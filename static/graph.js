@@ -19,6 +19,7 @@ var settings = {
 var nodeTypes = {
     button: {
         title: 'Button',
+        kind: 'hardware',
         inputs: [
             'enabled',
         ],
@@ -31,6 +32,7 @@ var nodeTypes = {
 
     led: {
         title: 'Led',
+        kind: 'hardware',
         inputs: [
             'enabled',
             'brightness',
@@ -41,6 +43,7 @@ var nodeTypes = {
 
     switch: {
         title: 'Switch',
+        kind: 'logic',
         inputs: [
             'toggle',
             'set',
@@ -53,6 +56,7 @@ var nodeTypes = {
 
     pot: {
         title: 'Pot',
+        kind: 'hardware',
         inputs: [
             'enabled',
         ],
@@ -63,6 +67,7 @@ var nodeTypes = {
 
     servo: {
         title: 'Servo',
+        kind: 'hardware',
         inputs: [
             'enabled',
             'angle',
@@ -73,6 +78,7 @@ var nodeTypes = {
 
     buzzer: {
         title: 'Buzzer',
+        kind: 'hardware',
         inputs: [
             'enabled',
             'frequency',
@@ -83,6 +89,7 @@ var nodeTypes = {
 
     branch: {
         title: 'Branch',
+        kind: 'logic',
         inputs: [
             'input',
             'if true',
@@ -95,6 +102,7 @@ var nodeTypes = {
 
     timer: {
         title: 'Timer',
+        kind: 'generator',
         inputs: [
             'enabled',
             'interval',
@@ -171,6 +179,8 @@ function buildOutput(g) {
 }
 
 function buildNode(g) {
+    g.attr('class', function(d) { return 'node ' + (nodeTypes[d.type].kind || ''); });
+
     g.attr('transform', function(d) {
         return 'translate(' +
             alignPixel(d.x) + ', ' +

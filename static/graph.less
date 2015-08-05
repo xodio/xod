@@ -1,4 +1,8 @@
 
+@hardware: hsl(160, 60%, 25%);
+@logic: hsl(0, 0%, 25%);
+@generator: hsl(260, 60%, 25%);
+
 #canvas {
     background-color: #777;
 
@@ -12,6 +16,10 @@
     rect.outline {
         fill: #555;
     }
+
+    &.hardware rect.outline { fill: @hardware; }
+    &.logic rect.outline { fill: @logic; }
+    &.generator rect.outline { fill: @generator; }
 
     .outline {
         stroke: black;
