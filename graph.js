@@ -9,8 +9,9 @@ var settings = {
 
         endpoint: {
             radius: 3,
-            step: 10,
-            vmargin: 20,
+            step: 15,
+            vmargin: 15,
+            hpadding: 10,
         },
     }
 }
@@ -40,6 +41,36 @@ function nodeHeight(node) {
         (pcount - 1) * settings.node.endpoint.step;
 }
 
+function buildEndpoint(g, x, labelDx, labelAnchor) {
+    var yBase = settings.node.title.height +
+                settings.node.endpoint.vmargin;
+
+    calcY = function(d, i) {
+        return yBase + i * settings.node.endpoint.step;
+    }
+
+    g.append('circle')
+        .attr('cx', x)
+        .attr('cy', calcY)
+        .attr('r', settings.node.endpoint.radius)
+        .attr('fill', 'black');
+
+    g.append('text')
+        .text(function(d) { return d.title; })
+        .attr('text-anchor', labelAnchor)
+        .attr('dominant-baseline', 'central')
+        .attr('x', x + labelDx)
+        .attr('y', calcY);
+}
+
+function buildInput(g) {
+    buildEndpoint(g, 0, settings.node.endpoint.hpadding, 'start');
+}
+
+function buildOutput(g) {
+    buildEndpoint(g, settings.node.width,
+                  -settings.node.endpoint.hpadding, 'end');
+}
 
 function buildNode(g) {
     g.attr('transform', function(d) {
@@ -64,24 +95,24 @@ function buildNode(g) {
         .attr('d', 'm 0 ' + settings.node.title.height + ' h ' + settings.node.width)
         .attr('stroke', 'blue');
 
-    g.append('circle')
-        .attr('cx', 0)
-        .attr('cy', 45)
-        .attr('r', 3)
-        .attr('fill', 'black');
+    var input = g.selectAll('g.input')
+        .data(function(d) { return d.inputs; })
+        .enter().append('g').attr('class', 'endpoint input');
 
-    g.append('text')
-        .text('enabled')
-        .attr('class', 'endpoint')
-        .attr('dominant-baseline', 'central')
-        .attr('x', 10)
-        .attr('y', 45)
+    buildInput(input);
+
+    var output = g.selectAll('g.output')
+        .data(function(d) { return d.outputs; })
+        .enter().append('g').attr('class', 'endpoint output');
+
+    buildOutput(output);
 }
 
 $(function() {
     var body = d3.select("body");
 
     var svg = body.append('svg')
+        .attr('id', 'canvas')
         .attr('height', 600)
         .attr('width', 600);
 

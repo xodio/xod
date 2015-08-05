@@ -3,7 +3,7 @@ text {
     font-family: Ubuntu, sans;
 }
 
-text.endpoint {
+.endpoint text {
     font-size: 10px;
     transform: translate(0, -1px);
 }
