@@ -37,7 +37,72 @@ var nodeTypes = {
         ],
         outputs: [
         ],
-    }
+    },
+
+    switch: {
+        title: 'Switch',
+        inputs: [
+            'toggle',
+            'set',
+            'reset',
+        ],
+        outputs: [
+            'output',
+        ],
+    },
+
+    pot: {
+        title: 'Pot',
+        inputs: [
+            'enabled',
+        ],
+        outputs: [
+            'value',
+        ],
+    },
+
+    servo: {
+        title: 'Servo',
+        inputs: [
+            'enabled',
+            'angle',
+        ],
+        outputs: [
+        ],
+    },
+
+    buzzer: {
+        title: 'Buzzer',
+        inputs: [
+            'enabled',
+            'frequency',
+        ],
+        outputs: [
+        ],
+    },
+
+    branch: {
+        title: 'Branch',
+        inputs: [
+            'input',
+            'if true',
+            'if false',
+        ],
+        outputs: [
+            'output'
+        ],
+    },
+
+    timer: {
+        title: 'Timer',
+        inputs: [
+            'enabled',
+            'interval',
+        ],
+        outputs: [
+            'tick'
+        ],
+    },
 }
 
 function alignPixel(x) {
@@ -162,8 +227,8 @@ $(function() {
 
         var svg = body.append('svg')
             .attr('id', 'canvas')
-            .attr('height', 600)
-            .attr('width', 600);
+            .attr('height', 1080)
+            .attr('width', 1920);
 
         var node = svg.selectAll("g.node")
             .data(d3.values(nodes))

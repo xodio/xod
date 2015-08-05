@@ -5,16 +5,26 @@
             "x": 100,
             "y": 100
         },
+        "switch": {
+            "type": "switch",
+            "x": 350,
+            "y": 100
+        },
         "led": {
             "type": "led",
-            "x": 350,
+            "x": 600,
             "y": 100
         }
     },
 
     "links": [{
         "fromNode": "button",
-        "fromOutput": "down",
+        "fromOutput": "press",
+        "toNode": "switch",
+        "toInput": "toggle"
+    }, {
+        "fromNode": "switch",
+        "fromOutput": "output",
         "toNode": "led",
         "toInput": "enabled"
     }]

@@ -1,7 +1,7 @@
 {
     "nodes": {
-        "button": {
-            "type": "button",
+        "pot": {
+            "type": "pot",
             "x": 100,
             "y": 100
         },
@@ -13,9 +13,10 @@
     },
 
     "links": [{
-        "fromNode": "button",
-        "fromOutput": "down",
+        "fromNode": "pot",
+        "fromOutput": "value",
         "toNode": "led",
-        "toInput": "enabled"
+        "toInput": "brightness"
     }]
 }
+
