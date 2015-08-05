@@ -240,7 +240,16 @@ function buildLink(path, nodes) {
             endpointPosition(nodes[d.toNode], d.toInput, 'inputs'),
         ];
 
-        return d3.svg.line()(points) + 'Z';
+        var sx = points[0][0];
+        var sy = points[0][1];
+        var ex = points[1][0];
+        var ey = points[1][1];
+        var cx = sx + (ex - sx) / 2;
+
+        return 'M ' + sx + ' ' + sy + ' C ' +
+            cx + ' ' + sy + ', ' +
+            cx + ' ' + ey + ', ' +
+            ex + ' ' + ey + '';
     });
 }
 
