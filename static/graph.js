@@ -8,7 +8,7 @@ var settings = {
         },
 
         endpoint: {
-            radius: 3,
+            radius: 3.5,
             step: 15,
             vmargin: 15,
             hpadding: 10,
@@ -143,12 +143,15 @@ function endpointPosition(node, endpointName, endpointsField) {
 }
 
 function buildEndpoint(g, dir, type) {
-    var x = (dir == 'output') ? settings.node.width : 0;
-    var labelDx = ((dir == 'output') ? -1 : 1) * settings.node.endpoint.hpadding;
-    var labelAnchor = (dir == 'output') ? 'end' : 'start';
+    var isOutput = (dir == 'output');
+    var x = isOutput ? settings.node.width : 0;
+    var labelDx = (isOutput ? -1 : 1) * settings.node.endpoint.hpadding;
+    var labelAnchor = isOutput ? 'end' : 'start';
 
     var yBase = settings.node.title.height +
                 settings.node.endpoint.vmargin;
+
+    var r = settings.node.endpoint.radius;
 
     calcY = function(d) {
         return yBase + d.index * settings.node.endpoint.step;
@@ -160,20 +163,21 @@ function buildEndpoint(g, dir, type) {
         g.append('circle')
             .attr('cx', x)
             .attr('cy', calcY)
-            .attr('r', settings.node.endpoint.radius)
-            .attr('fill', 'black');
-    } else if (type == 'bool') {
-        g.append('circle')
-            .attr('cx', x)
-            .attr('cy', calcY)
-            .attr('r', settings.node.endpoint.radius)
-            .attr('fill', 'red');
+            .attr('r', r)
     } else if (type == 'pulse') {
-        g.append('circle')
-            .attr('cx', x)
-            .attr('cy', calcY)
-            .attr('r', settings.node.endpoint.radius)
-            .attr('fill', 'green');
+        var ex = x + r / 2;
+        g.append('path')
+            .attr('d', d3.svg.symbol().type('triangle-down').size(Math.PI * r * r))
+            .attr('transform', function(d) {
+                return 'translate(' + ex + ', ' + calcY(d) + ') rotate(-90)';
+            });
+    } else if (type == 'bool') {
+        var s = Math.sqrt(Math.PI) * r;
+        g.append('rect')
+            .attr('x', x - s / 2)
+            .attr('y', function(d) { return calcY(d) - s / 2; })
+            .attr('width', s)
+            .attr('height', s)
     }
 
     g.append('text')

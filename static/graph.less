@@ -3,6 +3,8 @@
 @logic: hsl(0, 0%, 25%);
 @generator: hsl(260, 60%, 25%);
 
+@endpoint: hsl(0, 0%, 10%);
+
 #canvas {
     background-color: #777;
 
@@ -26,9 +28,16 @@
         stroke-width: 1px;
     }
 
-    .endpoint text {
-        font-size: 10px;
-        transform: translate(0, -1px);
+    .endpoint {
+        fill: @endpoint;
+        stroke: black;
+        stroke-width: 1px;
+
+        text {
+            font-size: 10px;
+            transform: translate(0, -1px);
+            stroke: none;
+        }
     }
 }
 
