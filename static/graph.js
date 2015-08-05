@@ -40,27 +40,6 @@ var nodeTypes = {
     }
 }
 
-var nodes = {
-    button: {
-        type: 'button',
-        x: 10,
-        y: 10,
-    },
-
-    led: {
-        type: 'led',
-        x: 250,
-        y: 10,
-    },
-}
-
-var links = [{
-    fromNode: 'button',
-    fromOutput: 'down',
-    toNode: 'led',
-    toInput: 'enabled',
-}]
-
 function alignPixel(x) {
     if (Array.isArray(x)) {
         return x.map(alignPixel);
@@ -163,7 +142,7 @@ function buildNode(g) {
     buildOutput(output);
 }
 
-function buildLink(path) {
+function buildLink(path, nodes) {
     path.attr('d', function(d) {
         var points = [
             outputPosition(nodes[d.fromNode], d.fromOutput),
@@ -175,22 +154,27 @@ function buildLink(path) {
 }
 
 $(function() {
-    var body = d3.select("body");
+    d3.json("/data/" + datum + ".json", function(json) {
+        var nodes = json.nodes;
+        var links = json.links;
 
-    var svg = body.append('svg')
-        .attr('id', 'canvas')
-        .attr('height', 600)
-        .attr('width', 600);
+        var body = d3.select("body");
 
-    var node = svg.selectAll("g.node")
-        .data(d3.values(nodes))
-        .enter().append("g").attr('class', 'node');
+        var svg = body.append('svg')
+            .attr('id', 'canvas')
+            .attr('height', 600)
+            .attr('width', 600);
 
-    buildNode(node);
+        var node = svg.selectAll("g.node")
+            .data(d3.values(nodes))
+            .enter().append("g").attr('class', 'node');
 
-    var link = svg.selectAll("path.link")
-        .data(links)
-        .enter().append("path").attr('class', 'link');
+        buildNode(node);
 
-    buildLink(link);
+        var link = svg.selectAll("path.link")
+            .data(links)
+            .enter().append("path").attr('class', 'link');
+
+        buildLink(link, nodes);
+    });
 });

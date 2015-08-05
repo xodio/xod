@@ -8,9 +8,14 @@ app.engine('handlebars', exphbs({}));
 app.set('view engine', 'handlebars');
 
 app.use(express.static('static'));
+app.use('/data', express.static('data'));
 
 app.get('/', function (req, res) {
-  res.render('index');
+  res.redirect('/1/');
+});
+
+app.get('/:datum/', function (req, res) {
+  res.render('index', {datum: req.params.datum});
 });
 
 var server = app.listen(8000, function () {

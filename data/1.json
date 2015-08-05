@@ -1,0 +1,21 @@
+{
+    "nodes": {
+        "button": {
+            "type": "button",
+            "x": 10,
+            "y": 10
+        },
+        "led": {
+            "type": "led",
+            "x": 250,
+            "y": 10
+        }
+    },
+
+    "links": [{
+        "fromNode": "button",
+        "fromOutput": "down",
+        "toNode": "led",
+        "toInput": "enabled"
+    }]
+}
