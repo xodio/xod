@@ -1,6 +1,20 @@
 
+#canvas {
+    background-color: #777;
+}
+
+.node rect.outline {
+    fill: #555;
+}
+
+.node .outline {
+    stroke: black;
+    stroke-width: 1px;
+}
+
 text {
     font-family: Ubuntu, sans;
+    fill: white;
 }
 
 .endpoint text {

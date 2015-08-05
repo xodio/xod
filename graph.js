@@ -19,8 +19,8 @@ var settings = {
 var nodes = [{
     title: 'Button',
 
-    x: 10,
-    y: 10,
+    x: 10.5,
+    y: 10.5,
 
     inputs: [{
         title: 'enabled'
@@ -78,10 +78,9 @@ function buildNode(g) {
     });
 
     g.append('rect')
+        .attr('class', 'outline')
         .attr('width', settings.node.width)
         .attr('height', function(d) { return nodeHeight(d); })
-        .attr('fill', 'white')
-        .attr('stroke', 'blue')
 
     g.append('text')
         .text(function(d) { return d.title; })
@@ -92,8 +91,8 @@ function buildNode(g) {
         .attr('class', 'title')
 
     g.append('path')
+        .attr('class', 'outline')
         .attr('d', 'm 0 ' + settings.node.title.height + ' h ' + settings.node.width)
-        .attr('stroke', 'blue');
 
     var input = g.selectAll('g.input')
         .data(function(d) { return d.inputs; })
