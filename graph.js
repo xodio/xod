@@ -34,8 +34,8 @@ var nodeTypes = {
 var nodes = [{
     type: 'button',
 
-    x: 10.5,
-    y: 10.5,
+    x: 10,
+    y: 10,
 }]
 
 
@@ -80,7 +80,9 @@ function buildOutput(g) {
 
 function buildNode(g) {
     g.attr('transform', function(d) {
-        return 'translate(' + d.x + ', ' + d.y + ')';
+        return 'translate(' +
+            (Math.floor(d.x) + 0.5) + ', ' +
+            (Math.floor(d.y) + 0.5) + ')';
     });
 
     g.append('rect')
