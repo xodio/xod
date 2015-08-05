@@ -142,19 +142,39 @@ function endpointPosition(node, endpointName, endpointsField) {
     ]);
 }
 
-function buildEndpoint(g, x, labelDx, labelAnchor) {
+function buildEndpoint(g, dir, type) {
+    var x = (dir == 'output') ? settings.node.width : 0;
+    var labelDx = ((dir == 'output') ? -1 : 1) * settings.node.endpoint.hpadding;
+    var labelAnchor = (dir == 'output') ? 'end' : 'start';
+
     var yBase = settings.node.title.height +
                 settings.node.endpoint.vmargin;
 
-    calcY = function(d, i) {
-        return yBase + i * settings.node.endpoint.step;
+    calcY = function(d) {
+        return yBase + d.index * settings.node.endpoint.step;
     }
 
-    g.append('circle')
-        .attr('cx', x)
-        .attr('cy', calcY)
-        .attr('r', settings.node.endpoint.radius)
-        .attr('fill', 'black');
+    g.attr('class', 'endpoint ' + dir + ' ' + type);
+
+    if (type == 'number') {
+        g.append('circle')
+            .attr('cx', x)
+            .attr('cy', calcY)
+            .attr('r', settings.node.endpoint.radius)
+            .attr('fill', 'black');
+    } else if (type == 'bool') {
+        g.append('circle')
+            .attr('cx', x)
+            .attr('cy', calcY)
+            .attr('r', settings.node.endpoint.radius)
+            .attr('fill', 'red');
+    } else if (type == 'pulse') {
+        g.append('circle')
+            .attr('cx', x)
+            .attr('cy', calcY)
+            .attr('r', settings.node.endpoint.radius)
+            .attr('fill', 'green');
+    }
 
     g.append('text')
         .text(function(d) { return d.name; })
@@ -162,15 +182,6 @@ function buildEndpoint(g, x, labelDx, labelAnchor) {
         .attr('dominant-baseline', 'central')
         .attr('x', x + labelDx)
         .attr('y', calcY);
-}
-
-function buildInput(g) {
-    buildEndpoint(g, 0, settings.node.endpoint.hpadding, 'start');
-}
-
-function buildOutput(g) {
-    buildEndpoint(g, settings.node.width,
-                  -settings.node.endpoint.hpadding, 'end');
 }
 
 function buildNode(g) {
@@ -197,19 +208,25 @@ function buildNode(g) {
 
     g.append('path')
         .attr('class', 'outline')
-        .attr('d', 'm 0 ' + settings.node.title.height + ' h ' + settings.node.width)
+        .attr('d', 'm 0 ' + settings.node.title.height + ' h ' + settings.node.width);
 
-    var input = g.selectAll('g.input')
-        .data(function(d) { return nodeTypes[d.type].inputs; })
-        .enter().append('g').attr('class', 'endpoint input');
+    ['input', 'output'].forEach(function(dir) {
+        ['bool', 'number', 'pulse'].forEach(function(type) {
+            var endpoint = g.selectAll('g.endpoint.' + dir + '.' + type)
+                .data(function(d) {
+                    var endpoints = nodeTypes[d.type][dir + 's'];
+                    return endpoints.filter(function(ep) {
+                        return ep.type == type;
+                    }).map(function(ep) {
+                        ep.index = endpoints.indexOf(ep);
+                        return ep;
+                    });
+                }).enter()
+                    .append('g');
 
-    buildInput(input);
-
-    var output = g.selectAll('g.output')
-        .data(function(d) { return nodeTypes[d.type].outputs; })
-        .enter().append('g').attr('class', 'endpoint output');
-
-    buildOutput(output);
+            buildEndpoint(endpoint, dir, type);
+        });
+    });
 }
 
 function buildLink(path, nodes) {
