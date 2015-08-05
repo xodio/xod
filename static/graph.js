@@ -21,12 +21,12 @@ var nodeTypes = {
         title: 'Button',
         kind: 'hardware',
         inputs: [
-            'enabled',
+            {name: 'enabled', type: 'bool'},
         ],
         outputs: [
-            'down',
-            'press',
-            'release',
+            {name: 'down', type: 'bool'},
+            {name: 'press', type: 'pulse'},
+            {name: 'release', type: 'pulse'},
         ],
     },
 
@@ -34,8 +34,8 @@ var nodeTypes = {
         title: 'Led',
         kind: 'hardware',
         inputs: [
-            'enabled',
-            'brightness',
+            {name: 'enabled', type: 'bool'},
+            {name: 'brightness', type: 'number'},
         ],
         outputs: [
         ],
@@ -45,12 +45,12 @@ var nodeTypes = {
         title: 'Switch',
         kind: 'logic',
         inputs: [
-            'toggle',
-            'set',
-            'reset',
+            {name: 'toggle', type: 'pulse'},
+            {name: 'set', type: 'pulse'},
+            {name: 'reset', type: 'pulse'},
         ],
         outputs: [
-            'output',
+            {name: 'output', type: 'bool'},
         ],
     },
 
@@ -58,10 +58,10 @@ var nodeTypes = {
         title: 'Pot',
         kind: 'hardware',
         inputs: [
-            'enabled',
+            {name: 'enabled', type: 'bool'},
         ],
         outputs: [
-            'value',
+            {name: 'value', type: 'number'},
         ],
     },
 
@@ -69,8 +69,8 @@ var nodeTypes = {
         title: 'Servo',
         kind: 'hardware',
         inputs: [
-            'enabled',
-            'angle',
+            {name: 'enabled', type: 'bool'},
+            {name: 'angle', type: 'number'},
         ],
         outputs: [
         ],
@@ -80,8 +80,8 @@ var nodeTypes = {
         title: 'Buzzer',
         kind: 'hardware',
         inputs: [
-            'enabled',
-            'frequency',
+            {name: 'enabled', type: 'bool'},
+            {name: 'frequency', type: 'number'},
         ],
         outputs: [
         ],
@@ -91,12 +91,12 @@ var nodeTypes = {
         title: 'Branch',
         kind: 'logic',
         inputs: [
-            'input',
-            'if true',
-            'if false',
+            {name: 'input', type: 'bool'},
+            {name: 'if_true', type: 'number'},
+            {name: 'if_false', type: 'number'},
         ],
         outputs: [
-            'output'
+            {name: 'output', type: 'number'},
         ],
     },
 
@@ -104,11 +104,11 @@ var nodeTypes = {
         title: 'Timer',
         kind: 'generator',
         inputs: [
-            'enabled',
-            'interval',
+            {name: 'enabled', type: 'bool'},
+            {name: 'interval', type: 'number'},
         ],
         outputs: [
-            'tick'
+            {name: 'tick', type: 'pulse'},
         ],
     },
 }
@@ -129,20 +129,15 @@ function nodeHeight(node) {
         (pcount - 1) * settings.node.endpoint.step;
 }
 
-function inputPosition(node, endpointName) {
+function endpointPosition(node, endpointName, endpointsField) {
     var ntype = nodeTypes[node.type];
-    var idx = ntype.inputs.indexOf(endpointName);
-    return alignPixel([
-        node.x,
-        node.y + settings.node.title.height + settings.node.endpoint.vmargin + idx * settings.node.endpoint.step
-    ]);
-}
+    var endpointNames = ntype[endpointsField].map(function(ep) {
+        return ep.name;
+    });
 
-function outputPosition(node, endpointName) {
-    var ntype = nodeTypes[node.type];
-    var idx = ntype.outputs.indexOf(endpointName);
+    var idx = endpointNames.indexOf(endpointName);
     return alignPixel([
-        node.x + settings.node.width,
+        node.x + ((endpointsField == 'outputs') ? settings.node.width : 0),
         node.y + settings.node.title.height + settings.node.endpoint.vmargin + idx * settings.node.endpoint.step
     ]);
 }
@@ -162,7 +157,7 @@ function buildEndpoint(g, x, labelDx, labelAnchor) {
         .attr('fill', 'black');
 
     g.append('text')
-        .text(function(d) { return d; })
+        .text(function(d) { return d.name; })
         .attr('text-anchor', labelAnchor)
         .attr('dominant-baseline', 'central')
         .attr('x', x + labelDx)
@@ -220,8 +215,8 @@ function buildNode(g) {
 function buildLink(path, nodes) {
     path.attr('d', function(d) {
         var points = [
-            outputPosition(nodes[d.fromNode], d.fromOutput),
-            inputPosition(nodes[d.toNode], d.toInput),
+            endpointPosition(nodes[d.fromNode], d.fromOutput, 'outputs'),
+            endpointPosition(nodes[d.toNode], d.toInput, 'inputs'),
         ];
 
         return d3.svg.line()(points) + 'Z';
