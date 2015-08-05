@@ -16,26 +16,32 @@ var settings = {
     }
 }
 
+var nodeTypes = {
+    button: {
+        title: 'Button',
+
+        inputs: [
+            'enabled',
+        ],
+
+        outputs: [
+            'press',
+            'release',
+        ],
+    }
+}
+
 var nodes = [{
-    title: 'Button',
+    type: 'button',
 
     x: 10.5,
     y: 10.5,
-
-    inputs: [{
-        title: 'enabled'
-    }],
-
-    outputs: [{
-        title: 'press'
-    }, {
-        title: 'release'
-    }],
 }]
 
 
 function nodeHeight(node) {
-    var pcount = Math.max(node.inputs.length, node.outputs.length);
+    var ntype = nodeTypes[node.type];
+    var pcount = Math.max(ntype.inputs.length, ntype.outputs.length);
     return settings.node.title.height +
         2 * settings.node.endpoint.vmargin +
         (pcount - 1) * settings.node.endpoint.step;
@@ -56,7 +62,7 @@ function buildEndpoint(g, x, labelDx, labelAnchor) {
         .attr('fill', 'black');
 
     g.append('text')
-        .text(function(d) { return d.title; })
+        .text(function(d) { return d; })
         .attr('text-anchor', labelAnchor)
         .attr('dominant-baseline', 'central')
         .attr('x', x + labelDx)
@@ -83,7 +89,7 @@ function buildNode(g) {
         .attr('height', function(d) { return nodeHeight(d); })
 
     g.append('text')
-        .text(function(d) { return d.title; })
+        .text(function(d) { return nodeTypes[d.type].title; })
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
         .attr('x', settings.node.width / 2)
@@ -95,13 +101,13 @@ function buildNode(g) {
         .attr('d', 'm 0 ' + settings.node.title.height + ' h ' + settings.node.width)
 
     var input = g.selectAll('g.input')
-        .data(function(d) { return d.inputs; })
+        .data(function(d) { return nodeTypes[d.type].inputs; })
         .enter().append('g').attr('class', 'endpoint input');
 
     buildInput(input);
 
     var output = g.selectAll('g.output')
-        .data(function(d) { return d.outputs; })
+        .data(function(d) { return nodeTypes[d.type].outputs; })
         .enter().append('g').attr('class', 'endpoint output');
 
     buildOutput(output);
