@@ -19,25 +19,55 @@ var settings = {
 var nodeTypes = {
     button: {
         title: 'Button',
-
         inputs: [
             'enabled',
         ],
-
         outputs: [
+            'down',
             'press',
             'release',
+        ],
+    },
+
+    led: {
+        title: 'Led',
+        inputs: [
+            'enabled',
+            'brightness',
+        ],
+        outputs: [
         ],
     }
 }
 
-var nodes = [{
-    type: 'button',
+var nodes = {
+    button: {
+        type: 'button',
+        x: 10,
+        y: 10,
+    },
 
-    x: 10,
-    y: 10,
+    led: {
+        type: 'led',
+        x: 250,
+        y: 10,
+    },
+}
+
+var links = [{
+    fromNode: 'button',
+    fromOutput: 'down',
+    toNode: 'led',
+    toInput: 'enabled',
 }]
 
+function alignPixel(x) {
+    if (Array.isArray(x)) {
+        return x.map(alignPixel);
+    }
+
+    return Math.floor(x) + 0.5;
+}
 
 function nodeHeight(node) {
     var ntype = nodeTypes[node.type];
@@ -45,6 +75,24 @@ function nodeHeight(node) {
     return settings.node.title.height +
         2 * settings.node.endpoint.vmargin +
         (pcount - 1) * settings.node.endpoint.step;
+}
+
+function inputPosition(node, endpointName) {
+    var ntype = nodeTypes[node.type];
+    var idx = ntype.inputs.indexOf(endpointName);
+    return alignPixel([
+        node.x,
+        node.y + settings.node.title.height + settings.node.endpoint.vmargin + idx * settings.node.endpoint.step
+    ]);
+}
+
+function outputPosition(node, endpointName) {
+    var ntype = nodeTypes[node.type];
+    var idx = ntype.outputs.indexOf(endpointName);
+    return alignPixel([
+        node.x + settings.node.width,
+        node.y + settings.node.title.height + settings.node.endpoint.vmargin + idx * settings.node.endpoint.step
+    ]);
 }
 
 function buildEndpoint(g, x, labelDx, labelAnchor) {
@@ -81,8 +129,8 @@ function buildOutput(g) {
 function buildNode(g) {
     g.attr('transform', function(d) {
         return 'translate(' +
-            (Math.floor(d.x) + 0.5) + ', ' +
-            (Math.floor(d.y) + 0.5) + ')';
+            alignPixel(d.x) + ', ' +
+            alignPixel(d.y) + ')';
     });
 
     g.append('rect')
@@ -115,6 +163,17 @@ function buildNode(g) {
     buildOutput(output);
 }
 
+function buildLink(path) {
+    path.attr('d', function(d) {
+        var points = [
+            outputPosition(nodes[d.fromNode], d.fromOutput),
+            inputPosition(nodes[d.toNode], d.toInput),
+        ];
+
+        return d3.svg.line()(points) + 'Z';
+    });
+}
+
 $(function() {
     var body = d3.select("body");
 
@@ -124,8 +183,14 @@ $(function() {
         .attr('width', 600);
 
     var node = svg.selectAll("g.node")
-        .data(nodes)
+        .data(d3.values(nodes))
         .enter().append("g").attr('class', 'node');
 
     buildNode(node);
+
+    var link = svg.selectAll("path.link")
+        .data(links)
+        .enter().append("path").attr('class', 'link');
+
+    buildLink(link);
 });
