@@ -13,7 +13,13 @@
         "led": {
             "type": "led",
             "x": 600,
-            "y": 100
+            "y": 100,
+            "inputs": {
+                "brightness": {
+                    "value": 80,
+                    "unit": "%"
+                }
+            }
         }
     },
 

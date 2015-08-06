@@ -187,11 +187,11 @@ function buildEndpoint(g, dir, type) {
         .attr('y', calcY)
         .text(function(d) {
             var label = d.name;
-            var hasOpts = !!d.value || !!d.unit;
+            var hasOpts = (d.value !== undefined) || (d.unit !== undefined);
             if (hasOpts) {
                 label += ' [';
-                if (d.value) { label += '=' + d.value; }
-                if (d.unit)  { label += d.unit; }
+                if (d.value !== undefined) { label += '=' + d.value; }
+                if (d.unit  !== undefined) { label += d.unit; }
                 label += ']';
             }
 

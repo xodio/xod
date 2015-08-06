@@ -13,7 +13,13 @@
         "timer": {
             "type": "timer",
             "x": 500,
-            "y": 200
+            "y": 200,
+            "inputs": {
+                "interval": {
+                    "value": 0.5,
+                    "unit": "s"
+                }
+            }
         },
         "controlSwitch": {
             "type": "switch",
@@ -23,7 +29,13 @@
         "buzzer": {
             "type": "buzzer",
             "x": 900,
-            "y": 200
+            "y": 200,
+            "inputs": {
+                "frequency": {
+                    "value": 50,
+                    "unit": "Hz"
+                }
+            }
         },
         "led": {
             "type": "led",
@@ -33,12 +45,25 @@
         "servo": {
             "type": "servo",
             "x": 900,
-            "y": 100
+            "y": 100,
+            "inputs": {
+                "angle": {
+                    "unit": "deg"
+                }
+            }
         },
         "branch": {
             "type": "branch",
             "x": 600,
-            "y": 100
+            "y": 100,
+            "inputs": {
+                "if_true": {
+                    "value": 90
+                },
+                "if_false": {
+                    "value": 0
+                }
+            }
         }
     },
 

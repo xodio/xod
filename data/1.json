@@ -8,13 +8,7 @@
         "led": {
             "type": "led",
             "x": 350,
-            "y": 100,
-            "inputs": {
-                "brightness": {
-                    "value": 100,
-                    "unit": "%"
-                }
-            }
+            "y": 100
         }
     },
 
