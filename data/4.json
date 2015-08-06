@@ -1,0 +1,44 @@
+{
+    "nodes": {
+        "lightSensor": {
+            "type": "lightSensor",
+            "x": 100,
+            "y": 100,
+            "outputs": {
+                "value": { "unit": "lx" }
+            }
+        },
+        "mapper": {
+            "type": "mapper",
+            "x": 300,
+            "y": 100,
+            "inputs": {
+                "in_min": { "value": 0 },
+                "in_max": { "value": 50 },
+                "out_min": { "value": 100 },
+                "out_max": { "value": 0 }
+            }
+
+        },
+        "led": {
+            "type": "led",
+            "x": 500,
+            "y": 100,
+            "inputs": {
+                "brightness": { "unit": "%" }
+            }
+        }
+    },
+
+    "links": [{
+        "fromNode": "lightSensor",
+        "fromOutput": "value",
+        "toNode": "mapper",
+        "toInput": "in"
+    }, {
+        "fromNode": "mapper",
+        "fromOutput": "out",
+        "toNode": "led",
+        "toInput": "brightness"
+    }]
+}
