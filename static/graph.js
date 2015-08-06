@@ -181,11 +181,22 @@ function buildEndpoint(g, dir, type) {
     }
 
     g.append('text')
-        .text(function(d) { return d.name; })
         .attr('text-anchor', labelAnchor)
         .attr('dominant-baseline', 'central')
         .attr('x', x + labelDx)
-        .attr('y', calcY);
+        .attr('y', calcY)
+        .text(function(d) {
+            var label = d.name;
+            var hasOpts = !!d.value || !!d.unit;
+            if (hasOpts) {
+                label += ' [';
+                if (d.value) { label += '=' + d.value; }
+                if (d.unit)  { label += d.unit; }
+                label += ']';
+            }
+
+            return label;
+        });
 }
 
 function buildNode(g) {
@@ -219,10 +230,14 @@ function buildNode(g) {
             var endpoint = g.selectAll('g.endpoint.' + dir + '.' + type)
                 .data(function(d) {
                     var endpoints = nodeTypes[d.type][dir + 's'];
+                    var endpointOptions = d[dir + 's'];
                     return endpoints.filter(function(ep) {
                         return ep.type == type;
                     }).map(function(ep) {
                         ep.index = endpoints.indexOf(ep);
+                        if (endpointOptions) {
+                            Object.assign(ep, endpointOptions[ep.name] || {});
+                        }
                         return ep;
                     });
                 }).enter()
@@ -253,7 +268,7 @@ function buildLink(path, nodes) {
     });
 }
 
-$(function() {
+function visualize() {
     d3.json("/data/" + datum + ".json", function(json) {
         var nodes = json.nodes;
         var links = json.links;
@@ -277,4 +292,4 @@ $(function() {
 
         buildLink(link, nodes);
     });
-});
+};
