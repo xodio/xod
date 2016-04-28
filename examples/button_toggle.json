@@ -1,0 +1,24 @@
+{
+  "nodes": [{
+    "id": 1,
+    "type": "t-flip-flop.core"
+  }, {
+    "id": 2,
+    "type": "switch.core"
+  }, {
+    "id": 3,
+    "type": "led.core"
+  }],
+
+  "links": [{
+    "fromNode": 2,
+    "fromOutput": "press",
+    "toNode": 1,
+    "toInput": "toggle"
+  }, {
+    "fromNode": 1,
+    "fromOutput": "value",
+    "toNode": 3,
+    "toInput": "enable"
+  }]
+}
