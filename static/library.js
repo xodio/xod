@@ -136,4 +136,80 @@ var nodeTypes = {
         ],
     },
 
+    gprs: {
+        title: 'GPRS',
+        kind: 'hardware',
+        inputs: [],
+        outputs: [
+            {name: 'got_sms', type: 'pulse'},
+            {name: 'message', type: 'number'},
+        ],
+    },
+
+    ws281x: {
+        title: 'WS281x Leds',
+        kind: 'hardware',
+        inputs: [
+            {name: 'red', type: 'number'},
+            {name: 'green', type: 'number'},
+            {name: 'blue', type: 'number'},
+            {name: 'index', type: 'number'},
+            {name: 'push', type: 'pulse'},
+        ],
+        outputs: [],
+    },
+
+    counter: {
+        title: 'Counter',
+        kind: 'logic',
+        inputs: [
+            {name: 'reset', type: 'pulse'},
+            {name: 'increment', type: 'pulse'},
+        ],
+        outputs: [
+            {name: 'value', type: 'number'},
+        ],
+    },
+
+    rangeCheck: {
+        title: 'Range Check',
+        kind: 'logic',
+        inputs: [
+            {name: 'in', type: 'number'},
+            {name: 'range_min', type: 'number'},
+            {name: 'range_max', type: 'number'},
+        ],
+        outputs: [
+            {name: 'between', type: 'bool'},
+            {name: 'less', type: 'bool'},
+            {name: 'greater', type: 'bool'},
+        ],
+    },
+
+    pulseFilter: {
+        title: 'Pulse Filter',
+        kind: 'logic',
+        inputs: [
+            {name: 'in', type: 'pulse'},
+            {name: 'pass', type: 'bool'},
+        ],
+        outputs: [
+            {name: 'out', type: 'pulse'},
+        ],
+    },
+
+    hsbToRgb: {
+        title: 'HSB to RGB',
+        kind: 'logic',
+        inputs: [
+            {name: 'hue', type: 'number'},
+            {name: 'saturation', type: 'number'},
+            {name: 'brightness', type: 'number'},
+        ],
+        outputs: [
+            {name: 'red', type: 'number'},
+            {name: 'green', type: 'number'},
+            {name: 'blue', type: 'number'},
+        ],
+    },
 }
