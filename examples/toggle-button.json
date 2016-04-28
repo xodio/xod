@@ -1,13 +1,13 @@
 {
   "nodes": [{
     "id": 1,
-    "type": "t-flip-flop.core"
+    "type": "core.t-flip-flop"
   }, {
     "id": 2,
-    "type": "switch.core"
+    "type": "core.switch"
   }, {
     "id": 3,
-    "type": "led.core"
+    "type": "core.led"
   }],
 
   "links": [{
@@ -17,7 +17,7 @@
     "toInput": "toggle"
   }, {
     "fromNode": 1,
-    "fromOutput": "value",
+    "fromOutput": "state",
     "toNode": 3,
     "toInput": "enable"
   }]
