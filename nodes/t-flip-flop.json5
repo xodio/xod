@@ -1,0 +1,13 @@
+{
+  inputs: [{
+    name: 'toggle',
+    type: 'trigger',
+    description: 'Flip current state to opposite'
+  }],
+  outputs: [{
+    name: 'state',
+    type: 'bool',
+    description: 'Current latch state',
+  }],
+}
+

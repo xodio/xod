@@ -46,5 +46,13 @@ TriggerInput.prototype.pop = function() {
   return val;
 };
 
-exports.ValueInput = ValueInput;
-exports.TriggerInput = TriggerInput;
+// ========================================================
+exports.create = function(meta, ownerNode) {
+  switch (meta.type) {
+    case 'trigger': return new TriggerInput(ownerNode);
+    case 'bool': return new ValueInput(ownerNode, Boolean);
+    case 'number': return new ValueInput(ownerNode, Number);
+    case 'string': return new ValueInput(ownerNode, String);
+    default: throw new TypeError("Unknown input type: " + meta.type);
+  }
+};

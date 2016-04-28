@@ -1,0 +1,11 @@
+{
+  inputs: [{
+    name: 'enable',
+    type: 'bool',
+    description: 'Set to true to power the LED'
+  }, {
+    name: 'brightness',
+    type: 'number',
+    description: 'Shine brightness'
+  }]
+}

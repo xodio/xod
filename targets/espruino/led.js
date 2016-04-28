@@ -1,13 +1,9 @@
 
-var Node = require('@xod/node');
-var inputs = require('@xod/input');
+var Node = require('@xod/impl/node');
 
-var Led = function(wiring) {
-  Node.call(this);
+var Led = function(meta) {
+  Node.call(this, meta);
   this._pin = P9;
-
-  this.inputs.enable = new inputs.ValueInput(this, Boolean);
-  this.inputs.brightness = new inputs.ValueInput(this, Number);
 };
 
 Led.prototype = Object.create(Node.prototype);
@@ -21,4 +17,4 @@ Led.prototype.eval = function() {
   analogWrite(this._pin, val);
 };
 
-exports.Node = Led;
+exports = Led;

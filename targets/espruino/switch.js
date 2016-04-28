@@ -1,13 +1,9 @@
 
-var outputs = require('@xod/output');
-var Node = require('@xod/node');
+var Node = require('@xod/impl/node');
 
-var Switch = function(wiring) {
-  Node.call(this);
+var Switch = function(meta) {
+  Node.call(this, meta);
   setWatch(this._onTrigger.bind(this), P8, {repeat: true, debounce: 30});
-  this.outputs.press = new outputs.EventOutput();
-  this.outputs.release = new outputs.EventOutput();
-  this.outputs.state = new outputs.ValueOutput(Boolean);
 };
 
 Switch.prototype = Object.create(Node.prototype);
@@ -23,4 +19,4 @@ Switch.prototype._onTrigger = function(e) {
   this.outputs.state.set(e.state);
 };
 
-exports.Node = Switch;
+exports = Switch;
