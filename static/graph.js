@@ -27,14 +27,14 @@ function pinOffset(i) {
   return settings.node.pin.margin + i * settings.node.pin.gap;
 }
 
-function visualizeInput(pin, i) {
+function renderInput(pin, i) {
   let g = d3.select(this);
   g.append('circle')
     .attr('r', 4)
     .attr('cx', pinOffset(i));
 }
 
-function visualizeOutput(pin, i) {
+function renderOutput(pin, i) {
   let g = d3.select(this);
   g.append('circle')
     .attr('r', 4)
@@ -42,7 +42,7 @@ function visualizeOutput(pin, i) {
     .attr('cx', pinOffset(i));
 }
 
-function visualizeNode(node) {
+function renderNode(node) {
   var g = d3.select(this);
   var ui = patch.uiOf(node);
   var nodeType = patch.typeOf(node);
@@ -67,17 +67,17 @@ function visualizeNode(node) {
     .enter()
       .append('g')
       .attr('class', 'pin input')
-      .each(visualizeInput);
+      .each(renderInput);
 
   g.selectAll('g.pin.output')
     .data(nodeType.outputs || [])
     .enter()
       .append('g')
       .attr('class', 'pin output')
-      .each(visualizeOutput);
+      .each(renderOutput);
 }
 
-function visualizeLink(link) {
+function renderLink(link) {
   let path = d3.select(this);
 
   let fromNodeUI = patch.uiOf(link.fromNode);
@@ -94,7 +94,7 @@ function visualizeLink(link) {
   path.attr('d', ['M', sx, sy, 'L', ex, ey].join(' '));
 }
 
-function visualize() {
+function render() {
   d3.json("/examples/" + example + ".json", function(json) {
     patch = Patch.wrap(json);
 
@@ -112,14 +112,14 @@ function visualize() {
         .enter()
           .append("g")
           .attr('class', 'node')
-          .each(visualizeNode);
+          .each(renderNode);
 
       svg.selectAll('path.link')
         .data(patch.links)
         .enter()
           .append('path')
           .attr('class', 'link')
-          .each(visualizeLink)
+          .each(renderLink)
     });
   });
 };
