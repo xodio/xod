@@ -15,6 +15,7 @@ var settings = {
 var svg = null;
 var patch = null;
 var nodeRepository = new AjaxNodeRepository();
+var selectedNode = null;
 
 function alignPixel(x) {
   if (Array.isArray(x)) {
@@ -43,12 +44,8 @@ function renderOutput(pin, i) {
     .attr('cx', pinOffset(i));
 }
 
-function renderNode(node) {
-  var g = d3.select(this);
-  var ui = patch.uiOf(node);
-  var nodeType = patch.typeOf(node);
-
-  g.attr('transform', 'translate(' + alignPixel(ui.x) + ', ' + alignPixel(ui.y) + ')');
+function createNode(node) {
+  let g = d3.select(this);
 
   g.append('rect')
     .attr('class', 'outline')
@@ -62,6 +59,15 @@ function renderNode(node) {
     .attr('x', settings.node.width / 2)
     .attr('y', settings.node.height / 2)
     .attr('class', 'title');
+}
+
+function renderNode(node) {
+  let g = d3.select(this);
+  let ui = patch.uiOf(node);
+  let nodeType = patch.typeOf(node);
+
+  g.attr('transform', 'translate(' + alignPixel(ui.x) + ', ' + alignPixel(ui.y) + ')')
+    .classed('selected', node === selectedNode);
 
   g.selectAll('g.pin.input')
     .data(nodeType.inputs || [])
@@ -105,8 +111,10 @@ function renderPatch() {
     .enter()
       .append("g")
       .attr('class', 'node')
+      .each(createNode)
       .each(renderNode)
-      .call(nodeDrag);
+      .call(nodeDrag)
+      .on('click', handleNodeClick);
 
   svg.selectAll('path.link')
     .data(patch.links)
@@ -123,6 +131,11 @@ function handleNodeDrag(node) {
   ui.y = d3.event.y;
   g.attr('transform', 'translate(' + alignPixel(ui.x) + ', ' + alignPixel(ui.y) + ')');
   svg.selectAll('path.link').each(renderLink);
+}
+
+function handleNodeClick(node) {
+  selectedNode = node;
+  d3.selectAll("g.node").each(renderNode);
 }
 
 function render() {
