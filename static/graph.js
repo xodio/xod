@@ -12,6 +12,7 @@ var settings = {
   }
 }
 
+var svg = null;
 var patch = null;
 var nodeRepository = new AjaxNodeRepository();
 
@@ -94,13 +95,18 @@ function renderLink(link) {
   path.attr('d', ['M', sx, sy, 'L', ex, ey].join(' '));
 }
 
-function renderPatch(svg, patch) {
-  svg.selectAll("g.node")
+function renderPatch() {
+  let nodeDrag = d3.behavior.drag()
+    .origin((node) => patch.uiOf(node))
+    .on('drag', handleNodeDrag);
+
+  let nodes = svg.selectAll("g.node")
     .data(patch.nodes)
     .enter()
       .append("g")
       .attr('class', 'node')
-      .each(renderNode);
+      .each(renderNode)
+      .call(nodeDrag);
 
   svg.selectAll('path.link')
     .data(patch.links)
@@ -108,6 +114,15 @@ function renderPatch(svg, patch) {
       .append('path')
       .attr('class', 'link')
       .each(renderLink)
+}
+
+function handleNodeDrag(node) {
+  let g = d3.select(this);
+  let ui = patch.uiOf(node);
+  ui.x = d3.event.x;
+  ui.y = d3.event.y;
+  g.attr('transform', 'translate(' + alignPixel(ui.x) + ', ' + alignPixel(ui.y) + ')');
+  svg.selectAll('path.link').each(renderLink);
 }
 
 function render() {
@@ -118,12 +133,12 @@ function render() {
     nodeRepository.prefetch(nodeTypes, function(err) {
       var body = d3.select("body");
 
-      var svg = body.append('svg')
+      svg = body.append('svg')
         .attr('id', 'canvas')
         .attr('width', 1920)
         .attr('height', 1080);
 
-      renderPatch(svg, patch);
+      renderPatch();
     });
   });
 };
