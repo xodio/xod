@@ -94,6 +94,22 @@ function renderLink(link) {
   path.attr('d', ['M', sx, sy, 'L', ex, ey].join(' '));
 }
 
+function renderPatch(svg, patch) {
+  svg.selectAll("g.node")
+    .data(patch.nodes)
+    .enter()
+      .append("g")
+      .attr('class', 'node')
+      .each(renderNode);
+
+  svg.selectAll('path.link')
+    .data(patch.links)
+    .enter()
+      .append('path')
+      .attr('class', 'link')
+      .each(renderLink)
+}
+
 function render() {
   d3.json("/examples/" + example + ".json", function(json) {
     patch = Patch.wrap(json);
@@ -107,19 +123,7 @@ function render() {
         .attr('width', 1920)
         .attr('height', 1080);
 
-      svg.selectAll("g.node")
-        .data(patch.nodes)
-        .enter()
-          .append("g")
-          .attr('class', 'node')
-          .each(renderNode);
-
-      svg.selectAll('path.link')
-        .data(patch.links)
-        .enter()
-          .append('path')
-          .attr('class', 'link')
-          .each(renderLink)
+      renderPatch(svg, patch);
     });
   });
 };
