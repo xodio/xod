@@ -1,48 +1,35 @@
 
-@hardware: hsl(160, 60%, 25%);
-@logic: hsl(0, 0%, 25%);
-@generator: hsl(260, 60%, 25%);
-
-@endpoint: hsl(0, 0%, 10%);
+@node-color: #555;
 
 #canvas {
-    background-color: #777;
+  background-color: #777;
 
-    text {
-        font-family: Ubuntu, sans;
-        fill: white;
-    }
+  text {
+    font-family: Ubuntu, sans;
+    font-size: 12px;
+    fill: white;
+  }
 }
 
 .node {
-    rect.outline {
-        fill: #555;
-    }
+  rect.outline {
+    fill: @node-color;
+  }
 
-    &.hardware rect.outline { fill: @hardware; }
-    &.logic rect.outline { fill: @logic; }
-    &.generator rect.outline { fill: @generator; }
+  .outline {
+    stroke: black;
+    stroke-width: 1px;
+  }
 
-    .outline {
-        stroke: black;
-        stroke-width: 1px;
-    }
-
-    .endpoint {
-        fill: @endpoint;
-        stroke: black;
-        stroke-width: 1px;
-
-        text {
-            font-size: 10px;
-            transform: translate(0, -1px);
-            stroke: none;
-        }
-    }
+  .pin {
+    stroke: black;
+    stroke-width: 1px;
+    fill: @node-color;
+  }
 }
 
 .link {
-    stroke: black;
-    stroke-width: 1px;
-    fill: none;
+  stroke: black;
+  stroke-width: 1px;
+  fill: none;
 }

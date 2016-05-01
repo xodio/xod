@@ -8,14 +8,16 @@ app.engine('handlebars', exphbs({}));
 app.set('view engine', 'handlebars');
 
 app.use(express.static('static'));
-app.use('/data', express.static('data'));
+app.use('/examples', express.static('examples'));
+app.use('/nodes', express.static('nodes'));
+app.use('/bower_components', express.static('bower_components'));
 
 app.get('/', function (req, res) {
-  res.redirect('/1/');
+  res.redirect('/toggle-button/');
 });
 
-app.get('/:datum/', function (req, res) {
-  res.render('index', {datum: req.params.datum});
+app.get('/:example/', function (req, res) {
+  res.render('index', {example: req.params.example});
 });
 
 var server = app.listen(8000, function () {

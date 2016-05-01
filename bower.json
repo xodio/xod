@@ -1,0 +1,22 @@
+{
+  "name": "xod",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "Victor Nakoryakov (Amperka LLC)"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/nailxx/vtroyka",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "json5": "^0.5.0"
+  }
+}
