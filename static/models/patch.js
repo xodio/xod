@@ -3,7 +3,7 @@ var Patch = function(obj) {
   this._obj = obj;
 
   this._nodes = new Map(obj.nodes.map(
-    nodeObj => [nodeObj.id, new Node(nodeObj, obj.ui.nodes[nodeObj.id])]));
+    nodeObj => [nodeObj.id, new Node(nodeObj, obj.ui.nodes[nodeObj.id], this)]));
 
   this._links = obj.links.map(
     linkObj => new Link(linkObj, this));
@@ -25,10 +25,23 @@ Patch.prototype.links = function() {
   return this._links;
 };
 
+Patch.prototype.addLink = function(opts) {
+  var linkObj = {
+    fromNode: opts.fromNode.id(),
+    fromOutput: opts.fromOutput.name(),
+    toNode: opts.toNode.id(),
+    toInput: opts.toInput.name(),
+  };
+
+  this._obj.links.push(linkObj);
+  this._links.push(new Link(linkObj, this));
+};
+
 // ==========================================================================
-var Node = function(obj, layoutObj) {
+var Node = function(obj, layoutObj, patch) {
   this._obj = obj;
   this._layoutObj = layoutObj;
+  this._patch = patch;
   this._typeObj = nodeRepository.get(obj.type);
 
   this._inputs = new Map((this._typeObj.inputs || []).map(
@@ -38,8 +51,16 @@ var Node = function(obj, layoutObj) {
     (outputObj, i) => [outputObj.name, new Pin(false, outputObj, i, this)]));
 };
 
+Node.prototype.patch = function() {
+  return this._patch;
+};
+
 Node.prototype.type = function() {
   return this._obj.type;
+};
+
+Node.prototype.id = function() {
+  return this._obj.id;
 };
 
 Node.prototype.x = function() {
@@ -109,10 +130,34 @@ Pin.prototype.isOutput = function() {
   return !this._isInput;
 };
 
+Pin.prototype.name = function() {
+  return this._obj.name;
+};
+
 Pin.prototype.index = function() {
   return this._index;
 };
 
 Pin.prototype.node = function() {
   return this._node;
+};
+
+Pin.prototype.linkTo = function(pin) {
+  var fromPin, toPin;
+  if (this.isOutput() && pin.isInput()) {
+    fromPin = this;
+    toPin = pin;
+  } else if (this.isInput() && pin.isOutput()) {
+    fromPin = pin;
+    toPin = this;
+  } else {
+    throw new Error('One pin should be output, another should be input');
+  }
+
+  this.node().patch().addLink({
+    fromNode: fromPin.node(),
+    fromOutput: fromPin,
+    toNode: toPin.node(),
+    toInput: toPin
+  });
 };

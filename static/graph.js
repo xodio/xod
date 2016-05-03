@@ -12,10 +12,43 @@ var settings = {
   }
 }
 
+var rubberLine = {
+  create: function(pos) {
+    this._points = [pos, pos];
+    this._path = svg.append('path').attr('class', 'rubber-line');
+    this.render();
+  },
+
+  remove: function() {
+    this._path.remove();
+  },
+
+  render: function() {
+    this._path.attr('d', this._lineData());
+  },
+
+  updateToPoint: function(pos) {
+    this._points[1] = pos;
+    this.render();
+  },
+
+  _lineData: function() {
+    return [
+      'M',
+      this._points[0].x,
+      this._points[0].y,
+      'L',
+      this._points[1].x,
+      this._points[1].y,
+    ].join(' ');
+  },
+};
+
 var svg = null;
 var patch = null;
 var nodeRepository = new AjaxNodeRepository();
 var selectedNode = null;
+var linkingPin = null;
 
 function alignPixel(x) {
   if (Array.isArray(x)) {
@@ -29,19 +62,58 @@ function pinOffset(i) {
   return settings.node.pin.margin + i * settings.node.pin.gap;
 }
 
-function renderInput(pin, i) {
-  let g = d3.select(this);
-  g.append('circle')
-    .attr('r', 4)
-    .attr('cx', pinOffset(i));
+function beginLink(pin) {
+  linkingPin = pin;
+  selectedNode = null;
+
+  rubberLine.create(pinPosition(pin));
+
+  svg.on('mousemove', () => {
+    [x, y] = d3.mouse(svg.node());
+    rubberLine.updateToPoint({x: x - 1, y: y + 1});
+    rubberLine.render();
+  });
 }
 
-function renderOutput(pin, i) {
+function completeLink(pin) {
+  linkingPin.linkTo(pin);
+  linkingPin = null;
+  rubberLine.remove();
+  svg.on('mousemove', null);
+  svg.selectAll('path.link')
+    .data(patch.links())
+    .enter()
+      .append('path')
+      .attr('class', 'link')
+      .each(renderLink)
+}
+
+function handlePinClick(pin) {
+  d3.event.preventDefault();
+  if (linkingPin) {
+    completeLink(pin);
+  } else {
+    beginLink(pin);
+  }
+
+  d3.selectAll("g.node").each(renderNode);
+}
+
+function createPin(pin, i) {
   let g = d3.select(this);
+  let cx = pinOffset(i);
+  let cy = pin.isInput() ? 0 : settings.node.height;
   g.append('circle')
-    .attr('r', 4)
-    .attr('cy', settings.node.height)
-    .attr('cx', pinOffset(i));
+    .attr('r', settings.node.pin.radius)
+    .attr('cx', cx)
+    .attr('cy', cy)
+    .on('click', handlePinClick);
+}
+
+function renderPin(pin, i) {
+  let g = d3.select(this);
+  let circle = g.select('circle');
+  circle.attr('r', linkingPin === pin ? 8 : 4);
 }
 
 function createNode(node) {
@@ -59,6 +131,22 @@ function createNode(node) {
     .attr('x', settings.node.width / 2)
     .attr('y', settings.node.height / 2)
     .attr('class', 'title');
+
+  g.selectAll('g.pin.input')
+    .data(node.inputs())
+    .enter()
+      .append('g')
+      .attr('class', 'pin input')
+      .each(createPin)
+      .each(renderPin);
+
+  g.selectAll('g.pin.output')
+    .data(node.outputs())
+    .enter()
+      .append('g')
+      .attr('class', 'pin output')
+      .each(createPin)
+      .each(renderPin);
 }
 
 function renderNode(node) {
@@ -69,17 +157,11 @@ function renderNode(node) {
 
   g.selectAll('g.pin.input')
     .data(node.inputs())
-    .enter()
-      .append('g')
-      .attr('class', 'pin input')
-      .each(renderInput);
+    .each(renderPin);
 
   g.selectAll('g.pin.output')
     .data(node.outputs())
-    .enter()
-      .append('g')
-      .attr('class', 'pin output')
-      .each(renderOutput);
+    .each(renderPin);
 }
 
 function pinPosition(pin) {
