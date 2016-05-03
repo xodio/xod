@@ -75,7 +75,7 @@ function beginLink(pin) {
   rubberLine.create(pinPosition(pin));
 
   svg.on('mousemove', () => {
-    [x, y] = d3.mouse(svg.node());
+    let [x, y] = d3.mouse(svg.node());
     rubberLine.updateToPoint({x: x - 1, y: y + 1});
     rubberLine.render();
   });
