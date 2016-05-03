@@ -1,4 +1,6 @@
 
+var JSON5 = require('json5');
+
 export default class AjaxNodeRepository {
   constructor() {
     this._urlTemplate = '/nodes/{type}.json5';
