@@ -1,5 +1,6 @@
 import d3 from 'd3';
 import LinkRenderer from './render/link';
+import RubberLine from './render/rubber-line';
 import AjaxNodeRepository from './dao/nodes';
 import {Patch, Node, Link, Pin} from './models/patch';
 
@@ -18,43 +19,13 @@ var settings = {
   }
 }
 
-var rubberLine = {
-  create: function(pos) {
-    this._points = [pos, pos];
-    this._path = svg.append('path').attr('class', 'rubber-line');
-    this.render();
-  },
-
-  remove: function() {
-    this._path.remove();
-  },
-
-  render: function() {
-    this._path.attr('d', this._lineData());
-  },
-
-  updateToPoint: function(pos) {
-    this._points[1] = pos;
-    this.render();
-  },
-
-  _lineData: function() {
-    return [
-      'M',
-      this._points[0].x,
-      this._points[0].y,
-      'L',
-      this._points[1].x,
-      this._points[1].y,
-    ].join(' ');
-  },
-};
 
 var svg = null;
 var patch = null;
 var nodeRepository = new AjaxNodeRepository();
 var selectedNode = null;
 var linkingPin = null;
+var rubberLine = null;
 
 function alignPixel(x) {
   if (Array.isArray(x)) {
@@ -72,12 +43,11 @@ function beginLink(pin) {
   linkingPin = pin;
   selectedNode = null;
 
-  rubberLine.create(pinPosition(pin));
+  rubberLine = new RubberLine(svg, pinPosition(pin));
 
   svg.on('mousemove', () => {
     let [x, y] = d3.mouse(svg.node());
-    rubberLine.updateToPoint({x: x - 1, y: y + 1});
-    rubberLine.render();
+    rubberLine.targetPoint({x: x - 1, y: y + 1});
   });
 }
 
