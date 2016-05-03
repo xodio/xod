@@ -11,6 +11,7 @@ app.use(express.static('static'));
 app.use('/examples', express.static('examples'));
 app.use('/nodes', express.static('nodes'));
 app.use('/bower_components', express.static('bower_components'));
+app.use('/web', express.static('build/web'));
 
 app.get('/', function (req, res) {
   res.redirect('/toggle-button/');

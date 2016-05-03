@@ -1,3 +1,8 @@
+import LinkRenderer from './render/link';
+import AjaxNodeRepository from './dao/nodes';
+import {Patch, Node, Link, Pin} from './models/patch';
+
+var linkRenderer = null;
 
 var settings = {
   node: {
@@ -80,12 +85,7 @@ function completeLink(pin) {
   linkingPin = null;
   rubberLine.remove();
   svg.on('mousemove', null);
-  svg.selectAll('path.link')
-    .data(patch.links())
-    .enter()
-      .append('path')
-      .attr('class', 'link')
-      .each(renderLink)
+  linkRenderer.upsert();
 }
 
 function handlePinClick(pin) {
@@ -177,15 +177,6 @@ function pinPosition(pin) {
   }
 }
 
-function renderLink(link) {
-  let path = d3.select(this);
-
-  let from = pinPosition(link.from());
-  let to = pinPosition(link.to());
-
-  path.attr('d', ['M', from.x, from.y, 'L', to.x, to.y].join(' '));
-}
-
 function renderPatch() {
   let nodeDrag = d3.behavior.drag()
     .origin(node => node.pos())
@@ -201,12 +192,7 @@ function renderPatch() {
       .call(nodeDrag)
       .on('click', handleNodeClick);
 
-  svg.selectAll('path.link')
-    .data(patch.links())
-    .enter()
-      .append('path')
-      .attr('class', 'link')
-      .each(renderLink)
+  linkRenderer.upsert();
 }
 
 function handleNodeDrag(node) {
@@ -218,7 +204,7 @@ function handleNodeDrag(node) {
   });
 
   g.attr('transform', 'translate(' + alignPixel(d3.event.x) + ', ' + alignPixel(d3.event.y) + ')');
-  svg.selectAll('path.link').each(renderLink);
+  linkRenderer.upsert();
 }
 
 function handleNodeClick(node) {
@@ -226,18 +212,18 @@ function handleNodeClick(node) {
   d3.selectAll("g.node").each(renderNode);
 }
 
-function render() {
-  d3.json("/examples/" + example + ".json", function(json) {
-    nodeRepository.prefetch(Patch.nodeTypes(json), function(err) {
-      patch = new Patch(json);
-      var body = d3.select("body");
+/* main */
+d3.json("/examples/" + example + ".json", function(json) {
+  nodeRepository.prefetch(Patch.nodeTypes(json), function(err) {
+    patch = new Patch(json, nodeRepository);
+    var body = d3.select("body");
 
-      svg = body.append('svg')
-        .attr('id', 'canvas')
-        .attr('width', 1920)
-        .attr('height', 1080);
+    svg = body.append('svg')
+      .attr('id', 'canvas')
+      .attr('width', 1920)
+      .attr('height', 1080);
 
-      renderPatch();
-    });
+    linkRenderer = new LinkRenderer(svg, patch);
+    renderPatch();
   });
-};
+});

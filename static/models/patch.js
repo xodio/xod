@@ -1,9 +1,18 @@
 
-var Patch = function(obj) {
+var Patch = function(obj, nodeRepository) {
   this._obj = obj;
 
   this._nodes = new Map(obj.nodes.map(
-    nodeObj => [nodeObj.id, new Node(nodeObj, obj.ui.nodes[nodeObj.id], this)]));
+    nodeObj => [
+      nodeObj.id,
+      new Node({
+        obj: nodeObj,
+        layoutObj: obj.ui.nodes[nodeObj.id],
+        typeObj: nodeRepository.get(nodeObj.type),
+        patch: this
+      })
+    ]
+  ));
 
   this._links = obj.links.map(
     linkObj => new Link(linkObj, this));
@@ -38,11 +47,11 @@ Patch.prototype.addLink = function(opts) {
 };
 
 // ==========================================================================
-var Node = function(obj, layoutObj, patch) {
-  this._obj = obj;
-  this._layoutObj = layoutObj;
-  this._patch = patch;
-  this._typeObj = nodeRepository.get(obj.type);
+var Node = function(opts) {
+  this._obj = opts.obj;
+  this._layoutObj = opts.layoutObj;
+  this._typeObj = opts.typeObj;
+  this._patch = opts.patch;
 
   this._inputs = new Map((this._typeObj.inputs || []).map(
     (inputObj, i) => [inputObj.name, new Pin(true, inputObj, i, this)]));
@@ -161,3 +170,5 @@ Pin.prototype.linkTo = function(pin) {
     toInput: toPin
   });
 };
+
+export {Patch, Node, Link, Pin};
