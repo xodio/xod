@@ -1,5 +1,5 @@
 
-var JSON5 = require('json5');
+import JSON5 from 'json5';
 
 export default class AjaxNodeRepository {
   constructor() {

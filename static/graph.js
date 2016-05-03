@@ -1,3 +1,4 @@
+import d3 from 'd3';
 import LinkRenderer from './render/link';
 import AjaxNodeRepository from './dao/nodes';
 import {Patch, Node, Link, Pin} from './models/patch';
