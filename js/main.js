@@ -1,18 +1,15 @@
 import d3 from 'd3';
-import settings from './render/settings';
-import LinkRenderer from './render/link';
-import { renderPins, pinPosition } from './render/pin';
-import RubberLine from './render/rubber-line';
 import AjaxNodeRepository from './dao/nodes';
+import settings from './render/settings';
+import renderLinks from './render/link';
+import { renderPins, pinPosition } from './render/pin';
 import {Patch, Node, Link, Pin} from './models/patch';
-
-var linkRenderer = null;
+import LinkingBehavior from './behavior/linking';
 
 var svg = null;
 var patch = null;
 var nodeRepository = new AjaxNodeRepository();
 var selectedNode = null;
-var linkingPin = null;
 var rubberLine = null;
 
 function alignPixel(x) {
@@ -21,37 +18,6 @@ function alignPixel(x) {
   }
 
   return Math.floor(x) + 0.5;
-}
-
-function beginLink(pin) {
-  linkingPin = pin;
-  selectedNode = null;
-
-  rubberLine = new RubberLine(svg, pinPosition(pin));
-
-  svg.on('mousemove', () => {
-    let [x, y] = d3.mouse(svg.node());
-    rubberLine.targetPoint({x: x - 1, y: y + 1});
-  });
-}
-
-function completeLink(pin) {
-  linkingPin.linkTo(pin);
-  linkingPin = null;
-  rubberLine.remove();
-  svg.on('mousemove', null);
-  linkRenderer.upsert();
-}
-
-function handlePinClick(pin) {
-  d3.event.preventDefault();
-  if (linkingPin) {
-    completeLink(pin);
-  } else {
-    beginLink(pin);
-  }
-
-  d3.selectAll("g.node").each(renderNode);
 }
 
 function createNode(node) {
@@ -97,7 +63,7 @@ function renderPatch() {
       .call(nodeDrag)
       .on('click', handleNodeClick);
 
-  linkRenderer.upsert();
+  renderLinks({links: patch.links(), canvas: svg});
 }
 
 function handleNodeDrag(node) {
@@ -109,7 +75,7 @@ function handleNodeDrag(node) {
   });
 
   g.attr('transform', 'translate(' + alignPixel(d3.event.x) + ', ' + alignPixel(d3.event.y) + ')');
-  linkRenderer.upsert();
+  renderLinks()
 }
 
 function handleNodeClick(node) {
@@ -128,7 +94,11 @@ d3.json("/examples/" + example + ".json", function(json) {
       .attr('width', 1920)
       .attr('height', 1080);
 
-    linkRenderer = new LinkRenderer(svg, patch);
     renderPatch();
+
+    let linkingBehavior = new LinkingBehavior(svg, () => {
+      renderLinks({links: patch.links(), canvas: svg});
+    });
+    linkingBehavior.listen();
   });
 });

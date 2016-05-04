@@ -7,34 +7,35 @@ export function pinOffset(i) {
 
 export function pinPosition(pin) {
   let nodePos = pin.node().pos();
-  let dy = pin.isInput() ? 0 : settings.node.height;
-  return {x: nodePos.x, y: y + dy}
+  return {
+    x: nodePos.x + pinOffset(pin.index()),
+    y: nodePos.y + (pin.isInput() ? 0 : settings.node.height)
+  }
 }
 
 export function renderPins(opts) {
   if (opts.nodeElement) {
     let node = opts.nodeElement.datum();
-    selection = opts.nodeElement.selectAll('circle.pin')
-      .data(node.pins());
+    opts.nodeElement.selectAll('circle.pin')
+      .data(node.pins())
       .each(update)
       .enter()
-        .createAll();
+        .append('circle')
+        .classed('pin', true)
+        .classed('input', (d) => d.isInput())
+        .classed('output', (d) => d.isOutput())
+        .attr('cx', (d) => pinOffset(d.index()))
+        .attr('cy', (d) => d.isInput() ? 0 : settings.node.height)
+        .each(update);
   } else {
-    d3.selectAll('circle.pin');
+    d3.selectAll('circle.pin')
       .each(update);
   }
 }
 
-function createAll() {
-  d3.selectAll(this)
-    .enter()
-      .append('circle')
-      .classed('pin', true)
-      .classed('input', (d) => d.isInput())
-      .classed('output', (d) => d.isOutput())
-      .attr('cx', (d) => pinOffset(d.index()))
-      .attr('cy', (d) => d.isInput() ? 0 : settings.node.height)
-      .each(update);
+export function listenPins(type, listener) {
+  d3.selectAll('circle.pin')
+    .on(type, listener);
 }
 
 function update() {
