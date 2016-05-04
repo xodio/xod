@@ -10,14 +10,18 @@ export function renderNodes(patch) {
       .origin(node => node.pos())
       .on('drag', handleDrag);
 
-  patch.element().selectAll(SELECTOR)
-    .data(patch.nodes())
+  let sel = patch.element().selectAll(SELECTOR)
+    .data(patch.nodes(), d => d.id())
+    .each(update);
+
+  sel.enter()
+    .appendClassed(SELECTOR)
+    .each(create)
     .each(update)
-    .enter()
-      .appendClassed(SELECTOR)
-      .each(create)
-      .each(update)
-      .call(nodeDrag);
+    .call(nodeDrag);
+
+  sel.exit()
+    .remove();
 }
 
 export function listenNodes(patch, type, listener) {
@@ -45,7 +49,7 @@ function create(node) {
 function update(node) {
   d3.select(this)
     .translate(node.pos())
-    .classed('selected', node.featured('selected'));
+    .classed('selected', node.isFeatured('selected'));
   renderPins(node);
 }
 

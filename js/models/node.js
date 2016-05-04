@@ -61,4 +61,8 @@ export default class Node extends Model {
   pins() {
     return this.inputs().concat(this.outputs());
   }
+
+  links() {
+    return this.patch().linksOf(this);
+  }
 }

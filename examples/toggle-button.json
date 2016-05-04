@@ -11,11 +11,13 @@
   }],
 
   "links": [{
+    "id": 1,
     "fromNode": 2,
     "fromOutput": "press",
     "toNode": 1,
     "toInput": "toggle"
   }, {
+    "id": 2,
     "fromNode": 1,
     "fromOutput": "state",
     "toNode": 3,

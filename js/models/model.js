@@ -21,7 +21,7 @@ export default class Model {
     this.patch().feature(this, name, value);
   }
 
-  featured(name) {
-    return this.patch().featured(this, name);
+  isFeatured(name) {
+    return this.patch().isFeatured(this, name);
   }
 }

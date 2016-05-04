@@ -8,11 +8,23 @@ export default class Link extends Model {
     this._patch = patch;
   }
 
+  id() {
+    return this._obj.id;
+  }
+
   from() {
-    return this._patch.node(this._obj.fromNode).output(this._obj.fromOutput);
+    return this.fromNode().output(this._obj.fromOutput);
+  }
+
+  fromNode() {
+    return this._patch.node(this._obj.fromNode);
   }
 
   to() {
-    return this._patch.node(this._obj.toNode).input(this._obj.toInput);
+    return this.toNode().input(this._obj.toInput);
+  }
+
+  toNode() {
+    return this._patch.node(this._obj.toNode);
   }
 }

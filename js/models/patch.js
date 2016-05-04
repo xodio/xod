@@ -21,8 +21,8 @@ export default class Patch extends Model {
       ]
     ));
 
-    this._links = obj.links.map(
-      linkObj => new Link(linkObj, this));
+    this._links = new Set(obj.links.map(
+      linkObj => new Link(linkObj, this)));
 
     this._features = new Map();
   }
@@ -40,7 +40,7 @@ export default class Patch extends Model {
   }
 
   links() {
-    return this._links;
+    return Array.from(this._links);
   }
 
   addLink(opts) {
@@ -52,7 +52,34 @@ export default class Patch extends Model {
     };
 
     this._obj.links.push(linkObj);
-    this._links.push(new Link(linkObj, this));
+    this._links.add(new Link(linkObj, this));
+  }
+
+  linksOf(node) {
+    return this.links().filter(l => {
+      return l.fromNode() === node ||
+        l.toNode() === node;
+    });
+  }
+
+  remove(entity) {
+    if (entity.forEach) {
+      entity.forEach(e => this._removeOne(e));
+    } else {
+      this._removeOne(entity);
+    }
+  }
+
+  _removeOne(entity) {
+    // TODO: remove from features
+    if (entity instanceof Node) {
+      this.remove(entity.links());
+      this._nodes.delete(entity.id());
+    } else if (entity instanceof Link) {
+      this._links.delete(entity);
+    } else {
+      throw new Error("Only links and nodes can be removed");
+    }
   }
 
   feature(entity, name, value) {
@@ -72,9 +99,13 @@ export default class Patch extends Model {
     }
   }
 
-  featured(entity, name) {
+  isFeatured(entity, name) {
     return this._features.has(name) &&
       this._features.get(name).has(entity);
+  }
+
+  featured(name) {
+    return this._features.get(name) || new Set();
   }
 
   emptyFeature(name) {
