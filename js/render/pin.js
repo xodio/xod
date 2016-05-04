@@ -13,10 +13,9 @@ export function pinPosition(pin) {
   }
 }
 
-export function renderPins(opts) {
-  if (opts.nodeElement) {
-    let node = opts.nodeElement.datum();
-    opts.nodeElement.selectAll('circle.pin')
+export function renderPins(node) {
+  if (node) {
+    node.element().selectAll('circle.pin')
       .data(node.pins())
       .each(update)
       .enter()

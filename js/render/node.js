@@ -41,7 +41,7 @@ function update(node) {
   let g = d3.select(this);
   let pos = node.pos();
   g.attr('transform', 'translate(' + alignPixel(pos.x) + ', ' + alignPixel(pos.y) + ')');
-  renderPins({nodeElement: node.element()});
+  renderPins(node);
 }
 
 function alignPixel(x) {
@@ -61,5 +61,5 @@ function handleDrag(node) {
   });
 
   g.attr('transform', 'translate(' + alignPixel(d3.event.x) + ', ' + alignPixel(d3.event.y) + ')');
-  renderLinks({links: node.patch().links(), canvas: node.patch().element()});
+  renderLinks(node.patch());
 }

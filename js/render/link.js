@@ -1,20 +1,14 @@
 
 import { pinPosition } from './pin';
 
-export default function renderLinks(opts) {
-  opts = opts || {};
-  if (opts.links) {
-    opts.canvas.selectAll('path.link')
-      .data(opts.links)
-      .each(update)
-      .enter()
-        .append('path')
-        .attr('class', 'link')
-        .each(update);
-  } else {
-    d3.selectAll('path.link')
+export default function renderLinks(patch) {
+  patch.element().selectAll('path.link')
+    .data(patch.links())
+    .each(update)
+    .enter()
+      .append('path')
+      .attr('class', 'link')
       .each(update);
-  }
 }
 
 function update(link) {

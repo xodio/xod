@@ -3,7 +3,6 @@ import AjaxNodeRepository from './dao/nodes';
 import settings from './render/settings';
 import { renderNodes } from './render/node';
 import renderLinks from './render/link';
-import { renderPins, pinPosition } from './render/pin';
 import Patch from './models/patch';
 import LinkingBehavior from './behavior/linking';
 
@@ -13,7 +12,7 @@ var nodeRepository = new AjaxNodeRepository();
 
 function renderPatch() {
   renderNodes(patch);
-  renderLinks({links: patch.links(), canvas: svg});
+  renderLinks(patch);
 }
 
 /* main */
@@ -31,7 +30,7 @@ d3.json("/examples/" + example + ".json", function(json) {
     renderPatch();
 
     let linkingBehavior = new LinkingBehavior(svg, () => {
-      renderLinks({links: patch.links(), canvas: svg});
+      renderLinks(patch);
     });
     linkingBehavior.listen();
   });

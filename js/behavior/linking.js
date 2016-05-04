@@ -1,6 +1,5 @@
 
 import RubberLine from '../render/rubber-line';
-import renderLinks from '../render/link';
 import { listenPins, pinPosition } from '../render/pin';
 
 export default class LinkingBehavior {
