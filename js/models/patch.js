@@ -109,6 +109,10 @@ Node.prototype.output = function(name) {
   return this._outputs.get(name);
 };
 
+Node.prototype.pins = function() {
+  return this.inputs().concat(this.outputs());
+};
+
 // ==========================================================================
 var Link = function(obj, patch) {
   this._obj = obj;

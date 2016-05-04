@@ -1,24 +1,12 @@
 import d3 from 'd3';
+import settings from './render/settings';
 import LinkRenderer from './render/link';
+import { renderPins, pinPosition } from './render/pin';
 import RubberLine from './render/rubber-line';
 import AjaxNodeRepository from './dao/nodes';
 import {Patch, Node, Link, Pin} from './models/patch';
 
 var linkRenderer = null;
-
-var settings = {
-  node: {
-    width: 128,
-    height: 32,
-
-    pin: {
-      radius: 4,
-      margin: 16,
-      gap: 16,
-    }
-  }
-}
-
 
 var svg = null;
 var patch = null;
@@ -33,10 +21,6 @@ function alignPixel(x) {
   }
 
   return Math.floor(x) + 0.5;
-}
-
-function pinOffset(i) {
-  return settings.node.pin.margin + i * settings.node.pin.gap;
 }
 
 function beginLink(pin) {
@@ -70,23 +54,6 @@ function handlePinClick(pin) {
   d3.selectAll("g.node").each(renderNode);
 }
 
-function createPin(pin, i) {
-  let g = d3.select(this);
-  let cx = pinOffset(i);
-  let cy = pin.isInput() ? 0 : settings.node.height;
-  g.append('circle')
-    .attr('r', settings.node.pin.radius)
-    .attr('cx', cx)
-    .attr('cy', cy)
-    .on('click', handlePinClick);
-}
-
-function renderPin(pin, i) {
-  let g = d3.select(this);
-  let circle = g.select('circle');
-  circle.attr('r', linkingPin === pin ? 8 : 4);
-}
-
 function createNode(node) {
   let g = d3.select(this);
 
@@ -103,21 +70,7 @@ function createNode(node) {
     .attr('y', settings.node.height / 2)
     .attr('class', 'title');
 
-  g.selectAll('g.pin.input')
-    .data(node.inputs())
-    .enter()
-      .append('g')
-      .attr('class', 'pin input')
-      .each(createPin)
-      .each(renderPin);
-
-  g.selectAll('g.pin.output')
-    .data(node.outputs())
-    .enter()
-      .append('g')
-      .attr('class', 'pin output')
-      .each(createPin)
-      .each(renderPin);
+  renderPins({nodeElement: g});
 }
 
 function renderNode(node) {
@@ -126,26 +79,7 @@ function renderNode(node) {
   g.attr('transform', 'translate(' + alignPixel(node.x()) + ', ' + alignPixel(node.y()) + ')')
     .classed('selected', node === selectedNode);
 
-  g.selectAll('g.pin.input')
-    .data(node.inputs())
-    .each(renderPin);
-
-  g.selectAll('g.pin.output')
-    .data(node.outputs())
-    .each(renderPin);
-}
-
-function pinPosition(pin) {
-  let node = pin.node();
-  let y = node.y();
-  if (pin.isOutput()) {
-    y += settings.node.height;
-  }
-
-  return {
-    x: node.x() + pinOffset(pin.index()),
-    y: y
-  }
+  renderPins({nodeElement: g});
 }
 
 function renderPatch() {
