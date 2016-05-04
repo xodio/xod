@@ -4,7 +4,7 @@ import settings from './render/settings';
 import { renderNodes } from './render/node';
 import renderLinks from './render/link';
 import { renderPins, pinPosition } from './render/pin';
-import {Patch, Node, Link, Pin} from './models/patch';
+import Patch from './models/patch';
 import LinkingBehavior from './behavior/linking';
 
 var svg = null;
