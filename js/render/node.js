@@ -3,17 +3,18 @@ import settings from './settings';
 import { renderPins } from './pin';
 import { renderLinks } from './link';
 
+const SELECTOR = 'g.node';
+
 export function renderNodes(patch) {
   let nodeDrag = d3.behavior.drag()
       .origin(node => node.pos())
       .on('drag', handleDrag);
 
-  patch.element().selectAll('g.node')
+  patch.element().selectAll(SELECTOR)
     .data(patch.nodes())
     .each(update)
     .enter()
-      .append('g')
-      .attr('class', 'node')
+      .appendClassed(SELECTOR)
       .each(create)
       .each(update)
       .call(nodeDrag);

@@ -1,13 +1,14 @@
 
 import { pinPosition } from './pin';
 
+const SELECTOR = 'path.link';
+
 export function renderLinks(patch) {
-  patch.element().selectAll('path.link')
+  patch.element().selectAll(SELECTOR)
     .data(patch.links())
     .each(update)
     .enter()
-      .append('path')
-      .attr('class', 'link')
+      .appendClassed(SELECTOR)
       .each(update);
 }
 

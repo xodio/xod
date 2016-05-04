@@ -1,4 +1,7 @@
+
 import d3 from 'd3';
+import 'd3-plugins';
+
 import AjaxNodeRepository from './dao/nodes';
 import settings from './render/settings';
 import { renderNodes } from './render/node';

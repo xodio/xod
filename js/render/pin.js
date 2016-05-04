@@ -1,6 +1,8 @@
 
 import settings from './settings';
 
+const SELECTOR = 'circle.pin';
+
 export function pinOffset(i) {
   return settings.node.pin.margin + i * settings.node.pin.gap;
 }
@@ -15,18 +17,18 @@ export function pinPosition(pin) {
 
 export function renderPins(node) {
   if (node) {
-    node.element().selectAll('circle.pin')
+    node.element().selectAll(SELECTOR)
       .data(node.pins())
       .each(update)
       .enter()
-        .append('circle')
-        .classed('pin', true)
+        .appendClassed(SELECTOR)
         .classed('input', (d) => d.isInput())
         .classed('output', (d) => d.isOutput())
         .attr('cx', (d) => pinOffset(d.index()))
         .attr('cy', (d) => d.isInput() ? 0 : settings.node.height)
         .each(update);
   } else {
+    // TODO: remove global
     d3.selectAll('circle.pin')
       .each(update);
   }

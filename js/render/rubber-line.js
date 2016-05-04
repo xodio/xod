@@ -2,8 +2,7 @@
 export default class RubberLine {
   constructor(canvas, pos) {
     this._points = [pos, pos];
-    this._path = canvas.append('path')
-      .attr('class', 'rubber-line');
+    this._path = canvas.appendClassed('path.rubber-line');
     this.render();
   }
 
