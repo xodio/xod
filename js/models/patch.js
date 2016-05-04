@@ -22,6 +22,15 @@ Patch.nodeTypes = /* static */ function(obj) {
   return obj.nodes.map(x => x.type);
 };
 
+Patch.prototype.element = function(e) {
+  if (e === undefined) {
+    return this._element;
+  } else {
+    this._element = e;
+    return this;
+  }
+};
+
 Patch.prototype.nodes = function() {
   return Array.from(this._nodes.values());
 };
@@ -58,6 +67,15 @@ var Node = function(opts) {
 
   this._outputs = new Map((this._typeObj.outputs || []).map(
     (outputObj, i) => [outputObj.name, new Pin(false, outputObj, i, this)]));
+};
+
+Node.prototype.element = function(e) {
+  if (e === undefined) {
+    return this._element;
+  } else {
+    this._element = e;
+    return this;
+  }
 };
 
 Node.prototype.patch = function() {
