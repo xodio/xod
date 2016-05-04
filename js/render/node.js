@@ -20,6 +20,10 @@ export function renderNodes(patch) {
       .call(nodeDrag);
 }
 
+export function listenNodes(patch, type, listener) {
+  patch.element().selectAll(SELECTOR).on(type, listener);
+}
+
 function create(node) {
   let g = d3.select(this);
   node.element(g);
@@ -39,17 +43,10 @@ function create(node) {
 }
 
 function update(node) {
-  d3.select(this);
-    .transform(node.pos());
+  d3.select(this)
+    .translate(node.pos())
+    .classed('selected', node.featured('selected'));
   renderPins(node);
-}
-
-function alignPixel(x) {
-  if (Array.isArray(x)) {
-    return x.map(alignPixel);
-  }
-
-  return Math.floor(x) + 0.5;
 }
 
 function handleDrag(node) {

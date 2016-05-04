@@ -4,7 +4,7 @@ import Pin from './pin';
 
 export default class Node extends Model { 
   constructor(opts) {
-    super();
+    super(opts.patch);
     this._obj = opts.obj;
     this._layoutObj = opts.layoutObj;
     this._typeObj = opts.typeObj;

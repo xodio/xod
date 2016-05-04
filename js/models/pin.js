@@ -3,7 +3,7 @@ import Model from './model';
 
 export default class Pin extends Model { 
   constructor(isInput, obj, index, node) {
-    super();
+    super(node.patch());
     this._isInput = isInput;
     this._obj = obj;
     this._index = index;

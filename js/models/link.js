@@ -3,7 +3,7 @@ import Model from './model';
 
 export default class Link extends Model { 
   constructor(obj, patch) {
-    super();
+    super(patch);
     this._obj = obj;
     this._patch = patch;
   }

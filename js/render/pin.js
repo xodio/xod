@@ -34,8 +34,8 @@ export function renderPins(node) {
   }
 }
 
-export function listenPins(type, listener) {
-  d3.selectAll('circle.pin')
+export function listenPins(owner, type, listener) {
+  owner.element().selectAll('circle.pin')
     .on(type, listener);
 }
 

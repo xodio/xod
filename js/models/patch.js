@@ -23,6 +23,8 @@ export default class Patch extends Model {
 
     this._links = obj.links.map(
       linkObj => new Link(linkObj, this));
+
+    this._features = new Map();
   }
 
   static nodeTypes(obj) {
@@ -51,5 +53,31 @@ export default class Patch extends Model {
 
     this._obj.links.push(linkObj);
     this._links.push(new Link(linkObj, this));
+  }
+
+  feature(entity, name, value) {
+    if (value === undefined) {
+      value = true;
+    }
+
+    if (!this._features.has(name)) {
+      this._features.set(name, new Set());
+    }
+
+    var set = this._features.get(name);
+    if (value) {
+      set.add(entity);
+    } else {
+      set.delete(entity);
+    }
+  }
+
+  featured(entity, name) {
+    return this._features.has(name) &&
+      this._features.get(name).has(entity);
+  }
+
+  emptyFeature(name) {
+    this._features.delete(name);
   }
 }
