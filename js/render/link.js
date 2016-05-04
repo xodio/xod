@@ -1,7 +1,7 @@
 
 import { pinPosition } from './pin';
 
-export default function renderLinks(patch) {
+export function renderLinks(patch) {
   patch.element().selectAll('path.link')
     .data(patch.links())
     .each(update)

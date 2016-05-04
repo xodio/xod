@@ -2,7 +2,7 @@ import d3 from 'd3';
 import AjaxNodeRepository from './dao/nodes';
 import settings from './render/settings';
 import { renderNodes } from './render/node';
-import renderLinks from './render/link';
+import { renderLinks } from './render/link';
 import Patch from './models/patch';
 import LinkingBehavior from './behavior/linking';
 

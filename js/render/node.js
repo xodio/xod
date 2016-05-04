@@ -1,7 +1,7 @@
 
 import settings from './settings';
 import { renderPins } from './pin';
-import renderLinks from './link';
+import { renderLinks } from './link';
 
 export function renderNodes(patch) {
   let nodeDrag = d3.behavior.drag()
