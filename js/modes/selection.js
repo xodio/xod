@@ -1,5 +1,6 @@
 
 import { listenNodes, renderNodes } from '../render/node';
+import { listenLinks, renderLinks } from '../render/link';
 
 export default class SelectionMode {
   constructor(patch) {
@@ -7,21 +8,24 @@ export default class SelectionMode {
   }
 
   enter() {
-    listenNodes(this._patch, 'mousedown.selection', this._onNodeClick.bind(this));
+    listenNodes(this._patch, 'mousedown.selection', this._onClick.bind(this));
+    listenLinks(this._patch, 'mousedown.selection', this._onClick.bind(this));
   }
 
   exit() {
     listenNodes(this._patch, 'mousedown.selection', null);
+    listenLinks(this._patch, 'mousedown.selection', null);
   }
 
-  _onNodeClick(node) {
+  _onClick(entity) {
     d3.event.preventDefault();
     if (d3.event.shiftKey) {
-      node.feature('selected', !node.featured('selected'));
+      entity.feature('selected', !entity.featured('selected'));
     } else {
       this._patch.emptyFeature('selected');
-      node.feature('selected');
+      entity.feature('selected');
     }
     renderNodes(this._patch);
+    renderLinks(this._patch);
   }
 }
