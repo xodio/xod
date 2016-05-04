@@ -39,9 +39,8 @@ function create(node) {
 }
 
 function update(node) {
-  let g = d3.select(this);
-  let pos = node.pos();
-  g.attr('transform', 'translate(' + alignPixel(pos.x) + ', ' + alignPixel(pos.y) + ')');
+  d3.select(this);
+    .transform(node.pos());
   renderPins(node);
 }
 
@@ -54,13 +53,7 @@ function alignPixel(x) {
 }
 
 function handleDrag(node) {
-  let g = d3.select(this);
-
-  node.pos({
-    x: d3.event.x,
-    y: d3.event.y
-  });
-
-  g.attr('transform', 'translate(' + alignPixel(d3.event.x) + ', ' + alignPixel(d3.event.y) + ')');
+  node.pos(d3.event)
+  d3.select(this).translate(d3.event);
   renderLinks(node.patch());
 }
