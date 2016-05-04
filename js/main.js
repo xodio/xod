@@ -49,13 +49,6 @@ d3.json("/examples/" + example + ".json", function(json) {
     patch.element(svg);
     renderPatch();
 
-    /*
-    let linkingBehavior = new LinkingBehavior(svg, () => {
-      renderLinks(patch);
-    });
-    linkingBehavior.listen();
-    */
-
     selectionMode = new SelectionMode(patch);
     linkingMode = new LinkingMode(patch);
 

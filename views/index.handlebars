@@ -4,10 +4,25 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,500,700,400italic&subset=latin,cyrillic,latin-ext' rel='stylesheet' type='text/css'>
         <link rel="stylesheet/less" type="text/css" href="/graph.less">
+        <link rel="stylesheet/less" type="text/css" href="/ui.less">
         <link rel="stylesheet" type="text/css" href="/lib/reset.css">
         <script src="/lib/less.js"></script>
+        <script src="/web/bundle.js" defer></script>
     </head>
-    <body></body>
+    <body>
+      <nav class="navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">XOD</a>
+          </div>
+
+          <form class="navbar-form navbar-left">
+            <button type="submit" class="btn btn-default">Upload</button>
+          </form>
+
+        </div>
+      </nav>
+
+    </body>
     <script>var example = '{{ example }}';</script>
-    <script src="/web/bundle.js"></script>
 </html>
