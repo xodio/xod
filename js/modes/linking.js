@@ -14,7 +14,12 @@ export default class LinkingMode {
     this._rubberLine = new RubberLine(this._patch.element(), pinPosition(pin));
     this._patch.element().on('mousemove.linking', () => {
       let [x, y] = d3.mouse(this._patch.element().node());
-      this._rubberLine.targetPoint({x: x - 1, y: y + 1});
+      let linkingPos = pinPosition(this._linkingPin);
+      // shift endpoint a bit so that rubber line don't capture
+      // all click events
+      x += (linkingPos.x > x) ? 2 : -2;
+      y += (linkingPos.y > y) ? 2 : -2;
+      this._rubberLine.targetPoint({x: x, y: y});
     });
 
     listenPins(this._patch, 'click.linking', this._onPinClick.bind(this));
@@ -22,6 +27,7 @@ export default class LinkingMode {
 
   exit() {
     this._patch.element().on('mousemove.linking', null);
+    listenPins(this._patch, 'click.linking', null);
   }
 
   _onPinClick(pin) {

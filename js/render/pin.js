@@ -18,7 +18,7 @@ export function pinPosition(pin) {
 export function renderPins(node) {
   if (node) {
     node.element().selectAll(SELECTOR)
-      .data(node.pins())
+      .data(node.pins(), d => [node.id(), d.isOutput(), d.index()])
       .each(update)
       .enter()
         .appendClassed(SELECTOR)

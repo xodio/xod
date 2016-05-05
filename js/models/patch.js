@@ -48,7 +48,13 @@ export default class Patch extends Model {
   }
 
   addLink(opts) {
+    let id = Math.max(...this.links().map(x => x.id())) + 1;
+    if (id < 1) {
+      id = 1;
+    }
+
     var linkObj = {
+      id: id,
       fromNode: opts.fromNode.id(),
       fromOutput: opts.fromOutput.name(),
       toNode: opts.toNode.id(),
