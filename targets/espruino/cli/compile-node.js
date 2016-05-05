@@ -27,10 +27,16 @@ source.outputs.forEach((output) => {
 
 source.inputs = source.inputs || [];
 source.inputs.forEach((input) => {
-  meta.inputs.push({
+  var inp = {
     name: input.name,
     type: input.type,
-  });
+  };
+
+  if (input.defaultValue) {
+    inp.defaultValue = input.defaultValue;
+  }
+
+  meta.inputs.push(inp);
 });
 
 var outFilename = opts.argv[1];

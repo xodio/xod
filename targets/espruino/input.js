@@ -8,10 +8,10 @@ Input.prototype.set = function() {
 };
 
 // ========================================================
-var ValueInput = function(ownerNode, type) {
+var ValueInput = function(ownerNode, type, value) {
   Input.call(this, ownerNode);
   this._type = type;
-  this._val = new type();
+  this._val = new type(value);
 };
 
 ValueInput.prototype = Object.create(Input.prototype);
@@ -50,9 +50,9 @@ TriggerInput.prototype.pop = function() {
 exports.create = function(meta, ownerNode) {
   switch (meta.type) {
     case 'trigger': return new TriggerInput(ownerNode);
-    case 'bool': return new ValueInput(ownerNode, Boolean);
-    case 'number': return new ValueInput(ownerNode, Number);
-    case 'string': return new ValueInput(ownerNode, String);
+    case 'bool': return new ValueInput(ownerNode, Boolean, meta.defaultValue);
+    case 'number': return new ValueInput(ownerNode, Number, meta.defaultValue);
+    case 'string': return new ValueInput(ownerNode, String, meta.defaultValue);
     default: throw new TypeError("Unknown input type: " + meta.type);
   }
 };

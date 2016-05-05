@@ -12,7 +12,6 @@ Led.prototype.constructor = Led;
 Led.prototype.eval = function() {
   var b = this.inputs.brightness.pop();
   var e = this.inputs.enable.pop();
-  b = 1; // FIXME: hard-code
   var val = b * b * b * (+e);
   analogWrite(this._pin, val);
 };
