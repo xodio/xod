@@ -84,8 +84,16 @@ export default class Patch extends Model {
     // TODO: remove from features
     if (entity instanceof Node) {
       this.remove(entity.links());
+      // remove from raw obj
+      this._obj.nodes = this._obj.nodes.filter(
+        x => x.id !== entity.id());
+      // remove from models
       this._nodes.delete(entity.id());
     } else if (entity instanceof Link) {
+      // remove from raw obj
+      this._obj.links = this._obj.links.filter(
+        x => x.id !== entity.id());
+      // remove from models
       this._links.delete(entity);
     } else {
       throw new Error("Only links and nodes can be removed");
