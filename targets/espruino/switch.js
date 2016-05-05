@@ -10,13 +10,14 @@ Switch.prototype = Object.create(Node.prototype);
 Switch.prototype.constructor = Switch;
 
 Switch.prototype._onTrigger = function(e) {
-  if (e.state) {
+  var state = !e.state;
+  if (state) {
     this.outputs.press.set();
   } else {
     this.outputs.release.set();
   }
 
-  this.outputs.state.set(e.state);
+  this.outputs.state.set(state);
 };
 
 exports = Switch;
