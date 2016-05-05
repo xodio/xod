@@ -11,12 +11,16 @@
     }
   },
   "icons": { 
-      "32": "chrome/img/xod.32.png", 
-      "48": "chrome/img/xod.48.png", 
-      "64": "chrome/img/xod.64.png", 
-      "128": "chrome/img/xod.128.png" 
+    "32": "chrome/img/xod.32.png", 
+    "48": "chrome/img/xod.48.png", 
+    "64": "chrome/img/xod.64.png", 
+    "128": "chrome/img/xod.128.png" 
   },
-  "permissions": [
-      "serial"
+  "permissions" : [
+    "serial",
+    {"fileSystem": ["write", "retainEntries", "directory"]},
+    "storage",
+    "http://*/",
+    "https://*/"
   ]
 }

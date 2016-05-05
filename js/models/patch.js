@@ -31,6 +31,10 @@ export default class Patch extends Model {
     return obj.nodes.map(x => x.type);
   }
 
+  data() {
+    return this._obj;
+  }
+
   nodes() {
     return Array.from(this._nodes.values());
   }

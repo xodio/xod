@@ -2,6 +2,8 @@
 import d3 from 'd3';
 import './d3-plugins';
 
+import { transpilePatch } from '../targets/espruino/patch-transpiler.js';
+
 import AjaxNodeRepository from './dao/nodes';
 import settings from './render/settings';
 import { renderNodes } from './render/node';
@@ -35,28 +37,66 @@ function listenEnterLinking() {
   });
 }
 
-/* main */
-if (typeof(example) === 'undefined') {
-  var example = 'toggle-button';
+function sendPatchToEspruino() {
+  let code = transpilePatch(patch.data());
+  console.log('Generated code:', code);
+
+  function onConnected() {
+    Espruino.Core.CodeWriter.writeToEspruino(code, () => {
+      console.log('*** Sent ***'); 
+    });
+  }
+
+  function onDisconnected() {
+    console.log('*** Disconnected ***'); 
+  }
+
+  function openAndSend() {
+    Espruino.Core.Serial.startListening(x => console.log('→→', x));
+    Espruino.Core.Serial.open('/dev/ttyACM0', onConnected, onDisconnected);
+  }
+
+  Espruino.Config.set('MODULE_URL', 'http://localhost:3001/modules');
+  Espruino.Config.set('BOARD_JSON_URL', 'http://js.amperka.ru/json');
+  Espruino.Config.set('MODULE_EXTENSIONS', '.js');
+  Espruino.callProcessor("transformForEspruino", code, (newCode) => {
+    code = newCode;
+    console.log('Code to be sent:', code);
+    openAndSend();
+  });
 }
 
-d3.json("/examples/" + example + ".json", function(json) {
-  nodeRepository.prefetch(Patch.nodeTypes(json), function(err) {
-    patch = new Patch(json, nodeRepository);
-    var body = d3.select("body");
+/* main */
+function main() {
+  if (typeof(example) === 'undefined') {
+    var example = 'toggle-button';
+  }
 
-    svg = body.append('svg')
-      .attr('id', 'canvas')
-      .attr('width', 1920)
-      .attr('height', 1080);
+  d3.json("/examples/" + example + ".json", function(json) {
+    nodeRepository.prefetch(Patch.nodeTypes(json), function(err) {
+      patch = new Patch(json, nodeRepository);
+      var body = d3.select("body");
 
-    patch.element(svg);
-    renderPatch();
+      svg = body.append('svg')
+        .attr('id', 'canvas')
+        .attr('width', 1920)
+        .attr('height', 1080);
 
-    selectionMode = new SelectionMode(patch);
-    linkingMode = new LinkingMode(patch);
+      patch.element(svg);
+      renderPatch();
 
-    selectionMode.enter();
-    listenEnterLinking();
+      selectionMode = new SelectionMode(patch);
+      linkingMode = new LinkingMode(patch);
+
+      selectionMode.enter();
+      listenEnterLinking();
+    });
   });
-});
+
+  d3.select('button').on('click', () => {
+    d3.event.preventDefault();
+    sendPatchToEspruino();
+  });
+};
+
+document.addEventListener("DOMContentLoaded", main);
