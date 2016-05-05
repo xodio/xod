@@ -1,5 +1,5 @@
 
-@node-color: #555;
+$node-color: #555;
 
 #canvas {
   background-color: #999;
@@ -14,7 +14,7 @@
 
 .node {
   rect.outline {
-    fill: @node-color;
+    fill: $node-color;
   }
 
   .outline {
@@ -25,7 +25,7 @@
   .pin {
     stroke: black;
     stroke-width: 1px;
-    fill: @node-color;
+    fill: $node-color;
   }
 
   &.selected {

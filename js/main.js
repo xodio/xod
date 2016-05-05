@@ -36,6 +36,10 @@ function listenEnterLinking() {
 }
 
 /* main */
+if (typeof(example) === 'undefined') {
+  var example = 'toggle-button';
+}
+
 d3.json("/examples/" + example + ".json", function(json) {
   nodeRepository.prefetch(Patch.nodeTypes(json), function(err) {
     patch = new Patch(json, nodeRepository);
