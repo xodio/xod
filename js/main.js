@@ -27,6 +27,10 @@ function renderPatch() {
 
 function listenEnterLinking() {
   listenPins(patch, 'click.enter-linking', (pin) => {
+    if (!pin.canLink()) {
+      return;
+    }
+
     listenPins(patch, 'click.enter-linking', null);
     selectionMode.exit();
     linkingMode.enter(pin, () => {

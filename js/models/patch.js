@@ -2,6 +2,7 @@
 import Model from './model';
 import Node from './node';
 import Link from './link';
+import Pin from './pin';
 
 export default class Patch extends Model { 
   constructor(obj, nodeRepository) {
@@ -69,11 +70,19 @@ export default class Patch extends Model {
     this._links.add(new Link(linkObj, this));
   }
 
-  linksOf(node) {
-    return this.links().filter(l => {
-      return l.fromNode() === node ||
-        l.toNode() === node;
-    });
+  linksOf(entity) {
+    if (entity instanceof Node) {
+      let node = entity;
+      return this.links().filter(l => l.fromNode() === node || l.toNode() === node);
+    } else if (entity instanceof Pin) {
+      let pin = entity;
+      let predicate = pin.isInput() ?
+        (l => l.to() === pin) :
+        (l => l.from() === pin);
+      return this.linksOf(pin.node()).filter(predicate);
+    } else {
+      throw new Error('Entity should be either node or pin');
+    }
   }
 
   remove(entity) {

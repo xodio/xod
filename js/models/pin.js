@@ -39,6 +39,10 @@ export default class Pin extends Model {
     return this._node;
   }
 
+  links() {
+    return this.patch().linksOf(this);
+  }
+
   linkTo(pin) {
     var fromPin, toPin;
     if (this.isOutput() && pin.isInput()) {
@@ -59,11 +63,16 @@ export default class Pin extends Model {
     });
   }
 
+  canLink() {
+    return this.isOutput() || this.type() === 'trigger' || !this.links().length;
+  }
+
   validLinkPins() {
     let pins = this.patch().pins();
     pins = pins.filter(x => x.isInput() === this.isOutput());
     pins = pins.filter(x => x.isValueType() === this.isValueType());
     pins = pins.filter(x => x.node() !== this.node());
+    pins = pins.filter(x => x.canLink());
     return pins;
   }
 }
