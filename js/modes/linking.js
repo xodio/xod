@@ -16,6 +16,7 @@ export default class LinkingMode {
     this._patch.feature(pin.validLinkPins(), 'valid-link');
     renderNodes(this._patch);
 
+    d3.select('body').on('keydown.linking', this._onKeyDown.bind(this));
     this._patch.element().on('mousemove.linking', () => {
       let [x, y] = d3.mouse(this._patch.element().node());
       let linkingPos = pinPosition(this._linkingPin);
@@ -30,9 +31,15 @@ export default class LinkingMode {
   }
 
   exit() {
+    this._rubberLine.remove();
+    this._rubberLine = null;
+    this._linkingPin = null;
+
+    d3.select('body').on('keydown.linking', null);
     this._patch.element().on('mousemove.linking', null);
     listenPins(this._patch, 'click.linking', null);
     this._patch.emptyFeature('valid-link');
+
     renderNodes(this._patch);
   }
 
@@ -40,14 +47,28 @@ export default class LinkingMode {
     d3.event.preventDefault();
 
     this._linkingPin.linkTo(pin);
-    this._linkingPin = null;
-
-    this._rubberLine.remove();
-    this._rubberLine = null;
-
     renderLinks(this._patch);
 
     this._completeCallback();
     this._completeCallback = null;
+    this.exit();
+  }
+
+  _onKeyDown() {
+    switch (d3.event.keyCode) {
+      case 8:  // Backspace
+      case 27: // ESC
+      case 46: // DEL
+        this._onCancel();
+        break;
+    }
+  }
+
+  _onCancel() {
+    d3.event.preventDefault();
+
+    this._completeCallback();
+    this._completeCallback = null;
+    this.exit();
   }
 }

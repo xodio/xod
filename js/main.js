@@ -30,7 +30,6 @@ function listenEnterLinking() {
     listenPins(patch, 'click.enter-linking', null);
     selectionMode.exit();
     linkingMode.enter(pin, () => {
-      linkingMode.exit();
       selectionMode.enter();
       listenEnterLinking();
     });

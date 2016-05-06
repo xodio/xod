@@ -48,7 +48,6 @@ export default class Patch extends Model {
   }
 
   pins() {
-    console.log(this.nodes().map(x => x.pins()));
     return Array.prototype.concat([], ...this.nodes().map(x => x.pins()));
   }
 
