@@ -101,7 +101,7 @@ function main() {
     });
   });
 
-  d3.select('button').on('click', () => {
+  d3.select('#upload').on('click', () => {
     d3.event.preventDefault();
     sendPatchToEspruino();
   });
