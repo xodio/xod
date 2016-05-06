@@ -71,4 +71,5 @@ function trianglePath(r) {
 }
 
 function update(pin) {
+  d3.select(this).classed('valid-link', pin.isFeatured('valid-link'));
 }

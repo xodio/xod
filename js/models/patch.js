@@ -47,6 +47,11 @@ export default class Patch extends Model {
     return Array.from(this._links);
   }
 
+  pins() {
+    console.log(this.nodes().map(x => x.pins()));
+    return Array.prototype.concat([], ...this.nodes().map(x => x.pins()));
+  }
+
   addLink(opts) {
     let id = Math.max(...this.links().map(x => x.id())) + 1;
     if (id < 1) {
@@ -101,6 +106,11 @@ export default class Patch extends Model {
   }
 
   feature(entity, name, value) {
+    if (entity.forEach) {
+      entity.forEach(e => this.feature(e, name, value));
+      return;
+    }
+
     if (value === undefined) {
       value = true;
     }

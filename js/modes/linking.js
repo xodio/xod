@@ -1,6 +1,7 @@
 
 import RubberLine from '../render/rubber-line';
 import { listenPins, pinPosition } from '../render/pin';
+import { renderNodes } from '../render/node';
 import { renderLinks } from '../render/link';
 
 export default class LinkingMode {
@@ -12,6 +13,9 @@ export default class LinkingMode {
     this._linkingPin = pin;
     this._completeCallback = completeCallback;
     this._rubberLine = new RubberLine(this._patch.element(), pinPosition(pin));
+    this._patch.feature(pin.validLinkPins(), 'valid-link');
+    renderNodes(this._patch);
+
     this._patch.element().on('mousemove.linking', () => {
       let [x, y] = d3.mouse(this._patch.element().node());
       let linkingPos = pinPosition(this._linkingPin);
@@ -28,6 +32,8 @@ export default class LinkingMode {
   exit() {
     this._patch.element().on('mousemove.linking', null);
     listenPins(this._patch, 'click.linking', null);
+    this._patch.emptyFeature('valid-link');
+    renderNodes(this._patch);
   }
 
   _onPinClick(pin) {

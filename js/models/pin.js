@@ -53,4 +53,12 @@ export default class Pin extends Model {
       toInput: toPin
     });
   }
+
+  validLinkPins() {
+    if (this.isInput()) {
+      return this.patch().pins().filter(x => x.isOutput());
+    } else {
+      return this.patch().pins().filter(x => x.isInput());
+    }
+  }
 }
