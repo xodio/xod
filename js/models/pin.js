@@ -30,6 +30,11 @@ export default class Pin extends Model {
     return this._obj.type;
   }
 
+  isValueType() {
+    let t = this.type();
+    return t !== 'event' && t !== 'trigger';
+  }
+
   node() {
     return this._node;
   }
@@ -55,10 +60,10 @@ export default class Pin extends Model {
   }
 
   validLinkPins() {
-    if (this.isInput()) {
-      return this.patch().pins().filter(x => x.isOutput());
-    } else {
-      return this.patch().pins().filter(x => x.isInput());
-    }
+    let pins = this.patch().pins();
+    pins = pins.filter(x => x.isInput() === this.isOutput());
+    pins = pins.filter(x => x.isValueType() === this.isValueType());
+    pins = pins.filter(x => x.node() !== this.node());
+    return pins;
   }
 }
