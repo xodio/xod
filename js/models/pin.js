@@ -26,6 +26,10 @@ export default class Pin extends Model {
     return this._index;
   }
 
+  type() {
+    return this._obj.type;
+  }
+
   node() {
     return this._node;
   }

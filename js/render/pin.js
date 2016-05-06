@@ -1,7 +1,7 @@
 
 import settings from './settings';
 
-const SELECTOR = 'circle.pin';
+const SELECTOR = 'g.pin';
 
 export function pinOffset(i) {
   return settings.node.pin.margin + i * settings.node.pin.gap;
@@ -16,30 +16,59 @@ export function pinPosition(pin) {
 }
 
 export function renderPins(node) {
-  if (node) {
-    node.element().selectAll(SELECTOR)
-      .data(node.pins(), d => [node.id(), d.isOutput(), d.index()])
-      .each(update)
-      .enter()
-        .appendClassed(SELECTOR)
-        .classed('input', (d) => d.isInput())
-        .classed('output', (d) => d.isOutput())
-        .attr('cx', (d) => pinOffset(d.index()))
-        .attr('cy', (d) => d.isInput() ? 0 : settings.node.height)
-        .each(update);
-  } else {
-    // TODO: remove global
-    d3.selectAll('circle.pin')
+  let g = node.element().selectAll(SELECTOR)
+    .data(node.pins(), d => [node.id(), d.isOutput(), d.index()])
+    .each(update)
+    .enter()
+      .appendClassed(SELECTOR)
+      .classed('input', (d) => d.isInput())
+      .classed('output', (d) => d.isOutput())
+      .each(create)
       .each(update);
-  }
 }
 
 export function listenPins(owner, type, listener) {
-  owner.element().selectAll('circle.pin')
+  owner.element().selectAll(SELECTOR)
     .on(type, listener);
 }
 
-function update() {
-  d3.select(this)
-    .attr('r', settings.node.pin.radius);
+function create(pin) {
+  let g = d3.select(this);
+  pin.element(g);
+
+  let r = settings.node.pin.radius;
+  let sym = null;
+
+  if (pin.type() === 'event' || pin.type() === 'trigger') {
+    sym = g.append('path')
+      .attr('d', trianglePath(r * 1.3)); // 1.3 is a visual compensation
+  } else {
+    sym = g.append('circle')
+      .attr('r', r);
+  }
+
+  sym.translate({
+    x: pinOffset(pin.index()),
+    y: pin.isInput() ? 0 : settings.node.height
+  });
+}
+
+function trianglePath(r) {
+  // equilaral triangle from circumscribed circle
+  const sqrt3 = Math.sqrt(3);
+  const sin30 = 0.5;
+  const cos30 = sqrt3 / 2;
+
+  let a = r * sqrt3; // one side
+  let h = a * cos30;
+
+  return [
+    'M', 0, 2 / 3 * h,
+    'l', -a * sin30, -h,
+    'l', a, 0,
+    'Z'
+  ].join(' ');
+}
+
+function update(pin) {
 }
