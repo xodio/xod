@@ -73,7 +73,13 @@ function sendPatchToEspruino() {
 }
 
 /* main */
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/App.jsx';
+
 function main() {
+  ReactDOM.render(<App />, document.getElementById('app'));
+
   if (typeof(example) === 'undefined') {
     var example = 'toggle-button';
   }
@@ -83,11 +89,7 @@ function main() {
       patch = new Patch(json, nodeRepository);
       var body = d3.select("body");
 
-      svg = body.append('svg')
-        .attr('id', 'canvas')
-        .attr('width', 1920)
-        .attr('height', 1080);
-
+      svg = d3.select('svg');
       patch.element(svg);
       renderPatch();
 

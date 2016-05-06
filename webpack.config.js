@@ -13,24 +13,23 @@ module.exports = {
     path.resolve(dirJS, 'main.js'),
     path.resolve(dirTargets, 'espruino/patch-transpiler.js'),
     path.resolve(dirStyle, 'patch.scss'),
-    path.resolve(dirStyle, 'ui.scss'),
-    'bootstrap-loader',
   ],
+  resolve: {
+    extensions: ['', '.js', '.jsx']
+  },
   output: {
     path: dirBuild,
     filename: 'bundle.js'
   },
   module: {
     loaders: [
-      { test: dirJS, loader: 'babel-loader' },
-      { test: dirTargets, loader: 'babel-loader' },
-      { test: require.resolve("jquery"), loader: "expose?$!expose?jQuery" },
-      { test: /\.json$/, loader: 'json-loader' },
+      { test: dirJS, loader: 'babel?cacheDirectory' },
+      { test: dirTargets, loader: 'babel?cacheDirectory' },
+      { test: /\.json$/, loader: 'json' },
       { test: /\.css$/, loaders: [ 'style', 'css', ] },
       { test: /\.scss$/, loaders: [ 'style', 'css', 'sass' ] },
       { test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url?limit=10000" },
       { test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/, loader: 'file' },
-      { test: /bootstrap-sass\/assets\/javascripts\//, loader: 'imports?jQuery=jquery' },
     ]
   },
   plugins: [
