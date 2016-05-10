@@ -7,6 +7,7 @@ export default class App extends React.Component {
   render() {
     const style = {
       fontFamily: 'Roboto',
+      color: '#ddd',
     };
 
     const toolbarH = 48;
