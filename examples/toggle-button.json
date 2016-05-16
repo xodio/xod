@@ -1,7 +1,7 @@
 {
   "nodes": [{
     "id": 1,
-    "type": "core.t-flip-flop"
+    "type": "core.flip-flop"
   }, {
     "id": 2,
     "type": "core.switch"

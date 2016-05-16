@@ -3,6 +3,14 @@
     name: 'toggle',
     type: 'trigger',
     description: 'Flip current state to opposite'
+  }, {
+    name: 'set',
+    type: 'trigger',
+    description: 'Set current state to true'
+  }, {
+    name: 'reset',
+    type: 'trigger',
+    description: 'Set current state to false'
   }],
   outputs: [{
     name: 'state',
