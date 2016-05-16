@@ -1,8 +1,8 @@
 
 var Node = require('@xod/impl/node');
 
-var Not = function(meta) {
-  Node.call(this, meta);
+var Not = function(meta, props) {
+  Node.call(this, meta, props);
 };
 
 Not.prototype = Object.create(Node.prototype);

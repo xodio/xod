@@ -2,18 +2,23 @@
 var createInput = require('@xod/impl/input').create;
 var createOutput = require('@xod/impl/output').create;
 
-var Node = function(meta) {
+var Node = function(meta, props) {
   var self = this;
 
   this.inputs = {};
   this.outputs = {};
 
   meta.inputs.forEach(function(x) {
-    self.inputs[x.name] = createInput(x, self);
+    var val = props[x.name];
+    if (val === undefined) {
+      val = x.defaultValue;
+    }
+
+    self.inputs[x.name] = createInput(self, x.type, val);
   });
 
   meta.outputs.forEach(function(x) {
-    self.outputs[x.name] = createOutput(x);
+    self.outputs[x.name] = createOutput(x.type);
   });
 };
 

@@ -15,6 +15,8 @@ export default class Node extends Model {
 
     this._outputs = new Map((this._typeObj.outputs || []).map(
       (outputObj, i) => [outputObj.name, new Pin(false, outputObj, i, this)]));
+
+    this._obj.props = this._obj.props || {};
   }
 
   patch() {
@@ -27,6 +29,18 @@ export default class Node extends Model {
 
   id() {
     return this._obj.id;
+  }
+
+  propNames() {
+    return this._obj.props.keys();
+  }
+
+  prop(name, value) {
+    if (value === undefined) {
+      return this._obj.props[name];
+    } else {
+      this._obj.props[name] = value;
+    }
   }
 
   pos(val) {

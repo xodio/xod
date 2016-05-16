@@ -1,8 +1,8 @@
 
 var Node = require('@xod/impl/node');
 
-var Pot = function(meta) {
-  Node.call(this, meta);
+var Pot = function(meta, props) {
+  Node.call(this, meta, props);
   setInterval(this._onInterval.bind(this), 20);
 };
 

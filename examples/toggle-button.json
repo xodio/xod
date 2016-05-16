@@ -7,7 +7,10 @@
     "type": "core.switch"
   }, {
     "id": 3,
-    "type": "core.led"
+    "type": "core.led",
+    "props": {
+      "brightness": 0.67
+    }
   }, {
     "id": 4,
     "type": "core.not"

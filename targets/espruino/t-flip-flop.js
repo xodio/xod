@@ -1,8 +1,8 @@
 
 var Node = require('@xod/impl/node');
 
-var TFlipFlop = function(meta) {
-  Node.call(this, meta);
+var TFlipFlop = function(meta, props) {
+  Node.call(this, meta, props);
   this._val = false;
 };
 

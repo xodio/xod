@@ -1,8 +1,8 @@
 
 var Node = require('@xod/impl/node');
 
-var Led = function(meta) {
-  Node.call(this, meta);
+var Led = function(meta, props) {
+  Node.call(this, meta, props);
   this._pin = P9;
 };
 

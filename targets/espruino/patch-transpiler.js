@@ -15,12 +15,14 @@ export function transpilePatch(source) {
     }
 
     type = type.substr('core.'.length);
+    var props = node.props || {}; // TODO: strip props equal to default values
 
     outputLines.push(
       '(function() {',
         `var meta = require("@xod/meta/${type}");`,
         `var nodeImpl = require("@xod/impl/${type}");`,
-        `nodes[${node.id}] = new nodeImpl(meta);`,
+        `var props = ${JSON.stringify(props)};`,
+        `nodes[${node.id}] = new nodeImpl(meta, props);`,
       '})();'
     );
   });

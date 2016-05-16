@@ -7,6 +7,10 @@ import Node from '../models/node';
 
 
 export default class Inspector extends React.Component {
+  handlePropertyChange(e) {
+    e.input.node().prop(e.input.name(), e.value);
+  }
+
   render() {
     let selection = this.props.selection.filter(x => x instanceof Node);
     let content = null;
@@ -23,7 +27,8 @@ export default class Inspector extends React.Component {
           key={input.name()}
           name={input.name()}
           value={input.defaultValue()}
-          type={input.type()} />;
+          type={input.type()}
+          onChange={(e) => this.handlePropertyChange({input: input, value: e.value})} />;
       });
 
       if (valueInputs.length === 0) {

@@ -45,12 +45,12 @@ EventOutput.prototype.set = function() {
 };
 
 // ========================================================
-exports.create = function(meta) {
-  switch (meta.type) {
+exports.create = function(type) {
+  switch (type) {
     case 'event': return new EventOutput();
     case 'bool': return new ValueOutput(Boolean);
     case 'number': return new ValueOutput(Number);
     case 'string': return new ValueOutput(String);
-    default: throw new TypeError("Unknown output type: " + meta.type);
+    default: throw new TypeError("Unknown output type: " + type);
   }
 };
