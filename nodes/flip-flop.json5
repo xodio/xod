@@ -17,7 +17,6 @@
   }],
   outputs: [{
     name: 'state',
-    label: 'ST',
     type: 'bool',
     description: 'Current latch state',
   }],
