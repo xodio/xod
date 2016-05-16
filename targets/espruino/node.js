@@ -26,4 +26,7 @@ Node.prototype.link = function(outputName, toNode, inputName) {
   this.outputs[outputName].linkTo(toNode.inputs[inputName]);
 };
 
+Node.prototype.eval = function() {
+};
+
 exports = Node;

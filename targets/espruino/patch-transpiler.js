@@ -8,6 +8,7 @@ export function transpilePatch(source) {
     'var nodes = {};'
   ];
 
+  // create node instances
   source.nodes.forEach((node) => {
     var type = node.type;
     if (!type.startsWith('core.')) {
@@ -27,9 +28,18 @@ export function transpilePatch(source) {
     );
   });
 
+  // link nodes
   source.links.forEach((node) => {
     outputLines.push(
       `nodes[${node.fromNode}].link('${node.fromOutput}', nodes[${node.toNode}], '${node.toInput}');`
+    );
+  });
+
+  // initially evaluate nodes
+  // TODO: we should keep smart order here based on nodes dependencies
+  source.nodes.forEach((node) => {
+    outputLines.push(
+      `nodes[${node.id}].eval();`
     );
   });
 
