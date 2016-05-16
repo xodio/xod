@@ -38,7 +38,7 @@ function create(node) {
     .attr('height', settings.node.height);
 
   g.append('text')
-    .text(node.type())
+    .text(node.label())
     .attr('text-anchor', 'middle')
     .attr('dominant-baseline', 'central')
     .attr('x', settings.node.width / 2)

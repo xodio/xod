@@ -79,4 +79,16 @@ export default class Node extends Model {
   links() {
     return this.patch().linksOf(this);
   }
+
+  label() {
+    if (this._typeObj.label) {
+      return this._typeObj.label;
+    }
+    
+    return this.type()
+      .toLowerCase()
+      .replace('-', ' ')
+      .replace('core.', '')
+      .replace(/\b./g, a => a.toUpperCase());
+  }
 }

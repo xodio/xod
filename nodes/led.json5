@@ -1,4 +1,5 @@
 {
+  label: 'LED',
   inputs: [{
     name: 'enable',
     type: 'bool',

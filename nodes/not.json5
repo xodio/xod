@@ -1,4 +1,5 @@
 {
+  label: 'not',
   inputs: [{
     name: 'in',
     type: 'bool',
