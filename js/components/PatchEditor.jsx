@@ -15,7 +15,8 @@ export default class PatchEditor extends React.Component {
 
     let canvas = null;
     if (this.props.patch) {
-      canvas = <Canvas patch={this.props.patch} />;
+      canvas = <Canvas patch={this.props.patch}
+        onSelectionChanged={this.props.onSelectionChanged} />;
     }
 
     return (<div style={style}>{canvas}</div>);

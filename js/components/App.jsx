@@ -24,6 +24,10 @@ export default class App extends React.Component {
     sendPatchToEspruino(this.state.patch);
   }
 
+  handleSelectionChanged(e) {
+    console.log(e);
+  }
+
   render() {
     const style = {
       fontFamily: 'Roboto',
@@ -35,10 +39,15 @@ export default class App extends React.Component {
 
     return (
       <div style={style}>
+
         <Toolbar height={toolbarH}
           onUpload={() => this.handleUpload()}/>
+
         <Sidebar top={toolbarH} width={sidebarW} />
-        <PatchEditor patch={this.state.patch} left={sidebarW} top={toolbarH} />
+
+        <PatchEditor patch={this.state.patch} left={sidebarW} top={toolbarH}
+          onSelectionChanged={this.handleSelectionChanged}/>
+
       </div>
     );
   }

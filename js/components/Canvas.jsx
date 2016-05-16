@@ -11,6 +11,7 @@ export default class Canvas extends React.Component {
     let patch = this.props.patch;
 
     patch.element(svg);
+    patch.on('feature', this.handleFeatureChange.bind(this));
     renderPatch(patch);
 
     this._selectionMode = new SelectionMode(patch);
@@ -18,6 +19,14 @@ export default class Canvas extends React.Component {
 
     this._selectionMode.enter();
     this.listenEnterLinking();
+  }
+
+  handleFeatureChange(e) {
+    if (e.feature === 'selected') {
+      this.props.onSelectionChanged({
+        selection: this.props.patch.featured('selected'),
+      });
+    }
   }
 
   listenEnterLinking() {

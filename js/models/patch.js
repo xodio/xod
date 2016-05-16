@@ -114,13 +114,23 @@ export default class Patch extends Model {
   }
 
   feature(entity, name, value) {
+    if (value === undefined) {
+      value = true;
+    }
+
+    this._feature(entity, name, value);
+
+    this.emit('feature', {
+      entity: entity,
+      feature: name,
+      value: value,
+    });
+  }
+
+  _feature(entity, name, value) {
     if (entity.forEach) {
       entity.forEach(e => this.feature(e, name, value));
       return;
-    }
-
-    if (value === undefined) {
-      value = true;
     }
 
     if (!this._features.has(name)) {
@@ -141,7 +151,7 @@ export default class Patch extends Model {
   }
 
   featured(name) {
-    return this._features.get(name) || new Set();
+    return [...this._features.get(name)] || [];
   }
 
   emptyFeature(name) {

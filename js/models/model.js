@@ -1,5 +1,7 @@
 
-export default class Model {
+import ee from 'event-emitter';
+
+class Model {
   constructor(patch) {
     this._patch = patch;
   }
@@ -25,3 +27,7 @@ export default class Model {
     return this.patch().isFeatured(this, name);
   }
 }
+
+Model.prototype = ee(Model.prototype);
+
+export default Model;
