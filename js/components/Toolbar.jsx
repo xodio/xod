@@ -22,7 +22,8 @@ export default class Toolbar extends React.Component {
       <div style={style}>
         <ToolbarItem>XOD</ToolbarItem>
         <ToolbarItem>
-          <Button id="upload">Upload</Button>
+          <Button id="upload"
+            onClick={this.props.onUpload}>Upload</Button>
         </ToolbarItem>
       </div>
     );
