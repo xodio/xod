@@ -2,11 +2,13 @@
   label: 'LED',
   inputs: [{
     name: 'enable',
+    label: 'EN',
     type: 'bool',
     defaultValue: true,
     description: 'Set to true to power the LED'
   }, {
     name: 'brightness',
+    label: 'BR',
     type: 'number',
     defaultValue: 1,
     description: 'Shine brightness'

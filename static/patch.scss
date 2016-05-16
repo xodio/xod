@@ -2,7 +2,7 @@
 $node-color: #555;
 $fill-ok: #3d3;
 
-#canvas {
+svg {
   background-color: #999;
   cursor: default;
 
@@ -30,6 +30,14 @@ $fill-ok: #3d3;
     
     &.valid-link {
       fill: $fill-ok;
+    }
+
+    text {
+      font-family: monospace;
+      font-size: 9px;
+      font-weight: bold;
+      stroke-width: 0px;
+      fill: #333;
     }
   }
 

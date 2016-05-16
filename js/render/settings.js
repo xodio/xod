@@ -8,6 +8,7 @@ export default {
       radius: 4,
       margin: 16,
       gap: 16,
+      labelMargin: 5,
     }
   }
 };

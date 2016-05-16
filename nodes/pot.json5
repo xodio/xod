@@ -1,6 +1,7 @@
 {
   outputs: [{
     name: 'value',
+    label: 'VAL',
     type: 'number',
     description: 'Current potentiometer value',
   }]

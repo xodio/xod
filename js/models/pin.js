@@ -79,4 +79,8 @@ export default class Pin extends Model {
     pins = pins.filter(x => x.canLink());
     return pins;
   }
+
+  label() {
+    return this._obj.label || '';
+  }
 }

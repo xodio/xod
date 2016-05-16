@@ -47,7 +47,14 @@ function create(pin) {
       .attr('r', r);
   }
 
-  sym.translate({
+  let labelMargin = settings.node.pin.labelMargin * (pin.isInput() ? -1 : +1);
+  g.append('text')
+    .text(pin.label())
+    .attr('dominant-baseline', 'central')
+    .attr('text-anchor', pin.isInput() ? 'start' : 'end')
+    .attr('transform', `translate(0, ${labelMargin}) rotate(-90)`);
+
+  g.translate({
     x: pinOffset(pin.index()),
     y: pin.isInput() ? 0 : settings.node.height
   });

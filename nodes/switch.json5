@@ -1,14 +1,17 @@
 {
   outputs: [{
     name: 'state',
+    label: 'ST',
     type: 'bool',
     description: 'Current switch state: false in default position, true in opposite',
   }, {
     name: 'press',
+    label: 'P',
     type: 'event',
     description: 'Occurs in a moment when the switch is shifted',
   }, {
     name: 'release',
+    label: 'R',
     type: 'event',
     description: 'Occurs in a moment when the switch is released',
   }],
