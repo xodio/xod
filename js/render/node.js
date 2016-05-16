@@ -32,18 +32,36 @@ function create(node) {
   let g = d3.select(this);
   node.element(g);
 
-  g.append('rect')
+  let inputCount = node.inputs().length;
+  let outputCount = node.outputs().length;
+  let pinGapCount = Math.max(inputCount-1, outputCount-1, 0);
+
+  let width = 2 * settings.node.horzMargin +
+    settings.node.pin.gap * pinGapCount;
+
+  let outline = g.append('rect')
     .attr('class', 'outline')
-    .attr('width', settings.node.width)
+    .attr('width', width)
     .attr('height', settings.node.height);
 
-  g.append('text')
+  let label = g.append('text')
     .text(node.label())
     .attr('text-anchor', 'middle')
     .attr('dominant-baseline', 'central')
-    .attr('x', settings.node.width / 2)
+    .attr('x', width / 2)
     .attr('y', settings.node.height / 2)
     .attr('class', 'title');
+
+  let labelWidth = label.node().getBBox().width;
+  let minWidth = labelWidth + 2 * settings.node.horzMargin;
+  if (minWidth <= width) {
+    return;
+  }
+
+  // text is too wide, extend node width
+  width = Math.ceil(minWidth / settings.node.pin.gap) * settings.node.pin.gap;
+  outline.attr('width', width);
+  label.attr('x', width / 2);
 }
 
 function update(node) {

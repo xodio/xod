@@ -1,7 +1,7 @@
 
 export default {
   node: {
-    width: 128,
+    horzMargin: 8,
     height: 32,
 
     pin: {
