@@ -7,12 +7,12 @@ export default class PropertyGridRow extends React.Component {
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
       overflow: 'hidden',
-      maxWidth: '110px', // FIXME: hardcoded 50%
     };
 
     let editStyle = {
       backgroundColor: 'transparent',
       borderBottom: '1px solid #999',
+      width: 50,
       color: 'white'
     };
 

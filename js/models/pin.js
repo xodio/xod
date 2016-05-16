@@ -30,6 +30,10 @@ export default class Pin extends Model {
     return this._obj.type;
   }
 
+  defaultValue() {
+    return this._obj.defaultValue;
+  }
+
   isValueType() {
     let t = this.type();
     return t !== 'event' && t !== 'trigger';

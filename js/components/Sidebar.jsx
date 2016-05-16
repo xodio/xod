@@ -15,7 +15,7 @@ export default class Toolbar extends React.Component {
 
     return (
       <div style={style}>
-        <Inspector />
+        <Inspector selection={this.props.selection} />
       </div>
     );
   }

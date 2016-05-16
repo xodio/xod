@@ -11,6 +11,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       patch: null,
+      selection: [],
     }
   }
 
@@ -25,7 +26,7 @@ export default class App extends React.Component {
   }
 
   handleSelectionChanged(e) {
-    console.log(e);
+    this.setState({selection: e.selection});
   }
 
   render() {
@@ -37,16 +38,17 @@ export default class App extends React.Component {
     const toolbarH = 48;
     const sidebarW = 240;
 
+    // FIXME: incorrect `this` binding leads to () => this.handleXXX
     return (
       <div style={style}>
 
         <Toolbar height={toolbarH}
           onUpload={() => this.handleUpload()}/>
 
-        <Sidebar top={toolbarH} width={sidebarW} />
+        <Sidebar top={toolbarH} width={sidebarW} selection={this.state.selection} />
 
         <PatchEditor patch={this.state.patch} left={sidebarW} top={toolbarH}
-          onSelectionChanged={this.handleSelectionChanged}/>
+          onSelectionChanged={(e) => this.handleSelectionChanged(e)}/>
 
       </div>
     );
