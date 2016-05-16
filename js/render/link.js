@@ -1,7 +1,7 @@
 
 import { pinPosition } from './pin';
 
-const SELECTOR = 'path.link';
+const SELECTOR = 'g.link';
 
 export function renderLinks(patch) {
   let sel = patch.element().selectAll(SELECTOR)
@@ -18,20 +18,23 @@ export function renderLinks(patch) {
 }
 
 export function listenLinks(patch, type, listener) {
-  patch.element().selectAll(SELECTOR)
+  patch.element().selectAll(SELECTOR + ' path.dummy')
     .on(type, listener);
 }
 
 function create(link) {
-  link.element(d3.select(this));
+  let sel = d3.select(this);
+  link.element(sel);
+  sel.appendClassed('path.visual');
+  sel.appendClassed('path.dummy');
 }
 
 function update(link) {
-  let path = d3.select(this);
+  let g = d3.select(this);
   let from = pinPosition(link.from());
   let to = pinPosition(link.to());
   let lineData = ['M', from.x, from.y, 'L', to.x, to.y].join(' ');
-  path
+  g.selectAll('path')
     .attr('d', lineData)
     .classed('selected', link.isFeatured('selected'));
 }

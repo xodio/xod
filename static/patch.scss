@@ -49,12 +49,21 @@ svg {
 }
 
 .link {
-  stroke: black;
-  stroke-width: 1px;
-  fill: none;
+  path.visual {
+    stroke: black;
+    stroke-width: 1px;
+    fill: none;
 
-  &.selected {
+  }
+
+  path.visual.selected {
     stroke: red;
+  }
+
+  path.dummy {
+    stroke: black;
+    stroke-opacity: 0.0;
+    stroke-width: 11px;
   }
 }
 
