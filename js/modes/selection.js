@@ -1,6 +1,7 @@
 
-import { listenNodes, renderNodes } from '../render/node';
-import { listenLinks, renderLinks } from '../render/link';
+import { listenNodes } from '../render/node';
+import { listenLinks } from '../render/link';
+import { renderPatch } from '../render/patch';
 
 export default class SelectionMode {
   constructor(patch) {
@@ -9,18 +10,20 @@ export default class SelectionMode {
 
   enter() {
     d3.select('body').on('keydown.selection', this._onKeyDown.bind(this));
-    listenNodes(this._patch, 'mousedown.selection', this._onClick.bind(this));
-    listenLinks(this._patch, 'mousedown.selection', this._onClick.bind(this));
+    this._patch.element().on('mousedown.selection', this._onClickBody.bind(this));
+    listenNodes(this._patch, 'mousedown.selection', this._onClickEntity.bind(this));
+    listenLinks(this._patch, 'mousedown.selection', this._onClickEntity.bind(this));
   }
 
   exit() {
     d3.select('body').on('keydown.selection', null);
+    this._patch.element().on('mousedown.selection', null);
     listenNodes(this._patch, 'mousedown.selection', null);
     listenLinks(this._patch, 'mousedown.selection', null);
   }
 
-  _onClick(entity) {
-    d3.event.preventDefault();
+  _onClickEntity(entity) {
+    d3.event.stopPropagation();
     if (d3.event.shiftKey) {
       entity.feature('selected', !entity.isFeatured('selected'));
     } else {
@@ -28,8 +31,16 @@ export default class SelectionMode {
       entity.feature('selected');
     }
 
-    renderNodes(this._patch);
-    renderLinks(this._patch);
+    renderPatch(this._patch);
+  }
+
+  _onClickBody() {
+    if (d3.event.shiftKey) {
+      return;
+    }
+
+    this._patch.emptyFeature('selected');
+    renderPatch(this._patch);
   }
 
   _onKeyDown() {
@@ -42,8 +53,6 @@ export default class SelectionMode {
     d3.event.preventDefault();
     var selected = this._patch.featured('selected');
     this._patch.remove(selected);
-
-    renderNodes(this._patch);
-    renderLinks(this._patch);
+    renderPatch(this._patch);
   }
 }
