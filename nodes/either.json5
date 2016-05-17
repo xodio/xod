@@ -1,0 +1,24 @@
+{
+  inputs: [{
+    name: 'in',
+    label: 'IN',
+    type: 'bool',
+    description: 'Selector value'
+  }, {
+    name: 'ifTrue',
+    label: 'T',
+    type: 'string',
+    description: 'Output if selector is true'
+  }, {
+    name: 'ifFalse',
+    label: 'F',
+    type: 'string',
+    description: 'Output if selector is false'
+  }],
+  outputs: [{
+    name: 'out',
+    type: 'string',
+    description: 'Selected output value',
+  }],
+}
+
