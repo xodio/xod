@@ -36,8 +36,7 @@ function create(node) {
   let outputCount = node.outputs().length;
   let pinGapCount = Math.max(inputCount-1, outputCount-1, 0);
 
-  let width = 2 * settings.node.horzMargin +
-    settings.node.pin.gap * pinGapCount;
+  let width = settings.node.pin.gap * (pinGapCount + 2);
 
   let outline = g.append('rect')
     .attr('class', 'outline')
