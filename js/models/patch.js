@@ -151,10 +151,17 @@ export default class Patch extends Model {
   }
 
   featured(name) {
-    return [...this._features.get(name)] || [];
+    let entities = this._features.get(name) || new Set();
+    return [...entities];
   }
 
   emptyFeature(name) {
+    let entities = this.featured(name);
     this._features.delete(name);
+    this.emit('feature', {
+      entity: entities,
+      feature: name,
+      value: false,
+    });
   }
 }
