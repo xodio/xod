@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "XOD IDE",
+  "description": "XOD Visual development environment for electronics.",
+  "version": "0.1",
+  "author": "Victor Nakoryakov, Amperka LLC",
+  "app": {
+    "background": {
+      "scripts": ["chrome/background.js"],
+      "persistent": false
+    }
+  },
+  "icons": { 
+    "32": "chrome/img/xod.32.png", 
+    "48": "chrome/img/xod.48.png", 
+    "64": "chrome/img/xod.64.png", 
+    "128": "chrome/img/xod.128.png" 
+  },
+  "permissions" : [
+    "serial",
+    {"fileSystem": ["write", "retainEntries", "directory"]},
+    "storage",
+    "http://*/",
+    "https://*/"
+  ]
+}

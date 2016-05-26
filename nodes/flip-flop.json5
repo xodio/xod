@@ -1,0 +1,24 @@
+{
+  inputs: [{
+    name: 'toggle',
+    label: 'TGL',
+    type: 'trigger',
+    description: 'Flip current state to opposite'
+  }, {
+    name: 'set',
+    label: 'SET',
+    type: 'trigger',
+    description: 'Set current state to true'
+  }, {
+    name: 'reset',
+    label: 'RST',
+    type: 'trigger',
+    description: 'Set current state to false'
+  }],
+  outputs: [{
+    name: 'state',
+    type: 'bool',
+    description: 'Current latch state',
+  }],
+}
+

@@ -1,0 +1,57 @@
+{
+  "nodes": [{
+    "id": 1,
+    "type": "core.flip-flop"
+  }, {
+    "id": 2,
+    "type": "core.switch"
+  }, {
+    "id": 3,
+    "type": "core.led",
+    "props": {
+      "brightness": 0.67
+    }
+  }, {
+    "id": 4,
+    "type": "core.not"
+  }, {
+    "id": 5,
+    "type": "core.pot"
+  }, {
+    "id": 6,
+    "type": "core.either"
+  }, {
+    "id": 7,
+    "type": "core.servo"
+  }, {
+    "id": 8,
+    "type": "core.map"
+  }],
+
+  "links": [{
+    "id": 1,
+    "fromNode": 2,
+    "fromOutput": "press",
+    "toNode": 1,
+    "toInput": "toggle"
+  }, {
+    "id": 2,
+    "fromNode": 1,
+    "fromOutput": "state",
+    "toNode": 3,
+    "toInput": "enable"
+  }],
+
+  "ui": {
+    "nodes": {
+      "2": {"x": 100, "y": 100},
+      "1": {"x": 100, "y": 200},
+      "3": {"x": 100, "y": 300},
+      "4": {"x": 300, "y": 150},
+      "5": {"x": 300, "y": 350},
+      "6": {"x": 500, "y": 100},
+      "7": {"x": 500, "y": 350},
+      "8": {"x": 500, "y": 200}
+    }
+  }
+}

@@ -1,0 +1,74 @@
+
+$node-color: #555;
+$fill-ok: #3d3;
+
+svg {
+  background-color: #999;
+  cursor: default;
+
+  text {
+    font-family: Ubuntu, sans;
+    font-size: 12px;
+    fill: white;
+  }
+}
+
+.node {
+  rect.outline {
+    fill: $node-color;
+  }
+
+  .outline {
+    stroke: black;
+    stroke-width: 1px;
+  }
+
+  .pin {
+    stroke: black;
+    stroke-width: 1px;
+    fill: $node-color;
+    
+    &.valid-link {
+      fill: $fill-ok;
+    }
+
+    text {
+      font-family: monospace;
+      font-size: 9px;
+      font-weight: bold;
+      stroke-width: 0px;
+      fill: #333;
+    }
+  }
+
+  &.selected {
+    .outline {
+      stroke: red;
+    }
+  }
+}
+
+.link {
+  path.visual {
+    stroke: black;
+    stroke-width: 1px;
+    fill: none;
+
+  }
+
+  path.visual.selected {
+    stroke: red;
+  }
+
+  path.dummy {
+    stroke: black;
+    stroke-opacity: 0.0;
+    stroke-width: 11px;
+  }
+}
+
+.rubber-line {
+  stroke: black;
+  stroke-width: 1px;
+  fill: none;
+}
