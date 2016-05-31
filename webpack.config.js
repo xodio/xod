@@ -12,7 +12,7 @@ module.exports = {
   entry: [
     path.resolve(dirJS, 'main.js'),
     path.resolve(dirTargets, 'espruino/patch-transpiler.js'),
-    path.resolve(dirStyle, 'patch.scss'),
+    path.resolve(dirStyle, 'patch.scss')
   ],
   resolve: {
     extensions: ['', '.js', '.jsx']
@@ -26,18 +26,18 @@ module.exports = {
       { test: dirJS, loader: 'babel?cacheDirectory' },
       { test: dirTargets, loader: 'babel?cacheDirectory' },
       { test: /\.json$/, loader: 'json' },
-      { test: /\.css$/, loaders: [ 'style', 'css', ] },
+      { test: /\.css$/, loaders: [ 'style', 'css' ] },
       { test: /\.scss$/, loaders: [ 'style', 'css', 'sass' ] },
       { test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url?limit=10000" },
-      { test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/, loader: 'file' },
+      { test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/, loader: 'file' }
     ]
   },
   plugins: [
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoErrorsPlugin()
   ],
   stats: {
     colors: true
   },
   // Create Sourcemaps for the bundle
-  devtool: 'source-map',
+  devtool: 'source-map'
 };
