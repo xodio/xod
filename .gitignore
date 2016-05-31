@@ -2,3 +2,5 @@ node_modules/
 bower_components/
 build/
 EspruinoTools
+.idea/
+*.iml
