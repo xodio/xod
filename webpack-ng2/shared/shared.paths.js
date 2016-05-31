@@ -1,4 +1,4 @@
-var projectMetadata = require("../project.description.js");
+var projectMetadata = require("../../project.description");
 var path = require("path");
 
 module.exports = {

@@ -1,4 +1,4 @@
-var root = require("../../shared/webpack.paths").projectDirectory;
+var root = require("../../shared/shared.paths.js").projectDirectory;
 var path = require("path");
 
 module.exports = {
