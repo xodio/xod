@@ -2,7 +2,8 @@ module.exports = function () {
     return {
         files: [
             '**/*.js',
-            '!**/*.spec.js'
+            '!**/*.spec.js',
+            '!node_modules/**/*'
         ],
         tests: [
             'webpack-ng2/**/*.spec.js'
