@@ -2,7 +2,10 @@ var root = require("../../shared/shared.paths").projectDirectory;
 var path = require("path");
 
 module.exports = {
-    targets: [{
+    /**
+     * Modes might contains more than one target
+     */
+    targets: {
         development: path.join(root, "dists", "development")
-    }]
+    }
 };

@@ -44,6 +44,7 @@
     "rebass": "^0.2.6",
     "resolve-url-loader": "^1.4.3",
     "sass-loader": "^3.2.0",
+    "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.0",

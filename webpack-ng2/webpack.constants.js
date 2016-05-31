@@ -1,4 +1,4 @@
-modules.exports = {
+module.exports = {
     MODE: {
         DEVELOPMENT: "development",
         PRODUCTION: "production",
