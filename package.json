@@ -5,6 +5,11 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "ng2-dev": "export NODE_ENV=development && node application.ng2.js",
+    "ng2-prod": "export NODE_ENV=production && node application.ng2.js",
+    "ng2-test": "export NODE_ENV=test && node application.ng2.js",
+    "install-deps": "node install-local-deps.js && sudo node install-global-deps.js",
+    "install-service": "sudo node install-service.js",
     "webpack": "webpack",
     "webpack-watch": "webpack --watch"
   },
@@ -15,6 +20,7 @@
     "express": "^4.13.3",
     "express-handlebars": "^2.0.1",
     "express-jade": "0.0.3",
+    "get-env": "^0.4.0",
     "jade": "^1.11.0",
     "json5": "^0.5.0",
     "node-getopt": "^0.2.3",
