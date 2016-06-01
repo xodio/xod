@@ -6,7 +6,8 @@ module.exports = function() {
       '!node_modules/**/*'
     ],
     tests: [
-      'webpack-ng2/**/*.spec.js'
+      'webpack-ng2/**/*.spec.js',
+      'server/**/*.spec.js'
     ],
     testFramework: 'jasmine',
     preprocessors: {

@@ -1,44 +1,26 @@
 import {Services} from './services/services';
-import * as CONSTANTS from './server.constants';
 import {DevelopmentServer} from './mode/server.development';
 import {ProductionServer} from './mode/server.production';
 import {TestServer} from './mode/server.test';
 
 /**
- * Generic Server class responsible for launching server in specified mode
+ * Generic Server class responsible for launching server in specified config
  */
 export class Server {
 
   /**
-   * @param mode possible modes are listed in /applicaiton.constants.js
+   * @param config possible modes are listed in /applicaiton.constants.js
    */
-  constructor(mode) {
-    this._mode = mode;
-    this._services = new Services(this.mode());
+  constructor(config) {
+    this._config = config;
   }
 
   /**
-   * Server mode
-   * @returns {_mode}
+   * Server config
+   * @returns {_config}
    */
-  mode() {
-    return this._mode;
-  }
-
-  /**
-   * Server Services Set
-   * @returns {_services}
-   */
-  services() {
-    return this._services;
-  }
-
-  /**
-   * Server location: host and port
-   * @returns {_location}
-   */
-  location() {
-    return this._location;
+  config() {
+    return this._config;
   }
 
   /**
@@ -50,34 +32,19 @@ export class Server {
   }
 
   /**
-   * This method instantiate appropriate Server instance
+   * This method launch Server in an appropriate config
    */
-  laucnh() {
+  launch() {
     this._instance = null;
 
-    /**
-     * Retrieve appropriate server
-     */
-    switch (this.mode()) {
-      case CONSTANTS.MODE.DEVELOPMENT.NAME:
-        this._location = CONSTANTS.MODE.DEVELOPMENT.SERVER;
-        this._instance = new DevelopmentServer(this.location(), this.services());
-        break;
+    const serverClasses = [DevelopmentServer, ProductionServer, TestServer];
 
-      case CONSTANTS.MODE.PRODUCTION.NAME:
-        this._location = CONSTANTS.MODE.PRODUCTION.SERVER;
-        this._instance = new ProductionServer(this.location(), this.services());
-        break;
-
-      case CONSTANTS.MODE.TEST.NAME:
-        this._location = CONSTANTS.MODE.TEST.SERVER;
-        this._instance = new TestServer(this.location(), this.services());
-        break;
-
-      default:
-        throw new Error('Unrecocknized server mode');
+    for (let index in Object.keys(serverClasses)) {
+      const ServerClass = serverClasses[index];
+      if (ServerClass.name === this.config().name) {
+        this._instance = new ServerClass(this.config());
+        this.instance().launch();
+      }
     }
-
-    this.instance().launch();
   }
 }

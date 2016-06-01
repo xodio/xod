@@ -1,17 +1,18 @@
 module.exports = {
   MODE: {
     DEVELOPMENT: {
-      NAME: 'development',
-      SERVER: {
-        PORT: 1705,
-        HOST: 'localhost'
-      }
+      
     },
     PRODUCTION: {
       NAME: 'production',
       SERVER: {
         PORT: 1706,
         HOST: 'localhost'
+      },
+      SERVICES: {
+        LOGGER: {
+          MODE: 'console'
+        }
       }
     },
     TEST: {
@@ -19,6 +20,11 @@ module.exports = {
       SERVER: {
         PORT: 1707,
         HOST: 'localhost'
+      },
+      SERVICES: {
+        LOGGER: {
+          MODE: 'console'
+        }
       }
     }
   }

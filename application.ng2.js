@@ -1,4 +1,4 @@
-import {Server} from "./server/server";
+import {Server} from './server/server';
 
 const mode = require('get-env')({
   test: ['test', 'testing'],
@@ -6,15 +6,16 @@ const mode = require('get-env')({
   development: ['dev', 'development']
 });
 
+switch (mode) {
+  case 'test':
+
+}
+
 const server = new Server(mode);
 
-server.laucnh();
+server.launch();
 
 /*
-import * as express from 'express';
-import expressJade from 'express-jade';
-
-const server = express();
 
 server.engine('jade', expressJade({}));
 server.set('view engine', 'jade');
