@@ -1,7 +1,7 @@
-var projectMetadata = require("../../project.description");
-var path = require("path");
+var projectMetadata = require('../../project.description');
+var path = require('path');
 
 module.exports = {
-    projectDirectory: projectMetadata.directory,
-    sources: path.join(projectMetadata.directory, "angularjs")
+  projectDirectory: projectMetadata.directory,
+  sources: path.join(projectMetadata.directory, 'angularjs')
 };

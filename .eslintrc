@@ -1,5 +1,23 @@
 {
-  "extends": "eslint:recommended",
+  "extends": [
+    "eslint:recommended",
+    "plugin:jasmine/recommended"
+  ],
+
+  "env": {
+    "es6": true,
+    "node": true,
+    "jasmine": true
+  },
+
+  "parserOptions": {
+    "sourceType": "module",
+  },
+
+  "plugins": [
+    "jasmine"
+  ],
+
 
   "rules": {
     "array-bracket-spacing": [2, "never"],
@@ -89,6 +107,9 @@
     "require": false,
     "print": false,
     "PrimaryI2C": false,
-    "Uint8Array": false
+    "Uint8Array": false,
+    "console": false,
+    "module": false,
+    "__dirname": false
   }
 }

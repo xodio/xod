@@ -3,5 +3,5 @@ var loaders = require('./shared.loaders');
 var plugins = require('./shared.plugins');
 
 module.exports = _.merge([{
-    loaders: loaders
+  loaders: loaders
 }, plugins]);

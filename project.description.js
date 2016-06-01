@@ -1,4 +1,4 @@
 module.exports = {
-    name: "xod",
-    directory: __dirname
+  name: 'xod',
+  directory: __dirname
 };
