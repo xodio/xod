@@ -58,7 +58,8 @@
     "space-in-parens": [2, "never"],
     "space-unary-ops": [1, {"words": true, "nonwords": false}],
     "spaced-comment": [2, "always"],
-    "yoda": [2, "never"]
+    "yoda": [2, "never"],
+    "no-console": [0, { "allow": ["log", "warn", "error"] }]
   },
 
   "globals": {

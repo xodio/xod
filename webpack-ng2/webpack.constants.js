@@ -1,6 +1,12 @@
 module.exports = {
   MODE: {
-    DEVELOPMENT: 'development',
+    DEVELOPMENT: {
+      NAME: 'development',
+      SERVER: {
+        PORT: 1705,
+        HOST: 'localhost'
+      }
+    },
     PRODUCTION: 'production',
     TEST: 'test'
   }
