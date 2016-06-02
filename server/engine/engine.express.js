@@ -1,41 +1,28 @@
 import express from 'express';
-import expressJade from 'express-jade';
 import {GenericEngine} from './engine.generic';
-import {Services} from '../services/services';
 import Q from 'q';
-import lsof from 'lsof';
-import {Killer} from '../helpers/process/killer';
+import {Ports} from '../helpers/host/ports';
 
 export class ExpressEngine extends GenericEngine {
   constructor(config) {
     super(config);
     this._instance = express();
-    this._services = new Services(config);
   }
 
   instance() {
     return this._instance;
   }
 
-  services() {
-    return this._services;
-  }
-
   launch() {
     const deferred = Q.defer();
-    lsof.rawTcpPort(this.config().server.port, (data) => {
-      const pids = data.map(process => process.pid);
-      Killer.kill(pids)
-        .then(() => {
-          this._httpd = this.instance().listen(this.config().server.port, () => {
-            this.services().launch(this, this.config().services).then(() => {
-              deferred.resolve(true);
-            });
+    Ports.free(this.config().server.port)
+      .then(() => {
+        this._httpd = this.instance().listen(this.config().server.port, () => {
+          this.services().launch(this).then(() => {
+            deferred.resolve(true);
           });
-        }, (pids) => {
-          deferred.reject(pids);
         });
-    });
+      }, pids => deferred.reject(pids));
     return deferred.promise;
   }
 

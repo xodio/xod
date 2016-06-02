@@ -8,7 +8,7 @@ export class Services {
   config() {
     return this._config;
   }
- 
+
   launch() {
     const deferred = Q.defer();
     deferred.resolve(true);

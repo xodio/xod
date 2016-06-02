@@ -14,4 +14,12 @@ export class GenericServer {
   engine() {
     return this._engine;
   }
+
+  launch() {
+    return this.engine().launch();
+  }
+
+  stop() {
+    return this.engine().stop();
+  }
 }

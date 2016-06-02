@@ -1,3 +1,13 @@
-/**
- * Created by morphing on 01.06.16.
- */
+import {GenericClient} from './client.generic';
+
+export class DevelopmentClient extends GenericClient {
+  constructor(config) {
+    super(config);
+  }
+
+  _launch() {
+  }
+
+  discover() {
+  }
+}
