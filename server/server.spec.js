@@ -22,15 +22,15 @@ describe('Development server', function() {
       });
   });
 
-  it('should instantiate engine after creating', function(done) {
+  it('should instantiate engine at least after launching', function(done) {
     expect(server.engine() instanceof GenericEngine).toBe(true);
     done();
   });
 
-  it('should listen to port specified in config', function(done) {
+  it('should listen to port specified in config after launching', function(done) {
     tcpPortUsed.check(testConfig.server.port, testConfig.server.host)
       .then(function(inUse) {
-        expect(inUse).toBe(false);
+        expect(inUse).toBe(true);
         done();
       }, function() {
         expect(true).toBe(false);
