@@ -10,9 +10,6 @@ export const testConfig = {
       path: '/diests/test',
       port: 2707,
       host: 'localhost'
-    },
-    logger: {
-      mode: 'memory'
     }
   }
 };

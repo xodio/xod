@@ -3,7 +3,7 @@ import {Services} from '../services/services';
 export class GenericEngine {
   constructor(config) {
     this._config = config;
-    this._services = new Services(config.services);
+    this._services = new Services(this.config().services);
   }
 
   config() {

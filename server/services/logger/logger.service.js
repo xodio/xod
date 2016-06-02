@@ -5,3 +5,5 @@ export class Logger extends GenericService {
     super(config);
   }
 }
+
+Logger.mode = 'logger';

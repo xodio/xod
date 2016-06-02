@@ -9,10 +9,8 @@ export const developmentConfig = {
       mode: 'development',
       path: '/dists/development',
       port: 2705,
-      host: 'localhost'
-    },
-    logger: {
-      mode: 'console'
+      host: 'localhost',
+      script: 'export NODE_ENV="development" && npm run ng2-client'
     }
   }
 };

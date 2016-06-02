@@ -5,3 +5,5 @@ export class Hardware extends GenericService {
     super(config);
   }
 }
+
+Hardware.mode = 'hardware';

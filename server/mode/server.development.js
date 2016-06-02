@@ -7,4 +7,4 @@ export class DevelopmentServer extends GenericServer {
   }
 }
 
-DevelopmentServer.name = 'development';
+DevelopmentServer.mode = 'development';

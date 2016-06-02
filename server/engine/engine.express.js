@@ -29,6 +29,8 @@ export class ExpressEngine extends GenericEngine {
   stop() {
     const deferred = Q.defer();
     this._httpd.close(() => {
+      this.services().stop()
+        .then(() => deferred.resolve(true), () => deferred.reject(false));
       deferred.resolve(true);
     });
     return deferred.promise;
