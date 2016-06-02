@@ -1,4 +1,5 @@
-import {Server} from './server/server';
+const Server = require('./server/server');
+const ServerConfig = require('./server/config/config');
 
 const mode = require('get-env')({
   test: ['test', 'testing'],
@@ -6,12 +7,9 @@ const mode = require('get-env')({
   development: ['dev', 'development']
 });
 
-switch (mode) {
-  case 'test':
+const config = new ServerConfig(mode);
 
-}
-
-const server = new Server(mode);
+const server = new Server(config.resolve());
 
 server.launch();
 

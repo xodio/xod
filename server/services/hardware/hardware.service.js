@@ -1,9 +1,11 @@
-import {GenericService} from '../service.generic';
+const GenericService = require('../service.generic');
 
-export class Hardware extends GenericService {
+class Hardware extends GenericService {
   constructor(config) {
     super(config);
   }
-}
+};
 
 Hardware.mode = 'hardware';
+
+module.exports = Hardware;

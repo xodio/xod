@@ -1,9 +1,9 @@
-import express from 'express';
-import {GenericEngine} from './engine.generic';
-import Q from 'q';
-import {Ports} from '../helpers/host/ports';
+const express = require('express');
+const GenericEngine = require('./engine.generic');
+const Q = require('q');
+const Ports = require('../helpers/host/ports');
 
-export class ExpressEngine extends GenericEngine {
+module.exports = class ExpressEngine extends GenericEngine {
   constructor(config) {
     super(config);
     this._instance = express();
@@ -14,6 +14,7 @@ export class ExpressEngine extends GenericEngine {
   }
 
   launch() {
+    console.log('launching express');
     const deferred = Q.defer();
     Ports.free(this.config().server.port)
       .then(() => {

@@ -4,6 +4,7 @@ module.exports = function() {
       '**/*.js',
       '!**/*.spec.js',
       '!node_modules/**/*'
+      
     ],
     tests: [
       'webpack-ng2/**/*.spec.js',

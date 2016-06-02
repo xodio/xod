@@ -1,4 +1,4 @@
-export class GenericClient {
+class GenericClient {
   constructor(config) {
     this._config = config;
   }
@@ -7,3 +7,5 @@ export class GenericClient {
     return this._config;
   }
 }
+
+module.exports = GenericClient;

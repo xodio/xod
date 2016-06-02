@@ -1,8 +1,8 @@
-import {Killer} from '../process/killer';
-import lsof from 'lsof';
-import Q from 'q';
+const Killer = require('../process/killer');
+const lsof = require('lsof');
+const Q = require('q');
 
-export const Ports = {
+const Ports = {
   free: (port) => {
     const deferred = Q.defer();
     lsof.rawTcpPort(port, (data) => {
@@ -13,3 +13,5 @@ export const Ports = {
     return deferred.promise;
   }
 };
+
+module.exports = Ports;

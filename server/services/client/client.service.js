@@ -1,10 +1,10 @@
-import {DevelopmentClient} from './mode/client.development';
-import {ProductionClient} from './mode/client.production';
-import {TestClient} from './mode/client.test';
-import {GenericService} from '../service.generic.js';
-import Q from 'q';
+const DevelopmentClient = require('./mode/client.development');
+const ProductionClient = require('./mode/client.production');
+const TestClient = require('./mode/client.test');
+const GenericService = require('../service.generic.js');
+const Q = require('q');
 
-export class Client extends GenericService {
+class Client extends GenericService {
   constructor(config) {
     super(config);
     this._instance = null;
@@ -35,3 +35,5 @@ export class Client extends GenericService {
 }
 
 Client.mode = 'client';
+
+module.exports = Client;

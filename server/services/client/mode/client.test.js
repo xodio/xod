@@ -1,6 +1,6 @@
-import {GenericClient} from './client.generic';
+const GenericClient = require('./client.generic');
 
-export class TestClient extends GenericClient {
+class TestClient extends GenericClient {
   constructor(config) {
     super(config);
   }
@@ -13,3 +13,5 @@ export class TestClient extends GenericClient {
 }
 
 TestClient.mode = 'test';
+
+module.exports = TestClient;

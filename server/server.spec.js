@@ -1,10 +1,10 @@
-import {TestServer} from './mode/server.test';
-import {testConfig} from './config/test.config';
-import {developmentConfig} from './config/development.config';
-import {GenericEngine} from './engine/engine.generic';
-import tcpPortUsed from 'tcp-port-used';
-import {DevelopmentServer} from './mode/server.development';
-import {Services} from './services/services';
+const TestServer = require('./mode/server.test');
+const testConfig = require('./config/test.config');
+const developmentConfig = require('./config/development.config');
+const GenericEngine = require('./engine/engine.generic');
+const tcpPortUsed = require('tcp-port-used');
+const DevelopmentServer = require('./mode/server.development');
+const Services = require('./services/services');
 
 describe('Test server', function() {
 

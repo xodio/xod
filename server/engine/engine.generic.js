@@ -1,6 +1,6 @@
-import {Services} from '../services/services';
+const Services = require('../services/services');
 
-export class GenericEngine {
+module.exports = class GenericEngine {
   constructor(config) {
     this._config = config;
     this._services = new Services(this.config().services);
@@ -13,4 +13,4 @@ export class GenericEngine {
   services() {
     return this._services;
   }
-}
+};

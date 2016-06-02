@@ -1,10 +1,10 @@
-import {Client} from './client/client.service';
-import {Logger} from './logger/logger.service';
-import {Hardware} from './hardware/hardware.service';
-import {GenericService} from './service.generic';
-import Q from 'q';
+const Client = require('./client/client.service');
+const Logger = require('./logger/logger.service');
+const Hardware = require('./hardware/hardware.service');
+const GenericService = require('./service.generic');
+const Q = require('q');
 
-export class Services {
+class Services {
   constructor(config) {
     this._config = config;
   }
@@ -23,6 +23,7 @@ export class Services {
     const servicesModes = servicesClasses.map(serviceClass => serviceClass.mode);
     const servicesClassesHash = {};
     const servicesModesHash = {};
+  
     for (let index in Object.keys(servicesClasses)) {
       servicesClassesHash[servicesModes[index]] = servicesClasses[index];
       servicesModesHash[servicesModes[index]] = this.config()[servicesModes[index]];
@@ -92,3 +93,5 @@ Services.STATUS = {
   VALID: 'valid',
   INVALID: 'invalid'
 };
+
+module.exports = Services;

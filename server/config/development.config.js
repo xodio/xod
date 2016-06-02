@@ -1,4 +1,4 @@
-export const developmentConfig = {
+const developmentConfig = {
   name: 'development',
   server: {
     port: 1705,
@@ -14,3 +14,5 @@ export const developmentConfig = {
     }
   }
 };
+
+module.exports = developmentConfig;

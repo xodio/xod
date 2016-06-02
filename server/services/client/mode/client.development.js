@@ -1,9 +1,10 @@
-import {GenericClient} from './client.generic';
-import {Ports} from '../../../helpers/host/ports';
-import Q from 'q';
-import shell from 'shelljs';
+const GenericClient = require('./client.generic');
+const Ports = require('../../../helpers/host/ports');
+const Q = require('q');
+const exec = require('process-promises').exec;
 
-export class DevelopmentClient extends GenericClient {
+class DevelopmentClient extends GenericClient {
+
   constructor(config) {
     super(config);
   }
@@ -14,18 +15,11 @@ export class DevelopmentClient extends GenericClient {
 
   launch() {
     const deferred = Q.defer();
-    shell.env['NODE_ENV'] = 'development';
-    shell.env['WEBPACK_PORT'] = this.config().port;
-    this._terminal = shell.exec(
-      'xterm -hold -e "bash -c webpack --watch --progress --color --config webpack.ng2.config.js"',
-      function(code) {
-        if (!code) {
-          deferred.resolve(code);
-        } else {
-          deferred.reject(code);
-        }
-      }
-    );
+    exec('xterm -hold -e bash -c "webpack webpack.ng2.config.js --watch --progress --color --config"')
+      .on('process', (process) => {
+        this._terminal = process;
+        deferred.resolve(process);
+      });
     return deferred.promise;
   }
 
@@ -33,7 +27,9 @@ export class DevelopmentClient extends GenericClient {
     Ports
       .free(this.config().port)
       .then(() => {
-        this.terminal().kill('SIGTERM');
+        process.kill(this.terminal().pid);
+      }, () => {
+        process.kill(this.terminal().pid);
       });
   }
 
@@ -50,3 +46,5 @@ export class DevelopmentClient extends GenericClient {
 }
 
 DevelopmentClient.mode = 'development';
+
+module.exports = DevelopmentClient;

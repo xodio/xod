@@ -1,4 +1,4 @@
-export class GenericService {
+class GenericService {
   constructor(config) {
     this._config = config;
     this._status = GenericService.STATUS.VALID;
@@ -11,9 +11,11 @@ export class GenericService {
   status() {
     return this._status;
   }
-}
+};
 
 GenericService.STATUS = {
   VALID: 'valid',
   INVALID: 'invalid'
 };
+
+module.exports = GenericService;

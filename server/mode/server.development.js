@@ -1,10 +1,12 @@
-import {GenericServer} from './server.generic';
-import {ExpressEngine} from '../engine/engine.express';
+const GenericServer = require('./server.generic');
+const ExpressEngine = require('../engine/engine.express');
 
-export class DevelopmentServer extends GenericServer {
+class DevelopmentServer extends GenericServer {
   constructor(config) {
     super(config, new ExpressEngine(config));
   }
 }
 
 DevelopmentServer.mode = 'development';
+
+module.exports = DevelopmentServer;

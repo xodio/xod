@@ -1,7 +1,7 @@
 /**
  * @abstract
  */
-export class GenericServer {
+module.exports = class GenericServer {
   constructor(config, engine) {
     this._config = config;
     this._engine = engine;

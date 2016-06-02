@@ -1,8 +1,8 @@
-import {developmentConfig} from 'development.config';
-import {productionConfig} from 'production.config';
-import {testConfig} from 'test.config';
+const developmentConfig = require('./development.config');
+const productionConfig = require('./production.config');
+const testConfig = require('./test.config');
 
-export class ServerConfig {
+class ServerConfig {
   constructor(mode) {
     this._mode = mode;
   }
@@ -22,3 +22,5 @@ export class ServerConfig {
     return configs;
   }
 }
+
+module.exports = ServerConfig;

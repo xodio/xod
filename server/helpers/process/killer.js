@@ -1,7 +1,7 @@
-import Q from 'q';
-import ps from 'ps-node';
+const Q = require('q');
+const ps = require('ps-node');
 
-export const Killer = {
+const Killer = {
   kill: (pids) => {
     const deferred = Q.defer();
     const promises = pids.map(pid => {
@@ -24,3 +24,5 @@ export const Killer = {
     return deferred.promise;
   }
 };
+
+module.exports = Killer;

@@ -1,3 +1,4 @@
+var nodeExternals = require('webpack-node-externals');
 var path = require('path');
 var webpackMerge = require('webpack-merge');
 var sharedConfig = require('../../shared/shared');
@@ -11,20 +12,25 @@ module.exports = webpackMerge(sharedConfig, {
   resolve: {
     extensions: ['', '.js', 'css', 'json'],
     root: sources,
-    modulesDirectories: ['node_modules']
+    exclude: ['node_modules']
   },
+  loaders: [{
+    test: /\.js$/,
+    loader: 'babel',
+    exclude: /node_modules/
+  }],
   preLoaders: [{
     test: /\.js$/,
     loader: 'source-map-loader',
     exclude: [
-      'node_modules/rxjs',
-      'node_modules/@angular2-material',
-      'node_modules/@angular'
+      'node_modules'
     ]
   }],
   output: {
     path: target,
     filename: '[name].bundle.js',
     sourceMapFilename: '[name].map'
-  }
+  },
+  target: 'node',
+  externals: [nodeExternals()]
 });
