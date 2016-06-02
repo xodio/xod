@@ -6,3 +6,5 @@ EspruinoTools
 *.iml
 dists/
 typings/
+venv3/
+doc/_build
