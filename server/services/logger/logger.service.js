@@ -1,6 +1,6 @@
 import {GenericService} from '../service.generic';
 
-export class Hardware extends GenericService {
+export class Logger extends GenericService {
   constructor(config) {
     super(config);
   }

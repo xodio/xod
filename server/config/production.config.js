@@ -5,8 +5,15 @@ export const productionConfig = {
     host: 'localhost'
   },
   services: {
+    client: {
+      mode: 'production',
+      path: '/dists/production',
+      host: 'localhost',
+      port: 2706
+    },
     logger: {
-      mode: 'console'
+      mode: 'file',
+      path: '/log'
     }
   }
 };

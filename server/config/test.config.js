@@ -5,8 +5,14 @@ export const testConfig = {
     host: 'localhost'
   },
   services: {
+    client: {
+      mode: 'test',
+      path: '/diests/test',
+      port: 2707,
+      host: 'localhost'
+    },
     logger: {
-      mode: 'console'
+      mode: 'memory'
     }
   }
 };

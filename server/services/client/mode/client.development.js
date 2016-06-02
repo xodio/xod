@@ -11,3 +11,5 @@ export class DevelopmentClient extends GenericClient {
   discover() {
   }
 }
+
+DevelopmentClient.mode = 'development';
