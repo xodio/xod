@@ -25,12 +25,16 @@ export class ExpressEngine extends GenericEngine {
     const deferred = Q.defer();
     lsof.rawTcpPort(this.config().server.port, (data) => {
       const pids = data.map(process => process.pid);
-      Killer.kill(pids);
-      this._httpd = this.instance().listen(this.config().server.port, () => {
-        this.services().launch(this, this.config().services).then(() => {
-          deferred.resolve(true);
+      Killer.kill(pids)
+        .then(() => {
+          this._httpd = this.instance().listen(this.config().server.port, () => {
+            this.services().launch(this, this.config().services).then(() => {
+              deferred.resolve(true);
+            });
+          });
+        }, (pids) => {
+          deferred.reject(pids);
         });
-      });
     });
     return deferred.promise;
   }

@@ -16,7 +16,11 @@ export const Killer = {
       return deferred.promise;
     });
 
-    Q.all(promises);
+    Q.all(promises)
+      .then(
+        (pids) => deferred.resolve(pids),
+        (info) => deferred.reject(info)
+      );
     return deferred.promise;
   }
 };
