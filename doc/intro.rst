@@ -84,3 +84,5 @@ will look familiar if you have an experience with that products.
 #. XOD is visual in a first place. Visualization features are used primarily to give
    you an easy program structure overview and ability to quickly and intuitively change
    that program, not to make it look funny or coarse-grained.
+#. XOD is open source. It’s free in sense of freedom. You can fork it, tweak it, host it
+   and contribute back.
