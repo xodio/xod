@@ -5,34 +5,44 @@ var sharedConfig = require('../../shared/shared');
 var target = require('./development.paths').targets.development;
 var sources = require('../../shared/shared.paths').sources;
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var webpack = require('webpack');
+var commonsPlugin = new webpack.optimize.CommonsChunkPlugin('common.js');
 
 module.exports = webpackMerge(sharedConfig, {
   entry: {
-    'babel-polyfill': 'babel-polyfill',
-    client: path.resolve('./angularjs/application/client.js')
+    client: ['babel-polyfill', path.resolve('./angularjs/application/client.js')]
   },
   resolve: {
     extensions: ['', '.js', 'css', 'json'],
     root: path.resolve(sources, '..')
   },
-  loaders: [{
-    test: /\.js$/,
-    loader: 'babel',
-    exclude: /node_modules/,
-    query: {
-      presets: ['es2015', 'angular2']
-    }
-  }],
+  module: {
+    loaders: [{
+      test: /\.js$/,
+      loader: 'babel',
+      query: {
+        presets: ['es2015', 'angular2'],
+        plugins: ['transform-runtime']
+      },
+      exclude: /node_modules/
+    }]
+  },
   output: {
     path: target,
     filename: '[name].bundle.js',
     sourceMapFilename: '[name].map'
   },
-  target: 'node',
-  externals: [nodeExternals()],
-  plugins: [new CopyWebpackPlugin([{
-    from: path.resolve(sources, 'application') + '/index.html',
-    to: path.resolve(target)
-  }])]
+  target: 'web',
+  plugins: [
+    new CopyWebpackPlugin([{
+      from: path.resolve(sources, 'application') + '/index.html',
+      to: path.resolve(target)
+    }, {
+      from: path.resolve(sources, '..', 'node_modules', 'babel-polyfill', 'dist') + '/polyfill.js',
+      to: path.resolve(target)
+    }]),
+    commonsPlugin
+  ]
 });
 
+console.log(module.exports);
