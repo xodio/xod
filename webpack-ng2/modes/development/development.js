@@ -8,6 +8,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = webpackMerge(sharedConfig, {
   entry: {
+    'babel-polyfill': 'babel-polyfill',
     client: path.resolve('./angularjs/application/client.js')
   },
   resolve: {
@@ -17,12 +18,10 @@ module.exports = webpackMerge(sharedConfig, {
   loaders: [{
     test: /\.js$/,
     loader: 'babel',
-    exclude: /node_modules/
-  }],
-  preLoaders: [{
-    test: /\.js$/,
-    loader: 'source-map-loader',
-    exclude: /node_modules/
+    exclude: /node_modules/,
+    query: {
+      presets: ['es2015', 'angular2']
+    }
   }],
   output: {
     path: target,
@@ -32,7 +31,7 @@ module.exports = webpackMerge(sharedConfig, {
   target: 'node',
   externals: [nodeExternals()],
   plugins: [new CopyWebpackPlugin([{
-    from: path.resolve(sources, 'application') + 'index.html',
+    from: path.resolve(sources, 'application') + '/index.html',
     to: path.resolve(target)
   }])]
 });
