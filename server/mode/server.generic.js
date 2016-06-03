@@ -2,9 +2,14 @@
  * @abstract
  */
 module.exports = class GenericServer {
-  constructor(config, engine) {
+  constructor(root, config, engine) {
     this._config = config;
     this._engine = engine;
+    this._root = root;
+  }
+
+  root() {
+    return this._root;
   }
 
   config() {
@@ -22,4 +27,5 @@ module.exports = class GenericServer {
   stop() {
     return this.engine().stop();
   }
-}
+};
+

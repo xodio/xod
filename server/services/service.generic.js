@@ -1,3 +1,5 @@
+const GenericRoute = require('./route.generic');
+
 class GenericService {
   constructor(config) {
     this._config = config;
@@ -11,7 +13,11 @@ class GenericService {
   status() {
     return this._status;
   }
-};
+
+  route() {
+    return this._route;
+  }
+}
 
 GenericService.STATUS = {
   VALID: 'valid',

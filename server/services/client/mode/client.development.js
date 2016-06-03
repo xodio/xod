@@ -15,7 +15,7 @@ class DevelopmentClient extends GenericClient {
 
   launch() {
     const deferred = Q.defer();
-    exec('xterm -hold -e bash -c "webpack webpack.ng2.config.js --watch --progress --color --config"')
+    exec('xterm -hold -e bash -c "webpack --watch --progress --color --config webpack.ng2.config.js"')
       .on('process', (process) => {
         this._terminal = process;
         deferred.resolve(process);

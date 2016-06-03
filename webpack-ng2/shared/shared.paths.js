@@ -3,5 +3,5 @@ var path = require('path');
 
 module.exports = {
   projectDirectory: projectMetadata.directory,
-  sources: path.join(projectMetadata.directory, 'angularjs')
+  sources: path.resolve(projectMetadata.directory, 'angularjs')
 };

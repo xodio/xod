@@ -17,13 +17,13 @@ class Services {
     return this._instances;
   }
 
-  launch() {
+  launch(engine) {
     const deferred = Q.defer();
     const servicesClasses = [Client, Logger, Hardware];
     const servicesModes = servicesClasses.map(serviceClass => serviceClass.mode);
     const servicesClassesHash = {};
     const servicesModesHash = {};
-  
+
     for (let index in Object.keys(servicesClasses)) {
       servicesClassesHash[servicesModes[index]] = servicesClasses[index];
       servicesModesHash[servicesModes[index]] = this.config()[servicesModes[index]];
@@ -38,10 +38,19 @@ class Services {
       });
 
 
-    const serviceStatuses = this.instances().map(service => service.discover());
+    const serviceStatuses = this.instances().map(
+      service => {
+        service.discover();
+        return service;
+      }
+    );
 
     Q.all(serviceStatuses)
       .then(() => {
+        this.instances().forEach(instance => {
+          engine.attach(instance);
+        });
+
         deferred.resolve(true);
       }, () => {
         deferred.reject(false);

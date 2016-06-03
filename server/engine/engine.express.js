@@ -1,12 +1,20 @@
+/* global __dirname */
+
 const express = require('express');
 const GenericEngine = require('./engine.generic');
 const Q = require('q');
 const Ports = require('../helpers/host/ports');
 
 module.exports = class ExpressEngine extends GenericEngine {
-  constructor(config) {
+  constructor(root, config) {
     super(config);
+    this._root = root;
     this._instance = express();
+    this.registeredRoutes = {};
+  }
+
+  root() {
+    return this._root;
   }
 
   instance() {
@@ -14,7 +22,6 @@ module.exports = class ExpressEngine extends GenericEngine {
   }
 
   launch() {
-    console.log('launching express');
     const deferred = Q.defer();
     Ports.free(this.config().server.port)
       .then(() => {
@@ -36,4 +43,20 @@ module.exports = class ExpressEngine extends GenericEngine {
     });
     return deferred.promise;
   }
-}
+
+  registerRoute(route) {
+    console.log(__dirname + route.resource());
+    this.instance().use(route.uri(), express.static(this.root() + route.resource()));
+  }
+
+  removeRoute(route) {
+  }
+
+  attach(service) {
+    this.registerRoute(service.route());
+  }
+
+  detach(service) {
+    this.removeRoute(service.route());
+  }
+};

@@ -2,12 +2,14 @@ const DevelopmentClient = require('./mode/client.development');
 const ProductionClient = require('./mode/client.production');
 const TestClient = require('./mode/client.test');
 const GenericService = require('../service.generic.js');
+const GenericRoute = require('../route.generic');
 const Q = require('q');
 
 class Client extends GenericService {
   constructor(config) {
     super(config);
     this._instance = null;
+    this._route = new GenericRoute('/', '/dists/development/');
   }
 
   instance() {

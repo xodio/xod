@@ -4,15 +4,15 @@ var webpackMerge = require('webpack-merge');
 var sharedConfig = require('../../shared/shared');
 var target = require('./development.paths').targets.development;
 var sources = require('../../shared/shared.paths').sources;
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = webpackMerge(sharedConfig, {
   entry: {
-    client: path.join(sources, 'application', 'client.js')
+    client: path.resolve('./angularjs/application/client.js')
   },
   resolve: {
     extensions: ['', '.js', 'css', 'json'],
-    root: sources,
-    exclude: ['node_modules']
+    root: path.resolve(sources, '..')
   },
   loaders: [{
     test: /\.js$/,
@@ -22,9 +22,7 @@ module.exports = webpackMerge(sharedConfig, {
   preLoaders: [{
     test: /\.js$/,
     loader: 'source-map-loader',
-    exclude: [
-      'node_modules'
-    ]
+    exclude: /node_modules/
   }],
   output: {
     path: target,
@@ -32,5 +30,10 @@ module.exports = webpackMerge(sharedConfig, {
     sourceMapFilename: '[name].map'
   },
   target: 'node',
-  externals: [nodeExternals()]
+  externals: [nodeExternals()],
+  plugins: [new CopyWebpackPlugin([{
+    from: path.resolve(sources, 'application') + 'index.html',
+    to: path.resolve(target)
+  }])]
 });
+
