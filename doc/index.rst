@@ -3,18 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to XOD's documentation!
-===============================
-
-Contents:
+Welcome to XOD!
+===============
 
 .. toctree::
    :maxdepth: 2
 
    intro
    structure
-
-
+   execution
 
 Indices and tables
 ==================
