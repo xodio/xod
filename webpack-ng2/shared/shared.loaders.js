@@ -2,6 +2,9 @@ module.exports = [{
   test: /\.json$/,
   loader: 'json-loader'
 }, {
-  test: /\.css$/,
-  loader: 'style-loader!css-loader?modules&importLoaders=1!postcss-loader?parser=postcss-js!babel'
+  test: /\.styl$/,
+  loader: 'raw-loader!postcss-loader!stylus-loader'
+}, {
+  test: /\.html$/,
+  loader: 'raw-loader'
 }];

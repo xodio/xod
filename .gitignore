@@ -5,3 +5,4 @@ EspruinoTools
 .idea/
 *.iml
 dists/
+typings/

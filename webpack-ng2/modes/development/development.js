@@ -46,7 +46,16 @@ module.exports = webpackMerge(sharedConfig, {
       to: path.resolve(target)
     }]),
     commonsPlugin
-  ]
+  ],
+  devServer: {
+    colors: true,
+    contentBase: './dists/development',
+    historyApiFallback: true,
+    inline: true,
+    progress: true
+  },
+
+  devtool: 'eval-source-map'
 });
 
 console.log(module.exports);

@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {EditorPage} from './components/editor/editor.page.ts';
 
 @Component({
     selector: 'xod',
-    template: '<h1>My First Angular 2 App</h1>'
+    template: '<editor></editor>',
+    directives: [EditorPage],
+    styles: [require('./app.styl')]
 })
-export class AppComponent{
+export class AppComponent {
 }

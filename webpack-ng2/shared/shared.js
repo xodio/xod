@@ -2,6 +2,8 @@ var loaders = require('./shared.loaders');
 var plugins = require('./shared.plugins');
 
 module.exports = {
-  loaders: loaders,
+  module: {
+    loaders: loaders
+  },
   plugins: plugins
 };

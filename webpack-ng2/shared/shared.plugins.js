@@ -7,10 +7,7 @@ module.exports = {
   postcss: function() {
     return [
       precss,
-      autoprefixer,
-      postcssImport({
-        addDependencyTo: webpack
-      })
+      autoprefixer
     ];
   }
 };
