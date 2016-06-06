@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
 import {PatchService} from './patch/patch.service.ts';
 import {PatchComponent} from "./patch/patch.component.ts";
 import {PatchModel} from './patch/patch.model.ts';
@@ -8,12 +8,11 @@ import {PatchModel} from './patch/patch.model.ts';
   template: require('./patch-canvas.widget.html'),
   styles: [require('./patch-canvas.widget.styl')],
   directives: [PatchComponent],
-  providers: [PatchService]
 })
 export class PatchCanvasWidget {
-  private patch: PatchModel;
+  private patches: Array<PatchModel>;
 
   constructor(private service: PatchService) {
-    this.patch = service.getPatch("");
+    this.patches = service.patchesAsArray();
   }
 }

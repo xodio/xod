@@ -1,5 +1,6 @@
 <div class="patch-canvas-widget">
+    <div class="patch-name">123</div>
     <svg width="1000" height="1000">
-        <g [model]="patch" patch></g>
+        <svg:g *ngFor="let patch of patches" [model]="patch" patch/>
     </svg>
 </div>
