@@ -1,18 +1,21 @@
 import {Component, ElementRef, Input, EventEmitter, Output} from '@angular/core';
-import {NgFor, NgStyle} from '@angular/common';
+import {NgFor} from '@angular/common';
 import * as d3 from 'd3';
 import {PatchModel} from './patch.model.ts';
 import {NodeComponent} from '../node/node.component.ts';
-import {Point} from '../geometry/geometry.lib.ts';
+import {Point, Rect} from '../geometry/geometry.lib.ts';
 import {TextComponent} from '../text/text.component.ts';
 import {PatchService} from './patch.service.ts';
 import {EditorMessage, EditorBus} from '../../editor/editor.bus.ts';
+import {NodeService} from '../node/node.service.ts';
+import {NodeModel} from '../node/node.model.ts';
 
 @Component({
   selector: '[patch]',
   template: require('./patch.component.html'),
   directives: [NgFor, NodeComponent, TextComponent],
   inputs: ['model'],
+  providers: [NodeService]
 })
 export class PatchComponent {
   @Input() model: PatchModel;
@@ -21,7 +24,7 @@ export class PatchComponent {
   private element: HTMLElement;
   private zeroPoint: Point;
 
-  constructor(element: ElementRef, private service: PatchService, private bus: EditorBus) {
+  constructor(element: ElementRef, private service: PatchService, private bus: EditorBus, private nodeService: NodeService) {
     this.element = element.nativeElement;
     this.zeroPoint = new Point(0, 0);
 
@@ -82,5 +85,13 @@ export class PatchComponent {
   onSelect() {
     this.service.select(this.model);
     this.onPatchSelect.emit(this.model);
+  }
+
+  createNode(event: any) {
+    const point = new Point(event.offsetX, event.offsetY);
+    const end = new Point(point.x + 10, point.y + 20);
+    const node = this.nodeService.create(new NodeModel(null, this.model.id, new Rect(point, end), "ab"));
+    this.model.nodes = this.nodeService.nodes();
+    this.bus.send(new EditorMessage('create-node', node));
   }
 }

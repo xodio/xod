@@ -8,10 +8,7 @@ export class PatchSample extends PatchModel {
       id,
       name,
       new Rect(new Point(100, 100), new Point(300, 400)),
-      [
-        new NodeModel(100, 100, 200, 20),
-        new NodeModel(150, 80, 100, 30)
-      ]
+      []
     );
   }
 }

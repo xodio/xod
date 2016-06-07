@@ -1,4 +1,6 @@
+import {Rect} from '../geometry/geometry.lib.ts';
+
 export class NodeModel {
-  constructor(public x: number, public y: number, public width: number, public height: number) {
+  constructor(public id: number, public patchId: number, public bbox: Rect, public label: string) {
   }
 }
