@@ -14,4 +14,8 @@ export class Rect {
   height() {
     return this.max.y - this.min.y;
   }
+
+  center() {
+    return new Point(this.min.x + this.width() / 2, this.min.y + this.height() / 2);
+  }
 }

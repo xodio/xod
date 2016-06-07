@@ -10,9 +10,11 @@ import {Point} from "../geometry/geometry.lib.ts";
 export class TextComponent {
   @Input() content: string;
   @Input() position: Point;
+  @Input() align: string;
 
   constructor() {
     this.content = "Text";
     this.position = new Point(0, 0);
+    this.align = "right";
   }
 }

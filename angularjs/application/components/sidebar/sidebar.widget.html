@@ -1,9 +1,15 @@
 <div class="sidebar-widget">
     <control-panel></control-panel>
-    <h3 class="node-name">
+    <h3 class="patch-name">
         {{patch ? patch.name : 'No patch selected'}}
     </h3>
     <form>
-        <input id="sidebar-widget-node-name" type="text" (change)="onChange($event)" [value]="patch ? patch.name : ''" [disabled]="!patch" />
+        <input id="sidebar-widget-patch-name" type="text" (change)="onPatchChange($event)" [value]="patch ? patch.name : ''" [disabled]="!patch" />
+    </form>
+    <h3 class="node-name">
+        {{node ? node.name : 'No node selected'}}
+    </h3>
+    <form>
+        <input id="sidebar-widget-node-name" type="text" (change)="onNodeChange($event)" [value]="node ? node.label : ''" [disabled]="!node" />
     </form>
 </div>

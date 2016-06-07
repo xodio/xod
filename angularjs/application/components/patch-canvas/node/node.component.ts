@@ -1,21 +1,36 @@
 import {Component, ElementRef, Input} from '@angular/core';
+import {NgFor} from '@angular/common';
 import {NodeModel} from './node.model.ts';
 import * as d3 from 'd3';
 import {EditorMessage, EditorBus} from '../../editor/editor.bus.ts';
 import {Point} from '../geometry/geometry.lib.ts';
+import {TextComponent} from "../text/text.component.ts";
+import {NodeService} from './node.service.ts';
+import {PinComponent} from './pin/pin.component.ts';
 
 @Component({
   selector: '[node]',
-  template: require('./node.component.html')
+  template: require('./node.component.html'),
+  directives: [TextComponent, PinComponent, NgFor],
+  styles: [require('./node.component.styl')]
 })
 export class NodeComponent {
   @Input() model: NodeModel;
 
   private element: HTMLElement;
+  private zeroPoint: Point;
 
-  constructor(element: ElementRef, private bus: EditorBus) {
+  constructor(element: ElementRef, private bus: EditorBus, private service: NodeService) {
     this.element = element.nativeElement;
     this.element.style.fill = 'red';
+    this.zeroPoint = new Point(0, 0);
+
+    this.bus.listen('update-node', (message: EditorMessage) => {
+      const node = <NodeModel>message.body;
+      if (message.body.id === this.model.id && message.body.patchId === this.model.patchId) {
+        this.model = node;
+      }
+    });
   }
 
   ngOnInit() {
@@ -42,20 +57,30 @@ export class NodeComponent {
           model.bbox.min.x += (<DragEvent>d3.event).x - pointerPosition.x;
           model.bbox.min.y += (<DragEvent>d3.event).y - pointerPosition.y;
 
+          model.bbox.max.x += (<DragEvent>d3.event).x - pointerPosition.x;
+          model.bbox.max.y += (<DragEvent>d3.event).y - pointerPosition.y;
+
           pointerPosition.x = (<DragEvent>d3.event).x;
           pointerPosition.y = (<DragEvent>d3.event).y;
         }
         (<any>d3.event).sourceEvent.stopPropagation();
       })
-      .on('dragend', function() { rect.style('fill', 'red'); pointerPosition = null; (<any>d3.event).sourceEvent.stopPropagation();});
+      .on('dragend', function() { rect.style('fill', 'lightgray'); pointerPosition = null; (<any>d3.event).sourceEvent.stopPropagation();});
 
     element.on("click", () => {
-      // this.service.select(this.model);
+      this.service.select(this.model);
       this.bus.send(new EditorMessage('select-node', this.model));
-      (<any>d3.event).stopPropagation()
     });
 
     element.call(drag);
+  }
+
+  labelPosition() {
+    return new Point(this.model.bbox.width() / 2, this.model.bbox.height() / 2);
+  }
+
+  selected() {
+    return this.service.isSelected(this.model);
   }
 
   transform() {

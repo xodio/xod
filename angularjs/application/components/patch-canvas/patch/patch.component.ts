@@ -9,6 +9,7 @@ import {PatchService} from './patch.service.ts';
 import {EditorMessage, EditorBus} from '../../editor/editor.bus.ts';
 import {NodeService} from '../node/node.service.ts';
 import {NodeModel} from '../node/node.model.ts';
+import {PinModel, PinType} from "../node/pin/pin.model.ts";
 
 @Component({
   selector: '[patch]',
@@ -40,38 +41,19 @@ export class PatchComponent {
   }
 
   draw() {
-    const rect = d3.select(this.element)
-      .select('rect')
-      .attr('width', this.model.bbox.width())
-      .attr('height', this.model.bbox.height());
-
     const element = d3.select(this.element);
     const model = this.model;
+    const rect = d3.select(this.element).select('rect');
 
     let pointerPosition = null;
 
-    const drag = d3.behavior.drag()
-      .on('dragstart', function() { rect.style('fill', 'lightblue'); })
-      .on('drag', function() {
-        if (pointerPosition === null) {
-          pointerPosition = new Point((<DragEvent>d3.event).x, (<DragEvent>d3.event).y);
-        } else {
-          model.bbox.min.x += (<DragEvent>d3.event).x - pointerPosition.x;
-          model.bbox.min.y += (<DragEvent>d3.event).y - pointerPosition.y;
-
-          pointerPosition.x = (<DragEvent>d3.event).x;
-          pointerPosition.y = (<DragEvent>d3.event).y;
-        }
-      })
-      .on('dragend', function() { rect.style('fill', 'lightgray'); pointerPosition = null; });
-
     element.on("click", () => {
-      this.service.select(this.model);
-      this.bus.send(new EditorMessage('select-patch', this.model));
-      (<any>d3.event).stopPropagation()
+      if (!this.selected()) {
+        this.service.select(this.model);
+        this.bus.send(new EditorMessage('select-patch', this.model));
+      }
+      (<any>d3.event).stopPropagation();
     });
-
-    element.call(drag);
   }
 
   position() {
@@ -89,8 +71,8 @@ export class PatchComponent {
 
   createNode(event: any) {
     const point = new Point(event.offsetX, event.offsetY);
-    const end = new Point(point.x + 10, point.y + 20);
-    const node = this.nodeService.create(new NodeModel(null, this.model.id, new Rect(point, end), "ab"));
+    const end = new Point(point.x + 100, point.y + 50);
+    const node = this.nodeService.create(new NodeModel(null, this.model.id, new Rect(point, end), "Node", [new PinModel(0, 0, 0, "A", PinType.Input), new PinModel(1, 0, 1, "B", PinType.Input)], []));
     this.model.nodes = this.nodeService.nodes();
     this.bus.send(new EditorMessage('create-node', node));
   }

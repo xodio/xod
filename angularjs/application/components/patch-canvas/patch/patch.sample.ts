@@ -7,7 +7,7 @@ export class PatchSample extends PatchModel {
     super(
       id,
       name,
-      new Rect(new Point(100, 100), new Point(300, 400)),
+      new Rect(new Point(0, 0), new Point(2000, 2000)),
       []
     );
   }

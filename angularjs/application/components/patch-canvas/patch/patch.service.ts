@@ -14,8 +14,7 @@ export class PatchService {
 
   constructor() {
     this._patches = new Map<number, PatchModel>();
-    this.create(new PatchSample(0, "A"));
-    this.create(new PatchSample(1, "A"));
+    this.create(new PatchSample(0, "Test"));
     this.selected = null;
   }
 

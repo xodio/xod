@@ -1,3 +1,7 @@
 <svg:g [attr.transform]="transform()">
-    <svg:rect x="0" y="0" width="100" height="10" fill="red"></svg:rect>
+    <svg:rect [attr.x]="0" [attr.y]="0" [attr.width]="model.bbox.width()" [attr.height]="model.bbox.height()" fill="lightgray"
+              [ngStyle]="{stroke: selected() ? 'red' : 'black', 'stroke-width': 2}"></svg:rect>
+    <svg:g [content]="model.label" [position]="labelPosition()" fill="black" [align]="'middle'" text/>
+    <svg:g *ngFor="let input of model.inputs" [model]="input" pin></svg:g>
+    <svg:g *ngFor="let output of model.outputs" [model]="output" pin></svg:g>
 </svg:g>

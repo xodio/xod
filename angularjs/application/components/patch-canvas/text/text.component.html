@@ -1,1 +1,1 @@
-<svg:text class="text-component">{{content}}</svg:text>
+<svg:text [attr.pointer-events]="'none'" class="text-component" [attr.x]="position.x" [attr.y]="position.y" [attr.text-anchor]="align">{{content}}</svg:text>
