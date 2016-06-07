@@ -8,8 +8,8 @@ hobbyists.
 It contrasts to classical programming like one do with C++ or JavaScript in
 many ways although it is powerful enough to solve same problems.
 
-Quick look
-==========
+A Quick Look
+============
 
 .. image:: images/intro/example.*
    :align: center
@@ -38,7 +38,7 @@ as a sequence of instructions.
 .. todo:: Example
 
 
-Fundamental concepts
+Fundamental Concepts
 ====================
 
 Let's explain few concepts that stay behind programming in XOD:
@@ -62,7 +62,7 @@ Let's explain few concepts that stay behind programming in XOD:
 These three concepts together give you the ability to create robust programs 
 in a simple way. Even if you haven't programming experience before.
 
-What makes XOD different
+What Makes XOD Different
 ========================
 
 Some languages and tools that look similar to XOD at a first sight.

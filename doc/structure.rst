@@ -37,7 +37,7 @@ a good idea to label a node “Water Pump” instead of default “Relay” if y
 a pump connected to the relay. After all, you’re trying to control a pump, not an
 abstract relay.
 
-Pins, inputs, and outputs
+Pins, Inputs, and Outputs
 =========================
 
 Every node has pins. They are depicted by small circles along edges of a node.

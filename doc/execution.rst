@@ -10,7 +10,7 @@ control flow. That means there is no such thing as instruction pointer that
 determines what command will be executed at next moment. Instead, updates are
 done in instant transactions where all data is evaluated simultaneously.
 
-Static and dynamic parts
+Static and Dynamic Parts
 ========================
 
 Links and nodes are static. They can’t be changed at run time. The static
@@ -41,7 +41,7 @@ in XOD.
 At moments when there is no data update on a link (most of the time) the
 link is said to be *idle*.
 
-Signal value
+Signal Value
 ============
 
 A signal can have payload data associated with it. The data is called *value*.
@@ -106,7 +106,7 @@ a real-time reaction to external changes.
 Vice versa, transactions can occasionally occur in response to rare events.
 This lets processor sleep most of the time and preserve battery charge.
 
-Order of evaluation
+Order of Evaluation
 ===================
 
 Once you get the idea of transactions, it’s intuitive enough to understand which
