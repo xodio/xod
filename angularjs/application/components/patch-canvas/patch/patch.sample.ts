@@ -3,8 +3,9 @@ import {NodeModel} from '../node/node.model.ts';
 import {Rect, Point} from '../geometry/geometry.lib.ts';
 
 export class PatchSample extends PatchModel {
-  constructor(name: string) {
+  constructor(id: number, name: string) {
     super(
+      id,
       name,
       new Rect(new Point(100, 100), new Point(300, 400)),
       [

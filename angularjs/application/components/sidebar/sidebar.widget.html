@@ -1,3 +1,9 @@
 <div class="sidebar-widget">
     <control-panel></control-panel>
+    <h3 class="node-name">
+        {{patch ? patch.name : 'No patch selected'}}
+    </h3>
+    <form>
+        <input id="sidebar-widget-node-name" type="text" (change)="onChange($event)" [value]="patch ? patch.name : ''" [disabled]="!patch" />
+    </form>
 </div>

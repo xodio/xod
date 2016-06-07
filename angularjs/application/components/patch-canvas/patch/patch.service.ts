@@ -4,27 +4,29 @@ import {PatchModel} from './patch.model.ts';
 
 @Injectable()
 export class PatchService {
-  private patches: Map<string, PatchModel>;
+  private _patches: Map<number, PatchModel>;
   private selected: PatchModel;
+  private count: number = 0;
+
+  patchesAsArray() {
+    return Object.keys(this._patches).map(key => this._patches[key]);
+  }
 
   constructor() {
-    this.patches = new Map<string, PatchModel>();
-    this.patches["a"] = new PatchSample("A");
-    this.patches["b"] = new PatchSample("B");
+    this._patches = new Map<number, PatchModel>();
+    this.create(new PatchSample(0, "A"));
+    this.create(new PatchSample(1, "A"));
     this.selected = null;
   }
 
-  patchesAsArray(): Array<PatchModel> {
-    return Object.keys(this.patches).map(name => this.patches[name]);
-  }
-
-  patch(name: string) {
-    return this.patches[name];
+  create(patch: PatchModel) {
+    this._patches[this.count++] = patch;
+    patch.id = this.count - 1;
   }
 
   update(patch: PatchModel) {
-    this.patches[patch.name] = patch;
-    return this.patches[name];
+    this._patches[patch.id] = patch;
+    return this._patches[patch.id];
   }
 
   select(patch: PatchModel) {
@@ -37,7 +39,7 @@ export class PatchService {
     } else if (patch === null) {
       return false;
     } else {
-      return this.selected.name === patch.name;
+      return this.selected.id === patch.id;
     }
   }
 }

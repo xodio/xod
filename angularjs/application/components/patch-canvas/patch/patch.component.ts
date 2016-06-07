@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input} from '@angular/core';
+import {Component, ElementRef, Input, EventEmitter, Output} from '@angular/core';
 import {NgFor, NgStyle} from '@angular/common';
 import * as d3 from 'd3';
 import {PatchModel} from './patch.model.ts';
@@ -6,6 +6,7 @@ import {NodeComponent} from '../node/node.component.ts';
 import {Point} from '../geometry/geometry.lib.ts';
 import {TextComponent} from '../text/text.component.ts';
 import {PatchService} from './patch.service.ts';
+import {EditorMessage, EditorBus} from '../../editor/editor.bus.ts';
 
 @Component({
   selector: '[patch]',
@@ -15,13 +16,20 @@ import {PatchService} from './patch.service.ts';
 })
 export class PatchComponent {
   @Input() model: PatchModel;
+  @Output() onPatchSelect: EventEmitter<PatchModel> = new EventEmitter();
 
   private element: HTMLElement;
   private zeroPoint: Point;
 
-  constructor(element: ElementRef, private service: PatchService) {
+  constructor(element: ElementRef, private service: PatchService, private bus: EditorBus) {
     this.element = element.nativeElement;
     this.zeroPoint = new Point(0, 0);
+
+    this.bus.listen('update-patch', (message: EditorMessage): void => {
+      if (this.selected()) {
+        this.model = <PatchModel>message.body;
+      }
+    });
   }
 
   ngOnInit() {
@@ -56,8 +64,8 @@ export class PatchComponent {
 
     element.on("click", () => {
       this.service.select(this.model);
-      // TODO: implement response propagation
-      (<any>d3.event).stopPropagation();
+      this.bus.send(new EditorMessage('select-patch', this.model));
+      (<any>d3.event).stopPropagation()
     });
 
     element.call(drag);
@@ -69,5 +77,10 @@ export class PatchComponent {
 
   selected() {
     return this.service.isSelected(this.model);
+  }
+
+  onSelect() {
+    this.service.select(this.model);
+    this.onPatchSelect.emit(this.model);
   }
 }
