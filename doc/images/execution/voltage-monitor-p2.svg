@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="canvas"
+   width="276.07123"
+   height="420.02319"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="voltage-monitor-p3.svg">
+  <metadata
+     id="metadata217">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs215" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1016"
+     id="namedview213"
+     showgrid="true"
+     inkscape:zoom="2.0388246"
+     inkscape:cx="-44.414818"
+     inkscape:cy="203.09874"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-nodes="true" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Links"
+     transform="translate(-236.0909,-143.328)"
+     style="display:inline">
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#cc0000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 446.9064,317.10591 364.99646,175.84805"
+       id="path4289"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#cc0000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 348.81067,316.12495 365.48694,176.33853"
+       id="path4291"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#cc0000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 294.85801,316.61543 70.13845,-140.2769"
+       id="path4293"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 252.67685,285.71528 26.97632,32.37159"
+       id="path4295"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 379.22035,290.62006 -13.73341,25.01442"
+       id="path4297"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 480.25895,291.60102 -17.65723,25.50489"
+       id="path4299"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 349.79163,349.96798 43.6526,25.50489"
+       id="path4301"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 446.9064,348.98703 -37.76685,27.4668"
+       id="path4303"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 392.95375,409.80638 377.25843,425.5017"
+       id="path4305"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:#cc0000;fill-rule:evenodd;stroke:#cc0000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 277.20078,349.96798 83.87185,76.51468"
+       id="path4307"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 361.16296,458.3638 0,17.65724"
+       id="path4984"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 361.16296,507.90215 1.47144,22.56202"
+       id="path4986"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="Layer 1"
+     style="display:inline"
+     transform="translate(-236.0909,-143.328)">
+    <rect
+       style="fill:#9e8e9c;fill-opacity:1;stroke:#cc0000;stroke-width:0.99999994"
+       id="rect47"
+       height="32"
+       width="48"
+       class="outline"
+       x="348.81079"
+       y="143.828" />
+    <text
+       style="font-size:12.5px;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff"
+       id="text49"
+       class="title"
+       y="163.828"
+       x="373.91077"
+       sodipodi:linespacing="125%">
+      <tspan
+         id="tspan4345"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#ffffff">Voltage</tspan>
+    </text>
+    <circle
+       style="fill:#cc0000;stroke:#cc0000"
+       r="4"
+       id="circle53"
+       cx="365.31079"
+       cy="176.328" />
+    <rect
+       y="316.68024"
+       x="431.15775"
+       class="outline"
+       width="48"
+       height="32"
+       id="rect4406"
+       style="fill:#888a85;stroke:#555753;stroke-width:1" />
+    <text
+       x="455.15775"
+       y="336.68024"
+       class="title"
+       id="text4408"
+       style="font-size:12.5px;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff"
+       sodipodi:linespacing="125%">
+      <tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#ffffff"
+         id="tspan4410">&lt;</tspan>
+    </text>
+    <circle
+       cy="349.18024"
+       cx="447.65775"
+       id="circle4412"
+       r="4"
+       style="fill:#888a85;stroke:#555753" />
+    <rect
+       style="fill:#9e8e9c;fill-opacity:1;stroke:#555753;stroke-width:1"
+       id="rect4442"
+       height="32"
+       width="48"
+       class="outline"
+       x="346.38803"
+       y="530.8512" />
+    <text
+       style="font-size:12.5px;text-anchor:middle;fill:#ffffff"
+       id="text4444"
+       class="title"
+       y="550.8512"
+       x="370.66269">
+      <tspan
+         id="tspan4446"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';fill:#ffffff">Alarm</tspan>
+    </text>
+    <circle
+       style="fill:#888a85;stroke:#555753"
+       r="4"
+       id="circle4448"
+       cx="362.88803"
+       cy="530.3512" />
+    <circle
+       style="fill:#cc0000;stroke:#cc0000"
+       r="4"
+       id="circle4599"
+       cx="447.65775"
+       cy="316.67072" />
+    <circle
+       cy="316.67072"
+       cx="463.65775"
+       id="circle4601"
+       r="4"
+       style="fill:#888a85;stroke:#555753" />
+    <rect
+       style="fill:#888a85;stroke:#555753;stroke-width:1"
+       id="rect4603"
+       height="32"
+       width="48"
+       class="outline"
+       x="333.25244"
+       y="316.68024" />
+    <text
+       style="font-size:12.5px;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff"
+       id="text4605"
+       class="title"
+       y="336.68024"
+       x="357.25244"
+       sodipodi:linespacing="125%">
+      <tspan
+         id="tspan4607"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#ffffff">&gt;</tspan>
+    </text>
+    <circle
+       style="fill:#888a85;stroke:#555753"
+       r="4"
+       id="circle4609"
+       cx="349.75244"
+       cy="349.18024" />
+    <circle
+       cy="316.67072"
+       cx="349.75244"
+       id="circle4611"
+       r="4"
+       style="fill:#cc0000;stroke:#cc0000" />
+    <circle
+       style="fill:#888a85;stroke:#555753"
+       r="4"
+       id="circle4613"
+       cx="365.75244"
+       cy="316.67072" />
+    <rect
+       y="258.45245"
+       x="363.4649"
+       class="outline"
+       width="48"
+       height="32"
+       id="rect4615"
+       style="fill:#96a38a;fill-opacity:1;stroke:#555753;stroke-width:1" />
+    <text
+       x="387.4649"
+       y="278.45245"
+       class="title"
+       id="text4617"
+       style="font-size:12.5px;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff"
+       sodipodi:linespacing="125%">
+      <tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#ffffff"
+         id="tspan4619">11.6</tspan>
+    </text>
+    <circle
+       cy="290.95245"
+       cx="379.9649"
+       id="circle4621"
+       r="4"
+       style="fill:#888a85;stroke:#555753" />
+    <rect
+       style="fill:#96a38a;fill-opacity:1;stroke:#555753;stroke-width:1"
+       id="rect4627"
+       height="32"
+       width="48"
+       class="outline"
+       x="463.66211"
+       y="258.80374" />
+    <text
+       style="font-size:12.5px;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff"
+       id="text4629"
+       class="title"
+       y="278.80374"
+       x="487.66211"
+       sodipodi:linespacing="125%">
+      <tspan
+         id="tspan4631"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#ffffff">12.1</tspan>
+    </text>
+    <circle
+       style="fill:#888a85;stroke:#555753"
+       r="4"
+       id="circle4633"
+       cx="480.16211"
+       cy="291.30374" />
+    <rect
+       y="376.02817"
+       x="376.90503"
+       class="outline"
+       width="48"
+       height="32"
+       id="rect4255"
+       style="fill:#888a85;stroke:#555753;stroke-width:1" />
+    <text
+       sodipodi:linespacing="125%"
+       x="400.90503"
+       y="396.02817"
+       class="title"
+       id="text4257"
+       style="font-size:12.5px;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff">
+      <tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#ffffff"
+         id="tspan4259">and</tspan>
+    </text>
+    <circle
+       cy="408.52817"
+       cx="393.40503"
+       id="circle4261"
+       r="4"
+       style="fill:#888a85;stroke:#555753" />
+    <circle
+       style="fill:#888a85;stroke:#555753"
+       r="4"
+       id="circle4263"
+       cx="393.40503"
+       cy="376.01865" />
+    <circle
+       cy="376.01865"
+       cx="409.40503"
+       id="circle4265"
+       r="4"
+       style="fill:#888a85;stroke:#555753" />
+    <rect
+       style="fill:#888a85;stroke:#555753;stroke-width:1"
+       id="rect4267"
+       height="32"
+       width="48"
+       class="outline"
+       x="344.55368"
+       y="426.00113" />
+    <text
+       style="font-size:12.5px;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff"
+       id="text4269"
+       class="title"
+       y="446.00113"
+       x="368.55368"
+       sodipodi:linespacing="125%">
+      <tspan
+         id="tspan4271"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#ffffff">or</tspan>
+    </text>
+    <circle
+       style="fill:#888a85;stroke:#555753"
+       r="4"
+       id="circle4273"
+       cx="361.05368"
+       cy="458.50113" />
+    <circle
+       cy="425.99161"
+       cx="361.05368"
+       id="circle4275"
+       r="4"
+       style="fill:#cc0000;stroke:#cc0000" />
+    <circle
+       style="fill:#888a85;stroke:#555753"
+       r="4"
+       id="circle4277"
+       cx="377.05368"
+       cy="425.99161" />
+    <rect
+       y="317.00363"
+       x="262.45349"
+       class="outline"
+       width="48"
+       height="32"
+       id="rect4406-0"
+       style="display:inline;fill:#888a85;stroke:#cc0000;stroke-width:1" />
+    <text
+       x="286.45349"
+       y="337.00363"
+       class="title"
+       id="text4408-4"
+       style="font-size:12.5px;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;display:inline;fill:#ffffff"
+       sodipodi:linespacing="125%">
+      <tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#ffffff"
+         id="tspan4410-5">=</tspan>
+    </text>
+    <circle
+       cy="349.50363"
+       cx="278.95349"
+       id="circle4412-5"
+       r="4"
+       style="display:inline;fill:#cc0000;stroke:#cc0000" />
+    <circle
+       style="display:inline;fill:#888a85;stroke:#555753"
+       r="4"
+       id="circle4599-4"
+       cx="278.95349"
+       cy="316.99411" />
+    <circle
+       cy="316.99411"
+       cx="294.95349"
+       id="circle4601-7"
+       r="4"
+       style="display:inline;fill:#cc0000;stroke:#cc0000" />
+    <rect
+       style="display:inline;fill:#96a38a;fill-opacity:1;stroke:#555753;stroke-width:1"
+       id="rect4627-6"
+       height="32"
+       width="48"
+       class="outline"
+       x="236.5909"
+       y="253.24139" />
+    <text
+       style="font-size:12.5px;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;display:inline;fill:#ffffff"
+       id="text4629-5"
+       class="title"
+       y="273.24139"
+       x="260.59091"
+       sodipodi:linespacing="125%">
+      <tspan
+         id="tspan4631-6"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#ffffff">0</tspan>
+    </text>
+    <circle
+       style="display:inline;fill:#888a85;stroke:#555753"
+       r="4"
+       id="circle4633-6"
+       cx="253.0909"
+       cy="285.74139" />
+    <rect
+       y="476.00113"
+       x="344.55368"
+       class="outline"
+       width="48"
+       height="32"
+       id="rect4972"
+       style="fill:#888a85;stroke:#555753;stroke-width:1" />
+    <text
+       sodipodi:linespacing="125%"
+       x="368.55368"
+       y="496.00113"
+       class="title"
+       id="text4974"
+       style="font-size:12.5px;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff">
+      <tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#ffffff"
+         id="tspan4976">not</tspan>
+    </text>
+    <circle
+       cy="508.50113"
+       cx="361.05368"
+       id="circle4978"
+       r="4"
+       style="fill:#888a85;stroke:#555753" />
+    <circle
+       style="fill:#888a85;stroke:#555753"
+       r="4"
+       id="circle4980"
+       cx="361.05368"
+       cy="475.99161" />
+    <text
+       sodipodi:linespacing="125%"
+       x="320.59091"
+       y="240.24139"
+       class="title"
+       id="text5080"
+       style="font-size:12.5px;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;display:inline;fill:#cc0000">
+      <tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#cc0000"
+         id="tspan5082">12</tspan>
+    </text>
+    <text
+       style="font-size:12.5px;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;display:inline;fill:#cc0000"
+       id="text5084"
+       class="title"
+       y="240.24139"
+       x="366.20544"
+       sodipodi:linespacing="125%">
+      <tspan
+         id="tspan5086"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#cc0000">12</tspan>
+    </text>
+    <text
+       sodipodi:linespacing="125%"
+       x="405.9342"
+       y="234.35565"
+       class="title"
+       id="text5088"
+       style="font-size:12.5px;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;display:inline;fill:#cc0000">
+      <tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#cc0000"
+         id="tspan5090">12</tspan>
+    </text>
+    <text
+       style="font-size:12.5px;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;display:inline;fill:#cc0000"
+       id="text5111"
+       class="title"
+       y="397.68506"
+       x="307.34799"
+       sodipodi:linespacing="125%">
+      <tspan
+         id="tspan5113"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#cc0000">false</tspan>
+    </text>
+  </g>
+</svg>
