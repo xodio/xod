@@ -1,10 +1,11 @@
 import {OpaqueToken} from '@angular/core';
 
-export let SampleNodeConfigToken = new OpaqueToken('node.sample.config');
+export let SAMPLE_NODE_CONFIG = new OpaqueToken('sample.node.config');
 
-export class SampleNodeConfig {
-  constructor(public nodesCount: number) {
-  }
-
-  static defaultConfig: SampleNodeConfig = new SampleNodeConfig(10);
+export interface SampleNodeConfigClass {
+  nodesCount: number;
 }
+
+export const SampleNodeConfig: SampleNodeConfigClass =  {
+  nodesCount: 10
+};

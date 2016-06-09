@@ -5,7 +5,7 @@ import {PatchService} from "./patch.service.ts";
 import {Injectable} from '@angular/core';
 
 @Injectable()
-export class SamplePatchService extends PatchService{
+export class SamplePatchService extends PatchService {
   constructor() {
     super();
     const samplePatch = new PatchModel(null, "Sample patch", new Rect(new Point(0, 0), new Point(2000, 2000)), [], []);

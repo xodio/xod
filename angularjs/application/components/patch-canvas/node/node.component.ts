@@ -12,6 +12,8 @@ import {PinService} from './pin/pin.service.ts';
 import {SampleLinkService} from "../link/link.sample.service.ts";
 import {SamplePatchService} from "../patch/patch.sample.service.ts";
 import {PatchService} from '../patch/patch.service.ts';
+import {SampleNodeService} from "./node.sample.service.ts";
+import {SampleNodeConfig} from './node.sample.config.ts';
 
 @Component({
   selector: '[node]',
@@ -20,11 +22,9 @@ import {PatchService} from '../patch/patch.service.ts';
   styles: [require('./node.component.styl')],
   providers: [
     provide(NodeService, {
-      useClass: SampleLinkService,
-      deps: [[
-        PatchService, {
-          useClass: SamplePatchService
-        }]
+      useExisting: SampleNodeService,
+      deps: [
+        PatchService, SampleNodeConfig
       ]
     })
   ]
@@ -37,6 +37,7 @@ export class NodeComponent {
   private zeroPoint: Point;
 
   constructor(element: ElementRef, private bus: EditorBus, private service: NodeService) {
+    console.log('node');
     this.element = element.nativeElement;
     this.element.style.fill = 'red';
     this.zeroPoint = new Point(0, 0);

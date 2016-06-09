@@ -4,14 +4,6 @@ import {PatchComponent} from "./patch/patch.component.ts";
 import {PatchModel} from './patch/patch.model.ts';
 import {Rect, Point} from "./geometry/geometry.lib.ts";
 import {SamplePatchService} from './patch/patch.sample.service.ts';
-import {NodeService} from './node/node.service.ts';
-import {LinkService} from './link/link.service.ts';
-import {PinService} from './node/pin/pin.service.ts';
-import {SamplePinService} from './node/pin/pin.sample.service.ts';
-import {SampleNodeService} from './node/node.sample.service.ts';
-import {SampleLinkService} from './link/link.sample.service.ts';
-import {SampleNodeConfigToken, SampleNodeConfig} from './node/node.sample.config.ts';
-import {SamplePinConfigToken, SamplePinConfig} from "./node/pin/pin.sample.config.ts";
 
 
 /**
@@ -35,6 +27,7 @@ export class PatchCanvasWidget {
 
   constructor(private element: ElementRef, private service: PatchService) {
     this.patches = this.service.patchesAsArray();
+    console.log('patch canvas widget');
   }
 
   addPatch(event: any) {

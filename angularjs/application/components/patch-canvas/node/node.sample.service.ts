@@ -3,14 +3,14 @@ import {NodeModel} from "./node.model.ts";
 import {NodeService} from "./node.service.ts";
 import {Rect, Point} from '../geometry/geometry.lib.ts';
 import {PatchService} from '../patch/patch.service.ts';
-import {SampleNodeConfig} from "./node.sample.config.ts";
+import {SAMPLE_NODE_CONFIG, SampleNodeConfigClass} from "./node.sample.config.ts";
 
 @Injectable()
 export class SampleNodeService extends NodeService {
   constructor(@Inject(forwardRef(() => PatchService)) private patchService: PatchService,
-              @Inject(forwardRef(() => NodeService)) private nodeService: NodeService,
-              @Inject(SampleNodeConfig.defaultConfig) private config: SampleNodeConfig) {
+              @Inject(SAMPLE_NODE_CONFIG) private config: SampleNodeConfigClass) {
     super();
+    console.log('sample node service');
 
     const patchesIds = this.patchService.patchesIds();
 
@@ -26,7 +26,7 @@ export class SampleNodeService extends NodeService {
           null, patchId, patchBBox, "Node", [], []
         );
 
-        this.nodeService.create(node);
+        this.create(node);
       }
     }
   }

@@ -25,7 +25,7 @@ import {SamplePinService} from '../node/pin/pin.sample.service.ts';
   inputs: ['model'],
   providers: [
     provide(NodeService, {
-      useExisting: SampleNodeService
+      useClass: SampleNodeService
     }),
     provide(PinService, {
       useExisting: SamplePinService
@@ -43,8 +43,8 @@ export class PatchComponent {
   private element: HTMLElement;
   private zeroPoint: Point;
 
-  constructor(element: ElementRef, private patchService: PatchService, private bus: EditorBus,
-              private nodeService: NodeService, private pinService: PinService, private linkService: LinkService) {
+  constructor(element: ElementRef, private patchService: PatchService, private bus: EditorBus, private nodeService: NodeService) {
+    console.log('patch');
     this.element = element.nativeElement;
     this.zeroPoint = new Point(0, 0);
 

@@ -9,6 +9,7 @@ export class NodeService {
   private selected: NodeModel = null;
 
   constructor() {
+    console.log('node service');
   }
 
   create(node: NodeModel) {
