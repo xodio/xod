@@ -1,12 +1,17 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Inject, forwardRef} from '@angular/core';
 import {PinService} from './pin.service.ts';
 import {PatchService} from '../../patch/patch.service.ts';
 import {NodeService} from '../node.service.ts';
 import {PinModel, PinType} from './pin.model.ts';
+import {SamplePinConfigToken, SamplePinConfig} from './pin.sample.config.ts';
 
 @Injectable()
 export class SamplePinService extends PinService {
-  constructor(private patchService: PatchService, private nodeService: NodeService, private inputPinsCount: number, private outputPinsCount: number) {
+  constructor(
+    @Inject(forwardRef(() => PatchService)) private patchService: PatchService,
+    @Inject(forwardRef(() => NodeService)) private nodeService: NodeService,
+    @Inject(SamplePinConfigToken) private config: SamplePinConfig
+  ) {
     super();
 
     const patches = this.patchService.patchesAsArray();
@@ -17,12 +22,12 @@ export class SamplePinService extends PinService {
         const nodeId = nodesIds[indexJ];
         let pin: PinModel = null;
         let indexK: number = null;
-        for (indexK = 0; indexK < this.inputPinsCount; ++indexK) {
+        for (indexK = 0; indexK < this.config.inputPinsCount; ++indexK) {
           pin = new PinModel(null, nodeId, indexK, "In", PinType.Input);
           this.createPin(pin);
         }
 
-        for (indexK = 0; indexK < this.outputPinsCount; ++indexK) {
+        for (indexK = 0; indexK < this.config.outputPinsCount; ++indexK) {
           pin = new PinModel(null, nodeId, indexK, "Out", PinType.Output);
           this.createPin(pin);
         }

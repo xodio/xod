@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, EventEmitter, Output} from '@angular/core';
+import {Component, ElementRef, Input, EventEmitter, Output, provide} from '@angular/core';
 import {NgFor} from '@angular/common';
 import * as d3 from 'd3';
 import {PatchModel} from './patch.model.ts';
@@ -14,12 +14,26 @@ import {LinkComponent} from '../link/link.component.ts';
 import {LinkModel} from '../link/link.model.ts';
 import {LinkService} from '../link/link.service.ts';
 import {PinService} from '../node/pin/pin.service.ts';
+import {SampleNodeService} from "../node/node.sample.service.ts";
+import {SampleLinkService} from "../link/link.sample.service.ts";
+import {SamplePinService} from '../node/pin/pin.sample.service.ts';
 
 @Component({
   selector: '[patch]',
   template: require('./patch.component.html'),
   directives: [NgFor, LinkComponent, TextComponent, NodeComponent],
-  inputs: ['model']
+  inputs: ['model'],
+  providers: [
+    provide(NodeService, {
+      useExisting: SampleNodeService
+    }),
+    provide(PinService, {
+      useExisting: SamplePinService
+    }),
+    provide(LinkService, {
+      useExisting: SampleLinkService
+    })
+  ]
 })
 export class PatchComponent {
   @Input() patchId: number;
@@ -74,9 +88,6 @@ export class PatchComponent {
   onSelect() {
     this.patchService.select(this.model);
     this.onPatchSelect.emit(this.model);
-  }
-
-  createNode(event: any) {
   }
 
   resolvePatch() {

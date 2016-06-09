@@ -1,20 +1,21 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Inject, forwardRef} from '@angular/core';
 import {NodeModel} from "./node.model.ts";
 import {NodeService} from "./node.service.ts";
 import {Rect, Point} from '../geometry/geometry.lib.ts';
 import {PatchService} from '../patch/patch.service.ts';
+import {SampleNodeConfig} from "./node.sample.config.ts";
 
 @Injectable()
 export class SampleNodeService extends NodeService {
-  constructor(private patchService: PatchService,
-              private nodeService: NodeService,
-              private nodesCount: number) {
+  constructor(@Inject(forwardRef(() => PatchService)) private patchService: PatchService,
+              @Inject(forwardRef(() => NodeService)) private nodeService: NodeService,
+              @Inject(SampleNodeConfig.defaultConfig) private config: SampleNodeConfig) {
     super();
 
     const patchesIds = this.patchService.patchesIds();
 
     for (let indexI in Object.keys(patchesIds)) {
-      for (let indexJ = 0; indexJ < this.nodesCount; ++indexJ) {
+      for (let indexJ = 0; indexJ < this.config.nodesCount; ++indexJ) {
         const patchId = patchesIds[indexI];
         const patchBBox = new Rect(
           new Point(20 + indexJ * 120 % 700, 20 + indexJ * 120 % 700),

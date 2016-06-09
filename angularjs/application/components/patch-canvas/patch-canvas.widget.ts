@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, Output, Inject, provide} from '@angular/core';
 import {PatchService} from './patch/patch.service.ts';
 import {PatchComponent} from "./patch/patch.component.ts";
 import {PatchModel} from './patch/patch.model.ts';
@@ -10,6 +10,8 @@ import {PinService} from './node/pin/pin.service.ts';
 import {SamplePinService} from './node/pin/pin.sample.service.ts';
 import {SampleNodeService} from './node/node.sample.service.ts';
 import {SampleLinkService} from './link/link.sample.service.ts';
+import {SampleNodeConfigToken, SampleNodeConfig} from './node/node.sample.config.ts';
+import {SamplePinConfigToken, SamplePinConfig} from "./node/pin/pin.sample.config.ts";
 
 
 /**
@@ -22,26 +24,11 @@ import {SampleLinkService} from './link/link.sample.service.ts';
   template: require('./patch-canvas.widget.html'),
   styles: [require('./patch-canvas.widget.styl')],
   directives: [PatchComponent],
-  providers: [[
-    PatchService, {
-      useExisting: SamplePatchService
-    }], [
-    NodeService, {
-      useExisting: SampleNodeService,
-      deps: []
-    }], [
-    LinkService, {
-      useExisting: SampleLinkService
-    }], [
-    PinService, {
-      useExisting: SamplePinService,
-      deps: [
-        SamplePatchService, SampleNodeService, {
-          inputPinsCount: 10,
-          outputPinsCount: 5
-        }
-      ]
-    }]]
+  providers: [
+    provide(PatchService, {
+      useClass: SamplePatchService
+    })
+  ]
 })
 export class PatchCanvasWidget {
   private patches: Array<PatchModel>;

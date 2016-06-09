@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input} from '@angular/core';
+import {Component, ElementRef, Input, Inject, forwardRef, provide} from '@angular/core';
 import {NgFor} from '@angular/common';
 import {NodeModel} from './node.model.ts';
 import * as d3 from 'd3';
@@ -9,12 +9,25 @@ import {NodeService} from './node.service.ts';
 import {PinComponent} from './pin/pin.component.ts';
 import {PinModel} from './pin/pin.model.ts';
 import {PinService} from './pin/pin.service.ts';
+import {SampleLinkService} from "../link/link.sample.service.ts";
+import {SamplePatchService} from "../patch/patch.sample.service.ts";
+import {PatchService} from '../patch/patch.service.ts';
 
 @Component({
   selector: '[node]',
   template: require('./node.component.html'),
   directives: [TextComponent, PinComponent, NgFor],
   styles: [require('./node.component.styl')],
+  providers: [
+    provide(NodeService, {
+      useClass: SampleLinkService,
+      deps: [[
+        PatchService, {
+          useClass: SamplePatchService
+        }]
+      ]
+    })
+  ]
 })
 export class NodeComponent {
   @Input() nodeId: number;
