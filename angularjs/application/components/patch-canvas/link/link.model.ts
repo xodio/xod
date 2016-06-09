@@ -1,6 +1,4 @@
-import {NodeModel} from '../node/node.model.ts';
-
-export class EdgeModel {
-  constructor(public input: NodeModel, public output: NodeModel) {
+export class LinkModel {
+  constructor(public id: number, public inputPinId: number, public outputPinId: number) {
   }
 }

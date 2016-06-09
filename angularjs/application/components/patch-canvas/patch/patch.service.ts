@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {PatchSample} from './patch.sample.ts';
 import {PatchModel} from './patch.model.ts';
 
 @Injectable()
@@ -12,9 +11,20 @@ export class PatchService {
     return Object.keys(this._patches).map(key => this._patches[key]);
   }
 
+  patch(patchId: number) {
+    return this.patches()[patchId];
+  }
+
+  patches() {
+    return this._patches;
+  }
+
+  patchesIds() {
+    return this.patchesAsArray().map(patch => patch.id);
+  }
+
   constructor() {
     this._patches = new Map<number, PatchModel>();
-    this.create(new PatchSample(0, "Test"));
     this.selected = null;
   }
 
@@ -40,5 +50,9 @@ export class PatchService {
     } else {
       return this.selected.id === patch.id;
     }
+  }
+
+  resolve(patchId: number) {
+    return this.patch(patchId);
   }
 }

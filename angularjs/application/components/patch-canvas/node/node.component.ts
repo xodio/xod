@@ -7,15 +7,18 @@ import {Point} from '../geometry/geometry.lib.ts';
 import {TextComponent} from "../text/text.component.ts";
 import {NodeService} from './node.service.ts';
 import {PinComponent} from './pin/pin.component.ts';
+import {PinModel} from './pin/pin.model.ts';
+import {PinService} from './pin/pin.service.ts';
 
 @Component({
   selector: '[node]',
   template: require('./node.component.html'),
   directives: [TextComponent, PinComponent, NgFor],
-  styles: [require('./node.component.styl')]
+  styles: [require('./node.component.styl')],
 })
 export class NodeComponent {
-  @Input() model: NodeModel;
+  @Input() nodeId: number;
+  private model: NodeModel;
 
   private element: HTMLElement;
   private zeroPoint: Point;
@@ -73,6 +76,10 @@ export class NodeComponent {
     });
 
     element.call(drag);
+  }
+
+  resolveNode() {
+    return this.service.resolveNode(this.nodeId);
   }
 
   labelPosition() {

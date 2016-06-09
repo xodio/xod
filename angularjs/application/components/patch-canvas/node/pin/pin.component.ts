@@ -28,8 +28,13 @@ export class PinComponent {
     }
   }
 
-  labelPosition() {
-    return new Point(0, 0);
+  labelTransform() {
+    switch(this.model.type) {
+      case PinType.Input:
+        return 'rotate(-90) translate(8, 16)';
+      case PinType.Output:
+        return 'rotate(-90) translate(-20, 16)';
+    }
   }
 
   transform() {

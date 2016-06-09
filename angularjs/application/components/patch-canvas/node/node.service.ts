@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {NodeModel} from './node.model.ts';
+import {Rect} from "../geometry/geometry.lib.ts";
 
 @Injectable()
 export class NodeService {
@@ -16,19 +17,23 @@ export class NodeService {
     return node;
   }
 
+  resolveNode(nodeId: number) {
+    return this._nodes[nodeId];
+  }
+
   node(id: number) {
     return this._nodes[id];
   }
 
-  nodes() {
-    return Object.keys(this._nodes).map(key => this._nodes[key]);
+  nodesIds(patchId): Array<number> {
+    return Object.keys(this._nodes).map(key => this._nodes[key]).filter(node => node.patchId === patchId).map(node => node.id);
   }
 
-  select(node) {
+  select(node: NodeModel) {
     this.selected = node;
   }
 
-  isSelected(node) {
+  isSelected(node: NodeModel) {
     if (this.selected && node) {
       return this.selected.patchId === node.patchId && this.selected.id === node.id;
     } else {

@@ -10,24 +10,31 @@ import {EditorMessage, EditorBus} from '../../editor/editor.bus.ts';
 import {NodeService} from '../node/node.service.ts';
 import {NodeModel} from '../node/node.model.ts';
 import {PinModel, PinType} from "../node/pin/pin.model.ts";
+import {LinkComponent} from '../link/link.component.ts';
+import {LinkModel} from '../link/link.model.ts';
+import {LinkService} from '../link/link.service.ts';
+import {PinService} from '../node/pin/pin.service.ts';
 
 @Component({
   selector: '[patch]',
   template: require('./patch.component.html'),
-  directives: [NgFor, NodeComponent, TextComponent],
-  inputs: ['model'],
-  providers: [NodeService]
+  directives: [NgFor, LinkComponent, TextComponent, NodeComponent],
+  inputs: ['model']
 })
 export class PatchComponent {
-  @Input() model: PatchModel;
+  @Input() patchId: number;
   @Output() onPatchSelect: EventEmitter<PatchModel> = new EventEmitter();
 
+  private model: PatchModel = null;
   private element: HTMLElement;
   private zeroPoint: Point;
 
-  constructor(element: ElementRef, private service: PatchService, private bus: EditorBus, private nodeService: NodeService) {
+  constructor(element: ElementRef, private patchService: PatchService, private bus: EditorBus,
+              private nodeService: NodeService, private pinService: PinService, private linkService: LinkService) {
     this.element = element.nativeElement;
     this.zeroPoint = new Point(0, 0);
+
+    this.model = this.patchService.resolve(this.patchId);
 
     this.bus.listen('update-patch', (message: EditorMessage): void => {
       if (this.selected()) {
@@ -49,7 +56,7 @@ export class PatchComponent {
 
     element.on("click", () => {
       if (!this.selected()) {
-        this.service.select(this.model);
+        this.patchService.select(this.model);
         this.bus.send(new EditorMessage('select-patch', this.model));
       }
       (<any>d3.event).stopPropagation();
@@ -61,19 +68,18 @@ export class PatchComponent {
   }
 
   selected() {
-    return this.service.isSelected(this.model);
+    return this.patchService.isSelected(this.model);
   }
 
   onSelect() {
-    this.service.select(this.model);
+    this.patchService.select(this.model);
     this.onPatchSelect.emit(this.model);
   }
 
   createNode(event: any) {
-    const point = new Point(event.offsetX, event.offsetY);
-    const end = new Point(point.x + 100, point.y + 50);
-    const node = this.nodeService.create(new NodeModel(null, this.model.id, new Rect(point, end), "Node", [new PinModel(0, 0, 0, "A", PinType.Input), new PinModel(1, 0, 1, "B", PinType.Input)], []));
-    this.model.nodes = this.nodeService.nodes();
-    this.bus.send(new EditorMessage('create-node', node));
+  }
+
+  resolvePatch() {
+    return this.patchService.resolve(this.patchId);
   }
 }
