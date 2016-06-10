@@ -20,8 +20,7 @@ import {EditorBus, EditorMessage} from "../editor/editor.bus.ts";
   providers: [
     provide(PatchService, {
       useExisting: SamplePatchService
-    }),
-    EditorBus
+    })
   ]
 })
 export class PatchCanvasWidget {

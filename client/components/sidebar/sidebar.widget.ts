@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, provide} from '@angular/core';
 import {ControlPanelWidget} from './control-panel/control-panel.widget.ts';
 import {PatchModel} from '../patch-canvas/patch/patch.model.ts';
 import {EditorBus, EditorMessage} from '../editor/editor.bus.ts';
@@ -8,25 +8,22 @@ import {NodeModel} from '../patch-canvas/node/node.model.ts';
   selector: 'sidebar',
   template: require('./sidebar.widget.html'),
   styles: [require('./sidebar.widget.styl')],
-  directives: [ControlPanelWidget]
+  directives: [ControlPanelWidget],
 })
 export class SidebarWidget {
   @Input() patch: PatchModel = null;
   @Input() node: NodeModel = null;
-  @Output() patchChange = new EventEmitter<PatchModel>();
 
   constructor(private bus: EditorBus) {
     this.bus.listen('select-patch', (message: EditorMessage): void => {
+      console.log('asd');
       this.patch = <PatchModel>message.body;
+      console.log(<PatchModel>message.body);
     });
 
     this.bus.listen('select-node', (message: EditorMessage): void => {
       this.node = <NodeModel>message.body;
     });
-  }
-
-  saveProperties() {
-    this.patchChange.emit(this.patch);
   }
 
   onPatchChange(event: any) {

@@ -37,7 +37,6 @@ import {SamplePinService} from '../node/pin/pin.sample.service.ts';
 })
 export class PatchComponent {
   @Input() patchId: number;
-  @Output() onPatchSelect: EventEmitter<PatchModel> = new EventEmitter();
 
   private model: PatchModel = null;
   private element: HTMLElement;
@@ -59,8 +58,11 @@ export class PatchComponent {
   ngOnInit() {
     console.log(this.patchId);
     this.model = this.resolvePatch();
-    if (this.model) {
+    if (!!this.model) {
       this.model.nodesIds = this.nodeService.nodesIds(this.patchId);
+      console.log('this.model');
+      console.log(this.model);
+      this.bus.send(new EditorMessage('select-patch', this.model));
       this.draw();
     }
   }
@@ -76,9 +78,8 @@ export class PatchComponent {
 
   createNode(event: any) {
     const bbox = new Rect(new Point(event.offsetX, event.offsetY), new Point(event.offsetX + 50, event.offsetY + 50));
-    let node = new NodeModel(this.nodeService.reserveId(), this.model.id, bbox, "Node", [], []);
+    let node = new NodeModel(this.nodeService.reserveId(), this.patchId, bbox, "Node", [], []);
     this.nodeService.create(node);
-    console.log(this.patchId);
     this.model.nodesIds = this.nodeService.nodesIds(this.patchId);
     this.bus.send(new EditorMessage('update-patch', this.patchService.patch(this.patchId)));
   }
@@ -88,12 +89,9 @@ export class PatchComponent {
   }
 
   selected() {
-    return this.patchService.isSelected(this.model);
-  }
-
-  onSelect() {
-    this.patchService.select(this.model);
-    this.onPatchSelect.emit(this.model);
+    if (this.model) {
+      return this.patchService.isSelected(this.model);
+    }
   }
 
   resolvePatch() {

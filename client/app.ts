@@ -30,8 +30,7 @@ import {EditorBus} from "./components/editor/editor.bus.ts";
             }),
             provide(PatchService, {
               useExisting: SamplePatchService
-            }),
-            EditorBus
+            })
           ]}
       ),
       provide(SampleNodeConfig, {
@@ -41,8 +40,7 @@ import {EditorBus} from "./components/editor/editor.bus.ts";
           }),
           provide(NodeService, {
             useExisting: SampleNodeConfig
-          }),
-          EditorBus
+          })
         ]
       }),
       provide(SamplePinService, {
@@ -52,8 +50,7 @@ import {EditorBus} from "./components/editor/editor.bus.ts";
             }),
             provide(NodeService, {
               useExisting: SampleNodeService
-            }),
-            EditorBus
+            })
           ]
       }),
       provide(SampleLinkService, {
@@ -63,8 +60,7 @@ import {EditorBus} from "./components/editor/editor.bus.ts";
           }),
           provide(PinService, {
             useExisting: SamplePinService
-          }),
-          EditorBus
+          })
         ]
       }),
       SamplePatchService

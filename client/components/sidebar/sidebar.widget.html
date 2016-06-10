@@ -1,7 +1,7 @@
 <div class="sidebar-widget">
     <control-panel></control-panel>
     <h3 class="patch-name">
-        {{patch ? patch.name : 'No patch selected'}}
+        {{!!patch ? patch.name : 'No patch selected'}}
     </h3>
     <form>
         <input id="sidebar-widget-patch-name" type="text" (change)="onPatchChange($event)" [value]="patch ? patch.name : ''" [disabled]="!patch" />
