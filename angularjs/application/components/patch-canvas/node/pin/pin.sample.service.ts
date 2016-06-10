@@ -3,14 +3,14 @@ import {PinService} from './pin.service.ts';
 import {PatchService} from '../../patch/patch.service.ts';
 import {NodeService} from '../node.service.ts';
 import {PinModel, PinType} from './pin.model.ts';
-import {SamplePinConfigToken, SamplePinConfig} from './pin.sample.config.ts';
+import {SAMPLE_PIN_CONFIG, SamplePinConfigClass} from './pin.sample.config.ts';
 
 @Injectable()
 export class SamplePinService extends PinService {
   constructor(
     @Inject(forwardRef(() => PatchService)) private patchService: PatchService,
     @Inject(forwardRef(() => NodeService)) private nodeService: NodeService,
-    @Inject(SamplePinConfigToken) private config: SamplePinConfig
+    @Inject(SAMPLE_PIN_CONFIG) private config: SamplePinConfigClass
   ) {
     super();
 

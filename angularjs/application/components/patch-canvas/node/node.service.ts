@@ -13,21 +13,28 @@ export class NodeService {
   }
 
   create(node: NodeModel) {
-    this._nodes[this.count++] = node;
-    node.id = this.count - 1;
+    this._nodes[node.id] = node;
     return node;
   }
 
   resolveNode(nodeId: number) {
+    console.log('resolving ' + nodeId.toString());
     return this._nodes[nodeId];
+  }
+
+  reserveId(): number {
+    return this.count++;
   }
 
   node(id: number) {
     return this._nodes[id];
   }
 
-  nodesIds(patchId): Array<number> {
-    return Object.keys(this._nodes).map(key => this._nodes[key]).filter(node => node.patchId === patchId).map(node => node.id);
+  nodesIds(patchId: number): Array<number> {
+    console.log(this._nodes);
+    const ids = Object.keys(this._nodes).map(key => this._nodes[key]).filter(node => node.patchId === patchId).map(node => node.id);
+    console.log('ids = ' + ids.toString());
+    return ids;
   }
 
   select(node: NodeModel) {

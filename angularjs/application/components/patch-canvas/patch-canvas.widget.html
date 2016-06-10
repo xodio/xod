@@ -1,6 +1,6 @@
 <div class="patch-canvas-widget">
     <div class="patch-name">Workspace</div>
-    <svg width="2000" height="2000" (click)="addPatch($event)" [attr.preserveAspectRatio]="'xMinYMax meet'">
-        <svg:g *ngFor="let patch of patches" [patchId]="patch" patch />
+    <svg width="2000" height="2000" [attr.preserveAspectRatio]="'xMinYMax meet'">
+        <svg:g *ngIf="patches" *ngFor="let patch of patches" [patchId]="patch" patch />
     </svg>
 </div>

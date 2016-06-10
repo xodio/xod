@@ -8,7 +8,7 @@ export class PatchService {
   private count: number = 0;
 
   patchesAsArray() {
-    return Object.keys(this._patches).map(key => this._patches[key]);
+    return Object.keys(this._patches).map(key => this._patches[key].id);
   }
 
   patch(patchId: number) {
@@ -23,14 +23,17 @@ export class PatchService {
     return this.patchesAsArray().map(patch => patch.id);
   }
 
+  reserveId(): number {
+    return this.count++;
+  }
+
   constructor() {
     this._patches = new Map<number, PatchModel>();
     this.selected = null;
   }
 
   create(patch: PatchModel) {
-    this._patches[this.count++] = patch;
-    patch.id = this.count - 1;
+    this._patches[patch.id] = patch;
   }
 
   update(patch: PatchModel) {

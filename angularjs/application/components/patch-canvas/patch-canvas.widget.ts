@@ -4,6 +4,7 @@ import {PatchComponent} from "./patch/patch.component.ts";
 import {PatchModel} from './patch/patch.model.ts';
 import {Rect, Point} from "./geometry/geometry.lib.ts";
 import {SamplePatchService} from './patch/patch.sample.service.ts';
+import {EditorBus, EditorMessage} from "../editor/editor.bus.ts";
 
 
 /**
@@ -18,22 +19,26 @@ import {SamplePatchService} from './patch/patch.sample.service.ts';
   directives: [PatchComponent],
   providers: [
     provide(PatchService, {
-      useClass: SamplePatchService
-    })
+      useExisting: SamplePatchService
+    }),
+    EditorBus
   ]
 })
 export class PatchCanvasWidget {
   private patches: Array<PatchModel>;
 
-  constructor(private element: ElementRef, private service: PatchService) {
+  constructor(private element: ElementRef, private service: PatchService, private bus: EditorBus) {
     this.patches = this.service.patchesAsArray();
-    console.log('patch canvas widget');
+    console.log(this.patches);
+    bus.listen('create-patch', (message: EditorMessage): void => {
+      console.log('create-patch');
+      this.patches = this.service.patchesAsArray();
+    });
   }
 
   addPatch(event: any) {
     const topLeftPoint = new Point(event.offsetX, event.offsetY);
     const bottomRightPoint = new Point(topLeftPoint.x + 100, topLeftPoint.y + 100);
-    this.service.create(new PatchModel(10, 'New', new Rect(topLeftPoint, bottomRightPoint), [], []));
     this.patches = this.service.patchesIds();
   }
 }

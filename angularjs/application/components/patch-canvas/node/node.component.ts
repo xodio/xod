@@ -19,15 +19,7 @@ import {SampleNodeConfig} from './node.sample.config.ts';
   selector: '[node]',
   template: require('./node.component.html'),
   directives: [TextComponent, PinComponent, NgFor],
-  styles: [require('./node.component.styl')],
-  providers: [
-    provide(NodeService, {
-      useExisting: SampleNodeService,
-      deps: [
-        PatchService, SampleNodeConfig
-      ]
-    })
-  ]
+  styles: [require('./node.component.styl')]
 })
 export class NodeComponent {
   @Input() nodeId: number;
@@ -37,7 +29,6 @@ export class NodeComponent {
   private zeroPoint: Point;
 
   constructor(element: ElementRef, private bus: EditorBus, private service: NodeService) {
-    console.log('node');
     this.element = element.nativeElement;
     this.element.style.fill = 'red';
     this.zeroPoint = new Point(0, 0);
@@ -51,6 +42,8 @@ export class NodeComponent {
   }
 
   ngOnInit() {
+    console.log(this.service);
+    this.model = this.resolveNode();
     this.draw();
   }
 
@@ -93,6 +86,7 @@ export class NodeComponent {
   }
 
   resolveNode() {
+    console.log('resolving ' + this.nodeId.toString());
     return this.service.resolveNode(this.nodeId);
   }
 

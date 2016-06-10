@@ -1,10 +1,13 @@
 import {OpaqueToken} from '@angular/core';
 
-export let SamplePinConfigToken = new OpaqueToken('node.sample.config');
+export let SAMPLE_PIN_CONFIG = new OpaqueToken('sample.pin.config');
 
-export class SamplePinConfig {
-  constructor(public inputPinsCount: number, public outputPinsCount: number) {
-  }
-
-  static defaultConfig = new SamplePinConfig(10, 4);
+export interface SamplePinConfigClass {
+  inputPinsCount: number;
+  outputPinsCount: number;
 }
+
+export const SamplePinConfig: SamplePinConfigClass =  {
+  inputPinsCount: 10,
+  outputPinsCount: 5
+};

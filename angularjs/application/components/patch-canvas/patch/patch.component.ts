@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, EventEmitter, Output, provide} from '@angular/core';
-import {NgFor} from '@angular/common';
+import {NgIf, NgFor} from '@angular/common';
 import * as d3 from 'd3';
 import {PatchModel} from './patch.model.ts';
 import {NodeComponent} from '../node/node.component.ts';
@@ -21,7 +21,7 @@ import {SamplePinService} from '../node/pin/pin.sample.service.ts';
 @Component({
   selector: '[patch]',
   template: require('./patch.component.html'),
-  directives: [NgFor, LinkComponent, TextComponent, NodeComponent],
+  directives: [NgFor, NgIf, LinkComponent, TextComponent, NodeComponent],
   inputs: ['model'],
   providers: [
     provide(NodeService, {
@@ -45,10 +45,9 @@ export class PatchComponent {
 
   constructor(element: ElementRef, private patchService: PatchService, private bus: EditorBus, private nodeService: NodeService) {
     console.log('patch');
+    console.log(this.nodeService);
     this.element = element.nativeElement;
     this.zeroPoint = new Point(0, 0);
-
-    this.model = this.patchService.resolve(this.patchId);
 
     this.bus.listen('update-patch', (message: EditorMessage): void => {
       if (this.selected()) {
@@ -59,22 +58,27 @@ export class PatchComponent {
 
   ngOnInit() {
     this.draw();
+    console.log(this.patchId);
+    this.model = this.resolvePatch();
+    this.model.nodesIds = this.nodeService.nodesIds(this.patchId);
   }
 
   draw() {
+    this.model = this.resolvePatch();
     const element = d3.select(this.element);
     const model = this.model;
     const rect = d3.select(this.element).select('rect');
 
     let pointerPosition = null;
+  }
 
-    element.on("click", () => {
-      if (!this.selected()) {
-        this.patchService.select(this.model);
-        this.bus.send(new EditorMessage('select-patch', this.model));
-      }
-      (<any>d3.event).stopPropagation();
-    });
+  createNode(event: any) {
+    const bbox = new Rect(new Point(event.offsetX, event.offsetY), new Point(event.offsetX + 50, event.offsetY + 50));
+    let node = new NodeModel(this.nodeService.reserveId(), this.model.id, bbox, "Node", [], []);
+    this.nodeService.create(node);
+    console.log(this.patchId);
+    this.model.nodesIds = this.nodeService.nodesIds(this.patchId);
+    this.bus.send(new EditorMessage('update-patch', this.patchService.patch(this.patchId)));
   }
 
   position() {

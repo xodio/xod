@@ -7,5 +7,5 @@ export interface SampleNodeConfigClass {
 }
 
 export const SampleNodeConfig: SampleNodeConfigClass =  {
-  nodesCount: 10
+  nodesCount: 80
 };

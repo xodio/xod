@@ -12,18 +12,18 @@ export class SampleNodeService extends NodeService {
     super();
     console.log('sample node service');
 
-    const patchesIds = this.patchService.patchesIds();
+    const patchesIds = [0];
 
     for (let indexI in Object.keys(patchesIds)) {
       for (let indexJ = 0; indexJ < this.config.nodesCount; ++indexJ) {
         const patchId = patchesIds[indexI];
         const patchBBox = new Rect(
-          new Point(20 + indexJ * 120 % 700, 20 + indexJ * 120 % 700),
-          new Point(20 + indexJ * 120 % 700, 20 + indexJ * 120 % 700)
+          new Point(20 + indexJ * 120 % 1200, 20 + Math.floor(indexJ / 10) * 120),
+          new Point(20 + indexJ * 120 % 1200 + 50, 20 + Math.floor(indexJ / 10) * 120 + 50)
         );
 
         const node = new NodeModel(
-          null, patchId, patchBBox, "Node", [], []
+          this.reserveId(), patchId, patchBBox, "Node", [], []
         );
 
         this.create(node);
