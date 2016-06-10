@@ -90,7 +90,7 @@ For example, once the system captures temperature signal from a sensor it takes
 the new value as constant. It passes the signal along links causing connected
 nodes to be updated. They could initiate own output signals as a response
 to that input signal. These new signals are passed further, and the process is
-repeated until all nodes that depend directly or indirectly on the original signal
+repeated until all nodes that immediately depend on the original signal
 are re-evaluated. Only after that the system can take in subsequent temperature
 signal to update again.
 
@@ -105,6 +105,9 @@ a real-time reaction to external changes.
 
 Vice versa, transactions can occasionally occur in response to rare events.
 This lets processor sleep most of the time and preserve battery charge.
+
+A particular branch of a transactional update completes when it stumbles upon
+a node that has no outputs or any impure node.
 
 Order of Evaluation
 ===================
@@ -200,12 +203,12 @@ Restrictions
 To make this rules feasible patch graph should follow few restrictions that are
 built into XOD:
 
-1. A patch should be an *acyclic* graph. I.e. a node cannot send an output signal back
-   to its input or an input of any ascendant. So creation of links that cause graph loops
-   is prohibited in XOD.
+1. A patch should not have loops involving only pure functional nodes. I.e. pure functional
+   node cannot send an output signal back to its input directly or indirectly. So creation
+   of links that cause graph loops is prohibited in XOD.
 2. In a case of simultaneous signals, the resolution priority on conflicting input should
    be explicit and well defined. So connecting more than one link to an input is
    not possible as well.
 
-There is a special “feedback” node to deal with the first restriction and “merge” node
+There is a special “capture” node to deal with the first restriction and “merge” node
 to deal with the second.
