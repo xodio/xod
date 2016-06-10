@@ -16,6 +16,7 @@ export class SamplePinService extends PinService {
 
     const patches = this.patchService.patchesAsArray();
 
+    /*
     for (let indexI = 0; indexI < patches.length; ++indexI) {
       const nodesIds = this.nodeService.nodesIds(patches[indexI]);
       for (let indexJ = 0; indexJ < nodesIds.length; ++indexJ) {
@@ -32,6 +33,6 @@ export class SamplePinService extends PinService {
           this.createPin(pin);
         }
       }
-    }
+    }*/
   }
 }

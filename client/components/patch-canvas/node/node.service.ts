@@ -18,7 +18,6 @@ export class NodeService {
   }
 
   resolveNode(nodeId: number) {
-    console.log('resolving ' + nodeId.toString());
     return this._nodes[nodeId];
   }
 

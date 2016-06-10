@@ -7,13 +7,6 @@ import {Point} from '../geometry/geometry.lib.ts';
 import {TextComponent} from "../text/text.component.ts";
 import {NodeService} from './node.service.ts';
 import {PinComponent} from './pin/pin.component.ts';
-import {PinModel} from './pin/pin.model.ts';
-import {PinService} from './pin/pin.service.ts';
-import {SampleLinkService} from "../link/link.sample.service.ts";
-import {SamplePatchService} from "../patch/patch.sample.service.ts";
-import {PatchService} from '../patch/patch.service.ts';
-import {SampleNodeService} from "./node.sample.service.ts";
-import {SampleNodeConfig} from './node.sample.config.ts';
 
 @Component({
   selector: '[node]',
@@ -42,9 +35,10 @@ export class NodeComponent {
   }
 
   ngOnInit() {
-    console.log(this.service);
     this.model = this.resolveNode();
-    this.draw();
+    if (this.model) {
+      this.draw();
+    }
   }
 
   draw() {
@@ -86,8 +80,11 @@ export class NodeComponent {
   }
 
   resolveNode() {
-    console.log('resolving ' + this.nodeId.toString());
-    return this.service.resolveNode(this.nodeId);
+    if (this.service) {
+      return this.service.resolveNode(this.nodeId);
+    } else {
+      return null;
+    }
   }
 
   labelPosition() {

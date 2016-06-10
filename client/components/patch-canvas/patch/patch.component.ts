@@ -57,10 +57,12 @@ export class PatchComponent {
   }
 
   ngOnInit() {
-    this.draw();
     console.log(this.patchId);
     this.model = this.resolvePatch();
-    this.model.nodesIds = this.nodeService.nodesIds(this.patchId);
+    if (this.model) {
+      this.model.nodesIds = this.nodeService.nodesIds(this.patchId);
+      this.draw();
+    }
   }
 
   draw() {

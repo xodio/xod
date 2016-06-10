@@ -28,12 +28,13 @@ export class PatchCanvasWidget {
   private patches: Array<PatchModel>;
 
   constructor(private element: ElementRef, private service: PatchService, private bus: EditorBus) {
-    this.patches = this.service.patchesAsArray();
-    console.log(this.patches);
     bus.listen('create-patch', (message: EditorMessage): void => {
-      console.log('create-patch');
       this.patches = this.service.patchesAsArray();
     });
+  }
+
+  ngOnInit() {
+    this.patches = this.service.patchesAsArray();
   }
 
   addPatch(event: any) {
