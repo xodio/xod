@@ -10,7 +10,7 @@ var commonsPlugin = new webpack.optimize.CommonsChunkPlugin('common.js');
 
 module.exports = webpackMerge(sharedConfig, {
   entry: {
-    client: ['babel-polyfill', path.resolve('./angularjs/application/client.ts')]
+    client: ['babel-polyfill', path.resolve('./client/client.ts')]
   },
   resolve: {
     extensions: ['', '.js', 'css', 'json'],
@@ -39,7 +39,7 @@ module.exports = webpackMerge(sharedConfig, {
   target: 'web',
   plugins: [
     new CopyWebpackPlugin([{
-      from: path.resolve(sources, 'application') + '/index.html',
+      from: path.resolve(sources) + '/index.html',
       to: path.resolve(target)
     }, {
       from: path.resolve(sources, '..', 'node_modules', 'babel-polyfill', 'dist') + '/polyfill.js',
