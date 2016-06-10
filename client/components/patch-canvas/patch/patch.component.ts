@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, EventEmitter, Output, provide} from '@angular/core';
+import {Component, ElementRef, Input, Inject, EventEmitter, Output, provide, forwardRef} from '@angular/core';
 import {NgIf, NgFor} from '@angular/common';
 import * as d3 from 'd3';
 import {PatchModel} from './patch.model.ts';
@@ -17,6 +17,7 @@ import {PinService} from '../node/pin/pin.service.ts';
 import {SampleNodeService} from "../node/node.sample.service.ts";
 import {SampleLinkService} from "../link/link.sample.service.ts";
 import {SamplePinService} from '../node/pin/pin.sample.service.ts';
+import {SamplePatchService} from "./patch.sample.service.ts";
 
 @Component({
   selector: '[patch]',
@@ -24,14 +25,11 @@ import {SamplePinService} from '../node/pin/pin.sample.service.ts';
   directives: [NgFor, NgIf, LinkComponent, TextComponent, NodeComponent],
   inputs: ['model'],
   providers: [
+    provide(PatchService, {
+      useExisting: SamplePatchService
+    }),
     provide(NodeService, {
-      useClass: SampleNodeService
-    }),
-    provide(PinService, {
-      useExisting: SamplePinService
-    }),
-    provide(LinkService, {
-      useExisting: SampleLinkService
+      useExisting: SampleNodeService
     })
   ]
 })
@@ -42,7 +40,7 @@ export class PatchComponent {
   private element: HTMLElement;
   private zeroPoint: Point;
 
-  constructor(element: ElementRef, private patchService: PatchService, private bus: EditorBus, private nodeService: NodeService) {
+  constructor(element: ElementRef, @Inject(forwardRef(() => PatchService)) private patchService: PatchService, private bus: EditorBus, @Inject(forwardRef(() => NodeService)) private nodeService: NodeService) {
     console.log('patch');
     console.log(this.nodeService);
     this.element = element.nativeElement;
@@ -58,7 +56,7 @@ export class PatchComponent {
   ngOnInit() {
     console.log(this.patchId);
     this.model = this.resolvePatch();
-    if (!!this.model) {
+    if (!!this.model && this.nodeService) {
       this.model.nodesIds = this.nodeService.nodesIds(this.patchId);
       console.log('this.model');
       console.log(this.model);
@@ -95,6 +93,11 @@ export class PatchComponent {
   }
 
   resolvePatch() {
-    return this.patchService.resolve(this.patchId);
+    if (this.patchService) {
+      const patch = this.patchService.resolve(this.patchId);
+      return patch;
+    } else {
+      return null;
+    }
   }
 }

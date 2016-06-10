@@ -7,10 +7,9 @@ import {EditorBus, EditorMessage} from "../../editor/editor.bus.ts";
 
 @Injectable()
 export class SamplePatchService extends PatchService {
-  constructor(private bus: EditorBus, private patchService: PatchService) {
+  constructor() {
     super();
-    const samplePatch = new PatchModel(this.patchService.reserveId(), "Sample patch", new Rect(new Point(0, 0), new Point(2000, 2000)), [], []);
+    const samplePatch = new PatchModel(this.reserveId(), "Sample patch", new Rect(new Point(0, 0), new Point(2000, 2000)), [], []);
     this.create(samplePatch);
-    this.bus.send(new EditorMessage('create-patch', {}));
   }
 }

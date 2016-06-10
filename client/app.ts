@@ -21,48 +21,16 @@ import {EditorBus} from "./components/editor/editor.bus.ts";
     providers: [
       provide(SAMPLE_NODE_CONFIG, {useValue: SampleNodeConfig}),
       provide(SAMPLE_PATCH_CONFIG, {useValue: SamplePatchConfig}),
+      provide(SAMPLE_PIN_CONFIG, {useValue: SamplePinConfig}),
       provide(SAMPLE_LINK_CONFIG, {useValue: SampleLinkConfig}),
-      provide(SAMPLE_LINK_CONFIG, {useValue: SampleLinkConfig}),
-      provide(SampleNodeService, {
-          deps: [
-            provide(SAMPLE_NODE_CONFIG, {
-              useValue: SampleNodeConfig
-            }),
-            provide(PatchService, {
-              useExisting: SamplePatchService
-            })
-          ]}
-      ),
-      provide(SampleNodeConfig, {
-        deps: [
-          provide(SAMPLE_NODE_CONFIG, {
-            useValue: SampleNodeConfig
-          }),
-          provide(NodeService, {
-            useExisting: SampleNodeConfig
-          })
-        ]
-      }),
-      provide(SamplePinService, {
-          deps: [
-            provide(SAMPLE_PIN_CONFIG, {
-              useValue: SamplePinConfig
-            }),
-            provide(NodeService, {
-              useExisting: SampleNodeService
-            })
-          ]
-      }),
-      provide(SampleLinkService, {
-        deps: [
-          provide(SAMPLE_LINK_CONFIG, {
-            useValue: SampleLinkConfig
-          }),
-          provide(PinService, {
-            useExisting: SamplePinService
-          })
-        ]
-      }),
+
+      EditorBus,
+      PatchService,
+      NodeService,
+      PinService,
+
+      SampleNodeService,
+      SamplePinService,
       SamplePatchService
     ]
 })
