@@ -11,7 +11,7 @@ import {SamplePinService} from "./pin.sample.service.ts";
   selector: '[pin]',
   template: require('./pin.component.html'),
   directives: [],
-  styles: [require('./pin.component.styl')],
+  styles: [],
   providers: [
     provide(NodeService, {
       useExisting: SampleNodeService
