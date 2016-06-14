@@ -1,4 +1,4 @@
 <svg:g *ngIf="model" [attr.transform]="transform()">
     <svg:circle cx="0" cy="0" r="4" fill="black"></svg:circle>
-    <svg:text x="0" y="-10" [attr.transform]="labelTransform()" font-color="black" fill="black">In</svg:text>
+    <svg:text x="0" y="-10" [attr.transform]="labelTransform()" font-color="black" fill="black">{{model.label}}</svg:text>
 </svg:g>
