@@ -63,6 +63,33 @@ designed to work with. There are few basic types: pulse, boolean, number,
 string, array and a grouping mechanism that allows you create new composite
 pin types. But more on that later.
 
+Node Categories
+===============
+
+You may already noticed that nodes are colored differently. The color depends on
+node type or rather on type *category*. There are few of them.
+
+*Pure functional* nodes are gray. They react to input change instantly.
+Think that their outputs are hard-bound to inputs. They are functions in the
+mathematical sense: change of an input parameter lead to re-computation of the
+function and update of the output. Also, pure functional nodes cannot change
+their outputs sporadically without input change. Pure function nodes are used
+to perform mathematical and logical operations, data transformations,
+filtering, and formatting.
+
+*Hardware* nodes are purple. They represent physical peripheral devices such as
+sensors or actuators. Their inputs are commands to perform something useful, and
+their outputs are signals of something has happened in the real world.
+
+*Configuration* nodes (or config nodes for short) are green. They serve a value
+that passes as a signal at the very beginning of program execution. You would
+usually use constants to tweak the system. You can change the value served either
+from patch editor directly or via a GUI board.
+
+*Watch* nodes are pink. They show you the last signal value they have received.
+You would use them to debug the program and to gather system output. Watches
+are available in patch editor and on GUI boards as well.
+
 Links
 =====
 
@@ -91,33 +118,16 @@ about this in :ref:`execution` chapter.
 Links can be drawn as straight lines or as polylines at your will. An appearance
 doesn't affect logic anyhow. It’s just for program clearness.
 
-Pure Nodes and Cycles
-=====================
-
-You may already note that nodes are colored differently. The color depends on
-node type or rather on type *category*. For now, the most important difference
-is that there are *pure functional* node types which are colored in gray and
-all other.
-
-Pure functional nodes react to input change instantly. Think that their outputs
-are hard-bound to inputs. They are functions in the mathematical sense: change of
-an input parameter lead to re-computation of the function and update of the
-output.
-
-Also, pure function nodes cannot change their outputs sporadically without input
-change.
-
-Pure function nodes are used to perform mathematical and logical operations,
-data transformations, filtering, and formatting.
-
-*Impure nodes* on the other side take a time to update. They can change their output
-in response to some external events or time flow.
+Cycles and Buffers
+==================
 
 One thing to note is that links should not create cycles or loops within the
-program that consist of pure nodes only. Thus, you will be not allowed to create
-a link that would create a path that data can flow infinitely round after round.
+program. Thus, you will be not allowed to create a link that would create a
+path that data can flow infinitely round after round.
 
-You can put an impure node in-between of a cycle to break the loop.
+However, there are cases when feeding a signal back is required. For these
+cases there is a couple of special nodes that can be put in-between to
+close the loop. But more on that later.
 
 Patches
 =======

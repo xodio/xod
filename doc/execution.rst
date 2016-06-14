@@ -107,7 +107,8 @@ Vice versa, transactions can occasionally occur in response to rare events.
 This lets processor sleep most of the time and preserve battery charge.
 
 A particular branch of a transactional update completes when it stumbles upon
-a node that has no outputs or any impure node.
+a node that has no outputs or any node that had not generate an output signal in
+response to the input signal.
 
 Order of Evaluation
 ===================
@@ -210,5 +211,5 @@ built into XOD:
    be explicit and well defined. So connecting more than one link to an input is
    not possible as well.
 
-There is a special “capture” node to deal with the first restriction and “merge” node
+There is a special “buffer” node to deal with the first restriction and “merge” node
 to deal with the second.
