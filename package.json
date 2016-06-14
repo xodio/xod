@@ -5,13 +5,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "ng2-dev": "export NODE_ENV=\"development\" && node application.ng2.js",
-    "ng2-prod": "export NODE_ENV=\"production\" && node application.ng2.js",
-    "ng2-test": "export NODE_ENV=\"test\" && node application.ng2.js",
-    "install-deps": "node install-local-deps.js && sudo node install-global-deps.js",
-    "install-service": "sudo node install-service.js",
-    "webpack": "webpack",
-    "webpack-watch": "webpack --watch",
+    "start": "export NODE_ENV=\"development\" && webpack-dev-server --debug --devtool sourcemap --output-pathinfo --hot --progress --color --config webpack.ng2.config.js",
     "postinstall": "typings install"
   },
   "author": "Amperka LLC",
