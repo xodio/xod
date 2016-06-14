@@ -15,11 +15,10 @@ export class SampleNodeService extends NodeService {
 
     const patchesIds = patchService.patchesIds();
 
-    console.log(patchesIds);
+    for (let indexI = 0; indexI < patchesIds.length; ++indexI) {
+      const patchId = patchesIds[indexI];
 
-    for (let indexI in Object.keys(patchesIds)) {
       for (let indexJ = 0; indexJ < this.config.nodesCount; ++indexJ) {
-        const patchId = patchesIds[indexI];
         const patchBBox = new Rect(
           new Point(20 + indexJ * 360 % 1200, 20 + Math.floor(indexJ / 4) * 120),
           new Point(20 + indexJ * 360 % 1200 + 120, 20 + Math.floor(indexJ / 4) * 120 + 120)

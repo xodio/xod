@@ -30,6 +30,9 @@ import {SamplePatchService} from "./patch.sample.service.ts";
     }),
     provide(NodeService, {
       useExisting: SampleNodeService
+    }),
+    provide(LinkService, {
+      useExisting: SampleLinkService
     })
   ]
 })
@@ -40,38 +43,26 @@ export class PatchComponent {
   private element: HTMLElement;
   private zeroPoint: Point;
 
-  constructor(element: ElementRef, @Inject(forwardRef(() => PatchService)) private patchService: PatchService, private bus: EditorBus, @Inject(forwardRef(() => NodeService)) private nodeService: NodeService) {
-    console.log('patch');
-    console.log(this.nodeService);
+  constructor(element: ElementRef, @Inject(forwardRef(() => PatchService)) private patchService: PatchService, private bus: EditorBus, @Inject(forwardRef(() => NodeService)) private nodeService: NodeService, @Inject(forwardRef(() => LinkService)) private linkService: LinkService) {
     this.element = element.nativeElement;
     this.zeroPoint = new Point(0, 0);
 
-    this.bus.listen('update-patch', (message: EditorMessage): void => {
-      if (this.selected()) {
-        this.model = <PatchModel>message.body;
-      }
+    this.bus.listen('create-link', (id: EditorMessage): void => {
+      setTimeout(_=>{
+        this.model.linksIds = this.linkService.linksIds(this.patchId);
+        console.log(this.model.linksIds);
+      }, 0);
     });
   }
 
-  ngOnInit() {
-    console.log(this.patchId);
-    this.model = this.resolvePatch();
-    if (!!this.model && this.nodeService) {
+  ngAfterViewInit() {
+    setTimeout(_=>{
+      this.model = this.resolvePatch();
       this.model.nodesIds = this.nodeService.nodesIds(this.patchId);
-      console.log('this.model');
-      console.log(this.model);
+      this.model.linksIds = this.linkService.linksIds(this.patchId);
+      console.log(this.model.linksIds);
       this.bus.send(new EditorMessage('select-patch', this.model));
-      this.draw();
-    }
-  }
-
-  draw() {
-    this.model = this.resolvePatch();
-    const element = d3.select(this.element);
-    const model = this.model;
-    const rect = d3.select(this.element).select('rect');
-
-    let pointerPosition = null;
+    });
   }
 
   createNode(event: any) {
@@ -79,7 +70,6 @@ export class PatchComponent {
     let node = new NodeModel(this.nodeService.reserveId(), this.patchId, bbox, "Node", [], []);
     this.nodeService.create(node);
     this.model.nodesIds = this.nodeService.nodesIds(this.patchId);
-    this.bus.send(new EditorMessage('update-patch', this.patchService.patch(this.patchId)));
   }
 
   position() {

@@ -24,7 +24,7 @@ export class EditorBus {
   send(message: EditorMessage) {
     const listeners = this.listeners.get(message.tag);
     if (listeners) {
-      for (let index in Object.keys(listeners)) {
+      for (let index = 0; index < listeners.length; index++) {
         listeners[index](message);
       }
     }

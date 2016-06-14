@@ -1,5 +1,6 @@
 <svg:g class="patch-component" [attr.transform]="position()" *ngIf="!!model">
     <svg:rect *ngIf="model" [attr.width]="model.bbox.width()" [attr.height]="model.bbox.height()"
               fill="lightgray" opacity="0.5" stroke-width="2" [ngStyle]="{stroke: selected() ? 'red' : 'black'}" (click)="createNode($event)" />
-    <svg:g *ngIf="model && model.nodesIds" *ngFor="let nodeId of model.nodesIds" [nodeId]="nodeId" node />
+    <svg:g *ngIf="model.nodesIds" *ngFor="let nodeId of model.nodesIds" [nodeId]="nodeId" node />
+    <svg:g *ngIf="model.linksIds" *ngFor="let linkId of model.linksIds" [linkId]="linkId" link />
 </svg:g>

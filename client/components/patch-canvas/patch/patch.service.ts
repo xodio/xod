@@ -7,8 +7,8 @@ export class PatchService {
   private selected: PatchModel;
   private count: number = 0;
 
-  patchesAsArray(): Array<number> {
-    return Object.keys(this._patches).map(key => this._patches[key].id);
+  patchesIds(): Array<number> {
+    return this.patches().map(patch => patch.id);
   }
 
   patch(patchId: number) {
@@ -16,11 +16,14 @@ export class PatchService {
   }
 
   patches() {
-    return this._patches;
-  }
-
-  patchesIds(): Array<number> {
-    return this.patchesAsArray();
+    const patches: Array<PatchModel> = [];
+    const iterator = this._patches.values();
+    let value = iterator.next();
+    while(!value.done) {
+      patches.push(value.value);
+      value = iterator.next();
+    }
+    return patches;
   }
 
   reserveId(): number {
@@ -33,12 +36,12 @@ export class PatchService {
   }
 
   create(patch: PatchModel) {
-    this._patches[patch.id] = patch;
+    this._patches.set(patch.id, patch);
   }
 
   update(patch: PatchModel) {
-    this._patches[patch.id] = patch;
-    return this._patches[patch.id];
+    this._patches.set(patch.id, patch);
+    return patch;
   }
 
   select(patch: PatchModel) {

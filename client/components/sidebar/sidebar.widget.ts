@@ -29,14 +29,12 @@ export class SidebarWidget {
   onPatchChange(event: any) {
     this.changeDetectorRef.detach();
     this.patch = this.patch.updateName(event.target.value);
-    this.bus.send(new EditorMessage('update-patch', this.patch));
     this.changeDetectorRef.detectChanges();
   }
 
   onNodeChange(event: any) {
     this.changeDetectorRef.detach();
     this.node = this.node.updateLabel(event.target.value);
-    this.bus.send(new EditorMessage('update-node', this.node))
     this.changeDetectorRef.detectChanges();
   }
 }

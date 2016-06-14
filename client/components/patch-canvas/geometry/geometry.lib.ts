@@ -1,6 +1,10 @@
 export class Point {
   constructor(public x: number, public y: number) {
   }
+
+  add(shift: Point) {
+    return new Point(this.x + shift.x, this.y + shift.y);
+  }
 }
 
 export class Rect {
@@ -17,5 +21,9 @@ export class Rect {
 
   center() {
     return new Point(this.min.x + this.width() / 2, this.min.y + this.height() / 2);
+  }
+
+  translate(shift: Point) {
+    return new Rect(this.min.add(shift), this.max.add(shift));
   }
 }

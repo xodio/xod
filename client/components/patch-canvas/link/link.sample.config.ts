@@ -7,5 +7,5 @@ export interface SampleLinkConfigClass {
 }
 
 export const SampleLinkConfig: SampleLinkConfigClass =  {
-  linksCount: 2
+  linksCount: 0
 };

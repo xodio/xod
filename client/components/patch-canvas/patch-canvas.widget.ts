@@ -22,30 +22,15 @@ import {PinService} from "./node/pin/pin.service.ts";
   styles: [require('./patch-canvas.widget.styl')],
   directives: [PatchComponent],
   providers: [
-    provide(NodeService, {
-      useExisting: SampleNodeService
-    }),
     provide(PatchService, {
       useExisting: SamplePatchService
     })
   ]
 })
 export class PatchCanvasWidget {
-  private patches: Array<number>;
+  private patches: Array<number> = [];
 
   constructor(private element: ElementRef, private service: PatchService, private bus: EditorBus) {
-    bus.listen('create-patch', (message: EditorMessage): void => {
-      this.patches = this.service.patchesAsArray();
-    });
-  }
-
-  ngOnInit() {
-    this.patches = this.service.patchesAsArray();
-  }
-
-  addPatch(event: any) {
-    const topLeftPoint = new Point(event.offsetX, event.offsetY);
-    const bottomRightPoint = new Point(topLeftPoint.x + 100, topLeftPoint.y + 100);
     this.patches = this.service.patchesIds();
   }
 }

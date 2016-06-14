@@ -4,38 +4,51 @@ import {PinModel, PinType} from './pin.model.ts';
 @Injectable()
 export class PinService {
   private _pins = new Map<number, PinModel>();
-  private selected: PinModel = null;
+  private _selected: PinModel = null;
   private count: number = 0;
 
   constructor() {
   }
 
   pins() {
-    return this._pins;
+    const pins: Array<PinModel> = [];
+    const iterator = this._pins.values();
+    let value = iterator.next();
+    while(!value.done) {
+      pins.push(value.value);
+      value = iterator.next();
+    }
+    return pins;
   }
 
-  pinsIds(nodeId: number) {
-    return Object.keys(this._pins).filter(key => this._pins[key].nodeId === nodeId).map(key => this._pins[key].id);
+  pinsIds(nodeId: number): Array<number> {
+    return this.pins().map(pin => pin.pinId);
   }
 
-  inputPinsIds(nodeId: number) {
-    return this.pinsIds(nodeId).filter(pinId => this._pins[pinId].type === PinType.Input);
+  pinsOfNode(nodeId: number): Array<PinModel> {
+    return this.pins().filter(pin => pin.nodeId === nodeId);
   }
 
-  outputPinsIds(nodeId: number) {
-    return this.pinsIds(nodeId).filter(pinId => this._pins[pinId].type === PinType.Output);
+  inputPinsIds(nodeId: number): Array<number> {
+    return this.pinsOfNode(nodeId).filter(pin => pin.type === PinType.Input).map(pin => pin.pinId);
   }
 
-  pin(id: number) {
-    return this.pins()[id];
+  outputPinsIds(nodeId: number): Array<number> {
+    return this.pinsOfNode(nodeId).filter(pin => pin.type === PinType.Output).map(pin => pin.pinId);
   }
 
-  select(pin: PinModel) {
-    this.selected = pin;
+  pin(id: number): PinModel {
+    return this._pins.get(id);
+  }
+
+  // TODO: implement pin validation: it should not be selected
+  select(pin: PinModel): PinModel {
+    this._selected = pin;
+    return pin;
   }
 
   isSelected(pin: PinModel) {
-    return this.selected && pin && this.selected.id === pin.id;
+    return this._selected && pin && this._selected.pinId === pin.pinId;
   }
 
   resolve(pinId: number) {
@@ -47,7 +60,19 @@ export class PinService {
   }
 
   createPin(pin: PinModel) {
-    this.pins()[pin.id] = pin;
+    this._pins.set(pin.pinId, pin);
     return pin;
+  }
+
+  deselect() {
+    this._selected = null;
+  }
+
+  selected() {
+    return this._selected;
+  }
+
+  somePinSelected() {
+    return !!this._selected;
   }
 }

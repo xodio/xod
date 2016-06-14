@@ -30,7 +30,6 @@ export class NodeService {
   }
 
   nodesIds(patchId: number): Array<number> {
-    console.log(this._nodes);
     const ids = Object.keys(this._nodes).map(key => this._nodes[key]).filter(node => node.patchId === patchId).map(node => node.id);
     return ids;
   }

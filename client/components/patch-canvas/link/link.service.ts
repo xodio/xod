@@ -1,34 +1,59 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, forwardRef } from '@angular/core';
 import {LinkModel} from './link.model.ts';
+import {EditorBus, EditorMessage} from '../../editor/editor.bus.ts';
 
 @Injectable()
 export class LinkService {
   private _links = new Map<number, LinkModel>();
   private count = 0;
-  private selected: number = null;
+  private selected: LinkModel = null;
 
   constructor() {
   }
 
   create(link: LinkModel) {
-    this._links[this.count++] = link;
-    link.id = this.count - 1;
+    this._links.set(link.id, link);
     return link;
   }
 
   link(id: number) {
-    return this._links[id];
+    return this._links.get(id);
   }
 
   links() {
-    return Object.keys(this._links).map(key => this._links[key]);
+    const links: Array<LinkModel> = [];
+    const iterator = this._links.values();
+    let value = iterator.next();
+    while(!value.done) {
+      links.push(value.value);
+      value = iterator.next();
+    }
+    return links;
   }
 
-  select(linkId: number) {
-    this.selected = linkId;
+  select(link: LinkModel): LinkModel {
+    this.selected = link;
+    return link;
   }
 
-  isSelected(linkId: number) {
-    return this.selected || linkId && this.selected === linkId;
+  isSelected(linkId: number): boolean {
+    if (!!this.selected) {
+      return linkId && this.selected.id === linkId;
+    } else {
+      return false;
+    }
+  }
+
+  reserveId(): number {
+    this.count++;
+    return this.count;
+  }
+
+  linksOfPatch(patchId: number) {
+    return this.links().filter(link => link.patchId === patchId);
+  }
+
+  linksIds(patchId: number) {
+    return this.linksOfPatch(patchId).map(link => link.id);
   }
 }

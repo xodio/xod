@@ -31,7 +31,8 @@ import {EditorBus} from "./components/editor/editor.bus.ts";
 
       SampleNodeService,
       SamplePinService,
-      SamplePatchService
+      SamplePatchService,
+      SampleLinkService
     ]
 })
 export class AppComponent {
