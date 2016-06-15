@@ -12,4 +12,6 @@
     <form>
         <input id="sidebar-widget-node-name" type="text" (change)="onNodeChange($event)" [value]="node ? node.label : ''" [disabled]="!node" />
     </form>
+
+    <node-type></node-type>
 </div>
