@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NodeTypeService } from './node-type.service.ts';
-import { INodeType } from './node-type.interface.ts';
+import { INodeType, NodeCategory } from './node-type.interface.ts';
 
 @Injectable()
 export class SampleNodeTypeService extends NodeTypeService {
@@ -12,42 +12,42 @@ export class SampleNodeTypeService extends NodeTypeService {
           {
             id: 1,
             label: 'not',
-            category: 1
+            category: NodeCategory.Functional
           },
           {
             id: 2,
             label: 'equal',
-            category: 1
+            category: NodeCategory.Functional
           },
           {
             id: 3,
             label: 'either',
-            category: 1
+            category: NodeCategory.Functional
           },
           {
             id: 4,
             label: 'button',
-            category: 2
+            category: NodeCategory.Hardware
           },
           {
             id: 5,
             label: 'thermometer',
-            category: 2
+            category: NodeCategory.Hardware
           },
           {
             id: 6,
             label: 'configuration',
-            category: 3
+            category: NodeCategory.Configuration
           },
           {
             id: 7,
             label: 'led',
-            category: 4
+            category: NodeCategory.Watch
           },
           {
             id: 8,
             label: 'someUserPatch',
-            category: 5
+            category: NodeCategory.Patch
           }
         ]);
     }
