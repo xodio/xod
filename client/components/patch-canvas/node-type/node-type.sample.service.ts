@@ -10,37 +10,37 @@ export class SampleNodeTypeService extends NodeTypeService {
 
         this.addFromArray([
           {
-            id: 0,
+            id: 1,
             label: 'not',
             category: 0
           },
           {
-            id: 1,
+            id: 2,
             label: 'equal',
             category: 0
           },
           {
-            id: 2,
+            id: 3,
             label: 'either',
             category: 0
           },
           {
-            id: 3,
+            id: 4,
             label: 'button',
             category: 1
           },
           {
-            id: 4,
+            id: 5,
             label: 'thermometer',
             category: 1
           },
           {
-            id: 5,
+            id: 6,
             label: 'configuration',
             category: 2
           },
           {
-            id: 6,
+            id: 7,
             label: 'led',
             category: 3
           }
