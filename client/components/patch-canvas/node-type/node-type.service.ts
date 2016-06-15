@@ -13,10 +13,14 @@ export class NodeTypeService {
 
   add(nodeType: INodeType) {
     this._types.push(nodeType);
+
+    this.setDefaultSelection();
   }
 
   addFromArray(nodeTypes: INodeType[]) {
     this._types = this._types.concat(nodeTypes);
+
+    this.setDefaultSelection();
   }
 
   parseJSON(json: string) {
@@ -40,6 +44,12 @@ export class NodeTypeService {
 
   selected() {
     return this._selected;
+  }
+
+  setDefaultSelection() {
+    if (this._selected === null && this._types.length > 0) {
+      this._selected = this._types[0];
+    }
   }
 
   get(index: number) {
