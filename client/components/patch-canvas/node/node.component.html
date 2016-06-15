@@ -1,5 +1,7 @@
-<svg:g *ngIf="model" [attr.transform]="transform()">
-    <svg:rect *ngIf="model" [attr.x]="0" [attr.y]="0" [attr.width]="model.bbox.width()" [attr.height]="model.bbox.height()" fill="lightgray"
+<svg:g *ngIf="!!model" [attr.transform]="transform()">
+    <svg:rect [attr.x]="0" [attr.y]="0" [attr.width]="model.bbox.width()" [attr.height]="model.bbox.height()" fill="lightgray"
               [ngStyle]="{stroke: selected() ? 'red' : 'black', 'stroke-width': 2}"></svg:rect>
-    <svg:g *ngIf="model" [content]="model.label" [position]="labelPosition()" fill="black" [align]="'middle'" text/>
+    <svg:g [content]="model.label" [position]="labelPosition()" fill="black" [align]="'middle'" text/>
+    <svg:g *ngIf="model && model.inputPinsIds" *ngFor="let inputPinId of model.inputPinsIds" [pinId]="inputPinId" pin/>
+    <svg:g *ngIf="model && model.outputPinsIds" *ngFor="let outputPinId of model.outputPinsIds" [pinId]="outputPinId" pin/>
 </svg:g>

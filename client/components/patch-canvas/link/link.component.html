@@ -1,3 +1,3 @@
-<svg:g>
-    <svg:line x0="0" y0="0" x1="100" y1="100"></svg:line>
+<svg:g *ngIf="model">
+    <svg:line [attr.x1]="position().input.x" [attr.y1]="position().input.y" [attr.x2]="position().output.x" [attr.y2]="position().output.y" stroke="black" fill="black"></svg:line>
 </svg:g>

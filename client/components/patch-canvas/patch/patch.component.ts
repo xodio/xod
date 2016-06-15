@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, EventEmitter, Output, provide} from '@angular/core';
+import {Component, ElementRef, Input, Inject, EventEmitter, Output, provide, forwardRef} from '@angular/core';
 import {NgIf, NgFor} from '@angular/common';
 import * as d3 from 'd3';
 import {PatchModel} from './patch.model.ts';
@@ -17,6 +17,7 @@ import {PinService} from '../node/pin/pin.service.ts';
 import {SampleNodeService} from "../node/node.sample.service.ts";
 import {SampleLinkService} from "../link/link.sample.service.ts";
 import {SamplePinService} from '../node/pin/pin.sample.service.ts';
+import {SamplePatchService} from "./patch.sample.service.ts";
 
 @Component({
   selector: '[patch]',
@@ -24,11 +25,11 @@ import {SamplePinService} from '../node/pin/pin.sample.service.ts';
   directives: [NgFor, NgIf, LinkComponent, TextComponent, NodeComponent],
   inputs: ['model'],
   providers: [
-    provide(NodeService, {
-      useClass: SampleNodeService
+    provide(PatchService, {
+      useExisting: SamplePatchService
     }),
-    provide(PinService, {
-      useExisting: SamplePinService
+    provide(NodeService, {
+      useExisting: SampleNodeService
     }),
     provide(LinkService, {
       useExisting: SampleLinkService
@@ -42,38 +43,26 @@ export class PatchComponent {
   private element: HTMLElement;
   private zeroPoint: Point;
 
-  constructor(element: ElementRef, private patchService: PatchService, private bus: EditorBus, private nodeService: NodeService) {
-    console.log('patch');
-    console.log(this.nodeService);
+  constructor(element: ElementRef, @Inject(forwardRef(() => PatchService)) private patchService: PatchService, private bus: EditorBus, @Inject(forwardRef(() => NodeService)) private nodeService: NodeService, @Inject(forwardRef(() => LinkService)) private linkService: LinkService) {
     this.element = element.nativeElement;
     this.zeroPoint = new Point(0, 0);
 
-    this.bus.listen('update-patch', (message: EditorMessage): void => {
-      if (this.selected()) {
-        this.model = <PatchModel>message.body;
-      }
+    this.bus.listen('create-link', (id: EditorMessage): void => {
+      setTimeout(_=>{
+        this.model.linksIds = this.linkService.linksIds(this.patchId);
+        console.log(this.model.linksIds);
+      }, 0);
     });
   }
 
-  ngOnInit() {
-    console.log(this.patchId);
-    this.model = this.resolvePatch();
-    if (!!this.model) {
+  ngAfterViewInit() {
+    setTimeout(_=>{
+      this.model = this.resolvePatch();
       this.model.nodesIds = this.nodeService.nodesIds(this.patchId);
-      console.log('this.model');
-      console.log(this.model);
+      this.model.linksIds = this.linkService.linksIds(this.patchId);
+      console.log(this.model.linksIds);
       this.bus.send(new EditorMessage('select-patch', this.model));
-      this.draw();
-    }
-  }
-
-  draw() {
-    this.model = this.resolvePatch();
-    const element = d3.select(this.element);
-    const model = this.model;
-    const rect = d3.select(this.element).select('rect');
-
-    let pointerPosition = null;
+    });
   }
 
   createNode(event: any) {
@@ -81,7 +70,6 @@ export class PatchComponent {
     let node = new NodeModel(this.nodeService.reserveId(), this.patchId, bbox, "Node", [], []);
     this.nodeService.create(node);
     this.model.nodesIds = this.nodeService.nodesIds(this.patchId);
-    this.bus.send(new EditorMessage('update-patch', this.patchService.patch(this.patchId)));
   }
 
   position() {
@@ -95,6 +83,11 @@ export class PatchComponent {
   }
 
   resolvePatch() {
-    return this.patchService.resolve(this.patchId);
+    if (this.patchService) {
+      const patch = this.patchService.resolve(this.patchId);
+      return patch;
+    } else {
+      return null;
+    }
   }
 }
