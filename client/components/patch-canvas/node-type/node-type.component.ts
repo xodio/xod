@@ -9,7 +9,9 @@ import {SampleNodeTypeService} from './node-type.sample.service.ts';
   template: require('./node-type.component.html'),
   directives: [NgFor],
   providers: [
-    SampleNodeTypeService
+    provide(NodeTypeService, {
+      useExisting: SampleNodeTypeService
+    })
   ]
 })
 export class NodeTypeComponent {
@@ -19,7 +21,7 @@ export class NodeTypeComponent {
 
   constructor(
     element: ElementRef,
-    @Inject(forwardRef(() => SampleNodeTypeService)) private service: SampleNodeTypeService
+    @Inject(forwardRef(() => NodeTypeService)) private service: NodeTypeService
   ) {
     this.element = element.nativeElement;
     this._service = service;
