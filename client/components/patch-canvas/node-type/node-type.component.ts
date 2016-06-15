@@ -25,10 +25,6 @@ export class NodeTypeComponent {
     this.element = element.nativeElement;
 
     this.types = this.service.types();
-
-    if(this.types.length) {
-      this.service.setSelected(this.types[0]);
-    }
   }
 
   ngOnInit() {
@@ -39,5 +35,9 @@ export class NodeTypeComponent {
     const val = event.target.value;
 
     this.service.setSelected(val);
+  }
+
+  isSelected(id: number) {
+    return (this.service.selected().id === id) ? "selected" : null;
   }
 }
