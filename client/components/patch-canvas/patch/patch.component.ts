@@ -67,7 +67,7 @@ export class PatchComponent {
 
   createNode(event: any) {
     const bbox = new Rect(new Point(event.offsetX, event.offsetY), new Point(event.offsetX + 50, event.offsetY + 50));
-    let node = new NodeModel(this.nodeService.reserveId(), this.patchId, bbox, "Node", [], [], 0);
+    let node = new NodeModel(this.nodeService.reserveId(), this.patchId, bbox, "Node", [], [], 5);
     this.nodeService.create(node);
     this.model.nodesIds = this.nodeService.nodesIds(this.patchId);
   }

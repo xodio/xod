@@ -10,6 +10,8 @@ import {PinComponent} from './pin/pin.component.ts';
 import {PinService} from "./pin/pin.service.ts";
 import {SamplePinService} from "./pin/pin.sample.service.ts";
 import {SampleNodeService} from "./node.sample.service.ts";
+import {NodeTypeService} from "../node-type/node-type.service.ts";
+import {SampleNodeTypeService} from "../node-type/node-type.sample.service.ts";
 
 @Component({
   selector: '[node]',
@@ -22,25 +24,38 @@ import {SampleNodeService} from "./node.sample.service.ts";
     }),
     provide(PinService, {
       useExisting: SamplePinService
+    }),
+    provide(NodeTypeService, {
+      useExisting: SampleNodeTypeService
     })
   ]
 })
 export class NodeComponent {
   @Input() nodeId: number;
   private model: NodeModel;
+  private category: number;
 
   private element: HTMLElement;
   private zeroPoint: Point;
 
-  constructor(element: ElementRef, private bus: EditorBus, @Inject(forwardRef(() => NodeService)) private service: NodeService, @Inject(forwardRef(() => PinService)) private pinService: PinService) {
+  constructor(
+    element: ElementRef, 
+    private bus: EditorBus,
+    @Inject(forwardRef(() => NodeService)) private service: NodeService,
+    @Inject(forwardRef(() => PinService)) private pinService: PinService,
+    @Inject(forwardRef(() => NodeTypeService)) private nodeTypeService: NodeTypeService
+  ) {
+
     this.element = element.nativeElement;
     this.element.style.fill = 'red';
     this.zeroPoint = new Point(0, 0);
+    this.category = 0;
 
     this.bus.listen('update-node', (message: EditorMessage) => {
       const node = <NodeModel>message.body;
       if (message.body.id === this.model.id && message.body.patchId === this.model.patchId) {
         this.model = node;
+        this.updateCategory();
       }
     });
   }
@@ -48,6 +63,7 @@ export class NodeComponent {
   ngOnInit() {
     this.model = this.resolveNode();
     if (this.model) {
+      this.updateCategory();
       this.model.inputPinsIds = this.pinService.inputPinsIds(this.model.id);
       this.model.outputPinsIds = this.pinService.outputPinsIds(this.model.id);
       this.draw();
@@ -110,5 +126,33 @@ export class NodeComponent {
 
   transform() {
     return `translate(${this.model.bbox.min.x}, ${this.model.bbox.min.y})`;
+  }
+
+  getClassNames() {
+    let classNames = ['nodeRect'];
+
+    if (this.selected()) {
+      classNames.push('selected');
+    }
+
+    if (this.model.nodeTypeId !== 0) {
+      classNames.push('node_type' + this.model.nodeTypeId);
+      classNames.push('node_category' + this.category);
+    }
+
+    return classNames;
+  }
+
+  // @TODO: Node wouldn't know anything about NodeTypeService.
+  //        Move it into NodeService.
+  updateCategory() {
+    let type = this.nodeTypeService.findById(this.model.nodeTypeId);
+    let category = 0;
+
+    if (type && type.category) {
+      category = type.category;
+    }
+
+    this.category = category;
   }
 }
