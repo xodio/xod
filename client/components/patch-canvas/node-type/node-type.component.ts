@@ -17,19 +17,17 @@ import {SampleNodeTypeService} from './node-type.sample.service.ts';
 export class NodeTypeComponent {
   private types: any;
   private element: HTMLElement;
-  private _service: NodeTypeService;
 
   constructor(
     element: ElementRef,
     @Inject(forwardRef(() => NodeTypeService)) private service: NodeTypeService
   ) {
     this.element = element.nativeElement;
-    this._service = service;
 
-    this.types = this._service.types();
+    this.types = this.service.types();
 
     if(this.types.length) {
-      this._service.setSelected(this.types[0]);
+      this.service.setSelected(this.types[0]);
     }
   }
 
@@ -40,6 +38,6 @@ export class NodeTypeComponent {
   onTypeChanged(event: any) {
     const val = event.target.value;
 
-    this._service.setSelected(val);
+    this.service.setSelected(val);
   }
 }

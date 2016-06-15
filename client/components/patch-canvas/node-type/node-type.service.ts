@@ -65,7 +65,6 @@ export class NodeTypeService {
 
     for (let i = 0; i < count; i++) {
       if (this._types[i].id === id) {
-        console.log('--->', typeof this._types[i].id, typeof id);
         result = this._types[i];
         break;
       }
