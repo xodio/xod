@@ -12,42 +12,42 @@ export class SampleNodeTypeService extends NodeTypeService {
           {
             id: 1,
             label: 'not',
-            category: 0
+            category: 1
           },
           {
             id: 2,
             label: 'equal',
-            category: 0
+            category: 1
           },
           {
             id: 3,
             label: 'either',
-            category: 0
+            category: 1
           },
           {
             id: 4,
             label: 'button',
-            category: 1
+            category: 2
           },
           {
             id: 5,
             label: 'thermometer',
-            category: 1
+            category: 2
           },
           {
             id: 6,
             label: 'configuration',
-            category: 2
+            category: 3
           },
           {
             id: 7,
             label: 'led',
-            category: 3
+            category: 4
           },
           {
             id: 8,
             label: 'someUserPatch',
-            category: 4
+            category: 5
           }
         ]);
     }
