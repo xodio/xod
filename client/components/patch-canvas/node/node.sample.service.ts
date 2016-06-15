@@ -19,13 +19,10 @@ export class SampleNodeService extends NodeService {
       const patchId = patchesIds[indexI];
 
       for (let indexJ = 0; indexJ < this.config.nodesCount; ++indexJ) {
-        const patchBBox = new Rect(
-          new Point(20 + indexJ * 360 % 1200, 20 + Math.floor(indexJ / 4) * 120),
-          new Point(20 + indexJ * 360 % 1200 + 120, 20 + Math.floor(indexJ / 4) * 120 + 120)
-        );
+        const position = new Point(20 + indexJ * 360 % 1200, 20 + Math.floor(indexJ / 4) * 120);
 
         const node = new NodeModel(
-          this.reserveId(), patchId, patchBBox, "Node", [], [], 0
+          this.reserveId(), patchId, position, "Node", [], [], 0
         );
 
         this.create(node);

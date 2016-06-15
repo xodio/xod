@@ -3,7 +3,7 @@ import {NgFor, NgIf} from '@angular/common';
 import {NodeModel} from './node.model.ts';
 import * as d3 from 'd3';
 import {EditorMessage, EditorBus} from '../../editor/editor.bus.ts';
-import {Point} from '../geometry/geometry.lib.ts';
+import {Point, Rect, Graphics} from '../geometry/geometry.lib.ts';
 import {TextComponent} from "../text/text.component.ts";
 import {NodeService} from './node.service.ts';
 import {PinComponent} from './pin/pin.component.ts';
@@ -35,6 +35,8 @@ export class NodeComponent {
   private model: NodeModel;
   private category: number;
 
+  private bbox: Rect;
+
   private element: HTMLElement;
   private zeroPoint: Point;
 
@@ -50,6 +52,7 @@ export class NodeComponent {
     this.element.style.fill = 'red';
     this.zeroPoint = new Point(0, 0);
     this.category = 0;
+    this.bbox = Graphics.getNodeBbox(this.zeroPoint);
 
     this.bus.listen('update-node', (message: EditorMessage) => {
       const node = <NodeModel>message.body;
@@ -63,6 +66,7 @@ export class NodeComponent {
   ngOnInit() {
     this.model = this.resolveNode();
     if (this.model) {
+      this.bbox = Graphics.getNodeBbox(this.model.position);
       this.updateCategory();
       this.model.inputPinsIds = this.pinService.inputPinsIds(this.model.id);
       this.model.outputPinsIds = this.pinService.outputPinsIds(this.model.id);
@@ -73,11 +77,12 @@ export class NodeComponent {
   draw() {
     const rect = d3.select(this.element)
       .select('rect')
-      .attr('width', this.model.bbox.width())
-      .attr('height', this.model.bbox.height());
+      .attr('width', this.bbox.width())
+      .attr('height', this.bbox.height());
 
     const element = d3.select(this.element);
     const model = this.model;
+    const bbox = this.bbox;
 
     let pointerPosition = null;
 
@@ -87,11 +92,11 @@ export class NodeComponent {
         if (pointerPosition === null) {
           pointerPosition = new Point((<DragEvent>d3.event).x, (<DragEvent>d3.event).y);
         } else {
-          model.bbox.min.x += (<DragEvent>d3.event).x - pointerPosition.x;
-          model.bbox.min.y += (<DragEvent>d3.event).y - pointerPosition.y;
+          bbox.min.x += (<DragEvent>d3.event).x - pointerPosition.x;
+          bbox.min.y += (<DragEvent>d3.event).y - pointerPosition.y;
 
-          model.bbox.max.x += (<DragEvent>d3.event).x - pointerPosition.x;
-          model.bbox.max.y += (<DragEvent>d3.event).y - pointerPosition.y;
+          bbox.max.x += (<DragEvent>d3.event).x - pointerPosition.x;
+          bbox.max.y += (<DragEvent>d3.event).y - pointerPosition.y;
 
           pointerPosition.x = (<DragEvent>d3.event).x;
           pointerPosition.y = (<DragEvent>d3.event).y;
@@ -117,7 +122,7 @@ export class NodeComponent {
   }
 
   labelPosition() {
-    return new Point(this.model.bbox.width() / 2, this.model.bbox.height() / 2);
+    return new Point(this.bbox.width() / 2, this.bbox.height() / 2);
   }
 
   selected() {
@@ -125,7 +130,7 @@ export class NodeComponent {
   }
 
   transform() {
-    return `translate(${this.model.bbox.min.x}, ${this.model.bbox.min.y})`;
+    return `translate(${this.bbox.min.x}, ${this.bbox.min.y})`;
   }
 
   getClassNames() {
