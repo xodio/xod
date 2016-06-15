@@ -1,8 +1,9 @@
-<h3>Add node:</h3>
 <form>
-	<select>
-		<option *ngFor="let type of types" value="{{type.id}}">
-			{{type.label}}
-		</option>
-	</select>
+	<fieldset>
+		<select (change)="onTypeChanged($event)">
+			<option *ngFor="let type of types" value="{{type.id}}">
+				{{type.label}}
+			</option>
+		</select>
+	</fieldset>
 </form>
