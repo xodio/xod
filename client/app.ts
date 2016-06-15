@@ -11,6 +11,8 @@ import {PinService} from "./components/patch-canvas/node/pin/pin.service.ts";
 import {SAMPLE_LINK_CONFIG, SampleLinkConfig} from "./components/patch-canvas/link/link.sample.config.ts";
 import {SamplePinConfig, SAMPLE_PIN_CONFIG} from "./components/patch-canvas/node/pin/pin.sample.config.ts";
 import {SAMPLE_PATCH_CONFIG, SamplePatchConfig} from "./components/patch-canvas/patch/patch.sample.config.ts";
+import {NodeTypeService} from "./components/patch-canvas/node-type/node-type.service.ts";
+import {SampleNodeTypeService} from "./components/patch-canvas/node-type/node-type.sample.service.ts";
 import {EditorBus} from "./components/editor/editor.bus.ts";
 
 @Component({
@@ -28,11 +30,13 @@ import {EditorBus} from "./components/editor/editor.bus.ts";
       PatchService,
       NodeService,
       PinService,
+      NodeTypeService,
 
       SampleNodeService,
       SamplePinService,
       SamplePatchService,
-      SampleLinkService
+      SampleLinkService,
+      SampleNodeTypeService
     ]
 })
 export class AppComponent {

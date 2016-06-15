@@ -26,12 +26,12 @@ export class SamplePinService extends PinService {
         let pin: PinModel = null;
         let indexK: number = null;
         for (indexK = 0; indexK < this.config.inputPinsCount; ++indexK) {
-          pin = new PinModel(this.reserveId(), nodeId, indexK, "In", PinType.Input, this.nodeService.node(nodeId).bbox.min);
+          pin = new PinModel(this.reserveId(), nodeId, indexK, "In", PinType.Input, this.nodeService.node(nodeId).position);
           this.createPin(pin);
         }
         
         for (indexK = 0; indexK < this.config.outputPinsCount; ++indexK) {
-          pin = new PinModel(this.reserveId(), nodeId, indexK, "Out", PinType.Output, this.nodeService.node(nodeId).bbox.min);
+          pin = new PinModel(this.reserveId(), nodeId, indexK, "Out", PinType.Output, this.nodeService.node(nodeId).position);
           this.createPin(pin);
         }
       }

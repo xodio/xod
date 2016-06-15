@@ -1,2 +1,58 @@
-text
-  font-color black
+.nodeRect
+  rect
+    fill: lightgrey;
+    stroke: black;
+    strokeWidth: 2;
+    
+    &.selected
+      stroke: red;
+    &:hover
+      fill: lightblue;
+    &.transparent
+      fill: transparent !important;
+      stroke: transparent !important;
+  [text]
+    fill: black
+
+  &.node_category
+    // Functional = grey
+    &1
+      rect
+        fill: #888A85;
+        &:hover
+          fill: #2F3A20;
+      [text]
+        fill: white
+    // Hardware = purple 
+    &2
+      rect
+        fill: #9E8E9C;
+        &:hover
+          fill: #8B4885;
+      [text]
+        fill: white
+    // Configuration = green
+    &3
+      rect
+        fill: #96A38A;
+        &:hover
+          fill: #53822B;
+      [text]
+        fill: white
+    // Watch = pink
+    &4
+      rect
+        fill: #CC97B3;
+        &:hover
+          fill: #792B55;
+      [text]
+        fill: white
+    // Patch = blue?
+    &5
+      rect
+        fill: #6A729A;
+        &:hover
+          fill: #252F88;
+      [text]
+        fill: white
+    

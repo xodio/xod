@@ -4,11 +4,13 @@ import {PatchModel} from '../patch-canvas/patch/patch.model.ts';
 import {EditorBus, EditorMessage} from '../editor/editor.bus.ts';
 import {NodeModel} from '../patch-canvas/node/node.model.ts';
 
+import {NodeTypeComponent} from '../patch-canvas/node-type/node-type.component.ts';
+
 @Component({
   selector: 'sidebar',
   template: require('./sidebar.widget.html'),
   styles: [require('./sidebar.widget.styl')],
-  directives: [ControlPanelWidget]
+  directives: [ControlPanelWidget, NodeTypeComponent]
 })
 export class SidebarWidget {
   @Input() patch: PatchModel = null;

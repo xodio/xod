@@ -18,6 +18,8 @@ import {SampleNodeService} from "../node/node.sample.service.ts";
 import {SampleLinkService} from "../link/link.sample.service.ts";
 import {SamplePinService} from '../node/pin/pin.sample.service.ts';
 import {SamplePatchService} from "./patch.sample.service.ts";
+import {NodeTypeService} from "../node-type/node-type.service.ts";
+import {SampleNodeTypeService} from "../node-type/node-type.sample.service.ts";
 
 @Component({
   selector: '[patch]',
@@ -33,6 +35,12 @@ import {SamplePatchService} from "./patch.sample.service.ts";
     }),
     provide(LinkService, {
       useExisting: SampleLinkService
+    }),
+    // @TODO: In the near future we don't have to need inject nodeTypeService here.
+    //        It would be better to subscribe on "selectedNodeTypeChanged" and
+    //        update private nodeTypeId, that will be used in createNode.
+    provide(NodeTypeService, {
+      useExisting: SampleNodeTypeService
     })
   ]
 })
@@ -43,7 +51,14 @@ export class PatchComponent {
   private element: HTMLElement;
   private zeroPoint: Point;
 
-  constructor(element: ElementRef, @Inject(forwardRef(() => PatchService)) private patchService: PatchService, private bus: EditorBus, @Inject(forwardRef(() => NodeService)) private nodeService: NodeService, @Inject(forwardRef(() => LinkService)) private linkService: LinkService) {
+  constructor(
+    element: ElementRef,
+    private bus: EditorBus,
+    @Inject(forwardRef(() => PatchService)) private patchService: PatchService,
+    @Inject(forwardRef(() => NodeService)) private nodeService: NodeService,
+    @Inject(forwardRef(() => LinkService)) private linkService: LinkService,
+    @Inject(forwardRef(() => NodeTypeService)) private nodeTypeService: NodeTypeService
+  ) {
     this.element = element.nativeElement;
     this.zeroPoint = new Point(0, 0);
 
@@ -65,9 +80,13 @@ export class PatchComponent {
     });
   }
 
+  // @TODO: Rewrite this method:
   createNode(event: any) {
-    const bbox = new Rect(new Point(event.offsetX, event.offsetY), new Point(event.offsetX + 50, event.offsetY + 50));
-    let node = new NodeModel(this.nodeService.reserveId(), this.patchId, bbox, "Node", [], []);
+    const position = new Point(event.offsetX, event.offsetY);
+    const nodeType = this.nodeTypeService.selected();
+    const label = nodeType.label || "Node";
+    let node = new NodeModel(this.nodeService.reserveId(), this.patchId, position, label, [], [], nodeType.id);
+
     this.nodeService.create(node);
     this.model.nodesIds = this.nodeService.nodesIds(this.patchId);
   }

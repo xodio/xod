@@ -1,7 +1,8 @@
 import {Component, ElementRef, Input, provide, forwardRef, Inject} from '@angular/core';
 import {EditorMessage, EditorBus} from '../../../editor/editor.bus.ts';
-import {Point} from '../../geometry/geometry.lib.ts';
+import {Graphics} from '../../geometry/geometry.lib.ts';
 import {PinModel, PinType} from './pin.model.ts';
+import {NodeComponent} from '../node.component.ts';
 import {NodeService} from '../node.service.ts';
 import {PinService} from "./pin.service.ts";
 import {SampleNodeService} from "../node.sample.service.ts";
@@ -61,9 +62,13 @@ export class PinComponent {
     });
   }
 
+  center() {
+    return Graphics.getPinCenter(this.pinPosition(), this.model.absoluteCenter);
+  }
+
   pinPosition() {
     const node = this.nodeService.node(this.model.nodeId);
-    return this.model.pinPosition(node.inputPinsIds.length, node.outputPinsIds.length, node.bbox.width(), node.bbox.height());
+    return Graphics.getPinPosition(node, this.model.type, this.model.position);
   }
 
   labelTransform() {

@@ -3,13 +3,15 @@ import {NgFor, NgIf} from '@angular/common';
 import {NodeModel} from './node.model.ts';
 import * as d3 from 'd3';
 import {EditorMessage, EditorBus} from '../../editor/editor.bus.ts';
-import {Point} from '../geometry/geometry.lib.ts';
+import {Point, Rect, Graphics} from '../geometry/geometry.lib.ts';
 import {TextComponent} from "../text/text.component.ts";
 import {NodeService} from './node.service.ts';
 import {PinComponent} from './pin/pin.component.ts';
 import {PinService} from "./pin/pin.service.ts";
 import {SamplePinService} from "./pin/pin.sample.service.ts";
 import {SampleNodeService} from "./node.sample.service.ts";
+import {NodeTypeService} from "../node-type/node-type.service.ts";
+import {SampleNodeTypeService} from "../node-type/node-type.sample.service.ts";
 
 @Component({
   selector: '[node]',
@@ -22,25 +24,41 @@ import {SampleNodeService} from "./node.sample.service.ts";
     }),
     provide(PinService, {
       useExisting: SamplePinService
+    }),
+    provide(NodeTypeService, {
+      useExisting: SampleNodeTypeService
     })
   ]
 })
 export class NodeComponent {
   @Input() nodeId: number;
   private model: NodeModel;
+  private category: number;
+
+  private bbox: Rect;
 
   private element: HTMLElement;
   private zeroPoint: Point;
 
-  constructor(element: ElementRef, private bus: EditorBus, @Inject(forwardRef(() => NodeService)) private service: NodeService, @Inject(forwardRef(() => PinService)) private pinService: PinService) {
+  constructor(
+    element: ElementRef, 
+    private bus: EditorBus,
+    @Inject(forwardRef(() => NodeService)) private service: NodeService,
+    @Inject(forwardRef(() => PinService)) private pinService: PinService,
+    @Inject(forwardRef(() => NodeTypeService)) private nodeTypeService: NodeTypeService
+  ) {
+
     this.element = element.nativeElement;
     this.element.style.fill = 'red';
     this.zeroPoint = new Point(0, 0);
+    this.category = 0;
+    this.bbox = Graphics.getNodeBbox(this.zeroPoint);
 
     this.bus.listen('update-node', (message: EditorMessage) => {
       const node = <NodeModel>message.body;
       if (message.body.id === this.model.id && message.body.patchId === this.model.patchId) {
         this.model = node;
+        this.updateCategory();
       }
     });
   }
@@ -48,6 +66,8 @@ export class NodeComponent {
   ngOnInit() {
     this.model = this.resolveNode();
     if (this.model) {
+      this.bbox = Graphics.getNodeBbox(this.model.position);
+      this.updateCategory();
       this.model.inputPinsIds = this.pinService.inputPinsIds(this.model.id);
       this.model.outputPinsIds = this.pinService.outputPinsIds(this.model.id);
       this.draw();
@@ -57,11 +77,12 @@ export class NodeComponent {
   draw() {
     const rect = d3.select(this.element)
       .select('rect')
-      .attr('width', this.model.bbox.width())
-      .attr('height', this.model.bbox.height());
+      .attr('width', this.bbox.width())
+      .attr('height', this.bbox.height());
 
     const element = d3.select(this.element);
     const model = this.model;
+    const bbox = this.bbox;
 
     let pointerPosition = null;
 
@@ -71,11 +92,11 @@ export class NodeComponent {
         if (pointerPosition === null) {
           pointerPosition = new Point((<DragEvent>d3.event).x, (<DragEvent>d3.event).y);
         } else {
-          model.bbox.min.x += (<DragEvent>d3.event).x - pointerPosition.x;
-          model.bbox.min.y += (<DragEvent>d3.event).y - pointerPosition.y;
+          bbox.min.x += (<DragEvent>d3.event).x - pointerPosition.x;
+          bbox.min.y += (<DragEvent>d3.event).y - pointerPosition.y;
 
-          model.bbox.max.x += (<DragEvent>d3.event).x - pointerPosition.x;
-          model.bbox.max.y += (<DragEvent>d3.event).y - pointerPosition.y;
+          bbox.max.x += (<DragEvent>d3.event).x - pointerPosition.x;
+          bbox.max.y += (<DragEvent>d3.event).y - pointerPosition.y;
 
           pointerPosition.x = (<DragEvent>d3.event).x;
           pointerPosition.y = (<DragEvent>d3.event).y;
@@ -101,7 +122,7 @@ export class NodeComponent {
   }
 
   labelPosition() {
-    return new Point(this.model.bbox.width() / 2, this.model.bbox.height() / 2);
+    return new Point(this.bbox.width() / 2, this.bbox.height() / 2);
   }
 
   selected() {
@@ -109,6 +130,34 @@ export class NodeComponent {
   }
 
   transform() {
-    return `translate(${this.model.bbox.min.x}, ${this.model.bbox.min.y})`;
+    return `translate(${this.bbox.min.x}, ${this.bbox.min.y})`;
+  }
+
+  getClassNames() {
+    let classNames = ['nodeRect'];
+
+    if (this.selected()) {
+      classNames.push('selected');
+    }
+
+    if (this.model.nodeTypeId !== 0) {
+      classNames.push('node_type' + this.model.nodeTypeId);
+      classNames.push('node_category' + this.category);
+    }
+
+    return classNames;
+  }
+
+  // @TODO: Node wouldn't know anything about NodeTypeService.
+  //        Move it into NodeService.
+  updateCategory() {
+    let type = this.nodeTypeService.findById(this.model.nodeTypeId);
+    let category = 0;
+
+    if (type && type.category) {
+      category = type.category;
+    }
+
+    this.category = category;
   }
 }
