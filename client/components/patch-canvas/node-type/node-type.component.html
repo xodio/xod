@@ -1,7 +1,7 @@
 <form>
 	<fieldset>
 		<select (change)="onTypeChanged($event)">
-			<option *ngFor="let type of types" value="{{type.id}}">
+			<option *ngFor="let type of types; let i = index" value="{{type.id}}" [attr.selected]="isSelected(type['id'])">
 				{{type.label}}
 			</option>
 		</select>
