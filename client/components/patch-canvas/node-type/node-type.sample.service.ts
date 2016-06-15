@@ -43,6 +43,11 @@ export class SampleNodeTypeService extends NodeTypeService {
             id: 7,
             label: 'led',
             category: 3
+          },
+          {
+            id: 8,
+            label: 'someUserPatch',
+            category: 4
           }
         ]);
     }
