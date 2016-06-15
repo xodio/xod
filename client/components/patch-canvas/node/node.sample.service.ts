@@ -25,7 +25,7 @@ export class SampleNodeService extends NodeService {
         );
 
         const node = new NodeModel(
-          this.reserveId(), patchId, patchBBox, "Node", [], []
+          this.reserveId(), patchId, patchBBox, "Node", [], [], 0
         );
 
         this.create(node);
