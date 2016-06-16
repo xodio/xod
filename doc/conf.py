@@ -32,6 +32,7 @@
 # ones.
 extensions = [
     'sphinx.ext.imgmath',
+    'sphinxcontrib.plantuml',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -115,6 +116,8 @@ pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
+
+plantuml_output_format = 'svg'
 
 
 # -- Options for HTML output ----------------------------------------------

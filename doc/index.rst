@@ -13,10 +13,4 @@ Welcome to XOD!
    structure
    execution
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+   developer
