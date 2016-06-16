@@ -1,20 +1,15 @@
 import {Injectable} from '@angular/core';
 import {PatchModel} from './patch.model.ts';
-
-interface IPatchServiceState {
-  patches: Map<number, PatchModel>;
-  selected: PatchModel;
-  count: number;
-}
+import {IServiceState} from '../../../share/interfaces.ts';
 
 @Injectable()
 export class PatchService {
 
-  private _state: IPatchServiceState;
+  private _state: IServiceState;
 
   constructor() {
     this._state = {
-      patches: new Map<number, PatchModel>(),
+      models: new Map<number, PatchModel>(),
       selected: null,
       count: 0
     };
@@ -30,7 +25,7 @@ export class PatchService {
 
   patches() {
     const patches: Array<PatchModel> = [];
-    const iterator = this._state.patches.values();
+    const iterator = this._state.models.values();
     let value = iterator.next();
     while(!value.done) {
       patches.push(value.value);
@@ -44,11 +39,11 @@ export class PatchService {
   }
 
   create(patch: PatchModel) {
-    this._state.patches.set(patch.id, patch);
+    this._state.models.set(patch.id, patch);
   }
 
   update(patch: PatchModel) {
-    this._state.patches.set(patch.id, patch);
+    this._state.models.set(patch.id, patch);
     return patch;
   }
 

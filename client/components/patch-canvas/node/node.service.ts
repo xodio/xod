@@ -1,20 +1,15 @@
 import { Injectable } from '@angular/core';
 import {NodeModel} from './node.model.ts';
 import {Rect} from "../geometry/geometry.lib.ts";
-
-interface INodeServiceState {
-  nodes: Map<number, NodeModel>,
-  selected: NodeModel,
-  count: number
-}
+import {IServiceState} from '../../../share/interfaces.ts';
 
 @Injectable()
 export class NodeService {
-  private _state: INodeServiceState;
+  private _state: IServiceState;
 
   constructor() {
     this._state = {
-      nodes: new Map<number, NodeModel>(),
+      models: new Map<number, NodeModel>(),
       selected: null,
       count: 0
     };
@@ -23,12 +18,12 @@ export class NodeService {
   }
 
   create(node: NodeModel) {
-    this._state.nodes[node.id] = node;
+    this._state.models[node.id] = node;
     return node;
   }
 
   resolveNode(nodeId: number) {
-    return this._state.nodes[nodeId];
+    return this._state.models[nodeId];
   }
 
   reserveId(): number {
@@ -36,11 +31,11 @@ export class NodeService {
   }
 
   node(id: number) {
-    return this._state.nodes[id];
+    return this._state.models[id];
   }
 
   nodesIds(patchId: number): Array<number> {
-    const ids = Object.keys(this._state.nodes).map(key => this._state.nodes[key]).filter(node => node.patchId === patchId).map(node => node.id);
+    const ids = Object.keys(this._state.models).map(key => this._state.models[key]).filter(node => node.patchId === patchId).map(node => node.id);
     return ids;
   }
 
