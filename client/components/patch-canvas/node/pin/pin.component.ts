@@ -2,7 +2,6 @@ import {Component, ElementRef, Input, provide, forwardRef, Inject} from '@angula
 import {EditorMessage, EditorBus} from '../../../editor/editor.bus.ts';
 import {Graphics} from '../../geometry/geometry.lib.ts';
 import {PinModel, PinType} from './pin.model.ts';
-import {NodeComponent} from '../node.component.ts';
 import {NodeService} from '../node.service.ts';
 import {PinService} from "./pin.service.ts";
 import {SampleNodeService} from "../node.sample.service.ts";
@@ -33,7 +32,6 @@ export class PinComponent {
   private model: PinModel;
   private element: HTMLElement;
   private highlighted: boolean = false;
-  private selected: boolean = false;
 
   constructor(element: ElementRef, private bus: EditorBus, @Inject(forwardRef(() => NodeService)) private nodeService: NodeService, @Inject(forwardRef(() => PinService)) private pinService: PinService, @Inject(forwardRef(() => LinkService)) private linkService: LinkService) {
     this.element = element.nativeElement;
@@ -98,6 +96,10 @@ export class PinComponent {
         }
       }, true);
     });
+  }
+
+  isSelected() {
+    return this.pinService.isSelected(this.model);
   }
 
   center() {
