@@ -1,18 +1,27 @@
 import {Injectable} from '@angular/core';
 import {PinModel, PinType} from './pin.model.ts';
 
+interface IPinServiceState {
+  pins: Map<number, PinModel>,
+  selected: PinModel,
+  count: number
+}
+
 @Injectable()
 export class PinService {
-  private _pins = new Map<number, PinModel>();
-  private _selected: PinModel = null;
-  private count: number = 0;
+  private _state: IPinServiceState;
 
   constructor() {
+    this._state = {
+      pins: new Map<number, PinModel>(),
+      selected: null,
+      count: 0
+    };
   }
 
   pins() {
     const pins: Array<PinModel> = [];
-    const iterator = this._pins.values();
+    const iterator = this._state.pins.values();
     let value = iterator.next();
     while(!value.done) {
       pins.push(value.value);
@@ -38,41 +47,41 @@ export class PinService {
   }
 
   pin(id: number): PinModel {
-    return this._pins.get(id);
+    return this._state.pins.get(id);
   }
 
   // TODO: implement pin validation: it should not be selected
   select(pin: PinModel): PinModel {
-    this._selected = pin;
+    this._state.selected = pin;
     return pin;
   }
 
   isSelected(pin: PinModel) {
-    return this._selected && pin && this._selected.pinId === pin.pinId;
+    return this._state.selected && pin && this._state.selected.pinId === pin.pinId;
   }
 
   resolve(pinId: number) {
-    return this._pins[pinId];
+    return this._state.pins[pinId];
   }
 
   reserveId(): number {
-    return this.count++;
+    return this._state.count++;
   }
 
   createPin(pin: PinModel) {
-    this._pins.set(pin.pinId, pin);
+    this._state.pins.set(pin.pinId, pin);
     return pin;
   }
 
   deselect() {
-    this._selected = null;
+    this._state.selected = null;
   }
 
   selected() {
-    return this._selected;
+    return this._state.selected;
   }
 
   somePinSelected() {
-    return !!this._selected;
+    return !!this._state.selected;
   }
 }

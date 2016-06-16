@@ -1,24 +1,30 @@
 import { Injectable } from '@angular/core';
 import { INodeType } from './node-type.interface.ts';
 
+interface INodeTypeServiceState {
+  types: INodeType[],
+  selected: INodeType
+}
+
 @Injectable()
 export class NodeTypeService {
-  private _types: INodeType[];
-  private _selected: INodeType;
+  private _state: INodeTypeServiceState;
 
   constructor() {   
-    this._types = [];
-    this._selected = null;
+    this._state = {
+      types: [],
+      selected: null
+    };
   }
 
   add(nodeType: INodeType) {
-    this._types.push(nodeType);
+    this._state.types.push(nodeType);
 
     this.setDefaultSelection();
   }
 
   addFromArray(nodeTypes: INodeType[]) {
-    this._types = this._types.concat(nodeTypes);
+    this._state.types = this._state.types.concat(nodeTypes);
 
     this.setDefaultSelection();
   }
@@ -30,25 +36,25 @@ export class NodeTypeService {
   }
 
   types() {
-    return this._types;
+    return this._state.types;
   }
 
   count() {
-    return this._types.length;
+    return this._state.types.length;
   }
 
   setSelected(id: number) {
     const type = this.findById(id);
-    this._selected = type;
+    this._state.selected = type;
   }
 
   selected() {
-    return this._selected;
+    return this._state.selected;
   }
 
   setDefaultSelection() {
-    if (this._selected === null && this._types.length > 0) {
-      this._selected = this._types[0];
+    if (this._state.selected === null && this._state.types.length > 0) {
+      this._state.selected = this._state.types[0];
     }
   }
 
@@ -61,7 +67,7 @@ export class NodeTypeService {
     }
 
     if (i > 0 && count > i) {
-      return this._types[index];
+      return this._state.types[index];
     }
 
     return null;
@@ -74,8 +80,8 @@ export class NodeTypeService {
     id = (typeof id === 'number') ? id : parseInt(id);
 
     for (let i = 0; i < count; i++) {
-      if (this._types[i].id === id) {
-        result = this._types[i];
+      if (this._state.types[i].id === id) {
+        result = this._state.types[i];
         break;
       }
     }

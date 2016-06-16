@@ -2,27 +2,36 @@ import { Injectable, Inject, forwardRef } from '@angular/core';
 import {LinkModel} from './link.model.ts';
 import {EditorBus, EditorMessage} from '../../editor/editor.bus.ts';
 
+interface ILinkServiceState {
+  links: Map<number, LinkModel>,
+  selected: LinkModel,
+  count: number
+}
+
 @Injectable()
 export class LinkService {
-  private _links = new Map<number, LinkModel>();
-  private count = 0;
-  private selected: LinkModel = null;
+  private _state: ILinkServiceState;
 
   constructor() {
+    this._state = {
+      links: new Map<number, LinkModel>(),
+      selected: null,
+      count: 0
+    };
   }
 
   create(link: LinkModel) {
-    this._links.set(link.id, link);
+    this._state.links.set(link.id, link);
     return link;
   }
 
   link(id: number) {
-    return this._links.get(id);
+    return this._state.links.get(id);
   }
 
   links() {
     const links: Array<LinkModel> = [];
-    const iterator = this._links.values();
+    const iterator = this._state.links.values();
     let value = iterator.next();
     while(!value.done) {
       links.push(value.value);
@@ -32,21 +41,20 @@ export class LinkService {
   }
 
   select(link: LinkModel): LinkModel {
-    this.selected = link;
+    this._state.selected = link;
     return link;
   }
 
   isSelected(linkId: number): boolean {
-    if (!!this.selected) {
-      return linkId && this.selected.id === linkId;
+    if (!!this._state.selected) {
+      return linkId && this._state.selected.id === linkId;
     } else {
       return false;
     }
   }
 
   reserveId(): number {
-    this.count++;
-    return this.count;
+    return this._state.count++;
   }
 
   linksOfPatch(patchId: number) {
