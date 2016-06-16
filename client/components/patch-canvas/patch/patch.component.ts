@@ -4,7 +4,6 @@ import * as d3 from 'd3';
 import {PatchModel} from './patch.model.ts';
 import {NodeComponent} from '../node/node.component.ts';
 import {Point, Rect} from '../geometry/geometry.lib.ts';
-import {TextComponent} from '../text/text.component.ts';
 import {PatchService} from './patch.service.ts';
 import {EditorMessage, EditorBus} from '../../editor/editor.bus.ts';
 import {NodeService} from '../node/node.service.ts';
@@ -24,7 +23,7 @@ import {SampleNodeTypeService} from "../node-type/node-type.sample.service.ts";
 @Component({
   selector: '[patch]',
   template: require('./patch.component.html'),
-  directives: [NgFor, NgIf, LinkComponent, TextComponent, NodeComponent],
+  directives: [NgFor, NgIf, LinkComponent, NodeComponent],
   inputs: ['model'],
   providers: [
     provide(PatchService, {

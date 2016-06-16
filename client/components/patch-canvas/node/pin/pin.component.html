@@ -1,4 +1,9 @@
 <svg:g *ngIf="model" [attr.transform]="transform()" class="pin-component">
     <svg:circle cx="0" cy="0" r="4" [attr.fill]="isSelected() ? 'red' : (highlighted ? 'lightgreen' : 'black')" class="pin-component-marker"></svg:circle>
-    <svg:text x="0" y="-10" [attr.transform]="labelTransform()" font-color="black" fill="black" class="pin-component-label">{{model.label}}</svg:text>
+
+    <svg:text
+      [attr.transform]="labelTransform()"
+      [attr.text-anchor]="model.isInput() ? 'start' : 'end'"
+      dominant-baseline="central"
+      class="pin-component-label">{{model.label}}</svg:text>
 </svg:g>

@@ -112,12 +112,8 @@ export class PinComponent {
   }
 
   labelTransform() {
-    switch(this.model.type) {
-      case PinType.Input:
-        return 'rotate(-90) translate(8, 16)';
-      case PinType.Output:
-        return 'rotate(-90) translate(-20, 16)';
-    }
+    const margin = ((this.model.isInput()) ? -1 : 1) * 5;
+    return `translate(0, ${margin}) rotate(-90)`;
   }
 
   onClick(event) {

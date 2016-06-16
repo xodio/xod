@@ -1,7 +1,13 @@
 <svg:g *ngIf="!!model" [attr.transform]="transform()" [ngClass]="getClassNames()">
 	<svg:rect class="transparent" [attr.x]="0" [attr.y]="-22" [attr.width]="bbox.width()" [attr.height]="bbox.height() + 42" bg></svg:rect>
     <svg:rect [attr.x]="0" [attr.y]="0" [attr.width]="bbox.width()" [attr.height]="bbox.height()" rect></svg:rect>
-    <svg:g [content]="model.label" [position]="labelPosition()" [align]="'middle'" text/>
+
+    <svg:text
+        [attr.x]="labelPosition().x"
+        [attr.y]="labelPosition().y"
+        text-anchor="middle"
+        dominant-baseline="central">{{model.label}}</svg:text>
+
     <svg:g *ngIf="model && model.inputPinsIds" *ngFor="let inputPinId of model.inputPinsIds" [pinId]="inputPinId" pin/>
     <svg:g *ngIf="model && model.outputPinsIds" *ngFor="let outputPinId of model.outputPinsIds" [pinId]="outputPinId" pin/>
 </svg:g>

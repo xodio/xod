@@ -4,7 +4,6 @@ import {NodeModel} from './node.model.ts';
 import * as d3 from 'd3';
 import {EditorMessage, EditorBus} from '../../editor/editor.bus.ts';
 import {Point, Rect, Graphics} from '../geometry/geometry.lib.ts';
-import {TextComponent} from "../text/text.component.ts";
 import {NodeService} from './node.service.ts';
 import {PinComponent} from './pin/pin.component.ts';
 import {PinService} from "./pin/pin.service.ts";
@@ -16,7 +15,7 @@ import {SampleNodeTypeService} from "../node-type/node-type.sample.service.ts";
 @Component({
   selector: '[node]',
   template: require('./node.component.html'),
-  directives: [TextComponent, PinComponent, NgFor, NgIf],
+  directives: [PinComponent, NgFor, NgIf],
   styles: [require('./node.component.styl')],
   providers: [
     provide(NodeService, {
@@ -49,7 +48,6 @@ export class NodeComponent {
   ) {
 
     this.element = element.nativeElement;
-    this.element.style.fill = 'red';
     this.zeroPoint = new Point(0, 0);
     this.category = 0;
     this.bbox = Graphics.getNodeBbox(this.zeroPoint);

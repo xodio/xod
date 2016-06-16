@@ -15,4 +15,12 @@ export class PinModel {
   updateCenter(center: Point) {
     return new PinModel(this.pinId, this.nodeId, this.position, this.label, this.type, center);
   }
+
+  isInput() {
+    return this.type === PinType.Input;
+  }
+
+  isOutput() {
+    return this.type === PinType.Output;
+  }
 }

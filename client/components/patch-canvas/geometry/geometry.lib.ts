@@ -37,7 +37,7 @@ export class Graphics {
   public static getNodeBbox(position: Point) : Rect {
     let firstPoint = position || new Point( 0, 0 );
 
-    let secondPoint = new Point( firstPoint.x + 120, firstPoint.y + 120 );
+    let secondPoint = new Point( firstPoint.x + 120, firstPoint.y + 30 );
 
     return new Rect( firstPoint, secondPoint );
   }
