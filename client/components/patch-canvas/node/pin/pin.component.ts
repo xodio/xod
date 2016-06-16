@@ -71,7 +71,7 @@ export class PinComponent {
         // Something selected
         if (this.pinService.somePinSelected() && this.highlighted) {
           // in this case we are trying creating a link between selected pin and clicked pin
-          if (this.linkService.create(new LinkModel(this.linkService.reserveId(), this.nodeService.node(this.model.nodeId).patchId, this.pinService.selected().pinId, this.pinId))) {
+          if (this.linkService.create(new LinkModel(this.linkService.reserveId(), this.nodeService.node(this.model.nodeId).patchId, this.pinService.selected().id, this.pinId))) {
             this.bus.send(new EditorMessage('create-link', this.nodeService.node(this.model.nodeId).patchId));
             // in case of our success we deselect selected pin
             this.pinService.deselect();
