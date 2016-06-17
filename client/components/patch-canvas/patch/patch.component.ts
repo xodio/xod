@@ -13,11 +13,12 @@ import {PinModel, PinType} from "../node/pin/pin.model.ts";
 import {LinkComponent} from '../link/link.component.ts';
 import {LinkModel} from '../link/link.model.ts';
 import {LinkService} from '../link/link.service.ts';
-import {PinService} from '../node/pin/pin.service.ts';
 import {SampleNodeService} from "../node/node.sample.service.ts";
 import {SampleLinkService} from "../link/link.sample.service.ts";
+import {PinService} from '../node/pin/pin.service.ts';
 import {SamplePinService} from '../node/pin/pin.sample.service.ts';
 import {SamplePatchService} from "./patch.sample.service.ts";
+import {IPin} from "../node-type/node-type.interface.ts";
 import {NodeTypeService} from "../node-type/node-type.service.ts";
 import {SampleNodeTypeService} from "../node-type/node-type.sample.service.ts";
 
@@ -35,6 +36,9 @@ import {SampleNodeTypeService} from "../node-type/node-type.sample.service.ts";
     }),
     provide(LinkService, {
       useExisting: SampleLinkService
+    }),
+    provide(PinService, {
+      useExisting: SamplePinService
     }),
     // @TODO: In the near future we don't have to need inject nodeTypeService here.
     //        It would be better to subscribe on "selectedNodeTypeChanged" and
@@ -57,6 +61,7 @@ export class PatchComponent {
     @Inject(forwardRef(() => PatchService)) private patchService: PatchService,
     @Inject(forwardRef(() => NodeService)) private nodeService: NodeService,
     @Inject(forwardRef(() => LinkService)) private linkService: LinkService,
+    @Inject(forwardRef(() => PinService)) private pinService: PinService,
     @Inject(forwardRef(() => NodeTypeService)) private nodeTypeService: NodeTypeService
   ) {
     this.element = element.nativeElement;
@@ -80,15 +85,39 @@ export class PatchComponent {
     });
   }
 
-  // @TODO: Rewrite this method:
+  // @TODO: Rewrite and move methods `createNode`, `createPin` and `createPins`
   createNode(event: any) {
     const position = new Point(event.offsetX, event.offsetY);
     const nodeType = this.nodeTypeService.selected();
     const label = nodeType.label || "Node";
+
     let node = new NodeModel(this.nodeService.reserveId(), this.patchId, position, label, [], [], nodeType.id);
+
+    const inputPins = this.createPins(nodeType.inputs, PinType.Input, node.id, position);
+    const outputPins = this.createPins(nodeType.outputs, PinType.Output, node.id, position);
+
+    node.inputPinsIds = inputPins;
+    node.outputPinsIds = outputPins;
 
     this.nodeService.create(node);
     this.model.nodesIds = this.nodeService.nodesIds(this.patchId);
+  }
+  createPin(pinData: IPin, kind: PinType, nodeId: number, nodePosition: Point, position?: number) : number {
+    const _position = position || 0;
+    // @TODO: Validate pinData
+    const pin = new PinModel(this.pinService.reserveId(), nodeId, _position, pinData.label, kind, nodePosition);
+
+    this.pinService.createPin(pin);
+    return pin.pinId;
+  }
+  createPins(pinsArray: IPin[], kind: PinType, nodeId: number, nodePosition: Point) : number[] {
+    let result = [];
+
+      for (var i = 0; i < pinsArray.length; i++) {
+        result.push( this.createPin(pinsArray[i], kind, nodeId, nodePosition, i) );
+      }
+
+    return result;
   }
 
   position() {

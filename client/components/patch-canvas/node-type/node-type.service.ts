@@ -26,6 +26,7 @@ export class NodeTypeService {
   parseJSON(json: string) {
     const data = JSON.parse(json);
 
+    // @TODO: Add conversion of inputs/outputs types from strings into numbers (using enum PinType)
     this.addFromArray( data );
   }
 
