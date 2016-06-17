@@ -108,7 +108,7 @@ export class PatchComponent {
     const pin = new PinModel(this.pinService.reserveId(), nodeId, _position, pinData.label, kind, nodePosition);
 
     this.pinService.createPin(pin);
-    return pin.pinId;
+    return pin.id;
   }
   createPins(pinsArray: IPin[], kind: PinType, nodeId: number, nodePosition: Point) : number[] {
     let result = [];
