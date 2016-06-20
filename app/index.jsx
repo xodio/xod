@@ -3,6 +3,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './containers/App.jsx';
-import { initialState } from './state.jsx';
+import { initialState } from './state.js';
 
 ReactDOM.render(<App data={initialState} />, document.getElementById('root'));

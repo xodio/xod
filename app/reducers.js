@@ -1,12 +1,14 @@
 import * as Actions from './actions.js';
 import { combineReducers } from 'redux'
-import { initialState } from './state.jsx';
+import { initialState } from './state.js';
+import update from 'react-addons-update';
 
 const node = (state, action) => {
   switch (action.type) {
     case Actions.MOVE_NODE:
-      state = Object.assign({}, action.position);
-      return state;
+      return update(state, {
+        position: action.position
+      });
     case Actions.ADD_NODE:
       return action.node;
     case Actions.DELETE_NODE:
@@ -15,25 +17,26 @@ const node = (state, action) => {
   return state;
 };
 
-const nodes = (state, action) => {
-  let newState = state;
+export const nodes = (state, action) => {
   switch (action.type) {
 
     case Actions.ADD_NODE:
       const newNode = node(undefined, action);
-      newState = Object.assign({}, state);
       const newNodeId = Math.max(...Object.keys(state).map(parseInt));
       newNode.id = newNodeId;
-      newState[newNodeId] = newNode;
-      return newState;
+      return update(state, {
+        $merge: {
+          newNode
+        }
+      });
 
     case Actions.DELETE_NODE:
-      newState = Object.assign({}, state);
+      newState = React.addons.update({}, state);
       newState[action.id] = node(state[action.id], action);
       return newState;
 
     case Actions.MOVE_NODE:
-      newState = Object.assign({}, state);
+      newState = React.addons.update({}, state);
       newState[action.id] = node(state[action.id], action);
       return newState;
 

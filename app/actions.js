@@ -12,7 +12,7 @@ export const moveNode = (id, position) => {
 export const addNode = (node) => {
   return {
     type: ADD_NODE,
-    node
+    node: node
   }
 };
 
