@@ -6,6 +6,7 @@
     "start": "mkdir -p ./dist && cp -f ./app/index.html ./dist/index.html && webpack-dev-server --watch --progress --colors --config webpack.config.js",
     "test": "mocha-webpack --colors --webpack-config webpack.config.js \"test/**/*Spec.jsx\"",
     "lint": "eslint --ext .js --ext .jsx ./app || true"
+    "test": "mocha-webpack --colors --webpack-config webpack.config.js \"test/**/*Spec.jsx\"",
   },
   "repository": {},
   "keywords": [],
