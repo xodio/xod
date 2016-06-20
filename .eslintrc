@@ -1,5 +1,28 @@
 {
-  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+
+  "plugins": [
+    "react",
+    "import"
+  ],
+
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/react",
+    "plugin:react/recommended"
+  ],
+
+  "settings": {
+    "import/resolver": "webpack"
+  },
 
   "rules": {
     "array-bracket-spacing": [2, "never"],
@@ -40,6 +63,8 @@
     "space-in-parens": [2, "never"],
     "space-unary-ops": [1, {"words": true, "nonwords": false}],
     "spaced-comment": [2, "always"],
-    "yoda": [2, "never"]
+    "yoda": [2, "never"],
+
+    "import/extensions": [2, "never"]
   }
 }
