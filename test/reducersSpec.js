@@ -7,7 +7,6 @@ import chai from 'chai';
 describe('Nodes reducer', function() {
   describe('while adding node', function () {
     it('should insert node', () => {
-      "use strict";
       const oldState = initialState.project.nodes;
       const state = nodes(oldState, Actions.addNode({
         id: null,
@@ -21,7 +20,6 @@ describe('Nodes reducer', function() {
     });
 
     it('should set appropriate id for a new node', () => {
-      "use strict";
       const props = {
         label: 'node'
       };
@@ -37,7 +35,6 @@ describe('Nodes reducer', function() {
     });
 
     it('should be reverse operation for node deletion', () => {
-      "use strict";
       let state = null;
       const props = {
         label: 'node'
@@ -56,7 +53,6 @@ describe('Nodes reducer', function() {
 
   describe('while removing node', function () {
     it('should remove node', () => {
-      "use strict";
       const oldState = initialState.project.nodes;
       const state = nodes(oldState, Actions.deleteNode(lastId(oldState)));
 
@@ -64,7 +60,6 @@ describe('Nodes reducer', function() {
     });
 
     it('should remove node with specified id', () => {
-      "use strict";
       const oldState = initialState.project.nodes;
       const removingNodeId = lastId(oldState);
       const state = nodes(oldState, Actions.deleteNode(removingNodeId));
@@ -73,7 +68,6 @@ describe('Nodes reducer', function() {
     });
 
     it('should be reverse operation for node insertion', () => {
-      "use strict";
       let state = null;
       const props = {
         label: 'node'
@@ -89,7 +83,6 @@ describe('Nodes reducer', function() {
 
   describe('while moving node', function () {
     it('should move node', () => {
-      "use strict";
       const oldState = initialState.project.nodes;
       const movingNodeId = lastId(oldState);
       const position = {
@@ -104,7 +97,6 @@ describe('Nodes reducer', function() {
     });
 
     it('should not affect other nodes', () => {
-      "use strict";
       const oldState = initialState.project.nodes;
       const removingNodeId = lastId(oldState);
       const state = nodes(oldState, Actions.deleteNode(removingNodeId));

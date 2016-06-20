@@ -13,7 +13,6 @@ export const removeNode = (nodes, key) => {
     return nodes[nodeId]
   });
   return nodesWithoutRemoved.reduce((newNodes, currentNode) => {
-    "use strict";
     const temp = {};
 
     temp[currentNode.id] = currentNode;
