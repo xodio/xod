@@ -60,31 +60,37 @@ const initialState = {
           1: {
             id: 1,
             nodeId: 1,
+            type: 'input',
             key: 'in'
           },
           2: {
             id: 2,
             nodeId: 2,
+            type: 'input',
             key: 'in'
           },
           3: {
             id: 3,
             nodeId: 2,
+            type: 'output',
             key: 'out'
           },
           4: {
             id: 4,
             nodeId: 3,
+            type: 'output',
             key: 'out'
           },
           5: {
             id: 5,
             nodeId: 4,
+            type: 'input',
             key: 'in'
           },
           6: {
             id: 6,
             nodeId: 5,
+            type: 'input',
             key: 'in'
           }
         },
