@@ -1,1 +1,4 @@
 node_modules/
+.idea/
+xod.iml
+dist/
