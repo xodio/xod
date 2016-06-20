@@ -66,5 +66,10 @@ module.exports = {
     'yoda': [2, 'never'],
 
     'import/extensions': [2, 'never'],
+    'import/imports-first': 2,
+    'import/newline-after-import': 2,
+
+    'react/jsx-indent': [2, 2],
+    'react/jsx-indent-props': [2, 2],
   },
 }
