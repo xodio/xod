@@ -9,29 +9,51 @@ const initialState = {
     name: 'Awesome project',
     patches: {
       1: {
+        id: 1,
+        name: 'My first patch',
         nodes: {
           1: {
             id: 1,
             typeId: 4,
+            position: {
+              x: 240,
+              y: 90
+            },
             props: {
               brightness: 0.67
             }
           },
           2: {
             id: 2,
-            typeId: 1
+            typeId: 1,
+            position: {
+              x: 360,
+              y: 300
+            },
           },
           3: {
             id: 3,
-            typeId: 3
+            typeId: 3,
+            position: {
+              x: 80,
+              y: 20
+            },
           },
           4: {
             id: 4,
-            typeId: 2
+            typeId: 2,
+            position: {
+              x: 170,
+              y: 380
+            },
           },
           5: {
             id: 5,
-            typeId: 5
+            typeId: 5,
+            position: {
+              x: 30,
+              y: 75
+            },
           }
         },
         pins: {
@@ -63,16 +85,27 @@ const initialState = {
           6: {
             id: 6,
             nodeId: 5,
-            key: 'out'
+            key: 'in'
           }
         },
         links: {
-          
+          1: {
+            id: 1,
+            fromPinId: 4,
+            toPinId: 1
+          },
+          2: {
+            id: 2,
+            fromPinId: 4,
+            toPinId: 6
+          }
         }
       }
     }
   },
-  editor: {},
+  editor: {
+    currentPatch: 1
+  },
   nodeTypes: {
     1: {
       id: 1,
@@ -158,4 +191,4 @@ const initialState = {
   }
 };
 
-ReactDOM.render(<App data={initialState} />, document.getElementById('root'));
+ReactDOM.render(<App {...initialState} />, document.getElementById('root'));
