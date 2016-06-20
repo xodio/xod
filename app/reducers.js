@@ -4,6 +4,10 @@ import update from 'react-addons-update';
 
 export const newId = (nodes) => Math.max(...Object.keys(nodes).map(id => parseInt(id))) + 1;
 export const lastId = (nodes) => Math.max(...Object.keys(nodes).map(id => parseInt(id)));
+export const copyNode = (node) => update({}, {
+  $merge: node
+});
+
 export const removeNode = (nodes, key) => {
   const nodesWithoutRemoved = Object.keys(nodes).filter(nodeId => nodeId !== key.toString()).map(nodeId => {
     return nodes[nodeId]
@@ -13,7 +17,6 @@ export const removeNode = (nodes, key) => {
     const temp = {};
 
     temp[currentNode.id] = currentNode;
-
 
     return update(newNodes, {
       $merge: temp
