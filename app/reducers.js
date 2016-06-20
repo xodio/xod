@@ -28,7 +28,9 @@ const node = (state, action) => {
   switch (action.type) {
     case Actions.MOVE_NODE:
       return update(state, {
-        position: action.position
+        $merge: {
+          position: action.position
+        }
       });
     case Actions.ADD_NODE:
       return action.node;
@@ -56,8 +58,12 @@ export const nodes = (state, action) => {
       return removeNode(state, action.id);
 
     case Actions.MOVE_NODE:
-      newState = update({}, state);
-      newState[action.id] = node(state[action.id], action);
+      temp = {};
+      const movedNode = node(state[action.id], action);
+      temp[movedNode.id] = movedNode;
+      newState = update(state, {
+        $merge: temp
+      });
       return newState;
 
     default:
