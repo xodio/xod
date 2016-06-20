@@ -7,15 +7,17 @@ var webpackPostprocessor = wallabyWebpack();
 module.exports = function (wallaby) {
   return {
     files: [
-      { pattern: 'app/**/*.jsx', load: false }
+      { pattern: 'app/**/*.jsx', load: false },
+      { pattern: 'app/**/*.js', load: false }
     ],
 
     tests: [
-      { pattern: 'test/**/*Spec.jsx', load: false }
+      { pattern: 'test/**/*Spec.js', load: false }
     ],
 
     compilers: {
-      '**/*.jsx': wallaby.compilers.babel()
+      '**/*.jsx': wallaby.compilers.babel(),
+      '**/*.js': wallaby.compilers.babel()
     },
 
     postprocessor: webpackPostprocessor,
