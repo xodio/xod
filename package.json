@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "XOD project",
   "scripts": {
-    "start": "mkdir -p ./public && cp -f ./app/index.html ./dist/index.html && webpack-dev-server --watch --progress --colors --config webpack.config.js"
+    "start": "mkdir -p ./dist && cp -f ./app/index.html ./dist/index.html && webpack-dev-server --watch --progress --colors --config webpack.config.js"
   },
   "repository": {
   },
