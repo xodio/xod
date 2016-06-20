@@ -3,66 +3,81 @@ export const initialState = {
     name: 'Awesome project',
     patches: {
       1: {
-        nodes: {
-          1: {
-            id: 1,
-            typeId: 4,
-            props: {
-              brightness: 0.67
-            }
-          },
-          2: {
-            id: 2,
-            typeId: 1
-          },
-          3: {
-            id: 3,
-            typeId: 3
-          },
-          4: {
-            id: 4,
-            typeId: 2
-          },
-          5: {
-            id: 5,
-            typeId: 5
-          }
-        },
-        pins: {
-          1: {
-            id: 1,
-            nodeId: 1,
-            key: 'in'
-          },
-          2: {
-            id: 2,
-            nodeId: 2,
-            key: 'in'
-          },
-          3: {
-            id: 3,
-            nodeId: 2,
-            key: 'out'
-          },
-          4: {
-            id: 4,
-            nodeId: 3,
-            key: 'out'
-          },
-          5: {
-            id: 5,
-            nodeId: 4,
-            key: 'in'
-          },
-          6: {
-            id: 6,
-            nodeId: 5,
-            key: 'out'
-          }
-        },
-        links: {
-
+        id: 1,
+        name: 'Skynet'
+      }
+    },
+    nodes: {
+      1: {
+        id: 1,
+        patchId: 1,
+        typeId: 4,
+        props: {
+          brightness: 0.67
         }
+      },
+      2: {
+        id: 2,
+        patchId: 1,
+        typeId: 1,
+        props: {
+          brightness: 0.67
+        }
+      },
+      3: {
+        id: 3,
+        patchId: 1,
+        typeId: 3,
+        props: {
+          brightness: 0.67
+        }
+      },
+      4: {
+        id: 4,
+        patchId: 1,
+        typeId: 2,
+        props: {
+          brightness: 0.67
+        }
+      },
+      5: {
+        id: 5,
+        patchId: 1,
+        typeId: 5
+      }
+    },
+    links: {
+    },
+    pins: {
+      1: {
+        id: 1,
+        nodeId: 1,
+        key: 'in'
+      },
+      2: {
+        id: 2,
+        nodeId: 2,
+        key: 'in'
+      },
+      3: {
+        id: 3,
+        nodeId: 2,
+        key: 'out'
+      },
+      4: {
+        id: 4,
+        nodeId: 3,
+        key: 'out'
+      },
+      5: {
+        id: 5,
+        nodeId: 4,
+        key: 'in'
+      },
+      6: {
+        id: 6,
+        nodeId: 5,
+        key: 'out'
       }
     }
   },
