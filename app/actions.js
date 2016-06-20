@@ -5,7 +5,7 @@ export const DELETE_NODE = 'DELETE_NODE';
 export const moveNode = (id, position) => {
   return {
     type: MOVE_NODE,
-    position
+    position: position
   }
 };
 
