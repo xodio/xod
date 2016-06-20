@@ -1,16 +1,12 @@
 import React from 'react';
 
-function SVGLayer({ name, children }) {
+const SVGLayer = ({name, childs}) => {
+
   return (
     <g id={name}>
-      {children}
+      {childs}
     </g>
   );
-}
-
-SVGLayer.propTypes = {
-  name: React.PropTypes.string.isRequired,
-  children: React.PropTypes.any.isRequired,
 };
 
 export default SVGLayer;
