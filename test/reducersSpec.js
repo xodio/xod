@@ -86,4 +86,30 @@ describe('Nodes reducer', function() {
       chai.expect(state).to.deep.equal(oldState);
     });
   });
+
+  describe('while moving node', function () {
+    it('should move node', () => {
+      "use strict";
+      const oldState = initialState.project.nodes;
+      const movingNodeId = lastId(oldState);
+      const position = {
+        x: 0,
+        y: 100
+      };
+      const state = nodes(oldState, Actions.moveNode(lastId(oldState), position));
+
+      const movedNode = state[lastId(oldState)];
+
+      chai.expect(movedNode.position).to.deep.equal(position);
+    });
+
+    it('should not affect other nodes', () => {
+      "use strict";
+      const oldState = initialState.project.nodes;
+      const removingNodeId = lastId(oldState);
+      const state = nodes(oldState, Actions.deleteNode(removingNodeId));
+
+      chai.assert(!nodes.hasOwnProperty(removingNodeId));
+    });
+  });
 });

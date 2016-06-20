@@ -5,20 +5,21 @@ export const DELETE_NODE = 'DELETE_NODE';
 export const moveNode = (id, position) => {
   return {
     type: MOVE_NODE,
-    position: position
+    id,
+    position
   }
 };
 
 export const addNode = (node) => {
   return {
     type: ADD_NODE,
-    node: node
+    node
   }
 };
 
 export const deleteNode = (id) => {
   return {
     type: DELETE_NODE,
-    id: id
+    id
   }
 };
