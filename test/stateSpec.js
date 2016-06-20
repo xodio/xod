@@ -1,6 +1,6 @@
 import React from 'react';
 import { assert } from 'chai';
-import { initialState } from '../app/state.jsx';
+import { initialState } from '../app/state.js';
 
 describe('Initial state', function() {
   describe('node types', function () {
