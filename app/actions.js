@@ -19,6 +19,6 @@ export const addNode = (node) => {
 export const deleteNode = (id) => {
   return {
     type: DELETE_NODE,
-    id
+    id: id
   }
 };
