@@ -1,0 +1,215 @@
+
+.. _execution:
+
+***************
+Execution Model
+***************
+
+In contrast to conventional programming, XOD is data flow language rather than
+control flow. That means there is no such thing as instruction pointer that
+determines what command will be executed at next moment. Instead, updates are
+done in instant transactions where all data is evaluated simultaneously.
+
+Static and Dynamic Parts
+========================
+
+Links and nodes are static. They can’t be changed at run time. The static
+structure makes XOD programs easy to understand and foresee their behavior. You
+can always know what changes will affect which nodes just by looking at
+links.  And these connections doesn’t depend on a current or past state of any
+objects.
+
+What makes the behavior dynamic are data updates. Data flows along links
+from outputs to inputs and cause cascade updates until the patch is fully
+evaluated to the defined state.
+
+Data updates are initiated by some external impact. It can be a clock signal
+to perform regular updates or a signal from a sensor, for example, that will
+make a device respond to an event of the real world.
+
+Signals
+=======
+
+Links are flow lanes for your data. Likewise, wires conduct electricity
+links conduct data. Electricity spread over with semi-infinite speed.
+You may think of data in the same way.
+
+Unlike electricity in wires, however, data is granular and flows along
+links only when updated. A moment of data update is called *a signal*
+in XOD.
+
+At moments when there is no data update on a link (most of the time) the
+link is said to be *idle*.
+
+Signal Value
+============
+
+A signal can have payload data associated with it. The data is called *value*.
+The type of value is defined by input/output pin type. It can be one of:
+
+* ``pulse`` — no data associated with the signal, used for signals that just
+  describe the fact of something has occurred;
+* ``bool`` — either ``true`` (aka “yes”, logical one) or ``false`` (aka “no”, logical zero);
+* ``number`` — integer or real number, infinity or special ``NaN`` (Not a Number) value;
+* ``string`` — textual value that can be empty, single character, a line or
+  multiple lines of text;
+
+Besides any bool, number or string signal value can be ``null``. Null is *not* the
+same as ``false``, ``0`` or empty string. It denotes a missing value. Nulls are
+used for default values, optional values, and erroneous values.
+
+Also, there are stared types that are suffixed with an asterisk, e.g.
+``number*``. Stared types are ordered lists or so-called tuples used to pack
+several homogenous values into one.
+
+The type of signal can’t change while it flows from an output to an input,
+i.e. you can’t connect pins of a different type. However, some nodes 
+can convert signal type if used as a medium.
+
+Buffering
+=========
+
+Once an input receives a signal, it *buffers* (cache, capture, hold) its value
+so that a node could use it for updates initiated by other input
+signals anytime in future.
+
+Receiving a signal again on a particular input overwrites buffered value with
+a new one. So input pins always store most recent signal’s value.
+
+Before an input receive any signal it buffers ``null`` value. However,
+a particular node can override the default value for some of its pins.
+
+Transactions
+============
+
+Despite many values are continuous in nature, e.g. current time, ambient
+temperature, sound pressure level, signals in XOD are not continuous.
+So updates in XOD are always discrete.
+
+For example, once the system captures temperature signal from a sensor it takes
+the new value as constant. It passes the signal along links causing connected
+nodes to be updated. They could initiate own output signals as a response
+to that input signal. These new signals are passed further, and the process is
+repeated until all nodes that immediately depend on the original signal
+are re-evaluated. Only after that the system can take in subsequent temperature
+signal to update again.
+
+Such cascade node update caused by a signal is called *transaction*.
+
+Although nothing can be done instantly, you should think of transactions
+as moment atomic updates where no external impact is possible until everything
+will be evaluated in response to an initiating signal.
+
+Transactions can happen one after another in milliseconds rate appear to be
+a real-time reaction to external changes.
+
+Vice versa, transactions can occasionally occur in response to rare events.
+This lets processor sleep most of the time and preserve battery charge.
+
+A particular branch of a transactional update completes when it stumbles upon
+a node that has no outputs or any node that had not generate an output signal in
+response to the input signal.
+
+Order of Evaluation
+===================
+
+Once you get the idea of transactions, it’s intuitive enough to understand which
+node will update after which. For the sake of completeness let’s outline
+evaluation rules of a transaction.
+
+1. A new transaction starts when there is a signal generated by some node’s output.
+2. Any signals coming from outside while a transaction is in progress are postponed
+   until current transaction finishes.
+3. Each node is evaluated at most once during a particular transaction.
+4. A node is evaluated only after all nodes that it depends on (i.e. linked to
+   outputs) are evaluated.
+
+Example
+-------
+
+Consider an example of power quality monitor. We want to enable an alarm when there
+is a voltage (greater than zero), but it is out of desired range from 11.6 to
+12.1 volts.
+
+.. image:: images/execution/voltage-monitor.*
+   :align: center
+
+Although the same can be done with fewer nodes in a more compact way, let’s look
+at this example to understand node evaluation order step by step.
+
+First, voltage sensor detects a voltage change. Let’s say its value is 12 volts.
+Voltage signal is spread over three outgoing links to three other node inputs as
+shown below.
+
+.. image:: images/execution/voltage-monitor-p1.*
+   :align: center
+
+After that, these three nodes should be updated. The precise order does not matter
+because they do not have cross-dependencies, and it is not predictable at all.
+Let’s imagine that leftmost node (equality) would be the first. It compares incoming
+signal ``12`` with a buffered value ``0``. The result is ``false``, and that value
+is passed as an output signal further.
+
+.. image:: images/execution/voltage-monitor-p2.*
+   :align: center
+
+We are still have three nodes that should be updated. Now there is an input signal
+for “or” node, and it should react. However, this would violate the rule #4 since nodes
+that “or” depends on indirectly are still not evaluated. So “greater” node is
+chosen.
+
+It compares signal ``12`` with buffered constant ``11.6`` and outputs ``true`` since
+12 is greater than 11.6.
+
+.. image:: images/execution/voltage-monitor-p3.*
+   :align: center
+
+There are still three dirty nodes. However, the only one that can be processed next is
+“less” node because other two depend on it. The “less” node is evaluated to ``true``.
+
+.. image:: images/execution/voltage-monitor-p4.*
+   :align: center
+
+Oh, now we have just two node candidates to be updated. Since “or” depends on “and”,
+the later one is evaluated first. It finally sends ``true`` to “or” node that waits
+here from the second step.
+
+.. image:: images/execution/voltage-monitor-p5.*
+   :align: center
+
+If we have some very quick voltage sensor, it can try to push new update right at
+the current moment. However, we have not finished with current transaction yet because there
+are still dirty nodes. So that new update signal will be postponed until we are done.
+
+Node “or” finally got signals for each input, so it is evaluated and passes ``true``
+to its output.
+
+.. image:: images/execution/voltage-monitor-p6.*
+   :align: center
+
+Now “not” node is outdated. It is evaluated and pass ``false`` further.
+
+.. image:: images/execution/voltage-monitor-p7.*
+   :align: center
+
+As a final result, alarm node receives ``false`` signal and the alarm is not enabled.
+That is fine because input voltage falls into permissible range.
+
+At this moment transaction completes, and we are ready to start the new one to handle
+voltage meter update that came few steps ago.
+
+Restrictions
+------------
+
+To make this rules feasible patch graph should follow few restrictions that are
+built into XOD:
+
+1. A patch should not have loops involving only pure functional nodes. I.e. pure functional
+   node cannot send an output signal back to its input directly or indirectly. So creation
+   of links that cause graph loops is prohibited in XOD.
+2. In a case of simultaneous signals, the resolution priority on conflicting input should
+   be explicit and well defined. So connecting more than one link to an input is
+   not possible as well.
+
+There is a special “buffer” node to deal with the first restriction and “merge” node
+to deal with the second.
