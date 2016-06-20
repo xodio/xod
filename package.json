@@ -4,6 +4,7 @@
   "description": "XOD project",
   "scripts": {
     "start": "mkdir -p ./dist && cp -f ./app/index.html ./dist/index.html && webpack-dev-server --watch --progress --colors --config webpack.config.js",
+    "test": "mocha-webpack --colors --webpack-config webpack.config.js \"test/**/*Spec.jsx\"",
     "lint": "eslint --ext .js --ext .jsx ./app || true"
   },
   "repository": {},
@@ -40,7 +41,10 @@
     "eslint-plugin-jsx-a11y": "^1.5.3",
     "eslint-plugin-react": "^5.2.2",
     "mocha": "^2.3.4",
+    "mocha-webpack": "^0.4.0",
+    "phantomjs2-ext": "^0.2.2",
     "react-hot-loader": "^1.3.0",
+    "wallaby-webpack": "0.0.22",
     "webpack-dev-server": "^1.14.0"
   }
 }
