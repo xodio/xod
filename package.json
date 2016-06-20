@@ -4,7 +4,7 @@
   "description": "XOD project",
   "scripts": {
     "start": "mkdir -p ./dist && cp -f ./app/index.html ./dist/index.html && webpack-dev-server --watch --progress --colors --config webpack.config.js",
-    "lint": "eslint ./app"
+    "lint": "eslint --ext .js --ext .jsx ./app || true"
   },
   "repository": {},
   "keywords": [],
@@ -34,6 +34,9 @@
     "chai": "^3.4.1",
     "chai-immutable": "^1.5.3",
     "eslint": "^2.13.0",
+    "eslint-import-resolver-webpack": "^0.3.0",
+    "eslint-plugin-import": "^1.8.1",
+    "eslint-plugin-react": "^5.2.2",
     "mocha": "^2.3.4",
     "react-hot-loader": "^1.3.0",
     "webpack-dev-server": "^1.14.0"
