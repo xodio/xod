@@ -1,80 +1,86 @@
 import React from 'react';
-import Stylizer from '../utils/stylizer';
-
-const linkStyles = {
-  line: {
-    normal: {
-      stroke: 'black',
-      strokeWidth: 2,
-    },
-    hover: {
-      stroke: 'red',
-    },
-  },
-  helper: {
-    normal: {
-      stroke: 'transparent',
-      strokeWidth: 8,
-    },
-    hover: {
-      stroke: 'yellow',
-    },
-  },
-};
+import R from 'ramda';
 
 class Link extends React.Component {
-  constructor(props) {
-    super(props);
-    this.elementId = `link_${this.props.link.id}`;
+    constructor(props) {
+        super(props);
+        this.displayName = 'Link';
+        this.elId = 'link_' + this.props.link.id;
 
-    this.state = {
-      hovered: false,
-    };
+        this.state = {
+          hovered: false
+        };
 
-    Stylizer.assignStyles(this, linkStyles);
-    Stylizer.hoverable(this, ['line', 'helper']);
-  }
+        this.handleOver = this.onMouseOver.bind(this);
+        this.handleOut = this.onMouseOut.bind(this);
+    }
 
-  getPosition() {
-    return {
-      from: this.props.viewState.from.getAbsCenter(),
-      to: this.props.viewState.to.getAbsCenter(),
-    };
-  }
+    getStyles() {
+      const _styles = this.props.style;
 
-  getCoords() {
-    const pos = this.getPosition();
+      let styles = {
+        line: _styles.line.normal,
+        helper: _styles.helper.normal
+      };
 
-    return {
-      x1: pos.from.x,
-      y1: pos.from.y,
-      x2: pos.to.x,
-      y2: pos.to.y,
-    };
-  }
+      if (this.state.hovered) {
+        styles.line = R.merge(styles.line, _styles.line.hover);
+        styles.helper = R.merge(styles.helper, _styles.helper.hover);
+      }
 
-  render() {
-    const coords = this.getCoords();
-    const styles = this.getStyle();
+      return styles;
+    }
 
-    return (
-      <g className="link" id={this.elementId} onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
-        <line
-          {...coords}
-          style={styles.helper}
-        />
-        <line
-          {...coords}
-          style={styles.line}
-        />
-      </g>
-    );
-  }
+    // @TODO: Use react-update for this mess:
+    onMouseOver() {
+      let state = this.state;
+      state.hovered = true;
+
+      this.setState(state);
+    }
+    onMouseOut() {
+      let state = this.state;
+      state.hovered = false;
+
+      this.setState(state);
+    }
+
+    getPosition() {
+      console.log('vs', this.props.viewState);
+      return {
+        from: this.props.viewState.from.getAbsCenter(),
+        to: this.props.viewState.to.getAbsCenter()
+      };
+    }
+
+    getCoords() {
+      const pos = this.getPosition();
+
+      return {
+        x1: pos.from.x,
+        y1: pos.from.y,
+        x2: pos.to.x,
+        y2: pos.to.y
+      };
+    }
+
+    render() {
+      const coords = this.getCoords();
+      const styles = this.getStyles();
+
+      console.log('>',coords);
+
+      return (
+        <g className="link" id={this.elId} onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
+          <line 
+            {...coords}
+            style={styles.helper} />
+          <line 
+            {...coords}
+            style={styles.line} />
+        </g>
+      );
+    }
 }
-
-Link.propTypes = {
-  link: React.PropTypes.any.isRequired,
-  viewState: React.PropTypes.any.isRequired,
-};
 
 export default Link;

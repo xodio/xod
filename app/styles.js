@@ -1,5 +1,8 @@
 const Styles = {
   svg: {
+    background: {
+      fill: '#eee'
+    },
     node: {
       // sizes
       width: 100,
@@ -14,7 +17,7 @@ const Styles = {
       },
       rect: {
         normal: {
-          fill: 'lightgrey',
+          fill: '#ccc',
           stroke: 'black',
           strokeWidth: 1,
         },
@@ -62,6 +65,26 @@ const Styles = {
         },
         hover: {
           fill: 'red'
+        }
+      }
+    },
+    link: {
+      line: {
+        normal: {
+          stroke: 'black',
+          strokeWidth: 2
+        },
+        hover: {
+          stroke: 'red'
+        }
+      },
+      helper: {
+        normal: {
+          stroke: 'transparent',
+          strokeWidth: 8
+        },
+        hover: {
+          stroke: 'yellow'
         }
       }
     }

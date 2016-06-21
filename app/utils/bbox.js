@@ -46,4 +46,13 @@ export default class Bbox {
       absMax: this.getAbsMax()
     };
   }
+
+  addPosition(addBbox) {
+    return new Bbox({
+      x: this.props.x + addBbox.getPosition().x,
+      y: this.props.y + addBbox.getPosition().y,
+      width: this.props.width,
+      height: this.props.width
+    });
+  }
 }
