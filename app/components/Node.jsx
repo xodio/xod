@@ -1,6 +1,7 @@
 import React from 'react'
 import R from 'ramda'
 import PinList from '../components/PinList.jsx'
+import Stylizer from '../utils/stylizer.js'
 
 class Node extends React.Component {
     constructor(props) {
@@ -8,26 +9,14 @@ class Node extends React.Component {
         this.displayName = 'Node';
         this.node = this.props.node;
         this.elId = 'node_' + this.node.id;
-        this.state = {
-          hovered: false
-        };
 
-        this.handleOver = this.onMouseOver.bind(this);
-        this.handleOut = this.onMouseOut.bind(this);
-    }
-
-    // @TODO: Use react-update for this mess:
-    onMouseOver() {
-      let state = this.state;
-      state.hovered = true;
-
-      this.setState(state);
-    }
-    onMouseOut() {
-      let state = this.state;
-      state.hovered = false;
-
-      this.setState(state);
+        Stylizer.assignStyles(this, {
+          block: this.props.style.node.block,
+          rect: this.props.style.node.rect,
+          text: this.props.style.node.text,
+          pins: this.props.style.pin
+        });
+        Stylizer.hoverable(this, ['rect', 'text']);
     }
 
     getNodeStyle() {
@@ -65,20 +54,8 @@ class Node extends React.Component {
     }
 
     render() {
-      const _styles = this.getNodeStyle();
+      const styles = this.getStyle();
       const position = this.props.viewState.nodes[this.node.id].bbox.getPosition();
-
-      let styles = {
-        block: _styles.block,
-        rect: _styles.rect.normal,
-        text: _styles.text.normal,
-        pins: this.props.style.pin
-      }
-
-      if (this.state.hovered) {
-        styles.rect = R.merge(styles.rect, _styles.rect.hover);
-        styles.text = R.merge(styles.text, _styles.text.hover);
-      }
 
       return (
         <svg {...position} key={this.elId} id={this.elId}>
