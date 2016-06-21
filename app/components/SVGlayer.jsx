@@ -1,12 +1,17 @@
 import React from 'react';
 
-const SVGLayer = ({name, childs}) => {
-
-  return (
-    <g id={name}>
-      {childs}
-    </g>
-  );
-};
+class SVGLayer extends React.Component {
+    constructor(props) {
+        super(props);
+        this.displayName = 'SVGLayer';
+    }
+    render() {
+      return (
+        <g id={this.props.name}>
+          {this.props.childs}
+        </g>
+      );
+    }
+}
 
 export default SVGLayer;

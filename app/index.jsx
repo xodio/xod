@@ -47,8 +47,8 @@ const initialState = {
               y: 380
             },
           },
-          5: {
-            id: 5,
+          8: {
+            id: 8,
             typeId: 5,
             position: {
               x: 30,
@@ -89,7 +89,7 @@ const initialState = {
           },
           6: {
             id: 6,
-            nodeId: 5,
+            nodeId: 8,
             type: 'input',
             key: 'in'
           }

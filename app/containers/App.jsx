@@ -1,5 +1,5 @@
-import React from 'react';
-import Canvas from '../containers/canvas.jsx';
+import React from 'react'
+import Patch from '../containers/Patch.jsx'
 
 export default class App extends React.Component {
 
@@ -20,7 +20,7 @@ export default class App extends React.Component {
   render() {
     return (
     	<div>
-		    <Canvas {...this.curPatch} size={this.canvasSize} />
+		    <Patch {...this.curPatch} size={this.canvasSize} />
       </div>
     );
   }
