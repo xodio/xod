@@ -9,13 +9,29 @@ const Styles = {
         y: 25
       },
       // styles
-      rect: {
-        fill: 'lightgrey',
-        stroke: 'black',
-        strokeWidth: 1,
-      },
       block: {
         fill: 'transparent'
+      },
+      rect: {
+        normal: {
+          fill: 'lightgrey',
+          stroke: 'black',
+          strokeWidth: 1,
+        },
+        hover: {
+          fill: 'lightblue'
+        }
+      },
+      text: {
+        normal: {
+          textAnchor: 'middle',
+          aligmentBaseline: 'central',
+          fill: 'black',
+          fontSize: 12
+        },
+        hover: {
+          fill: 'blue'
+        }
       }
     },
     pin: {

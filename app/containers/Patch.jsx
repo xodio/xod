@@ -118,44 +118,6 @@ export default class Patch extends React.Component {
 
   }
 
-  // calculatePinPositions(pins) {
-  //   pins = R.values(pins);
-
-  //   let pinsByType = R.groupBy((pin)=>{ return pin.type; }, pins);
-
-  //   let center = {
-  //     x: nodeSize.width / 2 + nodeSize.x,
-  //     y: nodeSize.height / 2 + nodeSize.y
-  //   };
-
-  //   const radius = 5;
-  //   const vOffset = {
-  //     input: nodeSize.y - radius,
-  //     output: nodeSize.y + nodeSize.height - radius
-  //   };
-  //   const xPadding = 15;
-
-  //   for (let type in pinsByType) {
-  //     let offset = 0;
-
-  //     let count = pinsByType[type].length;
-  //     let maxWidth = (count * radius) + (count - 1) * xPadding;
-  //     let beginX = center.x - maxWidth;
-
-
-  //     for (let i in pinsByType[type]) {
-  //       pinsByType[type][i].radius = radius;
-  //       pinsByType[type][i].position = {
-  //         x: beginX + offset,
-  //         y: vOffset[type]
-  //       };
-  //       offset += xPadding;
-  //     }
-  //   }
-
-  //   return R.flatten(R.values(pinsByType));
-  // }
-
   render() {
     return (
       <svg width={this.props.size.width} height={this.props.size.height} xmlns="http://www.w3.org/2000/svg">
