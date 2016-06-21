@@ -15,6 +15,8 @@ class Pin extends React.Component {
         this.handleOver = this.onMouseOver.bind(this);
         this.handleOut = this.onMouseOut.bind(this);
     }
+
+    // @TODO: Use react-update for this mess:
     onMouseOver() {
       let state = this.state;
       state.hovered = true;
