@@ -13,8 +13,6 @@ export default class App extends React.Component {
       width: (document) ? document.documentElement.clientWidth : 800,
       height: (document) ? document.documentElement.clientHeight : 600
     };
-
-    console.log('curPatch >', this.curPatch);
   }
 
   render() {

@@ -1,5 +1,6 @@
 import React from 'react'
 import R from 'ramda'
+import Stylizer from '../utils/stylizer.js'
 
 class Pin extends React.Component {
     constructor(props) {
@@ -12,22 +13,8 @@ class Pin extends React.Component {
           hovered: false
         };
 
-        this.handleOver = this.onMouseOver.bind(this);
-        this.handleOut = this.onMouseOut.bind(this);
-    }
-
-    // @TODO: Use react-update for this mess:
-    onMouseOver() {
-      let state = this.state;
-      state.hovered = true;
-
-      this.setState(state);
-    }
-    onMouseOut() {
-      let state = this.state;
-      state.hovered = false;
-
-      this.setState(state);
+        Stylizer.assignStyles(this, this.props.style);
+        Stylizer.hoverable(this, ['circle', 'text']);
     }
 
     getPosition() {
@@ -67,15 +54,7 @@ class Pin extends React.Component {
 
     render() {
 
-      let styles = {
-        circle: this.props.style.circle.normal,
-        text: this.props.style.text.normal
-      };
-
-      if (this.state.hovered) {
-        styles.circle = R.merge(styles.circle, this.props.style.circle.hover);
-        styles.text = R.merge(styles.text, this.props.style.text.hover);
-      }
+      let styles = this.getStyle();
 
       return (
         <g className="pin" id={this.elId} onMouseOver={this.handleOver} onMouseOut={this.handleOut}>

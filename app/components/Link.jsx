@@ -1,5 +1,6 @@
 import React from 'react';
 import R from 'ramda';
+import Stylizer from '../utils/stylizer.js'
 
 class Link extends React.Component {
     constructor(props) {
@@ -11,42 +12,11 @@ class Link extends React.Component {
           hovered: false
         };
 
-        this.handleOver = this.onMouseOver.bind(this);
-        this.handleOut = this.onMouseOut.bind(this);
-    }
-
-    getStyles() {
-      const _styles = this.props.style;
-
-      let styles = {
-        line: _styles.line.normal,
-        helper: _styles.helper.normal
-      };
-
-      if (this.state.hovered) {
-        styles.line = R.merge(styles.line, _styles.line.hover);
-        styles.helper = R.merge(styles.helper, _styles.helper.hover);
-      }
-
-      return styles;
-    }
-
-    // @TODO: Use react-update for this mess:
-    onMouseOver() {
-      let state = this.state;
-      state.hovered = true;
-
-      this.setState(state);
-    }
-    onMouseOut() {
-      let state = this.state;
-      state.hovered = false;
-
-      this.setState(state);
+        Stylizer.assignStyles(this, this.props.style);
+        Stylizer.hoverable(this, ['line', 'helper']);
     }
 
     getPosition() {
-      console.log('vs', this.props.viewState);
       return {
         from: this.props.viewState.from.getAbsCenter(),
         to: this.props.viewState.to.getAbsCenter()
@@ -66,9 +36,7 @@ class Link extends React.Component {
 
     render() {
       const coords = this.getCoords();
-      const styles = this.getStyles();
-
-      console.log('>',coords);
+      const styles = this.getStyle();
 
       return (
         <g className="link" id={this.elId} onMouseOver={this.handleOver} onMouseOut={this.handleOut}>

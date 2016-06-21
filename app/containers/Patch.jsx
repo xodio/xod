@@ -22,7 +22,8 @@ export default class Patch extends React.Component {
       childs: this.createNodes(props.nodes, props.pins, this.viewState)
     } ];
 
-    console.log(this.viewState);
+    console.log('patch: ', this.props);
+    console.log('viewState: ', this.viewState);
   }
 
   // @TODO: finish this methods and pass them into components
