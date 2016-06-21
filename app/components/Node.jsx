@@ -82,7 +82,6 @@ class Node extends React.Component {
 
       return (
         <svg {...position} key={this.elId} id={this.elId}>
-          <rect {...this.getBlockProps()} style={styles.block} />
           <g className="node" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
             <rect {...this.getRectProps()} style={styles.rect} />
             <text {...this.getTextProps()} style={styles.text}>{this.node.id}</text>

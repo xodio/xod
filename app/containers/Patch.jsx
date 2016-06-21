@@ -4,6 +4,7 @@ import Styles from '../styles.js'
 import Bbox from '../utils/bbox.js'
 import SVGLayer from '../components/SVGlayer.jsx'
 import Node from '../components/Node.jsx'
+import Link from '../components/Link.jsx'
 
 export default class Patch extends React.Component {
   constructor(props) {
@@ -11,14 +12,17 @@ export default class Patch extends React.Component {
 
     this.viewState = this.createViewState(props);
     this.layers = [ {
-      name: 'background'
+      name: 'background',
+      childs: this.createBackground()
+    }, {
+      name: 'links',
+      childs: this.createLinks(props.links, this.viewState)
     }, {
       name: 'nodes',
       childs: this.createNodes(props.nodes, props.pins, this.viewState)
-    }, {
-      name: 'links',
-      // childs: props.links
     } ];
+
+    console.log(this.viewState);
   }
 
   // @TODO: finish this methods and pass them into components
@@ -27,6 +31,7 @@ export default class Patch extends React.Component {
 
     viewState.nodes = this.calcNodes( state.nodes );
     viewState.pins = this.calcPins( state.pins, viewState.nodes );
+    viewState.links = this.calcLinks( state.links, viewState.pins, viewState.nodes );
 
     return viewState;
   }
@@ -37,26 +42,27 @@ export default class Patch extends React.Component {
     for (let i in nodes) {
       let node = nodes[i];
 
-      result[i] = {};
-      result[i].id = node.id;
-      result[i].bbox = new Bbox({
-        x: nodes[i].position.x,
-        y: nodes[i].position.y,
-        width: Styles.svg.node.width,
-        height: Styles.svg.node.height
-      });
+      result[i] = {
+        id: node.id,
+        bbox: new Bbox({
+          x: node.position.x,
+          y: node.position.y,
+          width: Styles.svg.node.width,
+          height: Styles.svg.node.height
+        })
+      }
     }
 
     return result;
   }
 
-  calcPins( pins, nodes ) {
+  calcPins( pins, nodesView ) {
     let result = {};
 
     const pinsByNodes = R.groupBy((pin)=>{ return pin.nodeId; }, R.values(pins));
 
     for (let n in pinsByNodes) {
-      let node = nodes[n];
+      let node = nodesView[n];
       const pinsByType = R.groupBy((pin)=>{ return pin.type; }, pinsByNodes[n]);
 
       let vOffset = {
@@ -79,8 +85,8 @@ export default class Patch extends React.Component {
             bbox: new Bbox({
               x: node.bbox.getCenter().x - maxLength + offset,
               y: vOffset[type],
-              width: Styles.svg.pin.radius,
-              height: Styles.svg.pin.radius
+              width: Styles.svg.pin.radius * 2,
+              height: Styles.svg.pin.radius * 2
             })
           };
 
@@ -88,6 +94,25 @@ export default class Patch extends React.Component {
         }
       }
 
+    }
+
+    return result;
+  }
+
+  calcLinks( links, pinsView, nodesView ) {
+    let result = {};
+
+    for (let i in links) {
+      let pinFrom = pinsView[links[i].fromPinId];
+      let pinTo = pinsView[links[i].toPinId];
+      let nodeFrom = nodesView[pinFrom.nodeId];
+      let nodeTo = nodesView[pinTo.nodeId];
+
+      result[i] = {
+        id: links[i].id,
+        from: pinFrom.bbox.addPosition( nodeFrom.bbox ),
+        to: pinTo.bbox.addPosition( nodeTo.bbox )
+      };
     }
 
     return result;
@@ -105,7 +130,7 @@ export default class Patch extends React.Component {
         R.filter(
           (child)=>{ return (child.nodeId) ? (child.nodeId === node.id) : (child.id === node.id); }
         ),
-        viewState
+        R.props(['nodes','pins'], viewState)
       );
 
       nodeChilds.push( nodeFactory({key: node.id, node: node, pins: nodePins, style: Styles.svg, viewState: viewState}) );
@@ -114,8 +139,25 @@ export default class Patch extends React.Component {
     return nodeChilds;
   }
 
-  createLinks(links) {
+  createLinks(links, viewState) {
+    let linkChilds = [];
+    let linkFactory = React.createFactory(Link);
 
+    for (let i in links) {
+      const link = links[i];
+
+      linkChilds.push( linkFactory({key: link.id, link: link, viewState: viewState.links[i], style: Styles.svg.link}) );
+    }
+
+    return linkChilds;
+  }
+
+  createBackground() {
+    let bgChilds = [];
+
+    bgChilds.push( <rect key="bg" x="0" y="0" width={this.props.size.width} height={this.props.size.height} style={Styles.svg.background} /> );
+
+    return bgChilds;
   }
 
   render() {

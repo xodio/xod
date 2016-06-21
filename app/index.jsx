@@ -17,7 +17,7 @@ const initialState = {
             typeId: 4,
             position: {
               x: 240,
-              y: 90
+              y: 110
             },
             props: {
               brightness: 0.67
@@ -52,7 +52,7 @@ const initialState = {
             typeId: 5,
             position: {
               x: 30,
-              y: 75
+              y: 185
             },
           }
         },
