@@ -1,31 +1,88 @@
-import React from 'react';
+import React from 'react'
+import R from 'ramda'
 
-const Pin = ({data}) => {
+class Pin extends React.Component {
+    constructor(props) {
+        super(props);
 
-  console.log('>>>>', data);
+        this.displayName = 'Pin';
+        this.elId = 'pin_' + props.data.id;
 
-  const elId = 'pin_'+data.id;
+        this.state = {
+          hovered: false
+        };
 
-  const radius = data.radius;
-  const circleProps = {
-    cx: data.position.x + radius + 1,
-    cy: data.position.y + radius + 1,
-    r: radius,
-    fill: 'darkgrey',
-    stroke: 'black',
-    strokeWidth: 1
-  };
-  const textProps = {
-    x: data.position.x + radius,
-    y: data.position.y + radius
-  }
+        this.handleOver = this.onMouseOver.bind(this);
+        this.handleOut = this.onMouseOut.bind(this);
+    }
+    onMouseOver() {
+      let state = this.state;
+      state.hovered = true;
 
-  return (
-    <g id={elId}>
-      <circle {...circleProps} />
-      <text {...textProps} aligmentBaseline="central" fill="black" fontSize="12">{data.key}</text>
-    </g>
-  );
-};
+      this.setState(state);
+    }
+    onMouseOut() {
+      let state = this.state;
+      state.hovered = false;
+
+      this.setState(state);
+    }
+
+    getPosition() {
+      const radius = this.props.style.radius;
+      return {
+        x: this.props.viewState.bbox.getPosition().x + radius + 1,
+        y: this.props.viewState.bbox.getPosition().y + radius + 1
+      };
+    }
+    getCircleProps() {
+      return {
+        cx: this.getPosition().x,
+        cy: this.getPosition().y,
+        r: this.props.style.radius
+      };
+    }
+    getTextProps() {
+      const textMargin = (this.props.style.radius + 2) * ((this.isInput()) ? 1 : -1);
+      const pos = this.getPosition();
+      return {
+        x: pos.x + textMargin,
+        y: pos.y + this.props.style.text.normal.fontSize / 4,
+        transform: 'rotate(-90 '+(pos.x)+','+(pos.y)+')',
+        textAnchor: (this.isInput()) ? 'start' : 'end'
+      };
+    }
+
+    getType() {
+      return this.props.data.type;
+    }
+    isInput() {
+      return (this.getType() === 'input');
+    }
+    isOutput() {
+      return (this.getType() === 'output');
+    }
+
+    render() {
+
+      let styles = {
+        circle: this.props.style.circle.normal,
+        text: this.props.style.text.normal
+      };
+
+      if (this.state.hovered) {
+        styles.circle = R.merge(styles.circle, this.props.style.circle.hover);
+        styles.text = R.merge(styles.text, this.props.style.text.hover);
+      }
+
+      return (
+        <g className="pin" id={this.elId} onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
+          <rect style={this.props.style.block} />
+          <circle {...this.getCircleProps()} style={styles.circle} />
+          <text className="test ad" {...this.getTextProps()} style={styles.text} >{this.props.data.key}</text>
+        </g>
+      );
+    }
+}
 
 export default Pin;

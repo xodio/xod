@@ -1,248 +1,168 @@
-import React from 'react';
-import R from 'ramda';
-import Bbox from '../utils/bbox';
-import SVGLayer from '../components/SVGlayer';
-import Node from '../components/Node';
-import Link from '../components/Link';
-
-const backgroundStyle = {
-  fill: '#eee',
-};
-
-const Sizes = {
-  node: {
-    min_width: 80,
-    height: 40,
-    padding: {
-      x: 2,
-      y: 25,
-    },
-  },
-  pin: {
-    radius: 5,
-    margin: 15,
-  },
-};
+import React from 'react'
+import R from 'ramda'
+import Styles from '../styles.js'
+import Bbox from '../utils/bbox.js'
+import SVGLayer from '../components/SVGlayer.jsx'
+import Node from '../components/Node.jsx'
 
 export default class Patch extends React.Component {
   constructor(props) {
     super(props);
 
     this.viewState = this.createViewState(props);
-    this.layers = [{
-      name: 'background',
-      children: this.createBackground(),
-    }, {
-      name: 'links',
-      children: this.createLinks(props.links, this.viewState),
+    this.layers = [ {
+      name: 'background'
     }, {
       name: 'nodes',
-      children: this.createNodes(props.nodes, props.pins, this.viewState),
-    }];
-
-    // console.log('patch: ', this.props);
-    // console.log('viewState: ', this.viewState);
+      childs: this.createNodes(props.nodes, props.pins, this.viewState)
+    }, {
+      name: 'links',
+      // childs: props.links
+    } ];
   }
 
-  getMaxSidePinCount(pins, nodeId) {
-    return R.pipe(
-      R.values,
-      R.filter((a) => (a.nodeId === nodeId)),
-      R.groupBy((a) => a.nodeId + a.type),
-      R.values,
-      R.reduce((p, c) => R.max(p, c.length || 0), 0)
-    )(pins);
-  }
-  getPinsWidth(count, withMargins) {
-    const marginCount = (withMargins) ? count + 1 : count - 1;
-    return (marginCount * Sizes.pin.margin) + (count * Sizes.pin.radius * 2);
-  }
-  getNodeWidth(nodeId) {
-    const pinsMaxCount = this.getMaxSidePinCount(this.props.pins, nodeId);
-    let nodeWidth = this.getPinsWidth(pinsMaxCount, true);
-
-    if (nodeWidth < Sizes.node.min_width) {
-      nodeWidth = Sizes.node.min_width;
-    }
-
-    return nodeWidth;
-  }
-  getPinListWidth(nodeId) {
-    const pinsMaxCount = this.getMaxSidePinCount(this.props.pins, nodeId);
-    return this.getPinsWidth(pinsMaxCount, false);
-  }
-
+  // @TODO: finish this methods and pass them into components
   createViewState(state) {
-    const viewState = {};
+    let viewState = {};
 
-    viewState.nodes = this.calcNodes(state.nodes);
-    viewState.pins = this.calcPins(state.pins, viewState.nodes);
-    viewState.links = this.calcLinks(state.links, viewState.pins, viewState.nodes);
+    viewState.nodes = this.calcNodes( state.nodes );
+    viewState.pins = this.calcPins( state.pins, viewState.nodes );
 
     return viewState;
   }
 
-  calcNodes(nodes) {
-    return R.pipe(
-      R.values,
-      R.reduce((p, node) => {
-        const n = p;
-        const nodeWidth = this.getNodeWidth(node.id);
+  calcNodes( nodes ) {
+    let result = {};
 
-        n[node.id] = {
-          id: node.id,
-          bbox: new Bbox({
-            x: node.position.x,
-            y: node.position.y,
-            width: nodeWidth,
-            height: Sizes.node.height,
-          }),
-          padding: Sizes.node.padding,
-        };
+    for (let i in nodes) {
+      let node = nodes[i];
 
-        return n;
-      }, {})
-    )(nodes);
+      result[i] = {};
+      result[i].id = node.id;
+      result[i].bbox = new Bbox({
+        x: nodes[i].position.x,
+        y: nodes[i].position.y,
+        width: Styles.svg.node.width,
+        height: Styles.svg.node.height
+      });
+    }
+
+    return result;
   }
 
-  calcPins(pins, nodesView) {
-    return R.pipe(
-      R.values,
-      R.groupBy((p) => p.nodeId + p.type),
-      R.map((a) => {
-        const node = nodesView[a[0].nodeId];
-        const nodeWidth = this.getNodeWidth(node.id);
-        const pinsWidth = this.getPinListWidth(node.id);
-        let offset = 0;
-        const vOffset = {
-          input: Sizes.node.padding.y - Sizes.pin.radius,
-          output: node.bbox.getSize().height + Sizes.node.padding.y - Sizes.pin.radius,
-        };
+  calcPins( pins, nodes ) {
+    let result = {};
 
-        return R.map((pin) => {
-          const r = {
+    const pinsByNodes = R.groupBy((pin)=>{ return pin.nodeId; }, R.values(pins));
+
+    for (let n in pinsByNodes) {
+      let node = nodes[n];
+      const pinsByType = R.groupBy((pin)=>{ return pin.type; }, pinsByNodes[n]);
+
+      let vOffset = {
+        input: Styles.svg.node.padding.y - Styles.svg.pin.radius,
+        output: node.bbox.getSize().height + Styles.svg.node.padding.y - Styles.svg.pin.radius
+      };
+
+      for (let type in pinsByType) {
+        const count = pinsByType[type].length;
+        const maxLength = count * Styles.svg.pin.radius + (count - 1) * Styles.svg.pin.margin;
+        let offset = 0;
+
+        for (let i in pinsByType[type]) {
+          let pin = pinsByType[type][i];
+
+          result[pin.id] = {
             id: pin.id,
-            nodeId: pin.nodeId,
-            type: pin.type,
+            nodeId: node.id,
+            type: type,
             bbox: new Bbox({
-              x: (nodeWidth - pinsWidth) / 2 + offset,
-              y: vOffset[pin.type],
-              width: Sizes.pin.radius * 2,
-              height: Sizes.pin.radius * 2,
-            }),
+              x: node.bbox.getCenter().x - maxLength + offset,
+              y: vOffset[type],
+              width: Styles.svg.pin.radius,
+              height: Styles.svg.pin.radius
+            })
           };
 
-          offset += Sizes.pin.margin + Sizes.pin.radius * 2;
+          offset += Styles.svg.pin.margin;
+        }
+      }
 
-          return r;
-        }, a);
-      }),
-      R.values,
-      R.flatten,
-      R.reduce((p, pin) => {
-        const n = p;
-        n[pin.id] = pin;
-        return n;
-      }, {})
-    )(pins);
-  }
+    }
 
-  calcLinks(links, pinsView, nodesView) {
-    return R.pipe(
-      R.values,
-      R.reduce((p, link) => {
-        const n = p;
-        const pinFrom = pinsView[link.fromPinId];
-        const pinTo = pinsView[link.toPinId];
-        const nodeFrom = nodesView[pinFrom.nodeId];
-        const nodeTo = nodesView[pinTo.nodeId];
-
-        n[link.id] = {
-          id: link.id,
-          from: pinFrom.bbox.addPosition(nodeFrom.bbox),
-          to: pinTo.bbox.addPosition(nodeTo.bbox),
-        };
-
-        return n;
-      }, {})
-    )(links);
+    return result;
   }
 
   createNodes(nodes, pins, viewState) {
-    const nodeFactory = React.createFactory(Node);
+    let nodeChilds = [];
+    let nodeFactory = React.createFactory(Node)
 
-    return R.pipe(
-      R.values,
-      R.reduce((p, node) => {
-        const nodePins = R.filter(R.propEq('nodeId', node.id), pins);
+    for (let n in nodes) {
+      const node = nodes[n];
+      const nodePins = R.filter( R.propEq('nodeId', node.id), pins );
 
-        const n = p;
-        n.push(
-          nodeFactory({
-            key: node.id,
-            node,
-            pins: nodePins,
-            radius: Sizes.pin.radius,
-            viewState,
-          })
-        );
+      let nodeViewState = R.map(
+        R.filter(
+          (child)=>{ return (child.nodeId) ? (child.nodeId === node.id) : (child.id === node.id); }
+        ),
+        viewState
+      );
 
-        return n;
-      }, [])
-    )(nodes);
+      nodeChilds.push( nodeFactory({key: node.id, node: node, pins: nodePins, style: Styles.svg, viewState: viewState}) );
+    }
+
+    return nodeChilds;
   }
 
-  createLinks(links, viewState) {
-    const linkFactory = React.createFactory(Link);
+  createLinks(links) {
 
-    return R.pipe(
-      R.values,
-      R.reduce((p, link) => {
-        const n = p;
-        n.push(
-          linkFactory({
-            key: link.id,
-            link,
-            viewState: viewState.links[link.id],
-            style: Sizes.link,
-          })
-        );
-
-        return n;
-      }, [])
-    )(links);
   }
 
-  createBackground() {
-    const bgChildren = [];
+  // calculatePinPositions(pins) {
+  //   pins = R.values(pins);
 
-    bgChildren.push(
-      <rect
-        key="bg" x="0" y="0"
-        width={this.props.size.width} height={this.props.size.height}
-        style={backgroundStyle}
-      />
-    );
+  //   let pinsByType = R.groupBy((pin)=>{ return pin.type; }, pins);
 
-    return bgChildren;
-  }
+  //   let center = {
+  //     x: nodeSize.width / 2 + nodeSize.x,
+  //     y: nodeSize.height / 2 + nodeSize.y
+  //   };
+
+  //   const radius = 5;
+  //   const vOffset = {
+  //     input: nodeSize.y - radius,
+  //     output: nodeSize.y + nodeSize.height - radius
+  //   };
+  //   const xPadding = 15;
+
+  //   for (let type in pinsByType) {
+  //     let offset = 0;
+
+  //     let count = pinsByType[type].length;
+  //     let maxWidth = (count * radius) + (count - 1) * xPadding;
+  //     let beginX = center.x - maxWidth;
+
+
+  //     for (let i in pinsByType[type]) {
+  //       pinsByType[type][i].radius = radius;
+  //       pinsByType[type][i].position = {
+  //         x: beginX + offset,
+  //         y: vOffset[type]
+  //       };
+  //       offset += xPadding;
+  //     }
+  //   }
+
+  //   return R.flatten(R.values(pinsByType));
+  // }
 
   render() {
     return (
       <svg width={this.props.size.width} height={this.props.size.height} xmlns="http://www.w3.org/2000/svg">
-        <text x="5" y="5">{this.props.name}</text>
         {this.layers.map(layer =>
-          <SVGLayer key={layer.name} name={layer.name} children={layer.children} />
+          <SVGLayer key={layer.name} name={layer.name} childs={layer.childs} />
         )}
       </svg>
     );
   }
 }
-
-Patch.propTypes = {
-  name: React.PropTypes.string,
-  links: React.PropTypes.any.isRequired,
-  nodes: React.PropTypes.any.isRequired,
-  pins: React.PropTypes.any.isRequired,
-  size: React.PropTypes.any.isRequired,
-};
