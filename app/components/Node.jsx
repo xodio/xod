@@ -1,7 +1,34 @@
-import React from 'react'
-import R from 'ramda'
-import PinList from '../components/PinList.jsx'
-import Stylizer from '../utils/stylizer.js'
+import React from 'react';
+import R from 'ramda';
+import PinList from '../components/PinList.jsx';
+import Stylizer from '../utils/stylizer.js';
+
+const nodeStyles = {
+  block: {
+    fill: 'transparent'
+  },
+  rect: {
+    normal: {
+      fill: '#ccc',
+      stroke: 'black',
+      strokeWidth: 1,
+    },
+    hover: {
+      fill: 'lightblue'
+    }
+  },
+  text: {
+    normal: {
+      textAnchor: 'middle',
+      aligmentBaseline: 'central',
+      fill: 'black',
+      fontSize: 12
+    },
+    hover: {
+      fill: 'blue'
+    }
+  }
+};
 
 class Node extends React.Component {
     constructor(props) {
@@ -10,12 +37,7 @@ class Node extends React.Component {
         this.node = this.props.node;
         this.elId = 'node_' + this.node.id;
 
-        Stylizer.assignStyles(this, {
-          block: this.props.style.node.block,
-          rect: this.props.style.node.rect,
-          text: this.props.style.node.text,
-          pins: this.props.style.pin
-        });
+        Stylizer.assignStyles(this, nodeStyles);
         Stylizer.hoverable(this, ['rect', 'text']);
     }
 
@@ -63,7 +85,7 @@ class Node extends React.Component {
             <rect {...this.getRectProps()} style={styles.rect} />
             <text {...this.getTextProps()} style={styles.text}>{this.node.id}</text>
           </g>
-          <PinList pins={this.props.pins} viewState={this.props.viewState.pins} style={styles.pins} />
+          <PinList pins={this.props.pins} viewState={this.props.viewState.pins} radius={this.props.style.pin.radius} />
         </svg>
       );
     }

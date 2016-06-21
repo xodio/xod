@@ -12,7 +12,7 @@ class PinList extends React.Component {
       return (
         <g className="pinlist">
           {pins.map( (pin) =>
-            <Pin key={pin.id} data={pin} viewState={this.props.viewState[pin.id]} style={this.props.style} />
+            <Pin key={pin.id} data={pin} viewState={this.props.viewState[pin.id]} radius={this.props.radius} />
           )}
         </g>
       );

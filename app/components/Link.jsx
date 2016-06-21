@@ -2,6 +2,27 @@ import React from 'react';
 import R from 'ramda';
 import Stylizer from '../utils/stylizer.js'
 
+const linkStyles = {
+  line: {
+    normal: {
+      stroke: 'black',
+      strokeWidth: 2,
+    },
+    hover: {
+      stroke: 'red',
+    },
+  },
+  helper: {
+    normal: {
+      stroke: 'transparent',
+      strokeWidth: 8,
+    },
+    hover: {
+      stroke: 'yellow',
+    },
+  },
+};
+
 class Link extends React.Component {
     constructor(props) {
         super(props);
@@ -12,7 +33,7 @@ class Link extends React.Component {
           hovered: false
         };
 
-        Stylizer.assignStyles(this, this.props.style);
+        Stylizer.assignStyles(this, linkStyles);
         Stylizer.hoverable(this, ['line', 'helper']);
     }
 

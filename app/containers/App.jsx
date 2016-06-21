@@ -1,5 +1,5 @@
-import React from 'react'
-import Patch from '../containers/Patch.jsx'
+import React from 'react';
+import Patch from '../containers/Patch.jsx';
 
 export default class App extends React.Component {
 
