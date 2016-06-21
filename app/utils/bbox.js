@@ -6,35 +6,35 @@ export default class Bbox {
   getPosition() {
     return {
       x: this.props.x,
-      y: this.props.y
+      y: this.props.y,
     };
   }
 
   getSize() {
     return {
       width: this.props.width,
-      height: this.props.height
+      height: this.props.height,
     };
   }
 
   getCenter() {
     return {
       x: this.props.width / 2,
-      y: this.props.height / 2
+      y: this.props.height / 2,
     };
   }
 
   getAbsCenter() {
     return {
       x: this.props.x + this.getCenter().x,
-      y: this.props.y + this.getCenter().y
+      y: this.props.y + this.getCenter().y,
     };
   }
 
   getAbsMax() {
     return {
       x: this.props.x + this.props.width,
-      y: this.props.y + this.props.height
+      y: this.props.y + this.props.height,
     };
   }
 
@@ -43,7 +43,7 @@ export default class Bbox {
       position: this.getPosition(),
       center: this.getCenter(),
       absCenter: this.getAbsCenter(),
-      absMax: this.getAbsMax()
+      absMax: this.getAbsMax(),
     };
   }
 
@@ -52,7 +52,7 @@ export default class Bbox {
       x: this.props.x + addBbox.getPosition().x,
       y: this.props.y + addBbox.getPosition().y,
       width: this.props.width,
-      height: this.props.width
+      height: this.props.width,
     });
   }
 }
