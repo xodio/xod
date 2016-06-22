@@ -3,13 +3,13 @@ module.exports = {
     'ecmaVersion': 6,
     'sourceType': 'module',
     'ecmaFeatures': {
-      'jsx': true,
+      'jsx': true
     }
   },
 
   'plugins': [
     'react',
-    'import',
+    'import'
   ],
 
   'extends': [
@@ -18,14 +18,23 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/react',
     'plugin:react/recommended',
-    'airbnb',
+    'airbnb'
   ],
 
   'settings': {
-    'import/resolver': 'webpack',
+    'import/resolver': ['node', 'webpack']
   },
 
   'rules': {
-    'import/extensions': [2, 'never'],
+    'import/extensions': [2, 'never']
   },
-}
+
+  'globals': {
+    'describe': true,
+    'it': true,
+    'before': true,
+    'beforeEach': true,
+    'after': true,
+    'afterEach': true
+  }
+};

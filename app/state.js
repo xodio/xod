@@ -4,8 +4,8 @@ export const initialState = {
     patches: {
       1: {
         id: 1,
-        name: 'Skynet'
-      }
+        name: 'Skynet',
+      },
     },
     nodes: {
       1: {
@@ -13,38 +13,38 @@ export const initialState = {
         patchId: 1,
         typeId: 4,
         props: {
-          brightness: 0.67
-        }
+          brightness: 0.67,
+        },
       },
       2: {
         id: 2,
         patchId: 1,
         typeId: 1,
         props: {
-          brightness: 0.67
-        }
+          brightness: 0.67,
+        },
       },
       3: {
         id: 3,
         patchId: 1,
         typeId: 3,
         props: {
-          brightness: 0.67
-        }
+          brightness: 0.67,
+        },
       },
       4: {
         id: 4,
         patchId: 1,
         typeId: 2,
         props: {
-          brightness: 0.67
-        }
+          brightness: 0.67,
+        },
       },
       5: {
         id: 5,
         patchId: 1,
-        typeId: 5
-      }
+        typeId: 5,
+      },
     },
     links: {
     },
@@ -52,34 +52,34 @@ export const initialState = {
       1: {
         id: 1,
         nodeId: 1,
-        key: 'in'
+        key: 'in',
       },
       2: {
         id: 2,
         nodeId: 2,
-        key: 'in'
+        key: 'in',
       },
       3: {
         id: 3,
         nodeId: 2,
-        key: 'out'
+        key: 'out',
       },
       4: {
         id: 4,
         nodeId: 3,
-        key: 'out'
+        key: 'out',
       },
       5: {
         id: 5,
         nodeId: 4,
-        key: 'in'
+        key: 'in',
       },
       6: {
         id: 6,
         nodeId: 5,
-        key: 'out'
-      }
-    }
+        key: 'out',
+      },
+    },
   },
   editor: {},
   nodeTypes: {
@@ -90,13 +90,13 @@ export const initialState = {
       pins: {
         input: [{
           key: 'in',
-          label: 'in'
+          label: 'in',
         }],
         output: [{
           key: 'out',
-          label: 'out'
-        }]
-      }
+          label: 'out',
+        }],
+      },
     },
     2: {
       id: 2,
@@ -105,16 +105,16 @@ export const initialState = {
       pins: {
         input: [{
           key: 'in1',
-          label: 'in1'
+          label: 'in1',
         }, {
           key: 'in2',
-          label: 'in2'
+          label: 'in2',
         }],
         output: [{
           key: 'out',
-          label: 'out'
-        }]
-      }
+          label: 'out',
+        }],
+      },
     },
     3: {
       id: 3,
@@ -124,9 +124,9 @@ export const initialState = {
         input: [],
         output: [{
           key: 'out',
-          label: 'out'
-        }]
-      }
+          label: 'out',
+        }],
+      },
     },
     4: {
       id: 4,
@@ -135,10 +135,10 @@ export const initialState = {
       pins: {
         input: [{
           key: 'in',
-          label: 'in'
+          label: 'in',
         }],
-        output: []
-      }
+        output: [],
+      },
     },
     5: {
       id: 5,
@@ -148,9 +148,9 @@ export const initialState = {
         input: [],
         output: [{
           key: 'out',
-          label: 'out'
-        }]
-      }
+          label: 'out',
+        }],
+      },
     },
     6: {
       id: 6,
@@ -160,9 +160,9 @@ export const initialState = {
         input: [],
         output: [{
           key: 'out',
-          label: 'out'
-        }]
-      }
-    }
-  }
+          label: 'out',
+        }],
+      },
+    },
+  },
 };

@@ -1,11 +1,10 @@
-import * as Actions from '../app/actions.js';
-import { initialState } from '../app/state.js';
-import { newId, nodes, lastId, copyNode } from '../app/reducers.js';
+import * as Actions from '../app/actions';
+import { initialState } from '../app/state';
+import { newId, nodes, lastId, copyNode } from '../app/reducers';
 import chai from 'chai';
 
-
-describe('Nodes reducer', function() {
-  describe('while adding node', function () {
+describe('Nodes reducer', () => {
+  describe('while adding node', () => {
     it('should insert node', () => {
       const oldState = initialState.project.nodes;
       const state = nodes(oldState, Actions.addNode({
@@ -13,22 +12,22 @@ describe('Nodes reducer', function() {
         patchId: 1,
         typeId: 0,
         props: {
-          label: 'node'
-        }
+          label: 'node',
+        },
       }));
-      chai.assert(newId(oldState) + 1=== newId(state));
+      chai.assert(newId(oldState) + 1 === newId(state));
     });
 
     it('should set appropriate id for a new node', () => {
       const props = {
-        label: 'node'
+        label: 'node',
       };
       const oldState = initialState.project.nodes;
       const state = nodes(oldState, Actions.addNode({
         id: null,
         patchId: 1,
         typeId: 0,
-        props
+        props,
       }));
       const newNode = state[lastId(state)];
       chai.assert(newNode.id === lastId(state));
@@ -37,21 +36,21 @@ describe('Nodes reducer', function() {
     it('should be reverse operation for node deletion', () => {
       let state = null;
       const props = {
-        label: 'node'
+        label: 'node',
       };
       const oldState = initialState.project.nodes;
       state = nodes(oldState, Actions.addNode({
         id: null,
         patchId: 1,
         typeId: 0,
-        props
+        props,
       }));
       state = nodes(state, Actions.deleteNode(lastId(state)));
       chai.expect(state).to.deep.equal(oldState);
     });
   });
 
-  describe('while removing node', function () {
+  describe('while removing node', () => {
     it('should remove node', () => {
       const oldState = initialState.project.nodes;
       const state = nodes(oldState, Actions.deleteNode(lastId(oldState)));
@@ -64,14 +63,11 @@ describe('Nodes reducer', function() {
       const removingNodeId = lastId(oldState);
       const state = nodes(oldState, Actions.deleteNode(removingNodeId));
 
-      chai.assert(!nodes.hasOwnProperty(removingNodeId));
+      chai.assert(!state.hasOwnProperty(removingNodeId));
     });
 
     it('should be reverse operation for node insertion', () => {
       let state = null;
-      const props = {
-        label: 'node'
-      };
       const oldState = initialState.project.nodes;
       const removingNodeId = lastId(oldState);
       const removingNode = copyNode(oldState[removingNodeId]);
@@ -81,13 +77,12 @@ describe('Nodes reducer', function() {
     });
   });
 
-  describe('while moving node', function () {
+  describe('while moving node', () => {
     it('should move node', () => {
       const oldState = initialState.project.nodes;
-      const movingNodeId = lastId(oldState);
       const position = {
         x: 0,
-        y: 100
+        y: 100,
       };
       const state = nodes(oldState, Actions.moveNode(lastId(oldState), position));
 
@@ -101,7 +96,7 @@ describe('Nodes reducer', function() {
       const removingNodeId = lastId(oldState);
       const state = nodes(oldState, Actions.deleteNode(removingNodeId));
 
-      chai.assert(!nodes.hasOwnProperty(removingNodeId));
+      chai.assert(!state.hasOwnProperty(removingNodeId));
     });
   });
 });
