@@ -1,5 +1,5 @@
 import * as Actions from '../app/actions';
-import { initialState } from '../app/state';
+import initialState from '../app/state';
 import { newId, nodes, lastId, copyNode } from '../app/reducers';
 import chai from 'chai';
 

@@ -47,8 +47,8 @@ const initialState = {
           y: 380,
         },
       },
-      8: {
-        id: 8,
+      5: {
+        id: 5,
         typeId: 5,
         patchId: 1,
         position: {
