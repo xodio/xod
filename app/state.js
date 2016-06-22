@@ -90,7 +90,7 @@ const initialState = {
       },
       6: {
         id: 6,
-        nodeId: 8,
+        nodeId: 5,
         type: 'input',
         key: 'in',
       },
