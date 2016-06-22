@@ -22,7 +22,7 @@ module.exports = {
   ],
 
   'settings': {
-    'import/resolver': ['node', 'webpack'],
+    'import/resolver': {'node': {"extensions": [".js", ".jsx"]}, 'webpack': {}},
   },
 
   'rules': {
