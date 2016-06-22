@@ -1,6 +1,6 @@
-import * as Actions from './actions';
-import { combineReducers } from 'redux';
+import * as Actions from '../actions';
 import update from 'react-addons-update';
+import initialState from '../state';
 
 export const newId = (nodes) => Math.max(...Object.keys(nodes).map(id => parseInt(id, 10))) + 1;
 export const lastId = (nodes) => Math.max(...Object.keys(nodes).map(id => parseInt(id, 10)));
@@ -38,7 +38,7 @@ const node = (state, action) => {
 };
 
 export const nodes = (state, action) => {
-  let newState = state;
+  let newState = (state === undefined) ? initialState.project.nodes : state;
   let temp = null;
   let movedNode = null;
   let newNode = null;
@@ -72,7 +72,3 @@ export const nodes = (state, action) => {
       return newState;
   }
 };
-
-export const nodeApp = combineReducers({
-  nodes,
-});
