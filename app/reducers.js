@@ -1,53 +1,75 @@
 import * as Actions from './actions';
 import { combineReducers } from 'redux';
-import R from 'ramda';
+import update from 'react-addons-update';
 
-const nodeIds = (nodes) =>
-    R.map(node => parseInt(node.id, 10))(R.values(nodes));
+export const newId = (nodes) => Math.max(...Object.keys(nodes).map(id => parseInt(id, 10))) + 1;
+export const lastId = (nodes) => Math.max(...Object.keys(nodes).map(id => parseInt(id, 10)));
+export const copyNode = (node) => update({}, {
+  $merge: node,
+});
 
-export const lastId = (nodes) => {
-  const ids = nodeIds(nodes);
-  // -1 is important because if nodes store doesn't contain nodes then we should return 0 as newId
-  return R.reduce(R.max, -1, ids);
+export const removeNode = (nodes, key) => {
+  const nodesWithoutRemoved = Object.keys(nodes).filter(nodeId => nodeId !== key.toString())
+    .map(nodeId => nodes[nodeId]);
+  return nodesWithoutRemoved.reduce((newNodes, currentNode) => {
+    const temp = {};
+
+    temp[currentNode.id] = currentNode;
+
+    return update(newNodes, {
+      $merge: temp,
+    });
+  }, {});
 };
-
-export const newId = (nodes) => lastId(nodes) + 1;
-
-export const copyNode = (node) => R.clone(node);
 
 const node = (state, action) => {
   switch (action.type) {
-    case Actions.NODE_MOVE:
-      return R.set(R.lensProp('position'), action.payload.position, state);
-    case Actions.NODE_ADD:
-      return R.view(R.lensProp('payload'), action);
+    case Actions.MOVE_NODE:
+      return update(state, {
+        $merge: {
+          position: action.position,
+        },
+      });
+    case Actions.ADD_NODE:
+      return action.node;
     default:
       return state;
   }
 };
 
 export const nodes = (state, action) => {
+  let newState = state;
+  let temp = null;
   let movedNode = null;
   let newNode = null;
   let newNodeId = 0;
 
   switch (action.type) {
 
-    case Actions.NODE_ADD:
+    case Actions.ADD_NODE:
+      temp = {};
       newNode = node(undefined, action);
       newNodeId = newId(state);
-      newNode = R.set(R.lensProp('id'), newNodeId, newNode);
-      return R.set(R.lensProp(newNodeId), newNode, state);
+      newNode.id = newNodeId;
+      temp[newNode.id] = newNode;
+      return update(state, {
+        $merge: temp,
+      });
 
-    case Actions.NODE_DELETE:
-      return R.omit([action.payload.id.toString()], state);
+    case Actions.DELETE_NODE:
+      return removeNode(state, action.id);
 
-    case Actions.NODE_MOVE:
-      movedNode = node(R.view(R.lensProp(action.payload.id), state), action);
-      return R.set(R.lensProp('id'), movedNode, state);
+    case Actions.MOVE_NODE:
+      temp = {};
+      movedNode = node(state[action.id], action);
+      temp[movedNode.id] = movedNode;
+      newState = update(state, {
+        $merge: temp,
+      });
+      return newState;
 
     default:
-      return state;
+      return newState;
   }
 };
 
