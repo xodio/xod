@@ -44,7 +44,7 @@ export default class Patch extends React.Component {
     // console.log('viewState: ', this.viewState);
   }
 
-  getPinsCount(pins, nodeId) {
+  getMaxSidePinCount(pins, nodeId) {
     return R.pipe(
       R.values,
       R.filter((a) => (a.nodeId === nodeId)),
@@ -58,7 +58,7 @@ export default class Patch extends React.Component {
     return (marginCount * Sizes.pin.margin) + (count * Sizes.pin.radius * 2);
   }
   getNodeWidth(nodeId) {
-    const pinsMaxCount = this.getPinsCount(this.props.pins, nodeId);
+    const pinsMaxCount = this.getMaxSidePinCount(this.props.pins, nodeId);
     let nodeWidth = this.getPinsWidth(pinsMaxCount, true);
 
     if (nodeWidth < Sizes.node.min_width) {
@@ -68,7 +68,7 @@ export default class Patch extends React.Component {
     return nodeWidth;
   }
   getPinListWidth(nodeId) {
-    const pinsMaxCount = this.getPinsCount(this.props.pins, nodeId);
+    const pinsMaxCount = this.getMaxSidePinCount(this.props.pins, nodeId);
     return this.getPinsWidth(pinsMaxCount, false);
   }
 
