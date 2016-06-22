@@ -21,6 +21,10 @@ localhost.
 
 Check coding standards. It should return zero warnings and errors.
 
+    npm test
+
+Build development version of xod and test it.
+
 Building User Documentation
 ---------------------------
 
