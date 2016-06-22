@@ -2,21 +2,15 @@ import React from 'react'
 import R from 'ramda'
 import Pin from '../components/Pin.jsx'
 
-class PinList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.displayName = 'PinList';
-    }
-    render() {
-      const pins = R.values(this.props.pins);
-      return (
-        <g className="pinlist">
-          {pins.map( (pin) =>
-            <Pin key={pin.id} data={pin} viewState={this.props.viewState[pin.id]} radius={this.props.radius} />
-          )}
-        </g>
-      );
-    }
+function PinList ({ radius, pins, viewState}) {
+  const _pins = R.values(pins);
+  return (
+    <g className="pinlist">
+      {_pins.map( (pin) =>
+        <Pin key={'pin_' + pin.id} data={pin} viewState={viewState[pin.id]} radius={radius} />
+      )}
+    </g>
+  );
 }
 
 export default PinList;

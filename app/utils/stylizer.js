@@ -1,75 +1,86 @@
-import R from 'ramda'
+import R from 'ramda';
 
 const Stylizer = {
   assignStyles: (component, styles) => {
-    if (!component.styles) {
-      component.styles = {
-        styles: styles,
+    const c = component;
+
+    if (!c.styles) {
+      c.styles = {
+        styles,
         keys: {},
-        getters: []
+        getters: [],
       };
     }
     // assign default getter
-    component.styles.getters.push( Stylizer.getters.normal.bind(component) );
+    c.styles.getters.push(Stylizer.getters.normal.bind(c));
     // assign default getStyle method
-    component.getStyle = Stylizer._funcs.getStyle.bind(component);
+    c.getStyle = Stylizer.funcs.getStyle.bind(c);
   },
   hoverable: (component, keys) => {
-    if (!component.styles) {
-      Stylizer.assignStyles(component, {});
-    }
-    if (!component.state) {
-      component.state = {};
-    }
-    component.state.hovered = false;
-    component.onMouseOver = Stylizer._funcs.onMouseOver;
-    component.onMouseOut = Stylizer._funcs.onMouseOut;
-    component.handleOver = component.onMouseOver.bind(component);
-    component.handleOut = component.onMouseOut.bind(component);
+    const c = component;
 
-    component.styles.keys.hover = keys;
-    component.styles.getters.push( Stylizer.getters.hover.bind(component) );
+    if (!c.styles) {
+      Stylizer.assignStyles(c, {});
+    }
+    if (!c.state) {
+      c.state = {};
+    }
+    c.state.hovered = false;
+    c.onMouseOver = Stylizer.funcs.onMouseOver;
+    c.onMouseOut = Stylizer.funcs.onMouseOut;
+    c.handleOver = c.onMouseOver.bind(c);
+    c.handleOut = c.onMouseOut.bind(c);
+
+    c.styles.keys.hover = keys;
+    c.styles.getters.push(Stylizer.getters.hover.bind(c));
   },
   getters: {
-    normal: function (styles) {
-      for (let k in styles) {
-        styles[k] = (styles[k].hasOwnProperty('normal')) ? styles[k].normal : styles[k];
-      }
-      return styles;
+    normal(styles) {
+      return Object.keys(styles).reduce(
+        (prev, cur) => {
+          const p = prev;
+          p[cur] = ((styles[cur].hasOwnProperty('normal')) ? styles[cur].normal : styles[cur]);
+          return p;
+        }, {}
+      );
     },
-    hover: function (styles) {
-      if (this.state && this.state.hovered) {
-        for (let i in this.styles.keys.hover) {
-          let kind = this.styles.keys.hover[i];
+    hover(styles) {
+      let hovered = {};
 
-          if (this.styles.styles[kind].hasOwnProperty('hover')) {
-            styles[kind] = R.merge(styles[kind], this.styles.styles[kind].hover);
-          }
-        }
+      if (this.state && this.state.hovered) {
+        hovered = this.styles.keys.hover.reduce(
+          (prev, cur) => {
+            const p = prev;
+            if (this.styles.styles[cur].hasOwnProperty('hover')) {
+              p[cur] = this.styles.styles[cur].hover;
+            }
+            return p;
+          }, {}
+        );
       }
 
-      return styles;
-    }
+      return R.mergeWith(R.merge, styles, hovered);
+    },
   },
 
-  _funcs: {
-    getStyle: function () {
+  funcs: {
+    getStyle() {
       let styles = Object.assign({}, this.styles.styles);
-      for (let g in this.styles.getters) {
-        styles = this.styles.getters[g](styles);
-      }
+      this.styles.getters.forEach((func) => {
+        styles = func(styles);
+      });
       return styles;
     },
-    onMouseOver: function () {
-      let state = Object.assign({}, this.state);
+    onMouseOver() {
+      const state = Object.assign({}, this.state);
       state.hovered = true;
       this.setState(state);
     },
-    onMouseOut: function () {
-      let state = Object.assign({}, this.state);
+    onMouseOut() {
+      const state = Object.assign({}, this.state);
       state.hovered = false;
       this.setState(state);
-    }
+    },
   },
 };
 

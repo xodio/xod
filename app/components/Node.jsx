@@ -33,7 +33,6 @@ const nodeStyles = {
 class Node extends React.Component {
     constructor(props) {
         super(props);
-        this.displayName = 'Node';
         this.node = this.props.node;
         this.elId = 'node_' + this.node.id;
 
