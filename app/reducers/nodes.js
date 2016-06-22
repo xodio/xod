@@ -1,4 +1,4 @@
-import * as Actions from './actions';
+import * as Actions from '../actions';
 import { combineReducers } from 'redux';
 import R from 'ramda';
 
