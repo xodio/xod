@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { initialState } from '../app/state';
+import initialState from '../app/state';
 
 describe('Initial state', () => {
   describe('node types', () => {

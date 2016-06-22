@@ -1,4 +1,4 @@
-export const initialState = {
+const initialState = {
   project: {
     name: 'Awesome project',
     patches: {
@@ -10,78 +10,107 @@ export const initialState = {
     nodes: {
       1: {
         id: 1,
-        patchId: 1,
         typeId: 4,
+        patchId: 1,
+        position: {
+          x: 240,
+          y: 110,
+        },
         props: {
           brightness: 0.67,
         },
       },
       2: {
         id: 2,
-        patchId: 1,
         typeId: 1,
-        props: {
-          brightness: 0.67,
+        patchId: 1,
+        position: {
+          x: 360,
+          y: 300,
         },
       },
       3: {
         id: 3,
-        patchId: 1,
         typeId: 3,
-        props: {
-          brightness: 0.67,
+        patchId: 1,
+        position: {
+          x: 80,
+          y: 20,
         },
       },
       4: {
         id: 4,
-        patchId: 1,
         typeId: 2,
-        props: {
-          brightness: 0.67,
+        patchId: 1,
+        position: {
+          x: 170,
+          y: 380,
         },
       },
       5: {
         id: 5,
-        patchId: 1,
         typeId: 5,
+        patchId: 1,
+        position: {
+          x: 30,
+          y: 185,
+        },
       },
-    },
-    links: {
     },
     pins: {
       1: {
         id: 1,
         nodeId: 1,
+        type: 'input',
         key: 'in',
       },
       2: {
         id: 2,
         nodeId: 2,
+        type: 'input',
         key: 'in',
       },
       3: {
         id: 3,
         nodeId: 2,
+        type: 'output',
         key: 'out',
       },
       4: {
         id: 4,
         nodeId: 3,
+        type: 'output',
         key: 'out',
       },
       5: {
         id: 5,
         nodeId: 4,
+        type: 'input',
         key: 'in',
       },
       6: {
         id: 6,
         nodeId: 5,
-        key: 'out',
+        type: 'input',
+        key: 'in',
+      },
+    },
+    links: {
+      1: {
+        id: 1,
+        fromPinId: 4,
+        toPinId: 1,
+      },
+      2: {
+        id: 2,
+        fromPinId: 4,
+        toPinId: 6,
       },
     },
   },
-  editor: {},
+  editor: {
+    currentPatch: 1,
+  },
   nodeTypes: {
     1: {
       id: 1,
@@ -166,3 +195,5 @@ export const initialState = {
     },
   },
 };
+
+export default initialState;
