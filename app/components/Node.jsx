@@ -1,6 +1,7 @@
 import React from 'react';
 import PinList from '../components/PinList';
 import Stylizer from '../utils/stylizer';
+import SVGDraggable from '../components/SVGDraggable';
 
 const nodeStyles = {
   block: {
@@ -73,22 +74,39 @@ class Node extends React.Component {
     };
   }
 
+  handleDragStart() {
+    console.log('drag start!', arguments);
+  }
+  handleDragMove() {
+
+  }
+  handleDragStop() {
+    // Save!
+    console.log('drag stop!', arguments);
+  }
+
   render() {
     const styles = this.getStyle();
     const position = this.getViewState().bbox.getPosition();
 
     return (
-      <svg {...position} key={this.elementId} id={this.elementId}>
-        <g className="node" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
-          <rect {...this.getRectProps()} style={styles.rect} />
-          <text {...this.getTextProps()} style={styles.text}>{this.node.id}</text>
-        </g>
-        <PinList
-          pins={this.props.pins}
-          viewState={this.props.viewState.pins}
-          radius={this.props.radius}
-        />
-      </svg>
+      <SVGDraggable
+        onStart={this.handleDragStart}
+        onDrag={this.handleDragMove}
+        onStop={this.handleDragStop}
+      >
+        <svg {...position} key={this.elementId} id={this.elementId}>
+          <g className="node" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
+            <rect {...this.getRectProps()} style={styles.rect} />
+            <text {...this.getTextProps()} style={styles.text}>{this.node.id}</text>
+          </g>
+          <PinList
+            pins={this.props.pins}
+            viewState={this.props.viewState.pins}
+            radius={this.props.radius}
+          />
+        </svg>
+      </SVGDraggable>
     );
   }
 }
