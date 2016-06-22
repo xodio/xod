@@ -26,7 +26,6 @@ const linkStyles = {
 class Link extends React.Component {
     constructor(props) {
         super(props);
-        this.displayName = 'Link';
         this.elId = 'link_' + this.props.link.id;
 
         this.state = {
