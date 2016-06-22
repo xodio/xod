@@ -38,15 +38,6 @@ export default class Bbox {
     };
   }
 
-  toJS() {
-    return {
-      position: this.getPosition(),
-      center: this.getCenter(),
-      absCenter: this.getAbsCenter(),
-      absMax: this.getAbsMax(),
-    };
-  }
-
   addPosition(addBbox) {
     return new Bbox({
       x: this.props.x + addBbox.getPosition().x,
