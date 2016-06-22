@@ -22,7 +22,6 @@
     "file-loader": "^0.8.5",
     "ramda": "^0.21.0",
     "react": "^0.14.6",
-    "react-addons-update": "^15.1.0",
     "react-dom": "^0.14.6",
     "react-redux": "^4.0.6",
     "redux": "^3.0.5",

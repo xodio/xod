@@ -58,7 +58,12 @@ class Link extends React.Component {
     const styles = this.getStyle();
 
     return (
-      <g className="link" id={this.elementId} onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
+      <g
+        className="link"
+        id={this.elementId}
+        onMouseOver={this.handleOver}
+        onMouseOut={this.handleOut}
+      >
         <line
           {...coords}
           style={styles.helper}
