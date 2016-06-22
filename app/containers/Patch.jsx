@@ -122,25 +122,26 @@ export default class Patch extends React.Component {
   }
 
   createNodes(nodes, pins, viewState) {
-    const nodeChilds = [];
+    const nodeChildren = [];
     const nodeFactory = React.createFactory(Node);
 
     for (let n in nodes) {
       const node = nodes[n];
       const nodePins = R.filter( R.propEq('nodeId', node.id), pins );
 
-      nodeChilds.push(
+      nodeChildren.push(
         nodeFactory({
           key: node.id,
           node,
           pins: nodePins,
-          style: Styles.svg,
+          size: Styles.svg.node,
+          radius: Styles.svg.pin.radius,
           viewState,
         })
       );
     }
 
-    return nodeChilds;
+    return nodeChildren;
   }
 
   createLinks(links, viewState) {
