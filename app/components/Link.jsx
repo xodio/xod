@@ -25,7 +25,7 @@ const linkStyles = {
 class Link extends React.Component {
   constructor(props) {
     super(props);
-    this.elId = `link_${this.props.link.id}`;
+    this.elementId = `link_${this.props.link.id}`;
 
     this.state = {
       hovered: false,
@@ -58,7 +58,7 @@ class Link extends React.Component {
     const styles = this.getStyle();
 
     return (
-      <g className="link" id={this.elId} onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
+      <g className="link" id={this.elementId} onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
         <line
           {...coords}
           style={styles.helper}

@@ -33,7 +33,7 @@ class Node extends React.Component {
   constructor(props) {
     super(props);
     this.node = this.props.node;
-    this.elId = `node_${this.node.id}`;
+    this.elementId = `node_${this.node.id}`;
 
     Stylizer.assignStyles(this, nodeStyles);
     Stylizer.hoverable(this, ['rect', 'text']);
@@ -78,7 +78,7 @@ class Node extends React.Component {
     const position = this.getViewState().bbox.getPosition();
 
     return (
-      <svg {...position} key={this.elId} id={this.elId}>
+      <svg {...position} key={this.elementId} id={this.elementId}>
         <g className="node" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
           <rect {...this.getRectProps()} style={styles.rect} />
           <text {...this.getTextProps()} style={styles.text}>{this.node.id}</text>

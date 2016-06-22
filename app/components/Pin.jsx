@@ -35,7 +35,7 @@ export default class Pin extends React.Component {
   constructor(props) {
     super(props);
 
-    this.elId = `pin_${props.data.id}`;
+    this.elementId = `pin_${props.data.id}`;
 
     Stylizer.assignStyles(this, pinStyles);
     Stylizer.hoverable(this, ['circle', 'text']);
@@ -100,7 +100,7 @@ export default class Pin extends React.Component {
     const styles = this.getStyle();
 
     return (
-      <g className="pin" id={this.elId} onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
+      <g className="pin" id={this.elementId} onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
         <rect {...this.getRectProps()} style={styles.block} />
         <circle {...this.getCircleProps()} style={styles.circle} />
         <text
