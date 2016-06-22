@@ -22,7 +22,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loaders: ['react-hot', 'babel?presets[]=react,presets[]=es2015']
+        loaders: ['react-hot', 'babel?presets[]=react,presets[]=es2015,presets[]=react-native-stage-0/decorator-support']
       },
       {
         test: /\.scss$/,

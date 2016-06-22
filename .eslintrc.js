@@ -25,7 +25,9 @@ module.exports = {
     'import/resolver': 'webpack',
   },
 
+  'parser': 'babel-eslint',
   'rules': {
     'import/extensions': [2, 'never'],
   },
-}
+
+};
