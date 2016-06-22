@@ -189,8 +189,9 @@ export default class Patch extends React.Component {
 }
 
 Patch.propTypes = {
-  links: React.PropTypes.Object,
-  nodes: React.PropTypes.Object,
-  pins: React.PropTypes.Object,
-  size: React.PropTypes.Object,
+  name: React.PropTypes.string,
+  links: React.PropTypes.any.isRequired,
+  nodes: React.PropTypes.any.isRequired,
+  pins: React.PropTypes.any.isRequired,
+  size: React.PropTypes.any.isRequired,
 };

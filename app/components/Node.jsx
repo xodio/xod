@@ -91,4 +91,11 @@ class Node extends React.Component {
     }
 }
 
+Node.propTypes = {
+  node: React.PropTypes.any.isRequired,
+  viewState: React.PropTypes.any.isRequired,
+  radius: React.PropTypes.number.isRequired,
+  size: React.PropTypes.any.isRequired,
+};
+
 export default Node;
