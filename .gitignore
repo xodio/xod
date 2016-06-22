@@ -3,3 +3,4 @@ doc/_build/
 .idea/
 xod.iml
 dist/
+.tmp/

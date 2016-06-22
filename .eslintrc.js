@@ -4,7 +4,7 @@ module.exports = {
     'sourceType': 'module',
     'ecmaFeatures': {
       'jsx': true,
-    }
+    },
   },
 
   'plugins': [
@@ -29,4 +29,12 @@ module.exports = {
     'import/extensions': [2, 'never'],
   },
 
+  'globals': {
+    'describe': true,
+    'it': true,
+    'before': true,
+    'beforeEach': true,
+    'after': true,
+    'afterEach': true,
+  },
 };
