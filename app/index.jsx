@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './containers/App.jsx';
+import App from './containers/App';
 import { initialState } from './state';
 
 ReactDOM.render(<App data={initialState} />, document.getElementById('root'));
