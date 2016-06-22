@@ -95,4 +95,8 @@ class Pin extends React.Component {
     }
 }
 
-export default Pin;
+export default Pin;Pin.propTypes = {
+  data: React.PropTypes.object,
+  viewState: React.PropTypes.object,
+  radius: React.PropTypes.number,
+};
