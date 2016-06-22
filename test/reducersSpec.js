@@ -1,6 +1,6 @@
 import * as Actions from '../app/actions';
 import initialState from '../app/state';
-import { newId, nodes, lastId, copyNode } from '../app/reducers';
+import { newId, nodes, lastId, copyNode } from '../app/reducers/nodes';
 import chai from 'chai';
 
 describe('Nodes reducer', () => {
