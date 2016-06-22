@@ -27,7 +27,7 @@
     "webpack": "^1.12.10"
   },
   "engines": {
-    "node": "0.12.0"
+    "node": "6.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.4.0",
