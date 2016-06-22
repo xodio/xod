@@ -41,7 +41,7 @@ class Node extends React.Component {
     }
 
     getNodeStyle() {
-      return this.props.style.node;
+      return this.props.size;
     }
 
     getPaddings() {
@@ -84,7 +84,7 @@ class Node extends React.Component {
             <rect {...this.getRectProps()} style={styles.rect} />
             <text {...this.getTextProps()} style={styles.text}>{this.node.id}</text>
           </g>
-          <PinList pins={this.props.pins} viewState={this.props.viewState.pins} radius={this.props.style.pin.radius} />
+          <PinList pins={this.props.pins} viewState={this.props.viewState.pins} radius={this.props.radius} />
         </svg>
       );
     }
