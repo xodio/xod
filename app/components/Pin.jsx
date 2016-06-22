@@ -100,7 +100,12 @@ export default class Pin extends React.Component {
     const styles = this.getStyle();
 
     return (
-      <g className="pin" id={this.elementId} onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
+      <g
+        className="pin"
+        id={this.elementId}
+        onMouseOver={this.handleOver}
+        onMouseOut={this.handleOut}
+      >
         <rect {...this.getRectProps()} style={styles.block} />
         <circle {...this.getCircleProps()} style={styles.circle} />
         <text
