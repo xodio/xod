@@ -1,13 +1,27 @@
 import React from 'react';
 import R from 'ramda';
-import Styles from '../shared/styles';
 import Bbox from '../utils/bbox';
 import SVGLayer from '../components/SVGlayer';
 import Node from '../components/Node';
 import Link from '../components/Link';
 
 const backgroundStyle = {
-  fill: '#eee'
+  fill: '#eee',
+};
+
+const Sizes = {
+  node: {
+    min_width: 80,
+    height: 40,
+    padding: {
+      x: 2,
+      y: 25,
+    },
+  },
+  pin: {
+    radius: 5,
+    margin: 15,
+  },
 };
 
 export default class Patch extends React.Component {
@@ -17,17 +31,45 @@ export default class Patch extends React.Component {
     this.viewState = this.createViewState(props);
     this.layers = [{
       name: 'background',
-      childs: this.createBackground(),
+      children: this.createBackground(),
     }, {
       name: 'links',
-      childs: this.createLinks(props.links, this.viewState),
+      children: this.createLinks(props.links, this.viewState),
     }, {
       name: 'nodes',
-      childs: this.createNodes(props.nodes, props.pins, this.viewState),
+      children: this.createNodes(props.nodes, props.pins, this.viewState),
     }];
 
-    console.log('patch: ', this.props);
-    console.log('viewState: ', this.viewState);
+    // console.log('patch: ', this.props);
+    // console.log('viewState: ', this.viewState);
+  }
+
+  getPinsCount(pins, nodeId) {
+    return R.pipe(
+      R.values,
+      R.filter((a) => (a.nodeId === nodeId)),
+      R.groupBy((a) => a.nodeId + a.type),
+      R.values,
+      R.reduce((p, c) => R.max(p, c.length || 0), 0)
+    )(pins);
+  }
+  getPinsWidth(count, withMargins) {
+    const marginCount = (withMargins) ? count + 1 : count - 1;
+    return (marginCount * Sizes.pin.margin) + (count * Sizes.pin.radius * 2);
+  }
+  getNodeWidth(nodeId) {
+    const pinsMaxCount = this.getPinsCount(this.props.pins, nodeId);
+    let nodeWidth = this.getPinsWidth(pinsMaxCount, true);
+
+    if (nodeWidth < Sizes.node.min_width) {
+      nodeWidth = Sizes.node.min_width;
+    }
+
+    return nodeWidth;
+  }
+  getPinListWidth(nodeId) {
+    const pinsMaxCount = this.getPinsCount(this.props.pins, nodeId);
+    return this.getPinsWidth(pinsMaxCount, false);
   }
 
   createViewState(state) {
@@ -41,133 +83,140 @@ export default class Patch extends React.Component {
   }
 
   calcNodes(nodes) {
-    const result = {};
+    return R.pipe(
+      R.values,
+      R.reduce((p, node) => {
+        const n = p;
+        const nodeWidth = this.getNodeWidth(node.id);
 
-    for (let i in nodes) {
-      let node = nodes[i];
+        n[node.id] = {
+          id: node.id,
+          bbox: new Bbox({
+            x: node.position.x,
+            y: node.position.y,
+            width: nodeWidth,
+            height: Sizes.node.height,
+          }),
+          padding: Sizes.node.padding,
+        };
 
-      result[i] = {
-        id: node.id,
-        bbox: new Bbox({
-          x: node.position.x,
-          y: node.position.y,
-          width: Styles.svg.node.width,
-          height: Styles.svg.node.height,
-        }),
-      };
-    }
-
-    return result;
+        return n;
+      }, {})
+    )(nodes);
   }
 
   calcPins(pins, nodesView) {
-    const result = {};
-
-    const pinsByNodes = R.groupBy((pin)=>{ return pin.nodeId; }, R.values(pins));
-
-    for (let n in pinsByNodes) {
-      const node = nodesView[n];
-      const pinsByType = R.groupBy((pin)=>{ return pin.type; }, pinsByNodes[n]);
-
-      const vOffset = {
-        input: Styles.svg.node.padding.y - Styles.svg.pin.radius,
-        output: node.bbox.getSize().height + Styles.svg.node.padding.y - Styles.svg.pin.radius
-      };
-
-      for (let type in pinsByType) {
-        const count = pinsByType[type].length;
-        const maxLength = count * Styles.svg.pin.radius + (count - 1) * Styles.svg.pin.margin;
+    return R.pipe(
+      R.values,
+      R.groupBy((p) => p.nodeId + p.type),
+      R.map((a) => {
+        const node = nodesView[a[0].nodeId];
+        const nodeWidth = this.getNodeWidth(node.id);
+        const pinsWidth = this.getPinListWidth(node.id);
         let offset = 0;
+        const vOffset = {
+          input: Sizes.node.padding.y - Sizes.pin.radius,
+          output: node.bbox.getSize().height + Sizes.node.padding.y - Sizes.pin.radius,
+        };
 
-        for (let i in pinsByType[type]) {
-          const pin = pinsByType[type][i];
-
-          result[pin.id] = {
+        return R.map((pin) => {
+          const r = {
             id: pin.id,
-            nodeId: node.id,
-            type,
+            nodeId: pin.nodeId,
+            type: pin.type,
             bbox: new Bbox({
-              x: node.bbox.getCenter().x - maxLength + offset,
-              y: vOffset[type],
-              width: Styles.svg.pin.radius * 2,
-              height: Styles.svg.pin.radius * 2,
+              x: (nodeWidth - pinsWidth) / 2 + offset,
+              y: vOffset[pin.type],
+              width: Sizes.pin.radius * 2,
+              height: Sizes.pin.radius * 2,
             }),
           };
 
-          offset += Styles.svg.pin.margin;
-        }
-      }
-    }
+          offset += Sizes.pin.margin + Sizes.pin.radius * 2;
 
-    return result;
+          return r;
+        }, a);
+      }),
+      R.values,
+      R.flatten,
+      R.reduce((p, pin) => {
+        const n = p;
+        n[pin.id] = pin;
+        return n;
+      }, {})
+    )(pins);
   }
 
   calcLinks(links, pinsView, nodesView) {
-    const result = {};
+    return R.pipe(
+      R.values,
+      R.reduce((p, link) => {
+        const n = p;
+        const pinFrom = pinsView[link.fromPinId];
+        const pinTo = pinsView[link.toPinId];
+        const nodeFrom = nodesView[pinFrom.nodeId];
+        const nodeTo = nodesView[pinTo.nodeId];
 
-    for (let i in links) {
-      const pinFrom = pinsView[links[i].fromPinId];
-      const pinTo = pinsView[links[i].toPinId];
-      const nodeFrom = nodesView[pinFrom.nodeId];
-      const nodeTo = nodesView[pinTo.nodeId];
+        n[link.id] = {
+          id: link.id,
+          from: pinFrom.bbox.addPosition(nodeFrom.bbox),
+          to: pinTo.bbox.addPosition(nodeTo.bbox),
+        };
 
-      result[i] = {
-        id: links[i].id,
-        from: pinFrom.bbox.addPosition( nodeFrom.bbox ),
-        to: pinTo.bbox.addPosition( nodeTo.bbox )
-      };
-    }
-
-    return result;
+        return n;
+      }, {})
+    )(links);
   }
 
   createNodes(nodes, pins, viewState) {
-    const nodeChildren = [];
     const nodeFactory = React.createFactory(Node);
 
-    for (let n in nodes) {
-      const node = nodes[n];
-      const nodePins = R.filter( R.propEq('nodeId', node.id), pins );
+    return R.pipe(
+      R.values,
+      R.reduce((p, node) => {
+        const nodePins = R.filter(R.propEq('nodeId', node.id), pins);
 
-      nodeChildren.push(
-        nodeFactory({
-          key: node.id,
-          node,
-          pins: nodePins,
-          size: Styles.svg.node,
-          radius: Styles.svg.pin.radius,
-          viewState,
-        })
-      );
-    }
+        const n = p;
+        n.push(
+          nodeFactory({
+            key: node.id,
+            node,
+            pins: nodePins,
+            radius: Sizes.pin.radius,
+            viewState,
+          })
+        );
 
-    return nodeChildren;
+        return n;
+      }, [])
+    )(nodes);
   }
 
   createLinks(links, viewState) {
-    const linkChilds = [];
     const linkFactory = React.createFactory(Link);
 
-    for (let i in links) {
-      const link = links[i];
+    return R.pipe(
+      R.values,
+      R.reduce((p, link) => {
+        const n = p;
+        n.push(
+          linkFactory({
+            key: link.id,
+            link,
+            viewState: viewState.links[link.id],
+            style: Sizes.link,
+          })
+        );
 
-      linkChilds.push(
-        linkFactory({
-          key: link.id,
-          link,
-          viewState: viewState.links[i],
-          style: Styles.svg.link,
-        })
-      );
-    }
-
-    return linkChilds;
+        return n;
+      }, [])
+    )(links);
   }
 
   createBackground() {
-    const bgChilds = [];
+    const bgChildren = [];
 
-    bgChilds.push(
+    bgChildren.push(
       <rect
         key="bg" x="0" y="0"
         width={this.props.size.width} height={this.props.size.height}
@@ -175,14 +224,15 @@ export default class Patch extends React.Component {
       />
     );
 
-    return bgChilds;
+    return bgChildren;
   }
 
   render() {
     return (
       <svg width={this.props.size.width} height={this.props.size.height} xmlns="http://www.w3.org/2000/svg">
+        <text x="5" y="5">{this.props.name}</text>
         {this.layers.map(layer =>
-          <SVGLayer key={layer.name} name={layer.name} childs={layer.childs} />
+          <SVGLayer key={layer.name} name={layer.name} children={layer.children} />
         )}
       </svg>
     );

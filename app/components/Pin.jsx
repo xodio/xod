@@ -48,6 +48,24 @@ export default class Pin extends React.Component {
       y: this.props.viewState.bbox.getPosition().y + radius + 1,
     };
   }
+  getBlockCorrection() {
+    return {
+      x: (pinStyles.block.width / 2 - this.props.radius),
+      y: (pinStyles.block.height),
+    };
+  }
+  getRectProps() {
+    const rp = {
+      x: this.getPosition().x - (this.props.radius + this.getBlockCorrection().x),
+      y: this.getPosition().y,
+    };
+
+    if (this.isInput()) {
+      rp.y -= (pinStyles.block.height);
+    }
+
+    return rp;
+  }
   getCircleProps() {
     return {
       cx: this.getPosition().x,
@@ -56,7 +74,9 @@ export default class Pin extends React.Component {
     };
   }
   getTextProps() {
-    const textMargin = (this.props.radius + 2) * ((this.isInput()) ? 1 : -1);
+    const textMargin = (
+      (this.props.radius + this.getBlockCorrection().x) * ((this.isInput()) ? 1 : -1)
+    );
     const pos = this.getPosition();
     return {
       x: pos.x + textMargin,
@@ -81,7 +101,7 @@ export default class Pin extends React.Component {
 
     return (
       <g className="pin" id={this.elId} onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
-        <rect style={styles.block} />
+        <rect {...this.getRectProps()} style={styles.block} />
         <circle {...this.getCircleProps()} style={styles.circle} />
         <text
           key={`pinText_${this.props.data.id}`}
