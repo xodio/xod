@@ -4,7 +4,7 @@
   "description": "XOD project",
   "scripts": {
     "start": "mkdir -p ./dist && cp -f ./app/index.html ./dist/index.html && webpack-dev-server --watch --progress --colors --config webpack.config.js",
-    "lint": "eslint --ext .js --ext .jsx ./app || true",
+    "lint": "eslint --ext .js --ext .jsx ./app ./test || true",
     "test": "mocha-webpack --colors --webpack-config webpack.config.js \"test/**/*Spec.js\""
   },
   "repository": {},
