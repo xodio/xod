@@ -25,7 +25,6 @@ module.exports = {
     'import/resolver': {'node': {"extensions": [".js", ".jsx"]}, 'webpack': {}},
   },
 
-  'parser': 'babel-eslint',
   'rules': {
     'import/extensions': [2, 'never'],
   },

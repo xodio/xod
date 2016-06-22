@@ -35,7 +35,6 @@
   },
   "devDependencies": {
     "babel-cli": "^6.4.0",
-    "babel-eslint": "^6.0.5",
     "chai": "^3.4.1",
     "chai-immutable": "^1.5.3",
     "eslint": "^2.13.0",
