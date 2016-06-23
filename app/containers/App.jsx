@@ -24,17 +24,16 @@ export default class App extends React.Component {
   render() {
     const state = this.store.getState();
 
-    console.log(state);
-
     const projectName = state.project.name;
     const editorMode = state.editor.mode || 'edit';
+    const curPatchId = state.editor.currentPatch;
 
     return (
       <div>
         <h1>{projectName}</h1>
 
         <Provider store={this.store}>
-          <PatchContainer editorMode={editorMode} size={this.canvasSize} />
+          <PatchContainer patchId={curPatchId} editorMode={editorMode} size={this.canvasSize} />
         </Provider>
       </div>
     );

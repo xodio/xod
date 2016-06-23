@@ -1,6 +1,5 @@
 import React from 'react';
 import R from 'ramda';
-import Bbox from '../utils/bbox';
 import SVGLayer from '../components/SVGlayer';
 import Node from '../components/Node';
 import Link from '../components/Link';
@@ -13,7 +12,7 @@ export default class Patch extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log(this.props);
+    // console.log('>', this.props);
 
     this.layers = [{
       name: 'background',
@@ -25,9 +24,6 @@ export default class Patch extends React.Component {
       name: 'nodes',
       children: this.createNodes(props.nodes, props.pins, this.props.viewState),
     }];
-
-    // console.log('patch: ', this.props);
-    // console.log('viewState: ', this.viewState);
   }
 
   createNodes(nodes, pins, viewState) {
@@ -90,18 +86,26 @@ export default class Patch extends React.Component {
   }
 
   render() {
+    const patchName = this.props.patches[this.props.patchId].name;
+
     return (
       <svg width={this.props.size.width} height={this.props.size.height} xmlns="http://www.w3.org/2000/svg">
-        <text x="5" y="5">{this.props.name}</text>
         {this.layers.map(layer =>
           <SVGLayer key={layer.name} name={layer.name} children={layer.children} />
         )}
+        <text x="5" y="20">{`Patch: ${patchName}`}</text>
       </svg>
     );
   }
 }
 
 Patch.propTypes = {
+  patchId: React.PropTypes.number.isRequired,
+  patches: React.PropTypes.any.isRequired,
+  nodes: React.PropTypes.any.isRequired,
+  pins: React.PropTypes.any.isRequired,
+  links: React.PropTypes.any.isRequired,
+  viewState: React.PropTypes.any.isRequired,
   size: React.PropTypes.any.isRequired,
   editorMode: React.PropTypes.string.isRequired,
 };
