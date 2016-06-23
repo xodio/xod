@@ -80,9 +80,9 @@ class Node extends React.Component {
   handleDragMove() {
 
   }
-  handleDragStop() {
+  handleDragEnd() {
     // Save!
-    console.log('drag stop!', arguments);
+    console.log('drag End!', arguments);
   }
 
   render() {
@@ -95,7 +95,7 @@ class Node extends React.Component {
         active={draggable}
         onStart={this.handleDragStart}
         onDrag={this.handleDragMove}
-        onStop={this.handleDragStop}
+        onEnd={this.handleDragEnd}
       >
         <svg {...position} key={this.elementId} id={this.elementId}>
           <g className="node" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
