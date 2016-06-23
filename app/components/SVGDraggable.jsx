@@ -9,14 +9,14 @@ class SVGDraggable extends React.Component {
 
     this.handleDragStart = this.dragStart.bind(this);
     this.handleDragMove = this.dragMove.bind(this);
-    this.handleDragStop = this.dragStop.bind(this);
+    this.handleDragEnd = this.dragEnd.bind(this);
 
     const nullFunc = () => null;
 
     this.callbacks = {
       onStart: this.props.onStart || nullFunc,
       onDrag: this.props.onDrag || nullFunc,
-      onStop: this.props.onStop || nullFunc,
+      onEnd: this.props.onEnd || nullFunc,
     };
 
     // console.log('!', this.state.initialPosition);
@@ -92,13 +92,13 @@ class SVGDraggable extends React.Component {
 
     this.forceUpdate();
   }
-  dragStop(event) {
+  dragEnd(event) {
     if (!this.props.active) return;
 
     this.applyTranslate();
     this.state = this.getDefaultState();
 
-    this.callbacks.onStop.call(this, event);
+    this.callbacks.onEnd.call(this, event);
 
     this.forceUpdate();
   }
@@ -134,7 +134,7 @@ class SVGDraggable extends React.Component {
       <g
         onMouseDown={this.handleDragStart}
         onMouseMove={this.handleDragMove}
-        onMouseUp={this.handleDragStop}
+        onMouseUp={this.handleDragEnd}
         transform={`translate(${this.state.translate.x} ${this.state.translate.y})`}
         style={styles}
       >
@@ -150,7 +150,7 @@ SVGDraggable.propTypes = {
   active: React.PropTypes.bool,
   onStart: React.PropTypes.func,
   onDrag: React.PropTypes.func,
-  onStop: React.PropTypes.func,
+  onEnd: React.PropTypes.func,
 };
 
 export default SVGDraggable;
