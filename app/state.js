@@ -1,6 +1,8 @@
 const initialState = {
   project: {
-    name: 'Awesome project',
+    project: {
+      name: 'Awesome project',
+    },
     patches: {
       1: {
         id: 1,
