@@ -98,6 +98,7 @@ export default class Patch extends React.Component {
             height: Sizes.node.height,
           }),
           padding: Sizes.node.padding,
+          draggable: (this.props.editorMode === 'edit')
         };
 
         return n;
