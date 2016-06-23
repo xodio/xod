@@ -1,4 +1,6 @@
 module.exports = {
+  'parser': 'babel-eslint',
+
   'parserOptions': {
     'ecmaVersion': 6,
     'sourceType': 'module',
@@ -22,7 +24,7 @@ module.exports = {
   ],
 
   'settings': {
-    'import/resolver': {'node': {"extensions": [".js", ".jsx"]}},
+    'import/resolver': ['node', 'webpack'],
   },
 
   'rules': {
