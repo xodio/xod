@@ -20,10 +20,10 @@ export default class Patch extends React.Component {
       children: this.createBackground(),
     }, {
       name: 'links',
-      children: this.createLinks(props.links, this.viewState),
+      children: this.createLinks(props.links, this.props.viewState),
     }, {
       name: 'nodes',
-      children: this.createNodes(props.nodes, props.pins, this.viewState),
+      children: this.createNodes(props.nodes, props.pins, this.props.viewState),
     }];
 
     // console.log('patch: ', this.props);
@@ -44,7 +44,7 @@ export default class Patch extends React.Component {
             key: node.id,
             node,
             pins: nodePins,
-            radius: Sizes.pin.radius,
+            radius: viewState.sizes.pin.radius,
             viewState,
           })
         );
@@ -66,7 +66,7 @@ export default class Patch extends React.Component {
             key: link.id,
             link,
             viewState: viewState.links[link.id],
-            style: Sizes.link,
+            style: viewState.sizes.link,
           })
         );
 
