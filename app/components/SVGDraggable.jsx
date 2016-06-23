@@ -51,6 +51,7 @@ class SVGDraggable extends React.Component {
   }
 
   dragStart(event) {
+    if (!this.props.active) return;
     // @TODO: Move component above all other components into this layer!
     this.state.startPosition = {
       x: event.clientX,
@@ -62,6 +63,8 @@ class SVGDraggable extends React.Component {
     this.forceUpdate();
   }
   dragMove(event) {
+    if (!this.props.active) return;
+
     if (this.state.dragged) {
       const mousePos = {
         x: event.clientX,
@@ -77,6 +80,8 @@ class SVGDraggable extends React.Component {
     this.forceUpdate();
   }
   dragStop() {
+    if (!this.props.active) return;
+
     this.applyTranslate();
     this.state = this.getDefaultState();
     this.forceUpdate();
@@ -126,9 +131,10 @@ class SVGDraggable extends React.Component {
 
 SVGDraggable.propTypes = {
   children: React.PropTypes.any,
-  onStart: React.PropTypes.any,
-  onDrag: React.PropTypes.any,
-  onStop: React.PropTypes.any,
+  active: React.PropTypes.bool,
+  onStart: React.PropTypes.func,
+  onDrag: React.PropTypes.func,
+  onStop: React.PropTypes.func,
 };
 
 export default SVGDraggable;

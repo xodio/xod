@@ -88,9 +88,11 @@ class Node extends React.Component {
   render() {
     const styles = this.getStyle();
     const position = this.getViewState().bbox.getPosition();
+    const draggable = this.getViewState().draggable;
 
     return (
       <SVGDraggable
+        active={draggable}
         onStart={this.handleDragStart}
         onDrag={this.handleDragMove}
         onStop={this.handleDragStop}
