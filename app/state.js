@@ -110,6 +110,7 @@ const initialState = {
   },
   editor: {
     currentPatch: 1,
+    mode: 'edit',
   },
   nodeTypes: {
     1: {

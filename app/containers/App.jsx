@@ -60,6 +60,7 @@ export default class App extends React.Component {
     data.nodes = this.getPatchNodes(this.project.nodes, data.patch.id);
     data.pins = this.getPatchPins(this.project.pins, data.nodes);
     data.links = this.getPatchLinks(this.project.links, data.pins);
+    data.editorMode = this.props.editor.mode || 'edit';
 
     return data;
   }

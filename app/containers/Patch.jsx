@@ -245,4 +245,5 @@ Patch.propTypes = {
   nodes: React.PropTypes.any.isRequired,
   pins: React.PropTypes.any.isRequired,
   size: React.PropTypes.any.isRequired,
+  editorMode: React.PropTypes.string.isRequired,
 };
