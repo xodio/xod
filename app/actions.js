@@ -1,19 +1,19 @@
-export const MOVE_NODE = 'MOVE_NODE';
-export const ADD_NODE = 'ADD_NODE';
-export const DELETE_NODE = 'DELETE_NODE';
+export const NODE_MOVE = 'NODE_MOVE';
+export const NODE_ADD = 'NODE_ADD';
+export const NODE_DELETE = 'NODE_DELETE';
 
-export const moveNode = (id, position) => ({
-  type: MOVE_NODE,
+export const nodeMove = (id, position) => ({
+  type: NODE_MOVE,
   id,
   position,
 });
 
-export const addNode = (node) => ({
-  type: ADD_NODE,
+export const nodeAdd = (node) => ({
+  type: NODE_ADD,
   node,
 });
 
-export const deleteNode = (id) => ({
-  type: DELETE_NODE,
+export const nodeDelete = (id) => ({
+  type: NODE_DELETE,
   id,
 });
