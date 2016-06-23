@@ -5,6 +5,8 @@ import SVGLayer from '../components/SVGlayer';
 import Node from '../components/Node';
 import Link from '../components/Link';
 
+import { connect } from 'react-redux';
+
 const backgroundStyle = {
   fill: '#eee',
 };
@@ -24,9 +26,14 @@ const Sizes = {
   },
 };
 
+@connect(state => ({
+  patch: state,
+}))
 export default class Patch extends React.Component {
   constructor(props) {
     super(props);
+
+    console.log(this.props);
 
     this.viewState = this.createViewState(props);
     this.layers = [{
@@ -241,10 +248,6 @@ export default class Patch extends React.Component {
 }
 
 Patch.propTypes = {
-  name: React.PropTypes.string,
-  links: React.PropTypes.any.isRequired,
-  nodes: React.PropTypes.any.isRequired,
-  pins: React.PropTypes.any.isRequired,
   size: React.PropTypes.any.isRequired,
   editorMode: React.PropTypes.string.isRequired,
 };
