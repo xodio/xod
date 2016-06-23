@@ -23,6 +23,7 @@ export default class viewStateGenerator {
     viewState.nodes = this.getNodesViewState(state);
     viewState.pins = this.getPinsViewState(state, viewState);
     viewState.links = this.getLinksViewState(state, viewState);
+    viewState.sizes = Sizes;
 
     return viewState;
   }
