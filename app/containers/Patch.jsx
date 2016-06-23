@@ -75,14 +75,14 @@ export default class Patch extends React.Component {
   createViewState(state) {
     const viewState = {};
 
-    viewState.nodes = this.calcNodes(state.nodes);
-    viewState.pins = this.calcPins(state.pins, viewState.nodes);
-    viewState.links = this.calcLinks(state.links, viewState.pins, viewState.nodes);
+    viewState.nodes = this.getNodesViewState(state.nodes);
+    viewState.pins = this.getPinsViewState(state.pins, viewState.nodes);
+    viewState.links = this.getLinksViewState(state.links, viewState.pins, viewState.nodes);
 
     return viewState;
   }
 
-  calcNodes(nodes) {
+  getNodesViewState(nodes) {
     return R.pipe(
       R.values,
       R.reduce((p, node) => {
@@ -106,7 +106,7 @@ export default class Patch extends React.Component {
     )(nodes);
   }
 
-  calcPins(pins, nodesView) {
+  getPinsViewState(pins, nodesView) {
     return R.pipe(
       R.values,
       R.groupBy((p) => p.nodeId + p.type),
@@ -148,7 +148,7 @@ export default class Patch extends React.Component {
     )(pins);
   }
 
-  calcLinks(links, pinsView, nodesView) {
+  getLinksViewState(links, pinsView, nodesView) {
     return R.pipe(
       R.values,
       R.reduce((p, link) => {
