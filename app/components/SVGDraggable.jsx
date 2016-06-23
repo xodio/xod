@@ -11,6 +11,14 @@ class SVGDraggable extends React.Component {
     this.handleDragMove = this.dragMove.bind(this);
     this.handleDragStop = this.dragStop.bind(this);
 
+    const nullFunc = () => null;
+
+    this.callbacks = {
+      onStart: this.props.onStart || nullFunc,
+      onDrag: this.props.onDrag || nullFunc,
+      onStop: this.props.onStop || nullFunc,
+    };
+
     // console.log('!', this.state.initialPosition);
   }
 
@@ -39,6 +47,7 @@ class SVGDraggable extends React.Component {
       y: el.props.y,
     };
   }
+
   parseChildren() {
     let arr = [];
     if ({}.hasOwnProperty.call(this.props.children, 'length')) {
@@ -60,6 +69,8 @@ class SVGDraggable extends React.Component {
     this.state.dragged = true;
     this.state.scale = 1.1;
 
+    this.callbacks.onStart.call(this, event);
+
     this.forceUpdate();
   }
   dragMove(event) {
@@ -77,13 +88,18 @@ class SVGDraggable extends React.Component {
       };
     }
 
+    this.callbacks.onDrag.call(this, event);
+
     this.forceUpdate();
   }
-  dragStop() {
+  dragStop(event) {
     if (!this.props.active) return;
 
     this.applyTranslate();
     this.state = this.getDefaultState();
+
+    this.callbacks.onStop.call(this, event);
+
     this.forceUpdate();
   }
 
