@@ -24,13 +24,13 @@ export const removeNode = (nodes, key) => {
 
 const node = (state, action) => {
   switch (action.type) {
-    case Actions.MOVE_NODE:
+    case Actions.NODE_MOVE:
       return update(state, {
         $merge: {
           position: action.position,
         },
       });
-    case Actions.ADD_NODE:
+    case Actions.NODE_ADD:
       return action.node;
     default:
       return state;
@@ -46,7 +46,7 @@ export const nodes = (state, action) => {
 
   switch (action.type) {
 
-    case Actions.ADD_NODE:
+    case Actions.NODE_ADD:
       temp = {};
       newNode = node(undefined, action);
       newNodeId = newId(state);
@@ -56,10 +56,10 @@ export const nodes = (state, action) => {
         $merge: temp,
       });
 
-    case Actions.DELETE_NODE:
+    case Actions.NODE_DELETE:
       return removeNode(state, action.id);
 
-    case Actions.MOVE_NODE:
+    case Actions.NODE_MOVE:
       temp = {};
       movedNode = node(state[action.id], action);
       temp[movedNode.id] = movedNode;
