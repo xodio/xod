@@ -1,81 +1,38 @@
 import React from 'react';
 import R from 'ramda';
 import Patch from '../containers/Patch';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import { Editor, Project, NodeTypes } from '../reducers/';
+import initialState from '../state';
+import { getViewableSize } from '../utils/browser';
+
+const projectName = initialState.project.name;
+const Stores = {
+  Project: createStore(Project),
+  Editor: createStore(Editor),
+  NodeTypes: createStore(NodeTypes),
+};
 
 export default class App extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.project = this.props.project;
-    this.curPatch = this.project.patches[this.props.editor.currentPatch];
-    this.patchData = this.getPatchData();
-
-    this.canvasSize = {
-      width: (document) ? document.documentElement.clientWidth : 800,
-      height: (document) ? document.documentElement.clientHeight : 600,
-    };
-  }
-
-  getPatchNodes(nodes, patchId) {
-    return R.pipe(
-      R.values,
-      R.reduce((p, node) => {
-        const n = p;
-        if (node.patchId === patchId) {
-          n[node.id] = node;
-        }
-        return n;
-      }, {})
-    )(nodes);
-  }
-  getPatchPins(pins, nodes) {
-    return R.pipe(
-      R.values,
-      R.reduce((p, pin) => {
-        const n = p;
-        if (nodes.hasOwnProperty(pin.nodeId)) {
-          n[pin.id] = pin;
-        }
-        return n;
-      }, {})
-    )(pins);
-  }
-  getPatchLinks(links, pins) {
-    return R.pipe(
-      R.values,
-      R.reduce((p, link) => {
-        const n = p;
-        if (pins.hasOwnProperty(link.fromPinId) && pins.hasOwnProperty(link.toPinId)) {
-          n[link.id] = link;
-        }
-        return n;
-      }, {})
-    )(links);
-  }
-  getPatchData() {
-    const data = {};
-
-    data.patch = this.curPatch;
-    data.nodes = this.getPatchNodes(this.project.nodes, data.patch.id);
-    data.pins = this.getPatchPins(this.project.pins, data.nodes);
-    data.links = this.getPatchLinks(this.project.links, data.pins);
-    data.editorMode = this.props.editor.mode || 'edit';
-
-    return data;
+    this.canvasSize = getViewableSize(800, 600);
   }
 
   render() {
+    const editorMode = Stores.Editor.getState().mode || 'edit';
+
     return (
       <div>
-        <Patch {...this.patchData} size={this.canvasSize} />
+        <h1>{projectName}</h1>
+
+        <Provider store={Stores.Project}>
+          <Patch editorMode={editorMode} size={this.canvasSize} />
+        </Provider>
       </div>
     );
   }
 }
-
-App.propTypes = {
-  project: React.PropTypes.any.isRequired,
-  editor: React.PropTypes.any.isRequired,
-  nodeTypes: React.PropTypes.any.isRequired,
-};
