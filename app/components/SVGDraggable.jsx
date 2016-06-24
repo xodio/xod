@@ -11,20 +11,20 @@ class SVGDraggable extends React.Component {
     this.handleDragMove = this.dragMove.bind(this);
     this.handleDragEnd = this.dragEnd.bind(this);
 
-    const nullFunc = () => null;
+    const nullFunc = f => f;
 
     this.callbacks = {
-      onStart: this.props.onStart || nullFunc,
+      onDragStart: this.props.onDragStart || nullFunc,
       onDrag: this.props.onDrag || nullFunc,
-      onEnd: this.props.onEnd || nullFunc,
+      onDragEnd: this.props.onDragEnd || nullFunc,
     };
-
-    // console.log('!', this.state.initialPosition);
   }
 
-  getDefaultState() {
+  getDefaultState(newPosition) {
+    const el = this.getChildState(this.props.children);
     const state = {
-      initialPosition: this.parseChildren(),
+      element: el.element,
+      position: newPosition || el.position,
       translate: {
         x: 0,
         y: 0,
@@ -43,20 +43,11 @@ class SVGDraggable extends React.Component {
   getChildState(el) {
     return {
       element: el,
-      x: el.props.x,
-      y: el.props.y,
+      position: {
+        x: el.props.x,
+        y: el.props.y,
+      },
     };
-  }
-
-  parseChildren() {
-    let arr = [];
-    if ({}.hasOwnProperty.call(this.props.children, 'length')) {
-      arr = R.map(this.getChildState, this.props.children);
-    }
-
-    arr.push(this.getChildState(this.props.children));
-
-    return arr;
   }
 
   dragStart(event) {
@@ -69,7 +60,7 @@ class SVGDraggable extends React.Component {
     this.state.dragged = true;
     this.state.scale = 1.1;
 
-    this.callbacks.onStart.call(this, event);
+    this.callbacks.onDragStart.call(this, event);
 
     this.forceUpdate();
   }
@@ -95,16 +86,21 @@ class SVGDraggable extends React.Component {
   dragEnd(event) {
     if (!this.props.active) return;
 
-    this.applyTranslate();
-    this.state = this.getDefaultState();
+    const newPosition = this.applyTranslate();
 
-    this.callbacks.onEnd.call(this, event);
+    this.callbacks.onDragEnd(event, newPosition);
+    this.state = this.getDefaultState(newPosition);
 
     this.forceUpdate();
   }
 
   applyTranslate() {
-    // @TODO: Apply translate to state!
+    const newPosition = R.clone(this.state.position);
+
+    newPosition.x += this.state.translate.x;
+    newPosition.y += this.state.translate.y;
+
+    return newPosition;
   }
 
   render() {
@@ -148,9 +144,9 @@ class SVGDraggable extends React.Component {
 SVGDraggable.propTypes = {
   children: React.PropTypes.any,
   active: React.PropTypes.bool,
-  onStart: React.PropTypes.func,
+  onDragStart: React.PropTypes.func,
   onDrag: React.PropTypes.func,
-  onEnd: React.PropTypes.func,
+  onDragEnd: React.PropTypes.func,
 };
 
 export default SVGDraggable;

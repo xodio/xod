@@ -38,6 +38,16 @@ class Node extends React.Component {
 
     Stylizer.assignStyles(this, nodeStyles);
     Stylizer.hoverable(this, ['rect', 'text']);
+
+    this.handleDragStart = this.onDragStart.bind(this);
+    this.handleDrag = this.onDragMove.bind(this);
+    this.handleDragEnd = this.onDragEnd.bind(this);
+  }
+
+  onDragStart() {}
+  onDragMove() {}
+  onDragEnd(event, position) {
+    this.props.onDragEnd(this.node.id, position);
   }
 
   getViewState() {
@@ -74,17 +84,6 @@ class Node extends React.Component {
     };
   }
 
-  handleDragStart() {
-    console.log('drag start!', arguments);
-  }
-  handleDragMove() {
-
-  }
-  handleDragEnd() {
-    // Save!
-    console.log('drag End!', arguments);
-  }
-
   render() {
     const styles = this.getStyle();
     const position = this.getViewState().bbox.getPosition();
@@ -92,12 +91,13 @@ class Node extends React.Component {
 
     return (
       <SVGDraggable
+        key={this.elementId}
         active={draggable}
-        onStart={this.handleDragStart}
+        onDragStart={this.handleDragStart}
         onDrag={this.handleDragMove}
-        onEnd={this.handleDragEnd}
+        onDragEnd={this.handleDragEnd}
       >
-        <svg {...position} key={this.elementId} id={this.elementId}>
+        <svg {...position} id={this.elementId}>
           <g className="node" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
             <rect {...this.getRectProps()} style={styles.rect} />
             <text {...this.getTextProps()} style={styles.text}>{this.node.id}</text>
@@ -118,6 +118,7 @@ Node.propTypes = {
   pins: React.PropTypes.any.isRequired,
   viewState: React.PropTypes.any.isRequired,
   radius: React.PropTypes.number.isRequired,
+  onDragEnd: React.PropTypes.func.isRequired,
 };
 
 export default Node;
