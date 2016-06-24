@@ -1,5 +1,5 @@
-import { project } from './project';
 import { combineReducers } from 'redux';
+import { meta } from './meta';
 import { editor } from './editor';
 import { nodeTypes } from './nodetypes';
 import { patches } from './patches';
@@ -9,11 +9,13 @@ import { links } from './links';
 import { viewState } from './viewstate';
 
 export default combineReducers({
-  project,
-  patches,
-  nodes,
-  pins,
-  links,
+  project: combineReducers({
+    meta,
+    patches,
+    nodes,
+    pins,
+    links,
+  }),
   nodeTypes,
   editor,
   viewState,

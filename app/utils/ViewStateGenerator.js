@@ -35,7 +35,7 @@ export default class viewStateGenerator {
       R.groupBy((a) => a.nodeId + a.type),
       R.values,
       R.reduce((p, c) => R.max(p, c.length || 0), 0)
-    )(state.pins);
+    )(state.project.pins);
   }
   getPinsWidth(count, withMargins) {
     const marginCount = (withMargins) ? count + 1 : count - 1;
@@ -62,7 +62,6 @@ export default class viewStateGenerator {
       R.reduce((p, node) => {
         const n = p;
         const nodeWidth = this.getNodeWidth(state, node.id);
-
         n[node.id] = {
           id: node.id,
           bbox: new Bbox({
@@ -77,7 +76,7 @@ export default class viewStateGenerator {
 
         return n;
       }, {})
-    )(state.nodes);
+    )(state.project.nodes);
   }
 
   getPinsViewState(state, view) {
@@ -119,7 +118,7 @@ export default class viewStateGenerator {
         n[pin.id] = pin;
         return n;
       }, {})
-    )(state.pins);
+    )(state.project.pins);
   }
 
   getLinksViewState(state, view) {
@@ -140,6 +139,6 @@ export default class viewStateGenerator {
 
         return n;
       }, {})
-    )(state.links);
+    )(state.project.links);
   }
 }

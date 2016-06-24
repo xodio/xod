@@ -38,7 +38,9 @@ const node = (state, action) => {
 };
 
 export const nodes = (state, action) => {
-  let newState = (state === undefined) ? initialState.project.nodes : state;
+  let newState = (state === undefined) ? update(state, {
+    $set: initialState.project.nodes,
+  }) : state;
   let temp = null;
   let movedNode = null;
   let newNode = null;

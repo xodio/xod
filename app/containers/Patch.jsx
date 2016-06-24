@@ -1,29 +1,40 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import R from 'ramda';
 import SVGLayer from '../components/SVGlayer';
 import Node from '../components/Node';
 import Link from '../components/Link';
+import * as Actions from '../actions';
 
 const backgroundStyle = {
   fill: '#eee',
 };
 
-export default class Patch extends React.Component {
+class Patch extends React.Component {
   constructor(props) {
     super(props);
 
-    // console.log('>', this.props);
-
     this.layers = [{
       name: 'background',
-      children: this.createBackground(),
+      factory: () => this.createBackground(),
     }, {
       name: 'links',
-      children: this.createLinks(props.links, this.props.viewState),
+      factory: () => this.createLinks(
+        props.project.links,
+        this.props.viewState
+      ),
     }, {
       name: 'nodes',
-      children: this.createNodes(props.nodes, props.pins, this.props.viewState),
+      factory: () => this.createNodes(
+        this.props.project.nodes,
+        props.project.pins,
+        this.props.viewState
+      ),
     }];
+  }
+
+  handleNodeMove(id, position) {
+    this.props.dispatch(Actions.nodeMove(id, position));
   }
 
   createNodes(nodes, pins, viewState) {
@@ -33,7 +44,6 @@ export default class Patch extends React.Component {
       R.values,
       R.reduce((p, node) => {
         const nodePins = R.filter(R.propEq('nodeId', node.id), pins);
-
         const n = p;
         n.push(
           nodeFactory({
@@ -42,6 +52,7 @@ export default class Patch extends React.Component {
             pins: nodePins,
             radius: viewState.sizes.pin.radius,
             viewState,
+            onDragEnd: this.handleNodeMove.bind(this),
           })
         );
 
@@ -86,12 +97,14 @@ export default class Patch extends React.Component {
   }
 
   render() {
-    const patchName = this.props.patches[this.props.patchId].name;
+    const patchName = this.props.project.patches[this.props.editor.currentPatchId].name;
 
     return (
       <svg width={this.props.size.width} height={this.props.size.height} xmlns="http://www.w3.org/2000/svg">
         {this.layers.map(layer =>
-          <SVGLayer key={layer.name} name={layer.name} children={layer.children} />
+          <SVGLayer key={layer.name} name={layer.name}>
+            {layer.factory()}
+          </SVGLayer>
         )}
         <text x="5" y="20">{`Patch: ${patchName}`}</text>
       </svg>
@@ -100,12 +113,11 @@ export default class Patch extends React.Component {
 }
 
 Patch.propTypes = {
-  patchId: React.PropTypes.number.isRequired,
-  patches: React.PropTypes.any.isRequired,
-  nodes: React.PropTypes.any.isRequired,
-  pins: React.PropTypes.any.isRequired,
-  links: React.PropTypes.any.isRequired,
-  viewState: React.PropTypes.any.isRequired,
+  dispatch: React.PropTypes.func.isRequired,
   size: React.PropTypes.any.isRequired,
-  editorMode: React.PropTypes.string.isRequired,
+  project: React.PropTypes.any.isRequired,
+  editor: React.PropTypes.any.isRequired,
+  viewState: React.PropTypes.any.isRequired,
 };
+
+export default connect(state => state)(Patch);
