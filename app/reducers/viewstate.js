@@ -10,7 +10,6 @@ export const viewState = (state, action) => {
   const newState = (state === undefined) ? update(state, {
     $set: vsGenerator.create(initialState),
   }) : state;
-  // @TODO: Use const instead of string action name!
   switch (action.type) {
     case ActionType.VIEWSTATE_UPDATE:
       return update(newState, {
