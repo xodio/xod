@@ -1,3 +1,4 @@
+import * as ActionType from '../actionTypes';
 import initialState from '../state';
 import update from 'react-addons-update';
 
@@ -6,7 +7,7 @@ export const meta = (state, action) => {
     $set: initialState.project.meta,
   }) : state;
   switch (action.type) {
-    case 'META_UPDATE': {
+    case ActionType.META_UPDATE: {
       return update(newState, {
         $merge: action.data,
       });

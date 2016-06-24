@@ -1,19 +1,27 @@
-export const NODE_MOVE = 'NODE_MOVE';
-export const NODE_ADD = 'NODE_ADD';
-export const NODE_DELETE = 'NODE_DELETE';
+import * as ActionType from './actionTypes';
 
 export const nodeMove = (id, position) => ({
-  type: NODE_MOVE,
+  type: ActionType.NODE_MOVE,
   id,
   position,
 });
 
 export const nodeAdd = (node) => ({
-  type: NODE_ADD,
+  type: ActionType.NODE_ADD,
   node,
 });
 
 export const nodeDelete = (id) => ({
-  type: NODE_DELETE,
+  type: ActionType.NODE_DELETE,
   id,
+});
+
+export const metaUpdate = (data) => ({
+  type: ActionType.META_UPDATE,
+  data,
+});
+
+export const viewstateUpdate = (state) => ({
+  type: ActionType.VIEWSTATE_UPDATE,
+  state,
 });

@@ -1,4 +1,4 @@
-import * as Actions from '../actions';
+import * as ActionType from '../actionTypes';
 import update from 'react-addons-update';
 import initialState from '../state';
 
@@ -24,13 +24,13 @@ export const removeNode = (nodes, key) => {
 
 const node = (state, action) => {
   switch (action.type) {
-    case Actions.NODE_MOVE:
+    case ActionType.NODE_MOVE:
       return update(state, {
         $merge: {
           position: action.position,
         },
       });
-    case Actions.NODE_ADD:
+    case ActionType.NODE_ADD:
       return action.node;
     default:
       return state;
@@ -48,7 +48,7 @@ export const nodes = (state, action) => {
 
   switch (action.type) {
 
-    case Actions.NODE_ADD:
+    case ActionType.NODE_ADD:
       temp = {};
       newNode = node(undefined, action);
       newNodeId = newId(state);
@@ -58,10 +58,10 @@ export const nodes = (state, action) => {
         $merge: temp,
       });
 
-    case Actions.NODE_DELETE:
+    case ActionType.NODE_DELETE:
       return removeNode(state, action.id);
 
-    case Actions.NODE_MOVE:
+    case ActionType.NODE_MOVE:
       temp = {};
       movedNode = node(state[action.id], action);
       temp[movedNode.id] = movedNode;
