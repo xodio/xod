@@ -25,11 +25,7 @@ class SVGDraggable extends React.Component {
     const state = {
       element: el.element,
       position: newPosition || el.position,
-      translate: {
-        x: 0,
-        y: 0,
-      },
-      startPosition: {
+      mousePrevPosition: {
         x: 0,
         y: 0,
       },
@@ -52,17 +48,14 @@ class SVGDraggable extends React.Component {
 
   dragStart(event) {
     if (!this.props.active) return;
+
     // @TODO: Move component above all other components into this layer!
-    this.state.startPosition = {
+    this.state.dragged = true;
+    this.state.mousePrevPosition = {
       x: event.clientX,
       y: event.clientY,
     };
-    this.state.dragged = true;
-    this.state.scale = 1.1;
-
     this.callbacks.onDragStart.call(this, event);
-
-    this.forceUpdate();
   }
   dragMove(event) {
     if (!this.props.active) return;
@@ -73,25 +66,28 @@ class SVGDraggable extends React.Component {
         y: event.clientY,
       };
 
-      this.state.translate = {
-        x: mousePos.x - this.state.startPosition.x,
-        y: mousePos.y - this.state.startPosition.y,
+      const curPosition = this.getChildState(this.props.children).position;
+      const newPos = {
+        x: (mousePos.x - this.state.mousePrevPosition.x) + curPosition.x,
+        y: (mousePos.y - this.state.mousePrevPosition.y) + curPosition.y,
       };
+
+      this.callbacks.onDrag(event, newPos);
+
+      this.state.mousePrevPosition = {
+        x: mousePos.x,
+        y: mousePos.y,
+      };
+
+      this.forceUpdate();
     }
-
-    this.callbacks.onDrag.call(this, event);
-
-    this.forceUpdate();
   }
   dragEnd(event) {
     if (!this.props.active) return;
 
-    const newPosition = this.applyTranslate();
-
-    this.callbacks.onDragEnd(event, newPosition);
-    this.state = this.getDefaultState(newPosition);
-
-    this.forceUpdate();
+    const curPosition = this.getChildState(this.props.children).position;
+    this.callbacks.onDragEnd(event, curPosition);
+    this.state = this.getDefaultState();
   }
 
   applyTranslate() {
@@ -131,7 +127,6 @@ class SVGDraggable extends React.Component {
         onMouseDown={this.handleDragStart}
         onMouseMove={this.handleDragMove}
         onMouseUp={this.handleDragEnd}
-        transform={`translate(${this.state.translate.x} ${this.state.translate.y})`}
         style={styles}
       >
         {this.props.children}

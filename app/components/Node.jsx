@@ -40,12 +40,14 @@ class Node extends React.Component {
     Stylizer.hoverable(this, ['rect', 'text']);
 
     this.handleDragStart = this.onDragStart.bind(this);
-    this.handleDrag = this.onDragMove.bind(this);
+    this.handleDragMove = this.onDragMove.bind(this);
     this.handleDragEnd = this.onDragEnd.bind(this);
   }
 
   onDragStart() {}
-  onDragMove() {}
+  onDragMove(event, position) {
+    this.props.onDrag(this.node.id, position);
+  }
   onDragEnd(event, position) {
     this.props.onDragEnd(this.node.id, position);
   }
@@ -118,6 +120,7 @@ Node.propTypes = {
   pins: React.PropTypes.any.isRequired,
   viewState: React.PropTypes.any.isRequired,
   radius: React.PropTypes.number.isRequired,
+  onDrag: React.PropTypes.func.isRequired,
   onDragEnd: React.PropTypes.func.isRequired,
 };
 

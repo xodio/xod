@@ -33,7 +33,10 @@ class Patch extends React.Component {
     }];
   }
 
-  handleNodeMove(id, position) {
+  onNodeDrag(id, position) {
+    this.props.dispatch(Actions.nodeDrag(id, position));
+  }
+  onNodeMove(id, position) {
     this.props.dispatch(Actions.nodeMove(id, position));
   }
 
@@ -52,7 +55,8 @@ class Patch extends React.Component {
             pins: nodePins,
             radius: viewState.sizes.pin.radius,
             viewState,
-            onDragEnd: this.handleNodeMove.bind(this),
+            onDrag: this.onNodeDrag.bind(this),
+            onDragEnd: this.onNodeMove.bind(this),
           })
         );
 

@@ -6,6 +6,13 @@ export const nodeMove = (id, position) => ({
   position,
 });
 
+export const nodeDrag = (id, position) => ({
+  type: ActionType.NODE_MOVE,
+  id,
+  position,
+  skipHistory: true,
+});
+
 export const nodeAdd = (node) => ({
   type: ActionType.NODE_ADD,
   node,
@@ -24,4 +31,5 @@ export const metaUpdate = (data) => ({
 export const viewstateUpdate = (state) => ({
   type: ActionType.VIEWSTATE_UPDATE,
   state,
+  skipHistory: true,
 });
