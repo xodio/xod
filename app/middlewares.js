@@ -6,7 +6,7 @@ function updateViewState({ getState, dispatch }) {
   return (next) => (action) => {
     const actionObj = next(action);
     if (action.type !== ActionTypes.VIEWSTATE_UPDATE) {
-      dispatch(Actions.viewstateUpdate(getState()));
+      dispatch(Actions.updateViewState(getState()));
     }
     return actionObj;
   };

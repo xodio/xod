@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import * as Actions from '../actions';
 import Patch from './Patch';
 
 class Editor extends React.Component {
@@ -9,15 +10,14 @@ class Editor extends React.Component {
     this.displayName = 'Editor';
 
     this.onProjectNameClick = this.onProjectNameClick.bind(this);
+
+    console.log('!', this.props);
   }
 
   onProjectNameClick() {
-    return this.props.dispatch({
-      type: 'META_UPDATE',
-      data: {
-        name: 'Mega project',
-      },
-    });
+    return this.props.dispatch(Actions.updateMeta({
+      name: 'Mega project',
+    }));
   }
 
   render() {
