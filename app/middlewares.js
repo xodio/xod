@@ -1,6 +1,6 @@
 import { compose, applyMiddleware } from 'redux';
-import * as ActionTypes from './ActionTypes';
-import * as Actions from './Actions';
+import * as ActionTypes from './actionTypes';
+import * as Actions from './actions';
 
 function updateViewState({ getState, dispatch }) {
   return (next) => (action) => {
