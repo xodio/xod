@@ -8,10 +8,7 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.displayName = 'Editor';
-
     this.onProjectNameClick = this.onProjectNameClick.bind(this);
-
-    console.log('!', this.props);
   }
 
   onProjectNameClick() {

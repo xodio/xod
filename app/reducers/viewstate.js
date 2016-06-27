@@ -1,8 +1,8 @@
 import initialState from '../state';
-import viewStateGenerator from '../utils/ViewStateGenerator';
+import ViewStateGenerator from '../utils/ViewStateGenerator';
 import * as ActionType from '../actionTypes';
 
-const vsGenerator = new viewStateGenerator();
+const vsGenerator = new ViewStateGenerator();
 
 export const viewState = (state, action) => {
   const newState = (state === undefined) ? vsGenerator.create(initialState) : state;

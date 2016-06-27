@@ -25,7 +25,7 @@ const link = (state, action) => {
 };
 
 export const links = (state, action) => {
-  let newState = (state === undefined) ? initialState.project.links : state;
+  const newState = (state === undefined) ? initialState.project.links : state;
   let newLink = null;
   let newLinkId = 0;
 
@@ -35,7 +35,6 @@ export const links = (state, action) => {
       newLinkId = newId(state);
       newLink = R.set(R.lensProp('id'), newLinkId, newLink);
       return R.set(R.lensProp(newLinkId), newLink, state);
-      break;
     case LINK_DELETE:
       return R.omit([action.payload.id.toString()], state);
     default:
