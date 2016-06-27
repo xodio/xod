@@ -33,8 +33,8 @@ const nodeStyles = {
 class Node extends React.Component {
   constructor(props) {
     super(props);
-    this.node = this.props.node;
-    this.elementId = `node_${this.node.id}`;
+    this.id = this.props.id;
+    this.elementId = `node_${this.id}`;
 
     Stylizer.assignStyles(this, nodeStyles);
     Stylizer.hoverable(this, ['rect', 'text']);
@@ -44,21 +44,17 @@ class Node extends React.Component {
   }
 
   onDragMove(event, position) {
-    this.props.onDragMove(this.node.id, position);
+    this.props.onDragMove(this.id, position);
   }
   onDragEnd(event, position) {
-    this.props.onDragEnd(this.node.id, position);
-  }
-
-  getViewState() {
-    return this.props.viewState.nodes[this.node.id];
+    this.props.onDragEnd(this.id, position);
   }
 
   getPaddings() {
-    return this.getViewState().padding;
+    return this.props.padding;
   }
   getRectProps() {
-    const size = this.getViewState().bbox.getSize();
+    const size = this.props.bbox.getSize();
     const paddings = this.getPaddings();
     return {
       width: size.width,
@@ -86,8 +82,8 @@ class Node extends React.Component {
 
   render() {
     const styles = this.getStyle();
-    const position = this.getViewState().bbox.getPosition();
-    const draggable = this.getViewState().draggable;
+    const position = this.props.bbox.getPosition();
+    const draggable = this.props.draggable;
 
     return (
       <SVGDraggable
@@ -99,11 +95,10 @@ class Node extends React.Component {
         <svg {...position} id={this.elementId}>
           <g className="node" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
             <rect {...this.getRectProps()} style={styles.rect} />
-            <text {...this.getTextProps()} style={styles.text}>{this.node.id}</text>
+            <text {...this.getTextProps()} style={styles.text}>{this.id}</text>
           </g>
           <PinList
             pins={this.props.pins}
-            viewState={this.props.viewState.pins}
             radius={this.props.radius}
           />
         </svg>
@@ -113,10 +108,12 @@ class Node extends React.Component {
 }
 
 Node.propTypes = {
-  node: React.PropTypes.any.isRequired,
+  id: React.PropTypes.number.isRequired,
   pins: React.PropTypes.any.isRequired,
-  viewState: React.PropTypes.any.isRequired,
+  bbox: React.PropTypes.any.isRequired,
+  padding: React.PropTypes.any.isRequired,
   radius: React.PropTypes.number.isRequired,
+  draggable: React.PropTypes.bool.isRequired,
   onDragMove: React.PropTypes.func.isRequired,
   onDragEnd: React.PropTypes.func.isRequired,
 };

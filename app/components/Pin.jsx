@@ -35,7 +35,7 @@ export default class Pin extends React.Component {
   constructor(props) {
     super(props);
 
-    this.elementId = `pin_${props.data.id}`;
+    this.elementId = `pin_${props.id}`;
 
     Stylizer.assignStyles(this, pinStyles);
     Stylizer.hoverable(this, ['circle', 'text']);
@@ -44,8 +44,8 @@ export default class Pin extends React.Component {
   getPosition() {
     const radius = this.props.radius;
     return {
-      x: this.props.viewState.bbox.getPosition().x + radius + 1,
-      y: this.props.viewState.bbox.getPosition().y + radius + 1,
+      x: this.props.bbox.getPosition().x + radius + 1,
+      y: this.props.bbox.getPosition().y + radius + 1,
     };
   }
   getBlockCorrection() {
@@ -87,7 +87,7 @@ export default class Pin extends React.Component {
   }
 
   getType() {
-    return this.props.data.type;
+    return this.props.type;
   }
   isInput() {
     return (this.getType() === 'input');
@@ -109,11 +109,11 @@ export default class Pin extends React.Component {
         <rect {...this.getRectProps()} style={styles.block} />
         <circle {...this.getCircleProps()} style={styles.circle} />
         <text
-          key={`pinText_${this.props.data.id}`}
+          key={`pinText_${this.props.id}`}
           {...this.getTextProps()}
           style={styles.text}
         >
-          {this.props.data.key}
+          {this.props.name}
         </text>
       </g>
     );
@@ -121,7 +121,9 @@ export default class Pin extends React.Component {
 }
 
 Pin.propTypes = {
-  data: React.PropTypes.object,
-  viewState: React.PropTypes.object,
-  radius: React.PropTypes.number,
+  id: React.PropTypes.number.isRequired,
+  name: React.PropTypes.string.isRequired,
+  type: React.PropTypes.string.isRequired,
+  bbox: React.PropTypes.object.isRequired,
+  radius: React.PropTypes.number.isRequired,
 };

@@ -1,9 +1,6 @@
-import initialState from '../state';
-
-export const editor = (state, action) => {
-  const newState = (state === undefined) ? initialState.editor : state;
+export const editor = (state = {}, action) => {
   switch (action.type) {
     default:
-      return newState;
+      return state;
   }
 };

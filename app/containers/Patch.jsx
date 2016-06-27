@@ -5,6 +5,7 @@ import SVGLayer from '../components/SVGlayer';
 import Node from '../components/Node';
 import Link from '../components/Link';
 import * as Actions from '../actions';
+import * as ViewState from '../utils/viewstate';
 
 const backgroundStyle = {
   fill: '#eee',
@@ -24,46 +25,41 @@ class Patch extends React.Component {
       factory: () => this.createBackground(),
     }, {
       name: 'links',
-      factory: () => this.createLinks(
-        props.project.links,
-        this.props.viewState
-      ),
+      factory: () => this.createLinks(props.project.links),
     }, {
       name: 'nodes',
-      factory: () => this.createNodes(
-        this.props.project.nodes,
-        props.project.pins,
-        this.props.viewState
-      ),
+      factory: () => this.createNodes(this.props.project.nodes),
     }];
   }
 
-  onNodeDrag(id, position) {
+  onNodeDragMove(id, position) {
     this.props.dispatch(Actions.dragNode(id, position));
   }
-
-  onNodeMove(id, position) {
+  onNodeDragEnd(id, position) {
     this.props.dispatch(Actions.moveNode(id, position));
   }
 
-  createNodes(nodes, pins, viewState) {
+  createNodes(nodes) {
     const nodeFactory = React.createFactory(Node);
 
     return R.pipe(
       R.values,
       R.reduce((p, node) => {
-        const nodePins = R.filter(R.propEq('nodeId', node.id), pins);
         const n = p;
+        const viewstate = ViewState.getNodeState()(
+          this.props.project,
+          {
+            id: node.id,
+          }
+        );
+
+        viewstate.key = node.id;
+        viewstate.onDragMove = this.onNodeDragMove.bind(this);
+        viewstate.onDragEnd = this.onNodeDragEnd.bind(this);
+        viewstate.draggable = this.isEditMode();
+
         n.push(
-          nodeFactory({
-            key: node.id,
-            node,
-            pins: nodePins,
-            radius: viewState.sizes.pin.radius,
-            viewState,
-            onDragMove: this.onNodeDrag.bind(this),
-            onDragEnd: this.onNodeMove.bind(this),
-          })
+          nodeFactory(viewstate)
         );
 
         return n;
@@ -71,21 +67,23 @@ class Patch extends React.Component {
     )(nodes);
   }
 
-  createLinks(links, viewState) {
+  createLinks(links) {
     const linkFactory = React.createFactory(Link);
 
     return R.pipe(
       R.values,
       R.reduce((p, link) => {
         const n = p;
-        n.push(
-          linkFactory({
-            key: link.id,
-            link,
-            viewState: viewState.links[link.id],
-            style: viewState.sizes.link,
-          })
+        const viewstate = ViewState.getLinkState()(
+          this.props.project,
+          {
+            id: link.id,
+            pins: [link.fromPinId, link.toPinId],
+          }
         );
+        viewstate.key = link.id;
+
+        n.push(linkFactory(viewstate));
 
         return n;
       }, [])
@@ -104,6 +102,14 @@ class Patch extends React.Component {
     );
 
     return bgChildren;
+  }
+
+  isEditMode() {
+    return (this.props.editor.mode === 'edit');
+  }
+
+  isViewMode() {
+    return (this.props.editor.mode === 'view');
   }
 
   render() {
@@ -132,7 +138,6 @@ Patch.propTypes = {
   size: React.PropTypes.any.isRequired,
   project: React.PropTypes.any.isRequired,
   editor: React.PropTypes.any.isRequired,
-  viewState: React.PropTypes.any.isRequired,
 };
 
 export default connect(state => state)(Patch);

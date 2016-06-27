@@ -1,11 +1,6 @@
-import initialState from '../state';
-import R from 'ramda';
-
-export const nodeTypes = (state, action) => {
-  const newState = (state === undefined) ? R.clone(initialState.nodeTypes) : state;
-
+export const nodeTypes = (state = {}, action) => {
   switch (action.type) {
     default:
-      return newState;
+      return state;
   }
 };

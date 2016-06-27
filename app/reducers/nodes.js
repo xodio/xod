@@ -1,5 +1,4 @@
 import { NODE_MOVE, NODE_ADD, NODE_DELETE } from '../actionTypes';
-import initialState from '../state';
 import R from 'ramda';
 
 const nodeIds = (nodes) =>
@@ -26,9 +25,7 @@ const node = (state, action) => {
   }
 };
 
-export const nodes = (state, action) => {
-  const newState = (state === undefined) ? R.clone(initialState.project.nodes) : state;
-
+export const nodes = (state = {}, action) => {
   let movedNode = null;
   let newNode = null;
   let newNodeId = 0;
@@ -49,6 +46,6 @@ export const nodes = (state, action) => {
       return R.set(R.lensProp(action.payload.id), movedNode, state);
 
     default:
-      return newState;
+      return state;
   }
 };

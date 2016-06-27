@@ -2,12 +2,12 @@ import React from 'react';
 import R from 'ramda';
 import Pin from '../components/Pin';
 
-function PinList({ radius, pins, viewState }) {
+function PinList({ radius, pins }) {
   const pinsArr = R.values(pins);
   return (
     <g className="pinlist">
       {pinsArr.map((pin) =>
-        <Pin key={`pin_${pin.id}`} data={pin} viewState={viewState[pin.id]} radius={radius} />
+        <Pin key={`pin_${pin.id}`} {...pin} radius={radius} />
       )}
     </g>
   );
@@ -16,7 +16,6 @@ function PinList({ radius, pins, viewState }) {
 PinList.propTypes = {
   radius: React.PropTypes.number.isRequired,
   pins: React.PropTypes.any.isRequired,
-  viewState: React.PropTypes.any.isRequired,
 };
 
 export default PinList;

@@ -1,4 +1,3 @@
-import initialState from '../state';
 import { LINK_ADD, LINK_DELETE } from '../actionTypes';
 import R from 'ramda';
 
@@ -24,8 +23,7 @@ const link = (state, action) => {
   }
 };
 
-export const links = (state, action) => {
-  const newState = (state === undefined) ? initialState.project.links : state;
+export const links = (state = {}, action) => {
   let newLink = null;
   let newLinkId = 0;
 
@@ -38,6 +36,6 @@ export const links = (state, action) => {
     case LINK_DELETE:
       return R.omit([action.payload.id.toString()], state);
     default:
-      return newState;
+      return state;
   }
 };

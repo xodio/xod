@@ -1,14 +1,12 @@
 import R from 'ramda';
 import * as ActionType from '../actionTypes';
-import initialState from '../state';
 
-export const meta = (state, action) => {
-  const newState = (state === undefined) ? R.clone(initialState.project.meta) : state;
+export const meta = (state = {}, action) => {
   switch (action.type) {
     case ActionType.META_UPDATE: {
-      return R.merge(newState, action.payload);
+      return R.merge(state, action.payload);
     }
     default:
-      return newState;
+      return state;
   }
 };
