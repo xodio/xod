@@ -9,6 +9,11 @@ import * as Actions from '../actions';
 const backgroundStyle = {
   fill: '#eee',
 };
+const preventSelectStyle = {
+  '-webkit-user-select': 'none',
+  '-moz-user-select': 'none',
+  'user-select': 'none',
+};
 
 class Patch extends React.Component {
   constructor(props) {
@@ -104,7 +109,12 @@ class Patch extends React.Component {
     const patchName = this.props.project.patches[this.props.editor.currentPatchId].name;
 
     return (
-      <svg width={this.props.size.width} height={this.props.size.height} xmlns="http://www.w3.org/2000/svg">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={this.props.size.width}
+        height={this.props.size.height}
+        style={preventSelectStyle}
+      >
         {this.layers.map(layer =>
           <SVGLayer key={layer.name} name={layer.name}>
             {layer.factory()}
