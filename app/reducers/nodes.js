@@ -1,4 +1,4 @@
-import * as Actions from '../actions';
+import { NODE_MOVE, NODE_ADD, NODE_DELETE } from '../actionTypes';
 import { combineReducers } from 'redux';
 import R from 'ramda';
 
@@ -17,9 +17,9 @@ export const copyNode = (node) => R.clone(node);
 
 const node = (state, action) => {
   switch (action.type) {
-    case Actions.NODE_MOVE:
+    case NODE_MOVE:
       return R.set(R.lensProp('position'), action.payload.position, state);
-    case Actions.NODE_ADD:
+    case NODE_ADD:
       return R.view(R.lensProp('payload'), action);
     default:
       return state;
@@ -33,16 +33,16 @@ export const nodes = (state, action) => {
 
   switch (action.type) {
 
-    case Actions.NODE_ADD:
+    case NODE_ADD:
       newNode = node(undefined, action);
       newNodeId = newId(state);
       newNode = R.set(R.lensProp('id'), newNodeId, newNode);
       return R.set(R.lensProp(newNodeId), newNode, state);
 
-    case Actions.NODE_DELETE:
+    case NODE_DELETE:
       return R.omit([action.payload.id.toString()], state);
 
-    case Actions.NODE_MOVE:
+    case NODE_MOVE:
       movedNode = node(R.view(R.lensProp(action.payload.id), state), action);
       return R.set(R.lensProp('id'), movedNode, state);
 
