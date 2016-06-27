@@ -7,17 +7,69 @@ class SVGDraggable extends React.Component {
 
     this.state = this.getDefaultState();
 
-    this.handleDragStart = this.dragStart.bind(this);
-    this.handleDragMove = this.dragMove.bind(this);
-    this.handleDragEnd = this.dragEnd.bind(this);
+    this.onMouseDown = this.onMouseDown.bind(this);
+    this.onMouseMove = this.onMouseMove.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
 
     const nullFunc = f => f;
 
     this.callbacks = {
       onDragStart: this.props.onDragStart || nullFunc,
-      onDrag: this.props.onDrag || nullFunc,
+      onDragMove: this.props.onDragMove || nullFunc,
       onDragEnd: this.props.onDragEnd || nullFunc,
     };
+  }
+
+  onMouseDown(event) {
+    if (!this.props.active) return;
+
+    // @TODO: Move component above all other components into this layer!
+    this.tempDragged = true;
+    this.state.mousePrevPosition = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+    this.callbacks.onDragStart.call(this, event);
+  }
+  onMouseMove(event) {
+    if (!this.props.active) return;
+
+    if (this.tempDragged) {
+      const mousePos = {
+        x: event.clientX,
+        y: event.clientY,
+      };
+
+      const curPosition = this.getChildState(this.props.children).position;
+      const newPos = {
+        x: (mousePos.x - this.state.mousePrevPosition.x) + curPosition.x,
+        y: (mousePos.y - this.state.mousePrevPosition.y) + curPosition.y,
+      };
+
+      if (
+        mousePos.x !== this.state.mousePrevPosition.x ||
+        mousePos.y !== this.state.mousePrevPosition.y
+      ) {
+        this.state.dragged = true;
+        this.callbacks.onDragMove(event, newPos);
+        this.state.mousePrevPosition = {
+          x: mousePos.x,
+          y: mousePos.y,
+        };
+        this.forceUpdate();
+      }
+    }
+  }
+  onMouseUp(event) {
+    if (!this.props.active) return;
+
+    this.tempDragged = false;
+
+    if (this.state.dragged) {
+      const curPosition = this.getChildState(this.props.children).position;
+      this.callbacks.onDragEnd(event, curPosition);
+      this.state = this.getDefaultState();
+    }
   }
 
   getDefaultState(newPosition) {
@@ -46,48 +98,20 @@ class SVGDraggable extends React.Component {
     };
   }
 
-  dragStart(event) {
-    if (!this.props.active) return;
-
-    // @TODO: Move component above all other components into this layer!
-    this.state.dragged = true;
-    this.state.mousePrevPosition = {
-      x: event.clientX,
-      y: event.clientY,
+  getDragMonitorProps() {
+    return (this.state.dragged) ? {
+      x: -500, y: -500,
+      width: 2000, height: 2000,
+      style: {
+        fill: 'transparent',
+      },
+    } : {
+      x: 0, y: 0,
+      width: 0, height: 0,
+      style: {
+        fill: 'transparent',
+      },
     };
-    this.callbacks.onDragStart.call(this, event);
-  }
-  dragMove(event) {
-    if (!this.props.active) return;
-
-    if (this.state.dragged) {
-      const mousePos = {
-        x: event.clientX,
-        y: event.clientY,
-      };
-
-      const curPosition = this.getChildState(this.props.children).position;
-      const newPos = {
-        x: (mousePos.x - this.state.mousePrevPosition.x) + curPosition.x,
-        y: (mousePos.y - this.state.mousePrevPosition.y) + curPosition.y,
-      };
-
-      this.callbacks.onDrag(event, newPos);
-
-      this.state.mousePrevPosition = {
-        x: mousePos.x,
-        y: mousePos.y,
-      };
-
-      this.forceUpdate();
-    }
-  }
-  dragEnd(event) {
-    if (!this.props.active) return;
-
-    const curPosition = this.getChildState(this.props.children).position;
-    this.callbacks.onDragEnd(event, curPosition);
-    this.state = this.getDefaultState();
   }
 
   applyTranslate() {
@@ -103,30 +127,13 @@ class SVGDraggable extends React.Component {
     const styles = {
       opacity: (this.state.dragged) ? 0.6 : 1,
     };
-    // @TODO: make a candy from this crap:
-    const dragMonitorProps = (this.state.dragged) ? {
-      x: -500,
-      y: -500,
-      width: 2000,
-      height: 2000,
-      style: {
-        fill: 'transparent',
-      },
-    } : {
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-      style: {
-        fill: 'transparent',
-      },
-    };
+    const dragMonitorProps = this.getDragMonitorProps();
 
     return (
       <g
-        onMouseDown={this.handleDragStart}
-        onMouseMove={this.handleDragMove}
-        onMouseUp={this.handleDragEnd}
+        onMouseDown={this.onMouseDown}
+        onMouseMove={this.onMouseMove}
+        onMouseUp={this.onMouseUp}
         style={styles}
       >
         {this.props.children}
@@ -140,7 +147,7 @@ SVGDraggable.propTypes = {
   children: React.PropTypes.any,
   active: React.PropTypes.bool,
   onDragStart: React.PropTypes.func,
-  onDrag: React.PropTypes.func,
+  onDragMove: React.PropTypes.func,
   onDragEnd: React.PropTypes.func,
 };
 

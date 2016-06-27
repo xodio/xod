@@ -55,7 +55,7 @@ class Patch extends React.Component {
             pins: nodePins,
             radius: viewState.sizes.pin.radius,
             viewState,
-            onDrag: this.onNodeDrag.bind(this),
+            onDragMove: this.onNodeDrag.bind(this),
             onDragEnd: this.onNodeMove.bind(this),
           })
         );

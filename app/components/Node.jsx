@@ -46,7 +46,7 @@ class Node extends React.Component {
 
   onDragStart() {}
   onDragMove(event, position) {
-    this.props.onDrag(this.node.id, position);
+    this.props.onDragMove(this.node.id, position);
   }
   onDragEnd(event, position) {
     this.props.onDragEnd(this.node.id, position);
@@ -96,7 +96,7 @@ class Node extends React.Component {
         key={this.elementId}
         active={draggable}
         onDragStart={this.handleDragStart}
-        onDrag={this.handleDragMove}
+        onDragMove={this.handleDragMove}
         onDragEnd={this.handleDragEnd}
       >
         <svg {...position} id={this.elementId}>
@@ -120,7 +120,7 @@ Node.propTypes = {
   pins: React.PropTypes.any.isRequired,
   viewState: React.PropTypes.any.isRequired,
   radius: React.PropTypes.number.isRequired,
-  onDrag: React.PropTypes.func.isRequired,
+  onDragMove: React.PropTypes.func.isRequired,
   onDragEnd: React.PropTypes.func.isRequired,
 };
 
