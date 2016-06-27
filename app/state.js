@@ -1,6 +1,9 @@
 const initialState = {
   project: {
-    name: 'Awesome project',
+    meta: {
+      name: 'Awesome project',
+      author: 'Amperka team',
+    },
     patches: {
       1: {
         id: 1,
@@ -109,7 +112,8 @@ const initialState = {
     },
   },
   editor: {
-    currentPatch: 1,
+    currentPatchId: 1,
+    mode: 'edit',
   },
   nodeTypes: {
     1: {

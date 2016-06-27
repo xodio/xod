@@ -1,6 +1,7 @@
 import React from 'react';
 import PinList from '../components/PinList';
 import Stylizer from '../utils/stylizer';
+import SVGDraggable from '../components/SVGDraggable';
 
 const nodeStyles = {
   block: {
@@ -37,6 +38,16 @@ class Node extends React.Component {
 
     Stylizer.assignStyles(this, nodeStyles);
     Stylizer.hoverable(this, ['rect', 'text']);
+
+    this.handleDragMove = this.onDragMove.bind(this);
+    this.handleDragEnd = this.onDragEnd.bind(this);
+  }
+
+  onDragMove(event, position) {
+    this.props.onDragMove(this.node.id, position);
+  }
+  onDragEnd(event, position) {
+    this.props.onDragEnd(this.node.id, position);
   }
 
   getViewState() {
@@ -76,19 +87,27 @@ class Node extends React.Component {
   render() {
     const styles = this.getStyle();
     const position = this.getViewState().bbox.getPosition();
+    const draggable = this.getViewState().draggable;
 
     return (
-      <svg {...position} key={this.elementId} id={this.elementId}>
-        <g className="node" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
-          <rect {...this.getRectProps()} style={styles.rect} />
-          <text {...this.getTextProps()} style={styles.text}>{this.node.id}</text>
-        </g>
-        <PinList
-          pins={this.props.pins}
-          viewState={this.props.viewState.pins}
-          radius={this.props.radius}
-        />
-      </svg>
+      <SVGDraggable
+        key={this.elementId}
+        active={draggable}
+        onDragMove={this.handleDragMove}
+        onDragEnd={this.handleDragEnd}
+      >
+        <svg {...position} id={this.elementId}>
+          <g className="node" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
+            <rect {...this.getRectProps()} style={styles.rect} />
+            <text {...this.getTextProps()} style={styles.text}>{this.node.id}</text>
+          </g>
+          <PinList
+            pins={this.props.pins}
+            viewState={this.props.viewState.pins}
+            radius={this.props.radius}
+          />
+        </svg>
+      </SVGDraggable>
     );
   }
 }
@@ -98,6 +117,8 @@ Node.propTypes = {
   pins: React.PropTypes.any.isRequired,
   viewState: React.PropTypes.any.isRequired,
   radius: React.PropTypes.number.isRequired,
+  onDragMove: React.PropTypes.func.isRequired,
+  onDragEnd: React.PropTypes.func.isRequired,
 };
 
 export default Node;

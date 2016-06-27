@@ -1,171 +1,48 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import R from 'ramda';
-import Bbox from '../utils/bbox';
 import SVGLayer from '../components/SVGlayer';
 import Node from '../components/Node';
 import Link from '../components/Link';
+import * as Actions from '../actions';
 
 const backgroundStyle = {
   fill: '#eee',
 };
-
-const Sizes = {
-  node: {
-    min_width: 80,
-    height: 40,
-    padding: {
-      x: 2,
-      y: 25,
-    },
-  },
-  pin: {
-    radius: 5,
-    margin: 15,
-  },
+const preventSelectStyle = {
+  WebkitUserSelect: 'none',
+  MozUserSelect: 'none',
+  UserSelect: 'none',
 };
 
-export default class Patch extends React.Component {
+class Patch extends React.Component {
   constructor(props) {
     super(props);
 
-    this.viewState = this.createViewState(props);
     this.layers = [{
       name: 'background',
-      children: this.createBackground(),
+      factory: () => this.createBackground(),
     }, {
       name: 'links',
-      children: this.createLinks(props.links, this.viewState),
+      factory: () => this.createLinks(
+        props.project.links,
+        this.props.viewState
+      ),
     }, {
       name: 'nodes',
-      children: this.createNodes(props.nodes, props.pins, this.viewState),
+      factory: () => this.createNodes(
+        this.props.project.nodes,
+        props.project.pins,
+        this.props.viewState
+      ),
     }];
-
-    // console.log('patch: ', this.props);
-    // console.log('viewState: ', this.viewState);
   }
 
-  getMaxSidePinCount(pins, nodeId) {
-    return R.pipe(
-      R.values,
-      R.filter((a) => (a.nodeId === nodeId)),
-      R.groupBy((a) => a.nodeId + a.type),
-      R.values,
-      R.reduce((p, c) => R.max(p, c.length || 0), 0)
-    )(pins);
+  onNodeDrag(id, position) {
+    this.props.dispatch(Actions.dragNode(id, position));
   }
-  getPinsWidth(count, withMargins) {
-    const marginCount = (withMargins) ? count + 1 : count - 1;
-    return (marginCount * Sizes.pin.margin) + (count * Sizes.pin.radius * 2);
-  }
-  getNodeWidth(nodeId) {
-    const pinsMaxCount = this.getMaxSidePinCount(this.props.pins, nodeId);
-    let nodeWidth = this.getPinsWidth(pinsMaxCount, true);
-
-    if (nodeWidth < Sizes.node.min_width) {
-      nodeWidth = Sizes.node.min_width;
-    }
-
-    return nodeWidth;
-  }
-  getPinListWidth(nodeId) {
-    const pinsMaxCount = this.getMaxSidePinCount(this.props.pins, nodeId);
-    return this.getPinsWidth(pinsMaxCount, false);
-  }
-
-  createViewState(state) {
-    const viewState = {};
-
-    viewState.nodes = this.calcNodes(state.nodes);
-    viewState.pins = this.calcPins(state.pins, viewState.nodes);
-    viewState.links = this.calcLinks(state.links, viewState.pins, viewState.nodes);
-
-    return viewState;
-  }
-
-  calcNodes(nodes) {
-    return R.pipe(
-      R.values,
-      R.reduce((p, node) => {
-        const n = p;
-        const nodeWidth = this.getNodeWidth(node.id);
-
-        n[node.id] = {
-          id: node.id,
-          bbox: new Bbox({
-            x: node.position.x,
-            y: node.position.y,
-            width: nodeWidth,
-            height: Sizes.node.height,
-          }),
-          padding: Sizes.node.padding,
-        };
-
-        return n;
-      }, {})
-    )(nodes);
-  }
-
-  calcPins(pins, nodesView) {
-    return R.pipe(
-      R.values,
-      R.groupBy((p) => p.nodeId + p.type),
-      R.map((a) => {
-        const node = nodesView[a[0].nodeId];
-        const nodeWidth = this.getNodeWidth(node.id);
-        const pinsWidth = this.getPinListWidth(node.id);
-        let offset = 0;
-        const vOffset = {
-          input: Sizes.node.padding.y - Sizes.pin.radius,
-          output: node.bbox.getSize().height + Sizes.node.padding.y - Sizes.pin.radius,
-        };
-
-        return R.map((pin) => {
-          const r = {
-            id: pin.id,
-            nodeId: pin.nodeId,
-            type: pin.type,
-            bbox: new Bbox({
-              x: (nodeWidth - pinsWidth) / 2 + offset,
-              y: vOffset[pin.type],
-              width: Sizes.pin.radius * 2,
-              height: Sizes.pin.radius * 2,
-            }),
-          };
-
-          offset += Sizes.pin.margin + Sizes.pin.radius * 2;
-
-          return r;
-        }, a);
-      }),
-      R.values,
-      R.flatten,
-      R.reduce((p, pin) => {
-        const n = p;
-        n[pin.id] = pin;
-        return n;
-      }, {})
-    )(pins);
-  }
-
-  calcLinks(links, pinsView, nodesView) {
-    return R.pipe(
-      R.values,
-      R.reduce((p, link) => {
-        const n = p;
-        const pinFrom = pinsView[link.fromPinId];
-        const pinTo = pinsView[link.toPinId];
-        const nodeFrom = nodesView[pinFrom.nodeId];
-        const nodeTo = nodesView[pinTo.nodeId];
-
-        n[link.id] = {
-          id: link.id,
-          from: pinFrom.bbox.addPosition(nodeFrom.bbox),
-          to: pinTo.bbox.addPosition(nodeTo.bbox),
-        };
-
-        return n;
-      }, {})
-    )(links);
+  onNodeMove(id, position) {
+    this.props.dispatch(Actions.moveNode(id, position));
   }
 
   createNodes(nodes, pins, viewState) {
@@ -175,15 +52,16 @@ export default class Patch extends React.Component {
       R.values,
       R.reduce((p, node) => {
         const nodePins = R.filter(R.propEq('nodeId', node.id), pins);
-
         const n = p;
         n.push(
           nodeFactory({
             key: node.id,
             node,
             pins: nodePins,
-            radius: Sizes.pin.radius,
+            radius: viewState.sizes.pin.radius,
             viewState,
+            onDragMove: this.onNodeDrag.bind(this),
+            onDragEnd: this.onNodeMove.bind(this),
           })
         );
 
@@ -204,7 +82,7 @@ export default class Patch extends React.Component {
             key: link.id,
             link,
             viewState: viewState.links[link.id],
-            style: Sizes.link,
+            style: viewState.sizes.link,
           })
         );
 
@@ -228,21 +106,32 @@ export default class Patch extends React.Component {
   }
 
   render() {
+    const patchName = this.props.project.patches[this.props.editor.currentPatchId].name;
+
     return (
-      <svg width={this.props.size.width} height={this.props.size.height} xmlns="http://www.w3.org/2000/svg">
-        <text x="5" y="5">{this.props.name}</text>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={this.props.size.width}
+        height={this.props.size.height}
+        style={preventSelectStyle}
+      >
         {this.layers.map(layer =>
-          <SVGLayer key={layer.name} name={layer.name} children={layer.children} />
+          <SVGLayer key={layer.name} name={layer.name}>
+            {layer.factory()}
+          </SVGLayer>
         )}
+        <text x="5" y="20">{`Patch: ${patchName}`}</text>
       </svg>
     );
   }
 }
 
 Patch.propTypes = {
-  name: React.PropTypes.string,
-  links: React.PropTypes.any.isRequired,
-  nodes: React.PropTypes.any.isRequired,
-  pins: React.PropTypes.any.isRequired,
+  dispatch: React.PropTypes.func.isRequired,
   size: React.PropTypes.any.isRequired,
+  project: React.PropTypes.any.isRequired,
+  editor: React.PropTypes.any.isRequired,
+  viewState: React.PropTypes.any.isRequired,
 };
+
+export default connect(state => state)(Patch);
