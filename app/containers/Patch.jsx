@@ -41,6 +41,7 @@ class Patch extends React.Component {
   onNodeDrag(id, position) {
     this.props.dispatch(Actions.dragNode(id, position));
   }
+
   onNodeMove(id, position) {
     this.props.dispatch(Actions.moveNode(id, position));
   }

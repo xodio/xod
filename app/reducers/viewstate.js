@@ -1,5 +1,5 @@
 import initialState from '../state';
-import ViewStateGenerator from '../utils/viewstateGenerator';
+import ViewStateGenerator from '../utils/ViewStateGenerator';
 import * as ActionType from '../actionTypes';
 
 const vsGenerator = new ViewStateGenerator();

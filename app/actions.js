@@ -31,6 +31,18 @@ export const deleteNode = (id) => ({
   },
 });
 
+export const addLink = (link) => ({
+  type: ActionType.LINK_ADD,
+  payload: link,
+});
+
+export const deleteLink = (id) => ({
+  type: ActionType.LINK_DELETE,
+  payload: {
+    id,
+  },
+});
+
 export const updateMeta = (data) => ({
   type: ActionType.META_UPDATE,
   payload: data,

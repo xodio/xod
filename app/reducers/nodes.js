@@ -1,4 +1,5 @@
-import * as ActionType from '../actionTypes';
+import { NODE_MOVE, NODE_ADD, NODE_DELETE } from '../actionTypes';
+import initialState from '../state';
 import R from 'ramda';
 
 const nodeIds = (nodes) =>
@@ -16,36 +17,38 @@ export const copyNode = (node) => R.clone(node);
 
 const node = (state, action) => {
   switch (action.type) {
-    case ActionType.NODE_MOVE:
+    case NODE_MOVE:
       return R.set(R.lensProp('position'), action.payload.position, state);
-    case ActionType.NODE_ADD:
+    case NODE_ADD:
       return R.view(R.lensProp('payload'), action);
     default:
       return state;
   }
 };
 
-export const nodes = (state = {}, action) => {
+export const nodes = (state, action) => {
+  const newState = (state === undefined) ? R.clone(initialState.project.nodes) : state;
+
   let movedNode = null;
   let newNode = null;
   let newNodeId = 0;
 
   switch (action.type) {
 
-    case ActionType.NODE_ADD:
+    case NODE_ADD:
       newNode = node(undefined, action);
       newNodeId = newId(state);
       newNode = R.set(R.lensProp('id'), newNodeId, newNode);
       return R.set(R.lensProp(newNodeId), newNode, state);
 
-    case ActionType.NODE_DELETE:
+    case NODE_DELETE:
       return R.omit([action.payload.id.toString()], state);
 
-    case ActionType.NODE_MOVE:
+    case NODE_MOVE:
       movedNode = node(R.view(R.lensProp(action.payload.id), state), action);
       return R.set(R.lensProp(action.payload.id), movedNode, state);
 
     default:
-      return state;
+      return newState;
   }
 };

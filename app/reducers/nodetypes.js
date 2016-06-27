@@ -1,10 +1,9 @@
 import initialState from '../state';
-import update from 'react-addons-update';
+import R from 'ramda';
 
 export const nodeTypes = (state, action) => {
-  const newState = (state === undefined) ? update(state, {
-    $set: initialState.nodeTypes,
-  }) : state;
+  const newState = (state === undefined) ? R.clone(initialState.nodeTypes) : state;
+
   switch (action.type) {
     default:
       return newState;

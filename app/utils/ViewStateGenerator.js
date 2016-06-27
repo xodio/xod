@@ -16,7 +16,7 @@ const Sizes = {
   },
 };
 
-export default class viewStateGenerator {
+export default class ViewStateGenerator {
   create(state) {
     const viewState = {};
 

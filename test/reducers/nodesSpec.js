@@ -1,5 +1,5 @@
-import * as Actions from '../app/actions';
-import { newId, nodes, lastId, copyNode } from '../app/reducers/nodes';
+import * as Actions from '../../app/actions';
+import { newId, nodes, lastId, copyNode } from '../../app/reducers/nodes';
 import chai from 'chai';
 import R from 'ramda';
 

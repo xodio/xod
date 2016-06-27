@@ -1,10 +1,9 @@
 import initialState from '../state';
-import update from 'react-addons-update';
+import R from 'ramda';
 
 export const patches = (state, action) => {
-  const newState = (state === undefined) ? update(state, {
-    $set: initialState.project.patches,
-  }) : state;
+  const newState = (state === undefined) ? R.clone(initialState.project.patches) : state;
+
   switch (action.type) {
     default:
       return newState;
