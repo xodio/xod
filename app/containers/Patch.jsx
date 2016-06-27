@@ -132,7 +132,6 @@ Patch.propTypes = {
   size: React.PropTypes.any.isRequired,
   project: React.PropTypes.any.isRequired,
   editor: React.PropTypes.any.isRequired,
-  viewState: React.PropTypes.any.isRequired,
 };
 
 export default connect(state => state)(Patch);

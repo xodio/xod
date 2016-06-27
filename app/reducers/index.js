@@ -6,7 +6,6 @@ import { patches } from './patches';
 import { nodes } from './nodes';
 import { pins } from './pins';
 import { links } from './links';
-import { viewState } from './viewstate';
 
 export default combineReducers({
   project: combineReducers({
@@ -18,5 +17,4 @@ export default combineReducers({
   }),
   nodeTypes,
   editor,
-  viewState,
 });
