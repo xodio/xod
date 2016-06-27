@@ -39,12 +39,10 @@ class Node extends React.Component {
     Stylizer.assignStyles(this, nodeStyles);
     Stylizer.hoverable(this, ['rect', 'text']);
 
-    this.handleDragStart = this.onDragStart.bind(this);
     this.handleDragMove = this.onDragMove.bind(this);
     this.handleDragEnd = this.onDragEnd.bind(this);
   }
 
-  onDragStart() {}
   onDragMove(event, position) {
     this.props.onDragMove(this.node.id, position);
   }
@@ -95,7 +93,6 @@ class Node extends React.Component {
       <SVGDraggable
         key={this.elementId}
         active={draggable}
-        onDragStart={this.handleDragStart}
         onDragMove={this.handleDragMove}
         onDragEnd={this.handleDragEnd}
       >

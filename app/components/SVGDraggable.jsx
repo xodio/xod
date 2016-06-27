@@ -14,7 +14,6 @@ class SVGDraggable extends React.Component {
     const nullFunc = f => f;
 
     this.callbacks = {
-      onDragStart: this.props.onDragStart || nullFunc,
       onDragMove: this.props.onDragMove || nullFunc,
       onDragEnd: this.props.onDragEnd || nullFunc,
     };
@@ -23,13 +22,11 @@ class SVGDraggable extends React.Component {
   onMouseDown(event) {
     if (!this.props.active) return;
 
-    // @TODO: Move component above all other components into this layer!
     this.tempDragged = true;
     this.state.mousePrevPosition = {
       x: event.clientX,
       y: event.clientY,
     };
-    this.callbacks.onDragStart.call(this, event);
   }
   onMouseMove(event) {
     if (!this.props.active) return;
@@ -40,16 +37,18 @@ class SVGDraggable extends React.Component {
         y: event.clientY,
       };
 
-      const curPosition = this.getChildState(this.props.children).position;
-      const newPos = {
-        x: (mousePos.x - this.state.mousePrevPosition.x) + curPosition.x,
-        y: (mousePos.y - this.state.mousePrevPosition.y) + curPosition.y,
-      };
-
+      // Check for really dragging
       if (
         mousePos.x !== this.state.mousePrevPosition.x ||
         mousePos.y !== this.state.mousePrevPosition.y
       ) {
+        // @TODO: Move component above all other components into this layer!
+        const curPosition = this.getChildState(this.props.children).position;
+        const newPos = {
+          x: (mousePos.x - this.state.mousePrevPosition.x) + curPosition.x,
+          y: (mousePos.y - this.state.mousePrevPosition.y) + curPosition.y,
+        };
+
         this.state.dragged = true;
         this.callbacks.onDragMove(event, newPos);
         this.state.mousePrevPosition = {
@@ -146,7 +145,6 @@ class SVGDraggable extends React.Component {
 SVGDraggable.propTypes = {
   children: React.PropTypes.any,
   active: React.PropTypes.bool,
-  onDragStart: React.PropTypes.func,
   onDragMove: React.PropTypes.func,
   onDragEnd: React.PropTypes.func,
 };

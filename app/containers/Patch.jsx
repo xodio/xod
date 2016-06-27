@@ -10,9 +10,9 @@ const backgroundStyle = {
   fill: '#eee',
 };
 const preventSelectStyle = {
-  '-webkit-user-select': 'none',
-  '-moz-user-select': 'none',
-  'user-select': 'none',
+  WebkitUserSelect: 'none',
+  MozUserSelect: 'none',
+  UserSelect: 'none',
 };
 
 class Patch extends React.Component {
