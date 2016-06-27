@@ -1,9 +1,9 @@
 import { NODE_MOVE, NODE_ADD, NODE_DELETE } from '../actionTypes';
-import { combineReducers } from 'redux';
+import initialState from '../state';
 import R from 'ramda';
 
 const nodeIds = (nodes) =>
-  R.map(node => parseInt(node.id, 10))(R.values(nodes));
+    R.map(node => parseInt(node.id, 10))(R.values(nodes));
 
 export const lastId = (nodes) => {
   const ids = nodeIds(nodes);
@@ -27,6 +27,8 @@ const node = (state, action) => {
 };
 
 export const nodes = (state, action) => {
+  const newState = (state === undefined) ? R.clone(initialState.project.nodes) : state;
+
   let movedNode = null;
   let newNode = null;
   let newNodeId = 0;
@@ -47,10 +49,6 @@ export const nodes = (state, action) => {
       return R.set(R.lensProp('id'), movedNode, state);
 
     default:
-      return state;
+      return newState;
   }
 };
-
-export const nodeApp = combineReducers({
-  nodes,
-});

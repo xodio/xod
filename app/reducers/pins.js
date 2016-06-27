@@ -1,8 +1,9 @@
 import initialState from '../state';
+import R from 'ramda';
 
 export const pins = (state, action) => {
-  let newState = (state === undefined) ? initialState.project.pins : state;
-  switch (action.type) {
+  const newState = (state === undefined) ? R.clone(initialState.project.pins) : state;
+  switch(action.type) {
     default:
       return newState;
   }
