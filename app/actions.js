@@ -47,10 +47,3 @@ export const updateMeta = (data) => ({
   type: ActionType.META_UPDATE,
   payload: data,
 });
-
-export const updateViewState = (state) => ({
-  type: ActionType.VIEWSTATE_UPDATE,
-  payload: {
-    state,
-  },
-});
