@@ -38,7 +38,7 @@ export default class Bbox {
     };
   }
 
-  addPosition(addBbox) {
+  translate(addBbox) {
     return new Bbox({
       x: this.props.x + addBbox.getPosition().x,
       y: this.props.y + addBbox.getPosition().y,
