@@ -46,7 +46,7 @@ export const nodes = (state, action) => {
 
     case NODE_MOVE:
       movedNode = node(R.view(R.lensProp(action.payload.id), state), action);
-      return R.set(R.lensProp('id'), movedNode, state);
+      return R.set(R.lensProp(action.payload.id), movedNode, state);
 
     default:
       return newState;
