@@ -25,6 +25,7 @@
     "react-dom": "^0.14.6",
     "react-redux": "^4.0.6",
     "redux": "^3.0.5",
+    "reselect": "^2.5.1",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.10"
   },
