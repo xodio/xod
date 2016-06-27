@@ -22,7 +22,6 @@ const Sizes = {
 const getNodes = (state) => R.pipe(
   R.view(R.lensProp('nodes'))
 )(state);
-
 const getNodeById = (state, props) => R.pipe(
   getNodes,
   R.filter((node) => node.id === props.id),
@@ -33,10 +32,33 @@ const getNodeById = (state, props) => R.pipe(
 const getPins = (state) => R.pipe(
   R.view(R.lensProp('pins'))
 )(state);
-
 const getPinsByNodeId = (state, props) => R.pipe(
   getPins,
   R.filter((pin) => pin.nodeId === props.id)
+)(state, props);
+const getPinsByIds = (state, props) => R.pipe(
+  getPins,
+  R.values,
+  R.reduce((p, pin) => {
+    const n = p;
+    if (props && props.pins && props.pins.indexOf(pin.id) !== -1) {
+      n[pin.id] = pin;
+    }
+    return n;
+  }, {})
+)(state, props);
+
+const getNodesByPinIds = (state, props) => R.pipe(
+  getPins,
+  R.filter((pin) =>
+    props && props.pins && props.pins.indexOf(pin.id) !== -1
+  ),
+  R.values,
+  R.reduce((p, pin) => {
+    const n = p;
+    n[pin.nodeId] = getNodeById(state, { id: pin.nodeId });
+    return n;
+  }, {})
 )(state, props);
 
 const getMaxSidePinCount = (pins) => R.pipe(
@@ -45,19 +67,18 @@ const getMaxSidePinCount = (pins) => R.pipe(
   R.values,
   R.reduce((p, c) => R.max(p, c.length || 0), 0)
 )(pins);
-
 const getSidesPinCount = (pins) => R.pipe(
   R.values,
   R.groupBy((pin) => pin.type),
   R.values,
-  R.reduce((p, pins) => {
+  R.reduce((p, group) => {
     const n = p;
-    const type = pins[0].type;
-    n[type] = pins.length;
+    const type = group[0].type;
+    n[type] = group.length;
     return n;
   }, {
     input: 0,
-    output: 0
+    output: 0,
   })
 )(pins);
 
@@ -65,11 +86,6 @@ const getPinsWidth = (count, withMargins) => {
   const marginCount = (withMargins) ? count + 1 : count - 1;
   return (marginCount * Sizes.pin.margin) + (count * Sizes.pin.radius * 2);
 };
-
-const getLinks = (state) => R.pipe(
-  R.view(R.lensProp('links'))
-)(state);
-
 const getNodeWidth = (pins) => {
   const pinsCount = getMaxSidePinCount(pins);
   let nodeWidth = getPinsWidth(pinsCount, true);
@@ -80,8 +96,18 @@ const getNodeWidth = (pins) => {
 };
 const getPinListWidths = (counts) => ({
   input: getPinsWidth(counts.input, false),
-  output: getPinsWidth(counts.output,false),
+  output: getPinsWidth(counts.output, false),
 });
+
+const getLinks = (state) => R.pipe(
+  R.view(R.lensProp('links'))
+)(state);
+const getLinkById = (state, props) => R.pipe(
+  getLinks,
+  R.filter((link) => link.id === props.id),
+  R.values,
+  R.head
+)(state, props);
 
 const getPinsView = (pins, nodeBbox, nodeWidth, pinsWidth) => R.pipe(
   R.values,
@@ -121,29 +147,65 @@ const getPinsView = (pins, nodeBbox, nodeWidth, pinsWidth) => R.pipe(
   }, {})
 )(pins);
 
-export const getNode = () => createSelector(
+const getNodeView = (node, pins) => {
+  const nodeWidth = getNodeWidth(pins);
+  const pinsCount = getSidesPinCount(pins);
+  const pinsWidth = getPinListWidths(pinsCount);
+  const nodeBbox = new Bbox({
+    x: node.position.x,
+    y: node.position.y,
+    width: nodeWidth,
+    height: Sizes.node.height,
+  });
+
+  const pinsView = getPinsView(pins, nodeBbox, nodeWidth, pinsWidth);
+
+  return {
+    id: node.id,
+    pins: pinsView,
+    radius: Sizes.pin.radius,
+    bbox: nodeBbox,
+    padding: Sizes.node.padding,
+  };
+};
+
+export const getNodeState = () => createSelector(
   [
     getNodeById,
     getPinsByNodeId,
   ],
-  (node, pins) => {
-    const nodeWidth = getNodeWidth(pins);
-    const pinsCount = getSidesPinCount(pins);
-    const pinsWidth = getPinListWidths(pinsCount);
-    const nodeBbox = new Bbox({
-      x: node.position.x,
-      y: node.position.y,
-      width: nodeWidth,
-      height: Sizes.node.height,
-    });
-    const pinsView = getPinsView(pins, nodeBbox, nodeWidth, pinsWidth);
+  (node, pins) => getNodeView(node, pins)
+);
+
+export const getLinkState = () => createSelector(
+  [
+    getLinkById,
+    getPinsByIds,
+    getNodesByPinIds,
+    getPins,
+  ],
+  (link, pins, nodes, allPins) => {
+    const pinFrom = pins[link.fromPinId];
+    const pinTo = pins[link.toPinId];
+
+    const pinsFrom = R.pipe(
+      R.values,
+      R.filter((pin) => pin.nodeId === pinFrom.nodeId)
+    )(allPins);
+    const pinsTo = R.pipe(
+      R.values,
+      R.filter((pin) => pin.nodeId === pinTo.nodeId)
+    )(allPins);
+
+    const nodeViewFrom = getNodeView(nodes[pinFrom.nodeId], pinsFrom);
+    const nodeViewTo = getNodeView(nodes[pinTo.nodeId], pinsTo);
+    const pinViewFrom = nodeViewFrom.pins[pinFrom.id];
+    const pinViewTo = nodeViewTo.pins[pinTo.id];
 
     return {
-      id: node.id,
-      pins: pinsView,
-      radius: Sizes.pin.radius,
-      bbox: nodeBbox,
-      padding: Sizes.node.padding,
+      id: link.id,
+      from: pinViewFrom.bbox.translate(nodeViewFrom.bbox).getAbsCenter(),
+      to: pinViewTo.bbox.translate(nodeViewTo.bbox).getAbsCenter(),
     };
   }
 );

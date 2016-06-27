@@ -25,7 +25,7 @@ const linkStyles = {
 class Link extends React.Component {
   constructor(props) {
     super(props);
-    this.elementId = `link_${this.props.link.id}`;
+    this.elementId = `link_${this.props.id}`;
 
     this.state = {
       hovered: false,
@@ -37,8 +37,8 @@ class Link extends React.Component {
 
   getPosition() {
     return {
-      from: this.props.viewState.from.getAbsCenter(),
-      to: this.props.viewState.to.getAbsCenter(),
+      from: this.props.from,
+      to: this.props.to,
     };
   }
 
@@ -78,8 +78,9 @@ class Link extends React.Component {
 }
 
 Link.propTypes = {
-  link: React.PropTypes.any.isRequired,
-  viewState: React.PropTypes.any.isRequired,
+  id: React.PropTypes.number.isRequired,
+  from: React.PropTypes.object.isRequired,
+  to: React.PropTypes.object.isRequired,
 };
 
 export default Link;
