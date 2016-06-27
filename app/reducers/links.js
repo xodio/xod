@@ -13,6 +13,8 @@ export const lastId = (links) => {
 
 export const newId = (links) => lastId(links) + 1;
 
+export const copyLink = (link) => R.clone(link);
+
 const link = (state, action) => {
   switch (action.type) {
     case LINK_ADD:
@@ -31,7 +33,7 @@ export const links = (state, action) => {
     case LINK_ADD:
       newLink = link(undefined, action);
       newLinkId = newId(state);
-      newLink = R.set(R.lensProp('id'), newNodeId, newLink);
+      newLink = R.set(R.lensProp('id'), newLinkId, newLink);
       return R.set(R.lensProp(newLinkId), newLink, state);
       break;
     case LINK_DELETE:
