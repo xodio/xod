@@ -1,13 +1,5 @@
 /* eslint-env browser */
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
-import App from './containers/App';
-<<<<<<< refs/remotes/origin/master
-
-ReactDOM.render(<App />, document.getElementById('root'));
-=======
 import { Editor, Project, NodeTypes } from './reducers/';
 import initialState from './state';
 
@@ -28,4 +20,3 @@ ReactDOM.render(
   />,
   document.getElementById('root')
 );
->>>>>>> feat(store): create stores and pass their states into app container
