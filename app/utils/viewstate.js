@@ -17,6 +17,8 @@ const Sizes = {
   },
 };
 
+// Accepts state.project as state
+
 const getNodes = (state) => R.pipe(
   R.view(R.lensProp('nodes'))
 )(state);
@@ -44,20 +46,29 @@ const getMaxSidePinCount = (pins) => R.pipe(
   R.reduce((p, c) => R.max(p, c.length || 0), 0)
 )(pins);
 
+const getSidesPinCount = (pins) => R.pipe(
+  R.values,
+  R.groupBy((pin) => pin.type),
+  R.values,
+  R.reduce((p, pins) => {
+    const n = p;
+    const type = pins[0].type;
+    n[type] = pins.length;
+    return n;
+  }, {
+    input: 0,
+    output: 0
+  })
+)(pins);
+
 const getPinsWidth = (count, withMargins) => {
   const marginCount = (withMargins) ? count + 1 : count - 1;
   return (marginCount * Sizes.pin.margin) + (count * Sizes.pin.radius * 2);
 };
 
-// const getLinks = (state) => R.pipe(
-//   getProject,
-//   R.view(R.lensProp('links'))
-// )(state);
-
-// const getMeta = (state) => R.pipe(
-//   getProject,
-//   R.view(R.lensProp('meta'))
-// )(state);
+const getLinks = (state) => R.pipe(
+  R.view(R.lensProp('links'))
+)(state);
 
 const getNodeWidth = (pins) => {
   const pinsCount = getMaxSidePinCount(pins);
@@ -67,10 +78,10 @@ const getNodeWidth = (pins) => {
   }
   return nodeWidth;
 };
-const getPinListWidth = (pins) => {
-  const pinsCount = getMaxSidePinCount(pins);
-  return getPinsWidth(pinsCount, false);
-};
+const getPinListWidths = (counts) => ({
+  input: getPinsWidth(counts.input, false),
+  output: getPinsWidth(counts.output,false),
+});
 
 const getPinsView = (pins, nodeBbox, nodeWidth, pinsWidth) => R.pipe(
   R.values,
@@ -89,7 +100,7 @@ const getPinsView = (pins, nodeBbox, nodeWidth, pinsWidth) => R.pipe(
         nodeId: pin.nodeId,
         type: pin.type,
         bbox: new Bbox({
-          x: (nodeWidth - pinsWidth) / 2 + offset,
+          x: (nodeWidth - pinsWidth[pin.type]) / 2 + offset,
           y: vOffset[pin.type],
           width: Sizes.pin.radius * 2,
           height: Sizes.pin.radius * 2,
@@ -117,7 +128,8 @@ export const getNode = () => createSelector(
   ],
   (node, pins) => {
     const nodeWidth = getNodeWidth(pins);
-    const pinsWidth = getPinListWidth(pins);
+    const pinsCount = getSidesPinCount(pins);
+    const pinsWidth = getPinListWidths(pinsCount);
     const nodeBbox = new Bbox({
       x: node.position.x,
       y: node.position.y,
@@ -135,3 +147,7 @@ export const getNode = () => createSelector(
     };
   }
 );
+
+export const getMeta = (state) => R.pipe(
+  R.view(R.lensProp('meta'))
+)(state);
