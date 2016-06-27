@@ -8,7 +8,7 @@ describe('Links reducer', () => {
     0: {
       id: 0,
       fromPinId: 0,
-      toPinId: 1
+      toPinId: 1,
     },
   };
 
@@ -29,7 +29,7 @@ describe('Links reducer', () => {
       chai.assert(newId(oldState) + 1 === newId(state));
     });
 
-    it('should set appropriate id for a new node', () => {
+    it('should set appropriate id for a new link', () => {
       const state = links(linkStore, Actions.addLink({
         fromPinId: 2,
         toPinId: 3,
@@ -38,18 +38,18 @@ describe('Links reducer', () => {
       chai.assert(newLink.id === lastId(state));
     });
 
-    it('should be reverse operation for node deletion', () => {
+    it('should be reverse operation for link deletion', () => {
       let state = null;
       state = links(linkStore, Actions.addLink({
         fromPinId: 2,
-        toPinId: 3
+        toPinId: 3,
       }));
       state = links(state, Actions.deleteLink(lastId(state)));
       chai.expect(state).to.deep.equal(linkStore);
     });
   });
 
-  describe('while removing node', () => {
+  describe('while removing link', () => {
     let linkStore = null;
     beforeEach(
       () => {
@@ -57,14 +57,14 @@ describe('Links reducer', () => {
       }
     );
 
-    it('should remove node', () => {
+    it('should remove link', () => {
       const oldState = linkStore;
       const state = links(oldState, Actions.deleteLink(lastId(oldState)));
 
       chai.assert(lastId(oldState) - 1 === lastId(state));
     });
 
-    it('should remove node with specified id', () => {
+    it('should remove link with specified id', () => {
       const oldState = linkStore;
       const removingLinkId = lastId(oldState);
       const state = links(oldState, Actions.deleteLink(removingLinkId));
@@ -72,16 +72,16 @@ describe('Links reducer', () => {
       chai.assert(!state.hasOwnProperty(removingLinkId));
     });
 
-    it('should be reverse operation for node insertion', () => {
+    it('should be reverse operation for link insertion', () => {
       let state = null;
       const RemovingLinkId = lastId(linkStore);
-      const removingNode = copyLink(linkStore[RemovingLinkId]);
+      const removingLink = copyLink(linkStore[RemovingLinkId]);
       state = links(linkStore, Actions.deleteLink(RemovingLinkId));
-      state = links(state, Actions.addLink(removingNode));
+      state = links(state, Actions.addLink(removingLink));
       chai.expect(state).to.deep.equal(linkStore);
     });
 
-    it('should not affect other nodes', () => {
+    it('should not affect other links', () => {
       const oldState = linkStore;
       const removingLinkId = lastId(oldState);
       const state = links(oldState, Actions.deleteLink(removingLinkId));
