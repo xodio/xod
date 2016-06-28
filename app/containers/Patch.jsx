@@ -31,23 +31,78 @@ class Patch extends React.Component {
 
     this.createLayers();
 
+    this.dragging = {
+      prevMousePosition: {
+        x: 0,
+        y: 0,
+      },
+    };
+
     this.onKeyDown = this.onKeyDown.bind(this);
+    this.onMouseMove = this.onMouseMove.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
   }
 
   onNodeClick(id) {
     this.props.dispatch(Actions.clickNode(id));
   }
-  onNodeDragMove(id, position) {
-    this.props.dispatch(Actions.dragNode(id, position));
-  }
-  onNodeDragEnd(id, position) {
-    this.props.dispatch(Actions.moveNode(id, position));
+  onNodeMouseDown(event, id) {
+    this.dragging = R.set(
+      R.lensProp('prevMousePosition'),
+      {
+        x: event.clientX,
+        y: event.clientY,
+      },
+      this.dragging
+    );
+
+    this.props.dispatch(Actions.setDragging(id));
   }
   onPinClick(id) {
     this.props.dispatch(Actions.clickPin(id));
   }
   onLinkClick(id) {
     this.props.dispatch(Actions.clickLink(id));
+  }
+
+  onMouseMove(event) {
+    if (this.props.editor.dragging !== null) {
+      const dragId = this.props.editor.dragging;
+      const draggedNode = Selectors.ViewState.getNodeState()(this.props.project, { id: dragId });
+
+      const mousePosition = {
+        x: event.clientX,
+        y: event.clientY,
+      };
+      const deltaPosition = {
+        x: mousePosition.x - this.dragging.prevMousePosition.x,
+        y: mousePosition.y - this.dragging.prevMousePosition.y,
+      };
+
+      const newPosition = draggedNode.bbox.translate(deltaPosition).getPosition();
+
+      this.dragging = R.set(
+        R.lensProp('prevMousePosition'),
+        mousePosition,
+        this.dragging
+      );
+      this.props.dispatch(Actions.dragNode(dragId, newPosition));
+    }
+  }
+  onMouseUp() {
+    if (this.props.editor.dragging !== null) {
+      const dragId = this.props.editor.dragging;
+      const draggedNode = Selectors.ViewState.getNodeState()(this.props.project, { id: dragId });
+
+      R.set(
+        R.lensProp('prevMousePosition'),
+        {},
+        this.dragging
+      );
+
+      this.props.dispatch(Actions.setDragging(null));
+      this.props.dispatch(Actions.moveNode(dragId, draggedNode.bbox.getPosition()));
+    }
   }
 
   onKeyDown(event) {
@@ -103,8 +158,7 @@ class Patch extends React.Component {
 
         viewstate.key = node.id;
         viewstate.onClick = this.onNodeClick.bind(this);
-        viewstate.onDragMove = this.onNodeDragMove.bind(this);
-        viewstate.onDragEnd = this.onNodeDragEnd.bind(this);
+        viewstate.onMouseDown = this.onNodeMouseDown.bind(this);
         viewstate.onPinClick = this.onPinClick.bind(this);
         viewstate.draggable = this.isEditMode();
 
@@ -181,6 +235,8 @@ class Patch extends React.Component {
         width={this.props.size.width}
         height={this.props.size.height}
         style={preventSelectStyle}
+        onMouseMove={this.onMouseMove}
+        onMouseUp={this.onMouseUp}
       >
         <EventListener target={document} onKeyDown={this.onKeyDown} />
         {this.layers.map(layer =>
