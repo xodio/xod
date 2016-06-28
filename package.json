@@ -5,7 +5,8 @@
   "scripts": {
     "start": "mkdir -p ./dist && cp -f ./app/index.html ./dist/index.html && webpack-dev-server --watch --progress --colors --config webpack.config.js",
     "lint": "eslint --ext .js --ext .jsx ./app ./test || true",
-    "test": "mocha-webpack --colors --webpack-config webpack.config.js \"test/**/*Spec.js\""
+    "test": "mocha-webpack --colors --webpack-config webpack.config.js \"test/**/*Spec.js\"",
+    "travis": "npm-run-all --continue-on-error lint test"
   },
   "repository": {},
   "keywords": [],
@@ -45,6 +46,7 @@
     "eslint-plugin-react": "^5.2.2",
     "mocha": "^2.3.4",
     "mocha-webpack": "^0.4.0",
+    "npm-run-all": "^2.3.0",
     "react-hot-loader": "^1.3.0",
     "wallaby-webpack": "0.0.22",
     "webpack-dev-server": "^1.14.0"
