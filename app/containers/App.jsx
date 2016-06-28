@@ -1,3 +1,4 @@
+import R from 'ramda';
 import React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
@@ -16,14 +17,25 @@ export default class App extends React.Component {
     const initialState = this.serializer.getState();
 
     this.store = createStore(Reducers, initialState, EditorMiddleware);
+    this.state = {
+      size: getViewableSize(800, 600),
+    };
+  }
 
-    this.canvasSize = getViewableSize(800, 600);
+  updateSize() {
+    this.setState(
+      R.set(
+        R.lensProp('size'),
+        getViewableSize(800, 600),
+        this.state
+      )
+    );
   }
 
   render() {
     return (
       <Provider store={this.store}>
-        <Editor size={this.canvasSize} />
+        <Editor size={this.state.size} />
       </Provider>
     );
   }
