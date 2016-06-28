@@ -26,6 +26,9 @@ class Patch extends React.Component {
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
+  onNodeClick(id) {
+    this.props.dispatch(Actions.clickNode(id));
+  }
   onNodeDragMove(id, position) {
     this.props.dispatch(Actions.dragNode(id, position));
   }
@@ -45,7 +48,14 @@ class Patch extends React.Component {
     if (selection.length > 0) {
       // Backspace / Delete
       if (keycode === 8 || keycode === 46) {
-        console.log('delete it!');
+        selection.forEach((select) => {
+          // Deleting nodes is disabled
+          // Until they are not able to delete children pins and connected links
+          if (select.entity !== 'Pin' && select.entity !== 'Node') {
+            const delAction = `delete${select.entity}`;
+            this.props.dispatch(Actions[delAction](select.id));
+          }
+        });
       }
       // Escape
       if (keycode === 27) {
@@ -85,6 +95,7 @@ class Patch extends React.Component {
         );
 
         viewstate.key = node.id;
+        viewstate.onClick = this.onNodeClick.bind(this);
         viewstate.onDragMove = this.onNodeDragMove.bind(this);
         viewstate.onDragEnd = this.onNodeDragEnd.bind(this);
         viewstate.onPinClick = this.onPinClick.bind(this);
@@ -126,7 +137,6 @@ class Patch extends React.Component {
         viewstate.key = link.id;
         viewstate.onClick = this.onLinkClick.bind(this);
         viewstate.selected = Selectors.Editor.checkSelection(this.props.editor, 'Link', link.id);
-        console.log('!', viewstate.selected);
 
         n.push(linkFactory(viewstate));
 

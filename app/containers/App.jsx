@@ -7,6 +7,7 @@ import { getViewableSize } from '../utils/browser';
 import { EditorMiddleware } from '../middlewares';
 import Serializer from '../serializers/mock';
 import Editor from './Editor';
+import EventListener from 'react-event-listener';
 
 export default class App extends React.Component {
 
@@ -20,9 +21,11 @@ export default class App extends React.Component {
     this.state = {
       size: getViewableSize(800, 600),
     };
+
+    this.onResize = this.onResize.bind(this);
   }
 
-  updateSize() {
+  onResize() {
     this.setState(
       R.set(
         R.lensProp('size'),
@@ -34,9 +37,12 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <Provider store={this.store}>
-        <Editor size={this.state.size} />
-      </Provider>
+      <div>
+        <EventListener target={window} onResize={this.onResize} />
+        <Provider store={this.store}>
+          <Editor size={this.state.size} />
+        </Provider>
+      </div>
     );
   }
 }

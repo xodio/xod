@@ -49,7 +49,17 @@ export const updateMeta = (data) => ({
   payload: data,
 });
 
-const selectPin = (id) => ({
+export const selectNode = (id) => ({
+  type: ActionType.EDITOR_SELECT_NODE,
+  payload: {
+    id,
+  },
+  meta: {
+    skipHistory: true,
+  },
+});
+
+export const selectPin = (id) => ({
   type: ActionType.EDITOR_SELECT_PIN,
   payload: {
     id,
@@ -76,6 +86,20 @@ export const deselectAll = () => ({
     skipHistory: true,
   },
 });
+
+export const clickNode = (id) => (dispatch, getState) => {
+  const store = getState();
+  const isSelected = Selectors.Editor.checkSelection(store.editor, 'Node', id);
+  const result = [
+    dispatch(deselectAll()),
+  ];
+
+  if (!isSelected) {
+    result.push(dispatch(selectNode(id)));
+  }
+
+  return Promise.all(result);
+};
 
 export const clickPin = (id) => (dispatch, getState) => {
   const store = getState();
@@ -109,5 +133,5 @@ export const clickLink = (id) => (dispatch, getState) => {
     result.push(dispatch(selectLink(id)));
   }
 
-  return result;
+  return Promise.all(result);
 };

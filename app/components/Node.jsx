@@ -17,6 +17,9 @@ const nodeStyles = {
     hover: {
       fill: 'lightblue',
     },
+    selected: {
+      fill: 'yellow',
+    },
   },
   text: {
     normal: {
@@ -39,11 +42,16 @@ class Node extends React.Component {
 
     Stylizer.assignStyles(this, nodeStyles);
     Stylizer.hoverable(this, ['rect', 'text']);
+    Stylizer.selectable(this, ['rect']);
 
+    this.onClick = this.onClick.bind(this);
     this.handleDragMove = this.onDragMove.bind(this);
     this.handleDragEnd = this.onDragEnd.bind(this);
   }
 
+  onClick() {
+    this.props.onClick(this.id);
+  }
   onDragMove(event, position) {
     this.props.onDragMove(this.id, position);
   }
@@ -95,7 +103,7 @@ class Node extends React.Component {
         onDragEnd={this.handleDragEnd}
       >
         <svg {...position} id={this.elementId}>
-          <g className="node" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
+          <g className="node" onMouseOver={this.handleOver} onMouseOut={this.handleOut} onClick={this.onClick}>
             <rect {...this.getRectProps()} style={styles.rect} />
             <text {...this.getTextProps()} style={styles.text}>{this.id}</text>
           </g>
@@ -117,6 +125,7 @@ Node.propTypes = {
   padding: React.PropTypes.any.isRequired,
   radius: React.PropTypes.number.isRequired,
   draggable: React.PropTypes.bool.isRequired,
+  onClick: React.PropTypes.func.isRequired,
   onDragMove: React.PropTypes.func.isRequired,
   onDragEnd: React.PropTypes.func.isRequired,
   onPinClick: React.PropTypes.func.isRequired,

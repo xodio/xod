@@ -11,7 +11,6 @@ export const getSelectionByTypes = createSelector(
   getSelection,
   (selection) => {
     let result = {};
-    console.log(selection);
     if (selection.length > 0) {
       result = R.groupBy((s) => s.entity, selection);
     }
