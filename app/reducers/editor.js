@@ -1,18 +1,23 @@
 import R from 'ramda';
 import { EDITOR_DESELECT_ALL, EDITOR_SELECT_PIN, EDITOR_SELECT_LINK } from '../actionTypes';
 
+const addSelection = (entityName, action, state) => {
+  const select = {
+    entity: entityName,
+    id: action.payload.id,
+  };
+  const newSelection = R.concat(state.selection, select);
+  return R.set(R.lensProp('selection'), newSelection, state);
+};
+
 export const editor = (state = {}, action) => {
   switch (action.type) {
     case EDITOR_DESELECT_ALL:
-      return R.merge(state, {
-        selectedNode: null,
-        selectedPin: null,
-        selectedLink: null,
-      });
+      return R.set(R.lensProp('selection'), [], state);
     case EDITOR_SELECT_LINK:
-      return R.set(R.lensProp('selectedLink'), action.payload.id, state);
+      return addSelection('Link', action, state);
     case EDITOR_SELECT_PIN:
-      return R.set(R.lensProp('selectedPin'), action.payload.id, state);
+      return addSelection('Pin', action, state);
     default:
       return state;
   }

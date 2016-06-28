@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
-import Bbox from './bbox';
+import Bbox from '../utils/bbox';
 
 const Sizes = {
   node: {
@@ -16,16 +16,6 @@ const Sizes = {
     margin: 15,
   },
 };
-
-// Accepts state.editor as state
-export const getSelection = (state) => R.pick(
-  [
-    'selectedNode',
-    'selectedPin',
-    'selectedLink',
-  ],
-  state
-);
 
 // Accepts state.project as state
 const getNodes = (state) => R.pipe(

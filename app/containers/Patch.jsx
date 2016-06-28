@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import EventListener from 'react-event-listener';
 import R from 'ramda';
 import SVGLayer from '../components/SVGlayer';
 import Node from '../components/Node';
 import Link from '../components/Link';
 import * as Actions from '../actions';
-import * as ViewState from '../utils/viewstate';
+import Selectors from '../selectors';
 
 const backgroundStyle = {
   fill: '#eee',
@@ -21,6 +22,8 @@ class Patch extends React.Component {
     super(props);
 
     this.createLayers();
+
+    this.onKeyDown = this.onKeyDown.bind(this);
   }
 
   onNodeDragMove(id, position) {
@@ -33,39 +36,48 @@ class Patch extends React.Component {
     this.props.dispatch(Actions.clickPin(id));
   }
   onLinkClick(id) {
-    this.props.dispatch(Actions.selectLink(id));
+    this.props.dispatch(Actions.clickLink(id));
+  }
+
+  onKeyDown(event) {
+    const keycode = event.keyCode || event.which;
+    const selection = Selectors.Editor.getSelection(this.props.editor);
+    if (selection.length > 0) {
+      // Backspace / Delete
+      if (keycode === 8 || keycode === 46) {
+        console.log('delete it!');
+      }
+      // Escape
+      if (keycode === 27) {
+        this.props.dispatch(Actions.deselectAll());
+      }
+    }
   }
 
   createLayers() {
-    const selection = ViewState.getSelection(
-      this.props.editor
-    );
     this.layers = [{
       name: 'background',
       factory: () => this.createBackground(),
     }, {
       name: 'links',
       factory: () => this.createLinks(
-        this.props.project.links,
-        selection.selectedLink
+        this.props.project.links
       ),
     }, {
       name: 'nodes',
       factory: () => this.createNodes(
-        this.props.project.nodes,
-        selection.selectedNode,
-        selection.selectedPin
+        this.props.project.nodes
       ),
     }];
   }
-  createNodes(nodes, selNode, selPin) {
+  createNodes(nodes) {
     const nodeFactory = React.createFactory(Node);
 
     return R.pipe(
       R.values,
       R.reduce((p, node) => {
         const n = p;
-        const viewstate = ViewState.getNodeState()(
+        const viewstate = Selectors.ViewState.getNodeState()(
           this.props.project,
           {
             id: node.id,
@@ -78,10 +90,15 @@ class Patch extends React.Component {
         viewstate.onPinClick = this.onPinClick.bind(this);
         viewstate.draggable = this.isEditMode();
 
-        viewstate.selected = (node.id === selNode);
-        if (viewstate.pins && viewstate.pins[selPin]) {
-          viewstate.pins[selPin].selected = true;
-        }
+        viewstate.selected = Selectors.Editor.checkSelection(this.props.editor, 'Node', node.id);
+
+        const selectedPinIds = Selectors.Editor.getSelectedIds(this.props.editor, 'Pin');
+
+        selectedPinIds.forEach((id) => {
+          if (viewstate.pins && viewstate.pins[id]) {
+            viewstate.pins[id].selected = true;
+          }
+        });
 
         n.push(
           nodeFactory(viewstate)
@@ -92,14 +109,14 @@ class Patch extends React.Component {
     )(nodes);
   }
 
-  createLinks(links, selLink) {
+  createLinks(links) {
     const linkFactory = React.createFactory(Link);
 
     return R.pipe(
       R.values,
       R.reduce((p, link) => {
         const n = p;
-        const viewstate = ViewState.getLinkState()(
+        const viewstate = Selectors.ViewState.getLinkState()(
           this.props.project,
           {
             id: link.id,
@@ -108,7 +125,8 @@ class Patch extends React.Component {
         );
         viewstate.key = link.id;
         viewstate.onClick = this.onLinkClick.bind(this);
-        viewstate.selected = (selLink === link.id);
+        viewstate.selected = Selectors.Editor.checkSelection(this.props.editor, 'Link', link.id);
+        console.log('!', viewstate.selected);
 
         n.push(linkFactory(viewstate));
 
@@ -151,6 +169,7 @@ class Patch extends React.Component {
         height={this.props.size.height}
         style={preventSelectStyle}
       >
+        <EventListener target={document} onKeyDown={this.onKeyDown} />
         {this.layers.map(layer =>
           <SVGLayer key={layer.name} name={layer.name}>
             {layer.factory()}

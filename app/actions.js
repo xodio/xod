@@ -1,4 +1,5 @@
 import * as ActionType from './actionTypes';
+import Selectors from './selectors';
 
 export const moveNode = (id, position) => ({
   type: ActionType.NODE_MOVE,
@@ -78,20 +79,35 @@ export const deselectAll = () => ({
 
 export const clickPin = (id) => (dispatch, getState) => {
   const store = getState();
-  const selectedId = store.editor.selectedPin;
+  const selected = Selectors.Editor.getSelectedIds(store.editor, 'Pin');
+  const isSelected = Selectors.Editor.checkSelection(store.editor, 'Pin', id);
   const result = [
     dispatch(deselectAll()),
   ];
 
-  if (selectedId && selectedId !== id) {
+  if (selected.length === 1 && !isSelected) {
     const link = {
-      fromPinId: store.editor.selectedPin,
+      fromPinId: parseInt(selected[0], 10),
       toPinId: id,
     };
     result.push(dispatch(addLink(link)));
-  } else if (selectedId !== id) {
+  } else if (!isSelected) {
     result.push(dispatch(selectPin(id)));
   }
 
   return Promise.all(result);
+};
+
+export const clickLink = (id) => (dispatch, getState) => {
+  const store = getState();
+  const isSelected = Selectors.Editor.checkSelection(store.editor, 'Link', id);
+  const result = [
+    dispatch(deselectAll()),
+  ];
+
+  if (!isSelected) {
+    result.push(dispatch(selectLink(id)));
+  }
+
+  return result;
 };
