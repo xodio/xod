@@ -44,6 +44,8 @@ class Patch extends React.Component {
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
+
+    this.deselectAll = this.deselectAll.bind(this);
   }
 
   onNodeClick(id) {
@@ -66,8 +68,6 @@ class Patch extends React.Component {
         this.state
       )
     );
-
-    // this.props.dispatch(Actions.setDragging(id));
   }
   onPinClick(id) {
     this.props.dispatch(Actions.clickPin(id));
@@ -137,9 +137,13 @@ class Patch extends React.Component {
         });
       }
       if (keycode === KEYCODE_ESCAPE) {
-        this.props.dispatch(Actions.deselectAll());
+        this.deselectAll();
       }
     }
+  }
+
+  deselectAll() {
+    this.props.dispatch(Actions.deselectAll());
   }
 
   createLayers() {
@@ -227,6 +231,7 @@ class Patch extends React.Component {
         key="bg" x="0" y="0"
         width={this.props.size.width} height={this.props.size.height}
         style={backgroundStyle}
+        onClick={this.deselectAll}
       />
     );
 
