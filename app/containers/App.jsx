@@ -9,6 +9,9 @@ import Serializer from '../serializers/mock';
 import Editor from './Editor';
 import EventListener from 'react-event-listener';
 
+const DEFAULT_CANVAS_WIDTH = 800;
+const DEFAULT_CANVAS_HEIGHT = 600;
+
 export default class App extends React.Component {
 
   constructor(props) {
@@ -19,7 +22,7 @@ export default class App extends React.Component {
 
     this.store = createStore(Reducers, initialState, EditorMiddleware);
     this.state = {
-      size: getViewableSize(800, 600),
+      size: getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
     };
 
     this.onResize = this.onResize.bind(this);
@@ -29,7 +32,7 @@ export default class App extends React.Component {
     this.setState(
       R.set(
         R.lensProp('size'),
-        getViewableSize(800, 600),
+        getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
         this.state
       )
     );

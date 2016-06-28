@@ -97,6 +97,7 @@ class SVGDraggable extends React.Component {
     };
   }
 
+  // @TODO: This crutch should be removed, because MouseMove event handling should be in the Patch!
   getDragMonitorProps() {
     return (this.state.dragged) ? {
       x: -500, y: -500,

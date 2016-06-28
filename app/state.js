@@ -1,3 +1,13 @@
+export const EDITOR_MODE_EDIT = 'edit';
+export const EDITOR_MODE_LINKING = 'linking';
+export const EDITOR_MODE_PANNING = 'pan';
+
+export const NODETYPE_CATEGORY_FUNCTIONAL = 1;
+export const NODETYPE_CATEGORY_HARDWARE = 2;
+export const NODETYPE_CATEGORY_CONFIGURATION = 3;
+export const NODETYPE_CATEGORY_WATCH = 4;
+export const NODETYPE_CATEGORY_PATCHES = 5;
+
 const initialState = {
   project: {
     meta: {
@@ -113,7 +123,7 @@ const initialState = {
   },
   editor: {
     currentPatchId: 1,
-    mode: 'edit',
+    mode: EDITOR_MODE_EDIT,
     selection: [],
     selectedPin: null,
   },
@@ -121,7 +131,7 @@ const initialState = {
     1: {
       id: 1,
       name: 'not',
-      category: 'functional',
+      category: NODETYPE_CATEGORY_FUNCTIONAL,
       pins: {
         input: [{
           key: 'in',
@@ -136,7 +146,7 @@ const initialState = {
     2: {
       id: 2,
       name: 'either',
-      category: 'functional',
+      category: NODETYPE_CATEGORY_FUNCTIONAL,
       pins: {
         input: [{
           key: 'in1',
@@ -154,7 +164,7 @@ const initialState = {
     3: {
       id: 3,
       name: 'pot',
-      category: 'hardware',
+      category: NODETYPE_CATEGORY_HARDWARE,
       pins: {
         input: [],
         output: [{
@@ -166,7 +176,7 @@ const initialState = {
     4: {
       id: 4,
       name: 'led',
-      category: 'watch',
+      category: NODETYPE_CATEGORY_WATCH,
       pins: {
         input: [{
           key: 'in',
@@ -178,7 +188,7 @@ const initialState = {
     5: {
       id: 5,
       name: 'servo',
-      category: 'hardware',
+      category: NODETYPE_CATEGORY_HARDWARE,
       pins: {
         input: [],
         output: [{
@@ -190,7 +200,7 @@ const initialState = {
     6: {
       id: 6,
       name: 'config',
-      category: 'configuration',
+      category: NODETYPE_CATEGORY_CONFIGURATION,
       pins: {
         input: [],
         output: [{
