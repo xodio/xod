@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
-import Bbox from './bbox';
+import Bbox from '../utils/bbox';
 
 const Sizes = {
   node: {
@@ -18,7 +18,6 @@ const Sizes = {
 };
 
 // Accepts state.project as state
-
 const getNodes = (state) => R.pipe(
   R.view(R.lensProp('nodes'))
 )(state);

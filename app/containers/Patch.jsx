@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import EventListener from 'react-event-listener';
 import R from 'ramda';
 import SVGLayer from '../components/SVGlayer';
 import Node from '../components/Node';
 import Link from '../components/Link';
 import * as Actions from '../actions';
-import * as ViewState from '../utils/viewstate';
+import Selectors from '../selectors';
 
 const backgroundStyle = {
   fill: '#eee',
@@ -20,25 +21,65 @@ class Patch extends React.Component {
   constructor(props) {
     super(props);
 
-    this.layers = [{
-      name: 'background',
-      factory: () => this.createBackground(),
-    }, {
-      name: 'links',
-      factory: () => this.createLinks(props.project.links),
-    }, {
-      name: 'nodes',
-      factory: () => this.createNodes(this.props.project.nodes),
-    }];
+    this.createLayers();
+
+    this.onKeyDown = this.onKeyDown.bind(this);
   }
 
+  onNodeClick(id) {
+    this.props.dispatch(Actions.clickNode(id));
+  }
   onNodeDragMove(id, position) {
     this.props.dispatch(Actions.dragNode(id, position));
   }
   onNodeDragEnd(id, position) {
     this.props.dispatch(Actions.moveNode(id, position));
   }
+  onPinClick(id) {
+    this.props.dispatch(Actions.clickPin(id));
+  }
+  onLinkClick(id) {
+    this.props.dispatch(Actions.clickLink(id));
+  }
 
+  onKeyDown(event) {
+    const keycode = event.keyCode || event.which;
+    const selection = Selectors.Editor.getSelection(this.props.editor);
+    if (selection.length > 0) {
+      // Backspace / Delete
+      if (keycode === 8 || keycode === 46) {
+        selection.forEach((select) => {
+          // Deleting nodes is disabled
+          // Until they are not able to delete children pins and connected links
+          if (select.entity !== 'Node') {
+            const delAction = `delete${select.entity}`;
+            this.props.dispatch(Actions[delAction](select.id));
+          }
+        });
+      }
+      // Escape
+      if (keycode === 27) {
+        this.props.dispatch(Actions.deselectAll());
+      }
+    }
+  }
+
+  createLayers() {
+    this.layers = [{
+      name: 'background',
+      factory: () => this.createBackground(),
+    }, {
+      name: 'links',
+      factory: () => this.createLinks(
+        this.props.project.links
+      ),
+    }, {
+      name: 'nodes',
+      factory: () => this.createNodes(
+        this.props.project.nodes
+      ),
+    }];
+  }
   createNodes(nodes) {
     const nodeFactory = React.createFactory(Node);
 
@@ -46,7 +87,8 @@ class Patch extends React.Component {
       R.values,
       R.reduce((p, node) => {
         const n = p;
-        const viewstate = ViewState.getNodeState()(
+        const selectedPin = this.props.editor.selectedPin;
+        const viewstate = Selectors.ViewState.getNodeState()(
           this.props.project,
           {
             id: node.id,
@@ -54,9 +96,17 @@ class Patch extends React.Component {
         );
 
         viewstate.key = node.id;
+        viewstate.onClick = this.onNodeClick.bind(this);
         viewstate.onDragMove = this.onNodeDragMove.bind(this);
         viewstate.onDragEnd = this.onNodeDragEnd.bind(this);
+        viewstate.onPinClick = this.onPinClick.bind(this);
         viewstate.draggable = this.isEditMode();
+
+        viewstate.selected = Selectors.Editor.checkSelection(this.props.editor, 'Node', node.id);
+
+        if (selectedPin && viewstate.pins && viewstate.pins[selectedPin]) {
+          viewstate.pins[selectedPin].selected = true;
+        }
 
         n.push(
           nodeFactory(viewstate)
@@ -74,7 +124,7 @@ class Patch extends React.Component {
       R.values,
       R.reduce((p, link) => {
         const n = p;
-        const viewstate = ViewState.getLinkState()(
+        const viewstate = Selectors.ViewState.getLinkState()(
           this.props.project,
           {
             id: link.id,
@@ -82,6 +132,8 @@ class Patch extends React.Component {
           }
         );
         viewstate.key = link.id;
+        viewstate.onClick = this.onLinkClick.bind(this);
+        viewstate.selected = Selectors.Editor.checkSelection(this.props.editor, 'Link', link.id);
 
         n.push(linkFactory(viewstate));
 
@@ -113,6 +165,8 @@ class Patch extends React.Component {
   }
 
   render() {
+    this.createLayers();
+
     const patchName = this.props.project.patches[this.props.editor.currentPatchId].name;
 
     return (
@@ -122,6 +176,7 @@ class Patch extends React.Component {
         height={this.props.size.height}
         style={preventSelectStyle}
       >
+        <EventListener target={document} onKeyDown={this.onKeyDown} />
         {this.layers.map(layer =>
           <SVGLayer key={layer.name} name={layer.name}>
             {layer.factory()}

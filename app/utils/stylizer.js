@@ -1,5 +1,22 @@
 import R from 'ramda';
 
+const makeStyleReducer = (key, isStore = false) => function styleReducer(styles) {
+  let result = {};
+  const storeKey = (isStore) ? 'props' : 'state';
+  if (this[storeKey] && this[storeKey][key]) {
+    result = this.styles.keys[key].reduce(
+      (prev, cur) => {
+        const p = prev;
+        if (this.styles.styles[cur].hasOwnProperty(key)) {
+          p[cur] = this.styles.styles[cur][key];
+        }
+        return p;
+      }, {}
+    );
+  }
+  return R.mergeWith(R.merge, styles, result);
+};
+
 const Stylizer = {
   assignStyles: (component, styles) => {
     const c = component;
@@ -25,7 +42,7 @@ const Stylizer = {
     if (!c.state) {
       c.state = {};
     }
-    c.state.hovered = false;
+    c.state.hover = false;
     c.onMouseOver = Stylizer.funcs.onMouseOver;
     c.onMouseOut = Stylizer.funcs.onMouseOut;
     c.handleOver = c.onMouseOver.bind(c);
@@ -33,6 +50,19 @@ const Stylizer = {
 
     c.styles.keys.hover = keys;
     c.styles.getters.push(Stylizer.getters.hover.bind(c));
+  },
+  selectable: (component, keys) => {
+    const c = component;
+    if (!c.styles) {
+      Stylizer.assignStyles(c, {});
+    }
+    if (!c.state) {
+      c.state = {};
+    }
+    c.state.selected = false;
+
+    c.styles.keys.selected = keys;
+    c.styles.getters.push(Stylizer.getters.selected.bind(c));
   },
   getters: {
     normal(styles) {
@@ -44,23 +74,8 @@ const Stylizer = {
         }, {}
       );
     },
-    hover(styles) {
-      let hovered = {};
-
-      if (this.state && this.state.hovered) {
-        hovered = this.styles.keys.hover.reduce(
-          (prev, cur) => {
-            const p = prev;
-            if (this.styles.styles[cur].hasOwnProperty('hover')) {
-              p[cur] = this.styles.styles[cur].hover;
-            }
-            return p;
-          }, {}
-        );
-      }
-
-      return R.mergeWith(R.merge, styles, hovered);
-    },
+    hover: makeStyleReducer('hover'),
+    selected: makeStyleReducer('selected', true),
   },
 
   funcs: {
@@ -73,12 +88,12 @@ const Stylizer = {
     },
     onMouseOver() {
       const state = Object.assign({}, this.state);
-      state.hovered = true;
+      state.hover = true;
       this.setState(state);
     },
     onMouseOut() {
       const state = Object.assign({}, this.state);
-      state.hovered = false;
+      state.hover = false;
       this.setState(state);
     },
   },
