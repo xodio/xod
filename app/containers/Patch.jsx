@@ -19,10 +19,11 @@ const LAYERNAME_NODES = 'nodes';
 const backgroundStyle = {
   fill: '#eee',
 };
-const preventSelectStyle = {
+const svgStyle = {
   WebkitUserSelect: 'none',
   MozUserSelect: 'none',
   UserSelect: 'none',
+  cursor: 'default',
 };
 
 class Patch extends React.Component {
@@ -180,7 +181,7 @@ class Patch extends React.Component {
         xmlns="http://www.w3.org/2000/svg"
         width={this.props.size.width}
         height={this.props.size.height}
-        style={preventSelectStyle}
+        style={svgStyle}
       >
         <EventListener target={document} onKeyDown={this.onKeyDown} />
         {this.layers.map(layer =>
