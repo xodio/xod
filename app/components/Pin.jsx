@@ -1,3 +1,4 @@
+import R from 'ramda';
 import React from 'react';
 import Stylizer from '../utils/stylizer';
 
@@ -46,6 +47,7 @@ export default class Pin extends React.Component {
 
     Stylizer.assignStyles(this, pinStyles);
     Stylizer.hoverable(this, ['circle', 'text']);
+    Stylizer.selectable(this, ['circle', 'text']);
 
     this.onClick = this.onClick.bind(this);
   }

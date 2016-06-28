@@ -10,6 +10,9 @@ const linkStyles = {
     hover: {
       stroke: 'red',
     },
+    selected: {
+      stroke: 'red',
+    },
   },
   helper: {
     normal: {
@@ -33,11 +36,13 @@ class Link extends React.Component {
 
     Stylizer.assignStyles(this, linkStyles);
     Stylizer.hoverable(this, ['line', 'helper']);
+    Stylizer.selectable(this, ['line']);
 
     this.onClick = this.onClick.bind(this);
   }
 
   onClick() {
+    console.log('!', this);
     this.props.onClick(this.props.id);
   }
 

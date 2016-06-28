@@ -37,18 +37,28 @@ class Patch extends React.Component {
   }
 
   createLayers() {
+    const selection = ViewState.getSelection(
+      this.props.editor
+    );
     this.layers = [{
       name: 'background',
       factory: () => this.createBackground(),
     }, {
       name: 'links',
-      factory: () => this.createLinks(this.props.project.links),
+      factory: () => this.createLinks(
+        this.props.project.links,
+        selection.selectedLink
+      ),
     }, {
       name: 'nodes',
-      factory: () => this.createNodes(this.props.project.nodes),
+      factory: () => this.createNodes(
+        this.props.project.nodes,
+        selection.selectedNode,
+        selection.selectedPin
+      ),
     }];
   }
-  createNodes(nodes) {
+  createNodes(nodes, selNode, selPin) {
     const nodeFactory = React.createFactory(Node);
 
     return R.pipe(
@@ -68,6 +78,11 @@ class Patch extends React.Component {
         viewstate.onPinClick = this.onPinClick.bind(this);
         viewstate.draggable = this.isEditMode();
 
+        viewstate.selected = (node.id === selNode);
+        if (viewstate.pins && viewstate.pins[selPin]) {
+          viewstate.pins[selPin].selected = true;
+        }
+
         n.push(
           nodeFactory(viewstate)
         );
@@ -77,7 +92,7 @@ class Patch extends React.Component {
     )(nodes);
   }
 
-  createLinks(links) {
+  createLinks(links, selLink) {
     const linkFactory = React.createFactory(Link);
 
     return R.pipe(
@@ -93,6 +108,7 @@ class Patch extends React.Component {
         );
         viewstate.key = link.id;
         viewstate.onClick = this.onLinkClick.bind(this);
+        viewstate.selected = (selLink === link.id);
 
         n.push(linkFactory(viewstate));
 

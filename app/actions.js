@@ -80,22 +80,19 @@ export const deselectAll = () => ({
 export const clickPin = (id) => (dispatch, getState) => {
   const store = getState();
   const selectedId = store.editor.selectedPin;
-  let result;
+  const result = [
+    dispatch(deselectAll()),
+  ];
 
   if (selectedId && selectedId !== id) {
     const link = {
       fromPinId: store.editor.selectedPin,
       toPinId: id,
     };
-    result = Promise.all([
-      dispatch(deselectAll()),
-      dispatch(addLink(link)),
-    ]);
-  } else if (selectedId === id) {
-    result = dispatch(selectPin(null));
-  } else {
-    result = dispatch(selectPin(id));
+    result.push(dispatch(addLink(link)));
+  } else if (selectedId !== id) {
+    result.push(dispatch(selectPin(id)));
   }
 
-  return result;
+  return Promise.all(result);
 };

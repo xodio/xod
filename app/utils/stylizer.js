@@ -1,8 +1,9 @@
 import R from 'ramda';
 
-const makeStyleReducer = (key) => function styleReducer(styles) {
+const makeStyleReducer = (key, isStore = false) => function styleReducer(styles) {
   let result = {};
-  if (this.state && this.state[key]) {
+  const storeKey = (isStore) ? 'props' : 'state';
+  if (this[storeKey] && this[storeKey][key]) {
     result = this.styles.keys[key].reduce(
       (prev, cur) => {
         const p = prev;
@@ -50,6 +51,19 @@ const Stylizer = {
     c.styles.keys.hover = keys;
     c.styles.getters.push(Stylizer.getters.hover.bind(c));
   },
+  selectable: (component, keys) => {
+    const c = component;
+    if (!c.styles) {
+      Stylizer.assignStyles(c, {});
+    }
+    if (!c.state) {
+      c.state = {};
+    }
+    c.state.selected = false;
+
+    c.styles.keys.selected = keys;
+    c.styles.getters.push(Stylizer.getters.selected.bind(c));
+  },
   getters: {
     normal(styles) {
       return Object.keys(styles).reduce(
@@ -61,7 +75,7 @@ const Stylizer = {
       );
     },
     hover: makeStyleReducer('hover'),
-    selected: makeStyleReducer('selected'),
+    selected: makeStyleReducer('selected', true),
   },
 
   funcs: {
