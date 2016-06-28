@@ -25,6 +25,16 @@ const preventSelectStyle = {
   UserSelect: 'none',
 };
 
+const findParentByClassName = (element, className) => {
+  let result = null;
+  if (element.classList.contains(className)) {
+    result = element;
+  } else if (element.parentNode) {
+    result = findParentByClassName(element.parentNode, className);
+  }
+  return result;
+};
+
 class Patch extends React.Component {
   constructor(props) {
     super(props);
@@ -52,6 +62,8 @@ class Patch extends React.Component {
     this.props.dispatch(Actions.clickNode(id));
   }
   onNodeMouseDown(event, id) {
+    this.setDragElement(event.target, id);
+
     this.dragging = R.set(
       R.lensProp('prevMousePosition'),
       {
@@ -59,14 +71,6 @@ class Patch extends React.Component {
         y: event.clientY,
       },
       this.dragging
-    );
-
-    this.setState(
-      R.set(
-        R.lensProp('dragNodeId'),
-        id,
-        this.state
-      )
     );
   }
   onPinClick(id) {
@@ -112,10 +116,12 @@ class Patch extends React.Component {
       );
 
       this.setState(
-        R.set(
-          R.lensProp('dragNodeId'),
-          null,
-          this.state
+        R.merge(
+          this.state,
+          {
+            dragNodeId: null,
+            dragNodeElementId: null,
+          }
         )
       );
       this.props.dispatch(Actions.moveNode(dragId, draggedNode.bbox.getPosition()));
@@ -142,25 +148,45 @@ class Patch extends React.Component {
     }
   }
 
+  setDragElement(element, id) {
+    if (element !== null && id !== null) {
+      const nodeContainer = findParentByClassName(element, 'node');
+
+      this.setState(
+        R.merge(
+          this.state,
+          {
+            dragNodeId: id,
+            dragNodeElementId: nodeContainer.id,
+          }
+        )
+      );
+    }
+  }
+
   deselectAll() {
     this.props.dispatch(Actions.deselectAll());
   }
 
   createLayers() {
-    this.layers = [{
-      name: LAYERNAME_BACKGROUND,
-      factory: () => this.createBackground(),
-    }, {
-      name: LAYERNAME_LINKS,
-      factory: () => this.createLinks(
-        this.props.project.links
-      ),
-    }, {
-      name: LAYERNAME_NODES,
-      factory: () => this.createNodes(
-        this.props.project.nodes
-      ),
-    }];
+    this.layers = {
+      background: {
+        name: LAYERNAME_BACKGROUND,
+        factory: () => this.createBackground(),
+      },
+      links: {
+        name: LAYERNAME_LINKS,
+        factory: () => this.createLinks(
+          this.props.project.links
+        ),
+      },
+      nodes: {
+        name: LAYERNAME_NODES,
+        factory: () => this.createNodes(
+          this.props.project.nodes
+        ),
+      },
+    };
   }
   createNodes(nodes) {
     const nodeFactory = React.createFactory(Node);
@@ -251,10 +277,14 @@ class Patch extends React.Component {
     this.createLayers();
 
     const patchName = this.props.project.patches[this.props.editor.currentPatchId].name;
+    if (this.state.dragNodeElementId) {
+      this.layers.nodes.svgZindex = <use xlinkHref={`#${this.state.dragNodeElementId}`} />;
+    }
 
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
+        viewBox={`0 0 ${this.props.size.width} ${this.props.size.height}`}
         width={this.props.size.width}
         height={this.props.size.height}
         style={preventSelectStyle}
@@ -262,9 +292,10 @@ class Patch extends React.Component {
         onMouseUp={this.onMouseUp}
       >
         <EventListener target={document} onKeyDown={this.onKeyDown} />
-        {this.layers.map(layer =>
+        {R.values(this.layers).map(layer =>
           <SVGLayer key={layer.name} name={layer.name}>
             {layer.factory()}
+            {layer.svgZindex}
           </SVGLayer>
         )}
         <text x="5" y="20">{`Patch: ${patchName}`}</text>
