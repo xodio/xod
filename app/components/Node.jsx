@@ -2,7 +2,6 @@ import R from 'ramda';
 import React from 'react';
 import Pin from '../components/Pin';
 import Stylizer from '../utils/stylizer';
-import SVGDraggable from '../components/SVGDraggable';
 
 const nodeStyles = {
   block: {
@@ -45,18 +44,16 @@ class Node extends React.Component {
     Stylizer.selectable(this, ['rect']);
 
     this.onClick = this.onClick.bind(this);
-    this.handleDragMove = this.onDragMove.bind(this);
-    this.handleDragEnd = this.onDragEnd.bind(this);
+    this.onMouseDown = this.onMouseDown.bind(this);
   }
 
   onClick() {
     this.props.onClick(this.id);
   }
-  onDragMove(event, position) {
-    this.props.onDragMove(this.id, position);
-  }
-  onDragEnd(event, position) {
-    this.props.onDragEnd(this.id, position);
+  onMouseDown(event) {
+    if (this.props.draggable) {
+      this.props.onMouseDown(event, this.id);
+    }
   }
 
   getPaddings() {
@@ -94,36 +91,39 @@ class Node extends React.Component {
     const pins = R.values(this.props.pins);
     const position = this.props.bbox.getPosition();
     const draggable = this.props.draggable;
+    const dragStyle = {
+      opacity: (this.props.isDragged) ? 0.7 : 1,
+    };
 
     return (
-      <SVGDraggable
+      <svg
+        className="node"
+        {...position}
+        id={this.elementId}
         key={this.elementId}
-        active={draggable}
-        onDragMove={this.handleDragMove}
-        onDragEnd={this.handleDragEnd}
+        draggable={draggable}
+        onMouseDown={this.onMouseDown}
+        style={dragStyle}
       >
-        <svg {...position} id={this.elementId}>
-          <g
-            className="node"
-            onMouseOver={this.handleOver}
-            onMouseOut={this.handleOut}
-            onClick={this.onClick}
-          >
-            <rect {...this.getRectProps()} style={styles.rect} />
-            <text {...this.getTextProps()} style={styles.text}>{this.id}</text>
-          </g>
-          <g className="pinlist">
-            {pins.map((pin) =>
-              <Pin
-                key={`pin_${pin.id}`}
-                {...pin}
-                radius={this.props.radius}
-                onClick={this.props.onPinClick}
-              />
-            )}
-          </g>
-        </svg>
-      </SVGDraggable>
+        <g
+          onMouseOver={this.handleOver}
+          onMouseOut={this.handleOut}
+          onClick={this.onClick}
+        >
+          <rect {...this.getRectProps()} style={styles.rect} />
+          <text {...this.getTextProps()} style={styles.text}>{this.id}</text>
+        </g>
+        <g className="pinlist">
+          {pins.map((pin) =>
+            <Pin
+              key={`pin_${pin.id}`}
+              {...pin}
+              radius={this.props.radius}
+              onClick={this.props.onPinClick}
+            />
+          )}
+        </g>
+      </svg>
     );
   }
 }
@@ -135,9 +135,9 @@ Node.propTypes = {
   padding: React.PropTypes.any.isRequired,
   radius: React.PropTypes.number.isRequired,
   draggable: React.PropTypes.bool.isRequired,
+  isDragged: React.PropTypes.bool,
   onClick: React.PropTypes.func.isRequired,
-  onDragMove: React.PropTypes.func.isRequired,
-  onDragEnd: React.PropTypes.func.isRequired,
+  onMouseDown: React.PropTypes.func.isRequired,
   onPinClick: React.PropTypes.func.isRequired,
 };
 

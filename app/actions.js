@@ -134,3 +134,4 @@ export const clickLink = (id) => (dispatch, getState) => {
 
   return Promise.all(result);
 };
+
