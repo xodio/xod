@@ -37,6 +37,9 @@ class Patch extends React.Component {
         y: 0,
       },
     };
+    this.state = {
+      dragNodeId: null,
+    };
 
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
@@ -56,7 +59,15 @@ class Patch extends React.Component {
       this.dragging
     );
 
-    this.props.dispatch(Actions.setDragging(id));
+    this.setState(
+      R.set(
+        R.lensProp('dragNodeId'),
+        id,
+        this.state
+      )
+    );
+
+    // this.props.dispatch(Actions.setDragging(id));
   }
   onPinClick(id) {
     this.props.dispatch(Actions.clickPin(id));
@@ -66,8 +77,8 @@ class Patch extends React.Component {
   }
 
   onMouseMove(event) {
-    if (this.props.editor.dragging !== null) {
-      const dragId = this.props.editor.dragging;
+    if (this.state.dragNodeId !== null) {
+      const dragId = this.state.dragNodeId;
       const draggedNode = Selectors.ViewState.getNodeState()(this.props.project, { id: dragId });
 
       const mousePosition = {
@@ -90,8 +101,8 @@ class Patch extends React.Component {
     }
   }
   onMouseUp() {
-    if (this.props.editor.dragging !== null) {
-      const dragId = this.props.editor.dragging;
+    if (this.state.dragNodeId !== null) {
+      const dragId = this.state.dragNodeId;
       const draggedNode = Selectors.ViewState.getNodeState()(this.props.project, { id: dragId });
 
       R.set(
@@ -100,7 +111,13 @@ class Patch extends React.Component {
         this.dragging
       );
 
-      this.props.dispatch(Actions.setDragging(null));
+      this.setState(
+        R.set(
+          R.lensProp('dragNodeId'),
+          null,
+          this.state
+        )
+      );
       this.props.dispatch(Actions.moveNode(dragId, draggedNode.bbox.getPosition()));
     }
   }

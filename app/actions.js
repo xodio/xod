@@ -135,12 +135,3 @@ export const clickLink = (id) => (dispatch, getState) => {
   return Promise.all(result);
 };
 
-export const setDragging = (id) => ({
-  type: ActionType.EDITOR_SET_DRAGGING,
-  payload: {
-    id,
-  },
-  meta: {
-    skipHistory: true,
-  },
-});
