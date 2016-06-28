@@ -182,6 +182,7 @@ class Patch extends React.Component {
         viewstate.onMouseDown = this.onNodeMouseDown.bind(this);
         viewstate.onPinClick = this.onPinClick.bind(this);
         viewstate.draggable = this.isEditMode();
+        viewstate.isDragged = (this.state.dragNodeId === node.id);
 
         viewstate.selected = Selectors.Editor.checkSelection(this.props.editor, 'Node', node.id);
 

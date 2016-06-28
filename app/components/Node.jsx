@@ -91,6 +91,9 @@ class Node extends React.Component {
     const pins = R.values(this.props.pins);
     const position = this.props.bbox.getPosition();
     const draggable = this.props.draggable;
+    const dragStyle = {
+      opacity: (this.props.isDragged) ? 0.7 : 1,
+    };
 
     return (
       <svg
@@ -99,6 +102,7 @@ class Node extends React.Component {
         key={this.elementId}
         draggable={draggable}
         onMouseDown={this.onMouseDown}
+        style={dragStyle}
       >
         <g
           className="node"
@@ -131,6 +135,7 @@ Node.propTypes = {
   padding: React.PropTypes.any.isRequired,
   radius: React.PropTypes.number.isRequired,
   draggable: React.PropTypes.bool.isRequired,
+  isDragged: React.PropTypes.bool,
   onClick: React.PropTypes.func.isRequired,
   onMouseDown: React.PropTypes.func.isRequired,
   onPinClick: React.PropTypes.func.isRequired,
