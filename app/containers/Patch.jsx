@@ -20,16 +20,7 @@ class Patch extends React.Component {
   constructor(props) {
     super(props);
 
-    this.layers = [{
-      name: 'background',
-      factory: () => this.createBackground(),
-    }, {
-      name: 'links',
-      factory: () => this.createLinks(props.project.links),
-    }, {
-      name: 'nodes',
-      factory: () => this.createNodes(this.props.project.nodes),
-    }];
+    this.createLayers();
   }
 
   onNodeDragMove(id, position) {
@@ -42,6 +33,18 @@ class Patch extends React.Component {
     this.props.dispatch(Actions.clickPin(id));
   }
 
+  createLayers() {
+    this.layers = [{
+      name: 'background',
+      factory: () => this.createBackground(),
+    }, {
+      name: 'links',
+      factory: () => this.createLinks(this.props.project.links),
+    }, {
+      name: 'nodes',
+      factory: () => this.createNodes(this.props.project.nodes),
+    }];
+  }
   createNodes(nodes) {
     const nodeFactory = React.createFactory(Node);
 
@@ -117,6 +120,8 @@ class Patch extends React.Component {
   }
 
   render() {
+    this.createLayers();
+
     const patchName = this.props.project.patches[this.props.editor.currentPatchId].name;
 
     return (
