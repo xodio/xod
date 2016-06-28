@@ -4,7 +4,6 @@ import {
   EDITOR_SELECT_NODE,
   EDITOR_SELECT_PIN,
   EDITOR_SELECT_LINK,
-  EDITOR_SET_DRAGGING,
 } from '../actionTypes';
 
 const addSelection = (entityName, action, state) => {
@@ -29,8 +28,6 @@ export const editor = (state = {}, action) => {
       return addSelection('Link', action, state);
     case EDITOR_SELECT_PIN:
       return R.set(R.lensProp('selectedPin'), action.payload.id, state);
-    case EDITOR_SET_DRAGGING:
-      return R.set(R.lensProp('dragging'), action.payload.id, state);
     default:
       return state;
   }
