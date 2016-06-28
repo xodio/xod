@@ -1,4 +1,3 @@
-import R from 'ramda';
 import React from 'react';
 import Stylizer from '../utils/stylizer';
 

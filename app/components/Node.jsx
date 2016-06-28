@@ -103,13 +103,23 @@ class Node extends React.Component {
         onDragEnd={this.handleDragEnd}
       >
         <svg {...position} id={this.elementId}>
-          <g className="node" onMouseOver={this.handleOver} onMouseOut={this.handleOut} onClick={this.onClick}>
+          <g
+            className="node"
+            onMouseOver={this.handleOver}
+            onMouseOut={this.handleOut}
+            onClick={this.onClick}
+          >
             <rect {...this.getRectProps()} style={styles.rect} />
             <text {...this.getTextProps()} style={styles.text}>{this.id}</text>
           </g>
           <g className="pinlist">
             {pins.map((pin) =>
-              <Pin key={`pin_${pin.id}`} {...pin} radius={this.props.radius} onClick={this.props.onPinClick} />
+              <Pin
+                key={`pin_${pin.id}`}
+                {...pin}
+                radius={this.props.radius}
+                onClick={this.props.onPinClick}
+              />
             )}
           </g>
         </svg>
