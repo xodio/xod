@@ -8,6 +8,14 @@ import Link from '../components/Link';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 
+const KEYCODE_DELETE = 46;
+const KEYCODE_BACKSPACE = 8;
+const KEYCODE_ESCAPE = 27;
+
+const LAYERNAME_BACKGROUND = 'background';
+const LAYERNAME_LINKS = 'links';
+const LAYERNAME_NODES = 'nodes';
+
 const backgroundStyle = {
   fill: '#eee',
 };
@@ -46,8 +54,7 @@ class Patch extends React.Component {
     const keycode = event.keyCode || event.which;
     const selection = Selectors.Editor.getSelection(this.props.editor);
     if (selection.length > 0) {
-      // Backspace / Delete
-      if (keycode === 8 || keycode === 46) {
+      if (keycode === KEYCODE_BACKSPACE || keycode === KEYCODE_DELETE) {
         selection.forEach((select) => {
           // Deleting nodes is disabled
           // Until they are not able to delete children pins and connected links
@@ -57,8 +64,7 @@ class Patch extends React.Component {
           }
         });
       }
-      // Escape
-      if (keycode === 27) {
+      if (keycode === KEYCODE_ESCAPE) {
         this.props.dispatch(Actions.deselectAll());
       }
     }
@@ -66,15 +72,15 @@ class Patch extends React.Component {
 
   createLayers() {
     this.layers = [{
-      name: 'background',
+      name: LAYERNAME_BACKGROUND,
       factory: () => this.createBackground(),
     }, {
-      name: 'links',
+      name: LAYERNAME_LINKS,
       factory: () => this.createLinks(
         this.props.project.links
       ),
     }, {
-      name: 'nodes',
+      name: LAYERNAME_NODES,
       factory: () => this.createNodes(
         this.props.project.nodes
       ),

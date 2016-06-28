@@ -7,7 +7,6 @@ import Patch from './Patch';
 class Editor extends React.Component {
   constructor(props) {
     super(props);
-    this.displayName = 'Editor';
     this.onProjectNameClick = this.onProjectNameClick.bind(this);
   }
 
