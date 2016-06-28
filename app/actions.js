@@ -1,3 +1,4 @@
+import R from 'ramda';
 import * as ActionType from './actionTypes';
 
 export const moveNode = (id, position) => ({
@@ -47,3 +48,24 @@ export const updateMeta = (data) => ({
   type: ActionType.META_UPDATE,
   payload: data,
 });
+
+const selectPin = (id) => ({
+  type: ActionType.PIN_SELECT,
+  payload: {
+    id,
+  },
+});
+
+export const clickPin = (id) => (dispatch, getState) => {
+  const store = getState();
+  let result;
+
+  if (store.editor.selectedPin) {
+    const pinIds = R.concat(store.editor.selectedPin, id);
+    result = dispatch(addLink, pinIds);
+  } else {
+    result = dispatch(selectPin, id);
+  }
+
+  return result;
+};

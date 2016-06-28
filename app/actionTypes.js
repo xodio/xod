@@ -7,3 +7,6 @@ export const LINK_DELETE = 'LINK_DELETE';
 
 export const META_UPDATE = 'META_UPDATE';
 export const VIEWSTATE_UPDATE = 'VIEWSTATE_UPDATE';
+
+export const PIN_CLICK = 'PIN_CLICK';
+export const PIN_SELECT = 'PIN_SELECT';

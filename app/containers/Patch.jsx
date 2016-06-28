@@ -38,6 +38,9 @@ class Patch extends React.Component {
   onNodeDragEnd(id, position) {
     this.props.dispatch(Actions.moveNode(id, position));
   }
+  onPinClick(id) {
+    this.props.dispatch(Actions.clickPin(id));
+  }
 
   createNodes(nodes) {
     const nodeFactory = React.createFactory(Node);
@@ -56,6 +59,7 @@ class Patch extends React.Component {
         viewstate.key = node.id;
         viewstate.onDragMove = this.onNodeDragMove.bind(this);
         viewstate.onDragEnd = this.onNodeDragEnd.bind(this);
+        viewstate.onPinClick = this.onPinClick.bind(this);
         viewstate.draggable = this.isEditMode();
 
         n.push(

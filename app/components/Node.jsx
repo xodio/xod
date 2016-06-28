@@ -1,5 +1,6 @@
+import R from 'ramda';
 import React from 'react';
-import PinList from '../components/PinList';
+import Pin from '../components/Pin';
 import Stylizer from '../utils/stylizer';
 import SVGDraggable from '../components/SVGDraggable';
 
@@ -82,6 +83,7 @@ class Node extends React.Component {
 
   render() {
     const styles = this.getStyle();
+    const pins = R.values(this.props.pins);
     const position = this.props.bbox.getPosition();
     const draggable = this.props.draggable;
 
@@ -97,10 +99,11 @@ class Node extends React.Component {
             <rect {...this.getRectProps()} style={styles.rect} />
             <text {...this.getTextProps()} style={styles.text}>{this.id}</text>
           </g>
-          <PinList
-            pins={this.props.pins}
-            radius={this.props.radius}
-          />
+          <g className="pinlist">
+            {pins.map((pin) =>
+              <Pin key={`pin_${pin.id}`} {...pin} radius={this.props.radius} onClick={this.props.onPinClick} />
+            )}
+          </g>
         </svg>
       </SVGDraggable>
     );
@@ -116,6 +119,7 @@ Node.propTypes = {
   draggable: React.PropTypes.bool.isRequired,
   onDragMove: React.PropTypes.func.isRequired,
   onDragEnd: React.PropTypes.func.isRequired,
+  onPinClick: React.PropTypes.func.isRequired,
 };
 
 export default Node;
