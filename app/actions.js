@@ -1,4 +1,3 @@
-import R from 'ramda';
 import * as ActionType from './actionTypes';
 
 export const moveNode = (id, position) => ({

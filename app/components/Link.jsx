@@ -42,7 +42,6 @@ class Link extends React.Component {
   }
 
   onClick() {
-    console.log('!', this);
     this.props.onClick(this.props.id);
   }
 
