@@ -32,6 +32,9 @@ class Patch extends React.Component {
   onPinClick(id) {
     this.props.dispatch(Actions.clickPin(id));
   }
+  onLinkClick(id) {
+    this.props.dispatch(Actions.selectLink(id));
+  }
 
   createLayers() {
     this.layers = [{
@@ -89,6 +92,7 @@ class Patch extends React.Component {
           }
         );
         viewstate.key = link.id;
+        viewstate.onClick = this.onLinkClick.bind(this);
 
         n.push(linkFactory(viewstate));
 

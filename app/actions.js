@@ -50,21 +50,51 @@ export const updateMeta = (data) => ({
 });
 
 const selectPin = (id) => ({
-  type: ActionType.PIN_SELECT,
+  type: ActionType.EDITOR_SELECT_PIN,
   payload: {
     id,
+  },
+  meta: {
+    skipHistory: true,
+  },
+});
+
+export const selectLink = (id) => ({
+  type: ActionType.EDITOR_SELECT_LINK,
+  payload: {
+    id,
+  },
+  meta: {
+    skipHistory: true,
+  },
+});
+
+export const deselectAll = () => ({
+  type: ActionType.EDITOR_DESELECT_ALL,
+  payload: {},
+  meta: {
+    skipHistory: true,
   },
 });
 
 export const clickPin = (id) => (dispatch, getState) => {
   const store = getState();
+  const selectedId = store.editor.selectedPin;
   let result;
 
-  if (store.editor.selectedPin) {
-    const pinIds = R.concat(store.editor.selectedPin, id);
-    result = dispatch(addLink, pinIds);
+  if (selectedId && selectedId !== id) {
+    const link = {
+      fromPinId: store.editor.selectedPin,
+      toPinId: id,
+    };
+    result = Promise.all([
+      dispatch(deselectAll()),
+      dispatch(addLink(link)),
+    ]);
+  } else if (selectedId === id) {
+    result = dispatch(selectPin(null));
   } else {
-    result = dispatch(selectPin, id);
+    result = dispatch(selectPin(id));
   }
 
   return result;

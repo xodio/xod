@@ -17,6 +17,10 @@ const pinStyles = {
     hover: {
       fill: 'red',
     },
+    selected: {
+      fill: 'yellow',
+      stroke: 'red',
+    },
   },
   text: {
     normal: {
@@ -26,6 +30,9 @@ const pinStyles = {
       cursor: 'default',
     },
     hover: {
+      fill: 'red',
+    },
+    selected: {
       fill: 'red',
     },
   },

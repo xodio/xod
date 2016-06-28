@@ -33,6 +33,12 @@ class Link extends React.Component {
 
     Stylizer.assignStyles(this, linkStyles);
     Stylizer.hoverable(this, ['line', 'helper']);
+
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick() {
+    this.props.onClick(this.props.id);
   }
 
   getPosition() {
@@ -61,6 +67,7 @@ class Link extends React.Component {
       <g
         className="link"
         id={this.elementId}
+        onClick={this.onClick}
         onMouseOver={this.handleOver}
         onMouseOut={this.handleOut}
       >
@@ -81,6 +88,7 @@ Link.propTypes = {
   id: React.PropTypes.number.isRequired,
   from: React.PropTypes.object.isRequired,
   to: React.PropTypes.object.isRequired,
+  onClick: React.PropTypes.func.isRequired,
 };
 
 export default Link;

@@ -114,6 +114,9 @@ const initialState = {
   editor: {
     currentPatchId: 1,
     mode: 'edit',
+    selectedNode: null,
+    selectedPin: null,
+    selectedLink: null,
   },
   nodeTypes: {
     1: {
