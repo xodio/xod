@@ -97,6 +97,7 @@ class Node extends React.Component {
 
     return (
       <svg
+        className="node"
         {...position}
         id={this.elementId}
         key={this.elementId}
@@ -105,7 +106,6 @@ class Node extends React.Component {
         style={dragStyle}
       >
         <g
-          className="node"
           onMouseOver={this.handleOver}
           onMouseOut={this.handleOut}
           onClick={this.onClick}
