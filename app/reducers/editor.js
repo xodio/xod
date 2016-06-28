@@ -18,13 +18,16 @@ const addSelection = (entityName, action, state) => {
 export const editor = (state = {}, action) => {
   switch (action.type) {
     case EDITOR_DESELECT_ALL:
-      return R.set(R.lensProp('selection'), [], state);
+      return R.merge(state, {
+        selection: [],
+        selectedPin: null,
+      });
     case EDITOR_SELECT_NODE:
       return addSelection('Node', action, state);
-    case EDITOR_SELECT_PIN:
-      return addSelection('Pin', action, state);
     case EDITOR_SELECT_LINK:
       return addSelection('Link', action, state);
+    case EDITOR_SELECT_PIN:
+      return R.set(R.lensProp('selectedPin'), action.payload.id, state);
     default:
       return state;
   }

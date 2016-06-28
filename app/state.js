@@ -115,6 +115,7 @@ const initialState = {
     currentPatchId: 1,
     mode: 'edit',
     selection: [],
+    selectedPin: null,
   },
   nodeTypes: {
     1: {

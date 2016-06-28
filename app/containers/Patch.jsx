@@ -51,7 +51,7 @@ class Patch extends React.Component {
         selection.forEach((select) => {
           // Deleting nodes is disabled
           // Until they are not able to delete children pins and connected links
-          if (select.entity !== 'Pin' && select.entity !== 'Node') {
+          if (select.entity !== 'Node') {
             const delAction = `delete${select.entity}`;
             this.props.dispatch(Actions[delAction](select.id));
           }
@@ -87,6 +87,7 @@ class Patch extends React.Component {
       R.values,
       R.reduce((p, node) => {
         const n = p;
+        const selectedPin = this.props.editor.selectedPin;
         const viewstate = Selectors.ViewState.getNodeState()(
           this.props.project,
           {
@@ -103,13 +104,9 @@ class Patch extends React.Component {
 
         viewstate.selected = Selectors.Editor.checkSelection(this.props.editor, 'Node', node.id);
 
-        const selectedPinIds = Selectors.Editor.getSelectedIds(this.props.editor, 'Pin');
-
-        selectedPinIds.forEach((id) => {
-          if (viewstate.pins && viewstate.pins[id]) {
-            viewstate.pins[id].selected = true;
-          }
-        });
+        if (selectedPin && viewstate.pins && viewstate.pins[selectedPin]) {
+          viewstate.pins[selectedPin].selected = true;
+        }
 
         n.push(
           nodeFactory(viewstate)

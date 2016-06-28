@@ -103,19 +103,18 @@ export const clickNode = (id) => (dispatch, getState) => {
 
 export const clickPin = (id) => (dispatch, getState) => {
   const store = getState();
-  const selected = Selectors.Editor.getSelectedIds(store.editor, 'Pin');
-  const isSelected = Selectors.Editor.checkSelection(store.editor, 'Pin', id);
+  const selected = store.editor.selectedPin;
   const result = [
     dispatch(deselectAll()),
   ];
 
-  if (selected.length === 1 && !isSelected) {
+  if (selected && selected !== id) {
     const link = {
-      fromPinId: parseInt(selected[0], 10),
+      fromPinId: selected,
       toPinId: id,
     };
     result.push(dispatch(addLink(link)));
-  } else if (!isSelected) {
+  } else if (selected !== id) {
     result.push(dispatch(selectPin(id)));
   }
 
