@@ -43,12 +43,13 @@ class Node extends React.Component {
     Stylizer.hoverable(this, ['rect', 'text']);
     Stylizer.selectable(this, ['rect']);
 
-    this.onClick = this.onClick.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
   }
 
-  onClick() {
-    this.props.onClick(this.id);
+  onMouseUp() {
+    console.log(this.props.isClicked);
+    this.props.onMouseUp(this.id);
   }
   onMouseDown(event) {
     if (this.props.draggable) {
@@ -108,7 +109,7 @@ class Node extends React.Component {
         <g
           onMouseOver={this.handleOver}
           onMouseOut={this.handleOut}
-          onClick={this.onClick}
+          onMouseUp={this.onMouseUp}
         >
           <rect {...this.getRectProps()} style={styles.rect} />
           <text {...this.getTextProps()} style={styles.text}>{this.id}</text>
@@ -119,7 +120,7 @@ class Node extends React.Component {
               key={`pin_${pin.id}`}
               {...pin}
               radius={this.props.radius}
-              onClick={this.props.onPinClick}
+              onMouseUp={this.props.onPinMouseUp}
             />
           )}
         </g>
@@ -136,9 +137,9 @@ Node.propTypes = {
   radius: React.PropTypes.number.isRequired,
   draggable: React.PropTypes.bool.isRequired,
   isDragged: React.PropTypes.bool,
-  onClick: React.PropTypes.func.isRequired,
+  onMouseUp: React.PropTypes.func.isRequired,
   onMouseDown: React.PropTypes.func.isRequired,
-  onPinClick: React.PropTypes.func.isRequired,
+  onPinMouseUp: React.PropTypes.func.isRequired,
 };
 
 export default Node;
