@@ -48,11 +48,11 @@ export default class Pin extends React.Component {
     Stylizer.hoverable(this, ['circle', 'text']);
     Stylizer.selectable(this, ['circle', 'text']);
 
-    this.onClick = this.onClick.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
   }
 
-  onClick() {
-    this.props.onClick(this.props.id);
+  onMouseUp() {
+    this.props.onMouseUp(this.props.id);
   }
 
   getPosition() {
@@ -117,7 +117,7 @@ export default class Pin extends React.Component {
       <g
         className="pin"
         id={this.elementId}
-        onClick={this.onClick}
+        onMouseUp={this.onMouseUp}
         onMouseOver={this.handleOver}
         onMouseOut={this.handleOut}
       >
@@ -141,5 +141,5 @@ Pin.propTypes = {
   type: React.PropTypes.string.isRequired,
   bbox: React.PropTypes.object.isRequired,
   radius: React.PropTypes.number.isRequired,
-  onClick: React.PropTypes.func.isRequired,
+  onMouseUp: React.PropTypes.func.isRequired,
 };

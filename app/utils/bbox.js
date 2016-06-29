@@ -38,10 +38,22 @@ export default class Bbox {
     };
   }
 
-  translate(addBbox) {
+  translate(extent) {
+    let plusPosition = {
+      x: 0,
+      y: 0,
+    };
+
+    if (extent instanceof Bbox) {
+      plusPosition = extent.getPosition();
+    } else {
+      plusPosition.x += (Object.hasOwnProperty.call(extent, 'x')) ? extent.x : 0;
+      plusPosition.y += (Object.hasOwnProperty.call(extent, 'y')) ? extent.y : 0;
+    }
+
     return new Bbox({
-      x: this.props.x + addBbox.getPosition().x,
-      y: this.props.y + addBbox.getPosition().y,
+      x: this.props.x + plusPosition.x,
+      y: this.props.y + plusPosition.y,
       width: this.props.width,
       height: this.props.width,
     });
