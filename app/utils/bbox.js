@@ -38,17 +38,17 @@ export default class Bbox {
     };
   }
 
-  translate(add) {
+  translate(extent) {
     let plusPosition = {
       x: 0,
       y: 0,
     };
 
-    if (add instanceof Bbox) {
-      plusPosition = add.getPosition();
+    if (extent instanceof Bbox) {
+      plusPosition = extent.getPosition();
     } else {
-      plusPosition.x += (Object.hasOwnProperty.call(add, 'x')) ? add.x : 0;
-      plusPosition.y += (Object.hasOwnProperty.call(add, 'y')) ? add.y : 0;
+      plusPosition.x += (Object.hasOwnProperty.call(extent, 'x')) ? extent.x : 0;
+      plusPosition.y += (Object.hasOwnProperty.call(extent, 'y')) ? extent.y : 0;
     }
 
     return new Bbox({
