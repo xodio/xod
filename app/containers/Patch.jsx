@@ -7,10 +7,7 @@ import Node from '../components/Node';
 import Link from '../components/Link';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
-
-const KEYCODE_DELETE = 46;
-const KEYCODE_BACKSPACE = 8;
-const KEYCODE_ESCAPE = 27;
+import * as KEYCODE from '../constants/keycodes';
 
 const LAYERNAME_BACKGROUND = 'background';
 const LAYERNAME_LINKS = 'links';
@@ -143,13 +140,13 @@ class Patch extends React.Component {
     const keycode = event.keyCode || event.which;
     const selection = Selectors.Editor.getSelection(this.props.editor);
     if (selection.length > 0) {
-      if (keycode === KEYCODE_BACKSPACE || keycode === KEYCODE_DELETE) {
+      if (keycode === KEYCODE.BACKSPACE || keycode === KEYCODE.DELETE) {
         selection.forEach((select) => {
           this.props.dispatch(Actions[DELETE_ACTIONS[select.entity]](select.id));
         });
       }
-      if (keycode === KEYCODE_ESCAPE) {
-        this.props.dispatch(Actions.deselectAll());
+      if (keycode === KEYCODE.ESCAPE) {
+        this.deselectAll();
       }
     }
   }
@@ -217,7 +214,7 @@ class Patch extends React.Component {
         viewstate.onMouseUp = this.onNodeMouseUp.bind(this);
         viewstate.onMouseDown = this.onNodeMouseDown.bind(this);
         viewstate.onPinMouseUp = this.onPinMouseUp.bind(this);
-        viewstate.draggable = this.isEditMode();
+        viewstate.draggable = Selectors.Editor.isEditingMode(this.props.editor);
         viewstate.isDragged = (this.state.dragNodeId === node.id);
         viewstate.isClicked = (this.state.clickNodeId === node.id);
 
@@ -263,6 +260,13 @@ class Patch extends React.Component {
 
   createBackground() {
     const bgChildren = [];
+    let bgOnClick = f => f;
+
+    if (Selectors.Editor.isEditingMode(this.props.editor)) {
+      bgOnClick = this.deselectAll.bind(this);
+    } else if (Selectors.Editor.isCreatingMode(this.props.editor)) {
+      bgOnClick = this.onCreateNode.bind(this);
+    }
 
     bgChildren.push(
       <rect
@@ -275,14 +279,6 @@ class Patch extends React.Component {
     );
 
     return bgChildren;
-  }
-
-  isEditMode() {
-    return (this.props.editor.mode === 'edit');
-  }
-
-  isViewMode() {
-    return (this.props.editor.mode === 'view');
   }
 
   render() {

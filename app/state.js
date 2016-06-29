@@ -1,6 +1,4 @@
-export const EDITOR_MODE_EDIT = 'edit';
-export const EDITOR_MODE_LINKING = 'linking';
-export const EDITOR_MODE_PANNING = 'pan';
+import * as EDITOR_MODE from './constants/editorModes';
 
 export const NODETYPE_CATEGORY_FUNCTIONAL = 1;
 export const NODETYPE_CATEGORY_HARDWARE = 2;
@@ -123,7 +121,7 @@ const initialState = {
   },
   editor: {
     currentPatchId: 1,
-    mode: EDITOR_MODE_EDIT,
+    mode: EDITOR_MODE.EDITING,
     dragging: null,
     selection: [],
     selectedPin: null,
