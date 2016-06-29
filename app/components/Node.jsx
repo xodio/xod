@@ -48,8 +48,9 @@ class Node extends React.Component {
   }
 
   onMouseUp() {
-    console.log(this.props.isClicked);
-    this.props.onMouseUp(this.id);
+    if (this.props.isClicked) {
+      this.props.onMouseUp(this.id);
+    }
   }
   onMouseDown(event) {
     if (this.props.draggable) {
@@ -137,6 +138,7 @@ Node.propTypes = {
   radius: React.PropTypes.number.isRequired,
   draggable: React.PropTypes.bool.isRequired,
   isDragged: React.PropTypes.bool,
+  isClicked: React.PropTypes.bool,
   onMouseUp: React.PropTypes.func.isRequired,
   onMouseDown: React.PropTypes.func.isRequired,
   onPinMouseUp: React.PropTypes.func.isRequired,
