@@ -1,3 +1,4 @@
+import R from 'ramda';
 import * as ActionType from './actionTypes';
 import Selectors from './selectors';
 
@@ -25,7 +26,7 @@ export const addNode = (node) => ({
   payload: node,
 });
 
-export const deleteNode = (id) => ({
+const deleteNodeAction = (id) => ({
   type: ActionType.NODE_DELETE,
   payload: {
     id,
@@ -64,6 +65,36 @@ export const updateMeta = (data) => ({
   type: ActionType.META_UPDATE,
   payload: data,
 });
+
+export const deleteNode = (id) => (dispatch, getState) => {
+  const state = getState().project;
+  const result = [];
+
+  // 1. getPinsByNodeId
+  const pins = Selectors.Pin.getPinsByNodeId(state, { id });
+  // 2. getLinksByPinId and delete them
+  R.pipe(
+    R.values,
+    R.reduce((prev, c) => {
+      const pinLinks = Selectors.Link.getLinksByPinId(state, { pinIds: [c.id] });
+      return R.concat(prev, pinLinks);
+    }, []),
+    R.forEach((link) => {
+      result.push(dispatch(deleteLink(link.id)));
+    })
+  )(pins);
+  // 3. delete all found pins
+  R.pipe(
+    R.values,
+    R.forEach((pin) => {
+      result.push(dispatch(deletePin(pin.id)));
+    })
+  )(pins);
+  // 4. delete node
+  result.push(dispatch(deleteNodeAction(id)));
+
+  return result;
+};
 
 export const selectNode = (id) => ({
   type: ActionType.EDITOR_SELECT_NODE,
