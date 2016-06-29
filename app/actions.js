@@ -135,8 +135,8 @@ export const deselectAll = () => ({
 });
 
 export const clickNode = (id) => (dispatch, getState) => {
-  const store = getState();
-  const isSelected = Selectors.Editor.checkSelection(store.editor, 'Node', id);
+  const state = getState();
+  const isSelected = Selectors.Editor.checkSelection(state.editor, 'Node', id);
   const result = [
     dispatch(deselectAll()),
   ];
@@ -145,12 +145,12 @@ export const clickNode = (id) => (dispatch, getState) => {
     result.push(dispatch(selectNode(id)));
   }
 
-  return Promise.all(result);
+  return result;
 };
 
 export const clickPin = (id) => (dispatch, getState) => {
-  const store = getState();
-  const selected = store.editor.selectedPin;
+  const state = getState();
+  const selected = state.editor.selectedPin;
   const result = [
     dispatch(deselectAll()),
   ];
@@ -165,12 +165,12 @@ export const clickPin = (id) => (dispatch, getState) => {
     result.push(dispatch(selectPin(id)));
   }
 
-  return Promise.all(result);
+  return result;
 };
 
 export const clickLink = (id) => (dispatch, getState) => {
-  const store = getState();
-  const isSelected = Selectors.Editor.checkSelection(store.editor, 'Link', id);
+  const state = getState();
+  const isSelected = Selectors.Editor.checkSelection(state.editor, 'Link', id);
   const result = [
     dispatch(deselectAll()),
   ];
@@ -179,6 +179,6 @@ export const clickLink = (id) => (dispatch, getState) => {
     result.push(dispatch(selectLink(id)));
   }
 
-  return Promise.all(result);
+  return result;
 };
 
