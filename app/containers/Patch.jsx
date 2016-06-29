@@ -151,6 +151,15 @@ class Patch extends React.Component {
     }
   }
 
+  onCreateNode(event) {
+    const targetOffset = event.target.ownerSVGElement.getBoundingClientRect();
+    const position = {
+      x: event.clientX - targetOffset.left,
+      y: event.clientY - targetOffset.top,
+    };
+    this.props.dispatch(Actions.addNodeWithDependencies(1, position));
+  }
+
   setDragNodeId(id) {
     this.setState(
       R.set(
@@ -274,7 +283,7 @@ class Patch extends React.Component {
         width={this.props.size.width}
         height={this.props.size.height}
         style={backgroundStyle}
-        onClick={this.deselectAll}
+        onClick={bgOnClick}
       />
     );
 

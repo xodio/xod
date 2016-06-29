@@ -66,6 +66,36 @@ export const updateMeta = (data) => ({
   payload: data,
 });
 
+export const addNodeWithDependencies = (nodeTypeId, position) => (dispatch, getState) => {
+  const result = [];
+  console.log('!', position);
+  const nodeType = Selectors.NodeType.getNodeTypeById(getState(), nodeTypeId);
+  if (nodeType && position) {
+    result.push(
+      dispatch(
+        addNode({
+          typeId: nodeType.id,
+          position,
+        })
+      )
+    );
+    const nodeId = Selectors.Node.getLastNodeId(getState().project);
+    const types = ['input', 'output']; // @TODO: replace this dirty hack
+    R.values(nodeType.pins).forEach((group, i) => {
+      group.forEach((pin) => {
+        result.push(
+          dispatch(
+            addPin(nodeId, types[i], pin.key)
+          )
+        );
+      });
+    });
+  }
+
+  return result;
+};
+
+
 export const deleteNodeWithDependencies = (id) => (dispatch, getState) => {
   const state = getState().project;
   const result = [];
