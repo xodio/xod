@@ -5,6 +5,13 @@ export const getNodes = (state) => R.pipe(
   R.view(R.lensProp('nodes'))
 )(state);
 
+export const getLastNodeId = (state) => R.pipe(
+  getNodes,
+  R.values,
+  R.map(node => parseInt(node.id, 10)),
+  R.reduce(R.max, -1)
+)(state);
+
 export const getNodeById = (state, props) => R.pipe(
   getNodes,
   R.filter((node) => node.id === props.id),
