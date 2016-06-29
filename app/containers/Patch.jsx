@@ -18,15 +18,20 @@ const LAYERNAME_NODES = 'nodes';
 
 const CLICK_SAFEZONE = 3; // How far user should drag a node to prevent selecting by click
 
+const DELETE_ACTIONS = {
+  Node: 'deleteNodeWithDependencies',
+  Link: 'deleteLink',
+};
+
 const backgroundStyle = {
   fill: '#eee',
 };
-const preventSelectStyle = {
+const svgStyle = {
   WebkitUserSelect: 'none',
   MozUserSelect: 'none',
   UserSelect: 'none',
+  cursor: 'default',
 };
-
 const findParentByClassName = (element, className) => {
   let result = null;
   if (element.classList.contains(className)) {
@@ -140,16 +145,11 @@ class Patch extends React.Component {
     if (selection.length > 0) {
       if (keycode === KEYCODE_BACKSPACE || keycode === KEYCODE_DELETE) {
         selection.forEach((select) => {
-          // Deleting nodes is disabled
-          // Until they are not able to delete children pins and connected links
-          if (select.entity !== 'Node') {
-            const delAction = `delete${select.entity}`;
-            this.props.dispatch(Actions[delAction](select.id));
-          }
+          this.props.dispatch(Actions[DELETE_ACTIONS[select.entity]](select.id));
         });
       }
       if (keycode === KEYCODE_ESCAPE) {
-        this.deselectAll();
+        this.props.dispatch(Actions.deselectAll());
       }
     }
   }
@@ -177,24 +177,20 @@ class Patch extends React.Component {
   }
 
   createLayers() {
-    this.layers = {
-      background: {
-        name: LAYERNAME_BACKGROUND,
-        factory: () => this.createBackground(),
-      },
-      links: {
-        name: LAYERNAME_LINKS,
-        factory: () => this.createLinks(
-          this.props.project.links
-        ),
-      },
-      nodes: {
-        name: LAYERNAME_NODES,
-        factory: () => this.createNodes(
-          this.props.project.nodes
-        ),
-      },
-    };
+    this.layers = [{
+      name: LAYERNAME_BACKGROUND,
+      factory: () => this.createBackground(),
+    }, {
+      name: LAYERNAME_LINKS,
+      factory: () => this.createLinks(
+        this.props.project.links
+      ),
+    }, {
+      name: LAYERNAME_NODES,
+      factory: () => this.createNodes(
+        this.props.project.nodes
+      ),
+    }];
   }
   createNodes(nodes) {
     const nodeFactory = React.createFactory(Node);
@@ -271,7 +267,8 @@ class Patch extends React.Component {
     bgChildren.push(
       <rect
         key="bg" x="0" y="0"
-        width={this.props.size.width} height={this.props.size.height}
+        width={this.props.size.width}
+        height={this.props.size.height}
         style={backgroundStyle}
         onClick={this.deselectAll}
       />
@@ -299,12 +296,12 @@ class Patch extends React.Component {
         viewBox={`0 0 ${this.props.size.width} ${this.props.size.height}`}
         width={this.props.size.width}
         height={this.props.size.height}
-        style={preventSelectStyle}
+        style={svgStyle}
         onMouseMove={this.onMouseMove}
         onMouseUp={this.onMouseUp}
       >
         <EventListener target={document} onKeyDown={this.onKeyDown} />
-        {R.values(this.layers).map(layer =>
+        {this.layers.map(layer =>
           <SVGLayer key={layer.name} name={layer.name}>
             {layer.factory()}
           </SVGLayer>

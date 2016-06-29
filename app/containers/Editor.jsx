@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import * as Actions from '../actions';
 import Patch from './Patch';
+import Selectors from '../selectors';
 
 class Editor extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class Editor extends React.Component {
   }
 
   render() {
-    const projectMeta = this.props.project.meta;
+    const projectMeta = Selectors.Meta.getMeta(this.props.project);
 
     return (
       <div>
