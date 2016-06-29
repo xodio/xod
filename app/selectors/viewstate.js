@@ -1,6 +1,9 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
 import Bbox from '../utils/bbox';
+import * as SelectorNode from './node';
+import * as SelectorPin from './pin';
+import * as SelectorLink from './link';
 
 const Sizes = {
   node: {
@@ -18,48 +21,6 @@ const Sizes = {
 };
 
 // Accepts state.project as state
-const getNodes = (state) => R.pipe(
-  R.view(R.lensProp('nodes'))
-)(state);
-const getNodeById = (state, props) => R.pipe(
-  getNodes,
-  R.filter((node) => node.id === props.id),
-  R.values,
-  R.head
-)(state, props);
-
-const getPins = (state) => R.pipe(
-  R.view(R.lensProp('pins'))
-)(state);
-const getPinsByNodeId = (state, props) => R.pipe(
-  getPins,
-  R.filter((pin) => pin.nodeId === props.id)
-)(state, props);
-const getPinsByIds = (state, props) => R.pipe(
-  getPins,
-  R.values,
-  R.reduce((p, pin) => {
-    const n = p;
-    if (props && props.pins && props.pins.indexOf(pin.id) !== -1) {
-      n[pin.id] = pin;
-    }
-    return n;
-  }, {})
-)(state, props);
-
-const getNodesByPinIds = (state, props) => R.pipe(
-  getPins,
-  R.filter((pin) =>
-    props && props.pins && props.pins.indexOf(pin.id) !== -1
-  ),
-  R.values,
-  R.reduce((p, pin) => {
-    const n = p;
-    n[pin.nodeId] = getNodeById(state, { id: pin.nodeId });
-    return n;
-  }, {})
-)(state, props);
-
 const getMaxSidePinCount = (pins) => R.pipe(
   R.values,
   R.groupBy((pin) => pin.type),
@@ -97,16 +58,6 @@ const getPinListWidths = (counts) => ({
   input: getPinsWidth(counts.input, false),
   output: getPinsWidth(counts.output, false),
 });
-
-const getLinks = (state) => R.pipe(
-  R.view(R.lensProp('links'))
-)(state);
-const getLinkById = (state, props) => R.pipe(
-  getLinks,
-  R.filter((link) => link.id === props.id),
-  R.values,
-  R.head
-)(state, props);
 
 const getPinsView = (pins, nodeBbox, nodeWidth, pinsWidth) => R.pipe(
   R.values,
@@ -170,18 +121,18 @@ const getNodeView = (node, pins) => {
 
 export const getNodeState = () => createSelector(
   [
-    getNodeById,
-    getPinsByNodeId,
+    SelectorNode.getNodeById,
+    SelectorPin.getPinsByNodeId,
   ],
   (node, pins) => getNodeView(node, pins)
 );
 
 export const getLinkState = () => createSelector(
   [
-    getLinkById,
-    getPinsByIds,
-    getNodesByPinIds,
-    getPins,
+    SelectorLink.getLinkById,
+    SelectorPin.getPinsByIds,
+    SelectorNode.getNodesByPinIds,
+    SelectorPin.getPins,
   ],
   (link, pins, nodes, allPins) => {
     const pinFrom = pins[link.fromPinId];
@@ -208,7 +159,3 @@ export const getLinkState = () => createSelector(
     };
   }
 );
-
-export const getMeta = (state) => R.pipe(
-  R.view(R.lensProp('meta'))
-)(state);
