@@ -124,7 +124,6 @@ const initialState = {
   editor: {
     currentPatchId: 1,
     mode: EDITOR_MODE_EDIT,
-    dragging: null,
     selection: [],
     selectedPin: null,
   },
