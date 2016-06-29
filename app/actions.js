@@ -133,6 +133,16 @@ export const deselectAll = () => ({
   },
 });
 
+export const setMode = (mode) => ({
+  type: ActionType.EDITOR_SET_MODE,
+  payload: {
+    mode,
+  },
+  meta: {
+    skipHistory: true,
+  },
+});
+
 export const clickNode = (id) => (dispatch, getState) => {
   const state = getState();
   const isSelected = Selectors.Editor.checkSelection(state.editor, 'Node', id);
