@@ -140,12 +140,8 @@ class Patch extends React.Component {
     if (selection.length > 0) {
       if (keycode === KEYCODE_BACKSPACE || keycode === KEYCODE_DELETE) {
         selection.forEach((select) => {
-          // Deleting nodes is disabled
-          // Until they are not able to delete children pins and connected links
-          if (select.entity !== 'Node') {
-            const delAction = `delete${select.entity}`;
-            this.props.dispatch(Actions[delAction](select.id));
-          }
+          const delAction = `delete${select.entity}`;
+          this.props.dispatch(Actions[delAction](select.id));
         });
       }
       if (keycode === KEYCODE_ESCAPE) {
