@@ -32,6 +32,22 @@ export const deleteNode = (id) => ({
   },
 });
 
+export const addPin = (nodeId, type, name) => ({
+  type: ActionType.PIN_ADD,
+  payload: {
+    nodeId,
+    type,
+    name,
+  },
+});
+
+export const deletePin = (id) => ({
+  type: ActionType.PIN_DELETE,
+  payload: {
+    id,
+  },
+});
+
 export const addLink = (link) => ({
   type: ActionType.LINK_ADD,
   payload: link,
