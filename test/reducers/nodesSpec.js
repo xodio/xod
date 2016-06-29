@@ -37,7 +37,7 @@ describe('Nodes reducer', () => {
     it('should be reverse operation for node deletion', () => {
       let state = null;
       state = nodes(nodeStore, Actions.addNode({}));
-      state = nodes(state, Actions.deleteNode(lastId(state)));
+      state = nodes(state, Actions.deleteNodeAction(lastId(state)));
       chai.expect(state).to.deep.equal(nodeStore);
     });
   });
@@ -52,7 +52,7 @@ describe('Nodes reducer', () => {
 
     it('should remove node', () => {
       const oldState = nodeStore;
-      const state = nodes(oldState, Actions.deleteNode(lastId(oldState)));
+      const state = nodes(oldState, Actions.deleteNodeAction(lastId(oldState)));
 
       chai.assert(lastId(oldState) - 1 === lastId(state));
     });
@@ -60,7 +60,7 @@ describe('Nodes reducer', () => {
     it('should remove node with specified id', () => {
       const oldState = nodeStore;
       const removingNodeId = lastId(oldState);
-      const state = nodes(oldState, Actions.deleteNode(removingNodeId));
+      const state = nodes(oldState, Actions.deleteNodeAction(removingNodeId));
 
       chai.assert(!state.hasOwnProperty(removingNodeId));
     });
@@ -69,7 +69,7 @@ describe('Nodes reducer', () => {
       let state = null;
       const removingNodeId = lastId(nodeStore);
       const removingNode = copyNode(nodeStore[removingNodeId]);
-      state = nodes(nodeStore, Actions.deleteNode(removingNodeId));
+      state = nodes(nodeStore, Actions.deleteNodeAction(removingNodeId));
       state = nodes(state, Actions.addNode(removingNode));
       chai.expect(state).to.deep.equal(nodeStore);
     });
@@ -77,7 +77,7 @@ describe('Nodes reducer', () => {
     it('should not affect other nodes', () => {
       const oldState = nodeStore;
       const removingNodeId = lastId(oldState);
-      const state = nodes(oldState, Actions.deleteNode(removingNodeId));
+      const state = nodes(oldState, Actions.deleteNodeAction(removingNodeId));
 
       chai.assert(!state.hasOwnProperty(removingNodeId));
     });

@@ -26,7 +26,7 @@ export const addNode = (node) => ({
   payload: node,
 });
 
-const deleteNodeAction = (id) => ({
+export const deleteNodeAction = (id) => ({
   type: ActionType.NODE_DELETE,
   payload: {
     id,
@@ -69,7 +69,6 @@ export const updateMeta = (data) => ({
 export const deleteNode = (id) => (dispatch, getState) => {
   const state = getState().project;
   const result = [];
-
   // 1. getPinsByNodeId
   const pins = Selectors.Pin.getPinsByNodeId(state, { id });
   // 2. getLinksByPinId and delete them
