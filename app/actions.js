@@ -68,7 +68,6 @@ export const updateMeta = (data) => ({
 
 export const addNodeWithDependencies = (nodeTypeId, position) => (dispatch, getState) => {
   const result = [];
-  console.log('!', position);
   const nodeType = Selectors.NodeType.getNodeTypeById(getState(), nodeTypeId);
   if (nodeType && position) {
     result.push(
