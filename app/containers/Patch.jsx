@@ -7,6 +7,7 @@ import Node from '../components/Node';
 import Link from '../components/Link';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
+import * as EDITOR_MODE from '../constants/editorModes';
 import * as KEYCODE from '../constants/keycodes';
 
 const LAYERNAME_BACKGROUND = 'background';
@@ -161,6 +162,7 @@ class Patch extends React.Component {
       y: event.clientY - targetOffset.top,
     };
     this.props.dispatch(Actions.addNodeWithDependencies(1, position));
+    this.props.dispatch(Actions.setMode(EDITOR_MODE.DEFAULT));
   }
 
   getStateForViewState() {
