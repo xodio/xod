@@ -22,8 +22,7 @@ export const pins = (state = {}, action) => {
         {
           id: newId,
           nodeId: action.payload.nodeId,
-          type: action.payload.type,
-          name: action.payload.name,
+          key: action.payload.key,
         },
         state
       );

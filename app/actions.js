@@ -33,12 +33,11 @@ export const deleteNode = (id) => ({
   },
 });
 
-export const addPin = (nodeId, type, name) => ({
+export const addPin = (nodeId, key) => ({
   type: ActionType.PIN_ADD,
   payload: {
     nodeId,
-    type,
-    name,
+    key,
   },
 });
 
@@ -79,15 +78,12 @@ export const addNodeWithDependencies = (nodeTypeId, position) => (dispatch, getS
       )
     );
     const nodeId = Selectors.Node.getLastNodeId(getState().project);
-    const types = ['input', 'output']; // @TODO: replace this dirty hack
-    R.values(nodeType.pins).forEach((group, i) => {
-      group.forEach((pin) => {
-        result.push(
-          dispatch(
-            addPin(nodeId, types[i], pin.key)
-          )
-        );
-      });
+    R.values(nodeType.pins).forEach((pin) => {
+      result.push(
+        dispatch(
+          addPin(nodeId, pin.key)
+        )
+      );
     });
   }
 
