@@ -77,7 +77,7 @@ describe('Links reducer', () => {
       const RemovingLinkId = lastId(linkStore);
       const removingLink = copyLink(linkStore[RemovingLinkId]);
       state = links(linkStore, Actions.deleteLink(RemovingLinkId));
-      state = links(state, Actions.addLink(removingLink));
+      state = links(state, Actions.addLink(removingLink.fromPinId, removingLink.toPinId));
       chai.expect(state).to.deep.equal(linkStore);
     });
 
