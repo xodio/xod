@@ -1,10 +1,6 @@
 import * as EDITOR_MODE from './constants/editorModes';
-
-export const NODETYPE_CATEGORY_FUNCTIONAL = 1;
-export const NODETYPE_CATEGORY_HARDWARE = 2;
-export const NODETYPE_CATEGORY_CONFIGURATION = 3;
-export const NODETYPE_CATEGORY_WATCH = 4;
-export const NODETYPE_CATEGORY_PATCHES = 5;
+import * as NODE_CATEGORY from './constants/nodeCategory';
+import * as PIN_TYPE from './constants/pinType';
 
 const initialState = {
   project: {
@@ -72,38 +68,42 @@ const initialState = {
       1: {
         id: 1,
         nodeId: 1,
-        type: 'input',
-        name: 'in',
+        key: 'in',
       },
       2: {
         id: 2,
         nodeId: 2,
-        type: 'input',
-        name: 'in',
+        key: 'in',
       },
       3: {
         id: 3,
         nodeId: 2,
-        type: 'output',
-        name: 'out',
+        key: 'out',
       },
       4: {
         id: 4,
         nodeId: 3,
-        type: 'output',
-        name: 'out',
+        key: 'out',
       },
       5: {
         id: 5,
         nodeId: 4,
-        type: 'input',
-        name: 'in',
+        key: 'in1',
       },
       6: {
         id: 6,
+        nodeId: 4,
+        key: 'in2',
+      },
+      7: {
+        id: 7,
+        nodeId: 4,
+        key: 'out',
+      },
+      8: {
+        id: 8,
         nodeId: 5,
-        type: 'input',
-        name: 'in',
+        key: 'out',
       },
     },
     links: {
@@ -130,82 +130,88 @@ const initialState = {
     1: {
       id: 1,
       name: 'not',
-      category: NODETYPE_CATEGORY_FUNCTIONAL,
+      category: NODE_CATEGORY.FUNCTIONAL,
       pins: {
-        input: [{
+        in: {
           key: 'in',
+          type: PIN_TYPE.INPUT,
           label: 'in',
-        }],
-        output: [{
+        },
+        out: {
           key: 'out',
+          type: PIN_TYPE.OUTPUT,
           label: 'out',
-        }],
+        },
       },
     },
     2: {
       id: 2,
       name: 'either',
-      category: NODETYPE_CATEGORY_FUNCTIONAL,
+      category: NODE_CATEGORY.FUNCTIONAL,
       pins: {
-        input: [{
+        in1: {
           key: 'in1',
+          type: PIN_TYPE.INPUT,
           label: 'in1',
-        }, {
+        },
+        in2: {
           key: 'in2',
+          type: PIN_TYPE.INPUT,
           label: 'in2',
-        }],
-        output: [{
+        },
+        out: {
           key: 'out',
+          type: PIN_TYPE.OUTPUT,
           label: 'out',
-        }],
+        },
       },
     },
     3: {
       id: 3,
       name: 'pot',
-      category: NODETYPE_CATEGORY_HARDWARE,
+      category: NODE_CATEGORY.HARDWARE,
       pins: {
-        input: [],
-        output: [{
+        out: {
           key: 'out',
+          type: PIN_TYPE.OUTPUT,
           label: 'out',
-        }],
+        },
       },
     },
     4: {
       id: 4,
       name: 'led',
-      category: NODETYPE_CATEGORY_WATCH,
+      category: NODE_CATEGORY.WATCH,
       pins: {
-        input: [{
+        in: {
           key: 'in',
+          type: PIN_TYPE.INPUT,
           label: 'in',
-        }],
-        output: [],
+        },
       },
     },
     5: {
       id: 5,
       name: 'servo',
-      category: NODETYPE_CATEGORY_HARDWARE,
+      category: NODE_CATEGORY.HARDWARE,
       pins: {
-        input: [],
-        output: [{
+        out: {
           key: 'out',
+          type: PIN_TYPE.OUTPUT,
           label: 'out',
-        }],
+        },
       },
     },
     6: {
       id: 6,
       name: 'config',
-      category: NODETYPE_CATEGORY_CONFIGURATION,
+      category: NODE_CATEGORY.CONFIGURATION,
       pins: {
-        input: [],
-        output: [{
+        out: {
           key: 'out',
+          type: PIN_TYPE.OUTPUT,
           label: 'out',
-        }],
+        },
       },
     },
   },

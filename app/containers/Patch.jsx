@@ -62,7 +62,8 @@ class Patch extends React.Component {
     this.props.dispatch(Actions.clickNode(id));
   }
   onNodeMouseDown(event, id) {
-    const node = Selectors.ViewState.getNodeState()(this.props.project, { id });
+    const state = this.getStateForViewState();
+    const node = Selectors.ViewState.getNodeState()(state, { id });
 
     this.dragging = {
       mousePosition: {
@@ -91,8 +92,9 @@ class Patch extends React.Component {
 
   onMouseMove(event) {
     if (this.state.dragNodeId !== null) {
+      const state = this.getStateForViewState();
       const dragId = this.state.dragNodeId;
-      const draggedNode = Selectors.ViewState.getNodeState()(this.props.project, { id: dragId });
+      const draggedNode = Selectors.ViewState.getNodeState()(state, { id: dragId });
       const mousePosition = {
         x: event.clientX,
         y: event.clientY,
@@ -127,7 +129,8 @@ class Patch extends React.Component {
   onMouseUp() {
     if (this.state.dragNodeId !== null) {
       const dragId = this.state.dragNodeId;
-      const draggedNode = Selectors.ViewState.getNodeState()(this.props.project, { id: dragId });
+      const state = this.getStateForViewState();
+      const draggedNode = Selectors.ViewState.getNodeState()(state, { id: dragId });
 
       this.setDragNodeId(null);
       this.props.dispatch(Actions.moveNode(dragId, draggedNode.bbox.getPosition()));
@@ -158,6 +161,14 @@ class Patch extends React.Component {
       y: event.clientY - targetOffset.top,
     };
     this.props.dispatch(Actions.addNodeWithDependencies(1, position));
+  }
+
+  getStateForViewState() {
+    return R.set(
+      R.lensProp('nodeTypes'),
+      this.props.nodeTypes,
+      this.props.project
+    );
   }
 
   setDragNodeId(id) {
@@ -201,6 +212,7 @@ class Patch extends React.Component {
   createNodes(nodes) {
     const nodeFactory = React.createFactory(Node);
     let comparator = R.comparator();
+    const state = this.getStateForViewState();
 
     if (this.state.dragNodeId) {
       comparator = (a) => ((a.id === this.state.dragNodeId) ? 1 : 0);
@@ -213,7 +225,7 @@ class Patch extends React.Component {
         const n = p;
         const selectedPin = this.props.editor.selectedPin;
         const viewstate = Selectors.ViewState.getNodeState()(
-          this.props.project,
+          state,
           {
             id: node.id,
           }
@@ -244,13 +256,14 @@ class Patch extends React.Component {
 
   createLinks(links) {
     const linkFactory = React.createFactory(Link);
+    const state = this.getStateForViewState();
 
     return R.pipe(
       R.values,
       R.reduce((p, link) => {
         const n = p;
         const viewstate = Selectors.ViewState.getLinkState()(
-          this.props.project,
+          state,
           {
             id: link.id,
             pins: [link.fromPinId, link.toPinId],
@@ -322,6 +335,7 @@ Patch.propTypes = {
   size: React.PropTypes.any.isRequired,
   project: React.PropTypes.any.isRequired,
   editor: React.PropTypes.any.isRequired,
+  nodeTypes: React.PropTypes.any.isRequired,
 };
 
 export default connect(state => state)(Patch);

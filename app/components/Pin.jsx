@@ -1,5 +1,6 @@
 import React from 'react';
 import Stylizer from '../utils/stylizer';
+import * as PIN_TYPE from '../constants/pinType';
 
 const pinStyles = {
   block: {
@@ -104,10 +105,10 @@ export default class Pin extends React.Component {
     return this.props.type;
   }
   isInput() {
-    return (this.getType() === 'input');
+    return (this.getType() === PIN_TYPE.INPUT);
   }
   isOutput() {
-    return (this.getType() === 'output');
+    return (this.getType() === PIN_TYPE.OUTPUT);
   }
 
   render() {
@@ -128,7 +129,7 @@ export default class Pin extends React.Component {
           {...this.getTextProps()}
           style={styles.text}
         >
-          {this.props.name}
+          {this.props.label}
         </text>
       </g>
     );
@@ -137,8 +138,8 @@ export default class Pin extends React.Component {
 
 Pin.propTypes = {
   id: React.PropTypes.number.isRequired,
-  name: React.PropTypes.string.isRequired,
-  type: React.PropTypes.string.isRequired,
+  label: React.PropTypes.string.isRequired,
+  type: React.PropTypes.number.isRequired,
   bbox: React.PropTypes.object.isRequired,
   radius: React.PropTypes.number.isRequired,
   onMouseUp: React.PropTypes.func.isRequired,

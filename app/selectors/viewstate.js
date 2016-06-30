@@ -1,9 +1,11 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
 import Bbox from '../utils/bbox';
+import * as SelectorNodeType from './nodetype';
 import * as SelectorNode from './node';
 import * as SelectorPin from './pin';
 import * as SelectorLink from './link';
+import * as PIN_TYPE from '../constants/pinType';
 
 const Sizes = {
   node: {
@@ -37,8 +39,8 @@ const getSidesPinCount = (pins) => R.pipe(
     n[type] = group.length;
     return n;
   }, {
-    input: 0,
-    output: 0,
+    [PIN_TYPE.INPUT]: 0,
+    [PIN_TYPE.OUTPUT]: 0,
   })
 )(pins);
 
@@ -55,8 +57,8 @@ const getNodeWidth = (pins) => {
   return nodeWidth;
 };
 const getPinListWidths = (counts) => ({
-  input: getPinsWidth(counts.input, false),
-  output: getPinsWidth(counts.output, false),
+  [PIN_TYPE.INPUT]: getPinsWidth(counts[PIN_TYPE.INPUT], false),
+  [PIN_TYPE.OUTPUT]: getPinsWidth(counts[PIN_TYPE.OUTPUT], false),
 });
 
 const getPinsView = (pins, nodeBbox, nodeWidth, pinsWidth) => R.pipe(
@@ -64,15 +66,15 @@ const getPinsView = (pins, nodeBbox, nodeWidth, pinsWidth) => R.pipe(
   R.groupBy((pin) => pin.type),
   R.map((group) => {
     const vOffset = {
-      input: Sizes.node.padding.y - Sizes.pin.radius,
-      output: nodeBbox.getSize().height + Sizes.node.padding.y - Sizes.pin.radius,
+      [PIN_TYPE.INPUT]: Sizes.node.padding.y - Sizes.pin.radius,
+      [PIN_TYPE.OUTPUT]: nodeBbox.getSize().height + Sizes.node.padding.y - Sizes.pin.radius,
     };
     let offset = 0;
 
     return R.map((pin) => {
       const r = {
         id: pin.id,
-        name: pin.name,
+        label: pin.label,
         nodeId: pin.nodeId,
         type: pin.type,
         bbox: new Bbox({
@@ -97,9 +99,18 @@ const getPinsView = (pins, nodeBbox, nodeWidth, pinsWidth) => R.pipe(
   }, {})
 )(pins);
 
-const getNodeView = (node, pins) => {
-  const nodeWidth = getNodeWidth(pins);
-  const pinsCount = getSidesPinCount(pins);
+const getNodeView = (node, pins, nodeTypes) => {
+  const nodeType = nodeTypes[node.typeId];
+  // Extending pins with nodeType.pins data
+  const pinsExtended = R.map((pin) => {
+    const ntPin = nodeType.pins[pin.key];
+    return R.merge({
+      type: ntPin.type,
+      label: ntPin.label,
+    })(pin);
+  })(pins);
+  const nodeWidth = getNodeWidth(pinsExtended);
+  const pinsCount = getSidesPinCount(pinsExtended);
   const pinsWidth = getPinListWidths(pinsCount);
   const nodeBbox = new Bbox({
     x: node.position.x,
@@ -108,7 +119,7 @@ const getNodeView = (node, pins) => {
     height: Sizes.node.height,
   });
 
-  const pinsView = getPinsView(pins, nodeBbox, nodeWidth, pinsWidth);
+  const pinsView = getPinsView(pinsExtended, nodeBbox, nodeWidth, pinsWidth);
 
   return {
     id: node.id,
@@ -123,8 +134,9 @@ export const getNodeState = () => createSelector(
   [
     SelectorNode.getNodeById,
     SelectorPin.getPinsByNodeId,
+    SelectorNodeType.getNodeTypes,
   ],
-  (node, pins) => getNodeView(node, pins)
+  (node, pins, nodeTypePins) => getNodeView(node, pins, nodeTypePins)
 );
 
 export const getLinkState = () => createSelector(
@@ -133,8 +145,9 @@ export const getLinkState = () => createSelector(
     SelectorPin.getPinsByIds,
     SelectorNode.getNodesByPinIds,
     SelectorPin.getPins,
+    SelectorNodeType.getNodeTypes,
   ],
-  (link, pins, nodes, allPins) => {
+  (link, pins, nodes, allPins, nodeTypes) => {
     const pinFrom = pins[link.fromPinId];
     const pinTo = pins[link.toPinId];
 
@@ -147,8 +160,8 @@ export const getLinkState = () => createSelector(
       R.filter((pin) => pin.nodeId === pinTo.nodeId)
     )(allPins);
 
-    const nodeViewFrom = getNodeView(nodes[pinFrom.nodeId], pinsFrom);
-    const nodeViewTo = getNodeView(nodes[pinTo.nodeId], pinsTo);
+    const nodeViewFrom = getNodeView(nodes[pinFrom.nodeId], pinsFrom, nodeTypes);
+    const nodeViewTo = getNodeView(nodes[pinTo.nodeId], pinsTo, nodeTypes);
     const pinViewFrom = nodeViewFrom.pins[pinFrom.id];
     const pinViewTo = nodeViewTo.pins[pinTo.id];
 
