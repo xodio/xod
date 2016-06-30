@@ -6,21 +6,7 @@ import * as SelectorNode from './node';
 import * as SelectorPin from './pin';
 import * as SelectorLink from './link';
 import * as PIN_TYPE from '../constants/pinType';
-
-const Sizes = {
-  node: {
-    min_width: 80,
-    height: 40,
-    padding: {
-      x: 2,
-      y: 25,
-    },
-  },
-  pin: {
-    radius: 5,
-    margin: 15,
-  },
-};
+import * as SIZES from '../constants/sizes';
 
 // Accepts state.project as state
 const getMaxSidePinCount = (pins) => R.pipe(
@@ -46,13 +32,13 @@ const getSidesPinCount = (pins) => R.pipe(
 
 const getPinsWidth = (count, withMargins) => {
   const marginCount = (withMargins) ? count + 1 : count - 1;
-  return (marginCount * Sizes.pin.margin) + (count * Sizes.pin.radius * 2);
+  return (marginCount * SIZES.PIN.margin) + (count * SIZES.PIN.radius * 2);
 };
 const getNodeWidth = (pins) => {
   const pinsCount = getMaxSidePinCount(pins);
   let nodeWidth = getPinsWidth(pinsCount, true);
-  if (nodeWidth < Sizes.node.min_width) {
-    nodeWidth = Sizes.node.min_width;
+  if (nodeWidth < SIZES.NODE.min_width) {
+    nodeWidth = SIZES.NODE.min_width;
   }
   return nodeWidth;
 };
@@ -66,8 +52,8 @@ const getPinsView = (pins, nodeBbox, nodeWidth, pinsWidth) => R.pipe(
   R.groupBy((pin) => pin.type),
   R.map((group) => {
     const vOffset = {
-      [PIN_TYPE.INPUT]: Sizes.node.padding.y - Sizes.pin.radius,
-      [PIN_TYPE.OUTPUT]: nodeBbox.getSize().height + Sizes.node.padding.y - Sizes.pin.radius,
+      [PIN_TYPE.INPUT]: SIZES.NODE.padding.y - SIZES.PIN.radius,
+      [PIN_TYPE.OUTPUT]: nodeBbox.getSize().height + SIZES.NODE.padding.y - SIZES.PIN.radius,
     };
     let offset = 0;
 
@@ -80,12 +66,12 @@ const getPinsView = (pins, nodeBbox, nodeWidth, pinsWidth) => R.pipe(
         bbox: new Bbox({
           x: (nodeWidth - pinsWidth[pin.type]) / 2 + offset,
           y: vOffset[pin.type],
-          width: Sizes.pin.radius * 2,
-          height: Sizes.pin.radius * 2,
+          width: SIZES.PIN.radius * 2,
+          height: SIZES.PIN.radius * 2,
         }),
       };
 
-      offset += Sizes.pin.margin + Sizes.pin.radius * 2;
+      offset += SIZES.PIN.margin + SIZES.PIN.radius * 2;
 
       return r;
     }, group);
@@ -116,7 +102,7 @@ const getNodeView = (node, pins, nodeTypes) => {
     x: node.position.x,
     y: node.position.y,
     width: nodeWidth,
-    height: Sizes.node.height,
+    height: SIZES.NODE.height,
   });
 
   const pinsView = getPinsView(pinsExtended, nodeBbox, nodeWidth, pinsWidth);
@@ -124,9 +110,9 @@ const getNodeView = (node, pins, nodeTypes) => {
   return {
     id: node.id,
     pins: pinsView,
-    radius: Sizes.pin.radius,
+    radius: SIZES.PIN.radius,
     bbox: nodeBbox,
-    padding: Sizes.node.padding,
+    padding: SIZES.NODE.padding,
   };
 };
 
