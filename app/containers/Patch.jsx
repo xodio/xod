@@ -60,7 +60,7 @@ class Patch extends React.Component {
   }
 
   onNodeMouseUp(id) {
-    this.props.dispatch(Actions.clickNode(id));
+    this.props.dispatch(Actions.selectNode(id));
   }
   onNodeMouseDown(event, id) {
     const state = this.getStateForViewState();
@@ -85,10 +85,10 @@ class Patch extends React.Component {
     );
   }
   onPinMouseUp(id) {
-    this.props.dispatch(Actions.clickPin(id));
+    this.props.dispatch(Actions.linkPin(id));
   }
   onLinkClick(id) {
-    this.props.dispatch(Actions.clickLink(id));
+    this.props.dispatch(Actions.selectLink(id));
   }
 
   onMouseMove(event) {
@@ -225,7 +225,7 @@ class Patch extends React.Component {
       R.sort(comparator),
       R.reduce((p, node) => {
         const n = p;
-        const selectedPin = this.props.editor.selectedPin;
+        const linkingPin = this.props.editor.linkingPin;
         const viewstate = Selectors.ViewState.getNodeState()(
           state,
           {
@@ -243,8 +243,8 @@ class Patch extends React.Component {
 
         viewstate.selected = Selectors.Editor.checkSelection(this.props.editor, 'Node', node.id);
 
-        if (selectedPin && viewstate.pins && viewstate.pins[selectedPin]) {
-          viewstate.pins[selectedPin].selected = true;
+        if (linkingPin && viewstate.pins && viewstate.pins[linkingPin]) {
+          viewstate.pins[linkingPin].selected = true;
         }
 
         n.push(

@@ -48,9 +48,12 @@ export const deletePin = (id) => ({
   },
 });
 
-export const addLink = (link) => ({
+export const addLink = (fromPinId, toPinId) => ({
   type: ActionType.LINK_ADD,
-  payload: link,
+  payload: {
+    fromPinId,
+    toPinId,
+  },
 });
 
 export const deleteLink = (id) => ({
@@ -120,7 +123,7 @@ export const deleteNodeWithDependencies = (id) => (dispatch, getState) => {
   return result;
 };
 
-export const selectNode = (id) => ({
+export const setNodeSelection = (id) => ({
   type: ActionType.EDITOR_SELECT_NODE,
   payload: {
     id,
@@ -130,7 +133,7 @@ export const selectNode = (id) => ({
   },
 });
 
-export const selectPin = (id) => ({
+export const setPinSelection = (id) => ({
   type: ActionType.EDITOR_SELECT_PIN,
   payload: {
     id,
@@ -140,7 +143,7 @@ export const selectPin = (id) => ({
   },
 });
 
-export const selectLink = (id) => ({
+export const setLinkSelection = (id) => ({
   type: ActionType.EDITOR_SELECT_LINK,
   payload: {
     id,
@@ -168,7 +171,7 @@ export const setMode = (mode) => ({
   },
 });
 
-export const clickNode = (id) => (dispatch, getState) => {
+export const selectNode = (id) => (dispatch, getState) => {
   const state = getState();
   const isSelected = Selectors.Editor.checkSelection(state.editor, 'Node', id);
   const result = [
@@ -176,33 +179,29 @@ export const clickNode = (id) => (dispatch, getState) => {
   ];
 
   if (!isSelected) {
-    result.push(dispatch(selectNode(id)));
+    result.push(dispatch(setNodeSelection(id)));
   }
 
   return result;
 };
 
-export const clickPin = (id) => (dispatch, getState) => {
+export const linkPin = (id) => (dispatch, getState) => {
   const state = getState();
-  const selected = state.editor.selectedPin;
+  const selected = state.editor.linkingPin;
   const result = [
     dispatch(deselectAll()),
   ];
 
-  if (selected && selected !== id) {
-    const link = {
-      fromPinId: selected,
-      toPinId: id,
-    };
-    result.push(dispatch(addLink(link)));
+  if (selected !== id && selected !== null) {
+    result.push(dispatch(addLink(selected, id)));
   } else if (selected !== id) {
-    result.push(dispatch(selectPin(id)));
+    result.push(dispatch(setPinSelection(id)));
   }
 
   return result;
 };
 
-export const clickLink = (id) => (dispatch, getState) => {
+export const selectLink = (id) => (dispatch, getState) => {
   const state = getState();
   const isSelected = Selectors.Editor.checkSelection(state.editor, 'Link', id);
   const result = [
@@ -210,7 +209,7 @@ export const clickLink = (id) => (dispatch, getState) => {
   ];
 
   if (!isSelected) {
-    result.push(dispatch(selectLink(id)));
+    result.push(dispatch(setLinkSelection(id)));
   }
 
   return result;

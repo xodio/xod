@@ -124,7 +124,7 @@ const initialState = {
     mode: EDITOR_MODE.EDITING,
     dragging: null,
     selection: [],
-    selectedPin: null,
+    linkingPin: null,
   },
   nodeTypes: {
     1: {

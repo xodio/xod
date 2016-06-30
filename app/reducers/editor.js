@@ -21,14 +21,14 @@ export const editor = (state = {}, action) => {
     case EDITOR_DESELECT_ALL:
       return R.merge(state, {
         selection: [],
-        selectedPin: null,
+        linkingPin: null,
       });
     case EDITOR_SELECT_NODE:
       return addSelection('Node', action, state);
     case EDITOR_SELECT_LINK:
       return addSelection('Link', action, state);
     case EDITOR_SELECT_PIN:
-      return R.set(R.lensProp('selectedPin'), action.payload.id, state);
+      return R.set(R.lensProp('linkingPin'), action.payload.id, state);
     case EDITOR_SET_MODE:
       return R.set(R.lensProp('mode'), action.payload.mode, state);
     default:
