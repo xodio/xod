@@ -24,7 +24,6 @@ export const links = (state = {}, action) => {
         toPinId: action.payload.toPinId,
       };
       newLink.id = newId(state);
-      console.log('!', newLink);
       return R.set(R.lensProp(newLink.id), newLink, state);
     case LINK_DELETE:
       return R.omit([action.payload.id.toString()], state);
