@@ -7,6 +7,7 @@ import * as SelectorPin from './pin';
 import * as SelectorLink from './link';
 import * as PIN_TYPE from '../constants/pinType';
 import * as SIZES from '../constants/sizes';
+import NodeText from '../components/NodeText';
 
 // Accepts state.project as state
 const getMaxSidePinCount = (pins) => R.pipe(
@@ -98,17 +99,21 @@ const getNodeView = (node, pins, nodeTypes) => {
   const nodeWidth = getNodeWidth(pinsExtended);
   const pinsCount = getSidesPinCount(pinsExtended);
   const pinsWidth = getPinListWidths(pinsCount);
+  const label = (node.label) ? node.label : '';
+
   const nodeBbox = new Bbox({
     x: node.position.x,
     y: node.position.y,
     width: nodeWidth,
-    height: SIZES.NODE.height,
+    height: SIZES.NODE.min_height,
   });
 
   const pinsView = getPinsView(pinsExtended, nodeBbox, nodeWidth, pinsWidth);
 
   return {
     id: node.id,
+    typeLabel: nodeType.label,
+    label,
     pins: pinsView,
     radius: SIZES.PIN.radius,
     bbox: nodeBbox,
@@ -151,10 +156,13 @@ export const getLinkState = () => createSelector(
     const pinViewFrom = nodeViewFrom.pins[pinFrom.id];
     const pinViewTo = nodeViewTo.pins[pinTo.id];
 
+    const fromBbox = pinViewFrom.bbox.translate(nodeViewFrom.bbox).getAbsCenter();
+    const toBbox = pinViewTo.bbox.translate(nodeViewTo.bbox).getAbsCenter();
+
     return {
       id: link.id,
-      from: pinViewFrom.bbox.translate(nodeViewFrom.bbox).getAbsCenter(),
-      to: pinViewTo.bbox.translate(nodeViewTo.bbox).getAbsCenter(),
+      from: fromBbox,
+      to: toBbox,
     };
   }
 );

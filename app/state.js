@@ -39,6 +39,7 @@ const initialState = {
       3: {
         id: 3,
         typeId: 3,
+        label: 'Speed',
         patchId: 1,
         position: {
           x: 80,
@@ -129,7 +130,7 @@ const initialState = {
   nodeTypes: {
     1: {
       id: 1,
-      name: 'not',
+      label: 'not',
       category: NODE_CATEGORY.FUNCTIONAL,
       pins: {
         in: {
@@ -146,7 +147,7 @@ const initialState = {
     },
     2: {
       id: 2,
-      name: 'either',
+      label: 'either',
       category: NODE_CATEGORY.FUNCTIONAL,
       pins: {
         in1: {
@@ -168,7 +169,7 @@ const initialState = {
     },
     3: {
       id: 3,
-      name: 'pot',
+      label: 'pot',
       category: NODE_CATEGORY.HARDWARE,
       pins: {
         out: {
@@ -180,7 +181,7 @@ const initialState = {
     },
     4: {
       id: 4,
-      name: 'led',
+      label: 'led',
       category: NODE_CATEGORY.WATCH,
       pins: {
         in: {
@@ -192,7 +193,7 @@ const initialState = {
     },
     5: {
       id: 5,
-      name: 'servo',
+      label: 'servo',
       category: NODE_CATEGORY.HARDWARE,
       pins: {
         out: {
@@ -204,7 +205,7 @@ const initialState = {
     },
     6: {
       id: 6,
-      name: 'config',
+      label: 'config',
       category: NODE_CATEGORY.CONFIGURATION,
       pins: {
         out: {

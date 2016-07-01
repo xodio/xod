@@ -2,6 +2,8 @@ import R from 'ramda';
 import React from 'react';
 import Pin from '../components/Pin';
 import Stylizer from '../utils/stylizer';
+import NodeText from '../components/NodeText';
+import * as SIZES from '../constants/sizes';
 
 const nodeStyles = {
   block: {
@@ -83,8 +85,8 @@ class Node extends React.Component {
   getTextProps() {
     const rectSize = this.getRectProps();
     return {
-      x: (rectSize.width / 2) + rectSize.x,
-      y: (rectSize.height / 2) + rectSize.y + nodeStyles.text.normal.fontSize / 4,
+      x: rectSize.x + rectSize.width / 2,
+      y: rectSize.y + rectSize.height / 2,
     };
   }
 
@@ -112,8 +114,14 @@ class Node extends React.Component {
           onMouseOut={this.handleOut}
           onMouseUp={this.onMouseUp}
         >
-          <rect {...this.getRectProps()} style={styles.rect} />
-          <text {...this.getTextProps()} style={styles.text}>{this.id}</text>
+          <rect {...this.getRectProps()} style={styles.rect} ref="rect" />
+          <NodeText
+            ref="text"
+            position={this.getTextProps()}
+            style={styles.text}
+            label={this.props.label}
+            typeLabel={this.props.typeLabel}
+          />
         </g>
         <g className="pinlist">
           {pins.map((pin) =>
@@ -132,6 +140,8 @@ class Node extends React.Component {
 
 Node.propTypes = {
   id: React.PropTypes.number.isRequired,
+  typeLabel: React.PropTypes.string.isRequired,
+  label: React.PropTypes.string.isRequired,
   pins: React.PropTypes.any.isRequired,
   bbox: React.PropTypes.any.isRequired,
   padding: React.PropTypes.any.isRequired,
