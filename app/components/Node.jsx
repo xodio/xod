@@ -3,6 +3,7 @@ import React from 'react';
 import Pin from '../components/Pin';
 import Stylizer from '../utils/stylizer';
 import NodeText from '../components/NodeText';
+
 import * as SIZES from '../constants/sizes';
 
 const nodeStyles = {
@@ -39,7 +40,8 @@ class Node extends React.Component {
   constructor(props) {
     super(props);
     this.id = this.props.id;
-    this.elementId = `node_${this.id}`;
+
+    this.pins = {};
 
     Stylizer.assignStyles(this, nodeStyles);
     Stylizer.hoverable(this, ['rect', 'text']);
@@ -47,6 +49,13 @@ class Node extends React.Component {
 
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
+  }
+
+  componentDidMount() {
+    this.updatePatchViewstate();
+  }
+  componentDidUpdate() {
+    this.updatePatchViewstate();
   }
 
   onMouseUp() {
@@ -60,26 +69,28 @@ class Node extends React.Component {
     }
   }
 
-  getPaddings() {
-    return this.props.padding;
+  getZeroPosition() {
+    const position = R.clone(this.props.position);
+
+    position.x -= SIZES.NODE.padding.x + (this.props.width / 2);
+    position.y -= SIZES.NODE.padding.y + (this.props.height / 2);
+
+    return position;
   }
   getRectProps() {
-    const size = this.props.bbox.getSize();
-    const paddings = this.getPaddings();
     return {
-      width: size.width,
-      height: size.height,
-      x: paddings.x,
-      y: paddings.y,
+      width: this.props.width,
+      height: this.props.height,
+      x: SIZES.NODE.padding.x,
+      y: SIZES.NODE.padding.y,
     };
   }
   getBlockProps() {
-    const paddings = this.getPaddings();
     return {
       x: 0,
       y: 0,
-      width: this.getRectProps().width + (paddings.x * 2),
-      height: this.getRectProps().height + (paddings.y * 2),
+      width: this.getRectProps().width + (SIZES.NODE.padding.x * 2),
+      height: this.getRectProps().height + (SIZES.NODE.padding.y * 2),
     };
   }
   getTextProps() {
@@ -90,10 +101,47 @@ class Node extends React.Component {
     };
   }
 
+  updatePatchViewstate() {
+    const nodeText = this.refs.text;
+
+    const oldWidth = this.props.width;
+    const textWidth = nodeText.getWidth();
+    const newWidth = textWidth + (SIZES.NODE_TEXT.margin.x * 2);
+    let resultWidth = oldWidth;
+
+    if (oldWidth !== newWidth && newWidth > SIZES.NODE.min_width) {
+      resultWidth = newWidth;
+    }
+
+    const nodePins = R.pipe(
+      R.values,
+      R.map((pin) => {
+        const n = pin;
+        n.realPosition = {
+          x: pin.position.x + this.getZeroPosition().x + SIZES.PIN.radius,
+          y: pin.position.y + this.getZeroPosition().y + SIZES.PIN.radius,
+        };
+        return n;
+      }),
+      R.reduce((p, c) => {
+        const n = p;
+        n[c.id] = c;
+        return n;
+      }, {})
+    )(this.props.pins);
+
+    this.props.onRender(this.id, {
+      width: resultWidth,
+      pins: nodePins,
+    });
+  }
+
   render() {
     const styles = this.getStyle();
     const pins = R.values(this.props.pins);
-    const position = this.props.bbox.getPosition();
+    const position = this.getZeroPosition();
+    const textPosition = this.getTextProps();
+
     const draggable = this.props.draggable;
     const dragStyle = {
       opacity: (this.props.isDragged) ? 0.7 : 1,
@@ -103,8 +151,7 @@ class Node extends React.Component {
       <svg
         className="node"
         {...position}
-        id={this.elementId}
-        key={this.elementId}
+        key={this.id}
         draggable={draggable}
         onMouseDown={this.onMouseDown}
         style={dragStyle}
@@ -117,7 +164,7 @@ class Node extends React.Component {
           <rect {...this.getRectProps()} style={styles.rect} ref="rect" />
           <NodeText
             ref="text"
-            position={this.getTextProps()}
+            position={textPosition}
             style={styles.text}
             label={this.props.label}
           />
@@ -125,9 +172,8 @@ class Node extends React.Component {
         <g className="pinlist">
           {pins.map((pin) =>
             <Pin
-              key={`pin_${pin.id}`}
+              key={pin.id}
               {...pin}
-              radius={this.props.radius}
               onMouseUp={this.props.onPinMouseUp}
             />
           )}
@@ -141,15 +187,22 @@ Node.propTypes = {
   id: React.PropTypes.number.isRequired,
   label: React.PropTypes.string.isRequired,
   pins: React.PropTypes.any.isRequired,
-  bbox: React.PropTypes.any.isRequired,
-  padding: React.PropTypes.any.isRequired,
-  radius: React.PropTypes.number.isRequired,
+  position: React.PropTypes.object.isRequired,
+  width: React.PropTypes.number,
+  height: React.PropTypes.number,
   draggable: React.PropTypes.bool.isRequired,
   isDragged: React.PropTypes.bool,
   isClicked: React.PropTypes.bool,
+  onRender: React.PropTypes.func.isRequired,
   onMouseUp: React.PropTypes.func.isRequired,
   onMouseDown: React.PropTypes.func.isRequired,
   onPinMouseUp: React.PropTypes.func.isRequired,
+};
+Node.defaultProps = {
+  width: SIZES.NODE.min_width,
+  height: SIZES.NODE.min_height,
+  isDragged: false,
+  isClicked: false,
 };
 
 export default Node;

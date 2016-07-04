@@ -1,12 +1,15 @@
 import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
+
 import EventListener from 'react-event-listener';
 import SVGLayer from '../components/SVGlayer';
 import Node from '../components/Node';
 import Link from '../components/Link';
+
 import * as Actions from '../actions';
 import Selectors from '../selectors';
+import PatchUtils from '../utils/patchUtils';
 import * as EDITOR_MODE from '../constants/editorModes';
 import * as KEYCODE from '../constants/keycodes';
 
@@ -16,6 +19,7 @@ const LAYERNAME_NODES = 'nodes';
 
 const CLICK_SAFEZONE = 3; // How far user should drag a node to prevent selecting by click
 
+// @TODO: Remove in case with replacing with SELECTION_DELETE action
 const DELETE_ACTIONS = {
   Node: 'deleteNodeWithDependencies',
   Link: 'deleteLink',
@@ -49,6 +53,9 @@ class Patch extends React.Component {
       clickNodeId: null,
       dragNodeId: null,
     };
+    this.nodesViewstate = {};
+    this.nodesCount = 0;
+    this.nodesRendered = 0;
 
     this.createLayers();
 
@@ -59,12 +66,30 @@ class Patch extends React.Component {
     this.deselectAll = this.deselectAll.bind(this);
   }
 
+  componentDidMount() {
+  }
+
+  onNodeRendered(id, props) {
+    if (!Object.hasOwnProperty.call(this.nodesViewstate, id)) {
+      this.nodesViewstate[id] = {};
+    }
+
+    this.nodesViewstate[id] = R.merge(this.nodesViewstate[id], props);
+    if (this.nodesRendered < this.nodesCount) {
+      this.nodesRendered++;
+    }
+
+    if (this.nodesCount === this.nodesRendered) {
+      this.forceUpdate();
+      this.nodesRendered = Infinity;
+    }
+  }
+
   onNodeMouseUp(id) {
     this.props.dispatch(Actions.selectNode(id));
   }
   onNodeMouseDown(event, id) {
-    const state = this.getStateForViewState();
-    const node = Selectors.ViewState.getNodeState()(state, { id });
+    const node = this.props.project.nodes[id].position;
 
     this.dragging = {
       mousePosition: {
@@ -93,9 +118,8 @@ class Patch extends React.Component {
 
   onMouseMove(event) {
     if (this.state.dragNodeId !== null) {
-      const state = this.getStateForViewState();
       const dragId = this.state.dragNodeId;
-      const draggedNode = Selectors.ViewState.getNodeState()(state, { id: dragId });
+      const draggedPos = this.props.project.nodes[dragId].position;
       const mousePosition = {
         x: event.clientX,
         y: event.clientY,
@@ -111,8 +135,11 @@ class Patch extends React.Component {
         mousePosition,
         this.dragging
       );
+      const newPosition = {
+        x: draggedPos.x + deltaPosition.x,
+        y: draggedPos.y + deltaPosition.y,
+      };
 
-      const newPosition = draggedNode.bbox.translate(deltaPosition).getPosition();
       this.props.dispatch(Actions.dragNode(dragId, newPosition));
 
       if (
@@ -130,11 +157,10 @@ class Patch extends React.Component {
   onMouseUp() {
     if (this.state.dragNodeId !== null) {
       const dragId = this.state.dragNodeId;
-      const state = this.getStateForViewState();
-      const draggedNode = Selectors.ViewState.getNodeState()(state, { id: dragId });
+      const draggedPos = this.props.project.nodes[dragId].position;
 
       this.setDragNodeId(null);
-      this.props.dispatch(Actions.moveNode(dragId, draggedNode.bbox.getPosition()));
+      this.props.dispatch(Actions.moveNode(dragId, draggedPos));
     }
 
     this.dragging = {};
@@ -163,14 +189,6 @@ class Patch extends React.Component {
     };
     this.props.dispatch(Actions.addNodeWithDependencies(1, position));
     this.props.dispatch(Actions.setMode(EDITOR_MODE.DEFAULT));
-  }
-
-  getStateForViewState() {
-    return R.set(
-      R.lensProp('nodeTypes'),
-      this.props.nodeTypes,
-      this.props.project
-    );
   }
 
   setDragNodeId(id) {
@@ -213,8 +231,10 @@ class Patch extends React.Component {
   }
   createNodes(nodes) {
     const nodeFactory = React.createFactory(Node);
+
+    this.nodesCount = R.keys(nodes).length;
+
     let comparator = R.comparator();
-    const state = this.getStateForViewState();
 
     if (this.state.dragNodeId) {
       comparator = (a) => ((a.id === this.state.dragNodeId) ? 1 : 0);
@@ -226,22 +246,38 @@ class Patch extends React.Component {
       R.reduce((p, node) => {
         const n = p;
         const linkingPin = this.props.editor.linkingPin;
-        const viewstate = Selectors.ViewState.getNodeState()(
-          state,
-          {
-            id: node.id,
-          }
+
+        const nodeType = Selectors.NodeType.getNodeTypeById({
+          nodeTypes: this.props.nodeTypes,
+        }, node.typeId);
+
+        const nodeWidth = (this.nodesViewstate[node.id] && this.nodesViewstate[node.id].width) ?
+          this.nodesViewstate[node.id].width :
+          PatchUtils.getNodeWidth(nodeType.pins);
+
+        const nodePins = PatchUtils.getPinsData(
+          this.props.project.pins,
+          node.id,
+          nodeWidth,
+          nodeType
         );
 
-        viewstate.key = node.id;
-        viewstate.onMouseUp = this.onNodeMouseUp.bind(this);
-        viewstate.onMouseDown = this.onNodeMouseDown.bind(this);
-        viewstate.onPinMouseUp = this.onPinMouseUp.bind(this);
-        viewstate.draggable = Selectors.Editor.isEditingMode(this.props.editor);
-        viewstate.isDragged = (this.state.dragNodeId === node.id);
-        viewstate.isClicked = (this.state.clickNodeId === node.id);
-
-        viewstate.selected = Selectors.Editor.checkSelection(this.props.editor, 'Node', node.id);
+        const viewstate = {
+          id: node.id,
+          key: node.id,
+          label: node.label || nodeType.label,
+          pins: nodePins,
+          position: node.position,
+          width: nodeWidth,
+          onRender: this.onNodeRendered.bind(this),
+          onMouseUp: this.onNodeMouseUp.bind(this),
+          onMouseDown: this.onNodeMouseDown.bind(this),
+          onPinMouseUp: this.onPinMouseUp.bind(this),
+          draggable: Selectors.Editor.isEditingMode(this.props.editor),
+          isDragged: (this.state.dragNodeId === node.id),
+          isClicked: (this.state.clickNodeId === node.id),
+          selected: Selectors.Editor.checkSelection(this.props.editor, 'Node', node.id),
+        };
 
         if (linkingPin && viewstate.pins && viewstate.pins[linkingPin]) {
           viewstate.pins[linkingPin].selected = true;
@@ -258,25 +294,31 @@ class Patch extends React.Component {
 
   createLinks(links) {
     const linkFactory = React.createFactory(Link);
-    const state = this.getStateForViewState();
 
     return R.pipe(
       R.values,
       R.reduce((p, link) => {
         const n = p;
-        const viewstate = Selectors.ViewState.getLinkState()(
-          state,
-          {
+        const fromNodeId = this.props.project.pins[link.fromPinId].nodeId;
+        const toNodeId = this.props.project.pins[link.toPinId].nodeId;
+
+        if (
+          this.nodesViewstate[fromNodeId] && this.nodesViewstate[toNodeId]
+        ) {
+          const fromPin = this.nodesViewstate[fromNodeId].pins[link.fromPinId];
+          const toPin = this.nodesViewstate[toNodeId].pins[link.toPinId];
+
+          const viewstate = {
             id: link.id,
-            pins: [link.fromPinId, link.toPinId],
-          }
-        );
-        viewstate.key = link.id;
-        viewstate.onClick = this.onLinkClick.bind(this);
-        viewstate.selected = Selectors.Editor.checkSelection(this.props.editor, 'Link', link.id);
+            key: link.id,
+            from: fromPin.realPosition,
+            to: toPin.realPosition,
+            onClick: this.onLinkClick.bind(this),
+            selected: Selectors.Editor.checkSelection(this.props.editor, 'Link', link.id),
+          };
 
-        n.push(linkFactory(viewstate));
-
+          n.push(linkFactory(viewstate));
+        }
         return n;
       }, [])
     )(links);

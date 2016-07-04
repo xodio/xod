@@ -20,8 +20,8 @@ const initialState = {
         typeId: 4,
         patchId: 1,
         position: {
-          x: 240,
-          y: 110,
+          x: 320,
+          y: 120,
         },
         props: {
           brightness: 0.67,
@@ -39,16 +39,17 @@ const initialState = {
       3: {
         id: 3,
         typeId: 3,
-        label: 'Speed',
+        label: 'User defined name',
         patchId: 1,
         position: {
-          x: 80,
-          y: 20,
+          x: 160,
+          y: 90,
         },
       },
       4: {
         id: 4,
         typeId: 2,
+        label: 'Very looooooooong node label',
         patchId: 1,
         position: {
           x: 170,
@@ -60,7 +61,7 @@ const initialState = {
         typeId: 5,
         patchId: 1,
         position: {
-          x: 30,
+          x: 100,
           y: 185,
         },
       },

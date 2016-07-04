@@ -2,25 +2,37 @@ import React from 'react';
 
 class NodeText extends React.Component {
   componentDidMount() {
-    const line = this.getBbox();
-    const yCorrection = Math.round(line.height / 4);
-
-    this.position = {
-      x: this.props.position.x,
-      y: this.props.position.y + yCorrection,
-    };
-
-    this.forceUpdate();
+    this.labelBbox = this.getBbox();
   }
   getBbox() {
     return this.refs.label.getBBox();
+  }
+  getWidth() {
+    return this.labelBbox.width;
+  }
+  getHeight() {
+    return this.labelBbox.height;
+  }
+  getPosition() {
+    const position = {
+      x: this.props.position.x,
+      y: this.props.position.y,
+    };
+
+    if (this.labelBbox) {
+      const line = this.labelBbox;
+      const yCorrection = Math.round(line.height / 4);
+      position.y += yCorrection;
+    }
+
+    return position;
   }
   render() {
     const style = this.props.style;
 
     return (
       <text
-        {...this.position}
+        {...this.getPosition()}
         style={style}
         textAnchor="middle"
         ref="label"
