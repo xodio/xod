@@ -99,7 +99,7 @@ const getNodeView = (node, pins, nodeTypes) => {
   const nodeWidth = getNodeWidth(pinsExtended);
   const pinsCount = getSidesPinCount(pinsExtended);
   const pinsWidth = getPinListWidths(pinsCount);
-  const label = (node.label) ? node.label : '';
+  const label = (node.label) ? node.label : nodeType.label;
 
   const nodeBbox = new Bbox({
     x: node.position.x,
@@ -112,7 +112,6 @@ const getNodeView = (node, pins, nodeTypes) => {
 
   return {
     id: node.id,
-    typeLabel: nodeType.label,
     label,
     pins: pinsView,
     radius: SIZES.PIN.radius,

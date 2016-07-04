@@ -2,10 +2,8 @@ import React from 'react';
 
 class NodeText extends React.Component {
   componentDidMount() {
-    const line = this.getLineBbox();
-    const yCorrection = (this.props.label) ?
-      Math.round(line.height / 9) * -1 :
-      Math.round(line.height / 4);
+    const line = this.getBbox();
+    const yCorrection = Math.round(line.height / 4);
 
     this.position = {
       x: this.props.position.x,
@@ -15,30 +13,19 @@ class NodeText extends React.Component {
     this.forceUpdate();
   }
   getBbox() {
-    return this.refs.text.getBBox();
-  }
-  getLineBbox() {
-    return this.refs.line.getBBox();
+    return this.refs.label.getBBox();
   }
   render() {
     const style = this.props.style;
 
     return (
-      <text style={style} ref="text">
-        <tspan
-          {...this.position}
-          textAnchor="middle"
-          ref="line"
-        >
-          {this.props.typeLabel}
-        </tspan>
-        <tspan
-          {...this.position}
-          textAnchor="middle"
-          dy="1.2em"
-        >
-          {this.props.label}
-        </tspan>
+      <text
+        {...this.position}
+        style={style}
+        textAnchor="middle"
+        ref="label"
+      >
+        {this.props.label}
       </text>
     );
   }
@@ -47,8 +34,7 @@ class NodeText extends React.Component {
 NodeText.propTypes = {
   position: React.PropTypes.any,
   style: React.PropTypes.any,
-  typeLabel: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string,
+  label: React.PropTypes.string.isRequired,
 };
 
 export default NodeText;

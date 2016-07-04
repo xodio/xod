@@ -120,7 +120,6 @@ class Node extends React.Component {
             position={this.getTextProps()}
             style={styles.text}
             label={this.props.label}
-            typeLabel={this.props.typeLabel}
           />
         </g>
         <g className="pinlist">
@@ -140,7 +139,6 @@ class Node extends React.Component {
 
 Node.propTypes = {
   id: React.PropTypes.number.isRequired,
-  typeLabel: React.PropTypes.string.isRequired,
   label: React.PropTypes.string.isRequired,
   pins: React.PropTypes.any.isRequired,
   bbox: React.PropTypes.any.isRequired,
