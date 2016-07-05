@@ -27,7 +27,7 @@ class Toolbar extends React.Component {
     this.onNodeTypeChange = this.onNodeTypeChange.bind(this);
   }
   onAddNodeClick() {
-    this.props.ononAddNodeClick();
+    this.props.onAddNodeClick();
   }
   onNodeTypeChange(event) {
     this.props.onNodeTypeChange(event.target.value);
@@ -60,7 +60,7 @@ class Toolbar extends React.Component {
 Toolbar.propTypes = {
   nodeTypes: React.PropTypes.object,
   onNodeTypeChange: React.PropTypes.func,
-  ononAddNodeClick: React.PropTypes.func,
+  onAddNodeClick: React.PropTypes.func,
 };
 
 export default Toolbar;
