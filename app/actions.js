@@ -215,3 +215,9 @@ export const selectLink = (id) => (dispatch, getState) => {
   return result;
 };
 
+export const setSelectedNodeType = (id) => ({
+  type: ActionType.EDITOR_SET_SELECTED_NODETYPE,
+  payload: {
+    id,
+  },
+});
