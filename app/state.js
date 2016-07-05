@@ -127,6 +127,7 @@ const initialState = {
     dragging: null,
     selection: [],
     linkingPin: null,
+    selectedNodeType: 1,
   },
   nodeTypes: {
     1: {
