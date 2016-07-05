@@ -187,7 +187,8 @@ class Patch extends React.Component {
       x: event.clientX - targetOffset.left,
       y: event.clientY - targetOffset.top,
     };
-    this.props.dispatch(Actions.addNodeWithDependencies(1, position));
+    const nodeTypeId = this.props.editor.selectedNodeType;
+    this.props.dispatch(Actions.addNodeWithDependencies(nodeTypeId, position));
     this.props.dispatch(Actions.setMode(EDITOR_MODE.DEFAULT));
   }
 

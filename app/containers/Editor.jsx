@@ -54,7 +54,7 @@ class Editor extends React.Component {
   }
 
   setSelectedNodeType(nodeTypeId) {
-    // this.props.dispatch(Actions.setSelectedNodeType(nodeTypeId));
+    this.props.dispatch(Actions.setSelectedNodeType(nodeTypeId));
   }
 
   render() {
