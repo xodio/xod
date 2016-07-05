@@ -40,7 +40,11 @@ class Toolbar extends React.Component {
       <div style={styles.container}>
         <select onChange={this.onNodeTypeChange}>
           {nodeTypes.map((type) =>
-            <option key={type.id} value={type.id}>
+            <option
+              key={type.id}
+              value={type.id}
+              selected={type.id === this.props.selectedNodeType}
+            >
               {type.label}
             </option>
           )}
@@ -49,6 +53,7 @@ class Toolbar extends React.Component {
           className="toolbar-addNodeButton"
           style={styles.button}
           onClick={this.onAddNodeClick}
+          title="Hotkey: N"
         >
           + Add node
         </button>
@@ -59,6 +64,7 @@ class Toolbar extends React.Component {
 
 Toolbar.propTypes = {
   nodeTypes: React.PropTypes.object,
+  selectedNodeType: React.PropTypes.number,
   onNodeTypeChange: React.PropTypes.func,
   onAddNodeClick: React.PropTypes.func,
 };

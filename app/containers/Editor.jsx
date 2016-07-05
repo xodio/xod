@@ -69,6 +69,7 @@ class Editor extends React.Component {
         <div style={styles.patchContainer}>
           <Toolbar
             nodeTypes={this.props.nodeTypes}
+            selectedNodeType={this.props.editor.selectedNodeType}
             onNodeTypeChange={this.setSelectedNodeType}
             onAddNodeClick={this.setModeCreating}
           />
