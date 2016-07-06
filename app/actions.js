@@ -160,6 +160,15 @@ export const deselectAll = () => ({
     skipHistory: true,
   },
 });
+export const deselectAllIfNeeded = () => (dispatch, getState) => {
+  const state = getState();
+  if (
+    state.editor.selection.length > 0 ||
+    state.editor.linkingPin
+  ) {
+    dispatch(deselectAll());
+  }
+};
 
 export const setMode = (mode) => ({
   type: ActionType.EDITOR_SET_MODE,
@@ -175,7 +184,7 @@ export const selectNode = (id) => (dispatch, getState) => {
   const state = getState();
   const isSelected = Selectors.Editor.checkSelection(state.editor, 'Node', id);
   const result = [
-    dispatch(deselectAll()),
+    dispatch(deselectAllIfNeeded()),
   ];
 
   if (!isSelected) {
@@ -189,7 +198,7 @@ export const linkPin = (id) => (dispatch, getState) => {
   const state = getState();
   const selected = state.editor.linkingPin;
   const result = [
-    dispatch(deselectAll()),
+    dispatch(deselectAllIfNeeded()),
   ];
 
   if (selected !== id && selected !== null) {
@@ -205,7 +214,7 @@ export const selectLink = (id) => (dispatch, getState) => {
   const state = getState();
   const isSelected = Selectors.Editor.checkSelection(state.editor, 'Link', id);
   const result = [
-    dispatch(deselectAll()),
+    dispatch(deselectAllIfNeeded()),
   ];
 
   if (!isSelected) {
