@@ -52,11 +52,17 @@ class Patch extends React.Component {
     this.state = {
       clickNodeId: null,
       dragNodeId: null,
+      ghostLink: null,
     };
     this.nodesViewstate = {};
     this.nodesCount = 0;
     this.nodesRendered = 0;
     this.nodesUpdated = 0;
+
+    this.mousePosition = {
+      x: 0,
+      y: 0,
+    };
 
     this.createLayers();
 
@@ -90,11 +96,14 @@ class Patch extends React.Component {
       this.state.ghostNode = null;
     }
   }
+  componentDidUpdate() {
+    this.createGhostLink(this.props);
+  }
 
   onNodeRendered(id, props) {
     if (id === 0) return;
 
-    if (!this.nodesViewstate.hasOwnProperty(id)) {
+    if (!Object.hasOwnProperty.call(this.nodesViewstate, id)) {
       this.nodesViewstate[id] = {};
     }
 
@@ -141,9 +150,12 @@ class Patch extends React.Component {
   }
 
   onMouseMove(event) {
+    const svg = findParentByClassName(event.target, 'patch');
+    const bbox = svg.getBoundingClientRect();
+
     const mousePosition = {
-      x: event.clientX,
-      y: event.clientY,
+      x: event.clientX - bbox.left,
+      y: event.clientY - bbox.top,
     };
 
     if (this.state.dragNodeId !== null) {
@@ -166,6 +178,7 @@ class Patch extends React.Component {
       };
 
       this.props.dispatch(Actions.dragNode(dragId, newPosition));
+    this.mousePosition = mousePosition;
 
       if (
         R.all(
@@ -192,6 +205,7 @@ class Patch extends React.Component {
         )
       );
     }
+    this.dragGhostLink(mousePosition, bbox);
   }
   onMouseUp(event) {
     if (this.state.dragNodeId !== null) {
@@ -257,6 +271,18 @@ class Patch extends React.Component {
     this.props.dispatch(Actions.deselectAll());
   }
 
+  dragGhostLink() {
+    if (this.props.editor.linkingPin && this.state.ghostLink) {
+      this.setState(
+        R.set(
+          R.lensPath(['ghostLink', 'to']),
+          this.mousePosition,
+          this.state
+        )
+      );
+    }
+  }
+
   createLayers() {
     this.layers = [{
       name: LAYERNAME_BACKGROUND,
@@ -320,6 +346,8 @@ class Patch extends React.Component {
       R.values,
       R.sort(comparator),
       R.reduce((p, node) => {
+        const n = p;
+
         const viewstate = this.createNodeState(node, {
           onMouseUp: this.onNodeMouseUp.bind(this),
           onMouseDown: this.onNodeMouseDown.bind(this),
@@ -330,7 +358,9 @@ class Patch extends React.Component {
           selected: Selectors.Editor.checkSelection(this.props.editor, 'Node', node.id),
         });
 
-        return R.assoc(node.id, viewstate, p);
+        n[node.id] = viewstate;
+
+        return n;
       }, {})
     )(nodes);
   }
@@ -346,43 +376,119 @@ class Patch extends React.Component {
     return R.pipe(
       R.values,
       R.reduce((p, cur) => {
-        const node = this.createNode(cur);
-        return R.append(node, p);
+        const n = p;
+
+        n.push(
+          this.createNode(cur)
+        );
+
+        return n;
       }, [])
     )(viewstate);
   }
 
-  createLinks(links) {
-    const linkFactory = React.createFactory(Link);
+  createGhostNode(props) {
+    if (props.editor.mode === EDITOR_MODE.CREATING) {
+      if (this.state.ghostNode === null) {
+        const ghostProps = {
+          hoverable: false,
+          isDragged: true,
+        };
+        this.state.ghostNode = this.createNodeState({
+          id: 0,
+          typeId: this.props.editor.selectedNodeType,
+          patchId: this.props.editor.currentPatchId,
+          position: this.mousePosition,
+        }, ghostProps);
+      }
+    } else {
+      this.state.ghostNode = null;
+    }
+  }
 
+  createLink(link) {
+    const linkFactory = React.createFactory(Link);
+    return linkFactory(link);
+  }
+  createLinkState(link, customProps) {
+    const props = (typeof customProps === 'object') ? customProps : {};
+    let fromPos = { x: 0, y: 0 };
+    let toPos = { x: 0, y: 0 };
+
+    if (link.fromPinId) {
+      const fromNodeId = this.props.project.pins[link.fromPinId].nodeId;
+      const fromPin = this.nodesViewstate[fromNodeId].pins[link.fromPinId];
+
+      fromPos = fromPin.realPosition;
+    }
+    if (link.toPinId) {
+      const toNodeId = this.props.project.pins[link.toPinId].nodeId;
+      const toPin = this.nodesViewstate[toNodeId].pins[link.toPinId];
+
+      toPos = toPin.realPosition;
+    }
+
+    const viewstate = {
+      id: link.id,
+      key: link.id,
+      from: fromPos,
+      to: toPos,
+      onClick: this.onLinkClick.bind(this),
+      selected: Selectors.Editor.checkSelection(this.props.editor, 'Link', link.id),
+    };
+
+    return R.merge(
+      viewstate,
+      props
+    );
+  }
+  createLinks(links) {
     return R.pipe(
       R.values,
       R.reduce((p, link) => {
-        let result = p;
+        const n = p;
         const fromNodeId = this.props.project.pins[link.fromPinId].nodeId;
         const toNodeId = this.props.project.pins[link.toPinId].nodeId;
 
         if (
           this.nodesViewstate[fromNodeId] && this.nodesViewstate[toNodeId]
         ) {
-          const fromPin = this.nodesViewstate[fromNodeId].pins[link.fromPinId];
-          const toPin = this.nodesViewstate[toNodeId].pins[link.toPinId];
+          const viewstate = this.createLinkState(link);
 
-          const viewstate = {
-            id: link.id,
-            key: link.id,
-            from: fromPin.realPosition,
-            to: toPin.realPosition,
-            onClick: this.onLinkClick.bind(this),
-            selected: Selectors.Editor.checkSelection(this.props.editor, 'Link', link.id),
-          };
-          const linkComponent = linkFactory(viewstate);
-
-          result = R.append(linkComponent, result);
+          n.push(
+            this.createLink(viewstate)
+          );
         }
-        return result;
+        return n;
       }, [])
     )(links);
+  }
+
+  createGhostLink(props) {
+    const stateName = 'ghostLink';
+    if (props.editor.linkingPin && this.state.ghostLink === null) {
+      const linkViewstate = this.createLinkState({
+        id: 0,
+        fromPinId: this.props.editor.linkingPin,
+        toPinId: null,
+      }, {
+        to: this.mousePosition,
+        hoverable: false,
+        clickable: false,
+      });
+
+      this.setState(
+        R.assoc(
+          stateName,
+          linkViewstate,
+          this.state
+        )
+      );
+    } else if (props.editor.linkingPin === null && this.state.ghostLink) {
+      this.setState(
+        R.assoc(stateName, null, this.state)
+      );
+    }
   }
 
   createBackground() {
@@ -411,6 +517,7 @@ class Patch extends React.Component {
 
     const patchName = this.props.project.patches[this.props.editor.currentPatchId].name;
     const ghostNode = (this.state.ghostNode) ? this.createNode(this.state.ghostNode) : null;
+    const ghostLink = (this.state.ghostLink) ? this.createLink(this.state.ghostLink) : null;
 
     return (
       <svg
@@ -427,6 +534,7 @@ class Patch extends React.Component {
         {this.layers.map(layer =>
           <SVGLayer key={layer.name} name={layer.name}>
             {layer.factory()}
+            {(layer.name === LAYERNAME_LINKS) ? ghostLink : null}
           </SVGLayer>
         )}
         <text x="5" y="20">{`Patch: ${patchName}`}</text>

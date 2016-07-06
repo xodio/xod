@@ -35,7 +35,9 @@ class Link extends React.Component {
     };
 
     Stylizer.assignStyles(this, linkStyles);
-    Stylizer.hoverable(this, ['line', 'helper']);
+    if (this.props.hoverable) {
+      Stylizer.hoverable(this, ['line', 'helper']);
+    }
     Stylizer.selectable(this, ['line']);
 
     this.onClick = this.onClick.bind(this);
@@ -74,6 +76,7 @@ class Link extends React.Component {
         onClick={this.onClick}
         onMouseOver={this.handleOver}
         onMouseOut={this.handleOut}
+        pointerEvents={this.props.clickable}
       >
         <line
           {...coords}
@@ -92,7 +95,14 @@ Link.propTypes = {
   id: React.PropTypes.number.isRequired,
   from: React.PropTypes.object.isRequired,
   to: React.PropTypes.object.isRequired,
+  hoverable: React.PropTypes.bool,
+  clickable: React.PropTypes.bool,
   onClick: React.PropTypes.func.isRequired,
+};
+
+Link.defaultProps = {
+  hoverable: true,
+  clickable: true,
 };
 
 export default Link;
