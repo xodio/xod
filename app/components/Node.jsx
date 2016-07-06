@@ -80,7 +80,7 @@ class Node extends React.Component {
     }
   }
 
-  getZeroPosition() {
+  getOriginPosition() {
     const position = R.clone(this.props.position);
 
     position.x -= SIZES.NODE.padding.x + (this.width / 2);
@@ -129,8 +129,8 @@ class Node extends React.Component {
       R.map((pin) => {
         const n = pin;
         n.realPosition = {
-          x: pin.position.x + this.getZeroPosition().x + SIZES.PIN.radius,
-          y: pin.position.y + this.getZeroPosition().y + SIZES.PIN.radius,
+          x: pin.position.x + this.getOriginPosition().x + SIZES.PIN.radius,
+          y: pin.position.y + this.getOriginPosition().y + SIZES.PIN.radius,
         };
         return n;
       }),
@@ -152,7 +152,7 @@ class Node extends React.Component {
   render() {
     const styles = this.getStyle();
     const pins = R.values(this.props.pins);
-    const position = this.getZeroPosition();
+    const position = this.getOriginPosition();
     const textPosition = this.getTextProps();
 
     const draggable = this.props.draggable;
