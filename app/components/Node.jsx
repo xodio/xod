@@ -44,11 +44,17 @@ class Node extends React.Component {
     this.pins = {};
 
     Stylizer.assignStyles(this, nodeStyles);
-    Stylizer.hoverable(this, ['rect', 'text']);
+    if (this.props.hoverable) {
+      Stylizer.hoverable(this, ['rect', 'text']);
+    }
     Stylizer.selectable(this, ['rect']);
+
+    this.width = this.props.width;
+    this.height = this.props.height;
 
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
+    this.onPinMouseUp = this.onPinMouseUp.bind(this);
   }
 
   componentDidMount() {
@@ -59,28 +65,33 @@ class Node extends React.Component {
   }
 
   onMouseUp() {
-    if (this.props.isClicked) {
+    if (this.props.isClicked && this.props.onMouseUp) {
       this.props.onMouseUp(this.id);
     }
   }
   onMouseDown(event) {
-    if (this.props.draggable) {
+    if (this.props.draggable && this.props.onMouseDown) {
       this.props.onMouseDown(event, this.id);
+    }
+  }
+  onPinMouseUp(pinId) {
+    if (this.props.isClicked && this.props.onPinMouseUp) {
+      this.props.onPinMouseUp(pinId);
     }
   }
 
   getZeroPosition() {
     const position = R.clone(this.props.position);
 
-    position.x -= SIZES.NODE.padding.x + (this.props.width / 2);
-    position.y -= SIZES.NODE.padding.y + (this.props.height / 2);
+    position.x -= SIZES.NODE.padding.x + (this.width / 2);
+    position.y -= SIZES.NODE.padding.y + (this.height / 2);
 
     return position;
   }
   getRectProps() {
     return {
-      width: this.props.width,
-      height: this.props.height,
+      width: this.width,
+      height: this.height,
       x: SIZES.NODE.padding.x,
       y: SIZES.NODE.padding.y,
     };
@@ -104,7 +115,7 @@ class Node extends React.Component {
   updatePatchViewstate() {
     const nodeText = this.refs.text;
 
-    const oldWidth = this.props.width;
+    const oldWidth = this.width;
     const textWidth = nodeText.getWidth();
     const newWidth = textWidth + (SIZES.NODE_TEXT.margin.x * 2);
     let resultWidth = oldWidth;
@@ -129,6 +140,8 @@ class Node extends React.Component {
         return n;
       }, {})
     )(this.props.pins);
+
+    this.width = resultWidth;
 
     this.props.onRender(this.id, {
       width: resultWidth,
@@ -174,7 +187,7 @@ class Node extends React.Component {
             <Pin
               key={pin.id}
               {...pin}
-              onMouseUp={this.props.onPinMouseUp}
+              onMouseUp={this.onPinMouseUp}
             />
           )}
         </g>
@@ -190,19 +203,23 @@ Node.propTypes = {
   position: React.PropTypes.object.isRequired,
   width: React.PropTypes.number,
   height: React.PropTypes.number,
-  draggable: React.PropTypes.bool.isRequired,
+  hoverable: React.PropTypes.bool,
+  draggable: React.PropTypes.bool,
   isDragged: React.PropTypes.bool,
   isClicked: React.PropTypes.bool,
   onRender: React.PropTypes.func.isRequired,
-  onMouseUp: React.PropTypes.func.isRequired,
-  onMouseDown: React.PropTypes.func.isRequired,
-  onPinMouseUp: React.PropTypes.func.isRequired,
+  onMouseUp: React.PropTypes.func,
+  onMouseDown: React.PropTypes.func,
+  onPinMouseUp: React.PropTypes.func,
 };
 Node.defaultProps = {
   width: SIZES.NODE.min_width,
   height: SIZES.NODE.min_height,
+  hoverable: true,
+  draggable: true,
   isDragged: false,
   isClicked: false,
+  selected: false,
 };
 
 export default Node;
