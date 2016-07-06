@@ -19,7 +19,7 @@ const node = (state, action) => {
     case NODE_MOVE:
       return R.set(R.lensProp('position'), action.payload.position, state);
     case NODE_ADD:
-      return R.view(R.lensProp('payload'), action);
+      return R.prop('payload', action);
     default:
       return state;
   }
@@ -42,7 +42,7 @@ export const nodes = (state = {}, action) => {
       return R.omit([action.payload.id.toString()], state);
 
     case NODE_MOVE:
-      movedNode = node(R.view(R.lensProp(action.payload.id), state), action);
+      movedNode = node(R.prop(action.payload.id, state), action);
       return R.set(R.lensProp(action.payload.id), movedNode, state);
 
     default:

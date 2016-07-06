@@ -1,5 +1,6 @@
 import React from 'react';
 import Stylizer from '../utils/stylizer';
+import * as PIN_TYPE from '../constants/pinType';
 
 const pinStyles = {
   block: {
@@ -42,7 +43,7 @@ export default class Pin extends React.Component {
   constructor(props) {
     super(props);
 
-    this.elementId = `pin_${props.id}`;
+    this.id = this.props.id;
 
     Stylizer.assignStyles(this, pinStyles);
     Stylizer.hoverable(this, ['circle', 'text']);
@@ -58,8 +59,8 @@ export default class Pin extends React.Component {
   getPosition() {
     const radius = this.props.radius;
     return {
-      x: this.props.bbox.getPosition().x + radius + 1,
-      y: this.props.bbox.getPosition().y + radius + 1,
+      x: this.props.position.x + radius + 1,
+      y: this.props.position.y + radius + 1,
     };
   }
   getBlockCorrection() {
@@ -104,10 +105,10 @@ export default class Pin extends React.Component {
     return this.props.type;
   }
   isInput() {
-    return (this.getType() === 'input');
+    return (this.getType() === PIN_TYPE.INPUT);
   }
   isOutput() {
-    return (this.getType() === 'output');
+    return (this.getType() === PIN_TYPE.OUTPUT);
   }
 
   render() {
@@ -116,7 +117,7 @@ export default class Pin extends React.Component {
     return (
       <g
         className="pin"
-        id={this.elementId}
+        id={this.id}
         onMouseUp={this.onMouseUp}
         onMouseOver={this.handleOver}
         onMouseOut={this.handleOut}
@@ -128,7 +129,7 @@ export default class Pin extends React.Component {
           {...this.getTextProps()}
           style={styles.text}
         >
-          {this.props.name}
+          {this.props.label}
         </text>
       </g>
     );
@@ -137,9 +138,9 @@ export default class Pin extends React.Component {
 
 Pin.propTypes = {
   id: React.PropTypes.number.isRequired,
-  name: React.PropTypes.string.isRequired,
-  type: React.PropTypes.string.isRequired,
-  bbox: React.PropTypes.object.isRequired,
+  label: React.PropTypes.string.isRequired,
+  type: React.PropTypes.number.isRequired,
+  position: React.PropTypes.object.isRequired,
   radius: React.PropTypes.number.isRequired,
   onMouseUp: React.PropTypes.func.isRequired,
 };

@@ -1,7 +1,7 @@
 import R from 'ramda';
 
 export const getLinks = (state) => R.pipe(
-  R.view(R.lensProp('links'))
+  R.prop('links')
 )(state);
 
 export const getLinkById = (state, props) => R.pipe(

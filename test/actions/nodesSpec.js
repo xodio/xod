@@ -1,62 +1,163 @@
 import chai from 'chai';
-import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { nodes } from '../../app/reducers/nodes';
+import { pins } from '../../app/reducers/pins';
+import { links } from '../../app/reducers/links';
+import { nodeTypes } from '../../app/reducers/nodetypes';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import * as Actions from '../../app/actions';
-import * as ActionType from '../../app/actionTypes';
+import * as PIN_TYPE from '../../app/constants/pinType';
 
-const middlewares = [thunk];
-const mockStore = configureStore(middlewares);
+// const middlewares = [thunk];
+// const mockStore = configureStore(middlewares);
+const mockStore = (state) => createStore(combineReducers({
+  project: combineReducers({
+    nodes,
+    pins,
+    links,
+  }),
+  nodeTypes,
+}), state, applyMiddleware(thunk));
 
-describe('Node deleting with dependecies', () => {
-  const mockState = {
-    project: {
-      nodes: {
+describe('Node actions with dependencies', () => {
+  describe('Add node', () => {
+    const mockState = {
+      project: {
+        nodes: {},
+        pins: {},
+      },
+      nodeTypes: {
         1: {
           id: 1,
-        },
-        2: {
-          id: 2,
-        },
-      },
-      pins: {
-        1: {
-          id: 1,
-          nodeId: 1,
-        },
-        2: {
-          id: 2,
-          nodeId: 1,
-        },
-        3: {
-          id: 3,
-          nodeId: 2,
+          pins: {
+            in: {
+              key: 'in',
+              type: PIN_TYPE.INPUT,
+              label: 'in',
+            },
+            out: {
+              key: 'out',
+              type: PIN_TYPE.OUTPUT,
+              label: 'out',
+            },
+          },
         },
       },
-      links: {
-        1: {
-          id: 1,
-          fromPinId: 2,
-          toPinId: 3,
-        },
-      },
-    },
-  };
+    };
 
-  let store;
-  beforeEach(() => {
-    store = mockStore(mockState);
+    let store;
+    beforeEach(() => {
+      store = mockStore(mockState);
+    });
+    it('should add children pins', () => {
+      const expectedState = {
+        project: {
+          nodes: {
+            0: {
+              id: 0,
+              typeId: 1,
+              position: {
+                x: 10,
+                y: 10,
+              },
+            },
+          },
+          pins: {
+            0: {
+              id: 0,
+              nodeId: 0,
+              key: 'in',
+            },
+            1: {
+              id: 1,
+              nodeId: 0,
+              key: 'out',
+            },
+          },
+          links: {},
+        },
+        nodeTypes: {
+          1: {
+            id: 1,
+            pins: {
+              in: {
+                key: 'in',
+                type: PIN_TYPE.INPUT,
+                label: 'in',
+              },
+              out: {
+                key: 'out',
+                type: PIN_TYPE.OUTPUT,
+                label: 'out',
+              },
+            },
+          },
+        },
+      };
+
+      store.dispatch(Actions.addNodeWithDependencies(1, { x: 10, y: 10 }));
+
+      chai.expect(store.getState()).to.deep.equal(expectedState);
+    });
   });
 
-  it('should delete node, children pins and link', () => {
-    const expectedActions = [
-      { type: ActionType.LINK_DELETE, payload: { id: 1 } },
-      { type: ActionType.PIN_DELETE, payload: { id: 1 } },
-      { type: ActionType.PIN_DELETE, payload: { id: 2 } },
-      { type: ActionType.NODE_DELETE, payload: { id: 1 } },
-    ];
+  describe('Delete node', () => {
+    const mockState = {
+      project: {
+        nodes: {
+          1: {
+            id: 1,
+          },
+          2: {
+            id: 2,
+          },
+        },
+        pins: {
+          1: {
+            id: 1,
+            nodeId: 1,
+          },
+          2: {
+            id: 2,
+            nodeId: 1,
+          },
+          3: {
+            id: 3,
+            nodeId: 2,
+          },
+        },
+        links: {
+          1: {
+            id: 1,
+            fromPinId: 2,
+            toPinId: 3,
+          },
+        },
+      },
+    };
 
-    store.dispatch(Actions.deleteNodeWithDependencies(1));
+    let store;
+    beforeEach(() => {
+      store = mockStore(mockState);
+    });
 
-    chai.expect(store.getActions()).to.deep.equal(expectedActions);
+    it('should delete node, children pins and link', () => {
+      const expectedState = {
+        project: {
+          nodes: {
+            2: { id: 2 },
+          },
+          pins: {
+            3: { id: 3, nodeId: 2 },
+          },
+          links: {},
+        },
+        nodeTypes: {},
+      };
+
+      store.dispatch(Actions.deleteNodeWithDependencies(1));
+
+      chai.expect(store.getState()).to.deep.equal(expectedState);
+    });
   });
 });

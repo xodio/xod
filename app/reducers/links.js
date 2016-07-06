@@ -14,25 +14,17 @@ export const newId = (links) => lastId(links) + 1;
 
 export const copyLink = (link) => R.clone(link);
 
-const link = (state, action) => {
-  switch (action.type) {
-    case LINK_ADD:
-      return R.view(R.lensProp('payload'), action);
-    default:
-      return state;
-  }
-};
-
 export const links = (state = {}, action) => {
   let newLink = null;
-  let newLinkId = 0;
 
   switch (action.type) {
     case LINK_ADD:
-      newLink = link(undefined, action);
-      newLinkId = newId(state);
-      newLink = R.set(R.lensProp('id'), newLinkId, newLink);
-      return R.set(R.lensProp(newLinkId), newLink, state);
+      newLink = {
+        fromPinId: action.payload.fromPinId,
+        toPinId: action.payload.toPinId,
+      };
+      newLink.id = newId(state);
+      return R.set(R.lensProp(newLink.id), newLink, state);
     case LINK_DELETE:
       return R.omit([action.payload.id.toString()], state);
     default:
