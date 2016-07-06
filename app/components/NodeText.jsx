@@ -3,6 +3,7 @@ import React from 'react';
 class NodeText extends React.Component {
   componentDidMount() {
     this.labelBbox = this.getBbox();
+    this.forceUpdate();
   }
   getBbox() {
     return this.refs.label.getBBox();

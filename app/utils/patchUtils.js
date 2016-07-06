@@ -82,9 +82,23 @@ const getPinPosition = (pins, nodeWidth) => {
 };
 
 const getPinsData = (pinsState, nodeId, nodeWidth, nodeType) => {
-  const pins = Selectors.Pin.getPinsByNodeId({
+  let pins = Selectors.Pin.getPinsByNodeId({
     pins: pinsState,
   }, { id: nodeId });
+
+  if (R.keys(pins).length === 0) {
+    let pinsCount = 0;
+    pins = R.pipe(
+      R.values,
+      R.reduce((p, pin) => {
+        const n = p;
+        n[pin.key] = pin;
+        n[pin.key].id = pinsCount;
+        pinsCount++;
+        return p;
+      }, {})
+    )(nodeType.pins);
+  }
 
   const pinsExtended = R.map((pin) => {
     const ntPin = nodeType.pins[pin.key];

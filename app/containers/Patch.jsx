@@ -56,6 +56,7 @@ class Patch extends React.Component {
     this.nodesViewstate = {};
     this.nodesCount = 0;
     this.nodesRendered = 0;
+    this.nodesUpdated = 0;
 
     this.createLayers();
 
@@ -66,10 +67,33 @@ class Patch extends React.Component {
     this.deselectAll = this.deselectAll.bind(this);
   }
 
-  componentDidMount() {
+  componentWillUpdate(nextProps) {
+    this.nodesCount = 0;
+
+    if (nextProps.editor.mode === EDITOR_MODE.CREATING) {
+      if (this.state.ghostNode === null) {
+        const ghostProps = {
+          hoverable: false,
+          isDragged: true,
+        };
+        this.state.ghostNode = this.createNodeState({
+          id: 0,
+          typeId: this.props.editor.selectedNodeType,
+          patchId: this.props.editor.currentPatchId,
+          position: {
+            x: 0,
+            y: 0,
+          },
+        }, ghostProps);
+      }
+    } else {
+      this.state.ghostNode = null;
+    }
   }
 
   onNodeRendered(id, props) {
+    if (id === 0) return;
+
     if (!Object.hasOwnProperty.call(this.nodesViewstate, id)) {
       this.nodesViewstate[id] = {};
     }
@@ -79,9 +103,9 @@ class Patch extends React.Component {
       this.nodesRendered++;
     }
 
-    if (this.nodesCount === this.nodesRendered) {
+    if (this.nodesCount === this.nodesRendered && this.nodesCount !== this.nodesUpdated) {
       this.forceUpdate();
-      this.nodesRendered = Infinity;
+      this.nodesUpdated = this.nodesCount;
     }
   }
 
@@ -117,13 +141,14 @@ class Patch extends React.Component {
   }
 
   onMouseMove(event) {
+    const mousePosition = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+
     if (this.state.dragNodeId !== null) {
       const dragId = this.state.dragNodeId;
       const draggedPos = this.props.project.nodes[dragId].position;
-      const mousePosition = {
-        x: event.clientX,
-        y: event.clientY,
-      };
 
       const deltaPosition = {
         x: mousePosition.x - this.dragging.mousePosition.x,
@@ -153,14 +178,31 @@ class Patch extends React.Component {
         this.setClickNodeId(null);
       }
     }
+    if (this.props.editor.mode === EDITOR_MODE.CREATING && this.state.ghostNode) {
+      const container = findParentByClassName(event.target, 'patch');
+      const bbox = container.getBoundingClientRect();
+      this.setState(
+        R.set(
+          R.lensPath(['ghostNode', 'position']),
+          {
+            x: mousePosition.x - bbox.left,
+            y: mousePosition.y - bbox.top,
+          },
+          this.state
+        )
+      );
+    }
   }
-  onMouseUp() {
+  onMouseUp(event) {
     if (this.state.dragNodeId !== null) {
       const dragId = this.state.dragNodeId;
       const draggedPos = this.props.project.nodes[dragId].position;
 
       this.setDragNodeId(null);
       this.props.dispatch(Actions.moveNode(dragId, draggedPos));
+    }
+    if (Selectors.Editor.isCreatingMode(this.props.editor)) {
+      this.onCreateNode(event);
     }
 
     this.dragging = {};
@@ -182,7 +224,8 @@ class Patch extends React.Component {
   }
 
   onCreateNode(event) {
-    const targetOffset = event.target.ownerSVGElement.getBoundingClientRect();
+    const container = findParentByClassName(event.target, 'patch');
+    const targetOffset = container.getBoundingClientRect();
     const position = {
       x: event.clientX - targetOffset.left,
       y: event.clientY - targetOffset.top,
@@ -230,11 +273,43 @@ class Patch extends React.Component {
       ),
     }];
   }
-  createNodes(nodes) {
-    const nodeFactory = React.createFactory(Node);
+  createNodeState(node, customProps) {
+    const props = (typeof customProps === 'object') ? customProps : {};
 
-    this.nodesCount = R.keys(nodes).length;
+    const linkingPin = this.props.editor.linkingPin;
 
+    const nodeType = Selectors.NodeType.getNodeTypeById({
+      nodeTypes: this.props.nodeTypes,
+    }, node.typeId);
+
+    const nodeWidth = (this.nodesViewstate[node.id] && this.nodesViewstate[node.id].width) ?
+      this.nodesViewstate[node.id].width :
+      PatchUtils.getNodeWidth(nodeType.pins);
+
+    const nodePins = PatchUtils.getPinsData(
+      this.props.project.pins,
+      node.id,
+      nodeWidth,
+      nodeType
+    );
+
+    const viewstate = {
+      id: node.id,
+      key: node.id,
+      label: node.label || nodeType.label,
+      pins: nodePins,
+      position: node.position,
+      width: nodeWidth,
+      onRender: this.onNodeRendered.bind(this),
+    };
+
+    if (linkingPin && viewstate.pins && viewstate.pins[linkingPin]) {
+      viewstate.pins[linkingPin].selected = true;
+    }
+
+    return R.merge(viewstate, props);
+  }
+  createNodeStates(nodes) {
     let comparator = R.comparator();
 
     if (this.state.dragNodeId) {
@@ -246,31 +321,8 @@ class Patch extends React.Component {
       R.sort(comparator),
       R.reduce((p, node) => {
         const n = p;
-        const linkingPin = this.props.editor.linkingPin;
 
-        const nodeType = Selectors.NodeType.getNodeTypeById({
-          nodeTypes: this.props.nodeTypes,
-        }, node.typeId);
-
-        const nodeWidth = (this.nodesViewstate[node.id] && this.nodesViewstate[node.id].width) ?
-          this.nodesViewstate[node.id].width :
-          PatchUtils.getNodeWidth(nodeType.pins);
-
-        const nodePins = PatchUtils.getPinsData(
-          this.props.project.pins,
-          node.id,
-          nodeWidth,
-          nodeType
-        );
-
-        const viewstate = {
-          id: node.id,
-          key: node.id,
-          label: node.label || nodeType.label,
-          pins: nodePins,
-          position: node.position,
-          width: nodeWidth,
-          onRender: this.onNodeRendered.bind(this),
+        const viewstate = this.createNodeState(node, {
           onMouseUp: this.onNodeMouseUp.bind(this),
           onMouseDown: this.onNodeMouseDown.bind(this),
           onPinMouseUp: this.onPinMouseUp.bind(this),
@@ -278,19 +330,35 @@ class Patch extends React.Component {
           isDragged: (this.state.dragNodeId === node.id),
           isClicked: (this.state.clickNodeId === node.id),
           selected: Selectors.Editor.checkSelection(this.props.editor, 'Node', node.id),
-        };
+        });
 
-        if (linkingPin && viewstate.pins && viewstate.pins[linkingPin]) {
-          viewstate.pins[linkingPin].selected = true;
-        }
+        n[node.id] = viewstate;
+
+        return n;
+      }, {})
+    )(nodes);
+  }
+  createNode(nodeState) {
+    const nodeFactory = React.createFactory(Node);
+    return nodeFactory(nodeState);
+  }
+  createNodes(nodes) {
+    const viewstate = this.createNodeStates(nodes);
+
+    this.nodesCount = R.keys(nodes).length;
+
+    return R.pipe(
+      R.values,
+      R.reduce((p, cur) => {
+        const n = p;
 
         n.push(
-          nodeFactory(viewstate)
+          this.createNode(cur)
         );
 
         return n;
       }, [])
-    )(nodes);
+    )(viewstate);
   }
 
   createLinks(links) {
@@ -331,8 +399,6 @@ class Patch extends React.Component {
 
     if (Selectors.Editor.isEditingMode(this.props.editor)) {
       bgOnClick = this.deselectAll.bind(this);
-    } else if (Selectors.Editor.isCreatingMode(this.props.editor)) {
-      bgOnClick = this.onCreateNode.bind(this);
     }
 
     bgChildren.push(
@@ -352,10 +418,12 @@ class Patch extends React.Component {
     this.createLayers();
 
     const patchName = this.props.project.patches[this.props.editor.currentPatchId].name;
+    const ghostNode = (this.state.ghostNode) ? this.createNode(this.state.ghostNode) : null;
 
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
+        className="patch"
         viewBox={`0 0 ${this.props.size.width} ${this.props.size.height}`}
         width={this.props.size.width}
         height={this.props.size.height}
@@ -370,6 +438,7 @@ class Patch extends React.Component {
           </SVGLayer>
         )}
         <text x="5" y="20">{`Patch: ${patchName}`}</text>
+        {ghostNode}
       </svg>
     );
   }
