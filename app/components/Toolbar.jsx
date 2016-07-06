@@ -13,9 +13,7 @@ const styles = {
     color: '#fff',
     textShadow: '0 -1px 0 rgba(0,0,30,0.3)',
     border: 0,
-    borderRadius: 0,
-    borderTopRightRadius: '2px',
-    borderBottomRightRadius: '2px',
+    borderRadius: '2px',
   },
 };
 
@@ -26,11 +24,13 @@ class Toolbar extends React.Component {
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onNodeTypeChange = this.onNodeTypeChange.bind(this);
   }
-  onAddNodeClick() {
+  onAddNodeClick(event) {
     this.props.onAddNodeClick();
+    event.target.blur();
   }
   onNodeTypeChange(event) {
     this.props.onNodeTypeChange(event.target.value);
+    event.target.blur();
   }
   render() {
     const nodeTypes = R.values(this.props.nodeTypes);
@@ -38,12 +38,14 @@ class Toolbar extends React.Component {
 
     return (
       <div style={styles.container}>
-        <select onChange={this.onNodeTypeChange}>
+        <select
+          onChange={this.onNodeTypeChange}
+          value={this.props.selectedNodeType}
+        >
           {nodeTypes.map((type) =>
             <option
               key={type.id}
               value={type.id}
-              selected={type.id === this.props.selectedNodeType}
             >
               {type.label}
             </option>
@@ -64,7 +66,7 @@ class Toolbar extends React.Component {
 
 Toolbar.propTypes = {
   nodeTypes: React.PropTypes.object,
-  selectedNodeType: React.PropTypes.number,
+  selectedNodeType: React.PropTypes.any,
   onNodeTypeChange: React.PropTypes.func,
   onAddNodeClick: React.PropTypes.func,
 };
