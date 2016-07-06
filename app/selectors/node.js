@@ -2,7 +2,7 @@ import R from 'ramda';
 import * as SelectorPin from './pin';
 
 export const getNodes = (state) => R.pipe(
-  R.view(R.lensProp('nodes'))
+  R.prop('nodes')
 )(state);
 
 export const getLastNodeId = (state) => R.pipe(

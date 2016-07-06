@@ -1,7 +1,7 @@
 import R from 'ramda';
 
 export const getPins = (state) => R.pipe(
-  R.view(R.lensProp('pins'))
+  R.prop('pins')
 )(state);
 
 export const getPinsByNodeId = (state, props) => R.pipe(

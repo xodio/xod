@@ -1,15 +1,15 @@
 import R from 'ramda';
 
 export const getNodeTypes = (state) => R.pipe(
-  R.view(R.lensProp('nodeTypes'))
+  R.prop('nodeTypes')
 )(state);
 
 export const getNodeTypeById = (state, id) => R.pipe(
   getNodeTypes,
-  R.view(R.lensProp(id))
+  R.prop(id)
 )(state);
 
 export const getPinsByNodeTypeId = (state, id) => R.pipe(
   getNodeTypeById,
-  R.view(R.lensProp('pins'))
+  R.prop('pins')
 )(state, id);
