@@ -52,6 +52,7 @@ class Patch extends React.Component {
     this.state = {
       clickNodeId: null,
       dragNodeId: null,
+      ghostNode: null,
       ghostLink: null,
     };
     this.nodesViewstate = {};
@@ -76,25 +77,7 @@ class Patch extends React.Component {
   componentWillUpdate(nextProps) {
     this.nodesCount = 0;
 
-    if (nextProps.editor.mode === EDITOR_MODE.CREATING) {
-      if (this.state.ghostNode === null) {
-        const ghostProps = {
-          hoverable: false,
-          isDragged: true,
-        };
-        this.state.ghostNode = this.createNodeState({
-          id: 0,
-          typeId: this.props.editor.selectedNodeType,
-          patchId: this.props.editor.currentPatchId,
-          position: {
-            x: 0,
-            y: 0,
-          },
-        }, ghostProps);
-      }
-    } else {
-      this.state.ghostNode = null;
-    }
+    this.createGhostNode(nextProps);
   }
   componentDidUpdate() {
     this.createGhostLink(this.props);
@@ -123,7 +106,6 @@ class Patch extends React.Component {
   }
   onNodeMouseDown(event, id) {
     const node = this.props.project.nodes[id].position;
-
     this.dragging = {
       mousePosition: {
         x: event.clientX,
@@ -132,15 +114,7 @@ class Patch extends React.Component {
       elementPosition: node.position,
     };
 
-    this.setState(
-      R.merge(
-        this.state,
-        {
-          clickNodeId: id,
-          dragNodeId: id,
-        }
-      )
-    );
+    this.setClickNodeId(id);
   }
   onPinMouseUp(id) {
     this.props.dispatch(Actions.linkPin(id));
@@ -158,62 +132,22 @@ class Patch extends React.Component {
       y: event.clientY - bbox.top,
     };
 
-    if (this.state.dragNodeId !== null) {
-      const dragId = this.state.dragNodeId;
-      const draggedPos = this.props.project.nodes[dragId].position;
-
-      const deltaPosition = {
-        x: mousePosition.x - this.dragging.mousePosition.x,
-        y: mousePosition.y - this.dragging.mousePosition.y,
-      };
-
-      this.dragging = R.set(
-        R.lensProp('mousePosition'),
-        mousePosition,
-        this.dragging
-      );
-      const newPosition = {
-        x: draggedPos.x + deltaPosition.x,
-        y: draggedPos.y + deltaPosition.y,
-      };
-
-      this.props.dispatch(Actions.dragNode(dragId, newPosition));
     this.mousePosition = mousePosition;
 
-      if (
-        R.all(
-          R.flip(
-            R.gte(CLICK_SAFEZONE)
-          ),
-          newPosition
-        )
-      ) {
-        this.setClickNodeId(null);
-      }
-    }
-    if (this.props.editor.mode === EDITOR_MODE.CREATING && this.state.ghostNode) {
-      const container = findParentByClassName(event.target, 'patch');
-      const bbox = container.getBoundingClientRect();
-      this.setState(
-        R.set(
-          R.lensPath(['ghostNode', 'position']),
-          {
-            x: mousePosition.x - bbox.left,
-            y: mousePosition.y - bbox.top,
-          },
-          this.state
-        )
-      );
-    }
+    this.dragNode(mousePosition);
+    this.dragGhostNode(mousePosition, bbox);
     this.dragGhostLink(mousePosition, bbox);
   }
   onMouseUp(event) {
-    if (this.state.dragNodeId !== null) {
+    if (this.state.dragNodeId) {
       const dragId = this.state.dragNodeId;
       const draggedPos = this.props.project.nodes[dragId].position;
 
       this.setDragNodeId(null);
       this.props.dispatch(Actions.moveNode(dragId, draggedPos));
+    }
+    if (this.state.clickNodeId) {
+      this.setClickNodeId(null);
     }
     if (Selectors.Editor.isCreatingMode(this.props.editor)) {
       this.onCreateNode(event);
@@ -271,6 +205,58 @@ class Patch extends React.Component {
     this.props.dispatch(Actions.deselectAll());
   }
 
+  dragNode(mousePosition) {
+    if (this.state.clickNodeId !== null || this.state.dragNodeId !== null) {
+      const dragId = this.state.clickNodeId || this.state.dragNodeId;
+      const draggedPos = this.props.project.nodes[dragId].position;
+      const deltaPosition = {
+        x: mousePosition.x - this.dragging.mousePosition.x,
+        y: mousePosition.y - this.dragging.mousePosition.y,
+      };
+
+      this.dragging = R.set(
+        R.lensProp('mousePosition'),
+        mousePosition,
+        this.dragging
+      );
+      const newPosition = {
+        x: draggedPos.x + deltaPosition.x,
+        y: draggedPos.y + deltaPosition.y,
+      };
+
+      this.props.dispatch(Actions.dragNode(dragId, newPosition));
+
+      if (
+        R.all(
+          R.flip(
+            R.gte(CLICK_SAFEZONE)
+          ),
+          newPosition
+        )
+      ) {
+        this.setState(
+          R.merge(
+            this.state,
+            {
+              dragNodeId: dragId,
+              clickNodeId: null,
+            }
+          )
+        );
+      }
+    }
+  }
+  dragGhostNode() {
+    if (this.props.editor.mode === EDITOR_MODE.CREATING && this.state.ghostNode) {
+      this.setState(
+        R.set(
+          R.lensPath(['ghostNode', 'position']),
+          this.mousePosition,
+          this.state
+        )
+      );
+    }
+  }
   dragGhostLink() {
     if (this.props.editor.linkingPin && this.state.ghostLink) {
       this.setState(
@@ -535,10 +521,10 @@ class Patch extends React.Component {
           <SVGLayer key={layer.name} name={layer.name}>
             {layer.factory()}
             {(layer.name === LAYERNAME_LINKS) ? ghostLink : null}
+            {(layer.name === LAYERNAME_NODES) ? ghostNode : null}
           </SVGLayer>
         )}
         <text x="5" y="20">{`Patch: ${patchName}`}</text>
-        {ghostNode}
       </svg>
     );
   }
