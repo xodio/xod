@@ -127,18 +127,13 @@ class Node extends React.Component {
     const nodePins = R.pipe(
       R.values,
       R.map((pin) => {
-        const n = pin;
-        n.realPosition = {
+        const position = {
           x: pin.position.x + this.getOriginPosition().x + SIZES.PIN.radius,
           y: pin.position.y + this.getOriginPosition().y + SIZES.PIN.radius,
         };
-        return n;
+        return R.assoc('realPosition', position, pin);
       }),
-      R.reduce((p, c) => {
-        const n = p;
-        n[c.id] = c;
-        return n;
-      }, {})
+      R.reduce((p, c) => R.assoc(c.id, c, p), {})
     )(this.props.pins);
 
     this.width = resultWidth;

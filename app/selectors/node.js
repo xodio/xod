@@ -25,9 +25,9 @@ export const getNodesByPinIds = (state, props) => R.pipe(
     props && props.pins && props.pins.indexOf(pin.id) !== -1
   ),
   R.values,
-  R.reduce((p, pin) => {
-    const n = p;
-    n[pin.nodeId] = getNodeById(state, { id: pin.nodeId });
-    return n;
-  }, {})
+  R.reduce((p, pin) => R.assoc(
+    pin.nodeId,
+    getNodeById(state, { id: pin.nodeId }),
+    p
+  ), {})
 )(state, props);

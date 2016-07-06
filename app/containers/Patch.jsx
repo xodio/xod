@@ -320,8 +320,6 @@ class Patch extends React.Component {
       R.values,
       R.sort(comparator),
       R.reduce((p, node) => {
-        const n = p;
-
         const viewstate = this.createNodeState(node, {
           onMouseUp: this.onNodeMouseUp.bind(this),
           onMouseDown: this.onNodeMouseDown.bind(this),
@@ -332,9 +330,7 @@ class Patch extends React.Component {
           selected: Selectors.Editor.checkSelection(this.props.editor, 'Node', node.id),
         });
 
-        n[node.id] = viewstate;
-
-        return n;
+        return R.assoc(node.id, viewstate, p);
       }, {})
     )(nodes);
   }
@@ -350,13 +346,8 @@ class Patch extends React.Component {
     return R.pipe(
       R.values,
       R.reduce((p, cur) => {
-        const n = p;
-
-        n.push(
-          this.createNode(cur)
-        );
-
-        return n;
+        const node = this.createNode(cur);
+        return R.append(node, p);
       }, [])
     )(viewstate);
   }
@@ -367,7 +358,7 @@ class Patch extends React.Component {
     return R.pipe(
       R.values,
       R.reduce((p, link) => {
-        const n = p;
+        let result = p;
         const fromNodeId = this.props.project.pins[link.fromPinId].nodeId;
         const toNodeId = this.props.project.pins[link.toPinId].nodeId;
 
@@ -385,10 +376,11 @@ class Patch extends React.Component {
             onClick: this.onLinkClick.bind(this),
             selected: Selectors.Editor.checkSelection(this.props.editor, 'Link', link.id),
           };
+          const linkComponent = linkFactory(viewstate);
 
-          n.push(linkFactory(viewstate));
+          result = R.append(linkComponent, result);
         }
-        return n;
+        return result;
       }, [])
     )(links);
   }

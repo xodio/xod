@@ -18,10 +18,8 @@ const getSidesPinCount = (pins) => R.pipe(
   R.groupBy((pin) => pin.type),
   R.values,
   R.reduce((p, group) => {
-    const n = p;
     const type = group[0].type;
-    n[type] = group.length;
-    return n;
+    return R.assoc(type, group.length, p);
   }, {
     [PIN_TYPE.INPUT]: 0,
     [PIN_TYPE.OUTPUT]: 0,
@@ -73,11 +71,7 @@ const getPinPosition = (pins, nodeWidth) => {
     }),
     R.values,
     R.flatten,
-    R.reduce((p, pin) => {
-      const n = p;
-      n[pin.id] = pin;
-      return n;
-    }, {})
+    R.reduce((p, pin) => R.assoc(pin.id, pin, p), {})
   )(pins);
 };
 
@@ -91,11 +85,9 @@ const getPinsData = (pinsState, nodeId, nodeWidth, nodeType) => {
     pins = R.pipe(
       R.values,
       R.reduce((p, pin) => {
-        const n = p;
-        n[pin.key] = pin;
-        n[pin.key].id = pinsCount;
+        const newPin = R.assoc('id', pinsCount, pin);
         pinsCount++;
-        return p;
+        return R.assoc(pin.key, newPin, p);
       }, {})
     )(nodeType.pins);
   }

@@ -13,10 +13,10 @@ export const getPinsByIds = (state, props) => R.pipe(
   getPins,
   R.values,
   R.reduce((p, pin) => {
-    const n = p;
+    let result = p;
     if (props && props.pins && props.pins.indexOf(pin.id) !== -1) {
-      n[pin.id] = pin;
+      result = R.assic(pin.id, pin, p);
     }
-    return n;
+    return result;
   }, {})
 )(state, props);
