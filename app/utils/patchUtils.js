@@ -34,8 +34,8 @@ const getPinListWidths = (counts) => ({
 const getNodeWidth = (pins) => {
   const pinsCount = getMaxSidePinCount(pins);
   let nodeWidth = getPinsWidth(pinsCount, true);
-  if (nodeWidth < SIZES.NODE.min_width) {
-    nodeWidth = SIZES.NODE.min_width;
+  if (nodeWidth < SIZES.NODE.minWidth) {
+    nodeWidth = SIZES.NODE.minWidth;
   }
   return nodeWidth;
 };
@@ -49,7 +49,7 @@ const getPinPosition = (pins, nodeWidth) => {
     R.map((group) => {
       const vOffset = {
         [PIN_TYPE.INPUT]: SIZES.NODE.padding.y - SIZES.PIN.radius,
-        [PIN_TYPE.OUTPUT]: SIZES.NODE.min_height + SIZES.NODE.padding.y - SIZES.PIN.radius,
+        [PIN_TYPE.OUTPUT]: SIZES.NODE.minHeight + SIZES.NODE.padding.y - SIZES.PIN.radius,
       };
       let offset = 0;
 

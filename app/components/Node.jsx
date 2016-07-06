@@ -120,7 +120,7 @@ class Node extends React.Component {
     const newWidth = textWidth + (SIZES.NODE_TEXT.margin.x * 2);
     let resultWidth = oldWidth;
 
-    if (oldWidth !== newWidth && newWidth > SIZES.NODE.min_width) {
+    if (oldWidth !== newWidth && newWidth > SIZES.NODE.minWidth) {
       resultWidth = newWidth;
     }
 
@@ -213,8 +213,8 @@ Node.propTypes = {
   onPinMouseUp: React.PropTypes.func,
 };
 Node.defaultProps = {
-  width: SIZES.NODE.min_width,
-  height: SIZES.NODE.min_height,
+  width: SIZES.NODE.minWidth,
+  height: SIZES.NODE.minHeight,
   hoverable: true,
   draggable: true,
   isDragged: false,

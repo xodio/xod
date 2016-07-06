@@ -1,6 +1,6 @@
 export const NODE = {
-  min_width: 80,
-  min_height: 40,
+  minWidth: 80,
+  minHeight: 40,
   padding: {
     x: 2,
     y: 25,
