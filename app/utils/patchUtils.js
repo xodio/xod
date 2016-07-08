@@ -1,11 +1,11 @@
 import R from 'ramda';
 import Selectors from '../selectors';
-import * as PIN_TYPE from '../constants/pinType';
+import * as PIN_DIRECTION from '../constants/pinDirection';
 import * as SIZES from '../constants/sizes';
 
 const getMaxSidePinCount = (pins) => R.pipe(
   R.values,
-  R.groupBy((pin) => pin.type),
+  R.groupBy((pin) => pin.direction),
   R.values,
   R.reduce((p, c) => R.max(p, c.length || 0), 0)
 )(pins);
@@ -15,19 +15,19 @@ const getPinsWidth = (count, withMargins) => {
 };
 const getSidesPinCount = (pins) => R.pipe(
   R.values,
-  R.groupBy((pin) => pin.type),
+  R.groupBy((pin) => pin.direction),
   R.values,
   R.reduce((p, group) => {
-    const type = group[0].type;
-    return R.assoc(type, group.length, p);
+    const direction = group[0].direction;
+    return R.assoc(direction, group.length, p);
   }, {
-    [PIN_TYPE.INPUT]: 0,
-    [PIN_TYPE.OUTPUT]: 0,
+    [PIN_DIRECTION.INPUT]: 0,
+    [PIN_DIRECTION.OUTPUT]: 0,
   })
 )(pins);
 const getPinListWidths = (counts) => ({
-  [PIN_TYPE.INPUT]: getPinsWidth(counts[PIN_TYPE.INPUT], false),
-  [PIN_TYPE.OUTPUT]: getPinsWidth(counts[PIN_TYPE.OUTPUT], false),
+  [PIN_DIRECTION.INPUT]: getPinsWidth(counts[PIN_DIRECTION.INPUT], false),
+  [PIN_DIRECTION.OUTPUT]: getPinsWidth(counts[PIN_DIRECTION.OUTPUT], false),
 });
 const getNodeWidth = (pins) => {
   const pinsCount = getMaxSidePinCount(pins);
@@ -43,11 +43,11 @@ const getPinPosition = (pins, nodeWidth) => {
 
   return R.pipe(
     R.values,
-    R.groupBy((pin) => pin.type),
+    R.groupBy((pin) => pin.direction),
     R.map((group) => {
       const vOffset = {
-        [PIN_TYPE.INPUT]: SIZES.NODE.padding.y - SIZES.PIN.radius,
-        [PIN_TYPE.OUTPUT]: SIZES.NODE.minHeight + SIZES.NODE.padding.y - SIZES.PIN.radius,
+        [PIN_DIRECTION.INPUT]: SIZES.NODE.padding.y - SIZES.PIN.radius,
+        [PIN_DIRECTION.OUTPUT]: SIZES.NODE.minHeight + SIZES.NODE.padding.y - SIZES.PIN.radius,
       };
       let offset = 0;
 
@@ -56,10 +56,10 @@ const getPinPosition = (pins, nodeWidth) => {
           id: pin.id,
           label: pin.label,
           nodeId: pin.nodeId,
-          type: pin.type,
+          direction: pin.direction,
           position: {
-            x: (nodeWidth - pinsWidth[pin.type]) / 2 + offset,
-            y: vOffset[pin.type],
+            x: (nodeWidth - pinsWidth[pin.direction]) / 2 + offset,
+            y: vOffset[pin.direction],
           },
           radius: SIZES.PIN.radius,
         };
@@ -95,7 +95,7 @@ const getPinsData = (pinsState, nodeId, nodeWidth, nodeType) => {
   const pinsExtended = R.map((pin) => {
     const ntPin = nodeType.pins[pin.key];
     return R.merge({
-      type: ntPin.type,
+      direction: ntPin.direction,
       label: ntPin.label,
     })(pin);
   })(pins);

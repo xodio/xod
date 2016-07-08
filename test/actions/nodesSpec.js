@@ -6,7 +6,7 @@ import { links } from '../../app/reducers/links';
 import { nodeTypes } from '../../app/reducers/nodetypes';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import * as Actions from '../../app/actions';
-import * as PIN_TYPE from '../../app/constants/pinType';
+import * as PIN_DIRECTION from '../../app/constants/pinDirection';
 
 // const middlewares = [thunk];
 // const mockStore = configureStore(middlewares);
@@ -32,12 +32,12 @@ describe('Node actions with dependencies', () => {
           pins: {
             in: {
               key: 'in',
-              type: PIN_TYPE.INPUT,
+              type: PIN_DIRECTION.INPUT,
               label: 'in',
             },
             out: {
               key: 'out',
-              type: PIN_TYPE.OUTPUT,
+              type: PIN_DIRECTION.OUTPUT,
               label: 'out',
             },
           },
@@ -82,12 +82,12 @@ describe('Node actions with dependencies', () => {
             pins: {
               in: {
                 key: 'in',
-                type: PIN_TYPE.INPUT,
+                type: PIN_DIRECTION.INPUT,
                 label: 'in',
               },
               out: {
                 key: 'out',
-                type: PIN_TYPE.OUTPUT,
+                type: PIN_DIRECTION.OUTPUT,
                 label: 'out',
               },
             },
