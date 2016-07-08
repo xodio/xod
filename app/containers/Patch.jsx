@@ -86,7 +86,7 @@ class Patch extends React.Component {
   onNodeRendered(id, props) {
     if (id === 0) return;
 
-    if (!Object.hasOwnProperty.call(this.nodesViewstate, id)) {
+    if (!this.nodesViewstate.hasOwnProperty(id)) {
       this.nodesViewstate[id] = {};
     }
 
