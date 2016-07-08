@@ -41,6 +41,11 @@ export const getSelectedIds = (state, entityName) => R.pipe(
   R.keys
 )(state);
 
+export const hasSelection = (state) => (
+  state.editor.selection.length > 0 ||
+  state.editor.linkingPin !== null
+);
+
 export const getMode = (state) => R.prop('mode')(state);
 
 export const isDefaultMode = (state) => (state.mode === EDITOR_MODE.DEFAULT);

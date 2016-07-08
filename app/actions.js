@@ -128,18 +128,12 @@ export const setNodeSelection = (id) => ({
   payload: {
     id,
   },
-  meta: {
-    skipHistory: true,
-  },
 });
 
 export const setPinSelection = (id) => ({
   type: ActionType.EDITOR_SELECT_PIN,
   payload: {
     id,
-  },
-  meta: {
-    skipHistory: true,
   },
 });
 
@@ -148,35 +142,33 @@ export const setLinkSelection = (id) => ({
   payload: {
     id,
   },
-  meta: {
-    skipHistory: true,
-  },
 });
 
-export const deselectAll = () => ({
-  type: ActionType.EDITOR_DESELECT_ALL,
-  payload: {},
-  meta: {
-    skipHistory: true,
-  },
-});
+export const deselectAll = () => (dispatch, getState) => {
+  const state = getState();
+  if (!Selectors.Editor.hasSelection(state)) { return; }
+
+  dispatch({
+    type: ActionType.EDITOR_DESELECT_ALL,
+    payload: {},
+  });
+};
 
 export const setMode = (mode) => ({
   type: ActionType.EDITOR_SET_MODE,
   payload: {
     mode,
   },
-  meta: {
-    skipHistory: true,
-  },
 });
 
 export const selectNode = (id) => (dispatch, getState) => {
   const state = getState();
   const isSelected = Selectors.Editor.checkSelection(state.editor, 'Node', id);
-  const result = [
-    dispatch(deselectAll()),
-  ];
+  const deselect = dispatch(deselectAll());
+  const result = [];
+  if (deselect) {
+    result.push(deselect);
+  }
 
   if (!isSelected) {
     result.push(dispatch(setNodeSelection(id)));
@@ -188,9 +180,11 @@ export const selectNode = (id) => (dispatch, getState) => {
 export const linkPin = (id) => (dispatch, getState) => {
   const state = getState();
   const selected = state.editor.linkingPin;
-  const result = [
-    dispatch(deselectAll()),
-  ];
+  const deselect = dispatch(deselectAll());
+  const result = [];
+  if (deselect) {
+    result.push(deselect);
+  }
 
   if (selected !== id && selected !== null) {
     result.push(dispatch(addLink(selected, id)));
@@ -204,9 +198,11 @@ export const linkPin = (id) => (dispatch, getState) => {
 export const selectLink = (id) => (dispatch, getState) => {
   const state = getState();
   const isSelected = Selectors.Editor.checkSelection(state.editor, 'Link', id);
-  const result = [
-    dispatch(deselectAll()),
-  ];
+  const deselect = dispatch(deselectAll());
+  const result = [];
+  if (deselect) {
+    result.push(deselect);
+  }
 
   if (!isSelected) {
     result.push(dispatch(setLinkSelection(id)));
