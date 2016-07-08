@@ -161,15 +161,21 @@ class Patch extends React.Component {
   onKeyDown(event) {
     const keycode = event.keyCode || event.which;
     const selection = Selectors.Editor.getSelection(this.props.editor);
-    if (selection.length > 0) {
-      if (keycode === KEYCODE.BACKSPACE || keycode === KEYCODE.DELETE) {
-        selection.forEach((select) => {
-          this.props.dispatch(Actions[DELETE_ACTIONS[select.entity]](select.id));
-        });
-      }
-      if (keycode === KEYCODE.ESCAPE) {
-        this.deselectAll();
-      }
+    const hasSelection = selection.length > 0;
+    const isLinking = this.props.linkingPin !== null;
+    if (
+      hasSelection &&
+      (keycode === KEYCODE.BACKSPACE || keycode === KEYCODE.DELETE)
+    ) {
+      selection.forEach((select) => {
+        this.props.dispatch(Actions[DELETE_ACTIONS[select.entity]](select.id));
+      });
+    }
+    if (
+      (hasSelection || isLinking) &&
+      keycode === KEYCODE.ESCAPE
+    ) {
+      this.deselectAll();
     }
   }
 
