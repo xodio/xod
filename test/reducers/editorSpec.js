@@ -94,12 +94,13 @@ describe('Editor reducer', () => {
       chai.expect(store.getState().editor.selection.length).to.be.equal(0);
     });
     it('should deselect all', () => {
-      const expectedActions = [
-        Actions.deselectAll(),
-      ];
+      store = testStore(mockState);
+      const id = 1;
 
+      store.dispatch(Actions.selectLink(id));
       store.dispatch(Actions.deselectAll());
-      chai.expect(store.getActions()).to.deep.equal(expectedActions);
+
+      chai.expect(store.getState()).to.deep.equal(mockState);
     });
     it('should select pin', () => {
       const id = 0;
