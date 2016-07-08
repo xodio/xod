@@ -5,9 +5,7 @@ import { getNodeTypes, getPinsByNodeTypeId } from './nodetype';
 import * as PIN_DIRECTION from '../constants/pinDirection';
 import * as PIN_VALIDITY from '../constants/pinValidity';
 
-export const getPins = (state) => R.pipe(
-  R.prop('pins')
-)(state);
+export const getPins = R.prop('pins');
 
 export const getPinsByNodeId = (state, props) => R.pipe(
   getPins,
