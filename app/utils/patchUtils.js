@@ -1,5 +1,4 @@
 import R from 'ramda';
-import Selectors from '../selectors';
 import * as PIN_DIRECTION from '../constants/pinDirection';
 import * as SIZES from '../constants/sizes';
 
