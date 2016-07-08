@@ -40,7 +40,6 @@ const getNodeWidth = (pins) => {
 const getPinPosition = (pins, nodeWidth) => {
   const pinsCount = getSidesPinCount(pins);
   const pinsWidth = getPinListWidths(pinsCount);
-
   return R.pipe(
     R.values,
     R.groupBy((pin) => pin.direction),
@@ -52,17 +51,16 @@ const getPinPosition = (pins, nodeWidth) => {
       let offset = 0;
 
       return R.map((pin) => {
-        const r = {
-          id: pin.id,
-          label: pin.label,
-          nodeId: pin.nodeId,
-          direction: pin.direction,
-          position: {
-            x: (nodeWidth - pinsWidth[pin.direction]) / 2 + offset,
-            y: vOffset[pin.direction],
-          },
-          radius: SIZES.PIN.radius,
-        };
+        const r = R.merge(
+          pin,
+          {
+            position: {
+              x: (nodeWidth - pinsWidth[pin.direction]) / 2 + offset,
+              y: vOffset[pin.direction],
+            },
+            radius: SIZES.PIN.radius,
+          }
+        );
 
         offset += SIZES.PIN.margin + SIZES.PIN.radius * 2;
 
@@ -75,40 +73,11 @@ const getPinPosition = (pins, nodeWidth) => {
   )(pins);
 };
 
-const getPinsData = (pinsState, nodeId, nodeWidth, nodeType) => {
-  let pins = Selectors.Pin.getPinsByNodeId({
-    pins: pinsState,
-  }, { id: nodeId });
-
-  if (R.keys(pins).length === 0) {
-    let pinsCount = 0;
-    pins = R.pipe(
-      R.values,
-      R.reduce((p, pin) => {
-        const newPin = R.assoc('id', pinsCount, pin);
-        pinsCount++;
-        return R.assoc(pin.key, newPin, p);
-      }, {})
-    )(nodeType.pins);
-  }
-
-  const pinsExtended = R.map((pin) => {
-    const ntPin = nodeType.pins[pin.key];
-    return R.merge({
-      direction: ntPin.direction,
-      label: ntPin.label,
-    })(pin);
-  })(pins);
-
-  return getPinPosition(pinsExtended, nodeWidth);
-};
-
 export default {
   getNodeWidth,
   getPinsWidth,
   getPinListWidths,
   getPinPosition,
-  getPinsData,
   getSidesPinCount,
   getMaxSidePinCount,
 };
