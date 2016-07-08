@@ -60,7 +60,6 @@ describe('Editor reducer', () => {
     it('should select node', () => {
       const id = 0;
       const expectedActions = [
-        Actions.deselectAll(),
         Actions.setNodeSelection(id),
       ];
 
@@ -80,7 +79,6 @@ describe('Editor reducer', () => {
     it('should select link', () => {
       const id = 0;
       const expectedActions = [
-        Actions.deselectAll(),
         Actions.setLinkSelection(id),
       ];
 
@@ -106,7 +104,6 @@ describe('Editor reducer', () => {
     it('should select pin', () => {
       const id = 0;
       const expectedActions = [
-        Actions.deselectAll(),
         Actions.setPinSelection(id),
       ];
 
@@ -129,7 +126,6 @@ describe('Editor reducer', () => {
       const expected = {
         state: mockState,
         actions: [
-          Actions.deselectAll(),
           Actions.addLink(idFrom, idTo),
         ],
       };
