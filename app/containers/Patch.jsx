@@ -251,7 +251,7 @@ class Patch extends React.Component {
     }
   }
   dragGhostLink() {
-    if (this.props.editor.linkingPin && this.state.ghostLink) {
+    if (this.props.linkingPin && this.state.ghostLink) {
       this.setState(
         R.set(
           R.lensPath(['ghostLink', 'to']),
@@ -279,18 +279,33 @@ class Patch extends React.Component {
     }];
   }
   createPinsState(nodeId, nodeWidth) {
-    // const validPins = Selectors.Pin.getValidPins(fullPins, 3);
-    const nodePins = R.pipe(
+    let nodePins = R.pipe(
       R.values,
       R.filter((pin) => (pin.nodeId === nodeId)),
       R.reduce((p, cur) => R.assoc(cur.id, cur, p), {})
     )(this.props.pins);
+
+    if (this.props.linkingPin) {
+      const pinValidity = Selectors.Pin.getValidPins(
+        this.props.pins,
+        this.props.project.links,
+        this.props.linkingPin
+      );
+
+      nodePins = R.pipe(
+        R.values,
+        R.filter((pin) => (pin.nodeId === nodeId)),
+        R.map((pin) => R.assoc('validness', pinValidity[pin.id].validness, pin)),
+        R.reduce((p, cur) => R.assoc(cur.id, cur, p), {})
+      )(nodePins);
+    }
+
     return PatchUtils.getPinPosition(nodePins, nodeWidth);
   }
   createNodeState(node, customProps) {
     const props = (typeof customProps === 'object') ? customProps : {};
 
-    const linkingPin = this.props.editor.linkingPin;
+    const linkingPin = this.props.linkingPin;
 
     const nodeType = Selectors.NodeType.getNodeTypeById({
       nodeTypes: this.props.nodeTypes,
@@ -442,7 +457,7 @@ class Patch extends React.Component {
     if (props.editor.linkingPin && this.state.ghostLink === null) {
       const linkViewstate = this.createLinkState({
         id: 0,
-        fromPinId: this.props.editor.linkingPin,
+        fromPinId: this.props.linkingPin,
         toPinId: null,
       }, {
         to: this.mousePosition,
@@ -524,6 +539,7 @@ Patch.propTypes = {
   project: React.PropTypes.any.isRequired,
   editor: React.PropTypes.any.isRequired,
   nodeTypes: React.PropTypes.any.isRequired,
+  linkingPin: React.PropTypes.number,
 };
 
 export default connect(state => ({
@@ -531,7 +547,9 @@ export default connect(state => ({
     pins: state.project.pins,
     nodes: state.project.nodes,
     nodeTypes: state.nodeTypes,
+    editor: state.editor,
   }),
+  linkingPin: Selectors.Editor.getLinkingPin(state.editor),
   project: state.project,
   editor: state.editor,
   nodeTypes: state.nodeTypes,

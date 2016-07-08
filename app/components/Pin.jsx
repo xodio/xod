@@ -1,6 +1,7 @@
 import React from 'react';
 import Stylizer from '../utils/stylizer';
-import * as PIN_TYPE from '../constants/pinType';
+import * as PIN_DIRECTION from '../constants/pinDirection';
+import * as PIN_VALIDITY from '../constants/pinValidity';
 
 const pinStyles = {
   block: {
@@ -21,6 +22,19 @@ const pinStyles = {
     selected: {
       fill: 'yellow',
       stroke: 'red',
+    },
+    validness: {
+      [PIN_VALIDITY.INVALID]: {
+        opacity: 0.5,
+      },
+      [PIN_VALIDITY.ALMOST]: {
+        fill: 'yellow',
+        stroke: 'orange',
+      },
+      [PIN_VALIDITY.VALID]: {
+        fill: 'green',
+        stroke: 'darkgreen',
+      },
     },
   },
   text: {
@@ -48,6 +62,7 @@ export default class Pin extends React.Component {
     Stylizer.assignStyles(this, pinStyles);
     Stylizer.hoverable(this, ['circle', 'text']);
     Stylizer.selectable(this, ['circle', 'text']);
+    Stylizer.dependOnProp(this, 'validness', ['circle']);
 
     this.onMouseUp = this.onMouseUp.bind(this);
   }
@@ -105,10 +120,10 @@ export default class Pin extends React.Component {
     return this.props.type;
   }
   isInput() {
-    return (this.getType() === PIN_TYPE.INPUT);
+    return (this.getType() === PIN_DIRECTION.INPUT);
   }
   isOutput() {
-    return (this.getType() === PIN_TYPE.OUTPUT);
+    return (this.getType() === PIN_DIRECTION.OUTPUT);
   }
 
   render() {
@@ -146,4 +161,9 @@ Pin.propTypes = {
   position: React.PropTypes.object.isRequired,
   radius: React.PropTypes.number.isRequired,
   onMouseUp: React.PropTypes.func.isRequired,
+  validness: React.PropTypes.number,
+};
+
+Pin.defaultProps = {
+  validness: PIN_VALIDITY.NONE,
 };
