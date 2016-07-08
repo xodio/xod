@@ -18,6 +18,7 @@ const initialState = {
       1: {
         id: 1,
         typeId: 4,
+        label: 'Blue LED',
         patchId: 1,
         position: {
           x: 320,
@@ -39,7 +40,7 @@ const initialState = {
       3: {
         id: 3,
         typeId: 3,
-        label: 'User defined name',
+        label: 'My potentiometer with a knob',
         patchId: 1,
         position: {
           x: 160,
@@ -49,7 +50,6 @@ const initialState = {
       4: {
         id: 4,
         typeId: 2,
-        label: 'Very looooooooong node label',
         patchId: 1,
         position: {
           x: 170,
@@ -70,7 +70,7 @@ const initialState = {
       1: {
         id: 1,
         nodeId: 1,
-        key: 'in',
+        key: 'brightness',
       },
       2: {
         id: 2,
@@ -90,22 +90,27 @@ const initialState = {
       5: {
         id: 5,
         nodeId: 4,
-        key: 'in1',
+        key: 'in',
       },
       6: {
         id: 6,
         nodeId: 4,
-        key: 'in2',
+        key: 'ifFalse',
       },
       7: {
         id: 7,
         nodeId: 4,
-        key: 'out',
+        key: 'ifTrue',
       },
       8: {
         id: 8,
-        nodeId: 5,
+        nodeId: 4,
         key: 'out',
+      },
+      9: {
+        id: 9,
+        nodeId: 5,
+        key: 'value',
       },
     },
     links: {
@@ -132,88 +137,108 @@ const initialState = {
   nodeTypes: {
     1: {
       id: 1,
-      label: 'not',
+      label: 'Not',
       category: NODE_CATEGORY.FUNCTIONAL,
       pins: {
         in: {
           key: 'in',
           type: PIN_TYPE.INPUT,
-          label: 'in',
         },
         out: {
           key: 'out',
           type: PIN_TYPE.OUTPUT,
-          label: 'out',
         },
       },
     },
     2: {
       id: 2,
-      label: 'either',
+      label: 'Either',
       category: NODE_CATEGORY.FUNCTIONAL,
       pins: {
-        in1: {
-          key: 'in1',
+        in: {
+          key: 'in',
           type: PIN_TYPE.INPUT,
-          label: 'in1',
+          label: 'IN',
         },
-        in2: {
-          key: 'in2',
+        ifTrue: {
+          key: 'ifTrue',
           type: PIN_TYPE.INPUT,
-          label: 'in2',
+          label: 'T',
+        },
+        ifFalse: {
+          key: 'ifFalse',
+          type: PIN_TYPE.INPUT,
+          label: 'F',
         },
         out: {
           key: 'out',
           type: PIN_TYPE.OUTPUT,
-          label: 'out',
         },
       },
     },
     3: {
       id: 3,
-      label: 'pot',
+      label: 'Pot',
       category: NODE_CATEGORY.HARDWARE,
       pins: {
         out: {
           key: 'out',
           type: PIN_TYPE.OUTPUT,
-          label: 'out',
         },
       },
     },
     4: {
       id: 4,
-      label: 'led',
-      category: NODE_CATEGORY.WATCH,
+      label: 'LED',
+      category: NODE_CATEGORY.HARDWARE,
       pins: {
-        in: {
-          key: 'in',
+        brightness: {
+          key: 'brightness',
           type: PIN_TYPE.INPUT,
-          label: 'in',
         },
       },
     },
     5: {
       id: 5,
-      label: 'servo',
+      label: 'Servo',
       category: NODE_CATEGORY.HARDWARE,
       pins: {
-        out: {
-          key: 'out',
-          type: PIN_TYPE.OUTPUT,
-          label: 'out',
+        value: {
+          key: 'value',
+          type: PIN_TYPE.INPUT,
         },
       },
     },
     6: {
       id: 6,
-      label: 'config',
+      label: 'Constant',
       category: NODE_CATEGORY.CONFIGURATION,
       pins: {
-        out: {
-          key: 'out',
+        value: {
+          key: 'value',
           type: PIN_TYPE.OUTPUT,
-          label: 'out',
+        },
+      },
+    },
+    7: {
+      id: 7,
+      label: 'IMU',
+      category: NODE_CATEGORY.HARDWARE,
+      pins: {
+        yaw: {
+          key: 'yaw',
+          type: PIN_TYPE.OUTPUT,
+          label: 'YAW',
+        },
+        pitch: {
+          key: 'pitch',
+          type: PIN_TYPE.OUTPUT,
+          label: 'PIT',
+        },
+        roll: {
+          key: 'roll',
+          type: PIN_TYPE.OUTPUT,
+          label: 'ROL',
         },
       },
     },
