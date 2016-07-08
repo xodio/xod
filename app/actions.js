@@ -128,9 +128,6 @@ export const setNodeSelection = (id) => ({
   payload: {
     id,
   },
-  meta: {
-    skipHistory: true,
-  },
 });
 
 export const setPinSelection = (id) => ({
@@ -138,18 +135,12 @@ export const setPinSelection = (id) => ({
   payload: {
     id,
   },
-  meta: {
-    skipHistory: true,
-  },
 });
 
 export const setLinkSelection = (id) => ({
   type: ActionType.EDITOR_SELECT_LINK,
   payload: {
     id,
-  },
-  meta: {
-    skipHistory: true,
   },
 });
 
@@ -160,9 +151,6 @@ export const deselectAll = () => (dispatch, getState) => {
   dispatch({
     type: ActionType.EDITOR_DESELECT_ALL,
     payload: {},
-    meta: {
-      skipHistory: true,
-    },
   });
 };
 
@@ -170,9 +158,6 @@ export const setMode = (mode) => ({
   type: ActionType.EDITOR_SET_MODE,
   payload: {
     mode,
-  },
-  meta: {
-    skipHistory: true,
   },
 });
 
