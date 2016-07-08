@@ -2,6 +2,7 @@ import R from 'ramda';
 import { createSelector } from 'reselect';
 import { getNodes } from './node';
 import { getNodeTypes, getPinsByNodeTypeId } from './nodetype';
+import * as PIN_DIRECTION from '../constants/pinDirection';
 import * as PIN_VALIDITY from '../constants/pinValidity';
 
 export const getPins = (state) => R.pipe(
@@ -39,21 +40,33 @@ export const getFullPinsData = createSelector(
   )(pins)
 );
 
-export const getValidPins = (pins, forPinId) => {
+export const getValidPins = (pins, links, forPinId) => {
   const oPin = pins[forPinId];
-
   return R.pipe(
     R.values,
     R.reduce((p, pin) => {
       const samePin = (pin.id === oPin.id);
+      const sameNode = (pin.nodeId === oPin.nodeId);
       const sameDirection = (pin.direction === oPin.direction);
       const sameType = (pin.type === oPin.type);
+      const pinLinks = R.pipe(
+        R.values,
+        R.filter((link) => (link.fromPinId === pin.id || link.toPinId === pin.id))
+      )(links);
+      const canHaveLink = (
+        (
+          pin.direction === PIN_DIRECTION.INPUT &&
+          pinLinks.length === 0
+        ) ||
+        pin.direction === PIN_DIRECTION.OUTPUT
+      );
 
       let validness = PIN_VALIDITY.INVALID;
 
-      if (!samePin) {
+
+      if (!samePin && !sameNode && canHaveLink) {
         if (!sameDirection) { validness = PIN_VALIDITY.ALMOST; }
-        if (sameType) { validness = PIN_VALIDITY.VALID; }
+        if (!sameDirection && sameType) { validness = PIN_VALIDITY.VALID; }
       }
 
       const result = {
