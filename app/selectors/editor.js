@@ -46,6 +46,8 @@ export const hasSelection = (state) => (
   state.editor.linkingPin !== null
 );
 
+export const getLinkingPin = (editor) => R.prop('linkingPin')(editor);
+
 export const getMode = (state) => R.prop('mode')(state);
 
 export const isDefaultMode = (state) => (state.mode === EDITOR_MODE.DEFAULT);
