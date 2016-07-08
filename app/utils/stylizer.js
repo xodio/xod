@@ -4,11 +4,24 @@ const makeStyleReducer = (key, isStore = false) => function styleReducer(styles)
   let result = {};
   const storeKey = (isStore) ? 'props' : 'state';
   if (this[storeKey] && this[storeKey][key]) {
+    const val = this[storeKey][key];
     result = this.styles.keys[key].reduce(
       (prev, cur) => {
-        const p = prev;
-        if (this.styles.styles[cur].hasOwnProperty(key)) {
-          p[cur] = this.styles.styles[cur][key];
+        let p = prev;
+        const hasStyles = this.styles.styles[cur].hasOwnProperty(key);
+        if (hasStyles) {
+          const hasPropStyle = (
+            typeof this.styles.styles[cur][key] === 'object' &&
+            this.styles.styles[cur][key].hasOwnProperty(val)
+          );
+          let updateWith;
+          if (hasPropStyle) {
+            updateWith = this.styles.styles[cur][key][val];
+          } else {
+            updateWith = this.styles.styles[cur][key];
+          }
+
+          p = R.assoc(cur, updateWith, prev);
         }
         return p;
       }, {}
@@ -18,6 +31,15 @@ const makeStyleReducer = (key, isStore = false) => function styleReducer(styles)
 };
 
 const Stylizer = {
+  init: (component) => {
+    const c = component;
+    if (!c.styles) {
+      Stylizer.assignStyles(c, {});
+    }
+    if (!c.state) {
+      c.state = {};
+    }
+  },
   assignStyles: (component, styles) => {
     const c = component;
 
@@ -28,21 +50,16 @@ const Stylizer = {
         getters: [],
       };
     }
-    // assign default getter
+    // assign default getters
     c.styles.getters.push(Stylizer.getters.normal.bind(c));
     // assign default getStyle method
     c.getStyle = Stylizer.funcs.getStyle.bind(c);
   },
   hoverable: (component, keys) => {
     const c = component;
-
-    if (!c.styles) {
-      Stylizer.assignStyles(c, {});
-    }
-    if (!c.state) {
-      c.state = {};
-    }
+    Stylizer.init(c);
     c.state.hover = false;
+
     c.onMouseOver = Stylizer.funcs.onMouseOver;
     c.onMouseOut = Stylizer.funcs.onMouseOut;
     c.handleOver = c.onMouseOver.bind(c);
@@ -53,16 +70,18 @@ const Stylizer = {
   },
   selectable: (component, keys) => {
     const c = component;
-    if (!c.styles) {
-      Stylizer.assignStyles(c, {});
-    }
-    if (!c.state) {
-      c.state = {};
-    }
+    Stylizer.init(c);
     c.state.selected = false;
 
     c.styles.keys.selected = keys;
     c.styles.getters.push(Stylizer.getters.selected.bind(c));
+  },
+  dependOnProp: (component, propName, keys) => {
+    const c = component;
+    Stylizer.init(c);
+
+    c.styles.keys[propName] = keys;
+    c.styles.getters.push(Stylizer.getters.dependOnProp(c, propName));
   },
   getters: {
     normal(styles) {
@@ -76,6 +95,7 @@ const Stylizer = {
     },
     hover: makeStyleReducer('hover'),
     selected: makeStyleReducer('selected', true),
+    dependOnProp: (component, propName) => makeStyleReducer(propName, true).bind(component),
   },
 
   funcs: {
