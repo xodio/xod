@@ -113,6 +113,15 @@ export default class Pin extends React.Component {
 
   render() {
     const styles = this.getStyle();
+    const label = this.props.label ? (
+      <text
+        key={`pinText_${this.props.id}`}
+        {...this.getTextProps()}
+        style={styles.text}
+      >
+        {this.props.label}
+      </text>
+    ) : null;
 
     return (
       <g
@@ -124,13 +133,7 @@ export default class Pin extends React.Component {
       >
         <rect {...this.getRectProps()} style={styles.block} />
         <circle {...this.getCircleProps()} style={styles.circle} />
-        <text
-          key={`pinText_${this.props.id}`}
-          {...this.getTextProps()}
-          style={styles.text}
-        >
-          {this.props.label}
-        </text>
+        {label}
       </g>
     );
   }
@@ -138,7 +141,7 @@ export default class Pin extends React.Component {
 
 Pin.propTypes = {
   id: React.PropTypes.number.isRequired,
-  label: React.PropTypes.string.isRequired,
+  label: React.PropTypes.string,
   type: React.PropTypes.number.isRequired,
   position: React.PropTypes.object.isRequired,
   radius: React.PropTypes.number.isRequired,
