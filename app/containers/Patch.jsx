@@ -278,6 +278,15 @@ class Patch extends React.Component {
       ),
     }];
   }
+  createPinsState(nodeId, nodeWidth) {
+    // const validPins = Selectors.Pin.getValidPins(fullPins, 3);
+    const nodePins = R.pipe(
+      R.values,
+      R.filter((pin) => (pin.nodeId === nodeId)),
+      R.reduce((p, cur) => R.assoc(cur.id, cur, p), {})
+    )(this.props.pins);
+    return PatchUtils.getPinPosition(nodePins, nodeWidth);
+  }
   createNodeState(node, customProps) {
     const props = (typeof customProps === 'object') ? customProps : {};
 
@@ -291,12 +300,7 @@ class Patch extends React.Component {
       this.nodesViewstate[node.id].width :
       PatchUtils.getNodeWidth(nodeType.pins);
 
-    const nodePins = PatchUtils.getPinsData(
-      this.props.project.pins,
-      node.id,
-      nodeWidth,
-      nodeType
-    );
+    const nodePins = this.createPinsState(node.id, nodeWidth, nodeType);
 
     const viewstate = {
       id: node.id,
@@ -386,13 +390,13 @@ class Patch extends React.Component {
     let toPos = { x: 0, y: 0 };
 
     if (link.fromPinId) {
-      const fromNodeId = this.props.project.pins[link.fromPinId].nodeId;
+      const fromNodeId = this.props.pins[link.fromPinId].nodeId;
       const fromPin = this.nodesViewstate[fromNodeId].pins[link.fromPinId];
 
       fromPos = fromPin.realPosition;
     }
     if (link.toPinId) {
-      const toNodeId = this.props.project.pins[link.toPinId].nodeId;
+      const toNodeId = this.props.pins[link.toPinId].nodeId;
       const toPin = this.nodesViewstate[toNodeId].pins[link.toPinId];
 
       toPos = toPin.realPosition;
@@ -417,8 +421,8 @@ class Patch extends React.Component {
       R.values,
       R.reduce((p, link) => {
         let result = p;
-        const fromNodeId = this.props.project.pins[link.fromPinId].nodeId;
-        const toNodeId = this.props.project.pins[link.toPinId].nodeId;
+        const fromNodeId = this.props.pins[link.fromPinId].nodeId;
+        const toNodeId = this.props.pins[link.toPinId].nodeId;
         const viewstateIsReady = (this.nodesViewstate[fromNodeId] && this.nodesViewstate[toNodeId]);
 
         if (viewstateIsReady) {
@@ -516,9 +520,19 @@ class Patch extends React.Component {
 Patch.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   size: React.PropTypes.any.isRequired,
+  pins: React.PropTypes.any.isRequired,
   project: React.PropTypes.any.isRequired,
   editor: React.PropTypes.any.isRequired,
   nodeTypes: React.PropTypes.any.isRequired,
 };
 
-export default connect(state => state)(Patch);
+export default connect(state => ({
+  pins: Selectors.Pin.getFullPinsData({
+    pins: state.project.pins,
+    nodes: state.project.nodes,
+    nodeTypes: state.nodeTypes,
+  }),
+  project: state.project,
+  editor: state.editor,
+  nodeTypes: state.nodeTypes,
+}))(Patch);
