@@ -17,8 +17,6 @@ const LAYERNAME_BACKGROUND = 'background';
 const LAYERNAME_LINKS = 'links';
 const LAYERNAME_NODES = 'nodes';
 
-const CLICK_SAFEZONE = 3; // How far user should drag a node to prevent selecting by click
-
 // @TODO: Remove in case with replacing with SELECTION_DELETE action
 const DELETE_ACTIONS = {
   Node: 'deleteNodeWithDependencies',
@@ -230,15 +228,7 @@ class Patch extends React.Component {
 
       this.props.dispatch(Actions.dragNode(dragId, newPosition));
 
-      if (
-        R.all(
-          R.flip(
-            R.gte(CLICK_SAFEZONE)
-          ),
-          newPosition
-        )
-      ) {
-        this.setState(
+      this.setState(
           R.merge(
             this.state,
             {
@@ -247,7 +237,6 @@ class Patch extends React.Component {
             }
           )
         );
-      }
     }
   }
   dragGhostNode() {
