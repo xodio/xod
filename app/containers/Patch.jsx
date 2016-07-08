@@ -419,10 +419,9 @@ class Patch extends React.Component {
         let result = p;
         const fromNodeId = this.props.project.pins[link.fromPinId].nodeId;
         const toNodeId = this.props.project.pins[link.toPinId].nodeId;
+        const viewstateIsReady = (this.nodesViewstate[fromNodeId] && this.nodesViewstate[toNodeId]);
 
-        if (
-          this.nodesViewstate[fromNodeId] && this.nodesViewstate[toNodeId]
-        ) {
+        if (viewstateIsReady) {
           const viewstate = this.createLinkState(link);
           result = R.append(
             this.createLink(viewstate),
