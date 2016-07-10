@@ -1,5 +1,6 @@
 import * as EDITOR_MODE from './constants/editorModes';
 import * as NODE_CATEGORY from './constants/nodeCategory';
+import * as PIN_DIRECTION from './constants/pinDirection';
 import * as PIN_TYPE from './constants/pinType';
 
 const initialState = {
@@ -142,11 +143,13 @@ const initialState = {
       pins: {
         in: {
           key: 'in',
-          type: PIN_TYPE.INPUT,
+          type: PIN_TYPE.BOOL,
+          direction: PIN_DIRECTION.INPUT,
         },
         out: {
           key: 'out',
-          type: PIN_TYPE.OUTPUT,
+          type: PIN_TYPE.BOOL,
+          direction: PIN_DIRECTION.OUTPUT,
         },
       },
     },
@@ -157,22 +160,26 @@ const initialState = {
       pins: {
         in: {
           key: 'in',
-          type: PIN_TYPE.INPUT,
+          type: PIN_TYPE.BOOL,
+          direction: PIN_DIRECTION.INPUT,
           label: 'IN',
         },
         ifTrue: {
           key: 'ifTrue',
-          type: PIN_TYPE.INPUT,
+          type: PIN_TYPE.BOOL,
+          direction: PIN_DIRECTION.INPUT,
           label: 'T',
         },
         ifFalse: {
           key: 'ifFalse',
-          type: PIN_TYPE.INPUT,
+          type: PIN_TYPE.BOOL,
+          direction: PIN_DIRECTION.INPUT,
           label: 'F',
         },
         out: {
           key: 'out',
-          type: PIN_TYPE.OUTPUT,
+          type: PIN_TYPE.BOOL,
+          direction: PIN_DIRECTION.OUTPUT,
         },
       },
     },
@@ -183,7 +190,8 @@ const initialState = {
       pins: {
         out: {
           key: 'out',
-          type: PIN_TYPE.OUTPUT,
+          type: PIN_TYPE.NUMBER,
+          direction: PIN_DIRECTION.OUTPUT,
         },
       },
     },
@@ -194,7 +202,8 @@ const initialState = {
       pins: {
         brightness: {
           key: 'brightness',
-          type: PIN_TYPE.INPUT,
+          type: PIN_TYPE.NUMBER,
+          direction: PIN_DIRECTION.INPUT,
         },
       },
     },
@@ -205,7 +214,8 @@ const initialState = {
       pins: {
         value: {
           key: 'value',
-          type: PIN_TYPE.INPUT,
+          type: PIN_TYPE.NUMBER,
+          direction: PIN_DIRECTION.INPUT,
         },
       },
     },
@@ -216,7 +226,8 @@ const initialState = {
       pins: {
         value: {
           key: 'value',
-          type: PIN_TYPE.OUTPUT,
+          type: PIN_TYPE.NUMBER,
+          direction: PIN_DIRECTION.OUTPUT,
         },
       },
     },
@@ -227,17 +238,20 @@ const initialState = {
       pins: {
         yaw: {
           key: 'yaw',
-          type: PIN_TYPE.OUTPUT,
+          type: PIN_TYPE.NUMBER,
+          direction: PIN_DIRECTION.OUTPUT,
           label: 'YAW',
         },
         pitch: {
           key: 'pitch',
-          type: PIN_TYPE.OUTPUT,
+          type: PIN_TYPE.NUMBER,
+          direction: PIN_DIRECTION.OUTPUT,
           label: 'PIT',
         },
         roll: {
           key: 'roll',
-          type: PIN_TYPE.OUTPUT,
+          type: PIN_TYPE.NUMBER,
+          direction: PIN_DIRECTION.OUTPUT,
           label: 'ROL',
         },
       },
