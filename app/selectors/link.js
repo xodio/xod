@@ -2,8 +2,7 @@ import R from 'ramda';
 import { getFullPinsData, canPinHaveMoreLinks } from './pin';
 import { LINK_ERRORS } from '../constants/errorMessages';
 
-export const getLinks = R.prop('links');
-export const getGlobalLinks = R.view(R.lensPath(['project', 'links']));
+export const getLinks = R.view(R.lensPath(['project', 'links']));
 
 export const getLinkById = (state, props) => R.pipe(
   getLinks,
@@ -25,7 +24,7 @@ export const getLinksByPinId = (state, props) => R.pipe(
 
 export const validateLink = (state, fromPinId, toPinId) => {
   const pins = getFullPinsData(state);
-  const linksState = getGlobalLinks(state);
+  const linksState = getLinks(state);
   const fromPin = pins[fromPinId];
   const toPin = pins[toPinId];
 

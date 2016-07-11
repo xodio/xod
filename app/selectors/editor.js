@@ -2,10 +2,21 @@ import R from 'ramda';
 import { createSelector } from 'reselect';
 import * as EDITOR_MODE from '../constants/editorModes';
 
+export const getEditor = R.prop('editor');
+
+export const getCurrentPatchId = R.pipe(
+  getEditor,
+  R.prop('currentPatchId')
+);
+
 export const getSelection = (state) => R.pipe(
-  R.pick(['selection']),
-  R.values,
-  R.head
+  getEditor,
+  R.prop('selection')
+)(state);
+
+export const getSelectedNodeType = (state) => R.pipe(
+  getEditor,
+  R.prop('selectedNodeType')
 )(state);
 
 export const getSelectionByTypes = createSelector(
@@ -24,34 +35,45 @@ export const getSelectionByTypes = createSelector(
   }
 );
 
-export const checkSelection = (state, entityName, id) => R.pipe(
-  getSelectionByTypes,
-  R.prop(entityName),
-  R.find(
-    R.propEq('id', id)
-  ),
-  R.isNil,
-  R.not
-)(state);
-
-export const getSelectedIds = (state, entityName) => R.pipe(
-  getSelectionByTypes,
-  R.prop(entityName),
-  R.groupBy((s) => s.id),
-  R.keys
-)(state);
+export const checkSelection = (selection, entityName, id) => R.pipe(
+  R.values,
+  R.groupBy((s) => s.entity),
+  R.ifElse(
+    R.has(entityName),
+    R.pipe(
+      R.prop(entityName),
+      R.find(
+        R.propEq('id', id)
+      ),
+      R.isNil,
+      R.not
+    ),
+    () => false
+  )
+)(selection);
 
 export const hasSelection = (state) => (
   state.editor.selection.length > 0 ||
   state.editor.linkingPin !== null
 );
 
-export const getLinkingPin = (editor) => R.prop('linkingPin')(editor);
+export const getLinkingPin = (state) => R.pipe(
+  getEditor,
+  R.prop('linkingPin')
+)(state);
 
-export const getMode = (state) => R.prop('mode')(state);
+export const getMode = (state) => R.pipe(
+  getEditor,
+  R.prop('mode')
+)(state);
 
-export const isDefaultMode = (state) => (state.mode === EDITOR_MODE.DEFAULT);
-export const isCreatingMode = (state) => (state.mode === EDITOR_MODE.CREATING);
-export const isEditingMode = (state) => (state.mode === EDITOR_MODE.EDITING);
-export const isLinkingMode = (state) => (state.mode === EDITOR_MODE.LINKING);
-export const isPanningMode = (state) => (state.mode === EDITOR_MODE.PANNING);
+export const getModeChecks = (state) => {
+  const mode = getMode(state);
+  return {
+    mode,
+    isDefault: (mode === EDITOR_MODE.DEFAULT),
+    isCreating: (mode === EDITOR_MODE.CREATING),
+    isEditing: (mode === EDITOR_MODE.EDITING),
+    isPanning: (mode === EDITOR_MODE.PANNING),
+  };
+};
