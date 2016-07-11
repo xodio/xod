@@ -7,9 +7,9 @@ import { pins } from './pins';
 import { links } from './links';
 import { errors } from './errors';
 
-import combineReducersWithContext from './combineWithContext';
+import combineReducersWithContext, { combineReducersWithContextAndCatcher } from './combineWithContext';
 
-export default combineReducersWithContext({
+export default combineReducersWithContextAndCatcher({
   project: combineReducersWithContext({
     meta,
     patches,
