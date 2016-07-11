@@ -28,10 +28,36 @@ export const validateLink = (state, fromPinId, toPinId) => {
   const fromPin = pins[fromPinId];
   const toPin = pins[toPinId];
 
-  return (
-    fromPin.direction !== toPin.direction &&
-    fromPin.nodeId !== toPin.nodeId &&
-    isPinCanHaveMoreLinks(fromPin, linksState) &&
-    isPinCanHaveMoreLinks(toPin, linksState)
+  const sameDirection = fromPin.direction === toPin.direction;
+  const sameNode = fromPin.nodeId === toPin.nodeId;
+  const fromPinCanHaveMoreLinks = isPinCanHaveMoreLinks(fromPin, linksState);
+  const toPinCanHaveMoreLinks = isPinCanHaveMoreLinks(toPin, linksState);
+
+  const check = (
+    !sameDirection &&
+    !sameNode &&
+    fromPinCanHaveMoreLinks &&
+    toPinCanHaveMoreLinks
   );
+  const result = {
+    validness: check,
+    message: '',
+  };
+
+  if (!check) {
+    if (sameDirection) {
+      result.message += 'Can\'t create link between pins of the same direction!';
+    } else
+    if (sameNode) {
+      result.message += 'Can\'t create link between pins of the same node!';
+    } else
+    if (!fromPinCanHaveMoreLinks) {
+      result.message += 'Input pin can have only one link!';
+    } else
+    if (!toPinCanHaveMoreLinks) {
+      result.message += 'Input pin can have only one link!';
+    }
+  }
+
+  return result;
 };

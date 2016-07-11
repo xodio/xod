@@ -20,14 +20,16 @@ export const links = (state = {}, action, context) => {
 
   switch (action.type) {
     case LINK_ADD: {
-      const linkCanBeCreated = Selectors.Link.validateLink(
-        context,
-        action.payload.fromPinId,
-        action.payload.toPinId
-      );
+      if (context) {
+        const check = Selectors.Link.validateLink(
+          context,
+          action.payload.fromPinId,
+          action.payload.toPinId
+        );
 
-      if (!linkCanBeCreated) {
-        throw new Error('Link cannot been created');
+        if (!check.validness) {
+          throw new Error(check.message);
+        }
       }
 
       newLink = {
