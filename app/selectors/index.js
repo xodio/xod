@@ -4,6 +4,7 @@ import * as Pin from './pin';
 import * as Link from './link';
 import * as Meta from './meta';
 import * as NodeType from './nodetype';
+import * as Errors from './errors';
 
 export default {
   Editor,
@@ -12,4 +13,5 @@ export default {
   Link,
   Meta,
   NodeType,
+  Errors,
 };

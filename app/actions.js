@@ -217,3 +217,18 @@ export const setSelectedNodeType = (id) => ({
     id,
   },
 });
+
+export const showError = (error) => ({
+  type: ActionType.ERROR_SHOW,
+  payload: {
+    timestamp: new Date().getTime(),
+    error,
+  },
+});
+
+export const hideError = (timestamp) => ({
+  type: ActionType.ERROR_HIDE,
+  payload: {
+    timestamp,
+  },
+});

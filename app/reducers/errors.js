@@ -6,7 +6,7 @@ export const errors = (state = [], action) => {
     case ActionType.ERROR_SHOW:
       return R.append(action.payload, state);
     case ActionType.ERROR_HIDE: {
-      const filter = (n) => n.id === action.payload.id;
+      const filter = (n) => n.timestamp === action.payload.timestamp;
       return R.reject(filter, state);
     }
     default:
