@@ -9,6 +9,7 @@ import Serializer from '../serializers/mock';
 import Editor from './Editor';
 import SnackBar from './SnackBar';
 import EventListener from 'react-event-listener';
+import DevTools from './DevTools';
 
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
@@ -44,10 +45,11 @@ export default class App extends React.Component {
       <div>
         <EventListener target={window} onResize={this.onResize} />
         <Provider store={this.store}>
-          <Editor size={this.state.size} />
-        </Provider>
-        <Provider store={this.store}>
-          <SnackBar />
+          <div>
+            <Editor size={this.state.size} />
+            <SnackBar />
+            <DevTools />
+          </div>
         </Provider>
       </div>
     );
