@@ -40,17 +40,17 @@ export const getFullPinsData = createSelector(
   )(pins)
 );
 
-export const isPinHaveLinks = (pin, links) => R.pipe(
+export const doesPinHaveLinks = (pin, links) => R.pipe(
   R.values,
   R.filter((link) => (link.fromPinId === pin.id || link.toPinId === pin.id)),
   R.length,
   R.flip(R.gt)(0)
 )(links);
 
-export const isPinCanHaveMoreLinks = (pin, links) => (
+export const canPinHaveMoreLinks = (pin, links) => (
   (
     pin.direction === PIN_DIRECTION.INPUT &&
-    !isPinHaveLinks(pin, links)
+    !doesPinHaveLinks(pin, links)
   ) ||
   pin.direction === PIN_DIRECTION.OUTPUT
 );
@@ -64,7 +64,7 @@ export const getValidPins = (pins, links, forPinId) => {
       const sameNode = (pin.nodeId === oPin.nodeId);
       const sameDirection = (pin.direction === oPin.direction);
       const sameType = (pin.type === oPin.type);
-      const canHaveLink = isPinCanHaveMoreLinks(pin, links);
+      const canHaveLink = canPinHaveMoreLinks(pin, links);
 
       let validness = PIN_VALIDITY.INVALID;
 

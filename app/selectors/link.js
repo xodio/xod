@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { getFullPinsData, isPinCanHaveMoreLinks } from './pin';
+import { getFullPinsData, canPinHaveMoreLinks } from './pin';
 import { LINK_ERRORS } from '../constants/errorMessages';
 
 export const getLinks = R.prop('links');
@@ -31,8 +31,8 @@ export const validateLink = (state, fromPinId, toPinId) => {
 
   const sameDirection = fromPin.direction === toPin.direction;
   const sameNode = fromPin.nodeId === toPin.nodeId;
-  const fromPinCanHaveMoreLinks = isPinCanHaveMoreLinks(fromPin, linksState);
-  const toPinCanHaveMoreLinks = isPinCanHaveMoreLinks(toPin, linksState);
+  const fromPinCanHaveMoreLinks = canPinHaveMoreLinks(fromPin, linksState);
+  const toPinCanHaveMoreLinks = canPinHaveMoreLinks(toPin, linksState);
 
   const check = (
     !sameDirection &&
