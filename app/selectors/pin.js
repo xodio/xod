@@ -1,11 +1,13 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
-import { getNodes } from './node';
+import { getGlobalNodes } from './node';
 import { getNodeTypes, getPinsByNodeTypeId } from './nodetype';
 import * as PIN_DIRECTION from '../constants/pinDirection';
 import * as PIN_VALIDITY from '../constants/pinValidity';
 
 export const getPins = R.prop('pins');
+
+export const getGlobalPins = R.view(R.lensPath(['project', 'pins']));
 
 export const getPinsByNodeId = (state, props) => R.pipe(
   getPins,
@@ -25,7 +27,7 @@ export const getPinsByIds = (state, props) => R.pipe(
 )(state, props);
 
 export const getFullPinsData = createSelector(
-  [getPins, getNodeTypes, getNodes],
+  [getGlobalPins, getNodeTypes, getGlobalNodes],
   (pins, nodeTypes, nodes) => R.pipe(
     R.values,
     R.reduce((p, pin) => {

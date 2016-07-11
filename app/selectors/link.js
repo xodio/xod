@@ -1,8 +1,7 @@
 import R from 'ramda';
 
-export const getLinks = (state) => R.pipe(
-  R.prop('links')
-)(state);
+export const getLinks = R.prop('links');
+export const getGlobalLinks = R.view(R.lensPath(['project', 'links']));
 
 export const getLinkById = (state, props) => R.pipe(
   getLinks,
