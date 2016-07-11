@@ -7,6 +7,7 @@ import { getViewableSize } from '../utils/browser';
 import { EditorMiddleware } from '../middlewares';
 import Serializer from '../serializers/mock';
 import Editor from './Editor';
+import SnackBar from './SnackBar';
 import EventListener from 'react-event-listener';
 
 const DEFAULT_CANVAS_WIDTH = 800;
@@ -44,6 +45,9 @@ export default class App extends React.Component {
         <EventListener target={window} onResize={this.onResize} />
         <Provider store={this.store}>
           <Editor size={this.state.size} />
+        </Provider>
+        <Provider store={this.store}>
+          <SnackBar />
         </Provider>
       </div>
     );
