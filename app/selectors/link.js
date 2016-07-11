@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { getFullPinsData, isPinCanHaveMoreLinks } from './pin';
 
 export const getLinks = R.prop('links');
 export const getGlobalLinks = R.view(R.lensPath(['project', 'links']));
@@ -20,3 +21,17 @@ export const getLinksByPinId = (state, props) => R.pipe(
   ),
   R.values
 )(state, props);
+
+export const validateLink = (state, fromPinId, toPinId) => {
+  const pins = getFullPinsData(state);
+  const linksState = getGlobalLinks(state);
+  const fromPin = pins[fromPinId];
+  const toPin = pins[toPinId];
+
+  return (
+    fromPin.direction !== toPin.direction &&
+    fromPin.nodeId !== toPin.nodeId &&
+    isPinCanHaveMoreLinks(fromPin, linksState) &&
+    isPinCanHaveMoreLinks(toPin, linksState)
+  );
+};

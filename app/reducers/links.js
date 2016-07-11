@@ -20,15 +20,10 @@ export const links = (state = {}, action, context) => {
 
   switch (action.type) {
     case LINK_ADD: {
-      const pins = Selectors.Pin.getFullPinsData(context);
-      const linksState = Selectors.Link.getGlobalLinks(context);
-      const fromPin = pins[action.payload.fromPinId];
-      const toPin = pins[action.payload.toPinId];
-
-      const linkCanBeCreated = (
-        fromPin.direction !== toPin.direction &&
-        Selectors.Pin.isPinCanHaveMoreLinks(fromPin, linksState) &&
-        Selectors.Pin.isPinCanHaveMoreLinks(toPin, linksState)
+      const linkCanBeCreated = Selectors.Link.validateLink(
+        context,
+        action.payload.fromPinId,
+        action.payload.toPinId
       );
 
       if (!linkCanBeCreated) {
