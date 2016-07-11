@@ -549,12 +549,7 @@ Patch.propTypes = {
 };
 
 export default connect(state => ({
-  pins: Selectors.Pin.getFullPinsData({
-    pins: state.project.pins,
-    nodes: state.project.nodes,
-    nodeTypes: state.nodeTypes,
-    editor: state.editor,
-  }),
+  pins: Selectors.Pin.getFullPinsData(state),
   linkingPin: Selectors.Editor.getLinkingPin(state.editor),
   project: state.project,
   editor: state.editor,
