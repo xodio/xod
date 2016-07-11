@@ -7,6 +7,7 @@ import { hideError } from '../actions';
 const styles = {
   container: {
     position: 'fixed',
+    zIndex: 10,
     bottom: 0,
     right: 0,
     width: '200px',
@@ -23,7 +24,6 @@ const styles = {
 
 const SnackBar = ({ errors, actions }) => {
   const onClick = (timestamp) => actions.hideError.bind(undefined, timestamp);
-
   return (
     <ul style={styles.container}>
       {errors.map((error, i) =>
@@ -32,8 +32,11 @@ const SnackBar = ({ errors, actions }) => {
           onClick={onClick(error.timestamp)}
           style={styles.error}
         >
-          {error.timestamp}:<br />
-          {error.message}
+          <small>
+            {error.timestamp}:
+          </small>
+          <br />
+          {error.error.message}
         </li>
       )}
     </ul>
