@@ -51,8 +51,7 @@ export const deletePin = (id) => ({
 export const addLink = (fromPinId, toPinId) => ({
   type: ActionType.LINK_ADD,
   payload: {
-    fromPinId,
-    toPinId,
+    pins: [fromPinId, toPinId],
   },
 });
 

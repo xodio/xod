@@ -24,8 +24,7 @@ export const links = (state = {}, action, context) => {
       if (context) {
         const check = Selectors.Link.validateLink(
           context,
-          action.payload.fromPinId,
-          action.payload.toPinId
+          action.payload.pins
         );
 
         if (!check.validness) {
@@ -34,8 +33,7 @@ export const links = (state = {}, action, context) => {
       }
 
       newLink = {
-        fromPinId: action.payload.fromPinId,
-        toPinId: action.payload.toPinId,
+        pins: action.payload.pins,
       };
       newLink.id = newId(state);
       return R.set(R.lensProp(newLink.id), newLink, state);

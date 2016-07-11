@@ -117,13 +117,11 @@ const initialState = {
     links: {
       1: {
         id: 1,
-        fromPinId: 4,
-        toPinId: 1,
+        pins: [4, 1],
       },
       2: {
         id: 2,
-        fromPinId: 4,
-        toPinId: 6,
+        pins: [4, 6],
       },
     },
   },

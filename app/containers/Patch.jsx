@@ -405,27 +405,23 @@ class Patch extends React.Component {
   }
   createLinkState(link, customProps) {
     const props = (typeof customProps === 'object') ? customProps : {};
-    let fromPos = { x: 0, y: 0 };
-    let toPos = { x: 0, y: 0 };
+    const positions = [
+      { x: 0, y: 0 },
+      { x: 0, y: 0 },
+    ];
 
-    if (link.fromPinId) {
-      const fromNodeId = this.props.pins[link.fromPinId].nodeId;
-      const fromPin = this.nodesViewstate[fromNodeId].pins[link.fromPinId];
+    link.pins.forEach((pinId, i) => {
+      const pinNodeId = this.props.pins[pinId].nodeId;
+      const pinViewstate = this.nodesViewstate[pinNodeId].pins[pinId];
 
-      fromPos = fromPin.realPosition;
-    }
-    if (link.toPinId) {
-      const toNodeId = this.props.pins[link.toPinId].nodeId;
-      const toPin = this.nodesViewstate[toNodeId].pins[link.toPinId];
-
-      toPos = toPin.realPosition;
-    }
+      positions[i] = pinViewstate.realPosition;
+    });
 
     const viewstate = {
       id: link.id,
       key: link.id,
-      from: fromPos,
-      to: toPos,
+      from: positions[0],
+      to: positions[1],
       onClick: this.onLinkClick.bind(this),
       selected: Selectors.Editor.checkSelection(this.props.selection, 'Link', link.id),
     };
@@ -440,8 +436,8 @@ class Patch extends React.Component {
       R.values,
       R.reduce((p, link) => {
         let result = p;
-        const fromNodeId = this.props.pins[link.fromPinId].nodeId;
-        const toNodeId = this.props.pins[link.toPinId].nodeId;
+        const fromNodeId = this.props.pins[link.pins[0]].nodeId;
+        const toNodeId = this.props.pins[link.pins[1]].nodeId;
         const viewstateIsReady = (this.nodesViewstate[fromNodeId] && this.nodesViewstate[toNodeId]);
 
         if (viewstateIsReady) {
@@ -461,8 +457,7 @@ class Patch extends React.Component {
     if (props.linkingPin && this.state.ghostLink === null) {
       const linkViewstate = this.createLinkState({
         id: 0,
-        fromPinId: this.props.linkingPin,
-        toPinId: null,
+        pins: [this.props.linkingPin],
       }, {
         to: this.mousePosition,
         hoverable: false,

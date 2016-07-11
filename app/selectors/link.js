@@ -22,11 +22,11 @@ export const getLinksByPinId = (state, props) => R.pipe(
   R.values
 )(state, props);
 
-export const validateLink = (state, fromPinId, toPinId) => {
+export const validateLink = (state, pinIds) => {
   const pins = getFullPinsData(state);
   const linksState = getLinks(state);
-  const fromPin = pins[fromPinId];
-  const toPin = pins[toPinId];
+  const fromPin = pins[pinIds[0]];
+  const toPin = pins[pinIds[1]];
 
   const sameDirection = fromPin.direction === toPin.direction;
   const sameNode = fromPin.nodeId === toPin.nodeId;
