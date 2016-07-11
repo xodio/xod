@@ -1,5 +1,6 @@
 import R from 'ramda';
 import { getFullPinsData, isPinCanHaveMoreLinks } from './pin';
+import { LINK_ERRORS } from '../constants/errorMessages';
 
 export const getLinks = R.prop('links');
 export const getGlobalLinks = R.view(R.lensPath(['project', 'links']));
@@ -46,16 +47,13 @@ export const validateLink = (state, fromPinId, toPinId) => {
 
   if (!check) {
     if (sameDirection) {
-      result.message += 'Can\'t create link between pins of the same direction!';
+      result.message = LINK_ERRORS.SAME_DIRECTION;
     } else
     if (sameNode) {
-      result.message += 'Can\'t create link between pins of the same node!';
+      result.message = LINK_ERRORS.SAME_NODE;
     } else
-    if (!fromPinCanHaveMoreLinks) {
-      result.message += 'Input pin can have only one link!';
-    } else
-    if (!toPinCanHaveMoreLinks) {
-      result.message += 'Input pin can have only one link!';
+    if (!fromPinCanHaveMoreLinks || !toPinCanHaveMoreLinks) {
+      result.message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
     }
   }
 
