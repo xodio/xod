@@ -163,7 +163,8 @@ export const setMode = (mode) => ({
 
 export const selectNode = (id) => (dispatch, getState) => {
   const state = getState();
-  const isSelected = Selectors.Editor.checkSelection(state, 'Node', id);
+  const selection = Selectors.Editor.getSelection(state);
+  const isSelected = Selectors.Editor.checkSelection(selection, 'Node', id);
   const deselect = dispatch(deselectAll());
   const result = [];
   if (deselect) {
@@ -197,7 +198,8 @@ export const linkPin = (id) => (dispatch, getState) => {
 
 export const selectLink = (id) => (dispatch, getState) => {
   const state = getState();
-  const isSelected = Selectors.Editor.checkSelection(state, 'Link', id);
+  const selection = Selectors.Editor.getSelection(state);
+  const isSelected = Selectors.Editor.checkSelection(selection, 'Link', id);
   const deselect = dispatch(deselectAll());
   const result = [];
   if (deselect) {

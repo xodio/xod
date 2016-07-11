@@ -7,8 +7,7 @@ describe('Links reducer', () => {
   const sharedLinkStore = {
     0: {
       id: 0,
-      fromPinId: 0,
-      toPinId: 1,
+      pins: [0, 1],
     },
   };
 
@@ -22,28 +21,19 @@ describe('Links reducer', () => {
 
     it('should insert link', () => {
       const oldState = linkStore;
-      const state = links(oldState, Actions.addLink({
-        fromPinId: 2,
-        toPinId: 3,
-      }));
+      const state = links(oldState, Actions.addLink(2, 3));
       chai.assert(newId(oldState) + 1 === newId(state));
     });
 
     it('should set appropriate id for a new link', () => {
-      const state = links(linkStore, Actions.addLink({
-        fromPinId: 2,
-        toPinId: 3,
-      }));
+      const state = links(linkStore, Actions.addLink(2, 3));
       const newLink = state[lastId(state)];
       chai.assert(newLink.id === lastId(state));
     });
 
     it('should be reverse operation for link deletion', () => {
       let state = null;
-      state = links(linkStore, Actions.addLink({
-        fromPinId: 2,
-        toPinId: 3,
-      }));
+      state = links(linkStore, Actions.addLink(2, 3));
       state = links(state, Actions.deleteLink(lastId(state)));
       chai.expect(state).to.deep.equal(linkStore);
     });
@@ -77,7 +67,7 @@ describe('Links reducer', () => {
       const RemovingLinkId = lastId(linkStore);
       const removingLink = copyLink(linkStore[RemovingLinkId]);
       state = links(linkStore, Actions.deleteLink(RemovingLinkId));
-      state = links(state, Actions.addLink(removingLink.fromPinId, removingLink.toPinId));
+      state = links(state, Actions.addLink(removingLink.pins[0], removingLink.pins[1]));
       chai.expect(state).to.deep.equal(linkStore);
     });
 

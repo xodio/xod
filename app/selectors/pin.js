@@ -40,7 +40,7 @@ export const getFullPinsData = createSelector(
 
 export const doesPinHaveLinks = (pin, links) => R.pipe(
   R.values,
-  R.filter((link) => (link.fromPinId === pin.id || link.toPinId === pin.id)),
+  R.filter((link) => (link.pins[0] === pin.id || link.pins[1] === pin.id)),
   R.length,
   R.flip(R.gt)(0)
 )(links);
