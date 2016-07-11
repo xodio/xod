@@ -1,6 +1,7 @@
 import { LINK_ADD, LINK_DELETE } from '../actionTypes';
 import R from 'ramda';
 import Selectors from '../selectors';
+import CustomError from '../utils/customError';
 
 const nodeIds = (links) =>
   R.map(link => parseInt(link.id, 10))(R.values(links));
@@ -28,7 +29,7 @@ export const links = (state = {}, action, context) => {
         );
 
         if (!check.validness) {
-          throw new Error(check.message);
+          throw new CustomError(check.message);
         }
       }
 

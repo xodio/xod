@@ -2,12 +2,17 @@ import { compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { showError } from './actions';
 import DevTools from './containers/DevTools';
+import CustomError from './utils/customError';
 
 const crashReporter = store => next => action => {
   try {
     return next(action);
   } catch (err) {
-    return store.dispatch(showError(err));
+    if (err instanceof CustomError) {
+      return store.dispatch(showError(err));
+    }
+
+    throw err;
   }
 };
 
