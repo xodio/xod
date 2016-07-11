@@ -11,6 +11,7 @@ export default createDevTools(
     toggleVisibilityKey="ctrl-h"
     changePositionKey="ctrl-p"
     changeMonitorKey="ctrl-m"
+    defaultIsVisible={false}
   >
     <FilterableLogMonitor />
     <Dispatcher />
