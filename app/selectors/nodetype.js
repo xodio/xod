@@ -1,8 +1,6 @@
 import R from 'ramda';
 
-export const getNodeTypes = (state) => R.pipe(
-  R.prop('nodeTypes')
-)(state);
+export const getNodeTypes = R.prop('nodeTypes');
 
 export const getNodeTypeById = (state, id) => R.pipe(
   getNodeTypes,

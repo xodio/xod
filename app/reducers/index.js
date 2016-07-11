@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import { meta } from './meta';
 import { editor } from './editor';
 import { nodeTypes } from './nodetypes';
@@ -6,9 +5,12 @@ import { patches } from './patches';
 import { nodes } from './nodes';
 import { pins } from './pins';
 import { links } from './links';
+import { errors } from './errors';
 
-export default combineReducers({
-  project: combineReducers({
+import combineReducersWithContext from './combineWithContext';
+
+export default combineReducersWithContext({
+  project: combineReducersWithContext({
     meta,
     patches,
     nodes,
@@ -17,4 +19,5 @@ export default combineReducers({
   }),
   nodeTypes,
   editor,
+  errors,
 });

@@ -34,6 +34,10 @@ class Editor extends React.Component {
   onKeyDown(event) {
     const keycode = event.keyCode || event.which;
 
+    if (keycode === KEYCODE.BACKSPACE) {
+      event.preventDefault();
+    }
+
     if (keycode === KEYCODE.N) {
       this.setModeCreating();
     }
