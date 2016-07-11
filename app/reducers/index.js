@@ -5,6 +5,7 @@ import { patches } from './patches';
 import { nodes } from './nodes';
 import { pins } from './pins';
 import { links } from './links';
+import { errors } from './errors';
 
 import combineReducersWithContext from './combineWithContext';
 
@@ -18,4 +19,5 @@ export default combineReducersWithContext({
   }),
   nodeTypes,
   editor,
+  errors,
 });
