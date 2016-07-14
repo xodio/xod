@@ -423,7 +423,7 @@ class Patch extends React.Component {
       from: positions[0],
       to: positions[1],
       onClick: this.onLinkClick.bind(this),
-      selected: Selectors.Editor.checkSelection(this.props.selection, 'Link', link.id),
+      selected: Selectors.Editor.isSelected(this.props.selection, 'Link', link.id),
     };
 
     return R.merge(

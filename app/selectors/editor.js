@@ -35,21 +35,11 @@ export const getSelectionByTypes = createSelector(
   }
 );
 
-export const checkSelection = (selection, entityName, id) => R.pipe(
-  R.values,
-  R.groupBy((s) => s.entity),
-  R.ifElse(
-    R.has(entityName),
-    R.pipe(
-      R.prop(entityName),
-      R.find(
-        R.propEq('id', id)
-      ),
-      R.isNil,
-      R.not
-    ),
-    () => false
-  )
+export const isSelected = (selection, entityName, id) => R.pipe(
+  R.filter(R.propEq('entity', entityName)),
+  R.find(R.propEq('id', id)),
+  R.isNil,
+  R.not
 )(selection);
 
 export const hasSelection = (state) => (
