@@ -52,12 +52,12 @@ export default class App extends React.Component {
       // @TODO
       // Selectors.Project.getJSON(this.store.getState());
     } else {
-      this.proposeToInstallApplication();
+      this.suggestToInstallApplication();
     }
   }
 
-  proposeToInstallApplication() {
-    this.refs.proposeToInstallApplication.show();
+  suggestToInstallApplication() {
+    this.refs.suggestToInstallApplication.show();
   }
 
   render() {
@@ -76,7 +76,7 @@ export default class App extends React.Component {
           dialogStyles={{
             height: 'auto',
           }}
-          ref="proposeToInstallApplication"
+          ref="suggestToInstallApplication"
           title="Oops! You need a Chrome App!"
         >
           <p>
