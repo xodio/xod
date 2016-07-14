@@ -1,3 +1,6 @@
+
+import { default as styles } from '../styles/main.scss';
+
 import R from 'ramda';
 import React from 'react';
 import { createStore } from 'redux';
