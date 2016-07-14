@@ -8,6 +8,7 @@ import { EditorMiddleware } from '../middlewares';
 import Serializer from '../serializers/mock';
 import Editor from './Editor';
 import SnackBar from './SnackBar';
+import Toolbar from './Toolbar';
 import EventListener from 'react-event-listener';
 
 // DevTools via component is's a temporary feature, that makes some lags.
@@ -32,6 +33,7 @@ export default class App extends React.Component {
     };
 
     this.onResize = this.onResize.bind(this);
+    this.onUpload = this.onUpload.bind(this);
   }
 
   onResize() {
@@ -44,12 +46,17 @@ export default class App extends React.Component {
     );
   }
 
+  onUpload() {
+    // @TODO
+  }
+
   render() {
     return (
       <div>
         <EventListener target={window} onResize={this.onResize} />
         <Provider store={this.store}>
           <div>
+            <Toolbar onUpload={this.onUpload} />
             <Editor size={this.state.size} />
             <SnackBar />
             <DevTools />

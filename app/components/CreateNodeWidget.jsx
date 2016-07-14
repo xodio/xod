@@ -17,7 +17,7 @@ const styles = {
   },
 };
 
-class Toolbar extends React.Component {
+class CreateNodeWidget extends React.Component {
   constructor(props) {
     super(props);
 
@@ -64,11 +64,11 @@ class Toolbar extends React.Component {
   }
 }
 
-Toolbar.propTypes = {
+CreateNodeWidget.propTypes = {
   nodeTypes: React.PropTypes.object,
   selectedNodeType: React.PropTypes.any,
   onNodeTypeChange: React.PropTypes.func,
   onAddNodeClick: React.PropTypes.func,
 };
 
-export default Toolbar;
+export default CreateNodeWidget;
