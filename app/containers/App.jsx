@@ -72,6 +72,9 @@ export default class App extends React.Component {
           </div>
         </Provider>
         <SkyLight
+          dialogStyles={{
+            height: 'auto',
+          }}
           ref="proposeToInstallApplication"
           title="Oops! You need a Chrome App!"
         >
@@ -80,7 +83,7 @@ export default class App extends React.Component {
             It's free.
           </p>
           <p>
-            <a href="#">Go to Chrome Store</a>
+            <a href="#">Open in Chrome Store</a>
           </p>
         </SkyLight>
       </div>
