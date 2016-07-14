@@ -1,13 +1,11 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
-import { getGlobalNodes } from './node';
-import { getNodeTypes, getPinsByNodeTypeId } from './nodetype';
+import { getNodes } from './node';
+import { getNodeTypes } from './nodetype';
 import * as PIN_DIRECTION from '../constants/pinDirection';
 import * as PIN_VALIDITY from '../constants/pinValidity';
 
-export const getPins = R.prop('pins');
-
-export const getGlobalPins = R.view(R.lensPath(['project', 'pins']));
+export const getPins = R.view(R.lensPath(['project', 'pins']));
 
 export const getPinsByNodeId = (state, props) => R.pipe(
   getPins,
@@ -27,12 +25,12 @@ export const getPinsByIds = (state, props) => R.pipe(
 )(state, props);
 
 export const getFullPinsData = createSelector(
-  [getGlobalPins, getNodeTypes, getGlobalNodes],
+  [getPins, getNodeTypes, getNodes],
   (pins, nodeTypes, nodes) => R.pipe(
     R.values,
     R.reduce((p, pin) => {
       const node = nodes[pin.nodeId];
-      const nodeTypePins = getPinsByNodeTypeId({ nodeTypes }, node.typeId);
+      const nodeTypePins = nodeTypes[node.typeId].pins;
       const originalPin = nodeTypePins[pin.key];
 
       return R.assoc(pin.id, R.merge(pin, originalPin), p);
@@ -42,7 +40,7 @@ export const getFullPinsData = createSelector(
 
 export const doesPinHaveLinks = (pin, links) => R.pipe(
   R.values,
-  R.filter((link) => (link.fromPinId === pin.id || link.toPinId === pin.id)),
+  R.filter((link) => (link.pins[0] === pin.id || link.pins[1] === pin.id)),
   R.length,
   R.flip(R.gt)(0)
 )(links);

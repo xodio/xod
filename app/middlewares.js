@@ -2,16 +2,21 @@ import { compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { showError } from './actions';
 import DevTools from './containers/DevTools';
+import ValidationError from './utils/validationError';
 
-const crashReporter = store => next => action => {
+const validationErrorReporter = store => next => action => {
   try {
     return next(action);
   } catch (err) {
-    return store.dispatch(showError(err));
+    if (err instanceof ValidationError) {
+      return store.dispatch(showError(err));
+    }
+
+    throw err;
   }
 };
 
 export const EditorMiddleware = compose(
-  applyMiddleware(crashReporter, thunk),
+  applyMiddleware(validationErrorReporter, thunk),
   DevTools.instrument()
 );

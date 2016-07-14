@@ -20,24 +20,21 @@ export const links = (state = {}, action, context) => {
 
   switch (action.type) {
     case LINK_ADD: {
-      if (context) {
-        const check = Selectors.Link.validateLink(
-          context,
-          action.payload.fromPinId,
-          action.payload.toPinId
-        );
+      let newState = state;
+      const linkValid = !context || Selectors.Link.validateLink(
+        context,
+        action.payload.pins
+      );
 
-        if (!check.validness) {
-          throw new Error(check.message);
-        }
+      if (linkValid) {
+        newLink = {
+          pins: action.payload.pins,
+        };
+        newLink.id = newId(state);
+        newState = R.set(R.lensProp(newLink.id), newLink, state);
       }
 
-      newLink = {
-        fromPinId: action.payload.fromPinId,
-        toPinId: action.payload.toPinId,
-      };
-      newLink.id = newId(state);
-      return R.set(R.lensProp(newLink.id), newLink, state);
+      return newState;
     }
     case LINK_DELETE:
       return R.omit([action.payload.id.toString()], state);

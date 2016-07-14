@@ -1,9 +1,9 @@
 import R from 'ramda';
 import { getFullPinsData, canPinHaveMoreLinks } from './pin';
 import { LINK_ERRORS } from '../constants/errorMessages';
+import ValidationError from '../utils/validationError';
 
-export const getLinks = R.prop('links');
-export const getGlobalLinks = R.view(R.lensPath(['project', 'links']));
+export const getLinks = R.view(R.lensPath(['project', 'links']));
 
 export const getLinkById = (state, props) => R.pipe(
   getLinks,
@@ -23,11 +23,11 @@ export const getLinksByPinId = (state, props) => R.pipe(
   R.values
 )(state, props);
 
-export const validateLink = (state, fromPinId, toPinId) => {
+export const validateLink = (state, pinIds) => {
   const pins = getFullPinsData(state);
-  const linksState = getGlobalLinks(state);
-  const fromPin = pins[fromPinId];
-  const toPin = pins[toPinId];
+  const linksState = getLinks(state);
+  const fromPin = pins[pinIds[0]];
+  const toPin = pins[pinIds[1]];
 
   const sameDirection = fromPin.direction === toPin.direction;
   const sameNode = fromPin.nodeId === toPin.nodeId;
@@ -40,22 +40,22 @@ export const validateLink = (state, fromPinId, toPinId) => {
     fromPinCanHaveMoreLinks &&
     toPinCanHaveMoreLinks
   );
-  const result = {
-    validness: check,
-    message: '',
-  };
 
   if (!check) {
+    let error;
+
     if (sameDirection) {
-      result.message = LINK_ERRORS.SAME_DIRECTION;
+      error = new ValidationError(LINK_ERRORS.SAME_DIRECTION);
     } else
     if (sameNode) {
-      result.message = LINK_ERRORS.SAME_NODE;
+      error = new ValidationError(LINK_ERRORS.SAME_NODE);
     } else
     if (!fromPinCanHaveMoreLinks || !toPinCanHaveMoreLinks) {
-      result.message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
+      error = new ValidationError(LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN);
     }
+
+    throw error;
   }
 
-  return result;
+  return true;
 };

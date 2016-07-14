@@ -51,8 +51,7 @@ export const deletePin = (id) => ({
 export const addLink = (fromPinId, toPinId) => ({
   type: ActionType.LINK_ADD,
   payload: {
-    fromPinId,
-    toPinId,
+    pins: [fromPinId, toPinId],
   },
 });
 
@@ -70,7 +69,8 @@ export const updateMeta = (data) => ({
 
 export const addNodeWithDependencies = (nodeTypeId, position) => (dispatch, getState) => {
   const result = [];
-  const nodeType = Selectors.NodeType.getNodeTypeById(getState(), nodeTypeId);
+  const nodeTypes = Selectors.NodeType.getNodeTypes(getState());
+  const nodeType = nodeTypes[nodeTypeId];
   if (nodeType && position) {
     result.push(
       dispatch(
@@ -80,7 +80,7 @@ export const addNodeWithDependencies = (nodeTypeId, position) => (dispatch, getS
         })
       )
     );
-    const nodeId = Selectors.Node.getLastNodeId(getState().project);
+    const nodeId = Selectors.Node.getLastNodeId(getState());
     R.values(nodeType.pins).forEach((pin) => {
       result.push(
         dispatch(
@@ -95,7 +95,7 @@ export const addNodeWithDependencies = (nodeTypeId, position) => (dispatch, getS
 
 
 export const deleteNodeWithDependencies = (id) => (dispatch, getState) => {
-  const state = getState().project;
+  const state = getState();
   const result = [];
   // 1. getPinsByNodeId
   const pins = Selectors.Pin.getPinsByNodeId(state, { id });
@@ -163,7 +163,8 @@ export const setMode = (mode) => ({
 
 export const selectNode = (id) => (dispatch, getState) => {
   const state = getState();
-  const isSelected = Selectors.Editor.checkSelection(state.editor, 'Node', id);
+  const selection = Selectors.Editor.getSelection(state);
+  const isSelected = Selectors.Editor.isSelected(selection, 'Node', id);
   const deselect = dispatch(deselectAll());
   const result = [];
   if (deselect) {
@@ -197,7 +198,8 @@ export const linkPin = (id) => (dispatch, getState) => {
 
 export const selectLink = (id) => (dispatch, getState) => {
   const state = getState();
-  const isSelected = Selectors.Editor.checkSelection(state.editor, 'Link', id);
+  const selection = Selectors.Editor.getSelection(state);
+  const isSelected = Selectors.Editor.isSelected(selection, 'Link', id);
   const deselect = dispatch(deselectAll());
   const result = [];
   if (deselect) {

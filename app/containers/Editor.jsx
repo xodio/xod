@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import * as EDITOR_MODE from '../constants/editorModes';
@@ -26,9 +27,9 @@ class Editor extends React.Component {
   }
 
   onProjectNameClick() {
-    return this.props.dispatch(Actions.updateMeta({
+    return this.props.actions.updateMeta({
       name: 'Mega project',
-    }));
+    });
   }
 
   onKeyDown(event) {
@@ -41,28 +42,28 @@ class Editor extends React.Component {
     if (keycode === KEYCODE.N) {
       this.setModeCreating();
     }
-    if (keycode === KEYCODE.ESCAPE && Selectors.Editor.isCreatingMode(this.props.editor)) {
+    if (keycode === KEYCODE.ESCAPE && this.props.mode.isCreatingNode) {
       this.setModeDefault();
     }
   }
 
   setEditorMode(mode) {
-    this.props.dispatch(Actions.setMode(mode));
+    this.props.actions.setMode(mode);
   }
 
   setModeCreating() {
-    this.setEditorMode(EDITOR_MODE.CREATING);
+    this.setEditorMode(EDITOR_MODE.CREATING_NODE);
   }
   setModeDefault() {
     this.setEditorMode(EDITOR_MODE.DEFAULT);
   }
 
   setSelectedNodeType(nodeTypeId) {
-    this.props.dispatch(Actions.setSelectedNodeType(nodeTypeId));
+    this.props.actions.setSelectedNodeType(nodeTypeId);
   }
 
   render() {
-    const projectMeta = Selectors.Meta.getMeta(this.props.project);
+    const projectMeta = this.props.meta;
 
     return (
       <div>
@@ -73,7 +74,7 @@ class Editor extends React.Component {
         <div style={styles.patchContainer}>
           <Toolbar
             nodeTypes={this.props.nodeTypes}
-            selectedNodeType={this.props.editor.selectedNodeType}
+            selectedNodeType={this.props.selectedNodeType}
             onNodeTypeChange={this.setSelectedNodeType}
             onAddNodeClick={this.setModeCreating}
           />
@@ -85,11 +86,29 @@ class Editor extends React.Component {
 }
 
 Editor.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  project: React.PropTypes.any.isRequired,
+  meta: React.PropTypes.any.isRequired,
   editor: React.PropTypes.any.isRequired,
   nodeTypes: React.PropTypes.any.isRequired,
-  size: React.PropTypes.any.isRequired,
+  size: React.PropTypes.object.isRequired,
+  selectedNodeType: React.PropTypes.number,
+  mode: React.PropTypes.object,
+  actions: React.PropTypes.object,
 };
 
-export default connect(state => state)(Editor);
+const mapStateToProps = (state) => ({
+  editor: Selectors.Editor.getEditor(state),
+  meta: Selectors.Meta.getMeta(state),
+  nodeTypes: Selectors.NodeType.getNodeTypes(state),
+  selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
+  mode: Selectors.Editor.getModeChecks(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({
+    updateMeta: Actions.updateMeta,
+    setMode: Actions.setMode,
+    setSelectedNodeType: Actions.setSelectedNodeType,
+  }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Editor);
