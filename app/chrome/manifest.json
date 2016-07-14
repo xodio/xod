@@ -1,0 +1,22 @@
+{
+  "name": "XOD",
+  "description": "An amazing application",
+  "version": "0.1",
+  "manifest_version": 2,
+  "author": "Amperka",
+  "minimum_chrome_version": "31.0",
+  "offline_enabled": true,
+  "app": {
+    "background": {
+      "scripts": ["./background.js"]
+    }
+  },
+  "permissions": [
+    {"fileSystem": ["write"]}
+  ],
+  "file_handlers": {
+    "text": {
+      "types": ["application/javascript", "application/json"]
+    }
+  }
+}

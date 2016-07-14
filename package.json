@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "description": "XOD project",
   "scripts": {
-    "start": "mkdir -p ./dist && cp -f ./app/index.html ./dist/index.html && webpack-dev-server --watch --progress --colors --config webpack.config.js",
+    "start": "webpack-dev-server --watch --progress --colors --config webpack.config.js",
+    "build": "webpack --progress --colors --config webpack.config.js",
+    "build-chrome": "webpack --progress --colors --config webpack.config.chrome.js",
+    "dev-chrome": "webpack --watch --progress --colors --config webpack.config.chrome.js",
     "lint": "eslint --ext .js --ext .jsx ./app ./test || true",
     "test": "mocha-webpack --colors --webpack-config webpack.config.js \"test/**/*Spec.js\"",
     "travis": "npm-run-all --continue-on-error lint test"
@@ -26,6 +29,7 @@
     "react-dom": "^0.14.6",
     "react-event-listener": "^0.2.1",
     "react-redux": "^4.0.6",
+    "react-skylight": "^0.4.0",
     "redux": "^3.0.5",
     "redux-thunk": "^2.1.0",
     "reselect": "^2.5.1",
@@ -39,6 +43,7 @@
     "babel-cli": "^6.4.0",
     "chai": "^3.4.1",
     "chai-immutable": "^1.5.3",
+    "copy-webpack-plugin": "^3.0.1",
     "eslint": "^2.13.0",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-import-resolver-webpack": "^0.3.0",
