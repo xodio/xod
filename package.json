@@ -29,6 +29,7 @@
     "react-dom": "^0.14.6",
     "react-event-listener": "^0.2.1",
     "react-redux": "^4.0.6",
+    "react-skylight": "^0.4.0",
     "redux": "^3.0.5",
     "redux-thunk": "^2.1.0",
     "reselect": "^2.5.1",
