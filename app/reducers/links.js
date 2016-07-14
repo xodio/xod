@@ -21,14 +21,12 @@ export const links = (state = {}, action, context) => {
   switch (action.type) {
     case LINK_ADD: {
       let newState = state;
+      const linkValid = !context || Selectors.Link.validateLink(
+        context,
+        action.payload.pins
+      );
 
-      if (
-        !context ||
-        Selectors.Link.validateLink(
-          context,
-          action.payload.pins
-        )
-      ) {
+      if (linkValid) {
         newLink = {
           pins: action.payload.pins,
         };
