@@ -6,6 +6,7 @@
     "start": "webpack-dev-server --watch --progress --colors --config webpack.config.js",
     "build": "webpack --progress --colors --config webpack.config.js",
     "build-chrome": "webpack --progress --colors --config webpack.config.chrome.js",
+    "dev-chrome": "webpack --watch --progress --colors --config webpack.config.chrome.js",
     "lint": "eslint --ext .js --ext .jsx ./app ./test || true",
     "test": "mocha-webpack --colors --webpack-config webpack.config.js \"test/**/*Spec.js\"",
     "travis": "npm-run-all --continue-on-error lint test"
