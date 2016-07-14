@@ -8,6 +8,7 @@ import * as KEYCODE from '../constants/keycodes';
 import Patch from './Patch';
 import EventListener from 'react-event-listener';
 import CreateNodeWidget from '../components/CreateNodeWidget';
+import Inspector from '../components/Inspector';
 
 const styles = {
   patchContainer: {
@@ -59,6 +60,11 @@ class Editor extends React.Component {
     return (
       <div>
         <EventListener target={document} onKeyDown={this.onKeyDown} />
+        <Inspector
+          selections={this.props.selection}
+          nodeTypes={this.props.nodeTypes}
+          onPropUpdate={this.onPropUpdate}
+        />
         <div style={styles.patchContainer}>
           <CreateNodeWidget
             nodeTypes={this.props.nodeTypes}
@@ -77,6 +83,7 @@ Editor.propTypes = {
   editor: React.PropTypes.any.isRequired,
   nodeTypes: React.PropTypes.any.isRequired,
   size: React.PropTypes.object.isRequired,
+  selection: React.PropTypes.array,
   selectedNodeType: React.PropTypes.number,
   mode: React.PropTypes.object,
   actions: React.PropTypes.object,
@@ -85,6 +92,7 @@ Editor.propTypes = {
 const mapStateToProps = (state) => ({
   editor: Selectors.Editor.getEditor(state),
   nodeTypes: Selectors.NodeType.getNodeTypes(state),
+  selection: Selectors.Editor.getSelection(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
   mode: Selectors.Editor.getModeChecks(state),
 });
