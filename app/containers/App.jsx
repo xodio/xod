@@ -6,7 +6,6 @@ import Reducers from '../reducers/';
 import { getViewableSize } from '../utils/browser';
 import { EditorMiddleware } from '../middlewares';
 import Serializer from '../serializers/mock';
-import Selectors from '../selectors';
 import Editor from './Editor';
 import SnackBar from './SnackBar';
 import Toolbar from './Toolbar';
@@ -38,10 +37,6 @@ export default class App extends React.Component {
     this.onUpload = this.onUpload.bind(this);
   }
 
-  proposeToInstallApplication() {
-    this.refs.proposeToInstallApplication.show();
-  }
-
   onResize() {
     this.setState(
       R.set(
@@ -59,6 +54,10 @@ export default class App extends React.Component {
     } else {
       this.proposeToInstallApplication();
     }
+  }
+
+  proposeToInstallApplication() {
+    this.refs.proposeToInstallApplication.show();
   }
 
   render() {
