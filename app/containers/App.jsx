@@ -6,6 +6,7 @@ import Reducers from '../reducers/';
 import { getViewableSize } from '../utils/browser';
 import { EditorMiddleware } from '../middlewares';
 import Serializer from '../serializers/mock';
+import Selectors from '../selectors';
 import Editor from './Editor';
 import SnackBar from './SnackBar';
 import Toolbar from './Toolbar';
@@ -54,6 +55,7 @@ export default class App extends React.Component {
     const isChromeApplication = window.chrome && chrome.app && chrome.app.runtime;
     if (isChromeApplication) {
       // @TODO
+      // Selectors.Project.getJSON(this.store.getState());
     } else {
       this.proposeToInstallApplication();
     }

@@ -6,8 +6,10 @@ import * as Meta from './meta';
 import * as NodeType from './nodetype';
 import * as Errors from './errors';
 import * as Patch from './patch';
+import * as Project from './project';
 
 export default {
+  Project,
   Editor,
   Patch,
   Node,
