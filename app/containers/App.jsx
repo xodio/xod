@@ -10,6 +10,7 @@ import Editor from './Editor';
 import SnackBar from './SnackBar';
 import Toolbar from './Toolbar';
 import EventListener from 'react-event-listener';
+import SkyLight from 'react-skylight';
 
 // DevTools via component is's a temporary feature, that makes some lags.
 // I hope developers of DevToolsExtension will fix bug and then we'll return to it.
@@ -36,6 +37,10 @@ export default class App extends React.Component {
     this.onUpload = this.onUpload.bind(this);
   }
 
+  proposeToInstallApplication() {
+    this.refs.proposeToInstallApplication.show();
+  }
+
   onResize() {
     this.setState(
       R.set(
@@ -45,9 +50,13 @@ export default class App extends React.Component {
       )
     );
   }
-
   onUpload() {
-    // @TODO
+    const isChromeApplication = window.chrome && chrome.app && chrome.app.runtime;
+    if (isChromeApplication) {
+      // @TODO
+    } else {
+      this.proposeToInstallApplication();
+    }
   }
 
   render() {
@@ -62,6 +71,18 @@ export default class App extends React.Component {
             <DevTools />
           </div>
         </Provider>
+        <SkyLight
+          ref="proposeToInstallApplication"
+          title="Oops! You need a Chrome App!"
+        >
+          <p>
+            To use this feature you have to install a Chrome Application.<br />
+            It's free.
+          </p>
+          <p>
+            <a href="#">Go to Chrome Store</a>
+          </p>
+        </SkyLight>
       </div>
     );
   }
