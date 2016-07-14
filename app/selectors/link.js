@@ -1,6 +1,7 @@
 import R from 'ramda';
 import { getFullPinsData, canPinHaveMoreLinks } from './pin';
 import { LINK_ERRORS } from '../constants/errorMessages';
+import ValidationError from '../utils/validationError';
 
 export const getLinks = R.view(R.lensPath(['project', 'links']));
 
@@ -39,22 +40,22 @@ export const validateLink = (state, pinIds) => {
     fromPinCanHaveMoreLinks &&
     toPinCanHaveMoreLinks
   );
-  const result = {
-    validness: check,
-    message: '',
-  };
 
   if (!check) {
+    let error;
+
     if (sameDirection) {
-      result.message = LINK_ERRORS.SAME_DIRECTION;
+      error = new ValidationError(LINK_ERRORS.SAME_DIRECTION);
     } else
     if (sameNode) {
-      result.message = LINK_ERRORS.SAME_NODE;
+      error = new ValidationError(LINK_ERRORS.SAME_NODE);
     } else
     if (!fromPinCanHaveMoreLinks || !toPinCanHaveMoreLinks) {
-      result.message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
+      error = new ValidationError(LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN);
     }
+
+    throw error;
   }
 
-  return result;
+  return true;
 };

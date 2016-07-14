@@ -1,7 +1,6 @@
 import { LINK_ADD, LINK_DELETE } from '../actionTypes';
 import R from 'ramda';
 import Selectors from '../selectors';
-import CustomError from '../utils/customError';
 
 const nodeIds = (links) =>
   R.map(link => parseInt(link.id, 10))(R.values(links));
@@ -21,22 +20,22 @@ export const links = (state = {}, action, context) => {
 
   switch (action.type) {
     case LINK_ADD: {
-      if (context) {
-        const check = Selectors.Link.validateLink(
+      let newState = state;
+
+      if (
+        Selectors.Link.validateLink(
           context,
           action.payload.pins
-        );
-
-        if (!check.validness) {
-          throw new CustomError(check.message);
-        }
+        )
+      ) {
+        newLink = {
+          pins: action.payload.pins,
+        };
+        newLink.id = newId(state);
+        newState = R.set(R.lensProp(newLink.id), newLink, state);
       }
 
-      newLink = {
-        pins: action.payload.pins,
-      };
-      newLink.id = newId(state);
-      return R.set(R.lensProp(newLink.id), newLink, state);
+      return newState;
     }
     case LINK_DELETE:
       return R.omit([action.payload.id.toString()], state);

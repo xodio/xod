@@ -1,7 +1,7 @@
-class CustomError {
+class ValidationError {
   constructor(message) {
     this.message = message;
   }
 }
 
-export default CustomError;
+export default ValidationError;
