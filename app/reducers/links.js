@@ -23,6 +23,7 @@ export const links = (state = {}, action, context) => {
       let newState = state;
 
       if (
+        !context ||
         Selectors.Link.validateLink(
           context,
           action.payload.pins

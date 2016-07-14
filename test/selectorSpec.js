@@ -3,6 +3,7 @@ import chai from 'chai';
 import initialState from '../app/state';
 import Selectors from '../app/selectors';
 import { LINK_ERRORS } from '../app/constants/errorMessages';
+import ValidationError from '../app/utils/validationError';
 
 describe('Link selector', () => {
   describe('while validating link creating', () => {
@@ -15,40 +16,33 @@ describe('Link selector', () => {
 
     it('should be valid', () => {
       const pins = [2, 8];
-      const check = Selectors.Link.validateLink(state, pins);
+      const check = Selectors.Link.validateLink.bind(null, state, pins);
 
-      chai.expect(check.validness).to.equal(true);
-    });
-
-    it('should be invalid', () => {
-      const pins = [2, 3];
-      const check = Selectors.Link.validateLink(state, pins);
-
-      chai.expect(check.validness).to.equal(false);
+      chai.expect(check()).to.equal(true);
     });
 
     it(`should be invalid with error: ${LINK_ERRORS.SAME_NODE}`, () => {
       const pins = [2, 3];
-      const check = Selectors.Link.validateLink(state, pins);
+      const check = Selectors.Link.validateLink.bind(null, state, pins);
       const message = LINK_ERRORS.SAME_NODE;
 
-      chai.expect(check.message).to.equal(message);
+      chai.expect(check).to.throw(new ValidationError(message));
     });
 
     it(`should be invalid with error: ${LINK_ERRORS.SAME_DIRECTION}`, () => {
       const pins = [2, 7];
-      const check = Selectors.Link.validateLink(state, pins);
+      const check = Selectors.Link.validateLink.bind(null, state, pins);
       const message = LINK_ERRORS.SAME_DIRECTION;
 
-      chai.expect(check.message).to.equal(message);
+      chai.expect(check).to.throw(new ValidationError(message));
     });
 
     it(`should be invalid with error: ${LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN}`, () => {
       const pins = [3, 6];
-      const check = Selectors.Link.validateLink(state, pins);
+      const check = Selectors.Link.validateLink.bind(null, state, pins);
       const message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
 
-      chai.expect(check.message).to.equal(message);
+      chai.expect(check).to.throw(new ValidationError(message));
     });
   });
 });
