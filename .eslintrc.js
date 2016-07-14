@@ -36,5 +36,6 @@ module.exports = {
     'beforeEach': true,
     'after': true,
     'afterEach': true,
+    'chrome': true,
   },
 };

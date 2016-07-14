@@ -16,8 +16,10 @@
   ],
   "file_handlers": {
     "text": {
-      "types": ["application/javascript",
-                "application/json"],
-    }
+      "types": [
+        "application/javascript",
+        "application/json",
+      ],
+    },
   }
 }
