@@ -44,6 +44,10 @@ module.exports = {
           'img',
         ],
       },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        loader: 'file?name=fonts/[name].[ext]'
+      }
     ],
   },
   plugins: [
