@@ -4,6 +4,8 @@ class Inspector extends React.Component {
   constructor(props) {
     super(props);
     this.displayName = 'Inspector';
+
+    this.widgets = [];
   }
 
   render() {
