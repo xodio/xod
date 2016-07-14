@@ -151,7 +151,7 @@ class Patch extends React.Component {
     if (this.state.clickNodeId) {
       this.setClickNodeId(null);
     }
-    if (this.props.mode.isCreating) {
+    if (this.props.mode.isCreatingNode) {
       this.onCreateNode(event);
     }
 
@@ -246,7 +246,7 @@ class Patch extends React.Component {
     }
   }
   dragGhostNode() {
-    if (this.props.mode.isCreating && this.state.ghostNode) {
+    if (this.props.mode.isCreatingNode && this.state.ghostNode) {
       this.setState(
         R.set(
           R.lensPath(['ghostNode', 'position']),
@@ -355,7 +355,7 @@ class Patch extends React.Component {
           draggable: this.props.mode.isEditing,
           isDragged: (this.state.dragNodeId === node.id),
           isClicked: (this.state.clickNodeId === node.id),
-          selected: Selectors.Editor.checkSelection(this.props.selection, 'Node', node.id),
+          selected: Selectors.Editor.isSelected(this.props.selection, 'Node', node.id),
         });
 
         return R.assoc(node.id, viewstate, p);
@@ -381,7 +381,7 @@ class Patch extends React.Component {
   }
 
   createGhostNode(props) {
-    if (props.mode.isCreating) {
+    if (props.mode.isCreatingNode) {
       if (this.state.ghostNode === null) {
         const ghostProps = {
           hoverable: false,

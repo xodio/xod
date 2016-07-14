@@ -1,4 +1,4 @@
-export const CREATING = 'creating';
+export const CREATING_NODE = 'creatingNode';
 export const EDITING = 'editing';
 export const PANNING = 'panning';
 

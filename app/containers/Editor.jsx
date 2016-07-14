@@ -42,7 +42,7 @@ class Editor extends React.Component {
     if (keycode === KEYCODE.N) {
       this.setModeCreating();
     }
-    if (keycode === KEYCODE.ESCAPE && this.props.mode.isCreating) {
+    if (keycode === KEYCODE.ESCAPE && this.props.mode.isCreatingNode) {
       this.setModeDefault();
     }
   }
@@ -52,7 +52,7 @@ class Editor extends React.Component {
   }
 
   setModeCreating() {
-    this.setEditorMode(EDITOR_MODE.CREATING);
+    this.setEditorMode(EDITOR_MODE.CREATING_NODE);
   }
   setModeDefault() {
     this.setEditorMode(EDITOR_MODE.DEFAULT);
