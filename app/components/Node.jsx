@@ -82,10 +82,13 @@ class Node extends React.Component {
 
     const oldWidth = this.width;
     const textWidth = nodeText.getWidth();
-    const newWidth = textWidth + (SIZES.NODE_TEXT.margin.x * 2);
+    let newWidth = textWidth + (SIZES.NODE_TEXT.margin.x * 2);
     let resultWidth = oldWidth;
 
-    if (oldWidth !== newWidth && newWidth > SIZES.NODE.minWidth) {
+    if (newWidth < SIZES.NODE.minWidth) {
+      newWidth = SIZES.NODE.minWidth;
+    }
+    if (oldWidth !== newWidth) {
       resultWidth = newWidth;
     }
 

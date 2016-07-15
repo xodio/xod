@@ -76,8 +76,12 @@ class Patch extends React.Component {
   onNodeRendered(id, props) {
     if (id === 0) return;
 
+    let forceUpdate = false;
+
     if (!this.nodesViewstate.hasOwnProperty(id)) {
       this.nodesViewstate[id] = {};
+    } else if (!R.equals(this.nodesViewstate[id], props)) {
+      forceUpdate = true;
     }
 
     this.nodesViewstate[id] = R.merge(this.nodesViewstate[id], props);
@@ -86,8 +90,12 @@ class Patch extends React.Component {
     }
 
     if (this.nodesCount === this.nodesRendered && this.nodesCount !== this.nodesUpdated) {
-      this.forceUpdate();
+      forceUpdate = true;
       this.nodesUpdated = this.nodesCount;
+    }
+
+    if (forceUpdate) {
+      this.forceUpdate();
     }
   }
 
