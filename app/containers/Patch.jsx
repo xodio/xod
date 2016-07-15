@@ -12,6 +12,7 @@ import Selectors from '../selectors';
 import PatchUtils from '../utils/patchUtils';
 import * as EDITOR_MODE from '../constants/editorModes';
 import * as KEYCODE from '../constants/keycodes';
+import { PROPERTY_TYPE } from '../constants/property';
 
 const LAYERNAME_BACKGROUND = 'background';
 const LAYERNAME_LINKS = 'links';
@@ -312,9 +313,18 @@ class Patch extends React.Component {
 
     const nodePins = this.createPinsState(node.id, nodeWidth, nodeType);
     const isNodeHaveValue = (
-      node.hasOwnProperty('properties') && node.properties.hasOwnProperty('value')
+      node.hasOwnProperty('properties') &&
+      node.properties.hasOwnProperty('value') &&
+      node.properties.value !== ''
     );
-    const value = (isNodeHaveValue) ? String(node.properties.value) : null;
+    let value = (isNodeHaveValue) ? String(node.properties.value) : null;
+
+    if (isNodeHaveValue) {
+      const isNodeValueTypeString = (PROPERTY_TYPE.STRING === nodeType.properties.value.type);
+      if (isNodeValueTypeString) {
+        value = `"${value}"`;
+      }
+    }
 
     const viewstate = {
       id: node.id,
