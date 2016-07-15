@@ -1,0 +1,61 @@
+
+.Inspector {
+  position: absolute;
+  width: 200px;
+  height: 100%;
+  background: #eee;
+  color: #000;
+
+  .title {
+    display: block;
+    padding: 26px 20px 4px 8px;
+    color: #999;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  li {
+    padding: 4px 8px;
+    margin: 1px 0;
+    font-size: $font-size-m;
+  }
+
+}
+
+.HintWidget {
+  @include inspector-widget();
+}
+
+.BoolWidget {
+  @include inspector-widget();
+
+  label {
+    padding-right: 30px;
+  }
+}
+
+.NumberWidget {
+  @include inspector-widget();
+
+  label {
+    padding-right: 60px;
+  }
+  input {
+    width: 55px;
+  }
+}
+
+.StringWidget {
+  @include inspector-widget();
+
+  label {
+    padding-right: 105px;
+  }
+  input {
+    width: 100;
+  }
+}

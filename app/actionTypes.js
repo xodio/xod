@@ -1,6 +1,7 @@
 export const NODE_MOVE = 'NODE_MOVE';
 export const NODE_ADD = 'NODE_ADD';
 export const NODE_DELETE = 'NODE_DELETE';
+export const NODE_UPDATE_PROPERTY = 'NODE_UPDATE_PROPERTY';
 
 export const LINK_ADD = 'LINK_ADD';
 export const LINK_DELETE = 'LINK_DELETE';
@@ -24,3 +25,4 @@ export const EDITOR_SELECT_LINK = 'EDITOR_SELECT_LINK';
 export const EDITOR_SET_MODE = 'EDITOR_SET_MODE';
 
 export const EDITOR_SET_SELECTED_NODETYPE = 'EDITOR_SET_SELECTED_NODETYPE';
+

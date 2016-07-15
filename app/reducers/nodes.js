@@ -1,4 +1,4 @@
-import { NODE_MOVE, NODE_ADD, NODE_DELETE } from '../actionTypes';
+import { NODE_MOVE, NODE_ADD, NODE_DELETE, NODE_UPDATE_PROPERTY } from '../actionTypes';
 import R from 'ramda';
 
 const nodeIds = (nodes) =>
@@ -44,6 +44,16 @@ export const nodes = (state = {}, action) => {
     case NODE_MOVE:
       movedNode = node(R.prop(action.payload.id, state), action);
       return R.set(R.lensProp(action.payload.id), movedNode, state);
+
+    case NODE_UPDATE_PROPERTY:
+      return R.set(
+        R.lensPath([
+          action.payload.id,
+          'properties',
+          action.payload.key,
+        ]),
+        action.payload.value
+      )(state);
 
     default:
       return state;
