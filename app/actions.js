@@ -240,3 +240,12 @@ export const hideError = (timestamp) => ({
     timestamp,
   },
 });
+
+export const updateNodeProperty = (nodeId, propKey, propValue) => ({
+  type: ActionType.NODE_UPDATE_PROPERTY,
+  payload: {
+    id: nodeId,
+    key: propKey,
+    value: propValue,
+  },
+});
