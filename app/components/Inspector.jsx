@@ -4,9 +4,10 @@ import * as ENTITIES from '../constants/entities';
 
 const styles = {
   container: {
-    float: 'left',
+    position: 'absolute',
     width: '200px',
-    background: '#fff',
+    height: '100%',
+    background: '#eee',
     color: '#000',
   },
   title: {

@@ -1,25 +1,6 @@
 import React from 'react';
 import R from 'ramda';
 
-const styles = {
-  container: {
-    display: 'inline-block',
-    padding: '1px 3px 3px 3px',
-    marginBottom: '3px',
-    borderRadius: '4px',
-    background: '#ccc',
-    boxShadow: 'inset 0 1px 1px rgba(0,0,20,0.3), 0 1px 0 #fff',
-  },
-  button: {
-    background: '#286AA7',
-    color: '#fff',
-    textShadow: '0 -1px 0 rgba(0,0,30,0.3)',
-    border: 0,
-    borderRadius: '2px',
-    marginLeft: '2px',
-  },
-};
-
 class CreateNodeWidget extends React.Component {
   constructor(props) {
     super(props);
@@ -40,7 +21,7 @@ class CreateNodeWidget extends React.Component {
 
 
     return (
-      <div style={styles.container}>
+      <div className="CreateNodeWidget">
         <select
           onChange={this.onNodeTypeChange}
           value={this.props.selectedNodeType}
@@ -55,8 +36,7 @@ class CreateNodeWidget extends React.Component {
           )}
         </select>
         <button
-          className="toolbar-addNodeButton"
-          style={styles.button}
+          className="button-add-node"
           onClick={this.onAddNodeClick}
           title="Hotkey: N"
         >

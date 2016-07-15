@@ -18,13 +18,14 @@
   }
 
   .upload-button {
+    @include button-blue;
+
     position: absolute;
     top: 0;
     right: 0;
+    bottom: 0;
     display: block;
-    background: #7E6403;
-    color: #fff;
-    padding: 8px 18px 9px;
+    padding: 0 12px;
     border: 0;
   }
 }

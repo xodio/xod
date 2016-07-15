@@ -1,0 +1,19 @@
+
+.CreateNodeWidget {
+  display: inline-block;
+  padding: 3px 3px 2px 3px;
+  margin-bottom: 3px;
+  border-radius: 4px;
+  background: #ccc;
+  box-shadow: 0 1px 0 #fff;
+
+  .button-add-node {
+    @include button-blue;
+
+    text-shadow: 0 -1px 0 rgba(0,0,30,0.3);
+    border: 0;
+    border-radius: 2px;
+    margin-left: 2px;
+  }
+}
+

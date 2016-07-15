@@ -17,7 +17,7 @@ const styles = {
     left: 0,
     right: 0,
     marginLeft: '200px',
-    background: '#eee',
+    background: '#808080',
     padding: '20px',
     overflow: 'hidden',
     boxShadow: 'inset 2px 0 10px rgba(0,0,30,.3)',
