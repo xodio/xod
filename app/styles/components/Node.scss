@@ -1,20 +1,20 @@
 
 .Node {
   .body {
-    fill: #444;
-    stroke: #000;
+    fill: $color-canvas-face;
+    stroke: $color-canvas-face-stroke;
     stroke-width: 1px;
   }
 
   &:hover {
     .body {
-      fill: #555;
+      fill: color-canvas-hover($color-canvas-face);
     }
   }
 
   &.is-selected {
     .body {
-      stroke: red;
+      stroke: $color-canvas-selected;
     }
   }
 }

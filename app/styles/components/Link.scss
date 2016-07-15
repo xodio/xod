@@ -1,17 +1,23 @@
 
 .Link {
-  stroke: #000;
+  stroke: $color-canvas-face-stroke;
   stroke-width: 1px;
 
   &:hover {
     .line {
-      stroke: #444;
+      stroke: color-canvas-hover($color-canvas-face-stroke);
     }
   }
 
   &.is-selected {
     .line {
-      stroke: red;
+      stroke: $color-canvas-selected;
+    }
+  }
+
+  &.is-selected:hover {
+    .line {
+      stroke: color-canvas-hover($color-canvas-selected);
     }
   }
 }

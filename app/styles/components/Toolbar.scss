@@ -1,14 +1,16 @@
 
 .Toolbar {
+  font-size: $font-size-l;
+
   position: relative;
   display: block;
-  background-color: #1E2329;
-  color: #fff;
+  background-color: $color-ctrl-background;
+  color: $color-ctrl-background-text;
 
   .logo {
     display: inline-block;
     padding: 5px 10px;
-    color: #7A838F;
+    color: #7A838F; // TODO: will be replaced by SVG logo
   }
 
   .project-meta {
@@ -18,7 +20,7 @@
   }
 
   .upload-button {
-    @include button-blue;
+    @include button-blue; // TODO: we should get rid of color value notion
 
     position: absolute;
     top: 0;
