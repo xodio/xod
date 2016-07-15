@@ -1,4 +1,5 @@
 import React from 'react';
+import Widgets from './InspectorWidgets';
 
 const styles = {
   container: {
@@ -25,9 +26,24 @@ const styles = {
 class Inspector extends React.Component {
   constructor(props) {
     super(props);
-    this.displayName = 'Inspector';
 
     this.widgets = [];
+  }
+
+  componentWillUpdate(nextProps) {
+    if (nextProps.selection.length === 0) {
+      this.widgets = [
+        new Widgets.HintWidget({
+          text: 'Select the node to edit its properties.',
+        }),
+      ];
+    } else {
+      this.widgets = [
+        new Widgets.HintWidget({
+          text: 'There is no properties.',
+        }),
+      ];
+    }
   }
 
   render() {
@@ -35,9 +51,9 @@ class Inspector extends React.Component {
       <div style={styles.container}>
         <small style={styles.title}>Inspector</small>
         <ul style={styles.ul}>
-          {this.widgets.map(widget =>
-            <li style={styles.li}>
-              {widget.name}
+          {this.widgets.map((widget, i) =>
+            <li key={i} style={styles.li}>
+              {widget}
             </li>
           )}
         </ul>

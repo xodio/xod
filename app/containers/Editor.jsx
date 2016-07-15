@@ -93,7 +93,7 @@ class Editor extends React.Component {
       <div>
         <EventListener target={document} onKeyDown={this.onKeyDown} />
         <Inspector
-          selections={this.props.selection}
+          selection={this.props.selection}
           nodeTypes={this.props.nodeTypes}
           onPropUpdate={this.onPropUpdate}
         />
