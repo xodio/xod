@@ -311,11 +311,15 @@ class Patch extends React.Component {
       PatchUtils.getNodeWidth(nodeType.pins);
 
     const nodePins = this.createPinsState(node.id, nodeWidth, nodeType);
+    const isNodeHaveValue = (
+      node.hasOwnProperty('properties') && node.properties.hasOwnProperty('value')
+    );
+    const value = (isNodeHaveValue) ? String(node.properties.value) : null;
 
     const viewstate = {
       id: node.id,
       key: node.id,
-      label: node.label || nodeType.label,
+      label: value || node.label || nodeType.label,
       pins: nodePins,
       position: node.position,
       width: nodeWidth,
