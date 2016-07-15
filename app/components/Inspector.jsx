@@ -1,6 +1,6 @@
-import R from 'ramda';
 import React from 'react';
 import Widgets from './InspectorWidgets';
+import * as ENTITIES from '../constants/entities';
 
 const styles = {
   container: {
@@ -48,20 +48,22 @@ class Inspector extends React.Component {
     } else if (selection.length === 1) {
       const entity = (selection[0].entity);
       switch (entity) {
-        default:
-        case 'Node':
+        case ENTITIES.NODE:
           this.widgets = [
             new Widgets.HintWidget({
               text: 'There are no properties for the selected node.',
             }),
           ];
           break;
-        case 'Link':
+        case ENTITIES.LINK:
           this.widgets = [
             new Widgets.HintWidget({
               text: 'Links have not any properties.',
             }),
           ];
+          break;
+        default:
+          this.widgets = [];
           break;
       }
     } else {
