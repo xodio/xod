@@ -29,6 +29,7 @@ class Editor extends React.Component {
     super(props);
 
     this.onKeyDown = this.onKeyDown.bind(this);
+    this.onPropUpdate = this.onPropUpdate.bind(this);
     this.setModeCreating = this.setModeCreating.bind(this);
     this.setModeDefault = this.setModeDefault.bind(this);
     this.setSelectedNodeType = this.setSelectedNodeType.bind(this);
@@ -49,6 +50,9 @@ class Editor extends React.Component {
     if (keycode === KEYCODE.ESCAPE && this.props.mode.isCreatingNode) {
       this.setModeDefault();
     }
+  }
+  onPropUpdate(nodeId, propKey, propValue) {
+    this.props.actions.updateNodeProperty(nodeId, propKey, propValue);
   }
 
   setEditorMode(mode) {
@@ -74,6 +78,7 @@ class Editor extends React.Component {
         <EventListener target={document} onKeyDown={this.onKeyDown} />
         <Inspector
           selection={this.props.selection}
+          nodes={this.props.nodes}
           nodeTypes={this.props.nodeTypes}
           onPropUpdate={this.onPropUpdate}
         />
@@ -92,6 +97,7 @@ class Editor extends React.Component {
 }
 
 Editor.propTypes = {
+  nodes: React.PropTypes.any.isRequired,
   editor: React.PropTypes.any.isRequired,
   nodeTypes: React.PropTypes.any.isRequired,
   size: React.PropTypes.object.isRequired,
@@ -102,6 +108,7 @@ Editor.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  nodes: Selectors.Node.getNodes(state),
   editor: Selectors.Editor.getEditor(state),
   nodeTypes: Selectors.NodeType.getNodeTypes(state),
   selection: Selectors.Editor.getSelection(state),
@@ -113,6 +120,7 @@ const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     setMode: Actions.setMode,
     setSelectedNodeType: Actions.setSelectedNodeType,
+    updateNodeProperty: Actions.updateNodeProperty,
   }, dispatch),
 });
 

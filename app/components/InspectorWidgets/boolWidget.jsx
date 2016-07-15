@@ -9,11 +9,6 @@ function BoolWidget({ nodeId, key, label, value, onPropUpdate }) {
 
   return (
     <div className="BoolWidget">
-      <label
-        htmlFor={elementId}
-      >
-        {label}
-      </label>
       <input
         id={elementId}
         type="checkbox"
@@ -21,6 +16,11 @@ function BoolWidget({ nodeId, key, label, value, onPropUpdate }) {
         checked={value}
         onChange={onChange}
       />
+      <label
+        htmlFor={elementId}
+      >
+        {label}
+      </label>
     </div>
   );
 }

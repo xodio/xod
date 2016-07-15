@@ -8,3 +8,30 @@
     background: #0c77da;
   }
 }
+
+@mixin inspector-widget() {
+  padding: 4px;
+  margin-bottom: 2px;
+  border-top: 1px solid #ccc;
+  overflow: hidden;
+
+  font-size: $font-size-m;
+  font-family: $font-family-condensed;
+  line-height: $font-size-l;
+  vertical-align: baseline;
+
+  label {
+    display: block;
+  }
+  input {
+    float: right;
+  }
+
+  &:hover, &:focus {
+    background: #fff;
+    
+    label {
+      color: #823906;
+    }
+  }
+}

@@ -2,8 +2,8 @@ import React from 'react';
 
 function HintWidget({ text }) {
   return (
-    <div className="inspector__hintWidget">
-      <small>{text}</small>
+    <div className="HintWidget">
+      <span>{text}</span>
     </div>
   );
 }
