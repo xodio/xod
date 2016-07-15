@@ -18,3 +18,7 @@ export const NODE_TEXT = {
     y: 5,
   },
 };
+
+export const LINK_HOTSPOT = {
+  width: 8,
+}
