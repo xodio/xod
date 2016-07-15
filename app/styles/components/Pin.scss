@@ -1,37 +1,38 @@
 
 .Pin {
   .symbol {
-    fill: #444;
-    stroke: black;
+    fill: $color-canvas-face;
+    stroke: $color-canvas-face-stroke;
   }
 
   .label {
     font-family: $font-family-mono;
     font-weight: 500;
+    fill: $color-canvas-background-text;
     dominant-baseline: central;
   }
 
   &:hover {
     .symbol {
-      fill: #555;
+      fill: color-canvas-hover($color-canvas-face);
     }
   }
 
   &.is-selected {
     .symbol {
-      stroke: red;
+      stroke: $color-canvas-selected;
     }
   }
 
   &.is-valid {
     .symbol {
-      fill: #0f0;
+      fill: $color-canvas-ok;
     }
   }
 
   &.is-almost-valid {
     .symbol {
-      fill: #ab0;
+      fill: $color-canvas-almost-ok;
     }
   }
 }

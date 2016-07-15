@@ -1,0 +1,12 @@
+
+@function color-canvas-hover($base-color) {
+  @if (lightness($base-color) < 20) {
+    @return lighten($base-color, 25%);
+  }
+
+  @if (lightness($base-color) >= 40) {
+    @return darken($base-color, 10%);
+  }
+
+  @return lighten($base-color, 5%);
+}
