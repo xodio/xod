@@ -1,0 +1,17 @@
+
+.Link {
+  stroke: #000;
+  stroke-width: 1px;
+
+  &:hover {
+    .line {
+      stroke: #444;
+    }
+  }
+
+  &.is-selected {
+    .line {
+      stroke: red;
+    }
+  }
+}

@@ -1,4 +1,7 @@
+
 import React from 'react';
+import classNames from 'classnames';
+import * as SIZES from '../constants/sizes';
 import Stylizer from '../utils/stylizer';
 
 const linkStyles = {
@@ -67,11 +70,13 @@ class Link extends React.Component {
 
   render() {
     const coords = this.getCoords();
-    const styles = this.getStyle();
+    const cls = classNames('Link', {
+      'is-selected': this.props.selected,
+    });
 
     return (
       <g
-        className="link"
+        className={cls}
         id={this.elementId}
         onClick={this.onClick}
         onMouseOver={this.handleOver}
@@ -79,12 +84,13 @@ class Link extends React.Component {
         pointerEvents={this.props.clickable}
       >
         <line
+          stroke="transparent"
+          strokeWidth={SIZES.LINK_HOTSPOT.width}
           {...coords}
-          style={styles.helper}
         />
         <line
+          className="line"
           {...coords}
-          style={styles.line}
         />
       </g>
     );
@@ -95,6 +101,7 @@ Link.propTypes = {
   id: React.PropTypes.number.isRequired,
   from: React.PropTypes.object.isRequired,
   to: React.PropTypes.object.isRequired,
+  selected: React.PropTypes.bool,
   hoverable: React.PropTypes.bool,
   clickable: React.PropTypes.bool,
   onClick: React.PropTypes.func.isRequired,

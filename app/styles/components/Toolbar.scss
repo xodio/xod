@@ -1,0 +1,30 @@
+
+.Toolbar {
+  position: relative;
+  display: block;
+  background-color: #1E2329;
+  color: #fff;
+
+  .logo {
+    display: inline-block;
+    padding: 5px 10px;
+    color: #7A838F;
+  }
+
+  .project-meta {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 5px;
+  }
+
+  .upload-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    background: #7E6403;
+    color: #fff;
+    padding: 8px 18px 9px;
+    border: 0;
+  }
+}

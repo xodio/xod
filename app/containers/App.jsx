@@ -1,3 +1,7 @@
+
+// eslint-disable-next-line no-unused-vars
+import styles from '../styles/main.scss';
+
 import R from 'ramda';
 import React from 'react';
 import { createStore } from 'redux';

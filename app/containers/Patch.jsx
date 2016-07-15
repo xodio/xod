@@ -23,15 +23,6 @@ const DELETE_ACTIONS = {
   Link: 'deleteLink',
 };
 
-const backgroundStyle = {
-  fill: '#eee',
-};
-const svgStyle = {
-  WebkitUserSelect: 'none',
-  MozUserSelect: 'none',
-  UserSelect: 'none',
-  cursor: 'default',
-};
 const findParentByClassName = (element, className) => {
   let result = null;
   if (element.classList.contains(className)) {
@@ -122,7 +113,7 @@ class Patch extends React.Component {
   }
 
   onMouseMove(event) {
-    const svg = findParentByClassName(event.target, 'patch');
+    const svg = findParentByClassName(event.target, 'Patch');
     const bbox = svg.getBoundingClientRect();
 
     const mousePosition = {
@@ -180,7 +171,7 @@ class Patch extends React.Component {
   }
 
   onCreateNode(event) {
-    const container = findParentByClassName(event.target, 'patch');
+    const container = findParentByClassName(event.target, 'Patch');
     const targetOffset = container.getBoundingClientRect();
     const position = {
       x: event.clientX - targetOffset.left,
@@ -488,10 +479,10 @@ class Patch extends React.Component {
 
     bgChildren.push(
       <rect
+        className="layer-background"
         key="bg" x="0" y="0"
         width={this.props.size.width}
         height={this.props.size.height}
-        style={backgroundStyle}
         onClick={bgOnClick}
       />
     );
@@ -509,11 +500,10 @@ class Patch extends React.Component {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="patch"
+        className="Patch"
         viewBox={`0 0 ${this.props.size.width} ${this.props.size.height}`}
         width={this.props.size.width}
         height={this.props.size.height}
-        style={svgStyle}
         onMouseMove={this.onMouseMove}
         onMouseUp={this.onMouseUp}
       >

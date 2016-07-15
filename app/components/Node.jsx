@@ -1,40 +1,11 @@
+
 import R from 'ramda';
 import React from 'react';
+import classNames from 'classnames';
 import Pin from '../components/Pin';
-import Stylizer from '../utils/stylizer';
 import NodeText from '../components/NodeText';
 
 import * as SIZES from '../constants/sizes';
-
-const nodeStyles = {
-  block: {
-    fill: 'transparent',
-  },
-  rect: {
-    normal: {
-      fill: '#ccc',
-      stroke: 'black',
-      strokeWidth: 1,
-    },
-    hover: {
-      fill: 'lightblue',
-    },
-    selected: {
-      fill: 'yellow',
-    },
-  },
-  text: {
-    normal: {
-      textAnchor: 'middle',
-      aligmentBaseline: 'central',
-      fill: 'black',
-      fontSize: 12,
-    },
-    hover: {
-      fill: 'blue',
-    },
-  },
-};
 
 class Node extends React.Component {
   constructor(props) {
@@ -42,12 +13,6 @@ class Node extends React.Component {
     this.id = this.props.id;
 
     this.pins = {};
-
-    Stylizer.assignStyles(this, nodeStyles);
-    if (this.props.hoverable) {
-      Stylizer.hoverable(this, ['rect', 'text']);
-    }
-    Stylizer.selectable(this, ['rect']);
 
     this.width = this.props.width;
     this.height = this.props.height;
@@ -145,35 +110,32 @@ class Node extends React.Component {
   }
 
   render() {
-    const styles = this.getStyle();
     const pins = R.values(this.props.pins);
     const position = this.getOriginPosition();
     const textPosition = this.getTextProps();
-
     const draggable = this.props.draggable;
-    const dragStyle = {
-      opacity: (this.props.isDragged) ? 0.7 : 1,
-    };
+
+    const cls = classNames('Node', {
+      'is-selected': this.props.selected,
+    });
 
     return (
       <svg
-        className="node"
+        className={cls}
         {...position}
         key={this.id}
         draggable={draggable}
         onMouseDown={this.onMouseDown}
-        style={dragStyle}
       >
         <g
           onMouseOver={this.handleOver}
           onMouseOut={this.handleOut}
           onMouseUp={this.onMouseUp}
         >
-          <rect {...this.getRectProps()} style={styles.rect} ref="rect" />
+          <rect className="body" {...this.getRectProps()} ref="rect" />
           <NodeText
             ref="text"
             position={textPosition}
-            style={styles.text}
             label={this.props.label}
           />
         </g>
@@ -198,6 +160,7 @@ Node.propTypes = {
   position: React.PropTypes.object.isRequired,
   width: React.PropTypes.number,
   height: React.PropTypes.number,
+  selected: React.PropTypes.bool,
   hoverable: React.PropTypes.bool,
   draggable: React.PropTypes.bool,
   isDragged: React.PropTypes.bool,

@@ -29,12 +29,10 @@ class NodeText extends React.Component {
     return position;
   }
   render() {
-    const style = this.props.style;
-
     return (
       <text
+        className="NodeText"
         {...this.getPosition()}
-        style={style}
         textAnchor="middle"
         ref="label"
       >
@@ -46,7 +44,6 @@ class NodeText extends React.Component {
 
 NodeText.propTypes = {
   position: React.PropTypes.any,
-  style: React.PropTypes.any,
   label: React.PropTypes.string.isRequired,
 };
 
