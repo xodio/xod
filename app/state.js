@@ -26,9 +26,6 @@ const initialState = {
           x: 320,
           y: 120,
         },
-        props: {
-          brightness: 0.67,
-        },
       },
       2: {
         id: 2,
