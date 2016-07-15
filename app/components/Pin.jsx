@@ -1,69 +1,14 @@
+
 import React from 'react';
-import Stylizer from '../utils/stylizer';
+import classNames from 'classnames';
 import * as PIN_DIRECTION from '../constants/pinDirection';
 import * as PIN_VALIDITY from '../constants/pinValidity';
 
-const pinStyles = {
-  block: {
-    width: 15,
-    height: 25,
-    fill: 'transparent',
-  },
-  circle: {
-    normal: {
-      fill: 'darkgrey',
-      stroke: 'black',
-      strokeWidth: 1,
-      cursor: 'default',
-    },
-    hover: {
-      fill: 'red',
-    },
-    selected: {
-      fill: 'yellow',
-      stroke: 'red',
-    },
-    validness: {
-      [PIN_VALIDITY.INVALID]: {
-        opacity: 0.5,
-      },
-      [PIN_VALIDITY.ALMOST]: {
-        fill: 'yellow',
-        stroke: 'orange',
-      },
-      [PIN_VALIDITY.VALID]: {
-        fill: 'green',
-        stroke: 'darkgreen',
-      },
-    },
-  },
-  text: {
-    normal: {
-      fill: 'black',
-      fontSize: 12,
-      aligmentBaseline: 'central',
-      cursor: 'default',
-    },
-    hover: {
-      fill: 'red',
-    },
-    selected: {
-      fill: 'red',
-    },
-  },
-};
 
 export default class Pin extends React.Component {
   constructor(props) {
     super(props);
-
     this.id = this.props.id;
-
-    Stylizer.assignStyles(this, pinStyles);
-    Stylizer.hoverable(this, ['circle', 'text']);
-    Stylizer.selectable(this, ['circle', 'text']);
-    Stylizer.dependOnProp(this, 'validness', ['circle']);
-
     this.onMouseUp = this.onMouseUp.bind(this);
   }
 
@@ -78,24 +23,18 @@ export default class Pin extends React.Component {
       y: this.props.position.y + radius + 1,
     };
   }
-  getBlockCorrection() {
+
+  getHotspotProps() {
+    const halfSide = this.props.radius + 1;
     return {
-      x: (pinStyles.block.width / 2 - this.props.radius),
-      y: (pinStyles.block.height),
+      x: this.getPosition().x - halfSide,
+      y: this.getPosition().y - halfSide,
+      width: halfSide * 2,
+      height: halfSide * 2,
+      fill: 'transparent',
     };
   }
-  getRectProps() {
-    const rp = {
-      x: this.getPosition().x - (this.props.radius + this.getBlockCorrection().x),
-      y: this.getPosition().y,
-    };
 
-    if (this.isInput()) {
-      rp.y -= (pinStyles.block.height);
-    }
-
-    return rp;
-  }
   getCircleProps() {
     return {
       cx: this.getPosition().x,
@@ -103,51 +42,55 @@ export default class Pin extends React.Component {
       r: this.props.radius,
     };
   }
+
   getTextProps() {
-    const textMargin = (
-      (this.props.radius + this.getBlockCorrection().x) * ((this.isInput()) ? 1 : -1)
-    );
+    const textMargin = this.props.radius * (this.isInput() ? 1 : -1);
     const pos = this.getPosition();
     return {
       x: pos.x + textMargin,
-      y: pos.y + this.getStyle().text.fontSize / 4,
+      y: pos.y,
       transform: `rotate(-90 ${pos.x}, ${pos.y})`,
-      textAnchor: (this.isInput()) ? 'start' : 'end',
+      textAnchor: this.isInput() ? 'start' : 'end',
     };
   }
 
-  getType() {
-    return this.props.type;
+  getDirection() {
+    return this.props.direction;
   }
   isInput() {
-    return (this.getType() === PIN_DIRECTION.INPUT);
+    return (this.getDirection() === PIN_DIRECTION.INPUT);
   }
   isOutput() {
-    return (this.getType() === PIN_DIRECTION.OUTPUT);
+    return (this.getDirection() === PIN_DIRECTION.OUTPUT);
   }
 
   render() {
-    const styles = this.getStyle();
     const label = this.props.label ? (
       <text
+        className="label"
         key={`pinText_${this.props.id}`}
         {...this.getTextProps()}
-        style={styles.text}
       >
         {this.props.label}
       </text>
     ) : null;
 
+    const cls = classNames('Pin', {
+      'is-selected': this.props.selected,
+      'is-valid': this.props.validness === PIN_VALIDITY.VALID,
+      'is-almost-valid': this.props.validness === PIN_VALIDITY.ALMOST,
+    });
+
     return (
       <g
-        className="pin"
+        className={cls}
         id={this.id}
         onMouseUp={this.onMouseUp}
         onMouseOver={this.handleOver}
         onMouseOut={this.handleOut}
       >
-        <rect {...this.getRectProps()} style={styles.block} />
-        <circle {...this.getCircleProps()} style={styles.circle} />
+        <rect {...this.getHotspotProps()} />
+        <circle className="symbol" {...this.getCircleProps()} />
         {label}
       </g>
     );
@@ -157,7 +100,7 @@ export default class Pin extends React.Component {
 Pin.propTypes = {
   id: React.PropTypes.number.isRequired,
   label: React.PropTypes.string,
-  type: React.PropTypes.number.isRequired,
+  direction: React.PropTypes.number.isRequired,
   position: React.PropTypes.object.isRequired,
   radius: React.PropTypes.number.isRequired,
   onMouseUp: React.PropTypes.func.isRequired,

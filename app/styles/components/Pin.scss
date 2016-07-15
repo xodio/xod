@@ -1,0 +1,37 @@
+
+.Pin {
+  .symbol {
+    fill: #444;
+    stroke: black;
+  }
+
+  .label {
+    font-family: $font-family-mono;
+    font-weight: 500;
+    dominant-baseline: central;
+  }
+
+  &:hover {
+    .symbol {
+      fill: #555;
+    }
+  }
+
+  &.is-selected {
+    .symbol {
+      stroke: red;
+    }
+  }
+
+  &.is-valid {
+    .symbol {
+      fill: #0f0;
+    }
+  }
+
+  &.is-almost-valid {
+    .symbol {
+      fill: #ab0;
+    }
+  }
+}
