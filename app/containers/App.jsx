@@ -1,5 +1,5 @@
 
-import { default as styles } from '../styles/main.scss';
+import styles from '../styles/main.scss';
 
 import R from 'ramda';
 import React from 'react';
