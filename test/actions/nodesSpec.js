@@ -60,6 +60,7 @@ describe('Node actions with dependencies', () => {
                 x: 10,
                 y: 10,
               },
+              properties: {},
             },
           },
           pins: {
