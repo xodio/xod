@@ -71,12 +71,18 @@ export const addNodeWithDependencies = (nodeTypeId, position) => (dispatch, getS
   const result = [];
   const nodeTypes = Selectors.NodeType.getNodeTypes(getState());
   const nodeType = nodeTypes[nodeTypeId];
+  const defaultProps = R.pipe(
+    R.prop('properties'),
+    R.values,
+    R.reduce((p, prop) => R.assoc(prop.key, prop.defaultValue, p), {})
+  )(nodeType);
   if (nodeType && position) {
     result.push(
       dispatch(
         addNode({
           typeId: nodeType.id,
           position,
+          properties: defaultProps,
         })
       )
     );
