@@ -1,0 +1,10 @@
+
+@mixin button-blue() {
+  cursor: pointer;
+  background: #286aa7;
+  color: #fff;
+
+  &:hover {
+    background: #0c77da;
+  }
+}

@@ -1,6 +1,7 @@
 
 @import
-  'abstracts/variables';
+  'abstracts/variables',
+  'abstracts/mixins';
 
 @import
   'fonts/roboto',
@@ -17,4 +18,5 @@
   'components/NodeText',
   'components/Pin',
   'components/Link',
-  'components/Toolbar';
+  'components/Toolbar',
+  'components/CreateNodeWidget';

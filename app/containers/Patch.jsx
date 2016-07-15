@@ -501,9 +501,8 @@ class Patch extends React.Component {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="Patch"
-        viewBox={`0 0 ${this.props.size.width} ${this.props.size.height}`}
-        width={this.props.size.width}
-        height={this.props.size.height}
+        width="100%"
+        height="100%"
         onMouseMove={this.onMouseMove}
         onMouseUp={this.onMouseUp}
       >

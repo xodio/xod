@@ -8,10 +8,19 @@ import * as KEYCODE from '../constants/keycodes';
 import Patch from './Patch';
 import EventListener from 'react-event-listener';
 import CreateNodeWidget from '../components/CreateNodeWidget';
+import Inspector from '../components/Inspector';
 
 const styles = {
   patchContainer: {
-    position: 'relative',
+    position: 'absolute',
+    height: '100%',
+    left: 0,
+    right: 0,
+    marginLeft: '200px',
+    background: '#808080',
+    padding: '20px',
+    overflow: 'hidden',
+    boxShadow: 'inset 2px 0 10px rgba(0,0,30,.3)',
   },
 };
 
@@ -23,6 +32,8 @@ class Editor extends React.Component {
     this.setModeCreating = this.setModeCreating.bind(this);
     this.setModeDefault = this.setModeDefault.bind(this);
     this.setSelectedNodeType = this.setSelectedNodeType.bind(this);
+
+    this.patchSize = this.props.size;
   }
 
   onKeyDown(event) {
@@ -52,21 +63,28 @@ class Editor extends React.Component {
   }
 
   setSelectedNodeType(nodeTypeId) {
-    this.props.actions.setSelectedNodeType(nodeTypeId);
+    this.props.actions.setSelectedNodeType(
+      parseInt(nodeTypeId, 10)
+    );
   }
 
   render() {
     return (
       <div>
         <EventListener target={document} onKeyDown={this.onKeyDown} />
-        <div style={styles.patchContainer}>
+        <Inspector
+          selection={this.props.selection}
+          nodeTypes={this.props.nodeTypes}
+          onPropUpdate={this.onPropUpdate}
+        />
+        <div style={styles.patchContainer} ref="patchContainer">
           <CreateNodeWidget
             nodeTypes={this.props.nodeTypes}
             selectedNodeType={this.props.selectedNodeType}
             onNodeTypeChange={this.setSelectedNodeType}
             onAddNodeClick={this.setModeCreating}
           />
-          <Patch size={this.props.size} />
+          <Patch size={this.patchSize} />
         </div>
       </div>
     );
@@ -77,6 +95,7 @@ Editor.propTypes = {
   editor: React.PropTypes.any.isRequired,
   nodeTypes: React.PropTypes.any.isRequired,
   size: React.PropTypes.object.isRequired,
+  selection: React.PropTypes.array,
   selectedNodeType: React.PropTypes.number,
   mode: React.PropTypes.object,
   actions: React.PropTypes.object,
@@ -85,6 +104,7 @@ Editor.propTypes = {
 const mapStateToProps = (state) => ({
   editor: Selectors.Editor.getEditor(state),
   nodeTypes: Selectors.NodeType.getNodeTypes(state),
+  selection: Selectors.Editor.getSelection(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
   mode: Selectors.Editor.getModeChecks(state),
 });

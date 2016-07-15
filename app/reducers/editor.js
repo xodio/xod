@@ -7,6 +7,7 @@ import {
   EDITOR_SET_MODE,
   EDITOR_SET_SELECTED_NODETYPE,
 } from '../actionTypes';
+import * as ENTITIES from '../constants/entities';
 
 const addSelection = (entityName, action, state) => {
   const select = {
@@ -25,9 +26,9 @@ export const editor = (state = {}, action) => {
         linkingPin: null,
       });
     case EDITOR_SELECT_NODE:
-      return addSelection('Node', action, state);
+      return addSelection(ENTITIES.NODE, action, state);
     case EDITOR_SELECT_LINK:
-      return addSelection('Link', action, state);
+      return addSelection(ENTITIES.LINK, action, state);
     case EDITOR_SELECT_PIN:
       return R.set(R.lensProp('linkingPin'), action.payload.id, state);
     case EDITOR_SET_MODE:
