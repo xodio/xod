@@ -10,11 +10,12 @@ const styles = {
   },
   title: {
     display: 'block',
-    padding: '26px 20px 10px 20px',
+    padding: '26px 20px 4px 8px',
+    color: '#999',
   },
   ul: {
-    padding: '0px',
-    margin: '10px 0 0 0',
+    padding: 0,
+    margin: 0,
     listStyleType: 'none',
   },
   li: {
