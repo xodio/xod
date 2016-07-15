@@ -1,4 +1,5 @@
 
+// eslint-disable-next-line no-unused-vars
 import styles from '../styles/main.scss';
 
 import R from 'ramda';

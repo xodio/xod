@@ -21,4 +21,4 @@ export const NODE_TEXT = {
 
 export const LINK_HOTSPOT = {
   width: 8,
-}
+};

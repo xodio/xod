@@ -116,7 +116,7 @@ class Node extends React.Component {
     const draggable = this.props.draggable;
 
     const cls = classNames('Node', {
-      'is-selected': this.props.selected
+      'is-selected': this.props.selected,
     });
 
     return (
@@ -160,6 +160,7 @@ Node.propTypes = {
   position: React.PropTypes.object.isRequired,
   width: React.PropTypes.number,
   height: React.PropTypes.number,
+  selected: React.PropTypes.bool,
   hoverable: React.PropTypes.bool,
   draggable: React.PropTypes.bool,
   isDragged: React.PropTypes.bool,

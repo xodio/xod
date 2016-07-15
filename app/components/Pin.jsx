@@ -104,6 +104,7 @@ Pin.propTypes = {
   position: React.PropTypes.object.isRequired,
   radius: React.PropTypes.number.isRequired,
   onMouseUp: React.PropTypes.func.isRequired,
+  selected: React.PropTypes.bool,
   validness: React.PropTypes.number,
 };
 

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import * as SIZES from '../constants/sizes'; 
+import * as SIZES from '../constants/sizes';
 import Stylizer from '../utils/stylizer';
 
 const linkStyles = {
@@ -84,12 +84,12 @@ class Link extends React.Component {
         pointerEvents={this.props.clickable}
       >
         <line
-          stroke='transparent'
+          stroke="transparent"
           strokeWidth={SIZES.LINK_HOTSPOT.width}
           {...coords}
         />
         <line
-          className='line'
+          className="line"
           {...coords}
         />
       </g>
