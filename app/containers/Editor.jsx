@@ -73,7 +73,9 @@ class Editor extends React.Component {
   }
 
   setSelectedNodeType(nodeTypeId) {
-    this.props.actions.setSelectedNodeType(nodeTypeId);
+    this.props.actions.setSelectedNodeType(
+      parseInt(nodeTypeId, 10)
+    );
   }
 
   updateSize() {
