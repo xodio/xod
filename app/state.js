@@ -2,6 +2,7 @@ import * as EDITOR_MODE from './constants/editorModes';
 import * as NODE_CATEGORY from './constants/nodeCategory';
 import * as PIN_DIRECTION from './constants/pinDirection';
 import * as PIN_TYPE from './constants/pinType';
+import { PROPERTY_TYPE, PROPERTY_DEFAULT_VALUE } from './constants/property';
 
 const initialState = {
   project: {
@@ -219,7 +220,27 @@ const initialState = {
     },
     6: {
       id: 6,
-      label: 'Constant',
+      label: 'Constant:Bool',
+      category: NODE_CATEGORY.CONFIGURATION,
+      pins: {
+        value: {
+          key: 'value',
+          type: PIN_TYPE.BOOL,
+          direction: PIN_DIRECTION.OUTPUT,
+        },
+      },
+      properties: {
+        value: {
+          key: 'value',
+          label: 'Value',
+          type: PROPERTY_TYPE.BOOL,
+          defaultValue: PROPERTY_DEFAULT_VALUE.BOOL,
+        },
+      },
+    },
+    7: {
+      id: 7,
+      label: 'Constant:Number',
       category: NODE_CATEGORY.CONFIGURATION,
       pins: {
         value: {
@@ -228,9 +249,37 @@ const initialState = {
           direction: PIN_DIRECTION.OUTPUT,
         },
       },
+      properties: {
+        value: {
+          key: 'value',
+          label: 'Value',
+          type: PROPERTY_TYPE.NUMBER,
+          defaultValue: PROPERTY_DEFAULT_VALUE.NUMBER,
+        },
+      },
     },
-    7: {
-      id: 7,
+    8: {
+      id: 8,
+      label: 'Constant:String',
+      category: NODE_CATEGORY.CONFIGURATION,
+      pins: {
+        value: {
+          key: 'value',
+          type: PIN_TYPE.STRING,
+          direction: PIN_DIRECTION.OUTPUT,
+        },
+      },
+      properties: {
+        value: {
+          key: 'value',
+          label: 'Value',
+          type: PROPERTY_TYPE.STRING,
+          defaultValue: PROPERTY_DEFAULT_VALUE.STRING,
+        },
+      },
+    },
+    9: {
+      id: 9,
       label: 'IMU',
       category: NODE_CATEGORY.HARDWARE,
       pins: {
