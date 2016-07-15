@@ -1,5 +1,27 @@
 import React from 'react';
 
+const styles = {
+  container: {
+    float: 'left',
+    width: '200px',
+    background: '#fff',
+    color: '#000',
+  },
+  title: {
+    display: 'block',
+    padding: '26px 20px 10px 20px',
+  },
+  ul: {
+    padding: '0px',
+    margin: '10px 0 0 0',
+    listStyleType: 'none',
+  },
+  li: {
+    padding: '4px 8px',
+    margin: '1px 0',
+  },
+};
+
 class Inspector extends React.Component {
   constructor(props) {
     super(props);
@@ -10,11 +32,11 @@ class Inspector extends React.Component {
 
   render() {
     return (
-      <div>
-        <p><small>Inspector</small></p>
-        <ul>
+      <div style={styles.container}>
+        <small style={styles.title}>Inspector</small>
+        <ul style={styles.ul}>
           {this.widgets.map(widget =>
-            <li>
+            <li style={styles.li}>
               {widget.name}
             </li>
           )}
