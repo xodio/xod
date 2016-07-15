@@ -38,16 +38,11 @@ module.exports = {
         ],
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
+        test: /assets\/.*\.(jpe?g|png|gif|svg|woff|woff2)$/,
         loaders: [
-          'url?limit=8192',
-          'img',
+          'file?name=[path][name].[ext]?[hash:6]&context=./app'
         ],
       },
-      {
-        test: /\.(eot|svg|ttf|woff|woff2)$/,
-        loader: 'file?name=fonts/[name].[ext]'
-      }
     ],
   },
   plugins: [

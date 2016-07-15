@@ -4,8 +4,8 @@
   font-style: normal;
   font-weight: 300;
   src: /*local('Roboto Condensed Light'), local('RobotoCondensed-Light'),*/
-       url('../fonts/roboto-condensed-v13-latin-ext_latin_greek_cyrillic-300.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/roboto-condensed-v13-latin-ext_latin_greek_cyrillic-300.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+       url('../assets/fonts/roboto-condensed-v13-latin-ext_latin_greek_cyrillic-300.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../assets/fonts/roboto-condensed-v13-latin-ext_latin_greek_cyrillic-300.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 /* roboto-condensed-regular - latin-ext_latin_greek_cyrillic */
 @font-face {
@@ -13,8 +13,8 @@
   font-style: normal;
   font-weight: 400;
   src: /*local('Roboto Condensed'), local('RobotoCondensed-Regular'),*/
-       url('../fonts/roboto-condensed-v13-latin-ext_latin_greek_cyrillic-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/roboto-condensed-v13-latin-ext_latin_greek_cyrillic-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+       url('../assets/fonts/roboto-condensed-v13-latin-ext_latin_greek_cyrillic-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../assets/fonts/roboto-condensed-v13-latin-ext_latin_greek_cyrillic-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 /* roboto-condensed-700 - latin-ext_latin_greek_cyrillic */
 @font-face {
@@ -22,6 +22,6 @@
   font-style: normal;
   font-weight: 700;
   src: /*local('Roboto Condensed Bold'), local('RobotoCondensed-Bold'),*/
-       url('../fonts/roboto-condensed-v13-latin-ext_latin_greek_cyrillic-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/roboto-condensed-v13-latin-ext_latin_greek_cyrillic-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+       url('../assets/fonts/roboto-condensed-v13-latin-ext_latin_greek_cyrillic-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../assets/fonts/roboto-condensed-v13-latin-ext_latin_greek_cyrillic-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
