@@ -1,3 +1,4 @@
+import R from 'ramda';
 import React from 'react';
 import Widgets from './InspectorWidgets';
 
@@ -28,20 +29,45 @@ class Inspector extends React.Component {
   constructor(props) {
     super(props);
 
-    this.widgets = [];
+    this.createWidgets(props);
   }
 
   componentWillUpdate(nextProps) {
-    if (nextProps.selection.length === 0) {
+    this.createWidgets(nextProps);
+  }
+
+  createWidgets(props) {
+    const selection = props.selection;
+
+    if (selection.length === 0) {
       this.widgets = [
         new Widgets.HintWidget({
-          text: 'Select the node to edit its properties.',
+          text: 'Select a node to edit its properties.',
         }),
       ];
+    } else if (selection.length === 1) {
+      const entity = (selection[0].entity);
+      switch (entity) {
+        default:
+        case 'Node':
+          this.widgets = [
+            new Widgets.HintWidget({
+              text: 'There are no properties for the selected node.',
+            }),
+          ];
+          break;
+        case 'Link':
+          this.widgets = [
+            new Widgets.HintWidget({
+              text: 'Links have not any properties.',
+            }),
+          ];
+          break;
+      }
     } else {
       this.widgets = [
         new Widgets.HintWidget({
-          text: 'There is no properties.',
+          text: `You have selected: ${selection.length} elements.`,
         }),
       ];
     }
