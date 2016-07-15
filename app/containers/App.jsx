@@ -37,10 +37,6 @@ export default class App extends React.Component {
     this.onUpload = this.onUpload.bind(this);
   }
 
-  proposeToInstallApplication() {
-    this.refs.proposeToInstallApplication.show();
-  }
-
   onResize() {
     this.setState(
       R.set(
@@ -54,9 +50,14 @@ export default class App extends React.Component {
     const isChromeApplication = window.chrome && chrome.app && chrome.app.runtime;
     if (isChromeApplication) {
       // @TODO
+      // Selectors.Project.getJSON(this.store.getState());
     } else {
-      this.proposeToInstallApplication();
+      this.suggestToInstallApplication();
     }
+  }
+
+  suggestToInstallApplication() {
+    this.refs.suggestToInstallApplication.show();
   }
 
   render() {
@@ -75,7 +76,7 @@ export default class App extends React.Component {
           dialogStyles={{
             height: 'auto',
           }}
-          ref="proposeToInstallApplication"
+          ref="suggestToInstallApplication"
           title="Oops! You need a Chrome App!"
         >
           <p>
