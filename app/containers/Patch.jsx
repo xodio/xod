@@ -320,16 +320,16 @@ class Patch extends React.Component {
       PatchUtils.getNodeWidth(nodeType.pins);
 
     const nodePins = this.createPinsState(node.id, nodeWidth, nodeType);
-    const isNodeHaveValue = (
+    const nodeHaveValue = (
       node.hasOwnProperty('properties') &&
       node.properties.hasOwnProperty('value') &&
       node.properties.value !== ''
     );
-    let value = (isNodeHaveValue) ? String(node.properties.value) : null;
+    let value = nodeHaveValue ? String(node.properties.value) : null;
 
-    if (isNodeHaveValue) {
-      const isNodeValueTypeString = (PROPERTY_TYPE.STRING === nodeType.properties.value.type);
-      if (isNodeValueTypeString) {
+    if (nodeHaveValue) {
+      const nodeValueTypeString = (nodeType.properties.value.type === PROPERTY_TYPE.STRING);
+      if (nodeValueTypeString) {
         value = `"${value}"`;
       }
     }
