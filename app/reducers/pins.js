@@ -1,5 +1,6 @@
-import { PIN_ADD, PIN_DELETE } from '../actionTypes';
 import R from 'ramda';
+import { NODE_DELETE, PIN_ADD, PIN_DELETE } from '../actionTypes';
+import { getPinsByNodeId } from '../selectors/pin';
 
 const getPinIds = (state) =>
   R.map(pin => parseInt(pin.id, 10))(R.values(state));
@@ -11,7 +12,7 @@ export const getLastId = (state) => {
 };
 export const getNewId = (state) => getLastId(state) + 1;
 
-export const pins = (state = {}, action) => {
+export const pins = (state = {}, action, projectState) => {
   let newId;
 
   switch (action.type) {
@@ -26,6 +27,10 @@ export const pins = (state = {}, action) => {
         },
         state
       );
+    case NODE_DELETE: {
+      const pinsToDelete = getPinsByNodeId(projectState, { id: action.payload.id });
+      return R.omit(R.keys(pinsToDelete), state);
+    }
     case PIN_DELETE:
       return R.omit([action.payload.id.toString()], state);
     default:

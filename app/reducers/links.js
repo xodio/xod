@@ -1,6 +1,7 @@
-import { LINK_ADD, LINK_DELETE } from '../actionTypes';
+import { NODE_DELETE, LINK_ADD, LINK_DELETE } from '../actionTypes';
 import R from 'ramda';
-import Selectors from '../selectors';
+import { getPinsByNodeId } from '../selectors/pin';
+import { getLinksByPinId } from '../selectors/link';
 
 const nodeIds = (links) =>
   R.map(link => parseInt(link.id, 10))(R.values(links));
@@ -15,26 +16,28 @@ export const newId = (links) => lastId(links) + 1;
 
 export const copyLink = (link) => R.clone(link);
 
-export const links = (state = {}, action, context) => {
+export const links = (state = {}, action, projectState) => {
   let newLink = null;
 
   switch (action.type) {
     case LINK_ADD: {
-      let newState = state;
-      const linkValid = !context || Selectors.Link.validateLink(
-        context,
-        action.payload.pins
-      );
-
-      if (linkValid) {
-        newLink = {
-          pins: action.payload.pins,
-        };
-        newLink.id = newId(state);
-        newState = R.set(R.lensProp(newLink.id), newLink, state);
-      }
-
-      return newState;
+      newLink = {
+        pins: action.payload.pins,
+      };
+      newLink.id = newId(state);
+      return R.set(R.lensProp(newLink.id), newLink, state);
+    }
+    case NODE_DELETE: {
+      const pinsToDelete = getPinsByNodeId(projectState, { id: action.payload.id });
+      const linksToDelete = R.pipe(
+        R.values,
+        R.reduce((prev, c) => {
+          const pinLinks = getLinksByPinId(projectState, { pinIds: [c.id] });
+          return R.concat(prev, pinLinks);
+        }, []),
+        R.map((pin) => String(pin.id))
+      )(pinsToDelete);
+      return R.omit(linksToDelete, state);
     }
     case LINK_DELETE:
       return R.omit([action.payload.id.toString()], state);

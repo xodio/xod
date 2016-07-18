@@ -1,23 +1,10 @@
+import { combineReducers } from 'redux';
 import undoable from 'redux-undo';
 
-import { meta } from './meta';
+import projectReducer from './project';
 import { editor } from './editor';
-import { nodeTypes } from './nodetypes';
-import { patches } from './patches';
-import { nodes } from './nodes';
-import { pins } from './pins';
-import { links } from './links';
 import { errors } from './errors';
 
-import combineReducersWithContext from './combineWithContext';
-
-const projectReducer = combineReducersWithContext({
-  meta,
-  patches,
-  nodes,
-  pins,
-  links,
-});
 const projectUndoConfig = {
   filter: (action) => !(
     action.hasOwnProperty('meta') &&
@@ -27,9 +14,8 @@ const projectUndoConfig = {
   limit: 10,
 };
 
-export default combineReducersWithContext({
+export default combineReducers({
   project: undoable(projectReducer, projectUndoConfig),
-  nodeTypes,
   editor,
   errors,
 });

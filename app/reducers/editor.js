@@ -1,5 +1,6 @@
 import R from 'ramda';
 import {
+  NODE_DELETE,
   EDITOR_DESELECT_ALL,
   EDITOR_SELECT_NODE,
   EDITOR_SELECT_PIN,
@@ -20,6 +21,7 @@ const addSelection = (entityName, action, state) => {
 
 export const editor = (state = {}, action) => {
   switch (action.type) {
+    case NODE_DELETE:
     case EDITOR_DESELECT_ALL:
       return R.merge(state, {
         selection: [],
