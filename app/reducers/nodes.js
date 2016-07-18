@@ -25,7 +25,7 @@ const node = (state, action) => {
   }
 };
 
-export const nodes = (state = {}, action, context) => {
+export const nodes = (state = {}, action) => {
   let movedNode = null;
   let newNode = null;
   let newNodeId = 0;
