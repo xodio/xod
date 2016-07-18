@@ -48,10 +48,10 @@ export const deletePin = (id) => ({
   },
 });
 
-export const addLink = (fromPinId, toPinId) => ({
+export const addLink = (pins) => ({
   type: ActionType.LINK_ADD,
   payload: {
-    pins: [fromPinId, toPinId],
+    pins,
   },
 });
 
@@ -193,8 +193,15 @@ export const linkPin = (id) => (dispatch, getState) => {
     result.push(deselect);
   }
 
+  const pins = [selected, id];
+
   if (selected !== id && selected !== null) {
-    result.push(dispatch(addLink(selected, id)));
+    const validation = Selectors.Link.validateLink(state, pins);
+    if (validation.isValid) {
+      result.push(dispatch(addLink(pins)));
+    } else {
+      result.push(dispatch(showError({ message: validation.message })));
+    }
   } else if (selected !== id) {
     result.push(dispatch(setPinSelection(id)));
   }
