@@ -5,6 +5,9 @@ class NodeText extends React.Component {
     this.labelBbox = this.getBbox();
     this.forceUpdate();
   }
+  componentDidUpdate() {
+    this.labelBbox = this.getBbox();
+  }
   getBbox() {
     return this.refs.label.getBBox();
   }

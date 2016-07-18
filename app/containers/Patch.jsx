@@ -12,6 +12,7 @@ import Selectors from '../selectors';
 import PatchUtils from '../utils/patchUtils';
 import * as EDITOR_MODE from '../constants/editorModes';
 import * as KEYCODE from '../constants/keycodes';
+import { PROPERTY_TYPE } from '../constants/property';
 
 const LAYERNAME_BACKGROUND = 'background';
 const LAYERNAME_LINKS = 'links';
@@ -75,8 +76,12 @@ class Patch extends React.Component {
   onNodeRendered(id, props) {
     if (id === 0) return;
 
+    let forceUpdate = false;
+
     if (!this.nodesViewstate.hasOwnProperty(id)) {
       this.nodesViewstate[id] = {};
+    } else if (!R.equals(this.nodesViewstate[id], props)) {
+      forceUpdate = true;
     }
 
     this.nodesViewstate[id] = R.merge(this.nodesViewstate[id], props);
@@ -85,8 +90,12 @@ class Patch extends React.Component {
     }
 
     if (this.nodesCount === this.nodesRendered && this.nodesCount !== this.nodesUpdated) {
-      this.forceUpdate();
+      forceUpdate = true;
       this.nodesUpdated = this.nodesCount;
+    }
+
+    if (forceUpdate) {
+      this.forceUpdate();
     }
   }
 
@@ -311,11 +320,24 @@ class Patch extends React.Component {
       PatchUtils.getNodeWidth(nodeType.pins);
 
     const nodePins = this.createPinsState(node.id, nodeWidth, nodeType);
+    const nodeHaveValue = (
+      node.hasOwnProperty('properties') &&
+      node.properties.hasOwnProperty('value') &&
+      node.properties.value !== ''
+    );
+    let value = nodeHaveValue ? String(node.properties.value) : null;
+
+    if (nodeHaveValue) {
+      const nodeValueTypeString = (nodeType.properties.value.type === PROPERTY_TYPE.STRING);
+      if (nodeValueTypeString) {
+        value = `"${value}"`;
+      }
+    }
 
     const viewstate = {
       id: node.id,
       key: node.id,
-      label: node.label || nodeType.label,
+      label: value || node.label || nodeType.label,
       pins: nodePins,
       position: node.position,
       width: nodeWidth,
