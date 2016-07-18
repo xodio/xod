@@ -1,10 +1,10 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
+import { getProject } from './project';
 import { getNodes } from './node';
 import { getNodeTypes } from './nodetype';
 import * as PIN_DIRECTION from '../constants/pinDirection';
 import * as PIN_VALIDITY from '../constants/pinValidity';
-import { getProject } from './project';
 
 export const getPins = R.pipe(
   getProject,
@@ -36,7 +36,6 @@ export const getFullPinsData = createSelector(
       const node = nodes[pin.nodeId];
       const nodeTypePins = nodeTypes[node.typeId].pins;
       const originalPin = nodeTypePins[pin.key];
-
       return R.assoc(pin.id, R.merge(pin, originalPin), p);
     }, {})
   )(pins)
