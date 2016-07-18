@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { ActionCreators } from 'redux-undo';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import * as EDITOR_MODE from '../constants/editorModes';
@@ -49,6 +50,13 @@ class Editor extends React.Component {
     }
     if (keycode === KEYCODE.ESCAPE && this.props.mode.isCreatingNode) {
       this.setModeDefault();
+    }
+
+    if (event.ctrlKey && keycode === KEYCODE.Z) {
+      this.props.actions.undo();
+    }
+    if (event.ctrlKey && keycode === KEYCODE.Y) {
+      this.props.actions.redo();
     }
   }
   onPropUpdate(nodeId, propKey, propValue) {
@@ -121,6 +129,8 @@ const mapDispatchToProps = (dispatch) => ({
     setMode: Actions.setMode,
     setSelectedNodeType: Actions.setSelectedNodeType,
     updateNodeProperty: Actions.updateNodeProperty,
+    undo: ActionCreators.undo,
+    redo: ActionCreators.redo,
   }, dispatch),
 });
 
