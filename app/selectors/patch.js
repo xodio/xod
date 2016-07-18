@@ -1,8 +1,12 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
 import { getCurrentPatchId } from './editor';
+import { getProject } from './project';
 
-export const getPatches = (state) => R.view(R.lensPath(['project', 'patches']))(state);
+export const getPatches = R.pipe(
+  getProject,
+  R.prop('patches')
+);
 export const getCurrentPatch = (state) => {
   const curPatchId = getCurrentPatchId(state);
   return R.pipe(

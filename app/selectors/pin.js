@@ -4,8 +4,12 @@ import { getNodes } from './node';
 import { getNodeTypes } from './nodetype';
 import * as PIN_DIRECTION from '../constants/pinDirection';
 import * as PIN_VALIDITY from '../constants/pinValidity';
+import { getProject } from './project';
 
-export const getPins = R.view(R.lensPath(['project', 'pins']));
+export const getPins = R.pipe(
+  getProject,
+  R.prop('pins')
+);
 
 export const getPinsByNodeId = (state, props) => R.pipe(
   getPins,
