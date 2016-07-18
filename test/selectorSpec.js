@@ -3,7 +3,6 @@ import chai from 'chai';
 import initialState from '../app/state';
 import Selectors from '../app/selectors';
 import { LINK_ERRORS } from '../app/constants/errorMessages';
-import ValidationError from '../app/utils/validationError';
 
 describe('Link selector', () => {
   describe('while validating link creating', () => {
@@ -18,7 +17,7 @@ describe('Link selector', () => {
       const pins = [2, 8];
       const check = Selectors.Link.validateLink.bind(null, state, pins);
 
-      chai.expect(check()).to.equal(true);
+      chai.expect(check().isValid).to.equal(true);
     });
 
     it(`should be invalid with error: ${LINK_ERRORS.SAME_NODE}`, () => {
@@ -26,7 +25,7 @@ describe('Link selector', () => {
       const check = Selectors.Link.validateLink.bind(null, state, pins);
       const message = LINK_ERRORS.SAME_NODE;
 
-      chai.expect(check).to.throw(new ValidationError(message));
+      chai.expect(check().message).to.be.equal(message);
     });
 
     it(`should be invalid with error: ${LINK_ERRORS.SAME_DIRECTION}`, () => {
@@ -34,7 +33,7 @@ describe('Link selector', () => {
       const check = Selectors.Link.validateLink.bind(null, state, pins);
       const message = LINK_ERRORS.SAME_DIRECTION;
 
-      chai.expect(check).to.throw(new ValidationError(message));
+      chai.expect(check().message).to.be.equal(message);
     });
 
     it(`should be invalid with error: ${LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN}`, () => {
@@ -42,7 +41,7 @@ describe('Link selector', () => {
       const check = Selectors.Link.validateLink.bind(null, state, pins);
       const message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
 
-      chai.expect(check).to.throw(new ValidationError(message));
+      chai.expect(check().message).to.be.equal(message);
     });
   });
 });
