@@ -2,6 +2,21 @@ import R from 'ramda';
 import * as ActionType from './actionTypes';
 import Selectors from './selectors';
 
+export const showError = (error) => ({
+  type: ActionType.ERROR_SHOW,
+  payload: {
+    timestamp: new Date().getTime(),
+    error,
+  },
+});
+
+export const hideError = (timestamp) => ({
+  type: ActionType.ERROR_HIDE,
+  payload: {
+    timestamp,
+  },
+});
+
 export const moveNode = (id, position) => ({
   type: ActionType.NODE_MOVE,
   payload: {
@@ -95,36 +110,6 @@ export const addNodeWithDependencies = (nodeTypeId, position) => (dispatch, getS
       );
     });
   }
-
-  return result;
-};
-
-
-export const deleteNodeWithDependencies = (id) => (dispatch, getState) => {
-  const state = getState();
-  const result = [];
-  // 1. getPinsByNodeId
-  const pins = Selectors.Pin.getPinsByNodeId(state, { id });
-  // 2. getLinksByPinId and delete them
-  R.pipe(
-    R.values,
-    R.reduce((prev, c) => {
-      const pinLinks = Selectors.Link.getLinksByPinId(state, { pinIds: [c.id] });
-      return R.concat(prev, pinLinks);
-    }, []),
-    R.forEach((link) => {
-      result.push(dispatch(deleteLink(link.id)));
-    })
-  )(pins);
-  // 3. delete all found pins
-  R.pipe(
-    R.values,
-    R.forEach((pin) => {
-      result.push(dispatch(deletePin(pin.id)));
-    })
-  )(pins);
-  // 4. delete node
-  result.push(dispatch(deleteNode(id)));
 
   return result;
 };
@@ -230,21 +215,6 @@ export const setSelectedNodeType = (id) => ({
   type: ActionType.EDITOR_SET_SELECTED_NODETYPE,
   payload: {
     id,
-  },
-});
-
-export const showError = (error) => ({
-  type: ActionType.ERROR_SHOW,
-  payload: {
-    timestamp: new Date().getTime(),
-    error,
-  },
-});
-
-export const hideError = (timestamp) => ({
-  type: ActionType.ERROR_HIDE,
-  payload: {
-    timestamp,
   },
 });
 

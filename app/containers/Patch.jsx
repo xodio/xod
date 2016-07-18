@@ -20,7 +20,7 @@ const LAYERNAME_NODES = 'nodes';
 
 // @TODO: Remove in case with replacing with SELECTION_DELETE action
 const DELETE_ACTIONS = {
-  Node: 'deleteNodeWithDependencies',
+  Node: 'deleteNode',
   Link: 'deleteLink',
 };
 
