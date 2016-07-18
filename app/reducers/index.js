@@ -19,6 +19,11 @@ const projectReducer = combineReducersWithContext({
   links,
 });
 const projectUndoConfig = {
+  filter: (action) => !(
+    action.hasOwnProperty('meta') &&
+    action.meta.hasOwnProperty('skipHistory') &&
+    action.meta.skipHistory
+  ),
   limit: 10,
 };
 
