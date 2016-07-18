@@ -1,3 +1,5 @@
+import undoable from 'redux-undo';
+
 import { meta } from './meta';
 import { editor } from './editor';
 import { nodeTypes } from './nodetypes';
@@ -9,14 +11,19 @@ import { errors } from './errors';
 
 import combineReducersWithContext from './combineWithContext';
 
+const projectReducer = combineReducersWithContext({
+  meta,
+  patches,
+  nodes,
+  pins,
+  links,
+});
+const projectUndoConfig = {
+  limit: 10,
+};
+
 export default combineReducersWithContext({
-  project: combineReducersWithContext({
-    meta,
-    patches,
-    nodes,
-    pins,
-    links,
-  }),
+  project: undoable(projectReducer, projectUndoConfig),
   nodeTypes,
   editor,
   errors,
