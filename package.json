@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "description": "XOD project",
   "scripts": {
-    "start": "webpack-dev-server --watch --progress --colors --config webpack.config.js",
-    "build": "webpack --progress --colors --config webpack.config.js",
-    "build-chrome": "webpack --progress --colors --config webpack.config.chrome.js",
-    "dev-chrome": "webpack --watch --progress --colors --config webpack.config.chrome.js",
+    "start": "webpack-dev-server --watch --progress --colors --inline --hot --config webpack/web-dev.js",
+    "build": "webpack --progress --colors --config webpack/web-dev.js",
+    "build-chrome": "webpack --progress --colors --config webpack/chrome-dev.js",
+    "dev-chrome": "webpack --watch --progress --colors --config webpack/chrome-dev.js",
     "lint": "eslint --ext .js --ext .jsx ./app ./test || true",
     "test": "mocha-webpack --colors --webpack-config webpack.config.js \"test/**/*Spec.js\"",
     "travis": "npm-run-all --continue-on-error lint test"
@@ -70,6 +70,8 @@
     "redux-mock-store": "^1.1.1",
     "sass-loader": "^4.0.0",
     "wallaby-webpack": "0.0.22",
-    "webpack-dev-server": "^1.14.0"
+    "webpack-dev-server": "^1.14.0",
+    "webpack-merge": "^0.14.0",
+    "webpack-validator": "^2.2.3"
   }
 }

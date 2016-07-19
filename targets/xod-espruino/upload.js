@@ -15,7 +15,7 @@ import "espruino/core/env.js";
 
 import transpile from './transpiler';
 
-export default function upload(data) {
+export function upload(data) {
   const s = transpile(data);
   console.log(s);
 }

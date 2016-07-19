@@ -1,33 +1,24 @@
-const path = require('path');
+
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   devtool: 'inline-source-map',
   entry: [
-    'webpack-dev-server/client?http://localhost:8080/',
-    'webpack/hot/only-dev-server',
     './app/index.jsx',
   ],
   output: {
-    path: path.join(__dirname, 'dist/web'),
     filename: 'bundle.js',
-    publicPath: 'http://localhost:8080/',
   },
   resolve: {
-    modulesDirectories: ['node_modules', 'app'],
+    modulesDirectories: ['node_modules', 'app', 'targets'],
     extensions: ['', '.js', '.jsx', '.scss'],
   },
   module: {
     loaders: [
       {
-        test: /\.jsx?$/,
-        exclude: [
-          /node_modules/,
-          /targets\/espruino\/runtime\.js/
-        ],
+        test: /app\/.*\.jsx?$/,
         loaders: [
-          'react-hot',
           'babel?presets[]=react,presets[]=es2015',
         ],
       },
@@ -49,16 +40,9 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new CopyWebpackPlugin([
       { from: 'app/index.html' },
     ]),
   ],
-  devServer: {
-    hot: true,
-    host: 'localhost',
-    port: 8080,
-    contentBase: './dist/web/',
-  },
 };
