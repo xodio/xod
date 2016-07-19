@@ -4,4 +4,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './containers/App';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import upload from '../targets/espruino/upload';
+
+ReactDOM.render(<App onUpload={upload} />, document.getElementById('root'));

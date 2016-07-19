@@ -22,7 +22,10 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
+        exclude: [
+          /node_modules/,
+          /targets\/espruino\/runtime\.js/
+        ],
         loaders: [
           'react-hot',
           'babel?presets[]=react,presets[]=es2015',
