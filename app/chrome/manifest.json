@@ -8,10 +8,12 @@
   "offline_enabled": true,
   "app": {
     "background": {
-      "scripts": ["./background.js"]
+      "scripts": ["./background.js"],
+      "persistent": false
     }
   },
   "permissions": [
+    "serial",
     {"fileSystem": ["write"]}
   ],
   "file_handlers": {

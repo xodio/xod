@@ -1,7 +1,4 @@
 
-// eslint-disable-next-line no-unused-vars
-import styles from '../styles/main.scss';
-
 import R from 'ramda';
 import React from 'react';
 import { createStore } from 'redux';
@@ -9,6 +6,7 @@ import { Provider } from 'react-redux';
 import Reducers from '../reducers/';
 import { getViewableSize } from '../utils/browser';
 import { EditorMiddleware } from '../middlewares';
+import * as Actions from '../actions';
 import Serializer from '../serializers/mock';
 import Editor from './Editor';
 import SnackBar from './SnackBar';
@@ -54,8 +52,7 @@ export default class App extends React.Component {
   onUpload() {
     const isChromeApplication = window.chrome && chrome.app && chrome.app.runtime;
     if (isChromeApplication) {
-      // @TODO
-      // Selectors.Project.getJSON(this.store.getState());
+      this.store.dispatch(Actions.upload());
     } else {
       this.suggestToInstallApplication();
     }

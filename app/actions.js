@@ -1,5 +1,8 @@
 import * as ActionType from './actionTypes';
+import * as STATUS from './constants/statuses';
 import Selectors from './selectors';
+import { upload as uploadToEspruino } from 'xod-espruino/upload';
+
 
 export const showError = (error) => ({
   type: ActionType.ERROR_SHOW,
@@ -186,3 +189,39 @@ export const loadProjectFromJSON = (json) => ({
   type: ActionType.PROJECT_LOAD_DATA,
   payload: json,
 });
+
+export const upload = () => (dispatch, getState) => {
+  const project = Selectors.Project.getJSON(getState());
+
+  dispatch({
+    type: ActionType.UPLOAD,
+    meta: { status: STATUS.STARTED },
+  });
+
+  const progress = (message, percentage) => dispatch({
+    type: ActionType.UPLOAD,
+    meta: { status: STATUS.PROGRESSED },
+    payload: { message, percentage },
+  });
+
+  const succeed = () => dispatch({
+    type: ActionType.UPLOAD,
+    meta: { status: STATUS.SUCCEEDED },
+  });
+
+  const fail = (err) => dispatch({
+    type: ActionType.UPLOAD,
+    meta: { status: STATUS.FAILED },
+    payload: { message: err.message },
+  });
+
+  uploadToEspruino(project, progress)
+    .then(succeed)
+    .catch(err => {
+      if (err.constructor !== Error) {
+        throw err;
+      }
+
+      fail(err);
+    });
+};
