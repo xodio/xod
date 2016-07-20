@@ -8,7 +8,6 @@ import { errors } from './errors';
 
 const projectUndoConfig = {
   filter: (action) => !(R.pathEq(['meta', 'skipHistory'], true, action)),
-  limit: 10,
 };
 
 export default combineReducers({
