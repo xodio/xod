@@ -1,5 +1,6 @@
 import { NODE_MOVE, NODE_ADD, NODE_DELETE, NODE_UPDATE_PROPERTY } from '../actionTypes';
 import R from 'ramda';
+import { getNodeTypes } from '../selectors/nodetype';
 
 const nodeIds = (nodes) =>
     R.map(node => parseInt(node.id, 10))(R.values(nodes));
@@ -25,19 +26,29 @@ const node = (state, action) => {
   }
 };
 
-export const nodes = (state = {}, action) => {
+export const nodes = (state = {}, action, projectState) => {
   let movedNode = null;
   let newNode = null;
   let newNodeId = 0;
 
   switch (action.type) {
 
-    case NODE_ADD:
-      newNode = node(undefined, action);
-      newNodeId = newId(state);
-      newNode = R.set(R.lensProp('id'), newNodeId, newNode);
-      return R.set(R.lensProp(newNodeId), newNode, state);
+    case NODE_ADD: {
+      const nodeType = getNodeTypes(projectState)[action.payload.typeId];
+      const defaultProps = R.pipe(
+        R.prop('properties'),
+        R.values,
+        R.reduce((p, prop) => R.assoc(prop.key, prop.defaultValue, p), {})
+      )(nodeType);
 
+      newNodeId = newId(state);
+      newNode = R.set(R.lensProp('id'), newNodeId, {
+        typeId: action.payload.typeId,
+        position: action.payload.position,
+        properties: defaultProps,
+      });
+      return R.set(R.lensProp(newNodeId), newNode, state);
+    }
     case NODE_DELETE:
       return R.omit([action.payload.id.toString()], state);
 

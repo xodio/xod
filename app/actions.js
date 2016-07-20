@@ -36,28 +36,16 @@ export const dragNode = (id, position) => ({
   },
 });
 
-export const addNode = (node) => ({
+export const addNode = (typeId, position) => ({
   type: ActionType.NODE_ADD,
-  payload: node,
+  payload: {
+    typeId,
+    position,
+  },
 });
 
 export const deleteNode = (id) => ({
   type: ActionType.NODE_DELETE,
-  payload: {
-    id,
-  },
-});
-
-export const addPin = (nodeId, key) => ({
-  type: ActionType.PIN_ADD,
-  payload: {
-    nodeId,
-    key,
-  },
-});
-
-export const deletePin = (id) => ({
-  type: ActionType.PIN_DELETE,
   payload: {
     id,
   },
@@ -81,38 +69,6 @@ export const updateMeta = (data) => ({
   type: ActionType.META_UPDATE,
   payload: data,
 });
-
-export const addNodeWithDependencies = (nodeTypeId, position) => (dispatch, getState) => {
-  const result = [];
-  const nodeTypes = Selectors.NodeType.getNodeTypes(getState());
-  const nodeType = nodeTypes[nodeTypeId];
-  const defaultProps = R.pipe(
-    R.prop('properties'),
-    R.values,
-    R.reduce((p, prop) => R.assoc(prop.key, prop.defaultValue, p), {})
-  )(nodeType);
-  if (nodeType && position) {
-    result.push(
-      dispatch(
-        addNode({
-          typeId: nodeType.id,
-          position,
-          properties: defaultProps,
-        })
-      )
-    );
-    const nodeId = Selectors.Node.getLastNodeId(getState());
-    R.values(nodeType.pins).forEach((pin) => {
-      result.push(
-        dispatch(
-          addPin(nodeId, pin.key)
-        )
-      );
-    });
-  }
-
-  return result;
-};
 
 export const setNodeSelection = (id) => ({
   type: ActionType.EDITOR_SELECT_NODE,

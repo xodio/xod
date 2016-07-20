@@ -1,6 +1,8 @@
 import R from 'ramda';
-import { NODE_DELETE, PIN_ADD, PIN_DELETE } from '../actionTypes';
+import { NODE_ADD, NODE_DELETE } from '../actionTypes';
+import { getLastNodeId } from '../selectors/node';
 import { getPinsByNodeId } from '../selectors/pin';
+import { getNodeTypes } from '../selectors/nodetype';
 
 const getPinIds = (state) =>
   R.map(pin => parseInt(pin.id, 10))(R.values(state));
@@ -12,27 +14,40 @@ export const getLastId = (state) => {
 };
 export const getNewId = (state) => getLastId(state) + 1;
 
+const createPins = (state, nodeId, pins) => {
+  let lastId = getLastId(state);
+
+  return R.pipe(
+    R.values,
+    R.reduce((p, pin) => {
+      lastId++;
+
+      return R.assoc(
+        lastId,
+        {
+          id: lastId,
+          nodeId,
+          key: pin.key,
+        },
+        p
+      );
+    }, state)
+  )(pins);
+};
+
 export const pins = (state = {}, action, projectState) => {
   let newId;
 
   switch (action.type) {
-    case PIN_ADD:
-      newId = getNewId(state);
-      return R.set(
-        R.lensProp(newId),
-        {
-          id: newId,
-          nodeId: action.payload.nodeId,
-          key: action.payload.key,
-        },
-        state
-      );
+    case NODE_ADD: {
+      const nodeType = getNodeTypes(projectState)[action.payload.typeId];
+      const nodeId = getLastNodeId(projectState) + 1;
+      return createPins(state, nodeId, nodeType.pins);
+    }
     case NODE_DELETE: {
       const pinsToDelete = getPinsByNodeId(projectState, { id: action.payload.id });
       return R.omit(R.keys(pinsToDelete), state);
     }
-    case PIN_DELETE:
-      return R.omit([action.payload.id.toString()], state);
     default:
       return state;
   }
