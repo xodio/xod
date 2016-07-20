@@ -9,11 +9,17 @@ class Toolbar extends React.Component {
   constructor(props) {
     super(props);
     this.onProjectNameClick = this.onProjectNameClick.bind(this);
+    this.onSave = this.onSave.bind(this);
   }
   onProjectNameClick() {
     return this.props.actions.updateMeta({
       name: 'Mega project',
     });
+  }
+  onSave() {
+    const url = `data:text/json;charset=utf8,${encodeURIComponent(this.props.projectJSON)}`;
+    window.open(url, '_blank');
+    window.focus();
   }
   render() {
     const meta = this.props.meta;
@@ -32,6 +38,12 @@ class Toolbar extends React.Component {
           </span>
         </div>
         <button
+          className="save-button"
+          onClick={this.onSave}
+        >
+          Save project as
+        </button>
+        <button
           className="upload-button"
           onClick={this.props.onUpload}
         >
@@ -45,10 +57,13 @@ class Toolbar extends React.Component {
 Toolbar.propTypes = {
   meta: React.PropTypes.object,
   actions: React.PropTypes.object,
+  projectJSON: React.PropTypes.string,
   onUpload: React.PropTypes.func,
+  onSave: React.PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
+  projectJSON: Selectors.Project.getJSON(state),
   meta: Selectors.Meta.getMeta(state),
 });
 const mapDispatchToProps = (dispatch) => ({
