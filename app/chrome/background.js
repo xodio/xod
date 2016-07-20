@@ -1,4 +1,13 @@
-function init() {
+
+function disconnectAll() {
+  chrome.serial.getConnections(connections => {
+    connections.forEach(c => {
+      chrome.serial.disconnect(c.connectionId, () => null);
+    });
+  });
+}
+
+chrome.app.runtime.onLaunched.addListener(() => {
   const options = {
     frame: 'chrome',
     minWidth: 640,
@@ -9,14 +18,4 @@ function init() {
 
   const onCreate = window => window.onClosed.addListener(disconnectAll);
   chrome.app.window.create('index.html', options, onCreate);
-}
-
-chrome.app.runtime.onLaunched.addListener(init);
-
-function disconnectAll() {
-  chrome.serial.getConnections(function(connections) {
-    connections.forEach(c => {
-      chrome.serial.disconnect(c.connectionId, _ => null);
-    });
-  });
-}
+});

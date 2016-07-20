@@ -1,7 +1,4 @@
 
-// eslint-disable-next-line no-unused-vars
-import styles from '../styles/main.scss';
-
 import R from 'ramda';
 import React from 'react';
 import { createStore } from 'redux';
@@ -11,7 +8,6 @@ import { getViewableSize } from '../utils/browser';
 import { EditorMiddleware } from '../middlewares';
 import * as Actions from '../actions';
 import Serializer from '../serializers/mock';
-import Selectors from '../selectors';
 import Editor from './Editor';
 import SnackBar from './SnackBar';
 import Toolbar from './Toolbar';

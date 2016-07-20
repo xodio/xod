@@ -195,8 +195,8 @@ export const upload = () => (dispatch, getState) => {
     type: ActionType.UPLOAD_STATUS_UPDATED,
     payload: {
       done: false,
-      message: message,
-      percentage: percentage,
+      message,
+      percentage,
     },
   });
 
