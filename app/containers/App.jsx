@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import Reducers from '../reducers/';
 import { getViewableSize } from '../utils/browser';
 import { EditorMiddleware } from '../middlewares';
+import * as Actions from '../actions';
 import Serializer from '../serializers/mock';
 import Selectors from '../selectors';
 import Editor from './Editor';
@@ -55,8 +56,15 @@ export default class App extends React.Component {
   onUpload() {
     const isChromeApplication = window.chrome && chrome.app && chrome.app.runtime;
     if (isChromeApplication) {
+      const dispatch = this.store.dispatch;
       const project = Selectors.Project.getJSON(this.store.getState());
-      this.props.onUpload(project);
+      const progress = (message, percentage) => {
+        dispatch(Actions.updateUploadProgress(message, percentage));
+      };
+
+      this.props.onUpload(project, progress)
+        .then(() => dispatch(Actions.completeUpload()))
+        .catch(err => dispatch(Actions.failUpload(err)));
     } else {
       this.suggestToInstallApplication();
     }

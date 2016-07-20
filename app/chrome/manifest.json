@@ -12,6 +12,7 @@
     }
   },
   "permissions": [
+    "serial",
     {"fileSystem": ["write"]}
   ],
   "file_handlers": {

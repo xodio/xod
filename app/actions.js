@@ -186,3 +186,27 @@ export const loadProjectFromJSON = (json) => ({
   type: ActionType.PROJECT_LOAD_DATA,
   payload: json,
 });
+
+export const updateUploadProgress = (message, percentage) => ({
+  type: ActionType.UPLOAD_STATUS_UPDATED,
+  payload: {
+    done: false,
+    message: message,
+    percentage: percentage,
+  },
+});
+
+export const completeUpload = () => ({
+  type: ActionType.UPLOAD_STATUS_UPDATED,
+  payload: {
+    done: true,
+    message: 'Completed successfully',
+    percentage: 100,
+  },
+});
+
+export const failUpload = (error) => ({
+  type: ActionType.UPLOAD_STATUS_UPDATED,
+  payload: error,
+  error: true,
+});
