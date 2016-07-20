@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ActionCreators } from 'redux-undo';
+import { ActionCreators as ReduxUndoActions } from 'redux-undo';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import * as EDITOR_MODE from '../constants/editorModes';
 import * as KEYCODE from '../constants/keycodes';
+import { isInput } from '../utils/browser';
 import Patch from './Patch';
 import EventListener from 'react-event-listener';
 import CreateNodeWidget from '../components/CreateNodeWidget';
@@ -40,23 +41,28 @@ class Editor extends React.Component {
 
   onKeyDown(event) {
     const keycode = event.keyCode || event.which;
+    const isNotInput = !isInput(event);
 
-    if (keycode === KEYCODE.BACKSPACE) {
-      event.preventDefault();
-    }
+    if (isNotInput) {
 
-    if (keycode === KEYCODE.N) {
-      this.setModeCreating();
-    }
-    if (keycode === KEYCODE.ESCAPE && this.props.mode.isCreatingNode) {
-      this.setModeDefault();
-    }
+      if (keycode === KEYCODE.BACKSPACE) {
+        event.preventDefault();
+      }
 
-    if (event.ctrlKey && keycode === KEYCODE.Z) {
-      this.props.actions.undo();
-    }
-    if (event.ctrlKey && keycode === KEYCODE.Y) {
-      this.props.actions.redo();
+      if (keycode === KEYCODE.N) {
+        this.setModeCreating();
+      }
+      if (keycode === KEYCODE.ESCAPE && this.props.mode.isCreatingNode) {
+        this.setModeDefault();
+      }
+
+      if (event.ctrlKey && keycode === KEYCODE.Z) {
+        this.props.actions.undo();
+      }
+      if (event.ctrlKey && keycode === KEYCODE.Y) {
+        this.props.actions.redo();
+      }
+      
     }
   }
   onPropUpdate(nodeId, propKey, propValue) {
@@ -129,8 +135,8 @@ const mapDispatchToProps = (dispatch) => ({
     setMode: Actions.setMode,
     setSelectedNodeType: Actions.setSelectedNodeType,
     updateNodeProperty: Actions.updateNodeProperty,
-    undo: ActionCreators.undo,
-    redo: ActionCreators.redo,
+    undo: ReduxUndoActions.undo,
+    redo: ReduxUndoActions.redo,
   }, dispatch),
 });
 

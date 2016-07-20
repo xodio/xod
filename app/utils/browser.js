@@ -27,3 +27,9 @@ export function getStyle(oElm, strCssRule) {
   }
   return strValue;
 }
+
+export const isInput = (event) => (
+  event.target.nodeName === 'INPUT' ||
+  event.target.nodeName === 'TEXTAREA' ||
+  event.target.nodeName === 'SELECT'
+);

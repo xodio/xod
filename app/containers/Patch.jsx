@@ -10,6 +10,7 @@ import Link from '../components/Link';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import PatchUtils from '../utils/patchUtils';
+import { isInput } from '../utils/browser';
 import * as EDITOR_MODE from '../constants/editorModes';
 import * as KEYCODE from '../constants/keycodes';
 import { PROPERTY_TYPE } from '../constants/property';
@@ -163,19 +164,22 @@ class Patch extends React.Component {
     const selection = this.props.selection;
     const hasSelection = selection.length > 0;
     const isLinking = this.props.linkingPin !== null;
-    if (
-      hasSelection &&
-      (keycode === KEYCODE.BACKSPACE || keycode === KEYCODE.DELETE)
-    ) {
-      selection.forEach((select) => {
-        this.props.dispatch(Actions[DELETE_ACTIONS[select.entity]](select.id));
-      });
-    }
-    if (
-      (hasSelection || isLinking) &&
-      keycode === KEYCODE.ESCAPE
-    ) {
-      this.deselectAll();
+    const isNotInput = !isInput(event);
+    if (isNotInput) {
+      if (
+        hasSelection &&
+        (keycode === KEYCODE.BACKSPACE || keycode === KEYCODE.DELETE)
+      ) {
+        selection.forEach((select) => {
+          this.props.dispatch(Actions[DELETE_ACTIONS[select.entity]](select.id));
+        });
+      }
+      if (
+        (hasSelection || isLinking) &&
+        keycode === KEYCODE.ESCAPE
+      ) {
+        this.deselectAll();
+      }
     }
   }
 
