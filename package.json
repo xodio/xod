@@ -7,7 +7,7 @@
     "build": "webpack --progress --colors --config webpack/web-dev.js",
     "build-chrome": "webpack --progress --colors --config webpack/chrome-dev.js",
     "dev-chrome": "webpack --watch --progress --colors --config webpack/chrome-dev.js",
-    "lint": "eslint --ext .js --ext .jsx ./app ./test || true",
+    "lint": "eslint --ext .js --ext .jsx ./app ./targets ./test || true",
     "test": "mocha-webpack --colors --webpack-config webpack.config.js \"test/**/*Spec.js\"",
     "travis": "npm-run-all --continue-on-error lint test"
   },

@@ -1,47 +1,43 @@
 
-import Espruino from "espruino/espruino";
-//
+import Espruino from 'espruino/espruino';
+
 // Espruino object is constructed in several modules via global variable.
 // So we have to just import few modules to get them executed.
-import "espruino/core/utils.js";
-import "espruino/core/config.js";
-import "espruino/core/serial.js";
-import "espruino/core/serial_chrome.js";
-import "espruino/core/codeWriter.js";
-import "espruino/core/modules.js";
-import "espruino/core/env.js";
+import 'espruino/core/utils';
+import 'espruino/core/config';
+import 'espruino/core/serial';
+import 'espruino/core/serial_chrome';
+import 'espruino/core/codeWriter';
+import 'espruino/core/modules';
+import 'espruino/core/env';
 
 import co from 'co';
 import transpile from './transpiler';
 
 /*
  * Helper wrapper functions to convert EspruinoTools’ callback-based routines
- * to promise-based 
+ * to promise-based
  */
 function writeToEspruino(code) {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     Espruino.Core.CodeWriter.writeToEspruino(code, resolve);
   });
 }
 
 function serialOpen(port, disconnectedCallback) {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     Espruino.Core.Serial.open(port, resolve, disconnectedCallback);
   });
 }
 
 function transformForEspruino(code) {
-  return new Promise((resolve, reject) => {
-    Espruino.callProcessor("transformForEspruino", code, resolve);
+  return new Promise(resolve => {
+    Espruino.callProcessor('transformForEspruino', code, resolve);
   });
 }
 
 function delay(ms) {
-  return new Promise((resolve, reject) => setTimeout(resolve, ms));
-}
-
-function onDisconnected() {
-  console.log('@@@ Disconnected'); 
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function setProgressListener(progressCallback) {
@@ -52,7 +48,7 @@ function setProgressListener(progressCallback) {
   const notify = () => {
     const percentage = progress / progressMax * 100;
     progressCallback(status, percentage);
-  }
+  };
 
   Espruino.Core.Status = {
     setStatus: (newStatus, maxAmount) => {
@@ -82,14 +78,14 @@ export function upload(project, progressCallback) {
   Espruino.Core.Serial.setSlowWrite(false);
   setProgressListener(progressCallback);
 
-  return co(function*() {
+  return co(function* asyncUpload() {
     const transformedCode = yield transformForEspruino(code);
 
     // Due to implementation of EspruinoTools we have to listen serial
     // Just do nothing with incomming data
-    Espruino.Core.Serial.startListening(_ => null);
+    Espruino.Core.Serial.startListening(() => null);
 
-    const connectionInfo = yield serialOpen(port, onDisconnected);
+    const connectionInfo = yield serialOpen(port, () => null);
     if (!connectionInfo) {
       throw new Error(`Failed to open serial port ${port}`);
     }
