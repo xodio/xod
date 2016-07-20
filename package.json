@@ -8,7 +8,7 @@
     "build-chrome": "webpack --progress --colors --config webpack/chrome-dev.js",
     "dev-chrome": "webpack --watch --progress --colors --config webpack/chrome-dev.js",
     "lint": "eslint --ext .js --ext .jsx ./app ./targets ./test || true",
-    "test": "mocha-webpack --colors --webpack-config webpack.config.js \"test/**/*Spec.js\"",
+    "test": "mocha-webpack --colors --webpack-config webpack/test.js \"test/**/*Spec.js\"",
     "travis": "npm-run-all --continue-on-error lint test"
   },
   "repository": {},
