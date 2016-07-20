@@ -44,7 +44,6 @@ class Editor extends React.Component {
     const isNotInput = !isInput(event);
 
     if (isNotInput) {
-
       if (keycode === KEYCODE.BACKSPACE) {
         event.preventDefault();
       }
@@ -62,7 +61,6 @@ class Editor extends React.Component {
       if (event.ctrlKey && keycode === KEYCODE.Y) {
         this.props.actions.redo();
       }
-      
     }
   }
   onPropUpdate(nodeId, propKey, propValue) {
