@@ -197,4 +197,35 @@ describe('Project reducer: ', () => {
       chai.expect(movedNode.position).to.deep.equal(position);
     });
   });
+
+  describe('Load data from JSON', () => {
+    let store;
+    beforeEach(() => {
+      store = mockStore({});
+    });
+
+    it('should be loaded', () => {
+      const data = {
+        nodes: {
+          1: {
+            id: 1,
+          },
+        },
+        pins: {
+          1: {
+            id: 1,
+            nodeId: 1,
+          },
+        },
+        links: {},
+        patches: {},
+        meta: {},
+        nodeTypes: {},
+      };
+
+      store.dispatch(Actions.loadProjectFromJSON(JSON.stringify(data)));
+      const projectState = Selectors.Project.getProject(store.getState());
+      chai.expect(projectState).to.deep.equal(data);
+    });
+  });
 });
