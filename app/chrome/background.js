@@ -7,7 +7,16 @@ function init() {
     height: 768,
   };
 
-  chrome.app.window.create('index.html', options);
+  const onCreate = window => window.onClosed.addListener(disconnectAll);
+  chrome.app.window.create('index.html', options, onCreate);
 }
 
 chrome.app.runtime.onLaunched.addListener(init);
+
+function disconnectAll() {
+  chrome.serial.getConnections(function(connections) {
+    connections.forEach(c => {
+      chrome.serial.disconnect(c.connectionId, _ => null);
+    });
+  });
+}
