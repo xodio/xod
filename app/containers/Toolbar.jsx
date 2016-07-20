@@ -12,11 +12,13 @@ class Toolbar extends React.Component {
     this.onSave = this.onSave.bind(this);
     this.onLoad = this.onLoad.bind(this);
   }
+
   onProjectNameClick() {
     return this.props.actions.updateMeta({
       name: 'Mega project',
     });
   }
+
   onLoad(event) {
     const input = event.target;
     const files = input.files;
@@ -38,11 +40,13 @@ class Toolbar extends React.Component {
 
     input.value = '';
   }
+
   onSave() {
     const url = `data:text/json;charset=utf8,${encodeURIComponent(this.props.projectJSON)}`;
     window.open(url, '_blank');
     window.focus();
   }
+
   render() {
     const meta = this.props.meta;
 

@@ -57,9 +57,11 @@ export default class Pin extends React.Component {
   getDirection() {
     return this.props.direction;
   }
+
   isInput() {
     return (this.getDirection() === PIN_DIRECTION.INPUT);
   }
+
   isOutput() {
     return (this.getDirection() === PIN_DIRECTION.OUTPUT);
   }

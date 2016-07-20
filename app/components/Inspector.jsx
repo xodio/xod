@@ -18,6 +18,7 @@ class Inspector extends React.Component {
 
     this.createWidgets(props);
   }
+
   componentWillUpdate(nextProps) {
     this.createWidgets(nextProps);
   }
@@ -66,6 +67,7 @@ class Inspector extends React.Component {
       this.createMultipleSelectionWidgets(selection);
     }
   }
+
   createEmptySelectionWidgets() {
     this.widgets = [
       new Widgets.HintWidget({
@@ -73,6 +75,7 @@ class Inspector extends React.Component {
       }),
     ];
   }
+
   createNodeWidgets(props, selection) {
     const node = props.nodes[selection.id];
     const nodeType = props.nodeTypes[node.typeId];
@@ -105,6 +108,7 @@ class Inspector extends React.Component {
       this.widgets = widgets;
     }
   }
+
   createLinkWidgets() {
     this.widgets = [
       new Widgets.HintWidget({
@@ -112,6 +116,7 @@ class Inspector extends React.Component {
       }),
     ];
   }
+
   createMultipleSelectionWidgets(selection) {
     this.widgets = [
       new Widgets.HintWidget({

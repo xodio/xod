@@ -8,14 +8,17 @@ class CreateNodeWidget extends React.Component {
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onNodeTypeChange = this.onNodeTypeChange.bind(this);
   }
+
   onAddNodeClick(event) {
     this.props.onAddNodeClick();
     event.target.blur();
   }
+
   onNodeTypeChange(event) {
     this.props.onNodeTypeChange(event.target.value);
     event.target.blur();
   }
+
   render() {
     const nodeTypes = R.values(this.props.nodeTypes);
 

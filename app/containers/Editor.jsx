@@ -74,6 +74,7 @@ class Editor extends React.Component {
   setModeCreating() {
     this.setEditorMode(EDITOR_MODE.CREATING_NODE);
   }
+
   setModeDefault() {
     this.setEditorMode(EDITOR_MODE.DEFAULT);
   }

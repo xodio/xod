@@ -103,6 +103,7 @@ class Patch extends React.Component {
   onNodeMouseUp(id) {
     this.props.dispatch(Actions.selectNode(id));
   }
+
   onNodeMouseDown(event, id) {
     const node = this.props.nodes[id].position;
     this.dragging = {
@@ -115,9 +116,11 @@ class Patch extends React.Component {
 
     this.setClickNodeId(id);
   }
+
   onPinMouseUp(id) {
     this.props.dispatch(Actions.linkPin(id));
   }
+
   onLinkClick(id) {
     this.props.dispatch(Actions.selectLink(id));
   }
@@ -141,6 +144,7 @@ class Patch extends React.Component {
     this.dragGhostNode();
     this.dragGhostLink();
   }
+
   onMouseUp(event) {
     if (this.state.dragNodeId) {
       const dragId = this.state.dragNodeId;
@@ -204,6 +208,7 @@ class Patch extends React.Component {
         )
     );
   }
+
   setClickNodeId(id) {
     const st = R.set(
       R.lensProp('clickNodeId'),
@@ -249,6 +254,7 @@ class Patch extends React.Component {
         );
     }
   }
+
   dragGhostNode() {
     if (this.props.mode.isCreatingNode && this.state.ghostNode) {
       this.setState(
@@ -260,6 +266,7 @@ class Patch extends React.Component {
       );
     }
   }
+
   dragGhostLink() {
     if (this.props.linkingPin && this.state.ghostLink) {
       this.setState(
@@ -288,6 +295,7 @@ class Patch extends React.Component {
       ),
     }];
   }
+
   createPinsState(nodeId, nodeWidth) {
     let nodePins = R.pipe(
       R.values,
@@ -312,6 +320,7 @@ class Patch extends React.Component {
 
     return PatchUtils.getPinPosition(nodePins, nodeWidth);
   }
+
   createNodeState(node, customProps) {
     const props = (typeof customProps === 'object') ? customProps : {};
 
@@ -354,6 +363,7 @@ class Patch extends React.Component {
 
     return R.merge(viewstate, props);
   }
+
   createNodeStates(nodes) {
     let comparator = R.comparator();
 
@@ -379,10 +389,12 @@ class Patch extends React.Component {
       }, {})
     )(nodes);
   }
+
   createNode(nodeState) {
     const nodeFactory = React.createFactory(Node);
     return nodeFactory(nodeState);
   }
+
   createNodes(nodes) {
     const viewstate = this.createNodeStates(nodes);
 
@@ -420,6 +432,7 @@ class Patch extends React.Component {
     const linkFactory = React.createFactory(Link);
     return linkFactory(link);
   }
+
   createLinkState(link, customProps) {
     const props = (typeof customProps === 'object') ? customProps : {};
     const positions = [
@@ -448,6 +461,7 @@ class Patch extends React.Component {
       props
     );
   }
+
   createLinks(links) {
     return R.pipe(
       R.values,
