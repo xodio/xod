@@ -1,18 +1,18 @@
 module.exports = {
-  'parserOptions': {
-    'ecmaVersion': 6,
-    'sourceType': 'module',
-    'ecmaFeatures': {
-      'jsx': true,
+  parserOptions: {
+    ecmaVersion: 6,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
     },
   },
 
-  'plugins': [
+  plugins: [
     'react',
     'import',
   ],
 
-  'extends': [
+  extends: [
     'eslint:recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
@@ -21,7 +21,7 @@ module.exports = {
     'airbnb',
   ],
 
-  'settings': {
+  settings: {
     'import/resolver': {
       webpack: {
         config: './webpack/base.js',
@@ -29,17 +29,17 @@ module.exports = {
       }},
   },
 
-  'rules': {
+  rules: {
     'import/extensions': [2, 'never'],
   },
 
-  'globals': {
-    'describe': true,
-    'it': true,
-    'before': true,
-    'beforeEach': true,
-    'after': true,
-    'afterEach': true,
-    'chrome': true,
+  globals: {
+    describe: true,
+    it: true,
+    before: true,
+    beforeEach: true,
+    after: true,
+    afterEach: true,
+    chrome: true,
   },
 };
