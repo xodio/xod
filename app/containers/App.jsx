@@ -50,6 +50,7 @@ export default class App extends React.Component {
       )
     );
   }
+
   onUpload() {
     const isChromeApplication = window.chrome && chrome.app && chrome.app.runtime;
     if (isChromeApplication) {

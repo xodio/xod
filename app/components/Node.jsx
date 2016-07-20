@@ -25,6 +25,7 @@ class Node extends React.Component {
   componentDidMount() {
     this.updatePatchViewstate();
   }
+
   componentDidUpdate() {
     this.updatePatchViewstate();
   }
@@ -34,11 +35,13 @@ class Node extends React.Component {
       this.props.onMouseUp(this.id);
     }
   }
+
   onMouseDown(event) {
     if (this.props.draggable && this.props.onMouseDown) {
       this.props.onMouseDown(event, this.id);
     }
   }
+
   onPinMouseUp(pinId) {
     if (this.props.isClicked && this.props.onPinMouseUp) {
       this.props.onPinMouseUp(pinId);
@@ -53,6 +56,7 @@ class Node extends React.Component {
 
     return position;
   }
+
   getRectProps() {
     return {
       width: this.width,
@@ -61,6 +65,7 @@ class Node extends React.Component {
       y: SIZES.NODE.padding.y,
     };
   }
+
   getBlockProps() {
     return {
       x: 0,
@@ -69,6 +74,7 @@ class Node extends React.Component {
       height: this.getRectProps().height + (SIZES.NODE.padding.y * 2),
     };
   }
+
   getTextProps() {
     const rectSize = this.getRectProps();
     return {

@@ -31,6 +31,7 @@ class SnackBar extends React.Component {
     this.timers = {};
     this.onClick = (timestamp) => this.hideError.bind(this, timestamp);
   }
+
   componentWillReceiveProps(nextProps) {
     nextProps.errors.forEach((error) => {
       if (!this.timers.hasOwnProperty(error.timestamp)) {
@@ -40,12 +41,14 @@ class SnackBar extends React.Component {
       }
     });
   }
+
   hideError(timestamp) {
     if (this.timers.hasOwnProperty(timestamp)) {
       clearTimeout(this.timer[timestamp]);
     }
     this.props.hideError(timestamp);
   }
+
   render() {
     return (
       <div>

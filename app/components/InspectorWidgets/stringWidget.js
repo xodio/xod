@@ -22,9 +22,11 @@ class StringWidget extends React.Component {
       R.assoc('value', newValue, this.state)
     );
   }
+
   onBlur() {
     this.props.onPropUpdate(this.state.value);
   }
+
   onKeyDown(event) {
     const keycode = event.keycode || event.which;
     if (keycode === ENTER) {

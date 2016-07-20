@@ -5,18 +5,23 @@ class NodeText extends React.Component {
     this.labelBbox = this.getBbox();
     this.forceUpdate();
   }
+
   componentDidUpdate() {
     this.labelBbox = this.getBbox();
   }
+
   getBbox() {
     return this.refs.label.getBBox();
   }
+
   getWidth() {
     return this.labelBbox.width;
   }
+
   getHeight() {
     return this.labelBbox.height;
   }
+
   getPosition() {
     const position = {
       x: this.props.position.x,
@@ -31,6 +36,7 @@ class NodeText extends React.Component {
 
     return position;
   }
+
   render() {
     return (
       <text
