@@ -5,9 +5,9 @@ import R from 'ramda';
 
 describe('Links reducer', () => {
   const sharedLinkStore = {
-    0: {
-      id: 0,
-      pins: [0, 1],
+    1: {
+      id: 1,
+      pins: [1, 2],
     },
   };
 
@@ -22,7 +22,7 @@ describe('Links reducer', () => {
     it('should insert link', () => {
       const oldState = linkStore;
       const state = links(oldState, Actions.addLink(2, 3));
-      chai.assert(newId(oldState) + 1 === newId(state));
+      chai.assert(newId(oldState) === lastId(state));
     });
 
     it('should set appropriate id for a new link', () => {
@@ -67,7 +67,7 @@ describe('Links reducer', () => {
       const RemovingLinkId = lastId(linkStore);
       const removingLink = copyLink(linkStore[RemovingLinkId]);
       state = links(linkStore, Actions.deleteLink(RemovingLinkId));
-      state = links(state, Actions.addLink(removingLink.pins[0], removingLink.pins[1]));
+      state = links(state, Actions.addLink([removingLink.pins[0], removingLink.pins[1]]));
       chai.expect(state).to.deep.equal(linkStore);
     });
 

@@ -10,7 +10,7 @@ export const getLastNodeId = (state) => R.pipe(
   getNodes,
   R.values,
   R.map(node => parseInt(node.id, 10)),
-  R.reduce(R.max, -1)
+  R.reduce(R.max, 0)
 )(state);
 
 export const getNodeById = (state, props) => R.pipe(

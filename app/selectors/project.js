@@ -1,7 +1,7 @@
 import R from 'ramda';
 
 const getProjectState = (state, path) => {
-  if (path.length > 0 && state.hasOwnProperty(path[0])) {
+  if (path.length > 0 && R.has(path[0], state)) {
     return getProjectState(
       R.prop(path.shift(), state),
       path
@@ -15,4 +15,4 @@ export const getProject = (state) => {
   return getProjectState(state, path);
 };
 
-export const getJSON = (state) => JSON.stringify(R.prop('project', state));
+export const getJSON = (state) => JSON.stringify(getProject(state));
