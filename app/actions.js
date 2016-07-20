@@ -181,3 +181,8 @@ export const updateNodeProperty = (nodeId, propKey, propValue) => ({
     value: propValue,
   },
 });
+
+export const loadProjectFromJSON = (json) => ({
+  type: ActionType.PROJECT_LOAD_DATA,
+  payload: json,
+});

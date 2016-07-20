@@ -8,7 +8,7 @@
   box-shadow: 0 1px 0 #fff;
 
   .button-add-node {
-    @include button-blue;
+    @include button-primary;
 
     text-shadow: 0 -1px 0 rgba(0,0,30,0.3);
     border: 0;
