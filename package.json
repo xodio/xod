@@ -33,6 +33,7 @@
     "react-skylight": "^0.4.0",
     "redux": "^3.0.5",
     "redux-thunk": "^2.1.0",
+    "redux-undo": "^1.0.0-beta8",
     "reselect": "^2.5.1",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.10"

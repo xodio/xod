@@ -1,23 +1,17 @@
-import { meta } from './meta';
+import R from 'ramda';
+import { combineReducers } from 'redux';
+import undoable from 'redux-undo';
+
+import projectReducer from './project';
 import { editor } from './editor';
-import { nodeTypes } from './nodetypes';
-import { patches } from './patches';
-import { nodes } from './nodes';
-import { pins } from './pins';
-import { links } from './links';
 import { errors } from './errors';
 
-import combineReducersWithContext from './combineWithContext';
+const projectUndoConfig = {
+  filter: (action) => !(R.pathEq(['meta', 'skipHistory'], true, action)),
+};
 
-export default combineReducersWithContext({
-  project: combineReducersWithContext({
-    meta,
-    patches,
-    nodes,
-    pins,
-    links,
-  }),
-  nodeTypes,
+export default combineReducers({
+  project: undoable(projectReducer, projectUndoConfig),
   editor,
   errors,
 });

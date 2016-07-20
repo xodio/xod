@@ -122,6 +122,176 @@ const initialState = {
         pins: [4, 6],
       },
     },
+    nodeTypes: {
+      1: {
+        id: 1,
+        label: 'Not',
+        category: NODE_CATEGORY.FUNCTIONAL,
+        pins: {
+          in: {
+            key: 'in',
+            type: PIN_TYPE.BOOL,
+            direction: PIN_DIRECTION.INPUT,
+          },
+          out: {
+            key: 'out',
+            type: PIN_TYPE.BOOL,
+            direction: PIN_DIRECTION.OUTPUT,
+          },
+        },
+      },
+      2: {
+        id: 2,
+        label: 'Either',
+        category: NODE_CATEGORY.FUNCTIONAL,
+        pins: {
+          in: {
+            key: 'in',
+            type: PIN_TYPE.BOOL,
+            direction: PIN_DIRECTION.INPUT,
+            label: 'IN',
+          },
+          ifTrue: {
+            key: 'ifTrue',
+            type: PIN_TYPE.BOOL,
+            direction: PIN_DIRECTION.INPUT,
+            label: 'T',
+          },
+          ifFalse: {
+            key: 'ifFalse',
+            type: PIN_TYPE.BOOL,
+            direction: PIN_DIRECTION.INPUT,
+            label: 'F',
+          },
+          out: {
+            key: 'out',
+            type: PIN_TYPE.BOOL,
+            direction: PIN_DIRECTION.OUTPUT,
+          },
+        },
+      },
+      3: {
+        id: 3,
+        label: 'Pot',
+        category: NODE_CATEGORY.HARDWARE,
+        pins: {
+          out: {
+            key: 'out',
+            type: PIN_TYPE.NUMBER,
+            direction: PIN_DIRECTION.OUTPUT,
+          },
+        },
+      },
+      4: {
+        id: 4,
+        label: 'LED',
+        category: NODE_CATEGORY.HARDWARE,
+        pins: {
+          brightness: {
+            key: 'brightness',
+            type: PIN_TYPE.NUMBER,
+            direction: PIN_DIRECTION.INPUT,
+          },
+        },
+      },
+      5: {
+        id: 5,
+        label: 'Servo',
+        category: NODE_CATEGORY.HARDWARE,
+        pins: {
+          value: {
+            key: 'value',
+            type: PIN_TYPE.NUMBER,
+            direction: PIN_DIRECTION.INPUT,
+          },
+        },
+      },
+      6: {
+        id: 6,
+        label: 'Constant:Bool',
+        category: NODE_CATEGORY.CONFIGURATION,
+        pins: {
+          value: {
+            key: 'value',
+            type: PIN_TYPE.BOOL,
+            direction: PIN_DIRECTION.OUTPUT,
+          },
+        },
+        properties: {
+          value: {
+            key: 'value',
+            label: 'Value',
+            type: PROPERTY_TYPE.BOOL,
+            defaultValue: PROPERTY_DEFAULT_VALUE.BOOL,
+          },
+        },
+      },
+      7: {
+        id: 7,
+        label: 'Constant:Number',
+        category: NODE_CATEGORY.CONFIGURATION,
+        pins: {
+          value: {
+            key: 'value',
+            type: PIN_TYPE.NUMBER,
+            direction: PIN_DIRECTION.OUTPUT,
+          },
+        },
+        properties: {
+          value: {
+            key: 'value',
+            label: 'Value',
+            type: PROPERTY_TYPE.NUMBER,
+            defaultValue: PROPERTY_DEFAULT_VALUE.NUMBER,
+          },
+        },
+      },
+      8: {
+        id: 8,
+        label: 'Constant:String',
+        category: NODE_CATEGORY.CONFIGURATION,
+        pins: {
+          value: {
+            key: 'value',
+            type: PIN_TYPE.STRING,
+            direction: PIN_DIRECTION.OUTPUT,
+          },
+        },
+        properties: {
+          value: {
+            key: 'value',
+            label: 'Value',
+            type: PROPERTY_TYPE.STRING,
+            defaultValue: PROPERTY_DEFAULT_VALUE.STRING,
+          },
+        },
+      },
+      9: {
+        id: 9,
+        label: 'IMU',
+        category: NODE_CATEGORY.HARDWARE,
+        pins: {
+          yaw: {
+            key: 'yaw',
+            type: PIN_TYPE.NUMBER,
+            direction: PIN_DIRECTION.OUTPUT,
+            label: 'YAW',
+          },
+          pitch: {
+            key: 'pitch',
+            type: PIN_TYPE.NUMBER,
+            direction: PIN_DIRECTION.OUTPUT,
+            label: 'PIT',
+          },
+          roll: {
+            key: 'roll',
+            type: PIN_TYPE.NUMBER,
+            direction: PIN_DIRECTION.OUTPUT,
+            label: 'ROL',
+          },
+        },
+      },
+    },
   },
   editor: {
     currentPatchId: 1,
@@ -130,176 +300,6 @@ const initialState = {
     selection: [],
     linkingPin: null,
     selectedNodeType: 1,
-  },
-  nodeTypes: {
-    1: {
-      id: 1,
-      label: 'Not',
-      category: NODE_CATEGORY.FUNCTIONAL,
-      pins: {
-        in: {
-          key: 'in',
-          type: PIN_TYPE.BOOL,
-          direction: PIN_DIRECTION.INPUT,
-        },
-        out: {
-          key: 'out',
-          type: PIN_TYPE.BOOL,
-          direction: PIN_DIRECTION.OUTPUT,
-        },
-      },
-    },
-    2: {
-      id: 2,
-      label: 'Either',
-      category: NODE_CATEGORY.FUNCTIONAL,
-      pins: {
-        in: {
-          key: 'in',
-          type: PIN_TYPE.BOOL,
-          direction: PIN_DIRECTION.INPUT,
-          label: 'IN',
-        },
-        ifTrue: {
-          key: 'ifTrue',
-          type: PIN_TYPE.BOOL,
-          direction: PIN_DIRECTION.INPUT,
-          label: 'T',
-        },
-        ifFalse: {
-          key: 'ifFalse',
-          type: PIN_TYPE.BOOL,
-          direction: PIN_DIRECTION.INPUT,
-          label: 'F',
-        },
-        out: {
-          key: 'out',
-          type: PIN_TYPE.BOOL,
-          direction: PIN_DIRECTION.OUTPUT,
-        },
-      },
-    },
-    3: {
-      id: 3,
-      label: 'Pot',
-      category: NODE_CATEGORY.HARDWARE,
-      pins: {
-        out: {
-          key: 'out',
-          type: PIN_TYPE.NUMBER,
-          direction: PIN_DIRECTION.OUTPUT,
-        },
-      },
-    },
-    4: {
-      id: 4,
-      label: 'LED',
-      category: NODE_CATEGORY.HARDWARE,
-      pins: {
-        brightness: {
-          key: 'brightness',
-          type: PIN_TYPE.NUMBER,
-          direction: PIN_DIRECTION.INPUT,
-        },
-      },
-    },
-    5: {
-      id: 5,
-      label: 'Servo',
-      category: NODE_CATEGORY.HARDWARE,
-      pins: {
-        value: {
-          key: 'value',
-          type: PIN_TYPE.NUMBER,
-          direction: PIN_DIRECTION.INPUT,
-        },
-      },
-    },
-    6: {
-      id: 6,
-      label: 'Constant:Bool',
-      category: NODE_CATEGORY.CONFIGURATION,
-      pins: {
-        value: {
-          key: 'value',
-          type: PIN_TYPE.BOOL,
-          direction: PIN_DIRECTION.OUTPUT,
-        },
-      },
-      properties: {
-        value: {
-          key: 'value',
-          label: 'Value',
-          type: PROPERTY_TYPE.BOOL,
-          defaultValue: PROPERTY_DEFAULT_VALUE.BOOL,
-        },
-      },
-    },
-    7: {
-      id: 7,
-      label: 'Constant:Number',
-      category: NODE_CATEGORY.CONFIGURATION,
-      pins: {
-        value: {
-          key: 'value',
-          type: PIN_TYPE.NUMBER,
-          direction: PIN_DIRECTION.OUTPUT,
-        },
-      },
-      properties: {
-        value: {
-          key: 'value',
-          label: 'Value',
-          type: PROPERTY_TYPE.NUMBER,
-          defaultValue: PROPERTY_DEFAULT_VALUE.NUMBER,
-        },
-      },
-    },
-    8: {
-      id: 8,
-      label: 'Constant:String',
-      category: NODE_CATEGORY.CONFIGURATION,
-      pins: {
-        value: {
-          key: 'value',
-          type: PIN_TYPE.STRING,
-          direction: PIN_DIRECTION.OUTPUT,
-        },
-      },
-      properties: {
-        value: {
-          key: 'value',
-          label: 'Value',
-          type: PROPERTY_TYPE.STRING,
-          defaultValue: PROPERTY_DEFAULT_VALUE.STRING,
-        },
-      },
-    },
-    9: {
-      id: 9,
-      label: 'IMU',
-      category: NODE_CATEGORY.HARDWARE,
-      pins: {
-        yaw: {
-          key: 'yaw',
-          type: PIN_TYPE.NUMBER,
-          direction: PIN_DIRECTION.OUTPUT,
-          label: 'YAW',
-        },
-        pitch: {
-          key: 'pitch',
-          type: PIN_TYPE.NUMBER,
-          direction: PIN_DIRECTION.OUTPUT,
-          label: 'PIT',
-        },
-        roll: {
-          key: 'roll',
-          type: PIN_TYPE.NUMBER,
-          direction: PIN_DIRECTION.OUTPUT,
-          label: 'ROL',
-        },
-      },
-    },
   },
   errors: [],
 };

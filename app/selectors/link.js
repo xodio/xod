@@ -1,9 +1,12 @@
 import R from 'ramda';
 import { getFullPinsData, canPinHaveMoreLinks } from './pin';
 import { LINK_ERRORS } from '../constants/errorMessages';
-import ValidationError from '../utils/validationError';
+import { getProject } from './project';
 
-export const getLinks = R.view(R.lensPath(['project', 'links']));
+export const getLinks = R.pipe(
+  getProject,
+  R.prop('links')
+);
 
 export const getLinkById = (state, props) => R.pipe(
   getLinks,
@@ -16,8 +19,8 @@ export const getLinksByPinId = (state, props) => R.pipe(
   getLinks,
   R.filter(
     (link) => (
-      props.pinIds.indexOf(link.fromPinId) !== -1 ||
-      props.pinIds.indexOf(link.toPinId) !== -1
+      props.pinIds.indexOf(link.pins[0]) !== -1 ||
+      props.pinIds.indexOf(link.pins[1]) !== -1
     )
   ),
   R.values
@@ -41,21 +44,22 @@ export const validateLink = (state, pinIds) => {
     toPinCanHaveMoreLinks
   );
 
-  if (!check) {
-    let error;
+  const result = {
+    isValid: check,
+    message: 'Unknown error',
+  };
 
+  if (!check) {
     if (sameDirection) {
-      error = new ValidationError(LINK_ERRORS.SAME_DIRECTION);
+      result.message = LINK_ERRORS.SAME_DIRECTION;
     } else
     if (sameNode) {
-      error = new ValidationError(LINK_ERRORS.SAME_NODE);
+      result.message = LINK_ERRORS.SAME_NODE;
     } else
     if (!fromPinCanHaveMoreLinks || !toPinCanHaveMoreLinks) {
-      error = new ValidationError(LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN);
+      result.message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
     }
-
-    throw error;
   }
 
-  return true;
+  return result;
 };

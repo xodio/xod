@@ -120,25 +120,5 @@ describe('Editor reducer', () => {
 
       chai.expect(store.getState().editor.linkingPin).to.be.a('null');
     });
-    it('should create link between two selected pins', () => {
-      store = testStore(mockState);
-      const idFrom = 0;
-      const idTo = 1;
-      const expected = {
-        state: mockState,
-        actions: [
-          Actions.addLink(idFrom, idTo),
-        ],
-      };
-
-      store.dispatch(Actions.linkPin(idFrom));
-      const actions = store.dispatch(Actions.linkPin(idTo));
-      const check = {
-        state: store.getState(),
-        actions,
-      };
-
-      chai.expect(check).to.deep.equal(expected);
-    });
   });
 });

@@ -1,3 +1,18 @@
 import R from 'ramda';
 
-export const getJSON = (state) => JSON.stringify(R.prop('project', state));
+const getProjectState = (state, path) => {
+  if (path.length > 0 && R.has(path[0], state)) {
+    return getProjectState(
+      R.prop(path.shift(), state),
+      path
+    );
+  }
+  return state;
+};
+
+export const getProject = (state) => {
+  const path = ['project', 'present'];
+  return getProjectState(state, path);
+};
+
+export const getJSON = (state) => JSON.stringify(getProject(state));

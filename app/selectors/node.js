@@ -1,12 +1,16 @@
 import R from 'ramda';
+import { getProject } from './project';
 
-export const getNodes = R.view(R.lensPath(['project', 'nodes']));
+export const getNodes = R.pipe(
+  getProject,
+  R.prop('nodes')
+);
 
 export const getLastNodeId = (state) => R.pipe(
   getNodes,
   R.values,
   R.map(node => parseInt(node.id, 10)),
-  R.reduce(R.max, -1)
+  R.reduce(R.max, 0)
 )(state);
 
 export const getNodeById = (state, props) => R.pipe(

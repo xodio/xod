@@ -6,9 +6,6 @@ export const NODE_UPDATE_PROPERTY = 'NODE_UPDATE_PROPERTY';
 export const LINK_ADD = 'LINK_ADD';
 export const LINK_DELETE = 'LINK_DELETE';
 
-export const PIN_ADD = 'PIN_ADD';
-export const PIN_DELETE = 'PIN_DELETE';
-
 export const META_UPDATE = 'META_UPDATE';
 export const VIEWSTATE_UPDATE = 'VIEWSTATE_UPDATE';
 
