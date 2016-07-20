@@ -12,7 +12,6 @@ export const getLastId = (state) => {
   // -1 is important because if nodes store doesn't contain nodes then we should return 0 as newId
   return R.reduce(R.max, -1, ids);
 };
-export const getNewId = (state) => getLastId(state) + 1;
 
 const createPins = (state, nodeId, pins) => {
   let lastId = getLastId(state);
@@ -36,8 +35,6 @@ const createPins = (state, nodeId, pins) => {
 };
 
 export const pins = (state = {}, action, projectState) => {
-  let newId;
-
   switch (action.type) {
     case NODE_ADD: {
       const nodeType = getNodeTypes(projectState)[action.payload.typeId];
