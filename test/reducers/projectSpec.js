@@ -1,12 +1,14 @@
 import chai from 'chai';
-import projectReducer from '../../app/reducers/project';
 import { createStore, combineReducers } from 'redux';
+import undoable, { ActionCreators as ReduxUndoActions } from 'redux-undo';
+import projectReducer from '../../app/reducers/project';
 import { newId, lastId, nodes } from '../../app/reducers/nodes';
 import * as Actions from '../../app/actions';
+import Selectors from '../../app/selectors';
 import * as PIN_DIRECTION from '../../app/constants/pinDirection';
 
 const mockStore = (state) => createStore(combineReducers({
-  project: projectReducer,
+  project: undoable(projectReducer),
 }), state);
 
 describe('Project reducer: ', () => {
@@ -30,6 +32,9 @@ describe('Project reducer: ', () => {
             },
           },
         },
+        links: {},
+        meta: {},
+        patches: {},
       },
     };
 
@@ -65,15 +70,30 @@ describe('Project reducer: ', () => {
 
       store.dispatch(Actions.addNode(1, { x: 10, y: 10 }));
 
-      chai.expect(store.getState().project.nodes).to.deep.equal(expectedNodes);
-      chai.expect(store.getState().project.pins).to.deep.equal(expectedPins);
+      const projectStore = Selectors.Project.getProject(store.getState());
+
+      chai.expect(projectStore.nodes).to.deep.equal(expectedNodes);
+      chai.expect(projectStore.pins).to.deep.equal(expectedPins);
     });
 
     it('should set appropriate id for a new node', () => {
       store.dispatch(Actions.addNode(1, { x: 10, y: 10 }));
+      const projectStore = Selectors.Project.getProject(store.getState());
+
       chai.assert(
-        lastId(store.getState().project.nodes) === newId(mockState.project.nodes)
+        lastId(projectStore.nodes) === newId(mockState.project.nodes)
       );
+    });
+
+    it('should be undoable and redoable', () => {
+      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }));
+      const updatedStore = Selectors.Project.getProject(store.getState());
+      store.dispatch(ReduxUndoActions.undo());
+      const undoedStore = Selectors.Project.getProject(store.getState());
+      store.dispatch(ReduxUndoActions.redo());
+      const redoedStore = Selectors.Project.getProject(store.getState());
+      chai.expect(undoedStore).to.deep.equal(mockState.project);
+      chai.expect(redoedStore).to.deep.equal(updatedStore);
     });
   });
 
@@ -108,6 +128,9 @@ describe('Project reducer: ', () => {
             pins: [2, 3],
           },
         },
+        nodeTypes: {},
+        meta: {},
+        patches: {},
       },
     };
 
@@ -127,9 +150,22 @@ describe('Project reducer: ', () => {
 
       store.dispatch(Actions.deleteNode(1));
 
-      chai.expect(store.getState().project.nodes).to.deep.equal(expectedNodes);
-      chai.expect(store.getState().project.pins).to.deep.equal(expectedPins);
-      chai.expect(store.getState().project.links).to.deep.equal(expectedLinks);
+      const projectStore = Selectors.Project.getProject(store.getState());
+
+      chai.expect(projectStore.nodes).to.deep.equal(expectedNodes);
+      chai.expect(projectStore.pins).to.deep.equal(expectedPins);
+      chai.expect(projectStore.links).to.deep.equal(expectedLinks);
+    });
+
+    it('should be undoable and redoable', () => {
+      store.dispatch(Actions.deleteNode(1));
+      const updatedStore = Selectors.Project.getProject(store.getState());
+      store.dispatch(ReduxUndoActions.undo());
+      const undoedStore = Selectors.Project.getProject(store.getState());
+      store.dispatch(ReduxUndoActions.redo());
+      const redoedStore = Selectors.Project.getProject(store.getState());
+      chai.expect(undoedStore).to.deep.equal(mockState.project);
+      chai.expect(redoedStore).to.deep.equal(updatedStore);
     });
   });
 
