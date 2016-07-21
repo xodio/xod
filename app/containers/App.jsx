@@ -1,33 +1,27 @@
 
 import R from 'ramda';
 import React from 'react';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import Reducers from '../reducers/';
-import { getViewableSize, isChromeApp } from '../utils/browser';
-import { EditorMiddleware } from '../middlewares';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import * as Actions from '../actions';
 import Selectors from '../selectors';
-import Serializer from '../serializers/mock';
+import { getViewableSize } from '../utils/browser';
+
 import Editor from './Editor';
 import SnackBar from './SnackBar';
 import Toolbar from './Toolbar';
-import EventListener from 'react-event-listener';
 import SkyLight from 'react-skylight';
+import EventListener from 'react-event-listener';
 
 import DevTools from './DevTools';
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
 
-export default class App extends React.Component {
-
+class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.serializer = new Serializer();
-    const initialState = this.serializer.getState();
-
-    this.store = createStore(Reducers, initialState, EditorMiddleware);
     this.state = {
       size: getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
     };
@@ -36,6 +30,7 @@ export default class App extends React.Component {
     this.onUpload = this.onUpload.bind(this);
     this.onLoad = this.onLoad.bind(this);
     this.onSave = this.onSave.bind(this);
+
   }
 
   onResize() {
@@ -49,19 +44,20 @@ export default class App extends React.Component {
   }
 
   onUpload() {
-    if (isChromeApp) {
-      this.store.dispatch(Actions.upload());
+    const isChromeApplication = window.chrome && chrome.app && chrome.app.runtime;
+    if (isChromeApplication) {
+      this.props.actions.upload();
     } else {
       this.suggestToInstallApplication();
     }
   }
 
   onLoad(json) {
-    this.store.dispatch(Actions.loadProjectFromJSON(json));
+    this.props.actions.loadProjectFromJSON();
   }
 
   onSave() {
-    const projectJSON = Selectors.Project.getJSON(this.store.getState());
+    const projectJSON = this.props.projectJSON;
     const url = `data:text/json;charset=utf8,${encodeURIComponent(projectJSON)}`;
     window.open(url, '_blank');
     window.focus();
@@ -78,18 +74,14 @@ export default class App extends React.Component {
       <div>
         <EventListener target={window} onResize={this.onResize} />
         <Toolbar
-          meta={meta}
+          meta={this.props.meta}
           onUpload={this.onUpload}
           onLoad={this.onLoad}
           onSave={this.onSave}
         />
-        <Provider store={this.store}>
-          <div>
-            <Editor size={this.state.size} />
-            <SnackBar />
-            {devToolsInstrument}
-          </div>
-        </Provider>
+        <Editor size={this.state.size} />
+        <SnackBar />
+        {devToolsInstrument}
         <SkyLight
           dialogStyles={{
             height: 'auto',
@@ -109,3 +101,18 @@ export default class App extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  projectJSON: Selectors.Project.getJSON(state),
+  meta: Selectors.Project.getMeta(state),
+
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({
+    upload: Actions.upload,
+    loadProjectFromJSON: Actions.loadProjectFromJSON,
+  }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
