@@ -1,12 +1,10 @@
 import React from 'react';
 
-const PatchWrapper = ({ children }) => {
-  return (
-    <div className="Patch-wrapper">
-      {children}
-    </div>
-  );
-};
+const PatchWrapper = ({ children }) => (
+  <div className="Patch-wrapper">
+    {children}
+  </div>
+);
 
 PatchWrapper.propTypes = {
   children: React.PropTypes.arrayOf(React.PropTypes.element),
