@@ -77,14 +77,14 @@ export default class App extends React.Component {
     return (
       <div>
         <EventListener target={window} onResize={this.onResize} />
+        <Toolbar
+          meta={meta}
+          onUpload={this.onUpload}
+          onLoad={this.onLoad}
+          onSave={this.onSave}
+        />
         <Provider store={this.store}>
           <div>
-            <Toolbar
-              meta={meta}
-              onUpload={this.onUpload}
-              onLoad={this.onLoad}
-              onSave={this.onSave}
-            />
             <Editor size={this.state.size} />
             <SnackBar />
             {devToolsInstrument}
