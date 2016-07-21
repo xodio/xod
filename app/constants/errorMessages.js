@@ -5,5 +5,6 @@ export const LINK_ERRORS = {
 };
 
 export const SAVE_LOAD_ERRORS = {
-  LOAD_EXTENSION: 'Application accepts files only with .xod extension!',
+  NOT_A_JSON: 'File that you try to load is not in a JSON format!',
+  INVALID_FORMAT: 'File that you try to load are corrupted and have a wrong structure!',
 };

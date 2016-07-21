@@ -16,13 +16,6 @@ class Toolbar extends React.Component {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
 
-      if (!(/.+\.xod$/).test(file.name)) {
-        this.props.actions.showError({
-          message: SAVE_LOAD_ERRORS.LOAD_EXTENSION,
-        });
-        return;
-      }
-
       const reader = new FileReader();
       reader.onload = (evt) => {
         this.props.onLoad(evt.target.result);

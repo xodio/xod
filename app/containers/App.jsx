@@ -8,6 +8,7 @@ import * as Actions from '../actions';
 import Selectors from '../selectors';
 import { getViewableSize, isChromeApp } from '../utils/browser';
 import * as EDITOR_MODE from '../constants/editorModes';
+import { SAVE_LOAD_ERRORS } from '../constants/errorMessages';
 
 import Editor from './Editor';
 import SnackBar from './SnackBar';
@@ -54,14 +55,57 @@ class App extends React.Component {
   }
 
   onLoad(json) {
+    let project;
+    let validJSON = true;
+    let errorMessage = null;
+
+    try {
+      project = JSON.parse(json);
+    } catch (err) {
+      validJSON = false;
+      errorMessage = SAVE_LOAD_ERRORS.NOT_A_JSON;
+    }
+
+    if (
+      validJSON && typeof project === 'object' &&
+      !(
+        project.hasOwnProperty('nodes') &&
+        project.hasOwnProperty('links') &&
+        project.hasOwnProperty('pins') &&
+        project.hasOwnProperty('patches') &&
+        project.hasOwnProperty('nodeTypes') &&
+        project.hasOwnProperty('meta')
+      )
+    ) {
+      errorMessage = SAVE_LOAD_ERRORS.INVALID_FORMAT;
+    }
+
+    if (errorMessage) {
+      this.props.actions.showError({
+        message: errorMessage,
+      });
+      return;
+    }
+
     this.props.actions.loadProjectFromJSON(json);
   }
 
   onSave() {
-    const projectJSON = this.props.projectJSON;
-    const url = `data:text/json;charset=utf8,${encodeURIComponent(projectJSON)}`;
-    window.open(url, '_blank');
-    window.focus();
+    const projectName = this.props.meta.name;
+    const link = (document) ? document.createElement('a') : null;
+    const url = `data:application/xod;charset=utf8,${encodeURIComponent(this.props.projectJSON)}`;
+
+    if (link && link.download !== undefined) {
+      link.href = url;
+      link.setAttribute('download', `${projectName}.xod`);
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      window.open(url, '_blank');
+      window.focus();
+    }
   }
 
   onSelectNodeType(typeId) {
@@ -121,6 +165,7 @@ const mapDispatchToProps = (dispatch) => ({
     upload: Actions.upload,
     loadProjectFromJSON: Actions.loadProjectFromJSON,
     setMode: Actions.setMode,
+    showError: Actions.showError,
     setSelectedNodeType: Actions.setSelectedNodeType,
   }, dispatch),
 });
