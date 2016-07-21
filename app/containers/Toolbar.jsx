@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Selectors from '../selectors';
 import * as Actions from '../actions';
+import { SAVE_LOAD_ERRORS } from '../constants/errorMessages';
 
 class Toolbar extends React.Component {
   constructor(props) {
@@ -26,8 +27,11 @@ class Toolbar extends React.Component {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
 
-      if (!(/.*\/json/).test(file.type)) {
-        continue;
+      if (!(/.+\.xod$/).test(file.name)) {
+        this.props.actions.showError({
+          message: SAVE_LOAD_ERRORS.LOAD_EXTENSION,
+        });
+        return;
       }
 
       const reader = new FileReader();
@@ -42,9 +46,21 @@ class Toolbar extends React.Component {
   }
 
   onSave() {
-    const url = `data:text/json;charset=utf8,${encodeURIComponent(this.props.projectJSON)}`;
-    window.open(url, '_blank');
-    window.focus();
+    const projectName = this.props.meta.name;
+    const link = (document) ? document.createElement('a') : null;
+    const url = `data:application/xod;charset=utf8,${encodeURIComponent(this.props.projectJSON)}`;
+
+    if (link && link.download !== undefined) {
+      link.href = url;
+      link.setAttribute('download', `${projectName}.xod`);
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      window.open(url, '_blank');
+      window.focus();
+    }
   }
 
   render() {
@@ -63,29 +79,34 @@ class Toolbar extends React.Component {
             {(meta.author) ? ` by ${meta.author}` : ''}
           </span>
         </div>
+
         <button
           className="upload-button"
           onClick={this.props.onUpload}
         >
           UPLOAD
         </button>
+
         <button
           className="save-button"
           onClick={this.onSave}
         >
           Save project as
         </button>
+
         <label
           className="load-button"
         >
           <input
             type="file"
+            accept=".xod"
             onChange={this.onLoad}
           />
           <span>
             Load project
           </span>
         </label>
+
       </div>
     );
   }
@@ -106,6 +127,7 @@ const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     updateMeta: Actions.updateMeta,
     loadProjectFromJSON: Actions.loadProjectFromJSON,
+    showError: Actions.showError,
   }, dispatch),
 });
 
