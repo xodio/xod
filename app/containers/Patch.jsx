@@ -535,7 +535,6 @@ class Patch extends React.Component {
   render() {
     this.createLayers();
 
-    const patchName = this.props.patch.name;
     const ghostNode = (this.state.ghostNode) ? this.createNode(this.state.ghostNode) : null;
     const ghostLink = (this.state.ghostLink) ? this.createLink(this.state.ghostLink) : null;
 
@@ -553,7 +552,6 @@ class Patch extends React.Component {
               {(layer.name === LAYERNAME_NODES) ? ghostNode : null}
             </SVGLayer>
           )}
-          <text x="5" y="20">{`Patch: ${patchName}`}</text>
         </PatchSVG>
       </PatchWrapper>
     );
