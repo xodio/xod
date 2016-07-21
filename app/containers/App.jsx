@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 
 import * as Actions from '../actions';
 import Selectors from '../selectors';
-import { getViewableSize } from '../utils/browser';
+import { getViewableSize, isChromeApp } from '../utils/browser';
 
 import Editor from './Editor';
 import SnackBar from './SnackBar';
@@ -44,8 +44,8 @@ class App extends React.Component {
   }
 
   onUpload() {
-    const isChromeApplication = window.chrome && chrome.app && chrome.app.runtime;
-    if (isChromeApplication) {
+    const isChromeApp = window.chrome && chrome.app && chrome.app.runtime;
+    if (isChromeApp) {
       this.props.actions.upload();
     } else {
       this.suggestToInstallApplication();
