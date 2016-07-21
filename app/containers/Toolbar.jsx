@@ -32,7 +32,7 @@ class Toolbar extends React.Component {
 
       const reader = new FileReader();
       reader.onload = (evt) => {
-        this.props.actions.updateProject(evt.target.result);
+        this.props.actions.loadProjectFromJSON(evt.target.result);
       };
 
       reader.readAsText(file);
@@ -105,7 +105,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     updateMeta: Actions.updateMeta,
-    updateProject: Actions.updateProjectData,
+    loadProjectFromJSON: Actions.loadProjectFromJSON,
   }, dispatch),
 });
 
