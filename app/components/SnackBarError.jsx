@@ -1,6 +1,7 @@
 import React from 'react';
 
-const ERROR_TIMEOUT = 3000;
+const TIMEOUT_ERROR_SHOW = 5;
+const TIMEOUT_ERROR_HIDE = 3000;
 
 class SnackBarError extends React.Component {
   constructor(props) {
@@ -14,11 +15,13 @@ class SnackBarError extends React.Component {
   }
 
   componentDidMount() {
-    this.refs.body.classList.remove('hide');
+    setTimeout(() => {
+      this.refs.body.classList.remove('hide');
+    }, TIMEOUT_ERROR_SHOW);
 
     this.timer = setTimeout(() => {
       this.hide();
-    }, ERROR_TIMEOUT);
+    }, TIMEOUT_ERROR_HIDE);
   }
 
   shouldComponentUpdate() {
