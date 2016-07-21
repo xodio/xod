@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Selectors from '../selectors';
 import * as Actions from '../actions';
+import { SAVE_LOAD_ERRORS } from '../constants/errorMessages';
 
 class Toolbar extends React.Component {
   constructor(props) {
@@ -27,6 +28,9 @@ class Toolbar extends React.Component {
       const file = files[i];
 
       if (!(/.+\.xod$/).test(file.name)) {
+        this.props.actions.showError({
+          message: SAVE_LOAD_ERRORS.LOAD_EXTENSION,
+        });
         return;
       }
 
@@ -123,6 +127,7 @@ const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     updateMeta: Actions.updateMeta,
     loadProjectFromJSON: Actions.loadProjectFromJSON,
+    showError: Actions.showError,
   }, dispatch),
 });
 
