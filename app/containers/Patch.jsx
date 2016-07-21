@@ -3,6 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import EventListener from 'react-event-listener';
+import PatchWrapper from '../components/PatchWrapper';
+import PatchSVG from '../components/PatchSVG';
 import SVGLayer from '../components/SVGlayer';
 import Node from '../components/Node';
 import Link from '../components/Link';
@@ -538,24 +540,22 @@ class Patch extends React.Component {
     const ghostLink = (this.state.ghostLink) ? this.createLink(this.state.ghostLink) : null;
 
     return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="Patch"
-        width="100%"
-        height="100%"
-        onMouseMove={this.onMouseMove}
-        onMouseUp={this.onMouseUp}
-      >
+      <PatchWrapper>
         <EventListener target={document} onKeyDown={this.onKeyDown} />
-        {this.layers.map(layer =>
-          <SVGLayer key={layer.name} name={layer.name}>
-            {layer.factory()}
-            {(layer.name === LAYERNAME_LINKS) ? ghostLink : null}
-            {(layer.name === LAYERNAME_NODES) ? ghostNode : null}
-          </SVGLayer>
-        )}
-        <text x="5" y="20">{`Patch: ${patchName}`}</text>
-      </svg>
+        <PatchSVG
+          onMouseMove={this.onMouseMove}
+          onMouseUp={this.onMouseUp}
+        >
+          {this.layers.map(layer =>
+            <SVGLayer key={layer.name} name={layer.name}>
+              {layer.factory()}
+              {(layer.name === LAYERNAME_LINKS) ? ghostLink : null}
+              {(layer.name === LAYERNAME_NODES) ? ghostNode : null}
+            </SVGLayer>
+          )}
+          <text x="5" y="20">{`Patch: ${patchName}`}</text>
+        </PatchSVG>
+      </PatchWrapper>
     );
   }
 }
