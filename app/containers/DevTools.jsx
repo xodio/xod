@@ -12,6 +12,7 @@ export default createDevTools(
     changePositionKey="ctrl-p"
     changeMonitorKey="ctrl-m"
     defaultIsVisible={false}
+    defaultPosition="right"
   >
     <FilterableLogMonitor />
     <Dispatcher />
