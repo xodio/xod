@@ -1,5 +1,6 @@
 
 import React from 'react';
+import CreateNodeWidget from './CreateNodeWidget';
 
 class Toolbar extends React.Component {
   constructor(props) {
@@ -42,9 +43,17 @@ class Toolbar extends React.Component {
 
     return (
       <div className="Toolbar">
+        <CreateNodeWidget
+          nodeTypes={this.props.nodeTypes}
+          selectedNodeType={this.props.selectedNodeType}
+          onNodeTypeChange={this.props.onSelectNodeType}
+          onAddNodeClick={this.props.onAddNodeClick}
+        />
+
         <div className="logo">
           XOD
         </div>
+
         <div className="project-meta">
           <span onClick={this.onProjectNameClick}>
             {meta.name}
@@ -88,10 +97,14 @@ class Toolbar extends React.Component {
 
 Toolbar.propTypes = {
   meta: React.PropTypes.object,
+  nodeTypes: React.PropTypes.object,
+  selectedNodeType: React.PropTypes.number,
   projectJSON: React.PropTypes.string,
   onUpload: React.PropTypes.func,
   onLoad: React.PropTypes.func,
   onSave: React.PropTypes.func,
+  onSelectNodeType: React.PropTypes.func,
+  onAddNodeClick: React.PropTypes.func,
 };
 
 export default Toolbar;

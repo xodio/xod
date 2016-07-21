@@ -7,10 +7,11 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import { getViewableSize, isChromeApp } from '../utils/browser';
+import * as EDITOR_MODE from '../constants/editorModes';
 
 import Editor from './Editor';
 import SnackBar from './SnackBar';
-import Toolbar from './Toolbar';
+import Toolbar from '../components/Toolbar';
 import SkyLight from 'react-skylight';
 import EventListener from 'react-event-listener';
 
@@ -30,6 +31,8 @@ class App extends React.Component {
     this.onUpload = this.onUpload.bind(this);
     this.onLoad = this.onLoad.bind(this);
     this.onSave = this.onSave.bind(this);
+    this.onSelectNodeType = this.onSelectNodeType.bind(this);
+    this.onAddNodeClick = this.onAddNodeClick.bind(this);
   }
 
   onResize() {
@@ -61,6 +64,16 @@ class App extends React.Component {
     window.focus();
   }
 
+  onSelectNodeType(typeId) {
+    this.props.actions.setSelectedNodeType(
+      parseInt(typeId, 10)
+    );
+  }
+
+  onAddNodeClick() {
+    this.props.actions.setMode(EDITOR_MODE.CREATING_NODE);
+  }
+
   suggestToInstallApplication() {
     this.refs.suggestToInstallApplication.show();
   }
@@ -73,9 +86,12 @@ class App extends React.Component {
         <EventListener target={window} onResize={this.onResize} />
         <Toolbar
           meta={this.props.meta}
+          nodeTypes={this.props.nodeTypes}
           onUpload={this.onUpload}
           onLoad={this.onLoad}
           onSave={this.onSave}
+          onSelectNodeType={this.onSelectNodeType}
+          onAddNodeClick={this.onAddNodeClick}
         />
         <Editor size={this.state.size} />
         <SnackBar />
@@ -103,19 +119,24 @@ class App extends React.Component {
 App.propTypes = {
   projectJSON: React.PropTypes.string,
   meta: React.PropTypes.object,
+  nodeTypes: React.PropTypes.any.isRequired,
+  selectedNodeType: React.PropTypes.number,
   actions: React.PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
   projectJSON: Selectors.Project.getJSON(state),
   meta: Selectors.Project.getMeta(state),
-
+  nodeTypes: Selectors.NodeType.getNodeTypes(state),
+  selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     upload: Actions.upload,
     loadProjectFromJSON: Actions.loadProjectFromJSON,
+    setMode: Actions.setMode,
+    setSelectedNodeType: Actions.setSelectedNodeType,
   }, dispatch),
 });
 

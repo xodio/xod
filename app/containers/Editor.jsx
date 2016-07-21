@@ -9,7 +9,6 @@ import * as KEYCODE from '../constants/keycodes';
 import { isInput } from '../utils/browser';
 import Patch from './Patch';
 import EventListener from 'react-event-listener';
-import CreateNodeWidget from '../components/CreateNodeWidget';
 import Inspector from '../components/Inspector';
 
 const styles = {
@@ -96,12 +95,6 @@ class Editor extends React.Component {
           onPropUpdate={this.onPropUpdate}
         />
         <div style={styles.patchContainer} ref="patchContainer">
-          <CreateNodeWidget
-            nodeTypes={this.props.nodeTypes}
-            selectedNodeType={this.props.selectedNodeType}
-            onNodeTypeChange={this.setSelectedNodeType}
-            onAddNodeClick={this.setModeCreating}
-          />
           <Patch size={this.patchSize} />
         </div>
       </div>

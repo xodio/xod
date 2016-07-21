@@ -43,7 +43,7 @@ class CreateNodeWidget extends React.Component {
           onClick={this.onAddNodeClick}
           title="Hotkey: N"
         >
-          + Add node
+          Add node
         </button>
       </div>
     );
