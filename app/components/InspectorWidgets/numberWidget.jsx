@@ -1,6 +1,6 @@
 import R from 'ramda';
 import React from 'react';
-import { ENTER, ESCAPE } from '../../constants/keycodes';
+import { ENTER, ESCAPE, DOT, COMMA, UP, DOWN } from '../../constants/keycodes';
 
 class NumberWidget extends React.Component {
   constructor(props) {
@@ -17,30 +17,54 @@ class NumberWidget extends React.Component {
   }
 
   onChange(event) {
-    const newValue = this.parseVal(event.target.value);
+    const newValue = this.parseVal(event.target.value, true);
+    this.updateValue(newValue);
+  }
+
+  onBlur() {
+    const newValue = this.parseVal(this.state.value);
+    this.updateValue(newValue);
+    this.props.onPropUpdate(newValue);
+  }
+
+  onKeyDown(event) {
+    const keycode = event.keycode || event.which;
+    const input = event.target;
+
+    if (keycode === DOT || keycode === COMMA) {
+      event.preventDefault();
+      this.updateValue(`${input.value}.`);
+    }
+    if (keycode === UP) {
+      event.preventDefault();
+      this.updateValue(this.parseVal(input.value) + 1);
+    }
+    if (keycode === DOWN) {
+      event.preventDefault();
+      this.updateValue(this.parseVal(input.value) - 1);
+    }
+    if (keycode === ENTER) {
+      input.blur();
+    }
+    if (keycode === ESCAPE) {
+      if (this.state.value === this.state.initialValue) {
+        input.blur();
+      } else {
+        this.updateValue(this.state.initialValue);
+      }
+    }
+  }
+
+  updateValue(newValue) {
     this.setState(
       R.assoc('value', newValue, this.state)
     );
   }
 
-  onBlur() {
-    this.props.onPropUpdate(this.state.value);
-  }
-
-  onKeyDown(event) {
-    const keycode = event.keycode || event.which;
-    if (keycode === ENTER) {
-      event.target.blur();
-    }
-    if (keycode === ESCAPE) {
-      this.setState(
-        R.assoc('value', this.state.initialValue, this.state)
-      );
-    }
-  }
-
-  parseVal(val) {
-    return parseInt(val, 10);
+  parseVal(val, isForInput = false) {
+    const lastChar = (isForInput && val[val.length - 1] === '.') ? '.' : null;
+    const newValue = parseFloat(val) + lastChar;
+    return isNaN(newValue) ? '' : newValue;
   }
 
   render() {
@@ -51,7 +75,8 @@ class NumberWidget extends React.Component {
       <div className="NumberWidget">
         <input
           id={elementId}
-          type="number"
+          type="text"
+          step="any"
           value={val}
           onChange={this.onChange}
           onBlur={this.onBlur}
