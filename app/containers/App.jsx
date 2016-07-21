@@ -7,6 +7,7 @@ import Reducers from '../reducers/';
 import { getViewableSize, isChromeApp } from '../utils/browser';
 import { EditorMiddleware } from '../middlewares';
 import * as Actions from '../actions';
+import Selectors from '../selectors';
 import Serializer from '../serializers/mock';
 import Editor from './Editor';
 import SnackBar from './SnackBar';
@@ -33,6 +34,8 @@ export default class App extends React.Component {
 
     this.onResize = this.onResize.bind(this);
     this.onUpload = this.onUpload.bind(this);
+    this.onLoad = this.onLoad.bind(this);
+    this.onSave = this.onSave.bind(this);
   }
 
   onResize() {
@@ -53,6 +56,17 @@ export default class App extends React.Component {
     }
   }
 
+  onLoad(json) {
+    this.store.dispatch(Actions.loadProjectFromJSON(json));
+  }
+
+  onSave() {
+    const projectJSON = Selectors.Project.getJSON(this.store.getState());
+    const url = `data:text/json;charset=utf8,${encodeURIComponent(projectJSON)}`;
+    window.open(url, '_blank');
+    window.focus();
+  }
+
   suggestToInstallApplication() {
     this.refs.suggestToInstallApplication.show();
   }
@@ -65,7 +79,12 @@ export default class App extends React.Component {
         <EventListener target={window} onResize={this.onResize} />
         <Provider store={this.store}>
           <div>
-            <Toolbar onUpload={this.onUpload} />
+            <Toolbar
+              meta={meta}
+              onUpload={this.onUpload}
+              onLoad={this.onLoad}
+              onSave={this.onSave}
+            />
             <Editor size={this.state.size} />
             <SnackBar />
             {devToolsInstrument}
