@@ -12,7 +12,7 @@ import * as EDITOR_MODE from '../constants/editorModes';
 import Editor from './Editor';
 import SnackBar from './SnackBar';
 import Toolbar from '../components/Toolbar';
-import SkyLight from 'react-skylight';
+import PopupInstallApp from '../components/PopupInstallApp';
 import EventListener from 'react-event-listener';
 
 import DevTools from './DevTools';
@@ -75,12 +75,11 @@ class App extends React.Component {
   }
 
   suggestToInstallApplication() {
-    this.refs.suggestToInstallApplication.show();
+    this.refs.installAppPopup.show();
   }
 
   render() {
     const devToolsInstrument = (isChromeApp) ? <DevTools /> : null;
-
     return (
       <div>
         <EventListener target={window} onResize={this.onResize} />
@@ -96,21 +95,7 @@ class App extends React.Component {
         <Editor size={this.state.size} />
         <SnackBar />
         {devToolsInstrument}
-        <SkyLight
-          dialogStyles={{
-            height: 'auto',
-          }}
-          ref="suggestToInstallApplication"
-          title="Oops! You need a Chrome App!"
-        >
-          <p>
-            To use this feature you have to install a Chrome Application.<br />
-            It's free.
-          </p>
-          <p>
-            <a href="#">Open in Chrome Store</a>
-          </p>
-        </SkyLight>
+        <PopupInstallApp ref="installAppPopup" />
       </div>
     );
   }
