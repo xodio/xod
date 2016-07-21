@@ -1,3 +1,5 @@
+export const isChromeApp = window.chrome && chrome.app && chrome.app.runtime;
+
 export function getViewableSize(defaultWidth = 0, defaultHeight = 0) {
   const sizes = {
     width: defaultWidth,

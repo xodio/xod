@@ -4,7 +4,7 @@ import React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import Reducers from '../reducers/';
-import { getViewableSize } from '../utils/browser';
+import { getViewableSize, isChromeApp } from '../utils/browser';
 import { EditorMiddleware } from '../middlewares';
 import * as Actions from '../actions';
 import Serializer from '../serializers/mock';
@@ -14,6 +14,7 @@ import Toolbar from './Toolbar';
 import EventListener from 'react-event-listener';
 import SkyLight from 'react-skylight';
 
+import DevTools from './DevTools';
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
 
@@ -45,8 +46,7 @@ export default class App extends React.Component {
   }
 
   onUpload() {
-    const isChromeApplication = window.chrome && chrome.app && chrome.app.runtime;
-    if (isChromeApplication) {
+    if (isChromeApp) {
       this.store.dispatch(Actions.upload());
     } else {
       this.suggestToInstallApplication();
@@ -58,6 +58,8 @@ export default class App extends React.Component {
   }
 
   render() {
+    const devToolsInstrument = (isChromeApp) ? <DevTools /> : null;
+
     return (
       <div>
         <EventListener target={window} onResize={this.onResize} />
@@ -66,6 +68,7 @@ export default class App extends React.Component {
             <Toolbar onUpload={this.onUpload} />
             <Editor size={this.state.size} />
             <SnackBar />
+            {devToolsInstrument}
           </div>
         </Provider>
         <SkyLight
