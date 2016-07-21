@@ -30,7 +30,6 @@ class App extends React.Component {
     this.onUpload = this.onUpload.bind(this);
     this.onLoad = this.onLoad.bind(this);
     this.onSave = this.onSave.bind(this);
-
   }
 
   onResize() {
@@ -44,7 +43,6 @@ class App extends React.Component {
   }
 
   onUpload() {
-    const isChromeApp = window.chrome && chrome.app && chrome.app.runtime;
     if (isChromeApp) {
       this.props.actions.upload();
     } else {
@@ -53,7 +51,7 @@ class App extends React.Component {
   }
 
   onLoad(json) {
-    this.props.actions.loadProjectFromJSON();
+    this.props.actions.loadProjectFromJSON(json);
   }
 
   onSave() {
@@ -101,6 +99,12 @@ class App extends React.Component {
     );
   }
 }
+
+App.propTypes = {
+  projectJSON: React.PropTypes.string,
+  meta: React.PropTypes.object,
+  actions: React.PropTypes.object,
+};
 
 const mapStateToProps = (state) => ({
   projectJSON: Selectors.Project.getJSON(state),
