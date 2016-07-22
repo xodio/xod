@@ -19,7 +19,7 @@ class SnackBarError extends React.Component {
 
   componentDidMount() {
     setTimeout(() => {
-      this.refs.body.classList.remove('hide');
+      this.refs.body.classList.remove('hidden');
     }, 5);
   }
 
@@ -61,7 +61,7 @@ class SnackBarError extends React.Component {
   }
 
   hide() {
-    this.refs.body.classList.add('hide');
+    this.refs.body.classList.add('hidden');
 
     setTimeout(() => {
       this.props.onHide(this.props.error.id);

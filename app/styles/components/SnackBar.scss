@@ -20,7 +20,7 @@ $snackbar-width: 200px;
   transition: all 0.3s ease-in;
   left: 0;
 
-  &.hide {
+  &.hidden {
     left: $snackbar-width;
   }
 }
