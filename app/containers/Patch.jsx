@@ -12,7 +12,7 @@ import Link from '../components/Link';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import PatchUtils from '../utils/patchUtils';
-import { isInput } from '../utils/browser';
+import { isInput, findParentByClassName } from '../utils/browser';
 import * as EDITOR_MODE from '../constants/editorModes';
 import * as KEYCODE from '../constants/keycodes';
 import { PROPERTY_TYPE } from '../constants/property';
@@ -25,16 +25,6 @@ const LAYERNAME_NODES = 'nodes';
 const DELETE_ACTIONS = {
   Node: 'deleteNode',
   Link: 'deleteLink',
-};
-
-const findParentByClassName = (element, className) => {
-  let result = null;
-  if (element.classList.contains(className)) {
-    result = element;
-  } else if (element.parentNode) {
-    result = findParentByClassName(element.parentNode, className);
-  }
-  return result;
 };
 
 class Patch extends React.Component {

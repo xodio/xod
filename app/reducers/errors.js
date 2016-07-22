@@ -1,15 +1,48 @@
 import R from 'ramda';
-import * as ActionType from '../actionTypes';
+import { ERROR } from '../actionTypes';
+import * as STATUS from '../constants/statuses';
+import { getNewId } from '../selectors/errors';
 
-export const errors = (state = [], action) => {
-  switch (action.type) {
-    case ActionType.ERROR_SHOW:
-      return R.append(action.payload, state);
-    case ActionType.ERROR_HIDE: {
-      const filter = (n) => n.timestamp === action.payload.timestamp;
-      return R.reject(filter, state);
+export const errorsReducer = (errors = {}, action) => {
+  if (
+    action.type === ERROR &&
+    action.meta &&
+    action.meta.status
+  ) {
+    switch (action.meta.status) {
+      case STATUS.STARTED: {
+        const newId = getNewId(errors);
+        return R.assoc(
+          newId,
+          {
+            id: newId,
+            timestamp: action.meta.timestamp,
+            status: action.meta.status,
+            payload: action.payload,
+          },
+          errors
+        );
+      }
+      case STATUS.SUCCEEDED: {
+        if (!errors.hasOwnProperty(action.payload.id)) { return errors; }
+
+        return R.assoc(
+          action.payload.id,
+          R.merge(
+            errors[action.payload.id],
+            {
+              timestamp: action.meta.timestamp,
+              status: action.meta.status,
+            }
+          ),
+          errors
+        );
+      }
+      case STATUS.DELETED:
+        return R.omit([action.payload.id.toString()], errors);
+      default: break;
     }
-    default:
-      return state;
   }
+
+  return errors;
 };

@@ -81,7 +81,7 @@ class App extends React.Component {
     }
 
     if (errorMessage) {
-      this.props.actions.showError({
+      this.props.actions.addError({
         message: errorMessage,
       });
       return;
@@ -165,7 +165,7 @@ const mapDispatchToProps = (dispatch) => ({
     upload: Actions.upload,
     loadProjectFromJSON: Actions.loadProjectFromJSON,
     setMode: Actions.setMode,
-    showError: Actions.showError,
+    addError: Actions.addError,
     setSelectedNodeType: Actions.setSelectedNodeType,
   }, dispatch),
 });

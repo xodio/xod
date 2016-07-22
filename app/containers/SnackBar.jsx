@@ -6,42 +6,37 @@ import { connect } from 'react-redux';
 import SnackBarList from '../components/SnackBarList';
 import SnackBarError from '../components/SnackBarError';
 import Selectors from '../selectors';
-import { hideError } from '../actions';
+import { deleteError, keepError } from '../actions';
 
 class SnackBar extends React.Component {
   constructor(props) {
     super(props);
+
     this.errors = {};
+
     this.hideError = this.hideError.bind(this);
-  }
-  componentWillReceiveProps(nextProps) {
-    this.addNewErrors(nextProps.errors);
+    this.keepError = this.keepError.bind(this);
   }
 
-  addNewErrors(errors) {
-    errors.forEach((err, i) => {
-      if (!this.errors.hasOwnProperty(err.timestamp)) {
-        this.errors[err.timestamp] = (
-          <SnackBarError
-            key={i}
-            onHide={this.hideError}
-            error={err}
-          />
-        );
-      }
-    });
+  hideError(id) {
+    this.props.deleteError(id);
   }
-
-  hideError(timestamp) {
-    delete this.errors[timestamp];
-    this.props.hideError(timestamp);
+  keepError(id) {
+    this.props.keepError(id);
   }
 
   render() {
-    const errors = R.values(this.errors);
+    const errors = R.values(this.props.errors);
     return (
       <SnackBarList>
-        {errors.map(error => error)}
+        {errors.map((error, i) =>
+          <SnackBarError
+            key={i}
+            onHide={this.hideError}
+            keepError={this.keepError}
+            error={error}
+          />
+        )}
       </SnackBarList>
     );
   }
@@ -49,14 +44,18 @@ class SnackBar extends React.Component {
 
 
 SnackBar.propTypes = {
-  errors: React.PropTypes.array,
-  hideError: React.PropTypes.func,
+  errors: React.PropTypes.object,
+  deleteError: React.PropTypes.func,
+  keepError: React.PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
   errors: Selectors.Errors.getErrors(state),
 });
 
-const mapDispatchToProps = (dispatch) => (bindActionCreators({ hideError }, dispatch));
+const mapDispatchToProps = (dispatch) => (bindActionCreators({
+  deleteError,
+  keepError,
+}, dispatch));
 
 export default connect(mapStateToProps, mapDispatchToProps)(SnackBar);

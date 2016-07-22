@@ -301,7 +301,7 @@ const initialState = {
     linkingPin: null,
     selectedNodeType: 1,
   },
-  errors: [],
+  errors: {},
 };
 
 export default initialState;

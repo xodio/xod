@@ -11,9 +11,6 @@ export const VIEWSTATE_UPDATE = 'VIEWSTATE_UPDATE';
 
 export const PIN_CLICK = 'PIN_CLICK';
 
-export const ERROR_SHOW = 'ERROR_SHOW';
-export const ERROR_HIDE = 'ERROR_HIDE';
-
 export const EDITOR_DESELECT_ALL = 'EDITOR_DESELECT_ALL';
 export const EDITOR_SELECT_NODE = 'EDITOR_SELECT_NODE';
 export const EDITOR_SELECT_PIN = 'EDITOR_SELECT_PIN';
@@ -25,4 +22,5 @@ export const EDITOR_SET_SELECTED_NODETYPE = 'EDITOR_SET_SELECTED_NODETYPE';
 
 export const PROJECT_LOAD_DATA = 'PROJECT_LOAD_DATA';
 
+export const ERROR = 'ERROR';
 export const UPLOAD = 'UPLOAD';

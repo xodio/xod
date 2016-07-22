@@ -3,21 +3,53 @@ import * as STATUS from './constants/statuses';
 import Selectors from './selectors';
 import { upload as uploadToEspruino } from 'xod-espruino/upload';
 
+const ERROR_TIMEOUT = 3000;
 
-export const showError = (error) => ({
-  type: ActionType.ERROR_SHOW,
+const getTimestamp = () => new Date().getTime();
+
+const setTimeoutForError = (id, dispatch) => {
+  setTimeout(() => {
+    dispatch({
+      type: ActionType.ERROR,
+      payload: {
+        id,
+      },
+      meta: {
+        timestamp: getTimestamp(),
+        status: STATUS.SUCCEEDED,
+      },
+    });
+  }, ERROR_TIMEOUT);
+};
+
+export const addError = (error) => (dispatch, getState) => {
+  const errors = Selectors.Errors.getErrors(getState());
+  const newErrorId = Selectors.Errors.getNewId(errors);
+  dispatch({
+    type: ActionType.ERROR,
+    payload: error,
+    meta: {
+      timestamp: getTimestamp(),
+      status: STATUS.STARTED,
+    },
+  });
+  setTimeoutForError(newErrorId, dispatch);
+};
+
+export const deleteError = (id) => ({
+  type: ActionType.ERROR,
   payload: {
-    timestamp: new Date().getTime(),
-    error,
+    id,
+  },
+  meta: {
+    timestamp: getTimestamp(),
+    status: STATUS.DELETED,
   },
 });
 
-export const hideError = (timestamp) => ({
-  type: ActionType.ERROR_HIDE,
-  payload: {
-    timestamp,
-  },
-});
+export const keepError = (id) => (dispatch) => {
+  setTimeoutForError(id, dispatch);
+};
 
 export const moveNode = (id, position) => ({
   type: ActionType.NODE_MOVE,
@@ -143,7 +175,7 @@ export const linkPin = (id) => (dispatch, getState) => {
     if (validation.isValid) {
       result.push(dispatch(addLink(pins)));
     } else {
-      result.push(dispatch(showError({ message: validation.message })));
+      result.push(dispatch(addError({ message: validation.message })));
     }
   } else if (selected !== id) {
     result.push(dispatch(setPinSelection(id)));
