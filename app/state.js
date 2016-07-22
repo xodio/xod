@@ -302,6 +302,7 @@ const initialState = {
     selectedNodeType: 1,
   },
   errors: {},
+  processes: {},
 };
 
 export default initialState;
