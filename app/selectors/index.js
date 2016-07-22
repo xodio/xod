@@ -6,6 +6,7 @@ import * as NodeType from './nodetype';
 import * as Errors from './errors';
 import * as Patch from './patch';
 import * as Project from './project';
+import * as Processes from './processes';
 
 export default {
   Project,
@@ -16,4 +17,5 @@ export default {
   Link,
   NodeType,
   Errors,
+  Processes,
 };
