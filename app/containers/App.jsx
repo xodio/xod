@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as Actions from '../actions';
+import { UPLOAD as UPLOAD_ACTION_TYPE } from '../actionTypes';
 import Selectors from '../selectors';
 import { getViewableSize, isChromeApp } from '../utils/browser';
 import * as EDITOR_MODE from '../constants/editorModes';
@@ -14,6 +15,7 @@ import Editor from './Editor';
 import SnackBar from './SnackBar';
 import Toolbar from '../components/Toolbar';
 import PopupInstallApp from '../components/PopupInstallApp';
+import PopupUploadProject from '../components/PopupUploadProject';
 import EventListener from 'react-event-listener';
 
 import DevTools from './DevTools';
@@ -27,6 +29,7 @@ class App extends React.Component {
     this.state = {
       size: getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
       popupInstallApp: false,
+      popupUploadProject: false,
     };
 
     this.onResize = this.onResize.bind(this);
@@ -35,6 +38,7 @@ class App extends React.Component {
     this.onSave = this.onSave.bind(this);
     this.onSelectNodeType = this.onSelectNodeType.bind(this);
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
+    this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
   }
 
   onResize() {
@@ -49,9 +53,10 @@ class App extends React.Component {
 
   onUpload() {
     if (isChromeApp) {
+      this.showUploadProgressPopup();
       this.props.actions.upload();
     } else {
-      this.suggestToInstallApplication();
+      this.showInstallAppPopup();
     }
   }
 
@@ -119,9 +124,26 @@ class App extends React.Component {
     this.props.actions.setMode(EDITOR_MODE.CREATING_NODE);
   }
 
-  suggestToInstallApplication() {
+  onUploadPopupClose(id) {
+    this.hideUploadProgressPopup();
+    this.props.actions.deleteProcess(id, UPLOAD_ACTION_TYPE);
+  }
+
+  showInstallAppPopup() {
     this.setState(
       R.assoc('popupInstallApp', true, this.state)
+    );
+  }
+
+  showUploadProgressPopup() {
+    this.setState(
+      R.assoc('popupUploadProject', true, this.state)
+    );
+  }
+
+  hideUploadProgressPopup() {
+    this.setState(
+      R.assoc('popupUploadProject', false, this.state)
     );
   }
 
@@ -142,7 +164,14 @@ class App extends React.Component {
         <Editor size={this.state.size} />
         <SnackBar />
         {devToolsInstrument}
-        <PopupInstallApp isVisible={this.state.popupInstallApp} />
+        <PopupInstallApp
+          isVisible={this.state.popupInstallApp}
+        />
+        <PopupUploadProject
+          isVisible={this.state.popupUploadProject}
+          upload={this.props.upload}
+          onClose={this.onUploadPopupClose}
+        />
       </div>
     );
   }
@@ -154,6 +183,7 @@ App.propTypes = {
   nodeTypes: React.PropTypes.any.isRequired,
   selectedNodeType: React.PropTypes.number,
   actions: React.PropTypes.object,
+  upload: React.PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
@@ -161,6 +191,7 @@ const mapStateToProps = (state) => ({
   meta: Selectors.Project.getMeta(state),
   nodeTypes: Selectors.NodeType.getNodeTypes(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
+  upload: Selectors.Processes.getUpload(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -170,6 +201,7 @@ const mapDispatchToProps = (dispatch) => ({
     setMode: Actions.setMode,
     addError: Actions.addError,
     setSelectedNodeType: Actions.setSelectedNodeType,
+    deleteProcess: Actions.deleteProcess,
   }, dispatch),
 });
 
