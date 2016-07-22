@@ -89,7 +89,7 @@ class SnackBarError extends React.Component {
 
   render() {
     const error = this.props.error;
-    const cls = classNames('SnackBar-Error', {
+    const cls = classNames('SnackBarError', {
       hidden: this.state.hidden,
     });
     return (

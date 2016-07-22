@@ -1,7 +1,7 @@
 import React from 'react';
 
 const PatchWrapper = ({ children }) => (
-  <div className="Patch-wrapper">
+  <div className="PatchWrapper">
     {children}
   </div>
 );

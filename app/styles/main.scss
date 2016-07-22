@@ -14,12 +14,14 @@
   'base/base';
 
 @import
-  'components/Patch',
+  'components/PatchWrapper',
+  'components/PatchSVG',
   'components/Node',
   'components/NodeText',
   'components/Pin',
   'components/Link',
   'components/Toolbar',
   'components/Inspector',
-  'components/SnackBar',
+  'components/SnackBarList',
+  'components/SnackBarError',
   'components/CreateNodeWidget';

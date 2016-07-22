@@ -1,15 +1,4 @@
-$snackbar-width: 200px;
-
-
-.SnackBar-List {
-  position: fixed;
-  z-index: 10;
-  bottom: 0;
-  right: 0;
-  width: $snackbar-width;
-}
-
-.SnackBar-Error {
+.SnackBarError {
   position: relative;
   display: block;
   margin-top: 1px;

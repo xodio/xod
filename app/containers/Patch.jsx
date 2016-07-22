@@ -118,7 +118,7 @@ class Patch extends React.Component {
   }
 
   onMouseMove(event) {
-    const svg = findParentByClassName(event.target, 'Patch');
+    const svg = findParentByClassName(event.target, 'PatchSVG');
     const bbox = svg.getBoundingClientRect();
 
     const mousePosition = {

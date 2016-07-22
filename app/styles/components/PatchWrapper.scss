@@ -1,4 +1,4 @@
-.Patch-wrapper {
+.PatchWrapper {
   position: absolute;
   height: 100%;
   left: 0;
@@ -8,13 +8,4 @@
   padding: 20px;
   overflow: hidden;
   box-shadow: inset 2px 0 10px rgba(0,0,30,.3);
-}
-
-.Patch {
-  cursor: default;
-  user-select: none;
-
-  .layer-background {
-    fill: $color-canvas-background;
-  }
 }
