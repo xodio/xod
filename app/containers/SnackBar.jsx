@@ -1,87 +1,136 @@
+import R from 'ramda';
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
+import SnackBarList from '../components/SnackBarList';
+import SnackBarError from '../components/SnackBarError';
 import Selectors from '../selectors';
-import { hideError } from '../actions';
+import { deleteError } from '../actions';
 
 const ERROR_TIMEOUT = 3000;
-
-const styles = {
-  container: {
-    position: 'fixed',
-    zIndex: 10,
-    bottom: 0,
-    right: 0,
-    width: '200px',
-  },
-  error: {
-    display: 'block',
-    marginTop: '1px',
-    padding: '8px 16px',
-    color: '#fff',
-    background: '#600',
-    borderBottom: '1px solid #400',
-    transition: 'all 0.5s ease-in',
-  },
-};
 
 class SnackBar extends React.Component {
   constructor(props) {
     super(props);
-    this.timers = {};
-    this.onClick = (timestamp) => this.hideError.bind(this, timestamp);
+
+    this.errors = {};
+    this.state = {
+      mouseover: false,
+    };
+
+    this.hideError = this.hideError.bind(this);
+    this.onMouseOver = this.onMouseOver.bind(this);
+    this.onMouseOut = this.onMouseOut.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    nextProps.errors.forEach((error) => {
-      if (!this.timers.hasOwnProperty(error.timestamp)) {
-        setTimeout(() => {
-          this.hideError(error.timestamp);
-        }, ERROR_TIMEOUT);
-      }
-    });
+    this.addErrors(nextProps.errors);
   }
 
-  hideError(timestamp) {
-    if (this.timers.hasOwnProperty(timestamp)) {
-      clearTimeout(this.timer[timestamp]);
-    }
-    this.props.hideError(timestamp);
+  onMouseOver() {
+    if (this.state.mouseover) return;
+
+    this.setState(
+      R.assoc('mouseover', true, this.state)
+    );
+  }
+
+  onMouseOut() {
+    if (!this.state.mouseover) return;
+
+    this.setState(
+      R.assoc('mouseover', false, this.state)
+    );
+
+    this.restartTimeouts();
+  }
+
+  setTimeout(id) {
+    return setTimeout(() => {
+      if (!this.state.mouseover) {
+        this.hideError(id);
+      }
+    }, ERROR_TIMEOUT);
+  }
+
+  restartTimeouts() {
+    R.pipe(
+      R.values,
+      R.forEach((error) => {
+        const id = error.data.id;
+        clearTimeout(error.timeout);
+        this.errors[id].timeout = this.setTimeout(id);
+      })
+    )(this.errors);
+  }
+
+  hideError(id) {
+    const element = this.errors[id].ref;
+
+    if (!element) return;
+
+    element
+      .hide()
+      .then(() => delete this.errors[id])
+      .then(() => this.props.deleteError(id));
+  }
+
+  addErrors(errors) {
+    R.pipe(
+      R.values,
+      R.forEach((error) => {
+        if (this.errors.hasOwnProperty(error.id)) {
+          return;
+        }
+
+        const assignRef = (el) => {
+          if (this.errors.hasOwnProperty(error.id)) {
+            this.errors[error.id].ref = el;
+          }
+        };
+
+        this.errors[error.id] = {
+          timeout: this.setTimeout(error.id),
+          data: error,
+          element: (
+            <SnackBarError
+              ref={assignRef}
+              key={error.id}
+              onHide={this.hideError}
+              error={error}
+            />
+          ),
+        };
+      })
+    )(errors);
   }
 
   render() {
+    const errors = R.values(this.errors);
     return (
-      <div>
-        <ul style={styles.container}>
-          {this.props.errors.map((error, i) =>
-            <li
-              key={i}
-              onClick={this.onClick(error.timestamp)}
-              style={styles.error}
-            >
-              <small>
-                {error.timestamp}:
-              </small>
-              <br />
-              {error.error.message}
-            </li>
-          )}
-        </ul>
-      </div>
+      <SnackBarList
+        onMouseOver={this.onMouseOver}
+        onMouseOut={this.onMouseOut}
+      >
+        {errors.map(error => error.element)}
+      </SnackBarList>
     );
   }
 }
 
 
 SnackBar.propTypes = {
-  errors: React.PropTypes.array,
-  hideError: React.PropTypes.func,
+  errors: React.PropTypes.object,
+  deleteError: React.PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
   errors: Selectors.Errors.getErrors(state),
 });
 
-const mapDispatchToProps = (dispatch) => (bindActionCreators({ hideError }, dispatch));
+const mapDispatchToProps = (dispatch) => (bindActionCreators({
+  deleteError,
+}, dispatch));
 
 export default connect(mapStateToProps, mapDispatchToProps)(SnackBar);

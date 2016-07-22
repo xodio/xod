@@ -3,6 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import EventListener from 'react-event-listener';
+import PatchWrapper from '../components/PatchWrapper';
+import PatchSVG from '../components/PatchSVG';
 import SVGLayer from '../components/SVGlayer';
 import Node from '../components/Node';
 import Link from '../components/Link';
@@ -10,7 +12,7 @@ import Link from '../components/Link';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import PatchUtils from '../utils/patchUtils';
-import { isInput } from '../utils/browser';
+import { isInput, findParentByClassName } from '../utils/browser';
 import * as EDITOR_MODE from '../constants/editorModes';
 import * as KEYCODE from '../constants/keycodes';
 import { PROPERTY_TYPE } from '../constants/property';
@@ -23,16 +25,6 @@ const LAYERNAME_NODES = 'nodes';
 const DELETE_ACTIONS = {
   Node: 'deleteNode',
   Link: 'deleteLink',
-};
-
-const findParentByClassName = (element, className) => {
-  let result = null;
-  if (element.classList.contains(className)) {
-    result = element;
-  } else if (element.parentNode) {
-    result = findParentByClassName(element.parentNode, className);
-  }
-  return result;
 };
 
 class Patch extends React.Component {
@@ -126,7 +118,7 @@ class Patch extends React.Component {
   }
 
   onMouseMove(event) {
-    const svg = findParentByClassName(event.target, 'Patch');
+    const svg = findParentByClassName(event.target, 'PatchSVG');
     const bbox = svg.getBoundingClientRect();
 
     const mousePosition = {
@@ -533,29 +525,25 @@ class Patch extends React.Component {
   render() {
     this.createLayers();
 
-    const patchName = this.props.patch.name;
     const ghostNode = (this.state.ghostNode) ? this.createNode(this.state.ghostNode) : null;
     const ghostLink = (this.state.ghostLink) ? this.createLink(this.state.ghostLink) : null;
 
     return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="Patch"
-        width="100%"
-        height="100%"
-        onMouseMove={this.onMouseMove}
-        onMouseUp={this.onMouseUp}
-      >
+      <PatchWrapper>
         <EventListener target={document} onKeyDown={this.onKeyDown} />
-        {this.layers.map(layer =>
-          <SVGLayer key={layer.name} name={layer.name}>
-            {layer.factory()}
-            {(layer.name === LAYERNAME_LINKS) ? ghostLink : null}
-            {(layer.name === LAYERNAME_NODES) ? ghostNode : null}
-          </SVGLayer>
-        )}
-        <text x="5" y="20">{`Patch: ${patchName}`}</text>
-      </svg>
+        <PatchSVG
+          onMouseMove={this.onMouseMove}
+          onMouseUp={this.onMouseUp}
+        >
+          {this.layers.map(layer =>
+            <SVGLayer key={layer.name} name={layer.name}>
+              {layer.factory()}
+              {(layer.name === LAYERNAME_LINKS) ? ghostLink : null}
+              {(layer.name === LAYERNAME_NODES) ? ghostNode : null}
+            </SVGLayer>
+          )}
+        </PatchSVG>
+      </PatchWrapper>
     );
   }
 }

@@ -35,3 +35,18 @@ export const isInput = (event) => (
   event.target.nodeName === 'TEXTAREA' ||
   event.target.nodeName === 'SELECT'
 );
+
+export const findParentByClassName = (element, className) => {
+  let result = null;
+  if (element.classList.contains(className)) {
+    result = element;
+  } else if (element.parentNode) {
+    result = findParentByClassName(element.parentNode, className);
+  }
+  return result;
+};
+
+export const checkForMouseBubbling = (event, parent) => {
+  const elem = event.toElement || event.relatedTarget;
+  return (elem.parentNode === parent || elem === parent);
+};

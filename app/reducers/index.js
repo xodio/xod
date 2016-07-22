@@ -4,7 +4,7 @@ import undoable from 'redux-undo';
 
 import projectReducer from './project';
 import { editor } from './editor';
-import { errors } from './errors';
+import { errorsReducer } from './errors';
 
 const projectUndoConfig = {
   filter: (action) => !(R.pathEq(['meta', 'skipHistory'], true, action)),
@@ -13,5 +13,5 @@ const projectUndoConfig = {
 export default combineReducers({
   project: undoable(projectReducer, projectUndoConfig),
   editor,
-  errors,
+  errors: errorsReducer,
 });

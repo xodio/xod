@@ -1,15 +1,24 @@
 import R from 'ramda';
-import * as ActionType from '../actionTypes';
+import { ERROR_ADD, ERROR_DELETE } from '../actionTypes';
+import { getNewId } from '../selectors/errors';
 
-export const errors = (state = [], action) => {
+export const errorsReducer = (errors = {}, action) => {
   switch (action.type) {
-    case ActionType.ERROR_SHOW:
-      return R.append(action.payload, state);
-    case ActionType.ERROR_HIDE: {
-      const filter = (n) => n.timestamp === action.payload.timestamp;
-      return R.reject(filter, state);
+    case ERROR_ADD: {
+      const newId = getNewId(errors);
+      return R.assoc(
+        newId,
+        {
+          id: newId,
+          timestamp: action.meta.timestamp,
+          payload: action.payload,
+        },
+        errors
+      );
     }
+    case ERROR_DELETE:
+      return R.omit([action.payload.id.toString()], errors);
     default:
-      return state;
+      return errors;
   }
 };

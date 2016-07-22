@@ -9,22 +9,7 @@ import * as KEYCODE from '../constants/keycodes';
 import { isInput } from '../utils/browser';
 import Patch from './Patch';
 import EventListener from 'react-event-listener';
-import CreateNodeWidget from '../components/CreateNodeWidget';
 import Inspector from '../components/Inspector';
-
-const styles = {
-  patchContainer: {
-    position: 'absolute',
-    height: '100%',
-    left: 0,
-    right: 0,
-    marginLeft: '200px',
-    background: '#808080',
-    padding: '20px',
-    overflow: 'hidden',
-    boxShadow: 'inset 2px 0 10px rgba(0,0,30,.3)',
-  },
-};
 
 class Editor extends React.Component {
   constructor(props) {
@@ -95,15 +80,7 @@ class Editor extends React.Component {
           nodeTypes={this.props.nodeTypes}
           onPropUpdate={this.onPropUpdate}
         />
-        <div style={styles.patchContainer} ref="patchContainer">
-          <CreateNodeWidget
-            nodeTypes={this.props.nodeTypes}
-            selectedNodeType={this.props.selectedNodeType}
-            onNodeTypeChange={this.setSelectedNodeType}
-            onAddNodeClick={this.setModeCreating}
-          />
-          <Patch size={this.patchSize} />
-        </div>
+        <Patch size={this.patchSize} />
       </div>
     );
   }

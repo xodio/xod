@@ -1,38 +1,40 @@
 
 import R from 'ramda';
 import React from 'react';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import Reducers from '../reducers/';
-import { getViewableSize, isChromeApp } from '../utils/browser';
-import { EditorMiddleware } from '../middlewares';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import * as Actions from '../actions';
-import Serializer from '../serializers/mock';
+import Selectors from '../selectors';
+import { getViewableSize, isChromeApp } from '../utils/browser';
+import * as EDITOR_MODE from '../constants/editorModes';
+import { SAVE_LOAD_ERRORS } from '../constants/errorMessages';
+
 import Editor from './Editor';
 import SnackBar from './SnackBar';
-import Toolbar from './Toolbar';
+import Toolbar from '../components/Toolbar';
+import PopupInstallApp from '../components/PopupInstallApp';
 import EventListener from 'react-event-listener';
-import SkyLight from 'react-skylight';
 
 import DevTools from './DevTools';
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
 
-export default class App extends React.Component {
-
+class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.serializer = new Serializer();
-    const initialState = this.serializer.getState();
-
-    this.store = createStore(Reducers, initialState, EditorMiddleware);
     this.state = {
       size: getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
+      popupInstallApp: false,
     };
 
     this.onResize = this.onResize.bind(this);
     this.onUpload = this.onUpload.bind(this);
+    this.onLoad = this.onLoad.bind(this);
+    this.onSave = this.onSave.bind(this);
+    this.onSelectNodeType = this.onSelectNodeType.bind(this);
+    this.onAddNodeClick = this.onAddNodeClick.bind(this);
   }
 
   onResize() {
@@ -47,46 +49,128 @@ export default class App extends React.Component {
 
   onUpload() {
     if (isChromeApp) {
-      this.store.dispatch(Actions.upload());
+      this.props.actions.upload();
     } else {
       this.suggestToInstallApplication();
     }
   }
 
+  onLoad(json) {
+    let project;
+    let validJSON = true;
+    let errorMessage = null;
+
+    try {
+      project = JSON.parse(json);
+    } catch (err) {
+      validJSON = false;
+      errorMessage = SAVE_LOAD_ERRORS.NOT_A_JSON;
+    }
+
+    if (
+      validJSON && typeof project === 'object' &&
+      !(
+        project.hasOwnProperty('nodes') &&
+        project.hasOwnProperty('links') &&
+        project.hasOwnProperty('pins') &&
+        project.hasOwnProperty('patches') &&
+        project.hasOwnProperty('nodeTypes') &&
+        project.hasOwnProperty('meta')
+      )
+    ) {
+      errorMessage = SAVE_LOAD_ERRORS.INVALID_FORMAT;
+    }
+
+    if (errorMessage) {
+      this.props.actions.addError({
+        message: errorMessage,
+      });
+      return;
+    }
+
+    this.props.actions.loadProjectFromJSON(json);
+  }
+
+  onSave() {
+    const projectName = this.props.meta.name;
+    const link = (document) ? document.createElement('a') : null;
+    const url = `data:application/xod;charset=utf8,${encodeURIComponent(this.props.projectJSON)}`;
+
+    if (link && link.download !== undefined) {
+      link.href = url;
+      link.setAttribute('download', `${projectName}.xod`);
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      window.open(url, '_blank');
+      window.focus();
+    }
+  }
+
+  onSelectNodeType(typeId) {
+    this.props.actions.setSelectedNodeType(
+      parseInt(typeId, 10)
+    );
+  }
+
+  onAddNodeClick() {
+    this.props.actions.setMode(EDITOR_MODE.CREATING_NODE);
+  }
+
   suggestToInstallApplication() {
-    this.refs.suggestToInstallApplication.show();
+    this.setState(
+      R.assoc('popupInstallApp', true, this.state)
+    );
   }
 
   render() {
     const devToolsInstrument = (isChromeApp) ? <DevTools /> : null;
-
     return (
       <div>
         <EventListener target={window} onResize={this.onResize} />
-        <Provider store={this.store}>
-          <div>
-            <Toolbar onUpload={this.onUpload} />
-            <Editor size={this.state.size} />
-            <SnackBar />
-            {devToolsInstrument}
-          </div>
-        </Provider>
-        <SkyLight
-          dialogStyles={{
-            height: 'auto',
-          }}
-          ref="suggestToInstallApplication"
-          title="Oops! You need a Chrome App!"
-        >
-          <p>
-            To use this feature you have to install a Chrome Application.<br />
-            It's free.
-          </p>
-          <p>
-            <a href="#">Open in Chrome Store</a>
-          </p>
-        </SkyLight>
+        <Toolbar
+          meta={this.props.meta}
+          nodeTypes={this.props.nodeTypes}
+          onUpload={this.onUpload}
+          onLoad={this.onLoad}
+          onSave={this.onSave}
+          onSelectNodeType={this.onSelectNodeType}
+          onAddNodeClick={this.onAddNodeClick}
+        />
+        <Editor size={this.state.size} />
+        <SnackBar />
+        {devToolsInstrument}
+        <PopupInstallApp isVisible={this.state.popupInstallApp} />
       </div>
     );
   }
 }
+
+App.propTypes = {
+  projectJSON: React.PropTypes.string,
+  meta: React.PropTypes.object,
+  nodeTypes: React.PropTypes.any.isRequired,
+  selectedNodeType: React.PropTypes.number,
+  actions: React.PropTypes.object,
+};
+
+const mapStateToProps = (state) => ({
+  projectJSON: Selectors.Project.getJSON(state),
+  meta: Selectors.Project.getMeta(state),
+  nodeTypes: Selectors.NodeType.getNodeTypes(state),
+  selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({
+    upload: Actions.upload,
+    loadProjectFromJSON: Actions.loadProjectFromJSON,
+    setMode: Actions.setMode,
+    addError: Actions.addError,
+    setSelectedNodeType: Actions.setSelectedNodeType,
+  }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

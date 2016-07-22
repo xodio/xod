@@ -3,19 +3,25 @@ import * as STATUS from './constants/statuses';
 import Selectors from './selectors';
 import { upload as uploadToEspruino } from 'xod-espruino/upload';
 
+const getTimestamp = () => new Date().getTime();
 
-export const showError = (error) => ({
-  type: ActionType.ERROR_SHOW,
-  payload: {
-    timestamp: new Date().getTime(),
-    error,
+export const addError = (error) => ({
+  type: ActionType.ERROR_ADD,
+  payload: error,
+  meta: {
+    timestamp: getTimestamp(),
+    status: STATUS.STARTED,
   },
 });
 
-export const hideError = (timestamp) => ({
-  type: ActionType.ERROR_HIDE,
+export const deleteError = (id) => ({
+  type: ActionType.ERROR_DELETE,
   payload: {
-    timestamp,
+    id,
+  },
+  meta: {
+    timestamp: getTimestamp(),
+    status: STATUS.DELETED,
   },
 });
 
@@ -143,7 +149,7 @@ export const linkPin = (id) => (dispatch, getState) => {
     if (validation.isValid) {
       result.push(dispatch(addLink(pins)));
     } else {
-      result.push(dispatch(showError({ message: validation.message })));
+      result.push(dispatch(addError({ message: validation.message })));
     }
   } else if (selected !== id) {
     result.push(dispatch(setPinSelection(id)));

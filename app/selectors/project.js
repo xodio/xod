@@ -16,3 +16,8 @@ export const getProject = (state) => {
 };
 
 export const getJSON = (state) => JSON.stringify(getProject(state));
+
+export const getMeta = R.pipe(
+  getProject,
+  R.prop('meta')
+);
