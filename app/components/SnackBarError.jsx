@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import classNames from 'classnames';
 import * as STATUS from '../constants/statuses';
 import { checkForMouseBubbling } from '../utils/browser';
 
@@ -9,6 +10,7 @@ class SnackBarError extends React.Component {
 
     this.state = {
       mouseOver: false,
+      hidden: true,
     };
 
     this.hide = this.hide.bind(this);
@@ -19,7 +21,7 @@ class SnackBarError extends React.Component {
 
   componentDidMount() {
     setTimeout(() => {
-      this.refs.body.classList.remove('hidden');
+      this.setHidden(false);
     }, 5);
   }
 
@@ -30,6 +32,18 @@ class SnackBarError extends React.Component {
     ) {
       this.hide();
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      nextState.hidden === this.state.hidden ||
+      (
+        nextState.mouseOver &&
+        nextProps.error.status === STATUS.SUCCEEDED
+      )
+    ) { return false; }
+
+    return true;
   }
 
   onClick() {
@@ -59,9 +73,14 @@ class SnackBarError extends React.Component {
       R.assoc('mouseOver', val, this.state)
     );
   }
+  setHidden(val) {
+    this.setState(
+      R.assoc('hidden', val, this.state)
+    );
+  }
 
   hide() {
-    this.refs.body.classList.add('hidden');
+    this.setHidden(true);
 
     setTimeout(() => {
       this.props.onHide(this.props.error.id);
@@ -70,10 +89,13 @@ class SnackBarError extends React.Component {
 
   render() {
     const error = this.props.error;
+    const cls = classNames('SnackBar-Error', {
+      hidden: this.state.hidden,
+    });
     return (
       <li
         ref="body"
-        className="SnackBar-Error hide"
+        className={cls}
         onClick={this.onClick}
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
