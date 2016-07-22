@@ -12,8 +12,6 @@ class SnackBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.errors = {};
-
     this.hideError = this.hideError.bind(this);
     this.keepError = this.keepError.bind(this);
   }
@@ -29,9 +27,9 @@ class SnackBar extends React.Component {
     const errors = R.values(this.props.errors);
     return (
       <SnackBarList>
-        {errors.map((error, i) =>
+        {errors.map((error) =>
           <SnackBarError
-            key={i}
+            key={error.id}
             onHide={this.hideError}
             keepError={this.keepError}
             error={error}
