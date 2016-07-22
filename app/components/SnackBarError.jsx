@@ -2,6 +2,8 @@ import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
 
+const ANIMATION_TIMEOUT = 500;
+
 class SnackBarError extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +19,7 @@ class SnackBarError extends React.Component {
   componentDidMount() {
     setTimeout(() => {
       this.setHidden(false);
-    }, 5);
+    });
   }
 
   onClick() {
@@ -33,7 +35,7 @@ class SnackBarError extends React.Component {
   hide() {
     return new Promise((resolve) => {
       this.setHidden(true);
-      setTimeout(() => resolve(), 500);
+      setTimeout(resolve, ANIMATION_TIMEOUT);
     });
   }
 
