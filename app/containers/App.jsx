@@ -127,7 +127,6 @@ class App extends React.Component {
 
   render() {
     const devToolsInstrument = (isChromeApp) ? <DevTools /> : null;
-    console.log('?', this.state.popupInstallApp);
     return (
       <div>
         <EventListener target={window} onResize={this.onResize} />
