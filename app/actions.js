@@ -3,41 +3,19 @@ import * as STATUS from './constants/statuses';
 import Selectors from './selectors';
 import { upload as uploadToEspruino } from 'xod-espruino/upload';
 
-const ERROR_TIMEOUT = 3000;
-
 const getTimestamp = () => new Date().getTime();
 
-const setTimeoutForError = (id, dispatch) => {
-  setTimeout(() => {
-    dispatch({
-      type: ActionType.ERROR,
-      payload: {
-        id,
-      },
-      meta: {
-        timestamp: getTimestamp(),
-        status: STATUS.SUCCEEDED,
-      },
-    });
-  }, ERROR_TIMEOUT);
-};
-
-export const addError = (error) => (dispatch, getState) => {
-  const errors = Selectors.Errors.getErrors(getState());
-  const newErrorId = Selectors.Errors.getNewId(errors);
-  dispatch({
-    type: ActionType.ERROR,
-    payload: error,
-    meta: {
-      timestamp: getTimestamp(),
-      status: STATUS.STARTED,
-    },
-  });
-  setTimeoutForError(newErrorId, dispatch);
-};
+export const addError = (error) => ({
+  type: ActionType.ERROR_ADD,
+  payload: error,
+  meta: {
+    timestamp: getTimestamp(),
+    status: STATUS.STARTED,
+  },
+});
 
 export const deleteError = (id) => ({
-  type: ActionType.ERROR,
+  type: ActionType.ERROR_DELETE,
   payload: {
     id,
   },
@@ -46,10 +24,6 @@ export const deleteError = (id) => ({
     status: STATUS.DELETED,
   },
 });
-
-export const keepError = (id) => (dispatch) => {
-  setTimeoutForError(id, dispatch);
-};
 
 export const moveNode = (id, position) => ({
   type: ActionType.NODE_MOVE,

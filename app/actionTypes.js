@@ -22,5 +22,7 @@ export const EDITOR_SET_SELECTED_NODETYPE = 'EDITOR_SET_SELECTED_NODETYPE';
 
 export const PROJECT_LOAD_DATA = 'PROJECT_LOAD_DATA';
 
-export const ERROR = 'ERROR';
+export const ERROR_ADD = 'ERROR_ADD';
+export const ERROR_DELETE = 'ERROR_DELETE';
+
 export const UPLOAD = 'UPLOAD';
