@@ -15,7 +15,7 @@ class PopupUploadProject extends React.Component {
   }
 
   onClose() {
-    if (this.isSucceeded()) {
+    if (this.canClose()) {
       this.props.onClose(this.props.upload.id);
     }
   }
@@ -32,6 +32,26 @@ class PopupUploadProject extends React.Component {
       (<p>{this.props.upload.message}</p>) : null;
 
     switch (this.props.upload.status) {
+      case STATUS.SUCCEEDED:
+        return (
+          <div>
+            <p>
+              Congratulations!<br />
+              Your device has been successfully patched!<br />
+              Now you can close this window and can continue bringing your ideas to life.
+            </p>
+            {message}
+          </div>
+        );
+      case STATUS.FAILED:
+        return (
+          <div>
+            <p>
+              <strong>Oops! Error occured.</strong>
+            </p>
+            {message}
+          </div>
+        );
       default:
         return (
           <div>
@@ -61,11 +81,19 @@ class PopupUploadProject extends React.Component {
     return (this.props.upload.status === STATUS.SUCCEEDED);
   }
 
+  isFailed() {
+    return (this.props.upload.status === STATUS.FAILED);
+  }
+
+  canClose() {
+    return (this.isSucceeded() || this.isFailed());
+  }
+
   render() {
     const title = this.getTitle();
     const message = this.getMessage();
     const progress = this.getProgress();
-    const closeButtonStyle = this.isSucceeded() ?
+    const closeButtonStyle = this.canClose() ?
       { display: 'inline' } :
       { display: 'none' };
 
