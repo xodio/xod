@@ -2,6 +2,11 @@ import React from 'react';
 import SkyLight from 'react-skylight';
 
 class PopupInstallApp extends React.Component {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isVisible) {
+      this.show();
+    }
+  }
   show() {
     this.refs.popup.show();
   }
@@ -29,5 +34,9 @@ class PopupInstallApp extends React.Component {
     );
   }
 }
+
+PopupInstallApp.propTypes = {
+  isVisible: React.PropTypes.bool,
+};
 
 export default PopupInstallApp;

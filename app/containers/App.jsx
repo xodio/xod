@@ -26,6 +26,7 @@ class App extends React.Component {
 
     this.state = {
       size: getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
+      popupInstallApp: false,
     };
 
     this.onResize = this.onResize.bind(this);
@@ -119,11 +120,14 @@ class App extends React.Component {
   }
 
   suggestToInstallApplication() {
-    this.refs.installAppPopup.show();
+    this.setState(
+      R.assoc('popupInstallApp', true, this.state)
+    );
   }
 
   render() {
     const devToolsInstrument = (isChromeApp) ? <DevTools /> : null;
+    console.log('?', this.state.popupInstallApp);
     return (
       <div>
         <EventListener target={window} onResize={this.onResize} />
@@ -139,7 +143,7 @@ class App extends React.Component {
         <Editor size={this.state.size} />
         <SnackBar />
         {devToolsInstrument}
-        <PopupInstallApp ref="installAppPopup" />
+        <PopupInstallApp isVisible={this.state.popupInstallApp} />
       </div>
     );
   }
