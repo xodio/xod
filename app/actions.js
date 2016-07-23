@@ -1,5 +1,6 @@
 import * as ActionType from './actionTypes';
 import * as STATUS from './constants/statuses';
+import * as EDITOR_MODE from './constants/editorModes';
 import Selectors from './selectors';
 import { upload as uploadToEspruino } from 'xod-espruino/upload';
 
@@ -151,7 +152,9 @@ export const linkPin = (id) => (dispatch, getState) => {
     } else {
       result.push(dispatch(addError({ message: validation.message })));
     }
+    dispatch(setMode(EDITOR_MODE.DEFAULT));
   } else if (selected !== id) {
+    dispatch(setMode(EDITOR_MODE.LINKING));
     result.push(dispatch(setPinSelection(id)));
   }
 

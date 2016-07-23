@@ -31,7 +31,7 @@ class Node extends React.Component {
   }
 
   onMouseUp() {
-    if (this.props.isClicked && this.props.onMouseUp) {
+    if (!this.props.selected && this.props.selectable && this.props.onMouseUp) {
       this.props.onMouseUp(this.id);
     }
   }
@@ -172,6 +172,7 @@ Node.propTypes = {
   selected: React.PropTypes.bool,
   hoverable: React.PropTypes.bool,
   draggable: React.PropTypes.bool,
+  selectable: React.PropTypes.bool,
   isDragged: React.PropTypes.bool,
   isClicked: React.PropTypes.bool,
   onRender: React.PropTypes.func.isRequired,
