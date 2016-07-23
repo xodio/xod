@@ -12,6 +12,7 @@ export const processesReducer = (processes = {}, action) => {
       R.merge(
         act.payload,
         {
+          id,
           type: action.type,
           status: action.meta.status,
         }
