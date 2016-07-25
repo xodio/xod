@@ -1,4 +1,3 @@
-import R from 'ramda';
 import chai from 'chai';
 import { processesReducer as reducer } from '../../app/reducers/processes';
 import { getLastId } from '../../app/selectors/processes';
@@ -6,24 +5,14 @@ import * as STATUS from '../../app/constants/statuses';
 
 describe('Processes reducer', () => {
   describe('while dispatch any process actionCreator', () => {
-    const initialEmptytate = {};
-    const initialStateWithProcess = {
+    const emptyState = {};
+    const stateWithProcess = {
       1: {
         type: 'TEST_PROCESS',
         status: STATUS.STARTED,
         id: 1,
       },
     };
-
-    let emptyState;
-    let stateWithProcess;
-
-    beforeEach(
-      () => {
-        emptyState = R.clone(initialEmptytate);
-        stateWithProcess = R.clone(initialStateWithProcess);
-      }
-    );
 
     it(`should insert a process with status ${STATUS.STARTED}`, () => {
       const newState = reducer(emptyState, {
