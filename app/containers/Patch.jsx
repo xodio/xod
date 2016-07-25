@@ -114,7 +114,11 @@ class Patch extends React.Component {
   }
 
   onLinkClick(id) {
-    this.props.dispatch(Actions.selectLink(id));
+    if (id > 0) {
+      this.props.dispatch(Actions.selectLink(id));
+    } else {
+      this.deselectAll();
+    }
   }
 
   onMouseMove(event) {

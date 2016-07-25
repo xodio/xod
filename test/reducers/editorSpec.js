@@ -41,6 +41,7 @@ describe('Editor reducer', () => {
   describe('selecting entities', () => {
     const mockState = {
       editor: {
+        mode: EDITOR_MODE.DEFAULT,
         selection: [],
         linkingPin: null,
       },
