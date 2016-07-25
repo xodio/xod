@@ -6,6 +6,7 @@ import * as PIN_VALIDITY from '../constants/pinValidity';
 import { LINK_ERRORS } from '../constants/errorMessages';
 import { PROPERTY_TYPE } from '../constants/property';
 import * as ENTITIES from '../constants/entities';
+import * as SIZES from '../constants/sizes';
 
 import { getCurrentPatchId, getSelection } from './editor';
 
@@ -13,6 +14,28 @@ import { getCurrentPatchId, getSelection } from './editor';
   Common utils
 */
 const arr2obj = R.reduce((p, cur) => R.assoc(cur.id, cur, p), {});
+
+const isEntitySelected = (state, entity, id) => {
+  const selection = getSelection(state);
+  return (
+    selection.length > 0 &&
+    R.pipe(
+      R.filter((sel) =>
+        (
+          sel.entity === entity &&
+          sel.id === id
+        )
+      ),
+      R.length
+    )(selection) > 0
+  );
+};
+const isNodeSelected = (state, nodeId) => {
+  isEntitySelected(state, ENTITIES.NODE, nodeId);
+};
+const isLinkSelected = (state, linkId) => {
+  isEntitySelected(state, ENTITIES.LINK, linkId);
+};
 
 /*
   Project selectors
@@ -103,6 +126,56 @@ export const getPinsByIds = (state, props) => R.pipe(
   }, {})
 )(state, props);
 
+const getVerticalPinOffsets = () => ({
+  [PIN_DIRECTION.INPUT]: SIZES.NODE.padding.y - SIZES.PIN.radius,
+  [PIN_DIRECTION.OUTPUT]: SIZES.NODE.minHeight + SIZES.NODE.padding.y - SIZES.PIN.radius,
+});
+
+const getPinsWidth = (count, withMargins) => {
+  const marginCount = (withMargins) ? count + 1 : count - 1;
+  return (marginCount * SIZES.PIN.margin) + (count * SIZES.PIN.radius * 2);
+};
+
+const getPinPosition = (nodeTypePins, key, nodePosition) => {
+  const originalPin = nodeTypePins[key];
+  const direction = originalPin.direction;
+
+  const groups = R.pipe(
+    R.values,
+    R.groupBy((nPin) => nPin.direction)
+  )(nodeTypePins);
+  const widths = R.pipe(
+    R.keys,
+    R.reduce((prev, dir) =>
+      R.assoc(
+        dir,
+        getPinsWidth(groups[dir].length, false),
+        prev
+      ),
+      {}
+    )
+  )(groups);
+  const vOffset = getVerticalPinOffsets();
+  const pinIndex = R.pipe(
+    R.find(R.propEq('key', key)),
+    R.prop('index')
+  )(groups[direction]);
+  const groupCenter = widths[direction] / 2;
+  const pinX = (
+    groupCenter +
+    (
+      pinIndex * SIZES.PIN.radius * 2 +
+      pinIndex * SIZES.PIN.margin
+    )
+  );
+  return {
+    position: {
+      x: nodePosition.x + pinX,
+      y: nodePosition.y + vOffset[direction],
+    },
+  };
+};
+
 export const getPreparedPins = createSelector(
   [getPins, getNodeTypes, getNodes],
   (pins, nodeTypes, nodes) => R.pipe(
@@ -111,7 +184,14 @@ export const getPreparedPins = createSelector(
       const node = nodes[pin.nodeId];
       const nodeTypePins = nodeTypes[node.typeId].pins;
       const originalPin = nodeTypePins[pin.key];
-      return R.assoc(pin.id, R.merge(pin, originalPin), p);
+
+      const pinPosition = getPinPosition(nodeTypePins, pin.key, node.position);
+
+      return R.assoc(
+        pin.id,
+        R.mergeAll([pin, originalPin, pinPosition]),
+        p
+      );
     }, {})
   )(pins)
 );
@@ -225,6 +305,30 @@ export const validateLink = (state, pinIds) => {
   return result;
 };
 
+export const getPreparedLinks = (state) => {
+  const links = getLinks(state);
+  const pins = getPreparedPins(state);
+
+  return R.pipe(
+    R.values,
+    R.map((link) => {
+      const addData = {};
+      if (link.pins.length > 0) {
+        if (link.pins[0]) {
+          addData.from = pins[link.pins[0]].position;
+        }
+        if (link.pins[1]) {
+          addData.to = pins[link.pins[1]].position;
+        }
+      }
+      addData.isSelected = isLinkSelected(state, link.id);
+
+      return R.merge(link, addData);
+    }),
+    arr2obj
+  )(links);
+};
+
 /*
   Patch selectors
 */
@@ -270,21 +374,6 @@ const getNodePins = (state, nodeId) => {
     R.filter((pin) => pin.nodeId === nodeId),
     arr2obj
   )(pins);
-};
-const isNodeSelected = (state, nodeId) => {
-  const selection = getSelection(state);
-  return (
-    selection.length > 0 &&
-    R.pipe(
-      R.filter((sel) =>
-        (
-          sel.entity === ENTITIES.NODE &&
-          sel.id === nodeId
-        )
-      ),
-      R.length
-    )(selection) > 0
-  );
 };
 
 export const getPreparedNodes = (state) => {

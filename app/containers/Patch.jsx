@@ -574,7 +574,7 @@ Patch.propTypes = {
 
 const mapStateToProps = (state) => ({
   nodes: Selectors.Project.getPreparedNodes(state),
-  links: Selectors.Project.getLinks(state),
+  links: Selectors.Project.getPreparedLinks(state),
   pins: Selectors.Project.getPreparedPins(state),
   patch: Selectors.Project.getCurrentPatch(state),
   selection: Selectors.Editor.getSelection(state),
