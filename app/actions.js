@@ -198,6 +198,8 @@ export const loadProjectFromJSON = (json) => ({
 
 export const upload = () => (dispatch, getState) => {
   const project = Selectors.Project.getJSON(getState());
+  const processes = Selectors.Processes.getProccesses(getState());
+  const newId = Selectors.Processes.getNewId(processes);
 
   dispatch({
     type: ActionType.UPLOAD,
@@ -207,18 +209,28 @@ export const upload = () => (dispatch, getState) => {
   const progress = (message, percentage) => dispatch({
     type: ActionType.UPLOAD,
     meta: { status: STATUS.PROGRESSED },
-    payload: { message, percentage },
+    payload: {
+      id: newId,
+      message,
+      percentage,
+    },
   });
 
   const succeed = () => dispatch({
     type: ActionType.UPLOAD,
+    payload: {
+      id: newId,
+    },
     meta: { status: STATUS.SUCCEEDED },
   });
 
   const fail = (err) => dispatch({
     type: ActionType.UPLOAD,
     meta: { status: STATUS.FAILED },
-    payload: { message: err.message },
+    payload: {
+      id: newId,
+      message: err.message,
+    },
   });
 
   uploadToEspruino(project, progress)
@@ -231,3 +243,13 @@ export const upload = () => (dispatch, getState) => {
       fail(err);
     });
 };
+
+export const deleteProcess = (id, type) => ({
+  type,
+  payload: {
+    id,
+  },
+  meta: {
+    status: STATUS.DELETED,
+  },
+});
