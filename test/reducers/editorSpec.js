@@ -28,6 +28,10 @@ describe('Editor reducer', () => {
       const state = editor(store, Actions.setMode(EDITOR_MODE.EDITING));
       chai.expect(state.mode).to.be.equal(EDITOR_MODE.EDITING);
     });
+    it('should set mode to linking', () => {
+      const state = editor(store, Actions.setMode(EDITOR_MODE.LINKING));
+      chai.expect(state.mode).to.be.equal(EDITOR_MODE.LINKING);
+    });
     it('should set mode to default', () => {
       const state = editor(store, Actions.setMode(EDITOR_MODE.DEFAULT));
       chai.expect(state.mode).to.be.equal(EDITOR_MODE.DEFAULT);
@@ -37,6 +41,7 @@ describe('Editor reducer', () => {
   describe('selecting entities', () => {
     const mockState = {
       editor: {
+        mode: EDITOR_MODE.DEFAULT,
         selection: [],
         linkingPin: null,
       },
@@ -105,6 +110,7 @@ describe('Editor reducer', () => {
     it('should select pin', () => {
       const id = 0;
       const expectedActions = [
+        Actions.setMode(EDITOR_MODE.LINKING),
         Actions.setPinSelection(id),
       ];
 

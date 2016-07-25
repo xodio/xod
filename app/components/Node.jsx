@@ -31,7 +31,7 @@ class Node extends React.Component {
   }
 
   onMouseUp() {
-    if (this.props.isClicked && this.props.onMouseUp) {
+    if (this.canSelectNode()) {
       this.props.onMouseUp(this.id);
     }
   }
@@ -43,8 +43,10 @@ class Node extends React.Component {
   }
 
   onPinMouseUp(pinId) {
-    if (this.props.isClicked && this.props.onPinMouseUp) {
+    if (this.canSelectPin()) {
       this.props.onPinMouseUp(pinId);
+    } else {
+      this.onMouseUp();
     }
   }
 
@@ -81,6 +83,13 @@ class Node extends React.Component {
       x: rectSize.x + rectSize.width / 2,
       y: rectSize.y + rectSize.height / 2,
     };
+  }
+
+  canSelectNode() {
+    return (!this.props.selected && this.props.selectable && this.props.onMouseUp);
+  }
+  canSelectPin() {
+    return (this.props.isClicked && this.props.onPinMouseUp);
   }
 
   updatePatchViewstate() {
@@ -172,6 +181,7 @@ Node.propTypes = {
   selected: React.PropTypes.bool,
   hoverable: React.PropTypes.bool,
   draggable: React.PropTypes.bool,
+  selectable: React.PropTypes.bool,
   isDragged: React.PropTypes.bool,
   isClicked: React.PropTypes.bool,
   onRender: React.PropTypes.func.isRequired,

@@ -114,7 +114,11 @@ class Patch extends React.Component {
   }
 
   onLinkClick(id) {
-    this.props.dispatch(Actions.selectLink(id));
+    if (id > 0) {
+      this.props.dispatch(Actions.selectLink(id));
+    } else {
+      this.deselectAll();
+    }
   }
 
   onMouseMove(event) {
@@ -358,10 +362,13 @@ class Patch extends React.Component {
 
   createNodeStates(nodes) {
     let comparator = R.comparator();
+    const isDraggable = (this.props.mode.isEditing || this.props.mode.isLinking);
+    const isSelectable = (this.props.mode.isEditing);
 
     if (this.state.dragNodeId) {
       comparator = (a) => ((a.id === this.state.dragNodeId) ? 1 : 0);
     }
+
 
     return R.pipe(
       R.values,
@@ -371,7 +378,8 @@ class Patch extends React.Component {
           onMouseUp: this.onNodeMouseUp.bind(this),
           onMouseDown: this.onNodeMouseDown.bind(this),
           onPinMouseUp: this.onPinMouseUp.bind(this),
-          draggable: this.props.mode.isEditing,
+          draggable: isDraggable,
+          selectable: isSelectable,
           isDragged: (this.state.dragNodeId === node.id),
           isClicked: (this.state.clickNodeId === node.id),
           selected: Selectors.Editor.isSelected(this.props.selection, 'Node', node.id),

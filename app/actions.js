@@ -1,5 +1,6 @@
 import * as ActionType from './actionTypes';
 import * as STATUS from './constants/statuses';
+import * as EDITOR_MODE from './constants/editorModes';
 import Selectors from './selectors';
 import { upload as uploadToEspruino } from 'xod-espruino/upload';
 
@@ -99,6 +100,13 @@ export const setLinkSelection = (id) => ({
   },
 });
 
+export const setMode = (mode) => ({
+  type: ActionType.EDITOR_SET_MODE,
+  payload: {
+    mode,
+  },
+});
+
 export const deselectAll = () => (dispatch, getState) => {
   const state = getState();
   if (!Selectors.Editor.hasSelection(state)) { return; }
@@ -107,14 +115,8 @@ export const deselectAll = () => (dispatch, getState) => {
     type: ActionType.EDITOR_DESELECT_ALL,
     payload: {},
   });
+  dispatch(setMode(EDITOR_MODE.DEFAULT));
 };
-
-export const setMode = (mode) => ({
-  type: ActionType.EDITOR_SET_MODE,
-  payload: {
-    mode,
-  },
-});
 
 export const selectNode = (id) => (dispatch, getState) => {
   const state = getState();
@@ -151,7 +153,9 @@ export const linkPin = (id) => (dispatch, getState) => {
     } else {
       result.push(dispatch(addError({ message: validation.message })));
     }
+    dispatch(setMode(EDITOR_MODE.DEFAULT));
   } else if (selected !== id) {
+    dispatch(setMode(EDITOR_MODE.LINKING));
     result.push(dispatch(setPinSelection(id)));
   }
 
