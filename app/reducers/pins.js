@@ -1,8 +1,6 @@
 import R from 'ramda';
 import { NODE_ADD, NODE_DELETE } from '../actionTypes';
-import { getLastNodeId } from '../selectors/node';
-import { getPinsByNodeId } from '../selectors/pin';
-import { getNodeTypes } from '../selectors/nodetype';
+import { getLastNodeId, getPinsByNodeId, getNodeTypes } from '../selectors/project';
 
 const getPinIds = (state) =>
   R.map(pin => parseInt(pin.id, 10))(R.values(state));

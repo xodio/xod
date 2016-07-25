@@ -55,6 +55,8 @@ class Patch extends React.Component {
     this.onMouseUp = this.onMouseUp.bind(this);
 
     this.deselectAll = this.deselectAll.bind(this);
+
+    console.log(this.props.nodesNew);
   }
 
   componentWillUpdate(nextProps) {
@@ -300,7 +302,7 @@ class Patch extends React.Component {
     )(this.props.pins);
 
     if (this.props.linkingPin) {
-      const pinValidity = Selectors.Pin.getValidPins(
+      const pinValidity = Selectors.ProjectgetValidPins(
         this.props.pins,
         this.props.links,
         this.props.linkingPin
@@ -571,15 +573,16 @@ Patch.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  nodes: Selectors.Node.getNodes(state),
-  links: Selectors.Link.getLinks(state),
-  pins: Selectors.Pin.getFullPinsData(state),
-  patch: Selectors.Patch.getCurrentPatch(state),
+  nodes: Selectors.Project.getNodes(state),
+  nodesNew: Selectors.Project.getPreparedNodes(state),
+  links: Selectors.Project.getLinks(state),
+  pins: Selectors.Project.getFullPinsData(state),
+  patch: Selectors.Project.getCurrentPatch(state),
   selection: Selectors.Editor.getSelection(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
   mode: Selectors.Editor.getModeChecks(state),
   linkingPin: Selectors.Editor.getLinkingPin(state),
-  nodeTypes: Selectors.NodeType.getNodeTypes(state),
+  nodeTypes: Selectors.Project.getNodeTypes(state),
 });
 
 export default connect(mapStateToProps)(Patch);

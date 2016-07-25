@@ -19,3 +19,7 @@ export const getNodeById = (state, props) => R.pipe(
   R.values,
   R.head
 )(state, props);
+
+export const getPreparedNodes = (state) => {
+  return getNodes(state);
+};

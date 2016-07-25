@@ -147,7 +147,7 @@ export const linkPin = (id) => (dispatch, getState) => {
   const pins = [selected, id];
 
   if (selected !== id && selected !== null) {
-    const validation = Selectors.Link.validateLink(state, pins);
+    const validation = Selectors.Project.validateLink(state, pins);
     if (validation.isValid) {
       result.push(dispatch(addLink(pins)));
     } else {
