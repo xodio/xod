@@ -4,8 +4,15 @@ import { createSelector } from 'reselect';
 import * as PIN_DIRECTION from '../constants/pinDirection';
 import * as PIN_VALIDITY from '../constants/pinValidity';
 import { LINK_ERRORS } from '../constants/errorMessages';
+import { PROPERTY_TYPE } from '../constants/property';
+import * as ENTITIES from '../constants/entities';
 
-import { getCurrentPatchId } from './editor';
+import { getCurrentPatchId, getSelection } from './editor';
+
+/*
+  Common utils
+*/
+const arr2obj = R.reduce((p, cur) => R.assoc(cur.id, cur, p), {});
 
 /*
   Project selectors
@@ -42,6 +49,11 @@ export const getNodeTypes = R.pipe(
   R.prop('nodeTypes')
 );
 
+export const getNodeTypeById = (state, id) => R.pipe(
+  getNodeTypes,
+  R.prop(id)
+)(state);
+
 /*
   Node selectors
 */
@@ -65,8 +77,6 @@ export const getNodeById = (state, props) => R.pipe(
   R.head
 )(state, props);
 
-export const getPreparedNodes = (state) => getNodes(state);
-
 /*
   Pin selectors
 */
@@ -87,13 +97,13 @@ export const getPinsByIds = (state, props) => R.pipe(
   R.reduce((p, pin) => {
     let result = p;
     if (props && props.pins && props.pins.indexOf(pin.id) !== -1) {
-      result = R.assic(pin.id, pin, p);
+      result = R.assoc(pin.id, pin, p);
     }
     return result;
   }, {})
 )(state, props);
 
-export const getFullPinsData = createSelector(
+export const getPreparedPins = createSelector(
   [getPins, getNodeTypes, getNodes],
   (pins, nodeTypes, nodes) => R.pipe(
     R.values,
@@ -178,7 +188,7 @@ export const getLinksByPinId = (state, props) => R.pipe(
 )(state, props);
 
 export const validateLink = (state, pinIds) => {
-  const pins = getFullPinsData(state);
+  const pins = getPreparedPins(state);
   const linksState = getLinks(state);
   const fromPin = pins[pinIds[0]];
   const toPin = pins[pinIds[1]];
@@ -235,3 +245,65 @@ export const getPatchName = createSelector(
   getCurrentPatch,
   (patch) => R.prop('name')(patch)
 );
+
+// TEMP
+
+const getNodeLabel = (state, node) => {
+  const nodeType = getNodeTypeById(state, node.typeId);
+  let nodeLabel = (node.label) ? node.label : nodeType.label;
+
+  const nodeValue = R.view(R.lensPath(['properties', 'value']), node);
+  if (nodeValue !== undefined) {
+    const nodeValueType = nodeType.properties.value.type;
+    nodeLabel = nodeValue;
+    if (nodeValue === '' && nodeValueType === PROPERTY_TYPE.STRING) {
+      nodeLabel = '<EmptyString>';
+    }
+  }
+
+  return nodeLabel;
+};
+const getNodePins = (state, nodeId) => {
+  const pins = getPreparedPins(state);
+  return R.pipe(
+    R.values,
+    R.filter((pin) => pin.nodeId === nodeId),
+    arr2obj
+  )(pins);
+};
+const isNodeSelected = (state, nodeId) => {
+  const selection = getSelection(state);
+  return (
+    selection.length > 0 &&
+    R.pipe(
+      R.filter((sel) =>
+        (
+          sel.entity === ENTITIES.NODE &&
+          sel.id === nodeId
+        )
+      ),
+      R.length
+    )(selection) > 0
+  );
+};
+
+export const getPreparedNodes = (state) => {
+  const nodes = getNodes(state);
+
+  return R.pipe(
+    R.values,
+    R.map((node) => {
+      const label = getNodeLabel(state, node);
+      const nodePins = getNodePins(state, node.id);
+      const isSelected = isNodeSelected(state, node.id);
+
+      return R.merge(node, {
+        label,
+        pins: nodePins,
+        isSelected,
+      });
+    }),
+    arr2obj
+  )(nodes);
+};
+

@@ -21,6 +21,8 @@ const LAYERNAME_BACKGROUND = 'background';
 const LAYERNAME_LINKS = 'links';
 const LAYERNAME_NODES = 'nodes';
 
+const PATCH_SVG_CLASS = 'PatchSVG';
+
 // @TODO: Remove in case with replacing with SELECTION_DELETE action
 const DELETE_ACTIONS = {
   Node: 'deleteNode',
@@ -55,8 +57,6 @@ class Patch extends React.Component {
     this.onMouseUp = this.onMouseUp.bind(this);
 
     this.deselectAll = this.deselectAll.bind(this);
-
-    console.log(this.props.nodesNew);
   }
 
   componentWillUpdate(nextProps) {
@@ -124,7 +124,7 @@ class Patch extends React.Component {
   }
 
   onMouseMove(event) {
-    const svg = findParentByClassName(event.target, 'PatchSVG');
+    const svg = findParentByClassName(event.target, PATCH_SVG_CLASS);
     const bbox = svg.getBoundingClientRect();
 
     const mousePosition = {
@@ -186,7 +186,7 @@ class Patch extends React.Component {
   }
 
   onCreateNode(event) {
-    const container = findParentByClassName(event.target, 'Patch');
+    const container = findParentByClassName(event.target, PATCH_SVG_CLASS);
     const targetOffset = container.getBoundingClientRect();
     const position = {
       x: event.clientX - targetOffset.left,
@@ -573,10 +573,9 @@ Patch.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  nodes: Selectors.Project.getNodes(state),
-  nodesNew: Selectors.Project.getPreparedNodes(state),
+  nodes: Selectors.Project.getPreparedNodes(state),
   links: Selectors.Project.getLinks(state),
-  pins: Selectors.Project.getFullPinsData(state),
+  pins: Selectors.Project.getPreparedPins(state),
   patch: Selectors.Project.getCurrentPatch(state),
   selection: Selectors.Editor.getSelection(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
