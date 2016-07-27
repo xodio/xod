@@ -257,3 +257,17 @@ export const deleteProcess = (id, type) => ({
     status: STATUS.DELETED,
   },
 });
+
+export const deleteSelection = () => (dispatch, getState) => {
+  const selection = Selectors.Editor.getSelection(getState());
+  const DELETE_ACTIONS = {
+    Node: deleteNode,
+    Link: deleteLink,
+  };
+
+  selection.forEach((select) => {
+    dispatch(
+      DELETE_ACTIONS[select.entity](select.id)
+    );
+  });
+};

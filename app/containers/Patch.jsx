@@ -23,12 +23,6 @@ const LAYERNAME_NODES = 'nodes';
 
 const PATCH_SVG_CLASS = 'PatchSVG';
 
-// @TODO: Remove in case with replacing with SELECTION_DELETE action
-const DELETE_ACTIONS = {
-  Node: 'deleteNode',
-  Link: 'deleteLink',
-};
-
 class Patch extends React.Component {
   constructor(props) {
     super(props);
@@ -172,9 +166,7 @@ class Patch extends React.Component {
         hasSelection &&
         (keycode === KEYCODE.BACKSPACE || keycode === KEYCODE.DELETE)
       ) {
-        selection.forEach((select) => {
-          this.props.dispatch(Actions[DELETE_ACTIONS[select.entity]](select.id));
-        });
+        this.props.dispatch(Actions.deleteSelection());
       }
       if (
         (hasSelection || isLinking) &&
