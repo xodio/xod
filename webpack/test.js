@@ -15,7 +15,7 @@ const config = merge.smart(baseConfig, {
       },
       {
         test: /targets\/.*\.js$/,
-        loader: 'null',
+        loader: 'babel?presets[]=es2015',
       },
     ],
   },
