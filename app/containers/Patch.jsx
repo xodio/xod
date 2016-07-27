@@ -302,7 +302,7 @@ class Patch extends React.Component {
     )(this.props.pins);
 
     if (this.props.linkingPin) {
-      const pinValidity = Selectors.ProjectgetValidPins(
+      const pinValidity = Selectors.Project.getValidPins(
         this.props.pins,
         this.props.links,
         this.props.linkingPin
