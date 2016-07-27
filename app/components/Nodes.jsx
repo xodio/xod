@@ -13,6 +13,7 @@ const Nodes = ({ nodes, onMouseUp, onMouseDown, onPinMouseUp }) => (
         position={node.position}
         pins={node.pins}
         isSelected={node.isSelected}
+        isGhost={node.isGhost}
         onMouseUp={onMouseUp}
         onMouseDown={onMouseDown}
         onPinMouseUp={onPinMouseUp}
