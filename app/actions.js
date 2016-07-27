@@ -115,7 +115,9 @@ export const deselectAll = () => (dispatch, getState) => {
     type: ActionType.EDITOR_DESELECT_ALL,
     payload: {},
   });
-  dispatch(setMode(EDITOR_MODE.DEFAULT));
+  if (!Selectors.Editor.getModeChecks(state).isDefault) {
+    dispatch(setMode(EDITOR_MODE.DEFAULT));
+  }
 };
 
 export const selectNode = (id) => (dispatch, getState) => {
