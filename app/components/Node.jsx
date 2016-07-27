@@ -31,15 +31,11 @@ class Node extends React.Component {
   }
 
   onMouseUp() {
-    if (this.canSelectNode()) {
-      this.props.onMouseUp(this.id);
-    }
+    this.props.onMouseUp(this.id);
   }
 
   onMouseDown(event) {
-    if (this.props.draggable && this.props.onMouseDown) {
-      this.props.onMouseDown(event, this.id);
-    }
+    this.props.onMouseDown(event, this.id);
   }
 
   onPinMouseUp(pinId) {
@@ -197,6 +193,8 @@ Node.defaultProps = {
   isDragged: false,
   isClicked: false,
   selected: false,
+  onMouseUp: f => f,
+  onMouseDown: f => f,
 };
 
 export default Node;

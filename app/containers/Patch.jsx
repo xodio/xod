@@ -89,10 +89,19 @@ class Patch extends React.Component {
   }
 
   onNodeMouseUp(id) {
-    this.props.dispatch(Actions.selectNode(id));
+    const isSelected = Selectors.Editor.isSelected(this.props.selection, 'Node', id);
+    const isSelectable = (this.props.mode.isEditing);
+    const canSelectNode = (isSelectable && !isSelected);
+    if (canSelectNode) {
+      this.props.dispatch(Actions.selectNode(id));
+    }
   }
 
   onNodeMouseDown(event, id) {
+    const isDraggable = (this.props.mode.isEditing || this.props.mode.isLinking);
+
+    if (!isDraggable) { return; }
+
     const node = this.props.nodes[id].position;
     this.dragging = {
       mousePosition: {
