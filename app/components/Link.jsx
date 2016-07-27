@@ -71,7 +71,7 @@ class Link extends React.Component {
   render() {
     const coords = this.getCoords();
     const cls = classNames('Link', {
-      'is-selected': this.props.selected,
+      'is-selected': this.props.isSelected,
     });
 
     return (
@@ -101,7 +101,7 @@ Link.propTypes = {
   id: React.PropTypes.number.isRequired,
   from: React.PropTypes.object.isRequired,
   to: React.PropTypes.object.isRequired,
-  selected: React.PropTypes.bool,
+  isSelected: React.PropTypes.bool,
   hoverable: React.PropTypes.bool,
   clickable: React.PropTypes.bool,
   onClick: React.PropTypes.func.isRequired,

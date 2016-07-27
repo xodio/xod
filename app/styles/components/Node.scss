@@ -17,4 +17,8 @@
       stroke: $color-canvas-selected;
     }
   }
+
+  &.is-ghost {
+    opacity: 0.6;
+  }
 }

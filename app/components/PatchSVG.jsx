@@ -14,7 +14,10 @@ const PatchSVG = ({ children, onMouseMove, onMouseUp }) => (
 );
 
 PatchSVG.propTypes = {
-  children: React.PropTypes.arrayOf(React.PropTypes.element),
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.element,
+    React.PropTypes.arrayOf(React.PropTypes.element),
+  ]),
   onMouseMove: React.PropTypes.func,
   onMouseUp: React.PropTypes.func,
 };
