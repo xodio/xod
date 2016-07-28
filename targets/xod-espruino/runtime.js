@@ -1,51 +1,48 @@
 
-export class NodeImpl {
-  constructor(fireFunc) {
-    this.fire = fireFunc;
-  }
-
-  evaluate() {
-  }
-}
-
 export class Node {
-  constructor({ impl, links, inputTypes, nodes }) {
-    // links: {
-    //   outputName: [{
-    //     lazy: Boolean,
-    //     nodeID: Number,
-    //     inputName: String
-    //   }]
-    // }
-    //
-    // inputTypes: {
-    //   inputName: (val) => val
-    // }
-
-    this._links = links;
+  /**
+    * @typedef {{
+    *   lazy: boolean,
+    *   nodeID: number,
+    *   inputName: string
+    * }} OutLink
+    */
+  /**
+    * @param {function} setup
+    *   node’s setup function
+    * @param {function} evaluate
+    *   node’s evaluation function (aka implementation)
+    * @param {boolean} pure
+    *   whether `impl` should receive `fire` function as argument
+    * @param {Object.<string, function>} inputTypes
+    *   input type coercing functions
+    * @param {Object.<string, Array.<OutLink>>} outLinks
+    *   map from output name to outgoing link description
+    * @param {Object.<number, Node>} nodes
+    *   map from ID to `Node` instances
+    */
+  constructor({ setup, evaluate, pure, inputTypes, outLinks, nodes }) {
+    this._setup = setup || (() => {});
+    this._evaluate = evaluate || (() => {});
+    this._pure = (pure === undefined) ? true : pure;
+    this._inputTypes = inputTypes || {};
+    this._outLinks = outLinks || {};
     this._nodes = nodes;
-    this._inputTypes = inputTypes;
 
-    if (impl.prototype instanceof NodeImpl) {
-      // Class-based implementation
-      const instance = new impl(this.fire.bind(this));
-      this._evaluate = instance.evaluate.bind(instance);
-
-      // FIXME: find more elegant way as we need this just for tests
-      this.implObj = instance; 
-    } else {
-      // Function-based implementation
-      this._evaluate = impl;
-    }
-
-    this._inputs = {};
-    this._dirty = false;
+    this._cachedInputs = {};
     this._pendingOutputs = {};
+    this._dirty = false;
   }
 
   fire(outputs) {
     Object.assign(this._pendingOutputs, outputs);
     this.emit('fire');
+  }
+
+  fireCallback() {
+    if (!this._pure) {
+      return this.fire.bind(this); 
+    }
   }
 
   onTransactionStart() {
@@ -57,30 +54,34 @@ export class Node {
     return this._dirty;
   }
 
+  setup() {
+    this._setup(this.fireCallback());
+  }
+
   evaluate() {
     if (!this._dirty) {
       return;
     }
 
-    const result = this._evaluate(this._inputs) || {};
+    const result = this._evaluate(this._cachedInputs, this.fireCallback()) || {};
     this._sendOutputs(result);
     this._dirty = false;
   }
 
   _receiveInput(name, value, lazy) {
-    this._inputs[name] = this._inputTypes[name](value);
+    this._cachedInputs[name] = this._inputTypes[name](value);
     this._dirty = this._dirty || !lazy;
   }
 
   _sendOutputs(signals) {
     Object.keys(signals).forEach(outputName => {
-      const outputLinks = this._links[outputName];
-      if (!outputLinks) {
+      const outLinks = this._outLinks[outputName];
+      if (!outLinks) {
         return;
       }
 
       const val = signals[outputName];
-      outputLinks.forEach(({ nodeID, inputName, lazy }) => {
+      outLinks.forEach(({ nodeID, inputName, lazy }) => {
         this._nodes[nodeID]._receiveInput(inputName, val, lazy);
       });
     });
@@ -110,11 +111,10 @@ if (!('on' in Node.prototype && 'emit' in Node.prototype)) {
 
 export class Project {
   /**
-    * Defines a project (program). There would be just a single instance
-    * of project on target platform.
-    *
-    * @param {Object} nodes - indexed node list {id: node}
-    * @param {Array} topology - sorted node index list that defines an order
+    * @param {Object.<number, Node>} nodes
+    *   map from ID to Node instances
+    * @param {Array.<number, number>} topology 
+    *   sorted node index list that defines an order
     *   of the graph traversal
     */
   constructor({ nodes, topology }) {
@@ -124,13 +124,14 @@ export class Project {
     this._inTransaction = false;
 
     const fire = this.fire.bind(this);
-    Object.keys(this._nodes).forEach(id => this._nodes[id].on('fire', fire));
+    this.forEachNode(node => node.on('fire', fire));
+    this.forEachNode(node => node.setup());
   }
 
   runTransaction() {
     try {
       this._inTransaction = true;
-      Object.keys(this._nodes).forEach(id => this._nodes[id].onTransactionStart());
+      this.forEachNode(node => node.onTransactionStart());
 
       let node;
       while ( (node = this.getFirstDirtyNode()) ) {
@@ -170,6 +171,10 @@ export class Project {
   fire() {
     this._pendingTransaction = true;
     this.flushTransaction();
+  }
+
+  forEachNode(callback) {
+    Object.keys(this._nodes).forEach(id => callback(this._nodes[id]));
   }
 }
 
