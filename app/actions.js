@@ -123,7 +123,7 @@ export const deselectAll = () => (dispatch, getState) => {
 export const selectNode = (id) => (dispatch, getState) => {
   const state = getState();
   const selection = Selectors.Editor.getSelection(state);
-  const isSelected = Selectors.Editor.isSelected(selection, 'Node', id);
+  const isSelected = Selectors.Editor.isNodeSelected(selection, id);
   const deselect = dispatch(deselectAll());
   const result = [];
   if (deselect) {
@@ -167,7 +167,7 @@ export const linkPin = (id) => (dispatch, getState) => {
 export const selectLink = (id) => (dispatch, getState) => {
   const state = getState();
   const selection = Selectors.Editor.getSelection(state);
-  const isSelected = Selectors.Editor.isSelected(selection, 'Link', id);
+  const isSelected = Selectors.Editor.isLinkSelected(selection, id);
   const deselect = dispatch(deselectAll());
   const result = [];
   if (deselect) {

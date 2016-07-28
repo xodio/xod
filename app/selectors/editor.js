@@ -1,6 +1,7 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
 import * as EDITOR_MODE from '../constants/editorModes';
+import * as ENTITY from '../constants/entities';
 
 export const getEditor = R.prop('editor');
 
@@ -41,6 +42,9 @@ export const isSelected = (selection, entityName, id) => R.pipe(
   R.isNil,
   R.not
 )(selection);
+
+export const isNodeSelected = (selection, id) => isSelected(selection, ENTITY.NODE, id);
+export const isLinkSelected = (selection, id) => isSelected(selection, ENTITY.LINK, id);
 
 export const hasSelection = (state) => (
   state.editor.selection.length > 0 ||

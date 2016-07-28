@@ -41,7 +41,7 @@ class Patch extends React.Component {
   }
 
   onNodeMouseUp(id) {
-    const isSelected = Selectors.Editor.isSelected(this.props.selection, 'Node', id);
+    const isSelected = Selectors.Editor.isNodeSelected(this.props.selection, id);
     const isSelectable = (this.props.mode.isEditing);
     const canSelectNode = (isSelectable && !isSelected);
     if (canSelectNode) {
