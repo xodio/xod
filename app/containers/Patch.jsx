@@ -1,6 +1,7 @@
 import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import EventListener from 'react-event-listener';
 import PatchWrapper from '../components/PatchWrapper';
@@ -44,7 +45,7 @@ class Patch extends React.Component {
     const isSelectable = (this.props.mode.isEditing);
     const canSelectNode = (isSelectable && !isSelected);
     if (canSelectNode) {
-      this.props.dispatch(Actions.selectNode(id));
+      this.props.actions.selectNode(id);
     }
   }
 
@@ -71,7 +72,7 @@ class Patch extends React.Component {
     const isClicked = (this.state.clickNodeId === nodeId);
 
     if (isClicked) {
-      this.props.dispatch(Actions.linkPin(id));
+      this.props.actions.linkPin(id);
     } else {
       this.onNodeMouseUp(nodeId);
     }
@@ -79,7 +80,7 @@ class Patch extends React.Component {
 
   onLinkClick(id) {
     if (id > 0) {
-      this.props.dispatch(Actions.selectLink(id));
+      this.props.actions.selectLink(id);
     } else {
       this.deselectAll();
     }
@@ -115,7 +116,7 @@ class Patch extends React.Component {
       const draggedPos = this.props.nodes[dragId].position;
 
       this.setDragNodeId(null);
-      this.props.dispatch(Actions.moveNode(dragId, draggedPos));
+      this.props.actions.moveNode(dragId, draggedPos);
     }
     if (this.state.clickNodeId) {
       this.setClickNodeId(null);
@@ -138,7 +139,7 @@ class Patch extends React.Component {
         hasSelection &&
         (keycode === KEYCODE.BACKSPACE || keycode === KEYCODE.DELETE)
       ) {
-        this.props.dispatch(Actions.deleteSelection());
+        this.props.actions.deleteSelection();
       }
       if (
         (hasSelection || isLinking) &&
@@ -157,8 +158,8 @@ class Patch extends React.Component {
       y: event.clientY - targetOffset.top,
     };
     const nodeTypeId = this.props.selectedNodeType;
-    this.props.dispatch(Actions.addNode(nodeTypeId, position));
-    this.props.dispatch(Actions.setMode(EDITOR_MODE.DEFAULT));
+    this.props.actions.addNode(nodeTypeId, position);
+    this.props.actions.setMode(EDITOR_MODE.DEFAULT);
     // @TODO: Combine it in one action and add feature of selecting new node by default
   }
 
@@ -286,7 +287,7 @@ class Patch extends React.Component {
         y: draggedPos.y + deltaPosition.y,
       };
 
-      this.props.dispatch(Actions.dragNode(dragId, newPosition));
+      this.props.actions.dragNode(dragId, newPosition);
 
       if (this.state.dragNodeId !== dragId && this.state.clickNodeId !== null) {
         this.setState(
@@ -303,7 +304,7 @@ class Patch extends React.Component {
   }
 
   deselectAll() {
-    this.props.dispatch(Actions.deselectAll());
+    this.props.actions.deselectAll();
   }
 
   render() {
@@ -339,13 +340,13 @@ class Patch extends React.Component {
 }
 
 Patch.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
   size: React.PropTypes.any.isRequired,
+  actions: React.PropTypes.objectOf(React.PropTypes.func),
   nodes: React.PropTypes.any,
-  ghostNode: React.PropTypes.any,
-  ghostLink: React.PropTypes.any,
   pins: React.PropTypes.any,
   links: React.PropTypes.any,
+  ghostNode: React.PropTypes.any,
+  ghostLink: React.PropTypes.any,
   patch: React.PropTypes.any,
   linkingPin: React.PropTypes.number,
   selection: React.PropTypes.array,
@@ -368,4 +369,18 @@ const mapStateToProps = (state) => ({
   nodeTypes: Selectors.Project.getNodeTypes(state),
 });
 
-export default connect(mapStateToProps)(Patch);
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({
+    setMode: Actions.setMode,
+    addNode: Actions.addNode,
+    moveNode: Actions.moveNode,
+    dragNode: Actions.dragNode,
+    deselectAll: Actions.deselectAll,
+    deleteSelection: Actions.deleteSelection,
+    selectLink: Actions.selectLink,
+    selectNode: Actions.selectNode,
+    linkPin: Actions.linkPin,
+  }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Patch);
