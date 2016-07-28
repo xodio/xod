@@ -16,9 +16,6 @@ import {
   getModeChecks,
 } from './editor';
 
-/*
-  Common utils
-*/
 const arr2obj = R.reduce((p, cur) => R.assoc(cur.id, cur, p), {});
 
 const isEntitySelected = (state, entity, id) => {
@@ -39,24 +36,26 @@ const isEntitySelected = (state, entity, id) => {
 const isNodeSelected = (state, nodeId) => isEntitySelected(state, ENTITIES.NODE, nodeId);
 const isLinkSelected = (state, linkId) => isEntitySelected(state, ENTITIES.LINK, linkId);
 
-/*
-  Project selectors
-*/
+export const getProject = R.prop('project');
 
-const getProjectState = (state, path) => {
-  if (path.length > 0 && R.has(path[0], state)) {
-    return getProjectState(
-      R.prop(path.shift(), state),
-      path
-    );
-  }
-  return state;
+export const getPatches = R.pipe(
+  getProject,
+  R.prop('patches')
+);
+
+export const getCurrentPatch = (state) => {
+  const curPatchId = getCurrentPatchId(state);
+  return R.pipe(
+    getPatches,
+    R.prop(curPatchId),
+    R.prop('present')
+  )(state);
 };
 
-export const getProject = (state) => {
-  const path = ['project', 'present'];
-  return getProjectState(state, path);
-};
+export const getPatchName = createSelector(
+  getCurrentPatch,
+  (patch) => R.prop('name')(patch)
+);
 
 export const getJSON = (state) => JSON.stringify(getProject(state));
 
@@ -65,12 +64,8 @@ export const getMeta = R.pipe(
   R.prop('meta')
 );
 
-/*
-  NodeType selectors
-*/
-
 export const getNodeTypes = R.pipe(
-  getProject,
+  getCurrentPatch,
   R.prop('nodeTypes')
 );
 
@@ -84,7 +79,7 @@ export const getNodeTypeById = (state, id) => R.pipe(
 */
 
 export const getNodes = R.pipe(
-  getProject,
+  getCurrentPatch,
   R.prop('nodes')
 );
 
@@ -102,12 +97,8 @@ export const getNodeById = (state, props) => R.pipe(
   R.head
 )(state, props);
 
-/*
-  Pin selectors
-*/
-
 export const getPins = R.pipe(
-  getProject,
+  getCurrentPatch,
   R.prop('pins')
 );
 
@@ -216,12 +207,8 @@ export const canPinHaveMoreLinks = (pin, links) => (
   pin.direction === PIN_DIRECTION.OUTPUT
 );
 
-/*
-  Link selectors
-*/
-
 export const getLinks = R.pipe(
-  getProject,
+  getCurrentPatch,
   R.prop('links')
 );
 
@@ -309,27 +296,6 @@ export const getPreparedLinks = (state) => {
     arr2obj
   )(links);
 };
-
-/*
-  Patch selectors
-*/
-
-export const getPatches = R.pipe(
-  getProject,
-  R.prop('patches')
-);
-export const getCurrentPatch = (state) => {
-  const curPatchId = getCurrentPatchId(state);
-  return R.pipe(
-    getPatches,
-    R.prop(curPatchId)
-  )(state);
-};
-
-export const getPatchName = createSelector(
-  getCurrentPatch,
-  (patch) => R.prop('name')(patch)
-);
 
 export const getValidPins = (pins, links, forPinId) => {
   const oPin = pins[forPinId];
