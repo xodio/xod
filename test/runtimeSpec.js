@@ -1,6 +1,7 @@
 
+import EventEmitter from 'events';
 import { expect } from 'chai';
-import { NodeImpl, Node, Project } from 'xod-espruino/runtime';
+import { Node, Project } from 'xod-espruino/runtime';
 
 describe('Runtime', () => {
   describe('Project node graph', () => {
@@ -21,10 +22,9 @@ describe('Runtime', () => {
       let calls = [];
       let nodes = {};
 
-      let publishResolve;
-      const publish = new Promise(resolve => { publishResolve = resolve });
+      const ee = new EventEmitter();
       const publishSetup = (fire) => {
-        publish.then(val => fire({ val }));
+        ee.on('sample', val => fire({ val }));
       }
 
       nodes[1] = new Node({
@@ -48,8 +48,8 @@ describe('Runtime', () => {
 
       new Project({ nodes, topology: [1, 2] });
 
-      publishResolve(42);
-      publish.then(() => expect(calls).to.be.eql([{ val: 42 }]));
+      ee.emit('sample', 42);
+      expect(calls).to.be.eql([{ val: 42 }]);
     });
   });
 });
