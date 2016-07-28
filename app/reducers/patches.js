@@ -12,6 +12,16 @@ import { getPatchUndoType, getPatchRedoType, getPatchClearHistoryType } from '..
 
 const undoFilter = (action) => !(R.pathEq(['meta', 'skipHistory'], true, action));
 
+const initUndoable = (reducers, state) => {
+  const id = state.meta.id;
+  return undoable(combineReducers(reducers), {
+    filter: undoFilter,
+    undoType: getPatchUndoType(id),
+    redoType: getPatchRedoType(id),
+    clearHistoryType: getPatchClearHistoryType(id),
+  });
+};
+
 export const patchesReducer = (state = {}, action) => {
   const reducers = {
     meta: patchMeta,
@@ -21,26 +31,17 @@ export const patchesReducer = (state = {}, action) => {
     nodes,
   };
 
-  const patches = R.values(state);
+  return R.pipe(
+    R.keys,
+    R.reduce((p, pId) => {
+      let patch = state[pId];
 
-  return R.reduce((prev, patch) => {
-    const id = patch.meta.id;
-    let history;
-    let present;
+      if (patch.hasOwnProperty('present')) {
+        patch = patch.present;
+      }
 
-    if (typeof patch === 'object') {
-      history = undoable(combineReducers(reducers), {
-        filter: undoFilter,
-        undoType: getPatchUndoType(id),
-        redoType: getPatchRedoType(id),
-        clearHistoryType: getPatchClearHistoryType(id),
-      });
-      present = patch;
-    } else {
-      history = patch;
-      present = patch.present;
-    }
-
-    return R.assoc(id, history(present, action), prev);
-  }, {}, patches);
+      const undoReducer = initUndoable(reducers, patch);
+      return R.assoc(pId, undoReducer(state[pId], action), p);
+    }, {})
+  )(state);
 };
