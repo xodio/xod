@@ -6,79 +6,69 @@ import { Node, Project } from 'xod-espruino/runtime';
 describe('Runtime', () => {
   describe('Project node graph', () => {
     let nodes;
-    let topology;
 
     beforeEach(() => {
       nodes = {};
-      topology = [];
     });
 
     function createNode(id, params) {
-      const node = nodes[id] = new Node(Object.assign({ nodes }, params));
-      topology.push[id];
-      return node;
+      nodes[id] = new Node(Object.assign({ nodes }, params));
     }
 
-    function createProject() {
-      return new Project(nodes, topology);
-    }
-
-    it('should transmit signal from publisher to subsriber', () => {
-      const publishStream = new EventEmitter();
-      createNode(1, {
-        setup: (fire) => publishStream.on('sample', fire),
+    function createPublisherNode(id, outLinks) {
+      const ee = new EventEmitter();
+      createNode(id, {
+        setup: (fire) => ee.on('publish', fire),
         pure: false,
-        outLinks: {
-          val: [{
-            nodeID: 2,
-            inputName: 'val',
-          }],
-        },
+        outLinks
       });
 
-      let calls = [];
+      return ee;
+    }
+
+    function createSubscriberNode(id) {
+      let mock = {
+        calls: []
+      };
+
       createNode(2, {
-        evaluate: inputs => calls.push(inputs),
+        evaluate: inputs => mock.calls.push(inputs),
         pure: false,
         inputTypes: { val: Number },
         nodes,
       });
 
+      return mock;
+    }
+
+    it('should transmit signal from publisher to subsriber', () => {
+      const publisher = createPublisherNode(1, {
+        val: [{ nodeID: 2, inputName: 'val' }],
+      });
+
+      const subscriber = createSubscriberNode(2);
+
       new Project({ nodes, topology: [1, 2] });
 
-      publishStream.emit('sample', { val: 42 });
-      expect(calls).to.be.eql([
+      publisher.emit('publish', { val: 42 });
+      expect(subscriber.calls).to.be.eql([
         { val: 42 }
       ]);
     });
 
     it('should transmit multiple signals from publisher to subsriber', () => {
-      const publishStream = new EventEmitter();
-      createNode(1, {
-        setup: (fire) => publishStream.on('sample', fire),
-        pure: false,
-        outLinks: {
-          val: [{
-            nodeID: 2,
-            inputName: 'val',
-          }],
-        },
+      const publisher = createPublisherNode(1, {
+        val: [{ nodeID: 2, inputName: 'val' }],
       });
 
-      let calls = [];
-      createNode(2, {
-        evaluate: inputs => calls.push(inputs),
-        pure: false,
-        inputTypes: { val: Number },
-        nodes,
-      });
+      const subscriber = createSubscriberNode(2);
 
       new Project({ nodes, topology: [1, 2] });
 
-      publishStream.emit('sample', { val: 42 });
-      publishStream.emit('sample', { val: 43 });
-      publishStream.emit('sample', { val: 44 });
-      expect(calls).to.be.eql([
+      publisher.emit('publish', { val: 42 });
+      publisher.emit('publish', { val: 43 });
+      publisher.emit('publish', { val: 44 });
+      expect(subscriber.calls).to.be.eql([
         { val: 42 },
         { val: 43 },
         { val: 44 },
