@@ -13,7 +13,6 @@ import Links from '../components/Links';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import { isInput, findParentByClassName } from '../utils/browser';
-import * as EDITOR_MODE from '../constants/editorModes';
 import * as KEYCODE from '../constants/keycodes';
 
 const PATCH_SVG_CLASS = 'PatchSVG';
@@ -141,6 +140,8 @@ class Patch extends React.Component {
       ) {
         this.props.actions.deleteSelection();
       }
+      // @TODO: By pressing ENTER — pass event upper to process it in Editor
+      //        And then call focus into first input field in the inspector
       if (
         (hasSelection || isLinking) &&
         keycode === KEYCODE.ESCAPE
@@ -159,8 +160,6 @@ class Patch extends React.Component {
     };
     const nodeTypeId = this.props.selectedNodeType;
     this.props.actions.addNode(nodeTypeId, position);
-    this.props.actions.setMode(EDITOR_MODE.DEFAULT);
-    // @TODO: Combine it in one action and add feature of selecting new node by default
   }
 
   getNodes() {
@@ -371,7 +370,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
-    setMode: Actions.setMode,
     addNode: Actions.addNode,
     moveNode: Actions.moveNode,
     dragNode: Actions.dragNode,

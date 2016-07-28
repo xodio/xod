@@ -137,6 +137,14 @@ export const selectNode = (id) => (dispatch, getState) => {
   return result;
 };
 
+export const addAndSelectNode = (typeId, position) => (dispatch, getState) => {
+  dispatch(addNode(typeId, position));
+  dispatch(setMode(EDITOR_MODE.DEFAULT));
+
+  const newId = Selectors.Project.getLastNodeId(getState());
+  dispatch(selectNode(newId));
+};
+
 export const linkPin = (id) => (dispatch, getState) => {
   const state = getState();
   const selected = state.editor.linkingPin;
