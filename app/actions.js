@@ -107,6 +107,21 @@ export const setMode = (mode) => ({
   },
 });
 
+export const undoPatch = (patchId) => ({
+  type: ActionType.getPatchUndoType(patchId),
+  payload: {},
+});
+
+export const redoPatch = (patchId) => ({
+  type: ActionType.getPatchRedoType(patchId),
+  payload: {},
+});
+
+export const clearHistoryPatch = (patchId) => ({
+  type: ActionType.getPatchClearHistoryType(patchId),
+  payload: {},
+});
+
 export const deselectAll = () => (dispatch, getState) => {
   const state = getState();
   if (!Selectors.Editor.hasSelection(state)) { return; }
