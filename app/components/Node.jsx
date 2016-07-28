@@ -163,6 +163,7 @@ Node.defaultProps = {
   isGhost: false,
   onMouseUp: f => f,
   onMouseDown: f => f,
+  onPinMouseUp: f => f,
 };
 
 export default Node;
