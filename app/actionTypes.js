@@ -26,3 +26,7 @@ export const ERROR_ADD = 'ERROR_ADD';
 export const ERROR_DELETE = 'ERROR_DELETE';
 
 export const UPLOAD = 'UPLOAD';
+
+export const getPatchUndoType = (id) => `PATCH_UNDO_${id}`;
+export const getPatchRedoType = (id) => `PATCH_REDO_${id}`;
+export const getPatchClearHistoryType = (id) => `PATCH_CLEAR_HISTORY_${id}`;

@@ -20,6 +20,7 @@ export default class Root extends React.Component {
   }
 
   render() {
+    console.log(this.store.getState());
     return (
       <Provider store={this.store}>
         <App />
