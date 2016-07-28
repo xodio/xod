@@ -159,7 +159,7 @@ class Patch extends React.Component {
       y: event.clientY - targetOffset.top,
     };
     const nodeTypeId = this.props.selectedNodeType;
-    this.props.actions.addNode(nodeTypeId, position);
+    this.props.actions.addAndSelectNode(nodeTypeId, position);
   }
 
   getNodes() {
@@ -370,7 +370,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
-    addNode: Actions.addNode,
+    addAndSelectNode: Actions.addAndSelectNode,
     moveNode: Actions.moveNode,
     dragNode: Actions.dragNode,
     deselectAll: Actions.deselectAll,
