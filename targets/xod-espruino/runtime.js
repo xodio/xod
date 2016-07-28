@@ -63,7 +63,8 @@ export class Node {
       return;
     }
 
-    const result = this._evaluate(this._cachedInputs, this.fireCallback()) || {};
+    const inputs = Object.assign({}, this._cachedInputs);
+    const result = this._evaluate(inputs, this.fireCallback()) || {};
     this._sendOutputs(result);
     this._dirty = false;
   }
