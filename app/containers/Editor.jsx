@@ -80,7 +80,9 @@ class Editor extends React.Component {
           nodeTypes={this.props.nodeTypes}
           onPropUpdate={this.onPropUpdate}
         />
-        <Patch size={this.patchSize} />
+        <Patch
+          size={this.patchSize}
+        />
       </div>
     );
   }
@@ -98,9 +100,9 @@ Editor.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  nodes: Selectors.Node.getNodes(state),
+  nodes: Selectors.Project.getNodes(state),
   editor: Selectors.Editor.getEditor(state),
-  nodeTypes: Selectors.NodeType.getNodeTypes(state),
+  nodeTypes: Selectors.Project.getNodeTypes(state),
   selection: Selectors.Editor.getSelection(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
   mode: Selectors.Editor.getModeChecks(state),

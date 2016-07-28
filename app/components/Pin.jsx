@@ -78,7 +78,7 @@ export default class Pin extends React.Component {
     ) : null;
 
     const cls = classNames('Pin', {
-      'is-selected': this.props.selected,
+      'is-selected': this.props.isSelected,
       'is-valid': this.props.validness === PIN_VALIDITY.VALID,
       'is-almost-valid': this.props.validness === PIN_VALIDITY.ALMOST,
     });
@@ -106,7 +106,7 @@ Pin.propTypes = {
   position: React.PropTypes.object.isRequired,
   radius: React.PropTypes.number.isRequired,
   onMouseUp: React.PropTypes.func.isRequired,
-  selected: React.PropTypes.bool,
+  isSelected: React.PropTypes.bool,
   validness: React.PropTypes.number,
 };
 

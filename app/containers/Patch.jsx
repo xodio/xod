@@ -1,31 +1,20 @@
 import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import EventListener from 'react-event-listener';
 import PatchWrapper from '../components/PatchWrapper';
 import PatchSVG from '../components/PatchSVG';
-import SVGLayer from '../components/SVGlayer';
-import Node from '../components/Node';
-import Link from '../components/Link';
+import BackgroundLayer from '../components/BackgroundLayer';
+import NodesLayer from '../components/NodesLayer';
+import LinksLayer from '../components/LinksLayer';
+import GhostsLayer from './GhostsLayer';
 
 import * as Actions from '../actions';
 import Selectors from '../selectors';
-import PatchUtils from '../utils/patchUtils';
-import { isInput, findParentByClassName } from '../utils/browser';
-import * as EDITOR_MODE from '../constants/editorModes';
+import { isInput, findRootSVG } from '../utils/browser';
 import * as KEYCODE from '../constants/keycodes';
-import { PROPERTY_TYPE } from '../constants/property';
-
-const LAYERNAME_BACKGROUND = 'background';
-const LAYERNAME_LINKS = 'links';
-const LAYERNAME_NODES = 'nodes';
-
-// @TODO: Remove in case with replacing with SELECTION_DELETE action
-const DELETE_ACTIONS = {
-  Node: 'deleteNode',
-  Link: 'deleteLink',
-};
 
 class Patch extends React.Component {
   constructor(props) {
@@ -35,68 +24,34 @@ class Patch extends React.Component {
     this.state = {
       clickNodeId: null,
       dragNodeId: null,
-      ghostNode: null,
-      ghostLink: null,
     };
-    this.nodesViewstate = {};
-    this.nodesCount = 0;
-    this.nodesRendered = 0;
-    this.nodesUpdated = 0;
-
-    this.mousePosition = {
-      x: 0,
-      y: 0,
-    };
-
-    this.createLayers();
+    this.state.mousePosition = { x: 0, y: 0 };
 
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
+    this.onNodeMouseUp = this.onNodeMouseUp.bind(this);
+    this.onNodeMouseDown = this.onNodeMouseDown.bind(this);
+    this.onPinMouseUp = this.onPinMouseUp.bind(this);
+    this.onLinkClick = this.onLinkClick.bind(this);
 
     this.deselectAll = this.deselectAll.bind(this);
   }
 
-  componentWillUpdate(nextProps) {
-    this.nodesCount = 0;
-
-    this.createGhostNode(nextProps);
-  }
-  componentDidUpdate() {
-    this.createGhostLink(this.props);
-  }
-
-  onNodeRendered(id, props) {
-    if (id === 0) return;
-
-    let forceUpdate = false;
-
-    if (!this.nodesViewstate.hasOwnProperty(id)) {
-      this.nodesViewstate[id] = {};
-    } else if (!R.equals(this.nodesViewstate[id], props)) {
-      forceUpdate = true;
-    }
-
-    this.nodesViewstate[id] = R.merge(this.nodesViewstate[id], props);
-    if (this.nodesRendered < this.nodesCount) {
-      this.nodesRendered++;
-    }
-
-    if (this.nodesCount === this.nodesRendered && this.nodesCount !== this.nodesUpdated) {
-      forceUpdate = true;
-      this.nodesUpdated = this.nodesCount;
-    }
-
-    if (forceUpdate) {
-      this.forceUpdate();
-    }
-  }
-
   onNodeMouseUp(id) {
-    this.props.dispatch(Actions.selectNode(id));
+    const isSelected = Selectors.Editor.isNodeSelected(this.props.selection, id);
+    const isSelectable = (this.props.mode.isEditing);
+    const canSelectNode = (isSelectable && !isSelected);
+    if (canSelectNode) {
+      this.props.actions.selectNode(id);
+    }
   }
 
   onNodeMouseDown(event, id) {
+    const isDraggable = (this.props.mode.isEditing || this.props.mode.isLinking);
+
+    if (!isDraggable) { return; }
+
     const node = this.props.nodes[id].position;
     this.dragging = {
       mousePosition: {
@@ -110,19 +65,27 @@ class Patch extends React.Component {
   }
 
   onPinMouseUp(id) {
-    this.props.dispatch(Actions.linkPin(id));
+    const pin = this.props.pins[id];
+    const nodeId = pin.nodeId;
+    const isClicked = (this.state.clickNodeId === nodeId);
+
+    if (isClicked) {
+      this.props.actions.linkPin(id);
+    } else {
+      this.onNodeMouseUp(nodeId);
+    }
   }
 
   onLinkClick(id) {
     if (id > 0) {
-      this.props.dispatch(Actions.selectLink(id));
+      this.props.actions.selectLink(id);
     } else {
       this.deselectAll();
     }
   }
 
   onMouseMove(event) {
-    const svg = findParentByClassName(event.target, 'PatchSVG');
+    const svg = findRootSVG(event.target);
     const bbox = svg.getBoundingClientRect();
 
     const mousePosition = {
@@ -134,11 +97,8 @@ class Patch extends React.Component {
       y: mousePosition.y - bbox.top,
     };
 
-    this.mousePosition = relMousePosition;
-
+    this.setMousePosition(relMousePosition);
     this.dragNode(mousePosition);
-    this.dragGhostNode();
-    this.dragGhostLink();
   }
 
   onMouseUp(event) {
@@ -147,7 +107,7 @@ class Patch extends React.Component {
       const draggedPos = this.props.nodes[dragId].position;
 
       this.setDragNodeId(null);
-      this.props.dispatch(Actions.moveNode(dragId, draggedPos));
+      this.props.actions.moveNode(dragId, draggedPos);
     }
     if (this.state.clickNodeId) {
       this.setClickNodeId(null);
@@ -170,10 +130,10 @@ class Patch extends React.Component {
         hasSelection &&
         (keycode === KEYCODE.BACKSPACE || keycode === KEYCODE.DELETE)
       ) {
-        selection.forEach((select) => {
-          this.props.dispatch(Actions[DELETE_ACTIONS[select.entity]](select.id));
-        });
+        this.props.actions.deleteSelection();
       }
+      // @TODO: By pressing ENTER — pass event upper to process it in Editor
+      //        And then call focus into first input field in the inspector
       if (
         (hasSelection || isLinking) &&
         keycode === KEYCODE.ESCAPE
@@ -184,15 +144,23 @@ class Patch extends React.Component {
   }
 
   onCreateNode(event) {
-    const container = findParentByClassName(event.target, 'Patch');
+    const container = findRootSVG(event.target);
     const targetOffset = container.getBoundingClientRect();
     const position = {
       x: event.clientX - targetOffset.left,
       y: event.clientY - targetOffset.top,
     };
     const nodeTypeId = this.props.selectedNodeType;
-    this.props.dispatch(Actions.addNode(nodeTypeId, position));
-    this.props.dispatch(Actions.setMode(EDITOR_MODE.DEFAULT));
+    this.props.actions.addAndSelectNode(nodeTypeId, position);
+  }
+
+  getNodes() {
+    let nodes = R.values(this.props.nodes);
+    nodes = this.extendNodesByPinValidness(nodes);
+    return nodes;
+  }
+  getLinks() {
+    return R.values(this.props.links);
   }
 
   setDragNodeId(id) {
@@ -214,8 +182,33 @@ class Patch extends React.Component {
     this.setState(st);
   }
 
-  deselectAll() {
-    this.props.dispatch(Actions.deselectAll());
+  setMousePosition(pos) {
+    this.setState(
+      R.assoc('mousePosition', pos, this.state)
+    );
+  }
+
+  extendNodesByPinValidness(nodes) {
+    if (!this.props.linkingPin) {
+      return nodes;
+    }
+
+    const pinsValidation = Selectors.Project.getValidPins(
+      this.props.pins,
+      this.props.links,
+      this.props.linkingPin
+    );
+
+    const assignValidnessToPins = (pins) => R.pipe(
+      R.values,
+      R.map((pin) => R.assoc('validness', pinsValidation[pin.id].validness, pin)),
+      R.reduce((p, cur) => R.assoc(cur.id, cur, p), {})
+    )(pins);
+
+    return R.pipe(
+      R.values,
+      R.map(node => R.assoc('pins', assignValidnessToPins(node.pins), node))
+    )(this.props.nodes);
   }
 
   dragNode(mousePosition) {
@@ -237,9 +230,10 @@ class Patch extends React.Component {
         y: draggedPos.y + deltaPosition.y,
       };
 
-      this.props.dispatch(Actions.dragNode(dragId, newPosition));
+      this.props.actions.dragNode(dragId, newPosition);
 
-      this.setState(
+      if (this.state.dragNodeId !== dragId && this.state.clickNodeId !== null) {
+        this.setState(
           R.merge(
             this.state,
             {
@@ -248,293 +242,17 @@ class Patch extends React.Component {
             }
           )
         );
-    }
-  }
-
-  dragGhostNode() {
-    if (this.props.mode.isCreatingNode && this.state.ghostNode) {
-      this.setState(
-        R.set(
-          R.lensPath(['ghostNode', 'position']),
-          this.mousePosition,
-          this.state
-        )
-      );
-    }
-  }
-
-  dragGhostLink() {
-    if (this.props.linkingPin && this.state.ghostLink) {
-      this.setState(
-        R.set(
-          R.lensPath(['ghostLink', 'to']),
-          this.mousePosition,
-          this.state
-        )
-      );
-    }
-  }
-
-  createLayers() {
-    this.layers = [{
-      name: LAYERNAME_BACKGROUND,
-      factory: () => this.createBackground(),
-    }, {
-      name: LAYERNAME_LINKS,
-      factory: () => this.createLinks(
-        this.props.links
-      ),
-    }, {
-      name: LAYERNAME_NODES,
-      factory: () => this.createNodes(
-        this.props.nodes
-      ),
-    }];
-  }
-
-  createPinsState(nodeId, nodeWidth) {
-    let nodePins = R.pipe(
-      R.values,
-      R.filter((pin) => (pin.nodeId === nodeId)),
-      R.reduce((p, cur) => R.assoc(cur.id, cur, p), {})
-    )(this.props.pins);
-
-    if (this.props.linkingPin) {
-      const pinValidity = Selectors.Pin.getValidPins(
-        this.props.pins,
-        this.props.links,
-        this.props.linkingPin
-      );
-
-      nodePins = R.pipe(
-        R.values,
-        R.filter((pin) => (pin.nodeId === nodeId)),
-        R.map((pin) => R.assoc('validness', pinValidity[pin.id].validness, pin)),
-        R.reduce((p, cur) => R.assoc(cur.id, cur, p), {})
-      )(nodePins);
-    }
-
-    return PatchUtils.getPinPosition(nodePins, nodeWidth);
-  }
-
-  createNodeState(node, customProps) {
-    const props = (typeof customProps === 'object') ? customProps : {};
-
-    const linkingPin = this.props.linkingPin;
-
-    const nodeType = this.props.nodeTypes[node.typeId];
-
-    const nodeWidth = (this.nodesViewstate[node.id] && this.nodesViewstate[node.id].width) ?
-      this.nodesViewstate[node.id].width :
-      PatchUtils.getNodeWidth(nodeType.pins);
-
-    const nodePins = this.createPinsState(node.id, nodeWidth, nodeType);
-    const nodeHaveValue = (
-      node.hasOwnProperty('properties') &&
-      node.properties.hasOwnProperty('value') &&
-      node.properties.value !== ''
-    );
-    let value = nodeHaveValue ? String(node.properties.value) : null;
-
-    if (nodeHaveValue) {
-      const nodeValueTypeString = (nodeType.properties.value.type === PROPERTY_TYPE.STRING);
-      if (nodeValueTypeString) {
-        value = `"${value}"`;
       }
     }
-
-    const viewstate = {
-      id: node.id,
-      key: node.id,
-      label: value || node.label || nodeType.label,
-      pins: nodePins,
-      position: node.position,
-      width: nodeWidth,
-      onRender: this.onNodeRendered.bind(this),
-    };
-
-    if (linkingPin && viewstate.pins && viewstate.pins[linkingPin]) {
-      viewstate.pins[linkingPin].selected = true;
-    }
-
-    return R.merge(viewstate, props);
   }
 
-  createNodeStates(nodes) {
-    let comparator = R.comparator();
-    const isDraggable = (this.props.mode.isEditing || this.props.mode.isLinking);
-    const isSelectable = (this.props.mode.isEditing);
-
-    if (this.state.dragNodeId) {
-      comparator = (a) => ((a.id === this.state.dragNodeId) ? 1 : 0);
-    }
-
-
-    return R.pipe(
-      R.values,
-      R.sort(comparator),
-      R.reduce((p, node) => {
-        const viewstate = this.createNodeState(node, {
-          onMouseUp: this.onNodeMouseUp.bind(this),
-          onMouseDown: this.onNodeMouseDown.bind(this),
-          onPinMouseUp: this.onPinMouseUp.bind(this),
-          draggable: isDraggable,
-          selectable: isSelectable,
-          isDragged: (this.state.dragNodeId === node.id),
-          isClicked: (this.state.clickNodeId === node.id),
-          selected: Selectors.Editor.isSelected(this.props.selection, 'Node', node.id),
-        });
-
-        return R.assoc(node.id, viewstate, p);
-      }, {})
-    )(nodes);
-  }
-
-  createNode(nodeState) {
-    const nodeFactory = React.createFactory(Node);
-    return nodeFactory(nodeState);
-  }
-
-  createNodes(nodes) {
-    const viewstate = this.createNodeStates(nodes);
-
-    this.nodesCount = R.keys(nodes).length;
-
-    return R.pipe(
-      R.values,
-      R.reduce((p, cur) => R.append(
-        this.createNode(cur),
-        p
-      ), [])
-    )(viewstate);
-  }
-
-  createGhostNode(props) {
-    if (props.mode.isCreatingNode) {
-      if (this.state.ghostNode === null) {
-        const ghostProps = {
-          hoverable: false,
-          isDragged: true,
-        };
-        this.state.ghostNode = this.createNodeState({
-          id: 0,
-          typeId: props.selectedNodeType,
-          patchId: props.patch.id,
-          position: this.mousePosition,
-        }, ghostProps);
-      }
-    } else {
-      this.state.ghostNode = null;
-    }
-  }
-
-  createLink(link) {
-    const linkFactory = React.createFactory(Link);
-    return linkFactory(link);
-  }
-
-  createLinkState(link, customProps) {
-    const props = (typeof customProps === 'object') ? customProps : {};
-    const positions = [
-      { x: 0, y: 0 },
-      { x: 0, y: 0 },
-    ];
-
-    link.pins.forEach((pinId, i) => {
-      const pinNodeId = this.props.pins[pinId].nodeId;
-      const pinViewstate = this.nodesViewstate[pinNodeId].pins[pinId];
-
-      positions[i] = pinViewstate.realPosition;
-    });
-
-    const viewstate = {
-      id: link.id,
-      key: link.id,
-      from: positions[0],
-      to: positions[1],
-      onClick: this.onLinkClick.bind(this),
-      selected: Selectors.Editor.isSelected(this.props.selection, 'Link', link.id),
-    };
-
-    return R.merge(
-      viewstate,
-      props
-    );
-  }
-
-  createLinks(links) {
-    return R.pipe(
-      R.values,
-      R.reduce((p, link) => {
-        let result = p;
-        const fromNodeId = this.props.pins[link.pins[0]].nodeId;
-        const toNodeId = this.props.pins[link.pins[1]].nodeId;
-        const viewstateIsReady = (this.nodesViewstate[fromNodeId] && this.nodesViewstate[toNodeId]);
-
-        if (viewstateIsReady) {
-          const viewstate = this.createLinkState(link);
-          result = R.append(
-            this.createLink(viewstate),
-            p
-          );
-        }
-        return result;
-      }, [])
-    )(links);
-  }
-
-  createGhostLink(props) {
-    const stateName = 'ghostLink';
-    if (props.linkingPin && this.state.ghostLink === null) {
-      const linkViewstate = this.createLinkState({
-        id: 0,
-        pins: [this.props.linkingPin],
-      }, {
-        to: this.mousePosition,
-        hoverable: false,
-        clickable: false,
-      });
-
-      this.setState(
-        R.assoc(
-          stateName,
-          linkViewstate,
-          this.state
-        )
-      );
-    } else if (props.linkingPin === null && this.state.ghostLink) {
-      this.setState(
-        R.assoc(stateName, null, this.state)
-      );
-    }
-  }
-
-  createBackground() {
-    const bgChildren = [];
-    let bgOnClick = f => f;
-
-    if (this.props.mode.isEditing) {
-      bgOnClick = this.deselectAll.bind(this);
-    }
-
-    bgChildren.push(
-      <rect
-        className="layer-background"
-        key="bg" x="0" y="0"
-        width={this.props.size.width}
-        height={this.props.size.height}
-        onClick={bgOnClick}
-      />
-    );
-
-    return bgChildren;
+  deselectAll() {
+    this.props.actions.deselectAll();
   }
 
   render() {
-    this.createLayers();
-
-    const ghostNode = (this.state.ghostNode) ? this.createNode(this.state.ghostNode) : null;
-    const ghostLink = (this.state.ghostLink) ? this.createLink(this.state.ghostLink) : null;
+    const nodes = this.getNodes();
+    const links = this.getLinks();
 
     return (
       <PatchWrapper>
@@ -543,13 +261,24 @@ class Patch extends React.Component {
           onMouseMove={this.onMouseMove}
           onMouseUp={this.onMouseUp}
         >
-          {this.layers.map(layer =>
-            <SVGLayer key={layer.name} name={layer.name}>
-              {layer.factory()}
-              {(layer.name === LAYERNAME_LINKS) ? ghostLink : null}
-              {(layer.name === LAYERNAME_NODES) ? ghostNode : null}
-            </SVGLayer>
-          )}
+          <BackgroundLayer
+            width={this.props.size.width}
+            height={this.props.size.height}
+            onClick={this.deselectAll}
+          />
+          <LinksLayer
+            links={links}
+            onClick={this.onLinkClick}
+          />
+          <NodesLayer
+            nodes={nodes}
+            onMouseUp={this.onNodeMouseUp}
+            onMouseDown={this.onNodeMouseDown}
+            onPinMouseUp={this.onPinMouseUp}
+          />
+          <GhostsLayer
+            mousePosition={this.state.mousePosition}
+          />
         </PatchSVG>
       </PatchWrapper>
     );
@@ -557,8 +286,8 @@ class Patch extends React.Component {
 }
 
 Patch.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
   size: React.PropTypes.any.isRequired,
+  actions: React.PropTypes.objectOf(React.PropTypes.func),
   nodes: React.PropTypes.any,
   pins: React.PropTypes.any,
   links: React.PropTypes.any,
@@ -571,15 +300,28 @@ Patch.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  nodes: Selectors.Node.getNodes(state),
-  links: Selectors.Link.getLinks(state),
-  pins: Selectors.Pin.getFullPinsData(state),
-  patch: Selectors.Patch.getCurrentPatch(state),
+  nodes: Selectors.Project.getPreparedNodes(state),
+  links: Selectors.Project.getPreparedLinks(state),
+  pins: Selectors.Project.getPreparedPins(state),
+  patch: Selectors.Project.getCurrentPatch(state),
   selection: Selectors.Editor.getSelection(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
   mode: Selectors.Editor.getModeChecks(state),
   linkingPin: Selectors.Editor.getLinkingPin(state),
-  nodeTypes: Selectors.NodeType.getNodeTypes(state),
+  nodeTypes: Selectors.Project.getNodeTypes(state),
 });
 
-export default connect(mapStateToProps)(Patch);
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({
+    addAndSelectNode: Actions.addAndSelectNode,
+    moveNode: Actions.moveNode,
+    dragNode: Actions.dragNode,
+    deselectAll: Actions.deselectAll,
+    deleteSelection: Actions.deleteSelection,
+    selectLink: Actions.selectLink,
+    selectNode: Actions.selectNode,
+    linkPin: Actions.linkPin,
+  }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Patch);

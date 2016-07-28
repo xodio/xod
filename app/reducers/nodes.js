@@ -1,6 +1,6 @@
 import { NODE_MOVE, NODE_ADD, NODE_DELETE, NODE_UPDATE_PROPERTY } from '../actionTypes';
 import R from 'ramda';
-import { getNodeTypes } from '../selectors/nodetype';
+import { getNodeTypes } from '../selectors/project';
 
 const nodeIds = (nodes) =>
     R.map(node => parseInt(node.id, 10))(R.values(nodes));

@@ -1,7 +1,6 @@
-import { NODE_DELETE, LINK_ADD, LINK_DELETE } from '../actionTypes';
 import R from 'ramda';
-import { getPinsByNodeId } from '../selectors/pin';
-import { getLinksByPinId } from '../selectors/link';
+import { NODE_DELETE, LINK_ADD, LINK_DELETE } from '../actionTypes';
+import { getPinsByNodeId, getLinksByPinId } from '../selectors/project';
 
 const nodeIds = (links) =>
   R.map(link => parseInt(link.id, 10))(R.values(links));

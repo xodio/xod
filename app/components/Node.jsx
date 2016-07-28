@@ -23,31 +23,23 @@ class Node extends React.Component {
   }
 
   componentDidMount() {
-    this.updatePatchViewstate();
+    this.updateNodeWidth();
   }
 
-  componentDidUpdate() {
-    this.updatePatchViewstate();
+  shouldComponentUpdate(newProps) {
+    return !R.equals(newProps, this.props);
   }
 
   onMouseUp() {
-    if (this.canSelectNode()) {
-      this.props.onMouseUp(this.id);
-    }
+    this.props.onMouseUp(this.id);
   }
 
   onMouseDown(event) {
-    if (this.props.draggable && this.props.onMouseDown) {
-      this.props.onMouseDown(event, this.id);
-    }
+    this.props.onMouseDown(event, this.id);
   }
 
   onPinMouseUp(pinId) {
-    if (this.canSelectPin()) {
-      this.props.onPinMouseUp(pinId);
-    } else {
-      this.onMouseUp();
-    }
+    this.props.onPinMouseUp(pinId);
   }
 
   getOriginPosition() {
@@ -85,56 +77,37 @@ class Node extends React.Component {
     };
   }
 
-  canSelectNode() {
-    return (!this.props.selected && this.props.selectable && this.props.onMouseUp);
-  }
-  canSelectPin() {
-    return (this.props.isClicked && this.props.onPinMouseUp);
-  }
-
-  updatePatchViewstate() {
+  updateNodeWidth() {
     const nodeText = this.refs.text;
-
-    const oldWidth = this.width;
     const textWidth = nodeText.getWidth();
     let newWidth = textWidth + (SIZES.NODE_TEXT.margin.x * 2);
-    let resultWidth = oldWidth;
 
     if (newWidth < SIZES.NODE.minWidth) {
       newWidth = SIZES.NODE.minWidth;
     }
-    if (oldWidth !== newWidth) {
-      resultWidth = newWidth;
+    if (this.width !== newWidth) {
+      this.width = newWidth;
+      this.forceUpdate();
     }
-
-    const nodePins = R.pipe(
-      R.values,
-      R.map((pin) => {
-        const position = {
-          x: pin.position.x + this.getOriginPosition().x + SIZES.PIN.radius,
-          y: pin.position.y + this.getOriginPosition().y + SIZES.PIN.radius,
-        };
-        return R.assoc('realPosition', position, pin);
-      }),
-      R.reduce((p, c) => R.assoc(c.id, c, p), {})
-    )(this.props.pins);
-
-    this.width = resultWidth;
-
-    this.props.onRender(this.id, {
-      width: resultWidth,
-      pins: nodePins,
-    });
   }
 
   render() {
-    const pins = R.values(this.props.pins);
     const position = this.getOriginPosition();
+    const pins = R.pipe(
+      R.values,
+      R.map((pin) => {
+        const newPosition = {
+          x: pin.position.x - position.x,
+          y: pin.position.y - position.y,
+        };
+        return R.assoc('position', newPosition, pin);
+      })
+    )(this.props.pins);
     const textPosition = this.getTextProps();
-    const draggable = this.props.draggable;
 
     const cls = classNames('Node', {
-      'is-selected': this.props.selected,
+      'is-selected': this.props.isSelected,
+      'is-ghost': this.props.isGhost,
     });
 
     return (
@@ -142,7 +115,6 @@ class Node extends React.Component {
         className={cls}
         {...position}
         key={this.id}
-        draggable={draggable}
         onMouseDown={this.onMouseDown}
       >
         <g
@@ -178,13 +150,8 @@ Node.propTypes = {
   position: React.PropTypes.object.isRequired,
   width: React.PropTypes.number,
   height: React.PropTypes.number,
-  selected: React.PropTypes.bool,
-  hoverable: React.PropTypes.bool,
-  draggable: React.PropTypes.bool,
-  selectable: React.PropTypes.bool,
-  isDragged: React.PropTypes.bool,
-  isClicked: React.PropTypes.bool,
-  onRender: React.PropTypes.func.isRequired,
+  isSelected: React.PropTypes.bool,
+  isGhost: React.PropTypes.bool,
   onMouseUp: React.PropTypes.func,
   onMouseDown: React.PropTypes.func,
   onPinMouseUp: React.PropTypes.func,
@@ -192,11 +159,11 @@ Node.propTypes = {
 Node.defaultProps = {
   width: SIZES.NODE.minWidth,
   height: SIZES.NODE.minHeight,
-  hoverable: true,
-  draggable: true,
-  isDragged: false,
-  isClicked: false,
-  selected: false,
+  isSelected: false,
+  isGhost: false,
+  onMouseUp: f => f,
+  onMouseDown: f => f,
+  onPinMouseUp: f => f,
 };
 
 export default Node;

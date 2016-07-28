@@ -68,11 +68,19 @@ class Link extends React.Component {
     };
   }
 
+  isClickable() {
+    return (!this.props.isGhost);
+  }
+
   render() {
     const coords = this.getCoords();
     const cls = classNames('Link', {
-      'is-selected': this.props.selected,
+      'is-selected': this.props.isSelected,
+      'is-ghost': this.props.isGhost,
     });
+
+    const clickable = this.isClickable();
+    const pointerEvents = (clickable) ? 'all' : 'none';
 
     return (
       <g
@@ -81,7 +89,7 @@ class Link extends React.Component {
         onClick={this.onClick}
         onMouseOver={this.handleOver}
         onMouseOut={this.handleOut}
-        pointerEvents={this.props.clickable}
+        style={{ pointerEvents }}
       >
         <line
           stroke="transparent"
@@ -101,15 +109,17 @@ Link.propTypes = {
   id: React.PropTypes.number.isRequired,
   from: React.PropTypes.object.isRequired,
   to: React.PropTypes.object.isRequired,
-  selected: React.PropTypes.bool,
+  isSelected: React.PropTypes.bool,
+  isGhost: React.PropTypes.bool,
   hoverable: React.PropTypes.bool,
-  clickable: React.PropTypes.bool,
-  onClick: React.PropTypes.func.isRequired,
+  onClick: React.PropTypes.func,
 };
 
 Link.defaultProps = {
+  isSelected: false,
+  isGhost: false,
   hoverable: true,
-  clickable: true,
+  onClick: f => f,
 };
 
 export default Link;

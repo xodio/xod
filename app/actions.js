@@ -115,13 +115,15 @@ export const deselectAll = () => (dispatch, getState) => {
     type: ActionType.EDITOR_DESELECT_ALL,
     payload: {},
   });
-  dispatch(setMode(EDITOR_MODE.DEFAULT));
+  if (!Selectors.Editor.getModeChecks(state).isDefault) {
+    dispatch(setMode(EDITOR_MODE.DEFAULT));
+  }
 };
 
 export const selectNode = (id) => (dispatch, getState) => {
   const state = getState();
   const selection = Selectors.Editor.getSelection(state);
-  const isSelected = Selectors.Editor.isSelected(selection, 'Node', id);
+  const isSelected = Selectors.Editor.isNodeSelected(selection, id);
   const deselect = dispatch(deselectAll());
   const result = [];
   if (deselect) {
@@ -133,6 +135,14 @@ export const selectNode = (id) => (dispatch, getState) => {
   }
 
   return result;
+};
+
+export const addAndSelectNode = (typeId, position) => (dispatch, getState) => {
+  dispatch(addNode(typeId, position));
+  dispatch(setMode(EDITOR_MODE.DEFAULT));
+
+  const newId = Selectors.Project.getLastNodeId(getState());
+  dispatch(selectNode(newId));
 };
 
 export const linkPin = (id) => (dispatch, getState) => {
@@ -147,7 +157,7 @@ export const linkPin = (id) => (dispatch, getState) => {
   const pins = [selected, id];
 
   if (selected !== id && selected !== null) {
-    const validation = Selectors.Link.validateLink(state, pins);
+    const validation = Selectors.Project.validateLink(state, pins);
     if (validation.isValid) {
       result.push(dispatch(addLink(pins)));
     } else {
@@ -165,7 +175,7 @@ export const linkPin = (id) => (dispatch, getState) => {
 export const selectLink = (id) => (dispatch, getState) => {
   const state = getState();
   const selection = Selectors.Editor.getSelection(state);
-  const isSelected = Selectors.Editor.isSelected(selection, 'Link', id);
+  const isSelected = Selectors.Editor.isLinkSelected(selection, id);
   const deselect = dispatch(deselectAll());
   const result = [];
   if (deselect) {
@@ -257,3 +267,17 @@ export const deleteProcess = (id, type) => ({
     status: STATUS.DELETED,
   },
 });
+
+export const deleteSelection = () => (dispatch, getState) => {
+  const selection = Selectors.Editor.getSelection(getState());
+  const DELETE_ACTIONS = {
+    Node: deleteNode,
+    Link: deleteLink,
+  };
+
+  selection.forEach((select) => {
+    dispatch(
+      DELETE_ACTIONS[select.entity](select.id)
+    );
+  });
+};
