@@ -1,6 +1,6 @@
 import React from 'react';
 import SVGLayer from './SVGLayer';
-import Link from '../components/Link';
+import Link from './Link';
 import { LINKS as LAYER_NAME } from '../constants/layers';
 
 const Links = ({ links, onClick }) => (

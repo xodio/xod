@@ -1,6 +1,6 @@
 import React from 'react';
 import SVGLayer from './SVGLayer';
-import Node from '../components/Node';
+import Node from './Node';
 import { NODES as LAYER_NAME } from '../constants/layers';
 
 const Nodes = ({ nodes, onMouseUp, onMouseDown, onPinMouseUp }) => (
