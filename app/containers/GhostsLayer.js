@@ -108,6 +108,7 @@ class GhostLayer extends React.Component {
     return (
       <SVGLayer
         name={LAYER_NAME}
+        className="GhostsLayer"
       >
         {ghostNode}
         {ghostLink}

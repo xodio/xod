@@ -3,8 +3,11 @@ import SVGLayer from './SVGLayer';
 import Link from './Link';
 import { LINKS as LAYER_NAME } from '../constants/layers';
 
-const Links = ({ links, onClick }) => (
-  <SVGLayer name={LAYER_NAME}>
+const LinksLayer = ({ links, onClick }) => (
+  <SVGLayer
+    name={LAYER_NAME}
+    className="LinksLayer"
+  >
     {links.map(link =>
       <Link
         key={link.id}
@@ -18,9 +21,9 @@ const Links = ({ links, onClick }) => (
   </SVGLayer>
 );
 
-Links.propTypes = {
+LinksLayer.propTypes = {
   links: React.PropTypes.arrayOf(React.PropTypes.object),
   onClick: React.PropTypes.func,
 };
 
-export default Links;
+export default LinksLayer;

@@ -3,8 +3,11 @@ import SVGLayer from './SVGLayer';
 import Node from './Node';
 import { NODES as LAYER_NAME } from '../constants/layers';
 
-const Nodes = ({ nodes, onMouseUp, onMouseDown, onPinMouseUp }) => (
-  <SVGLayer name={LAYER_NAME}>
+const NodesLayer = ({ nodes, onMouseUp, onMouseDown, onPinMouseUp }) => (
+  <SVGLayer
+    name={LAYER_NAME}
+    className="NodesLayer"
+  >
     {nodes.map(node =>
       <Node
         key={node.id}
@@ -22,11 +25,11 @@ const Nodes = ({ nodes, onMouseUp, onMouseDown, onPinMouseUp }) => (
   </SVGLayer>
 );
 
-Nodes.propTypes = {
+NodesLayer.propTypes = {
   nodes: React.PropTypes.arrayOf(React.PropTypes.object),
   onMouseUp: React.PropTypes.func,
   onMouseDown: React.PropTypes.func,
   onPinMouseUp: React.PropTypes.func,
 };
 
-export default Nodes;
+export default NodesLayer;

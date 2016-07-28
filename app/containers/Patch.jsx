@@ -3,13 +3,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import GhostLayer from './GhostLayer';
 import EventListener from 'react-event-listener';
 import PatchWrapper from '../components/PatchWrapper';
 import PatchSVG from '../components/PatchSVG';
-import Background from '../components/Background';
-import Nodes from '../components/Nodes';
-import Links from '../components/Links';
+import BackgroundLayer from '../components/BackgroundLayer';
+import NodesLayer from '../components/NodesLayer';
+import LinksLayer from '../components/LinksLayer';
+import GhostsLayer from './GhostsLayer';
 
 import * as Actions from '../actions';
 import Selectors from '../selectors';
@@ -261,22 +261,22 @@ class Patch extends React.Component {
           onMouseMove={this.onMouseMove}
           onMouseUp={this.onMouseUp}
         >
-          <Background
+          <BackgroundLayer
             width={this.props.size.width}
             height={this.props.size.height}
             onClick={this.deselectAll}
           />
-          <Links
+          <LinksLayer
             links={links}
             onClick={this.onLinkClick}
           />
-          <Nodes
+          <NodesLayer
             nodes={nodes}
             onMouseUp={this.onNodeMouseUp}
             onMouseDown={this.onNodeMouseDown}
             onPinMouseUp={this.onPinMouseUp}
           />
-          <GhostLayer
+          <GhostsLayer
             mousePosition={this.state.mousePosition}
           />
         </PatchSVG>
