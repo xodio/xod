@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import GhostLayer from './GhostLayer';
 import EventListener from 'react-event-listener';
 import PatchWrapper from '../components/PatchWrapper';
 import PatchSVG from '../components/PatchSVG';
@@ -12,10 +13,8 @@ import Links from '../components/Links';
 
 import * as Actions from '../actions';
 import Selectors from '../selectors';
-import { isInput, findParentByClassName } from '../utils/browser';
+import { isInput, findRootSVG } from '../utils/browser';
 import * as KEYCODE from '../constants/keycodes';
-
-const PATCH_SVG_CLASS = 'PatchSVG';
 
 class Patch extends React.Component {
   constructor(props) {
@@ -26,7 +25,7 @@ class Patch extends React.Component {
       clickNodeId: null,
       dragNodeId: null,
     };
-    this.mousePosition = { x: 0, y: 0 };
+    this.state.mousePosition = { x: 0, y: 0 };
 
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
@@ -86,7 +85,7 @@ class Patch extends React.Component {
   }
 
   onMouseMove(event) {
-    const svg = findParentByClassName(event.target, PATCH_SVG_CLASS);
+    const svg = findRootSVG(event.target);
     const bbox = svg.getBoundingClientRect();
 
     const mousePosition = {
@@ -98,15 +97,8 @@ class Patch extends React.Component {
       y: mousePosition.y - bbox.top,
     };
 
-    const isDraggingGhost = (this.props.mode.isCreatingNode || this.props.mode.isLinking);
-
     this.setMousePosition(relMousePosition);
-
     this.dragNode(mousePosition);
-
-    if (isDraggingGhost) {
-      this.forceUpdate();
-    }
   }
 
   onMouseUp(event) {
@@ -152,7 +144,7 @@ class Patch extends React.Component {
   }
 
   onCreateNode(event) {
-    const container = findParentByClassName(event.target, PATCH_SVG_CLASS);
+    const container = findRootSVG(event.target);
     const targetOffset = container.getBoundingClientRect();
     const position = {
       x: event.clientX - targetOffset.left,
@@ -164,18 +156,11 @@ class Patch extends React.Component {
 
   getNodes() {
     let nodes = R.values(this.props.nodes);
-
     nodes = this.extendNodesByPinValidness(nodes);
-    nodes = this.extendNodesByNodeGhost(nodes);
-
     return nodes;
   }
   getLinks() {
-    let links = R.values(this.props.links);
-
-    links = this.extendLinksByLinkGhost(links);
-
-    return links;
+    return R.values(this.props.links);
   }
 
   setDragNodeId(id) {
@@ -198,10 +183,9 @@ class Patch extends React.Component {
   }
 
   setMousePosition(pos) {
-    this.mousePosition = pos;
-    // this.setState(
-    //   R.assoc('mousePosition', pos, this.state)
-    // );
+    this.setState(
+      R.assoc('mousePosition', pos, this.state)
+    );
   }
 
   extendNodesByPinValidness(nodes) {
@@ -225,46 +209,6 @@ class Patch extends React.Component {
       R.values,
       R.map(node => R.assoc('pins', assignValidnessToPins(node.pins), node))
     )(this.props.nodes);
-  }
-
-  extendNodesByNodeGhost(nodes) {
-    if (!this.props.ghostNode) {
-      return nodes;
-    }
-
-    const ghostNode = R.merge(
-      this.props.ghostNode,
-      {
-        position: this.mousePosition,
-        isGhost: true,
-      }
-    );
-
-    ghostNode.pins = R.pipe(
-      R.values,
-      R.map(pin => R.assoc('position', {
-        x: pin.position.x + ghostNode.position.x,
-        y: pin.position.y + ghostNode.position.y,
-      }, pin)),
-      R.reduce((p, cur) => R.assoc(cur.id, cur, p), {})
-    )(ghostNode.pins);
-
-    return R.append(ghostNode, nodes);
-  }
-
-  extendLinksByLinkGhost(links) {
-    if (!this.props.ghostLink) {
-      return links;
-    }
-
-    const ghostLink = R.merge(
-      this.props.ghostLink,
-      {
-        to: this.mousePosition,
-      }
-    );
-
-    return R.append(ghostLink, links);
   }
 
   dragNode(mousePosition) {
@@ -332,6 +276,9 @@ class Patch extends React.Component {
             onMouseDown={this.onNodeMouseDown}
             onPinMouseUp={this.onPinMouseUp}
           />
+          <GhostLayer
+            mousePosition={this.state.mousePosition}
+          />
         </PatchSVG>
       </PatchWrapper>
     );
@@ -344,8 +291,6 @@ Patch.propTypes = {
   nodes: React.PropTypes.any,
   pins: React.PropTypes.any,
   links: React.PropTypes.any,
-  ghostNode: React.PropTypes.any,
-  ghostLink: React.PropTypes.any,
   patch: React.PropTypes.any,
   linkingPin: React.PropTypes.number,
   selection: React.PropTypes.array,
@@ -356,8 +301,6 @@ Patch.propTypes = {
 
 const mapStateToProps = (state) => ({
   nodes: Selectors.Project.getPreparedNodes(state),
-  ghostNode: Selectors.Project.getNodeGhost(state),
-  ghostLink: Selectors.Project.getLinkGhost(state),
   links: Selectors.Project.getPreparedLinks(state),
   pins: Selectors.Project.getPreparedPins(state),
   patch: Selectors.Project.getCurrentPatch(state),
