@@ -10,7 +10,7 @@ function SVGLayer({ name, children }) {
 
 SVGLayer.propTypes = {
   name: React.PropTypes.string.isRequired,
-  children: React.PropTypes.any.isRequired,
+  children: React.PropTypes.any,
 };
 
 export default SVGLayer;
