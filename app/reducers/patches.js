@@ -1,7 +1,7 @@
 import R from 'ramda';
 import undoable from 'redux-undo';
 import { patchReducer } from './patchReducer';
-import { combineReducers } from 'redux';
+import applyReducers from '../utils/applyReducers';
 import { getPatchUndoType, getPatchRedoType, getPatchClearHistoryType } from '../actionTypes';
 
 export const patches = (patchIds) => {
@@ -20,5 +20,5 @@ export const patches = (patchIds) => {
     }, {})
   )(patchIds);
 
-  return combineReducers(reducers);
+  return (state = {}, action, context) => applyReducers(reducers, state, action, context);
 };
