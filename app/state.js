@@ -19,7 +19,6 @@ const initialState = {
             id: 1,
             typeId: 4,
             label: 'Blue LED',
-            patchId: 1,
             position: {
               x: 320,
               y: 120,
@@ -28,7 +27,6 @@ const initialState = {
           2: {
             id: 2,
             typeId: 1,
-            patchId: 1,
             position: {
               x: 360,
               y: 300,
@@ -38,7 +36,6 @@ const initialState = {
             id: 3,
             typeId: 3,
             label: 'My potentiometer with a knob',
-            patchId: 1,
             position: {
               x: 160,
               y: 90,
@@ -47,7 +44,6 @@ const initialState = {
           4: {
             id: 4,
             typeId: 2,
-            patchId: 1,
             position: {
               x: 170,
               y: 380,
@@ -56,7 +52,6 @@ const initialState = {
           5: {
             id: 5,
             typeId: 5,
-            patchId: 1,
             position: {
               x: 100,
               y: 185,
@@ -118,6 +113,28 @@ const initialState = {
           2: {
             id: 2,
             pins: [4, 6],
+          },
+        },
+      },
+      2: {
+        id: 2,
+        name: 'test',
+        nodes: {
+          1: {
+            id: 1,
+            typeId: 4,
+            label: 'test',
+            position: {
+              x: 200,
+              y: 200,
+            },
+          },
+        },
+        pins: {
+          1: {
+            id: 1,
+            nodeId: 1,
+            key: 'brightness',
           },
         },
       },
