@@ -26,7 +26,7 @@ const node = (state, action) => {
   }
 };
 
-export const nodes = (state = {}, action, projectState) => {
+export const nodes = (state = {}, action, patchState) => {
   let movedNode = null;
   let newNode = null;
   let newNodeId = 0;
@@ -34,7 +34,7 @@ export const nodes = (state = {}, action, projectState) => {
   switch (action.type) {
 
     case NODE_ADD: {
-      const nodeType = getNodeTypes(projectState)[action.payload.typeId];
+      const nodeType = getNodeTypes(patchState)[action.payload.typeId];
       const defaultProps = R.pipe(
         R.prop('properties'),
         R.values,

@@ -1,25 +1,15 @@
 import R from 'ramda';
-import applyReducers from '../utils/applyReducers';
-import { pins } from './pins';
-import { links } from './links';
-import { nodes } from './nodes';
+import undoable from 'redux-undo';
+import { patchReducer } from './patchReducer';
+// import applyReducers from '../utils/applyReducers';
 
-export const patches = () => {
-  const reducers = {
-    links,
-    pins,
-    nodes,
-  };
+export const patches = (patchIds) => {
+  // const undoConfig = {
+  //   filter: (action) => !(R.pathEq(['meta', 'skipHistory'], true, action)),
+  // };
 
   return (state = {}, action) => R.pipe(
     R.values,
-    R.reduce((p, cur) =>
-      R.assoc(
-        cur.id,
-        applyReducers(reducers, cur, action, 'PATCHES'),
-        p
-      ),
-      {}
-    )
-  )(state);
+    R.reduce((p, id) => R.assoc(id, patchReducer(state[id], action), p), {})
+  )(patchIds);
 };

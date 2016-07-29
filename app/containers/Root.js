@@ -1,8 +1,10 @@
+import R from 'ramda';
 import React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
-import Reducers from '../reducers/';
+import generateReducers from '../reducers/';
+import Selectors from '../selectors/';
 import Serializer from '../serializers/mock';
 import { EditorMiddleware } from '../middlewares';
 
@@ -15,8 +17,26 @@ export default class Root extends React.Component {
 
     this.serializer = new Serializer();
     const initialState = this.serializer.getState();
+    this.patches = Selectors.Project.getPatches(initialState);
 
-    this.store = createStore(Reducers, initialState, EditorMiddleware);
+    console.log('patches:', this.patches);
+    this.store = createStore(this.createReducers(this.patches), initialState, EditorMiddleware);
+
+    console.log('!', this.store.getState());
+    this.store.subscribe(() => {
+      const rootState = this.store.getState();
+      const statePatches = Selectors.Project.getPatches(rootState);
+      if (!R.eqBy(R.prop('id'), statePatches, this.patches)) {
+        console.log('patches count changed! ', this.patches, ' --> ', statePatches);
+        this.store.replaceReducers(this.createReducers(statePatches));
+      }
+    });
+  }
+
+  createReducers(patches) {
+    this.patches = patches;
+    const patchIds = R.keys(this.patches);
+    return generateReducers(patchIds);
   }
 
   render() {

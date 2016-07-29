@@ -5,10 +5,10 @@ import { meta } from './meta';
 import { patches } from './patches';
 import { nodeTypes } from './nodetypes';
 
-export default () => {
+export default (patchIds) => {
   const reducers = {
     meta,
-    patches: patches(),
+    patches: patches(patchIds),
     nodeTypes,
   };
 

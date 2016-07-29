@@ -32,15 +32,15 @@ const createPins = (state, nodeId, pins) => {
   )(pins);
 };
 
-export const pins = (state = {}, action, projectState) => {
+export const pins = (state = {}, action, patchState) => {
   switch (action.type) {
     case NODE_ADD: {
-      const nodeType = getNodeTypes(projectState)[action.payload.typeId];
-      const nodeId = getLastNodeId(projectState) + 1;
+      const nodeType = getNodeTypes(patchState)[action.payload.typeId];
+      const nodeId = getLastNodeId(patchState) + 1;
       return createPins(state, nodeId, nodeType.pins);
     }
     case NODE_DELETE: {
-      const pinsToDelete = getPinsByNodeId(projectState, { id: action.payload.id });
+      const pinsToDelete = getPinsByNodeId(patchState, { id: action.payload.id });
       return R.omit(R.keys(pinsToDelete), state);
     }
     default:

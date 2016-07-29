@@ -15,7 +15,7 @@ export const newId = (links) => lastId(links) + 1;
 
 export const copyLink = (link) => R.clone(link);
 
-export const links = (state = {}, action, projectState) => {
+export const links = (state = {}, action, patchState) => {
   let newLink = null;
 
   switch (action.type) {
@@ -27,11 +27,11 @@ export const links = (state = {}, action, projectState) => {
       return R.set(R.lensProp(newLink.id), newLink, state);
     }
     case NODE_DELETE: {
-      const pinsToDelete = getPinsByNodeId(projectState, { id: action.payload.id });
+      const pinsToDelete = getPinsByNodeId(patchState, { id: action.payload.id });
       const linksToDelete = R.pipe(
         R.values,
         R.reduce((prev, c) => {
-          const pinLinks = getLinksByPinId(projectState, { pinIds: [c.id] });
+          const pinLinks = getLinksByPinId(patchState, { pinIds: [c.id] });
           return R.concat(prev, pinLinks);
         }, []),
         R.map((pin) => String(pin.id))

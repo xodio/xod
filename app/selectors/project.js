@@ -74,8 +74,19 @@ export const getPatches = R.pipe(
   R.prop('patches')
 );
 export const getCurrentPatch = (state) => {
+  // @TODO: Refactor this crutch
+  if (
+    R.allPass([
+      R.has('id'),
+      R.has('nodes'),
+      R.has('pins'),
+      R.has('links'),
+    ])(state)
+  ) {
+    return state;
+  }
+
   const curPatchId = getCurrentPatchId(state);
-  console.log('!', curPatchId, state);
   return R.pipe(
     getPatches,
     R.prop(curPatchId)

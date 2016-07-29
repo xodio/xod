@@ -1,7 +1,6 @@
 import R from 'ramda';
 
-export default (reducers, state, action, callFrom) => {
-  const cf = callFrom; // @TODO: remove it
+const applyReducers = (reducers, state, action) => {
   let hasChanged = false;
   const nextState = R.pipe(
     R.keys,
@@ -14,4 +13,6 @@ export default (reducers, state, action, callFrom) => {
     }, state)
   )(reducers);
   return hasChanged ? nextState : state;
-}
+};
+
+export default applyReducers;
