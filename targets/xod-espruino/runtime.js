@@ -21,7 +21,8 @@ export class Node {
     * @param {Object.<number, Node>} nodes
     *   map from ID to `Node` instances
     */
-  constructor({ setup, evaluate, pure, inputTypes, outLinks, nodes }) {
+  constructor({ id, setup, evaluate, pure, inputTypes, outLinks, nodes }) {
+    this._id = id;
     this._setup = setup || (() => {});
     this._evaluate = evaluate || (() => {});
     this._pure = (pure === undefined) ? true : pure;
@@ -55,7 +56,7 @@ export class Node {
   }
 
   setup() {
-    this._setup(this.fireCallback());
+    this._setup(this.fire.bind(this));
   }
 
   evaluate() {
@@ -83,7 +84,7 @@ export class Node {
 
       const val = signals[outputName];
       outLinks.forEach(({ nodeID, inputName, lazy }) => {
-        this._nodes[nodeID]._receiveInput(inputName, val, lazy);
+        this._nodes[nodeID]._receiveInput(inputName, val, !!lazy);
       });
     });
   }
@@ -126,7 +127,19 @@ export class Project {
 
     const fire = this.fire.bind(this);
     this.forEachNode(node => node.on('fire', fire));
-    this.forEachNode(node => node.setup());
+    this.setup();
+  }
+
+  setup() {
+    this._inSetup = true;
+
+    try {
+      this.forEachNode(node => node.setup());
+    } finally {
+      this._inSetup = false;
+    }
+
+    this.flushTransaction();
   }
 
   runTransaction() {
@@ -150,7 +163,7 @@ export class Project {
     * Runs a new transaction if required and possible
     */
   flushTransaction() {
-    if (!this._pendingTransaction || this._inTransaction) {
+    if (!this._pendingTransaction || this._inTransaction || this._inSetup) {
       return;
     }
 

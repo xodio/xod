@@ -12,7 +12,7 @@ describe('Runtime', () => {
     });
 
     function createNode(id, params) {
-      nodes[id] = new Node(Object.assign({ nodes }, params));
+      nodes[id] = new Node(Object.assign({ id, nodes }, params));
     }
 
     function createPublisherNode(id, outLinks) {
@@ -105,10 +105,42 @@ describe('Runtime', () => {
         { val: 1142 },
         { val: 1143 },
       ]);
+    });
 
+    it('should allow simultaneous signals at start', () => {
+      // constant 42
+      createNode(1, {
+        setup: fire => fire({ val: 42 }),
+        outLinks: {
+          val: [{ nodeID: 3, inputName: 'a' }],
+        }
+      });
+
+      // constant 100
+      createNode(2, {
+        setup: fire => fire({ val: 100 }),
+        outLinks: {
+          val: [{ nodeID: 3, inputName: 'b' }],
+        }
+      });
+
+      // sum
+      createNode(3, {
+        evaluate: ({ a, b }) => ({ out: a + b }),
+        inputTypes: { a: Number, b: Number },
+        outLinks: {
+          out: [{ nodeID: 4, inputName: 'val' }],
+        }
+      });
+
+      const subscriber = createSubscriberNode(4);
+      new Project({ nodes, topology: [1, 2, 3, 4] });
+
+      expect(subscriber.calls).to.be.eql([
+        { val: 142 },
+      ]);
     });
 
     //it('should postpone impure nodes');
-    //it('should allow squashed transactions');
   });
 });
