@@ -17,6 +17,10 @@ const config = merge.smart(baseConfig, {
         test: /targets\/.*\.js$/,
         loader: 'babel?presets[]=es2015',
       },
+      {
+        test: /node_modules\/espruino\/.*\.js$/,
+        loader: 'null',
+      },
     ],
   },
 });
