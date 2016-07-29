@@ -20,5 +20,5 @@ export const patches = (patchIds) => {
     }, {})
   )(patchIds);
 
-  return (state = {}, action, context) => applyReducers(reducers, state, action, context);
+  return (state = {}, action, projectState) => applyReducers(reducers, state, action, projectState);
 };

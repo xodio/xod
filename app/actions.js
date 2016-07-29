@@ -45,11 +45,14 @@ export const dragNode = (id, position) => ({
   },
 });
 
-export const addNode = (typeId, position) => ({
+export const addNode = (typeId, position, curPatchId) => ({
   type: ActionType.NODE_ADD,
   payload: {
     typeId,
     position,
+  },
+  meta: {
+    patchId: curPatchId,
   },
 });
 
@@ -137,8 +140,8 @@ export const selectNode = (id) => (dispatch, getState) => {
   return result;
 };
 
-export const addAndSelectNode = (typeId, position) => (dispatch, getState) => {
-  dispatch(addNode(typeId, position));
+export const addAndSelectNode = (typeId, position, curPatchId) => (dispatch, getState) => {
+  dispatch(addNode(typeId, position, curPatchId));
   dispatch(setMode(EDITOR_MODE.DEFAULT));
 
   const newId = Selectors.Project.getLastNodeId(getState());

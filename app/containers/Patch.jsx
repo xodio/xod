@@ -151,7 +151,8 @@ class Patch extends React.Component {
       y: event.clientY - targetOffset.top,
     };
     const nodeTypeId = this.props.selectedNodeType;
-    this.props.actions.addAndSelectNode(nodeTypeId, position);
+    const curPatchId = this.props.currentPatchId;
+    this.props.actions.addAndSelectNode(nodeTypeId, position, curPatchId);
   }
 
   getNodes() {
@@ -295,6 +296,7 @@ Patch.propTypes = {
   linkingPin: React.PropTypes.number,
   selection: React.PropTypes.array,
   selectedNodeType: React.PropTypes.number,
+  currentPatchId: React.PropTypes.number,
   nodeTypes: React.PropTypes.object,
   mode: React.PropTypes.object,
 };
@@ -306,6 +308,7 @@ const mapStateToProps = (state) => ({
   patch: Selectors.Project.getCurrentPatch(state),
   selection: Selectors.Editor.getSelection(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
+  currentPatchId: Selectors.Editor.getCurrentPatchId(state),
   mode: Selectors.Editor.getModeChecks(state),
   linkingPin: Selectors.Editor.getLinkingPin(state),
   nodeTypes: Selectors.Project.getNodeTypes(state),

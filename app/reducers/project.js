@@ -1,4 +1,3 @@
-// import { combineReducers } from 'redux';
 import applyReducers from '../utils/applyReducers';
 import { PROJECT_LOAD_DATA } from '../actionTypes';
 
@@ -13,11 +12,11 @@ export default (patchIds) => {
     nodeTypes,
   };
 
-  return (state = {}, action, context) => {
+  return (state = {}, action) => {
     if (action.type === PROJECT_LOAD_DATA) {
       return JSON.parse(action.payload);
     }
 
-    return applyReducers(reducers, state, action, context);
+    return applyReducers(reducers, state, action, state);
   };
 };

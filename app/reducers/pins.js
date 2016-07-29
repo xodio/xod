@@ -1,6 +1,9 @@
 import R from 'ramda';
 import { NODE_ADD, NODE_DELETE } from '../actionTypes';
 import { getLastNodeId, getPinsByNodeId, getNodeTypes } from '../selectors/project';
+import {
+  isActionForCurrentPatch,
+} from '../utils/reducerUtils';
 
 const getPinIds = (state) =>
   R.map(pin => parseInt(pin.id, 10))(R.values(state));
@@ -32,15 +35,17 @@ const createPins = (state, nodeId, pins) => {
   )(pins);
 };
 
-export const pins = (state = {}, action, patchState) => {
+export const pins = (state = {}, action, projectState) => {
   switch (action.type) {
     case NODE_ADD: {
-      const nodeType = getNodeTypes(patchState)[action.payload.typeId];
-      const nodeId = getLastNodeId(patchState) + 1;
+      if (!isActionForCurrentPatch(state, action, projectState)) { return state; }
+
+      const nodeType = getNodeTypes(projectState)[action.payload.typeId];
+      const nodeId = getLastNodeId(projectState) + 1;
       return createPins(state, nodeId, nodeType.pins);
     }
     case NODE_DELETE: {
-      const pinsToDelete = getPinsByNodeId(patchState, { id: action.payload.id });
+      const pinsToDelete = getPinsByNodeId(projectState, { id: action.payload.id });
       return R.omit(R.keys(pinsToDelete), state);
     }
     default:

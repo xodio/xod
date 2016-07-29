@@ -5,9 +5,8 @@ const applyReducers = (reducers, state, action, context) => {
   const nextState = R.pipe(
     R.keys,
     R.reduce((nState, key) => {
-      const nextContext = context || nState;
       const prevStateForKey = nState[key];
-      const nextStateForKey = reducers[key](nState[key], action, nextContext);
+      const nextStateForKey = reducers[key](nState[key], action, context);
       hasChanged = hasChanged || nextStateForKey !== prevStateForKey;
 
       return R.assoc(key, nextStateForKey, nState);

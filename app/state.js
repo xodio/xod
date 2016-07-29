@@ -120,8 +120,8 @@ const initialState = {
         id: 2,
         name: 'test',
         nodes: {
-          1: {
-            id: 1,
+          6: {
+            id: 6,
             typeId: 4,
             label: 'test',
             position: {
@@ -131,9 +131,9 @@ const initialState = {
           },
         },
         pins: {
-          1: {
-            id: 1,
-            nodeId: 1,
+          10: {
+            id: 10,
+            nodeId: 6,
             key: 'brightness',
           },
         },

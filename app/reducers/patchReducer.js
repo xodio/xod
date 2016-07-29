@@ -4,7 +4,7 @@ import { pins } from './pins';
 import { links } from './links';
 import { nodes } from './nodes';
 
-export const patchReducer = (state = {}, action, context) => {
+export const patchReducer = (state = {}, action, projectState) => {
   const reducers = {
     links,
     pins,
@@ -14,6 +14,5 @@ export const patchReducer = (state = {}, action, context) => {
   if (action.type === 'TEST') {
     return JSON.parse(action.payload);
   }
-
-  return applyReducers(reducers, state, action, context);
+  return applyReducers(reducers, state, action, projectState);
 };
