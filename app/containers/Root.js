@@ -18,11 +18,8 @@ export default class Root extends React.Component {
     this.serializer = new Serializer();
     const initialState = this.serializer.getState();
     this.patches = Selectors.Project.getPatches(initialState);
-
-    console.log('patches:', this.patches);
     this.store = createStore(this.createReducers(this.patches), initialState, EditorMiddleware);
 
-    console.log('!', this.store.getState());
     this.store.subscribe(() => {
       const rootState = this.store.getState();
       const statePatches = Selectors.Project.getPatches(rootState);
