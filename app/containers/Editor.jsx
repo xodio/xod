@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ActionCreators as ReduxUndoActions } from 'redux-undo';
+// import { ActionCreators as ReduxUndoActions } from 'redux-undo';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import * as EDITOR_MODE from '../constants/editorModes';
@@ -41,10 +41,10 @@ class Editor extends React.Component {
       }
 
       if (event.ctrlKey && keycode === KEYCODE.Z) {
-        this.props.actions.undo();
+        this.props.actions.undo(this.props.currentPatchId);
       }
       if (event.ctrlKey && keycode === KEYCODE.Y) {
-        this.props.actions.redo();
+        this.props.actions.redo(this.props.currentPatchId);
       }
     }
   }
@@ -95,6 +95,7 @@ Editor.propTypes = {
   size: React.PropTypes.object.isRequired,
   selection: React.PropTypes.array,
   selectedNodeType: React.PropTypes.number,
+  currentPatchId: React.PropTypes.number,
   mode: React.PropTypes.object,
   actions: React.PropTypes.object,
 };
@@ -105,6 +106,7 @@ const mapStateToProps = (state) => ({
   nodeTypes: Selectors.Project.getNodeTypes(state),
   selection: Selectors.Editor.getSelection(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
+  currentPatchId: Selectors.Editor.getCurrentPatchId(state),
   mode: Selectors.Editor.getModeChecks(state),
 });
 
@@ -113,8 +115,8 @@ const mapDispatchToProps = (dispatch) => ({
     setMode: Actions.setMode,
     setSelectedNodeType: Actions.setSelectedNodeType,
     updateNodeProperty: Actions.updateNodeProperty,
-    undo: ReduxUndoActions.undo,
-    redo: ReduxUndoActions.redo,
+    undo: Actions.undoPatch, // ReduxUndoActions.undo,
+    redo: Actions.redoPatch, // ReduxUndoActions.redo,
   }, dispatch),
 });
 

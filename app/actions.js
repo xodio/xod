@@ -281,3 +281,18 @@ export const deleteSelection = () => (dispatch, getState) => {
     );
   });
 };
+
+export const undoPatch = (id) => ({
+  type: ActionType.getPatchUndoType(id),
+  payload: {},
+});
+
+export const redoPatch = (id) => ({
+  type: ActionType.getPatchRedoType(id),
+  payload: {},
+});
+
+export const clearHistoryPatch = (id) => ({
+  type: ActionType.getPatchClearHistoryType(id),
+  payload: {},
+});
