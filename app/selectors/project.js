@@ -89,7 +89,8 @@ export const getCurrentPatch = (state) => {
   const curPatchId = getCurrentPatchId(state);
   return R.pipe(
     getPatches,
-    R.prop(curPatchId)
+    R.prop(curPatchId),
+    R.prop('present')
   )(state);
 };
 
