@@ -14,112 +14,112 @@ const initialState = {
       1: {
         id: 1,
         name: 'Skynet',
-      },
-    },
-    nodes: {
-      1: {
-        id: 1,
-        typeId: 4,
-        label: 'Blue LED',
-        patchId: 1,
-        position: {
-          x: 320,
-          y: 120,
+        nodes: {
+          1: {
+            id: 1,
+            typeId: 4,
+            label: 'Blue LED',
+            patchId: 1,
+            position: {
+              x: 320,
+              y: 120,
+            },
+          },
+          2: {
+            id: 2,
+            typeId: 1,
+            patchId: 1,
+            position: {
+              x: 360,
+              y: 300,
+            },
+          },
+          3: {
+            id: 3,
+            typeId: 3,
+            label: 'My potentiometer with a knob',
+            patchId: 1,
+            position: {
+              x: 160,
+              y: 90,
+            },
+          },
+          4: {
+            id: 4,
+            typeId: 2,
+            patchId: 1,
+            position: {
+              x: 170,
+              y: 380,
+            },
+          },
+          5: {
+            id: 5,
+            typeId: 5,
+            patchId: 1,
+            position: {
+              x: 100,
+              y: 185,
+            },
+          },
         },
-      },
-      2: {
-        id: 2,
-        typeId: 1,
-        patchId: 1,
-        position: {
-          x: 360,
-          y: 300,
+        pins: {
+          1: {
+            id: 1,
+            nodeId: 1,
+            key: 'brightness',
+          },
+          2: {
+            id: 2,
+            nodeId: 2,
+            key: 'in',
+          },
+          3: {
+            id: 3,
+            nodeId: 2,
+            key: 'out',
+          },
+          4: {
+            id: 4,
+            nodeId: 3,
+            key: 'out',
+          },
+          5: {
+            id: 5,
+            nodeId: 4,
+            key: 'in',
+          },
+          6: {
+            id: 6,
+            nodeId: 4,
+            key: 'ifFalse',
+          },
+          7: {
+            id: 7,
+            nodeId: 4,
+            key: 'ifTrue',
+          },
+          8: {
+            id: 8,
+            nodeId: 4,
+            key: 'out',
+          },
+          9: {
+            id: 9,
+            nodeId: 5,
+            key: 'value',
+          },
         },
-      },
-      3: {
-        id: 3,
-        typeId: 3,
-        label: 'My potentiometer with a knob',
-        patchId: 1,
-        position: {
-          x: 160,
-          y: 90,
+        links: {
+          1: {
+            id: 1,
+            pins: [4, 1],
+          },
+          2: {
+            id: 2,
+            pins: [4, 6],
+          },
         },
-      },
-      4: {
-        id: 4,
-        typeId: 2,
-        patchId: 1,
-        position: {
-          x: 170,
-          y: 380,
-        },
-      },
-      5: {
-        id: 5,
-        typeId: 5,
-        patchId: 1,
-        position: {
-          x: 100,
-          y: 185,
-        },
-      },
-    },
-    pins: {
-      1: {
-        id: 1,
-        nodeId: 1,
-        key: 'brightness',
-      },
-      2: {
-        id: 2,
-        nodeId: 2,
-        key: 'in',
-      },
-      3: {
-        id: 3,
-        nodeId: 2,
-        key: 'out',
-      },
-      4: {
-        id: 4,
-        nodeId: 3,
-        key: 'out',
-      },
-      5: {
-        id: 5,
-        nodeId: 4,
-        key: 'in',
-      },
-      6: {
-        id: 6,
-        nodeId: 4,
-        key: 'ifFalse',
-      },
-      7: {
-        id: 7,
-        nodeId: 4,
-        key: 'ifTrue',
-      },
-      8: {
-        id: 8,
-        nodeId: 4,
-        key: 'out',
-      },
-      9: {
-        id: 9,
-        nodeId: 5,
-        key: 'value',
-      },
-    },
-    links: {
-      1: {
-        id: 1,
-        pins: [4, 1],
-      },
-      2: {
-        id: 2,
-        pins: [4, 6],
       },
     },
     nodeTypes: {
