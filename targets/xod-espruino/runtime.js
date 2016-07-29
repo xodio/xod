@@ -143,16 +143,15 @@ export class Project {
     this._topology = topology;
     this._pendingTransaction = false;
     this._inTransaction = false;
-
-    const fire = this.onNodeFire.bind(this);
-    this.forEachNode(node => node.on('fire', fire));
-    this.setup();
   }
 
   /**
-    * Setups all nodes once the graph is ready.
+    * Setups all nodes all starts graph execution.
     */
-  setup() {
+  launch() {
+    const fire = this.onNodeFire.bind(this);
+    this.forEachNode(node => node.on('fire', fire));
+
     this._inSetup = true;
 
     try {

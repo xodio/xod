@@ -13,6 +13,10 @@ function hasIncomingEdges(vertex, edges) {
   return R.any(edgeIncoming, edges);
 }
 
+function hasEdgeFrom(n, edges) {
+  return m => R.contains([n, m], edges);
+}
+
 /**
   * Sorts graph vertexes topologically.
   *
@@ -28,24 +32,27 @@ function hasIncomingEdges(vertex, edges) {
 export function sortGraph(vertexes, edges) {
   let l = []; // Empty list that will contain the sorted elements
   let s = findVertexesWithNoIncomingEdges(vertexes, edges);
+  let edgesLeft = edges;
+
+  const excludeEdgesFrom = n => m => {
+    edgesLeft = R.without([[n, m]], edgesLeft);
+    if (!hasIncomingEdges(m, edgesLeft)) {
+      s = R.append(m, s);
+    }
+  };
+
   while (s.length) {
     const n = R.head(s);
     s = R.drop(1, s);
     l = R.append(n, l);
-
-    const hasEdgeFromN = (m) => R.contains([n, m], edges);
-
-    R.forEach(m => {
-      edges = R.without([[n, m]], edges);
-      if (!hasIncomingEdges(m, edges)) {
-        s = R.append(m, s);
-      }
-
-    }, R.filter(hasEdgeFromN, vertexes));
+    R.forEach(
+      excludeEdgesFrom(n),
+      R.filter(hasEdgeFrom(n, edgesLeft), vertexes)
+    );
   }
 
-  if (edges.length) {
-    throw new Error("Graph has at least one cycle");
+  if (edgesLeft.length) {
+    throw new Error('Graph has at least one cycle');
   }
 
   return l;

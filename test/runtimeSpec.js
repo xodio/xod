@@ -20,15 +20,15 @@ describe('Runtime', () => {
       createNode(id, {
         setup: (fire) => ee.on('publish', fire),
         pure: false,
-        outLinks
+        outLinks,
       });
 
       return ee;
     }
 
     function createSubscriberNode(id) {
-      let mock = {
-        calls: []
+      const mock = {
+        calls: [],
       };
 
       createNode(id, {
@@ -41,6 +41,11 @@ describe('Runtime', () => {
       return mock;
     }
 
+    function launch(topology) {
+      const project = new Project({ nodes, topology });
+      project.launch();
+    }
+
     it('should transmit signal from publisher to subsriber', () => {
       const publisher = createPublisherNode(1, {
         val: [{ nodeID: 2, inputName: 'val' }],
@@ -48,11 +53,10 @@ describe('Runtime', () => {
 
       const subscriber = createSubscriberNode(2);
 
-      new Project({ nodes, topology: [1, 2] });
-
+      launch([1, 2]);
       publisher.emit('publish', { val: 42 });
       expect(subscriber.calls).to.be.eql([
-        { val: 42 }
+        { val: 42 },
       ]);
     });
 
@@ -63,8 +67,7 @@ describe('Runtime', () => {
 
       const subscriber = createSubscriberNode(2);
 
-      new Project({ nodes, topology: [1, 2] });
-
+      launch([1, 2]);
       publisher.emit('publish', { val: 42 });
       publisher.emit('publish', { val: 43 });
       publisher.emit('publish', { val: 44 });
@@ -85,7 +88,7 @@ describe('Runtime', () => {
         inputTypes: { inp: Number },
         outLinks: {
           out: [{ nodeID: 3, inputName: 'inp' }],
-        }
+        },
       });
 
       createNode(3, {
@@ -93,12 +96,12 @@ describe('Runtime', () => {
         inputTypes: { inp: Number },
         outLinks: {
           out: [{ nodeID: 4, inputName: 'val' }],
-        }
+        },
       });
 
       const subscriber = createSubscriberNode(4);
 
-      new Project({ nodes, topology: [1, 2, 3, 4] });
+      launch([1, 2, 3, 4]);
       publisher.emit('publish', { val: 42 });
       publisher.emit('publish', { val: 43 });
       expect(subscriber.calls).to.be.eql([
@@ -113,7 +116,7 @@ describe('Runtime', () => {
         setup: fire => fire({ val: 42 }),
         outLinks: {
           val: [{ nodeID: 3, inputName: 'a' }],
-        }
+        },
       });
 
       // constant 100
@@ -121,7 +124,7 @@ describe('Runtime', () => {
         setup: fire => fire({ val: 100 }),
         outLinks: {
           val: [{ nodeID: 3, inputName: 'b' }],
-        }
+        },
       });
 
       // sum
@@ -130,17 +133,17 @@ describe('Runtime', () => {
         inputTypes: { a: Number, b: Number },
         outLinks: {
           out: [{ nodeID: 4, inputName: 'val' }],
-        }
+        },
       });
 
       const subscriber = createSubscriberNode(4);
-      new Project({ nodes, topology: [1, 2, 3, 4] });
 
+      launch([1, 2, 3, 4]);
       expect(subscriber.calls).to.be.eql([
         { val: 142 },
       ]);
     });
 
-    //it('should postpone impure nodes');
+    // TODO: it('should postpone impure nodes');
   });
 });
