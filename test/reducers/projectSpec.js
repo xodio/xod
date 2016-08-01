@@ -17,6 +17,7 @@ describe('Project reducer: ', () => {
       patches: {
         1: {
           present: {
+            id: 1,
             nodes: {},
             pins: {},
             links: {},
@@ -114,17 +115,29 @@ describe('Project reducer: ', () => {
   });
 
   describe('Delete node', () => {
-    const mockState = {
-      project: {
-        nodes: {
+    const patchPath = ['project', 'patches', 1];
+    const mockState = R.pipe(
+      R.dissocPath(['project', 'patches', 1, 'present']),
+      R.assocPath(
+        patchPath,
+        {
+          id: 1,
+        }
+      ),
+      R.assocPath(
+        R.append('nodes', patchPath),
+        {
           1: {
             id: 1,
           },
           2: {
             id: 2,
           },
-        },
-        pins: {
+        }
+      ),
+      R.assocPath(
+        R.append('pins', patchPath),
+        {
           1: {
             id: 1,
             nodeId: 1,
@@ -137,18 +150,26 @@ describe('Project reducer: ', () => {
             id: 3,
             nodeId: 2,
           },
-        },
-        links: {
+        }
+      ),
+      R.assocPath(
+        R.append('links', patchPath),
+        {
           1: {
             id: 1,
             pins: [2, 3],
           },
-        },
-        nodeTypes: {},
-        meta: {},
-        patches: {},
-      },
-    };
+        }
+      ),
+      R.assocPath(
+        ['project', 'counter'],
+        {
+          nodes: 2,
+          pins: 3,
+          links: 1,
+        }
+      )
+    )(projectShape);
 
     let store;
     beforeEach(() => {
@@ -156,32 +177,40 @@ describe('Project reducer: ', () => {
     });
 
     it('should delete node, children pins and link', () => {
-      const expectedNodes = {
-        2: { id: 2 },
-      };
-      const expectedPins = {
-        3: { id: 3, nodeId: 2 },
-      };
+      const patchId = 1;
+      const expectedNodes = { 2: { id: 2 } };
+      const expectedPins = { 3: { id: 3, nodeId: 2 } };
       const expectedLinks = {};
 
       store.dispatch(Actions.deleteNode(1));
 
-      const projectStore = Selectors.Project.getProject(store.getState());
+      const projectState = Selectors.Project.getProject(store.getState());
+      const patchState = Selectors.Project.getPatchById(projectState, patchId);
 
-      chai.expect(projectStore.nodes).to.deep.equal(expectedNodes);
-      chai.expect(projectStore.pins).to.deep.equal(expectedPins);
-      chai.expect(projectStore.links).to.deep.equal(expectedLinks);
+      chai.expect(patchState.nodes).to.deep.equal(expectedNodes);
+      chai.expect(patchState.pins).to.deep.equal(expectedPins);
+      chai.expect(patchState.links).to.deep.equal(expectedLinks);
     });
 
     it('should be undoable and redoable', () => {
+      const patchId = 1;
+      const initialProjectState = Selectors.Project.getProject(store.getState());
+      const initialPatchState = Selectors.Project.getPatchById(initialProjectState, patchId);
+
       store.dispatch(Actions.deleteNode(1));
-      const updatedStore = Selectors.Project.getProject(store.getState());
-      store.dispatch(ReduxUndoActions.undo());
-      const undoedStore = Selectors.Project.getProject(store.getState());
-      store.dispatch(ReduxUndoActions.redo());
-      const redoedStore = Selectors.Project.getProject(store.getState());
-      chai.expect(undoedStore).to.deep.equal(mockState.project);
-      chai.expect(redoedStore).to.deep.equal(updatedStore);
+      const updatedProjectState = Selectors.Project.getProject(store.getState());
+      const updatedPatchState = Selectors.Project.getPatchById(updatedProjectState, patchId);
+
+      store.dispatch(Actions.undoPatch(patchId));
+      const undoedProjectState = Selectors.Project.getProject(store.getState());
+      const undoedPatchState = Selectors.Project.getPatchById(undoedProjectState, patchId);
+
+      store.dispatch(Actions.redoPatch(patchId));
+      const redoedProjectState = Selectors.Project.getProject(store.getState());
+      const redoedPatchState = Selectors.Project.getPatchById(redoedProjectState, patchId);
+
+      chai.expect(undoedPatchState).to.deep.equal(initialPatchState);
+      chai.expect(redoedPatchState).to.deep.equal(updatedPatchState);
     });
   });
 
