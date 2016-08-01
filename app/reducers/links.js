@@ -3,23 +3,13 @@ import { NODE_DELETE, LINK_ADD, LINK_DELETE } from '../actionTypes';
 import {
   getPinsByNodeIdInPatch,
   getLinksByPinIdInPatch,
+  getLastLinkId,
 } from '../selectors/project';
 import {
   currentPatchHasThatPins,
   currentPatchHasThatNode,
   getCurrentPatchId,
 } from '../utils/reducerUtils';
-
-const nodeIds = (links) =>
-  R.map(link => parseInt(link.id, 10))(R.values(links));
-
-export const lastId = (links) => {
-  const ids = nodeIds(links);
-  // -1 is important because if nodes store doesn't contain nodes then we should return 0 as newId
-  return R.reduce(R.max, 0, ids);
-};
-
-export const newId = (links) => lastId(links) + 1;
 
 export const copyLink = (link) => R.clone(link);
 
@@ -33,7 +23,7 @@ export const links = (state = {}, action, projectState) => {
       newLink = {
         pins: action.payload.pins,
       };
-      newLink.id = newId(state);
+      newLink.id = getLastLinkId(projectState) + 1;
       return R.set(R.lensProp(newLink.id), newLink, state);
     }
     case NODE_DELETE: {
