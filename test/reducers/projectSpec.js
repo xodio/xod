@@ -215,29 +215,24 @@ describe('Project reducer: ', () => {
   });
 
   describe('Moving node', () => {
-    let nodeStore = null;
-
-    beforeEach(() => {
-      nodeStore = {
-        1: {
-          id: 1,
-          position: {
-            x: 0,
-            y: 100,
-          },
+    const nodeStore = {
+      1: {
+        id: 1,
+        position: {
+          x: 0,
+          y: 100,
         },
-      };
-    });
+      },
+    };
 
     it('should move node', () => {
-      const oldState = nodeStore;
+      const nodeId = 1;
       const position = {
         x: 0,
         y: 100,
       };
-      const state = nodes(oldState, Actions.moveNode(lastId(oldState), position));
-
-      const movedNode = state[lastId(oldState)];
+      const state = nodes(nodeStore, Actions.moveNode(nodeId, position));
+      const movedNode = state[nodeId];
 
       chai.expect(movedNode.position).to.deep.equal(position);
     });
