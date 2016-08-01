@@ -1,42 +1,56 @@
+import R from 'ramda';
 import chai from 'chai';
-import { createStore, combineReducers } from 'redux';
-import undoable, { ActionCreators as ReduxUndoActions } from 'redux-undo';
-import projectReducer from '../../app/reducers/project';
-import { newId, lastId, nodes } from '../../app/reducers/nodes';
+import thunk from 'redux-thunk';
+import { createStore, applyMiddleware } from 'redux';
+import generateReducers from '../../app/reducers/';
+import { nodes } from '../../app/reducers/nodes';
 import * as Actions from '../../app/actions';
 import Selectors from '../../app/selectors';
 import * as PIN_DIRECTION from '../../app/constants/pinDirection';
 
-const mockStore = (state) => createStore(combineReducers({
-  project: undoable(projectReducer),
-}), state);
+const mockStore = (state) => createStore(generateReducers([1]), state, applyMiddleware(thunk));
 
 describe('Project reducer: ', () => {
-  describe('Add node', () => {
-    const mockState = {
-      project: {
-        nodes: {},
-        pins: {},
-        nodeTypes: {
-          1: {
-            id: 1,
-            pins: {
-              in: {
-                key: 'in',
-                direction: PIN_DIRECTION.INPUT,
-              },
-              out: {
-                key: 'out',
-                direction: PIN_DIRECTION.OUTPUT,
-              },
-            },
+  const projectShape = {
+    project: {
+      meta: {},
+      patches: {
+        1: {
+          present: {
+            nodes: {},
+            pins: {},
+            links: {},
           },
         },
-        links: {},
-        meta: {},
-        patches: {},
       },
-    };
+      nodeTypes: {},
+      counter: {
+        patches: 1,
+        nodes: 0,
+        pins: 0,
+        links: 0,
+      },
+    },
+  };
+
+  describe('Add node', () => {
+    const mockState = R.assocPath(
+      ['project', 'nodeTypes', 1],
+      {
+        id: 1,
+        pins: {
+          in: {
+            key: 'in',
+            direction: PIN_DIRECTION.INPUT,
+          },
+          out: {
+            key: 'out',
+            direction: PIN_DIRECTION.OUTPUT,
+          },
+        },
+      },
+      projectShape
+    );
 
     let store;
     beforeEach(() => {
@@ -44,6 +58,7 @@ describe('Project reducer: ', () => {
     });
 
     it('should add node and children pins', () => {
+      const patchId = 1;
       const expectedNodes = {
         1: {
           id: 1,
@@ -67,33 +82,34 @@ describe('Project reducer: ', () => {
           key: 'out',
         },
       };
+      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }, patchId));
 
-      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }));
+      const projectState = Selectors.Project.getProject(store.getState());
+      const patchState = Selectors.Project.getPatchById(projectState, patchId);
 
-      const projectStore = Selectors.Project.getProject(store.getState());
-
-      chai.expect(projectStore.nodes).to.deep.equal(expectedNodes);
-      chai.expect(projectStore.pins).to.deep.equal(expectedPins);
-    });
-
-    it('should set appropriate id for a new node', () => {
-      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }));
-      const projectStore = Selectors.Project.getProject(store.getState());
-
-      chai.assert(
-        lastId(projectStore.nodes) === newId(mockState.project.nodes)
-      );
+      chai.expect(patchState.nodes).to.deep.equal(expectedNodes);
+      chai.expect(patchState.pins).to.deep.equal(expectedPins);
     });
 
     it('should be undoable and redoable', () => {
-      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }));
-      const updatedStore = Selectors.Project.getProject(store.getState());
-      store.dispatch(ReduxUndoActions.undo());
-      const undoedStore = Selectors.Project.getProject(store.getState());
-      store.dispatch(ReduxUndoActions.redo());
-      const redoedStore = Selectors.Project.getProject(store.getState());
-      chai.expect(undoedStore).to.deep.equal(mockState.project);
-      chai.expect(redoedStore).to.deep.equal(updatedStore);
+      const patchId = 1;
+      const initialProjectState = Selectors.Project.getProject(store.getState());
+      const initialPatchState = Selectors.Project.getPatchById(initialProjectState, patchId);
+
+      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }, patchId));
+      const updatedProjectState = Selectors.Project.getProject(store.getState());
+      const updatedPatchState = Selectors.Project.getPatchById(updatedProjectState, patchId);
+
+      store.dispatch(Actions.undoPatch(patchId));
+      const undoedProjectState = Selectors.Project.getProject(store.getState());
+      const undoedPatchState = Selectors.Project.getPatchById(undoedProjectState, patchId);
+
+      store.dispatch(Actions.redoPatch(patchId));
+      const redoedProjectState = Selectors.Project.getProject(store.getState());
+      const redoedPatchState = Selectors.Project.getPatchById(redoedProjectState, patchId);
+
+      chai.expect(undoedPatchState).to.deep.equal(initialPatchState);
+      chai.expect(redoedPatchState).to.deep.equal(updatedPatchState);
     });
   });
 
