@@ -1,19 +1,9 @@
 import R from 'ramda';
 import { NODE_ADD, NODE_DELETE } from '../actionTypes';
-import {
-  getLastNodeId,
-  getLastPinId,
-  getPinsByNodeIdInPatch,
-  getNodeTypes,
-} from '../selectors/project';
-import {
-  isActionForCurrentPatch,
-  currentPatchHasThatNode,
-  getCurrentPatchId,
-} from '../utils/reducerUtils';
+import { forThisPatch, isPinsInThisPatch } from '../utils/actions';
 
-const createPins = (state, nodeId, pins, projectState) => {
-  let lastId = getLastPinId(projectState);
+const createPins = (state, nodeId, pins, lastPinId) => {
+  let lastId = R.clone(lastPinId);
 
   return R.pipe(
     R.values,
@@ -33,28 +23,20 @@ const createPins = (state, nodeId, pins, projectState) => {
   )(pins);
 };
 
-export const pins = (state = {}, action, projectState) => {
+export const pins = (state = {}, action, patchId) => {
   switch (action.type) {
     case NODE_ADD: {
-      if (!isActionForCurrentPatch(state, action, projectState)) { return state; }
+      if (!forThisPatch(action, patchId)) { return state; }
 
-      const nodeType = getNodeTypes(projectState)[action.payload.typeId];
-      const nodeId = getLastNodeId(projectState) + 1;
-      return createPins(state, nodeId, nodeType.pins, projectState);
+      const nodeType = action.payload.nodeType;
+      const nodeId = action.payload.newNodeId;
+      const lastPinId = action.payload.lastPinId;
+
+      return createPins(state, nodeId, nodeType.pins, lastPinId);
     }
     case NODE_DELETE: {
-      if (!currentPatchHasThatNode(state, action.payload.id, projectState)) { return state; }
-
-      const patchId = getCurrentPatchId(state, projectState);
-      const pinsToDelete = getPinsByNodeIdInPatch(
-        projectState,
-        {
-          id: action.payload.id,
-          patchId,
-        }
-      );
-      const pinIds = R.keys(pinsToDelete);
-      return R.omit(pinIds, state);
+      if (!isPinsInThisPatch(state, action.payload.pins)) { return state; }
+      return R.omit(action.payload.pins, state);
     }
     default:
       return state;

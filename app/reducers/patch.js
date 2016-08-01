@@ -4,15 +4,16 @@ import { pins } from './pins';
 import { links } from './links';
 import { nodes } from './nodes';
 
-export const patchReducer = (state = {}, action, projectState) => {
-  const reducers = {
-    links,
-    pins,
-    nodes,
-  };
+export const patchReducer = (id) => {
+  const patchId = id;
 
-  if (action.type === 'TEST') {
-    return JSON.parse(action.payload);
-  }
-  return applyReducers(reducers, state, action, projectState);
+  return (state = {}, action) => {
+    const reducers = {
+      links,
+      pins,
+      nodes,
+    };
+
+    return applyReducers(reducers, state, action, patchId);
+  };
 };

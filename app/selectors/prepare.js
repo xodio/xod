@@ -1,0 +1,68 @@
+import R from 'ramda';
+import {
+  getNodeTypes,
+  getLastNodeId,
+  getLastPinId,
+  getLastLinkId,
+  getPatchByNodeId,
+  getPatchByPinId,
+  getPinsByNodeIdInPatch,
+  getLinksByPinIdInPatch,
+} from './project';
+
+export const addNode = (projectState, typeId, position) => {
+  const newNodeId = getLastNodeId(projectState) + 1;
+  const nodeType = getNodeTypes(projectState)[typeId];
+  const lastPinId = getLastPinId(projectState);
+
+  return {
+    typeId,
+    position,
+    nodeType,
+    newNodeId,
+    lastPinId,
+  };
+};
+
+export const deleteNode = (projectState, id) => {
+  const patch = getPatchByNodeId(projectState, id);
+  const pins = getPinsByNodeIdInPatch(projectState, {
+    patchId: patch.id,
+    id,
+  });
+  const links = R.pipe(
+    R.values,
+    R.reduce((prev, c) => {
+      const pinLinks = getLinksByPinIdInPatch(
+        projectState,
+        {
+          patchId: patch.id,
+          pinIds: [c.id],
+        }
+      );
+      return R.concat(prev, R.keys(pinLinks));
+    }, [])
+  )(pins);
+
+  return {
+    id,
+    pins: R.keys(pins),
+    links,
+  };
+};
+
+export const addLink = (projectState, pins) => {
+  const patch = getPatchByPinId(projectState, pins[0]);
+  const patchId = patch.id;
+  const newId = getLastLinkId(projectState) + 1;
+
+  return {
+    payload: {
+      newId,
+      pins,
+    },
+    meta: {
+      patchId,
+    },
+  };
+};

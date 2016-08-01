@@ -16,9 +16,9 @@ export const patches = (patchIds) => {
         redoType: getPatchRedoType(id),
         clearHistoryType: getPatchClearHistoryType(id),
       };
-      return R.assoc(id, undoable(patchReducer, undoConfig), p);
+      return R.assoc(id, undoable(patchReducer(id), undoConfig), p);
     }, {})
   )(patchIds);
 
-  return (state = {}, action, projectState) => applyReducers(reducers, state, action, projectState);
+  return (state = {}, action) => applyReducers(reducers, state, action);
 };

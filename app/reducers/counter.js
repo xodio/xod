@@ -1,11 +1,10 @@
 import R from 'ramda';
 import { NODE_ADD, LINK_ADD } from '../actionTypes';
-import { getNodeTypes } from '../selectors/project';
 
-export const counterReducer = (state = {}, action, projectState) => {
+export const counterReducer = (state = {}, action) => {
   switch (action.type) {
     case NODE_ADD: {
-      const nodeType = getNodeTypes(projectState)[action.payload.typeId];
+      const nodeType = action.payload.nodeType;
       const pinsCount = R.pipe(
         R.values,
         R.length

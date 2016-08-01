@@ -1,58 +1,26 @@
 import R from 'ramda';
 import { NODE_DELETE, LINK_ADD, LINK_DELETE } from '../actionTypes';
-import {
-  getPinsByNodeIdInPatch,
-  getLinksByPinIdInPatch,
-  getLastLinkId,
-} from '../selectors/project';
-import {
-  currentPatchHasThatPins,
-  currentPatchHasThatNode,
-  getCurrentPatchId,
-} from '../utils/reducerUtils';
+import { forThisPatch, isLinksInThisPatch } from '../utils/actions';
 
 export const copyLink = (link) => R.clone(link);
 
-export const links = (state = {}, action, projectState) => {
-  let newLink = null;
-
+export const links = (state = {}, action, patchId) => {
   switch (action.type) {
     case LINK_ADD: {
-      if (!currentPatchHasThatPins(state, action.payload.pins, projectState)) { return state; }
+      if (!forThisPatch(action, patchId)) { return state; }
 
-      newLink = {
+      const newLink = {
+        id: action.payload.newId,
         pins: action.payload.pins,
       };
-      newLink.id = getLastLinkId(projectState) + 1;
       return R.set(R.lensProp(newLink.id), newLink, state);
     }
     case NODE_DELETE: {
-      if (!currentPatchHasThatNode(state, action.payload.id, projectState)) { return state; }
-
-      const patchId = getCurrentPatchId(state, projectState);
-      const pinsToDelete = getPinsByNodeIdInPatch(
-        projectState,
-        {
-          id: action.payload.id,
-          patchId,
-        }
-      );
-      const linksToDelete = R.pipe(
-        R.values,
-        R.reduce((prev, c) => {
-          const pinLinks = getLinksByPinIdInPatch(
-            projectState,
-            {
-              pinIds: [c.id],
-              patchId,
-            }
-          );
-          return R.concat(prev, R.keys(pinLinks));
-        }, [])
-      )(pinsToDelete);
-      return R.omit(linksToDelete, state);
+      if (!isLinksInThisPatch(state, action.payload.links)) { return state; }
+      return R.omit(action.payload.links, state);
     }
     case LINK_DELETE:
+      if (!isLinksInThisPatch(state, [action.payload.id.toString()])) { return state; }
       return R.omit([action.payload.id.toString()], state);
     default:
       return state;

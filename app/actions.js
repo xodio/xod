@@ -45,30 +45,39 @@ export const dragNode = (id, position) => ({
   },
 });
 
-export const addNode = (typeId, position, curPatchId) => ({
-  type: ActionType.NODE_ADD,
-  payload: {
-    typeId,
-    position,
-  },
-  meta: {
-    patchId: curPatchId,
-  },
-});
+export const addNode = (typeId, position, curPatchId) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.addNode(projectState, typeId, position);
 
-export const deleteNode = (id) => ({
-  type: ActionType.NODE_DELETE,
-  payload: {
-    id,
-  },
-});
+  dispatch({
+    type: ActionType.NODE_ADD,
+    payload: preparedData,
+    meta: {
+      patchId: curPatchId,
+    },
+  });
+};
 
-export const addLink = (pins) => ({
-  type: ActionType.LINK_ADD,
-  payload: {
-    pins,
-  },
-});
+export const deleteNode = (id) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.deleteNode(projectState, id);
+
+  dispatch({
+    type: ActionType.NODE_DELETE,
+    payload: preparedData,
+  });
+};
+
+export const addLink = (pins) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.addLink(projectState, pins);
+
+  dispatch({
+    type: ActionType.LINK_ADD,
+    payload: preparedData.payload,
+    meta: preparedData.meta,
+  });
+};
 
 export const deleteLink = (id) => ({
   type: ActionType.LINK_DELETE,
