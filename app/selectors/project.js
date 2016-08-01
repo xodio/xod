@@ -131,6 +131,57 @@ export const getValidPins = (pins, links, forPinId) => {
   )(pins);
 };
 
+export const getPatchById = (projectState, id) => R.view(
+  R.lensPath([
+    'patches',
+    id,
+    'present',
+  ])
+)(projectState);
+
+/*
+  Counter selectors
+*/
+export const getLastPatchId = R.pipe(
+  getProject,
+  R.view(R.lensPath([
+    'counter',
+    'patches',
+  ]))
+);
+
+export const getLastNodeId = R.pipe(
+  getProject,
+  R.view(R.lensPath([
+    'counter',
+    'nodes',
+  ]))
+);
+
+export const getLastPinId = R.pipe(
+  getProject,
+  R.view(R.lensPath([
+    'counter',
+    'pins',
+  ]))
+);
+
+export const getLastLinkId = R.pipe(
+  getProject,
+  R.view(R.lensPath([
+    'counter',
+    'links',
+  ]))
+);
+
+export const getLastNodeTypeId = R.pipe(
+  getProject,
+  R.view(R.lensPath([
+    'counter',
+    'nodeTypes',
+  ]))
+);
+
 /*
   NodeType selectors
 */
@@ -154,13 +205,6 @@ export const getNodes = R.pipe(
   R.prop('nodes')
 );
 
-export const getLastNodeId = (state) => R.pipe(
-  getNodes,
-  R.values,
-  R.map(node => parseInt(node.id, 10)),
-  R.reduce(R.max, 0)
-)(state);
-
 export const getNodeById = (state, props) => R.pipe(
   getNodes,
   R.filter((node) => node.id === props.id),
@@ -181,6 +225,16 @@ export const getPinsByNodeId = (state, props) => R.pipe(
   getPins,
   R.filter((pin) => pin.nodeId === props.id)
 )(state, props);
+
+export const getPinsByNodeIdInPatch = (state, props) => {
+  const patchId = R.prop('patchId', props);
+  if (!patchId) { return {}; }
+
+  return R.pipe(
+    R.view(R.lensPath(['patches', patchId, 'present', 'pins'])),
+    R.filter(R.propEq('nodeId', props.id))
+  )(state);
+};
 
 export const getPinsByIds = (state, props) => R.pipe(
   getPins,
@@ -293,6 +347,21 @@ export const getLinksByPinId = (state, props) => R.pipe(
   ),
   R.values
 )(state, props);
+
+export const getLinksByPinIdInPatch = (state, props) => {
+  const patchId = R.prop('patchId', props);
+  if (!patchId) { return {}; }
+
+  return R.pipe(
+    R.view(R.lensPath(['patches', patchId, 'present', 'links'])),
+    R.filter(
+      (link) => (
+        props.pinIds.indexOf(link.pins[0]) !== -1 ||
+        props.pinIds.indexOf(link.pins[1]) !== -1
+      )
+    )
+  )(state);
+};
 
 export const validateLink = (state, pinIds) => {
   const pins = getPreparedPins(state);

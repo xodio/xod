@@ -324,6 +324,13 @@ const initialState = {
         },
       },
     },
+    counter: {
+      patches: 2,
+      nodes: 6,
+      pins: 10,
+      links: 2,
+      nodeTypes: 9,
+    },
   },
   editor: {
     currentPatchId: 1,

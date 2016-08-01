@@ -1,6 +1,6 @@
 import R from 'ramda';
 import undoable from 'redux-undo';
-import { patchReducer } from './patchReducer';
+import { patchReducer } from './patch';
 import applyReducers from '../utils/applyReducers';
 import { getPatchUndoType, getPatchRedoType, getPatchClearHistoryType } from '../actionTypes';
 

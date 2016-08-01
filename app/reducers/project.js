@@ -4,12 +4,14 @@ import { PROJECT_LOAD_DATA } from '../actionTypes';
 import { meta } from './meta';
 import { patches } from './patches';
 import { nodeTypes } from './nodetypes';
+import { counterReducer } from './counter';
 
 export default (patchIds) => {
   const reducers = {
     meta,
     patches: patches(patchIds),
     nodeTypes,
+    counter: counterReducer,
   };
 
   return (state = {}, action) => {

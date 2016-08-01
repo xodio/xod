@@ -1,21 +1,19 @@
 import R from 'ramda';
 import { NODE_ADD, NODE_DELETE } from '../actionTypes';
-import { getLastNodeId, getPinsByNodeId, getNodeTypes } from '../selectors/project';
+import {
+  getLastNodeId,
+  getLastPinId,
+  getPinsByNodeIdInPatch,
+  getNodeTypes,
+} from '../selectors/project';
 import {
   isActionForCurrentPatch,
+  currentPatchHasThatNode,
+  getCurrentPatchId,
 } from '../utils/reducerUtils';
 
-const getPinIds = (state) =>
-  R.map(pin => parseInt(pin.id, 10))(R.values(state));
-
-export const getLastId = (state) => {
-  const ids = getPinIds(state);
-  // -1 is important because if nodes store doesn't contain nodes then we should return 0 as newId
-  return R.reduce(R.max, 0, ids);
-};
-
-const createPins = (state, nodeId, pins) => {
-  let lastId = getLastId(state);
+const createPins = (state, nodeId, pins, projectState) => {
+  let lastId = getLastPinId(projectState);
 
   return R.pipe(
     R.values,
@@ -42,11 +40,21 @@ export const pins = (state = {}, action, projectState) => {
 
       const nodeType = getNodeTypes(projectState)[action.payload.typeId];
       const nodeId = getLastNodeId(projectState) + 1;
-      return createPins(state, nodeId, nodeType.pins);
+      return createPins(state, nodeId, nodeType.pins, projectState);
     }
     case NODE_DELETE: {
-      const pinsToDelete = getPinsByNodeId(projectState, { id: action.payload.id });
-      return R.omit(R.keys(pinsToDelete), state);
+      if (!currentPatchHasThatNode(state, action.payload.id, projectState)) { return state; }
+
+      const patchId = getCurrentPatchId(state, projectState);
+      const pinsToDelete = getPinsByNodeIdInPatch(
+        projectState,
+        {
+          id: action.payload.id,
+          patchId,
+        }
+      );
+      const pinIds = R.keys(pinsToDelete);
+      return R.omit(pinIds, state);
     }
     default:
       return state;

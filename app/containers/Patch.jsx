@@ -125,6 +125,7 @@ class Patch extends React.Component {
     const hasSelection = selection.length > 0;
     const isLinking = this.props.linkingPin !== null;
     const isNotInput = !isInput(event);
+
     if (isNotInput) {
       if (
         hasSelection &&

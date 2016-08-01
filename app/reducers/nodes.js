@@ -1,21 +1,10 @@
 import { NODE_MOVE, NODE_ADD, NODE_DELETE, NODE_UPDATE_PROPERTY } from '../actionTypes';
 import R from 'ramda';
-import { getNodeTypes } from '../selectors/project';
+import { getNodeTypes, getLastNodeId } from '../selectors/project';
 import {
   isActionForCurrentPatch,
   currentStateHasThatNode,
 } from '../utils/reducerUtils';
-
-const nodeIds = (nodes) =>
-    R.map(node => parseInt(node.id, 10))(R.values(nodes));
-
-export const lastId = (nodes) => {
-  const ids = nodeIds(nodes);
-  // -1 is important because if nodes store doesn't contain nodes then we should return 0 as newId
-  return R.reduce(R.max, 0, ids);
-};
-
-export const newId = (nodes) => lastId(nodes) + 1;
 
 export const copyNode = (node) => R.clone(node);
 
@@ -47,7 +36,7 @@ export const nodes = (state = {}, action, projectState) => {
         R.reduce((p, prop) => R.assoc(prop.key, prop.defaultValue, p), {})
       )(nodeType);
 
-      newNodeId = newId(state);
+      newNodeId = getLastNodeId(projectState) + 1;
       newNode = R.set(R.lensProp('id'), newNodeId, {
         typeId: action.payload.typeId,
         position: action.payload.position,

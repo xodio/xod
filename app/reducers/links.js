@@ -1,9 +1,13 @@
 import R from 'ramda';
 import { NODE_DELETE, LINK_ADD, LINK_DELETE } from '../actionTypes';
-import { getPinsByNodeId, getLinksByPinId } from '../selectors/project';
+import {
+  getPinsByNodeIdInPatch,
+  getLinksByPinIdInPatch,
+} from '../selectors/project';
 import {
   currentPatchHasThatPins,
   currentPatchHasThatNode,
+  getCurrentPatchId,
 } from '../utils/reducerUtils';
 
 const nodeIds = (links) =>
@@ -35,14 +39,26 @@ export const links = (state = {}, action, projectState) => {
     case NODE_DELETE: {
       if (!currentPatchHasThatNode(state, action.payload.id, projectState)) { return state; }
 
-      const pinsToDelete = getPinsByNodeId(projectState, { id: action.payload.id });
+      const patchId = getCurrentPatchId(state, projectState);
+      const pinsToDelete = getPinsByNodeIdInPatch(
+        projectState,
+        {
+          id: action.payload.id,
+          patchId,
+        }
+      );
       const linksToDelete = R.pipe(
         R.values,
         R.reduce((prev, c) => {
-          const pinLinks = getLinksByPinId(projectState, { pinIds: [c.id] });
-          return R.concat(prev, pinLinks);
-        }, []),
-        R.map((pin) => String(pin.id))
+          const pinLinks = getLinksByPinIdInPatch(
+            projectState,
+            {
+              pinIds: [c.id],
+              patchId,
+            }
+          );
+          return R.concat(prev, R.keys(pinLinks));
+        }, [])
       )(pinsToDelete);
       return R.omit(linksToDelete, state);
     }
