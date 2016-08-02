@@ -14,7 +14,7 @@ class ProjectBrowser extends React.Component {
   }
 
   onTreeChange(newTree) {
-    console.log('tree changed!', newTree);
+    console.log('tree changed:', Selectors.Project.parseTreeView(newTree));
   }
 
   render() {

@@ -651,4 +651,41 @@ export const getTreeView = (state) => {
   };
 };
 
-// export const parseTreeView = (state) => {};
+export const parseTreeView = (tree) => {
+  const resultShape = {
+    folders: [],
+    patches: [],
+  };
+  const parseTree = (treePart, parentId) => {
+    const partResult = R.clone(resultShape);
+    if (treePart.leaf) {
+      return R.assoc('patches', R.append({
+        id: treePart.id,
+        folderId: parentId,
+      }, partResult.patches), partResult);
+    }
+
+    if (treePart.id) {
+      partResult.folders = R.append({
+        id: treePart.id,
+        parentId,
+      }, partResult.folders);
+    }
+
+    if (treePart.children && treePart.children.length > 0) {
+      R.pipe(
+        R.values,
+        R.forEach(child => {
+          const chilParentId = treePart.id || null;
+          const childResult = parseTree(child, chilParentId);
+          partResult.folders = R.concat(partResult.folders, childResult.folders);
+          partResult.patches = R.concat(partResult.patches, childResult.patches);
+        })
+      )(treePart.children);
+    }
+
+    return partResult;
+  };
+
+  return parseTree(tree, null);
+};
