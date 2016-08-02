@@ -56,6 +56,38 @@ export const deleteNode = (projectState, id) => {
   };
 };
 
+export const moveNode = (projectState, id, position) => {
+  const patchId = getPatchByNodeId(projectState, id).id;
+
+  return {
+    payload: {
+      id,
+      position,
+    },
+    meta: {
+      patchId,
+    },
+  };
+};
+
+export const dragNode = (projectState, id, position) =>
+  R.assocPath(['meta', 'skipHistory'], true, moveNode(projectState, id, position));
+
+export const updateNodeProperty = (projectState, nodeId, propKey, propValue) => {
+  const patchId = getPatchByNodeId(projectState, nodeId).id;
+
+  return {
+    payload: {
+      id: nodeId,
+      key: propKey,
+      value: propValue,
+    },
+    meta: {
+      patchId,
+    },
+  };
+};
+
 export const addLink = (projectState, pins) => {
   const patch = getPatchByPinId(projectState, pins[0]);
   const patchId = patch.id;

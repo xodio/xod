@@ -26,24 +26,27 @@ export const deleteError = (id) => ({
   },
 });
 
-export const moveNode = (id, position) => ({
-  type: ActionType.NODE_MOVE,
-  payload: {
-    id,
-    position,
-  },
-});
+export const moveNode = (id, position) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.moveNode(projectState, id, position);
 
-export const dragNode = (id, position) => ({
-  type: ActionType.NODE_MOVE,
-  payload: {
-    id,
-    position,
-  },
-  meta: {
-    skipHistory: true,
-  },
-});
+  dispatch({
+    type: ActionType.NODE_MOVE,
+    payload: preparedData.payload,
+    meta: preparedData.meta,
+  });
+};
+
+export const dragNode = (id, position) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.dragNode(projectState, id, position);
+
+  dispatch({
+    type: ActionType.NODE_MOVE,
+    payload: preparedData.payload,
+    meta: preparedData.meta,
+  });
+};
 
 export const addNode = (typeId, position, curPatchId) => (dispatch, getState) => {
   const projectState = Selectors.Project.getProject(getState());
@@ -209,14 +212,21 @@ export const setSelectedNodeType = (id) => ({
   },
 });
 
-export const updateNodeProperty = (nodeId, propKey, propValue) => ({
-  type: ActionType.NODE_UPDATE_PROPERTY,
-  payload: {
-    id: nodeId,
-    key: propKey,
-    value: propValue,
-  },
-});
+export const updateNodeProperty = (nodeId, propKey, propValue) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.updateNodeProperty(
+    projectState,
+    nodeId,
+    propKey,
+    propValue
+  );
+
+  dispatch({
+    type: ActionType.NODE_UPDATE_PROPERTY,
+    payload: preparedData.payload,
+    meta: preparedData.meta,
+  });
+};
 
 export const loadProjectFromJSON = (json) => ({
   type: ActionType.PROJECT_LOAD_DATA,
