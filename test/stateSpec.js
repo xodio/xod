@@ -15,15 +15,6 @@ describe('Initial state', () => {
   });
 
   describe('should have reducers inside project:', () => {
-    it('nodes', () => {
-      chai.expect(initialState.project).to.have.any.keys(['nodes']);
-    });
-    it('pins', () => {
-      chai.expect(initialState.project).to.have.any.keys(['pins']);
-    });
-    it('links', () => {
-      chai.expect(initialState.project).to.have.any.keys(['links']);
-    });
     it('nodeTypes', () => {
       chai.expect(initialState.project).to.have.any.keys(['nodeTypes']);
     });
@@ -32,6 +23,24 @@ describe('Initial state', () => {
     });
     it('patches', () => {
       chai.expect(initialState.project).to.have.any.keys(['patches']);
+    });
+  });
+
+  describe('should have in patches:', () => {
+    it('at least one patch', () => {
+      chai.expect(Object.keys(initialState.project.patches)).to.have.length.above(0);
+    });
+    it('nodes', () => {
+      const patchId = Object.keys(initialState.project.patches)[0];
+      chai.expect(initialState.project.patches[patchId]).to.have.any.keys(['nodes']);
+    });
+    it('pins', () => {
+      const patchId = Object.keys(initialState.project.patches)[0];
+      chai.expect(initialState.project.patches[patchId]).to.have.any.keys(['pins']);
+    });
+    it('links', () => {
+      const patchId = Object.keys(initialState.project.patches)[0];
+      chai.expect(initialState.project.patches[patchId]).to.have.any.keys(['links']);
     });
   });
 });
