@@ -24,7 +24,6 @@ export default class Root extends React.Component {
       const rootState = this.store.getState();
       const statePatches = Selectors.Project.getPatches(rootState);
       if (!R.eqBy(R.prop('id'), statePatches, this.patches)) {
-        // console.log('patches count changed! ', this.patches, ' --> ', statePatches);
         this.store.replaceReducers(this.createReducers(statePatches));
       }
     });
