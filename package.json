@@ -72,6 +72,7 @@
     "redux-devtools-filterable-log-monitor": "^0.6.6",
     "redux-mock-store": "^1.1.1",
     "sass-loader": "^4.0.0",
+    "source-map-support": "^0.4.2",
     "wallaby-webpack": "0.0.22",
     "webpack-dev-server": "^1.14.0",
     "webpack-merge": "^0.14.0",
