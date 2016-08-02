@@ -56,7 +56,7 @@ describe('Project selector', () => {
 
   it('should return valid JSON', () => {
     const json = JSON.parse(Selectors.Project.getJSON(state));
-
-    chai.expect(json).to.have.all.keys(['meta', 'nodes', 'pins', 'links', 'patches', 'nodeTypes']);
+    chai.expect(json).to.have.all.keys(['meta', 'patches', 'nodeTypes', 'counter']);
+    chai.expect(json.patches[1]).to.have.all.keys(['id', 'name', 'nodes', 'pins', 'links']);
   });
 });

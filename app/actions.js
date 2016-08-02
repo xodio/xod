@@ -26,46 +26,62 @@ export const deleteError = (id) => ({
   },
 });
 
-export const moveNode = (id, position) => ({
-  type: ActionType.NODE_MOVE,
-  payload: {
-    id,
-    position,
-  },
-});
+export const moveNode = (id, position) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.moveNode(projectState, id, position);
 
-export const dragNode = (id, position) => ({
-  type: ActionType.NODE_MOVE,
-  payload: {
-    id,
-    position,
-  },
-  meta: {
-    skipHistory: true,
-  },
-});
+  dispatch({
+    type: ActionType.NODE_MOVE,
+    payload: preparedData.payload,
+    meta: preparedData.meta,
+  });
+};
 
-export const addNode = (typeId, position) => ({
-  type: ActionType.NODE_ADD,
-  payload: {
-    typeId,
-    position,
-  },
-});
+export const dragNode = (id, position) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.dragNode(projectState, id, position);
 
-export const deleteNode = (id) => ({
-  type: ActionType.NODE_DELETE,
-  payload: {
-    id,
-  },
-});
+  dispatch({
+    type: ActionType.NODE_MOVE,
+    payload: preparedData.payload,
+    meta: preparedData.meta,
+  });
+};
 
-export const addLink = (pins) => ({
-  type: ActionType.LINK_ADD,
-  payload: {
-    pins,
-  },
-});
+export const addNode = (typeId, position, curPatchId) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.addNode(projectState, typeId, position);
+
+  dispatch({
+    type: ActionType.NODE_ADD,
+    payload: preparedData,
+    meta: {
+      patchId: curPatchId,
+    },
+  });
+};
+
+export const deleteNode = (id) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.deleteNode(projectState, id);
+
+  dispatch({
+    type: ActionType.NODE_DELETE,
+    payload: preparedData.payload,
+    meta: preparedData.meta,
+  });
+};
+
+export const addLink = (pins) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.addLink(projectState, pins);
+
+  dispatch({
+    type: ActionType.LINK_ADD,
+    payload: preparedData.payload,
+    meta: preparedData.meta,
+  });
+};
 
 export const deleteLink = (id) => ({
   type: ActionType.LINK_DELETE,
@@ -137,8 +153,8 @@ export const selectNode = (id) => (dispatch, getState) => {
   return result;
 };
 
-export const addAndSelectNode = (typeId, position) => (dispatch, getState) => {
-  dispatch(addNode(typeId, position));
+export const addAndSelectNode = (typeId, position, curPatchId) => (dispatch, getState) => {
+  dispatch(addNode(typeId, position, curPatchId));
   dispatch(setMode(EDITOR_MODE.DEFAULT));
 
   const newId = Selectors.Project.getLastNodeId(getState());
@@ -196,14 +212,21 @@ export const setSelectedNodeType = (id) => ({
   },
 });
 
-export const updateNodeProperty = (nodeId, propKey, propValue) => ({
-  type: ActionType.NODE_UPDATE_PROPERTY,
-  payload: {
-    id: nodeId,
-    key: propKey,
-    value: propValue,
-  },
-});
+export const updateNodeProperty = (nodeId, propKey, propValue) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.updateNodeProperty(
+    projectState,
+    nodeId,
+    propKey,
+    propValue
+  );
+
+  dispatch({
+    type: ActionType.NODE_UPDATE_PROPERTY,
+    payload: preparedData.payload,
+    meta: preparedData.meta,
+  });
+};
 
 export const loadProjectFromJSON = (json) => ({
   type: ActionType.PROJECT_LOAD_DATA,
@@ -281,3 +304,18 @@ export const deleteSelection = () => (dispatch, getState) => {
     );
   });
 };
+
+export const undoPatch = (id) => ({
+  type: ActionType.getPatchUndoType(id),
+  payload: {},
+});
+
+export const redoPatch = (id) => ({
+  type: ActionType.getPatchRedoType(id),
+  payload: {},
+});
+
+export const clearHistoryPatch = (id) => ({
+  type: ActionType.getPatchClearHistoryType(id),
+  payload: {},
+});

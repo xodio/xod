@@ -66,6 +66,143 @@ export const getMeta = R.pipe(
 );
 
 /*
+  Patch selectors
+*/
+
+export const getPatches = (projectState) => R.pipe(
+  getProject,
+  R.prop('patches')
+)(projectState);
+
+export const getPatchById = (projectState, id) => {
+  const patch = R.view(
+    R.lensPath([
+      'patches',
+      id,
+    ])
+  )(projectState);
+
+  let result = patch;
+  if (R.has('present', patch)) {
+    result = R.prop('present', result);
+  }
+
+  return result;
+};
+
+const getPatchByEntityId = (projectState, id, entityBranch) => R.pipe(
+  R.prop('patches'),
+  R.keys,
+  R.map(patchId => getPatchById(projectState, patchId)),
+  R.filter(patch => R.has(id, R.prop(entityBranch, patch))),
+  R.head
+)(projectState);
+
+export const getPatchByNodeId = (projectState, nodeId) =>
+  getPatchByEntityId(projectState, nodeId, 'nodes');
+
+export const getPatchByPinId = (projectState, pinId) =>
+  getPatchByEntityId(projectState, pinId, 'pins');
+
+export const getCurrentPatch = (rootState) => {
+  const curPatchId = getCurrentPatchId(rootState);
+  const projectState = getProject(rootState);
+  return getPatchById(projectState, curPatchId);
+};
+
+export const getPatchName = createSelector(
+  getCurrentPatch,
+  (patch) => R.prop('name')(patch)
+);
+
+export const doesPinHaveLinks = (pin, links) => R.pipe(
+  R.values,
+  R.filter((link) => (link.pins[0] === pin.id || link.pins[1] === pin.id)),
+  R.length,
+  R.flip(R.gt)(0)
+)(links);
+
+export const canPinHaveMoreLinks = (pin, links) => (
+  (
+    pin.direction === PIN_DIRECTION.INPUT &&
+    !doesPinHaveLinks(pin, links)
+  ) ||
+  pin.direction === PIN_DIRECTION.OUTPUT
+);
+
+export const getValidPins = (pins, links, forPinId) => {
+  const oPin = pins[forPinId];
+  return R.pipe(
+    R.values,
+    R.reduce((p, pin) => {
+      const samePin = (pin.id === oPin.id);
+      const sameNode = (pin.nodeId === oPin.nodeId);
+      const sameDirection = (pin.direction === oPin.direction);
+      const sameType = (pin.type === oPin.type);
+      const canHaveLink = canPinHaveMoreLinks(pin, links);
+
+      let validness = PIN_VALIDITY.INVALID;
+
+
+      if (!samePin && !sameNode && canHaveLink) {
+        if (!sameDirection) { validness = PIN_VALIDITY.ALMOST; }
+        if (!sameDirection && sameType) { validness = PIN_VALIDITY.VALID; }
+      }
+
+      const result = {
+        id: pin.id,
+        validness,
+      };
+
+      return R.assoc(pin.id, result, p);
+    }, {})
+  )(pins);
+};
+
+/*
+  Counter selectors
+*/
+export const getLastPatchId = R.pipe(
+  getProject,
+  R.view(R.lensPath([
+    'counter',
+    'patches',
+  ]))
+);
+
+export const getLastNodeId = R.pipe(
+  getProject,
+  R.view(R.lensPath([
+    'counter',
+    'nodes',
+  ]))
+);
+
+export const getLastPinId = R.pipe(
+  getProject,
+  R.view(R.lensPath([
+    'counter',
+    'pins',
+  ]))
+);
+
+export const getLastLinkId = R.pipe(
+  getProject,
+  R.view(R.lensPath([
+    'counter',
+    'links',
+  ]))
+);
+
+export const getLastNodeTypeId = R.pipe(
+  getProject,
+  R.view(R.lensPath([
+    'counter',
+    'nodeTypes',
+  ]))
+);
+
+/*
   NodeType selectors
 */
 
@@ -84,16 +221,9 @@ export const getNodeTypeById = (state, id) => R.pipe(
 */
 
 export const getNodes = R.pipe(
-  getProject,
+  getCurrentPatch,
   R.prop('nodes')
 );
-
-export const getLastNodeId = (state) => R.pipe(
-  getNodes,
-  R.values,
-  R.map(node => parseInt(node.id, 10)),
-  R.reduce(R.max, 0)
-)(state);
 
 export const getNodeById = (state, props) => R.pipe(
   getNodes,
@@ -107,7 +237,7 @@ export const getNodeById = (state, props) => R.pipe(
 */
 
 export const getPins = R.pipe(
-  getProject,
+  getCurrentPatch,
   R.prop('pins')
 );
 
@@ -115,6 +245,16 @@ export const getPinsByNodeId = (state, props) => R.pipe(
   getPins,
   R.filter((pin) => pin.nodeId === props.id)
 )(state, props);
+
+export const getPinsByNodeIdInPatch = (projectState, props) => {
+  const patchId = R.prop('patchId', props);
+  if (!patchId) { return {}; }
+
+  return R.pipe(
+    R.view(R.lensPath(['patches', patchId, 'present', 'pins'])),
+    R.filter(R.propEq('nodeId', props.id))
+  )(projectState);
+};
 
 export const getPinsByIds = (state, props) => R.pipe(
   getPins,
@@ -201,27 +341,12 @@ export const getPreparedPins = createSelector(
   )(pins)
 );
 
-export const doesPinHaveLinks = (pin, links) => R.pipe(
-  R.values,
-  R.filter((link) => (link.pins[0] === pin.id || link.pins[1] === pin.id)),
-  R.length,
-  R.flip(R.gt)(0)
-)(links);
-
-export const canPinHaveMoreLinks = (pin, links) => (
-  (
-    pin.direction === PIN_DIRECTION.INPUT &&
-    !doesPinHaveLinks(pin, links)
-  ) ||
-  pin.direction === PIN_DIRECTION.OUTPUT
-);
-
 /*
   Link selectors
 */
 
 export const getLinks = R.pipe(
-  getProject,
+  getCurrentPatch,
   R.prop('links')
 );
 
@@ -242,6 +367,21 @@ export const getLinksByPinId = (state, props) => R.pipe(
   ),
   R.values
 )(state, props);
+
+export const getLinksByPinIdInPatch = (state, props) => {
+  const patchId = R.prop('patchId', props);
+  if (!patchId) { return {}; }
+
+  return R.pipe(
+    R.view(R.lensPath(['patches', patchId, 'present', 'links'])),
+    R.filter(
+      (link) => (
+        props.pinIds.indexOf(link.pins[0]) !== -1 ||
+        props.pinIds.indexOf(link.pins[1]) !== -1
+      )
+    )
+  )(state);
+};
 
 export const validateLink = (state, pinIds) => {
   const pins = getPreparedPins(state);
@@ -308,56 +448,6 @@ export const getPreparedLinks = (state) => {
     }),
     arr2obj
   )(links);
-};
-
-/*
-  Patch selectors
-*/
-
-export const getPatches = R.pipe(
-  getProject,
-  R.prop('patches')
-);
-export const getCurrentPatch = (state) => {
-  const curPatchId = getCurrentPatchId(state);
-  return R.pipe(
-    getPatches,
-    R.prop(curPatchId)
-  )(state);
-};
-
-export const getPatchName = createSelector(
-  getCurrentPatch,
-  (patch) => R.prop('name')(patch)
-);
-
-export const getValidPins = (pins, links, forPinId) => {
-  const oPin = pins[forPinId];
-  return R.pipe(
-    R.values,
-    R.reduce((p, pin) => {
-      const samePin = (pin.id === oPin.id);
-      const sameNode = (pin.nodeId === oPin.nodeId);
-      const sameDirection = (pin.direction === oPin.direction);
-      const sameType = (pin.type === oPin.type);
-      const canHaveLink = canPinHaveMoreLinks(pin, links);
-
-      let validness = PIN_VALIDITY.INVALID;
-
-
-      if (!samePin && !sameNode && canHaveLink) {
-        if (!sameDirection) { validness = PIN_VALIDITY.ALMOST; }
-        if (!sameDirection && sameType) { validness = PIN_VALIDITY.VALID; }
-      }
-
-      const result = {
-        id: pin.id,
-        validness,
-      };
-
-      return R.assoc(pin.id, result, p);
-    }, {})
-  )(pins);
 };
 
 const getNodeLabel = (state, node) => {
