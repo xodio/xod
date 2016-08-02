@@ -40,7 +40,7 @@
     box-sizing: border-box;
 
     &.placeholder {
-      border: 1px dashed $sidebar-selected-background;
+      border: 1px dashed #ccc;
 
       & > * {
         visibility: hidden;
@@ -57,11 +57,14 @@
       padding: 4px 6px;
 
       &.is-active {
-        border-left: 100px solid $sidebar-selected-background;
-        border-right: 100px solid $sidebar-selected-background;
+        border-left: 100px solid #fff;
+        border-right: 100px solid #fff;
         margin-left: -100px;
-        background: $sidebar-selected-background;
+        background: #fff;
         color: #006;
+      }
+      &.is-current {
+        color: red;
       }
     }
     .collapse {
