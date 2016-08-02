@@ -64,7 +64,8 @@ export const deleteNode = (id) => (dispatch, getState) => {
 
   dispatch({
     type: ActionType.NODE_DELETE,
-    payload: preparedData,
+    payload: preparedData.payload,
+    meta: preparedData.meta,
   });
 };
 

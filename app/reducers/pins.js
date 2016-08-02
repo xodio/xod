@@ -1,6 +1,5 @@
 import R from 'ramda';
 import { NODE_ADD, NODE_DELETE } from '../actionTypes';
-import { forThisPatch, isPinsInThisPatch } from '../utils/actions';
 
 const createPins = (state, nodeId, pins, lastPinId) => {
   let lastId = R.clone(lastPinId);
@@ -23,11 +22,9 @@ const createPins = (state, nodeId, pins, lastPinId) => {
   )(pins);
 };
 
-export const pins = (state = {}, action, patchId) => {
+export const pins = (state = {}, action) => {
   switch (action.type) {
     case NODE_ADD: {
-      if (!forThisPatch(action, patchId)) { return state; }
-
       const nodeType = action.payload.nodeType;
       const nodeId = action.payload.newNodeId;
       const lastPinId = action.payload.lastPinId;
@@ -35,7 +32,6 @@ export const pins = (state = {}, action, patchId) => {
       return createPins(state, nodeId, nodeType.pins, lastPinId);
     }
     case NODE_DELETE: {
-      if (!isPinsInThisPatch(state, action.payload.pins)) { return state; }
       return R.omit(action.payload.pins, state);
     }
     default:

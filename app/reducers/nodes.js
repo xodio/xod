@@ -1,6 +1,5 @@
 import { NODE_MOVE, NODE_ADD, NODE_DELETE, NODE_UPDATE_PROPERTY } from '../actionTypes';
 import R from 'ramda';
-import { forThisPatch, isNodeInThisPatch } from '../utils/actions';
 
 export const copyNode = (node) => R.clone(node);
 
@@ -15,7 +14,7 @@ const node = (state, action) => {
   }
 };
 
-export const nodes = (state = {}, action, patchId) => {
+export const nodes = (state = {}, action) => {
   let movedNode = null;
   let newNode = null;
   let newNodeId = 0;
@@ -23,8 +22,6 @@ export const nodes = (state = {}, action, patchId) => {
   switch (action.type) {
 
     case NODE_ADD: {
-      if (!forThisPatch(action, patchId)) { return state; }
-
       const nodeType = action.payload.nodeType;
       const defaultProps = R.pipe(
         R.prop('properties'),
@@ -42,19 +39,13 @@ export const nodes = (state = {}, action, patchId) => {
       return R.set(R.lensProp(newNodeId), newNode, state);
     }
     case NODE_DELETE:
-      if (!isNodeInThisPatch(state, action.payload.id)) { return state; }
-
       return R.omit([action.payload.id.toString()], state);
 
     case NODE_MOVE:
-      if (!isNodeInThisPatch(state, action.payload.id)) { return state; }
-
       movedNode = node(R.prop(action.payload.id, state), action);
       return R.set(R.lensProp(action.payload.id), movedNode, state);
 
     case NODE_UPDATE_PROPERTY:
-      if (!isNodeInThisPatch(state, action.payload.id)) { return state; }
-
       return R.set(
         R.lensPath([
           action.payload.id,

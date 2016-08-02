@@ -45,9 +45,14 @@ export const deleteNode = (projectState, id) => {
   )(pins);
 
   return {
-    id,
-    pins: R.keys(pins),
-    links,
+    payload: {
+      id,
+      pins: R.keys(pins),
+      links,
+    },
+    meta: {
+      patchId: patch.id,
+    },
   };
 };
 
