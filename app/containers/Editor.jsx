@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import { ActionCreators as ReduxUndoActions } from 'redux-undo';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import * as EDITOR_MODE from '../constants/editorModes';
@@ -115,8 +114,8 @@ const mapDispatchToProps = (dispatch) => ({
     setMode: Actions.setMode,
     setSelectedNodeType: Actions.setSelectedNodeType,
     updateNodeProperty: Actions.updateNodeProperty,
-    undo: Actions.undoPatch, // ReduxUndoActions.undo,
-    redo: Actions.redoPatch, // ReduxUndoActions.redo,
+    undo: Actions.undoPatch,
+    redo: Actions.redoPatch,
   }, dispatch),
 });
 
