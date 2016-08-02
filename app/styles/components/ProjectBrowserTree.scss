@@ -1,0 +1,87 @@
+.ProjectBrowserTree {
+  width: $sidebar-width;
+  background: $sidebar-background;
+  color: $sidebar-color;
+  padding: 8px 0;
+
+  box-sizing: border-box;
+
+  * { box-sizing: border-box; }
+
+  .f-no-select {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  .m-tree {
+    position: relative;
+    overflow: hidden;
+    font-family: $font-family-normal;
+    font-size: $font-size-m;
+
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  .m-draggable {
+    position: absolute;
+    opacity: 0.8;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  .m-node {
+    box-sizing: border-box;
+
+    &.placeholder {
+      border: 1px dashed $sidebar-selected-background;
+
+      & > * {
+        visibility: hidden;
+      }
+    }
+
+    .inner {
+      position: relative;
+      cursor: pointer;
+      padding-left: 12px;
+    }
+    .node {
+      display: block;
+      padding: 4px 6px;
+
+      &.is-active {
+        border-left: 100px solid $sidebar-selected-background;
+        border-right: 100px solid $sidebar-selected-background;
+        margin-left: -100px;
+        background: $sidebar-selected-background;
+        color: #006;
+      }
+    }
+    .collapse {
+      position: absolute;
+      left: 0;
+      padding: 2px 6px;
+      cursor: pointer;
+    }
+    .children {
+      display: block;
+    }
+
+    .caret-down:before {
+      font-size: $font-size-m;
+      content: '\25BE';
+    }
+    .caret-right:before {
+      font-size: $font-size-m;
+      content: '\25B8';
+    }
+  }
+
+}

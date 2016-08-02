@@ -14,6 +14,7 @@
   'base/base';
 
 @import
+  'components/Sidebar',
   'components/PatchWrapper',
   'components/PatchSVG',
   'components/BackgroundLayer',
@@ -25,4 +26,5 @@
   'components/Inspector',
   'components/SnackBarList',
   'components/SnackBarError',
+  'components/ProjectBrowserTree',
   'components/CreateNodeWidget';

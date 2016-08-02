@@ -8,6 +8,7 @@ import * as KEYCODE from '../constants/keycodes';
 import { isInput } from '../utils/browser';
 import Patch from './Patch';
 import EventListener from 'react-event-listener';
+import Sidebar from '../components/Sidebar';
 import Inspector from '../components/Inspector';
 import ProjectBrowser from './ProjectBrowser';
 
@@ -74,13 +75,15 @@ class Editor extends React.Component {
     return (
       <div>
         <EventListener target={document} onKeyDown={this.onKeyDown} />
-        <ProjectBrowser />
-        <Inspector
-          selection={this.props.selection}
-          nodes={this.props.nodes}
-          nodeTypes={this.props.nodeTypes}
-          onPropUpdate={this.onPropUpdate}
-        />
+        <Sidebar>
+          <ProjectBrowser />
+          <Inspector
+            selection={this.props.selection}
+            nodes={this.props.nodes}
+            nodeTypes={this.props.nodeTypes}
+            onPropUpdate={this.onPropUpdate}
+          />
+        </Sidebar>
         <Patch
           size={this.patchSize}
         />

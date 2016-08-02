@@ -596,3 +596,59 @@ export const getLinkGhost = (state) => {
     to: { x: 0, y: 0 },
   };
 };
+
+/*
+  Folders
+*/
+export const getFolders = R.pipe(
+  getProject,
+  R.prop('folders')
+);
+
+/*
+  Tree view (get / parse)
+*/
+export const getTreeView = (state) => {
+  const makeTree = (folders, patches, parentId) => {
+    const foldersAtLevel = R.pipe(
+      R.values,
+      R.filter(R.propEq('parentId', parentId))
+    )(folders);
+    const patchesAtLevel = R.pipe(
+      R.values,
+      R.map(R.prop('present')),
+      R.filter(R.propEq('folderId', parentId))
+    )(patches);
+
+    return R.concat(
+      R.map(
+        folder => ({
+          id: folder.id,
+          module: folder.name,
+          collapsed: true,
+          children: makeTree(folders, patches, folder.id),
+        }),
+        foldersAtLevel
+      ),
+      R.map(
+        patch => ({
+          id: patch.id,
+          module: patch.name,
+          leaf: true,
+        }),
+        patchesAtLevel
+      )
+    );
+  };
+
+  const folders = getFolders(state);
+  const patches = getPatches(state);
+
+  return {
+    module: 'Project',
+    collapsed: false,
+    children: makeTree(folders, patches, null),
+  };
+};
+
+// export const parseTreeView = (state) => {};
