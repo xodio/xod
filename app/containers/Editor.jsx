@@ -9,6 +9,7 @@ import { isInput } from '../utils/browser';
 import Patch from './Patch';
 import EventListener from 'react-event-listener';
 import Inspector from '../components/Inspector';
+import ProjectBrowser from './ProjectBrowser';
 
 class Editor extends React.Component {
   constructor(props) {
@@ -73,6 +74,7 @@ class Editor extends React.Component {
     return (
       <div>
         <EventListener target={document} onKeyDown={this.onKeyDown} />
+        <ProjectBrowser />
         <Inspector
           selection={this.props.selection}
           nodes={this.props.nodes}
