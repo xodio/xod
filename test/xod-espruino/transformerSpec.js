@@ -1,6 +1,6 @@
 
 import { expect } from 'chai';
-import { transform } from 'xod-espruino/transformer';
+import transform from 'xod-espruino/transformer';
 
 describe('Transformer', () => {
   it('should transform empty json to empty node list', () => {

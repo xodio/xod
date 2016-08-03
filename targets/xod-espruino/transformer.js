@@ -7,7 +7,7 @@ import * as PIN_TYPE from 'constants/pinType';
   * Transforms JSON data as it seen it *.xod files to
   * a shape expected by the runtime.
   */
-export function transform(project) {
+export default function transform(project) {
   const nodes = () => R.propOr({}, 'nodes', project);
 
   const pins = () => R.propOr({}, 'pins', project);
