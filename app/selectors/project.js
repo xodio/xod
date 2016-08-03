@@ -609,7 +609,23 @@ export const getFolders = R.pipe(
   Tree view (get / parse)
 */
 export const getTreeView = (state) => {
-  const makeTree = (folders, patches, parentId) => {
+  const getFoldersPath = (folders, folderId) => {
+    const result = [];
+
+    if (folderId === null) { return result; }
+
+    const parentFolder = folders[folderId];
+    result.push(parentFolder.id);
+
+    if (parentFolder.parentId) {
+      result.concat(getFoldersPath(folders, parentFolder.parentId));
+    }
+
+    return result;
+  };
+
+  const makeTree = (folders, patches, parentId, curPatchPath) => {
+    const path = curPatchPath || [];
     const foldersAtLevel = R.pipe(
       R.values,
       R.filter(R.propEq('parentId', parentId))
@@ -625,7 +641,7 @@ export const getTreeView = (state) => {
         folder => ({
           id: folder.id,
           module: folder.name,
-          collapsed: true,
+          collapsed: (path.indexOf(folder.id) === -1),
           children: makeTree(folders, patches, folder.id),
         }),
         foldersAtLevel
@@ -643,11 +659,15 @@ export const getTreeView = (state) => {
 
   const folders = getFolders(state);
   const patches = getPatches(state);
+  const curPatch = getCurrentPatch(state);
+  const curPatchPath = getFoldersPath(folders, curPatch.folderId);
+  const projectChildren = makeTree(folders, patches, null, curPatchPath);
+
 
   return {
     module: 'Project',
     collapsed: false,
-    children: makeTree(folders, patches, null),
+    children: projectChildren,
   };
 };
 
