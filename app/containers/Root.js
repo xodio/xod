@@ -23,8 +23,8 @@ export default class Root extends React.Component {
     this.store.subscribe(() => {
       const rootState = this.store.getState();
       const statePatches = Selectors.Project.getPatches(rootState);
-      if (!R.eqBy(R.prop('id'), statePatches, this.patches)) {
-        this.store.replaceReducers(this.createReducers(statePatches));
+      if (Selectors.Project.isPatchesUpdated(statePatches, this.patches)) {
+        this.store.replaceReducer(this.createReducers(statePatches));
       }
     });
   }

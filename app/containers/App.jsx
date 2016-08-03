@@ -72,17 +72,7 @@ class App extends React.Component {
       errorMessage = SAVE_LOAD_ERRORS.NOT_A_JSON;
     }
 
-    if (
-      validJSON && typeof project === 'object' &&
-      !(
-        project.hasOwnProperty('nodes') &&
-        project.hasOwnProperty('links') &&
-        project.hasOwnProperty('pins') &&
-        project.hasOwnProperty('patches') &&
-        project.hasOwnProperty('nodeTypes') &&
-        project.hasOwnProperty('meta')
-      )
-    ) {
+    if (validJSON && !Selectors.Project.validateProject(project)) {
       errorMessage = SAVE_LOAD_ERRORS.INVALID_FORMAT;
     }
 
@@ -187,7 +177,7 @@ App.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  projectJSON: Selectors.Project.getJSON(state),
+  projectJSON: Selectors.Project.getProjectJSON(state),
   meta: Selectors.Project.getMeta(state),
   nodeTypes: Selectors.Project.getNodeTypes(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
