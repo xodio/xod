@@ -3,8 +3,8 @@ export class Node {
   /**
     * @typedef {{
     *   lazy: boolean,
-    *   nodeID: number,
-    *   inputName: string
+    *   nodeId: number,
+    *   key: string
     * }} OutLink
     */
   /**
@@ -102,8 +102,8 @@ export class Node {
       }
 
       const val = signals[outputName];
-      outLinks.forEach(({ nodeID, inputName, lazy }) => {
-        this._nodes[nodeID]._receiveInput(inputName, val, !!lazy);
+      outLinks.forEach(({ nodeId, key, lazy }) => {
+        this._nodes[nodeId]._receiveInput(key, val, !!lazy);
       });
     });
   }
@@ -199,8 +199,8 @@ export class Project {
   getFirstDirtyNode() {
     const len = this._topology.length;
     for (let i = 0; i < len; ++i) {
-      const nodeID = this._topology[i];
-      const node = this._nodes[nodeID];
+      const nodeId = this._topology[i];
+      const node = this._nodes[nodeId];
       if (node.isDirty()) {
         return node;
       }

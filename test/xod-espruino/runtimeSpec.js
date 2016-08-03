@@ -48,7 +48,7 @@ describe('Runtime', () => {
 
     it('should transmit signal from publisher to subsriber', () => {
       const publisher = createPublisherNode(1, {
-        val: [{ nodeID: 2, inputName: 'val' }],
+        val: [{ nodeId: 2, key: 'val' }],
       });
 
       const subscriber = createSubscriberNode(2);
@@ -62,7 +62,7 @@ describe('Runtime', () => {
 
     it('should transmit multiple signals from publisher to subsriber', () => {
       const publisher = createPublisherNode(1, {
-        val: [{ nodeID: 2, inputName: 'val' }],
+        val: [{ nodeId: 2, key: 'val' }],
       });
 
       const subscriber = createSubscriberNode(2);
@@ -80,14 +80,14 @@ describe('Runtime', () => {
 
     it('should evaluate pure nodes', () => {
       const publisher = createPublisherNode(1, {
-        val: [{ nodeID: 2, inputName: 'inp' }],
+        val: [{ nodeId: 2, key: 'inp' }],
       });
 
       createNode(2, {
         evaluate: ({ inp }) => ({ out: inp + 100 }),
         inputTypes: { inp: Number },
         outLinks: {
-          out: [{ nodeID: 3, inputName: 'inp' }],
+          out: [{ nodeId: 3, key: 'inp' }],
         },
       });
 
@@ -95,7 +95,7 @@ describe('Runtime', () => {
         evaluate: ({ inp }) => ({ out: inp + 1000 }),
         inputTypes: { inp: Number },
         outLinks: {
-          out: [{ nodeID: 4, inputName: 'val' }],
+          out: [{ nodeId: 4, key: 'val' }],
         },
       });
 
@@ -115,7 +115,7 @@ describe('Runtime', () => {
       createNode(1, {
         setup: fire => fire({ val: 42 }),
         outLinks: {
-          val: [{ nodeID: 3, inputName: 'a' }],
+          val: [{ nodeId: 3, key: 'a' }],
         },
       });
 
@@ -123,7 +123,7 @@ describe('Runtime', () => {
       createNode(2, {
         setup: fire => fire({ val: 100 }),
         outLinks: {
-          val: [{ nodeID: 3, inputName: 'b' }],
+          val: [{ nodeId: 3, key: 'b' }],
         },
       });
 
@@ -132,7 +132,7 @@ describe('Runtime', () => {
         evaluate: ({ a, b }) => ({ out: a + b }),
         inputTypes: { a: Number, b: Number },
         outLinks: {
-          out: [{ nodeID: 4, inputName: 'val' }],
+          out: [{ nodeId: 4, key: 'val' }],
         },
       });
 
