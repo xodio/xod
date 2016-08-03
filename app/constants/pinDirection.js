@@ -1,2 +1,2 @@
-export const INPUT = 0;
-export const OUTPUT = 1;
+export const INPUT = 'input';
+export const OUTPUT = 'output';

@@ -1,5 +1,7 @@
 
 import R from 'ramda';
+import * as PIN_DIRECTION from 'constants/pinDirection';
+import * as PIN_TYPE from 'constants/pinType';
 
 /**
   * Transforms JSON data as it seen it *.xod files to
@@ -26,18 +28,18 @@ export function transform(project) {
 
   // :: String -> JSType -- converts pin string type name to native JS type object
   const nativeType = R.pipe(
-    R.when(R.equals('pulse'), R.always(Boolean)),
-    R.when(R.equals('bool'), R.always(Boolean)),
-    R.when(R.equals('number'), R.always(Number)),
-    R.when(R.equals('string'), R.always(String))
+    R.when(R.equals(PIN_TYPE.PULSE), R.always(Boolean)),
+    R.when(R.equals(PIN_TYPE.BOOL), R.always(Boolean)),
+    R.when(R.equals(PIN_TYPE.NUMBER), R.always(Number)),
+    R.when(R.equals(PIN_TYPE.STRING), R.always(String))
   );
 
   // :: {Key: NodeType.Pin} -> {Key: NodeType.Pin}
   const filterByDirection = dir => R.filter(R.propEq('direction', dir));
 
   // :: NodeType -> {Key: NodeType.Pin}
-  const inputs = R.compose(filterByDirection('input'), nodeTypePins);
-  const outputs = R.compose(filterByDirection('output'), nodeTypePins);
+  const inputs = R.compose(filterByDirection(PIN_DIRECTION.INPUT), nodeTypePins);
+  const outputs = R.compose(filterByDirection(PIN_DIRECTION.OUTPUT), nodeTypePins);
 
   // :: NodeType -> {Key: JSType}
   const inputTypes = R.compose(
