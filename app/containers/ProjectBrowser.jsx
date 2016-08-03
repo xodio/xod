@@ -60,6 +60,12 @@ class ProjectBrowser extends React.Component {
 
   onDelete(type, id) {
     console.log('DELETE: ', type, id);
+
+    if (type === 'folder') {
+      this.props.actions.deleteFolder(id);
+    } else {
+      this.props.actions.deletePatch(id);
+    }
   }
 
   onRename(type, id, name) {
@@ -112,7 +118,9 @@ const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     switchPatch: Actions.switchPatch,
     renameFolder: Actions.renameFolder,
+    deleteFolder: Actions.deleteFolder,
     renamePatch: Actions.renamePatch,
+    deletePatch: Actions.deletePatch,
   }, dispatch),
 });
 
