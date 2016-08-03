@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import * as Actions from '../actions';
+import * as Actions from '../actions';
 import Selectors from '../selectors';
 import ProjectBrowserTree from '../components/ProjectBrowserTree';
 
@@ -11,10 +11,15 @@ class ProjectBrowser extends React.Component {
     super(props);
 
     this.onTreeChange = this.onTreeChange.bind(this);
+    this.onSwitchPatch = this.onSwitchPatch.bind(this);
   }
 
   onTreeChange(newTree) {
     console.log('tree changed:', Selectors.Project.parseTreeView(newTree));
+  }
+
+  onSwitchPatch(id) {
+    this.props.actions.switchPatch(id);
   }
 
   render() {
@@ -25,6 +30,7 @@ class ProjectBrowser extends React.Component {
           tree={this.props.tree}
           currentPatchId={this.props.currentPatchId}
           onChange={this.onTreeChange}
+          onSwitchPatch={this.onSwitchPatch}
         />
       </div>
     );
@@ -45,7 +51,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({}, dispatch),
+  actions: bindActionCreators({
+    switchPatch: Actions.switchPatch,
+  }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectBrowser);

@@ -317,3 +317,10 @@ export const clearHistoryPatch = (id) => ({
   type: ActionType.getPatchClearHistoryType(id),
   payload: {},
 });
+
+export const switchPatch = (id) => ({
+  type: ActionType.EDITOR_SWITCH_PATCH,
+  payload: {
+    id,
+  },
+});

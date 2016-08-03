@@ -31,6 +31,13 @@ class ProjectBrowserTree extends React.Component {
 
     this.setState(R.assoc('active', nodeRef, this.state));
   }
+
+  onDoubleClickNode(node) {
+    if (!node.leaf || !node.id) { return; }
+
+    this.props.onSwitchPatch(node.id);
+  }
+
   onChange(tree) {
     this.props.onChange(tree);
   }
@@ -39,20 +46,20 @@ class ProjectBrowserTree extends React.Component {
     this.setState(R.assoc('tree', tree, this.state));
   }
 
-  bindOnClickNode(node) {
-    return this.onClickNode.bind(this, node);
-  }
-
   renderNode(node) {
     const nodeClassName = classNames('node', {
       'is-active': node === this.state.active,
       'is-current': (node.hasOwnProperty('leaf') && node.id === this.props.currentPatchId),
     });
 
+    const onClick = this.onClickNode.bind(this, node);
+    const onDblClick = this.onDoubleClickNode.bind(this, node);
+
     return (
       <span
         className={nodeClassName}
-        onClick={this.bindOnClickNode(node)}
+        onClick={onClick}
+        onDoubleClick={onDblClick}
       >
         {node.module}
       </span>
@@ -76,6 +83,7 @@ ProjectBrowserTree.propTypes = {
   tree: React.PropTypes.object.isRequired,
   currentPatchId: React.PropTypes.number,
   onChange: React.PropTypes.func,
+  onSwitchPatch: React.PropTypes.func,
 };
 
 export default ProjectBrowserTree;

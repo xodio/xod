@@ -7,6 +7,7 @@ import {
   EDITOR_SELECT_LINK,
   EDITOR_SET_MODE,
   EDITOR_SET_SELECTED_NODETYPE,
+  EDITOR_SWITCH_PATCH,
 } from '../actionTypes';
 import * as ENTITIES from '../constants/entities';
 
@@ -32,11 +33,13 @@ export const editor = (state = {}, action) => {
     case EDITOR_SELECT_LINK:
       return addSelection(ENTITIES.LINK, action, state);
     case EDITOR_SELECT_PIN:
-      return R.set(R.lensProp('linkingPin'), action.payload.id, state);
+      return R.assoc('linkingPin', action.payload.id, state);
     case EDITOR_SET_MODE:
-      return R.set(R.lensProp('mode'), action.payload.mode, state);
+      return R.assoc('mode', action.payload.mode, state);
     case EDITOR_SET_SELECTED_NODETYPE:
-      return R.set(R.lensProp('selectedNodeType'), action.payload.id, state);
+      return R.assoc('selectedNodeType', action.payload.id, state);
+    case EDITOR_SWITCH_PATCH:
+      return R.assoc('currentPatchId', action.payload.id, state);
     default:
       return state;
   }
