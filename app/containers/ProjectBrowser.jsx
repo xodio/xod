@@ -3,8 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
-import ProjectBrowserTree from '../components/ProjectBrowserTree';
 
+import { findParentByClassName } from '../utils/browser';
+
+import ProjectBrowserTree from '../components/ProjectBrowserTree';
+import ProjectBrowserToolbar from '../components/ProjectBrowserToolbar';
 
 class ProjectBrowser extends React.Component {
   constructor(props) {
@@ -12,6 +15,16 @@ class ProjectBrowser extends React.Component {
 
     this.onTreeChange = this.onTreeChange.bind(this);
     this.onSwitchPatch = this.onSwitchPatch.bind(this);
+    this.onMissClick = this.onMissClick.bind(this);
+  }
+
+  onMissClick(event) {
+    const treeView = findParentByClassName(event.target, 'ProjectBrowserTree');
+    if (treeView) { return; }
+
+    if (this.refs.treeView && this.refs.treeView.deselect) {
+      this.refs.treeView.deselect();
+    }
   }
 
   onTreeChange(newTree) {
@@ -24,9 +37,14 @@ class ProjectBrowser extends React.Component {
 
   render() {
     return (
-      <div className="ProjectBrowser">
+      <div
+        className="ProjectBrowser"
+        onClick={this.onMissClick}
+      >
         <small className="title">Project browser</small>
+        <ProjectBrowserToolbar />
         <ProjectBrowserTree
+          ref="treeView"
           tree={this.props.tree}
           currentPatchId={this.props.currentPatchId}
           onChange={this.onTreeChange}

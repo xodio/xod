@@ -30,7 +30,7 @@ class ProjectBrowserTree extends React.Component {
       nodeRef.collapsed = !nodeRef.collapsed;
     }
 
-    this.setState(R.assoc('active', nodeRef, this.state));
+    this.setActive(nodeRef);
   }
 
   onDoubleClickNode(node) {
@@ -43,8 +43,16 @@ class ProjectBrowserTree extends React.Component {
     this.props.onChange(tree);
   }
 
+  setActive(val) {
+    this.setState(R.assoc('active', val, this.state));
+  }
+
   updateTree(tree) {
     this.setState(R.assoc('tree', tree, this.state));
+  }
+
+  deselect() {
+    this.setActive(null);
   }
 
   renderNode(node) {
@@ -56,9 +64,9 @@ class ProjectBrowserTree extends React.Component {
     const onClick = this.onClickNode.bind(this, node);
     const onDblClick = this.onDoubleClickNode.bind(this, node);
 
-    const iconName = (node.leaf) ? 'file-o' :
-                     (node.collapsed) ? 'folder-o' :
-                     'folder-open-o';
+    let iconName = 'folder-open-o';
+    if (node.leaf) { iconName = 'file-o'; }
+    if (node.collapsed) { iconName = 'folder-o'; }
 
     return (
       <span

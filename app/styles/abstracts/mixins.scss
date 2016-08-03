@@ -1,21 +1,23 @@
 
 @mixin button-primary() {
   cursor: pointer;
-  background: #286aa7;
-  color: #fff;
+  background: $color-button-primary-background;
+  color: $color-button-primary-text;
+  border: 0;
 
   &:hover {
-    background: #0c77da;
+    background: $color-button-primary-background-hover;
   }
 }
 
 @mixin button-secondary() {
   cursor: pointer;
-  background: #506b4c;
-  color: #fff;
+  background: $color-button-secondary-background;
+  color: $color-button-secondary-text;
+  border: 0;
 
   &:hover {
-    background: #5F8359;
+    background: $color-button-secondary-background-hover;
   }
 }
 
