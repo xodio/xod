@@ -38,6 +38,10 @@ module.exports = {
           'file?name=[path][name].[ext]?[hash:6]&context=./app'
         ],
       },
+      {
+        test: /\.json5$/,
+        loader: 'json5',
+      },
     ],
   },
   plugins: [
