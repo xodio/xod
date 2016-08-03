@@ -8,13 +8,24 @@ import * as PIN_TYPE from 'constants/pinType';
   * a shape expected by the runtime.
   */
 export default function transform(project) {
-  const nodes = () => R.propOr({}, 'nodes', project);
+  // :: () -> Patch -- joins all patches into one shallow
+  const mergedPatch = R.compose(
+    R.omit('id'),
+    R.reduce(R.merge, {}),
+    R.values,
+    R.propOr({}, 'patches')
+  )(project);
 
-  const pins = () => R.propOr({}, 'pins', project);
+  // :: String -> {a} -- extacts a specific key branch from the merged patch
+  const mergedEntities = key => R.propOr({}, key)(mergedPatch);
+
+  const nodes = () => mergedEntities('nodes');
+
+  const pins = () => mergedEntities('pins');
   const pinList = R.compose(R.values, pins);
   const pinById = id => R.propOr({}, id, pins());
 
-  const links = () => R.propOr({}, 'links', project);
+  const links = () => mergedEntities('links');
   const linkList = R.compose(R.values, links);
 
   const nodeTypes = () => R.propOr({}, 'nodeTypes', project);

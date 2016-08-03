@@ -10,10 +10,15 @@ describe('Transformer', () => {
 
   it('should merge node and node type', () => {
     const nodes = transform({
-      nodes: {
-        42: {
-          id: 42,
-          typeId: 777,
+      patches: {
+        1: {
+          id: 1,
+          nodes: {
+            42: {
+              id: 42,
+              typeId: 777,
+            },
+          },
         },
       },
       nodeTypes: {
@@ -54,18 +59,23 @@ describe('Transformer', () => {
 
   it('should merge links', () => {
     const nodes = transform({
-      nodes: {
-        42: { id: 42, typeId: 777 },
-        43: { id: 43, typeId: 777 },
-      },
-      pins: {
-        421: { id: 421, nodeId: 42, key: 'valueIn' },
-        422: { id: 422, nodeId: 42, key: 'valueOut' },
-        431: { id: 431, nodeId: 43, key: 'valueIn' },
-        432: { id: 432, nodeId: 43, key: 'valueOut' },
-      },
-      links: {
-        1: { id: 1, pins: [422, 431] },
+      patches: {
+        1: {
+          id: 1,
+          nodes: {
+            42: { id: 42, typeId: 777 },
+            43: { id: 43, typeId: 777 },
+          },
+          pins: {
+            421: { id: 421, nodeId: 42, key: 'valueIn' },
+            422: { id: 422, nodeId: 42, key: 'valueOut' },
+            431: { id: 431, nodeId: 43, key: 'valueIn' },
+            432: { id: 432, nodeId: 43, key: 'valueOut' },
+          },
+          links: {
+            1: { id: 1, pins: [422, 431] },
+          },
+        },
       },
       nodeTypes: {
         777: {
