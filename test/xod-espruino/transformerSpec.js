@@ -1,14 +1,14 @@
 
 import { expect } from 'chai';
-import { transform } from 'xod-espruino/transformer'
+import { transform } from 'xod-espruino/transformer';
 
-describe('Transformer', function() {
-  it('should transform empty json to empty node list', function() {
+describe('Transformer', () => {
+  it('should transform empty json to empty node list', () => {
     const nodes = transform({});
     expect(nodes).to.be.eql({});
   });
 
-  it('should merge node and node type', function() {
+  it('should merge node and node type', () => {
     const nodes = transform({
       nodes: {
         42: {
@@ -52,7 +52,7 @@ describe('Transformer', function() {
     });
   });
 
-  it('should merge links', function() {
+  it('should merge links', () => {
     const nodes = transform({
       nodes: {
         42: { id: 42, typeId: 777 },
@@ -65,7 +65,7 @@ describe('Transformer', function() {
         432: { id: 432, nodeId: 43, key: 'valueOut' },
       },
       links: {
-        1: { id: 1, pins: [422, 431] }
+        1: { id: 1, pins: [422, 431] },
       },
       nodeTypes: {
         777: {

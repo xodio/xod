@@ -76,7 +76,7 @@ export function transform(project) {
       R.defaultTo({}),
       R.find(R.where({
         nodeId: R.equals(ownerNode.id),
-        key: R.equals(nodeTypePin.key)
+        key: R.equals(nodeTypePin.key),
       }))
     )(pinList())
   );
