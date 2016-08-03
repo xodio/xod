@@ -1,10 +1,10 @@
-import R from 'ramda';
 import applyReducers from '../utils/applyReducers';
 
 import { meta } from './meta';
 import { patches } from './patches';
 import { nodeTypes } from './nodetypes';
 import { counterReducer } from './counter';
+import { foldersReducer } from './folders';
 
 import {
   PROJECT_LOAD_DATA,
@@ -18,6 +18,7 @@ export default (patchIds) => {
     patches: patches(patchIds),
     nodeTypes,
     counter: counterReducer,
+    folders: foldersReducer,
   };
 
   return (state = {}, action) => {

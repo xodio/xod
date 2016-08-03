@@ -1,3 +1,4 @@
+import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -16,11 +17,33 @@ class ProjectBrowser extends React.Component {
     this.onTreeChange = this.onTreeChange.bind(this);
     this.onSwitchPatch = this.onSwitchPatch.bind(this);
     this.onMissClick = this.onMissClick.bind(this);
+    this.onNodeSelect = this.onNodeSelect.bind(this);
+    this.onRename = this.onRename.bind(this);
+    this.onDelete = this.onDelete.bind(this);
+
+    this.state = {
+      selection: null,
+    };
+  }
+
+  onNodeSelect(type, id) {
+    if (id === null) {
+      return this.setState(
+        R.assoc('selection', null, this.state)
+      );
+    }
+
+    return this.setState(
+      R.assoc('selection', {
+        type,
+        id,
+      }, this.state)
+    );
   }
 
   onMissClick(event) {
-    const treeView = findParentByClassName(event.target, 'ProjectBrowserTree');
-    if (treeView) { return; }
+    const treeView = findParentByClassName(event.target, 'inner');
+    if (treeView && treeView.parentNode.className === 'm-node') { return; }
 
     if (this.refs.treeView && this.refs.treeView.deselect) {
       this.refs.treeView.deselect();
@@ -35,6 +58,18 @@ class ProjectBrowser extends React.Component {
     this.props.actions.switchPatch(id);
   }
 
+  onDelete(type, id) {
+    console.log('DELETE: ', type, id);
+  }
+
+  onRename(type, id, name) {
+    if (type === 'folder') {
+      this.props.actions.renameFolder(id, name);
+    } else {
+      this.props.actions.renamePatch(id, name);
+    }
+  }
+
   render() {
     return (
       <div
@@ -42,11 +77,16 @@ class ProjectBrowser extends React.Component {
         onClick={this.onMissClick}
       >
         <small className="title">Project browser</small>
-        <ProjectBrowserToolbar />
+        <ProjectBrowserToolbar
+          selection={this.state.selection}
+          onDelete={this.onDelete}
+          onRename={this.onRename}
+        />
         <ProjectBrowserTree
           ref="treeView"
           tree={this.props.tree}
           currentPatchId={this.props.currentPatchId}
+          onSelect={this.onNodeSelect}
           onChange={this.onTreeChange}
           onSwitchPatch={this.onSwitchPatch}
         />
@@ -71,6 +111,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     switchPatch: Actions.switchPatch,
+    renameFolder: Actions.renameFolder,
+    renamePatch: Actions.renamePatch,
   }, dispatch),
 });
 

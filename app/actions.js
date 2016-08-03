@@ -339,7 +339,7 @@ export const renamePatch = (id, name) => ({
 });
 
 export const renameFolder = (id, name) => ({
-  type: ActionType.PROJECT_RENAME_FOLDER,
+  type: ActionType.FOLDER_RENAME,
   payload: {
     id,
     name,

@@ -45,6 +45,20 @@ class ProjectBrowserTree extends React.Component {
 
   setActive(val) {
     this.setState(R.assoc('active', val, this.state));
+
+    let selected = {
+      type: null,
+      id: null,
+    };
+
+    if (val !== null) {
+      selected = {
+        type: (val.leaf) ? 'patch' : 'folder',
+        id: val.id || null,
+      };
+    }
+
+    this.props.onSelect(selected.type, selected.id);
   }
 
   updateTree(tree) {
@@ -96,6 +110,7 @@ class ProjectBrowserTree extends React.Component {
 ProjectBrowserTree.propTypes = {
   tree: React.PropTypes.object.isRequired,
   currentPatchId: React.PropTypes.number,
+  onSelect: React.PropTypes.func,
   onChange: React.PropTypes.func,
   onSwitchPatch: React.PropTypes.func,
 };
