@@ -6,6 +6,10 @@ import { patches } from './patches';
 import { nodeTypes } from './nodetypes';
 import { counterReducer } from './counter';
 
+import {
+  PROJECT_LOAD_DATA,
+} from '../actionTypes';
+
 import { parseProjectJSON } from '../selectors/project';
 
 export default (patchIds) => {
