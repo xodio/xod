@@ -1,8 +1,10 @@
 .ProjectBrowserTree {
   width: $sidebar-width;
+  height: 300px;
   background: $sidebar-background;
   color: $sidebar-color;
   padding: 8px 0;
+  overflow: auto;
 
   box-sizing: border-box;
 
