@@ -1,5 +1,5 @@
+import R from 'ramda';
 import applyReducers from '../utils/applyReducers';
-import { PROJECT_LOAD_DATA } from '../actionTypes';
 
 import { meta } from './meta';
 import { patches } from './patches';
@@ -21,6 +21,6 @@ export default (patchIds) => {
       return parseProjectJSON(action.payload);
     }
 
-    return applyReducers(reducers, state, action);
+    return applyReducers(reducers, state, action, state);
   };
 };

@@ -318,9 +318,30 @@ export const clearHistoryPatch = (id) => ({
   payload: {},
 });
 
-export const switchPatch = (id) => ({
-  type: ActionType.EDITOR_SWITCH_PATCH,
+export const switchPatch = (id) => (dispatch) => {
+  dispatch(deselectAll());
+  dispatch({
+    type: ActionType.EDITOR_SWITCH_PATCH,
+    payload: {
+      id,
+    },
+  });
+};
+
+export const renamePatch = (id, name) => ({
+  type: ActionType.PATCH_RENAME,
+  payload: {
+    name,
+  },
+  meta: {
+    patchId: id,
+  },
+});
+
+export const renameFolder = (id, name) => ({
+  type: ActionType.PROJECT_RENAME_FOLDER,
   payload: {
     id,
+    name,
   },
 });

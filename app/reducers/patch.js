@@ -1,8 +1,13 @@
+import R from 'ramda';
 import applyReducers from '../utils/applyReducers';
 
 import { pins } from './pins';
 import { links } from './links';
 import { nodes } from './nodes';
+
+import {
+  PATCH_RENAME,
+} from '../actionTypes';
 
 export const patchReducer = (id) => {
   const patchId = id;
@@ -28,6 +33,11 @@ export const patchReducer = (id) => {
       return state;
     }
 
-    return applyReducers(reducers, state, action, patchId);
+    switch (action.type) {
+      case PATCH_RENAME:
+        return R.assoc('name', action.payload.name, state);
+      default:
+        return applyReducers(reducers, state, action, patchId);
+    }
   };
 };
