@@ -2,6 +2,7 @@ import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
 import Tree from 'react-ui-tree';
+import { Icon } from 'react-fa';
 
 
 class ProjectBrowserTree extends React.Component {
@@ -55,12 +56,17 @@ class ProjectBrowserTree extends React.Component {
     const onClick = this.onClickNode.bind(this, node);
     const onDblClick = this.onDoubleClickNode.bind(this, node);
 
+    const iconName = (node.leaf) ? 'file-o' :
+                     (node.collapsed) ? 'folder-o' :
+                     'folder-open-o';
+
     return (
       <span
         className={nodeClassName}
         onClick={onClick}
         onDoubleClick={onDblClick}
       >
+        <Icon name={iconName} className="icon" />
         {node.module}
       </span>
     );

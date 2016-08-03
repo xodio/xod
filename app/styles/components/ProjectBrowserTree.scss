@@ -47,6 +47,7 @@
       }
     }
 
+
     .inner {
       position: relative;
       cursor: pointer;
@@ -54,17 +55,24 @@
     }
     .node {
       display: block;
-      padding: 4px 6px;
+      padding: 4px 6px 4px 10px;
+      overflow: hidden;
 
       &.is-active {
         border-left: 100px solid #fff;
         border-right: 100px solid #fff;
         margin-left: -100px;
+        margin-right: -100px;
         background: #fff;
         color: #006;
       }
       &.is-current {
         color: red;
+      }
+
+      .icon {
+        position: relative;
+        left: -4px;
       }
     }
     .collapse {
