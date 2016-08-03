@@ -33,9 +33,13 @@ module.exports = {
         ],
       },
       {
-        test: /assets\/.*\.(jpe?g|png|gif|svg|woff|woff2)$/,
+        test: /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?\S*)?$/,
+        loader: 'url-loader?limit=100000&name=[name].[ext]',
+      },
+      {
+        test: /assets\/.*\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)$/,
         loaders: [
-          'file?name=[path][name].[ext]?[hash:6]&context=./app'
+          'file?name=[path][name].[ext]?[hash:6]&context=./app',
         ],
       },
       {
