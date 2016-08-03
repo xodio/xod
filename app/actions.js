@@ -338,6 +338,13 @@ export const renamePatch = (id, name) => ({
   },
 });
 
+export const deletePatch = (id) => ({
+  type: ActionType.PATCH_DELETE,
+  payload: {
+    id,
+  },
+});
+
 export const renameFolder = (id, name) => ({
   type: ActionType.FOLDER_RENAME,
   payload: {
@@ -345,3 +352,17 @@ export const renameFolder = (id, name) => ({
     name,
   },
 });
+
+export const deleteFolder = (id) => (dispatch, getState) => {
+  const folders = Selectors.Project.getFoldersByFolderId(getState(), id);
+  const patches = Selectors.Project.getPatchesByFolderId(getState(), id);
+
+  folders.forEach(folder => dispatch(deleteFolder(folder.id)));
+  patches.forEach(patch => dispatch(deletePatch(patch.id)));
+  dispatch({
+    type: ActionType.FOLDER_DELETE,
+    payload: {
+      id,
+    },
+  });
+};

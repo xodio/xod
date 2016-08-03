@@ -1,12 +1,15 @@
 import R from 'ramda';
-import * as ActionType from '../actionTypes';
+import {
+  FOLDER_RENAME,
+  FOLDER_DELETE,
+} from '../actionTypes';
 
 export const foldersReducer = (state = {}, action) => {
   switch (action.type) {
-    case ActionType.FOLDER_RENAME: {
+    case FOLDER_RENAME: {
       return R.assocPath([action.payload.id, 'name'], action.payload.name, state);
     }
-    case ActionType.FOLDER_DELETE: {
+    case FOLDER_DELETE: {
       return R.omit([action.payload.id.toString()], state);
     }
     default:

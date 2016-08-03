@@ -57,7 +57,7 @@ export const getProject = (state) => {
 export const getPatches = (projectState) => R.pipe(
   getProject,
   R.prop('patches')
-)(projectState);
+)(state);
 
 export const getPatchById = (projectState, id) => {
   const patch = R.view(
@@ -74,6 +74,13 @@ export const getPatchById = (projectState, id) => {
 
   return result;
 };
+
+export const getPatchesByFolderId = (state, folderId) => R.pipe(
+  getPatches,
+  R.values,
+  R.map(R.prop('present')),
+  R.filter(R.propEq('folderId', folderId))
+)(state);
 
 const getPatchByEntityId = (projectState, id, entityBranch) => R.pipe(
   R.prop('patches'),
@@ -604,26 +611,31 @@ export const getFolders = R.pipe(
   getProject,
   R.prop('folders')
 );
+export const getFoldersByFolderId = (state, folderId) => R.pipe(
+  getFolders,
+  R.values,
+  R.filter(R.propEq('parentId', folderId))
+)(state);
 
 /*
   Tree view (get / parse)
 */
+export const getFoldersPath = (folders, folderId) => {
+  const result = [];
+
+  if (folderId === null) { return result; }
+
+  const parentFolder = folders[folderId];
+  result.push(parentFolder.id);
+
+  if (parentFolder.parentId) {
+    result.concat(getFoldersPath(folders, parentFolder.parentId));
+  }
+
+  return result;
+};
+
 export const getTreeView = (state) => {
-  const getFoldersPath = (folders, folderId) => {
-    const result = [];
-
-    if (folderId === null) { return result; }
-
-    const parentFolder = folders[folderId];
-    result.push(parentFolder.id);
-
-    if (parentFolder.parentId) {
-      result.concat(getFoldersPath(folders, parentFolder.parentId));
-    }
-
-    return result;
-  };
-
   const makeTree = (folders, patches, parentId, curPatchPath) => {
     const path = curPatchPath || [];
     const foldersAtLevel = R.pipe(
