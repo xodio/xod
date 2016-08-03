@@ -38,7 +38,7 @@ export const isInput = (event) => (
 
 export const findParentByClassName = (element, className) => {
   let result = null;
-  if (element.classList.contains(className)) {
+  if (element && element.classList && element.classList.contains(className)) {
     result = element;
   } else if (element.parentNode) {
     result = findParentByClassName(element.parentNode, className);
