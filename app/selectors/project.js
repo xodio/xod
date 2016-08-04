@@ -166,7 +166,8 @@ export const getProjectJSON = (state) => {
   const patches = R.pipe(
     getPatches,
     R.values,
-    R.map(patch => R.propOr(patch, 'present', patch))
+    R.map(patch => R.propOr(patch, 'present', patch)),
+    arr2obj
   )(project);
   const projectToSave = R.assoc('patches', patches, project);
 
