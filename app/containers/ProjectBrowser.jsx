@@ -58,7 +58,7 @@ class ProjectBrowser extends React.Component {
   }
 
   onTreeChange(newTree) {
-    console.log('tree changed:', Selectors.Project.parseTreeView(newTree));
+    // console.log('tree changed:', Selectors.Project.parseTreeView(newTree));
   }
 
   onSwitchPatch(id) {
@@ -67,13 +67,11 @@ class ProjectBrowser extends React.Component {
 
   onPatchCreate(name) {
     const folderId = this.getFolderId();
-    console.log('>', folderId);
     this.props.actions.addPatch(name, folderId);
   }
 
   onFolderCreate(name) {
     const folderId = this.getFolderId();
-    console.log('>', folderId);
     this.props.actions.addFolder(name, folderId);
   }
 
