@@ -358,7 +358,6 @@ export const deletePatch = (id) => ({
 export const addFolder = (name) => (dispatch, getState) => {
   const projectState = Selectors.Project.getProject(getState());
   const preparedData = Selectors.Prepare.addFolder(projectState, name);
-  console.log('!!!', preparedData);
   dispatch({
     type: ActionType.FOLDER_ADD,
     payload: preparedData,
