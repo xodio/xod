@@ -21,6 +21,17 @@
   }
 }
 
+@mixin button-alt() {
+  cursor: pointer;
+  background: $color-button-alt-background;
+  color: $color-button-alt-text;
+  border: 0;
+
+  &:hover {
+    background: $color-button-alt-background-hover;
+  }
+}
+
 @mixin inspector-widget() {
   padding: 4px;
   margin-bottom: 2px;
@@ -45,5 +56,54 @@
     label {
       color: #823906;
     }
+  }
+}
+
+@mixin popup() {
+
+  h2 { margin-top: 0; }
+
+  .PopupContent {
+    padding: 4px 0;
+    border-bottom: 1px solid #eee;
+  }
+  .PopupButtons {
+    padding: 8px 0 0 0;
+    text-align: right;
+
+    button {
+      margin: 0 0 0 8px;
+    }
+  }
+  .PopupFields {
+    box-sizing: border-box;
+    padding: 4px 0;
+
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      font-size: $font-size-m;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      box-shadow: inset 0 1px 3px 1px rgba(0,0,0,.2);
+    }
+  }
+
+  .PopupButton-Primary {
+    @include button-primary();
+
+    padding: 8px 12px;
+    font-weight: 100;
+    font-size: $font-size-m;
+    border-radius: 2px;
+  }
+  .PopupButton-Secondary {
+    @include button-alt();
+
+    padding: 8px 12px;
+    font-weight: 100;
+    font-size: $font-size-m;
+    border-radius: 2px;
   }
 }
