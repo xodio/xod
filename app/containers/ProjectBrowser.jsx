@@ -23,6 +23,8 @@ class ProjectBrowser extends React.Component {
 
     this.state = {
       selection: null,
+      renaming: false,
+      deleting: false,
     };
   }
 
@@ -43,7 +45,10 @@ class ProjectBrowser extends React.Component {
 
   onMissClick(event) {
     const treeView = findParentByClassName(event.target, 'inner');
-    if (treeView && treeView.parentNode.className === 'm-node') { return; }
+    if (
+      treeView && treeView.parentNode.className === 'm-node' ||
+      findParentByClassName(event.target, 'ProjectBrowserToolbar')
+    ) { return; }
 
     if (this.refs.treeView && this.refs.treeView.deselect) {
       this.refs.treeView.deselect();
@@ -59,8 +64,6 @@ class ProjectBrowser extends React.Component {
   }
 
   onDelete(type, id) {
-    console.log('DELETE: ', type, id);
-
     if (type === 'folder') {
       this.props.actions.deleteFolder(id);
     } else {
@@ -87,6 +90,8 @@ class ProjectBrowser extends React.Component {
           selection={this.state.selection}
           onDelete={this.onDelete}
           onRename={this.onRename}
+          patches={this.props.patches}
+          folders={this.props.folders}
         />
         <ProjectBrowserTree
           ref="treeView"
@@ -105,12 +110,14 @@ ProjectBrowser.propTypes = {
   tree: React.PropTypes.object.isRequired,
   actions: React.PropTypes.object,
   patches: React.PropTypes.object,
+  folders: React.PropTypes.object,
   currentPatchId: React.PropTypes.number,
 };
 
 const mapStateToProps = (state) => ({
   tree: Selectors.Project.getTreeView(state),
   patches: Selectors.Project.getPatches(state),
+  folders: Selectors.Project.getFolders(state),
   currentPatchId: Selectors.Editor.getCurrentPatchId(state),
 });
 
