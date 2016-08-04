@@ -42,6 +42,7 @@ const PopupConfirm = ({
           <button
             className="PopupButton-Primary"
             onClick={onConfirm}
+            autoFocus
           >
             {confirmText}
           </button>
