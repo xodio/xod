@@ -4,11 +4,33 @@ import {
   getLastNodeId,
   getLastPinId,
   getLastLinkId,
+  getLastPatchId,
+  getLastFolderId,
   getPatchByNodeId,
   getPatchByPinId,
   getPinsByNodeIdInPatch,
   getLinksByPinIdInPatch,
 } from './project';
+
+export const addPatch = (projectState, name, folderId) => {
+  const newId = getLastPatchId(projectState) + 1;
+
+  return {
+    newId,
+    name,
+    folderId,
+  };
+};
+
+export const addFolder = (projectState, name, parentId) => {
+  const newId = getLastFolderId(projectState) + 1;
+
+  return {
+    newId,
+    name,
+    parentId,
+  };
+};
 
 export const addNode = (projectState, typeId, position) => {
   const newNodeId = getLastNodeId(projectState) + 1;

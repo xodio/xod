@@ -223,6 +223,14 @@ export const getLastPatchId = R.pipe(
   ]))
 );
 
+export const getLastFolderId = R.pipe(
+  getProject,
+  R.view(R.lensPath([
+    'counter',
+    'folders',
+  ]))
+);
+
 export const getLastNodeId = R.pipe(
   getProject,
   R.view(R.lensPath([
