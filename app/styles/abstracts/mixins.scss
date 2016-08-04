@@ -61,17 +61,23 @@
 
 @mixin popup() {
 
-  h2 { margin-top: 0; }
+  h2 {
+    font-size: $font-size-l;
+    margin-top: 0;
+  }
 
   .PopupContent {
     padding: 4px 0;
     border-bottom: 1px solid #eee;
+    font-size: $font-size-m;
   }
   .PopupButtons {
     padding: 8px 0 0 0;
     text-align: right;
 
     button {
+      height: auto;
+      width: auto;
       margin: 0 0 0 8px;
     }
   }
