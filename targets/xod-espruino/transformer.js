@@ -11,7 +11,7 @@ export default function transform(project) {
   // :: () -> Patch -- joins all patches into one shallow
   const mergedPatch = R.compose(
     R.omit('id'),
-    R.reduce(R.merge, {}),
+    R.reduce(R.mergeWith(R.merge), {}),
     R.values,
     R.propOr({}, 'patches')
   )(project);

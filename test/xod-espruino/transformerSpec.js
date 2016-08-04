@@ -103,4 +103,32 @@ describe('Transformer', () => {
       }],
     });
   });
+
+  it('should merge patches', () => {
+    const nodes = transform({
+      patches: {
+        1: {
+          id: 1,
+          nodes: {
+            42: { id: 42, typeId: 777 },
+          },
+        },
+        2: {
+          id: 2,
+          nodes: {
+            43: { id: 43, typeId: 777 },
+          },
+        }
+      },
+      nodeTypes: {
+        777: {
+          id: 777,
+          pins: {},
+        },
+      },
+    });  
+
+    expect(nodes).to.have.property(42);
+    expect(nodes).to.have.property(43);
+  });
 });
