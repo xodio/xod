@@ -24,9 +24,11 @@ export const EDITOR_SWITCH_PATCH = 'EDITOR_SWITCH_PATCH';
 
 export const PROJECT_LOAD_DATA = 'PROJECT_LOAD_DATA';
 
+export const FOLDER_ADD = 'FOLDER_ADD';
 export const FOLDER_RENAME = 'FOLDER_RENAME';
 export const FOLDER_DELETE = 'FOLDER_DELETE';
 
+export const PATCH_ADD = 'PATCH_ADD';
 export const PATCH_RENAME = 'PATCH_RENAME';
 export const PATCH_DELETE = 'PATCH_DELETE';
 

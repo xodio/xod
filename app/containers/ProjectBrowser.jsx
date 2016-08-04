@@ -20,6 +20,8 @@ class ProjectBrowser extends React.Component {
     this.onNodeSelect = this.onNodeSelect.bind(this);
     this.onRename = this.onRename.bind(this);
     this.onDelete = this.onDelete.bind(this);
+    this.onPatchCreate = this.onPatchCreate.bind(this);
+    this.onFolderCreate = this.onFolderCreate.bind(this);
 
     this.state = {
       selection: null,
@@ -63,6 +65,14 @@ class ProjectBrowser extends React.Component {
     this.props.actions.switchPatch(id);
   }
 
+  onPatchCreate(name) {
+    this.props.actions.addPatch(name);
+  }
+
+  onFolderCreate(name) {
+    this.props.actions.addFolder(name);
+  }
+
   onDelete(type, id) {
     if (type === 'folder') {
       this.props.actions.deleteFolder(id);
@@ -88,10 +98,12 @@ class ProjectBrowser extends React.Component {
         <small className="title">Project browser</small>
         <ProjectBrowserToolbar
           selection={this.state.selection}
-          onDelete={this.onDelete}
-          onRename={this.onRename}
           patches={this.props.patches}
           folders={this.props.folders}
+          onDelete={this.onDelete}
+          onRename={this.onRename}
+          onPatchCreate={this.onPatchCreate}
+          onFolderCreate={this.onFolderCreate}
         />
         <ProjectBrowserTree
           ref="treeView"
@@ -124,8 +136,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     switchPatch: Actions.switchPatch,
+    addFolder: Actions.addFolder,
     renameFolder: Actions.renameFolder,
     deleteFolder: Actions.deleteFolder,
+    addPatch: Actions.addPatch,
     renamePatch: Actions.renamePatch,
     deletePatch: Actions.deletePatch,
   }, dispatch),

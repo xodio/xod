@@ -5,34 +5,54 @@ import { Icon } from 'react-fa';
 import PopupPrompt from '../components/PopupPrompt';
 import PopupConfirm from '../components/PopupConfirm';
 
+const initialState = {
+  renaming: false,
+  deleting: false,
+  creatingPatch: false,
+  creatingFolder: false,
+};
+
 class ProjectBrowserToolbar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      renaming: false,
-      deleting: false,
-      creating: false,
-    };
+    this.state = R.clone(initialState);
 
     this.onRenameClick = this.onRenameClick.bind(this);
     this.onRenamed = this.onRenamed.bind(this);
     this.onDeleteClick = this.onDeleteClick.bind(this);
     this.onDeleted = this.onDeleted.bind(this);
     this.onPopupClosed = this.onPopupClosed.bind(this);
+    this.onPatchCreateClick = this.onPatchCreateClick.bind(this);
+    this.onPatchCreated = this.onPatchCreated.bind(this);
+    this.onFolderCreateClick = this.onFolderCreateClick.bind(this);
+    this.onFolderCreated = this.onFolderCreated.bind(this);
+  }
+
+  onPatchCreateClick() {
+    this.setState(R.assoc('creatingPatch', true, this.state));
+  }
+
+  onPatchCreated(name) {
+    this.setState(R.assoc('creatingPatch', false, this.state));
+    this.props.onPatchCreate(name);
+  }
+
+  onFolderCreateClick() {
+    this.setState(R.assoc('creatingFolder', true, this.state));
+  }
+
+  onFolderCreated(name) {
+    this.setState(R.assoc('creatingFolder', false, this.state));
+    this.props.onFolderCreate(name);
   }
 
   onRenameClick() {
-    this.setState(
-      R.assoc('renaming', true, this.state)
-    );
+    this.setState(R.assoc('renaming', true, this.state));
   }
 
   onRenamed(name) {
-    this.setState(
-      R.assoc('renaming', false, this.state)
-    );
-
+    this.setState(R.assoc('renaming', false, this.state));
     this.props.onRename(
       this.props.selection.type,
       this.props.selection.id,
@@ -41,26 +61,16 @@ class ProjectBrowserToolbar extends React.Component {
   }
 
   onDeleteClick() {
-    this.setState(
-      R.assoc('deleting', true, this.state)
-    );
+    this.setState(R.assoc('deleting', true, this.state));
   }
 
   onDeleted() {
-    this.setState(
-      R.assoc('deleting', false, this.state)
-    );
-
+    this.setState(R.assoc('deleting', false, this.state));
     this.props.onDelete(this.props.selection.type, this.props.selection.id);
   }
 
   onPopupClosed() {
-    this.setState(
-      R.merge(this.state, {
-        renaming: false,
-        deleting: false,
-      })
-    );
+    this.setState(R.merge(this.state, initialState));
   }
 
   getFolderName(id) {
@@ -97,10 +107,27 @@ class ProjectBrowserToolbar extends React.Component {
     if (this.state.deleting) {
       return this.renderDeletingPopup();
     }
+    if (this.state.creatingPatch || this.state.creatingFolder) {
+      return this.renderCreatingPopup();
+    }
 
     return null;
   }
 
+  renderCreatingPopup() {
+    const type = (this.state.creatingPatch) ? 'patch' : 'folder';
+    const confirmCallback = (this.state.creatingPatch) ? this.onPatchCreated : this.onFolderCreated;
+
+    return (
+      <PopupPrompt
+        title={`Create new ${type}`}
+        onConfirm={confirmCallback}
+        onClose={this.onPopupClosed}
+      >
+        Type the name for new {type}:
+      </PopupPrompt>
+    );
+  }
 
   renderRenamingPopup() {
     const selection = this.getSelectionInfo();
@@ -160,10 +187,16 @@ class ProjectBrowserToolbar extends React.Component {
     return (
       <div className="ProjectBrowserToolbar">
         <div className="ProjectBrowserToolbar-left">
-          <button title="Add patch">
+          <button
+            title="Add patch"
+            onClick={this.onPatchCreateClick}
+          >
             <Icon name="file" />
           </button>
-          <button title="Add folder">
+          <button
+            title="Add folder"
+            onClick={this.onFolderCreateClick}
+          >
             <Icon name="folder" />
           </button>
         </div>
@@ -180,6 +213,8 @@ ProjectBrowserToolbar.propTypes = {
   patches: React.PropTypes.object,
   onRename: React.PropTypes.func,
   onDelete: React.PropTypes.func,
+  onPatchCreate: React.PropTypes.func,
+  onFolderCreate: React.PropTypes.func,
 };
 
 ProjectBrowserToolbar.defaultProps = {

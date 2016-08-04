@@ -328,6 +328,16 @@ export const switchPatch = (id) => (dispatch) => {
   });
 };
 
+export const addPatch = (name) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.addPatch(projectState, name);
+
+  dispatch({
+    type: ActionType.PATCH_ADD,
+    payload: preparedData,
+  });
+};
+
 export const renamePatch = (id, name) => ({
   type: ActionType.PATCH_RENAME,
   payload: {
@@ -344,6 +354,16 @@ export const deletePatch = (id) => ({
     id,
   },
 });
+
+export const addFolder = (name) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.addFolder(projectState, name);
+  console.log('!!!', preparedData);
+  dispatch({
+    type: ActionType.FOLDER_ADD,
+    payload: preparedData,
+  });
+};
 
 export const renameFolder = (id, name) => ({
   type: ActionType.FOLDER_RENAME,
