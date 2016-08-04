@@ -6,6 +6,8 @@ import { patches } from './patches';
 import { nodeTypes } from './nodetypes';
 import { counterReducer } from './counter';
 
+import { parseProjectJSON } from '../selectors/project';
+
 export default (patchIds) => {
   const reducers = {
     meta,
@@ -16,9 +18,9 @@ export default (patchIds) => {
 
   return (state = {}, action) => {
     if (action.type === PROJECT_LOAD_DATA) {
-      return JSON.parse(action.payload);
+      return parseProjectJSON(action.payload);
     }
 
-    return applyReducers(reducers, state, action, state);
+    return applyReducers(reducers, state, action);
   };
 };

@@ -39,10 +39,6 @@ const isEntitySelected = (state, entity, id) => {
 const isNodeSelected = (state, nodeId) => isEntitySelected(state, ENTITIES.NODE, nodeId);
 const isLinkSelected = (state, linkId) => isEntitySelected(state, ENTITIES.LINK, linkId);
 
-/*
-  Project selectors
-*/
-
 const getProjectState = (state, path) => {
   if (path.length > 0 && R.has(path[0], state)) {
     return getProjectState(
@@ -57,17 +53,6 @@ export const getProject = (state) => {
   const path = ['project', 'present'];
   return getProjectState(state, path);
 };
-
-export const getJSON = (state) => JSON.stringify(getProject(state));
-
-export const getMeta = R.pipe(
-  getProject,
-  R.prop('meta')
-);
-
-/*
-  Patch selectors
-*/
 
 export const getPatches = (projectState) => R.pipe(
   getProject,
@@ -158,6 +143,66 @@ export const getValidPins = (pins, links, forPinId) => {
     }, {})
   )(pins);
 };
+
+export const validatePatches = () => R.pipe(
+  R.values,
+  R.all(
+    patch => (
+      patch.hasOwnProperty('id') &&
+      patch.hasOwnProperty('name') &&
+      patch.hasOwnProperty('nodes') &&
+      patch.hasOwnProperty('pins') &&
+      patch.hasOwnProperty('links')
+    )
+  )
+);
+
+export const isPatchesUpdated = (newPatches, oldPatches) => (
+  !R.equals(R.keys(newPatches), R.keys(oldPatches))
+);
+
+export const getProjectJSON = (state) => {
+  const project = getProject(state);
+  const patches = R.pipe(
+    getPatches,
+    R.values,
+    R.map(patch => R.propOr(patch, 'present', patch))
+  )(project);
+  const projectToSave = R.assoc('patches', patches, project);
+
+  return JSON.stringify(projectToSave);
+};
+
+export const validateProject = (project) => (
+  typeof project === 'object' &&
+  (
+    project.hasOwnProperty('patches') &&
+    project.hasOwnProperty('nodeTypes') &&
+    project.hasOwnProperty('counter') &&
+    project.hasOwnProperty('meta')
+  ) &&
+  (
+    R.keys(project.patches).length === 0 ||
+    validatePatches(project.patches)
+  )
+);
+
+export const parseProjectJSON = (json) => {
+  const project = JSON.parse(json);
+  const patches = R.pipe(
+    getPatches,
+    R.values,
+    R.reduce((p, patch) => R.assoc(patch.id, { past: [], present: patch, future: [] }, p), {})
+  )(project);
+  const projectToLoad = R.assoc('patches', patches, project);
+
+  return projectToLoad;
+};
+
+export const getMeta = R.pipe(
+  getProject,
+  R.prop('meta')
+);
 
 /*
   Counter selectors
