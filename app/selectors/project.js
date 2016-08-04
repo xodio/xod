@@ -57,7 +57,7 @@ export const getProject = (state) => {
 export const getPatches = (projectState) => R.pipe(
   getProject,
   R.prop('patches')
-)(state);
+)(projectState);
 
 export const getPatchById = (projectState, id) => {
   const patch = R.view(
