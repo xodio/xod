@@ -1,0 +1,38 @@
+{
+  inputs: [{
+    key: 'in',
+    label: 'IN',
+    type: 'number',
+    description: 'Input value to map'
+  }, {
+    key: 'inA',
+    label: 'As',
+    type: 'number',
+    description: 'Input range start'
+  }, {
+    key: 'inB',
+    label: 'Bs',
+    type: 'number',
+    description: 'Input range end'
+  }, {
+    key: 'outA',
+    label: 'At',
+    type: 'number',
+    description: 'Output range start'
+  }, {
+    key: 'outB',
+    label: 'Bt',
+    type: 'number',
+    description: 'Output range end'
+  }, {
+    key: 'clip',
+    label: 'CL',
+    type: 'bool',
+    description: 'Clip result to output range'
+  }],
+  outputs: [{
+    key: 'out',
+    type: 'number',
+    description: 'Mapped value',
+  }],
+}

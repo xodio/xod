@@ -1,0 +1,7 @@
+{
+  outputs: [{
+    key: 'state',
+    type: 'bool',
+    description: 'Emits `true` when pressed and `false` when released',
+  }],
+}

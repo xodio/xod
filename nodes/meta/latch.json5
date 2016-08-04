@@ -1,0 +1,24 @@
+{
+  inputs: [{
+    key: 'toggle',
+    label: 'TGL',
+    type: 'pulse',
+    description: 'Flips current state to opposite'
+  }, {
+    key: 'set',
+    label: 'SET',
+    type: 'pulse',
+    description: 'Sets current state to `true`'
+  }, {
+    key: 'reset',
+    label: 'RST',
+    type: 'pulse',
+    description: 'Sets current state to `false`'
+  }],
+  outputs: [{
+    key: 'state',
+    type: 'bool',
+    description: 'Emits current latch state when changes',
+  }],
+}
+
