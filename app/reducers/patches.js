@@ -26,12 +26,12 @@ export const patches = (patchIds) => {
     }, {})
   )(patchIds);
 
-  const newPatch = (id, name, folderId) => ({
+  const newPatch = (action) => ({
     past: [],
     present: {
-      id,
-      name: name || 'New patch',
-      folderId: folderId || null,
+      id: action.payload.newId,
+      name: action.payload.name || 'New patch',
+      folderId: action.payload.folderId || null,
       nodes: {},
       pins: {},
       links: {},
@@ -44,10 +44,7 @@ export const patches = (patchIds) => {
       case PATCH_ADD:
         return R.assoc(
           action.payload.newId,
-          newPatch(
-            action.payload.newId,
-            action.payload.name
-          ),
+          newPatch(action),
           state
         );
       case PATCH_DELETE:

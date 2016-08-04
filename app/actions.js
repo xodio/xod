@@ -328,9 +328,9 @@ export const switchPatch = (id) => (dispatch) => {
   });
 };
 
-export const addPatch = (name) => (dispatch, getState) => {
+export const addPatch = (name, folderId) => (dispatch, getState) => {
   const projectState = Selectors.Project.getProject(getState());
-  const preparedData = Selectors.Prepare.addPatch(projectState, name);
+  const preparedData = Selectors.Prepare.addPatch(projectState, name, folderId);
 
   dispatch({
     type: ActionType.PATCH_ADD,
@@ -355,9 +355,9 @@ export const deletePatch = (id) => ({
   },
 });
 
-export const addFolder = (name) => (dispatch, getState) => {
+export const addFolder = (name, parentId) => (dispatch, getState) => {
   const projectState = Selectors.Project.getProject(getState());
-  const preparedData = Selectors.Prepare.addFolder(projectState, name);
+  const preparedData = Selectors.Prepare.addFolder(projectState, name, parentId);
   dispatch({
     type: ActionType.FOLDER_ADD,
     payload: preparedData,

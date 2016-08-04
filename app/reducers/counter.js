@@ -1,5 +1,10 @@
 import R from 'ramda';
-import { NODE_ADD, LINK_ADD } from '../actionTypes';
+import {
+  NODE_ADD,
+  LINK_ADD,
+  PATCH_ADD,
+  FOLDER_ADD,
+} from '../actionTypes';
 
 export const counterReducer = (state = {}, action) => {
   switch (action.type) {
@@ -19,6 +24,10 @@ export const counterReducer = (state = {}, action) => {
     }
     case LINK_ADD:
       return R.assoc('links', R.inc(state.links), state);
+    case PATCH_ADD:
+      return R.assoc('patches', R.inc(state.patches), state);
+    case FOLDER_ADD:
+      return R.assoc('folders', R.inc(state.folders), state);
     default:
       return state;
   }

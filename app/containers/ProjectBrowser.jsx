@@ -66,11 +66,15 @@ class ProjectBrowser extends React.Component {
   }
 
   onPatchCreate(name) {
-    this.props.actions.addPatch(name);
+    const folderId = this.getFolderId();
+    console.log('>', folderId);
+    this.props.actions.addPatch(name, folderId);
   }
 
   onFolderCreate(name) {
-    this.props.actions.addFolder(name);
+    const folderId = this.getFolderId();
+    console.log('>', folderId);
+    this.props.actions.addFolder(name, folderId);
   }
 
   onDelete(type, id) {
@@ -87,6 +91,26 @@ class ProjectBrowser extends React.Component {
     } else {
       this.props.actions.renamePatch(id, name);
     }
+  }
+
+  getPatchFolderId(id) {
+    if (!this.props.patches.hasOwnProperty(id)) { return ''; }
+    const patch = this.props.patches[id];
+
+    return R.pipe(
+      R.propOr(patch, 'present'),
+      R.prop('folderId')
+    )(patch);
+  }
+
+  getFolderId() {
+    if (this.state.selection === null) { return null; }
+
+    if (this.state.selection.type === 'folder') {
+      return this.state.selection.id;
+    }
+
+    return this.getPatchFolderId(this.state.selection.id);
   }
 
   render() {
