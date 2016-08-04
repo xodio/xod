@@ -498,7 +498,7 @@ export const getPreparedLinks = (state) => {
 
 const getNodeLabel = (state, node) => {
   const nodeType = getNodeTypeById(state, node.typeId);
-  let nodeLabel = (node.label) ? node.label : nodeType.label;
+  let nodeLabel = node.label || nodeType.label || nodeType.key;
 
   const nodeValue = R.view(R.lensPath(['properties', 'value']), node);
   if (nodeValue !== undefined) {
