@@ -157,7 +157,6 @@ class ProjectBrowser extends React.Component {
       return;
     }
 
-    console.log('deselect', this.state);
     if (this.refs.treeView && this.refs.treeView.deselect) {
       this.refs.treeView.deselect();
     }
