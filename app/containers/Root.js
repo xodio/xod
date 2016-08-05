@@ -7,6 +7,7 @@ import generateReducers from '../reducers/';
 import Selectors from '../selectors/';
 import Serializer from '../serializers/mock';
 import { EditorMiddleware } from '../middlewares';
+import { addNode } from '../actions';
 
 import App from './App';
 
@@ -27,6 +28,30 @@ export default class Root extends React.Component {
         this.store.replaceReducer(this.createReducers(statePatches));
       }
     });
+  }
+
+  componentDidMount() {
+    this.populateDemo();
+  }
+
+  populateDemo() {
+    const state = this.store.getState();
+    const nodeTypeIdByKey = key => R.compose(
+      R.prop('id'),
+      R.find(R.propEq('key', key)),
+      R.values
+    )(state.project.nodeTypes);
+
+    const dispatchAddNode = (nodeTypeKey, x, y) => {
+      const nodeTypeId = nodeTypeIdByKey(nodeTypeKey);
+      const action = addNode(nodeTypeId, { x, y }, 1);
+      this.store.dispatch(action);
+    };
+
+    dispatchAddNode('button', 100, 100);
+    dispatchAddNode('pot', 400, 100);
+    dispatchAddNode('led', 100, 400);
+    dispatchAddNode('servo', 400, 400);
   }
 
   createReducers(patches) {

@@ -1,13 +1,6 @@
 {
   inputs: [{
-    name: 'enable',
-    label: 'EN',
-    type: 'bool',
-    defaultValue: true,
-    description: 'Apply torque to the shaft'
-  }, {
-    name: 'value',
-    label: 'VAL',
+    key: 'value',
     type: 'number',
     defaultValue: 1,
     description: 'Rotation angle/value'
