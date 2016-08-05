@@ -114,17 +114,19 @@ export const setLinkSelection = (id) => ({
   },
 });
 
+export const setModeUnsafe = (mode) => ({
+  type: ActionType.EDITOR_SET_MODE,
+  payload: {
+    mode,
+  },
+});
+
 export const setMode = (mode) => (dispatch, getState) => {
   if (Selectors.Editor.getMode(getState()) === mode) {
     return;
   }
 
-  dispatch({
-    type: ActionType.EDITOR_SET_MODE,
-    payload: {
-      mode,
-    },
-  });
+  dispatch(setModeUnsafe(mode));
 };
 
 export const deselectAll = () => (dispatch, getState) => {
