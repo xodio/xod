@@ -24,11 +24,10 @@ class ProjectBrowser extends React.Component {
     this.onPatchCreate = this.onPatchCreate.bind(this);
     this.onFolderCreate = this.onFolderCreate.bind(this);
     this.onToolbarHotkeys = this.onToolbarHotkeys.bind(this);
+    this.deselect = this.deselect.bind(this);
 
     this.state = {
       selection: null,
-      renaming: false,
-      deleting: false,
     };
 
     this.hotkeys = {};
@@ -67,9 +66,7 @@ class ProjectBrowser extends React.Component {
       findParentByClassName(event.target, 'ProjectBrowserToolbar')
     ) { return; }
 
-    if (this.refs.treeView && this.refs.treeView.deselect) {
-      this.refs.treeView.deselect();
-    }
+    this.deselect();
   }
 
   onTreeChange(newTree) {
@@ -106,6 +103,7 @@ class ProjectBrowser extends React.Component {
     } else {
       this.props.actions.deletePatch(id);
     }
+    this.state.selection = null;
   }
 
   onRename(type, id, name) {
@@ -143,10 +141,26 @@ class ProjectBrowser extends React.Component {
   getHotkeyHandlers() {
     return R.merge(
       {
-        [CMD.ESCAPE]: this.refs.treeView.deselect,
+        [CMD.ESCAPE]: this.deselect,
       },
       this.hotkeys
     );
+  }
+
+  deselect() {
+    if (
+      this.refs.toolbar &&
+      this.refs.toolbar.getState('renaming') ||
+      this.refs.toolbar.getState('deleting') ||
+      this.state.selection === null
+    ) {
+      return;
+    }
+
+    console.log('deselect', this.state);
+    if (this.refs.treeView && this.refs.treeView.deselect) {
+      this.refs.treeView.deselect();
+    }
   }
 
   render() {
@@ -157,14 +171,17 @@ class ProjectBrowser extends React.Component {
       >
         <small className="title">Project browser</small>
         <ProjectBrowserToolbar
+          ref="toolbar"
           hotkeys={this.onToolbarHotkeys}
           selection={this.state.selection}
+          currentPatchId={this.props.currentPatchId}
           patches={this.props.patches}
           folders={this.props.folders}
           onDelete={this.onDelete}
           onRename={this.onRename}
           onPatchCreate={this.onPatchCreate}
           onFolderCreate={this.onFolderCreate}
+          onDeleteError={this.props.actions.addError}
         />
         <ProjectBrowserTree
           ref="treeView"
@@ -206,6 +223,7 @@ const mapDispatchToProps = (dispatch) => ({
     renamePatch: Actions.renamePatch,
     deletePatch: Actions.deletePatch,
     movePatch: Actions.movePatch,
+    addError: Actions.addError,
   }, dispatch),
 });
 

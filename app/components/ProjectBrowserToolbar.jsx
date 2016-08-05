@@ -2,6 +2,7 @@ import R from 'ramda';
 import React from 'react';
 
 import CMD from '../constants/commands';
+import { PROJECT_BROWSER_ERRORS } from '../constants/errorMessages';
 
 import { Icon } from 'react-fa';
 import PopupPrompt from '../components/PopupPrompt';
@@ -69,6 +70,19 @@ class ProjectBrowserToolbar extends React.Component {
   }
 
   onDeleteClick() {
+    if (this.canBeDeletedWithoutConfirmation()) {
+      this.onDeleted();
+      return;
+    }
+
+    if (
+      this.props.selection.type === 'patch' &&
+      this.props.selection.id === this.props.currentPatchId
+    ) {
+      this.props.onDeleteError({ message: PROJECT_BROWSER_ERRORS.CANT_DELETE_CURRENT_PATCH });
+      return;
+    }
+
     this.setState(R.assoc('deleting', true, this.state));
   }
 
@@ -115,6 +129,39 @@ class ProjectBrowserToolbar extends React.Component {
       [CMD.PROJECT_BROWSER_RENAME]: this.onRenameClick,
       [CMD.PROJECT_BROWSER_DELETE]: this.onDeleteClick,
     };
+  }
+
+  getPresentPatch(patch) {
+    return R.propOr(patch, 'present', patch);
+  }
+
+  getState(key) {
+    return this.state[key];
+  }
+
+  canBeDeletedWithoutConfirmation() {
+    const type = this.props.selection.type;
+    const id = this.props.selection.id;
+    let haveChilds = false;
+
+    if (type === 'folder') {
+      const folders = R.values(this.props.folders);
+      const patches = R.values(this.props.patches);
+      const folderChilds = R.filter(R.propEq('parentId', id))(folders);
+      const patchChilds = R.filter(
+        patch => R.propEq('folderId', id)(this.getPresentPatch(patch))
+      )(patches);
+
+      haveChilds = ((folderChilds.length + patchChilds.length) > 0);
+    }
+
+    if (type === 'patch') {
+      const patches = this.props.patches;
+      const patch = this.getPresentPatch(patches[id]);
+      haveChilds = (R.values(patch.nodes).length > 0);
+    }
+
+    return !haveChilds;
   }
 
   renderPopup() {
@@ -226,6 +273,7 @@ class ProjectBrowserToolbar extends React.Component {
 
 ProjectBrowserToolbar.propTypes = {
   selection: React.PropTypes.object,
+  currentPatchId: React.PropTypes.number,
   folders: React.PropTypes.object,
   patches: React.PropTypes.object,
   onRename: React.PropTypes.func,
@@ -233,6 +281,7 @@ ProjectBrowserToolbar.propTypes = {
   onPatchCreate: React.PropTypes.func,
   onFolderCreate: React.PropTypes.func,
   hotkeys: React.PropTypes.func,
+  onDeleteError: React.PropTypes.func,
 };
 
 ProjectBrowserToolbar.defaultProps = {
