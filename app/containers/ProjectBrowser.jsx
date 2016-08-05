@@ -117,6 +117,7 @@ class ProjectBrowser extends React.Component {
   }
 
   render() {
+    const tree = R.clone(this.props.tree);
     return (
       <div
         className="ProjectBrowser"
@@ -134,7 +135,7 @@ class ProjectBrowser extends React.Component {
         />
         <ProjectBrowserTree
           ref="treeView"
-          tree={this.props.tree}
+          tree={tree}
           currentPatchId={this.props.currentPatchId}
           onSelect={this.onNodeSelect}
           onChange={this.onTreeChange}
