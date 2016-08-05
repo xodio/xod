@@ -2,11 +2,9 @@
 import R from 'ramda';
 
 import * as EDITOR_MODE from './constants/editorModes';
-import * as NODE_CATEGORY from './constants/nodeCategory';
 import * as PIN_DIRECTION from './constants/pinDirection';
-import * as PIN_TYPE from './constants/pinType';
-import { PROPERTY_TYPE, PROPERTY_DEFAULT_VALUE } from './constants/property';
 
+/* eslint-disable global-require */
 const nodeMetas = {
   button: require('../nodes/meta/button.json5'),
   either: require('../nodes/meta/either.json5'),
@@ -17,6 +15,7 @@ const nodeMetas = {
   pot: require('../nodes/meta/pot.json5'),
   servo: require('../nodes/meta/servo.json5'),
 };
+/* eslint-enable global-require */
 
 R.mapDirectedNodeTypePins = (direction, collectionKey) => R.compose(
   R.indexBy(R.prop('key')),
@@ -37,7 +36,7 @@ const nodeTypes = R.compose(
     {
       id: R.indexOf(key, R.keys(metas)) + 1,
       key,
-      pins: mapNodeTypePins(meta)
+      pins: mapNodeTypePins(meta),
     }
   ))
 )(nodeMetas);

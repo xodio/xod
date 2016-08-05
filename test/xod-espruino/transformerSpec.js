@@ -118,7 +118,7 @@ describe('Transformer', () => {
           nodes: {
             43: { id: 43, typeId: 777 },
           },
-        }
+        },
       },
       nodeTypes: {
         777: {
@@ -126,7 +126,7 @@ describe('Transformer', () => {
           pins: {},
         },
       },
-    });  
+    });
 
     expect(nodes).to.have.property(42);
     expect(nodes).to.have.property(43);

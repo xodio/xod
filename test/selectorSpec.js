@@ -18,8 +18,8 @@ describe('Link selector', () => {
               inB: { key: 'inB', type: PIN_TYPE.NUMBER, direction: PIN_DIRECTION.INPUT },
               outA: { key: 'outA', type: PIN_TYPE.NUMBER, direction: PIN_DIRECTION.OUTPUT },
               outB: { key: 'outB', type: PIN_TYPE.NUMBER, direction: PIN_DIRECTION.OUTPUT },
-            }
-          }
+            },
+          },
         },
         patches: {
           1: {
@@ -44,7 +44,7 @@ describe('Link selector', () => {
           },
         },
       },
-      editor: { 
+      editor: {
         // FIXME: it should not be here. But now project selectors
         // are coupled with editor selectors o_O !! See issue #135.
         currentPatchId: 1,
@@ -57,12 +57,12 @@ describe('Link selector', () => {
 
     function expectOk(pinFrom, pinTo) {
       const check = validate(pinFrom, pinTo);
-      chai.expect(check.isValid).to.be.true;
+      chai.expect(check.isValid).to.be.equal(true);
     }
 
     function expectFail(pinFrom, pinTo, message) {
       const check = validate(pinFrom, pinTo);
-      chai.expect(check.isValid).to.be.false;
+      chai.expect(check.isValid).to.be.equal(false);
       chai.expect(check.message).to.be.equal(message);
     }
 
@@ -75,16 +75,16 @@ describe('Link selector', () => {
       expectOk(24, 12);
     });
 
-    it(`should be invalid to link same node`, () => {
+    it('should be invalid to link same node', () => {
       expectFail(14, 11, LINK_ERRORS.SAME_NODE);
     });
 
-    it(`should be invalid to link same direction`, () => {
+    it('should be invalid to link same direction', () => {
       expectFail(14, 24, LINK_ERRORS.SAME_DIRECTION);
       expectFail(12, 22, LINK_ERRORS.SAME_DIRECTION);
     });
 
-    it(`should be invalid to have multiple inbound links`, () => {
+    it('should be invalid to have multiple inbound links', () => {
       expectFail(13, 21, LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN);
     });
   });
