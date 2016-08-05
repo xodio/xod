@@ -39,6 +39,7 @@
     "react-dom": "^0.14.6",
     "react-event-listener": "^0.2.1",
     "react-fa": "git+https://github.com/brusherru/react-fa.git",
+    "react-hotkeys": "^0.9.0",
     "react-redux": "^4.0.6",
     "react-skylight": "^0.4.0",
     "react-ui-tree": "^2.5.0",

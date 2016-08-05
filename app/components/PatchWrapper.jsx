@@ -7,7 +7,7 @@ const PatchWrapper = ({ children }) => (
 );
 
 PatchWrapper.propTypes = {
-  children: React.PropTypes.arrayOf(React.PropTypes.element),
+  children: React.PropTypes.element,
 };
 
 export default PatchWrapper;

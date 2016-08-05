@@ -1,56 +1,46 @@
+import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import * as EDITOR_MODE from '../constants/editorModes';
-import * as KEYCODE from '../constants/keycodes';
-import { isInput } from '../utils/browser';
+import CMD from '../constants/commands';
+
 import Patch from './Patch';
-import EventListener from 'react-event-listener';
+import ProjectBrowser from './ProjectBrowser';
 import Sidebar from '../components/Sidebar';
 import Inspector from '../components/Inspector';
-import ProjectBrowser from './ProjectBrowser';
 
 class Editor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onKeyDown = this.onKeyDown.bind(this);
     this.onPropUpdate = this.onPropUpdate.bind(this);
     this.setModeCreating = this.setModeCreating.bind(this);
     this.setModeDefault = this.setModeDefault.bind(this);
     this.setSelectedNodeType = this.setSelectedNodeType.bind(this);
+    this.onPatchHotkeys = this.onPatchHotkeys.bind(this);
+    this.onBrowserHotkeys = this.onBrowserHotkeys.bind(this);
 
     this.patchSize = this.props.size;
+    this.hotkeys = {};
   }
 
-  onKeyDown(event) {
-    const keycode = event.keyCode || event.which;
-    const isNotInput = !isInput(event);
-
-    if (isNotInput) {
-      if (keycode === KEYCODE.BACKSPACE) {
-        event.preventDefault();
-      }
-
-      if (keycode === KEYCODE.N) {
-        this.setModeCreating();
-      }
-      if (keycode === KEYCODE.ESCAPE && this.props.mode.isCreatingNode) {
-        this.setModeDefault();
-      }
-
-      if (event.ctrlKey && keycode === KEYCODE.Z) {
-        this.props.actions.undo(this.props.currentPatchId);
-      }
-      if (event.ctrlKey && keycode === KEYCODE.Y) {
-        this.props.actions.redo(this.props.currentPatchId);
-      }
-    }
+  componentDidMount() {
+    this.props.hotkeys(this.getHotkeyHandlers());
   }
+
   onPropUpdate(nodeId, propKey, propValue) {
     this.props.actions.updateNodeProperty(nodeId, propKey, propValue);
+  }
+
+  onPatchHotkeys(hotkeys) {
+    this.hotkeys.patch = hotkeys;
+  }
+  onBrowserHotkeys(hotkeys) {
+    this.hotkeys.browser = hotkeys;
   }
 
   setEditorMode(mode) {
@@ -71,12 +61,66 @@ class Editor extends React.Component {
     );
   }
 
+  getHotkeyHandlers() {
+    return this.mergeCommands([
+      {
+        [CMD.SET_MODE_CREATING]: this.setModeCreating,
+        [CMD.ESCAPE]: this.setModeDefault,
+        [CMD.UNDO]: () => this.props.actions.undo(this.props.currentPatchId),
+        [CMD.REDO]: () => this.props.actions.redo(this.props.currentPatchId),
+      },
+      this.hotkeys.patch,
+      this.hotkeys.browser,
+    ]);
+    // return R.mergeAll([
+    //   {
+    //     [CMD.SET_MODE_CREATING]: this.setModeCreating,
+    //     [CMD.ESCAPE]: this.setModeDefault,
+    //     [CMD.UNDO]: () => this.props.actions.undo(this.props.currentPatchId),
+    //     [CMD.REDO]: () => this.props.actions.redo(this.props.currentPatchId),
+    //   },
+    //   this.hotkeys.patch,
+    //   this.hotkeys.browser,
+    // ]);
+  }
+  mergeCommand(obj1, obj2) {
+    const result = R.clone(obj1);
+    const arr2 = R.keys(obj2);
+    const hasKey = R.flip(R.has)(obj1);
+    console.log('merge objects:', obj1, obj2);
+    console.log('??', arr2);
+    arr2.forEach(key => {
+      console.log(key, hasKey(key));
+      if (hasKey(key)) {
+        console.log('compose', obj1, obj2);
+      }
+      result[key] = hasKey(key) ? R.compose(obj1[key], obj2[key]) : obj2[key];
+    });
+
+    console.log('merged:', result);
+    return result;
+  }
+
+  mergeCommands(array) {
+    console.log('start:', array);
+    if (array.length === 1) {
+      console.log('end', array[0]);
+      return array[0];
+    }
+    const cutArray = R.slice(2, Infinity);
+    const getResult = R.flip(R.prepend)(cutArray(array));
+    const newArray = getResult(this.mergeCommand(array[0], array[1]));
+
+    const nextMerge = this.mergeCommands(newArray);
+
+    return nextMerge;
+  }
+
   render() {
     return (
       <div>
-        <EventListener target={document} onKeyDown={this.onKeyDown} />
         <Sidebar>
-          <ProjectBrowser />
+          <ProjectBrowser hotkeys={this.onBrowserHotkeys} />
           <Inspector
             selection={this.props.selection}
             nodes={this.props.nodes}
@@ -85,6 +129,7 @@ class Editor extends React.Component {
           />
         </Sidebar>
         <Patch
+          hotkeys={this.onPatchHotkeys}
           size={this.patchSize}
         />
       </div>
@@ -102,6 +147,7 @@ Editor.propTypes = {
   currentPatchId: React.PropTypes.number,
   mode: React.PropTypes.object,
   actions: React.PropTypes.object,
+  hotkeys: React.PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({

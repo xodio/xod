@@ -3,18 +3,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import EventListener from 'react-event-listener';
+import * as Actions from '../actions';
+import Selectors from '../selectors';
+import { findRootSVG } from '../utils/browser';
+import CMD from '../constants/commands';
+
 import PatchWrapper from '../components/PatchWrapper';
 import PatchSVG from '../components/PatchSVG';
 import BackgroundLayer from '../components/BackgroundLayer';
 import NodesLayer from '../components/NodesLayer';
 import LinksLayer from '../components/LinksLayer';
 import GhostsLayer from './GhostsLayer';
-
-import * as Actions from '../actions';
-import Selectors from '../selectors';
-import { isInput, findRootSVG } from '../utils/browser';
-import * as KEYCODE from '../constants/keycodes';
 
 class Patch extends React.Component {
   constructor(props) {
@@ -27,7 +26,6 @@ class Patch extends React.Component {
     };
     this.state.mousePosition = { x: 0, y: 0 };
 
-    this.onKeyDown = this.onKeyDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onNodeMouseUp = this.onNodeMouseUp.bind(this);
@@ -36,6 +34,10 @@ class Patch extends React.Component {
     this.onLinkClick = this.onLinkClick.bind(this);
 
     this.deselectAll = this.deselectAll.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.hotkeys(this.getHotkeyHandlers());
   }
 
   onNodeMouseUp(id) {
@@ -119,31 +121,6 @@ class Patch extends React.Component {
     this.dragging = {};
   }
 
-  onKeyDown(event) {
-    const keycode = event.keyCode || event.which;
-    const selection = this.props.selection;
-    const hasSelection = selection.length > 0;
-    const isLinking = this.props.linkingPin !== null;
-    const isNotInput = !isInput(event);
-
-    if (isNotInput) {
-      if (
-        hasSelection &&
-        (keycode === KEYCODE.BACKSPACE || keycode === KEYCODE.DELETE)
-      ) {
-        this.props.actions.deleteSelection();
-      }
-      // @TODO: By pressing ENTER — pass event upper to process it in Editor
-      //        And then call focus into first input field in the inspector
-      if (
-        (hasSelection || isLinking) &&
-        keycode === KEYCODE.ESCAPE
-      ) {
-        this.deselectAll();
-      }
-    }
-  }
-
   onCreateNode(event) {
     const container = findRootSVG(event.target);
     const targetOffset = container.getBoundingClientRect();
@@ -188,6 +165,13 @@ class Patch extends React.Component {
     this.setState(
       R.assoc('mousePosition', pos, this.state)
     );
+  }
+
+  getHotkeyHandlers() {
+    return {
+      [CMD.DELETE_SELECTION]: this.props.actions.deleteSelection,
+      [CMD.ESCAPE]: this.deselectAll,
+    };
   }
 
   extendNodesByPinValidness(nodes) {
@@ -258,7 +242,6 @@ class Patch extends React.Component {
 
     return (
       <PatchWrapper>
-        <EventListener target={document} onKeyDown={this.onKeyDown} />
         <PatchSVG
           onMouseMove={this.onMouseMove}
           onMouseUp={this.onMouseUp}
@@ -300,6 +283,7 @@ Patch.propTypes = {
   patchId: React.PropTypes.number,
   nodeTypes: React.PropTypes.object,
   mode: React.PropTypes.object,
+  hotkeys: React.PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({

@@ -1,7 +1,9 @@
 import R from 'ramda';
 import React from 'react';
-import { Icon } from 'react-fa';
 
+import CMD from '../constants/commands';
+
+import { Icon } from 'react-fa';
 import PopupPrompt from '../components/PopupPrompt';
 import PopupConfirm from '../components/PopupConfirm';
 
@@ -27,6 +29,12 @@ class ProjectBrowserToolbar extends React.Component {
     this.onPatchCreated = this.onPatchCreated.bind(this);
     this.onFolderCreateClick = this.onFolderCreateClick.bind(this);
     this.onFolderCreated = this.onFolderCreated.bind(this);
+
+    this.hotkeys = {};
+  }
+
+  componentDidMount() {
+    this.props.hotkeys(this.getHotkeyHandlers());
   }
 
   onPatchCreateClick() {
@@ -97,6 +105,15 @@ class ProjectBrowserToolbar extends React.Component {
       type,
       id,
       name,
+    };
+  }
+
+  getHotkeyHandlers() {
+    return {
+      [CMD.ADD_PATCH]: this.onPatchCreateClick,
+      [CMD.ADD_FOLDER]: this.onFolderCreateClick,
+      [CMD.PROJECT_BROWSER_RENAME]: this.onRenameClick,
+      [CMD.PROJECT_BROWSER_DELETE]: this.onDeleteClick,
     };
   }
 
@@ -215,6 +232,7 @@ ProjectBrowserToolbar.propTypes = {
   onDelete: React.PropTypes.func,
   onPatchCreate: React.PropTypes.func,
   onFolderCreate: React.PropTypes.func,
+  hotkeys: React.PropTypes.func,
 };
 
 ProjectBrowserToolbar.defaultProps = {

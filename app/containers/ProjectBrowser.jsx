@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 
+import CMD from '../constants/commands';
 import { findParentByClassName } from '../utils/browser';
 
 import ProjectBrowserTree from '../components/ProjectBrowserTree';
@@ -22,6 +23,7 @@ class ProjectBrowser extends React.Component {
     this.onDelete = this.onDelete.bind(this);
     this.onPatchCreate = this.onPatchCreate.bind(this);
     this.onFolderCreate = this.onFolderCreate.bind(this);
+    this.onToolbarHotkeys = this.onToolbarHotkeys.bind(this);
 
     this.state = {
       selection: null,
@@ -29,7 +31,18 @@ class ProjectBrowser extends React.Component {
       deleting: false,
     };
 
+    this.hotkeys = {};
     this.oldTree = R.clone(props.tree);
+  }
+
+  componentDidMount() {
+    this.props.hotkeys(this.getHotkeyHandlers());
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.tree !== this.oldTree) {
+      this.oldTree = nextProps.tree;
+    }
   }
 
   onNodeSelect(type, id) {
@@ -70,8 +83,6 @@ class ProjectBrowser extends React.Component {
     if (treeChanges.changed) {
       dispatchChange(treeChanges.folders, this.props.actions.moveFolder);
       dispatchChange(treeChanges.patches, this.props.actions.movePatch);
-
-      this.oldTree = newTree;
     }
   }
 
@@ -105,6 +116,10 @@ class ProjectBrowser extends React.Component {
     }
   }
 
+  onToolbarHotkeys(hotkeys) {
+    this.hotkeys = hotkeys;
+  }
+
   getPatchFolderId(id) {
     if (!this.props.patches.hasOwnProperty(id)) { return ''; }
     const patch = this.props.patches[id];
@@ -125,6 +140,15 @@ class ProjectBrowser extends React.Component {
     return this.getPatchFolderId(this.state.selection.id);
   }
 
+  getHotkeyHandlers() {
+    return R.merge(
+      {
+        [CMD.ESCAPE]: this.refs.treeView.deselect,
+      },
+      this.hotkeys
+    );
+  }
+
   render() {
     return (
       <div
@@ -133,6 +157,7 @@ class ProjectBrowser extends React.Component {
       >
         <small className="title">Project browser</small>
         <ProjectBrowserToolbar
+          hotkeys={this.onToolbarHotkeys}
           selection={this.state.selection}
           patches={this.props.patches}
           folders={this.props.folders}
@@ -160,6 +185,7 @@ ProjectBrowser.propTypes = {
   patches: React.PropTypes.object,
   folders: React.PropTypes.object,
   currentPatchId: React.PropTypes.number,
+  hotkeys: React.PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({

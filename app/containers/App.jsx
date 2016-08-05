@@ -1,6 +1,7 @@
 
 import R from 'ramda';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -10,6 +11,9 @@ import Selectors from '../selectors';
 import { getViewableSize, isChromeApp } from '../utils/browser';
 import * as EDITOR_MODE from '../constants/editorModes';
 import { SAVE_LOAD_ERRORS } from '../constants/errorMessages';
+
+import { HotKeys } from 'react-hotkeys';
+import hotkeysKeymap from '../constants/hotkeys';
 
 import Editor from './Editor';
 import SnackBar from './SnackBar';
@@ -30,6 +34,7 @@ class App extends React.Component {
       size: getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
       popupInstallApp: false,
       popupUploadProject: false,
+      hotkeys: {},
     };
 
     this.onResize = this.onResize.bind(this);
@@ -39,6 +44,11 @@ class App extends React.Component {
     this.onSelectNodeType = this.onSelectNodeType.bind(this);
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
+    this.onHotkeys = this.onHotkeys.bind(this);
+  }
+
+  componentDidMount() {
+    ReactDOM.findDOMNode(this.refs.hotkeys).focus();
   }
 
   onResize() {
@@ -119,6 +129,15 @@ class App extends React.Component {
     this.props.actions.deleteProcess(id, UPLOAD_ACTION_TYPE);
   }
 
+  onHotkeys(hotkeys) {
+    this.setState(R.assoc('hotkeys', hotkeys, this.state));
+  }
+
+  getHotkeyHandlers() {
+    console.log('?', this.state.hotkeys);
+    return this.state.hotkeys;
+  }
+
   showInstallAppPopup() {
     this.setState(
       R.assoc('popupInstallApp', true, this.state)
@@ -140,7 +159,7 @@ class App extends React.Component {
   render() {
     const devToolsInstrument = (isChromeApp) ? <DevTools /> : null;
     return (
-      <div>
+      <HotKeys keyMap={hotkeysKeymap} handlers={this.getHotkeyHandlers()} ref="hotkeys">
         <EventListener target={window} onResize={this.onResize} />
         <Toolbar
           meta={this.props.meta}
@@ -151,7 +170,7 @@ class App extends React.Component {
           onSelectNodeType={this.onSelectNodeType}
           onAddNodeClick={this.onAddNodeClick}
         />
-        <Editor size={this.state.size} />
+        <Editor hotkeys={this.onHotkeys} size={this.state.size} />
         <SnackBar />
         {devToolsInstrument}
         <PopupInstallApp
@@ -162,7 +181,7 @@ class App extends React.Component {
           upload={this.props.upload}
           onClose={this.onUploadPopupClose}
         />
-      </div>
+      </HotKeys>
     );
   }
 }

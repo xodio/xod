@@ -16,6 +16,7 @@ class ProjectBrowserTree extends React.Component {
     this.onClickNode = this.onClickNode.bind(this);
     this.onChange = this.onChange.bind(this);
     this.renderNode = this.renderNode.bind(this);
+    this.deselect = this.deselect.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
