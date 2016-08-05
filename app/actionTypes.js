@@ -27,10 +27,12 @@ export const PROJECT_LOAD_DATA = 'PROJECT_LOAD_DATA';
 export const FOLDER_ADD = 'FOLDER_ADD';
 export const FOLDER_RENAME = 'FOLDER_RENAME';
 export const FOLDER_DELETE = 'FOLDER_DELETE';
+export const FOLDER_MOVE = 'FOLDER_MOVE';
 
 export const PATCH_ADD = 'PATCH_ADD';
 export const PATCH_RENAME = 'PATCH_RENAME';
 export const PATCH_DELETE = 'PATCH_DELETE';
+export const PATCH_MOVE = 'PATCH_MOVE';
 
 export const ERROR_ADD = 'ERROR_ADD';
 export const ERROR_DELETE = 'ERROR_DELETE';

@@ -61,8 +61,13 @@ class ProjectBrowser extends React.Component {
     const oldTree = this.props.tree;
     const treeChanges = Selectors.Project.getTreeChanges(oldTree, newTree);
 
+    const dispatchChange = (array, action) => {
+      array.forEach((item) => action(item));
+    };
+
     if (treeChanges.changed) {
-      
+      dispatchChange(treeChanges.folders, this.props.actions.moveFolder);
+      dispatchChange(treeChanges.patches, this.props.actions.movePatch);
     }
   }
 
@@ -167,9 +172,11 @@ const mapDispatchToProps = (dispatch) => ({
     addFolder: Actions.addFolder,
     renameFolder: Actions.renameFolder,
     deleteFolder: Actions.deleteFolder,
+    moveFolder: Actions.moveFolder,
     addPatch: Actions.addPatch,
     renamePatch: Actions.renamePatch,
     deletePatch: Actions.deletePatch,
+    movePatch: Actions.movePatch,
   }, dispatch),
 });
 

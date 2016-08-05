@@ -3,6 +3,7 @@ import {
   FOLDER_ADD,
   FOLDER_RENAME,
   FOLDER_DELETE,
+  FOLDER_MOVE,
 } from '../actionTypes';
 
 const newFolder = (action) => ({
@@ -17,9 +18,10 @@ export const foldersReducer = (state = {}, action) => {
       return R.assoc(action.payload.newId, newFolder(action), state);
     case FOLDER_RENAME:
       return R.assocPath([action.payload.id, 'name'], action.payload.name, state);
-    case FOLDER_DELETE: {
+    case FOLDER_DELETE:
       return R.omit([action.payload.id.toString()], state);
-    }
+    case FOLDER_MOVE:
+      return R.assocPath([action.payload.id, 'parentId'], action.payload.parentId, state);
     default:
       return state;
   }

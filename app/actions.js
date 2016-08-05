@@ -355,6 +355,17 @@ export const deletePatch = (id) => ({
   },
 });
 
+export const movePatch = (changes) => ({
+  type: ActionType.PATCH_MOVE,
+  payload: {
+    id: changes.id,
+    folderId: changes.folderId,
+  },
+  meta: {
+    patchId: changes.id,
+  },
+});
+
 export const addFolder = (name, parentId) => (dispatch, getState) => {
   const projectState = Selectors.Project.getProject(getState());
   const preparedData = Selectors.Prepare.addFolder(projectState, name, parentId);
@@ -385,3 +396,11 @@ export const deleteFolder = (id) => (dispatch, getState) => {
     },
   });
 };
+
+export const moveFolder = (changes) => ({
+  type: ActionType.FOLDER_MOVE,
+  payload: {
+    id: changes.id,
+    parentId: changes.parentId,
+  },
+});
