@@ -28,6 +28,8 @@ class ProjectBrowser extends React.Component {
       renaming: false,
       deleting: false,
     };
+
+    this.oldTree = R.clone(props.tree);
   }
 
   onNodeSelect(type, id) {
@@ -58,7 +60,7 @@ class ProjectBrowser extends React.Component {
   }
 
   onTreeChange(newTree) {
-    const oldTree = this.props.tree;
+    const oldTree = this.oldTree;
     const treeChanges = Selectors.Project.getTreeChanges(oldTree, newTree);
 
     const dispatchChange = (array, action) => {
@@ -68,6 +70,8 @@ class ProjectBrowser extends React.Component {
     if (treeChanges.changed) {
       dispatchChange(treeChanges.folders, this.props.actions.moveFolder);
       dispatchChange(treeChanges.patches, this.props.actions.movePatch);
+
+      this.oldTree = newTree;
     }
   }
 
@@ -122,7 +126,6 @@ class ProjectBrowser extends React.Component {
   }
 
   render() {
-    const tree = R.clone(this.props.tree);
     return (
       <div
         className="ProjectBrowser"
@@ -140,7 +143,7 @@ class ProjectBrowser extends React.Component {
         />
         <ProjectBrowserTree
           ref="treeView"
-          tree={tree}
+          tree={this.props.tree}
           currentPatchId={this.props.currentPatchId}
           onSelect={this.onNodeSelect}
           onChange={this.onTreeChange}

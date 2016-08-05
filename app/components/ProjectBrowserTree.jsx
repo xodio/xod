@@ -29,7 +29,6 @@ class ProjectBrowserTree extends React.Component {
     if (!node.hasOwnProperty('leaf')) {
       nodeRef.collapsed = !nodeRef.collapsed;
     }
-
     this.setActive(nodeRef);
   }
 
@@ -43,9 +42,7 @@ class ProjectBrowserTree extends React.Component {
     this.props.onChange(tree);
   }
 
-  setActive(val) {
-    this.setState(R.assoc('active', val, this.state));
-
+  getActiveData(val) {
     let selected = {
       type: null,
       id: null,
@@ -58,6 +55,13 @@ class ProjectBrowserTree extends React.Component {
       };
     }
 
+    return selected;
+  }
+
+  setActive(val) {
+    const selected = this.getActiveData(val);
+
+    this.setState(R.assoc('active', selected, this.state));
     this.props.onSelect(selected.type, selected.id);
   }
 
@@ -69,10 +73,27 @@ class ProjectBrowserTree extends React.Component {
     this.setActive(null);
   }
 
+  isNodeActive(node) {
+    const thatNode = this.getActiveData(node);
+
+    return (
+      thatNode && this.state.active &&
+      thatNode.id === this.state.active.id &&
+      thatNode.type === this.state.active.type
+    );
+  }
+
+  isNodeCurrent(node) {
+    return (
+      node.hasOwnProperty('leaf') &&
+      node.id === this.props.currentPatchId
+    );
+  }
+
   renderNode(node) {
     const nodeClassName = classNames('node', {
-      'is-active': node === this.state.active,
-      'is-current': (node.hasOwnProperty('leaf') && node.id === this.props.currentPatchId),
+      'is-active': this.isNodeActive(node),
+      'is-current': this.isNodeCurrent(node),
     });
 
     const onClick = this.onClickNode.bind(this, node);
