@@ -1,15 +1,21 @@
 
-import runtime from 'raw!./runtime';
 import transform from './transformer';
 
-export default function transpile(project) {
-  const transformedProject = transform(project);
-  const payload = `var project = ${JSON.stringify(transformedProject)};`;
+export default function transpile({ project, runtime }) {
+  const nodes = transform(project);
+  const payload = [
+    `var nodes = ${JSON.stringify(nodes)};`,
+    'var project = new Project(nodes);',
+    'function onInit() {',
+    '  project.launch();',
+    '}',
+  ].join('\n');
   const save = 'save();';
 
   return [
-    payload,
     runtime,
+    payload,
     save,
+    '',
   ].join('\n');
 }

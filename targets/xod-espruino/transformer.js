@@ -1,7 +1,7 @@
 
 import R from 'ramda';
-import * as PIN_DIRECTION from 'constants/pinDirection';
-import * as PIN_TYPE from 'constants/pinType';
+import * as PIN_DIRECTION from '../../app/constants/pinDirection';
+import * as PIN_TYPE from '../../app/constants/pinType';
 
 /**
   * Transforms JSON data as it seen it *.xod files to

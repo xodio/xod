@@ -225,7 +225,3 @@ export class Project {
     Object.keys(this._nodes).forEach(id => callback(this._nodes[id]));
   }
 }
-
-function onInit() {
-  console.log(project);
-}
