@@ -134,7 +134,6 @@ class App extends React.Component {
   }
 
   getHotkeyHandlers() {
-    console.log('?', this.state.hotkeys);
     return this.state.hotkeys;
   }
 

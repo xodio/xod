@@ -87,24 +87,15 @@ class Editor extends React.Component {
     const result = R.clone(obj1);
     const arr2 = R.keys(obj2);
     const hasKey = R.flip(R.has)(obj1);
-    console.log('merge objects:', obj1, obj2);
-    console.log('??', arr2);
     arr2.forEach(key => {
-      console.log(key, hasKey(key));
-      if (hasKey(key)) {
-        console.log('compose', obj1, obj2);
-      }
       result[key] = hasKey(key) ? R.compose(obj1[key], obj2[key]) : obj2[key];
     });
 
-    console.log('merged:', result);
     return result;
   }
 
   mergeCommands(array) {
-    console.log('start:', array);
     if (array.length === 1) {
-      console.log('end', array[0]);
       return array[0];
     }
     const cutArray = R.slice(2, Infinity);
