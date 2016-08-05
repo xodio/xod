@@ -23,11 +23,13 @@ describe('Project reducer: ', () => {
         },
       },
       nodeTypes: {},
+      folders: {},
       counter: {
         patches: 1,
         nodes: 0,
         pins: 0,
         links: 0,
+        folders: 0,
       },
     },
   };
@@ -392,6 +394,76 @@ describe('Project reducer: ', () => {
       store.dispatch(Actions.loadProjectFromJSON(JSON.stringify(data)));
       const projectState = Selectors.Project.getProject(store.getState());
       chai.expect(projectState).to.deep.equal(data);
+    });
+  });
+
+  describe('Folders reducer', () => {
+    const mockState = R.pipe(
+      R.assocPath(
+        ['project', 'folders'],
+        {
+          1: {
+            id: 1,
+            parentId: null,
+            name: 'test',
+          },
+        }
+      ),
+      R.assocPath(
+        ['project', 'counter', 'folders'],
+        1
+      )
+    )(projectShape);
+
+    let store;
+    beforeEach(() => {
+      store = mockStore(mockState);
+    });
+
+    it('should add folder without parentId', () => {
+      store.dispatch(Actions.addFolder('Test folder'));
+      const childFolderId = Selectors.Project.getLastFolderId(store.getState());
+      const folders = Selectors.Project.getFolders(store.getState());
+
+      chai.expect(R.keys(folders)).to.have.lengthOf(2);
+      chai.expect(folders[childFolderId].parentId).to.be.equal(null);
+    });
+
+    it('should add folder with correct parentId', () => {
+      const lastFolderId = Selectors.Project.getLastFolderId(store.getState());
+      store.dispatch(Actions.addFolder('Test folder', lastFolderId));
+      const childFolderId = Selectors.Project.getLastFolderId(store.getState());
+      const folders = Selectors.Project.getFolders(store.getState());
+
+      chai.expect(R.keys(folders)).to.have.lengthOf(2);
+      chai.expect(folders[childFolderId].parentId).to.be.equal(folders[lastFolderId].id);
+    });
+
+    it('should delete folder', () => {
+      const lastFolderId = Selectors.Project.getLastFolderId(store.getState());
+      store.dispatch(Actions.deleteFolder(lastFolderId));
+      const folders = Selectors.Project.getFolders(store.getState());
+
+      chai.expect(R.keys(folders)).to.have.lengthOf(0);
+    });
+
+    it('should move folder under another', () => {
+      const parentFolderId = Selectors.Project.getLastFolderId(store.getState());
+      store.dispatch(Actions.addFolder('parent', parentFolderId));
+      const childFolderId = Selectors.Project.getLastFolderId(store.getState());
+      store.dispatch(Actions.moveFolder({ id: childFolderId, parentId: null }));
+      const folders = Selectors.Project.getFolders(store.getState());
+
+      chai.expect(folders[childFolderId].parentId).to.be.equal(null);
+    });
+
+    it('should rename folder', () => {
+      const newFolderName = 'qwe123';
+      const lastFolderId = Selectors.Project.getLastFolderId(store.getState());
+      store.dispatch(Actions.renameFolder(lastFolderId, newFolderName));
+      const folders = Selectors.Project.getFolders(store.getState());
+
+      chai.expect(folders[lastFolderId].name).to.be.equal(newFolderName);
     });
   });
 });
