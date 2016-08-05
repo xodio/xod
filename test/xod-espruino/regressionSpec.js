@@ -16,7 +16,8 @@ describe('xod-espruino', () => {
 
     const projectJSON = Selectors.Project.getProjectJSON(store.getState());
     const project = JSON.parse(projectJSON);
-    const code = transpile(project);
-    expect(code).to.match(/var project = {.+};/);
+    const code = transpile({ project, runtime: 'BlaBlaBla;' });
+    expect(code).to.match(/var nodes = {.+};/);
+    expect(code).to.match(/BlaBlaBla/);
   });
 });
