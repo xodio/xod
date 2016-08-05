@@ -2,7 +2,7 @@ import * as ActionType from './actionTypes';
 import * as STATUS from './constants/statuses';
 import * as EDITOR_MODE from './constants/editorModes';
 import Selectors from './selectors';
-import { upload as uploadToEspruino } from 'xod-espruino/upload';
+import { uploadToEspruino } from './utils/espruino';
 
 const getTimestamp = () => new Date().getTime();
 
@@ -234,7 +234,7 @@ export const loadProjectFromJSON = (json) => ({
 });
 
 export const upload = () => (dispatch, getState) => {
-  const project = Selectors.Project.getJSON(getState());
+  const project = Selectors.Project.getProjectJSON(getState());
   const processes = Selectors.Processes.getProccesses(getState());
   const newId = Selectors.Processes.getNewId(processes);
 
