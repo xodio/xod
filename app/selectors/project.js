@@ -729,3 +729,47 @@ export const parseTreeView = (tree) => {
 
   return parseTree(tree, null);
 };
+
+export const getTreeChanges = (oldTree, newTree) => {
+  const oldTreeParsed = parseTreeView(oldTree);
+  const newTreeParsed = parseTreeView(newTree);
+  const result = {
+    folders: [],
+    patches: [],
+    changed: false,
+  };
+
+  const sortById = R.sortBy(R.prop('id'));
+
+  oldTreeParsed.folders = sortById(oldTreeParsed.folders);
+  newTreeParsed.folders = sortById(newTreeParsed.folders);
+  newTreeParsed.folders.forEach(
+    (newFolder, i) => {
+      if (
+        newFolder.id !== oldTreeParsed.folders[i].id ||
+        newFolder.parentId !== oldTreeParsed.folders[i].parentId
+      ) {
+        result.folders.push(newFolder);
+      }
+    }
+  );
+
+  oldTreeParsed.patches = sortById(oldTreeParsed.patches);
+  newTreeParsed.patches = sortById(newTreeParsed.patches);
+  newTreeParsed.patches.forEach(
+    (newPatch, i) => {
+      if (
+        newPatch.id !== oldTreeParsed.patches[i].id ||
+        newPatch.folderId !== oldTreeParsed.patches[i].folderId
+      ) {
+        result.patches.push(newPatch);
+      }
+    }
+  );
+
+  if (result.folders.length > 0 || result.patches.length > 0) {
+    result.changed = true;
+  }
+
+  return result;
+};

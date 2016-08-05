@@ -58,7 +58,12 @@ class ProjectBrowser extends React.Component {
   }
 
   onTreeChange(newTree) {
-    // console.log('tree changed:', Selectors.Project.parseTreeView(newTree));
+    const oldTree = this.props.tree;
+    const treeChanges = Selectors.Project.getTreeChanges(oldTree, newTree);
+
+    if (treeChanges.changed) {
+      
+    }
   }
 
   onSwitchPatch(id) {
