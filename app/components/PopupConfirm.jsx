@@ -2,6 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
 
+import EventListener from 'react-event-listener';
+import { ESCAPE } from '../constants/keycodes';
+
 const PopupConfirm = ({
   title,
   children,
@@ -19,8 +22,16 @@ const PopupConfirm = ({
     { display: 'none' } :
     { display: 'inline' };
 
+  const onKeyDown = (event) => {
+    const keycode = event.keycode || event.which;
+    if (keycode === ESCAPE) {
+      onCloseClicked();
+    }
+  };
+
   return (
     <div className={wrapperClassNames}>
+      <EventListener target={document} onKeyDown={onKeyDown} />
       <SkyLightStateless
         dialogStyles={{ height: 'auto' }}
         isVisible={isVisible}

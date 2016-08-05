@@ -2,6 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
 
+import EventListener from 'react-event-listener';
+import { ESCAPE } from '../constants/keycodes';
+
 const PopupPrompt = ({
   title,
   children,
@@ -10,7 +13,7 @@ const PopupPrompt = ({
   className,
   onConfirm,
   onClose,
-  onKeyDown,
+  onInputKeyDown,
   inputType,
   isModal,
   isVisible,
@@ -29,8 +32,16 @@ const PopupPrompt = ({
     return onConfirm(value);
   };
 
+  const onKeyDown = (event) => {
+    const keycode = event.keycode || event.which;
+    if (keycode === ESCAPE) {
+      onCloseClicked();
+    }
+  };
+
   return (
     <div className={wrapperClassNames}>
+      <EventListener target={document} onKeyDown={onKeyDown} />
       <SkyLightStateless
         dialogStyles={{ height: 'auto' }}
         isVisible={isVisible}
@@ -43,7 +54,7 @@ const PopupPrompt = ({
           <div className="PopupContent">
             {children}
             <div className="PopupFields">
-              <input name="answer" type={inputType} onKeyDown={onKeyDown} autoFocus />
+              <input name="answer" type={inputType} onKeyDown={onInputKeyDown} autoFocus />
             </div>
           </div>
           <div className="PopupButtons">
@@ -75,7 +86,7 @@ PopupPrompt.propTypes = {
   className: React.PropTypes.string,
   onClose: React.PropTypes.func,
   onConfirm: React.PropTypes.func,
-  onKeyDown: React.PropTypes.func,
+  onInputKeyDown: React.PropTypes.func,
   inputType: React.PropTypes.string,
   isModal: React.PropTypes.bool,
   isVisible: React.PropTypes.bool,
@@ -87,7 +98,7 @@ PopupPrompt.defaultProps = {
   className: '',
   onClose: f => f,
   onConfirm: f => f,
-  onKeyDown: f => f,
+  onInputKeyDown: f => f,
   inputType: 'text',
   isModal: false,
   isVisible: true,
