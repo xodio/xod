@@ -1,7 +1,7 @@
 export const PROPERTY_TYPE = {
-  BOOL: 0,
-  NUMBER: 1,
-  STRING: 2,
+  BOOL: 'bool',
+  NUMBER: 'number',
+  STRING: 'string',
 };
 
 export const PROPERTY_DEFAULT_VALUE = {

@@ -7,6 +7,7 @@ import * as PIN_DIRECTION from './constants/pinDirection';
 /* eslint-disable global-require */
 const nodeMetas = {
   button: require('../nodes/meta/button.json5'),
+  constBool: require('../nodes/meta/constBool.json5'),
   either: require('../nodes/meta/either.json5'),
   latch: require('../nodes/meta/latch.json5'),
   led: require('../nodes/meta/led.json5'),
@@ -28,6 +29,11 @@ const mapNodeTypePins = meta => R.merge(
   R.mapDirectedNodeTypePins(PIN_DIRECTION.OUTPUT, 'outputs')(meta)
 );
 
+const mapNodeTypeProperties = R.compose(
+  R.indexBy(R.prop('key')),
+  R.propOr([], 'properties')
+);
+
 const nodeTypes = R.compose(
   R.indexBy(R.prop('id')),
   R.values,
@@ -37,6 +43,7 @@ const nodeTypes = R.compose(
       id: R.indexOf(key, R.keys(metas)) + 1,
       key,
       pins: mapNodeTypePins(meta),
+      properties: mapNodeTypeProperties(meta),
     }
   ))
 )(nodeMetas);

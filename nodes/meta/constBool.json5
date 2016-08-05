@@ -1,0 +1,14 @@
+{
+  label: '<Bool>',
+  category: 'configuration',
+  outputs: [{
+    key: 'value',
+    type: 'bool',
+  }],
+  properties: [{
+    key: 'value',
+    label: 'Value',
+    type: 'bool',
+    defaultValue: false,
+  }]
+}
