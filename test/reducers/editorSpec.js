@@ -7,35 +7,42 @@ import * as Actions from '../../app/actions';
 import { editor } from '../../app/reducers/editor';
 import * as EDITOR_MODE from '../../app/constants/editorModes';
 
+const mockStore = configureStore([thunk]);
+const testStore = (state) => createStore(
+  combineReducers({
+    editor,
+  }),
+  state,
+  applyMiddleware(thunk)
+);
+
 describe('Editor reducer', () => {
   describe('set mode', () => {
     const mockState = {
-      mode: EDITOR_MODE.DEFAULT,
+      editor: {
+        mode: null,
+      },
     };
     let store = null;
 
     beforeEach(
       () => {
-        store = R.clone(mockState);
+        store = mockStore(mockState);
       }
     );
 
-    it('should set mode to creating', () => {
-      const state = editor(store, Actions.setMode(EDITOR_MODE.CREATING));
-      chai.expect(state.mode).to.be.equal(EDITOR_MODE.CREATING);
-    });
-    it('should set mode to editing', () => {
-      const state = editor(store, Actions.setMode(EDITOR_MODE.EDITING));
-      chai.expect(state.mode).to.be.equal(EDITOR_MODE.EDITING);
-    });
-    it('should set mode to linking', () => {
-      const state = editor(store, Actions.setMode(EDITOR_MODE.LINKING));
-      chai.expect(state.mode).to.be.equal(EDITOR_MODE.LINKING);
-    });
-    it('should set mode to default', () => {
-      const state = editor(store, Actions.setMode(EDITOR_MODE.DEFAULT));
-      chai.expect(state.mode).to.be.equal(EDITOR_MODE.DEFAULT);
-    });
+    const testMode = (mode) => {
+      const expectedActions = [
+        Actions.setModeUnsafe(mode),
+      ];
+      store.dispatch(Actions.setMode(mode));
+      chai.expect(store.getActions()).to.deep.equal(expectedActions);
+    };
+
+    it('should set mode to creating', () => testMode(EDITOR_MODE.CREATING_NODE));
+    it('should set mode to editing', () => testMode(EDITOR_MODE.EDITING));
+    it('should set mode to linking', () => testMode(EDITOR_MODE.LINKING));
+    it('should set mode to default', () => testMode(EDITOR_MODE.DEFAULT));
   });
 
   describe('selecting entities', () => {
@@ -46,14 +53,6 @@ describe('Editor reducer', () => {
         linkingPin: null,
       },
     };
-    const mockStore = configureStore([thunk]);
-    const testStore = (state) => createStore(
-      combineReducers({
-        editor,
-      }),
-      state,
-      applyMiddleware(thunk)
-    );
     let store = null;
 
     beforeEach(
@@ -110,7 +109,7 @@ describe('Editor reducer', () => {
     it('should select pin', () => {
       const id = 0;
       const expectedActions = [
-        Actions.setMode(EDITOR_MODE.LINKING),
+        Actions.setModeUnsafe(EDITOR_MODE.LINKING),
         Actions.setPinSelection(id),
       ];
 
