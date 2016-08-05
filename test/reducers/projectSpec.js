@@ -23,13 +23,19 @@ describe('Project reducer: ', () => {
         },
       },
       nodeTypes: {},
-      folders: {},
+      folders: {
+        1: {
+          id: 1,
+          parentId: null,
+          name: 'test',
+        },
+      },
       counter: {
         patches: 1,
         nodes: 0,
         pins: 0,
         links: 0,
-        folders: 0,
+        folders: 1,
       },
     },
   };
@@ -398,23 +404,7 @@ describe('Project reducer: ', () => {
   });
 
   describe('Folders reducer', () => {
-    const mockState = R.pipe(
-      R.assocPath(
-        ['project', 'folders'],
-        {
-          1: {
-            id: 1,
-            parentId: null,
-            name: 'test',
-          },
-        }
-      ),
-      R.assocPath(
-        ['project', 'counter', 'folders'],
-        1
-      )
-    )(projectShape);
-
+    const mockState = projectShape;
     let store;
     beforeEach(() => {
       store = mockStore(mockState);
@@ -464,6 +454,64 @@ describe('Project reducer: ', () => {
       const folders = Selectors.Project.getFolders(store.getState());
 
       chai.expect(folders[lastFolderId].name).to.be.equal(newFolderName);
+    });
+  });
+
+  describe('Patch reducer', () => {
+    const mockState = projectShape;
+    let store;
+    beforeEach(() => {
+      store = mockStore(mockState);
+    });
+
+    const getPatch = R.prop('present');
+
+    it('should add patch without parentId', () => {
+      store.dispatch(Actions.addPatch('Test patch'));
+      const childPatchId = Selectors.Project.getLastPatchId(store.getState());
+      const patches = Selectors.Project.getPatches(store.getState());
+
+      chai.expect(R.keys(patches)).to.have.lengthOf(2);
+      chai.expect(getPatch(patches[childPatchId]).folderId).to.be.equal(null);
+    });
+
+    it('should add patch with correct folderId', () => {
+      const lastFolderId = Selectors.Project.getLastFolderId(store.getState());
+      store.dispatch(Actions.addPatch('Test patch', lastFolderId));
+      const childPatchId = Selectors.Project.getLastPatchId(store.getState());
+      const folders = Selectors.Project.getFolders(store.getState());
+      const patches = Selectors.Project.getPatches(store.getState());
+
+      chai.expect(R.keys(patches)).to.have.lengthOf(2);
+      chai.expect(getPatch(patches[childPatchId]).folderId).to.be.equal(folders[lastFolderId].id);
+    });
+
+    it('should delete patch', () => {
+      const lastPatchId = Selectors.Project.getLastPatchId(store.getState());
+      store.dispatch(Actions.deletePatch(lastPatchId));
+      const patches = Selectors.Project.getPatches(store.getState());
+
+      chai.expect(R.keys(patches)).to.have.lengthOf(0);
+    });
+
+    it('should move patch under another folder', () => {
+      const lastPatchId = Selectors.Project.getLastPatchId(store.getState());
+      const rootFolderId = Selectors.Project.getLastFolderId(store.getState());
+      store.dispatch(Actions.addFolder('parent', rootFolderId));
+      const parentFolderId = Selectors.Project.getLastFolderId(store.getState());
+      store.dispatch(Actions.movePatch({ id: lastPatchId, folderId: parentFolderId }));
+      const patches = Selectors.Project.getPatches(store.getState());
+
+      chai.expect(getPatch(patches[lastPatchId]).folderId).to.be.equal(parentFolderId);
+    });
+
+    it('should rename patch', () => {
+      const newName = 'qwe123';
+      const lastPatchId = Selectors.Project.getLastPatchId(store.getState());
+      store.dispatch(Actions.renamePatch(lastPatchId, newName));
+      const patches = Selectors.Project.getPatches(store.getState());
+
+      chai.expect(getPatch(patches[lastPatchId]).name).to.be.equal(newName);
     });
   });
 });
