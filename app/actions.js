@@ -412,3 +412,22 @@ export const moveFolder = (changes) => ({
     parentId: changes.parentId,
   },
 });
+
+export const openTab = (patchId) => ({
+  type: ActionType.TAB_OPEN,
+  payload: {
+    patchId,
+  },
+});
+
+export const closeTab = (id) => ({
+  type: ActionType.TAB_CLOSE,
+  payload: {
+    id,
+  },
+});
+
+export const sortTabs = (newOrderObject) => ({
+  type: ActionType.TAB_SORT,
+  payload: newOrderObject,
+});
