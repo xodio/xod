@@ -11,6 +11,7 @@ import CMD from '../constants/commands';
 import Patch from './Patch';
 import ProjectBrowser from './ProjectBrowser';
 import Sidebar from '../components/Sidebar';
+import Workarea from '../components/Workarea';
 import Inspector from '../components/Inspector';
 
 class Editor extends React.Component {
@@ -119,10 +120,13 @@ class Editor extends React.Component {
             onPropUpdate={this.onPropUpdate}
           />
         </Sidebar>
-        <Patch
-          hotkeys={this.onPatchHotkeys}
-          size={this.patchSize}
-        />
+        <Workarea>
+          <Tabs />
+          <Patch
+            hotkeys={this.onPatchHotkeys}
+            size={this.patchSize}
+          />
+        </Workarea>
       </div>
     );
   }
