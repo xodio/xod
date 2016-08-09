@@ -1,0 +1,29 @@
+.TabsItem {
+  display: inline-block;
+
+  margin: 4px 0 0 0;
+  padding: 0 15px;
+
+  background: $color-tabs-unactive-background;
+  color: $color-tabs-unactive-text;
+
+  line-height: 30px;
+  height: 26px;
+
+  transition: 0.1s ease-out all;
+
+  &:hover, &:focus {
+    height: 30px;
+    margin-top: 0;
+  }
+
+  &.is-active {
+    background: $color-tabs-active-background;
+    color: $color-tabs-active-text;
+
+    &:hover, &:focus {
+      height: 26px;
+      margin-top: 4px;
+    }
+  }
+}

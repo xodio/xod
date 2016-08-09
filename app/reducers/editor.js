@@ -25,7 +25,7 @@ const addSelection = (entityName, action, state) => {
 };
 
 const addTab = (state, action) => {
-  if (!(action.payload && action.payload.patchId)) {
+  if (!(action.payload && action.payload.id)) {
     return state;
   }
 
@@ -39,7 +39,7 @@ const addTab = (state, action) => {
 
   return R.assocPath(['tabs', newId], {
     id: newId,
-    patchId: action.payload.patchId,
+    patchId: action.payload.id,
     index: newIndex,
   }, state);
 };
@@ -49,6 +49,8 @@ const applyTabSort = (tab, payload) => {
 
   return R.assoc('index', payload[tab.id].index, tab);
 };
+const tabHasPatch = (state, patchId) =>
+  R.find(R.propEq('patchId', patchId))(R.values(state.tabs));
 
 export const editor = (state = {}, action) => {
   switch (action.type) {
@@ -68,8 +70,13 @@ export const editor = (state = {}, action) => {
       return R.assoc('mode', action.payload.mode, state);
     case EDITOR_SET_SELECTED_NODETYPE:
       return R.assoc('selectedNodeType', action.payload.id, state);
-    case EDITOR_SWITCH_PATCH:
-      return R.assoc('currentPatchId', action.payload.id, state);
+    case EDITOR_SWITCH_PATCH: {
+      let newState = state;
+      if (!tabHasPatch(state, action.payload.id)) {
+        newState = addTab(newState, action);
+      }
+      return R.assoc('currentPatchId', action.payload.id, newState);
+    }
     case TAB_CLOSE:
       return R.dissocPath(['tabs', action.payload.id.toString()], state);
     case TAB_SORT:

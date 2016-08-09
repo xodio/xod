@@ -2,6 +2,7 @@ import R from 'ramda';
 import { createSelector } from 'reselect';
 import * as EDITOR_MODE from '../constants/editorModes';
 import * as ENTITY from '../constants/entities';
+import { getProject, getPatchById } from './project';
 
 export const getEditor = R.prop('editor');
 
@@ -71,4 +72,34 @@ export const getModeChecks = (state) => {
     isLinking: (mode === EDITOR_MODE.LINKING),
     isPanning: (mode === EDITOR_MODE.PANNING),
   };
+};
+
+export const getTabs = (state) => R.pipe(
+  getEditor,
+  R.prop('tabs')
+)(state);
+
+export const getPreparedTabs = (state) => {
+  const currentPatchId = getCurrentPatchId(state);
+  const projectState = getProject(state);
+
+  return R.pipe(
+    getTabs,
+    R.values,
+    R.reduce(
+      (p, cur) => {
+        const patch = getPatchById(projectState, cur.patchId);
+        const mergedData = R.merge(
+          cur,
+          {
+            name: patch.name,
+            isActive: (currentPatchId === cur.patchId),
+          }
+        );
+
+        return R.assoc(cur.id, mergedData, p);
+      },
+      {}
+    )
+  )(state);
 };

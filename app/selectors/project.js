@@ -67,12 +67,7 @@ export const getPatchById = (projectState, id) => {
     ])
   )(projectState);
 
-  let result = patch;
-  if (R.has('present', patch)) {
-    result = R.prop('present', result);
-  }
-
-  return result;
+  return R.propOr(patch, 'present', patch);
 };
 
 export const getPatchesByFolderId = (state, folderId) => R.pipe(

@@ -7,7 +7,7 @@ const Workarea = ({ children }) => (
 );
 
 Workarea.propTypes = {
-  children: React.PropTypes.element,
+  children: React.PropTypes.arrayOf(React.PropTypes.element),
 };
 
 export default Workarea;

@@ -10,6 +10,7 @@ import CMD from '../constants/commands';
 
 import Patch from './Patch';
 import ProjectBrowser from './ProjectBrowser';
+import Tabs from './Tabs';
 import Sidebar from '../components/Sidebar';
 import Workarea from '../components/Workarea';
 import Inspector from '../components/Inspector';
