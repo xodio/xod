@@ -73,16 +73,6 @@ class Editor extends React.Component {
       this.hotkeys.patch,
       this.hotkeys.browser,
     ]);
-    // return R.mergeAll([
-    //   {
-    //     [CMD.SET_MODE_CREATING]: this.setModeCreating,
-    //     [CMD.ESCAPE]: this.setModeDefault,
-    //     [CMD.UNDO]: () => this.props.actions.undo(this.props.currentPatchId),
-    //     [CMD.REDO]: () => this.props.actions.redo(this.props.currentPatchId),
-    //   },
-    //   this.hotkeys.patch,
-    //   this.hotkeys.browser,
-    // ]);
   }
   mergeCommand(obj1, obj2) {
     const result = R.clone(obj1);
