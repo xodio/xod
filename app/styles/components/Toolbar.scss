@@ -6,6 +6,8 @@
   background-color: $color-ctrl-background;
   color: $color-ctrl-background-text;
 
+  overflow: hidden;
+
   @mixin button-toolbar {
     display: block;
     float: right;
