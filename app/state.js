@@ -95,6 +95,14 @@ const initialState = {
     selection: [],
     linkingPin: null,
     selectedNodeType: 1,
+    activeTab: 1,
+    tabs: {
+      1: {
+        id: 1,
+        patchId: 1,
+        index: 0,
+      },
+    },
   },
   errors: {},
   processes: {},
