@@ -3,28 +3,27 @@
 
   margin: 4px 0 0 0;
   padding: 0 10px 0 14px;
+  height: 26px;
 
   background: $color-tabs-unactive-background;
   color: $color-tabs-unactive-text;
-
   line-height: 30px;
-  height: 26px;
 
-  transition: 0.1s ease-out all;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  text-shadow: 0 1px 0 rgba(0,0,0, .5);
+  cursor: default;
+
+  transition: 0.3s ease-out all;
+
 
   &:hover, &:focus {
-    height: 30px;
-    margin-top: 0;
+    background: $color-tabs-hover-background;
   }
 
   &.is-active {
     background: $color-tabs-active-background;
     color: $color-tabs-active-text;
-
-    &:hover, &:focus {
-      height: 26px;
-      margin-top: 4px;
-    }
   }
 
   .tab-name {
@@ -37,14 +36,16 @@
   .tab-close {
     display: inline-block;
     padding: 6px;
+
+    color: $color-tabs-unactive-text;
     font-size: 1.4em;
     line-height: 1;
 
     vertical-align: middle;
 
     &:hover, &:focus {
-      color: red;
-      cursor: pointer;
+      cursor: default;
+      color: $color-tabs-hover-text;
     }
   }
 }

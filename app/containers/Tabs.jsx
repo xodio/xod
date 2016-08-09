@@ -12,32 +12,34 @@ class Tabs extends React.Component {
   constructor(props) {
     super(props);
 
-    this.switchPatch = this.switchPatch.bind(this);
-    this.closeTab = this.closeTab.bind(this);
+    this.onSwitchPatch = this.onSwitchPatch.bind(this);
+    this.onCloseTab = this.onCloseTab.bind(this);
+  }
+
+  onSwitchPatch(patchId) {
+    return this.props.actions.switchPatch(patchId);
+  }
+
+  onCloseTab(patchId) {
+    return this.props.actions.closeTab(patchId);
   }
 
   getTabs() {
-    return R.values(this.props.tabs);
-  }
-
-  switchPatch(patchId) {
-    return this.props.actions.switchPatch(patchId);
-  }
-  closeTab(patchId) {
-    return this.props.actions.closeTab(patchId);
+    return R.sortBy(
+      R.prop('index')
+    )(R.values(this.props.tabs));
   }
 
   render() {
     const tabs = this.getTabs();
-
     return (
       <TabsContainer>
         {tabs.map(tab =>
           <TabsItem
-            data={tab}
             key={tab.id}
-            onClick={this.switchPatch}
-            onClose={this.closeTab}
+            data={tab}
+            onClick={this.onSwitchPatch}
+            onClose={this.onCloseTab}
           />
         )}
       </TabsContainer>
@@ -59,6 +61,7 @@ const mapDispatchToprops = (dispatch) => ({
   actions: bindActionCreators({
     switchPatch: Actions.switchPatch,
     closeTab: Actions.closeTab,
+    sortTabs: Actions.sortTabs,
   }, dispatch),
 });
 
