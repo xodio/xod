@@ -48,8 +48,13 @@ export const isNodeSelected = (selection, id) => isSelected(selection, ENTITY.NO
 export const isLinkSelected = (selection, id) => isSelected(selection, ENTITY.LINK, id);
 
 export const hasSelection = (state) => (
-  state.editor.selection.length > 0 ||
-  state.editor.linkingPin !== null
+  (
+    state.editor.selection &&
+    state.editor.selection.length > 0
+  ) || (
+    state.editor.linkingPin &&
+    state.editor.linkingPin !== null
+  )
 );
 
 export const getLinkingPin = (state) => R.pipe(
