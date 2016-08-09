@@ -74,8 +74,6 @@ export const editor = (state = {}, action) => {
       return addTab(state, action);
     case TAB_CLOSE:
       return R.dissocPath(['tabs', action.payload.id.toString()], state);
-    case TAB_SWITCH:
-      return R.assoc('activeTab', action.payload.id, state);
     case TAB_SORT:
       return R.assoc(
         'tabs',
