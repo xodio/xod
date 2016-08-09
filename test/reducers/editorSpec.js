@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
 import * as Actions from '../../app/actions';
+import projectReducer from '../../app/reducers/project';
 import { editor } from '../../app/reducers/editor';
 import * as EDITOR_MODE from '../../app/constants/editorModes';
 
@@ -62,7 +63,7 @@ describe('Editor reducer', () => {
     );
 
     it('should select node', () => {
-      const id = 0;
+      const id = 1;
       const expectedActions = [
         Actions.setNodeSelection(id),
       ];
@@ -73,7 +74,7 @@ describe('Editor reducer', () => {
     });
     it('should deselect node on second click', () => {
       store = testStore(mockState);
-      const id = 0;
+      const id = 1;
 
       store.dispatch(Actions.selectNode(id));
       store.dispatch(Actions.selectNode(id));
@@ -81,7 +82,7 @@ describe('Editor reducer', () => {
       chai.expect(store.getState().editor.selection.length).to.be.equal(0);
     });
     it('should select link', () => {
-      const id = 0;
+      const id = 1;
       const expectedActions = [
         Actions.setLinkSelection(id),
       ];
@@ -91,7 +92,7 @@ describe('Editor reducer', () => {
     });
     it('should deselect link on second click', () => {
       store = testStore(mockState);
-      const id = 0;
+      const id = 1;
 
       store.dispatch(Actions.selectLink(id));
       store.dispatch(Actions.selectLink(id));
@@ -107,7 +108,7 @@ describe('Editor reducer', () => {
       chai.expect(store.getState()).to.deep.equal(mockState);
     });
     it('should select pin', () => {
-      const id = 0;
+      const id = 1;
       const expectedActions = [
         Actions.setModeUnsafe(EDITOR_MODE.LINKING),
         Actions.setPinSelection(id),
@@ -118,12 +119,67 @@ describe('Editor reducer', () => {
     });
     it('should deselect pin on second click', () => {
       store = testStore(mockState);
-      const id = 0;
+      const id = 1;
 
       store.dispatch(Actions.linkPin(id));
       store.dispatch(Actions.linkPin(id));
 
       chai.expect(store.getState().editor.linkingPin).to.be.a('null');
     });
+  });
+
+  describe('working with tabs', () => {
+    const createTabsStore = (state) => createStore(
+      combineReducers({
+        project: projectReducer,
+        editor,
+      }),
+      state,
+      applyMiddleware(thunk)
+    );
+    const mockState = {
+      project: {
+        patches: {
+          1: {
+            id: 1,
+            name: 'First patch',
+          },
+          2: {
+            id: 2,
+            name: 'Second patch',
+          },
+        },
+      },
+      editor: {
+        currentPatchId: 1,
+        tabs: {
+          1: {
+            id: 1,
+            patchId: 1,
+            index: 0,
+          },
+        },
+      },
+    };
+    let store = null;
+
+    beforeEach(
+      () => {
+        store = createTabsStore(mockState);
+      }
+    );
+
+    it('should add new tab', () => {
+      store.dispatch(Actions.switchPatch(2));
+
+      chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(2);
+      chai.expect(store.getState().editor.currentPatchId).to.be.equal(2);
+    });
+    it('should close the tab', () => {
+      store.dispatch(Actions.closeTab(1));
+
+      chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(0);
+    });
+    it('should sort tabs', () => true);
   });
 });
