@@ -19,7 +19,6 @@ export const EDITOR_SET_MODE = 'EDITOR_SET_MODE';
 export const EDITOR_SET_SELECTED_NODETYPE = 'EDITOR_SET_SELECTED_NODETYPE';
 export const EDITOR_SWITCH_PATCH = 'EDITOR_SWITCH_PATCH';
 
-export const TAB_OPEN = 'TAB_OPEN';
 export const TAB_CLOSE = 'TAB_CLOSE';
 export const TAB_SORT = 'TAB_SORT';
 

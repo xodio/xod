@@ -8,9 +8,7 @@ import {
   EDITOR_SET_MODE,
   EDITOR_SET_SELECTED_NODETYPE,
   EDITOR_SWITCH_PATCH,
-  TAB_OPEN,
   TAB_CLOSE,
-  TAB_SWITCH,
   TAB_SORT,
 } from '../actionTypes';
 import * as ENTITIES from '../constants/entities';
