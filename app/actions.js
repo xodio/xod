@@ -326,7 +326,9 @@ export const clearHistoryPatch = (id) => ({
   payload: {},
 });
 
-export const switchPatch = (id) => (dispatch) => {
+export const switchPatch = (id) => (dispatch, getState) => {
+  if (Selectors.Editor.getCurrentPatchId(getState()) === id) { return; }
+
   dispatch(deselectAll());
   dispatch({
     type: ActionType.EDITOR_SWITCH_PATCH,
