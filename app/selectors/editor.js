@@ -91,20 +91,16 @@ export const getPreparedTabs = (state) => {
   return R.pipe(
     getTabs,
     R.values,
-    R.reduce(
-      (p, cur) => {
-        const patch = getPatchById(projectState, cur.patchId);
-        const mergedData = R.merge(
-          cur,
-          {
-            name: patch.name,
-            isActive: (currentPatchId === cur.patchId),
-          }
-        );
-
-        return R.assoc(cur.id, mergedData, p);
-      },
-      {}
-    )
+    R.map((tab) => {
+      const patch = getPatchById(projectState, tab.patchId);
+      return R.merge(
+        tab,
+        {
+          name: patch.name,
+          isActive: (currentPatchId === tab.patchId),
+        }
+      );
+    }),
+    R.indexBy(R.prop('id'))
   )(state);
 };
