@@ -413,13 +413,6 @@ export const moveFolder = (changes) => ({
   },
 });
 
-export const openTab = (patchId) => ({
-  type: ActionType.TAB_OPEN,
-  payload: {
-    patchId,
-  },
-});
-
 export const closeTab = (id) => ({
   type: ActionType.TAB_CLOSE,
   payload: {

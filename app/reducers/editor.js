@@ -70,8 +70,6 @@ export const editor = (state = {}, action) => {
       return R.assoc('selectedNodeType', action.payload.id, state);
     case EDITOR_SWITCH_PATCH:
       return R.assoc('currentPatchId', action.payload.id, state);
-    case TAB_OPEN:
-      return addTab(state, action);
     case TAB_CLOSE:
       return R.dissocPath(['tabs', action.payload.id.toString()], state);
     case TAB_SORT:
