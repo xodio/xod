@@ -21,7 +21,6 @@ export const EDITOR_SWITCH_PATCH = 'EDITOR_SWITCH_PATCH';
 
 export const TAB_OPEN = 'TAB_OPEN';
 export const TAB_CLOSE = 'TAB_CLOSE';
-export const TAB_SWITCH = 'TAB_SWITCH';
 export const TAB_SORT = 'TAB_SORT';
 
 export const PROJECT_LOAD_DATA = 'PROJECT_LOAD_DATA';
