@@ -1,0 +1,14 @@
+{
+  label: '<String>',
+  category: 'configuration',
+  outputs: [{
+    key: 'value',
+    type: 'number',
+  }],
+  properties: [{
+    key: 'value',
+    label: 'Value',
+    type: 'string',
+    defaultValue: '',
+  }]
+}

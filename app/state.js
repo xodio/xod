@@ -8,6 +8,8 @@ import * as PIN_DIRECTION from './constants/pinDirection';
 const nodeMetas = {
   button: require('../nodes/meta/button.json5'),
   constBool: require('../nodes/meta/constBool.json5'),
+  constNumber: require('../nodes/meta/constNumber.json5'),
+  constString: require('../nodes/meta/constString.json5'),
   either: require('../nodes/meta/either.json5'),
   latch: require('../nodes/meta/latch.json5'),
   led: require('../nodes/meta/led.json5'),
