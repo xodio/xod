@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
 import * as Actions from '../../app/actions';
+import { EDITOR_SET_MODE } from '../../app/actionTypes';
 import projectReducer from '../../app/reducers/project';
 import { editor } from '../../app/reducers/editor';
 import * as EDITOR_MODE from '../../app/constants/editorModes';
@@ -34,7 +35,12 @@ describe('Editor reducer', () => {
 
     const testMode = (mode) => {
       const expectedActions = [
-        Actions.setModeUnsafe(mode),
+        {
+          type: EDITOR_SET_MODE,
+          payload: {
+            mode,
+          },
+        },
       ];
       store.dispatch(Actions.setMode(mode));
       chai.expect(store.getActions()).to.deep.equal(expectedActions);
@@ -110,7 +116,12 @@ describe('Editor reducer', () => {
     it('should select pin', () => {
       const id = 1;
       const expectedActions = [
-        Actions.setModeUnsafe(EDITOR_MODE.LINKING),
+        {
+          type: EDITOR_SET_MODE,
+          payload: {
+            mode: EDITOR_MODE.LINKING,
+          },
+        },
         Actions.setPinSelection(id),
       ];
 
