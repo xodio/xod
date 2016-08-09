@@ -48,7 +48,6 @@
     "redux-undo": "^1.0.0-beta8",
     "reselect": "^2.5.1",
     "style-loader": "^0.13.0",
-    "url-loader": "^0.5.7",
     "webpack": "^1.12.10"
   },
   "engines": {
