@@ -624,18 +624,10 @@ export const getFoldersByFolderId = (state, folderId) => R.pipe(
   Tree view (get / parse)
 */
 export const getFoldersPath = (folders, folderId) => {
-  const result = [];
-
-  if (folderId === null) { return result; }
-
-  const parentFolder = folders[folderId];
-  result.push(parentFolder.id);
-
-  if (parentFolder.parentId) {
-    result.concat(getFoldersPath(folders, parentFolder.parentId));
-  }
-
-  return result;
+  if (!folderId) { return []; }
+  const folder = folders[folderId];
+  const parentPath = getFoldersPath(folders, folder.parentId);
+  return R.concat([folderId], parentPath);
 };
 
 export const getTreeView = (state) => {
