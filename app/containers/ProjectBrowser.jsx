@@ -60,11 +60,7 @@ class ProjectBrowser extends React.Component {
   }
 
   onMissClick(event) {
-    const treeView = findParentByClassName(event.target, 'inner');
-    if (
-      treeView && treeView.parentNode.className === 'm-node' ||
-      findParentByClassName(event.target, 'ProjectBrowserToolbar')
-    ) { return; }
+    if(this.isMissClicked(event)) { return; }
 
     this.deselect();
   }
@@ -148,18 +144,33 @@ class ProjectBrowser extends React.Component {
   }
 
   deselect() {
-    if (
-      this.refs.toolbar &&
-      this.refs.toolbar.getState('renaming') ||
-      this.refs.toolbar.getState('deleting') ||
-      this.state.selection === null
-    ) {
-      return;
-    }
-
-    if (this.refs.treeView && this.refs.treeView.deselect) {
+    if (this.canBeDeselected()) {
       this.refs.treeView.deselect();
     }
+  }
+
+  isMissClicked(event) {
+    const treeView = findParentByClassName(event.target, 'inner');
+    return (
+      treeView && treeView.parentNode.className === 'm-node' ||
+      findParentByClassName(event.target, 'ProjectBrowserToolbar')
+    );
+  }
+
+  canBeDeselected() {
+    return (
+      !(
+        this.refs.toolbar &&
+        this.refs.toolbar.getState('renaming') ||
+        this.refs.toolbar.getState('deleting') ||
+        this.refs.toolbar.getState('creatingPatch') ||
+        this.refs.toolbar.getState('creatingFolder') ||
+        this.state.selection === null
+      ) &&
+      (
+        this.refs.treeView && this.refs.treeView.deselect
+      )
+    );
   }
 
   render() {
