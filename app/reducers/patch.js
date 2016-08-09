@@ -14,7 +14,7 @@ export const patchReducer = (id) => {
   const patchId = id;
   const initialPatchState = {
     id: patchId,
-    folderId: 0,
+    folderId: null,
     name: `Patch #${patchId}`,
   };
 
@@ -40,7 +40,7 @@ export const patchReducer = (id) => {
       case PATCH_MOVE:
         return R.assoc('folderId', action.payload.folderId, state);
       default:
-        return applyReducers(reducers, state, action, patchId);
+        return applyReducers(reducers, R.merge(initialPatchState, state), action, patchId);
     }
   };
 };

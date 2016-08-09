@@ -79,7 +79,7 @@ const initialState = {
     },
     nodeTypes,
     folders: {},
-   counter: {
+    counter: {
       patches: 2,
       nodes: 0,
       pins: 0,
