@@ -60,7 +60,7 @@ class ProjectBrowser extends React.Component {
   }
 
   onMissClick(event) {
-    if(this.isMissClicked(event)) { return; }
+    if (this.isMissClicked(event)) { return; }
 
     this.deselect();
   }
