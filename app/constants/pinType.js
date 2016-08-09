@@ -1,4 +1,4 @@
-export const PULSE = 1;
-export const BOOL = 2;
-export const NUMBER = 3;
-export const STRING = 4;
+export const PULSE = 'pulse';
+export const BOOL = 'bool';
+export const NUMBER = 'number';
+export const STRING = 'string';

@@ -166,7 +166,8 @@ export const getProjectJSON = (state) => {
   const patches = R.pipe(
     getPatches,
     R.values,
-    R.map(patch => R.propOr(patch, 'present', patch))
+    R.map(patch => R.propOr(patch, 'present', patch)),
+    arr2obj
   )(project);
   const projectToSave = R.assoc('patches', patches, project);
 
@@ -497,7 +498,7 @@ export const getPreparedLinks = (state) => {
 
 const getNodeLabel = (state, node) => {
   const nodeType = getNodeTypeById(state, node.typeId);
-  let nodeLabel = (node.label) ? node.label : nodeType.label;
+  let nodeLabel = node.label || nodeType.label || nodeType.key;
 
   const nodeValue = R.view(R.lensPath(['properties', 'value']), node);
   if (nodeValue !== undefined) {

@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   entry: [
     'babel-polyfill',
     './app/index.jsx',
@@ -37,6 +37,10 @@ module.exports = {
         loaders: [
           'file?name=[path][name].[ext]?[hash:6]&context=./app'
         ],
+      },
+      {
+        test: /\.json5$/,
+        loader: 'json5',
       },
     ],
   },

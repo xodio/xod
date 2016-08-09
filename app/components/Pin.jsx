@@ -102,7 +102,7 @@ export default class Pin extends React.Component {
 Pin.propTypes = {
   id: React.PropTypes.number.isRequired,
   label: React.PropTypes.string,
-  direction: React.PropTypes.number.isRequired,
+  direction: React.PropTypes.string.isRequired,
   position: React.PropTypes.object.isRequired,
   radius: React.PropTypes.number.isRequired,
   onMouseUp: React.PropTypes.func.isRequired,

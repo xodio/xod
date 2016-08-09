@@ -12,7 +12,6 @@ import 'espruino/core/modules';
 import 'espruino/core/env';
 
 import co from 'co';
-import transpile from './transpiler';
 
 /*
  * Helper wrapper functions to convert EspruinoTools’ callback-based routines
@@ -71,8 +70,7 @@ function removeProgressListener() {
   Espruino.Core.Status = null;
 }
 
-export function upload(project, progressCallback) {
-  const code = transpile(project);
+export function upload(code, progressCallback) {
   const port = '/dev/ttyACM0';
 
   Espruino.Core.Serial.setSlowWrite(false);

@@ -1,0 +1,8 @@
+{
+  inputs: [{
+    key: 'value',
+    type: 'number',
+    defaultValue: 1,
+    description: 'Rotation angle/value'
+  }]
+}

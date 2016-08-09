@@ -1,0 +1,24 @@
+{
+  inputs: [{
+    key: 'inp',
+    label: 'IN',
+    type: 'bool',
+    description: 'Selector value'
+  }, {
+    key: 'trueValue',
+    label: 'T',
+    type: 'number',
+    description: 'Output if selector is `true`'
+  }, {
+    key: 'falseValue',
+    label: 'F',
+    type: 'number',
+    description: 'Output if selector is `false`'
+  }],
+  outputs: [{
+    key: 'out',
+    type: 'number',
+    description: 'Selected output value',
+  }],
+}
+

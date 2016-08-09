@@ -1,0 +1,13 @@
+{
+  label: 'not',
+  inputs: [{
+    key: 'in',
+    type: 'bool',
+    description: 'Value to be inverted'
+  }],
+  outputs: [{
+    key: 'out',
+    type: 'bool',
+    description: 'Resulting inverted value',
+  }],
+}

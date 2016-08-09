@@ -1,0 +1,8 @@
+{
+  label: 'LED',
+  inputs: [{
+    key: 'brightness',
+    type: 'number',
+    description: 'Shine brightness'
+  }]
+}
