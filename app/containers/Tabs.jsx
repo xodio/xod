@@ -13,6 +13,7 @@ class Tabs extends React.Component {
     super(props);
 
     this.switchPatch = this.switchPatch.bind(this);
+    this.closeTab = this.closeTab.bind(this);
   }
 
   getTabs() {
@@ -21,6 +22,9 @@ class Tabs extends React.Component {
 
   switchPatch(patchId) {
     return this.props.actions.switchPatch(patchId);
+  }
+  closeTab(patchId) {
+    return this.props.actions.closeTab(patchId);
   }
 
   render() {
@@ -33,6 +37,7 @@ class Tabs extends React.Component {
             data={tab}
             key={tab.id}
             onClick={this.switchPatch}
+            onClose={this.closeTab}
           />
         )}
       </TabsContainer>
@@ -42,6 +47,7 @@ class Tabs extends React.Component {
 
 Tabs.propTypes = {
   tabs: React.PropTypes.object,
+  actions: React.PropTypes.objectOf(React.PropTypes.func),
 };
 
 const mapStateToProps = (state) => ({
@@ -52,6 +58,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToprops = (dispatch) => ({
   actions: bindActionCreators({
     switchPatch: Actions.switchPatch,
+    closeTab: Actions.closeTab,
   }, dispatch),
 });
 

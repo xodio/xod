@@ -2,7 +2,7 @@
   display: inline-block;
 
   margin: 4px 0 0 0;
-  padding: 0 15px;
+  padding: 0 10px 0 14px;
 
   background: $color-tabs-unactive-background;
   color: $color-tabs-unactive-text;
@@ -24,6 +24,27 @@
     &:hover, &:focus {
       height: 26px;
       margin-top: 4px;
+    }
+  }
+
+  .tab-name {
+    display: inline-block;
+    margin-right: 6px;
+
+    vertical-align: middle;
+  }
+
+  .tab-close {
+    display: inline-block;
+    padding: 6px;
+    font-size: 1.4em;
+    line-height: 1;
+
+    vertical-align: middle;
+
+    &:hover, &:focus {
+      color: red;
+      cursor: pointer;
     }
   }
 }
