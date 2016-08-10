@@ -1,0 +1,19 @@
+{
+  label: '<OutputNumber>',
+  category: 'patch',
+  inputs: [{
+    key: 'OUT',
+    type: 'number',
+  }],
+  properties: [{
+    key: 'label',
+    label: 'Name',
+    type: 'string',
+    defaultValue: 'OutputNumber',
+  }, {
+    key: 'key',
+    label: 'Pin label',
+    type: 'string',
+    defaultValue: 'OUT',
+  }]
+}

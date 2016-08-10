@@ -1,0 +1,19 @@
+{
+  label: '<InputString>',
+  category: 'patch',
+  outputs: [{
+    key: 'IN',
+    type: 'string',
+  }],
+  properties: [{
+    key: 'label',
+    label: 'Name',
+    type: 'string',
+    defaultValue: 'InputString',
+  }, {
+    key: 'key',
+    label: 'Pin label',
+    type: 'string',
+    defaultValue: 'IN',
+  }]
+}

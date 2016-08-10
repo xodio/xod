@@ -1,0 +1,19 @@
+{
+  label: '<InputBool>',
+  category: 'patch',
+  outputs: [{
+    key: 'IN',
+    type: 'bool',
+  }],
+  properties: [{
+    key: 'label',
+    label: 'Name',
+    type: 'string',
+    defaultValue: 'InputBool',
+  }, {
+    key: 'key',
+    label: 'Pin label',
+    type: 'string',
+    defaultValue: 'IN',
+  }]
+}

@@ -17,6 +17,12 @@ const nodeMetas = {
   not: require('../nodes/meta/not.json5'),
   pot: require('../nodes/meta/pot.json5'),
   servo: require('../nodes/meta/servo.json5'),
+  inputBool: require('../nodes/meta/inputBool.json5'),
+  inputNumber: require('../nodes/meta/inputNumber.json5'),
+  inputString: require('../nodes/meta/inputString.json5'),
+  outputBool: require('../nodes/meta/outputBool.json5'),
+  outputNumber: require('../nodes/meta/outputNumber.json5'),
+  outputString: require('../nodes/meta/outputString.json5'),
 };
 /* eslint-enable global-require */
 
