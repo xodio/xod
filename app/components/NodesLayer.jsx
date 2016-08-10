@@ -15,6 +15,7 @@ const NodesLayer = ({ nodes, onMouseUp, onMouseDown, onPinMouseUp }) => (
         label={node.label}
         position={node.position}
         pins={node.pins}
+        width={node.width}
         isSelected={node.isSelected}
         isGhost={node.isGhost}
         onMouseUp={onMouseUp}

@@ -57,6 +57,7 @@ class GhostLayer extends React.Component {
         id={node.id}
         label={node.label}
         position={node.position}
+        width={node.width}
         pins={node.pins}
         isGhost={node.isGhost}
       />
