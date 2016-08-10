@@ -40,6 +40,32 @@ class Patch extends React.Component {
     this.props.hotkeys(this.getHotkeyHandlers());
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const haveGhost = R.either(R.prop('ghostNode'), R.prop('ghostLink'));
+    const notNil = R.complement(R.isNil);
+    const isDraggingGhost = R.useWith(notNil, [haveGhost, haveGhost]);
+
+    const notEquals = R.complement(R.equals);
+    const mPos = R.prop('mousePosition');
+    const isChangingMousePosition = R.useWith(notEquals, [mPos, mPos]);
+
+    const isDraggingNode = R.complement(R.isEmpty);
+
+    const shouldNotUpdateMousePosition = (
+      !(
+        isDraggingGhost(this.props, nextProps)
+        ||
+        isDraggingNode(this.dragging)
+      )
+      &&
+      isChangingMousePosition(this.state, nextState)
+    );
+
+    if (shouldNotUpdateMousePosition) { return false; }
+
+    return true;
+  }
+
   onNodeMouseUp(id) {
     const isSelected = Selectors.Editor.isNodeSelected(this.props.selection, id);
     const isSelectable = (this.props.mode.isEditing);
