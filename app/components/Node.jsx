@@ -27,7 +27,11 @@ class Node extends React.Component {
   }
 
   shouldComponentUpdate(newProps) {
-    return !R.equals(newProps, this.props);
+    return R.not(R.equals(newProps, this.props));
+  }
+
+  componentDidUpdate() {
+    this.updateNodeWidth();
   }
 
   onMouseUp() {
