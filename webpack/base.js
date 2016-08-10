@@ -33,9 +33,15 @@ module.exports = {
         ],
       },
       {
-        test: /assets\/.*\.(jpe?g|png|gif|svg|woff|woff2)$/,
+        test: /assets\/.*\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)?$/,
         loaders: [
-          'file?name=[path][name].[ext]?[hash:6]&context=./app'
+          'file?name=[path][name].[ext]?[hash:6]&context=./app',
+        ],
+      },
+      {
+        test: /node_modules\/font-awesome\/.*\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)(\?\S*)?$/,
+        loaders: [
+          'file?name=[path][name].[ext]?[hash:6]',
         ],
       },
       {

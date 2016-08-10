@@ -1,16 +1,10 @@
 
 .Inspector {
-  position: absolute;
-  width: 200px;
+  display: block;
+  width: 100%;
   height: 100%;
-  background: #eee;
-  color: #000;
-
-  .title {
-    display: block;
-    padding: 26px 20px 4px 8px;
-    color: #999;
-  }
+  background: $sidebar-background;
+  color: $sidebar-color;
 
   ul {
     padding: 0;

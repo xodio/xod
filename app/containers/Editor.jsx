@@ -1,54 +1,48 @@
+import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import * as EDITOR_MODE from '../constants/editorModes';
-import * as KEYCODE from '../constants/keycodes';
-import { isInput } from '../utils/browser';
+import CMD from '../constants/commands';
+
 import Patch from './Patch';
-import EventListener from 'react-event-listener';
+import ProjectBrowser from './ProjectBrowser';
+import Tabs from './Tabs';
+import Sidebar from '../components/Sidebar';
+import Workarea from '../components/Workarea';
 import Inspector from '../components/Inspector';
 
 class Editor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onKeyDown = this.onKeyDown.bind(this);
     this.onPropUpdate = this.onPropUpdate.bind(this);
     this.setModeCreating = this.setModeCreating.bind(this);
     this.setModeDefault = this.setModeDefault.bind(this);
     this.setSelectedNodeType = this.setSelectedNodeType.bind(this);
+    this.onPatchHotkeys = this.onPatchHotkeys.bind(this);
+    this.onBrowserHotkeys = this.onBrowserHotkeys.bind(this);
 
     this.patchSize = this.props.size;
+    this.hotkeys = {};
   }
 
-  onKeyDown(event) {
-    const keycode = event.keyCode || event.which;
-    const isNotInput = !isInput(event);
-
-    if (isNotInput) {
-      if (keycode === KEYCODE.BACKSPACE) {
-        event.preventDefault();
-      }
-
-      if (keycode === KEYCODE.N) {
-        this.setModeCreating();
-      }
-      if (keycode === KEYCODE.ESCAPE && this.props.mode.isCreatingNode) {
-        this.setModeDefault();
-      }
-
-      if (event.ctrlKey && keycode === KEYCODE.Z) {
-        this.props.actions.undo(this.props.currentPatchId);
-      }
-      if (event.ctrlKey && keycode === KEYCODE.Y) {
-        this.props.actions.redo(this.props.currentPatchId);
-      }
-    }
+  componentDidMount() {
+    this.props.hotkeys(this.getHotkeyHandlers());
   }
+
   onPropUpdate(nodeId, propKey, propValue) {
     this.props.actions.updateNodeProperty(nodeId, propKey, propValue);
+  }
+
+  onPatchHotkeys(hotkeys) {
+    this.hotkeys.patch = hotkeys;
+  }
+  onBrowserHotkeys(hotkeys) {
+    this.hotkeys.browser = hotkeys;
   }
 
   setEditorMode(mode) {
@@ -69,19 +63,45 @@ class Editor extends React.Component {
     );
   }
 
+  getHotkeyHandlers() {
+    return this.mergeCommands([
+      {
+        [CMD.SET_MODE_CREATING]: this.setModeCreating,
+        [CMD.ESCAPE]: this.setModeDefault,
+        [CMD.UNDO]: () => this.props.actions.undo(this.props.currentPatchId),
+        [CMD.REDO]: () => this.props.actions.redo(this.props.currentPatchId),
+      },
+      this.hotkeys.patch,
+      this.hotkeys.browser,
+    ]);
+  }
+  mergeCommand(obj1, obj2) {
+    return R.mergeWith(R.compose, obj1, obj2);
+  }
+
+  mergeCommands(array) {
+    return R.reduce(this.mergeCommand, {}, array);
+  }
+
   render() {
     return (
       <div>
-        <EventListener target={document} onKeyDown={this.onKeyDown} />
-        <Inspector
-          selection={this.props.selection}
-          nodes={this.props.nodes}
-          nodeTypes={this.props.nodeTypes}
-          onPropUpdate={this.onPropUpdate}
-        />
-        <Patch
-          size={this.patchSize}
-        />
+        <Sidebar>
+          <ProjectBrowser hotkeys={this.onBrowserHotkeys} />
+          <Inspector
+            selection={this.props.selection}
+            nodes={this.props.nodes}
+            nodeTypes={this.props.nodeTypes}
+            onPropUpdate={this.onPropUpdate}
+          />
+        </Sidebar>
+        <Workarea>
+          <Tabs />
+          <Patch
+            hotkeys={this.onPatchHotkeys}
+            size={this.patchSize}
+          />
+        </Workarea>
       </div>
     );
   }
@@ -97,6 +117,7 @@ Editor.propTypes = {
   currentPatchId: React.PropTypes.number,
   mode: React.PropTypes.object,
   actions: React.PropTypes.object,
+  hotkeys: React.PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({

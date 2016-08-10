@@ -67,13 +67,15 @@ export const getPatchById = (projectState, id) => {
     ])
   )(projectState);
 
-  let result = patch;
-  if (R.has('present', patch)) {
-    result = R.prop('present', result);
-  }
-
-  return result;
+  return R.propOr(patch, 'present', patch);
 };
+
+export const getPatchesByFolderId = (state, folderId) => R.pipe(
+  getPatches,
+  R.values,
+  R.map(R.prop('present')),
+  R.filter(R.propEq('folderId', folderId))
+)(state);
 
 const getPatchByEntityId = (projectState, id, entityBranch) => R.pipe(
   R.prop('patches'),
@@ -213,6 +215,14 @@ export const getLastPatchId = R.pipe(
   R.view(R.lensPath([
     'counter',
     'patches',
+  ]))
+);
+
+export const getLastFolderId = R.pipe(
+  getProject,
+  R.view(R.lensPath([
+    'counter',
+    'folders',
   ]))
 );
 
@@ -595,4 +605,158 @@ export const getLinkGhost = (state) => {
     from: addPinRadius(pin.position),
     to: { x: 0, y: 0 },
   };
+};
+
+/*
+  Folders
+*/
+export const getFolders = R.pipe(
+  getProject,
+  R.prop('folders')
+);
+export const getFoldersByFolderId = (state, folderId) => R.pipe(
+  getFolders,
+  R.values,
+  R.filter(R.propEq('parentId', folderId))
+)(state);
+
+/*
+  Tree view (get / parse)
+*/
+export const getFoldersPath = (folders, folderId) => {
+  if (!folderId) { return []; }
+  const folder = folders[folderId];
+  const parentPath = getFoldersPath(folders, folder.parentId);
+  return R.concat([folderId], parentPath);
+};
+
+export const getTreeView = (state) => {
+  const makeTree = (folders, patches, parentId, curPatchPath) => {
+    const path = curPatchPath || [];
+    const foldersAtLevel = R.pipe(
+      R.values,
+      R.filter(R.propEq('parentId', parentId))
+    )(folders);
+    const patchesAtLevel = R.pipe(
+      R.values,
+      R.map(R.prop('present')),
+      R.filter(R.propEq('folderId', parentId))
+    )(patches);
+
+    return R.concat(
+      R.map(
+        folder => ({
+          id: folder.id,
+          module: folder.name,
+          collapsed: (path.indexOf(folder.id) === -1),
+          children: makeTree(folders, patches, folder.id),
+        }),
+        foldersAtLevel
+      ),
+      R.map(
+        patch => ({
+          id: patch.id,
+          module: patch.name,
+          leaf: true,
+        }),
+        patchesAtLevel
+      )
+    );
+  };
+
+  const folders = getFolders(state);
+  const patches = getPatches(state);
+  const curPatch = getCurrentPatch(state);
+  const curPatchPath = getFoldersPath(folders, curPatch.folderId);
+  const projectChildren = makeTree(folders, patches, null, curPatchPath);
+
+
+  return {
+    module: 'Project',
+    collapsed: false,
+    children: projectChildren,
+  };
+};
+
+export const parseTreeView = (tree) => {
+  const resultShape = {
+    folders: [],
+    patches: [],
+  };
+  const parseTree = (treePart, parentId) => {
+    const partResult = R.clone(resultShape);
+    if (treePart.leaf) {
+      return R.assoc('patches', R.append({
+        id: treePart.id,
+        folderId: parentId,
+      }, partResult.patches), partResult);
+    }
+
+    if (treePart.id) {
+      partResult.folders = R.append({
+        id: treePart.id,
+        parentId,
+      }, partResult.folders);
+    }
+
+    if (treePart.children && treePart.children.length > 0) {
+      R.pipe(
+        R.values,
+        R.forEach(child => {
+          const chilParentId = treePart.id || null;
+          const childResult = parseTree(child, chilParentId);
+          partResult.folders = R.concat(partResult.folders, childResult.folders);
+          partResult.patches = R.concat(partResult.patches, childResult.patches);
+        })
+      )(treePart.children);
+    }
+
+    return partResult;
+  };
+
+  return parseTree(tree, null);
+};
+
+export const getTreeChanges = (oldTree, newTree) => {
+  const oldTreeParsed = parseTreeView(oldTree);
+  const newTreeParsed = parseTreeView(newTree);
+  const result = {
+    folders: [],
+    patches: [],
+    changed: false,
+  };
+
+  const sortById = R.sortBy(R.prop('id'));
+
+  oldTreeParsed.folders = sortById(oldTreeParsed.folders);
+  newTreeParsed.folders = sortById(newTreeParsed.folders);
+  newTreeParsed.folders.forEach(
+    (newFolder, i) => {
+      if (
+        newFolder.id !== oldTreeParsed.folders[i].id ||
+        newFolder.parentId !== oldTreeParsed.folders[i].parentId
+      ) {
+        result.folders.push(newFolder);
+      }
+    }
+  );
+
+  oldTreeParsed.patches = sortById(oldTreeParsed.patches);
+  newTreeParsed.patches = sortById(newTreeParsed.patches);
+  newTreeParsed.patches.forEach(
+    (newPatch, i) => {
+      if (
+        newPatch.id !== oldTreeParsed.patches[i].id ||
+        newPatch.folderId !== oldTreeParsed.patches[i].folderId
+      ) {
+        result.patches.push(newPatch);
+      }
+    }
+  );
+
+  if (result.folders.length > 0 || result.patches.length > 0) {
+    result.changed = true;
+  }
+
+  return result;
 };

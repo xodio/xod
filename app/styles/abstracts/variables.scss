@@ -19,7 +19,35 @@ $color-canvas-selected: #f00;
 $color-canvas-ok: #0f0;
 $color-canvas-almost-ok: #ab0;
 
+$color-button-primary-background: #286aa7;
+$color-button-primary-text: #fff;
+$color-button-primary-background-hover: #0c77da;
+
+$color-button-secondary-background: #506b4c;
+$color-button-secondary-text: #fff;
+$color-button-secondary-background-hover: #5F8359;
+
+$color-button-alt-background: #777;
+$color-button-alt-text: #fff;
+$color-button-alt-background-hover: #999;
+
 $color-ctrl-background: #2d4c29;
 $color-ctrl-background-text: #fff;
 
+$color-tabs-background: #2D3030;
+$color-tabs-unactive-background: #4D5353;
+$color-tabs-hover-background: #4C5353;
+$color-tabs-active-background: $color-canvas-background;
+$color-tabs-unactive-text: #BBB;
+$color-tabs-active-text: #EEE;
+$color-tabs-hover-text: #FFF;
+
 $snackbar-width: 200px;
+$sidebar-width: 200px;
+
+$sidebar-background: #eee;
+$sidebar-color: #000;
+$sidebar-title-color: #999;
+$sidebar-title-divider: #ccc;
+$sidebar-block-shadow: inset 0 5px 15px 1px rgba(0,0,0,.1);
+$sidebar-block-divider: 1px solid #fff;

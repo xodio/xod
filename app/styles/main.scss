@@ -14,6 +14,8 @@
   'base/base';
 
 @import
+  'components/Sidebar',
+  'components/Workarea',
   'components/PatchWrapper',
   'components/PatchSVG',
   'components/BackgroundLayer',
@@ -21,8 +23,15 @@
   'components/NodeText',
   'components/Pin',
   'components/Link',
+  'components/PopupAlert',
+  'components/PopupPrompt',
+  'components/PopupConfirm',
+  'components/TabsContainer',
+  'components/TabsItem',
   'components/Toolbar',
   'components/Inspector',
   'components/SnackBarList',
   'components/SnackBarError',
+  'components/ProjectBrowserToolbar',
+  'components/ProjectBrowserTree',
   'components/CreateNodeWidget';

@@ -2,7 +2,13 @@ import R from 'ramda';
 import undoable from 'redux-undo';
 import { patchReducer } from './patch';
 import applyReducers from '../utils/applyReducers';
-import { getPatchUndoType, getPatchRedoType, getPatchClearHistoryType } from '../actionTypes';
+import {
+  getPatchUndoType,
+  getPatchRedoType,
+  getPatchClearHistoryType,
+  PATCH_ADD,
+  PATCH_DELETE,
+} from '../actionTypes';
 
 export const patches = (patchIds) => {
   const undoFilter = (action) => !(R.pathEq(['meta', 'skipHistory'], true, action));
@@ -20,5 +26,31 @@ export const patches = (patchIds) => {
     }, {})
   )(patchIds);
 
-  return (state = {}, action) => applyReducers(reducers, state, action);
+  const newPatch = (action) => ({
+    past: [],
+    present: {
+      id: action.payload.newId,
+      name: action.payload.name || 'New patch',
+      folderId: action.payload.folderId || null,
+      nodes: {},
+      pins: {},
+      links: {},
+    },
+    future: [],
+  });
+
+  return (state = {}, action) => {
+    switch (action.type) {
+      case PATCH_ADD:
+        return R.assoc(
+          action.payload.newId,
+          newPatch(action),
+          state
+        );
+      case PATCH_DELETE:
+        return R.omit([action.payload.id.toString()], state);
+      default:
+        return applyReducers(reducers, state, action);
+    }
+  };
 };

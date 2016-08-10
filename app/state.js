@@ -78,12 +78,14 @@ const initialState = {
       },
     },
     nodeTypes,
+    folders: {},
     counter: {
-      patches: 1,
-      nodes: 1,
-      pins: 1,
-      links: 1,
+      patches: 2,
+      nodes: 0,
+      pins: 0,
+      links: 0,
       nodeTypes: +maxKey(nodeTypes) + 1,
+      folders: 0,
     },
   },
   editor: {
@@ -93,6 +95,13 @@ const initialState = {
     selection: [],
     linkingPin: null,
     selectedNodeType: 1,
+    tabs: {
+      1: {
+        id: 1,
+        patchId: 1,
+        index: 0,
+      },
+    },
   },
   errors: {},
   processes: {},

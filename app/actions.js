@@ -114,12 +114,18 @@ export const setLinkSelection = (id) => ({
   },
 });
 
-export const setMode = (mode) => ({
-  type: ActionType.EDITOR_SET_MODE,
-  payload: {
-    mode,
-  },
-});
+export const setMode = (mode) => (dispatch, getState) => {
+  if (Selectors.Editor.getMode(getState()) === mode) {
+    return;
+  }
+
+  dispatch({
+    type: ActionType.EDITOR_SET_MODE,
+    payload: {
+      mode,
+    },
+  });
+};
 
 export const deselectAll = () => (dispatch, getState) => {
   const state = getState();
@@ -316,4 +322,105 @@ export const redoPatch = (id) => ({
 export const clearHistoryPatch = (id) => ({
   type: ActionType.getPatchClearHistoryType(id),
   payload: {},
+});
+
+export const switchPatch = (id) => (dispatch, getState) => {
+  if (Selectors.Editor.getCurrentPatchId(getState()) === id) { return; }
+
+  dispatch(deselectAll());
+  dispatch({
+    type: ActionType.EDITOR_SWITCH_PATCH,
+    payload: {
+      id,
+    },
+  });
+};
+
+export const addPatch = (name, folderId) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.addPatch(projectState, name, folderId);
+
+  dispatch({
+    type: ActionType.PATCH_ADD,
+    payload: preparedData,
+  });
+};
+
+export const renamePatch = (id, name) => ({
+  type: ActionType.PATCH_RENAME,
+  payload: {
+    name,
+  },
+  meta: {
+    patchId: id,
+  },
+});
+
+export const deletePatch = (id) => ({
+  type: ActionType.PATCH_DELETE,
+  payload: {
+    id,
+  },
+});
+
+export const movePatch = (changes) => ({
+  type: ActionType.PATCH_MOVE,
+  payload: {
+    id: changes.id,
+    folderId: changes.folderId,
+  },
+  meta: {
+    patchId: changes.id,
+  },
+});
+
+export const addFolder = (name, parentId) => (dispatch, getState) => {
+  const projectState = Selectors.Project.getProject(getState());
+  const preparedData = Selectors.Prepare.addFolder(projectState, name, parentId);
+  dispatch({
+    type: ActionType.FOLDER_ADD,
+    payload: preparedData,
+  });
+};
+
+export const renameFolder = (id, name) => ({
+  type: ActionType.FOLDER_RENAME,
+  payload: {
+    id,
+    name,
+  },
+});
+
+export const deleteFolder = (id) => (dispatch, getState) => {
+  const folders = Selectors.Project.getFoldersByFolderId(getState(), id);
+  const patches = Selectors.Project.getPatchesByFolderId(getState(), id);
+
+  folders.forEach(folder => dispatch(deleteFolder(folder.id)));
+  patches.forEach(patch => dispatch(deletePatch(patch.id)));
+  dispatch({
+    type: ActionType.FOLDER_DELETE,
+    payload: {
+      id,
+    },
+  });
+};
+
+export const moveFolder = (changes) => ({
+  type: ActionType.FOLDER_MOVE,
+  payload: {
+    id: changes.id,
+    parentId: changes.parentId,
+  },
+});
+
+export const closeTab = (id) => ({
+  type: ActionType.TAB_CLOSE,
+  payload: {
+    id,
+  },
+});
+
+export const sortTabs = (newOrderObject) => ({
+  type: ActionType.TAB_SORT,
+  payload: newOrderObject,
 });

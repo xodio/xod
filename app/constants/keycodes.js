@@ -9,3 +9,4 @@ export const COMMA = 188;
 export const N = 78;
 export const Z = 90;
 export const Y = 89;
+export const R = 82;
