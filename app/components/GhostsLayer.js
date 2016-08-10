@@ -1,12 +1,10 @@
 import R from 'ramda';
 import React from 'react';
-import { connect } from 'react-redux';
 
 import SVGLayer from '../components/SVGLayer';
 import Node from '../components/Node';
 import Link from '../components/Link';
 import { GHOSTS as LAYER_NAME } from '../constants/layers';
-import Selectors from '../selectors';
 
 class GhostLayer extends React.Component {
   constructor(props) {
@@ -124,10 +122,4 @@ GhostLayer.propTypes = {
   ghostLink: React.PropTypes.any,
 };
 
-const mapStateToProps = (state) => ({
-  mode: Selectors.Editor.getModeChecks(state),
-  ghostNode: Selectors.Project.getNodeGhost(state),
-  ghostLink: Selectors.Project.getLinkGhost(state),
-});
-
-export default connect(mapStateToProps)(GhostLayer);
+export default GhostLayer;
