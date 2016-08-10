@@ -1,5 +1,6 @@
 
 import R from 'ramda';
+import { sortGraph } from '../../app/utils/gmath';
 import * as PIN_DIRECTION from '../../app/constants/pinDirection';
 import * as PIN_TYPE from '../../app/constants/pinType';
 
@@ -52,6 +53,7 @@ export default function transform(project, implPlatforms = []) {
   const mergedEntities = key => R.propOr({}, key)(mergedPatch);
 
   const nodes = () => mergedEntities('nodes');
+  const nodeList = R.compose(R.values, nodes);
 
   const pins = () => mergedEntities('pins');
   const pinList = R.compose(R.values, pins);
@@ -99,12 +101,17 @@ export default function transform(project, implPlatforms = []) {
     R.objOf('inputTypes', inputTypes(nodeType))
   );
 
-  // :: Link -> OutLink
-  const linkDestination = R.compose(
-    R.pick(['nodeId', 'key']),
+  // :: Link -> LinkPinIndex -> Pin
+  const linkPin = idx => R.compose(
     pinById,
-    R.nth(1),
+    R.nth(idx),
     R.prop('pins')
+  );
+
+  // :: Link -> OutLink
+  const linkOutLink = R.compose(
+    R.pick(['nodeId', 'key']),
+    linkPin(1)
   );
 
   // :: Pin -> [Link]
@@ -129,7 +136,7 @@ export default function transform(project, implPlatforms = []) {
 
   // :: NodeType.Pin -> [OutLink]
   const nodeTypePinOutLinks = ownerNode => R.compose(
-    R.map(linkDestination),
+    R.map(linkOutLink),
     outgoingLinks,
     pinByNodeTypePin(ownerNode)
   );
@@ -149,14 +156,30 @@ export default function transform(project, implPlatforms = []) {
     R.objOf('outLinks', nodeOutLinks(node)),
   ]);
 
+  const transformedNodes = R.map(transformedNode, nodes());
+
   // :: NodeType -> ImplementationString
   const nodeTypeImpl = R.compose(
     priorityValue(implPlatforms),
     R.propOr({}, 'impl')
   );
 
+  const impl = R.map(nodeTypeImpl, usedNodeTypes());
+
+  // Link -> [NodeId]
+  const linkNodeIds = R.compose(
+    R.pluck('nodeId'),
+    R.map(pinById),
+    R.prop('pins')
+  );
+  
+  const dagVertexes = R.pluck('id', nodeList());
+  const dagEdges = R.map(linkNodeIds, linkList());
+  const topology = sortGraph(dagVertexes, dagEdges);
+
   return {
-    nodes: R.map(transformedNode, nodes()),
-    impl: R.map(nodeTypeImpl, usedNodeTypes()),
+    nodes: transformedNodes,
+    impl,
+    topology,
   };
 }

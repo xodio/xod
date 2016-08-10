@@ -44,6 +44,13 @@ function transpileNodes(nodes) {
   return `var nodes = ${nodesCode}`;
 }
 
+function transpileProject(topology) {
+  return joinLines([
+    `var topology = ${JSON.stringify(topology)};`,
+    'var project = new Project(nodes, topology);',
+  ]);
+}
+
 export default function transpile({ project, runtime }) {
   const proj = transform(project, ['espruino', 'js']);
 
@@ -57,7 +64,7 @@ export default function transpile({ project, runtime }) {
     transpileImpl(proj.impl),
     '// =====================================================================',
     transpileNodes(proj.nodes),
-    'var project = new Project(nodes);',
+    transpileProject(proj.topology),
     launcher,
   ]);
 
