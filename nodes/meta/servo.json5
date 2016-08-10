@@ -4,5 +4,11 @@
     type: 'number',
     defaultValue: 1,
     description: 'Rotation angle/value'
+  }],
+  properties: [{
+    key: 'pin',
+    label: 'Pin',
+    type: 'string',
+    defaultValue: 'P13',
   }]
 }

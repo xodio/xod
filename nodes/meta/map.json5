@@ -1,6 +1,6 @@
 {
   inputs: [{
-    key: 'in',
+    key: 'inp',
     label: 'IN',
     type: 'number',
     description: 'Input value to map'

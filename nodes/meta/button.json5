@@ -4,4 +4,10 @@
     type: 'bool',
     description: 'Emits `true` when pressed and `false` when released',
   }],
+  properties: [{
+    key: 'pin',
+    label: 'Pin',
+    type: 'string',
+    defaultValue: 'P2',
+  }]
 }
