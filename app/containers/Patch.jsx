@@ -45,20 +45,16 @@ class Patch extends React.Component {
     const notNil = R.complement(R.isNil);
     const isDraggingGhost = R.useWith(notNil, [haveGhost, haveGhost]);
 
-    const notEquals = R.complement(R.equals);
-    const mPos = R.prop('mousePosition');
-    const isChangingMousePosition = R.useWith(notEquals, [mPos, mPos]);
+    const isChangingMousePosition = nextState.mousePosition !== this.state.mousePosition;
 
     const isDraggingNode = R.complement(R.isEmpty);
 
     const shouldNotUpdateMousePosition = (
       !(
-        isDraggingGhost(this.props, nextProps)
-        ||
+        isDraggingGhost(this.props, nextProps) ||
         isDraggingNode(this.dragging)
-      )
-      &&
-      isChangingMousePosition(this.state, nextState)
+      ) &&
+      isChangingMousePosition
     );
 
     if (shouldNotUpdateMousePosition) { return false; }
