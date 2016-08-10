@@ -10,10 +10,6 @@ describe('Transformer', () => {
   });
 
   it('should merge node and node type', () => {
-    const impl =
-      'module.exports.evaluate = ' +
-      'function(e) { return {valueOut: e.inputs.valueIn + 100}; };';
-
     const result = transform({
       patches: {
         1: {
@@ -30,7 +26,6 @@ describe('Transformer', () => {
         777: {
           id: 777,
           pure: true,
-          impl,
           pins: {
             valueIn: {
               direction: 'input',
@@ -58,8 +53,30 @@ describe('Transformer', () => {
         outLinks: {},
       },
     });
+  });
 
-    expect(result.impl).to.be.eql({ 777: impl });
+  it('should extract implementation', () => {
+    const js = 'module.exports.setup = function() {}';
+    const cpp = 'void setup(void*) {}';
+
+    const result = transform({
+      patches: {
+        1: {
+          id: 1,
+          nodes: {
+            42: { id: 42, typeId: 777 },
+          },
+        },
+      },
+      nodeTypes: {
+        777: {
+          id: 777,
+          impl: { js, cpp },
+        },
+      },
+    }, ['es6', 'js']);
+
+    expect(result.impl).to.be.eql({ 777: js });
   });
 
   it('should merge links', () => {

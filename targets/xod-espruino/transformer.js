@@ -22,11 +22,24 @@ const renameKeys = R.curry(
   )
 );
 
+// :: [k] -> {k: v} -> v | Undefined -- returns a value in obj for
+//    an existing key that found first in priorityKeys
+const priorityValue = R.curry(
+  (priorityKeys, obj) => {
+    const key = R.head(R.intersection(priorityKeys, R.keys(obj)));
+    return R.prop(key, obj);
+  }
+);
+
 /**
   * Transforms JSON data as it seen it *.xod files to
   * a shape expected by the runtime.
+  *
+  * @param {Object} project -- project from app world
+  * @param {Array.<String>} implPlatforms -- allowed platforms to extract
+  *   implementation for given in prioritized list. E.g. ['espruino', 'js'].
   */
-export default function transform(project) {
+export default function transform(project, implPlatforms = []) {
   // :: () -> Patch -- joins all patches into one shallow
   const mergedPatch = R.compose(
     R.omit('id'),
@@ -136,8 +149,14 @@ export default function transform(project) {
     R.objOf('outLinks', nodeOutLinks(node)),
   ]);
 
+  // :: NodeType -> ImplementationString
+  const nodeTypeImpl = R.compose(
+    priorityValue(implPlatforms),
+    R.propOr({}, 'impl')
+  );
+
   return {
     nodes: R.map(transformedNode, nodes()),
-    impl: R.map(R.prop('impl'), usedNodeTypes()),
+    impl: R.map(nodeTypeImpl, usedNodeTypes()),
   };
 }
