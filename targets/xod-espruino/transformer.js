@@ -3,6 +3,25 @@ import R from 'ramda';
 import * as PIN_DIRECTION from '../../app/constants/pinDirection';
 import * as PIN_TYPE from '../../app/constants/pinType';
 
+// From: https://github.com/ramda/ramda/wiki/Cookbook#rename-keys-of-an-object
+/**
+ * Creates a new object with the own properties of the provided object, but the
+ * keys renamed according to the keysMap object as `{oldKey: newKey}`.
+ * When some key is not found in the keysMap, then it's passed as-is.
+ *
+ * Keep in mind that in the case of keys conflict is behaviour undefined and
+ * the result may vary between various JS engines!
+ *
+ * @sig {a: b} -> {a: *} -> {b: *}
+ */
+const renameKeys = R.curry(
+  (keysMap, obj) => R.reduce(
+    (acc, key) => R.assoc(keysMap[key] || key, obj[key], acc),
+    {},
+    R.keys(obj)
+  )
+);
+
 /**
   * Transforms JSON data as it seen it *.xod files to
   * a shape expected by the runtime.
@@ -30,6 +49,9 @@ export default function transform(project) {
 
   const nodeTypes = () => R.propOr({}, 'nodeTypes', project);
   const nodeTypeById = id => R.propOr({}, id, nodeTypes());
+
+  const usedNodeTypeIds = () => R.pluck('typeId', R.values(nodes()));
+  const usedNodeTypes = () => R.pick(usedNodeTypeIds(), nodeTypes());
 
   // :: Node -> NodeType
   const nodeTypeByNode = R.compose(nodeTypeById, R.prop('typeId'));
@@ -60,7 +82,7 @@ export default function transform(project) {
 
   // :: NodeType -> TransformedNodeType
   const transformedNodeType = nodeType => R.merge(
-    R.pick(['pure', 'setup', 'evaluate'])(nodeType),
+    R.pick(['pure'])(nodeType),
     R.objOf('inputTypes', inputTypes(nodeType))
   );
 
@@ -109,10 +131,13 @@ export default function transform(project) {
 
   // :: Node -> TransformedNode
   const transformedNode = node => R.mergeAll([
-    R.pick(['id'])(node),
+    renameKeys({ typeId: 'implId' }, R.pick(['id', 'typeId'])(node)),
     R.compose(transformedNodeType, nodeTypeByNode)(node),
     R.objOf('outLinks', nodeOutLinks(node)),
   ]);
 
-  return R.map(transformedNode, nodes());
+  return {
+    nodes: R.map(transformedNode, nodes()),
+    impl: R.map(R.prop('impl'), usedNodeTypes()),
+  };
 }

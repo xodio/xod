@@ -3,13 +3,18 @@ import { expect } from 'chai';
 import transform from 'xod-espruino/transformer';
 
 describe('Transformer', () => {
-  it('should transform empty json to empty node list', () => {
-    const nodes = transform({});
-    expect(nodes).to.be.eql({});
+  it('should transform empty json to empty result', () => {
+    const result = transform({});
+    expect(result.nodes).to.be.eql({});
+    expect(result.impl).to.be.eql({});
   });
 
   it('should merge node and node type', () => {
-    const nodes = transform({
+    const impl =
+      'module.exports.evaluate = ' +
+      'function(e) { return {valueOut: e.inputs.valueIn + 100}; };';
+
+    const result = transform({
       patches: {
         1: {
           id: 1,
@@ -25,8 +30,7 @@ describe('Transformer', () => {
         777: {
           id: 777,
           pure: true,
-          setup: 'module.exports = function(fire) {};',
-          evaluate: 'module.exports = function(inputs) { return {valueOut: valueIn + 100}; };',
+          impl,
           pins: {
             valueIn: {
               direction: 'input',
@@ -43,11 +47,10 @@ describe('Transformer', () => {
       },
     });
 
-    expect(nodes).to.be.eql({
+    expect(result.nodes).to.be.eql({
       42: {
         id: 42,
-        setup: 'module.exports = function(fire) {};',
-        evaluate: 'module.exports = function(inputs) { return {valueOut: valueIn + 100}; };',
+        implId: 777,
         pure: true,
         inputTypes: {
           valueIn: Number,
@@ -55,10 +58,12 @@ describe('Transformer', () => {
         outLinks: {},
       },
     });
+
+    expect(result.impl).to.be.eql({ 777: impl });
   });
 
   it('should merge links', () => {
-    const nodes = transform({
+    const result = transform({
       patches: {
         1: {
           id: 1,
@@ -96,7 +101,7 @@ describe('Transformer', () => {
       },
     });
 
-    expect(nodes[42].outLinks).to.be.eql({
+    expect(result.nodes[42].outLinks).to.be.eql({
       valueOut: [{
         nodeId: 43,
         key: 'valueIn',
@@ -105,7 +110,7 @@ describe('Transformer', () => {
   });
 
   it('should merge patches', () => {
-    const nodes = transform({
+    const result = transform({
       patches: {
         1: {
           id: 1,
@@ -128,7 +133,7 @@ describe('Transformer', () => {
       },
     });
 
-    expect(nodes).to.have.property(42);
-    expect(nodes).to.have.property(43);
+    expect(result.nodes).to.have.property(42);
+    expect(result.nodes).to.have.property(43);
   });
 });
