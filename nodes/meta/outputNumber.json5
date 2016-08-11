@@ -1,6 +1,6 @@
 {
   label: '<OutputNumber>',
-  category: 'patch',
+  category: 'io',
   inputs: [{
     key: 'OUT',
     type: 'number',

@@ -7,6 +7,7 @@ import { LINK_ERRORS } from '../constants/errorMessages';
 import { PROPERTY_TYPE } from '../constants/property';
 import * as ENTITIES from '../constants/entities';
 import * as SIZES from '../constants/sizes';
+import * as NODE_CATEGORY from '../constants/nodeCategory';
 
 import {
   getCurrentPatchId,
@@ -54,10 +55,12 @@ export const getProject = (state) => {
   return getProjectState(state, path);
 };
 
-export const getPatches = (projectState) => R.pipe(
+export const getPatches = R.pipe(
   getProject,
   R.prop('patches')
-)(projectState);
+);
+
+// export const getPreparedPatches;
 
 export const getPatchById = (projectState, id) => {
   const patch = R.view(
@@ -285,6 +288,12 @@ export const getNodes = R.pipe(
   R.prop('nodes')
 );
 
+export const getNodesByPatchId = (patchId, state) => R.pipe(
+  getProject,
+  R.path(['patches', patchId, 'present']),
+  R.prop('nodes')
+)(state);
+
 export const getNodeById = (state, props) => R.pipe(
   getNodes,
   R.filter((node) => node.id === props.id),
@@ -347,7 +356,7 @@ const getGroupedPinsWidth = R.pipe(
 const getNodeWidth = R.pipe(
   R.values,
   R.append(SIZES.NODE.minWidth),
-  R.apply(R.max)
+  R.reduce(R.max, -Infinity)
 );
 
 const getPinPosition = (nodeTypePins, key, nodePosition) => {
@@ -534,6 +543,8 @@ const getNodeLabel = (state, node) => {
       nodeLabel = '<EmptyString>';
     }
   }
+
+  nodeLabel = R.pathOr(nodeLabel, ['properties', 'label'], node);
 
   return String(nodeLabel);
 };
@@ -782,3 +793,57 @@ export const getTreeChanges = (oldTree, newTree) => {
 
   return result;
 };
+
+const filterPatchNode = R.filter(R.propEq('category', NODE_CATEGORY.PATCHES));
+
+export const getPatchIOPins = (node, i) => {
+  const pin = R.values(node.pins)[0];
+  return {
+    key: node.properties.key,
+    direction: pin.direction,
+    type: pin.type,
+    index: i,
+  };
+};
+
+export const getPatchIO = R.pipe(
+  R.prop('nodes'),
+  R.values,
+  filterPatchNode,
+  R.mapObjIndexed(getPatchIOPins),
+  R.values
+);
+
+export const getPatchNode = (state, patch) => {
+  const extendNodes = R.mapObjIndexed(
+    node => R.compose(
+      R.flip(R.merge)(node),
+      R.curry(getNodeTypeById)(state),
+      R.prop('typeId')
+    )(node)
+  );
+
+  const isItPatchNode = R.pipe(
+    R.prop('nodes'),
+    R.values,
+    filterPatchNode,
+    R.length,
+    R.flip(R.gt)(0)
+  );
+
+  const assocNodes = p => R.assoc('nodes', extendNodes(R.prop('nodes', p)), p);
+  const assocFlag = p => R.assoc('isPatchNode', isItPatchNode(p), p);
+  const assocIO = p => R.assoc('io', getPatchIO(p), p);
+
+  return R.pipe(
+    assocNodes,
+    assocFlag,
+    assocIO
+  )(patch);
+};
+
+export const getPatchNodes = state => R.pipe(
+  getPatches,
+  R.mapObjIndexed(R.prop('present')),
+  R.mapObjIndexed(patch => getPatchNode(state, patch))
+)(state);

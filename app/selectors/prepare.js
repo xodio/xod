@@ -6,11 +6,18 @@ import {
   getLastLinkId,
   getLastPatchId,
   getLastFolderId,
+  getLastNodeTypeId,
+  getPatchById,
   getPatchByNodeId,
   getPatchByPinId,
+  getPatchIO,
+  getPatchIOPins,
   getPinsByNodeIdInPatch,
   getLinksByPinIdInPatch,
 } from './project';
+
+import * as NODE_CATEGORY from '../constants/nodeCategory';
+import * as DIRECTION from '../constants/pinDirection';
 
 export const addPatch = (projectState, name, folderId) => {
   const newId = getLastPatchId(projectState) + 1;
@@ -32,17 +39,46 @@ export const addFolder = (projectState, name, parentId) => {
   };
 };
 
-export const addNode = (projectState, typeId, position) => {
+export const addNode = (projectState, typeId, position, patchId) => {
   const newNodeId = getLastNodeId(projectState) + 1;
   const nodeType = getNodeTypes(projectState)[typeId];
   const lastPinId = getLastPinId(projectState);
+  let patchNode = null;
+
+  if (nodeType.category === NODE_CATEGORY.IO) {
+    const patch = getPatchById(projectState, patchId);
+    const nodeTypePins = R.values(nodeType.pins);
+    const getRand = () => Math.round(Math.random() * 100);
+    const invertDirection = R.ifElse(
+      R.equals(DIRECTION.INPUT),
+      () => DIRECTION.OUTPUT,
+      () => DIRECTION.INPUT
+    );
+    patchNode = {
+      patchId: patch.id,
+      label: patch.name,
+      key: patch.name,
+      category: nodeType.category,
+      pins: {
+        key: `${nodeType.properties.key.defaultValue}_${getRand()}`,
+        direction: invertDirection(nodeTypePins[0].direction),
+        type: nodeTypePins[0].type,
+      },
+    };
+  }
 
   return {
-    typeId,
-    position,
-    nodeType,
-    newNodeId,
-    lastPinId,
+    payload: {
+      typeId,
+      position,
+      nodeType,
+      newNodeId,
+      lastPinId,
+      patchNode,
+    },
+    meta: {
+      patchId,
+    },
   };
 };
 

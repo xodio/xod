@@ -1,6 +1,6 @@
 {
   label: '<InputBool>',
-  category: 'patch',
+  category: 'io',
   outputs: [{
     key: 'IN',
     type: 'bool',

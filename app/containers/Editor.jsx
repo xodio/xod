@@ -118,6 +118,7 @@ Editor.propTypes = {
   mode: React.PropTypes.object,
   actions: React.PropTypes.object,
   hotkeys: React.PropTypes.func,
+  p: React.PropTypes.any,
 };
 
 const mapStateToProps = (state) => ({

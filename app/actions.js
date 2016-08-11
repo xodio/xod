@@ -50,12 +50,12 @@ export const dragNode = (id, position) => (dispatch, getState) => {
 
 export const addNode = (typeId, position, patchId) => (dispatch, getState) => {
   const projectState = Selectors.Project.getProject(getState());
-  const preparedData = Selectors.Prepare.addNode(projectState, typeId, position);
+  const preparedData = Selectors.Prepare.addNode(projectState, typeId, position, patchId);
 
   dispatch({
     type: ActionType.NODE_ADD,
-    payload: preparedData,
-    meta: { patchId },
+    payload: preparedData.payload,
+    meta: preparedData.meta,
   });
 };
 
