@@ -76,7 +76,7 @@ export default function transpile({ project, runtime }) {
   const saver = joinLines([
     'if (typeof save !== "undefined") {',
     '  save();',
-    '}'
+    '}',
   ]);
 
   return joinLineBlocks([
