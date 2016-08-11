@@ -323,7 +323,7 @@ const mapStateToProps = (state) => ({
   patchId: Selectors.Editor.getCurrentPatchId(state),
   mode: Selectors.Editor.getModeChecks(state),
   linkingPin: Selectors.Editor.getLinkingPin(state),
-  nodeTypes: Selectors.Project.getNodeTypes(state),
+  nodeTypes: Selectors.Project.getPreparedNodeTypes(state),
   ghostNode: Selectors.Project.getNodeGhost(state),
   ghostLink: Selectors.Project.getLinkGhost(state),
 });

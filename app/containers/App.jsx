@@ -197,7 +197,7 @@ App.propTypes = {
 const mapStateToProps = (state) => ({
   projectJSON: Selectors.Project.getProjectJSON(state),
   meta: Selectors.Project.getMeta(state),
-  nodeTypes: Selectors.Project.getNodeTypes(state),
+  nodeTypes: Selectors.Project.getPreparedNodeTypes(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
   upload: Selectors.Processes.getUpload(state),
 });

@@ -124,7 +124,7 @@ Editor.propTypes = {
 const mapStateToProps = (state) => ({
   nodes: Selectors.Project.getNodes(state),
   editor: Selectors.Editor.getEditor(state),
-  nodeTypes: Selectors.Project.getNodeTypes(state),
+  nodeTypes: Selectors.Project.getPreparedNodeTypes(state),
   selection: Selectors.Editor.getSelection(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
   currentPatchId: Selectors.Editor.getCurrentPatchId(state),

@@ -10,52 +10,31 @@ import * as NODE_CATEGORY from '../constants/nodeCategory';
 export const nodeTypes = (state = {}, action) => {
   switch (action.type) {
     case NODE_ADD: {
-      if (!action.payload.patchNode) { return state; }
+      if (action.payload.nodeType.category !== NODE_CATEGORY.IO) { return state; }
 
-      const patchNode = action.payload.patchNode;
-
+      const patchId = action.meta.patchId;
       const int = R.curry(R.flip(parseInt)(10));
-      const eqPatchId = R.propEq('patchId', patchNode.patchId);
-
-      const oldNodeType = R.pipe(
+      const eqPatchId = R.propEq('patchId', patchId);
+      const oldId = R.pipe(
         R.pickBy(eqPatchId),
         R.values,
-        R.head
-      );
-
-      const oldId = R.pipe(
-        oldNodeType,
+        R.head,
         R.propOr(null, 'id')
-      );
+      )(state);
+
+      if (oldId) { return state; }
+
       const newId = R.pipe(
         R.keys,
         R.map(int),
         R.reduce(R.max, -Infinity),
         R.inc
-      );
+      )(state);
 
-      const nodeType = oldNodeType(state);
-      const id = oldId(state) || newId(state);
-
-      const pins = (nodeType) ? R.values(nodeType.pins) : [];
-      const newPin = R.pipe(
-        R.prop('pins'),
-        R.assoc('index', R.length(pins)),
-        R.assoc('key', R.length(pins))
-      )(patchNode);
-
-      const newPins = R.append(
-        newPin,
-        pins
-      );
-
-
-      return R.assoc(id, {
-        id,
-        label: patchNode.label,
-        patchId: patchNode.patchId,
+      return R.assoc(newId, {
+        id: newId,
+        patchId,
         category: NODE_CATEGORY.PATCHES,
-        pins: R.indexBy(R.prop('key'), newPins),
       }, state);
     }
     default:

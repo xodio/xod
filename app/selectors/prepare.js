@@ -43,28 +43,6 @@ export const addNode = (projectState, typeId, position, patchId) => {
   const newNodeId = getLastNodeId(projectState) + 1;
   const nodeType = getNodeTypes(projectState)[typeId];
   const lastPinId = getLastPinId(projectState);
-  let patchNode = null;
-
-  if (nodeType.category === NODE_CATEGORY.IO) {
-    const patch = getPatchById(projectState, patchId);
-    const nodeTypePins = R.values(nodeType.pins);
-    const invertDirection = R.ifElse(
-      R.equals(DIRECTION.INPUT),
-      () => DIRECTION.OUTPUT,
-      () => DIRECTION.INPUT
-    );
-    patchNode = {
-      patchId: patch.id,
-      label: patch.name,
-      key: patch.name,
-      category: nodeType.category,
-      pins: {
-        label: nodeType.properties.key.defaultValue,
-        direction: invertDirection(nodeTypePins[0].direction),
-        type: nodeTypePins[0].type,
-      },
-    };
-  }
 
   return {
     payload: {
@@ -73,7 +51,6 @@ export const addNode = (projectState, typeId, position, patchId) => {
       nodeType,
       newNodeId,
       lastPinId,
-      patchNode,
     },
     meta: {
       patchId,
