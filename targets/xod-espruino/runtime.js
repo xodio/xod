@@ -1,5 +1,5 @@
 
-function nullFunc() {};
+function nullFunc() {}
 
 /**
   * @typedef {{
@@ -29,8 +29,10 @@ function Node(args) {
   this._pure = (args.pure === undefined) ? true : args.pure;
   this._inputTypes = args.inputTypes || {};
   this._outLinks = args.outLinks || {};
+  this._props = args.props || {};
   this._nodes = args.nodes;
 
+  this._context = {};
   this._cachedInputs = {};
   this._pendingOutputs = {};
   this._dirty = false;
@@ -77,7 +79,11 @@ Node.prototype.isDirty = function() {
   * Called once the graph is ready at the very beginning of program execution.
   */
 Node.prototype.setup = function() {
-  this._setup(this.fire.bind(this));
+  this._setup({
+    fire: this.fire.bind(this),
+    props: this._props,
+    context: this._context
+  });
 }
 
 /**
@@ -88,9 +94,16 @@ Node.prototype.evaluate = function() {
     return;
   }
 
-  var fireCallback = this._pure ? null : this.fire.bind(this);
+  var fire = this._pure ? null : this.fire.bind(this);
   var inputs = this._cachedInputs.clone();
-  var result = this._evaluate(inputs, fireCallback) || {};
+
+  var result = this._evaluate({
+    inputs: inputs,
+    fire: fire,
+    context: this._context,
+    props: this._props
+  }) || {};
+
   this._sendOutputs(result);
   this._dirty = false;
 }
@@ -163,7 +176,7 @@ Project.prototype.flushTransaction = function() {
   try {
     this.forEachNode(function(node) { node.onTransactionStart(); });
 
-    let node;
+    var node;
     while ( (node = this.getFirstDirtyNode()) ) {
       node.evaluate();
     }
@@ -182,7 +195,7 @@ Project.prototype.flushTransaction = function() {
   */
 Project.prototype.getFirstDirtyNode = function() {
   var len = this._topology.length;
-  for (let i = 0; i < len; ++i) {
+  for (var i = 0; i < len; ++i) {
     var nodeId = this._topology[i];
     var node = this._nodes[nodeId];
     if (node.isDirty()) {
@@ -210,5 +223,8 @@ Project.prototype.forEachNode = function(callback) {
   Object.keys(this._nodes).forEach(function(id) { callback(self._nodes[id]); });
 }
 
-module.exports.Node = Node;
-module.exports.Project = Project;
+if (typeof module !== 'undefined') {
+  // Export some entities for tests
+  module.exports.Node = Node;
+  module.exports.Project = Project;
+}

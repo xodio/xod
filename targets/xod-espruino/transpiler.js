@@ -32,22 +32,35 @@ function transpileNodes(nodes) {
   // we should actually refer to `impl` global variable. JSON.stringify would
   // enclose it in quoutes. So we place these special tokens to unquote the values
   // and refer to actual `impl` with a regex find/replace in an additional step.
-  const injectFuncRefs = R.map(node => R.merge(node, {
+  const injectFuncRefs = node => R.merge(node, {
     setup: `__IMPLREF__setup#${node.implId}__`,
     upkeep: `__IMPLREF__upkeep#${node.implId}__`,
     evaluate: `__IMPLREF__evaluate#${node.implId}__`,
-  }));
+  });
 
-  const nodesJson = JSON.stringify(injectFuncRefs(nodes), null, 2);
-  const nodesCode = nodesJson.replace(/"__IMPLREF__(.+)#(.+)__"/g, "impl['$2'].$1");
+  const items = R.compose(
+    joinLineBlocks,
+    R.values,
+    R.mapObjIndexed(
+      (node, nodeId) => {
+        const nodeJson = JSON.stringify(injectFuncRefs(node), null, 2);
+        const template = `nodes['${nodeId}'] = new Node(${nodeJson});`;
+        const statement = template.replace(/"__IMPLREF__(.+)#(.+)__"/g, "impl['$2'].$1");
+        return statement;
+      }
+    )
+  );
 
-  return `var nodes = ${nodesCode}`;
+  return joinLineBlocks([
+    'var nodes = {};',
+    items(nodes),
+  ]);
 }
 
 function transpileProject(topology) {
   return joinLines([
     `var topology = ${JSON.stringify(topology)};`,
-    'var project = new Project(nodes, topology);',
+    'var project = new Project({ nodes: nodes, topology: topology });',
   ]);
 }
 
@@ -60,18 +73,21 @@ export default function transpile({ project, runtime }) {
     '}',
   ]);
 
-  const payload = joinLineBlocks([
-    transpileImpl(proj.impl),
-    '// =====================================================================',
-    transpileNodes(proj.nodes),
-    transpileProject(proj.topology),
-    launcher,
+  const saver = joinLines([
+    'if (typeof save !== "undefined") {',
+    '  save();',
+    '}'
   ]);
 
   return joinLineBlocks([
     runtime,
     '// =====================================================================',
-    payload,
-    'save();',
+    transpileImpl(proj.impl),
+    '// =====================================================================',
+    transpileNodes(proj.nodes),
+    transpileProject(proj.topology),
+    launcher,
+    saver,
+    '',
   ]);
 }

@@ -35,14 +35,14 @@ describe('Runtime', () => {
     }
 
     function createPublisherNode(id, outLinks) {
-      const ee = new EventEmitter();
+      const emitter = new EventEmitter();
       createNode(id, {
-        setup: (fire) => ee.on('publish', fire),
+        setup: e => emitter.on('publish', e.fire),
         pure: false,
         outLinks,
       });
 
-      return ee;
+      return emitter;
     }
 
     function createSubscriberNode(id) {
@@ -51,7 +51,7 @@ describe('Runtime', () => {
       };
 
       createNode(id, {
-        evaluate: inputs => mock.calls.push(inputs),
+        evaluate: e => mock.calls.push(e.inputs),
         pure: false,
         inputTypes: { val: Number },
         nodes,
@@ -103,7 +103,7 @@ describe('Runtime', () => {
       });
 
       createNode(2, {
-        evaluate: ({ inp }) => ({ out: inp + 100 }),
+        evaluate: e => ({ out: e.inputs.inp + 100 }),
         inputTypes: { inp: Number },
         outLinks: {
           out: [{ nodeId: 3, key: 'inp' }],
@@ -111,7 +111,7 @@ describe('Runtime', () => {
       });
 
       createNode(3, {
-        evaluate: ({ inp }) => ({ out: inp + 1000 }),
+        evaluate: e => ({ out: e.inputs.inp + 1000 }),
         inputTypes: { inp: Number },
         outLinks: {
           out: [{ nodeId: 4, key: 'val' }],
@@ -132,7 +132,7 @@ describe('Runtime', () => {
     it('should allow simultaneous signals at start', () => {
       // constant 42
       createNode(1, {
-        setup: fire => fire({ val: 42 }),
+        setup: e => e.fire({ val: 42 }),
         outLinks: {
           val: [{ nodeId: 3, key: 'a' }],
         },
@@ -140,7 +140,7 @@ describe('Runtime', () => {
 
       // constant 100
       createNode(2, {
-        setup: fire => fire({ val: 100 }),
+        setup: e => e.fire({ val: 100 }),
         outLinks: {
           val: [{ nodeId: 3, key: 'b' }],
         },
@@ -148,7 +148,7 @@ describe('Runtime', () => {
 
       // sum
       createNode(3, {
-        evaluate: ({ a, b }) => ({ out: a + b }),
+        evaluate: (e) => ({ out: e.inputs.a + e.inputs.b }),
         inputTypes: { a: Number, b: Number },
         outLinks: {
           out: [{ nodeId: 4, key: 'val' }],
