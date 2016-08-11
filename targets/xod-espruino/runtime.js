@@ -115,35 +115,6 @@ Node.prototype._sendOutputs = function(signals) {
   });
 }
 
-// Object.on and Object.emit is implemented in Espruino, but in
-// standard JavaScript it is not
-if (!('on' in Node.prototype && 'emit' in Node.prototype)) {
-  Node.prototype.on = function(event, callback) {
-    if (!this.hasOwnProperty('__listeners')) {
-      this.__listeners = {};
-    }
-
-    if (!this.__listeners.hasOwnProperty(event)) {
-      this.__listeners[event] = [];
-    }
-
-    this.__listeners[event].push(callback);
-  };
-
-  Node.prototype.emit = function(event, payload) {
-    var callbacks = (this.__listeners || {})[event] || [];
-    callbacks.forEach(function(cb) { cb(payload) });
-  };
-}
-
-// Object.clone is implemented in Espruino, but in
-// standard JavaScript it is not
-if (!('clone' in Object.prototype)) {
-  Object.prototype.clone = function() {
-    return Object.assign({}, this);
-  };
-}
-
 /**
   * @param {Object.<number, Node>} args.nodes
   *   map from ID to Node instances

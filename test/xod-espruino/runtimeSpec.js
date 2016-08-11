@@ -4,6 +4,25 @@ import { expect } from 'chai';
 import { Node, Project } from 'xod-espruino/runtime';
 
 describe('Runtime', () => {
+  before(() => {
+    // Espruino have native `on`, `emit` and `clone` methods defined for any
+    // object. They are not standard so we simply monkey-patch `Object` to
+    // properly run Espruino’s runtime in tests
+    /* eslint-disable no-extend-native */
+    Object.prototype.on = EventEmitter.prototype.on;
+    Object.prototype.emit = EventEmitter.prototype.emit;
+    Object.prototype.clone = function clone() {
+      return Object.assign({}, this);
+    };
+    /* eslint-enable no-extend-native */
+  });
+
+  after(() => {
+    delete Object.prototype.on;
+    delete Object.prototype.emit;
+    delete Object.prototype.clone;
+  });
+
   describe('Project with numeric nodes', () => {
     let nodes;
 
