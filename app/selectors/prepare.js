@@ -48,7 +48,6 @@ export const addNode = (projectState, typeId, position, patchId) => {
   if (nodeType.category === NODE_CATEGORY.IO) {
     const patch = getPatchById(projectState, patchId);
     const nodeTypePins = R.values(nodeType.pins);
-    const getRand = () => Math.round(Math.random() * 100);
     const invertDirection = R.ifElse(
       R.equals(DIRECTION.INPUT),
       () => DIRECTION.OUTPUT,
@@ -60,7 +59,7 @@ export const addNode = (projectState, typeId, position, patchId) => {
       key: patch.name,
       category: nodeType.category,
       pins: {
-        key: `${nodeType.properties.key.defaultValue}_${getRand()}`,
+        label: nodeType.properties.key.defaultValue,
         direction: invertDirection(nodeTypePins[0].direction),
         type: nodeTypePins[0].type,
       },

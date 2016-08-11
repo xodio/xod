@@ -38,8 +38,14 @@ export const nodeTypes = (state = {}, action) => {
       const id = oldId(state) || newId(state);
 
       const pins = (nodeType) ? R.values(nodeType.pins) : [];
+      const newPin = R.pipe(
+        R.prop('pins'),
+        R.assoc('index', R.length(pins)),
+        R.assoc('key', R.length(pins))
+      )(patchNode);
+
       const newPins = R.append(
-        R.assoc('index', R.length(pins), patchNode.pins),
+        newPin,
         pins
       );
 
