@@ -9,6 +9,6 @@
     key: 'pin',
     label: 'Pin',
     type: 'string',
-    defaultValue: 'P13',
+    defaultValue: 'A10',
   }]
 }

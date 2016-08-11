@@ -4,6 +4,6 @@ module.exports.setup = function(e) {
 };
 
 module.exports.evaluate = function(e) {
-  var ms = 600 + (2400 - 600) * e.inputs.value;
-  analogWrite(e.context.pin, ms / 20, { freq: 50 });
+  var us = 600 + (2400 - 600) * e.inputs.value;
+  analogWrite(e.context.pin, us / 20000, { freq: 50 });
 };
