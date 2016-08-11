@@ -10,5 +10,15 @@
     label: 'Pin',
     type: 'string',
     defaultValue: 'A10',
+  }, {
+    key: 'minPulse',
+    label: 'Min Pulse (μs)',
+    type: 'number',
+    defaultValue: '700',
+  }, {
+    key: 'maxPulse',
+    label: 'Max Pulse (μs)',
+    type: 'number',
+    defaultValue: '2300',
   }]
 }
