@@ -329,15 +329,15 @@ const getVerticalPinOffsets = () => ({
   [PIN_DIRECTION.OUTPUT]: SIZES.NODE.padding.y - SIZES.PIN.radius * 2,
 });
 
-const getPinsWidth = (count, withMargins) => {
+const getPinsWidth = R.curry((withMargins, count) => {
   const marginCount = (withMargins) ? count + 1 : count - 1;
   return (marginCount * SIZES.PIN.margin) + (count * SIZES.PIN.radius * 2);
-};
+});
 
 const getGroupedPinsWidth = R.pipe(
   R.values,
   R.groupBy(R.prop('direction')),
-  R.mapObjIndexed(R.compose(R.flip(getPinsWidth)(true), R.length))
+  R.mapObjIndexed(R.compose(getPinsWidth(true), R.length))
 );
 
 const getNodeWidth = R.pipe(
@@ -359,7 +359,7 @@ const getPinPosition = (nodeTypePins, key, nodePosition) => {
     R.reduce((prev, dir) =>
       R.assoc(
         dir,
-        getPinsWidth(groups[dir].length, false),
+        getPinsWidth(false, groups[dir].length),
         prev
       ),
       {}
