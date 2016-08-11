@@ -18,6 +18,7 @@ describe('Transformer', () => {
             42: {
               id: 42,
               typeId: 777,
+              properties: { someValue: 'foo' },
             },
           },
         },
@@ -51,6 +52,7 @@ describe('Transformer', () => {
           valueIn: Number,
         },
         outLinks: {},
+        props: { someValue: 'foo' },
       },
     });
   });

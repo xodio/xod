@@ -151,7 +151,10 @@ export default function transform(project, implPlatforms = []) {
 
   // :: Node -> TransformedNode
   const transformedNode = node => R.mergeAll([
-    renameKeys({ typeId: 'implId' }, R.pick(['id', 'typeId'])(node)),
+    renameKeys(
+      { typeId: 'implId', properties: 'props' },
+      R.pick(['id', 'typeId', 'properties'])(node)
+    ),
     R.compose(transformedNodeType, nodeTypeByNode)(node),
     R.objOf('outLinks', nodeOutLinks(node)),
   ]);
