@@ -6,18 +6,17 @@ import {
   getLastLinkId,
   getLastPatchId,
   getLastFolderId,
-  getLastNodeTypeId,
-  getPatchById,
+  // getLastNodeTypeId,
+  // getPatchById,
   getPatchByNodeId,
-  getPatchByPinId,
-  getPatchIO,
-  getPatchIOPins,
+  // getPatchIO,
+  // getPatchIOPins,
   getPinsByNodeIdInPatch,
   getLinksByPinIdInPatch,
 } from './project';
 
-import * as NODE_CATEGORY from '../constants/nodeCategory';
-import * as DIRECTION from '../constants/pinDirection';
+// import * as NODE_CATEGORY from '../constants/nodeCategory';
+// import * as DIRECTION from '../constants/pinDirection';
 
 export const addPatch = (projectState, name, folderId) => {
   const newId = getLastPatchId(projectState) + 1;
@@ -122,15 +121,15 @@ export const updateNodeProperty = (projectState, nodeId, propKey, propValue) => 
   };
 };
 
-export const addLink = (projectState, pins) => {
-  const patch = getPatchByPinId(projectState, pins[0]);
+export const addLink = (projectState, data1, data2) => {
+  const patch = getPatchByNodeId(projectState, data1.nodeId);
   const patchId = patch.id;
   const newId = getLastLinkId(projectState) + 1;
 
   return {
     payload: {
       newId,
-      pins,
+      pins: [data1, data2],
     },
     meta: {
       patchId,

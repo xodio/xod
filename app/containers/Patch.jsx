@@ -88,13 +88,12 @@ class Patch extends React.Component {
     this.setClickNodeId(id);
   }
 
-  onPinMouseUp(id) {
-    const pin = this.props.pins[id];
-    const nodeId = pin.nodeId;
+  onPinMouseUp(nodeId, pinKey) {
+    // const pin = this.props.pins[id];
     const isClicked = (this.state.clickNodeId === nodeId);
 
     if (isClicked) {
-      this.props.actions.linkPin(id);
+      this.props.actions.linkPin(nodeId, pinKey);
     } else {
       this.onNodeMouseUp(nodeId);
     }
@@ -299,7 +298,7 @@ Patch.propTypes = {
   size: React.PropTypes.any.isRequired,
   actions: React.PropTypes.objectOf(React.PropTypes.func),
   nodes: React.PropTypes.any,
-  pins: React.PropTypes.any,
+  // pins: React.PropTypes.any,
   links: React.PropTypes.any,
   patch: React.PropTypes.any,
   linkingPin: React.PropTypes.number,
@@ -316,7 +315,7 @@ Patch.propTypes = {
 const mapStateToProps = (state) => ({
   nodes: Selectors.Project.getPreparedNodes(state),
   links: Selectors.Project.getPreparedLinks(state),
-  pins: Selectors.Project.getPreparedPins(state),
+  // pins: Selectors.Project.getPreparedPins(state),
   patch: Selectors.Project.getCurrentPatch(state),
   selection: Selectors.Editor.getSelection(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),

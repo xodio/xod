@@ -84,6 +84,7 @@ class Editor extends React.Component {
   }
 
   render() {
+    console.log('nodes:', this.props.nodes);
     return (
       <div>
         <Sidebar>
@@ -122,7 +123,7 @@ Editor.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  nodes: Selectors.Project.getNodes(state),
+  nodes: Selectors.Project.getPreparedNodes(state),
   editor: Selectors.Editor.getEditor(state),
   nodeTypes: Selectors.Project.getPreparedNodeTypes(state),
   selection: Selectors.Editor.getSelection(state),

@@ -70,9 +70,9 @@ export const deleteNode = (id) => (dispatch, getState) => {
   });
 };
 
-export const addLink = (pins) => (dispatch, getState) => {
+export const addLink = (data1, data2) => (dispatch, getState) => {
   const projectState = Selectors.Project.getProject(getState());
-  const preparedData = Selectors.Prepare.addLink(projectState, pins);
+  const preparedData = Selectors.Prepare.addLink(projectState, data1, data2);
 
   dispatch({
     type: ActionType.LINK_ADD,
@@ -100,10 +100,11 @@ export const setNodeSelection = (id) => ({
   },
 });
 
-export const setPinSelection = (id) => ({
+export const setPinSelection = (nodeId, pinKey) => ({
   type: ActionType.EDITOR_SELECT_PIN,
   payload: {
-    id,
+    nodeId,
+    pinKey,
   },
 });
 

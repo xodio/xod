@@ -306,8 +306,9 @@ export const getNodeById = (state, props) => R.pipe(
 */
 
 export const getPins = R.pipe(
-  getCurrentPatch,
-  R.prop('pins')
+  getNodeTypes,
+  R.mapObjIndexed(R.prop('pins')),
+  R.flatten
 );
 
 export const getPinsByNodeId = (state, props) => R.pipe(
@@ -684,28 +685,10 @@ export const getPreparedNodeTypeById = (state, id) => R.pipe(
   R.prop(id)
 )(state);
 
-export const getPreparedPins = createSelector(
-  [getPins, getPreparedNodeTypes, getNodes, getLinkingPin],
-  (pins, nodeTypes, nodes, linkingPin) => R.pipe(
-    R.values,
-    R.reduce((p, pin) => {
-      const node = nodes[pin.nodeId];
-      const nodeTypePins = nodeTypes[node.typeId].pins;
-      const originalPin = nodeTypePins[pin.key];
-
-      const pinPosition = getPinPosition(nodeTypePins, pin.key, node.position);
-      const radius = { radius: SIZES.PIN.radius };
-      const isSelected = { isSelected: (linkingPin === pin.id) };
-
-      return R.assoc(
-        pin.id,
-        R.mergeAll([pin, originalPin, pinPosition, radius, isSelected]),
-        p
-      );
-    }, {})
-  )(pins)
-);
-
+export const getPreparedPins = () => {
+  // console.error('@TODO: Replace getPreparedPins with new method!');
+  return {};
+};
 
 export const validateLink = (state, pinIds) => {
   const pins = getPreparedPins(state);
@@ -750,30 +733,6 @@ const addPinRadius = (position) => ({
   y: position.y + SIZES.PIN.radius,
 });
 
-export const getPreparedLinks = (state) => {
-  const links = getLinks(state);
-  const pins = getPreparedPins(state);
-
-  return R.pipe(
-    R.values,
-    R.map((link) => {
-      const addData = {};
-      if (link.pins.length > 0) {
-        if (link.pins[0]) {
-          addData.from = addPinRadius(pins[link.pins[0]].position);
-        }
-        if (link.pins[1]) {
-          addData.to = addPinRadius(pins[link.pins[1]].position);
-        }
-      }
-      addData.isSelected = isLinkSelected(state, link.id);
-
-      return R.merge(link, addData);
-    }),
-    arr2obj
-  )(links);
-};
-
 const getNodeLabel = (state, node) => {
   const nodeType = getPreparedNodeTypeById(state, node.typeId);
   let nodeLabel = node.label || nodeType.label || nodeType.key;
@@ -791,13 +750,26 @@ const getNodeLabel = (state, node) => {
 
   return String(nodeLabel);
 };
-const getNodePins = (state, nodeId) => {
-  const pins = getPreparedPins(state);
-  return R.pipe(
-    R.values,
-    R.filter((pin) => pin.nodeId === nodeId),
-    arr2obj
-  )(pins);
+const getNodePins = (state, typeId) => R.pipe(
+  getPreparedNodeTypes,
+  R.pickBy(R.propEq('id', typeId)),
+  R.values,
+  R.map(R.prop('pins')),
+  R.head
+)(state);
+
+export const preparePins = (state, node) => {
+  const pins = getNodePins(state, node.typeId);
+  const linkingPin = getLinkingPin(state);
+
+  return R.map(pin => {
+    const originalPin = pins[pin.key];
+    const pinPosition = getPinPosition(pins, pin.key, node.position);
+    const radius = { radius: SIZES.PIN.radius };
+    const isSelected = { isSelected: (linkingPin === pin.id) };
+
+    return R.mergeAll([pin, originalPin, pinPosition, radius, isSelected]);
+  })(pins);
 };
 
 export const getPreparedNodes = (state) => {
@@ -807,7 +779,7 @@ export const getPreparedNodes = (state) => {
     R.values,
     R.map((node) => {
       const label = getNodeLabel(state, node);
-      const nodePins = getNodePins(state, node.id);
+      const nodePins = preparePins(state, node);
       const pinsWidth = getGroupedPinsWidth(nodePins);
       const nodeWidth = getNodeWidth(pinsWidth);
       const isSelected = isNodeSelected(state, node.id);
@@ -821,6 +793,24 @@ export const getPreparedNodes = (state) => {
     }),
     arr2obj
   )(nodes);
+};
+
+export const getPreparedLinks = (state) => {
+  const nodes = getPreparedNodes(state);
+  const links = getLinks(state);
+
+  return R.mapObjIndexed((link) => {
+    const pins = R.map(data => R.merge(data, nodes[data.nodeId].pins[data.pinKey]), link.pins);
+
+    return R.merge(
+      link,
+      {
+        from: addPinRadius(pins[0].position) || null,
+        to: addPinRadius(pins[1].position) || null,
+        isSelected: isLinkSelected(state, link.id),
+      }
+    );
+  })(links);
 };
 
 export const getNodeGhost = (state) => {

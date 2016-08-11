@@ -7,7 +7,7 @@ import generateReducers from '../reducers/';
 import Selectors from '../selectors/';
 import Serializer from '../serializers/mock';
 import { EditorMiddleware } from '../middlewares';
-import { addNode } from '../actions';
+import { addNode, addLink } from '../actions';
 
 import App from './App';
 
@@ -47,11 +47,16 @@ export default class Root extends React.Component {
       const action = addNode(nodeTypeId, { x, y }, 1);
       this.store.dispatch(action);
     };
+    const dispatchAddLink = (o1, o2) => {
+      const action = addLink(o1, o2);
+      this.store.dispatch(action);
+    };
 
     dispatchAddNode('button', 100, 100);
     dispatchAddNode('pot', 400, 100);
     dispatchAddNode('led', 100, 400);
     dispatchAddNode('servo', 400, 400);
+    dispatchAddLink({ nodeId: 1, pinKey: 'state' }, { nodeId: 3, pinKey: 'brightness' });
   }
 
   createReducers(patches) {

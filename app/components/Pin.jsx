@@ -8,12 +8,11 @@ import * as PIN_VALIDITY from '../constants/pinValidity';
 export default class Pin extends React.Component {
   constructor(props) {
     super(props);
-    this.id = this.props.id;
     this.onMouseUp = this.onMouseUp.bind(this);
   }
 
   onMouseUp() {
-    this.props.onMouseUp(this.props.id);
+    this.props.onMouseUp(this.props.nodeId, this.props.keyName);
   }
 
   getPosition() {
@@ -70,7 +69,7 @@ export default class Pin extends React.Component {
     const label = this.props.label ? (
       <text
         className="label"
-        key={`pinText_${this.props.id}`}
+        key={`pinText_${this.props.keyName}`}
         {...this.getTextProps()}
       >
         {this.props.label}
@@ -86,7 +85,7 @@ export default class Pin extends React.Component {
     return (
       <g
         className={cls}
-        id={this.id}
+        id={this.key}
         onMouseUp={this.onMouseUp}
         onMouseOver={this.handleOver}
         onMouseOut={this.handleOut}
@@ -100,7 +99,8 @@ export default class Pin extends React.Component {
 }
 
 Pin.propTypes = {
-  id: React.PropTypes.number.isRequired,
+  nodeId: React.PropTypes.number.isRequired,
+  keyName: React.PropTypes.string.isRequired,
   label: React.PropTypes.string,
   direction: React.PropTypes.string.isRequired,
   position: React.PropTypes.object.isRequired,
