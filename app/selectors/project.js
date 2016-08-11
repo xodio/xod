@@ -171,7 +171,7 @@ export const getProjectPojo = (state) => {
     R.map(patch => R.propOr(patch, 'present', patch)),
     arr2obj
   )(project);
-  
+
   return R.assoc('patches', patches, project);
 };
 

@@ -13,6 +13,10 @@ import 'espruino/core/env';
 
 import co from 'co';
 
+// TODO: now console is an only adequate way to debug hardware interaction
+// so allow console.log while upload.
+/* eslint-disable no-console */
+
 /*
  * Helper wrapper functions to convert EspruinoTools’ callback-based routines
  * to promise-based
@@ -86,7 +90,7 @@ export function upload(code, progressCallback) {
 
     console.log('Code is about to be uploaded:\n', code3);
 
-    Espruino.Core.Serial.startListening(arrayBuffer => { 
+    Espruino.Core.Serial.startListening(arrayBuffer => {
       const uintArray = new Uint8Array(arrayBuffer);
       const str = String.fromCharCode.apply(null, uintArray);
       console.log('Got', JSON.stringify(str));
