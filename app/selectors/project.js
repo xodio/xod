@@ -163,7 +163,7 @@ export const isPatchesUpdated = (newPatches, oldPatches) => (
   !R.equals(R.keys(newPatches), R.keys(oldPatches))
 );
 
-export const getProjectJSON = (state) => {
+export const getProjectPojo = (state) => {
   const project = getProject(state);
   const patches = R.pipe(
     getPatches,
@@ -171,10 +171,14 @@ export const getProjectJSON = (state) => {
     R.map(patch => R.propOr(patch, 'present', patch)),
     arr2obj
   )(project);
-  const projectToSave = R.assoc('patches', patches, project);
-
-  return JSON.stringify(projectToSave);
+  
+  return R.assoc('patches', patches, project);
 };
+
+export const getProjectJSON = R.compose(
+  JSON.stringify,
+  getProjectPojo
+);
 
 export const validateProject = (project) => (
   typeof project === 'object' &&

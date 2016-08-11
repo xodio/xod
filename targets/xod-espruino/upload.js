@@ -77,20 +77,40 @@ export function upload(code, progressCallback) {
   setProgressListener(progressCallback);
 
   return co(function* asyncUpload() {
-    const transformedCode = yield transformForEspruino(code);
+    const code2 = yield transformForEspruino(code);
 
-    // Due to implementation of EspruinoTools we have to listen serial
-    // Just do nothing with incomming data
-    Espruino.Core.Serial.startListening(() => null);
+    const code3 = [
+      code2,
+      'save();',
+    ].join('\n');
 
-    const connectionInfo = yield serialOpen(port, () => null);
+    console.log('Code is about to be uploaded:\n', code3);
+
+    Espruino.Core.Serial.startListening(arrayBuffer => { 
+      const uintArray = new Uint8Array(arrayBuffer);
+      const str = String.fromCharCode.apply(null, uintArray);
+      console.log('Got', JSON.stringify(str));
+    });
+
+    const connectionInfo = yield serialOpen(
+      port, () => console.log('Disconnected')
+    );
+
     if (!connectionInfo) {
       throw new Error(`Failed to open serial port ${port}`);
     }
 
-    yield writeToEspruino(transformedCode);
-
+    // Give a chance for the board to see the connection,
+    // issue a prompt, etc. 1000 ms looks like more than necessary
+    // so it could be tweaked for optimization.
     yield delay(1000);
+
+    yield writeToEspruino(code3);
+
+    // Give a chance to process and save the code.
+    // 1000 ms could be lowered.
+    yield delay(1000);
+
     Espruino.Core.Serial.close();
 
     removeProgressListener();

@@ -238,7 +238,7 @@ export const loadProjectFromJSON = (json) => ({
 });
 
 export const upload = () => (dispatch, getState) => {
-  const project = Selectors.Project.getProjectJSON(getState());
+  const project = Selectors.Project.getProjectPojo(getState());
   const processes = Selectors.Processes.getProccesses(getState());
   const newId = Selectors.Processes.getNewId(processes);
 

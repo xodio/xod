@@ -8,6 +8,6 @@
     key: 'pin',
     label: 'Pin',
     type: 'string',
-    defaultValue: 'P2',
+    defaultValue: 'BTN1',
   }]
 }
