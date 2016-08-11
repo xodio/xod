@@ -172,7 +172,7 @@ export default function transform(project, implPlatforms = []) {
     R.map(pinById),
     R.prop('pins')
   );
-  
+
   const dagVertexes = R.pluck('id', nodeList());
   const dagEdges = R.map(linkNodeIds, linkList());
   const topology = sortGraph(dagVertexes, dagEdges);
