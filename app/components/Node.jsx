@@ -15,6 +15,7 @@ class Node extends React.Component {
     this.pins = {};
 
     this.width = this.props.width;
+    this.originalWidth = this.props.width;
     this.height = this.props.height;
 
     this.onMouseUp = this.onMouseUp.bind(this);
@@ -27,7 +28,11 @@ class Node extends React.Component {
   }
 
   shouldComponentUpdate(newProps) {
-    return !R.equals(newProps, this.props);
+    return R.not(R.equals(newProps, this.props));
+  }
+
+  componentDidUpdate() {
+    this.updateNodeWidth();
   }
 
   onMouseUp() {
@@ -85,7 +90,7 @@ class Node extends React.Component {
     if (newWidth < SIZES.NODE.minWidth) {
       newWidth = SIZES.NODE.minWidth;
     }
-    if (this.width !== newWidth) {
+    if (this.width !== newWidth && newWidth >= this.originalWidth) {
       this.width = newWidth;
       this.forceUpdate();
     }

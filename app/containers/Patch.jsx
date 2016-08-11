@@ -13,7 +13,7 @@ import PatchSVG from '../components/PatchSVG';
 import BackgroundLayer from '../components/BackgroundLayer';
 import NodesLayer from '../components/NodesLayer';
 import LinksLayer from '../components/LinksLayer';
-import GhostsLayer from './GhostsLayer';
+import GhostsLayer from '../components/GhostsLayer';
 
 class Patch extends React.Component {
   constructor(props) {
@@ -38,6 +38,28 @@ class Patch extends React.Component {
 
   componentDidMount() {
     this.props.hotkeys(this.getHotkeyHandlers());
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const haveGhost = R.either(R.prop('ghostNode'), R.prop('ghostLink'));
+    const notNil = R.complement(R.isNil);
+    const isDraggingGhost = R.useWith(notNil, [haveGhost, haveGhost]);
+
+    const isChangingMousePosition = nextState.mousePosition !== this.state.mousePosition;
+
+    const isDraggingNode = R.complement(R.isEmpty);
+
+    const shouldNotUpdateMousePosition = (
+      !(
+        isDraggingGhost(this.props, nextProps) ||
+        isDraggingNode(this.dragging)
+      ) &&
+      isChangingMousePosition
+    );
+
+    if (shouldNotUpdateMousePosition) { return false; }
+
+    return true;
   }
 
   onNodeMouseUp(id) {
@@ -263,6 +285,9 @@ class Patch extends React.Component {
           />
           <GhostsLayer
             mousePosition={this.state.mousePosition}
+            mode={this.props.mode}
+            ghostNode={this.props.ghostNode}
+            ghostLink={this.props.ghostLink}
           />
         </PatchSVG>
       </PatchWrapper>
@@ -283,6 +308,8 @@ Patch.propTypes = {
   patchId: React.PropTypes.number,
   nodeTypes: React.PropTypes.object,
   mode: React.PropTypes.object,
+  ghostNode: React.PropTypes.any,
+  ghostLink: React.PropTypes.any,
   hotkeys: React.PropTypes.func,
 };
 
@@ -297,6 +324,8 @@ const mapStateToProps = (state) => ({
   mode: Selectors.Editor.getModeChecks(state),
   linkingPin: Selectors.Editor.getLinkingPin(state),
   nodeTypes: Selectors.Project.getNodeTypes(state),
+  ghostNode: Selectors.Project.getNodeGhost(state),
+  ghostLink: Selectors.Project.getLinkGhost(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

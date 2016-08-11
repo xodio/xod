@@ -19,7 +19,7 @@ import {
 /*
   Common utils
 */
-const arr2obj = R.reduce((p, cur) => R.assoc(cur.id, cur, p), {});
+const arr2obj = R.indexBy(R.prop('id'));
 
 const isEntitySelected = (state, entity, id) => {
   const selection = getSelection(state);
@@ -329,10 +329,22 @@ const getVerticalPinOffsets = () => ({
   [PIN_DIRECTION.OUTPUT]: SIZES.NODE.padding.y - SIZES.PIN.radius * 2,
 });
 
-const getPinsWidth = (count, withMargins) => {
+const getPinsWidth = R.curry((withMargins, count) => {
   const marginCount = (withMargins) ? count + 1 : count - 1;
   return (marginCount * SIZES.PIN.margin) + (count * SIZES.PIN.radius * 2);
-};
+});
+
+const getGroupedPinsWidth = R.pipe(
+  R.values,
+  R.groupBy(R.prop('direction')),
+  R.mapObjIndexed(R.compose(getPinsWidth(true), R.length))
+);
+
+const getNodeWidth = R.pipe(
+  R.values,
+  R.append(SIZES.NODE.minWidth),
+  R.apply(R.max)
+);
 
 const getPinPosition = (nodeTypePins, key, nodePosition) => {
   const originalPin = nodeTypePins[key];
@@ -347,7 +359,7 @@ const getPinPosition = (nodeTypePins, key, nodePosition) => {
     R.reduce((prev, dir) =>
       R.assoc(
         dir,
-        getPinsWidth(groups[dir].length, false),
+        getPinsWidth(false, groups[dir].length),
         prev
       ),
       {}
@@ -538,11 +550,14 @@ export const getPreparedNodes = (state) => {
     R.map((node) => {
       const label = getNodeLabel(state, node);
       const nodePins = getNodePins(state, node.id);
+      const pinsWidth = getGroupedPinsWidth(nodePins);
+      const nodeWidth = getNodeWidth(pinsWidth);
       const isSelected = isNodeSelected(state, node.id);
 
       return R.merge(node, {
         label,
         pins: nodePins,
+        width: nodeWidth,
         isSelected,
       });
     }),
@@ -582,12 +597,15 @@ export const getNodeGhost = (state) => {
     arr2obj
   )(nodeType.pins);
 
+  const pinsWidth = getGroupedPinsWidth(nodePins);
+  const nodeWidth = getNodeWidth(pinsWidth);
   return {
     id: -1,
     label: nodeLabel,
     typeId: nodeTypeId,
     position: nodePosition,
     pins: nodePins,
+    width: nodeWidth,
     properties: nodeProperties,
   };
 };
