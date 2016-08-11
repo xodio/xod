@@ -28,24 +28,33 @@ function transpileImpl(impl) {
 }
 
 function transpileNodes(nodes) {
-  // __IMPLREF__ is a voodoo to work around JSON safety. For function references
-  // we should actually refer to `impl` global variable. JSON.stringify would
-  // enclose it in quoutes. So we place these special tokens to unquote the values
-  // and refer to actual `impl` with a regex find/replace in an additional step.
+  // __PLACEHOLDER__ is a voodoo to work around JSON safety. We can’t reference
+  // real JS symbols in JSON string so we leave a placeholder and use
+  // find-n-replace over result string to substitute proper references.
   const injectFuncRefs = node => R.merge(node, {
-    setup: `__IMPLREF__setup#${node.implId}__`,
-    upkeep: `__IMPLREF__upkeep#${node.implId}__`,
-    evaluate: `__IMPLREF__evaluate#${node.implId}__`,
+    setup: `__PLACEHOLDER__@@impl['${node.implId}'].setup@@__`,
+    upkeep: `__PLACEHOLDER__@@impl['${node.implId}'].upkeep@@__`,
+    evaluate: `__PLACEHOLDER__@@impl['${node.implId}'].evaluate@@__`,
+    nodes: '__PLACEHOLDER__@@nodes@@__',
   });
+
+  function replacer(key, val) {
+    if (val === Boolean || val === Number || val === String) {
+      // leave type as is
+      return `__PLACEHOLDER__@@${val.name}@@__`;
+    }
+
+    return val;
+  }
 
   const items = R.compose(
     joinLineBlocks,
     R.values,
     R.mapObjIndexed(
       (node, nodeId) => {
-        const nodeJson = JSON.stringify(injectFuncRefs(node), null, 2);
+        const nodeJson = JSON.stringify(injectFuncRefs(node), replacer, 2);
         const template = `nodes['${nodeId}'] = new Node(${nodeJson});`;
-        const statement = template.replace(/"__IMPLREF__(.+)#(.+)__"/g, "impl['$2'].$1");
+        const statement = template .replace(/"__PLACEHOLDER__@@(.+)@@__"/g, "$1");
         return statement;
       }
     )
