@@ -9,6 +9,7 @@ const widgetAccordance = {
     [PROPERTY_TYPE.BOOL]: Widgets.BoolWidget,
     [PROPERTY_TYPE.NUMBER]: Widgets.NumberWidget,
     [PROPERTY_TYPE.STRING]: Widgets.StringWidget,
+    [PROPERTY_TYPE.IO_LABEL]: Widgets.IOLabelWidget,
   },
 };
 
