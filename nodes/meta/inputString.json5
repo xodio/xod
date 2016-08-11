@@ -13,7 +13,7 @@
   }, {
     key: 'key',
     label: 'Pin label',
-    type: 'string',
+    type: 'io_label',
     defaultValue: 'IN',
   }]
 }
