@@ -92,14 +92,12 @@ const initialState = {
         id: 1,
         name: 'Main',
         nodes: {},
-        pins: {},
         links: {},
       },
       2: {
         id: 2,
         name: 'AUX',
         nodes: {},
-        pins: {},
         links: {},
       },
     },
@@ -108,7 +106,6 @@ const initialState = {
     counter: {
       patches: 2,
       nodes: 0,
-      pins: 0,
       links: 0,
       nodeTypes: +maxKey(nodeTypes) + 1,
       folders: 0,

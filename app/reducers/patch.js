@@ -1,7 +1,6 @@
 import R from 'ramda';
 import applyReducers from '../utils/applyReducers';
 
-import { pins } from './pins';
 import { links } from './links';
 import { nodes } from './nodes';
 
@@ -21,7 +20,6 @@ export const patchReducer = (id) => {
   return (state = initialPatchState, action) => {
     const reducers = {
       links,
-      pins,
       nodes,
     };
 
