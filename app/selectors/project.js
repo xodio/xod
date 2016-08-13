@@ -684,7 +684,7 @@ export const getPreparedNodeTypes = state => {
         key: patchNode.name,
         label: patchNode.name,
         properties: {},
-        pins: patchNode.io,
+        pins: R.pipe(R.values, R.indexBy(R.prop('key')))(patchNode.io),
       };
       return R.merge(nodeType, patchNodeData);
     })
@@ -845,7 +845,7 @@ export const getNodeGhost = (state) => {
     return null;
   }
   const nodePosition = { x: 0, y: 0 };
-  const nodeType = getNodeTypeById(state, nodeTypeId);
+  const nodeType = getPreparedNodeTypeById(state, nodeTypeId);
   const nodeProperties = R.pipe(
     R.prop('properties'),
     R.values,
