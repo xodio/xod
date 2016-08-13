@@ -84,7 +84,6 @@ class Editor extends React.Component {
   }
 
   render() {
-    console.log('nodes:', this.props.nodes);
     return (
       <div>
         <Sidebar>

@@ -12,7 +12,7 @@ export default class Pin extends React.Component {
   }
 
   onMouseUp() {
-    this.props.onMouseUp(this.props.nodeId, this.props.keyName);
+    this.props.onMouseUp(this.props.keyName);
   }
 
   getPosition() {
@@ -85,7 +85,7 @@ export default class Pin extends React.Component {
     return (
       <g
         className={cls}
-        id={this.key}
+        id={this.props.keyName}
         onMouseUp={this.onMouseUp}
         onMouseOver={this.handleOver}
         onMouseOut={this.handleOut}

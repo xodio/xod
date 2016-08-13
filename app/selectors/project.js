@@ -120,33 +120,44 @@ export const canPinHaveMoreLinks = (pin, links) => (
   pin.direction === PIN_DIRECTION.OUTPUT
 );
 
-export const getValidPins = (pins, links, forPinId) => {
-  const oPin = pins[forPinId];
-  return R.pipe(
-    R.values,
-    R.reduce((p, pin) => {
-      const samePin = (pin.id === oPin.id);
-      const sameNode = (pin.nodeId === oPin.nodeId);
-      const sameDirection = (pin.direction === oPin.direction);
-      const sameType = (pin.type === oPin.type);
-      const canHaveLink = canPinHaveMoreLinks(pin, links);
+const getAllPinsFromNodes = R.pipe(
+  R.values,
+  R.reduce(
+    (p, cur) =>
+    R.pipe(
+      R.prop('pins'),
+      R.values,
+      R.map(R.assoc('nodeId', cur.id)),
+      R.concat(p)
+    )(cur),
+    []
+  )
+);
 
-      let validness = PIN_VALIDITY.INVALID;
+export const getValidPins = (nodes, links, forPin) => {
+  const oNode = nodes[forPin.nodeId];
+  const allPins = getAllPinsFromNodes(nodes);
+  const oPin = oNode.pins[forPin.pinKey];
 
+  return R.map(pin => {
+    const sameNode = (pin.nodeId === oPin.nodeId);
+    const sameDirection = (pin.direction === oPin.direction);
+    const sameType = (pin.type === oPin.type);
+    const canHaveLink = canPinHaveMoreLinks(pin, links);
 
-      if (!samePin && !sameNode && canHaveLink) {
-        if (!sameDirection) { validness = PIN_VALIDITY.ALMOST; }
-        if (!sameDirection && sameType) { validness = PIN_VALIDITY.VALID; }
-      }
+    let validness = PIN_VALIDITY.INVALID;
 
-      const result = {
-        id: pin.id,
-        validness,
-      };
+    if (!sameNode && canHaveLink) {
+      if (!sameDirection) { validness = PIN_VALIDITY.ALMOST; }
+      if (!sameDirection && sameType) { validness = PIN_VALIDITY.VALID; }
+    }
 
-      return R.assoc(pin.id, result, p);
-    }, {})
-  )(pins);
+    return {
+      nodeId: pin.nodeId,
+      pinKey: pin.key,
+      validness,
+    };
+  }, allPins);
 };
 
 export const validatePatches = () => R.pipe(
@@ -685,49 +696,6 @@ export const getPreparedNodeTypeById = (state, id) => R.pipe(
   R.prop(id)
 )(state);
 
-export const getPreparedPins = () => {
-  // console.error('@TODO: Replace getPreparedPins with new method!');
-  return {};
-};
-
-export const validateLink = (state, pinIds) => {
-  const pins = getPreparedPins(state);
-  const linksState = getLinks(state);
-  const fromPin = pins[pinIds[0]];
-  const toPin = pins[pinIds[1]];
-
-  const sameDirection = fromPin.direction === toPin.direction;
-  const sameNode = fromPin.nodeId === toPin.nodeId;
-  const fromPinCanHaveMoreLinks = canPinHaveMoreLinks(fromPin, linksState);
-  const toPinCanHaveMoreLinks = canPinHaveMoreLinks(toPin, linksState);
-
-  const check = (
-    !sameDirection &&
-    !sameNode &&
-    fromPinCanHaveMoreLinks &&
-    toPinCanHaveMoreLinks
-  );
-
-  const result = {
-    isValid: check,
-    message: 'Unknown error',
-  };
-
-  if (!check) {
-    if (sameDirection) {
-      result.message = LINK_ERRORS.SAME_DIRECTION;
-    } else
-    if (sameNode) {
-      result.message = LINK_ERRORS.SAME_NODE;
-    } else
-    if (!fromPinCanHaveMoreLinks || !toPinCanHaveMoreLinks) {
-      result.message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
-    }
-  }
-
-  return result;
-};
-
 const addPinRadius = (position) => ({
   x: position.x + SIZES.PIN.radius,
   y: position.y + SIZES.PIN.radius,
@@ -766,8 +734,13 @@ export const preparePins = (state, node) => {
     const originalPin = pins[pin.key];
     const pinPosition = getPinPosition(pins, pin.key, node.position);
     const radius = { radius: SIZES.PIN.radius };
-    const isSelected = { isSelected: (linkingPin === pin.id) };
-
+    const isSelected = {
+      isSelected: (
+        linkingPin &&
+        linkingPin.nodeId === node.id &&
+        linkingPin.pinKey === pin.key
+      ),
+    };
     return R.mergeAll([pin, originalPin, pinPosition, radius, isSelected]);
   })(pins);
 };
@@ -811,6 +784,57 @@ export const getPreparedLinks = (state) => {
       }
     );
   })(links);
+};
+
+export const validateLink = (state, linkData) => {
+  const nodes = getPreparedNodes(state);
+  const pins = getAllPinsFromNodes(nodes);
+
+  const linksState = getLinks(state);
+
+  const eqProps = (data) => R.both(
+    R.propEq('nodeId', data.nodeId),
+    R.propEq('key', data.pinKey)
+  );
+  const findPin = R.compose(
+    R.flip(R.find)(pins),
+    eqProps
+  );
+
+
+  const fromPin = findPin(linkData[0]);
+  const toPin = findPin(linkData[1]);
+
+  const sameDirection = fromPin.direction === toPin.direction;
+  const sameNode = fromPin.nodeId === toPin.nodeId;
+  const fromPinCanHaveMoreLinks = canPinHaveMoreLinks(fromPin, linksState);
+  const toPinCanHaveMoreLinks = canPinHaveMoreLinks(toPin, linksState);
+
+  const check = (
+    !sameDirection &&
+    !sameNode &&
+    fromPinCanHaveMoreLinks &&
+    toPinCanHaveMoreLinks
+  );
+
+  const result = {
+    isValid: check,
+    message: 'Unknown error',
+  };
+
+  if (!check) {
+    if (sameDirection) {
+      result.message = LINK_ERRORS.SAME_DIRECTION;
+    } else
+    if (sameNode) {
+      result.message = LINK_ERRORS.SAME_NODE;
+    } else
+    if (!fromPinCanHaveMoreLinks || !toPinCanHaveMoreLinks) {
+      result.message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
+    }
+  }
+
+  return result;
 };
 
 export const getNodeGhost = (state) => {
@@ -859,11 +883,12 @@ export const getNodeGhost = (state) => {
 };
 
 export const getLinkGhost = (state) => {
-  const fromPinId = getLinkingPin(state);
-  if (!fromPinId) { return null; }
+  const fromPin = getLinkingPin(state);
+  if (!fromPin) { return null; }
 
-  const pins = getPreparedPins(state);
-  const pin = pins[fromPinId];
+  const nodes = getPreparedNodes(state);
+  const node = nodes[fromPin.nodeId];
+  const pin = node.pins[fromPin.pinKey];
 
   return {
     id: -1,

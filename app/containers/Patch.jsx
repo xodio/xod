@@ -201,21 +201,18 @@ class Patch extends React.Component {
     }
 
     const pinsValidation = Selectors.Project.getValidPins(
-      this.props.pins,
+      this.props.nodes,
       this.props.links,
       this.props.linkingPin
     );
 
-    const assignValidnessToPins = (pins) => R.pipe(
-      R.values,
-      R.map((pin) => R.assoc('validness', pinsValidation[pin.id].validness, pin)),
-      R.reduce((p, cur) => R.assoc(cur.id, cur, p), {})
-    )(pins);
-
     return R.pipe(
-      R.values,
-      R.map(node => R.assoc('pins', assignValidnessToPins(node.pins), node))
-    )(this.props.nodes);
+      R.map(data => R.pipe(
+          R.find(R.propEq('id', data.nodeId)),
+          R.assocPath(['pins', data.pinKey, 'validness'], data.validness)
+        )(nodes)
+      )
+    )(pinsValidation);
   }
 
   dragNode(mousePosition) {
@@ -301,7 +298,7 @@ Patch.propTypes = {
   // pins: React.PropTypes.any,
   links: React.PropTypes.any,
   patch: React.PropTypes.any,
-  linkingPin: React.PropTypes.number,
+  linkingPin: React.PropTypes.object,
   selection: React.PropTypes.array,
   selectedNodeType: React.PropTypes.number,
   patchId: React.PropTypes.number,

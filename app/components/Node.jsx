@@ -44,7 +44,7 @@ class Node extends React.Component {
   }
 
   onPinMouseUp(pinId) {
-    this.props.onPinMouseUp(pinId);
+    this.props.onPinMouseUp(this.id, pinId);
   }
 
   getOriginPosition() {

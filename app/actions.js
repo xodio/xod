@@ -100,12 +100,9 @@ export const setNodeSelection = (id) => ({
   },
 });
 
-export const setPinSelection = (nodeId, pinKey) => ({
+export const setPinSelection = (data) => ({
   type: ActionType.EDITOR_SELECT_PIN,
-  payload: {
-    nodeId,
-    pinKey,
-  },
+  payload: data,
 });
 
 export const setLinkSelection = (id) => ({
@@ -166,7 +163,11 @@ export const addAndSelectNode = (typeId, position, curPatchId) => (dispatch, get
   dispatch(selectNode(newId));
 };
 
-export const linkPin = (id) => (dispatch, getState) => {
+export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
+  const data = {
+    nodeId,
+    pinKey,
+  };
   const state = getState();
   const selected = state.editor.linkingPin;
   const deselect = dispatch(deselectAll());
@@ -175,19 +176,19 @@ export const linkPin = (id) => (dispatch, getState) => {
     result.push(deselect);
   }
 
-  const pins = [selected, id];
+  const pins = [selected, data];
 
-  if (selected !== id && selected !== null) {
+  if (selected !== data && selected !== null) {
     const validation = Selectors.Project.validateLink(state, pins);
     if (validation.isValid) {
-      result.push(dispatch(addLink(pins)));
+      result.push(dispatch(addLink(pins[0], pins[1])));
     } else {
       result.push(dispatch(addError({ message: validation.message })));
     }
     dispatch(setMode(EDITOR_MODE.DEFAULT));
-  } else if (selected !== id) {
+  } else if (selected !== data) {
     dispatch(setMode(EDITOR_MODE.LINKING));
-    result.push(dispatch(setPinSelection(id)));
+    result.push(dispatch(setPinSelection(data)));
   }
 
   return result;
