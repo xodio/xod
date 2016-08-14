@@ -1,3 +1,4 @@
+import R from 'ramda';
 import * as ActionType from './actionTypes';
 import * as STATUS from './constants/statuses';
 import * as EDITOR_MODE from './constants/editorModes';
@@ -181,7 +182,9 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
 
   const pins = [selected, data];
 
-  if (selected !== data && selected !== null) {
+  const notEquals = R.not(R.equals(selected, data));
+
+  if (notEquals && selected !== null) {
     const validation = Selectors.Project.validateLink(state, pins);
     if (validation.isValid) {
       result.push(dispatch(addLink(pins[0], pins[1])));
@@ -189,7 +192,7 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
       result.push(dispatch(addError({ message: validation.message })));
     }
     dispatch(setMode(EDITOR_MODE.DEFAULT));
-  } else if (selected !== data) {
+  } else if (notEquals) {
     dispatch(setMode(EDITOR_MODE.LINKING));
     result.push(dispatch(setPinSelection(nodeId, pinKey)));
   }
