@@ -24,6 +24,8 @@ const arr2obj = R.indexBy(R.prop('id'));
 
 const isEntitySelected = (state, entity, id) => {
   const selection = getSelection(state);
+  if (!selection) { return false; }
+
   return (
     selection.length > 0 &&
     R.pipe(
@@ -107,7 +109,7 @@ export const getPatchName = createSelector(
 
 export const doesPinHaveLinks = (pin, links) => R.pipe(
   R.values,
-  R.filter((link) => (link.pins[0] === pin.id || link.pins[1] === pin.id)),
+  R.filter((link) => (link.pins[0].pinKey === pin.key || link.pins[1].pinKey === pin.key)),
   R.length,
   R.flip(R.gt)(0)
 )(links);
