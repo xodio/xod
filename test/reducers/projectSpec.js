@@ -236,12 +236,12 @@ describe('Project reducer: ', () => {
         {
           1: {
             id: 1,
-            pins: [1, 2],
+            pins: [{ nodeId: 1, pinKey: 'out' }, { nodeId: 2, pinKey: 'in' }],
           },
         }
       ),
       R.assocPath(
-        R.append('pins', patchPath),
+        R.append('nodes', patchPath),
         {
           1: { id: 1 },
           2: { id: 2 },
@@ -252,9 +252,8 @@ describe('Project reducer: ', () => {
         ['project', 'counter'],
         {
           patches: 1,
-          nodes: 0,
+          nodes: 2,
           links: 1,
-          pins: 3,
         }
       )
     )(projectShape);
@@ -265,9 +264,12 @@ describe('Project reducer: ', () => {
     });
 
     it('should insert link', () => {
+      const data1 = { nodeId: 2, pinKey: 'out' };
+      const data2 = { nodeId: 3, pinKey: 'in' };
+
       const patchId = 1;
       const before = store.getState();
-      store.dispatch(Actions.addLink([2, 3]));
+      store.dispatch(Actions.addLink(data1, data2));
       const after = store.getState();
       const newId = (before.project.counter.links + 1);
       const newLink = R.view(
@@ -277,9 +279,12 @@ describe('Project reducer: ', () => {
     });
 
     it('should be reverse operation for link deletion', () => {
+      const data1 = { nodeId: 2, pinKey: 'out' };
+      const data2 = { nodeId: 3, pinKey: 'in' };
+
       const initialState = store.getState();
       const initialPatch = initialState.project.patches[1].present;
-      store.dispatch(Actions.addLink([2, 3]));
+      store.dispatch(Actions.addLink(data1, data2));
       const afterAddState = store.getState();
       store.dispatch(Actions.deleteLink(afterAddState.project.counter.links));
       const afterDeleteState = store.getState();

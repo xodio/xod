@@ -8,6 +8,10 @@ import { LINK_ERRORS } from '../app/constants/errorMessages';
 
 describe('Link selector', () => {
   describe('while validating link creating', () => {
+    function pin(nodeId, pinKey) {
+      return { nodeId, pinKey };
+    }
+
     const state = {
       project: {
         nodeTypes: {
@@ -28,18 +32,8 @@ describe('Link selector', () => {
               1: { id: 1, typeId: 42, position: { x: 100, y: 100 } },
               2: { id: 2, typeId: 42, position: { x: 200, y: 200 } },
             },
-            pins: {
-              11: { id: 11, nodeId: 1, key: 'inA' },
-              12: { id: 12, nodeId: 1, key: 'inB' },
-              13: { id: 13, nodeId: 1, key: 'outA' },
-              14: { id: 14, nodeId: 1, key: 'outB' },
-              21: { id: 21, nodeId: 2, key: 'inA' },
-              22: { id: 22, nodeId: 2, key: 'inB' },
-              23: { id: 23, nodeId: 2, key: 'outA' },
-              24: { id: 24, nodeId: 2, key: 'outB' },
-            },
             links: {
-              100: { id: 100, pins: [14, 21] },
+              100: { id: 100, pins: [pin(1, 'outB'), pin(2, 'inA')] },
             },
           },
         },
@@ -67,25 +61,23 @@ describe('Link selector', () => {
     }
 
     it('should be valid', () => {
-      expectOk(14, 22);
-      expectOk(13, 22);
-      expectOk(23, 11);
-      expectOk(24, 11);
-      expectOk(23, 12);
-      expectOk(24, 12);
+      expectOk(pin(1, 'outA'), pin(2, 'inB'));
+      expectOk(pin(1, 'inB'), pin(2, 'outB'));
+      expectOk(pin(2, 'outA'), pin(1, 'inB'));
+      expectOk(pin(2, 'inB'), pin(1, 'outB'));
     });
 
     it('should be invalid to link same node', () => {
-      expectFail(14, 11, LINK_ERRORS.SAME_NODE);
+      expectFail(pin(1, 'outA'), pin(1, 'inA'), LINK_ERRORS.SAME_NODE);
     });
 
     it('should be invalid to link same direction', () => {
-      expectFail(14, 24, LINK_ERRORS.SAME_DIRECTION);
-      expectFail(12, 22, LINK_ERRORS.SAME_DIRECTION);
+      expectFail(pin(1, 'outA'), pin(2, 'outA'), LINK_ERRORS.SAME_DIRECTION);
+      expectFail(pin(2, 'outB'), pin(1, 'outA'), LINK_ERRORS.SAME_DIRECTION);
     });
 
     it('should be invalid to have multiple inbound links', () => {
-      expectFail(13, 21, LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN);
+      expectFail(pin(1, 'outA'), pin(2, 'inA'), LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN);
     });
   });
 });

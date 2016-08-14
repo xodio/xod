@@ -131,10 +131,11 @@ describe('Editor reducer', () => {
     });
     it('should deselect pin on second click', () => {
       store = testStore(mockState);
-      const id = 1;
+      const nodeId = 1;
+      const pinKey = 'value';
 
-      store.dispatch(Actions.linkPin(id));
-      store.dispatch(Actions.linkPin(id));
+      store.dispatch(Actions.linkPin(nodeId, pinKey));
+      store.dispatch(Actions.linkPin(nodeId, pinKey));
 
       chai.expect(store.getState().editor.linkingPin).to.be.a('null');
     });
