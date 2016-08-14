@@ -64,7 +64,7 @@ describe('Project reducer: ', () => {
       store = mockStore(mockState);
     });
 
-    it('should add node and children pins', () => {
+    it('should add node', () => {
       const patchId = 1;
       const expectedNodes = {
         1: {
@@ -77,25 +77,12 @@ describe('Project reducer: ', () => {
           properties: {},
         },
       };
-      const expectedPins = {
-        1: {
-          id: 1,
-          nodeId: 1,
-          key: 'in',
-        },
-        2: {
-          id: 2,
-          nodeId: 1,
-          key: 'out',
-        },
-      };
       store.dispatch(Actions.addNode(1, { x: 10, y: 10 }, patchId));
 
       const projectState = Selectors.Project.getProject(store.getState());
       const patchState = Selectors.Project.getPatchById(projectState, patchId);
 
       chai.expect(patchState.nodes).to.deep.equal(expectedNodes);
-      chai.expect(patchState.pins).to.deep.equal(expectedPins);
     });
 
     it('should be undoable and redoable', () => {
@@ -184,7 +171,6 @@ describe('Project reducer: ', () => {
     it('should delete node, children pins and link', () => {
       const patchId = 1;
       const expectedNodes = { 2: { id: 2 } };
-      const expectedPins = { 3: { id: 3, nodeId: 2 } };
       const expectedLinks = {};
 
       store.dispatch(Actions.deleteNode(1));
@@ -193,7 +179,6 @@ describe('Project reducer: ', () => {
       const patchState = Selectors.Project.getPatchById(projectState, patchId);
 
       chai.expect(patchState.nodes).to.deep.equal(expectedNodes);
-      chai.expect(patchState.pins).to.deep.equal(expectedPins);
       chai.expect(patchState.links).to.deep.equal(expectedLinks);
     });
 

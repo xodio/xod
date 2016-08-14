@@ -100,9 +100,12 @@ export const setNodeSelection = (id) => ({
   },
 });
 
-export const setPinSelection = (data) => ({
+export const setPinSelection = (nodeId, pinKey) => ({
   type: ActionType.EDITOR_SELECT_PIN,
-  payload: data,
+  payload: {
+    nodeId,
+    pinKey,
+  },
 });
 
 export const setLinkSelection = (id) => ({
@@ -188,7 +191,7 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
     dispatch(setMode(EDITOR_MODE.DEFAULT));
   } else if (selected !== data) {
     dispatch(setMode(EDITOR_MODE.LINKING));
-    result.push(dispatch(setPinSelection(data)));
+    result.push(dispatch(setPinSelection(nodeId, pinKey)));
   }
 
   return result;
