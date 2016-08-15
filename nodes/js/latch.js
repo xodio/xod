@@ -4,13 +4,17 @@ module.exports.setup = function(e) {
 };
 
 module.exports.evaluate = function(e) {
-  var inputs = e.inputs;
-  var ctx = e.context;
+  const inputs = e.inputs;
+  let newState;
+
   if (inputs.toggle) {
-    return (ctx.state = !ctx.state);
+    newState = !e.context.state;
   } else if (inputs.set) {
-    return (ctx.state = true);
+    newState = true;
   } else /* if (inputs.reset) */ {
-    return (ctx.state = false);
+    newState = false;
   }
+
+  e.context.state = newState;
+  return { state: newState };
 };
