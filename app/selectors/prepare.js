@@ -51,8 +51,20 @@ export const addNode = (projectState, typeId, position, patchId) => {
 
 export const deleteNode = (projectState, id) => {
   const patch = getPatchByNodeId(projectState, id);
-  const links = R.filter(
-    R.propEq('nodeId', id)
+  const links = R.pipe(
+    R.values,
+    R.filter(
+      R.pipe(
+        R.prop('pins'),
+        R.find(R.propEq('nodeId', id))
+      )
+    ),
+    R.map(
+      R.pipe(
+        R.prop('id'),
+        R.toString
+      )
+    )
   )(getLinks(projectState, patch.id));
 
   return {
