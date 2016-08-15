@@ -9,6 +9,9 @@ import Selectors from '../../app/selectors';
 import * as PIN_DIRECTION from '../../app/constants/pinDirection';
 
 const mockStore = (state) => createStore(generateReducers([1]), state, applyMiddleware(thunk));
+function pin(nodeId, pinKey) {
+  return { nodeId, pinKey };
+}
 
 describe('Project reducer: ', () => {
   const projectShape = {
@@ -149,7 +152,7 @@ describe('Project reducer: ', () => {
         {
           1: {
             id: 1,
-            pins: [2, 3],
+            pins: [pin(1, 'out'), pin(3, 'in')],
           },
         }
       ),
