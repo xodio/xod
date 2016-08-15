@@ -8,7 +8,7 @@
     "build-chrome": "webpack --progress --colors --config webpack/chrome-dev.js",
     "dev-chrome": "webpack --watch --progress --colors --config webpack/chrome-dev.js",
     "lint-es6": "eslint --ext .js --ext .jsx ./app ./targets ./test --ignore-path targets/xod-espruino/runtime.js || true",
-    "lint-espruino": "eslint --config .eslintrc.espruino.js targets/xod-espruino/runtime.js || true",
+    "lint-espruino": "eslint --config .eslintrc.espruino.js targets/xod-espruino/runtime.js nodes/js nodes/espruino || true",
     "lint": "npm-run-all lint-es6 lint-espruino",
     "test": "mocha-webpack \"test/**/*Spec.js\"",
     "travis": "npm-run-all --continue-on-error lint test"

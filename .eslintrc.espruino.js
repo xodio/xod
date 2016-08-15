@@ -9,16 +9,22 @@ module.exports = {
   ],
 
   rules: {
-    'no-underscore-dangle': 'off',
-    'func-names': 'off',
-    'space-before-function-paren': ['error', 'never'],
     'comma-dangle': ['error', 'never'],
+    'func-names': 'off',
+    'no-param-reassign': ["error", { "props": false }],
+    'no-underscore-dangle': 'off',
     'object-shorthand': ['error', 'never'],
     'prefer-arrow-callback': 'off',
+    'space-before-function-paren': ['error', 'never'],
   },
 
   globals: {
+    Pin: true,
     analogRead: true,
+    analogWrite: true,
+    digitalRead: true,
+    digitalWrite: true,
+    setWatch: true,
   },
 };
 

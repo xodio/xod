@@ -1,6 +1,6 @@
 
 module.exports.setup = function(e) {
-  var pin = new Pin(e.props.pin);
+  const pin = new Pin(e.props.pin);
 
   setWatch(function(evt) {
     e.fire({ state: evt.state });
