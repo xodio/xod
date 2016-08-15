@@ -507,4 +507,44 @@ describe('Project reducer: ', () => {
       chai.expect(getPatch(patches[lastPatchId]).name).to.be.equal(newName);
     });
   });
+
+  describe('Patch nodes', () => {
+    const patchId = 1;
+    const mockState = R.assocPath(
+      ['project', 'nodeTypes', 1],
+      {
+        id: 1,
+        label: 'InputBool',
+        category: 'io',
+      },
+      projectShape
+    );
+
+    let store;
+    beforeEach(() => {
+      store = mockStore(mockState);
+    });
+
+    it('should be created by adding IO node into patch', () => {
+      const getNodeTypes = () => store.getState().project.nodeTypes;
+      const expectedNodeTypes = R.merge(
+        getNodeTypes(),
+        {
+          2: {
+            id: 2,
+            patchId,
+            category: 'patch',
+          },
+        }
+      );
+
+
+      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }, patchId));
+      chai.expect(getNodeTypes()).to.deep.equal(expectedNodeTypes);
+    });
+
+    it('should be deleted by deleting last IO node from patch', () => {
+      // @TODO
+    });
+  });
 });
