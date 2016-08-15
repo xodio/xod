@@ -336,16 +336,6 @@ export const getPinsByNodeId = (state, props) => R.pipe(
   R.filter((pin) => pin.nodeId === props.id)
 )(state, props);
 
-export const getPinsByNodeIdInPatch = (projectState, props) => {
-  const patchId = R.prop('patchId', props);
-  if (!patchId) { return {}; }
-
-  return R.pipe(
-    R.view(R.lensPath(['patches', patchId, 'present', 'pins'])),
-    R.filter(R.propEq('nodeId', props.id))
-  )(projectState);
-};
-
 export const getPinsByIds = (state, props) => R.pipe(
   getPins,
   R.values,
@@ -425,27 +415,16 @@ const getPinPosition = (nodeTypePins, key, nodePosition) => {
   Link selectors
 */
 
-export const getLinks = R.pipe(
-  getCurrentPatch,
-  R.prop('links')
-);
+export const getLinks = (state, patchId) => {
+  const patch = getPatchById(state, patchId) || getCurrentPatch(state);
+  return R.prop('links')(patch);
+};
 
 export const getLinkById = (state, props) => R.pipe(
   getLinks,
   R.filter((link) => link.id === props.id),
   R.values,
   R.head
-)(state, props);
-
-export const getLinksByPinId = (state, props) => R.pipe(
-  getLinks,
-  R.filter(
-    (link) => (
-      props.pinIds.indexOf(link.pins[0]) !== -1 ||
-      props.pinIds.indexOf(link.pins[1]) !== -1
-    )
-  ),
-  R.values
 )(state, props);
 
 export const getLinksByPinIdInPatch = (state, props) => {
