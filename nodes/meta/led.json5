@@ -4,5 +4,11 @@
     key: 'brightness',
     type: 'number',
     description: 'Shine brightness'
+  }],
+  properties: [{
+    key: 'pin',
+    label: 'Pin',
+    type: 'string',
+    defaultValue: 'LED1',
   }]
 }

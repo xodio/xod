@@ -59,6 +59,7 @@
     "chai": "^3.4.1",
     "chai-immutable": "^1.5.3",
     "copy-webpack-plugin": "^3.0.1",
+    "dirty-chai": "^1.2.2",
     "eslint": "^2.13.0",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-import-resolver-webpack": "^0.3.2",

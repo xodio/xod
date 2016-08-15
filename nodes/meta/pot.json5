@@ -1,7 +1,18 @@
 {
+  inputs: [{
+    key: 'sample',
+    type: 'pulse',
+    description: 'Sample current value',
+  }],
   outputs: [{
     key: 'value',
     type: 'number',
-    description: 'Current potentiometer value',
+    description: 'Sampled potentiometer value',
+  }],
+  properties: [{
+    key: 'pin',
+    label: 'Pin',
+    type: 'string',
+    defaultValue: 'A0',
   }]
 }

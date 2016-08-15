@@ -20,6 +20,20 @@ const nodeMetas = {
 };
 /* eslint-enable global-require */
 
+function loadImpl(platform, key, ext) {
+  try {
+    /* eslint-disable global-require, prefer-template */
+    return require('!raw!../nodes/' + platform + '/' + key + ext);
+    /* eslint-enable global-require, prefer-template */
+  } catch (err) {
+    if (/Cannot find module/.test(err)) {
+      return null;
+    }
+
+    throw err;
+  }
+}
+
 R.mapDirectedNodeTypePins = (direction, collectionKey) => R.compose(
   R.indexBy(R.prop('key')),
   R.addIndex(R.map)((pin, index) => R.merge({ index, direction }, pin)),
@@ -36,6 +50,8 @@ const mapNodeTypeProperties = R.compose(
   R.propOr([], 'properties')
 );
 
+const removeNils = R.reject(R.isNil);
+
 const nodeTypes = R.compose(
   R.indexBy(R.prop('id')),
   R.values,
@@ -46,6 +62,10 @@ const nodeTypes = R.compose(
       key,
       pins: mapNodeTypePins(meta),
       properties: mapNodeTypeProperties(meta),
+      impl: removeNils({
+        js: loadImpl('js', key, '.js'),
+        espruino: loadImpl('espruino', key, '.js'),
+      }),
     }
   ))
 )(nodeMetas);
