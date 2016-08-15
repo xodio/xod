@@ -4,8 +4,8 @@ module.exports.setup = function(e) {
 };
 
 module.exports.evaluate = function(e) {
-  const inputs = e.inputs;
-  let newState;
+  var inputs = e.inputs;
+  var newState;
 
   if (inputs.toggle) {
     newState = !e.context.state;

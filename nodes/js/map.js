@@ -1,9 +1,8 @@
 
 module.exports.evaluate = function(e) {
-  const inputs = e.inputs;
-  const k = (inputs.inp - inputs.inA) / (inputs.inB - inputs.inA);
-
-  let out = inputs.outA + k * (inputs.outB - inputs.outA);
+  var inputs = e.inputs;
+  var k = (inputs.inp - inputs.inA) / (inputs.inB - inputs.inA);
+  var out = inputs.outA + k * (inputs.outB - inputs.outA);
 
   if (inputs.clip) {
     if (inputs.outB > inputs.outA) {

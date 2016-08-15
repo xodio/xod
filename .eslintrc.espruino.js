@@ -13,7 +13,13 @@ module.exports = {
     'func-names': 'off',
     'no-param-reassign': ["error", { "props": false }],
     'no-underscore-dangle': 'off',
+    'no-var': 'off',
     'object-shorthand': ['error', 'never'],
+    "one-var": ['error', {
+      "uninitialized": 'always',
+      "initialized": 'never',
+    }],
+    'one-var-declaration-per-line': ['error', 'initializations'],
     'prefer-arrow-callback': 'off',
     'space-before-function-paren': ['error', 'never'],
   },

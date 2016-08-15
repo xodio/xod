@@ -4,11 +4,11 @@ module.exports.setup = function(e) {
 };
 
 module.exports.evaluate = function(e) {
-  const b = e.inputs.brightness;
+  var b = e.inputs.brightness;
 
   // Adjust duty cycle as a power function to align brightness
   // perception by human eye
-  const duty = b * b * b;
+  var duty = b * b * b;
 
   analogWrite(e.context.pin, duty);
 };

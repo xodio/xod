@@ -46,7 +46,7 @@ function Node(args) {
   * initial values.
   */
 Node.prototype.fire = function(outputs) {
-  const self = this;
+  var self = this;
   Object.keys(outputs).forEach(function(key) {
     self._pendingOutputs[key] = outputs[key];
   });
@@ -89,14 +89,16 @@ Node.prototype.setup = function() {
   * Evaluates the `Node` taking input signals and producting output signals.
   */
 Node.prototype.evaluate = function() {
+  var fire, inputs, result;
+
   if (!this._dirty) {
     return;
   }
 
-  const fire = this._pure ? null : this.fire.bind(this);
-  const inputs = this._cachedInputs.clone();
+  fire = this._pure ? null : this.fire.bind(this);
+  inputs = this._cachedInputs.clone();
 
-  const result = this._evaluate({
+  result = this._evaluate({
     inputs: inputs,
     fire: fire,
     context: this._context,
@@ -113,14 +115,17 @@ Node.prototype._receiveInput = function(name, value, lazy) {
 };
 
 Node.prototype._sendOutputs = function(signals) {
-  const self = this;
+  var self = this;
+
   Object.keys(signals).forEach(function(outputName) {
-    const outLinks = self._outLinks[outputName];
+    var val;
+    var outLinks = self._outLinks[outputName];
+
     if (!outLinks) {
       return;
     }
 
-    const val = signals[outputName];
+    val = signals[outputName];
     outLinks.forEach(function(link) {
       self._nodes[link.nodeId]._receiveInput(link.key, val, !!link.lazy);
     });
@@ -145,7 +150,7 @@ function Project(args) {
   * Setups all nodes all starts graph execution.
   */
 Project.prototype.launch = function() {
-  const fire = this.onNodeFire.bind(this);
+  var fire = this.onNodeFire.bind(this);
   this.forEachNode(function(node) { node.on('fire', fire); });
 
   this._inSetup = true;
@@ -174,12 +179,7 @@ Project.prototype.flushTransaction = function() {
 
   try {
     this.forEachNode(function(node) { node.onTransactionStart(); });
-
-    let node = this.getFirstDirtyNode();
-    while (node) {
-      node.evaluate();
-      node = this.getFirstDirtyNode();
-    }
+    this.forEachDirtyNode(function(node) { node.evaluate(); });
   } finally {
     this._inTransaction = false;
   }
@@ -193,16 +193,24 @@ Project.prototype.flushTransaction = function() {
   * are up to date in current transaction.
   */
 Project.prototype.getFirstDirtyNode = function() {
-  const len = this._topology.length;
-  for (let i = 0; i < len; ++i) {
-    const nodeId = this._topology[i];
-    const node = this._nodes[nodeId];
+  var i, nodeId, node;
+  var len = this._topology.length;
+  for (i = 0; i < len; ++i) {
+    nodeId = this._topology[i];
+    node = this._nodes[nodeId];
     if (node.isDirty()) {
       return node;
     }
   }
 
   return null;
+};
+
+Project.prototype.forEachDirtyNode = function(callback) {
+  var node;
+  for (node = this.getFirstDirtyNode(); node; node = this.getFirstDirtyNode()) {
+    callback(node);
+  }
 };
 
 /**
@@ -220,7 +228,7 @@ Project.prototype.onNodeFire = function() {
   * Executes `callback` with `node` argument for every node in the graph.
   */
 Project.prototype.forEachNode = function(callback) {
-  const self = this;
+  var self = this;
   Object.keys(this._nodes).forEach(function(id) { callback(self._nodes[id]); });
 };
 
