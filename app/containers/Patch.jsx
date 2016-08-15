@@ -207,12 +207,14 @@ class Patch extends React.Component {
     );
 
     return R.pipe(
-      R.map(data => R.pipe(
-          R.find(R.propEq('id', data.nodeId)),
-          R.assocPath(['pins', data.pinKey, 'validness'], data.validness)
-        )(nodes)
-      )
-    )(pinsValidation);
+      R.map(node => {
+        const pvs = R.filter(R.propEq('nodeId', node.id), pinsValidation);
+        if (pvs.length === 0) { return node; }
+
+        const add = R.map(pv => R.assocPath(['pins', pv.pinKey, 'validness'], pv.validness), pvs);
+        return R.reduce((n, a) => a(n), node, add);
+      })
+    )(nodes);
   }
 
   dragNode(mousePosition) {
@@ -295,7 +297,6 @@ Patch.propTypes = {
   size: React.PropTypes.any.isRequired,
   actions: React.PropTypes.objectOf(React.PropTypes.func),
   nodes: React.PropTypes.any,
-  // pins: React.PropTypes.any,
   links: React.PropTypes.any,
   patch: React.PropTypes.any,
   linkingPin: React.PropTypes.object,
@@ -312,7 +313,6 @@ Patch.propTypes = {
 const mapStateToProps = (state) => ({
   nodes: Selectors.Project.getPreparedNodes(state),
   links: Selectors.Project.getPreparedLinks(state),
-  // pins: Selectors.Project.getPreparedPins(state),
   patch: Selectors.Project.getCurrentPatch(state),
   selection: Selectors.Editor.getSelection(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),

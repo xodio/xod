@@ -7,13 +7,8 @@
   }],
   properties: [{
     key: 'label',
-    label: 'Name',
-    type: 'string',
-    defaultValue: 'OutputBool',
-  }, {
-    key: 'key',
     label: 'Pin label',
     type: 'io_label',
-    defaultValue: 'OUT',
+    defaultValue: 'OutB',
   }]
 }

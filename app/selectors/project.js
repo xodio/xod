@@ -109,7 +109,10 @@ export const getPatchName = createSelector(
 
 export const doesPinHaveLinks = (pin, links) => R.pipe(
   R.values,
-  R.filter((link) => (link.pins[0].pinKey === pin.key || link.pins[1].pinKey === pin.key)),
+  R.filter((link) => (
+    (link.pins[0].pinKey === pin.key && link.pins[0].nodeId === pin.nodeId) ||
+    (link.pins[1].pinKey === pin.key && link.pins[1].nodeId === pin.nodeId)
+  )),
   R.length,
   R.flip(R.gt)(0)
 )(links);
@@ -137,9 +140,13 @@ const getAllPinsFromNodes = R.pipe(
 );
 
 export const getValidPins = (nodes, links, forPin) => {
-  const oNode = nodes[forPin.nodeId];
   const allPins = getAllPinsFromNodes(nodes);
-  const oPin = oNode.pins[forPin.pinKey];
+  const oPin = R.find(
+    R.both(
+      R.propEq('nodeId', forPin.nodeId),
+      R.propEq('key', forPin.pinKey)
+    ),
+  allPins);
 
   return R.map(pin => {
     const sameNode = (pin.nodeId === oPin.nodeId);
@@ -612,16 +619,19 @@ export const getTreeChanges = (oldTree, newTree) => {
 
 const filterPatchNode = R.filter(R.propEq('category', NODE_CATEGORY.IO));
 
-export const getPatchIOPins = (node, i) => {
+export const getPatchIOPin = (node, i) => {
   const pin = R.values(node.pins)[0];
   const invertDirection = R.ifElse(
     R.equals(PIN_DIRECTION.INPUT),
     () => PIN_DIRECTION.OUTPUT,
     () => PIN_DIRECTION.INPUT
   );
+  const dir = invertDirection(pin.direction);
+
   return {
-    key: node.properties.key,
-    direction: invertDirection(pin.direction),
+    label: node.properties.label,
+    key: `${dir}_${i}`,
+    direction: dir,
     type: pin.type,
     index: i,
   };
@@ -631,7 +641,15 @@ export const getPatchIO = R.pipe(
   R.prop('nodes'),
   R.values,
   filterPatchNode,
-  R.mapObjIndexed(getPatchIOPins),
+  R.groupBy(R.compose(R.prop('direction'), R.prop(0), R.values, R.prop('pins'))),
+  R.mapObjIndexed(R.pipe(
+    R.mapObjIndexed(getPatchIOPin),
+    R.values
+  )),
+  R.values,
+  R.merge([[], []]),
+  R.values,
+  R.apply(R.concat),
   R.values
 );
 
