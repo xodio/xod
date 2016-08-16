@@ -6,9 +6,10 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import { findRootSVG } from '../utils/browser';
+
+import { HotKeys } from 'react-hotkeys';
 import CMD from '../constants/commands';
 
-import PatchWrapper from '../components/PatchWrapper';
 import PatchSVG from '../components/PatchSVG';
 import BackgroundLayer from '../components/BackgroundLayer';
 import NodesLayer from '../components/NodesLayer';
@@ -34,10 +35,6 @@ class Patch extends React.Component {
     this.onLinkClick = this.onLinkClick.bind(this);
 
     this.deselectAll = this.deselectAll.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.hotkeys(this.getHotkeyHandlers());
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -261,7 +258,11 @@ class Patch extends React.Component {
     const links = this.getLinks();
 
     return (
-      <PatchWrapper>
+      <HotKeys
+        handlers={this.getHotkeyHandlers()}
+        always
+        className="PatchWrapper"
+      >
         <PatchSVG
           onMouseMove={this.onMouseMove}
           onMouseUp={this.onMouseUp}
@@ -288,7 +289,7 @@ class Patch extends React.Component {
             ghostLink={this.props.ghostLink}
           />
         </PatchSVG>
-      </PatchWrapper>
+      </HotKeys>
     );
   }
 }
@@ -307,7 +308,6 @@ Patch.propTypes = {
   mode: React.PropTypes.object,
   ghostNode: React.PropTypes.any,
   ghostLink: React.PropTypes.any,
-  hotkeys: React.PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({

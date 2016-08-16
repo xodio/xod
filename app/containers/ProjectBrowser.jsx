@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 
+import { HotKeys } from 'react-hotkeys';
 import CMD from '../constants/commands';
 import { findParentByClassName } from '../utils/browser';
 
@@ -26,6 +27,8 @@ class ProjectBrowser extends React.Component {
     this.onToolbarHotkeys = this.onToolbarHotkeys.bind(this);
     this.deselect = this.deselect.bind(this);
 
+    this.getHotkeyHandlers = this.getHotkeyHandlers.bind(this);
+
     this.state = {
       selection: null,
     };
@@ -35,7 +38,7 @@ class ProjectBrowser extends React.Component {
   }
 
   componentDidMount() {
-    this.props.hotkeys(this.getHotkeyHandlers());
+    this.setHotkeys(this.getHotkeyHandlers());
   }
 
   componentWillReceiveProps(nextProps) {
@@ -114,6 +117,10 @@ class ProjectBrowser extends React.Component {
     this.hotkeys = hotkeys;
   }
 
+  setHotkeys(hotkeys) {
+    this.hotkeys = hotkeys;
+  }
+
   getPatchFolderId(id) {
     if (!this.props.patches.hasOwnProperty(id)) { return ''; }
     const patch = this.props.patches[id];
@@ -175,7 +182,8 @@ class ProjectBrowser extends React.Component {
 
   render() {
     return (
-      <div
+      <HotKeys
+        handlers={this.getHotkeyHandlers()}
         className="ProjectBrowser"
         onClick={this.onMissClick}
       >
@@ -201,7 +209,7 @@ class ProjectBrowser extends React.Component {
           onChange={this.onTreeChange}
           onSwitchPatch={this.onSwitchPatch}
         />
-      </div>
+      </HotKeys>
     );
   }
 }

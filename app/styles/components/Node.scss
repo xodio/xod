@@ -14,11 +14,17 @@
 
   &.is-selected {
     .body {
-      stroke: $color-canvas-selected;
+      stroke: $color-canvas-selected-faded;
     }
   }
 
   &.is-ghost {
     opacity: 0.8;
+  }
+}
+
+:focus .Node.is-selected {
+  .body {
+    stroke: $color-canvas-selected;
   }
 }

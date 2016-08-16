@@ -11,7 +11,7 @@
 
   &.is-selected {
     .line {
-      stroke: $color-canvas-selected;
+      stroke: $color-canvas-selected-faded;
     }
   }
 
@@ -19,5 +19,11 @@
     .line {
       stroke: color-canvas-hover($color-canvas-selected);
     }
+  }
+}
+
+:focus .Link.is-selected {
+  .line {
+    stroke: $color-canvas-selected;
   }
 }

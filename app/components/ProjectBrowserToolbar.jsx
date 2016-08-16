@@ -126,8 +126,8 @@ class ProjectBrowserToolbar extends React.Component {
     return {
       [CMD.ADD_PATCH]: this.onPatchCreateClick,
       [CMD.ADD_FOLDER]: this.onFolderCreateClick,
-      [CMD.PROJECT_BROWSER_RENAME]: this.onRenameClick,
-      [CMD.PROJECT_BROWSER_DELETE]: this.onDeleteClick,
+      [CMD.RENAME]: this.onRenameClick,
+      [CMD.DELETE]: this.onDeleteClick,
     };
   }
 

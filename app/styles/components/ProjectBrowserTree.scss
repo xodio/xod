@@ -69,6 +69,7 @@
         color: #006;
       }
       &.is-current {
+        // font-weight: bold;
         color: red;
       }
 
@@ -97,4 +98,11 @@
     }
   }
 
+}
+
+:focus .ProjectBrowserTree .node.is-active {
+  background: $color-button-primary-background;
+  border-left: 100px solid $color-button-primary-background;
+  border-right: 100px solid $color-button-primary-background;
+  color: $color-button-primary-text;
 }
