@@ -1,6 +1,7 @@
 import R from 'ramda';
 import {
   getLinks,
+  getNodes,
   getNodeTypes,
   getLastNodeId,
   getLastPinId,
@@ -8,7 +9,10 @@ import {
   getLastPatchId,
   getLastFolderId,
   getPatchByNodeId,
+  getPatchNodes,
 } from './project';
+import * as NODE_CATEGORY from '../constants/nodeCategory';
+import { NODETYPE_ERRORS } from '../constants/errorMessages';
 
 export const addPatch = (projectState, name, folderId) => {
   const newId = getLastPatchId(projectState) + 1;
@@ -49,28 +53,77 @@ export const addNode = (projectState, typeId, position, patchId) => {
   };
 };
 
+
+const findByProp = (propName, propVal, from) => R.pipe(
+  R.values,
+  R.find(R.propEq(propName, propVal))
+)(from);
+
+const findById = (id, from) => findByProp('id', id, from);
+const findByPatchId = (id, from) => findByProp('patchId', id, from);
+const findByNodeTypeId = (id, from) => findByProp('typeId', id, from);
+
+const getLinksToDeleteWithNode = (projectState, nodeId, patchId) => R.pipe(
+  R.values,
+  R.filter(
+    R.pipe(
+      R.prop('pins'),
+      R.find(R.propEq('nodeId', nodeId))
+    )
+  ),
+  R.map(
+    R.pipe(
+      R.prop('id'),
+      R.toString
+    )
+  )
+)(getLinks(projectState, patchId));
+
+const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
+  const nodes = getNodes(projectState, patchId);
+  const node = findById(nodeId, nodes);
+  const nodeTypes = getNodeTypes(projectState);
+  const nodeType = findById(node.typeId, nodeTypes);
+  const isIO = (nodeType.category === NODE_CATEGORY.IO);
+
+  let nodeTypeToDelete = null;
+  let nodeTypeToDeleteError = false;
+
+  if (isIO) {
+    const patchNodes = getPatchNodes(projectState);
+    const patchNode = patchNodes[patchId];
+    const ioNodes = patchNode.io.length;
+    const patchNodeType = (isIO) ? findByPatchId(patchId, nodeTypes) : null;
+
+    if (ioNodes <= 1) {
+      nodeTypeToDelete = patchNodeType.id;
+
+      if (findByNodeTypeId(nodeTypeToDelete, nodes)) {
+        nodeTypeToDeleteError = NODETYPE_ERRORS.CANT_DELETE_USED_PATCHNODE;
+      }
+    }
+
+    // @TODO: Add check for pin usage! Can't delete IO node that used somewhere as pin.
+    // NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE
+  }
+
+  return {
+    id: nodeTypeToDelete,
+    error: nodeTypeToDeleteError,
+  };
+};
+
 export const deleteNode = (projectState, id) => {
   const patch = getPatchByNodeId(projectState, id);
-  const links = R.pipe(
-    R.values,
-    R.filter(
-      R.pipe(
-        R.prop('pins'),
-        R.find(R.propEq('nodeId', id))
-      )
-    ),
-    R.map(
-      R.pipe(
-        R.prop('id'),
-        R.toString
-      )
-    )
-  )(getLinks(projectState, patch.id));
+  const linksToDelete = getLinksToDeleteWithNode(projectState, id, patch.id);
+
+  const nodeTypeToDelete = getNodeTypeToDeleteWithNode(projectState, id, patch.id);
 
   return {
     payload: {
       id,
-      links,
+      links: linksToDelete,
+      nodeType: nodeTypeToDelete,
     },
     meta: {
       patchId: patch.id,

@@ -1,8 +1,7 @@
 import R from 'ramda';
 import {
   NODE_ADD,
-  // NODE_DELETE,
-  // NODE_UPDATE_PROPERTY,
+  NODE_DELETE,
 } from '../actionTypes';
 import * as NODE_CATEGORY from '../constants/nodeCategory';
 
@@ -36,6 +35,10 @@ export const nodeTypes = (state = {}, action) => {
         patchId,
         category: NODE_CATEGORY.PATCHES,
       }, state);
+    }
+    case NODE_DELETE: {
+      if (!action.payload.nodeType.id) { return state; }
+      return R.omit([action.payload.nodeType.id.toString()], state);
     }
     default:
       return state;

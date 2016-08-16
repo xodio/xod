@@ -5,6 +5,7 @@ import * as EDITOR_MODE from './constants/editorModes';
 import Selectors from './selectors';
 import { uploadToEspruino } from './utils/espruino';
 
+
 const getTimestamp = () => new Date().getTime();
 
 export const addError = (error) => ({
@@ -63,6 +64,11 @@ export const addNode = (typeId, position, patchId) => (dispatch, getState) => {
 export const deleteNode = (id) => (dispatch, getState) => {
   const projectState = Selectors.Project.getProject(getState());
   const preparedData = Selectors.Prepare.deleteNode(projectState, id);
+
+  if (preparedData.payload.nodeType.error) {
+    dispatch(addError({ message: preparedData.payload.nodeType.error }));
+    return;
+  }
 
   dispatch({
     type: ActionType.NODE_DELETE,

@@ -303,10 +303,10 @@ export const getNodeTypeById = (state, id) => R.pipe(
   Node selectors
 */
 
-export const getNodes = R.pipe(
-  getCurrentPatch,
-  R.prop('nodes')
-);
+export const getNodes = (state, patchId) => {
+  const patch = getPatchById(state, patchId) || getCurrentPatch(state);
+  return R.prop('nodes')(patch);
+};
 
 export const getNodesByPatchId = (patchId, state) => R.pipe(
   getProject,
