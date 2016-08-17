@@ -17,15 +17,14 @@ describe('Transformer', () => {
           nodes: {
             42: {
               id: 42,
-              typeId: 777,
-              properties: { someValue: 'foo' },
+              typeId: 'core/add100',
             },
           },
         },
       },
       nodeTypes: {
-        777: {
-          id: 777,
+        'core/add100': {
+          key: 'core/add100',
           pure: true,
           pins: {
             valueIn: {
@@ -87,8 +86,8 @@ describe('Transformer', () => {
         1: {
           id: 1,
           nodes: {
-            42: { id: 42, typeId: 777 },
-            43: { id: 43, typeId: 777 },
+            42: { id: 42, typeId: 'core/add100' },
+            43: { id: 43, typeId: 'core/add100' },
           },
           pins: {
             421: { id: 421, nodeId: 42, key: 'valueIn' },
@@ -102,8 +101,8 @@ describe('Transformer', () => {
         },
       },
       nodeTypes: {
-        777: {
-          id: 777,
+        'core/add100': {
+          id: 'core/add100',
           pins: {
             valueIn: {
               direction: 'input',
@@ -134,19 +133,19 @@ describe('Transformer', () => {
         1: {
           id: 1,
           nodes: {
-            42: { id: 42, typeId: 777 },
+            42: { id: 42, typeId: 'core/add100' },
           },
         },
         2: {
           id: 2,
           nodes: {
-            43: { id: 43, typeId: 777 },
+            43: { id: 43, typeId: 'core/add100' },
           },
         },
       },
       nodeTypes: {
-        777: {
-          id: 777,
+        'core/add100': {
+          id: 'core/add100',
           pins: {},
         },
       },
