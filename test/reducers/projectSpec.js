@@ -21,11 +21,41 @@ describe('Project reducer: ', () => {
         1: {
           id: 1,
           nodes: {},
-          pins: {},
           links: {},
         },
       },
-      nodeTypes: {},
+      nodeTypes: {
+        1: {
+          id: 1,
+          category: 'hardware',
+          pins: {
+            in: {
+              index: 0,
+              direction: 'input',
+              key: 'in',
+              type: 'number',
+            },
+            out: {
+              index: 1,
+              direction: 'output',
+              key: 'out',
+              type: 'number',
+            },
+          },
+        },
+        2: {
+          id: 2,
+          category: 'io',
+          pins: {
+            out: {
+              index: 1,
+              direction: 'input',
+              key: 'out',
+              type: 'number',
+            },
+          },
+        },
+      },
       folders: {
         1: {
           id: 1,
@@ -124,26 +154,11 @@ describe('Project reducer: ', () => {
         {
           1: {
             id: 1,
+            typeId: 1,
           },
           2: {
             id: 2,
-          },
-        }
-      ),
-      R.assocPath(
-        R.append('pins', patchPath),
-        {
-          1: {
-            id: 1,
-            nodeId: 1,
-          },
-          2: {
-            id: 2,
-            nodeId: 1,
-          },
-          3: {
-            id: 3,
-            nodeId: 2,
+            typeId: 1,
           },
         }
       ),
@@ -173,7 +188,7 @@ describe('Project reducer: ', () => {
 
     it('should delete node, children pins and link', () => {
       const patchId = 1;
-      const expectedNodes = { 2: { id: 2 } };
+      const expectedNodes = { 2: { id: 2, typeId: 1 } };
       const expectedLinks = {};
 
       store.dispatch(Actions.deleteNode(1));
@@ -304,16 +319,8 @@ describe('Project reducer: ', () => {
         {
           1: {
             id: 1,
-            pins: [1, 2],
+            pins: [{ nodeId: 1, pinKey: 'out' }, { nodeId: 2, pinKey: 'in' }],
           },
-        }
-      ),
-      R.assocPath(
-        R.append('pins', patchPath),
-        {
-          1: { id: 1 },
-          2: { id: 2 },
-          3: { id: 3 },
         }
       ),
       R.assocPath(
@@ -322,7 +329,6 @@ describe('Project reducer: ', () => {
           patches: 1,
           nodes: 0,
           links: 1,
-          pins: 3,
         }
       )
     )(projectShape);
@@ -376,12 +382,6 @@ describe('Project reducer: ', () => {
         nodes: {
           1: {
             id: 1,
-          },
-        },
-        pins: {
-          1: {
-            id: 1,
-            nodeId: 1,
           },
         },
         links: {},
@@ -510,13 +510,7 @@ describe('Project reducer: ', () => {
 
   describe('Patch nodes', () => {
     const patchId = 1;
-    const mockState = R.assocPath(
-      ['project', 'nodeTypes', 1],
-      {
-        id: 1,
-        label: 'InputBool',
-        category: 'io',
-      },
+    const mockState = R.clone(
       projectShape
     );
 
@@ -530,8 +524,8 @@ describe('Project reducer: ', () => {
       const expectedNodeTypes = R.merge(
         getNodeTypes(),
         {
-          2: {
-            id: 2,
+          3: {
+            id: 3,
             patchId,
             category: 'patch',
           },
@@ -539,12 +533,18 @@ describe('Project reducer: ', () => {
       );
 
 
-      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode(2, { x: 10, y: 10 }, patchId));
       chai.expect(getNodeTypes()).to.deep.equal(expectedNodeTypes);
     });
 
     it('should be deleted by deleting last IO node from patch', () => {
-      // @TODO
+      const getNodeTypes = () => store.getState().project.nodeTypes;
+      const expectedNodeTypes = getNodeTypes();
+
+      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.deleteNode(1, patchId));
+
+      chai.expect(getNodeTypes()).to.deep.equal(expectedNodeTypes);
     });
   });
 });
