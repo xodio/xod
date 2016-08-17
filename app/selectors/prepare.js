@@ -107,12 +107,12 @@ const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
     const patchNodeType = (isIO) ? findByPatchId(patchId, nodeTypes) : null;
     const patchNode = findByNodeTypeId(patchNodeType.id, nodes);
 
-    let patchNodeLinks = 0;
+
     if (patchNode) {
       // Get links and check for pins usage
       const pinKey = getPinKeyByNodeIdAndLabel(node.id, node.properties.label, patch);
       const links = getLinks(projectState, patchId);
-      patchNodeLinks = R.pipe(
+      const patchNodeLinks = R.pipe(
         R.values,
         R.filter(
           link => (
@@ -122,12 +122,14 @@ const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
         ),
         R.length
       )(links);
+
+      if (patchNodeLinks > 0) {
+        // This pin have links
+        nodeTypeToDeleteError = NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE;
+      }
     }
 
-    if (patchNodeLinks > 0) {
-      // This pin have links
-      nodeTypeToDeleteError = NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE;
-    } else if (ioNodes === 1) {
+    if (ioNodes === 1) {
       // This is last IO node! It will remove whole PatchNode.
       nodeTypeToDelete = patchNodeType.id;
 

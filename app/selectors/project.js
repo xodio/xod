@@ -610,7 +610,7 @@ export const getPatchIOPin = (node, i) => {
   return {
     nodeId: node.id,
     label: node.properties.label,
-    key: `${dir}_${i}`,
+    key: `${dir}_${node.id}`,
     direction: dir,
     type: pin.type,
     index: i,
