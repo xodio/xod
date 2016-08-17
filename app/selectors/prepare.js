@@ -79,6 +79,17 @@ const getLinksToDeleteWithNode = (projectState, nodeId, patchId) => R.pipe(
   )
 )(getLinks(projectState, patchId));
 
+const getPinKeyByNodeIdAndLabel = (nodeId, label, patch) => R.pipe(
+  R.prop('io'),
+  R.find(
+    R.both(
+      R.propEq('nodeId', nodeId),
+      R.propEq('label', label)
+    )
+  ),
+  R.propOr(null, 'key')
+)(patch);
+
 const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
   const nodes = getNodes(projectState, patchId);
   const node = findById(nodeId, nodes);
@@ -91,20 +102,40 @@ const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
 
   if (isIO) {
     const patchNodes = getPatchNodes(projectState);
-    const patchNode = patchNodes[patchId];
-    const ioNodes = patchNode.io.length;
+    const patch = patchNodes[patchId];
+    const ioNodes = patch.io.length;
     const patchNodeType = (isIO) ? findByPatchId(patchId, nodeTypes) : null;
+    const patchNode = findByNodeTypeId(patchNodeType.id, nodes);
 
-    if (ioNodes <= 1) {
+    let patchNodeLinks = 0;
+    if (patchNode) {
+      // Get links and check for pins usage
+      const pinKey = getPinKeyByNodeIdAndLabel(node.id, node.properties.label, patch);
+      const links = getLinks(projectState, patchId);
+      patchNodeLinks = R.pipe(
+        R.values,
+        R.filter(
+          link => (
+            (link.pins[0].nodeId === patchNode.id && link.pins[0].pinKey === pinKey) ||
+            (link.pins[1].nodeId === patchNode.id && link.pins[1].pinKey === pinKey)
+          )
+        ),
+        R.length
+      )(links);
+    }
+
+    if (patchNodeLinks > 0) {
+      // This pin have links
+      nodeTypeToDeleteError = NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE;
+    } else if (ioNodes === 1) {
+      // This is last IO node! It will remove whole PatchNode.
       nodeTypeToDelete = patchNodeType.id;
 
-      if (findByNodeTypeId(nodeTypeToDelete, nodes)) {
+      if (patchNode) {
+        // This patch node is used somewhere!
         nodeTypeToDeleteError = NODETYPE_ERRORS.CANT_DELETE_USED_PATCHNODE;
       }
     }
-
-    // @TODO: Add check for pin usage! Can't delete IO node that used somewhere as pin.
-    // NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE
   }
 
   return {

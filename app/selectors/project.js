@@ -608,6 +608,7 @@ export const getPatchIOPin = (node, i) => {
   const dir = invertDirection(pin.direction);
 
   return {
+    nodeId: node.id,
     label: node.properties.label,
     key: `${dir}_${i}`,
     direction: dir,
