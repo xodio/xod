@@ -109,10 +109,8 @@ class App extends React.Component {
     }
   }
 
-  onSelectNodeType(typeId) {
-    this.props.actions.setSelectedNodeType(
-      parseInt(typeId, 10)
-    );
+  onSelectNodeType(typeKey) {
+    this.props.actions.setSelectedNodeType(typeKey);
   }
 
   onAddNodeClick() {
@@ -186,7 +184,7 @@ App.propTypes = {
   projectJSON: React.PropTypes.string,
   meta: React.PropTypes.object,
   nodeTypes: React.PropTypes.any.isRequired,
-  selectedNodeType: React.PropTypes.number,
+  selectedNodeType: React.PropTypes.string,
   actions: React.PropTypes.object,
   upload: React.PropTypes.object,
 };

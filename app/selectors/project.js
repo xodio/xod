@@ -17,6 +17,8 @@ import {
   getModeChecks,
 } from './editor';
 
+const getUserName = () => 'Bob';
+
 /*
   Common utils
 */
@@ -27,6 +29,7 @@ const findByProp = (propName, propVal, from) => R.pipe(
 )(from);
 
 const findById = (id, from) => findByProp('id', id, from);
+const findByKey = (key, from) => findByProp('key', key, from);
 const findByPatchId = (id, from) => findByProp('patchId', id, from);
 const findByNodeTypeId = (id, from) => findByProp('typeId', id, from);
 
@@ -69,8 +72,6 @@ export const getPatches = R.pipe(
   getProject,
   R.prop('patches')
 );
-
-// export const getPreparedPatches;
 
 export const getPatchById = (projectState, id) => {
   const patch = R.view(
@@ -681,27 +682,31 @@ export const getPatchNodes = state => R.pipe(
 )(state);
 
 export const getPreparedNodeTypes = state => {
-  const patches = getPatches(state);
+  const patchNodes = getPatchNodes(state);
+  const patchNodeTypes = R.pipe(
+    R.values,
+    R.map(
+      patch => ({
+        key: `${getUserName()}/${patch.name}`,
+        patchId: patch.id,
+        label: patch.name,
+        category: NODE_CATEGORY.PATCHES,
+        properties: {},
+        pins: R.pipe(R.values, R.indexBy(R.prop('key')))(patch.io),
+      })
+    ),
+    R.indexBy(R.prop('key'))
+  )(patchNodes);
 
   return R.pipe(
     getNodeTypes,
-    R.mapObjIndexed(nodeType => {
-      if (nodeType.category !== NODE_CATEGORY.PATCHES) { return nodeType; }
-      const patchNode = getPatchNode(state, patches[nodeType.patchId].present);
-      const patchNodeData = {
-        key: patchNode.name,
-        label: patchNode.name,
-        properties: {},
-        pins: R.pipe(R.values, R.indexBy(R.prop('key')))(patchNode.io),
-      };
-      return R.merge(nodeType, patchNodeData);
-    })
+    R.flip(R.merge)(patchNodeTypes)
   )(state);
 };
 
-export const getPreparedNodeTypeById = (state, id) => R.pipe(
+export const getPreparedNodeTypeByKey = (state, key) => R.pipe(
   getPreparedNodeTypes,
-  R.prop(id)
+  R.prop(key)
 )(state);
 
 const addPinRadius = (position) => ({
@@ -710,7 +715,7 @@ const addPinRadius = (position) => ({
 });
 
 const getNodeLabel = (state, node) => {
-  const nodeType = getPreparedNodeTypeById(state, node.typeId);
+  const nodeType = getPreparedNodeTypeByKey(state, node.typeId);
   let nodeLabel = node.label || nodeType.label || nodeType.key;
 
   const nodeValue = R.view(R.lensPath(['properties', 'value']), node);
@@ -728,7 +733,7 @@ const getNodeLabel = (state, node) => {
 };
 const getNodePins = (state, typeId) => R.pipe(
   getPreparedNodeTypes,
-  R.pickBy(R.propEq('id', typeId)),
+  R.pickBy(R.propEq('key', typeId)),
   R.values,
   R.map(R.prop('pins')),
   R.head
@@ -853,7 +858,7 @@ export const getNodeGhost = (state) => {
     return null;
   }
   const nodePosition = { x: 0, y: 0 };
-  const nodeType = getPreparedNodeTypeById(state, nodeTypeId);
+  const nodeType = getPreparedNodeTypeByKey(state, nodeTypeId);
   const nodeProperties = R.pipe(
     R.prop('properties'),
     R.values,
@@ -936,8 +941,8 @@ const getPinKeyByNodeIdAndLabel = (nodeId, label, patch) => R.pipe(
 export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
   const nodes = getNodes(projectState, patchId);
   const node = findById(nodeId, nodes);
-  const nodeTypes = getNodeTypes(projectState);
-  const nodeType = findById(node.typeId, nodeTypes);
+  const nodeTypes = getPreparedNodeTypes(projectState);
+  const nodeType = findByKey(node.typeId, nodeTypes);
   const isIO = (nodeType.category === NODE_CATEGORY.IO);
 
   let nodeTypeToDelete = null;
@@ -948,8 +953,12 @@ export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
     const patch = patchNodes[patchId];
     const ioNodes = patch.io.length;
     const patchNodeType = (isIO) ? findByPatchId(patchId, nodeTypes) : null;
-    const patchNode = findByNodeTypeId(patchNodeType.id, nodes);
+    const patchNode = findByNodeTypeId(patchNodeType.key, nodes);
 
+    if (ioNodes === 1) {
+      // This is last IO node! It will remove whole PatchNode.
+      nodeTypeToDelete = patchNodeType.id;
+    }
 
     if (patchNode) {
       // Get links and check for pins usage
@@ -969,14 +978,7 @@ export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
       if (patchNodeLinks > 0) {
         // This pin have links
         nodeTypeToDeleteError = NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE;
-      }
-    }
-
-    if (ioNodes === 1) {
-      // This is last IO node! It will remove whole PatchNode.
-      nodeTypeToDelete = patchNodeType.id;
-
-      if (patchNode) {
+      } else if (ioNodes === 1) {
         // This patch node is used somewhere!
         nodeTypeToDeleteError = NODETYPE_ERRORS.CANT_DELETE_USED_PATCHNODE;
       }

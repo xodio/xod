@@ -302,7 +302,7 @@ Patch.propTypes = {
   patch: React.PropTypes.any,
   linkingPin: React.PropTypes.object,
   selection: React.PropTypes.array,
-  selectedNodeType: React.PropTypes.number,
+  selectedNodeType: React.PropTypes.string,
   patchId: React.PropTypes.number,
   nodeTypes: React.PropTypes.object,
   mode: React.PropTypes.object,

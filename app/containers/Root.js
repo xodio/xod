@@ -35,16 +35,8 @@ export default class Root extends React.Component {
   }
 
   populateDemo() {
-    const state = this.store.getState();
-    const nodeTypeIdByKey = key => R.compose(
-      R.prop('id'),
-      R.find(R.propEq('key', key)),
-      R.values
-    )(state.project.nodeTypes);
-
     const dispatchAddNode = (nodeTypeKey, x, y) => {
-      const nodeTypeId = nodeTypeIdByKey(nodeTypeKey);
-      const action = addNode(nodeTypeId, { x, y }, 1);
+      const action = addNode(nodeTypeKey, { x, y }, 1);
       this.store.dispatch(action);
     };
     const dispatchAddLink = (o1, o2) => {
@@ -52,10 +44,10 @@ export default class Root extends React.Component {
       this.store.dispatch(action);
     };
 
-    dispatchAddNode('button', 100, 100);
-    dispatchAddNode('pot', 400, 100);
-    dispatchAddNode('led', 100, 400);
-    dispatchAddNode('servo', 400, 400);
+    dispatchAddNode('core/button', 100, 100);
+    dispatchAddNode('core/pot', 400, 100);
+    dispatchAddNode('core/led', 100, 400);
+    dispatchAddNode('core/servo', 400, 400);
     dispatchAddLink({ nodeId: 1, pinKey: 'state' }, { nodeId: 3, pinKey: 'brightness' });
   }
 

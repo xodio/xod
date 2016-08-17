@@ -1,6 +1,6 @@
 import R from 'ramda';
 import {
-  getNodeTypes,
+  getPreparedNodeTypes,
   getLastNodeId,
   getLastPinId,
   getLastLinkId,
@@ -33,7 +33,7 @@ export const addFolder = (projectState, name, parentId) => {
 
 export const addNode = (projectState, typeId, position, patchId) => {
   const newNodeId = getLastNodeId(projectState) + 1;
-  const nodeType = getNodeTypes(projectState)[typeId];
+  const nodeType = getPreparedNodeTypes(projectState)[typeId];
   const lastPinId = getLastPinId(projectState);
 
   return {
