@@ -1,4 +1,4 @@
 
 module.exports.evaluate = function(e) {
-  return {out: !e.inputs.in};
+  return { out: !e.inputs.in };
 };
