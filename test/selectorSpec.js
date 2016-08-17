@@ -15,8 +15,8 @@ describe('Link selector', () => {
     const state = {
       project: {
         nodeTypes: {
-          42: {
-            id: 42,
+          'core/test': {
+            key: 'core/test',
             pins: {
               inA: { key: 'inA', type: PIN_TYPE.NUMBER, direction: PIN_DIRECTION.INPUT },
               inB: { key: 'inB', type: PIN_TYPE.NUMBER, direction: PIN_DIRECTION.INPUT },
@@ -29,8 +29,8 @@ describe('Link selector', () => {
           1: {
             id: 1,
             nodes: {
-              1: { id: 1, typeId: 42, position: { x: 100, y: 100 } },
-              2: { id: 2, typeId: 42, position: { x: 200, y: 200 } },
+              1: { id: 1, typeId: 'core/test', position: { x: 100, y: 100 } },
+              2: { id: 2, typeId: 'core/test', position: { x: 200, y: 200 } },
             },
             links: {
               100: { id: 100, pins: [pin(1, 'outB'), pin(2, 'inA')] },

@@ -17,7 +17,7 @@ import {
   getModeChecks,
 } from './editor';
 
-const getUserName = () => 'Bob';
+export const getUserName = () => 'Bob';
 
 /*
   Common utils
@@ -672,11 +672,11 @@ export const getPatchNode = (state, patch) => {
 
 export const getPatchNodes = state => R.pipe(
   getPatches,
-  R.mapObjIndexed(
+  R.mapObjIndexed(patch =>
     R.pipe(
-      R.prop('present'),
+      R.propOr(patch, 'present'),
       R.curry(getPatchNode)(state)
-    )
+    )(patch)
   ),
   R.pickBy(R.propEq('isPatchNode', true))
 )(state);
@@ -802,7 +802,6 @@ export const getPreparedLinks = (state) => {
 export const validateLink = (state, linkData) => {
   const nodes = getPreparedNodes(state);
   const pins = getAllPinsFromNodes(nodes);
-
   const linksState = getLinks(state);
 
   const eqProps = (data) => R.both(
@@ -957,7 +956,7 @@ export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
 
     if (ioNodes === 1) {
       // This is last IO node! It will remove whole PatchNode.
-      nodeTypeToDelete = patchNodeType.id;
+      nodeTypeToDelete = patchNodeType.key;
     }
 
     if (patchNode) {
@@ -986,7 +985,7 @@ export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
   }
 
   return {
-    id: nodeTypeToDelete,
+    key: nodeTypeToDelete,
     error: nodeTypeToDeleteError,
   };
 };

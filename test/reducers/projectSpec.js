@@ -6,13 +6,16 @@ import generateReducers from '../../app/reducers/';
 import { nodes } from '../../app/reducers/nodes';
 import * as Actions from '../../app/actions';
 import Selectors from '../../app/selectors';
-import * as PIN_DIRECTION from '../../app/constants/pinDirection';
 import { NODETYPE_ERRORS } from '../../app/constants/errorMessages';
 
-const mockStore = (state) => createStore(generateReducers([1]), state, applyMiddleware(thunk));
 function pin(nodeId, pinKey) {
   return { nodeId, pinKey };
 }
+const mockStore = (state) => createStore(generateReducers([1]), state, applyMiddleware(thunk));
+const getNodeTypes = (state) => Selectors.Project.getPreparedNodeTypes(state);
+const getPatchName = (pId, state) => state.project.patches[pId].present.name;
+const getPatchNodeName = (pId, state) =>
+  `${Selectors.Project.getUserName()}/${getPatchName(pId, state)}`;
 
 describe('Project reducer: ', () => {
   const projectShape = {
@@ -26,8 +29,8 @@ describe('Project reducer: ', () => {
         },
       },
       nodeTypes: {
-        1: {
-          id: 1,
+        'core/test': {
+          key: 'core/test',
           category: 'hardware',
           pins: {
             in: {
@@ -44,8 +47,8 @@ describe('Project reducer: ', () => {
             },
           },
         },
-        2: {
-          id: 2,
+        'core/output': {
+          key: 'core/output',
           category: 'io',
           pins: {
             out: {
@@ -75,27 +78,9 @@ describe('Project reducer: ', () => {
   };
 
   describe('Add node', () => {
-    const mockState = R.assocPath(
-      ['project', 'nodeTypes', 1],
-      {
-        id: 1,
-        pins: {
-          in: {
-            key: 'in',
-            direction: PIN_DIRECTION.INPUT,
-          },
-          out: {
-            key: 'out',
-            direction: PIN_DIRECTION.OUTPUT,
-          },
-        },
-      },
-      projectShape
-    );
-
     let store;
     beforeEach(() => {
-      store = mockStore(mockState);
+      store = mockStore(projectShape);
     });
 
     it('should add node', () => {
@@ -103,7 +88,7 @@ describe('Project reducer: ', () => {
       const expectedNodes = {
         1: {
           id: 1,
-          typeId: 1,
+          typeId: 'core/test',
           position: {
             x: 10,
             y: 10,
@@ -111,7 +96,7 @@ describe('Project reducer: ', () => {
           properties: {},
         },
       };
-      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
 
       const projectState = Selectors.Project.getProject(store.getState());
       const patchState = Selectors.Project.getPatchById(projectState, patchId);
@@ -124,7 +109,7 @@ describe('Project reducer: ', () => {
       const initialProjectState = Selectors.Project.getProject(store.getState());
       const initialPatchState = Selectors.Project.getPatchById(initialProjectState, patchId);
 
-      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
       const updatedProjectState = Selectors.Project.getProject(store.getState());
       const updatedPatchState = Selectors.Project.getPatchById(updatedProjectState, patchId);
 
@@ -155,11 +140,11 @@ describe('Project reducer: ', () => {
         {
           1: {
             id: 1,
-            typeId: 1,
+            typeId: 'core/test',
           },
           2: {
             id: 2,
-            typeId: 1,
+            typeId: 'core/test',
           },
         }
       ),
@@ -176,7 +161,6 @@ describe('Project reducer: ', () => {
         ['project', 'counter'],
         {
           nodes: 2,
-          pins: 3,
           links: 1,
         }
       )
@@ -189,7 +173,7 @@ describe('Project reducer: ', () => {
 
     it('should delete node, children pins and link', () => {
       const patchId = 1;
-      const expectedNodes = { 2: { id: 2, typeId: 1 } };
+      const expectedNodes = { 2: { id: 2, typeId: 'core/test' } };
       const expectedLinks = {};
 
       store.dispatch(Actions.deleteNode(1));
@@ -398,10 +382,9 @@ describe('Project reducer: ', () => {
   });
 
   describe('Folders reducer', () => {
-    const mockState = projectShape;
     let store;
     beforeEach(() => {
-      store = mockStore(mockState);
+      store = mockStore(projectShape);
     });
 
     it('should add folder without parentId', () => {
@@ -521,51 +504,45 @@ describe('Project reducer: ', () => {
     });
 
     it('should be created by adding IO node into patch', () => {
-      const getNodeTypes = () => store.getState().project.nodeTypes;
-      const expectedNodeTypes = R.merge(
-        getNodeTypes(),
-        {
-          3: {
-            id: 3,
-            patchId,
-            category: 'patch',
-          },
-        }
+      const patchNodeName = getPatchNodeName(patchId, store.getState());
+
+      const expectedNodeTypes = R.concat(
+        R.keys(getNodeTypes(store.getState())),
+        patchNodeName
       );
 
 
-      store.dispatch(Actions.addNode(2, { x: 10, y: 10 }, patchId));
-      chai.expect(getNodeTypes()).to.deep.equal(expectedNodeTypes);
+      store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
+      chai.expect(R.keys(getNodeTypes(store.getState()))).to.deep.equal(expectedNodeTypes);
     });
 
     it('should be deleted by deleting last IO node from patch', () => {
-      const getNodeTypes = () => store.getState().project.nodeTypes;
-      const expectedNodeTypes = getNodeTypes();
+      const expectedNodeTypes = getNodeTypes(store.getState());
 
-      store.dispatch(Actions.addNode(2, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
       store.dispatch(Actions.deleteNode(1, patchId));
 
-      chai.expect(getNodeTypes()).to.deep.equal(expectedNodeTypes);
+      chai.expect(getNodeTypes(store.getState())).to.deep.equal(expectedNodeTypes);
     });
 
     it('should show error on attempt to delete IO node that have a link', () => {
-      const getNodeTypes = () => store.getState().project.nodeTypes;
       const expectedNodeTypeToDelete = {
-        id: null,
+        key: null,
         error: NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE,
       };
+      const patchNodeName = getPatchNodeName(patchId, store.getState());
 
-      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }, patchId));
-      store.dispatch(Actions.addNode(2, { x: 10, y: 10 }, patchId));
-      store.dispatch(Actions.addNode(2, { x: 10, y: 10 }, patchId));
-      store.dispatch(Actions.addNode(3, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode(patchNodeName, { x: 10, y: 10 }, patchId));
       store.dispatch(Actions.addLink(pin(1, 'in'), pin(4, 'output_3')));
 
-      const nodeTypesWithPatch = getNodeTypes();
+      const nodeTypesWithPatch = getNodeTypes(store.getState());
 
       store.dispatch(Actions.deleteNode(3));
 
-      const nodeTypesAfterDelete = getNodeTypes();
+      const nodeTypesAfterDelete = getNodeTypes(store.getState());
       const nodeTypeToDelete = Selectors.Project.getNodeTypeToDeleteWithNode(
         store.getState().project,
         3,
@@ -577,21 +554,21 @@ describe('Project reducer: ', () => {
     });
 
     it('should show error on attempt to delete last IO node of used patch node', () => {
-      const getNodeTypes = () => store.getState().project.nodeTypes;
+      const patchNodeName = getPatchNodeName(patchId, store.getState());
       const expectedNodeTypeToDelete = {
-        id: 3,
+        key: patchNodeName,
         error: NODETYPE_ERRORS.CANT_DELETE_USED_PATCHNODE,
       };
 
-      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }, patchId));
-      store.dispatch(Actions.addNode(2, { x: 10, y: 10 }, patchId));
-      store.dispatch(Actions.addNode(3, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode(patchNodeName, { x: 10, y: 10 }, patchId));
 
-      const nodeTypesWithPatch = getNodeTypes();
+      const nodeTypesWithPatch = getNodeTypes(store.getState());
 
       store.dispatch(Actions.deleteNode(2));
 
-      const nodeTypesAfterDelete = getNodeTypes();
+      const nodeTypesAfterDelete = getNodeTypes(store.getState());
       const nodeTypeToDelete = Selectors.Project.getNodeTypeToDeleteWithNode(
         store.getState().project,
         2,
