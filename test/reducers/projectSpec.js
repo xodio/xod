@@ -7,6 +7,7 @@ import { nodes } from '../../app/reducers/nodes';
 import * as Actions from '../../app/actions';
 import Selectors from '../../app/selectors';
 import * as PIN_DIRECTION from '../../app/constants/pinDirection';
+import { NODETYPE_ERRORS } from '../../app/constants/errorMessages';
 
 const mockStore = (state) => createStore(generateReducers([1]), state, applyMiddleware(thunk));
 function pin(nodeId, pinKey) {
@@ -541,10 +542,64 @@ describe('Project reducer: ', () => {
       const getNodeTypes = () => store.getState().project.nodeTypes;
       const expectedNodeTypes = getNodeTypes();
 
-      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode(2, { x: 10, y: 10 }, patchId));
       store.dispatch(Actions.deleteNode(1, patchId));
 
       chai.expect(getNodeTypes()).to.deep.equal(expectedNodeTypes);
+    });
+
+    it('should show error on attempt to delete IO node that have a link', () => {
+      const getNodeTypes = () => store.getState().project.nodeTypes;
+      const expectedNodeTypeToDelete = {
+        id: null,
+        error: NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE,
+      };
+
+      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode(2, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode(2, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode(3, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addLink(pin(1, 'in'), pin(4, 'output_3')));
+
+      const nodeTypesWithPatch = getNodeTypes();
+
+      store.dispatch(Actions.deleteNode(3));
+
+      const nodeTypesAfterDelete = getNodeTypes();
+      const nodeTypeToDelete = Selectors.Project.getNodeTypeToDeleteWithNode(
+        store.getState().project,
+        3,
+        patchId
+      );
+
+      chai.expect(nodeTypesWithPatch).to.deep.equal(nodeTypesAfterDelete);
+      chai.expect(nodeTypeToDelete).to.deep.equal(expectedNodeTypeToDelete);
+    });
+
+    it('should show error on attempt to delete last IO node of used patch node', () => {
+      const getNodeTypes = () => store.getState().project.nodeTypes;
+      const expectedNodeTypeToDelete = {
+        id: 3,
+        error: NODETYPE_ERRORS.CANT_DELETE_USED_PATCHNODE,
+      };
+
+      store.dispatch(Actions.addNode(1, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode(2, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode(3, { x: 10, y: 10 }, patchId));
+
+      const nodeTypesWithPatch = getNodeTypes();
+
+      store.dispatch(Actions.deleteNode(2));
+
+      const nodeTypesAfterDelete = getNodeTypes();
+      const nodeTypeToDelete = Selectors.Project.getNodeTypeToDeleteWithNode(
+        store.getState().project,
+        2,
+        patchId
+      );
+
+      chai.expect(nodeTypesWithPatch).to.deep.equal(nodeTypesAfterDelete);
+      chai.expect(nodeTypeToDelete).to.deep.equal(expectedNodeTypeToDelete);
     });
   });
 });
