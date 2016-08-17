@@ -45,7 +45,7 @@ describe('Transformer', () => {
     expect(result.nodes).to.be.eql({
       42: {
         id: 42,
-        implId: 777,
+        implId: 'core/add100',
         pure: true,
         inputTypes: {
           valueIn: Number,
@@ -65,19 +65,19 @@ describe('Transformer', () => {
         1: {
           id: 1,
           nodes: {
-            42: { id: 42, typeId: 777 },
+            42: { id: 42, typeId: 'core/add100' },
           },
         },
       },
       nodeTypes: {
-        777: {
-          id: 777,
+        'core/add100': {
+          id: 'core/add100',
           impl: { js, cpp },
         },
       },
     }, ['es6', 'js']);
 
-    expect(result.impl).to.be.eql({ 777: js });
+    expect(result.impl).to.be.eql({ 'core/add100': js });
   });
 
   it('should merge links', () => {
@@ -161,8 +161,8 @@ describe('Transformer', () => {
         1: {
           id: 1,
           nodes: {
-            42: { id: 42, typeId: 777 },
-            43: { id: 43, typeId: 777 },
+            42: { id: 42, typeId: 'core/add100' },
+            43: { id: 43, typeId: 'core/add100' },
           },
           pins: {
             421: { id: 421, nodeId: 42, key: 'valueIn' },
@@ -176,8 +176,8 @@ describe('Transformer', () => {
         },
       },
       nodeTypes: {
-        777: {
-          id: 777,
+        'core/add100': {
+          id: 'core/add100',
           pins: {
             valueIn: {
               direction: 'input',
