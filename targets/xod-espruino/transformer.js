@@ -63,13 +63,13 @@ export default function transform(project, implPlatforms = []) {
   const linkList = R.compose(R.values, links);
 
   const nodeTypes = () => R.propOr({}, 'nodeTypes', project);
-  const nodeTypeById = id => R.propOr({}, id, nodeTypes());
+  const nodeTypeByKey = key => R.propOr({}, key, nodeTypes());
 
   const usedNodeTypeIds = () => R.pluck('typeId', R.values(nodes()));
   const usedNodeTypes = () => R.pick(usedNodeTypeIds(), nodeTypes());
 
   // :: Node -> NodeType
-  const nodeTypeByNode = R.compose(nodeTypeById, R.prop('typeId'));
+  const nodeTypeByNode = R.compose(nodeTypeByKey, R.prop('typeId'));
 
   // :: NodeType -> {Key: NodeType.Pin}
   const nodeTypePins = R.propOr({}, 'pins');
