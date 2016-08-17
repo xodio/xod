@@ -18,6 +18,7 @@ describe('Transformer', () => {
             42: {
               id: 42,
               typeId: 'core/add100',
+              properties: { someValue: 'foo' },
             },
           },
         },
