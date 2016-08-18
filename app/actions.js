@@ -77,9 +77,9 @@ export const deleteNode = (id) => (dispatch, getState) => {
   });
 };
 
-export const addLink = (data1, data2) => (dispatch, getState) => {
+export const addLink = (pin1, pin2) => (dispatch, getState) => {
   const projectState = Selectors.Project.getProject(getState());
-  const preparedData = Selectors.Prepare.addLink(projectState, data1, data2);
+  const preparedData = Selectors.Prepare.addLink(projectState, pin1, pin2);
 
   dispatch({
     type: ActionType.LINK_ADD,
@@ -188,22 +188,25 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
 
   const pins = [selected, data];
 
-  const notEquals = R.not(R.equals(selected, data));
-
-  if (notEquals && selected !== null) {
-    const validation = Selectors.Project.validateLink(state, pins);
-    if (validation.isValid) {
-      result.push(dispatch(addLink(pins[0], pins[1])));
-    } else {
-      result.push(dispatch(addError({ message: validation.message })));
-    }
-    dispatch(setMode(EDITOR_MODE.DEFAULT));
-  } else if (notEquals) {
-    dispatch(setMode(EDITOR_MODE.LINKING));
-    result.push(dispatch(setPinSelection(nodeId, pinKey)));
+  if (R.equals(selected, data)) {
+    // linking a pin to itself
+    return result;
   }
 
-  return result;
+  let action;
+
+  if (selected) {
+    const validation = Selectors.Project.validateLink(state, pins);
+    action = validation.isValid ?
+      addLink(pins[0], pins[1]) :
+      addError({ message: validation.message });
+    dispatch(setMode(EDITOR_MODE.DEFAULT));
+  } else {
+    dispatch(setMode(EDITOR_MODE.LINKING));
+    action = setPinSelection(nodeId, pinKey);
+  }
+
+  return R.append(dispatch(action), result);
 };
 
 export const selectLink = (id) => (dispatch, getState) => {
