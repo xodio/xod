@@ -1,8 +1,8 @@
-import HintWidget from './hintWidget';
-import BoolWidget from './boolWidget';
-import NumberWidget from './numberWidget';
-import StringWidget from './stringWidget';
-import IOLabelWidget from './ioLabelWidget';
+import HintWidget from './HintWidget';
+import BoolWidget from './BoolWidget';
+import NumberWidget from './NumberWidget';
+import StringWidget from './StringWidget';
+import IOLabelWidget from './IOLabelWidget';
 
 export default {
   HintWidget,
