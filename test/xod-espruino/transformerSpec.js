@@ -90,14 +90,14 @@ describe('Transformer', () => {
             42: { id: 42, typeId: 'core/add100' },
             43: { id: 43, typeId: 'core/add100' },
           },
-          pins: {
-            421: { id: 421, nodeId: 42, key: 'valueIn' },
-            422: { id: 422, nodeId: 42, key: 'valueOut' },
-            431: { id: 431, nodeId: 43, key: 'valueIn' },
-            432: { id: 432, nodeId: 43, key: 'valueOut' },
-          },
           links: {
-            1: { id: 1, pins: [422, 431] },
+            1: {
+              id: 1,
+              pins: [
+                { nodeId: 42, pinKey: 'valueOut' },
+                { nodeId: 43, pinKey: 'valueIn' },
+              ],
+            },
           },
         },
       },
@@ -165,14 +165,14 @@ describe('Transformer', () => {
             42: { id: 42, typeId: 'core/add100' },
             43: { id: 43, typeId: 'core/add100' },
           },
-          pins: {
-            421: { id: 421, nodeId: 42, key: 'valueIn' },
-            422: { id: 422, nodeId: 42, key: 'valueOut' },
-            431: { id: 431, nodeId: 43, key: 'valueIn' },
-            432: { id: 432, nodeId: 43, key: 'valueOut' },
-          },
           links: {
-            1: { id: 1, pins: [422, 431] },
+            1: {
+              id: 1,
+              pins: [
+                { nodeId: 42, pinKey: 'valueOut' },
+                { nodeId: 43, pinKey: 'valueIn' },
+              ],
+            },
           },
         },
       },
