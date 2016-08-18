@@ -201,7 +201,7 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
       addLink(pins[0], pins[1]) :
       addError({ message: validation.message });
     dispatch(setMode(EDITOR_MODE.DEFAULT));
-  } else {
+  } else if (notEquals) {
     dispatch(setMode(EDITOR_MODE.LINKING));
     action = setPinSelection(nodeId, pinKey);
   }

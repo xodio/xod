@@ -813,25 +813,33 @@ export const validateLink = (state, linkData) => {
     eqProps
   );
 
+  const isOutput = R.propEq('direction', PIN_DIRECTION.OUTPUT);
 
-  const fromPin = findPin(linkData[0]);
-  const toPin = findPin(linkData[1]);
+  const pin1 = findPin(linkData[0]);
+  const pin2 = findPin(linkData[1]);
 
-  const sameDirection = fromPin.direction === toPin.direction;
-  const sameNode = fromPin.nodeId === toPin.nodeId;
-  const fromPinCanHaveMoreLinks = canPinHaveMoreLinks(fromPin, linksState);
-  const toPinCanHaveMoreLinks = canPinHaveMoreLinks(toPin, linksState);
+  const isOutputPin1 = isOutput(pin1);
+
+  const fromPin = (isOutputPin1) ? pin1 : pin2;
+  const toPin = (isOutputPin1) ? pin2 : pin1;
+
+  const sameDirection = pin1.direction === pin2.direction;
+  const sameNode = pin1.nodeId === pin2.nodeId;
+  const pin1CanHaveMoreLinks = canPinHaveMoreLinks(pin1, linksState);
+  const pin2CanHaveMoreLinks = canPinHaveMoreLinks(pin2, linksState);
 
   const check = (
     !sameDirection &&
     !sameNode &&
-    fromPinCanHaveMoreLinks &&
-    toPinCanHaveMoreLinks
+    pin1CanHaveMoreLinks &&
+    pin2CanHaveMoreLinks
   );
 
   const result = {
     isValid: check,
     message: 'Unknown error',
+    from: fromPin,
+    to: toPin,
   };
 
   if (!check) {
@@ -841,7 +849,7 @@ export const validateLink = (state, linkData) => {
     if (sameNode) {
       result.message = LINK_ERRORS.SAME_NODE;
     } else
-    if (!fromPinCanHaveMoreLinks || !toPinCanHaveMoreLinks) {
+    if (!pin1CanHaveMoreLinks || !pin2CanHaveMoreLinks) {
       result.message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
     }
   }
