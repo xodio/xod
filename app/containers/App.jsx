@@ -1,7 +1,6 @@
 
 import R from 'ramda';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -11,6 +10,7 @@ import Selectors from '../selectors';
 import { getViewableSize, isChromeApp } from '../utils/browser';
 import * as EDITOR_MODE from '../constants/editorModes';
 import { SAVE_LOAD_ERRORS } from '../constants/errorMessages';
+import { BACKSPACE } from '../constants/keycodes';
 
 import { HotKeys } from 'react-hotkeys';
 import hotkeysKeymap from '../constants/hotkeys';
@@ -34,9 +34,9 @@ class App extends React.Component {
       size: getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
       popupInstallApp: false,
       popupUploadProject: false,
-      hotkeys: {},
     };
 
+    this.onKeyDown = this.onKeyDown.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onUpload = this.onUpload.bind(this);
     this.onLoad = this.onLoad.bind(this);
@@ -44,11 +44,6 @@ class App extends React.Component {
     this.onSelectNodeType = this.onSelectNodeType.bind(this);
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
-    this.onHotkeys = this.onHotkeys.bind(this);
-  }
-
-  componentDidMount() {
-    ReactDOM.findDOMNode(this.refs.hotkeys).focus();
   }
 
   onResize() {
@@ -114,10 +109,8 @@ class App extends React.Component {
     }
   }
 
-  onSelectNodeType(typeId) {
-    this.props.actions.setSelectedNodeType(
-      parseInt(typeId, 10)
-    );
+  onSelectNodeType(typeKey) {
+    this.props.actions.setSelectedNodeType(typeKey);
   }
 
   onAddNodeClick() {
@@ -129,12 +122,14 @@ class App extends React.Component {
     this.props.actions.deleteProcess(id, UPLOAD_ACTION_TYPE);
   }
 
-  onHotkeys(hotkeys) {
-    this.setState(R.assoc('hotkeys', hotkeys, this.state));
-  }
+  onKeyDown(event) {
+    const keyCode = event.keyCode || event.which;
 
-  getHotkeyHandlers() {
-    return this.state.hotkeys;
+    if (keyCode === BACKSPACE) {
+      event.preventDefault();
+    }
+
+    return false;
   }
 
   showInstallAppPopup() {
@@ -158,8 +153,8 @@ class App extends React.Component {
   render() {
     const devToolsInstrument = (isChromeApp) ? <DevTools /> : null;
     return (
-      <HotKeys keyMap={hotkeysKeymap} handlers={this.getHotkeyHandlers()} ref="hotkeys">
-        <EventListener target={window} onResize={this.onResize} />
+      <HotKeys keyMap={hotkeysKeymap} id="App">
+        <EventListener target={window} onResize={this.onResize} onKeyDown={this.onKeyDown} />
         <Toolbar
           meta={this.props.meta}
           nodeTypes={this.props.nodeTypes}
@@ -169,7 +164,7 @@ class App extends React.Component {
           onSelectNodeType={this.onSelectNodeType}
           onAddNodeClick={this.onAddNodeClick}
         />
-        <Editor hotkeys={this.onHotkeys} size={this.state.size} />
+        <Editor size={this.state.size} />
         <SnackBar />
         {devToolsInstrument}
         <PopupInstallApp
@@ -189,7 +184,7 @@ App.propTypes = {
   projectJSON: React.PropTypes.string,
   meta: React.PropTypes.object,
   nodeTypes: React.PropTypes.any.isRequired,
-  selectedNodeType: React.PropTypes.number,
+  selectedNodeType: React.PropTypes.string,
   actions: React.PropTypes.object,
   upload: React.PropTypes.object,
 };
@@ -197,7 +192,7 @@ App.propTypes = {
 const mapStateToProps = (state) => ({
   projectJSON: Selectors.Project.getProjectJSON(state),
   meta: Selectors.Project.getMeta(state),
-  nodeTypes: Selectors.Project.getNodeTypes(state),
+  nodeTypes: Selectors.Project.getPreparedNodeTypes(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
   upload: Selectors.Processes.getUpload(state),
 });

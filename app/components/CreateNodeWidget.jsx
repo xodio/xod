@@ -31,8 +31,8 @@ class CreateNodeWidget extends React.Component {
         >
           {nodeTypes.map((type) =>
             <option
-              key={type.id}
-              value={type.id}
+              key={type.key}
+              value={type.key}
             >
               {type.label || type.key}
             </option>

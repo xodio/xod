@@ -20,7 +20,7 @@
 
   &.is-selected {
     .symbol {
-      stroke: $color-canvas-selected;
+      stroke: $color-canvas-selected-faded;
     }
   }
 
@@ -34,5 +34,11 @@
     .symbol {
       fill: $color-canvas-almost-ok;
     }
+  }
+}
+
+:focus .Pin.is-selected {
+  .symbol {
+    stroke: $color-canvas-selected;
   }
 }

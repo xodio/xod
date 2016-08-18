@@ -7,4 +7,9 @@
   background: #808080;
   padding: 20px;
   overflow: hidden;
+
+  &:focus {
+    box-shadow: none;
+    outline: none;
+  }
 }

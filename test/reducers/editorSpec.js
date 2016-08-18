@@ -114,7 +114,8 @@ describe('Editor reducer', () => {
       chai.expect(store.getState()).to.deep.equal(mockState);
     });
     it('should select pin', () => {
-      const id = 1;
+      const nodeId = 1;
+      const pinKey = 'value';
       const expectedActions = [
         {
           type: EDITOR_SET_MODE,
@@ -122,18 +123,19 @@ describe('Editor reducer', () => {
             mode: EDITOR_MODE.LINKING,
           },
         },
-        Actions.setPinSelection(id),
+        Actions.setPinSelection(nodeId, pinKey),
       ];
 
-      store.dispatch(Actions.linkPin(id));
+      store.dispatch(Actions.linkPin(nodeId, pinKey));
       chai.expect(store.getActions()).to.deep.equal(expectedActions);
     });
     it('should deselect pin on second click', () => {
       store = testStore(mockState);
-      const id = 1;
+      const nodeId = 1;
+      const pinKey = 'value';
 
-      store.dispatch(Actions.linkPin(id));
-      store.dispatch(Actions.linkPin(id));
+      store.dispatch(Actions.linkPin(nodeId, pinKey));
+      store.dispatch(Actions.linkPin(nodeId, pinKey));
 
       chai.expect(store.getState().editor.linkingPin).to.be.a('null');
     });

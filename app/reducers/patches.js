@@ -33,7 +33,6 @@ export const patches = (patchIds) => {
       name: action.payload.name || 'New patch',
       folderId: action.payload.folderId || null,
       nodes: {},
-      pins: {},
       links: {},
     },
     future: [],

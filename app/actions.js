@@ -1,8 +1,10 @@
+import R from 'ramda';
 import * as ActionType from './actionTypes';
 import * as STATUS from './constants/statuses';
 import * as EDITOR_MODE from './constants/editorModes';
 import Selectors from './selectors';
 import { uploadToEspruino } from './utils/espruino';
+
 
 const getTimestamp = () => new Date().getTime();
 
@@ -50,18 +52,23 @@ export const dragNode = (id, position) => (dispatch, getState) => {
 
 export const addNode = (typeId, position, patchId) => (dispatch, getState) => {
   const projectState = Selectors.Project.getProject(getState());
-  const preparedData = Selectors.Prepare.addNode(projectState, typeId, position);
+  const preparedData = Selectors.Prepare.addNode(projectState, typeId, position, patchId);
 
   dispatch({
     type: ActionType.NODE_ADD,
-    payload: preparedData,
-    meta: { patchId },
+    payload: preparedData.payload,
+    meta: preparedData.meta,
   });
 };
 
 export const deleteNode = (id) => (dispatch, getState) => {
   const projectState = Selectors.Project.getProject(getState());
   const preparedData = Selectors.Prepare.deleteNode(projectState, id);
+
+  if (preparedData.payload.nodeType.error) {
+    dispatch(addError({ message: preparedData.payload.nodeType.error }));
+    return;
+  }
 
   dispatch({
     type: ActionType.NODE_DELETE,
@@ -70,9 +77,9 @@ export const deleteNode = (id) => (dispatch, getState) => {
   });
 };
 
-export const addLink = (pins) => (dispatch, getState) => {
+export const addLink = (pin1, pin2) => (dispatch, getState) => {
   const projectState = Selectors.Project.getProject(getState());
-  const preparedData = Selectors.Prepare.addLink(projectState, pins);
+  const preparedData = Selectors.Prepare.addLink(projectState, pin1, pin2);
 
   dispatch({
     type: ActionType.LINK_ADD,
@@ -100,10 +107,11 @@ export const setNodeSelection = (id) => ({
   },
 });
 
-export const setPinSelection = (id) => ({
+export const setPinSelection = (nodeId, pinKey) => ({
   type: ActionType.EDITOR_SELECT_PIN,
   payload: {
-    id,
+    nodeId,
+    pinKey,
   },
 });
 
@@ -165,7 +173,11 @@ export const addAndSelectNode = (typeId, position, curPatchId) => (dispatch, get
   dispatch(selectNode(newId));
 };
 
-export const linkPin = (id) => (dispatch, getState) => {
+export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
+  const data = {
+    nodeId,
+    pinKey,
+  };
   const state = getState();
   const selected = state.editor.linkingPin;
   const deselect = dispatch(deselectAll());
@@ -174,22 +186,27 @@ export const linkPin = (id) => (dispatch, getState) => {
     result.push(deselect);
   }
 
-  const pins = [selected, id];
+  const pins = [selected, data];
 
-  if (selected !== id && selected !== null) {
-    const validation = Selectors.Project.validateLink(state, pins);
-    if (validation.isValid) {
-      result.push(dispatch(addLink(pins)));
-    } else {
-      result.push(dispatch(addError({ message: validation.message })));
-    }
-    dispatch(setMode(EDITOR_MODE.DEFAULT));
-  } else if (selected !== id) {
-    dispatch(setMode(EDITOR_MODE.LINKING));
-    result.push(dispatch(setPinSelection(id)));
+  if (R.equals(selected, data)) {
+    // linking a pin to itself
+    return result;
   }
 
-  return result;
+  let action;
+
+  if (selected) {
+    const validation = Selectors.Project.validateLink(state, pins);
+    action = validation.isValid ?
+      addLink(pins[0], pins[1]) :
+      addError({ message: validation.message });
+    dispatch(setMode(EDITOR_MODE.DEFAULT));
+  } else {
+    dispatch(setMode(EDITOR_MODE.LINKING));
+    action = setPinSelection(nodeId, pinKey);
+  }
+
+  return R.append(dispatch(action), result);
 };
 
 export const selectLink = (id) => (dispatch, getState) => {

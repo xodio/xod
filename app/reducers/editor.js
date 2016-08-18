@@ -63,7 +63,7 @@ export const editor = (state = {}, action) => {
     case EDITOR_SELECT_LINK:
       return addSelection(ENTITIES.LINK, action, state);
     case EDITOR_SELECT_PIN:
-      return R.assoc('linkingPin', action.payload.id, state);
+      return R.assoc('linkingPin', action.payload, state);
     case EDITOR_SET_MODE:
       return R.assoc('mode', action.payload.mode, state);
     case EDITOR_SET_SELECTED_NODETYPE:

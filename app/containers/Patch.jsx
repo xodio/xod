@@ -6,9 +6,10 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import { findRootSVG } from '../utils/browser';
+
+import { HotKeys } from 'react-hotkeys';
 import CMD from '../constants/commands';
 
-import PatchWrapper from '../components/PatchWrapper';
 import PatchSVG from '../components/PatchSVG';
 import BackgroundLayer from '../components/BackgroundLayer';
 import NodesLayer from '../components/NodesLayer';
@@ -34,10 +35,6 @@ class Patch extends React.Component {
     this.onLinkClick = this.onLinkClick.bind(this);
 
     this.deselectAll = this.deselectAll.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.hotkeys(this.getHotkeyHandlers());
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -88,13 +85,12 @@ class Patch extends React.Component {
     this.setClickNodeId(id);
   }
 
-  onPinMouseUp(id) {
-    const pin = this.props.pins[id];
-    const nodeId = pin.nodeId;
+  onPinMouseUp(nodeId, pinKey) {
+    // const pin = this.props.pins[id];
     const isClicked = (this.state.clickNodeId === nodeId);
 
     if (isClicked) {
-      this.props.actions.linkPin(id);
+      this.props.actions.linkPin(nodeId, pinKey);
     } else {
       this.onNodeMouseUp(nodeId);
     }
@@ -202,21 +198,20 @@ class Patch extends React.Component {
     }
 
     const pinsValidation = Selectors.Project.getValidPins(
-      this.props.pins,
+      this.props.nodes,
       this.props.links,
       this.props.linkingPin
     );
 
-    const assignValidnessToPins = (pins) => R.pipe(
-      R.values,
-      R.map((pin) => R.assoc('validness', pinsValidation[pin.id].validness, pin)),
-      R.reduce((p, cur) => R.assoc(cur.id, cur, p), {})
-    )(pins);
-
     return R.pipe(
-      R.values,
-      R.map(node => R.assoc('pins', assignValidnessToPins(node.pins), node))
-    )(this.props.nodes);
+      R.map(node => {
+        const pvs = R.filter(R.propEq('nodeId', node.id), pinsValidation);
+        if (pvs.length === 0) { return node; }
+
+        const add = R.map(pv => R.assocPath(['pins', pv.pinKey, 'validness'], pv.validness), pvs);
+        return R.reduce((n, a) => a(n), node, add);
+      })
+    )(nodes);
   }
 
   dragNode(mousePosition) {
@@ -263,7 +258,11 @@ class Patch extends React.Component {
     const links = this.getLinks();
 
     return (
-      <PatchWrapper>
+      <HotKeys
+        handlers={this.getHotkeyHandlers()}
+        always
+        className="PatchWrapper"
+      >
         <PatchSVG
           onMouseMove={this.onMouseMove}
           onMouseUp={this.onMouseUp}
@@ -290,7 +289,7 @@ class Patch extends React.Component {
             ghostLink={this.props.ghostLink}
           />
         </PatchSVG>
-      </PatchWrapper>
+      </HotKeys>
     );
   }
 }
@@ -299,31 +298,28 @@ Patch.propTypes = {
   size: React.PropTypes.any.isRequired,
   actions: React.PropTypes.objectOf(React.PropTypes.func),
   nodes: React.PropTypes.any,
-  pins: React.PropTypes.any,
   links: React.PropTypes.any,
   patch: React.PropTypes.any,
-  linkingPin: React.PropTypes.number,
+  linkingPin: React.PropTypes.object,
   selection: React.PropTypes.array,
-  selectedNodeType: React.PropTypes.number,
+  selectedNodeType: React.PropTypes.string,
   patchId: React.PropTypes.number,
   nodeTypes: React.PropTypes.object,
   mode: React.PropTypes.object,
   ghostNode: React.PropTypes.any,
   ghostLink: React.PropTypes.any,
-  hotkeys: React.PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
   nodes: Selectors.Project.getPreparedNodes(state),
   links: Selectors.Project.getPreparedLinks(state),
-  pins: Selectors.Project.getPreparedPins(state),
   patch: Selectors.Project.getCurrentPatch(state),
   selection: Selectors.Editor.getSelection(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
   patchId: Selectors.Editor.getCurrentPatchId(state),
   mode: Selectors.Editor.getModeChecks(state),
   linkingPin: Selectors.Editor.getLinkingPin(state),
-  nodeTypes: Selectors.Project.getNodeTypes(state),
+  nodeTypes: Selectors.Project.getPreparedNodeTypes(state),
   ghostNode: Selectors.Project.getNodeGhost(state),
   ghostLink: Selectors.Project.getLinkGhost(state),
 });

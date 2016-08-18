@@ -9,6 +9,7 @@ const widgetAccordance = {
     [PROPERTY_TYPE.BOOL]: Widgets.BoolWidget,
     [PROPERTY_TYPE.NUMBER]: Widgets.NumberWidget,
     [PROPERTY_TYPE.STRING]: Widgets.StringWidget,
+    [PROPERTY_TYPE.IO_LABEL]: Widgets.IOLabelWidget,
   },
 };
 
@@ -95,7 +96,7 @@ class Inspector extends React.Component {
         widgets.push(
           factory({
             nodeId: node.id,
-            key: prop.key,
+            key: `${node.id}_${prop.key}`,
             label: prop.label,
             value: prop.value,
             onPropUpdate: (newValue) => {
@@ -130,8 +131,8 @@ class Inspector extends React.Component {
       <div className="Inspector">
         <small className="title">Inspector</small>
         <ul>
-          {this.widgets.map((widget, i) =>
-            <li key={i}>
+          {this.widgets.map(widget =>
+            <li key={widget.key}>
               {widget}
             </li>
           )}

@@ -1,7 +1,6 @@
 import R from 'ramda';
 import applyReducers from '../utils/applyReducers';
 
-import { pins } from './pins';
 import { links } from './links';
 import { nodes } from './nodes';
 
@@ -21,9 +20,20 @@ export const patchReducer = (id) => {
   return (state = initialPatchState, action) => {
     const reducers = {
       links,
-      pins,
       nodes,
     };
+
+    let istate = state;
+
+    const hasInitialKeys = R.compose(
+      R.allPass,
+      R.map(R.has),
+      R.keys
+    )(initialPatchState);
+
+    if (!hasInitialKeys(state)) {
+      istate = R.merge(initialPatchState, state);
+    }
 
     if (
       action &&
@@ -40,7 +50,7 @@ export const patchReducer = (id) => {
       case PATCH_MOVE:
         return R.assoc('folderId', action.payload.folderId, state);
       default:
-        return applyReducers(reducers, R.merge(initialPatchState, state), action, patchId);
+        return applyReducers(reducers, istate, action, patchId);
     }
   };
 };

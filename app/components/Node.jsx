@@ -44,7 +44,7 @@ class Node extends React.Component {
   }
 
   onPinMouseUp(pinId) {
-    this.props.onPinMouseUp(pinId);
+    this.props.onPinMouseUp(this.id, pinId);
   }
 
   getOriginPosition() {
@@ -137,7 +137,9 @@ class Node extends React.Component {
         <g className="pinlist">
           {pins.map((pin) =>
             <Pin
-              key={pin.id}
+              nodeId={this.id}
+              keyName={pin.key}
+              key={pin.key}
               {...pin}
               onMouseUp={this.onPinMouseUp}
             />

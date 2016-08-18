@@ -3,10 +3,11 @@ import { createSelector } from 'reselect';
 
 import * as PIN_DIRECTION from '../constants/pinDirection';
 import * as PIN_VALIDITY from '../constants/pinValidity';
-import { LINK_ERRORS } from '../constants/errorMessages';
+import { LINK_ERRORS, NODETYPE_ERRORS } from '../constants/errorMessages';
 import { PROPERTY_TYPE } from '../constants/property';
 import * as ENTITIES from '../constants/entities';
 import * as SIZES from '../constants/sizes';
+import * as NODE_CATEGORY from '../constants/nodeCategory';
 
 import {
   getCurrentPatchId,
@@ -16,13 +17,26 @@ import {
   getModeChecks,
 } from './editor';
 
+export const getUserName = () => 'Bob';
+
 /*
   Common utils
 */
 const arr2obj = R.indexBy(R.prop('id'));
+const findByProp = (propName, propVal, from) => R.pipe(
+  R.values,
+  R.find(R.propEq(propName, propVal))
+)(from);
+
+const findById = (id, from) => findByProp('id', id, from);
+const findByKey = (key, from) => findByProp('key', key, from);
+const findByPatchId = (id, from) => findByProp('patchId', id, from);
+const findByNodeTypeId = (id, from) => findByProp('typeId', id, from);
 
 const isEntitySelected = (state, entity, id) => {
   const selection = getSelection(state);
+  if (!selection) { return false; }
+
   return (
     selection.length > 0 &&
     R.pipe(
@@ -54,10 +68,10 @@ export const getProject = (state) => {
   return getProjectState(state, path);
 };
 
-export const getPatches = (projectState) => R.pipe(
+export const getPatches = R.pipe(
   getProject,
   R.prop('patches')
-)(projectState);
+);
 
 export const getPatchById = (projectState, id) => {
   const patch = R.view(
@@ -104,7 +118,10 @@ export const getPatchName = createSelector(
 
 export const doesPinHaveLinks = (pin, links) => R.pipe(
   R.values,
-  R.filter((link) => (link.pins[0] === pin.id || link.pins[1] === pin.id)),
+  R.filter((link) => (
+    (link.pins[0].pinKey === pin.key && link.pins[0].nodeId === pin.nodeId) ||
+    (link.pins[1].pinKey === pin.key && link.pins[1].nodeId === pin.nodeId)
+  )),
   R.length,
   R.flip(R.gt)(0)
 )(links);
@@ -117,33 +134,48 @@ export const canPinHaveMoreLinks = (pin, links) => (
   pin.direction === PIN_DIRECTION.OUTPUT
 );
 
-export const getValidPins = (pins, links, forPinId) => {
-  const oPin = pins[forPinId];
-  return R.pipe(
-    R.values,
-    R.reduce((p, pin) => {
-      const samePin = (pin.id === oPin.id);
-      const sameNode = (pin.nodeId === oPin.nodeId);
-      const sameDirection = (pin.direction === oPin.direction);
-      const sameType = (pin.type === oPin.type);
-      const canHaveLink = canPinHaveMoreLinks(pin, links);
+const getAllPinsFromNodes = R.pipe(
+  R.values,
+  R.reduce(
+    (p, cur) =>
+    R.pipe(
+      R.prop('pins'),
+      R.values,
+      R.map(R.assoc('nodeId', cur.id)),
+      R.concat(p)
+    )(cur),
+    []
+  )
+);
 
-      let validness = PIN_VALIDITY.INVALID;
+export const getValidPins = (nodes, links, forPin) => {
+  const allPins = getAllPinsFromNodes(nodes);
+  const oPin = R.find(
+    R.both(
+      R.propEq('nodeId', forPin.nodeId),
+      R.propEq('key', forPin.pinKey)
+    ),
+  allPins);
 
+  return R.map(pin => {
+    const sameNode = (pin.nodeId === oPin.nodeId);
+    const sameDirection = (pin.direction === oPin.direction);
+    const sameType = (pin.type === oPin.type);
+    const canHaveLink = canPinHaveMoreLinks(pin, links);
 
-      if (!samePin && !sameNode && canHaveLink) {
-        if (!sameDirection) { validness = PIN_VALIDITY.ALMOST; }
-        if (!sameDirection && sameType) { validness = PIN_VALIDITY.VALID; }
-      }
+    let validness = PIN_VALIDITY.INVALID;
 
-      const result = {
-        id: pin.id,
-        validness,
-      };
+    if (!sameNode && canHaveLink) {
+      if (!sameDirection) { validness = PIN_VALIDITY.ALMOST; }
+      if (!sameDirection && sameType) { validness = PIN_VALIDITY.VALID; }
+    }
 
-      return R.assoc(pin.id, result, p);
-    }, {})
-  )(pins);
+    return {
+      nodeId: pin.nodeId,
+      pinKey: pin.key,
+      validness,
+    };
+  }, allPins);
 };
 
 export const validatePatches = () => R.pipe(
@@ -271,19 +303,25 @@ export const getNodeTypes = R.pipe(
   R.prop('nodeTypes')
 );
 
-export const getNodeTypeById = (state, id) => R.pipe(
+export const getNodeTypeById = R.curry((state, id) => R.pipe(
   getNodeTypes,
   R.prop(id)
-)(state);
+)(state));
 
 /*
   Node selectors
 */
 
-export const getNodes = R.pipe(
-  getCurrentPatch,
+export const getNodes = (state, patchId) => {
+  const patch = getPatchById(state, patchId) || getCurrentPatch(state);
+  return R.prop('nodes')(patch);
+};
+
+export const getNodesByPatchId = (patchId, state) => R.pipe(
+  getProject,
+  R.path(['patches', patchId, 'present']),
   R.prop('nodes')
-);
+)(state);
 
 export const getNodeById = (state, props) => R.pipe(
   getNodes,
@@ -297,24 +335,15 @@ export const getNodeById = (state, props) => R.pipe(
 */
 
 export const getPins = R.pipe(
-  getCurrentPatch,
-  R.prop('pins')
+  getNodeTypes,
+  R.mapObjIndexed(R.prop('pins')),
+  R.flatten
 );
 
 export const getPinsByNodeId = (state, props) => R.pipe(
   getPins,
   R.filter((pin) => pin.nodeId === props.id)
 )(state, props);
-
-export const getPinsByNodeIdInPatch = (projectState, props) => {
-  const patchId = R.prop('patchId', props);
-  if (!patchId) { return {}; }
-
-  return R.pipe(
-    R.view(R.lensPath(['patches', patchId, 'present', 'pins'])),
-    R.filter(R.propEq('nodeId', props.id))
-  )(projectState);
-};
 
 export const getPinsByIds = (state, props) => R.pipe(
   getPins,
@@ -347,7 +376,7 @@ const getGroupedPinsWidth = R.pipe(
 const getNodeWidth = R.pipe(
   R.values,
   R.append(SIZES.NODE.minWidth),
-  R.apply(R.max)
+  R.reduce(R.max, -Infinity)
 );
 
 const getPinPosition = (nodeTypePins, key, nodePosition) => {
@@ -391,53 +420,20 @@ const getPinPosition = (nodeTypePins, key, nodePosition) => {
   };
 };
 
-export const getPreparedPins = createSelector(
-  [getPins, getNodeTypes, getNodes, getLinkingPin],
-  (pins, nodeTypes, nodes, linkingPin) => R.pipe(
-    R.values,
-    R.reduce((p, pin) => {
-      const node = nodes[pin.nodeId];
-      const nodeTypePins = nodeTypes[node.typeId].pins;
-      const originalPin = nodeTypePins[pin.key];
-
-      const pinPosition = getPinPosition(nodeTypePins, pin.key, node.position);
-      const radius = { radius: SIZES.PIN.radius };
-      const isSelected = { isSelected: (linkingPin === pin.id) };
-
-      return R.assoc(
-        pin.id,
-        R.mergeAll([pin, originalPin, pinPosition, radius, isSelected]),
-        p
-      );
-    }, {})
-  )(pins)
-);
-
 /*
   Link selectors
 */
 
-export const getLinks = R.pipe(
-  getCurrentPatch,
-  R.prop('links')
-);
+export const getLinks = (state, patchId) => {
+  const patch = getPatchById(state, patchId) || getCurrentPatch(state);
+  return R.prop('links')(patch);
+};
 
 export const getLinkById = (state, props) => R.pipe(
   getLinks,
   R.filter((link) => link.id === props.id),
   R.values,
   R.head
-)(state, props);
-
-export const getLinksByPinId = (state, props) => R.pipe(
-  getLinks,
-  R.filter(
-    (link) => (
-      props.pinIds.indexOf(link.pins[0]) !== -1 ||
-      props.pinIds.indexOf(link.pins[1]) !== -1
-    )
-  ),
-  R.values
 )(state, props);
 
 export const getLinksByPinIdInPatch = (state, props) => {
@@ -453,180 +449,6 @@ export const getLinksByPinIdInPatch = (state, props) => {
       )
     )
   )(state);
-};
-
-export const validateLink = (state, pinIds) => {
-  const pins = getPreparedPins(state);
-  const linksState = getLinks(state);
-  const fromPin = pins[pinIds[0]];
-  const toPin = pins[pinIds[1]];
-
-  const sameDirection = fromPin.direction === toPin.direction;
-  const sameNode = fromPin.nodeId === toPin.nodeId;
-  const fromPinCanHaveMoreLinks = canPinHaveMoreLinks(fromPin, linksState);
-  const toPinCanHaveMoreLinks = canPinHaveMoreLinks(toPin, linksState);
-
-  const check = (
-    !sameDirection &&
-    !sameNode &&
-    fromPinCanHaveMoreLinks &&
-    toPinCanHaveMoreLinks
-  );
-
-  const result = {
-    isValid: check,
-    message: 'Unknown error',
-  };
-
-  if (!check) {
-    if (sameDirection) {
-      result.message = LINK_ERRORS.SAME_DIRECTION;
-    } else
-    if (sameNode) {
-      result.message = LINK_ERRORS.SAME_NODE;
-    } else
-    if (!fromPinCanHaveMoreLinks || !toPinCanHaveMoreLinks) {
-      result.message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
-    }
-  }
-
-  return result;
-};
-
-const addPinRadius = (position) => ({
-  x: position.x + SIZES.PIN.radius,
-  y: position.y + SIZES.PIN.radius,
-});
-
-export const getPreparedLinks = (state) => {
-  const links = getLinks(state);
-  const pins = getPreparedPins(state);
-
-  return R.pipe(
-    R.values,
-    R.map((link) => {
-      const addData = {};
-      if (link.pins.length > 0) {
-        if (link.pins[0]) {
-          addData.from = addPinRadius(pins[link.pins[0]].position);
-        }
-        if (link.pins[1]) {
-          addData.to = addPinRadius(pins[link.pins[1]].position);
-        }
-      }
-      addData.isSelected = isLinkSelected(state, link.id);
-
-      return R.merge(link, addData);
-    }),
-    arr2obj
-  )(links);
-};
-
-const getNodeLabel = (state, node) => {
-  const nodeType = getNodeTypeById(state, node.typeId);
-  let nodeLabel = node.label || nodeType.label || nodeType.key;
-
-  const nodeValue = R.view(R.lensPath(['properties', 'value']), node);
-  if (nodeValue !== undefined) {
-    const nodeValueType = nodeType.properties.value.type;
-    nodeLabel = nodeValue;
-    if (nodeValue === '' && nodeValueType === PROPERTY_TYPE.STRING) {
-      nodeLabel = '<EmptyString>';
-    }
-  }
-
-  return String(nodeLabel);
-};
-const getNodePins = (state, nodeId) => {
-  const pins = getPreparedPins(state);
-  return R.pipe(
-    R.values,
-    R.filter((pin) => pin.nodeId === nodeId),
-    arr2obj
-  )(pins);
-};
-
-export const getPreparedNodes = (state) => {
-  const nodes = getNodes(state);
-
-  return R.pipe(
-    R.values,
-    R.map((node) => {
-      const label = getNodeLabel(state, node);
-      const nodePins = getNodePins(state, node.id);
-      const pinsWidth = getGroupedPinsWidth(nodePins);
-      const nodeWidth = getNodeWidth(pinsWidth);
-      const isSelected = isNodeSelected(state, node.id);
-
-      return R.merge(node, {
-        label,
-        pins: nodePins,
-        width: nodeWidth,
-        isSelected,
-      });
-    }),
-    arr2obj
-  )(nodes);
-};
-
-export const getNodeGhost = (state) => {
-  const nodeTypeId = getSelectedNodeType(state);
-  const isCreatingMode = getModeChecks(state).isCreatingNode;
-
-  if (!(isCreatingMode && nodeTypeId)) {
-    return null;
-  }
-  const nodePosition = { x: 0, y: 0 };
-  const nodeType = getNodeTypeById(state, nodeTypeId);
-  const nodeProperties = R.pipe(
-    R.prop('properties'),
-    R.values,
-    R.reduce((p, prop) => R.assoc(prop.key, prop.defaultValue, p), {})
-  )(nodeType);
-
-  const nodeLabel = getNodeLabel(state, { typeId: nodeTypeId, properties: nodeProperties });
-
-  let pinsCount = -1;
-  const nodePins = R.pipe(
-    R.values,
-    R.map((pin) => {
-      const id = { id: pinsCount };
-      const pos = getPinPosition(nodeType.pins, pin.key, nodePosition);
-      const radius = { radius: SIZES.PIN.radius };
-
-      pinsCount--;
-
-      return R.mergeAll([pin, id, pos, radius]);
-    }),
-    arr2obj
-  )(nodeType.pins);
-
-  const pinsWidth = getGroupedPinsWidth(nodePins);
-  const nodeWidth = getNodeWidth(pinsWidth);
-  return {
-    id: -1,
-    label: nodeLabel,
-    typeId: nodeTypeId,
-    position: nodePosition,
-    pins: nodePins,
-    width: nodeWidth,
-    properties: nodeProperties,
-  };
-};
-
-export const getLinkGhost = (state) => {
-  const fromPinId = getLinkingPin(state);
-  if (!fromPinId) { return null; }
-
-  const pins = getPreparedPins(state);
-  const pin = pins[fromPinId];
-
-  return {
-    id: -1,
-    pins: [pin],
-    from: addPinRadius(pin.position),
-    to: { x: 0, y: 0 },
-  };
 };
 
 /*
@@ -782,3 +604,386 @@ export const getTreeChanges = (oldTree, newTree) => {
 
   return result;
 };
+
+const filterPatchNode = R.filter(R.propEq('category', NODE_CATEGORY.IO));
+
+export const getPatchIOPin = (node, i) => {
+  const pin = R.values(node.pins)[0];
+  const invertDirection = R.ifElse(
+    R.equals(PIN_DIRECTION.INPUT),
+    () => PIN_DIRECTION.OUTPUT,
+    () => PIN_DIRECTION.INPUT
+  );
+  const dir = invertDirection(pin.direction);
+
+  return {
+    nodeId: node.id,
+    label: node.properties.label,
+    key: `${dir}_${node.id}`,
+    direction: dir,
+    type: pin.type,
+    index: i,
+  };
+};
+
+export const getPatchIO = R.pipe(
+  R.prop('nodes'),
+  R.values,
+  filterPatchNode,
+  R.groupBy(R.compose(R.prop('direction'), R.prop(0), R.values, R.prop('pins'))),
+  R.mapObjIndexed(R.pipe(
+    R.mapObjIndexed(getPatchIOPin),
+    R.values
+  )),
+  R.values,
+  R.merge([[], []]),
+  R.values,
+  R.apply(R.concat),
+  R.values
+);
+
+export const getPatchNode = R.curry((state, patch) => {
+  const extendNodes = R.map(
+    node => R.compose(
+      R.flip(R.merge)(node),
+      getNodeTypeById(state),
+      R.prop('typeId')
+    )(node)
+  );
+
+  const isItPatchNode = R.pipe(
+    R.prop('nodes'),
+    R.values,
+    filterPatchNode,
+    R.length,
+    R.flip(R.gt)(0)
+  );
+
+  const assocNodes = p => R.assoc('nodes', extendNodes(R.prop('nodes', p)), p);
+  const assocFlag = p => R.assoc('isPatchNode', isItPatchNode(p), p);
+  const assocIO = p => R.assoc('io', getPatchIO(p), p);
+
+  return R.pipe(
+    assocNodes,
+    assocFlag,
+    assocIO
+  )(patch);
+});
+
+export const getPatchNodes = state => R.pipe(
+  getPatches,
+  R.map(patch =>
+    R.pipe(
+      R.propOr(patch, 'present'),
+      getPatchNode(state)
+    )(patch)
+  ),
+  R.pickBy(R.propEq('isPatchNode', true))
+)(state);
+
+export const getPreparedNodeTypes = state => {
+  const patchNodes = getPatchNodes(state);
+  const patchNodeTypes = R.pipe(
+    R.values,
+    R.map(
+      patch => ({
+        key: `${getUserName()}/${patch.name}`,
+        patchId: patch.id,
+        label: patch.name,
+        category: NODE_CATEGORY.PATCHES,
+        properties: {},
+        pins: R.pipe(R.values, R.indexBy(R.prop('key')))(patch.io),
+      })
+    ),
+    R.indexBy(R.prop('key'))
+  )(patchNodes);
+
+  return R.pipe(
+    getNodeTypes,
+    R.flip(R.merge)(patchNodeTypes)
+  )(state);
+};
+
+export const getPreparedNodeTypeByKey = (state, key) => R.pipe(
+  getPreparedNodeTypes,
+  R.prop(key)
+)(state);
+
+const addPinRadius = (position) => ({
+  x: position.x + SIZES.PIN.radius,
+  y: position.y + SIZES.PIN.radius,
+});
+
+const getNodeLabel = (state, node) => {
+  const nodeType = getPreparedNodeTypeByKey(state, node.typeId);
+  let nodeLabel = node.label || nodeType.label || nodeType.key;
+
+  const nodeValue = R.view(R.lensPath(['properties', 'value']), node);
+  if (nodeValue !== undefined) {
+    const nodeValueType = nodeType.properties.value.type;
+    nodeLabel = nodeValue;
+    if (nodeValue === '' && nodeValueType === PROPERTY_TYPE.STRING) {
+      nodeLabel = '<EmptyString>';
+    }
+  }
+
+  nodeLabel = R.pathOr(nodeLabel, ['properties', 'label'], node);
+
+  return String(nodeLabel);
+};
+const getNodePins = (state, typeId) => R.pipe(
+  getPreparedNodeTypes,
+  R.pickBy(R.propEq('key', typeId)),
+  R.values,
+  R.map(R.prop('pins')),
+  R.head
+)(state);
+
+export const preparePins = (state, node) => {
+  const pins = getNodePins(state, node.typeId);
+  const linkingPin = getLinkingPin(state);
+
+  return R.map(pin => {
+    const originalPin = pins[pin.key];
+    const pinPosition = getPinPosition(pins, pin.key, node.position);
+    const radius = { radius: SIZES.PIN.radius };
+    const isSelected = {
+      isSelected: (
+        linkingPin &&
+        linkingPin.nodeId === node.id &&
+        linkingPin.pinKey === pin.key
+      ),
+    };
+    return R.mergeAll([pin, originalPin, pinPosition, radius, isSelected]);
+  })(pins);
+};
+
+export const getPreparedNodes = (state) => {
+  const nodes = getNodes(state);
+
+  return R.pipe(
+    R.values,
+    R.map((node) => {
+      const label = getNodeLabel(state, node);
+      const nodePins = preparePins(state, node);
+      const pinsWidth = getGroupedPinsWidth(nodePins);
+      const nodeWidth = getNodeWidth(pinsWidth);
+      const isSelected = isNodeSelected(state, node.id);
+
+      return R.merge(node, {
+        label,
+        pins: nodePins,
+        width: nodeWidth,
+        isSelected,
+      });
+    }),
+    arr2obj
+  )(nodes);
+};
+
+export const getPreparedLinks = (state) => {
+  const nodes = getPreparedNodes(state);
+  const links = getLinks(state);
+
+  return R.mapObjIndexed((link) => {
+    const pins = R.map(data => R.merge(data, nodes[data.nodeId].pins[data.pinKey]), link.pins);
+
+    return R.merge(
+      link,
+      {
+        from: addPinRadius(pins[0].position) || null,
+        to: addPinRadius(pins[1].position) || null,
+        isSelected: isLinkSelected(state, link.id),
+      }
+    );
+  })(links);
+};
+
+export const validateLink = (state, linkData) => {
+  const nodes = getPreparedNodes(state);
+  const pins = getAllPinsFromNodes(nodes);
+  const linksState = getLinks(state);
+
+  const eqProps = (data) => R.both(
+    R.propEq('nodeId', data.nodeId),
+    R.propEq('key', data.pinKey)
+  );
+  const findPin = R.compose(
+    R.flip(R.find)(pins),
+    eqProps
+  );
+
+
+  const fromPin = findPin(linkData[0]);
+  const toPin = findPin(linkData[1]);
+
+  const sameDirection = fromPin.direction === toPin.direction;
+  const sameNode = fromPin.nodeId === toPin.nodeId;
+  const fromPinCanHaveMoreLinks = canPinHaveMoreLinks(fromPin, linksState);
+  const toPinCanHaveMoreLinks = canPinHaveMoreLinks(toPin, linksState);
+
+  const check = (
+    !sameDirection &&
+    !sameNode &&
+    fromPinCanHaveMoreLinks &&
+    toPinCanHaveMoreLinks
+  );
+
+  const result = {
+    isValid: check,
+    message: 'Unknown error',
+  };
+
+  if (!check) {
+    if (sameDirection) {
+      result.message = LINK_ERRORS.SAME_DIRECTION;
+    } else
+    if (sameNode) {
+      result.message = LINK_ERRORS.SAME_NODE;
+    } else
+    if (!fromPinCanHaveMoreLinks || !toPinCanHaveMoreLinks) {
+      result.message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
+    }
+  }
+
+  return result;
+};
+
+export const getNodeGhost = (state) => {
+  const nodeTypeId = getSelectedNodeType(state);
+  const isCreatingMode = getModeChecks(state).isCreatingNode;
+
+  if (!(isCreatingMode && nodeTypeId)) {
+    return null;
+  }
+  const nodePosition = { x: 0, y: 0 };
+  const nodeType = getPreparedNodeTypeByKey(state, nodeTypeId);
+  const nodeProperties = R.pipe(
+    R.prop('properties'),
+    R.values,
+    R.reduce((p, prop) => R.assoc(prop.key, prop.defaultValue, p), {})
+  )(nodeType);
+
+  const nodeLabel = getNodeLabel(state, { typeId: nodeTypeId, properties: nodeProperties });
+
+  let pinCount = -1;
+  const nodePins = R.pipe(
+    R.values,
+    R.map((pin) => {
+      const id = { id: pinCount };
+      const pos = getPinPosition(nodeType.pins, pin.key, nodePosition);
+      const radius = { radius: SIZES.PIN.radius };
+
+      pinCount--;
+
+      return R.mergeAll([pin, id, pos, radius]);
+    }),
+    arr2obj
+  )(nodeType.pins);
+
+  const pinsWidth = getGroupedPinsWidth(nodePins);
+  const nodeWidth = getNodeWidth(pinsWidth);
+  return {
+    id: -1,
+    label: nodeLabel,
+    typeId: nodeTypeId,
+    position: nodePosition,
+    pins: nodePins,
+    width: nodeWidth,
+    properties: nodeProperties,
+  };
+};
+
+export const getLinkGhost = (state) => {
+  const fromPin = getLinkingPin(state);
+  if (!fromPin) { return null; }
+
+  const nodes = getPreparedNodes(state);
+  const node = nodes[fromPin.nodeId];
+  const pin = node.pins[fromPin.pinKey];
+
+  return {
+    id: -1,
+    pins: [pin],
+    from: addPinRadius(pin.position),
+    to: { x: 0, y: 0 },
+  };
+};
+
+export const getLinksToDeleteWithNode = (projectState, nodeId, patchId) => R.pipe(
+  R.values,
+  R.filter(
+    R.pipe(
+      R.prop('pins'),
+      R.find(R.propEq('nodeId', nodeId))
+    )
+  ),
+  R.map(
+    R.pipe(
+      R.prop('id'),
+      R.toString
+    )
+  )
+)(getLinks(projectState, patchId));
+
+const getPinKeyByNodeId = (nodeId, patch) => R.pipe(
+  R.prop('io'),
+  R.find(
+    R.propEq('nodeId', nodeId)
+  ),
+  R.propOr(null, 'key')
+)(patch);
+
+export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
+  const nodes = getNodes(projectState, patchId);
+  const node = findById(nodeId, nodes);
+  const nodeTypes = getPreparedNodeTypes(projectState);
+  const nodeType = findByKey(node.typeId, nodeTypes);
+  const isIO = (nodeType.category === NODE_CATEGORY.IO);
+
+  let nodeTypeToDelete = null;
+  let nodeTypeToDeleteError = false;
+
+  if (isIO) {
+    const patchNodes = getPatchNodes(projectState);
+    const patch = patchNodes[patchId];
+    const ioNodes = patch.io.length;
+    const patchNodeType = (isIO) ? findByPatchId(patchId, nodeTypes) : null;
+    const patchNode = findByNodeTypeId(patchNodeType.key, nodes);
+
+    if (ioNodes === 1) {
+      // This is last IO node! It will remove whole PatchNode.
+      nodeTypeToDelete = patchNodeType.key;
+    }
+
+    if (patchNode) {
+      // Get links and check for pins usage
+      const pinKey = getPinKeyByNodeId(node.id, patch);
+      const links = getLinks(projectState, patchId);
+      const patchNodeLinks = R.pipe(
+        R.values,
+        R.filter(
+          link => (
+            (link.pins[0].nodeId === patchNode.id && link.pins[0].pinKey === pinKey) ||
+            (link.pins[1].nodeId === patchNode.id && link.pins[1].pinKey === pinKey)
+          )
+        ),
+        R.length
+      )(links);
+
+      if (patchNodeLinks > 0) {
+        // This pin have links
+        nodeTypeToDeleteError = NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE;
+      } else if (ioNodes === 1) {
+        // This patch node is used somewhere!
+        nodeTypeToDeleteError = NODETYPE_ERRORS.CANT_DELETE_USED_PATCHNODE;
+      }
+    }
+  }
+
+  return {
+    key: nodeTypeToDelete,
+    error: nodeTypeToDeleteError,
+  };
+};
+

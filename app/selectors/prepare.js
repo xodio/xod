@@ -1,15 +1,14 @@
 import R from 'ramda';
 import {
-  getNodeTypes,
+  getPreparedNodeTypes,
   getLastNodeId,
   getLastPinId,
   getLastLinkId,
   getLastPatchId,
   getLastFolderId,
   getPatchByNodeId,
-  getPatchByPinId,
-  getPinsByNodeIdInPatch,
-  getLinksByPinIdInPatch,
+  getLinksToDeleteWithNode,
+  getNodeTypeToDeleteWithNode,
 } from './project';
 
 export const addPatch = (projectState, name, folderId) => {
@@ -32,45 +31,36 @@ export const addFolder = (projectState, name, parentId) => {
   };
 };
 
-export const addNode = (projectState, typeId, position) => {
+export const addNode = (projectState, typeId, position, patchId) => {
   const newNodeId = getLastNodeId(projectState) + 1;
-  const nodeType = getNodeTypes(projectState)[typeId];
+  const nodeType = getPreparedNodeTypes(projectState)[typeId];
   const lastPinId = getLastPinId(projectState);
 
   return {
-    typeId,
-    position,
-    nodeType,
-    newNodeId,
-    lastPinId,
+    payload: {
+      typeId,
+      position,
+      nodeType,
+      newNodeId,
+      lastPinId,
+    },
+    meta: {
+      patchId,
+    },
   };
 };
 
 export const deleteNode = (projectState, id) => {
   const patch = getPatchByNodeId(projectState, id);
-  const pins = getPinsByNodeIdInPatch(projectState, {
-    patchId: patch.id,
-    id,
-  });
-  const links = R.pipe(
-    R.values,
-    R.reduce((prev, c) => {
-      const pinLinks = getLinksByPinIdInPatch(
-        projectState,
-        {
-          patchId: patch.id,
-          pinIds: [c.id],
-        }
-      );
-      return R.concat(prev, R.keys(pinLinks));
-    }, [])
-  )(pins);
+  const linksToDelete = getLinksToDeleteWithNode(projectState, id, patch.id);
+
+  const nodeTypeToDelete = getNodeTypeToDeleteWithNode(projectState, id, patch.id);
 
   return {
     payload: {
       id,
-      pins: R.keys(pins),
-      links,
+      links: linksToDelete,
+      nodeType: nodeTypeToDelete,
     },
     meta: {
       patchId: patch.id,
@@ -110,15 +100,15 @@ export const updateNodeProperty = (projectState, nodeId, propKey, propValue) => 
   };
 };
 
-export const addLink = (projectState, pins) => {
-  const patch = getPatchByPinId(projectState, pins[0]);
+export const addLink = (projectState, pin1, pin2) => {
+  const patch = getPatchByNodeId(projectState, pin1.nodeId);
   const patchId = patch.id;
   const newId = getLastLinkId(projectState) + 1;
 
   return {
     payload: {
       newId,
-      pins,
+      pins: [pin1, pin2],
     },
     meta: {
       patchId,

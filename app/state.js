@@ -6,24 +6,30 @@ import * as PIN_DIRECTION from './constants/pinDirection';
 
 /* eslint-disable global-require */
 const nodeMetas = {
-  button: require('../nodes/meta/button.json5'),
-  constBool: require('../nodes/meta/constBool.json5'),
-  constNumber: require('../nodes/meta/constNumber.json5'),
-  constString: require('../nodes/meta/constString.json5'),
-  either: require('../nodes/meta/either.json5'),
-  latch: require('../nodes/meta/latch.json5'),
-  led: require('../nodes/meta/led.json5'),
-  map: require('../nodes/meta/map.json5'),
-  not: require('../nodes/meta/not.json5'),
-  pot: require('../nodes/meta/pot.json5'),
-  servo: require('../nodes/meta/servo.json5'),
+  'core/button': require('../nodes/meta/button.json5'),
+  'core/constBool': require('../nodes/meta/constBool.json5'),
+  'core/constNumber': require('../nodes/meta/constNumber.json5'),
+  'core/constString': require('../nodes/meta/constString.json5'),
+  'core/either': require('../nodes/meta/either.json5'),
+  'core/latch': require('../nodes/meta/latch.json5'),
+  'core/led': require('../nodes/meta/led.json5'),
+  'core/map': require('../nodes/meta/map.json5'),
+  'core/not': require('../nodes/meta/not.json5'),
+  'core/pot': require('../nodes/meta/pot.json5'),
+  'core/servo': require('../nodes/meta/servo.json5'),
+  'core/inputBool': require('../nodes/meta/inputBool.json5'),
+  'core/inputNumber': require('../nodes/meta/inputNumber.json5'),
+  'core/inputString': require('../nodes/meta/inputString.json5'),
+  'core/outputBool': require('../nodes/meta/outputBool.json5'),
+  'core/outputNumber': require('../nodes/meta/outputNumber.json5'),
+  'core/outputString': require('../nodes/meta/outputString.json5'),
 };
 /* eslint-enable global-require */
 
 function loadImpl(platform, key, ext) {
   try {
     /* eslint-disable global-require, prefer-template */
-    return require('!raw!../nodes/' + platform + '/' + key + ext);
+    return require('!raw!../nodes/' + platform + '/' + key.replace('core/', '') + ext);
     /* eslint-enable global-require, prefer-template */
   } catch (err) {
     if (/Cannot find module/.test(err)) {
@@ -53,12 +59,11 @@ const mapNodeTypeProperties = R.compose(
 const removeNils = R.reject(R.isNil);
 
 const nodeTypes = R.compose(
-  R.indexBy(R.prop('id')),
+  R.indexBy(R.prop('key')),
   R.values,
-  R.mapObjIndexed((meta, key, metas) => R.merge(
+  R.mapObjIndexed((meta, key) => R.merge(
     R.omit(['inputs', 'outputs'], meta),
     {
-      id: R.indexOf(key, R.keys(metas)) + 1,
       key,
       pins: mapNodeTypePins(meta),
       properties: mapNodeTypeProperties(meta),
@@ -86,14 +91,12 @@ const initialState = {
         id: 1,
         name: 'Main',
         nodes: {},
-        pins: {},
         links: {},
       },
       2: {
         id: 2,
         name: 'AUX',
         nodes: {},
-        pins: {},
         links: {},
       },
     },
@@ -102,7 +105,6 @@ const initialState = {
     counter: {
       patches: 2,
       nodes: 0,
-      pins: 0,
       links: 0,
       nodeTypes: +maxKey(nodeTypes) + 1,
       folders: 0,
@@ -114,7 +116,7 @@ const initialState = {
     dragging: null,
     selection: [],
     linkingPin: null,
-    selectedNodeType: 1,
+    selectedNodeType: 'button',
     tabs: {
       1: {
         id: 1,

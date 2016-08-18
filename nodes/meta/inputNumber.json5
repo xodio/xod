@@ -1,0 +1,14 @@
+{
+  label: '<InputNumber>',
+  category: 'io',
+  outputs: [{
+    key: 'IN',
+    type: 'number',
+  }],
+  properties: [{
+    key: 'label',
+    label: 'Pin label',
+    type: 'io_label',
+    defaultValue: 'InN',
+  }]
+}

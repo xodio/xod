@@ -34,10 +34,6 @@ describe('Initial state', () => {
       const patchId = Object.keys(initialState.project.patches)[0];
       chai.expect(initialState.project.patches[patchId]).to.have.any.keys(['nodes']);
     });
-    it('pins', () => {
-      const patchId = Object.keys(initialState.project.patches)[0];
-      chai.expect(initialState.project.patches[patchId]).to.have.any.keys(['pins']);
-    });
     it('links', () => {
       const patchId = Object.keys(initialState.project.patches)[0];
       chai.expect(initialState.project.patches[patchId]).to.have.any.keys(['links']);

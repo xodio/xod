@@ -1,4 +1,3 @@
-import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -6,7 +5,10 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import Selectors from '../selectors';
 import * as EDITOR_MODE from '../constants/editorModes';
+
+import { HotKeys } from 'react-hotkeys';
 import CMD from '../constants/commands';
+
 
 import Patch from './Patch';
 import ProjectBrowser from './ProjectBrowser';
@@ -23,26 +25,13 @@ class Editor extends React.Component {
     this.setModeCreating = this.setModeCreating.bind(this);
     this.setModeDefault = this.setModeDefault.bind(this);
     this.setSelectedNodeType = this.setSelectedNodeType.bind(this);
-    this.onPatchHotkeys = this.onPatchHotkeys.bind(this);
-    this.onBrowserHotkeys = this.onBrowserHotkeys.bind(this);
+    this.getHotkeyHandlers = this.getHotkeyHandlers.bind(this);
 
     this.patchSize = this.props.size;
-    this.hotkeys = {};
-  }
-
-  componentDidMount() {
-    this.props.hotkeys(this.getHotkeyHandlers());
   }
 
   onPropUpdate(nodeId, propKey, propValue) {
     this.props.actions.updateNodeProperty(nodeId, propKey, propValue);
-  }
-
-  onPatchHotkeys(hotkeys) {
-    this.hotkeys.patch = hotkeys;
-  }
-  onBrowserHotkeys(hotkeys) {
-    this.hotkeys.browser = hotkeys;
   }
 
   setEditorMode(mode) {
@@ -64,30 +53,19 @@ class Editor extends React.Component {
   }
 
   getHotkeyHandlers() {
-    return this.mergeCommands([
-      {
-        [CMD.SET_MODE_CREATING]: this.setModeCreating,
-        [CMD.ESCAPE]: this.setModeDefault,
-        [CMD.UNDO]: () => this.props.actions.undo(this.props.currentPatchId),
-        [CMD.REDO]: () => this.props.actions.redo(this.props.currentPatchId),
-      },
-      this.hotkeys.patch,
-      this.hotkeys.browser,
-    ]);
-  }
-  mergeCommand(obj1, obj2) {
-    return R.mergeWith(R.compose, obj1, obj2);
-  }
-
-  mergeCommands(array) {
-    return R.reduce(this.mergeCommand, {}, array);
+    return {
+      [CMD.SET_MODE_CREATING]: this.setModeCreating,
+      [CMD.SET_MODE_DEFAULT]: this.setModeDefault,
+      [CMD.UNDO]: () => this.props.actions.undo(this.props.currentPatchId),
+      [CMD.REDO]: () => this.props.actions.redo(this.props.currentPatchId),
+    };
   }
 
   render() {
     return (
-      <div>
+      <HotKeys handlers={this.getHotkeyHandlers()}>
         <Sidebar>
-          <ProjectBrowser hotkeys={this.onBrowserHotkeys} />
+          <ProjectBrowser />
           <Inspector
             selection={this.props.selection}
             nodes={this.props.nodes}
@@ -98,11 +76,10 @@ class Editor extends React.Component {
         <Workarea>
           <Tabs />
           <Patch
-            hotkeys={this.onPatchHotkeys}
             size={this.patchSize}
           />
         </Workarea>
-      </div>
+      </HotKeys>
     );
   }
 }
@@ -113,17 +90,17 @@ Editor.propTypes = {
   nodeTypes: React.PropTypes.any.isRequired,
   size: React.PropTypes.object.isRequired,
   selection: React.PropTypes.array,
-  selectedNodeType: React.PropTypes.number,
+  selectedNodeType: React.PropTypes.string,
   currentPatchId: React.PropTypes.number,
   mode: React.PropTypes.object,
   actions: React.PropTypes.object,
-  hotkeys: React.PropTypes.func,
+  p: React.PropTypes.any,
 };
 
 const mapStateToProps = (state) => ({
-  nodes: Selectors.Project.getNodes(state),
+  nodes: Selectors.Project.getPreparedNodes(state),
   editor: Selectors.Editor.getEditor(state),
-  nodeTypes: Selectors.Project.getNodeTypes(state),
+  nodeTypes: Selectors.Project.getPreparedNodeTypes(state),
   selection: Selectors.Editor.getSelection(state),
   selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
   currentPatchId: Selectors.Editor.getCurrentPatchId(state),

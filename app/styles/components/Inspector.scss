@@ -53,3 +53,14 @@
     width: 100;
   }
 }
+
+.IOLabelWidget {
+  @include inspector-widget();
+
+  label {
+    padding-right: 105px;
+  }
+  input {
+    width: 100;
+  }
+}
