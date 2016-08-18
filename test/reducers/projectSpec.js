@@ -75,6 +75,9 @@ describe('Project reducer: ', () => {
         folders: 1,
       },
     },
+    editor: {
+      currentPatchId: 1,
+    },
   };
 
   describe('Add node', () => {
@@ -246,9 +249,9 @@ describe('Project reducer: ', () => {
       R.assocPath(
         R.append('nodes', patchPath),
         {
-          1: { id: 1 },
-          2: { id: 2 },
-          3: { id: 3 },
+          1: { id: 1, typeId: 'test/test', position: { x: 0, y: 0 } },
+          2: { id: 2, typeId: 'test/test', position: { x: 0, y: 0 } },
+          3: { id: 3, typeId: 'test/test', position: { x: 0, y: 0 } },
         }
       ),
       R.assocPath(
@@ -257,6 +260,24 @@ describe('Project reducer: ', () => {
           patches: 1,
           nodes: 2,
           links: 1,
+        }
+      ),
+      R.assocPath(
+        ['project', 'nodeTypes'],
+        {
+          'test/test': {
+            key: 'test/test',
+            pins: {
+              in: {
+                key: 'in',
+                direction: 'input',
+              },
+              out: {
+                key: 'out',
+                direction: 'output',
+              },
+            },
+          },
         }
       )
     )(projectShape);
@@ -267,12 +288,12 @@ describe('Project reducer: ', () => {
     });
 
     it('should insert link', () => {
-      const data1 = { nodeId: 2, pinKey: 'out' };
-      const data2 = { nodeId: 3, pinKey: 'in' };
+      const from = { nodeId: 2, pinKey: 'out' };
+      const to = { nodeId: 3, pinKey: 'in' };
 
       const patchId = 1;
       const before = store.getState();
-      store.dispatch(Actions.addLink(data1, data2));
+      store.dispatch(Actions.addLink(from, to));
       const after = store.getState();
       const newId = (before.project.counter.links + 1);
       const newLink = R.view(
@@ -282,12 +303,12 @@ describe('Project reducer: ', () => {
     });
 
     it('should be reverse operation for link deletion', () => {
-      const data1 = { nodeId: 2, pinKey: 'out' };
-      const data2 = { nodeId: 3, pinKey: 'in' };
+      const from = { nodeId: 2, pinKey: 'out' };
+      const to = { nodeId: 3, pinKey: 'in' };
 
       const initialState = store.getState();
       const initialPatch = initialState.project.patches[1].present;
-      store.dispatch(Actions.addLink(data1, data2));
+      store.dispatch(Actions.addLink(from, to));
       const afterAddState = store.getState();
       store.dispatch(Actions.deleteLink(afterAddState.project.counter.links));
       const afterDeleteState = store.getState();

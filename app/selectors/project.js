@@ -134,7 +134,7 @@ export const canPinHaveMoreLinks = (pin, links) => (
   pin.direction === PIN_DIRECTION.OUTPUT
 );
 
-const getAllPinsFromNodes = R.pipe(
+export const getAllPinsFromNodes = R.pipe(
   R.values,
   R.reduce(
     (p, cur) =>
@@ -758,8 +758,8 @@ export const preparePins = (state, node) => {
   })(pins);
 };
 
-export const getPreparedNodes = (state) => {
-  const nodes = getNodes(state);
+export const getPreparedNodes = (state, patchId) => {
+  const nodes = getNodes(state, patchId);
 
   return R.pipe(
     R.values,
@@ -813,20 +813,19 @@ export const validateLink = (state, linkData) => {
     eqProps
   );
 
+  const pin1 = findPin(linkData[0]);
+  const pin2 = findPin(linkData[1]);
 
-  const fromPin = findPin(linkData[0]);
-  const toPin = findPin(linkData[1]);
-
-  const sameDirection = fromPin.direction === toPin.direction;
-  const sameNode = fromPin.nodeId === toPin.nodeId;
-  const fromPinCanHaveMoreLinks = canPinHaveMoreLinks(fromPin, linksState);
-  const toPinCanHaveMoreLinks = canPinHaveMoreLinks(toPin, linksState);
+  const sameDirection = pin1.direction === pin2.direction;
+  const sameNode = pin1.nodeId === pin2.nodeId;
+  const pin1CanHaveMoreLinks = canPinHaveMoreLinks(pin1, linksState);
+  const pin2CanHaveMoreLinks = canPinHaveMoreLinks(pin2, linksState);
 
   const check = (
     !sameDirection &&
     !sameNode &&
-    fromPinCanHaveMoreLinks &&
-    toPinCanHaveMoreLinks
+    pin1CanHaveMoreLinks &&
+    pin2CanHaveMoreLinks
   );
 
   const result = {
@@ -841,7 +840,7 @@ export const validateLink = (state, linkData) => {
     if (sameNode) {
       result.message = LINK_ERRORS.SAME_NODE;
     } else
-    if (!fromPinCanHaveMoreLinks || !toPinCanHaveMoreLinks) {
+    if (!pin1CanHaveMoreLinks || !pin2CanHaveMoreLinks) {
       result.message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
     }
   }

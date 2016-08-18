@@ -78,8 +78,7 @@ export const deleteNode = (id) => (dispatch, getState) => {
 };
 
 export const addLink = (pin1, pin2) => (dispatch, getState) => {
-  const projectState = Selectors.Project.getProject(getState());
-  const preparedData = Selectors.Prepare.addLink(projectState, pin1, pin2);
+  const preparedData = Selectors.Prepare.addLink(getState(), pin1, pin2);
 
   dispatch({
     type: ActionType.LINK_ADD,
