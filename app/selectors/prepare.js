@@ -106,7 +106,7 @@ export const updateNodeProperty = (projectState, nodeId, propKey, propValue) => 
 
 export const addLink = (state, pin1, pin2) => {
   const projectState = getProject(state);
-  const patch = getPatchByNodeId(projectState, data1.nodeId);
+  const patch = getPatchByNodeId(projectState, pin1.nodeId);
   const nodes = getPreparedNodes(state, patch.id);
   const pins = getAllPinsFromNodes(nodes);
 
