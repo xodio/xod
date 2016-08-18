@@ -1,6 +1,6 @@
 import R from 'ramda';
 import React from 'react';
-import Widgets from './InspectorWidgets';
+import Widgets from './inspectorWidgets';
 import * as ENTITIES from '../constants/entities';
 import { PROPERTY_TYPE } from '../constants/property';
 
