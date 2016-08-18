@@ -303,10 +303,10 @@ export const getNodeTypes = R.pipe(
   R.prop('nodeTypes')
 );
 
-export const getNodeTypeById = (state, id) => R.pipe(
+export const getNodeTypeById = R.curry((state, id) => R.pipe(
   getNodeTypes,
   R.prop(id)
-)(state);
+)(state));
 
 /*
   Node selectors
@@ -642,11 +642,11 @@ export const getPatchIO = R.pipe(
   R.values
 );
 
-export const getPatchNode = (state, patch) => {
-  const extendNodes = R.mapObjIndexed(
+export const getPatchNode = R.curry((state, patch) => {
+  const extendNodes = R.map(
     node => R.compose(
       R.flip(R.merge)(node),
-      R.curry(getNodeTypeById)(state),
+      getNodeTypeById(state),
       R.prop('typeId')
     )(node)
   );
@@ -668,14 +668,14 @@ export const getPatchNode = (state, patch) => {
     assocFlag,
     assocIO
   )(patch);
-};
+});
 
 export const getPatchNodes = state => R.pipe(
   getPatches,
-  R.mapObjIndexed(patch =>
+  R.map(patch =>
     R.pipe(
       R.propOr(patch, 'present'),
-      R.curry(getPatchNode)(state)
+      getPatchNode(state)
     )(patch)
   ),
   R.pickBy(R.propEq('isPatchNode', true))
@@ -866,15 +866,15 @@ export const getNodeGhost = (state) => {
 
   const nodeLabel = getNodeLabel(state, { typeId: nodeTypeId, properties: nodeProperties });
 
-  let pinsCount = -1;
+  let pinCount = -1;
   const nodePins = R.pipe(
     R.values,
     R.map((pin) => {
-      const id = { id: pinsCount };
+      const id = { id: pinCount };
       const pos = getPinPosition(nodeType.pins, pin.key, nodePosition);
       const radius = { radius: SIZES.PIN.radius };
 
-      pinsCount--;
+      pinCount--;
 
       return R.mergeAll([pin, id, pos, radius]);
     }),
@@ -926,13 +926,10 @@ export const getLinksToDeleteWithNode = (projectState, nodeId, patchId) => R.pip
   )
 )(getLinks(projectState, patchId));
 
-const getPinKeyByNodeIdAndLabel = (nodeId, label, patch) => R.pipe(
+const getPinKeyByNodeId = (nodeId, patch) => R.pipe(
   R.prop('io'),
   R.find(
-    R.both(
-      R.propEq('nodeId', nodeId),
-      R.propEq('label', label)
-    )
+    R.propEq('nodeId', nodeId)
   ),
   R.propOr(null, 'key')
 )(patch);
@@ -961,7 +958,7 @@ export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
 
     if (patchNode) {
       // Get links and check for pins usage
-      const pinKey = getPinKeyByNodeIdAndLabel(node.id, node.properties.label, patch);
+      const pinKey = getPinKeyByNodeId(node.id, patch);
       const links = getLinks(projectState, patchId);
       const patchNodeLinks = R.pipe(
         R.values,

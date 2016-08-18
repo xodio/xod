@@ -100,15 +100,15 @@ export const updateNodeProperty = (projectState, nodeId, propKey, propValue) => 
   };
 };
 
-export const addLink = (projectState, data1, data2) => {
-  const patch = getPatchByNodeId(projectState, data1.nodeId);
+export const addLink = (projectState, pin1, pin2) => {
+  const patch = getPatchByNodeId(projectState, pin1.nodeId);
   const patchId = patch.id;
   const newId = getLastLinkId(projectState) + 1;
 
   return {
     payload: {
       newId,
-      pins: [data1, data2],
+      pins: [pin1, pin2],
     },
     meta: {
       patchId,
