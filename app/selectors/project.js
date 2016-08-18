@@ -134,7 +134,7 @@ export const canPinHaveMoreLinks = (pin, links) => (
   pin.direction === PIN_DIRECTION.OUTPUT
 );
 
-const getAllPinsFromNodes = R.pipe(
+export const getAllPinsFromNodes = R.pipe(
   R.values,
   R.reduce(
     (p, cur) =>
@@ -758,8 +758,8 @@ export const preparePins = (state, node) => {
   })(pins);
 };
 
-export const getPreparedNodes = (state) => {
-  const nodes = getNodes(state);
+export const getPreparedNodes = (state, patchId) => {
+  const nodes = getNodes(state, patchId);
 
   return R.pipe(
     R.values,
@@ -813,15 +813,8 @@ export const validateLink = (state, linkData) => {
     eqProps
   );
 
-  const isOutput = R.propEq('direction', PIN_DIRECTION.OUTPUT);
-
   const pin1 = findPin(linkData[0]);
   const pin2 = findPin(linkData[1]);
-
-  const isOutputPin1 = isOutput(pin1);
-
-  const fromPin = (isOutputPin1) ? pin1 : pin2;
-  const toPin = (isOutputPin1) ? pin2 : pin1;
 
   const sameDirection = pin1.direction === pin2.direction;
   const sameNode = pin1.nodeId === pin2.nodeId;
@@ -838,8 +831,6 @@ export const validateLink = (state, linkData) => {
   const result = {
     isValid: check,
     message: 'Unknown error',
-    from: fromPin,
-    to: toPin,
   };
 
   if (!check) {
