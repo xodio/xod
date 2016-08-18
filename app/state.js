@@ -29,7 +29,7 @@ const nodeMetas = {
 function loadImpl(platform, key, ext) {
   try {
     /* eslint-disable global-require, prefer-template */
-    return require('!raw!../nodes/' + platform + '/' + key + ext);
+    return require('!raw!../nodes/' + platform + '/' + key.replace('core/', '') + ext);
     /* eslint-enable global-require, prefer-template */
   } catch (err) {
     if (/Cannot find module/.test(err)) {

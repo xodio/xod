@@ -55,10 +55,6 @@ export default function transform(project, implPlatforms = []) {
   const nodes = () => mergedEntities('nodes');
   const nodeList = R.compose(R.values, nodes);
 
-  const pins = () => mergedEntities('pins');
-  const pinList = R.compose(R.values, pins);
-  const pinById = id => R.propOr({}, id, pins());
-
   const links = () => mergedEntities('links');
   const linkList = R.compose(R.values, links);
 
@@ -87,7 +83,6 @@ export default function transform(project, implPlatforms = []) {
 
   // :: NodeType -> {Key: NodeType.Pin}
   const inputs = R.compose(filterByDirection(PIN_DIRECTION.INPUT), nodeTypePins);
-  const outputs = R.compose(filterByDirection(PIN_DIRECTION.OUTPUT), nodeTypePins);
 
   // :: NodeType -> {Key: JSType}
   const inputTypes = R.compose(
@@ -101,53 +96,33 @@ export default function transform(project, implPlatforms = []) {
     R.objOf('inputTypes', inputTypes(nodeType))
   );
 
-  // :: Link -> LinkPinIndex -> Pin
-  const linkPin = idx => R.compose(
-    pinById,
-    R.nth(idx),
-    R.prop('pins')
-  );
-
-  // :: Link -> OutLink
-  const linkOutLink = R.compose(
-    R.pick(['nodeId', 'key']),
-    linkPin(1)
-  );
-
-  // :: Pin -> [Link]
-  const outgoingLinks = (pin) => R.filter(
+  // :: Node -> [Link]
+  const outgoingLinks = (node) => R.filter(
     R.compose(
-      R.equals(pin.id),
+      R.propEq('nodeId', node.id),
       R.nth(0),
       R.prop('pins')
     )
   )(linkList());
 
-  // :: NodeType.Pin -> Pin
-  const pinByNodeTypePin = R.curry(
-    (ownerNode, nodeTypePin) => R.compose(
-      R.defaultTo({}),
-      R.find(R.where({
-        nodeId: R.equals(ownerNode.id),
-        key: R.equals(nodeTypePin.key),
-      }))
-    )(pinList())
-  );
+  // :: Node -> {outKey: [Link]}
+  const nodeOutLinks = node => R.reduce(
+    (outLinks, pin) => {
+      const key = pin.pins[0].pinKey;
+      const newLink = {
+        key: pin.pins[1].pinKey,
+        nodeId: pin.pins[1].nodeId,
+      };
 
-  // :: NodeType.Pin -> [OutLink]
-  const nodeTypePinOutLinks = ownerNode => R.compose(
-    R.map(linkOutLink),
-    outgoingLinks,
-    pinByNodeTypePin(ownerNode)
-  );
+      if (R.has(key, outLinks)) {
+        return R.append(newLink, outLinks[key]);
+      }
 
-  // :: Node -> [OutLink]
-  const nodeOutLinks = node => R.compose(
-    R.reject(R.isEmpty),
-    R.map(nodeTypePinOutLinks(node)),
-    outputs,
-    nodeTypeByNode
-  )(node);
+      return R.assoc(key, [newLink], outLinks);
+    },
+    {},
+    outgoingLinks(node)
+  );
 
   // :: Node -> TransformedNode
   const transformedNode = node => R.mergeAll([
@@ -172,7 +147,6 @@ export default function transform(project, implPlatforms = []) {
   // Link -> [NodeId]
   const linkNodeIds = R.compose(
     R.pluck('nodeId'),
-    R.map(pinById),
     R.prop('pins')
   );
 
