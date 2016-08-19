@@ -57,15 +57,21 @@ export const getSelectionByTypes = createSelector(
   }
 );
 
-export const isSelected = (selection, entityName, id) => R.pipe(
+export const isEntitySelected = (selection, entityName, id) => R.pipe(
   R.filter(R.propEq('entity', entityName)),
   R.find(R.propEq('id', id)),
   R.isNil,
   R.not
 )(selection);
 
-export const isNodeSelected = (selection, id) => isSelected(selection, ENTITY.NODE, id);
-export const isLinkSelected = (selection, id) => isSelected(selection, ENTITY.LINK, id);
+export const isNodeSelected = R.curry((selection, id) => isEntitySelected(selection, ENTITY.NODE, id));
+export const isLinkSelected = R.curry((selection, id) => isEntitySelected(selection, ENTITY.LINK, id));
+
+const isPinSelected = (linkingPin, node, pin) => (
+  linkingPin &&
+  linkingPin.nodeId === node.id &&
+  linkingPin.pinKey === pin.key
+);
 
 export const hasSelection = (state) => (
   (
@@ -270,4 +276,33 @@ export const getLinkGhost = (state, patchId) => {
     from: addPinRadius(pin.position),
     to: { x: 0, y: 0 },
   };
+};
+
+// :: dereferencedNodes -> viewNodes
+export const viewNodes = (state, deferencedNodes) => {
+  const selection = getSelection(state);
+  const linkingPin = getLinkingPin(state);
+
+  return R.map(node => {
+    const markSelectedPin = (pin) =>
+      R.assoc('isSelected', isPinSelected(linkingPin, node, pin), pin);
+
+    return R.merge(node, {
+      isSelected: isNodeSelected(selection, node.id),
+      pins: R.map(markSelectedPin, node.pins),
+    });
+  }, deferencedNodes);
+};
+
+// :: dereferencedLinks -> viewLinks
+export const viewLinks = (state, dereferencedLinks) => {
+  const selection = getSelection(state);
+
+  const isSelected = R.pipe(
+    R.prop('id'),
+    isLinkSelected(selection)
+  );
+  const markSelectedLink = (link) => R.assoc('isSelected', isSelected(link), link);
+
+  return R.map(markSelectedLink, dereferencedLinks);
 };

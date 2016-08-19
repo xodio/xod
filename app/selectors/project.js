@@ -247,23 +247,16 @@ export const getNodeTypeById = R.curry((state, id) => R.pipe(
   Node selectors
 */
 
-export const getNodes = (state, patchId) => R.compose(
+export const getNodes = R.curry((patchId, state) => R.compose(
   R.prop('nodes'),
   getPatchById(patchId)
-)(state);
+)(state));
 
-export const getNodesByPatchId = (patchId, state) => R.pipe(
+export const getNodesByPatchId = R.curry((patchId, state) => R.pipe(
   getProject,
   R.path(['patches', patchId, 'present']),
   R.prop('nodes')
-)(state);
-
-export const getNodeById = (state, props) => R.pipe(
-  getNodes,
-  R.filter((node) => node.id === props.id),
-  R.values,
-  R.head
-)(state, props);
+)(state));
 
 /*
   Pin selectors
@@ -674,48 +667,34 @@ const getNodePins = (state, typeId) => R.pipe(
   R.head
 )(state);
 
-export const preparePins = (state, node) => {
-  const pins = getNodePins(state, node.typeId);
-  // const linkingPin = getLinkingPin(state); // @TODO: Move to Editor and prepareViewPin (?)
+export const preparePins = (projectState, node) => {
+  const pins = getNodePins(projectState, node.typeId);
 
   return R.map(pin => {
     const originalPin = pins[pin.key];
     const pinPosition = getPinPosition(pins, pin.key, node.position);
     const radius = { radius: SIZES.PIN.radius };
-    const isSelected = {
-      isSelected: false,
-      // (
-      //   linkingPin &&
-      //   linkingPin.nodeId === node.id &&
-      //   linkingPin.pinKey === pin.key
-      // ),
-    };
+    const isSelected = { isSelected: false };
     return R.mergeAll([pin, originalPin, pinPosition, radius, isSelected]);
   })(pins);
 };
 
-export const dereferencedNodes = (projectState, patchId) => {
-  const nodes = getNodes(projectState, patchId);
-
-  return R.pipe(
-    R.values,
+export const dereferencedNodes = (projectState, patchId) =>
+  R.pipe(
+    getNodes(patchId),
     R.map((node) => {
       const label = getNodeLabel(projectState, node);
       const nodePins = preparePins(projectState, node);
       const pinsWidth = getGroupedPinsWidth(nodePins);
       const nodeWidth = getNodeWidth(pinsWidth);
-      const isSelected = false; // isNodeSelected(projectState, node.id); // @TODO: Move to Editor
 
       return R.merge(node, {
         label,
         pins: nodePins,
         width: nodeWidth,
-        isSelected,
       });
-    }),
-    arr2obj
-  )(nodes);
-};
+    })
+  )(projectState);
 
 export const dereferencedLinks = (projectState, patchId) => {
   const nodes = dereferencedNodes(projectState, patchId);
@@ -729,7 +708,6 @@ export const dereferencedLinks = (projectState, patchId) => {
       {
         from: addPinRadius(pins[0].position) || null,
         to: addPinRadius(pins[1].position) || null,
-        isSelected: false, // isLinkSelected(projectState, link.id), // @TODO: Move to Editor
       }
     );
   })(links);
@@ -760,7 +738,7 @@ const getPinKeyByNodeId = (nodeId, patch) => R.pipe(
 )(patch);
 
 export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
-  const nodes = getNodes(projectState, patchId);
+  const nodes = getNodes(patchId, projectState);
   const node = findById(nodeId, nodes);
   const nodeTypes = dereferencedNodeTypes(projectState);
   const nodeType = findByKey(node.typeId, nodeTypes);

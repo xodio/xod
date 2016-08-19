@@ -313,10 +313,13 @@ Patch.propTypes = {
 const mapStateToProps = (state) => {
   const project = Selectors.Project.getProject(state);
   const curPatchId = Selectors.Editor.getCurrentPatchId(state);
+  const defNodes = Selectors.Project.dereferencedNodes(project, curPatchId);
+  const defLinks = Selectors.Project.dereferencedLinks(project, curPatchId);
 
   return {
-    nodes: Selectors.Project.dereferencedNodes(project, curPatchId),
-    links: Selectors.Project.dereferencedLinks(project, curPatchId),
+    nodes: Selectors.Editor.viewNodes(state, defNodes),
+    links: Selectors.Editor.viewLinks(state, defLinks),
+
     patch: Selectors.Project.getPatchById(project, curPatchId),
     nodeTypes: Selectors.Project.dereferencedNodeTypes(state),
 
