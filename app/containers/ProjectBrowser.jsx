@@ -223,12 +223,17 @@ ProjectBrowser.propTypes = {
   hotkeys: React.PropTypes.func,
 };
 
-const mapStateToProps = (state) => ({
-  tree: Selectors.Project.getTreeView(state),
-  patches: Selectors.Project.getPatches(state),
-  folders: Selectors.Project.getFolders(state),
-  currentPatchId: Selectors.Editor.getCurrentPatchId(state),
-});
+const mapStateToProps = (state) => {
+  const project = Selectors.Project.getProject(state);
+  const curPatchId = Selectors.Editor.getCurrentPatchId(state);
+
+  return {
+    tree: Selectors.Project.getTreeView(project, curPatchId),
+    patches: Selectors.Project.getPatches(state),
+    folders: Selectors.Project.getFolders(state),
+    currentPatchId: curPatchId,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({

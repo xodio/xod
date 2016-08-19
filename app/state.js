@@ -116,7 +116,7 @@ const initialState = {
     dragging: null,
     selection: [],
     linkingPin: null,
-    selectedNodeType: 'button',
+    selectedNodeType: 'core/button',
     tabs: {
       1: {
         id: 1,

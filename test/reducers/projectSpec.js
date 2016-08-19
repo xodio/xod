@@ -12,7 +12,7 @@ function pin(nodeId, pinKey) {
   return { nodeId, pinKey };
 }
 const mockStore = (state) => createStore(generateReducers([1]), state, applyMiddleware(thunk));
-const getNodeTypes = (state) => Selectors.Project.getPreparedNodeTypes(state);
+const getNodeTypes = (state) => Selectors.Project.dereferencedNodeTypes(state);
 const getPatchName = (pId, state) => state.project.patches[pId].present.name;
 const getPatchNodeName = (pId, state) =>
   `${Selectors.Project.getUserName()}/${getPatchName(pId, state)}`;
@@ -102,27 +102,29 @@ describe('Project reducer: ', () => {
       store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
 
       const projectState = Selectors.Project.getProject(store.getState());
-      const patchState = Selectors.Project.getPatchById(projectState, patchId);
+      const patchState = Selectors.Project.getPatchById(patchId, projectState);
 
       chai.expect(patchState.nodes).to.deep.equal(expectedNodes);
     });
 
     it('should be undoable and redoable', () => {
       const patchId = 1;
+      const getPatch = Selectors.Project.getPatchById(patchId);
+
       const initialProjectState = Selectors.Project.getProject(store.getState());
-      const initialPatchState = Selectors.Project.getPatchById(initialProjectState, patchId);
+      const initialPatchState = getPatch(initialProjectState);
 
       store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
       const updatedProjectState = Selectors.Project.getProject(store.getState());
-      const updatedPatchState = Selectors.Project.getPatchById(updatedProjectState, patchId);
+      const updatedPatchState = getPatch(updatedProjectState);
 
       store.dispatch(Actions.undoPatch(patchId));
       const undoedProjectState = Selectors.Project.getProject(store.getState());
-      const undoedPatchState = Selectors.Project.getPatchById(undoedProjectState, patchId);
+      const undoedPatchState = getPatch(undoedProjectState);
 
       store.dispatch(Actions.redoPatch(patchId));
       const redoedProjectState = Selectors.Project.getProject(store.getState());
-      const redoedPatchState = Selectors.Project.getPatchById(redoedProjectState, patchId);
+      const redoedPatchState = getPatch(redoedProjectState);
 
       chai.expect(undoedPatchState).to.deep.equal(initialPatchState);
       chai.expect(redoedPatchState).to.deep.equal(updatedPatchState);
@@ -182,7 +184,7 @@ describe('Project reducer: ', () => {
       store.dispatch(Actions.deleteNode(1));
 
       const projectState = Selectors.Project.getProject(store.getState());
-      const patchState = Selectors.Project.getPatchById(projectState, patchId);
+      const patchState = Selectors.Project.getPatchById(patchId, projectState);
 
       chai.expect(patchState.nodes).to.deep.equal(expectedNodes);
       chai.expect(patchState.links).to.deep.equal(expectedLinks);
