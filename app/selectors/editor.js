@@ -2,21 +2,18 @@ import R from 'ramda';
 import { createSelector } from 'reselect';
 
 import * as PIN_VALIDITY from '../constants/pinValidity';
-import { LINK_ERRORS } from '../constants/errorMessages';
 import * as EDITOR_MODE from '../constants/editorModes';
 import * as ENTITY from '../constants/entities';
 import * as SIZES from '../constants/sizes';
 
 import {
-  arr2obj,
+  indexById,
   getProject,
   getPatchById,
-  getPatchByNodeId,
   getAllPinsFromNodes,
   canPinHaveMoreLinks,
   getPreparedNodeTypeByKey,
   dereferencedNodes,
-  getLinks,
   getNodeLabel,
   getPinPosition,
   getGroupedPinsWidth,
@@ -64,8 +61,12 @@ export const isEntitySelected = (selection, entityName, id) => R.pipe(
   R.not
 )(selection);
 
-export const isNodeSelected = R.curry((selection, id) => isEntitySelected(selection, ENTITY.NODE, id));
-export const isLinkSelected = R.curry((selection, id) => isEntitySelected(selection, ENTITY.LINK, id));
+export const isNodeSelected = R.curry(
+  (selection, id) => isEntitySelected(selection, ENTITY.NODE, id)
+);
+export const isLinkSelected = R.curry(
+  (selection, id) => isEntitySelected(selection, ENTITY.LINK, id)
+);
 
 const isPinSelected = (linkingPin, node, pin) => (
   linkingPin &&
@@ -161,59 +162,6 @@ export const getValidPins = (nodes, links, forPin) => {
   }, allPins);
 };
 
-export const validateLink = (state, linkData) => {
-  const project = getProject(state);
-  const patch = getPatchByNodeId(project, linkData[0].nodeId);
-  const patchId = patch.id;
-
-  const nodes = dereferencedNodes(project, patchId);
-  const pins = getAllPinsFromNodes(nodes);
-  const linksState = getLinks(project, patchId);
-
-  const eqProps = (data) => R.both(
-    R.propEq('nodeId', data.nodeId),
-    R.propEq('key', data.pinKey)
-  );
-  const findPin = R.compose(
-    R.flip(R.find)(pins),
-    eqProps
-  );
-
-  const pin1 = findPin(linkData[0]);
-  const pin2 = findPin(linkData[1]);
-
-  const sameDirection = pin1.direction === pin2.direction;
-  const sameNode = pin1.nodeId === pin2.nodeId;
-  const pin1CanHaveMoreLinks = canPinHaveMoreLinks(pin1, linksState);
-  const pin2CanHaveMoreLinks = canPinHaveMoreLinks(pin2, linksState);
-
-  const check = (
-    !sameDirection &&
-    !sameNode &&
-    pin1CanHaveMoreLinks &&
-    pin2CanHaveMoreLinks
-  );
-
-  const result = {
-    isValid: check,
-    message: 'Unknown error',
-  };
-
-  if (!check) {
-    if (sameDirection) {
-      result.message = LINK_ERRORS.SAME_DIRECTION;
-    } else
-    if (sameNode) {
-      result.message = LINK_ERRORS.SAME_NODE;
-    } else
-    if (!pin1CanHaveMoreLinks || !pin2CanHaveMoreLinks) {
-      result.message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
-    }
-  }
-
-  return result;
-};
-
 export const getNodeGhost = (state) => {
   const nodeTypeId = getSelectedNodeType(state);
   const isCreatingMode = getModeChecks(state).isCreatingNode;
@@ -245,7 +193,7 @@ export const getNodeGhost = (state) => {
 
       return R.mergeAll([pin, id, pos, radius]);
     }),
-    arr2obj
+    indexById
   )(nodeType.pins);
 
   const pinsWidth = getGroupedPinsWidth(nodePins);

@@ -1,7 +1,7 @@
 import R from 'ramda';
 
 import * as PIN_DIRECTION from '../constants/pinDirection';
-import { NODETYPE_ERRORS } from '../constants/errorMessages';
+import { LINK_ERRORS, NODETYPE_ERRORS } from '../constants/errorMessages';
 import { PROPERTY_TYPE } from '../constants/property';
 import * as SIZES from '../constants/sizes';
 import * as NODE_CATEGORY from '../constants/nodeCategory';
@@ -11,7 +11,7 @@ export const getUserName = () => 'Bob';
 /*
   Common utils
 */
-export const arr2obj = R.indexBy(R.prop('id'));
+export const indexById = R.indexBy(R.prop('id'));
 const findByProp = (propName, propVal, from) => R.pipe(
   R.values,
   R.find(R.propEq(propName, propVal))
@@ -136,7 +136,7 @@ export const getProjectPojo = (state) => {
     getPatches,
     R.values,
     R.map(patch => R.propOr(patch, 'present', patch)),
-    arr2obj
+    indexById
   )(project);
 
   return R.assoc('patches', patches, project);
@@ -790,3 +790,56 @@ export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
   };
 };
 
+
+export const validateLink = (state, linkData) => {
+  const project = getProject(state);
+  const patch = getPatchByNodeId(project, linkData[0].nodeId);
+  const patchId = patch.id;
+
+  const nodes = dereferencedNodes(project, patchId);
+  const pins = getAllPinsFromNodes(nodes);
+  const linksState = getLinks(project, patchId);
+
+  const eqProps = (data) => R.both(
+    R.propEq('nodeId', data.nodeId),
+    R.propEq('key', data.pinKey)
+  );
+  const findPin = R.compose(
+    R.flip(R.find)(pins),
+    eqProps
+  );
+
+  const pin1 = findPin(linkData[0]);
+  const pin2 = findPin(linkData[1]);
+
+  const sameDirection = pin1.direction === pin2.direction;
+  const sameNode = pin1.nodeId === pin2.nodeId;
+  const pin1CanHaveMoreLinks = canPinHaveMoreLinks(pin1, linksState);
+  const pin2CanHaveMoreLinks = canPinHaveMoreLinks(pin2, linksState);
+
+  const check = (
+    !sameDirection &&
+    !sameNode &&
+    pin1CanHaveMoreLinks &&
+    pin2CanHaveMoreLinks
+  );
+
+  const result = {
+    isValid: check,
+    message: 'Unknown error',
+  };
+
+  if (!check) {
+    if (sameDirection) {
+      result.message = LINK_ERRORS.SAME_DIRECTION;
+    } else
+    if (sameNode) {
+      result.message = LINK_ERRORS.SAME_NODE;
+    } else
+    if (!pin1CanHaveMoreLinks || !pin2CanHaveMoreLinks) {
+      result.message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
+    }
+  }
+
+  return result;
+};

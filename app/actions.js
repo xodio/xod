@@ -195,7 +195,7 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
   let action;
 
   if (selected) {
-    const validation = Selectors.Editor.validateLink(state, pins);
+    const validation = Selectors.Project.validateLink(state, pins);
     action = validation.isValid ?
       addLink(pins[0], pins[1]) :
       addError({ message: validation.message });
