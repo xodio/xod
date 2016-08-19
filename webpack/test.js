@@ -8,13 +8,13 @@ const config = merge.smart(baseConfig, {
   module: {
     loaders: [
       {
-        test: /test\/.*\.js$/,
+        test: /.*\.spec\.js$/,
         loaders: [
           'babel?presets[]=es2015',
         ],
       },
       {
-        test: /targets\/.*\.js$/,
+        test: /src\/runtime\/.*\.js$/,
         loader: 'babel?presets[]=es2015',
       },
       {

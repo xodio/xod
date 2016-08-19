@@ -12,14 +12,14 @@ const config = merge.smart(baseConfig, {
     path: path.join(__dirname, '../dist/chrome'),
   },
   entry: [
-    './targets/xod-espruino/upload.js'
+    './src/runtime/xod-espruino/upload.js',
   ],
   module: {
     loaders: [
       {
-        test: /targets\/.*\.js$/,
+        test: /src\/runtime\/.*\.js$/,
         exclude: [
-          /targets\/.*runtime\.js$/,
+          /src\/runtime\/.*runtime\.js$/,
         ],
         loader: 'babel?presets[]=es2015',
       },
@@ -28,7 +28,7 @@ const config = merge.smart(baseConfig, {
         loaders: [
           'exports?Espruino',
           'imports?$=jquery',
-        ]
+        ],
       },
       {
         test: /node_modules\/espruino\/.*\.js$/,

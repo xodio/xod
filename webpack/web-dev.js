@@ -15,11 +15,11 @@ const config = merge.smart(baseConfig, {
   module: {
     loaders: [
       {
-        test: /app\/.*\.jsx?$/,
+        test: /src\/client\/.*\.jsx?$/,
         loaders: ['react-hot'],
       },
       {
-        test: /targets\/.*\.js$/,
+        test: /src\/runtime\/.*\.js$/,
         loader: 'null',
       },
     ],

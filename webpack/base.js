@@ -1,4 +1,4 @@
-
+const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -6,19 +6,20 @@ module.exports = {
   devtool: 'source-map',
   entry: [
     'babel-polyfill',
-    './app/index.jsx',
+    './src/client/index.jsx',
   ],
   output: {
     filename: 'bundle.js',
   },
   resolve: {
-    modulesDirectories: ['node_modules', 'app', 'targets'],
+    root: path.join(__dirname, '../src'),
+    modulesDirectories: ['node_modules', 'src'],
     extensions: ['', '.js', '.jsx', '.scss'],
   },
   module: {
     loaders: [
       {
-        test: /app\/.*\.jsx?$/,
+        test: /src\/.*\.jsx?$/,
         loaders: [
           'babel?presets[]=react,presets[]=es2015',
         ],

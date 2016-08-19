@@ -4,12 +4,12 @@ import { createStore, applyMiddleware } from 'redux';
 import { default as chai, expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
-import Selectors from 'selectors';
-import runtime from '!raw!xod-espruino/runtime';
-import transpile from 'xod-espruino/transpiler';
-import initialState from 'state';
-import generateReducers from 'reducers';
-import { addNode } from 'actions';
+import Selectors from '../../src/client/selectors';
+import runtime from '!raw!../../src/runtime/xod-espruino/runtime';
+import transpile from '../../src/runtime/xod-espruino/transpiler';
+import initialState from '../../src/client/state';
+import generateReducers from '../../src/client/reducers';
+import { addNode } from '../../src/client/actions';
 
 chai.use(dirtyChai);
 

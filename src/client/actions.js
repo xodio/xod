@@ -3,7 +3,7 @@ import * as ActionType from './actionTypes';
 import * as STATUS from './constants/statuses';
 import * as EDITOR_MODE from './constants/editorModes';
 import Selectors from './selectors';
-import { uploadToEspruino } from './utils/espruino';
+import { uploadToEspruino } from '../utils/espruino';
 
 
 const getTimestamp = () => new Date().getTime();

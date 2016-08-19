@@ -2,11 +2,11 @@ import R from 'ramda';
 import chai from 'chai';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
-import generateReducers from '../../app/reducers/';
-import { nodes } from '../../app/reducers/nodes';
-import * as Actions from '../../app/actions';
-import Selectors from '../../app/selectors';
-import { NODETYPE_ERRORS } from '../../app/constants/errorMessages';
+import generateReducers from '../../src/client/reducers/';
+import { nodes } from '../../src/client/reducers/nodes';
+import * as Actions from '../../src/client/actions';
+import Selectors from '../../src/client/selectors';
+import { NODETYPE_ERRORS } from '../../src/client/constants/errorMessages';
 
 function pin(nodeId, pinKey) {
   return { nodeId, pinKey };
