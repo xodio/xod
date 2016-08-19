@@ -15,7 +15,7 @@ import {
   getAllPinsFromNodes,
   canPinHaveMoreLinks,
   getPreparedNodeTypeByKey,
-  getPreparedNodes,
+  dereferencedNodes,
   getLinks,
   getNodeLabel,
   getPinPosition,
@@ -160,7 +160,7 @@ export const validateLink = (state, linkData) => {
   const patch = getPatchByNodeId(project, linkData[0].nodeId);
   const patchId = patch.id;
 
-  const nodes = getPreparedNodes(project, patchId);
+  const nodes = dereferencedNodes(project, patchId);
   const pins = getAllPinsFromNodes(nodes);
   const linksState = getLinks(project, patchId);
 
@@ -260,7 +260,7 @@ export const getLinkGhost = (state, patchId) => {
   if (!fromPin) { return null; }
 
   const project = getProject(state);
-  const nodes = getPreparedNodes(project, patchId);
+  const nodes = dereferencedNodes(project, patchId);
   const node = nodes[fromPin.nodeId];
   const pin = node.pins[fromPin.pinKey];
 

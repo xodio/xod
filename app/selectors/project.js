@@ -616,7 +616,7 @@ export const getPatchNodes = state => R.pipe(
   R.pickBy(R.propEq('isPatchNode', true))
 )(state);
 
-export const getPreparedNodeTypes = state => {
+export const dereferencedNodeTypes = state => {
   const patchNodes = getPatchNodes(state);
   const patchNodeTypes = R.pipe(
     R.values,
@@ -640,7 +640,7 @@ export const getPreparedNodeTypes = state => {
 };
 
 export const getPreparedNodeTypeByKey = (state, key) => R.pipe(
-  getPreparedNodeTypes,
+  dereferencedNodeTypes,
   R.prop(key)
 )(state);
 
@@ -667,7 +667,7 @@ export const getNodeLabel = (state, node) => {
   return String(nodeLabel);
 };
 const getNodePins = (state, typeId) => R.pipe(
-  getPreparedNodeTypes,
+  dereferencedNodeTypes,
   R.pickBy(R.propEq('key', typeId)),
   R.values,
   R.map(R.prop('pins')),
@@ -694,7 +694,7 @@ export const preparePins = (state, node) => {
   })(pins);
 };
 
-export const getPreparedNodes = (projectState, patchId) => {
+export const dereferencedNodes = (projectState, patchId) => {
   const nodes = getNodes(projectState, patchId);
 
   return R.pipe(
@@ -717,8 +717,8 @@ export const getPreparedNodes = (projectState, patchId) => {
   )(nodes);
 };
 
-export const getPreparedLinks = (projectState, patchId) => {
-  const nodes = getPreparedNodes(projectState, patchId);
+export const dereferencedLinks = (projectState, patchId) => {
+  const nodes = dereferencedNodes(projectState, patchId);
   const links = getLinks(projectState, patchId);
 
   return R.mapObjIndexed((link) => {
@@ -762,7 +762,7 @@ const getPinKeyByNodeId = (nodeId, patch) => R.pipe(
 export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
   const nodes = getNodes(projectState, patchId);
   const node = findById(nodeId, nodes);
-  const nodeTypes = getPreparedNodeTypes(projectState);
+  const nodeTypes = dereferencedNodeTypes(projectState);
   const nodeType = findByKey(node.typeId, nodeTypes);
   const isIO = (nodeType.category === NODE_CATEGORY.IO);
 

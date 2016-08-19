@@ -315,10 +315,10 @@ const mapStateToProps = (state) => {
   const curPatchId = Selectors.Editor.getCurrentPatchId(state);
 
   return {
-    nodes: Selectors.Project.getPreparedNodes(project, curPatchId),
-    links: Selectors.Project.getPreparedLinks(project, curPatchId),
+    nodes: Selectors.Project.dereferencedNodes(project, curPatchId),
+    links: Selectors.Project.dereferencedLinks(project, curPatchId),
     patch: Selectors.Project.getPatchById(project, curPatchId),
-    nodeTypes: Selectors.Project.getPreparedNodeTypes(state),
+    nodeTypes: Selectors.Project.dereferencedNodeTypes(state),
 
     selection: Selectors.Editor.getSelection(state),
     selectedNodeType: Selectors.Editor.getSelectedNodeType(state),

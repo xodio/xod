@@ -12,7 +12,7 @@ function pin(nodeId, pinKey) {
   return { nodeId, pinKey };
 }
 const mockStore = (state) => createStore(generateReducers([1]), state, applyMiddleware(thunk));
-const getNodeTypes = (state) => Selectors.Project.getPreparedNodeTypes(state);
+const getNodeTypes = (state) => Selectors.Project.dereferencedNodeTypes(state);
 const getPatchName = (pId, state) => state.project.patches[pId].present.name;
 const getPatchNodeName = (pId, state) =>
   `${Selectors.Project.getUserName()}/${getPatchName(pId, state)}`;

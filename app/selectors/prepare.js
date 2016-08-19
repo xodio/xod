@@ -1,8 +1,8 @@
 import R from 'ramda';
 import {
   getProject,
-  getPreparedNodes,
-  getPreparedNodeTypes,
+  dereferencedNodes,
+  dereferencedNodeTypes,
   getAllPinsFromNodes,
   getLastNodeId,
   getLastPinId,
@@ -37,7 +37,7 @@ export const addFolder = (projectState, name, parentId) => {
 
 export const addNode = (projectState, typeId, position, patchId) => {
   const newNodeId = getLastNodeId(projectState) + 1;
-  const nodeType = getPreparedNodeTypes(projectState)[typeId];
+  const nodeType = dereferencedNodeTypes(projectState)[typeId];
   const lastPinId = getLastPinId(projectState);
 
   return {
@@ -107,7 +107,7 @@ export const updateNodeProperty = (projectState, nodeId, propKey, propValue) => 
 export const addLink = (state, pin1, pin2) => {
   const projectState = getProject(state);
   const patch = getPatchByNodeId(projectState, pin1.nodeId);
-  const nodes = getPreparedNodes(projectState, patch.id);
+  const nodes = dereferencedNodes(projectState, patch.id);
   const pins = getAllPinsFromNodes(nodes);
 
   const eqProps = (link) => R.both(
