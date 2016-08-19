@@ -197,7 +197,7 @@ class Patch extends React.Component {
       return nodes;
     }
 
-    const pinsValidation = Selectors.Project.getValidPins(
+    const pinsValidation = Selectors.Editor.getValidPins(
       this.props.nodes,
       this.props.links,
       this.props.linkingPin
@@ -310,19 +310,25 @@ Patch.propTypes = {
   ghostLink: React.PropTypes.any,
 };
 
-const mapStateToProps = (state) => ({
-  nodes: Selectors.Project.getPreparedNodes(state),
-  links: Selectors.Project.getPreparedLinks(state),
-  patch: Selectors.Project.getCurrentPatch(state),
-  selection: Selectors.Editor.getSelection(state),
-  selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
-  patchId: Selectors.Editor.getCurrentPatchId(state),
-  mode: Selectors.Editor.getModeChecks(state),
-  linkingPin: Selectors.Editor.getLinkingPin(state),
-  nodeTypes: Selectors.Project.getPreparedNodeTypes(state),
-  ghostNode: Selectors.Project.getNodeGhost(state),
-  ghostLink: Selectors.Project.getLinkGhost(state),
-});
+const mapStateToProps = (state) => {
+  const project = Selectors.Project.getProject(state);
+  const curPatchId = Selectors.Editor.getCurrentPatchId(state);
+
+  return {
+    nodes: Selectors.Project.getPreparedNodes(project, curPatchId),
+    links: Selectors.Project.getPreparedLinks(project, curPatchId),
+    patch: Selectors.Project.getPatchById(project, curPatchId),
+    nodeTypes: Selectors.Project.getPreparedNodeTypes(state),
+
+    selection: Selectors.Editor.getSelection(state),
+    selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
+    patchId: Selectors.Editor.getCurrentPatchId(state),
+    mode: Selectors.Editor.getModeChecks(state),
+    linkingPin: Selectors.Editor.getLinkingPin(state),
+    ghostNode: Selectors.Editor.getNodeGhost(state, curPatchId),
+    ghostLink: Selectors.Editor.getLinkGhost(state, curPatchId),
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({

@@ -1,8 +1,28 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
+
+import * as PIN_VALIDITY from '../constants/pinValidity';
+import { LINK_ERRORS } from '../constants/errorMessages';
 import * as EDITOR_MODE from '../constants/editorModes';
 import * as ENTITY from '../constants/entities';
-import { getProject, getPatchById } from './project';
+import * as SIZES from '../constants/sizes';
+
+import {
+  arr2obj,
+  getProject,
+  getPatchById,
+  getPatchByNodeId,
+  getAllPinsFromNodes,
+  canPinHaveMoreLinks,
+  getPreparedNodeTypeByKey,
+  getPreparedNodes,
+  getLinks,
+  getNodeLabel,
+  getPinPosition,
+  getGroupedPinsWidth,
+  getNodeWidth,
+  addPinRadius,
+} from './project';
 
 export const getEditor = R.prop('editor');
 
@@ -92,7 +112,7 @@ export const getPreparedTabs = (state) => {
     getTabs,
     R.values,
     R.map((tab) => {
-      const patch = getPatchById(projectState, tab.patchId);
+      const patch = getPatchById(tab.patchId, projectState);
       return R.merge(
         tab,
         {
@@ -103,4 +123,151 @@ export const getPreparedTabs = (state) => {
     }),
     R.indexBy(R.prop('id'))
   )(state);
+};
+
+export const getValidPins = (nodes, links, forPin) => {
+  const allPins = getAllPinsFromNodes(nodes);
+  const oPin = R.find(
+    R.both(
+      R.propEq('nodeId', forPin.nodeId),
+      R.propEq('key', forPin.pinKey)
+    ),
+  allPins);
+
+  return R.map(pin => {
+    const sameNode = (pin.nodeId === oPin.nodeId);
+    const sameDirection = (pin.direction === oPin.direction);
+    const sameType = (pin.type === oPin.type);
+    const canHaveLink = canPinHaveMoreLinks(pin, links);
+
+    let validness = PIN_VALIDITY.INVALID;
+
+    if (!sameNode && canHaveLink) {
+      if (!sameDirection) { validness = PIN_VALIDITY.ALMOST; }
+      if (!sameDirection && sameType) { validness = PIN_VALIDITY.VALID; }
+    }
+
+    return {
+      nodeId: pin.nodeId,
+      pinKey: pin.key,
+      validness,
+    };
+  }, allPins);
+};
+
+export const validateLink = (state, linkData) => {
+  const project = getProject(state);
+  const patch = getPatchByNodeId(project, linkData[0].nodeId);
+  const patchId = patch.id;
+
+  const nodes = getPreparedNodes(project, patchId);
+  const pins = getAllPinsFromNodes(nodes);
+  const linksState = getLinks(project, patchId);
+
+  const eqProps = (data) => R.both(
+    R.propEq('nodeId', data.nodeId),
+    R.propEq('key', data.pinKey)
+  );
+  const findPin = R.compose(
+    R.flip(R.find)(pins),
+    eqProps
+  );
+
+  const pin1 = findPin(linkData[0]);
+  const pin2 = findPin(linkData[1]);
+
+  const sameDirection = pin1.direction === pin2.direction;
+  const sameNode = pin1.nodeId === pin2.nodeId;
+  const pin1CanHaveMoreLinks = canPinHaveMoreLinks(pin1, linksState);
+  const pin2CanHaveMoreLinks = canPinHaveMoreLinks(pin2, linksState);
+
+  const check = (
+    !sameDirection &&
+    !sameNode &&
+    pin1CanHaveMoreLinks &&
+    pin2CanHaveMoreLinks
+  );
+
+  const result = {
+    isValid: check,
+    message: 'Unknown error',
+  };
+
+  if (!check) {
+    if (sameDirection) {
+      result.message = LINK_ERRORS.SAME_DIRECTION;
+    } else
+    if (sameNode) {
+      result.message = LINK_ERRORS.SAME_NODE;
+    } else
+    if (!pin1CanHaveMoreLinks || !pin2CanHaveMoreLinks) {
+      result.message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
+    }
+  }
+
+  return result;
+};
+
+export const getNodeGhost = (state) => {
+  const nodeTypeId = getSelectedNodeType(state);
+  const isCreatingMode = getModeChecks(state).isCreatingNode;
+
+  if (!(isCreatingMode && nodeTypeId)) {
+    return null;
+  }
+
+  const project = getProject(state);
+  const nodePosition = { x: 0, y: 0 };
+  const nodeType = getPreparedNodeTypeByKey(project, nodeTypeId);
+  const nodeProperties = R.pipe(
+    R.prop('properties'),
+    R.values,
+    R.reduce((p, prop) => R.assoc(prop.key, prop.defaultValue, p), {})
+  )(nodeType);
+
+  const nodeLabel = getNodeLabel(state, { typeId: nodeTypeId, properties: nodeProperties });
+
+  let pinCount = -1;
+  const nodePins = R.pipe(
+    R.values,
+    R.map((pin) => {
+      const id = { id: pinCount };
+      const pos = getPinPosition(nodeType.pins, pin.key, nodePosition);
+      const radius = { radius: SIZES.PIN.radius };
+
+      pinCount--;
+
+      return R.mergeAll([pin, id, pos, radius]);
+    }),
+    arr2obj
+  )(nodeType.pins);
+
+  const pinsWidth = getGroupedPinsWidth(nodePins);
+  const nodeWidth = getNodeWidth(pinsWidth);
+  return {
+    id: -1,
+    label: nodeLabel,
+    typeId: nodeTypeId,
+    position: nodePosition,
+    pins: nodePins,
+    width: nodeWidth,
+    properties: nodeProperties,
+  };
+};
+
+export const getLinkGhost = (state, patchId) => {
+  const fromPin = getLinkingPin(state);
+  if (!fromPin) { return null; }
+
+  const project = getProject(state);
+  const nodes = getPreparedNodes(project, patchId);
+  const node = nodes[fromPin.nodeId];
+  const pin = node.pins[fromPin.pinKey];
+
+  return {
+    id: -1,
+    pins: [pin],
+    from: addPinRadius(pin.position),
+    to: { x: 0, y: 0 },
+  };
 };

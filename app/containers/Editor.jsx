@@ -97,15 +97,20 @@ Editor.propTypes = {
   p: React.PropTypes.any,
 };
 
-const mapStateToProps = (state) => ({
-  nodes: Selectors.Project.getPreparedNodes(state),
-  editor: Selectors.Editor.getEditor(state),
-  nodeTypes: Selectors.Project.getPreparedNodeTypes(state),
-  selection: Selectors.Editor.getSelection(state),
-  selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
-  currentPatchId: Selectors.Editor.getCurrentPatchId(state),
-  mode: Selectors.Editor.getModeChecks(state),
-});
+const mapStateToProps = (state) => {
+  const project = Selectors.Project.getProject(state);
+  const curPatchId = Selectors.Editor.getCurrentPatchId(state);
+
+  return {
+    nodes: Selectors.Project.getPreparedNodes(project, curPatchId),
+    nodeTypes: Selectors.Project.getPreparedNodeTypes(state),
+    editor: Selectors.Editor.getEditor(state),
+    selection: Selectors.Editor.getSelection(state),
+    selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
+    currentPatchId: curPatchId,
+    mode: Selectors.Editor.getModeChecks(state),
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
