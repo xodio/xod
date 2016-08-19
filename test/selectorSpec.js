@@ -46,7 +46,7 @@ describe('Link selector', () => {
     };
 
     function validate(pinFrom, pinTo) {
-      return Selectors.Project.validateLink(state, [pinFrom, pinTo]);
+      return Selectors.Editor.validateLink(state, [pinFrom, pinTo]);
     }
 
     function expectOk(pinFrom, pinTo) {
