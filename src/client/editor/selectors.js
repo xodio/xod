@@ -19,7 +19,7 @@ import {
   getGroupedPinsWidth,
   getNodeWidth,
   addPinRadius,
-} from './project';
+} from 'xod/client/selectors/project';
 
 export const getEditor = R.prop('editor');
 

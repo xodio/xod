@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as Actions from '../actions';
+import * as EditorActions from 'xod/client/editor/actions'; // @TODO: remove it!
 import Selectors from '../selectors';
 import { findRootSVG } from '../utils/browser';
 
@@ -335,14 +336,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
-    addAndSelectNode: Actions.addAndSelectNode,
+    addAndSelectNode: EditorActions.addAndSelectNode,
     moveNode: Actions.moveNode,
     dragNode: Actions.dragNode,
-    deselectAll: Actions.deselectAll,
-    deleteSelection: Actions.deleteSelection,
-    selectLink: Actions.selectLink,
-    selectNode: Actions.selectNode,
-    linkPin: Actions.linkPin,
+    deselectAll: EditorActions.deselectAll,
+    deleteSelection: EditorActions.deleteSelection,
+    selectLink: EditorActions.selectLink,
+    selectNode: EditorActions.selectNode,
+    linkPin: EditorActions.linkPin,
   }, dispatch),
 });
 

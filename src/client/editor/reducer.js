@@ -10,8 +10,8 @@ import {
   EDITOR_SWITCH_PATCH,
   TAB_CLOSE,
   TAB_SORT,
-} from '../actionTypes';
-import * as ENTITIES from '../constants/entities';
+} from './actionTypes';
+import * as ENTITIES from 'xod/client/constants/entities';
 
 const addSelection = (entityName, action, state) => {
   const select = {
@@ -50,7 +50,7 @@ const applyTabSort = (tab, payload) => {
 const tabHasPatch = (state, patchId) =>
   R.find(R.propEq('patchId', patchId))(R.values(state.tabs));
 
-export const editor = (state = {}, action) => {
+const editorReducer = (state = {}, action) => {
   switch (action.type) {
     case NODE_DELETE:
     case EDITOR_DESELECT_ALL:
@@ -91,3 +91,5 @@ export const editor = (state = {}, action) => {
       return state;
   }
 };
+
+export default editorReducer;

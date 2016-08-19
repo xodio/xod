@@ -1,10 +1,7 @@
-import R from 'ramda';
 import * as ActionType from './actionTypes';
 import * as STATUS from './constants/statuses';
-import * as EDITOR_MODE from './constants/editorModes';
 import Selectors from './selectors';
 import { uploadToEspruino } from 'xod/utils/espruino';
-
 
 const getTimestamp = () => new Date().getTime();
 
@@ -99,139 +96,6 @@ export const updateMeta = (data) => ({
   payload: data,
 });
 
-export const setNodeSelection = (id) => ({
-  type: ActionType.EDITOR_SELECT_NODE,
-  payload: {
-    id,
-  },
-});
-
-export const setPinSelection = (nodeId, pinKey) => ({
-  type: ActionType.EDITOR_SELECT_PIN,
-  payload: {
-    nodeId,
-    pinKey,
-  },
-});
-
-export const setLinkSelection = (id) => ({
-  type: ActionType.EDITOR_SELECT_LINK,
-  payload: {
-    id,
-  },
-});
-
-export const setMode = (mode) => (dispatch, getState) => {
-  if (Selectors.Editor.getMode(getState()) === mode) {
-    return;
-  }
-
-  dispatch({
-    type: ActionType.EDITOR_SET_MODE,
-    payload: {
-      mode,
-    },
-  });
-};
-
-export const deselectAll = () => (dispatch, getState) => {
-  const state = getState();
-  if (!Selectors.Editor.hasSelection(state)) { return; }
-
-  dispatch({
-    type: ActionType.EDITOR_DESELECT_ALL,
-    payload: {},
-  });
-  if (!Selectors.Editor.getModeChecks(state).isDefault) {
-    dispatch(setMode(EDITOR_MODE.DEFAULT));
-  }
-};
-
-export const selectNode = (id) => (dispatch, getState) => {
-  const state = getState();
-  const selection = Selectors.Editor.getSelection(state);
-  const isSelected = Selectors.Editor.isNodeSelected(selection, id);
-  const deselect = dispatch(deselectAll());
-  const result = [];
-  if (deselect) {
-    result.push(deselect);
-  }
-
-  if (!isSelected) {
-    result.push(dispatch(setNodeSelection(id)));
-  }
-
-  return result;
-};
-
-export const addAndSelectNode = (typeId, position, curPatchId) => (dispatch, getState) => {
-  dispatch(addNode(typeId, position, curPatchId));
-  dispatch(setMode(EDITOR_MODE.DEFAULT));
-
-  const newId = Selectors.Project.getLastNodeId(getState());
-  dispatch(selectNode(newId));
-};
-
-export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
-  const data = {
-    nodeId,
-    pinKey,
-  };
-  const state = getState();
-  const selected = state.editor.linkingPin;
-  const deselect = dispatch(deselectAll());
-  const result = [];
-  if (deselect) {
-    result.push(deselect);
-  }
-
-  const pins = [selected, data];
-
-  if (R.equals(selected, data)) {
-    // linking a pin to itself
-    return result;
-  }
-
-  let action;
-
-  if (selected) {
-    const validation = Selectors.Project.validateLink(state, pins);
-    action = validation.isValid ?
-      addLink(pins[0], pins[1]) :
-      addError({ message: validation.message });
-    dispatch(setMode(EDITOR_MODE.DEFAULT));
-  } else {
-    dispatch(setMode(EDITOR_MODE.LINKING));
-    action = setPinSelection(nodeId, pinKey);
-  }
-
-  return R.append(dispatch(action), result);
-};
-
-export const selectLink = (id) => (dispatch, getState) => {
-  const state = getState();
-  const selection = Selectors.Editor.getSelection(state);
-  const isSelected = Selectors.Editor.isLinkSelected(selection, id);
-  const deselect = dispatch(deselectAll());
-  const result = [];
-  if (deselect) {
-    result.push(deselect);
-  }
-
-  if (!isSelected) {
-    result.push(dispatch(setLinkSelection(id)));
-  }
-
-  return result;
-};
-
-export const setSelectedNodeType = (id) => ({
-  type: ActionType.EDITOR_SET_SELECTED_NODETYPE,
-  payload: {
-    id,
-  },
-});
-
 export const updateNodeProperty = (nodeId, propKey, propValue) => (dispatch, getState) => {
   const projectState = Selectors.Project.getProject(getState());
   const preparedData = Selectors.Prepare.updateNodeProperty(
@@ -311,20 +175,6 @@ export const deleteProcess = (id, type) => ({
   },
 });
 
-export const deleteSelection = () => (dispatch, getState) => {
-  const selection = Selectors.Editor.getSelection(getState());
-  const DELETE_ACTIONS = {
-    Node: deleteNode,
-    Link: deleteLink,
-  };
-
-  selection.forEach((select) => {
-    dispatch(
-      DELETE_ACTIONS[select.entity](select.id)
-    );
-  });
-};
-
 export const undoPatch = (id) => ({
   type: ActionType.getPatchUndoType(id),
   payload: {},
@@ -339,18 +189,6 @@ export const clearHistoryPatch = (id) => ({
   type: ActionType.getPatchClearHistoryType(id),
   payload: {},
 });
-
-export const switchPatch = (id) => (dispatch, getState) => {
-  if (Selectors.Editor.getCurrentPatchId(getState()) === id) { return; }
-
-  dispatch(deselectAll());
-  dispatch({
-    type: ActionType.EDITOR_SWITCH_PATCH,
-    payload: {
-      id,
-    },
-  });
-};
 
 export const addPatch = (name, folderId) => (dispatch, getState) => {
   const projectState = Selectors.Project.getProject(getState());
