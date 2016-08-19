@@ -1,5 +1,5 @@
 import chai from 'chai';
-import initialState from '../app/state';
+import initialState from '../src/client/state';
 
 describe('Initial state', () => {
   describe('should have reducers:', () => {

@@ -1,8 +1,8 @@
 
 import R from 'ramda';
-import { sortGraph } from '../../app/utils/gmath';
-import * as PIN_DIRECTION from '../../app/constants/pinDirection';
-import * as PIN_TYPE from '../../app/constants/pinType';
+import { sortGraph } from '../../utils/gmath';
+import * as PIN_DIRECTION from '../../client/constants/pinDirection';
+import * as PIN_TYPE from '../../client/constants/pinType';
 
 // From: https://github.com/ramda/ramda/wiki/Cookbook#rename-keys-of-an-object
 /**

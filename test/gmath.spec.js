@@ -1,6 +1,6 @@
 
 import { expect } from 'chai';
-import { sortGraph } from 'utils/gmath';
+import { sortGraph } from '../src/utils/gmath';
 
 describe('Graph math', () => {
   describe('Topological sorting', () => {

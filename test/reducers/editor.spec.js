@@ -3,11 +3,11 @@ import chai from 'chai';
 import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
-import * as Actions from '../../app/actions';
-import { EDITOR_SET_MODE } from '../../app/actionTypes';
-import projectReducer from '../../app/reducers/project';
-import { editor } from '../../app/reducers/editor';
-import * as EDITOR_MODE from '../../app/constants/editorModes';
+import * as Actions from '../../src/client/actions';
+import { EDITOR_SET_MODE } from '../../src/client/actionTypes';
+import projectReducer from '../../src/client/reducers/project';
+import { editor } from '../../src/client/reducers/editor';
+import * as EDITOR_MODE from '../../src/client/constants/editorModes';
 
 const mockStore = configureStore([thunk]);
 const testStore = (state) => createStore(

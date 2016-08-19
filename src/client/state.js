@@ -6,30 +6,30 @@ import * as PIN_DIRECTION from './constants/pinDirection';
 
 /* eslint-disable global-require */
 const nodeMetas = {
-  'core/button': require('../nodes/meta/button.json5'),
-  'core/constBool': require('../nodes/meta/constBool.json5'),
-  'core/constNumber': require('../nodes/meta/constNumber.json5'),
-  'core/constString': require('../nodes/meta/constString.json5'),
-  'core/either': require('../nodes/meta/either.json5'),
-  'core/latch': require('../nodes/meta/latch.json5'),
-  'core/led': require('../nodes/meta/led.json5'),
-  'core/map': require('../nodes/meta/map.json5'),
-  'core/not': require('../nodes/meta/not.json5'),
-  'core/pot': require('../nodes/meta/pot.json5'),
-  'core/servo': require('../nodes/meta/servo.json5'),
-  'core/inputBool': require('../nodes/meta/inputBool.json5'),
-  'core/inputNumber': require('../nodes/meta/inputNumber.json5'),
-  'core/inputString': require('../nodes/meta/inputString.json5'),
-  'core/outputBool': require('../nodes/meta/outputBool.json5'),
-  'core/outputNumber': require('../nodes/meta/outputNumber.json5'),
-  'core/outputString': require('../nodes/meta/outputString.json5'),
+  'core/button': require('../../nodes/meta/button.json5'),
+  'core/constBool': require('../../nodes/meta/constBool.json5'),
+  'core/constNumber': require('../../nodes/meta/constNumber.json5'),
+  'core/constString': require('../../nodes/meta/constString.json5'),
+  'core/either': require('../../nodes/meta/either.json5'),
+  'core/latch': require('../../nodes/meta/latch.json5'),
+  'core/led': require('../../nodes/meta/led.json5'),
+  'core/map': require('../../nodes/meta/map.json5'),
+  'core/not': require('../../nodes/meta/not.json5'),
+  'core/pot': require('../../nodes/meta/pot.json5'),
+  'core/servo': require('../../nodes/meta/servo.json5'),
+  'core/inputBool': require('../../nodes/meta/inputBool.json5'),
+  'core/inputNumber': require('../../nodes/meta/inputNumber.json5'),
+  'core/inputString': require('../../nodes/meta/inputString.json5'),
+  'core/outputBool': require('../../nodes/meta/outputBool.json5'),
+  'core/outputNumber': require('../../nodes/meta/outputNumber.json5'),
+  'core/outputString': require('../../nodes/meta/outputString.json5'),
 };
 /* eslint-enable global-require */
 
 function loadImpl(platform, key, ext) {
   try {
     /* eslint-disable global-require, prefer-template */
-    return require('!raw!../nodes/' + platform + '/' + key.replace('core/', '') + ext);
+    return require('!raw!../../nodes/' + platform + '/' + key.replace('core/', '') + ext);
     /* eslint-enable global-require, prefer-template */
   } catch (err) {
     if (/Cannot find module/.test(err)) {

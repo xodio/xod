@@ -1,7 +1,7 @@
 
 import EventEmitter from 'events';
 import { expect } from 'chai';
-import { Node, Project } from 'xod-espruino/runtime';
+import { Node, Project } from '../../src/runtime/xod-espruino/runtime';
 
 describe('Runtime', () => {
   before(() => {
