@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import projectReducer from './project';
+import projectReducer from 'xod/client/project/reducer';
 import editorReducer from 'xod/client/editor/reducer';
 import { errorsReducer } from './errors';
 import { processesReducer } from './processes';
