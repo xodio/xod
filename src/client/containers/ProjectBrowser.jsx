@@ -7,7 +7,7 @@ import Selectors from '../selectors';
 
 import { HotKeys } from 'react-hotkeys';
 import CMD from '../constants/commands';
-import { findParentByClassName } from '../utils/browser';
+import { findParentByClassName } from 'xod/client/utils/browser';
 
 import ProjectBrowserTree from '../components/ProjectBrowserTree';
 import ProjectBrowserToolbar from '../components/ProjectBrowserToolbar';

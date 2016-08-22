@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
 
 import EventListener from 'react-event-listener';
-import { ESCAPE } from '../constants/keycodes';
+import { ESCAPE } from 'xod/client/constants/keycodes';
 
 const PopupConfirm = ({
   title,

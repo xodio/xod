@@ -1,10 +1,10 @@
 import R from 'ramda';
 import React from 'react';
 
-import SVGLayer from '../components/SVGLayer';
-import Node from '../components/Node';
-import Link from '../components/Link';
-import { GHOSTS as LAYER_NAME } from '../constants/layers';
+import SVGLayer from './SVGLayer';
+import Node from './Node';
+import Link from './Link';
+import { GHOSTS as LAYER_NAME } from 'xod/client/constants/layers';
 
 class GhostLayer extends React.Component {
   constructor(props) {

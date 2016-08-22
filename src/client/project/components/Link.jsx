@@ -1,8 +1,8 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import * as SIZES from '../constants/sizes';
-import Stylizer from '../utils/stylizer';
+import * as SIZES from 'xod/client/constants/sizes';
+import Stylizer from 'xod/client/utils/stylizer';
 
 const linkStyles = {
   line: {

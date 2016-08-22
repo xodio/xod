@@ -10,10 +10,10 @@ import { HotKeys } from 'react-hotkeys';
 import CMD from 'xod/client/constants/commands';
 
 
-import Patch from 'xod/client/containers/Patch';
+import Patch from './Patch';
 import ProjectBrowser from 'xod/client/containers/ProjectBrowser';
 import Sidebar from 'xod/client/components/Sidebar';
-import Workarea from 'xod/client/components/Workarea';
+import Workarea from 'xod/client/utils/components/Workarea';
 
 import Tabs from '../containers/Tabs';
 import Inspector from '../components/Inspector';
@@ -77,6 +77,7 @@ class Editor extends React.Component {
         <Workarea>
           <Tabs />
           <Patch
+            patchId={this.props.currentPatchId}
             size={this.patchSize}
           />
         </Workarea>

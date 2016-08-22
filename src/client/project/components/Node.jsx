@@ -2,10 +2,10 @@
 import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
-import Pin from '../components/Pin';
-import NodeText from '../components/NodeText';
+import Pin from './Pin';
+import NodeText from './NodeText';
 
-import * as SIZES from '../constants/sizes';
+import * as SIZES from 'xod/client/constants/sizes';
 
 class Node extends React.Component {
   constructor(props) {

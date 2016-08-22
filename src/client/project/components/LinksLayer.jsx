@@ -1,7 +1,7 @@
 import React from 'react';
 import SVGLayer from './SVGLayer';
 import Link from './Link';
-import { LINKS as LAYER_NAME } from '../constants/layers';
+import { LINKS as LAYER_NAME } from 'xod/client/constants/layers';
 
 const LinksLayer = ({ links, onClick }) => (
   <SVGLayer

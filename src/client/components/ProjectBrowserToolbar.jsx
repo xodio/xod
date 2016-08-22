@@ -5,8 +5,8 @@ import CMD from '../constants/commands';
 import { PROJECT_BROWSER_ERRORS } from '../constants/errorMessages';
 
 import { Icon } from 'react-fa';
-import PopupPrompt from '../components/PopupPrompt';
-import PopupConfirm from '../components/PopupConfirm';
+import PopupPrompt from 'xod/client/utils/components/PopupPrompt';
+import PopupConfirm from 'xod/client/utils/components/PopupConfirm';
 
 const initialState = {
   renaming: false,

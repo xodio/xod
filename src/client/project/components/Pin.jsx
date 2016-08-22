@@ -1,8 +1,8 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import * as PIN_DIRECTION from '../constants/pinDirection';
-import * as PIN_VALIDITY from '../constants/pinValidity';
+import * as PIN_DIRECTION from 'xod/client/constants/pinDirection';
+import * as PIN_VALIDITY from 'xod/client/constants/pinValidity';
 
 
 export default class Pin extends React.Component {

@@ -3,19 +3,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as Actions from '../actions';
+import * as ProjectActions from 'xod/client/project/actions';
 import * as EditorActions from 'xod/client/editor/actions'; // @TODO: remove it!
-import Selectors from '../selectors';
-import { findRootSVG } from '../utils/browser';
+import Selectors from 'xod/client/selectors';
+import { findRootSVG } from 'xod/client/utils/browser';
 
 import { HotKeys } from 'react-hotkeys';
-import CMD from '../constants/commands';
+import CMD from 'xod/client/constants/commands';
 
-import PatchSVG from '../components/PatchSVG';
-import BackgroundLayer from '../components/BackgroundLayer';
-import NodesLayer from '../components/NodesLayer';
-import LinksLayer from '../components/LinksLayer';
-import GhostsLayer from '../components/GhostsLayer';
+import PatchSVG from 'xod/client/project/components/PatchSVG';
+import BackgroundLayer from 'xod/client/project/components/BackgroundLayer';
+import NodesLayer from 'xod/client/project/components/NodesLayer';
+import LinksLayer from 'xod/client/project/components/LinksLayer';
+import GhostsLayer from 'xod/client/project/components/GhostsLayer';
 
 class Patch extends React.Component {
   constructor(props) {
@@ -337,8 +337,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     addAndSelectNode: EditorActions.addAndSelectNode,
-    moveNode: Actions.moveNode,
-    dragNode: Actions.dragNode,
+    moveNode: ProjectActions.moveNode,
+    dragNode: ProjectActions.dragNode,
     deselectAll: EditorActions.deselectAll,
     deleteSelection: EditorActions.deleteSelection,
     selectLink: EditorActions.selectLink,
