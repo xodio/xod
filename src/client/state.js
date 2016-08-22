@@ -1,7 +1,7 @@
 
 import R from 'ramda';
 
-import { state as editorState } from 'xod/client/editor';
+import editorState from 'xod/client/editor/state';
 import * as PIN_DIRECTION from './constants/pinDirection';
 
 /* eslint-disable global-require */
