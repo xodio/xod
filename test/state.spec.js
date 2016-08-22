@@ -1,5 +1,5 @@
 import chai from 'chai';
-import initialState from '../src/client/state';
+import initialState from '../src/client/app-browser/state';
 
 describe('Initial state', () => {
   describe('should have reducers:', () => {

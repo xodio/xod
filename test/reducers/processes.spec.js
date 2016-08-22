@@ -1,6 +1,6 @@
 import chai from 'chai';
-import { processesReducer as reducer } from '../../src/client/reducers/processes';
-import { getLastId } from '../../src/client/selectors/processes';
+import { default as reducer } from '../../src/client/processes/reducer';
+import { getLastId } from '../../src/client/processes/selectors';
 import * as STATUS from '../../src/client/constants/statuses';
 
 describe('Processes reducer', () => {

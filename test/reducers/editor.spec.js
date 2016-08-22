@@ -8,7 +8,7 @@ import * as Actions from '../../src/client/editor/actions';
 import editorReducer from '../../src/client/editor/reducer';
 import { EDITOR_SET_MODE } from '../../src/client/editor/actionTypes';
 
-import projectReducer from '../../src/client/reducers/project';
+import projectReducer from '../../src/client/project/reducer';
 import { EDITOR_MODE } from '../../src/client/editor/constants';
 
 const mockStore = configureStore([thunk]);

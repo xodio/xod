@@ -1,7 +1,7 @@
 import R from 'ramda';
 import chai from 'chai';
-import initialState from '../src/client/state';
-import Selectors from '../src/client/selectors';
+import initialState from '../src/client/app-browser/state';
+import Selectors from '../src/client/app-browser/selectors';
 import * as PIN_TYPE from '../src/client/constants/pinType';
 import * as PIN_DIRECTION from '../src/client/constants/pinDirection';
 import { LINK_ERRORS } from '../src/client/constants/errorMessages';
