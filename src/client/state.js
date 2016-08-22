@@ -1,7 +1,7 @@
 
 import R from 'ramda';
 
-import { EDITOR_MODE } from 'xod/client/editor/constants';
+import { state as editorState } from 'xod/client/editor';
 import * as PIN_DIRECTION from './constants/pinDirection';
 
 /* eslint-disable global-require */
@@ -110,21 +110,7 @@ const initialState = {
       folders: 0,
     },
   },
-  editor: {
-    currentPatchId: 1,
-    mode: EDITOR_MODE.EDITING,
-    dragging: null,
-    selection: [],
-    linkingPin: null,
-    selectedNodeType: 'core/button',
-    tabs: {
-      1: {
-        id: 1,
-        patchId: 1,
-        index: 0,
-      },
-    },
-  },
+  editor: editorState,
   errors: {},
   processes: {},
 };

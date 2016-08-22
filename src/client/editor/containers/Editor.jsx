@@ -4,17 +4,18 @@ import { bindActionCreators } from 'redux';
 
 import * as Actions from '../actions';
 import { EDITOR_MODE } from 'xod/client/editor/constants';
-import Selectors from '../selectors';
+import Selectors from 'xod/client/selectors';
 
 import { HotKeys } from 'react-hotkeys';
-import CMD from '../constants/commands';
+import CMD from 'xod/client/constants/commands';
 
 
-import Patch from './Patch';
-import ProjectBrowser from './ProjectBrowser';
-import Tabs from './Tabs';
-import Sidebar from '../components/Sidebar';
-import Workarea from '../components/Workarea';
+import Patch from 'xod/client/containers/Patch';
+import ProjectBrowser from 'xod/client/containers/ProjectBrowser';
+import Sidebar from 'xod/client/components/Sidebar';
+import Workarea from 'xod/client/components/Workarea';
+
+import Tabs from '../containers/Tabs';
 import Inspector from '../components/Inspector';
 
 class Editor extends React.Component {

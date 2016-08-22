@@ -1,5 +1,5 @@
 import React from 'react';
-import CreateNodeWidget from './CreateNodeWidget';
+import CreateNodeWidget from 'xod/client/editor/components/CreateNodeWidget';
 
 class Toolbar extends React.Component {
   constructor(props) {

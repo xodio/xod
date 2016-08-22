@@ -1,6 +1,6 @@
 import R from 'ramda';
 import React from 'react';
-import { ENTER, ESCAPE, DOT, COMMA, UP, DOWN } from '../../constants/keycodes';
+import { ENTER, ESCAPE, DOT, COMMA, UP, DOWN } from 'xod/client/constants/keycodes';
 
 class NumberWidget extends React.Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import R from 'ramda';
 import React from 'react';
-import { ENTER, ESCAPE } from '../../constants/keycodes';
+import { ENTER, ESCAPE } from 'xod/client/constants/keycodes';
 
 class StringWidget extends React.Component {
   constructor(props) {

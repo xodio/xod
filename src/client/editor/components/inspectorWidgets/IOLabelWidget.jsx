@@ -1,6 +1,6 @@
 import R from 'ramda';
 import React from 'react';
-import { ENTER, ESCAPE } from '../../constants/keycodes';
+import { ENTER, ESCAPE } from 'xod/client/constants/keycodes';
 
 class IOLabelWidget extends React.Component {
   constructor(props) {

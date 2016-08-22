@@ -8,14 +8,13 @@ import * as Actions from '../actions';
 import { UPLOAD as UPLOAD_ACTION_TYPE } from '../actionTypes';
 import Selectors from '../selectors';
 import { getViewableSize, isChromeApp } from '../utils/browser';
-import { EDITOR_MODE } from 'xod/client/editor/constants';
 import { SAVE_LOAD_ERRORS } from '../constants/errorMessages';
 import { BACKSPACE } from '../constants/keycodes';
 
 import { HotKeys } from 'react-hotkeys';
 import hotkeysKeymap from '../constants/hotkeys';
 
-import Editor from './Editor';
+import { constants as EDITOR_CONST, container as Editor } from 'xod/client/editor';
 import SnackBar from './SnackBar';
 import Toolbar from '../components/Toolbar';
 import PopupInstallApp from '../components/PopupInstallApp';
@@ -114,7 +113,7 @@ class App extends React.Component {
   }
 
   onAddNodeClick() {
-    this.props.actions.setMode(EDITOR_MODE.CREATING_NODE);
+    this.props.actions.setMode(EDITOR_CONST.EDITOR_MODE.CREATING_NODE);
   }
 
   onUploadPopupClose(id) {

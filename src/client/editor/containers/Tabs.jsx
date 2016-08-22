@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
-import Selectors from '../selectors';
+import Selectors from 'xod/client/selectors';
 
 import TabsContainer from '../components/TabsContainer';
 import TabsItem from '../components/TabsItem';

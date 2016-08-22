@@ -1,8 +1,8 @@
 import R from 'ramda';
 import React from 'react';
 import Widgets from './inspectorWidgets';
-import * as ENTITIES from '../constants/entities';
-import { PROPERTY_TYPE } from '../constants/property';
+import * as ENTITIES from 'xod/client/constants/entities';
+import { PROPERTY_TYPE } from 'xod/client/constants/property';
 
 const widgetAccordance = {
   [ENTITIES.NODE]: {
