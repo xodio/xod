@@ -5,7 +5,7 @@ import * as ActionType from './actionTypes';
 import * as Selectors from './selectors';
 
 // @TODO: Change path to pod:
-import * as SelectorsProject from 'xod/client/selectors/project';
+import * as SelectorsProject from 'xod/client/project/selectors';
 import {
   addNode,
   addLink,

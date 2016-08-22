@@ -1,10 +1,10 @@
 import R from 'ramda';
 
-import * as PIN_DIRECTION from '../constants/pinDirection';
-import { LINK_ERRORS, NODETYPE_ERRORS } from '../constants/errorMessages';
-import { PROPERTY_TYPE } from '../constants/property';
-import * as SIZES from '../constants/sizes';
-import * as NODE_CATEGORY from '../constants/nodeCategory';
+import * as PIN_DIRECTION from 'xod/client/constants/pinDirection';
+import { LINK_ERRORS, NODETYPE_ERRORS } from 'xod/client/constants/errorMessages';
+import { PROPERTY_TYPE } from 'xod/client/constants/property';
+import * as SIZES from 'xod/client/constants/sizes';
+import * as NODE_CATEGORY from 'xod/client/constants/nodeCategory';
 
 export const getUserName = () => 'Bob';
 
@@ -843,3 +843,129 @@ export const validateLink = (state, linkData) => {
 
   return result;
 };
+
+export const prepareToAddPatch = (projectState, name, folderId) => {
+  const newId = getLastPatchId(projectState) + 1;
+
+  return {
+    newId,
+    name,
+    folderId,
+  };
+};
+
+export const prepareToAddFolder = (projectState, name, parentId) => {
+  const newId = getLastFolderId(projectState) + 1;
+
+  return {
+    newId,
+    name,
+    parentId,
+  };
+};
+
+export const prepareToAddNode = (projectState, typeId, position, patchId) => {
+  const newNodeId = getLastNodeId(projectState) + 1;
+  const nodeType = dereferencedNodeTypes(projectState)[typeId];
+  const lastPinId = getLastPinId(projectState);
+
+  return {
+    payload: {
+      typeId,
+      position,
+      nodeType,
+      newNodeId,
+      lastPinId,
+    },
+    meta: {
+      patchId,
+    },
+  };
+};
+
+export const prepareToDeleteNode = (projectState, id) => {
+  const patch = getPatchByNodeId(projectState, id);
+  const linksToDelete = getLinksToDeleteWithNode(projectState, id, patch.id);
+
+  const nodeTypeToDelete = getNodeTypeToDeleteWithNode(projectState, id, patch.id);
+
+  return {
+    payload: {
+      id,
+      links: linksToDelete,
+      nodeType: nodeTypeToDelete,
+    },
+    meta: {
+      patchId: patch.id,
+    },
+  };
+};
+
+export const prepareToMoveNode = (projectState, id, position) => {
+  const patchId = getPatchByNodeId(projectState, id).id;
+
+  return {
+    payload: {
+      id,
+      position,
+    },
+    meta: {
+      patchId,
+    },
+  };
+};
+
+export const prepareToDragNode = (projectState, id, position) =>
+  R.assocPath(['meta', 'skipHistory'], true, prepareToMoveNode(projectState, id, position));
+
+export const prepareToUpdateNodeProperty = (projectState, nodeId, propKey, propValue) => {
+  const patchId = getPatchByNodeId(projectState, nodeId).id;
+
+  return {
+    payload: {
+      id: nodeId,
+      key: propKey,
+      value: propValue,
+    },
+    meta: {
+      patchId,
+    },
+  };
+};
+
+export const prepareToAddLink = (state, pin1, pin2) => {
+  const projectState = getProject(state);
+  const patch = getPatchByNodeId(projectState, pin1.nodeId);
+  const nodes = dereferencedNodes(projectState, patch.id);
+  const pins = getAllPinsFromNodes(nodes);
+
+  const eqProps = (link) => R.both(
+    R.propEq('nodeId', link.nodeId),
+    R.propEq('key', link.pinKey)
+  );
+  const findPin = R.compose(
+    R.flip(R.find)(pins),
+    eqProps
+  );
+  const isOutput = R.propEq('direction', PIN_DIRECTION.OUTPUT);
+
+  const fpin1 = findPin(pin1);
+  const isOutputData1 = isOutput(fpin1);
+
+  const fromPin = (isOutputData1) ? pin1 : pin2;
+  const toPin = (isOutputData1) ? pin2 : pin1;
+
+  const patchId = patch.id;
+  const newId = getLastLinkId(projectState) + 1;
+
+  return {
+    payload: {
+      newId,
+      pins: [fromPin, toPin],
+    },
+    meta: {
+      patchId,
+    },
+  };
+};
+

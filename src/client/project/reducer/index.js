@@ -1,4 +1,4 @@
-import applyReducers from '../utils/applyReducers';
+import applyReducers from 'xod/client/utils/applyReducers';
 
 import { meta } from './meta';
 import { patches } from './patches';
@@ -10,7 +10,7 @@ import {
   PROJECT_LOAD_DATA,
 } from '../actionTypes';
 
-import { parseProjectJSON } from '../selectors/project';
+import { parseProjectJSON } from '../selectors';
 
 export default (patchIds) => {
   const reducers = {
