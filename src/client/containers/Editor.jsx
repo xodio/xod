@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as Actions from '../actions';
-import * as EditorActions from 'xod/client/editor/actions'; // @TODO: remove it!
+import { EDITOR_MODE } from 'xod/client/editor/constants';
 import Selectors from '../selectors';
-import * as EDITOR_MODE from '../constants/editorModes';
 
 import { HotKeys } from 'react-hotkeys';
 import CMD from '../constants/commands';
@@ -115,8 +114,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
-    setMode: EditorActions.setMode,
-    setSelectedNodeType: EditorActions.setSelectedNodeType,
+    setMode: Actions.setMode,
+    setSelectedNodeType: Actions.setSelectedNodeType,
     updateNodeProperty: Actions.updateNodeProperty,
     undo: Actions.undoPatch,
     redo: Actions.redoPatch,

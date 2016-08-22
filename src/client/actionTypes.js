@@ -9,9 +9,6 @@ export const LINK_DELETE = 'LINK_DELETE';
 export const META_UPDATE = 'META_UPDATE';
 export const VIEWSTATE_UPDATE = 'VIEWSTATE_UPDATE';
 
-export const TAB_CLOSE = 'TAB_CLOSE';
-export const TAB_SORT = 'TAB_SORT';
-
 export const PROJECT_LOAD_DATA = 'PROJECT_LOAD_DATA';
 
 export const FOLDER_ADD = 'FOLDER_ADD';

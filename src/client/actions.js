@@ -3,6 +3,23 @@ import * as STATUS from './constants/statuses';
 import Selectors from './selectors';
 import { uploadToEspruino } from 'xod/utils/espruino';
 
+export {
+  setNodeSelection,
+  setPinSelection,
+  setLinkSelection,
+  setMode,
+  deselectAll,
+  selectNode,
+  addAndSelectNode,
+  linkPin,
+  selectLink,
+  setSelectedNodeType,
+  deleteSelection,
+  switchPatch,
+  closeTab,
+  sortTabs,
+} from 'xod/client/editor/actions';
+
 const getTimestamp = () => new Date().getTime();
 
 export const addError = (error) => ({
@@ -265,16 +282,4 @@ export const moveFolder = (changes) => ({
     id: changes.id,
     parentId: changes.parentId,
   },
-});
-
-export const closeTab = (id) => ({
-  type: ActionType.TAB_CLOSE,
-  payload: {
-    id,
-  },
-});
-
-export const sortTabs = (newOrderObject) => ({
-  type: ActionType.TAB_SORT,
-  payload: newOrderObject,
 });

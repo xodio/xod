@@ -1,8 +1,9 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
 
+import { EDITOR_MODE } from './constants';
+
 import * as PIN_VALIDITY from '../constants/pinValidity';
-import * as EDITOR_MODE from '../constants/editorModes';
 import * as ENTITY from '../constants/entities';
 import * as SIZES from '../constants/sizes';
 

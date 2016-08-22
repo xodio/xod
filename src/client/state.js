@@ -1,7 +1,7 @@
 
 import R from 'ramda';
 
-import * as EDITOR_MODE from './constants/editorModes';
+import { EDITOR_MODE } from 'xod/client/editor/constants';
 import * as PIN_DIRECTION from './constants/pinDirection';
 
 /* eslint-disable global-require */

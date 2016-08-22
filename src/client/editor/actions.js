@@ -172,3 +172,15 @@ export const switchPatch = (id) => (dispatch, getState) => {
     },
   });
 };
+
+export const closeTab = (id) => ({
+  type: ActionType.TAB_CLOSE,
+  payload: {
+    id,
+  },
+});
+
+export const sortTabs = (newOrderObject) => ({
+  type: ActionType.TAB_SORT,
+  payload: newOrderObject,
+});

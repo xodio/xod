@@ -8,7 +8,7 @@ import * as Actions from '../actions';
 import { UPLOAD as UPLOAD_ACTION_TYPE } from '../actionTypes';
 import Selectors from '../selectors';
 import { getViewableSize, isChromeApp } from '../utils/browser';
-import * as EDITOR_MODE from '../constants/editorModes';
+import { EDITOR_MODE } from 'xod/client/editor/constants';
 import { SAVE_LOAD_ERRORS } from '../constants/errorMessages';
 import { BACKSPACE } from '../constants/keycodes';
 
