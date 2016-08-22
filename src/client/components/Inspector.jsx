@@ -48,7 +48,7 @@ class Inspector extends React.Component {
   createWidgets(props) {
     const selection = props.selection;
 
-    if (selection.length === 0) {
+    if (selection.length === 0 || props.nodes[selection[0].id] === undefined) {
       this.createEmptySelectionWidgets();
     } else if (selection.length === 1) {
       const entity = (selection[0].entity);
