@@ -1,8 +1,8 @@
 import R from 'ramda';
-import { ERROR_ADD, ERROR_DELETE } from '../actionTypes';
-import { getNewId } from '../selectors/errors';
+import { ERROR_ADD, ERROR_DELETE } from './actionTypes';
+import { getNewId } from './selectors';
 
-export const errorsReducer = (errors = {}, action) => {
+export default (errors = {}, action) => {
   switch (action.type) {
     case ERROR_ADD: {
       const newId = getNewId(errors);

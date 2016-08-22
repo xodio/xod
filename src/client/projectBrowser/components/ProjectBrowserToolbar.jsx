@@ -1,8 +1,8 @@
 import R from 'ramda';
 import React from 'react';
 
-import CMD from '../constants/commands';
-import { PROJECT_BROWSER_ERRORS } from '../constants/errorMessages';
+import CMD from 'xod/client/constants/commands';
+import { PROJECT_BROWSER_ERRORS } from 'xod/client/constants/errorMessages';
 
 import { Icon } from 'react-fa';
 import PopupPrompt from 'xod/client/utils/components/PopupPrompt';

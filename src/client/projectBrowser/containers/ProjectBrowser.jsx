@@ -2,11 +2,15 @@ import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as Actions from '../actions';
-import Selectors from '../selectors';
+import * as MessageActions from 'xod/client/messages/actions';
+import * as ProjectActions from 'xod/client/project/actions';
+import * as EditorActions from 'xod/client/editor/actions';
+
+import * as ProjectSelectors from 'xod/client/project/selectors';
+import * as EditorSelectors from 'xod/client/editor/selectors';
 
 import { HotKeys } from 'react-hotkeys';
-import CMD from '../constants/commands';
+import CMD from 'xod/client/constants/commands';
 import { findParentByClassName } from 'xod/client/utils/browser';
 
 import ProjectBrowserTree from '../components/ProjectBrowserTree';
@@ -70,7 +74,7 @@ class ProjectBrowser extends React.Component {
 
   onTreeChange(newTree) {
     const oldTree = this.oldTree;
-    const treeChanges = Selectors.Project.getTreeChanges(oldTree, newTree);
+    const treeChanges = ProjectSelectors.getTreeChanges(oldTree, newTree);
 
     const dispatchChange = (array, action) => {
       array.forEach((item) => action(item));
@@ -224,29 +228,29 @@ ProjectBrowser.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const project = Selectors.Project.getProject(state);
-  const curPatchId = Selectors.Editor.getCurrentPatchId(state);
+  const project = ProjectSelectors.getProject(state);
+  const curPatchId = EditorSelectors.getCurrentPatchId(state);
 
   return {
-    tree: Selectors.Project.getTreeView(project, curPatchId),
-    patches: Selectors.Project.getPatches(state),
-    folders: Selectors.Project.getFolders(state),
+    tree: ProjectSelectors.getTreeView(project, curPatchId),
+    patches: ProjectSelectors.getPatches(state),
+    folders: ProjectSelectors.getFolders(state),
     currentPatchId: curPatchId,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
-    switchPatch: Actions.switchPatch,
-    addFolder: Actions.addFolder,
-    renameFolder: Actions.renameFolder,
-    deleteFolder: Actions.deleteFolder,
-    moveFolder: Actions.moveFolder,
-    addPatch: Actions.addPatch,
-    renamePatch: Actions.renamePatch,
-    deletePatch: Actions.deletePatch,
-    movePatch: Actions.movePatch,
-    addError: Actions.addError,
+    switchPatch: EditorActions.switchPatch,
+    addFolder: ProjectActions.addFolder,
+    renameFolder: ProjectActions.renameFolder,
+    deleteFolder: ProjectActions.deleteFolder,
+    moveFolder: ProjectActions.moveFolder,
+    addPatch: ProjectActions.addPatch,
+    renamePatch: ProjectActions.renamePatch,
+    deletePatch: ProjectActions.deletePatch,
+    movePatch: ProjectActions.movePatch,
+    addError: MessageActions.addError,
   }, dispatch),
 });
 

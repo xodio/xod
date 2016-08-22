@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
-import Selectors from 'xod/client/selectors';
+import * as EditorSelectors from '../selectors';
 
 import TabsContainer from '../components/TabsContainer';
 import TabsItem from '../components/TabsItem';
@@ -53,8 +53,8 @@ Tabs.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  tabs: Selectors.Editor.getPreparedTabs(state),
-  currentPatchId: Selectors.Editor.getCurrentPatchId(state),
+  tabs: EditorSelectors.getPreparedTabs(state),
+  currentPatchId: EditorSelectors.getCurrentPatchId(state),
 });
 
 const mapDispatchToprops = (dispatch) => ({

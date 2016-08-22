@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { UPLOAD } from '../actionTypes';
+import { UPLOAD } from './actionTypes';
 
 export const getProccesses = R.prop('processes');
 

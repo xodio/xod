@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import SnackBarList from '../components/SnackBarList';
 import SnackBarError from '../components/SnackBarError';
-import Selectors from '../selectors';
+import * as ErrorSelectors from '../selectors';
 import { deleteError } from '../actions';
 
 const ERROR_TIMEOUT = 3000;
@@ -126,7 +126,7 @@ SnackBar.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  errors: Selectors.Errors.getErrors(state),
+  errors: ErrorSelectors.getErrors(state),
 });
 
 const mapDispatchToProps = (dispatch) => (bindActionCreators({

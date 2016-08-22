@@ -3,8 +3,8 @@ import React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
-import generateReducers from '../reducers/';
-import Selectors from '../selectors/';
+import generateReducers from '../reducer';
+import Selectors from '../selectors';
 import Serializer from '../serializers/mock';
 import { EditorMiddleware } from '../middlewares';
 import { addNode, addLink } from '../actions';

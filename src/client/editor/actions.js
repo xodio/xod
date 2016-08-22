@@ -4,15 +4,16 @@ import { EDITOR_MODE } from './constants';
 import * as ActionType from './actionTypes';
 import * as Selectors from './selectors';
 
-// @TODO: Change path to pod:
 import * as SelectorsProject from 'xod/client/project/selectors';
 import {
   addNode,
   addLink,
-  addError,
   deleteNode,
   deleteLink,
-} from 'xod/client/actions';
+} from 'xod/client/project/actions';
+import {
+  addError,
+} from 'xod/client/messages/actions';
 
 export const setNodeSelection = (id) => ({
   type: ActionType.EDITOR_SELECT_NODE,

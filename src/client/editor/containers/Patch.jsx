@@ -5,7 +5,8 @@ import { bindActionCreators } from 'redux';
 
 import * as ProjectActions from 'xod/client/project/actions';
 import * as EditorActions from 'xod/client/editor/actions'; // @TODO: remove it!
-import Selectors from 'xod/client/selectors';
+import * as ProjectSelectors from 'xod/client/project/selectors';
+import * as EditorSelectors from 'xod/client/editor/selectors';
 import { findRootSVG } from 'xod/client/utils/browser';
 
 import { HotKeys } from 'react-hotkeys';
@@ -61,7 +62,7 @@ class Patch extends React.Component {
   }
 
   onNodeMouseUp(id) {
-    const isSelected = Selectors.Editor.isNodeSelected(this.props.selection, id);
+    const isSelected = EditorSelectors.isNodeSelected(this.props.selection, id);
     const isSelectable = (this.props.mode.isEditing);
     const canSelectNode = (isSelectable && !isSelected);
     if (canSelectNode) {
@@ -198,7 +199,7 @@ class Patch extends React.Component {
       return nodes;
     }
 
-    const pinsValidation = Selectors.Editor.getValidPins(
+    const pinsValidation = EditorSelectors.getValidPins(
       this.props.nodes,
       this.props.links,
       this.props.linkingPin
@@ -312,25 +313,25 @@ Patch.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const project = Selectors.Project.getProject(state);
-  const curPatchId = Selectors.Editor.getCurrentPatchId(state);
-  const defNodes = Selectors.Project.dereferencedNodes(project, curPatchId);
-  const defLinks = Selectors.Project.dereferencedLinks(project, curPatchId);
+  const project = ProjectSelectors.getProject(state);
+  const curPatchId = EditorSelectors.getCurrentPatchId(state);
+  const defNodes = ProjectSelectors.dereferencedNodes(project, curPatchId);
+  const defLinks = ProjectSelectors.dereferencedLinks(project, curPatchId);
 
   return {
-    nodes: Selectors.Editor.viewNodes(state, defNodes),
-    links: Selectors.Editor.viewLinks(state, defLinks),
+    nodes: EditorSelectors.viewNodes(state, defNodes),
+    links: EditorSelectors.viewLinks(state, defLinks),
 
-    patch: Selectors.Project.getPatchById(project, curPatchId),
-    nodeTypes: Selectors.Project.dereferencedNodeTypes(state),
+    patch: ProjectSelectors.getPatchById(project, curPatchId),
+    nodeTypes: ProjectSelectors.dereferencedNodeTypes(state),
 
-    selection: Selectors.Editor.getSelection(state),
-    selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
-    patchId: Selectors.Editor.getCurrentPatchId(state),
-    mode: Selectors.Editor.getModeChecks(state),
-    linkingPin: Selectors.Editor.getLinkingPin(state),
-    ghostNode: Selectors.Editor.getNodeGhost(state, curPatchId),
-    ghostLink: Selectors.Editor.getLinkGhost(state, curPatchId),
+    selection: EditorSelectors.getSelection(state),
+    selectedNodeType: EditorSelectors.getSelectedNodeType(state),
+    patchId: EditorSelectors.getCurrentPatchId(state),
+    mode: EditorSelectors.getModeChecks(state),
+    linkingPin: EditorSelectors.getLinkingPin(state),
+    ghostNode: EditorSelectors.getNodeGhost(state, curPatchId),
+    ghostLink: EditorSelectors.getLinkGhost(state, curPatchId),
   };
 };
 

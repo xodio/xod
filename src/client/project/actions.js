@@ -1,6 +1,6 @@
 import * as ActionType from './actionTypes';
 import * as Selectors from './selectors';
-import { addError } from 'xod/client/actions';
+import { addError } from 'xod/client/messages/actions';
 
 export const moveNode = (id, position) => (dispatch, getState) => {
   const projectState = Selectors.getProject(getState());

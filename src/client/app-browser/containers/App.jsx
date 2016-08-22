@@ -7,18 +7,18 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import { UPLOAD as UPLOAD_ACTION_TYPE } from '../actionTypes';
 import Selectors from '../selectors';
-import { getViewableSize, isChromeApp } from '../utils/browser';
-import { SAVE_LOAD_ERRORS } from '../constants/errorMessages';
-import { BACKSPACE } from '../constants/keycodes';
+import { getViewableSize, isChromeApp } from 'xod/client/utils/browser';
+import { SAVE_LOAD_ERRORS } from 'xod/client/constants/errorMessages';
+import { BACKSPACE } from 'xod/client/constants/keycodes';
 
 import { HotKeys } from 'react-hotkeys';
-import hotkeysKeymap from '../constants/hotkeys';
+import hotkeysKeymap from 'xod/client/constants/hotkeys';
 
 import { constants as EDITOR_CONST, container as Editor } from 'xod/client/editor';
-import SnackBar from './SnackBar';
+import SnackBar from 'xod/client/messages/containers/SnackBar';
 import Toolbar from '../components/Toolbar';
 import PopupInstallApp from '../components/PopupInstallApp';
-import PopupUploadProject from '../components/PopupUploadProject';
+import PopupUploadProject from 'xod/client/processes/components/PopupUploadProject';
 import EventListener from 'react-event-listener';
 
 import DevTools from './DevTools';

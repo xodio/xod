@@ -1,8 +1,8 @@
 import R from 'ramda';
-import * as STATUS from '../constants/statuses';
-import { getNewId } from '../selectors/processes';
+import * as STATUS from 'xod/client/constants/statuses';
+import { getNewId } from './selectors';
 
-export const processesReducer = (processes = {}, action) => {
+export default (processes = {}, action) => {
   const isProcess = (action.hasOwnProperty('meta') && action.meta.hasOwnProperty('status'));
   if (!isProcess) { return processes; }
 
