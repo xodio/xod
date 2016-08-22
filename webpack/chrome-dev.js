@@ -41,7 +41,7 @@ const config = merge.smart(baseConfig, {
   },
   plugins: [
     new CopyWebpackPlugin([
-      { from: 'app/chrome/' },
+      { from: 'src/client/chrome/' },
     ]),
   ],
 });
