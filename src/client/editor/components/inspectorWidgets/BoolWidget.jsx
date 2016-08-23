@@ -1,7 +1,7 @@
 import React from 'react';
 
-function BoolWidget({ nodeId, key, label, value, onPropUpdate }) {
-  const elementId = `widget_${nodeId}_${key}`;
+function BoolWidget({ keyName, label, value, onPropUpdate }) {
+  const elementId = `widget_${keyName}`;
   const onChange = (event) => {
     const newValue = Boolean(event.target.checked);
     onPropUpdate(newValue);
@@ -27,7 +27,7 @@ function BoolWidget({ nodeId, key, label, value, onPropUpdate }) {
 
 BoolWidget.propTypes = {
   nodeId: React.PropTypes.number,
-  key: React.PropTypes.string,
+  keyName: React.PropTypes.string,
   label: React.PropTypes.string,
   value: React.PropTypes.bool,
   onPropUpdate: React.PropTypes.func,

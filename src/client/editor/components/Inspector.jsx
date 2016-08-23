@@ -96,6 +96,7 @@ class Inspector extends React.Component {
           factory({
             nodeId: node.id,
             key: `${node.id}_${prop.key}`,
+            keyName: `${node.id}_${prop.key}`,
             label: prop.label,
             value: prop.value,
             onPropUpdate: (newValue) => {

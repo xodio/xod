@@ -47,7 +47,7 @@ class IOLabelWidget extends React.Component {
   }
 
   render() {
-    const elementId = `widget_${this.props.nodeId}_${this.props.key}`;
+    const elementId = `widget_${this.props.keyName}`;
     const val = this.state.value;
 
     return (
@@ -72,7 +72,7 @@ class IOLabelWidget extends React.Component {
 
 IOLabelWidget.propTypes = {
   nodeId: React.PropTypes.number,
-  key: React.PropTypes.string,
+  keyName: React.PropTypes.string,
   label: React.PropTypes.string,
   value: React.PropTypes.string,
   onPropUpdate: React.PropTypes.func,
