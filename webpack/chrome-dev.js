@@ -1,6 +1,5 @@
 
 const path = require('path');
-const webpack = require('webpack');
 const validate = require('webpack-validator');
 const merge = require('webpack-merge');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
