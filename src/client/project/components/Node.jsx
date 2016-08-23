@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import Pin from './Pin';
 import NodeText from './NodeText';
 
-import * as SIZES from 'xod/client/constants/sizes';
+import { SIZE } from '../constants';
 
 class Node extends React.Component {
   constructor(props) {
@@ -50,8 +50,8 @@ class Node extends React.Component {
   getOriginPosition() {
     const position = R.clone(this.props.position);
 
-    position.x -= SIZES.NODE.padding.x + (this.width / 2);
-    position.y -= SIZES.NODE.padding.y + (this.height / 2);
+    position.x -= SIZE.NODE.padding.x + (this.width / 2);
+    position.y -= SIZE.NODE.padding.y + (this.height / 2);
 
     return position;
   }
@@ -60,8 +60,8 @@ class Node extends React.Component {
     return {
       width: this.width,
       height: this.height,
-      x: SIZES.NODE.padding.x,
-      y: SIZES.NODE.padding.y,
+      x: SIZE.NODE.padding.x,
+      y: SIZE.NODE.padding.y,
     };
   }
 
@@ -69,8 +69,8 @@ class Node extends React.Component {
     return {
       x: 0,
       y: 0,
-      width: this.getRectProps().width + (SIZES.NODE.padding.x * 2),
-      height: this.getRectProps().height + (SIZES.NODE.padding.y * 2),
+      width: this.getRectProps().width + (SIZE.NODE.padding.x * 2),
+      height: this.getRectProps().height + (SIZE.NODE.padding.y * 2),
     };
   }
 
@@ -85,10 +85,10 @@ class Node extends React.Component {
   updateNodeWidth() {
     const nodeText = this.refs.text;
     const textWidth = nodeText.getWidth();
-    let newWidth = textWidth + (SIZES.NODE_TEXT.margin.x * 2);
+    let newWidth = textWidth + (SIZE.NODE_TEXT.margin.x * 2);
 
-    if (newWidth < SIZES.NODE.minWidth) {
-      newWidth = SIZES.NODE.minWidth;
+    if (newWidth < SIZE.NODE.minWidth) {
+      newWidth = SIZE.NODE.minWidth;
     }
     if (this.width !== newWidth && newWidth >= this.originalWidth) {
       this.width = newWidth;
@@ -164,8 +164,8 @@ Node.propTypes = {
   onPinMouseUp: React.PropTypes.func,
 };
 Node.defaultProps = {
-  width: SIZES.NODE.minWidth,
-  height: SIZES.NODE.minHeight,
+  width: SIZE.NODE.minWidth,
+  height: SIZE.NODE.minHeight,
   isSelected: false,
   isGhost: false,
   onMouseUp: f => f,

@@ -1,5 +1,5 @@
 import R from 'ramda';
-import * as STATUS from 'xod/client/constants/statuses';
+import { STATUS } from 'xod/client/utils/constants';
 import { getNewId } from './selectors';
 
 export default (processes = {}, action) => {

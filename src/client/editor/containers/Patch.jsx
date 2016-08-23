@@ -10,7 +10,7 @@ import * as EditorSelectors from 'xod/client/editor/selectors';
 import { findRootSVG } from 'xod/client/utils/browser';
 
 import { HotKeys } from 'react-hotkeys';
-import CMD from 'xod/client/constants/commands';
+import { COMMAND } from 'xod/client/utils/constants';
 
 import PatchSVG from 'xod/client/project/components/PatchSVG';
 import BackgroundLayer from 'xod/client/project/components/BackgroundLayer';
@@ -189,8 +189,8 @@ class Patch extends React.Component {
 
   getHotkeyHandlers() {
     return {
-      [CMD.DELETE_SELECTION]: this.props.actions.deleteSelection,
-      [CMD.ESCAPE]: this.deselectAll,
+      [COMMAND.DELETE_SELECTION]: this.props.actions.deleteSelection,
+      [COMMAND.ESCAPE]: this.deselectAll,
     };
   }
 

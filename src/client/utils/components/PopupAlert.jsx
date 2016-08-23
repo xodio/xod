@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
 
 import EventListener from 'react-event-listener';
-import { ESCAPE } from 'xod/client/constants/keycodes';
+import { KEYCODE } from 'xod/client/utils/constants';
 
 const PopupAlert = ({ title, children, closeText, className, onClose, isModal, isVisible }) => {
   const wrapperClassNames = classNames('PopupAlert', className);
@@ -14,7 +14,7 @@ const PopupAlert = ({ title, children, closeText, className, onClose, isModal, i
 
   const onKeyDown = (event) => {
     const keycode = event.keycode || event.which;
-    if (keycode === ESCAPE) {
+    if (keycode === KEYCODE.ESCAPE) {
       onCloseClicked();
     }
   };

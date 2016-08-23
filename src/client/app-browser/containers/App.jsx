@@ -4,15 +4,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { HotKeys } from 'react-hotkeys';
+
 import * as Actions from '../actions';
 import { UPLOAD as UPLOAD_ACTION_TYPE } from '../actionTypes';
 import Selectors from '../selectors';
 import { getViewableSize, isChromeApp } from 'xod/client/utils/browser';
-import { SAVE_LOAD_ERRORS } from 'xod/client/constants/errorMessages';
-import { BACKSPACE } from 'xod/client/constants/keycodes';
-
-import { HotKeys } from 'react-hotkeys';
-import hotkeysKeymap from 'xod/client/constants/hotkeys';
+import { SAVE_LOAD_ERRORS } from 'xod/client/messages/constants';
+import { KEYCODE, HOTKEY } from 'xod/client/utils/constants';
 
 import { constants as EDITOR_CONST, container as Editor } from 'xod/client/editor';
 import SnackBar from 'xod/client/messages/containers/SnackBar';
@@ -124,7 +123,7 @@ class App extends React.Component {
   onKeyDown(event) {
     const keyCode = event.keyCode || event.which;
 
-    if (keyCode === BACKSPACE) {
+    if (keyCode === KEYCODE.BACKSPACE) {
       event.preventDefault();
     }
 
@@ -152,7 +151,7 @@ class App extends React.Component {
   render() {
     const devToolsInstrument = (isChromeApp) ? <DevTools /> : null;
     return (
-      <HotKeys keyMap={hotkeysKeymap} id="App">
+      <HotKeys keyMap={HOTKEY} id="App">
         <EventListener target={window} onResize={this.onResize} onKeyDown={this.onKeyDown} />
         <Toolbar
           meta={this.props.meta}

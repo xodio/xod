@@ -2,10 +2,7 @@ import R from 'ramda';
 import { createSelector } from 'reselect';
 
 import { EDITOR_MODE } from './constants';
-
-import * as PIN_VALIDITY from '../constants/pinValidity';
-import * as ENTITY from '../constants/entities';
-import * as SIZES from '../constants/sizes';
+import { PIN_VALIDITY, ENTITY, SIZE } from 'xod/client/project/constants';
 
 import {
   indexById,
@@ -188,7 +185,7 @@ export const getNodeGhost = (state) => {
     R.map((pin) => {
       const id = { id: pinCount };
       const pos = getPinPosition(nodeType.pins, pin.key, nodePosition);
-      const radius = { radius: SIZES.PIN.radius };
+      const radius = { radius: SIZE.PIN.radius };
 
       pinCount--;
 

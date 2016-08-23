@@ -1,7 +1,7 @@
 import * as ActionType from './actionTypes';
 import ProcessSelectors from './selectors';
 
-import * as STATUS from 'xod/client/constants/statuses';
+import { STATUS } from 'xod/client/utils/constants';
 import ProjectSelectors from 'xod/client/project/selectors';
 import { uploadToEspruino } from 'xod/utils/espruino';
 

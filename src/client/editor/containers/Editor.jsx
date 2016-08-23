@@ -7,7 +7,7 @@ import * as EditorSelectors from '../selectors';
 import * as ProjectSelectors from 'xod/client/project/selectors';
 
 import { HotKeys } from 'react-hotkeys';
-import CMD from 'xod/client/constants/commands';
+import { COMMAND } from 'xod/client/utils/constants';
 import { EDITOR_MODE } from 'xod/client/editor/constants';
 
 import Patch from './Patch';
@@ -55,10 +55,10 @@ class Editor extends React.Component {
 
   getHotkeyHandlers() {
     return {
-      [CMD.SET_MODE_CREATING]: this.setModeCreating,
-      [CMD.SET_MODE_DEFAULT]: this.setModeDefault,
-      [CMD.UNDO]: () => this.props.actions.undo(this.props.currentPatchId),
-      [CMD.REDO]: () => this.props.actions.redo(this.props.currentPatchId),
+      [COMMAND.SET_MODE_CREATING]: this.setModeCreating,
+      [COMMAND.SET_MODE_DEFAULT]: this.setModeDefault,
+      [COMMAND.UNDO]: () => this.props.actions.undo(this.props.currentPatchId),
+      [COMMAND.REDO]: () => this.props.actions.redo(this.props.currentPatchId),
     };
   }
 

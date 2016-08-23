@@ -1,6 +1,6 @@
 import R from 'ramda';
 import React from 'react';
-import { ENTER, ESCAPE, DOT, COMMA, UP, DOWN } from 'xod/client/constants/keycodes';
+import { KEYCODE } from 'xod/client/utils/constants';
 
 class NumberWidget extends React.Component {
   constructor(props) {
@@ -31,22 +31,22 @@ class NumberWidget extends React.Component {
     const keycode = event.keycode || event.which;
     const input = event.target;
 
-    if (keycode === DOT || keycode === COMMA) {
+    if (keycode === KEYCODE.DOT || keycode === KEYCODE.COMMA) {
       event.preventDefault();
       this.updateValue(`${input.value}.`);
     }
-    if (keycode === UP) {
+    if (keycode === KEYCODE.UP) {
       event.preventDefault();
       this.updateValue(this.parseVal(input.value) + 1);
     }
-    if (keycode === DOWN) {
+    if (keycode === KEYCODE.DOWN) {
       event.preventDefault();
       this.updateValue(this.parseVal(input.value) - 1);
     }
-    if (keycode === ENTER) {
+    if (keycode === KEYCODE.ENTER) {
       input.blur();
     }
-    if (keycode === ESCAPE) {
+    if (keycode === KEYCODE.ESCAPE) {
       if (this.state.value === this.state.initialValue) {
         input.blur();
       } else {

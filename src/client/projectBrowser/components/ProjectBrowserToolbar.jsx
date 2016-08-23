@@ -1,8 +1,8 @@
 import R from 'ramda';
 import React from 'react';
 
-import CMD from 'xod/client/constants/commands';
-import { PROJECT_BROWSER_ERRORS } from 'xod/client/constants/errorMessages';
+import { COMMAND } from 'xod/client/utils/constants';
+import { PROJECT_BROWSER_ERRORS } from 'xod/client/messages/constants';
 
 import { Icon } from 'react-fa';
 import PopupPrompt from 'xod/client/utils/components/PopupPrompt';
@@ -124,10 +124,10 @@ class ProjectBrowserToolbar extends React.Component {
 
   getHotkeyHandlers() {
     return {
-      [CMD.ADD_PATCH]: this.onPatchCreateClick,
-      [CMD.ADD_FOLDER]: this.onFolderCreateClick,
-      [CMD.RENAME]: this.onRenameClick,
-      [CMD.DELETE]: this.onDeleteClick,
+      [COMMAND.ADD_PATCH]: this.onPatchCreateClick,
+      [COMMAND.ADD_FOLDER]: this.onFolderCreateClick,
+      [COMMAND.RENAME]: this.onRenameClick,
+      [COMMAND.DELETE]: this.onDeleteClick,
     };
   }
 

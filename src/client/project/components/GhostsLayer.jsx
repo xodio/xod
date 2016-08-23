@@ -4,7 +4,7 @@ import React from 'react';
 import SVGLayer from './SVGLayer';
 import Node from './Node';
 import Link from './Link';
-import { GHOSTS as LAYER_NAME } from 'xod/client/constants/layers';
+import { LAYER } from '../constants';
 
 class GhostLayer extends React.Component {
   constructor(props) {
@@ -106,7 +106,7 @@ class GhostLayer extends React.Component {
 
     return (
       <SVGLayer
-        name={LAYER_NAME}
+        name={LAYER.GHOSTS}
         className="GhostsLayer"
       >
         {ghostNode}

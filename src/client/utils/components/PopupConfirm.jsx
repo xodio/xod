@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
 
 import EventListener from 'react-event-listener';
-import { ESCAPE } from 'xod/client/constants/keycodes';
+import { KEYCODE } from 'xod/client/utils/constants';
 
 const PopupConfirm = ({
   title,
@@ -24,7 +24,7 @@ const PopupConfirm = ({
 
   const onKeyDown = (event) => {
     const keycode = event.keycode || event.which;
-    if (keycode === ESCAPE) {
+    if (keycode === KEYCODE.ESCAPE) {
       onCloseClicked();
     }
   };

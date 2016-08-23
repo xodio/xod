@@ -1,8 +1,9 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import * as SIZES from 'xod/client/constants/sizes';
 import Stylizer from 'xod/client/utils/stylizer';
+
+import { SIZE } from '../constants';
 
 const linkStyles = {
   line: {
@@ -93,7 +94,7 @@ class Link extends React.Component {
       >
         <line
           stroke="transparent"
-          strokeWidth={SIZES.LINK_HOTSPOT.width}
+          strokeWidth={SIZE.LINK_HOTSPOT.width}
           {...coords}
         />
         <line

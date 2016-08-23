@@ -1,11 +1,11 @@
 import React from 'react';
 import SVGLayer from './SVGLayer';
 import Node from './Node';
-import { NODES as LAYER_NAME } from 'xod/client/constants/layers';
+import { LAYER } from '../constants';
 
 const NodesLayer = ({ nodes, onMouseUp, onMouseDown, onPinMouseUp }) => (
   <SVGLayer
-    name={LAYER_NAME}
+    name={LAYER.NODES}
     className="NodesLayer"
   >
     {nodes.map(node =>

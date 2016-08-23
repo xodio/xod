@@ -1,8 +1,7 @@
 
 import R from 'ramda';
 import { sortGraph } from 'xod/utils/gmath';
-import * as PIN_DIRECTION from 'xod/client/constants/pinDirection';
-import * as PIN_TYPE from 'xod/client/constants/pinType';
+import { PIN_DIRECTION, PIN_TYPE } from 'xod/client/project/constants';
 
 // From: https://github.com/ramda/ramda/wiki/Cookbook#rename-keys-of-an-object
 /**

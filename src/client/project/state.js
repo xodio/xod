@@ -1,6 +1,6 @@
 import R from 'ramda';
 
-import * as PIN_DIRECTION from 'xod/client/constants/pinDirection';
+import { PIN_DIRECTION } from './constants';
 
 /* eslint-disable global-require */
 const nodeMetas = {

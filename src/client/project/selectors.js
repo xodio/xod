@@ -1,10 +1,7 @@
 import R from 'ramda';
 
-import * as PIN_DIRECTION from 'xod/client/constants/pinDirection';
-import { LINK_ERRORS, NODETYPE_ERRORS } from 'xod/client/constants/errorMessages';
-import { PROPERTY_TYPE } from 'xod/client/constants/property';
-import * as SIZES from 'xod/client/constants/sizes';
-import * as NODE_CATEGORY from 'xod/client/constants/nodeCategory';
+import { PIN_DIRECTION, PROPERTY_TYPE, SIZE, NODE_CATEGORY } from './constants';
+import { LINK_ERRORS, NODETYPE_ERRORS } from 'xod/client/messages/constants';
 
 export const getUserName = () => 'Bob';
 
@@ -286,13 +283,13 @@ export const getPinsByIds = (state, props) => R.pipe(
 )(state, props);
 
 const getVerticalPinOffsets = () => ({
-  [PIN_DIRECTION.INPUT]: -1 * SIZES.NODE.padding.y,
-  [PIN_DIRECTION.OUTPUT]: SIZES.NODE.padding.y - SIZES.PIN.radius * 2,
+  [PIN_DIRECTION.INPUT]: -1 * SIZE.NODE.padding.y,
+  [PIN_DIRECTION.OUTPUT]: SIZE.NODE.padding.y - SIZE.PIN.radius * 2,
 });
 
 const getPinsWidth = R.curry((withMargins, count) => {
   const marginCount = (withMargins) ? count + 1 : count - 1;
-  return (marginCount * SIZES.PIN.margin) + (count * SIZES.PIN.radius * 2);
+  return (marginCount * SIZE.PIN.margin) + (count * SIZE.PIN.radius * 2);
 });
 
 export const getGroupedPinsWidth = R.pipe(
@@ -303,7 +300,7 @@ export const getGroupedPinsWidth = R.pipe(
 
 export const getNodeWidth = R.pipe(
   R.values,
-  R.append(SIZES.NODE.minWidth),
+  R.append(SIZE.NODE.minWidth),
   R.reduce(R.max, -Infinity)
 );
 
@@ -335,8 +332,8 @@ export const getPinPosition = (nodeTypePins, key, nodePosition) => {
   const pinX = (
     -1 * groupCenter +
     (
-      pinIndex * SIZES.PIN.radius * 2 +
-      pinIndex * SIZES.PIN.margin
+      pinIndex * SIZE.PIN.radius * 2 +
+      pinIndex * SIZE.PIN.margin
     )
   );
 
@@ -638,8 +635,8 @@ export const getPreparedNodeTypeByKey = (state, key) => R.pipe(
 )(state);
 
 export const addPinRadius = (position) => ({
-  x: position.x + SIZES.PIN.radius,
-  y: position.y + SIZES.PIN.radius,
+  x: position.x + SIZE.PIN.radius,
+  y: position.y + SIZE.PIN.radius,
 });
 
 export const getNodeLabel = (state, node) => {
@@ -673,7 +670,7 @@ export const preparePins = (projectState, node) => {
   return R.map(pin => {
     const originalPin = pins[pin.key];
     const pinPosition = getPinPosition(pins, pin.key, node.position);
-    const radius = { radius: SIZES.PIN.radius };
+    const radius = { radius: SIZE.PIN.radius };
     const isSelected = { isSelected: false };
     return R.mergeAll([pin, originalPin, pinPosition, radius, isSelected]);
   })(pins);

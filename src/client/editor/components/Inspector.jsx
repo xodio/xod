@@ -1,11 +1,10 @@
 import R from 'ramda';
 import React from 'react';
 import Widgets from './inspectorWidgets';
-import * as ENTITIES from 'xod/client/constants/entities';
-import { PROPERTY_TYPE } from 'xod/client/constants/property';
+import { ENTITY, PROPERTY_TYPE } from 'xod/client/project/constants';
 
 const widgetAccordance = {
-  [ENTITIES.NODE]: {
+  [ENTITY.NODE]: {
     [PROPERTY_TYPE.BOOL]: Widgets.BoolWidget,
     [PROPERTY_TYPE.NUMBER]: Widgets.NumberWidget,
     [PROPERTY_TYPE.STRING]: Widgets.StringWidget,
@@ -53,11 +52,11 @@ class Inspector extends React.Component {
     } else if (selection.length === 1) {
       const entity = (selection[0].entity);
       switch (entity) {
-        case ENTITIES.NODE: {
+        case ENTITY.NODE: {
           this.createNodeWidgets(props, selection[0]);
           break;
         }
-        case ENTITIES.LINK:
+        case ENTITY.LINK:
           this.createLinkWidgets();
           break;
         default:
@@ -92,7 +91,7 @@ class Inspector extends React.Component {
       const widgets = [];
 
       properties.forEach((prop) => {
-        const factory = React.createFactory(widgetAccordance[ENTITIES.NODE][prop.type]);
+        const factory = React.createFactory(widgetAccordance[ENTITY.NODE][prop.type]);
         widgets.push(
           factory({
             nodeId: node.id,

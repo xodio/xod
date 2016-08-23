@@ -10,7 +10,7 @@ import * as ProjectSelectors from 'xod/client/project/selectors';
 import * as EditorSelectors from 'xod/client/editor/selectors';
 
 import { HotKeys } from 'react-hotkeys';
-import CMD from 'xod/client/constants/commands';
+import { COMMAND } from 'xod/client/utils/constants';
 import { findParentByClassName } from 'xod/client/utils/browser';
 
 import ProjectBrowserTree from '../components/ProjectBrowserTree';
@@ -148,7 +148,7 @@ class ProjectBrowser extends React.Component {
   getHotkeyHandlers() {
     return R.merge(
       {
-        [CMD.ESCAPE]: this.deselect,
+        [COMMAND.ESCAPE]: this.deselect,
       },
       this.hotkeys
     );

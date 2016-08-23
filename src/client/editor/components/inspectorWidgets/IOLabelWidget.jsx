@@ -1,6 +1,6 @@
 import R from 'ramda';
 import React from 'react';
-import { ENTER, ESCAPE } from 'xod/client/constants/keycodes';
+import { KEYCODE } from 'xod/client/utils/constants';
 
 class IOLabelWidget extends React.Component {
   constructor(props) {
@@ -32,10 +32,10 @@ class IOLabelWidget extends React.Component {
 
   onKeyDown(event) {
     const keycode = event.keycode || event.which;
-    if (keycode === ENTER) {
+    if (keycode === KEYCODE.ENTER) {
       event.target.blur();
     }
-    if (keycode === ESCAPE) {
+    if (keycode === KEYCODE.ESCAPE) {
       this.setState(
         R.assoc('value', this.state.initialValue, this.state)
       );

@@ -11,7 +11,7 @@ import {
   TAB_CLOSE,
   TAB_SORT,
 } from './actionTypes';
-import * as ENTITIES from 'xod/client/constants/entities';
+import { ENTITY } from 'xod/client/project/constants';
 
 const addSelection = (entityName, action, state) => {
   const select = {
@@ -59,9 +59,9 @@ const editorReducer = (state = {}, action) => {
         linkingPin: null,
       });
     case EDITOR_SELECT_NODE:
-      return addSelection(ENTITIES.NODE, action, state);
+      return addSelection(ENTITY.NODE, action, state);
     case EDITOR_SELECT_LINK:
-      return addSelection(ENTITIES.LINK, action, state);
+      return addSelection(ENTITY.LINK, action, state);
     case EDITOR_SELECT_PIN:
       return R.assoc('linkingPin', action.payload, state);
     case EDITOR_SET_MODE:

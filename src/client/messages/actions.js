@@ -1,5 +1,5 @@
 import * as ActionType from './actionTypes';
-import * as STATUS from 'xod/client/constants/statuses';
+import { STATUS } from 'xod/client/utils/constants';
 
 const getTimestamp = () => new Date().getTime();
 
