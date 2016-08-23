@@ -75,9 +75,6 @@ describe('Project reducer: ', () => {
         folders: 1,
       },
     },
-    editor: {
-      currentPatchId: 1,
-    },
   };
 
   describe('Add node', () => {
