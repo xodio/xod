@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as Actions from '../actions';
+import * as ProjectActions from 'xod/client/project/actions';
 import * as EditorSelectors from '../selectors';
 import * as ProjectSelectors from 'xod/client/project/selectors';
 
@@ -116,11 +117,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
+    updateNodeProperty: ProjectActions.updateNodeProperty,
+    undo: ProjectActions.undoPatch,
+    redo: ProjectActions.redoPatch,
+
     setMode: Actions.setMode,
     setSelectedNodeType: Actions.setSelectedNodeType,
-    updateNodeProperty: Actions.updateNodeProperty,
-    undo: Actions.undoPatch,
-    redo: Actions.redoPatch,
   }, dispatch),
 });
 
