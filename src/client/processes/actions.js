@@ -1,8 +1,8 @@
 import * as ActionType from './actionTypes';
-import ProcessSelectors from './selectors';
+import * as ProcessSelectors from './selectors';
+import * as ProjectSelectors from 'xod/client/project/selectors';
 
 import { STATUS } from 'xod/client/utils/constants';
-import ProjectSelectors from 'xod/client/project/selectors';
 import { uploadToEspruino } from 'xod/utils/espruino';
 
 export const upload = () => (dispatch, getState) => {
