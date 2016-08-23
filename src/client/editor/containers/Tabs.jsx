@@ -5,8 +5,57 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import * as EditorSelectors from '../selectors';
 
+import { arrayMoveIndex, arrayUpdateIndex, arrayIndexById } from 'xod/client/utils/array';
+
+import {
+  SortableContainer as sortableContainer,
+  SortableElement as sortableElement,
+} from 'react-sortable-hoc';
+
 import TabsContainer from '../components/TabsContainer';
 import TabsItem from '../components/TabsItem';
+
+const SortableItem = sortableElement(
+  ({ value }) => {
+    return (
+      <TabsItem
+        key={value.id}
+        data={value}
+        onClick={value.onClick}
+        onClose={value.onClose}
+      />
+    );
+  }
+);
+
+const SortableList = sortableContainer(
+  ({ items, onClick, onClose }) => (
+    <TabsContainer>
+      {items.map((value, index) => {
+        const item = R.merge(
+          value,
+          {
+            onClick,
+            onClose,
+          }
+        );
+
+        return (
+          <SortableItem
+            key={`item-${value.id}`}
+            index={index}
+            value={item}
+
+            onClick={onClick}
+            onClose={onClose}
+          />
+        );
+      }
+      )}
+    </TabsContainer>
+  )
+);
+
 
 class Tabs extends React.Component {
   constructor(props) {
@@ -14,6 +63,7 @@ class Tabs extends React.Component {
 
     this.onSwitchPatch = this.onSwitchPatch.bind(this);
     this.onCloseTab = this.onCloseTab.bind(this);
+    this.onSortEnd = this.onSortEnd.bind(this);
   }
 
   onSwitchPatch(patchId) {
@@ -22,6 +72,14 @@ class Tabs extends React.Component {
 
   onCloseTab(patchId) {
     return this.props.actions.closeTab(patchId);
+  }
+
+  onSortEnd(changes) {
+    const sortedTabs = arrayMoveIndex(changes.oldIndex, changes.newIndex, this.getTabs());
+    const newTabs = arrayUpdateIndex(sortedTabs);
+    const indexedTabs = arrayIndexById(newTabs);
+
+    this.props.actions.sortTabs(indexedTabs);
   }
 
   getTabs() {
@@ -33,16 +91,17 @@ class Tabs extends React.Component {
   render() {
     const tabs = this.getTabs();
     return (
-      <TabsContainer>
-        {tabs.map(tab =>
-          <TabsItem
-            key={tab.id}
-            data={tab}
-            onClick={this.onSwitchPatch}
-            onClose={this.onCloseTab}
-          />
-        )}
-      </TabsContainer>
+      <SortableList
+        items={tabs}
+        onSortEnd={this.onSortEnd}
+        axis="x"
+        lockAxis="x"
+        lockToContainerEdges
+        lockOffset="0%"
+
+        onClick={this.onSwitchPatch}
+        onClose={this.onCloseTab}
+      />
     );
   }
 }

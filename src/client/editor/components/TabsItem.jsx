@@ -15,14 +15,14 @@ const TabsItem = ({ data, onClick, onClose }) => {
   return (
     <li
       className={classes}
-      onClick={handleClick}
+      onMouseDown={handleClick}
     >
       <span className="tab-name">
         {data.name}
       </span>
       <span
         className="tab-close"
-        onClick={handleClose}
+        onMouseDown={handleClose}
       >
         &times;
       </span>
