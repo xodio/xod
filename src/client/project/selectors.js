@@ -917,12 +917,16 @@ export const prepareToDragNode = (projectState, id, position) =>
 
 export const prepareToUpdateNodeProperty = (projectState, nodeId, propKey, propValue) => {
   const patchId = getPatchByNodeId(projectState, nodeId).id;
+  const node = dereferencedNodes(projectState, patchId)[nodeId];
+  const nodeType = dereferencedNodeTypes(projectState)[node.typeId];
+  const propType = nodeType.properties[propKey].type;
 
   return {
     payload: {
       id: nodeId,
       key: propKey,
       value: propValue,
+      type: propType,
     },
     meta: {
       patchId,

@@ -1,4 +1,5 @@
 import { NODE_MOVE, NODE_ADD, NODE_DELETE, NODE_UPDATE_PROPERTY } from '../actionTypes';
+import { PROPERTY_TYPE_PARSE } from '../constants';
 import R from 'ramda';
 
 export const copyNode = (node) => R.clone(node);
@@ -14,6 +15,14 @@ const node = (state, action) => {
   }
 };
 
+const parseVal = (val, type) => {
+  if (type && PROPERTY_TYPE_PARSE.hasOwnProperty(type)) {
+    return PROPERTY_TYPE_PARSE[type](val);
+  }
+
+  return val;
+};
+
 export const nodes = (state = {}, action) => {
   let movedNode = null;
   let newNode = null;
@@ -26,7 +35,14 @@ export const nodes = (state = {}, action) => {
       const defaultProps = R.pipe(
         R.prop('properties'),
         R.values,
-        R.reduce((p, prop) => R.assoc(prop.key, prop.defaultValue, p), {})
+        R.reduce(
+          (p, prop) => R.assoc(
+            prop.key,
+            parseVal(prop.defaultValue, prop.type),
+            p
+          ),
+          {}
+        )
       )(nodeType);
 
       newNodeId = action.payload.newNodeId;
@@ -52,7 +68,7 @@ export const nodes = (state = {}, action) => {
           'properties',
           action.payload.key,
         ]),
-        action.payload.value
+        parseVal(action.payload.value, action.payload.type)
       )(state);
 
     default:

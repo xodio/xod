@@ -46,6 +46,13 @@ export const PROPERTY_TYPE = {
   IO_LABEL: 'io_label',
 };
 
+export const PROPERTY_TYPE_PARSE = {
+  [PROPERTY_TYPE.BOOL]: (v) => !!v,
+  [PROPERTY_TYPE.NUMBER]: (v) => parseFloat(v),
+  [PROPERTY_TYPE.STRING]: (v) => String(v),
+  [PROPERTY_TYPE.IO_LABEL]: (v) => String(v),
+};
+
 export const PROPERTY_DEFAULT_VALUE = {
   BOOL: false,
   NUMBER: 0,
