@@ -14,11 +14,11 @@
     key: 'minPulse',
     label: 'Min Pulse (μs)',
     type: 'number',
-    defaultValue: '700',
+    defaultValue: 700,
   }, {
     key: 'maxPulse',
     label: 'Max Pulse (μs)',
     type: 'number',
-    defaultValue: '2300',
+    defaultValue: 2300,
   }]
 }

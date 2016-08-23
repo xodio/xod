@@ -2,20 +2,20 @@ import R from 'ramda';
 import chai from 'chai';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
-import generateReducers from '../../src/client/reducers/';
-import { nodes } from '../../src/client/reducers/nodes';
-import * as Actions from '../../src/client/actions';
-import Selectors from '../../src/client/selectors';
-import { NODETYPE_ERRORS } from '../../src/client/constants/errorMessages';
+import generateReducers from '../../src/client/app-browser/reducer';
+import { nodes } from '../../src/client/project/reducer/nodes';
+import * as Actions from '../../src/client/project/actions';
+import * as Selectors from '../../src/client/project/selectors';
+import { NODETYPE_ERRORS } from '../../src/client/messages/constants';
 
 function pin(nodeId, pinKey) {
   return { nodeId, pinKey };
 }
 const mockStore = (state) => createStore(generateReducers([1]), state, applyMiddleware(thunk));
-const getNodeTypes = (state) => Selectors.Project.dereferencedNodeTypes(state);
+const getNodeTypes = (state) => Selectors.dereferencedNodeTypes(state);
 const getPatchName = (pId, state) => state.project.patches[pId].present.name;
 const getPatchNodeName = (pId, state) =>
-  `${Selectors.Project.getUserName()}/${getPatchName(pId, state)}`;
+  `${Selectors.getUserName()}/${getPatchName(pId, state)}`;
 
 describe('Project reducer: ', () => {
   const projectShape = {
@@ -75,9 +75,6 @@ describe('Project reducer: ', () => {
         folders: 1,
       },
     },
-    editor: {
-      currentPatchId: 1,
-    },
   };
 
   describe('Add node', () => {
@@ -101,29 +98,29 @@ describe('Project reducer: ', () => {
       };
       store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
 
-      const projectState = Selectors.Project.getProject(store.getState());
-      const patchState = Selectors.Project.getPatchById(patchId, projectState);
+      const projectState = Selectors.getProject(store.getState());
+      const patchState = Selectors.getPatchById(patchId, projectState);
 
       chai.expect(patchState.nodes).to.deep.equal(expectedNodes);
     });
 
     it('should be undoable and redoable', () => {
       const patchId = 1;
-      const getPatch = Selectors.Project.getPatchById(patchId);
+      const getPatch = Selectors.getPatchById(patchId);
 
-      const initialProjectState = Selectors.Project.getProject(store.getState());
+      const initialProjectState = Selectors.getProject(store.getState());
       const initialPatchState = getPatch(initialProjectState);
 
       store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
-      const updatedProjectState = Selectors.Project.getProject(store.getState());
+      const updatedProjectState = Selectors.getProject(store.getState());
       const updatedPatchState = getPatch(updatedProjectState);
 
       store.dispatch(Actions.undoPatch(patchId));
-      const undoedProjectState = Selectors.Project.getProject(store.getState());
+      const undoedProjectState = Selectors.getProject(store.getState());
       const undoedPatchState = getPatch(undoedProjectState);
 
       store.dispatch(Actions.redoPatch(patchId));
-      const redoedProjectState = Selectors.Project.getProject(store.getState());
+      const redoedProjectState = Selectors.getProject(store.getState());
       const redoedPatchState = getPatch(redoedProjectState);
 
       chai.expect(undoedPatchState).to.deep.equal(initialPatchState);
@@ -183,8 +180,8 @@ describe('Project reducer: ', () => {
 
       store.dispatch(Actions.deleteNode(1));
 
-      const projectState = Selectors.Project.getProject(store.getState());
-      const patchState = Selectors.Project.getPatchById(patchId, projectState);
+      const projectState = Selectors.getProject(store.getState());
+      const patchState = Selectors.getPatchById(patchId, projectState);
 
       chai.expect(patchState.nodes).to.deep.equal(expectedNodes);
       chai.expect(patchState.links).to.deep.equal(expectedLinks);
@@ -192,20 +189,20 @@ describe('Project reducer: ', () => {
 
     it('should be undoable and redoable', () => {
       const patchId = 1;
-      const initialProjectState = Selectors.Project.getProject(store.getState());
-      const initialPatchState = Selectors.Project.getPatchById(initialProjectState, patchId);
+      const initialProjectState = Selectors.getProject(store.getState());
+      const initialPatchState = Selectors.getPatchById(initialProjectState, patchId);
 
       store.dispatch(Actions.deleteNode(1));
-      const updatedProjectState = Selectors.Project.getProject(store.getState());
-      const updatedPatchState = Selectors.Project.getPatchById(updatedProjectState, patchId);
+      const updatedProjectState = Selectors.getProject(store.getState());
+      const updatedPatchState = Selectors.getPatchById(updatedProjectState, patchId);
 
       store.dispatch(Actions.undoPatch(patchId));
-      const undoedProjectState = Selectors.Project.getProject(store.getState());
-      const undoedPatchState = Selectors.Project.getPatchById(undoedProjectState, patchId);
+      const undoedProjectState = Selectors.getProject(store.getState());
+      const undoedPatchState = Selectors.getPatchById(undoedProjectState, patchId);
 
       store.dispatch(Actions.redoPatch(patchId));
-      const redoedProjectState = Selectors.Project.getProject(store.getState());
-      const redoedPatchState = Selectors.Project.getPatchById(redoedProjectState, patchId);
+      const redoedProjectState = Selectors.getProject(store.getState());
+      const redoedPatchState = Selectors.getPatchById(redoedProjectState, patchId);
 
       chai.expect(undoedPatchState).to.deep.equal(initialPatchState);
       chai.expect(redoedPatchState).to.deep.equal(updatedPatchState);
@@ -359,20 +356,20 @@ describe('Project reducer: ', () => {
       const patchId = 1;
       const lastLinkId = store.getState().project.counter.links;
 
-      const initialProjectState = Selectors.Project.getProject(store.getState());
-      const initialPatchState = Selectors.Project.getPatchById(initialProjectState, patchId);
+      const initialProjectState = Selectors.getProject(store.getState());
+      const initialPatchState = Selectors.getPatchById(initialProjectState, patchId);
 
       store.dispatch(Actions.deleteLink(lastLinkId));
-      const updatedProjectState = Selectors.Project.getProject(store.getState());
-      const updatedPatchState = Selectors.Project.getPatchById(updatedProjectState, patchId);
+      const updatedProjectState = Selectors.getProject(store.getState());
+      const updatedPatchState = Selectors.getPatchById(updatedProjectState, patchId);
 
       store.dispatch(Actions.undoPatch(patchId));
-      const undoedProjectState = Selectors.Project.getProject(store.getState());
-      const undoedPatchState = Selectors.Project.getPatchById(undoedProjectState, patchId);
+      const undoedProjectState = Selectors.getProject(store.getState());
+      const undoedPatchState = Selectors.getPatchById(undoedProjectState, patchId);
 
       store.dispatch(Actions.redoPatch(patchId));
-      const redoedProjectState = Selectors.Project.getProject(store.getState());
-      const redoedPatchState = Selectors.Project.getPatchById(redoedProjectState, patchId);
+      const redoedProjectState = Selectors.getProject(store.getState());
+      const redoedPatchState = Selectors.getPatchById(redoedProjectState, patchId);
 
       chai.expect(undoedPatchState).to.deep.equal(initialPatchState);
       chai.expect(redoedPatchState).to.deep.equal(updatedPatchState);
@@ -399,7 +396,7 @@ describe('Project reducer: ', () => {
       };
 
       store.dispatch(Actions.loadProjectFromJSON(JSON.stringify(data)));
-      const projectState = Selectors.Project.getProject(store.getState());
+      const projectState = Selectors.getProject(store.getState());
       chai.expect(projectState).to.deep.equal(data);
     });
   });
@@ -412,46 +409,46 @@ describe('Project reducer: ', () => {
 
     it('should add folder without parentId', () => {
       store.dispatch(Actions.addFolder('Test folder'));
-      const childFolderId = Selectors.Project.getLastFolderId(store.getState());
-      const folders = Selectors.Project.getFolders(store.getState());
+      const childFolderId = Selectors.getLastFolderId(store.getState());
+      const folders = Selectors.getFolders(store.getState());
 
       chai.expect(R.keys(folders)).to.have.lengthOf(2);
       chai.expect(folders[childFolderId].parentId).to.be.equal(null);
     });
 
     it('should add folder with correct parentId', () => {
-      const lastFolderId = Selectors.Project.getLastFolderId(store.getState());
+      const lastFolderId = Selectors.getLastFolderId(store.getState());
       store.dispatch(Actions.addFolder('Test folder', lastFolderId));
-      const childFolderId = Selectors.Project.getLastFolderId(store.getState());
-      const folders = Selectors.Project.getFolders(store.getState());
+      const childFolderId = Selectors.getLastFolderId(store.getState());
+      const folders = Selectors.getFolders(store.getState());
 
       chai.expect(R.keys(folders)).to.have.lengthOf(2);
       chai.expect(folders[childFolderId].parentId).to.be.equal(folders[lastFolderId].id);
     });
 
     it('should delete folder', () => {
-      const lastFolderId = Selectors.Project.getLastFolderId(store.getState());
+      const lastFolderId = Selectors.getLastFolderId(store.getState());
       store.dispatch(Actions.deleteFolder(lastFolderId));
-      const folders = Selectors.Project.getFolders(store.getState());
+      const folders = Selectors.getFolders(store.getState());
 
       chai.expect(R.keys(folders)).to.have.lengthOf(0);
     });
 
     it('should move folder under another', () => {
-      const parentFolderId = Selectors.Project.getLastFolderId(store.getState());
+      const parentFolderId = Selectors.getLastFolderId(store.getState());
       store.dispatch(Actions.addFolder('parent', parentFolderId));
-      const childFolderId = Selectors.Project.getLastFolderId(store.getState());
+      const childFolderId = Selectors.getLastFolderId(store.getState());
       store.dispatch(Actions.moveFolder({ id: childFolderId, parentId: null }));
-      const folders = Selectors.Project.getFolders(store.getState());
+      const folders = Selectors.getFolders(store.getState());
 
       chai.expect(folders[childFolderId].parentId).to.be.equal(null);
     });
 
     it('should rename folder', () => {
       const newFolderName = 'qwe123';
-      const lastFolderId = Selectors.Project.getLastFolderId(store.getState());
+      const lastFolderId = Selectors.getLastFolderId(store.getState());
       store.dispatch(Actions.renameFolder(lastFolderId, newFolderName));
-      const folders = Selectors.Project.getFolders(store.getState());
+      const folders = Selectors.getFolders(store.getState());
 
       chai.expect(folders[lastFolderId].name).to.be.equal(newFolderName);
     });
@@ -468,48 +465,48 @@ describe('Project reducer: ', () => {
 
     it('should add patch without parentId', () => {
       store.dispatch(Actions.addPatch('Test patch'));
-      const childPatchId = Selectors.Project.getLastPatchId(store.getState());
-      const patches = Selectors.Project.getPatches(store.getState());
+      const childPatchId = Selectors.getLastPatchId(store.getState());
+      const patches = Selectors.getPatches(store.getState());
 
       chai.expect(R.keys(patches)).to.have.lengthOf(2);
       chai.expect(getPatch(patches[childPatchId]).folderId).to.be.equal(null);
     });
 
     it('should add patch with correct folderId', () => {
-      const lastFolderId = Selectors.Project.getLastFolderId(store.getState());
+      const lastFolderId = Selectors.getLastFolderId(store.getState());
       store.dispatch(Actions.addPatch('Test patch', lastFolderId));
-      const childPatchId = Selectors.Project.getLastPatchId(store.getState());
-      const folders = Selectors.Project.getFolders(store.getState());
-      const patches = Selectors.Project.getPatches(store.getState());
+      const childPatchId = Selectors.getLastPatchId(store.getState());
+      const folders = Selectors.getFolders(store.getState());
+      const patches = Selectors.getPatches(store.getState());
 
       chai.expect(R.keys(patches)).to.have.lengthOf(2);
       chai.expect(getPatch(patches[childPatchId]).folderId).to.be.equal(folders[lastFolderId].id);
     });
 
     it('should delete patch', () => {
-      const lastPatchId = Selectors.Project.getLastPatchId(store.getState());
+      const lastPatchId = Selectors.getLastPatchId(store.getState());
       store.dispatch(Actions.deletePatch(lastPatchId));
-      const patches = Selectors.Project.getPatches(store.getState());
+      const patches = Selectors.getPatches(store.getState());
 
       chai.expect(R.keys(patches)).to.have.lengthOf(0);
     });
 
     it('should move patch under another folder', () => {
-      const lastPatchId = Selectors.Project.getLastPatchId(store.getState());
-      const rootFolderId = Selectors.Project.getLastFolderId(store.getState());
+      const lastPatchId = Selectors.getLastPatchId(store.getState());
+      const rootFolderId = Selectors.getLastFolderId(store.getState());
       store.dispatch(Actions.addFolder('parent', rootFolderId));
-      const parentFolderId = Selectors.Project.getLastFolderId(store.getState());
+      const parentFolderId = Selectors.getLastFolderId(store.getState());
       store.dispatch(Actions.movePatch({ id: lastPatchId, folderId: parentFolderId }));
-      const patches = Selectors.Project.getPatches(store.getState());
+      const patches = Selectors.getPatches(store.getState());
 
       chai.expect(getPatch(patches[lastPatchId]).folderId).to.be.equal(parentFolderId);
     });
 
     it('should rename patch', () => {
       const newName = 'qwe123';
-      const lastPatchId = Selectors.Project.getLastPatchId(store.getState());
+      const lastPatchId = Selectors.getLastPatchId(store.getState());
       store.dispatch(Actions.renamePatch(lastPatchId, newName));
-      const patches = Selectors.Project.getPatches(store.getState());
+      const patches = Selectors.getPatches(store.getState());
 
       chai.expect(getPatch(patches[lastPatchId]).name).to.be.equal(newName);
     });
@@ -566,7 +563,7 @@ describe('Project reducer: ', () => {
       store.dispatch(Actions.deleteNode(3));
 
       const nodeTypesAfterDelete = getNodeTypes(store.getState());
-      const nodeTypeToDelete = Selectors.Project.getNodeTypeToDeleteWithNode(
+      const nodeTypeToDelete = Selectors.getNodeTypeToDeleteWithNode(
         store.getState().project,
         3,
         patchId
@@ -592,7 +589,7 @@ describe('Project reducer: ', () => {
       store.dispatch(Actions.deleteNode(2));
 
       const nodeTypesAfterDelete = getNodeTypes(store.getState());
-      const nodeTypeToDelete = Selectors.Project.getNodeTypeToDeleteWithNode(
+      const nodeTypeToDelete = Selectors.getNodeTypeToDeleteWithNode(
         store.getState().project,
         2,
         patchId

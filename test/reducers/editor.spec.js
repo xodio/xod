@@ -3,16 +3,18 @@ import chai from 'chai';
 import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
-import * as Actions from '../../src/client/actions';
-import { EDITOR_SET_MODE } from '../../src/client/actionTypes';
-import projectReducer from '../../src/client/reducers/project';
-import { editor } from '../../src/client/reducers/editor';
-import * as EDITOR_MODE from '../../src/client/constants/editorModes';
+
+import * as Actions from '../../src/client/editor/actions';
+import editorReducer from '../../src/client/editor/reducer';
+import { EDITOR_SET_MODE } from '../../src/client/editor/actionTypes';
+
+import projectReducer from '../../src/client/project/reducer';
+import { EDITOR_MODE } from '../../src/client/editor/constants';
 
 const mockStore = configureStore([thunk]);
 const testStore = (state) => createStore(
   combineReducers({
-    editor,
+    editor: editorReducer,
   }),
   state,
   applyMiddleware(thunk)
@@ -145,7 +147,7 @@ describe('Editor reducer', () => {
     const createTabsStore = (state) => createStore(
       combineReducers({
         project: projectReducer,
-        editor,
+        editor: editorReducer,
       }),
       state,
       applyMiddleware(thunk)

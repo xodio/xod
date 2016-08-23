@@ -1,0 +1,87 @@
+import R from 'ramda';
+import React from 'react';
+import { KEYCODE } from 'xod/client/utils/constants';
+
+class IOLabelWidget extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      initialValue: props.value,
+      value: props.value,
+    };
+
+    this.onChange = this.onChange.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
+  }
+
+  onChange(event) {
+    const val = event.target.value;
+    if (!(/^([a-zA-Z0-9]){0,4}$/.test(val))) { return; }
+
+    const newValue = this.parseVal(val);
+    this.setState(
+      R.assoc('value', newValue, this.state)
+    );
+  }
+
+  onBlur() {
+    this.props.onPropUpdate(this.state.value);
+  }
+
+  onKeyDown(event) {
+    const keycode = event.keycode || event.which;
+    if (keycode === KEYCODE.ENTER) {
+      event.target.blur();
+    }
+    if (keycode === KEYCODE.ESCAPE) {
+      this.setState(
+        R.assoc('value', this.state.initialValue, this.state)
+      );
+    }
+  }
+
+  parseVal(val) {
+    return String(val);
+  }
+
+  render() {
+    const elementId = `widget_${this.props.keyName}`;
+    const val = this.state.value;
+
+    return (
+      <div className="IOLabelWidget">
+        <input
+          id={elementId}
+          type="text"
+          value={val}
+          onChange={this.onChange}
+          onBlur={this.onBlur}
+          onKeyDown={this.onKeyDown}
+        />
+        <label
+          htmlFor={elementId}
+        >
+          {this.props.label}
+        </label>
+      </div>
+    );
+  }
+}
+
+IOLabelWidget.propTypes = {
+  nodeId: React.PropTypes.number,
+  keyName: React.PropTypes.string,
+  label: React.PropTypes.string,
+  value: React.PropTypes.string,
+  onPropUpdate: React.PropTypes.func,
+};
+
+IOLabelWidget.defaultProps = {
+  label: 'Unnamed property',
+  value: false,
+  onPropUpdate: f => f,
+};
+
+export default IOLabelWidget;
