@@ -96,7 +96,7 @@ NumberWidget.propTypes = {
   nodeId: React.PropTypes.number,
   key: React.PropTypes.string,
   label: React.PropTypes.string,
-  value: React.PropTypes.string,
+  value: React.PropTypes.number,
   onPropUpdate: React.PropTypes.func,
 };
 
