@@ -1,0 +1,40 @@
+{
+  "name": "xod-server",
+  "version": "0.0.1",
+  "description": "Here will be server-side scripts.",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf build && mkdir build",
+    "build-server": "babel -d ./build ./src -s",
+    "build": "npm run clean && npm run build-server",
+    "start": "npm run build && node ./build/index.js",
+    "debug": "npm run build && node --debug ./build/index.js",
+    "test": "test"
+  },
+  "keywords": [
+    "xod",
+    "amperka"
+  ],
+  "author": "Amperka team",
+  "license": "MIT",
+  "engines": {
+    "node": "6.0.0"
+  },
+  "dependencies": {
+    "babel-preset-node6": "^11.0.0",
+    "mongodb": "^2.2.8",
+    "mongoose": "^4.5.10",
+    "restify": "^4.1.1",
+    "restify-mongoose": "^1.0.0",
+    "swagger-restify": "github:vellotis/swagger-restify"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-preset-es2015": "^6.13.2",
+    "eslint": "^3.3.1",
+    "eslint-config-airbnb-base": "^5.0.3",
+    "eslint-plugin-import": "^1.14.0",
+    "eslint-plugin-node": "^2.0.0",
+    "node-inspector": "^0.12.8"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "plugins": ["node"],
+  "extends": ["eslint:recommended", "plugin:node/recommended", "airbnb-base"],
+  "rules": {
+    "no-console": 0
+  }
+}
