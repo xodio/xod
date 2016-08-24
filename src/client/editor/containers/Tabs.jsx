@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import * as EditorSelectors from '../selectors';
 
-import { swap, assocIndex, indexById } from 'xod/client/utils/array';
+import { swap, assocIndexes, indexById } from 'xod/client/utils/array';
 
 import {
   SortableContainer as sortableContainer,
@@ -74,7 +74,7 @@ class Tabs extends React.Component {
 
   onSortEnd(changes) {
     const sortedTabs = swap(changes.oldIndex, changes.newIndex, this.getTabs());
-    const newTabs = assocIndex(sortedTabs);
+    const newTabs = assocIndexes(sortedTabs);
     const indexedTabs = indexById(newTabs);
 
     this.props.actions.sortTabs(indexedTabs);
@@ -95,7 +95,7 @@ class Tabs extends React.Component {
         axis="x"
         lockAxis="x"
         lockToContainerEdges
-        lockOffset="0%"
+        lockOffset="-5%"
 
         onClick={this.onSwitchPatch}
         onClose={this.onCloseTab}
