@@ -1,0 +1,128 @@
+# XOD API
+swagger: '2.0'
+info:
+  title: XOD API
+  description: Make awesome things with XOD API
+  version: "1.0.0"
+host: api.xod.com
+schemes:
+  - http
+  - ws
+securityDefinitions:
+  apiKey:
+    type: apiKey
+    name: apiKey
+    in: header
+  userSecurity:
+    type: basic
+security:
+  - apiKey: []
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /users:
+    get:
+      summary: List of users
+      description: ""
+      operationId: getUsers
+      tags:
+        - User
+      responses:
+        200:
+          description: Returns an array of users
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+  /users/me:
+    get:
+      summary: User Profile
+      description: The User Profile endpoint returns information about the XOD user that has authorized with the application.
+      operationId: getUserBySession
+      security:
+        - userSecurity: []
+      tags:
+        - User
+      responses:
+        200:
+          description: User profile information for a user
+          schema:
+            $ref: '#/definitions/User'
+        403:
+          description: Authentication error.
+          schema:
+            $ref: '#/definitions/Error'
+  /users/login:
+    post:
+      summary: Logs user into the system
+      description: ""
+      operationId: loginUser
+      parameters:
+        - in: query
+          name: username
+          description: The user name for login
+          required: false
+          type: string
+        - in: query
+          name: password
+          description: The password for login in clear text
+          required: false
+          type: string
+      tags:
+        - User
+      responses:
+        200:
+          description: Succesfully authorized response.
+          schema:
+            $ref: '#/definitions/AuthenticationResponse'
+        401:
+          description: Response on failed authorization request.
+          schema:
+            $ref: '#/definitions/AuthenticationFailedResponse'
+  /users/logout:
+    get:
+      tags:
+        - user
+      summary: Logs out current logged in user session
+      description: ""
+      operationId: logoutUser
+      produces:
+        - application/json
+        - application/xml
+      responses:
+        default:
+          description: successful operation
+definitions:
+  User:
+    type: object
+    properties:
+      username:
+        type: string
+        description: Username of the Xod user.
+      email:
+        type: string
+        description: Email address of the Xod user.
+      userpic:
+        type: string
+        description: Image URL on a userpic of Xod user.
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+  AuthenticationResponse:
+    type: object
+    properties:
+      authorized:
+        type: boolean
+      user:
+        $ref: '#/definitions/User'
+  AuthenticationFailedResponse:
+    type: object
+    properties:
+      authorized:
+        type: boolean
