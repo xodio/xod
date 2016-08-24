@@ -1,8 +1,10 @@
 import R from 'ramda';
 
+// :: (item, index) -> [a] -> [a] -- map an array with index
 const mapIndexed = R.addIndex(R.map);
 
-export const arrayMoveIndex = R.curry(
+// :: [a] -> [a] -- swaps two elements of `array` having `oldIndex` and `newIndex` indexes.
+export const swap = R.curry(
   (oldIndex, newIndex, array) => {
     const oldItem = R.nth(oldIndex, array);
     const newItem = R.nth(newIndex, array);
@@ -14,6 +16,8 @@ export const arrayMoveIndex = R.curry(
   }
 );
 
-export const arrayUpdateIndex = mapIndexed((item, index) => R.assoc('index', index, item));
+// :: [{...}] -> [{..., index: N}] -- sets each element in array a property 'index'
+export const assocIndexes = mapIndexed(R.flip(R.assoc('index')));
 
-export const arrayIndexById = R.indexBy(R.prop('id'));
+// :: [obj] -> { obj.id: obj, ... } -- transform array into object indexed by element.id
+export const indexById = R.indexBy(R.prop('id'));

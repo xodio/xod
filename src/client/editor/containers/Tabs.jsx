@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import * as EditorSelectors from '../selectors';
 
-import { arrayMoveIndex, arrayUpdateIndex, arrayIndexById } from 'xod/client/utils/array';
+import { swap, assocIndex, indexById } from 'xod/client/utils/array';
 
 import {
   SortableContainer as sortableContainer,
@@ -16,16 +16,14 @@ import TabsContainer from '../components/TabsContainer';
 import TabsItem from '../components/TabsItem';
 
 const SortableItem = sortableElement(
-  ({ value }) => {
-    return (
-      <TabsItem
-        key={value.id}
-        data={value}
-        onClick={value.onClick}
-        onClose={value.onClose}
-      />
-    );
-  }
+  ({ value }) => (
+    <TabsItem
+      key={value.id}
+      data={value}
+      onClick={value.onClick}
+      onClose={value.onClose}
+    />
+  )
 );
 
 const SortableList = sortableContainer(
@@ -75,9 +73,9 @@ class Tabs extends React.Component {
   }
 
   onSortEnd(changes) {
-    const sortedTabs = arrayMoveIndex(changes.oldIndex, changes.newIndex, this.getTabs());
-    const newTabs = arrayUpdateIndex(sortedTabs);
-    const indexedTabs = arrayIndexById(newTabs);
+    const sortedTabs = swap(changes.oldIndex, changes.newIndex, this.getTabs());
+    const newTabs = assocIndex(sortedTabs);
+    const indexedTabs = indexById(newTabs);
 
     this.props.actions.sortTabs(indexedTabs);
   }
