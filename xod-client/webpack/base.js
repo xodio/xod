@@ -6,7 +6,7 @@ module.exports = {
   devtool: 'source-map',
   entry: [
     'babel-polyfill',
-    './src/client/app-browser/index.jsx',
+    './src/app-browser/index.jsx',
   ],
   output: {
     filename: 'bundle.js',
@@ -54,7 +54,7 @@ module.exports = {
   plugins: [
     new webpack.NoErrorsPlugin(),
     new CopyWebpackPlugin([
-      { from: 'src/client/index.html' },
+      { from: 'src/index.html' },
     ]),
   ],
   externals: [

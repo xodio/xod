@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
 
 import EventListener from 'react-event-listener';
-import { KEYCODE } from 'xod/client/utils/constants';
+import { KEYCODE } from 'xod-client/utils/constants';
 
 const PopupPrompt = ({
   title,

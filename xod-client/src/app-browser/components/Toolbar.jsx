@@ -1,6 +1,6 @@
 import React from 'react';
-import { CreateNodeWidget } from 'xod/client/editor';
-import { UserPanel } from 'xod/client/user';
+import { CreateNodeWidget } from 'xod-client/editor';
+import { UserPanel } from 'xod-client/user';
 
 class Toolbar extends React.Component {
   constructor(props) {

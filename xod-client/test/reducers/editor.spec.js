@@ -4,12 +4,12 @@ import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
 
-import * as Actions from '../../src/client/editor/actions';
-import editorReducer from '../../src/client/editor/reducer';
-import { EDITOR_SET_MODE } from '../../src/client/editor/actionTypes';
+import * as Actions from '../../src/editor/actions';
+import editorReducer from '../../src/editor/reducer';
+import { EDITOR_SET_MODE } from '../../src/editor/actionTypes';
 
-import projectReducer from '../../src/client/project/reducer';
-import { EDITOR_MODE } from '../../src/client/editor/constants';
+import projectReducer from '../../src/project/reducer';
+import { EDITOR_MODE } from '../../src/editor/constants';
 
 const mockStore = configureStore([thunk]);
 const testStore = (state) => createStore(

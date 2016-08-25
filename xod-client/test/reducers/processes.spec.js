@@ -1,7 +1,7 @@
 import chai from 'chai';
-import { default as reducer } from '../../src/client/processes/reducer';
-import { getLastId } from '../../src/client/processes/selectors';
-import { STATUS } from '../../src/client/utils/constants';
+import { default as reducer } from '../../src/processes/reducer';
+import { getLastId } from '../../src/processes/selectors';
+import { STATUS } from '../../src/utils/constants';
 
 describe('Processes reducer', () => {
   describe('while dispatch any process actionCreator', () => {

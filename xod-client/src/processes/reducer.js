@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { STATUS } from 'xod/client/utils/constants';
+import { STATUS } from 'xod-client/utils/constants';
 import { getNewId } from './selectors';
 
 const makeProcess = (id, state, action) =>

@@ -1,6 +1,6 @@
 import R from 'ramda';
 import React from 'react';
-import { KEYCODE } from 'xod/client/utils/constants';
+import { KEYCODE } from 'xod-client/utils/constants';
 
 class IOLabelWidget extends React.Component {
   constructor(props) {

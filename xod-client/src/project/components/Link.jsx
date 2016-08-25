@@ -1,7 +1,7 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import Stylizer from 'xod/client/utils/stylizer';
+import Stylizer from 'xod-client/utils/stylizer';
 
 import { SIZE } from '../constants';
 

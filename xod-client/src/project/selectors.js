@@ -1,7 +1,7 @@
 import R from 'ramda';
 
 import { PIN_DIRECTION, PROPERTY_TYPE, SIZE, NODE_CATEGORY } from './constants';
-import { LINK_ERRORS, NODETYPE_ERRORS } from 'xod/client/messages/constants';
+import { LINK_ERRORS, NODETYPE_ERRORS } from 'xod-client/messages/constants';
 
 export const getUserName = () => 'Bob';
 
@@ -969,4 +969,3 @@ export const prepareToAddLink = (state, pin1, pin2) => {
     },
   };
 };
-

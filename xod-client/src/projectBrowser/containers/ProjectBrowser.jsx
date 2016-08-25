@@ -2,16 +2,16 @@ import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as MessageActions from 'xod/client/messages/actions';
-import * as ProjectActions from 'xod/client/project/actions';
-import * as EditorActions from 'xod/client/editor/actions';
+import * as MessageActions from 'xod-client/messages/actions';
+import * as ProjectActions from 'xod-client/project/actions';
+import * as EditorActions from 'xod-client/editor/actions';
 
-import * as ProjectSelectors from 'xod/client/project/selectors';
-import * as EditorSelectors from 'xod/client/editor/selectors';
+import * as ProjectSelectors from 'xod-client/project/selectors';
+import * as EditorSelectors from 'xod-client/editor/selectors';
 
 import { HotKeys } from 'react-hotkeys';
-import { COMMAND } from 'xod/client/utils/constants';
-import { findParentByClassName } from 'xod/client/utils/browser';
+import { COMMAND } from 'xod-client/utils/constants';
+import { findParentByClassName } from 'xod-client/utils/browser';
 
 import ProjectBrowserTree from '../components/ProjectBrowserTree';
 import ProjectBrowserToolbar from '../components/ProjectBrowserToolbar';

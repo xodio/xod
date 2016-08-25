@@ -3,18 +3,18 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as Actions from '../actions';
-import * as ProjectActions from 'xod/client/project/actions';
+import * as ProjectActions from 'xod-client/project/actions';
 import * as EditorSelectors from '../selectors';
-import * as ProjectSelectors from 'xod/client/project/selectors';
+import * as ProjectSelectors from 'xod-client/project/selectors';
 
 import { HotKeys } from 'react-hotkeys';
-import { COMMAND } from 'xod/client/utils/constants';
-import { EDITOR_MODE } from 'xod/client/editor/constants';
+import { COMMAND } from 'xod-client/utils/constants';
+import { EDITOR_MODE } from 'xod-client/editor/constants';
 
 import Patch from './Patch';
-import { ProjectBrowser } from 'xod/client/projectBrowser';
-import Sidebar from 'xod/client/utils/components/Sidebar';
-import Workarea from 'xod/client/utils/components/Workarea';
+import { ProjectBrowser } from 'xod-client/projectBrowser';
+import Sidebar from 'xod-client/utils/components/Sidebar';
+import Workarea from 'xod-client/utils/components/Workarea';
 
 import Tabs from '../containers/Tabs';
 import Inspector from '../components/Inspector';

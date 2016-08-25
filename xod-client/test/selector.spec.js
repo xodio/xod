@@ -1,9 +1,9 @@
 import R from 'ramda';
 import chai from 'chai';
-import initialState from '../src/client/app-browser/state';
-import Selectors from '../src/client/app-browser/selectors';
-import { PIN_TYPE, PIN_DIRECTION } from '../src/client/project/constants';
-import { LINK_ERRORS } from '../src/client/messages/constants';
+import initialState from '../src/app-browser/state';
+import Selectors from '../src/app-browser/selectors';
+import { PIN_TYPE, PIN_DIRECTION } from '../src/project/constants';
+import { LINK_ERRORS } from '../src/messages/constants';
 
 describe('Link selector', () => {
   describe('while validating link creating', () => {

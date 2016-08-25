@@ -8,15 +8,15 @@ import { HotKeys } from 'react-hotkeys';
 import * as Actions from '../actions';
 import { UPLOAD as UPLOAD_ACTION_TYPE } from '../actionTypes';
 import Selectors from '../selectors';
-import { getViewableSize, isChromeApp } from 'xod/client/utils/browser';
-import { SAVE_LOAD_ERRORS } from 'xod/client/messages/constants';
-import { KEYCODE, HOTKEY } from 'xod/client/utils/constants';
+import { getViewableSize, isChromeApp } from 'xod-client/utils/browser';
+import { SAVE_LOAD_ERRORS } from 'xod-client/messages/constants';
+import { KEYCODE, HOTKEY } from 'xod-client/utils/constants';
 
-import { constants as EDITOR_CONST, container as Editor } from 'xod/client/editor';
-import { SnackBar } from 'xod/client/messages';
+import { constants as EDITOR_CONST, container as Editor } from 'xod-client/editor';
+import { SnackBar } from 'xod-client/messages';
 import Toolbar from '../components/Toolbar';
 import PopupInstallApp from '../components/PopupInstallApp';
-import PopupUploadProject from 'xod/client/processes/components/PopupUploadProject';
+import PopupUploadProject from 'xod-client/processes/components/PopupUploadProject';
 import EventListener from 'react-event-listener';
 
 import DevTools from './DevTools';

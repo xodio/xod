@@ -1,4 +1,4 @@
-import applyReducers from 'xod/client/utils/applyReducers';
+import applyReducers from 'xod-client/utils/applyReducers';
 
 import { meta } from './meta';
 import { patches } from './patches';

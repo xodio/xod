@@ -3,20 +3,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as ProjectActions from 'xod/client/project/actions';
-import * as EditorActions from 'xod/client/editor/actions'; // @TODO: remove it!
-import * as ProjectSelectors from 'xod/client/project/selectors';
-import * as EditorSelectors from 'xod/client/editor/selectors';
-import { findRootSVG } from 'xod/client/utils/browser';
+import * as ProjectActions from 'xod-client/project/actions';
+import * as EditorActions from 'xod-client/editor/actions'; // @TODO: remove it!
+import * as ProjectSelectors from 'xod-client/project/selectors';
+import * as EditorSelectors from 'xod-client/editor/selectors';
+import { findRootSVG } from 'xod-client/utils/browser';
 
 import { HotKeys } from 'react-hotkeys';
-import { COMMAND } from 'xod/client/utils/constants';
+import { COMMAND } from 'xod-client/utils/constants';
 
-import PatchSVG from 'xod/client/project/components/PatchSVG';
-import BackgroundLayer from 'xod/client/project/components/BackgroundLayer';
-import NodesLayer from 'xod/client/project/components/NodesLayer';
-import LinksLayer from 'xod/client/project/components/LinksLayer';
-import GhostsLayer from 'xod/client/project/components/GhostsLayer';
+import PatchSVG from 'xod-client/project/components/PatchSVG';
+import BackgroundLayer from 'xod-client/project/components/BackgroundLayer';
+import NodesLayer from 'xod-client/project/components/NodesLayer';
+import LinksLayer from 'xod-client/project/components/LinksLayer';
+import GhostsLayer from 'xod-client/project/components/GhostsLayer';
 
 class Patch extends React.Component {
   constructor(props) {
