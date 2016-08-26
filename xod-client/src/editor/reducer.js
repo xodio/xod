@@ -11,7 +11,7 @@ import {
   TAB_CLOSE,
   TAB_SORT,
 } from './actionTypes';
-import { ENTITY } from 'xod-client/project/constants';
+import { ENTITY } from 'xod-core/project/constants';
 
 const addSelection = (entityName, action, state) => {
   const select = {

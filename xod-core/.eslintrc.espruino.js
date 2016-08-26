@@ -4,8 +4,7 @@ module.exports = {
   },
 
   extends: [
-    'eslint:recommended',
-    'airbnb',
+    'eslint:recommended'
   ],
 
   rules: {

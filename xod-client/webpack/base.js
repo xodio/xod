@@ -54,7 +54,7 @@ module.exports = {
   plugins: [
     new webpack.NoErrorsPlugin(),
     new CopyWebpackPlugin([
-      { from: 'src/index.html' },
+      { from: 'src/app-browser/index.html' },
     ]),
   ],
   externals: [

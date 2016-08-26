@@ -2,7 +2,7 @@ import R from 'ramda';
 import { createSelector } from 'reselect';
 
 import { EDITOR_MODE } from './constants';
-import { PIN_VALIDITY, ENTITY, SIZE } from 'xod-client/project/constants';
+import { PIN_VALIDITY, ENTITY, SIZE } from 'xod-core/project/constants';
 
 import {
   indexById,

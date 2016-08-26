@@ -1,7 +1,7 @@
 import R from 'ramda';
 import React from 'react';
 import Widgets from './inspectorWidgets';
-import { ENTITY, PROPERTY_TYPE } from 'xod-client/project/constants';
+import { ENTITY, PROPERTY_TYPE } from 'xod-core/project/constants';
 
 const widgetAccordance = {
   [ENTITY.NODE]: {
