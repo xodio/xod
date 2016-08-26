@@ -3,7 +3,7 @@ import { STATUS } from 'xod/client/utils/constants';
 import { getNewId } from './selectors';
 
 export default (processes = {}, action) => {
-  const isProcess = (action.hasOwnProperty('meta') && action.meta.hasOwnProperty('status'));
+  const isProcess = (action.meta && action.meta.status);
   if (!isProcess) { return processes; }
 
   const makeProcess = (id, state, act) =>
