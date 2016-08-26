@@ -47,6 +47,7 @@
     "react-sortable-hoc": "0.0.7",
     "react-ui-tree": "^2.5.0",
     "redux": "^3.0.5",
+    "redux-api-middleware": "^1.0.2",
     "redux-thunk": "^2.1.0",
     "redux-undo": "^1.0.0-beta8",
     "reselect": "^2.5.1",
