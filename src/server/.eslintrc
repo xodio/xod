@@ -6,5 +6,8 @@
   ],
   "plugins": [
     "ramda"
-  ]
+  ],
+  "rules": {
+    "no-console": "off"
+  }
 }
