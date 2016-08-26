@@ -1,0 +1,31 @@
+{
+  "name": "Profile",
+  "base": "User",
+  "strict": false,
+  "properties": {
+    "username": {
+      "type": "string",
+      "required": true
+    },
+    "userpic": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "projects": {
+      "type": "hasMany",
+      "model": "Project",
+      "foreignKey": ""
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": {}
+}
