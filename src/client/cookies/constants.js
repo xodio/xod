@@ -1,0 +1,1 @@
+export const UPDATE_COOKIES = 'UPDATE_COOKIES';
