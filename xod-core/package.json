@@ -15,7 +15,8 @@
   "license": "MIT",
   "dependencies": {
     "commander": "^2.9.0",
-    "ramda": "^0.21.0"
+    "ramda": "^0.21.0",
+    "co": "^4.6.0"
   },
   "engines": {
     "node": "6.0.0"

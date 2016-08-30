@@ -19,7 +19,7 @@ const config = merge.smart(baseConfig, {
         loaders: ['react-hot'],
       },
       {
-        test: /src\/runtime\/.*\.js$/,
+        test: /runtime\/.*\.js$/,
         loader: 'null',
       },
     ],
