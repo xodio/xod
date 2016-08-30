@@ -1,33 +1,55 @@
 import R from 'ramda';
 import { CALL_API } from 'redux-api-middleware';
+import { STATUS } from 'xod/client/utils/constants';
 
 const API_BASEPATH = 'http://0.0.0.0:3000/api';
 
 const parseBody = (body) => JSON.stringify(body);
 
-const generateTypes = (types, path) => {
-  let prefix = 'API_';
+const generateType = (path) => {
+  let actionType = 'API/';
 
   if (path === '' || path === '/') {
-    prefix += 'ROOT_';
+    actionType += 'ROOT_';
   } else {
-    prefix += R.pipe(
+    actionType += R.pipe(
       R.split('/'),
       R.tail,
       R.map(R.toUpper),
-      R.append(''),
       R.join('_')
     )(path);
   }
 
-  return R.map(type => `${prefix}${R.toUpper(type)}`)(types);
+  return actionType;
 };
+
+const generateActionCreators = (actionType, path) => R.pipe(
+  R.map(type => ({
+    type: generateType(path),
+    payload: (action, state, res) => {
+      if (res) {
+        return res.json().then(
+          json =>
+          ({
+            id: path, // @TODO: roll back to ID, but find it by path
+            response: json,
+          })
+        );
+      }
+
+      return ({ id: path });
+    },
+    meta: {
+      status: STATUS[type],
+    },
+  }))
+)(['STARTED', 'SUCCEEDED', 'FAILED']);
 
 const call = (options) => {
   const path = options.path || '';
   const method = options.method || 'GET';
-  const actionTypes = options.types || ['REQUEST', 'SUCCESS', 'FAILURE'];
-  const types = generateTypes(actionTypes, path);
+  const actionType = generateType(path);
+  const types = generateActionCreators(actionType, path);
   const headers = options.headers || {
     'Content-Type': 'application/json',
   };
@@ -46,19 +68,31 @@ const call = (options) => {
   };
 };
 
-export const actionType = (type, path) => generateTypes([type], path)[0];
+const ApiPath = {
+  profile: {
+    login: '/Profiles/login',
+    logout: '/Profiles/logout',
+  },
+};
+
+export const ApiTypes = {
+  profile: {
+    login: generateType(ApiPath.profile.login),
+    logout: generateType(ApiPath.profile.logout),
+  },
+};
 
 export const ApiActions = {
   profile: {
-    login: () => call({
-      path: '/Profiles/login',
+    login: (username, password) => call({
+      path: ApiPath.profile.login,
       method: 'post',
       body: {
-        username: 'brusher',
-        password: 'qwe123',
+        username: username || 'brusher',
+        password: password || 'qwe123',
       },
       logout: () => call({
-        path: '/Profiles/logout',
+        path: ApiPath.profile.logout,
         method: 'post',
       }),
     }),
