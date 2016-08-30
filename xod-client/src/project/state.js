@@ -27,7 +27,7 @@ const nodeMetas = {
 function loadImpl(platform, key, ext) {
   try {
     /* eslint-disable global-require, prefer-template */
-    return require('!raw!../../../xod-core/nodes/' + platform
+    return require('!raw!../../../xod-espruino/nodes/' + platform
                    + '/' + key.replace('core/', '') + ext);
     /* eslint-enable global-require, prefer-template */
   } catch (err) {

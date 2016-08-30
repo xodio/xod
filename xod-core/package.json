@@ -4,9 +4,7 @@
   "description": "XOD project: Core",
   "scripts": {
     "build": "babel src/ -d dist/",
-    "lint-es6": "eslint --ext .js ./src ./nodes ./test --ignore-path ./src/runtime/xod-espruino/runtime.js || true",
-    "lint-espruino": "eslint --config .eslintrc.espruino.js ./src/runtime/xod-espruino/runtime.js ./nodes/js ./nodes/espruino || true",
-    "lint": "npm-run-all lint-es6 lint-espruino",
+    "lint": "eslint --ext .js ./src ./nodes ./test || true",
     "test": "mocha --require babel-register test/**/*.js"
   },
   "repository": {},
@@ -31,7 +29,6 @@
     "dirty-chai": "^1.2.2",
     "eslint": "^2.13.0",
     "eslint-plugin-import": "^1.8.1",
-    "espruino": "git+https://github.com/espruino/EspruinoTools.git#gh-pages",
     "json5": "<0.5.0",
     "mocha": "^2.3.4",
     "npm-run-all": "^2.3.0",

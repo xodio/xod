@@ -22,7 +22,7 @@ const mapNodeTypeProperties = R.compose(
 const removeNils = R.reject(R.isNil);
 
 // :: (String -> String -> String) -> Object -> Object
-const getNodeTypes = R.uncurryN(2, getImpl => R.compose(
+export const getNodeTypes = R.uncurryN(2, getImpl => R.compose(
   R.indexBy(R.prop('key')),
   R.values,
   R.mapObjIndexed((meta, key) => R.merge(
@@ -44,7 +44,7 @@ const maxKey = R.compose(
   R.keys
 );
 
-const getInitialState = nodeTypes => ({
+export const getInitialState = nodeTypes => ({
   meta: {
     name: 'Awesome project',
     author: 'Amperka team',
@@ -73,5 +73,3 @@ const getInitialState = nodeTypes => ({
     folders: 0,
   },
 });
-
-export default getInitialState;

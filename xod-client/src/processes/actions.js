@@ -3,7 +3,7 @@ import * as ProcessSelectors from './selectors';
 import * as ProjectSelectors from 'xod-client/project/selectors';
 
 import { STATUS } from 'xod-client/utils/constants';
-import { uploadToEspruino } from 'xod-core/utils/esp';
+import { uploadToEspruino } from 'xod-client/utils/esp';
 
 export const upload = () => (dispatch, getState) => {
   const project = ProjectSelectors.getProjectPojo(getState());
