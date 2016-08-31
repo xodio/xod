@@ -1,12 +1,11 @@
 import R from 'ramda';
 import { CALL_API } from 'redux-api-middleware';
 import { STATUS } from 'xod/client/utils/constants';
+import { API_BASEPATH } from './routes';
 
-const API_BASEPATH = 'http://0.0.0.0:3000/api';
+export const parseBody = (body) => JSON.stringify(body);
 
-const parseBody = (body) => JSON.stringify(body);
-
-const generateType = (path) => {
+export const generateType = (path) => {
   let actionType = 'API/';
 
   if (path === '' || path === '/') {
@@ -23,7 +22,7 @@ const generateType = (path) => {
   return actionType;
 };
 
-const generateActionCreators = (actionType, path) => R.pipe(
+export const generateActionCreators = (actionType, path) => R.pipe(
   R.map(type => ({
     type: generateType(path),
     payload: (action, state, res) => {
@@ -45,7 +44,7 @@ const generateActionCreators = (actionType, path) => R.pipe(
   }))
 )(['STARTED', 'SUCCEEDED', 'FAILED']);
 
-const call = (options) => {
+export const call = (options) => {
   const path = options.path || '';
   const method = options.method || 'GET';
   const actionType = generateType(path);
@@ -66,35 +65,4 @@ const call = (options) => {
       credentials,
     },
   };
-};
-
-const ApiPath = {
-  profile: {
-    login: '/Profiles/login',
-    logout: '/Profiles/logout',
-  },
-};
-
-export const ApiTypes = {
-  profile: {
-    login: generateType(ApiPath.profile.login),
-    logout: generateType(ApiPath.profile.logout),
-  },
-};
-
-export const ApiActions = {
-  profile: {
-    login: (username, password) => call({
-      path: ApiPath.profile.login,
-      method: 'post',
-      body: {
-        username: username || 'brusher',
-        password: password || 'qwe123',
-      },
-      logout: () => call({
-        path: ApiPath.profile.logout,
-        method: 'post',
-      }),
-    }),
-  },
 };
