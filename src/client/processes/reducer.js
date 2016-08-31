@@ -19,12 +19,13 @@ const makeProcess = (id, state, action) =>
 export default (processes = {}, action) => {
   const isProcess = (action.meta && action.meta.status);
   if (!isProcess) { return processes; }
-
+  const newId = getNewId(processes);
+  const id = (action && action.payload && action.payload.id) ? action.payload.id : newId;
 
   switch (action.meta.status) {
     case STATUS.STARTED:
       return makeProcess(
-        action.payload.id || getNewId(processes),
+        newId,
         processes,
         action
       );
@@ -32,7 +33,7 @@ export default (processes = {}, action) => {
     case STATUS.SUCCEEDED:
     case STATUS.FAILED: {
       return makeProcess(
-        action.payload.id,
+        id,
         processes,
         action
       );

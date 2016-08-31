@@ -3,6 +3,8 @@ import { CALL_API } from 'redux-api-middleware';
 import { STATUS } from 'xod/client/utils/constants';
 import { API_BASEPATH } from './routes';
 
+import { getProccesses, findProcessByPath } from 'xod/client/processes/selectors';
+
 export const parseBody = (body) => JSON.stringify(body);
 
 export const generateType = (path) => {
@@ -26,17 +28,22 @@ export const generateActionCreators = (actionType, path) => R.pipe(
   R.map(type => ({
     type: generateType(path),
     payload: (action, state, res) => {
-      if (res) {
-        return res.json().then(
-          json =>
-          ({
-            id: path, // @TODO: roll back to ID, but find it by path
-            response: json,
-          })
-        );
-      }
+      const processes = getProccesses(state);
+      const proc = findProcessByPath(path)(processes);
+      if (!proc) { return { path }; }
 
-      return ({ id: path });
+      const id = R.prop('id', proc);
+      if (!res) { return ({ id, path }); }
+
+
+      return res.json().then(
+        json =>
+        ({
+          id,
+          path,
+          response: json,
+        })
+      );
     },
     meta: {
       status: STATUS[type],
