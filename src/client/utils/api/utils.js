@@ -1,4 +1,5 @@
 import R from 'ramda';
+import Cookies from 'js-cookie';
 import { CALL_API } from 'redux-api-middleware';
 import { STATUS } from 'xod/client/utils/constants';
 import { API_BASEPATH } from './routes';
@@ -51,20 +52,35 @@ export const generateActionCreators = (actionType, path) => R.pipe(
   }))
 )(['STARTED', 'SUCCEEDED', 'FAILED']);
 
+const processPath = R.curry((parts, path) => R.pipe(
+  R.split('/'),
+  R.map(part => {
+    if (part[0] === ':') {
+      return parts[R.tail(part)];
+    }
+
+    return part;
+  }),
+  R.join('/')
+)(path));
+
 export const call = (options) => {
   const path = options.path || '';
+  const parts = options.parts || {};
+  const callPath = processPath(parts, path);
   const method = options.method || 'GET';
   const actionType = generateType(path);
   const types = generateActionCreators(actionType, path);
-  const headers = options.headers || {
+  const headers = R.merge({
     'Content-Type': 'application/json',
-  };
-  const body = parseBody(options.body) || '';
+    Authorization: Cookies.get('access_token'),
+  }, options.headers);
+  const body = parseBody(options.body) || null;
   const credentials = options.credentials || 'include';
 
   return {
     [CALL_API]: {
-      endpoint: `${API_BASEPATH}${path}`,
+      endpoint: `${API_BASEPATH}${callPath}`,
       method,
       types,
       headers,

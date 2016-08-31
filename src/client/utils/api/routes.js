@@ -4,5 +4,6 @@ export default {
   profile: {
     login: '/Profiles/login',
     logout: '/Profiles/logout',
+    user: '/Profiles/:userId',
   },
 };

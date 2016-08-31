@@ -3,6 +3,8 @@ const methods = require('../utils/methods');
 module.exports = function ProfileModel(Profile) {
   methods.filter(
     [
+      'findById',
+
       'login',
       'logout',
       'resetPassword',
