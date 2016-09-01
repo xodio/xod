@@ -1,7 +1,7 @@
 
 import EventEmitter from 'events';
 import { expect } from 'chai';
-import { Node, Project } from '../../src/runtime/xod-espruino/runtime';
+import { Node, Project } from '../src/runtime';
 
 describe('Runtime', () => {
   before(() => {
@@ -65,7 +65,7 @@ describe('Runtime', () => {
       project.launch();
     }
 
-    it('should transmit signal from publisher to subsriber', () => {
+    it('should transmit signal from publisher to subscriber', () => {
       const publisher = createPublisherNode(1, {
         val: [{ nodeId: 2, key: 'val' }],
       });
@@ -79,7 +79,7 @@ describe('Runtime', () => {
       ]);
     });
 
-    it('should transmit multiple signals from publisher to subsriber', () => {
+    it('should transmit multiple signals from publisher to subscriber', () => {
       const publisher = createPublisherNode(1, {
         val: [{ nodeId: 2, key: 'val' }],
       });

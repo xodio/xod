@@ -4,7 +4,8 @@
   "description": "XOD project: Espruino runtime",
   "scripts": {
     "build": "webpack --progress --colors --config webpack/base.js",
-    "lint": "eslint ./src/runtime.js ./nodes/js ./nodes/espruino || true"
+    "lint": "eslint ./src/runtime.js ./nodes/js ./nodes/espruino || true",
+    "test": "mocha-webpack \"test/**/*.spec.js\""
   },
   "repository": {},
   "keywords": [],
@@ -50,6 +51,7 @@
     "npm-run-all": "^2.3.0",
     "null-loader": "^0.1.1",
     "raw-loader": "^0.5.1",
+    "source-map-support": "^0.4.2",
     "wallaby-webpack": "0.0.22",
     "webpack-merge": "^0.14.0",
     "webpack-validator": "^2.2.3"

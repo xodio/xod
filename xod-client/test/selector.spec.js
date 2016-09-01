@@ -2,7 +2,7 @@ import R from 'ramda';
 import chai from 'chai';
 import initialState from '../src/app-browser/state';
 import Selectors from '../src/app-browser/selectors';
-import { PIN_TYPE, PIN_DIRECTION } from 'xod-core/project/constants';
+import { PIN_TYPE, PIN_DIRECTION } from '../src/project/constants';
 import { LINK_ERRORS } from '../src/messages/constants';
 
 describe('Link selector', () => {
@@ -50,13 +50,12 @@ describe('Link selector', () => {
 
     function expectOk(pinFrom, pinTo) {
       const check = validate(pinFrom, pinTo);
-      chai.expect(check.isValid).to.be.equal(true);
+      chai.expect(check).to.be.equal(null);
     }
 
     function expectFail(pinFrom, pinTo, message) {
       const check = validate(pinFrom, pinTo);
-      chai.expect(check.isValid).to.be.equal(false);
-      chai.expect(check.message).to.be.equal(message);
+      chai.expect(LINK_ERRORS[check]).to.be.equal(message);
     }
 
     it('should be valid', () => {

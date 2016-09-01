@@ -2,11 +2,11 @@ import R from 'ramda';
 import chai from 'chai';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
-import generateReducers from '../../src/app-browser/reducer';
-import { nodes } from '../../src/project/reducer/nodes';
-import * as Actions from '../../src/project/actions';
-import * as Selectors from 'xod-core/project/selectors';
-import { NODETYPE_ERRORS } from '../../src/messages/constants';
+import generateReducers from '../src/app-browser/reducer';
+import { nodes } from '../src/project/reducer/nodes';
+import * as Actions from '../src/project/actions';
+import * as Selectors from '../src/project/selectors';
+import { NODETYPE_ERRORS } from '../src/messages/constants';
 
 function pin(nodeId, pinKey) {
   return { nodeId, pinKey };
@@ -548,7 +548,7 @@ describe('Project reducer: ', () => {
     it('should show error on attempt to delete IO node that have a link', () => {
       const expectedNodeTypeToDelete = {
         key: null,
-        error: NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE,
+        error: 'CANT_DELETE_USED_PIN_OF_PATCHNODE', // FIXME: replace with constant from xod-core
       };
       const patchNodeName = getPatchNodeName(patchId, store.getState());
 
@@ -577,7 +577,7 @@ describe('Project reducer: ', () => {
       const patchNodeName = getPatchNodeName(patchId, store.getState());
       const expectedNodeTypeToDelete = {
         key: patchNodeName,
-        error: NODETYPE_ERRORS.CANT_DELETE_USED_PATCHNODE,
+        error: 'CANT_DELETE_USED_PATCHNODE', // FIXME: replace with constant from xod-core
       };
 
       store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));

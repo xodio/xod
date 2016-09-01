@@ -24,4 +24,8 @@ module.exports = {
     afterEach: true,
     chrome: true,
   },
+
+  rules: {
+    'comma-dangle': ['error', 'only-multiline'],
+  },
 };

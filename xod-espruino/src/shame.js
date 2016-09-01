@@ -1,5 +1,5 @@
-export const window = {};
+export const window = window || {};
 
-export const navigator = {userAgent: "node"};
+export const navigator = navigator || {userAgent: "node"};
 
-export const document = {};
+export const document = document || {};

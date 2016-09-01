@@ -30,6 +30,7 @@ module.exports = {
     digitalRead: true,
     digitalWrite: true,
     setWatch: true,
+    setTimeout: true,
+    module: true,
   },
 };
-

@@ -23,7 +23,7 @@ function main() {
   const filename = program.args[0];
   const json = fs.readFileSync(filename);
   const project = JSON.parse(json);
-  const runtime = fs.readFileSync(platformDir + '/runtime.js');
+  const runtime = xodEspruino.runtime; // fs.readFileSync(platformDir + '/runtime.js');
   const code = transpile({ project, runtime });
 
   process.stdout.write(code);
