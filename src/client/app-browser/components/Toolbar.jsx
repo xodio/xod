@@ -1,5 +1,6 @@
 import React from 'react';
 import CreateNodeWidget from 'xod/client/editor/components/CreateNodeWidget';
+import UserPanel from 'xod/client/user/containers/UserPanel';
 
 class Toolbar extends React.Component {
   constructor(props) {
@@ -54,6 +55,8 @@ class Toolbar extends React.Component {
             {(meta.author) ? ` by ${meta.author}` : ''}
           </span>
         </div>
+
+        <UserPanel />
 
         <button
           className="upload-button"

@@ -65,7 +65,7 @@ class Editor extends React.Component {
 
   render() {
     return (
-      <HotKeys handlers={this.getHotkeyHandlers()}>
+      <HotKeys handlers={this.getHotkeyHandlers()} className="Editor">
         <Sidebar>
           <ProjectBrowser />
           <Inspector

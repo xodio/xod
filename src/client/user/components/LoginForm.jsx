@@ -46,15 +46,16 @@ export class LoginForm extends React.Component {
         >
           <FormsyComponent.Input
             name="username"
+            label="Username"
             type="text"
-            required
+            validations="isExisty"
             autoFocus
           />
           <FormsyComponent.Input
             name="password"
+            label="Password"
             type="password"
             validations="minLength:6"
-            required
           />
           <button
             className="LoginFormSubmit"

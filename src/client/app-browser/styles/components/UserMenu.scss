@@ -1,0 +1,23 @@
+.UserMenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  display: inline-block;
+  vertical-align: top;
+  float: right;
+  height: 32px;
+
+  &.is-opened {
+    // display: block;
+  }
+
+  li {
+    display: inline-block;
+    // border-right: 1px solid $color-user-menu-separator;
+  }
+
+  li > button {
+    @include button-alt;
+  }
+}

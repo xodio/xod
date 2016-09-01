@@ -58,4 +58,15 @@
       top: -300px;
     }
   }
+
+  .LoginButton {
+    @include button-toolbar;
+  }
+  .UserButton {
+    @include button-toolbar;
+    float: left;
+  }
+  .UserMenu li button {
+    @include button-toolbar;
+  }
 }
