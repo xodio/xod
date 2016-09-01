@@ -19,7 +19,7 @@ const config = merge.smart(baseConfig, {
         loaders: ['react-hot'],
       },
       {
-        test: /runtime\/.*\.js$/,
+        test: /src\/node_modules\/xod-espruino\/index\.js$/,
         loader: 'null',
       },
     ],

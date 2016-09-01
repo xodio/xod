@@ -4,13 +4,14 @@ require('babel-register');
 
 const program = require('commander');
 const fs = require('fs');
-const platformDir = __dirname + '/../targets/xod-espruino';
-const transpile = require(platformDir + '/transpiler').default;
+const platform = __dirname + '/../../xod-espruino/dist';
+const xodEspruino = require(platform);
+const transpile = xodEspruino.transpile;
 
 program
   .version('0.0.1')
   .arguments('<PATCH_FILE>');
- 
+
 function main() {
   program.parse(process.argv);
 
@@ -24,7 +25,7 @@ function main() {
   const project = JSON.parse(json);
   const runtime = fs.readFileSync(platformDir + '/runtime.js');
   const code = transpile({ project, runtime });
-   
+
   process.stdout.write(code);
 }
 

@@ -15,24 +15,6 @@ const config = merge.smart(baseConfig, {
   ],
   module: {
     loaders: [
-      {
-        test: /src\/runtime\/.*\.js$/,
-        exclude: [
-          /src\/runtime\/.*runtime\.js$/,
-        ],
-        loader: 'babel?presets[]=es2015',
-      },
-      {
-        test: /node_modules\/espruino\/espruino\.js$/,
-        loaders: [
-          'exports?Espruino',
-          'imports?$=jquery',
-        ],
-      },
-      {
-        test: /node_modules\/espruino\/.*\.js$/,
-        loader: 'imports?Espruino=espruino/espruino&$=jquery',
-      },
     ],
   },
   externals: {

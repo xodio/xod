@@ -1,47 +1,53 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const libraryName = 'xod-espruino';
 
 module.exports = {
-  entry: [
-    './src/index.js',
-  ],
+  entry: path.join(__dirname, '../src/index.js'),
   output: {
     path: path.join(__dirname, '../dist'),
+    libraryTarget: 'umd',
+    library: libraryName,
     filename: 'index.js',
+    umdNamedDefine: true
   },
+  externals: [
+    /xod-core\/.*/,
+    {fs: true},
+  ],
   resolve: {
     root: path.join(__dirname, '../src'),
-    modulesDirectories: ['node_modules', 'src'],
     extensions: ['', '.js'],
   },
   module: {
     loaders: [
       {
-        test: /node_modules\/espruino\/.*\.js$/,
-        loader: 'null',
-      },
-      {
         test: /src\/.*\.js$/,
         exclude: [
           /src\/runtime\.js$/,
         ],
-        loader: 'babel?presets[]=es2015',
+        loader: 'babel',
+      },
+      {
+        test: /src\/runtime.js$/,
+        loader: 'raw',
       },
       {
         test: /node_modules\/espruino\/espruino\.js$/,
         loaders: [
+          'globals?./src/shame.js',
           'exports?Espruino',
           'imports?$=jquery',
         ],
       },
       {
-        test: /node_modules\/espruino\/.*\.js$/,
-        loader: 'imports?Espruino=espruino/espruino&$=jquery',
+        test: /node_modules\/espruino\/.+\.js$/,
+        loaders: [
+          'globals?./src/shame.js',
+          'imports?Espruino=espruino/espruino,$=jquery',
+        ],
       },
     ],
   },
-  plugins: [
-    new webpack.NoErrorsPlugin(),
-  ],
 };

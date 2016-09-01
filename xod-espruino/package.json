@@ -19,16 +19,18 @@
     "babel-preset-node6": "^11.0.0",
     "babel-register": "^6.11.6",
     "classnames": "^2.2.5",
+    "co": "^4.6.0",
+    "jquery": "^3.1.0",
     "json5": "<0.5.0",
     "ramda": "^0.21.0",
-    "webpack": "^1.12.10",
-    "co": "^4.6.0"
+    "webpack": "^1.12.10"
   },
   "engines": {
     "node": "6.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.4.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-polyfill": "^6.9.1",
     "chai": "^3.4.1",
     "copy-webpack-plugin": "^3.0.1",
@@ -39,13 +41,15 @@
     "eslint-plugin-import": "^1.8.1",
     "eslint-plugin-jsx-a11y": "^1.5.3",
     "eslint-plugin-react": "^5.2.2",
+    "espruino": "git+https://github.com/espruino/EspruinoTools.git#gh-pages",
     "exports-loader": "^0.6.3",
+    "globals-loader": "0.0.3",
     "imports-loader": "^0.6.5",
     "mocha": "^2.3.4",
     "mocha-webpack": "^0.4.0",
     "npm-run-all": "^2.3.0",
     "null-loader": "^0.1.1",
-    "espruino": "git+https://github.com/espruino/EspruinoTools.git#gh-pages",
+    "raw-loader": "^0.5.1",
     "wallaby-webpack": "0.0.22",
     "webpack-merge": "^0.14.0",
     "webpack-validator": "^2.2.3"
