@@ -1,1 +1,1 @@
-export { default } from './containers/ProjectBrowser';
+export { default as ProjectBrowser } from './containers/ProjectBrowser';

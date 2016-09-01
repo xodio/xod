@@ -12,7 +12,7 @@ import { COMMAND } from 'xod/client/utils/constants';
 import { EDITOR_MODE } from 'xod/client/editor/constants';
 
 import Patch from './Patch';
-import ProjectBrowser from 'xod/client/projectBrowser';
+import ProjectBrowser from 'xod/client/projectBrowser/containers/ProjectBrowser';
 import Sidebar from 'xod/client/utils/components/Sidebar';
 import Workarea from 'xod/client/utils/components/Workarea';
 
