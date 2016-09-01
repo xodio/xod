@@ -33,6 +33,8 @@
     "espruino": "git+https://github.com/espruino/EspruinoTools.git#gh-pages",
     "file-loader": "^0.8.5",
     "font-awesome": "^4.6.3",
+    "formsy-react": "^0.18.1",
+    "formsy-react-components": "^0.8.1",
     "jquery": "^3.1.0",
     "js-cookie": "^2.1.2",
     "json5": "<0.5.0",
