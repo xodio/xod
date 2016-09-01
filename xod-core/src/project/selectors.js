@@ -1,7 +1,7 @@
 import R from 'ramda';
 
 import { PIN_DIRECTION, PROPERTY_TYPE, SIZE, NODE_CATEGORY,
-         NODETYPE_ERRORS } from './constants';
+         NODETYPE_ERRORS, LINK_ERRORS } from './constants';
 
 export const getUserName = R.always('Bob');
 
@@ -821,24 +821,23 @@ export const validateLink = (state, linkData) => {
     pin2CanHaveMoreLinks
   );
 
-  const result = {
-    isValid: check,
-    message: 'Unknown error',
-  };
+  let error = null;
 
   if (!check) {
     if (sameDirection) {
-      result.message = LINK_ERRORS.SAME_DIRECTION;
+      error = LINK_ERRORS.SAME_DIRECTION;
     } else
     if (sameNode) {
-      result.message = LINK_ERRORS.SAME_NODE;
+      error = LINK_ERRORS.SAME_NODE;
     } else
     if (!pin1CanHaveMoreLinks || !pin2CanHaveMoreLinks) {
-      result.message = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
+      error = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
+    } else {
+      error = LINK_ERRORS.UNKNOWN_ERROR;
     }
   }
 
-  return result;
+  return error;
 };
 
 export const prepareToAddPatch = (projectState, name, folderId) => {

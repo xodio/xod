@@ -15,6 +15,8 @@ import {
   addError,
 } from 'xod-client/messages/actions';
 
+import { LINK_ERRORS } from 'xod-client/messages/constants';
+
 export const setNodeSelection = (id) => ({
   type: ActionType.EDITOR_SELECT_NODE,
   payload: {
@@ -111,10 +113,10 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
   let action;
 
   if (selected) {
-    const validation = SelectorsProject.validateLink(state, pins);
-    action = validation.isValid ?
-      addLink(pins[0], pins[1]) :
-      addError({ message: validation.message });
+    const error = SelectorsProject.validateLink(state, pins);
+    action = error ?
+      addError({ message: LINK_ERRORS[error] }) :
+      addLink(pins[0], pins[1]);
     dispatch(setMode(EDITOR_MODE.DEFAULT));
   } else {
     dispatch(setMode(EDITOR_MODE.LINKING));

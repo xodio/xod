@@ -1,6 +1,7 @@
 import * as ActionType from './actionTypes';
 import * as Selectors from './selectors';
 import { addError } from 'xod-client/messages/actions';
+import { NODETYPE_ERRORS } from 'xod-client/messages/constants';
 
 export const moveNode = (id, position) => (dispatch, getState) => {
   const projectState = Selectors.getProject(getState());
@@ -40,7 +41,9 @@ export const deleteNode = (id) => (dispatch, getState) => {
   const preparedData = Selectors.prepareToDeleteNode(projectState, id);
 
   if (preparedData.payload.nodeType.error) {
-    dispatch(addError({ message: preparedData.payload.nodeType.error }));
+    dispatch(addError({
+      message: NODETYPE_ERRORS[preparedData.payload.nodeType.error]
+    }));
     return;
   }
 
