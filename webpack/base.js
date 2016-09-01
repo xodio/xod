@@ -57,4 +57,14 @@ module.exports = {
       { from: 'src/client/index.html' },
     ]),
   ],
+  externals: [
+    {
+      'isomorphic-fetch': {
+        root: 'isomorphic-fetch',
+        commonjs2: 'isomorphic-fetch',
+        commonjs: 'isomorphic-fetch',
+        amd: 'isomorphic-fetch',
+      },
+    },
+  ],
 };
