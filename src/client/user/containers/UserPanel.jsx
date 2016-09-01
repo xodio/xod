@@ -9,6 +9,7 @@ import { Icon } from 'react-fa';
 import { LoginButton } from '../components/LoginButton';
 import { UserButton } from '../components/UserButton';
 import { UserMenu } from '../components/UserMenu';
+import PopupForm from 'xod/client/utils/components/PopupForm';
 
 import { ApiActions } from 'xod/client/api';
 
@@ -25,7 +26,9 @@ class UserPanel extends React.Component {
     this.openMenu = this.openMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
+
     this.showLoginPopup = this.showLoginPopup.bind(this);
+    this.hideLoginPopup = this.hideLoginPopup.bind(this);
   }
 
   componentWillReceiveProps(props) {
@@ -61,6 +64,25 @@ class UserPanel extends React.Component {
     return (
       <div className="UserPanel UserPanel-unauthorized">
         <LoginButton onClick={this.showLoginPopup} />
+        <PopupForm
+          onClose={this.hideLoginPopup}
+          isVisible={this.state.showLoginPopup}
+
+          title="Sign in"
+        >
+          <div>
+            Please, enter your username and password:
+          </div>
+          <div>
+            Form here
+          </div>
+          <div>
+            submit button here
+          </div>
+          <div>
+            Forgot password here
+          </div>
+        </PopupForm>
       </div>
     );
   }
@@ -122,13 +144,16 @@ class UserPanel extends React.Component {
     return this.openMenu();
   }
 
-  showLoginPopup(evt) {
-    evt.preventDefault();
+  showLoginPopup() {
+    this.updateState({
+      showLoginPopup: true,
+    });
+  }
 
-    this.props.actions.login();
-    // this.updateState({
-    //   showLoginPopup: true,
-    // });
+  hideLoginPopup() {
+    this.updateState({
+      showLoginPopup: false,
+    });
   }
 
   render() {

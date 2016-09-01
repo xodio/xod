@@ -5,8 +5,8 @@ import { SkyLightStateless } from 'react-skylight';
 import EventListener from 'react-event-listener';
 import { KEYCODE } from 'xod/client/utils/constants';
 
-const PopupAlert = ({ title, children, closeText, className, onClose, isModal, isVisible }) => {
-  const wrapperClassNames = classNames('PopupAlert', className);
+const PopupForm = ({ title, children, className, onClose, isModal, isVisible }) => {
+  const wrapperClassNames = classNames('PopupForm', className);
   const onCloseClicked = (!isModal) ? onClose : f => f;
   const closeButtonStyle = (isModal) ?
     { display: 'none' } :
@@ -33,36 +33,25 @@ const PopupAlert = ({ title, children, closeText, className, onClose, isModal, i
         <div className="PopupContent">
           {children}
         </div>
-        <div className="PopupButtons">
-          <button
-            className="PopupButton-Primary"
-            onClick={onClose}
-            autoFocus
-          >
-            {closeText}
-          </button>
-        </div>
       </SkyLightStateless>
     </div>
   );
 };
 
-PopupAlert.propTypes = {
+PopupForm.propTypes = {
   title: React.PropTypes.string,
   children: React.PropTypes.any,
-  closeText: React.PropTypes.string,
   className: React.PropTypes.string,
   onClose: React.PropTypes.func,
   isModal: React.PropTypes.bool,
   isVisible: React.PropTypes.bool,
 };
-PopupAlert.defaultProps = {
-  title: 'Alert!',
-  closeText: 'Okay',
+PopupForm.defaultProps = {
+  title: 'Fill the form',
   className: '',
   onClose: f => f,
   isModal: false,
   isVisible: true,
 };
 
-export default PopupAlert;
+export default PopupForm;
