@@ -7,9 +7,9 @@ import { cookies, userInfo } from 'xod/client/cookies/selectors';
 
 import { Icon } from 'react-fa';
 import { LoginButton } from '../components/LoginButton';
+import { LoginForm } from '../components/LoginForm';
 import { UserButton } from '../components/UserButton';
 import { UserMenu } from '../components/UserMenu';
-import PopupForm from 'xod/client/utils/components/PopupForm';
 
 import { ApiActions } from 'xod/client/api';
 
@@ -29,6 +29,8 @@ class UserPanel extends React.Component {
 
     this.showLoginPopup = this.showLoginPopup.bind(this);
     this.hideLoginPopup = this.hideLoginPopup.bind(this);
+
+    this.submitLogin = this.submitLogin.bind(this);
   }
 
   componentWillReceiveProps(props) {
@@ -37,7 +39,11 @@ class UserPanel extends React.Component {
       !props.userInfo.username &&
       !this.state.gettingUserInfo
     ) {
-      this.updateState({ gettingUserInfo: true });
+      this.updateState({
+        showLoginPopup: false,
+        menuOpened: false,
+        gettingUserInfo: true,
+      });
       this.props.actions.getData();
     }
 
@@ -64,25 +70,11 @@ class UserPanel extends React.Component {
     return (
       <div className="UserPanel UserPanel-unauthorized">
         <LoginButton onClick={this.showLoginPopup} />
-        <PopupForm
+        <LoginForm
           onClose={this.hideLoginPopup}
           isVisible={this.state.showLoginPopup}
-
-          title="Sign in"
-        >
-          <div>
-            Please, enter your username and password:
-          </div>
-          <div>
-            Form here
-          </div>
-          <div>
-            submit button here
-          </div>
-          <div>
-            Forgot password here
-          </div>
-        </PopupForm>
+          onSubmit={this.submitLogin}
+        />
       </div>
     );
   }
@@ -154,6 +146,10 @@ class UserPanel extends React.Component {
     this.updateState({
       showLoginPopup: false,
     });
+  }
+
+  submitLogin(model) {
+    this.props.actions.login(model.username, model.password);
   }
 
   render() {
