@@ -68,7 +68,7 @@ class UserPanel extends React.Component {
 
   getUnauthorizedPanel() {
     return (
-      <div className="UserPanel UserPanel-unauthorized">
+      <div className="UserPanel unauthorized">
         <LoginButton onClick={this.showLoginPopup} />
         <LoginForm
           onClose={this.hideLoginPopup}
@@ -81,7 +81,7 @@ class UserPanel extends React.Component {
 
   getAuthorizedPanel(username) {
     return (
-      <div className="UserPanel UserPanel-authorized">
+      <div className="UserPanel authorized">
         <UserButton
           username={username}
           onClick={this.toggleMenu}
@@ -96,7 +96,7 @@ class UserPanel extends React.Component {
 
   getLoadingPanel() {
     return (
-      <div className="UserPanel UserPanel-loading">
+      <div className="UserPanel loading">
         <Icon spin name="spinner" />
       </div>
     );

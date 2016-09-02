@@ -1,1 +1,3 @@
-export { default as ProjectBrowser } from './containers/ProjectBrowser';
+import ProjectBrowser from './containers/ProjectBrowser';
+
+export { ProjectBrowser };
