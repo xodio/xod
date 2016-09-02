@@ -1,0 +1,16 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "Mongo": {
+    "host": "127.0.0.1",
+    "port": 27017,
+    "url": "mongodb://127.0.0.1:27017/xod",
+    "database": "xod",
+    "password": "",
+    "name": "Mongo",
+    "user": "",
+    "connector": "mongodb"
+  }
+}

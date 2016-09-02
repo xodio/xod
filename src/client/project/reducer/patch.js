@@ -37,8 +37,8 @@ export const patchReducer = (id) => {
 
     if (
       action &&
-      action.hasOwnProperty('meta') &&
-      action.meta.hasOwnProperty('patchId') &&
+      action.meta &&
+      action.meta.patchId &&
       parseInt(action.meta.patchId, 10) !== parseInt(patchId, 10)
     ) {
       return state;

@@ -10,6 +10,8 @@ $font-size-m: 11px;
 $font-size-l: 18px;
 $font-size-xl: 28px;
 
+$color-basic-text: #000;
+
 $color-canvas-background: #808080;
 $color-canvas-background-text: #000;
 $color-canvas-face: #444;
@@ -42,6 +44,11 @@ $color-tabs-active-background: $color-canvas-background;
 $color-tabs-unactive-text: #BBB;
 $color-tabs-active-text: #EEE;
 $color-tabs-hover-text: #FFF;
+
+$color-user-menu-background: #777;
+$color-user-menu-text: #fff;
+$color-user-menu-hover: #999;
+$color-user-menu-separator: #444;
 
 $snackbar-width: 200px;
 $sidebar-width: 200px;

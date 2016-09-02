@@ -30,7 +30,7 @@ module.exports = {
   },
 
   rules: {
-    'import/extensions': [2, 'never'],
+    'import/extensions': [2, 'never']
   },
 
   globals: {

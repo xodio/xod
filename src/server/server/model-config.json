@@ -1,0 +1,51 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "AccessToken": {
+    "dataSource": "Mongo",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "Mongo",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "Mongo",
+    "public": false
+  },
+  "Role": {
+    "dataSource": "Mongo",
+    "public": false
+  },
+  "User": {
+    "dataSource": "Mongo",
+    "public": false,
+    "options": {
+      "emailVerificationRequired": false
+    }
+  },
+  "Project": {
+    "dataSource": "Mongo",
+    "public": true
+  },
+  "Package": {
+    "dataSource": "Mongo",
+    "public": true
+  },
+  "Profile": {
+    "dataSource": "Mongo",
+    "public": true
+  }
+}

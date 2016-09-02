@@ -19,3 +19,8 @@ export const getUpload = R.pipe(
   R.filter((proc) => proc.type === UPLOAD),
   R.head
 );
+
+export const findProcessByPath = path => R.pipe(
+  R.values,
+  R.find(R.propEq('path', path))
+);
