@@ -10,12 +10,12 @@ const config = merge.smart(baseConfig, {
       {
         test: /.*\.spec\.js$/,
         loaders: [
-          'babel?presets[]=es2015',
+          'babel',
         ],
       },
       {
-        test: /src\/runtime\/.*\.js$/,
-        loader: 'babel?presets[]=es2015',
+        test: /src\/runtime\.js$/,
+        loader: 'babel',
       },
       {
         test: /node_modules\/espruino\/.*\.js$/,

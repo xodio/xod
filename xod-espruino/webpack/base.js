@@ -30,7 +30,7 @@ module.exports = {
         loader: 'babel',
       },
       {
-        test: /src\/runtime.js$/,
+        test: /src\/runtime\.js$/,
         loader: 'raw',
       },
       {

@@ -6,7 +6,6 @@ import generateReducers from '../src/app-browser/reducer';
 import { nodes } from '../src/project/reducer/nodes';
 import * as Actions from '../src/project/actions';
 import * as Selectors from '../src/project/selectors';
-import { NODETYPE_ERRORS } from '../src/messages/constants';
 
 function pin(nodeId, pinKey) {
   return { nodeId, pinKey };

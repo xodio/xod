@@ -24,6 +24,6 @@ export const NODETYPE_ERRORS = {
   [NTE.CANT_DELETE_USED_PIN_OF_PATCHNODE]: [
     'Current IO Node is represents a Pin of Patch Node.',
     'And it is used somewhere.',
-    'You should remove a linkage first!'
+    'You should remove a linkage first!',
   ].join(' '),
 };

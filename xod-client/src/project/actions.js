@@ -42,7 +42,7 @@ export const deleteNode = (id) => (dispatch, getState) => {
 
   if (preparedData.payload.nodeType.error) {
     dispatch(addError({
-      message: NODETYPE_ERRORS[preparedData.payload.nodeType.error]
+      message: NODETYPE_ERRORS[preparedData.payload.nodeType.error],
     }));
     return;
   }
