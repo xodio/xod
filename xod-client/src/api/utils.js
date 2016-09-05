@@ -1,10 +1,10 @@
 import R from 'ramda';
 import Cookies from 'js-cookie';
 import { CALL_API } from 'redux-api-middleware';
-import { STATUS } from 'xod/client/utils/constants';
+import { STATUS } from 'xod-client/utils/constants';
 import { API_BASEPATH } from './routes';
 
-import { getProccesses, findProcessByPath } from 'xod/client/processes/selectors';
+import { getProccesses, findProcessByPath } from 'xod-client/processes/selectors';
 
 export const parseBody = (body) => JSON.stringify(body);
 

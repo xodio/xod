@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { cookies, userInfo } from 'xod/client/cookies/selectors';
+import { cookies, userInfo } from 'xod-client/cookies/selectors';
 
 import { Icon } from 'react-fa';
 import { LoginButton } from '../components/LoginButton';
@@ -11,7 +11,7 @@ import { LoginForm } from '../components/LoginForm';
 import { UserButton } from '../components/UserButton';
 import { UserMenu } from '../components/UserMenu';
 
-import { ApiActions } from 'xod/client/api';
+import { ApiActions } from 'xod-client/api';
 
 class UserPanel extends React.Component {
   constructor(props) {

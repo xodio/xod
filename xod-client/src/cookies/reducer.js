@@ -1,8 +1,8 @@
 import R from 'ramda';
 
 import * as Selectors from './selectors';
-import { STATUS } from 'xod/client/utils/constants';
-import { ApiActionTypes } from 'xod/client/api';
+import { STATUS } from 'xod-client/utils/constants';
+import { ApiActionTypes } from 'xod-client/api';
 import { UPDATE_COOKIES } from './constants';
 
 const isSucceeded = (action) => (action.meta && action.meta.status === STATUS.SUCCEEDED);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PopupForm from 'xod/client/utils/components/PopupForm';
+import PopupForm from 'xod-client/utils/components/PopupForm';
 import Formsy from 'formsy-react';
 import FormsyComponent from 'formsy-react-components';
 

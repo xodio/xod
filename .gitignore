@@ -1,2 +1,6 @@
-; emacs's local config
+.idea/
+dist/
+.tmp/
+*.orig
 .dir-locals.el
+npm-debug.log

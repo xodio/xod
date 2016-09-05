@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import * as EditorSelectors from '../selectors';
 
-import { swap, assocIndexes, indexById } from 'xod/client/utils/array';
+import { swap, assocIndexes, indexById } from 'xod-client/utils/array';
 
 import {
   SortableContainer as sortableContainer,
