@@ -6,6 +6,8 @@ import { nodeTypes } from './nodetypes';
 import { counterReducer } from './counter';
 import { foldersReducer } from './folders';
 
+import { ApiHelpers, ApiActionTypes } from 'xod/client/api';
+
 import {
   PROJECT_LOAD_DATA,
 } from '../actionTypes';
@@ -24,6 +26,13 @@ export default (patchIds) => {
   return (state = {}, action) => {
     if (action.type === PROJECT_LOAD_DATA) {
       return parseProjectJSON(action.payload);
+    }
+
+    if (
+      action.type === ApiActionTypes.project.load &&
+      ApiHelpers.completedResponse(action)
+    ) {
+      return parseProjectJSON(action.payload.response.pojo);
     }
 
     return applyReducers(reducers, state, action, state);

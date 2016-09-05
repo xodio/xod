@@ -36,15 +36,15 @@
       "emailVerificationRequired": false
     }
   },
-  "Project": {
+  "project": {
     "dataSource": "Mongo",
     "public": true
   },
-  "Package": {
+  "package": {
     "dataSource": "Mongo",
     "public": true
   },
-  "Profile": {
+  "user": {
     "dataSource": "Mongo",
     "public": true
   }

@@ -3,7 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { cookies, userInfo } from 'xod-client/cookies/selectors';
+import { getProjectPojo } from 'xod-client/project/selectors';
+import * as user from '../selectors';
 
 import { Icon } from 'react-fa';
 import { LoginButton } from '../components/LoginButton';
@@ -31,12 +32,24 @@ class UserPanel extends React.Component {
     this.hideLoginPopup = this.hideLoginPopup.bind(this);
 
     this.submitLogin = this.submitLogin.bind(this);
+    this.saveProject = this.saveProject.bind(this);
+    this.loadProject = this.loadProject.bind(this);
+  }
+
+  componentDidMount() {
+    this.getUserData();
   }
 
   componentWillReceiveProps(props) {
+    this.getUserData(props);
+  }
+
+  getUserData(newProps) {
+    const props = newProps || this.props;
+
     if (
-      props.userInfo.user_id &&
-      !props.userInfo.username &&
+      props.userId &&
+      !props.username &&
       !this.state.gettingUserInfo
     ) {
       this.updateState({
@@ -48,8 +61,8 @@ class UserPanel extends React.Component {
     }
 
     if (
-      !props.userInfo.user_id ||
-      props.userInfo.username
+      !props.userId ||
+      props.username
     ) {
       this.updateState({ gettingUserInfo: false });
     }
@@ -57,6 +70,18 @@ class UserPanel extends React.Component {
 
   getButtons() {
     return [
+      {
+        name: 'save',
+        icon: 'cloud-upload',
+        text: 'Save project in cloud',
+        onClick: this.saveProject,
+      },
+      {
+        name: 'load',
+        icon: 'cloud-download',
+        text: 'Load project from cloud',
+        onClick: this.loadProject,
+      },
       {
         name: 'logout',
         icon: 'sign-out',
@@ -103,12 +128,12 @@ class UserPanel extends React.Component {
   }
 
   getPanel() {
-    if (!this.props.userInfo || !this.props.userInfo.user_id) {
+    if (!this.props.userId) {
       return this.getUnauthorizedPanel();
     }
 
-    if (this.props.userInfo.username) {
-      return this.getAuthorizedPanel(this.props.userInfo.username);
+    if (this.props.username) {
+      return this.getAuthorizedPanel(this.props.username);
     }
 
     return this.getLoadingPanel();
@@ -116,6 +141,14 @@ class UserPanel extends React.Component {
 
   updateState(newState) {
     return this.setState(R.merge(this.state, newState));
+  }
+
+  saveProject() {
+    this.props.actions.save(this.props.projectPojo);
+  }
+
+  loadProject() {
+    this.props.actions.load('57cd837ea951160b31c98f37');
   }
 
   openMenu() {
@@ -158,15 +191,20 @@ class UserPanel extends React.Component {
 }
 
 UserPanel.propTypes = {
-  userInfo: React.PropTypes.object,
+  projectPojo: React.PropTypes.object,
+  userId: React.PropTypes.string,
+  username: React.PropTypes.string,
+  userpic: React.PropTypes.string,
   actions: React.PropTypes.object,
 };
 
 const mapStateToProps = state => {
-  const cooks = cookies(state);
-
+  const userData = user.user(state);
   return {
-    userInfo: userInfo(cooks),
+    projectPojo: getProjectPojo(state),
+    userId: user.userId(userData),
+    username: user.username(userData),
+    userpic: user.userpic(userData),
   };
 };
 
@@ -175,6 +213,8 @@ const mapDispatchToProps = dispatch => ({
     login: ApiActions.profile.login,
     logout: ApiActions.profile.logout,
     getData: ApiActions.profile.me,
+    save: ApiActions.project.save,
+    load: ApiActions.project.load,
   }, dispatch),
 });
 

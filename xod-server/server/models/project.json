@@ -1,5 +1,5 @@
 {
-  "name": "Project",
+  "name": "project",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -10,13 +10,15 @@
       "type": "string",
       "required": true
     },
-    "date_created": {
+    "createdAt": {
       "type": "date",
-      "required": true
+      "required": false,
+      "defaultFn": "now"
     },
-    "date_updated": {
+    "updatedAt": {
       "type": "date",
-      "required": true
+      "required": false,
+      "defaultFn": "now"
     },
     "pojo": {
       "type": "string"
@@ -31,29 +33,9 @@
   "relations": {
     "author": {
       "type": "belongsTo",
-      "model": "Profile",
-      "foreignKey": "profileId"
+      "model": "user",
+      "foreignKey": "ownerId"
     }
   },
-  "acls": [
-    {
-      "accessType": "WRITE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW"
-    },
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "$owner",
-      "permission": "ALLOW"
-    },
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "DENY"
-    }
-  ],
   "methods": {}
 }

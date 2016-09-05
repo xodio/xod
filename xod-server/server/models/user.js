@@ -1,6 +1,6 @@
 const methods = require('../utils/methods');
 
-module.exports = function ProfileModel(Profile) {
+module.exports = function UserModel(User) {
   methods.filter(
     [
       'findById',
@@ -14,6 +14,6 @@ module.exports = function ProfileModel(Profile) {
       '__get__projects',
       '__count__projects',
     ],
-    Profile
+    User
   );
 };

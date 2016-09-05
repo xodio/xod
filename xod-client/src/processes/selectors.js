@@ -24,3 +24,8 @@ export const findProcessByPath = path => R.pipe(
   R.values,
   R.find(R.propEq('path', path))
 );
+
+export const findProcessByType = type => R.pipe(
+  R.values,
+  R.find(R.propEq('type', type))
+);

@@ -57,14 +57,4 @@ module.exports = {
       { from: 'src/app-browser/index.html' },
     ]),
   ],
-  externals: [
-    {
-      'isomorphic-fetch': {
-        root: 'isomorphic-fetch',
-        commonjs2: 'isomorphic-fetch',
-        commonjs: 'isomorphic-fetch',
-        amd: 'isomorphic-fetch',
-      },
-    },
-  ],
 };

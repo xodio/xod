@@ -136,7 +136,10 @@ export const getProjectPojo = (state) => {
     indexById
   )(project);
 
-  return R.assoc('patches', patches, project);
+  return R.pipe(
+    R.assoc('patches', patches),
+    R.omit(['counter'])
+  )(project);
 };
 
 export const getProjectJSON = R.compose(
