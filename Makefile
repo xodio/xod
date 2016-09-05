@@ -18,10 +18,11 @@ lint:
 	cd xod-core && npm run lint
 	cd xod-client && npm run lint
 
-start:
+start: build
 	make build
 	cd xod-client && npm run start
 
-ci:
-	make lint
-	make test
+ci: lint test
+
+.PHONY:
+	ci lint test start build install
