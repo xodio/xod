@@ -1,0 +1,7 @@
+node_modules/*
+!src/node_modules/
+doc/_build/
+.idea/
+xod.iml
+dist/
+.tmp/

@@ -6,28 +6,28 @@ XOD
 Deployment on localhost
 -----------------------
 
-    $ npm install
-    $ npm start
+    $ make install
+    $ make start
 
 Open <http://localhost:8080> in your browser.
 
 Maintenance Scripts
 -------------------
 
-    $ npm start
+    $ make start
 
 Run webpack dev server along with services enough to use XOD in a browser on
 localhost.
 
-    $ npm run lint
+    $ make lint
 
 Check coding standards. It should return zero warnings and errors.
 
-    npm test
+    $ make test
 
 Build development version of xod and test it.
 
 Building User Documentation
 ---------------------------
 
-Refer to [README](doc/README.md) in `doc/` directory.
+Refer to [README](xod-client/doc/README.md) in `xod-client/doc/` directory.

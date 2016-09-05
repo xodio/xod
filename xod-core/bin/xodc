@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+
+require('babel-register');
+
+const program = require('commander');
+const fs = require('fs');
+const platform = __dirname + '/../../xod-espruino/dist';
+const xodEspruino = require(platform);
+const transpile = xodEspruino.transpile;
+
+program
+  .version('0.0.1')
+  .arguments('<PATCH_FILE>');
+
+function main() {
+  program.parse(process.argv);
+
+  if (program.args.length !== 1) {
+    program.outputHelp();
+    return;
+  }
+
+  const filename = program.args[0];
+  const json = fs.readFileSync(filename);
+  const project = JSON.parse(json);
+  const runtime = xodEspruino.runtime;
+  const code = transpile({ project, runtime });
+
+  process.stdout.write(code);
+}
+
+main();
+
+// vim:ft=javascript
