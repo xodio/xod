@@ -21,7 +21,7 @@ lint:
 start: build
 	cd xod-client && npm run start
 
-ci: install lint test
+ci: install build lint test
 
 .PHONY:
 	ci lint test start build install
