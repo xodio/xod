@@ -4,7 +4,7 @@
   "description": "Here will be server-side scripts.",
   "main": "server/server.js",
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint --ext .js ./server || true",
     "start": "node .",
     "posttest": "npm run lint && nsp check",
     "dev": "npm-watch"
@@ -33,9 +33,10 @@
   },
   "devDependencies": {
     "eslint": "^2.13.1",
-    "eslint-config-airbnb": "^9.0.1",
-    "eslint-config-loopback": "^4.0.0",
+    "eslint-plugin-import": "^1.8.1",
     "eslint-plugin-ramda": "^1.0.2",
+    "eslint-config-loopback": "^4.0.0",
+    "eslint-config-airbnb": "^9.0.1",
     "npm-watch": "^0.1.6",
     "nsp": "^2.1.0"
   },
