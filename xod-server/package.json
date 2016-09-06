@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint .",
     "start": "node .",
-    "posttest": "npm run lint && nsp check"
+    "posttest": "npm run lint && nsp check",
+    "dev": "npm-watch"
   },
   "keywords": [
     "xod",
@@ -35,6 +36,16 @@
     "eslint-config-airbnb": "^9.0.1",
     "eslint-config-loopback": "^4.0.0",
     "eslint-plugin-ramda": "^1.0.2",
+    "npm-watch": "^0.1.6",
     "nsp": "^2.1.0"
+  },
+  "watch": {
+    "start": {
+      "patterns": [
+        "server",
+        "node_modules"
+      ],
+      "extensions": "js, json"
+    }
   }
 }

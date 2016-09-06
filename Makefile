@@ -2,6 +2,7 @@ install:
 	cd xod-espruino && npm install
 	cd xod-core && npm install
 	cd xod-client && npm install
+	cd xod-server && npm install
 
 build:
 	cd xod-espruino && npm run build
@@ -17,9 +18,13 @@ lint:
 	cd xod-espruino && npm run lint
 	cd xod-core && npm run lint
 	cd xod-client && npm run lint
+	cd xod-server && npm run lint
 
 start: build
 	cd xod-client && npm run start
+
+server:
+	cd xod-server && npm run dev
 
 ci: install build lint test
 
