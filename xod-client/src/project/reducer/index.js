@@ -6,7 +6,7 @@ import { nodeTypes } from './nodetypes';
 import { counterReducer } from './counter';
 import { foldersReducer } from './folders';
 
-import { ApiHelpers, ApiActionTypes } from 'xod/client/api';
+import { ApiHelpers, ApiActionTypes } from 'xod-client/api';
 
 import {
   PROJECT_LOAD_DATA,
