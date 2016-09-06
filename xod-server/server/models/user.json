@@ -1,6 +1,7 @@
 {
-  "name": "Profile",
+  "name": "user",
   "base": "User",
+  "idInjection": true,
   "strict": false,
   "properties": {
     "username": {
@@ -15,8 +16,13 @@
   "relations": {
     "projects": {
       "type": "hasMany",
-      "model": "Project",
-      "foreignKey": ""
+      "model": "project",
+      "foreignKey": "ownerId"
+    },
+    "packages": {
+      "type": "hasMany",
+      "model": "package",
+      "foreignKey": "ownerId"
     }
   },
   "acls": [

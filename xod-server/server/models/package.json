@@ -1,5 +1,5 @@
 {
-  "name": "Package",
+  "name": "package",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -16,7 +16,7 @@
     "author": {
       "type": "belongsTo",
       "model": "Profile",
-      "foreignKey": "userId"
+      "foreignKey": "ownerId"
     }
   },
   "acls": [],

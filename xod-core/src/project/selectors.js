@@ -117,7 +117,6 @@ export const validatePatches = () => R.pipe(
       patch.hasOwnProperty('id') &&
       patch.hasOwnProperty('name') &&
       patch.hasOwnProperty('nodes') &&
-      patch.hasOwnProperty('pins') &&
       patch.hasOwnProperty('links')
     )
   )
@@ -136,7 +135,10 @@ export const getProjectPojo = (state) => {
     indexById
   )(project);
 
-  return R.assoc('patches', patches, project);
+  return R.pipe(
+    R.assoc('patches', patches),
+    R.omit(['counter'])
+  )(project);
 };
 
 export const getProjectJSON = R.compose(
@@ -149,7 +151,6 @@ export const validateProject = (project) => (
   (
     project.hasOwnProperty('patches') &&
     project.hasOwnProperty('nodeTypes') &&
-    project.hasOwnProperty('counter') &&
     project.hasOwnProperty('meta')
   ) &&
   (

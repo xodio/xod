@@ -2,12 +2,13 @@
   "extends": [
     "eslint:recommended",
     "loopback",
-    "airbnb"
+    "airbnb/base"
   ],
   "plugins": [
     "ramda"
   ],
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "new-cap": "off"
   }
 }

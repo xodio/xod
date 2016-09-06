@@ -4,12 +4,14 @@ import { CALL_API } from 'redux-api-middleware';
 import { STATUS } from 'xod-client/utils/constants';
 import { API_BASEPATH } from './routes';
 
-import { getProccesses, findProcessByPath } from 'xod-client/processes/selectors';
+import { getProccesses, findProcessByType } from 'xod-client/processes/selectors';
 
 export const parseBody = (body) => JSON.stringify(body);
 
-export const generateType = (path) => {
-  let actionType = 'API/';
+export const generateType = (route) => {
+  const method = String(route.method).toUpperCase();
+  const path = route.path;
+  let actionType = `${method}@API/`;
 
   if (path === '' || path === '/') {
     actionType += 'ROOT_';
@@ -25,12 +27,15 @@ export const generateType = (path) => {
   return actionType;
 };
 
-export const generateActionCreators = (actionType, path) => R.pipe(
-  R.map(type => ({
-    type: generateType(path),
+export const generateActionCreators = (route) => {
+  const actionType = generateType(route);
+  const path = route.path;
+
+  return R.map(type => ({
+    type: actionType,
     payload: (action, state, res) => {
       const processes = getProccesses(state);
-      const proc = findProcessByPath(path)(processes);
+      const proc = findProcessByType(actionType)(processes);
       if (!proc) { return { path }; }
 
       const id = R.prop('id', proc);
@@ -49,8 +54,8 @@ export const generateActionCreators = (actionType, path) => R.pipe(
     meta: {
       status: STATUS[type],
     },
-  }))
-)(['STARTED', 'SUCCEEDED', 'FAILED']);
+  }), ['STARTED', 'SUCCEEDED', 'FAILED']);
+};
 
 const processPath = R.curry((parts, path) => R.pipe(
   R.split('/'),
@@ -64,13 +69,10 @@ const processPath = R.curry((parts, path) => R.pipe(
   R.join('/')
 )(path));
 
-export const call = (options) => {
-  const path = options.path || '';
+export const call = (route, options) => {
   const parts = options.parts || {};
-  const callPath = processPath(parts, path);
-  const method = options.method || 'GET';
-  const actionType = generateType(path);
-  const types = generateActionCreators(actionType, path);
+  const callPath = processPath(parts, route.path);
+  const types = generateActionCreators(route);
   const headers = R.merge({
     'Content-Type': 'application/json',
     Authorization: Cookies.get('access_token'),
@@ -81,7 +83,7 @@ export const call = (options) => {
   return {
     [CALL_API]: {
       endpoint: `${API_BASEPATH}${callPath}`,
-      method,
+      method: route.method,
       types,
       headers,
       body,
