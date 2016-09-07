@@ -36,38 +36,6 @@ class UserPanel extends React.Component {
     this.loadProject = this.loadProject.bind(this);
   }
 
-  componentDidMount() {
-    this.getUserData();
-  }
-
-  componentWillReceiveProps(props) {
-    this.getUserData(props);
-  }
-
-  getUserData(newProps) {
-    const props = newProps || this.props;
-
-    if (
-      props.userId &&
-      !props.username &&
-      !this.state.gettingUserInfo
-    ) {
-      this.updateState({
-        showLoginPopup: false,
-        menuOpened: false,
-        gettingUserInfo: true,
-      });
-      this.props.actions.getData();
-    }
-
-    if (
-      !props.userId ||
-      props.username
-    ) {
-      this.updateState({ gettingUserInfo: false });
-    }
-  }
-
   getButtons() {
     return [
       {
@@ -210,9 +178,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
-    login: ApiActions.profile.login,
-    logout: ApiActions.profile.logout,
-    getData: ApiActions.profile.me,
+    login: ApiActions.user.login,
+    logout: ApiActions.user.logout,
     save: ApiActions.project.save,
     load: ApiActions.project.load,
   }, dispatch),
