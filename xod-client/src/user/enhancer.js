@@ -80,6 +80,7 @@ export const authEnhancer = next => (reducer, initialState, enhancer) => {
     initialState = undefined; // eslint-disable-line
   }
 
+  let gettingDataRequest = false;
   let persistedState;
   let finalInitialState;
 
@@ -96,6 +97,7 @@ export const authEnhancer = next => (reducer, initialState, enhancer) => {
   // On init: check authorization
   if (hasToGetUserData(finalInitialState)) {
     getUserData(store.dispatch);
+    gettingDataRequest = true;
   }
 
   // On change: write / delete cookies
@@ -129,11 +131,13 @@ export const authEnhancer = next => (reducer, initialState, enhancer) => {
     const processes = getProccesses(state);
     const gettingUserData = R.pipe(
       filterNotFinished,
-      findProcessByType(type)
+      findProcessByType(type),
+      notNil
     )(processes);
 
-    if (hasToGetUserData(state) && !gettingUserData) {
+    if (hasToGetUserData(state) && !gettingUserData && gettingDataRequest === false) {
       getUserData(store.dispatch);
+      gettingDataRequest = true;
     }
   });
 
