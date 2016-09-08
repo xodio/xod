@@ -1,7 +1,10 @@
+import R from 'ramda';
 import Cookies from 'js-cookie';
 
 import Routes from './routes';
 import { call } from './utils';
+import helpers from './helpers';
+import * as ProjectSelectors from 'xod-client/project/selectors';
 
 const getUserId = () => Cookies.get('user_id');
 
@@ -56,17 +59,24 @@ Actions.project.load = (projectId) =>
     }
   );
 
-Actions.project.save = (projectData) =>
-  call(
+Actions.project.save = (projectData) => {
+  const projectName = R.pipe(
+    ProjectSelectors.getMeta,
+    ProjectSelectors.getName,
+    helpers.makeSafeName
+  )(projectData);
+
+  return call(
     Routes.project.save,
     {
       body: {
-        name: 'My project',
+        name: projectName,
         pojo: JSON.stringify(projectData),
         public: true,
-        userId: getUserId(),
+        ownerId: getUserId(),
       },
     }
   );
+};
 
 export default Actions;
