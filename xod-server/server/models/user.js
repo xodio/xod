@@ -1,6 +1,6 @@
 const R = require('ramda');
 const methods = require('../utils/methods');
-
+const extract = source => JSON.parse(JSON.stringify(source)); // @TODO: Remove this hack
 
 module.exports = function UserModel(User) {
   User.validatesUniquenessOf('username', { message: 'User already exists' });
@@ -25,22 +25,22 @@ module.exports = function UserModel(User) {
   User.signIn = (credentials, send) => {
     const app = User.app;
     const Project = app.models.Project;
-
     User.login(
       credentials,
       'user',
       (uErr, usr) => {
+        const userData = extract(usr);
+
         Project.find({
-          where: { ownerId: usr.userId },
+          where: { ownerId: userData.userId },
         }, (pErr, proj) => {
           const err = (uErr || pErr) ? R.merge(uErr, pErr) : null;
-
           send(err, {
-            id: usr.id,
-            ttl: usr.ttl,
-            userId: usr.userId,
-            username: usr.user.username,
-            userpic: usr.user.userpic,
+            id: userData.id,
+            ttl: userData.ttl,
+            userId: userData.userId,
+            username: userData.user.username,
+            userpic: userData.user.userpic,
             projects: proj,
           });
         });
