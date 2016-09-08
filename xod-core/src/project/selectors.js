@@ -176,6 +176,8 @@ export const getMeta = R.pipe(
   R.prop('meta')
 );
 
+export const getName = R.prop('name');
+
 /*
   Counter selectors
 */
@@ -439,10 +441,14 @@ export const getTreeView = (state, patchId) => {
   const curPatch = getPatchById(patchId, state);
   const curPatchPath = getFoldersPath(folders, curPatch.folderId);
   const projectChildren = makeTree(folders, patches, null, curPatchPath);
-
+  const projectName = R.pipe(
+    getMeta,
+    getName
+  )(state);
 
   return {
-    module: 'Project',
+    id: 0,
+    module: projectName,
     collapsed: false,
     children: projectChildren,
   };

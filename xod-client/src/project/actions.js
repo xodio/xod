@@ -151,6 +151,11 @@ export const movePatch = (changes) => ({
   },
 });
 
+export const renameProject = (name) => ({
+  type: ActionType.PROJECT_RENAME,
+  payload: name,
+});
+
 export const addFolder = (name, parentId) => (dispatch, getState) => {
   const projectState = Selectors.getProject(getState());
   const preparedData = Selectors.prepareToAddFolder(projectState, name, parentId);
