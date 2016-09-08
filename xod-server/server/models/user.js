@@ -1,6 +1,7 @@
 const R = require('ramda');
 const methods = require('../utils/methods');
 
+
 module.exports = function UserModel(User) {
   User.validatesUniquenessOf('username', { message: 'User already exists' });
   User.validatesLengthOf('password', { min: 6, message: { min: 'Password is too short' } });
@@ -21,15 +22,12 @@ module.exports = function UserModel(User) {
     User
   );
 
-  User.signIn = (username, password, send) => {
+  User.signIn = (credentials, send) => {
     const app = User.app;
     const Project = app.models.Project;
 
     User.login(
-      {
-        username,
-        password,
-      },
+      credentials,
       'user',
       (uErr, usr) => {
         Project.find({
@@ -52,10 +50,7 @@ module.exports = function UserModel(User) {
 
   User.remoteMethod('signIn', {
     http: { path: '/login', verb: 'post' },
-    accepts: [
-      { arg: 'username', type: 'string', required: true },
-      { arg: 'password', type: 'string', required: true },
-    ],
+    accepts: { arg: 'credentials', type: 'object', http: { source: 'body' } },
     returns: [
       { arg: 'id', type: 'string', root: true },
       { arg: 'ttl', type: 'number', root: true },
