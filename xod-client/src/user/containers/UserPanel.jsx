@@ -22,6 +22,7 @@ class UserPanel extends React.Component {
       gettingUserInfo: false,
       menuOpened: false,
       showLoginPopup: false,
+      panel: 'unauth',
     };
 
     this.openMenu = this.openMenu.bind(this);
@@ -34,6 +35,20 @@ class UserPanel extends React.Component {
     this.submitLogin = this.submitLogin.bind(this);
     this.saveProject = this.saveProject.bind(this);
     this.loadProject = this.loadProject.bind(this);
+  }
+
+  componentWillReceiveProps(props) {
+    if (!props.userId) {
+      this.closeMenu();
+      return this.setPanel('unauth');
+    }
+
+    if (props.username) {
+      this.hideLoginPopup();
+      return this.setPanel('auth');
+    }
+
+    return this.setPanel('loading');
   }
 
   getButtons() {
@@ -96,19 +111,19 @@ class UserPanel extends React.Component {
   }
 
   getPanel() {
-    if (!this.props.userId) {
-      return this.getUnauthorizedPanel();
+    switch (this.state.panel) {
+      default:
+      case 'unath':
+        return this.getUnauthorizedPanel();
+      case 'auth':
+        return this.getAuthorizedPanel(this.props.username);
+      case 'loading':
+        return this.getLoadingPanel();
     }
-
-    if (this.props.username) {
-      return this.getAuthorizedPanel(this.props.username);
-    }
-
-    return this.getLoadingPanel();
   }
 
-  updateState(newState) {
-    return this.setState(R.merge(this.state, newState));
+  setPanel(panelName) {
+    return this.setState({ panel: panelName });
   }
 
   saveProject() {
@@ -120,12 +135,12 @@ class UserPanel extends React.Component {
   }
 
   openMenu() {
-    this.updateState({
+    this.setState({
       menuOpened: true,
     });
   }
   closeMenu() {
-    this.updateState({
+    this.setState({
       menuOpened: false,
     });
   }
@@ -138,13 +153,13 @@ class UserPanel extends React.Component {
   }
 
   showLoginPopup() {
-    this.updateState({
+    this.setState({
       showLoginPopup: true,
     });
   }
 
   hideLoginPopup() {
-    this.updateState({
+    this.setState({
       showLoginPopup: false,
     });
   }
