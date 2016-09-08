@@ -13,7 +13,10 @@ export default (userState = {}, action) => {
 
       return R.pipe(
         R.assoc('access_token', action.payload.response.id),
-        R.assoc('user_id', action.payload.response.userId)
+        R.assoc('user_id', action.payload.response.userId),
+        R.assoc('username', action.payload.response.username),
+        R.assoc('userpic', action.payload.response.userpic),
+        R.assoc('projects', action.payload.response.projects)
       )(userState);
     }
     case ApiActionTypes.user.findById: {
