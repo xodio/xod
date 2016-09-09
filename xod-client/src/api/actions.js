@@ -61,7 +61,6 @@ Actions.project.load = (projectId) =>
 
 Actions.project.save = (projectData) => {
   const projectMeta = ProjectSelectors.getMeta(projectData);
-  console.log('=', projectData);
   const projectServerId = ProjectSelectors.getServerId(projectMeta);
   const projectName = R.pipe(
     ProjectSelectors.getName,
