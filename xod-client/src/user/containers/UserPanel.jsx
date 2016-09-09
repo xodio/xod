@@ -1,9 +1,8 @@
-import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getProjectPojo } from 'xod-client/project/selectors';
+import { getProject, getMeta, getServerId, getProjectPojo } from 'xod-client/project/selectors';
 import * as user from '../selectors';
 
 import { Icon } from 'react-fa';
@@ -52,17 +51,22 @@ class UserPanel extends React.Component {
   }
 
   getButtons() {
+    const canSave = this.canSave();
+    const canLoad = this.canLoad();
+
     return [
       {
         name: 'save',
         icon: 'cloud-upload',
         text: 'Save project in cloud',
+        active: canSave,
         onClick: this.saveProject,
       },
       {
         name: 'load',
         icon: 'cloud-download',
         text: 'Load project from cloud',
+        active: canLoad,
         onClick: this.loadProject,
       },
       {
@@ -131,7 +135,9 @@ class UserPanel extends React.Component {
   }
 
   loadProject() {
-    this.props.actions.load('57cd837ea951160b31c98f37');
+    if (this.props.currentProjectId) {
+      this.props.actions.load(this.props.currentProjectId);
+    }
   }
 
   openMenu() {
@@ -168,13 +174,31 @@ class UserPanel extends React.Component {
     this.props.actions.login(model.username, model.password);
   }
 
+  compareServerAndPojo() {
+    return (
+      this.props.lastSyncProject &&
+      this.props.lastSyncProject.pojo === JSON.stringify(this.props.projectPojo)
+    );
+  }
+
+  canSave() {
+    return !this.compareServerAndPojo();
+  }
+
+  canLoad() {
+    return (this.props.currentProjectId && !this.compareServerAndPojo());
+  }
+
   render() {
     return this.getPanel();
   }
 }
 
 UserPanel.propTypes = {
+  project: React.PropTypes.object,
+  currentProjectId: React.PropTypes.number,
   projectPojo: React.PropTypes.object,
+  lastSyncProject: React.PropTypes.object,
   userId: React.PropTypes.string,
   username: React.PropTypes.string,
   userpic: React.PropTypes.string,
@@ -183,8 +207,15 @@ UserPanel.propTypes = {
 
 const mapStateToProps = state => {
   const userData = user.user(state);
+  const userProjects = user.projects(userData) || {};
+  const project = getProject(state);
+  const meta = getMeta(project);
+  const curProjectId = getServerId(meta);
+
   return {
+    currentProjectId: curProjectId,
     projectPojo: getProjectPojo(state),
+    lastSyncProject: userProjects[curProjectId],
     userId: user.userId(userData),
     username: user.username(userData),
     userpic: user.userpic(userData),

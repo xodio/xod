@@ -1,8 +1,14 @@
 {
   "name": "user",
   "base": "User",
-  "idInjection": true,
   "strict": false,
+  "idInjection": true,
+  "hidden": [
+    "email"
+  ],
+  "protected": [
+    "email"
+  ],
   "properties": {
     "username": {
       "type": "string",

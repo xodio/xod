@@ -9,8 +9,6 @@ module.exports = function UserModel(User) {
 
   methods.filter(
     [
-      'findById',
-
       'logout',
       'resetPassword',
       'confirm',
@@ -22,6 +20,8 @@ module.exports = function UserModel(User) {
     User
   );
 
+  // /user/login
+  // Custom login with returning user data, includes project list
   User.signIn = (credentials, send) => {
     const app = User.app;
     const Project = app.models.Project;
@@ -55,6 +55,28 @@ module.exports = function UserModel(User) {
       { arg: 'id', type: 'string', root: true },
       { arg: 'ttl', type: 'number', root: true },
       { arg: 'userId', type: 'string', root: true },
+      { arg: 'username', type: 'string', root: true },
+      { arg: 'userpic', type: 'string', root: true },
+      { arg: 'projects', type: ['object'], root: true },
+    ],
+  });
+
+  // /user/{id}
+  // Returns userdata, includes project list
+  User.getUserData = (id, send) => {
+    User.findOne({
+      where: { id },
+      include: 'projects',
+    }, (err, result) => {
+      send(err, result);
+    });
+  };
+
+  User.remoteMethod('getUserData', {
+    http: { path: '/:id', verb: 'get' },
+    accepts: { arg: 'id', type: 'string', required: true },
+    returns: [
+      { arg: 'id', type: 'string', root: true },
       { arg: 'username', type: 'string', root: true },
       { arg: 'userpic', type: 'string', root: true },
       { arg: 'projects', type: ['object'], root: true },

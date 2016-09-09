@@ -46,6 +46,7 @@ const maxKey = R.compose(
 
 export const getInitialState = nodeTypes => ({
   meta: {
+    _id: 1,
     name: 'Awesome project',
     author: 'Amperka team',
   },

@@ -60,16 +60,19 @@ Actions.project.load = (projectId) =>
   );
 
 Actions.project.save = (projectData) => {
+  const projectMeta = ProjectSelectors.getMeta(projectData);
+  console.log('=', projectData);
+  const projectServerId = ProjectSelectors.getServerId(projectMeta);
   const projectName = R.pipe(
-    ProjectSelectors.getMeta,
     ProjectSelectors.getName,
     helpers.makeSafeName
-  )(projectData);
+  )(projectMeta);
 
   return call(
     Routes.project.save,
     {
       body: {
+        id: projectServerId,
         name: projectName,
         pojo: JSON.stringify(projectData),
         public: true,

@@ -9,11 +9,12 @@ export const UserMenu = ({ opened, buttons }) => {
 
   const buttonsRenderer = (button, i) => {
     const icon = (button.icon) ? <Icon name={button.icon} /> : null;
-
+    const disabled = (button.active !== undefined) ? !button.active : false;
     return (
       <li key={i}>
         <button
           className="UserMenu-button UserMenu-button-{button.name}"
+          disabled={disabled}
           onClick={button.onClick}
         >
           {icon}
