@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getProject, getMeta, getServerId, getProjectPojo } from 'xod-client/project/selectors';
+import { getMeta, getServerId, getProjectPojo } from 'xod-client/project/selectors';
+import { projectHaveChanges, projectCanBeLoaded } from 'xod-client/utils/selectors';
 import * as user from '../selectors';
 
 import { Icon } from 'react-fa';
@@ -174,19 +175,12 @@ class UserPanel extends React.Component {
     this.props.actions.login(model.username, model.password);
   }
 
-  compareServerAndPojo() {
-    return (
-      this.props.lastSyncProject &&
-      this.props.lastSyncProject.pojo === JSON.stringify(this.props.projectPojo)
-    );
-  }
-
   canSave() {
-    return !this.compareServerAndPojo();
+    return this.props.haveChanges;
   }
 
   canLoad() {
-    return (this.props.currentProjectId && !this.compareServerAndPojo());
+    return this.props.canLoad;
   }
 
   render() {
@@ -195,10 +189,10 @@ class UserPanel extends React.Component {
 }
 
 UserPanel.propTypes = {
-  project: React.PropTypes.object,
+  haveChanges: React.PropTypes.bool,
+  canLoad: React.PropTypes.bool,
   currentProjectId: React.PropTypes.number,
   projectPojo: React.PropTypes.object,
-  lastSyncProject: React.PropTypes.object,
   userId: React.PropTypes.string,
   username: React.PropTypes.string,
   userpic: React.PropTypes.string,
@@ -207,15 +201,15 @@ UserPanel.propTypes = {
 
 const mapStateToProps = state => {
   const userData = user.user(state);
-  const userProjects = user.projects(userData) || {};
-  const project = getProject(state);
+  const project = getProjectPojo(state);
   const meta = getMeta(project);
   const curProjectId = getServerId(meta);
 
   return {
+    haveChanges: projectHaveChanges(state),
+    canLoad: projectCanBeLoaded(state),
     currentProjectId: curProjectId,
     projectPojo: getProjectPojo(state),
-    lastSyncProject: userProjects[curProjectId],
     userId: user.userId(userData),
     username: user.username(userData),
     userpic: user.userpic(userData),
