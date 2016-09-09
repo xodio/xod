@@ -136,9 +136,9 @@ class App extends React.Component {
 
     if (this.props.haveChanges) {
       message = 'You have not saved changes in your project. Are you sure want to close app?';
+      if (event) { event.returnValue = message; } // eslint-disable-line
     }
 
-    if (event) { event.returnValue = message; } // eslint-disable-line
     return message;
   }
 
