@@ -1,7 +1,7 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
 
-class PopupInstallApp extends React.Component {
+class PopupShowCode extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.isVisible) {
       this.show();
@@ -21,25 +21,33 @@ class PopupInstallApp extends React.Component {
           height: 'auto',
         }}
         ref="popup"
-        title="Oops! You need a Chrome App!"
+        title="Transpiled code:"
         onCloseClicked={this.props.onClose}
         onOverlayClicked={this.props.onClose}
       >
+        <textarea
+          className="PopupShowCode-codebox"
+          value={this.props.code}
+          readOnly
+        />
         <p>
-          To use this feature you have to install a Chrome Application.<br />
-          It's free.
-        </p>
-        <p>
-          <a href="#">Open in Chrome Store</a>
+          This code could be uploaded onto your device.<br />
+          Just connect your device via USB and click on "Upload" button.
         </p>
       </SkyLight>
     );
   }
 }
 
-PopupInstallApp.propTypes = {
+PopupShowCode.defaultProps = {
+  isVisible: false,
+  code: '',
+};
+
+PopupShowCode.propTypes = {
   isVisible: React.PropTypes.bool,
+  code: React.PropTypes.string,
   onClose: React.PropTypes.func,
 };
 
-export default PopupInstallApp;
+export default PopupShowCode;
