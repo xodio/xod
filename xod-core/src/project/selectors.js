@@ -177,7 +177,7 @@ export const getMeta = R.pipe(
 );
 
 export const getName = R.prop('name');
-export const getServerId = R.prop('_id');
+export const getId = R.prop('id');
 
 /*
   Counter selectors

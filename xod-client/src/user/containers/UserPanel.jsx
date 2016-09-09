@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getMeta, getServerId, getProjectPojo } from 'xod-client/project/selectors';
-import { projectHaveChanges, projectCanBeLoaded } from 'xod-client/utils/selectors';
+import { getMeta, getId, getProjectPojo } from 'xod-client/project/selectors';
+import { projectHasChanges, projectCanBeLoaded } from 'xod-client/utils/selectors';
 import * as user from '../selectors';
 
 import { Icon } from 'react-fa';
@@ -176,7 +176,7 @@ class UserPanel extends React.Component {
   }
 
   canSave() {
-    return this.props.haveChanges;
+    return this.props.hasChanges;
   }
 
   canLoad() {
@@ -189,7 +189,7 @@ class UserPanel extends React.Component {
 }
 
 UserPanel.propTypes = {
-  haveChanges: React.PropTypes.bool,
+  hasChanges: React.PropTypes.bool,
   canLoad: React.PropTypes.bool,
   currentProjectId: React.PropTypes.number,
   projectPojo: React.PropTypes.object,
@@ -203,10 +203,10 @@ const mapStateToProps = state => {
   const userData = user.user(state);
   const project = getProjectPojo(state);
   const meta = getMeta(project);
-  const curProjectId = getServerId(meta);
+  const curProjectId = getId(meta);
 
   return {
-    haveChanges: projectHaveChanges(state),
+    hasChanges: projectHasChanges(state),
     canLoad: projectCanBeLoaded(state),
     currentProjectId: curProjectId,
     projectPojo: getProjectPojo(state),

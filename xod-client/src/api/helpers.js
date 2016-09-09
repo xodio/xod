@@ -13,7 +13,7 @@ const currentUser = (action, state) => (
 
 const isError = R.propEq('error', true);
 
-const makeSafeName = R.pipe(
+const makeURISafeName = R.pipe(
   R.replace(' ', '_'),
   R.replace(/\W/g, ''),
   R.toLower
@@ -25,5 +25,5 @@ export default {
   completedResponse,
   currentUser,
   isError,
-  makeSafeName,
+  makeURISafeName,
 };

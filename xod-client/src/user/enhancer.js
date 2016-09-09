@@ -1,5 +1,6 @@
 import R from 'ramda';
 import Cookies from 'js-cookie';
+import { notNil } from 'xod-client/utils/ramda';
 import { ApiActions, CALL_API } from 'xod-client/api';
 import { userLens, userIdLens, accessTokenLens } from 'xod-client/user/selectors';
 import {
@@ -8,7 +9,6 @@ import {
   filterNotFinished,
 } from 'xod-client/processes/selectors';
 
-const notNil = R.complement(R.isNil);
 const hasAuthData = R.pipe(
   R.prop('user'),
   R.allPass([

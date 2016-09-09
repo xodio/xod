@@ -9,7 +9,7 @@ import * as Actions from '../actions';
 import { UPLOAD as UPLOAD_ACTION_TYPE } from '../actionTypes';
 import Selectors from '../selectors';
 import { getViewableSize, isChromeApp } from 'xod-client/utils/browser';
-import { projectHaveChanges } from 'xod-client/utils/selectors';
+import { projectHasChanges } from 'xod-client/utils/selectors';
 import { SAVE_LOAD_ERRORS } from 'xod-client/messages/constants';
 import { KEYCODE, HOTKEY } from 'xod-client/utils/constants';
 
@@ -134,7 +134,7 @@ class App extends React.Component {
   onCloseApp(event) {
     let message = true;
 
-    if (this.props.haveChanges) {
+    if (this.props.hasChanges) {
       message = 'You have not saved changes in your project. Are you sure want to close app?';
       if (event) { event.returnValue = message; } // eslint-disable-line
     }
@@ -196,7 +196,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  haveChanges: React.PropTypes.bool,
+  hasChanges: React.PropTypes.bool,
   projectJSON: React.PropTypes.string,
   meta: React.PropTypes.object,
   nodeTypes: React.PropTypes.any.isRequired,
@@ -206,7 +206,7 @@ App.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  haveChanges: projectHaveChanges(state),
+  hasChanges: projectHasChanges(state),
   projectJSON: Selectors.Project.getProjectJSON(state),
   meta: Selectors.Project.getMeta(state),
   nodeTypes: Selectors.Project.dereferencedNodeTypes(state),

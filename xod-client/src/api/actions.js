@@ -61,10 +61,10 @@ Actions.project.load = (projectId) =>
 
 Actions.project.save = (projectData) => {
   const projectMeta = ProjectSelectors.getMeta(projectData);
-  const projectServerId = ProjectSelectors.getServerId(projectMeta);
+  const projectServerId = ProjectSelectors.getId(projectMeta);
   const projectName = R.pipe(
     ProjectSelectors.getName,
-    helpers.makeSafeName
+    helpers.makeURISafeName
   )(projectMeta);
 
   return call(

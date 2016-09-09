@@ -1,4 +1,4 @@
-import { getMeta, getServerId, getProjectPojo } from 'xod-client/project/selectors';
+import { getMeta, getId, getProjectPojo } from 'xod-client/project/selectors';
 import * as user from 'xod-client/user/selectors';
 
 const dataForSync = (state) => {
@@ -7,7 +7,7 @@ const dataForSync = (state) => {
 
   const projectPojo = getProjectPojo(state);
   const meta = getMeta(projectPojo);
-  const curProjectId = getServerId(meta);
+  const curProjectId = getId(meta);
 
   const lastSyncProject = (curProjectId) ? userProjects[curProjectId] : null;
 
@@ -18,7 +18,7 @@ const dataForSync = (state) => {
   };
 };
 
-export const projectHaveChanges = (state) => {
+export const projectHasChanges = (state) => {
   const { lastSyncProject, currentProject } = dataForSync(state);
 
   return !(
