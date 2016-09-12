@@ -1,5 +1,6 @@
 import R from 'ramda';
 import { UPLOAD } from './actionTypes';
+import { STATUS } from 'xod-client/utils/constants';
 
 export const getProccesses = R.prop('processes');
 
@@ -28,4 +29,11 @@ export const findProcessByPath = path => R.pipe(
 export const findProcessByType = type => R.pipe(
   R.values,
   R.find(R.propEq('type', type))
+);
+
+export const filterNotFinished = R.filter(
+  R.anyPass([
+    R.propEq('status', STATUS.STARTED),
+    R.propEq('status', STATUS.PROGRESSED),
+  ])
 );

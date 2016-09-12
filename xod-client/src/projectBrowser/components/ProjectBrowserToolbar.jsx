@@ -95,6 +95,9 @@ class ProjectBrowserToolbar extends React.Component {
     this.setState(R.merge(this.state, initialState));
   }
 
+  getProjectName() {
+    return this.props.projectName;
+  }
   getFolderName(id) {
     if (!this.props.folders.hasOwnProperty(id)) { return ''; }
     return this.props.folders[id].name;
@@ -113,7 +116,10 @@ class ProjectBrowserToolbar extends React.Component {
     if (this.props.selection === null) { return null; }
     const type = this.props.selection.type;
     const id = this.props.selection.id;
-    const name = (type === 'folder') ? this.getFolderName(id) : this.getPatchName(id);
+    let name = this.getProjectName();
+    if (id > 0) {
+      name = (type === 'folder') ? this.getFolderName(id) : this.getPatchName(id);
+    }
 
     return {
       type,
@@ -137,6 +143,16 @@ class ProjectBrowserToolbar extends React.Component {
 
   getState(key) {
     return this.state[key];
+  }
+
+  getActionButtons(selection) {
+    let buttonRenderers = ['renderRenameButton', 'renderDeleteButton'];
+
+    if (selection.type === 'project') {
+      buttonRenderers = R.reject(R.equals('renderDeleteButton'), buttonRenderers);
+    }
+
+    return R.map(method => this[method](selection), buttonRenderers);
   }
 
   canBeDeletedWithoutConfirmation() {
@@ -221,25 +237,39 @@ class ProjectBrowserToolbar extends React.Component {
     );
   }
 
+  renderRenameButton(selection) {
+    return (
+      <button
+        key={`${selection.id}_rename`}
+        title={`Rename ${selection.type}`}
+        onClick={this.onRenameClick}
+      >
+        <Icon name="pencil-square" />
+      </button>
+    );
+  }
+
+  renderDeleteButton(selection) {
+    return (
+      <button
+        key={`${selection.id}_delete`}
+        title={`Delete ${selection.type}`}
+        onClick={this.onDeleteClick}
+      >
+        <Icon name="trash" />
+      </button>
+    );
+  }
+
   renderActionsWithSelected() {
     if (!this.props.selection) { return null; }
 
     const selection = this.getSelectionInfo();
+    const buttons = this.getActionButtons(selection);
 
     return (
       <div className="ProjectBrowserToolbar-right">
-        <button
-          title={`Rename ${selection.type}`}
-          onClick={this.onRenameClick}
-        >
-          <Icon name="pencil-square" />
-        </button>
-        <button
-          title={`Delete ${selection.type}`}
-          onClick={this.onDeleteClick}
-        >
-          <Icon name="trash" />
-        </button>
+        {buttons}
       </div>
     );
   }
@@ -274,6 +304,7 @@ class ProjectBrowserToolbar extends React.Component {
 ProjectBrowserToolbar.propTypes = {
   selection: React.PropTypes.object,
   currentPatchId: React.PropTypes.number,
+  projectName: React.PropTypes.string,
   folders: React.PropTypes.object,
   patches: React.PropTypes.object,
   onRename: React.PropTypes.func,

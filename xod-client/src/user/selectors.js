@@ -15,11 +15,14 @@ export const userId = R.view(userIdLens);
 // :: userState -> { user_id, username, userpic }
 export const userInfo = R.pick(['user_id, username, userpic']);
 
-// :: userState -> [ project, ... ]
-export const projects = R.prop('projects');
-
 // :: userState -> username
 export const username = R.prop('username');
 
 // :: userState -> userpic
 export const userpic = R.prop('suerpic');
+
+// :: userState -> [ project, ... ]
+export const projects = R.prop('projects');
+
+// :: [ project, ... ] -> { id: project, ... }
+export const indexById = R.indexBy(R.prop('id'));

@@ -1,3 +1,4 @@
+export const PROJECT_RENAME = 'PROJECT_RENAME';
 export const PROJECT_LOAD_DATA = 'PROJECT_LOAD_DATA';
 
 export const NODE_MOVE = 'NODE_MOVE';

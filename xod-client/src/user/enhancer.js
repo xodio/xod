@@ -1,5 +1,39 @@
 import R from 'ramda';
 import Cookies from 'js-cookie';
+import { notNil } from 'xod-client/utils/ramda';
+import { ApiActions, CALL_API } from 'xod-client/api';
+import { userLens, userIdLens, accessTokenLens } from 'xod-client/user/selectors';
+import {
+  getProccesses,
+  findProcessByType,
+  filterNotFinished,
+} from 'xod-client/processes/selectors';
+
+const hasAuthData = R.pipe(
+  R.prop('user'),
+  R.allPass([
+    R.propSatisfies(notNil, 'access_token'),
+    R.propSatisfies(notNil, 'user_id'),
+  ])
+);
+const hasUserData = R.pipe(
+  R.prop('user'),
+  R.allPass([
+    R.propSatisfies(notNil, 'username'),
+  ])
+);
+
+// key in cookies : lens to property in state
+const cookieLenses = {
+  access_token: R.compose(
+    userLens,
+    accessTokenLens
+  ),
+  user_id: R.compose(
+    userLens,
+    userIdLens
+  ),
+};
 
 // :: key -> cookieValue
 const getCookie = (key) => {
@@ -32,14 +66,21 @@ const readState = R.curry(
   )(lenses)
 );
 
-export const cookieSync = cookieLenses => next => (reducer, initialState, enhancer) => {
+// do we need to get user data?
+const hasToGetUserData = state => (hasAuthData(state) && !hasUserData(state));
+
+
+// get user data if needed
+const getUserData = dispatch => dispatch(ApiActions.user.me());
+
+
+export const authEnhancer = next => (reducer, initialState, enhancer) => {
   if (typeof initialState === 'function' && typeof enhancer === 'undefined') {
     enhancer = initialState;  // eslint-disable-line
     initialState = undefined; // eslint-disable-line
   }
 
-  cookieLenses = cookieLenses || {}; // eslint-disable-line
-
+  let gettingDataRequest = false;
   let persistedState;
   let finalInitialState;
 
@@ -53,9 +94,17 @@ export const cookieSync = cookieLenses => next => (reducer, initialState, enhanc
 
   const store = next(reducer, finalInitialState, enhancer);
 
-  // Write cookies
+  // On init: check authorization
+  if (hasToGetUserData(finalInitialState)) {
+    getUserData(store.dispatch);
+    gettingDataRequest = true;
+  }
+
+  // On change: write / delete cookies
   store.subscribe(() => {
     const state = store.getState();
+
+    // Store cookies
     const stateValues = readState(state, cookieLenses);
     const cookieValues = readCookies(cookieLenses);
 
@@ -75,6 +124,20 @@ export const cookieSync = cookieLenses => next => (reducer, initialState, enhanc
       )(cookieLenses);
     } catch (e) {
       console.warn('Unable to sync cookies from state to browser:', e); // eslint-disable-line
+    }
+
+    // Get user data, if needed
+    const type = ApiActions.user.me()[CALL_API].types[0].type;
+    const processes = getProccesses(state);
+    const gettingUserData = R.pipe(
+      filterNotFinished,
+      findProcessByType(type),
+      notNil
+    )(processes);
+
+    if (hasToGetUserData(state) && !gettingUserData && gettingDataRequest === false) {
+      getUserData(store.dispatch);
+      gettingDataRequest = true;
     }
   });
 

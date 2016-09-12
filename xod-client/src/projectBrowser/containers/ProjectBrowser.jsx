@@ -112,8 +112,10 @@ class ProjectBrowser extends React.Component {
   onRename(type, id, name) {
     if (type === 'folder') {
       this.props.actions.renameFolder(id, name);
-    } else {
+    } else if (type === 'patch') {
       this.props.actions.renamePatch(id, name);
+    } else {
+      this.props.actions.renameProject(name);
     }
   }
 
@@ -197,6 +199,7 @@ class ProjectBrowser extends React.Component {
           hotkeys={this.onToolbarHotkeys}
           selection={this.state.selection}
           currentPatchId={this.props.currentPatchId}
+          projectName={this.props.projectName}
           patches={this.props.patches}
           folders={this.props.folders}
           onDelete={this.onDelete}
@@ -221,6 +224,7 @@ class ProjectBrowser extends React.Component {
 ProjectBrowser.propTypes = {
   tree: React.PropTypes.object.isRequired,
   actions: React.PropTypes.object,
+  projectName: React.PropTypes.string,
   patches: React.PropTypes.object,
   folders: React.PropTypes.object,
   currentPatchId: React.PropTypes.number,
@@ -229,10 +233,13 @@ ProjectBrowser.propTypes = {
 
 const mapStateToProps = (state) => {
   const project = ProjectSelectors.getProject(state);
+  const projectMeta = ProjectSelectors.getMeta(project);
+  const projectName = ProjectSelectors.getName(projectMeta);
   const curPatchId = EditorSelectors.getCurrentPatchId(state);
 
   return {
     tree: ProjectSelectors.getTreeView(project, curPatchId),
+    projectName,
     patches: ProjectSelectors.getPatches(state),
     folders: ProjectSelectors.getFolders(state),
     currentPatchId: curPatchId,
@@ -249,6 +256,7 @@ const mapDispatchToProps = (dispatch) => ({
     addPatch: ProjectActions.addPatch,
     renamePatch: ProjectActions.renamePatch,
     deletePatch: ProjectActions.deletePatch,
+    renameProject: ProjectActions.renameProject,
     movePatch: ProjectActions.movePatch,
     addError: MessageActions.addError,
   }, dispatch),

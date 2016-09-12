@@ -9,6 +9,7 @@ import * as Actions from '../actions';
 import { UPLOAD as UPLOAD_ACTION_TYPE } from '../actionTypes';
 import Selectors from '../selectors';
 import { getViewableSize, isChromeApp } from 'xod-client/utils/browser';
+import { projectHasChanges } from 'xod-client/utils/selectors';
 import { SAVE_LOAD_ERRORS } from 'xod-client/messages/constants';
 import { KEYCODE, HOTKEY } from 'xod-client/utils/constants';
 
@@ -41,6 +42,7 @@ class App extends React.Component {
     this.onSelectNodeType = this.onSelectNodeType.bind(this);
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
+    this.onCloseApp = this.onCloseApp.bind(this);
   }
 
   onResize() {
@@ -129,6 +131,17 @@ class App extends React.Component {
     return false;
   }
 
+  onCloseApp(event) {
+    let message = true;
+
+    if (this.props.hasChanges) {
+      message = 'You have not saved changes in your project. Are you sure want to close app?';
+      if (event) { event.returnValue = message; } // eslint-disable-line
+    }
+
+    return message;
+  }
+
   showInstallAppPopup() {
     this.setState(
       R.assoc('popupInstallApp', true, this.state)
@@ -151,7 +164,12 @@ class App extends React.Component {
     const devToolsInstrument = (isChromeApp) ? <DevTools /> : null;
     return (
       <HotKeys keyMap={HOTKEY} id="App">
-        <EventListener target={window} onResize={this.onResize} onKeyDown={this.onKeyDown} />
+        <EventListener
+          target={window}
+          onResize={this.onResize}
+          onKeyDown={this.onKeyDown}
+          onBeforeUnload={this.onCloseApp}
+        />
         <Toolbar
           meta={this.props.meta}
           nodeTypes={this.props.nodeTypes}
@@ -178,6 +196,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
+  hasChanges: React.PropTypes.bool,
   projectJSON: React.PropTypes.string,
   meta: React.PropTypes.object,
   nodeTypes: React.PropTypes.any.isRequired,
@@ -187,6 +206,7 @@ App.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  hasChanges: projectHasChanges(state),
   projectJSON: Selectors.Project.getProjectJSON(state),
   meta: Selectors.Project.getMeta(state),
   nodeTypes: Selectors.Project.dereferencedNodeTypes(state),
