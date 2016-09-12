@@ -12,7 +12,7 @@ import { getViewableSize, isChromeApp } from 'xod-client/utils/browser';
 import { projectHasChanges } from 'xod-client/utils/selectors';
 import { SAVE_LOAD_ERRORS } from 'xod-client/messages/constants';
 import { KEYCODE, HOTKEY } from 'xod-client/utils/constants';
-import { doTranspile } from 'xod-client/utils/esp';
+import { transpile } from 'xod-espruino';
 
 import { constants as EDITOR_CONST, container as Editor } from 'xod-client/editor';
 import { SnackBar } from 'xod-client/messages';
@@ -74,7 +74,7 @@ class App extends React.Component {
 
   onShowCode() {
     this.setState({
-      code: doTranspile(this.props.project),
+      code: transpile(this.props.project),
     });
     this.showCodePopup();
   }
@@ -225,6 +225,7 @@ class App extends React.Component {
 
 App.propTypes = {
   hasChanges: React.PropTypes.bool,
+  project: React.PropTypes.object,
   projectJSON: React.PropTypes.string,
   meta: React.PropTypes.object,
   nodeTypes: React.PropTypes.any.isRequired,
@@ -235,6 +236,7 @@ App.propTypes = {
 
 const mapStateToProps = (state) => ({
   hasChanges: projectHasChanges(state),
+  project: Selectors.Project.getProject(state),
   projectJSON: Selectors.Project.getProjectJSON(state),
   meta: Selectors.Project.getMeta(state),
   nodeTypes: Selectors.Project.dereferencedNodeTypes(state),

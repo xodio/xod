@@ -7,12 +7,15 @@ class PopupShowCode extends React.Component {
       this.show();
     }
   }
+
   show() {
     this.refs.popup.show();
   }
+
   hide() {
     this.refs.popup.hide();
   }
+
   render() {
     return (
       <SkyLight
