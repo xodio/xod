@@ -56,3 +56,11 @@ export const checkForMouseBubbling = (event, parent) => {
   const elem = event.toElement || event.relatedTarget;
   return (elem.parentNode === parent || elem === parent);
 };
+
+export const isInputTarget = (event) => {
+  const target = event.target || event.srcElement;
+  const type = target.nodeName;
+  const inputs = ['INPUT', 'TEXTAREA', 'SELECT'];
+
+  return (inputs.indexOf(type) !== -1);
+};
