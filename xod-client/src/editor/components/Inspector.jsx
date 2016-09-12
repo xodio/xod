@@ -12,6 +12,14 @@ const widgetAccordance = {
   },
 };
 
+const labelProp = {
+  key: 'label',
+  label: 'Label',
+  type: 'string',
+  defaultValue: '',
+  value: '',
+};
+
 class Inspector extends React.Component {
   constructor(props) {
     super(props);
@@ -24,27 +32,20 @@ class Inspector extends React.Component {
   }
 
   getProperties(nodeType, node) {
-    let props = [];
+    let props = [labelProp];
 
     if (nodeType.hasOwnProperty('properties')) {
       props = R.pipe(
         R.values,
-        R.append({
-          key: 'label',
-          label: 'Label',
-          type: 'string',
-          defaultValue: '',
-          value: '',
-        }),
+        R.append(labelProp),
         R.map((prop) => {
-          const merged = R.clone(prop);
           if (
             node.hasOwnProperty('properties') &&
             node.properties.hasOwnProperty(prop.key)
           ) {
-            merged.value = node.properties[prop.key];
+            return R.assoc('value', node.properties[prop.key], prop);
           }
-          return merged;
+          return prop;
         })
       )(nodeType.properties);
     }
