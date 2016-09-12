@@ -8,7 +8,7 @@
     "start": "node .",
     "posttest": "npm run lint && nsp check",
     "dev": "npm-watch",
-    "prepareDb": "node ./scripts/prepareDb.js",
+    "reset": "node ./scripts/resetDb.js",
     "addUser": "node ./scripts/addUser.js"
   },
   "keywords": [
