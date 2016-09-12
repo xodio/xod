@@ -14,6 +14,7 @@
   'base/base';
 
 @import
+  'components/SkyLight',
   'components/UserPanel',
   'components/UserMenu',
   'components/Sidebar',
@@ -35,6 +36,7 @@
   'components/SnackBarList',
   'components/SnackBarError',
   'components/ProjectBrowser',
+  'components/PopupShowCode',
   'components/ProjectBrowserToolbar',
   'components/ProjectBrowserTree',
   'components/CreateNodeWidget';

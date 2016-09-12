@@ -31,7 +31,7 @@
     margin: 0 5px;
   }
 
-  .upload-button {
+  .upload-button, .show-code-button {
     @include button-primary;
     @include button-toolbar;
   }

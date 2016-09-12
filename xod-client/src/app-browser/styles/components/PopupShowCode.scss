@@ -1,0 +1,10 @@
+.PopupShowCode {
+  
+  &-codebox {
+    display: block;
+    width: 100%;
+    height: 300px;
+
+    font-family: $font-family-mono;
+  }
+}

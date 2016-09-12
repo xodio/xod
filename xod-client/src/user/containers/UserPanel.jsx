@@ -59,14 +59,14 @@ class UserPanel extends React.Component {
       {
         name: 'save',
         icon: 'cloud-upload',
-        text: 'Save project in cloud',
+        text: 'Save',
         active: canSave,
         onClick: this.saveProject,
       },
       {
         name: 'load',
         icon: 'cloud-download',
-        text: 'Load project from cloud',
+        text: 'Load',
         active: canLoad,
         onClick: this.loadProject,
       },

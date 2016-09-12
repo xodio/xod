@@ -12,11 +12,13 @@ import { getViewableSize, isChromeApp } from 'xod-client/utils/browser';
 import { projectHasChanges } from 'xod-client/utils/selectors';
 import { SAVE_LOAD_ERRORS } from 'xod-client/messages/constants';
 import { KEYCODE, HOTKEY } from 'xod-client/utils/constants';
+import { transpile } from 'xod-espruino';
 
 import { constants as EDITOR_CONST, container as Editor } from 'xod-client/editor';
 import { SnackBar } from 'xod-client/messages';
 import Toolbar from '../components/Toolbar';
 import PopupInstallApp from '../components/PopupInstallApp';
+import PopupShowCode from '../components/PopupShowCode';
 import PopupUploadProject from 'xod-client/processes/components/PopupUploadProject';
 import EventListener from 'react-event-listener';
 
@@ -32,17 +34,23 @@ class App extends React.Component {
       size: getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
       popupInstallApp: false,
       popupUploadProject: false,
+      popupShowCode: false,
+      code: '',
     };
 
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onUpload = this.onUpload.bind(this);
+    this.onShowCode = this.onShowCode.bind(this);
     this.onLoad = this.onLoad.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onSelectNodeType = this.onSelectNodeType.bind(this);
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
+
+    this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
+    this.hideCodePopup = this.hideCodePopup.bind(this);
   }
 
   onResize() {
@@ -62,6 +70,13 @@ class App extends React.Component {
     } else {
       this.showInstallAppPopup();
     }
+  }
+
+  onShowCode() {
+    this.setState({
+      code: transpile(this.props.project),
+    });
+    this.showCodePopup();
   }
 
   onLoad(json) {
@@ -143,21 +158,27 @@ class App extends React.Component {
   }
 
   showInstallAppPopup() {
-    this.setState(
-      R.assoc('popupInstallApp', true, this.state)
-    );
+    this.setState({ popupInstallApp: true });
+  }
+
+  hideInstallAppPopup() {
+    this.setState({ popupInstallApp: false });
   }
 
   showUploadProgressPopup() {
-    this.setState(
-      R.assoc('popupUploadProject', true, this.state)
-    );
+    this.setState({ popupUploadProject: true });
   }
 
   hideUploadProgressPopup() {
-    this.setState(
-      R.assoc('popupUploadProject', false, this.state)
-    );
+    this.setState({ popupUploadProject: false });
+  }
+
+  showCodePopup() {
+    this.setState({ popupShowCode: true });
+  }
+
+  hideCodePopup() {
+    this.setState({ popupShowCode: false });
   }
 
   render() {
@@ -174,6 +195,7 @@ class App extends React.Component {
           meta={this.props.meta}
           nodeTypes={this.props.nodeTypes}
           onUpload={this.onUpload}
+          onShowCode={this.onShowCode}
           onLoad={this.onLoad}
           onSave={this.onSave}
           onSelectNodeType={this.onSelectNodeType}
@@ -184,6 +206,12 @@ class App extends React.Component {
         {devToolsInstrument}
         <PopupInstallApp
           isVisible={this.state.popupInstallApp}
+          onClose={this.hideInstallAppPopup}
+        />
+        <PopupShowCode
+          isVisible={this.state.popupShowCode}
+          code={this.state.code}
+          onClose={this.hideCodePopup}
         />
         <PopupUploadProject
           isVisible={this.state.popupUploadProject}
@@ -197,6 +225,7 @@ class App extends React.Component {
 
 App.propTypes = {
   hasChanges: React.PropTypes.bool,
+  project: React.PropTypes.object,
   projectJSON: React.PropTypes.string,
   meta: React.PropTypes.object,
   nodeTypes: React.PropTypes.any.isRequired,
@@ -207,6 +236,7 @@ App.propTypes = {
 
 const mapStateToProps = (state) => ({
   hasChanges: projectHasChanges(state),
+  project: Selectors.Project.getProject(state),
   projectJSON: Selectors.Project.getProjectJSON(state),
   meta: Selectors.Project.getMeta(state),
   nodeTypes: Selectors.Project.dereferencedNodeTypes(state),
