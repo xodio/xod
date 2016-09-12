@@ -1,6 +1,9 @@
 
 function nullFunc() {}
 
+var PULSE = {type: 'pulse'};
+var identity = function(x) { return x; };
+
 /**
   * @typedef {{
   *   lazy: boolean,
@@ -236,4 +239,6 @@ if (typeof module !== 'undefined') {
   // Export some entities for tests
   module.exports.Node = Node;
   module.exports.Project = Project;
+  module.exports.PULSE = PULSE;
+  module.exports.identity = identity;
 }
