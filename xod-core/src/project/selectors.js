@@ -660,7 +660,10 @@ export const getNodeLabel = (state, node) => {
     }
   }
 
-  nodeLabel = R.pathOr(nodeLabel, ['properties', 'label'], node);
+  let nodeCustomLabel = R.path(['properties', 'label'], node);
+  if (nodeCustomLabel === '') { nodeCustomLabel = null; }
+
+  nodeLabel = (nodeCustomLabel) ? nodeCustomLabel : nodeLabel;
 
   return String(nodeLabel);
 };
@@ -926,7 +929,7 @@ export const prepareToUpdateNodeProperty = (projectState, nodeId, propKey, propV
   const patchId = getPatchByNodeId(projectState, nodeId).id;
   const node = dereferencedNodes(projectState, patchId)[nodeId];
   const nodeType = dereferencedNodeTypes(projectState)[node.typeId];
-  const propType = nodeType.properties[propKey].type;
+  const propType = (propKey === 'label') ? 'label' : nodeType.properties[propKey].type;
 
   return {
     payload: {

@@ -29,6 +29,13 @@ class Inspector extends React.Component {
     if (nodeType.hasOwnProperty('properties')) {
       props = R.pipe(
         R.values,
+        R.append({
+          key: 'label',
+          label: 'Label',
+          type: 'string',
+          defaultValue: '',
+          value: '',
+        }),
         R.map((prop) => {
           const merged = R.clone(prop);
           if (
