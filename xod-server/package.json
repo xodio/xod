@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "eslint --ext .js ./server || true",
     "start": "node .",
+    "prepare": "node ./scripts/prepareDb.js",
     "posttest": "npm run lint && nsp check",
     "dev": "npm-watch"
   },
