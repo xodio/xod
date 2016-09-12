@@ -20,15 +20,16 @@ You will need a MongoDB to serve data.
 Runs a REST API server, that provides authorization, save/load in cloud and etc.
 Open API Explorer to learn more: <http://0.0.0.0:3000/explorer/>
 
-You can create a user using cli-tools. Just run a script:
-
     $ npm run addUser %USERNAME% %EMAIL% %PASSWORD%
 
-If you want to remove all data from your db and automatically create first user
-named Amperka, just run a next command. But be carefully, you can't restore your
-data if you didn't make a backup! This scripts made only for testing purposes.
+Create a user using cli-tools.
 
     $npm run reset
+
+Remove all data from your db and automatically create first user named Amperka,
+just run a next command. But be carefully, you can't restore your data if you 
+didn't make a backup! This scripts made only for testing purposes.
+
 
 Maintenance Scripts
 -------------------
