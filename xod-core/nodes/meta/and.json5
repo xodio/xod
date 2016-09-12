@@ -1,0 +1,18 @@
+{
+  label: 'and',
+  inputs: [{
+    key: 'a',
+    type: 'bool',
+    description: 'First input'
+  },
+  {
+    key: 'b',
+    type: 'bool',
+    description: 'Second input'
+  }],
+  outputs: [{
+    key: 'out',
+    type: 'bool',
+    description: '"true" if both inputs are "true"',
+  }],
+}

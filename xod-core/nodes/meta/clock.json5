@@ -1,0 +1,13 @@
+{
+  properties: [{
+    key: 'interval',
+    label: 'Interval (seconds)',
+    type: 'number',
+    defaultValue: 1,
+  }],
+  outputs: [{
+    key: 'tick',
+    type: 'pulse',
+    description: 'Emits pulse periodically',
+  }],
+}

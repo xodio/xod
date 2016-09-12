@@ -1,0 +1,13 @@
+{
+  label: 'Buzzer',
+  inputs: [{
+    key: 'freq',
+    type: 'number',
+    description: 'Frequency (Hz)'
+  }],
+  properties: [{
+    key: 'pin',
+    label: 'Pin',
+    type: 'string',
+  }]
+}
