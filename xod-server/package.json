@@ -6,9 +6,10 @@
   "scripts": {
     "lint": "eslint --ext .js ./server || true",
     "start": "node .",
-    "prepare": "node ./scripts/prepareDb.js",
     "posttest": "npm run lint && nsp check",
-    "dev": "npm-watch"
+    "dev": "npm-watch",
+    "prepareDb": "node ./scripts/prepareDb.js",
+    "addUser": "node ./scripts/addUser.js"
   },
   "keywords": [
     "xod",

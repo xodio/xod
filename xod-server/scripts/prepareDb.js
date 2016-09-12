@@ -1,5 +1,6 @@
 const R = require('ramda');
 const server = require('../server/server.js');
+const createUser = require('./parts/create-user.js');
 /* eslint-disable max-len */
 
 const userOptions = {
@@ -34,25 +35,11 @@ const destroyAll = (app) =>
     )(models);
   });
 
-// Create a user
-const createUser = (app) =>
-  new Promise(resolve => {
-    const User = app.models.user;
-
-    User.create(
-      userOptions,
-      (err, instance) => {
-        if (err) { console.error(err); }
-        console.log(`+ Add user ${instance.username}:${userOptions.password}: successfully.`);
-        resolve(app);
-      });
-  });
-
 // Run
 Promise.resolve(server)
   .then(destroyAll)
   .then(emptyLine)
-  .then(createUser)
+  .then(createUser(userOptions))
   .then(emptyLine)
   .then(() => {
     console.log('=== It\'s done! ===');
