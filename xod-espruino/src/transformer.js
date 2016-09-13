@@ -106,22 +106,25 @@ export default function transform(project, implPlatforms = []) {
   )(linkList);
 
   // :: Node -> {outKey: [Link]}
-  const nodeOutLinks = node => R.reduce(
-    (outLinks, pin) => {
-      const key = pin.pins[0].pinKey;
-      const newLink = {
-        key: pin.pins[1].pinKey,
-        nodeId: pin.pins[1].nodeId,
-      };
+  const nodeOutLinks = R.compose(
+    R.reduce(
+      (outLinks, link) => {
+        const [fromNode, toNode] = link.pins;
 
-      if (R.has(key, outLinks)) {
-        return R.append(newLink, outLinks[key]);
-      }
-
-      return R.assoc(key, [newLink], outLinks);
-    },
-    {},
-    outgoingLinks(node)
+        return R.mergeWith(
+          R.concat,
+          {
+            [fromNode.pinKey]: [{
+              key: toNode.pinKey,
+              nodeId: toNode.nodeId,
+            }]
+          },
+          outLinks
+        );
+      },
+      {}
+    ),
+    outgoingLinks
   );
 
   // :: Node -> TransformedNode
