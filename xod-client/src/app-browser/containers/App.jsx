@@ -8,7 +8,7 @@ import { HotKeys } from 'react-hotkeys';
 import * as Actions from '../actions';
 import { UPLOAD as UPLOAD_ACTION_TYPE } from '../actionTypes';
 import Selectors from '../selectors';
-import { getViewableSize, isChromeApp } from 'xod-client/utils/browser';
+import { getViewableSize, isChromeApp, isInputTarget } from 'xod-client/utils/browser';
 import { projectHasChanges } from 'xod-client/utils/selectors';
 import { SAVE_LOAD_ERRORS } from 'xod-client/messages/constants';
 import { KEYCODE, HOTKEY } from 'xod-client/utils/constants';
@@ -139,7 +139,7 @@ class App extends React.Component {
   onKeyDown(event) {
     const keyCode = event.keyCode || event.which;
 
-    if (keyCode === KEYCODE.BACKSPACE) {
+    if (!isInputTarget(event) && keyCode === KEYCODE.BACKSPACE) {
       event.preventDefault();
     }
 
