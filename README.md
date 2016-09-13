@@ -22,13 +22,13 @@ Open API Explorer to learn more: <http://0.0.0.0:3000/explorer/>
 
     $ npm run addUser %USERNAME% %EMAIL% %PASSWORD%
 
-Create a user using cli-tools.
+Creates a user using cli-tools.
 
     $npm run reset
 
-Remove all data from your db and automatically create first user named Amperka,
-just run a next command. But be carefully, you can't restore your data if you 
-didn't make a backup! This scripts made only for testing purposes.
+Removes all data from your database and automatically creates the first user named Amperka.
+But be careful, you can't restore your data if you didn't make a backup!
+This scripts made only for testing purposes.
 
 
 Maintenance Scripts
@@ -41,7 +41,7 @@ localhost.
 
     $ make server
 
-Run REST API server with hot realoding.
+Run REST API server with hot reloading.
 
     $ make lint
 
