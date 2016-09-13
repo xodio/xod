@@ -1,33 +1,57 @@
 {
   inputs: [{
     key: 'inp',
-    label: 'IN',
     type: 'number',
+    mode: 'both',
+    currentMode: 'pin',
+    pinLabel: 'IN',
+    label: 'Input',
+    value: 0,
     description: 'Input value to map'
   }, {
     key: 'inA',
-    label: 'As',
     type: 'number',
+    mode: 'both',
+    currentMode: 'property',
+    pinLabel: 'As',
+    label: 'Input range start',
+    value: 0,
     description: 'Input range start'
   }, {
     key: 'inB',
-    label: 'Bs',
     type: 'number',
+    mode: 'both',
+    currentMode: 'property',
+    pinLabel: 'Bs',
+    label: 'Input range end',
+    value: 0,
     description: 'Input range end'
   }, {
     key: 'outA',
-    label: 'At',
     type: 'number',
+    mode: 'both',
+    currentMode: 'property',
+    pinLabel: 'At',
+    label: 'Output range start',
+    value: 0,
     description: 'Output range start'
   }, {
     key: 'outB',
-    label: 'Bt',
     type: 'number',
+    mode: 'both',
+    currentMode: 'property',
+    pinLabel: 'Bt',
+    label: 'Output range end',
+    value: 0,
     description: 'Output range end'
   }, {
     key: 'clip',
-    label: 'CL',
     type: 'bool',
+    mode: 'both',
+    currentMode: 'property',
+    pinLabel: 'CL',
+    label: 'Clip',
+    value: false,
     description: 'Clip result to output range'
   }],
   outputs: [{

@@ -3,6 +3,11 @@
   inputs: [{
     key: 'brightness',
     type: 'number',
+    mode: 'both',
+    currentMode: 'pin',
+    label: 'Brightness',
+    value: 0,
+    pinLabel: '',
     description: 'Shine brightness'
   }],
   properties: [{

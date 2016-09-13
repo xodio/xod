@@ -1,14 +1,24 @@
 {
   label: '<String>',
   category: 'configuration',
+  inputs: [{
+    key: 'value',
+    type: 'string',
+    mode: 'property',
+    label: 'Value',
+    value: ''
+  }, {
+    key: 'pulse',
+    type: 'enum',
+    mode: 'both',
+    currentMode: 'property',
+    label: 'Pulse',
+    pinLabel: 'PLS',
+    values: ['on start', 'never'],
+    value: 0
+  }],
   outputs: [{
     key: 'value',
     type: 'number',
-  }],
-  properties: [{
-    key: 'value',
-    label: 'Value',
-    type: 'string',
-    defaultValue: '',
   }]
 }

@@ -1,14 +1,24 @@
 {
   label: '<Bool>',
   category: 'configuration',
+  inputs: [{
+    key: 'value',
+    type: 'bool',
+    mode: 'property',
+    label: 'Value',
+    value: false
+  }, {
+    key: 'pulse',
+    type: 'enum',
+    mode: 'both',
+    currentMode: 'property',
+    label: 'Pulse',
+    pinLabel: 'PLS',
+    values: ['on start', 'never'],
+    value: 0
+  }],
   outputs: [{
     key: 'value',
     type: 'bool',
-  }],
-  properties: [{
-    key: 'value',
-    label: 'Value',
-    type: 'bool',
-    defaultValue: false,
   }]
 }

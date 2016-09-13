@@ -1,18 +1,20 @@
 {
+  category: 'hardware',
   inputs: [{
+    key: 'pin',
+    type: 'string',
+    mode: 'property',
+    label: 'Pin',
+    value: 'A0'
+  }, {
     key: 'sample',
     type: 'pulse',
+    mode: 'pin',
     description: 'Sample current value',
   }],
   outputs: [{
     key: 'value',
     type: 'number',
     description: 'Sampled potentiometer value',
-  }],
-  properties: [{
-    key: 'pin',
-    label: 'Pin',
-    type: 'string',
-    defaultValue: 'A0',
   }]
 }

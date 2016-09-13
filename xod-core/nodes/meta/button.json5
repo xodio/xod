@@ -1,13 +1,15 @@
 {
+  category: 'hardware',
+  inputs: [{
+    key: 'pin',
+    type: 'string',
+    mode: 'property',
+    label: 'Pin',
+    value: 'BTN1'
+  }],
   outputs: [{
     key: 'state',
     type: 'bool',
     description: 'Emits `true` when pressed and `false` when released',
-  }],
-  properties: [{
-    key: 'pin',
-    label: 'Pin',
-    type: 'string',
-    defaultValue: 'BTN1',
   }]
 }

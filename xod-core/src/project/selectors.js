@@ -633,7 +633,8 @@ export const dereferencedNodeTypes = state => {
 
   return R.pipe(
     getNodeTypes,
-    R.flip(R.merge)(patchNodeTypes)
+    R.flip(R.merge)(patchNodeTypes),
+    (c) => { console.log('=', c); return c; }
   )(state);
 };
 

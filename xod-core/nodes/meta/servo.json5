@@ -1,24 +1,35 @@
 {
+  category: 'hardware',
   inputs: [{
-    key: 'value',
-    type: 'number',
-    defaultValue: 1,
-    description: 'Rotation angle/value'
-  }],
-  properties: [{
     key: 'pin',
-    label: 'Pin',
     type: 'string',
-    defaultValue: 'A10',
+    mode: 'property',
+    label: 'Pin',
+    value: 'A10'
   }, {
     key: 'minPulse',
-    label: 'Min Pulse (μs)',
     type: 'number',
-    defaultValue: 700,
+    mode: 'both',
+    currentMode: 'property',
+    label: 'Min Pulse (μs)',
+    pinLabel: 'MIN',
+    value: 700
   }, {
     key: 'maxPulse',
-    label: 'Max Pulse (μs)',
     type: 'number',
-    defaultValue: 2300,
+    mode: 'both',
+    currentMode: 'property',
+    label: 'Max Pulse (μs)',
+    pinLabel: 'MAX',
+    value: 2300
+  }, {
+    key: 'value',
+    type: 'number',
+    mode: 'both',
+    currentMode: 'pin',
+    label: 'Value',
+    pinLabel: 'VAL',
+    value: 1,
+    description: 'Rotation angle/value'
   }]
 }

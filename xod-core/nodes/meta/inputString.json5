@@ -1,14 +1,16 @@
 {
   label: '<InputString>',
   category: 'io',
+  inputs: [{
+    key: 'label',
+    type: 'string',
+    mode: 'property',
+    widget: 'io_label',
+    label: 'Pin label',
+    value: 'InS'
+  }],
   outputs: [{
     key: 'PIN',
     type: 'string',
-  }],
-  properties: [{
-    key: 'label',
-    label: 'Pin label',
-    type: 'io_label',
-    defaultValue: 'InS',
   }]
 }
