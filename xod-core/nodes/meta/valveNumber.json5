@@ -1,0 +1,19 @@
+{
+  label: 'valveNumber',
+  inputs: [{
+    key: 'cond',
+    type: 'bool',
+    description: 'Condition'
+  },
+  {
+    key: 'in',
+    type: 'number',
+    description: 'Input'
+  }],
+  outputs: [{
+    key: 'out',
+    type: 'number',
+    description: 'Output (receives messages from the input if condition is "true")',
+  }],
+  pure: false
+}
