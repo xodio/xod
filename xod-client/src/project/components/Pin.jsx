@@ -41,12 +41,27 @@ export default class Pin extends React.Component {
     };
   }
 
+  getTriangleProps() {
+    const r = this.props.radius;
+    const x = this.getPosition().x - r;
+    const y = this.getPosition().y - r;
+    const s = r * 2;
+
+    return {
+      points: [
+        `${x},${y}`,
+        `${x + s},${y}`,
+        `${x + s / 2},${y + s}`,
+      ].join(' '),
+    };
+  }
+
   getTextProps() {
     const textMargin = this.props.radius * (this.isInput() ? 1 : -1);
     const pos = this.getPosition();
     return {
-      x: pos.x + textMargin,
-      y: pos.y,
+      x: pos.x + textMargin + 2,
+      y: pos.y + 4,
       transform: `rotate(-90 ${pos.x}, ${pos.y})`,
       textAnchor: this.isInput() ? 'start' : 'end',
     };
@@ -64,34 +79,47 @@ export default class Pin extends React.Component {
     return (this.getDirection() === PIN_DIRECTION.OUTPUT);
   }
 
+  isProperty() {
+    return (this.props.mode === 'property');
+  }
+
   render() {
-    const label = this.props.label ? (
+    const pinLabel = this.props.pinLabel ? (
       <text
-        className="label"
+        className="pinLabel"
         key={`pinText_${this.props.keyName}`}
         {...this.getTextProps()}
       >
-        {this.props.label}
+        {this.props.pinLabel}
       </text>
     ) : null;
 
     const cls = classNames('Pin', {
+      'is-property': this.isProperty(),
       'is-selected': this.props.isSelected,
       'is-valid': this.props.validness === PIN_VALIDITY.VALID,
       'is-almost-valid': this.props.validness === PIN_VALIDITY.ALMOST,
     });
 
+    const onMouseUp = !this.isProperty() ? this.onMouseUp : f => f;
+    const onMouseOver = !this.isProperty() ? this.handleOver : f => f;
+    const onMouseOut = !this.isProperty() ? this.handleOut : f => f;
+
+    const symbol = !this.isProperty() ?
+      <circle className="symbol" {...this.getCircleProps()} /> :
+      <polygon className="symbol" {...this.getTriangleProps()} />;
+
     return (
       <g
         className={cls}
         id={this.props.keyName}
-        onMouseUp={this.onMouseUp}
-        onMouseOver={this.handleOver}
-        onMouseOut={this.handleOut}
+        onMouseUp={onMouseUp}
+        onMouseOver={onMouseOver}
+        onMouseOut={onMouseOut}
       >
         <rect {...this.getHotspotProps()} />
-        <circle className="symbol" {...this.getCircleProps()} />
-        {label}
+        {symbol}
+        {pinLabel}
       </g>
     );
   }
@@ -100,7 +128,8 @@ export default class Pin extends React.Component {
 Pin.propTypes = {
   nodeId: React.PropTypes.number.isRequired,
   keyName: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string,
+  mode: React.PropTypes.string,
+  pinLabel: React.PropTypes.string,
   direction: React.PropTypes.string.isRequired,
   position: React.PropTypes.object.isRequired,
   radius: React.PropTypes.number.isRequired,

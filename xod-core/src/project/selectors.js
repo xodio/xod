@@ -263,29 +263,6 @@ export const getNodesByPatchId = R.curry((patchId, state) => R.pipe(
   Pin selectors
 */
 
-export const getPins = R.pipe(
-  getNodeTypes,
-  R.mapObjIndexed(R.prop('pins')),
-  R.flatten
-);
-
-export const getPinsByNodeId = (state, props) => R.pipe(
-  getPins,
-  R.filter((pin) => pin.nodeId === props.id)
-)(state, props);
-
-export const getPinsByIds = (state, props) => R.pipe(
-  getPins,
-  R.values,
-  R.reduce((p, pin) => {
-    let result = p;
-    if (props && props.pins && props.pins.indexOf(pin.id) !== -1) {
-      result = R.assoc(pin.id, pin, p);
-    }
-    return result;
-  }, {})
-)(state, props);
-
 const getVerticalPinOffsets = () => ({
   [PIN_DIRECTION.INPUT]: -1 * SIZE.NODE.padding.y,
   [PIN_DIRECTION.OUTPUT]: SIZE.NODE.padding.y - SIZE.PIN.radius * 2,
@@ -633,8 +610,7 @@ export const dereferencedNodeTypes = state => {
 
   return R.pipe(
     getNodeTypes,
-    R.flip(R.merge)(patchNodeTypes),
-    (c) => { console.log('=', c); return c; }
+    R.flip(R.merge)(patchNodeTypes)
   )(state);
 };
 

@@ -174,7 +174,7 @@ export const getNodeGhost = (state) => {
   const nodeProperties = R.pipe(
     R.prop('properties'),
     R.values,
-    R.reduce((p, prop) => R.assoc(prop.key, prop.defaultValue, p), {})
+    R.reduce((p, prop) => R.assoc(prop.key, prop.value, p), {})
   )(nodeType);
 
   const nodeLabel = getNodeLabel(state, { typeId: nodeTypeId, properties: nodeProperties });

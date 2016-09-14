@@ -5,7 +5,8 @@ import { PIN_DIRECTION } from './constants';
 
 R.mapDirectedNodeTypePins = (direction, collectionKey) => R.compose(
   R.indexBy(R.prop('key')),
-  R.addIndex(R.map)((pin, index) => R.merge({ index, direction }, pin)),
+  R.addIndex(R.map)((io, index) => R.merge({ index, direction }, io)),
+  R.reject(R.propEq('modes', 'property')),
   R.propOr([], collectionKey)
 );
 
@@ -16,7 +17,8 @@ const mapNodeTypePins = meta => R.merge(
 
 const mapNodeTypeProperties = R.compose(
   R.indexBy(R.prop('key')),
-  R.propOr([], 'properties')
+  R.reject(R.propEq('modes', 'pin')),
+  R.propOr([], 'inputs')
 );
 
 const removeNils = R.reject(R.isNil);

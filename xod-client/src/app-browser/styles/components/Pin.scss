@@ -35,6 +35,12 @@
       fill: $color-canvas-almost-ok;
     }
   }
+
+  &.is-property {
+    .pinLabel {
+      opacity: 0.5;
+    }
+  }
 }
 
 :focus .Pin.is-selected {

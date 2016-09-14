@@ -43,6 +43,7 @@ export const PROPERTY_TYPE = {
   BOOL: 'bool',
   NUMBER: 'number',
   STRING: 'string',
+  PULSE: 'pulse',
   IO_LABEL: 'io_label',
 };
 
@@ -50,6 +51,7 @@ export const PROPERTY_TYPE_PARSE = {
   [PROPERTY_TYPE.BOOL]: (v) => !!v,
   [PROPERTY_TYPE.NUMBER]: (v) => parseFloat(v),
   [PROPERTY_TYPE.STRING]: (v) => String(v),
+  [PROPERTY_TYPE.PULSE]: (v) => parseInt(v, 10),
   [PROPERTY_TYPE.IO_LABEL]: (v) => String(v),
 };
 
@@ -57,6 +59,7 @@ export const PROPERTY_DEFAULT_VALUE = {
   BOOL: false,
   NUMBER: 0,
   STRING: '',
+  PULSE: '',
   IO_LABEL: '',
 };
 

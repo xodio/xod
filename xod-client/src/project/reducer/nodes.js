@@ -38,7 +38,7 @@ export const nodes = (state = {}, action) => {
         R.reduce(
           (p, prop) => R.assoc(
             prop.key,
-            parseVal(prop.defaultValue, prop.type),
+            parseVal(prop.value, prop.type),
             p
           ),
           {}
