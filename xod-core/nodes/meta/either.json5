@@ -2,14 +2,14 @@
   inputs: [{
     key: 'inp',
     type: 'bool',
-    mode: 'pin',
+    modes: 'pin',
     pinLabel: 'IN',
     description: 'Selector value'
   }, {
     key: 'trueValue',
     type: 'number',
-    mode: 'both',
-    currentMode: 'pin',
+    modes: 'both',
+    mode: 'pin',
     label: 'Value if true',
     pinLabel: 'T',
     value: 1,
@@ -17,8 +17,8 @@
   }, {
     key: 'falseValue',
     type: 'number',
-    mode: 'both',
-    currentMode: 'pin',
+    modes: 'both',
+    mode: 'pin',
     label: 'Value if false',
     pinLabel: 'F',
     value: 0,

@@ -3,30 +3,30 @@
   inputs: [{
     key: 'pin',
     type: 'string',
-    mode: 'property',
+    modes: 'property',
     label: 'Pin',
     value: 'A10'
   }, {
     key: 'minPulse',
     type: 'number',
-    mode: 'both',
-    currentMode: 'property',
+    modes: 'both',
+    mode: 'property',
     label: 'Min Pulse (μs)',
     pinLabel: 'MIN',
     value: 700
   }, {
     key: 'maxPulse',
     type: 'number',
-    mode: 'both',
-    currentMode: 'property',
+    modes: 'both',
+    mode: 'property',
     label: 'Max Pulse (μs)',
     pinLabel: 'MAX',
     value: 2300
   }, {
     key: 'value',
     type: 'number',
-    mode: 'both',
-    currentMode: 'pin',
+    modes: 'both',
+    mode: 'pin',
     label: 'Value',
     pinLabel: 'VAL',
     value: 1,

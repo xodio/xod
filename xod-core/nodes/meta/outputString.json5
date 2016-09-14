@@ -7,7 +7,7 @@
   }, {
     key: 'label',
     type: 'string',
-    mode: 'property',
+    modes: 'property',
     widget: 'io_label',
     label: 'Pin label',
     value: 'OutS'

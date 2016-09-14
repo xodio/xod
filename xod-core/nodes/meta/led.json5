@@ -3,8 +3,8 @@
   inputs: [{
     key: 'brightness',
     type: 'number',
-    mode: 'both',
-    currentMode: 'pin',
+    modes: 'both',
+    mode: 'pin',
     label: 'Brightness',
     value: 0,
     pinLabel: '',

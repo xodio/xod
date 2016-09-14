@@ -4,14 +4,14 @@
   inputs: [{
     key: 'value',
     type: 'string',
-    mode: 'property',
+    modes: 'property',
     label: 'Value',
     value: ''
   }, {
     key: 'pulse',
     type: 'enum',
-    mode: 'both',
-    currentMode: 'property',
+    modes: 'both',
+    mode: 'property',
     label: 'Pulse',
     pinLabel: 'PLS',
     values: ['on start', 'never'],

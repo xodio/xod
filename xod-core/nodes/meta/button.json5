@@ -3,7 +3,7 @@
   inputs: [{
     key: 'pin',
     type: 'string',
-    mode: 'property',
+    modes: 'property',
     label: 'Pin',
     value: 'BTN1'
   }],

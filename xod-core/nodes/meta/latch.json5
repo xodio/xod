@@ -2,19 +2,19 @@
   inputs: [{
     key: 'toggle',
     type: 'pulse',
-    mode: 'pin',
+    modes: 'pin',
     pinLabel: 'TGL',
     description: 'Flips current state to opposite'
   }, {
     key: 'set',
     type: 'pulse',
-    mode: 'pin',
+    modes: 'pin',
     pinLabel: 'SET',
     description: 'Sets current state to `true`'
   }, {
     key: 'reset',
     type: 'pulse',
-    mode: 'pin',
+    modes: 'pin',
     pinLabel: 'RST',
     description: 'Sets current state to `false`'
   }],
