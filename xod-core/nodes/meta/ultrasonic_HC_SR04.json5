@@ -1,0 +1,37 @@
+{
+  label: "HC-SR04",
+  inputs: [{
+    key: 'sample',
+    type: 'pulse',
+    description: 'Sample current value',
+  }],
+  outputs: [{
+    key: 'value',
+    type: 'number',
+    description: 'Sampled distance (mm)',
+  },
+  {
+    key: 'error',
+    type: 'string',
+    description: 'Operation error',
+  }],
+  properties: [{
+    key: 'pinTrig',
+    label: 'Pin',
+    type: 'string',
+    defaultValue: 'C9',
+  },
+  {
+    key: 'pinEcho',
+    label: 'Pin',
+    type: 'string',
+    defaultValue: 'A8',
+  },
+  {
+    key: 'units',
+    label: 'Units',
+    type: 'string',
+    defaultValue: 'mm',
+  }],
+  pure: false
+}

@@ -12,6 +12,7 @@ const nodeMetas = {
   'core/latch': require('../../../xod-core/nodes/meta/latch.json5'),
   'core/clock': require('../../../xod-core/nodes/meta/clock.json5'),
   'core/led': require('../../../xod-core/nodes/meta/led.json5'),
+  'core/ultrasonic_HC_SR04': require('../../../xod-core/nodes/meta/ultrasonic_HC_SR04.json5'),
   'core/map': require('../../../xod-core/nodes/meta/map.json5'),
   'core/not': require('../../../xod-core/nodes/meta/not.json5'),
   'core/and': require('../../../xod-core/nodes/meta/and.json5'),
