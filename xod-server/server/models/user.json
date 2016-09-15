@@ -1,8 +1,14 @@
 {
   "name": "user",
   "base": "User",
-  "idInjection": true,
   "strict": false,
+  "idInjection": true,
+  "hidden": [
+    "email"
+  ],
+  "protected": [
+    "email"
+  ],
   "properties": {
     "username": {
       "type": "string",
@@ -31,6 +37,13 @@
       "principalType": "ROLE",
       "principalId": "$authenticated",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "signIn"
     }
   ],
   "methods": {}

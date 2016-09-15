@@ -66,6 +66,13 @@ class Toolbar extends React.Component {
         </button>
 
         <button
+          className="show-code-button"
+          onClick={this.props.onShowCode}
+        >
+          SHOW CODE
+        </button>
+
+        <button
           className="save-button"
           onClick={this.onSave}
         >
@@ -96,6 +103,7 @@ Toolbar.propTypes = {
   selectedNodeType: React.PropTypes.number,
   projectJSON: React.PropTypes.string,
   onUpload: React.PropTypes.func,
+  onShowCode: React.PropTypes.func,
   onLoad: React.PropTypes.func,
   onSave: React.PropTypes.func,
   onSelectNodeType: React.PropTypes.func,

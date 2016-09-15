@@ -176,6 +176,9 @@ export const getMeta = R.pipe(
   R.prop('meta')
 );
 
+export const getName = R.prop('name');
+export const getId = R.prop('id');
+
 /*
   Counter selectors
 */
@@ -439,10 +442,14 @@ export const getTreeView = (state, patchId) => {
   const curPatch = getPatchById(patchId, state);
   const curPatchPath = getFoldersPath(folders, curPatch.folderId);
   const projectChildren = makeTree(folders, patches, null, curPatchPath);
-
+  const projectName = R.pipe(
+    getMeta,
+    getName
+  )(state);
 
   return {
-    module: 'Project',
+    id: 0,
+    module: projectName,
     collapsed: false,
     children: projectChildren,
   };
@@ -653,7 +660,10 @@ export const getNodeLabel = (state, node) => {
     }
   }
 
-  nodeLabel = R.pathOr(nodeLabel, ['properties', 'label'], node);
+  let nodeCustomLabel = R.path(['properties', 'label'], node);
+  if (nodeCustomLabel === '') { nodeCustomLabel = null; }
+
+  nodeLabel = (nodeCustomLabel) ? nodeCustomLabel : nodeLabel;
 
   return String(nodeLabel);
 };
@@ -919,7 +929,7 @@ export const prepareToUpdateNodeProperty = (projectState, nodeId, propKey, propV
   const patchId = getPatchByNodeId(projectState, nodeId).id;
   const node = dereferencedNodes(projectState, patchId)[nodeId];
   const nodeType = dereferencedNodeTypes(projectState)[node.typeId];
-  const propType = nodeType.properties[propKey].type;
+  const propType = (propKey === 'label') ? 'label' : nodeType.properties[propKey].type;
 
   return {
     payload: {

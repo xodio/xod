@@ -1,6 +1,7 @@
 
 import R from 'ramda';
 import transform from './transformer';
+import defaultRuntime from './runtime';
 
 const joinLines = R.join('\n');
 const joinLineBlocks = R.join('\n\n');
@@ -75,8 +76,9 @@ function transpileProject(topology) {
   ]);
 }
 
-export default function transpile({ project, runtime }) {
+export default function transpile({ project, customRuntime }) {
   const proj = transform(project, ['espruino', 'js']);
+  const runtime = customRuntime || defaultRuntime;
 
   const launcher = joinLines([
     'function onInit() {',

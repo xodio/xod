@@ -7,7 +7,9 @@
     "lint": "eslint --ext .js ./server || true",
     "start": "node .",
     "posttest": "npm run lint && nsp check",
-    "dev": "npm-watch"
+    "dev": "npm-watch",
+    "reset": "node ./scripts/resetDb.js",
+    "addUser": "node ./scripts/addUser.js"
   },
   "keywords": [
     "xod",

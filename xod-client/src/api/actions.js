@@ -1,17 +1,20 @@
+import R from 'ramda';
 import Cookies from 'js-cookie';
 
 import Routes from './routes';
 import { call } from './utils';
+import helpers from './helpers';
+import * as ProjectSelectors from 'xod-client/project/selectors';
 
-const profileId = () => Cookies.get('user_id');
+const getUserId = () => Cookies.get('user_id');
 
 const Actions = {
-  profile: {},
+  user: {},
   project: {},
 };
 
 
-Actions.profile.login = (username, password) =>
+Actions.user.login = (username, password) =>
   call(
     Routes.user.login,
     {
@@ -22,9 +25,9 @@ Actions.profile.login = (username, password) =>
     }
   );
 
-Actions.profile.logout = () => call(Routes.user.logout);
+Actions.user.logout = () => call(Routes.user.logout);
 
-Actions.profile.user = (userId) =>
+Actions.user.user = (userId) =>
   call(
     Routes.user.findById,
     {
@@ -34,9 +37,9 @@ Actions.profile.user = (userId) =>
     }
   );
 
-Actions.profile.me = () => Actions.profile.user(profileId());
+Actions.user.me = () => Actions.user.user(getUserId());
 
-Actions.profile.projects = (userId) =>
+Actions.user.projects = (userId) =>
   call(
     Routes.user.projects,
     {
@@ -56,17 +59,26 @@ Actions.project.load = (projectId) =>
     }
   );
 
-Actions.project.save = (projectData) =>
-  call(
+Actions.project.save = (projectData) => {
+  const projectMeta = ProjectSelectors.getMeta(projectData);
+  const projectServerId = ProjectSelectors.getId(projectMeta);
+  const projectName = R.pipe(
+    ProjectSelectors.getName,
+    helpers.makeURISafeName
+  )(projectMeta);
+
+  return call(
     Routes.project.save,
     {
       body: {
-        name: 'My project',
+        id: projectServerId,
+        name: projectName,
         pojo: JSON.stringify(projectData),
         public: true,
-        profileId: profileId(),
+        ownerId: getUserId(),
       },
     }
   );
+};
 
 export default Actions;
