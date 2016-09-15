@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import classNames from 'classnames';
 import { KEYCODE } from 'xod-client/utils/constants';
 
 class IOLabelWidget extends React.Component {
@@ -50,12 +51,17 @@ class IOLabelWidget extends React.Component {
     const elementId = `widget_${this.props.keyName}`;
     const val = this.state.value;
 
+    const cls = classNames('IOLabelWidget', {
+      'is-disabled': this.props.disabled,
+    });
+
     return (
-      <div className="IOLabelWidget">
+      <div className={cls}>
         <input
           id={elementId}
           type="text"
           value={val}
+          disabled={this.props.disabled}
           onChange={this.onChange}
           onBlur={this.onBlur}
           onKeyDown={this.onKeyDown}
@@ -75,12 +81,14 @@ IOLabelWidget.propTypes = {
   keyName: React.PropTypes.string,
   label: React.PropTypes.string,
   value: React.PropTypes.string,
+  disabled: React.PropTypes.bool,
   onPropUpdate: React.PropTypes.func,
 };
 
 IOLabelWidget.defaultProps = {
   label: 'Unnamed property',
   value: false,
+  disabled: false,
   onPropUpdate: f => f,
 };
 

@@ -15,6 +15,8 @@ const widgetAccordance = {
 
 const labelProp = {
   key: 'label',
+  modes: 'property',
+  mode: 'property',
   label: 'Label',
   type: 'string',
   value: '',
@@ -101,6 +103,8 @@ class Inspector extends React.Component {
 
       properties.forEach((prop) => {
         const factory = React.createFactory(widgetAccordance[ENTITY.NODE][prop.type]);
+        const disabled = (prop.mode === 'pin');
+
         widgets.push(
           factory({
             nodeId: node.id,
@@ -108,6 +112,9 @@ class Inspector extends React.Component {
             keyName: `${node.id}_${prop.key}`,
             label: prop.label,
             value: prop.value,
+            modes: prop.modes,
+            mode: prop.mode,
+            disabled,
             onPropUpdate: (newValue) => {
               this.props.onPropUpdate(node.id, prop.key, newValue);
             },

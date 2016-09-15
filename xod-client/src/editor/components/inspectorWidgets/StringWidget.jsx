@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import classNames from 'classnames';
 import { KEYCODE } from 'xod-client/utils/constants';
 
 class StringWidget extends React.Component {
@@ -47,12 +48,17 @@ class StringWidget extends React.Component {
     const elementId = `widget_${this.props.keyName}`;
     const val = this.state.value;
 
+    const cls = classNames('StringWidget', {
+      'is-disabled': this.props.disabled,
+    });
+
     return (
-      <div className="StringWidget">
+      <div className={cls}>
         <input
           id={elementId}
           type="text"
           value={val}
+          disabled={this.props.disabled}
           onChange={this.onChange}
           onBlur={this.onBlur}
           onKeyDown={this.onKeyDown}
@@ -70,6 +76,7 @@ class StringWidget extends React.Component {
 StringWidget.propTypes = {
   nodeId: React.PropTypes.number,
   keyName: React.PropTypes.string,
+  disabled: React.PropTypes.bool,
   label: React.PropTypes.string,
   value: React.PropTypes.string,
   onPropUpdate: React.PropTypes.func,
@@ -78,6 +85,7 @@ StringWidget.propTypes = {
 StringWidget.defaultProps = {
   label: 'Unnamed property',
   value: false,
+  disabled: false,
   onPropUpdate: f => f,
 };
 

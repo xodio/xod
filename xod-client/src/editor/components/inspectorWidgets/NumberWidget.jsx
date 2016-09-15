@@ -1,6 +1,8 @@
 import R from 'ramda';
 import React from 'react';
+import classNames from 'classnames';
 import { KEYCODE } from 'xod-client/utils/constants';
+import Switch from '../InspectorModeSwitch';
 
 class NumberWidget extends React.Component {
   constructor(props) {
@@ -71,13 +73,24 @@ class NumberWidget extends React.Component {
     const elementId = `widget_${this.props.keyName}`;
     const val = this.state.value;
 
+    const cls = classNames('NumberWidget', {
+      'is-disabled': this.props.disabled,
+    });
+
+    const onSwitch = (val) => { console.log('!!!', val); };
+    const SwitchComp = (this.props.modes === 'both') ?
+      <Switch mode={this.props.mode} onSwitch={onSwitch} /> :
+      null;
+
     return (
-      <div className="NumberWidget">
+      <div className={cls}>
+        {SwitchComp}
         <input
           id={elementId}
           type="text"
           step="any"
           value={val}
+          disabled={this.props.disabled}
           onChange={this.onChange}
           onBlur={this.onBlur}
           onKeyDown={this.onKeyDown}
@@ -95,14 +108,18 @@ class NumberWidget extends React.Component {
 NumberWidget.propTypes = {
   nodeId: React.PropTypes.number,
   keyName: React.PropTypes.string,
+  modes: React.PropTypes.string,
+  mode: React.PropTypes.string,
   label: React.PropTypes.string,
   value: React.PropTypes.number,
+  disabled: React.PropTypes.bool,
   onPropUpdate: React.PropTypes.func,
 };
 
 NumberWidget.defaultProps = {
   label: 'Unnamed property',
   value: false,
+  disabled: false,
   onPropUpdate: f => f,
 };
 

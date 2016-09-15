@@ -35,6 +35,7 @@
     "json5": "<0.5.0",
     "ramda": "^0.21.0",
     "rc-progress": "^1.0.4",
+    "rc-switch": "^1.4.2",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-event-listener": "^0.2.1",
