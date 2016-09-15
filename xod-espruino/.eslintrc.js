@@ -35,5 +35,6 @@ module.exports = {
     setInterval: true,
     PULSE: true,
     identity: true,
+    require: true,
   },
 };

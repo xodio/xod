@@ -8,5 +8,5 @@ module.exports.evaluate = function(e) {
     return { greater: PULSE };
   } else {
     return { equal: PULSE };
-  };
+  }
 };

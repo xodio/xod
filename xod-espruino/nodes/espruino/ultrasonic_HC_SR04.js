@@ -6,7 +6,7 @@ module.exports.setup = function(e) {
   var pinEcho = new Pin(e.props.pinEcho);
   e.context.device = sonic.connect({
     trigPin: pinTrig,
-    echoPin: pinEcho,
+    echoPin: pinEcho
   });
   e.context.units = e.props.units;
   e.context.isBusy = false;
