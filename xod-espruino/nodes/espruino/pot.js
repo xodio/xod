@@ -4,5 +4,5 @@ module.exports.setup = function(e) {
 };
 
 module.exports.evaluate = function(e) {
-   return { value: analogRead(e.context.pin) };
+  return { value: analogRead(e.context.pin) };
 };

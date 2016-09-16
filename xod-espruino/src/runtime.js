@@ -92,7 +92,7 @@ Node.prototype.setup = function() {
   * Evaluates the `Node` taking input signals and producting output signals.
   */
 Node.prototype.evaluate = function() {
-  var fire, inputs, result;
+  var fire, inputs, result, self;
 
   if (!this._dirty) {
     return;
@@ -107,6 +107,14 @@ Node.prototype.evaluate = function() {
     context: this._context,
     props: this._props
   }) || {};
+
+  // remove "outdated" pulses
+  self = this;
+  Object.keys(this._cachedInputs).forEach(function(key) {
+    if (self._cachedInputs[key] === PULSE) {
+      delete self._cachedInputs[key];
+    }
+  });
 
   this._sendOutputs(result);
   this._dirty = false;
