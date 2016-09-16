@@ -76,11 +76,12 @@ export const updateMeta = (data) => ({
   payload: data,
 });
 
-export const updateNodeProperty = (nodeId, propKey, propValue) => (dispatch, getState) => {
+export const updateNodeProperty = (nodeId, propKind, propKey, propValue) => (dispatch, getState) => {
   const projectState = Selectors.getProject(getState());
   const preparedData = Selectors.prepareToUpdateNodeProperty(
     projectState,
     nodeId,
+    propKind,
     propKey,
     propValue
   );

@@ -902,15 +902,17 @@ export const prepareToMoveNode = (projectState, id, position) => {
 export const prepareToDragNode = (projectState, id, position) =>
   R.assocPath(['meta', 'skipHistory'], true, prepareToMoveNode(projectState, id, position));
 
-export const prepareToUpdateNodeProperty = (projectState, nodeId, propKey, propValue) => {
+export const prepareToUpdateNodeProperty = (projectState, nodeId, propKind, propKey, propValue) => {
   const patchId = getPatchByNodeId(projectState, nodeId).id;
   const node = dereferencedNodes(projectState, patchId)[nodeId];
   const nodeType = dereferencedNodeTypes(projectState)[node.typeId];
-  const propType = (propKey === 'label') ? 'label' : nodeType.properties[propKey].type;
+  const kind = (propKind === 'pin') ? 'pins' : 'properties';
+  const propType = (propKind === 'pin') ? nodeType.pins[propKey].type : undefined;
 
   return {
     payload: {
       id: nodeId,
+      kind: kind,
       key: propKey,
       value: propValue,
       type: propType,

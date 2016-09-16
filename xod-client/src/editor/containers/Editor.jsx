@@ -32,8 +32,9 @@ class Editor extends React.Component {
     this.patchSize = this.props.size;
   }
 
-  onPropUpdate(nodeId, propKey, propValue) {
-    this.props.actions.updateNodeProperty(nodeId, propKey, propValue);
+  onPropUpdate(nodeId, propKind, propKey, propValue) {
+    console.log('UPDATE!', nodeId, propKind, propKey, propValue);
+    this.props.actions.updateNodeProperty(nodeId, propKind, propKey, propValue);
   }
 
   setEditorMode(mode) {

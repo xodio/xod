@@ -14,10 +14,18 @@ const widgetAccordance = {
 };
 
 const labelProp = {
-  key: 'label',
-  modes: 'property',
+  kind: 'property',
   mode: 'property',
+  key: 'label',
   label: 'Label',
+  type: 'string',
+  value: '',
+};
+const pinProp = {
+  kind: 'property',
+  mode: 'property',
+  key: 'pin',
+  label: 'Pin',
   type: 'string',
   value: '',
 };
@@ -33,26 +41,38 @@ class Inspector extends React.Component {
     this.createWidgets(nextProps);
   }
 
-  getProperties(nodeType, node) {
-    let props = [labelProp];
+  getProperties(nodeType) {
+    const props = [labelProp];
 
-    if (nodeType.hasOwnProperty('properties')) {
-      props = R.pipe(
-        R.values,
-        R.append(labelProp),
-        R.map((prop) => {
-          if (
-            node.hasOwnProperty('properties') &&
-            node.properties.hasOwnProperty(prop.key)
-          ) {
-            return R.assoc('value', node.properties[prop.key], prop);
-          }
-          return prop;
-        })
-      )(nodeType.properties);
+    if (nodeType.category === 'hardware') {
+      props.push(pinProp);
     }
 
     return props;
+  }
+
+  getInspectableProps(nodeType, node) {
+    const props = this.getProperties(nodeType, node);
+    let pins = [];
+
+    if (nodeType.hasOwnProperty('pins')) {
+      pins = R.pipe(
+        R.filter(R.propEq('mode', 'property')),
+        R.values,
+        R.map((pin) => {
+          if (
+            node.hasOwnProperty('pins') &&
+            node.pins.hasOwnProperty(pin.key)
+          ) {
+            return R.assoc('value', node.pins[pin.key].value, pin);
+          }
+          return pin;
+        }),
+        R.map(R.assoc('kind', 'pin'))
+      )(nodeType.pins);
+    }
+
+    return R.concat(props, pins);
   }
 
   createWidgets(props) {
@@ -90,7 +110,7 @@ class Inspector extends React.Component {
   createNodeWidgets(props, selection) {
     const node = props.nodes[selection.id];
     const nodeType = props.nodeTypes[node.typeId];
-    const properties = this.getProperties(nodeType, node);
+    const properties = this.getInspectableProps(nodeType, node);
 
     if (properties.length === 0) {
       this.widgets = [
@@ -103,7 +123,7 @@ class Inspector extends React.Component {
 
       properties.forEach((prop) => {
         const factory = React.createFactory(widgetAccordance[ENTITY.NODE][prop.type]);
-        const disabled = (prop.mode === 'pin');
+        const disabled = (prop.mode !== 'property');
 
         widgets.push(
           factory({
@@ -112,11 +132,10 @@ class Inspector extends React.Component {
             keyName: `${node.id}_${prop.key}`,
             label: prop.label,
             value: prop.value,
-            modes: prop.modes,
             mode: prop.mode,
             disabled,
             onPropUpdate: (newValue) => {
-              this.props.onPropUpdate(node.id, prop.key, newValue);
+              this.props.onPropUpdate(node.id, prop.kind, prop.key, newValue);
             },
           })
         );

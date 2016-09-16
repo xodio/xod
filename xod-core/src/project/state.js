@@ -15,12 +15,6 @@ const mapNodeTypePins = meta => R.merge(
   R.mapDirectedNodeTypePins(PIN_DIRECTION.OUTPUT, 'outputs')(meta)
 );
 
-const mapNodeTypeProperties = R.compose(
-  R.indexBy(R.prop('key')),
-  R.reject(R.propEq('modes', 'pin')),
-  R.propOr([], 'inputs')
-);
-
 const removeNils = R.reject(R.isNil);
 
 // :: (String -> String -> String) -> Object -> Object
@@ -32,7 +26,6 @@ export const getNodeTypes = R.uncurryN(2, getImpl => R.compose(
     {
       key,
       pins: mapNodeTypePins(meta),
-      properties: mapNodeTypeProperties(meta),
       impl: removeNils({
         js: getImpl('js', key, '.js'),
         espruino: getImpl('espruino', key, '.js'),

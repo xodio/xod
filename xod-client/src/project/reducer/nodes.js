@@ -23,6 +23,25 @@ const parseVal = (val, type) => {
   return val;
 };
 
+const getPropertyPath = (payload) => {
+  const path = [
+    payload.id,
+    payload.kind,
+    payload.key,
+  ];
+
+  if (payload.kind === 'pins') {
+    path.push('value');
+  }
+
+  return path;
+};
+
+const getNodePins = R.pipe(
+  R.path(['payload', 'nodeType', 'pins']),
+  R.mapObjIndexed(R.pick(['mode', 'value']))
+);
+
 export const nodes = (state = {}, action) => {
   let movedNode = null;
   let newNode = null;
@@ -31,25 +50,12 @@ export const nodes = (state = {}, action) => {
   switch (action.type) {
 
     case NODE_ADD: {
-      const nodeType = action.payload.nodeType;
-      const defaultProps = R.pipe(
-        R.prop('properties'),
-        R.values,
-        R.reduce(
-          (p, prop) => R.assoc(
-            prop.key,
-            parseVal(prop.value, prop.type),
-            p
-          ),
-          {}
-        )
-      )(nodeType);
-
       newNodeId = action.payload.newNodeId;
       newNode = R.set(R.lensProp('id'), newNodeId, {
         typeId: action.payload.typeId,
         position: action.payload.position,
-        properties: defaultProps,
+        pins: getNodePins(action),
+        properties: {},
       });
 
       return R.set(R.lensProp(newNodeId), newNode, state);
@@ -63,11 +69,7 @@ export const nodes = (state = {}, action) => {
 
     case NODE_UPDATE_PROPERTY:
       return R.set(
-        R.lensPath([
-          action.payload.id,
-          'properties',
-          action.payload.key,
-        ]),
+        R.lensPath(getPropertyPath(action.payload)),
         parseVal(action.payload.value, action.payload.type)
       )(state);
 
