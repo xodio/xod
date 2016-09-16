@@ -1,13 +1,6 @@
 {
   category: 'hardware',
   inputs: [{
-    key: 'pin',
-    type: 'string',
-    mode: 'property',
-    pinLabel: 'PIN',
-    label: 'Pin',
-    value: 'A10'
-  }, {
     key: 'minPulse',
     type: 'number',
     mode: 'property',

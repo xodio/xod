@@ -1,13 +1,5 @@
 {
   category: 'hardware',
-  inputs: [{
-    key: 'pin',
-    type: 'string',
-    mode: 'property',
-    pinLabel: 'PIN',
-    label: 'Pin',
-    value: 'BTN1'
-  }],
   outputs: [{
     key: 'state',
     type: 'bool',

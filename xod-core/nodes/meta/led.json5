@@ -1,12 +1,7 @@
 {
   label: 'LED',
+  category: 'hardware',
   inputs: [{
-    key: 'pin',
-    type: 'string',
-    mode: 'property',
-    label: 'Pin',
-    value: 'LED1'
-  }, {
     key: 'brightness',
     type: 'number',
     mode: 'pin',
