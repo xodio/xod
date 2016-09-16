@@ -2,25 +2,23 @@
   inputs: [{
     key: 'inp',
     type: 'bool',
-    modes: 'pin',
     pinLabel: 'IN',
+    label: 'Value',
     description: 'Selector value'
   }, {
     key: 'trueValue',
     type: 'number',
-    modes: 'both',
-    mode: 'pin',
     label: 'Value if true',
     pinLabel: 'T',
+    label: 'True output',
     value: 1,
     description: 'Output if selector is `true`'
   }, {
     key: 'falseValue',
     type: 'number',
-    modes: 'both',
-    mode: 'pin',
     label: 'Value if false',
     pinLabel: 'F',
+    label: 'False output',
     value: 0,
     description: 'Output if selector is `false`'
   }],

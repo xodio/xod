@@ -4,12 +4,5 @@
   inputs: [{
     key: 'OUT',
     type: 'bool',
-  }, {
-    key: 'label',
-    type: 'string',
-    modes: 'property',
-    widget: 'io_label',
-    label: 'Pin label',
-    value: 'OutB'
   }]
 }

@@ -3,7 +3,7 @@
   inputs: [{
     key: 'in',
     type: 'bool',
-    modes: 'pin',
+    label: 'Input',
     description: 'Value to be inverted'
   }],
   outputs: [{

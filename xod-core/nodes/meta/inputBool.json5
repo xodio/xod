@@ -1,14 +1,6 @@
 {
   label: '<InputBool>',
   category: 'io',
-  inputs: [{
-    key: 'label',
-    type: 'string',
-    modes: 'property',
-    widget: 'io_label',
-    label: 'Pin label',
-    value: 'InB'
-  }],
   outputs: [{
     key: 'PIN',
     type: 'bool',

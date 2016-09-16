@@ -3,32 +3,30 @@
   inputs: [{
     key: 'pin',
     type: 'string',
-    modes: 'property',
+    mode: 'property',
+    pinLabel: 'PIN',
     label: 'Pin',
     value: 'A10'
   }, {
     key: 'minPulse',
     type: 'number',
-    modes: 'both',
     mode: 'property',
-    label: 'Min Pulse (μs)',
     pinLabel: 'MIN',
+    label: 'Min Pulse (μs)',
     value: 700
   }, {
     key: 'maxPulse',
     type: 'number',
-    modes: 'both',
     mode: 'property',
-    label: 'Max Pulse (μs)',
     pinLabel: 'MAX',
+    label: 'Max Pulse (μs)',
     value: 2300
   }, {
     key: 'value',
     type: 'number',
-    modes: 'both',
     mode: 'pin',
-    label: 'Value',
     pinLabel: 'VAL',
+    label: 'Value',
     value: 1,
     description: 'Rotation angle/value'
   }]

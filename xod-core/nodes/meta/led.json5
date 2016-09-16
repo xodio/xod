@@ -1,19 +1,17 @@
 {
   label: 'LED',
   inputs: [{
+    key: 'pin',
+    type: 'string',
+    mode: 'property',
+    label: 'Pin',
+    value: 'LED1'
+  }, {
     key: 'brightness',
     type: 'number',
-    modes: 'both',
     mode: 'pin',
     label: 'Brightness',
     value: 0,
-    pinLabel: '',
     description: 'Shine brightness'
-  }],
-  properties: [{
-    key: 'pin',
-    label: 'Pin',
-    type: 'string',
-    defaultValue: 'LED1',
   }]
 }

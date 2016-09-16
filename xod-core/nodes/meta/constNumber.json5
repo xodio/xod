@@ -4,17 +4,16 @@
   inputs: [{
     key: 'value',
     type: 'number',
-    modes: 'property',
+    mode: 'property',
+    pinLabel: 'VAL',
     label: 'Value',
     value: 0
   }, {
     key: 'pulse',
     type: 'pulse',
-    modes: 'both',
     mode: 'property',
-    label: 'Pulse',
     pinLabel: 'PLS',
-    values: ['on start', 'never'],
+    label: 'Pulse',
     value: 0
   }],
   outputs: [{

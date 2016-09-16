@@ -3,13 +3,15 @@
   inputs: [{
     key: 'pin',
     type: 'string',
-    modes: 'property',
+    mode: 'property',
+    pinLabel: 'PIN',
     label: 'Pin',
     value: 'A0'
   }, {
     key: 'sample',
     type: 'pulse',
-    modes: 'pin',
+    pinLabel: 'PLS',
+    label: 'Get value pulse',
     description: 'Sample current value',
   }],
   outputs: [{
