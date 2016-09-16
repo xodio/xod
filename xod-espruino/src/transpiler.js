@@ -43,6 +43,8 @@ function transpileNodes(nodes) {
     if (val === Boolean || val === Number || val === String) {
       // leave type as is
       return `__PLACEHOLDER__@@${val.name}@@__`;
+    } else if (val == '<<identity>>') {
+      return '__PLACEHOLDER__@@identity@@__';
     }
 
     return val;

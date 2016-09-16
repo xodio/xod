@@ -1,0 +1,19 @@
+{
+  label: 'triggerableNumber',
+  inputs: [{
+    key: 'trigOn',
+    type: 'pulse',
+    description: 'Pulse to trig on'
+  }],
+  outputs: [{
+    key: 'out',
+    type: 'number',
+    description: 'Output value',
+  }],
+  properties: [{
+    key: 'value',
+    label: 'Value',
+    type: 'number',
+    defaultValue: 0,
+  }]
+}

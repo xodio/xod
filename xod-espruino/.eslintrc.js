@@ -32,5 +32,9 @@ module.exports = {
     setWatch: true,
     setTimeout: true,
     module: true,
+    setInterval: true,
+    PULSE: true,
+    identity: true,
+    require: true,
   },
 };

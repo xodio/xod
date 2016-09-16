@@ -1,0 +1,28 @@
+{
+  properties: [{
+    key: 'a',
+    label: 'First value',
+    type: 'number',
+  },
+  {
+    key: 'b',
+    label: 'Second value',
+    type: 'number',
+  }
+  ],
+  outputs: [{
+    key: 'equal',
+    type: 'pulse',
+    description: 'Pulses if a = b',
+  },
+  {
+    key: 'less',
+    type: 'pulse',
+    description: 'Pulses if a < b',
+  },
+  {
+    key: 'greater',
+    type: 'pulse',
+    description: 'Pulses if a > b',
+  }],
+}

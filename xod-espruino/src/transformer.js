@@ -51,17 +51,17 @@ export default function transform(project, implPlatforms = []) {
   // :: String -> {a} -- extacts a specific key branch from the merged patch
   const mergedEntities = key => R.propOr({}, key)(mergedPatch);
 
-  const nodes = () => mergedEntities('nodes');
-  const nodeList = R.compose(R.values, nodes);
+  const nodes = mergedEntities('nodes');
+  const nodeList = R.values(nodes);
 
-  const links = () => mergedEntities('links');
-  const linkList = R.compose(R.values, links);
+  const links = mergedEntities('links');
+  const linkList = R.values(links);
 
-  const nodeTypes = () => R.propOr({}, 'nodeTypes', project);
-  const nodeTypeByKey = key => R.propOr({}, key, nodeTypes());
+  const nodeTypes = R.propOr({}, 'nodeTypes', project);
+  const nodeTypeByKey = key => R.propOr({}, key, nodeTypes);
 
-  const usedNodeTypeIds = () => R.pluck('typeId', R.values(nodes()));
-  const usedNodeTypes = () => R.pick(usedNodeTypeIds(), nodeTypes());
+  const usedNodeTypeIds = R.pluck('typeId', R.values(nodes));
+  const usedNodeTypes = R.pick(usedNodeTypeIds, nodeTypes);
 
   // :: Node -> NodeType
   const nodeTypeByNode = R.compose(nodeTypeByKey, R.prop('typeId'));
@@ -70,22 +70,23 @@ export default function transform(project, implPlatforms = []) {
   const nodeTypePins = R.propOr({}, 'pins');
 
   // :: String -> JSType -- converts pin string type name to native JS type object
-  const nativeType = R.pipe(
-    R.when(R.equals(PIN_TYPE.PULSE), R.always(Boolean)),
-    R.when(R.equals(PIN_TYPE.BOOL), R.always(Boolean)),
-    R.when(R.equals(PIN_TYPE.NUMBER), R.always(Number)),
-    R.when(R.equals(PIN_TYPE.STRING), R.always(String))
-  );
+  const nativeType = R.cond([
+    [R.equals(PIN_TYPE.PULSE), R.always('<<identity>>')],
+    [R.equals(PIN_TYPE.BOOL), R.always(Boolean)],
+    [R.equals(PIN_TYPE.NUMBER), R.always(Number)],
+    [R.equals(PIN_TYPE.STRING), R.always(String)],
+    [R.T, () => { throw Error('Unknown type!'); }],
+  ]);
 
   // :: {Key: NodeType.Pin} -> {Key: NodeType.Pin}
-  const filterByDirection = dir => R.filter(R.propEq('direction', dir));
+  const filterByDirection = R.compose(R.filter, R.propEq('direction'));
 
   // :: NodeType -> {Key: NodeType.Pin}
   const inputs = R.compose(filterByDirection(PIN_DIRECTION.INPUT), nodeTypePins);
 
-  // :: NodeType -> {Key: JSType}
+  // :: NodeType -> {Key: (value -> JSType)}
   const inputTypes = R.compose(
-    R.map(pin => nativeType(pin.type)),
+    R.map(R.compose(nativeType, R.prop('type'))),
     inputs
   );
 
@@ -102,25 +103,28 @@ export default function transform(project, implPlatforms = []) {
       R.nth(0),
       R.prop('pins')
     )
-  )(linkList());
+  )(linkList);
 
   // :: Node -> {outKey: [Link]}
-  const nodeOutLinks = node => R.reduce(
-    (outLinks, pin) => {
-      const key = pin.pins[0].pinKey;
-      const newLink = {
-        key: pin.pins[1].pinKey,
-        nodeId: pin.pins[1].nodeId,
-      };
+  const nodeOutLinks = R.compose(
+    R.reduce(
+      (outLinks, link) => {
+        const [fromNode, toNode] = link.pins;
 
-      if (R.has(key, outLinks)) {
-        return R.append(newLink, outLinks[key]);
-      }
-
-      return R.assoc(key, [newLink], outLinks);
-    },
-    {},
-    outgoingLinks(node)
+        return R.mergeWith(
+          R.concat,
+          {
+            [fromNode.pinKey]: [{
+              key: toNode.pinKey,
+              nodeId: toNode.nodeId,
+            }]
+          },
+          outLinks
+        );
+      },
+      {}
+    ),
+    outgoingLinks
   );
 
   // :: Node -> TransformedNode
@@ -133,7 +137,7 @@ export default function transform(project, implPlatforms = []) {
     R.objOf('outLinks', nodeOutLinks(node)),
   ]);
 
-  const transformedNodes = R.map(transformedNode, nodes());
+  const transformedNodes = R.map(transformedNode, nodes);
 
   // :: NodeType -> ImplementationString
   const nodeTypeImpl = R.compose(
@@ -141,7 +145,7 @@ export default function transform(project, implPlatforms = []) {
     R.propOr({}, 'impl')
   );
 
-  const impl = R.map(nodeTypeImpl, usedNodeTypes());
+  const impl = R.map(nodeTypeImpl, usedNodeTypes);
 
   // Link -> [NodeId]
   const linkNodeIds = R.compose(
@@ -149,8 +153,8 @@ export default function transform(project, implPlatforms = []) {
     R.prop('pins')
   );
 
-  const dagVertexes = R.pluck('id', nodeList());
-  const dagEdges = R.map(linkNodeIds, linkList());
+  const dagVertexes = R.pluck('id', nodeList);
+  const dagEdges = R.map(linkNodeIds, linkList);
   const topology = sortGraph(dagVertexes, dagEdges);
 
   return {
