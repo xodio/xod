@@ -2,6 +2,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { PIN_DIRECTION, PIN_VALIDITY } from '../constants';
+import { PROPERTY_MODE } from 'xod-client/project/constants';
 
 
 export default class Pin extends React.Component {
@@ -80,7 +81,7 @@ export default class Pin extends React.Component {
   }
 
   isProperty() {
-    return (this.props.mode === 'property');
+    return (this.props.mode === PROPERTY_MODE.PROP);
   }
 
   render() {

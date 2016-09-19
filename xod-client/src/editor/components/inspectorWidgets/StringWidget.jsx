@@ -1,7 +1,9 @@
 import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
+import composeWidget from './composeWidget';
 import { KEYCODE } from 'xod-client/utils/constants';
+import { PROPERTY_TYPE_PARSE } from 'xod-client/project/constants';
 
 class StringWidget extends React.Component {
   constructor(props) {
@@ -41,7 +43,7 @@ class StringWidget extends React.Component {
   }
 
   parseVal(val) {
-    return String(val);
+    return PROPERTY_TYPE_PARSE.string(val);
   }
 
   render() {
@@ -89,4 +91,4 @@ StringWidget.defaultProps = {
   onPropUpdate: f => f,
 };
 
-export default StringWidget;
+export default composeWidget(StringWidget);

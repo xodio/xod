@@ -1,10 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
+import { PROPERTY_TYPE_PARSE } from 'xod-client/project/constants';
 
 function BoolWidget({ keyName, label, value, disabled, onPropUpdate }) {
   const elementId = `widget_${keyName}`;
   const onChange = (event) => {
-    const newValue = Boolean(event.target.checked);
+    const val = event.target.checked;
+    const newValue = PROPERTY_TYPE_PARSE.bool(val);
     onPropUpdate(newValue);
   };
 
@@ -32,7 +34,6 @@ function BoolWidget({ keyName, label, value, disabled, onPropUpdate }) {
 }
 
 BoolWidget.propTypes = {
-  nodeId: React.PropTypes.number,
   keyName: React.PropTypes.string,
   label: React.PropTypes.string,
   value: React.PropTypes.bool,

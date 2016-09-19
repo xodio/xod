@@ -1,5 +1,6 @@
 import { LINK_ERRORS as LE,
-         NODETYPE_ERRORS as NTE } from 'xod-core/project/constants';
+         NODETYPE_ERRORS as NTE,
+         PROPERTY_ERRORS as PE } from 'xod-core/project/constants';
 
 export const LINK_ERRORS = {
   [LE.SAME_DIRECTION]: 'Can\'t create link between pins of the same direction!',
@@ -25,5 +26,12 @@ export const NODETYPE_ERRORS = {
     'Current IO Node is represents a Pin of Patch Node.',
     'And it is used somewhere.',
     'You should remove a linkage first!',
+  ].join(' '),
+};
+
+export const PROPERTY_ERRORS = {
+  [PE.PIN_HAS_LINK]: [
+    'Can\'t convert a pin into property, because it has a connected links.',
+    'You should remove links first!',
   ].join(' '),
 };

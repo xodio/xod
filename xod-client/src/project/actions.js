@@ -1,7 +1,7 @@
 import * as ActionType from './actionTypes';
 import * as Selectors from './selectors';
 import { addError } from 'xod-client/messages/actions';
-import { NODETYPE_ERRORS } from 'xod-client/messages/constants';
+import { PROPERTY_ERRORS, NODETYPE_ERRORS } from 'xod-client/messages/constants';
 
 export const moveNode = (id, position) => (dispatch, getState) => {
   const projectState = Selectors.getProject(getState());
@@ -76,18 +76,42 @@ export const updateMeta = (data) => ({
   payload: data,
 });
 
-export const updateNodeProperty = (nodeId, propKind, propKey, propValue) => (dispatch, getState) => {
+export const updateNodeProperty =
+  (nodeId, propKind, propKey, propValue) => (dispatch, getState) => {
+    const projectState = Selectors.getProject(getState());
+    const preparedData = Selectors.prepareToUpdateNodeProperty(
+      projectState,
+      nodeId,
+      propKind,
+      propKey,
+      propValue
+    );
+
+    dispatch({
+      type: ActionType.NODE_UPDATE_PROPERTY,
+      payload: preparedData.payload,
+      meta: preparedData.meta,
+    });
+  };
+
+export const changePinMode = (nodeId, pinKey, pinMode) => (dispatch, getState) => {
   const projectState = Selectors.getProject(getState());
-  const preparedData = Selectors.prepareToUpdateNodeProperty(
+  const preparedData = Selectors.prepareToChangePinMode(
     projectState,
     nodeId,
-    propKind,
-    propKey,
-    propValue
+    pinKey,
+    pinMode
   );
 
+  if (preparedData.error) {
+    dispatch(addError({
+      message: PROPERTY_ERRORS[preparedData.error],
+    }));
+    return;
+  }
+
   dispatch({
-    type: ActionType.NODE_UPDATE_PROPERTY,
+    type: ActionType.NODE_CHANGE_PIN_MODE,
     payload: preparedData.payload,
     meta: preparedData.meta,
   });

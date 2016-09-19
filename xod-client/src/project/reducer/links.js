@@ -1,5 +1,9 @@
 import R from 'ramda';
-import { NODE_DELETE, LINK_ADD, LINK_DELETE } from '../actionTypes';
+import {
+  NODE_DELETE,
+  LINK_ADD,
+  LINK_DELETE,
+} from '../actionTypes';
 
 export const copyLink = (link) => R.clone(link);
 
@@ -12,11 +16,12 @@ export const links = (state = {}, action) => {
       };
       return R.set(R.lensProp(newLink.id), newLink, state);
     }
-    case NODE_DELETE: {
+    case NODE_DELETE:
       return R.omit(action.payload.links, state);
-    }
+
     case LINK_DELETE:
       return R.omit([action.payload.id.toString()], state);
+
     default:
       return state;
   }

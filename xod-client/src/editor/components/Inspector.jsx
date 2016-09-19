@@ -1,7 +1,13 @@
 import R from 'ramda';
 import React from 'react';
 import Widgets from './inspectorWidgets';
-import { ENTITY, PROPERTY_TYPE } from 'xod-core/project/constants';
+import {
+  ENTITY,
+  PROPERTY_TYPE,
+  PROPERTY_KIND,
+  PROPERTY_MODE,
+  PIN_DIRECTION,
+} from 'xod-core/project/constants';
 
 const widgetAccordance = {
   [ENTITY.NODE]: {
@@ -14,16 +20,16 @@ const widgetAccordance = {
 };
 
 const labelProp = {
-  kind: 'property',
-  mode: 'property',
+  kind: PROPERTY_KIND.PROP,
+  mode: PROPERTY_MODE.PROP,
   key: 'label',
   label: 'Label',
   type: 'string',
   value: '',
 };
 const pinProp = {
-  kind: 'property',
-  mode: 'property',
+  kind: PROPERTY_KIND.PROP,
+  mode: PROPERTY_MODE.PROP,
   key: 'pin',
   label: 'Pin',
   type: 'string',
@@ -51,28 +57,29 @@ class Inspector extends React.Component {
     return props;
   }
 
-  getInspectableProps(nodeType, node) {
-    const props = this.getProperties(nodeType, node);
-    let pins = [];
-
-    if (nodeType.hasOwnProperty('pins')) {
-      pins = R.pipe(
-        R.filter(R.propEq('mode', 'property')),
-        R.values,
-        R.map((pin) => {
-          if (
-            node.hasOwnProperty('pins') &&
-            node.pins.hasOwnProperty(pin.key)
-          ) {
-            return R.assoc('value', node.pins[pin.key].value, pin);
-          }
-          return pin;
-        }),
-        R.map(R.assoc('kind', 'pin'))
-      )(nodeType.pins);
+  getPins(nodeType, node) {
+    if (!nodeType.hasOwnProperty('pins')) {
+      return [];
     }
 
-    return R.concat(props, pins);
+    return R.pipe(
+      R.values,
+      R.reject(R.propEq('direction', PIN_DIRECTION.OUTPUT)),
+      R.map(pin =>
+        R.merge(
+          pin,
+          R.pick(['mode', 'value'], node.pins[pin.key])
+        )
+      ),
+      R.map(R.assoc('kind', PROPERTY_KIND.PIN))
+    )(nodeType.pins);
+  }
+
+  getInspectableProps(nodeType, node) {
+    return R.concat(
+      this.getProperties(nodeType, node),
+      this.getPins(nodeType, node)
+    );
   }
 
   createWidgets(props) {
@@ -112,6 +119,7 @@ class Inspector extends React.Component {
     const nodeType = props.nodeTypes[node.typeId];
     const properties = this.getInspectableProps(nodeType, node);
 
+
     if (properties.length === 0) {
       this.widgets = [
         new Widgets.HintWidget({
@@ -120,22 +128,26 @@ class Inspector extends React.Component {
       ];
     } else {
       const widgets = [];
-
       properties.forEach((prop) => {
         const factory = React.createFactory(widgetAccordance[ENTITY.NODE][prop.type]);
-        const disabled = (prop.mode !== 'property');
-
+        const mode = prop.mode || PROPERTY_MODE.PIN;
         widgets.push(
           factory({
-            nodeId: node.id,
             key: `${node.id}_${prop.key}`,
             keyName: `${node.id}_${prop.key}`,
+            kind: prop.kind,
             label: prop.label,
             value: prop.value,
-            mode: prop.mode,
-            disabled,
+            mode,
             onPropUpdate: (newValue) => {
               this.props.onPropUpdate(node.id, prop.kind, prop.key, newValue);
+            },
+            onPinModeSwitch: () => {
+              const inversedMode = (mode === PROPERTY_MODE.PIN) ?
+                PROPERTY_MODE.PROP :
+                PROPERTY_MODE.PIN;
+
+              this.props.onPinModeSwitch(node.id, prop.key, inversedMode);
             },
           })
         );
@@ -182,6 +194,7 @@ Inspector.propTypes = {
   nodes: React.PropTypes.object,
   nodeTypes: React.PropTypes.object,
   onPropUpdate: React.PropTypes.func,
+  onPinModeSwitch: React.PropTypes.func,
 };
 
 Inspector.defaultProps = {
@@ -189,6 +202,7 @@ Inspector.defaultProps = {
   nodes: {},
   nodeTypes: {},
   onPropUpdate: f => f,
+  onPinModeSwitch: f => f,
 };
 
 export default Inspector;

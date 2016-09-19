@@ -44,15 +44,32 @@ export const PROPERTY_TYPE = {
   NUMBER: 'number',
   STRING: 'string',
   PULSE: 'pulse',
-  IO_LABEL: 'io_label',
+};
+
+export const PROPERTY_KIND = {
+  PIN: 'pin',
+  PROP: 'property',
+};
+
+export const PROPERTY_KIND_PLURAL = {
+  PIN: 'pins',
+  PROP: 'properties',
+};
+
+export const PROPERTY_MODE = {
+  PIN: 'pin',
+  PROP: 'property',
 };
 
 export const PROPERTY_TYPE_PARSE = {
   [PROPERTY_TYPE.BOOL]: (v) => !!v,
-  [PROPERTY_TYPE.NUMBER]: (v) => parseFloat(v),
+  [PROPERTY_TYPE.NUMBER]: (v, add) => {
+    const lastChar = (add && v[v.length - 1] === '.') ? '.' : null;
+    const newValue = parseFloat(v) + lastChar;
+    return isNaN(newValue) ? '' : newValue;
+  },
   [PROPERTY_TYPE.STRING]: (v) => String(v),
-  [PROPERTY_TYPE.PULSE]: (v) => parseInt(v, 10),
-  [PROPERTY_TYPE.IO_LABEL]: (v) => String(v),
+  [PROPERTY_TYPE.PULSE]: (v) => String(v),
 };
 
 export const PROPERTY_DEFAULT_VALUE = {
@@ -60,7 +77,6 @@ export const PROPERTY_DEFAULT_VALUE = {
   NUMBER: 0,
   STRING: '',
   PULSE: '',
-  IO_LABEL: '',
 };
 
 export const SIZE = {
@@ -97,4 +113,8 @@ export const LINK_ERRORS = {
   SAME_NODE: 'SAME_NODE',
   ONE_LINK_FOR_INPUT_PIN: 'ONE_LINK_FOR_INPUT_PIN',
   UNKNOWN_ERROR: 'UNKNOWN_ERROR',
+};
+
+export const PROPERTY_ERRORS = {
+  PIN_HAS_LINK: 'PIN_HAS_LINK',
 };

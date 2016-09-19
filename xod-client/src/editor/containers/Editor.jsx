@@ -24,6 +24,7 @@ class Editor extends React.Component {
     super(props);
 
     this.onPropUpdate = this.onPropUpdate.bind(this);
+    this.onPinModeSwitch = this.onPinModeSwitch.bind(this);
     this.setModeCreating = this.setModeCreating.bind(this);
     this.setModeDefault = this.setModeDefault.bind(this);
     this.setSelectedNodeType = this.setSelectedNodeType.bind(this);
@@ -33,8 +34,11 @@ class Editor extends React.Component {
   }
 
   onPropUpdate(nodeId, propKind, propKey, propValue) {
-    console.log('UPDATE!', nodeId, propKind, propKey, propValue);
     this.props.actions.updateNodeProperty(nodeId, propKind, propKey, propValue);
+  }
+
+  onPinModeSwitch(nodeId, pinKey, mode) {
+    this.props.actions.changePinMode(nodeId, pinKey, mode);
   }
 
   setEditorMode(mode) {
@@ -74,6 +78,7 @@ class Editor extends React.Component {
             nodes={this.props.nodes}
             nodeTypes={this.props.nodeTypes}
             onPropUpdate={this.onPropUpdate}
+            onPinModeSwitch={this.onPinModeSwitch}
           />
         </Sidebar>
         <Workarea>
@@ -119,6 +124,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     updateNodeProperty: ProjectActions.updateNodeProperty,
+    changePinMode: ProjectActions.changePinMode,
     undo: ProjectActions.undoPatch,
     redo: ProjectActions.redoPatch,
 

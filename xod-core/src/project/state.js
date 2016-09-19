@@ -1,12 +1,12 @@
 import R from 'ramda';
 
-import { PIN_DIRECTION } from './constants';
+import { PIN_DIRECTION, PROPERTY_MODE } from './constants';
 
 
 R.mapDirectedNodeTypePins = (direction, collectionKey) => R.compose(
   R.indexBy(R.prop('key')),
   R.addIndex(R.map)((io, index) => R.merge({ index, direction }, io)),
-  R.reject(R.propEq('modes', 'property')),
+  R.reject(R.propEq('modes', PROPERTY_MODE.PROP)),
   R.propOr([], collectionKey)
 );
 

@@ -1,8 +1,10 @@
 import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
+import composeWidget from './composeWidget';
 import { KEYCODE } from 'xod-client/utils/constants';
-import Switch from '../InspectorModeSwitch';
+import { PROPERTY_TYPE_PARSE } from 'xod-client/project/constants';
+
 
 class NumberWidget extends React.Component {
   constructor(props) {
@@ -64,9 +66,7 @@ class NumberWidget extends React.Component {
   }
 
   parseVal(val, isForInput = false) {
-    const lastChar = (isForInput && val[val.length - 1] === '.') ? '.' : null;
-    const newValue = parseFloat(val) + lastChar;
-    return isNaN(newValue) ? '' : newValue;
+    return PROPERTY_TYPE_PARSE.number(val, isForInput);
   }
 
   render() {
@@ -77,14 +77,8 @@ class NumberWidget extends React.Component {
       'is-disabled': this.props.disabled,
     });
 
-    const onSwitch = (val) => { console.log('!!!', val); };
-    const SwitchComp = (this.props.modes === 'both') ?
-      <Switch mode={this.props.mode} onSwitch={onSwitch} /> :
-      null;
-
     return (
       <div className={cls}>
-        {SwitchComp}
         <input
           id={elementId}
           type="text"
@@ -118,9 +112,8 @@ NumberWidget.propTypes = {
 
 NumberWidget.defaultProps = {
   label: 'Unnamed property',
-  value: false,
   disabled: false,
   onPropUpdate: f => f,
 };
 
-export default NumberWidget;
+export default composeWidget(NumberWidget);

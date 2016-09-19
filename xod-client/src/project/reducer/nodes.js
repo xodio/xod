@@ -1,5 +1,15 @@
-import { NODE_MOVE, NODE_ADD, NODE_DELETE, NODE_UPDATE_PROPERTY } from '../actionTypes';
-import { PROPERTY_TYPE_PARSE } from '../constants';
+import {
+  NODE_MOVE,
+  NODE_ADD,
+  NODE_DELETE,
+  NODE_UPDATE_PROPERTY,
+  NODE_CHANGE_PIN_MODE,
+} from '../actionTypes';
+import {
+  PROPERTY_MODE,
+  PROPERTY_KIND_PLURAL,
+  PROPERTY_TYPE_PARSE,
+} from '../constants';
 import R from 'ramda';
 
 export const copyNode = (node) => R.clone(node);
@@ -23,23 +33,31 @@ const parseVal = (val, type) => {
   return val;
 };
 
-const getPropertyPath = (payload) => {
+const getPropertyPath = (payload, add) => {
   const path = [
     payload.id,
     payload.kind,
     payload.key,
   ];
 
-  if (payload.kind === 'pins') {
-    path.push('value');
+  if (add && payload.kind === PROPERTY_KIND_PLURAL.PIN) {
+    path.push(add);
   }
 
   return path;
 };
 
 const getNodePins = R.pipe(
-  R.path(['payload', 'nodeType', 'pins']),
-  R.mapObjIndexed(R.pick(['mode', 'value']))
+  R.path(['payload', 'nodeType', PROPERTY_KIND_PLURAL.PIN]),
+  R.mapObjIndexed(
+    R.pipe(
+      R.pick(['mode', 'value']),
+      R.merge({
+        mode: PROPERTY_MODE.PIN,
+        value: null,
+      })
+    )
+  )
 );
 
 export const nodes = (state = {}, action) => {
@@ -69,8 +87,19 @@ export const nodes = (state = {}, action) => {
 
     case NODE_UPDATE_PROPERTY:
       return R.set(
-        R.lensPath(getPropertyPath(action.payload)),
+        R.lensPath(getPropertyPath(action.payload, 'value')),
         parseVal(action.payload.value, action.payload.type)
+      )(state);
+
+    case NODE_CHANGE_PIN_MODE:
+      return R.assocPath(
+        [
+          action.payload.id,
+          PROPERTY_KIND_PLURAL.PIN,
+          action.payload.key,
+          'mode',
+        ],
+        action.payload.mode
       )(state);
 
     default:

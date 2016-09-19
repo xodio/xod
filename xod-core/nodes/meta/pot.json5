@@ -4,7 +4,7 @@
     key: 'sample',
     type: 'pulse',
     pinLabel: 'PLS',
-    label: 'Get value pulse',
+    label: 'Sample pulse',
     description: 'Sample current value',
   }],
   outputs: [{

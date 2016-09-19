@@ -1,7 +1,17 @@
 import R from 'ramda';
 
-import { PIN_DIRECTION, PROPERTY_TYPE, SIZE, NODE_CATEGORY,
-         NODETYPE_ERRORS, LINK_ERRORS } from './constants';
+import {
+  PIN_DIRECTION,
+  PROPERTY_TYPE,
+  PROPERTY_KIND_PLURAL,
+  PROPERTY_KIND,
+  SIZE,
+  NODE_CATEGORY,
+
+  PROPERTY_ERRORS,
+  NODETYPE_ERRORS,
+  LINK_ERRORS
+} from './constants';
 
 export const getUserName = R.always('Bob');
 
@@ -101,7 +111,7 @@ export const getAllPinsFromNodes = R.pipe(
   R.reduce(
     (p, cur) =>
     R.pipe(
-      R.prop('pins'),
+      R.prop(PROPERTY_KIND_PLURAL.PIN),
       R.values,
       R.map(R.assoc('nodeId', cur.id)),
       R.concat(p)
@@ -210,7 +220,7 @@ export const getLastPinId = R.pipe(
   getProject,
   R.view(R.lensPath([
     'counter',
-    'pins',
+    PROPERTY_KIND_PLURAL.PIN,
   ]))
 );
 
@@ -251,12 +261,6 @@ export const getNodeTypeById = R.curry((state, id) => R.pipe(
 export const getNodes = R.curry((patchId, state) => R.compose(
   R.prop('nodes'),
   getPatchById(patchId)
-)(state));
-
-export const getNodesByPatchId = R.curry((patchId, state) => R.pipe(
-  getProject,
-  R.path(['patches', patchId, 'present']),
-  R.prop('nodes')
 )(state));
 
 /*
@@ -540,7 +544,7 @@ export const getPatchIO = R.pipe(
   R.prop('nodes'),
   R.values,
   filterPatchNode,
-  R.groupBy(R.compose(R.prop('direction'), R.prop(0), R.values, R.prop('pins'))),
+  R.groupBy(R.compose(R.prop('direction'), R.prop(0), R.values, R.prop(PROPERTY_KIND_PLURAL.PIN))),
   R.mapObjIndexed(R.pipe(
     R.mapObjIndexed(getPatchIOPin),
     R.values
@@ -628,7 +632,7 @@ export const getNodeLabel = (state, node) => {
   const nodeType = getPreparedNodeTypeByKey(state, node.typeId);
   let nodeLabel = node.label || nodeType.label || nodeType.key;
 
-  const nodeValue = R.view(R.lensPath(['properties', 'value']), node);
+  const nodeValue = R.view(R.lensPath([PROPERTY_KIND_PLURAL.PROP,'value']), node);
   if (nodeValue !== undefined) {
     const nodeValueType = nodeType.properties.value.type;
     nodeLabel = nodeValue;
@@ -637,7 +641,7 @@ export const getNodeLabel = (state, node) => {
     }
   }
 
-  let nodeCustomLabel = R.path(['properties', 'label'], node);
+  let nodeCustomLabel = R.path([PROPERTY_KIND_PLURAL.PROP, 'label'], node);
   if (nodeCustomLabel === '') { nodeCustomLabel = null; }
 
   nodeLabel = (nodeCustomLabel) ? nodeCustomLabel : nodeLabel;
@@ -648,7 +652,7 @@ const getNodePins = (state, typeId) => R.pipe(
   dereferencedNodeTypes,
   R.pickBy(R.propEq('key', typeId)),
   R.values,
-  R.map(R.prop('pins')),
+  R.map(R.prop(PROPERTY_KIND_PLURAL.PIN)),
   R.head
 )(state);
 
@@ -656,7 +660,7 @@ export const preparePins = (projectState, node) => {
   const pins = getNodePins(projectState, node.typeId);
 
   return R.map(pin => {
-    const originalPin = pins[pin.key];
+    const originalPin = node.pins[pin.key];
     const pinPosition = getPinPosition(pins, pin.key, node.position);
     const radius = { radius: SIZE.PIN.radius };
     const isSelected = { isSelected: false };
@@ -698,11 +702,32 @@ export const dereferencedLinks = (projectState, patchId) => {
   })(links);
 };
 
+export const getLinksConnectedWithPin = (projectState, nodeId, pinKey, patchId) => R.pipe(
+  R.values,
+  R.filter(
+    R.pipe(
+      R.prop(PROPERTY_KIND_PLURAL.PIN),
+      R.find(
+        R.allPass([
+          R.propEq('nodeId', nodeId),
+          R.propEq('pinKey', pinKey),
+        ])
+      )
+    )
+  ),
+  R.map(
+    R.pipe(
+      R.prop('id'),
+      R.toString
+    )
+  )
+)(getLinks(projectState, patchId));
+
 export const getLinksToDeleteWithNode = (projectState, nodeId, patchId) => R.pipe(
   R.values,
   R.filter(
     R.pipe(
-      R.prop('pins'),
+      R.prop(PROPERTY_KIND_PLURAL.PIN),
       R.find(R.propEq('nodeId', nodeId))
     )
   ),
@@ -906,8 +931,8 @@ export const prepareToUpdateNodeProperty = (projectState, nodeId, propKind, prop
   const patchId = getPatchByNodeId(projectState, nodeId).id;
   const node = dereferencedNodes(projectState, patchId)[nodeId];
   const nodeType = dereferencedNodeTypes(projectState)[node.typeId];
-  const kind = (propKind === 'pin') ? 'pins' : 'properties';
-  const propType = (propKind === 'pin') ? nodeType.pins[propKey].type : undefined;
+  const kind = (propKind === PROPERTY_KIND.PIN) ? PROPERTY_KIND_PLURAL.PIN : PROPERTY_KIND_PLURAL.PROP;
+  const propType = (propKind === PROPERTY_KIND.PIN) ? nodeType.pins[propKey].type : undefined;
 
   return {
     payload: {
@@ -916,6 +941,28 @@ export const prepareToUpdateNodeProperty = (projectState, nodeId, propKind, prop
       key: propKey,
       value: propValue,
       type: propType,
+    },
+    meta: {
+      patchId,
+    },
+  };
+};
+
+export const prepareToChangePinMode = (projectState, nodeId, pinKey, mode) => {
+  const patchId = getPatchByNodeId(projectState, nodeId).id;
+  const linksToDelete = getLinksConnectedWithPin(projectState, nodeId, pinKey, patchId);
+
+  if (linksToDelete.length > 0) {
+    return {
+      error: PROPERTY_ERRORS.PIN_HAS_LINK,
+    };
+  }
+
+  return {
+    payload: {
+      id: nodeId,
+      key: pinKey,
+      mode,
     },
     meta: {
       patchId,

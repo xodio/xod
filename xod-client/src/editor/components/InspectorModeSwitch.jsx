@@ -1,8 +1,9 @@
 import React from 'react';
 import Switch from 'rc-switch';
+import { PROPERTY_MODE } from 'xod-client/project/constants';
 
 function InspectorModeSwitch({ mode, onSwitch }) {
-  const checked = (mode === 'property');
+  const checked = (mode === PROPERTY_MODE.PROP);
 
   return (
     <Switch
