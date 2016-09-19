@@ -1,31 +1,42 @@
+.InspectorModeSwitch {
+  margin-left: 4px;
+  top: 4px;
+}
+
 .rc-switch {
   position: relative;
   display: inline-block;
   box-sizing: border-box;
-  width: 44px;
-  height: 22px;
-  line-height: 20px;
+
+  width: 30px;
+  height: 15px;
+  float: left;
+
+  line-height: 1em;
   vertical-align: middle;
-  border-radius: 20px 20px;
-  border: 1px solid #ccc;
-  background-color: #ccc;
+  border-radius: 3px;
+
+  border: 1px solid #999;
+  background-color: #999;
+
   cursor: pointer;
   -webkit-transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
           transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
 }
 .rc-switch-inner {
-  color: #fff;
-  font-size: 12px;
+  color: #000;
+  font-size: $font-size-s;
   position: absolute;
-  left: 24px;
+  left: 18px;
+  top: 2px;
 }
 .rc-switch:after {
   position: absolute;
-  width: 18px;
-  height: 18px;
-  left: 2px;
-  top: 1px;
-  border-radius: 50% 50%;
+  width: 13px;
+  height: 13px;
+  left: 0;
+  top: 0;
+  border-radius: 2px;
   background-color: #ffffff;
   content: " ";
   cursor: pointer;
@@ -56,10 +67,13 @@
   background-color: #87d068;
 }
 .rc-switch-checked .rc-switch-inner {
-  left: 6px;
+  font-size: $font-size-m;
+  color: #fff;
+  left: 3px;
+  top: 1px;
 }
 .rc-switch-checked:after {
-  left: 22px;
+  left: 15px;
 }
 .rc-switch-disabled {
   cursor: no-drop;

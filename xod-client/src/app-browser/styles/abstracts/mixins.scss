@@ -84,14 +84,6 @@
   input {
     float: right;
   }
-
-  &:hover, &:focus {
-    background: #fff;
-    
-    label {
-      color: #823906;
-    }
-  }
 }
 
 @mixin popup() {
