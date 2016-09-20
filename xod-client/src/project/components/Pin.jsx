@@ -102,7 +102,6 @@ export default class Pin extends React.Component {
       'is-almost-valid': this.props.validness === PIN_VALIDITY.ALMOST,
     });
 
-    const onMouseUp = !this.isProperty() ? this.onMouseUp : f => f;
     const onMouseOver = !this.isProperty() ? this.handleOver : f => f;
     const onMouseOut = !this.isProperty() ? this.handleOut : f => f;
 
@@ -114,7 +113,7 @@ export default class Pin extends React.Component {
       <g
         className={cls}
         id={this.props.keyName}
-        onMouseUp={onMouseUp}
+        onMouseUp={this.onMouseUp}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}
       >

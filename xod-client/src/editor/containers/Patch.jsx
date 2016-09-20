@@ -11,7 +11,6 @@ import { findRootSVG } from 'xod-client/utils/browser';
 
 import { HotKeys } from 'react-hotkeys';
 import { COMMAND } from 'xod-client/utils/constants';
-import { EDITOR_MODE } from 'xod-client/editor/constants';
 
 import PatchSVG from 'xod-client/project/components/PatchSVG';
 import BackgroundLayer from 'xod-client/project/components/BackgroundLayer';
@@ -89,7 +88,6 @@ class Patch extends React.Component {
   }
 
   onPinMouseUp(nodeId, pinKey) {
-    // const pin = this.props.pins[id];
     const isClicked = (this.state.clickNodeId === nodeId);
 
     if (isClicked) {
