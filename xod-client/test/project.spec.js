@@ -5,6 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 import generateReducers from '../src/app-browser/reducer';
 import { nodes } from '../src/project/reducer/nodes';
 import * as Actions from '../src/project/actions';
+import { PROPERTY_ERRORS, LINK_ERRORS, NODETYPE_ERRORS } from '../src/project/constants';
 import * as Selectors from '../src/project/selectors';
 
 function pin(nodeId, pinKey) {
@@ -54,6 +55,19 @@ describe('Project reducer: ', () => {
               index: 1,
               direction: 'input',
               key: 'out',
+              type: 'number',
+            },
+          },
+        },
+        'core/prop': {
+          key: 'core/prop',
+          category: 'hardware',
+          pins: {
+            in: {
+              index: 1,
+              direction: 'input',
+              mode: 'prop',
+              key: 'in',
               type: 'number',
             },
           },
@@ -560,7 +574,7 @@ describe('Project reducer: ', () => {
     it('should show error on attempt to delete IO node that have a link', () => {
       const expectedNodeTypeToDelete = {
         key: null,
-        error: 'CANT_DELETE_USED_PIN_OF_PATCHNODE', // FIXME: replace with constant from xod-core
+        error: NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE,
       };
       const patchNodeName = getPatchNodeName(patchId, store.getState());
 
@@ -588,7 +602,7 @@ describe('Project reducer: ', () => {
       const patchNodeName = getPatchNodeName(patchId, store.getState());
       const expectedNodeTypeToDelete = {
         key: patchNodeName,
-        error: 'CANT_DELETE_USED_PATCHNODE', // FIXME: replace with constant from xod-core
+        error: NODETYPE_ERRORS.CANT_DELETE_USED_PATCHNODE,
       };
 
       store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
@@ -608,6 +622,51 @@ describe('Project reducer: ', () => {
 
       chai.expect(nodeTypesWithPatch).to.deep.equal(nodeTypesAfterDelete);
       chai.expect(nodeTypeToDelete).to.deep.equal(expectedNodeTypeToDelete);
+    });
+  });
+
+  describe('Switching pins/props', () => {
+    const patchId = 1;
+    const mockState = R.clone(
+      projectShape
+    );
+
+    let store;
+    beforeEach(() => {
+      store = mockStore(mockState);
+      store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addLink(pin(1, 'out'), pin(2, 'in')));
+    });
+
+    it('should add link between pins that has mode "pin"', () => {
+      const projectState = Selectors.getProject(store.getState());
+      const links = Selectors.getLinks(projectState, patchId);
+      const linksArr = R.values(links);
+
+      chai.assert(linksArr.length === 1);
+    });
+
+    it('should show error on attempt to make link between pin with mode prop and real pin', () => {
+      store.dispatch(Actions.addNode('core/prop', { x: 10, y: 10 }, patchId)); // id: 3
+
+      const validity = Selectors.validatePin(store.getState(), pin(3, 'in'));
+
+      chai.assert(validity === LINK_ERRORS.PROP_CANT_HAVE_LINKS);
+    });
+
+    it('should show error on attempt to switch mode of pin, that has a connected link', () => {
+      const projectState = Selectors.getProject(store.getState());
+      const preparedData = Selectors.prepareToChangePinMode(
+        projectState,
+        2,
+        'in',
+        'property'
+      );
+
+      chai.expect(preparedData).to.deep.equal({
+        error: PROPERTY_ERRORS.PIN_HAS_LINK,
+      });
     });
   });
 });

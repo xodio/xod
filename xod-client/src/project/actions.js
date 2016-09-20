@@ -57,6 +57,13 @@ export const deleteNode = (id) => (dispatch, getState) => {
 export const addLink = (pin1, pin2) => (dispatch, getState) => {
   const preparedData = Selectors.prepareToAddLink(getState(), pin1, pin2);
 
+  if (preparedData.error) {
+    dispatch(addError({
+      message: PROPERTY_ERRORS[preparedData.error],
+    }));
+    return;
+  }
+
   dispatch({
     type: ActionType.LINK_ADD,
     payload: preparedData.payload,

@@ -3,6 +3,7 @@ import R from 'ramda';
 import {
   PIN_DIRECTION,
   PROPERTY_TYPE,
+  PROPERTY_MODE,
   PROPERTY_KIND_PLURAL,
   PROPERTY_KIND,
   SIZE,
@@ -800,6 +801,14 @@ export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
   };
 };
 
+const pinComparator = (data) => R.both(
+  R.propEq('nodeId', data.nodeId),
+  R.propEq('key', data.pinKey)
+);
+const findPin = (pins) => R.compose(
+  R.flip(R.find)(pins),
+  pinComparator
+);
 
 export const validateLink = (state, linkData) => {
   const project = getProject(state);
@@ -810,26 +819,21 @@ export const validateLink = (state, linkData) => {
   const pins = getAllPinsFromNodes(nodes);
   const linksState = getLinks(project, patchId);
 
-  const eqProps = (data) => R.both(
-    R.propEq('nodeId', data.nodeId),
-    R.propEq('key', data.pinKey)
-  );
-  const findPin = R.compose(
-    R.flip(R.find)(pins),
-    eqProps
-  );
+  const getPin = findPin(pins);
 
-  const pin1 = findPin(linkData[0]);
-  const pin2 = findPin(linkData[1]);
+  const pin1 = getPin(linkData[0]);
+  const pin2 = getPin(linkData[1]);
 
   const sameDirection = pin1.direction === pin2.direction;
   const sameNode = pin1.nodeId === pin2.nodeId;
+  const allPinsInPinMode = pin1.mode === PROPERTY_MODE.PIN && pin2.mode === PROPERTY_MODE.PIN;
   const pin1CanHaveMoreLinks = canPinHaveMoreLinks(pin1, linksState);
   const pin2CanHaveMoreLinks = canPinHaveMoreLinks(pin2, linksState);
 
   const check = (
     !sameDirection &&
     !sameNode &&
+    allPinsInPinMode &&
     pin1CanHaveMoreLinks &&
     pin2CanHaveMoreLinks
   );
@@ -845,6 +849,44 @@ export const validateLink = (state, linkData) => {
     } else
     if (!pin1CanHaveMoreLinks || !pin2CanHaveMoreLinks) {
       error = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
+    } else 
+    if (!allPinsInPinMode) {
+      error = LINK_ERRORS.PROP_CANT_HAVE_LINKS;
+    } else {
+      error = LINK_ERRORS.UNKNOWN_ERROR;
+    }
+  }
+
+  return error;
+};
+
+export const validatePin = (state, pin) => {
+  const project = getProject(state);
+  const patch = getPatchByNodeId(project, pin.nodeId);
+  const patchId = patch.id;
+  const nodes = dereferencedNodes(project, patchId);
+  const linksState = getLinks(project, patchId);
+  const pins = getAllPinsFromNodes(nodes);
+
+  const getPin = findPin(pins);
+  const pinData = getPin(pin);
+
+  const pinCanHaveMoreLinks = canPinHaveMoreLinks(pinData, linksState);
+  const pinIsInPinMode = pinData.mode === PROPERTY_MODE.PIN;
+
+  const check = (
+    pinCanHaveMoreLinks &&
+    pinIsInPinMode
+  );
+
+  let error = null;
+
+  if (!check) {
+    if (!pinCanHaveMoreLinks) {
+      error = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
+    } else
+    if (!pinIsInPinMode) {
+      error = LINK_ERRORS.PROP_CANT_HAVE_LINKS;
     } else {
       error = LINK_ERRORS.UNKNOWN_ERROR;
     }

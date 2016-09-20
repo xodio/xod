@@ -24,14 +24,6 @@ export const setNodeSelection = (id) => ({
   },
 });
 
-export const setPinSelection = (nodeId, pinKey) => ({
-  type: ActionType.EDITOR_SELECT_PIN,
-  payload: {
-    nodeId,
-    pinKey,
-  },
-});
-
 export const setLinkSelection = (id) => ({
   type: ActionType.EDITOR_SELECT_LINK,
   payload: {
@@ -50,6 +42,26 @@ export const setMode = (mode) => (dispatch, getState) => {
       mode,
     },
   });
+};
+
+export const setPinSelection = (nodeId, pinKey) => ({
+  type: ActionType.EDITOR_SELECT_PIN,
+  payload: {
+    nodeId,
+    pinKey,
+  },
+});
+
+const doPinSelection = (nodeId, pinKey) => (dispatch, getState) => {
+  const err = SelectorsProject.validatePin(getState(), { nodeId, pinKey });
+
+  if (err) {
+    dispatch(addError({ message: LINK_ERRORS[err] }));
+    return;
+  }
+
+  dispatch(setMode(EDITOR_MODE.LINKING));
+  dispatch(setPinSelection(nodeId, pinKey));
 };
 
 export const deselectAll = () => (dispatch, getState) => {
@@ -97,21 +109,17 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
   };
   const state = getState();
   const selected = state.editor.linkingPin;
-  const deselect = dispatch(deselectAll());
-  const result = [];
-  if (deselect) {
-    result.push(deselect);
-  }
+
+  dispatch(deselectAll());
 
   const pins = [selected, data];
 
   if (R.equals(selected, data)) {
     // linking a pin to itself
-    return result;
+    return;
   }
 
   let action;
-
   if (selected) {
     const error = SelectorsProject.validateLink(state, pins);
     action = error ?
@@ -119,11 +127,9 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
       addLink(pins[0], pins[1]);
     dispatch(setMode(EDITOR_MODE.DEFAULT));
   } else {
-    dispatch(setMode(EDITOR_MODE.LINKING));
-    action = setPinSelection(nodeId, pinKey);
+    action = doPinSelection(nodeId, pinKey);
   }
-
-  return R.append(dispatch(action), result);
+  dispatch(action);
 };
 
 export const selectLink = (id) => (dispatch, getState) => {
