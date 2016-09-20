@@ -61,7 +61,6 @@ class Editor extends React.Component {
 
   getHotkeyHandlers() {
     return {
-      [COMMAND.SET_MODE_CREATING]: this.setModeCreating,
       [COMMAND.SET_MODE_DEFAULT]: this.setModeDefault,
       [COMMAND.UNDO]: () => this.props.actions.undo(this.props.currentPatchId),
       [COMMAND.REDO]: () => this.props.actions.redo(this.props.currentPatchId),
@@ -86,6 +85,7 @@ class Editor extends React.Component {
           <Patch
             patchId={this.props.currentPatchId}
             size={this.patchSize}
+            setModeCreating={this.setModeCreating}
           />
         </Workarea>
       </HotKeys>

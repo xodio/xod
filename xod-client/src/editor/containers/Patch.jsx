@@ -11,6 +11,7 @@ import { findRootSVG } from 'xod-client/utils/browser';
 
 import { HotKeys } from 'react-hotkeys';
 import { COMMAND } from 'xod-client/utils/constants';
+import { EDITOR_MODE } from 'xod-client/editor/constants';
 
 import PatchSVG from 'xod-client/project/components/PatchSVG';
 import BackgroundLayer from 'xod-client/project/components/BackgroundLayer';
@@ -189,6 +190,7 @@ class Patch extends React.Component {
 
   getHotkeyHandlers() {
     return {
+      [COMMAND.SET_MODE_CREATING]: this.props.setModeCreating,
       [COMMAND.DELETE_SELECTION]: this.props.actions.deleteSelection,
       [COMMAND.ESCAPE]: this.deselectAll,
     };
@@ -310,6 +312,8 @@ Patch.propTypes = {
   mode: React.PropTypes.object,
   ghostNode: React.PropTypes.any,
   ghostLink: React.PropTypes.any,
+
+  setModeCreating: React.PropTypes.func,
 };
 
 const mapStateToProps = (state) => {
