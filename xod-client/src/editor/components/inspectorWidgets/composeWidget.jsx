@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import Switch from '../InspectorModeSwitch';
 import { PROPERTY_MODE, PROPERTY_KIND } from 'xod-client/project/constants';
 
@@ -35,12 +34,8 @@ export default function composeWidget(Component) {
     }
 
     render() {
-      const cls = classNames('InspectorWidget', {
-        'is-disabled': this.isDisabled(),
-      });
-
       return (
-        <div className={cls}>
+        <div className="InspectorWidget">
           {this.getSwitch()}
           <Component
             {...this.props}
