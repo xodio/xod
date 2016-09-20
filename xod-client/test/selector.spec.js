@@ -10,8 +10,16 @@ describe('Link selector', () => {
     function pin(nodeId, pinKey) {
       return { nodeId, pinKey };
     }
-    const inputPin = { type: PIN_TYPE.NUMBER, direction: PIN_DIRECTION.INPUT, mode: PROPERTY_MODE.PIN };
-    const outputPin = { type: PIN_TYPE.NUMBER, direction: PIN_DIRECTION.OUTPUT, mode: PROPERTY_MODE.PIN };
+    const inputPin = {
+      type: PIN_TYPE.NUMBER,
+      direction: PIN_DIRECTION.INPUT,
+      mode: PROPERTY_MODE.PIN,
+    };
+    const outputPin = {
+      type: PIN_TYPE.NUMBER,
+      direction: PIN_DIRECTION.OUTPUT,
+      mode: PROPERTY_MODE.PIN,
+    };
 
     const makeInputPin = R.flip(R.merge)(inputPin);
     const makeOutputPin = R.flip(R.merge)(outputPin);
