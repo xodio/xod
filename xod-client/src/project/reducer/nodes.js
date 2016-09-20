@@ -51,7 +51,7 @@ const getNodePins = R.pipe(
   R.path(['payload', 'nodeType', PROPERTY_KIND_PLURAL.PIN]),
   R.mapObjIndexed(
     R.pipe(
-      R.pick(['mode', 'value']),
+      R.pick(['direction', 'mode', 'value']),
       R.merge({
         mode: PROPERTY_MODE.PIN,
         value: null,

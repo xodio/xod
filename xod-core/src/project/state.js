@@ -3,7 +3,7 @@ import R from 'ramda';
 import { PIN_DIRECTION, PROPERTY_MODE } from './constants';
 
 
-R.mapDirectedNodeTypePins = (direction, collectionKey) => R.compose(
+const mapDirectedNodeTypePins = (direction, collectionKey) => R.compose(
   R.indexBy(R.prop('key')),
   R.addIndex(R.map)((io, index) => R.merge({ index, direction }, io)),
   R.reject(R.propEq('modes', PROPERTY_MODE.PROP)),
@@ -11,8 +11,8 @@ R.mapDirectedNodeTypePins = (direction, collectionKey) => R.compose(
 );
 
 const mapNodeTypePins = meta => R.merge(
-  R.mapDirectedNodeTypePins(PIN_DIRECTION.INPUT, 'inputs')(meta),
-  R.mapDirectedNodeTypePins(PIN_DIRECTION.OUTPUT, 'outputs')(meta)
+  mapDirectedNodeTypePins(PIN_DIRECTION.INPUT, 'inputs')(meta),
+  mapDirectedNodeTypePins(PIN_DIRECTION.OUTPUT, 'outputs')(meta)
 );
 
 const removeNils = R.reject(R.isNil);

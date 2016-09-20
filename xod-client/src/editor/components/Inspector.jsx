@@ -36,6 +36,12 @@ const pinProp = {
   value: '',
 };
 
+const getProp = (obj, node, key) => R.pipe(
+  R.pathOr('', ['properties', key]),
+  R.assoc('value', R.__, {}), // eslint-disable-line
+  R.merge(obj)
+)(node);
+
 class Inspector extends React.Component {
   constructor(props) {
     super(props);
@@ -47,11 +53,15 @@ class Inspector extends React.Component {
     this.createWidgets(nextProps);
   }
 
-  getProperties(nodeType) {
-    const props = [labelProp];
+  getProperties(nodeType, node) {
+    const props = [
+      getProp(labelProp, node, 'label'),
+    ];
 
     if (nodeType.category === 'hardware') {
-      props.push(pinProp);
+      props.push(
+        getProp(pinProp, node, 'pin')
+      );
     }
 
     return props;
