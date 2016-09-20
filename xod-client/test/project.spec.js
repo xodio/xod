@@ -92,6 +92,16 @@ describe('Project reducer: ', () => {
             x: 10,
             y: 10,
           },
+          pins: {
+            in: {
+              mode: 'pin',
+              value: null,
+            },
+            out: {
+              mode: 'pin',
+              value: null,
+            },
+          },
           properties: {},
         },
       };
@@ -234,6 +244,9 @@ describe('Project reducer: ', () => {
 
   describe('Add link', () => {
     const patchPath = ['project', 'patches', 1];
+    const nullPin = { mode: 'pin', value: null };
+    const testPins = { in: nullPin, out: nullPin };
+    const nullPos = { x: 0, y: 0 };
     const mockState = R.pipe(
       R.assocPath(
         R.append('links', patchPath),
@@ -247,9 +260,9 @@ describe('Project reducer: ', () => {
       R.assocPath(
         R.append('nodes', patchPath),
         {
-          1: { id: 1, typeId: 'test/test', position: { x: 0, y: 0 } },
-          2: { id: 2, typeId: 'test/test', position: { x: 0, y: 0 } },
-          3: { id: 3, typeId: 'test/test', position: { x: 0, y: 0 } },
+          1: { id: 1, typeId: 'test/test', position: nullPos, pins: testPins },
+          2: { id: 2, typeId: 'test/test', position: nullPos, pins: testPins },
+          3: { id: 3, typeId: 'test/test', position: nullPos, pins: testPins },
         }
       ),
       R.assocPath(
@@ -555,10 +568,9 @@ describe('Project reducer: ', () => {
       store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
       store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
       store.dispatch(Actions.addNode(patchNodeName, { x: 10, y: 10 }, patchId));
-      store.dispatch(Actions.addLink(pin(1, 'in'), pin(4, 'output_3')));
+      store.dispatch(Actions.addLink(pin(1, 'in'), pin(4, 'input_3')));
 
       const nodeTypesWithPatch = getNodeTypes(store.getState());
-
       store.dispatch(Actions.deleteNode(3));
 
       const nodeTypesAfterDelete = getNodeTypes(store.getState());

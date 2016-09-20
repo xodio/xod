@@ -660,7 +660,7 @@ export const preparePins = (projectState, node) => {
   const pins = getNodePins(projectState, node.typeId);
 
   return R.map(pin => {
-    const originalPin = node.pins[pin.key];
+    const originalPin = R.path(['pins', pin.key], node) || {};
     const pinPosition = getPinPosition(pins, pin.key, node.position);
     const radius = { radius: SIZE.PIN.radius };
     const isSelected = { isSelected: false };
