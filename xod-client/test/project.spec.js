@@ -106,16 +106,6 @@ describe('Project reducer: ', () => {
             x: 10,
             y: 10,
           },
-          pins: {
-            in: {
-              mode: 'pin',
-              value: null,
-            },
-            out: {
-              mode: 'pin',
-              value: null,
-            },
-          },
           properties: {},
         },
       };
@@ -582,7 +572,7 @@ describe('Project reducer: ', () => {
       store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
       store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
       store.dispatch(Actions.addNode(patchNodeName, { x: 10, y: 10 }, patchId));
-      store.dispatch(Actions.addLink(pin(1, 'in'), pin(4, 'input_3')));
+      store.dispatch(Actions.addLink(pin(1, 'in'), pin(4, 'output_3')));
 
       const nodeTypesWithPatch = getNodeTypes(store.getState());
       store.dispatch(Actions.deleteNode(3));
