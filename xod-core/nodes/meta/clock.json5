@@ -1,9 +1,10 @@
 {
-  properties: [{
+  inputs: [{
     key: 'interval',
-    label: 'Interval (seconds)',
+    pinLabel: 'INT',
+    label: 'Interval (sec)',
     type: 'number',
-    defaultValue: 1,
+    value: 1,
   }],
   outputs: [{
     key: 'tick',

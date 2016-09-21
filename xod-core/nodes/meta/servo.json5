@@ -22,5 +22,11 @@
     label: 'Value',
     value: 1,
     description: 'Rotation angle/value'
+  }],
+  properties: [{
+    key: 'pin',
+    label: 'Pin',
+    type: 'string',
+    value: 'A10',
   }]
 }

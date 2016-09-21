@@ -9,7 +9,7 @@
     value: ''
   }, {
     key: 'pulse',
-    type: 'enum',
+    type: 'pulse',
     mode: 'property',
     pinLabel: 'PLS',
     label: 'Pulse',

@@ -4,5 +4,11 @@
     key: 'state',
     type: 'bool',
     description: 'Emits `true` when pressed and `false` when released',
+  }],
+  properties: [{
+    key: 'pin',
+    label: 'Pin',
+    type: 'string',
+    value: 'BTN1',
   }]
 }

@@ -11,5 +11,11 @@
     key: 'value',
     type: 'number',
     description: 'Sampled potentiometer value',
+  }],
+  properties: [{
+    key: 'pin',
+    label: 'Pin',
+    type: 'string',
+    value: 'A6',
   }]
 }

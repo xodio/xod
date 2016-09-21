@@ -1,11 +1,13 @@
 {
-  properties: [{
+  inputs: [{
     key: 'a',
+    pinLabel: 'IN1',
     label: 'First value',
     type: 'number',
   },
   {
     key: 'b',
+    pinLabel: 'IN2',
     label: 'Second value',
     type: 'number',
   }
@@ -13,16 +15,19 @@
   outputs: [{
     key: 'equal',
     type: 'pulse',
+    pinLabel: '==',
     description: 'Pulses if a = b',
   },
   {
     key: 'less',
     type: 'pulse',
+    pinLabel: '<',
     description: 'Pulses if a < b',
   },
   {
     key: 'greater',
     type: 'pulse',
+    pinLabel: '>',
     description: 'Pulses if a > b',
   }],
 }
