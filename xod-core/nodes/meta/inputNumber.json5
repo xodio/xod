@@ -4,5 +4,11 @@
   outputs: [{
     key: 'PIN',
     type: 'number',
+  }],
+  properties: [{
+    key: 'pinLabel',
+    type: 'string',
+    label: 'Pin label',
+    value: '',
   }]
 }

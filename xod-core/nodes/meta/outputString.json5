@@ -4,5 +4,12 @@
   inputs: [{
     key: 'OUT',
     type: 'string',
+    label: 'Value',
+  }],
+  properties: [{
+    key: 'pinLabel',
+    type: 'string',
+    label: 'Pin label',
+    value: '',
   }]
 }
