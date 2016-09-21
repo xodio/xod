@@ -1,7 +1,6 @@
 import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
-import composeWidget from './composeWidget';
 import { KEYCODE } from 'xod-client/utils/constants';
 import { PROPERTY_TYPE_PARSE } from 'xod-client/project/constants';
 
@@ -91,4 +90,4 @@ StringWidget.defaultProps = {
   onPropUpdate: f => f,
 };
 
-export default composeWidget(StringWidget);
+export default StringWidget;

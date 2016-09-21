@@ -15,7 +15,7 @@ const widgetAccordance = {
     [PROPERTY_TYPE.NUMBER]: Widgets.NumberWidget,
     [PROPERTY_TYPE.STRING]: Widgets.StringWidget,
     [PROPERTY_TYPE.PULSE]: Widgets.NumberWidget,
-    [PROPERTY_TYPE.IO_LABEL]: Widgets.IOLabelWidget,
+    // [PROPERTY_TYPE.IO_LABEL]: Widgets.IOLabelWidget, // @TODO: use special field widget
   },
 };
 
@@ -139,8 +139,13 @@ class Inspector extends React.Component {
     } else {
       const widgets = [];
       properties.forEach((prop) => {
-        const factory = React.createFactory(widgetAccordance[ENTITY.NODE][prop.type]);
+        const factory = React.createFactory(
+          Widgets.composeWidget(
+            widgetAccordance[ENTITY.NODE][prop.type]
+          )
+        );
         const mode = prop.mode || PROPERTY_MODE.PIN;
+
         widgets.push(
           factory({
             key: `${node.id}_${prop.key}`,

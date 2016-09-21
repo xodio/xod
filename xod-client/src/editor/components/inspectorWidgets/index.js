@@ -3,6 +3,7 @@ import BoolWidget from './BoolWidget';
 import NumberWidget from './NumberWidget';
 import StringWidget from './StringWidget';
 import IOLabelWidget from './IOLabelWidget';
+import composeWidget from './composeWidget';
 
 export default {
   HintWidget,
@@ -10,4 +11,5 @@ export default {
   NumberWidget,
   StringWidget,
   IOLabelWidget,
+  composeWidget,
 };

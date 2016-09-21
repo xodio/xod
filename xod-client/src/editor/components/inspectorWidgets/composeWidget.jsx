@@ -56,5 +56,9 @@ export default function composeWidget(Component) {
     onPinModeSwitch: React.PropTypes.func,
   };
 
+  Widget.defaultProps = {
+    value: null,
+  };
+
   return Widget;
 }

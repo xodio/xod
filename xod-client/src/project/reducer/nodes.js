@@ -47,19 +47,6 @@ const getPropertyPath = (payload, add) => {
   return path;
 };
 
-const getNodePins = R.pipe(
-  R.path(['payload', 'nodeType', PROPERTY_KIND_PLURAL.PIN]),
-  R.mapObjIndexed(
-    R.pipe(
-      R.pick(['direction', 'mode', 'value']),
-      R.merge({
-        mode: PROPERTY_MODE.PIN,
-        value: null,
-      })
-    )
-  )
-);
-
 export const nodes = (state = {}, action) => {
   let movedNode = null;
   let newNode = null;
@@ -72,7 +59,6 @@ export const nodes = (state = {}, action) => {
       newNode = R.set(R.lensProp('id'), newNodeId, {
         typeId: action.payload.typeId,
         position: action.payload.position,
-        pins: getNodePins(action),
         properties: {},
       });
 
@@ -91,7 +77,15 @@ export const nodes = (state = {}, action) => {
         parseVal(action.payload.value, action.payload.type)
       )(state);
 
-    case NODE_CHANGE_PIN_MODE:
+    case NODE_CHANGE_PIN_MODE: {
+      if (action.payload.mode === PROPERTY_MODE.PIN) {
+        return R.dissocPath([
+          action.payload.id,
+          PROPERTY_KIND_PLURAL.PIN,
+          action.payload.key,
+        ], state);
+      }
+
       return R.assocPath(
         [
           action.payload.id,
@@ -101,7 +95,7 @@ export const nodes = (state = {}, action) => {
         ],
         action.payload.mode
       )(state);
-
+    }
     default:
       return state;
   }

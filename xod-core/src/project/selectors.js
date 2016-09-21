@@ -526,8 +526,8 @@ export const getPatchIOPin = (node, i) => {
   const pin = R.values(node.pins)[0];
   const invertDirection = R.ifElse(
     R.equals(PIN_DIRECTION.INPUT),
-    () => PIN_DIRECTION.OUTPUT,
-    () => PIN_DIRECTION.INPUT
+    R.always(PIN_DIRECTION.OUTPUT),
+    R.always(PIN_DIRECTION.INPUT)
   );
   const dir = invertDirection(pin.direction);
 
@@ -607,7 +607,10 @@ export const dereferencedNodeTypes = state => {
         label: patch.name,
         category: NODE_CATEGORY.PATCHES,
         properties: {},
-        pins: R.pipe(R.values, R.indexBy(R.prop('key')))(patch.io),
+        pins: R.pipe(
+          R.values,
+          R.indexBy(R.prop('key'))
+        )(patch.io),
       })
     ),
     R.indexBy(R.prop('key'))
@@ -665,7 +668,8 @@ export const preparePins = (projectState, node) => {
     const pinPosition = getPinPosition(pins, pin.key, node.position);
     const radius = { radius: SIZE.PIN.radius };
     const isSelected = { isSelected: false };
-    return R.mergeAll([pin, originalPin, pinPosition, radius, isSelected]);
+    const defaultPin = { value: null, mode: PROPERTY_MODE.PIN };
+    return R.mergeAll([defaultPin, pin, originalPin, pinPosition, radius, isSelected]);
   })(pins);
 };
 
@@ -810,6 +814,11 @@ const findPin = (pins) => R.compose(
   pinComparator
 );
 
+const pinHasPinMode = (pin) => (
+  pin.mode === undefined ||
+  pin.mode && pin.mode === PROPERTY_MODE.PIN
+);
+
 export const validateLink = (state, linkData) => {
   const project = getProject(state);
   const patch = getPatchByNodeId(project, linkData[0].nodeId);
@@ -826,7 +835,7 @@ export const validateLink = (state, linkData) => {
 
   const sameDirection = pin1.direction === pin2.direction;
   const sameNode = pin1.nodeId === pin2.nodeId;
-  const allPinsInPinMode = pin1.mode === PROPERTY_MODE.PIN && pin2.mode === PROPERTY_MODE.PIN;
+  const allPinsInPinMode = pinHasPinMode(pin1) && pinHasPinMode(pin2);
   const pin1CanHaveMoreLinks = canPinHaveMoreLinks(pin1, linksState);
   const pin2CanHaveMoreLinks = canPinHaveMoreLinks(pin2, linksState);
 
@@ -872,7 +881,7 @@ export const validatePin = (state, pin) => {
   const pinData = getPin(pin);
 
   const pinCanHaveMoreLinks = canPinHaveMoreLinks(pinData, linksState);
-  const pinIsInPinMode = pinData.mode === PROPERTY_MODE.PIN;
+  const pinIsInPinMode = pinHasPinMode(pinData);
 
   const check = (
     pinCanHaveMoreLinks &&
@@ -918,7 +927,6 @@ export const prepareToAddFolder = (projectState, name, parentId) => {
 export const prepareToAddNode = (projectState, typeId, position, patchId) => {
   const newNodeId = getLastNodeId(projectState) + 1;
   const nodeType = dereferencedNodeTypes(projectState)[typeId];
-  const lastPinId = getLastPinId(projectState);
 
   return {
     payload: {
@@ -926,7 +934,6 @@ export const prepareToAddNode = (projectState, typeId, position, patchId) => {
       position,
       nodeType,
       newNodeId,
-      lastPinId,
     },
     meta: {
       patchId,
