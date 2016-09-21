@@ -19,19 +19,18 @@ const widgetAccordance = {
   },
 };
 
+const defaultProp = {
+  kind: PROPERTY_KIND.PROP,
+  mode: PROPERTY_MODE.PROP,
+  type: 'string',
+  value: '',
+};
+
 const labelProp = {
   kind: PROPERTY_KIND.PROP,
   mode: PROPERTY_MODE.PROP,
   key: 'label',
   label: 'Label',
-  type: 'string',
-  value: '',
-};
-const pinProp = {
-  kind: PROPERTY_KIND.PROP,
-  mode: PROPERTY_MODE.PROP,
-  key: 'pin',
-  label: 'Pin',
   type: 'string',
   value: '',
 };
@@ -58,10 +57,14 @@ class Inspector extends React.Component {
       getProp(labelProp, node, 'label'),
     ];
 
-    if (nodeType.category === 'hardware') {
-      props.push(
-        getProp(pinProp, node, 'pin')
-      );
+    if (nodeType.properties) {
+      R.pipe(
+        (c) => { console.log('NT', c); return c; },
+        R.values,
+        R.map(R.merge(defaultProp)),
+        (c) => { console.log('NT', c); return c; },
+        R.forEach(prop => props.push(prop))
+      )(nodeType.properties);
     }
 
     return props;
