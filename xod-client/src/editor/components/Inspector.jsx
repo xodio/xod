@@ -59,10 +59,13 @@ class Inspector extends React.Component {
 
     if (nodeType.properties) {
       R.pipe(
-        (c) => { console.log('NT', c); return c; },
         R.values,
         R.map(R.merge(defaultProp)),
-        (c) => { console.log('NT', c); return c; },
+        R.map(prop => {
+          const nodeVal = R.pathOr(null, ['properties', prop.key], node);
+          if (nodeVal === null) { return prop; }
+          return R.assoc('value', nodeVal, prop);
+        }),
         R.forEach(prop => props.push(prop))
       )(nodeType.properties);
     }
