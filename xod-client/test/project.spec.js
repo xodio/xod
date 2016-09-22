@@ -630,7 +630,35 @@ describe('Project reducer: ', () => {
       store.dispatch(Actions.addLink(pin(1, 'out'), pin(2, 'in')));
     });
 
-    it('should add link between pins that has mode "pin"', () => {
+    it('should add injected flag to pin', () => {
+      const nodeId = 1;
+      const pinKey = 'in';
+      const injected = true;
+
+      store.dispatch(Actions.changePinMode(nodeId, pinKey, injected));
+
+      const projectState = Selectors.getProject(store.getState());
+      const node = Selectors.getNodes(patchId, projectState)[nodeId];
+      const pinData = node.pins[pinKey];
+
+      chai.assert(pinData.injected === injected);
+    });
+
+    it('should remove injected flag from pin', () => {
+      const nodeId = 1;
+      const pinKey = 'in';
+      const injected = false;
+
+      store.dispatch(Actions.changePinMode(nodeId, pinKey, injected));
+
+      const projectState = Selectors.getProject(store.getState());
+      const node = Selectors.getNodes(patchId, projectState)[nodeId];
+      const pinData = node.pins[pinKey];
+
+      chai.assert(pinData.injected === injected);
+    });
+
+    it('should add link between pins that is not injected', () => {
       const projectState = Selectors.getProject(store.getState());
       const links = Selectors.getLinks(projectState, patchId);
       const linksArr = R.values(links);
@@ -638,7 +666,7 @@ describe('Project reducer: ', () => {
       chai.assert(linksArr.length === 1);
     });
 
-    it('should show error on attempt to make link between pin with mode prop and real pin', () => {
+    it('should show error on attempt to make link between injected pin and regular pin', () => {
       store.dispatch(Actions.addNode('core/prop', { x: 10, y: 10 }, patchId)); // id: 3
 
       const validity = Selectors.validatePin(store.getState(), pin(3, 'in'));
@@ -646,7 +674,7 @@ describe('Project reducer: ', () => {
       chai.assert(validity === LINK_ERRORS.PROP_CANT_HAVE_LINKS);
     });
 
-    it('should show error on attempt to switch mode of pin, that has a connected link', () => {
+    it('should show error on attempt to switch mode of a pin, that has a connected link', () => {
       const projectState = Selectors.getProject(store.getState());
       const preparedData = Selectors.prepareToChangePinMode(
         projectState,
