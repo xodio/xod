@@ -31,6 +31,36 @@ const priorityValue = R.curry(
   }
 );
 
+// :: ({String: Patch}, String) -> Int
+// -- maxIdOf(project.patches, 'nodes') -> max .id of all nodes in all patches
+const maxIdOf = (patches, key) => R.compose(
+  R.reduce(R.max, 0),
+  R.map(R.propOr(0, 'id')),
+  R.reduce(R.concat, []),
+  R.map(R.compose(R.values, R.propOr({}, key))),
+  R.values
+)(patches);
+
+// -------------- TODO: move to xod-core? (with all other selectors) --------
+
+const isInputNode = R.propSatisfies(R.test(/^core\/input/), 'typeId');
+const isOutputNode = R.propSatisfies(R.test(/^core\/output/), 'typeId');
+
+// :: Patch -> Boolean
+const isPatchNodeType = R.compose(
+  R.any(R.either(isInputNode, isOutputNode)),
+  R.values,
+  R.propOr({}, 'nodes')
+);
+
+// --------------------------------------------------------------------------
+const dump = (title, data) => {
+  /*
+  console.log(title, JSON.stringify(data, null, '  '),
+              '\n*************************************');
+  */
+};
+
 /**
   * Transforms JSON data as it seen it *.xod files to
   * a shape expected by the runtime.
@@ -40,27 +70,186 @@ const priorityValue = R.curry(
   *   implementation for given in prioritized list. E.g. ['espruino', 'js'].
   */
 export default function transform(project, implPlatforms = []) {
-  // :: () -> Patch -- joins all patches into one shallow
-  const mergedPatch = R.compose(
-    R.omit('id'),
-    R.reduce(R.mergeWith(R.merge), {}),
-    R.values,
-    R.propOr({}, 'patches')
-  )(project);
-
-  // :: String -> {a} -- extacts a specific key branch from the merged patch
-  const mergedEntities = key => R.propOr({}, key)(mergedPatch);
-
-  const nodes = mergedEntities('nodes');
-  const nodeList = R.values(nodes);
-
-  const links = mergedEntities('links');
-  const linkList = R.values(links);
 
   const nodeTypes = R.propOr({}, 'nodeTypes', project);
   const nodeTypeByKey = key => R.propOr({}, key, nodeTypes);
 
-  const usedNodeTypeIds = R.pluck('typeId', R.values(nodes));
+  const allPatches = R.propOr({}, 'patches', project);
+
+  // flat patch that merged from all non-patchnodes
+  const mergedPatch = R.compose(
+    R.omit('id'),
+    R.reduce(R.mergeWith(R.merge), {}),
+    R.filter(R.complement(isPatchNodeType)),
+    R.values
+  )(allPatches);
+
+  // :: String -> {a} -- extacts a specific key branch from the merged patch
+  const mergedEntities = key => R.propOr({}, key)(mergedPatch);
+
+  const allNodes = mergedEntities('nodes');
+  const allLinks = mergedEntities('links');
+
+  // type PatchNode = {nodes :: [Node], links :: [Link]}
+
+  // :: {patchNode.name: PatchNode}
+  const patchNodesByName = R.compose(
+    R.reduce(
+      ((ns, n) =>
+       isPatchNodeType(n)
+       ? R.assoc(n.name, {
+         links: R.values(n.links),
+         nodes: R.values(n.nodes),
+       }, ns)
+       : ns),
+      {}
+    ),
+    R.values
+  )(allPatches);
+
+  // :: Int -> PatchNode
+  const getPatchNodeById = R.compose(
+    R.prop(R.__, patchNodesByName),
+    R.last, R.split('/'),
+    R.prop('typeId'),
+    R.prop(R.__, allNodes)
+  );
+
+  // :: Node -> Boolean
+  // "true", if node is instance of one of @patchNodesByName
+  // and its .typeId is not in @nodeTypes
+  const isPatchNodeInstance = R.compose(
+    R.both(
+      R.complement(R.has(R.__, nodeTypes)),
+      R.compose(
+        R.any(R.__, R.keys(patchNodesByName)),
+        type => name => RegExp('/' + name + '$').test(type)
+      )
+    ),
+    R.propOr('', 'typeId')
+  );
+
+  const patchNodeInstIds = R.compose(
+    R.pluck('id'),
+    R.filter(isPatchNodeInstance),
+    R.values
+  )(allNodes);
+
+  const patchNodeInstInputLinks = R.pickBy(
+    ({pins: [_, {nodeId}]}) => R.contains(nodeId, patchNodeInstIds),
+    allLinks
+  );
+  const patchNodeInstOutputLinks = R.pickBy(
+    ({pins: [{nodeId}, _]}) => R.contains(nodeId, patchNodeInstIds),
+    allLinks
+  );
+
+  const linksToPins = R.compose(R.pluck('pins'), R.values);
+  const patchNodeInstInputPins = linksToPins(patchNodeInstInputLinks);
+  const patchNodeInstOutputPins = linksToPins(patchNodeInstOutputLinks);
+
+  const cleanedLinks = R.omit(
+    R.concat(R.keys(patchNodeInstInputLinks), R.keys(patchNodeInstOutputLinks)),
+    allLinks
+  );
+
+  const cleanedNodes = R.omit(R.map(String, patchNodeInstIds), allNodes);
+
+  // -----------------------------------------------------------
+
+  let nodeList = [];
+  let linkList = [];
+  R.values(cleanedNodes).forEach(l => nodeList.push(l));
+  R.values(cleanedLinks).forEach(l => linkList.push(l));
+
+  const idsByTypeIdPrefix = prefix => R.compose(
+    R.pluck('id'),
+    R.filter(({typeId}) => R.test(RegExp('^' + prefix), typeId))
+  );
+
+  let nodeIdSeq = maxIdOf(allPatches, "nodes") + 1;
+  let linkIdSeq = maxIdOf(allPatches, "links") + 1;
+
+  patchNodeInstIds.forEach(pnId => {
+    const { nodes, links } = getPatchNodeById(pnId);
+    const inputIds = R.pluck('id', R.filter(isInputNode, nodes));
+    const outputIds = R.pluck('id', R.filter(isOutputNode, nodes));
+    const terminals = R.concat(inputIds, outputIds);
+
+    // push non-terminal nodes
+    let oldToNewId = {};
+    nodes.forEach(n => {
+      if (!R.contains(n.id, terminals)) {
+        const newId = nodeIdSeq;
+        oldToNewId[n.id] = newId;
+        nodeList.push(R.assoc('id', newId, n));
+        nodeIdSeq += 1;
+      }
+    });
+
+    // push internal links
+    links.forEach(link => {
+      const {pins: [{nodeId: nFrom, pinKey: pFrom},
+                    {nodeId: nTo, pinKey: pTo}]} = link;
+      if (!R.contains(nFrom, terminals) && !R.contains(nTo, terminals)) {
+        linkList.push({
+          id: linkIdSeq,
+          pins: [
+            {pinKey: pFrom, nodeId: oldToNewId[nFrom]},
+            {pinKey: pTo, nodeId: oldToNewId[nTo]},
+          ]
+        });
+        linkIdSeq += 1;
+      }
+    });
+
+    // relink patchnode inputs
+    R.filter(
+      ([_, { nodeId }]) => nodeId == pnId,
+      patchNodeInstInputPins
+    ).forEach(
+      ([{nodeId: nFrom, pinKey: pFrom}, {pinKey: terminal}]) => {
+        const terminalId = R.last(R.split('_', terminal));
+        links.forEach(({pins: [{nodeId}, {nodeId: nTo, pinKey: pTo}]}) => {
+          if (nodeId == terminalId) {
+            linkList.push({
+              id: linkIdSeq,
+              pins: [
+                {pinKey: pFrom, nodeId: nFrom},
+                {pinKey: pTo, nodeId: oldToNewId[nTo]},
+              ]
+            });
+            linkIdSeq += 1;
+          }
+        });
+      }
+    );
+
+    // relink patchnode inputs
+    R.filter(
+      ([{ nodeId }, _]) => nodeId == pnId,
+      patchNodeInstOutputPins
+    ).forEach(
+      ([{pinKey: terminal}, {nodeId: nTo, pinKey: pTo}]) => {
+        const terminalId = R.last(R.split('_', terminal));
+        links.forEach(({pins: [{nodeId: nFrom, pinKey: pFrom}, {nodeId}]}) => {
+          if (nodeId == terminalId) {
+            linkList.push({
+              id: linkIdSeq,
+              pins: [
+                {pinKey: pFrom, nodeId: oldToNewId[nFrom]},
+                {pinKey: pTo, nodeId: nTo},
+              ]
+            });
+            linkIdSeq += 1;
+          }
+        });
+      }
+    );
+  });
+  // -----------------------------------------------------------
+
+  const usedNodeTypeIds = R.pluck('typeId', nodeList);
   const usedNodeTypes = R.pick(usedNodeTypeIds, nodeTypes);
 
   // :: Node -> NodeType
@@ -137,7 +326,7 @@ export default function transform(project, implPlatforms = []) {
     R.objOf('outLinks', nodeOutLinks(node)),
   ]);
 
-  const transformedNodes = R.map(transformedNode, nodes);
+  const transformedNodes = R.map(transformedNode, nodeList);
 
   // :: NodeType -> ImplementationString
   const nodeTypeImpl = R.compose(
