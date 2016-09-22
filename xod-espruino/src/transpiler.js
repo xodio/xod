@@ -13,11 +13,20 @@ function transpileImpl(impl) {
     R.mapObjIndexed(
       (code, implId) => {
         const itemRef = `impl['${implId}']`;
-        return joinLines([
+        let lines = [];
+
+        if (/^core\/input/.test(implId) || /^core\/output/.test(implId)) {
+          lines = [`${itemRef} = identityNode();`];
+        } else {
+          lines = [
+            `${itemRef} = {};`,
+            `(function(module, exports) {${code}})({exports: ${itemRef}}, ${itemRef});`,
+          ];
+        }
+
+        return joinLines(R.concat([
           '// ---------------------------------------------------------------------',
-          `${itemRef} = {};`,
-          `(function(module, exports) {${code}})({exports: ${itemRef}}, ${itemRef});`,
-        ]);
+        ], lines));
       }
     )
   );

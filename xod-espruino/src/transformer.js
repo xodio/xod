@@ -129,6 +129,9 @@ export default function transform(project, implPlatforms = []) {
     R.propOr('', 'typeId')
   );
 
+  let nodeIdSeq = maxIdOf(allPatches, "nodes") + 1;
+  let linkIdSeq = maxIdOf(allPatches, "links") + 1;
+
   const patchNodeInstIds = R.compose(
     R.pluck('id'),
     R.filter(isPatchNodeInstance),
@@ -167,40 +170,30 @@ export default function transform(project, implPlatforms = []) {
     R.filter(({typeId}) => R.test(RegExp('^' + prefix), typeId))
   );
 
-  let nodeIdSeq = maxIdOf(allPatches, "nodes") + 1;
-  let linkIdSeq = maxIdOf(allPatches, "links") + 1;
-
   patchNodeInstIds.forEach(pnId => {
     const { nodes, links } = getPatchNodeById(pnId);
-    const inputIds = R.pluck('id', R.filter(isInputNode, nodes));
-    const outputIds = R.pluck('id', R.filter(isOutputNode, nodes));
-    const terminals = R.concat(inputIds, outputIds);
 
-    // push non-terminal nodes
+    // push nodes
     let oldToNewId = {};
-    nodes.forEach(n => {
-      if (!R.contains(n.id, terminals)) {
-        const newId = nodeIdSeq;
-        oldToNewId[n.id] = newId;
-        nodeList.push(R.assoc('id', newId, n));
-        nodeIdSeq += 1;
-      }
+    nodes.forEach(node => {
+      const newId = nodeIdSeq;
+      oldToNewId[node.id] = newId;
+      nodeList.push(R.assoc('id', newId, node));
+      nodeIdSeq += 1;
     });
 
     // push internal links
     links.forEach(link => {
       const {pins: [{nodeId: nFrom, pinKey: pFrom},
                     {nodeId: nTo, pinKey: pTo}]} = link;
-      if (!R.contains(nFrom, terminals) && !R.contains(nTo, terminals)) {
-        linkList.push({
-          id: linkIdSeq,
-          pins: [
-            {pinKey: pFrom, nodeId: oldToNewId[nFrom]},
-            {pinKey: pTo, nodeId: oldToNewId[nTo]},
-          ]
-        });
-        linkIdSeq += 1;
-      }
+      linkList.push({
+        id: linkIdSeq,
+        pins: [
+          {pinKey: pFrom, nodeId: oldToNewId[nFrom]},
+          {pinKey: pTo, nodeId: oldToNewId[nTo]},
+        ]
+      });
+      linkIdSeq += 1;
     });
 
     // relink patchnode inputs
@@ -208,42 +201,34 @@ export default function transform(project, implPlatforms = []) {
       ([_, { nodeId }]) => nodeId == pnId,
       patchNodeInstInputPins
     ).forEach(
-      ([{nodeId: nFrom, pinKey: pFrom}, {pinKey: terminal}]) => {
+      ([source, {pinKey: terminal}]) => {
         const terminalId = R.last(R.split('_', terminal));
-        links.forEach(({pins: [{nodeId}, {nodeId: nTo, pinKey: pTo}]}) => {
-          if (nodeId == terminalId) {
-            linkList.push({
-              id: linkIdSeq,
-              pins: [
-                {pinKey: pFrom, nodeId: nFrom},
-                {pinKey: pTo, nodeId: oldToNewId[nTo]},
-              ]
-            });
-            linkIdSeq += 1;
-          }
+        linkList.push({
+          id: linkIdSeq,
+          pins: [
+            source,
+            {pinKey: 'IN', nodeId: oldToNewId[terminalId]},
+          ]
         });
+        linkIdSeq += 1;
       }
     );
 
-    // relink patchnode inputs
+    // relink patchnode outputs
     R.filter(
       ([{ nodeId }, _]) => nodeId == pnId,
       patchNodeInstOutputPins
     ).forEach(
-      ([{pinKey: terminal}, {nodeId: nTo, pinKey: pTo}]) => {
+      ([{pinKey: terminal}, target]) => {
         const terminalId = R.last(R.split('_', terminal));
-        links.forEach(({pins: [{nodeId: nFrom, pinKey: pFrom}, {nodeId}]}) => {
-          if (nodeId == terminalId) {
-            linkList.push({
-              id: linkIdSeq,
-              pins: [
-                {pinKey: pFrom, nodeId: oldToNewId[nFrom]},
-                {pinKey: pTo, nodeId: nTo},
-              ]
-            });
-            linkIdSeq += 1;
-          }
+        linkList.push({
+          id: linkIdSeq,
+          pins: [
+            {pinKey: 'OUT', nodeId: oldToNewId[terminalId]},
+            target,
+          ]
         });
+        linkIdSeq += 1;
       }
     );
   });
@@ -326,7 +311,13 @@ export default function transform(project, implPlatforms = []) {
     R.objOf('outLinks', nodeOutLinks(node)),
   ]);
 
-  const transformedNodes = R.map(transformedNode, nodeList);
+  const transformedNodes = R.compose(
+    R.fromPairs,
+    R.map(R.compose(
+      n => [n.id, n],
+      transformedNode
+    ))
+  )(nodeList);
 
   // :: NodeType -> ImplementationString
   const nodeTypeImpl = R.compose(

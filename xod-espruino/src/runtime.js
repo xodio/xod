@@ -2,7 +2,14 @@
 function nullFunc() {}
 
 var PULSE = {type: 'pulse'};
+
 var identity = function(x) { return x; };
+
+function identityNode() {
+  return {
+     evaluate: function(e) { return {PIN: e.inputs.PIN}; }
+  };
+}
 
 /**
   * @typedef {{
