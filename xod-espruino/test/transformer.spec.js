@@ -384,7 +384,7 @@ describe('Transformer', () => {
       nodeTypes: R.merge(ioTypes, buttonAndLedTypes)
     });
 
-    assert(hasTopology(result, [
+    assert(hasTopology(result)([
       [102, 'button'],
       [103, 'core/outputBool'],
       [101, 'led']
@@ -428,12 +428,11 @@ describe('Transformer', () => {
       nodeTypes: R.merge(ioTypes, buttonAndLedTypes)
     });
 
-    assert(R.equals(
-      R.map(id => [id, result.nodes[id].implId], result.topology)
-      [[100, 'button'],
-       [102, 'core/inputBool'], // terminals receive its ids after nodes
-       [103, 'led']]
-    ));
+    assert(hasTopology(result)([
+      [100, 'button'],
+      [102, 'core/inputBool'], // terminals receive its ids after nodes
+      [103, 'led']
+    ]));
 
     assert(hasLink(result,
                    [100, 'state', 'PIN', 102]),
@@ -511,26 +510,18 @@ describe('Transformer', () => {
       },
       nodeTypes: R.merge(ioTypes, buttonAndLedTypes)
     });
-/*
-    assert(hasTopology(result, [
-      [100, 'button'],
-      [103, 'core/inputBool'],
-      [103, 'core/inputBool'],
-      [103, 'core/outputBool'],
-      [103, 'core/outputBool'],
-      [103, 'core/inputBool'],
-      [103, 'core/outputBool'],
-      [101, 'led']
-    ]));
-/*
-    assert(hasLink(result,
-                   [102, 'state', 'PIN', 103]),
-           'button should be connected to outputBool');
 
-    assert(hasLink(result,
-                   [103, 'PIN', 'brightness', 101]),
-           'outputBool should be connected to led');
-*/
+    assert(hasTopology(result)([
+      [100, 'button'],
+      [104, 'core/inputBool'],
+      [109, 'core/inputBool'],
+      [110, 'core/outputBool'],
+      [106, 'core/outputBool'],
+      [107, 'core/inputBool'],
+      [108, 'core/outputBool'],
+      [103, 'led']
+    ]));
+
   });
 
 });
