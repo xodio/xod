@@ -5,11 +5,13 @@ var PULSE = {type: 'pulse'};
 
 var identity = function(x) { return x; };
 
+/* eslint-disable no-unused-vars */
 function identityNode() {
   return {
      evaluate: function(e) { return {PIN: e.inputs.PIN}; }
   };
 }
+/* eslint-enable no-unused-vars */
 
 /**
   * @typedef {{
