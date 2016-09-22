@@ -43,8 +43,10 @@ const maxIdOf = (patches, key) => R.compose(
 
 // -------------- TODO: move to xod-core? (with all other selectors) --------
 
-const isInputNode = R.propSatisfies(R.test(/^core\/input/), 'typeId');
-const isOutputNode = R.propSatisfies(R.test(/^core\/output/), 'typeId');
+const _mkTypeTest = regex =>
+        (node, prop='typeId') => R.propSatisfies(R.test(regex), prop, node);
+const isInputNode = _mkTypeTest(/^core\/input/);
+const isOutputNode = _mkTypeTest(/^core\/output/);
 
 // :: Patch -> Boolean
 const isPatchNodeType = R.compose(
@@ -52,14 +54,6 @@ const isPatchNodeType = R.compose(
   R.values,
   R.propOr({}, 'nodes')
 );
-
-// --------------------------------------------------------------------------
-const dump = (title, data) => {
-  /*
-  console.log(title, JSON.stringify(data, null, '  '),
-              '\n*************************************');
-  */
-};
 
 /**
   * Transforms JSON data as it seen it *.xod files to
@@ -87,9 +81,6 @@ export default function transform(project, implPlatforms = []) {
   // :: String -> {a} -- extacts a specific key branch from the merged patch
   const mergedEntities = key => R.propOr({}, key)(mergedPatch);
 
-  const allNodes = mergedEntities('nodes');
-  const allLinks = mergedEntities('links');
-
   // type PatchNode = {nodes :: [Node], links :: [Link]}
 
   // :: {patchNode.name: PatchNode}
@@ -107,14 +98,6 @@ export default function transform(project, implPlatforms = []) {
     R.values
   )(allPatches);
 
-  // :: Int -> PatchNode
-  const getPatchNodeById = R.compose(
-    R.prop(R.__, patchNodesByName),
-    R.last, R.split('/'),
-    R.prop('typeId'),
-    R.prop(R.__, allNodes)
-  );
-
   // :: Node -> Boolean
   // "true", if node is instance of one of @patchNodesByName
   // and its .typeId is not in @nodeTypes
@@ -129,56 +112,65 @@ export default function transform(project, implPlatforms = []) {
     R.propOr('', 'typeId')
   );
 
+  let allNodes = mergedEntities('nodes');
+  let allLinks = mergedEntities('links');
+
   let nodeIdSeq = maxIdOf(allPatches, "nodes") + 1;
   let linkIdSeq = maxIdOf(allPatches, "links") + 1;
 
-  const patchNodeInstIds = R.compose(
-    R.pluck('id'),
-    R.filter(isPatchNodeInstance),
-    R.values
-  )(allNodes);
+  // performs one iteration of patchnode injection
+  function populate() {
 
-  const patchNodeInstInputLinks = R.pickBy(
-    ({pins: [_, {nodeId}]}) => R.contains(nodeId, patchNodeInstIds),
-    allLinks
-  );
-  const patchNodeInstOutputLinks = R.pickBy(
-    ({pins: [{nodeId}, _]}) => R.contains(nodeId, patchNodeInstIds),
-    allLinks
-  );
+    const patchNodeInstId = R.compose(
+      R.head,
+      R.pluck('id'),
+      R.filter(isPatchNodeInstance),
+      R.values
+    )(allNodes);
 
-  const linksToPins = R.compose(R.pluck('pins'), R.values);
-  const patchNodeInstInputPins = linksToPins(patchNodeInstInputLinks);
-  const patchNodeInstOutputPins = linksToPins(patchNodeInstOutputLinks);
+    if (R.isNil(patchNodeInstId)) {
+      // no patchnodes to inject
+      return true;
+    };
 
-  const cleanedLinks = R.omit(
-    R.concat(R.keys(patchNodeInstInputLinks), R.keys(patchNodeInstOutputLinks)),
-    allLinks
-  );
+    const patchNodeInstInputLinks = R.pickBy(
+      ({pins: [_, {nodeId}]}) => nodeId == patchNodeInstId,
+      allLinks
+    );
+    const patchNodeInstOutputLinks = R.pickBy(
+      ({pins: [{nodeId}, _]}) => nodeId == patchNodeInstId,
+      allLinks
+    );
 
-  const cleanedNodes = R.omit(R.map(String, patchNodeInstIds), allNodes);
+    const linksToPins = R.compose(R.pluck('pins'), R.values);
+    const patchNodeInstInputPins = linksToPins(patchNodeInstInputLinks);
+    const patchNodeInstOutputPins = linksToPins(patchNodeInstOutputLinks);
 
-  // -----------------------------------------------------------
+    const cleanedLinks = R.omit(
+      R.concat(R.keys(patchNodeInstInputLinks), R.keys(patchNodeInstOutputLinks)),
+      allLinks
+    );
 
-  let nodeList = [];
-  let linkList = [];
-  R.values(cleanedNodes).forEach(l => nodeList.push(l));
-  R.values(cleanedLinks).forEach(l => linkList.push(l));
+    const cleanedNodes = R.dissoc(patchNodeInstId.toString(), allNodes);
 
-  const idsByTypeIdPrefix = prefix => R.compose(
-    R.pluck('id'),
-    R.filter(({typeId}) => R.test(RegExp('^' + prefix), typeId))
-  );
+    let newNodes = {};
+    let newLinks = {};
+    R.values(cleanedNodes).forEach(n => { newNodes[n.id.toString()] = n; });
+    R.values(cleanedLinks).forEach(l => { newLinks[l.id.toString()] = l; });
 
-  patchNodeInstIds.forEach(pnId => {
-    const { nodes, links } = getPatchNodeById(pnId);
+    const { nodes, links } = R.compose(
+      R.prop(R.__, patchNodesByName),
+      R.last, R.split('/'),
+      R.prop('typeId'),
+      R.prop(R.__, allNodes)
+    )(patchNodeInstId);
 
     // push nodes
     let oldToNewId = {};
     nodes.forEach(node => {
       const newId = nodeIdSeq;
       oldToNewId[node.id] = newId;
-      nodeList.push(R.assoc('id', newId, node));
+      newNodes[newId.toString()] = R.assoc('id', newId, node);
       nodeIdSeq += 1;
     });
 
@@ -186,53 +178,61 @@ export default function transform(project, implPlatforms = []) {
     links.forEach(link => {
       const {pins: [{nodeId: nFrom, pinKey: pFrom},
                     {nodeId: nTo, pinKey: pTo}]} = link;
-      linkList.push({
+      newLinks[linkIdSeq.toString()] = {
         id: linkIdSeq,
         pins: [
           {pinKey: pFrom, nodeId: oldToNewId[nFrom]},
           {pinKey: pTo, nodeId: oldToNewId[nTo]},
         ]
-      });
+      };
       linkIdSeq += 1;
     });
 
     // relink patchnode inputs
     R.filter(
-      ([_, { nodeId }]) => nodeId == pnId,
+      ([_, { nodeId }]) => nodeId == patchNodeInstId,
       patchNodeInstInputPins
     ).forEach(
       ([source, {pinKey: terminal}]) => {
         const terminalId = R.last(R.split('_', terminal));
-        linkList.push({
+        newLinks[linkIdSeq.toString()] = {
           id: linkIdSeq,
           pins: [
             source,
-            {pinKey: 'IN', nodeId: oldToNewId[terminalId]},
+            {pinKey: 'PIN', nodeId: oldToNewId[terminalId]},
           ]
-        });
+        };
         linkIdSeq += 1;
       }
     );
 
     // relink patchnode outputs
     R.filter(
-      ([{ nodeId }, _]) => nodeId == pnId,
+      ([{ nodeId }, _]) => nodeId == patchNodeInstId,
       patchNodeInstOutputPins
     ).forEach(
       ([{pinKey: terminal}, target]) => {
         const terminalId = R.last(R.split('_', terminal));
-        linkList.push({
+        newLinks[linkIdSeq.toString()] = {
           id: linkIdSeq,
           pins: [
-            {pinKey: 'OUT', nodeId: oldToNewId[terminalId]},
+            {pinKey: 'PIN', nodeId: oldToNewId[terminalId]},
             target,
           ]
-        });
+        };
         linkIdSeq += 1;
       }
     );
-  });
-  // -----------------------------------------------------------
+
+    allNodes = newNodes;
+    allLinks = newLinks;
+    return false;
+  };
+
+  while(!populate()){};
+
+  const nodeList = R.values(allNodes);
+  const linkList = R.values(allLinks);
 
   const usedNodeTypeIds = R.pluck('typeId', nodeList);
   const usedNodeTypes = R.pick(usedNodeTypeIds, nodeTypes);
@@ -266,8 +266,13 @@ export default function transform(project, implPlatforms = []) {
 
   // :: NodeType -> TransformedNodeType
   const transformedNodeType = nodeType => R.merge(
-    R.pick(['pure'])(nodeType),
-    R.objOf('inputTypes', inputTypes(nodeType))
+    R.pick(['pure'], nodeType),
+    R.objOf(
+      'inputTypes',
+      isInputNode(nodeType, 'key')
+        ? {PIN: nativeType(nodeType.pins.PIN.type)}
+        : inputTypes(nodeType)
+    )
   );
 
   // :: Node -> [Link]
@@ -311,13 +316,7 @@ export default function transform(project, implPlatforms = []) {
     R.objOf('outLinks', nodeOutLinks(node)),
   ]);
 
-  const transformedNodes = R.compose(
-    R.fromPairs,
-    R.map(R.compose(
-      n => [n.id, n],
-      transformedNode
-    ))
-  )(nodeList);
+  const transformedNodes = R.map(transformedNode, allNodes);
 
   // :: NodeType -> ImplementationString
   const nodeTypeImpl = R.compose(
