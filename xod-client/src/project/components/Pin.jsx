@@ -2,7 +2,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import { PIN_DIRECTION, PIN_VALIDITY } from '../constants';
-import { PROPERTY_MODE } from 'xod-client/project/constants';
 
 
 export default class Pin extends React.Component {
@@ -81,7 +80,7 @@ export default class Pin extends React.Component {
   }
 
   isProperty() {
-    return (this.props.mode === PROPERTY_MODE.PROP);
+    return !!this.props.injected;
   }
 
   render() {
@@ -128,7 +127,7 @@ export default class Pin extends React.Component {
 Pin.propTypes = {
   nodeId: React.PropTypes.number.isRequired,
   keyName: React.PropTypes.string.isRequired,
-  mode: React.PropTypes.string,
+  injected: React.PropTypes.bool,
   pinLabel: React.PropTypes.string,
   direction: React.PropTypes.string.isRequired,
   position: React.PropTypes.object.isRequired,

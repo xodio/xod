@@ -10,7 +10,7 @@
   }, {
     key: 'pulse',
     type: 'pulse',
-    mode: 'property',
+    injected: true,
     pinLabel: 'PLS',
     label: 'Pulse',
     value: 0

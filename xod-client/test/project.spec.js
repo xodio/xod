@@ -66,7 +66,7 @@ describe('Project reducer: ', () => {
             in: {
               index: 1,
               direction: 'input',
-              mode: 'prop',
+              injected: true,
               key: 'in',
               type: 'number',
             },
@@ -102,6 +102,7 @@ describe('Project reducer: ', () => {
         1: {
           id: 1,
           typeId: 'core/test',
+          pins: {},
           position: {
             x: 10,
             y: 10,
@@ -248,7 +249,7 @@ describe('Project reducer: ', () => {
 
   describe('Add link', () => {
     const patchPath = ['project', 'patches', 1];
-    const nullPin = { mode: 'pin', value: null };
+    const nullPin = { value: null };
     const testPins = { in: nullPin, out: nullPin };
     const nullPos = { x: 0, y: 0 };
     const mockState = R.pipe(

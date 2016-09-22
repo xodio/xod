@@ -1,17 +1,15 @@
 import React from 'react';
 import Switch from 'rc-switch';
-import { PROPERTY_MODE } from 'xod-client/project/constants';
 import { Icon } from 'react-fa';
 
-function InspectorModeSwitch({ mode, onSwitch }) {
-  const checked = (mode === PROPERTY_MODE.PROP);
+function InspectorModeSwitch({ injected, onSwitch }) {
   const iconProp = <Icon name="caret-down" />;
   const iconPin = <Icon name="circle-o" />;
 
   return (
     <Switch
       className="InspectorModeSwitch"
-      checked={checked}
+      checked={injected}
       onChange={onSwitch}
       checkedChildren={iconProp}
       unCheckedChildren={iconPin}
@@ -20,7 +18,7 @@ function InspectorModeSwitch({ mode, onSwitch }) {
 }
 
 InspectorModeSwitch.propTypes = {
-  mode: React.PropTypes.string,
+  injected: React.PropTypes.bool,
   onSwitch: React.PropTypes.func,
 };
 

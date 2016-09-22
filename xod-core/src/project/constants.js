@@ -51,16 +51,6 @@ export const PROPERTY_KIND = {
   PROP: 'property',
 };
 
-export const PROPERTY_KIND_PLURAL = {
-  PIN: 'pins',
-  PROP: 'properties',
-};
-
-export const PROPERTY_MODE = {
-  PIN: 'pin',
-  PROP: 'property',
-};
-
 export const PROPERTY_TYPE_PARSE = {
   [PROPERTY_TYPE.BOOL]: (v) => !!v,
   [PROPERTY_TYPE.NUMBER]: (v, add) => {

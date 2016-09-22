@@ -9,7 +9,7 @@
   }, {
     key: 'inA',
     type: 'number',
-    mode: 'property',
+    injected: true,
     pinLabel: 'As',
     label: 'Input range start',
     value: 0,
@@ -17,7 +17,7 @@
   }, {
     key: 'inB',
     type: 'number',
-    mode: 'property',
+    injected: true,
     pinLabel: 'Bs',
     label: 'Input range end',
     value: 0,
@@ -25,7 +25,7 @@
   }, {
     key: 'outA',
     type: 'number',
-    mode: 'property',
+    injected: true,
     pinLabel: 'At',
     label: 'Output range start',
     value: 0,
@@ -33,7 +33,7 @@
   }, {
     key: 'outB',
     type: 'number',
-    mode: 'property',
+    injected: true,
     pinLabel: 'Bt',
     label: 'Output range end',
     value: 0,
@@ -41,7 +41,7 @@
   }, {
     key: 'clip',
     type: 'bool',
-    mode: 'property',
+    injected: true,
     pinLabel: 'CL',
     label: 'Clip',
     value: false,

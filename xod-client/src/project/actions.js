@@ -101,13 +101,13 @@ export const updateNodeProperty =
     });
   };
 
-export const changePinMode = (nodeId, pinKey, pinMode) => (dispatch, getState) => {
+export const changePinMode = (nodeId, pinKey, injected) => (dispatch, getState) => {
   const projectState = Selectors.getProject(getState());
   const preparedData = Selectors.prepareToChangePinMode(
     projectState,
     nodeId,
     pinKey,
-    pinMode
+    injected
   );
 
   if (preparedData.error) {

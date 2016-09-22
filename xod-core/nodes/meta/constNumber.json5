@@ -4,14 +4,14 @@
   inputs: [{
     key: 'value',
     type: 'number',
-    mode: 'property',
+    injected: true,
     pinLabel: 'VAL',
     label: 'Value',
     value: 0
   }, {
     key: 'pulse',
     type: 'pulse',
-    mode: 'property',
+    injected: true,
     pinLabel: 'PLS',
     label: 'Pulse',
     value: 0

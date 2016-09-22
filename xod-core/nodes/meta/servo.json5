@@ -3,21 +3,20 @@
   inputs: [{
     key: 'minPulse',
     type: 'number',
-    mode: 'property',
+    injected: true,
     pinLabel: 'MIN',
     label: 'Min Pulse (μs)',
     value: 700
   }, {
     key: 'maxPulse',
     type: 'number',
-    mode: 'property',
+    injected: true,
     pinLabel: 'MAX',
     label: 'Max Pulse (μs)',
     value: 2300
   }, {
     key: 'value',
     type: 'number',
-    mode: 'pin',
     pinLabel: 'VAL',
     label: 'Value',
     value: 1,

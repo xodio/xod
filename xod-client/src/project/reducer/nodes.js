@@ -6,8 +6,6 @@ import {
   NODE_CHANGE_PIN_MODE,
 } from '../actionTypes';
 import {
-  PROPERTY_MODE,
-  PROPERTY_KIND_PLURAL,
   PROPERTY_TYPE_PARSE,
 } from '../constants';
 import R from 'ramda';
@@ -33,14 +31,21 @@ const parseVal = (val, type) => {
   return val;
 };
 
+const getNodePins = R.pipe(
+  R.path(['nodeType', 'pins']),
+  R.pickBy(R.propEq('injected', true)),
+  R.mapObjIndexed(R.pick(['injected', 'value']))
+);
+
 const getPropertyPath = (payload, add) => {
+  const kindPath = (payload.kind === 'pin') ? 'pins' : 'properties';
   const path = [
     payload.id,
-    payload.kind,
+    kindPath,
     payload.key,
   ];
 
-  if (add && payload.kind === PROPERTY_KIND_PLURAL.PIN) {
+  if (add && payload.kind === 'pin') {
     path.push(add);
   }
 
@@ -58,6 +63,7 @@ export const nodes = (state = {}, action) => {
       newNodeId = action.payload.newNodeId;
       newNode = R.set(R.lensProp('id'), newNodeId, {
         typeId: action.payload.typeId,
+        pins: getNodePins(action.payload),
         position: action.payload.position,
         properties: {},
       });
@@ -77,25 +83,16 @@ export const nodes = (state = {}, action) => {
         parseVal(action.payload.value, action.payload.type)
       )(state);
 
-    case NODE_CHANGE_PIN_MODE: {
-      if (action.payload.mode === PROPERTY_MODE.PIN) {
-        return R.dissocPath([
-          action.payload.id,
-          PROPERTY_KIND_PLURAL.PIN,
-          action.payload.key,
-        ], state);
-      }
-
+    case NODE_CHANGE_PIN_MODE:
       return R.assocPath(
         [
           action.payload.id,
-          PROPERTY_KIND_PLURAL.PIN,
+          'pins',
           action.payload.key,
-          'mode',
+          'injected',
         ],
-        action.payload.mode
+        action.payload.injected
       )(state);
-    }
     default:
       return state;
   }

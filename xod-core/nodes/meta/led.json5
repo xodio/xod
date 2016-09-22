@@ -4,7 +4,6 @@
   inputs: [{
     key: 'brightness',
     type: 'number',
-    mode: 'pin',
     label: 'Brightness',
     value: 0,
     description: 'Shine brightness'

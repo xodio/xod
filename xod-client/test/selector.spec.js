@@ -2,7 +2,7 @@ import R from 'ramda';
 import chai from 'chai';
 import initialState from '../src/app-browser/state';
 import Selectors from '../src/app-browser/selectors';
-import { PROPERTY_MODE, PIN_TYPE, PIN_DIRECTION } from '../src/project/constants';
+import { PIN_TYPE, PIN_DIRECTION } from '../src/project/constants';
 import { LINK_ERRORS } from '../src/messages/constants';
 
 describe('Link selector', () => {
@@ -13,12 +13,10 @@ describe('Link selector', () => {
     const inputPin = {
       type: PIN_TYPE.NUMBER,
       direction: PIN_DIRECTION.INPUT,
-      mode: PROPERTY_MODE.PIN,
     };
     const outputPin = {
       type: PIN_TYPE.NUMBER,
       direction: PIN_DIRECTION.OUTPUT,
-      mode: PROPERTY_MODE.PIN,
     };
 
     const makeInputPin = R.flip(R.merge)(inputPin);

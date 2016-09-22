@@ -5,7 +5,6 @@ import {
   ENTITY,
   PROPERTY_TYPE,
   PROPERTY_KIND,
-  PROPERTY_MODE,
   PIN_DIRECTION,
 } from 'xod-core/project/constants';
 
@@ -21,14 +20,14 @@ const widgetAccordance = {
 
 const defaultProp = {
   kind: PROPERTY_KIND.PROP,
-  mode: PROPERTY_MODE.PROP,
+  injected: false,
   type: 'string',
   value: '',
 };
 
 const labelProp = {
   kind: PROPERTY_KIND.PROP,
-  mode: PROPERTY_MODE.PROP,
+  injected: false,
   key: 'label',
   label: 'Label',
   type: 'string',
@@ -84,7 +83,7 @@ class Inspector extends React.Component {
       R.map(pin =>
         R.merge(
           pin,
-          R.pick(['mode', 'value'], node.pins[pin.key])
+          R.pick(['injected', 'value'], node.pins[pin.key])
         )
       ),
       R.map(R.assoc('kind', PROPERTY_KIND.PIN))
@@ -135,7 +134,6 @@ class Inspector extends React.Component {
     const nodeType = props.nodeTypes[node.typeId];
     const properties = this.getInspectableProps(nodeType, node);
 
-
     if (properties.length === 0) {
       this.widgets = [
         new Widgets.HintWidget({
@@ -150,7 +148,7 @@ class Inspector extends React.Component {
             widgetAccordance[ENTITY.NODE][prop.type]
           )
         );
-        const mode = prop.mode || PROPERTY_MODE.PIN;
+        const injected = prop.injected || false;
 
         widgets.push(
           factory({
@@ -159,14 +157,12 @@ class Inspector extends React.Component {
             kind: prop.kind,
             label: prop.label,
             value: prop.value,
-            mode,
+            injected,
             onPropUpdate: (newValue) => {
               this.props.onPropUpdate(node.id, prop.kind, prop.key, newValue);
             },
             onPinModeSwitch: () => {
-              const inversedMode = (mode === PROPERTY_MODE.PIN) ?
-                PROPERTY_MODE.PROP :
-                PROPERTY_MODE.PIN;
+              const inversedMode = !injected;
 
               this.props.onPinModeSwitch(node.id, prop.key, inversedMode);
             },
