@@ -122,14 +122,14 @@ export default function transform(project, implPlatforms = []) {
   function populate() {
 
     const patchNodeInstId = R.compose(
-      R.head,
+      R.reduce(R.min, nodeIdSeq),
       R.pluck('id'),
       R.filter(isPatchNodeInstance),
       R.values
     )(allNodes);
 
-    if (R.isNil(patchNodeInstId)) {
-      // no patchnodes to inject
+    if (patchNodeInstId == nodeIdSeq) {
+      // no nodeId with (id < maxId) found => no patchnodes to inject
       return true;
     };
 
