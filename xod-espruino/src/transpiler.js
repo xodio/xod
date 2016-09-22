@@ -54,9 +54,9 @@ function transpileNodes(nodes) {
     joinLineBlocks,
     R.values,
     R.mapObjIndexed(
-      (node, nodeId) => {
+      (node) => {
         const nodeJson = JSON.stringify(injectFuncRefs(node), replacer, 2);
-        const template = `nodes['${nodeId}'] = new Node(${nodeJson});`;
+        const template = `nodes['${node.id}'] = new Node(${nodeJson});`;
         const statement = template.replace(/"__PLACEHOLDER__@@(.+)@@__"/g, '$1');
         return statement;
       }
