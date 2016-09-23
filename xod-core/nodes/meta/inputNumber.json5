@@ -2,7 +2,7 @@
   label: '<InputNumber>',
   category: 'io',
   outputs: [{
-    key: 'IN',
+    key: 'PIN',
     type: 'number',
   }],
   properties: [{

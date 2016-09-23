@@ -2,7 +2,7 @@
   label: '<OutputBool>',
   category: 'io',
   inputs: [{
-    key: 'OUT',
+    key: 'PIN',
     type: 'bool',
   }],
   properties: [{

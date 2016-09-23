@@ -13,11 +13,21 @@ function transpileImpl(impl) {
     R.mapObjIndexed(
       (code, implId) => {
         const itemRef = `impl['${implId}']`;
-        return joinLines([
+        let lines = [];
+
+        // TODO: move such predicates to xod-core
+        if (/^core\/input/.test(implId) || /^core\/output/.test(implId)) {
+          lines = [`${itemRef} = identityNode();`];
+        } else {
+          lines = [
+            `${itemRef} = {};`,
+            `(function(module, exports) {${code}})({exports: ${itemRef}}, ${itemRef});`,
+          ];
+        }
+
+        return joinLines(R.concat([
           '// ---------------------------------------------------------------------',
-          `${itemRef} = {};`,
-          `(function(module, exports) {${code}})({exports: ${itemRef}}, ${itemRef});`,
-        ]);
+        ], lines));
       }
     )
   );
@@ -54,9 +64,9 @@ function transpileNodes(nodes) {
     joinLineBlocks,
     R.values,
     R.mapObjIndexed(
-      (node, nodeId) => {
+      (node) => {
         const nodeJson = JSON.stringify(injectFuncRefs(node), replacer, 2);
-        const template = `nodes['${nodeId}'] = new Node(${nodeJson});`;
+        const template = `nodes['${node.id}'] = new Node(${nodeJson});`;
         const statement = template.replace(/"__PLACEHOLDER__@@(.+)@@__"/g, '$1');
         return statement;
       }
