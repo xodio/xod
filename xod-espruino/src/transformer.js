@@ -41,12 +41,13 @@ const maxIdOf = (patches, key) => R.compose(
   R.values
 )(patches);
 
-// -------------- TODO: move to xod-core? (with all other selectors) --------
-
+// ----------------
+// TODO: move to xod-core? (with all other selectors)
 const _mkTypeTest = regex =>
         (node, prop='typeId') => R.propSatisfies(R.test(regex), prop, node);
 const isInputNode = _mkTypeTest(/^core\/input/);
 const isOutputNode = _mkTypeTest(/^core\/output/);
+// ----------------
 
 // :: Patch -> Boolean
 const isPatchNodeType = R.compose(
