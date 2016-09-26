@@ -4,17 +4,9 @@
   "description": "XOD project: Core",
   "scripts": {
     "dev": "npm-watch",
-    "build": "babel src/ -d dist/",
+    "build": "babel --watch src/ -d dist/",
     "lint": "eslint ./src ./nodes ./test || true",
     "test": "mocha --require babel-register test/**/*.js"
-  },
-  "watch": {
-    "build": {
-      "patterns": [
-        "src"
-      ],
-      "extensions": "js"
-    }
   },
   "repository": {},
   "keywords": [],
@@ -41,7 +33,6 @@
     "json5": "<0.5.0",
     "mocha": "^2.3.4",
     "npm-run-all": "^2.3.0",
-    "npm-watch": "^0.1.6",
     "source-map-support": "^0.4.2"
   }
 }
