@@ -1,4 +1,5 @@
 install:
+	npm install
 	cd xod-core     && npm install
 	cd xod-espruino && npm install
 	cd xod-client   && npm install
@@ -35,7 +36,7 @@ dev-server:
 	cd xod-server   && npm run dev
 
 dev:
-	npm run concurrently -- "make dev-core" "make dev-espruino" "make dev-client"
+	npm run concurrently -- --kill-others "make dev-core" "make dev-espruino" "make dev-client"
 
 ci: install build lint test
 
