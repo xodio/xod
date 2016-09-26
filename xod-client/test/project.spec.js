@@ -6,7 +6,11 @@ import generateReducers from '../src/app-browser/reducer';
 import { nodes } from '../src/project/reducer/nodes';
 import * as Actions from '../src/project/actions';
 import * as PrepareTo from '../src/project/actionPreparations';
-import { PROPERTY_ERRORS, LINK_ERRORS, NODETYPE_ERRORS } from '../src/project/constants';
+import {
+  PROPERTY_ERRORS,
+  LINK_ERRORS,
+  NODETYPE_ERRORS,
+} from 'xod-core/project/constants';
 import * as Selectors from '../src/project/selectors';
 
 function pin(nodeId, pinKey) {

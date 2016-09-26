@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { noop } from 'xod-client/utils/ramda';
-import { PROPERTY_TYPE_PARSE } from 'xod-client/project/constants';
+import { PROPERTY_TYPE_PARSE } from 'xod-core/project/constants';
 
 function BoolWidget({ keyName, label, value, disabled, onPropUpdate }) {
   const elementId = `widget_${keyName}`;

@@ -46,11 +46,6 @@ export const PROPERTY_TYPE = {
   PULSE: 'pulse',
 };
 
-export const PROPERTY_KIND = {
-  PIN: 'pin',
-  PROP: 'property',
-};
-
 export const PROPERTY_DEFAULT_VALUE = {
   BOOL: false,
   NUMBER: 0,

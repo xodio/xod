@@ -7,7 +7,7 @@ import {
 } from '../actionTypes';
 import {
   PROPERTY_TYPE_PARSE,
-} from '../constants';
+} from 'xod-core/project/constants';
 import R from 'ramda';
 
 export const copyNode = (node) => R.clone(node);

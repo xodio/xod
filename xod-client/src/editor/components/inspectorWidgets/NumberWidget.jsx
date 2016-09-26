@@ -3,7 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { KEYCODE } from 'xod-client/utils/constants';
 import { noop } from 'xod-client/utils/ramda';
-import { PROPERTY_TYPE_PARSE } from 'xod-client/project/constants';
+import { PROPERTY_TYPE_PARSE } from 'xod-core/project/constants';
 
 
 class NumberWidget extends React.Component {

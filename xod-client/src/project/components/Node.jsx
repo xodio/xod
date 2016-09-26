@@ -5,7 +5,7 @@ import Pin from './Pin';
 import NodeText from './NodeText';
 import { noop } from 'xod-client/utils/ramda';
 
-import { SIZE } from '../constants';
+import { SIZE } from 'xod-core/project/constants';
 
 class Node extends React.Component {
   constructor(props) {

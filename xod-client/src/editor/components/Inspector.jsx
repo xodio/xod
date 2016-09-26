@@ -4,18 +4,20 @@ import Widgets from './inspectorWidgets';
 import { noop } from 'xod-client/utils/ramda';
 import {
   ENTITY,
-  PROPERTY_TYPE,
-  PROPERTY_KIND,
   PIN_DIRECTION,
 } from 'xod-core/project/constants';
+import {
+  WIDGET_TYPE,
+  PROPERTY_KIND,
+} from 'xod-client/project/constants';
 
 const widgetAccordance = {
   [ENTITY.NODE]: {
-    [PROPERTY_TYPE.BOOL]: Widgets.BoolWidget,
-    [PROPERTY_TYPE.NUMBER]: Widgets.NumberWidget,
-    [PROPERTY_TYPE.STRING]: Widgets.StringWidget,
-    [PROPERTY_TYPE.PULSE]: Widgets.PulseWidget,
-    // [PROPERTY_TYPE.IO_LABEL]: Widgets.IOLabelWidget, // @TODO: use special field widget
+    [WIDGET_TYPE.BOOL]: Widgets.BoolWidget,
+    [WIDGET_TYPE.NUMBER]: Widgets.NumberWidget,
+    [WIDGET_TYPE.STRING]: Widgets.StringWidget,
+    [WIDGET_TYPE.PULSE]: Widgets.PulseWidget,
+    [WIDGET_TYPE.IO_LABEL]: Widgets.IOLabelWidget,
   },
 };
 
@@ -144,9 +146,10 @@ class Inspector extends React.Component {
     } else {
       const widgets = [];
       properties.forEach((prop) => {
+        const widgetType = prop.widget || prop.type;
         const factory = React.createFactory(
           Widgets.composeWidget(
-            widgetAccordance[ENTITY.NODE][prop.type]
+            widgetAccordance[ENTITY.NODE][widgetType]
           )
         );
         const injected = prop.injected || false;

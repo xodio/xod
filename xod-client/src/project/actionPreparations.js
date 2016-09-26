@@ -1,10 +1,7 @@
 import R from 'ramda';
 import * as Selectors from './selectors';
-import {
-  PIN_DIRECTION,
-  PROPERTY_KIND,
-  PROPERTY_ERRORS,
-} from './constants';
+import { PIN_DIRECTION, PROPERTY_ERRORS } from 'xod-core/project/constants';
+import { PROPERTY_KIND } from 'xod-client/project/constants';
 
 export const addPatch = (projectState, name, folderId) => {
   const newId = Selectors.getLastPatchId(projectState) + 1;

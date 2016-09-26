@@ -9,6 +9,7 @@
   properties: [{
     key: 'pinLabel',
     type: 'string',
+    widget: 'IOLabel',
     label: 'Pin label',
     value: '',
   }]
