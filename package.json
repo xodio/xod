@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "concurrently": "concurrently"
+  },
+  "devDependencies": {
+    "concurrently": "^2.2.0"
+  }
+}
