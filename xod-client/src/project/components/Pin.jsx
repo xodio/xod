@@ -78,7 +78,7 @@ export default class Pin extends React.Component {
     return (this.getDirection() === PIN_DIRECTION.OUTPUT);
   }
 
-  isProperty() {
+  isInjected() {
     return !!this.props.injected;
   }
 
@@ -94,16 +94,16 @@ export default class Pin extends React.Component {
     ) : null;
 
     const cls = classNames('Pin', {
-      'is-property': this.isProperty(),
+      'is-property': this.isInjected(),
       'is-selected': this.props.isSelected,
       'is-valid': this.props.validness === PIN_VALIDITY.VALID,
       'is-almost-valid': this.props.validness === PIN_VALIDITY.ALMOST,
     });
 
-    const onMouseOver = !this.isProperty() ? this.handleOver : noop;
-    const onMouseOut = !this.isProperty() ? this.handleOut : noop;
+    const onMouseOver = !this.isInjected() ? this.handleOver : noop;
+    const onMouseOut = !this.isInjected() ? this.handleOut : noop;
 
-    const symbol = !this.isProperty() ?
+    const symbol = !this.isInjected() ?
       <circle className="symbol" {...this.getCircleProps()} /> :
       <polygon className="symbol" {...this.getTriangleProps()} />;
 

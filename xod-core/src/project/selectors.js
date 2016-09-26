@@ -831,14 +831,14 @@ export const validateLink = (state, linkData) => {
 
   const sameDirection = pin1.direction === pin2.direction;
   const sameNode = pin1.nodeId === pin2.nodeId;
-  const allPinsInPinMode = !pinIsInjected(pin1) && !pinIsInjected(pin2);
+  const allPinsEjected = !pinIsInjected(pin1) && !pinIsInjected(pin2);
   const pin1CanHaveMoreLinks = canPinHaveMoreLinks(pin1, linksState);
   const pin2CanHaveMoreLinks = canPinHaveMoreLinks(pin2, linksState);
 
   const check = (
     !sameDirection &&
     !sameNode &&
-    allPinsInPinMode &&
+    allPinsEjected &&
     pin1CanHaveMoreLinks &&
     pin2CanHaveMoreLinks
   );
@@ -855,7 +855,7 @@ export const validateLink = (state, linkData) => {
     if (!pin1CanHaveMoreLinks || !pin2CanHaveMoreLinks) {
       error = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
     } else 
-    if (!allPinsInPinMode) {
+    if (!allPinsEjected) {
       error = LINK_ERRORS.PROP_CANT_HAVE_LINKS;
     } else {
       error = LINK_ERRORS.UNKNOWN_ERROR;
@@ -877,11 +877,11 @@ export const validatePin = (state, pin) => {
   const pinData = getPin(pin);
 
   const pinCanHaveMoreLinks = canPinHaveMoreLinks(pinData, linksState);
-  const pinIsInPinMode = !pinIsInjected(pinData);
+  const pinEjected = !pinIsInjected(pinData);
 
   const check = (
     pinCanHaveMoreLinks &&
-    pinIsInPinMode
+    pinEjected
   );
 
   let error = null;
@@ -890,7 +890,7 @@ export const validatePin = (state, pin) => {
     if (!pinCanHaveMoreLinks) {
       error = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
     } else
-    if (!pinIsInPinMode) {
+    if (!pinEjected) {
       error = LINK_ERRORS.PROP_CANT_HAVE_LINKS;
     } else {
       error = LINK_ERRORS.UNKNOWN_ERROR;
