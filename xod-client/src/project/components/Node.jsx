@@ -1,9 +1,9 @@
-
 import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
 import Pin from './Pin';
 import NodeText from './NodeText';
+import { noop } from 'xod-client/utils/ramda';
 
 import { SIZE } from '../constants';
 
@@ -167,9 +167,9 @@ Node.defaultProps = {
   height: SIZE.NODE.minHeight,
   isSelected: false,
   isGhost: false,
-  onMouseUp: f => f,
-  onMouseDown: f => f,
-  onPinMouseUp: f => f,
+  onMouseUp: noop,
+  onMouseDown: noop,
+  onPinMouseUp: noop,
 };
 
 export default Node;

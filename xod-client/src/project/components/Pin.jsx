@@ -1,8 +1,7 @@
-
 import React from 'react';
 import classNames from 'classnames';
 import { PIN_DIRECTION, PIN_VALIDITY } from '../constants';
-
+import { noop } from 'xod-client/utils/ramda';
 
 export default class Pin extends React.Component {
   constructor(props) {
@@ -101,8 +100,8 @@ export default class Pin extends React.Component {
       'is-almost-valid': this.props.validness === PIN_VALIDITY.ALMOST,
     });
 
-    const onMouseOver = !this.isProperty() ? this.handleOver : f => f;
-    const onMouseOut = !this.isProperty() ? this.handleOut : f => f;
+    const onMouseOver = !this.isProperty() ? this.handleOver : noop;
+    const onMouseOut = !this.isProperty() ? this.handleOut : noop;
 
     const symbol = !this.isProperty() ?
       <circle className="symbol" {...this.getCircleProps()} /> :

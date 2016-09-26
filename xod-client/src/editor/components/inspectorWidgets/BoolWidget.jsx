@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { noop } from 'xod-client/utils/ramda';
 import { PROPERTY_TYPE_PARSE } from 'xod-client/project/constants';
 
 function BoolWidget({ keyName, label, value, disabled, onPropUpdate }) {
@@ -45,7 +46,7 @@ BoolWidget.defaultProps = {
   label: 'Unnamed property',
   value: false,
   disabled: false,
-  onPropUpdate: f => f,
+  onPropUpdate: noop,
 };
 
 export default BoolWidget;

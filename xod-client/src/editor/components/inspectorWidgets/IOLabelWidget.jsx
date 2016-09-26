@@ -2,6 +2,7 @@ import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
 import { KEYCODE } from 'xod-client/utils/constants';
+import { noop } from 'xod-client/utils/ramda';
 import { PROPERTY_TYPE_PARSE } from 'xod-client/project/constants';
 
 class IOLabelWidget extends React.Component {
@@ -90,7 +91,7 @@ IOLabelWidget.defaultProps = {
   label: 'Unnamed property',
   value: false,
   disabled: false,
-  onPropUpdate: f => f,
+  onPropUpdate: noop,
 };
 
 export default IOLabelWidget;

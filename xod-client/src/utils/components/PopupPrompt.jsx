@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
+import { noop } from 'xod-client/utils/ramda';
 
 import EventListener from 'react-event-listener';
 import { KEYCODE } from 'xod-client/utils/constants';
@@ -19,7 +20,7 @@ const PopupPrompt = ({
   isVisible,
 }) => {
   const wrapperClassNames = classNames('PopupPrompt', className);
-  const onCloseClicked = (!isModal) ? onClose : f => f;
+  const onCloseClicked = (!isModal) ? onClose : noop;
   const closeButtonStyle = (isModal) ?
     { display: 'none' } :
     { display: 'inline' };
@@ -96,9 +97,9 @@ PopupPrompt.defaultProps = {
   confirmText: 'Confirm',
   cancelText: 'Cancel',
   className: '',
-  onClose: f => f,
-  onConfirm: f => f,
-  onInputKeyDown: f => f,
+  onClose: noop,
+  onConfirm: noop,
+  onInputKeyDown: noop,
   inputType: 'text',
   isModal: false,
   isVisible: true,

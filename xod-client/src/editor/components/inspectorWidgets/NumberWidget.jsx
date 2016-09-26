@@ -2,6 +2,7 @@ import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
 import { KEYCODE } from 'xod-client/utils/constants';
+import { noop } from 'xod-client/utils/ramda';
 import { PROPERTY_TYPE_PARSE } from 'xod-client/project/constants';
 
 
@@ -112,7 +113,7 @@ NumberWidget.propTypes = {
 NumberWidget.defaultProps = {
   label: 'Unnamed property',
   disabled: false,
-  onPropUpdate: f => f,
+  onPropUpdate: noop,
 };
 
 export default NumberWidget;

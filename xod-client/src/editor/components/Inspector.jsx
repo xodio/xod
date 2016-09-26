@@ -1,6 +1,7 @@
 import R from 'ramda';
 import React from 'react';
 import Widgets from './inspectorWidgets';
+import { noop } from 'xod-client/utils/ramda';
 import {
   ENTITY,
   PROPERTY_TYPE,
@@ -218,8 +219,8 @@ Inspector.defaultProps = {
   selection: [],
   nodes: {},
   nodeTypes: {},
-  onPropUpdate: f => f,
-  onPinModeSwitch: f => f,
+  onPropUpdate: noop,
+  onPinModeSwitch: noop,
 };
 
 export default Inspector;

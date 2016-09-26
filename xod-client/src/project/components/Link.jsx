@@ -1,8 +1,7 @@
-
 import React from 'react';
 import classNames from 'classnames';
 import Stylizer from 'xod-client/utils/stylizer';
-
+import { noop } from 'xod-client/utils/ramda';
 import { SIZE } from '../constants';
 
 const linkStyles = {
@@ -120,7 +119,7 @@ Link.defaultProps = {
   isSelected: false,
   isGhost: false,
   hoverable: true,
-  onClick: f => f,
+  onClick: noop,
 };
 
 export default Link;

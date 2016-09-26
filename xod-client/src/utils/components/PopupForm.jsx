@@ -1,13 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
+import { noop } from 'xod-client/utils/ramda';
 
 import EventListener from 'react-event-listener';
 import { KEYCODE } from 'xod-client/utils/constants';
 
 const PopupForm = ({ title, children, className, onClose, isModal, isVisible }) => {
   const wrapperClassNames = classNames('PopupForm', className);
-  const onCloseClicked = (!isModal) ? onClose : f => f;
+  const onCloseClicked = (!isModal) ? onClose : noop;
   const closeButtonStyle = (isModal) ?
     { display: 'none' } :
     { display: 'inline' };
@@ -49,7 +50,7 @@ PopupForm.propTypes = {
 PopupForm.defaultProps = {
   title: 'Fill the form',
   className: '',
-  onClose: f => f,
+  onClose: noop,
   isModal: false,
   isVisible: true,
 };
