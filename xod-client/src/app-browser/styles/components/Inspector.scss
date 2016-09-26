@@ -53,6 +53,18 @@
   }
 }
 
+.PulseWidget {
+  @include inspector-widget();
+
+  select {
+    width: 60px;
+    float: right;
+  }
+  input {
+    width: 30px;
+  }
+}
+
 .StringWidget {
   @include inspector-widget();
 

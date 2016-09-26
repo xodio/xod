@@ -51,6 +51,13 @@ export const PROPERTY_KIND = {
   PROP: 'property',
 };
 
+export const PROPERTY_DEFAULT_VALUE = {
+  BOOL: false,
+  NUMBER: 0,
+  STRING: '',
+  PULSE: 'once',
+};
+
 export const PROPERTY_TYPE_PARSE = {
   [PROPERTY_TYPE.BOOL]: (v) => !!v,
   [PROPERTY_TYPE.NUMBER]: (v, add) => {
@@ -59,14 +66,7 @@ export const PROPERTY_TYPE_PARSE = {
     return isNaN(newValue) ? '' : newValue;
   },
   [PROPERTY_TYPE.STRING]: (v) => String(v),
-  [PROPERTY_TYPE.PULSE]: (v) => String(v),
-};
-
-export const PROPERTY_DEFAULT_VALUE = {
-  BOOL: false,
-  NUMBER: 0,
-  STRING: '',
-  PULSE: '',
+  [PROPERTY_TYPE.PULSE]: (v) => v !== null ? String(v) : PROPERTY_DEFAULT_VALUE.PULSE,
 };
 
 export const SIZE = {

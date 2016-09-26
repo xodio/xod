@@ -13,7 +13,7 @@ const widgetAccordance = {
     [PROPERTY_TYPE.BOOL]: Widgets.BoolWidget,
     [PROPERTY_TYPE.NUMBER]: Widgets.NumberWidget,
     [PROPERTY_TYPE.STRING]: Widgets.StringWidget,
-    [PROPERTY_TYPE.PULSE]: Widgets.NumberWidget,
+    [PROPERTY_TYPE.PULSE]: Widgets.PulseWidget,
     // [PROPERTY_TYPE.IO_LABEL]: Widgets.IOLabelWidget, // @TODO: use special field widget
   },
 };
