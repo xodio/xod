@@ -5,6 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 import generateReducers from '../src/app-browser/reducer';
 import { nodes } from '../src/project/reducer/nodes';
 import * as Actions from '../src/project/actions';
+import * as PrepareTo from '../src/project/actionPreparations';
 import { PROPERTY_ERRORS, LINK_ERRORS, NODETYPE_ERRORS } from '../src/project/constants';
 import * as Selectors from '../src/project/selectors';
 
@@ -676,7 +677,7 @@ describe('Project reducer: ', () => {
 
     it('should show error on attempt to switch mode of a pin, that has a connected link', () => {
       const projectState = Selectors.getProject(store.getState());
-      const preparedData = Selectors.prepareToChangePinMode(
+      const preparedData = PrepareTo.changePinMode(
         projectState,
         2,
         'in',

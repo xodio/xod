@@ -1,11 +1,12 @@
 import * as ActionType from './actionTypes';
+import * as PrepareTo from './actionPreparations';
 import * as Selectors from './selectors';
 import { addError } from 'xod-client/messages/actions';
 import { PROPERTY_ERRORS, NODETYPE_ERRORS } from 'xod-client/messages/constants';
 
 export const moveNode = (id, position) => (dispatch, getState) => {
   const projectState = Selectors.getProject(getState());
-  const preparedData = Selectors.prepareToMoveNode(projectState, id, position);
+  const preparedData = PrepareTo.moveNode(projectState, id, position);
 
   dispatch({
     type: ActionType.NODE_MOVE,
@@ -16,7 +17,7 @@ export const moveNode = (id, position) => (dispatch, getState) => {
 
 export const dragNode = (id, position) => (dispatch, getState) => {
   const projectState = Selectors.getProject(getState());
-  const preparedData = Selectors.prepareToDragNode(projectState, id, position);
+  const preparedData = PrepareTo.dragNode(projectState, id, position);
 
   dispatch({
     type: ActionType.NODE_MOVE,
@@ -27,7 +28,7 @@ export const dragNode = (id, position) => (dispatch, getState) => {
 
 export const addNode = (typeId, position, patchId) => (dispatch, getState) => {
   const projectState = Selectors.getProject(getState());
-  const preparedData = Selectors.prepareToAddNode(projectState, typeId, position, patchId);
+  const preparedData = PrepareTo.addNode(projectState, typeId, position, patchId);
 
   dispatch({
     type: ActionType.NODE_ADD,
@@ -38,7 +39,7 @@ export const addNode = (typeId, position, patchId) => (dispatch, getState) => {
 
 export const deleteNode = (id) => (dispatch, getState) => {
   const projectState = Selectors.getProject(getState());
-  const preparedData = Selectors.prepareToDeleteNode(projectState, id);
+  const preparedData = PrepareTo.deleteNode(projectState, id);
 
   if (preparedData.payload.nodeType.error) {
     dispatch(addError({
@@ -55,7 +56,7 @@ export const deleteNode = (id) => (dispatch, getState) => {
 };
 
 export const addLink = (pin1, pin2) => (dispatch, getState) => {
-  const preparedData = Selectors.prepareToAddLink(getState(), pin1, pin2);
+  const preparedData = PrepareTo.addLink(getState(), pin1, pin2);
 
   if (preparedData.error) {
     dispatch(addError({
@@ -86,7 +87,7 @@ export const updateMeta = (data) => ({
 export const updateNodeProperty =
   (nodeId, propKind, propKey, propValue) => (dispatch, getState) => {
     const projectState = Selectors.getProject(getState());
-    const preparedData = Selectors.prepareToUpdateNodeProperty(
+    const preparedData = PrepareTo.updateNodeProperty(
       projectState,
       nodeId,
       propKind,
@@ -103,7 +104,7 @@ export const updateNodeProperty =
 
 export const changePinMode = (nodeId, pinKey, injected) => (dispatch, getState) => {
   const projectState = Selectors.getProject(getState());
-  const preparedData = Selectors.prepareToChangePinMode(
+  const preparedData = PrepareTo.changePinMode(
     projectState,
     nodeId,
     pinKey,
@@ -147,7 +148,7 @@ export const clearHistoryPatch = (id) => ({
 
 export const addPatch = (name, folderId) => (dispatch, getState) => {
   const projectState = Selectors.getProject(getState());
-  const preparedData = Selectors.prepareToAddPatch(projectState, name, folderId);
+  const preparedData = PrepareTo.addPatch(projectState, name, folderId);
 
   dispatch({
     type: ActionType.PATCH_ADD,
@@ -190,7 +191,7 @@ export const renameProject = (name) => ({
 
 export const addFolder = (name, parentId) => (dispatch, getState) => {
   const projectState = Selectors.getProject(getState());
-  const preparedData = Selectors.prepareToAddFolder(projectState, name, parentId);
+  const preparedData = PrepareTo.addFolder(projectState, name, parentId);
   dispatch({
     type: ActionType.FOLDER_ADD,
     payload: preparedData,
