@@ -4,7 +4,9 @@
   "description": "XOD project: Espruino runtime",
   "scripts": {
     "build": "webpack --progress --colors --config webpack/base.js",
-    "lint": "eslint ./src/runtime.js ./nodes/js ./nodes/espruino || true",
+    "lint:espruino": "eslint --no-eslintrc --config eslintrc.espruino.js ./src/runtime.js ./nodes/js ./nodes/espruino || true",
+    "lint:es6": "eslint ./src --ignore-pattern runtime.js || true",
+    "lint": "npm-run-all lint:*",
     "test": "mocha-webpack \"test/**/*.spec.js\""
   },
   "repository": {},
@@ -21,6 +23,7 @@
     "babel-register": "^6.11.6",
     "classnames": "^2.2.5",
     "co": "^4.6.0",
+    "espruino": "git+https://github.com/espruino/EspruinoTools.git#gh-pages",
     "jquery": "^3.1.0",
     "json5": "<0.5.0",
     "ramda": "^0.21.0",
@@ -36,13 +39,10 @@
     "chai": "^3.4.1",
     "copy-webpack-plugin": "^3.0.1",
     "dirty-chai": "^1.2.2",
-    "eslint": "^2.13.0",
-    "eslint-config-airbnb": "^9.0.1",
+    "eslint": "^3.6.1",
+    "eslint-config-airbnb-base": "^8.0.0",
+    "eslint-plugin-import": "^1.16.0",
     "eslint-import-resolver-webpack": "^0.3.2",
-    "eslint-plugin-import": "^1.8.1",
-    "eslint-plugin-jsx-a11y": "^1.5.3",
-    "eslint-plugin-react": "^5.2.2",
-    "espruino": "git+https://github.com/espruino/EspruinoTools.git#gh-pages",
     "exports-loader": "^0.6.3",
     "globals-loader": "0.0.3",
     "imports-loader": "^0.6.5",
@@ -55,5 +55,8 @@
     "wallaby-webpack": "0.0.22",
     "webpack-merge": "^0.14.0",
     "webpack-validator": "^2.2.3"
+  },
+  "peerDependencies": {
+    "xod-core": "^0.0.1"
   }
 }

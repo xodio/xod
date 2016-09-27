@@ -1,7 +1,7 @@
 
 import R from 'ramda';
 import transform from './transformer';
-import defaultRuntime from './runtime';
+import defaultRuntime from './runtime'; // eslint-disable-line import/default
 
 const joinLines = R.join('\n');
 const joinLineBlocks = R.join('\n\n');
@@ -53,7 +53,7 @@ function transpileNodes(nodes) {
     if (val === Boolean || val === Number || val === String) {
       // leave type as is
       return `__PLACEHOLDER__@@${val.name}@@__`;
-    } else if (val == '<<identity>>') {
+    } else if (val === '<<identity>>') {
       return '__PLACEHOLDER__@@identity@@__';
     }
 
