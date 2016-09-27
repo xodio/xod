@@ -54,14 +54,14 @@ export const PROPERTY_DEFAULT_VALUE = {
 };
 
 export const PROPERTY_TYPE_PARSE = {
-  [PROPERTY_TYPE.BOOL]: (v) => !!v,
+  [PROPERTY_TYPE.BOOL]: v => !!v,
   [PROPERTY_TYPE.NUMBER]: (v, add) => {
     const lastChar = (add && v[v.length - 1] === '.') ? '.' : null;
     const newValue = parseFloat(v) + lastChar;
     return isNaN(newValue) ? '' : newValue;
   },
-  [PROPERTY_TYPE.STRING]: (v) => String(v),
-  [PROPERTY_TYPE.PULSE]: (v) => v !== null ? String(v) : PROPERTY_DEFAULT_VALUE.PULSE,
+  [PROPERTY_TYPE.STRING]: v => String(v),
+  [PROPERTY_TYPE.PULSE]: v => (v !== null ? String(v) : PROPERTY_DEFAULT_VALUE.PULSE),
 };
 
 export const SIZE = {
@@ -98,7 +98,7 @@ export const LINK_ERRORS = {
   SAME_NODE: 'SAME_NODE',
   ONE_LINK_FOR_INPUT_PIN: 'ONE_LINK_FOR_INPUT_PIN',
   UNKNOWN_ERROR: 'UNKNOWN_ERROR',
-  PROP_CANT_HAVE_LINKS: 'PROP_CANT_HAVE_LINKS', 
+  PROP_CANT_HAVE_LINKS: 'PROP_CANT_HAVE_LINKS',
 };
 
 export const PROPERTY_ERRORS = {

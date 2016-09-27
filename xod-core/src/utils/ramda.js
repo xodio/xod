@@ -1,5 +1,6 @@
 import R from 'ramda';
 
+// eslint-disable-next-line import/prefer-default-export
 export const deepMerge = R.mergeWith(
   (o1, o2) =>
   R.ifElse(

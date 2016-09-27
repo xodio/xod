@@ -5,9 +5,8 @@ import {
   PROPERTY_TYPE,
   SIZE,
   NODE_CATEGORY,
-
   NODETYPE_ERRORS,
-  LINK_ERRORS
+  LINK_ERRORS,
 } from './constants';
 
 import { deepMerge } from '../utils/ramda';
@@ -89,7 +88,7 @@ export const getPatchName = (projectState, patchId) => R.compose(
 
 export const doesPinHaveLinks = (pin, links) => R.pipe(
   R.values,
-  R.filter((link) => (
+  R.filter(link => (
     (link.pins[0].pinKey === pin.key && link.pins[0].nodeId === pin.nodeId) ||
     (link.pins[1].pinKey === pin.key && link.pins[1].nodeId === pin.nodeId)
   )),
@@ -122,12 +121,12 @@ export const getAllPinsFromNodes = R.pipe(
 export const validatePatches = () => R.pipe(
   R.values,
   R.all(
-    patch => (
-      patch.hasOwnProperty('id') &&
-      patch.hasOwnProperty('name') &&
-      patch.hasOwnProperty('nodes') &&
-      patch.hasOwnProperty('links')
-    )
+    R.allPass([
+      R.has('id'),
+      R.has('name'),
+      R.has('nodes'),
+      R.has('links'),
+    ])
   )
 );
 
@@ -155,13 +154,13 @@ export const getProjectJSON = R.compose(
   getProjectPojo
 );
 
-export const validateProject = (project) => (
+export const validateProject = project => (
   typeof project === 'object' &&
-  (
-    project.hasOwnProperty('patches') &&
-    project.hasOwnProperty('nodeTypes') &&
-    project.hasOwnProperty('meta')
-  ) &&
+  R.allPass([
+    R.has('patches'),
+    R.has('nodeTypes'),
+    R.has('meta'),
+  ], project) &&
   (
     R.keys(project.patches).length === 0 ||
     validatePatches(project.patches)
@@ -268,7 +267,7 @@ export const getNodes = R.curry((patchId, state) => R.compose(
 
 const getVerticalPinOffsets = () => ({
   [PIN_DIRECTION.INPUT]: -1 * SIZE.NODE.padding.y,
-  [PIN_DIRECTION.OUTPUT]: SIZE.NODE.padding.y - SIZE.PIN.radius * 2,
+  [PIN_DIRECTION.OUTPUT]: SIZE.NODE.padding.y - (SIZE.PIN.radius * 2),
 });
 
 const getPinsWidth = R.curry((withMargins, count) => {
@@ -294,7 +293,7 @@ export const getPinPosition = (nodeTypePins, key, nodePosition) => {
 
   const groups = R.pipe(
     R.values,
-    R.groupBy((nPin) => nPin.direction)
+    R.groupBy(nPin => nPin.direction)
   )(nodeTypePins);
   const widths = R.pipe(
     R.keys,
@@ -314,11 +313,9 @@ export const getPinPosition = (nodeTypePins, key, nodePosition) => {
   )(groups[direction]);
   const groupCenter = widths[direction] / 2;
   const pinX = (
-    -1 * groupCenter +
-    (
-      pinIndex * SIZE.PIN.radius * 2 +
-      pinIndex * SIZE.PIN.margin
-    )
+    (-1 * groupCenter) +
+    (pinIndex * SIZE.PIN.radius * 2) +
+    (pinIndex * SIZE.PIN.margin)
   );
 
   return {
@@ -340,7 +337,7 @@ export const getLinks = (state, patchId) => R.compose(
 
 export const getLinkById = (state, props) => R.pipe(
   getLinks,
-  R.filter((link) => link.id === props.id),
+  R.filter(link => link.id === props.id),
   R.values,
   R.head
 )(state, props);
@@ -352,7 +349,7 @@ export const getLinksByPinIdInPatch = (state, props) => {
   return R.pipe(
     R.view(R.lensPath(['patches', patchId, 'present', 'links'])),
     R.filter(
-      (link) => (
+      link => (
         props.pinIds.indexOf(link.pins[0]) !== -1 ||
         props.pinIds.indexOf(link.pins[1]) !== -1
       )
@@ -459,7 +456,7 @@ export const parseTreeView = (tree) => {
     if (treePart.children && treePart.children.length > 0) {
       R.pipe(
         R.values,
-        R.forEach(child => {
+        R.forEach((child) => {
           const chilParentId = treePart.id || null;
           const childResult = parseTree(child, chilParentId);
           partResult.folders = R.concat(partResult.folders, childResult.folders);
@@ -595,7 +592,7 @@ export const getPatchNodes = state => R.pipe(
   R.pickBy(R.propEq('isPatchNode', true))
 )(state);
 
-export const dereferencedNodeTypes = state => {
+export const dereferencedNodeTypes = (state) => {
   const patchNodes = getPatchNodes(state);
   const patchNodeTypes = R.pipe(
     R.values,
@@ -626,7 +623,7 @@ export const getPreparedNodeTypeByKey = (state, key) => R.pipe(
   R.prop(key)
 )(state);
 
-export const addPinRadius = (position) => ({
+export const addPinRadius = position => ({
   x: position.x + SIZE.PIN.radius,
   y: position.y + SIZE.PIN.radius,
 });
@@ -635,7 +632,7 @@ export const getNodeLabel = (state, node) => {
   const nodeType = getPreparedNodeTypeByKey(state, node.typeId);
   let nodeLabel = node.label || nodeType.label || nodeType.key;
 
-  const nodeValue = R.view(R.lensPath(['properties','value']), node);
+  const nodeValue = R.view(R.lensPath(['properties', 'value']), node);
   if (nodeValue !== undefined) {
     const nodeValueType = nodeType.properties.value.type;
     nodeLabel = nodeValue;
@@ -647,7 +644,7 @@ export const getNodeLabel = (state, node) => {
   let nodeCustomLabel = R.path(['properties', 'label'], node);
   if (nodeCustomLabel === '') { nodeCustomLabel = null; }
 
-  nodeLabel = (nodeCustomLabel) ? nodeCustomLabel : nodeLabel;
+  nodeLabel = nodeCustomLabel || nodeLabel;
 
   return String(nodeLabel);
 };
@@ -662,7 +659,7 @@ const getNodePins = (state, typeId) => R.pipe(
 export const preparePins = (projectState, node) => {
   const pins = getNodePins(projectState, node.typeId);
 
-  return R.map(pin => {
+  return R.map((pin) => {
     const originalPin = R.path(['pins', pin.key], node) || {};
     const pinPosition = getPinPosition(pins, pin.key, node.position);
     const radius = { radius: SIZE.PIN.radius };
@@ -804,16 +801,16 @@ export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
   };
 };
 
-const pinComparator = (data) => R.both(
+const pinComparator = data => R.both(
   R.propEq('nodeId', data.nodeId),
   R.propEq('key', data.pinKey)
 );
-const findPin = (pins) => R.compose(
+const findPin = pins => R.compose(
   R.flip(R.find)(pins),
   pinComparator
 );
 
-const pinIsInjected = (pin) => (!!pin.injected);
+const pinIsInjected = pin => !!pin.injected;
 
 export const validateLink = (state, linkData) => {
   const project = getProject(state);
@@ -848,14 +845,11 @@ export const validateLink = (state, linkData) => {
   if (!check) {
     if (sameDirection) {
       error = LINK_ERRORS.SAME_DIRECTION;
-    } else
-    if (sameNode) {
+    } else if (sameNode) {
       error = LINK_ERRORS.SAME_NODE;
-    } else
-    if (!pin1CanHaveMoreLinks || !pin2CanHaveMoreLinks) {
+    } else if (!pin1CanHaveMoreLinks || !pin2CanHaveMoreLinks) {
       error = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
-    } else 
-    if (!allPinsEjected) {
+    } else if (!allPinsEjected) {
       error = LINK_ERRORS.PROP_CANT_HAVE_LINKS;
     } else {
       error = LINK_ERRORS.UNKNOWN_ERROR;
