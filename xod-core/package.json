@@ -4,6 +4,7 @@
   "description": "XOD project: Core",
   "scripts": {
     "build": "babel src/ -d dist/",
+    "dev": "babel --watch src/ -d dist/",
     "lint": "eslint ./src ./nodes ./test || true",
     "test": "mocha --require babel-register test/**/*.js"
   },

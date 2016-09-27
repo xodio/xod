@@ -5,3 +5,5 @@ doc/_build
 *.orig
 .dir-locals.el
 npm-debug.log
+
+node_modules/
