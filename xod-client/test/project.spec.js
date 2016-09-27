@@ -5,6 +5,12 @@ import { createStore, applyMiddleware } from 'redux';
 import generateReducers from '../src/app-browser/reducer';
 import { nodes } from '../src/project/reducer/nodes';
 import * as Actions from '../src/project/actions';
+import * as PrepareTo from '../src/project/actionPreparations';
+import {
+  PROPERTY_ERRORS,
+  LINK_ERRORS,
+  NODETYPE_ERRORS,
+} from 'xod-core/project/constants';
 import * as Selectors from '../src/project/selectors';
 
 function pin(nodeId, pinKey) {
@@ -58,6 +64,19 @@ describe('Project reducer: ', () => {
             },
           },
         },
+        'core/prop': {
+          key: 'core/prop',
+          category: 'hardware',
+          pins: {
+            in: {
+              index: 1,
+              direction: 'input',
+              injected: true,
+              key: 'in',
+              type: 'number',
+            },
+          },
+        },
       },
       folders: {
         1: {
@@ -88,6 +107,7 @@ describe('Project reducer: ', () => {
         1: {
           id: 1,
           typeId: 'core/test',
+          pins: {},
           position: {
             x: 10,
             y: 10,
@@ -234,6 +254,9 @@ describe('Project reducer: ', () => {
 
   describe('Add link', () => {
     const patchPath = ['project', 'patches', 1];
+    const nullPin = { value: null };
+    const testPins = { in: nullPin, out: nullPin };
+    const nullPos = { x: 0, y: 0 };
     const mockState = R.pipe(
       R.assocPath(
         R.append('links', patchPath),
@@ -247,9 +270,9 @@ describe('Project reducer: ', () => {
       R.assocPath(
         R.append('nodes', patchPath),
         {
-          1: { id: 1, typeId: 'test/test', position: { x: 0, y: 0 } },
-          2: { id: 2, typeId: 'test/test', position: { x: 0, y: 0 } },
-          3: { id: 3, typeId: 'test/test', position: { x: 0, y: 0 } },
+          1: { id: 1, typeId: 'test/test', position: nullPos, pins: testPins },
+          2: { id: 2, typeId: 'test/test', position: nullPos, pins: testPins },
+          3: { id: 3, typeId: 'test/test', position: nullPos, pins: testPins },
         }
       ),
       R.assocPath(
@@ -547,7 +570,7 @@ describe('Project reducer: ', () => {
     it('should show error on attempt to delete IO node that have a link', () => {
       const expectedNodeTypeToDelete = {
         key: null,
-        error: 'CANT_DELETE_USED_PIN_OF_PATCHNODE', // FIXME: replace with constant from xod-core
+        error: NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE,
       };
       const patchNodeName = getPatchNodeName(patchId, store.getState());
 
@@ -558,7 +581,6 @@ describe('Project reducer: ', () => {
       store.dispatch(Actions.addLink(pin(1, 'in'), pin(4, 'output_3')));
 
       const nodeTypesWithPatch = getNodeTypes(store.getState());
-
       store.dispatch(Actions.deleteNode(3));
 
       const nodeTypesAfterDelete = getNodeTypes(store.getState());
@@ -576,7 +598,7 @@ describe('Project reducer: ', () => {
       const patchNodeName = getPatchNodeName(patchId, store.getState());
       const expectedNodeTypeToDelete = {
         key: patchNodeName,
-        error: 'CANT_DELETE_USED_PATCHNODE', // FIXME: replace with constant from xod-core
+        error: NODETYPE_ERRORS.CANT_DELETE_USED_PATCHNODE,
       };
 
       store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
@@ -596,6 +618,79 @@ describe('Project reducer: ', () => {
 
       chai.expect(nodeTypesWithPatch).to.deep.equal(nodeTypesAfterDelete);
       chai.expect(nodeTypeToDelete).to.deep.equal(expectedNodeTypeToDelete);
+    });
+  });
+
+  describe('Switching pins/props', () => {
+    const patchId = 1;
+    const mockState = R.clone(
+      projectShape
+    );
+
+    let store;
+    beforeEach(() => {
+      store = mockStore(mockState);
+      store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addLink(pin(1, 'out'), pin(2, 'in')));
+    });
+
+    it('should add injected flag to pin', () => {
+      const nodeId = 1;
+      const pinKey = 'in';
+      const injected = true;
+
+      store.dispatch(Actions.changePinMode(nodeId, pinKey, injected));
+
+      const projectState = Selectors.getProject(store.getState());
+      const node = Selectors.getNodes(patchId, projectState)[nodeId];
+      const pinData = node.pins[pinKey];
+
+      chai.assert(pinData.injected === injected);
+    });
+
+    it('should remove injected flag from pin', () => {
+      const nodeId = 1;
+      const pinKey = 'in';
+      const injected = false;
+
+      store.dispatch(Actions.changePinMode(nodeId, pinKey, injected));
+
+      const projectState = Selectors.getProject(store.getState());
+      const node = Selectors.getNodes(patchId, projectState)[nodeId];
+      const pinData = node.pins[pinKey];
+
+      chai.assert(pinData.injected === injected);
+    });
+
+    it('should add link between pins that is not injected', () => {
+      const projectState = Selectors.getProject(store.getState());
+      const links = Selectors.getLinks(projectState, patchId);
+      const linksArr = R.values(links);
+
+      chai.assert(linksArr.length === 1);
+    });
+
+    it('should show error on attempt to make link between injected pin and regular pin', () => {
+      store.dispatch(Actions.addNode('core/prop', { x: 10, y: 10 }, patchId)); // id: 3
+
+      const validity = Selectors.validatePin(store.getState(), pin(3, 'in'));
+
+      chai.assert(validity === LINK_ERRORS.PROP_CANT_HAVE_LINKS);
+    });
+
+    it('should show error on attempt to switch mode of a pin, that has a connected link', () => {
+      const projectState = Selectors.getProject(store.getState());
+      const preparedData = PrepareTo.changePinMode(
+        projectState,
+        2,
+        'in',
+        'property'
+      );
+
+      chai.expect(preparedData).to.deep.equal({
+        error: PROPERTY_ERRORS.PIN_HAS_LINK,
+      });
     });
   });
 });

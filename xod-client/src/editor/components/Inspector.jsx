@@ -1,24 +1,47 @@
 import R from 'ramda';
 import React from 'react';
 import Widgets from './inspectorWidgets';
-import { ENTITY, PROPERTY_TYPE } from 'xod-core/project/constants';
+import { noop } from 'xod-client/utils/ramda';
+import {
+  ENTITY,
+  PIN_DIRECTION,
+} from 'xod-core/project/constants';
+import {
+  WIDGET_TYPE,
+  PROPERTY_KIND,
+} from 'xod-client/project/constants';
 
 const widgetAccordance = {
   [ENTITY.NODE]: {
-    [PROPERTY_TYPE.BOOL]: Widgets.BoolWidget,
-    [PROPERTY_TYPE.NUMBER]: Widgets.NumberWidget,
-    [PROPERTY_TYPE.STRING]: Widgets.StringWidget,
-    [PROPERTY_TYPE.IO_LABEL]: Widgets.IOLabelWidget,
+    [WIDGET_TYPE.BOOL]: Widgets.BoolWidget,
+    [WIDGET_TYPE.NUMBER]: Widgets.NumberWidget,
+    [WIDGET_TYPE.STRING]: Widgets.StringWidget,
+    [WIDGET_TYPE.PULSE]: Widgets.PulseWidget,
+    [WIDGET_TYPE.IO_LABEL]: Widgets.IOLabelWidget,
   },
 };
 
+const defaultProp = {
+  kind: PROPERTY_KIND.PROP,
+  injected: false,
+  type: 'string',
+  value: '',
+};
+
 const labelProp = {
+  kind: PROPERTY_KIND.PROP,
+  injected: false,
   key: 'label',
   label: 'Label',
   type: 'string',
-  defaultValue: '',
   value: '',
 };
+
+const getProp = (obj, node, key) => R.pipe(
+  R.pathOr('', ['properties', key]),
+  R.assoc('value', R.__, {}), // eslint-disable-line
+  R.merge(obj)
+)(node);
 
 class Inspector extends React.Component {
   constructor(props) {
@@ -32,24 +55,49 @@ class Inspector extends React.Component {
   }
 
   getProperties(nodeType, node) {
-    let props = [labelProp];
+    const props = [
+      getProp(labelProp, node, 'label'),
+    ];
 
-    if (nodeType.hasOwnProperty('properties')) {
-      props = R.pipe(
+    if (nodeType.properties) {
+      R.pipe(
         R.values,
-        R.append(labelProp),
-        R.map((prop) => {
-          if (
-            node.hasOwnProperty('properties') &&
-            node.properties.hasOwnProperty(prop.key)
-          ) {
-            return R.assoc('value', node.properties[prop.key], prop);
-          }
-          return prop;
-        })
+        R.map(R.merge(defaultProp)),
+        R.map(prop => {
+          const nodeVal = R.pathOr(null, ['properties', prop.key], node);
+          if (nodeVal === null) { return prop; }
+          return R.assoc('value', nodeVal, prop);
+        }),
+        R.forEach(prop => props.push(prop))
       )(nodeType.properties);
     }
+
     return props;
+  }
+
+  getPins(nodeType, node) {
+    if (!nodeType.hasOwnProperty('pins')) {
+      return [];
+    }
+
+    return R.pipe(
+      R.values,
+      R.reject(R.propEq('direction', PIN_DIRECTION.OUTPUT)),
+      R.map(pin =>
+        R.merge(
+          pin,
+          R.pick(['injected', 'value'], node.pins[pin.key])
+        )
+      ),
+      R.map(R.assoc('kind', PROPERTY_KIND.PIN))
+    )(nodeType.pins);
+  }
+
+  getInspectableProps(nodeType, node) {
+    return R.concat(
+      this.getProperties(nodeType, node),
+      this.getPins(nodeType, node)
+    );
   }
 
   createWidgets(props) {
@@ -87,7 +135,7 @@ class Inspector extends React.Component {
   createNodeWidgets(props, selection) {
     const node = props.nodes[selection.id];
     const nodeType = props.nodeTypes[node.typeId];
-    const properties = this.getProperties(nodeType, node);
+    const properties = this.getInspectableProps(nodeType, node);
 
     if (properties.length === 0) {
       this.widgets = [
@@ -97,18 +145,30 @@ class Inspector extends React.Component {
       ];
     } else {
       const widgets = [];
-
       properties.forEach((prop) => {
-        const factory = React.createFactory(widgetAccordance[ENTITY.NODE][prop.type]);
+        const widgetType = prop.widget || prop.type;
+        const factory = React.createFactory(
+          Widgets.composeWidget(
+            widgetAccordance[ENTITY.NODE][widgetType]
+          )
+        );
+        const injected = prop.injected || false;
+
         widgets.push(
           factory({
-            nodeId: node.id,
             key: `${node.id}_${prop.key}`,
             keyName: `${node.id}_${prop.key}`,
+            kind: prop.kind,
             label: prop.label,
             value: prop.value,
+            injected,
             onPropUpdate: (newValue) => {
-              this.props.onPropUpdate(node.id, prop.key, newValue);
+              this.props.onPropUpdate(node.id, prop.kind, prop.key, newValue);
+            },
+            onPinModeSwitch: () => {
+              const inversedMode = !injected;
+
+              this.props.onPinModeSwitch(node.id, prop.key, inversedMode);
             },
           })
         );
@@ -155,13 +215,15 @@ Inspector.propTypes = {
   nodes: React.PropTypes.object,
   nodeTypes: React.PropTypes.object,
   onPropUpdate: React.PropTypes.func,
+  onPinModeSwitch: React.PropTypes.func,
 };
 
 Inspector.defaultProps = {
   selection: [],
   nodes: {},
   nodeTypes: {},
-  onPropUpdate: f => f,
+  onPropUpdate: noop,
+  onPinModeSwitch: noop,
 };
 
 export default Inspector;

@@ -1,33 +1,50 @@
 {
   inputs: [{
     key: 'inp',
-    label: 'IN',
     type: 'number',
+    pinLabel: 'IN',
+    label: 'Input',
+    value: 0,
     description: 'Input value to map'
   }, {
     key: 'inA',
-    label: 'As',
     type: 'number',
+    injected: true,
+    pinLabel: 'As',
+    label: 'Input range start',
+    value: 0,
     description: 'Input range start'
   }, {
     key: 'inB',
-    label: 'Bs',
     type: 'number',
+    injected: true,
+    pinLabel: 'Bs',
+    label: 'Input range end',
+    value: 0,
     description: 'Input range end'
   }, {
     key: 'outA',
-    label: 'At',
     type: 'number',
+    injected: true,
+    pinLabel: 'At',
+    label: 'Output range start',
+    value: 0,
     description: 'Output range start'
   }, {
     key: 'outB',
-    label: 'Bt',
     type: 'number',
+    injected: true,
+    pinLabel: 'Bt',
+    label: 'Output range end',
+    value: 0,
     description: 'Output range end'
   }, {
     key: 'clip',
-    label: 'CL',
     type: 'bool',
+    injected: true,
+    pinLabel: 'CL',
+    label: 'Clip',
+    value: false,
     description: 'Clip result to output range'
   }],
   outputs: [{

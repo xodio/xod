@@ -88,7 +88,6 @@ class Patch extends React.Component {
   }
 
   onPinMouseUp(nodeId, pinKey) {
-    // const pin = this.props.pins[id];
     const isClicked = (this.state.clickNodeId === nodeId);
 
     if (isClicked) {
@@ -189,6 +188,7 @@ class Patch extends React.Component {
 
   getHotkeyHandlers() {
     return {
+      [COMMAND.SET_MODE_CREATING]: this.props.setModeCreating,
       [COMMAND.DELETE_SELECTION]: this.props.actions.deleteSelection,
       [COMMAND.ESCAPE]: this.deselectAll,
     };
@@ -310,6 +310,8 @@ Patch.propTypes = {
   mode: React.PropTypes.object,
   ghostNode: React.PropTypes.any,
   ghostLink: React.PropTypes.any,
+
+  setModeCreating: React.PropTypes.func,
 };
 
 const mapStateToProps = (state) => {

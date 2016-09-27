@@ -1,37 +1,43 @@
 {
   label: "HC-SR04",
+  category: 'hardware',
   inputs: [{
     key: 'sample',
     type: 'pulse',
+    pinLabel: 'PLS',
+    label: 'Pulse',
     description: 'Sample current value',
+  },
+  {
+    key: 'units',
+    pinLabel: 'UNT',
+    label: 'Units',
+    type: 'string',
+    value: 'mm',
   }],
   outputs: [{
     key: 'value',
     type: 'number',
+    pinLabel: 'DST',
     description: 'Sampled distance (mm)',
   },
   {
     key: 'error',
     type: 'string',
+    pinLabel: 'ERR',
     description: 'Operation error',
   }],
   properties: [{
     key: 'pinTrig',
-    label: 'Pin',
+    label: 'Pin trigger',
     type: 'string',
-    defaultValue: 'C9',
+    value: 'C9',
   },
   {
     key: 'pinEcho',
-    label: 'Pin',
+    label: 'Pin echo',
     type: 'string',
-    defaultValue: 'A8',
-  },
-  {
-    key: 'units',
-    label: 'Units',
-    type: 'string',
-    defaultValue: 'mm',
+    value: 'A8',
   }],
   pure: false
 }

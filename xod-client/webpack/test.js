@@ -1,10 +1,13 @@
-
+const path = require('path');
 const validate = require('webpack-validator');
 const merge = require('webpack-merge');
 
 const baseConfig = require('./base.js');
 
 const config = merge.smart(baseConfig, {
+  resolve: {
+    modulesDirectories: ['node_modules', 'src', 'src/node_modules'],
+  },
   module: {
     loaders: [
       {
@@ -29,9 +32,9 @@ const config = merge.smart(baseConfig, {
         root: 'isomorphic-fetch',
         commonjs2: 'isomorphic-fetch',
         commonjs: 'isomorphic-fetch',
-        amd: 'isomorphic-fetch'
-      }
-    }
+        amd: 'isomorphic-fetch',
+      },
+    },
   ],
 });
 

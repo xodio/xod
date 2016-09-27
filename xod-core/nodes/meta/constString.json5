@@ -1,14 +1,22 @@
 {
   label: '<String>',
   category: 'configuration',
+  inputs: [{
+    key: 'value',
+    type: 'string',
+    pinLabel: 'VAL',
+    label: 'Value',
+    value: ''
+  }, {
+    key: 'pulse',
+    type: 'pulse',
+    injected: true,
+    pinLabel: 'PLS',
+    label: 'Pulse',
+    value: 0
+  }],
   outputs: [{
     key: 'value',
     type: 'number',
-  }],
-  properties: [{
-    key: 'value',
-    label: 'Value',
-    type: 'string',
-    defaultValue: '',
   }]
 }

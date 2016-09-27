@@ -3,17 +3,19 @@
   inputs: [{
     key: 'trigOn',
     type: 'pulse',
+    pinLabel: 'PLS',
+    label: 'Pulse',
     description: 'Pulse to trig on'
+  }, {
+    key: 'value',
+    pinLabel: 'VAL',
+    label: 'Value',
+    type: 'number',
+    value: 0,
   }],
   outputs: [{
     key: 'out',
     type: 'number',
     description: 'Output value',
-  }],
-  properties: [{
-    key: 'value',
-    label: 'Value',
-    type: 'number',
-    defaultValue: 0,
   }]
 }

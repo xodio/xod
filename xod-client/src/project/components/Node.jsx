@@ -1,11 +1,11 @@
-
 import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
 import Pin from './Pin';
 import NodeText from './NodeText';
+import { noop } from 'xod-client/utils/ramda';
 
-import { SIZE } from '../constants';
+import { SIZE } from 'xod-core/project/constants';
 
 class Node extends React.Component {
   constructor(props) {
@@ -100,13 +100,12 @@ class Node extends React.Component {
     const position = this.getOriginPosition();
     const pins = R.pipe(
       R.values,
-      R.map((pin) => {
-        const newPosition = {
+      R.map(pin =>
+        R.assoc('position', {
           x: pin.position.x - position.x,
           y: pin.position.y - position.y,
-        };
-        return R.assoc('position', newPosition, pin);
-      })
+        }, pin)
+      )
     )(this.props.pins);
     const textPosition = this.getTextProps();
 
@@ -168,9 +167,9 @@ Node.defaultProps = {
   height: SIZE.NODE.minHeight,
   isSelected: false,
   isGhost: false,
-  onMouseUp: f => f,
-  onMouseDown: f => f,
-  onPinMouseUp: f => f,
+  onMouseUp: noop,
+  onMouseDown: noop,
+  onPinMouseUp: noop,
 };
 
 export default Node;

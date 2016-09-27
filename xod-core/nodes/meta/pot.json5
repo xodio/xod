@@ -1,7 +1,10 @@
 {
+  category: 'hardware',
   inputs: [{
     key: 'sample',
     type: 'pulse',
+    pinLabel: 'PLS',
+    label: 'Sample pulse',
     description: 'Sample current value',
   }],
   outputs: [{
@@ -13,6 +16,6 @@
     key: 'pin',
     label: 'Pin',
     type: 'string',
-    defaultValue: 'A0',
+    value: 'A6',
   }]
 }

@@ -1,14 +1,23 @@
 {
   label: '<Bool>',
   category: 'configuration',
+  inputs: [{
+    key: 'value',
+    type: 'bool',
+    injected: true,
+    pinLabel: 'VAL',
+    label: 'Value',
+    value: false
+  }, {
+    key: 'pulse',
+    type: 'pulse',
+    injected: true,
+    pinLabel: 'PLS',
+    label: 'Pulse',
+    value: 0
+  }],
   outputs: [{
     key: 'value',
     type: 'bool',
-  }],
-  properties: [{
-    key: 'value',
-    label: 'Value',
-    type: 'bool',
-    defaultValue: false,
   }]
 }

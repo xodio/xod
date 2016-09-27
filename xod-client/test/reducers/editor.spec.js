@@ -14,6 +14,7 @@ import { EDITOR_MODE } from '../../src/editor/constants';
 const mockStore = configureStore([thunk]);
 const testStore = (state) => createStore(
   combineReducers({
+    project: f => f || {},
     editor: editorReducer,
   }),
   state,
@@ -56,6 +57,55 @@ describe('Editor reducer', () => {
 
   describe('selecting entities', () => {
     const mockState = {
+      project: {
+        patches: {
+          1: {
+            id: 1,
+            nodes: {
+              1: {
+                id: 1,
+                typeId: 'core/test',
+                position: { x: 0, y: 0 },
+                pins: {
+                  in: {
+                    mode: 'pin',
+                    value: null,
+                  },
+                },
+                properties: {},
+              },
+            },
+            links: {},
+          },
+        },
+        nodeTypes: {
+          'core/test': {
+            key: 'core/test',
+            category: 'hardware',
+            pins: {
+              in: {
+                index: 0,
+                direction: 'input',
+                key: 'in',
+                type: 'number',
+              },
+              out: {
+                index: 1,
+                direction: 'output',
+                key: 'out',
+                type: 'number',
+              },
+            },
+          },
+        },
+        counter: {
+          patches: 1,
+          nodes: 0,
+          pins: 0,
+          links: 0,
+          folders: 1,
+        },
+      },
       editor: {
         mode: EDITOR_MODE.DEFAULT,
         selection: [],
@@ -109,7 +159,6 @@ describe('Editor reducer', () => {
     it('should deselect all', () => {
       store = testStore(mockState);
       const id = 1;
-
       store.dispatch(Actions.selectLink(id));
       store.dispatch(Actions.deselectAll());
 
@@ -117,7 +166,7 @@ describe('Editor reducer', () => {
     });
     it('should select pin', () => {
       const nodeId = 1;
-      const pinKey = 'value';
+      const pinKey = 'in';
       const expectedActions = [
         {
           type: EDITOR_SET_MODE,
@@ -134,7 +183,7 @@ describe('Editor reducer', () => {
     it('should deselect pin on second click', () => {
       store = testStore(mockState);
       const nodeId = 1;
-      const pinKey = 'value';
+      const pinKey = 'in';
 
       store.dispatch(Actions.linkPin(nodeId, pinKey));
       store.dispatch(Actions.linkPin(nodeId, pinKey));

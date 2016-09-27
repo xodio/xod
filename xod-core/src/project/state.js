@@ -3,20 +3,15 @@ import R from 'ramda';
 import { PIN_DIRECTION } from './constants';
 
 
-R.mapDirectedNodeTypePins = (direction, collectionKey) => R.compose(
+const mapDirectedNodeTypePins = (direction, collectionKey) => R.compose(
   R.indexBy(R.prop('key')),
-  R.addIndex(R.map)((pin, index) => R.merge({ index, direction }, pin)),
+  R.addIndex(R.map)((io, index) => R.merge({ index, direction }, io)),
   R.propOr([], collectionKey)
 );
 
 const mapNodeTypePins = meta => R.merge(
-  R.mapDirectedNodeTypePins(PIN_DIRECTION.INPUT, 'inputs')(meta),
-  R.mapDirectedNodeTypePins(PIN_DIRECTION.OUTPUT, 'outputs')(meta)
-);
-
-const mapNodeTypeProperties = R.compose(
-  R.indexBy(R.prop('key')),
-  R.propOr([], 'properties')
+  mapDirectedNodeTypePins(PIN_DIRECTION.INPUT, 'inputs')(meta),
+  mapDirectedNodeTypePins(PIN_DIRECTION.OUTPUT, 'outputs')(meta)
 );
 
 const removeNils = R.reject(R.isNil);
@@ -30,7 +25,6 @@ export const getNodeTypes = R.uncurryN(2, getImpl => R.compose(
     {
       key,
       pins: mapNodeTypePins(meta),
-      properties: mapNodeTypeProperties(meta),
       impl: removeNils({
         js: getImpl('js', key, '.js'),
         espruino: getImpl('espruino', key, '.js'),
