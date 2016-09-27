@@ -11,6 +11,7 @@ module.exports = {
 
   extends: [
     'eslint:recommended',
+    'airbnb-base',
     'plugin:import/errors',
     'plugin:import/warnings',
   ],
@@ -22,10 +23,9 @@ module.exports = {
     beforeEach: true,
     after: true,
     afterEach: true,
-    chrome: true,
   },
 
   rules: {
-    'comma-dangle': ['error', 'only-multiline'],
+    'import/no-extraneous-dependencies': ['error', {devDependencies: ['**/*.spec.js']}]
   },
 };

@@ -1,40 +1,38 @@
 module.exports = {
   parserOptions: {
-    ecmaVersion: 5,
+    ecmaVersion: 6,
+    sourceType: 'module',
+    ecmaFeatures: {},
   },
 
-  extends: [
-    'eslint:recommended'
+  plugins: [
+    'import',
   ],
 
-  rules: {
-    'comma-dangle': ['error', 'never'],
-    'func-names': 'off',
-    'no-param-reassign': ["error", { "props": false }],
-    'no-underscore-dangle': 'off',
-    'no-var': 'off',
-    'object-shorthand': ['error', 'never'],
-    "one-var": ['error', {
-      "uninitialized": 'always',
-      "initialized": 'never',
-    }],
-    'one-var-declaration-per-line': ['error', 'initializations'],
-    'prefer-arrow-callback': 'off',
-    'space-before-function-paren': ['error', 'never'],
-  },
+  extends: [
+    'eslint:recommended',
+    'airbnb-base',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+  ],
 
   globals: {
-    Pin: true,
-    analogRead: true,
-    analogWrite: true,
-    digitalRead: true,
-    digitalWrite: true,
-    setWatch: true,
-    setTimeout: true,
-    module: true,
-    setInterval: true,
-    PULSE: true,
-    identity: true,
-    require: true,
+    describe: true,
+    it: true,
+    before: true,
+    beforeEach: true,
+    after: true,
+    afterEach: true,
+  },
+
+  rules: {
+    'import/no-extraneous-dependencies': ['error', {
+      devDependencies: ['**/*.spec.js']
+    }],
+    'no-underscore-dangle': ['error', {
+      allow: ["__"], /* Ramda’s R.__ */
+      allowAfterThis: true,
+      allowAfterSuper: true
+    }],
   },
 };

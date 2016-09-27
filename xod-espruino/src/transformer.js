@@ -3,6 +3,10 @@ import R from 'ramda';
 import { sortGraph } from 'xod-core/utils/gmath';
 import { PIN_DIRECTION, PIN_TYPE } from 'xod-core/project/constants';
 
+// TODO: remove following ESLint shunt. It barks on unused `_` in arrow funcs.
+// We should make smarter selectors for source & destination pins without _ hack
+/* eslint-disable no-unused-vars */
+
 // From: https://github.com/ramda/ramda/wiki/Cookbook#rename-keys-of-an-object
 /**
  * Creates a new object with the own properties of the provided object, but the
@@ -43,10 +47,10 @@ const maxIdOf = (patches, key) => R.compose(
 
 // ----------------
 // TODO: move to xod-core? (with all other selectors)
-const _mkTypeTest = regex =>
-        (node, prop='typeId') => R.propSatisfies(R.test(regex), prop, node);
-const isInputNode = _mkTypeTest(/^core\/input/);
-const isOutputNode = _mkTypeTest(/^core\/output/);
+const makeTypeTest = regex =>
+  (node, prop = 'typeId') => R.propSatisfies(R.test(regex), prop, node);
+const isInputNode = makeTypeTest(/^core\/input/);
+const isOutputNode = makeTypeTest(/^core\/output/);
 // ----------------
 
 // :: Patch -> Boolean
@@ -65,7 +69,6 @@ const isPatchNodeType = R.compose(
   *   implementation for given in prioritized list. E.g. ['espruino', 'js'].
   */
 export default function transform(project, implPlatforms = []) {
-
   const nodeTypes = R.propOr({}, 'nodeTypes', project);
   const nodeTypeByKey = key => R.propOr({}, key, nodeTypes);
 
@@ -87,13 +90,14 @@ export default function transform(project, implPlatforms = []) {
   // :: {patchNode.name: PatchNode}
   const patchNodesByName = R.compose(
     R.reduce(
-      ((ns, n) =>
-       isPatchNodeType(n)
-       ? R.assoc(n.name, {
-         links: R.values(n.links),
-         nodes: R.values(n.nodes),
-       }, ns)
-       : ns),
+      ((ns, n) => (
+        isPatchNodeType(n)
+          ? R.assoc(n.name, {
+            links: R.values(n.links),
+            nodes: R.values(n.nodes),
+          }, ns)
+          : ns
+      )),
       {}
     ),
     R.values
@@ -107,7 +111,7 @@ export default function transform(project, implPlatforms = []) {
       R.complement(R.has(R.__, nodeTypes)),
       R.compose(
         R.any(R.__, R.keys(patchNodesByName)),
-        type => name => RegExp('/' + name + '$').test(type)
+        type => name => RegExp(`/${name}$`).test(type)
       )
     ),
     R.propOr('', 'typeId')
@@ -116,12 +120,11 @@ export default function transform(project, implPlatforms = []) {
   let allNodes = mergedEntities('nodes');
   let allLinks = mergedEntities('links');
 
-  let nodeIdSeq = maxIdOf(allPatches, "nodes") + 1;
-  let linkIdSeq = maxIdOf(allPatches, "links") + 1;
+  let nodeIdSeq = maxIdOf(allPatches, 'nodes') + 1;
+  let linkIdSeq = maxIdOf(allPatches, 'links') + 1;
 
   // performs one iteration of patchnode injection
   function populate() {
-
     const patchNodeInstId = R.compose(
       R.reduce(R.min, nodeIdSeq),
       R.pluck('id'),
@@ -129,17 +132,17 @@ export default function transform(project, implPlatforms = []) {
       R.values
     )(allNodes);
 
-    if (patchNodeInstId == nodeIdSeq) {
+    if (patchNodeInstId === nodeIdSeq) {
       // no nodeId with (id < maxId) found => no patchnodes to inject
       return true;
-    };
+    }
 
     const patchNodeInstInputLinks = R.pickBy(
-      ({pins: [_, {nodeId}]}) => nodeId == patchNodeInstId,
+      ({ pins: [_, { nodeId }] }) => nodeId === patchNodeInstId,
       allLinks
     );
     const patchNodeInstOutputLinks = R.pickBy(
-      ({pins: [{nodeId}, _]}) => nodeId == patchNodeInstId,
+      ({ pins: [{ nodeId }, _] }) => nodeId === patchNodeInstId,
       allLinks
     );
 
@@ -156,8 +159,8 @@ export default function transform(project, implPlatforms = []) {
 
     let newNodes = {};
     let newLinks = {};
-    R.values(cleanedNodes).forEach(n => { newNodes[n.id.toString()] = n; });
-    R.values(cleanedLinks).forEach(l => { newLinks[l.id.toString()] = l; });
+    R.values(cleanedNodes).forEach((n) => { newNodes = R.assoc(n.id.toString(), n, newNodes); });
+    R.values(cleanedLinks).forEach((l) => { newLinks = R.assoc(l.id.toString(), l, newLinks); });
 
     const { nodes, links } = R.compose(
       R.prop(R.__, patchNodesByName),
@@ -168,59 +171,78 @@ export default function transform(project, implPlatforms = []) {
 
     // push nodes
     let oldToNewId = {};
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       const newId = nodeIdSeq;
-      oldToNewId[node.id] = newId;
-      newNodes[newId.toString()] = R.assoc('id', newId, node);
+      oldToNewId = R.assoc(node.id, newId, oldToNewId);
+      newNodes = R.assoc(
+        newId.toString(),
+        R.assoc('id', newId, node),
+        newNodes
+      );
+
       nodeIdSeq += 1;
     });
 
     // push internal links
-    links.forEach(link => {
-      const {pins: [{nodeId: nFrom, pinKey: pFrom},
-                    {nodeId: nTo, pinKey: pTo}]} = link;
-      newLinks[linkIdSeq.toString()] = {
+    links.forEach((link) => {
+      const {
+        pins: [
+          { nodeId: nFrom, pinKey: pFrom },
+          { nodeId: nTo, pinKey: pTo },
+        ],
+      } = link;
+
+      const newLink = {
         id: linkIdSeq,
         pins: [
-          {pinKey: pFrom, nodeId: oldToNewId[nFrom]},
-          {pinKey: pTo, nodeId: oldToNewId[nTo]},
-        ]
+          { pinKey: pFrom, nodeId: oldToNewId[nFrom] },
+          { pinKey: pTo, nodeId: oldToNewId[nTo] },
+        ],
       };
+
+      newLinks = R.assoc(linkIdSeq.toString(), newLink, newLinks);
+
       linkIdSeq += 1;
     });
 
     // relink patchnode inputs
     R.filter(
-      ([_, { nodeId }]) => nodeId == patchNodeInstId,
+      ([_, { nodeId }]) => nodeId === patchNodeInstId,
       patchNodeInstInputPins
     ).forEach(
-      ([source, {pinKey: terminal}]) => {
+      ([source, { pinKey: terminal }]) => {
         const terminalId = R.last(R.split('_', terminal));
-        newLinks[linkIdSeq.toString()] = {
+        const newLink = {
           id: linkIdSeq,
           pins: [
             source,
-            {pinKey: 'PIN', nodeId: oldToNewId[terminalId]},
-          ]
+            { pinKey: 'PIN', nodeId: oldToNewId[terminalId] },
+          ],
         };
+
+        newLinks = R.assoc(linkIdSeq.toString(), newLink, newLinks);
+
         linkIdSeq += 1;
       }
     );
 
     // relink patchnode outputs
     R.filter(
-      ([{ nodeId }, _]) => nodeId == patchNodeInstId,
+      ([{ nodeId }, _]) => nodeId === patchNodeInstId,
       patchNodeInstOutputPins
     ).forEach(
-      ([{pinKey: terminal}, target]) => {
+      ([{ pinKey: terminal }, target]) => {
         const terminalId = R.last(R.split('_', terminal));
-        newLinks[linkIdSeq.toString()] = {
+        const newLink = {
           id: linkIdSeq,
           pins: [
-            {pinKey: 'PIN', nodeId: oldToNewId[terminalId]},
+            { pinKey: 'PIN', nodeId: oldToNewId[terminalId] },
             target,
-          ]
+          ],
         };
+
+        newLinks = R.assoc(linkIdSeq.toString(), newLink, newLinks);
+
         linkIdSeq += 1;
       }
     );
@@ -228,9 +250,11 @@ export default function transform(project, implPlatforms = []) {
     allNodes = newNodes;
     allLinks = newLinks;
     return false;
-  };
+  }
 
-  while(!populate()){};
+  while (!populate()) {
+    // populate recursively
+  }
 
   const nodeList = R.values(allNodes);
   const linkList = R.values(allLinks);
@@ -271,13 +295,13 @@ export default function transform(project, implPlatforms = []) {
     R.objOf(
       'inputTypes',
       isInputNode(nodeType, 'key')
-        ? {PIN: nativeType(nodeType.pins.PIN.type)}
+        ? { PIN: nativeType(nodeType.pins.PIN.type) }
         : inputTypes(nodeType)
     )
   );
 
   // :: Node -> [Link]
-  const outgoingLinks = (node) => R.filter(
+  const outgoingLinks = node => R.filter(
     R.compose(
       R.propEq('nodeId', node.id),
       R.nth(0),
@@ -297,7 +321,7 @@ export default function transform(project, implPlatforms = []) {
             [fromNode.pinKey]: [{
               key: toNode.pinKey,
               nodeId: toNode.nodeId,
-            }]
+            }],
           },
           outLinks
         );
