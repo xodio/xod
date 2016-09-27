@@ -9,7 +9,6 @@ build:
 	cd xod-core     && npm run build
 	cd xod-espruino && npm run build
 	cd xod-client   && npm run build
-	cd xod-server   && npm run build
 
 test:
 	cd xod-core     && npm run test
