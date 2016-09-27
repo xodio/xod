@@ -43,21 +43,25 @@ export const PROPERTY_TYPE = {
   BOOL: 'bool',
   NUMBER: 'number',
   STRING: 'string',
-  IO_LABEL: 'io_label',
-};
-
-export const PROPERTY_TYPE_PARSE = {
-  [PROPERTY_TYPE.BOOL]: (v) => !!v,
-  [PROPERTY_TYPE.NUMBER]: (v) => parseFloat(v),
-  [PROPERTY_TYPE.STRING]: (v) => String(v),
-  [PROPERTY_TYPE.IO_LABEL]: (v) => String(v),
+  PULSE: 'pulse',
 };
 
 export const PROPERTY_DEFAULT_VALUE = {
   BOOL: false,
   NUMBER: 0,
   STRING: '',
-  IO_LABEL: '',
+  PULSE: 'once',
+};
+
+export const PROPERTY_TYPE_PARSE = {
+  [PROPERTY_TYPE.BOOL]: (v) => !!v,
+  [PROPERTY_TYPE.NUMBER]: (v, add) => {
+    const lastChar = (add && v[v.length - 1] === '.') ? '.' : null;
+    const newValue = parseFloat(v) + lastChar;
+    return isNaN(newValue) ? '' : newValue;
+  },
+  [PROPERTY_TYPE.STRING]: (v) => String(v),
+  [PROPERTY_TYPE.PULSE]: (v) => v !== null ? String(v) : PROPERTY_DEFAULT_VALUE.PULSE,
 };
 
 export const SIZE = {
@@ -94,4 +98,9 @@ export const LINK_ERRORS = {
   SAME_NODE: 'SAME_NODE',
   ONE_LINK_FOR_INPUT_PIN: 'ONE_LINK_FOR_INPUT_PIN',
   UNKNOWN_ERROR: 'UNKNOWN_ERROR',
+  PROP_CANT_HAVE_LINKS: 'PROP_CANT_HAVE_LINKS', 
+};
+
+export const PROPERTY_ERRORS = {
+  PIN_HAS_LINK: 'PIN_HAS_LINK',
 };

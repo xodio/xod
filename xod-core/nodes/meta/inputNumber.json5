@@ -6,9 +6,10 @@
     type: 'number',
   }],
   properties: [{
-    key: 'label',
+    key: 'pinLabel',
+    type: 'string',
+    widget: 'IOLabel',
     label: 'Pin label',
-    type: 'io_label',
-    defaultValue: 'InN',
+    value: '',
   }]
 }

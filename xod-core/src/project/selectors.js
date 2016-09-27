@@ -1,7 +1,16 @@
 import R from 'ramda';
 
-import { PIN_DIRECTION, PROPERTY_TYPE, SIZE, NODE_CATEGORY,
-         NODETYPE_ERRORS, LINK_ERRORS } from './constants';
+import {
+  PIN_DIRECTION,
+  PROPERTY_TYPE,
+  SIZE,
+  NODE_CATEGORY,
+
+  NODETYPE_ERRORS,
+  LINK_ERRORS
+} from './constants';
+
+import { deepMerge } from '../utils/ramda';
 
 export const getUserName = R.always('Bob');
 
@@ -253,38 +262,9 @@ export const getNodes = R.curry((patchId, state) => R.compose(
   getPatchById(patchId)
 )(state));
 
-export const getNodesByPatchId = R.curry((patchId, state) => R.pipe(
-  getProject,
-  R.path(['patches', patchId, 'present']),
-  R.prop('nodes')
-)(state));
-
 /*
   Pin selectors
 */
-
-export const getPins = R.pipe(
-  getNodeTypes,
-  R.mapObjIndexed(R.prop('pins')),
-  R.flatten
-);
-
-export const getPinsByNodeId = (state, props) => R.pipe(
-  getPins,
-  R.filter((pin) => pin.nodeId === props.id)
-)(state, props);
-
-export const getPinsByIds = (state, props) => R.pipe(
-  getPins,
-  R.values,
-  R.reduce((p, pin) => {
-    let result = p;
-    if (props && props.pins && props.pins.indexOf(pin.id) !== -1) {
-      result = R.assoc(pin.id, pin, p);
-    }
-    return result;
-  }, {})
-)(state, props);
 
 const getVerticalPinOffsets = () => ({
   [PIN_DIRECTION.INPUT]: -1 * SIZE.NODE.padding.y,
@@ -544,13 +524,14 @@ export const getPatchIOPin = (node, i) => {
   const pin = R.values(node.pins)[0];
   const invertDirection = R.ifElse(
     R.equals(PIN_DIRECTION.INPUT),
-    () => PIN_DIRECTION.OUTPUT,
-    () => PIN_DIRECTION.INPUT
+    R.always(PIN_DIRECTION.OUTPUT),
+    R.always(PIN_DIRECTION.INPUT)
   );
   const dir = invertDirection(pin.direction);
 
   return {
     nodeId: node.id,
+    pinLabel: node.properties.pinLabel,
     label: node.properties.label,
     key: `${dir}_${node.id}`,
     direction: dir,
@@ -578,7 +559,7 @@ export const getPatchIO = R.pipe(
 export const getPatchNode = R.curry((state, patch) => {
   const extendNodes = R.map(
     node => R.compose(
-      R.flip(R.merge)(node),
+      R.flip(deepMerge)(node),
       getNodeTypeById(state),
       R.prop('typeId')
     )(node)
@@ -625,7 +606,10 @@ export const dereferencedNodeTypes = state => {
         label: patch.name,
         category: NODE_CATEGORY.PATCHES,
         properties: {},
-        pins: R.pipe(R.values, R.indexBy(R.prop('key')))(patch.io),
+        pins: R.pipe(
+          R.values,
+          R.indexBy(R.prop('key'))
+        )(patch.io),
       })
     ),
     R.indexBy(R.prop('key'))
@@ -651,7 +635,7 @@ export const getNodeLabel = (state, node) => {
   const nodeType = getPreparedNodeTypeByKey(state, node.typeId);
   let nodeLabel = node.label || nodeType.label || nodeType.key;
 
-  const nodeValue = R.view(R.lensPath(['properties', 'value']), node);
+  const nodeValue = R.view(R.lensPath(['properties','value']), node);
   if (nodeValue !== undefined) {
     const nodeValueType = nodeType.properties.value.type;
     nodeLabel = nodeValue;
@@ -679,11 +663,12 @@ export const preparePins = (projectState, node) => {
   const pins = getNodePins(projectState, node.typeId);
 
   return R.map(pin => {
-    const originalPin = pins[pin.key];
+    const originalPin = R.path(['pins', pin.key], node) || {};
     const pinPosition = getPinPosition(pins, pin.key, node.position);
     const radius = { radius: SIZE.PIN.radius };
     const isSelected = { isSelected: false };
-    return R.mergeAll([pin, originalPin, pinPosition, radius, isSelected]);
+    const defaultPin = { value: null, injected: false };
+    return R.mergeAll([defaultPin, pin, originalPin, pinPosition, radius, isSelected]);
   })(pins);
 };
 
@@ -720,6 +705,27 @@ export const dereferencedLinks = (projectState, patchId) => {
     );
   })(links);
 };
+
+export const getLinksConnectedWithPin = (projectState, nodeId, pinKey, patchId) => R.pipe(
+  R.values,
+  R.filter(
+    R.pipe(
+      R.prop('pins'),
+      R.find(
+        R.allPass([
+          R.propEq('nodeId', nodeId),
+          R.propEq('pinKey', pinKey),
+        ])
+      )
+    )
+  ),
+  R.map(
+    R.pipe(
+      R.prop('id'),
+      R.toString
+    )
+  )
+)(getLinks(projectState, patchId));
 
 export const getLinksToDeleteWithNode = (projectState, nodeId, patchId) => R.pipe(
   R.values,
@@ -798,6 +804,16 @@ export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
   };
 };
 
+const pinComparator = (data) => R.both(
+  R.propEq('nodeId', data.nodeId),
+  R.propEq('key', data.pinKey)
+);
+const findPin = (pins) => R.compose(
+  R.flip(R.find)(pins),
+  pinComparator
+);
+
+const pinIsInjected = (pin) => (!!pin.injected);
 
 export const validateLink = (state, linkData) => {
   const project = getProject(state);
@@ -808,26 +824,21 @@ export const validateLink = (state, linkData) => {
   const pins = getAllPinsFromNodes(nodes);
   const linksState = getLinks(project, patchId);
 
-  const eqProps = (data) => R.both(
-    R.propEq('nodeId', data.nodeId),
-    R.propEq('key', data.pinKey)
-  );
-  const findPin = R.compose(
-    R.flip(R.find)(pins),
-    eqProps
-  );
+  const getPin = findPin(pins);
 
-  const pin1 = findPin(linkData[0]);
-  const pin2 = findPin(linkData[1]);
+  const pin1 = getPin(linkData[0]);
+  const pin2 = getPin(linkData[1]);
 
   const sameDirection = pin1.direction === pin2.direction;
   const sameNode = pin1.nodeId === pin2.nodeId;
+  const allPinsEjected = !pinIsInjected(pin1) && !pinIsInjected(pin2);
   const pin1CanHaveMoreLinks = canPinHaveMoreLinks(pin1, linksState);
   const pin2CanHaveMoreLinks = canPinHaveMoreLinks(pin2, linksState);
 
   const check = (
     !sameDirection &&
     !sameNode &&
+    allPinsEjected &&
     pin1CanHaveMoreLinks &&
     pin2CanHaveMoreLinks
   );
@@ -843,6 +854,9 @@ export const validateLink = (state, linkData) => {
     } else
     if (!pin1CanHaveMoreLinks || !pin2CanHaveMoreLinks) {
       error = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
+    } else 
+    if (!allPinsEjected) {
+      error = LINK_ERRORS.PROP_CANT_HAVE_LINKS;
     } else {
       error = LINK_ERRORS.UNKNOWN_ERROR;
     }
@@ -851,131 +865,37 @@ export const validateLink = (state, linkData) => {
   return error;
 };
 
-export const prepareToAddPatch = (projectState, name, folderId) => {
-  const newId = getLastPatchId(projectState) + 1;
-
-  return {
-    newId,
-    name,
-    folderId,
-  };
-};
-
-export const prepareToAddFolder = (projectState, name, parentId) => {
-  const newId = getLastFolderId(projectState) + 1;
-
-  return {
-    newId,
-    name,
-    parentId,
-  };
-};
-
-export const prepareToAddNode = (projectState, typeId, position, patchId) => {
-  const newNodeId = getLastNodeId(projectState) + 1;
-  const nodeType = dereferencedNodeTypes(projectState)[typeId];
-  const lastPinId = getLastPinId(projectState);
-
-  return {
-    payload: {
-      typeId,
-      position,
-      nodeType,
-      newNodeId,
-      lastPinId,
-    },
-    meta: {
-      patchId,
-    },
-  };
-};
-
-export const prepareToDeleteNode = (projectState, id) => {
-  const patch = getPatchByNodeId(projectState, id);
-  const linksToDelete = getLinksToDeleteWithNode(projectState, id, patch.id);
-
-  const nodeTypeToDelete = getNodeTypeToDeleteWithNode(projectState, id, patch.id);
-
-  return {
-    payload: {
-      id,
-      links: linksToDelete,
-      nodeType: nodeTypeToDelete,
-    },
-    meta: {
-      patchId: patch.id,
-    },
-  };
-};
-
-export const prepareToMoveNode = (projectState, id, position) => {
-  const patchId = getPatchByNodeId(projectState, id).id;
-
-  return {
-    payload: {
-      id,
-      position,
-    },
-    meta: {
-      patchId,
-    },
-  };
-};
-
-export const prepareToDragNode = (projectState, id, position) =>
-  R.assocPath(['meta', 'skipHistory'], true, prepareToMoveNode(projectState, id, position));
-
-export const prepareToUpdateNodeProperty = (projectState, nodeId, propKey, propValue) => {
-  const patchId = getPatchByNodeId(projectState, nodeId).id;
-  const node = dereferencedNodes(projectState, patchId)[nodeId];
-  const nodeType = dereferencedNodeTypes(projectState)[node.typeId];
-  const propType = (propKey === 'label') ? 'label' : nodeType.properties[propKey].type;
-
-  return {
-    payload: {
-      id: nodeId,
-      key: propKey,
-      value: propValue,
-      type: propType,
-    },
-    meta: {
-      patchId,
-    },
-  };
-};
-
-export const prepareToAddLink = (state, pin1, pin2) => {
-  const projectState = getProject(state);
-  const patch = getPatchByNodeId(projectState, pin1.nodeId);
-  const nodes = dereferencedNodes(projectState, patch.id);
+export const validatePin = (state, pin) => {
+  const project = getProject(state);
+  const patch = getPatchByNodeId(project, pin.nodeId);
+  const patchId = patch.id;
+  const nodes = dereferencedNodes(project, patchId);
+  const linksState = getLinks(project, patchId);
   const pins = getAllPinsFromNodes(nodes);
 
-  const eqProps = (link) => R.both(
-    R.propEq('nodeId', link.nodeId),
-    R.propEq('key', link.pinKey)
+  const getPin = findPin(pins);
+  const pinData = getPin(pin);
+
+  const pinCanHaveMoreLinks = canPinHaveMoreLinks(pinData, linksState);
+  const pinEjected = !pinIsInjected(pinData);
+
+  const check = (
+    pinCanHaveMoreLinks &&
+    pinEjected
   );
-  const findPin = R.compose(
-    R.flip(R.find)(pins),
-    eqProps
-  );
-  const isOutput = R.propEq('direction', PIN_DIRECTION.OUTPUT);
 
-  const fpin1 = findPin(pin1);
-  const isOutputData1 = isOutput(fpin1);
+  let error = null;
 
-  const fromPin = (isOutputData1) ? pin1 : pin2;
-  const toPin = (isOutputData1) ? pin2 : pin1;
+  if (!check) {
+    if (!pinCanHaveMoreLinks) {
+      error = LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
+    } else
+    if (!pinEjected) {
+      error = LINK_ERRORS.PROP_CANT_HAVE_LINKS;
+    } else {
+      error = LINK_ERRORS.UNKNOWN_ERROR;
+    }
+  }
 
-  const patchId = patch.id;
-  const newId = getLastLinkId(projectState) + 1;
-
-  return {
-    payload: {
-      newId,
-      pins: [fromPin, toPin],
-    },
-    meta: {
-      patchId,
-    },
-  };
+  return error;
 };

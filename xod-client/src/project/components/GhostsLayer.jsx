@@ -4,7 +4,7 @@ import React from 'react';
 import SVGLayer from './SVGLayer';
 import Node from './Node';
 import Link from './Link';
-import { LAYER } from '../constants';
+import { LAYER } from 'xod-core/project/constants';
 
 class GhostLayer extends React.Component {
   constructor(props) {

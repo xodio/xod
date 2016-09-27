@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
+import { noop } from 'xod-client/utils/ramda';
 
 import EventListener from 'react-event-listener';
 import { KEYCODE } from 'xod-client/utils/constants';
@@ -17,7 +18,7 @@ const PopupConfirm = ({
   isVisible,
 }) => {
   const wrapperClassNames = classNames('PopupConfirm', className);
-  const onCloseClicked = (!isModal) ? onClose : f => f;
+  const onCloseClicked = (!isModal) ? onClose : noop;
   const closeButtonStyle = (isModal) ?
     { display: 'none' } :
     { display: 'inline' };
@@ -79,8 +80,8 @@ PopupConfirm.defaultProps = {
   confirmText: 'Confirm',
   cancelText: 'Cancel',
   className: '',
-  onClose: f => f,
-  onConfirm: f => f,
+  onClose: noop,
+  onConfirm: noop,
   isModal: false,
   isVisible: true,
 };

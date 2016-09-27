@@ -1,13 +1,17 @@
 {
   label: 'Buzzer',
+  category: 'hardware',
   inputs: [{
     key: 'freq',
     type: 'number',
+    pinLabel: 'FREQ',
+    label: 'Frequency',
     description: 'Frequency (Hz)'
   }],
   properties: [{
     key: 'pin',
     label: 'Pin',
     type: 'string',
+    value: 'A3',
   }]
 }

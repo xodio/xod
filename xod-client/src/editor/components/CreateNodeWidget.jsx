@@ -1,5 +1,6 @@
 import React from 'react';
 import R from 'ramda';
+import { Icon } from 'react-fa';
 
 class CreateNodeWidget extends React.Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class CreateNodeWidget extends React.Component {
           onClick={this.onAddNodeClick}
           title="Hotkey: N"
         >
-          Add node
+          <Icon name="plus" />
         </button>
       </div>
     );

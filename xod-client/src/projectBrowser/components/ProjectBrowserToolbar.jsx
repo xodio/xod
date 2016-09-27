@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import { noop } from 'xod-client/utils/ramda';
 
 import { COMMAND } from 'xod-client/utils/constants';
 import { PROJECT_BROWSER_ERRORS } from 'xod-client/messages/constants';
@@ -317,8 +318,8 @@ ProjectBrowserToolbar.propTypes = {
 
 ProjectBrowserToolbar.defaultProps = {
   selection: null,
-  onRename: f => f,
-  onDelete: f => f,
+  onRename: noop,
+  onDelete: noop,
 };
 
 export default ProjectBrowserToolbar;

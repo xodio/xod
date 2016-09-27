@@ -6,46 +6,57 @@ import { noop } from 'xod-client/utils/ramda';
 import { PROPERTY_TYPE_PARSE } from 'xod-core/project/constants';
 
 
-class NumberWidget extends React.Component {
+class PulseWidget extends React.Component {
   constructor(props) {
     super(props);
+    const val = this.parseVal(props.value);
 
     this.state = {
-      initialValue: props.value,
-      value: props.value,
+      initialValue: val,
+      value: val,
     };
 
     this.onChange = this.onChange.bind(this);
+    this.onSelectChange = this.onSelectChange.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
-  onChange(event) {
-    const newValue = this.parseVal(event.target.value, true);
-    this.updateValue(newValue);
+  onChange() {
+    this.parseAndUpdate();
+  }
+
+  onSelectChange() {
+    this.onBlur();
   }
 
   onBlur() {
-    const newValue = this.parseVal(this.state.value);
-    this.updateValue(newValue);
+    const newValue = this.parseAndUpdate();
     this.props.onPropUpdate(newValue);
   }
 
   onKeyDown(event) {
     const keycode = event.keycode || event.which;
     const input = event.target;
+    const val = this.getValue();
 
     if (keycode === KEYCODE.DOT || keycode === KEYCODE.COMMA) {
       event.preventDefault();
-      this.updateValue(`${input.value}.`);
+      this.updateValue(
+        this.parseVal([val.type, `${input.value}.`])
+      );
     }
     if (keycode === KEYCODE.UP) {
       event.preventDefault();
-      this.updateValue(this.parseVal(input.value) + 1);
+      this.updateValue(
+        this.parseVal([val.type, input.value + 1])
+      );
     }
     if (keycode === KEYCODE.DOWN) {
       event.preventDefault();
-      this.updateValue(this.parseVal(input.value) - 1);
+      this.updateValue(
+        this.parseVal([val.type, input.value - 1])
+      );
     }
     if (keycode === KEYCODE.ENTER) {
       input.blur();
@@ -59,36 +70,62 @@ class NumberWidget extends React.Component {
     }
   }
 
+  getValue() {
+    const val = this.state.value.split(',');
+    return {
+      type: val[0], // once / every
+      time: val[1], // seconds
+    };
+  }
+
+  parseAndUpdate() {
+    const selectValue = this.refs.select.value;
+    const inputValue = this.refs.input.value;
+    const newValue = this.parseVal([selectValue, inputValue]);
+    this.updateValue(newValue);
+
+    return newValue;
+  }
+
   updateValue(newValue) {
     this.setState(
       R.assoc('value', newValue, this.state)
     );
   }
 
-  parseVal(val, isForInput = false) {
-    return PROPERTY_TYPE_PARSE.number(val, isForInput);
+  parseVal(val) {
+    return PROPERTY_TYPE_PARSE.pulse(val);
   }
 
   render() {
     const elementId = `widget_${this.props.keyName}`;
-    const val = this.state.value;
+    const val = this.getValue();
 
-    const cls = classNames('NumberWidget', {
+    const cls = classNames('PulseWidget', {
       'is-disabled': this.props.disabled,
     });
 
     return (
       <div className={cls}>
         <input
-          id={elementId}
+          ref="input"
           type="text"
-          step="any"
-          value={val}
+          value={val.time}
           disabled={this.props.disabled}
           onChange={this.onChange}
           onBlur={this.onBlur}
           onKeyDown={this.onKeyDown}
         />
+        <select
+          ref="select"
+          id={elementId}
+          value={val.type}
+          disabled={this.props.disabled}
+          onChange={this.onSelectChange}
+        >
+          <option value="once">Once</option>
+          <option value="every">Every</option>
+        </select>
         <label
           htmlFor={elementId}
         >
@@ -99,21 +136,22 @@ class NumberWidget extends React.Component {
   }
 }
 
-NumberWidget.propTypes = {
+PulseWidget.propTypes = {
   nodeId: React.PropTypes.number,
   keyName: React.PropTypes.string,
   modes: React.PropTypes.string,
   mode: React.PropTypes.string,
   label: React.PropTypes.string,
-  value: React.PropTypes.number,
+  value: React.PropTypes.string,
   disabled: React.PropTypes.bool,
   onPropUpdate: React.PropTypes.func,
 };
 
-NumberWidget.defaultProps = {
+PulseWidget.defaultProps = {
+  value: '',
   label: 'Unnamed property',
   disabled: false,
   onPropUpdate: noop,
 };
 
-export default NumberWidget;
+export default PulseWidget;

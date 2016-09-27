@@ -2,7 +2,7 @@ import R from 'ramda';
 import chai from 'chai';
 import initialState from '../src/app-browser/state';
 import Selectors from '../src/app-browser/selectors';
-import { PIN_TYPE, PIN_DIRECTION } from '../src/project/constants';
+import { PIN_TYPE, PIN_DIRECTION } from 'xod-core/project/constants';
 import { LINK_ERRORS } from '../src/messages/constants';
 
 describe('Link selector', () => {
@@ -10,6 +10,17 @@ describe('Link selector', () => {
     function pin(nodeId, pinKey) {
       return { nodeId, pinKey };
     }
+    const inputPin = {
+      type: PIN_TYPE.NUMBER,
+      direction: PIN_DIRECTION.INPUT,
+    };
+    const outputPin = {
+      type: PIN_TYPE.NUMBER,
+      direction: PIN_DIRECTION.OUTPUT,
+    };
+
+    const makeInputPin = R.flip(R.merge)(inputPin);
+    const makeOutputPin = R.flip(R.merge)(outputPin);
 
     const state = {
       project: {
@@ -17,10 +28,10 @@ describe('Link selector', () => {
           'core/test': {
             key: 'core/test',
             pins: {
-              inA: { key: 'inA', type: PIN_TYPE.NUMBER, direction: PIN_DIRECTION.INPUT },
-              inB: { key: 'inB', type: PIN_TYPE.NUMBER, direction: PIN_DIRECTION.INPUT },
-              outA: { key: 'outA', type: PIN_TYPE.NUMBER, direction: PIN_DIRECTION.OUTPUT },
-              outB: { key: 'outB', type: PIN_TYPE.NUMBER, direction: PIN_DIRECTION.OUTPUT },
+              inA: makeInputPin({ key: 'inA' }),
+              inB: makeInputPin({ key: 'inB' }),
+              outA: makeOutputPin({ key: 'outA' }),
+              outB: makeOutputPin({ key: 'outB' }),
             },
           },
         },

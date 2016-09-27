@@ -1,5 +1,13 @@
-import { NODE_MOVE, NODE_ADD, NODE_DELETE, NODE_UPDATE_PROPERTY } from '../actionTypes';
-import { PROPERTY_TYPE_PARSE } from '../constants';
+import {
+  NODE_MOVE,
+  NODE_ADD,
+  NODE_DELETE,
+  NODE_UPDATE_PROPERTY,
+  NODE_CHANGE_PIN_MODE,
+} from '../actionTypes';
+import {
+  PROPERTY_TYPE_PARSE,
+} from 'xod-core/project/constants';
 import R from 'ramda';
 
 export const copyNode = (node) => R.clone(node);
@@ -23,6 +31,27 @@ const parseVal = (val, type) => {
   return val;
 };
 
+const getNodePins = R.pipe(
+  R.path(['nodeType', 'pins']),
+  R.pickBy(R.propEq('injected', true)),
+  R.mapObjIndexed(R.pick(['injected', 'value']))
+);
+
+const getPropertyPath = (payload, add) => {
+  const kindPath = (payload.kind === 'pin') ? 'pins' : 'properties';
+  const path = [
+    payload.id,
+    kindPath,
+    payload.key,
+  ];
+
+  if (add && payload.kind === 'pin') {
+    path.push(add);
+  }
+
+  return path;
+};
+
 export const nodes = (state = {}, action) => {
   let movedNode = null;
   let newNode = null;
@@ -31,25 +60,12 @@ export const nodes = (state = {}, action) => {
   switch (action.type) {
 
     case NODE_ADD: {
-      const nodeType = action.payload.nodeType;
-      const defaultProps = R.pipe(
-        R.prop('properties'),
-        R.values,
-        R.reduce(
-          (p, prop) => R.assoc(
-            prop.key,
-            parseVal(prop.defaultValue, prop.type),
-            p
-          ),
-          {}
-        )
-      )(nodeType);
-
       newNodeId = action.payload.newNodeId;
       newNode = R.set(R.lensProp('id'), newNodeId, {
         typeId: action.payload.typeId,
+        pins: getNodePins(action.payload),
         position: action.payload.position,
-        properties: defaultProps,
+        properties: {},
       });
 
       return R.set(R.lensProp(newNodeId), newNode, state);
@@ -63,14 +79,20 @@ export const nodes = (state = {}, action) => {
 
     case NODE_UPDATE_PROPERTY:
       return R.set(
-        R.lensPath([
-          action.payload.id,
-          'properties',
-          action.payload.key,
-        ]),
+        R.lensPath(getPropertyPath(action.payload, 'value')),
         parseVal(action.payload.value, action.payload.type)
       )(state);
 
+    case NODE_CHANGE_PIN_MODE:
+      return R.assocPath(
+        [
+          action.payload.id,
+          'pins',
+          action.payload.key,
+          'injected',
+        ],
+        action.payload.injected
+      )(state);
     default:
       return state;
   }
