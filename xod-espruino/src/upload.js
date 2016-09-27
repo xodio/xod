@@ -22,19 +22,19 @@ import co from 'co';
  * to promise-based
  */
 function writeToEspruino(code) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     Espruino.Core.CodeWriter.writeToEspruino(code, resolve);
   });
 }
 
 function serialOpen(port, disconnectedCallback) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     Espruino.Core.Serial.open(port, resolve, disconnectedCallback);
   });
 }
 
 function transformForEspruino(code) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     Espruino.callProcessor('transformForEspruino', code, resolve);
   });
 }
@@ -49,7 +49,7 @@ function setProgressListener(progressCallback) {
   let progressMax = 1;
 
   const notify = () => {
-    const percentage = progress / progressMax * 100;
+    const percentage = (progress / progressMax) * 100;
     progressCallback(status, percentage);
   };
 
@@ -74,7 +74,7 @@ function removeProgressListener() {
   Espruino.Core.Status = null;
 }
 
-export function upload(code, progressCallback) {
+export default function upload(code, progressCallback) {
   const port = '/dev/ttyACM0';
 
   Espruino.Core.Serial.setSlowWrite(false);
@@ -90,7 +90,7 @@ export function upload(code, progressCallback) {
 
     console.log('Code is about to be uploaded:\n', code3);
 
-    Espruino.Core.Serial.startListening(arrayBuffer => {
+    Espruino.Core.Serial.startListening((arrayBuffer) => {
       const uintArray = new Uint8Array(arrayBuffer);
       const str = String.fromCharCode.apply(null, uintArray);
       console.log('Got', JSON.stringify(str));

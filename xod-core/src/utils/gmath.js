@@ -1,19 +1,19 @@
 
 import R from 'ramda';
 
-function findVertexesWithNoIncomingEdges(vertexes, edges) {
+export function findVertexesWithNoIncomingEdges(vertexes, edges) {
   return R.difference(
     vertexes,
     R.map(R.nth(1), edges)
   );
 }
 
-function hasIncomingEdges(vertex, edges) {
+export function hasIncomingEdges(vertex, edges) {
   const edgeIncoming = R.compose(R.equals(vertex), R.nth(1));
   return R.any(edgeIncoming, edges);
 }
 
-function hasEdgeFrom(n, edges) {
+export function hasEdgeFrom(n, edges) {
   return m => R.contains([n, m], edges);
 }
 
@@ -34,7 +34,7 @@ export function sortGraph(vertexes, edges) {
   let s = findVertexesWithNoIncomingEdges(vertexes, edges);
   let edgesLeft = edges;
 
-  const excludeEdgesFrom = n => m => {
+  const excludeEdgesFrom = n => (m) => {
     edgesLeft = R.without([[n, m]], edgesLeft);
     if (!hasIncomingEdges(m, edgesLeft)) {
       s = R.append(m, s);
