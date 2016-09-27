@@ -1,0 +1,72 @@
+.Toolbar {
+  font-size: $font-size-l;
+
+  position: relative;
+  display: block;
+  background-color: $color-ctrl-background;
+  color: $color-ctrl-background-text;
+
+  overflow: hidden;
+
+  @mixin button-toolbar {
+    display: block;
+    float: right;
+    height: 32px;
+    padding: 0 12px;
+    border: 0;
+    margin-left: 1px;
+
+    font-size: $font-size-m;
+  }
+
+  .logo {
+    display: inline-block;
+    padding: 5px 10px;
+    color: #7A838F; // TODO: will be replaced by SVG logo
+  }
+
+  .project-meta {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 5px;
+  }
+
+  .upload-button, .show-code-button {
+    @include button-primary;
+    @include button-toolbar;
+  }
+
+  .save-button {
+    @include button-secondary;
+    @include button-toolbar;
+  }
+
+  .load-button {
+    @include button-toolbar;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+
+    span {
+      @include button-secondary;
+      @include button-toolbar;
+
+      padding: 10px 12px;
+    }
+    input {
+      position: absolute;
+      top: -300px;
+    }
+  }
+
+  .LoginButton {
+    @include button-toolbar;
+  }
+  .UserButton {
+    @include button-toolbar;
+    float: left;
+  }
+  .UserMenu li button {
+    @include button-toolbar;
+  }
+}
