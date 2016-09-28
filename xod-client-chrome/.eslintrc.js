@@ -20,31 +20,4 @@ module.exports = {
     'plugin:react/recommended',
     'airbnb',
   ],
-
-  settings: {
-    'import/resolver': {
-      webpack: {
-        config: './webpack/base.js',
-        extensions: ['.js', '.jsx'],
-      },
-    },
-  },
-
-  rules: {
-    'import/extensions': [2, 'never'],
-  },
-
-  env: {
-    browser: true,
-  },
-
-  globals: {
-    describe: true,
-    it: true,
-    before: true,
-    beforeEach: true,
-    after: true,
-    afterEach: true,
-    chrome: true,
-  },
 };

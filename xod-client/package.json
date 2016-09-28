@@ -3,10 +3,8 @@
   "version": "0.0.1",
   "description": "XOD project: Client application",
   "scripts": {
-    "dev": "webpack-dev-server --watch --colors --inline --hot --config webpack/web-dev.js",
-    "build": "webpack --colors --config webpack/web-dev.js",
-    "build-chrome": "webpack --progress --colors --config webpack/chrome-dev.js",
-    "dev-chrome": "webpack --watch --progress --colors --config webpack/chrome-dev.js",
+    "dev": "webpack-dev-server --watch --progress --colors --inline --hot --config webpack/web-dev.js",
+    "build": "webpack --progress --colors --config webpack/web-dev.js",
     "lint": "eslint --ext .js --ext .jsx ./src ./test || true",
     "test": "mocha-webpack \"test/**/*.spec.js\""
   },
