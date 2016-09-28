@@ -31,7 +31,6 @@ function createWindow() {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     win = null;
-    return true;
   });
 }
 
@@ -47,11 +46,6 @@ app.on('ready', onReady);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', app.quit);
-app.on('before-quit', () => {
-    win.removeAllListeners('close');
-    win.close();
-    return true;
-});
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the

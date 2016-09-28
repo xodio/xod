@@ -38,6 +38,8 @@ class App extends React.Component {
       code: '',
     };
 
+    this.isElectronApp = (window && window.process && window.process.type);
+
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onUpload = this.onUpload.bind(this);
@@ -146,7 +148,12 @@ class App extends React.Component {
     return false;
   }
 
-  onCloseApp(event) {
+  onElectronClose() {
+    // @TODO
+    return true;
+  }
+
+  onBrowserClose(event) {
     let message = true;
 
     if (this.props.hasChanges) {
@@ -155,6 +162,14 @@ class App extends React.Component {
     }
 
     return message;
+  }
+
+  onCloseApp(event) {
+    if (this.isElectronApp) {
+      return this.onElectronClose(event);
+    }
+
+    return this.onBrowserClose(event);
   }
 
   showInstallAppPopup() {
