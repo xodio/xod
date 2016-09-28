@@ -15,6 +15,9 @@ module.exports = {
     root: path.join(__dirname, '../src'),
     modulesDirectories: ['node_modules', 'src'],
     extensions: ['', '.js', '.jsx', '.scss'],
+    alias: {
+      react: path.resolve('node_modules/react'),
+    },
   },
   module: {
     loaders: [
