@@ -17,8 +17,18 @@
     margin: 1px 0;
     font-size: $font-size-m;
   }
-
 }
+
+.InspectorWidget {
+  &:hover, &:focus {
+    background: #fff;
+    
+    label {
+      color: #823906;
+    }
+  }
+}
+
 
 .HintWidget {
   @include inspector-widget();
@@ -40,6 +50,18 @@
   }
   input {
     width: 55px;
+  }
+}
+
+.PulseWidget {
+  @include inspector-widget();
+
+  select {
+    width: 60px;
+    float: right;
+  }
+  input {
+    width: 30px;
   }
 }
 
