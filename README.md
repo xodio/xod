@@ -6,50 +6,54 @@ XOD
 Deployment on localhost
 -----------------------
 
+Start MongoDB with default network settings if you want to access the server.
+
     $ make install
-    $ make start
+    $ make dev
 
-Open <http://localhost:8080> in your browser.
-
-XOD-SERVER
-----------
-You will need a MongoDB to serve data.
-
-    $ make server
-
-Runs a REST API server, that provides authorization, save/load in cloud and etc.
-Open API Explorer to learn more: <http://0.0.0.0:3000/explorer/>
-
-    $ npm run addUser %USERNAME% %EMAIL% %PASSWORD%
-
-Creates a user using cli-tools.
-
-    $npm run reset
-
-Removes all data from your database and automatically creates the first user named Amperka.
-But be careful, you can't restore your data if you didn't make a backup!
-This scripts made only for testing purposes.
-
+Open <http://localhost:8080> in your browser to see the IDE.
+Open <http://localhost:3000/explorer/> to interact with REST API.
 
 Maintenance Scripts
 -------------------
 
-    $ make start
+To run dev server along with services enough to use XOD in a browser on
+localhost:
 
-Run webpack dev server along with services enough to use XOD in a browser on
-localhost.
+    $ make dev
 
-    $ make server
+To just build distribution-ready packages:
 
-Run REST API server with hot reloading.
+    $ make build
+
+To check coding standards:
 
     $ make lint
 
-Check coding standards. It should return zero warnings and errors.
+To run tests:
 
     $ make test
 
-Build development version of xod and test it.
+To do all checks that CI server would do on push:
+
+    $ make ci
+
+Managing Data
+-------------
+
+All scripts chould be run from within `xod-server` directory.
+
+    $ cd xod-server
+
+You should have MongoDB up and running.
+
+To create a user in the DB:
+
+    $ npm run addUser %USERNAME% %EMAIL% %PASSWORD%
+
+To destroy all data and reset the DB to an initial state:
+
+    $ npm run reset
 
 Building User Documentation
 ---------------------------
