@@ -35,12 +35,6 @@
       fill: $color-canvas-almost-ok;
     }
   }
-
-  &.is-property {
-    .symbol {
-      fill: $color-canvas-face-stroke;
-    }
-  }
 }
 
 :focus .Pin.is-selected {

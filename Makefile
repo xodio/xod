@@ -1,26 +1,35 @@
 install:
 	npm install
-	cd xod-core     && npm install
-	cd xod-espruino && npm install
-	cd xod-client   && npm install
-	cd xod-server   && npm install
+	cd xod-core    					&& npm install
+	cd xod-espruino 				&& npm install
+	cd xod-client           && npm install
+	cd xod-server           && npm install
+	cd xod-client-browser   && npm install
+	cd xod-client-chrome    && npm install
+	cd xod-client-electron  && npm install
 
 build:
-	cd xod-core     && npm run build
-	cd xod-espruino && npm run build
-	cd xod-client   && npm run build
+	cd xod-core             && npm run build
+	cd xod-espruino         && npm run build
+	cd xod-client           && npm run build
+	cd xod-client-browser   && npm run build
+	cd xod-client-electron  && npm run build
 
 test:
-	cd xod-core     && npm run test
-	cd xod-espruino && npm run test
-	cd xod-client   && npm run test
-	cd xod-server   && npm run test
+	cd xod-core             && npm run test
+	cd xod-espruino         && npm run test
+	cd xod-client           && npm run test
+	cd xod-client-browser   && npm run test
+	cd xod-server           && npm run test
 
 lint:
-	cd xod-core     && npm run lint
-	cd xod-espruino && npm run lint
-	cd xod-client   && npm run lint
-	cd xod-server   && npm run lint
+	cd xod-core             && npm run lint
+	cd xod-espruino         && npm run lint
+	cd xod-client           && npm run lint
+	cd xod-server           && npm run lint
+	cd xod-client-browser   && npm run lint
+	cd xod-client-chrome    && npm run lint
+	cd xod-client-electron  && npm run lint
 
 dev-core:
 	cd xod-core     && npm run dev

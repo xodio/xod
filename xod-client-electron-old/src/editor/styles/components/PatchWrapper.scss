@@ -1,0 +1,15 @@
+.PatchWrapper {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #808080;
+  padding: 20px;
+  overflow: hidden;
+
+  &:focus {
+    box-shadow: none;
+    outline: none;
+  }
+}

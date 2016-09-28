@@ -1,0 +1,20 @@
+.Sidebar {
+  position: absolute;
+  width: $sidebar-width;
+  height: 100%;
+
+  background: $sidebar-background;
+
+  & > * {
+    box-shadow: $sidebar-block-shadow;
+    border-bottom: $sidebar-block-divider;
+  }
+
+  .title {
+    display: block;
+    margin: 0 8px;
+    padding: 10px 20px 4px 0;
+    color: $sidebar-title-color;
+    border-bottom: 1px solid $sidebar-title-divider;
+  }
+}
