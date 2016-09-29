@@ -19,7 +19,6 @@ test:
 	cd xod-core             && npm run test
 	cd xod-espruino         && npm run test
 	cd xod-client           && npm run test
-	cd xod-client-browser   && npm run test
 	cd xod-server           && npm run test
 
 lint:
