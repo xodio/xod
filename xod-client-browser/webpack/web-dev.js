@@ -10,7 +10,7 @@ const baseConfig = require('./base.js');
 const config = merge.smart(baseConfig, {
   output: {
     path: path.join(__dirname, '../dist'),
-    publicPath: 'http://localhost:8080/',
+    publicPath: './',
   },
   module: {
     loaders: [
