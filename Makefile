@@ -35,7 +35,14 @@ dev-server:
 	cd xod-server   && npm run dev
 
 dev:
-	npm run concurrently -- --kill-others "make dev-core" "make dev-espruino" "make dev-client"
+	npm run concurrently -- \
+		--kill-others \
+		--prefix name \
+		--names "core,espruino,client,server" \
+		"make dev-core" \
+		"make dev-espruino" \
+		"make dev-client" \
+		"make dev-server"
 
 ci: install build lint test
 
