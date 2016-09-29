@@ -34,7 +34,7 @@ start-electron:
 	cd xod-core             && npm run build
 	cd xod-espruino         && npm run build
 	cd xod-client-browser   && npm run build
-	cd xod-client-electron  && npm start
+	cd xod-client-electron  && npm run build && npm start
 
 dev-core:
 	cd xod-core     && npm run dev

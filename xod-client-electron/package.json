@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "start": "npm run build && ./node_modules/.bin/electron ./dist/app.js",
+    "start": "electron ./dist/app.js",
     "build": "rm -rf ./dist && mkdir ./dist && cp -R ./src/node_modules/xod-client-browser/* ./dist && babel ./src -d ./dist && rm -r ./dist/node_modules",
     "lint": "eslint --ext .js --ext .jsx ./src ./test || true"
   },
