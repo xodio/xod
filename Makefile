@@ -1,7 +1,7 @@
 install:
 	npm install
-	cd xod-core    					&& npm install
-	cd xod-espruino 				&& npm install
+	cd xod-core             && npm install
+	cd xod-espruino         && npm install
 	cd xod-client           && npm install
 	cd xod-server           && npm install
 	cd xod-client-browser   && npm install
@@ -30,11 +30,6 @@ lint:
 	cd xod-client-chrome    && npm run lint
 	cd xod-client-electron  && npm run lint
 
-start-browser:
-	cd xod-core             && npm run build
-	cd xod-espruino         && npm run build
-	cd xod-client-browser   && npm start
-
 start-electron:
 	cd xod-core             && npm run build
 	cd xod-espruino         && npm run build
@@ -49,6 +44,11 @@ dev-espruino:
 
 dev-client:
 	cd xod-client   && npm run dev
+
+dev-browser:
+	cd xod-core             && npm run build
+	cd xod-espruino         && npm run build
+	cd xod-client-browser   && npm run dev
 
 dev-server:
 	cd xod-server   && npm run dev
