@@ -2,8 +2,9 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Root from './containers/Root';
+import Root from 'xod-client/core/containers/Root';
+import App from './containers/App';
 
 import './styles/main';
 
-ReactDOM.render(<Root />, document.getElementById('root'));
+ReactDOM.render(<Root><App /></Root>, document.getElementById('root'));

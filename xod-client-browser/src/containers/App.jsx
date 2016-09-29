@@ -5,9 +5,9 @@ import { bindActionCreators } from 'redux';
 
 import { HotKeys } from 'react-hotkeys';
 
-import * as Actions from '../actions';
-import { UPLOAD as UPLOAD_ACTION_TYPE } from '../actionTypes';
-import Selectors from '../selectors';
+import * as Actions from 'xod-client/core/actions';
+import { UPLOAD as UPLOAD_ACTION_TYPE } from 'xod-client/core/actionTypes';
+import Selectors from 'xod-client/core/selectors';
 import { getViewableSize, isChromeApp, isInputTarget } from 'xod-client/utils/browser';
 import { projectHasChanges } from 'xod-client/utils/selectors';
 import { SAVE_LOAD_ERRORS } from 'xod-client/messages/constants';
@@ -22,7 +22,7 @@ import PopupShowCode from '../components/PopupShowCode';
 import PopupUploadProject from 'xod-client/processes/components/PopupUploadProject';
 import EventListener from 'react-event-listener';
 
-import DevTools from './DevTools';
+import DevTools from 'xod-client/core/containers/DevTools';
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
 
