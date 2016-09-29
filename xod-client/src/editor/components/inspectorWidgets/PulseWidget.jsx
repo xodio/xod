@@ -142,7 +142,7 @@ PulseWidget.propTypes = {
   modes: React.PropTypes.string,
   mode: React.PropTypes.string,
   label: React.PropTypes.string,
-  value: React.PropTypes.string,
+  value: React.PropTypes.any,
   disabled: React.PropTypes.bool,
   onPropUpdate: React.PropTypes.func,
 };
