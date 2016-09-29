@@ -10,6 +10,14 @@ module.exports = {
   ],
   output: {
     filename: 'bundle.js',
+    path: path.join(__dirname, '../dist'),
+    publicPath: '',
+  },
+  devServer: {
+    hot: true,
+    host: 'localhost',
+    port: 8080,
+    contentBase: './dist/',
   },
   resolve: {
     root: path.join(__dirname, '../src'),
@@ -51,6 +59,10 @@ module.exports = {
       {
         test: /\.json5$/,
         loader: 'json5',
+      },
+      {
+        test: /src\/node_modules\/xod-espruino\/index\.js$/,
+        loader: 'null',
       },
     ],
   },
