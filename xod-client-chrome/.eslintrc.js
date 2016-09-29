@@ -20,4 +20,8 @@ module.exports = {
     'plugin:react/recommended',
     'airbnb',
   ],
+
+  globals: {
+    chrome: true,
+  }
 };
