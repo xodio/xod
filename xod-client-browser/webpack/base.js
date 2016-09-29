@@ -45,7 +45,7 @@ module.exports = {
       {
         test: /node_modules\/font-awesome\/.*\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)(\?\S*)?$/,
         loaders: [
-          'file?name=[path][name].[ext]?[hash:6]',
+          'file?name=/assets/font-awesome/[name].[ext]?[hash:6]',
         ],
       },
       {
