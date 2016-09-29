@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "XOD project: Client chrome application",
   "scripts": {
-    "build": "rm -rf ./dist && mkdir ./dist && cp -a ./node_modules/xod-client-browser/* ./dist && cp -a ./src/* ./dist",
+    "build": "rm -rf ./dist && mkdir ./dist && cp -R ./src/node_modules/xod-client-browser/* ./dist && cp -R ./src/* ./dist && rm -r ./dist/node_modules",
     "lint": "eslint --ext .js --ext .jsx ./src ./test || true"
   },
   "engines": {
