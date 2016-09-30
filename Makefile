@@ -42,9 +42,7 @@ dev-espruino:
 dev-client:
 	cd xod-client   && npm run dev
 
-dev-browser:
-	cd xod-core             && npm run build
-	cd xod-espruino         && npm run build
+dev-client-browser:
 	cd xod-client-browser   && npm run dev
 
 dev-server:
@@ -54,11 +52,12 @@ dev:
 	npm run concurrently -- \
 		--kill-others \
 		--prefix name \
-		--names "core,espruino,client,server" \
+		--names "core,espruino,client,server,browser" \
 		"make dev-core" \
 		"make dev-espruino" \
 		"make dev-client" \
-		"make dev-server"
+		"make dev-server" \
+		"make dev-client-browser"
 
 ci: install build lint test
 
