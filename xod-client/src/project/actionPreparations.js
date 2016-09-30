@@ -43,7 +43,7 @@ export const addNode = (projectState, typeId, position, patchId) => {
 
 export const deleteNode = (projectState, id) => {
   const patch = Selectors.getPatchByNodeId(projectState, id);
-  const linksToDelete = Selectors.getLinksToDeleteWithNode(projectState, id, patch.id);
+  const linksToDelete = Selectors.getLinksConnectedWithNode(projectState, id, patch.id);
 
   const nodeTypeToDelete = Selectors.getNodeTypeToDeleteWithNode(projectState, id, patch.id);
 

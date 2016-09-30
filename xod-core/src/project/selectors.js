@@ -673,7 +673,7 @@ export const getLinksConnectedWithPin = (projectState, nodeId, pinKey, patchId) 
   )
 )(getLinks(projectState, patchId));
 
-export const getLinksToDeleteWithNode = (projectState, nodeId, patchId) => R.pipe(
+export const getLinksConnectedWithNode = (projectState, nodeId, patchId) => R.pipe(
   R.values,
   R.filter(
     R.pipe(
