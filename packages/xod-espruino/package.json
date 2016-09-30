@@ -4,7 +4,7 @@
   "description": "XOD project: Espruino runtime",
   "scripts": {
     "dev": "webpack --watch --colors --config webpack/base.js",
-    "build": "webpack --colors --config webpack/base.js",
+    "build": "mkdir -p dist && webpack --colors --config webpack/base.js",
     "lint:espruino": "eslint --no-eslintrc --config eslintrc.espruino.js ./src/runtime.js ./nodes/js ./nodes/espruino || true",
     "lint:es6": "eslint ./src --ignore-pattern runtime.js || true",
     "lint": "npm-run-all lint:*",
