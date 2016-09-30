@@ -188,57 +188,6 @@ export const getName = R.prop('name');
 export const getId = R.prop('id');
 
 /*
-  Counter selectors
-*/
-export const getLastPatchId = R.pipe(
-  getProject,
-  R.view(R.lensPath([
-    'counter',
-    'patches',
-  ]))
-);
-
-export const getLastFolderId = R.pipe(
-  getProject,
-  R.view(R.lensPath([
-    'counter',
-    'folders',
-  ]))
-);
-
-export const getLastNodeId = R.pipe(
-  getProject,
-  R.view(R.lensPath([
-    'counter',
-    'nodes',
-  ]))
-);
-
-export const getLastPinId = R.pipe(
-  getProject,
-  R.view(R.lensPath([
-    'counter',
-    'pins',
-  ]))
-);
-
-export const getLastLinkId = R.pipe(
-  getProject,
-  R.view(R.lensPath([
-    'counter',
-    'links',
-  ]))
-);
-
-export const getLastNodeTypeId = R.pipe(
-  getProject,
-  R.view(R.lensPath([
-    'counter',
-    'nodeTypes',
-  ]))
-);
-
-/*
   NodeType selectors
 */
 
