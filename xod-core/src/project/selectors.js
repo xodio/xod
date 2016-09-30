@@ -681,12 +681,7 @@ export const getLinksConnectedWithNode = (projectState, nodeId, patchId) => R.pi
       R.find(R.propEq('nodeId', nodeId))
     )
   ),
-  R.map(
-    R.pipe(
-      R.prop('id'),
-      R.toString
-    )
-  )
+  R.map(R.prop('id'))
 )(getLinks(projectState, patchId));
 
 const getPinKeyByNodeId = (nodeId, patch) => R.pipe(
