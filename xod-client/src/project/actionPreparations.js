@@ -15,7 +15,7 @@ export const addPatch = (projectState, name, folderId) => {
 };
 
 export const addFolder = (projectState, name, parentId) => {
-  const newId = Selectors.getLastFolderId(projectState) + 1;
+  const newId = getId();
 
   return {
     newId,
