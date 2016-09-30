@@ -3,7 +3,6 @@ import applyReducers from 'xod-client/utils/applyReducers';
 import { meta } from './meta';
 import { patches } from './patches';
 import { nodeTypes } from './nodetypes';
-import { counterReducer } from './counter';
 import { foldersReducer } from './folders';
 
 import { ApiHelpers, ApiActionTypes } from 'xod-client/api';
@@ -19,7 +18,6 @@ export default (patchIds) => {
     meta,
     patches: patches(patchIds),
     nodeTypes,
-    counter: counterReducer,
     folders: foldersReducer,
   };
 
