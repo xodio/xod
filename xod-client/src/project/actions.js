@@ -61,10 +61,11 @@ export const addLink = (pin1, pin2) => (dispatch, getState) => {
   const preparedData = PrepareTo.addLink(getState(), pin1, pin2);
 
   if (preparedData.error) {
+    const errorMessage = PROPERTY_ERRORS[preparedData.error];
     dispatch(addError({
-      message: PROPERTY_ERRORS[preparedData.error],
+      message: errorMessage,
     }));
-    return;
+    return new Error(errorMessage);
   }
 
   dispatch({
@@ -72,6 +73,8 @@ export const addLink = (pin1, pin2) => (dispatch, getState) => {
     payload: preparedData.payload,
     meta: preparedData.meta,
   });
+
+  return preparedData.payload.newId;
 };
 
 export const deleteLink = (id) => ({
@@ -156,6 +159,8 @@ export const addPatch = (name, folderId) => (dispatch, getState) => {
     type: ActionType.PATCH_ADD,
     payload: preparedData,
   });
+
+  return preparedData.payload.newId;
 };
 
 export const renamePatch = (id, name) => ({
@@ -198,6 +203,7 @@ export const addFolder = (name, parentId) => (dispatch, getState) => {
     type: ActionType.FOLDER_ADD,
     payload: preparedData,
   });
+  return preparedData.payload.newId;
 };
 
 export const renameFolder = (id, name) => ({
