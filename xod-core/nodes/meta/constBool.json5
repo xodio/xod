@@ -2,7 +2,7 @@
   label: '<Bool>',
   category: 'configuration',
   inputs: [{
-    key: 'value',
+    key: 'inValue',
     type: 'bool',
     injected: true,
     pinLabel: 'VAL',
@@ -13,8 +13,7 @@
     type: 'pulse',
     injected: true,
     pinLabel: 'PLS',
-    label: 'Pulse',
-    value: 0
+    label: 'Pulse'
   }],
   outputs: [{
     key: 'value',

@@ -5,9 +5,9 @@ import { default as chai, expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
 import { runtime, transpile } from '../src/node_modules/xod-espruino';
-import Selectors from '../src/app-browser/selectors';
-import initialState from '../src/app-browser/state';
-import generateReducers from '../src/app-browser/reducer';
+import Selectors from '../src/core/selectors';
+import initialState from '../src/core/state';
+import generateReducers from '../src/core/reducer';
 import { addNode } from '../src/project/actions';
 
 chai.use(dirtyChai);

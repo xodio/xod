@@ -2,7 +2,7 @@ import R from 'ramda';
 import chai from 'chai';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
-import generateReducers from '../src/app-browser/reducer';
+import generateReducers from '../src/core/reducer';
 import { nodes } from '../src/project/reducer/nodes';
 import * as Actions from '../src/project/actions';
 import * as PrepareTo from '../src/project/actionPreparations';

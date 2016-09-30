@@ -1,7 +1,7 @@
 import R from 'ramda';
 import chai from 'chai';
-import initialState from '../src/app-browser/state';
-import Selectors from '../src/app-browser/selectors';
+import initialState from '../src/core/state';
+import Selectors from '../src/core/selectors';
 import { PIN_TYPE, PIN_DIRECTION } from 'xod-core/project/constants';
 import { LINK_ERRORS } from '../src/messages/constants';
 

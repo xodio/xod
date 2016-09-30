@@ -5,19 +5,15 @@ import { Provider } from 'react-redux';
 
 import generateReducers from '../reducer';
 import Selectors from '../selectors';
-import Serializer from '../serializers/mock';
+import initialState from '../state';
 import { EditorMiddleware } from '../middlewares';
 import { addNode, addLink } from '../actions';
-
-import App from './App';
 
 export default class Root extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.serializer = new Serializer();
-    const initialState = this.serializer.getState();
     this.patches = Selectors.Project.getPatches(initialState);
     this.store = createStore(this.createReducers(this.patches), initialState, EditorMiddleware);
 
@@ -60,8 +56,12 @@ export default class Root extends React.Component {
   render() {
     return (
       <Provider store={this.store}>
-        <App />
+        {this.props.children}
       </Provider>
     );
   }
 }
+
+Root.propTypes = {
+  children: React.PropTypes.element,
+};

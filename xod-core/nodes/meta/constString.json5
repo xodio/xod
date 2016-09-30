@@ -2,8 +2,9 @@
   label: '<String>',
   category: 'configuration',
   inputs: [{
-    key: 'value',
+    key: 'inValue',
     type: 'string',
+    injected: true,
     pinLabel: 'VAL',
     label: 'Value',
     value: ''
@@ -12,11 +13,10 @@
     type: 'pulse',
     injected: true,
     pinLabel: 'PLS',
-    label: 'Pulse',
-    value: 0
+    label: 'Pulse'
   }],
   outputs: [{
     key: 'value',
-    type: 'number',
+    type: 'string',
   }]
 }
