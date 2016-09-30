@@ -15,7 +15,7 @@ chai.use(dirtyChai);
 describe('xod-espruino', () => {
   it('should transpile example initial state to kinda valid code', () => {
     const store = createStore(generateReducers([1]), initialState, applyMiddleware(thunk));
-    store.dispatch(addNode('core/button', { x: 100, y: 100 }, 1));
+    const nodeId = store.dispatch(addNode('core/button', { x: 100, y: 100 }, '1'));
 
     const projectJSON = Selectors.Project.getProjectJSON(store.getState());
     const project = JSON.parse(projectJSON);
@@ -32,8 +32,8 @@ describe('xod-espruino', () => {
       expect(topology).to.exist();
       expect(onInit).to.exist();
 
-      expect(nodes).to.have.keys('1');
-      expect(topology).to.be.eql([1]);
+      expect(nodes).to.have.keys(nodeId);
+      expect(topology).to.be.eql([nodeId]);
     })();
     /* eslint-enable no-undef */
   });
