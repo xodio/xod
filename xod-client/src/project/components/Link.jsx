@@ -106,7 +106,7 @@ class Link extends React.Component {
 }
 
 Link.propTypes = {
-  id: React.PropTypes.number.isRequired,
+  id: React.PropTypes.string.isRequired,
   from: React.PropTypes.object.isRequired,
   to: React.PropTypes.object.isRequired,
   isSelected: React.PropTypes.bool,

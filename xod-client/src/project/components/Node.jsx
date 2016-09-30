@@ -150,7 +150,7 @@ class Node extends React.Component {
 }
 
 Node.propTypes = {
-  id: React.PropTypes.number.isRequired,
+  id: React.PropTypes.string.isRequired,
   label: React.PropTypes.string.isRequired,
   pins: React.PropTypes.any.isRequired,
   position: React.PropTypes.object.isRequired,

@@ -35,6 +35,8 @@ export const addNode = (typeId, position, patchId) => (dispatch, getState) => {
     payload: preparedData.payload,
     meta: preparedData.meta,
   });
+
+  return preparedData.payload.newNodeId;
 };
 
 export const deleteNode = (id) => (dispatch, getState) => {
