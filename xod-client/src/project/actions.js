@@ -160,7 +160,7 @@ export const addPatch = (name, folderId) => (dispatch, getState) => {
     payload: preparedData,
   });
 
-  return preparedData.payload.newId;
+  return preparedData.newId;
 };
 
 export const renamePatch = (id, name) => ({
@@ -203,7 +203,7 @@ export const addFolder = (name, parentId) => (dispatch, getState) => {
     type: ActionType.FOLDER_ADD,
     payload: preparedData,
   });
-  return preparedData.payload.newId;
+  return preparedData.newId;
 };
 
 export const renameFolder = (id, name) => ({
