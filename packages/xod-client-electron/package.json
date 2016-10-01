@@ -5,18 +5,12 @@
   "main": "src/app.js",
   "scripts": {
     "start": "electron ./dist/app.js",
-    "build": "rm -rf ./dist && mkdir ./dist && cp -R ./src/node_modules/xod-client-browser/* ./dist && babel ./src -d ./dist && rm -r ./dist/node_modules",
-    "lint": "eslint --ext .js --ext .jsx ./src ./test || true"
+    "build": "rm -rf ./dist && mkdir ./dist && cp -R ./src/node_modules/xod-client-browser/* ./dist && babel ./src -d ./dist && rm -r ./dist/node_modules"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "devtron": "^1.3.0",
-    "electron": "^1.4.1",
-    "eslint": "^3.6.1",
-    "eslint-config-airbnb": "^12.0.0",
-    "eslint-plugin-import": "^1.16.0",
-    "eslint-plugin-jsx-a11y": "^2.2.2",
-    "eslint-plugin-react": "^6.3.0"
+    "electron": "^1.4.1"
   }
 }

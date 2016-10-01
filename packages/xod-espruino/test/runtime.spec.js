@@ -1,15 +1,19 @@
 
 import EventEmitter from 'events';
-import { expect } from 'chai';
-import { Node, Project, PULSE } from '../src/runtime';
+import dirtyChai from 'dirty-chai';
 import R from 'ramda';
+
+import { default as chai, expect } from 'chai';
+import { Node, Project, PULSE } from '../platform/runtime';
+
+chai.use(dirtyChai);
 
 describe('Runtime basics', () => {
   describe('PULSE uniquiness', () => {
     it('PULSE should not be equal to user defined objects', () => {
-      const userDefinedObj = {type: 'pulse'};
+      const userDefinedObj = { type: 'pulse' };
       expect(R.equals(PULSE, userDefinedObj),
-             'Test\'s version of PULSE is outdated!').to.be.true;
+             'Test\'s version of PULSE is outdated!').to.be.true();
       expect(PULSE).to.not.equal(userDefinedObj);
     });
   });

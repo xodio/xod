@@ -4,8 +4,7 @@
   "description": "XOD project: Client browser application",
   "scripts": {
     "dev": "webpack-dev-server --watch --colors --inline --hot --config webpack/web-dev.js",
-    "build": "webpack --colors --config webpack/base.js",
-    "lint": "eslint --ext .js --ext .jsx ./src ./test || true"
+    "build": "webpack --colors --config webpack/base.js"
   },
   "engines": {
     "node": "6.0.0"
@@ -25,12 +24,6 @@
   "devDependencies": {
     "chai": "^3.4.1",
     "dirty-chai": "^1.2.2",
-    "eslint": "^2.13.0",
-    "eslint-config-airbnb": "^9.0.1",
-    "eslint-import-resolver-webpack": "^0.3.2",
-    "eslint-plugin-import": "^1.8.1",
-    "eslint-plugin-jsx-a11y": "^1.5.3",
-    "eslint-plugin-react": "^5.2.2",
     "mocha": "^2.3.4",
     "mocha-webpack": "^0.4.0",
     "react-hot-loader": "^1.3.0",

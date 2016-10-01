@@ -5,7 +5,6 @@
   "scripts": {
     "build": "babel src/ -d dist/",
     "dev": "babel --watch src/ -d dist/",
-    "lint": "eslint ./src ./nodes ./test || true",
     "test": "mocha --require babel-register test/**/*.js"
   },
   "repository": {},
@@ -25,9 +24,6 @@
     "chai": "^3.4.1",
     "chai-immutable": "^1.5.3",
     "dirty-chai": "^1.2.2",
-    "eslint": "^3.6.0",
-    "eslint-config-airbnb-base": "^8.0.0",
-    "eslint-plugin-import": "^1.16.0",
     "mocha": "^2.3.4",
     "source-map-support": "^0.4.2"
   }

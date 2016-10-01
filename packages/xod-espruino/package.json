@@ -5,9 +5,6 @@
   "scripts": {
     "dev": "webpack --watch --colors --config webpack/base.js",
     "build": "mkdir -p dist && webpack --colors --config webpack/base.js",
-    "lint:espruino": "eslint --no-eslintrc --config eslintrc.espruino.js ./src/runtime.js ./nodes/js ./nodes/espruino || true",
-    "lint:es6": "eslint ./src --ignore-pattern runtime.js || true",
-    "lint": "npm-run-all lint:*",
     "test": "mocha-webpack \"test/**/*.spec.js\""
   },
   "repository": {},
@@ -26,13 +23,8 @@
   "devDependencies": {
     "chai": "^3.4.1",
     "dirty-chai": "^1.2.2",
-    "eslint": "^3.6.1",
-    "eslint-config-airbnb-base": "^8.0.0",
-    "eslint-plugin-import": "^1.16.0",
-    "eslint-import-resolver-webpack": "^0.3.2",
     "mocha": "^2.3.4",
     "mocha-webpack": "^0.4.0",
-    "npm-run-all": "^2.3.0",
     "source-map-support": "^0.4.2"
   },
   "peerDependencies": {

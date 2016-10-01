@@ -11,7 +11,8 @@
     "build:only:xod-client-electron": "cd packages/xod-client-electron && npm run build",
     "build": "npm-run-all build:only:xod-core build:only:xod-espruino build:only:xod-client build:only:xod-client-browser build:only:xod-client-electron build:only:xod-client-chrome",
     "rebuild": "npm-run-all clean:dist build",
-    "start:only:xod-client-electron": "cd packages/xod-client-electron && npm run start"
+    "start:only:xod-client-electron": "cd packages/xod-client-electron && npm run start",
+    "lint": "eslint packages/*/{src,test} packages/xod-espruino/platform"
   },
   "devDependencies": {
     "babel-cli": "^6.16.0",
@@ -23,6 +24,12 @@
     "concurrently": "^2.2.0",
     "copy-webpack-plugin": "^3.0.1",
     "css-loader": "^0.25.0",
+    "eslint": "^3.7.0",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-import-resolver-webpack": "^0.6.0",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jsx-a11y": "^2.2.2",
+    "eslint-plugin-react": "^6.3.0",
     "exports-loader": "^0.6.3",
     "file-loader": "^0.9.0",
     "globals-loader": "0.0.3",

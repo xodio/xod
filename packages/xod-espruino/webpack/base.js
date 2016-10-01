@@ -31,13 +31,10 @@ module.exports = {
     loaders: [
       {
         test: /src\/.*\.js$/,
-        exclude: [
-          /src\/runtime\.js$/,
-        ],
         loader: 'babel?presets[]=es2015',
       },
       {
-        test: /src\/runtime\.js$/,
+        test: /platform\/.*\.js$/,
         loader: 'raw',
       },
       {

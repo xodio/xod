@@ -1,7 +1,7 @@
 
 import R from 'ramda';
 import transform from './transformer';
-import defaultRuntime from './runtime'; // eslint-disable-line import/default
+import defaultRuntime from '../platform/runtime'; // eslint-disable-line import/default
 
 const joinLines = R.join('\n');
 const joinLineBlocks = R.join('\n\n');
