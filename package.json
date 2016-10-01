@@ -1,8 +1,41 @@
 {
   "scripts": {
-    "concurrently": "concurrently"
+    "concurrently": "concurrently",
+    "clean:dist": "rimraf packages/*/dist",
+    "clean:node_modules": "rimraf node_modules packages/*/node_modules",
+    "build:only:xod-core": "babel --presets es2015 packages/xod-core/src -d packages/xod-core/dist",
+    "build:only:xod-espruino": "mkdir -p packages/xod-espruino/dist && webpack --progress --colors --config packages/xod-espruino/webpack/base.js",
+    "build:only:xod-client": "babel --presets react --ignore node_modules packages/xod-client/src -d packages/xod-client/dist",
+    "build:only:xod-client-browser": "webpack --progress --colors --config packages/xod-client-browser/webpack/base.js",
+    "build:only:xod-client-chrome": "cd packages/xod-client-chrome && npm run build",
+    "build:only:xod-client-electron": "cd packages/xod-client-electron && npm run build",
+    "build": "npm-run-all build:only:xod-core build:only:xod-espruino build:only:xod-client build:only:xod-client-browser build:only:xod-client-electron build:only:xod-client-chrome",
+    "rebuild": "npm-run-all clean:dist build",
+    "start:only:xod-client-electron": "cd packages/xod-client-electron && npm run start"
   },
   "devDependencies": {
-    "concurrently": "^2.2.0"
+    "babel-cli": "^6.16.0",
+    "babel-core": "^6.16.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-node6": "^11.0.0",
+    "babel-preset-react": "^6.16.0",
+    "concurrently": "^2.2.0",
+    "copy-webpack-plugin": "^3.0.1",
+    "css-loader": "^0.25.0",
+    "exports-loader": "^0.6.3",
+    "file-loader": "^0.9.0",
+    "globals-loader": "0.0.3",
+    "imports-loader": "^0.6.5",
+    "json5": "^0.4.0",
+    "json5-loader": "^0.6.0",
+    "node-sass": "^3.10.1",
+    "npm-run-all": "^3.1.0",
+    "null-loader": "^0.1.1",
+    "raw-loader": "^0.5.1",
+    "rimraf": "^2.5.4",
+    "sass-loader": "^4.0.2",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.2"
   }
 }

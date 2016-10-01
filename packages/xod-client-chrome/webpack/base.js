@@ -2,18 +2,24 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const pkgpath = subpath => path.join(__dirname, '..', subpath);
+
 module.exports = {
   devtool: 'source-map',
   entry: [
     'babel-polyfill',
-    './src/index.jsx',
+    pkgpath('src/index.jsx'),
   ],
   output: {
     filename: 'bundle.js',
   },
   resolve: {
     root: path.join(__dirname, '../src'),
-    modulesDirectories: ['node_modules', 'src'],
+    modulesDirectories: [
+      pkgpath('node_modules'), 
+      pkgpath('src'),
+      pkgpath('src/node_modules'),
+    ],
     extensions: ['', '.js', '.jsx', '.scss'],
   },
   module: {
@@ -29,7 +35,6 @@ module.exports = {
         loaders: [
           'style',
           'css',
-          'autoprefixer?browsers=last 3 versions',
           'sass?outputStyle=expanded',
         ],
       },
@@ -54,7 +59,7 @@ module.exports = {
   plugins: [
     new webpack.NoErrorsPlugin(),
     new CopyWebpackPlugin([
-      { from: 'src/index.html' },
+      { from: pkgpath('src/index.html') },
     ]),
   ],
 };
