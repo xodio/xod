@@ -2,10 +2,10 @@ import R from 'ramda';
 import * as Selectors from './selectors';
 import { PIN_DIRECTION, PROPERTY_ERRORS } from 'xod-core/project/constants';
 import { PROPERTY_KIND } from 'xod-client/project/constants';
-import { getId } from 'xod-core/utils';
+import { generateId } from 'xod-core/utils';
 
 export const addPatch = (projectState, name, folderId) => {
-  const newId = getId();
+  const newId = generateId();
 
   return {
     newId,
@@ -15,7 +15,7 @@ export const addPatch = (projectState, name, folderId) => {
 };
 
 export const addFolder = (projectState, name, parentId) => {
-  const newId = getId();
+  const newId = generateId();
 
   return {
     newId,
@@ -25,7 +25,7 @@ export const addFolder = (projectState, name, parentId) => {
 };
 
 export const addNode = (projectState, typeId, position, patchId) => {
-  const newNodeId = getId();
+  const newNodeId = generateId();
   const nodeType = Selectors.dereferencedNodeTypes(projectState)[typeId];
 
   return {
@@ -142,7 +142,7 @@ export const addLink = (state, pin1, pin2) => {
   const toPin = (isOutputData1) ? pin2 : pin1;
 
   const patchId = patch.id;
-  const newId = getId();
+  const newId = generateId();
 
   return {
     payload: {

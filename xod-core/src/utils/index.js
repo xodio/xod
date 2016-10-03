@@ -1,4 +1,4 @@
 import { v4 } from 'uuid';
 
 export default {};
-export const getId = () => v4();
+export const generateId = () => v4();
