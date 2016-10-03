@@ -29,6 +29,7 @@ module.exports = {
       pkgpath('src'),
       pkgpath('src/node_modules'),
       pkgpath('../xod-client/node_modules'),
+      pkgpath('../xod-core/node_modules'),
     ],
     extensions: ['', '.js', '.jsx', '.scss'],
   },
@@ -62,7 +63,7 @@ module.exports = {
       },
       {
         test: /\.json5$/,
-        loader: 'json5',
+        loader: 'json5-loader',
       },
       {
         test: /src\/node_modules\/xod-espruino\/index\.js$/,
