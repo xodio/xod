@@ -4,6 +4,8 @@ const merge = require('webpack-merge');
 
 const baseConfig = require('./base.js');
 
+delete baseConfig['externals'];
+
 const config = merge.smart(baseConfig, {
   module: {
     loaders: [
