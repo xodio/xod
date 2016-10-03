@@ -188,57 +188,6 @@ export const getName = R.prop('name');
 export const getId = R.prop('id');
 
 /*
-  Counter selectors
-*/
-export const getLastPatchId = R.pipe(
-  getProject,
-  R.view(R.lensPath([
-    'counter',
-    'patches',
-  ]))
-);
-
-export const getLastFolderId = R.pipe(
-  getProject,
-  R.view(R.lensPath([
-    'counter',
-    'folders',
-  ]))
-);
-
-export const getLastNodeId = R.pipe(
-  getProject,
-  R.view(R.lensPath([
-    'counter',
-    'nodes',
-  ]))
-);
-
-export const getLastPinId = R.pipe(
-  getProject,
-  R.view(R.lensPath([
-    'counter',
-    'pins',
-  ]))
-);
-
-export const getLastLinkId = R.pipe(
-  getProject,
-  R.view(R.lensPath([
-    'counter',
-    'links',
-  ]))
-);
-
-export const getLastNodeTypeId = R.pipe(
-  getProject,
-  R.view(R.lensPath([
-    'counter',
-    'nodeTypes',
-  ]))
-);
-
-/*
   NodeType selectors
 */
 
@@ -530,7 +479,7 @@ export const getPatchIOPin = (node, i) => {
     nodeId: node.id,
     pinLabel: node.properties.pinLabel,
     label: node.properties.label,
-    key: `${dir}_${node.id}`,
+    key: node.id,
     direction: dir,
     type: pin.type,
     index: i,
@@ -724,7 +673,7 @@ export const getLinksConnectedWithPin = (projectState, nodeId, pinKey, patchId) 
   )
 )(getLinks(projectState, patchId));
 
-export const getLinksToDeleteWithNode = (projectState, nodeId, patchId) => R.pipe(
+export const getLinksConnectedWithNode = (projectState, nodeId, patchId) => R.pipe(
   R.values,
   R.filter(
     R.pipe(
@@ -732,12 +681,7 @@ export const getLinksToDeleteWithNode = (projectState, nodeId, patchId) => R.pip
       R.find(R.propEq('nodeId', nodeId))
     )
   ),
-  R.map(
-    R.pipe(
-      R.prop('id'),
-      R.toString
-    )
-  )
+  R.map(R.prop('id'))
 )(getLinks(projectState, patchId));
 
 const getPinKeyByNodeId = (nodeId, patch) => R.pipe(

@@ -197,7 +197,7 @@ export const getNodeGhost = (state) => {
   const pinsWidth = getGroupedPinsWidth(nodePins);
   const nodeWidth = getNodeWidth(pinsWidth);
   return {
-    id: -1,
+    id: '',
     label: nodeLabel,
     typeId: nodeTypeId,
     position: nodePosition,
@@ -217,7 +217,7 @@ export const getLinkGhost = (state, patchId) => {
   const pin = node.pins[fromPin.pinKey];
 
   return {
-    id: -1,
+    id: '',
     pins: [pin],
     from: addPinRadius(pin.position),
     to: { x: 0, y: 0 },

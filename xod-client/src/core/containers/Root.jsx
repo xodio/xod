@@ -31,9 +31,12 @@ export default class Root extends React.Component {
   }
 
   populateDemo() {
+    const nodes = [];
+
     const dispatchAddNode = (nodeTypeKey, x, y) => {
       const action = addNode(nodeTypeKey, { x, y }, 1);
-      this.store.dispatch(action);
+      const newNodeId = this.store.dispatch(action);
+      nodes.push(newNodeId);
     };
     const dispatchAddLink = (o1, o2) => {
       const action = addLink(o1, o2);
@@ -44,7 +47,11 @@ export default class Root extends React.Component {
     dispatchAddNode('core/pot', 400, 100);
     dispatchAddNode('core/led', 100, 400);
     dispatchAddNode('core/servo', 400, 400);
-    dispatchAddLink({ nodeId: 1, pinKey: 'state' }, { nodeId: 3, pinKey: 'brightness' });
+
+    dispatchAddLink(
+      { nodeId: nodes[0], pinKey: 'state' },
+      { nodeId: nodes[2], pinKey: 'brightness' }
+    );
   }
 
   createReducers(patches) {

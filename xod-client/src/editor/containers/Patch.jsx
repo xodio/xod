@@ -98,7 +98,7 @@ class Patch extends React.Component {
   }
 
   onLinkClick(id) {
-    if (id > 0) {
+    if (id.length > 0) {
       this.props.actions.selectLink(id);
     } else {
       this.deselectAll();

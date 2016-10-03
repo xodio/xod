@@ -1,7 +1,5 @@
 import R from 'ramda';
-
 import { PIN_DIRECTION } from './constants';
-
 
 const mapDirectedNodeTypePins = (direction, collectionKey) => R.compose(
   R.indexBy(R.prop('key')),
@@ -46,13 +44,13 @@ export const getInitialState = nodeTypes => ({
   },
   patches: {
     1: {
-      id: 1,
+      id: '1',
       name: 'Main',
       nodes: {},
       links: {},
     },
     2: {
-      id: 2,
+      id: '2',
       name: 'AUX',
       nodes: {},
       links: {},
