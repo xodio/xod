@@ -267,6 +267,22 @@
     }
   },
   "nodeTypes": {
+    "2": {
+      "id": "2",
+      "patchNode": true,
+      "label": "AUX",
+      "category": "patch",
+      "properties": {},
+      "pins": {
+        "15a02c27-2396-4edd-a85b-5235ba2d8e08": {
+          "nodeId": "15a02c27-2396-4edd-a85b-5235ba2d8e08",
+          "key": "15a02c27-2396-4edd-a85b-5235ba2d8e08",
+          "direction": "input",
+          "type": "number",
+          "index": "0"
+        }
+      }
+    },
     "core/button": {
       "category": "hardware",
       "properties": [
@@ -277,7 +293,7 @@
           "value": "BTN1"
         }
       ],
-      "key": "core/button",
+      "id": "core/button",
       "pins": {
         "state": {
           "index": 0,
@@ -294,7 +310,7 @@
     "core/constBool": {
       "label": "<Bool>",
       "category": "configuration",
-      "key": "core/constBool",
+      "id": "core/constBool",
       "pins": {
         "inValue": {
           "index": 0,
@@ -329,7 +345,7 @@
     "core/constNumber": {
       "label": "<Number>",
       "category": "configuration",
-      "key": "core/constNumber",
+      "id": "core/constNumber",
       "pins": {
         "inValue": {
           "index": 0,
@@ -364,7 +380,7 @@
     "core/constString": {
       "label": "<String>",
       "category": "configuration",
-      "key": "core/constString",
+      "id": "core/constString",
       "pins": {
         "inValue": {
           "index": 0,
@@ -395,7 +411,7 @@
       "impl": {}
     },
     "core/either": {
-      "key": "core/either",
+      "id": "core/either",
       "pins": {
         "inp": {
           "index": 0,
@@ -439,7 +455,7 @@
       }
     },
     "core/latch": {
-      "key": "core/latch",
+      "id": "core/latch",
       "pins": {
         "toggle": {
           "index": 0,
@@ -482,7 +498,7 @@
       }
     },
     "core/clock": {
-      "key": "core/clock",
+      "id": "core/clock",
       "pins": {
         "interval": {
           "index": 0,
@@ -508,7 +524,7 @@
     "core/led": {
       "label": "LED",
       "category": "hardware",
-      "key": "core/led",
+      "id": "core/led",
       "pins": {
         "brightness": {
           "index": 0,
@@ -542,7 +558,7 @@
         }
       ],
       "pure": false,
-      "key": "core/ultrasonic_HC_SR04",
+      "id": "core/ultrasonic_HC_SR04",
       "pins": {
         "sample": {
           "index": 0,
@@ -584,7 +600,7 @@
       }
     },
     "core/map": {
-      "key": "core/map",
+      "id": "core/map",
       "pins": {
         "inp": {
           "index": 0,
@@ -665,7 +681,7 @@
     },
     "core/not": {
       "label": "not",
-      "key": "core/not",
+      "id": "core/not",
       "pins": {
         "in": {
           "index": 0,
@@ -689,7 +705,7 @@
     },
     "core/and": {
       "label": "and",
-      "key": "core/and",
+      "id": "core/and",
       "pins": {
         "a": {
           "index": 0,
@@ -719,7 +735,7 @@
     },
     "core/or": {
       "label": "or",
-      "key": "core/or",
+      "id": "core/or",
       "pins": {
         "a": {
           "index": 0,
@@ -750,7 +766,7 @@
     "core/valveNumber": {
       "label": "valveNumber",
       "pure": false,
-      "key": "core/valveNumber",
+      "id": "core/valveNumber",
       "pins": {
         "cond": {
           "index": 0,
@@ -780,7 +796,7 @@
     },
     "core/triggerableNumber": {
       "label": "triggerableNumber",
-      "key": "core/triggerableNumber",
+      "id": "core/triggerableNumber",
       "pins": {
         "trigOn": {
           "index": 0,
@@ -813,7 +829,7 @@
       }
     },
     "core/compare": {
-      "key": "core/compare",
+      "id": "core/compare",
       "pins": {
         "a": {
           "index": 0,
@@ -870,7 +886,7 @@
           "value": "A6"
         }
       ],
-      "key": "core/pot",
+      "id": "core/pot",
       "pins": {
         "sample": {
           "index": 0,
@@ -903,7 +919,7 @@
           "value": "A10"
         }
       ],
-      "key": "core/servo",
+      "id": "core/servo",
       "pins": {
         "minPulse": {
           "index": 0,
@@ -951,7 +967,7 @@
           "value": "A3"
         }
       ],
-      "key": "core/buzzer",
+      "id": "core/buzzer",
       "pins": {
         "freq": {
           "index": 0,
@@ -979,7 +995,7 @@
           "value": ""
         }
       ],
-      "key": "core/inputBool",
+      "id": "core/inputBool",
       "pins": {
         "PIN": {
           "index": 0,
@@ -1002,7 +1018,7 @@
           "value": ""
         }
       ],
-      "key": "core/inputNumber",
+      "id": "core/inputNumber",
       "pins": {
         "PIN": {
           "index": 0,
@@ -1025,7 +1041,7 @@
           "value": ""
         }
       ],
-      "key": "core/inputString",
+      "id": "core/inputString",
       "pins": {
         "PIN": {
           "index": 0,
@@ -1048,7 +1064,7 @@
           "value": ""
         }
       ],
-      "key": "core/outputBool",
+      "id": "core/outputBool",
       "pins": {
         "OUT": {
           "index": 0,
@@ -1072,7 +1088,7 @@
           "value": ""
         }
       ],
-      "key": "core/outputNumber",
+      "id": "core/outputNumber",
       "pins": {
         "OUT": {
           "index": 0,
@@ -1096,7 +1112,7 @@
           "value": ""
         }
       ],
-      "key": "core/outputString",
+      "id": "core/outputString",
       "pins": {
         "OUT": {
           "index": 0,

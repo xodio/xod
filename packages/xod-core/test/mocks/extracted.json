@@ -10,7 +10,8 @@
     {
       "path": "./main/",
       "meta": {
-        "name": "Main"
+        "id": "1",
+        "label": "Main"
       },
       "patch": {
         "nodes": {
@@ -148,7 +149,20 @@
     {
       "path": "./sub/aux/",
       "meta": {
-        "name": "AUX"
+        "id:": "2",
+        "patchNode": true,
+        "label": "AUX",
+        "category": "patch",
+        "properties": {},
+        "pins": {
+          "15a02c27-2396-4edd-a85b-5235ba2d8e08": {
+            "nodeId": "15a02c27-2396-4edd-a85b-5235ba2d8e08",
+            "key": "15a02c27-2396-4edd-a85b-5235ba2d8e08",
+            "direction": "input",
+            "type": "number",
+            "index": "0"
+          }
+        }
       },
       "patch": {
         "nodes": {
