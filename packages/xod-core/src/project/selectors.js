@@ -134,26 +134,6 @@ export const isPatchesUpdated = (newPatches, oldPatches) => (
   !R.equals(R.keys(newPatches), R.keys(oldPatches))
 );
 
-export const getProjectPojo = (state) => {
-  const project = getProject(state);
-  const patches = R.pipe(
-    getPatches,
-    R.values,
-    R.map(patch => R.propOr(patch, 'present', patch)),
-    indexById
-  )(project);
-
-  return R.pipe(
-    R.assoc('patches', patches),
-    R.omit(['counter'])
-  )(project);
-};
-
-export const getProjectJSON = R.compose(
-  JSON.stringify,
-  getProjectPojo
-);
-
 export const validateProject = project => (
   typeof project === 'object' &&
   R.allPass([
@@ -547,8 +527,8 @@ export const dereferencedNodeTypes = (state) => {
     R.values,
     R.map(
       patch => ({
-        key: `${getUserName()}/${patch.name}`,
-        patchId: patch.id,
+        key: patch.id,
+        patchNode: true,
         label: patch.name,
         category: NODE_CATEGORY.PATCHES,
         properties: {},
@@ -837,3 +817,24 @@ export const validatePin = (state, pin) => {
 
   return error;
 };
+
+export const getProjectPojo = (state) => {
+  const project = getProject(state);
+  const patches = R.pipe(
+    getPatches,
+    R.values,
+    R.map(patch => R.propOr(patch, 'present', patch)),
+    indexById
+  )(project);
+
+  return R.pipe(
+    R.assoc('patches', patches),
+    R.assoc('nodeTypes', dereferencedNodeTypes(state)),
+    R.omit(['counter'])
+  )(project);
+};
+
+export const getProjectJSON = R.compose(
+  JSON.stringify,
+  getProjectPojo
+);
