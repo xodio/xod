@@ -227,7 +227,7 @@ ProjectBrowser.propTypes = {
   projectName: React.PropTypes.string,
   patches: React.PropTypes.object,
   folders: React.PropTypes.object,
-  currentPatchId: React.PropTypes.number,
+  currentPatchId: React.PropTypes.string,
   hotkeys: React.PropTypes.func,
 };
 

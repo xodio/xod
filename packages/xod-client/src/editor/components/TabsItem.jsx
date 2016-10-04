@@ -32,8 +32,8 @@ const TabsItem = ({ data, onClick, onClose }) => {
 
 TabsItem.propTypes = {
   data: React.PropTypes.shape({
-    id: React.PropTypes.number,
-    patchId: React.PropTypes.number,
+    id: React.PropTypes.string,
+    patchId: React.PropTypes.string,
     index: React.PropTypes.number,
     name: React.PropTypes.string,
     isActive: React.PropTypes.boolean,
