@@ -1,0 +1,1119 @@
+{
+  "meta": {
+    "id": 1,
+    "name": "Awesome project",
+    "author": "Amperka team"
+  },
+  "patches": {
+    "1": {
+      "id": "1",
+      "folderId": null,
+      "name": "Main",
+      "nodes": {
+        "4d30660d-13f1-4dcf-8b6f-e51db2eee949": {
+          "typeId": "core/button",
+          "pins": {},
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "properties": {},
+          "id": "4d30660d-13f1-4dcf-8b6f-e51db2eee949"
+        },
+        "897562ec-2617-4d4c-8ad4-d655bba25c15": {
+          "typeId": "core/pot",
+          "pins": {},
+          "position": {
+            "x": 366,
+            "y": 215
+          },
+          "properties": {},
+          "id": "897562ec-2617-4d4c-8ad4-d655bba25c15"
+        },
+        "4b1c9250-0e63-4d8b-99cb-25c563ec3e89": {
+          "typeId": "core/led",
+          "pins": {},
+          "position": {
+            "x": 100,
+            "y": 400
+          },
+          "properties": {},
+          "id": "4b1c9250-0e63-4d8b-99cb-25c563ec3e89"
+        },
+        "2d813d09-a8bd-4e23-a006-80a1b3cc354a": {
+          "typeId": "core/servo",
+          "pins": {
+            "minPulse": {
+              "injected": true,
+              "value": 700
+            },
+            "maxPulse": {
+              "injected": true,
+              "value": 2300
+            }
+          },
+          "position": {
+            "x": 400,
+            "y": 400
+          },
+          "properties": {},
+          "id": "2d813d09-a8bd-4e23-a006-80a1b3cc354a"
+        },
+        "8598aa84-ae9b-432d-870a-e6c22b8c1911": {
+          "typeId": "2",
+          "pins": {},
+          "position": {
+            "x": 267,
+            "y": 298
+          },
+          "properties": {},
+          "id": "8598aa84-ae9b-432d-870a-e6c22b8c1911"
+        },
+        "2b2b6e7b-1a46-4a68-b833-b0813e6b438f": {
+          "typeId": "core/clock",
+          "pins": {
+            "interval": {
+              "injected": true,
+              "value": 0.5
+            }
+          },
+          "position": {
+            "x": 266,
+            "y": 76
+          },
+          "properties": {},
+          "id": "2b2b6e7b-1a46-4a68-b833-b0813e6b438f"
+        }
+      },
+      "links": {
+        "317a939d-1292-430f-84da-1a215cb3dfaa": {
+          "id": "317a939d-1292-430f-84da-1a215cb3dfaa",
+          "pins": [
+            {
+              "nodeId": "4d30660d-13f1-4dcf-8b6f-e51db2eee949",
+              "pinKey": "state"
+            },
+            {
+              "nodeId": "4b1c9250-0e63-4d8b-99cb-25c563ec3e89",
+              "pinKey": "brightness"
+            }
+          ]
+        },
+        "0efded4d-a251-4643-9ab3-05b66b538489": {
+          "id": "0efded4d-a251-4643-9ab3-05b66b538489",
+          "pins": [
+            {
+              "nodeId": "897562ec-2617-4d4c-8ad4-d655bba25c15",
+              "pinKey": "value"
+            },
+            {
+              "nodeId": "2d813d09-a8bd-4e23-a006-80a1b3cc354a",
+              "pinKey": "value"
+            }
+          ]
+        },
+        "ed18e73b-aca3-49c5-ba9a-504db8970250": {
+          "id": "ed18e73b-aca3-49c5-ba9a-504db8970250",
+          "pins": [
+            {
+              "nodeId": "897562ec-2617-4d4c-8ad4-d655bba25c15",
+              "pinKey": "value"
+            },
+            {
+              "nodeId": "8598aa84-ae9b-432d-870a-e6c22b8c1911",
+              "pinKey": "15a02c27-2396-4edd-a85b-5235ba2d8e08"
+            }
+          ]
+        },
+        "96ddb02e-ac3c-4207-b484-1847844b5d8c": {
+          "id": "96ddb02e-ac3c-4207-b484-1847844b5d8c",
+          "pins": [
+            {
+              "nodeId": "2b2b6e7b-1a46-4a68-b833-b0813e6b438f",
+              "pinKey": "tick"
+            },
+            {
+              "nodeId": "897562ec-2617-4d4c-8ad4-d655bba25c15",
+              "pinKey": "sample"
+            }
+          ]
+        }
+      }
+    },
+    "2": {
+      "id": "2",
+      "folderId": "1",
+      "name": "AUX",
+      "nodes": {
+        "30f27916-8d60-4b0d-b75b-71c6aefc7151": {
+          "typeId": "core/ultrasonic_HC_SR04",
+          "pins": {
+            "units": {
+              "injected": true
+            }
+          },
+          "position": {
+            "x": 170,
+            "y": 297
+          },
+          "properties": {},
+          "id": "30f27916-8d60-4b0d-b75b-71c6aefc7151"
+        },
+        "2b06b2dd-eaa0-44d5-a4fb-3b62ecc3f385": {
+          "typeId": "core/buzzer",
+          "pins": {},
+          "position": {
+            "x": 99,
+            "y": 575
+          },
+          "properties": {},
+          "id": "2b06b2dd-eaa0-44d5-a4fb-3b62ecc3f385"
+        },
+        "72025f9e-7b35-43de-93ec-ddf3029e7304": {
+          "typeId": "core/clock",
+          "pins": {
+            "interval": {
+              "injected": false,
+              "value": 1
+            }
+          },
+          "position": {
+            "x": 136,
+            "y": 124
+          },
+          "properties": {},
+          "id": "72025f9e-7b35-43de-93ec-ddf3029e7304"
+        },
+        "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa": {
+          "typeId": "core/triggerableNumber",
+          "pins": {
+            "value": {
+              "injected": true,
+              "value": 400
+            }
+          },
+          "position": {
+            "x": 121,
+            "y": 456
+          },
+          "properties": {},
+          "id": "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa"
+        },
+        "15a02c27-2396-4edd-a85b-5235ba2d8e08": {
+          "typeId": "core/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 211,
+            "y": 31
+          },
+          "properties": {},
+          "id": "15a02c27-2396-4edd-a85b-5235ba2d8e08"
+        }
+      },
+      "links": {
+        "83aa6407-d83d-4b54-8d37-d92ff95f1b3d": {
+          "id": "83aa6407-d83d-4b54-8d37-d92ff95f1b3d",
+          "pins": [
+            {
+              "nodeId": "72025f9e-7b35-43de-93ec-ddf3029e7304",
+              "pinKey": "tick"
+            },
+            {
+              "nodeId": "30f27916-8d60-4b0d-b75b-71c6aefc7151",
+              "pinKey": "sample"
+            }
+          ]
+        },
+        "9e937b66-cfac-48e3-88c4-d1b6b00019d3": {
+          "id": "9e937b66-cfac-48e3-88c4-d1b6b00019d3",
+          "pins": [
+            {
+              "nodeId": "30f27916-8d60-4b0d-b75b-71c6aefc7151",
+              "pinKey": "value"
+            },
+            {
+              "nodeId": "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa",
+              "pinKey": "trigOn"
+            }
+          ]
+        },
+        "8c10745c-4a2b-4eb9-ab1e-b88e889ca1b7": {
+          "id": "8c10745c-4a2b-4eb9-ab1e-b88e889ca1b7",
+          "pins": [
+            {
+              "nodeId": "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "2b06b2dd-eaa0-44d5-a4fb-3b62ecc3f385",
+              "pinKey": "freq"
+            }
+          ]
+        },
+        "d11d28ee-137e-4611-9410-18d7a16e1172": {
+          "id": "d11d28ee-137e-4611-9410-18d7a16e1172",
+          "pins": [
+            {
+              "nodeId": "15a02c27-2396-4edd-a85b-5235ba2d8e08",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "72025f9e-7b35-43de-93ec-ddf3029e7304",
+              "pinKey": "interval"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "nodeTypes": {
+    "core/button": {
+      "category": "hardware",
+      "properties": [
+        {
+          "key": "pin",
+          "label": "Pin",
+          "type": "string",
+          "value": "BTN1"
+        }
+      ],
+      "key": "core/button",
+      "pins": {
+        "state": {
+          "index": 0,
+          "direction": "output",
+          "key": "state",
+          "type": "bool",
+          "description": "Emits `true` when pressed and `false` when released"
+        }
+      },
+      "impl": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  var pin = new Pin(e.props.pin);\n\n  setWatch(function(evt) {\n    e.fire({ state: !evt.state });\n  }, pin, {\n    edge: 'both',\n    repeat: true,\n    debounce: 30\n  });\n};\n"
+      }
+    },
+    "core/constBool": {
+      "label": "<Bool>",
+      "category": "configuration",
+      "key": "core/constBool",
+      "pins": {
+        "inValue": {
+          "index": 0,
+          "direction": "input",
+          "key": "inValue",
+          "type": "bool",
+          "injected": true,
+          "pinLabel": "VAL",
+          "label": "Value",
+          "value": false
+        },
+        "pulse": {
+          "index": 1,
+          "direction": "input",
+          "key": "pulse",
+          "type": "pulse",
+          "injected": true,
+          "pinLabel": "PLS",
+          "label": "Pulse"
+        },
+        "value": {
+          "index": 0,
+          "direction": "output",
+          "key": "value",
+          "type": "bool"
+        }
+      },
+      "impl": {
+        "js": "\nmodule.exports.setup = function(e) {\n  e.fire({ value: e.props.value });\n};\n"
+      }
+    },
+    "core/constNumber": {
+      "label": "<Number>",
+      "category": "configuration",
+      "key": "core/constNumber",
+      "pins": {
+        "inValue": {
+          "index": 0,
+          "direction": "input",
+          "key": "inValue",
+          "type": "number",
+          "injected": true,
+          "pinLabel": "VAL",
+          "label": "Value",
+          "value": 0
+        },
+        "pulse": {
+          "index": 1,
+          "direction": "input",
+          "key": "pulse",
+          "type": "pulse",
+          "injected": true,
+          "pinLabel": "PLS",
+          "label": "Pulse"
+        },
+        "value": {
+          "index": 0,
+          "direction": "output",
+          "key": "value",
+          "type": "number"
+        }
+      },
+      "impl": {
+        "js": "\nmodule.exports.setup = function(e) {\n  e.fire({ value: e.props.value });\n};\n"
+      }
+    },
+    "core/constString": {
+      "label": "<String>",
+      "category": "configuration",
+      "key": "core/constString",
+      "pins": {
+        "inValue": {
+          "index": 0,
+          "direction": "input",
+          "key": "inValue",
+          "type": "string",
+          "injected": true,
+          "pinLabel": "VAL",
+          "label": "Value",
+          "value": ""
+        },
+        "pulse": {
+          "index": 1,
+          "direction": "input",
+          "key": "pulse",
+          "type": "pulse",
+          "injected": true,
+          "pinLabel": "PLS",
+          "label": "Pulse"
+        },
+        "value": {
+          "index": 0,
+          "direction": "output",
+          "key": "value",
+          "type": "string"
+        }
+      },
+      "impl": {}
+    },
+    "core/either": {
+      "key": "core/either",
+      "pins": {
+        "inp": {
+          "index": 0,
+          "direction": "input",
+          "key": "inp",
+          "type": "bool",
+          "pinLabel": "IN",
+          "label": "Value",
+          "description": "Selector value"
+        },
+        "trueValue": {
+          "index": 1,
+          "direction": "input",
+          "key": "trueValue",
+          "type": "number",
+          "label": "True output",
+          "pinLabel": "T",
+          "value": 1,
+          "description": "Output if selector is `true`"
+        },
+        "falseValue": {
+          "index": 2,
+          "direction": "input",
+          "key": "falseValue",
+          "type": "number",
+          "label": "False output",
+          "pinLabel": "F",
+          "value": 0,
+          "description": "Output if selector is `false`"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "number",
+          "description": "Selected output value"
+        }
+      },
+      "impl": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var out = e.inputs.inp ? e.inputs.trueValue : e.inputs.falseValue;\n  return { out: out };\n};\n"
+      }
+    },
+    "core/latch": {
+      "key": "core/latch",
+      "pins": {
+        "toggle": {
+          "index": 0,
+          "direction": "input",
+          "key": "toggle",
+          "type": "pulse",
+          "pinLabel": "TGL",
+          "label": "Toggle pulse",
+          "description": "Flips current state to opposite"
+        },
+        "set": {
+          "index": 1,
+          "direction": "input",
+          "key": "set",
+          "type": "pulse",
+          "pinLabel": "SET",
+          "label": "Set pulse",
+          "description": "Sets current state to `true`"
+        },
+        "reset": {
+          "index": 2,
+          "direction": "input",
+          "key": "reset",
+          "type": "pulse",
+          "modes": "pin",
+          "pinLabel": "RST",
+          "label": "Reset pulse",
+          "description": "Sets current state to `false`"
+        },
+        "state": {
+          "index": 0,
+          "direction": "output",
+          "key": "state",
+          "type": "bool",
+          "description": "Emits current latch state when changes"
+        }
+      },
+      "impl": {
+        "js": "\nmodule.exports.setup = function(e) {\n  e.context.state = e.props.initialState;\n};\n\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
+      }
+    },
+    "core/clock": {
+      "key": "core/clock",
+      "pins": {
+        "interval": {
+          "index": 0,
+          "direction": "input",
+          "key": "interval",
+          "pinLabel": "INT",
+          "label": "Interval (sec)",
+          "type": "number",
+          "value": 1
+        },
+        "tick": {
+          "index": 0,
+          "direction": "output",
+          "key": "tick",
+          "type": "pulse",
+          "description": "Emits pulse periodically"
+        }
+      },
+      "impl": {
+        "js": "\nmodule.exports.setup = function(e) {\n  setInterval(function() {\n    e.fire({ tick: PULSE });\n  }, e.props.interval * 1000);\n};\n"
+      }
+    },
+    "core/led": {
+      "label": "LED",
+      "category": "hardware",
+      "key": "core/led",
+      "pins": {
+        "brightness": {
+          "index": 0,
+          "direction": "input",
+          "key": "brightness",
+          "type": "number",
+          "label": "Brightness",
+          "value": 0,
+          "description": "Shine brightness"
+        }
+      },
+      "impl": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var b = e.inputs.brightness;\n\n  // Adjust duty cycle as a power function to align brightness\n  // perception by human eye\n  var duty = b * b * b;\n\n  analogWrite(e.context.pin, duty);\n};\n"
+      }
+    },
+    "core/ultrasonic_HC_SR04": {
+      "label": "HC-SR04",
+      "category": "hardware",
+      "properties": [
+        {
+          "key": "pinTrig",
+          "label": "Pin trigger",
+          "type": "string",
+          "value": "C9"
+        },
+        {
+          "key": "pinEcho",
+          "label": "Pin echo",
+          "type": "string",
+          "value": "A8"
+        }
+      ],
+      "pure": false,
+      "key": "core/ultrasonic_HC_SR04",
+      "pins": {
+        "sample": {
+          "index": 0,
+          "direction": "input",
+          "key": "sample",
+          "type": "pulse",
+          "pinLabel": "PLS",
+          "label": "Pulse",
+          "description": "Sample current value"
+        },
+        "units": {
+          "index": 1,
+          "direction": "input",
+          "key": "units",
+          "pinLabel": "UNT",
+          "label": "Units",
+          "type": "string",
+          "value": "mm"
+        },
+        "value": {
+          "index": 0,
+          "direction": "output",
+          "key": "value",
+          "type": "number",
+          "pinLabel": "DST",
+          "description": "Sampled distance (mm)"
+        },
+        "error": {
+          "index": 1,
+          "direction": "output",
+          "key": "error",
+          "type": "string",
+          "pinLabel": "ERR",
+          "description": "Operation error"
+        }
+      },
+      "impl": {
+        "espruino": "\nvar sonic = require('@amperka/ultrasonic');\n\nmodule.exports.setup = function(e) {\n  var pinTrig = new Pin(e.props.pinTrig);\n  var pinEcho = new Pin(e.props.pinEcho);\n  e.context.device = sonic.connect({\n    trigPin: pinTrig,\n    echoPin: pinEcho\n  });\n  e.context.units = e.props.units;\n  e.context.isBusy = false;\n};\n\nmodule.exports.evaluate = function(e) {\n  if (e.context.isBusy) {\n    e.fire({ error: \"busy\" });\n  } else {\n    e.context.isBusy = true;\n    e.context.device.ping(function(err, value) {\n      e.context.isBusy = false;\n      if (err) {\n        e.fire({ error: err.msg });\n      } else {\n        e.fire({ value: value });\n      }\n    }, e.context.units);\n  }\n};\n"
+      }
+    },
+    "core/map": {
+      "key": "core/map",
+      "pins": {
+        "inp": {
+          "index": 0,
+          "direction": "input",
+          "key": "inp",
+          "type": "number",
+          "pinLabel": "IN",
+          "label": "Input",
+          "value": 0,
+          "description": "Input value to map"
+        },
+        "inA": {
+          "index": 1,
+          "direction": "input",
+          "key": "inA",
+          "type": "number",
+          "injected": true,
+          "pinLabel": "As",
+          "label": "Input range start",
+          "value": 0,
+          "description": "Input range start"
+        },
+        "inB": {
+          "index": 2,
+          "direction": "input",
+          "key": "inB",
+          "type": "number",
+          "injected": true,
+          "pinLabel": "Bs",
+          "label": "Input range end",
+          "value": 0,
+          "description": "Input range end"
+        },
+        "outA": {
+          "index": 3,
+          "direction": "input",
+          "key": "outA",
+          "type": "number",
+          "injected": true,
+          "pinLabel": "At",
+          "label": "Output range start",
+          "value": 0,
+          "description": "Output range start"
+        },
+        "outB": {
+          "index": 4,
+          "direction": "input",
+          "key": "outB",
+          "type": "number",
+          "injected": true,
+          "pinLabel": "Bt",
+          "label": "Output range end",
+          "value": 0,
+          "description": "Output range end"
+        },
+        "clip": {
+          "index": 5,
+          "direction": "input",
+          "key": "clip",
+          "type": "bool",
+          "injected": true,
+          "pinLabel": "CL",
+          "label": "Clip",
+          "value": false,
+          "description": "Clip result to output range"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "number",
+          "description": "Mapped value"
+        }
+      },
+      "impl": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var k = (inputs.inp - inputs.inA) / (inputs.inB - inputs.inA);\n  var out = inputs.outA + k * (inputs.outB - inputs.outA);\n\n  if (inputs.clip) {\n    if (inputs.outB > inputs.outA) {\n      out = Math.max(inputs.outA, out);\n      out = Math.min(inputs.outB, out);\n    } else {\n      out = Math.max(inputs.outB, out);\n      out = Math.min(inputs.outA, out);\n    }\n  }\n\n  return { out: out };\n};\n"
+      }
+    },
+    "core/not": {
+      "label": "not",
+      "key": "core/not",
+      "pins": {
+        "in": {
+          "index": 0,
+          "direction": "input",
+          "key": "in",
+          "type": "bool",
+          "label": "Input",
+          "description": "Value to be inverted"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "bool",
+          "description": "Resulting inverted value"
+        }
+      },
+      "impl": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: !e.inputs.in };\n};\n"
+      }
+    },
+    "core/and": {
+      "label": "and",
+      "key": "core/and",
+      "pins": {
+        "a": {
+          "index": 0,
+          "direction": "input",
+          "key": "a",
+          "type": "bool",
+          "description": "First input"
+        },
+        "b": {
+          "index": 1,
+          "direction": "input",
+          "key": "b",
+          "type": "bool",
+          "description": "Second input"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "bool",
+          "description": "\"true\" if both inputs are \"true\""
+        }
+      },
+      "impl": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a && e.inputs.b };\n};\n"
+      }
+    },
+    "core/or": {
+      "label": "or",
+      "key": "core/or",
+      "pins": {
+        "a": {
+          "index": 0,
+          "direction": "input",
+          "key": "a",
+          "type": "bool",
+          "description": "First input"
+        },
+        "b": {
+          "index": 1,
+          "direction": "input",
+          "key": "b",
+          "type": "bool",
+          "description": "Second input"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "bool",
+          "description": "\"true\" if a least one of inputs is \"true\""
+        }
+      },
+      "impl": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a || e.inputs.b };\n};\n"
+      }
+    },
+    "core/valveNumber": {
+      "label": "valveNumber",
+      "pure": false,
+      "key": "core/valveNumber",
+      "pins": {
+        "cond": {
+          "index": 0,
+          "direction": "input",
+          "key": "cond",
+          "type": "bool",
+          "description": "Condition"
+        },
+        "in": {
+          "index": 1,
+          "direction": "input",
+          "key": "in",
+          "type": "number",
+          "description": "Input"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "number",
+          "description": "Output (receives messages from the input if condition is \"true\")"
+        }
+      },
+      "impl": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.cond) {\n    e.fire({ out: e.inputs.in });\n  }\n};\n"
+      }
+    },
+    "core/triggerableNumber": {
+      "label": "triggerableNumber",
+      "key": "core/triggerableNumber",
+      "pins": {
+        "trigOn": {
+          "index": 0,
+          "direction": "input",
+          "key": "trigOn",
+          "type": "pulse",
+          "pinLabel": "PLS",
+          "label": "Pulse",
+          "description": "Pulse to trig on"
+        },
+        "value": {
+          "index": 1,
+          "direction": "input",
+          "key": "value",
+          "pinLabel": "VAL",
+          "label": "Value",
+          "type": "number",
+          "value": 0
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "number",
+          "description": "Output value"
+        }
+      },
+      "impl": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.props.value };\n};\n"
+      }
+    },
+    "core/compare": {
+      "key": "core/compare",
+      "pins": {
+        "a": {
+          "index": 0,
+          "direction": "input",
+          "key": "a",
+          "pinLabel": "IN1",
+          "label": "First value",
+          "type": "number"
+        },
+        "b": {
+          "index": 1,
+          "direction": "input",
+          "key": "b",
+          "pinLabel": "IN2",
+          "label": "Second value",
+          "type": "number"
+        },
+        "equal": {
+          "index": 0,
+          "direction": "output",
+          "key": "equal",
+          "type": "pulse",
+          "pinLabel": "==",
+          "description": "Pulses if a = b"
+        },
+        "less": {
+          "index": 1,
+          "direction": "output",
+          "key": "less",
+          "type": "pulse",
+          "pinLabel": "<",
+          "description": "Pulses if a < b"
+        },
+        "greater": {
+          "index": 2,
+          "direction": "output",
+          "key": "greater",
+          "type": "pulse",
+          "pinLabel": ">",
+          "description": "Pulses if a > b"
+        }
+      },
+      "impl": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n  if (a < b) {\n    return { less: PULSE };\n  } else if (a > b) {\n    return { greater: PULSE };\n  } else {\n    return { equal: PULSE };\n  }\n};\n"
+      }
+    },
+    "core/pot": {
+      "category": "hardware",
+      "properties": [
+        {
+          "key": "pin",
+          "label": "Pin",
+          "type": "string",
+          "value": "A6"
+        }
+      ],
+      "key": "core/pot",
+      "pins": {
+        "sample": {
+          "index": 0,
+          "direction": "input",
+          "key": "sample",
+          "type": "pulse",
+          "pinLabel": "PLS",
+          "label": "Sample pulse",
+          "description": "Sample current value"
+        },
+        "value": {
+          "index": 0,
+          "direction": "output",
+          "key": "value",
+          "type": "number",
+          "description": "Sampled potentiometer value"
+        }
+      },
+      "impl": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  return { value: analogRead(e.context.pin) };\n};\n"
+      }
+    },
+    "core/servo": {
+      "category": "hardware",
+      "properties": [
+        {
+          "key": "pin",
+          "label": "Pin",
+          "type": "string",
+          "value": "A10"
+        }
+      ],
+      "key": "core/servo",
+      "pins": {
+        "minPulse": {
+          "index": 0,
+          "direction": "input",
+          "key": "minPulse",
+          "type": "number",
+          "injected": true,
+          "pinLabel": "MIN",
+          "label": "Min Pulse (μs)",
+          "value": 700
+        },
+        "maxPulse": {
+          "index": 1,
+          "direction": "input",
+          "key": "maxPulse",
+          "type": "number",
+          "injected": true,
+          "pinLabel": "MAX",
+          "label": "Max Pulse (μs)",
+          "value": 2300
+        },
+        "value": {
+          "index": 2,
+          "direction": "input",
+          "key": "value",
+          "type": "number",
+          "pinLabel": "VAL",
+          "label": "Value",
+          "value": 1,
+          "description": "Rotation angle/value"
+        }
+      },
+      "impl": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var minPulse = +e.props.minPulse;\n  var maxPulse = +e.props.maxPulse;\n  var us = minPulse + (maxPulse - minPulse) * e.inputs.value;\n  analogWrite(e.context.pin, us / 20000, { freq: 50 });\n};\n"
+      }
+    },
+    "core/buzzer": {
+      "label": "Buzzer",
+      "category": "hardware",
+      "properties": [
+        {
+          "key": "pin",
+          "label": "Pin",
+          "type": "string",
+          "value": "A3"
+        }
+      ],
+      "key": "core/buzzer",
+      "pins": {
+        "freq": {
+          "index": 0,
+          "direction": "input",
+          "key": "freq",
+          "type": "number",
+          "pinLabel": "FREQ",
+          "label": "Frequency",
+          "description": "Frequency (Hz)"
+        }
+      },
+      "impl": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var f = e.inputs.freq;\n\n  if (f === 0) {\n    digitalWrite(e.context.pin, false);\n  } else {\n    analogWrite(e.context.pin, 0.5, { freq: f });\n  }\n};\n"
+      }
+    },
+    "core/inputBool": {
+      "label": "<InputBool>",
+      "category": "io",
+      "properties": [
+        {
+          "key": "pinLabel",
+          "type": "string",
+          "widget": "IOLabel",
+          "label": "Pin label",
+          "value": ""
+        }
+      ],
+      "key": "core/inputBool",
+      "pins": {
+        "PIN": {
+          "index": 0,
+          "direction": "output",
+          "key": "PIN",
+          "type": "bool"
+        }
+      },
+      "impl": {}
+    },
+    "core/inputNumber": {
+      "label": "<InputNumber>",
+      "category": "io",
+      "properties": [
+        {
+          "key": "pinLabel",
+          "type": "string",
+          "widget": "IOLabel",
+          "label": "Pin label",
+          "value": ""
+        }
+      ],
+      "key": "core/inputNumber",
+      "pins": {
+        "PIN": {
+          "index": 0,
+          "direction": "output",
+          "key": "PIN",
+          "type": "number"
+        }
+      },
+      "impl": {}
+    },
+    "core/inputString": {
+      "label": "<InputString>",
+      "category": "io",
+      "properties": [
+        {
+          "key": "pinLabel",
+          "type": "string",
+          "widget": "IOLabel",
+          "label": "Pin label",
+          "value": ""
+        }
+      ],
+      "key": "core/inputString",
+      "pins": {
+        "PIN": {
+          "index": 0,
+          "direction": "output",
+          "key": "PIN",
+          "type": "string"
+        }
+      },
+      "impl": {}
+    },
+    "core/outputBool": {
+      "label": "<OutputBool>",
+      "category": "io",
+      "properties": [
+        {
+          "key": "pinLabel",
+          "type": "string",
+          "widget": "IOLabel",
+          "label": "Pin label",
+          "value": ""
+        }
+      ],
+      "key": "core/outputBool",
+      "pins": {
+        "OUT": {
+          "index": 0,
+          "direction": "input",
+          "key": "OUT",
+          "type": "bool",
+          "label": "Value"
+        }
+      },
+      "impl": {}
+    },
+    "core/outputNumber": {
+      "label": "<OutputNumber>",
+      "category": "io",
+      "properties": [
+        {
+          "key": "pinLabel",
+          "type": "string",
+          "widget": "IOLabel",
+          "label": "Pin label",
+          "value": ""
+        }
+      ],
+      "key": "core/outputNumber",
+      "pins": {
+        "OUT": {
+          "index": 0,
+          "direction": "input",
+          "key": "OUT",
+          "type": "number",
+          "label": "Value"
+        }
+      },
+      "impl": {}
+    },
+    "core/outputString": {
+      "label": "<OutputString>",
+      "category": "io",
+      "properties": [
+        {
+          "key": "pinLabel",
+          "type": "string",
+          "widget": "IOLabel",
+          "label": "Pin label",
+          "value": ""
+        }
+      ],
+      "key": "core/outputString",
+      "pins": {
+        "OUT": {
+          "index": 0,
+          "direction": "input",
+          "key": "OUT",
+          "type": "string",
+          "label": "Value"
+        }
+      },
+      "impl": {}
+    }
+  },
+  "folders": {
+    "1": {
+      "id": "1",
+      "name": "sub",
+      "parentId": null
+    }
+  }
+}
