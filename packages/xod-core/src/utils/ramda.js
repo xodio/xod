@@ -9,3 +9,5 @@ export const deepMerge = R.mergeWith(
     R.flip(R.merge)(o2)
   )(o1)
 );
+
+export const notNil = R.complement(R.isNil());
