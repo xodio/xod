@@ -94,11 +94,9 @@ export const selectNode = (id) => (dispatch, getState) => {
   return result;
 };
 
-export const addAndSelectNode = (typeId, position, curPatchId) => (dispatch, getState) => {
-  dispatch(addNode(typeId, position, curPatchId));
+export const addAndSelectNode = (typeId, position, curPatchId) => dispatch => {
+  const newId = dispatch(addNode(typeId, position, curPatchId));
   dispatch(setMode(EDITOR_MODE.DEFAULT));
-
-  const newId = core.generateId();
   dispatch(selectNode(newId));
 };
 
