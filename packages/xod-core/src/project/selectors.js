@@ -23,7 +23,6 @@ const findByProp = (propName, propVal, from) => R.pipe(
 )(from);
 
 const findById = (id, from) => findByProp('id', id, from);
-const findByKey = (key, from) => findByProp('key', key, from);
 const findByPatchId = (id, from) => findByProp('patchId', id, from);
 const findByNodeTypeId = (id, from) => findByProp('typeId', id, from);
 
@@ -456,10 +455,10 @@ export const getPatchIOPin = (node, i) => {
   const dir = invertDirection(pin.direction);
 
   return {
+    key: node.id,
     nodeId: node.id,
     pinLabel: node.properties.pinLabel,
     label: node.properties.label,
-    key: node.id,
     direction: dir,
     type: pin.type,
     index: i,
@@ -486,6 +485,7 @@ export const getPatchNode = R.curry((state, patch) => {
   const extendNodes = R.map(
     node => R.compose(
       R.flip(deepMerge)(node),
+      R.omit(['id']),
       getNodeTypeById(state),
       R.prop('typeId')
     )(node)
@@ -527,7 +527,7 @@ export const dereferencedNodeTypes = (state) => {
     R.values,
     R.map(
       patch => ({
-        key: patch.id,
+        id: patch.id,
         patchNode: true,
         label: patch.name,
         category: NODE_CATEGORY.PATCHES,
@@ -538,7 +538,7 @@ export const dereferencedNodeTypes = (state) => {
         )(patch.io),
       })
     ),
-    R.indexBy(R.prop('key'))
+    R.indexBy(R.prop('id'))
   )(patchNodes);
 
   return R.pipe(
@@ -547,9 +547,9 @@ export const dereferencedNodeTypes = (state) => {
   )(state);
 };
 
-export const getPreparedNodeTypeByKey = (state, key) => R.pipe(
+export const getPreparedNodeTypeById = (state, typeId) => R.pipe(
   dereferencedNodeTypes,
-  R.prop(key)
+  R.prop(typeId)
 )(state);
 
 export const addPinRadius = position => ({
@@ -558,8 +558,10 @@ export const addPinRadius = position => ({
 });
 
 export const getNodeLabel = (state, node) => {
-  const nodeType = getPreparedNodeTypeByKey(state, node.typeId);
-  let nodeLabel = node.label || nodeType.label || nodeType.key;
+  const nodeType = getPreparedNodeTypeById(state, node.typeId);
+  let nodeLabel = node.label ||
+                  nodeType.label ||
+                  nodeType.id;
 
   const nodeValue = R.view(R.lensPath(['properties', 'value']), node);
   if (nodeValue !== undefined) {
@@ -579,7 +581,7 @@ export const getNodeLabel = (state, node) => {
 };
 const getNodePins = (state, typeId) => R.pipe(
   dereferencedNodeTypes,
-  R.pickBy(R.propEq('key', typeId)),
+  R.pickBy(R.propEq('id', typeId)),
   R.values,
   R.map(R.prop('pins')),
   R.head
@@ -621,7 +623,6 @@ export const dereferencedLinks = (projectState, patchId) => {
 
   return R.mapObjIndexed((link) => {
     const pins = R.map(data => R.merge(data, nodes[data.nodeId].pins[data.pinKey]), link.pins);
-
     return R.merge(
       link,
       {
@@ -676,7 +677,7 @@ export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
   const nodes = getNodes(patchId, projectState);
   const node = findById(nodeId, nodes);
   const nodeTypes = dereferencedNodeTypes(projectState);
-  const nodeType = findByKey(node.typeId, nodeTypes);
+  const nodeType = findById(node.typeId, nodeTypes);
   const isIO = (nodeType.category === NODE_CATEGORY.IO);
 
   let nodeTypeToDelete = null;
@@ -686,12 +687,12 @@ export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
     const patchNodes = getPatchNodes(projectState);
     const patch = patchNodes[patchId];
     const ioNodes = patch.io.length;
-    const patchNodeType = (isIO) ? findByPatchId(patchId, nodeTypes) : null;
-    const patchNode = findByNodeTypeId(patchNodeType.key, nodes);
+    const patchNodeType = findById(patchId, nodeTypes);
+    const patchNode = findByNodeTypeId(patchNodeType.id, nodes);
 
     if (ioNodes === 1) {
       // This is last IO node! It will remove whole PatchNode.
-      nodeTypeToDelete = patchNodeType.key;
+      nodeTypeToDelete = patchNodeType.id;
     }
 
     if (patchNode) {
@@ -720,7 +721,7 @@ export const getNodeTypeToDeleteWithNode = (projectState, nodeId, patchId) => {
   }
 
   return {
-    key: nodeTypeToDelete,
+    id: nodeTypeToDelete,
     error: nodeTypeToDeleteError,
   };
 };
