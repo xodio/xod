@@ -1,7 +1,7 @@
 import R from 'ramda';
 import undoable from 'redux-undo';
 import { patchReducer } from './patch';
-import applyReducers from 'xod-client/utils/applyReducers';
+import applyReducers from '../../utils/applyReducers';
 import {
   getPatchUndoType,
   getPatchRedoType,

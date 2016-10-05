@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { UPLOAD } from './actionTypes';
-import { STATUS } from 'xod-client/utils/constants';
+import { STATUS } from '../utils/constants';
 
 export const getProccesses = R.prop('processes');
 

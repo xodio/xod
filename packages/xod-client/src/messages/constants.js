@@ -1,6 +1,8 @@
-import { LINK_ERRORS as LE,
-         NODETYPE_ERRORS as NTE,
-         PROPERTY_ERRORS as PE } from 'xod-core/project/constants';
+import {
+  LINK_ERRORS as LE,
+  NODETYPE_ERRORS as NTE,
+  PROPERTY_ERRORS as PE,
+} from 'xod-core';
 
 export const LINK_ERRORS = {
   [LE.SAME_DIRECTION]: 'Can\'t create link between pins of the same direction!',

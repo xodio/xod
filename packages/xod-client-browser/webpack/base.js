@@ -9,7 +9,7 @@ module.exports = {
   entry: [
     'babel-polyfill',
     pkgpath('src/index.jsx'),
-    pkgpath('../xod-client/src/core/styles/main.scss'),
+    pkgpath('node_modules/xod-client/src/core/styles/main.scss'),
   ],
   output: {
     filename: 'bundle.js',
@@ -23,13 +23,10 @@ module.exports = {
     contentBase: './dist/',
   },
   resolve: {
-    root: pkgpath('src'),
     modulesDirectories: [
       pkgpath('node_modules'),
-      pkgpath('src'),
-      pkgpath('src/node_modules'),
-      pkgpath('../xod-client/node_modules'),
-      pkgpath('../xod-core/node_modules'),
+      pkgpath('node_modules/xod-client/node_modules'),
+      pkgpath('node_modules/xod-client/node_modules/xod-core/node_modules'),
     ],
     extensions: ['', '.js', '.jsx', '.scss'],
   },
@@ -64,11 +61,7 @@ module.exports = {
       {
         test: /\.json5$/,
         loader: 'json5-loader',
-      },
-      {
-        test: /src\/node_modules\/xod-espruino\/index\.js$/,
-        loader: 'null',
-      },
+      }
     ],
   },
   plugins: [

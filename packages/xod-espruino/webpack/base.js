@@ -15,15 +15,13 @@ module.exports = {
     umdNamedDefine: true
   },
   externals: [
-    /xod-core\/.*/,
-    {fs: true},
+    'xod-core',
+    'fs',
   ],
   resolve: {
-    root: pkgpath('src'),
     modulesDirectories: [
       pkgpath('node_modules'),
-      pkgpath('src'),
-      pkgpath('src/node_modules')
+      pkgpath('node_modules/xod-core/node_modules'),
     ],
     extensions: ['', '.js'],
   },

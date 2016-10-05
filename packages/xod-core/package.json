@@ -11,6 +11,7 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "main": "dist/index.js",
   "dependencies": {
     "co": "^4.6.0",
     "commander": "^2.9.0",

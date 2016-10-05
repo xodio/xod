@@ -2,7 +2,7 @@ import R from 'ramda';
 import chai from 'chai';
 import initialState from '../src/core/state';
 import Selectors from '../src/core/selectors';
-import { PIN_TYPE, PIN_DIRECTION } from 'xod-core/project/constants';
+import { PIN_TYPE, PIN_DIRECTION } from 'xod-core';
 import { LINK_ERRORS } from '../src/messages/constants';
 
 describe('Link selector', () => {

@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import { apiMiddleware } from 'redux-api-middleware';
 import DevTools from './containers/DevTools';
 
-import { authEnhancer } from 'xod-client/user/enhancer';
+import { authEnhancer } from '../user/enhancer';
 
 const devTools = (typeof window === 'object' && typeof window.devToolsExtension !== 'undefined') ?
   window.devToolsExtension() : DevTools.instrument();

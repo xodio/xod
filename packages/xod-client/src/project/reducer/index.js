@@ -1,17 +1,17 @@
-import applyReducers from 'xod-client/utils/applyReducers';
+import applyReducers from '../../utils/applyReducers';
 
 import { meta } from './meta';
 import { patches } from './patches';
 import { nodeTypes } from './nodetypes';
 import { foldersReducer } from './folders';
 
-import { ApiHelpers, ApiActionTypes } from 'xod-client/api';
+import { ApiHelpers, ApiActionTypes } from '../../api';
 
 import {
   PROJECT_LOAD_DATA,
 } from '../actionTypes';
 
-import { parseProjectJSON } from '../selectors';
+import { parseProjectJSON } from 'xod-core';
 
 export default (patchIds) => {
   const reducers = {

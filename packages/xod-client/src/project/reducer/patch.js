@@ -1,5 +1,5 @@
 import R from 'ramda';
-import applyReducers from 'xod-client/utils/applyReducers';
+import applyReducers from '../../utils/applyReducers';
 
 import { links } from './links';
 import { nodes } from './nodes';

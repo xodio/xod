@@ -1,13 +1,13 @@
 import R from 'ramda';
 import React from 'react';
-import { noop } from 'xod-client/utils/ramda';
+import { noop } from '../../utils/ramda';
 
-import { COMMAND } from 'xod-client/utils/constants';
-import { PROJECT_BROWSER_ERRORS } from 'xod-client/messages/constants';
+import { COMMAND } from '../../utils/constants';
+import { PROJECT_BROWSER_ERRORS } from '../../messages/constants';
 
 import { Icon } from 'react-fa';
-import PopupPrompt from 'xod-client/utils/components/PopupPrompt';
-import PopupConfirm from 'xod-client/utils/components/PopupConfirm';
+import PopupPrompt from '../../utils/components/PopupPrompt';
+import PopupConfirm from '../../utils/components/PopupConfirm';
 
 const initialState = {
   renaming: false,

@@ -1,11 +1,11 @@
-import * as Project from 'xod-client/project/selectors';
-import * as Editor from 'xod-client/editor/selectors';
-import * as Errors from 'xod-client/messages/selectors';
-import * as Processes from 'xod-client/processes/selectors';
+import * as Editor from '../editor/selectors';
+import * as Errors from '../messages/selectors';
+import * as Processes from '../processes/selectors';
+import * as Utils from '../utils/selectors';
 
 export default {
-  Project,
   Editor,
   Errors,
   Processes,
+  Utils,
 };

@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 
-import projectReducer from 'xod-client/project/reducer';
-import editorReducer from 'xod-client/editor/reducer';
-import errorsReducer from 'xod-client/messages/reducer';
-import processesReducer from 'xod-client/processes/reducer';
-import userReducer from 'xod-client/user/reducer';
+import projectReducer from '../project/reducer';
+import editorReducer from '../editor/reducer';
+import errorsReducer from '../messages/reducer';
+import processesReducer from '../processes/reducer';
+import userReducer from '../user/reducer';
 
 const combineRootReducers = (patchIds) => combineReducers({
   project: projectReducer(patchIds),

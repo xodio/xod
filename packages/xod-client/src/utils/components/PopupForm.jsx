@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
-import { noop } from 'xod-client/utils/ramda';
+import { noop } from '../../utils/ramda';
 
 import EventListener from 'react-event-listener';
-import { KEYCODE } from 'xod-client/utils/constants';
+import { KEYCODE } from '../../utils/constants';
 
 const PopupForm = ({ title, children, className, onClose, isModal, isVisible }) => {
   const wrapperClassNames = classNames('PopupForm', className);

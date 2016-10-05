@@ -1,12 +1,12 @@
 import * as ActionType from './actionTypes';
 import * as ProcessSelectors from './selectors';
-import * as ProjectSelectors from 'xod-client/project/selectors';
 
-import { STATUS } from 'xod-client/utils/constants';
+import { STATUS } from '../utils/constants';
+import { getProjectPojo } from 'xod-core';
 import { upload as uploadToEspruino, transpile } from 'xod-espruino';
 
 export const upload = () => (dispatch, getState) => {
-  const project = ProjectSelectors.getProjectPojo(getState());
+  const project = getProjectPojo(getState());
   const processes = ProcessSelectors.getProccesses(getState());
   const newId = ProcessSelectors.getNewId(processes);
   const code = transpile(project);

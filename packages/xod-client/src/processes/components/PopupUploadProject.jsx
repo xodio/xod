@@ -1,7 +1,7 @@
 import React from 'react';
 import { SkyLightStateless } from 'react-skylight';
 import { Line as ProgressBar } from 'rc-progress';
-import { STATUS } from 'xod-client/utils/constants';
+import { STATUS } from '../../utils/constants';
 
 class PopupUploadProject extends React.Component {
   constructor(props) {

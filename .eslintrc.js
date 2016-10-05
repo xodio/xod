@@ -38,11 +38,13 @@ module.exports = {
       allowAfterSuper: true
     }],
 
+    'import/no-extraneous-dependencies': ['error', { 
+      devDependencies: ['**/*.spec.js'] 
+    }],
+
     'arrow-parens': 'off', // TODO: enable and fix code
     'no-prototype-builtins': 'off', // TODO: enable and fix code
     'no-undef': 'off', // TODO: enable and fix code
-    'import/no-extraneous-dependencies': 'off', // TODO: enable after lerna introducing
-    //'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.spec.js'] }]
     'import/imports-first': 'off', // TODO: enable and fix code
     'import/prefer-default-export': 'off', // TODO: enable and fix code
     'import/no-dynamic-require': 'off', // TODO: enable and fix code

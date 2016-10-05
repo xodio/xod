@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getMeta, getId, getProjectPojo } from 'xod-client/project/selectors';
-import { projectHasChanges, projectCanBeLoaded } from 'xod-client/utils/selectors';
+import { getMeta, getId, getProjectPojo } from '../project/selectors';
+import { projectHasChanges, projectCanBeLoaded } from '../utils/selectors';
 import * as user from '../selectors';
 
 import { Icon } from 'react-fa';
@@ -12,7 +12,7 @@ import { LoginForm } from '../components/LoginForm';
 import { UserButton } from '../components/UserButton';
 import { UserMenu } from '../components/UserMenu';
 
-import { ApiActions } from 'xod-client/api';
+import { ApiActions } from '../api';
 
 class UserPanel extends React.Component {
   constructor(props) {

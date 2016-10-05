@@ -1,6 +1,6 @@
 import R from 'ramda';
-import * as Selectors from 'xod-client/user/selectors';
-import { STATUS } from 'xod-client/utils/constants';
+import * as Selectors from '../user/selectors';
+import { STATUS } from '../utils/constants';
 
 const notNil = R.complement(R.isNil);
 const isSucceeded = R.pathEq(['meta', 'status'], STATUS.SUCCEEDED);
