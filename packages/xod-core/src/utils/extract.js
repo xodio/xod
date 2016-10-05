@@ -53,12 +53,13 @@ const extractLibs = R.pipe(
   R.values,
   R.map(
     R.pipe(
-      R.prop('key'),
+      R.prop('id'),
       R.split('/'),
       R.init,
       R.join('/')
     )
   ),
+  R.reject(R.isEmpty),
   R.uniq
 );
 
