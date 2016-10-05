@@ -13,9 +13,6 @@ function pin(nodeId, pinKey) {
 }
 const mockStore = (state) => createStore(generateReducers([1]), state, applyMiddleware(thunk));
 const getNodeTypes = (state) => core.dereferencedNodeTypes(state);
-const getPatchName = (pId, state) => state.project.patches[pId].present.name;
-const getPatchNodeName = (pId, state) =>
-  `${core.getUserName()}/${getPatchName(pId, state)}`;
 
 describe('Project reducer: ', () => {
   const projectShape = {
@@ -30,7 +27,7 @@ describe('Project reducer: ', () => {
       },
       nodeTypes: {
         'core/test': {
-          key: 'core/test',
+          id: 'core/test',
           category: 'hardware',
           pins: {
             in: {
@@ -48,7 +45,7 @@ describe('Project reducer: ', () => {
           },
         },
         'core/output': {
-          key: 'core/output',
+          id: 'core/output',
           category: 'io',
           pins: {
             out: {
@@ -60,7 +57,7 @@ describe('Project reducer: ', () => {
           },
         },
         'core/prop': {
-          key: 'core/prop',
+          id: 'core/prop',
           category: 'hardware',
           pins: {
             in: {
@@ -261,7 +258,7 @@ describe('Project reducer: ', () => {
         ['project', 'nodeTypes'],
         {
           'test/test': {
-            key: 'test/test',
+            id: 'test/test',
             pins: {
               in: {
                 key: 'in',
@@ -486,7 +483,7 @@ describe('Project reducer: ', () => {
       store.dispatch(Actions.renamePatch(lastPatchId, newName));
       const patches = core.getPatches(store.getState());
 
-      chai.expect(getPatch(patches[lastPatchId]).name).to.be.equal(newName);
+      chai.expect(getPatch(patches[lastPatchId]).label).to.be.equal(newName);
     });
   });
 
@@ -502,11 +499,9 @@ describe('Project reducer: ', () => {
     });
 
     it('should be created by adding IO node into patch', () => {
-      const patchNodeName = getPatchNodeName(patchId, store.getState());
-
-      const expectedNodeTypes = R.concat(
-        R.keys(getNodeTypes(store.getState())),
-        patchNodeName
+      const expectedNodeTypes = R.prepend(
+        patchId,
+        R.keys(getNodeTypes(store.getState()))
       );
 
 
@@ -525,15 +520,14 @@ describe('Project reducer: ', () => {
 
     it('should show error on attempt to delete IO node that have a link', () => {
       const expectedNodeTypeToDelete = {
-        key: null,
-        error: core.NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE,
+        id: null,
+        error: core.CANT_DELETE_USED_PIN_OF_PATCHNODE,
       };
-      const patchNodeName = getPatchNodeName(patchId, store.getState());
 
       const testNodeId = store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
       store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
       const outNodeId = store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
-      const ioNodeId = store.dispatch(Actions.addNode(patchNodeName, { x: 10, y: 10 }, patchId));
+      const ioNodeId = store.dispatch(Actions.addNode(patchId, { x: 10, y: 10 }, patchId));
       store.dispatch(Actions.addLink(pin(testNodeId, 'in'), pin(ioNodeId, outNodeId)));
 
       const nodeTypesWithPatch = getNodeTypes(store.getState());
@@ -551,15 +545,14 @@ describe('Project reducer: ', () => {
     });
 
     it('should show error on attempt to delete last IO node of used patch node', () => {
-      const patchNodeName = getPatchNodeName(patchId, store.getState());
       const expectedNodeTypeToDelete = {
-        key: patchNodeName,
-        error: core.NODETYPE_ERRORS.CANT_DELETE_USED_PATCHNODE,
+        id: patchId,
+        error: core.CANT_DELETE_USED_PATCHNODE,
       };
 
       store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
       const outNodeId = store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
-      store.dispatch(Actions.addNode(patchNodeName, { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode(patchId, { x: 10, y: 10 }, patchId));
 
       const nodeTypesWithPatch = getNodeTypes(store.getState());
 
