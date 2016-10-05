@@ -149,7 +149,7 @@
     {
       "path": "./sub/aux/",
       "meta": {
-        "id:": "2",
+        "id": "2",
         "patchNode": true,
         "label": "AUX",
         "category": "patch",
