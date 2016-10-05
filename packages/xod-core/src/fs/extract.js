@@ -1,15 +1,27 @@
 import R from 'ramda';
 import { notNil, hasNot } from '../utils/ramda';
 
+// :: "./awesome_project/" -> "main" -> "patch.xodm"
+const filePath = (projectPath, patchPath, fileName) => R.pipe(
+  R.concat(R.defaultTo('', patchPath)),
+  R.concat(projectPath)
+)(fileName);
+
+// :: "Awesome name" -> "awesome_name"
+const fsSafeName = R.pipe(
+  R.replace(/[^a-z0-9]/gi, '_'),
+  R.toLower
+);
+
+// :: folders -> folder -> path -> "parent_folder/child_folder/"
 const getParentFoldersPath = (folders, folder, path) => {
   const newPath = R.prepend(
-    R.toLower(folder.name),
+    fsSafeName(folder.name),
     path
   );
 
   if (R.isNil(folder.parentId)) {
     return R.pipe(
-      R.prepend('.'),
       R.append(''),
       R.join('/')
     )(newPath);
@@ -38,13 +50,6 @@ const foldersPaths = R.pipe(
     {}
   )(foldersArray)
 );
-
-// :: patch -> folders -> pathString
-const patchPath = R.curry((patch, folders) => {
-  const folderPath = R.propOr('./', patch.folderId, folders);
-  const patchName = R.toLower(patch.label);
-  return `${folderPath}${patchName}/`;
-});
 
 // :: xodball -> [ libName, ... ]
 const extractLibs = R.pipe(
@@ -80,13 +85,29 @@ export const project = xodball => ({
   libs: extractLibs(xodball),
 });
 
+// :: xodball -> "./project_name_lowercased/"
+export const getProjectPath = R.pipe(
+  R.path(['meta', 'name']),
+  fsSafeName,
+  R.flip(R.concat)('/'),
+  R.concat('./')
+);
+
+// :: patch -> folders -> "folder_name/patch_name_lowercased/"
+export const patchPath = R.curry((patch, xodball) => {
+  const folders = foldersPaths(xodball);
+  const folderPath = R.propOr('', patch.folderId, folders);
+  const patchName = fsSafeName(patch.label);
+  return `${folderPath}${patchName}/`;
+});
+
 // :: xodball -> [ patch: { path, meta, patch } ]
 export const patches = xodball => R.pipe(
   R.prop('patches'),
   R.values(),
   R.map(
     patch => ({
-      path: patchPath(patch, foldersPaths(xodball)),
+      path: patchPath(patch, xodball),
       meta: margeWithNodeType({
         id: patch.id,
         label: patch.label,
@@ -100,13 +121,43 @@ export const patches = xodball => R.pipe(
 )(xodball);
 
 // :: xodball -> extractedObject
-export const all = xodball => ({
+const all = xodball => ({
   project: project(xodball),
   patches: patches(xodball),
 });
+
+// :: xodball -> extractedObjectGroupedByPaths
+export const divided = (xodball) => {
+  const data = all(xodball);
+  const projectPath = getProjectPath(xodball);
+  const result = [{
+    path: filePath(projectPath, null, 'project.xod'),
+    content: data.project,
+  }];
+
+  return R.pipe(
+    R.reduce(
+      (acc, patch) => R.concat(acc,
+        [
+          {
+            path: filePath(projectPath, patch.path, 'patch.xodm'),
+            content: patch.meta,
+          },
+          {
+            path: filePath(projectPath, patch.path, 'patch.xodp'),
+            content: patch.patch,
+          },
+        ]
+      ),
+      []
+    ),
+    R.concat(result)
+  )(data.patches);
+};
 
 export default {
   all,
   project,
   patches,
+  divided,
 };

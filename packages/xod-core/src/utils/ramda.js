@@ -10,5 +10,5 @@ export const deepMerge = R.mergeWith(
   )(o1)
 );
 
-export const notNil = R.complement(R.isNil());
+export const notNil = R.complement(R.isNil);
 export const hasNot = R.complement(R.has);
