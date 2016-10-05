@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { notNil, hasNot } from './ramda';
+import { notNil, hasNot } from '../utils/ramda';
 
 const getParentFoldersPath = (folders, folder, path) => {
   const newPath = R.prepend(
