@@ -46,7 +46,7 @@ export const patchReducer = (id) => {
 
     switch (action.type) {
       case PATCH_RENAME:
-        return R.assoc('name', action.payload.name, state);
+        return R.assoc('label', action.payload.name, state);
       case PATCH_MOVE:
         return R.assoc('folderId', action.payload.folderId, state);
       default:

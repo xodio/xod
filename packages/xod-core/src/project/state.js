@@ -40,24 +40,17 @@ export const getInitialState = nodeTypes => ({
   patches: {
     1: {
       id: '1',
-      name: 'Main',
+      label: 'Main',
       nodes: {},
       links: {},
     },
     2: {
       id: '2',
-      name: 'AUX',
+      label: 'AUX',
       nodes: {},
       links: {},
     },
   },
   nodeTypes,
   folders: {},
-  counter: {
-    patches: 2,
-    nodes: 0,
-    links: 0,
-    nodeTypes: +maxKey(nodeTypes) + 1,
-    folders: 0,
-  },
 });

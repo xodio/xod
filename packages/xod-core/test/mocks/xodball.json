@@ -8,7 +8,7 @@
     "1": {
       "id": "1",
       "folderId": null,
-      "name": "Main",
+      "label": "Main",
       "nodes": {
         "4d30660d-13f1-4dcf-8b6f-e51db2eee949": {
           "typeId": "core/button",

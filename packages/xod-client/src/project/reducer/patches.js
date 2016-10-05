@@ -30,7 +30,7 @@ export const patches = (patchIds) => {
     past: [],
     present: {
       id: action.payload.newId,
-      name: action.payload.name || 'New patch',
+      label: action.payload.name || 'New patch',
       folderId: action.payload.folderId || null,
       nodes: {},
       links: {},

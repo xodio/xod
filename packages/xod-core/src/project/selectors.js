@@ -81,7 +81,7 @@ export const getPatchByLinkId = (projectState, linkId) =>
   getPatchByEntityId(projectState, linkId, 'links');
 
 export const getPatchName = (projectState, patchId) => R.compose(
-  R.prop('name'),
+  R.prop('label'),
   getPatchById(patchId)
 )(projectState);
 
@@ -122,7 +122,7 @@ export const validatePatches = () => R.pipe(
   R.all(
     R.allPass([
       R.has('id'),
-      R.has('name'),
+      R.has('label'),
       R.has('nodes'),
       R.has('links'),
     ])
@@ -334,7 +334,7 @@ export const getTreeView = (state, patchId) => {
       R.map(
         patch => ({
           id: patch.id,
-          module: patch.name,
+          module: patch.label,
           leaf: true,
         }),
         patchesAtLevel
@@ -529,7 +529,7 @@ export const dereferencedNodeTypes = (state) => {
       patch => ({
         id: patch.id,
         patchNode: true,
-        label: patch.name,
+        label: patch.label,
         category: NODE_CATEGORY.PATCHES,
         properties: {},
         pins: R.pipe(
