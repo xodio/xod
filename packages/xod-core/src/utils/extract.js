@@ -1,6 +1,5 @@
 import R from 'ramda';
-import { notNil } from './ramda';
-
+import { notNil, hasNot } from './ramda';
 
 const getParentFoldersPath = (folders, folder, path) => {
   const newPath = R.prepend(
@@ -43,7 +42,7 @@ const foldersPaths = R.pipe(
 // :: patch -> folders -> pathString
 const patchPath = R.curry((patch, folders) => {
   const folderPath = R.propOr('./', patch.folderId, folders);
-  const patchName = R.toLower(patch.name);
+  const patchName = R.toLower(patch.label);
   return `${folderPath}${patchName}/`;
 });
 
@@ -63,6 +62,18 @@ const extractLibs = R.pipe(
   R.uniq
 );
 
+// :: patchMeta -> xodball -> patchNodeMeta
+const margeWithNodeType = (obj, xodball) => {
+  if (hasNot(obj.id, xodball.nodeTypes)) {
+    return obj;
+  }
+
+  return R.pipe(
+    R.path(['nodeTypes', obj.id]),
+    R.flip(R.merge)(obj)
+  )(xodball);
+};
+
 // :: xodball -> { meta, libs }
 export const project = xodball => ({
   meta: R.omit(['id'], xodball.meta),
@@ -76,9 +87,10 @@ export const patches = xodball => R.pipe(
   R.map(
     patch => ({
       path: patchPath(patch, foldersPaths(xodball)),
-      meta: {
-        name: patch.name,
-      },
+      meta: margeWithNodeType({
+        id: patch.id,
+        label: patch.label,
+      }, xodball),
       patch: {
         nodes: patch.nodes,
         links: patch.links,

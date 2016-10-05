@@ -11,3 +11,4 @@ export const deepMerge = R.mergeWith(
 );
 
 export const notNil = R.complement(R.isNil());
+export const hasNot = R.complement(R.has);

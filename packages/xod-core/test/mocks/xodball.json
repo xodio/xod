@@ -143,7 +143,7 @@
     "2": {
       "id": "2",
       "folderId": "1",
-      "name": "AUX",
+      "label": "AUX",
       "nodes": {
         "30f27916-8d60-4b0d-b75b-71c6aefc7151": {
           "typeId": "core/ultrasonic_HC_SR04",
