@@ -21,6 +21,7 @@ module.exports = {
     'one-var-declaration-per-line': ['error', 'initializations'],
     'prefer-arrow-callback': 'off',
     'space-before-function-paren': ['error', 'never'],
+    'import/no-extraneous-dependencies': 'off',
   },
 
   globals: {
