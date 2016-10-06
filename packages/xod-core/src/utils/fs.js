@@ -1,7 +1,12 @@
 import fs from 'fs';
 
 export const rmDir = (dirPath, removeSelf = true) => {
-  const files = fs.readdirSync(dirPath);
+  let files = [];
+  try {
+    files = fs.readdirSync(dirPath);
+  } catch (err) {
+    return;
+  }
 
   if (files.length > 0) {
     files.forEach((file) => {
