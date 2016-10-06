@@ -1,21 +1,21 @@
 import R from 'ramda';
+import core from 'xod-core';
 
 import { EDITOR_MODE } from './constants';
 import * as ActionType from './actionTypes';
 import * as Selectors from './selectors';
 
-import * as SelectorsProject from 'xod-client/project/selectors';
 import {
   addNode,
   addLink,
   deleteNode,
   deleteLink,
-} from 'xod-client/project/actions';
+} from '../project/actions';
 import {
   addError,
-} from 'xod-client/messages/actions';
+} from '../messages/actions';
 
-import { LINK_ERRORS } from 'xod-client/messages/constants';
+import { LINK_ERRORS } from '../messages/constants';
 
 export const setNodeSelection = (id) => ({
   type: ActionType.EDITOR_SELECT_NODE,
@@ -53,7 +53,7 @@ export const setPinSelection = (nodeId, pinKey) => ({
 });
 
 const doPinSelection = (nodeId, pinKey) => (dispatch, getState) => {
-  const err = SelectorsProject.validatePin(getState(), { nodeId, pinKey });
+  const err = core.validatePin(getState(), { nodeId, pinKey });
 
   if (err) {
     dispatch(addError({ message: LINK_ERRORS[err] }));
@@ -98,7 +98,7 @@ export const addAndSelectNode = (typeId, position, curPatchId) => (dispatch, get
   dispatch(addNode(typeId, position, curPatchId));
   dispatch(setMode(EDITOR_MODE.DEFAULT));
 
-  const newId = SelectorsProject.getLastNodeId(getState());
+  const newId = core.getLastNodeId(getState());
   dispatch(selectNode(newId));
 };
 
@@ -121,7 +121,7 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
 
   let action;
   if (selected) {
-    const error = SelectorsProject.validateLink(state, pins);
+    const error = core.validateLink(state, pins);
     action = error ?
       addError({ message: LINK_ERRORS[error] }) :
       addLink(pins[0], pins[1]);

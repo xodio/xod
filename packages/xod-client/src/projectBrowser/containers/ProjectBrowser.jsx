@@ -2,16 +2,16 @@ import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as MessageActions from 'xod-client/messages/actions';
-import * as ProjectActions from 'xod-client/project/actions';
-import * as EditorActions from 'xod-client/editor/actions';
+import core from 'xod-core';
 
-import * as ProjectSelectors from 'xod-client/project/selectors';
-import * as EditorSelectors from 'xod-client/editor/selectors';
+import * as MessageActions from '../../messages/actions';
+import * as ProjectActions from '../../project/actions';
+import * as EditorActions from '../../editor/actions';
+import * as EditorSelectors from '../../editor/selectors';
+import { COMMAND } from '../../utils/constants';
+import { findParentByClassName } from '../../utils/browser';
 
 import { HotKeys } from 'react-hotkeys';
-import { COMMAND } from 'xod-client/utils/constants';
-import { findParentByClassName } from 'xod-client/utils/browser';
 
 import ProjectBrowserTree from '../components/ProjectBrowserTree';
 import ProjectBrowserToolbar from '../components/ProjectBrowserToolbar';
@@ -74,7 +74,7 @@ class ProjectBrowser extends React.Component {
 
   onTreeChange(newTree) {
     const oldTree = this.oldTree;
-    const treeChanges = ProjectSelectors.getTreeChanges(oldTree, newTree);
+    const treeChanges = core.ProjectSelectors.getTreeChanges(oldTree, newTree);
 
     const dispatchChange = (array, action) => {
       array.forEach((item) => action(item));
@@ -232,16 +232,16 @@ ProjectBrowser.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const project = ProjectSelectors.getProject(state);
-  const projectMeta = ProjectSelectors.getMeta(project);
-  const projectName = ProjectSelectors.getName(projectMeta);
+  const project = core.ProjectSelectors.getProject(state);
+  const projectMeta = core.ProjectSelectors.getMeta(project);
+  const projectName = core.ProjectSelectors.getName(projectMeta);
   const curPatchId = EditorSelectors.getCurrentPatchId(state);
 
   return {
-    tree: ProjectSelectors.getTreeView(project, curPatchId),
+    tree: core.ProjectSelectors.getTreeView(project, curPatchId),
     projectName,
-    patches: ProjectSelectors.getPatches(state),
-    folders: ProjectSelectors.getFolders(state),
+    patches: core.ProjectSelectors.getPatches(state),
+    folders: core.ProjectSelectors.getFolders(state),
     currentPatchId: curPatchId,
   };
 };

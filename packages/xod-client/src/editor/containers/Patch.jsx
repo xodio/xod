@@ -2,21 +2,21 @@ import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import core from 'xod-core';
 
-import * as ProjectActions from 'xod-client/project/actions';
-import * as EditorActions from 'xod-client/editor/actions'; // @TODO: remove it!
-import * as ProjectSelectors from 'xod-client/project/selectors';
-import * as EditorSelectors from 'xod-client/editor/selectors';
-import { findRootSVG } from 'xod-client/utils/browser';
+import * as EditorActions from '../actions'; // @TODO: remove it!
+import * as EditorSelectors from '../selectors';
+import * as ProjectActions from '../../project/actions';
+import { findRootSVG } from '../../utils/browser';
 
 import { HotKeys } from 'react-hotkeys';
-import { COMMAND } from 'xod-client/utils/constants';
+import { COMMAND } from '../../utils/constants';
 
-import PatchSVG from 'xod-client/project/components/PatchSVG';
-import BackgroundLayer from 'xod-client/project/components/BackgroundLayer';
-import NodesLayer from 'xod-client/project/components/NodesLayer';
-import LinksLayer from 'xod-client/project/components/LinksLayer';
-import GhostsLayer from 'xod-client/project/components/GhostsLayer';
+import PatchSVG from '../../project/components/PatchSVG';
+import BackgroundLayer from '../../project/components/BackgroundLayer';
+import NodesLayer from '../../project/components/NodesLayer';
+import LinksLayer from '../../project/components/LinksLayer';
+import GhostsLayer from '../../project/components/GhostsLayer';
 
 class Patch extends React.Component {
   constructor(props) {
@@ -315,17 +315,17 @@ Patch.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const project = ProjectSelectors.getProject(state);
+  const project = core.getProject(state);
   const curPatchId = EditorSelectors.getCurrentPatchId(state);
-  const defNodes = ProjectSelectors.dereferencedNodes(project, curPatchId);
-  const defLinks = ProjectSelectors.dereferencedLinks(project, curPatchId);
+  const defNodes = core.dereferencedNodes(project, curPatchId);
+  const defLinks = core.dereferencedLinks(project, curPatchId);
 
   return {
     nodes: EditorSelectors.viewNodes(state, defNodes),
     links: EditorSelectors.viewLinks(state, defLinks),
 
-    patch: ProjectSelectors.getPatchById(project, curPatchId),
-    nodeTypes: ProjectSelectors.dereferencedNodeTypes(state),
+    patch: core.getPatchById(project, curPatchId),
+    nodeTypes: core.dereferencedNodeTypes(state),
 
     selection: EditorSelectors.getSelection(state),
     selectedNodeType: EditorSelectors.getSelectedNodeType(state),

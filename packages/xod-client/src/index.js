@@ -5,9 +5,8 @@ export * from './messages/actions';
 export * from './processes/actions';
 
 export * from './editor/selectors';
-export * from './messages/selectors';
-export * from './processes/selectors';
 export * from './utils/selectors';
+export { getUpload } from './processes/selectors';
 
 export * from './utils/browser';
 

@@ -1,6 +1,4 @@
-import { getNodeTypes, getInitialState } from 'xod-core/project/state';
-
-export * from 'xod-core/project/state';
+import { genNodeTypes, getInitialState } from 'xod-core';
 
 /* eslint-disable global-require */
 const nodeMetas = {
@@ -47,7 +45,7 @@ function loadImpl(platform, key, ext) {
   }
 }
 
-export const nodeTypes = getNodeTypes(loadImpl, nodeMetas);
+export const nodeTypes = genNodeTypes(loadImpl, nodeMetas);
 
 const initialState = getInitialState(nodeTypes);
 export default initialState;

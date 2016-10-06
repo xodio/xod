@@ -15,7 +15,7 @@ const mapNodeTypePins = meta => R.merge(
 const removeNils = R.reject(R.isNil);
 
 // :: (String -> String -> String) -> Object -> Object
-export const getNodeTypes = R.uncurryN(2, getImpl => R.compose(
+export const genNodeTypes = R.uncurryN(2, getImpl => R.compose(
   R.indexBy(R.prop('key')),
   R.values,
   R.mapObjIndexed((meta, key) => R.merge(

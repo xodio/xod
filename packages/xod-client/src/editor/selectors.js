@@ -1,23 +1,8 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
+import core from 'xod-core';
 
 import { EDITOR_MODE } from './constants';
-import { PIN_VALIDITY, ENTITY, SIZE } from 'xod-core/project/constants';
-
-import {
-  indexById,
-  getProject,
-  getPatchById,
-  getAllPinsFromNodes,
-  canPinHaveMoreLinks,
-  getPreparedNodeTypeByKey,
-  dereferencedNodes,
-  getNodeLabel,
-  getPinPosition,
-  getGroupedPinsWidth,
-  getNodeWidth,
-  addPinRadius,
-} from 'xod-client/project/selectors';
 
 export const getEditor = R.prop('editor');
 
@@ -111,13 +96,13 @@ export const getTabs = (state) => R.pipe(
 
 export const getPreparedTabs = (state) => {
   const currentPatchId = getCurrentPatchId(state);
-  const projectState = getProject(state);
+  const projectState = core.getProject(state);
 
   return R.pipe(
     getTabs,
     R.values,
     R.map((tab) => {
-      const patch = getPatchById(tab.patchId, projectState);
+      const patch = core.getPatchById(tab.patchId, projectState);
       return R.merge(
         tab,
         {
@@ -131,7 +116,7 @@ export const getPreparedTabs = (state) => {
 };
 
 export const getValidPins = (nodes, links, forPin) => {
-  const allPins = getAllPinsFromNodes(nodes);
+  const allPins = core.getAllPinsFromNodes(nodes);
   const oPin = R.find(
     R.both(
       R.propEq('nodeId', forPin.nodeId),
@@ -143,13 +128,13 @@ export const getValidPins = (nodes, links, forPin) => {
     const sameNode = (pin.nodeId === oPin.nodeId);
     const sameDirection = (pin.direction === oPin.direction);
     const sameType = (pin.type === oPin.type);
-    const canHaveLink = canPinHaveMoreLinks(pin, links);
+    const canHaveLink = core.canPinHaveMoreLinks(pin, links);
 
-    let validness = PIN_VALIDITY.INVALID;
+    let validness = core.PIN_VALIDITY.INVALID;
 
     if (!sameNode && canHaveLink) {
-      if (!sameDirection) { validness = PIN_VALIDITY.ALMOST; }
-      if (!sameDirection && sameType) { validness = PIN_VALIDITY.VALID; }
+      if (!sameDirection) { validness = core.PIN_VALIDITY.ALMOST; }
+      if (!sameDirection && sameType) { validness = core.PIN_VALIDITY.VALID; }
     }
 
     return {
@@ -168,34 +153,34 @@ export const getNodeGhost = (state) => {
     return null;
   }
 
-  const project = getProject(state);
+  const project = core.getProject(state);
   const nodePosition = { x: 0, y: 0 };
-  const nodeType = getPreparedNodeTypeByKey(project, nodeTypeId);
+  const nodeType = core.getPreparedNodeTypeByKey(project, nodeTypeId);
   const nodeProperties = R.pipe(
     R.prop('properties'),
     R.values,
     R.reduce((p, prop) => R.assoc(prop.key, prop.value, p), {})
   )(nodeType);
 
-  const nodeLabel = getNodeLabel(state, { typeId: nodeTypeId, properties: nodeProperties });
+  const nodeLabel = core.getNodeLabel(state, { typeId: nodeTypeId, properties: nodeProperties });
 
   let pinCount = -1;
   const nodePins = R.pipe(
     R.values,
     R.map((pin) => {
       const id = { id: pinCount };
-      const pos = getPinPosition(nodeType.pins, pin.key, nodePosition);
+      const pos = core.getPinPosition(nodeType.pins, pin.key, nodePosition);
       const radius = { radius: SIZE.PIN.radius };
 
       pinCount--;
 
       return R.mergeAll([pin, id, pos, radius]);
     }),
-    indexById
+    core.indexById
   )(nodeType.pins);
 
-  const pinsWidth = getGroupedPinsWidth(nodePins);
-  const nodeWidth = getNodeWidth(pinsWidth);
+  const pinsWidth = core.getGroupedPinsWidth(nodePins);
+  const nodeWidth = core.getNodeWidth(pinsWidth);
   return {
     id: '',
     label: nodeLabel,
@@ -211,15 +196,15 @@ export const getLinkGhost = (state, patchId) => {
   const fromPin = getLinkingPin(state);
   if (!fromPin) { return null; }
 
-  const project = getProject(state);
-  const nodes = dereferencedNodes(project, patchId);
+  const project = core.getProject(state);
+  const nodes = core.dereferencedNodes(project, patchId);
   const node = nodes[fromPin.nodeId];
   const pin = node.pins[fromPin.pinKey];
 
   return {
     id: '',
     pins: [pin],
-    from: addPinRadius(pin.position),
+    from: core.addPinRadius(pin.position),
     to: { x: 0, y: 0 },
   };
 };
