@@ -1,8 +1,7 @@
 import R from 'ramda';
 import chai from 'chai';
+import core from 'xod-core';
 import initialState from '../src/core/state';
-import Selectors from '../src/core/selectors';
-import { PIN_TYPE, PIN_DIRECTION } from 'xod-core';
 import { LINK_ERRORS } from '../src/messages/constants';
 
 describe('Link selector', () => {
@@ -11,12 +10,12 @@ describe('Link selector', () => {
       return { nodeId, pinKey };
     }
     const inputPin = {
-      type: PIN_TYPE.NUMBER,
-      direction: PIN_DIRECTION.INPUT,
+      type: core.PIN_TYPE.NUMBER,
+      direction: core.PIN_DIRECTION.INPUT,
     };
     const outputPin = {
-      type: PIN_TYPE.NUMBER,
-      direction: PIN_DIRECTION.OUTPUT,
+      type: core.PIN_TYPE.NUMBER,
+      direction: core.PIN_DIRECTION.OUTPUT,
     };
 
     const makeInputPin = R.flip(R.merge)(inputPin);
@@ -56,7 +55,7 @@ describe('Link selector', () => {
     };
 
     function validate(pinFrom, pinTo) {
-      return Selectors.Project.validateLink(state, [pinFrom, pinTo]);
+      return core.validateLink(state, [pinFrom, pinTo]);
     }
 
     function expectOk(pinFrom, pinTo) {
@@ -100,7 +99,7 @@ describe('Project selector', () => {
   );
 
   it('should return valid JSON', () => {
-    const json = JSON.parse(Selectors.Project.getProjectJSON(state));
-    chai.assert(Selectors.Project.validateProject(json));
+    const json = JSON.parse(core.getProjectJSON(state));
+    chai.assert(core.validateProject(json));
   });
 });

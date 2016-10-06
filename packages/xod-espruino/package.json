@@ -13,8 +13,10 @@
   "license": "MIT",
   "main": "dist/index.js",
   "dependencies": {
+    "base64-js": "^1.2.0",
     "co": "^4.6.0",
     "espruino": "git+https://github.com/espruino/EspruinoTools.git#gh-pages",
+    "ieee754": "^1.1.8",
     "jquery": "^3.1.0",
     "ramda": "^0.21.0",
     "xod-core": "^0.0.1"

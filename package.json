@@ -15,8 +15,10 @@
     "build": "npm-run-all build:pkg:xod-core build:pkg:xod-espruino build:pkg:xod-client build:pkg:xod-client-browser build:pkg:xod-client-electron build:pkg:xod-client-chrome",
     "rebuild": "npm-run-all clean:dist build",
     "start:pkg:xod-client-electron": "cd packages/xod-client-electron && npm run start",
-    "test:pkg:xod-core": "mocha --require babel-register packages/xod-core/test/**/*.spec.js",
+    "test:pkg:xod-core": "mocha --require babel-register \"packages/xod-core/test/**/*.spec.js\"",
+    "test:pkg:xod-client": "mocha --require babel-register \"packages/xod-client/test/**/*.spec.js\"",
     "test:pkg:xod-espruino": "mocha-webpack --colors --require source-map-support/register --webpack-config packages/xod-espruino/webpack/test.js packages/xod-espruino/test/**/*.spec.js",
+    "test": "npm-run-all test:pkg:*",
     "lint": "eslint packages/*/{src,test} packages/xod-espruino/platform"
   },
   "devDependencies": {

@@ -45,10 +45,10 @@ export const isEntitySelected = (selection, entityName, id) => R.pipe(
 )(selection);
 
 export const isNodeSelected = R.curry(
-  (selection, id) => isEntitySelected(selection, ENTITY.NODE, id)
+  (selection, id) => isEntitySelected(selection, core.ENTITY.NODE, id)
 );
 export const isLinkSelected = R.curry(
-  (selection, id) => isEntitySelected(selection, ENTITY.LINK, id)
+  (selection, id) => isEntitySelected(selection, core.ENTITY.LINK, id)
 );
 
 const isPinSelected = (linkingPin, node, pin) => (
