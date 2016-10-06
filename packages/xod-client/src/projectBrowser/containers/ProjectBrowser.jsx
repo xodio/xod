@@ -74,7 +74,7 @@ class ProjectBrowser extends React.Component {
 
   onTreeChange(newTree) {
     const oldTree = this.oldTree;
-    const treeChanges = core.ProjectSelectors.getTreeChanges(oldTree, newTree);
+    const treeChanges = core.getTreeChanges(oldTree, newTree);
 
     const dispatchChange = (array, action) => {
       array.forEach((item) => action(item));
@@ -232,16 +232,16 @@ ProjectBrowser.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const project = core.ProjectSelectors.getProject(state);
-  const projectMeta = core.ProjectSelectors.getMeta(project);
-  const projectName = core.ProjectSelectors.getName(projectMeta);
+  const project = core.getProject(state);
+  const projectMeta = core.getMeta(project);
+  const projectName = core.getName(projectMeta);
   const curPatchId = EditorSelectors.getCurrentPatchId(state);
 
   return {
-    tree: core.ProjectSelectors.getTreeView(project, curPatchId),
+    tree: core.getTreeView(project, curPatchId),
     projectName,
-    patches: core.ProjectSelectors.getPatches(state),
-    folders: core.ProjectSelectors.getFolders(state),
+    patches: core.getPatches(state),
+    folders: core.getFolders(state),
     currentPatchId: curPatchId,
   };
 };

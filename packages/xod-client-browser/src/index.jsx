@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Root from 'xod-client';
+import { Root } from 'xod-client';
 
 import App from './containers/App';
 

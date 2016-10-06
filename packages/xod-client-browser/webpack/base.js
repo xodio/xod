@@ -8,6 +8,7 @@ module.exports = {
   devtool: 'source-map',
   entry: [
     'babel-polyfill',
+    pkgpath('src/shim.js'),
     pkgpath('src/index.jsx'),
     pkgpath('node_modules/xod-client/src/core/styles/main.scss'),
   ],
@@ -61,6 +62,10 @@ module.exports = {
       {
         test: /\.json5$/,
         loader: 'json5-loader',
+      },
+      {
+        test: /json5\/lib\/require/,
+        loader: 'null',
       }
     ],
   },
