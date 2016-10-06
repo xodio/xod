@@ -44,7 +44,7 @@ module.exports = {
       {
         test: /assets\/.*\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)?$/,
         loaders: [
-          'file?name=[path][name].[ext]?[hash:6]&context=./src',
+          'file?name=assets/[path][name].[ext]?[hash:6]&context=../xod-client/src/core/assets',
         ],
       },
       {
