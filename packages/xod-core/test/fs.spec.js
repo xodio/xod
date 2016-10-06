@@ -10,9 +10,7 @@ import xodball from './mocks/xodball.json';
 import { divided } from '../src/fs/extract';
 
 const tempDir = './fs-temp';
-const onError = (done) => (err) => {
-  done(err);
-};
+const onError = done => err => done(err);
 
 describe('Saver', () => {
   before(() => {
