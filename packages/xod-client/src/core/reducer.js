@@ -1,3 +1,4 @@
+import { merge } from 'ramda';
 import { combineReducers } from 'redux';
 
 import projectReducer from '../project/reducer';
@@ -6,14 +7,21 @@ import errorsReducer from '../messages/reducer';
 import processesReducer from '../processes/reducer';
 import userReducer from '../user/reducer';
 
-const combineRootReducers = (patchIds) => combineReducers({
-  project: projectReducer(patchIds),
-  editor: editorReducer,
-  errors: errorsReducer,
-  processes: processesReducer,
-  user: userReducer,
-});
+const combineRootReducers = (patchIds, addReducers) => {
+  const reducers = merge(
+    {
+      project: projectReducer(patchIds),
+      editor: editorReducer,
+      errors: errorsReducer,
+      processes: processesReducer,
+      user: userReducer,
+    },
+    addReducers
+  );
 
-export const createReducer = (patchIds) => combineRootReducers(patchIds);
+  return combineReducers(reducers);
+};
+
+export const createReducer = (patchIds, addReducers) => combineRootReducers(patchIds, addReducers);
 
 export default createReducer;
