@@ -27,6 +27,7 @@ import * as MessageActions from './messages/actions';
 import * as ProcessActions from './processes/actions';
 
 import * as EditorConstants from './editor/constants';
+import * as UtilsConstants from './utils/constants';
 import * as BrowserUtils from './utils/browser';
 
 import Root from './core/containers/Root';
@@ -55,5 +56,6 @@ export default Object.assign({
   ProcessActions,
 
   EditorConstants,
-  BrowserUtils,
+  UtilsConstants,
+  BrowserUtils
 );

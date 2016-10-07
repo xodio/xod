@@ -7,5 +7,5 @@ import * as Utils from './utils';
 
 export default Object.assign({},
   Project,
-  Utils,
+  Utils
 );
