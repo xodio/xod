@@ -49,6 +49,8 @@ Maintenance Scripts
 
 ### Building
 
+* `npm run build` builds all packages
+* `npm rebuild` cleans build artifacts then builds everything
 * `npm run build:pkg:<name>` builds a package with specified `<name>`,
   e.g. `npm run build:pkg:xod-core`
 * `npm run build:tree:<name>` builds a package with specified `<name>`
@@ -60,6 +62,11 @@ Maintenance Scripts
   its dependencies, then stay in watch mode looking for changes in that
   package or any of its dependencies;
   e.g. `npm run dev:tree:xod-client-browser`
+
+### Packaging
+
+* `npm run bootsrap` creates all necessary links between local packages and
+  installs their dependencies
 
 Managing Data
 -------------
