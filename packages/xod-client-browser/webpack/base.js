@@ -17,12 +17,6 @@ module.exports = {
     path: pkgpath('dist'),
     publicPath: '',
   },
-  devServer: {
-    hot: true,
-    host: 'localhost',
-    port: 8080,
-    contentBase: './dist/',
-  },
   resolve: {
     modulesDirectories: [
       pkgpath('node_modules'),

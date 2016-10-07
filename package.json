@@ -14,6 +14,9 @@
     "build:pkg:xod-client-electron": "cd packages/xod-client-electron && npm run build",
     "build": "npm-run-all build:pkg:xod-core build:pkg:xod-espruino build:pkg:xod-client build:pkg:xod-client-browser build:pkg:xod-client-electron build:pkg:xod-client-chrome",
     "rebuild": "npm-run-all clean:dist build",
+    "dev:pkg:xod-core": "npm run build:pkg:xod-core -- --watch",
+    "dev:pkg:xod-client": "npm run build:pkg:xod-client -- --watch",
+    "dev:pkg:xod-client-browser": "webpack-dev-server --watch --colors --inline --hot --config packages/xod-client-browser/webpack/web-dev.js",
     "start:pkg:xod-client-electron": "cd packages/xod-client-electron && npm run start",
     "test:pkg:xod-core": "mocha --require babel-register \"packages/xod-core/test/**/*.spec.js\"",
     "test:pkg:xod-client": "mocha --require babel-register \"packages/xod-client/test/**/*.spec.js\"",
@@ -53,9 +56,11 @@
     "null-loader": "^0.1.1",
     "raw-loader": "^0.5.1",
     "rimraf": "^2.5.4",
+    "react-hot-loader": "^1.3.0",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.2",
     "webpack-merge": "^0.14.1",
     "webpack-validator": "^2.2.8"
   }
