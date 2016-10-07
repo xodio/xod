@@ -3,9 +3,9 @@ import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
 import { default as chai, expect } from 'chai';
 import dirtyChai from 'dirty-chai';
+import core from 'xod-core';
 
-import { runtime, transpile } from '../src/node_modules/xod-espruino';
-import Selectors from '../src/core/selectors';
+import { runtime, transpile } from 'xod-espruino';
 import initialState from '../src/core/state';
 import generateReducers from '../src/core/reducer';
 import { addNode } from '../src/project/actions';
@@ -17,7 +17,7 @@ describe('xod-espruino', () => {
     const store = createStore(generateReducers([1]), initialState, applyMiddleware(thunk));
     const nodeId = store.dispatch(addNode('core/button', { x: 100, y: 100 }, '1'));
 
-    const projectJSON = Selectors.Project.getProjectJSON(store.getState());
+    const projectJSON = core.getProjectJSON(store.getState());
     const project = JSON.parse(projectJSON);
     const code = transpile({ project, runtime });
 

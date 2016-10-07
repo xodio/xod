@@ -1,7 +1,6 @@
 
 import R from 'ramda';
-import { sortGraph } from 'xod-core/utils/gmath';
-import { PIN_DIRECTION, PIN_TYPE } from 'xod-core/project/constants';
+import { PIN_DIRECTION, PIN_TYPE, sortGraph } from 'xod-core';
 
 // TODO: remove following ESLint shunt. It barks on unused `_` in arrow funcs.
 // We should make smarter selectors for source & destination pins without _ hack

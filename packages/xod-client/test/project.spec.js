@@ -2,25 +2,20 @@ import R from 'ramda';
 import chai from 'chai';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
+import core from 'xod-core';
 import generateReducers from '../src/core/reducer';
 import { nodes } from '../src/project/reducer/nodes';
 import * as Actions from '../src/project/actions';
 import * as PrepareTo from '../src/project/actionPreparations';
-import {
-  PROPERTY_ERRORS,
-  LINK_ERRORS,
-  NODETYPE_ERRORS,
-} from 'xod-core/project/constants';
-import * as Selectors from '../src/project/selectors';
 
 function pin(nodeId, pinKey) {
   return { nodeId, pinKey };
 }
 const mockStore = (state) => createStore(generateReducers([1]), state, applyMiddleware(thunk));
-const getNodeTypes = (state) => Selectors.dereferencedNodeTypes(state);
+const getNodeTypes = (state) => core.dereferencedNodeTypes(state);
 const getPatchName = (pId, state) => state.project.patches[pId].present.name;
 const getPatchNodeName = (pId, state) =>
-  `${Selectors.getUserName()}/${getPatchName(pId, state)}`;
+  `${core.getUserName()}/${getPatchName(pId, state)}`;
 
 describe('Project reducer: ', () => {
   const projectShape = {
@@ -111,29 +106,29 @@ describe('Project reducer: ', () => {
         },
       };
 
-      const projectState = Selectors.getProject(store.getState());
-      const patchState = Selectors.getPatchById(patchId, projectState);
+      const projectState = core.getProject(store.getState());
+      const patchState = core.getPatchById(patchId, projectState);
 
       chai.expect(patchState.nodes).to.deep.equal(expectedNodes);
     });
 
     it('should be undoable and redoable', () => {
       const patchId = '1';
-      const getPatch = Selectors.getPatchById(patchId);
+      const getPatch = core.getPatchById(patchId);
 
-      const initialProjectState = Selectors.getProject(store.getState());
+      const initialProjectState = core.getProject(store.getState());
       const initialPatchState = getPatch(initialProjectState);
 
       store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
-      const updatedProjectState = Selectors.getProject(store.getState());
+      const updatedProjectState = core.getProject(store.getState());
       const updatedPatchState = getPatch(updatedProjectState);
 
       store.dispatch(Actions.undoPatch(patchId));
-      const undoedProjectState = Selectors.getProject(store.getState());
+      const undoedProjectState = core.getProject(store.getState());
       const undoedPatchState = getPatch(undoedProjectState);
 
       store.dispatch(Actions.redoPatch(patchId));
-      const redoedProjectState = Selectors.getProject(store.getState());
+      const redoedProjectState = core.getProject(store.getState());
       const redoedPatchState = getPatch(redoedProjectState);
 
       chai.expect(undoedPatchState).to.deep.equal(initialPatchState);
@@ -186,8 +181,8 @@ describe('Project reducer: ', () => {
 
       store.dispatch(Actions.deleteNode('1'));
 
-      const projectState = Selectors.getProject(store.getState());
-      const patchState = Selectors.getPatchById(patchId, projectState);
+      const projectState = core.getProject(store.getState());
+      const patchState = core.getPatchById(patchId, projectState);
 
       chai.expect(patchState.nodes).to.deep.equal(expectedNodes);
       chai.expect(patchState.links).to.deep.equal(expectedLinks);
@@ -195,20 +190,20 @@ describe('Project reducer: ', () => {
 
     it('should be undoable and redoable', () => {
       const patchId = '1';
-      const initialProjectState = Selectors.getProject(store.getState());
-      const initialPatchState = Selectors.getPatchById(initialProjectState, patchId);
+      const initialProjectState = core.getProject(store.getState());
+      const initialPatchState = core.getPatchById(initialProjectState, patchId);
 
       store.dispatch(Actions.deleteNode('1'));
-      const updatedProjectState = Selectors.getProject(store.getState());
-      const updatedPatchState = Selectors.getPatchById(updatedProjectState, patchId);
+      const updatedProjectState = core.getProject(store.getState());
+      const updatedPatchState = core.getPatchById(updatedProjectState, patchId);
 
       store.dispatch(Actions.undoPatch(patchId));
-      const undoedProjectState = Selectors.getProject(store.getState());
-      const undoedPatchState = Selectors.getPatchById(undoedProjectState, patchId);
+      const undoedProjectState = core.getProject(store.getState());
+      const undoedPatchState = core.getPatchById(undoedProjectState, patchId);
 
       store.dispatch(Actions.redoPatch(patchId));
-      const redoedProjectState = Selectors.getProject(store.getState());
-      const redoedPatchState = Selectors.getPatchById(redoedProjectState, patchId);
+      const redoedProjectState = core.getProject(store.getState());
+      const redoedPatchState = core.getPatchById(redoedProjectState, patchId);
 
       chai.expect(undoedPatchState).to.deep.equal(initialPatchState);
       chai.expect(redoedPatchState).to.deep.equal(updatedPatchState);
@@ -346,20 +341,20 @@ describe('Project reducer: ', () => {
       const patchId = '1';
       const lastLinkId = '1';
 
-      const initialProjectState = Selectors.getProject(store.getState());
-      const initialPatchState = Selectors.getPatchById(initialProjectState, patchId);
+      const initialProjectState = core.getProject(store.getState());
+      const initialPatchState = core.getPatchById(initialProjectState, patchId);
 
       store.dispatch(Actions.deleteLink(lastLinkId));
-      const updatedProjectState = Selectors.getProject(store.getState());
-      const updatedPatchState = Selectors.getPatchById(updatedProjectState, patchId);
+      const updatedProjectState = core.getProject(store.getState());
+      const updatedPatchState = core.getPatchById(updatedProjectState, patchId);
 
       store.dispatch(Actions.undoPatch(patchId));
-      const undoedProjectState = Selectors.getProject(store.getState());
-      const undoedPatchState = Selectors.getPatchById(undoedProjectState, patchId);
+      const undoedProjectState = core.getProject(store.getState());
+      const undoedPatchState = core.getPatchById(undoedProjectState, patchId);
 
       store.dispatch(Actions.redoPatch(patchId));
-      const redoedProjectState = Selectors.getProject(store.getState());
-      const redoedPatchState = Selectors.getPatchById(redoedProjectState, patchId);
+      const redoedProjectState = core.getProject(store.getState());
+      const redoedPatchState = core.getPatchById(redoedProjectState, patchId);
 
       chai.expect(undoedPatchState).to.deep.equal(initialPatchState);
       chai.expect(redoedPatchState).to.deep.equal(updatedPatchState);
@@ -386,7 +381,7 @@ describe('Project reducer: ', () => {
       };
 
       store.dispatch(Actions.loadProjectFromJSON(JSON.stringify(data)));
-      const projectState = Selectors.getProject(store.getState());
+      const projectState = core.getProject(store.getState());
       chai.expect(projectState).to.deep.equal(data);
     });
   });
@@ -399,7 +394,7 @@ describe('Project reducer: ', () => {
 
     it('should add folder without parentId', () => {
       const newFolderId = store.dispatch(Actions.addFolder('Test folder'));
-      const folders = Selectors.getFolders(store.getState());
+      const folders = core.getFolders(store.getState());
 
       chai.expect(R.keys(folders)).to.have.lengthOf(2);
       chai.expect(folders[newFolderId].parentId).to.be.equal(null);
@@ -408,7 +403,7 @@ describe('Project reducer: ', () => {
     it('should add folder with correct parentId', () => {
       const parentFolderId = '1';
       const newFolderId = store.dispatch(Actions.addFolder('Test folder', parentFolderId));
-      const folders = Selectors.getFolders(store.getState());
+      const folders = core.getFolders(store.getState());
 
       chai.expect(R.keys(folders)).to.have.lengthOf(2);
       chai.expect(folders[newFolderId].parentId).to.be.equal(folders[parentFolderId].id);
@@ -416,7 +411,7 @@ describe('Project reducer: ', () => {
 
     it('should delete folder', () => {
       store.dispatch(Actions.deleteFolder('1'));
-      const folders = Selectors.getFolders(store.getState());
+      const folders = core.getFolders(store.getState());
 
       chai.expect(R.keys(folders)).to.have.lengthOf(0);
     });
@@ -425,7 +420,7 @@ describe('Project reducer: ', () => {
       const parentFolderId = '1';
       const childFolderId = store.dispatch(Actions.addFolder('parent', parentFolderId));
       store.dispatch(Actions.moveFolder({ id: childFolderId, parentId: null }));
-      const folders = Selectors.getFolders(store.getState());
+      const folders = core.getFolders(store.getState());
 
       chai.expect(folders[childFolderId].parentId).to.be.equal(null);
     });
@@ -434,7 +429,7 @@ describe('Project reducer: ', () => {
       const newFolderName = 'qwe123';
       const lastFolderId = '1';
       store.dispatch(Actions.renameFolder(lastFolderId, newFolderName));
-      const folders = Selectors.getFolders(store.getState());
+      const folders = core.getFolders(store.getState());
 
       chai.expect(folders[lastFolderId].name).to.be.equal(newFolderName);
     });
@@ -451,7 +446,7 @@ describe('Project reducer: ', () => {
 
     it('should add patch without parentId', () => {
       const newPatchId = store.dispatch(Actions.addPatch('Test patch'));
-      const patches = Selectors.getPatches(store.getState());
+      const patches = core.getPatches(store.getState());
 
       chai.expect(R.keys(patches)).to.have.lengthOf(2);
       chai.expect(getPatch(patches[newPatchId]).folderId).to.be.equal(null);
@@ -460,8 +455,8 @@ describe('Project reducer: ', () => {
     it('should add patch with correct folderId', () => {
       const parentFolderId = '1';
       const childPatchId = store.dispatch(Actions.addPatch('Test patch', parentFolderId));
-      const folders = Selectors.getFolders(store.getState());
-      const patches = Selectors.getPatches(store.getState());
+      const folders = core.getFolders(store.getState());
+      const patches = core.getPatches(store.getState());
 
       chai.expect(R.keys(patches)).to.have.lengthOf(2);
       chai.expect(getPatch(patches[childPatchId]).folderId).to.be.equal(folders[parentFolderId].id);
@@ -470,7 +465,7 @@ describe('Project reducer: ', () => {
     it('should delete patch', () => {
       const lastPatchId = '1';
       store.dispatch(Actions.deletePatch(lastPatchId));
-      const patches = Selectors.getPatches(store.getState());
+      const patches = core.getPatches(store.getState());
 
       chai.expect(R.keys(patches)).to.have.lengthOf(0);
     });
@@ -480,7 +475,7 @@ describe('Project reducer: ', () => {
       const rootFolderId = '1';
       const parentFolderId = store.dispatch(Actions.addFolder('parent', rootFolderId));
       store.dispatch(Actions.movePatch({ id: lastPatchId, folderId: parentFolderId }));
-      const patches = Selectors.getPatches(store.getState());
+      const patches = core.getPatches(store.getState());
 
       chai.expect(getPatch(patches[lastPatchId]).folderId).to.be.equal(parentFolderId);
     });
@@ -489,7 +484,7 @@ describe('Project reducer: ', () => {
       const newName = 'qwe123';
       const lastPatchId = '1';
       store.dispatch(Actions.renamePatch(lastPatchId, newName));
-      const patches = Selectors.getPatches(store.getState());
+      const patches = core.getPatches(store.getState());
 
       chai.expect(getPatch(patches[lastPatchId]).name).to.be.equal(newName);
     });
@@ -531,7 +526,7 @@ describe('Project reducer: ', () => {
     it('should show error on attempt to delete IO node that have a link', () => {
       const expectedNodeTypeToDelete = {
         key: null,
-        error: NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE,
+        error: core.NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE,
       };
       const patchNodeName = getPatchNodeName(patchId, store.getState());
 
@@ -545,7 +540,7 @@ describe('Project reducer: ', () => {
       store.dispatch(Actions.deleteNode(outNodeId));
 
       const nodeTypesAfterDelete = getNodeTypes(store.getState());
-      const nodeTypeToDelete = Selectors.getNodeTypeToDeleteWithNode(
+      const nodeTypeToDelete = core.getNodeTypeToDeleteWithNode(
         store.getState().project,
         outNodeId,
         patchId
@@ -559,7 +554,7 @@ describe('Project reducer: ', () => {
       const patchNodeName = getPatchNodeName(patchId, store.getState());
       const expectedNodeTypeToDelete = {
         key: patchNodeName,
-        error: NODETYPE_ERRORS.CANT_DELETE_USED_PATCHNODE,
+        error: core.NODETYPE_ERRORS.CANT_DELETE_USED_PATCHNODE,
       };
 
       store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
@@ -571,7 +566,7 @@ describe('Project reducer: ', () => {
       store.dispatch(Actions.deleteNode(outNodeId));
 
       const nodeTypesAfterDelete = getNodeTypes(store.getState());
-      const nodeTypeToDelete = Selectors.getNodeTypeToDeleteWithNode(
+      const nodeTypeToDelete = core.getNodeTypeToDeleteWithNode(
         store.getState().project,
         outNodeId,
         patchId
@@ -607,8 +602,8 @@ describe('Project reducer: ', () => {
 
       store.dispatch(Actions.changePinMode(nodeId, pinKey, injected));
 
-      const projectState = Selectors.getProject(store.getState());
-      const node = Selectors.getNodes(patchId, projectState)[nodeId];
+      const projectState = core.getProject(store.getState());
+      const node = core.getNodes(patchId, projectState)[nodeId];
       const pinData = node.pins[pinKey];
 
       chai.assert(pinData.injected === injected);
@@ -621,16 +616,16 @@ describe('Project reducer: ', () => {
 
       store.dispatch(Actions.changePinMode(nodeId, pinKey, injected));
 
-      const projectState = Selectors.getProject(store.getState());
-      const node = Selectors.getNodes(patchId, projectState)[nodeId];
+      const projectState = core.getProject(store.getState());
+      const node = core.getNodes(patchId, projectState)[nodeId];
       const pinData = node.pins[pinKey];
 
       chai.assert(pinData.injected === injected);
     });
 
     it('should add link between pins that is not injected', () => {
-      const projectState = Selectors.getProject(store.getState());
-      const links = Selectors.getLinks(projectState, patchId);
+      const projectState = core.getProject(store.getState());
+      const links = core.getLinks(projectState, patchId);
       const linksArr = R.values(links);
 
       chai.assert(linksArr.length === 1);
@@ -639,13 +634,13 @@ describe('Project reducer: ', () => {
     it('should show error on attempt to make link between injected pin and regular pin', () => {
       const newNodeId = store.dispatch(Actions.addNode('core/prop', { x: 10, y: 10 }, patchId));
 
-      const validity = Selectors.validatePin(store.getState(), pin(newNodeId, 'in'));
+      const validity = core.validatePin(store.getState(), pin(newNodeId, 'in'));
 
-      chai.assert(validity === LINK_ERRORS.PROP_CANT_HAVE_LINKS);
+      chai.assert(validity === core.LINK_ERRORS.PROP_CANT_HAVE_LINKS);
     });
 
     it('should show error on attempt to switch mode of a pin, that has a connected link', () => {
-      const projectState = Selectors.getProject(store.getState());
+      const projectState = core.getProject(store.getState());
       const preparedData = PrepareTo.changePinMode(
         projectState,
         testNodes[1],
@@ -654,7 +649,7 @@ describe('Project reducer: ', () => {
       );
 
       chai.expect(preparedData).to.deep.equal({
-        error: PROPERTY_ERRORS.PIN_HAS_LINK,
+        error: core.PROPERTY_ERRORS.PIN_HAS_LINK,
       });
     });
   });

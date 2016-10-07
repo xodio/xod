@@ -5,24 +5,16 @@ import { bindActionCreators } from 'redux';
 
 import { HotKeys } from 'react-hotkeys';
 
-import * as Actions from 'xod-client/core/actions';
-import { UPLOAD as UPLOAD_ACTION_TYPE } from 'xod-client/core/actionTypes';
-import Selectors from 'xod-client/core/selectors';
-import { getViewableSize, isChromeApp, isInputTarget } from 'xod-client/utils/browser';
-import { projectHasChanges } from 'xod-client/utils/selectors';
-import { SAVE_LOAD_ERRORS } from 'xod-client/messages/constants';
-import { KEYCODE, HOTKEY } from 'xod-client/utils/constants';
+import core from 'xod-core';
+import client from 'xod-client';
+
 import { transpile } from 'xod-espruino';
 
-import { constants as EDITOR_CONST, container as Editor } from 'xod-client/editor';
-import { SnackBar } from 'xod-client/messages';
 import Toolbar from '../components/Toolbar';
 import PopupInstallApp from '../components/PopupInstallApp';
 import PopupShowCode from '../components/PopupShowCode';
-import PopupUploadProject from 'xod-client/processes/components/PopupUploadProject';
 import EventListener from 'react-event-listener';
 
-import DevTools from 'xod-client/core/containers/DevTools';
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
 
@@ -31,7 +23,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      size: getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
+      size: client.getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
       popupInstallApp: false,
       popupUploadProject: false,
       popupShowCode: false,
@@ -59,14 +51,14 @@ class App extends React.Component {
     this.setState(
       R.set(
         R.lensProp('size'),
-        getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
+        client.getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
         this.state
       )
     );
   }
 
   onUpload() {
-    if (isChromeApp) {
+    if (client.isChromeApp) {
       this.showUploadProgressPopup();
       this.props.actions.upload();
     } else {
@@ -90,11 +82,11 @@ class App extends React.Component {
       project = JSON.parse(json);
     } catch (err) {
       validJSON = false;
-      errorMessage = SAVE_LOAD_ERRORS.NOT_A_JSON;
+      errorMessage = client.SAVE_LOAD_ERRORS.NOT_A_JSON;
     }
 
-    if (validJSON && !Selectors.Project.validateProject(project)) {
-      errorMessage = SAVE_LOAD_ERRORS.INVALID_FORMAT;
+    if (validJSON && !core.validateProject(project)) {
+      errorMessage = client.SAVE_LOAD_ERRORS.INVALID_FORMAT;
     }
 
     if (errorMessage) {
@@ -130,18 +122,18 @@ class App extends React.Component {
   }
 
   onAddNodeClick() {
-    this.props.actions.setMode(EDITOR_CONST.EDITOR_MODE.CREATING_NODE);
+    this.props.actions.setMode(client.EDITOR_MODE.CREATING_NODE);
   }
 
   onUploadPopupClose(id) {
     this.hideUploadProgressPopup();
-    this.props.actions.deleteProcess(id, UPLOAD_ACTION_TYPE);
+    this.props.actions.deleteProcess(id, client.UPLOAD);
   }
 
   onKeyDown(event) {
     const keyCode = event.keyCode || event.which;
 
-    if (!isInputTarget(event) && keyCode === KEYCODE.BACKSPACE) {
+    if (!client.isInputTarget(event) && keyCode === client.KEYCODE.BACKSPACE) {
       event.preventDefault();
     }
 
@@ -197,9 +189,9 @@ class App extends React.Component {
   }
 
   render() {
-    const devToolsInstrument = (isChromeApp) ? <DevTools /> : null;
+    const devToolsInstrument = (client.isChromeApp) ? <client.DevTools /> : null;
     return (
-      <HotKeys keyMap={HOTKEY} id="App">
+      <HotKeys keyMap={client.HOTKEY} id="App">
         <EventListener
           target={window}
           onResize={this.onResize}
@@ -216,8 +208,8 @@ class App extends React.Component {
           onSelectNodeType={this.onSelectNodeType}
           onAddNodeClick={this.onAddNodeClick}
         />
-        <Editor size={this.state.size} />
-        <SnackBar />
+        <client.Editor size={this.state.size} />
+        <client.SnackBar />
         {devToolsInstrument}
         <PopupInstallApp
           isVisible={this.state.popupInstallApp}
@@ -228,7 +220,7 @@ class App extends React.Component {
           code={this.state.code}
           onClose={this.hideCodePopup}
         />
-        <PopupUploadProject
+        <client.PopupUploadProject
           isVisible={this.state.popupUploadProject}
           upload={this.props.upload}
           onClose={this.onUploadPopupClose}
@@ -250,23 +242,23 @@ App.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  hasChanges: projectHasChanges(state),
-  project: Selectors.Project.getProject(state),
-  projectJSON: Selectors.Project.getProjectJSON(state),
-  meta: Selectors.Project.getMeta(state),
-  nodeTypes: Selectors.Project.dereferencedNodeTypes(state),
-  selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
-  upload: Selectors.Processes.getUpload(state),
+  hasChanges: client.projectHasChanges(state),
+  project: core.getProject(state),
+  projectJSON: core.getProjectJSON(state),
+  meta: core.getMeta(state),
+  nodeTypes: core.dereferencedNodeTypes(state),
+  selectedNodeType: client.getSelectedNodeType(state),
+  upload: client.getUpload(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
-    upload: Actions.upload,
-    loadProjectFromJSON: Actions.loadProjectFromJSON,
-    setMode: Actions.setMode,
-    addError: Actions.addError,
-    setSelectedNodeType: Actions.setSelectedNodeType,
-    deleteProcess: Actions.deleteProcess,
+    upload: client.upload,
+    loadProjectFromJSON: client.loadProjectFromJSON,
+    setMode: client.setMode,
+    addError: client.addError,
+    setSelectedNodeType: client.setSelectedNodeType,
+    deleteProcess: client.deleteProcess,
   }, dispatch),
 });
 

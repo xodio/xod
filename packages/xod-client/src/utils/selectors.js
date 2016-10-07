@@ -1,5 +1,5 @@
-import { getMeta, getId, getProjectPojo } from 'xod-client/project/selectors';
-import * as user from 'xod-client/user/selectors';
+import { getMeta, getId, getProjectPojo } from 'xod-core';
+import * as user from '../user/selectors';
 
 const dataForSync = (state) => {
   const userData = user.user(state);

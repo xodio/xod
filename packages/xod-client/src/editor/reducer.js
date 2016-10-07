@@ -11,14 +11,14 @@ import {
   TAB_CLOSE,
   TAB_SORT,
 } from './actionTypes';
-import { ENTITY } from 'xod-core/project/constants';
+import { ENTITY } from 'xod-core';
 
 const addSelection = (entityName, action, state) => {
   const select = {
     entity: entityName,
     id: action.payload.id,
   };
-  const newSelection = R.concat(state.selection, select);
+  const newSelection = R.append(select, state.selection);
   return R.set(R.lensProp('selection'), newSelection, state);
 };
 

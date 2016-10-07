@@ -2,9 +2,9 @@ import R from 'ramda';
 import React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+import core from 'xod-core';
 
 import generateReducers from '../reducer';
-import Selectors from '../selectors';
 import initialState from '../state';
 import { EditorMiddleware } from '../middlewares';
 import { addNode, addLink } from '../actions';
@@ -14,13 +14,13 @@ export default class Root extends React.Component {
   constructor(props) {
     super(props);
 
-    this.patches = Selectors.Project.getPatches(initialState);
+    this.patches = core.getPatches(initialState);
     this.store = createStore(this.createReducers(this.patches), initialState, EditorMiddleware);
 
     this.store.subscribe(() => {
       const rootState = this.store.getState();
-      const statePatches = Selectors.Project.getPatches(rootState);
-      if (Selectors.Project.isPatchesUpdated(statePatches, this.patches)) {
+      const statePatches = core.getPatches(rootState);
+      if (core.isPatchesUpdated(statePatches, this.patches)) {
         this.store.replaceReducer(this.createReducers(statePatches));
       }
     });

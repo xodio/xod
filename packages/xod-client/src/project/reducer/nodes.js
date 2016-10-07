@@ -5,9 +5,8 @@ import {
   NODE_UPDATE_PROPERTY,
   NODE_CHANGE_PIN_MODE,
 } from '../actionTypes';
-import {
-  PROPERTY_TYPE_PARSE,
-} from 'xod-core/project/constants';
+
+import { PROPERTY_TYPE_PARSE } from 'xod-core';
 import R from 'ramda';
 
 export const copyNode = (node) => R.clone(node);

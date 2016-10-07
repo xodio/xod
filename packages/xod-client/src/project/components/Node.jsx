@@ -3,9 +3,9 @@ import React from 'react';
 import classNames from 'classnames';
 import Pin from './Pin';
 import NodeText from './NodeText';
-import { noop } from 'xod-client/utils/ramda';
+import { noop } from '../../utils/ramda';
 
-import { SIZE } from 'xod-core/project/constants';
+import { SIZE } from 'xod-core';
 
 class Node extends React.Component {
   constructor(props) {

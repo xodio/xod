@@ -3,20 +3,15 @@
   "version": "0.0.1",
   "description": "XOD project: Client chrome application",
   "scripts": {
-    "build": "rm -rf ./dist && mkdir ./dist && cp -R ./src/node_modules/xod-client-browser/* ./dist && cp -R ./src/* ./dist && rm -r ./dist/node_modules",
-    "lint": "eslint --ext .js --ext .jsx ./src ./test || true"
+    "build": "rm -rf ./dist && mkdir ./dist && cp -R ./node_modules/xod-client-browser/* ./dist && cp -R ./src/* ./dist"
   },
   "engines": {
     "node": "6.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "xod-client-browser": "^0.0.1"
+  },
   "devDependencies": {
-    "eslint": "^2.13.0",
-    "eslint-config-airbnb": "^9.0.1",
-    "eslint-import-resolver-webpack": "^0.3.2",
-    "eslint-plugin-import": "^1.8.1",
-    "eslint-plugin-jsx-a11y": "^1.5.3",
-    "eslint-plugin-react": "^5.2.2"
   },
   "author": "Amperka.ru",
   "license": "MIT"

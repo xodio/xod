@@ -6,40 +6,40 @@ import transform from '../src/transformer';
 const ioTypes = {
   'core/inputBool': {
     key: 'core/inputBool',
-    pins: {PIN: {direction: 'output', key: 'PIN', type: 'bool'}}
+    pins: { PIN: { direction: 'output', key: 'PIN', type: 'bool' } },
   },
   'core/outputBool': {
     key: 'core/outputBool',
-    pins: {PIN: {direction: 'input', key: 'PIN', type: 'bool'}}
+    pins: { PIN: { direction: 'input', key: 'PIN', type: 'bool' } },
   },
 };
 
 const buttonAndLedTypes = {
-  'button': {
+  button: {
     key: 'button',
     pins: {
       state: {
         direction: 'output',
         key: 'state',
         type: 'bool',
-      }
-    }
+      },
+    },
   },
-  'led': {
+  led: {
     key: 'led',
     pins: {
       brightness: {
         direction: 'input',
         key: 'brightness',
         type: 'number',
-      }
-    }
-  }
+      },
+    },
+  },
 };
 
 const hasLink = (result, [nodeFrom, pinFrom, pinTo, nodeTo]) => R.equals(
   result.nodes[nodeFrom.toString()].outLinks,
-  { [pinFrom]: [{key: pinTo, nodeId: nodeTo}] }
+  { [pinFrom]: [{ key: pinTo, nodeId: nodeTo }] }
 );
 
 const hasTopology = result => R.equals(
@@ -47,10 +47,11 @@ const hasTopology = result => R.equals(
 );
 
 const link = (id, [nodeFrom, pinFrom, pinTo, nodeTo]) => ({
-  id, pins: [
-    {nodeId: nodeFrom, pinKey: pinFrom},
-    {nodeId: nodeTo, pinKey: pinTo}
-  ]
+  id,
+  pins: [
+    { nodeId: nodeFrom, pinKey: pinFrom },
+    { nodeId: nodeTo, pinKey: pinTo },
+  ],
 });
 
 
@@ -143,7 +144,7 @@ describe('Transformer', () => {
             43: { id: 43, typeId: 'core/add100' },
           },
           links: {
-            1: link(1, [42, 'valueOut', 'valueIn', 43])
+            1: link(1, [42, 'valueOut', 'valueIn', 43]),
           },
         },
       },
@@ -212,7 +213,7 @@ describe('Transformer', () => {
             43: { id: 43, typeId: 'core/add100' },
           },
           links: {
-            1: link(1, [42, 'valueOut', 'valueIn', 43])
+            1: link(1, [42, 'valueOut', 'valueIn', 43]),
           },
         },
       },
@@ -253,8 +254,8 @@ describe('Transformer', () => {
           name: 'NOP',
           nodes: {
             42: { id: 42, typeId: 'core/inputPulse' },
-          }
-        }
+          },
+        },
       },
     });
 
@@ -269,7 +270,7 @@ describe('Transformer', () => {
       id: 102,
       inputTypes: {},
       outLinks: {},
-      implId: 'core/inputPulse'
+      implId: 'core/inputPulse',
     });
   });
 
@@ -288,8 +289,8 @@ describe('Transformer', () => {
           name: 'NOP',
           nodes: {
             42: { id: 42, typeId: 'core/outputPulse' },
-          }
-        }
+          },
+        },
       },
     });
 
@@ -304,7 +305,7 @@ describe('Transformer', () => {
       id: 102,
       inputTypes: {},
       outLinks: {},
-      implId: 'core/outputPulse'
+      implId: 'core/outputPulse',
     });
   });
 
@@ -318,7 +319,7 @@ describe('Transformer', () => {
             101: { id: 101, typeId: 'foo/BULB' },
           },
           links: {
-            1: link(1, [100, 'state', 'input_41', 101])
+            1: link(1, [100, 'state', 'input_41', 101]),
           },
         },
         2: {
@@ -329,17 +330,17 @@ describe('Transformer', () => {
             42: { id: 42, typeId: 'led' },
           },
           links: {
-            2: link(2, [41, 'PIN', 'brightness', 42])
+            2: link(2, [41, 'PIN', 'brightness', 42]),
           },
-        }
+        },
       },
-      nodeTypes: R.merge(ioTypes, buttonAndLedTypes)
+      nodeTypes: R.merge(ioTypes, buttonAndLedTypes),
     });
 
     assert(R.equals(
-      R.map(id => [id, result.nodes[id].implId], result.topology)
+      R.map(id => [id, result.nodes[id].implId], result.topology),
       [[100, 'button'],
-       [102, 'core/inputBool'], // terminals receive its ids after nodes
+       [102, 'core/inputBool'], // terminals receive their ids after nodes
        [103, 'led']]
     ));
 
@@ -366,7 +367,7 @@ describe('Transformer', () => {
             101: { id: 101, typeId: 'led' },
           },
           links: {
-            1: link(1, [100, 'output_42', 'brightness', 101])
+            1: link(1, [100, 'output_42', 'brightness', 101]),
           },
         },
         2: {
@@ -377,17 +378,17 @@ describe('Transformer', () => {
             42: { id: 42, typeId: 'core/outputBool' },
           },
           links: {
-            2: link(2, [41, 'state', 'PIN', 42])
+            2: link(2, [41, 'state', 'PIN', 42]),
           },
-        }
+        },
       },
-      nodeTypes: R.merge(ioTypes, buttonAndLedTypes)
+      nodeTypes: R.merge(ioTypes, buttonAndLedTypes),
     });
 
     assert(hasTopology(result)([
       [102, 'button'],
       [103, 'core/outputBool'],
-      [101, 'led']
+      [101, 'led'],
     ]));
 
     assert(hasLink(result,
@@ -397,7 +398,6 @@ describe('Transformer', () => {
     assert(hasLink(result,
                    [103, 'PIN', 'brightness', 101]),
            'outputBool should be connected to led');
-
   });
 
   it('injected input should be connected properly', () => {
@@ -410,7 +410,7 @@ describe('Transformer', () => {
             101: { id: 101, typeId: 'foo/BULB' },
           },
           links: {
-            1: link(1, [100, 'state', 'input_41', 101])
+            1: link(1, [100, 'state', 'input_41', 101]),
           },
         },
         2: {
@@ -421,17 +421,17 @@ describe('Transformer', () => {
             42: { id: 42, typeId: 'led' },
           },
           links: {
-            2: link(2, [41, 'PIN', 'brightness', 42])
+            2: link(2, [41, 'PIN', 'brightness', 42]),
           },
-        }
+        },
       },
-      nodeTypes: R.merge(ioTypes, buttonAndLedTypes)
+      nodeTypes: R.merge(ioTypes, buttonAndLedTypes),
     });
 
     assert(hasTopology(result)([
       [100, 'button'],
       [102, 'core/inputBool'], // terminals receive its ids after nodes
-      [103, 'led']
+      [103, 'led'],
     ]));
 
     assert(hasLink(result,
@@ -481,7 +481,7 @@ describe('Transformer', () => {
             1: link(1, [100, 'state', 'input_41', 101]),
             2: link(2, [101, 'output_43', 'input_61', 102]),
             3: link(3, [102, 'output_62', 'brightness', 103]),
-          }
+          },
         },
         2: {
           id: 2,
@@ -504,11 +504,11 @@ describe('Transformer', () => {
             62: { id: 62, typeId: 'core/outputBool' },
           },
           links: {
-            6: link(6, [61, 'PIN', 'PIN', 62])
+            6: link(6, [61, 'PIN', 'PIN', 62]),
           },
-        }
+        },
       },
-      nodeTypes: R.merge(ioTypes, buttonAndLedTypes)
+      nodeTypes: R.merge(ioTypes, buttonAndLedTypes),
     });
 
     assert(hasTopology(result)([
@@ -519,9 +519,7 @@ describe('Transformer', () => {
       [106, 'core/outputBool'],
       [107, 'core/inputBool'],
       [108, 'core/outputBool'],
-      [103, 'led']
+      [103, 'led'],
     ]));
-
   });
-
 });

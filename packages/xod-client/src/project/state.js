@@ -1,8 +1,7 @@
-import { getNodeTypes, getInitialState } from 'xod-core/project/state';
-
-export * from 'xod-core/project/state';
+import { genNodeTypes, getInitialState } from 'xod-core';
 
 /* eslint-disable global-require */
+require('json5/lib/require');
 const nodeMetas = {
   'core/button': require('../../../xod-core/nodes/meta/button.json5'),
   'core/constBool': require('../../../xod-core/nodes/meta/constBool.json5'),
@@ -35,7 +34,7 @@ const nodeMetas = {
 function loadImpl(platform, key, ext) {
   try {
     /* eslint-disable global-require, prefer-template */
-    return require('!raw!../../../xod-espruino/nodes/' + platform
+    return require('!raw!../../../xod-espruino/platform/nodes/' + platform
                    + '/' + key.replace('core/', '') + ext);
     /* eslint-enable global-require, prefer-template */
   } catch (err) {
@@ -47,7 +46,7 @@ function loadImpl(platform, key, ext) {
   }
 }
 
-export const nodeTypes = getNodeTypes(loadImpl, nodeMetas);
+export const nodeTypes = genNodeTypes(loadImpl, nodeMetas);
 
 const initialState = getInitialState(nodeTypes);
 export default initialState;

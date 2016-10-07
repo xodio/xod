@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { PIN_DIRECTION, PIN_VALIDITY } from 'xod-core/project/constants';
-import { noop } from 'xod-client/utils/ramda';
+import { PIN_DIRECTION, PIN_VALIDITY } from 'xod-core';
+import { noop } from '../../utils/ramda';
 
 export default class Pin extends React.Component {
   constructor(props) {

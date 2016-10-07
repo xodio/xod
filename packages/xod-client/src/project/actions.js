@@ -1,11 +1,11 @@
+import core from 'xod-core';
 import * as ActionType from './actionTypes';
 import * as PrepareTo from './actionPreparations';
-import * as Selectors from './selectors';
-import { addError } from 'xod-client/messages/actions';
-import { PROPERTY_ERRORS, NODETYPE_ERRORS } from 'xod-client/messages/constants';
+import { addError } from '../messages/actions';
+import { PROPERTY_ERRORS, NODETYPE_ERRORS } from '../messages/constants';
 
 export const moveNode = (id, position) => (dispatch, getState) => {
-  const projectState = Selectors.getProject(getState());
+  const projectState = core.getProject(getState());
   const preparedData = PrepareTo.moveNode(projectState, id, position);
 
   dispatch({
@@ -16,7 +16,7 @@ export const moveNode = (id, position) => (dispatch, getState) => {
 };
 
 export const dragNode = (id, position) => (dispatch, getState) => {
-  const projectState = Selectors.getProject(getState());
+  const projectState = core.getProject(getState());
   const preparedData = PrepareTo.dragNode(projectState, id, position);
 
   dispatch({
@@ -27,7 +27,7 @@ export const dragNode = (id, position) => (dispatch, getState) => {
 };
 
 export const addNode = (typeId, position, patchId) => (dispatch, getState) => {
-  const projectState = Selectors.getProject(getState());
+  const projectState = core.getProject(getState());
   const preparedData = PrepareTo.addNode(projectState, typeId, position, patchId);
 
   dispatch({
@@ -40,7 +40,7 @@ export const addNode = (typeId, position, patchId) => (dispatch, getState) => {
 };
 
 export const deleteNode = (id) => (dispatch, getState) => {
-  const projectState = Selectors.getProject(getState());
+  const projectState = core.getProject(getState());
   const preparedData = PrepareTo.deleteNode(projectState, id);
 
   if (preparedData.payload.nodeType.error) {
@@ -91,7 +91,7 @@ export const updateMeta = (data) => ({
 
 export const updateNodeProperty =
   (nodeId, propKind, propKey, propValue) => (dispatch, getState) => {
-    const projectState = Selectors.getProject(getState());
+    const projectState = core.getProject(getState());
     const preparedData = PrepareTo.updateNodeProperty(
       projectState,
       nodeId,
@@ -108,7 +108,7 @@ export const updateNodeProperty =
   };
 
 export const changePinMode = (nodeId, pinKey, injected) => (dispatch, getState) => {
-  const projectState = Selectors.getProject(getState());
+  const projectState = core.getProject(getState());
   const preparedData = PrepareTo.changePinMode(
     projectState,
     nodeId,
@@ -152,7 +152,7 @@ export const clearHistoryPatch = (id) => ({
 });
 
 export const addPatch = (name, folderId) => (dispatch, getState) => {
-  const projectState = Selectors.getProject(getState());
+  const projectState = core.getProject(getState());
   const preparedData = PrepareTo.addPatch(projectState, name, folderId);
 
   dispatch({
@@ -197,7 +197,7 @@ export const renameProject = (name) => ({
 });
 
 export const addFolder = (name, parentId) => (dispatch, getState) => {
-  const projectState = Selectors.getProject(getState());
+  const projectState = core.getProject(getState());
   const preparedData = PrepareTo.addFolder(projectState, name, parentId);
   dispatch({
     type: ActionType.FOLDER_ADD,
@@ -215,8 +215,8 @@ export const renameFolder = (id, name) => ({
 });
 
 export const deleteFolder = (id) => (dispatch, getState) => {
-  const folders = Selectors.getFoldersByFolderId(getState(), id);
-  const patches = Selectors.getPatchesByFolderId(getState(), id);
+  const folders = core.getFoldersByFolderId(getState(), id);
+  const patches = core.getPatchesByFolderId(getState(), id);
 
   folders.forEach(folder => dispatch(deleteFolder(folder.id)));
   patches.forEach(patch => dispatch(deletePatch(patch.id)));

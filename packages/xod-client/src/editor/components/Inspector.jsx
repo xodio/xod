@@ -1,15 +1,9 @@
 import R from 'ramda';
 import React from 'react';
 import Widgets from './inspectorWidgets';
-import { noop } from 'xod-client/utils/ramda';
-import {
-  ENTITY,
-  PIN_DIRECTION,
-} from 'xod-core/project/constants';
-import {
-  WIDGET_TYPE,
-  PROPERTY_KIND,
-} from 'xod-client/project/constants';
+import { noop } from '../../utils/ramda';
+import { ENTITY, PIN_DIRECTION } from 'xod-core';
+import { WIDGET_TYPE, PROPERTY_KIND } from '../../project/constants';
 
 const widgetAccordance = {
   [ENTITY.NODE]: {

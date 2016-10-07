@@ -1,20 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import core from 'xod-core';
 
 import * as Actions from '../actions';
-import * as ProjectActions from 'xod-client/project/actions';
+import * as ProjectActions from '../../project/actions';
 import * as EditorSelectors from '../selectors';
-import * as ProjectSelectors from 'xod-client/project/selectors';
 
 import { HotKeys } from 'react-hotkeys';
-import { COMMAND } from 'xod-client/utils/constants';
-import { EDITOR_MODE } from 'xod-client/editor/constants';
+import { COMMAND } from '../../utils/constants';
+import { EDITOR_MODE } from '../../editor/constants';
 
 import Patch from './Patch';
-import { ProjectBrowser } from 'xod-client/projectBrowser';
-import Sidebar from 'xod-client/utils/components/Sidebar';
-import Workarea from 'xod-client/utils/components/Workarea';
+import { ProjectBrowser } from '../../projectBrowser';
+import Sidebar from '../../utils/components/Sidebar';
+import Workarea from '../../utils/components/Workarea';
 
 import Tabs from '../containers/Tabs';
 import Inspector from '../components/Inspector';
@@ -107,12 +107,12 @@ Editor.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const project = ProjectSelectors.getProject(state);
+  const project = core.getProject(state);
   const curPatchId = EditorSelectors.getCurrentPatchId(state);
 
   return {
-    nodes: ProjectSelectors.dereferencedNodes(project, curPatchId),
-    nodeTypes: ProjectSelectors.dereferencedNodeTypes(state),
+    nodes: core.dereferencedNodes(project, curPatchId),
+    nodeTypes: core.dereferencedNodeTypes(state),
     editor: EditorSelectors.getEditor(state),
     selection: EditorSelectors.getSelection(state),
     selectedNodeType: EditorSelectors.getSelectedNodeType(state),

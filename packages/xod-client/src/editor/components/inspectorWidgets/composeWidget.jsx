@@ -1,6 +1,6 @@
 import React from 'react';
 import Switch from '../InspectorModeSwitch';
-import { PROPERTY_KIND } from 'xod-client/project/constants';
+import { PROPERTY_KIND } from '../../../project/constants';
 
 export default function composeWidget(Component) {
   class Widget extends React.Component {

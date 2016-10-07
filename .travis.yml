@@ -6,4 +6,4 @@ before_install:
 language: node_js
 node_js:
   - "6"
-script: "make ci"
+script: "npm run ci"

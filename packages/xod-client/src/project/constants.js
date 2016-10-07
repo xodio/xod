@@ -1,4 +1,4 @@
-import { PROPERTY_TYPE } from 'xod-core/project/constants';
+import { PROPERTY_TYPE } from 'xod-core';
 
 export const PROPERTY_KIND = {
   PIN: 'pin',

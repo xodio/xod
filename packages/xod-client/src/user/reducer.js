@@ -1,6 +1,6 @@
 import R from 'ramda';
 
-import { ApiHelpers, ApiActionTypes } from 'xod-client/api';
+import { ApiHelpers, ApiActionTypes } from '../api';
 import * as Selectors from './selectors';
 
 export default (userState = {}, action) => {

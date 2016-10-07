@@ -1,13 +1,13 @@
 import R from 'ramda';
 import Cookies from 'js-cookie';
-import { notNil } from 'xod-client/utils/ramda';
-import { ApiActions, CALL_API } from 'xod-client/api';
-import { userLens, userIdLens, accessTokenLens } from 'xod-client/user/selectors';
+import { notNil } from '../utils/ramda';
+import { ApiActions, CALL_API } from '../api';
+import { userLens, userIdLens, accessTokenLens } from '../user/selectors';
 import {
   getProccesses,
   findProcessByType,
   filterNotFinished,
-} from 'xod-client/processes/selectors';
+} from '../processes/selectors';
 
 const hasAuthData = R.pipe(
   R.prop('user'),
