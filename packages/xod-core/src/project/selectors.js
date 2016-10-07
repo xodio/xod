@@ -23,7 +23,6 @@ const findByProp = (propName, propVal, from) => R.pipe(
 )(from);
 
 const findById = (id, from) => findByProp('id', id, from);
-const findByPatchId = (id, from) => findByProp('patchId', id, from);
 const findByNodeTypeId = (id, from) => findByProp('typeId', id, from);
 
 const getProjectState = (state, path) => {
