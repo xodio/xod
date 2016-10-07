@@ -19,7 +19,9 @@
     "test:pkg:xod-client": "mocha --require babel-register \"packages/xod-client/test/**/*.spec.js\"",
     "test:pkg:xod-espruino": "mocha-webpack --colors --require source-map-support/register --webpack-config packages/xod-espruino/webpack/test.js packages/xod-espruino/test/**/*.spec.js",
     "test": "npm-run-all test:pkg:*",
-    "lint": "eslint packages/*/{src,test} packages/xod-espruino/platform"
+    "lint": "eslint packages/*/{src,test} packages/xod-espruino/platform",
+    "verify": "npm-run-all build lint test",
+    "ci": "npm install && npm run verify"
   },
   "devDependencies": {
     "babel-cli": "^6.16.0",
