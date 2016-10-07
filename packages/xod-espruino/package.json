@@ -25,10 +25,7 @@
     "node": "6.0.0"
   },
   "devDependencies": {
-    "chai": "^3.4.1",
-    "dirty-chai": "^1.2.2",
-    "mocha": "^2.3.4",
-    "mocha-webpack": "^0.4.0",
-    "source-map-support": "^0.4.2"
+    "chai": "^3.5.0",
+    "dirty-chai": "^1.2.2"
   }
 }
