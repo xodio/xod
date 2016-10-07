@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "concurrently": "concurrently",
     "bootstrap": "lerna bootstrap",
     "postinstall": "npm run bootstrap",
     "clean:dist": "rimraf packages/*/dist",
@@ -20,6 +19,7 @@
     "dev:pkg:xod-client-browser": "webpack-dev-server --watch --colors --inline --hot --config packages/xod-client-browser/webpack/web-dev.js",
     "dev:tree:xod-client-browser": "concurrently --kill-others --prefix name --names \"core,espruino,client,browser\" \"npm run dev:pkg:xod-core\" \"npm run dev:pkg:xod-espruino\" \"npm run dev:pkg:xod-client\" \"npm run dev:pkg:xod-client-browser\"",
     "start:pkg:xod-client-electron": "cd packages/xod-client-electron && npm run start",
+    "start:pkg:xod-server": "cd packages/xod-server && npm start",
     "test:pkg:xod-core": "mocha --require babel-register \"packages/xod-core/test/**/*.spec.js\"",
     "test:pkg:xod-client": "mocha --require babel-register \"packages/xod-client/test/**/*.spec.js\"",
     "test:pkg:xod-espruino": "mocha-webpack --colors --require source-map-support/register --webpack-config packages/xod-espruino/webpack/test.js packages/xod-espruino/test/**/*.spec.js",
