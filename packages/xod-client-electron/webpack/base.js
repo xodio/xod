@@ -1,8 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
 
-module.exports = {
+const options = {
   devtool: 'source-map',
   entry: [
     'babel-polyfill',
@@ -25,12 +26,15 @@ module.exports = {
     extensions: ['', '.js', '.jsx', '.scss'],
     alias: {
       react: path.resolve('node_modules/react'),
+      // @TODO: Get rid of this hack:
+      encoding: path.resolve('node_modules/react'),
+      'iconv-lite': path.resolve('node_modules/react'),
     },
   },
   module: {
     loaders: [
       {
-        test: /src\/.*\.jsx?$/,
+        test: /src\/(?!app\/).*\.jsx?$/,
         loaders: [
           'babel?presets[]=react,presets[]=es2015',
         ],
@@ -69,7 +73,11 @@ module.exports = {
   plugins: [
     new webpack.NoErrorsPlugin(),
     new CopyWebpackPlugin([
-      { from: 'src/app/index.html' },
+      { from: 'src/view/index.html' },
     ]),
   ],
 };
+
+options.target = webpackTargetElectronRenderer(options);
+
+module.exports = options;

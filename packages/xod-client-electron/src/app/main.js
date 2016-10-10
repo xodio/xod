@@ -1,9 +1,11 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 import {
   app,
+  ipcMain,
   BrowserWindow,
 } from 'electron';
 import devtron from 'devtron';
+import { saveProject } from './remoteActions';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -20,7 +22,7 @@ function createWindow() {
   });
   win.maximize();
   // and load the index.html of the app.
-  win.loadURL(`file://${__dirname}/index.html`);
+  win.loadURL(`file://${__dirname}/../index.html`);
 
   // Open the DevTools.
   // win.webContents.openDevTools();
@@ -53,4 +55,13 @@ app.on('activate', () => {
   if (win === null) {
     createWindow();
   }
+});
+
+// Listen to IPC
+ipcMain.on('saveProject', (event, opts) => {
+  console.log('SAVE PROJECT!', opts.path);
+  saveProject(opts.pojo, opts.path, () => {
+    console.log('SAVED');
+    event.sender.send('saveProject:complete');
+  });
 });
