@@ -2,10 +2,10 @@
   "name": "xod-client-electron",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/app.js",
+  "main": "dist/app/main.js",
   "scripts": {
     "start": "electron ./dist/app.js",
-    "build": "webpack --display-error-details --colors --config webpack/base.js && babel ./src/app.js -o ./dist/app.js",
+    "build": "webpack --display-error-details --colors --config webpack/base.js && babel ./src/app/ -d ./dist/app/",
     "lint": "eslint --ext .js --ext .jsx ./src ./test || true"
   },
   "author": "",
