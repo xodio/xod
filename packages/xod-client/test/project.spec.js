@@ -521,7 +521,7 @@ describe('Project reducer: ', () => {
     it('should show error on attempt to delete IO node that have a link', () => {
       const expectedNodeTypeToDelete = {
         id: null,
-        error: core.CANT_DELETE_USED_PIN_OF_PATCHNODE,
+        error: core.NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE,
       };
 
       const testNodeId = store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
@@ -547,7 +547,7 @@ describe('Project reducer: ', () => {
     it('should show error on attempt to delete last IO node of used patch node', () => {
       const expectedNodeTypeToDelete = {
         id: patchId,
-        error: core.CANT_DELETE_USED_PATCHNODE,
+        error: core.NODETYPE_ERRORS.CANT_DELETE_USED_PATCHNODE,
       };
 
       store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));

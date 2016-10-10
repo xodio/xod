@@ -23,7 +23,7 @@ const options = {
   resolve: {
     root: path.join(__dirname, '../src'),
     modulesDirectories: ['node_modules', 'src', 'src/node_modules'],
-    extensions: ['', '.js', '.jsx', '.scss'],
+    extensions: ['', '.js', '.jsx', '.json5', '.scss'],
     alias: {
       react: path.resolve('node_modules/react'),
       // @TODO: Get rid of this hack:
@@ -34,7 +34,7 @@ const options = {
   module: {
     loaders: [
       {
-        test: /src\/(?!app\/).*\.jsx?$/,
+        test: /src\/.*\.jsx?$/,
         loaders: [
           'babel?presets[]=react,presets[]=es2015',
         ],

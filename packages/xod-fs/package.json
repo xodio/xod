@@ -1,28 +1,24 @@
 {
-  "name": "xod-core",
+  "name": "xod-fs",
   "version": "0.0.1",
-  "description": "XOD project: Core",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "build": "babel src/ -d dist/",
     "dev": "babel --watch src/ -d dist/",
     "test": "mocha --require babel-register test/**/*.js"
   },
-  "repository": {},
-  "keywords": [],
-  "author": "",
+  "author": "Amperka team",
   "license": "MIT",
-  "main": "dist/index.js",
   "dependencies": {
-    "co": "^4.6.0",
-    "commander": "^2.9.0",
     "file-save": "^0.2.0",
-    "ramda": "^0.21.0",
-    "uuid": "^2.0.3"
-  },
-  "engines": {
-    "node": "6.0.0"
+    "recursive-readdir": "^2.1.0",
+    "xod-core": "^0.0.1"
   },
   "devDependencies": {
     "chai": "^3.5.0"
+  },
+  "engines": {
+    "node": "6.0.0"
   }
 }

@@ -4,10 +4,10 @@ import fs from 'fs';
 import path from 'path';
 import recReadDir from 'recursive-readdir';
 
-import saver from '../src/fs/saver';
-import { rmDir } from '../src/utils/fs';
+import saver from '../src/saver';
+import { rmDir } from '../src/utils';
+import { divided } from 'xod-core';
 import xodball from './mocks/xodball.json';
-import { divided } from '../src/fs/extract';
 
 const tempDir = './fs-temp';
 const onError = done => err => done(err);

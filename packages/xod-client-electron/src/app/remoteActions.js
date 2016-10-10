@@ -1,4 +1,4 @@
-import saver from 'xod-core/fs/saver';
+import { saver } from 'xod-fs';
 
 export const saveProject = (pojo, workspace, onFinish) => saver(
   pojo,

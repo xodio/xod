@@ -19,7 +19,7 @@ Open <http://localhost:8080> in your browser.
 ### Desktop IDE
 
     $ npm run build:tree:xod-client-electron
-    $ npm run start:xod-client-electron
+    $ npm run start:pkg:xod-client-electron
 
 ### Hub Server
 

@@ -10,6 +10,9 @@ export { getUpload } from './processes/selectors';
 
 export * from './utils/browser';
 
+export { default as PopupShowCode } from './utils/components/PopupShowCode';
+export { default as Toolbar } from './utils/components/Toolbar';
+
 export { default as Root } from './core/containers/Root';
 export { container as Editor, CreateNodeWidget } from './editor';
 export { SnackBar } from './messages';

@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import { HotKeys } from 'react-hotkeys';
 
-import * as Actions from 'xod-client/core/actions';
+import client, { Toolbar, PopupShowCode, PopupUploadProject } from 'xod-client';
 import { saveProject } from '../actions';
 import { UPLOAD as UPLOAD_ACTION_TYPE } from 'xod-client/core/actionTypes';
 import Selectors from 'xod-client/core/selectors';
@@ -17,9 +17,6 @@ import { transpile } from 'xod-espruino';
 
 import { constants as EDITOR_CONST, container as Editor } from 'xod-client/editor';
 import { SnackBar } from 'xod-client/messages';
-import Toolbar from 'xod-client/utils/components/Toolbar';
-import PopupShowCode from 'xod-client/utils/components/PopupShowCode';
-import PopupUploadProject from 'xod-client/processes/components/PopupUploadProject';
 import EventListener from 'react-event-listener';
 
 const DEFAULT_CANVAS_WIDTH = 800;
@@ -298,13 +295,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
-    upload: Actions.upload,
-    loadProjectFromJSON: Actions.loadProjectFromJSON,
-    setMode: Actions.setMode,
+    upload: client.upload,
+    loadProjectFromJSON: client.loadProjectFromJSON,
+    setMode: client.setMode,
     saveProject,
-    addError: Actions.addError,
-    setSelectedNodeType: Actions.setSelectedNodeType,
-    deleteProcess: Actions.deleteProcess,
+    addError: client.addError,
+    setSelectedNodeType: client.setSelectedNodeType,
+    deleteProcess: client.deleteProcess,
   }, dispatch),
 });
 

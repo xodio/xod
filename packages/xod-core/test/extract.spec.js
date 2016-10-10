@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Extract from '../src/fs/extract';
+import * as Extract from '../src/utils/extract';
 import xodball from './mocks/xodball.json';
 import extracted from './mocks/extracted.json';
 

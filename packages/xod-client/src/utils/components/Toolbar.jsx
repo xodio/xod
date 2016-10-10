@@ -1,6 +1,7 @@
 import R from 'ramda';
 import React from 'react';
-import { CreateNodeWidget, UserPanel } from 'xod-client';
+import { CreateNodeWidget } from '../../editor/components/CreateNodeWidget';
+import { UserPanel } from '../../user/containers/UserPanel';
 
 const Toolbar = ({
   meta,

@@ -6,13 +6,11 @@ import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
 
 import core from 'xod-core';
-import client from 'xod-client';
+import client, { Toolbar, PopupShowCode } from 'xod-client';
 
 import { transpile } from 'xod-espruino';
 
-import Toolbar from '../components/Toolbar';
 import PopupInstallApp from '../components/PopupInstallApp';
-import PopupShowCode from '../components/PopupShowCode';
 import EventListener from 'react-event-listener';
 
 const DEFAULT_CANVAS_WIDTH = 800;
