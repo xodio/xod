@@ -12,7 +12,7 @@ Install all dependencies and perform package cross-linking with:
 
 ### Browser IDE
 
-    $ npm run dev:tree:xod-client-espruino
+    $ npm run dev:tree:xod-client-browser
 
 Open <http://localhost:8080> in your browser.
 
