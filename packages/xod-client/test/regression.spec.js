@@ -32,8 +32,8 @@ describe('xod-espruino', () => {
       expect(topology).to.exist();
       expect(onInit).to.exist();
 
-      expect(nodes).to.have.keys(nodeId);
-      expect(topology).to.be.eql([nodeId]);
+      expect(nodes).to.have.keys("0");
+      expect(topology).to.be.eql([0]);
     })();
     /* eslint-enable no-undef */
   });
