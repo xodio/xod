@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
 
 import * as Actions from 'xod-client/core/actions';
+import { saveProject } from '../actions';
 import { UPLOAD as UPLOAD_ACTION_TYPE } from 'xod-client/core/actionTypes';
 import Selectors from 'xod-client/core/selectors';
 import { getViewableSize, isInputTarget } from 'xod-client/utils/browser';
@@ -40,7 +41,8 @@ class App extends React.Component {
     this.onResize = this.onResize.bind(this);
     this.onUpload = this.onUpload.bind(this);
     this.onShowCode = this.onShowCode.bind(this);
-    this.onLoad = this.onLoad.bind(this);
+    this.onImport = this.onImport.bind(this);
+    this.onExport = this.onExport.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onSelectNodeType = this.onSelectNodeType.bind(this);
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
@@ -73,7 +75,7 @@ class App extends React.Component {
     this.showCodePopup();
   }
 
-  onLoad(json) {
+  onImport(json) {
     let project;
     let validJSON = true;
     let errorMessage = null;
@@ -99,7 +101,7 @@ class App extends React.Component {
     this.props.actions.loadProjectFromJSON(json);
   }
 
-  onSave() {
+  onExport() {
     const projectName = this.props.meta.name;
     const link = (document) ? document.createElement('a') : null;
     const url = `data:application/xod;charset=utf8,${encodeURIComponent(this.props.projectJSON)}`;
@@ -115,6 +117,14 @@ class App extends React.Component {
       window.open(url, '_blank');
       window.focus();
     }
+  }
+
+  onSave() {
+    // 1. Check for existing of workspace
+    //    if does not exists — show PopupSetWorkspace
+    // 2. Save!
+
+    this.props.actions.saveProject(this.props.projectJSON);
   }
 
   onSelectNodeType(typeKey) {
@@ -199,6 +209,12 @@ class App extends React.Component {
         onClick: this.onExport,
       },
       this.getToolbarLoadElement(),
+      {
+        key: 'save',
+        className: 'save-button',
+        label: 'Save project',
+        onClick: this.onSave,
+      },
     ];
   }
 
@@ -285,6 +301,7 @@ const mapDispatchToProps = (dispatch) => ({
     upload: Actions.upload,
     loadProjectFromJSON: Actions.loadProjectFromJSON,
     setMode: Actions.setMode,
+    saveProject,
     addError: Actions.addError,
     setSelectedNodeType: Actions.setSelectedNodeType,
     deleteProcess: Actions.deleteProcess,

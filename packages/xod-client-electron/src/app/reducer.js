@@ -1,13 +1,4 @@
-const initialState = {
-  workspace: null,
-};
-
-const settingsReducer = (state = initialState, action) => {
-  switch (action.type) {
-    default:
-      return state;
-  }
-};
+import settingsReducer from '../settings/reducer';
 
 export default {
   settings: settingsReducer,

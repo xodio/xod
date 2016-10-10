@@ -1,0 +1,1 @@
+export const SET_WORKSPACE = 'SET_WORKSPACE';
