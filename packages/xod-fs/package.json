@@ -11,6 +11,7 @@
   "author": "Amperka team",
   "license": "MIT",
   "dependencies": {
+    "expand-home-dir": "0.0.3",
     "file-save": "^0.2.0",
     "recursive-readdir": "^2.1.0",
     "xod-core": "^0.0.1"

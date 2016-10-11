@@ -1,12 +1,16 @@
 import path from 'path';
 import fileSave from 'file-save';
+import expandHomeDir from 'expand-home-dir';
 
 export default (data, pathToWorkspace, onFinish = () => {}, onError = () => {}) => {
   const streams = [];
   let streamsFinished = 0;
 
   const saveData = (file) => {
-    const filePath = path.resolve(pathToWorkspace, file.path);
+    const filePath = path.resolve(
+      expandHomeDir(pathToWorkspace),
+      file.path
+    );
     const fstream = fileSave(filePath)
       .write(JSON.stringify(file.content), 'utf8')
       .end();
