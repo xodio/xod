@@ -183,7 +183,6 @@ class App extends React.Component {
   }
 
   getSaveProgress() {
-    console.log('!', this.props.saveProcess);
     if (this.props.saveProcess && this.props.saveProcess.percentage) {
       return this.props.saveProcess.percentage;
     }

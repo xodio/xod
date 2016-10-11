@@ -1,24 +1,25 @@
 import R from 'ramda';
-import { ERROR_ADD, ERROR_DELETE } from './actionTypes';
+import { MESSAGE_ADD, MESSAGE_DELETE } from './actionTypes';
 import { getNewId } from './selectors';
 
-export default (errors = {}, action) => {
+export default (messages = {}, action) => {
   switch (action.type) {
-    case ERROR_ADD: {
-      const newId = getNewId(errors);
+    case MESSAGE_ADD: {
+      const newId = getNewId(messages);
       return R.assoc(
         newId,
         {
           id: newId,
+          type: action.meta.type,
           timestamp: action.meta.timestamp,
           payload: action.payload,
         },
-        errors
+        messages
       );
     }
-    case ERROR_DELETE:
-      return R.omit([action.payload.id.toString()], errors);
+    case MESSAGE_DELETE:
+      return R.omit([action.payload.id.toString()], messages);
     default:
-      return errors;
+      return messages;
   }
 };

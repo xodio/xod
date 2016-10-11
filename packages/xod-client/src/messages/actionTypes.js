@@ -1,2 +1,2 @@
-export const ERROR_ADD = 'ERROR_ADD';
-export const ERROR_DELETE = 'ERROR_DELETE';
+export const MESSAGE_ADD = 'MESSAGE_ADD';
+export const MESSAGE_DELETE = 'MESSAGE_DELETE';

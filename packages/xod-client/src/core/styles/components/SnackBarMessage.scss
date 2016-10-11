@@ -1,15 +1,27 @@
-.SnackBarError {
+.SnackBarMessage {
   position: relative;
   display: block;
   margin-top: 1px;
   padding: 8px 16px;
   color: #fff;
-  background: #600;
+  background: #666;
   border-bottom: 1px solid #400;
   transition: all 0.3s ease-in;
   left: 0;
 
   &.hidden {
     left: $snackbar-width;
+  }
+
+  &.error {
+    background: #600;
+  }
+
+  &.confirmation {
+    background: #060;
+  }
+
+  &.notification {
+    background: #006;
   }
 }

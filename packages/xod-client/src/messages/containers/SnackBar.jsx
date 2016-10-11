@@ -4,9 +4,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import SnackBarList from '../components/SnackBarList';
-import SnackBarError from '../components/SnackBarError';
+import SnackBarMessage from '../components/SnackBarMessage';
 import * as ErrorSelectors from '../selectors';
-import { deleteError } from '../actions';
+import { deleteMessage } from '../actions';
 
 const ERROR_TIMEOUT = 3000;
 
@@ -25,7 +25,7 @@ class SnackBar extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.addErrors(nextProps.errors);
+    this.addMessages(nextProps.errors);
   }
 
   onMouseOver() {
@@ -73,10 +73,10 @@ class SnackBar extends React.Component {
     element
       .hide()
       .then(() => delete this.errors[id])
-      .then(() => this.props.deleteError(id));
+      .then(() => this.props.deleteMessage(id));
   }
 
-  addErrors(errors) {
+  addMessages(errors) {
     R.pipe(
       R.values,
       R.forEach((error) => {
@@ -94,11 +94,11 @@ class SnackBar extends React.Component {
           timeout: this.setTimeout(error.id),
           data: error,
           element: (
-            <SnackBarError
+            <SnackBarMessage
               ref={assignRef}
               key={error.id}
               onHide={this.hideError}
-              error={error}
+              message={error}
             />
           ),
         };
@@ -122,7 +122,7 @@ class SnackBar extends React.Component {
 
 SnackBar.propTypes = {
   errors: React.PropTypes.object,
-  deleteError: React.PropTypes.func,
+  deleteMessage: React.PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
@@ -130,7 +130,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => (bindActionCreators({
-  deleteError,
+  deleteMessage,
 }, dispatch));
 
 export default connect(mapStateToProps, mapDispatchToProps)(SnackBar);

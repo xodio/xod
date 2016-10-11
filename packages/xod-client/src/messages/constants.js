@@ -4,6 +4,12 @@ import {
   PROPERTY_ERRORS as PE,
 } from 'xod-core';
 
+export const MESSAGE_TYPE = {
+  ERROR: 'ERROR',
+  CONFIRMATION: 'CONFIRMATION',
+  NOTIFICATION: 'NOTIFICATION',
+};
+
 export const LINK_ERRORS = {
   [LE.SAME_DIRECTION]: 'Can\'t create link between pins of the same direction!',
   [LE.SAME_NODE]: 'Can\'t create link between pins of the same node!',

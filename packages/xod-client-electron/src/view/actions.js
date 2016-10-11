@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import { addProcess, progressProcess, successProcess, deleteProcess } from 'xod-client';
+import { addProcess, progressProcess, successProcess, deleteProcess, addConfirmation } from 'xod-client';
 
 import { getWorkspace } from '../settings/selectors';
 import { SAVE_PROJECT } from './actionTypes';
@@ -22,6 +22,7 @@ export const saveProject = json => (dispatch, getState) => {
   ));
   ipcRenderer.once('saveProject:complete', () => {
     dispatch(successProcess(processId, type));
+    dispatch(addConfirmation({ message: 'Project has been saved successfully!' }));
     setTimeout(() => {
       dispatch(deleteProcess(processId, type));
     }, 1000);
