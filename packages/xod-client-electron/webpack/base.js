@@ -68,6 +68,10 @@ const options = {
         test: /src\/node_modules\/xod-espruino\/index\.js$/,
         loader: 'null',
       },
+      {
+        test: /json5\/lib\/require/,
+        loader: 'null',
+      }
     ],
   },
   plugins: [
