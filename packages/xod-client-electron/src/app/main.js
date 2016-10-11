@@ -38,6 +38,16 @@ function createWindow() {
 
 const onReady = () => {
   devtron.install();
+
+  // Listen to IPC
+  ipcMain.on('saveProject', (event, opts) => {
+    console.log('saving project...', opts.path);
+    event.sender.send('saveProject:process');
+    saveProject(opts.json, opts.path, () => {
+      event.sender.send('saveProject:complete');
+    });
+  });
+
   createWindow();
 };
 
@@ -55,13 +65,4 @@ app.on('activate', () => {
   if (win === null) {
     createWindow();
   }
-});
-
-// Listen to IPC
-ipcMain.on('saveProject', (event, opts) => {
-  console.log('SAVE PROJECT!', opts.path);
-  saveProject(opts.pojo, opts.path, () => {
-    console.log('SAVED');
-    event.sender.send('saveProject:complete');
-  });
 });
