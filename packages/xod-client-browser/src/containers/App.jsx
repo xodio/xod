@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
 
 import core from 'xod-core';
-import client, { Toolbar, PopupShowCode } from 'xod-client';
+import client from 'xod-client';
 
 import { transpile } from 'xod-espruino';
 
@@ -238,7 +238,7 @@ class App extends React.Component {
           onKeyDown={this.onKeyDown}
           onBeforeUnload={this.onCloseApp}
         />
-        <Toolbar
+        <client.Toolbar
           meta={this.props.meta}
           nodeTypes={this.props.nodeTypes}
           onSelectNodeType={this.onSelectNodeType}
@@ -252,7 +252,7 @@ class App extends React.Component {
           isVisible={this.state.popupInstallApp}
           onClose={this.hideInstallAppPopup}
         />
-        <PopupShowCode
+        <client.PopupShowCode
           isVisible={this.state.popupShowCode}
           code={this.state.code}
           onClose={this.hideCodePopup}

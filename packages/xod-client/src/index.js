@@ -37,6 +37,8 @@ import Root from './core/containers/Root';
 import { container as Editor, CreateNodeWidget } from './editor';
 import { SnackBar } from './messages';
 import { UserPanel } from './user';
+import Toolbar from './utils/components/Toolbar';
+import PopupShowCode from './utils/components/PopupShowCode';
 import PopupUploadProject from './processes/components/PopupUploadProject';
 import DevTools from './core/containers/DevTools';
 
@@ -48,6 +50,8 @@ export default Object.assign({
   UserPanel,
   PopupUploadProject,
   DevTools,
+  Toolbar,
+  PopupShowCode,
 },
   UtilsSelectors,
   EditorSelectors,

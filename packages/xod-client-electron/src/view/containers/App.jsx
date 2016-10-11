@@ -4,20 +4,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { HotKeys } from 'react-hotkeys';
-
-import client, { Toolbar, PopupShowCode, PopupUploadProject } from 'xod-client';
-import { saveProject } from '../actions';
-import { UPLOAD as UPLOAD_ACTION_TYPE } from 'xod-client/core/actionTypes';
-import Selectors from 'xod-client/core/selectors';
-import { getViewableSize, isInputTarget } from 'xod-client/utils/browser';
-import { projectHasChanges } from 'xod-client/utils/selectors';
-import { SAVE_LOAD_ERRORS } from 'xod-client/messages/constants';
-import { KEYCODE, HOTKEY } from 'xod-client/utils/constants';
-import { transpile } from 'xod-espruino';
-
-import { constants as EDITOR_CONST, container as Editor } from 'xod-client/editor';
-import { SnackBar } from 'xod-client/messages';
 import EventListener from 'react-event-listener';
+
+import core from 'xod-core';
+import client from 'xod-client';
+import { transpile } from 'xod-espruino';
+import { saveProject } from '../actions';
 
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
@@ -27,7 +19,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      size: getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
+      size: client.getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
       popupInstallApp: false,
       popupUploadProject: false,
       popupShowCode: false,
@@ -54,7 +46,7 @@ class App extends React.Component {
     this.setState(
       R.set(
         R.lensProp('size'),
-        getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
+        client.getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
         this.state
       )
     );
@@ -81,11 +73,11 @@ class App extends React.Component {
       project = JSON.parse(json);
     } catch (err) {
       validJSON = false;
-      errorMessage = SAVE_LOAD_ERRORS.NOT_A_JSON;
+      errorMessage = client.SAVE_LOAD_ERRORS.NOT_A_JSON;
     }
 
-    if (validJSON && !Selectors.Project.validateProject(project)) {
-      errorMessage = SAVE_LOAD_ERRORS.INVALID_FORMAT;
+    if (validJSON && !core.validateProject(project)) {
+      errorMessage = client.SAVE_LOAD_ERRORS.INVALID_FORMAT;
     }
 
     if (errorMessage) {
@@ -120,7 +112,7 @@ class App extends React.Component {
     // 1. Check for existing of workspace
     //    if does not exists — show PopupSetWorkspace
     // 2. Save!
-
+    console.log('> on save clicked');
     this.props.actions.saveProject(this.props.projectJSON);
   }
 
@@ -129,18 +121,18 @@ class App extends React.Component {
   }
 
   onAddNodeClick() {
-    this.props.actions.setMode(EDITOR_CONST.EDITOR_MODE.CREATING_NODE);
+    this.props.actions.setMode(client.EDITOR_MODE.CREATING_NODE);
   }
 
   onUploadPopupClose(id) {
     this.hideUploadProgressPopup();
-    this.props.actions.deleteProcess(id, UPLOAD_ACTION_TYPE);
+    this.props.actions.deleteProcess(id, client.UPLOAD);
   }
 
   onKeyDown(event) {
     const keyCode = event.keyCode || event.which;
 
-    if (!isInputTarget(event) && keyCode === KEYCODE.BACKSPACE) {
+    if (!client.isInputTarget(event) && keyCode === client.KEYCODE.BACKSPACE) {
       event.preventDefault();
     }
 
@@ -241,28 +233,28 @@ class App extends React.Component {
 
   render() {
     return (
-      <HotKeys keyMap={HOTKEY} id="App">
+      <HotKeys keyMap={client.HOTKEY} id="App">
         <EventListener
           target={window}
           onResize={this.onResize}
           onKeyDown={this.onKeyDown}
           onBeforeUnload={this.onCloseApp}
         />
-        <Toolbar
+        <client.Toolbar
           meta={this.props.meta}
           nodeTypes={this.props.nodeTypes}
           onSelectNodeType={this.onSelectNodeType}
           onAddNodeClick={this.onAddNodeClick}
           buttons={this.getToolbarButtons()}
         />
-        <Editor size={this.state.size} />
-        <SnackBar />
-        <PopupShowCode
+        <client.Editor size={this.state.size} />
+        <client.SnackBar />
+        <client.PopupShowCode
           isVisible={this.state.popupShowCode}
           code={this.state.code}
           onClose={this.hideCodePopup}
         />
-        <PopupUploadProject
+        <client.PopupUploadProject
           isVisible={this.state.popupUploadProject}
           upload={this.props.upload}
           onClose={this.onUploadPopupClose}
@@ -284,13 +276,13 @@ App.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  hasChanges: projectHasChanges(state),
-  project: Selectors.Project.getProject(state),
-  projectJSON: Selectors.Project.getProjectJSON(state),
-  meta: Selectors.Project.getMeta(state),
-  nodeTypes: Selectors.Project.dereferencedNodeTypes(state),
-  selectedNodeType: Selectors.Editor.getSelectedNodeType(state),
-  upload: Selectors.Processes.getUpload(state),
+  hasChanges: client.projectHasChanges(state),
+  project: core.getProject(state),
+  projectJSON: core.getProjectJSON(state),
+  meta: core.getMeta(state),
+  nodeTypes: core.dereferencedNodeTypes(state),
+  selectedNodeType: client.getSelectedNodeType(state),
+  upload: client.getUpload(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
