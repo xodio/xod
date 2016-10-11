@@ -10,9 +10,11 @@ import core from 'xod-core';
 import client from 'xod-client';
 import { transpile } from 'xod-espruino';
 import { saveProject } from '../actions';
+import { SAVE_PROJECT } from '../actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
-import { getWorkspace } from '../../settings/selectors';
+import { getSettings, getWorkspace } from '../../settings/selectors';
 import { setWorkspace } from '../../settings/actions';
+import SaveProgressBar from '../components/SaveProgressBar';
 
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
@@ -180,6 +182,15 @@ class App extends React.Component {
     return this.onElectronClose(event);
   }
 
+  getSaveProgress() {
+    console.log('!', this.props.saveProcess);
+    if (this.props.saveProcess && this.props.saveProcess.percentage) {
+      return this.props.saveProcess.percentage;
+    }
+
+    return 0;
+  }
+
   getToolbarLoadElement() {
     return (
       <label
@@ -303,6 +314,7 @@ class App extends React.Component {
           onChange={this.onWorkspaceChange}
           onClose={this.hidePopupSetWorkspace}
         />
+        <SaveProgressBar percentage={this.getSaveProgress()} />
       </HotKeys>
     );
   }
@@ -320,16 +332,22 @@ App.propTypes = {
   workspace: React.PropTypes.string,
 };
 
-const mapStateToProps = (state) => ({
-  hasChanges: client.projectHasChanges(state),
-  project: core.getProject(state),
-  projectJSON: core.getProjectJSON(state),
-  meta: core.getMeta(state),
-  nodeTypes: core.dereferencedNodeTypes(state),
-  selectedNodeType: client.getSelectedNodeType(state),
-  upload: client.getUpload(state),
-  workspace: getWorkspace(state.settings),
-});
+const mapStateToProps = (state) => {
+  const processes = client.getProccesses(state);
+  const settings = getSettings(state);
+
+  return ({
+    hasChanges: client.projectHasChanges(state),
+    project: core.getProject(state),
+    projectJSON: core.getProjectJSON(state),
+    meta: core.getMeta(state),
+    nodeTypes: core.dereferencedNodeTypes(state),
+    selectedNodeType: client.getSelectedNodeType(state),
+    upload: client.getUpload(state),
+    workspace: getWorkspace(settings),
+    saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),
+  });
+};
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({

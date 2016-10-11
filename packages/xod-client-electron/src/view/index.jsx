@@ -7,6 +7,7 @@ import App from './containers/App';
 import additionalReducers from './reducer';
 
 import 'xod-client/core/styles/main';
+import './styles/main';
 
 ReactDOM.render(
   <Root
