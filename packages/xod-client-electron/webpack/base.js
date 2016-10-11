@@ -23,7 +23,7 @@ const options = {
   resolve: {
     root: path.join(__dirname, '../src'),
     modulesDirectories: ['node_modules', 'src', 'src/node_modules'],
-    extensions: ['', '.js', '.jsx', '.json5', '.scss'],
+    extensions: ['', '.js', '.jsx', '.scss'],
     alias: {
       react: path.resolve('node_modules/react'),
       // @TODO: Get rid of this hack:
