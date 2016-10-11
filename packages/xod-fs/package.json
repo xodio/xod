@@ -2,7 +2,7 @@
   "name": "xod-fs",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "babel src/ -d dist/",
     "dev": "babel --watch src/ -d dist/",
