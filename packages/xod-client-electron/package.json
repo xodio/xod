@@ -19,7 +19,10 @@
     "react-skylight": "^0.4.1",
     "redux": "^3.0.5",
     "redux-api-middleware": "^1.0.2",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "xod-client": "^0.0.1",
+    "xod-core": "^0.0.1",
+    "xod-fs": "^0.0.1"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.1.0",
@@ -63,9 +66,6 @@
     "webpack-dev-server": "^1.14.0",
     "webpack-merge": "^0.14.0",
     "webpack-target-electron-renderer": "^0.4.0",
-    "webpack-validator": "^2.2.3",
-    "xod-client": "^0.0.1",
-    "xod-core": "^0.0.1",
-    "xod-fs": "^0.0.1"
+    "webpack-validator": "^2.2.3"
   }
 }

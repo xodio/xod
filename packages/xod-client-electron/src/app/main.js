@@ -41,7 +41,6 @@ const onReady = () => {
 
   // Listen to IPC
   ipcMain.on('saveProject', (event, opts) => {
-    console.log('saving project...', opts.path);
     event.sender.send('saveProject:process');
     saveProject(opts.json, opts.path, () => {
       event.sender.send('saveProject:complete');

@@ -7,3 +7,7 @@ export const setWorkspace = newPath => ({
   type: SET_WORKSPACE,
   payload: path.resolve(newPath),
 });
+
+export default {
+  setWorkspace,
+};

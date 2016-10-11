@@ -112,7 +112,6 @@ class App extends React.Component {
     // 1. Check for existing of workspace
     //    if does not exists — show PopupSetWorkspace
     // 2. Save!
-    console.log('> on save clicked');
     this.props.actions.saveProject(this.props.projectJSON);
   }
 

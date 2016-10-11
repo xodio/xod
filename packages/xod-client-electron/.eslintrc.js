@@ -32,5 +32,6 @@ module.exports = {
 
   rules: {
     'import/extensions': [2, 'never'],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
   },
 };
