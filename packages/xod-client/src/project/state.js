@@ -1,7 +1,6 @@
 import { genNodeTypes, getInitialState } from 'xod-core';
 
 /* eslint-disable global-require */
-require('json5/lib/require');
 const nodeMetas = {
   'core/button': require('../../../xod-core/nodes/meta/button.json5'),
   'core/constBool': require('../../../xod-core/nodes/meta/constBool.json5'),

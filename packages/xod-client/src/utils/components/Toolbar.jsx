@@ -1,7 +1,7 @@
 import R from 'ramda';
 import React from 'react';
-import { CreateNodeWidget } from '../../editor/components/CreateNodeWidget';
-import { UserPanel } from '../../user/containers/UserPanel';
+import CreateNodeWidget from '../../editor/components/CreateNodeWidget';
+import UserPanel from '../../user/containers/UserPanel';
 
 const Toolbar = ({
   meta,
