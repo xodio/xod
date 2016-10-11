@@ -10,6 +10,9 @@ import core from 'xod-core';
 import client from 'xod-client';
 import { transpile } from 'xod-espruino';
 import { saveProject } from '../actions';
+import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
+import { getWorkspace } from '../../settings/selectors';
+import { setWorkspace } from '../../settings/actions';
 
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
@@ -23,6 +26,8 @@ class App extends React.Component {
       popupInstallApp: false,
       popupUploadProject: false,
       popupShowCode: false,
+      popupSetWorkspace: false,
+      popupSetWorkspaceCB: null,
       code: '',
     };
 
@@ -37,9 +42,12 @@ class App extends React.Component {
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
+    this.onWorkspaceChange = this.onWorkspaceChange.bind(this);
 
     this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
     this.hideCodePopup = this.hideCodePopup.bind(this);
+    this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
+    this.hidePopupSetWorkspace = this.hidePopupSetWorkspace.bind(this);
   }
 
   onResize() {
@@ -108,11 +116,25 @@ class App extends React.Component {
     }
   }
 
+  onWorkspaceChange(val) {
+    this.hidePopupSetWorkspace();
+    this.props.actions.setWorkspace(val);
+
+    if (typeof this.state.popupSetWorkspaceCB === 'function') {
+      this.state.popupSetWorkspaceCB();
+      this.setState({ popupSetWorkspaceCB: null });
+    }
+  }
+
   onSave() {
     // 1. Check for existing of workspace
     //    if does not exists — show PopupSetWorkspace
-    // 2. Save!
-    this.props.actions.saveProject(this.props.projectJSON);
+    if (!this.props.workspace) {
+      this.showPopupSetWorkspace(this.onSave);
+    } else {
+      // 2. Save!
+      this.props.actions.saveProject(this.props.projectJSON);
+    }
   }
 
   onSelectNodeType(typeKey) {
@@ -203,6 +225,12 @@ class App extends React.Component {
         label: 'Save project',
         onClick: this.onSave,
       },
+      {
+        key: 'switchWorkspace',
+        className: 'save-button',
+        label: 'Workspace dir',
+        onClick: this.showPopupSetWorkspace,
+      },
     ];
   }
 
@@ -228,6 +256,17 @@ class App extends React.Component {
 
   hideCodePopup() {
     this.setState({ popupShowCode: false });
+  }
+
+  showPopupSetWorkspace(cb) {
+    this.setState({ popupSetWorkspace: true });
+    if (cb) {
+      this.setState({ popupSetWorkspaceCB: cb });
+    }
+  }
+
+  hidePopupSetWorkspace() {
+    this.setState({ popupSetWorkspace: false });
   }
 
   render() {
@@ -258,6 +297,12 @@ class App extends React.Component {
           upload={this.props.upload}
           onClose={this.onUploadPopupClose}
         />
+        <PopupSetWorkspace
+          workspace={this.props.workspace}
+          isVisible={this.state.popupSetWorkspace}
+          onChange={this.onWorkspaceChange}
+          onClose={this.hidePopupSetWorkspace}
+        />
       </HotKeys>
     );
   }
@@ -270,8 +315,9 @@ App.propTypes = {
   meta: React.PropTypes.object,
   nodeTypes: React.PropTypes.any.isRequired,
   selectedNodeType: React.PropTypes.string,
-  actions: React.PropTypes.object,
+  actions: React.PropTypes.objectOf(React.PropTypes.func),
   upload: React.PropTypes.object,
+  workspace: React.PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
@@ -282,6 +328,7 @@ const mapStateToProps = (state) => ({
   nodeTypes: core.dereferencedNodeTypes(state),
   selectedNodeType: client.getSelectedNodeType(state),
   upload: client.getUpload(state),
+  workspace: getWorkspace(state.settings),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -293,6 +340,7 @@ const mapDispatchToProps = (dispatch) => ({
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,
     deleteProcess: client.deleteProcess,
+    setWorkspace: setWorkspace,
   }, dispatch),
 });
 
