@@ -9,7 +9,7 @@ import EventListener from 'react-event-listener';
 import core from 'xod-core';
 import client from 'xod-client';
 import { transpile } from 'xod-espruino';
-import { saveProject } from '../actions';
+import { savePatch, saveProject } from '../actions';
 import { SAVE_PROJECT } from '../actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
 import { getSettings, getWorkspace } from '../../settings/selectors';
@@ -39,7 +39,8 @@ class App extends React.Component {
     this.onShowCode = this.onShowCode.bind(this);
     this.onImport = this.onImport.bind(this);
     this.onExport = this.onExport.bind(this);
-    this.onSave = this.onSave.bind(this);
+    this.onSavePatch = this.onSavePatch.bind(this);
+    this.onSaveProject = this.onSaveProject.bind(this);
     this.onSelectNodeType = this.onSelectNodeType.bind(this);
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
@@ -128,14 +129,30 @@ class App extends React.Component {
     }
   }
 
-  onSave() {
+  onSavePatch() {
     // 1. Check for existing of workspace
     //    if does not exists — show PopupSetWorkspace
     if (!this.props.workspace) {
-      this.showPopupSetWorkspace(this.onSave);
+      this.showPopupSetWorkspace(this.onSavePatch);
     } else {
       // 2. Save!
-      this.props.actions.saveProject(this.props.projectJSON);
+      this.props.actions.savePatch({
+        json: this.props.projectJSON,
+        patchId: this.props.currentPatchId,
+      });
+    }
+  }
+
+  onSaveProject() {
+    // 1. Check for existing of workspace
+    //    if does not exists — show PopupSetWorkspace
+    if (!this.props.workspace) {
+      this.showPopupSetWorkspace(this.onSaveProject);
+    } else {
+      // 2. Save!
+      this.props.actions.saveProject({
+        json: this.props.projectJSON
+      });
     }
   }
 
@@ -230,10 +247,16 @@ class App extends React.Component {
       },
       this.getToolbarLoadElement(),
       {
-        key: 'save',
+        key: 'saveProject',
         className: 'save-button',
         label: 'Save project',
-        onClick: this.onSave,
+        onClick: this.onSaveProject,
+      },
+      {
+        key: 'savePatch',
+        className: 'save-button',
+        label: 'Save current patch',
+        onClick: this.onSavePatch,
       },
       {
         key: 'switchWorkspace',
@@ -329,6 +352,8 @@ App.propTypes = {
   actions: React.PropTypes.objectOf(React.PropTypes.func),
   upload: React.PropTypes.object,
   workspace: React.PropTypes.string,
+  saveProcess: React.PropTypes.object,
+  currentPatchId: React.PropTypes.number,
 };
 
 const mapStateToProps = (state) => {
@@ -345,6 +370,7 @@ const mapStateToProps = (state) => {
     upload: client.getUpload(state),
     workspace: getWorkspace(settings),
     saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),
+    currentPatchId: client.getCurrentPatchId(state),
   });
 };
 
@@ -353,6 +379,7 @@ const mapDispatchToProps = (dispatch) => ({
     upload: client.upload,
     loadProjectFromJSON: client.loadProjectFromJSON,
     setMode: client.setMode,
+    savePatch,
     saveProject,
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,

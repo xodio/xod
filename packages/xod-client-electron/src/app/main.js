@@ -5,7 +5,7 @@ import {
   BrowserWindow,
 } from 'electron';
 import devtron from 'devtron';
-import { saveProject } from './remoteActions';
+import { savePatch, saveProject } from './remoteActions';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -40,6 +40,15 @@ const onReady = () => {
   devtron.install();
 
   // Listen to IPC
+  // @TODO: Remove repeating code
+
+  ipcMain.on('savePatch', (event, opts) => {
+    event.sender.send('savePatch:process');
+    savePatch(opts.json, opts.patchId, opts.path, () => {
+      event.sender.send('savePatch:complete');
+    });
+  });
+
   ipcMain.on('saveProject', (event, opts) => {
     event.sender.send('saveProject:process');
     saveProject(opts.json, opts.path, () => {
