@@ -2,6 +2,8 @@ import R from 'ramda';
 import { createSelector } from 'reselect';
 import core from 'xod-core';
 
+const { SIZE } = core;
+
 import { EDITOR_MODE } from './constants';
 
 export const getEditor = R.prop('editor');
