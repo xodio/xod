@@ -11,6 +11,12 @@ function identityNode() {
      evaluate: function(e) { return {PIN: e.inputs.PIN}; }
   };
 }
+
+function startUpConstantNode() {
+  return {
+    setup: function(e) { e.fire({ value: e.props.value }); }
+  };
+}
 /* eslint-enable no-unused-vars */
 
 /**
@@ -258,4 +264,6 @@ if (typeof module !== 'undefined') {
   module.exports.Project = Project;
   module.exports.PULSE = PULSE;
   module.exports.identity = identity;
+  module.exports.identityNode = identityNode;
+  module.exports.startUpConstantNode = startUpConstantNode;
 }

@@ -251,6 +251,36 @@ export default function transform(project, implPlatforms = []) {
     // populate recursively
   }
 
+  // insert contant nodes for the pinned inputs
+  R.compose(
+    R.filter(({ pins }) => !R.isEmpty(pins)),
+    R.values
+  )(
+    allNodes
+  ).forEach(({ id, pins }) => {
+    R.toPairs(pins).forEach(([pinKey, { value }]) => {
+      const newNodeId = generateId();
+      const newLinkId = generateId();
+
+      const newNode = {
+        id: newNodeId,
+        properties: { value },
+        typeId: '<<const>>',
+      };
+      const newLink = {
+        id: newLinkId,
+        pins: [
+          { pinKey: 'value', nodeId: newNodeId },
+          { pinKey, nodeId: id }
+        ]
+      };
+
+      allNodes = R.assoc(newNodeId, newNode, allNodes);
+      allLinks = R.assoc(newLinkId, newLink, allLinks);
+    });
+  });
+
+  // calculate the mapping "GUID -> Int index"
   const nodeGuidToIdx = R.fromPairs(
     R.addIndex(R.map)(
       (id, idx) => [id, idx],
@@ -345,14 +375,18 @@ export default function transform(project, implPlatforms = []) {
   );
 
   // :: Node -> TransformedNode
-  const transformedNode = node => R.mergeAll([
-    renameKeys(
-      { typeId: 'implId', properties: 'props' },
-      R.pick(['id', 'typeId', 'properties'])(node)
-    ),
-    R.compose(transformedNodeType, nodeTypeByNode)(node),
-    R.objOf('outLinks', nodeOutLinks(node)),
-  ]);
+  const transformedNode = R.compose(
+    R.mergeAll,
+    R.juxt([
+      R.compose(
+        renameKeys({typeId: 'implId', properties: 'props'}),
+        R.evolve({properties: R.omit(['label'])}),
+        R.pick(['id', 'typeId', 'properties'])
+      ),
+      R.compose(transformedNodeType, nodeTypeByNode),
+      R.compose(R.objOf('outLinks'), nodeOutLinks),
+    ])
+  );
 
   const transformedNodes = R.fromPairs(
     R.map(

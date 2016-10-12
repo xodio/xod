@@ -6,6 +6,7 @@
     type: 'number',
     value: 1,
   }],
+  pure: false,
   outputs: [{
     key: 'tick',
     type: 'pulse',

@@ -1,4 +1,4 @@
 
-module.exports.setup = function(e) {
-  e.fire({ value: e.props.value });
+module.exports.evaluate = function(e) {
+  e.fire({ value: e.inputs.value });
 };
