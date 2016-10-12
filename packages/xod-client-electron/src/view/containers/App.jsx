@@ -30,6 +30,7 @@ class App extends React.Component {
       popupShowCode: false,
       popupSetWorkspace: false,
       popupSetWorkspaceCB: null,
+      popupCreateProject: false,
       code: '',
     };
 
@@ -46,11 +47,14 @@ class App extends React.Component {
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
     this.onWorkspaceChange = this.onWorkspaceChange.bind(this);
+    this.onCreateProject = this.onCreateProject.bind(this);
 
     this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
     this.hideCodePopup = this.hideCodePopup.bind(this);
     this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
     this.hidePopupSetWorkspace = this.hidePopupSetWorkspace.bind(this);
+    this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
+    this.hidePopupCreateProject = this.hidePopupCreateProject.bind(this);
   }
 
   onResize() {
@@ -66,6 +70,12 @@ class App extends React.Component {
   onUpload() {
     this.showUploadProgressPopup();
     this.props.actions.upload();
+  }
+
+  onCreateProject(projectName) {
+    this.props.actions.createProject(projectName);
+    this.hidePopupCreateProject();
+    this.onSaveProject();
   }
 
   onShowCode() {
@@ -264,6 +274,12 @@ class App extends React.Component {
         label: 'Workspace dir',
         onClick: this.showPopupSetWorkspace,
       },
+      {
+        key: 'newProject',
+        className: 'upload-button',
+        label: 'Create new project',
+        onClick: this.showPopupCreateProject,
+      },
     ];
   }
 
@@ -289,6 +305,14 @@ class App extends React.Component {
 
   hideCodePopup() {
     this.setState({ popupShowCode: false });
+  }
+
+  showPopupCreateProject() {
+    this.setState({ popupCreateProject: true });
+  }
+
+  hidePopupCreateProject() {
+    this.setState({ popupCreateProject: false });
   }
 
   showPopupSetWorkspace(cb) {
@@ -330,6 +354,17 @@ class App extends React.Component {
           upload={this.props.upload}
           onClose={this.onUploadPopupClose}
         />
+        <client.PopupPrompt
+          title="Create new project"
+          confirmText="Create project"
+          isVisible={this.state.popupCreateProject}
+          onConfirm={this.onCreateProject}
+          onClose={this.hidePopupCreateProject}
+        >
+          <p>
+          Please, give a sonorous name to yor project:
+          </p>
+        </client.PopupPrompt>
         <PopupSetWorkspace
           workspace={this.props.workspace}
           isVisible={this.state.popupSetWorkspace}
@@ -353,7 +388,7 @@ App.propTypes = {
   upload: React.PropTypes.object,
   workspace: React.PropTypes.string,
   saveProcess: React.PropTypes.object,
-  currentPatchId: React.PropTypes.number,
+  currentPatchId: React.PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
@@ -376,6 +411,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
+    createProject: client.createProject,
     upload: client.upload,
     loadProjectFromJSON: client.loadProjectFromJSON,
     setMode: client.setMode,

@@ -1,13 +1,17 @@
 import applyReducers from '../../utils/applyReducers';
 
+import R from 'ramda';
+import core from 'xod-core';
+
 import { meta } from './meta';
-import { patches } from './patches';
+import { patches, newPatch } from './patches';
 import { nodeTypes } from './nodetypes';
 import { foldersReducer } from './folders';
 
 import { ApiHelpers, ApiActionTypes } from '../../api';
 
 import {
+  PROJECT_CREATE,
   PROJECT_LOAD_DATA,
 } from '../actionTypes';
 
@@ -22,6 +26,23 @@ export default (patchIds) => {
   };
 
   return (state = {}, action) => {
+    if (action.type === PROJECT_CREATE) {
+      const mainPatch = newPatch({ id: action.payload.mainPatchId, label: 'Main' });
+
+      return R.pipe(
+        R.assoc(
+          'patches',
+          {
+            [action.payload.mainPatchId]: mainPatch,
+          }
+        ),
+        R.assocPath(
+          ['meta', 'name'],
+          action.payload.name
+        )
+      )(state);
+    }
+
     if (action.type === PROJECT_LOAD_DATA) {
       return parseProjectJSON(action.payload);
     }

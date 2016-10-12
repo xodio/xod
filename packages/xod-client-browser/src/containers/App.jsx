@@ -25,6 +25,7 @@ class App extends React.Component {
       popupInstallApp: false,
       popupUploadProject: false,
       popupShowCode: false,
+      popupCreateProject: false,
       code: '',
     };
 
@@ -40,9 +41,12 @@ class App extends React.Component {
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
+    this.onCreateProject = this.onCreateProject.bind(this);
 
     this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
     this.hideCodePopup = this.hideCodePopup.bind(this);
+    this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
+    this.hidePopupCreateProject = this.hidePopupCreateProject.bind(this);
   }
 
   onResize() {
@@ -53,6 +57,11 @@ class App extends React.Component {
         this.state
       )
     );
+  }
+
+  onCreateProject(projectName) {
+    this.props.actions.createProject(projectName);
+    this.hidePopupCreateProject();
   }
 
   onUpload() {
@@ -201,6 +210,12 @@ class App extends React.Component {
         onClick: this.onExport,
       },
       this.getToolbarLoadElement(),
+      {
+        key: 'newProject',
+        className: 'upload-button',
+        label: 'Create new project',
+        onClick: this.showPopupCreateProject,
+      },
     ];
   }
 
@@ -226,6 +241,14 @@ class App extends React.Component {
 
   hideCodePopup() {
     this.setState({ popupShowCode: false });
+  }
+
+  showPopupCreateProject() {
+    this.setState({ popupCreateProject: true });
+  }
+
+  hidePopupCreateProject() {
+    this.setState({ popupCreateProject: false });
   }
 
   render() {
@@ -262,6 +285,17 @@ class App extends React.Component {
           upload={this.props.upload}
           onClose={this.onUploadPopupClose}
         />
+        <client.PopupPrompt
+          title="Create new project"
+          confirmText="Create project"
+          isVisible={this.state.popupCreateProject}
+          onConfirm={this.onCreateProject}
+          onClose={this.hidePopupCreateProject}
+        >
+          <p>
+          Please, give a sonorous name to yor project:
+          </p>
+        </client.PopupPrompt>
       </HotKeys>
     );
   }
@@ -290,6 +324,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
+    createProject: client.createProject,
     upload: client.upload,
     loadProjectFromJSON: client.loadProjectFromJSON,
     setMode: client.setMode,

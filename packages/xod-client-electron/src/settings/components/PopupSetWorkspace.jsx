@@ -59,7 +59,9 @@ class PopupSetWorkspace extends React.Component {
   }
 
   onChange(selection) {
-    this.props.onChange(selection[0]);
+    if (selection && selection.length > 0) {
+      this.props.onChange(selection[0]);
+    }
   }
 
   render() {

@@ -11,6 +11,9 @@ import {
   TAB_CLOSE,
   TAB_SORT,
 } from './actionTypes';
+import {
+  PROJECT_CREATE
+} from '../project/actionTypes';
 import { ENTITY, generateId } from 'xod-core';
 
 const addSelection = (entityName, action, state) => {
@@ -72,6 +75,15 @@ const editorReducer = (state = {}, action) => {
       return R.assoc('mode', action.payload.mode, state);
     case EDITOR_SET_SELECTED_NODETYPE:
       return R.assoc('selectedNodeType', action.payload.id, state);
+    case PROJECT_CREATE: {
+      const newState = R.assoc('tabs', [], state);
+      return editorReducer(newState, {
+        type: EDITOR_SWITCH_PATCH,
+        payload: {
+          id: action.payload.mainPatchId,
+        },
+      });
+    }
     case EDITOR_SWITCH_PATCH: {
       let newState = state;
       if (!tabHasPatch(state, action.payload.id)) {

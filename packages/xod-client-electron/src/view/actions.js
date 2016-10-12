@@ -30,11 +30,11 @@ const createSaveAction = ({ eventName, actionType, messageProcess = undefined, m
 
   ipcRenderer.once(
     `${eventName}:process`,
-    () => saveProgress({ processId, actionType, messageProcess }, dispatch)
+    () => saveProgress({ processId, actionType, message: messageProcess }, dispatch)
   );
   ipcRenderer.once(
     `${eventName}:complete`,
-    () => saveComplete({ processId, actionType, messageComplete }, dispatch)
+    () => saveComplete({ processId, actionType, message: messageComplete }, dispatch)
   );
 
   ipcRenderer.send(
