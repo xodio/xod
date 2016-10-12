@@ -14,7 +14,7 @@ export const patchReducer = (id) => {
   const initialPatchState = {
     id: patchId,
     folderId: null,
-    name: `Patch #${patchId}`,
+    label: `Patch #${patchId}`,
   };
 
   return (state = initialPatchState, action) => {

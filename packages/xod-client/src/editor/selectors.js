@@ -108,7 +108,7 @@ export const getPreparedTabs = (state) => {
       return R.merge(
         tab,
         {
-          name: patch.name,
+          label: patch.label,
           isActive: (currentPatchId === tab.patchId),
         }
       );
