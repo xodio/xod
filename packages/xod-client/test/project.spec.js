@@ -80,6 +80,23 @@ describe('Project reducer: ', () => {
     },
   };
 
+  describe('Create new project', () => {
+    let store;
+    beforeEach(() => {
+      store = mockStore(projectShape);
+    });
+
+    it('should create new project meta and just one patch', () => {
+      const projectName = 'Test project';
+      store.dispatch(Actions.createProject(projectName));
+
+      const projectState = core.getProject(store.getState());
+
+      chai.expect(projectState.meta.name).to.be.equal(projectName);
+      chai.expect(projectState.patches).not.to.be.empty();
+    });
+  });
+
   describe('Add node', () => {
     let store;
     beforeEach(() => {
