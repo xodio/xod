@@ -10,6 +10,7 @@
     }
   },
   {
+    "id": "1",
     "path": "./awesome_project/main/patch.xodm",
     "content": {
       "id": "1",
@@ -17,6 +18,7 @@
     }
   },
   {
+    "id": "1",
     "path": "./awesome_project/main/patch.xodp",
     "content": {
       "nodes": {
@@ -152,6 +154,7 @@
     }
   },
   {
+    "id": "2",
     "path": "./awesome_project/sub/aux/patch.xodm",
     "content": {
       "id": "2",
@@ -171,6 +174,7 @@
     }
   },
   {
+    "id": "2",
     "path": "./awesome_project/sub/aux/patch.xodp",
     "content": {
       "nodes": {

@@ -140,10 +140,12 @@ export const divided = (xodball) => {
       (acc, patch) => R.concat(acc,
         [
           {
+            id: patch.meta.id,
             path: filePath(projectPath, patch.path, 'patch.xodm'),
             content: patch.meta,
           },
           {
+            id: patch.meta.id,
             path: filePath(projectPath, patch.path, 'patch.xodp'),
             content: patch.patch,
           },
