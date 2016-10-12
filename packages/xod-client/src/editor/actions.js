@@ -98,7 +98,7 @@ export const addAndSelectNode = (typeId, position, curPatchId) => (dispatch, get
   dispatch(addNode(typeId, position, curPatchId));
   dispatch(setMode(EDITOR_MODE.DEFAULT));
 
-  const newId = core.getLastNodeId(getState());
+  const newId = core.generateId();
   dispatch(selectNode(newId));
 };
 
