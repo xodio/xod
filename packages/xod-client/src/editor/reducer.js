@@ -12,7 +12,7 @@ import {
   TAB_SORT,
 } from './actionTypes';
 import {
-  PROJECT_CREATE
+  PROJECT_CREATE,
 } from '../project/actionTypes';
 import { ENTITY, generateId } from 'xod-core';
 

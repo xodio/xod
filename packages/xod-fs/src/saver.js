@@ -2,7 +2,7 @@ import path from 'path';
 import fileSave from 'file-save';
 import expandHomeDir from 'expand-home-dir';
 
-export default (data, pathToWorkspace, onFinish = () => {}, onError = () => {}) => {
+export default (data, pathToWorkspace, onFinish = () => {}, onError = (err) => { throw err; }) => {
   const streams = [];
   let streamsFinished = 0;
 

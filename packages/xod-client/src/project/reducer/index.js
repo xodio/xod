@@ -1,7 +1,6 @@
 import applyReducers from '../../utils/applyReducers';
 
 import R from 'ramda';
-import core from 'xod-core';
 
 import { meta } from './meta';
 import { patches, newPatch } from './patches';

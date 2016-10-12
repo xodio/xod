@@ -37,7 +37,7 @@ import * as UtilsConstants from './utils/constants';
 import * as BrowserUtils from './utils/browser';
 
 import Root from './core/containers/Root';
-import { container as Editor, CreateNodeWidget, PopupCreateProject } from './editor';
+import { container as Editor, CreateNodeWidget } from './editor';
 import { SnackBar } from './messages';
 import { UserPanel } from './user';
 import Toolbar from './utils/components/Toolbar';

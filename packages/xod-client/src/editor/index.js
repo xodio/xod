@@ -6,7 +6,6 @@ import * as selectors from './selectors';
 import * as actions from './actions';
 import * as actionTypes from './actionTypes';
 import CreateNodeWidget from './components/CreateNodeWidget';
-import PopupCreateProject from './components/PopupCreateProject';
 
 export {
   reducer,
@@ -17,5 +16,4 @@ export {
   actionTypes,
   state,
   CreateNodeWidget,
-  PopupCreateProject,
 };

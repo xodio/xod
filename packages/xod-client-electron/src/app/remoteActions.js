@@ -2,8 +2,10 @@ import R from 'ramda';
 import { saver } from 'xod-fs';
 import { divided } from 'xod-core';
 
-const save = (data, workspace, onFinish) => saver(data, workspace, onFinish, (err) => { throw err; });
-const extract = (json) => divided(JSON.parse(json));
+const save = (data, workspace, onFinish) =>
+  saver(data, workspace, onFinish);
+
+const extract = json => divided(JSON.parse(json));
 
 export const savePatch = (json, patchId, workspace, onFinish) => {
   const data = R.filter(

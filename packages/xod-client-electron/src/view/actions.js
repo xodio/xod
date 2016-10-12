@@ -24,7 +24,12 @@ const saveComplete = ({ processId, actionType, message = 'Saved successfully!' }
   }, 1000);
 };
 
-const createSaveAction = ({ eventName, actionType, messageProcess = undefined, messageComplete = undefined }) => (opts) => (dispatch, getState) => {
+const createSaveAction = ({
+  eventName,
+  actionType,
+  messageProcess = undefined,
+  messageComplete = undefined,
+}) => opts => (dispatch, getState) => {
   const workspace = getWorkspace(getState().settings);
   const processId = dispatch(addProcess(actionType));
 

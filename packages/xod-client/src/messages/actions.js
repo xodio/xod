@@ -4,10 +4,6 @@ import { STATUS } from '../utils/constants';
 
 const getTimestamp = () => new Date().getTime();
 
-export const addError = (error) => addMessage(MESSAGE_TYPE.ERROR, error);
-export const addConfirmation = (error) => addMessage(MESSAGE_TYPE.CONFIRMATION, error);
-export const addNotification = (error) => addMessage(MESSAGE_TYPE.CONFIRMATION, error);
-
 export const addMessage = (type, message) => ({
   type: ActionType.MESSAGE_ADD,
   payload: message,
@@ -28,3 +24,7 @@ export const deleteMessage = (id) => ({
     status: STATUS.DELETED,
   },
 });
+
+export const addError = (error) => addMessage(MESSAGE_TYPE.ERROR, error);
+export const addConfirmation = (error) => addMessage(MESSAGE_TYPE.CONFIRMATION, error);
+export const addNotification = (error) => addMessage(MESSAGE_TYPE.CONFIRMATION, error);
