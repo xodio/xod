@@ -11,6 +11,7 @@ const options = {
   devtool: 'source-map',
   entry: [
     'babel-polyfill',
+    pkgpath('src/shim.js'),
     pkgpath('src/view/index.jsx'),
     pkgpath('node_modules/xod-client/src/core/styles/main.scss'),
     pkgpath('src/view/styles/main.scss'),
@@ -34,17 +35,11 @@ const options = {
       pkgpath('node_modules/xod-espruino/node_modules'),
     ],
     extensions: ['', '.js', '.jsx', '.scss'],
-    alias: {
-      // @TODO: Get rid of this hack:
-      // encoding: pkgpath('node_modules/react'),
-      // 'iconv-lite': pkgpath('node_modules/react'),
-    },
   },
   module: {
     loaders: [
       {
         test: /src\/.*\.jsx?$/,
-        exclude: /node_modules/,
         loaders: [
           'babel?presets[]=react,presets[]=es2015',
         ],
