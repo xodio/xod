@@ -12,8 +12,8 @@
     "babel-polyfill": "^6.16.0",
     "classnames": "^2.2.5",
     "ramda": "^0.22.1",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
     "react-event-listener": "^0.3.0",
     "react-hotkeys": "^0.9.0",
     "react-skylight": "^0.4.1",
@@ -21,6 +21,7 @@
     "redux-api-middleware": "^1.0.2",
     "redux-thunk": "^2.1.0",
     "xod-client": "^0.0.1",
+    "xod-espruino": "^0.0.1",
     "xod-core": "^0.0.1",
     "xod-fs": "^0.0.1"
   },
