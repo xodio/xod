@@ -3,9 +3,9 @@ import { expect } from 'chai';
 import fs from 'fs';
 import path from 'path';
 import recReadDir from 'recursive-readdir';
+import rimraf from 'rimraf';
 
 import save from '../src/save';
-import { rmDir } from '../src/utils';
 import { arrangeByFiles } from 'xod-core';
 import xodball from './mocks/xodball.json';
 
@@ -15,7 +15,7 @@ const onError = done => err => done(err);
 describe('Saver', () => {
   before(() => {
     const tmp = path.resolve(__dirname, tempDir);
-    rmDir(tmp);
+    rimraf.sync(tmp);
     fs.mkdirSync(tmp);
   });
 
