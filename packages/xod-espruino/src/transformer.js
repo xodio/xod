@@ -252,12 +252,12 @@ export default function transform(project, implPlatforms = []) {
   }
 
   // insert contant nodes for the pinned inputs
-  R.compose(
+  const nodesWithPinnedInputs = R.compose(
     R.filter(({ pins }) => !R.isEmpty(pins)),
     R.values
-  )(
-    allNodes
-  ).forEach(({ id, pins }) => {
+  )(allNodes);
+
+  nodesWithPinnedInputs.forEach(({ id, pins }) => {
     R.toPairs(pins).forEach(([pinKey, { value }]) => {
       const newNodeId = generateId();
       const newLinkId = generateId();
