@@ -1,17 +1,17 @@
 import React from 'react';
 import clx from 'classnames';
 
-export const SaveProgressBar = ({ percentage }) => {
-  const style = { width: `${Math.round(+ percentage * 100)}%` };
+export const SaveProgressBar = ({ progress }) => {
+  const style = { width: `${Math.round(+ progress * 100)}%` };
 
   const classNames = clx('SaveProgressBar', {
-    'is-hidden': (percentage === 0),
+    'is-hidden': (progress === 0),
   });
 
   return (
     <div className={classNames}>
       <div
-        className="SaveProgressBar__progressBar"
+        className="bar"
         style={style}
       />
     </div>
@@ -19,11 +19,11 @@ export const SaveProgressBar = ({ percentage }) => {
 };
 
 SaveProgressBar.propTypes = {
-  percentage: React.PropTypes.number,
+  progress: React.PropTypes.number,
 };
 
 SaveProgressBar.defaultProps = {
-  percentage: 0,
+  progress: 0,
 };
 
 export default SaveProgressBar;

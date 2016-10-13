@@ -4,9 +4,9 @@ import fs from 'fs';
 import path from 'path';
 import recReadDir from 'recursive-readdir';
 
-import saver from '../src/saver';
+import save from '../src/save';
 import { rmDir } from '../src/utils';
-import { divided } from 'xod-core';
+import { arrangeByFiles } from 'xod-core';
 import xodball from './mocks/xodball.json';
 
 const tempDir = './fs-temp';
@@ -33,7 +33,7 @@ describe('Saver', () => {
       done();
     };
 
-    saver(
+    save(
       {
         path: filePath,
         content: true,
@@ -45,7 +45,7 @@ describe('Saver', () => {
   });
 
   it('should save an extracted project into temp directory', (done) => {
-    const dataToSave = divided(xodball);
+    const dataToSave = arrangeByFiles(xodball);
     const workspace = path.resolve(__dirname, tempDir, 'workspace');
 
     const onFinish = () => {
@@ -62,7 +62,7 @@ describe('Saver', () => {
       }
     };
 
-    saver(
+    save(
       dataToSave,
       workspace,
       onFinish,

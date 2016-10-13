@@ -5,18 +5,18 @@ import { addProcess, progressProcess, successProcess, deleteProcess, addConfirma
 import { getWorkspace } from '../settings/selectors';
 import { SAVE_PATCH, SAVE_PROJECT } from './actionTypes';
 
-const saveProgress = ({ processId, actionType, message = 'Saving in process', percentage = 0.5 }, dispatch) => dispatch(
+const progressSave = ({ processId, actionType, message = 'Saving in process', progress = 0.5 }, dispatch) => dispatch(
   progressProcess(
     processId,
     actionType,
     {
       message,
-      percentage,
+      progress,
     }
   )
 );
 
-const saveComplete = ({ processId, actionType, message = 'Saved successfully!' }, dispatch) => {
+const completeSave = ({ processId, actionType, message = 'Saved successfully!' }, dispatch) => {
   dispatch(successProcess(processId, actionType));
   dispatch(addConfirmation({ message }));
   setTimeout(() => {
@@ -27,19 +27,19 @@ const saveComplete = ({ processId, actionType, message = 'Saved successfully!' }
 const createSaveAction = ({
   eventName,
   actionType,
-  messageProcess = undefined,
-  messageComplete = undefined,
+  processMessage,
+  processComplete,
 }) => opts => (dispatch, getState) => {
   const workspace = getWorkspace(getState().settings);
   const processId = dispatch(addProcess(actionType));
 
   ipcRenderer.once(
     `${eventName}:process`,
-    () => saveProgress({ processId, actionType, message: messageProcess }, dispatch)
+    () => progressSave({ processId, actionType, message: processMessage }, dispatch)
   );
   ipcRenderer.once(
     `${eventName}:complete`,
-    () => saveComplete({ processId, actionType, message: messageComplete }, dispatch)
+    () => completeSave({ processId, actionType, message: processComplete }, dispatch)
   );
 
   ipcRenderer.send(
@@ -53,13 +53,13 @@ const createSaveAction = ({
 export const savePatch = createSaveAction({
   eventName: 'savePatch',
   actionType: SAVE_PATCH,
-  messageComplete: 'Patch has been saved successfully!',
+  processComplete: 'Patch has been saved successfully!',
 });
 
 export const saveProject = createSaveAction({
   eventName: 'saveProject',
   actionType: SAVE_PROJECT,
-  messageComplete: 'Project has been saved successfully!',
+  processComplete: 'Project has been saved successfully!',
 });
 
 export default {

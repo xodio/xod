@@ -210,8 +210,8 @@ class App extends React.Component {
   }
 
   getSaveProgress() {
-    if (this.props.saveProcess && this.props.saveProcess.percentage) {
-      return this.props.saveProcess.percentage;
+    if (this.props.saveProcess && this.props.saveProcess.progress) {
+      return this.props.saveProcess.progress;
     }
 
     return 0;
@@ -371,7 +371,7 @@ class App extends React.Component {
           onChange={this.onWorkspaceChange}
           onClose={this.hidePopupSetWorkspace}
         />
-        <SaveProgressBar percentage={this.getSaveProgress()} />
+        <SaveProgressBar progress={this.getSaveProgress()} />
       </HotKeys>
     );
   }

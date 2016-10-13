@@ -1,8 +1,10 @@
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const pkgpath = subpath => path.join(__dirname, '..', subpath);
+const assetsPath = fs.realpathSync(pkgpath('node_modules/xod-client/src/core/assets'));
 
 module.exports = {
   devtool: 'source-map',
@@ -44,7 +46,7 @@ module.exports = {
       {
         test: /assets\/.*\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)?$/,
         loaders: [
-          'file?name=assets/[path][name].[ext]?[hash:6]&context=../xod-client/src/core/assets',
+          `file?name=assets/[path][name].[ext]?[hash:6]&context=${assetsPath}`,
         ],
       },
       {

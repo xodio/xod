@@ -157,7 +157,7 @@ export const getNodeGhost = (state) => {
 
   const project = core.getProject(state);
   const nodePosition = { x: 0, y: 0 };
-  const nodeType = core.getPreparedNodeTypeByKey(project, nodeTypeId);
+  const nodeType = core.getPreparedNodeTypeById(project, nodeTypeId);
   const nodeProperties = R.pipe(
     R.prop('properties'),
     R.values,
@@ -172,7 +172,7 @@ export const getNodeGhost = (state) => {
     R.map((pin) => {
       const id = { id: pinCount };
       const pos = core.getPinPosition(nodeType.pins, pin.key, nodePosition);
-      const radius = { radius: SIZE.PIN.radius };
+      const radius = { radius: core.SIZE.PIN.radius };
 
       pinCount--;
 

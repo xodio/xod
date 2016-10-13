@@ -15,7 +15,6 @@
   "dependencies": {
     "co": "^4.6.0",
     "commander": "^2.9.0",
-    "file-save": "^0.2.0",
     "ramda": "^0.21.0",
     "uuid": "^2.0.3"
   },

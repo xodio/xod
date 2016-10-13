@@ -12,7 +12,7 @@
     transform: translateY(6px);
   }
 
-  &__progressBar {
+  & .bar {
     position: absolute;
     left: 0; top: 0; bottom: 0;
     width: 0%;

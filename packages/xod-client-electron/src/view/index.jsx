@@ -2,16 +2,13 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Root from 'xod-client/core/containers/Root';
+import { Root } from 'xod-client';
 import App from './containers/App';
 import additionalReducers from './reducer';
 
-import 'xod-client/core/styles/main';
-import './styles/main';
-
 ReactDOM.render(
   <Root
-    extendReducers={additionalReducers}
+    extraReducers={additionalReducers}
   >
     <App />
   </Root>,

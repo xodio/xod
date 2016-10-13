@@ -16,7 +16,7 @@ export default class Root extends React.Component {
 
     this.patches = core.getPatches(initialState);
     this.store = createStore(
-      this.createReducers(this.patches, this.props.extendReducers),
+      this.createReducers(this.patches, this.props.extraReducers),
       initialState,
       EditorMiddleware
     );
@@ -25,7 +25,7 @@ export default class Root extends React.Component {
       const rootState = this.store.getState();
       const statePatches = core.getPatches(rootState);
       if (core.isPatchesUpdated(statePatches, this.patches)) {
-        this.store.replaceReducer(this.createReducers(statePatches, this.props.extendReducers));
+        this.store.replaceReducer(this.createReducers(statePatches, this.props.extraReducers));
       }
     });
   }
@@ -75,5 +75,5 @@ export default class Root extends React.Component {
 
 Root.propTypes = {
   children: React.PropTypes.element.isRequired,
-  extendReducers: React.PropTypes.object,
+  extraReducers: React.PropTypes.object,
 };

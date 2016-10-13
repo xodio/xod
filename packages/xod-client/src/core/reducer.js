@@ -7,7 +7,7 @@ import errorsReducer from '../messages/reducer';
 import processesReducer from '../processes/reducer';
 import userReducer from '../user/reducer';
 
-const combineRootReducers = (patchIds, addReducers) => {
+const combineRootReducers = (patchIds, extraReducers) => {
   const reducers = merge(
     {
       project: projectReducer(patchIds),
@@ -16,12 +16,12 @@ const combineRootReducers = (patchIds, addReducers) => {
       processes: processesReducer,
       user: userReducer,
     },
-    addReducers
+    extraReducers
   );
 
   return combineReducers(reducers);
 };
 
-export const createReducer = (patchIds, addReducers) => combineRootReducers(patchIds, addReducers);
+export const createReducer = (patchIds, extraReducers) => combineRootReducers(patchIds, extraReducers);
 
 export default createReducer;

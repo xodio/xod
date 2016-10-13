@@ -1,22 +1,22 @@
 import { expect } from 'chai';
-import * as Extract from '../src/utils/extract';
+import Extract from '../src/utils/extract';
 import xodball from './mocks/xodball.json';
 import extracted from './mocks/extracted.json';
 
 describe('Extract xodball', () => {
   it('should return project data, that contains meta and libs', () => {
-    const projectMeta = Extract.project(xodball);
+    const projectMeta = Extract.extractProject(xodball);
     expect(projectMeta).to.have.all.keys('meta', 'libs');
     expect(projectMeta).to.deep.equal(extracted[0].content);
   });
 
   it('should return same count of patches', () => {
-    const patchesCount = Extract.patches(xodball).length;
+    const patchesCount = Extract.extractPatches(xodball).length;
     expect(patchesCount).to.be.equal((extracted.length - 1) / 2);
   });
 
   it('should return patches that contains meta and patch data', () => {
-    const patches = Extract.patches(xodball);
+    const patches = Extract.extractPatches(xodball);
 
     patches.forEach((patch, i) => {
       expect(patch).to.have.all.keys('meta', 'patch', 'path');
@@ -36,7 +36,7 @@ describe('Extract xodball', () => {
     const paths = [];
 
     patchKeys.forEach(
-      key => paths.push(Extract.patchPath(patches[key], xodball))
+      key => paths.push(Extract.getPatchPath(patches[key], xodball))
     );
 
     expect(paths).to.deep.equal([
@@ -46,7 +46,7 @@ describe('Extract xodball', () => {
   });
 
   it('should return restructured data ready to be passed into saver', () => {
-    const project = Extract.divided(xodball);
+    const project = Extract.arrangeByFiles(xodball);
     expect(project).to.deep.equal(extracted);
   });
 });

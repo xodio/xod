@@ -1,11 +1,8 @@
 import R from 'ramda';
-import { saver } from 'xod-fs';
-import { divided } from 'xod-core';
+import { save } from 'xod-fs';
+import { arrangeByFiles } from 'xod-core';
 
-const save = (data, workspace, onFinish) =>
-  saver(data, workspace, onFinish);
-
-const extract = json => divided(JSON.parse(json));
+const extract = json => arrangeByFiles(JSON.parse(json));
 
 export const savePatch = (json, patchId, workspace, onFinish) => {
   const data = R.filter(

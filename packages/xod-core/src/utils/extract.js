@@ -1,7 +1,7 @@
 import R from 'ramda';
 import { notNil, hasNot } from '../utils/ramda';
 
-// :: "./awesome_project/" -> "main" -> "patch.xodm"
+// :: "./awesome_project/" -> "main" -> "patch.xodm" -> "./awesome_project/main/patch.xodm"
 const filePath = (projectPath, patchPath, fileName) => R.pipe(
   R.concat(R.defaultTo('', patchPath)),
   R.concat(projectPath)
@@ -80,7 +80,7 @@ const margeWithNodeType = (obj, xodball) => {
 };
 
 // :: xodball -> { meta, libs }
-export const project = xodball => ({
+export const extractProject = xodball => ({
   meta: R.omit(['id'], xodball.meta),
   libs: extractLibs(xodball),
 });
@@ -94,7 +94,7 @@ export const getProjectPath = R.pipe(
 );
 
 // :: patch -> folders -> "folder_name/patch_name_lowercased/"
-export const patchPath = R.curry((patch, xodball) => {
+export const getPatchPath = R.curry((patch, xodball) => {
   const folders = foldersPaths(xodball);
   const folderPath = R.propOr('', patch.folderId, folders);
   const patchName = fsSafeName(patch.label);
@@ -102,12 +102,12 @@ export const patchPath = R.curry((patch, xodball) => {
 });
 
 // :: xodball -> [ patch: { path, meta, patch } ]
-export const patches = xodball => R.pipe(
+export const extractPatches = xodball => R.pipe(
   R.prop('patches'),
   R.values(),
   R.map(
     patch => ({
-      path: patchPath(patch, xodball),
+      path: getPatchPath(patch, xodball),
       meta: margeWithNodeType({
         id: patch.id,
         label: patch.label,
@@ -121,14 +121,14 @@ export const patches = xodball => R.pipe(
 )(xodball);
 
 // :: xodball -> extractedObject
-const all = xodball => ({
-  project: project(xodball),
-  patches: patches(xodball),
+const extract = xodball => ({
+  project: extractProject(xodball),
+  patches: extractPatches(xodball),
 });
 
 // :: xodball -> extractedObjectGroupedByPaths
-export const divided = (xodball) => {
-  const data = all(xodball);
+export const arrangeByFiles = (xodball) => {
+  const data = extract(xodball);
   const projectPath = getProjectPath(xodball);
   const result = [{
     path: filePath(projectPath, null, 'project.xod'),
@@ -158,8 +158,10 @@ export const divided = (xodball) => {
 };
 
 export default {
-  all,
-  project,
-  patches,
-  divided,
+  extract,
+  extractProject,
+  extractPatches,
+  arrangeByFiles,
+  getProjectPath,
+  getPatchPath,
 };
