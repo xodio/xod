@@ -1,7 +1,6 @@
 
 import R from 'ramda';
 import { assert, expect } from 'chai';
-import { generateId } from 'xod-core';
 import transform from '../src/transformer';
 
 const ioTypes = {
@@ -98,7 +97,7 @@ describe('Transformer', () => {
     });
 
     expect(result.nodes).to.be.eql({
-      "0": {
+      0: {
         id: 0,
         implId: 'core/add100',
         pure: true,
@@ -337,12 +336,12 @@ describe('Transformer', () => {
 
     const [k1, k2, k3] = result.topology;
 
-    assert(R.equals(
-      R.map(id => result.nodes[id].implId, result.topology)
-      [['button'],
-       ['core/inputBool'],
-       ['led']]
-    ));
+    assert(
+      R.equals(
+        R.map(id => result.nodes[id].implId, result.topology),
+        ['button', 'core/inputBool', 'led']
+      )
+    );
 
     assert(hasLink(result,
                    [k1, 'state', 'PIN', k2]),

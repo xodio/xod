@@ -271,8 +271,8 @@ export default function transform(project, implPlatforms = []) {
         id: newLinkId,
         pins: [
           { pinKey: 'value', nodeId: newNodeId },
-          { pinKey, nodeId: id }
-        ]
+          { pinKey, nodeId: id },
+        ],
       };
 
       allNodes = R.assoc(newNodeId, newNode, allNodes);
@@ -379,8 +379,8 @@ export default function transform(project, implPlatforms = []) {
     R.mergeAll,
     R.juxt([
       R.compose(
-        renameKeys({typeId: 'implId', properties: 'props'}),
-        R.evolve({properties: R.omit(['label'])}),
+        renameKeys({ typeId: 'implId', properties: 'props' }),
+        R.evolve({ properties: R.omit(['label']) }),
         R.pick(['id', 'typeId', 'properties'])
       ),
       R.compose(transformedNodeType, nodeTypeByNode),
