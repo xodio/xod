@@ -262,7 +262,6 @@ class Patch extends React.Component {
     return (
       <HotKeys
         handlers={this.getHotkeyHandlers()}
-        always
         className="PatchWrapper"
       >
         <PatchSVG
