@@ -129,7 +129,7 @@ export default function transform(project, implPlatforms = []) {
     )(allNodes);
 
     if (!patchNodeInstId) {
-      // no nodeId with (id < maxId) found => no patchnodes to inject
+      // there is no more patch-nodes to populate -> work is done
       return true;
     }
 
