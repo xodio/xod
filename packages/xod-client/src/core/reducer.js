@@ -22,6 +22,7 @@ const combineRootReducers = (patchIds, extraReducers) => {
   return combineReducers(reducers);
 };
 
-export const createReducer = (patchIds, extraReducers) => combineRootReducers(patchIds, extraReducers);
+export const createReducer = (patchIds, extraReducers) =>
+  combineRootReducers(patchIds, extraReducers);
 
 export default createReducer;

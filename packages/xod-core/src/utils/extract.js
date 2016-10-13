@@ -156,12 +156,3 @@ export const arrangeByFiles = (xodball) => {
     R.concat(result)
   )(data.patches);
 };
-
-export default {
-  extract,
-  extractProject,
-  extractPatches,
-  arrangeByFiles,
-  getProjectPath,
-  getPatchPath,
-};
