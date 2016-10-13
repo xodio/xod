@@ -1,6 +1,13 @@
 
 module.exports.setup = function(e) {
-  setInterval(function() {
+  e.context.intId = null;
+};
+
+module.exports.evaluate = function(e) {
+  if (e.context.intId) {
+    clearInterval(e.context.intId);
+  }
+  e.context.intId = setInterval(function() {
     e.fire({ tick: PULSE });
-  }, e.props.interval * 1000);
+  }, e.inputs.interval * 1000);
 };

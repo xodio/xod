@@ -8,7 +8,7 @@ module.exports.setup = function(e) {
     trigPin: pinTrig,
     echoPin: pinEcho
   });
-  e.context.units = e.props.units;
+  e.context.units = e.props.units;  // FIXME! remove prop in the future
   e.context.isBusy = false;
 };
 

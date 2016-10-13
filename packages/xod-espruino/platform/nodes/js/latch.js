@@ -1,8 +1,4 @@
 
-module.exports.setup = function(e) {
-  e.context.state = e.props.initialState;
-};
-
 module.exports.evaluate = function(e) {
   var inputs = e.inputs;
   var newState;

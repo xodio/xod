@@ -1,4 +1,4 @@
 
 module.exports.evaluate = function(e) {
-  return { out: e.props.value };
+  return { out: e.inputs.value };
 };

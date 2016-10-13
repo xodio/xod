@@ -1,6 +1,6 @@
 
 import R from 'ramda';
-import { PIN_DIRECTION, PIN_TYPE, sortGraph } from 'xod-core';
+import { PIN_DIRECTION, PIN_TYPE, sortGraph, generateId } from 'xod-core';
 
 // TODO: remove following ESLint shunt. It barks on unused `_` in arrow funcs.
 // We should make smarter selectors for source & destination pins without _ hack
@@ -119,20 +119,17 @@ export default function transform(project, implPlatforms = []) {
   let allNodes = mergedEntities('nodes');
   let allLinks = mergedEntities('links');
 
-  let nodeIdSeq = maxIdOf(allPatches, 'nodes') + 1;
-  let linkIdSeq = maxIdOf(allPatches, 'links') + 1;
-
   // performs one iteration of patchnode injection
   function populate() {
     const patchNodeInstId = R.compose(
-      R.reduce(R.min, nodeIdSeq),
+      R.head,
       R.pluck('id'),
       R.filter(isPatchNodeInstance),
       R.values
     )(allNodes);
 
-    if (patchNodeInstId === nodeIdSeq) {
-      // no nodeId with (id < maxId) found => no patchnodes to inject
+    if (!patchNodeInstId) {
+      // there is no more patch-nodes to populate -> work is done
       return true;
     }
 
@@ -171,19 +168,19 @@ export default function transform(project, implPlatforms = []) {
     // push nodes
     let oldToNewId = {};
     nodes.forEach((node) => {
-      const newId = nodeIdSeq;
+      const newId = generateId();
       oldToNewId = R.assoc(node.id, newId, oldToNewId);
       newNodes = R.assoc(
-        newId.toString(),
+        newId,
         R.assoc('id', newId, node),
         newNodes
       );
-
-      nodeIdSeq += 1;
     });
 
     // push internal links
     links.forEach((link) => {
+      const newLinkId = generateId();
+
       const {
         pins: [
           { nodeId: nFrom, pinKey: pFrom },
@@ -192,16 +189,14 @@ export default function transform(project, implPlatforms = []) {
       } = link;
 
       const newLink = {
-        id: linkIdSeq,
+        id: newLinkId,
         pins: [
           { pinKey: pFrom, nodeId: oldToNewId[nFrom] },
           { pinKey: pTo, nodeId: oldToNewId[nTo] },
         ],
       };
 
-      newLinks = R.assoc(linkIdSeq.toString(), newLink, newLinks);
-
-      linkIdSeq += 1;
+      newLinks = R.assoc(newLinkId, newLink, newLinks);
     });
 
     // relink patchnode inputs
@@ -210,18 +205,19 @@ export default function transform(project, implPlatforms = []) {
       patchNodeInstInputPins
     ).forEach(
       ([source, { pinKey: terminal }]) => {
+        const newLinkId = generateId();
+
         const terminalId = R.last(R.split('_', terminal));
+
         const newLink = {
-          id: linkIdSeq,
+          id: newLinkId,
           pins: [
             source,
             { pinKey: 'PIN', nodeId: oldToNewId[terminalId] },
           ],
         };
 
-        newLinks = R.assoc(linkIdSeq.toString(), newLink, newLinks);
-
-        linkIdSeq += 1;
+        newLinks = R.assoc(newLinkId, newLink, newLinks);
       }
     );
 
@@ -231,18 +227,18 @@ export default function transform(project, implPlatforms = []) {
       patchNodeInstOutputPins
     ).forEach(
       ([{ pinKey: terminal }, target]) => {
+        const newLinkId = generateId();
+
         const terminalId = R.last(R.split('_', terminal));
         const newLink = {
-          id: linkIdSeq,
+          id: newLinkId,
           pins: [
             { pinKey: 'PIN', nodeId: oldToNewId[terminalId] },
             target,
           ],
         };
 
-        newLinks = R.assoc(linkIdSeq.toString(), newLink, newLinks);
-
-        linkIdSeq += 1;
+        newLinks = R.assoc(newLinkId, newLink, newLinks);
       }
     );
 
@@ -255,8 +251,56 @@ export default function transform(project, implPlatforms = []) {
     // populate recursively
   }
 
-  const nodeList = R.values(allNodes);
-  const linkList = R.values(allLinks);
+  // insert contant nodes for the pinned inputs
+  const nodesWithPinnedInputs = R.compose(
+    R.filter(({ pins }) => !R.isEmpty(pins)),
+    R.values
+  )(allNodes);
+
+  nodesWithPinnedInputs.forEach(({ id, pins }) => {
+    R.toPairs(pins).forEach(([pinKey, { value }]) => {
+      const newNodeId = generateId();
+      const newLinkId = generateId();
+
+      const newNode = {
+        id: newNodeId,
+        properties: { value },
+        typeId: '<<const>>',
+      };
+      const newLink = {
+        id: newLinkId,
+        pins: [
+          { pinKey: 'value', nodeId: newNodeId },
+          { pinKey, nodeId: id }
+        ]
+      };
+
+      allNodes = R.assoc(newNodeId, newNode, allNodes);
+      allLinks = R.assoc(newLinkId, newLink, allLinks);
+    });
+  });
+
+  // calculate the mapping "GUID -> Int index"
+  const nodeGuidToIdx = R.fromPairs(
+    R.addIndex(R.map)(
+      (id, idx) => [id, idx],
+      R.keys(allNodes)
+    )
+  );
+
+  const nodeList = R.map(
+    n => R.assoc('id', nodeGuidToIdx[n.id], n),
+    R.values(allNodes)
+  );
+
+  const linkList = R.map(
+    link => R.assoc(
+      'pins',
+      R.map(pin => R.assoc('nodeId', nodeGuidToIdx[pin.nodeId], pin), link.pins),
+      link
+    ),
+    R.values(allLinks)
+  );
 
   const usedNodeTypeIds = R.pluck('typeId', nodeList);
   const usedNodeTypes = R.pick(usedNodeTypeIds, nodeTypes);
@@ -331,16 +375,28 @@ export default function transform(project, implPlatforms = []) {
   );
 
   // :: Node -> TransformedNode
-  const transformedNode = node => R.mergeAll([
-    renameKeys(
-      { typeId: 'implId', properties: 'props' },
-      R.pick(['id', 'typeId', 'properties'])(node)
-    ),
-    R.compose(transformedNodeType, nodeTypeByNode)(node),
-    R.objOf('outLinks', nodeOutLinks(node)),
-  ]);
+  const transformedNode = R.compose(
+    R.mergeAll,
+    R.juxt([
+      R.compose(
+        renameKeys({typeId: 'implId', properties: 'props'}),
+        R.evolve({properties: R.omit(['label'])}),
+        R.pick(['id', 'typeId', 'properties'])
+      ),
+      R.compose(transformedNodeType, nodeTypeByNode),
+      R.compose(R.objOf('outLinks'), nodeOutLinks),
+    ])
+  );
 
-  const transformedNodes = R.map(transformedNode, allNodes);
+  const transformedNodes = R.fromPairs(
+    R.map(
+      R.compose(
+        n => [n.id, n],
+        transformedNode
+      ),
+      nodeList
+    )
+  );
 
   // :: NodeType -> ImplementationString
   const nodeTypeImpl = R.compose(

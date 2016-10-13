@@ -34,6 +34,7 @@ function transpileImpl(impl) {
 
   return joinLineBlocks([
     'var impl = {};',
+    "impl['<<const>>'] = startUpConstantNode();",
     items(impl),
   ]);
 }

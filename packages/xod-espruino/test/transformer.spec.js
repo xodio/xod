@@ -1,6 +1,7 @@
 
 import R from 'ramda';
 import { assert, expect } from 'chai';
+import { generateId } from 'xod-core';
 import transform from '../src/transformer';
 
 const ioTypes = {
@@ -97,8 +98,8 @@ describe('Transformer', () => {
     });
 
     expect(result.nodes).to.be.eql({
-      42: {
-        id: 42,
+      "0": {
+        id: 0,
         implId: 'core/add100',
         pure: true,
         inputTypes: {
@@ -167,9 +168,10 @@ describe('Transformer', () => {
       },
     });
 
-    expect(result.nodes[42].outLinks).to.be.eql({
+    const [nid1, nid2] = result.topology;
+    expect(result.nodes[nid1].outLinks).to.be.eql({
       valueOut: [{
-        nodeId: 43,
+        nodeId: nid2,
         key: 'valueIn',
       }],
     });
@@ -199,8 +201,10 @@ describe('Transformer', () => {
       },
     });
 
-    expect(result.nodes).to.have.property(42);
-    expect(result.nodes).to.have.property(43);
+    const [nid1, nid2] = result.topology;
+
+    expect(result.nodes).to.have.property(nid1);
+    expect(result.nodes).to.have.property(nid2);
   });
 
   it('should sort nodes', () => {
@@ -236,7 +240,7 @@ describe('Transformer', () => {
       },
     });
 
-    expect(result.topology).to.be.eql([42, 43]);
+    expect(result.topology).to.be.eql([0, 1]);
   });
 
   it('should inject patchnode with input only', () => {
@@ -259,15 +263,12 @@ describe('Transformer', () => {
       },
     });
 
-    assert(
-      R.equals(R.keys(result.nodes), ['102']),
-      'inserted node must have an id which equals (last used id + 1)'
-    );
+    const [newId] = result.topology;
 
     expect(
-      result.nodes['102']
+      result.nodes[newId]
     ).to.be.eql({
-      id: 102,
+      id: newId,
       inputTypes: {},
       outLinks: {},
       implId: 'core/inputPulse',
@@ -294,15 +295,12 @@ describe('Transformer', () => {
       },
     });
 
-    assert(
-      R.equals(R.keys(result.nodes), ['102']),
-      'inserted node must have an id which equals (last used id + 1)'
-    );
+    const [newId] = result.topology;
 
     expect(
-      result.nodes['102']
+      result.nodes[newId]
     ).to.be.eql({
-      id: 102,
+      id: newId,
       inputTypes: {},
       outLinks: {},
       implId: 'core/outputPulse',
@@ -337,22 +335,24 @@ describe('Transformer', () => {
       nodeTypes: R.merge(ioTypes, buttonAndLedTypes),
     });
 
+    const [k1, k2, k3] = result.topology;
+
     assert(R.equals(
-      R.map(id => [id, result.nodes[id].implId], result.topology),
-      [[100, 'button'],
-       [102, 'core/inputBool'], // terminals receive their ids after nodes
-       [103, 'led']]
+      R.map(id => result.nodes[id].implId, result.topology)
+      [['button'],
+       ['core/inputBool'],
+       ['led']]
     ));
 
     assert(hasLink(result,
-                   [100, 'state', 'PIN', 102]),
+                   [k1, 'state', 'PIN', k2]),
            'button should be connected to inputBool');
 
     assert(hasLink(result,
-                   [102, 'PIN', 'brightness', 103]),
+                   [k2, 'PIN', 'brightness', k3]),
            'inputBool should be connected to led');
 
-    assert(R.equals(result.nodes['102'].inputTypes,
+    assert(R.equals(result.nodes[k2].inputTypes,
                     { PIN: Boolean }),
            'inputBool should get a proper inputType');
   });
@@ -385,18 +385,20 @@ describe('Transformer', () => {
       nodeTypes: R.merge(ioTypes, buttonAndLedTypes),
     });
 
+    const [k1, k2, k3] = result.topology;
+
     assert(hasTopology(result)([
-      [102, 'button'],
-      [103, 'core/outputBool'],
-      [101, 'led'],
+      [k1, 'button'],
+      [k2, 'core/outputBool'],
+      [k3, 'led'],
     ]));
 
     assert(hasLink(result,
-                   [102, 'state', 'PIN', 103]),
+                   [k1, 'state', 'PIN', k2]),
            'button should be connected to outputBool');
 
     assert(hasLink(result,
-                   [103, 'PIN', 'brightness', 101]),
+                   [k2, 'PIN', 'brightness', k3]),
            'outputBool should be connected to led');
   });
 
@@ -428,21 +430,23 @@ describe('Transformer', () => {
       nodeTypes: R.merge(ioTypes, buttonAndLedTypes),
     });
 
+    const [k1, k2, k3] = result.topology;
+
     assert(hasTopology(result)([
-      [100, 'button'],
-      [102, 'core/inputBool'], // terminals receive its ids after nodes
-      [103, 'led'],
+      [k1, 'button'],
+      [k2, 'core/inputBool'],
+      [k3, 'led'],
     ]));
 
     assert(hasLink(result,
-                   [100, 'state', 'PIN', 102]),
+                   [k1, 'state', 'PIN', k2]),
            'button should be connected to inputBool');
 
     assert(hasLink(result,
-                   [102, 'PIN', 'brightness', 103]),
+                   [k2, 'PIN', 'brightness', k3]),
            'inputBool should be connected to led');
 
-    assert(R.equals(result.nodes['102'].inputTypes,
+    assert(R.equals(result.nodes[k2].inputTypes,
                     { PIN: Boolean }),
            'inputBool should get a proper inputType');
   });
@@ -511,15 +515,17 @@ describe('Transformer', () => {
       nodeTypes: R.merge(ioTypes, buttonAndLedTypes),
     });
 
+    const keys = result.topology;
+
     assert(hasTopology(result)([
-      [100, 'button'],
-      [104, 'core/inputBool'],
-      [109, 'core/inputBool'],
-      [110, 'core/outputBool'],
-      [106, 'core/outputBool'],
-      [107, 'core/inputBool'],
-      [108, 'core/outputBool'],
-      [103, 'led'],
+      [keys[0], 'button'],
+      [keys[1], 'core/inputBool'],
+      [keys[2], 'core/inputBool'],
+      [keys[3], 'core/outputBool'],
+      [keys[4], 'core/outputBool'],
+      [keys[5], 'core/inputBool'],
+      [keys[6], 'core/outputBool'],
+      [keys[7], 'led'],
     ]));
   });
 });
