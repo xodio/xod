@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as Unpack from '../src/utils/unpack';
-import xodball from './mocks/xodball.json';
-import extracted from './mocks/extracted.json';
+import xodball from './fixtures/xodball.json';
+import extracted from './fixtures/extracted.json';
 
 describe('Unpack xodball', () => {
   it('should return project data, that contains meta and libs', () => {

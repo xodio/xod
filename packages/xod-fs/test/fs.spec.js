@@ -8,7 +8,7 @@ import rimraf from 'rimraf';
 import save from '../src/save';
 import * as Loader from '../src/load';
 import { arrangeByFiles, pack } from 'xod-core';
-import xodball from './mocks/xodball.json';
+import xodball from './fixtures/xodball.json';
 
 const tempDir = './fs-temp';
 const onError = done => err => done(err);

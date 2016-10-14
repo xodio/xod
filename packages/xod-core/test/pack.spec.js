@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import pack from '../src/utils/pack';
-import xodball from './mocks/xodball.json';
-import extracted from './mocks/extracted.json';
+import xodball from './fixtures/xodball.json';
+import extracted from './fixtures/extracted.json';
 
 describe('Pack into xodball', () => {
   it('should return project state with keys: meta, patches, nodeTypes and folders', () => {
