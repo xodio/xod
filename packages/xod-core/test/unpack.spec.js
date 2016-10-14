@@ -3,7 +3,7 @@ import * as Unpack from '../src/utils/unpack';
 import xodball from './mocks/xodball.json';
 import extracted from './mocks/extracted.json';
 
-describe('Extract xodball', () => {
+describe('Unpack xodball', () => {
   it('should return project data, that contains meta and libs', () => {
     const projectMeta = Unpack.extractProject(xodball);
     expect(projectMeta).to.have.all.keys('meta', 'libs');
