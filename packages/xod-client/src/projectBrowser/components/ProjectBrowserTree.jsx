@@ -134,7 +134,7 @@ class ProjectBrowserTree extends React.Component {
 
 ProjectBrowserTree.propTypes = {
   tree: React.PropTypes.object.isRequired,
-  currentPatchId: React.PropTypes.number,
+  currentPatchId: React.PropTypes.string,
   onSelect: React.PropTypes.func,
   onChange: React.PropTypes.func,
   onSwitchPatch: React.PropTypes.func,

@@ -206,7 +206,7 @@ class ProjectBrowser extends React.Component {
           onRename={this.onRename}
           onPatchCreate={this.onPatchCreate}
           onFolderCreate={this.onFolderCreate}
-          onDeleteError={this.props.actions.addError}
+          onDeleteError={this.props.actions.addMessage}
         />
         <ProjectBrowserTree
           ref="treeView"
@@ -227,7 +227,7 @@ ProjectBrowser.propTypes = {
   projectName: React.PropTypes.string,
   patches: React.PropTypes.object,
   folders: React.PropTypes.object,
-  currentPatchId: React.PropTypes.number,
+  currentPatchId: React.PropTypes.string,
   hotkeys: React.PropTypes.func,
 };
 
@@ -258,7 +258,7 @@ const mapDispatchToProps = (dispatch) => ({
     deletePatch: ProjectActions.deletePatch,
     renameProject: ProjectActions.renameProject,
     movePatch: ProjectActions.movePatch,
-    addError: MessageActions.addError,
+    addMessage: MessageActions.addMessage,
   }, dispatch),
 });
 

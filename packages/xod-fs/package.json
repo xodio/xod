@@ -1,0 +1,26 @@
+{
+  "name": "xod-fs",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "babel src/ -d dist/",
+    "dev": "babel --watch src/ -d dist/",
+    "test": "mocha --require babel-register test/**/*.js"
+  },
+  "author": "Amperka team",
+  "license": "MIT",
+  "dependencies": {
+    "expand-home-dir": "0.0.3",
+    "file-save": "^0.2.0",
+    "recursive-readdir": "^2.1.0",
+    "rimraf": "^2.5.4",
+    "xod-core": "^0.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0"
+  },
+  "engines": {
+    "node": "6.0.0"
+  }
+}

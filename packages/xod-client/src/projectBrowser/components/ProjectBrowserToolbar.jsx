@@ -109,7 +109,7 @@ class ProjectBrowserToolbar extends React.Component {
 
     return R.pipe(
       R.propOr(patch, 'present'),
-      R.prop('name')
+      R.prop('label')
     )(patch);
   }
 
@@ -304,7 +304,7 @@ class ProjectBrowserToolbar extends React.Component {
 
 ProjectBrowserToolbar.propTypes = {
   selection: React.PropTypes.object,
-  currentPatchId: React.PropTypes.number,
+  currentPatchId: React.PropTypes.string,
   projectName: React.PropTypes.string,
   folders: React.PropTypes.object,
   patches: React.PropTypes.object,

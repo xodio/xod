@@ -38,8 +38,8 @@ module.exports = {
       allowAfterSuper: true
     }],
 
-    'import/no-extraneous-dependencies': ['error', { 
-      devDependencies: ['**/*.spec.js'] 
+    'import/no-extraneous-dependencies': ['error', {
+      devDependencies: ['**/*.spec.js', '**/xod-client-electron/**/*.js'] 
     }],
 
     'arrow-parens': 'off', // TODO: enable and fix code

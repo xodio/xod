@@ -1,0 +1,302 @@
+[
+  {
+    "path": "./awesome_project/project.xod",
+    "content": {
+      "meta": {
+        "name": "Awesome project",
+        "author": "Amperka team"
+      },
+      "libs": ["core"]
+    }
+  },
+  {
+    "id": "1",
+    "path": "./awesome_project/main/patch.xodm",
+    "content": {
+      "id": "1",
+      "label": "Main"
+    }
+  },
+  {
+    "id": "1",
+    "path": "./awesome_project/main/patch.xodp",
+    "content": {
+      "nodes": {
+          "4d30660d-13f1-4dcf-8b6f-e51db2eee949": {
+            "typeId": "core/button",
+            "pins": {},
+            "position": {
+              "x": 100,
+              "y": 100
+            },
+            "properties": {},
+            "id": "4d30660d-13f1-4dcf-8b6f-e51db2eee949"
+          },
+          "897562ec-2617-4d4c-8ad4-d655bba25c15": {
+            "typeId": "core/pot",
+            "pins": {},
+            "position": {
+              "x": 366,
+              "y": 215
+            },
+            "properties": {},
+            "id": "897562ec-2617-4d4c-8ad4-d655bba25c15"
+          },
+          "4b1c9250-0e63-4d8b-99cb-25c563ec3e89": {
+            "typeId": "core/led",
+            "pins": {},
+            "position": {
+              "x": 100,
+              "y": 400
+            },
+            "properties": {},
+            "id": "4b1c9250-0e63-4d8b-99cb-25c563ec3e89"
+          },
+          "2d813d09-a8bd-4e23-a006-80a1b3cc354a": {
+            "typeId": "core/servo",
+            "pins": {
+              "minPulse": {
+                "injected": true,
+                "value": 700
+              },
+              "maxPulse": {
+                "injected": true,
+                "value": 2300
+              }
+            },
+            "position": {
+              "x": 400,
+              "y": 400
+            },
+            "properties": {},
+            "id": "2d813d09-a8bd-4e23-a006-80a1b3cc354a"
+          },
+          "8598aa84-ae9b-432d-870a-e6c22b8c1911": {
+            "typeId": "2",
+            "pins": {},
+            "position": {
+              "x": 267,
+              "y": 298
+            },
+            "properties": {},
+            "id": "8598aa84-ae9b-432d-870a-e6c22b8c1911"
+          },
+          "2b2b6e7b-1a46-4a68-b833-b0813e6b438f": {
+            "typeId": "core/clock",
+            "pins": {
+              "interval": {
+                "injected": true,
+                "value": 0.5
+              }
+            },
+            "position": {
+              "x": 266,
+              "y": 76
+            },
+            "properties": {},
+            "id": "2b2b6e7b-1a46-4a68-b833-b0813e6b438f"
+          }
+      },
+      "links": {
+        "317a939d-1292-430f-84da-1a215cb3dfaa": {
+          "id": "317a939d-1292-430f-84da-1a215cb3dfaa",
+          "pins": [
+            {
+              "nodeId": "4d30660d-13f1-4dcf-8b6f-e51db2eee949",
+              "pinKey": "state"
+            },
+            {
+              "nodeId": "4b1c9250-0e63-4d8b-99cb-25c563ec3e89",
+              "pinKey": "brightness"
+            }
+          ]
+        },
+        "0efded4d-a251-4643-9ab3-05b66b538489": {
+          "id": "0efded4d-a251-4643-9ab3-05b66b538489",
+          "pins": [
+            {
+              "nodeId": "897562ec-2617-4d4c-8ad4-d655bba25c15",
+              "pinKey": "value"
+            },
+            {
+              "nodeId": "2d813d09-a8bd-4e23-a006-80a1b3cc354a",
+              "pinKey": "value"
+            }
+          ]
+        },
+        "ed18e73b-aca3-49c5-ba9a-504db8970250": {
+          "id": "ed18e73b-aca3-49c5-ba9a-504db8970250",
+          "pins": [
+            {
+              "nodeId": "897562ec-2617-4d4c-8ad4-d655bba25c15",
+              "pinKey": "value"
+            },
+            {
+              "nodeId": "8598aa84-ae9b-432d-870a-e6c22b8c1911",
+              "pinKey": "15a02c27-2396-4edd-a85b-5235ba2d8e08"
+            }
+          ]
+        },
+        "96ddb02e-ac3c-4207-b484-1847844b5d8c": {
+          "id": "96ddb02e-ac3c-4207-b484-1847844b5d8c",
+          "pins": [
+            {
+              "nodeId": "2b2b6e7b-1a46-4a68-b833-b0813e6b438f",
+              "pinKey": "tick"
+            },
+            {
+              "nodeId": "897562ec-2617-4d4c-8ad4-d655bba25c15",
+              "pinKey": "sample"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "id": "2",
+    "path": "./awesome_project/sub/aux/patch.xodm",
+    "content": {
+      "id": "2",
+      "patchNode": true,
+      "label": "AUX",
+      "category": "patch",
+      "properties": {},
+      "pins": {
+        "15a02c27-2396-4edd-a85b-5235ba2d8e08": {
+          "nodeId": "15a02c27-2396-4edd-a85b-5235ba2d8e08",
+          "key": "15a02c27-2396-4edd-a85b-5235ba2d8e08",
+          "direction": "input",
+          "type": "number",
+          "index": "0"
+        }
+      }
+    }
+  },
+  {
+    "id": "2",
+    "path": "./awesome_project/sub/aux/patch.xodp",
+    "content": {
+      "nodes": {
+          "30f27916-8d60-4b0d-b75b-71c6aefc7151": {
+            "typeId": "core/ultrasonic_HC_SR04",
+            "pins": {
+              "units": {
+                "injected": true
+              }
+            },
+            "position": {
+              "x": 170,
+              "y": 297
+            },
+            "properties": {},
+            "id": "30f27916-8d60-4b0d-b75b-71c6aefc7151"
+          },
+          "2b06b2dd-eaa0-44d5-a4fb-3b62ecc3f385": {
+            "typeId": "core/buzzer",
+            "pins": {},
+            "position": {
+              "x": 99,
+              "y": 575
+            },
+            "properties": {},
+            "id": "2b06b2dd-eaa0-44d5-a4fb-3b62ecc3f385"
+          },
+          "72025f9e-7b35-43de-93ec-ddf3029e7304": {
+            "typeId": "core/clock",
+            "pins": {
+              "interval": {
+                "injected": false,
+                "value": 1
+              }
+            },
+            "position": {
+              "x": 136,
+              "y": 124
+            },
+            "properties": {},
+            "id": "72025f9e-7b35-43de-93ec-ddf3029e7304"
+          },
+          "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa": {
+            "typeId": "core/triggerableNumber",
+            "pins": {
+              "value": {
+                "injected": true,
+                "value": 400
+              }
+            },
+            "position": {
+              "x": 121,
+              "y": 456
+            },
+            "properties": {},
+            "id": "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa"
+          },
+          "15a02c27-2396-4edd-a85b-5235ba2d8e08": {
+            "typeId": "core/inputNumber",
+            "pins": {},
+            "position": {
+              "x": 211,
+              "y": 31
+            },
+            "properties": {},
+            "id": "15a02c27-2396-4edd-a85b-5235ba2d8e08"
+          }
+      },
+      "links": {
+        "83aa6407-d83d-4b54-8d37-d92ff95f1b3d": {
+          "id": "83aa6407-d83d-4b54-8d37-d92ff95f1b3d",
+          "pins": [
+            {
+              "nodeId": "72025f9e-7b35-43de-93ec-ddf3029e7304",
+              "pinKey": "tick"
+            },
+            {
+              "nodeId": "30f27916-8d60-4b0d-b75b-71c6aefc7151",
+              "pinKey": "sample"
+            }
+          ]
+        },
+        "9e937b66-cfac-48e3-88c4-d1b6b00019d3": {
+          "id": "9e937b66-cfac-48e3-88c4-d1b6b00019d3",
+          "pins": [
+            {
+              "nodeId": "30f27916-8d60-4b0d-b75b-71c6aefc7151",
+              "pinKey": "value"
+            },
+            {
+              "nodeId": "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa",
+              "pinKey": "trigOn"
+            }
+          ]
+        },
+        "8c10745c-4a2b-4eb9-ab1e-b88e889ca1b7": {
+          "id": "8c10745c-4a2b-4eb9-ab1e-b88e889ca1b7",
+          "pins": [
+            {
+              "nodeId": "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "2b06b2dd-eaa0-44d5-a4fb-3b62ecc3f385",
+              "pinKey": "freq"
+            }
+          ]
+        },
+        "d11d28ee-137e-4611-9410-18d7a16e1172": {
+          "id": "d11d28ee-137e-4611-9410-18d7a16e1172",
+          "pins": [
+            {
+              "nodeId": "15a02c27-2396-4edd-a85b-5235ba2d8e08",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "72025f9e-7b35-43de-93ec-ddf3029e7304",
+              "pinKey": "interval"
+            }
+          ]
+        }
+      }
+    }
+  }
+]

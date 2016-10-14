@@ -60,10 +60,10 @@ describe('Editor reducer', () => {
       project: {
         patches: {
           1: {
-            id: 1,
+            id: '1',
             nodes: {
               1: {
-                id: 1,
+                id: '1',
                 typeId: 'core/test',
                 position: { x: 0, y: 0 },
                 pins: {
@@ -80,7 +80,7 @@ describe('Editor reducer', () => {
         },
         nodeTypes: {
           'core/test': {
-            key: 'core/test',
+            id: 'core/test',
             category: 'hardware',
             pins: {
               in: {
@@ -98,13 +98,6 @@ describe('Editor reducer', () => {
             },
           },
         },
-        counter: {
-          patches: 1,
-          nodes: 0,
-          pins: 0,
-          links: 0,
-          folders: 1,
-        },
       },
       editor: {
         mode: EDITOR_MODE.DEFAULT,
@@ -121,7 +114,7 @@ describe('Editor reducer', () => {
     );
 
     it('should select node', () => {
-      const id = 1;
+      const id = '1';
       const expectedActions = [
         Actions.setNodeSelection(id),
       ];
@@ -132,7 +125,7 @@ describe('Editor reducer', () => {
     });
     it('should deselect node on second click', () => {
       store = testStore(mockState);
-      const id = 1;
+      const id = '1';
 
       store.dispatch(Actions.selectNode(id));
       store.dispatch(Actions.selectNode(id));
@@ -140,7 +133,7 @@ describe('Editor reducer', () => {
       chai.expect(store.getState().editor.selection.length).to.be.equal(0);
     });
     it('should select link', () => {
-      const id = 1;
+      const id = '1';
       const expectedActions = [
         Actions.setLinkSelection(id),
       ];
@@ -150,7 +143,7 @@ describe('Editor reducer', () => {
     });
     it('should deselect link on second click', () => {
       store = testStore(mockState);
-      const id = 1;
+      const id = '1';
 
       store.dispatch(Actions.selectLink(id));
       store.dispatch(Actions.selectLink(id));
@@ -158,14 +151,14 @@ describe('Editor reducer', () => {
     });
     it('should deselect all', () => {
       store = testStore(mockState);
-      const id = 1;
+      const id = '1';
       store.dispatch(Actions.selectLink(id));
       store.dispatch(Actions.deselectAll());
 
       chai.expect(store.getState()).to.deep.equal(mockState);
     });
     it('should select pin', () => {
-      const nodeId = 1;
+      const nodeId = '1';
       const pinKey = 'in';
       const expectedActions = [
         {
@@ -182,7 +175,7 @@ describe('Editor reducer', () => {
     });
     it('should deselect pin on second click', () => {
       store = testStore(mockState);
-      const nodeId = 1;
+      const nodeId = '1';
       const pinKey = 'in';
 
       store.dispatch(Actions.linkPin(nodeId, pinKey));
@@ -205,21 +198,21 @@ describe('Editor reducer', () => {
       project: {
         patches: {
           1: {
-            id: 1,
+            id: '1',
             name: 'First patch',
           },
           2: {
-            id: 2,
+            id: '2',
             name: 'Second patch',
           },
         },
       },
       editor: {
-        currentPatchId: 1,
+        currentPatchId: '1',
         tabs: {
           1: {
-            id: 1,
-            patchId: 1,
+            id: '1',
+            patchId: '1',
             index: 0,
           },
         },

@@ -100,7 +100,7 @@ Editor.propTypes = {
   size: React.PropTypes.object.isRequired,
   selection: React.PropTypes.array,
   selectedNodeType: React.PropTypes.string,
-  currentPatchId: React.PropTypes.number,
+  currentPatchId: React.PropTypes.string,
   mode: React.PropTypes.object,
   actions: React.PropTypes.object,
   p: React.PropTypes.any,

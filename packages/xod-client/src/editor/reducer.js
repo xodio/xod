@@ -11,7 +11,10 @@ import {
   TAB_CLOSE,
   TAB_SORT,
 } from './actionTypes';
-import { ENTITY } from 'xod-core';
+import {
+  PROJECT_CREATE,
+} from '../project/actionTypes';
+import { ENTITY, generateId } from 'xod-core';
 
 const addSelection = (entityName, action, state) => {
   const select = {
@@ -28,12 +31,16 @@ const addTab = (state, action) => {
   }
 
   const tabs = R.prop('tabs')(state);
-  const tabIds = R.keys(tabs);
-  const lastId = R.reduce(R.max, -Infinity, tabIds);
-  const lastTab = R.path(['tabs', lastId], state);
-  const lastIndex = R.prop('index', lastTab);
-  const newId = R.inc(lastId);
+  const lastIndex = R.reduce(
+    (acc, tab) => R.pipe(
+      R.prop('index'),
+      R.max(acc)
+    )(tab),
+    -Infinity,
+    R.values(tabs)
+  );
   const newIndex = R.inc(lastIndex);
+  const newId = generateId();
 
   return R.assocPath(['tabs', newId], {
     id: newId,
@@ -68,6 +75,15 @@ const editorReducer = (state = {}, action) => {
       return R.assoc('mode', action.payload.mode, state);
     case EDITOR_SET_SELECTED_NODETYPE:
       return R.assoc('selectedNodeType', action.payload.id, state);
+    case PROJECT_CREATE: {
+      const newState = R.assoc('tabs', [], state);
+      return editorReducer(newState, {
+        type: EDITOR_SWITCH_PATCH,
+        payload: {
+          id: action.payload.mainPatchId,
+        },
+      });
+    }
     case EDITOR_SWITCH_PATCH: {
       let newState = state;
       if (!tabHasPatch(state, action.payload.id)) {

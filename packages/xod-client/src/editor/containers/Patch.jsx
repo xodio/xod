@@ -262,7 +262,6 @@ class Patch extends React.Component {
     return (
       <HotKeys
         handlers={this.getHotkeyHandlers()}
-        always
         className="PatchWrapper"
       >
         <PatchSVG
@@ -305,7 +304,7 @@ Patch.propTypes = {
   linkingPin: React.PropTypes.object,
   selection: React.PropTypes.array,
   selectedNodeType: React.PropTypes.string,
-  patchId: React.PropTypes.number,
+  patchId: React.PropTypes.string,
   nodeTypes: React.PropTypes.object,
   mode: React.PropTypes.object,
   ghostNode: React.PropTypes.any,

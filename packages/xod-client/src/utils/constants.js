@@ -17,7 +17,6 @@ export const HOTKEY = {
   [COMMAND.SET_MODE_CREATING]: 'n',
   [COMMAND.DELETE_SELECTION]: ['del', 'backspace'],
 
-  [COMMAND.SET_MODE_DEFAULT]: 'escape',
   [COMMAND.DESELECT]: 'escape',
 
   [COMMAND.UNDO]: 'ctrl+z',

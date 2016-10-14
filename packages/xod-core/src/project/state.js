@@ -16,25 +16,20 @@ const removeNils = R.reject(R.isNil);
 
 // :: (String -> String -> String) -> Object -> Object
 export const genNodeTypes = R.uncurryN(2, getImpl => R.compose(
-  R.indexBy(R.prop('key')),
+  R.indexBy(R.prop('id')),
   R.values,
-  R.mapObjIndexed((meta, key) => R.merge(
+  R.mapObjIndexed((meta, id) => R.merge(
     R.omit(['inputs', 'outputs'], meta),
     {
-      key,
+      id,
       pins: mapNodeTypePins(meta),
       impl: removeNils({
-        js: getImpl('js', key, '.js'),
-        espruino: getImpl('espruino', key, '.js'),
+        js: getImpl('js', id, '.js'),
+        espruino: getImpl('espruino', id, '.js'),
       }),
     }
   ))
 ));
-
-const maxKey = R.compose(
-  R.reduce(R.max, -Infinity),
-  R.keys
-);
 
 export const getInitialState = nodeTypes => ({
   meta: {
@@ -45,24 +40,17 @@ export const getInitialState = nodeTypes => ({
   patches: {
     1: {
       id: '1',
-      name: 'Main',
+      label: 'Main',
       nodes: {},
       links: {},
     },
     2: {
       id: '2',
-      name: 'AUX',
+      label: 'AUX',
       nodes: {},
       links: {},
     },
   },
   nodeTypes,
   folders: {},
-  counter: {
-    patches: 2,
-    nodes: 0,
-    links: 0,
-    nodeTypes: +maxKey(nodeTypes) + 1,
-    folders: 0,
-  },
 });

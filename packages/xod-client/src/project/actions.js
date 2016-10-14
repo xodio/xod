@@ -4,6 +4,14 @@ import * as PrepareTo from './actionPreparations';
 import { addError } from '../messages/actions';
 import { PROPERTY_ERRORS, NODETYPE_ERRORS } from '../messages/constants';
 
+export const createProject = (projectName) => ({
+  type: ActionType.PROJECT_CREATE,
+  payload: {
+    name: projectName,
+    mainPatchId: core.generateId(),
+  },
+});
+
 export const moveNode = (id, position) => (dispatch, getState) => {
   const projectState = core.getProject(getState());
   const preparedData = PrepareTo.moveNode(projectState, id, position);

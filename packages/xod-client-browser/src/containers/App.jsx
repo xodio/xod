@@ -10,9 +10,7 @@ import client from 'xod-client';
 
 import { transpile } from 'xod-espruino';
 
-import Toolbar from '../components/Toolbar';
 import PopupInstallApp from '../components/PopupInstallApp';
-import PopupShowCode from '../components/PopupShowCode';
 import EventListener from 'react-event-listener';
 
 const DEFAULT_CANVAS_WIDTH = 800;
@@ -27,6 +25,7 @@ class App extends React.Component {
       popupInstallApp: false,
       popupUploadProject: false,
       popupShowCode: false,
+      popupCreateProject: false,
       code: '',
     };
 
@@ -36,15 +35,18 @@ class App extends React.Component {
     this.onResize = this.onResize.bind(this);
     this.onUpload = this.onUpload.bind(this);
     this.onShowCode = this.onShowCode.bind(this);
-    this.onLoad = this.onLoad.bind(this);
-    this.onSave = this.onSave.bind(this);
+    this.onImport = this.onImport.bind(this);
+    this.onExport = this.onExport.bind(this);
     this.onSelectNodeType = this.onSelectNodeType.bind(this);
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
+    this.onCreateProject = this.onCreateProject.bind(this);
 
     this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
     this.hideCodePopup = this.hideCodePopup.bind(this);
+    this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
+    this.hidePopupCreateProject = this.hidePopupCreateProject.bind(this);
   }
 
   onResize() {
@@ -55,6 +57,11 @@ class App extends React.Component {
         this.state
       )
     );
+  }
+
+  onCreateProject(projectName) {
+    this.props.actions.createProject(projectName);
+    this.hidePopupCreateProject();
   }
 
   onUpload() {
@@ -73,7 +80,7 @@ class App extends React.Component {
     this.showCodePopup();
   }
 
-  onLoad(json) {
+  onImport(json) {
     let project;
     let validJSON = true;
     let errorMessage = null;
@@ -99,7 +106,7 @@ class App extends React.Component {
     this.props.actions.loadProjectFromJSON(json);
   }
 
-  onSave() {
+  onExport() {
     const projectName = this.props.meta.name;
     const link = (document) ? document.createElement('a') : null;
     const url = `data:application/xod;charset=utf8,${encodeURIComponent(this.props.projectJSON)}`;
@@ -164,6 +171,54 @@ class App extends React.Component {
     return this.onBrowserClose(event);
   }
 
+  getToolbarLoadElement() {
+    return (
+      <label
+        key="import"
+        className="load-button"
+      >
+        <input
+          type="file"
+          accept=".xod"
+          onChange={this.onImport}
+        />
+        <span>
+          Import project
+        </span>
+      </label>
+    );
+  }
+
+  getToolbarButtons() {
+    return [
+      {
+        key: 'upload',
+        className: 'upload-button',
+        label: 'Upload',
+        onClick: this.onUpload,
+      },
+      {
+        key: 'show-code',
+        className: 'show-code-button',
+        label: 'Show code',
+        onClick: this.onShowCode,
+      },
+      {
+        key: 'export',
+        className: 'save-button',
+        label: 'Export project',
+        onClick: this.onExport,
+      },
+      this.getToolbarLoadElement(),
+      {
+        key: 'newProject',
+        className: 'upload-button',
+        label: 'Create new project',
+        onClick: this.showPopupCreateProject,
+      },
+    ];
+  }
+
   showInstallAppPopup() {
     this.setState({ popupInstallApp: true });
   }
@@ -188,6 +243,14 @@ class App extends React.Component {
     this.setState({ popupShowCode: false });
   }
 
+  showPopupCreateProject() {
+    this.setState({ popupCreateProject: true });
+  }
+
+  hidePopupCreateProject() {
+    this.setState({ popupCreateProject: false });
+  }
+
   render() {
     const devToolsInstrument = (client.isChromeApp) ? <client.DevTools /> : null;
     return (
@@ -198,15 +261,12 @@ class App extends React.Component {
           onKeyDown={this.onKeyDown}
           onBeforeUnload={this.onCloseApp}
         />
-        <Toolbar
+        <client.Toolbar
           meta={this.props.meta}
           nodeTypes={this.props.nodeTypes}
-          onUpload={this.onUpload}
-          onShowCode={this.onShowCode}
-          onLoad={this.onLoad}
-          onSave={this.onSave}
           onSelectNodeType={this.onSelectNodeType}
           onAddNodeClick={this.onAddNodeClick}
+          buttons={this.getToolbarButtons()}
         />
         <client.Editor size={this.state.size} />
         <client.SnackBar />
@@ -215,7 +275,7 @@ class App extends React.Component {
           isVisible={this.state.popupInstallApp}
           onClose={this.hideInstallAppPopup}
         />
-        <PopupShowCode
+        <client.PopupShowCode
           isVisible={this.state.popupShowCode}
           code={this.state.code}
           onClose={this.hideCodePopup}
@@ -225,6 +285,17 @@ class App extends React.Component {
           upload={this.props.upload}
           onClose={this.onUploadPopupClose}
         />
+        <client.PopupPrompt
+          title="Create new project"
+          confirmText="Create project"
+          isVisible={this.state.popupCreateProject}
+          onConfirm={this.onCreateProject}
+          onClose={this.hidePopupCreateProject}
+        >
+          <p>
+          Please, give a sonorous name to yor project:
+          </p>
+        </client.PopupPrompt>
       </HotKeys>
     );
   }
@@ -253,6 +324,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
+    createProject: client.createProject,
     upload: client.upload,
     loadProjectFromJSON: client.loadProjectFromJSON,
     setMode: client.setMode,

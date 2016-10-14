@@ -18,7 +18,7 @@ const TabsItem = ({ data, onClick, onClose }) => {
       onMouseDown={handleClick}
     >
       <span className="tab-name">
-        {data.name}
+        {data.label}
       </span>
       <span
         className="tab-close"
@@ -32,10 +32,10 @@ const TabsItem = ({ data, onClick, onClose }) => {
 
 TabsItem.propTypes = {
   data: React.PropTypes.shape({
-    id: React.PropTypes.number,
-    patchId: React.PropTypes.number,
+    id: React.PropTypes.string,
+    patchId: React.PropTypes.string,
     index: React.PropTypes.number,
-    name: React.PropTypes.string,
+    label: React.PropTypes.string,
     isActive: React.PropTypes.boolean,
   }),
   onClick: React.PropTypes.func,
