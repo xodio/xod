@@ -74,6 +74,7 @@ describe('Saver', () => {
 
 describe('Loader', () => {
   const workspace = path.resolve(__dirname, tempDir, 'workspace');
+  const projectName = xodball.meta.name;
 
   it('should return an array of projects in workspace', () => {
     const projects = Loader.getProjects(workspace);
