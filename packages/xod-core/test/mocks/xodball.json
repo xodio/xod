@@ -10,7 +10,7 @@
       "label": "Main",
       "nodes": {
         "4d30660d-13f1-4dcf-8b6f-e51db2eee949": {
-          "typeId": "core/button",
+          "typeId": "xod/core/button",
           "pins": {},
           "position": {
             "x": 100,
@@ -20,7 +20,7 @@
           "id": "4d30660d-13f1-4dcf-8b6f-e51db2eee949"
         },
         "897562ec-2617-4d4c-8ad4-d655bba25c15": {
-          "typeId": "core/pot",
+          "typeId": "xod/core/pot",
           "pins": {},
           "position": {
             "x": 366,
@@ -30,7 +30,7 @@
           "id": "897562ec-2617-4d4c-8ad4-d655bba25c15"
         },
         "4b1c9250-0e63-4d8b-99cb-25c563ec3e89": {
-          "typeId": "core/led",
+          "typeId": "xod/core/led",
           "pins": {},
           "position": {
             "x": 100,
@@ -40,7 +40,7 @@
           "id": "4b1c9250-0e63-4d8b-99cb-25c563ec3e89"
         },
         "2d813d09-a8bd-4e23-a006-80a1b3cc354a": {
-          "typeId": "core/servo",
+          "typeId": "xod/core/servo",
           "pins": {
             "minPulse": {
               "injected": true,
@@ -69,7 +69,7 @@
           "id": "8598aa84-ae9b-432d-870a-e6c22b8c1911"
         },
         "2b2b6e7b-1a46-4a68-b833-b0813e6b438f": {
-          "typeId": "core/clock",
+          "typeId": "xod/core/clock",
           "pins": {
             "interval": {
               "injected": true,
@@ -145,7 +145,7 @@
       "label": "AUX",
       "nodes": {
         "30f27916-8d60-4b0d-b75b-71c6aefc7151": {
-          "typeId": "core/ultrasonic_HC_SR04",
+          "typeId": "xod/core/ultrasonic_HC_SR04",
           "pins": {
             "units": {
               "injected": true
@@ -159,7 +159,7 @@
           "id": "30f27916-8d60-4b0d-b75b-71c6aefc7151"
         },
         "2b06b2dd-eaa0-44d5-a4fb-3b62ecc3f385": {
-          "typeId": "core/buzzer",
+          "typeId": "xod/core/buzzer",
           "pins": {},
           "position": {
             "x": 99,
@@ -169,7 +169,7 @@
           "id": "2b06b2dd-eaa0-44d5-a4fb-3b62ecc3f385"
         },
         "72025f9e-7b35-43de-93ec-ddf3029e7304": {
-          "typeId": "core/clock",
+          "typeId": "xod/core/clock",
           "pins": {
             "interval": {
               "injected": false,
@@ -184,7 +184,7 @@
           "id": "72025f9e-7b35-43de-93ec-ddf3029e7304"
         },
         "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa": {
-          "typeId": "core/triggerableNumber",
+          "typeId": "xod/core/triggerableNumber",
           "pins": {
             "value": {
               "injected": true,
@@ -199,7 +199,7 @@
           "id": "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa"
         },
         "15a02c27-2396-4edd-a85b-5235ba2d8e08": {
-          "typeId": "core/inputNumber",
+          "typeId": "xod/core/inputNumber",
           "pins": {},
           "position": {
             "x": 211,
@@ -282,7 +282,7 @@
         }
       }
     },
-    "core/button": {
+    "xod/core/button": {
       "category": "hardware",
       "properties": [
         {
@@ -292,7 +292,7 @@
           "value": "BTN1"
         }
       ],
-      "id": "core/button",
+      "id": "xod/core/button",
       "pins": {
         "state": {
           "index": 0,
@@ -306,10 +306,10 @@
         "espruino": "\nmodule.exports.setup = function(e) {\n  var pin = new Pin(e.props.pin);\n\n  setWatch(function(evt) {\n    e.fire({ state: !evt.state });\n  }, pin, {\n    edge: 'both',\n    repeat: true,\n    debounce: 30\n  });\n};\n"
       }
     },
-    "core/constBool": {
+    "xod/core/constBool": {
       "label": "<Bool>",
       "category": "configuration",
-      "id": "core/constBool",
+      "id": "xod/core/constBool",
       "pins": {
         "inValue": {
           "index": 0,
@@ -341,10 +341,10 @@
         "js": "\nmodule.exports.setup = function(e) {\n  e.fire({ value: e.props.value });\n};\n"
       }
     },
-    "core/constNumber": {
+    "xod/core/constNumber": {
       "label": "<Number>",
       "category": "configuration",
-      "id": "core/constNumber",
+      "id": "xod/core/constNumber",
       "pins": {
         "inValue": {
           "index": 0,
@@ -376,10 +376,10 @@
         "js": "\nmodule.exports.setup = function(e) {\n  e.fire({ value: e.props.value });\n};\n"
       }
     },
-    "core/constString": {
+    "xod/core/constString": {
       "label": "<String>",
       "category": "configuration",
-      "id": "core/constString",
+      "id": "xod/core/constString",
       "pins": {
         "inValue": {
           "index": 0,
@@ -409,8 +409,8 @@
       },
       "impl": {}
     },
-    "core/either": {
-      "id": "core/either",
+    "xod/core/either": {
+      "id": "xod/core/either",
       "pins": {
         "inp": {
           "index": 0,
@@ -453,8 +453,8 @@
         "js": "\nmodule.exports.evaluate = function(e) {\n  var out = e.inputs.inp ? e.inputs.trueValue : e.inputs.falseValue;\n  return { out: out };\n};\n"
       }
     },
-    "core/latch": {
-      "id": "core/latch",
+    "xod/core/latch": {
+      "id": "xod/core/latch",
       "pins": {
         "toggle": {
           "index": 0,
@@ -496,8 +496,8 @@
         "js": "\nmodule.exports.setup = function(e) {\n  e.context.state = e.props.initialState;\n};\n\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
       }
     },
-    "core/clock": {
-      "id": "core/clock",
+    "xod/core/clock": {
+      "id": "xod/core/clock",
       "pins": {
         "interval": {
           "index": 0,
@@ -520,10 +520,10 @@
         "js": "\nmodule.exports.setup = function(e) {\n  setInterval(function() {\n    e.fire({ tick: PULSE });\n  }, e.props.interval * 1000);\n};\n"
       }
     },
-    "core/led": {
+    "xod/core/led": {
       "label": "LED",
       "category": "hardware",
-      "id": "core/led",
+      "id": "xod/core/led",
       "pins": {
         "brightness": {
           "index": 0,
@@ -539,7 +539,7 @@
         "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var b = e.inputs.brightness;\n\n  // Adjust duty cycle as a power function to align brightness\n  // perception by human eye\n  var duty = b * b * b;\n\n  analogWrite(e.context.pin, duty);\n};\n"
       }
     },
-    "core/ultrasonic_HC_SR04": {
+    "xod/core/ultrasonic_HC_SR04": {
       "label": "HC-SR04",
       "category": "hardware",
       "properties": [
@@ -557,7 +557,7 @@
         }
       ],
       "pure": false,
-      "id": "core/ultrasonic_HC_SR04",
+      "id": "xod/core/ultrasonic_HC_SR04",
       "pins": {
         "sample": {
           "index": 0,
@@ -598,8 +598,8 @@
         "espruino": "\nvar sonic = require('@amperka/ultrasonic');\n\nmodule.exports.setup = function(e) {\n  var pinTrig = new Pin(e.props.pinTrig);\n  var pinEcho = new Pin(e.props.pinEcho);\n  e.context.device = sonic.connect({\n    trigPin: pinTrig,\n    echoPin: pinEcho\n  });\n  e.context.units = e.props.units;\n  e.context.isBusy = false;\n};\n\nmodule.exports.evaluate = function(e) {\n  if (e.context.isBusy) {\n    e.fire({ error: \"busy\" });\n  } else {\n    e.context.isBusy = true;\n    e.context.device.ping(function(err, value) {\n      e.context.isBusy = false;\n      if (err) {\n        e.fire({ error: err.msg });\n      } else {\n        e.fire({ value: value });\n      }\n    }, e.context.units);\n  }\n};\n"
       }
     },
-    "core/map": {
-      "id": "core/map",
+    "xod/core/map": {
+      "id": "xod/core/map",
       "pins": {
         "inp": {
           "index": 0,
@@ -678,9 +678,9 @@
         "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var k = (inputs.inp - inputs.inA) / (inputs.inB - inputs.inA);\n  var out = inputs.outA + k * (inputs.outB - inputs.outA);\n\n  if (inputs.clip) {\n    if (inputs.outB > inputs.outA) {\n      out = Math.max(inputs.outA, out);\n      out = Math.min(inputs.outB, out);\n    } else {\n      out = Math.max(inputs.outB, out);\n      out = Math.min(inputs.outA, out);\n    }\n  }\n\n  return { out: out };\n};\n"
       }
     },
-    "core/not": {
+    "xod/core/not": {
       "label": "not",
-      "id": "core/not",
+      "id": "xod/core/not",
       "pins": {
         "in": {
           "index": 0,
@@ -702,9 +702,9 @@
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: !e.inputs.in };\n};\n"
       }
     },
-    "core/and": {
+    "xod/core/and": {
       "label": "and",
-      "id": "core/and",
+      "id": "xod/core/and",
       "pins": {
         "a": {
           "index": 0,
@@ -732,9 +732,9 @@
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a && e.inputs.b };\n};\n"
       }
     },
-    "core/or": {
+    "xod/core/or": {
       "label": "or",
-      "id": "core/or",
+      "id": "xod/core/or",
       "pins": {
         "a": {
           "index": 0,
@@ -762,10 +762,10 @@
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a || e.inputs.b };\n};\n"
       }
     },
-    "core/valveNumber": {
+    "xod/core/valveNumber": {
       "label": "valveNumber",
       "pure": false,
-      "id": "core/valveNumber",
+      "id": "xod/core/valveNumber",
       "pins": {
         "cond": {
           "index": 0,
@@ -793,9 +793,9 @@
         "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.cond) {\n    e.fire({ out: e.inputs.in });\n  }\n};\n"
       }
     },
-    "core/triggerableNumber": {
+    "xod/core/triggerableNumber": {
       "label": "triggerableNumber",
-      "id": "core/triggerableNumber",
+      "id": "xod/core/triggerableNumber",
       "pins": {
         "trigOn": {
           "index": 0,
@@ -827,8 +827,8 @@
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.props.value };\n};\n"
       }
     },
-    "core/compare": {
-      "id": "core/compare",
+    "xod/core/compare": {
+      "id": "xod/core/compare",
       "pins": {
         "a": {
           "index": 0,
@@ -875,7 +875,7 @@
         "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n  if (a < b) {\n    return { less: PULSE };\n  } else if (a > b) {\n    return { greater: PULSE };\n  } else {\n    return { equal: PULSE };\n  }\n};\n"
       }
     },
-    "core/pot": {
+    "xod/core/pot": {
       "category": "hardware",
       "properties": [
         {
@@ -885,7 +885,7 @@
           "value": "A6"
         }
       ],
-      "id": "core/pot",
+      "id": "xod/core/pot",
       "pins": {
         "sample": {
           "index": 0,
@@ -908,7 +908,7 @@
         "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  return { value: analogRead(e.context.pin) };\n};\n"
       }
     },
-    "core/servo": {
+    "xod/core/servo": {
       "category": "hardware",
       "properties": [
         {
@@ -918,7 +918,7 @@
           "value": "A10"
         }
       ],
-      "id": "core/servo",
+      "id": "xod/core/servo",
       "pins": {
         "minPulse": {
           "index": 0,
@@ -955,7 +955,7 @@
         "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var minPulse = +e.props.minPulse;\n  var maxPulse = +e.props.maxPulse;\n  var us = minPulse + (maxPulse - minPulse) * e.inputs.value;\n  analogWrite(e.context.pin, us / 20000, { freq: 50 });\n};\n"
       }
     },
-    "core/buzzer": {
+    "xod/core/buzzer": {
       "label": "Buzzer",
       "category": "hardware",
       "properties": [
@@ -966,7 +966,7 @@
           "value": "A3"
         }
       ],
-      "id": "core/buzzer",
+      "id": "xod/core/buzzer",
       "pins": {
         "freq": {
           "index": 0,
@@ -982,7 +982,7 @@
         "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var f = e.inputs.freq;\n\n  if (f === 0) {\n    digitalWrite(e.context.pin, false);\n  } else {\n    analogWrite(e.context.pin, 0.5, { freq: f });\n  }\n};\n"
       }
     },
-    "core/inputBool": {
+    "xod/core/inputBool": {
       "label": "<InputBool>",
       "category": "io",
       "properties": [
@@ -994,7 +994,7 @@
           "value": ""
         }
       ],
-      "id": "core/inputBool",
+      "id": "xod/core/inputBool",
       "pins": {
         "PIN": {
           "index": 0,
@@ -1005,7 +1005,7 @@
       },
       "impl": {}
     },
-    "core/inputNumber": {
+    "xod/core/inputNumber": {
       "label": "<InputNumber>",
       "category": "io",
       "properties": [
@@ -1017,7 +1017,7 @@
           "value": ""
         }
       ],
-      "id": "core/inputNumber",
+      "id": "xod/core/inputNumber",
       "pins": {
         "PIN": {
           "index": 0,
@@ -1028,7 +1028,7 @@
       },
       "impl": {}
     },
-    "core/inputString": {
+    "xod/core/inputString": {
       "label": "<InputString>",
       "category": "io",
       "properties": [
@@ -1040,7 +1040,7 @@
           "value": ""
         }
       ],
-      "id": "core/inputString",
+      "id": "xod/core/inputString",
       "pins": {
         "PIN": {
           "index": 0,
@@ -1051,7 +1051,7 @@
       },
       "impl": {}
     },
-    "core/outputBool": {
+    "xod/core/outputBool": {
       "label": "<OutputBool>",
       "category": "io",
       "properties": [
@@ -1063,7 +1063,7 @@
           "value": ""
         }
       ],
-      "id": "core/outputBool",
+      "id": "xod/core/outputBool",
       "pins": {
         "OUT": {
           "index": 0,
@@ -1075,7 +1075,7 @@
       },
       "impl": {}
     },
-    "core/outputNumber": {
+    "xod/core/outputNumber": {
       "label": "<OutputNumber>",
       "category": "io",
       "properties": [
@@ -1087,7 +1087,7 @@
           "value": ""
         }
       ],
-      "id": "core/outputNumber",
+      "id": "xod/core/outputNumber",
       "pins": {
         "OUT": {
           "index": 0,
@@ -1099,7 +1099,7 @@
       },
       "impl": {}
     },
-    "core/outputString": {
+    "xod/core/outputString": {
       "label": "<OutputString>",
       "category": "io",
       "properties": [
@@ -1111,7 +1111,7 @@
           "value": ""
         }
       ],
-      "id": "core/outputString",
+      "id": "xod/core/outputString",
       "pins": {
         "OUT": {
           "index": 0,

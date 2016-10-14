@@ -6,7 +6,7 @@
         "name": "Awesome project",
         "author": "Amperka team"
       },
-      "libs": ["core"]
+      "libs": ["xod/core"]
     }
   },
   {
@@ -23,7 +23,7 @@
     "content": {
       "nodes": {
           "4d30660d-13f1-4dcf-8b6f-e51db2eee949": {
-            "typeId": "core/button",
+            "typeId": "xod/core/button",
             "pins": {},
             "position": {
               "x": 100,
@@ -33,7 +33,7 @@
             "id": "4d30660d-13f1-4dcf-8b6f-e51db2eee949"
           },
           "897562ec-2617-4d4c-8ad4-d655bba25c15": {
-            "typeId": "core/pot",
+            "typeId": "xod/core/pot",
             "pins": {},
             "position": {
               "x": 366,
@@ -43,7 +43,7 @@
             "id": "897562ec-2617-4d4c-8ad4-d655bba25c15"
           },
           "4b1c9250-0e63-4d8b-99cb-25c563ec3e89": {
-            "typeId": "core/led",
+            "typeId": "xod/core/led",
             "pins": {},
             "position": {
               "x": 100,
@@ -53,7 +53,7 @@
             "id": "4b1c9250-0e63-4d8b-99cb-25c563ec3e89"
           },
           "2d813d09-a8bd-4e23-a006-80a1b3cc354a": {
-            "typeId": "core/servo",
+            "typeId": "xod/core/servo",
             "pins": {
               "minPulse": {
                 "injected": true,
@@ -82,7 +82,7 @@
             "id": "8598aa84-ae9b-432d-870a-e6c22b8c1911"
           },
           "2b2b6e7b-1a46-4a68-b833-b0813e6b438f": {
-            "typeId": "core/clock",
+            "typeId": "xod/core/clock",
             "pins": {
               "interval": {
                 "injected": true,
@@ -179,7 +179,7 @@
     "content": {
       "nodes": {
           "30f27916-8d60-4b0d-b75b-71c6aefc7151": {
-            "typeId": "core/ultrasonic_HC_SR04",
+            "typeId": "xod/core/ultrasonic_HC_SR04",
             "pins": {
               "units": {
                 "injected": true
@@ -193,7 +193,7 @@
             "id": "30f27916-8d60-4b0d-b75b-71c6aefc7151"
           },
           "2b06b2dd-eaa0-44d5-a4fb-3b62ecc3f385": {
-            "typeId": "core/buzzer",
+            "typeId": "xod/core/buzzer",
             "pins": {},
             "position": {
               "x": 99,
@@ -203,7 +203,7 @@
             "id": "2b06b2dd-eaa0-44d5-a4fb-3b62ecc3f385"
           },
           "72025f9e-7b35-43de-93ec-ddf3029e7304": {
-            "typeId": "core/clock",
+            "typeId": "xod/core/clock",
             "pins": {
               "interval": {
                 "injected": false,
@@ -218,7 +218,7 @@
             "id": "72025f9e-7b35-43de-93ec-ddf3029e7304"
           },
           "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa": {
-            "typeId": "core/triggerableNumber",
+            "typeId": "xod/core/triggerableNumber",
             "pins": {
               "value": {
                 "injected": true,
@@ -233,7 +233,7 @@
             "id": "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa"
           },
           "15a02c27-2396-4edd-a85b-5235ba2d8e08": {
-            "typeId": "core/inputNumber",
+            "typeId": "xod/core/inputNumber",
             "pins": {},
             "position": {
               "x": 211,
