@@ -183,12 +183,15 @@ const getPatchNodes = R.pipe(
 );
 
 // :: mergedData -> { ...nodeTypes, ...patchNodes }
-const getNodeTypes = mergedData => R.merge(
-  R.prop('nodeTypes', mergedData),
-  getPatchNodes(mergedData)
-);
+const getNodeTypes = R.curry((mergedData, libs) => R.mergeAll(
+  [
+    libs,
+    R.prop('nodeTypes', mergedData),
+    getPatchNodes(mergedData),
+  ]
+));
 
-export default (unpackedData) => {
+export default (unpackedData, libs = {}) => {
   const mergedData = mergeById(unpackedData);
   const packedData = {
     meta: getProjectMeta(mergedData),
@@ -196,7 +199,7 @@ export default (unpackedData) => {
   };
 
   packedData.patches = getPatches(mergedData, packedData.folders);
-  packedData.nodeTypes = getNodeTypes(mergedData);
+  packedData.nodeTypes = getNodeTypes(mergedData, libs);
 
   return packedData;
 };
