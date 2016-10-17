@@ -20,7 +20,7 @@ const getFileType = R.pipe(
   }
 );
 
-// :: "./project/path/to/patch/and/file.ext" -> { type, folders }
+// :: "./project/path/to/patch/and/file.ext" -> path { type, folders }
 const parsePath = R.pipe(
   R.split('/'),
   R.reject(R.equals('.')),
@@ -32,6 +32,42 @@ const parsePath = R.pipe(
     )(path),
   })
 );
+
+// :: path { type, folders } -> folders {} -> "folderId"
+const findFolderId = R.curry((path, folders) => {
+  if (path.length === 0) {
+    return null;
+  }
+
+  const getNextPartId = (pathParts, parentId) => {
+    if (pathParts.length === 0) {
+      return parentId;
+    }
+
+    const part = R.head(pathParts);
+    const id = R.pipe(
+      R.values,
+      R.find(
+        // (f) => { console.log('?', f); return false; }
+        R.allPass([
+          R.propEq('name', part),
+          R.propEq('parentId', parentId),
+        ])
+      ),
+      R.prop('id')
+    )(folders);
+
+    return getNextPartId(
+      R.tail(pathParts),
+      id
+    );
+  };
+
+  return getNextPartId(
+    R.split('/', path),
+    null
+  );
+});
 
 // :: unpackedFileData { path, content } -> { type, folders, content }
 const replacePathByTypeAndFolders = unpackedFileData => R.pipe(
@@ -113,19 +149,22 @@ const getProjectFolders = R.pipe(
 // :: mergedData -> patches
 const filterPatches = R.filter(R.propEq('type', 'patch'));
 
-// :: mergedData -> patches [{ id, label, nodes, links }, ...]
-const getPatches = R.pipe(
+// :: mergedData -> folders -> patches [{ id, label, nodes, links }, ...]
+const getPatches = R.curry((mergedData, folders) => R.pipe(
   filterPatches,
   R.map(
-    R.pipe(
-      R.prop('content'),
-      R.pick(['id', 'label', 'nodes', 'links']),
-      R.merge({ nodes: {}, links: {}, folderId: null })
-    )
+    patch => {
+      const folderId = findFolderId(patch.folders, folders);
+
+      return R.pipe(
+        R.prop('content'),
+        R.pick(['id', 'label', 'nodes', 'links']),
+        R.merge({ nodes: {}, links: {}, folderId })
+      )(patch);
+    }
   ),
   indexById
-  // @TODO: add folderId's!
-);
+)(mergedData));
 
 // :: mergedData -> patchNodes [{ id, patchNode, label, category, properties, pins }, ...]
 const getPatchNodes = R.pipe(
@@ -156,7 +195,7 @@ export default (unpackedData) => {
     folders: getProjectFolders(mergedData),
   };
 
-  packedData.patches = getPatches(mergedData);
+  packedData.patches = getPatches(mergedData, packedData.folders);
   packedData.nodeTypes = getNodeTypes(mergedData);
 
   return packedData;
