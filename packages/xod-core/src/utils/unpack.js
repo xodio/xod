@@ -8,7 +8,7 @@ const filePath = (projectPath, patchPath, fileName) => R.pipe(
 )(fileName);
 
 // :: "Awesome name" -> "awesome_name"
-const fsSafeName = R.pipe(
+export const fsSafeName = R.pipe(
   R.replace(/[^a-z0-9]/gi, '_'),
   R.toLower
 );
