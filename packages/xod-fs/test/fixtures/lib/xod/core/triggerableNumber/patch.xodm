@@ -1,0 +1,30 @@
+{
+  "label": "triggerableNumber",
+  "pins": {
+    "trigOn": {
+      "index": 0,
+      "direction": "input",
+      "key": "trigOn",
+      "type": "pulse",
+      "pinLabel": "PLS",
+      "label": "Pulse",
+      "description": "Pulse to trig on"
+    },
+    "value": {
+      "index": 1,
+      "direction": "input",
+      "key": "value",
+      "pinLabel": "VAL",
+      "label": "Value",
+      "type": "number",
+      "value": 0
+    },
+    "out": {
+      "index": 0,
+      "direction": "output",
+      "key": "out",
+      "type": "number",
+      "description": "Output value"
+    }
+  }
+}

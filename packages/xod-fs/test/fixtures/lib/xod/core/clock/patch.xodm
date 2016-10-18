@@ -1,0 +1,21 @@
+{
+  "pure": false,
+  "pins": {
+    "interval": {
+      "index": 0,
+      "direction": "input",
+      "key": "interval",
+      "pinLabel": "INT",
+      "label": "Interval (sec)",
+      "type": "number",
+      "value": 1
+    },
+    "tick": {
+      "index": 0,
+      "direction": "output",
+      "key": "tick",
+      "type": "pulse",
+      "description": "Emits pulse periodically"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "label": "not",
+  "pins": {
+    "in": {
+      "index": 0,
+      "direction": "input",
+      "key": "in",
+      "type": "bool",
+      "label": "Input",
+      "description": "Value to be inverted"
+    },
+    "out": {
+      "index": 0,
+      "direction": "output",
+      "key": "out",
+      "type": "bool",
+      "description": "Resulting inverted value"
+    }
+  }
+}

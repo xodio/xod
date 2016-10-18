@@ -1,0 +1,40 @@
+{
+  "pins": {
+    "inp": {
+      "index": 0,
+      "direction": "input",
+      "key": "inp",
+      "type": "bool",
+      "pinLabel": "IN",
+      "label": "Value",
+      "description": "Selector value"
+    },
+    "trueValue": {
+      "index": 1,
+      "direction": "input",
+      "key": "trueValue",
+      "type": "number",
+      "label": "True output",
+      "pinLabel": "T",
+      "value": 1,
+      "description": "Output if selector is `true`"
+    },
+    "falseValue": {
+      "index": 2,
+      "direction": "input",
+      "key": "falseValue",
+      "type": "number",
+      "label": "False output",
+      "pinLabel": "F",
+      "value": 0,
+      "description": "Output if selector is `false`"
+    },
+    "out": {
+      "index": 0,
+      "direction": "output",
+      "key": "out",
+      "type": "number",
+      "description": "Selected output value"
+    }
+  }
+}

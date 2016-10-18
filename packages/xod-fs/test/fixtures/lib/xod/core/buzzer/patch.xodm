@@ -1,0 +1,23 @@
+{
+  "label": "Buzzer",
+  "category": "hardware",
+  "properties": [
+    {
+      "key": "pin",
+      "label": "Pin",
+      "type": "string",
+      "value": "A3"
+    }
+  ],
+  "pins": {
+    "freq": {
+      "index": 0,
+      "direction": "input",
+      "key": "freq",
+      "type": "number",
+      "pinLabel": "FREQ",
+      "label": "Frequency",
+      "description": "Frequency (Hz)"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "pins": {
+    "a": {
+      "index": 0,
+      "direction": "input",
+      "key": "a",
+      "pinLabel": "IN1",
+      "label": "First value",
+      "type": "number"
+    },
+    "b": {
+      "index": 1,
+      "direction": "input",
+      "key": "b",
+      "pinLabel": "IN2",
+      "label": "Second value",
+      "type": "number"
+    },
+    "equal": {
+      "index": 0,
+      "direction": "output",
+      "key": "equal",
+      "type": "pulse",
+      "pinLabel": "==",
+      "description": "Pulses if a = b"
+    },
+    "less": {
+      "index": 1,
+      "direction": "output",
+      "key": "less",
+      "type": "pulse",
+      "pinLabel": "<",
+      "description": "Pulses if a < b"
+    },
+    "greater": {
+      "index": 2,
+      "direction": "output",
+      "key": "greater",
+      "type": "pulse",
+      "pinLabel": ">",
+      "description": "Pulses if a > b"
+    }
+  }
+}
