@@ -1,4 +1,20 @@
 {
+  "2": {
+    "id": "2",
+    "patchNode": true,
+    "label": "AUX",
+    "category": "patch",
+    "properties": {},
+    "pins": {
+      "15a02c27-2396-4edd-a85b-5235ba2d8e08": {
+        "nodeId": "15a02c27-2396-4edd-a85b-5235ba2d8e08",
+        "key": "15a02c27-2396-4edd-a85b-5235ba2d8e08",
+        "direction": "input",
+        "type": "number",
+        "index": "0"
+      }
+    }
+  },
   "xod/core/button": {
     "category": "hardware",
     "properties": [
@@ -124,7 +140,9 @@
         "type": "string"
       }
     },
-    "impl": {}
+    "impl": {
+      "js": "\nmodule.exports.setup = function(e) {\n  e.fire({ value: e.props.value });\n};\n"
+    }
   },
   "xod/core/either": {
     "id": "xod/core/either",
@@ -215,6 +233,7 @@
   },
   "xod/core/clock": {
     "id": "xod/core/clock",
+    "pure": false,
     "pins": {
       "interval": {
         "index": 0,
@@ -241,6 +260,14 @@
     "label": "LED",
     "category": "hardware",
     "id": "xod/core/led",
+    "properties": [
+      {
+        "key": "pin",
+        "label": "Pin",
+        "type": "string",
+        "value": "LED1"
+      }
+    ],
     "pins": {
       "brightness": {
         "index": 0,

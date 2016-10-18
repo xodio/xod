@@ -407,7 +407,9 @@
           "type": "string"
         }
       },
-      "impl": {}
+      "impl": {
+        "js": "\nmodule.exports.setup = function(e) {\n  e.fire({ value: e.props.value });\n};\n"
+      }
     },
     "xod/core/either": {
       "id": "xod/core/either",
@@ -498,6 +500,7 @@
     },
     "xod/core/clock": {
       "id": "xod/core/clock",
+      "pure": false,
       "pins": {
         "interval": {
           "index": 0,
@@ -524,6 +527,14 @@
       "label": "LED",
       "category": "hardware",
       "id": "xod/core/led",
+      "properties": [
+        {
+          "key": "pin",
+          "label": "Pin",
+          "type": "string",
+          "value": "LED1"
+        }
+      ],
       "pins": {
         "brightness": {
           "index": 0,
