@@ -1,0 +1,111 @@
+resources:
+  - name: xod
+    type: git
+    source:
+      uri: git@github.com:amperka/xod.git
+      branch: master
+      private_key: {{github-private-key}}
+
+  - name: master-version
+    type: semver
+    source:
+      driver: git
+      uri: git@github.com:xodio/xod-version.git
+      branch: master
+      file: master.txt
+      private_key: {{github-private-key}}
+
+  - name: xod-client-browser-image
+    type: docker-image
+    source:
+      repository: xodio/xod-client-browser
+      username: {{docker-hub-username}}
+      password: {{docker-hub-password}}
+
+jobs:
+  - name: build-monorepo
+    public: true
+    plan:
+    - get: xod
+      trigger: true
+
+    - task: install
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: xodio/node
+        inputs:
+        - name: xod
+        outputs:
+        - name: installed-xod
+        run:
+          path: sh
+          args:
+          - -exc
+          - |
+            rsync -a xod/ installed-xod/
+            cd installed-xod
+            npm install --silent
+            npm run bootstrap
+            symlinks -cr .
+
+    - task: build
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: xodio/node
+        inputs:
+        - name: installed-xod
+        outputs:
+        - name: built-xod
+        run:
+          path: sh
+          args:
+          - -exc
+          - |
+            rsync -a installed-xod/ built-xod/
+            cd built-xod
+            npm run build
+
+    - task: test
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: xodio/node
+        inputs:
+        - name: built-xod
+        run:
+          dir: built-xod
+          path: npm
+          args: [test]
+
+    - task: lint
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: xodio/node
+        inputs:
+        - name: built-xod
+        run:
+          dir: built-xod
+          path: npm
+          args: [run, lint]
+
+    - get: master-version
+      params: { pre: master }
+
+    - put: xod-client-browser-image
+      params:
+        build: built-xod/packages/xod-client-browser
+        tag: master-version/number
+
+    - put: master-version
+      params: { pre: master }
