@@ -1,43 +1,10 @@
 import R from 'ramda';
 import { expect } from 'chai';
 import pack from '../src/utils/pack';
+import { numerateFolders, replaceFolderId } from '../src/utils/test';
 import xodball from './fixtures/xodball.json';
 import unpacked from './fixtures/unpacked.json';
 import nodeTypesFixture from './fixtures/libs.json';
-
-const equalPatchesExceptFolderId = (expected, actual) => {
-  const replaceFolderId = R.map(R.assoc('folderId', 'test'));
-  expect(replaceFolderId(expected)).to.deep.equal(replaceFolderId(actual));
-};
-
-const equalFolders = (expected, actual) => {
-  const numIds = initialFolders => {
-    let id = 0;
-    const accordance = {};
-
-    return R.pipe(
-      R.values,
-      R.sortBy(R.prop('name')),
-      R.map(
-        folder => {
-          id += 1;
-          accordance[folder.id] = id;
-          return R.assoc('id', id, folder);
-        }
-      ),
-      R.map(
-        folder => {
-          if (folder.parentId === null) {
-            return folder;
-          }
-          return R.assoc('parentId', accordance[folder.parentId], folder);
-        }
-      )
-    )(initialFolders);
-  };
-
-  expect(numIds(expected)).to.deep.equal(numIds(actual));
-};
 
 describe('Pack into xodball', () => {
   let packed;
@@ -57,8 +24,7 @@ describe('Pack into xodball', () => {
   });
 
   it('should return same patches as initial xodball has', () => {
-    const patches = packed.patches;
-    equalPatchesExceptFolderId(patches, xodball.patches);
+    expect(replaceFolderId(packed.patches)).to.deep.equal(replaceFolderId(xodball.patches));
   });
 
   it('should return same nodeTypes as initial xodball has', () => {
@@ -83,8 +49,8 @@ describe('Pack into xodball', () => {
 
   it('should be equal to initial xodball, except folderIds', () => {
     expect(packed.meta).to.deep.equal(xodball.meta);
-    equalPatchesExceptFolderId(packed.patches, xodball.patches);
-    equalFolders(packed.folders, xodball.folders);
+    expect(replaceFolderId(packed.patches)).to.deep.equal(replaceFolderId(xodball.patches));
+    expect(numerateFolders(packed.folders)).to.deep.equal(numerateFolders(xodball.folders));
     expect(packed.nodeTypes).to.deep.equal(xodball.nodeTypes);
   });
 });
