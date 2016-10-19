@@ -8,7 +8,7 @@ import EventListener from 'react-event-listener';
 
 import core from 'xod-core';
 import client from 'xod-client';
-import { transpile } from 'xod-espruino';
+import { transpile, runtime } from 'xod-espruino';
 import { savePatch, saveProject } from '../actions';
 import { SAVE_PROJECT } from '../actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
@@ -25,7 +25,6 @@ class App extends React.Component {
 
     this.state = {
       size: client.getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
-      popupInstallApp: false,
       popupUploadProject: false,
       popupShowCode: false,
       popupSetWorkspace: false,
@@ -49,7 +48,6 @@ class App extends React.Component {
     this.onWorkspaceChange = this.onWorkspaceChange.bind(this);
     this.onCreateProject = this.onCreateProject.bind(this);
 
-    this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
     this.hideCodePopup = this.hideCodePopup.bind(this);
     this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
     this.hidePopupSetWorkspace = this.hidePopupSetWorkspace.bind(this);
@@ -80,7 +78,7 @@ class App extends React.Component {
 
   onShowCode() {
     this.setState({
-      code: transpile(this.props.project),
+      code: transpile({ project: this.props.project, runtime }),
     });
     this.showCodePopup();
   }
@@ -283,14 +281,6 @@ class App extends React.Component {
     ];
   }
 
-  showInstallAppPopup() {
-    this.setState({ popupInstallApp: true });
-  }
-
-  hideInstallAppPopup() {
-    this.setState({ popupInstallApp: false });
-  }
-
   showUploadProgressPopup() {
     this.setState({ popupUploadProject: true });
   }
@@ -397,7 +387,7 @@ const mapStateToProps = (state) => {
 
   return ({
     hasChanges: client.projectHasChanges(state),
-    project: core.getProject(state),
+    project: core.getProjectPojo(state),
     projectJSON: core.getProjectJSON(state),
     meta: core.getMeta(state),
     nodeTypes: core.dereferencedNodeTypes(state),
