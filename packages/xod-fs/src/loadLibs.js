@@ -81,7 +81,7 @@ const loadImpl = libsDir => metas => {
               resolveImpl([type, null]);
             }
 
-            fs.readFile(implPath, 'utf8', (errReadImpl, data) => {
+            fs.readFile(implPath, 'utf-8', (errReadImpl, data) => {
               resolveImpl([type, data]);
             });
           });

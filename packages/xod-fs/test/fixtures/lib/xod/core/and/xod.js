@@ -1,4 +1,1 @@
-
-module.exports.evaluate = function(e) {
-  return { out: e.inputs.a && e.inputs.b };
-};
+// should be imported into impl.js

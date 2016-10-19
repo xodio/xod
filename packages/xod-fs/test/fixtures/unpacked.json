@@ -22,131 +22,65 @@
     "path": "./awesome_project/main/patch.xodp",
     "content": {
       "nodes": {
-          "4d30660d-13f1-4dcf-8b6f-e51db2eee949": {
-            "typeId": "xod/core/button",
-            "pins": {},
-            "position": {
-              "x": 100,
-              "y": 100
-            },
-            "properties": {},
-            "id": "4d30660d-13f1-4dcf-8b6f-e51db2eee949"
+        "2c03e470-fefd-4f58-be6a-58d209d9158c": {
+          "typeId": "xod/core/pot",
+          "pins": {
+            "sample": {
+              "injected": true
+            }
           },
-          "897562ec-2617-4d4c-8ad4-d655bba25c15": {
-            "typeId": "xod/core/pot",
-            "pins": {},
-            "position": {
-              "x": 366,
-              "y": 215
-            },
-            "properties": {},
-            "id": "897562ec-2617-4d4c-8ad4-d655bba25c15"
+          "position": {
+            "x": 292,
+            "y": 182
           },
-          "4b1c9250-0e63-4d8b-99cb-25c563ec3e89": {
-            "typeId": "xod/core/led",
-            "pins": {},
-            "position": {
-              "x": 100,
-              "y": 400
-            },
-            "properties": {},
-            "id": "4b1c9250-0e63-4d8b-99cb-25c563ec3e89"
+          "properties": {},
+          "id": "2c03e470-fefd-4f58-be6a-58d209d9158c"
+        },
+        "89c69d91-b484-478d-8990-027e5f0a2e3e": {
+          "typeId": "xod/core/and",
+          "pins": {},
+          "position": {
+            "x": 163,
+            "y": 314
           },
-          "2d813d09-a8bd-4e23-a006-80a1b3cc354a": {
-            "typeId": "xod/core/servo",
-            "pins": {
-              "minPulse": {
-                "injected": true,
-                "value": 700
-              },
-              "maxPulse": {
-                "injected": true,
-                "value": 2300
-              }
-            },
-            "position": {
-              "x": 400,
-              "y": 400
-            },
-            "properties": {},
-            "id": "2d813d09-a8bd-4e23-a006-80a1b3cc354a"
+          "properties": {},
+          "id": "89c69d91-b484-478d-8990-027e5f0a2e3e"
+        },
+        "4d716df5-81e7-4845-9b82-31a54c1634d7": {
+          "typeId": "2",
+          "pins": {},
+          "position": {
+            "x": 363,
+            "y": 322
           },
-          "8598aa84-ae9b-432d-870a-e6c22b8c1911": {
-            "typeId": "2",
-            "pins": {},
-            "position": {
-              "x": 267,
-              "y": 298
-            },
-            "properties": {},
-            "id": "8598aa84-ae9b-432d-870a-e6c22b8c1911"
-          },
-          "2b2b6e7b-1a46-4a68-b833-b0813e6b438f": {
-            "typeId": "xod/core/clock",
-            "pins": {
-              "interval": {
-                "injected": true,
-                "value": 0.5
-              }
-            },
-            "position": {
-              "x": 266,
-              "y": 76
-            },
-            "properties": {},
-            "id": "2b2b6e7b-1a46-4a68-b833-b0813e6b438f"
-          }
+          "properties": {},
+          "id": "4d716df5-81e7-4845-9b82-31a54c1634d7"
+        }
       },
       "links": {
-        "317a939d-1292-430f-84da-1a215cb3dfaa": {
-          "id": "317a939d-1292-430f-84da-1a215cb3dfaa",
+        "3ed564cd-71e5-4ad3-9361-e7b9719bc82a": {
+          "id": "3ed564cd-71e5-4ad3-9361-e7b9719bc82a",
           "pins": [
             {
-              "nodeId": "4d30660d-13f1-4dcf-8b6f-e51db2eee949",
-              "pinKey": "state"
-            },
-            {
-              "nodeId": "4b1c9250-0e63-4d8b-99cb-25c563ec3e89",
-              "pinKey": "brightness"
-            }
-          ]
-        },
-        "0efded4d-a251-4643-9ab3-05b66b538489": {
-          "id": "0efded4d-a251-4643-9ab3-05b66b538489",
-          "pins": [
-            {
-              "nodeId": "897562ec-2617-4d4c-8ad4-d655bba25c15",
+              "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
               "pinKey": "value"
             },
             {
-              "nodeId": "2d813d09-a8bd-4e23-a006-80a1b3cc354a",
-              "pinKey": "value"
+              "nodeId": "89c69d91-b484-478d-8990-027e5f0a2e3e",
+              "pinKey": "b"
             }
           ]
         },
-        "ed18e73b-aca3-49c5-ba9a-504db8970250": {
-          "id": "ed18e73b-aca3-49c5-ba9a-504db8970250",
+        "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f": {
+          "id": "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f",
           "pins": [
             {
-              "nodeId": "897562ec-2617-4d4c-8ad4-d655bba25c15",
+              "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
               "pinKey": "value"
             },
             {
-              "nodeId": "8598aa84-ae9b-432d-870a-e6c22b8c1911",
-              "pinKey": "15a02c27-2396-4edd-a85b-5235ba2d8e08"
-            }
-          ]
-        },
-        "96ddb02e-ac3c-4207-b484-1847844b5d8c": {
-          "id": "96ddb02e-ac3c-4207-b484-1847844b5d8c",
-          "pins": [
-            {
-              "nodeId": "2b2b6e7b-1a46-4a68-b833-b0813e6b438f",
-              "pinKey": "tick"
-            },
-            {
-              "nodeId": "897562ec-2617-4d4c-8ad4-d655bba25c15",
-              "pinKey": "sample"
+              "nodeId": "4d716df5-81e7-4845-9b82-31a54c1634d7",
+              "pinKey": "38395ee5-8634-40f9-b7fa-dfe9eee208e8"
             }
           ]
         }
@@ -163,9 +97,9 @@
       "category": "patch",
       "properties": {},
       "pins": {
-        "15a02c27-2396-4edd-a85b-5235ba2d8e08": {
-          "nodeId": "15a02c27-2396-4edd-a85b-5235ba2d8e08",
-          "key": "15a02c27-2396-4edd-a85b-5235ba2d8e08",
+        "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
+          "key": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
+          "nodeId": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
           "direction": "input",
           "type": "number",
           "index": "0"
@@ -178,121 +112,38 @@
     "path": "./awesome_project/sub/aux/patch.xodp",
     "content": {
       "nodes": {
-          "30f27916-8d60-4b0d-b75b-71c6aefc7151": {
-            "typeId": "xod/core/ultrasonic_HC_SR04",
-            "pins": {
-              "units": {
-                "injected": true
-              }
-            },
-            "position": {
-              "x": 170,
-              "y": 297
-            },
-            "properties": {},
-            "id": "30f27916-8d60-4b0d-b75b-71c6aefc7151"
+        "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
+          "typeId": "xod/core/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 276,
+            "y": 155
           },
-          "2b06b2dd-eaa0-44d5-a4fb-3b62ecc3f385": {
-            "typeId": "xod/core/buzzer",
-            "pins": {},
-            "position": {
-              "x": 99,
-              "y": 575
-            },
-            "properties": {},
-            "id": "2b06b2dd-eaa0-44d5-a4fb-3b62ecc3f385"
+          "properties": {},
+          "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8"
+        },
+        "4da4c29d-f482-47c2-825e-a969084b1116": {
+          "typeId": "xod/core/led",
+          "pins": {},
+          "position": {
+            "x": 310,
+            "y": 307
           },
-          "72025f9e-7b35-43de-93ec-ddf3029e7304": {
-            "typeId": "xod/core/clock",
-            "pins": {
-              "interval": {
-                "injected": false,
-                "value": 1
-              }
-            },
-            "position": {
-              "x": 136,
-              "y": 124
-            },
-            "properties": {},
-            "id": "72025f9e-7b35-43de-93ec-ddf3029e7304"
-          },
-          "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa": {
-            "typeId": "xod/core/triggerableNumber",
-            "pins": {
-              "value": {
-                "injected": true,
-                "value": 400
-              }
-            },
-            "position": {
-              "x": 121,
-              "y": 456
-            },
-            "properties": {},
-            "id": "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa"
-          },
-          "15a02c27-2396-4edd-a85b-5235ba2d8e08": {
-            "typeId": "xod/core/inputNumber",
-            "pins": {},
-            "position": {
-              "x": 211,
-              "y": 31
-            },
-            "properties": {},
-            "id": "15a02c27-2396-4edd-a85b-5235ba2d8e08"
-          }
+          "properties": {},
+          "id": "4da4c29d-f482-47c2-825e-a969084b1116"
+        }
       },
       "links": {
-        "83aa6407-d83d-4b54-8d37-d92ff95f1b3d": {
-          "id": "83aa6407-d83d-4b54-8d37-d92ff95f1b3d",
+        "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1": {
+          "id": "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1",
           "pins": [
             {
-              "nodeId": "72025f9e-7b35-43de-93ec-ddf3029e7304",
-              "pinKey": "tick"
-            },
-            {
-              "nodeId": "30f27916-8d60-4b0d-b75b-71c6aefc7151",
-              "pinKey": "sample"
-            }
-          ]
-        },
-        "9e937b66-cfac-48e3-88c4-d1b6b00019d3": {
-          "id": "9e937b66-cfac-48e3-88c4-d1b6b00019d3",
-          "pins": [
-            {
-              "nodeId": "30f27916-8d60-4b0d-b75b-71c6aefc7151",
-              "pinKey": "value"
-            },
-            {
-              "nodeId": "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa",
-              "pinKey": "trigOn"
-            }
-          ]
-        },
-        "8c10745c-4a2b-4eb9-ab1e-b88e889ca1b7": {
-          "id": "8c10745c-4a2b-4eb9-ab1e-b88e889ca1b7",
-          "pins": [
-            {
-              "nodeId": "b6d6a1ec-7a38-4cc2-a8f2-afdc41e5c4aa",
-              "pinKey": "out"
-            },
-            {
-              "nodeId": "2b06b2dd-eaa0-44d5-a4fb-3b62ecc3f385",
-              "pinKey": "freq"
-            }
-          ]
-        },
-        "d11d28ee-137e-4611-9410-18d7a16e1172": {
-          "id": "d11d28ee-137e-4611-9410-18d7a16e1172",
-          "pins": [
-            {
-              "nodeId": "15a02c27-2396-4edd-a85b-5235ba2d8e08",
+              "nodeId": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
               "pinKey": "PIN"
             },
             {
-              "nodeId": "72025f9e-7b35-43de-93ec-ddf3029e7304",
-              "pinKey": "interval"
+              "nodeId": "4da4c29d-f482-47c2-825e-a969084b1116",
+              "pinKey": "brightness"
             }
           ]
         }

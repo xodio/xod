@@ -1,4 +1,3 @@
-import R from 'ramda';
 import { expect } from 'chai';
 import pack from '../src/utils/pack';
 import { numerateFolders, replaceFolderId } from '../src/utils/test';
