@@ -2,7 +2,7 @@ import React from 'react';
 import clx from 'classnames';
 
 export const SaveProgressBar = ({ progress }) => {
-  const style = { width: `${Math.round(+ progress * 100)}%` };
+  const style = { width: `${Math.round(+progress * 100)}%` };
 
   const classNames = clx('SaveProgressBar', {
     'is-hidden': (progress === 0),

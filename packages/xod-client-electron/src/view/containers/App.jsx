@@ -1,3 +1,5 @@
+/* eslint-disable react/forbid-prop-types */
+
 import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -14,7 +16,7 @@ import { SAVE_PROJECT } from '../actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
 import { getSettings, getWorkspace } from '../../settings/selectors';
 import { setWorkspace } from '../../settings/actions';
-import SaveProgressBar from '../components/SaveProgressBar';
+import { SaveProgressBar } from '../components/SaveProgressBar';
 
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
@@ -159,7 +161,7 @@ class App extends React.Component {
     } else {
       // 2. Save!
       this.props.actions.saveProject({
-        json: this.props.projectJSON
+        json: this.props.projectJSON,
       });
     }
   }
@@ -177,7 +179,7 @@ class App extends React.Component {
     this.props.actions.deleteProcess(id, client.UPLOAD);
   }
 
-  onKeyDown(event) {
+  onKeyDown(event) { // eslint-disable-line
     const keyCode = event.keyCode || event.which;
 
     if (!client.isInputTarget(event) && keyCode === client.KEYCODE.BACKSPACE) {
@@ -187,7 +189,7 @@ class App extends React.Component {
     return false;
   }
 
-  onElectronClose() {
+  onElectronClose() { // eslint-disable-line
     // @TODO
     return true;
   }
@@ -220,11 +222,13 @@ class App extends React.Component {
       <label
         key="import"
         className="load-button"
+        htmlFor="importButton_Input"
       >
         <input
           type="file"
           accept=".xod"
           onChange={this.onImport}
+          id="importButton_Input"
         />
         <span>
           Import project
@@ -373,7 +377,6 @@ App.propTypes = {
   projectJSON: React.PropTypes.string,
   meta: React.PropTypes.object,
   nodeTypes: React.PropTypes.any.isRequired,
-  selectedNodeType: React.PropTypes.string,
   actions: React.PropTypes.objectOf(React.PropTypes.func),
   upload: React.PropTypes.object,
   workspace: React.PropTypes.string,
@@ -391,7 +394,6 @@ const mapStateToProps = (state) => {
     projectJSON: core.getProjectJSON(state),
     meta: core.getMeta(state),
     nodeTypes: core.dereferencedNodeTypes(state),
-    selectedNodeType: client.getSelectedNodeType(state),
     upload: client.getUpload(state),
     workspace: getWorkspace(settings),
     saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),
@@ -410,7 +412,7 @@ const mapDispatchToProps = (dispatch) => ({
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,
     deleteProcess: client.deleteProcess,
-    setWorkspace: setWorkspace,
+    setWorkspace,
   }, dispatch),
 });
 
