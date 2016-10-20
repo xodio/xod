@@ -15,7 +15,7 @@ export const newPatch = ({ id, name, folderId }) => ({
   past: [],
   present: {
     id,
-    label: name,
+    label: name || 'New patch',
     folderId: folderId || null,
     nodes: {},
     links: {},
