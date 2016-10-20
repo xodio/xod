@@ -159,9 +159,9 @@ export const clearHistoryPatch = (id) => ({
   payload: {},
 });
 
-export const addPatch = (name, folderId) => (dispatch, getState) => {
+export const addPatch = (label, folderId) => (dispatch, getState) => {
   const projectState = core.getProject(getState());
-  const preparedData = PrepareTo.addPatch(projectState, name, folderId);
+  const preparedData = PrepareTo.addPatch(projectState, label, folderId);
 
   dispatch({
     type: ActionType.PATCH_ADD,

@@ -2,12 +2,12 @@ import R from 'ramda';
 import core from 'xod-core';
 import { PROPERTY_KIND } from './constants';
 
-export const addPatch = (projectState, name, folderId) => {
+export const addPatch = (projectState, label, folderId) => {
   const newId = core.generateId();
 
   return {
     newId,
-    name,
+    label,
     folderId,
   };
 };
