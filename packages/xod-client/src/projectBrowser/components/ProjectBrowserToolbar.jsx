@@ -118,7 +118,7 @@ class ProjectBrowserToolbar extends React.Component {
     const type = this.props.selection.type;
     const id = this.props.selection.id;
     let name = this.getProjectName();
-    if (id > 0) {
+    if (id !== 0) {
       name = (type === 'folder') ? this.getFolderName(id) : this.getPatchName(id);
     }
 
