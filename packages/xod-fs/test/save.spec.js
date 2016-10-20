@@ -9,16 +9,19 @@ import save from '../src/save';
 import { arrangeByFiles } from 'xod-core';
 import xodball from './fixtures/xodball.json';
 
-const tempDir = './fs-temp';
-const workspace = path.resolve(__dirname, tempDir, 'workspace');
+const tempDirName = './fs-temp';
+const tempDir = path.resolve(__dirname, tempDirName);
+const workspace = path.resolve(__dirname, tempDirName, 'workspace');
 
 const onError = done => err => done(err);
 
 describe('Saver', () => {
   before(() => {
-    const tmp = path.resolve(__dirname, tempDir);
-    rimraf.sync(`${tmp}/test.json`);
+    rimraf.sync(`${tempDir}/test.json`);
     rimraf.sync(workspace);
+  });
+  after(() => {
+    rimraf.sync(tempDir);
   });
 
   it('should save a test file in a temp directory', (done) => {
