@@ -51,7 +51,7 @@ class ProjectBrowserTree extends React.Component {
 
     if (val !== null) {
       let type = 'project';
-      if (val.id > 0) { type = (val.leaf) ? 'patch' : 'folder'; }
+      if (val.id !== 0) { type = (val.leaf) ? 'patch' : 'folder'; }
 
       selected = {
         type,

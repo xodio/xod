@@ -11,11 +11,11 @@ import {
   PATCH_DELETE,
 } from '../actionTypes';
 
-export const newPatch = ({ id, label, folderId }) => ({
+export const newPatch = ({ id, name, folderId }) => ({
   past: [],
   present: {
     id,
-    label: label || 'New patch',
+    label: name,
     folderId: folderId || null,
     nodes: {},
     links: {},
@@ -46,7 +46,7 @@ export const patches = (patchIds) => {
           action.payload.newId,
           newPatch({
             id: action.payload.newId,
-            label: action.payload.label,
+            name: action.payload.name,
             folderId: action.payload.folderId,
           }),
           state
