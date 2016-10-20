@@ -107,6 +107,7 @@ class App extends React.Component {
 
   onOpenProject(path) {
     this.props.actions.loadProject({ path });
+    this.hidePopupProjectSelection();
   }
 
   onImport(json) {
