@@ -8,7 +8,7 @@ import { HotKeys } from 'react-hotkeys';
 import core from 'xod-core';
 import client from 'xod-client';
 
-import { transpile } from 'xod-espruino';
+import { transpile, runtime } from 'xod-espruino';
 
 import PopupInstallApp from '../components/PopupInstallApp';
 import EventListener from 'react-event-listener';
@@ -75,7 +75,7 @@ class App extends React.Component {
 
   onShowCode() {
     this.setState({
-      code: transpile(this.props.project),
+      code: transpile({ project: this.props.project, runtime }),
     });
     this.showCodePopup();
   }
@@ -314,7 +314,7 @@ App.propTypes = {
 
 const mapStateToProps = (state) => ({
   hasChanges: client.projectHasChanges(state),
-  project: core.getProject(state),
+  project: core.getProjectPojo(state),
   projectJSON: core.getProjectJSON(state),
   meta: core.getMeta(state),
   nodeTypes: core.dereferencedNodeTypes(state),
