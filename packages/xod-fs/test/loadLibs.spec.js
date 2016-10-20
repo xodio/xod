@@ -4,12 +4,12 @@ import path from 'path';
 import loadLibs from '../src/loadLibs';
 import xodball from './fixtures/xodball.json';
 
-const workspaceDir = './fixtures/';
+const workspaceDir = './fixtures/workspace';
 
 describe('Library loader', () => {
   const workspace = path.resolve(__dirname, workspaceDir);
 
-  it('should load xod/core libs from ./fixtures/lib', (done) => {
+  it('should load xod/core libs from ./fixtures/workspace/lib', (done) => {
     const nodeTypes = Object.assign({}, xodball.nodeTypes);
     delete nodeTypes['2']; // lib loader don't know anything about patch nodes!
 

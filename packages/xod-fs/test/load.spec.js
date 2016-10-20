@@ -6,12 +6,10 @@ import { pack, numerateFolders, replaceFolderId } from 'xod-core';
 import unpacked from './fixtures/unpacked.json';
 import xodball from './fixtures/xodball.json';
 
-const tempDir = './fs-temp';
-const libDir = './fixtures';
+const tempDir = './fixtures/workspace';
 
 describe('Loader', () => {
-  const workspace = path.resolve(__dirname, tempDir, 'workspace');
-  const libPath = path.resolve(__dirname, libDir);
+  const workspace = path.resolve(__dirname, tempDir);
   const projectPath = 'awesome_project';
 
   it('should return an array of projects in workspace', (done) => {
@@ -43,7 +41,7 @@ describe('Loader', () => {
   });
 
   it('should load whole project, libs and pack it', (done) => {
-    Loader.loadFullProject(projectPath, workspace, libPath)
+    Loader.loadFullProject(projectPath, workspace)
       .then(({ project, libs }) => {
         const packed = pack(project, libs);
 
