@@ -2,7 +2,6 @@ import { expect } from 'chai';
 
 import path from 'path';
 import * as Loader from '../src/load';
-import loadLibs from '../src/loadLibs';
 import { pack, numerateFolders, replaceFolderId } from 'xod-core';
 import unpacked from './fixtures/unpacked.json';
 import xodball from './fixtures/xodball.json';
@@ -44,16 +43,7 @@ describe('Loader', () => {
   });
 
   it('should load whole project, libs and pack it', (done) => {
-    Loader.loadProject(projectPath, workspace)
-      .then(project => new Promise(resolve => {
-        loadLibs(project[0].content.libs, libPath)
-          .then(libs => {
-            resolve({
-              project,
-              libs,
-            });
-          });
-      }))
+    Loader.loadFullProject(projectPath, workspace, libPath)
       .then(({ project, libs }) => {
         const packed = pack(project, libs);
 

@@ -25,6 +25,7 @@ const scanLibsFolder = (libs, libsDir) => new Promise((resolve, reject) => {
       if (err) {
         reject(err);
       }
+
       const metas = files.filter(
         filename => path.extname(filename) === '.xodm'
       );
@@ -112,7 +113,6 @@ const loadImpl = libsDir => metas => {
 
 export default (libs, workspace) => {
   const libsDir = path.resolve(expandHomeDir(workspace), 'lib');
-
   return scanLibsFolder(libs, libsDir)
     .then(readMetaFiles)
     .then(loadImpl(libsDir))

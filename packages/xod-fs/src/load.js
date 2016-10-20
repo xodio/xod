@@ -3,6 +3,8 @@ import path from 'path';
 import recReadDir from 'recursive-readdir';
 import expandHomeDir from 'expand-home-dir';
 
+import loadLibs from './loadLibs';
+
 export const getProjects = (workspace) => {
   const fullPath = expandHomeDir(workspace);
 
@@ -17,11 +19,20 @@ export const getProjects = (workspace) => {
         new Promise(resolveProjectLoad => {
           fs.readFile(projectFile, 'utf8', (errRd, projectMeta) => {
             if (errRd) { throw errRd; }
+            const projectDir = path.dirname(projectFile);
+            try {
+              const result = Object.assign({}, JSON.parse(projectMeta));
+              result.path = projectDir;
 
-            const result = Object.assign({}, JSON.parse(projectMeta));
-            result.path = path.dirname(projectFile);
-
-            resolveProjectLoad(result);
+              resolveProjectLoad(result);
+            } catch (loadMetaError) {
+              resolveProjectLoad({
+                error: true,
+                message: 'Can\'t parse project meta file: invalid JSON.',
+                path: projectDir,
+                stacktrace: loadMetaError,
+              });
+            }
           });
         })
       ));
@@ -90,4 +101,20 @@ export const loadProject = (projectPath, workspace) => {
   );
 };
 
-export default loadProject;
+export const loadFullProject = (projectPath, workspace, libDir = workspace) =>
+  loadProject(projectPath, workspace)
+    .then(project => new Promise(resolve => {
+      loadLibs(project[0].content.libs, libDir)
+        .then(libs => {
+          resolve({
+            project,
+            libs,
+          });
+        });
+    }));
+
+export default {
+  getProjects,
+  loadProject,
+  loadFullProject,
+};
