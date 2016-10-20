@@ -52,7 +52,7 @@ export const patches = (patchIds) => {
           state
         );
       case PATCH_DELETE:
-        return R.omit([action.payload.id.toString()], state);
+        return R.omit([action.payload.id], state);
       default:
         return applyReducers(reducers, state, action);
     }

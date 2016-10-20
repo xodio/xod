@@ -11,7 +11,7 @@ import * as PrepareTo from '../src/project/actionPreparations';
 function pin(nodeId, pinKey) {
   return { nodeId, pinKey };
 }
-const mockStore = (state) => createStore(generateReducers([1]), state, applyMiddleware(thunk));
+const mockStore = (state) => createStore(generateReducers(['1']), state, applyMiddleware(thunk));
 const getNodeTypes = (state) => core.dereferencedNodeTypes(state);
 
 describe('Project reducer: ', () => {

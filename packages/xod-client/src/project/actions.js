@@ -171,10 +171,10 @@ export const addPatch = (label, folderId) => (dispatch, getState) => {
   return preparedData.newId;
 };
 
-export const renamePatch = (id, name) => ({
+export const renamePatch = (id, label) => ({
   type: ActionType.PATCH_RENAME,
   payload: {
-    name,
+    label,
   },
   meta: {
     patchId: id,
