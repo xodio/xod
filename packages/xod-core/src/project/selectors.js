@@ -153,7 +153,6 @@ export const parseProjectJSON = (json) => {
     R.reduce((p, patch) => R.assoc(patch.id, { past: [], present: patch, future: [] }, p), {})
   )(project);
   const projectToLoad = R.assoc('patches', patches, project);
-
   return projectToLoad;
 };
 

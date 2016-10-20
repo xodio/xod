@@ -1,6 +1,6 @@
 import R from 'ramda';
-import { save } from 'xod-fs';
-import { arrangeByFiles } from 'xod-core';
+import { save, getProjects, loadFullProject } from 'xod-fs';
+import { arrangeByFiles, pack } from 'xod-core';
 
 const extract = json => arrangeByFiles(JSON.parse(json));
 
@@ -16,7 +16,17 @@ export const saveProject = (json, workspace, onFinish) => {
   return save(data, workspace, onFinish);
 };
 
+export const loadProjectList = (workspace, onFinish) =>
+  getProjects(workspace).then(onFinish);
+
+export const loadProject = (projectPath, workspace, onFinish) =>
+  loadFullProject(projectPath, workspace)
+    .then(({ project, libs }) => pack(project, libs))
+    .then(onFinish);
+
 export default {
   savePatch,
   saveProject,
+  loadProjectList,
+  loadProject,
 };
