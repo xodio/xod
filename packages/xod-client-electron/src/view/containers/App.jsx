@@ -1,3 +1,5 @@
+/* eslint-disable react/forbid-prop-types */
+
 import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -9,12 +11,14 @@ import EventListener from 'react-event-listener';
 import core from 'xod-core';
 import client from 'xod-client';
 import { transpile, runtime } from 'xod-espruino';
-import { savePatch, saveProject } from '../actions';
+import { savePatch, saveProject, loadProjectList, loadProject } from '../actions';
 import { SAVE_PROJECT } from '../actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
+import PopupProjectSelection from '../../projects/components/PopupProjectSelection';
+import { getProjects } from '../../projects/selectors';
 import { getSettings, getWorkspace } from '../../settings/selectors';
 import { setWorkspace } from '../../settings/actions';
-import SaveProgressBar from '../components/SaveProgressBar';
+import { SaveProgressBar } from '../components/SaveProgressBar';
 
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
@@ -30,6 +34,7 @@ class App extends React.Component {
       popupSetWorkspace: false,
       popupSetWorkspaceCB: null,
       popupCreateProject: false,
+      popupProjectSelection: false,
       code: '',
     };
 
@@ -47,12 +52,16 @@ class App extends React.Component {
     this.onCloseApp = this.onCloseApp.bind(this);
     this.onWorkspaceChange = this.onWorkspaceChange.bind(this);
     this.onCreateProject = this.onCreateProject.bind(this);
+    this.onOpenProjectClicked = this.onOpenProjectClicked.bind(this);
+    this.onOpenProject = this.onOpenProject.bind(this);
 
     this.hideCodePopup = this.hideCodePopup.bind(this);
     this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
     this.hidePopupSetWorkspace = this.hidePopupSetWorkspace.bind(this);
     this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
     this.hidePopupCreateProject = this.hidePopupCreateProject.bind(this);
+    this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
+    this.hidePopupProjectSelection = this.hidePopupProjectSelection.bind(this);
   }
 
   onResize() {
@@ -81,6 +90,24 @@ class App extends React.Component {
       code: transpile({ project: this.props.project, runtime }),
     });
     this.showCodePopup();
+  }
+
+  onOpenProjectClicked() {
+    // 1. Check for existing of workspace
+    //    if does not exists — show PopupSetWorkspace
+    if (!this.props.workspace) {
+      this.showPopupSetWorkspace(this.onOpenProjectClicked);
+    } else {
+      // 2. Dispatch action that loads project list
+      this.props.actions.loadProjectList();
+      // 3. Show project selection popup, that will show loading and then show project list
+      this.showPopupProjectSelection();
+    }
+  }
+
+  onOpenProject(path) {
+    this.props.actions.loadProject({ path });
+    this.hidePopupProjectSelection();
   }
 
   onImport(json) {
@@ -159,7 +186,7 @@ class App extends React.Component {
     } else {
       // 2. Save!
       this.props.actions.saveProject({
-        json: this.props.projectJSON
+        json: this.props.projectJSON,
       });
     }
   }
@@ -177,7 +204,7 @@ class App extends React.Component {
     this.props.actions.deleteProcess(id, client.UPLOAD);
   }
 
-  onKeyDown(event) {
+  onKeyDown(event) { // eslint-disable-line class-methods-use-this
     const keyCode = event.keyCode || event.which;
 
     if (!client.isInputTarget(event) && keyCode === client.KEYCODE.BACKSPACE) {
@@ -187,7 +214,7 @@ class App extends React.Component {
     return false;
   }
 
-  onElectronClose() {
+  onElectronClose() { // eslint-disable-line class-methods-use-this
     // @TODO
     return true;
   }
@@ -220,11 +247,13 @@ class App extends React.Component {
       <label
         key="import"
         className="load-button"
+        htmlFor="importButton_Input"
       >
         <input
           type="file"
           accept=".xod"
           onChange={this.onImport}
+          id="importButton_Input"
         />
         <span>
           Import project
@@ -259,6 +288,12 @@ class App extends React.Component {
         className: 'save-button',
         label: 'Save project',
         onClick: this.onSaveProject,
+      },
+      {
+        key: 'openProject',
+        className: 'save-button',
+        label: 'Open project',
+        onClick: this.onOpenProjectClicked,
       },
       {
         key: 'savePatch',
@@ -303,6 +338,14 @@ class App extends React.Component {
 
   hidePopupCreateProject() {
     this.setState({ popupCreateProject: false });
+  }
+
+  showPopupProjectSelection() {
+    this.setState({ popupProjectSelection: true });
+  }
+
+  hidePopupProjectSelection() {
+    this.setState({ popupProjectSelection: false });
   }
 
   showPopupSetWorkspace(cb) {
@@ -361,6 +404,12 @@ class App extends React.Component {
           onChange={this.onWorkspaceChange}
           onClose={this.hidePopupSetWorkspace}
         />
+        <PopupProjectSelection
+          projects={this.props.projects}
+          isVisible={this.state.popupProjectSelection}
+          onSelect={this.onOpenProject}
+          onClose={this.hidePopupProjectSelection}
+        />
         <SaveProgressBar progress={this.getSaveProgress()} />
       </HotKeys>
     );
@@ -370,10 +419,10 @@ class App extends React.Component {
 App.propTypes = {
   hasChanges: React.PropTypes.bool,
   project: React.PropTypes.object,
+  projects: React.PropTypes.object,
   projectJSON: React.PropTypes.string,
   meta: React.PropTypes.object,
   nodeTypes: React.PropTypes.any.isRequired,
-  selectedNodeType: React.PropTypes.string,
   actions: React.PropTypes.objectOf(React.PropTypes.func),
   upload: React.PropTypes.object,
   workspace: React.PropTypes.string,
@@ -388,10 +437,10 @@ const mapStateToProps = (state) => {
   return ({
     hasChanges: client.projectHasChanges(state),
     project: core.getProjectPojo(state),
+    projects: getProjects(state),
     projectJSON: core.getProjectJSON(state),
     meta: core.getMeta(state),
     nodeTypes: core.dereferencedNodeTypes(state),
-    selectedNodeType: client.getSelectedNodeType(state),
     upload: client.getUpload(state),
     workspace: getWorkspace(settings),
     saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),
@@ -407,10 +456,12 @@ const mapDispatchToProps = (dispatch) => ({
     setMode: client.setMode,
     savePatch,
     saveProject,
+    loadProjectList,
+    loadProject,
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,
     deleteProcess: client.deleteProcess,
-    setWorkspace: setWorkspace,
+    setWorkspace,
   }, dispatch),
 });
 

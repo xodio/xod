@@ -1,68 +1,129 @@
 import R from 'ramda';
 import { ipcRenderer } from 'electron';
-import { addProcess, progressProcess, successProcess, deleteProcess, addConfirmation } from 'xod-client';
+import { addProcess, progressProcess, successProcess, deleteProcess, addConfirmation, loadProjectFromJSON } from 'xod-client';
 
 import { getWorkspace } from '../settings/selectors';
-import { SAVE_PATCH, SAVE_PROJECT } from './actionTypes';
+import { SAVE_PATCH, SAVE_PROJECT, LOAD_PROJECT_LIST, LOAD_PROJECT } from './actionTypes';
 
-const progressSave = ({ processId, actionType, message = 'Saving in process', progress = 0.5 }, dispatch) => dispatch(
+const processProgressed = ({
+  processId,
+  actionType,
+  message = 'Process in progress',
+  progress = 0.5,
+  payload = {},
+}, dispatch) => dispatch(
   progressProcess(
     processId,
     actionType,
-    {
+    R.merge({
       message,
       progress,
-    }
+    }, payload)
   )
 );
 
-const completeSave = ({ processId, actionType, message = 'Saved successfully!' }, dispatch) => {
-  dispatch(successProcess(processId, actionType));
-  dispatch(addConfirmation({ message }));
+const processCompleted = ({
+  processId,
+  actionType,
+  message = 'Process completed!',
+  notify = true,
+  payload,
+  onComplete = R.always(undefined),
+}, dispatch) => {
+  dispatch(successProcess(processId, actionType, { data: payload }));
+  onComplete(payload, dispatch);
+  if (notify) {
+    dispatch(addConfirmation({ message }));
+  }
   setTimeout(() => {
     dispatch(deleteProcess(processId, actionType));
   }, 1000);
 };
 
-const createSaveAction = ({
+const createAsyncAction = ({
   eventName,
   actionType,
-  processMessage,
-  processComplete,
+  messages: {
+    process: processMsg,
+    complete: completeMsg,
+  },
+  notify,
+  onComplete,
 }) => opts => (dispatch, getState) => {
   const workspace = getWorkspace(getState().settings);
   const processId = dispatch(addProcess(actionType));
 
   ipcRenderer.once(
     `${eventName}:process`,
-    () => progressSave({ processId, actionType, message: processMessage }, dispatch)
+    (sender, payload) => processProgressed(
+      { processId, actionType, message: processMsg, notify, payload },
+      dispatch
+    )
   );
   ipcRenderer.once(
     `${eventName}:complete`,
-    () => completeSave({ processId, actionType, message: processComplete }, dispatch)
+    (sender, payload) => {
+      processCompleted(
+        { processId, actionType, message: completeMsg, notify, payload, onComplete },
+        dispatch
+      );
+    }
   );
 
   ipcRenderer.send(
     eventName,
     R.merge(opts, {
-      path: workspace,
+      workspace,
     })
   );
 };
 
-export const savePatch = createSaveAction({
-  eventName: 'savePatch',
-  actionType: SAVE_PATCH,
-  processComplete: 'Patch has been saved successfully!',
+export const loadProjectList = createAsyncAction({
+  eventName: 'loadProjectList',
+  actionType: LOAD_PROJECT_LIST,
+  messages: {
+    process: 'Receiving of project list...',
+    complete: 'Project list has been received!',
+  },
+  notify: false,
 });
 
-export const saveProject = createSaveAction({
+export const loadProject = createAsyncAction({
+  eventName: 'loadProject',
+  actionType: LOAD_PROJECT,
+  messages: {
+    process: 'Loading project...',
+    complete: 'Project has been loaded!',
+  },
+  onComplete: (data, dispatch) => {
+    const json = JSON.stringify(data); // @TODO: Remove excessive json stringify->parse (?)
+    dispatch(
+      loadProjectFromJSON(json)
+    );
+  },
+});
+
+export const savePatch = createAsyncAction({
+  eventName: 'savePatch',
+  actionType: SAVE_PATCH,
+  messages: {
+    process: 'Saving in progress...',
+    complete: 'Patch has been saved successfully!',
+  },
+});
+
+export const saveProject = createAsyncAction({
   eventName: 'saveProject',
   actionType: SAVE_PROJECT,
-  processComplete: 'Project has been saved successfully!',
+  messages: {
+    process: 'Saving in progress...',
+    complete: 'Project has been saved successfully!',
+  },
 });
 
 export default {
   savePatch,
   saveProject,
+  loadProject,
+  loadProjectList,
 };

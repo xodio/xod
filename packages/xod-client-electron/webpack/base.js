@@ -12,7 +12,7 @@ const options = {
   entry: [
     'babel-polyfill',
     pkgpath('src/shim.js'),
-    pkgpath('src/view/index.jsx'),
+    pkgpath('src/index.jsx'),
     pkgpath('node_modules/xod-client/src/core/styles/main.scss'),
     pkgpath('src/view/styles/main.scss'),
   ],
@@ -81,7 +81,7 @@ const options = {
   plugins: [
     new webpack.NoErrorsPlugin(),
     new CopyWebpackPlugin([
-      { from: pkgpath('src/view/index.html') },
+      { from: pkgpath('src/index.html') },
     ]),
   ],
 };

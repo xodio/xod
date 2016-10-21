@@ -13,6 +13,7 @@ import {
 } from './actionTypes';
 import {
   PROJECT_CREATE,
+  PROJECT_LOAD_DATA,
 } from '../project/actionTypes';
 import { ENTITY, generateId } from 'xod-core';
 
@@ -81,6 +82,22 @@ const editorReducer = (state = {}, action) => {
         type: EDITOR_SWITCH_PATCH,
         payload: {
           id: action.payload.mainPatchId,
+        },
+      });
+    }
+    case PROJECT_LOAD_DATA: {
+      const newState = R.assoc('tabs', [], state);
+      const firstPatchId = R.pipe(
+        JSON.parse,
+        R.prop('patches'),
+        R.values,
+        R.head,
+        R.propOr(null, 'id')
+      )(action.payload);
+      return editorReducer(newState, {
+        type: EDITOR_SWITCH_PATCH,
+        payload: {
+          id: firstPatchId,
         },
       });
     }

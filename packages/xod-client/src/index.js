@@ -9,11 +9,13 @@ export * from './utils/selectors';
 export { getUpload } from './processes/selectors';
 
 export * from './utils/browser';
+export * from './utils/constants';
 
 export { default as PopupShowCode } from './utils/components/PopupShowCode';
 export { default as PopupAlert } from './utils/components/PopupAlert';
 export { default as PopupConfirm } from './utils/components/PopupConfirm';
 export { default as PopupPrompt } from './utils/components/PopupPrompt';
+export { default as PopupForm } from './utils/components/PopupForm';
 export { default as Toolbar } from './utils/components/Toolbar';
 
 export { default as Root } from './core/containers/Root';
@@ -45,6 +47,7 @@ import PopupShowCode from './utils/components/PopupShowCode';
 import PopupAlert from './utils/components/PopupAlert';
 import PopupConfirm from './utils/components/PopupConfirm';
 import PopupPrompt from './utils/components/PopupPrompt';
+import PopupForm from './utils/components/PopupForm';
 import PopupUploadProject from './processes/components/PopupUploadProject';
 import DevTools from './core/containers/DevTools';
 
@@ -56,6 +59,7 @@ export default Object.assign({
   PopupAlert,
   PopupConfirm,
   PopupPrompt,
+  PopupForm,
   SnackBar,
   UserPanel,
   PopupUploadProject,

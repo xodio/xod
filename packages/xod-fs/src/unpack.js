@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { notNil, hasNot } from '../utils/ramda';
+import { notNil, hasNot } from 'xod-core';
 
 // :: "./awesome_project/" -> "main" -> "patch.xodm" -> "./awesome_project/main/patch.xodm"
 const filePath = (projectPath, patchPath, fileName) => R.pipe(
@@ -8,7 +8,7 @@ const filePath = (projectPath, patchPath, fileName) => R.pipe(
 )(fileName);
 
 // :: "Awesome name" -> "awesome_name"
-const fsSafeName = R.pipe(
+export const fsSafeName = R.pipe(
   R.replace(/[^a-z0-9]/gi, '_'),
   R.toLower
 );

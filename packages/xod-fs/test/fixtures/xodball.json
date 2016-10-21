@@ -1,0 +1,242 @@
+{
+  "meta": {
+    "name": "Awesome project",
+    "author": "Amperka team"
+  },
+  "patches": {
+    "1": {
+      "id": "1",
+      "folderId": null,
+      "label": "Main",
+      "nodes": {
+        "2c03e470-fefd-4f58-be6a-58d209d9158c": {
+          "typeId": "xod/core/pot",
+          "pins": {
+            "sample": {
+              "injected": true
+            }
+          },
+          "position": {
+            "x": 292,
+            "y": 182
+          },
+          "properties": {},
+          "id": "2c03e470-fefd-4f58-be6a-58d209d9158c"
+        },
+        "89c69d91-b484-478d-8990-027e5f0a2e3e": {
+          "typeId": "xod/core/and",
+          "pins": {},
+          "position": {
+            "x": 163,
+            "y": 314
+          },
+          "properties": {},
+          "id": "89c69d91-b484-478d-8990-027e5f0a2e3e"
+        },
+        "4d716df5-81e7-4845-9b82-31a54c1634d7": {
+          "typeId": "2",
+          "pins": {},
+          "position": {
+            "x": 363,
+            "y": 322
+          },
+          "properties": {},
+          "id": "4d716df5-81e7-4845-9b82-31a54c1634d7"
+        }
+      },
+      "links": {
+        "3ed564cd-71e5-4ad3-9361-e7b9719bc82a": {
+          "id": "3ed564cd-71e5-4ad3-9361-e7b9719bc82a",
+          "pins": [{
+            "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
+            "pinKey": "value"
+          }, {
+            "nodeId": "89c69d91-b484-478d-8990-027e5f0a2e3e",
+            "pinKey": "b"
+          }]
+        },
+        "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f": {
+          "id": "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f",
+          "pins": [{
+            "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
+            "pinKey": "value"
+          }, {
+            "nodeId": "4d716df5-81e7-4845-9b82-31a54c1634d7",
+            "pinKey": "38395ee5-8634-40f9-b7fa-dfe9eee208e8"
+          }]
+        }
+      }
+    },
+    "2": {
+      "id": "2",
+      "folderId": "1",
+      "label": "AUX",
+      "nodes": {
+        "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
+          "typeId": "xod/core/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 276,
+            "y": 155
+          },
+          "properties": {},
+          "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8"
+        },
+        "4da4c29d-f482-47c2-825e-a969084b1116": {
+          "typeId": "xod/core/led",
+          "pins": {},
+          "position": {
+            "x": 310,
+            "y": 307
+          },
+          "properties": {},
+          "id": "4da4c29d-f482-47c2-825e-a969084b1116"
+        }
+      },
+      "links": {
+        "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1": {
+          "id": "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1",
+          "pins": [{
+            "nodeId": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
+            "pinKey": "PIN"
+          }, {
+            "nodeId": "4da4c29d-f482-47c2-825e-a969084b1116",
+            "pinKey": "brightness"
+          }]
+        }
+      }
+    }
+  },
+  "nodeTypes": {
+    "2": {
+      "id": "2",
+      "patchNode": true,
+      "label": "AUX",
+      "category": "patch",
+      "properties": {},
+      "pins": {
+        "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
+          "key": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
+          "nodeId": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
+          "direction": "input",
+          "type": "number",
+          "index": "0"
+        }
+      }
+    },
+    "xod/core/led": {
+      "label": "LED",
+      "category": "hardware",
+      "properties": [{
+        "key": "pin",
+        "label": "Pin",
+        "type": "string",
+        "value": "LED1"
+      }],
+      "id": "xod/core/led",
+      "pins": {
+        "brightness": {
+          "index": 0,
+          "direction": "input",
+          "key": "brightness",
+          "type": "number",
+          "label": "Brightness",
+          "value": 0,
+          "description": "Shine brightness"
+        }
+      },
+      "impl": {
+        "espruino": "// should be imported into impl.espruino\n"
+      }
+    },
+    "xod/core/and": {
+      "label": "and",
+      "id": "xod/core/and",
+      "pins": {
+        "a": {
+          "index": 0,
+          "direction": "input",
+          "key": "a",
+          "type": "bool",
+          "description": "First input"
+        },
+        "b": {
+          "index": 1,
+          "direction": "input",
+          "key": "b",
+          "type": "bool",
+          "description": "Second input"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "bool",
+          "description": "\"true\" if both inputs are \"true\""
+        }
+      },
+      "impl": {
+        "js": "// should be imported into impl.js\n"
+      }
+    },
+    "xod/core/pot": {
+      "category": "hardware",
+      "properties": [{
+        "key": "pin",
+        "label": "Pin",
+        "type": "string",
+        "value": "A6"
+      }],
+      "id": "xod/core/pot",
+      "pins": {
+        "sample": {
+          "index": 0,
+          "direction": "input",
+          "key": "sample",
+          "type": "pulse",
+          "pinLabel": "PLS",
+          "label": "Sample pulse",
+          "description": "Sample current value"
+        },
+        "value": {
+          "index": 0,
+          "direction": "output",
+          "key": "value",
+          "type": "number",
+          "description": "Sampled potentiometer value"
+        }
+      },
+      "impl": {
+        "espruino": "// should be imported into impl.espruino\n"
+      }
+    },
+    "xod/core/inputNumber": {
+      "label": "<InputNumber>",
+      "category": "io",
+      "properties": [{
+        "key": "pinLabel",
+        "type": "string",
+        "widget": "IOLabel",
+        "label": "Pin label",
+        "value": ""
+      }],
+      "id": "xod/core/inputNumber",
+      "pins": {
+        "PIN": {
+          "index": 0,
+          "direction": "output",
+          "key": "PIN",
+          "type": "number"
+        }
+      },
+      "impl": {}
+    }
+  },
+  "folders": {
+    "1": {
+      "id": "1",
+      "name": "sub",
+      "parentId": null
+    }
+  }
+}

@@ -16,6 +16,7 @@
     "react-dom": "^0.14.6",
     "react-event-listener": "^0.3.0",
     "react-hotkeys": "^0.9.0",
+    "react-redux": "^4.4.5",
     "react-skylight": "^0.4.1",
     "redux": "^3.0.5",
     "redux-api-middleware": "^1.0.2",
@@ -23,8 +24,7 @@
     "xod-client": "^0.0.1",
     "xod-espruino": "^0.0.1"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "author": "Amperka.ru",
   "license": "MIT"
 }
