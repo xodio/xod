@@ -2,9 +2,12 @@ import { expect } from 'chai';
 
 import path from 'path';
 import * as Loader from '../src/load';
-import { pack, numerateFolders, replaceFolderId } from 'xod-core';
+import pack from '../src/pack';
+
+import { expectEqualToXodball } from './utils';
 import unpacked from './fixtures/unpacked.json';
 import xodball from './fixtures/xodball.json';
+import libsFixture from './fixtures/libs.json';
 
 const tempDir = './fixtures/workspace';
 
@@ -31,26 +34,14 @@ describe('Loader', () => {
       .catch(done);
   });
 
-  it('should load whole project data that ready to be passed into xod-core/pack', (done) => {
-    Loader.loadProject(projectPath, workspace)
-      .then(project => {
-        expect(project).to.deep.include.members(unpacked);
-        done();
-      })
-      .catch(done);
-  });
-
   it('should load whole project, libs and pack it', (done) => {
-    Loader.loadFullProject(projectPath, workspace)
+    Loader.loadProjectWithLibs(projectPath, workspace)
       .then(({ project, libs }) => {
+        expect(project).to.deep.include.members(unpacked);
+        expect(libs).to.deep.equal(libsFixture);
+
         const packed = pack(project, libs);
-
-        // test like a last from xod-core/pack
-        expect(packed.meta).to.deep.equal(xodball.meta);
-        expect(replaceFolderId(packed.patches)).to.deep.equal(replaceFolderId(xodball.patches));
-        expect(numerateFolders(packed.folders)).to.deep.equal(numerateFolders(xodball.folders));
-        expect(packed.nodeTypes).to.deep.equal(xodball.nodeTypes);
-
+        expectEqualToXodball(packed, xodball, expect);
         done();
       })
       .catch(done);

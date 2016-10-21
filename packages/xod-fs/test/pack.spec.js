@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import pack from '../src/utils/pack';
-import { numerateFolders, replaceFolderId } from '../src/utils/test';
+import pack from '../src/pack';
+import { replaceFolderId, expectEqualToXodball } from './utils';
 import xodball from './fixtures/xodball.json';
 import unpacked from './fixtures/unpacked.json';
 import nodeTypesFixture from './fixtures/libs.json';
@@ -47,9 +47,6 @@ describe('Pack into xodball', () => {
   });
 
   it('should be equal to initial xodball, except folderIds', () => {
-    expect(packed.meta).to.deep.equal(xodball.meta);
-    expect(replaceFolderId(packed.patches)).to.deep.equal(replaceFolderId(xodball.patches));
-    expect(numerateFolders(packed.folders)).to.deep.equal(numerateFolders(xodball.folders));
-    expect(packed.nodeTypes).to.deep.equal(xodball.nodeTypes);
+    expectEqualToXodball(packed, xodball, expect);
   });
 });

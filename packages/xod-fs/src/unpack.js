@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { notNil, hasNot } from '../utils/ramda';
+import { notNil, hasNot } from 'xod-core';
 
 // :: "./awesome_project/" -> "main" -> "patch.xodm" -> "./awesome_project/main/patch.xodm"
 const filePath = (projectPath, patchPath, fileName) => R.pipe(

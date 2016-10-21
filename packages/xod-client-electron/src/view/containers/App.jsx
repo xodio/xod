@@ -204,7 +204,7 @@ class App extends React.Component {
     this.props.actions.deleteProcess(id, client.UPLOAD);
   }
 
-  onKeyDown(event) { // eslint-disable-line
+  onKeyDown(event) { // eslint-disable-line class-methods-use-this
     const keyCode = event.keyCode || event.which;
 
     if (!client.isInputTarget(event) && keyCode === client.KEYCODE.BACKSPACE) {
@@ -214,7 +214,7 @@ class App extends React.Component {
     return false;
   }
 
-  onElectronClose() { // eslint-disable-line
+  onElectronClose() { // eslint-disable-line class-methods-use-this
     // @TODO
     return true;
   }

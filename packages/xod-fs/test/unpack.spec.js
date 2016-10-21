@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Unpack from '../src/utils/unpack';
+import * as Unpack from '../src/unpack';
 import xodball from './fixtures/xodball.json';
 import unpacked from './fixtures/unpacked.json';
 

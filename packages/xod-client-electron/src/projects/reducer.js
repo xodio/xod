@@ -9,7 +9,7 @@ const initialState = {
   list: [],
 };
 
-const defaultProject = R.merge({
+const createProjectMeta = R.merge({
   path: '',
   name: null,
   author: null,
@@ -19,16 +19,16 @@ const defaultProject = R.merge({
 });
 
 // :: payload:loadedProjectList -> [ { path, name, author, libs, status, message }, ... ]
-const transformPayloadIntoProjects = R.map(project => {
+const transformPayloadIntoProjectMetas = R.map(project => {
   if (project.error) {
-    return defaultProject({
+    return createProjectMeta({
       path: project.path,
       status: PROJECT_STATUS.ERROR,
       message: project.message,
     });
   }
 
-  return defaultProject({
+  return createProjectMeta({
     path: project.path,
     name: project.meta.name,
     author: project.meta.author,
@@ -48,7 +48,7 @@ const projectsReducer = (state = initialState, action) => {
   if (R.both(isLoadingProject, isSucceeded)(action)) {
     return R.pipe(
       R.assoc('status', REDUCER_STATUS.LOADED),
-      R.assoc('list', transformPayloadIntoProjects(action.payload.data))
+      R.assoc('list', transformPayloadIntoProjectMetas(action.payload.data))
     )(state);
   }
 

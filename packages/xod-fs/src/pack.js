@@ -1,10 +1,10 @@
 import R from 'ramda';
-import { v4 as generateId } from 'uuid';
+import { generateId } from 'xod-core';
 
 const indexById = R.indexBy(R.prop('id'));
 
 // :: "may/be/path/to/somename.of.file.ext" ->
-//      fileType ("patch-meta"|"patch-data"|"project-meta")
+//      fileType ("patch"|"project")
 const getFileType = R.pipe(
   R.split('.'),
   (parts) => {

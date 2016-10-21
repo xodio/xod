@@ -5,44 +5,44 @@ import expandHomeDir from 'expand-home-dir';
 
 import loadLibs from './loadLibs';
 
+const readProjectMetaFile = (projectFile) => new Promise(
+  resolve => {
+    fs.readFile(projectFile, 'utf8', (errRd, projectMeta) => {
+      if (errRd) { throw errRd; }
+      const projectDir = path.dirname(projectFile);
+      try {
+        const result = Object.assign({}, JSON.parse(projectMeta));
+        result.path = projectDir;
+
+        resolve(result);
+      } catch (loadMetaError) {
+        resolve({
+          error: true,
+          message: "Can't parse project meta file: invalid JSON.",
+          path: projectDir,
+          stacktrace: loadMetaError,
+        });
+      }
+    });
+  }
+);
+
 export const getProjects = (workspace) => {
   const fullPath = expandHomeDir(workspace);
 
   return new Promise(resolve =>
     recReadDir(fullPath, (err, files) => {
-      const projectPromises = [];
       const projects = files.filter(
         filename => path.basename(filename) === 'project.xod'
       );
-
-      projects.forEach(projectFile => projectPromises.push(
-        new Promise(resolveProjectLoad => {
-          fs.readFile(projectFile, 'utf8', (errRd, projectMeta) => {
-            if (errRd) { throw errRd; }
-            const projectDir = path.dirname(projectFile);
-            try {
-              const result = Object.assign({}, JSON.parse(projectMeta));
-              result.path = projectDir;
-
-              resolveProjectLoad(result);
-            } catch (loadMetaError) {
-              resolveProjectLoad({
-                error: true,
-                message: 'Can\'t parse project meta file: invalid JSON.',
-                path: projectDir,
-                stacktrace: loadMetaError,
-              });
-            }
-          });
-        })
-      ));
+      const projectPromises = projects.map(readProjectMetaFile);
 
       return Promise.all(projectPromises).then(resolve);
     })
   );
 };
 
-export const loadProject = (projectPath, workspace) => {
+const loadProjectWithoutLibs = (projectPath, workspace) => {
   const fullPath = path.resolve(
     expandHomeDir(workspace),
     projectPath
@@ -101,8 +101,8 @@ export const loadProject = (projectPath, workspace) => {
   );
 };
 
-export const loadFullProject = (projectPath, workspace, libDir = workspace) =>
-  loadProject(projectPath, workspace)
+export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) =>
+  loadProjectWithoutLibs(projectPath, workspace)
     .then(project => new Promise(resolve => {
       loadLibs(project[0].content.libs, libDir)
         .then(libs => {
@@ -115,6 +115,5 @@ export const loadFullProject = (projectPath, workspace, libDir = workspace) =>
 
 export default {
   getProjects,
-  loadProject,
-  loadFullProject,
+  loadProjectWithLibs,
 };

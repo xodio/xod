@@ -13,6 +13,7 @@
   "dependencies": {
     "expand-home-dir": "0.0.3",
     "file-save": "^0.2.0",
+    "ramda": "^0.22.1",
     "recursive-readdir": "^2.1.0",
     "rimraf": "^2.5.4",
     "xod-core": "^0.0.1"

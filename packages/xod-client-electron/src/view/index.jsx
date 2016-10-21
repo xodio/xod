@@ -4,11 +4,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Root } from 'xod-client';
 import App from './containers/App';
-import additionalReducers from './reducer';
+
+import settingsReducer from '../settings/reducer';
+import projectsReducer from '../projects/reducer';
+
+const extraReducers = {
+  settings: settingsReducer,
+  projects: projectsReducer,
+};
 
 ReactDOM.render(
   <Root
-    extraReducers={additionalReducers}
+    extraReducers={extraReducers}
   >
     <App />
   </Root>,

@@ -6,7 +6,7 @@ import recReadDir from 'recursive-readdir';
 import rimraf from 'rimraf';
 
 import save from '../src/save';
-import { arrangeByFiles } from 'xod-core';
+import { arrangeByFiles } from '../src/unpack';
 import xodball from './fixtures/xodball.json';
 
 const tempDirName = './fs-temp';
