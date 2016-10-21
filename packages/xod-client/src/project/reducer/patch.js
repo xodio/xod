@@ -39,14 +39,14 @@ export const patchReducer = (id) => {
       action &&
       action.meta &&
       action.meta.patchId &&
-      parseInt(action.meta.patchId, 10) !== parseInt(patchId, 10)
+      action.meta.patchId !== patchId
     ) {
       return state;
     }
 
     switch (action.type) {
       case PATCH_RENAME:
-        return R.assoc('label', action.payload.name, state);
+        return R.assoc('label', action.payload.label, state);
       case PATCH_MOVE:
         return R.assoc('folderId', action.payload.folderId, state);
       default:
