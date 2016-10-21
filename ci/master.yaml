@@ -24,6 +24,7 @@ resources:
 
 jobs:
   - name: build-monorepo
+    serial: true
     public: true
     plan:
     - get: xod
