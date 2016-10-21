@@ -63,7 +63,6 @@ const createAsyncAction = ({
   ipcRenderer.once(
     `${eventName}:complete`,
     (sender, payload) => {
-      console.log('>', eventName, ':complete', payload);
       processCompleted(
         { processId, actionType, message: completeMsg, notify, payload, onComplete },
         dispatch
