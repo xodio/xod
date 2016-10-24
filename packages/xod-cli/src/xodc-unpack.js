@@ -12,7 +12,7 @@ export default (xodball, workspace) => {
 
   console.log(`Unpacking ${xodballPath} into ${workspacePath}`);
 
-  const spinner = new Spinner('Packing project...');
+  const spinner = new Spinner('Unpacking project...');
   spinner.start();
 
   try {
