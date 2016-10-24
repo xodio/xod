@@ -1,0 +1,27 @@
+{
+  "name": "xod-cli",
+  "version": "0.0.1",
+  "description": "XOD project: Command Line Interface",
+  "scripts": {
+    "build": "babel src/ -d bin/",
+    "dev": "babel --watch src/ -d bin/"
+  },
+  "bin": {
+    "xodc": "./bin/xodc.js"
+  },
+  "repository": {},
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "dependencies": {
+    "clui": "^0.3.1",
+    "commander": "^2.9.0",
+    "ramda": "^0.21.0",
+    "xod-espruino": "^0.0.1",
+    "xod-fs": "^0.0.1"
+  },
+  "engines": {
+    "node": "6.0.0"
+  }
+}
