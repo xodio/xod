@@ -26,27 +26,23 @@ describe('Saver', () => {
 
   it('should save a test file in a temp directory', (done) => {
     const filePath = `${tempDir}/test.json`;
-
-    const onFinish = () => {
-      const result = JSON.parse(
-        fs.readFileSync(
-          path.resolve(__dirname, filePath),
-          'utf8'
-        )
-      );
-      expect(result).to.be.equal(true);
-      done();
+    const testData = {
+      path: filePath,
+      content: true,
     };
 
-    save(
-      {
-        path: filePath,
-        content: true,
-      },
-      __dirname,
-      onFinish,
-      onError(done)
-    );
+    save(__dirname, testData)
+      .then(() => {
+        const result = JSON.parse(
+          fs.readFileSync(
+            path.resolve(__dirname, filePath),
+            'utf8'
+          )
+        );
+        expect(result).to.be.equal(true);
+        done();
+      })
+      .catch(onError(done));
   });
 
   it('should save an extracted project into temp directory', (done) => {
@@ -66,11 +62,8 @@ describe('Saver', () => {
       }
     };
 
-    save(
-      dataToSave,
-      workspace,
-      onFinish,
-      onError
-    );
+    save(workspace, dataToSave)
+      .then(onFinish)
+      .catch(onError(done));
   });
 });

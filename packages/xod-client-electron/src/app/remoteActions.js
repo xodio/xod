@@ -7,12 +7,12 @@ export const savePatch = (json, patchId, workspace, onFinish) => {
   const data = R.filter(
     R.propEq('id', patchId)
   )(extract(json));
-  return save(data, workspace, onFinish);
+  return save(workspace, data).then(onFinish);
 };
 
 export const saveProject = (json, workspace, onFinish) => {
   const data = extract(json);
-  return save(data, workspace, onFinish);
+  return save(workspace, data).then(onFinish);
 };
 
 export const loadProjectList = (workspace, onFinish) =>

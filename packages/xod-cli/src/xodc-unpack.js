@@ -23,15 +23,12 @@ export default (xodball, workspace) => {
       const unpacked = arrangeByFiles(json);
       const projectName = json.meta.name;
 
-      save(
-        unpacked,
-        workspacePath,
-        () => {
+      save(workspacePath, unpacked)
+        .then(() => {
           spinner.stop();
           console.log(`Project "${projectName}" successfully unpacked!`);
-        },
-        saveError => { throw saveError; }
-      );
+        })
+        .catch(saveError => { throw saveError; });
     });
   } catch (err) {
     spinner.stop();

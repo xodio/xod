@@ -2,8 +2,7 @@
 /* eslint-disable no-console */
 
 import path from 'path';
-import fs from 'fs';
-import { loadProjectWithLibs, pack } from 'xod-fs';
+import { loadProjectWithLibs, pack, writeJSON } from 'xod-fs';
 import { Spinner } from 'clui';
 
 export default (projectDir, output) => {
@@ -19,12 +18,13 @@ export default (projectDir, output) => {
 
   loadProjectWithLibs(projectPath, workspace)
     .then(({ project, libs }) => pack(project, libs))
-    .then(packed => fs.writeFile(output, JSON.stringify(packed, undefined, 2), 'utf8', err => {
-      if (err) { throw err; }
-
-      spinner.stop();
-      console.log(`Packed project successfully written into ${output}.`);
-    }))
+    .then(packed =>
+      writeJSON(output, packed)
+        .then(() => {
+          spinner.stop();
+          console.log(`Packed project successfully written into ${output}.`);
+        })
+    )
     .catch(err => {
       spinner.stop();
       console.error(err);

@@ -6,6 +6,7 @@
 
 import path from 'path';
 import fs from 'fs';
+import { writeJSON } from 'xod-fs';
 import { transpile, runtime } from 'xod-espruino';
 import { Spinner } from 'clui';
 
@@ -24,14 +25,23 @@ export default (xodball, program) => {
   const project = JSON.parse(json);
   const code = transpile({ project, runtime });
 
-  spinner.stop();
 
   if (output) {
-    fs.writeFileSync(output, code);
-    console.log('Result has been wrote into ', output, 'file.');
+    writeJSON(output, code)
+      .then(() => {
+        spinner.stop();
+        console.log(`Result has been wrote into ${output} file.`);
+        process.exit(1);
+      })
+      .catch(err => {
+        spinner.stop();
+        console.log(`Something went wrong during writing result into ${output} file.`);
+        console.error(err);
+        process.exit(0);
+      });
+  } else {
+    spinner.stop();
+    process.stdout.write(code);
     process.exit(1);
   }
-
-  process.stdout.write(code);
-  process.exit(1);
 };
