@@ -4,7 +4,7 @@ import fileSave from 'file-save';
 import expandHomeDir from 'expand-home-dir';
 
 // :: outputPath -> data -> Promise
-export const write = curry((outputPath, data) => new Promise(
+export const writeFile = curry((outputPath, data) => new Promise(
   (resolve, reject) => {
     const resolvedPath = path.resolve(expandHomeDir(outputPath));
     const fstream = fileSave(resolvedPath);
@@ -18,9 +18,9 @@ export const write = curry((outputPath, data) => new Promise(
 
 // :: outputPath -> data -> Promise
 export const writeJSON = curry((outputPath, data) =>
-  write(outputPath, JSON.stringify(data, undefined, 2)));
+  writeFile(outputPath, JSON.stringify(data, undefined, 2)));
 
 export default {
-  write,
+  writeFile,
   writeJSON,
 };
