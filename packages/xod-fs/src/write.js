@@ -1,0 +1,26 @@
+import { curry } from 'ramda';
+import path from 'path';
+import fileSave from 'file-save';
+import expandHomeDir from 'expand-home-dir';
+
+// :: outputPath -> data -> Promise
+export const write = curry((outputPath, data) => new Promise(
+  (resolve, reject) => {
+    const resolvedPath = path.resolve(expandHomeDir(outputPath));
+    const fstream = fileSave(resolvedPath);
+
+    fstream.write(data, 'utf8');
+    fstream.end();
+    fstream.finish(() => resolve({ path: resolvedPath, data }));
+    fstream.error(reject);
+  }
+));
+
+// :: outputPath -> data -> Promise
+export const writeJSON = curry((outputPath, data) =>
+  write(outputPath, JSON.stringify(data, undefined, 2)));
+
+export default {
+  write,
+  writeJSON,
+};
