@@ -38,7 +38,7 @@ export default (xodball, program) => {
 
       process.stdout.write(code);
       process.exit(1);
-      return Promise.resolve(code);
+      return code;
     })
     .catch(err => {
       spinner.stop();
