@@ -12,13 +12,17 @@ export const writeFile = curry((outputPath, data) => new Promise(
     fstream.write(data, 'utf8');
     fstream.end();
     fstream.finish(() => resolve({ path: resolvedPath, data }));
-    fstream.error(reject);
+    fstream.error(err => {
+      reject(Object.assign(err, { path: resolvedPath, data }));
+    });
   }
 ));
 
 // :: outputPath -> data -> Promise
 export const writeJSON = curry((outputPath, data) =>
-  writeFile(outputPath, JSON.stringify(data, undefined, 2)));
+  writeFile(outputPath, JSON.stringify(data, undefined, 2))
+    .catch(err => { throw Object.assign(err, { path: outputPath, data }); })
+);
 
 export default {
   writeFile,
