@@ -44,7 +44,10 @@ const readProjectMetaFile = (projectFile) => readJSON(projectFile)
 export const getProjects = (workspace) => readDir(workspace)
   .then(files => files.filter(filename => path.basename(filename) === 'project.xod'))
   .then(projects => Promise.all(
-    projects.map(readProjectMetaFile)
+    projects.map(
+      project => readProjectMetaFile(project)
+        .catch(err => ({ error: true, message: err.toString(), path: project }))
+    )
   ));
 
 const loadProjectWithoutLibs = (projectPath, workspace) =>
