@@ -1,38 +1,35 @@
 // unpack <xodball> <workspace>   Unpack xodball into new project directory in the workspace
-/* eslint-disable no-console */
 
 import path from 'path';
-import fs from 'fs';
-import { arrangeByFiles, save } from 'xod-fs';
+import { arrangeByFiles, save, readJSON } from 'xod-fs';
 import { Spinner } from 'clui';
+import * as msg from './messages';
 
 export default (xodball, workspace) => {
   const xodballPath = path.resolve(xodball);
   const workspacePath = path.resolve(workspace);
 
-  console.log(`Unpacking ${xodballPath} into ${workspacePath}`);
+  msg.notice(`Unpacking ${xodballPath}`);
+  msg.notice(`into ${workspacePath}`);
 
   const spinner = new Spinner('Unpacking project...');
   spinner.start();
 
-  try {
-    fs.readFile(xodballPath, 'utf8', (err, data) => {
-      if (err) { throw err; }
+  let projectName = 'Unknown project';
 
-      const json = JSON.parse(data);
-      const unpacked = arrangeByFiles(json);
-      const projectName = json.meta.name;
-
-      save(workspacePath, unpacked)
-        .then(() => {
-          spinner.stop();
-          console.log(`Project "${projectName}" successfully unpacked!`);
-        })
-        .catch(saveError => { throw saveError; });
+  readJSON(xodballPath)
+    .then(project => { projectName = project.meta.name; return project; })
+    .then(arrangeByFiles)
+    .then(save(workspacePath))
+    .then(() => {
+      spinner.stop();
+      msg.success(`Project "${msg.bold(projectName)}" successfully unpacked!`);
+      process.exit(1);
+    })
+    .catch(err => {
+      spinner.stop();
+      msg.error(`${msg.bold('Error')}: Can't unpack the project!`);
+      msg.notice(err);
+      process.exit(0);
     });
-  } catch (err) {
-    spinner.stop();
-    console.error(err);
-    process.exit(0);
-  }
 };

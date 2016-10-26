@@ -6,6 +6,9 @@ import program from 'commander';
 import pack from './xodc-pack';
 import unpack from './xodc-unpack';
 import transpile from './xodc-transpile';
+import { hello } from './messages';
+
+hello();
 
 program
   .version('0.0.1');
