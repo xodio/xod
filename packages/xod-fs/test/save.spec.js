@@ -11,21 +11,22 @@ import xodball from './fixtures/xodball.json';
 
 const tempDirName = './fs-temp';
 const tempDir = path.resolve(__dirname, tempDirName);
-const workspace = path.resolve(__dirname, tempDirName, 'workspace');
+const workspace = `${tempDirName}/workspace`;
+const workspacePath = path.resolve(__dirname, workspace);
 
 const onError = done => err => done(err);
 
 describe('Saver', () => {
   before(() => {
     rimraf.sync(`${tempDir}/test.json`);
-    rimraf.sync(workspace);
+    rimraf.sync(workspacePath);
   });
   after(() => {
     rimraf.sync(tempDir);
   });
 
   it('should save a test file in a temp directory', (done) => {
-    const filePath = `${tempDir}/test.json`;
+    const filePath = `${tempDirName}/test/test.json`;
     const testData = {
       path: filePath,
       content: true,
@@ -50,7 +51,7 @@ describe('Saver', () => {
 
     const onFinish = () => {
       try {
-        recReadDir(workspace, ['.DS_Store'], (err, files) => {
+        recReadDir(workspacePath, ['.DS_Store'], (err, files) => {
           if (files.length === 5) {
             done();
           } else {
@@ -62,7 +63,7 @@ describe('Saver', () => {
       }
     };
 
-    save(workspace, dataToSave)
+    save(workspacePath, dataToSave)
       .then(onFinish)
       .catch(onError(done));
   });
