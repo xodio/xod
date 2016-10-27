@@ -20,13 +20,13 @@ program
     .action(pack);
 program
   .command('unpack <xodball> <workspace>')
-    .description('Unpack xodball into new project directory in the workspace')
+    .description('Unpack xodball into new project directory')
     .alias('u')
     .action(unpack);
 
 program
-  .command('transpile <xodball>')
-    .description('transpile project')
+  .command('transpile <input>')
+    .description('Transpile project into device runtime')
     .option('-t, --target [target]', 'Target device for transpilation', 'espruino')
     .option('-o, --output [filename]', 'Write result of transpilation into file', false)
     .alias('t')
