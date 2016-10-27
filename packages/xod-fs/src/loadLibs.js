@@ -10,7 +10,7 @@ const implAccordance = {
 const implTypes = Object.keys(implAccordance);
 
 const getPatchName = (metaPath) => {
-  const parts = metaPath.split('/');
+  const parts = metaPath.split(path.sep);
   return parts[parts.length - 2];
 };
 
@@ -40,24 +40,26 @@ const scanLibsFolder = (libs, libsDir) => new Promise((resolve, reject) => {
 
 const readMetaFiles = (metafiles) => {
   const libNames = Object.keys(metafiles);
-  let libsPromisses = [];
+  let libPromises = [];
 
   libNames.forEach(name => {
     const libMetas = metafiles[name];
 
-    libsPromisses = libMetas.map(metaPath =>
-      readJSON(metaPath)
-        .then(data => Object.assign(
-          data,
-          {
-            id: `${name}/${getPatchName(metaPath)}`,
-            impl: {},
-          }
-        ))
+    libPromises = libPromises.concat(
+      libMetas.map(metaPath =>
+        readJSON(metaPath)
+          .then(data => Object.assign(
+            data,
+            {
+              id: `${name}/${getPatchName(metaPath)}`,
+              impl: {},
+            }
+          ))
+      )
     );
   });
 
-  return Promise.all(libsPromisses);
+  return Promise.all(libPromises);
 };
 
 const loadImpl = libsDir => metas => {
@@ -65,10 +67,8 @@ const loadImpl = libsDir => metas => {
 
   metas.forEach(meta => metaPromises.push(
     new Promise(resolve => {
-      let implPromises = [];
       const patchDir = path.resolve(libsDir, meta.id);
-
-      implPromises = implTypes.map(type => {
+      const implPromises = implTypes.map(type => {
         const implPath = path.resolve(patchDir, implAccordance[type]);
         return readFile(implPath)
           .then(data => ([type, data]))

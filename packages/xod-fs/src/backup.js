@@ -3,7 +3,7 @@ import fse from 'fs.extra';
 import rimraf from 'rimraf';
 import path from 'path';
 
-const lastDir = (dir) => dir.split('/').filter(name => name !== '').pop();
+const lastDir = (dir) => dir.split(path.sep).filter(name => name !== '').pop();
 
 export class Backup {
   constructor(dataPath, tempPath) {

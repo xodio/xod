@@ -1,4 +1,5 @@
 import R from 'ramda';
+import P from 'path';
 import { notNil, hasNot } from 'xod-core';
 
 // :: "./awesome_project/" -> "main" -> "patch.xodm" -> "./awesome_project/main/patch.xodm"
@@ -23,7 +24,7 @@ const getParentFoldersPath = (folders, folder, path) => {
   if (R.isNil(folder.parentId)) {
     return R.pipe(
       R.append(''),
-      R.join('/')
+      R.join(P.sep)
     )(newPath);
   }
 
@@ -58,9 +59,9 @@ const extractLibs = R.pipe(
   R.map(
     R.pipe(
       R.prop('id'),
-      R.split('/'),
+      R.split(P.sep),
       R.init,
-      R.join('/')
+      R.join(P.sep)
     )
   ),
   R.reject(R.isEmpty),
@@ -89,8 +90,8 @@ export const extractProject = xodball => ({
 export const getProjectPath = R.pipe(
   R.path(['meta', 'name']),
   fsSafeName,
-  R.flip(R.concat)('/'),
-  R.concat('./')
+  R.flip(R.concat)(P.sep),
+  R.concat(`.${P.sep}`)
 );
 
 // :: patch -> folders -> "folder_name/patch_name_lowercased/"

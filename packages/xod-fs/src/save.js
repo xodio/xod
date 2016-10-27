@@ -25,7 +25,7 @@ export default curry((pathToWorkspace, data) => {
   }
   const isArray = (data instanceof Array);
   const dataToSave = isArray ? data : [data];
-  const projectDir = dataToSave[0].path.split('/')[1];
+  const projectDir = dataToSave[0].path.split(path.sep)[1];
 
   const pathToProject = expandHomeDir(path.resolve(pathToWorkspace, projectDir));
   const pathToTemp = expandHomeDir(path.resolve(pathToWorkspace, './.tmp/'));

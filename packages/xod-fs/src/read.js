@@ -19,7 +19,11 @@ export const readFile = (inputPath) => new Promise(
   (resolve, reject) => {
     const resolvedPath = path.resolve(expandHomeDir(inputPath));
     fs.readFile(resolvedPath, 'utf8', (err, data) => {
-      if (err) { reject(Object.assign(err, { path: resolvedPath })); return; }
+      if (err) {
+        const error = Object.assign(err, { path: resolvedPath });
+        reject(error);
+        return;
+      }
       resolve(data);
     });
   }
