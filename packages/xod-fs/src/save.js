@@ -38,8 +38,8 @@ export default curry((pathToWorkspace, data) => {
       return Promise.all(savingFiles)
         .then(backup.clear)
         .catch(err => {
-          backup.restore();
-          throw err;
+          backup.restore()
+            .then(() => { throw err; });
         });
     });
 });

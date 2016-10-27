@@ -43,12 +43,20 @@ export class Backup {
     if (tempContents.length === 0) {
       rimraf.sync(this.path.temp);
     }
+    this.stored = false;
   }
 
   restore() {
-    if (!this.stored) { return; }
-    rimraf.sync(this.path.data);
-    fse.copyRecursive(this.path.dataTemp, this.path.data);
+    if (!this.stored) { return Promise.resolve(); }
+
+    return new Promise((resolve, reject) => {
+      rimraf.sync(this.path.data);
+      fse.copyRecursive(this.path.dataTemp, this.path.data, (err) => {
+        if (err) { reject(err); return; }
+        this.clear();
+        resolve();
+      });
+    });
   }
 }
 
