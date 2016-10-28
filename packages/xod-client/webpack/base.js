@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
   devtool: 'source-map',
@@ -28,7 +29,7 @@ module.exports = {
         loaders: [
           'style',
           'css',
-          'autoprefixer?browsers=last 3 versions',
+          'postcss',
           'sass?outputStyle=expanded',
         ],
       },
@@ -56,4 +57,5 @@ module.exports = {
       { from: 'src/app-browser/index.html' },
     ]),
   ],
+  postcss: function postCssPlugins() { return [autoprefixer]; },
 };

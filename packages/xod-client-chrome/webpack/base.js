@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 const pkgpath = subpath => path.join(__dirname, '..', subpath);
 
@@ -16,7 +17,7 @@ module.exports = {
   resolve: {
     root: path.join(__dirname, '../src'),
     modulesDirectories: [
-      pkgpath('node_modules'), 
+      pkgpath('node_modules'),
       pkgpath('src'),
       pkgpath('src/node_modules'),
     ],
@@ -35,6 +36,7 @@ module.exports = {
         loaders: [
           'style',
           'css',
+          'postcss',
           'sass?outputStyle=expanded',
         ],
       },
@@ -62,4 +64,5 @@ module.exports = {
       { from: pkgpath('src/index.html') },
     ]),
   ],
+  postcss: function postCssPlugins() { return [autoprefixer]; },
 };

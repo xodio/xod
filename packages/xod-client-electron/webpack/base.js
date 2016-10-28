@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 const webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
 
 const pkgpath = subpath => path.resolve(__dirname, '..', subpath);
@@ -49,6 +50,7 @@ const options = {
         loaders: [
           'style',
           'css',
+          'postcss',
           'sass?outputStyle=expanded',
         ],
       },
@@ -84,6 +86,7 @@ const options = {
       { from: pkgpath('src/index.html') },
     ]),
   ],
+  postcss: function postCssPlugins() { return [autoprefixer]; },
 };
 
 options.target = webpackTargetElectronRenderer(options);
