@@ -1,5 +1,5 @@
 import R from 'ramda';
-import P from 'path';
+import path from 'path';
 import { generateId } from 'xod-core';
 
 const indexById = R.indexBy(R.prop('id'));
@@ -23,20 +23,20 @@ const getFileType = R.pipe(
 
 // :: "./project/path/to/patch/and/file.ext" -> path { type, folders }
 const parsePath = R.pipe(
-  R.split(P.sep),
+  R.split(path.sep),
   R.reject(R.equals('.')),
-  (path) => ({
-    type: getFileType(R.last(path)),
+  (projectPath) => ({
+    type: getFileType(R.last(projectPath)),
     folders: R.pipe(
       R.slice(1, -2),
-      R.join(P.sep)
-    )(path),
+      R.join(path.sep)
+    )(projectPath),
   })
 );
 
 // :: path { type, folders } -> folders {} -> "folderId"
-const findFolderId = R.curry((path, folders) => {
-  if (path.length === 0) {
+const findFolderId = R.curry((folderPath, folders) => {
+  if (folderPath.length === 0) {
     return null;
   }
 
@@ -65,7 +65,7 @@ const findFolderId = R.curry((path, folders) => {
   };
 
   return getNextPartId(
-    R.split(P.sep, path),
+    R.split(path.sep, folderPath),
     null
   );
 });
@@ -144,7 +144,7 @@ const getProjectFolders = R.pipe(
   R.map(R.prop('folders')),
   R.reject(R.isEmpty),
   R.uniq,
-  R.map(R.split(P.sep)),
+  R.map(R.split(path.sep)),
   recursiveCreateFolders
 );
 // :: mergedData -> patches
