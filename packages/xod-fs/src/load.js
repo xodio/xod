@@ -1,117 +1,91 @@
-import fs from 'fs';
+import R from 'ramda';
 import path from 'path';
-import recReadDir from 'recursive-readdir';
-import expandHomeDir from 'expand-home-dir';
+import { readDir, readJSON } from './read';
 
 import loadLibs from './loadLibs';
 
-const readProjectMetaFile = (projectFile) => new Promise(
-  resolve => {
-    fs.readFile(projectFile, 'utf8', (errRd, projectMeta) => {
-      if (errRd) { throw errRd; }
-      const projectDir = path.dirname(projectFile);
-      try {
-        const result = Object.assign({}, JSON.parse(projectMeta));
-        result.path = projectDir;
+const hasId = R.has('id');
+const withIdFirst = (a, b) => ((!hasId(a) && hasId(b)) || -1);
 
-        resolve(result);
-      } catch (loadMetaError) {
-        resolve({
-          error: true,
-          message: "Can't parse project meta file: invalid JSON.",
-          path: projectDir,
-          stacktrace: loadMetaError,
-        });
-      }
-    });
-  }
+// :: unpackedFile -> true|false
+const isProject = R.pipe(
+  R.prop('path'),
+  path.basename,
+  R.equals('project.xod')
 );
 
-export const getProjects = (workspace) => {
-  const fullPath = expandHomeDir(workspace);
-
-  return new Promise(resolve =>
-    recReadDir(fullPath, (err, files) => {
-      const projects = files.filter(
-        filename => path.basename(filename) === 'project.xod'
-      );
-      const projectPromises = projects.map(readProjectMetaFile);
-
-      return Promise.all(projectPromises).then(resolve);
+// only patch.xodm have a patch id,
+// this method assign ids for patch.xodp by comparing paths
+// :: unpackedFiles -> unpackedFilesWithIds
+const assignIdsToAllPatches = files => {
+  const mem = {};
+  return R.pipe(
+    R.sort(withIdFirst),
+    R.map(file => {
+      const dir = path.dirname(file.path);
+      if (R.has(dir, mem)) { return R.assoc('id', mem[dir], file); }
+      if (hasId(file)) { mem[dir] = file.id; }
+      return file;
     })
-  );
+  )(files);
 };
 
-const loadProjectWithoutLibs = (projectPath, workspace) => {
-  const fullPath = path.resolve(
-    expandHomeDir(workspace),
-    projectPath
-  );
+// :: project -> libs[]
+const getProjectLibs = R.pipe(
+  R.find(isProject),
+  R.path(['content', 'libs'])
+);
 
-  return new Promise(resolve =>
-    recReadDir(fullPath, (err, files) => {
-      const projectPromises = [];
-      const projectFiles = files.filter(
-        filename => (
-          path.basename(filename) === 'project.xod' ||
-          path.basename(filename) === 'patch.xodm' ||
-          path.basename(filename) === 'patch.xodp'
-        )
-      );
+const readProjectMetaFile = (projectFile) => readJSON(projectFile)
+  .then(data => Object.assign(data, {
+    path: path.dirname(projectFile),
+  }));
 
-      projectFiles.forEach(file => projectPromises.push(
-        new Promise(resolveFile => {
-          fs.readFile(file, 'utf8', (errRd, fileData) => {
-            if (errRd) { throw errRd; }
+export const getProjects = (workspace) => readDir(workspace)
+  .then(files => files.filter(filename => path.basename(filename) === 'project.xod'))
+  .then(projects => Promise.all(
+    projects.map(
+      project => readProjectMetaFile(project)
+        .catch(err => ({ error: true, message: err.toString(), path: project }))
+    )
+  ));
 
-            const result = {
-              path: `./${path.relative(workspace, file)}`,
-              content: JSON.parse(fileData),
-            };
+const loadProjectWithoutLibs = (projectPath, workspace) =>
+  readDir(path.resolve(workspace, projectPath))
+  .then(files => files.filter(
+    filename => (
+      path.basename(filename) === 'project.xod' ||
+      path.basename(filename) === 'patch.xodm' ||
+      path.basename(filename) === 'patch.xodp'
+    )
+  ))
+  .then(projects => Promise.all(
+    projects.map(
+      project => readJSON(project)
+        .then(data => {
+          const result = {
+            path: `./${path.relative(workspace, project)}`,
+            content: data,
+          };
 
-            if (result.content.id) {
-              result.id = result.content.id;
-            }
-
-            resolveFile(result);
-          });
+          if (data.id) { result.id = data.id; }
+          return result;
         })
-      ));
-
-      return Promise.all(projectPromises)
-        .then(resultFiles => {
-          const pathsToIds = {};
-          resultFiles.forEach(file => {
-            if (file.path && file.id) {
-              pathsToIds[path.dirname(file.path)] = file.id;
-            }
-          });
-
-          return resultFiles.map(file => {
-            const fileDir = path.dirname(file.path);
-
-            if (!pathsToIds[fileDir]) {
-              return file;
-            }
-            return Object.assign({ id: pathsToIds[fileDir] }, file);
-          });
-        })
-        .then(resolve);
-    })
-  );
-};
+    )
+  ))
+  .then(assignIdsToAllPatches);
 
 export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) =>
   loadProjectWithoutLibs(projectPath, workspace)
-    .then(project => new Promise(resolve => {
-      loadLibs(project[0].content.libs, libDir)
-        .then(libs => {
-          resolve({
-            project,
-            libs,
-          });
-        });
-    }));
+    .then(project => loadLibs(getProjectLibs(project), libDir)
+      .then(libs => ({
+        project,
+        libs,
+      }))
+      .catch(err => {
+        throw Object.assign(err, { path: libDir, libs: getProjectLibs(project) });
+      })
+    );
 
 export default {
   getProjects,

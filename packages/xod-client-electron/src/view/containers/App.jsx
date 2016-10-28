@@ -143,7 +143,7 @@ class App extends React.Component {
 
     if (link && link.download !== undefined) {
       link.href = url;
-      link.setAttribute('download', `${projectName}.xod`);
+      link.setAttribute('download', `${projectName}.xodball`);
 
       document.body.appendChild(link);
       link.click();

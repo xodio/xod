@@ -1,6 +1,5 @@
 import path from 'path';
-import fs from 'fs';
-import recReadDir from 'recursive-readdir';
+import { readDir, readJSON, readFile } from './read';
 import expandHomeDir from 'expand-home-dir';
 
 const implAccordance = {
@@ -11,7 +10,7 @@ const implAccordance = {
 const implTypes = Object.keys(implAccordance);
 
 const getPatchName = (metaPath) => {
-  const parts = metaPath.split('/');
+  const parts = metaPath.split(path.sep);
   return parts[parts.length - 2];
 };
 
@@ -19,51 +18,48 @@ const scanLibsFolder = (libs, libsDir) => new Promise((resolve, reject) => {
   const loaded = {};
   let libsCount = libs.length;
 
-  libs.forEach(lib => recReadDir(
-    path.resolve(libsDir, lib),
-    (err, files) => {
-      if (err) {
-        reject(err);
-      }
+  libs.forEach(lib =>
+    readDir(path.resolve(libsDir, lib))
+      .then(files => files.filter(filename => path.extname(filename) === '.xodm'))
+      .then(metas => {
+        loaded[lib] = metas;
+        libsCount--;
 
-      const metas = files.filter(
-        filename => path.extname(filename) === '.xodm'
-      );
-
-      loaded[lib] = metas;
-      libsCount--;
-
-      if (libsCount === 0) {
-        resolve(loaded);
-      }
-    }
-  ));
+        if (libsCount === 0) {
+          resolve(loaded);
+        }
+      })
+      .catch(err => {
+        reject(Object.assign(err, {
+          path: path.resolve(libsDir, lib),
+          libName: lib,
+        }));
+      })
+  );
 });
 
 const readMetaFiles = (metafiles) => {
   const libNames = Object.keys(metafiles);
-  const libsPromisses = [];
+  let libPromises = [];
 
   libNames.forEach(name => {
     const libMetas = metafiles[name];
 
-    libMetas.forEach(metaPath => {
-      libsPromisses.push(
-        new Promise((resolve) => fs.readFile(metaPath, 'utf8', (err, filedata) => {
-          if (err) { throw err; }
-
-          const patchName = getPatchName(metaPath);
-          const result = JSON.parse(filedata);
-          result.id = `${name}/${patchName}`;
-          result.impl = {};
-
-          resolve(result);
-        }))
-      );
-    });
+    libPromises = libPromises.concat(
+      libMetas.map(metaPath =>
+        readJSON(metaPath)
+          .then(data => Object.assign(
+            data,
+            {
+              id: `${name}/${getPatchName(metaPath)}`,
+              impl: {},
+            }
+          ))
+      )
+    );
   });
 
-  return Promise.all(libsPromisses);
+  return Promise.all(libPromises);
 };
 
 const loadImpl = libsDir => metas => {
@@ -71,23 +67,19 @@ const loadImpl = libsDir => metas => {
 
   metas.forEach(meta => metaPromises.push(
     new Promise(resolve => {
-      const implPromises = [];
       const patchDir = path.resolve(libsDir, meta.id);
-
-      implTypes.forEach(type => implPromises.push(
-        new Promise(resolveImpl => {
-          const implPath = path.resolve(patchDir, implAccordance[type]);
-          fs.stat(implPath, (err) => {
+      const implPromises = implTypes.map(type => {
+        const implPath = path.resolve(patchDir, implAccordance[type]);
+        return readFile(implPath)
+          .then(data => ([type, data]))
+          .catch(err => {
             if (err && err.code === 'ENOENT') {
-              resolveImpl([type, null]);
+              return [type, null];
             }
 
-            fs.readFile(implPath, 'utf-8', (errReadImpl, data) => {
-              resolveImpl([type, data]);
-            });
+            throw Object.assign(err, { path: implPath, type });
           });
-        })
-      ));
+      });
 
       Promise.all(implPromises)
         .then(impls => {

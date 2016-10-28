@@ -20,6 +20,7 @@ module.exports = {
   ],
   resolve: {
     modulesDirectories: [
+      'node_modules',
       pkgpath('node_modules'),
       pkgpath('node_modules/xod-core/node_modules'),
     ],
