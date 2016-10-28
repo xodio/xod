@@ -18,7 +18,6 @@ class Node extends React.Component {
     this.originalWidth = this.props.width;
     this.height = this.props.height;
 
-    this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onPinMouseUp = this.onPinMouseUp.bind(this);
   }
@@ -33,10 +32,6 @@ class Node extends React.Component {
 
   componentDidUpdate() {
     this.updateNodeWidth();
-  }
-
-  onMouseUp() {
-    this.props.onMouseUp(this.id);
   }
 
   onMouseDown(event) {
@@ -124,7 +119,6 @@ class Node extends React.Component {
         <g
           onMouseOver={this.handleOver}
           onMouseOut={this.handleOut}
-          onMouseUp={this.onMouseUp}
         >
           <rect className="body" {...this.getRectProps()} ref="rect" />
           <NodeText
@@ -158,7 +152,6 @@ Node.propTypes = {
   height: React.PropTypes.number,
   isSelected: React.PropTypes.bool,
   isGhost: React.PropTypes.bool,
-  onMouseUp: React.PropTypes.func,
   onMouseDown: React.PropTypes.func,
   onPinMouseUp: React.PropTypes.func,
 };
@@ -167,7 +160,6 @@ Node.defaultProps = {
   height: SIZE.NODE.minHeight,
   isSelected: false,
   isGhost: false,
-  onMouseUp: noop,
   onMouseDown: noop,
   onPinMouseUp: noop,
 };

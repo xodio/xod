@@ -18,7 +18,6 @@ const NodesLayer = ({ nodes, onMouseUp, onMouseDown, onPinMouseUp }) => (
         width={node.width}
         isSelected={node.isSelected}
         isGhost={node.isGhost}
-        onMouseUp={onMouseUp}
         onMouseDown={onMouseDown}
         onPinMouseUp={onPinMouseUp}
       />
@@ -28,7 +27,6 @@ const NodesLayer = ({ nodes, onMouseUp, onMouseDown, onPinMouseUp }) => (
 
 NodesLayer.propTypes = {
   nodes: React.PropTypes.arrayOf(React.PropTypes.object),
-  onMouseUp: React.PropTypes.func,
   onMouseDown: React.PropTypes.func,
   onPinMouseUp: React.PropTypes.func,
 };

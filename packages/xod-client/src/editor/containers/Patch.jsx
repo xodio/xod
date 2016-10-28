@@ -31,7 +31,7 @@ class Patch extends React.Component {
 
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
-    this.onNodeMouseUp = this.onNodeMouseUp.bind(this);
+    this.onNodeSelect = this.onNodeSelect.bind(this);
     this.onNodeMouseDown = this.onNodeMouseDown.bind(this);
     this.onPinMouseUp = this.onPinMouseUp.bind(this);
     this.onLinkClick = this.onLinkClick.bind(this);
@@ -61,10 +61,11 @@ class Patch extends React.Component {
     return true;
   }
 
-  onNodeMouseUp(id) {
+  onNodeSelect(id) {
     const isSelected = EditorSelectors.isNodeSelected(this.props.selection, id);
     const isSelectable = (this.props.mode.isEditing);
     const canSelectNode = (isSelectable && !isSelected);
+
     if (canSelectNode) {
       this.props.actions.selectNode(id);
     }
@@ -73,6 +74,7 @@ class Patch extends React.Component {
   onNodeMouseDown(event, id) {
     const isDraggable = (this.props.mode.isEditing || this.props.mode.isLinking);
 
+    this.onNodeSelect(id);
     if (!isDraggable) { return; }
 
     const node = this.props.nodes[id].position;
@@ -93,7 +95,7 @@ class Patch extends React.Component {
     if (isClicked) {
       this.props.actions.linkPin(nodeId, pinKey);
     } else {
-      this.onNodeMouseUp(nodeId);
+      this.onNodeSelect(nodeId);
     }
   }
 
@@ -279,7 +281,6 @@ class Patch extends React.Component {
           />
           <NodesLayer
             nodes={nodes}
-            onMouseUp={this.onNodeMouseUp}
             onMouseDown={this.onNodeMouseDown}
             onPinMouseUp={this.onPinMouseUp}
           />
