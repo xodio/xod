@@ -24,7 +24,7 @@ export function getStyle(oElm, strCssRule) {
   if (document.defaultView && document.defaultView.getComputedStyle) {
     strValue = document.defaultView.getComputedStyle(oElm, '').getPropertyValue(strCssRule);
   } else if (oElm.currentStyle) {
-    strCss = strCssRule.replace(/\-(\w)/g, (strMatch, p1) => p1.toUpperCase());
+    strCss = strCssRule.replace(/-(\w)/g, (strMatch, p1) => p1.toUpperCase());
     strValue = oElm.currentStyle[strCss];
   }
   return strValue;
