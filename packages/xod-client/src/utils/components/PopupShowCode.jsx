@@ -25,8 +25,7 @@ class PopupShowCode extends React.Component {
         }}
         ref="popup"
         title="Transpiled code:"
-        onCloseClicked={this.props.onClose}
-        onOverlayClicked={this.props.onClose}
+        afterClose={this.props.onClose}
       >
         <textarea
           className="PopupShowCode-codebox"

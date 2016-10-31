@@ -74,8 +74,7 @@ class PopupSetWorkspace extends React.Component {
         }}
         ref="popup"
         title="Choose your workspace directory"
-        onCloseClicked={this.props.onClose}
-        onOverlayClicked={this.props.onClose}
+        afterClose={this.props.onClose}
       >
         {currentWorkspace}
         <p>
