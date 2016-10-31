@@ -94,15 +94,13 @@ class Patch extends React.Component {
     this.props.actions.linkPin(nodeId, pinKey);
   }
   onPinMouseUp(nodeId, pinKey) {
-    if (
-      !this.props.linkingPin ||
-      (
-        this.props.linkingPin.nodeId === nodeId &&
-        this.props.linkingPin.pinKey === pinKey
-      )
-    ) {
-      return;
-    }
+    const lp = this.props.linkingPin;
+    const secondPinClick = !lp || (
+      nodeId === lp.nodeId &&
+      pinKey === lp.pinKey
+    );
+
+    if (secondPinClick) { return; }
 
     this.props.actions.linkPin(nodeId, pinKey);
   }
