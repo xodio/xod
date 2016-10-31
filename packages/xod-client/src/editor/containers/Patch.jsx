@@ -33,6 +33,7 @@ class Patch extends React.Component {
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onNodeSelect = this.onNodeSelect.bind(this);
     this.onNodeMouseDown = this.onNodeMouseDown.bind(this);
+    this.onPinMouseDown = this.onPinMouseDown.bind(this);
     this.onPinMouseUp = this.onPinMouseUp.bind(this);
     this.onLinkClick = this.onLinkClick.bind(this);
 
@@ -89,14 +90,21 @@ class Patch extends React.Component {
     this.setClickNodeId(id);
   }
 
+  onPinMouseDown(nodeId, pinKey) {
+    this.props.actions.linkPin(nodeId, pinKey);
+  }
   onPinMouseUp(nodeId, pinKey) {
-    const isClicked = (this.state.clickNodeId === nodeId);
-
-    if (isClicked) {
-      this.props.actions.linkPin(nodeId, pinKey);
-    } else {
-      this.onNodeSelect(nodeId);
+    if (
+      !this.props.linkingPin ||
+      (
+        this.props.linkingPin.nodeId === nodeId &&
+        this.props.linkingPin.pinKey === pinKey
+      )
+    ) {
+      return;
     }
+
+    this.props.actions.linkPin(nodeId, pinKey);
   }
 
   onLinkClick(id) {
@@ -282,6 +290,7 @@ class Patch extends React.Component {
           <NodesLayer
             nodes={nodes}
             onMouseDown={this.onNodeMouseDown}
+            onPinMouseDown={this.onPinMouseDown}
             onPinMouseUp={this.onPinMouseUp}
           />
           <GhostsLayer

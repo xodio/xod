@@ -20,6 +20,7 @@ class Node extends React.Component {
 
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onPinMouseUp = this.onPinMouseUp.bind(this);
+    this.onPinMouseDown = this.onPinMouseDown.bind(this);
   }
 
   componentDidMount() {
@@ -35,11 +36,20 @@ class Node extends React.Component {
   }
 
   onMouseDown(event) {
+    if (this.refs.pinList.contains(event.target)) {
+      event.preventDefault();
+      return;
+    }
+
     this.props.onMouseDown(event, this.id);
   }
 
   onPinMouseUp(pinId) {
     this.props.onPinMouseUp(this.id, pinId);
+  }
+
+  onPinMouseDown(pinId) {
+    this.props.onPinMouseDown(this.id, pinId);
   }
 
   getOriginPosition() {
@@ -72,8 +82,8 @@ class Node extends React.Component {
   getTextProps() {
     const rectSize = this.getRectProps();
     return {
-      x: rectSize.x + rectSize.width / 2,
-      y: rectSize.y + rectSize.height / 2,
+      x: rectSize.x + (rectSize.width / 2),
+      y: rectSize.y + (rectSize.height / 2),
     };
   }
 
@@ -127,7 +137,7 @@ class Node extends React.Component {
             label={this.props.label}
           />
         </g>
-        <g className="pinlist">
+        <g className="pinlist" ref="pinList">
           {pins.map((pin) =>
             <Pin
               nodeId={this.id}
@@ -135,6 +145,7 @@ class Node extends React.Component {
               key={pin.key}
               {...pin}
               onMouseUp={this.onPinMouseUp}
+              onMouseDown={this.onPinMouseDown}
             />
           )}
         </g>
@@ -154,6 +165,7 @@ Node.propTypes = {
   isGhost: React.PropTypes.bool,
   onMouseDown: React.PropTypes.func,
   onPinMouseUp: React.PropTypes.func,
+  onPinMouseDown: React.PropTypes.func,
 };
 Node.defaultProps = {
   width: SIZE.NODE.minWidth,
@@ -162,6 +174,7 @@ Node.defaultProps = {
   isGhost: false,
   onMouseDown: noop,
   onPinMouseUp: noop,
+  onPinMouseDown: noop,
 };
 
 export default Node;

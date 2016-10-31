@@ -3,7 +3,7 @@ import SVGLayer from './SVGLayer';
 import Node from './Node';
 import { LAYER } from 'xod-core';
 
-const NodesLayer = ({ nodes, onMouseUp, onMouseDown, onPinMouseUp }) => (
+const NodesLayer = ({ nodes, onMouseDown, onPinMouseUp, onPinMouseDown }) => (
   <SVGLayer
     name={LAYER.NODES}
     className="NodesLayer"
@@ -20,6 +20,7 @@ const NodesLayer = ({ nodes, onMouseUp, onMouseDown, onPinMouseUp }) => (
         isGhost={node.isGhost}
         onMouseDown={onMouseDown}
         onPinMouseUp={onPinMouseUp}
+        onPinMouseDown={onPinMouseDown}
       />
     )}
   </SVGLayer>
@@ -29,6 +30,7 @@ NodesLayer.propTypes = {
   nodes: React.PropTypes.arrayOf(React.PropTypes.object),
   onMouseDown: React.PropTypes.func,
   onPinMouseUp: React.PropTypes.func,
+  onPinMouseDown: React.PropTypes.func,
 };
 
 export default NodesLayer;

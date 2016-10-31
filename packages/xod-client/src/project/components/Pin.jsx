@@ -7,10 +7,15 @@ export default class Pin extends React.Component {
   constructor(props) {
     super(props);
     this.onMouseUp = this.onMouseUp.bind(this);
+    this.onMouseDown = this.onMouseDown.bind(this);
   }
 
   onMouseUp() {
     this.props.onMouseUp(this.props.keyName);
+  }
+
+  onMouseDown() {
+    this.props.onMouseDown(this.props.keyName);
   }
 
   getPosition() {
@@ -50,7 +55,7 @@ export default class Pin extends React.Component {
       points: [
         `${x},${y}`,
         `${x + s},${y}`,
-        `${x + s / 2},${y + s}`,
+        `${x + (s / 2)},${y + s}`,
       ].join(' '),
     };
   }
@@ -112,6 +117,7 @@ export default class Pin extends React.Component {
         className={cls}
         id={this.props.keyName}
         onMouseUp={this.onMouseUp}
+        onMouseDown={this.onMouseDown}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}
       >
@@ -132,6 +138,7 @@ Pin.propTypes = {
   position: React.PropTypes.object.isRequired,
   radius: React.PropTypes.number.isRequired,
   onMouseUp: React.PropTypes.func.isRequired,
+  onMouseDown: React.PropTypes.func.isRequired,
   isSelected: React.PropTypes.bool,
   validness: React.PropTypes.number,
 };
