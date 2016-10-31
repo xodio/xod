@@ -192,7 +192,7 @@ class Patch extends React.Component {
     return {
       [COMMAND.SET_MODE_CREATING]: this.props.setModeCreating,
       [COMMAND.DELETE_SELECTION]: this.props.actions.deleteSelection,
-      [COMMAND.ESCAPE]: this.deselectAll,
+      [COMMAND.DESELECT]: this.deselectAll,
     };
   }
 
