@@ -49,7 +49,6 @@ const findFolderId = R.curry((folderPath, folders) => {
     const id = R.pipe(
       R.values,
       R.find(
-        // (f) => { console.log('?', f); return false; }
         R.allPass([
           R.propEq('name', part),
           R.propEq('parentId', parentId),
@@ -80,7 +79,13 @@ const replacePathByTypeAndFolders = unpackedFileData => R.pipe(
 
 // :: unpackedData -> mergedData [ { id, type, folders, content } ]
 const mergeById = R.pipe(
-  R.groupBy(R.prop('id')),
+  R.groupBy(R.pipe(
+    R.prop('path'),
+    (filePath) => {
+      const p = path.parse(filePath);
+      return `${p.dir}${path.sep}${p.name}`;
+    }
+  )),
   R.values,
   R.map(
     group => {
