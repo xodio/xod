@@ -18,9 +18,9 @@ class Node extends React.Component {
     this.originalWidth = this.props.width;
     this.height = this.props.height;
 
-    this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onPinMouseUp = this.onPinMouseUp.bind(this);
+    this.onPinMouseDown = this.onPinMouseDown.bind(this);
   }
 
   componentDidMount() {
@@ -35,16 +35,21 @@ class Node extends React.Component {
     this.updateNodeWidth();
   }
 
-  onMouseUp() {
-    this.props.onMouseUp(this.id);
-  }
-
   onMouseDown(event) {
+    if (this.refs.pinList.contains(event.target)) {
+      event.preventDefault();
+      return;
+    }
+
     this.props.onMouseDown(event, this.id);
   }
 
   onPinMouseUp(pinId) {
     this.props.onPinMouseUp(this.id, pinId);
+  }
+
+  onPinMouseDown(pinId) {
+    this.props.onPinMouseDown(this.id, pinId);
   }
 
   getOriginPosition() {
@@ -77,8 +82,8 @@ class Node extends React.Component {
   getTextProps() {
     const rectSize = this.getRectProps();
     return {
-      x: rectSize.x + rectSize.width / 2,
-      y: rectSize.y + rectSize.height / 2,
+      x: rectSize.x + (rectSize.width / 2),
+      y: rectSize.y + (rectSize.height / 2),
     };
   }
 
@@ -124,7 +129,6 @@ class Node extends React.Component {
         <g
           onMouseOver={this.handleOver}
           onMouseOut={this.handleOut}
-          onMouseUp={this.onMouseUp}
         >
           <rect className="body" {...this.getRectProps()} ref="rect" />
           <NodeText
@@ -133,7 +137,7 @@ class Node extends React.Component {
             label={this.props.label}
           />
         </g>
-        <g className="pinlist">
+        <g className="pinlist" ref="pinList">
           {pins.map((pin) =>
             <Pin
               nodeId={this.id}
@@ -141,6 +145,7 @@ class Node extends React.Component {
               key={pin.key}
               {...pin}
               onMouseUp={this.onPinMouseUp}
+              onMouseDown={this.onPinMouseDown}
             />
           )}
         </g>
@@ -158,18 +163,18 @@ Node.propTypes = {
   height: React.PropTypes.number,
   isSelected: React.PropTypes.bool,
   isGhost: React.PropTypes.bool,
-  onMouseUp: React.PropTypes.func,
   onMouseDown: React.PropTypes.func,
   onPinMouseUp: React.PropTypes.func,
+  onPinMouseDown: React.PropTypes.func,
 };
 Node.defaultProps = {
   width: SIZE.NODE.minWidth,
   height: SIZE.NODE.minHeight,
   isSelected: false,
   isGhost: false,
-  onMouseUp: noop,
   onMouseDown: noop,
   onPinMouseUp: noop,
+  onPinMouseDown: noop,
 };
 
 export default Node;

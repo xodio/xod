@@ -31,8 +31,9 @@ class Patch extends React.Component {
 
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
-    this.onNodeMouseUp = this.onNodeMouseUp.bind(this);
+    this.onNodeSelect = this.onNodeSelect.bind(this);
     this.onNodeMouseDown = this.onNodeMouseDown.bind(this);
+    this.onPinMouseDown = this.onPinMouseDown.bind(this);
     this.onPinMouseUp = this.onPinMouseUp.bind(this);
     this.onLinkClick = this.onLinkClick.bind(this);
 
@@ -61,10 +62,11 @@ class Patch extends React.Component {
     return true;
   }
 
-  onNodeMouseUp(id) {
+  onNodeSelect(id) {
     const isSelected = EditorSelectors.isNodeSelected(this.props.selection, id);
     const isSelectable = (this.props.mode.isEditing);
     const canSelectNode = (isSelectable && !isSelected);
+
     if (canSelectNode) {
       this.props.actions.selectNode(id);
     }
@@ -73,6 +75,7 @@ class Patch extends React.Component {
   onNodeMouseDown(event, id) {
     const isDraggable = (this.props.mode.isEditing || this.props.mode.isLinking);
 
+    this.onNodeSelect(id);
     if (!isDraggable) { return; }
 
     const node = this.props.nodes[id].position;
@@ -87,14 +90,19 @@ class Patch extends React.Component {
     this.setClickNodeId(id);
   }
 
+  onPinMouseDown(nodeId, pinKey) {
+    this.props.actions.linkPin(nodeId, pinKey);
+  }
   onPinMouseUp(nodeId, pinKey) {
-    const isClicked = (this.state.clickNodeId === nodeId);
+    const lp = this.props.linkingPin;
+    const firstPinClick = !lp || (
+      nodeId === lp.nodeId &&
+      pinKey === lp.pinKey
+    );
 
-    if (isClicked) {
-      this.props.actions.linkPin(nodeId, pinKey);
-    } else {
-      this.onNodeMouseUp(nodeId);
-    }
+    if (firstPinClick) { return; }
+
+    this.props.actions.linkPin(nodeId, pinKey);
   }
 
   onLinkClick(id) {
@@ -190,7 +198,7 @@ class Patch extends React.Component {
     return {
       [COMMAND.SET_MODE_CREATING]: this.props.setModeCreating,
       [COMMAND.DELETE_SELECTION]: this.props.actions.deleteSelection,
-      [COMMAND.ESCAPE]: this.deselectAll,
+      [COMMAND.DESELECT]: this.deselectAll,
     };
   }
 
@@ -279,8 +287,8 @@ class Patch extends React.Component {
           />
           <NodesLayer
             nodes={nodes}
-            onMouseUp={this.onNodeMouseUp}
             onMouseDown={this.onNodeMouseDown}
+            onPinMouseDown={this.onPinMouseDown}
             onPinMouseUp={this.onPinMouseUp}
           />
           <GhostsLayer

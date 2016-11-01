@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 const pkgpath = subpath => path.join(__dirname, '..', subpath);
 const assetsPath = fs.realpathSync(pkgpath('node_modules/xod-client/src/core/assets'));
@@ -40,6 +41,7 @@ module.exports = {
         loaders: [
           'style',
           'css',
+          'postcss',
           'sass?outputStyle=expanded',
         ],
       },
@@ -71,4 +73,5 @@ module.exports = {
       { from: pkgpath('src/index.html') },
     ]),
   ],
+  postcss: function postCssPlugins() { return [autoprefixer]; },
 };

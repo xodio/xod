@@ -258,7 +258,7 @@ const mapDispatchToProps = (dispatch) => ({
     deletePatch: ProjectActions.deletePatch,
     renameProject: ProjectActions.renameProject,
     movePatch: ProjectActions.movePatch,
-    addMessage: MessageActions.addMessage,
+    addMessage: MessageActions.addError,
   }, dispatch),
 });
 

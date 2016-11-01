@@ -833,7 +833,9 @@ export const getProjectPojo = (state) => {
   )(project);
 };
 
+const prettyJSON = data => JSON.stringify(data, undefined, 2);
+
 export const getProjectJSON = R.compose(
-  JSON.stringify,
+  prettyJSON,
   getProjectPojo
 );
