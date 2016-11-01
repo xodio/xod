@@ -11,9 +11,9 @@ module.exports = {
   devtool: 'source-map',
   entry: [
     'babel-polyfill',
+    pkgpath('node_modules/xod-client/src/core/styles/main.scss'),
     pkgpath('src/shim.js'),
     pkgpath('src/index.jsx'),
-    pkgpath('node_modules/xod-client/src/core/styles/main.scss'),
   ],
   output: {
     filename: 'bundle.js',
