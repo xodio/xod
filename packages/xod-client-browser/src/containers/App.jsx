@@ -35,6 +35,7 @@ class App extends React.Component {
     this.onResize = this.onResize.bind(this);
     this.onUpload = this.onUpload.bind(this);
     this.onShowCode = this.onShowCode.bind(this);
+    this.onImportChange = this.onImportChange.bind(this);
     this.onImport = this.onImport.bind(this);
     this.onExport = this.onExport.bind(this);
     this.onSelectNodeType = this.onSelectNodeType.bind(this);
@@ -78,6 +79,17 @@ class App extends React.Component {
       code: transpile({ project: this.props.project, runtime }),
     });
     this.showCodePopup();
+  }
+
+  onImportChange(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      this.onImport(e.target.result);
+    };
+
+    reader.readAsText(file);
   }
 
   onImport(json) {
@@ -179,8 +191,8 @@ class App extends React.Component {
       >
         <input
           type="file"
-          accept=".xod"
-          onChange={this.onImport}
+          accept=".xodball"
+          onChange={this.onImportChange}
         />
         <span>
           Import project

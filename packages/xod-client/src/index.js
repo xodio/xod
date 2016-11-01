@@ -21,6 +21,7 @@ export { default as Toolbar } from './utils/components/Toolbar';
 export { default as Root } from './core/containers/Root';
 export { container as Editor, CreateNodeWidget } from './editor';
 export { SnackBar } from './messages';
+export * from './messages/constants';
 export { UserPanel } from './user';
 export { default as PopupUploadProject } from './processes/components/PopupUploadProject';
 export { default as DevTools } from './core/containers/DevTools';
@@ -41,6 +42,7 @@ import * as BrowserUtils from './utils/browser';
 import Root from './core/containers/Root';
 import { container as Editor, CreateNodeWidget } from './editor';
 import { SnackBar } from './messages';
+import * as MessageConstants from './messages/constants';
 import { UserPanel } from './user';
 import Toolbar from './utils/components/Toolbar';
 import PopupShowCode from './utils/components/PopupShowCode';
@@ -76,6 +78,7 @@ export default Object.assign({
   ProcessActions,
 
   EditorConstants,
+  MessageConstants,
   UtilsConstants,
   BrowserUtils
 );
