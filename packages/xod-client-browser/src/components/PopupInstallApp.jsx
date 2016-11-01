@@ -22,8 +22,7 @@ class PopupInstallApp extends React.Component {
         }}
         ref="popup"
         title="Oops! You need a Chrome App!"
-        onCloseClicked={this.props.onClose}
-        onOverlayClicked={this.props.onClose}
+        afterClose={this.props.onClose}
       >
         <p>
           To use this feature you have to install a Chrome Application.<br />
