@@ -1,6 +1,6 @@
-import { v4 } from 'uuid';
+import { generate } from 'shortid';
 
 export * from './gmath';
 export * from './ramda';
 
-export const generateId = () => v4();
+export const generateId = () => generate();
