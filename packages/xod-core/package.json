@@ -15,6 +15,7 @@
   "dependencies": {
     "co": "^4.6.0",
     "ramda": "^0.21.0",
+    "shortid": "^2.2.6",
     "uuid": "^2.0.3"
   },
   "engines": {
