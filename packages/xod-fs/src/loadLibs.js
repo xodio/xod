@@ -1,3 +1,4 @@
+import R from 'ramda';
 import path from 'path';
 import { readDir, readJSON, readFile } from './read';
 import expandHomeDir from 'expand-home-dir';
@@ -14,29 +15,18 @@ const getPatchName = (metaPath) => {
   return parts[parts.length - 2];
 };
 
-const scanLibsFolder = (libs, libsDir) => new Promise((resolve, reject) => {
-  const loaded = {};
-  let libsCount = libs.length;
-
-  libs.forEach(lib =>
-    readDir(path.resolve(libsDir, lib))
+const scanLibsFolder = (libs, libsDir) => Promise.all(
+  libs.map(
+    lib => readDir(path.resolve(libsDir, lib))
       .then(files => files.filter(filename => path.extname(filename) === '.xodm'))
-      .then(metas => {
-        loaded[lib] = metas;
-        libsCount--;
-
-        if (libsCount === 0) {
-          resolve(loaded);
-        }
-      })
       .catch(err => {
-        reject(Object.assign(err, {
+        throw Object.assign(err, {
           path: path.resolve(libsDir, lib),
           libName: lib,
-        }));
+        });
       })
-  );
-});
+  ))
+  .then(R.zipObj(libs));
 
 const readMetaFiles = (metafiles) => {
   const libNames = Object.keys(metafiles);
