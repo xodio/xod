@@ -4,6 +4,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import core from 'xod-core';
 
+import DevTools from '../../utils/devtools';
 import generateReducers from '../reducer';
 import initialState from '../state';
 import { EditorMiddleware } from '../middlewares';
@@ -67,7 +68,10 @@ export default class Root extends React.Component {
   render() {
     return (
       <Provider store={this.store}>
+        <div>
         {this.props.children}
+        {DevTools}
+        </div>
       </Provider>
     );
   }
