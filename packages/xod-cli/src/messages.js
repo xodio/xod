@@ -3,7 +3,8 @@
 import clc from 'cli-color';
 
 function write(msg) {
-  process.stderr.write(msg + '\n');
+  process.stderr.write(msg);
+  process.stderr.write('\n');
 }
 
 export function error(msg) {

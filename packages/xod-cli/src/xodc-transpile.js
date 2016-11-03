@@ -58,7 +58,7 @@ export default (input, program) => {
           });
       }
 
-      msg.success(`Successfully transpiled`);
+      msg.success('Successfully transpiled');
       process.stdout.write(code);
       process.exit(0);
       return code;
