@@ -35,50 +35,34 @@ const getProjectState = (state, path) => {
   return state;
 };
 
-export const getProject = (state) => {
-  const path = ['project', 'present'];
-  return getProjectState(state, path);
-};
+export const getProject = state => R.propOr(state, 'project', state);
+
+const getPatchStatic = patch => R.propOr(patch, 'static', patch);
+const getPatchPresent = patch => R.propOr(patch, 'present', patch);
 
 export const getPatches = R.pipe(
   getProject,
-  R.prop('patches')
+  R.prop('patches'),
+  R.mapObjIndexed(patch => R.merge(getPatchStatic(patch), getPatchPresent(patch)))
 );
 
 export const getPatchById = R.curry((id, projectState) =>
-  R.view(
-    R.lensPath([
-      'patches',
-      id,
-    ])
+  R.pipe(
+    getPatches,
+    R.prop(id)
   )(projectState)
-);
-
-export const getPatchStaticById = R.curry(
-  (id, projectState) => {
-    const patch = getPatchById(id, projectState);
-    return R.propOr(patch, 'static', patch);
-  }
-);
-
-export const getPatchContentById = R.curry(
-  (id, projectState) => {
-    const patch = getPatchById(id, projectState);
-    return R.propOr(patch, 'present', patch);
-  }
 );
 
 export const getPatchesByFolderId = (state, folderId) => R.pipe(
   getPatches,
   R.values,
-  R.map(R.prop('present')),
   R.filter(R.propEq('folderId', folderId))
 )(state);
 
 const getPatchByEntityId = (projectState, id, entityBranch) => R.pipe(
   R.prop('patches'),
   R.keys,
-  R.map(patchId => getPatchContentById(patchId, projectState)),
+  R.map(patchId => getPatchById(patchId, projectState)),
   R.filter(patch => R.has(id, R.prop(entityBranch, patch))),
   R.head
 )(projectState);
@@ -91,7 +75,7 @@ export const getPatchByLinkId = (projectState, linkId) =>
 
 export const getPatchName = (projectState, patchId) => R.compose(
   R.prop('label'),
-  getPatchContentById(patchId)
+  getPatchByIdById(patchId)
 )(projectState);
 
 export const doesPinHaveLinks = (pin, links) => R.pipe(
@@ -160,7 +144,7 @@ export const parseProjectJSON = (json) => {
   const patches = R.pipe(
     getPatches,
     R.values,
-    R.reduce((p, patch) => R.assoc(patch.id, { past: [], present: patch, future: [] }, p), {})
+    R.reduce((p, patch) => R.assoc(patch.id, patch, p), {})
   )(project);
   const projectToLoad = R.assoc('patches', patches, project);
   return projectToLoad;
@@ -194,7 +178,7 @@ export const getNodeTypeById = R.curry((state, id) => R.pipe(
 
 export const getNodes = R.curry((patchId, state) => R.compose(
   R.prop('nodes'),
-  getPatchContentById(patchId)
+  getPatchById(patchId)
 )(state));
 
 /*
@@ -268,7 +252,7 @@ export const getPinPosition = (nodeTypePins, key, nodePosition) => {
 
 export const getLinks = (state, patchId) => R.compose(
   R.prop('links'),
-  getPatchContentById(patchId)
+  getPatchById(patchId)
 )(state);
 
 export const getLinkById = (state, props) => R.pipe(
@@ -325,7 +309,6 @@ export const getTreeView = (state, patchId) => {
     )(folders);
     const patchesAtLevel = R.pipe(
       R.values,
-      R.map(R.prop('present')),
       R.filter(R.propEq('folderId', parentId))
     )(patches);
 
@@ -352,7 +335,7 @@ export const getTreeView = (state, patchId) => {
 
   const folders = getFolders(state);
   const patches = getPatches(state);
-  const curPatch = getPatchContentById(patchId, state);
+  const curPatch = getPatchById(patchId, state);
   const curPatchPath = getFoldersPath(folders, curPatch.folderId);
   const projectChildren = makeTree(folders, patches, null, curPatchPath);
   const projectName = R.pipe(
@@ -520,12 +503,7 @@ export const getPatchNode = R.curry((state, patch) => {
 
 export const getPatchNodes = state => R.pipe(
   getPatches,
-  R.map(patch =>
-    R.pipe(
-      R.propOr(patch, 'present'),
-      getPatchNode(state)
-    )(patch)
-  ),
+  R.map(getPatchNode(state)),
   R.pickBy(R.propEq('isPatchNode', true))
 )(state);
 
@@ -832,7 +810,6 @@ export const getProjectPojo = (state) => {
   const patches = R.pipe(
     getPatches,
     R.values,
-    R.map(patch => R.propOr(patch, 'present', patch)),
     indexById
   )(project);
 
