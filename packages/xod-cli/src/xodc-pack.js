@@ -3,7 +3,6 @@
 
 import path from 'path';
 import { loadProjectWithLibs, pack, writeJSON } from 'xod-fs';
-import { Spinner } from 'clui';
 import * as msg from './messages';
 
 export default (projectDir, output) => {
@@ -13,19 +12,13 @@ export default (projectDir, output) => {
 
   msg.notice(`Packing ${dirName} into ${output}`);
 
-  const spinner = new Spinner('Packing project...');
-
-  spinner.start();
-
   loadProjectWithLibs(projectPath, workspace)
     .then(({ project, libs }) => pack(project, libs))
     .then(packed => writeJSON(output, packed))
     .then(() => {
-      spinner.stop();
       msg.success(`Packed project successfully written into ${output}.`);
     })
     .catch(err => {
-      spinner.stop();
       msg.error(err);
       process.exit(0);
     });

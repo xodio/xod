@@ -16,7 +16,6 @@
   "main": "dist/index.js",
   "dependencies": {
     "cli-color": "^1.1.0",
-    "clui": "^0.3.1",
     "commander": "^2.9.0",
     "ramda": "^0.21.0",
     "xod-espruino": "^0.0.1",
