@@ -59,8 +59,7 @@ export default (input, program) => {
             msg.success(`Result has been wrote into ${output} file.`);
           })
           .catch(err => {
-            msg.error(`Error: Can't write result into ${output} file.`);
-            msg.notice(err);
+            msg.error(err);
           });
       }
 
@@ -70,7 +69,6 @@ export default (input, program) => {
     })
     .catch(err => {
       spinner.stop();
-      msg.error('Error: Can\'t transpile code!');
-      msg.notice(err);
+      msg.error(err);
     });
 };

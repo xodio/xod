@@ -28,8 +28,7 @@ export default (xodball, workspace) => {
     })
     .catch(err => {
       spinner.stop();
-      msg.error(`${msg.bold('Error')}: Can't unpack the project!`);
-      msg.notice(err);
+      msg.error(err);
       process.exit(0);
     });
 };

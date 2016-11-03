@@ -26,8 +26,7 @@ export default (projectDir, output) => {
     })
     .catch(err => {
       spinner.stop();
-      msg.error(`${msg.bold('Error')}: Can't pack the project!`);
-      msg.notice(err);
+      msg.error(err);
       process.exit(0);
     });
 };
