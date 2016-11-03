@@ -4,7 +4,7 @@ import {
   NODE_DELETE,
   NODE_UPDATE_PROPERTY,
   NODE_CHANGE_PIN_MODE,
-} from '../actionTypes';
+} from '../../actionTypes';
 
 import { PROPERTY_TYPE_PARSE } from 'xod-core';
 import R from 'ramda';

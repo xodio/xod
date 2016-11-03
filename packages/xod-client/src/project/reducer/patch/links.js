@@ -3,7 +3,7 @@ import {
   NODE_DELETE,
   LINK_ADD,
   LINK_DELETE,
-} from '../actionTypes';
+} from '../../actionTypes';
 
 export const copyLink = (link) => R.clone(link);
 

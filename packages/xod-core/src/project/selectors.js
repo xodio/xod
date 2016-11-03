@@ -45,15 +45,25 @@ export const getPatches = R.pipe(
   R.prop('patches')
 );
 
-export const getPatchById = R.curry(
-  (id, projectState) => {
-    const patch = R.view(
-      R.lensPath([
-        'patches',
-        id,
-      ])
-    )(projectState);
+export const getPatchById = R.curry((id, projectState) =>
+  R.view(
+    R.lensPath([
+      'patches',
+      id,
+    ])
+  )(projectState)
+);
 
+export const getPatchStaticById = R.curry(
+  (id, projectState) => {
+    const patch = getPatchById(id, projectState);
+    return R.propOr(patch, 'static', patch);
+  }
+);
+
+export const getPatchContentById = R.curry(
+  (id, projectState) => {
+    const patch = getPatchById(id, projectState);
     return R.propOr(patch, 'present', patch);
   }
 );
@@ -68,7 +78,7 @@ export const getPatchesByFolderId = (state, folderId) => R.pipe(
 const getPatchByEntityId = (projectState, id, entityBranch) => R.pipe(
   R.prop('patches'),
   R.keys,
-  R.map(patchId => getPatchById(patchId, projectState)),
+  R.map(patchId => getPatchContentById(patchId, projectState)),
   R.filter(patch => R.has(id, R.prop(entityBranch, patch))),
   R.head
 )(projectState);
@@ -81,7 +91,7 @@ export const getPatchByLinkId = (projectState, linkId) =>
 
 export const getPatchName = (projectState, patchId) => R.compose(
   R.prop('label'),
-  getPatchById(patchId)
+  getPatchContentById(patchId)
 )(projectState);
 
 export const doesPinHaveLinks = (pin, links) => R.pipe(
@@ -184,7 +194,7 @@ export const getNodeTypeById = R.curry((state, id) => R.pipe(
 
 export const getNodes = R.curry((patchId, state) => R.compose(
   R.prop('nodes'),
-  getPatchById(patchId)
+  getPatchContentById(patchId)
 )(state));
 
 /*
@@ -258,7 +268,7 @@ export const getPinPosition = (nodeTypePins, key, nodePosition) => {
 
 export const getLinks = (state, patchId) => R.compose(
   R.prop('links'),
-  getPatchById(patchId)
+  getPatchContentById(patchId)
 )(state);
 
 export const getLinkById = (state, props) => R.pipe(
@@ -342,7 +352,7 @@ export const getTreeView = (state, patchId) => {
 
   const folders = getFolders(state);
   const patches = getPatches(state);
-  const curPatch = getPatchById(patchId, state);
+  const curPatch = getPatchContentById(patchId, state);
   const curPatchPath = getFoldersPath(folders, curPatch.folderId);
   const projectChildren = makeTree(folders, patches, null, curPatchPath);
   const projectName = R.pipe(

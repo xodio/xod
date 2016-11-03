@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
 import core from 'xod-core';
 import generateReducers from '../src/core/reducer';
-import { nodes } from '../src/project/reducer/nodes';
+import { nodes } from '../src/project/reducer/patch/nodes';
 import * as Actions from '../src/project/actions';
 import * as PrepareTo from '../src/project/actionPreparations';
 
@@ -456,7 +456,7 @@ describe('Project reducer: ', () => {
       store = mockStore(mockState);
     });
 
-    const getPatch = R.prop('present');
+    const getPatch = R.prop('static');
 
     it('should add patch without parentId', () => {
       const newPatchId = store.dispatch(Actions.addPatch('Test patch'));

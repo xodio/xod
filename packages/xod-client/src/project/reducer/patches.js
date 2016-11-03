@@ -1,43 +1,22 @@
 import R from 'ramda';
-import undoable from 'redux-undo';
-
-import { patchReducer } from './patch';
+import patchReducer, { newPatch } from './patch';
 import applyReducers from '../../utils/applyReducers';
 import {
-  getPatchUndoType,
-  getPatchRedoType,
-  getPatchClearHistoryType,
   PATCH_ADD,
   PATCH_DELETE,
 } from '../actionTypes';
 
-export const newPatch = ({ id, label, folderId }) => ({
-  past: [],
-  present: {
-    id,
-    label: label || 'New patch',
-    folderId: folderId || null,
-    nodes: {},
-    links: {},
-  },
-  future: [],
-});
+// :: patchIds -> { patchId: reducer }
+const generateReducers = R.pipe(
+  R.values,
+  R.reduce(
+    (p, id) => R.assoc(id, patchReducer(id), p),
+    {}
+  )
+);
 
 export const patches = (patchIds) => {
-  const undoFilter = (action) => !(R.pathEq(['meta', 'skipHistory'], true, action));
-
-  const reducers = R.pipe(
-    R.values,
-    R.reduce((p, id) => {
-      const undoConfig = {
-        filter: undoFilter,
-        undoType: getPatchUndoType(id),
-        redoType: getPatchRedoType(id),
-        clearHistoryType: getPatchClearHistoryType(id),
-      };
-      return R.assoc(id, undoable(patchReducer(id), undoConfig), p);
-    }, {})
-  )(patchIds);
+  const reducers = generateReducers(patchIds);
 
   return (state = {}, action) => {
     switch (action.type) {
@@ -58,3 +37,4 @@ export const patches = (patchIds) => {
     }
   };
 };
+export { newPatch } from './patch';
