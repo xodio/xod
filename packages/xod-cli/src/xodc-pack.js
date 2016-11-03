@@ -10,13 +10,13 @@ export default (projectDir, output) => {
   const workspace = path.resolve(projectDir, '..');
   const dirName = projectDir.split('/').filter(f => f !== '').pop();
 
-  msg.notice(`Packing ${dirName} into ${output}`);
+  msg.notice(`Packing ${dirName} into ${output} ...`);
 
   loadProjectWithLibs(projectPath, workspace)
     .then(({ project, libs }) => pack(project, libs))
     .then(packed => writeJSON(output, packed))
     .then(() => {
-      msg.success(`Packed project successfully written into ${output}.`);
+      msg.success(`Packed project successfully written into ${output}`);
     })
     .catch(err => {
       msg.error(err);

@@ -9,16 +9,16 @@ export default (xodball, workspace) => {
   const workspacePath = path.resolve(workspace);
 
   msg.notice(`Unpacking ${xodballPath}`);
-  msg.notice(`into ${workspacePath}`);
+  msg.notice(`into ${workspacePath} ...`);
 
-  let projectName = 'Unknown project';
+  let projectName = '<UNTITLED PROJECT>';
 
   readJSON(xodballPath)
     .then(project => { projectName = project.meta.name; return project; })
     .then(arrangeByFiles)
     .then(save(workspacePath))
     .then(() => {
-      msg.success(`Project "${msg.bold(projectName)}" successfully unpacked!`);
+      msg.success(`Successfully unpacked "${projectName}"`);
       process.exit(0);
     })
     .catch(err => {

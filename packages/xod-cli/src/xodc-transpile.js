@@ -16,7 +16,7 @@ export default (input, program) => {
   const extension = path.extname(input);
   const filename = path.basename(input);
 
-  msg.notice(`Transpiling ${filename} for ${target}`);
+  msg.notice(`Transpiling ${filename} for ${target} ...`);
 
   new Promise((resolve, reject) => {
     const stat = fs.statSync(input);
@@ -43,7 +43,7 @@ export default (input, program) => {
     }
 
     if (!stat.isFile() && !isDirectory) {
-      reject(new Error(`Can't transpile it: unknown type of input "${input}".`));
+      reject(new Error(`Unexpected input "${input}"`));
     }
   })
     .then(project => transpile({ project, runtime }))
@@ -51,13 +51,14 @@ export default (input, program) => {
       if (output) {
         return writeJSON(output, code)
           .then(() => {
-            msg.success(`Result has been wrote into ${output} file.`);
+            msg.success(`Successfully transpiled to ${output}`);
           })
           .catch(err => {
             msg.error(err);
           });
       }
 
+      msg.success(`Successfully transpiled`);
       process.stdout.write(code);
       process.exit(0);
       return code;
