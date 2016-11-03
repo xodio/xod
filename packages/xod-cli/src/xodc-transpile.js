@@ -8,7 +8,6 @@ import fs from 'fs';
 import path from 'path';
 import { loadProjectWithLibs, pack, writeJSON, readJSON } from 'xod-fs';
 import { transpile, runtime } from 'xod-espruino';
-import { Spinner } from 'clui';
 import * as msg from './messages';
 
 export default (input, program) => {
@@ -17,10 +16,7 @@ export default (input, program) => {
   const extension = path.extname(input);
   const filename = path.basename(input);
 
-  msg.notice(`Transpiling ${filename} for ${msg.bold(target)}`);
-
-  const spinner = new Spinner('Transpiling code...');
-  spinner.start();
+  msg.notice(`Transpiling ${filename} for ${target} ...`);
 
   new Promise((resolve, reject) => {
     const stat = fs.statSync(input);
@@ -47,30 +43,28 @@ export default (input, program) => {
     }
 
     if (!stat.isFile() && !isDirectory) {
-      reject(new Error(`Can't transpile it: unknown type of input "${input}".`));
+      reject(new Error(`Unexpected input "${input}"`));
     }
   })
     .then(project => transpile({ project, runtime }))
     .then(code => {
-      spinner.stop();
       if (output) {
         return writeJSON(output, code)
           .then(() => {
-            msg.success(`Result has been wrote into ${output} file.`);
+            msg.success(`Successfully transpiled to ${output}`);
           })
           .catch(err => {
-            msg.error(`Error: Can't write result into ${output} file.`);
-            msg.notice(err);
+            msg.error(err);
           });
       }
 
+      msg.success('Successfully transpiled');
       process.stdout.write(code);
-      process.exit(1);
+      process.exit(0);
       return code;
     })
     .catch(err => {
-      spinner.stop();
-      msg.error('Error: Can\'t transpile code!');
-      msg.notice(err);
+      msg.error(err);
+      process.exit(1);
     });
 };

@@ -2,7 +2,6 @@
 
 import path from 'path';
 import { arrangeByFiles, save, readJSON } from 'xod-fs';
-import { Spinner } from 'clui';
 import * as msg from './messages';
 
 export default (xodball, workspace) => {
@@ -10,26 +9,20 @@ export default (xodball, workspace) => {
   const workspacePath = path.resolve(workspace);
 
   msg.notice(`Unpacking ${xodballPath}`);
-  msg.notice(`into ${workspacePath}`);
+  msg.notice(`into ${workspacePath} ...`);
 
-  const spinner = new Spinner('Unpacking project...');
-  spinner.start();
-
-  let projectName = 'Unknown project';
+  let projectName = '<UNTITLED PROJECT>';
 
   readJSON(xodballPath)
     .then(project => { projectName = project.meta.name; return project; })
     .then(arrangeByFiles)
     .then(save(workspacePath))
     .then(() => {
-      spinner.stop();
-      msg.success(`Project "${msg.bold(projectName)}" successfully unpacked!`);
-      process.exit(1);
+      msg.success(`Successfully unpacked "${projectName}"`);
+      process.exit(0);
     })
     .catch(err => {
-      spinner.stop();
-      msg.error(`${msg.bold('Error')}: Can't unpack the project!`);
-      msg.notice(err);
-      process.exit(0);
+      msg.error(err);
+      process.exit(1);
     });
 };
