@@ -59,10 +59,11 @@ export default (input, program) => {
       }
 
       process.stdout.write(code);
-      process.exit(1);
+      process.exit(0);
       return code;
     })
     .catch(err => {
       msg.error(err);
+      process.exit(1);
     });
 };

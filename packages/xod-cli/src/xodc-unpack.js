@@ -19,10 +19,10 @@ export default (xodball, workspace) => {
     .then(save(workspacePath))
     .then(() => {
       msg.success(`Project "${msg.bold(projectName)}" successfully unpacked!`);
-      process.exit(1);
+      process.exit(0);
     })
     .catch(err => {
       msg.error(err);
-      process.exit(0);
+      process.exit(1);
     });
 };

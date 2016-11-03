@@ -20,6 +20,6 @@ export default (projectDir, output) => {
     })
     .catch(err => {
       msg.error(err);
-      process.exit(0);
+      process.exit(1);
     });
 };
