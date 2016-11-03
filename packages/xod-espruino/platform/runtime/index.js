@@ -170,6 +170,7 @@ function Project(args) {
   this._topology = args.topology;
   this._pendingTransaction = false;
   this._inTransaction = false;
+  this._dirtyIndex = 0;
 }
 
 /**
@@ -208,6 +209,7 @@ Project.prototype.flushTransaction = function() {
     this.forEachDirtyNode(function(node) { node.evaluate(); });
   } finally {
     this._inTransaction = false;
+    this._dirtyIndex = 0;
   }
 
   setTimeout(this.flushTransaction.bind(this), 0);
@@ -221,10 +223,11 @@ Project.prototype.flushTransaction = function() {
 Project.prototype.getFirstDirtyNode = function() {
   var i, nodeId, node;
   var len = this._topology.length;
-  for (i = 0; i < len; ++i) {
+  for (i = this._dirtyIndex; i < len; ++i) {
     nodeId = this._topology[i];
     node = this._nodes[nodeId];
     if (node.isDirty()) {
+      this._dirtyIndex = i + 1;
       return node;
     }
   }
