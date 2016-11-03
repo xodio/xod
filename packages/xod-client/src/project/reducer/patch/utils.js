@@ -15,9 +15,6 @@ export const newPatch = ({
   },
   past: [],
   present: {
-    id,
-    label,
-    folderId,
     nodes,
     links,
   },

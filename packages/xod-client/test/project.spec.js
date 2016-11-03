@@ -456,14 +456,12 @@ describe('Project reducer: ', () => {
       store = mockStore(mockState);
     });
 
-    const getPatch = R.prop('static');
-
     it('should add patch without parentId', () => {
       const newPatchId = store.dispatch(Actions.addPatch('Test patch'));
       const patches = core.getPatches(store.getState());
 
       chai.expect(R.keys(patches)).to.have.lengthOf(2);
-      chai.expect(getPatch(patches[newPatchId]).folderId).to.be.equal(null);
+      chai.expect(patches[newPatchId].folderId).to.be.equal(null);
     });
 
     it('should add patch with correct folderId', () => {
@@ -473,7 +471,7 @@ describe('Project reducer: ', () => {
       const patches = core.getPatches(store.getState());
 
       chai.expect(R.keys(patches)).to.have.lengthOf(2);
-      chai.expect(getPatch(patches[childPatchId]).folderId).to.be.equal(folders[parentFolderId].id);
+      chai.expect(patches[childPatchId].folderId).to.be.equal(folders[parentFolderId].id);
     });
 
     it('should delete patch', () => {
@@ -491,7 +489,7 @@ describe('Project reducer: ', () => {
       store.dispatch(Actions.movePatch({ id: lastPatchId, folderId: parentFolderId }));
       const patches = core.getPatches(store.getState());
 
-      chai.expect(getPatch(patches[lastPatchId]).folderId).to.be.equal(parentFolderId);
+      chai.expect(patches[lastPatchId].folderId).to.be.equal(parentFolderId);
     });
 
     it('should rename patch', () => {
@@ -500,7 +498,7 @@ describe('Project reducer: ', () => {
       store.dispatch(Actions.renamePatch(lastPatchId, newName));
       const patches = core.getPatches(store.getState());
 
-      chai.expect(getPatch(patches[lastPatchId]).label).to.be.equal(newName);
+      chai.expect(patches[lastPatchId].label).to.be.equal(newName);
     });
   });
 
