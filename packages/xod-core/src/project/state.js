@@ -37,14 +37,14 @@ export const getInitialState = nodeTypes => ({
     author: 'Amperka team',
   },
   patches: {
-    1: {
-      id: '1',
+    '@/1': {
+      id: '@/1',
       label: 'Main',
       nodes: {},
       links: {},
     },
-    2: {
-      id: '2',
+    '@/2': {
+      id: '@/2',
       label: 'AUX',
       nodes: {},
       links: {},

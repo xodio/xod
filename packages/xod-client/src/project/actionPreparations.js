@@ -3,7 +3,7 @@ import core from 'xod-core';
 import { PROPERTY_KIND } from './constants';
 
 export const addPatch = (projectState, label, folderId) => {
-  const newId = core.generateId();
+  const newId = core.generatePatchSID();
 
   return {
     newId,
