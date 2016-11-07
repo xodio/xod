@@ -6,13 +6,10 @@ import {
   PATCH_DELETE,
 } from '../actionTypes';
 
-// :: patchIds -> { patchId: reducer }
-const generateReducers = R.pipe(
-  R.values,
-  R.reduce(
-    (p, id) => R.assoc(id, patchReducer(id), p),
-    {}
-  )
+// :: [ 'patchIds' ] -> { patchId: reducer }
+const generateReducers = R.reduce(
+  (acc, id) => R.assoc(id, patchReducer(id), acc),
+  {}
 );
 
 export const patches = (patchIds) => {

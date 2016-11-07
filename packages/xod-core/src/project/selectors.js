@@ -53,6 +53,26 @@ export const getPatchById = R.curry((id, projectState) =>
   )(projectState)
 );
 
+// :: patch -> id
+export const getPatchId = R.compose(
+  R.prop('id'),
+  getPatchStatic
+);
+
+export const getPatchStaticById = R.curry(
+  (id, projectState) => {
+    const patch = getPatchById(id, projectState);
+    return getPatchStatic(patch);
+  }
+);
+
+export const getPatchPresentById = R.curry(
+  (id, projectState) => {
+    const patch = getPatchById(id, projectState);
+    return getPatchPresent(patch);
+  }
+);
+
 export const getPatchesByFolderId = (state, folderId) => R.pipe(
   getPatches,
   R.values,
@@ -61,10 +81,14 @@ export const getPatchesByFolderId = (state, folderId) => R.pipe(
 
 const getPatchByEntityId = (projectState, id, entityBranch) => R.pipe(
   R.prop('patches'),
-  R.keys,
-  R.map(patchId => getPatchById(patchId, projectState)),
-  R.filter(patch => R.has(id, R.prop(entityBranch, patch))),
-  R.head
+  R.values,
+  R.find(
+    R.pipe(
+      getPatchPresent,
+      R.prop(entityBranch),
+      R.has(id)
+    )
+  )
 )(projectState);
 
 export const getPatchByNodeId = (projectState, nodeId) =>
@@ -75,7 +99,7 @@ export const getPatchByLinkId = (projectState, linkId) =>
 
 export const getPatchName = (projectState, patchId) => R.compose(
   R.prop('label'),
-  getPatchByIdById(patchId)
+  getPatchStaticById(patchId)
 )(projectState);
 
 export const doesPinHaveLinks = (pin, links) => R.pipe(
@@ -335,8 +359,8 @@ export const getTreeView = (state, patchId) => {
 
   const folders = getFolders(state);
   const patches = getPatches(state);
-  const curPatch = getPatchById(patchId, state);
-  const curPatchPath = getFoldersPath(folders, curPatch.folderId);
+  const curPatchStatic = getPatchStaticById(patchId, state);
+  const curPatchPath = getFoldersPath(folders, curPatchStatic.folderId);
   const projectChildren = makeTree(folders, patches, null, curPatchPath);
   const projectName = R.pipe(
     getMeta,
@@ -726,7 +750,7 @@ const pinIsInjected = pin => !!pin.injected;
 export const validateLink = (state, linkData) => {
   const project = getProject(state);
   const patch = getPatchByNodeId(project, linkData[0].nodeId);
-  const patchId = patch.id;
+  const patchId = getPatchStatic(patch).id;
 
   const nodes = dereferencedNodes(project, patchId);
   const pins = getAllPinsFromNodes(nodes);

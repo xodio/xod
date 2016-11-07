@@ -41,9 +41,10 @@ export const addNode = (projectState, typeId, position, patchId) => {
 
 export const deleteNode = (projectState, id) => {
   const patch = core.getPatchByNodeId(projectState, id);
-  const linksToDelete = core.getLinksConnectedWithNode(projectState, id, patch.id);
+  const patchId = core.getPatchId(patch);
+  const linksToDelete = core.getLinksConnectedWithNode(projectState, id, patchId);
 
-  const nodeTypeToDelete = core.getNodeTypeToDeleteWithNode(projectState, id, patch.id);
+  const nodeTypeToDelete = core.getNodeTypeToDeleteWithNode(projectState, id, patchId);
 
   return {
     payload: {
@@ -52,7 +53,7 @@ export const deleteNode = (projectState, id) => {
       nodeType: nodeTypeToDelete,
     },
     meta: {
-      patchId: patch.id,
+      patchId,
     },
   };
 };
@@ -120,7 +121,8 @@ export const changePinMode = (projectState, nodeId, pinKey, injected) => {
 export const addLink = (state, pin1, pin2) => {
   const projectState = core.getProject(state);
   const patch = core.getPatchByNodeId(projectState, pin1.nodeId);
-  const nodes = core.dereferencedNodes(projectState, patch.id);
+  const patchId = core.getPatchId(patch);
+  const nodes = core.dereferencedNodes(projectState, patchId);
   const pins = core.getAllPinsFromNodes(nodes);
 
   const eqProps = (link) => R.both(
@@ -139,7 +141,6 @@ export const addLink = (state, pin1, pin2) => {
   const fromPin = (isOutputData1) ? pin1 : pin2;
   const toPin = (isOutputData1) ? pin2 : pin1;
 
-  const patchId = patch.id;
   const newId = core.generateId();
 
   return {
