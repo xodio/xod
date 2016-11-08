@@ -11,7 +11,7 @@ describe('Library loader', () => {
 
   it('should load xod/core libs from ./fixtures/workspace/lib', (done) => {
     const nodeTypes = Object.assign({}, xodball.nodeTypes);
-    delete nodeTypes['2']; // lib loader don't know anything about patch nodes!
+    delete nodeTypes['@/sub/aux']; // lib loader don't know anything about patch nodes!
 
     loadLibs(['xod/core'], workspace)
       .then((data) => {

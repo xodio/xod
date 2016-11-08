@@ -16,7 +16,7 @@ import {
 
 import { parseProjectJSON } from 'xod-core';
 
-export default (patchIds) => {
+export default (patchIds = []) => {
   const reducers = {
     meta,
     patches: patches(patchIds),

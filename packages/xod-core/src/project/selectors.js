@@ -168,7 +168,7 @@ export const parseProjectJSON = (json) => {
   const patches = R.pipe(
     getPatches,
     R.values,
-    R.reduce((p, patch) => R.assoc(patch.id, patch, p), {})
+    R.reduce((p, patch) => R.assoc(getPatchId(patch), patch, p), {})
   )(project);
   const projectToLoad = R.assoc('patches', patches, project);
   return projectToLoad;
@@ -348,7 +348,7 @@ export const getTreeView = (state, patchId) => {
       ),
       R.map(
         patch => ({
-          id: patch.id,
+          id: getPatchId(patch),
           module: patch.label,
           leaf: true,
         }),
@@ -537,7 +537,7 @@ export const dereferencedNodeTypes = (state) => {
     R.values,
     R.map(
       patch => ({
-        id: patch.id,
+        id: getPatchId(patch),
         patchNode: true,
         label: patch.label,
         category: NODE_CATEGORY.PATCHES,
@@ -797,7 +797,7 @@ export const validateLink = (state, linkData) => {
 export const validatePin = (state, pin) => {
   const project = getProject(state);
   const patch = getPatchByNodeId(project, pin.nodeId);
-  const patchId = patch.id;
+  const patchId = getPatchId(patch);
   const nodes = dereferencedNodes(project, patchId);
   const linksState = getLinks(project, patchId);
   const pins = getAllPinsFromNodes(nodes);

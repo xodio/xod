@@ -1,6 +1,6 @@
 import R from 'ramda';
 import path from 'path';
-import { generateId } from 'xod-core';
+import { hasNot, generateId, localID } from 'xod-core';
 
 const indexById = R.indexBy(R.prop('id'));
 
@@ -69,34 +69,51 @@ const findFolderId = R.curry((folderPath, folders) => {
   );
 });
 
-// :: unpackedFileData { path, content } -> { type, folders, content }
-const replacePathByTypeAndFolders = unpackedFileData => R.pipe(
-  R.flip(R.merge)(
-    parsePath(R.prop('path', unpackedFileData), unpackedFileData)
-  ),
-  R.omit('path')
-)(unpackedFileData);
+// :: [] -> true/false
+const isLengthEqualZero = R.pipe(
+  R.length,
+  R.equals(0)
+);
+
+// :: path './projectName/folder/patchName/somefile.xodsmth' -> '@/folder/patchName'
+const getPatchIdFromPath = R.pipe(
+  R.split('/'),
+  R.slice(2, -1),
+  R.join('/'),
+  R.ifElse(
+    isLengthEqualZero,
+    R.always(null),
+    localID
+  )
+);
+
+// :: unpackedFileData { path, content } -> { path, type, folders, content }
+const extractPathData = unpackedFileData => {
+  const patchPath = R.prop('path', unpackedFileData);
+
+  const patchTypeAndFolder = parsePath(patchPath);
+  const extendedPatch = R.merge(unpackedFileData, patchTypeAndFolder);
+
+  const patchId = getPatchIdFromPath(patchPath);
+  const idToMerge = (patchId === null) ? {} : { id: patchId };
+
+  return R.mergeWith(R.merge, extendedPatch, { content: idToMerge });
+};
 
 // :: unpackedData -> mergedData [ { id, type, folders, content } ]
 const mergeById = R.pipe(
-  R.groupBy(R.pipe(
-    R.prop('path'),
-    (filePath) => {
-      const p = path.parse(filePath);
-      return `${p.dir}${path.sep}${p.name}`;
-    }
-  )),
+  R.map(extractPathData),
+  R.groupBy(R.pathOr('project', ['content', 'id'])),
   R.values,
   R.map(
-    group => {
-      if (group.length > 1) {
-        return R.pipe(
-          replacePathByTypeAndFolders,
-          R.assoc('content', R.merge(group[0].content, group[1].content))
-        )(group[0]);
-      }
-      return replacePathByTypeAndFolders(group[0]);
-    }
+    R.reduce(
+      (acc, data) => R.mergeWithKey(
+        (k, l, r) => (k === 'content' ? R.merge(l, r) : r),
+        acc,
+        data
+      ),
+      {}
+    )
   )
 );
 

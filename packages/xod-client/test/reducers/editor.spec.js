@@ -186,14 +186,6 @@ describe('Editor reducer', () => {
   });
 
   describe('working with tabs', () => {
-    const createTabsStore = (state) => createStore(
-      combineReducers({
-        project: projectReducer,
-        editor: editorReducer,
-      }),
-      state,
-      applyMiddleware(thunk)
-    );
     const mockState = {
       project: {
         patches: {
@@ -218,6 +210,15 @@ describe('Editor reducer', () => {
         },
       },
     };
+    const createTabsStore = (state) => createStore(
+      combineReducers({
+        project: projectReducer(Object.keys(state.project.patches)),
+        editor: editorReducer,
+      }),
+      state,
+      applyMiddleware(thunk)
+    );
+
     let store = null;
 
     beforeEach(
