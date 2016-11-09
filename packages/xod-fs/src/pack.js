@@ -1,6 +1,6 @@
 import R from 'ramda';
 import path from 'path';
-import { hasNot, generateId, localID } from 'xod-core';
+import { generateId, localID } from 'xod-core';
 
 const indexById = R.indexBy(R.prop('id'));
 
@@ -27,7 +27,7 @@ const parsePath = R.pipe(
   R.reject(R.equals('.')),
   (projectPath) => ({
     type: getFileType(R.last(projectPath)),
-    folders: R.pipe(
+    folder: R.pipe(
       R.slice(1, -2),
       R.join(path.sep)
     )(projectPath),
@@ -161,33 +161,91 @@ const recursiveCreateFolders = (foldersSource) => {
   return foldersAcc;
 };
 
-// :: mergedData -> folders { id, name, parentId }
+// :: lib 'xod/core/someFolder/buzzer' -> 'xod/core/someFolder'
+const getLibFolder = R.pipe(
+  R.prop('id'),
+  R.split('/'),
+  R.init,
+  R.join(path.sep)
+);
+
+// :: libs -> libsWithFolderPath
+const extendLibsWithFolders = R.pipe(
+  R.values,
+  R.map(lib => R.assoc('folder', getLibFolder(lib), lib)),
+  indexById
+);
+
+const mapFolders = R.pipe(
+  R.values,
+  R.map(R.prop('folder'))
+);
+
+// :: mergedData -> libs -> folders ['path']
+const getFolders = R.curry(
+  (mergedData, libs) => R.pipe(
+    mapFolders,
+    R.concat(
+      mapFolders(libs)
+    ),
+    R.reject(R.isEmpty),
+    R.uniq
+  )(mergedData)
+);
+
+// :: folders -> folders { id, name, parentId }
 const getProjectFolders = R.pipe(
-  R.map(R.prop('folders')),
-  R.reject(R.isEmpty),
-  R.uniq,
   R.map(R.split(path.sep)),
   recursiveCreateFolders
 );
 // :: mergedData -> patches
 const filterPatches = R.filter(R.propEq('type', 'patch'));
 
-// :: mergedData -> folders -> patches [{ id, label, nodes, links }, ...]
-const getPatches = R.curry((mergedData, folders) => R.pipe(
-  filterPatches,
-  R.map(
-    patch => {
-      const folderId = findFolderId(patch.folders, folders);
+// :: libs -> libPatches
+const filterLibPatches = R.filter(R.has('nodes'));
 
-      return R.pipe(
-        R.prop('content'),
-        R.pick(['id', 'label', 'nodes', 'links']),
-        R.merge({ nodes: {}, links: {}, folderId })
-      )(patch);
-    }
-  ),
-  indexById
-)(mergedData));
+// :: folders -> patchFolder -> patch -> patchWithFolderId
+const getPatch = R.curry(
+  (folders, patchFolder, patch) => {
+    const folderId = findFolderId(patchFolder, folders);
+    return R.merge({ nodes: {}, links: {}, folderId }, patch);
+  }
+);
+
+// :: patchFile -> patch
+const pickPatchContent = R.pick(['id', 'label', 'nodes', 'links']);
+
+// :: lib -> libMeta
+const removePatchContent = R.omit(['nodes', 'links', 'folder', 'folderId']);
+
+// :: mergedData -> folders -> libs -> patches [{ id, label, nodes, links }, ...]
+const getPatches = R.curry(
+  (mergedData, folders, libs) => {
+    const patches = R.pipe(
+      filterPatches,
+      R.map(patch => {
+        const picked = R.pipe(
+          R.prop('content'),
+          pickPatchContent
+        )(patch);
+        return getPatch(folders, patch.folder, picked);
+      }),
+      indexById
+    )(mergedData);
+
+    const libPatches = R.pipe(
+      R.values,
+      filterLibPatches,
+      R.map(lib => {
+        const picked = pickPatchContent(lib);
+        return getPatch(folders, lib.folder, picked);
+      }),
+      indexById
+    )(libs);
+
+    return R.merge(patches, libPatches);
+  }
+);
 
 // :: mergedData -> patchNodes [{ id, patchNode, label, category, properties, pins }, ...]
 const getPatchNodes = R.pipe(
@@ -208,7 +266,7 @@ const getPatchNodes = R.pipe(
 // :: mergedData -> { ...nodeTypes, ...patchNodes }
 const getNodeTypes = R.curry((mergedData, libs) => R.mergeAll(
   [
-    libs,
+    R.mapObjIndexed(removePatchContent, libs),
     R.prop('nodeTypes', mergedData),
     getPatchNodes(mergedData),
   ]
@@ -216,13 +274,15 @@ const getNodeTypes = R.curry((mergedData, libs) => R.mergeAll(
 
 export default (unpackedData, libs = {}) => {
   const mergedData = mergeById(unpackedData);
+  const extendedLibs = extendLibsWithFolders(libs);
+  const folders = getFolders(mergedData, extendedLibs);
   const packedData = {
     meta: getProjectMeta(mergedData),
-    folders: getProjectFolders(mergedData),
+    folders: getProjectFolders(folders),
   };
 
-  packedData.patches = getPatches(mergedData, packedData.folders);
-  packedData.nodeTypes = getNodeTypes(mergedData, libs);
+  packedData.patches = getPatches(mergedData, packedData.folders, extendedLibs);
+  packedData.nodeTypes = getNodeTypes(mergedData, extendedLibs);
 
   return packedData;
 };

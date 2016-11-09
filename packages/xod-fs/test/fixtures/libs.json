@@ -105,5 +105,13 @@
       }
     },
     "impl": {}
+  },
+  "xod/core/test": {
+    "label": "Test",
+    "id": "xod/core/test",
+    "pins": {},
+    "nodes": {},
+    "links": {},
+    "impl": {}
   }
 }

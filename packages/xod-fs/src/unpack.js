@@ -153,7 +153,13 @@ const resolvePatchIds = patches => {
 // :: xodball -> [ patch: { path, meta, patch } ]
 export const extractPatches = xodball => R.pipe(
   R.prop('patches'),
-  R.values(),
+  R.values,
+  R.filter(
+    R.pipe(
+      R.prop('id'),
+      isLocalID
+    )
+  ),
   R.map(
     patch => ({
       id: patch.id,
