@@ -59,18 +59,16 @@ export const getPatchId = R.compose(
   getPatchStatic
 );
 
-export const getPatchStaticById = R.curry(
-  (id, projectState) => {
-    const patch = getPatchById(id, projectState);
-    return getPatchStatic(patch);
-  }
+// :: id -> projectState -> patchStatic
+export const getPatchStaticById = id => R.compose(
+  getPatchStatic,
+  getPatchById(id)
 );
 
-export const getPatchPresentById = R.curry(
-  (id, projectState) => {
-    const patch = getPatchById(id, projectState);
-    return getPatchPresent(patch);
-  }
+// :: id -> projectState -> patchPresent
+export const getPatchPresentById = id => R.compose(
+  getPatchPresent,
+  getPatchById(id)
 );
 
 export const getPatchesByFolderId = (state, folderId) => R.pipe(

@@ -16,15 +16,9 @@ const getPatchName = (metaPath) => {
   return parts[parts.length - 2];
 };
 
-const isXodPatchFile = (filename) => {
-  const ext = path.extname(filename);
-  return (ext === '.xodp');
-};
-
-const isXodMetaFile = (filename) => {
-  const ext = path.extname(filename);
-  return (ext === '.xodm');
-};
+const hasExt = R.curry((ext, filename) => R.equals(path.extname(filename), ext));
+const isXodPatchFile = hasExt('.xodp');
+const isXodMetaFile = hasExt('.xodm');
 
 const isXodFile = R.anyPass([isXodMetaFile, isXodPatchFile]);
 
