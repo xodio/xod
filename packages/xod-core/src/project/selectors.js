@@ -9,7 +9,7 @@ import {
   LINK_ERRORS,
 } from './constants';
 
-import { deepMerge } from '../utils/ramda';
+import { deepMerge, isLocalID, localID } from '../utils';
 
 export const getUserName = R.always('Bob');
 
@@ -306,6 +306,10 @@ export const getFolders = R.pipe(
   getProject,
   R.prop('folders')
 );
+
+// :: id -> folders -> folder
+export const getFolderById = R.pick;
+
 export const getFoldersByFolderId = (state, folderId) => R.pipe(
   getFolders,
   R.values,
@@ -320,6 +324,20 @@ export const getFoldersPath = (folders, folderId) => {
   const folder = folders[folderId];
   const parentPath = getFoldersPath(folders, folder.parentId);
   return R.concat([folderId], parentPath);
+};
+
+// :: foldersPath -> folders -> 'folder/childFolder/'
+export const getPath = (foldersPath, folders) => {
+  const folderIds = R.reverse(foldersPath);
+  const folderNames = R.map(
+    R.pipe(
+      R.prop(R.__, folders),
+      R.prop('name')
+    ),
+    folderIds
+  );
+
+  return R.join('/', folderNames);
 };
 
 export const getTreeView = (state, patchId) => {
@@ -529,6 +547,17 @@ export const getPatchNodes = state => R.pipe(
   R.pickBy(R.propEq('isPatchNode', true))
 )(state);
 
+const getPatchNodePath = R.curry(
+  (patch, project) => {
+    const folders = getFolders(project);
+    const patchFolders = getFoldersPath(folders, patch.folderId);
+    const folderPath = getPath(patchFolders, folders);
+    const patchLabel = R.prop('label', patch);
+
+    return localID(`${folderPath}${folderPath ? '/' : ''}${patchLabel}`);
+  }
+);
+
 export const dereferencedNodeTypes = (state) => {
   const patchNodes = getPatchNodes(state);
   const patchNodeTypes = R.pipe(
@@ -537,7 +566,8 @@ export const dereferencedNodeTypes = (state) => {
       patch => ({
         id: getPatchId(patch),
         patchNode: true,
-        label: patch.label,
+        label: R.prop('label', patch),
+        path: getPatchNodePath(patch, state),
         category: NODE_CATEGORY.PATCHES,
         properties: {},
         pins: R.pipe(
