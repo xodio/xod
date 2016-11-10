@@ -6,7 +6,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { loadProjectWithLibs, pack, writeJSON, readJSON } from 'xod-fs';
+import { loadProjectWithLibs, pack, readJSON, writeFile } from 'xod-fs';
 import { transpile, runtime } from 'xod-espruino';
 import * as msg from './messages';
 
@@ -49,7 +49,7 @@ export default (input, program) => {
     .then(project => transpile({ project, runtime }))
     .then(code => {
       if (output) {
-        return writeJSON(output, code)
+        return writeFile(output, code)
           .then(() => {
             msg.success(`Successfully transpiled to ${output}`);
           })
