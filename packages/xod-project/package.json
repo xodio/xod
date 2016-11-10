@@ -1,0 +1,20 @@
+{
+  "name": "xod-project",
+  "version": "0.0.1",
+  "description": "API functions to work on XOD project state",
+  "scripts": {
+    "doc": "documentation build --format html --output doc --sort-order alpha src/"
+  },
+  "repository": {},
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "dependencies": {},
+  "engines": {
+    "node": "6.0.0"
+  },
+  "devDependencies": {
+    "documentation": "^4.0.0-beta12"
+  }
+}
