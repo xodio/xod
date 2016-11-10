@@ -1,5 +1,6 @@
 import R from 'ramda';
 import path from 'path';
+import { hasNot } from 'xod-core';
 import { readDir, readJSON, readFile } from './read';
 import expandHomeDir from 'expand-home-dir';
 
@@ -15,10 +16,16 @@ const getPatchName = (metaPath) => {
   return parts[parts.length - 2];
 };
 
+const hasExt = R.curry((ext, filename) => R.equals(path.extname(filename), ext));
+const isXodPatchFile = hasExt('.xodp');
+const isXodMetaFile = hasExt('.xodm');
+
+const isXodFile = R.anyPass([isXodMetaFile, isXodPatchFile]);
+
 const scanLibsFolder = (libs, libsDir) => Promise.all(
   libs.map(
     lib => readDir(path.resolve(libsDir, lib))
-      .then(files => files.filter(filename => path.extname(filename) === '.xodm'))
+      .then(R.filter(isXodFile))
       .catch(err => {
         throw Object.assign(err, {
           path: path.resolve(libsDir, lib),
@@ -28,30 +35,47 @@ const scanLibsFolder = (libs, libsDir) => Promise.all(
   ))
   .then(R.zipObj(libs));
 
-const readMetaFiles = (metafiles) => {
-  const libNames = Object.keys(metafiles);
+const replaceNodeTypeIdWithLibName = R.curry(
+  (name, node) => {
+    const typeId = R.prop('typeId', node);
+
+    if (typeId[0] !== '@') { return node; }
+    const newTypeId = typeId.replace(/@/, name);
+
+    return R.assoc('typeId', newTypeId, node);
+  }
+);
+
+const readLibFiles = (libfiles) => {
+  const libNames = Object.keys(libfiles);
   let libPromises = [];
 
   libNames.forEach(name => {
-    const libMetas = metafiles[name];
+    const files = libfiles[name];
 
     libPromises = libPromises.concat(
-      libMetas.map(metaPath =>
-        readJSON(metaPath)
-          .then(data => Object.assign(
-            data,
-            {
-              id: `${name}/${getPatchName(metaPath)}`,
-              impl: {},
+      files.map(patchPath =>
+        readJSON(patchPath)
+          .then(loaded => {
+            const data = R.assoc('id', `${name}/${getPatchName(patchPath)}`, loaded);
+
+            if (hasNot('nodes', data)) {
+              return R.assoc('impl', {}, data);
             }
-          ))
+
+            return R.evolve(
+              {
+                nodes: R.mapObjIndexed(replaceNodeTypeIdWithLibName(name)),
+              },
+              data
+            );
+          })
       )
     );
   });
 
   return Promise.all(libPromises);
 };
-
 const loadImpl = libsDir => metas => {
   const metaPromises = [];
 
@@ -93,18 +117,19 @@ const loadImpl = libsDir => metas => {
   return Promise.all(metaPromises);
 };
 
+// :: libs [patch_1_Meta, patch_1_Content] -> mergedLibs [patch_1]
+const mergePatchesAndMetas = R.pipe(
+  R.groupBy(R.prop('id')),
+  R.values,
+  R.map(R.mergeAll),
+  R.flatten
+);
+
 export default (libs, workspace) => {
   const libsDir = path.resolve(expandHomeDir(workspace), 'lib');
   return scanLibsFolder(libs, libsDir)
-    .then(readMetaFiles)
+    .then(readLibFiles)
+    .then(mergePatchesAndMetas)
     .then(loadImpl(libsDir))
-    .then(
-      (data) => data.reduce(
-        (acc, cur) => {
-          acc[cur.id] = cur; // eslint-disable-line
-          return acc;
-        },
-        {}
-      )
-    );
+    .then(R.indexBy(R.prop('id')));
 };

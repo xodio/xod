@@ -4,8 +4,8 @@
     "author": "Amperka team"
   },
   "patches": {
-    "1": {
-      "id": "1",
+    "@/main": {
+      "id": "@/main",
       "folderId": null,
       "label": "Main",
       "nodes": {
@@ -34,7 +34,7 @@
           "id": "89c69d91-b484-478d-8990-027e5f0a2e3e"
         },
         "4d716df5-81e7-4845-9b82-31a54c1634d7": {
-          "typeId": "2",
+          "typeId": "@/sub/aux",
           "pins": {},
           "position": {
             "x": 363,
@@ -67,8 +67,8 @@
         }
       }
     },
-    "2": {
-      "id": "2",
+    "@/sub/aux": {
+      "id": "@/sub/aux",
       "folderId": "1",
       "label": "AUX",
       "nodes": {
@@ -105,11 +105,18 @@
           }]
         }
       }
+    },
+    "xod/core/test": {
+      "folderId": "0",
+      "id": "xod/core/test",
+      "label": "Test",
+      "links": {},
+      "nodes": {}
     }
   },
   "nodeTypes": {
-    "2": {
-      "id": "2",
+    "@/sub/aux": {
+      "id": "@/sub/aux",
       "patchNode": true,
       "label": "AUX",
       "category": "patch",
@@ -230,6 +237,12 @@
         }
       },
       "impl": {}
+    },
+    "xod/core/test": {
+      "label": "Test",
+      "id": "xod/core/test",
+      "pins": {},
+      "impl": {}
     }
   },
   "folders": {
@@ -237,6 +250,16 @@
       "id": "1",
       "name": "sub",
       "parentId": null
+    },
+    "2": {
+      "id": "2",
+      "name": "xod",
+      "parentId": null
+    },
+    "3": {
+      "id": "3",
+      "name": "core",
+      "parentId": "2"
     }
   }
 }

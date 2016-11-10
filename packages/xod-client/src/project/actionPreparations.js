@@ -3,7 +3,7 @@ import core from 'xod-core';
 import { PROPERTY_KIND } from './constants';
 
 export const addPatch = (projectState, label, folderId) => {
-  const newId = core.generateId();
+  const newId = core.generatePatchSID();
 
   return {
     newId,
@@ -41,9 +41,10 @@ export const addNode = (projectState, typeId, position, patchId) => {
 
 export const deleteNode = (projectState, id) => {
   const patch = core.getPatchByNodeId(projectState, id);
-  const linksToDelete = core.getLinksConnectedWithNode(projectState, id, patch.id);
+  const patchId = core.getPatchId(patch);
+  const linksToDelete = core.getLinksConnectedWithNode(projectState, id, patchId);
 
-  const nodeTypeToDelete = core.getNodeTypeToDeleteWithNode(projectState, id, patch.id);
+  const nodeTypeToDelete = core.getNodeTypeToDeleteWithNode(projectState, id, patchId);
 
   return {
     payload: {
@@ -52,13 +53,14 @@ export const deleteNode = (projectState, id) => {
       nodeType: nodeTypeToDelete,
     },
     meta: {
-      patchId: patch.id,
+      patchId,
     },
   };
 };
 
 export const moveNode = (projectState, id, position) => {
-  const patchId = core.getPatchByNodeId(projectState, id).id;
+  const patch = core.getPatchByNodeId(projectState, id);
+  const patchId = core.getPatchId(patch);
 
   return {
     payload: {
@@ -75,7 +77,8 @@ export const dragNode = (projectState, id, position) =>
   R.assocPath(['meta', 'skipHistory'], true, moveNode(projectState, id, position));
 
 export const updateNodeProperty = (projectState, nodeId, propKind, propKey, propValue) => {
-  const patchId = core.getPatchByNodeId(projectState, nodeId).id;
+  const patch = core.getPatchByNodeId(projectState, nodeId);
+  const patchId = core.getPatchId(patch);
   const node = core.dereferencedNodes(projectState, patchId)[nodeId];
   const nodeType = core.dereferencedNodeTypes(projectState)[node.typeId];
   const kind = (propKind === PROPERTY_KIND.PIN) ? 'pin' : 'property';
@@ -96,7 +99,8 @@ export const updateNodeProperty = (projectState, nodeId, propKind, propKey, prop
 };
 
 export const changePinMode = (projectState, nodeId, pinKey, injected) => {
-  const patchId = core.getPatchByNodeId(projectState, nodeId).id;
+  const patch = core.getPatchByNodeId(projectState, nodeId);
+  const patchId = core.getPatchId(patch);
   const linksToDelete = core.getLinksConnectedWithPin(projectState, nodeId, pinKey, patchId);
 
   if (linksToDelete.length > 0) {
@@ -120,7 +124,8 @@ export const changePinMode = (projectState, nodeId, pinKey, injected) => {
 export const addLink = (state, pin1, pin2) => {
   const projectState = core.getProject(state);
   const patch = core.getPatchByNodeId(projectState, pin1.nodeId);
-  const nodes = core.dereferencedNodes(projectState, patch.id);
+  const patchId = core.getPatchId(patch);
+  const nodes = core.dereferencedNodes(projectState, patchId);
   const pins = core.getAllPinsFromNodes(nodes);
 
   const eqProps = (link) => R.both(
@@ -139,7 +144,6 @@ export const addLink = (state, pin1, pin2) => {
   const fromPin = (isOutputData1) ? pin1 : pin2;
   const toPin = (isOutputData1) ? pin2 : pin1;
 
-  const patchId = patch.id;
   const newId = core.generateId();
 
   return {

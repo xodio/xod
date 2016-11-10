@@ -1,6 +1,6 @@
 import R from 'ramda';
 import path from 'path';
-import { notNil, hasNot } from 'xod-core';
+import { notNil, hasNot, localID, isLocalID } from 'xod-core';
 
 // :: "./awesome_project/" -> "main" -> "patch.xodm" -> "./awesome_project/main/patch.xodm"
 const filePath = (projectPath, patchPath, fileName) => R.pipe(
@@ -56,6 +56,10 @@ const foldersPaths = R.pipe(
 const extractLibs = R.pipe(
   R.prop('nodeTypes'),
   R.values,
+  R.reject(R.pipe(
+    R.prop('id'),
+    isLocalID
+  )),
   R.map(
     R.pipe(
       R.prop('id'),
@@ -69,14 +73,13 @@ const extractLibs = R.pipe(
 );
 
 // :: patchMeta -> xodball -> patchNodeMeta
-const margeWithNodeType = (obj, xodball) => {
-  if (hasNot(obj.id, xodball.nodeTypes)) {
-    return obj;
-  }
+const margeWithNodeType = (obj, patchId, xodball) => {
+  if (hasNot(patchId, xodball.nodeTypes)) { return obj; }
 
   return R.pipe(
-    R.path(['nodeTypes', obj.id]),
-    R.flip(R.merge)(obj)
+    R.path(['nodeTypes', patchId]),
+    R.flip(R.merge)(obj),
+    R.omit(['id'])
   )(xodball);
 };
 
@@ -102,23 +105,75 @@ export const getPatchPath = R.curry((patch, xodball) => {
   return `${folderPath}${patchName}/`;
 });
 
+// This function will remove ids from patches,
+// but if any node references to patch (this is patchNode),
+// so we'll replace this id with path, like '@/foldersPath/patchName'
+// :: patches -> patchesWithResolvedIds
+const resolvePatchIds = patches => {
+  const pathMapping = R.reduce(
+    (acc, patch) => {
+      if (isLocalID(patch.id) === false) { return acc; }
+      return R.assoc(patch.id, localID(patch.path), acc);
+    },
+    {},
+    patches
+  );
+
+  const filterLocalPatches = R.filter(
+    R.pipe(
+      R.prop('id'),
+      R.has(R.__, pathMapping)
+    )
+  );
+
+  const resolveNode = (node) => {
+    const typeId = node.typeId;
+    if (hasNot(typeId, pathMapping)) { return node; }
+    return R.assoc('typeId', pathMapping[typeId], node);
+  };
+
+  // :: patch -> patchWithResolvedNodes
+  const resolvePatches = R.evolve({
+    patch: {
+      nodes: R.pipe(
+        R.values,
+        R.map(resolveNode),
+        R.indexBy(R.prop('id'))
+      ),
+    },
+  });
+
+  return R.pipe(
+    filterLocalPatches,
+    R.map(resolvePatches),
+    R.map(R.omit(['id']))
+  )(patches);
+};
+
 // :: xodball -> [ patch: { path, meta, patch } ]
 export const extractPatches = xodball => R.pipe(
   R.prop('patches'),
-  R.values(),
+  R.values,
+  R.filter(
+    R.pipe(
+      R.prop('id'),
+      isLocalID
+    )
+  ),
   R.map(
     patch => ({
+      id: patch.id,
       path: getPatchPath(patch, xodball),
       meta: margeWithNodeType({
-        id: patch.id,
         label: patch.label,
-      }, xodball),
+      }, patch.id, xodball),
       patch: {
         nodes: patch.nodes,
         links: patch.links,
       },
     })
-  )
+  ),
+  resolvePatchIds
 )(xodball);
 
 // :: xodball -> extractedObject
@@ -141,12 +196,12 @@ export const arrangeByFiles = (xodball) => {
       (acc, patch) => R.concat(acc,
         [
           {
-            id: patch.meta.id,
+            // id: patch.meta.id,
             path: filePath(projectPath, patch.path, 'patch.xodm'),
             content: patch.meta,
           },
           {
-            id: patch.meta.id,
+            // id: patch.meta.id,
             path: filePath(projectPath, patch.path, 'patch.xodp'),
             content: patch.patch,
           },

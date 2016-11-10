@@ -1,4 +1,6 @@
+import R from 'ramda';
 import { expect } from 'chai';
+import { isLocalID } from 'xod-core';
 import * as Unpack from '../src/unpack';
 import xodball from './fixtures/xodball.json';
 import unpacked from './fixtures/unpacked.json';
@@ -31,7 +33,16 @@ describe('Unpack xodball', () => {
   });
 
   it('should return correct patch folders', () => {
-    const patches = xodball.patches;
+    const patches = R.pipe(
+      R.values,
+      R.filter(
+        R.pipe(
+          R.prop('id'),
+          isLocalID
+        )
+      ),
+      R.indexBy(R.prop('id'))
+    )(xodball.patches);
     const patchKeys = Object.keys(patches);
     const paths = [];
 

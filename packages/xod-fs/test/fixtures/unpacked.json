@@ -10,15 +10,12 @@
     }
   },
   {
-    "id": "1",
     "path": "./awesome_project/main/patch.xodm",
     "content": {
-      "id": "1",
       "label": "Main"
     }
   },
   {
-    "id": "1",
     "path": "./awesome_project/main/patch.xodp",
     "content": {
       "nodes": {
@@ -47,7 +44,7 @@
           "id": "89c69d91-b484-478d-8990-027e5f0a2e3e"
         },
         "4d716df5-81e7-4845-9b82-31a54c1634d7": {
-          "typeId": "2",
+          "typeId": "@/sub/aux",
           "pins": {},
           "position": {
             "x": 363,
@@ -88,10 +85,8 @@
     }
   },
   {
-    "id": "2",
     "path": "./awesome_project/sub/aux/patch.xodm",
     "content": {
-      "id": "2",
       "patchNode": true,
       "label": "AUX",
       "category": "patch",
@@ -108,7 +103,6 @@
     }
   },
   {
-    "id": "2",
     "path": "./awesome_project/sub/aux/patch.xodp",
     "content": {
       "nodes": {

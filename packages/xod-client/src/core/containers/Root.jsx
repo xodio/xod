@@ -39,7 +39,7 @@ export default class Root extends React.Component {
     const nodes = [];
 
     const dispatchAddNode = (nodeTypeKey, x, y) => {
-      const action = addNode(nodeTypeKey, { x, y }, '1');
+      const action = addNode(nodeTypeKey, { x, y }, '@/1');
       const newNodeId = this.store.dispatch(action);
       nodes.push(newNodeId);
     };

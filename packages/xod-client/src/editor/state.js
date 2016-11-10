@@ -1,7 +1,7 @@
 import { EDITOR_MODE } from './constants';
 
 export default {
-  currentPatchId: '1',
+  currentPatchId: '@/1',
   mode: EDITOR_MODE.EDITING,
   dragging: null,
   selection: [],
@@ -10,7 +10,7 @@ export default {
   tabs: {
     1: {
       id: '1',
-      patchId: '1',
+      patchId: '@/1',
       index: 0,
     },
   },

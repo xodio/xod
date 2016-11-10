@@ -1,1 +1,9 @@
-{"meta":{"name":"Awesome project","author":"Amperka team"},"libs":["xod/core"]}
+{
+  "meta": {
+    "name": "Awesome project",
+    "author": "Amperka team"
+  },
+  "libs": [
+    "xod/core"
+  ]
+}
