@@ -6,7 +6,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { loadProjectWithLibs, pack, writeJSON, readJSON, writeFile } from 'xod-fs';
+import { loadProjectWithLibs, pack, readJSON, writeFile } from 'xod-fs';
 import { transpile, runtime } from 'xod-espruino';
 import * as msg from './messages';
 
