@@ -38,8 +38,8 @@ const priorityValue = R.curry(
 // TODO: move to xod-core? (with all other selectors)
 const makeTypeTest = regex =>
   (node, prop = 'typeId') => R.propSatisfies(R.test(regex), prop, node);
-const isInputNode = makeTypeTest(/^core\/input/);
-const isOutputNode = makeTypeTest(/^core\/output/);
+const isInputNode = makeTypeTest(/^xod\/core\/input/);
+const isOutputNode = makeTypeTest(/^xod\/core\/output/);
 // ----------------
 
 // :: Patch -> Boolean

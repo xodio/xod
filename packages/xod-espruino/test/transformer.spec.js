@@ -4,12 +4,12 @@ import { assert, expect } from 'chai';
 import transform from '../src/transformer';
 
 const ioTypes = {
-  'core/inputBool': {
-    key: 'core/inputBool',
+  'xod/core/inputBool': {
+    key: 'xod/core/inputBool',
     pins: { PIN: { direction: 'output', key: 'PIN', type: 'bool' } },
   },
-  'core/outputBool': {
-    key: 'core/outputBool',
+  'xod/core/outputBool': {
+    key: 'xod/core/outputBool',
     pins: { PIN: { direction: 'input', key: 'PIN', type: 'bool' } },
   },
 };
@@ -256,7 +256,7 @@ describe('Transformer', () => {
           id: 2,
           label: 'NOP',
           nodes: {
-            42: { id: 42, typeId: 'core/inputPulse' },
+            42: { id: 42, typeId: 'xod/core/inputPulse' },
           },
         },
       },
@@ -270,7 +270,7 @@ describe('Transformer', () => {
       id: newId,
       inputTypes: {},
       outLinks: {},
-      implId: 'core/inputPulse',
+      implId: 'xod/core/inputPulse',
     });
   });
 
@@ -288,7 +288,7 @@ describe('Transformer', () => {
           id: 2,
           label: 'NOP',
           nodes: {
-            42: { id: 42, typeId: 'core/outputPulse' },
+            42: { id: 42, typeId: 'xod/core/outputPulse' },
           },
         },
       },
@@ -302,7 +302,7 @@ describe('Transformer', () => {
       id: newId,
       inputTypes: {},
       outLinks: {},
-      implId: 'core/outputPulse',
+      implId: 'xod/core/outputPulse',
     });
   });
 
@@ -323,7 +323,7 @@ describe('Transformer', () => {
           id: 2,
           label: 'BULB',
           nodes: {
-            41: { id: 41, typeId: 'core/inputBool' },
+            41: { id: 41, typeId: 'xod/core/inputBool' },
             42: { id: 42, typeId: 'led' },
           },
           links: {
@@ -339,7 +339,7 @@ describe('Transformer', () => {
     assert(
       R.equals(
         R.map(id => result.nodes[id].implId, result.topology),
-        ['button', 'core/inputBool', 'led']
+        ['button', 'xod/core/inputBool', 'led']
       )
     );
 
@@ -374,7 +374,7 @@ describe('Transformer', () => {
           label: 'BTN',
           nodes: {
             41: { id: 41, typeId: 'button' },
-            42: { id: 42, typeId: 'core/outputBool' },
+            42: { id: 42, typeId: 'xod/core/outputBool' },
           },
           links: {
             2: link(2, [41, 'state', 'PIN', 42]),
@@ -388,7 +388,7 @@ describe('Transformer', () => {
 
     assert(hasTopology(result)([
       [k1, 'button'],
-      [k2, 'core/outputBool'],
+      [k2, 'xod/core/outputBool'],
       [k3, 'led'],
     ]));
 
@@ -418,7 +418,7 @@ describe('Transformer', () => {
           id: 2,
           label: 'BULB',
           nodes: {
-            41: { id: 41, typeId: 'core/inputBool' },
+            41: { id: 41, typeId: 'xod/core/inputBool' },
             42: { id: 42, typeId: 'led' },
           },
           links: {
@@ -433,7 +433,7 @@ describe('Transformer', () => {
 
     assert(hasTopology(result)([
       [k1, 'button'],
-      [k2, 'core/inputBool'],
+      [k2, 'xod/core/inputBool'],
       [k3, 'led'],
     ]));
 
@@ -490,9 +490,9 @@ describe('Transformer', () => {
           id: 2,
           label: 'AUX',
           nodes: {
-            41: { id: 41, typeId: 'core/inputBool' },
+            41: { id: 41, typeId: 'xod/core/inputBool' },
             42: { id: 42, typeId: 'foo/NOP' },
-            43: { id: 43, typeId: 'core/outputBool' },
+            43: { id: 43, typeId: 'xod/core/outputBool' },
           },
           links: {
             4: link(5, [41, 'PIN', 'input_61', 42]),
@@ -503,8 +503,8 @@ describe('Transformer', () => {
           id: 3,
           label: 'NOP',
           nodes: {
-            61: { id: 61, typeId: 'core/inputBool' },
-            62: { id: 62, typeId: 'core/outputBool' },
+            61: { id: 61, typeId: 'xod/core/inputBool' },
+            62: { id: 62, typeId: 'xod/core/outputBool' },
           },
           links: {
             6: link(6, [61, 'PIN', 'PIN', 62]),
@@ -518,12 +518,12 @@ describe('Transformer', () => {
 
     assert(hasTopology(result)([
       [keys[0], 'button'],
-      [keys[1], 'core/inputBool'],
-      [keys[2], 'core/inputBool'],
-      [keys[3], 'core/outputBool'],
-      [keys[4], 'core/outputBool'],
-      [keys[5], 'core/inputBool'],
-      [keys[6], 'core/outputBool'],
+      [keys[1], 'xod/core/inputBool'],
+      [keys[2], 'xod/core/inputBool'],
+      [keys[3], 'xod/core/outputBool'],
+      [keys[4], 'xod/core/outputBool'],
+      [keys[5], 'xod/core/inputBool'],
+      [keys[6], 'xod/core/outputBool'],
       [keys[7], 'led'],
     ]));
   });
