@@ -254,7 +254,7 @@ describe('Transformer', () => {
         },
         2: {
           id: 2,
-          name: 'NOP',
+          label: 'NOP',
           nodes: {
             42: { id: 42, typeId: 'core/inputPulse' },
           },
@@ -286,7 +286,7 @@ describe('Transformer', () => {
         },
         2: {
           id: 2,
-          name: 'NOP',
+          label: 'NOP',
           nodes: {
             42: { id: 42, typeId: 'core/outputPulse' },
           },
@@ -321,7 +321,7 @@ describe('Transformer', () => {
         },
         2: {
           id: 2,
-          name: 'BULB',
+          label: 'BULB',
           nodes: {
             41: { id: 41, typeId: 'core/inputBool' },
             42: { id: 42, typeId: 'led' },
@@ -371,7 +371,7 @@ describe('Transformer', () => {
         },
         2: {
           id: 2,
-          name: 'BTN',
+          label: 'BTN',
           nodes: {
             41: { id: 41, typeId: 'button' },
             42: { id: 42, typeId: 'core/outputBool' },
@@ -416,7 +416,7 @@ describe('Transformer', () => {
         },
         2: {
           id: 2,
-          name: 'BULB',
+          label: 'BULB',
           nodes: {
             41: { id: 41, typeId: 'core/inputBool' },
             42: { id: 42, typeId: 'led' },
@@ -488,7 +488,7 @@ describe('Transformer', () => {
         },
         2: {
           id: 2,
-          name: 'AUX',
+          label: 'AUX',
           nodes: {
             41: { id: 41, typeId: 'core/inputBool' },
             42: { id: 42, typeId: 'foo/NOP' },
@@ -501,7 +501,7 @@ describe('Transformer', () => {
         },
         3: {
           id: 3,
-          name: 'NOP',
+          label: 'NOP',
           nodes: {
             61: { id: 61, typeId: 'core/inputBool' },
             62: { id: 62, typeId: 'core/outputBool' },

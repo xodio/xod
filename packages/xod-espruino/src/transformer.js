@@ -34,16 +34,6 @@ const priorityValue = R.curry(
   }
 );
 
-// :: ({String: Patch}, String) -> Int
-// -- maxIdOf(project.patches, 'nodes') -> max .id of all nodes in all patches
-const maxIdOf = (patches, key) => R.compose(
-  R.reduce(R.max, 0),
-  R.map(R.propOr(0, 'id')),
-  R.reduce(R.concat, []),
-  R.map(R.compose(R.values, R.propOr({}, key))),
-  R.values
-)(patches);
-
 // ----------------
 // TODO: move to xod-core? (with all other selectors)
 const makeTypeTest = regex =>
@@ -77,7 +67,7 @@ export default function transform(project, implPlatforms = []) {
   const mergedPatch = R.compose(
     R.omit('id'),
     R.reduce(R.mergeWith(R.merge), {}),
-    R.filter(R.complement(isPatchNodeType)),
+    R.reject(isPatchNodeType),
     R.values
   )(allPatches);
 
@@ -86,19 +76,17 @@ export default function transform(project, implPlatforms = []) {
 
   // type PatchNode = {nodes :: [Node], links :: [Link]}
 
-  // :: {patchNode.name: PatchNode}
+  // :: {patchNode.label: PatchNode}
   const patchNodesByName = R.compose(
-    R.reduce(
-      ((ns, n) => (
-        isPatchNodeType(n)
-          ? R.assoc(n.name, {
-            links: R.values(n.links),
-            nodes: R.values(n.nodes),
-          }, ns)
-          : ns
-      )),
-      {}
+    R.map(R.omit(['label'])),
+    R.indexBy(R.prop('label')),
+    R.map(
+      R.compose(
+        R.evolve({ links: R.values, nodes: R.values }),
+        R.pickAll(['label', 'links', 'nodes'])
+      )
     ),
+    R.filter(isPatchNodeType),
     R.values
   )(allPatches);
 
@@ -110,7 +98,7 @@ export default function transform(project, implPlatforms = []) {
       R.complement(R.has(R.__, nodeTypes)),
       R.compose(
         R.any(R.__, R.keys(patchNodesByName)),
-        type => name => RegExp(`/${name}$`).test(type)
+        type => label => RegExp(`/${label}$`).test(type)
       )
     ),
     R.propOr('', 'typeId')
