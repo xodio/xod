@@ -9,7 +9,7 @@ import {
   LINK_ERRORS,
 } from './constants';
 
-import { deepMerge, isLocalID, localID } from '../utils';
+import { deepMerge, localID } from '../utils';
 
 export const getUserName = R.always('Bob');
 
