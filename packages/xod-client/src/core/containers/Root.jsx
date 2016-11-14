@@ -48,10 +48,10 @@ export default class Root extends React.Component {
       this.store.dispatch(action);
     };
 
-    dispatchAddNode('core/button', 100, 100);
-    dispatchAddNode('core/pot', 400, 100);
-    dispatchAddNode('core/led', 100, 400);
-    dispatchAddNode('core/servo', 400, 400);
+    dispatchAddNode('xod/core/button', 100, 100);
+    dispatchAddNode('xod/core/pot', 400, 100);
+    dispatchAddNode('xod/core/led', 100, 400);
+    dispatchAddNode('xod/core/servo', 400, 400);
 
     dispatchAddLink(
       { nodeId: nodes[0], pinKey: 'state' },
