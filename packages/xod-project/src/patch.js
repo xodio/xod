@@ -18,7 +18,16 @@
 // TODO: implement
 
 /**
- * @function getPatchPath
+ * Gets a property `prop` of the `patch`.
+ *
+ * Available properties are:
+ *
+ * - `path`
+ * - `baseName`: the last component of the `path`. E.g. for `"foo/bar/baz"`
+ *   it would be `"baz"`.
+ *
+ * @function getPatchProp
+ * @param {string} prop
  * @param {Patch} patch
  * @returns {string} full path of the patch
  */

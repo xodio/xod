@@ -14,16 +14,18 @@
 // TODO: implement
 
 /**
- * @function getProjectName
+ * Gets a property of the `project`.
+ *
+ * Available properties are:
+ *
+ * - `author`
+ * - `name`
+ * - `path`: join of author and name, like `"xod/core"`
+ *
+ * @function getProjectProp
+ * @param {string} prop
  * @param {Project} project
- * @returns {string}
- */
-// TODO: implement
-
-/**
- * @function getProjectAuthor
- * @param {Project} project
- * @returns {string}
+ * @returns {*} value of the property or `undefined` if not found
  */
 // TODO: implement
 
