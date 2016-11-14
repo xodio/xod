@@ -316,7 +316,7 @@ describe('Transformer', () => {
             101: { id: 101, typeId: 'foo/BULB' },
           },
           links: {
-            1: link(1, [100, 'state', 'input_41', 101]),
+            1: link(1, [100, 'state', '41', 101]),
           },
         },
         2: {
@@ -366,7 +366,7 @@ describe('Transformer', () => {
             101: { id: 101, typeId: 'led' },
           },
           links: {
-            1: link(1, [100, 'output_42', 'brightness', 101]),
+            1: link(1, [100, '42', 'brightness', 101]),
           },
         },
         2: {
@@ -411,7 +411,7 @@ describe('Transformer', () => {
             101: { id: 101, typeId: 'foo/BULB' },
           },
           links: {
-            1: link(1, [100, 'state', 'input_41', 101]),
+            1: link(1, [100, 'state', '41', 101]),
           },
         },
         2: {
@@ -481,9 +481,9 @@ describe('Transformer', () => {
             103: { id: 103, typeId: 'led' },
           },
           links: {
-            1: link(1, [100, 'state', 'input_41', 101]),
-            2: link(2, [101, 'output_43', 'input_61', 102]),
-            3: link(3, [102, 'output_62', 'brightness', 103]),
+            1: link(1, [100, 'state', '41', 101]),
+            2: link(2, [101, '43', '61', 102]),
+            3: link(3, [102, '62', 'brightness', 103]),
           },
         },
         2: {
@@ -495,8 +495,8 @@ describe('Transformer', () => {
             43: { id: 43, typeId: 'xod/core/outputBool' },
           },
           links: {
-            4: link(5, [41, 'PIN', 'input_61', 42]),
-            5: link(6, [42, 'output_62', 'PIN', 43]),
+            4: link(4, [41, 'PIN', '61', 42]),
+            5: link(5, [42, '62', 'PIN', 43]),
           },
         },
         3: {
