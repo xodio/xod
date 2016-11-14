@@ -247,15 +247,24 @@ const getPatches = R.curry(
   }
 );
 
+// :: patchFile -> boolean
+const isPatchNode = R.compose(
+  R.flip(R.gt)(0),
+  R.length,
+  R.values,
+  R.pathOr([], ['content', 'pins'])
+);
+
 // :: mergedData -> patchNodes [{ id, patchNode, label, category, properties, pins }, ...]
 const getPatchNodes = R.pipe(
   filterPatches,
   R.filter(
-    R.pathEq(['content', 'patchNode'], true)
+    isPatchNode
   ),
   R.map(
     R.pipe(
       R.prop('content'),
+      // @TODO: Get rid off useless property 'patchNode'
       R.pick(['id', 'patchNode', 'label', 'category', 'properties', 'pins']),
       R.merge({ properties: {}, pins: {} })
     )
