@@ -9,7 +9,7 @@ import {
   LINK_ERRORS,
 } from './constants';
 
-import { deepMerge, localID } from '../utils';
+import { deepMerge, localID, isLocalID } from '../utils';
 
 export const getUserName = R.always('Bob');
 
@@ -561,6 +561,7 @@ const getPatchNodePath = R.curry(
 export const dereferencedNodeTypes = (state) => {
   const patchNodes = getPatchNodes(state);
   const patchNodeTypes = R.pipe(
+    R.filter(isLocalID),
     R.values,
     R.map(
       patch => ({
