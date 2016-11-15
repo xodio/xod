@@ -8,7 +8,9 @@
   background: #CCC;
   height: 32px;
 
-  select {}
+  select {
+    width: 160px;
+  }
 
   .button-add-node {
     @include button-primary;
