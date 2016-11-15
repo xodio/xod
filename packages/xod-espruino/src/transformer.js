@@ -1,6 +1,6 @@
 
 import R from 'ramda';
-import { PIN_DIRECTION, PIN_TYPE, sortGraph, generateId } from 'xod-core';
+import { PIN_DIRECTION, PIN_TYPE, mapIndexed, indexById, sortGraph, generateId } from 'xod-core';
 
 // TODO: remove following ESLint shunt. It barks on unused `_` in arrow funcs.
 // We should make smarter selectors for source & destination pins without _ hack
@@ -34,22 +34,12 @@ const priorityValue = R.curry(
   }
 );
 
-// :: ({String: Patch}, String) -> Int
-// -- maxIdOf(project.patches, 'nodes') -> max .id of all nodes in all patches
-const maxIdOf = (patches, key) => R.compose(
-  R.reduce(R.max, 0),
-  R.map(R.propOr(0, 'id')),
-  R.reduce(R.concat, []),
-  R.map(R.compose(R.values, R.propOr({}, key))),
-  R.values
-)(patches);
-
 // ----------------
 // TODO: move to xod-core? (with all other selectors)
 const makeTypeTest = regex =>
   (node, prop = 'typeId') => R.propSatisfies(R.test(regex), prop, node);
-const isInputNode = makeTypeTest(/^core\/input/);
-const isOutputNode = makeTypeTest(/^core\/output/);
+const isInputNode = makeTypeTest(/^xod\/core\/input/);
+const isOutputNode = makeTypeTest(/^xod\/core\/output/);
 // ----------------
 
 // :: Patch -> Boolean
@@ -71,13 +61,97 @@ export default function transform(project, implPlatforms = []) {
   const nodeTypes = R.propOr({}, 'nodeTypes', project);
   const nodeTypeByKey = key => R.propOr({}, key, nodeTypes);
 
-  const allPatches = R.propOr({}, 'patches', project);
+  // :: nodes -> [ nodeOriginalId, nodeNewId ]
+  const guidToIdx = R.compose(
+    R.fromPairs,
+    mapIndexed((id, idx) => [id, idx]),
+    R.keys
+  );
+
+  // :: nodeIdMap, links -> linksWithResolvedNodeIds
+  const resolveLinkIds = R.curry((nodeIdMap, links) =>
+    R.compose(
+      R.map(
+        R.evolve({
+          pins: R.map(pin =>
+            R.compose(
+              R.assoc('nodeId', R.prop(pin.nodeId, nodeIdMap)),
+              R.assoc('pinKey', R.propOr(pin.pinKey, pin.pinKey, nodeIdMap))
+            )(pin)
+          ),
+        })
+      ),
+      R.values
+    )(links)
+  );
+
+  // :: nodeIdMap, nodes -> nodesWithNewIds
+  const resolveNodeIds = R.curry((nodeIdMap, nodes) =>
+    R.compose(
+      R.map(node => R.assoc('id', nodeIdMap[node.id], node)),
+      R.values
+    )(nodes)
+  );
+
+  // :: patches -> nodeIdMapsInsidePatches
+  const nodeIdMapsInsidePatches = R.compose(
+    R.reduce((acc, patch) =>
+      R.assoc(
+        patch.id,
+        R.compose(
+          R.fromPairs,
+          R.map(node => [node.id, `${patch.id}/${node.id}`]),
+          R.values,
+          R.prop('nodes')
+        )(patch),
+        acc
+      ),
+      {}
+    ),
+    R.values
+  );
+
+  // :: { patchId: nodeIdMap } -> patches -> patchesWithResolvedIds
+  const resolveIdsInPatches = R.curry((nodeIdsMap, patches) =>
+    R.compose(
+      indexById,
+      R.map(patch =>
+        R.evolve({
+          nodes: R.compose(
+            indexById,
+            resolveNodeIds(nodeIdsMap[patch.id])
+          ),
+          links: R.compose(
+            indexById,
+            resolveLinkIds(
+              R.compose(
+                R.mergeAll,
+                R.values
+              )(nodeIdsMap)
+            )
+          ),
+        })(patch)
+      ),
+      R.values
+    )(patches)
+  );
+
+  // // patches -> patchesWithResolvedIds
+  const extendAllIdsWithPatchId = patches => R.compose(
+    resolveIdsInPatches,
+    nodeIdMapsInsidePatches
+  )(patches)(patches);
+
+  const allPatches = R.compose(
+    extendAllIdsWithPatchId,
+    R.propOr({}, 'patches')
+  )(project);
 
   // flat patch that merged from all non-patchnodes
   const mergedPatch = R.compose(
-    R.omit('id'),
+    R.omit(['id', 'label']),
     R.reduce(R.mergeWith(R.merge), {}),
-    R.filter(R.complement(isPatchNodeType)),
+    R.reject(isPatchNodeType),
     R.values
   )(allPatches);
 
@@ -86,19 +160,17 @@ export default function transform(project, implPlatforms = []) {
 
   // type PatchNode = {nodes :: [Node], links :: [Link]}
 
-  // :: {patchNode.name: PatchNode}
+  // :: {patchNode.label: PatchNode}
   const patchNodesByName = R.compose(
-    R.reduce(
-      ((ns, n) => (
-        isPatchNodeType(n)
-          ? R.assoc(n.name, {
-            links: R.values(n.links),
-            nodes: R.values(n.nodes),
-          }, ns)
-          : ns
-      )),
-      {}
+    R.map(R.omit(['label'])),
+    R.indexBy(R.prop('label')),
+    R.map(
+      R.compose(
+        R.evolve({ links: R.values, nodes: R.values }),
+        R.pickAll(['label', 'links', 'nodes'])
+      )
     ),
+    R.filter(isPatchNodeType),
     R.values
   )(allPatches);
 
@@ -110,7 +182,7 @@ export default function transform(project, implPlatforms = []) {
       R.complement(R.has(R.__, nodeTypes)),
       R.compose(
         R.any(R.__, R.keys(patchNodesByName)),
-        type => name => RegExp(`/${name}$`).test(type)
+        type => label => RegExp(`/${label}$`).test(type)
       )
     ),
     R.propOr('', 'typeId')
@@ -251,9 +323,14 @@ export default function transform(project, implPlatforms = []) {
     // populate recursively
   }
 
+  const isPinsEmpty = R.compose(
+    R.isEmpty,
+    R.prop('pins')
+  );
+
   // insert contant nodes for the pinned inputs
   const nodesWithPinnedInputs = R.compose(
-    R.filter(({ pins }) => !R.isEmpty(pins)),
+    R.reject(isPinsEmpty),
     R.values
   )(allNodes);
 
@@ -281,26 +358,9 @@ export default function transform(project, implPlatforms = []) {
   });
 
   // calculate the mapping "GUID -> Int index"
-  const nodeGuidToIdx = R.fromPairs(
-    R.addIndex(R.map)(
-      (id, idx) => [id, idx],
-      R.keys(allNodes)
-    )
-  );
-
-  const nodeList = R.map(
-    n => R.assoc('id', nodeGuidToIdx[n.id], n),
-    R.values(allNodes)
-  );
-
-  const linkList = R.map(
-    link => R.assoc(
-      'pins',
-      R.map(pin => R.assoc('nodeId', nodeGuidToIdx[pin.nodeId], pin), link.pins),
-      link
-    ),
-    R.values(allLinks)
-  );
+  const nodeGuidToIdx = guidToIdx(allNodes);
+  const nodeList = resolveNodeIds(nodeGuidToIdx, allNodes);
+  const linkList = resolveLinkIds(nodeGuidToIdx, allLinks);
 
   const usedNodeTypeIds = R.pluck('typeId', nodeList);
   const usedNodeTypes = R.pick(usedNodeTypeIds, nodeTypes);
@@ -380,7 +440,7 @@ export default function transform(project, implPlatforms = []) {
     R.juxt([
       R.compose(
         renameKeys({ typeId: 'implId', properties: 'props' }),
-        R.evolve({ properties: R.omit(['label']) }),
+        R.dissocPath(['properties', 'label']),
         R.pick(['id', 'typeId', 'properties'])
       ),
       R.compose(transformedNodeType, nodeTypeByNode),

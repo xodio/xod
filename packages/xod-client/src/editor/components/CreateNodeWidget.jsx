@@ -35,7 +35,7 @@ class CreateNodeWidget extends React.Component {
               key={type.id}
               value={type.id}
             >
-              {type.label || type.id}
+              {type.path || type.id}
             </option>
           )}
         </select>
