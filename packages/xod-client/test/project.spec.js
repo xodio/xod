@@ -122,7 +122,7 @@ describe('Project reducer: ', () => {
 
       const projectState = core.getProject(store.getState());
       const patchState = core.getPatchById(patchId, projectState);
-      console.log('wtf', patchState);
+
       chai.expect(patchState.nodes).to.deep.equal(expectedNodes);
     });
 
@@ -518,7 +518,6 @@ describe('Project reducer: ', () => {
         patchId,
         R.keys(getNodeTypes(store.getState()))
       );
-
 
       store.dispatch(Actions.addNode('xod/core/output', { x: 10, y: 10 }, patchId));
       chai.expect(R.keys(getNodeTypes(store.getState()))).to.have.members(expectedNodeTypes);
