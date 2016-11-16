@@ -21,15 +21,11 @@ class PopupInstallApp extends React.Component {
           height: 'auto',
         }}
         ref="popup"
-        title="Oops! You need a Chrome App!"
+        title="Oops! You need a desktop IDE!"
         afterClose={this.props.onClose}
       >
         <p>
-          To use this feature you have to install a Chrome Application.<br />
-          It's free.
-        </p>
-        <p>
-          <a href="#">Open in Chrome Store</a>
+          To upload projects you need to install XOD IDE for desktop.
         </p>
       </SkyLight>
     );
