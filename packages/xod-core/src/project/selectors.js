@@ -558,11 +558,16 @@ const getPatchNodePath = R.curry(
   }
 );
 
+const isLocalPatch = R.compose(
+  isLocalID,
+  getPatchId
+);
+
 export const dereferencedNodeTypes = (state) => {
   const patchNodes = getPatchNodes(state);
   const patchNodeTypes = R.pipe(
-    R.filter(isLocalID),
     R.values,
+    R.filter(isLocalPatch),
     R.map(
       patch => ({
         id: getPatchId(patch),
