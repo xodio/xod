@@ -91,8 +91,11 @@ export default function transpile({ project, customRuntime }) {
   const proj = transform(project, ['espruino', 'js']);
   const runtime = customRuntime || defaultRuntime;
 
+  // A2 is set to HIGH after reset for some reason.
+  // Force it to shut down with a hack.
   const launcher = joinLines([
     'function onInit() {',
+    '  digitalWrite(A2, false);', // TODO: remove hack
     '  project.launch();',
     '}',
   ]);
