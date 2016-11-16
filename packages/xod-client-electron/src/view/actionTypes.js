@@ -3,7 +3,6 @@ export const SAVE_PROJECT = 'SAVE_PROJECT';
 export const GET_PROJECT_LIST = 'GET_PROJECT_LIST';
 export const LOAD_PROJECT_LIST = 'LOAD_PROJECT_LIST';
 export const LOAD_PROJECT = 'LOAD_PROJECT';
-export const UPLOAD = 'UPLOAD';
 
 export default {
   SAVE_PATCH,
@@ -11,5 +10,4 @@ export default {
   GET_PROJECT_LIST,
   LOAD_PROJECT_LIST,
   LOAD_PROJECT,
-  UPLOAD,
 };

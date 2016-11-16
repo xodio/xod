@@ -2,12 +2,8 @@ import R from 'ramda';
 import { ipcRenderer } from 'electron';
 import { addProcess, progressProcess, successProcess, deleteProcess, addConfirmation, loadProjectFromJSON } from 'xod-client';
 
-import { getProjectPojo } from 'xod-core';
 import { getWorkspace } from '../settings/selectors';
 import ActionType from './actionTypes';
-
-import { transpile, runtime } from 'xod-espruino';
-import uploadToEspruino from 'xod-espruino-upload';
 
 const processProgressed = ({
   processId,
@@ -125,45 +121,7 @@ export const saveProject = createAsyncAction({
   },
 });
 
-export const upload = () => (dispatch, getState) => {
-  const project = getProjectPojo(getState());
-  const code = transpile({ project, runtime });
-
-  const newId = dispatch(addProcess(ActionType.UPLOAD));
-
-  const progress = (message, percentage) => dispatch(progressProcess(
-    newId,
-    ActionType.UPLOAD,
-    {
-      message,
-      percentage,
-    }
-  ));
-
-  const succeed = () => dispatch(successProcess(
-    newId,
-    ActionType.UPLOAD
-  ));
-
-  const fail = (err) => dispatch(failProcess(
-    newId,
-    ActionType.UPLOAD,
-    { message: err.message }
-  ));
-
-  uploadToEspruino(code, progress)
-    .then(succeed)
-    .catch(err => {
-      if (err.constructor !== Error) {
-        throw err;
-      }
-
-      fail(err);
-    });
-};
-
 export default {
-  upload,
   savePatch,
   saveProject,
   loadProject,

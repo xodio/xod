@@ -11,12 +11,14 @@ import EventListener from 'react-event-listener';
 import core from 'xod-core';
 import client from 'xod-client';
 import actions from '../actions';
-import selectors from '../selectors';
+import uploadActions from '../../upload/actions';
+import { getUploadProcess } from '../../upload/selectors';
 import { transpile, runtime } from 'xod-espruino';
-import ActionType from '../actionTypes';
+import { SAVE_PROJECT } from '../actionTypes';
+import { UPLOAD } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
 import PopupProjectSelection from '../../projects/components/PopupProjectSelection';
-import PopupUploadProject from '../components/PopupUploadProject';
+import PopupUploadProject from '../../upload/components/PopupUploadProject';
 import { getProjects } from '../../projects/selectors';
 import { getSettings, getWorkspace } from '../../settings/selectors';
 import { setWorkspace } from '../../settings/actions';
@@ -215,7 +217,7 @@ class App extends React.Component {
 
   onUploadPopupClose(id) {
     this.hideUploadProgressPopup();
-    this.props.actions.deleteProcess(id, ActionType.UPLOAD);
+    this.props.actions.deleteProcess(id, UPLOAD);
   }
 
   onKeyDown(event) { // eslint-disable-line class-methods-use-this
@@ -455,9 +457,9 @@ const mapStateToProps = (state) => {
     projectJSON: core.getProjectJSON(state),
     meta: core.getMeta(state),
     nodeTypes: core.dereferencedNodeTypes(state),
-    upload: selectors.getUploadProcess(state),
+    upload: getUploadProcess(state),
     workspace: getWorkspace(settings),
-    saveProcess: client.findProcessByType(ActionType.SAVE_PROJECT)(processes),
+    saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),
     currentPatchId: client.getCurrentPatchId(state),
   });
 };
@@ -471,7 +473,7 @@ const mapDispatchToProps = (dispatch) => ({
     saveProject: actions.saveProject,
     loadProjectList: actions.loadProjectList,
     loadProject: actions.loadProject,
-    upload: actions.upload,
+    upload: uploadActions.upload,
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,
     deleteProcess: client.deleteProcess,
