@@ -1,6 +1,0 @@
-node_modules/*
-!src/node_modules/
-.idea/
-xod.iml
-dist/
-.tmp/
