@@ -1,0 +1,22 @@
+{
+  "name": "xod-espruino-upload",
+  "version": "0.0.1",
+  "description": "XOD project: Espruino serial uploader",
+  "scripts": {
+  },
+  "repository": {},
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "dependencies": {
+    "co": "^4.6.0",
+    "espruino": "git+https://github.com/espruino/EspruinoTools.git#gh-pages",
+    "jquery": "^3.1.0"
+  },
+  "engines": {
+    "node": "6.0.0"
+  },
+  "devDependencies": {
+  }
+}

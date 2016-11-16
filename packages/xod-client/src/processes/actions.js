@@ -4,7 +4,8 @@ import * as ProcessSelectors from './selectors';
 
 import { STATUS } from '../utils/constants';
 import { getProjectPojo } from 'xod-core';
-import { upload as uploadToEspruino, transpile, runtime } from 'xod-espruino';
+import { transpile, runtime } from 'xod-espruino';
+import uploadToEspruino from 'xod-espruino-upload';
 
 export const addProcess = (type) => (dispatch, getState) => {
   const processes = ProcessSelectors.getProccesses(getState());
