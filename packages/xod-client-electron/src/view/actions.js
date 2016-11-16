@@ -3,7 +3,7 @@ import { ipcRenderer } from 'electron';
 import { addProcess, progressProcess, successProcess, deleteProcess, addConfirmation, loadProjectFromJSON } from 'xod-client';
 
 import { getWorkspace } from '../settings/selectors';
-import ActionType from './actionTypes';
+import * as ActionType from './actionTypes';
 
 const processProgressed = ({
   processId,

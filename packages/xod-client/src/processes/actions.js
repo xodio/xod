@@ -1,5 +1,4 @@
 import R from 'ramda';
-import * as ActionType from './actionTypes';
 import * as ProcessSelectors from './selectors';
 
 import { STATUS } from '../utils/constants';

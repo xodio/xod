@@ -23,7 +23,6 @@ export { container as Editor, CreateNodeWidget } from './editor';
 export { SnackBar } from './messages';
 export * from './messages/constants';
 export { UserPanel } from './user';
-export { default as PopupUploadProject } from './processes/components/PopupUploadProject';
 export { default as DevTools } from './core/containers/DevTools';
 
 import * as EditorSelectors from './editor/selectors';
@@ -50,7 +49,6 @@ import PopupAlert from './utils/components/PopupAlert';
 import PopupConfirm from './utils/components/PopupConfirm';
 import PopupPrompt from './utils/components/PopupPrompt';
 import PopupForm from './utils/components/PopupForm';
-import PopupUploadProject from './processes/components/PopupUploadProject';
 import DevTools from './core/containers/DevTools';
 
 export default Object.assign({
@@ -64,7 +62,6 @@ export default Object.assign({
   PopupForm,
   SnackBar,
   UserPanel,
-  PopupUploadProject,
   DevTools,
   Toolbar,
 },

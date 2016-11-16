@@ -1,10 +1,8 @@
-import R from 'ramda';
-import { ipcRenderer } from 'electron';
 
 import client from 'xod-client';
-import ActionType from './actionTypes';
 import uploadToEspruino from 'xod-espruino-upload';
 
+import { UPLOAD } from './actionTypes';
 import { getProjectPojo } from 'xod-core';
 import { transpile, runtime } from 'xod-espruino';
 
@@ -12,11 +10,11 @@ export const upload = () => (dispatch, getState) => {
   const project = getProjectPojo(getState());
   const code = transpile({ project, runtime });
 
-  const newId = dispatch(client.addProcess(ActionType.UPLOAD));
+  const newId = dispatch(client.addProcess(UPLOAD));
 
   const progress = (message, percentage) => dispatch(client.progressProcess(
     newId,
-    ActionType.UPLOAD,
+    UPLOAD,
     {
       message,
       percentage,
@@ -25,12 +23,12 @@ export const upload = () => (dispatch, getState) => {
 
   const succeed = () => dispatch(client.successProcess(
     newId,
-    ActionType.UPLOAD
+    UPLOAD
   ));
 
   const fail = (err) => dispatch(client.failProcess(
     newId,
-    ActionType.UPLOAD,
+    UPLOAD,
     { message: err.message }
   ));
 
