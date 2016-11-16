@@ -36,9 +36,7 @@ class PopupUploadProject extends React.Component {
         return (
           <div>
             <p>
-              Congratulations!<br />
-              Your device has been successfully patched!<br />
-              Now you can close this window and can continue bringing your ideas to life.
+              The program uploaded successfully.
             </p>
             {message}
           </div>
@@ -47,7 +45,7 @@ class PopupUploadProject extends React.Component {
         return (
           <div>
             <p>
-              <strong>Oops! Error occured.</strong>
+              Oops! Error occured.
             </p>
             {message}
           </div>
@@ -56,8 +54,8 @@ class PopupUploadProject extends React.Component {
         return (
           <div>
             <p>
-              Your application is uploading onto your device.<br />
-              Please, be patient and don't unplug the device from your PC.
+              Your program is uploading onto device.<br />
+              Do not unplug the device.
             </p>
             {message}
           </div>
@@ -93,6 +91,7 @@ class PopupUploadProject extends React.Component {
     const title = this.getTitle();
     const message = this.getMessage();
     const progress = this.getProgress();
+    const color = this.isFailed() ? '#d40000' : '#00d444';
     const closeButtonStyle = this.canClose() ?
       { display: 'inline' } :
       { display: 'none' };
@@ -106,7 +105,7 @@ class PopupUploadProject extends React.Component {
         onCloseClicked={this.onClose}
         onOverlayClicked={this.onClose}
       >
-        <ProgressBar percent={progress} strokeWidth="4" strokeColor="#ff0000" />
+        <ProgressBar percent={progress} strokeWidth="4" strokeColor={color} />
         {message}
       </SkyLightStateless>
     );
