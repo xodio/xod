@@ -2,8 +2,12 @@ import R from 'ramda';
 import { ipcRenderer } from 'electron';
 import { addProcess, progressProcess, successProcess, deleteProcess, addConfirmation, loadProjectFromJSON } from 'xod-client';
 
+import { getProjectPojo } from 'xod-core';
 import { getWorkspace } from '../settings/selectors';
-import { SAVE_PATCH, SAVE_PROJECT, LOAD_PROJECT_LIST, LOAD_PROJECT } from './actionTypes';
+import ActionType from './actionTypes';
+
+import { transpile, runtime } from 'xod-espruino';
+import uploadToEspruino from 'xod-espruino-upload';
 
 const processProgressed = ({
   processId,
@@ -80,7 +84,7 @@ const createAsyncAction = ({
 
 export const loadProjectList = createAsyncAction({
   eventName: 'loadProjectList',
-  actionType: LOAD_PROJECT_LIST,
+  actionType: ActionType.LOAD_PROJECT_LIST,
   messages: {
     process: 'Receiving of project list...',
     complete: 'Project list has been received!',
@@ -90,7 +94,7 @@ export const loadProjectList = createAsyncAction({
 
 export const loadProject = createAsyncAction({
   eventName: 'loadProject',
-  actionType: LOAD_PROJECT,
+  actionType: ActionType.LOAD_PROJECT,
   messages: {
     process: 'Loading project...',
     complete: 'Project has been loaded!',
@@ -105,7 +109,7 @@ export const loadProject = createAsyncAction({
 
 export const savePatch = createAsyncAction({
   eventName: 'savePatch',
-  actionType: SAVE_PATCH,
+  actionType: ActionType.SAVE_PATCH,
   messages: {
     process: 'Saving in progress...',
     complete: 'Patch has been saved successfully!',
@@ -114,14 +118,52 @@ export const savePatch = createAsyncAction({
 
 export const saveProject = createAsyncAction({
   eventName: 'saveProject',
-  actionType: SAVE_PROJECT,
+  actionType: ActionType.SAVE_PROJECT,
   messages: {
     process: 'Saving in progress...',
     complete: 'Project has been saved successfully!',
   },
 });
 
+export const upload = () => (dispatch, getState) => {
+  const project = getProjectPojo(getState());
+  const code = transpile({ project, runtime });
+
+  const newId = dispatch(addProcess(ActionType.UPLOAD));
+
+  const progress = (message, percentage) => dispatch(progressProcess(
+    newId,
+    ActionType.UPLOAD,
+    {
+      message,
+      percentage,
+    }
+  ));
+
+  const succeed = () => dispatch(successProcess(
+    newId,
+    ActionType.UPLOAD
+  ));
+
+  const fail = (err) => dispatch(failProcess(
+    newId,
+    ActionType.UPLOAD,
+    { message: err.message }
+  ));
+
+  uploadToEspruino(code, progress)
+    .then(succeed)
+    .catch(err => {
+      if (err.constructor !== Error) {
+        throw err;
+      }
+
+      fail(err);
+    });
+};
+
 export default {
+  upload,
   savePatch,
   saveProject,
   loadProject,

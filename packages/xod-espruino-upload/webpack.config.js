@@ -7,7 +7,7 @@ module.exports = {
   target: 'node',
   output: {
     path: pkgpath('dist'),
-    libraryTarget: 'commonjs',
+    libraryTarget: 'commonjs2',
     library: 'xod-espruino-upload',
     filename: 'index.js',
   },

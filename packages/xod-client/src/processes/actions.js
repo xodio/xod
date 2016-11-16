@@ -3,9 +3,6 @@ import * as ActionType from './actionTypes';
 import * as ProcessSelectors from './selectors';
 
 import { STATUS } from '../utils/constants';
-import { getProjectPojo } from 'xod-core';
-import { transpile, runtime } from 'xod-espruino';
-import uploadToEspruino from 'xod-espruino-upload';
 
 export const addProcess = (type) => (dispatch, getState) => {
   const processes = ProcessSelectors.getProccesses(getState());
@@ -42,38 +39,3 @@ export const deleteProcess = (id, type) => ({
   payload: { id },
   meta: { status: STATUS.DELETED },
 });
-
-export const upload = () => (dispatch, getState) => {
-  const project = getProjectPojo(getState());
-  const code = transpile({ project, runtime });
-
-  const newId = addProcess(ActionType.UPLOAD);
-
-  const progress = (message, percentage) => progressProcess(
-    newId,
-    ActionType.UPLOAD,
-    {
-      message,
-      percentage,
-    }
-  );
-  const succeed = () => successProcess(
-    newId,
-    ActionType.UPLOAD
-  );
-  const fail = (err) => failProcess(
-    newId,
-    ActionType.UPLOAD,
-    { message: err.message }
-  );
-
-  uploadToEspruino(code, progress)
-    .then(succeed)
-    .catch(err => {
-      if (err.constructor !== Error) {
-        throw err;
-      }
-
-      fail(err);
-    });
-};

@@ -1,7 +1,7 @@
 import React from 'react';
+import client from 'xod-client';
 import { SkyLightStateless } from 'react-skylight';
 import { Line as ProgressBar } from 'rc-progress';
-import { STATUS } from '../../utils/constants';
 
 class PopupUploadProject extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class PopupUploadProject extends React.Component {
       (<p>{this.props.upload.message}</p>) : null;
 
     switch (this.props.upload.status) {
-      case STATUS.SUCCEEDED:
+      case client.STATUS.SUCCEEDED:
         return (
           <div>
             <p>
@@ -43,7 +43,7 @@ class PopupUploadProject extends React.Component {
             {message}
           </div>
         );
-      case STATUS.FAILED:
+      case client.STATUS.FAILED:
         return (
           <div>
             <p>
@@ -78,11 +78,11 @@ class PopupUploadProject extends React.Component {
   }
 
   isSucceeded() {
-    return (this.props.upload.status === STATUS.SUCCEEDED);
+    return (this.props.upload.status === client.STATUS.SUCCEEDED);
   }
 
   isFailed() {
-    return (this.props.upload.status === STATUS.FAILED);
+    return (this.props.upload.status === client.STATUS.FAILED);
   }
 
   canClose() {
@@ -121,7 +121,7 @@ PopupUploadProject.propTypes = {
 
 PopupUploadProject.defaultProps = {
   upload: {
-    status: STATUS.STARTED,
+    status: client.STATUS.STARTED,
     message: '',
     percentage: 0,
   },
