@@ -11,7 +11,7 @@ import * as PrepareTo from '../src/project/actionPreparations';
 function pin(nodeId, pinKey) {
   return { nodeId, pinKey };
 }
-const mockStore = (state) => createStore(generateReducers(['1']), state, applyMiddleware(thunk));
+const mockStore = (state) => createStore(generateReducers(['@/1']), state, applyMiddleware(thunk));
 const getNodeTypes = (state) => core.dereferencedNodeTypes(state);
 
 describe('Project reducer: ', () => {
@@ -19,15 +19,15 @@ describe('Project reducer: ', () => {
     project: {
       meta: {},
       patches: {
-        1: {
-          id: '1',
+        '@/1': {
+          id: '@/1',
           nodes: {},
           links: {},
         },
       },
       nodeTypes: {
-        'core/test': {
-          id: 'core/test',
+        'xod/core/test': {
+          id: 'xod/core/test',
           category: 'hardware',
           pins: {
             in: {
@@ -44,8 +44,8 @@ describe('Project reducer: ', () => {
             },
           },
         },
-        'core/output': {
-          id: 'core/output',
+        'xod/core/output': {
+          id: 'xod/core/output',
           category: 'io',
           pins: {
             out: {
@@ -56,8 +56,8 @@ describe('Project reducer: ', () => {
             },
           },
         },
-        'core/prop': {
-          id: 'core/prop',
+        'xod/core/prop': {
+          id: 'xod/core/prop',
           category: 'hardware',
           pins: {
             in: {
@@ -104,13 +104,13 @@ describe('Project reducer: ', () => {
     });
 
     it('should add node', () => {
-      const patchId = '1';
-      const nodeId = store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
+      const patchId = '@/1';
+      const nodeId = store.dispatch(Actions.addNode('xod/core/test', { x: 10, y: 10 }, patchId));
 
       const expectedNodes = {
         [nodeId]: {
           id: nodeId,
-          typeId: 'core/test',
+          typeId: 'xod/core/test',
           pins: {},
           position: {
             x: 10,
@@ -127,13 +127,13 @@ describe('Project reducer: ', () => {
     });
 
     it('should be undoable and redoable', () => {
-      const patchId = '1';
+      const patchId = '@/1';
       const getPatch = core.getPatchById(patchId);
 
       const initialProjectState = core.getProject(store.getState());
       const initialPatchState = getPatch(initialProjectState);
 
-      store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode('xod/core/test', { x: 10, y: 10 }, patchId));
       const updatedProjectState = core.getProject(store.getState());
       const updatedPatchState = getPatch(updatedProjectState);
 
@@ -151,12 +151,12 @@ describe('Project reducer: ', () => {
   });
 
   describe('Delete node', () => {
-    const patchPath = ['project', 'patches', 1];
+    const patchPath = ['project', 'patches', '@/1'];
     const mockState = R.pipe(
       R.assocPath(
         patchPath,
         {
-          id: '1',
+          id: '@/1',
         }
       ),
       R.assocPath(
@@ -164,11 +164,11 @@ describe('Project reducer: ', () => {
         {
           1: {
             id: '1',
-            typeId: 'core/test',
+            typeId: 'xod/core/test',
           },
           2: {
             id: '2',
-            typeId: 'core/test',
+            typeId: 'xod/core/test',
           },
         }
       ),
@@ -189,8 +189,8 @@ describe('Project reducer: ', () => {
     });
 
     it('should delete node, children pins and link', () => {
-      const patchId = '1';
-      const expectedNodes = { 2: { id: '2', typeId: 'core/test' } };
+      const patchId = '@/1';
+      const expectedNodes = { 2: { id: '2', typeId: 'xod/core/test' } };
       const expectedLinks = {};
 
       store.dispatch(Actions.deleteNode('1'));
@@ -203,7 +203,7 @@ describe('Project reducer: ', () => {
     });
 
     it('should be undoable and redoable', () => {
-      const patchId = '1';
+      const patchId = '@/1';
       const initialProjectState = core.getProject(store.getState());
       const initialPatchState = core.getPatchById(initialProjectState, patchId);
 
@@ -249,7 +249,7 @@ describe('Project reducer: ', () => {
   });
 
   describe('Add link', () => {
-    const patchPath = ['project', 'patches', 1];
+    const patchPath = ['project', 'patches', '@/1'];
     const nullPin = { value: null };
     const testPins = { in: nullPin, out: nullPin };
     const nullPos = { x: 0, y: 0 };
@@ -300,7 +300,7 @@ describe('Project reducer: ', () => {
       const from = { nodeId: '2', pinKey: 'out' };
       const to = { nodeId: '3', pinKey: 'in' };
 
-      const patchId = '1';
+      const patchId = '@/1';
       const newId = store.dispatch(Actions.addLink(from, to));
       const after = store.getState();
       const newLink = R.view(
@@ -314,17 +314,17 @@ describe('Project reducer: ', () => {
       const to = { nodeId: '3', pinKey: 'in' };
 
       const initialState = store.getState();
-      const initialPatch = initialState.project.patches[1].present;
+      const initialPatch = initialState.project.patches['@/1'].present;
       const newLinkId = store.dispatch(Actions.addLink(from, to));
       store.dispatch(Actions.deleteLink(newLinkId));
       const afterDeleteState = store.getState();
-      const afterDeletePatch = afterDeleteState.project.patches[1].present;
+      const afterDeletePatch = afterDeleteState.project.patches['@/1'].present;
       chai.expect(afterDeletePatch).to.deep.equal(initialPatch);
     });
   });
 
   describe('Delete link', () => {
-    const patchPath = ['project', 'patches', 1];
+    const patchPath = ['project', 'patches', '@/1'];
     const mockState = R.pipe(
       R.assocPath(
         R.append('links', patchPath),
@@ -346,13 +346,13 @@ describe('Project reducer: ', () => {
       const lastLinkId = '1';
       store.dispatch(Actions.deleteLink(lastLinkId));
       const afterDeleteState = store.getState();
-      const afterDeletePatch = afterDeleteState.project.patches[1].present;
+      const afterDeletePatch = afterDeleteState.project.patches['@/1'].present;
 
       chai.expect(afterDeletePatch.links).to.deep.equal({});
     });
 
     it('should be undoable and redoable', () => {
-      const patchId = '1';
+      const patchId = '@/1';
       const lastLinkId = '1';
 
       const initialProjectState = core.getProject(store.getState());
@@ -475,7 +475,7 @@ describe('Project reducer: ', () => {
     });
 
     it('should delete patch', () => {
-      const lastPatchId = '1';
+      const lastPatchId = '@/1';
       store.dispatch(Actions.deletePatch(lastPatchId));
       const patches = core.getPatches(store.getState());
 
@@ -483,7 +483,7 @@ describe('Project reducer: ', () => {
     });
 
     it('should move patch under another folder', () => {
-      const lastPatchId = '1';
+      const lastPatchId = '@/1';
       const rootFolderId = '1';
       const parentFolderId = store.dispatch(Actions.addFolder('parent', rootFolderId));
       store.dispatch(Actions.movePatch({ id: lastPatchId, folderId: parentFolderId }));
@@ -494,7 +494,7 @@ describe('Project reducer: ', () => {
 
     it('should rename patch', () => {
       const newName = 'qwe123';
-      const lastPatchId = '1';
+      const lastPatchId = '@/1';
       store.dispatch(Actions.renamePatch(lastPatchId, newName));
       const patches = core.getPatches(store.getState());
 
@@ -503,7 +503,7 @@ describe('Project reducer: ', () => {
   });
 
   describe('Patch nodes', () => {
-    const patchId = '1';
+    const patchId = '@/1';
     const mockState = R.clone(
       projectShape
     );
@@ -519,15 +519,14 @@ describe('Project reducer: ', () => {
         R.keys(getNodeTypes(store.getState()))
       );
 
-
-      store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
-      chai.expect(R.keys(getNodeTypes(store.getState()))).to.deep.equal(expectedNodeTypes);
+      store.dispatch(Actions.addNode('xod/core/output', { x: 10, y: 10 }, patchId));
+      chai.expect(R.keys(getNodeTypes(store.getState()))).to.have.members(expectedNodeTypes);
     });
 
     it('should be deleted by deleting last IO node from patch', () => {
       const expectedNodeTypes = getNodeTypes(store.getState());
 
-      const newId = store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
+      const newId = store.dispatch(Actions.addNode('xod/core/output', { x: 10, y: 10 }, patchId));
       store.dispatch(Actions.deleteNode(newId));
 
       chai.expect(getNodeTypes(store.getState())).to.deep.equal(expectedNodeTypes);
@@ -539,9 +538,9 @@ describe('Project reducer: ', () => {
         error: core.NODETYPE_ERRORS.CANT_DELETE_USED_PIN_OF_PATCHNODE,
       };
 
-      const testNodeId = store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
-      store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
-      const outNodeId = store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
+      const testNodeId = store.dispatch(Actions.addNode('xod/core/test', { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode('xod/core/output', { x: 10, y: 10 }, patchId));
+      const outNodeId = store.dispatch(Actions.addNode('xod/core/output', { x: 10, y: 10 }, patchId));
       const ioNodeId = store.dispatch(Actions.addNode(patchId, { x: 10, y: 10 }, patchId));
       store.dispatch(Actions.addLink(pin(testNodeId, 'in'), pin(ioNodeId, outNodeId)));
 
@@ -565,8 +564,8 @@ describe('Project reducer: ', () => {
         error: core.NODETYPE_ERRORS.CANT_DELETE_USED_PATCHNODE,
       };
 
-      store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId));
-      const outNodeId = store.dispatch(Actions.addNode('core/output', { x: 10, y: 10 }, patchId));
+      store.dispatch(Actions.addNode('xod/core/test', { x: 10, y: 10 }, patchId));
+      const outNodeId = store.dispatch(Actions.addNode('xod/core/output', { x: 10, y: 10 }, patchId));
       store.dispatch(Actions.addNode(patchId, { x: 10, y: 10 }, patchId));
 
       const nodeTypesWithPatch = getNodeTypes(store.getState());
@@ -586,7 +585,7 @@ describe('Project reducer: ', () => {
   });
 
   describe('Switching pins/props', () => {
-    const patchId = '1';
+    const patchId = '@/1';
     const mockState = R.clone(
       projectShape
     );
@@ -597,8 +596,8 @@ describe('Project reducer: ', () => {
       store = mockStore(mockState);
       testNodes = [];
       testNodes.push(
-        store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId)),
-        store.dispatch(Actions.addNode('core/test', { x: 10, y: 10 }, patchId))
+        store.dispatch(Actions.addNode('xod/core/test', { x: 10, y: 10 }, patchId)),
+        store.dispatch(Actions.addNode('xod/core/test', { x: 10, y: 10 }, patchId))
       );
       store.dispatch(Actions.addLink(pin(testNodes[0], 'out'), pin(testNodes[1], 'in')));
     });
@@ -640,7 +639,7 @@ describe('Project reducer: ', () => {
     });
 
     it('should show error on attempt to make link between injected pin and regular pin', () => {
-      const newNodeId = store.dispatch(Actions.addNode('core/prop', { x: 10, y: 10 }, patchId));
+      const newNodeId = store.dispatch(Actions.addNode('xod/core/prop', { x: 10, y: 10 }, patchId));
 
       const validity = core.validatePin(store.getState(), pin(newNodeId, 'in'));
 
