@@ -1,7 +1,7 @@
 
 import R from 'ramda';
 import { assert, expect } from 'chai';
-import transform from '../src/transformer';
+import transform from '../src';
 
 const ioTypes = {
   'xod/core/inputBool': {
