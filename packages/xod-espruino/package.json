@@ -14,7 +14,8 @@
   "main": "dist/index.js",
   "dependencies": {
     "ramda": "^0.21.0",
-    "xod-core": "^0.0.1"
+    "xod-core": "^0.0.1",
+    "xod-transformer": "^0.0.1"
   },
   "engines": {
     "node": "6.0.0"

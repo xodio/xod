@@ -1,6 +1,6 @@
 
 import R from 'ramda';
-import transform from './transformer';
+import transform from 'xod-transformer';
 import defaultRuntime from '../platform/runtime'; // eslint-disable-line import/default
 
 const joinLines = R.join('\n');
