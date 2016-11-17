@@ -1,7 +1,7 @@
 {
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "postinstall": "npm run bootstrap",
+    "postinstall": "npm run bootstrap && lerna run --scope xod-client-electron electron-rebuild",
     "clean:dist": "rimraf packages/*/dist",
     "clean:node_modules": "rimraf node_modules packages/*/node_modules",
     "clean": "npm-run-all clean:*",
