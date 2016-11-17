@@ -3,7 +3,7 @@ import { ipcRenderer } from 'electron';
 import { addProcess, progressProcess, successProcess, deleteProcess, addConfirmation, loadProjectFromJSON } from 'xod-client';
 
 import { getWorkspace } from '../settings/selectors';
-import { SAVE_PATCH, SAVE_PROJECT, LOAD_PROJECT_LIST, LOAD_PROJECT } from './actionTypes';
+import * as ActionType from './actionTypes';
 
 const processProgressed = ({
   processId,
@@ -80,7 +80,7 @@ const createAsyncAction = ({
 
 export const loadProjectList = createAsyncAction({
   eventName: 'loadProjectList',
-  actionType: LOAD_PROJECT_LIST,
+  actionType: ActionType.LOAD_PROJECT_LIST,
   messages: {
     process: 'Receiving of project list...',
     complete: 'Project list has been received!',
@@ -90,7 +90,7 @@ export const loadProjectList = createAsyncAction({
 
 export const loadProject = createAsyncAction({
   eventName: 'loadProject',
-  actionType: LOAD_PROJECT,
+  actionType: ActionType.LOAD_PROJECT,
   messages: {
     process: 'Loading project...',
     complete: 'Project has been loaded!',
@@ -105,7 +105,7 @@ export const loadProject = createAsyncAction({
 
 export const savePatch = createAsyncAction({
   eventName: 'savePatch',
-  actionType: SAVE_PATCH,
+  actionType: ActionType.SAVE_PATCH,
   messages: {
     process: 'Saving in progress...',
     complete: 'Patch has been saved successfully!',
@@ -114,7 +114,7 @@ export const savePatch = createAsyncAction({
 
 export const saveProject = createAsyncAction({
   eventName: 'saveProject',
-  actionType: SAVE_PROJECT,
+  actionType: ActionType.SAVE_PROJECT,
   messages: {
     process: 'Saving in progress...',
     complete: 'Project has been saved successfully!',

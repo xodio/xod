@@ -40,7 +40,6 @@ class App extends React.Component {
     this.onExport = this.onExport.bind(this);
     this.onSelectNodeType = this.onSelectNodeType.bind(this);
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
-    this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
     this.onCreateProject = this.onCreateProject.bind(this);
 
@@ -66,12 +65,7 @@ class App extends React.Component {
   }
 
   onUpload() {
-    if (client.isChromeApp) {
-      this.showUploadProgressPopup();
-      this.props.actions.upload();
-    } else {
-      this.showInstallAppPopup();
-    }
+    this.showInstallAppPopup();
   }
 
   onShowCode() {
@@ -142,11 +136,6 @@ class App extends React.Component {
 
   onAddNodeClick() {
     this.props.actions.setMode(client.EDITOR_MODE.CREATING_NODE);
-  }
-
-  onUploadPopupClose(id) {
-    this.hideUploadProgressPopup();
-    this.props.actions.deleteProcess(id, client.UPLOAD);
   }
 
   onKeyDown(event) {
@@ -292,11 +281,6 @@ class App extends React.Component {
           code={this.state.code}
           onClose={this.hideCodePopup}
         />
-        <client.PopupUploadProject
-          isVisible={this.state.popupUploadProject}
-          upload={this.props.upload}
-          onClose={this.onUploadPopupClose}
-        />
         <client.PopupPrompt
           title="Create new project"
           confirmText="Create project"
@@ -321,7 +305,6 @@ App.propTypes = {
   nodeTypes: React.PropTypes.any.isRequired,
   selectedNodeType: React.PropTypes.string,
   actions: React.PropTypes.object,
-  upload: React.PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
@@ -331,13 +314,11 @@ const mapStateToProps = (state) => ({
   meta: core.getMeta(state),
   nodeTypes: core.dereferencedNodeTypes(state),
   selectedNodeType: client.getSelectedNodeType(state),
-  upload: client.getUpload(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     createProject: client.createProject,
-    upload: client.upload,
     loadProjectFromJSON: client.loadProjectFromJSON,
     setMode: client.setMode,
     addError: client.addError,

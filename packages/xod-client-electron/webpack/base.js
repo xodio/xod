@@ -37,6 +37,12 @@ const options = {
     ],
     extensions: ['', '.js', '.jsx', '.scss'],
   },
+  externals: {
+    // Webpack can’t package native modules
+    // keep them external
+    bindings: 'commonjs bindings',
+    serialport: 'commonjs serialport',
+  },
   module: {
     loaders: [
       {

@@ -7,6 +7,7 @@ import 'espruino/core/utils';
 import 'espruino/core/config';
 import 'espruino/core/serial';
 import 'espruino/core/serial_chrome';
+import 'espruino/core/serial_nodeserial';
 import 'espruino/core/codeWriter';
 import 'espruino/core/modules';
 import 'espruino/core/env';

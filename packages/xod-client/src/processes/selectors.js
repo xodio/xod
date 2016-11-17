@@ -1,5 +1,4 @@
 import R from 'ramda';
-import { UPLOAD } from './actionTypes';
 import { STATUS } from '../utils/constants';
 
 export const getProccesses = R.prop('processes');
@@ -12,13 +11,6 @@ export const getLastId = R.pipe(
 export const getNewId = R.pipe(
   getLastId,
   R.inc
-);
-
-export const getUpload = R.pipe(
-  getProccesses,
-  R.values,
-  R.filter((proc) => proc.type === UPLOAD),
-  R.head
 );
 
 export const findProcessByPath = path => R.pipe(

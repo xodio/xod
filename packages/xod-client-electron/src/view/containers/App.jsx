@@ -10,11 +10,15 @@ import EventListener from 'react-event-listener';
 
 import core from 'xod-core';
 import client from 'xod-client';
+import actions from '../actions';
+import uploadActions from '../../upload/actions';
+import { getUploadProcess } from '../../upload/selectors';
 import { transpile, runtime } from 'xod-espruino';
-import { savePatch, saveProject, loadProjectList, loadProject } from '../actions';
 import { SAVE_PROJECT } from '../actionTypes';
+import { UPLOAD } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
 import PopupProjectSelection from '../../projects/components/PopupProjectSelection';
+import PopupUploadProject from '../../upload/components/PopupUploadProject';
 import { getProjects } from '../../projects/selectors';
 import { getSettings, getWorkspace } from '../../settings/selectors';
 import { setWorkspace } from '../../settings/actions';
@@ -213,7 +217,7 @@ class App extends React.Component {
 
   onUploadPopupClose(id) {
     this.hideUploadProgressPopup();
-    this.props.actions.deleteProcess(id, client.UPLOAD);
+    this.props.actions.deleteProcess(id, UPLOAD);
   }
 
   onKeyDown(event) { // eslint-disable-line class-methods-use-this
@@ -394,7 +398,7 @@ class App extends React.Component {
           code={this.state.code}
           onClose={this.hideCodePopup}
         />
-        <client.PopupUploadProject
+        <PopupUploadProject
           isVisible={this.state.popupUploadProject}
           upload={this.props.upload}
           onClose={this.onUploadPopupClose}
@@ -453,7 +457,7 @@ const mapStateToProps = (state) => {
     projectJSON: core.getProjectJSON(state),
     meta: core.getMeta(state),
     nodeTypes: core.dereferencedNodeTypes(state),
-    upload: client.getUpload(state),
+    upload: getUploadProcess(state),
     workspace: getWorkspace(settings),
     saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),
     currentPatchId: client.getCurrentPatchId(state),
@@ -463,13 +467,13 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     createProject: client.createProject,
-    upload: client.upload,
     loadProjectFromJSON: client.loadProjectFromJSON,
     setMode: client.setMode,
-    savePatch,
-    saveProject,
-    loadProjectList,
-    loadProject,
+    savePatch: actions.savePatch,
+    saveProject: actions.saveProject,
+    loadProjectList: actions.loadProjectList,
+    loadProject: actions.loadProject,
+    upload: uploadActions.upload,
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,
     deleteProcess: client.deleteProcess,
