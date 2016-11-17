@@ -342,7 +342,9 @@ export default function transform(project, implPlatforms = []) {
   )(allNodes);
 
   nodesWithPinnedInputs.forEach(({ id, pins }) => {
-    R.toPairs(pins).forEach(([pinKey, { value }]) => {
+    R.toPairs(pins).forEach(([pinKey, { injected, value }]) => {
+      if (!injected) { return; }
+
       const newNodeId = generateId();
       const newLinkId = generateId();
 
