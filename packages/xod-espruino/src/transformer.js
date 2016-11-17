@@ -330,6 +330,13 @@ export default function transform(project, implPlatforms = []) {
 
   // insert contant nodes for the pinned inputs
   const nodesWithPinnedInputs = R.compose(
+    R.filter(
+      R.compose(
+        R.any(R.propEq('injected', true)),
+        R.values,
+        R.prop('pins')
+      )
+    ),
     R.reject(isPinsEmpty),
     R.values
   )(allNodes);

@@ -37,8 +37,8 @@ class Editor extends React.Component {
     this.props.actions.updateNodeProperty(nodeId, propKind, propKey, propValue);
   }
 
-  onPinModeSwitch(nodeId, pinKey, mode) {
-    this.props.actions.changePinMode(nodeId, pinKey, mode);
+  onPinModeSwitch(nodeId, pinKey, injected, val) {
+    this.props.actions.changePinMode(nodeId, pinKey, injected, val);
   }
 
   setEditorMode(mode) {

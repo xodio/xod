@@ -98,7 +98,7 @@ export const updateNodeProperty = (projectState, nodeId, propKind, propKey, prop
   };
 };
 
-export const changePinMode = (projectState, nodeId, pinKey, injected) => {
+export const changePinMode = (projectState, nodeId, pinKey, injected, val) => {
   const patch = core.getPatchByNodeId(projectState, nodeId);
   const patchId = core.getPatchId(patch);
   const linksToDelete = core.getLinksConnectedWithPin(projectState, nodeId, pinKey, patchId);
@@ -114,6 +114,7 @@ export const changePinMode = (projectState, nodeId, pinKey, injected) => {
       id: nodeId,
       key: pinKey,
       injected,
+      value: val,
     },
     meta: {
       patchId,

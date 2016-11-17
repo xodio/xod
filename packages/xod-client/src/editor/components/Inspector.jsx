@@ -160,9 +160,10 @@ class Inspector extends React.Component {
               this.props.onPropUpdate(node.id, prop.kind, prop.key, newValue);
             },
             onPinModeSwitch: () => {
-              const inversedMode = !injected;
+              const newInjected = !injected;
+              const val = (newInjected) ? prop.value : null;
 
-              this.props.onPinModeSwitch(node.id, prop.key, inversedMode);
+              this.props.onPinModeSwitch(node.id, prop.key, newInjected, val);
             },
           })
         );

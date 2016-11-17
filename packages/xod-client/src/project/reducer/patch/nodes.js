@@ -82,16 +82,19 @@ export const nodes = (state = {}, action) => {
         parseVal(action.payload.value, action.payload.type)
       )(state);
 
-    case NODE_CHANGE_PIN_MODE:
-      return R.assocPath(
-        [
-          action.payload.id,
-          'pins',
-          action.payload.key,
-          'injected',
-        ],
-        action.payload.injected
+    case NODE_CHANGE_PIN_MODE: {
+      const updateValue = (action.payload.value) ?
+        R.assocPath([action.payload.id, 'pins', action.payload.key, 'value'], action.payload.value) :
+        R.identity;
+
+      return R.compose(
+        R.assocPath(
+          [action.payload.id, 'pins', action.payload.key, 'injected'],
+          action.payload.injected
+        ),
+        updateValue
       )(state);
+    }
     default:
       return state;
   }
