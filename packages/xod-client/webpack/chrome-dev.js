@@ -11,7 +11,7 @@ const config = merge.smart(baseConfig, {
     path: path.join(__dirname, '../dist/chrome'),
   },
   entry: [
-    './src/runtime/xod-espruino/upload.js',
+    './src/runtime/xod-js/upload.js',
   ],
   module: {
     loaders: [

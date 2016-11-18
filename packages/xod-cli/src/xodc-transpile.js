@@ -7,7 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 import { loadProjectWithLibs, pack, readJSON, writeFile } from 'xod-fs';
-import { transpile, runtime } from 'xod-espruino';
+import { transpile, runtime } from 'xod-js';
 import * as msg from './messages';
 
 export default (input, program) => {

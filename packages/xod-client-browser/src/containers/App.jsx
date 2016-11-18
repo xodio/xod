@@ -8,7 +8,7 @@ import { HotKeys } from 'react-hotkeys';
 import core from 'xod-core';
 import client from 'xod-client';
 
-import { transpile, runtime } from 'xod-espruino';
+import { transpile, runtime } from 'xod-js';
 
 import PopupInstallApp from '../components/PopupInstallApp';
 import EventListener from 'react-event-listener';

@@ -13,7 +13,7 @@ import client from 'xod-client';
 import actions from '../actions';
 import uploadActions from '../../upload/actions';
 import { getUploadProcess } from '../../upload/selectors';
-import { transpile, runtime } from 'xod-espruino';
+import { transpile, runtime } from 'xod-js';
 import { SAVE_PROJECT } from '../actionTypes';
 import { UPLOAD } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';

@@ -1,5 +1,0 @@
-node_modules/
-!src/node_modules/
-dist/
-npm-debug.log
-.tmp/

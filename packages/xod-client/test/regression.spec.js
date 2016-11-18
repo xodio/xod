@@ -5,14 +5,14 @@ import { default as chai, expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 import core from 'xod-core';
 
-import { runtime, transpile } from 'xod-espruino';
+import { runtime, transpile } from 'xod-js';
 import initialState from '../src/core/state';
 import generateReducers from '../src/core/reducer';
 import { addNode } from '../src/project/actions';
 
 chai.use(dirtyChai);
 
-describe('xod-espruino', () => {
+describe('xod-js', () => {
   it('should transpile example initial state to kinda valid code', () => {
     const store = createStore(generateReducers(['@/1']), initialState, applyMiddleware(thunk));
     store.dispatch(addNode('xod/core/button', { x: 100, y: 100 }, '@/1'));
