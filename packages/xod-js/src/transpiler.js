@@ -87,19 +87,24 @@ function transpileProject(topology) {
   ]);
 }
 
-export default function transpile({ project, customRuntime, customLauncher }) {
-  const proj = transform(project, ['espruino', 'js']);
-  const runtime = customRuntime || jsRuntime;
-  const launcher = customLauncher || espruinoLauncher;
+export default function transpile(customOpts) {
+  const opts = R.merge({
+    project: {},
+    impls: ['espruino', 'js'],
+    runtime: jsRuntime,
+    launcher: espruinoLauncher,
+  }, customOpts);
+
+  const proj = transform(opts.project, opts.impls);
 
   return joinLineBlocks([
-    runtime,
+    opts.runtime,
     '// =====================================================================',
     transpileImpl(proj.impl),
     '// =====================================================================',
     transpileNodes(proj.nodes),
     transpileProject(proj.topology),
-    launcher,
+    opts.launcher,
     '',
   ]);
 }
