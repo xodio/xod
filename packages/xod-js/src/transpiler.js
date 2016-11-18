@@ -1,10 +1,10 @@
 
 import R from 'ramda';
 import transform from 'xod-transformer';
-import defaultRuntime from '../platform/runtime'; // eslint-disable-line import/default
+import { joinLines, joinLineBlocks } from './utils';
 
-const joinLines = R.join('\n');
-const joinLineBlocks = R.join('\n\n');
+import jsRuntime from '../platform/runtime';
+import espruinoLauncher from '../platform/espruino/launcher';
 
 function transpileImpl(impl) {
   const items = R.compose(
@@ -87,18 +87,10 @@ function transpileProject(topology) {
   ]);
 }
 
-export default function transpile({ project, customRuntime }) {
+export default function transpile({ project, customRuntime, customLauncher }) {
   const proj = transform(project, ['espruino', 'js']);
-  const runtime = customRuntime || defaultRuntime;
-
-  // A2 is set to HIGH after reset for some reason.
-  // Force it to shut down with a hack.
-  const launcher = joinLines([
-    'function onInit() {',
-    '  digitalWrite(A2, false);', // TODO: remove hack
-    '  project.launch();',
-    '}',
-  ]);
+  const runtime = customRuntime || jsRuntime;
+  const launcher = customLauncher || espruinoLauncher;
 
   return joinLineBlocks([
     runtime,
