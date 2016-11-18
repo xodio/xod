@@ -5,8 +5,9 @@ import { readDir, readJSON, readFile } from './read';
 import expandHomeDir from 'expand-home-dir';
 
 const implAccordance = {
-  js: 'xod.js',
+  js: 'any.js',
   espruino: 'espruino.js',
+  nodejs: 'nodejs.js',
 };
 
 const implTypes = Object.keys(implAccordance);
