@@ -4,11 +4,11 @@ import uploadToEspruino from 'xod-espruino-upload';
 
 import { UPLOAD } from './actionTypes';
 import { getProjectPojo } from 'xod-core';
-import { transpile, runtime } from 'xod-js';
+import { espruino } from 'xod-js';
 
 export const upload = () => (dispatch, getState) => {
   const project = getProjectPojo(getState());
-  const code = transpile({ project, runtime });
+  const code = espruino(project);
 
   const newId = dispatch(client.addProcess(UPLOAD));
 
