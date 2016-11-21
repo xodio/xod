@@ -16,7 +16,7 @@ function transpileImpl(impl) {
         let lines = [];
 
         // TODO: move such predicates to xod-core
-        if (/^core\/input/.test(implId) || /^core\/output/.test(implId)) {
+        if (/^xod\/core\/input/.test(implId) || /^xod\/core\/output/.test(implId)) {
           lines = [`${itemRef} = identityNode();`];
         } else {
           lines = [

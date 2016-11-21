@@ -6,7 +6,7 @@ import espruinoLauncher from '../platform/espruino/launcher';
 export default function transpile(project) {
   return runTranspile({
     project,
-    impl: ['espruino', 'js'],
+    impls: ['espruino', 'js'],
     runtime: jsRuntime,
     launcher: espruinoLauncher,
   });

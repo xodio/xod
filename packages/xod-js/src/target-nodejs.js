@@ -6,7 +6,7 @@ import nodejsLauncher from '../platform/nodejs/launcher';
 export default function transpile(project) {
   return runTranspile({
     project,
-    impl: ['nodejs', 'js'],
+    impls: ['nodejs', 'js'],
     runtime: jsRuntime,
     launcher: nodejsLauncher,
   });
