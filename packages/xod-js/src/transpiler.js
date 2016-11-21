@@ -4,7 +4,6 @@ import transform from 'xod-transformer';
 import { joinLines, joinLineBlocks } from './utils';
 
 import jsRuntime from '../platform/runtime';
-import espruinoLauncher from '../platform/espruino/launcher';
 
 function transpileImpl(impl) {
   const items = R.compose(
@@ -87,18 +86,40 @@ function transpileProject(topology) {
   ]);
 }
 
-export default function transpile(customOpts) {
-  const opts = R.merge({
-    project: {},
-    impls: ['espruino', 'js'],
-    runtime: jsRuntime,
-    launcher: espruinoLauncher,
-  }, customOpts);
+const validateTranspileOpts = (opts) => {
+  const validity = R.map(
+    (rule) => {
+      if (!rule.check(opts)) { return rule.error; }
+
+      return true;
+    },
+    [
+      { check: R.has('project'), error: 'Transpile options should have a `project` property.' },
+      { check: R.has('impls'), error: 'Transpile options should have a `impls` property.' },
+      { check: R.has('launcher'), error: 'Transpile options should have a `launcher` property.' },
+    ]
+  );
+
+  return R.ifElse(
+    R.all(R.equals(true)),
+    R.always({ valid: true }),
+    R.compose(
+      R.assoc('valid', false),
+      R.flip(R.assoc('errors'))({}),
+      R.join(' '),
+      R.reject(R.equals(true))
+    )
+  )(validity);
+};
+
+export default function transpile(opts) {
+  const validity = validateTranspileOpts(opts);
+  if (!validity.valid) { throw new Error(validity.errors); }
 
   const proj = transform(opts.project, opts.impls);
 
   return joinLineBlocks([
-    opts.runtime,
+    jsRuntime,
     '// =====================================================================',
     transpileImpl(proj.impl),
     '// =====================================================================',
