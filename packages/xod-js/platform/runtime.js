@@ -1,13 +1,19 @@
 /* eslint-disable no-unused-vars */
 
 // UTILS
-function clone(obj) {
-  if (Object.assign) { return Object.assign({}, obj); }
-  if (obj.clone) { return obj.clone(); }
+function clonePonyfill() {
+  if (Object.assign) {
+    return function clone(obj) { return Object.assign({}, obj); };
+  }
+  if (Object.prototype.clone) {
+    return function clone(obj) { return obj.clone(); };
+  }
 
-
-  throw new Error("Can't clone object in this environment!");
+  throw new Error('JS environment should support object cloning');
 }
+
+var clone = clonePonyfill();
+
 function nullFunc() {}
 function identity(x) { return x; }
 
