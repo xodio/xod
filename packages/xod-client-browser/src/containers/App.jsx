@@ -8,7 +8,7 @@ import { HotKeys } from 'react-hotkeys';
 import core from 'xod-core';
 import client from 'xod-client';
 
-import { espruino, nodejs } from 'xod-js';
+import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 
 import PopupInstallApp from '../components/PopupInstallApp';
 import EventListener from 'react-event-listener';
@@ -71,14 +71,14 @@ class App extends React.Component {
 
   onShowCodeEspruino() {
     this.setState({
-      code: espruino(this.props.project),
+      code: transpileForEspruino(this.props.project),
     });
     this.showCodePopup();
   }
 
   onShowCodeNodejs() {
     this.setState({
-      code: nodejs(this.props.project),
+      code: transpileForNodeJS(this.props.project),
     });
     this.showCodePopup();
   }

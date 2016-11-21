@@ -7,7 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 import { loadProjectWithLibs, pack, readJSON, writeFile } from 'xod-fs';
-import { espruino, nodejs } from 'xod-js';
+import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 import * as msg from './messages';
 
 export default (input, program) => {
@@ -16,16 +16,16 @@ export default (input, program) => {
   const extension = path.extname(input);
   const filename = path.basename(input);
 
-  let transpile = espruino;
+  let transpile = transpileForEspruino;
   switch (target) {
     case 'nodejs':
-      transpile = nodejs;
+      transpile = transpileForNodeJS;
       break;
     case 'arduino':
       throw new Error('There is no transpiler for arduino yet!');
     default:
     case 'espruino':
-      transpile = espruino;
+      transpile = transpileForEspruino;
       break;
   }
 

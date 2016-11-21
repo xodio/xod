@@ -13,7 +13,7 @@ import client from 'xod-client';
 import actions from '../actions';
 import uploadActions from '../../upload/actions';
 import { getUploadProcess } from '../../upload/selectors';
-import { espruino, nodejs } from 'xod-js';
+import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 import { SAVE_PROJECT } from '../actionTypes';
 import { UPLOAD } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
@@ -93,14 +93,14 @@ class App extends React.Component {
 
   onShowCodeEspruino() {
     this.setState({
-      code: espruino(this.props.project),
+      code: transpileForEspruino(this.props.project),
     });
     this.showCodePopup();
   }
 
   onShowCodeNodejs() {
     this.setState({
-      code: nodejs(this.props.project),
+      code: transpileForNodeJS(this.props.project),
     });
     this.showCodePopup();
   }
