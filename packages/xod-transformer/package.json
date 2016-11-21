@@ -2,18 +2,13 @@
   "name": "xod-transformer",
   "version": "0.0.1",
   "description": "XOD project: Transformer",
-  "scripts": {
-    "build": "babel src/ -d dist/",
-    "dev": "babel --watch src/ -d dist/",
-    "test": "mocha \"test/**/*.spec.js\""
-  },
+  "scripts": {},
   "repository": {},
   "keywords": [],
   "author": "",
   "license": "MIT",
   "main": "dist/index.js",
   "dependencies": {
-    "co": "^4.6.0",
     "ramda": "^0.21.0",
     "xod-core": "^0.0.1"
   },
