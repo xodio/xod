@@ -21,7 +21,10 @@ class CreateNodeWidget extends React.Component {
   }
 
   render() {
-    const nodeTypes = R.values(this.props.nodeTypes);
+    const sortById = R.sort(
+      R.comparator((a, b) => a.id < b.id)
+    );
+    const nodeTypes = sortById(R.values(this.props.nodeTypes));
 
 
     return (
