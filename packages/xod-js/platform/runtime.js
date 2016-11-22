@@ -5,11 +5,39 @@ function clonePonyfill() {
   if (Object.assign) {
     return function clone(obj) { return Object.assign({}, obj); };
   }
-  if (Object.prototype.clone) {
-    return function clone(obj) { return obj.clone(); };
+  
+  function assign(target, firstSource) {
+    if (target === undefined || target === null) {
+      throw new TypeError('Cannot convert first argument to object');
+    }
+
+    var to = Object(target);
+    for (var i = 1; i < arguments.length; i++) {
+      var nextSource = arguments[i];
+      if (nextSource === undefined || nextSource === null) {
+        continue;
+      }
+
+      var keysArray = Object.keys(Object(nextSource));
+      for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+        var nextKey = keysArray[nextIndex];
+        var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+        if (desc !== undefined && desc.enumerable) {
+          to[nextKey] = nextSource[nextKey];
+        }
+      }
+    }
+    return to;
   }
 
-  throw new Error('JS environment should support object cloning');
+  Object.defineProperty(Object, 'assign', {
+    enumerable: false,
+    configurable: true,
+    writable: true,
+    value: assign
+  });
+
+  return function clone(obj) { return Object.assign({}, obj); };
 }
 
 var clone = clonePonyfill();
