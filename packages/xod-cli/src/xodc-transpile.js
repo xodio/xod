@@ -16,17 +16,14 @@ export default (input, program) => {
   const extension = path.extname(input);
   const filename = path.basename(input);
 
-  let transpile = transpileForEspruino;
-  switch (target) {
-    case 'nodejs':
-      transpile = transpileForNodeJS;
-      break;
-    case 'arduino':
-      throw new Error('There is no transpiler for arduino yet!');
-    default:
-    case 'espruino':
-      transpile = transpileForEspruino;
-      break;
+  const transpilers = {
+    nodejs: transpileForNodeJS,
+    espruino: transpileForEspruino,
+  };
+
+  const transpile = transpilers[target];
+  if (!transpile) {
+    throw new Error(`Unknown target "${target}". Supported targets are: ${R.keys(transpilers)}`);
   }
 
   msg.notice(`Transpiling ${filename} for ${target} ...`);
