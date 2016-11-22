@@ -88,9 +88,11 @@ class Inspector extends React.Component {
   }
 
   getInspectableProps(nodeType, node) {
+    const sortByIndex = R.sortBy(R.prop('index'));
+
     return R.concat(
       this.getProperties(nodeType, node),
-      this.getPins(nodeType, node)
+      sortByIndex(this.getPins(nodeType, node))
     );
   }
 
