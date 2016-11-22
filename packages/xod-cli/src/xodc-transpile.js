@@ -1,13 +1,13 @@
-// transpile|t <input>                 Transpile code
-// -t --target [espruino|arduino]      Transpile code for target device (espruino by default).
-// -o --output [filename.txt]          Output result into file (or stdout by default).
+// transpile|t <input>                    Transpile code
+// -t --target [espruino|arduino|nodejs]  Transpile code for target device (espruino by default).
+// -o --output [filename.txt]             Output result into file (or stdout by default).
 
 /* eslint-disable no-console */
 
 import fs from 'fs';
 import path from 'path';
 import { loadProjectWithLibs, pack, readJSON, writeFile } from 'xod-fs';
-import { transpile, runtime } from 'xod-espruino';
+import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 import * as msg from './messages';
 
 export default (input, program) => {
@@ -15,6 +15,16 @@ export default (input, program) => {
   const output = program.output;
   const extension = path.extname(input);
   const filename = path.basename(input);
+
+  const transpilers = {
+    nodejs: transpileForNodeJS,
+    espruino: transpileForEspruino,
+  };
+
+  const transpile = transpilers[target];
+  if (!transpile) {
+    throw new Error(`Unknown target "${target}". Supported targets are: ${R.keys(transpilers)}`);
+  }
 
   msg.notice(`Transpiling ${filename} for ${target} ...`);
 
@@ -46,7 +56,7 @@ export default (input, program) => {
       reject(new Error(`Unexpected input "${input}"`));
     }
   })
-    .then(project => transpile({ project, runtime }))
+    .then(project => transpile(project))
     .then(code => {
       if (output) {
         return writeFile(output, code)

@@ -37,5 +37,6 @@ module.exports = {
     PULSE: true,
     identity: true,
     require: true,
+    project: true,
   },
 };

@@ -8,7 +8,7 @@ import { HotKeys } from 'react-hotkeys';
 import core from 'xod-core';
 import client from 'xod-client';
 
-import { transpile, runtime } from 'xod-espruino';
+import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 
 import PopupInstallApp from '../components/PopupInstallApp';
 import EventListener from 'react-event-listener';
@@ -34,7 +34,8 @@ class App extends React.Component {
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onUpload = this.onUpload.bind(this);
-    this.onShowCode = this.onShowCode.bind(this);
+    this.onShowCodeEspruino = this.onShowCodeEspruino.bind(this);
+    this.onShowCodeNodejs = this.onShowCodeNodejs.bind(this);
     this.onImportChange = this.onImportChange.bind(this);
     this.onImport = this.onImport.bind(this);
     this.onExport = this.onExport.bind(this);
@@ -68,9 +69,16 @@ class App extends React.Component {
     this.showInstallAppPopup();
   }
 
-  onShowCode() {
+  onShowCodeEspruino() {
     this.setState({
-      code: transpile({ project: this.props.project, runtime }),
+      code: transpileForEspruino(this.props.project),
+    });
+    this.showCodePopup();
+  }
+
+  onShowCodeNodejs() {
+    this.setState({
+      code: transpileForNodeJS(this.props.project),
     });
     this.showCodePopup();
   }
@@ -199,10 +207,16 @@ class App extends React.Component {
         onClick: this.onUpload,
       },
       {
-        key: 'show-code',
+        key: 'show-code-espruino',
         className: 'show-code-button',
-        label: 'Show code',
-        onClick: this.onShowCode,
+        label: 'Show code for Espruino',
+        onClick: this.onShowCodeEspruino,
+      },
+      {
+        key: 'show-code-nodejs',
+        className: 'show-code-button',
+        label: 'Show code for Nodejs',
+        onClick: this.onShowCodeNodejs,
       },
       {
         key: 'export',

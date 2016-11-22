@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const libraryName = 'xod-espruino';
+const libraryName = 'xod-js';
 
 const pkgpath = subpath => path.join(__dirname, '..', subpath);
 

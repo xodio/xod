@@ -1,11 +1,27 @@
+/* eslint-disable no-unused-vars */
+
+// UTILS
+function clonePonyfill() {
+  if (Object.assign) {
+    return function clone(obj) { return Object.assign({}, obj); };
+  }
+  if (Object.prototype.clone) {
+    return function clone(obj) { return obj.clone(); };
+  }
+
+  throw new Error('JS environment should support object cloning');
+}
+
+var clone = clonePonyfill();
 
 function nullFunc() {}
+function identity(x) { return x; }
 
+// CONSTANTS
 var PULSE = {type: 'pulse'};
 
-var identity = function(x) { return x; };
+// RUNTIME
 
-/* eslint-disable no-unused-vars */
 function identityNode() {
   return {
      evaluate: function(e) { return {PIN: e.inputs.PIN}; }
@@ -54,6 +70,8 @@ function Node(args) {
   this._cachedInputs = {};
   this._pendingOutputs = {};
   this._dirty = false;
+
+  this._fireCallback = nullFunc;
 }
 
 /**
@@ -69,7 +87,14 @@ Node.prototype.fire = function(outputs) {
     self._pendingOutputs[key] = outputs[key];
   });
 
-  this.emit('fire');
+  this._fireCallback();
+};
+
+/**
+  * Add event listener for fire event
+  */
+Node.prototype.onFire = function(listener) {
+  this._fireCallback = listener;
 };
 
 /**
@@ -114,7 +139,7 @@ Node.prototype.evaluate = function() {
   }
 
   fire = this._pure ? null : this.fire.bind(this);
-  inputs = this._cachedInputs.clone();
+  inputs = clone(this._cachedInputs);
 
   result = this._evaluate({
     inputs: inputs,
@@ -178,7 +203,7 @@ function Project(args) {
   */
 Project.prototype.launch = function() {
   var fire = this.onNodeFire.bind(this);
-  this.forEachNode(function(node) { node.on('fire', fire); });
+  this.forEachNode(function(node) { node.onFire(fire); });
 
   this._inSetup = true;
 

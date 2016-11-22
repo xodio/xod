@@ -1,4 +1,3 @@
-
 import R from 'ramda';
 import { PIN_DIRECTION, PIN_TYPE, mapIndexed, indexById, sortGraph, generateId } from 'xod-core';
 
