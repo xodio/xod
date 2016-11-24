@@ -24,10 +24,10 @@
  *
  * @function createLink
  * @param {string} secondPinKey - name of second node’s pin to link
- * @param {Node} secondNode - second node to link
+ * @param {NodeOrId} secondNode - second node to link
  * @param {string} firstPinKey - name of first node’s pin to link
- * @param {Node} firstNode - first node to link
- * @returns {Either<Error|Link>} error or a link object created
+ * @param {NodeOrId} firstNode - first node to link
+ * @returns {Link} error or a link object created
  */
 // TODO: implement
 

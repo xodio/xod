@@ -1,8 +1,6 @@
 
 /**
  * @typedef {Object} Node
- * @property {Position} position - coordinates of the node center
- * @property {string} typeId - read-only type name of the node
  */
 
 /**
@@ -26,7 +24,7 @@
 /**
  * @function createNode
  * @param {Position} position - coordinates of new node’s center
- * @param {Patch} type - type of node to create
+ * @param {PatchOrPath} type - type of node to create
  * @returns {Either<Error|Node>} error or a new node
  */
 // TODO: implement
@@ -113,7 +111,7 @@
  // TODO: implement
 
 /**
- * Get seed value of output pin.
+ * Gets seed value of output pin.
  *
  * It's like a default value for pin before node has been evaluated.
  *
@@ -125,40 +123,41 @@
  // TODO: implement
 
 /**
- * Set seed value to output pin.
+ * Sets seed value to output pin.
  *
  * @function setPinSeedValue
  * @param {PinValue} value
  * @param {string} key
  * @param {Node} node
- * @returns {Either<Error|PinValue>}
+ * @returns {Either<Error|Node>}
  */
  // TODO: implement
 
 
 /**
- * Get curried value of input pin.
+ * Gets curried value of input pin.
  *
  * It will return value even if pin isn't curried.
+ * In that case the last curried value or default one is returned.
  *
- * @function setPinCurriedValue
+ * @function getPinCurriedValue
  * @param {string} key
  * @param {Node} node
  * @returns {Either<Error|PinValue>}
  */
 
 /**
- * Set curried value to input pin.
+ * Sets curried value to input pin.
  *
- * @function getPinCurriedValue
+ * @function setPinCurriedValue
  * @param {string} key
  * @param {PinValue} value
  * @param {Node} node
- * @returns {Either<Error|PinValue>}
+ * @returns {Either<Error|Node>}
  */
 
  /**
-  * Set pin curried or uncurried.
+  * Enables or disables pin currying.
   *
   * @function curryPin
   * @param {boolean} curry
@@ -175,11 +174,11 @@
  */
 
 /**
- * Returns list of all links that connected with specified pin.
+ * Returns list of all links are connected to specified pin.
  *
  * @function listLinksByPin
  * @param {string} key
- * @param {Node} node
+ * @param {NodeOrId} node
  * @param {Patch} patch
  * @returns {Link[]}
  */

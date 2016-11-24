@@ -26,7 +26,7 @@
  * @function setProjectDescription
  * @param {string} description
  * @param {Project} project
- * @returns {string}
+ * @returns {Project}
  */
 // TODO: implement
 
@@ -76,12 +76,11 @@
   *
   * Check would fail in either case:
   * - JSON Schema test fails
-  * - one of another validate methods fails
-  * - another patch with same path already exist
+  * - one of other validate function fails
   *
   * @function validateProject
   * @param {Project} project - project to operate on
-  * @returns {Validity} validation result
+  * @returns {Either<Error|Project>} validation result
   */
  // TODO: implement
 
@@ -120,7 +119,7 @@
  * @function getPatchByPath
  * @param {string} path - full path of the patch to find, e.g. `"@/foo/bar"`
  * @param {Project} project - project bundle
- * @returns {Maybe<Null|Patch>} a patch with given path or `undefined` if it wasn’t found
+ * @returns {Maybe<Null|Patch>} a patch with given path or Null if it wasn’t found
  */
 // TODO: implement
 

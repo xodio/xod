@@ -1,7 +1,7 @@
 XOD-PROJECT
 ===========
 
-This is a core-package that provides an API to work with XOD projects.
+This is a core package that provides an API to work with XOD projects.
 
 ## Project structure
 ```
@@ -14,31 +14,33 @@ This is a core-package that provides an API to work with XOD projects.
 
 ## Basic principles of the API
 
-1. **Composability of methods** *(ramda-friendly)*
-   That means every method should take context as latest argument.
+1. **Composability of functions** *(ramda-friendly)*
+   That means every function take context as latest argument.
    For example, `getPinType(key, node)`.
 
 2. **Immutability of data**
-   So every method returns new copy with applied changes.
+   So every function returns new copy with applied changes.
 
 3. **Functional style**
-   API could be used in compositions and etc, so there is no exceptions, nulls or undefined returns.
-   Instead of them there will be monads: Either, Maybe and maybe some more.
-   Learn more about monads here: [ramda-fantasy](https://github.com/ramda/ramda-fantasy)
+   API could be used in compositions and etc, so there are no exceptions, nulls or undefined values.
+   Instead, monads like Either and Maybe from [ramda-fantasy](https://github.com/ramda/ramda-fantasy) are used.
 
-4. **Pure methods only**
-   In this package should be no side-effects, async data-flow and etc.
-   So every method of this API should be a pure function.
+4. **Pure functions only**
+   Functions of `xod-project` don’t have any side effects, state, or IO.
 
 5. **Atomic operations**
-   Each method should return a consistent part of project (or whole project).
+   Each function returns a consistent part of a project (or the whole project).
 
-## Naming conventions
+
+-----------------------
+## For contributors
+
+### Naming conventions
 
    * **Clear naming**
-     The method name should clearly inform about the expected result.
-     And always should begins with the predicate and ends with the subject.
-     The predicate may be abbreviated verb (like `assoc`).
+     The function name clearly informs about the expected result.
+     And always should begins with the action verb and ends with the subject.
+     The action verb may be abbreviated (like `assoc`).
      For example, `createLink`, `rebasePatch`, `getPinType`, `assocNode`.
 
    * **Getters and Setters for primitive properties**
@@ -55,13 +57,12 @@ This is a core-package that provides an API to work with XOD projects.
      regardless of their parents.
      For example, `listPatches`, `listNodes`.
 
-   * **Getters with conditions**
+   * **Getters with filtering/grouping**
      This is a common rule for all getters.
-     If getter have any condition it should ends with this condition.
-     Begin condition with prepositions `by`, `with` and `without`.
+     If getter have any filtering or grouping rule it ends with this rule.
+     Begin rule with prepositions `by`, `with` and `without`.
      For example, `getPatchByPath`, `listPatchWithNodes`.
 
-   * **Check methods**
-     If method checks something and returns boolean, it should begin with `is` word,
-     contain the subject and ends with participle.
-     For example, `isPinCurried`.
+   * **Check functions**
+     If function checks something and returns boolean, it looks like a question.
+     For example, `isPinCurried`, `hasPins`.

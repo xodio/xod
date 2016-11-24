@@ -1,8 +1,7 @@
 
 /**
- * An object representing single path in a project
+ * An object representing single patch in a project
  * @typedef {Object} Patch
- * @property {string} label - Label of the patch as it given by the user
  */
 
 /**
@@ -51,7 +50,7 @@
  */
 
  /**
-  * Returns a list of all platforms that supported with this patch.
+  * Returns a list of platforms for which a `patch` has native implementation
   *
   * For example, `['js', 'arduino', 'espruino', 'nodejs']`.
   *
@@ -147,7 +146,7 @@
  * @function getLinkById
  * @param {string} id - a link ID to find
  * @param {Patch} patch - a patch to operate on
- * @returns {Maybe<Null|Link>} a link with given `id` or `undefined` if not found
+ * @returns {Maybe<Null|Link>} a link with given `id` or Null if not found
  */
 // TODO: implement
 
