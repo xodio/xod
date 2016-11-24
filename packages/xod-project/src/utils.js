@@ -1,15 +1,30 @@
 
 /**
- * @typedef {Object} Position
- * @property {number} x
- * @property {number} y
+ * Contains resulting value or error
+ *
+ * See: {@link https://github.com/ramda/ramda-fantasy/blob/master/docs/Either.md}
+ *
+ * @external Either
  */
 
 /**
- * @typedef {Object} Validity
- * @property {boolean} valid - has check passed
- * @property {string} error - contains error text if not `valid` or `undefined` otherwise.
- *   Value of `error` is one of {@link ERROR} constants
+ * Contains resulting value or null
+ *
+ * See: {@link https://github.com/ramda/ramda-fantasy/blob/master/docs/Maybe.md}
+ *
+ * @external Maybe
+ */
+
+ /**
+  * A special object for triggering nodes without passing data.
+  *
+  * @typedef {Object} Pulse
+  */
+
+/**
+ * @typedef {Object} Position
+ * @property {number} x
+ * @property {number} y
  */
 
 /**
@@ -18,6 +33,6 @@
  *
  * @function validateName
  * @param {string} name - string to check
- * @returns {Validity} validation result
+ * @returns {Either<Error|string>} error or valid name
  */
 // TODO: implement

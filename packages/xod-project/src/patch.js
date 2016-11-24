@@ -17,29 +17,76 @@
  */
 // TODO: implement
 
+
 /**
- * Gets a property `prop` of the `patch`.
- *
- * Available properties are:
- *
- * - `path`
- * - `baseName`: the last component of the `path`. E.g. for `"foo/bar/baz"`
- *   it would be `"baz"`.
- *
- * @function getPatchProp
- * @param {string} prop
+ * @function duplicatePatch
+ * @param {string} newPath - full path of the new patch, e.g. `"@/foo/bar"`
  * @param {Patch} patch
- * @returns {string} full path of the patch
+ * @returns {Either<Error|Patch>} duplicated patch with new path or error
  */
 
-//=============================================================================
+/**
+ * @function getPatchPath
+ * @param {Patch} patch
+ * @returns {Maybe<Null|string>}
+ */
+
+/**
+ * @function getPatchBaseName
+ * @param {Patch} patch
+ * @returns {Maybe<Null|string>}
+ */
+
+/**
+ * @function getPatchLabel
+ * @param {Patch} patch
+ * @returns {string}
+ */
+
+/**
+ * @function setPatchLabel
+ * @param {string} label
+ * @param {Patch} patch
+ * @returns {Patch} a copy of the `patch` with new label
+ */
+
+ /**
+  * Returns a list of all platforms that supported with this patch.
+  *
+  * For example, `['js', 'arduino', 'espruino', 'nodejs']`.
+  *
+  * @function listPatchPlatforms
+  * @param {Patch} patch
+  * @returns {string[]}
+  */
+
+/**
+ * @function isPatchLocal
+ * @param {Patch} patch
+ * @returns {boolean}
+ */
+
+/**
+ * @function isPatchLibrary
+ * @param {Patch} patch
+ * @returns {boolean}
+ */
+
+/**
+ * @function getPatchTerminals
+ * @param {Patch} patch
+ * @returns {Node[]}
+ */
+ // TODO: implement
+
+// =============================================================================
 //
 // Nodes
 //
-//=============================================================================
+// =============================================================================
 
 /**
- * @function getNodeList
+ * @function listNodes
  * @param {Patch} patch - a patch to get nodes from
  * @returns {Node[]} list of all nodes not sorted in any arbitrary order
  */
@@ -49,7 +96,7 @@
  * @function getNodeById
  * @param {string} id - node ID to find
  * @param {Patch} patch - a patch where node should be searched
- * @returns {Node} a node with given ID or `undefined` if it wasn’t not found
+ * @returns {Maybe<Null|Node>} a node with given ID or `undefined` if it wasn’t not found
  */
 // TODO: implement
 
@@ -83,14 +130,14 @@
 // TODO: implement
 
 
-//=============================================================================
+// =============================================================================
 //
 // Links
 //
-//=============================================================================
+// =============================================================================
 
 /**
- * @function getLinkList
+ * @function listLinks
  * @param {Patch} patch - a patch to operate on
  * @returns {Link[]} list of all links not sorted in any arbitrary order
  */
@@ -100,7 +147,7 @@
  * @function getLinkById
  * @param {string} id - a link ID to find
  * @param {Patch} patch - a patch to operate on
- * @returns {Link} a link with given `id` or `undefined` if not found
+ * @returns {Maybe<Null|Link>} a link with given `id` or `undefined` if not found
  */
 // TODO: implement
 
@@ -116,7 +163,7 @@
  * @function validateLink
  * @param {Link} link - a link to validate
  * @param {Patch} patch - a patch to operate on
- * @returns {Validity} validation result
+ * @returns {Either<Error|Link>} validation errors or valid {@link Link}
  */
 // TODO: implement
 
@@ -128,8 +175,7 @@
  * @function assocLink
  * @param {Link} link - new link
  * @param {Patch} patch - a patch to operate on
- * @returns {Patch} a copy of the `patch` with changes applied
- * @throws {Error} if the link is not valid for the patch.
+ * @returns {Either<Error|Patch>} error or a copy of the `patch` with changes applied
  * @see {@link validateLink}
  */
 // TODO: implement
