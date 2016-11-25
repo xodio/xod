@@ -1,0 +1,205 @@
+
+/**
+ * Root of a project’s state tree
+ * @typedef {Object} Project
+ */
+
+ /**
+  * Archived project state
+  * @typedef {Object} Xodball
+  */
+
+/**
+ * @function createProject
+ * @returns {Project} newly created project
+ */
+// TODO: implement
+
+/**
+ * @function getProjectDescription
+ * @param {Project} project
+ * @returns {string}
+ */
+// TODO: implement
+
+/**
+ * @function setProjectDescription
+ * @param {string} description
+ * @param {Project} project
+ * @returns {Project}
+ */
+// TODO: implement
+
+/**
+ * @function getProjectAuthors
+ * @param {Project} project
+ * @returns {string[]}
+ */
+// TODO: implement
+
+/**
+ * @function setProjectAuthors
+ * @param {string[]} authors
+ * @param {Project} project
+ * @returns {Project}
+ */
+// TODO: implement
+
+/**
+ * @function getProjectLicense
+ * @param {Project} project
+ * @returns {string}
+ */
+// TODO: implement
+
+/**
+ * @function setProjectLicense
+ * @param {string} value
+ * @param {Project} project
+ * @returns {Project}
+ */
+// TODO: implement
+
+/**
+ * Converts project into Xodball: remove library patches, replace it with dependency list and etc.
+ *
+ * This functions validates project before archiving it and may return error of validation.
+ *
+ * @function archiveProject
+ * @param {Project} project
+ * @returns {Either<Error|Xodball>}
+ */
+ // TODO: implement
+
+ /**
+  * Checks `project` for validity.
+  *
+  * Check would fail in either case:
+  * - JSON Schema test fails
+  * - one of other validate function fails
+  *
+  * @function validateProject
+  * @param {Project} project - project to operate on
+  * @returns {Either<Error|Project>} validation result
+  */
+ // TODO: implement
+
+// =============================================================================
+//
+// Patches
+//
+// =============================================================================
+
+/**
+ * @function listPatches
+ * @param {Project} project - project bundle
+ * @returns {Patch[]} list of all patches not sorted in any arbitrary order
+ */
+// TODO: implement
+
+/**
+ * Return a list of local patches (excluding external libraries)
+ *
+ * @function listLocalPatches
+ * @param {Project} project
+ * @returns {Patch[]}
+ */
+// TODO: implement
+
+/**
+ * Return a list of library patches (excluding local patches)
+ *
+ * @function listLibraryPatches
+ * @param {Project} project
+ * @returns {Patch[]}
+ */
+// TODO: implement
+
+/**
+ * @function getPatchByPath
+ * @param {string} path - full path of the patch to find, e.g. `"@/foo/bar"`
+ * @param {Project} project - project bundle
+ * @returns {Maybe<Null|Patch>} a patch with given path or Null if it wasn’t found
+ */
+// TODO: implement
+
+/**
+ * Inserts or updates the `patch` within the `project`.
+ *
+ * Matching is done by patch’es path.
+ *
+ * @function assocPatch
+ * @param {Patch} patch - patch to insert or update
+ * @param {Project} project - project to operate on
+ * @returns {Either<Error|Project>} copy of the project with the updated patch
+ */
+// TODO: implement
+
+/**
+ * Removes the `patch` from the `project`.
+ *
+ * Does nothing if the `patch` not found in `project`.
+ *
+ * @function dissocPatch
+ * @param {Patch} patch - patch to remove
+ * @param {Project} project - project to operate on
+ * @returns {Project} copy of the project with the patch removed
+ */
+// TODO: implement
+
+/**
+ * Checks if a `patch` could be safely renamed given a new path.
+ *
+ * Check would fail in either case:
+ * - `newPath` contains invalid characters
+ * - `patch` is not in the `project`
+ * - another patch with same path already exist
+ *
+ * @function validatePatchRebase
+ * @param {string} newPath - new label for the patch
+ * @param {PatchOrPath} patch - patch to rename
+ * @param {Project} project - project to operate on
+ * @returns {Validity} validation result
+ */
+// TODO: implement
+
+/**
+ * Updates the `patch` in the `project` relocating it to a new path.
+ *
+ * Note that rebase will affect patch’es path that is used as its ID.
+ *
+ * All references to the patch from other patches will be set to
+ * the new path.
+ *
+ * @function rebasePatch
+ * @param {string} newPath - new label for the patch
+ * @param {PatchOrPath} patch - patch to rename
+ * @param {Project} project - project to operate on
+ * @returns {Either<Error|Project>} copy of the project with the patch renamed
+ * @see {@link validatePatchRebase}
+ */
+// TODO: implement
+
+// =============================================================================
+//
+// Virtual directories
+//
+// =============================================================================
+
+/**
+ * Returns list of patches in the specified directory.
+ *
+ * @function lsPatches
+ * @param {string} path
+ * @param {Project} project
+ * @returns {Patch[]}
+ */
+
+/**
+ * Returns list of directories in the specified directory.
+ *
+ * @function lsDirs
+ * @param {string} path
+ * @param {Project} project
+ * @returns {string[]}
+ */
