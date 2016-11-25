@@ -111,30 +111,6 @@
  // TODO: implement
 
 /**
- * Gets seed value of output pin.
- *
- * It's like a default value for pin before node has been evaluated.
- *
- * @function getPinSeedValue
- * @param {string} key
- * @param {Node} node
- * @returns {Either<Error|PinValue>}
- */
- // TODO: implement
-
-/**
- * Sets seed value to output pin.
- *
- * @function setPinSeedValue
- * @param {PinValue} value
- * @param {string} key
- * @param {Node} node
- * @returns {Either<Error|Node>}
- */
- // TODO: implement
-
-
-/**
  * Gets curried value of input pin.
  *
  * It will return value even if pin isn't curried.

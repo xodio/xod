@@ -3,17 +3,6 @@
  * @typedef {Object} Link
  */
 
- /**
-  * Array with pin key and node object.
-  *
-  * @typedef {Array} LinkEndpoint
-  * @param {string} key
-  * @param {Node} node
-  *
-  * @example
-  * ['out', NodeObject]
-  */
-
 /**
  * A {@link Link} object or just its ID as {@link string}
  * @typedef {(Link|string)} LinkOrId
@@ -32,13 +21,25 @@
 // TODO: implement
 
 /**
- * @function getLinkSource
+ * @function getLinkInputNodeId
  * @param {Link}
- * @returns {Maybe<Null|LinkEndpoint>}
+ * @returns {Maybe<Null|string>}
  */
 
 /**
- * @function getLinkDestination
+ * @function getLinkOutputNodeId
  * @param {Link}
- * @returns {Maybe<Null|LinkEndpoint>}
+ * @returns {Maybe<Null|string>}
+ */
+
+/**
+ * @function getLinkInputPinKey
+ * @param {Link}
+ * @returns {Maybe<Null|string>}
+ */
+
+/**
+ * @function getLinkInputPinKey
+ * @param {Link}
+ * @returns {Maybe<Null|string>}
  */
