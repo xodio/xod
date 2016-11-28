@@ -23,23 +23,23 @@
 /**
  * @function getLinkInputNodeId
  * @param {Link}
- * @returns {Maybe<Null|string>}
+ * @returns {Maybe<Nothing|string>}
  */
 
 /**
  * @function getLinkOutputNodeId
  * @param {Link}
- * @returns {Maybe<Null|string>}
+ * @returns {Maybe<Nothing|string>}
  */
 
 /**
  * @function getLinkInputPinKey
  * @param {Link}
- * @returns {Maybe<Null|string>}
+ * @returns {Maybe<Nothing|string>}
  */
 
 /**
  * @function getLinkInputPinKey
  * @param {Link}
- * @returns {Maybe<Null|string>}
+ * @returns {Maybe<Nothing|string>}
  */
