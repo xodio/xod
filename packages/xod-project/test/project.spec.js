@@ -40,27 +40,53 @@ describe('Project', () => {
         .that.is.empty();
     });
   });
-  // project description
+  // description
   describe('setProjectDescription', () => {
     it('should return Either.Right for string', () => {
       expect(Project.setProjectDescription('test', {}).isRight).to.be.true();
     });
     it('should return Either.Left for non-string', () => {
       expect(Project.setProjectDescription(123, {}).isLeft).to.be.true();
+      expect(Project.setProjectDescription(true, {}).isLeft).to.be.true();
+      expect(Project.setProjectDescription({}, {}).isLeft).to.be.true();
+      expect(Project.setProjectDescription([], {}).isLeft).to.be.true();
     });
   });
   describe('getProjectDescription', () => {
     it('should return empty string even if Project is empty object', () => {
       expect(Project.getProjectDescription({})).to.be.equal('');
     });
-    it('should return description string', () => {
+    it('should return string', () => {
       const fixture = {
         description: 'test',
       };
       expect(Project.getProjectDescription(fixture)).to.be.equal('test');
     });
   });
-  // project authors
+  // license
+  describe('setProjectLicense', () => {
+    it('should return Either.Right for string', () => {
+      expect(Project.setProjectLicense('BSD', {}).isRight).to.be.true();
+    });
+    it('should return Either.Left for non-string', () => {
+      expect(Project.setProjectLicense(123, {}).isLeft).to.be.true();
+      expect(Project.setProjectLicense(true, {}).isLeft).to.be.true();
+      expect(Project.setProjectLicense({}, {}).isLeft).to.be.true();
+      expect(Project.setProjectLicense([], {}).isLeft).to.be.true();
+    });
+  });
+  describe('getProjectLicense', () => {
+    it('should return empty string even if Project is empty object', () => {
+      expect(Project.getProjectLicense({})).to.be.equal('');
+    });
+    it('should return string', () => {
+      const fixture = {
+        license: 'MIT',
+      };
+      expect(Project.getProjectLicense(fixture)).to.be.equal('MIT');
+    });
+  });
+  // authors
   describe('setProjectAuthors', () => {
     it('should return Either.Right for empty array', () => {
       expect(Project.setProjectAuthors([], {}).isRight).to.be.true();
@@ -83,6 +109,17 @@ describe('Project', () => {
       expect(Project.setProjectAuthors(12, {}).isLeft).to.be.true();
       expect(Project.setProjectAuthors(true, {}).isLeft).to.be.true();
       expect(Project.setProjectAuthors({}, {}).isLeft).to.be.true();
+    });
+  });
+  describe('getProjectAuthors', () => {
+    it('should return empty array even if Project is empty object', () => {
+      expect(Project.getProjectAuthors({})).to.be.empty();
+    });
+    it('should return array of authors', () => {
+      const fixture = {
+        authors: ['Vasya', 'Petya'],
+      };
+      expect(Project.getProjectAuthors(fixture)).to.have.members(['Vasya', 'Petya']);
     });
   });
 });
