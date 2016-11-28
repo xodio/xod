@@ -1,6 +1,8 @@
 import R from 'ramda';
-import { isArrayOfStrings, assocRight, leaveError } from './utils';
 import { Either, Maybe } from 'ramda-fantasy';
+
+import * as Utils from './utils';
+import * as Patch from './patch';
 
 /**
  * Root of a project’s state tree
@@ -38,8 +40,8 @@ export const getProjectDescription = R.propOr('', 'description');
  */
 export const setProjectDescription = R.ifElse(
   R.is(String),
-  assocRight('description'),
-  leaveError('Project description should be a string.')
+  Utils.assocRight('description'),
+  Utils.leaveError('Project description should be a string.')
 );
 
 /**
@@ -56,9 +58,9 @@ export const getProjectAuthors = R.propOr([], 'authors');
  * @returns {Either<Error|Project>}
  */
 export const setProjectAuthors = R.ifElse(
-  isArrayOfStrings,
-  assocRight('authors'),
-  leaveError('Project authors should be a list of string.')
+  Utils.isArrayOfStrings,
+  Utils.assocRight('authors'),
+  Utils.leaveError('Project authors should be a list of string.')
 );
 
 /**
@@ -76,8 +78,8 @@ export const getProjectLicense = R.propOr('', 'license');
  */
 export const setProjectLicense = R.ifElse(
    R.is(String),
-   assocRight('license'),
-   leaveError('Project license should be a string.')
+   Utils.assocRight('license'),
+   Utils.leaveError('Project license should be a string.')
  );
 
 /**
@@ -115,7 +117,7 @@ export const setProjectLicense = R.ifElse(
  * @param {Project} project - project bundle
  * @returns {Patch[]} list of all patches not sorted in any arbitrary order
  */
-// TODO: implement
+export const listPatches = R.propOr([], 'patches');
 
 /**
  * Return a list of local patches (excluding external libraries)
@@ -124,7 +126,10 @@ export const setProjectLicense = R.ifElse(
  * @param {Project} project
  * @returns {Patch[]}
  */
-// TODO: implement
+export const listLocalPatches = R.compose(
+  R.filter(Patch.isPatchLocal),
+  listPatches
+);
 
 /**
  * Return a list of library patches (excluding local patches)
@@ -133,15 +138,25 @@ export const setProjectLicense = R.ifElse(
  * @param {Project} project
  * @returns {Patch[]}
  */
-// TODO: implement
+export const listLibraryPatches = R.compose(
+  R.filter(Patch.isPatchLibrary),
+  listPatches
+);
 
 /**
  * @function getPatchByPath
  * @param {string} path - full path of the patch to find, e.g. `"@/foo/bar"`
  * @param {Project} project - project bundle
- * @returns {Maybe<Null|Patch>} a patch with given path or Null if it wasn’t found
+ * @returns {Maybe<Nothing|Patch>} a patch with given path or Null if it wasn’t found
  */
-// TODO: implement
+export const getPatchByPath = R.curry(
+  (path, project) =>
+  R.compose(
+    Maybe,
+    R.propOr(null, path),
+    listPatches
+  )(project)
+);
 
 /**
  * Inserts or updates the `patch` within the `project`.

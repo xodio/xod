@@ -1,5 +1,5 @@
 import R from 'ramda';
-import chai, { assert, expect } from 'chai';
+import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
 import * as Project from '../src/project';
@@ -120,6 +120,33 @@ describe('Project', () => {
         authors: ['Vasya', 'Petya'],
       };
       expect(Project.getProjectAuthors(fixture)).to.have.members(['Vasya', 'Petya']);
+    });
+  });
+
+  describe('getPatchByPath', () => {
+    it('should return Nothing<Null> if project is empty object', () => {
+      const maybe = Project.getPatchByPath('test', {});
+      expect(maybe.isNothing).to.be.true();
+    });
+    it('should return Nothing<Null> if there is no patch with such path', () => {
+      const project = {
+        patches: {
+          '@/one': {},
+        },
+      };
+      const maybe = Project.getPatchByPath('@/two', project);
+      expect(maybe.isNothing).to.be.true();
+    });
+    it('should return Just<{}> if project have a patch', () => {
+      const patch = {};
+      const project = {
+        patches: {
+          '@/one': patch,
+        },
+      };
+      const maybe = Project.getPatchByPath('@/one', project);
+      expect(maybe.isJust).to.be.true();
+      expect(maybe.getOrElse(null)).to.be.equal(patch);
     });
   });
 });
