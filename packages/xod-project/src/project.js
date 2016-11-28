@@ -66,7 +66,7 @@ export const setProjectAuthors = R.ifElse(
  * @param {Project} project
  * @returns {string}
  */
-// TODO: implement
+export const getProjectLicense = R.propOr('', 'license');
 
 /**
  * @function setProjectLicense
@@ -74,7 +74,11 @@ export const setProjectAuthors = R.ifElse(
  * @param {Project} project
  * @returns {Project}
  */
-// TODO: implement
+export const setProjectLicense = R.ifElse(
+   R.is(String),
+   assocRight('license'),
+   leaveError('Project license should be a string.')
+ );
 
 /**
  * Converts project into Xodball: remove library patches, replace it with dependency list and etc.
