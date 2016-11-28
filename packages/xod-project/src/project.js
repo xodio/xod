@@ -1,3 +1,6 @@
+import R from 'ramda';
+import { isArrayOfStrings, assocRight, leaveError } from './utils';
+import { Either, Maybe } from 'ramda-fantasy';
 
 /**
  * Root of a project’s state tree
@@ -13,37 +16,50 @@
  * @function createProject
  * @returns {Project} newly created project
  */
-// TODO: implement
+export const createProject = () => ({
+  authors: [],
+  description: '',
+  license: '',
+  patches: {},
+});
 
 /**
  * @function getProjectDescription
  * @param {Project} project
  * @returns {string}
  */
-// TODO: implement
+export const getProjectDescription = R.propOr('', 'description');
 
 /**
  * @function setProjectDescription
  * @param {string} description
  * @param {Project} project
- * @returns {Project}
+ * @returns {Either<Error|Project>}
  */
-// TODO: implement
+export const setProjectDescription = R.ifElse(
+  R.is(String),
+  assocRight('description'),
+  leaveError('Project description should be a string.')
+);
 
 /**
  * @function getProjectAuthors
  * @param {Project} project
  * @returns {string[]}
  */
-// TODO: implement
+export const getProjectAuthors = R.propOr([], 'authors');
 
 /**
  * @function setProjectAuthors
  * @param {string[]} authors
  * @param {Project} project
- * @returns {Project}
+ * @returns {Either<Error|Project>}
  */
-// TODO: implement
+export const setProjectAuthors = R.ifElse(
+  isArrayOfStrings,
+  assocRight('authors'),
+  leaveError('Project authors should be a list of string.')
+);
 
 /**
  * @function getProjectLicense
