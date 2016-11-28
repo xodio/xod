@@ -1,4 +1,5 @@
-
+import R from 'ramda';
+import { Maybe } from 'ramda-fantasy';
 /**
  * An object representing single patch in a project
  * @typedef {Object} Patch
@@ -14,7 +15,12 @@
  * @param {string} path - full path of the patch, e.g. `"@/foo/bar"`
  * @returns {Patch} newly created patch
  */
-// TODO: implement
+// @TODO: add validateName and replace returns with Either<Error|Patch>
+export const createPatch = (path) => ({
+  path,
+  nodes: {},
+  links: {},
+});
 
 
 /**
@@ -27,13 +33,13 @@
 /**
  * @function getPatchPath
  * @param {Patch} patch
- * @returns {Maybe<Null|string>}
+ * @returns {Maybe<Nothing|string>}
  */
 
 /**
  * @function getPatchBaseName
  * @param {Patch} patch
- * @returns {Maybe<Null|string>}
+ * @returns {Maybe<Nothing|string>}
  */
 
 /**
@@ -64,12 +70,32 @@
  * @param {Patch} patch
  * @returns {boolean}
  */
+export const isPatchLocal = R.compose(
+  R.invoker(0, 'getOrElse'),
+  R.map(
+    R.compose(
+      R.test(/^@\/[a-zA-Z0-9_\-\/]+$/),
+      R.prop('path')
+    )
+  ),
+  Maybe
+);
 
 /**
  * @function isPatchLibrary
  * @param {Patch} patch
  * @returns {boolean}
  */
+export const isPatchLibrary = R.compose(
+  R.invoker(0, 'getOrElse'),
+  R.map(
+    R.compose(
+      R.test(/^[a-zA-Z0-9_\-\/]+$/),
+      R.prop('path')
+    )
+  ),
+  Maybe
+);
 
 /**
  * @function getPatchTerminals
@@ -95,7 +121,7 @@
  * @function getNodeById
  * @param {string} id - node ID to find
  * @param {Patch} patch - a patch where node should be searched
- * @returns {Maybe<Null|Node>} a node with given ID or `undefined` if it wasn’t not found
+ * @returns {Maybe<Nothing|Node>} a node with given ID or `undefined` if it wasn’t not found
  */
 // TODO: implement
 
@@ -146,7 +172,7 @@
  * @function getLinkById
  * @param {string} id - a link ID to find
  * @param {Patch} patch - a patch to operate on
- * @returns {Maybe<Null|Link>} a link with given `id` or Null if not found
+ * @returns {Maybe<Nothing|Link>} a link with given `id` or Null if not found
  */
 // TODO: implement
 
