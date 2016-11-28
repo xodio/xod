@@ -39,7 +39,7 @@
 /**
  * @function getNodeId
  * @param {Node} node
- * @returns {Maybe<Null|string>}
+ * @returns {Maybe<Nothing|string>}
  */
 // TODO: implement
 
