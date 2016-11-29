@@ -81,6 +81,16 @@ describe('Patch', () => {
         newPatch
       );
     });
+    it('new patch should not be equal to previvous', () => {
+      const newPath = '@/test2';
+      const newPatch = Patch.duplicatePatch(newPath, patch);
+
+      /* istanbul ignore next */
+      expectEither(
+        right => { expect(right).to.not.be.equal(patch); },
+        newPatch
+      );
+    });
   });
 
   describe('getPatchPath', () => {
