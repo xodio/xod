@@ -15,7 +15,7 @@
     "build:pkg:xod-client-browser": "webpack --progress --colors --config packages/xod-client-browser/webpack/base.js",
     "build:pkg:xod-client-electron": "webpack --colors --config packages/xod-client-electron/webpack/base.js && babel packages/xod-client-electron/src/app/ -d packages/xod-client-electron/dist/app/",
     "build:tree:xod-cli": "npm-run-all build:pkg:xod-core build:pkg:xod-js build:pkg:xod-fs build:pkg:xod-cli",
-    "build:tree:xod-client": "npm-run-all build:pkg:xod-core build:pkg:xod-js build:pkg:xod-client",
+    "build:tree:xod-client": "npm-run-all build:pkg:xod-core build:pkg:xod-transformer build:pkg:xod-js build:pkg:xod-client",
     "build:tree:xod-client-browser": "npm-run-all build:tree:xod-client build:pkg:xod-client-browser",
     "build:tree:xod-client-electron": "npm-run-all build:pkg:xod-fs build:tree:xod-client build:pkg:xod-espruino-upload build:pkg:xod-client-electron",
     "build": "npm-run-all build:pkg:xod-core build:pkg:xod-fs build:pkg:xod-transformer build:pkg:xod-js build:pkg:xod-espruino-upload build:pkg:xod-cli build:pkg:xod-client build:pkg:xod-client-browser build:pkg:xod-client-electron",
