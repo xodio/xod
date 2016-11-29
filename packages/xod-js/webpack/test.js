@@ -1,10 +1,13 @@
 
+const path = require('path');
 const validate = require('webpack-validator');
 const merge = require('webpack-merge');
 
 const baseConfig = require('./base.js');
 
 delete baseConfig['externals'];
+
+const pkgpath = subpath => path.join(__dirname, '..', subpath);
 
 const config = merge.smart(baseConfig, {
   module: {
@@ -16,13 +19,10 @@ const config = merge.smart(baseConfig, {
         ],
       },
       {
-        test: /platform\/.*\.js$/,
+        include: pkgpath('platform'),
+        test: /\.js$/,
         loader: 'babel',
-      },
-      {
-        test: /node_modules\/espruino\/.*\.js$/,
-        loader: 'null',
-      },
+      }
     ],
   },
 });

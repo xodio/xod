@@ -29,27 +29,14 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /src\/.*\.js$/,
+        include: pkgpath('src'),
+        test: /\.js$/,
         loader: 'babel?presets[]=es2015',
       },
       {
-        test: /platform\/.*\.js$/,
+        include: pkgpath('platform'),
+        test: /\.js$/,
         loader: 'raw',
-      },
-      {
-        test: /node_modules\/espruino\/espruino\.js$/,
-        loaders: [
-          'globals-loader?./src/shame.js',
-          'exports?Espruino',
-          'imports?$=jquery',
-        ],
-      },
-      {
-        test: /node_modules\/espruino\/.+\.js$/,
-        loaders: [
-          'globals-loader?./src/shame.js',
-          'imports?Espruino=espruino/espruino,$=jquery',
-        ],
       },
     ],
   },
