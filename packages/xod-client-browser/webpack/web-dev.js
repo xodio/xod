@@ -26,7 +26,8 @@ const config = merge.smart(baseConfig, {
   module: {
     loaders: [
       {
-        test: /src\/.*\.jsx?$/,
+        include: pkgpath('src'),
+        test: /\.jsx?$/,
         loaders: ['react-hot'],
       },
     ]
