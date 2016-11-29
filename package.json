@@ -1,7 +1,7 @@
 {
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "postinstall": "npm run bootstrap && lerna run --scope xod-client-electron electron-rebuild",
+    "postinstall": "npm run bootstrap",
     "clean:dist": "rimraf packages/*/dist",
     "clean:node_modules": "rimraf node_modules packages/*/node_modules",
     "clean": "npm-run-all clean:*",
@@ -28,6 +28,7 @@
     "dev:pkg:xod-client-browser": "webpack-dev-server --watch --colors --inline --hot --config packages/xod-client-browser/webpack/web-dev.js",
     "dev:tree:xod-cli": "concurrently --kill-others --prefix name --names \"core,js,fs,cli\" \"npm run dev:pkg:xod-core\" \"npm run dev:pkg:xod-js\" \"npm run dev:pkg:xod-fs\" \"npm run dev:pkg:xod-cli\"",
     "dev:tree:xod-client-browser": "concurrently --kill-others --prefix name --names \"core,js,client,browser\" \"npm run dev:pkg:xod-core\" \"npm run dev:pkg:xod-js\" \"npm run dev:pkg:xod-client\" \"npm run dev:pkg:xod-client-browser\"",
+    "electron-rebuild": "lerna run --scope xod-client-electron electron-rebuild",
     "start:pkg:xod-client-electron": "cd packages/xod-client-electron && npm run start",
     "start:pkg:xod-server": "cd packages/xod-server && npm start",
     "test:pkg:xod-core": "mocha --require babel-register \"packages/xod-core/test/**/*.spec.js\"",
