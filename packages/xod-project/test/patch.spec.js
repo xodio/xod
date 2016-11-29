@@ -60,6 +60,29 @@ describe('Patch', () => {
     });
   });
 
+  describe('duplicatePatch', () => {
+    const patch = { path: '@/test' };
+    it('should return Either.Left for wrong path', () => {
+      const newPatch = Patch.duplicatePatch('@/te $t', patch);
+      expect(newPatch.isLeft).to.be.true();
+    });
+    it('should return Either.Left for the same path', () => {
+      const newPatch = Patch.duplicatePatch('@/test', patch);
+      expect(newPatch.isLeft).to.be.true();
+    });
+    it('should return Either.Right for correct path', () => {
+      const newPath = '@/test2';
+      const newPatch = Patch.duplicatePatch(newPath, patch);
+      expect(newPatch.isRight).to.be.true();
+
+      /* istanbul ignore next */
+      expectEither(
+        right => { expect(right.path).to.be.equal(newPath); },
+        newPatch
+      );
+    });
+  });
+
   describe('getPatchPath', () => {
     it('should return Either.Left for empty object', () => {
       const result = Patch.getPatchPath({});

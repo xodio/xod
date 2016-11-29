@@ -36,6 +36,22 @@ export const createPatch = R.compose(
  * @param {Patch} patch
  * @returns {Either<Error|Patch>} duplicated patch with new path or error
  */
+export const duplicatePatch = R.curry(
+  (path, patch) =>
+  R.compose(
+    R.map(
+      R.assoc('path', R.__, patch)
+    ),
+    R.chain(
+      R.ifElse(
+        R.equals(R.prop('path', patch)),
+        Utils.leaveError('Can\'t duplicate a patch using the same path!'),
+        Either.Right
+      )
+    ),
+    Utils.validatePath
+  )(path)
+);
 
 /**
  * @function getPatchPath
