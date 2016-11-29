@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { Either } from 'ramda-fantasy';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
@@ -61,6 +62,37 @@ describe('Utils', () => {
     });
     it('should return false to array with mixed types', () => {
       toBeFalse(['test', 6, {}, 'test2']);
+    });
+  });
+
+  describe('validatePath', () => {
+    it('should be Either.Left for not valid paths', () => {
+      expect(Utils.validatePath('').isLeft).to.be.true();
+      expect(Utils.validatePath('кириллица').isLeft).to.be.true();
+      expect(Utils.validatePath('spa ce').isLeft).to.be.true();
+      expect(Utils.validatePath('spçiålÇhÅr$').isLeft).to.be.true();
+      expect(Utils.validatePath('dots.in.names').isLeft).to.be.true();
+    });
+    it('should be Either.Right for valid paths', () => {
+      expect(Utils.validatePath('@/patchName').isRight).to.be.true();
+      expect(Utils.validatePath('@/folder/subfolder/patchName').isRight).to.be.true();
+      expect(Utils.validatePath('@/folder_underscored/patch_name_underscored').isRight).to.be.true();
+      expect(Utils.validatePath('@/folder-dashed/patch-name-dashed').isRight).to.be.true();
+      expect(Utils.validatePath('not/a/local/patchName').isRight).to.be.true();
+      expect(Utils.validatePath('not/a/local/patch-name-dashed').isRight).to.be.true();
+      expect(Utils.validatePath('not/a/local/patch_name_underscored').isRight).to.be.true();
+    });
+    it('should be Either.Right should containt correct value', () => {
+      const path = '@/folder/subFolder/patchName';
+      const result = Utils.validatePath(path);
+      expect(result.isRight).to.be.true();
+
+      /* istanbul ignore next */
+      Either.either(
+        (err) => { throw err; },
+        (val) => { expect(val).to.be.equal(path); },
+        result
+      );
     });
   });
 

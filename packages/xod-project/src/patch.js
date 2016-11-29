@@ -1,5 +1,7 @@
 import R from 'ramda';
-import { Maybe } from 'ramda-fantasy';
+import { Maybe, Either } from 'ramda-fantasy';
+
+import * as Utils from './utils';
 /**
  * An object representing single patch in a project
  * @typedef {Object} Patch
@@ -13,15 +15,20 @@ import { Maybe } from 'ramda-fantasy';
 /**
  * @function createPatch
  * @param {string} path - full path of the patch, e.g. `"@/foo/bar"`
- * @returns {Patch} newly created patch
+ * @returns {Either<Error|Patch>} a validatePath error or newly created patch
  */
 // @TODO: add validateName and replace returns with Either<Error|Patch>
-export const createPatch = (path) => ({
-  path,
-  nodes: {},
-  links: {},
-});
-
+export const createPatch = R.compose(
+  R.map(
+    (path) => ({
+      path,
+      nodes: {},
+      links: [],
+    })
+  ),
+  Utils.validatePath,
+  R.defaultTo(undefined)
+);
 
 /**
  * @function duplicatePatch
@@ -33,8 +40,16 @@ export const createPatch = (path) => ({
 /**
  * @function getPatchPath
  * @param {Patch} patch
- * @returns {Maybe<Nothing|string>}
+ * @returns {Either<Error|string>}
  */
+export const getPatchPath = R.compose(
+  R.ifElse(
+    R.isNil,
+    Utils.leaveError('Can\'t get a path of the patch.'),
+    Either.Right
+  ),
+  R.prop('path')
+);
 
 /**
  * @function getPatchBaseName
@@ -68,33 +83,21 @@ export const createPatch = (path) => ({
 /**
  * @function isPatchLocal
  * @param {Patch} patch
- * @returns {boolean}
+ * @returns {Either<Error|boolean>}
  */
 export const isPatchLocal = R.compose(
-  R.invoker(0, 'getOrElse'),
-  R.map(
-    R.compose(
-      R.test(/^@\/[a-zA-Z0-9_\-\/]+$/),
-      R.prop('path')
-    )
-  ),
-  Maybe
+  R.map(R.test(/^@\/[a-zA-Z0-9_\-\/]+$/)),
+  getPatchPath
 );
 
 /**
  * @function isPatchLibrary
  * @param {Patch} patch
- * @returns {boolean}
+ * @returns {Either<Error|boolean>}
  */
 export const isPatchLibrary = R.compose(
-  R.invoker(0, 'getOrElse'),
-  R.map(
-    R.compose(
-      R.test(/^[a-zA-Z0-9_\-\/]+$/),
-      R.prop('path')
-    )
-  ),
-  Maybe
+  R.map(R.test(/^[a-zA-Z0-9_\-\/]+$/)),
+  getPatchPath
 );
 
 /**
