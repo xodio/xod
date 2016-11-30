@@ -43,7 +43,6 @@ describe('Project', () => {
   });
 
   // properties
-  // description
   describe('setProjectDescription', () => {
     it('should return Either.Right for string', () => {
       expect(Project.setProjectDescription('test', {}).isRight).to.be.true();
@@ -66,7 +65,7 @@ describe('Project', () => {
       expect(Project.getProjectDescription(fixture)).to.be.equal('test');
     });
   });
-  // license
+
   describe('setProjectLicense', () => {
     it('should return Either.Right for string', () => {
       expect(Project.setProjectLicense('BSD', {}).isRight).to.be.true();
@@ -89,7 +88,7 @@ describe('Project', () => {
       expect(Project.getProjectLicense(fixture)).to.be.equal('MIT');
     });
   });
-  // authors
+
   describe('setProjectAuthors', () => {
     it('should return Either.Right for empty array', () => {
       expect(Project.setProjectAuthors([], {}).isRight).to.be.true();
