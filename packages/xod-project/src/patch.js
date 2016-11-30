@@ -42,13 +42,6 @@ export const duplicatePatch = R.curry(
     R.map(
       R.assoc('path', R.__, patch)
     ),
-    R.chain(
-      R.ifElse(
-        R.equals(R.prop('path', patch)),
-        Utils.leaveError('Can\'t duplicate a patch using the same path!'),
-        Either.Right
-      )
-    ),
     Utils.validatePath
   )(path)
 );
@@ -56,28 +49,27 @@ export const duplicatePatch = R.curry(
 /**
  * @function getPatchPath
  * @param {Patch} patch
- * @returns {Either<Error|string>}
+ * @returns {string}
  */
-export const getPatchPath = R.compose(
-  R.ifElse(
-    R.isNil,
-    Utils.leaveError('Can\'t get a path of the patch.'),
-    Either.Right
-  ),
-  R.prop('path')
-);
+export const getPatchPath = R.prop('path');
 
 /**
  * @function getPatchBaseName
  * @param {Patch} patch
- * @returns {Maybe<Nothing|string>}
+ * @returns {string}
  */
+export const getPatchBaseName = R.compose(
+  R.last,
+  R.split('/'),
+  getPatchPath
+);
 
 /**
  * @function getPatchLabel
  * @param {Patch} patch
  * @returns {string}
  */
+export const getPatchLabel = R.propOr('', 'label');
 
 /**
  * @function setPatchLabel
@@ -85,6 +77,10 @@ export const getPatchPath = R.compose(
  * @param {Patch} patch
  * @returns {Patch} a copy of the `patch` with new label
  */
+export const setPatchLabel = R.useWith(
+  R.assoc('label'),
+  [String, R.identity]
+);
 
  /**
   * Returns a list of platforms for which a `patch` has native implementation
@@ -102,7 +98,7 @@ export const getPatchPath = R.compose(
  * @returns {Either<Error|boolean>}
  */
 export const isPatchLocal = R.compose(
-  R.map(R.test(/^@\/[a-zA-Z0-9_\-\/]+$/)),
+  R.test(/^@\/[a-zA-Z0-9_\-\/]+$/),
   getPatchPath
 );
 
@@ -112,7 +108,7 @@ export const isPatchLocal = R.compose(
  * @returns {Either<Error|boolean>}
  */
 export const isPatchLibrary = R.compose(
-  R.map(R.test(/^[a-zA-Z0-9_\-\/]+$/)),
+  R.test(/^[a-zA-Z0-9_\-\/]+$/),
   getPatchPath
 );
 
