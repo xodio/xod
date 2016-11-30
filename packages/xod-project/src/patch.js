@@ -113,6 +113,23 @@ export const isPatchLibrary = R.compose(
 );
 
 /**
+ * @function validatePatch
+ * @param {Patch} patch
+ * @returns {Either<Error|Patch>}
+ */
+export const validatePatch = R.ifElse(
+  R.allPass([
+    R.has('path'),
+    R.compose(
+      Utils.validatePath,
+      R.prop('path')
+    ),
+  ]),
+  Either.Right,
+  Utils.leaveError('Patch is not valid.')
+);
+
+/**
  * @function getPatchTerminals
  * @param {Patch} patch
  * @returns {Node[]}
