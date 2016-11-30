@@ -9,6 +9,7 @@ import { expectEither } from './helpers';
 chai.use(dirtyChai);
 
 describe('Patch', () => {
+  // constructors
   describe('createPatch', () => {
     it('should return Either.Left for non-valid path argument', () => {
       expect(Patch.createPatch().isLeft).to.be.true();
@@ -59,7 +60,6 @@ describe('Patch', () => {
       );
     });
   });
-
   describe('duplicatePatch', () => {
     const patch = { path: '@/test' };
     it('should return Either.Left for wrong path', () => {
@@ -82,6 +82,7 @@ describe('Patch', () => {
     });
   });
 
+  // properties
   describe('getPatchPath', () => {
     it('should return patch path', () => {
       const path = '@/test';
@@ -90,7 +91,6 @@ describe('Patch', () => {
       expect(result).to.be.equal(path);
     });
   });
-
   describe('getPatchBaseName', () => {
     it('should return base name extracted from path', () => {
       const baseName = 'test';
@@ -100,7 +100,6 @@ describe('Patch', () => {
       expect(result).to.be.equal(baseName);
     });
   });
-
   describe('getPatchLabel', () => {
     it('should return empty String for empty patch object', () => {
       expect(Patch.getPatchLabel({})).to.be.equal('');
@@ -110,7 +109,6 @@ describe('Patch', () => {
       expect(Patch.getPatchLabel({ label })).to.be.equal(label);
     });
   });
-
   describe('setPatchLabel', () => {
     it('should return patch with new label', () => {
       const newLabel = 'new label';
@@ -138,6 +136,35 @@ describe('Patch', () => {
     });
   });
 
+  // entity getters
+
+  // entity setters
+
+  // validations
+  describe('validatePatch', () => {
+    it('should return Either.Left for empty object', () => {
+      const patch = Patch.validatePatch({});
+      expect(patch.isLeft).to.be.true();
+    });
+    it('should return Either.Left for invalid path', () => {
+      const patch = Patch.validatePatch({ path: 'in√ål;d pÅth' });
+      expect(patch.isLeft).to.be.true();
+    });
+    it('should return Either.Right with valid patch', () => {
+      const path = '@/valid';
+      const patch = { path };
+      const test = Patch.validatePatch(patch);
+      expect(test.isRight).to.be.true();
+
+      /* istanbul ignore next */
+      expectEither(
+        rightPatch => { expect(rightPatch).to.be.equal(patch); },
+        test
+      );
+    });
+  });
+
+  // etc
   describe('isPatchLocal', () => {
     const localPath = '@/test';
     const libPath = 'vasya/superLibraru/test';
@@ -157,7 +184,6 @@ describe('Patch', () => {
       expect(result).to.be.false();
     });
   });
-
   describe('isPatchLibrary', () => {
     const localPath = '@/test';
     const libPath = 'vasya/superLibraru/test';
