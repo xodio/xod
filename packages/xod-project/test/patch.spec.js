@@ -66,10 +66,6 @@ describe('Patch', () => {
       const newPatch = Patch.duplicatePatch('@/te $t', patch);
       expect(newPatch.isLeft).to.be.true();
     });
-    it('should return Either.Left for the same path', () => {
-      const newPatch = Patch.duplicatePatch('@/test', patch);
-      expect(newPatch.isLeft).to.be.true();
-    });
     it('should return Either.Right for correct path', () => {
       const newPath = '@/test2';
       const newPatch = Patch.duplicatePatch(newPath, patch);
@@ -77,38 +73,68 @@ describe('Patch', () => {
 
       /* istanbul ignore next */
       expectEither(
-        right => { expect(right.path).to.be.equal(newPath); },
-        newPatch
-      );
-    });
-    it('new patch should not be equal to previvous', () => {
-      const newPath = '@/test2';
-      const newPatch = Patch.duplicatePatch(newPath, patch);
-
-      /* istanbul ignore next */
-      expectEither(
-        right => { expect(right).to.not.be.equal(patch); },
+        right => {
+          expect(right).to.be.an('object');
+          expect(right.path).to.be.equal(newPath);
+        },
         newPatch
       );
     });
   });
 
   describe('getPatchPath', () => {
-    it('should return Either.Left for empty object', () => {
-      const result = Patch.getPatchPath({});
-      expect(result.isLeft).to.be.true();
-    });
-    it('should return Either.Right for correct patch', () => {
+    it('should return patch path', () => {
       const path = '@/test';
       const patch = { path };
       const result = Patch.getPatchPath(patch);
-      expect(result.isRight).to.be.true();
+      expect(result).to.be.equal(path);
+    });
+  });
 
-      /* istanbul ignore next */
-      expectEither(
-        (val) => { expect(val).to.be.equal(path); },
-        result
-      );
+  describe('getPatchBaseName', () => {
+    it('should return base name extracted from path', () => {
+      const baseName = 'test';
+      const path = `@/folder/${baseName}`;
+      const patch = { path };
+      const result = Patch.getPatchBaseName(patch);
+      expect(result).to.be.equal(baseName);
+    });
+  });
+
+  describe('getPatchLabel', () => {
+    it('should return empty String for empty patch object', () => {
+      expect(Patch.getPatchLabel({})).to.be.equal('');
+    });
+    it('should return patch label', () => {
+      const label = 'patchLabel';
+      expect(Patch.getPatchLabel({ label })).to.be.equal(label);
+    });
+  });
+
+  describe('setPatchLabel', () => {
+    it('should return patch with new label', () => {
+      const newLabel = 'new label';
+      const patch = { label: 'old label' };
+      const newPatch = Patch.setPatchLabel(newLabel, patch);
+
+      expect(newPatch)
+        .to.have.property('label')
+        .that.is.a('string')
+        .that.equals(newLabel);
+    });
+    it('should always set a string to label', () => {
+      expect(Patch.setPatchLabel('test', {}))
+        .to.have.property('label')
+        .that.equals('test');
+      expect(Patch.setPatchLabel(5, {}))
+        .to.have.property('label')
+        .that.equals('5');
+      expect(Patch.setPatchLabel([1, 2], {}))
+        .to.have.property('label')
+        .that.equals('1,2');
+      expect(Patch.setPatchLabel({}, {}))
+        .to.have.property('label')
+        .that.equals('[object Object]');
     });
   });
 
@@ -118,28 +144,17 @@ describe('Patch', () => {
     const localPatch = { path: localPath };
     const libPatch = { path: libPath };
 
-    it('should return null for not-a-patch', () => {
-      expect(Patch.isPatchLocal({}).isLeft).to.be.true();
-    });
     it('should return true for localPatch', () => {
       const result = Patch.isPatchLocal(localPatch);
-      expect(result.isRight).to.be.true();
-
-      /* istanbul ignore next */
-      expectEither(
-        (val) => { expect(val).to.be.true(); },
-        result
-      );
+      expect(result).to.be.true();
+    });
+    it('should return false for not a patch', () => {
+      const result = Patch.isPatchLocal({});
+      expect(result).to.be.false();
     });
     it('should return false for libPatch', () => {
       const result = Patch.isPatchLocal(libPatch);
-      expect(result.isRight).to.be.true();
-
-      /* istanbul ignore next */
-      expectEither(
-        (val) => { expect(val).to.be.false(); },
-        result
-      );
+      expect(result).to.be.false();
     });
   });
 
@@ -149,28 +164,17 @@ describe('Patch', () => {
     const localPatch = { path: localPath };
     const libPatch = { path: libPath };
 
-    it('should return null for not-a-patch', () => {
-      expect(Patch.isPatchLibrary({}).isLeft).to.be.true();
-    });
     it('should return true for libPatch', () => {
       const result = Patch.isPatchLibrary(libPatch);
-      expect(result.isRight).to.be.true();
-
-      /* istanbul ignore next */
-      expectEither(
-        (val) => { expect(val).to.be.true(); },
-        result
-      );
+      expect(result).to.be.true();
+    });
+    it('should return false for not a patch', () => {
+      const result = Patch.isPatchLocal({});
+      expect(result).to.be.false();
     });
     it('should return false for localPatch', () => {
       const result = Patch.isPatchLibrary(localPatch);
-      expect(result.isRight).to.be.true();
-
-      /* istanbul ignore next */
-      expectEither(
-        (val) => { expect(val).to.be.false(); },
-        result
-      );
+      expect(result).to.be.false();
     });
   });
 });
