@@ -121,6 +121,7 @@ export const validatePatch = R.ifElse(
   R.allPass([
     R.has('path'),
     R.compose(
+      R.propEq('isRight', true),
       Utils.validatePath,
       R.prop('path')
     ),
