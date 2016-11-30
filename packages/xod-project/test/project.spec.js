@@ -199,6 +199,43 @@ describe('Project', () => {
       );
     });
   });
+  describe('dissocPatch', () => {
+    it('should dissocPatch by Patch object', () => {
+      const patch = { path: '@/test' };
+      const project = { patches: { [patch.path]: patch } };
+      const newProject = Project.dissocPatch(patch, project);
+      expect(newProject)
+        .to.have.property('patches')
+        .that.empty();
+    });
+    it('should dissocPatch by path string', () => {
+      const patch = { path: '@/test' };
+      const project = { patches: { [patch.path]: patch } };
+      const newProject = Project.dissocPatch(patch.path, project);
+      expect(newProject)
+        .to.have.property('patches')
+        .that.empty();
+    });
+    it('should not affect on other patches', () => {
+      const patch = { path: '@/test' };
+      const anotherPatch = { path: '@/leave/me/alone' };
+      const project = { patches: { [patch.path]: patch, [anotherPatch.path]: anotherPatch } };
+      const newProject = Project.dissocPatch(patch.path, project);
+      expect(newProject)
+        .to.have.property('patches')
+        .that.contain.all.keys([anotherPatch.path]);
+    });
+    it('should return project even if it has no patches', () => {
+      const project = {};
+      const newProject = Project.dissocPatch('@/test', project);
+      expect(newProject).to.be.equal(project);
+    });
+    it('should return project even if Patch object has no path', () => {
+      const project = {};
+      const newProject = Project.dissocPatch({}, project);
+      expect(newProject).to.be.equal(project);
+    });
+  });
 
   // validations
 

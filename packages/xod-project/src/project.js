@@ -197,11 +197,22 @@ export const assocPatch = R.curry((patch, project) => {
  * Does nothing if the `patch` not found in `project`.
  *
  * @function dissocPatch
- * @param {Patch} patch - patch to remove
+ * @param {PatchOrPath} patch - patch to remove
  * @param {Project} project - project to operate on
  * @returns {Project} copy of the project with the patch removed
  */
-// TODO: implement
+export const dissocPatch = R.curry(
+  (patchOrPath, project) => {
+    const getPath = R.ifElse(
+      R.is(String),
+      R.identity,
+      Patch.getPatchPath
+    );
+    const path = getPath(patchOrPath);
+
+    return R.dissocPath(['patches', path], project);
+  }
+);
 
 /**
  * Checks if a `patch` could be safely renamed given a new path.
