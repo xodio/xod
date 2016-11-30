@@ -1,6 +1,7 @@
 import R from 'ramda';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
+import { expectEither } from './helpers';
 
 import * as Project from '../src/project';
 
@@ -40,6 +41,8 @@ describe('Project', () => {
         .that.is.empty();
     });
   });
+
+  // properties
   // description
   describe('setProjectDescription', () => {
     it('should return Either.Right for string', () => {
@@ -123,6 +126,7 @@ describe('Project', () => {
     });
   });
 
+  // entity getters
   describe('getPatchByPath', () => {
     it('should return Nothing<Null> if project is empty object', () => {
       const maybe = Project.getPatchByPath('test', {});
@@ -149,4 +153,55 @@ describe('Project', () => {
       expect(maybe.getOrElse(null)).to.be.equal(patch);
     });
   });
+
+  // entity setters
+  describe('assocPatch', () => {
+    it('should return Either.Left if patch has not path', () => {
+      const newProject = Project.assocPatch({}, {});
+      expect(newProject.isLeft).to.be.true();
+    });
+    it('should assoc patch into project.patches even if its undefined', () => {
+      const path = '@/test';
+      const patch = { path };
+      const newProject = Project.assocPatch(patch, {});
+
+      expect(newProject.isRight).to.be.true();
+      /* istanbul ignore next */
+      expectEither(
+        (proj) => {
+          expect(proj)
+            .to.have.property('patches')
+            .that.have.property(path)
+            .that.equals(patch);
+        },
+        newProject
+      );
+    });
+    it('should not remove other patches from project', () => {
+      const oldPatch = { path: '@/old' };
+      const newPatch = { path: '@/new' };
+      const project = {
+        patches: {
+          [oldPatch.path]: oldPatch,
+        },
+      };
+      const newProject = Project.assocPatch(newPatch, project);
+
+      expect(newProject.isRight).to.be.true();
+      /* istanbul ignore next */
+      expectEither(
+        (proj) => {
+          expect(proj)
+            .to.have.property('patches')
+            .that.contains.all.keys([newPatch.path, oldPatch.path]);
+          expect(proj.patches[oldPatch.path]).to.be.equal(oldPatch);
+          expect(proj.patches[newPatch.path]).to.be.equal(newPatch);
+        }
+      );
+    });
+  });
+
+  // validations
+
+  // etc
 });

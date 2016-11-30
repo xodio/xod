@@ -168,7 +168,28 @@ export const getPatchByPath = R.curry(
  * @param {Project} project - project to operate on
  * @returns {Either<Error|Project>} copy of the project with the updated patch
  */
-// TODO: implement
+// @TODO: Add validating
+export const assocPatch = R.curry((patch, project) => {
+  const eitherPatch = Patch.validatePatch(patch);
+  if (eitherPatch.isLeft) { return eitherPatch; }
+
+  const makePath = R.flip(R.append)(['patches']);
+  const assocToProject = R.partialRight(R.assocPath, [project]);
+
+  return R.map(
+    R.compose(
+      R.apply(assocToProject),
+      R.juxt([
+        R.compose(
+          makePath,
+          R.prop('path'),
+          R.identity
+        ),
+        R.identity,
+      ])
+    )
+  )(eitherPatch);
+});
 
 /**
  * Removes the `patch` from the `project`.
