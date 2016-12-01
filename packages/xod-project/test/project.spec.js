@@ -125,7 +125,7 @@ describe('Project', () => {
     });
   });
 
-  // entity getters
+  // entity getters / search functions
   describe('getPatchByPath', () => {
     it('should return Nothing<Null> if project is empty object', () => {
       const maybe = Project.getPatchByPath('test', {});
@@ -150,6 +150,26 @@ describe('Project', () => {
       const maybe = Project.getPatchByPath('@/one', project);
       expect(maybe.isJust).to.be.true();
       expect(maybe.getOrElse(null)).to.be.equal(patch);
+    });
+  });
+  describe('getPatchPath', () => {
+    const path = '@/test';
+    const patch = { path };
+    const project = { patches: { [path]: patch } };
+
+    it('should return Either.Left', () => {
+      const result = Project.getPatchPath({}, project);
+      expect(result.isLeft).to.be.true();
+    });
+    it('should return Either.Right with patch path', () => {
+      const result = Project.getPatchPath(patch, project);
+      expect(result.isRight).to.be.true();
+
+      /* istanbul ignore next */
+      expectEither(
+        val => val === path,
+        result
+      );
     });
   });
 

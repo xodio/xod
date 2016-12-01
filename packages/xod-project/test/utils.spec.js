@@ -3,65 +3,19 @@ import { Either } from 'ramda-fantasy';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
+import { expectEither } from './helpers';
+
 import * as Utils from '../src/utils';
 
 chai.use(dirtyChai);
 
 describe('Utils', () => {
-  const notArrayShouldBeFalse = (f) => {
-    expect(f({})).to.be.false();
-    expect(f(1)).to.be.false();
-    expect(f('asd')).to.be.false();
-    expect(f(true)).to.be.false();
-  };
-
-  describe('isArrayOfStrings', () => {
-    const toBeTrue = (value) => {
-      expect(Utils.isArrayOfStrings(value)).to.be.true();
-    };
-    const toBeFalse = (value) => {
-      expect(Utils.isArrayOfStrings(value)).to.be.false();
-    };
-
-    it('should return true for empty array', () => {
-      toBeTrue([]);
-    });
-    it('should return true to array with only strings', () => {
-      toBeTrue(['test', 'test2']);
-    });
-    it('should return false for not-array', () => {
-      notArrayShouldBeFalse(Utils.isArrayOfStrings);
-    });
-    it('should return false to array with numbers', () => {
-      toBeFalse([1, 2]);
-    });
-    it('should return false to array with mixed types', () => {
-      toBeFalse(['test', 6, {}, 'test2']);
-    });
-  });
-
-  describe('isArrayOfNumbers', () => {
-    const toBeTrue = (value) => {
-      expect(Utils.isArrayOfNumbers(value)).to.be.true();
-    };
-    const toBeFalse = (value) => {
-      expect(Utils.isArrayOfNumbers(value)).to.be.false();
-    };
-
-    it('should return true for empty array', () => {
-      toBeTrue([]);
-    });
-    it('should return true to array with only numbers', () => {
-      toBeTrue([1, 2, 3]);
-    });
-    it('should return false for not-array', () => {
-      notArrayShouldBeFalse(Utils.isArrayOfNumbers);
-    });
-    it('should return false to array with strings', () => {
-      toBeFalse(['test', 'test2']);
-    });
-    it('should return false to array with mixed types', () => {
-      toBeFalse(['test', 6, {}, 'test2']);
+  describe('getBaseName', () => {
+    it('should return base name extracted from path', () => {
+      const baseName = 'test';
+      const path = `@/folder/${baseName}`;
+      const result = Utils.getBaseName(path);
+      expect(result).to.be.equal(baseName);
     });
   });
 
@@ -96,12 +50,76 @@ describe('Utils', () => {
     });
   });
 
-  describe('helpers', () => {
-    it('assocRight should return Object wrapped by Either.Right', () => {
-      expect(Utils.assocRight('test', 'testVal', {}).isRight).to.be.true();
+  // etc
+  describe('assocRight', () => {
+    const testObj = Utils.assocRight('test', 'testVal', {});
+
+    it('should return Either.Right', () => {
+      expect(testObj.isRight).to.be.true();
     });
-    it('leaveError should return Error wrapped by Either.Left', () => {
-      expect(Utils.leaveError('error message')().isLeft).to.be.true();
+    it('should contain object with new assigned value', () => {
+      /* istanbul ignore next */
+      expectEither(
+        val => {
+          expect(val)
+            .to.have.property('test')
+            .that.equals('testVal');
+        },
+        testObj
+      );
+    });
+  });
+  describe('leaveError', () => {
+    const errMsg = 'error message';
+    const testObj = Utils.leaveError(errMsg)();
+
+    it('should return Either.Left', () => {
+      expect(testObj.isLeft).to.be.true();
+    });
+    it('should contain Error', () => {
+      /* istanbul ignore next */
+      testObj.chain(val => {
+        expect(val)
+          .to.be.an.instanceof(Error)
+          .and.equal('testVal')
+          .and.have.property('message')
+          .that.equal(errMsg);
+      });
+    });
+  });
+
+  describe('isPathLocal', () => {
+    const localPath = '@/test';
+    const libPath = 'vasya/superLibraru/test';
+
+    it('should return true for localPath', () => {
+      const result = Utils.isPathLocal(localPath);
+      expect(result).to.be.true();
+    });
+    it('should return false for not a patch', () => {
+      const result = Utils.isPathLocal({});
+      expect(result).to.be.false();
+    });
+    it('should return false for libPath', () => {
+      const result = Utils.isPathLocal(libPath);
+      expect(result).to.be.false();
+    });
+  });
+  describe('isPathLibrary', () => {
+    const localPath = '@/test';
+    const libPath = 'vasya/superLibraru/test';
+
+    it('should return true for libPath', () => {
+      const result = Utils.isPathLibrary(libPath);
+      expect(result).to.be.true();
+    });
+    it('should return false for not a patch', () => {
+      const result = Utils.isPathLocal({});
+      expect(result).to.be.false();
+    });
+    it('should return false for localPath', () => {
+      const result = Utils.isPathLibrary(localPath);
+      expect(result).to.be.false();
     });
   });
 });
