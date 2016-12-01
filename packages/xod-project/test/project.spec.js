@@ -258,6 +258,68 @@ describe('Project', () => {
   });
 
   // validations
+  describe('validatePatchRebase', () => {
+    it('should return Either.Left if newPath contains invalid characters', () => {
+      const patch = {};
+      const project = { patches: { '@/test': patch } };
+      const newProject = Project.validatePatchRebase('in√ålid path', patch, project);
+
+      expect(newProject.isLeft).to.be.true();
+    });
+    it('should return Either.Left if patch is not in the project (Patch passed)', () => {
+      const patch = {};
+      const project = {};
+      const newProject = Project.validatePatchRebase('@/test', patch, project);
+
+      expect(newProject.isLeft).to.be.true();
+    });
+    it('should return Either.Left if patch is not in the project (path passed)', () => {
+      const project = {};
+      const newProject = Project.validatePatchRebase('@/test', '@/patch', project);
+
+      expect(newProject.isLeft).to.be.true();
+    });
+    it('should return Either.Left if another patch with same path already exist', () => {
+      const patch = {};
+      const project = { patches: { '@/test': patch } };
+      const newProject = Project.validatePatchRebase('@/test', {}, project);
+
+      expect(newProject.isLeft).to.be.true();
+    });
+
+    const testRightCase = (nPath, patchOrPath, origPatch, projectToTest) => {
+      const newProject = Project.validatePatchRebase(nPath, patchOrPath, projectToTest);
+      expect(newProject.isRight).to.be.true();
+
+      /* istanbul ignore next */
+      expectEither(
+        proj => {
+          expect(proj)
+            .to.have.property('patches')
+            .that.have.property(nPath)
+            .that.equal(origPatch);
+          expect(proj.patches).to.have.all.keys(nPath);
+        },
+        newProject
+      );
+    };
+    it('should return Either.Right for correct values (Patch passed)', () => {
+      const patch = {};
+      const oldPath = '@/test';
+      const newPath = '@/anotherPath';
+      const project = { patches: { [oldPath]: patch } };
+
+      testRightCase(newPath, patch, patch, project);
+    });
+    it('should return Either.Right for correct values (path passed)', () => {
+      const patch = {};
+      const oldPath = '@/test';
+      const newPath = '@/anotherPath';
+      const project = { patches: { [oldPath]: patch } };
+
+      testRightCase(newPath, oldPath, patch, project);
+    });
+  });
 
   // etc
 });
