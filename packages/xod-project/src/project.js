@@ -117,6 +117,7 @@ export const setProjectLicense = R.ifElse(
  * @param {Project} project - project bundle
  * @returns {Patch[]} list of all patches not sorted in any arbitrary order
  */
+// @FIX: patches is a HashTable
 export const listPatches = R.propOr([], 'patches');
 
 /**
@@ -127,7 +128,7 @@ export const listPatches = R.propOr([], 'patches');
  * @returns {Patch[]}
  */
 export const listLocalPatches = R.compose(
-  R.filter(Patch.isPatchLocal),
+  R.filter(Utils.isPathLocal),
   listPatches
 );
 
@@ -139,7 +140,7 @@ export const listLocalPatches = R.compose(
  * @returns {Patch[]}
  */
 export const listLibraryPatches = R.compose(
-  R.filter(Patch.isPatchLibrary),
+  R.filter(Utils.isPathLibrary),
   listPatches
 );
 
@@ -155,6 +156,29 @@ export const getPatchByPath = R.curry(
     Maybe,
     R.propOr(null, path),
     listPatches
+  )(project)
+);
+
+/**
+ *
+ * @function getPatchPath
+ * @param {Patch} patch
+ * @param {Project} project
+ * @returns {Either<Error|string>} path
+ */
+export const getPatchPath = R.curry(
+  (patch, project) =>
+  R.compose(
+    R.ifElse(
+      R.isNil,
+      Utils.leaveError('Can\'t find patch in the project.'),
+      Either.Right
+    ),
+    R.chain(R.path([0, 0])),
+    Maybe,
+    R.filter(p => p[1] === patch),
+    R.toPairs,
+    R.prop('patches')
   )(project)
 );
 
@@ -206,7 +230,10 @@ export const dissocPatch = R.curry(
     const getPath = R.ifElse(
       R.is(String),
       R.identity,
-      Patch.getPatchPath
+      R.compose(
+        R.chain(R.identity),
+        getPatchPath(R.__, project)
+      )
     );
     const path = getPath(patchOrPath);
 
@@ -228,7 +255,13 @@ export const dissocPatch = R.curry(
  * @param {Project} project - project to operate on
  * @returns {Validity} validation result
  */
-// TODO: implement
+export const validatePatchRebase = R.curry(
+  (newPath, PatchOrPath, Project) => {
+    const validPath = Utils.validatePath(newPath);
+    if (validPath.isLeft) { return validPath; }
+
+  }
+);
 
 /**
  * Updates the `patch` in the `project` relocating it to a new path.

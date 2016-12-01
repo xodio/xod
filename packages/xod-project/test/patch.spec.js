@@ -83,23 +83,6 @@ describe('Patch', () => {
   });
 
   // properties
-  describe('getPatchPath', () => {
-    it('should return patch path', () => {
-      const path = '@/test';
-      const patch = { path };
-      const result = Patch.getPatchPath(patch);
-      expect(result).to.be.equal(path);
-    });
-  });
-  describe('getPatchBaseName', () => {
-    it('should return base name extracted from path', () => {
-      const baseName = 'test';
-      const path = `@/folder/${baseName}`;
-      const patch = { path };
-      const result = Patch.getPatchBaseName(patch);
-      expect(result).to.be.equal(baseName);
-    });
-  });
   describe('getPatchLabel', () => {
     it('should return empty String for empty patch object', () => {
       expect(Patch.getPatchLabel({})).to.be.equal('');
@@ -165,42 +148,4 @@ describe('Patch', () => {
   });
 
   // etc
-  describe('isPatchLocal', () => {
-    const localPath = '@/test';
-    const libPath = 'vasya/superLibraru/test';
-    const localPatch = { path: localPath };
-    const libPatch = { path: libPath };
-
-    it('should return true for localPatch', () => {
-      const result = Patch.isPatchLocal(localPatch);
-      expect(result).to.be.true();
-    });
-    it('should return false for not a patch', () => {
-      const result = Patch.isPatchLocal({});
-      expect(result).to.be.false();
-    });
-    it('should return false for libPatch', () => {
-      const result = Patch.isPatchLocal(libPatch);
-      expect(result).to.be.false();
-    });
-  });
-  describe('isPatchLibrary', () => {
-    const localPath = '@/test';
-    const libPath = 'vasya/superLibraru/test';
-    const localPatch = { path: localPath };
-    const libPatch = { path: libPath };
-
-    it('should return true for libPatch', () => {
-      const result = Patch.isPatchLibrary(libPatch);
-      expect(result).to.be.true();
-    });
-    it('should return false for not a patch', () => {
-      const result = Patch.isPatchLocal({});
-      expect(result).to.be.false();
-    });
-    it('should return false for localPatch', () => {
-      const result = Patch.isPatchLibrary(localPatch);
-      expect(result).to.be.false();
-    });
-  });
 });

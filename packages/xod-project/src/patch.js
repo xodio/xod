@@ -47,24 +47,6 @@ export const duplicatePatch = R.curry(
 );
 
 /**
- * @function getPatchPath
- * @param {Patch} patch
- * @returns {string}
- */
-export const getPatchPath = R.prop('path');
-
-/**
- * @function getPatchBaseName
- * @param {Patch} patch
- * @returns {string}
- */
-export const getPatchBaseName = R.compose(
-  R.last,
-  R.split('/'),
-  getPatchPath
-);
-
-/**
  * @function getPatchLabel
  * @param {Patch} patch
  * @returns {string}
@@ -91,26 +73,6 @@ export const setPatchLabel = R.useWith(
   * @param {Patch} patch
   * @returns {string[]}
   */
-
-/**
- * @function isPatchLocal
- * @param {Patch} patch
- * @returns {Either<Error|boolean>}
- */
-export const isPatchLocal = R.compose(
-  R.test(/^@\/[a-zA-Z0-9_\-\/]+$/),
-  getPatchPath
-);
-
-/**
- * @function isPatchLibrary
- * @param {Patch} patch
- * @returns {Either<Error|boolean>}
- */
-export const isPatchLibrary = R.compose(
-  R.test(/^[a-zA-Z0-9_\-\/]+$/),
-  getPatchPath
-);
 
 /**
  * @function validatePatch

@@ -56,6 +56,30 @@ export const leaveError = R.compose(
 );
 
 /**
+ * @function getBaseName
+ * @param {string} path
+ * @returns {string}
+ */
+export const getBaseName = R.compose(
+  R.last,
+  R.split('/')
+);
+
+/**
+ * @function isPathLocal
+ * @param {string} path
+ * @returns {boolean}
+ */
+export const isPathLocal = R.test(/^@\/[a-zA-Z0-9_\-\/]+$/);
+
+/**
+ * @function isPathLibrary
+ * @param {string} path
+ * @returns {boolean}
+ */
+export const isPathLibrary = R.test(/^[a-zA-Z0-9_\-\/]+$/);
+
+/**
  * Checks if a path is a valid for entities like
  * project path, patch path component, etc
  *
