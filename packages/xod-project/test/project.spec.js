@@ -3,6 +3,7 @@ import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 import { expectEither } from './helpers';
 
+import * as Patch from '../src/patch';
 import * as Project from '../src/project';
 
 chai.use(dirtyChai);
@@ -173,16 +174,58 @@ describe('Project', () => {
     });
   });
 
+  // validations
+  describe('validatePatchRebase', () => {
+    it('should return Either.Left if newPath contains invalid characters', () => {
+      const patch = {};
+      const project = { patches: { '@/test': patch } };
+      const newProject = Project.validatePatchRebase('in√ålid path', patch, project);
+
+      expect(newProject.isLeft).to.be.true();
+    });
+    it('should return Either.Left if patch is not in the project', () => {
+      const project = {};
+      const newProject = Project.validatePatchRebase('@/test', '@/patch', project);
+
+      expect(newProject.isLeft).to.be.true();
+    });
+    it('should return Either.Left if another patch with same path already exist', () => {
+      const project = { patches: { '@/test': {}, '@/patch': {} } };
+      const newProject = Project.validatePatchRebase('@/test', '@/patch', project);
+
+      expect(newProject.isLeft).to.be.true();
+    });
+    it('should return Either.Right with Project', () => {
+      const patch = {};
+      const oldPath = '@/test';
+      const newPath = '@/anotherPath';
+      const project = { patches: { [oldPath]: patch } };
+
+      const newProject = Project.validatePatchRebase(newPath, oldPath, project);
+      /* istanbul ignore next */
+      expectEither(
+        proj => {
+          expect(proj).to.be.equal(project);
+        },
+        newProject
+      );
+    });
+  });
+
   // entity setters
   describe('assocPatch', () => {
-    it('should return Either.Left if patch has not path', () => {
-      const newProject = Project.assocPatch({}, {});
+    it('should return Either.Left if path is not valid', () => {
+      const newProject = Project.assocPatch('', Patch.createPatch(), {});
+      expect(newProject.isLeft).to.be.true();
+    });
+    it('should return Either.Left if patch is not valid', () => {
+      const newProject = Project.assocPatch('', {}, {});
       expect(newProject.isLeft).to.be.true();
     });
     it('should assoc patch into project.patches even if its undefined', () => {
       const path = '@/test';
-      const patch = { path };
-      const newProject = Project.assocPatch(patch, {});
+      const patch = Patch.createPatch();
+      const newProject = Project.assocPatch(path, patch, {});
 
       expect(newProject.isRight).to.be.true();
       /* istanbul ignore next */
@@ -197,14 +240,16 @@ describe('Project', () => {
       );
     });
     it('should not remove other patches from project', () => {
-      const oldPatch = { path: '@/old' };
-      const newPatch = { path: '@/new' };
+      const oldPath = '@/old';
+      const oldPatch = Patch.createPatch();
+      const newPath = '@/new';
+      const newPatch = Patch.createPatch();
       const project = {
         patches: {
-          [oldPatch.path]: oldPatch,
+          [oldPath]: oldPatch,
         },
       };
-      const newProject = Project.assocPatch(newPatch, project);
+      const newProject = Project.assocPatch(newPath, newPatch, project);
 
       expect(newProject.isRight).to.be.true();
       /* istanbul ignore next */
@@ -212,7 +257,7 @@ describe('Project', () => {
         (proj) => {
           expect(proj)
             .to.have.property('patches')
-            .that.contains.all.keys([newPatch.path, oldPatch.path]);
+            .that.contains.all.keys([newPath, oldPath]);
           expect(proj.patches[oldPatch.path]).to.be.equal(oldPatch);
           expect(proj.patches[newPatch.path]).to.be.equal(newPatch);
         }
@@ -220,18 +265,11 @@ describe('Project', () => {
     });
   });
   describe('dissocPatch', () => {
-    it('should dissocPatch by Patch object', () => {
-      const patch = { path: '@/test' };
-      const project = { patches: { [patch.path]: patch } };
-      const newProject = Project.dissocPatch(patch, project);
-      expect(newProject)
-        .to.have.property('patches')
-        .that.empty();
-    });
     it('should dissocPatch by path string', () => {
-      const patch = { path: '@/test' };
-      const project = { patches: { [patch.path]: patch } };
-      const newProject = Project.dissocPatch(patch.path, project);
+      const path = '@/test';
+      const patch = {};
+      const project = { patches: { [path]: patch } };
+      const newProject = Project.dissocPatch(path, project);
       expect(newProject)
         .to.have.property('patches')
         .that.empty();
@@ -250,45 +288,10 @@ describe('Project', () => {
       const newProject = Project.dissocPatch('@/test', project);
       expect(newProject).to.be.equal(project);
     });
-    it('should return project even if Patch object has no path', () => {
-      const project = {};
-      const newProject = Project.dissocPatch({}, project);
-      expect(newProject).to.be.equal(project);
-    });
   });
-
-  // validations
-  describe('validatePatchRebase', () => {
-    it('should return Either.Left if newPath contains invalid characters', () => {
-      const patch = {};
-      const project = { patches: { '@/test': patch } };
-      const newProject = Project.validatePatchRebase('in√ålid path', patch, project);
-
-      expect(newProject.isLeft).to.be.true();
-    });
-    it('should return Either.Left if patch is not in the project (Patch passed)', () => {
-      const patch = {};
-      const project = {};
-      const newProject = Project.validatePatchRebase('@/test', patch, project);
-
-      expect(newProject.isLeft).to.be.true();
-    });
-    it('should return Either.Left if patch is not in the project (path passed)', () => {
-      const project = {};
-      const newProject = Project.validatePatchRebase('@/test', '@/patch', project);
-
-      expect(newProject.isLeft).to.be.true();
-    });
-    it('should return Either.Left if another patch with same path already exist', () => {
-      const patch = {};
-      const project = { patches: { '@/test': patch } };
-      const newProject = Project.validatePatchRebase('@/test', {}, project);
-
-      expect(newProject.isLeft).to.be.true();
-    });
-
-    const testRightCase = (nPath, patchOrPath, origPatch, projectToTest) => {
-      const newProject = Project.validatePatchRebase(nPath, patchOrPath, projectToTest);
+  describe('rebasePatch', () => {
+    const testRightCase = (newPath, oldPath, origPatch, projectToTest) => {
+      const newProject = Project.rebasePatch(newPath, oldPath, projectToTest);
       expect(newProject.isRight).to.be.true();
 
       /* istanbul ignore next */
@@ -296,28 +299,30 @@ describe('Project', () => {
         proj => {
           expect(proj)
             .to.have.property('patches')
-            .that.have.property(nPath)
+            .that.have.property(newPath)
             .that.equal(origPatch);
-          expect(proj.patches).to.have.all.keys(nPath);
+          expect(proj.patches).to.have.all.keys(newPath);
         },
         newProject
       );
     };
-    it('should return Either.Right for correct values (Patch passed)', () => {
-      const patch = {};
-      const oldPath = '@/test';
-      const newPath = '@/anotherPath';
-      const project = { patches: { [oldPath]: patch } };
 
-      testRightCase(newPath, patch, patch, project);
+    it('should return Either.Left if something is not valid', () => {
+
     });
-    it('should return Either.Right for correct values (path passed)', () => {
+    it('should return Either.Right for correct values', () => {
       const patch = {};
       const oldPath = '@/test';
       const newPath = '@/anotherPath';
       const project = { patches: { [oldPath]: patch } };
 
       testRightCase(newPath, oldPath, patch, project);
+    });
+    it('should update all reference on changed path', () => {
+      const patch = {};
+      const oldPath = '@/test';
+      const newPath = '@/anotherPath';
+      const project = { patches: { [oldPath]: patch, '@/withNodes': { nodes: { type: oldPath } } } };
     });
   });
 

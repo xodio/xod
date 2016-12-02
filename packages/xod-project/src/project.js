@@ -188,31 +188,25 @@ export const getPatchPath = R.curry(
  * Matching is done by patch’es path.
  *
  * @function assocPatch
+ * @param {string} path
  * @param {Patch} patch - patch to insert or update
  * @param {Project} project - project to operate on
  * @returns {Either<Error|Project>} copy of the project with the updated patch
  */
 // @TODO: Add validating
-export const assocPatch = R.curry((patch, project) => {
+export const assocPatch = R.curry((path, patch, project) => {
+  const validatePath = Utils.validatePath(path);
+  if (validatePath.isLeft) { return validatePath; }
+
   const eitherPatch = Patch.validatePatch(patch);
   if (eitherPatch.isLeft) { return eitherPatch; }
 
-  const makePath = R.flip(R.append)(['patches']);
-  const assocToProject = R.partialRight(R.assocPath, [project]);
+  const appendPath = R.flip(R.append)(['patches']);
+  const targetPath = validatePath.chain(appendPath);
 
-  return R.map(
-    R.compose(
-      R.apply(assocToProject),
-      R.juxt([
-        R.compose(
-          makePath,
-          R.prop('path'),
-          R.identity
-        ),
-        R.identity,
-      ])
-    )
-  )(eitherPatch);
+  return eitherPatch.map(
+    R.assocPath(targetPath, R.__, project)
+  );
 });
 
 /**
@@ -221,24 +215,12 @@ export const assocPatch = R.curry((patch, project) => {
  * Does nothing if the `patch` not found in `project`.
  *
  * @function dissocPatch
- * @param {PatchOrPath} patch - patch to remove
+ * @param {string} path - path to patch to remove
  * @param {Project} project - project to operate on
  * @returns {Project} copy of the project with the patch removed
  */
 export const dissocPatch = R.curry(
-  (patchOrPath, project) => {
-    const getPath = R.ifElse(
-      R.is(String),
-      R.identity,
-      R.compose(
-        R.chain(R.identity),
-        getPatchPath(R.__, project)
-      )
-    );
-    const path = getPath(patchOrPath);
-
-    return R.dissocPath(['patches', path], project);
-  }
+  (path, project) => R.dissocPath(['patches', path], project)
 );
 
 /**
@@ -251,15 +233,22 @@ export const dissocPatch = R.curry(
  *
  * @function validatePatchRebase
  * @param {string} newPath - new label for the patch
- * @param {PatchOrPath} patch - patch to rename
+ * @param {string} oldPath - path to patch to rename
  * @param {Project} project - project to operate on
- * @returns {Validity} validation result
+ * @returns {Either<Error|Project>} validation result
  */
 export const validatePatchRebase = R.curry(
-  (newPath, PatchOrPath, Project) => {
+  (newPath, oldPath, project) => {
     const validPath = Utils.validatePath(newPath);
     if (validPath.isLeft) { return validPath; }
 
+    const pathIsOccupied = getPatchByPath(newPath, project).isJust;
+    if (pathIsOccupied) { return Utils.leaveError('Another patch with the same path is already exist.')(); }
+
+    const patch = getPatchByPath(oldPath, project);
+    if (patch.isNothing) { return Utils.leaveError('There is no patch in the project with specified path.')(); }
+
+    return Either.of(project);
   }
 );
 
