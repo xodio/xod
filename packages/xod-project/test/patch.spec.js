@@ -11,53 +11,26 @@ chai.use(dirtyChai);
 describe('Patch', () => {
   // constructors
   describe('createPatch', () => {
-    it('should return Either.Left for non-valid path argument', () => {
-      expect(Patch.createPatch().isLeft).to.be.true();
-      expect(Patch.createPatch('').isLeft).to.be.true();
-      expect(Patch.createPatch('$p∑çiål ÇhÅr$').isLeft).to.be.true();
-    });
-    it('should return Either.Right for valid path argument', () => {
-      expect(Patch.createPatch('@/test').isRight).to.be.true();
-      expect(Patch.createPatch('external/library/test').isRight).to.be.true();
-    });
-    it('should return Either.Right that have a key "path", that not empty', () => {
-      const right = Patch.createPatch('@/test');
+    it('should return Patch that is an object', () => {
+      const patch = Patch.createPatch();
 
-      expectEither(
-        (patch) => {
-          expect(patch)
-            .to.have.property('path')
-            .that.is.a('string')
-            .that.not.empty();
-        },
-        right
-      );
+      expect(patch).is.an('object');
     });
     it('should have key: nodes === {}', () => {
-      const right = Patch.createPatch('@/test');
+      const patch = Patch.createPatch('@/test');
 
-      expectEither(
-        (patch) => {
-          expect(patch)
-            .to.have.property('nodes')
-            .that.is.an('object')
-            .that.is.empty();
-        },
-        right
-      );
+      expect(patch)
+        .to.have.property('nodes')
+        .that.is.an('object')
+        .that.is.empty();
     });
     it('should have key: links === []', () => {
-      const right = Patch.createPatch('@/test');
+      const patch = Patch.createPatch('@/test');
 
-      expectEither(
-        (patch) => {
-          expect(patch)
-            .to.have.property('links')
-            .that.is.an('array')
-            .that.is.empty();
-        },
-        right
-      );
+      expect(patch)
+        .to.have.property('links')
+        .that.is.an('array')
+        .that.is.empty();
     });
   });
   describe('duplicatePatch', () => {
@@ -129,13 +102,8 @@ describe('Patch', () => {
       const patch = Patch.validatePatch({});
       expect(patch.isLeft).to.be.true();
     });
-    it('should return Either.Left for invalid path', () => {
-      const patch = Patch.validatePatch({ path: 'in√ål;d pÅth' });
-      expect(patch.isLeft).to.be.true();
-    });
     it('should return Either.Right with valid patch', () => {
-      const path = '@/valid';
-      const patch = { path };
+      const patch = { nodes: {}, links: {} };
       const test = Patch.validatePatch(patch);
       expect(test.isRight).to.be.true();
 

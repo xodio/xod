@@ -14,21 +14,12 @@ import * as Utils from './utils';
 
 /**
  * @function createPatch
- * @param {string} path - full path of the patch, e.g. `"@/foo/bar"`
- * @returns {Either<Error|Patch>} a validatePath error or newly created patch
+ * @returns {Patch} a validatePath error or newly created patch
  */
-// @TODO: add validateName and replace returns with Either<Error|Patch>
-export const createPatch = R.compose(
-  R.map(
-    (path) => ({
-      path,
-      nodes: {},
-      links: [],
-    })
-  ),
-  Utils.validatePath,
-  R.defaultTo(undefined)
-);
+export const createPatch = () => ({
+  nodes: {},
+  links: [],
+});
 
 /**
  * @function duplicatePatch
@@ -81,12 +72,8 @@ export const setPatchLabel = R.useWith(
  */
 export const validatePatch = R.ifElse(
   R.allPass([
-    R.has('path'),
-    R.compose(
-      R.propEq('isRight', true),
-      Utils.validatePath,
-      R.prop('path')
-    ),
+    R.has('nodes'),
+    R.has('links'),
   ]),
   Either.Right,
   Utils.leaveError('Patch is not valid.')
