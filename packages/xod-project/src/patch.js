@@ -97,7 +97,7 @@ export const validatePatch = R.ifElse(
  * @param {Patch} patch
  * @returns {Node[]}
  */
- // TODO: implement
+ export const lsDirs = () => {};
 
 // =============================================================================
 //
@@ -110,7 +110,7 @@ export const validatePatch = R.ifElse(
  * @param {Patch} patch - a patch to get nodes from
  * @returns {Node[]} list of all nodes not sorted in any arbitrary order
  */
-// TODO: implement
+export const listNodes = () => {};
 
 /**
  * @function getNodeById
@@ -118,7 +118,7 @@ export const validatePatch = R.ifElse(
  * @param {Patch} patch - a patch where node should be searched
  * @returns {Maybe<Nothing|Node>} a node with given ID or `undefined` if it wasn’t not found
  */
-// TODO: implement
+export const getNodeById = () => {};
 
 /**
  * Replaces a node with new one or inserts new one if it doesn’t exist yet.
@@ -133,7 +133,7 @@ export const validatePatch = R.ifElse(
  * @param {Patch} patch - a patch with the `node`
  * @returns {Patch} a copy of the `patch` with the node replaced
  */
-// TODO: implement
+export const assocNode = () => {};
 
 /**
  * Removes the `node` from the `patch`.
@@ -147,7 +147,7 @@ export const validatePatch = R.ifElse(
  * @param {Patch} patch - a patch where the node should be deleted
  * @returns {Patch} a copy of the `patch` with the node deleted
  */
-// TODO: implement
+export const dissocNode = () => {};
 
 
 // =============================================================================
@@ -161,7 +161,7 @@ export const validatePatch = R.ifElse(
  * @param {Patch} patch - a patch to operate on
  * @returns {Link[]} list of all links not sorted in any arbitrary order
  */
-// TODO: implement
+export const listLinks = () => {};
 
 /**
  * @function getLinkById
@@ -169,7 +169,7 @@ export const validatePatch = R.ifElse(
  * @param {Patch} patch - a patch to operate on
  * @returns {Maybe<Nothing|Link>} a link with given `id` or Null if not found
  */
-// TODO: implement
+export const getLinkById = () => {};
 
 /**
  * Checks if the `link` would be valid on the `patch`. I.e. it could be
@@ -185,7 +185,7 @@ export const validatePatch = R.ifElse(
  * @param {Patch} patch - a patch to operate on
  * @returns {Either<Error|Link>} validation errors or valid {@link Link}
  */
-// TODO: implement
+export const validateLink = () => {};
 
 /**
  * Replaces an existing `link` or inserts new one in the `patch`.
@@ -198,7 +198,7 @@ export const validatePatch = R.ifElse(
  * @returns {Either<Error|Patch>} error or a copy of the `patch` with changes applied
  * @see {@link validateLink}
  */
-// TODO: implement
+export const assocLink = () => {};
 
 /**
  * Removes the `link` from the `patch`.
@@ -210,4 +210,4 @@ export const validatePatch = R.ifElse(
  * @param {Patch} patch - a patch to operate on
  * @returns {Patch} a copy of the `patch` with changes applied
  */
-// TODO: implement
+export const dissocLink = () => {};

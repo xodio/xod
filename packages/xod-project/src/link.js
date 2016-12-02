@@ -18,28 +18,32 @@
  * @param {NodeOrId} firstNode - first node to link
  * @returns {Link} error or a link object created
  */
-// TODO: implement
+export const createLink = () => {};
 
 /**
  * @function getLinkInputNodeId
  * @param {Link}
  * @returns {Maybe<Nothing|string>}
  */
+export const getLinkInputNodeId = () => {};
 
 /**
  * @function getLinkOutputNodeId
  * @param {Link}
  * @returns {Maybe<Nothing|string>}
  */
+export const getLinkOutputNodeId = () => {};
 
 /**
  * @function getLinkInputPinKey
  * @param {Link}
  * @returns {Maybe<Nothing|string>}
  */
+export const getLinkInputPinKey = () => {};
 
 /**
  * @function getLinkInputPinKey
  * @param {Link}
  * @returns {Maybe<Nothing|string>}
  */
+export const getLinkInputPinKey = () => {};
