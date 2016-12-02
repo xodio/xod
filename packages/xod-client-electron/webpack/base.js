@@ -46,7 +46,8 @@ const options = {
   module: {
     loaders: [
       {
-        test: /src\/.*\.jsx?$/,
+        include: pkgpath('src'),
+        test: /\.jsx?$/,
         loaders: [
           'babel?presets[]=react,presets[]=es2015',
         ],
