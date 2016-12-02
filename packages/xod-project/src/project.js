@@ -91,7 +91,7 @@ export const setProjectLicense = R.ifElse(
  * @param {Project} project
  * @returns {Either<Error|Xodball>}
  */
- // TODO: implement
+export const archiveProject = () => {};
 
  /**
   * Checks `project` for validity.
@@ -104,7 +104,7 @@ export const setProjectLicense = R.ifElse(
   * @param {Project} project - project to operate on
   * @returns {Either<Error|Project>} validation result
   */
- // TODO: implement
+export const validateProject = () => {};
 
 // =============================================================================
 //
@@ -278,7 +278,7 @@ export const validatePatchRebase = R.curry(
  * @returns {Either<Error|Project>} copy of the project with the patch renamed
  * @see {@link validatePatchRebase}
  */
-// TODO: implement
+export const rebasePatch = () => {};
 
 // =============================================================================
 //
@@ -294,6 +294,7 @@ export const validatePatchRebase = R.curry(
  * @param {Project} project
  * @returns {Patch[]}
  */
+export const lsPatches = () => {};
 
 /**
  * Returns list of directories in the specified directory.
@@ -303,3 +304,4 @@ export const validatePatchRebase = R.curry(
  * @param {Project} project
  * @returns {string[]}
  */
+export const lsDirs = () => {};

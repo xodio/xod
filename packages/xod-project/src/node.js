@@ -27,21 +27,21 @@
  * @param {PatchOrPath} type - type of node to create
  * @returns {Either<Error|Node>} error or a new node
  */
-// TODO: implement
+export const createNode = () => {};
 
 /**
  * @function duplicateNode
  * @param {Node} node - node to clone
  * @returns {Node} cloned node with new id
  */
-// TODO: implement
+export const duplicateNode = () => {};
 
 /**
  * @function getNodeId
  * @param {Node} node
  * @returns {Maybe<Nothing|string>}
  */
-// TODO: implement
+export const getNodeId = () => {};
 
 /**
  * @function setNodeLabel
@@ -49,7 +49,7 @@
  * @param {Node} node
  * @returns {Node}
  */
-// TODO: implement
+export const setNodeLabel = () => {};
 
 /**
  * @function setNodePosition
@@ -57,7 +57,7 @@
  * @param {Node} node - node to move
  * @returns {Node} copy of node in new coordinates
  */
- // TODO: implement
+ export const setNodePosition = () => {};
 
  // =============================================================================
  //
@@ -70,21 +70,21 @@
  * @param {Node} node
  * @returns {string[]}
  */
- // TODO: implement
+ export const listPinKeys = () => {};
 
 /**
  * @function listInputPinKeys
  * @param {Node} node
  * @returns {string[]}
  */
- // TODO: implement
+ export const listInputPinKeys = () => {};
 
 /**
  * @function listOutputPinKeys
  * @param {Node} node
  * @returns {string[]}
  */
- // TODO: implement
+ export const listOutputPinKeys = () => {};
 
 /**
  * @function getPinType
@@ -92,7 +92,7 @@
  * @param {Node} node
  * @returns {Either<Error|PIN_TYPE>}
  */
- // TODO: implement
+ export const getPinType = () => {};
 
 /**
  * @function getPinLabel
@@ -100,7 +100,7 @@
  * @param {Node} node
  * @returns {Either<Error|string>}
  */
- // TODO: implement
+ export const getPinLabel = () => {};
 
 /**
  * @function getPinDescription
@@ -108,7 +108,7 @@
  * @param {Node} node
  * @returns {Either<Error|string>}
  */
- // TODO: implement
+ export const getPinDescription = () => {};
 
 /**
  * Gets curried value of input pin.
@@ -121,6 +121,7 @@
  * @param {Node} node
  * @returns {Either<Error|PinValue>}
  */
+export const getPinCurriedValue = () => {};
 
 /**
  * Sets curried value to input pin.
@@ -131,6 +132,7 @@
  * @param {Node} node
  * @returns {Either<Error|Node>}
  */
+export const setPinCurriedValue = () => {};
 
  /**
   * Enables or disables pin currying.
@@ -141,6 +143,7 @@
   * @param {Node} node
   * @returns {Either<Error|Node>}
   */
+ export const curryPin = () => {};
 
 /**
  * @function isPinCurried
@@ -148,6 +151,7 @@
  * @param {Node} node
  * @returns {Either<Error|boolean>}
  */
+export const isPinCurried = () => {};
 
 /**
  * Returns list of all links are connected to specified pin.
@@ -158,3 +162,4 @@
  * @param {Patch} patch
  * @returns {Link[]}
  */
+export const listLinksByPin = () => {};
