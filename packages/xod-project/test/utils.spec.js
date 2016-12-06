@@ -4,6 +4,7 @@ import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
 import { expectEither } from './helpers';
+import shortid from 'shortid';
 
 import * as Utils from '../src/utils';
 
@@ -120,6 +121,13 @@ describe('Utils', () => {
     it('should return false for localPath', () => {
       const result = Utils.isPathLibrary(localPath);
       expect(result).to.be.false();
+    });
+  });
+
+  describe('generateId', () => {
+    it('should be valid shortid', () => {
+      const id = Utils.generateId();
+      expect(shortid.isValid(id)).to.be.true();
     });
   });
 });

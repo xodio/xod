@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { Maybe } from 'ramda-fantasy';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
@@ -34,24 +35,21 @@ describe('Patch', () => {
     });
   });
   describe('duplicatePatch', () => {
-    const patch = { path: '@/test' };
-    it('should return Either.Left for wrong path', () => {
-      const newPatch = Patch.duplicatePatch('@/te $t', patch);
-      expect(newPatch.isLeft).to.be.true();
+    const patch = { nodes: {}, label: 'test' };
+    it('should return new patch (not the same object)', () => {
+      const newPatch = Patch.duplicatePatch(patch);
+      expect(newPatch)
+        .to.be.an('object')
+        .and.not.to.be.equal(patch);
     });
-    it('should return Either.Right for correct path', () => {
-      const newPath = '@/test2';
-      const newPatch = Patch.duplicatePatch(newPath, patch);
-      expect(newPatch.isRight).to.be.true();
-
-      /* istanbul ignore next */
-      expectEither(
-        right => {
-          expect(right).to.be.an('object');
-          expect(right.path).to.be.equal(newPath);
-        },
-        newPatch
-      );
+    it('should be deeply cloned (not the same nested objects)', () => {
+      const newPatch = Patch.duplicatePatch(patch);
+      expect(newPatch)
+        .have.property('label')
+        .that.equal(patch.label);
+      expect(newPatch)
+        .have.property('nodes')
+        .that.not.equal(patch.nodes);
     });
   });
 
@@ -93,6 +91,46 @@ describe('Patch', () => {
   });
 
   // entity getters
+  describe('listNodes', () => {
+    const patch = {
+      nodes: {
+        '@/test': { id: '@/test' },
+        '@/test2': { id: '@/test2' },
+      },
+    };
+
+    it('should return an empty array for empty patch', () => {
+      expect(Patch.listNodes({}))
+        .to.be.instanceof(Array)
+        .to.be.empty();
+    });
+    it('should return an array of nodes', () => {
+      expect(Patch.listNodes(patch))
+        .to.be.instanceof(Array)
+        .to.have.members([
+          patch.nodes['@/test'],
+          patch.nodes['@/test2'],
+        ]);
+    });
+  });
+  describe('getNodeById', () => {
+    const patch = {
+      nodes: {
+        '@/test': { id: '@/test' },
+      },
+    };
+
+    it('should Maybe.Nothing for non-existent node', () => {
+      expect(Patch.getNodeById('non-existent', {}).isNothing)
+        .to.be.true();
+    });
+    it('should Maybe.Just with node for existent node', () => {
+      expect(Patch.getNodeById('@/test', patch).isJust)
+        .to.be.true();
+      expect(Patch.getNodeById('@/test', patch).getOrElse(null))
+        .to.be.equal(patch.nodes['@/test']);
+    });
+  });
 
   // entity setters
 

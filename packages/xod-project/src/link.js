@@ -42,8 +42,8 @@ export const getLinkOutputNodeId = () => {};
 export const getLinkInputPinKey = () => {};
 
 /**
- * @function getLinkInputPinKey
+ * @function getLinkOutputPinKey
  * @param {Link}
  * @returns {Maybe<Nothing|string>}
  */
-export const getLinkInputPinKey = () => {};
+export const getLinkOutputPinKey = () => {};
