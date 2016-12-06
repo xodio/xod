@@ -1,5 +1,3 @@
-import R from 'ramda';
-import { Either } from 'ramda-fantasy';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
@@ -43,9 +41,8 @@ describe('Utils', () => {
       expect(result.isRight).to.be.true();
 
       /* istanbul ignore next */
-      Either.either(
-        (err) => { throw err; },
-        (val) => { expect(val).to.be.equal(path); },
+      expectEither(
+        val => { expect(val).to.be.equal(path); },
         result
       );
     });

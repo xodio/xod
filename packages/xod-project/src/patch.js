@@ -88,6 +88,22 @@ export const getPatchTerminals = () => {};
 // =============================================================================
 
 /**
+ * Checks that node id to be equal specified value
+ *
+ * @function nodeIdEquals
+ * @param {string} id [description]
+ * @param {Node} node [description]
+ * @returns {boolean}
+ */
+const nodeIdEquals = R.curry(
+  (id, node) =>
+  R.compose(
+    R.equals(id),
+    Node.getNodeId
+  )(node)
+);
+
+/**
  * @function listNodes
  * @param {Patch} patch - a patch to get nodes from
  * @returns {Node[]} list of all nodes not sorted in any arbitrary order
@@ -106,12 +122,7 @@ export const listNodes = R.compose(
 export const getNodeById = R.curry(
   (id, patch) => R.compose(
     Maybe,
-    R.find(
-      R.compose(
-        R.chain(R.equals(id)),
-        Node.getNodeId
-      )
-    ),
+    R.find(nodeIdEquals(id)),
     listNodes
   )(patch)
 );
@@ -132,7 +143,7 @@ export const getNodeById = R.curry(
 export const assocNode = R.curry(
   (node, patch) => {
     const key = R.prop('id', node);
-    return R.assoc(key, node, patch);
+    return R.assocPath(['nodes', key], node, patch);
   }
 );
 
@@ -148,7 +159,17 @@ export const assocNode = R.curry(
  * @param {Patch} patch - a patch where the node should be deleted
  * @returns {Patch} a copy of the `patch` with the node deleted
  */
-export const dissocNode = () => {};
+export const dissocNode = R.curry(
+  (nodeOrId, patch) => {
+    const id = (R.is(String, nodeOrId)) ? nodeOrId : Node.getNodeId(nodeOrId);
+
+    return R.ifElse(
+      R.pathSatisfies(R.complement(R.isNil), ['nodes', id]),
+      R.dissocPath(['nodes', id]),
+      R.identity
+    )(patch);
+  }
+);
 
 // =============================================================================
 //
