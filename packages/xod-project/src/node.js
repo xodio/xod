@@ -1,3 +1,6 @@
+import R from 'ramda';
+import { Maybe, Either } from 'ramda-fantasy';
+import * as Utils from './utils';
 
 /**
  * @typedef {Object} Node
@@ -41,7 +44,10 @@ export const duplicateNode = () => {};
  * @param {Node} node
  * @returns {Maybe<Nothing|string>}
  */
-export const getNodeId = () => {};
+export const getNodeId = R.compose(
+  Maybe,
+  R.prop('id')
+);
 
 /**
  * @function setNodeLabel

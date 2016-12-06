@@ -117,8 +117,8 @@ export const validateProject = () => {};
  * @param {Project} project - project bundle
  * @returns {Patch[]} list of all patches not sorted in any arbitrary order
  */
-// @FIX: patches is a HashTable
-export const listPatches = R.propOr([], 'patches');
+// @TODO: Fix it. Patches is a HashTable
+export const listPatches = R.propOr({}, 'patches');
 
 /**
  * Return a list of local patches (excluding external libraries)
@@ -129,6 +129,7 @@ export const listPatches = R.propOr([], 'patches');
  */
 export const listLocalPatches = R.compose(
   R.filter(Utils.isPathLocal),
+  R.values,
   listPatches
 );
 
@@ -141,6 +142,7 @@ export const listLocalPatches = R.compose(
  */
 export const listLibraryPatches = R.compose(
   R.filter(Utils.isPathLibrary),
+  R.values,
   listPatches
 );
 
@@ -178,7 +180,7 @@ export const getPatchPath = R.curry(
     Maybe,
     R.filter(p => p[1] === patch),
     R.toPairs,
-    R.prop('patches')
+    listPatches
   )(project)
 );
 
@@ -232,7 +234,7 @@ export const dissocPatch = R.curry(
  * - another patch with same path already exist
  *
  * @function validatePatchRebase
- * @param {string} newPath - new label for the patch
+ * @param {string} newPath - new path for the patch
  * @param {string} oldPath - path to patch to rename
  * @param {Project} project - project to operate on
  * @returns {Either<Error|Project>} validation result
@@ -261,13 +263,44 @@ export const validatePatchRebase = R.curry(
  * the new path.
  *
  * @function rebasePatch
- * @param {string} newPath - new label for the patch
- * @param {PatchOrPath} patch - patch to rename
+ * @param {string} newPath - new path for the patch
+ * @param {string} oldPath - old path for the patch
  * @param {Project} project - project to operate on
  * @returns {Either<Error|Project>} copy of the project with the patch renamed
  * @see {@link validatePatchRebase}
  */
-export const rebasePatch = () => {};
+export const rebasePatch = R.curry(
+  (newPath, oldPath, project) =>
+    validatePatchRebase(newPath, oldPath, project)
+      .map(
+        proj => {
+          const patch = getPatchByPath(oldPath, proj);
+          const assocThatPatch = patch.chain(R.assocPath(['patches', newPath]));
+
+          // @TODO: Think about refactoring that piece of code :-D
+          // Patch -> Patch
+          const updateReferences = R.when(
+            R.has('nodes'),
+            R.evolve({
+              nodes: R.mapObjIndexed(
+                R.when(
+                  R.propEq('type', oldPath),
+                  R.assoc('type', newPath)
+                )
+              ),
+            })
+          );
+
+          return R.compose(
+            R.evolve({
+              patches: R.mapObjIndexed(updateReferences),
+            }),
+            R.dissocPath(['patches', oldPath]),
+            assocThatPatch
+          )(proj);
+        }
+      )
+);
 
 // =============================================================================
 //
@@ -283,7 +316,17 @@ export const rebasePatch = () => {};
  * @param {Project} project
  * @returns {Patch[]}
  */
-export const lsPatches = () => {};
+export const lsPatches = R.curry(
+  (path, project) => {
+    const slashedPath = Utils.addSlashToEnd(path);
+    const reg = new RegExp(`^${slashedPath}([a-zA-Z0-9_-])+$`);
+
+    return R.compose(
+      R.pickBy((val, key) => R.test(reg, key)),
+      listPatches
+    )(project);
+  }
+);
 
 /**
  * Returns list of directories in the specified directory.
@@ -293,4 +336,22 @@ export const lsPatches = () => {};
  * @param {Project} project
  * @returns {string[]}
  */
-export const lsDirs = () => {};
+export const lsDirs = R.curry(
+  (path, project) => {
+    const slashedPath = Utils.addSlashToEnd(path);
+    const reg = new RegExp(`^${slashedPath}([a-zA-Z0-9_-]+)(?:\/).*`);
+
+    return R.compose(
+      R.uniq,
+      R.chain(
+        R.compose(
+          R.nth(1),
+          R.match(reg)
+        )
+      ),
+      R.filter(R.test(reg)),
+      R.keys,
+      listPatches
+    )(project);
+  }
+);

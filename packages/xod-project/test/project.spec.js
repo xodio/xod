@@ -173,6 +173,64 @@ describe('Project', () => {
       );
     });
   });
+  describe('lsPatches', () => {
+    const project = {
+      patches: {
+        '@/folder/patch': {},
+        '@/folder/patch2': {},
+        '@/folder/subfolder/patch3': {},
+        '@/folder2/patch4': {},
+        '@/patch5': {},
+      },
+    };
+
+    it('should return an object with patches', () => {
+      expect(Project.lsPatches('@/', project))
+        .to.be.an('object');
+      expect(Project.lsPatches('@', project))
+        .to.be.an('object');
+    });
+    it('should return only patches in the specified path', () => {
+      expect(Project.lsPatches('@/folder', project))
+        .to.be.an('object')
+        .that.have.all.keys([
+          '@/folder/patch',
+          '@/folder/patch2',
+        ]);
+    });
+  });
+  describe('lsDirs', () => {
+    const project = {
+      patches: {
+        '@/folder/patch': {},
+        '@/folder/subfolder/patch3': {},
+        '@/folder2/patch4': {},
+        '@/patch5': {},
+      },
+    };
+
+    it('should return a list of strings', () => {
+      expect(Project.lsDirs('@/', project))
+        .to.be.instanceof(Array);
+      expect(Project.lsDirs('@', project))
+      .to.be.instanceof(Array);
+    });
+    it('should return only dirs in the specified path', () => {
+      expect(Project.lsDirs('@/folder', project))
+        .to.be.instanceof(Array)
+        .that.have.members([
+          'subfolder',
+        ]);
+    });
+    it('should return only unique dirs', () => {
+      expect(Project.lsDirs('@', project))
+        .to.be.instanceof(Array)
+        .that.have.members([
+          'folder',
+          'folder2',
+        ]);
+    });
+  });
 
   // validations
   describe('validatePatchRebase', () => {
@@ -290,8 +348,17 @@ describe('Project', () => {
     });
   });
   describe('rebasePatch', () => {
-    const testRightCase = (newPath, oldPath, origPatch, projectToTest) => {
-      const newProject = Project.rebasePatch(newPath, oldPath, projectToTest);
+    it('should return Either.Left if something is not valid', () => {
+      expect(Project.rebasePatch('@/new', '@/old', {}).isLeft)
+        .to.be.true();
+    });
+    it('should return Either.Right for correct values', () => {
+      const patch = {};
+      const oldPath = '@/test';
+      const newPath = '@/anotherPath';
+      const project = { patches: { [oldPath]: patch } };
+
+      const newProject = Project.rebasePatch(newPath, oldPath, project);
       expect(newProject.isRight).to.be.true();
 
       /* istanbul ignore next */
@@ -300,29 +367,37 @@ describe('Project', () => {
           expect(proj)
             .to.have.property('patches')
             .that.have.property(newPath)
-            .that.equal(origPatch);
+            .that.equal(patch);
           expect(proj.patches).to.have.all.keys(newPath);
         },
         newProject
       );
-    };
-
-    it('should return Either.Left if something is not valid', () => {
-
-    });
-    it('should return Either.Right for correct values', () => {
-      const patch = {};
-      const oldPath = '@/test';
-      const newPath = '@/anotherPath';
-      const project = { patches: { [oldPath]: patch } };
-
-      testRightCase(newPath, oldPath, patch, project);
     });
     it('should update all reference on changed path', () => {
       const patch = {};
       const oldPath = '@/test';
       const newPath = '@/anotherPath';
-      const project = { patches: { [oldPath]: patch, '@/withNodes': { nodes: { type: oldPath } } } };
+      const withNodesPath = '@/withNodes';
+      const project = { patches: { [oldPath]: patch, '@/withNodes': { nodes: { 1: { type: oldPath } } } } };
+
+      const newProject = Project.rebasePatch(newPath, oldPath, project);
+      expect(newProject.isRight).to.be.true();
+
+      /* istanbul ignore next */
+      expectEither(
+        proj => {
+          expect(proj)
+            .to.have.property('patches')
+            .that.have.property(withNodesPath)
+            .that.have.property('nodes')
+            .that.have.property('1')
+            .that.have.property('type')
+            .that.equal(newPath);
+
+          expect(proj.patches).to.have.all.keys([newPath, withNodesPath]);
+        },
+        newProject
+      );
     });
   });
 

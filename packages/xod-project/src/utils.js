@@ -1,5 +1,6 @@
 import R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
+import shortid from 'shortid';
 /**
  * Contains resulting value or error
  *
@@ -119,3 +120,25 @@ export const isArrayOfNumbers = R.both(
   R.is(Array),
   R.all(R.is(Number))
 );
+
+/**
+ * Adds a slash to the end of string if it doesn't exist
+ * @function addSlashToEnd
+ * @param {string} str
+ * @returns {string}
+ */
+export const addSlashToEnd = R.ifElse(
+  R.compose(
+    R.equals('/'),
+    R.last
+  ),
+  R.identity,
+  R.concat(R.__, '/')
+);
+
+/**
+ * Generates an id for entities
+ * @function generateId
+ * @returns {string}
+ */
+export const generateId = shortid.generate;

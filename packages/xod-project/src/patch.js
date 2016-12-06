@@ -2,6 +2,7 @@ import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 
 import * as Utils from './utils';
+import * as Node from './node';
 /**
  * An object representing single patch in a project
  * @typedef {Object} Patch
@@ -23,18 +24,12 @@ export const createPatch = () => ({
 
 /**
  * @function duplicatePatch
- * @param {string} newPath - full path of the new patch, e.g. `"@/foo/bar"`
  * @param {Patch} patch
- * @returns {Either<Error|Patch>} duplicated patch with new path or error
+ * @returns {Patch} deeply cloned patch
  */
-export const duplicatePatch = R.curry(
-  (path, patch) =>
-  R.compose(
-    R.map(
-      R.assoc('path', R.__, patch)
-    ),
-    Utils.validatePath
-  )(path)
+export const duplicatePatch = R.compose(
+  JSON.parse,
+  JSON.stringify
 );
 
 /**
@@ -84,7 +79,7 @@ export const validatePatch = R.ifElse(
  * @param {Patch} patch
  * @returns {Node[]}
  */
- export const lsDirs = () => {};
+export const getPatchTerminals = () => {};
 
 // =============================================================================
 //
@@ -97,7 +92,10 @@ export const validatePatch = R.ifElse(
  * @param {Patch} patch - a patch to get nodes from
  * @returns {Node[]} list of all nodes not sorted in any arbitrary order
  */
-export const listNodes = () => {};
+export const listNodes = R.compose(
+  R.values,
+  R.propOr([], 'nodes')
+);
 
 /**
  * @function getNodeById
@@ -105,7 +103,18 @@ export const listNodes = () => {};
  * @param {Patch} patch - a patch where node should be searched
  * @returns {Maybe<Nothing|Node>} a node with given ID or `undefined` if it wasn’t not found
  */
-export const getNodeById = () => {};
+export const getNodeById = R.curry(
+  (id, patch) => R.compose(
+    Maybe,
+    R.find(
+      R.compose(
+        R.chain(R.equals(id)),
+        Node.getNodeId
+      )
+    ),
+    listNodes
+  )(patch)
+);
 
 /**
  * Replaces a node with new one or inserts new one if it doesn’t exist yet.
@@ -120,7 +129,12 @@ export const getNodeById = () => {};
  * @param {Patch} patch - a patch with the `node`
  * @returns {Patch} a copy of the `patch` with the node replaced
  */
-export const assocNode = () => {};
+export const assocNode = R.curry(
+  (node, patch) => {
+    const key = R.prop('id', node);
+    return R.assoc(key, node, patch);
+  }
+);
 
 /**
  * Removes the `node` from the `patch`.
@@ -135,7 +149,6 @@ export const assocNode = () => {};
  * @returns {Patch} a copy of the `patch` with the node deleted
  */
 export const dissocNode = () => {};
-
 
 // =============================================================================
 //
