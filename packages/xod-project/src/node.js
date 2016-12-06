@@ -24,30 +24,76 @@ import * as Utils from './utils';
  * @typedef {(string|number|boolean|Pulse)} PinValue
  */
 
+ // =============================================================================
+ //
+ // Validation
+ //
+ // =============================================================================
+
+/**
+ * Validate that position object has a keys x and y with numbers.
+ *
+ * @function validatePosition
+ * @param {Position} position
+ * @returns {Either<Error|Position>}
+ */
+export const validatePosition = R.ifElse(
+  R.allPass([
+    R.is(Object),
+    R.compose(R.is(Number), R.prop('x')),
+    R.compose(R.is(Number), R.prop('y')),
+  ]),
+  Either.of,
+  Utils.leaveError('Invalid position property.')
+);
+
+// =============================================================================
+//
+// Node
+//
+// =============================================================================
+
 /**
  * @function createNode
  * @param {Position} position - coordinates of new node’s center
- * @param {PatchOrPath} type - type of node to create
+ * @param {string} type - path to the patch, that will be the type of node to create
  * @returns {Either<Error|Node>} error or a new node
  */
-export const createNode = () => {};
+export const createNode = R.curry(
+  (position, type) =>
+    validatePosition(position)
+      .map(
+        R.assoc('position', R.__, {
+          id: Utils.generateId(),
+          type,
+        })
+      )
+);
 
 /**
  * @function duplicateNode
  * @param {Node} node - node to clone
  * @returns {Node} cloned node with new id
  */
-export const duplicateNode = () => {};
+export const duplicateNode = R.compose(
+  R.assoc('id', Utils.generateId()),
+  JSON.parse,
+  JSON.stringify
+);
 
 /**
  * @function getNodeId
  * @param {Node} node
- * @returns {Maybe<Nothing|string>}
+ * @returns {string}
  */
-export const getNodeId = R.compose(
-  Maybe,
-  R.prop('id')
-);
+export const getNodeId = R.prop('id');
+
+/**
+ * @function getNodeLabel
+ * @param {Node} node
+ * @returns {string}
+ */
+export const getNodeLabel = () => {};
 
 /**
  * @function setNodeLabel
@@ -61,9 +107,22 @@ export const setNodeLabel = () => {};
  * @function setNodePosition
  * @param {Position} position - new coordinates of node’s center
  * @param {Node} node - node to move
- * @returns {Node} copy of node in new coordinates
+ * @returns {Either<Error|Node>} copy of node in new coordinates
  */
- export const setNodePosition = () => {};
+export const setNodePosition = R.curry(
+  (position, node) =>
+    validatePosition(position)
+      .map(
+        R.assoc('position', R.__, node)
+      )
+);
+
+/**
+ * @function getNodePosition
+ * @param {Node} node
+ * @returns {Position}
+ */
+export const getNodePosition = R.prop('position');
 
  // =============================================================================
  //

@@ -1,5 +1,3 @@
-import R from 'ramda';
-import { Maybe } from 'ramda-fantasy';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
@@ -133,6 +131,49 @@ describe('Patch', () => {
   });
 
   // entity setters
+  describe('assocNode', () => {});
+  describe('dissocNode', () => {
+    const patch = {
+      nodes: {
+        '@/test': { id: '@/test' },
+        '@/test2': { id: '@/test2' },
+      },
+    };
+
+    it('should remove node by id', () => {
+      const newPatch = Patch.dissocNode('@/test', patch);
+
+      expect(newPatch)
+        .to.be.an('object')
+        .that.have.property('nodes')
+        .that.not.have.keys(['@/test']);
+    });
+    it('should remove node by Node object', () => {
+      const node = patch.nodes['@/test'];
+      const newPatch = Patch.dissocNode(node, patch);
+
+      expect(newPatch)
+        .to.be.an('object')
+        .that.have.property('nodes')
+        .that.not.have.keys(['@/test']);
+    });
+    it('should not affect on other nodes', () => {
+      const newPatch = Patch.dissocNode('@/test', patch);
+
+      expect(newPatch)
+        .to.be.an('object')
+        .that.have.property('nodes')
+        .that.have.keys(['@/test2'])
+        .and.not.have.keys(['@/test']);
+    });
+    it('should return unchanges Patch for non-existent node/id', () => {
+      const newPatch = Patch.dissocNode('@/non-existent', patch);
+
+      expect(newPatch)
+        .to.be.an('object')
+        .and.equals(patch);
+    });
+  });
 
   // validations
   describe('validatePatch', () => {
