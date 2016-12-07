@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { Either, Maybe } from 'ramda-fantasy';
+import { Either } from 'ramda-fantasy';
 import shortid from 'shortid';
 /**
  * Contains resulting value or error
@@ -71,14 +71,14 @@ export const getBaseName = R.compose(
  * @param {string} path
  * @returns {boolean}
  */
-export const isPathLocal = R.test(/^@\/[a-zA-Z0-9_\-\/]+$/);
+export const isPathLocal = R.test(/^@\/[a-zA-Z0-9_\-/]+$/);
 
 /**
  * @function isPathLibrary
  * @param {string} path
  * @returns {boolean}
  */
-export const isPathLibrary = R.test(/^[a-zA-Z0-9_\-\/]+$/);
+export const isPathLibrary = R.test(/^[a-zA-Z0-9_\-/]+$/);
 
 /**
  * Checks if a path is a valid for entities like
@@ -91,7 +91,7 @@ export const isPathLibrary = R.test(/^[a-zA-Z0-9_\-\/]+$/);
 export const validatePath = R.ifElse(
   R.allPass([
     R.complement(R.isNil),
-    R.test(/^(@\/)?[a-zA-Z0-9_\-\/]+$/),
+    R.test(/^(@\/)?[a-zA-Z0-9_\-/]+$/),
   ]),
   Either.Right,
   (path) => leaveError(`The path "${path}" is not valid.`)(path)

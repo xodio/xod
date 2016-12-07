@@ -276,14 +276,13 @@ describe('Project', () => {
       expect(newProject.isLeft).to.be.true();
     });
     it('should return Either.Left if patch is not valid', () => {
-      const newProject = Project.assocPatch('', {}, {});
+      const newProject = Project.assocPatch('@/test', {}, {});
       expect(newProject.isLeft).to.be.true();
     });
     it('should assoc patch into project.patches even if its undefined', () => {
       const path = '@/test';
       const patch = Patch.createPatch();
       const newProject = Project.assocPatch(path, patch, {});
-
       expect(newProject.isRight).to.be.true();
       /* istanbul ignore next */
       expectEither(
