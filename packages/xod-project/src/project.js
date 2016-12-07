@@ -339,7 +339,7 @@ export const lsPatches = R.curry(
 export const lsDirs = R.curry(
   (path, project) => {
     const slashedPath = Utils.addSlashToEnd(path);
-    const reg = new RegExp(`^${slashedPath}([a-zA-Z0-9_-]+)(?:\/).*`);
+    const reg = new RegExp(`^${slashedPath}([a-zA-Z0-9_-]+)(?:/).*`);
 
     return R.compose(
       R.uniq,

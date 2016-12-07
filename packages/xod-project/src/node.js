@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { Maybe, Either } from 'ramda-fantasy';
+import { Either } from 'ramda-fantasy';
 import * as Utils from './utils';
 
 /**
@@ -135,21 +135,21 @@ export const getNodePosition = R.prop('position');
  * @param {Node} node
  * @returns {string[]}
  */
- export const listPinKeys = () => {};
+export const listPinKeys = () => {};
 
 /**
  * @function listInputPinKeys
  * @param {Node} node
  * @returns {string[]}
  */
- export const listInputPinKeys = () => {};
+export const listInputPinKeys = () => {};
 
 /**
  * @function listOutputPinKeys
  * @param {Node} node
  * @returns {string[]}
  */
- export const listOutputPinKeys = () => {};
+export const listOutputPinKeys = () => {};
 
 /**
  * @function getPinType
@@ -157,7 +157,7 @@ export const getNodePosition = R.prop('position');
  * @param {Node} node
  * @returns {Either<Error|PIN_TYPE>}
  */
- export const getPinType = () => {};
+export const getPinType = () => {};
 
 /**
  * @function getPinLabel
@@ -165,7 +165,7 @@ export const getNodePosition = R.prop('position');
  * @param {Node} node
  * @returns {Either<Error|string>}
  */
- export const getPinLabel = () => {};
+export const getPinLabel = () => {};
 
 /**
  * @function getPinDescription
@@ -173,7 +173,7 @@ export const getNodePosition = R.prop('position');
  * @param {Node} node
  * @returns {Either<Error|string>}
  */
- export const getPinDescription = () => {};
+export const getPinDescription = () => {};
 
 /**
  * Gets curried value of input pin.
@@ -208,7 +208,7 @@ export const setPinCurriedValue = () => {};
   * @param {Node} node
   * @returns {Either<Error|Node>}
   */
- export const curryPin = () => {};
+export const curryPin = () => {};
 
 /**
  * @function isPinCurried
