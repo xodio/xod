@@ -1,4 +1,8 @@
+import R from 'ramda';
+import { Maybe, Either } from 'ramda-fantasy';
 
+import * as Utils from './utils';
+import * as Node from './node';
 /**
  * An object representing single patch in a project
  * @typedef {Object} Patch
@@ -11,36 +15,29 @@
 
 /**
  * @function createPatch
- * @param {string} path - full path of the patch, e.g. `"@/foo/bar"`
- * @returns {Patch} newly created patch
+ * @returns {Patch} a validatePath error or newly created patch
  */
-// TODO: implement
-
+export const createPatch = () => ({
+  nodes: {},
+  links: [],
+});
 
 /**
  * @function duplicatePatch
- * @param {string} newPath - full path of the new patch, e.g. `"@/foo/bar"`
  * @param {Patch} patch
- * @returns {Either<Error|Patch>} duplicated patch with new path or error
+ * @returns {Patch} deeply cloned patch
  */
-
-/**
- * @function getPatchPath
- * @param {Patch} patch
- * @returns {Maybe<Null|string>}
- */
-
-/**
- * @function getPatchBaseName
- * @param {Patch} patch
- * @returns {Maybe<Null|string>}
- */
+export const duplicatePatch = R.compose(
+  JSON.parse,
+  JSON.stringify
+);
 
 /**
  * @function getPatchLabel
  * @param {Patch} patch
  * @returns {string}
  */
+export const getPatchLabel = R.propOr('', 'label');
 
 /**
  * @function setPatchLabel
@@ -48,6 +45,10 @@
  * @param {Patch} patch
  * @returns {Patch} a copy of the `patch` with new label
  */
+export const setPatchLabel = R.useWith(
+  R.assoc('label'),
+  [String, R.identity]
+);
 
  /**
   * Returns a list of platforms for which a `patch` has native implementation
@@ -60,23 +61,25 @@
   */
 
 /**
- * @function isPatchLocal
+ * @function validatePatch
  * @param {Patch} patch
- * @returns {boolean}
+ * @returns {Either<Error|Patch>}
  */
-
-/**
- * @function isPatchLibrary
- * @param {Patch} patch
- * @returns {boolean}
- */
+export const validatePatch = R.ifElse(
+  R.allPass([
+    R.has('nodes'),
+    R.has('links'),
+  ]),
+  Either.Right,
+  Utils.leaveError('Patch is not valid.')
+);
 
 /**
  * @function getPatchTerminals
  * @param {Patch} patch
  * @returns {Node[]}
  */
- // TODO: implement
+export const getPatchTerminals = () => {};
 
 // =============================================================================
 //
@@ -85,19 +88,44 @@
 // =============================================================================
 
 /**
+ * Checks that node id to be equal specified value
+ *
+ * @function nodeIdEquals
+ * @param {string} id [description]
+ * @param {Node} node [description]
+ * @returns {boolean}
+ */
+const nodeIdEquals = R.curry(
+  (id, node) =>
+  R.compose(
+    R.equals(id),
+    Node.getNodeId
+  )(node)
+);
+
+/**
  * @function listNodes
  * @param {Patch} patch - a patch to get nodes from
  * @returns {Node[]} list of all nodes not sorted in any arbitrary order
  */
-// TODO: implement
+export const listNodes = R.compose(
+  R.values,
+  R.propOr([], 'nodes')
+);
 
 /**
  * @function getNodeById
  * @param {string} id - node ID to find
  * @param {Patch} patch - a patch where node should be searched
- * @returns {Maybe<Null|Node>} a node with given ID or `undefined` if it wasn’t not found
+ * @returns {Maybe<Nothing|Node>} a node with given ID or `undefined` if it wasn’t not found
  */
-// TODO: implement
+export const getNodeById = R.curry(
+  (id, patch) => R.compose(
+    Maybe,
+    R.find(nodeIdEquals(id)),
+    listNodes
+  )(patch)
+);
 
 /**
  * Replaces a node with new one or inserts new one if it doesn’t exist yet.
@@ -112,7 +140,12 @@
  * @param {Patch} patch - a patch with the `node`
  * @returns {Patch} a copy of the `patch` with the node replaced
  */
-// TODO: implement
+export const assocNode = R.curry(
+  (node, patch) => {
+    const key = R.prop('id', node);
+    return R.assocPath(['nodes', key], node, patch);
+  }
+);
 
 /**
  * Removes the `node` from the `patch`.
@@ -126,8 +159,17 @@
  * @param {Patch} patch - a patch where the node should be deleted
  * @returns {Patch} a copy of the `patch` with the node deleted
  */
-// TODO: implement
+export const dissocNode = R.curry(
+  (nodeOrId, patch) => {
+    const id = (R.is(String, nodeOrId)) ? nodeOrId : Node.getNodeId(nodeOrId);
 
+    return R.ifElse(
+      R.pathSatisfies(R.complement(R.isNil), ['nodes', id]),
+      R.dissocPath(['nodes', id]),
+      R.identity
+    )(patch);
+  }
+);
 
 // =============================================================================
 //
@@ -140,15 +182,15 @@
  * @param {Patch} patch - a patch to operate on
  * @returns {Link[]} list of all links not sorted in any arbitrary order
  */
-// TODO: implement
+export const listLinks = () => {};
 
 /**
  * @function getLinkById
  * @param {string} id - a link ID to find
  * @param {Patch} patch - a patch to operate on
- * @returns {Maybe<Null|Link>} a link with given `id` or Null if not found
+ * @returns {Maybe<Nothing|Link>} a link with given `id` or Null if not found
  */
-// TODO: implement
+export const getLinkById = () => {};
 
 /**
  * Checks if the `link` would be valid on the `patch`. I.e. it could be
@@ -164,7 +206,7 @@
  * @param {Patch} patch - a patch to operate on
  * @returns {Either<Error|Link>} validation errors or valid {@link Link}
  */
-// TODO: implement
+export const validateLink = () => {};
 
 /**
  * Replaces an existing `link` or inserts new one in the `patch`.
@@ -177,7 +219,7 @@
  * @returns {Either<Error|Patch>} error or a copy of the `patch` with changes applied
  * @see {@link validateLink}
  */
-// TODO: implement
+export const assocLink = () => {};
 
 /**
  * Removes the `link` from the `patch`.
@@ -189,4 +231,4 @@
  * @param {Patch} patch - a patch to operate on
  * @returns {Patch} a copy of the `patch` with changes applied
  */
-// TODO: implement
+export const dissocLink = () => {};

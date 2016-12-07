@@ -2,19 +2,24 @@
   "name": "xod-project",
   "version": "0.0.1",
   "description": "API functions to work on XOD project state",
+  "keywords": [],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "repository": {},
   "scripts": {
     "doc": "documentation build --format html --output doc --sort-order alpha src/"
   },
-  "repository": {},
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "main": "dist/index.js",
-  "dependencies": {},
-  "engines": {
-    "node": "6.0.0"
+  "dependencies": {
+    "ramda": "^0.22.1",
+    "ramda-fantasy": "^0.7.0",
+    "shortid": "^2.2.6"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
+    "dirty-chai": "^1.2.2",
     "documentation": "^4.0.0-beta12"
+  },
+  "engines": {
+    "node": "6.0.0"
   }
 }
