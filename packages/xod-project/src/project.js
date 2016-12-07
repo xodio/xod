@@ -195,21 +195,14 @@ export const getPatchPath = R.curry(
  * @param {Project} project - project to operate on
  * @returns {Either<Error|Project>} copy of the project with the updated patch
  */
-// @TODO: Add validating
-export const assocPatch = R.curry((path, patch, project) => {
-  const validatePath = Utils.validatePath(path);
-  if (validatePath.isLeft) { return validatePath; }
-
-  const eitherPatch = Patch.validatePatch(patch);
-  if (eitherPatch.isLeft) { return eitherPatch; }
-
-  const appendPath = R.flip(R.append)(['patches']);
-  const targetPath = validatePath.chain(appendPath);
-
-  return eitherPatch.map(
-    R.assocPath(targetPath, R.__, project)
-  );
-});
+// @TODO: Add validating of nodes and links
+export const assocPatch = R.curry((path, patch, project) =>
+  Utils.validatePath(path).chain(
+    validPath => Patch.validatePatch(patch).map(
+      R.assocPath(['patches', validPath], R.__, project)
+    )
+  )
+);
 
 /**
  * Removes the `patch` from the `project`.
@@ -221,8 +214,8 @@ export const assocPatch = R.curry((path, patch, project) => {
  * @param {Project} project - project to operate on
  * @returns {Project} copy of the project with the patch removed
  */
-export const dissocPatch = R.curry(
-  (path, project) => R.dissocPath(['patches', path], project)
+export const dissocPatch = R.curry((path, project) =>
+  R.dissocPath(['patches', path], project)
 );
 
 /**
