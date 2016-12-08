@@ -47,8 +47,18 @@ describe('Node', () => {
   });
   // properties
   describe('getNodeId', () => {
-    it('should return id', () => {
+    it('should return id string for Node object', () => {
       expect(Node.getNodeId({ id: '@/test' }))
+        .to.be.equal('@/test');
+    });
+    it('should return id string for string', () => {
+      expect(Node.getNodeId('@/test'))
+        .to.be.equal('@/test');
+    });
+  });
+  describe('getNodeType', () => {
+    it('should return type', () => {
+      expect(Node.getNodeType({ type: '@/test' }))
         .to.be.equal('@/test');
     });
   });
@@ -80,8 +90,174 @@ describe('Node', () => {
       );
     });
   });
-  // entity getters
-  // entity setters
+  describe('getNodeLabel', () => {
+    it('should return node label', () => {
+      expect(Node.getNodeLabel({ label: 'nodeLabel' })).to.be.equal('nodeLabel');
+    });
+    it('should return empty string for node without label', () => {
+      expect(Node.getNodeLabel({})).to.be.equal('');
+    });
+  });
+  describe('setNodeLabel', () => {
+    it('should return Node with new label', () => {
+      const label = 'new label';
+      const newNode = Node.setNodeLabel(label, {});
+
+      expect(newNode)
+        .to.be.an('object')
+        .that.have.property('label')
+        .that.equals(label);
+    });
+  });
+
+  describe('getPinCurriedValue', () => {
+    const node = {
+      pins: {
+        existingAndCurried: {
+          curried: true,
+          value: 'hey-ho',
+        },
+        existingAndUncurried: {
+          curried: false,
+          value: 'ha-ha',
+        },
+      },
+    };
+    const checkJust = (pinName) => {
+      const value = Node.getPinCurriedValue(pinName, node);
+      expect(value.isJust).to.be.true();
+      expect(value.getOrElse(null)).to.be.equal(node.pins[pinName].value);
+    };
+
+    it('should return Maybe.Nothing for undefined value', () => {
+      const value = Node.getPinCurriedValue('non-existent', node);
+      expect(value.isNothing).to.be.true();
+    });
+    it('should return Maybe.Just for defined value of curried pin', () => {
+      const pinName = 'existingAndCurried';
+      checkJust(pinName);
+    });
+    it('should return Maybe.Just for defined value of uncurried pin', () => {
+      const pinName = 'existingAndUncurried';
+      checkJust(pinName);
+    });
+  });
+  describe('setPinCurriedValue', () => {
+    it('should return Node with new curried value', () => {
+      const newNode = Node.setPinCurriedValue('test', true, {});
+
+      expect(newNode)
+        .to.be.an('object')
+        .that.have.property('pins')
+        .that.have.property('test')
+        .that.have.property('value')
+        .to.be.true();
+    });
+    it('should return Node with replaced curried value', () => {
+      const newNode = Node.setPinCurriedValue('test', true, { pins: { test: { value: false } } });
+
+      expect(newNode)
+        .to.be.an('object')
+        .that.have.property('pins')
+        .that.have.property('test')
+        .that.have.property('value')
+        .to.be.true();
+    });
+    it('should return Node without affecting on other curried pins', () => {
+      const newNode = Node.setPinCurriedValue('test', true, { pins: { other: { value: false } } });
+
+      expect(newNode)
+        .to.be.an('object')
+        .that.have.property('pins')
+        .that.have.property('other')
+        .that.have.property('value')
+        .to.be.false();
+    });
+  });
+  describe('curryPin', () => {
+    it('should return Node with curried `test` pin === true', () => {
+      const newNode = Node.curryPin('test', true, {});
+
+      expect(newNode)
+        .to.be.an('object')
+        .that.have.property('pins')
+        .that.have.property('test')
+        .that.have.property('curried')
+        .to.be.true();
+    });
+    it('should return Node with curried `test` pin === false', () => {
+      const newNode = Node.curryPin('test', false, {});
+
+      expect(newNode)
+        .to.be.an('object')
+        .that.have.property('pins')
+        .that.have.property('test')
+        .that.have.property('curried')
+        .to.be.false();
+    });
+    it('should return Node with curried `test` pin', () => {
+      const newNode = Node.curryPin('test', true, { pins: { test: { curried: false } } });
+
+      expect(newNode)
+        .to.be.an('object')
+        .that.have.property('pins')
+        .that.have.property('test')
+        .that.have.property('curried')
+        .to.be.true();
+    });
+    it('should return Node without affecting on other curried pins', () => {
+      const newNode = Node.curryPin('test', true, { pins: { other: { curried: false } } });
+
+      expect(newNode)
+        .to.be.an('object')
+        .that.have.property('pins')
+        .that.have.property('other')
+        .that.have.property('curried')
+        .to.be.false();
+    });
+  });
+  // checks
+  describe('isInputPinNode', () => {
+    it('should return false for type not equal to xod/core/input*', () => {
+      expect(Node.isInputPinNode({ type: '@/test/input' })).to.be.false();
+    });
+    it('should return true for type equal to xod/core/input*', () => {
+      expect(Node.isInputPinNode({ type: 'xod/core/inputNumber' })).to.be.true();
+    });
+  });
+  describe('isOutputPinNode', () => {
+    it('should return false for type not equal to xod/core/output*', () => {
+      expect(Node.isOutputPinNode({ type: '@/test/output' })).to.be.false();
+    });
+    it('should return true for type equal to xod/core/output*', () => {
+      expect(Node.isOutputPinNode({ type: 'xod/core/outputNumber' })).to.be.true();
+    });
+  });
+  describe('isPinNode', () => {
+    it('should return false for type not equal to xod/core/input* or xod/core/output*', () => {
+      expect(Node.isPinNode({ type: '@/test/output' })).to.be.false();
+    });
+    it('should return true for type equal to xod/core/input*', () => {
+      expect(Node.isPinNode({ type: 'xod/core/inputNumber' })).to.be.true();
+    });
+    it('should return true for type equal to xod/core/output*', () => {
+      expect(Node.isPinNode({ type: 'xod/core/outputNumber' })).to.be.true();
+    });
+  });
+  describe('isPinCurried', () => {
+    it('should return false for non-existent pin', () => {
+      expect(Node.isPinCurried('test', {})).to.be.false();
+    });
+    it('should return false for pin without `curried` property equal to true', () => {
+      expect(Node.isPinCurried('test', { pins: { test: {} } })).to.be.false();
+    });
+    it('should return true for pin that curried', () => {
+      expect(Node.isPinCurried('test', { pins: { test: { value: 1, curried: true } } })).to.be.true();
+    });
+    it('should return true for pin that curried, even it haven\'t a value', () => {
+      expect(Node.isPinCurried('test', { pins: { test: { curried: true } } })).to.be.true();
+    });
+  });
   // validations
   describe('validatePosition', () => {
     it('should return Either.Left for not valid position', () => {

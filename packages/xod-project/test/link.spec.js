@@ -1,0 +1,90 @@
+import chai, { expect } from 'chai';
+import dirtyChai from 'dirty-chai';
+
+import * as Link from '../src/link';
+
+chai.use(dirtyChai);
+
+describe('Link', () => {
+  // constructors
+  describe('createLink', () => {
+    const to = {
+      pin: 'toPin',
+      nodeId: '@/toNode',
+      node: '@/toNode', // we can pass a id string
+    };
+    const from = {
+      pin: 'fromPin',
+      nodeId: '@/fromNode',
+      node: { id: '@/fromNode' }, // or a whole Node object
+    };
+    const newLink = Link.createLink(to.pin, to.node, from.pin, from.node);
+
+    it('should return created link with `id` and `pins` keys', () => {
+      expect(newLink)
+        .to.be.an('object')
+        .to.have.keys(['id', 'input', 'output']);
+    });
+    it('should have `input` and `output` objects with keys `pinKey` and `nodeId`', () => {
+      expect(newLink)
+        .to.have.property('input')
+        .that.have.keys(['pinKey', 'nodeId']);
+      expect(newLink)
+        .to.have.property('output')
+        .that.have.keys(['pinKey', 'nodeId']);
+
+      expect(newLink.output.pinKey).to.be.equal(from.pin);
+      expect(newLink.output.nodeId).to.be.equal(from.nodeId);
+      expect(newLink.input.pinKey).to.be.equal(to.pin);
+      expect(newLink.input.nodeId).to.be.equal(to.nodeId);
+    });
+  });
+  // properties
+  describe('getLinkId', () => {
+    it('should return id string for Node object', () => {
+      expect(Link.getLinkId({ id: '@/test' }))
+        .to.be.equal('@/test');
+    });
+    it('should return id string for string', () => {
+      expect(Link.getLinkId('@/test'))
+        .to.be.equal('@/test');
+    });
+  });
+  describe('getters', () => {
+    const link = {
+      output: {
+        pinKey: 'fromPin',
+        nodeId: '@/from',
+      },
+      input: {
+        pinKey: 'toPin',
+        nodeId: '@/to',
+      },
+    };
+
+    describe('getLinkInputNodeId', () => {
+      it('should return input node id', () => {
+        const result = Link.getLinkInputNodeId(link);
+        expect(result.getOrElse(null)).to.be.equal(link.input.nodeId);
+      });
+    });
+    describe('getLinkOutputNodeId', () => {
+      it('should return output node id', () => {
+        const result = Link.getLinkOutputNodeId(link);
+        expect(result.getOrElse(null)).to.be.equal(link.output.nodeId);
+      });
+    });
+    describe('getLinkInputPinKey', () => {
+      it('should return input pin key', () => {
+        const result = Link.getLinkInputPinKey(link);
+        expect(result.getOrElse(null)).to.be.equal(link.input.pinKey);
+      });
+    });
+    describe('getLinkOutputPinKey', () => {
+      it('should return output pin key', () => {
+        const result = Link.getLinkOutputPinKey(link);
+        expect(result.getOrElse(null)).to.be.equal(link.output.pinKey);
+      });
+    });
+  });
+});

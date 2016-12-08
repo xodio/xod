@@ -1,3 +1,8 @@
+import R from 'ramda';
+import { Maybe } from 'ramda-fantasy';
+
+import * as Utils from './utils';
+import * as Node from './node';
 
 /**
  * @typedef {Object} Link
@@ -12,38 +17,71 @@
  * Creates a link between two pins of two nodes.
  *
  * @function createLink
- * @param {string} secondPinKey - name of second node’s pin to link
- * @param {NodeOrId} secondNode - second node to link
- * @param {string} firstPinKey - name of first node’s pin to link
- * @param {NodeOrId} firstNode - first node to link
+ * @param {string} inputPinKey - name of input node’s pin to link
+ * @param {NodeOrId} inputNode - input node to link
+ * @param {string} outputPinKey - name of output node’s pin to link
+ * @param {NodeOrId} outputNode - output node to link
  * @returns {Link} error or a link object created
  */
-export const createLink = () => {};
+export const createLink = R.curry(
+  (secondPinKey, secondNode, firstPinKey, firstNode) => (
+    {
+      id: Utils.generateId(),
+      output: {
+        nodeId: Node.getNodeId(firstNode),
+        pinKey: firstPinKey,
+      },
+      input: {
+        nodeId: Node.getNodeId(secondNode),
+        pinKey: secondPinKey,
+      },
+    }
+  )
+);
+
+/**
+ * @function getLinkId
+ * @param {LinkOrId} link
+ * @returns {string}
+ */
+export const getLinkId = R.ifElse(R.is(String), R.identity, R.prop('id'));
 
 /**
  * @function getLinkInputNodeId
  * @param {Link}
- * @returns {Maybe<Nothing|string>}
+ * @returns {string}
  */
-export const getLinkInputNodeId = () => {};
+export const getLinkInputNodeId = R.compose(
+  Maybe,
+  R.path(['input', 'nodeId'])
+);
 
 /**
  * @function getLinkOutputNodeId
  * @param {Link}
- * @returns {Maybe<Nothing|string>}
+ * @returns {string}
  */
-export const getLinkOutputNodeId = () => {};
+export const getLinkOutputNodeId = R.compose(
+  Maybe,
+  R.path(['output', 'nodeId'])
+);
 
 /**
  * @function getLinkInputPinKey
  * @param {Link}
- * @returns {Maybe<Nothing|string>}
+ * @returns {string}
  */
-export const getLinkInputPinKey = () => {};
+export const getLinkInputPinKey = R.compose(
+  Maybe,
+  R.path(['input', 'pinKey'])
+);
 
 /**
  * @function getLinkOutputPinKey
  * @param {Link}
- * @returns {Maybe<Nothing|string>}
+ * @returns {string}
  */
-export const getLinkOutputPinKey = () => {};
+export const getLinkOutputPinKey = R.compose(
+  Maybe,
+  R.path(['output', 'pinKey'])
+);

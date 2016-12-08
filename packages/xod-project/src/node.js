@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { Either } from 'ramda-fantasy';
+import { Maybe, Either } from 'ramda-fantasy';
 import * as Utils from './utils';
 
 /**
@@ -83,17 +83,24 @@ export const duplicateNode = R.compose(
 
 /**
  * @function getNodeId
+ * @param {NodeOrId} node
+ * @returns {string}
+ */
+export const getNodeId = R.ifElse(R.is(String), R.identity, R.prop('id'));
+
+/**
+ * @function getNodeType
  * @param {Node} node
  * @returns {string}
  */
-export const getNodeId = R.prop('id');
+export const getNodeType = R.prop('type');
 
 /**
  * @function getNodeLabel
  * @param {Node} node
  * @returns {string}
  */
-export const getNodeLabel = () => {};
+export const getNodeLabel = R.propOr('', 'label');
 
 /**
  * @function setNodeLabel
@@ -101,7 +108,7 @@ export const getNodeLabel = () => {};
  * @param {Node} node
  * @returns {Node}
  */
-export const setNodeLabel = () => {};
+export const setNodeLabel = R.assoc('label');
 
 /**
  * @function setNodePosition
@@ -124,56 +131,41 @@ export const setNodePosition = R.curry(
  */
 export const getNodePosition = R.prop('position');
 
+/**
+ * @function isInputPinNode
+ * @param {Node} node
+ * @returns {boolean}
+ */
+export const isInputPinNode = R.compose(
+  R.test(/^xod\/core\/input/),
+  getNodeType
+);
+
+/**
+ * @function isOutputPinNode
+ * @param {Node} node
+ * @returns {boolean}
+ */
+export const isOutputPinNode = R.compose(
+  R.test(/^xod\/core\/output/),
+  getNodeType
+);
+
+/**
+ * @function isPinNode
+ * @param {Node} node
+ * @returns {boolean}
+ */
+export const isPinNode = R.either(
+  isInputPinNode,
+  isOutputPinNode
+);
+
  // =============================================================================
  //
  // Pins
  //
  // =============================================================================
-
-/**
- * @function listPinKeys
- * @param {Node} node
- * @returns {string[]}
- */
-export const listPinKeys = () => {};
-
-/**
- * @function listInputPinKeys
- * @param {Node} node
- * @returns {string[]}
- */
-export const listInputPinKeys = () => {};
-
-/**
- * @function listOutputPinKeys
- * @param {Node} node
- * @returns {string[]}
- */
-export const listOutputPinKeys = () => {};
-
-/**
- * @function getPinType
- * @param {string} key
- * @param {Node} node
- * @returns {Either<Error|PIN_TYPE>}
- */
-export const getPinType = () => {};
-
-/**
- * @function getPinLabel
- * @param {string} key
- * @param {Node} node
- * @returns {Either<Error|string>}
- */
-export const getPinLabel = () => {};
-
-/**
- * @function getPinDescription
- * @param {string} key
- * @param {Node} node
- * @returns {Either<Error|string>}
- */
-export const getPinDescription = () => {};
 
 /**
  * Gets curried value of input pin.
@@ -184,47 +176,65 @@ export const getPinDescription = () => {};
  * @function getPinCurriedValue
  * @param {string} key
  * @param {Node} node
- * @returns {Either<Error|PinValue>}
+ * @returns {Maybe<Nothing|PinValue>}
  */
-export const getPinCurriedValue = () => {};
+export const getPinCurriedValue = R.compose(
+  Maybe,
+  R.useWith(
+    R.pathOr(null),
+    [
+      R.insert(1, R.__, ['pins', 'value']),
+      R.identity,
+    ]
+  )
+);
 
 /**
  * Sets curried value to input pin.
  *
  * @function setPinCurriedValue
  * @param {string} key
- * @param {PinValue} value
+ * @param {*} value
  * @param {Node} node
- * @returns {Either<Error|Node>}
+ * @returns {Node}
  */
-export const setPinCurriedValue = () => {};
+export const setPinCurriedValue = R.useWith(
+  R.assocPath,
+  [
+    R.insert(1, R.__, ['pins', 'value']),
+    R.identity,
+    R.identity,
+  ]
+);
 
  /**
   * Enables or disables pin currying.
   *
   * @function curryPin
-  * @param {boolean} curry
   * @param {string} key
+  * @param {boolean} curry
   * @param {Node} node
   * @returns {Either<Error|Node>}
   */
-export const curryPin = () => {};
+export const curryPin = R.useWith(
+  R.assocPath,
+  [
+    R.insert(1, R.__, ['pins', 'curried']),
+    R.identity,
+    R.identity,
+  ]
+);
 
 /**
  * @function isPinCurried
  * @param {string} key
  * @param {Node} node
- * @returns {Either<Error|boolean>}
+ * @returns {boolean}
  */
-export const isPinCurried = () => {};
-
-/**
- * Returns list of all links are connected to specified pin.
- *
- * @function listLinksByPin
- * @param {string} key
- * @param {NodeOrId} node
- * @param {Patch} patch
- * @returns {Link[]}
- */
-export const listLinksByPin = () => {};
+export const isPinCurried = R.useWith(
+  R.pathSatisfies(R.equals(true)),
+  [
+    R.insert(1, R.__, ['pins', 'curried']),
+    R.identity,
+  ]
+);
