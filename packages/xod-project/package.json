@@ -15,6 +15,5 @@
     "node": "6.0.0"
   },
   "devDependencies": {
-    "documentation": "^4.0.0-beta12"
   }
 }
