@@ -8,6 +8,7 @@ const RunCommand = require('lerna/lib/commands/RunCommand');
 //console.log(JSON.stringify(topologicallyBatchPackages(packages), null, 2));
 
 
+// https://github.com/lerna/lerna/issues/342
 // https://github.com/seansfkelley/lerna/commit/4e3e4789a4d627f90d8eb899dd9514818105aa7b
 function topologicallyBatchPackages(packagesToBatch) {
   // We're going to be chopping stuff out of this array, so copy it.
@@ -57,7 +58,41 @@ function topologicallyBatchPackages(packagesToBatch) {
   return batches;
 }
 
+function arrayConcat(a, b) {
+  return a.concat(b);
+}
+
 class SortedRunCommand extends RunCommand {
+  initialize(callback) {
+    super.initialize((err, result) => {
+      if (err) {
+        callback(err);
+        return;
+      }
+    });
+
+    if (this.flags.withDeps) {
+      this.logger.info('Including package dependencies');
+      const graph = PackageUtilities.getPackageGraph(this.packages);
+
+      function packageWithDeps(packageGraphNode) {
+        return packageGraphNode.dependencies
+          .map(pkgName => graph.get(pkgName))
+          .map(packageWithDeps)
+          .reduce(arrayConcat, []).concat([packageGraphNode]);
+      }
+
+      this.packagesWithScript = this.packagesWithScript
+        .map(pkg => graph.get(pkg.name))
+        .map(packageWithDeps)
+        .reduce(arrayConcat, [])
+        .map(graphNode => graphNode.package)
+        .filter((value, index, self) => self.map(pkg => pkg.name).indexOf(value.name) === index);
+    }
+
+    callback(null, true);
+  }
+
   runScriptInPackages(callback) {
     const batches = topologicallyBatchPackages(this.packagesWithScript);
 
@@ -81,5 +116,9 @@ class SortedRunCommand extends RunCommand {
 
 process.env['PATH'] = path.join(__dirname, 'node_modules', '.bin') + ':' + process.env['PATH'];
 
-const cmd = new SortedRunCommand(['build'], {});
+const cmd = new SortedRunCommand(['build'], {
+  scope: 'xod-client-browser',
+  withDeps: true,
+});
+
 cmd.run();
