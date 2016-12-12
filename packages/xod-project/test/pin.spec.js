@@ -1,4 +1,3 @@
-import { Either } from 'ramda-fantasy';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
@@ -15,11 +14,7 @@ describe('Pin', () => {
     it('should return Either.Left for invalid type', () => {
       const invalid = Pin.validatePinType('a');
       expect(invalid.isLeft).to.be.true();
-      Either.either(
-        err => { Helper.expectErrorMessage(expect, err, CONST.ERROR.PIN_TYPE_INVALID); },
-        () => {},
-        invalid
-      );
+      Helper.expectErrorMessage(expect, invalid, CONST.ERROR.PIN_TYPE_INVALID);
     });
     it('should return Either.Right for valid type', () => {
       const type = CONST.PIN_TYPE.NUMBER;
@@ -35,11 +30,7 @@ describe('Pin', () => {
     it('should return Either.Left for invalid direction', () => {
       const invalid = Pin.validatePinDirection('a');
       expect(invalid.isLeft).to.be.true();
-      Either.either(
-        err => { Helper.expectErrorMessage(expect, err, CONST.ERROR.PIN_DIRECTION_INVALID); },
-        () => {},
-        invalid
-      );
+      Helper.expectErrorMessage(expect, invalid, CONST.ERROR.PIN_DIRECTION_INVALID);
     });
     it('should return Either.Right for valid direction', () => {
       const direction = CONST.PIN_DIRECTION.INPUT;
@@ -49,6 +40,32 @@ describe('Pin', () => {
         val => { expect(val).to.be.equal(direction); },
         valid
       );
+    });
+  });
+  describe('validatePin', () => {
+    it('should return Either.Left for empty object', () => {
+      const invalid = Pin.validatePin({});
+      expect(invalid.isLeft).to.be.true();
+    });
+    it('should return Either.Left for wrong type', () => {
+      const invalid = Pin.validatePin({ type: 'a' });
+      expect(invalid.isLeft).to.be.true();
+    });
+    it('should return Either.Left for wrong direction', () => {
+      const invalid = Pin.validatePin({ type: CONST.PIN_TYPE.NUMBER, direction: 'z' });
+      expect(invalid.isLeft).to.be.true();
+    });
+    it('should return Either.Left for wrong key', () => {
+      const invalid = Pin.validatePin({ type: CONST.PIN_TYPE.NUMBER, direction: CONST.PIN_DIRECTION.INPUT, key: 'неправильный ключ для пина' });
+      expect(invalid.isLeft).to.be.true();
+    });
+    it('should return Either.Right for valid pin', () => {
+      const valid = Pin.validatePin({
+        key: 'a',
+        type: CONST.PIN_TYPE.NUMBER,
+        direction: CONST.PIN_DIRECTION.INPUT,
+      });
+      expect(valid.isRight).to.be.true();
     });
   });
   // constructors
@@ -89,8 +106,12 @@ describe('Pin', () => {
     });
   });
   describe('getPinKey', () => {
-    it('should return pin key', () => {
+    it('should return pin key for pin object', () => {
       const pin = { key: 'a' };
+      expect(Pin.getPinKey(pin)).to.be.equal('a');
+    });
+    it('should return string for string', () => {
+      const pin = 'a';
       expect(Pin.getPinKey(pin)).to.be.equal('a');
     });
   });

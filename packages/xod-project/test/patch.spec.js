@@ -275,129 +275,142 @@ describe('Patch', () => {
     });
   });
 
-  describe('listPinKeys', () => {
-    const patchWithImpl = {
-      pins: [
-        { key: 'in' },
-        { key: 'out' },
-      ],
-    };
-    const patchWithNodes = {
-      nodes: {
-        randomId_1: { id: 'randomId_1', type: 'xod/core/inputNumber' },
-        randomId_2: { id: 'randomId_2', type: 'xod/core/outputNumber' },
+  describe('lists', () => {
+    const patch = {
+      pins: {
+        in: { key: 'in', direction: CONST.PIN_DIRECTION.INPUT },
+        out: { key: 'out', direction: CONST.PIN_DIRECTION.OUTPUT },
       },
     };
-
-    it('should return empty array for empty patch', () => {
-      expect(Patch.listPinKeys({}))
+    describe('listPins', () => {
+      it('should return empty array for empty patch', () => {
+        expect(Patch.listPins({}))
         .to.be.instanceof(Array)
         .and.to.be.empty();
-    });
-    it('should return two pins for patch with hard-coded pins', () => {
-      expect(Patch.listPinKeys(patchWithImpl))
+      });
+      it('should return array with two pins', () => {
+        expect(Patch.listPins(patch))
         .to.be.instanceof(Array)
-        .and.have.all.members(['in', 'out']);
+        .and.have.all.members([patch.pins.in, patch.pins.out]);
+      });
     });
-    it('should return two pins for patch with nodes', () => {
-      expect(Patch.listPinKeys(patchWithNodes))
-        .to.be.instanceof(Array)
-        .and.have.all.members(['randomId_1', 'randomId_2']);
-    });
-  });
-  describe('listInputPinKeys', () => {
-    const patchWithImpl = {
-      pins: [
-        { key: 'in', direction: 'input' },
-        { key: 'out', direction: 'output' },
-      ],
-    };
-    const patchWithNodes = {
-      nodes: {
-        randomId_1: { id: 'randomId_1', type: 'xod/core/inputNumber' },
-        randomId_2: { id: 'randomId_2', type: 'xod/core/outputNumber' },
-      },
-    };
-
-    it('should return empty array for empty patch', () => {
-      expect(Patch.listInputPinKeys({}))
+    describe('listInputPins', () => {
+      it('should return empty array for empty patch', () => {
+        expect(Patch.listInputPins({}))
         .to.be.instanceof(Array)
         .and.to.be.empty();
-    });
-    it('should return one pin for patch with hard-coded pins', () => {
-      expect(Patch.listInputPinKeys(patchWithImpl))
+      });
+      it('should return array with one pin', () => {
+        expect(Patch.listInputPins(patch))
         .to.be.instanceof(Array)
-        .and.have.all.members(['in']);
+        .and.have.all.members([patch.pins.in]);
+      });
     });
-    it('should return one pin for patch with nodes', () => {
-      expect(Patch.listInputPinKeys(patchWithNodes))
-        .to.be.instanceof(Array)
-        .and.have.all.members(['randomId_1']);
-    });
-  });
-  describe('listOutputPinKeys', () => {
-    const patchWithImpl = {
-      pins: [
-        { key: 'in', direction: 'input' },
-        { key: 'out', direction: 'output' },
-      ],
-    };
-    const patchWithNodes = {
-      nodes: {
-        randomId_1: { id: 'randomId_1', type: 'xod/core/inputNumber' },
-        randomId_2: { id: 'randomId_2', type: 'xod/core/outputNumber' },
-      },
-    };
-
-    it('should return empty array for empty patch', () => {
-      expect(Patch.listOutputPinKeys({}))
+    describe('listOutputPins', () => {
+      it('should return empty array for empty patch', () => {
+        expect(Patch.listOutputPins({}))
         .to.be.instanceof(Array)
         .and.to.be.empty();
-    });
-    it('should return one pin for patch with hard-coded pins', () => {
-      expect(Patch.listOutputPinKeys(patchWithImpl))
+      });
+      it('should return array with one pin', () => {
+        expect(Patch.listOutputPins(patch))
         .to.be.instanceof(Array)
-        .and.have.all.members(['out']);
-    });
-    it('should return one pin for patch with nodes', () => {
-      expect(Patch.listOutputPinKeys(patchWithNodes))
-        .to.be.instanceof(Array)
-        .and.have.all.members(['randomId_2']);
+        .and.have.all.members([patch.pins.out]);
+      });
     });
   });
 
   // entity setters
   describe('assocPin', () => {
-    it('should return new patch with new pin', () => {
+    it('should return Either.Left for invalid pin', () => {
+      const newPatch = Patch.assocPin({}, {});
+      expect(newPatch.isLeft).to.be.true();
+    });
+    it('should return Either.Right with new patch with new pin', () => {
       const pin = {
         key: 'A',
-        type: 'number',
+        type: CONST.PIN_TYPE.STRING,
+        direction: CONST.PIN_DIRECTION.OUTPUT,
       };
-      const newPatch = Patch.assocPin(pin, patch);
+      const newPatch = Patch.assocPin(pin, {});
 
-      expect(newPatch)
-      .to.be.an('object')
-      .that.have.property(direction)
-      .that.have.property(index)
-      .to.be.deep.equal(pin);
+      Helper.expectEither(
+        validPatch => {
+          expect(validPatch)
+            .to.be.an('object')
+            .that.have.property('pins')
+            .that.have.property(pin.key)
+            .to.be.deep.equal(pin);
+        },
+        newPatch
+      );
     });
     it('should not affect on other pins', () => {
       const patchWithPins = {
         pins: {
-          A: { key: 'A', type: 'number' },
-          C: { key: 'C', type: 'number' },
+          A: { key: 'A', type: CONST.PIN_TYPE.NUMBER, direction: CONST.PIN_DIRECTION.INPUT },
+          C: { key: 'C', type: CONST.PIN_TYPE.STRING, direction: CONST.PIN_DIRECTION.OUTPUT },
         },
       };
       const pin = {
         key: 'B',
-        type: 'number',
+        type: CONST.PIN_TYPE.BOOLEAN,
+        direction: CONST.PIN_DIRECTION.INPUT,
       };
       const newPatch = Patch.assocPin(pin, patchWithPins);
       const expectedPatch = R.assocPath(['pins', pin.key], pin, patchWithPins);
 
+      Helper.expectEither(
+        validPatch => {
+          expect(validPatch)
+            .to.be.an('object')
+            .to.be.deep.equal(expectedPatch);
+        },
+        newPatch
+      );
+    });
+  });
+  describe('dissocPin', () => {
+    const patch = {
+      pins: {
+        a: { key: 'a' },
+        b: { key: 'b' },
+      },
+    };
+
+    it('should remove pin by key', () => {
+      const newPatch = Patch.dissocPin('a', patch);
+
       expect(newPatch)
-      .to.be.an('object')
-      .to.be.deep.equal(expectedPatch);
+        .to.be.an('object')
+        .that.have.property('pins')
+        .that.not.have.keys(['a']);
+    });
+    it('should remove pin by Pin object', () => {
+      const pin = patch.pins.b;
+      const newPatch = Patch.dissocPin(pin, patch);
+
+      expect(newPatch)
+        .to.be.an('object')
+        .that.have.property('pins')
+        .that.not.have.keys(['b']);
+    });
+    it('should not affect on other pins', () => {
+      const newPatch = Patch.dissocPin('a', patch);
+
+      expect(newPatch)
+        .to.be.an('object')
+        .that.have.property('pins')
+        .that.have.keys(['b'])
+        .and.not.have.keys(['a']);
+    });
+    it('should return unchanges Patch for non-existent pin/key', () => {
+      expect(Patch.dissocPin('c', patch))
+        .to.be.an('object')
+        .and.equals(patch);
+      expect(Patch.dissocPin({ key: 'c' }, patch))
+        .to.be.an('object')
+        .and.equals(patch);
     });
   });
   // @TODO: Add test for adding pinNode (assocNode -> assocPin)

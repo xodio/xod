@@ -5,6 +5,7 @@ import * as CONST from './constants';
 import * as Utils from './utils';
 import * as Node from './node';
 import * as Link from './link';
+import * as Pin from './pin';
 /**
  * An object representing single patch in a project
  * @typedef {Object} Patch
@@ -181,23 +182,38 @@ export const dissocNode = R.curry(
  * Returns new patch with new pin.
  *
  * @function assocPin
- * @param {string} key
- * @param {string} type
- * @param {string} direction
+ * @param {Pin} pin
  * @param {Patch} patch
- * @returns {Patch}
+ * @returns {Either<Error|Patch>}
  */
-export const assocPin = () => {};
+export const assocPin = R.curry(
+  (pin, patch) => Pin.validatePin(pin).map(
+    validPin => {
+      const key = Pin.getPinKey(validPin);
+      return R.assocPath(['pins', key], validPin, patch);
+    }
+  )
+);
 
 /**
  * Returns new patch without pin.
  *
  * @function dissocPin
- * @param {string} key
+ * @param {PinOrKey} key
  * @param {Patch} patch
  * @returns {Patch}
  */
-export const dissocPin = () => {};
+export const dissocPin = R.curry(
+  (pinOrKey, patch) => {
+    const key = Pin.getPinKey(pinOrKey);
+
+    return R.ifElse(
+      R.pathSatisfies(R.complement(R.isNil), ['pins', key]),
+      R.dissocPath(['pins', key]),
+      R.identity
+    )(patch);
+  }
+);
 
 /**
  * Returns new patch with updated pins meta data
@@ -211,25 +227,34 @@ export const dissocPin = () => {};
 export const updatePinMetaByNode = () => {};
 
 /**
- * @function listPinKeys
+ * @function listPins
  * @param {Patch} patch
- * @returns {string[]}
+ * @returns {Pin[]}
  */
-export const listPinKeys = () => {};
+export const listPins = R.compose(
+  R.values,
+  R.propOr({}, 'pins')
+);
 
 /**
- * @function listInputPinKeys
+ * @function listInputPins
  * @param {Patch} patch
- * @returns {string[]}
+ * @returns {Pin[]}
  */
-export const listInputPinKeys = () => {};
+export const listInputPins = R.compose(
+  R.filter(Pin.isInputPin),
+  listPins
+);
 
 /**
- * @function listOutputPinKeys
+ * @function listOutputPins
  * @param {Patch} patch
- * @returns {string[]}
+ * @returns {Pin[]}
  */
-export const listOutputPinKeys = () => {};
+export const listOutputPins = R.compose(
+  R.filter(Pin.isOutputPin),
+  listPins
+);
 
 // =============================================================================
 //

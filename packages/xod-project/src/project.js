@@ -115,12 +115,22 @@ export const validateProject = () => {};
 // =============================================================================
 
 /**
+ * @private
+ * @function getPatches
+ * @param {Project} project - project bundle
+ * @returns {Patches} object with patches stored by path
+ */
+export const getPatches = R.propOr({}, 'patches');
+
+/**
  * @function listPatches
  * @param {Project} project - project bundle
  * @returns {Patch[]} list of all patches not sorted in any arbitrary order
  */
-// @TODO: Fix it. Patches is a HashTable
-export const listPatches = R.propOr({}, 'patches');
+export const listPatches = R.compose(
+  R.values,
+  getPatches
+);
 
 /**
  * Return a list of local patches (excluding external libraries)
@@ -130,8 +140,9 @@ export const listPatches = R.propOr({}, 'patches');
  * @returns {Patch[]}
  */
 export const listLocalPatches = R.compose(
-  R.filter(Utils.isPathLocal),
-  R.values,
+  R.filter(
+    R.propSatisfies(Utils.isPathLocal, 'path')
+  ),
   listPatches
 );
 
@@ -143,8 +154,9 @@ export const listLocalPatches = R.compose(
  * @returns {Patch[]}
  */
 export const listLibraryPatches = R.compose(
-  R.filter(Utils.isPathLibrary),
-  R.values,
+  R.filter(
+    R.propSatisfies(Utils.isPathLibrary, 'path')
+  ),
   listPatches
 );
 
@@ -159,7 +171,7 @@ export const getPatchByPath = R.curry(
   R.compose(
     Maybe,
     R.propOr(null, path),
-    listPatches
+    getPatches
   )(project)
 );
 
@@ -182,7 +194,7 @@ export const getPatchPath = R.curry(
     Maybe,
     R.filter(p => p[1] === patch),
     R.toPairs,
-    listPatches
+    getPatches
   )(project)
 );
 
@@ -318,7 +330,7 @@ export const lsPatches = R.curry(
 
     return R.compose(
       R.pickBy((val, key) => R.test(reg, key)),
-      listPatches
+      getPatches
     )(project);
   }
 );
@@ -346,7 +358,7 @@ export const lsDirs = R.curry(
       ),
       R.filter(R.test(reg)),
       R.keys,
-      listPatches
+      getPatches
     )(project);
   }
 );

@@ -378,5 +378,51 @@ describe('Project', () => {
     });
   });
 
+  describe('lists', () => {
+    const project = {
+      patches: {
+        '@/test': { path: '@/test' },
+        'external/patch': { path: 'external/patch' },
+      },
+    };
+
+    describe('listPatches', () => {
+      it('should return empty array for empty project', () => {
+        expect(Project.listPatches({}))
+          .to.be.instanceof(Array)
+          .and.to.be.empty();
+      });
+      it('should return array with two patches', () => {
+        expect(Project.listPatches(project))
+          .to.be.instanceof(Array)
+          .and.have.lengthOf(2);
+      });
+    });
+    describe('listLocalPatches', () => {
+      it('should return empty array for empty project', () => {
+        expect(Project.listLocalPatches({}))
+          .to.be.instanceof(Array)
+          .and.to.be.empty();
+      });
+      it('should return array with one pin', () => {
+        expect(Project.listLocalPatches(project))
+          .to.be.instanceof(Array)
+          .and.have.all.members([project.patches['@/test']]);
+      });
+    });
+    describe('listLibraryPatches', () => {
+      it('should return empty array for empty project', () => {
+        expect(Project.listLibraryPatches({}))
+          .to.be.instanceof(Array)
+          .and.to.be.empty();
+      });
+      it('should return array with one pin', () => {
+        expect(Project.listLibraryPatches(project))
+          .to.be.instanceof(Array)
+          .and.have.all.members([project.patches['external/patch']]);
+      });
+    });
+  });
+
   // etc
 });
