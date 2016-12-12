@@ -1,10 +1,11 @@
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
-
-import { expectEither } from './helpers';
 import shortid from 'shortid';
 
+import * as CONST from '../src/constants';
 import * as Utils from '../src/utils';
+
+import * as Helper from './helpers';
 
 chai.use(dirtyChai);
 
@@ -20,11 +21,16 @@ describe('Utils', () => {
 
   describe('validatePath', () => {
     it('should be Either.Left for not valid paths', () => {
-      expect(Utils.validatePath('').isLeft).to.be.true();
+      const err1 = Utils.validatePath('');
+      const err2 = Utils.validatePath('dots.in.names');
+      expect(err1.isLeft).to.be.true();
       expect(Utils.validatePath('кириллица').isLeft).to.be.true();
       expect(Utils.validatePath('spa ce').isLeft).to.be.true();
       expect(Utils.validatePath('spçiålÇhÅr$').isLeft).to.be.true();
-      expect(Utils.validatePath('dots.in.names').isLeft).to.be.true();
+      expect(err2.isLeft).to.be.true();
+
+      Helper.expectErrorMessage(expect, err1, CONST.ERROR.PATH_INVALID);
+      Helper.expectErrorMessage(expect, err2, CONST.ERROR.PATH_INVALID);
     });
     it('should be Either.Right for valid paths', () => {
       expect(Utils.validatePath('@/patchName').isRight).to.be.true();
@@ -41,7 +47,7 @@ describe('Utils', () => {
       expect(result.isRight).to.be.true();
 
       /* istanbul ignore next */
-      expectEither(
+      Helper.expectEither(
         val => { expect(val).to.be.equal(path); },
         result
       );
@@ -57,7 +63,7 @@ describe('Utils', () => {
     });
     it('should contain object with new assigned value', () => {
       /* istanbul ignore next */
-      expectEither(
+      Helper.expectEither(
         val => {
           expect(val)
             .to.have.property('test')

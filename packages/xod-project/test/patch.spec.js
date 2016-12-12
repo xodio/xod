@@ -3,8 +3,9 @@ import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
 import * as Patch from '../src/patch';
+import * as CONST from '../src/constants';
 
-import { expectEither } from './helpers';
+import * as Helper from './helpers';
 
 chai.use(dirtyChai);
 
@@ -520,6 +521,7 @@ describe('Patch', () => {
     it('should return Either.Left for empty object', () => {
       const patch = Patch.validatePatch({});
       expect(patch.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, patch, CONST.ERROR.PATCH_INVALID);
     });
     it('should return Either.Right with valid patch', () => {
       const patch = { nodes: {}, links: {} };
@@ -527,7 +529,7 @@ describe('Patch', () => {
       expect(test.isRight).to.be.true();
 
       /* istanbul ignore next */
-      expectEither(
+      Helper.expectEither(
         rightPatch => { expect(rightPatch).to.be.equal(patch); },
         test
       );

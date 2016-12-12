@@ -1,6 +1,7 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 import * as Utils from './utils';
+import * as CONST from './constants';
 
 /**
  * @typedef {Object} Node
@@ -44,7 +45,7 @@ export const validatePosition = R.ifElse(
     R.compose(R.is(Number), R.prop('y')),
   ]),
   Either.of,
-  Utils.leaveError('Invalid position property.')
+  Utils.leaveError(CONST.ERROR.POSITION_INVALID)
 );
 
 // =============================================================================

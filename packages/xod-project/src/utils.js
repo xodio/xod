@@ -1,6 +1,8 @@
 import R from 'ramda';
 import { Either } from 'ramda-fantasy';
 import shortid from 'shortid';
+
+import * as CONST from './constants';
 /**
  * Contains resulting value or error
  *
@@ -94,31 +96,7 @@ export const validatePath = R.ifElse(
     R.test(/^(@\/)?[a-zA-Z0-9_\-/]+$/),
   ]),
   Either.Right,
-  (path) => leaveError(`The path "${path}" is not valid.`)(path)
-);
-
-/**
- * Checks that passed argument is array of strings
- *
- * @function isArrayOfStrings
- * @param {Array} array
- * @returns {boolean}
- */
-export const isArrayOfStrings = R.both(
-  R.is(Array),
-  R.all(R.is(String))
-);
-
-/**
- * Checks that passed argument is array of numbers
- *
- * @function isArrayOfNumbers
- * @param {Array} array
- * @returns {boolean}
- */
-export const isArrayOfNumbers = R.both(
-  R.is(Array),
-  R.all(R.is(Number))
+  (path) => leaveError(CONST.ERROR.PATH_INVALID)(path)
 );
 
 /**

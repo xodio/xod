@@ -2,8 +2,9 @@ import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
 import * as Link from '../src/link';
+import * as CONST from '../src/constants';
 
-import { expectEither } from './helpers';
+import * as Helper from './helpers';
 
 chai.use(dirtyChai);
 
@@ -161,13 +162,16 @@ describe('Link', () => {
     };
 
     it('should return Either.Left for link without id', () => {
-      expect(Link.validateLinkId({}).isLeft).to.be.true();
+      const err = Link.validateLinkId({});
+      expect(err.isLeft).to.be.true();
+      console.log('wtf', err);
+      Helper.expectErrorMessage(expect, err, CONST.ERROR.LINK_ID_INVALID);
     });
     it('should return Either.Right for link with id', () => {
       const newLink = Link.validateLinkId(link);
       expect(newLink.isRight).to.be.true();
 
-      expectEither(
+      Helper.expectEither(
         val => {
           expect(val)
             .to.have.property('id')

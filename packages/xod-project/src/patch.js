@@ -1,6 +1,7 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 
+import * as CONST from './constants';
 import * as Utils from './utils';
 import * as Node from './node';
 import * as Link from './link';
@@ -76,7 +77,7 @@ export const validatePatch = R.ifElse(
     R.has('links'),
   ]),
   Either.Right,
-  Utils.leaveError('Patch is not valid.')
+  Utils.leaveError(CONST.ERROR.PATCH_INVALID)
 );
 
 // =============================================================================
@@ -346,9 +347,9 @@ export const listLinksByPin = R.curry(
 export const validateLink = R.curry(
   (link, patch) => Link.validateLinkId(link).chain(validLink => {
     const input = listInputPinKeys(validLink.input.pinKey, validLink.input.nodeId, patch);
-    if (input.length === 0) { return Utils.leaveError('Link goes to nowhere: input pinKey or nodeId doesn\'t exist in this patch.')(); }
+    if (input.length === 0) { return Utils.leaveError(CONST.ERROR.LINK_INPUT_NOT_EXIST)(); }
     const output = listOutputPinKeys(validLink.output.pinKey, validLink.output.nodeId, patch);
-    if (output.length === 0) { return Utils.leaveError('Link begins from nowhere: output pinKey or nodeId doesn\'t exist in this patch.')(); }
+    if (output.length === 0) { return Utils.leaveError(CONST.ERROR.LINK_OUTPUT_NOT_EXIST)(); }
 
     return Either.of(validLink);
   })

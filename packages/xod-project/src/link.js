@@ -1,6 +1,7 @@
 import R from 'ramda';
 import { Either } from 'ramda-fantasy';
 
+import * as CONST from './constants';
 import * as Utils from './utils';
 import * as Node from './node';
 
@@ -143,5 +144,5 @@ export const validateLinkId = R.ifElse(
     R.prop('id')
   ),
   Either.Right,
-  Utils.leaveError('Link should have a generated id')
+  Utils.leaveError(CONST.ERROR.LINK_ID_INVALID)
 );

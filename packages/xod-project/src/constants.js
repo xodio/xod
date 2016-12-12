@@ -6,10 +6,23 @@
  * @enum {string}
  */
 export const ERROR = {
-  NAME_INVALID_CHARS: 'Name contains invalid characters',
-  NAME_EMPTY: 'Name should not be empty',
+  // patches
+  PATCH_INVALID: 'Patch is invalid',
+  PATCH_NOT_FOUND: 'Can\'t find specified patch in the specified project',
+  PATCH_NOT_FOUND_BY_PATH: 'There is no patch in the project with specified path',
+  PATCH_PATH_OCCUPIED: 'Another patch with the same path is already exist',
+  // pathes
+  PATH_INVALID: 'Path empty or contains invalid characters',
+  // nodes
+  POSITION_INVALID: 'Invalid position property',
+  // links
+  LINK_ID_INVALID: 'Link should have a generated id',
+  LINK_INPUT_NOT_EXIST: 'Link goes to nowhere: input pinKey or nodeId doesn\'t exist in this patch.',
+  LINK_OUTPUT_NOT_EXIST: 'Link goes from nowhere: output pinKey or nodeId doesn\'t exist in this patch.',
+  // pins
   PIN_TYPE_INVALID: 'Pin type should be one of possible values: `string`, `number`, `boolean`, `pulse`',
   PIN_DIRECTION_INVALID: 'Pin directions should be `input` or `output`.',
+  // etc
 };
 
 /**

@@ -1,9 +1,11 @@
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
-import { expectEither } from './helpers';
 
+import * as CONST from '../src/constants';
 import * as Patch from '../src/patch';
 import * as Project from '../src/project';
+
+import * as Helper from './helpers';
 
 chai.use(dirtyChai);
 
@@ -44,73 +46,47 @@ describe('Project', () => {
 
   // properties
   describe('setProjectDescription', () => {
-    it('should return Either.Right for string', () => {
-      expect(Project.setProjectDescription('test', {}).isRight).to.be.true();
-    });
-    it('should return Either.Left for non-string', () => {
-      expect(Project.setProjectDescription(123, {}).isLeft).to.be.true();
-      expect(Project.setProjectDescription(true, {}).isLeft).to.be.true();
-      expect(Project.setProjectDescription({}, {}).isLeft).to.be.true();
-      expect(Project.setProjectDescription([], {}).isLeft).to.be.true();
-    });
+    Helper.expectOptionalStringSetter(expect, Project.setProjectDescription, 'description');
   });
   describe('getProjectDescription', () => {
-    it('should return empty string even if Project is empty object', () => {
-      expect(Project.getProjectDescription({})).to.be.equal('');
-    });
-    it('should return string', () => {
-      const fixture = {
-        description: 'test',
-      };
-      expect(Project.getProjectDescription(fixture)).to.be.equal('test');
-    });
+    Helper.expectOptionalStringGetter(expect, Project.getProjectDescription, 'description');
   });
 
   describe('setProjectLicense', () => {
-    it('should return Either.Right for string', () => {
-      expect(Project.setProjectLicense('BSD', {}).isRight).to.be.true();
-    });
-    it('should return Either.Left for non-string', () => {
-      expect(Project.setProjectLicense(123, {}).isLeft).to.be.true();
-      expect(Project.setProjectLicense(true, {}).isLeft).to.be.true();
-      expect(Project.setProjectLicense({}, {}).isLeft).to.be.true();
-      expect(Project.setProjectLicense([], {}).isLeft).to.be.true();
-    });
+    Helper.expectOptionalStringSetter(expect, Project.setProjectLicense, 'license');
   });
   describe('getProjectLicense', () => {
-    it('should return empty string even if Project is empty object', () => {
-      expect(Project.getProjectLicense({})).to.be.equal('');
-    });
-    it('should return string', () => {
-      const fixture = {
-        license: 'MIT',
-      };
-      expect(Project.getProjectLicense(fixture)).to.be.equal('MIT');
-    });
+    Helper.expectOptionalStringGetter(expect, Project.getProjectLicense, 'license');
   });
 
   describe('setProjectAuthors', () => {
-    it('should return Either.Right for empty array', () => {
-      expect(Project.setProjectAuthors([], {}).isRight).to.be.true();
+    it('should return Project with authors equal to empty array', () => {
+      expect(Project.setProjectAuthors([], {}))
+        .to.be.an('object')
+        .that.have.property('authors')
+        .to.be.instanceof(Array)
+        .to.be.empty();
     });
-    it('should return Either.Right for array with one string', () => {
-      expect(Project.setProjectAuthors(['Vasya'], {}).isRight).to.be.true();
+    it('should return Project with assigned array into authors', () => {
+      const authors = ['Vasya', 'Petya'];
+      expect(Project.setProjectAuthors(authors, {}))
+        .to.be.an('object')
+        .that.have.property('authors')
+        .that.deep.equal(authors);
     });
-    it('should return Either.Right for array of strings', () => {
-      expect(Project.setProjectAuthors(['Vasya', 'Petya'], {}).isRight).to.be.true();
+    it('should return Project with single string in authors array', () => {
+      expect(Project.setProjectAuthors('Petya', {}))
+        .to.be.an('object')
+        .that.have.property('authors')
+        .that.have.property(0)
+        .that.equal('Petya');
     });
-
-    it('should return Either.Left for array of not strings', () => {
-      expect(Project.setProjectAuthors([1, 2], {}).isLeft).to.be.true();
-    });
-    it('should return Either.Left for array of mixed types', () => {
-      expect(Project.setProjectAuthors(['Vasya', 142, {}, 'Petya'], {}).isLeft).to.be.true();
-    });
-    it('should return Either.Left for not-array', () => {
-      expect(Project.setProjectAuthors('Vasya', {}).isLeft).to.be.true();
-      expect(Project.setProjectAuthors(12, {}).isLeft).to.be.true();
-      expect(Project.setProjectAuthors(true, {}).isLeft).to.be.true();
-      expect(Project.setProjectAuthors({}, {}).isLeft).to.be.true();
+    it('should return Project with single string (number converted into string) in authors array', () => {
+      expect(Project.setProjectAuthors(6, {}))
+        .to.be.an('object')
+        .that.have.property('authors')
+        .that.have.property(0)
+        .that.equal('6');
     });
   });
   describe('getProjectAuthors', () => {
@@ -160,13 +136,14 @@ describe('Project', () => {
     it('should return Either.Left', () => {
       const result = Project.getPatchPath({}, project);
       expect(result.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, result, CONST.ERROR.PATCH_NOT_FOUND);
     });
     it('should return Either.Right with patch path', () => {
       const result = Project.getPatchPath(patch, project);
       expect(result.isRight).to.be.true();
 
       /* istanbul ignore next */
-      expectEither(
+      Helper.expectEither(
         val => val === path,
         result
       );
@@ -245,12 +222,14 @@ describe('Project', () => {
       const newProject = Project.validatePatchRebase('@/test', '@/patch', project);
 
       expect(newProject.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, newProject, CONST.ERROR.PATCH_NOT_FOUND_BY_PATH);
     });
     it('should return Either.Left if another patch with same path already exist', () => {
       const project = { patches: { '@/test': {}, '@/patch': {} } };
       const newProject = Project.validatePatchRebase('@/test', '@/patch', project);
 
       expect(newProject.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, newProject, CONST.ERROR.PATCH_PATH_OCCUPIED);
     });
     it('should return Either.Right with Project', () => {
       const patch = {};
@@ -260,7 +239,7 @@ describe('Project', () => {
 
       const newProject = Project.validatePatchRebase(newPath, oldPath, project);
       /* istanbul ignore next */
-      expectEither(
+      Helper.expectEither(
         proj => {
           expect(proj).to.be.equal(project);
         },
@@ -285,7 +264,7 @@ describe('Project', () => {
       const newProject = Project.assocPatch(path, patch, {});
       expect(newProject.isRight).to.be.true();
       /* istanbul ignore next */
-      expectEither(
+      Helper.expectEither(
         (proj) => {
           expect(proj)
             .to.have.property('patches')
@@ -309,7 +288,7 @@ describe('Project', () => {
 
       expect(newProject.isRight).to.be.true();
       /* istanbul ignore next */
-      expectEither(
+      Helper.expectEither(
         (proj) => {
           expect(proj)
             .to.have.property('patches')
@@ -360,7 +339,7 @@ describe('Project', () => {
       expect(newProject.isRight).to.be.true();
 
       /* istanbul ignore next */
-      expectEither(
+      Helper.expectEither(
         proj => {
           expect(proj)
             .to.have.property('patches')
@@ -382,7 +361,7 @@ describe('Project', () => {
       expect(newProject.isRight).to.be.true();
 
       /* istanbul ignore next */
-      expectEither(
+      Helper.expectEither(
         proj => {
           expect(proj)
             .to.have.property('patches')

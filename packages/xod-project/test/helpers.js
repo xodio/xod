@@ -10,8 +10,21 @@ export const expectEither = R.curry((testFunction, object) => {
 });
 
 export const expectErrorMessage = R.curry((expect, err, originalMessage) => {
-  expect(err).to.be.an('Error');
-  expect(err.toString()).to.be.equal(new Error(originalMessage).toString());
+  const check = errObj => {
+    expect(errObj).to.be.an('Error');
+    expect(errObj.toString()).to.be.equal(new Error(originalMessage).toString());
+  };
+
+  if (err instanceof Either) {
+    Either.either(
+      check,
+      (val) => { throw new Error(`Expected Error but returned ${val}`); },
+      err
+    );
+    return;
+  }
+
+  check(err);
 });
 
 export const expectOptionalStringGetter = R.curry((expect, method, propName) => {

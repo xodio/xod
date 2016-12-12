@@ -1,6 +1,7 @@
 import R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
 
+import * as CONST from './constants';
 import * as Utils from './utils';
 import * as Patch from './patch';
 
@@ -36,13 +37,9 @@ export const getProjectDescription = R.propOr('', 'description');
  * @function setProjectDescription
  * @param {string} description
  * @param {Project} project
- * @returns {Either<Error|Project>}
+ * @returns {Project}
  */
-export const setProjectDescription = R.ifElse(
-  R.is(String),
-  Utils.assocRight('description'),
-  Utils.leaveError('Project description should be a string.')
-);
+export const setProjectDescription = Utils.assocString('description');
 
 /**
  * @function getProjectAuthors
@@ -55,12 +52,21 @@ export const getProjectAuthors = R.propOr([], 'authors');
  * @function setProjectAuthors
  * @param {string[]} authors
  * @param {Project} project
- * @returns {Either<Error|Project>}
+ * @returns {Project}
  */
-export const setProjectAuthors = R.ifElse(
-  Utils.isArrayOfStrings,
-  Utils.assocRight('authors'),
-  Utils.leaveError('Project authors should be a list of string.')
+export const setProjectAuthors = R.useWith(
+  R.assoc('authors'),
+  [
+    R.ifElse(
+      R.is(Array),
+      R.map(String),
+      R.compose(
+        R.flip(R.append)([]),
+        String
+      )
+    ),
+    R.identity,
+  ]
 );
 
 /**
@@ -76,11 +82,7 @@ export const getProjectLicense = R.propOr('', 'license');
  * @param {Project} project
  * @returns {Project}
  */
-export const setProjectLicense = R.ifElse(
-   R.is(String),
-   Utils.assocRight('license'),
-   Utils.leaveError('Project license should be a string.')
- );
+export const setProjectLicense = Utils.assocString('license');
 
 /**
  * Converts project into Xodball: remove library patches, replace it with dependency list and etc.
@@ -173,7 +175,7 @@ export const getPatchPath = R.curry(
   R.compose(
     R.ifElse(
       R.isNil,
-      Utils.leaveError('Can\'t find patch in the project.'),
+      Utils.leaveError(CONST.ERROR.PATCH_NOT_FOUND),
       Either.Right
     ),
     R.chain(R.path([0, 0])),
@@ -238,10 +240,10 @@ export const validatePatchRebase = R.curry(
     if (validPath.isLeft) { return validPath; }
 
     const pathIsOccupied = getPatchByPath(newPath, project).isJust;
-    if (pathIsOccupied) { return Utils.leaveError('Another patch with the same path is already exist.')(); }
+    if (pathIsOccupied) { return Utils.leaveError(CONST.ERROR.PATCH_PATH_OCCUPIED)(); }
 
     const patch = getPatchByPath(oldPath, project);
-    if (patch.isNothing) { return Utils.leaveError('There is no patch in the project with specified path.')(); }
+    if (patch.isNothing) { return Utils.leaveError(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH)(); }
 
     return Either.of(project);
   }

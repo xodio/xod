@@ -2,8 +2,9 @@ import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
 import * as Node from '../src/node';
+import * as CONST from '../src/constants';
 
-import { expectEither } from './helpers';
+import * as Helper from './helpers';
 
 chai.use(dirtyChai);
 
@@ -19,7 +20,7 @@ describe('Node', () => {
   describe('createNode', () => {
     it('should return Either.Right with node', () => {
       const newNode = Node.createNode({ x: 100, y: 100 }, '@/test');
-      expectEither(
+      Helper.expectEither(
         checkNodeObject,
         newNode
       );
@@ -72,7 +73,7 @@ describe('Node', () => {
   describe('setNodePosition', () => {
     it('should return Either.Right with node in new position', () => {
       const newNode = Node.setNodePosition({ x: 1, y: 1 }, { position: { x: 0, y: 0 } });
-      expectEither(
+      Helper.expectEither(
         node => {
           expect(node)
             .to.be.an('object')
@@ -265,6 +266,8 @@ describe('Node', () => {
       expect(Node.validatePosition([]).isLeft).to.be.true();
       expect(Node.validatePosition({ x: 1 }).isLeft).to.be.true();
       expect(Node.validatePosition({ x: '1', y: '5' }).isLeft).to.be.true();
+
+      Helper.expectErrorMessage(expect, Node.validatePosition(''), CONST.ERROR.POSITION_INVALID);
     });
     it('should return Either.Right for valid position', () => {
       expect(Node.validatePosition({ x: 0, y: 0 }).isRight).to.be.true();
