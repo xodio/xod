@@ -111,6 +111,21 @@ export const getNodeLabel = R.propOr('', 'label');
 export const setNodeLabel = R.assoc('label');
 
 /**
+ * @function getNodeDescription
+ * @param {Node} node
+ * @returns {string}
+ */
+export const getNodeDescription = R.propOr('', 'description');
+
+/**
+ * @function setNodeDescription
+ * @param {string} description
+ * @param {Node} node
+ * @returns {Node}
+ */
+export const setNodeDescription = R.assoc('description');
+
+/**
  * @function setNodePosition
  * @param {Position} position - new coordinates of node’s center
  * @param {Node} node - node to move

@@ -3,6 +3,8 @@ import dirtyChai from 'dirty-chai';
 
 import * as Link from '../src/link';
 
+import { expectEither } from './helpers';
+
 chai.use(dirtyChai);
 
 describe('Link', () => {
@@ -65,26 +67,115 @@ describe('Link', () => {
     describe('getLinkInputNodeId', () => {
       it('should return input node id', () => {
         const result = Link.getLinkInputNodeId(link);
-        expect(result.getOrElse(null)).to.be.equal(link.input.nodeId);
+        expect(result).to.be.equal(link.input.nodeId);
       });
     });
     describe('getLinkOutputNodeId', () => {
       it('should return output node id', () => {
         const result = Link.getLinkOutputNodeId(link);
-        expect(result.getOrElse(null)).to.be.equal(link.output.nodeId);
+        expect(result).to.be.equal(link.output.nodeId);
       });
     });
     describe('getLinkInputPinKey', () => {
       it('should return input pin key', () => {
         const result = Link.getLinkInputPinKey(link);
-        expect(result.getOrElse(null)).to.be.equal(link.input.pinKey);
+        expect(result).to.be.equal(link.input.pinKey);
       });
     });
     describe('getLinkOutputPinKey', () => {
       it('should return output pin key', () => {
         const result = Link.getLinkOutputPinKey(link);
-        expect(result.getOrElse(null)).to.be.equal(link.output.pinKey);
+        expect(result).to.be.equal(link.output.pinKey);
       });
+    });
+  });
+  // Checks
+  describe('isInputNodeIdEqualsTo', () => {
+    const link = {
+      input: { pinKey: 'toPin', nodeId: '@/to' },
+      output: { pinKey: 'fromPin', nodeId: '@/from' },
+    };
+
+    it('should return false for non-existent nodeId', () => {
+      expect(Link.isInputNodeIdEqualsTo('@/non-existent', link)).to.be.false();
+    });
+    it('should return false for nodeId from output', () => {
+      expect(Link.isInputNodeIdEqualsTo(link.output.nodeId, link)).to.be.false();
+    });
+    it('should return true for nodeId from input', () => {
+      expect(Link.isInputNodeIdEqualsTo(link.input.nodeId, link)).to.be.true();
+    });
+  });
+  describe('isOutputNodeIdEqualsTo', () => {
+    const link = {
+      input: { pinKey: 'toPin', nodeId: '@/to' },
+      output: { pinKey: 'fromPin', nodeId: '@/from' },
+    };
+
+    it('should return false for non-existent nodeId', () => {
+      expect(Link.isOutputNodeIdEqualsTo('@/non-existent', link)).to.be.false();
+    });
+    it('should return false for nodeId from input', () => {
+      expect(Link.isOutputNodeIdEqualsTo(link.input.nodeId, link)).to.be.false();
+    });
+    it('should return true for nodeId from output', () => {
+      expect(Link.isOutputNodeIdEqualsTo(link.output.nodeId, link)).to.be.true();
+    });
+  });
+  describe('isInputPinKeyEqualsTo', () => {
+    const link = {
+      input: { pinKey: 'toPin', nodeId: '@/to' },
+      output: { pinKey: 'fromPin', nodeId: '@/from' },
+    };
+
+    it('should return false for non-existent nodeId', () => {
+      expect(Link.isInputPinKeyEqualsTo('non-existent-pin', link)).to.be.false();
+    });
+    it('should return false for pinKey from output', () => {
+      expect(Link.isInputPinKeyEqualsTo(link.output.pinKey, link)).to.be.false();
+    });
+    it('should return true for pinKey from input', () => {
+      expect(Link.isInputPinKeyEqualsTo(link.input.pinKey, link)).to.be.true();
+    });
+  });
+  describe('isOutputPinKeyEqualsTo', () => {
+    const link = {
+      input: { pinKey: 'toPin', nodeId: '@/to' },
+      output: { pinKey: 'fromPin', nodeId: '@/from' },
+    };
+
+    it('should return false for non-existent nodeId', () => {
+      expect(Link.isOutputPinKeyEqualsTo('non-existent-pin', link)).to.be.false();
+    });
+    it('should return false for pinKey from input', () => {
+      expect(Link.isOutputPinKeyEqualsTo(link.input.pinKey, link)).to.be.false();
+    });
+    it('should return true for pinKey from output', () => {
+      expect(Link.isOutputPinKeyEqualsTo(link.output.pinKey, link)).to.be.true();
+    });
+  });
+
+  describe('validateLinkId', () => {
+    const link = {
+      id: '1',
+    };
+
+    it('should return Either.Left for link without id', () => {
+      expect(Link.validateLinkId({}).isLeft).to.be.true();
+    });
+    it('should return Either.Right for link with id', () => {
+      const newLink = Link.validateLinkId(link);
+      expect(newLink.isRight).to.be.true();
+
+      expectEither(
+        val => {
+          expect(val)
+            .to.have.property('id')
+            .that.is.a('string')
+            .and.equal(link.id);
+        },
+        newLink
+      );
     });
   });
 });
