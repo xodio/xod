@@ -2,7 +2,9 @@
   "name": "xod-transformer",
   "version": "0.0.1",
   "description": "XOD project: Transformer",
-  "scripts": {},
+  "scripts": {
+    "build": "babel --presets es2015 src/ -d dist/"
+  },
   "repository": {},
   "keywords": [],
   "author": "",

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "XOD project: Espruino serial uploader",
   "scripts": {
+    "build": "webpack --colors"
   },
   "repository": {},
   "keywords": [],

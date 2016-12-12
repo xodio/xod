@@ -4,6 +4,9 @@
   "description": "",
   "main": "dist/app/main.js",
   "scripts": {
+    "build:gui": "webpack --colors --config webpack/base.js",
+    "build:app": "babel src/app/ -d dist/app/",
+    "build": "npm-run-all build:*",
     "start": "electron ./dist/app/main.js",
     "electron-rebuild": "electron-rebuild"
   },
