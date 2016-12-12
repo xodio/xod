@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "XOD project: Espruino runtime",
   "scripts": {
-    "build": "webpack --colors --config webpack/base.js"
+    "build": "webpack --colors --config webpack/base.js",
+    "test": "mocha-webpack test/**/*.spec.js"
   },
   "repository": {},
   "keywords": [],

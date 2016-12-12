@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "XOD project: Transformer",
   "scripts": {
-    "build": "babel --presets es2015 src/ -d dist/"
+    "build": "babel --presets es2015 src/ -d dist/",
+    "test": "mocha test/**/*.spec.js"
   },
   "repository": {},
   "keywords": [],
