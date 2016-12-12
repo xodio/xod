@@ -142,3 +142,54 @@ export const addSlashToEnd = R.ifElse(
  * @returns {string}
  */
 export const generateId = shortid.generate;
+
+/**
+ * Checks that value is exist in the dictionary (object).
+ * @function isValueInDictionary
+ * @param {*} value
+ * @param {object} dictionary
+ * @returns {boolean}
+ */
+export const isValueInDictionary = R.compose(
+  R.gt(R.__, 0),
+  R.length,
+  R.keys,
+  R.useWith(
+    R.pickBy,
+    [
+      R.equals,
+      R.identity,
+    ]
+  )
+);
+
+/**
+ * Returns function that assoc string to a specified key
+ * @function assocString
+ * @param {string} key
+ * @returns {function}
+ */
+export const assocString = (key) => R.useWith(
+  R.assoc(key),
+  [
+    String,
+    R.identity,
+  ]
+);
+
+/**
+ * Returns function that assoc number to a specified key
+ * @function assocString
+ * @param {string} key
+ * @returns {function}
+ */
+export const assocNumber = (key) => R.useWith(
+  R.assoc(key),
+  [
+    R.compose(
+      R.defaultTo(0),
+      Number
+    ),
+    R.identity,
+  ]
+);

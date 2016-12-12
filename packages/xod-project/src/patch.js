@@ -199,47 +199,6 @@ export const assocPin = () => {};
 export const dissocPin = () => {};
 
 /**
- * @function getPinType
- * @param {string} key
- * @param {Patch} patch
- * @returns {Either<Error|PIN_TYPE>}
- */
-export const getPinType = () => {};
-
-/**
- * @function getPinLabel
- * @param {string} key
- * @param {Patch} patch
- * @returns {Either<Error|string>}
- */
-export const getPinLabel = () => {};
-
-/**
- * @function setPinLabel
- * @param {string} key
- * @param {string} label
- * @param {Patch} patch
- * @returns {Patch}
- */
-export const setPinLabel = () => {};
-
-/**
- * @function getPinDescription
- * @param {string} key
- * @param {Patch} patch
- * @returns {Either<Error|string>}
- */
-export const getPinDescription = () => {};
-
-/**
- * @function setPinDescription
- * @param {string} key
- * @param {Patch} patch
- * @returns {Patch}
- */
-export const setPinDescription = () => {};
-
-/**
  * Returns new patch with updated pins meta data
  * by passed Node (it should be input/output node).
  *

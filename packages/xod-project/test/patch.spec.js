@@ -1,3 +1,4 @@
+import R from 'ramda';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 

@@ -8,6 +8,8 @@
 export const ERROR = {
   NAME_INVALID_CHARS: 'Name contains invalid characters',
   NAME_EMPTY: 'Name should not be empty',
+  PIN_TYPE_INVALID: 'Pin type should be one of possible values: `string`, `number`, `boolean`, `pulse`',
+  PIN_DIRECTION_INVALID: 'Pin directions should be `input` or `output`.',
 };
 
 /**

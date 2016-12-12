@@ -3,7 +3,7 @@ import { Either } from 'ramda-fantasy';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
-import { expectEither } from './helpers';
+import * as Helper from './helpers';
 
 chai.use(dirtyChai);
 
@@ -18,11 +18,11 @@ describe('Helpers', () => {
     const right = Either.Right(rightObj);
 
     it('should throw Left value', () => {
-      const eitherLeft = () => expectEither(R.identity, left);
+      const eitherLeft = () => Helper.expectEither(R.identity, left);
       expect(eitherLeft).to.throw(leftObj);
     });
     it('should return Right value', () => {
-      expectEither(
+      Helper.expectEither(
         (val) => {
           expect(val).to.be.equal(rightObj);
         },
