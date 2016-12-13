@@ -144,13 +144,14 @@ export const validatePin = pin => {
   const direction = getPinDirection(pin);
   const key = getPinKey(pin);
 
-  return validatePinType(type).chain(
-    () => validatePinDirection(direction).chain(
-      () => Utils.validatePath(key).map(
-        () => pin
-      )
-    )
-  );
+  return validatePinType(type)
+    .chain(
+      () => validatePinDirection(direction)
+    ).chain(
+      () => Utils.validatePath(key)
+    ).map(
+      R.always(pin)
+    );
 };
 
 /**

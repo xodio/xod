@@ -225,6 +225,7 @@ const checkPinKeys = (link, curPatch, project) => {
       Node.getNodeType
     );
     // :: link -> Either
+    // @TODO: Get rid of this check or get rid of part of validateLink method
     const checkNodeExists = R.compose(
       Utils.maybeToEither(CONST.ERROR.NODE_NOT_FOUND),
       Patch.getNodeById(R.__, curPatch),
@@ -239,9 +240,9 @@ const checkPinKeys = (link, curPatch, project) => {
   };
 
   return check(Link.getLinkInputNodeId, Link.getLinkInputPinKey).chain(
-    () => check(Link.getLinkOutputNodeId, Link.getLinkOutputPinKey).chain(
-      () => Either.of(curPatch)
-    )
+    () => check(Link.getLinkOutputNodeId, Link.getLinkOutputPinKey)
+  ).map(
+    R.always(curPatch)
   );
 };
 

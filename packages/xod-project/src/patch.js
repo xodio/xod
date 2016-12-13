@@ -338,24 +338,27 @@ export const listLinksByPin = R.curry(
  * @returns {Either<Error|Link>} validation errors or valid {@link Link}
  */
 export const validateLink = R.curry(
-  (link, patch) => Link.validateLinkId(link).chain(
-    validLink => Link.validateLinkInput(validLink).chain(
-      () => Link.validateLinkOutput(validLink).chain(
-        () => {
-          const inputNode = getNodeById(validLink.input.nodeId, patch);
-          if (inputNode.isNothing) {
-            return Utils.leaveError(CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND)();
-          }
-          const outputNode = getNodeById(validLink.output.nodeId, patch);
-          if (outputNode.isNothing) {
-            return Utils.leaveError(CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND)();
-          }
-
-          return Either.of(validLink);
+  (link, patch) => Link.validateLinkId(link)
+    .chain(
+      Link.validateLinkInput
+    ).chain(
+      Link.validateLinkOutput
+    ).chain(
+      validLink => {
+        const inputNodeId = Link.getLinkInputNodeId(validLink);
+        const inputNode = getNodeById(inputNodeId, patch);
+        if (inputNode.isNothing) {
+          return Utils.leaveError(CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND)();
         }
-      )
+        const outputNodeId = Link.getLinkOutputNodeId(validLink);
+        const outputNode = getNodeById(outputNodeId, patch);
+        if (outputNode.isNothing) {
+          return Utils.leaveError(CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND)();
+        }
+
+        return Either.of(validLink);
+      }
     )
-  )
 );
 
 /**
