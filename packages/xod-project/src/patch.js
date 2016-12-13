@@ -83,6 +83,52 @@ export const validatePatch = R.ifElse(
 
 // =============================================================================
 //
+// Nodes
+//
+// =============================================================================
+
+/**
+ * Checks that node id to be equal specified value
+ *
+ * @function nodeIdEquals
+ * @param {string} id [description]
+ * @param {NodeOrId} node [description]
+ * @returns {boolean}
+ */
+export const nodeIdEquals = R.curry(
+  (id, node) =>
+  R.compose(
+    R.equals(id),
+    Node.getNodeId
+  )(node)
+);
+
+/**
+ * @function listNodes
+ * @param {Patch} patch - a patch to get nodes from
+ * @returns {Node[]} list of all nodes not sorted in any arbitrary order
+ */
+export const listNodes = R.compose(
+  R.values,
+  R.propOr([], 'nodes')
+);
+
+/**
+ * @function getNodeById
+ * @param {string} id - node ID to find
+ * @param {Patch} patch - a patch where node should be searched
+ * @returns {Maybe<Nothing|Node>} a node with given ID or `undefined` if it wasn’t not found
+ */
+export const getNodeById = R.curry(
+  (id, patch) => R.compose(
+    Maybe,
+    R.find(nodeIdEquals(id)),
+    listNodes
+  )(patch)
+);
+
+// =============================================================================
+//
 // Pins
 //
 // =============================================================================
@@ -279,14 +325,24 @@ export const listLinksByPin = R.curry(
  * @returns {Either<Error|Link>} validation errors or valid {@link Link}
  */
 export const validateLink = R.curry(
-  (link, patch) => Link.validateLinkId(link).chain(validLink => {
-    const input = listInputPinKeys(validLink.input.pinKey, validLink.input.nodeId, patch);
-    if (input.length === 0) { return Utils.leaveError(CONST.ERROR.LINK_INPUT_NOT_EXIST)(); }
-    const output = listOutputPinKeys(validLink.output.pinKey, validLink.output.nodeId, patch);
-    if (output.length === 0) { return Utils.leaveError(CONST.ERROR.LINK_OUTPUT_NOT_EXIST)(); }
+  (link, patch) => Link.validateLinkId(link).chain(
+    validLink => Link.validateLinkInput(validLink).chain(
+      () => Link.validateLinkOutput(validLink).chain(
+        () => {
+          const inputNode = getNodeById(validLink.input.nodeId, patch);
+          if (inputNode.isNothing) {
+            return Utils.leaveError(CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND)();
+          }
+          const outputNode = getNodeById(validLink.output.nodeId, patch);
+          if (outputNode.isNothing) {
+            return Utils.leaveError(CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND)();
+          }
 
-    return Either.of(validLink);
-  })
+          return Either.of(validLink);
+        }
+      )
+    )
+  )
 );
 
 /**
@@ -300,7 +356,14 @@ export const validateLink = R.curry(
  * @returns {Either<Error|Patch>} error or a copy of the `patch` with changes applied
  * @see {@link validateLink}
  */
-export const assocLink = () => {};
+export const assocLink = R.curry(
+  (link, patch) => validateLink(link, patch).map(
+    validLink => {
+      const id = Link.getLinkId(validLink);
+      return R.assocPath(['links', id], validLink, patch);
+    }
+  )
+);
 
 /**
  * Removes the `link` from the `patch`.
@@ -327,49 +390,9 @@ export const dissocLink = R.curry(
 
 // =============================================================================
 //
-// Nodes
+// Nodes assoc/dissoc
 //
 // =============================================================================
-
-/**
- * Checks that node id to be equal specified value
- *
- * @function nodeIdEquals
- * @param {string} id [description]
- * @param {NodeOrId} node [description]
- * @returns {boolean}
- */
-export const nodeIdEquals = R.curry(
-  (id, node) =>
-  R.compose(
-    R.equals(id),
-    Node.getNodeId
-  )(node)
-);
-
-/**
- * @function listNodes
- * @param {Patch} patch - a patch to get nodes from
- * @returns {Node[]} list of all nodes not sorted in any arbitrary order
- */
-export const listNodes = R.compose(
-  R.values,
-  R.propOr([], 'nodes')
-);
-
-/**
- * @function getNodeById
- * @param {string} id - node ID to find
- * @param {Patch} patch - a patch where node should be searched
- * @returns {Maybe<Nothing|Node>} a node with given ID or `undefined` if it wasn’t not found
- */
-export const getNodeById = R.curry(
-  (id, patch) => R.compose(
-    Maybe,
-    R.find(nodeIdEquals(id)),
-    listNodes
-  )(patch)
-);
 
 /**
  * Replaces a node with new one or inserts new one if it doesn’t exist yet.

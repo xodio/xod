@@ -132,6 +132,16 @@ export const isInputPinKeyEqualsTo = isGetterEqualTo(getLinkInputPinKey);
 export const isOutputPinKeyEqualsTo = isGetterEqualTo(getLinkOutputPinKey);
 
 /**
+ * Checks that input/output property has required properties
+ *
+ * @private
+ * @function hasLinkIOProps
+ * @param {object} io
+ * @returns {boolean}
+ */
+const hasLinkIOProps = R.both(R.has('nodeId'), R.has('pinKey'));
+
+/**
  * Checks that link has an id.
  *
  * @function validateLinkId
@@ -145,4 +155,36 @@ export const validateLinkId = R.ifElse(
   ),
   Either.Right,
   Utils.leaveError(CONST.ERROR.LINK_ID_INVALID)
+);
+
+/**
+ * Checks that link input property is valid
+ *
+ * @function validateLinkInput
+ * @param {Link} link
+ * @returns {Either<Error|Link>}
+ */
+export const validateLinkInput = R.ifElse(
+  R.compose(
+    hasLinkIOProps,
+    R.propOr({}, 'input')
+  ),
+  Either.Right,
+  Utils.leaveError(CONST.ERROR.LINK_INPUT_INVALID)
+);
+
+/**
+ * Checks that link output property is valid
+ *
+ * @function validateLinkOutput
+ * @param {Link} link
+ * @returns {Either<Error|Link>}
+ */
+export const validateLinkOutput = R.ifElse(
+  R.compose(
+    hasLinkIOProps,
+    R.propOr({}, 'output')
+  ),
+  Either.Right,
+  Utils.leaveError(CONST.ERROR.LINK_OUTPUT_INVALID)
 );

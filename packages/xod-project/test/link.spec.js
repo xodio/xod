@@ -164,7 +164,6 @@ describe('Link', () => {
     it('should return Either.Left for link without id', () => {
       const err = Link.validateLinkId({});
       expect(err.isLeft).to.be.true();
-      console.log('wtf', err);
       Helper.expectErrorMessage(expect, err, CONST.ERROR.LINK_ID_INVALID);
     });
     it('should return Either.Right for link with id', () => {
@@ -181,5 +180,32 @@ describe('Link', () => {
         newLink
       );
     });
+  });
+  describe('validations', () => {
+    const testLinkIO = (methodName, propertyName, error) => {
+      describe(methodName, () => {
+        it(`should return Either.Left for invalid ${propertyName}`, () => {
+          const result = Link[methodName]({});
+          expect(result.isLeft).to.be.true();
+          Helper.expectErrorMessage(expect, result, error);
+
+          const result2 = Link[methodName]({ [propertyName]: { nodeId: 'a' } });
+          expect(result2.isLeft).to.be.true();
+          Helper.expectErrorMessage(expect, result2, error);
+        });
+        it(`should return Either.Right for valid ${propertyName}`, () => {
+          const link = { [propertyName]: { nodeId: 'a', pinKey: 'in' } };
+          const result = Link[methodName](link);
+          expect(result.isRight).to.be.true();
+          Helper.expectEither(
+            validLink => expect(validLink).to.be.equal(link),
+            result
+          );
+        });
+      });
+    };
+
+    testLinkIO('validateLinkInput', 'input', CONST.ERROR.LINK_INPUT_INVALID);
+    testLinkIO('validateLinkOutput', 'output', CONST.ERROR.LINK_OUTPUT_INVALID);
   });
 });

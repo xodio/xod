@@ -17,8 +17,10 @@ export const ERROR = {
   POSITION_INVALID: 'Invalid position property',
   // links
   LINK_ID_INVALID: 'Link should have a generated id',
-  LINK_INPUT_NOT_EXIST: 'Link goes to nowhere: input pinKey or nodeId doesn\'t exist in this patch.',
-  LINK_OUTPUT_NOT_EXIST: 'Link goes from nowhere: output pinKey or nodeId doesn\'t exist in this patch.',
+  LINK_INPUT_INVALID: 'Link should have input object with keys: `pinKey` and `nodeId`',
+  LINK_OUTPUT_INVALID: 'Link should have output object with keys: `pinKey` and `nodeId`',
+  LINK_INPUT_NODE_NOT_FOUND: 'Input node of the link is not exist in this patch',
+  LINK_OUTPUT_NODE_NOT_FOUND: 'Output node of the link is not exist in this patch',
   // pins
   PIN_TYPE_INVALID: 'Pin type should be one of possible values: `string`, `number`, `boolean`, `pulse`',
   PIN_DIRECTION_INVALID: 'Pin directions should be `input` or `output`.',

@@ -112,8 +112,8 @@ describe('Patch', () => {
   describe('listNodes', () => {
     const patch = {
       nodes: {
-        'rndId': { id: 'rndId' },
-        'rndId2': { id: 'rndId2' },
+        rndId: { id: 'rndId' },
+        rndId2: { id: 'rndId2' },
       },
     };
 
@@ -126,8 +126,8 @@ describe('Patch', () => {
       expect(Patch.listNodes(patch))
         .to.be.instanceof(Array)
         .to.have.members([
-          patch.nodes['rndId'],
-          patch.nodes['rndId2'],
+          patch.nodes.rndId,
+          patch.nodes.rndId2,
         ]);
     });
   });
@@ -144,7 +144,7 @@ describe('Patch', () => {
   describe('getNodeById', () => {
     const patch = {
       nodes: {
-        'rndId': { id: 'rndId' },
+        rndId: { id: 'rndId' },
       },
     };
 
@@ -156,7 +156,7 @@ describe('Patch', () => {
       expect(Patch.getNodeById('rndId', patch).isJust)
         .to.be.true();
       expect(Patch.getNodeById('rndId', patch).getOrElse(null))
-        .to.be.equal(patch.nodes['rndId']);
+        .to.be.equal(patch.nodes.rndId);
     });
   });
   describe('listLinks', () => {
@@ -444,8 +444,8 @@ describe('Patch', () => {
   describe('dissocNode', () => {
     const patch = {
       nodes: {
-        'rndId': { id: 'rndId' },
-        'rndId2': { id: 'rndId2' },
+        rndId: { id: 'rndId' },
+        rndId2: { id: 'rndId2' },
       },
       links: {
         1: {
@@ -465,7 +465,7 @@ describe('Patch', () => {
         .that.not.have.keys(['rndId']);
     });
     it('should remove node by Node object', () => {
-      const node = patch.nodes['rndId'];
+      const node = patch.nodes.rndId;
       const newPatch = Patch.dissocNode(node, patch);
 
       expect(newPatch)
@@ -474,7 +474,7 @@ describe('Patch', () => {
         .that.not.have.keys(['rndId']);
     });
     it('should remove connected link', () => {
-      const node = patch.nodes['rndId'];
+      const node = patch.nodes.rndId;
       const newPatch = Patch.dissocNode(node, patch);
 
       expect(newPatch)
@@ -500,7 +500,20 @@ describe('Patch', () => {
         .and.equals(patch);
     });
   });
-  describe('assocLink', () => {}); // @TODO
+  describe('assocLink', () => {
+    // const patch = {
+    //   nodes: {
+    //     in: { id: 'in' },
+    //     out: { id: 'out' },
+    //   },
+    // };
+    // it('should return Either.Left for invalid link', () => {
+    //   expect(Patch.assocLink({}, {}).isLeft).to.be.true();
+    // })
+    // it('should return Either.Right with patch and assigned new link', () => {
+    //
+    // });
+  });
   describe('dissocLink', () => {
     const patch = {
       links: {
@@ -565,8 +578,56 @@ describe('Patch', () => {
     });
   });
   describe('validateLink', () => {
-    // @TODO
-  });
+    const patch = {
+      nodes: {
+        out: { id: 'out' },
+        in: { id: 'in' },
+      },
+    };
+    const linkId = '1';
+    const validInput = {
+      nodeId: 'in',
+      pinKey: 'in',
+    };
+    const validOutput = {
+      nodeId: 'out',
+      pinKey: 'out',
+    };
 
-  // etc
+    it('should return Either.Left for link without id', () => {
+      const err = Patch.validateLink({}, {});
+      expect(err.isLeft).to.be.true();
+    });
+    it('should return Either.Left if input property is not exist or invalid', () => {
+      const link = { id: linkId };
+      const err = Patch.validateLink(link, patch);
+      expect(err.isLeft).to.be.true();
+    });
+    it('should return Either.Left for non-existent input node in the patch', () => {
+      const link = { id: linkId, input: { nodeId: 'non-existent', pinKey: 'a' }, output: validOutput };
+      const err = Patch.validateLink(link, patch);
+      expect(err.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, err, CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND);
+    });
+    it('should return Either.Left if output property is not exist or invalid', () => {
+      const link = { id: linkId, input: validInput };
+      const err = Patch.validateLink(link, patch);
+      expect(err.isLeft).to.be.true();
+    });
+    it('should return Either.Left for non-existent output node in the patch', () => {
+      const link = { id: linkId, input: validInput, output: { nodeId: 'non-existent', pinKey: 'a' } };
+      const err = Patch.validateLink(link, patch);
+      expect(err.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, err, CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND);
+    });
+    it('should return Either.Right with link', () => {
+      const link = { id: linkId, input: validInput, output: validOutput };
+      const valid = Patch.validateLink(link, patch);
+      expect(valid.isRight).to.be.true();
+      Helper.expectEither(
+        validLink => expect(validLink).to.be.equal(link),
+        valid
+      );
+    });
+  });
 });
