@@ -512,8 +512,27 @@ describe('Patch', () => {
         .to.be.an('object')
         .and.equals(patch);
     });
+    it('should remove pin from patch on dissoc pinNode', () => {
+      const patchWithPins = {
+        nodes: {
+          a: { id: 'a', type: 'xod/core/inputNumber' },
+          b: { id: 'b', type: 'xod/core/outputNumber' },
+        },
+        pins: {
+          a: {},
+          b: {},
+        },
+      };
+      const newPatch = Patch.dissocNode('a', patchWithPins);
+      expect(newPatch)
+      .to.be.an('object')
+      .that.have.property('pins')
+      .that.have.keys(['b'])
+      .and.have.not.keys(['a']);
+    });
   });
   describe('assocLink', () => {
+    // @TODO: Add patch for assocLink
     // const patch = {
     //   nodes: {
     //     in: { id: 'in' },

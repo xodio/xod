@@ -164,3 +164,7 @@ export const validatePin = pin => {
 export const createPin = R.curry(
   (key, type, direction) => validatePin({ key, type, direction })
 );
+
+// @TODO: Implement this methods and tests for them!
+export const getPinTypeFromNodeType = R.always('number');
+export const getPinDirectionFromNodeType = R.always('input');

@@ -427,7 +427,11 @@ export const dissocLink = R.curry(
 export const assocNode = R.curry(
   (node, patch) => {
     const id = Node.getNodeId(node);
-    return R.assocPath(['nodes', id], node, patch);
+    const addNode = R.assocPath(['nodes', id]);
+
+    return R.compose(
+      addNode(node)
+    )(patch);
   }
 );
 
@@ -443,21 +447,32 @@ export const assocNode = R.curry(
  * @param {Patch} patch - a patch where the node should be deleted
  * @returns {Patch} a copy of the `patch` with the node deleted
  */
-// @TODO: Dissoc pinNode should remove pins from patch
 export const dissocNode = R.curry(
   (nodeOrId, patch) => {
     const id = Node.getNodeId(nodeOrId);
     const links = listLinksByNode(id, patch);
-    const newPatch = R.reduce(
-      (acc, cur) => dissocLink(cur, acc),
-      patch,
-      links
-    );
 
-    return R.ifElse(
+    const removeLinks = R.reduce(
+      R.flip(dissocLink)
+    );
+    const removePin = R.ifElse(
+      R.compose(
+        R.chain(Node.isPinNode),
+        getNodeById(id)
+      ),
+      dissocPin(id),
+      R.identity
+    );
+    const removeNode = R.ifElse(
       R.pathSatisfies(R.complement(R.isNil), ['nodes', id]),
       R.dissocPath(['nodes', id]),
       R.identity
-    )(newPatch);
+    );
+
+    return R.compose(
+      removeNode,
+      removePin,
+      removeLinks
+    )(patch, links);
   }
 );
