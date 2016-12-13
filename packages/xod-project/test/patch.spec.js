@@ -447,6 +447,13 @@ describe('Patch', () => {
         '@/test': { id: '@/test' },
         '@/test2': { id: '@/test2' },
       },
+      links: {
+        1: {
+          id: '1',
+          output: { pinKey: 'out', nodeId: '@/test' },
+          input: { pinKey: 'in', nodeId: '@/test2' },
+        },
+      },
     };
 
     it('should remove node by id', () => {
@@ -465,6 +472,15 @@ describe('Patch', () => {
         .to.be.an('object')
         .that.have.property('nodes')
         .that.not.have.keys(['@/test']);
+    });
+    it('should remove connected link', () => {
+      const node = patch.nodes['@/test'];
+      const newPatch = Patch.dissocNode(node, patch);
+
+      expect(newPatch)
+        .to.be.an('object')
+        .that.have.property('links')
+        .that.empty();
     });
     it('should not affect on other nodes', () => {
       const newPatch = Patch.dissocNode('@/test', patch);

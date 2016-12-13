@@ -83,97 +83,6 @@ export const validatePatch = R.ifElse(
 
 // =============================================================================
 //
-// Nodes
-//
-// =============================================================================
-
-/**
- * Checks that node id to be equal specified value
- *
- * @function nodeIdEquals
- * @param {string} id [description]
- * @param {NodeOrId} node [description]
- * @returns {boolean}
- */
-export const nodeIdEquals = R.curry(
-  (id, node) =>
-  R.compose(
-    R.equals(id),
-    Node.getNodeId
-  )(node)
-);
-
-/**
- * @function listNodes
- * @param {Patch} patch - a patch to get nodes from
- * @returns {Node[]} list of all nodes not sorted in any arbitrary order
- */
-export const listNodes = R.compose(
-  R.values,
-  R.propOr([], 'nodes')
-);
-
-/**
- * @function getNodeById
- * @param {string} id - node ID to find
- * @param {Patch} patch - a patch where node should be searched
- * @returns {Maybe<Nothing|Node>} a node with given ID or `undefined` if it wasn’t not found
- */
-export const getNodeById = R.curry(
-  (id, patch) => R.compose(
-    Maybe,
-    R.find(nodeIdEquals(id)),
-    listNodes
-  )(patch)
-);
-
-/**
- * Replaces a node with new one or inserts new one if it doesn’t exist yet.
- *
- * The node is searched by ID and its state
- * subtree is completely replaced with one given as argument.
- *
- * It’s up to you to keep the state integrity affected by the replacement.
- *
- * @function assocNode
- * @param {Node} node - new node
- * @param {Patch} patch - a patch with the `node`
- * @returns {Patch} a copy of the `patch` with the node replaced
- */
-export const assocNode = R.curry(
-  (node, patch) => {
-    const id = Node.getNodeId(node);
-    return R.assocPath(['nodes', id], node, patch);
-  }
-);
-
-/**
- * Removes the `node` from the `patch`.
- *
- * Does nothing if the `node` is not in the `patch`.
- *
- * Also removes all links associated with the `node`.
- *
- * @function dissocNode
- * @param {NodeOrId} node - node to delete
- * @param {Patch} patch - a patch where the node should be deleted
- * @returns {Patch} a copy of the `patch` with the node deleted
- */
-// @TODO: Add removing links!
-export const dissocNode = R.curry(
-  (nodeOrId, patch) => {
-    const id = Node.getNodeId(nodeOrId);
-
-    return R.ifElse(
-      R.pathSatisfies(R.complement(R.isNil), ['nodes', id]),
-      R.dissocPath(['nodes', id]),
-      R.identity
-    )(patch);
-  }
-);
-
-// =============================================================================
-//
 // Pins
 //
 // =============================================================================
@@ -412,5 +321,105 @@ export const dissocLink = R.curry(
       R.dissocPath(['links', id]),
       R.identity
     )(patch);
+  }
+);
+
+
+// =============================================================================
+//
+// Nodes
+//
+// =============================================================================
+
+/**
+ * Checks that node id to be equal specified value
+ *
+ * @function nodeIdEquals
+ * @param {string} id [description]
+ * @param {NodeOrId} node [description]
+ * @returns {boolean}
+ */
+export const nodeIdEquals = R.curry(
+  (id, node) =>
+  R.compose(
+    R.equals(id),
+    Node.getNodeId
+  )(node)
+);
+
+/**
+ * @function listNodes
+ * @param {Patch} patch - a patch to get nodes from
+ * @returns {Node[]} list of all nodes not sorted in any arbitrary order
+ */
+export const listNodes = R.compose(
+  R.values,
+  R.propOr([], 'nodes')
+);
+
+/**
+ * @function getNodeById
+ * @param {string} id - node ID to find
+ * @param {Patch} patch - a patch where node should be searched
+ * @returns {Maybe<Nothing|Node>} a node with given ID or `undefined` if it wasn’t not found
+ */
+export const getNodeById = R.curry(
+  (id, patch) => R.compose(
+    Maybe,
+    R.find(nodeIdEquals(id)),
+    listNodes
+  )(patch)
+);
+
+/**
+ * Replaces a node with new one or inserts new one if it doesn’t exist yet.
+ *
+ * The node is searched by ID and its state
+ * subtree is completely replaced with one given as argument.
+ *
+ * It’s up to you to keep the state integrity affected by the replacement.
+ *
+ * @function assocNode
+ * @param {Node} node - new node
+ * @param {Patch} patch - a patch with the `node`
+ * @returns {Patch} a copy of the `patch` with the node replaced
+ */
+export const assocNode = R.curry(
+  (node, patch) => {
+    const id = Node.getNodeId(node);
+    return R.assocPath(['nodes', id], node, patch);
+  }
+);
+
+/**
+ * Removes the `node` from the `patch`.
+ *
+ * Does nothing if the `node` is not in the `patch`.
+ *
+ * Also removes all links associated with the `node`.
+ *
+ * @function dissocNode
+ * @param {NodeOrId} node - node to delete
+ * @param {Patch} patch - a patch where the node should be deleted
+ * @returns {Patch} a copy of the `patch` with the node deleted
+ */
+// @TODO: Add removing links!
+export const dissocNode = R.curry(
+  (nodeOrId, patch) => {
+    const id = Node.getNodeId(nodeOrId);
+    const links = listLinksByNode(id, patch);
+    console.log('found: ', links);
+    const newPatch = R.reduce(
+      (acc, cur) => dissocLink(cur, acc),
+      patch,
+      links
+    );
+    console.log('after reduce: ', newPatch);
+
+    return R.ifElse(
+      R.pathSatisfies(R.complement(R.isNil), ['nodes', id]),
+      R.dissocPath(['nodes', id]),
+      R.identity
+    )(newPatch);
   }
 );
