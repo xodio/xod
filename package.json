@@ -1,7 +1,7 @@
 {
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "./make.js build",
+    "build": "./tools/lerna-run-sorted build",
     "ci": "npm install && npm run verify",
     "clean": "npm-run-all clean:*",
     "clean:dist": "rimraf packages/*/dist",
@@ -14,15 +14,14 @@
     "dev:pkg:xod-js": "npm run build:pkg:xod-js -- --watch",
     "dev:tree:xod-cli": "concurrently --kill-others --prefix name --names \"core,js,fs,cli\" \"npm run dev:pkg:xod-core\" \"npm run dev:pkg:xod-js\" \"npm run dev:pkg:xod-fs\" \"npm run dev:pkg:xod-cli\"",
     "dev:tree:xod-client-browser": "concurrently --kill-others --prefix name --names \"core,js,client,browser\" \"npm run dev:pkg:xod-core\" \"npm run dev:pkg:xod-js\" \"npm run dev:pkg:xod-client\" \"npm run dev:pkg:xod-client-browser\"",
-    "doc": "lerna run doc",
+    "doc": "./tools/lerna-run-sorted doc",
     "electron-rebuild": "lerna run --scope xod-client-electron electron-rebuild",
     "lerna": "lerna",
     "lint": "eslint packages/*/src packages/*/test packages/xod-js/platform",
-    "make": "./make.js",
     "postinstall": "npm run bootstrap",
-    "start:xod-client-electron": "./make.js start xod-client-electron",
-    "start:xod-server": "./make.js start xod-server",
-    "test": "lerna run test",
+    "start:xod-client-electron": "./tools/lerna-run-sorted start xod-client-electron",
+    "start:xod-server": "./tools/lerna-run-sorted start xod-server",
+    "test": "./tools/lerna-run-sorted test",
     "verify": "npm-run-all build lint test"
   },
   "devDependencies": {
