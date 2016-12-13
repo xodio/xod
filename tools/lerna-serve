@@ -1,0 +1,103 @@
+#!/usr/bin/env node
+/*
+ */
+const path = require('path');
+const async = require('async');
+const program = require('commander');
+const escapeArgs = require('command-join');
+const chalk = require('chalk');
+const PackageUtilities = require('lerna/lib/PackageUtilities');
+const ChildProcessUtilities = require('lerna/lib/ChildProcessUtilities');
+const RunCommand = require('lerna/lib/commands/RunCommand');
+
+/*
+ */
+class ServeCommand extends RunCommand {
+  initialize(callback) {
+    super.initialize((err, result) => {
+      if (err) {
+        callback(err);
+        return;
+      }
+    });
+
+    if (this.flags.withDeps) {
+      this.logger.info('Including package dependencies');
+      const graph = PackageUtilities.getPackageGraph(this.packages);
+      const concat = (a, b) => a.concat(b);
+
+      const packageWithDeps = packageGraphNode =>
+        packageGraphNode.dependencies
+          .map(pkgName => graph.get(pkgName))
+          .map(packageWithDeps)
+          .reduce(concat, []).concat([packageGraphNode]);
+
+      const unique =
+        (value, index, self) => 
+          self.map(pkg => pkg.name).indexOf(value.name) === index;
+
+      this.packagesWithScript = this.packagesWithScript
+        .map(pkg => graph.get(pkg.name))
+        .map(packageWithDeps)
+        .reduce(concat, [])
+        .map(graphNode => graphNode.package)
+        .filter(unique);
+    }
+
+    callback(null, true);
+  }
+
+  runScriptInPackages(callback) {
+    async.parallelLimit(this.packagesWithScript.map((pkg) => (cb) => {
+      this.runScriptInPackage(pkg, cb);
+    }), 100, callback);
+  }
+
+  runScriptInPackage(pkg, callback) {
+    const opts = {
+      cwd: pkg.location,
+      env: process.env
+    };
+
+    const command = `npm run ${this.script} ${escapeArgs(this.args)}`;
+    const proc = ChildProcessUtilities.exec(command, opts, callback);
+
+    function pipeOutput(source, target) {
+      const prefix = chalk.magenta(`[${pkg.name}]`);
+      source.on('data', data => target.write(`${prefix} ${data}`));
+    }
+
+    pipeOutput(proc.stdout, process.stdout);
+    pipeOutput(proc.stderr, process.stderr);
+  }
+}
+
+/*
+ * Make a simple CLI runner of the SortedRunCommand.
+ */
+program
+  .version('0.0.0')
+  .arguments('<npm-command> [package]')
+  .option('-t, --tree', 'Run command on dependencies first')
+  .action((cmd, pkg) => {
+    const flags = {
+      scope: pkg,
+      withDeps: program.tree,
+    };
+
+    const lernaCommand = new ServeCommand([cmd], flags);
+
+    // extend path with root-level node_modules to access build tools
+    // binaries
+    process.env['PATH'] = path.resolve(__dirname, '..', 'node_modules', '.bin') +
+      ':' + process.env['PATH'];
+
+    lernaCommand.run();
+  });
+
+program.parse(process.argv);
+if (program.args.length === 0) {
+  console.log(program.help());
+}
+
+// vim:ft=javascript
