@@ -408,13 +408,11 @@ export const dissocNode = R.curry(
   (nodeOrId, patch) => {
     const id = Node.getNodeId(nodeOrId);
     const links = listLinksByNode(id, patch);
-    console.log('found: ', links);
     const newPatch = R.reduce(
       (acc, cur) => dissocLink(cur, acc),
       patch,
       links
     );
-    console.log('after reduce: ', newPatch);
 
     return R.ifElse(
       R.pathSatisfies(R.complement(R.isNil), ['nodes', id]),
