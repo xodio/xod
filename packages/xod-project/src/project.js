@@ -308,7 +308,6 @@ export const validatePatchContents = R.curry(
  * @param {Project} project - project to operate on
  * @returns {Either<Error|Project>} copy of the project with the updated patch
  */
-// @TODO: Add validating of nodes and links
 export const assocPatch = R.curry((path, patch, project) =>
   Utils.validatePath(path).chain(
     validPath => Patch.validatePatch(patch).chain(
