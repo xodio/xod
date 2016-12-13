@@ -1,3 +1,4 @@
+import { Maybe } from 'ramda-fantasy';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 import shortid from 'shortid';
@@ -131,6 +132,26 @@ describe('Utils', () => {
     it('should be valid shortid', () => {
       const id = Utils.generateId();
       expect(shortid.isValid(id)).to.be.true();
+    });
+  });
+
+  describe('maybeToEither', () => {
+    it('should return Either.Left for Maybe.Nothing', () => {
+      const errMessage = 'test passed';
+      const nothing = Maybe.Nothing(); // eslint-disable-line new-cap
+      const either = Utils.maybeToEither(errMessage, nothing);
+      expect(either.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, either, errMessage);
+    });
+    it('should return Either.Right for Maybe.Just', () => {
+      const content = {};
+      const just = Maybe.of(content);
+      const either = Utils.maybeToEither({}, just);
+      expect(either.isRight).to.be.true();
+      Helper.expectEither(
+        val => expect(val).to.be.equal(content),
+        either
+      );
     });
   });
 });

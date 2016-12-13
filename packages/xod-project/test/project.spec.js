@@ -247,6 +247,75 @@ describe('Project', () => {
       );
     });
   });
+  describe('validatePatchContents', () => {
+    const smallProject = {
+      patches: {
+        '@/test': {},
+      },
+    };
+    const fullProject = {
+      patches: {
+        '@/test': {
+          pins: {
+            in: { key: 'in' },
+            out: { key: 'out' },
+          },
+        },
+      },
+    };
+    const patchWithNodeOnly = {
+      nodes: { a: { id: 'a', type: '@/test' } },
+    };
+    const fullPatch = {
+      nodes: {
+        a: { id: 'a', type: '@/test' },
+        b: { id: 'b', type: '@/test' },
+      },
+      links: {
+        l: {
+          id: 'l',
+          input: { nodeId: 'a', pinKey: 'in' },
+          output: { nodeId: 'b', pinKey: 'out' },
+        },
+      },
+    };
+
+    it('should be Either.Left for non-existent type', () => {
+      const result = Project.validatePatchContents(patchWithNodeOnly, {});
+      expect(result.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, result, CONST.ERROR.TYPE_NOT_FOUND);
+    });
+    it('should be Either.Left for non-existent pins', () => {
+      const result = Project.validatePatchContents(fullPatch, smallProject);
+      expect(result.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, result, CONST.ERROR.PINS_NOT_FOUND);
+    });
+    it('should be Either.Right for empty patch', () => {
+      const newPatch = { path: '@/test2' };
+      const result = Project.validatePatchContents(newPatch, smallProject);
+      expect(result.isRight).to.be.true();
+      Helper.expectEither(
+        validPatch => expect(validPatch).to.be.equal(newPatch),
+        result
+      );
+    });
+    it('should be Either.Right for patch with valid node without links', () => {
+      const result = Project.validatePatchContents(patchWithNodeOnly, smallProject);
+      expect(result.isRight).to.be.true();
+      Helper.expectEither(
+        validPatch => expect(validPatch).to.be.equal(patchWithNodeOnly),
+        result
+      );
+    });
+    it('should be Either.Right for valid new patch', () => {
+      const result = Project.validatePatchContents(fullPatch, fullProject);
+      expect(result.isRight).to.be.true();
+      Helper.expectEither(
+        validPatch => expect(validPatch).to.be.equal(fullPatch),
+        result
+      );
+    });
+  });
 
   // entity setters
   describe('assocPatch', () => {
@@ -258,7 +327,7 @@ describe('Project', () => {
       const newProject = Project.assocPatch('@/test', {}, {});
       expect(newProject.isLeft).to.be.true();
     });
-    it('should assoc patch into project.patches even if its undefined', () => {
+    it('should return Either.Right with associated patch', () => {
       const path = '@/test';
       const patch = Patch.createPatch();
       const newProject = Project.assocPatch(path, patch, {});

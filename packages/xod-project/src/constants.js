@@ -6,6 +6,9 @@
  * @enum {string}
  */
 export const ERROR = {
+  // project
+  TYPE_NOT_FOUND: 'Patch with specified type is not found in the project',
+  PINS_NOT_FOUND: 'Specified node types haven\'t required pins for creating links',
   // patches
   PATCH_INVALID: 'Patch is invalid',
   PATCH_NOT_FOUND: 'Can\'t find specified patch in the specified project',
@@ -14,6 +17,7 @@ export const ERROR = {
   // pathes
   PATH_INVALID: 'Path empty or contains invalid characters',
   // nodes
+  NODE_NOT_FOUND: 'Node not found in the patch',
   POSITION_INVALID: 'Invalid position property',
   // links
   LINK_ID_INVALID: 'Link should have a generated id',
@@ -24,7 +28,6 @@ export const ERROR = {
   // pins
   PIN_TYPE_INVALID: 'Pin type should be one of possible values: `string`, `number`, `boolean`, `pulse`',
   PIN_DIRECTION_INVALID: 'Pin directions should be `input` or `output`.',
-  // etc
 };
 
 /**

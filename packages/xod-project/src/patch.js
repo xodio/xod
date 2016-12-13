@@ -171,15 +171,28 @@ export const dissocPin = R.curry(
 );
 
 /**
- * Returns new patch with updated pins meta data
- * by passed Node (it should be input/output node).
- *
- * @function updatePinMetaByNode
- * @param {Node} node
- * @param {Patch} patch
- * @returns {Patch}
+ * @private
+ * @function getPins
+ * @param {Patch}
+ * @returns {Pins}
  */
-export const updatePinMetaByNode = () => {};
+const getPins = R.propOr({}, 'pins');
+
+/**
+ * Returns pin object by key
+ *
+ * @function getPinByKey
+ * @param {string} key
+ * @param {Patch} patch
+ * @returns {Maybe<Nothing|Pin>}
+ */
+export const getPinByKey = R.curry(
+  (key, patch) => R.compose(
+    Maybe,
+    R.prop(key),
+    getPins
+  )(patch)
+);
 
 /**
  * @function listPins
@@ -188,7 +201,7 @@ export const updatePinMetaByNode = () => {};
  */
 export const listPins = R.compose(
   R.values,
-  R.propOr({}, 'pins')
+  getPins
 );
 
 /**
@@ -224,7 +237,7 @@ export const listOutputPins = R.compose(
  */
 export const listLinks = R.compose(
   R.values,
-  R.propOr([], 'links')
+  R.propOr({}, 'links')
 );
 
 /**

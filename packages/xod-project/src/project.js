@@ -4,6 +4,8 @@ import { Either, Maybe } from 'ramda-fantasy';
 import * as CONST from './constants';
 import * as Utils from './utils';
 import * as Patch from './patch';
+import * as Node from './node';
+import * as Link from './link';
 
 /**
  * Root of a project’s state tree
@@ -199,6 +201,102 @@ export const getPatchPath = R.curry(
 );
 
 /**
+ * Checks project for existance of patches and pins that used in link.
+ *
+ * @private
+ * @function checkPinKeys
+ * @param {Link} link
+ * @param {Patch} curPatch
+ * @param {Project} project
+ * @returns {Either<Error|Link>}
+ */
+const checkPinKeys = (link, curPatch, project) => {
+  const check = (nodeIdGetter, pinKeyGetter) => {
+    const pinKey = pinKeyGetter(link);
+    // :: patch -> Either
+    const checkPinExists = R.compose(
+      Utils.maybeToEither(CONST.ERROR.PINS_NOT_FOUND),
+      Patch.getPinByKey(pinKey)
+    );
+    // :: node -> Either
+    const checkTypeExists = R.compose(
+      Utils.maybeToEither(CONST.ERROR.TYPE_NOT_FOUND),
+      getPatchByPath(R.__, project),
+      Node.getNodeType
+    );
+    // :: link -> Either
+    const checkNodeExists = R.compose(
+      Utils.maybeToEither(CONST.ERROR.NODE_NOT_FOUND),
+      Patch.getNodeById(R.__, curPatch),
+      nodeIdGetter
+    );
+
+    return R.compose(
+      R.chain(checkPinExists),
+      R.chain(checkTypeExists),
+      checkNodeExists
+    )(link);
+  };
+
+  return check(Link.getLinkInputNodeId, Link.getLinkInputPinKey).chain(
+    () => check(Link.getLinkOutputNodeId, Link.getLinkOutputPinKey).chain(
+      () => Either.of(curPatch)
+    )
+  );
+};
+
+/**
+ * Checks `patch` content to be valid:
+ *
+ * - all nodes have an existent types (patches),
+ * - valid pinKeys in the links
+ * @function validatePatchContents
+ * @param {Patch} patch
+ * @param {Project} project
+ * @returns {Either<Error|Patch>}
+ */
+// @TODO: Try to simplify this mess :-D
+export const validatePatchContents = R.curry(
+  (patch, project) => {
+    // :: patch -> Either
+    const checkNodeTypes = R.compose(
+      R.ifElse(
+        R.equals(false),
+        Utils.leaveError(CONST.ERROR.TYPE_NOT_FOUND),
+        R.always(Either.of(patch))
+      ),
+      R.all(Maybe.isJust),
+      R.chain(
+        R.compose(
+          getPatchByPath(R.__, project),
+          Node.getNodeType
+        )
+      ),
+      Patch.listNodes
+    );
+    // :: patch -> Either
+    const checkLinks = R.compose(
+      R.ifElse(
+        R.compose(
+          R.gt(R.__, 0),
+          R.length
+        ),
+        R.compose(
+          R.prop(0),
+          R.chain(R.partialRight(checkPinKeys, [patch, project]))
+        ),
+        R.always(
+          Either.of(patch)
+        )
+      ),
+      Patch.listLinks
+    );
+
+    return checkNodeTypes(patch).chain(checkLinks);
+  }
+);
+
+/**
  * Inserts or updates the `patch` within the `project`.
  *
  * Matching is done by patch’es path.
@@ -212,8 +310,10 @@ export const getPatchPath = R.curry(
 // @TODO: Add validating of nodes and links
 export const assocPatch = R.curry((path, patch, project) =>
   Utils.validatePath(path).chain(
-    validPath => Patch.validatePatch(patch).map(
-      R.assocPath(['patches', validPath], R.__, project)
+    validPath => Patch.validatePatch(patch).chain(
+      validPatch => validatePatchContents(validPatch, project).map(
+        R.assocPath(['patches', validPath], R.__, project)
+      )
     )
   )
 );

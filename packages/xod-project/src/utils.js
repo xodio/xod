@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { Either } from 'ramda-fantasy';
+import { Maybe, Either } from 'ramda-fantasy';
 import shortid from 'shortid';
 
 import * as CONST from './constants';
@@ -170,4 +170,19 @@ export const assocNumber = (key) => R.useWith(
     ),
     R.identity,
   ]
+);
+
+/**
+ * Return Either.Right for Maybe.Just and Either.Left for Maybe.Nothing
+ * @function maybeToEither
+ * @param {Error} error Error object for Maybe.Nothing
+ * @param {Maybe} maybe Maybe monad
+ * @returns {Either<Error|*>}
+ */
+export const maybeToEither = R.curry(
+  (error, maybe) => R.ifElse(
+    Maybe.isJust,
+    R.chain(Either.Right),
+    leaveError(error)
+  )(maybe)
 );

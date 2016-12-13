@@ -275,13 +275,27 @@ describe('Patch', () => {
     });
   });
 
-  describe('lists', () => {
+  describe('pins', () => {
     const patch = {
       pins: {
         in: { key: 'in', direction: CONST.PIN_DIRECTION.INPUT },
         out: { key: 'out', direction: CONST.PIN_DIRECTION.OUTPUT },
       },
     };
+    describe('getPinByKey', () => {
+      it('should return Maybe.Nothing for empty patch', () => {
+        const res = Patch.getPinByKey('a', {});
+        expect(res.isNothing).to.be.true();
+      });
+      it('should return Maybe.Just for patch with pin', () => {
+        const res = Patch.getPinByKey('a', { pins: { a: { key: 'a' } } });
+        expect(res.isJust).to.be.true();
+        expect(res.getOrElse(null))
+          .to.be.an('object')
+          .that.have.property('key')
+          .that.equal('a');
+      });
+    });
     describe('listPins', () => {
       it('should return empty array for empty patch', () => {
         expect(Patch.listPins({}))
@@ -439,7 +453,6 @@ describe('Patch', () => {
         .that.equals(node);
     });
   });
-  // @TODO: Add test for deleting links!
   // @TODO: Add test for deleting pinNode
   describe('dissocNode', () => {
     const patch = {
