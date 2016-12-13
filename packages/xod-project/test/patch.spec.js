@@ -112,8 +112,8 @@ describe('Patch', () => {
   describe('listNodes', () => {
     const patch = {
       nodes: {
-        '@/test': { id: '@/test' },
-        '@/test2': { id: '@/test2' },
+        'rndId': { id: 'rndId' },
+        'rndId2': { id: 'rndId2' },
       },
     };
 
@@ -126,8 +126,8 @@ describe('Patch', () => {
       expect(Patch.listNodes(patch))
         .to.be.instanceof(Array)
         .to.have.members([
-          patch.nodes['@/test'],
-          patch.nodes['@/test2'],
+          patch.nodes['rndId'],
+          patch.nodes['rndId2'],
         ]);
     });
   });
@@ -144,7 +144,7 @@ describe('Patch', () => {
   describe('getNodeById', () => {
     const patch = {
       nodes: {
-        '@/test': { id: '@/test' },
+        'rndId': { id: 'rndId' },
       },
     };
 
@@ -153,10 +153,10 @@ describe('Patch', () => {
         .to.be.true();
     });
     it('should Maybe.Just with node for existent node', () => {
-      expect(Patch.getNodeById('@/test', patch).isJust)
+      expect(Patch.getNodeById('rndId', patch).isJust)
         .to.be.true();
-      expect(Patch.getNodeById('@/test', patch).getOrElse(null))
-        .to.be.equal(patch.nodes['@/test']);
+      expect(Patch.getNodeById('rndId', patch).getOrElse(null))
+        .to.be.equal(patch.nodes['rndId']);
     });
   });
   describe('listLinks', () => {
@@ -444,37 +444,37 @@ describe('Patch', () => {
   describe('dissocNode', () => {
     const patch = {
       nodes: {
-        '@/test': { id: '@/test' },
-        '@/test2': { id: '@/test2' },
+        'rndId': { id: 'rndId' },
+        'rndId2': { id: 'rndId2' },
       },
       links: {
         1: {
           id: '1',
-          output: { pinKey: 'out', nodeId: '@/test' },
-          input: { pinKey: 'in', nodeId: '@/test2' },
+          output: { pinKey: 'out', nodeId: 'rndId' },
+          input: { pinKey: 'in', nodeId: 'rndId2' },
         },
       },
     };
 
     it('should remove node by id', () => {
-      const newPatch = Patch.dissocNode('@/test', patch);
+      const newPatch = Patch.dissocNode('rndId', patch);
 
       expect(newPatch)
         .to.be.an('object')
         .that.have.property('nodes')
-        .that.not.have.keys(['@/test']);
+        .that.not.have.keys(['rndId']);
     });
     it('should remove node by Node object', () => {
-      const node = patch.nodes['@/test'];
+      const node = patch.nodes['rndId'];
       const newPatch = Patch.dissocNode(node, patch);
 
       expect(newPatch)
         .to.be.an('object')
         .that.have.property('nodes')
-        .that.not.have.keys(['@/test']);
+        .that.not.have.keys(['rndId']);
     });
     it('should remove connected link', () => {
-      const node = patch.nodes['@/test'];
+      const node = patch.nodes['rndId'];
       const newPatch = Patch.dissocNode(node, patch);
 
       expect(newPatch)
@@ -483,13 +483,13 @@ describe('Patch', () => {
         .that.empty();
     });
     it('should not affect on other nodes', () => {
-      const newPatch = Patch.dissocNode('@/test', patch);
+      const newPatch = Patch.dissocNode('rndId', patch);
 
       expect(newPatch)
         .to.be.an('object')
         .that.have.property('nodes')
-        .that.have.keys(['@/test2'])
-        .and.not.have.keys(['@/test']);
+        .that.have.keys(['rndId2'])
+        .and.not.have.keys(['rndId']);
     });
     it('should return unchanges Patch for non-existent node/id', () => {
       expect(Patch.dissocNode('@/non-existent', patch))
