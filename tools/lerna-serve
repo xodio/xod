@@ -10,8 +10,34 @@ const PackageUtilities = require('lerna/lib/PackageUtilities');
 const ChildProcessUtilities = require('lerna/lib/ChildProcessUtilities');
 const RunCommand = require('lerna/lib/commands/RunCommand');
 
+const exceptLast = func => (value, idx, self) => 
+  ((idx === self.length - 1) ? value : func(value));
+
+function pipeOutput(source, target, label) {
+  const prefix = chalk.magenta(`[${label}] `);
+
+  let lineBuffer = [];
+
+  source.on('data', data =>
+    data
+      .split('\n')
+      .map(exceptLast(l => l + '\n'))
+      .forEach(pipe)
+  );
+
+  function pipe(data) {
+    lineBuffer.push(data);
+    if (data.endsWith('\n')) {
+      target.write(prefix);
+      target.write(lineBuffer.join(''));
+      lineBuffer = [];
+    }
+  }
+}
+
 /*
  */
+
 class ServeCommand extends RunCommand {
   initialize(callback) {
     super.initialize((err, result) => {
@@ -41,7 +67,8 @@ class ServeCommand extends RunCommand {
         .map(packageWithDeps)
         .reduce(concat, [])
         .map(graphNode => graphNode.package)
-        .filter(unique);
+        .filter(unique)
+        .filter((pkg) => pkg.scripts && pkg.scripts[this.script]);
     }
 
     callback(null, true);
@@ -62,13 +89,8 @@ class ServeCommand extends RunCommand {
     const command = `npm run ${this.script} ${escapeArgs(this.args)}`;
     const proc = ChildProcessUtilities.exec(command, opts, callback);
 
-    function pipeOutput(source, target) {
-      const prefix = chalk.magenta(`[${pkg.name}]`);
-      source.on('data', data => target.write(`${prefix} ${data}`));
-    }
-
-    pipeOutput(proc.stdout, process.stdout);
-    pipeOutput(proc.stderr, process.stderr);
+    pipeOutput(proc.stdout, process.stdout, pkg.name);
+    pipeOutput(proc.stderr, process.stderr, pkg.name);
   }
 }
 
