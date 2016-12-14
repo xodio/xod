@@ -424,7 +424,7 @@ export const rebasePatch = R.curry(
  */
 export const lsPatches = R.curry(
   (path, project) => {
-    const slashedPath = Utils.addSlashToEnd(path);
+    const slashedPath = Utils.ensureEndsWithSlash(path);
     const reg = new RegExp(`^${slashedPath}([a-zA-Z0-9_-])+$`);
 
     return R.compose(
@@ -444,7 +444,7 @@ export const lsPatches = R.curry(
  */
 export const lsDirs = R.curry(
   (path, project) => {
-    const slashedPath = Utils.addSlashToEnd(path);
+    const slashedPath = Utils.ensureEndsWithSlash(path);
     const reg = new RegExp(`^${slashedPath}([a-zA-Z0-9_-]+)(?:/).*`);
 
     return R.compose(

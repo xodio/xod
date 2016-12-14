@@ -1,6 +1,4 @@
 import R from 'ramda';
-import { Either } from 'ramda-fantasy';
-
 import * as CONST from './constants';
 import * as Utils from './utils';
 import * as Node from './node';
@@ -25,16 +23,16 @@ import * as Node from './node';
  * @returns {Link} error or a link object created
  */
 export const createLink = R.curry(
-  (secondPinKey, secondNode, firstPinKey, firstNode) => (
+  (inputPinKey, inputNode, outputPinKey, outputNode) => (
     {
       id: Utils.generateId(),
       output: {
-        nodeId: Node.getNodeId(firstNode),
-        pinKey: firstPinKey,
+        nodeId: Node.getNodeId(outputNode),
+        pinKey: outputPinKey,
       },
       input: {
-        nodeId: Node.getNodeId(secondNode),
-        pinKey: secondPinKey,
+        nodeId: Node.getNodeId(inputNode),
+        pinKey: inputPinKey,
       },
     }
   )
@@ -85,7 +83,10 @@ export const getLinkOutputPinKey = R.path(['output', 'pinKey']);
  * Returns function which will check that passed getter will be equal to some value
  * It's just a helper to create a few similar functions. So we're not exporting it.
  *
- * isGetterEqualTo :: function -> function
+ * @private
+ * @function isGetterEqualTo
+ * @param {function} getter
+ * @returns {function}
  */
 const isGetterEqualTo = (getter) => R.useWith(
   R.equals,
@@ -96,7 +97,7 @@ const isGetterEqualTo = (getter) => R.useWith(
 );
 
 /**
- * Returns boolean if input node id equal to specified node id
+ * Returns true if links input node id equal to specified node id
  * @function isLinkInputNodeIdEquals
  * @param {string} nodeId
  * @param {Link} link
@@ -105,7 +106,7 @@ const isGetterEqualTo = (getter) => R.useWith(
 export const isLinkInputNodeIdEquals = isGetterEqualTo(getLinkInputNodeId);
 
 /**
- * Returns boolean if input node id equal to specified node id
+ * Returns true if links output node id equal to specified node id
  * @function isLinkOutputNodeIdEquals
  * @param {string} nodeId
  * @param {Link} link
@@ -114,7 +115,7 @@ export const isLinkInputNodeIdEquals = isGetterEqualTo(getLinkInputNodeId);
 export const isLinkOutputNodeIdEquals = isGetterEqualTo(getLinkOutputNodeId);
 
 /**
- * Returns boolean if input pin key equal to specified pin key
+ * Returns true if input pin key equal to specified pin key
  * @function isInputPinKeyEquals
  * @param {string} pinKey
  * @param {Link} link
@@ -123,7 +124,7 @@ export const isLinkOutputNodeIdEquals = isGetterEqualTo(getLinkOutputNodeId);
 export const isLinkInputPinKeyEquals = isGetterEqualTo(getLinkInputPinKey);
 
 /**
- * Returns boolean if input pin key equal to specified pin key
+ * Returns true if input pin key equal to specified pin key
  * @function isOutputPinKeyEquals
  * @param {string} pinKey
  * @param {Link} link
@@ -135,11 +136,11 @@ export const isLinkOutputPinKeyEquals = isGetterEqualTo(getLinkOutputPinKey);
  * Checks that input/output property has required properties
  *
  * @private
- * @function hasLinkIOProps
+ * @function hasLinkRequiredProps
  * @param {object} io
  * @returns {boolean}
  */
-const hasLinkIOProps = R.both(R.has('nodeId'), R.has('pinKey'));
+const hasLinkRequiredProps = R.both(R.has('nodeId'), R.has('pinKey'));
 
 /**
  * Checks that link has an id.
@@ -166,7 +167,7 @@ export const validateLinkId = Utils.errOnFalse(
 export const validateLinkInput = Utils.errOnFalse(
   CONST.ERROR.LINK_INPUT_INVALID,
   R.compose(
-    hasLinkIOProps,
+    hasLinkRequiredProps,
     R.propOr({}, 'input')
   )
 );
@@ -181,7 +182,7 @@ export const validateLinkInput = Utils.errOnFalse(
 export const validateLinkOutput = Utils.errOnFalse(
   CONST.ERROR.LINK_OUTPUT_INVALID,
   R.compose(
-    hasLinkIOProps,
+    hasLinkRequiredProps,
     R.propOr({}, 'output')
   )
 );

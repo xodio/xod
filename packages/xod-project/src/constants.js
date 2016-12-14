@@ -11,11 +11,11 @@ export const ERROR = {
   PINS_NOT_FOUND: 'Specified node types haven\'t required pins for creating links',
   // patches
   PATCH_INVALID: 'Patch is invalid',
-  PATCH_NOT_FOUND: 'Can\'t find specified patch in the specified project',
-  PATCH_NOT_FOUND_BY_PATH: 'There is no patch in the project with specified path',
-  PATCH_PATH_OCCUPIED: 'Another patch with the same path is already exist',
+  PATCH_NOT_FOUND: "Can't find the patch in the project",
+  PATCH_NOT_FOUND_BY_PATH: 'There is no patch with the specified path in the project',
+  PATCH_PATH_OCCUPIED: 'Another patch with the same path already exists',
   // pathes
-  PATH_INVALID: 'Path empty or contains invalid characters',
+  PATH_INVALID: 'Path is empty or contains invalid characters',
   // nodes
   NODE_NOT_FOUND: 'Node not found in the patch',
   POSITION_INVALID: 'Invalid position property',
@@ -23,8 +23,8 @@ export const ERROR = {
   LINK_ID_INVALID: 'Link should have a generated id',
   LINK_INPUT_INVALID: 'Link should have input object with keys: `pinKey` and `nodeId`',
   LINK_OUTPUT_INVALID: 'Link should have output object with keys: `pinKey` and `nodeId`',
-  LINK_INPUT_NODE_NOT_FOUND: 'Input node of the link is not exist in this patch',
-  LINK_OUTPUT_NODE_NOT_FOUND: 'Output node of the link is not exist in this patch',
+  LINK_INPUT_NODE_NOT_FOUND: 'Input node of the link does not exist in this patch',
+  LINK_OUTPUT_NODE_NOT_FOUND: 'Output node of the link does not exist in this patch',
   // pins
   PIN_TYPE_INVALID: 'Pin type should be one of possible values: `string`, `number`, `boolean`, `pulse`',
   PIN_DIRECTION_INVALID: 'Pin directions should be `input` or `output`.',

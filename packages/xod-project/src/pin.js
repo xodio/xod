@@ -1,6 +1,4 @@
 import R from 'ramda';
-import { Either } from 'ramda-fantasy';
-
 import * as Utils from './utils';
 import * as CONST from './constants';
 
@@ -131,7 +129,7 @@ export const validatePinDirection = Utils.errOnFalse(
 );
 
 /**
- * Validates for correct pin
+ * Validates pin correctness
  *
  * @function validatePin
  * @param {Pin} pin

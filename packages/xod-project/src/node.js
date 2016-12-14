@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { Maybe, Either } from 'ramda-fantasy';
+import { Maybe } from 'ramda-fantasy';
 import * as Utils from './utils';
 import * as CONST from './constants';
 
@@ -25,6 +25,18 @@ import * as CONST from './constants';
  * @typedef {(string|number|boolean|Pulse)} PinValue
  */
 
+/**
+ * Returns path to pin property
+ * @private
+ * @function getPathToPinProperty
+ * @param {string} propName property name: `value` or `curried`
+ * @param {string} pinKey pin key
+ * @returns {string[]} path like `['pins', 'pinKey', 'value']`
+ */
+const getPathToPinProperty = R.curry(
+  (propName, pinKey) => ['pins', pinKey, propName]
+);
+
  // =============================================================================
  //
  // Validation
@@ -32,7 +44,7 @@ import * as CONST from './constants';
  // =============================================================================
 
 /**
- * Validate that position object has a keys x and y with numbers.
+ * Validate that position object has keys x and y with numbers.
  *
  * @function validatePosition
  * @param {Position} position
@@ -198,7 +210,7 @@ export const getPinCurriedValue = R.compose(
   R.useWith(
     R.pathOr(null),
     [
-      R.insert(1, R.__, ['pins', 'value']),
+      getPathToPinProperty('value'),
       R.identity,
     ]
   )
@@ -216,7 +228,7 @@ export const getPinCurriedValue = R.compose(
 export const setPinCurriedValue = R.useWith(
   R.assocPath,
   [
-    R.insert(1, R.__, ['pins', 'value']),
+    getPathToPinProperty('value'),
     R.identity,
     R.identity,
   ]
@@ -234,7 +246,7 @@ export const setPinCurriedValue = R.useWith(
 export const curryPin = R.useWith(
   R.assocPath,
   [
-    R.insert(1, R.__, ['pins', 'curried']),
+    getPathToPinProperty('curried'),
     R.identity,
     R.identity,
   ]
@@ -249,13 +261,13 @@ export const curryPin = R.useWith(
 export const isPinCurried = R.useWith(
   R.pathSatisfies(R.equals(true)),
   [
-    R.insert(1, R.__, ['pins', 'curried']),
+    getPathToPinProperty('curried'),
     R.identity,
   ]
 );
 
 /**
- * Returns regExp for extract data type from node type.
+ * Returns regExp to extract data type from node type.
  *
  * @private
  * @function getDataTypeRegExp
@@ -269,9 +281,16 @@ const getDataTypeRegExp = R.compose(
 );
 
 /**
+ * RegExp to extract data type from node type
+ *
+ * @name dataTypeRegexp
+ * @type {RegExp}
+ */
+const dataTypeRegexp = getDataTypeRegExp(CONST.PIN_TYPE);
+
+/**
  * Returns data type extracted from pinNode type
  * @function getPinNodeDataType
- * @param {PIN_TYPES} pinTypes
  * @param {Node} node
  * @returns {Either<Error|string>}
  */
@@ -287,13 +306,8 @@ export const getPinNodeDataType = R.compose(
     ),
     R.prop(1)
   ),
-  R.useWith(
-    R.match,
-    [
-      getDataTypeRegExp,
-      getNodeType,
-    ]
-  )
+  R.match(dataTypeRegexp),
+  getNodeType
 );
 
 /**

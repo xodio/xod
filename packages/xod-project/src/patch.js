@@ -429,7 +429,7 @@ export const assocNode = R.curry(
       (_node, _patch) => R.ifElse(
         Node.isPinNode,
         pinNode => {
-          const newPatch = Node.getPinNodeDataType(CONST.PIN_TYPE, pinNode).chain(
+          const newPatch = Node.getPinNodeDataType(pinNode).chain(
             type => Node.getPinNodeDirection(pinNode).chain(
               direction => Pin.createPin(id, type, direction).chain(
                 // @TODO: Add optional data (label, description, order) from node to pin

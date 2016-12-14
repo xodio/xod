@@ -117,11 +117,11 @@ export const validatePath = errOnFalse(
 
 /**
  * Adds a slash to the end of string if it doesn't exist
- * @function addSlashToEnd
+ * @function ensureEndsWithSlash
  * @param {string} str
  * @returns {string}
  */
-export const addSlashToEnd = R.ifElse(
+export const ensureEndsWithSlash = R.ifElse(
   R.compose(
     R.equals('/'),
     R.last
