@@ -12,14 +12,14 @@ Install all dependencies and perform package cross-linking with:
 
 ### Browser IDE
 
-    $ npm run dev:tree:xod-client-browser
+    $ npm run dev -- xod-client-browser
 
 Open <http://localhost:8080> in your browser.
 
 ### Desktop IDE
 
-    $ npm run build:tree:xod-client-electron
-    $ npm run start:pkg:xod-client-electron
+    $ npm run build -- xod-client-electron
+    $ npm run start:xod-client-electron
 
 ### Hub Server
 
@@ -41,8 +41,11 @@ Maintenance Scripts
 ### Verification
 
 * `npm run lint` performs lint-checking in all packages
-* `npm run test:pkg:<name>` runs test on package with specified `<name>`,
-  e.g.  `npm run test:pkg:xod-client`
+* `npm run test -- <name> --only` runs test on package with specified `<name>`.
+  E.g. `npm run test -- xod-client --only`.
+* `npm run test -- <name>` runs test on package with specified `<name>`,
+  and all packages it depends on directly or indirectly.
+  E.g. `npm run test -- xod-client`.
 * `npm test` tests all packages
 * `npm run verify` builds lints and tests; run this prior to pull request
 * `npm run ci` installs and verifies; used as a script for CI-server
@@ -50,18 +53,17 @@ Maintenance Scripts
 ### Building
 
 * `npm run build` builds all packages
-* `npm rebuild` cleans build artifacts then builds everything
-* `npm run build:pkg:<name>` builds a package with specified `<name>`,
-  e.g. `npm run build:pkg:xod-core`
-* `npm run build:tree:<name>` builds a package with specified `<name>`
-  and all its dependencies, e.g. `npm run build:tree:xod-client-electron`
-* `npm run dev:pkg:<name>` builds a package with specified `<name>` and
+* `npm run build -- <name> --only` builds a package with specified `<name>`,
+  e.g. `npm run build -- xod-core --only`
+* `npm run build -- <name>` builds a package with specified `<name>`
+  and all its dependencies, e.g. `npm run build -- xod-client-electron`
+* `npm run dev -- <name> --only` builds a package with specified `<name>` and
   stays in watch mode with auto-rebuild when its files change,
-  e.g. `npm run dev:pkg:xod-core`
-* `npm run dev:tree:<name>` builds a package with specified `<name>` and all
+  e.g. `npm run dev -- xod-core --only`
+* `npm run dev -- <name>` builds a package with specified `<name>` and all
   its dependencies, then stay in watch mode looking for changes in that
   package or any of its dependencies;
-  e.g. `npm run dev:tree:xod-client-browser`
+  e.g. `npm run dev -- xod-client-browser`
 
 ### Packaging
 
@@ -84,8 +86,3 @@ To create a user in the DB:
 To destroy all data and reset the DB to an initial state:
 
     $ npm run reset
-
-Building User Documentation
----------------------------
-
-Refer to [README](xod-client/doc/README.md) in `xod-client/doc/` directory.
