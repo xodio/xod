@@ -4,6 +4,7 @@
   "description": "XOD project: Transformer",
   "scripts": {
     "build": "babel --presets es2015 src/ -d dist/",
+    "dev": "npm run build -- --watch",
     "test": "mocha test/**/*.spec.js"
   },
   "repository": {},
