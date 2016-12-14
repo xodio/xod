@@ -277,7 +277,7 @@ const getDataTypeRegExp = R.compose(
  */
 export const getPinNodeDataType = R.compose(
   R.map(R.toLower),
-  Utils.maybeToEither(CONST.ERROR.DATATYPE_INVALID),
+  Utils.errOnNothing(CONST.ERROR.DATATYPE_INVALID),
   Maybe,
   R.compose(
     R.ifElse(
@@ -303,7 +303,7 @@ export const getPinNodeDataType = R.compose(
  * @returns {Either<Error|string>}
  */
 export const getPinNodeDirection = R.compose(
-  Utils.maybeToEither(CONST.ERROR.PIN_DIRECTION_INVALID),
+  Utils.errOnNothing(CONST.ERROR.PIN_DIRECTION_INVALID),
   Maybe,
   R.cond([
     [isInputPinNode, R.always(CONST.PIN_DIRECTION.INPUT)],

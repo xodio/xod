@@ -214,19 +214,19 @@ const checkPinKeys = (link, curPatch, project) => {
     const pinKey = pinKeyGetter(link);
     // :: patch -> Either
     const checkPinExists = R.compose(
-      Utils.maybeToEither(CONST.ERROR.PINS_NOT_FOUND),
+      Utils.errOnNothing(CONST.ERROR.PINS_NOT_FOUND),
       Patch.getPinByKey(pinKey)
     );
     // :: node -> Either
     const checkTypeExists = R.compose(
-      Utils.maybeToEither(CONST.ERROR.TYPE_NOT_FOUND),
+      Utils.errOnNothing(CONST.ERROR.TYPE_NOT_FOUND),
       getPatchByPath(R.__, project),
       Node.getNodeType
     );
     // :: link -> Either
     // @TODO: Get rid of this check or get rid of part of validateLink method
     const checkNodeExists = R.compose(
-      Utils.maybeToEither(CONST.ERROR.NODE_NOT_FOUND),
+      Utils.errOnNothing(CONST.ERROR.NODE_NOT_FOUND),
       Patch.getNodeById(R.__, curPatch),
       nodeIdGetter
     );

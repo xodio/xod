@@ -190,15 +190,15 @@ export const assocNumber = (key) => R.useWith(
 
 /**
  * Return Either.Right for Maybe.Just and Either.Left for Maybe.Nothing
- * @function maybeToEither
+ * @function errOnNothing
  * @param {string} errorMessage Error message for Maybe.Nothing
  * @param {Maybe<*>} maybe Maybe monad
  * @returns {Either<Error|*>}
  */
-export const maybeToEither = R.curry(
+export const errOnNothing = R.curry(
   (errorMessage, maybe) => R.ifElse(
-    Maybe.isJust,
-    R.chain(Either.Right),
-    err(errorMessage)
+    Maybe.isNothing,
+    err(errorMessage),
+    R.chain(Either.Right)
   )(maybe)
 );

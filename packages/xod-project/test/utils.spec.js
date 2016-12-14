@@ -153,18 +153,18 @@ describe('Utils', () => {
     });
   });
 
-  describe('maybeToEither', () => {
+  describe('errOnNothing', () => {
     it('should return Either.Left for Maybe.Nothing', () => {
       const errMessage = 'test passed';
       const nothing = Maybe.Nothing(); // eslint-disable-line new-cap
-      const either = Utils.maybeToEither(errMessage, nothing);
+      const either = Utils.errOnNothing(errMessage, nothing);
       expect(either.isLeft).to.be.true();
       Helper.expectErrorMessage(expect, either, errMessage);
     });
     it('should return Either.Right for Maybe.Just', () => {
       const content = {};
       const just = Maybe.of(content);
-      const either = Utils.maybeToEither({}, just);
+      const either = Utils.errOnNothing({}, just);
       expect(either.isRight).to.be.true();
       Helper.expectEither(
         val => expect(val).to.be.equal(content),
