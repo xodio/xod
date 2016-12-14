@@ -427,10 +427,33 @@ export const dissocLink = R.curry(
 export const assocNode = R.curry(
   (node, patch) => {
     const id = Node.getNodeId(node);
+    const addPin = R.curry(
+      (_node, _patch) => R.ifElse(
+        Node.isPinNode,
+        pinNode => {
+          const newPatch = Node.getPinNodeDataType(CONST.PIN_TYPE, pinNode).chain(
+            type => Node.getPinNodeDirection(pinNode).chain(
+              direction => Pin.createPin(id, type, direction).chain(
+                // @TODO: Add optional data (label, description, order) from node to pin
+                newPin => assocPin(newPin, _patch)
+              )
+            )
+          );
+          // @TODO: Think is it okay or we should return Either<Error|Patch> for invalid pinNodes?
+          return Either.either(
+            () => _patch,
+            valid => valid,
+            newPatch
+          );
+        },
+        R.always(_patch)
+      )(_node)
+    );
     const addNode = R.assocPath(['nodes', id]);
 
     return R.compose(
-      addNode(node)
+      addNode(node),
+      addPin(node)
     )(patch);
   }
 );

@@ -28,6 +28,8 @@ export const ERROR = {
   // pins
   PIN_TYPE_INVALID: 'Pin type should be one of possible values: `string`, `number`, `boolean`, `pulse`',
   PIN_DIRECTION_INVALID: 'Pin directions should be `input` or `output`.',
+  // other
+  DATATYPE_INVALID: 'Invalid data type',
 };
 
 /**

@@ -430,20 +430,17 @@ describe('Patch', () => {
   // @TODO: Add test for adding pinNode (assocNode -> assocPin)
   describe('assocNode', () => {
     it('should return Patch with new Node', () => {
-      const patch = { path: '@/myPatch' };
+      const patch = {};
       const node = { id: '1' };
       const newPatch = Patch.assocNode(node, patch);
 
-      expect(newPatch)
-        .to.have.property('path')
-        .that.equals(patch.path);
       expect(newPatch)
         .to.have.property('nodes')
         .to.have.property('1')
         .that.equals(node);
     });
     it('should replace old Node with same id', () => {
-      const patch = { path: '@/myPatch', nodes: { 1: { id: '1', label: 'old' } } };
+      const patch = { nodes: { 1: { id: '1', label: 'old' } } };
       const node = { id: '1', label: 'new' };
       const newPatch = Patch.assocNode(node, patch);
 
@@ -451,6 +448,37 @@ describe('Patch', () => {
         .to.have.property('nodes')
         .to.have.property('1')
         .that.equals(node);
+    });
+    it('should add pin by associating pinNode', () => {
+      const patch = {};
+      const node = { id: '1', type: 'xod/core/inputNumber' };
+      const newPatch = Patch.assocNode(node, patch);
+
+      expect(newPatch)
+        .to.have.property('pins')
+        .that.have.property('1')
+        .that.have.keys(['key', 'type', 'direction']);
+    });
+    it('should update pin by associating pinNode', () => {
+      const patch = {
+        pins: {
+          1: {
+            key: '1',
+            type: 'string',
+            direction: 'output',
+          },
+        },
+      };
+      const node = { id: '1', type: 'xod/core/inputNumber' };
+      const newPatch = Patch.assocNode(node, patch);
+      expect(newPatch)
+        .to.have.property('pins')
+        .that.have.property('1')
+        .that.deep.equal({
+          key: '1',
+          type: 'number',
+          direction: 'input',
+        });
     });
   });
   // @TODO: Add test for deleting pinNode

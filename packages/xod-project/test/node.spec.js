@@ -274,4 +274,46 @@ describe('Node', () => {
     });
   });
   // etc
+  describe('getPinNodeDataType', () => {
+    it('should return Either.Left with error for non-existent data-type', () => {
+      const res = Node.getPinNodeDataType({}, { type: 'xod/core/inputA' });
+      expect(res.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, res, CONST.ERROR.DATATYPE_INVALID);
+    });
+    it('should return Either.Right with `a` for xod/core/inputA', () => {
+      const res = Node.getPinNodeDataType({ a: 'a' }, { type: 'xod/core/inputA' });
+      Helper.expectEither(
+        val => expect(val).to.be.equal('a'),
+        res
+      );
+    });
+    it('should return Either.Right with `a` for xod/core/outputA', () => {
+      const res = Node.getPinNodeDataType({ a: 'a' }, { type: 'xod/core/inputA' });
+      Helper.expectEither(
+        val => expect(val).to.be.equal('a'),
+        res
+      );
+    });
+  });
+  describe('getPinNodeDirection', () => {
+    it('should return Either.Left with error for `xod/core/invalidPinNode`', () => {
+      const res = Node.getPinNodeDirection({ type: 'xod/core/invalidPinNode' });
+      expect(res.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, res, CONST.ERROR.PIN_DIRECTION_INVALID);
+    });
+    it('should return Either.Right with `input` for `xod/core/inputSomething`', () => {
+      const res = Node.getPinNodeDirection({ type: 'xod/core/inputSomething' });
+      Helper.expectEither(
+        val => expect(val).to.be.equal('input'),
+        res
+      );
+    });
+    it('should return Either.Right with `output` for `xod/core/outputSomething`', () => {
+      const res = Node.getPinNodeDirection({ type: 'xod/core/outputSomething' });
+      Helper.expectEither(
+        val => expect(val).to.be.equal('output'),
+        res
+      );
+    });
+  });
 });

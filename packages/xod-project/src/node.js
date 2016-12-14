@@ -254,3 +254,61 @@ export const isPinCurried = R.useWith(
     R.identity,
   ]
 );
+
+/**
+ * Returns regExp for extract data type from node type.
+ *
+ * @private
+ * @function getDataTypeRegExp
+ * @param {PIN_TYPES} pinTypes
+ * @returns {RegExp}
+ */
+const getDataTypeRegExp = R.compose(
+  pinTypes => new RegExp(`^xod/core/(?:input|output)(${pinTypes})`, 'i'),
+  R.join('|'),
+  R.values
+);
+
+/**
+ * Returns data type extracted from pinNode type
+ * @function getPinNodeDataType
+ * @param {PIN_TYPES} pinTypes
+ * @param {Node} node
+ * @returns {Either<Error|string>}
+ */
+export const getPinNodeDataType = R.compose(
+  R.map(R.toLower),
+  Utils.maybeToEither(CONST.ERROR.DATATYPE_INVALID),
+  Maybe,
+  R.compose(
+    R.ifElse(
+      R.isEmpty,
+      R.always(null),
+      R.identity
+    ),
+    R.prop(1)
+  ),
+  R.useWith(
+    R.match,
+    [
+      getDataTypeRegExp,
+      getNodeType,
+    ]
+  )
+);
+
+/**
+ * Returns pin direction extracted from pinNode type
+ * @function getPinDirectionFromNodeType
+ * @param {Node} node
+ * @returns {Either<Error|string>}
+ */
+export const getPinNodeDirection = R.compose(
+  Utils.maybeToEither(CONST.ERROR.PIN_DIRECTION_INVALID),
+  Maybe,
+  R.cond([
+    [isInputPinNode, R.always(CONST.PIN_DIRECTION.INPUT)],
+    [isOutputPinNode, R.always(CONST.PIN_DIRECTION.OUTPUT)],
+    [R.T, R.always(null)],
+  ])
+);
