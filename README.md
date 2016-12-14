@@ -1,7 +1,7 @@
 XOD
 ===
 
-[![Build Status](https://travis-ci.com/amperka/xod.svg?token=qpYnhqFDqibUozbjyas8&branch=master)](https://travis-ci.com/amperka/xod)
+[![Build Status](https://travis-ci.com/xodio/xod.svg?token=qpYnhqFDqibUozbjyas8&branch=master)](https://travis-ci.com/xodio/xod)
 
 Deployment on localhost
 -----------------------
