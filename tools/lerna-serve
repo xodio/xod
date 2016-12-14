@@ -14,11 +14,11 @@ const ServeCommand = require('./lerna-ext/ServeCommand');
 program
   .version('0.0.0')
   .arguments('<npm-command> [package]')
-  .option('-t, --tree', 'Run command on dependencies first')
+  .option('--only', 'Do not run command on dependencies, just run it on package')
   .action((cmd, pkg) => {
     const flags = {
       scope: pkg,
-      withDeps: program.tree,
+      withDeps: !program.only,
     };
 
     const lernaCommand = new ServeCommand([cmd], flags);
