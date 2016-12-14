@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "XOD project: Client application",
   "scripts": {
-    "dev": "webpack-dev-server --watch --colors --inline --hot --config webpack/web-dev.js",
-    "build": "webpack --progress --colors --config webpack/web-dev.js",
-    "test": "mocha-webpack \"test/**/*.spec.js\""
+    "build": "babel src/ -d dist/",
+    "dev": "npm run build -- --watch",
+    "test": "mocha test/**/*.spec.js"
   },
   "repository": {},
   "keywords": [],

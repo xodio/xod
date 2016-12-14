@@ -2,7 +2,10 @@
   "name": "xod-js",
   "version": "0.0.1",
   "description": "XOD project: Espruino runtime",
-  "scripts": {},
+  "scripts": {
+    "build": "webpack --colors",
+    "test": "mocha-webpack test/**/*.spec.js"
+  },
   "repository": {},
   "keywords": [],
   "author": "",

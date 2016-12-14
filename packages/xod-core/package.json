@@ -4,8 +4,8 @@
   "description": "XOD project: Core",
   "scripts": {
     "build": "babel src/ -d dist/",
-    "dev": "babel --watch src/ -d dist/",
-    "test": "mocha --require babel-register test/**/*.js"
+    "dev": "npm run build -- --watch",
+    "test": "mocha test/**/*.spec.js"
   },
   "repository": {},
   "keywords": [],

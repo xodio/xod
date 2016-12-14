@@ -1,0 +1,39 @@
+#!/usr/bin/env node
+/*
+ * CLI tool to run NPM commands on packages taking their
+ * dependency graph into account. Usage example:
+ *
+ * $ ./tools/lerna-run-sorted --tree build xod-client-browser
+ *
+ * Run `./tools/lerna-run-sorted --help` for details
+ */
+const path = require('path');
+const program = require('commander');
+const SortedRunCommand = require('./lerna-ext/SortedRunCommand');
+
+program
+  .version('0.0.0')
+  .arguments('<npm-command> [package]')
+  .option('--only', 'Do not run command on dependencies, just run it on package')
+  .action((cmd, pkg) => {
+    const flags = {
+      scope: pkg,
+      withDeps: !program.only,
+    };
+
+    const lernaCommand = new SortedRunCommand([cmd], flags);
+
+    // extend path with root-level node_modules to access build tools
+    // binaries
+    process.env['PATH'] = path.resolve(__dirname, '..', 'node_modules', '.bin') +
+      ':' + process.env['PATH'];
+
+    lernaCommand.run();
+  });
+
+program.parse(process.argv);
+if (program.args.length === 0) {
+  console.log(program.help());
+}
+
+// vim:ft=javascript

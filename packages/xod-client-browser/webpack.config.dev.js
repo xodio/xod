@@ -3,8 +3,8 @@ const path = require('path');
 const validate = require('webpack-validator');
 const merge = require('webpack-merge');
 
-const baseConfig = require('./base.js');
-const pkgpath = subpath => path.join(__dirname, '..', subpath);
+const baseConfig = require('./webpack.config.js');
+const pkgpath = subpath => path.join(__dirname, subpath);
 
 const config = merge.smart(baseConfig, {
   output: {

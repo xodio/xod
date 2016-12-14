@@ -2,7 +2,11 @@
   "name": "xod-transformer",
   "version": "0.0.1",
   "description": "XOD project: Transformer",
-  "scripts": {},
+  "scripts": {
+    "build": "babel src/ -d dist/",
+    "dev": "npm run build -- --watch",
+    "test": "mocha test/**/*.spec.js"
+  },
   "repository": {},
   "keywords": [],
   "author": "",
