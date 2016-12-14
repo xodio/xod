@@ -423,7 +423,6 @@ export const dissocLink = R.curry(
  * @param {Patch} patch - a patch with the `node`
  * @returns {Patch} a copy of the `patch` with the node replaced
  */
-// @TODO: Add pinNodes should assoc (add or update) pins to patch
 export const assocNode = R.curry(
   (node, patch) => {
     const id = Node.getNodeId(node);
