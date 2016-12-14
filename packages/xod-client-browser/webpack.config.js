@@ -3,17 +3,15 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const autoprefixer = require('autoprefixer');
-const webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
 
-const pkgpath = subpath => path.resolve(__dirname, '..', subpath);
+const pkgpath = subpath => path.join(__dirname, subpath);
 const assetsPath = fs.realpathSync(pkgpath('node_modules/xod-client/src/core/assets'));
 
-const options = {
+module.exports = {
   devtool: 'source-map',
   entry: [
     'babel-polyfill',
     pkgpath('node_modules/xod-client/src/core/styles/main.scss'),
-    pkgpath('src/view/styles/main.scss'),
     pkgpath('src/shim.js'),
     pkgpath('src/index.jsx'),
   ],
@@ -21,12 +19,6 @@ const options = {
     filename: 'bundle.js',
     path: pkgpath('dist'),
     publicPath: '',
-  },
-  devServer: {
-    hot: true,
-    host: 'localhost',
-    port: 8080,
-    contentBase: pkgpath('dist'),
   },
   resolve: {
     modulesDirectories: [
@@ -36,12 +28,6 @@ const options = {
       pkgpath('node_modules/xod-js/node_modules'),
     ],
     extensions: ['', '.js', '.jsx', '.scss'],
-  },
-  externals: {
-    // Webpack can’t package native modules
-    // keep them external
-    bindings: 'commonjs bindings',
-    serialport: 'commonjs serialport',
   },
   module: {
     loaders: [
@@ -74,17 +60,13 @@ const options = {
         ],
       },
       {
-        test: /\.json$/,
-        loader: 'json-loader',
-      },
-      {
         test: /\.json5$/,
         loader: 'json5-loader',
       },
       {
         test: /json5\/lib\/require/,
         loader: 'null',
-      },
+      }
     ],
   },
   plugins: [
@@ -95,7 +77,3 @@ const options = {
   ],
   postcss: function postCssPlugins() { return [autoprefixer]; },
 };
-
-options.target = webpackTargetElectronRenderer(options);
-
-module.exports = options;

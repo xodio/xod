@@ -3,11 +3,11 @@ const path = require('path');
 const validate = require('webpack-validator');
 const merge = require('webpack-merge');
 
-const baseConfig = require('./base.js');
+const baseConfig = require('./webpack.config.js');
 
 delete baseConfig['externals'];
 
-const pkgpath = subpath => path.join(__dirname, '..', subpath);
+const pkgpath = subpath => path.join(__dirname, subpath);
 
 const config = merge.smart(baseConfig, {
   module: {
