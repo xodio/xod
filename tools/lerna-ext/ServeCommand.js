@@ -31,6 +31,13 @@ function pipeOutput(source, target, label) {
   }
 }
 
+/*
+ * ServeCommand is an upgrade for `lerna run` for NPM-commands that
+ * keep running forever by design, e.g. watch, start, etc.
+ *
+ * It correctly handles real-time output streams of the processes
+ * that otherwise is available only when a process terminates.
+ */
 class ServeCommand extends RunCommand {
   initialize(callback) {
     super.initialize((err, result) => {
