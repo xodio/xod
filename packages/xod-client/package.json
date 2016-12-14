@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "XOD project: Client application",
   "scripts": {
-    "build": "babel --presets react src/ -d dist/",
+    "build": "babel src/ -d dist/",
     "dev": "npm run build -- --watch",
     "test": "mocha test/**/*.spec.js"
   },
