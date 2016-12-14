@@ -48,14 +48,31 @@ export const assocRight = R.curry(
 
  /**
   * Returns an Error object wrapped into Either.Left
-  * @function leaveError
+  * @function err
   * @param {string} errorMessage
   * @returns {Either.Left<Error>}
   */
-export const leaveError = R.compose(
+export const err = R.compose(
   R.always,
   Either.Left,
   R.construct(Error)
+);
+
+/**
+ * Returns function that checks condition and returns Either
+ * Left with Error for false
+ * Right with passed content for true
+ * @function errOnFalse
+ * @param {string} errorMessage
+ * @param {function} condition
+ * @returns {function}
+ */
+export const errOnFalse = R.curry(
+  (errorMessage, condition) => R.ifElse(
+    condition,
+    Either.of,
+    err(errorMessage)
+  )
 );
 
 /**
@@ -90,13 +107,12 @@ export const isPathLibrary = R.test(/^[a-zA-Z0-9_\-/]+$/);
  * @param {string} path - string to check
  * @returns {Either<Error|string>} error or valid path
  */
-export const validatePath = R.ifElse(
+export const validatePath = errOnFalse(
+  CONST.ERROR.PATH_INVALID,
   R.allPass([
     R.complement(R.isNil),
     R.test(/^(@\/)?[a-zA-Z0-9_\-/]+$/),
-  ]),
-  Either.Right,
-  (path) => leaveError(CONST.ERROR.PATH_INVALID)(path)
+  ])
 );
 
 /**
@@ -183,6 +199,6 @@ export const maybeToEither = R.curry(
   (errorMessage, maybe) => R.ifElse(
     Maybe.isJust,
     R.chain(Either.Right),
-    leaveError(errorMessage)
+    err(errorMessage)
   )(maybe)
 );

@@ -91,68 +91,68 @@ describe('Link', () => {
     });
   });
   // Checks
-  describe('isInputNodeIdEqualsTo', () => {
+  describe('isLinkInputNodeIdEquals', () => {
     const link = {
       input: { pinKey: 'toPin', nodeId: '@/to' },
       output: { pinKey: 'fromPin', nodeId: '@/from' },
     };
 
     it('should return false for non-existent nodeId', () => {
-      expect(Link.isInputNodeIdEqualsTo('@/non-existent', link)).to.be.false();
+      expect(Link.isLinkInputNodeIdEquals('@/non-existent', link)).to.be.false();
     });
     it('should return false for nodeId from output', () => {
-      expect(Link.isInputNodeIdEqualsTo(link.output.nodeId, link)).to.be.false();
+      expect(Link.isLinkInputNodeIdEquals(link.output.nodeId, link)).to.be.false();
     });
     it('should return true for nodeId from input', () => {
-      expect(Link.isInputNodeIdEqualsTo(link.input.nodeId, link)).to.be.true();
+      expect(Link.isLinkInputNodeIdEquals(link.input.nodeId, link)).to.be.true();
     });
   });
-  describe('isOutputNodeIdEqualsTo', () => {
+  describe('isLinkOutputNodeIdEquals', () => {
     const link = {
       input: { pinKey: 'toPin', nodeId: '@/to' },
       output: { pinKey: 'fromPin', nodeId: '@/from' },
     };
 
     it('should return false for non-existent nodeId', () => {
-      expect(Link.isOutputNodeIdEqualsTo('@/non-existent', link)).to.be.false();
+      expect(Link.isLinkOutputNodeIdEquals('@/non-existent', link)).to.be.false();
     });
     it('should return false for nodeId from input', () => {
-      expect(Link.isOutputNodeIdEqualsTo(link.input.nodeId, link)).to.be.false();
+      expect(Link.isLinkOutputNodeIdEquals(link.input.nodeId, link)).to.be.false();
     });
     it('should return true for nodeId from output', () => {
-      expect(Link.isOutputNodeIdEqualsTo(link.output.nodeId, link)).to.be.true();
+      expect(Link.isLinkOutputNodeIdEquals(link.output.nodeId, link)).to.be.true();
     });
   });
-  describe('isInputPinKeyEqualsTo', () => {
+  describe('isLinkInputPinKeyEquals', () => {
     const link = {
       input: { pinKey: 'toPin', nodeId: '@/to' },
       output: { pinKey: 'fromPin', nodeId: '@/from' },
     };
 
     it('should return false for non-existent nodeId', () => {
-      expect(Link.isInputPinKeyEqualsTo('non-existent-pin', link)).to.be.false();
+      expect(Link.isLinkInputPinKeyEquals('non-existent-pin', link)).to.be.false();
     });
     it('should return false for pinKey from output', () => {
-      expect(Link.isInputPinKeyEqualsTo(link.output.pinKey, link)).to.be.false();
+      expect(Link.isLinkInputPinKeyEquals(link.output.pinKey, link)).to.be.false();
     });
     it('should return true for pinKey from input', () => {
-      expect(Link.isInputPinKeyEqualsTo(link.input.pinKey, link)).to.be.true();
+      expect(Link.isLinkInputPinKeyEquals(link.input.pinKey, link)).to.be.true();
     });
   });
-  describe('isOutputPinKeyEqualsTo', () => {
+  describe('isLinkOutputPinKeyEquals', () => {
     const link = {
       input: { pinKey: 'toPin', nodeId: '@/to' },
       output: { pinKey: 'fromPin', nodeId: '@/from' },
     };
 
     it('should return false for non-existent nodeId', () => {
-      expect(Link.isOutputPinKeyEqualsTo('non-existent-pin', link)).to.be.false();
+      expect(Link.isLinkOutputPinKeyEquals('non-existent-pin', link)).to.be.false();
     });
     it('should return false for pinKey from input', () => {
-      expect(Link.isOutputPinKeyEqualsTo(link.input.pinKey, link)).to.be.false();
+      expect(Link.isLinkOutputPinKeyEquals(link.input.pinKey, link)).to.be.false();
     });
     it('should return true for pinKey from output', () => {
-      expect(Link.isOutputPinKeyEqualsTo(link.output.pinKey, link)).to.be.true();
+      expect(Link.isLinkOutputPinKeyEquals(link.output.pinKey, link)).to.be.true();
     });
   });
 

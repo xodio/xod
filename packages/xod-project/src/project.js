@@ -187,10 +187,9 @@ export const getPatchByPath = R.curry(
 export const getPatchPath = R.curry(
   (patch, project) =>
   R.compose(
-    R.ifElse(
-      R.isNil,
-      Utils.leaveError(CONST.ERROR.PATCH_NOT_FOUND),
-      Either.Right
+    Utils.errOnFalse(
+      CONST.ERROR.PATCH_NOT_FOUND,
+      R.complement(R.isNil)
     ),
     R.chain(R.path([0, 0])),
     Maybe,
@@ -263,7 +262,7 @@ export const validatePatchContents = R.curry(
     const checkNodeTypes = R.compose(
       R.ifElse(
         R.equals(false),
-        Utils.leaveError(CONST.ERROR.TYPE_NOT_FOUND),
+        Utils.err(CONST.ERROR.TYPE_NOT_FOUND),
         R.always(Either.of(patch))
       ),
       R.all(Maybe.isJust),
@@ -352,10 +351,10 @@ export const validatePatchRebase = R.curry(
     if (validPath.isLeft) { return validPath; }
 
     const pathIsOccupied = getPatchByPath(newPath, project).isJust;
-    if (pathIsOccupied) { return Utils.leaveError(CONST.ERROR.PATCH_PATH_OCCUPIED)(); }
+    if (pathIsOccupied) { return Utils.err(CONST.ERROR.PATCH_PATH_OCCUPIED)(); }
 
     const patch = getPatchByPath(oldPath, project);
-    if (patch.isNothing) { return Utils.leaveError(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH)(); }
+    if (patch.isNothing) { return Utils.err(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH)(); }
 
     return Either.of(project);
   }

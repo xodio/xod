@@ -74,9 +74,9 @@ describe('Utils', () => {
       );
     });
   });
-  describe('leaveError', () => {
+  describe('err', () => {
     const errMsg = 'error message';
-    const testObj = Utils.leaveError(errMsg)();
+    const testObj = Utils.err(errMsg)();
 
     it('should return Either.Left', () => {
       expect(testObj.isLeft).to.be.true();
@@ -132,6 +132,24 @@ describe('Utils', () => {
     it('should be valid shortid', () => {
       const id = Utils.generateId();
       expect(shortid.isValid(id)).to.be.true();
+    });
+  });
+
+  describe('errOnFalse', () => {
+    it('should be Either.Left for false', () => {
+      const errMessage = 'test';
+      const res = Utils.errOnFalse(errMessage, () => false)({});
+      expect(res.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, res, errMessage);
+    });
+    it('should be Either.Right for true', () => {
+      const obj = {};
+      const res = Utils.errOnFalse('test', () => true)(obj);
+      expect(res.isRight).to.be.true();
+      Helper.expectEither(
+        val => expect(val).to.be.equal(obj),
+        res
+      );
     });
   });
 

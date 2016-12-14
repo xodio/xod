@@ -113,10 +113,9 @@ export const isOutputPin = R.compose(
  * @param {PIN_TYPE} type
  * @returns {Either<Error|PIN_TYPE>}
  */
-export const validatePinType = R.ifElse(
-  R.flip(Utils.isValueInDictionary)(CONST.PIN_TYPE),
-  Either.of,
-  Utils.leaveError(CONST.ERROR.PIN_TYPE_INVALID)
+export const validatePinType = Utils.errOnFalse(
+  CONST.ERROR.PIN_TYPE_INVALID,
+  R.flip(Utils.isValueInDictionary)(CONST.PIN_TYPE)
 );
 
 /**
@@ -126,10 +125,9 @@ export const validatePinType = R.ifElse(
  * @param {PIN_DIRECTION} type
  * @returns {Either<Error|PIN_DIRECTION>}
  */
-export const validatePinDirection = R.ifElse(
-  R.flip(Utils.isValueInDictionary)(CONST.PIN_DIRECTION),
-  Either.of,
-  Utils.leaveError(CONST.ERROR.PIN_DIRECTION_INVALID)
+export const validatePinDirection = Utils.errOnFalse(
+  CONST.ERROR.PIN_DIRECTION_INVALID,
+  R.flip(Utils.isValueInDictionary)(CONST.PIN_DIRECTION)
 );
 
 /**

@@ -96,40 +96,40 @@ const isGetterEqualTo = (getter) => R.useWith(
 );
 
 /**
- * Returns boolean if input node id equal to specified id
- * @function isInputNodeIdEqualsTo
- * @param {string} id
+ * Returns boolean if input node id equal to specified node id
+ * @function isLinkInputNodeIdEquals
+ * @param {string} nodeId
  * @param {Link} link
  * @returns {boolean}
  */
-export const isInputNodeIdEqualsTo = isGetterEqualTo(getLinkInputNodeId);
+export const isLinkInputNodeIdEquals = isGetterEqualTo(getLinkInputNodeId);
 
 /**
- * Returns boolean if input node id equal to specified id
- * @function isOutputNodeIdEqualsTo
- * @param {string} id
+ * Returns boolean if input node id equal to specified node id
+ * @function isLinkOutputNodeIdEquals
+ * @param {string} nodeId
  * @param {Link} link
  * @returns {boolean}
  */
-export const isOutputNodeIdEqualsTo = isGetterEqualTo(getLinkOutputNodeId);
+export const isLinkOutputNodeIdEquals = isGetterEqualTo(getLinkOutputNodeId);
 
 /**
- * Returns boolean if input pin key equal to specified key
- * @function isInputPinKeyEqualsTo
- * @param {string} key
+ * Returns boolean if input pin key equal to specified pin key
+ * @function isInputPinKeyEquals
+ * @param {string} pinKey
  * @param {Link} link
  * @returns {boolean}
  */
-export const isInputPinKeyEqualsTo = isGetterEqualTo(getLinkInputPinKey);
+export const isLinkInputPinKeyEquals = isGetterEqualTo(getLinkInputPinKey);
 
 /**
- * Returns boolean if input pin key equal to specified key
- * @function isOutputPinKeyEqualsTo
- * @param {string} key
+ * Returns boolean if input pin key equal to specified pin key
+ * @function isOutputPinKeyEquals
+ * @param {string} pinKey
  * @param {Link} link
  * @returns {boolean}
  */
-export const isOutputPinKeyEqualsTo = isGetterEqualTo(getLinkOutputPinKey);
+export const isLinkOutputPinKeyEquals = isGetterEqualTo(getLinkOutputPinKey);
 
 /**
  * Checks that input/output property has required properties
@@ -148,13 +148,12 @@ const hasLinkIOProps = R.both(R.has('nodeId'), R.has('pinKey'));
  * @param {Link} link
  * @returns {Either<Error|Link>}
  */
-export const validateLinkId = R.ifElse(
+export const validateLinkId = Utils.errOnFalse(
+  CONST.ERROR.LINK_ID_INVALID,
   R.compose(
     R.is(String),
     R.prop('id')
-  ),
-  Either.Right,
-  Utils.leaveError(CONST.ERROR.LINK_ID_INVALID)
+  )
 );
 
 /**
@@ -164,13 +163,12 @@ export const validateLinkId = R.ifElse(
  * @param {Link} link
  * @returns {Either<Error|Link>}
  */
-export const validateLinkInput = R.ifElse(
+export const validateLinkInput = Utils.errOnFalse(
+  CONST.ERROR.LINK_INPUT_INVALID,
   R.compose(
     hasLinkIOProps,
     R.propOr({}, 'input')
-  ),
-  Either.Right,
-  Utils.leaveError(CONST.ERROR.LINK_INPUT_INVALID)
+  )
 );
 
 /**
@@ -180,11 +178,10 @@ export const validateLinkInput = R.ifElse(
  * @param {Link} link
  * @returns {Either<Error|Link>}
  */
-export const validateLinkOutput = R.ifElse(
+export const validateLinkOutput = Utils.errOnFalse(
+  CONST.ERROR.LINK_OUTPUT_INVALID,
   R.compose(
     hasLinkIOProps,
     R.propOr({}, 'output')
-  ),
-  Either.Right,
-  Utils.leaveError(CONST.ERROR.LINK_OUTPUT_INVALID)
+  )
 );

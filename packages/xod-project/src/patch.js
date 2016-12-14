@@ -72,13 +72,12 @@ export const listPatchPlatforms = R.compose(
  * @param {Patch} patch
  * @returns {Either<Error|Patch>}
  */
-export const validatePatch = R.ifElse(
+export const validatePatch = Utils.errOnFalse(
+  CONST.ERROR.PATCH_INVALID,
   R.allPass([
     R.has('nodes'),
     R.has('links'),
-  ]),
-  Either.Right,
-  Utils.leaveError(CONST.ERROR.PATCH_INVALID)
+  ])
 );
 
 // =============================================================================
@@ -285,8 +284,8 @@ export const listLinksByNode = R.curry(
 
     // :: Link -> boolean
     const filterByNodeId = R.either(
-      Link.isInputNodeIdEqualsTo(id),
-      Link.isOutputNodeIdEqualsTo(id)
+      Link.isLinkInputNodeIdEquals(id),
+      Link.isLinkOutputNodeIdEquals(id)
     );
 
     return R.filter(filterByNodeId, list);
@@ -310,12 +309,12 @@ export const listLinksByPin = R.curry(
     // :: Link -> boolean
     const filterByNodeIdAndPinKey = R.either(
       R.both(
-        Link.isInputNodeIdEqualsTo(id),
-        Link.isInputPinKeyEqualsTo(pinKey)
+        Link.isLinkInputNodeIdEquals(id),
+        Link.isLinkInputPinKeyEquals(pinKey)
       ),
       R.both(
-        Link.isOutputNodeIdEqualsTo(id),
-        Link.isOutputPinKeyEqualsTo(pinKey)
+        Link.isLinkOutputNodeIdEquals(id),
+        Link.isLinkOutputPinKeyEquals(pinKey)
       )
     );
 
@@ -348,12 +347,12 @@ export const validateLink = R.curry(
         const inputNodeId = Link.getLinkInputNodeId(validLink);
         const inputNode = getNodeById(inputNodeId, patch);
         if (inputNode.isNothing) {
-          return Utils.leaveError(CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND)();
+          return Utils.err(CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND)();
         }
         const outputNodeId = Link.getLinkOutputNodeId(validLink);
         const outputNode = getNodeById(outputNodeId, patch);
         if (outputNode.isNothing) {
-          return Utils.leaveError(CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND)();
+          return Utils.err(CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND)();
         }
 
         return Either.of(validLink);

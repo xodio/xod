@@ -38,14 +38,13 @@ import * as CONST from './constants';
  * @param {Position} position
  * @returns {Either<Error|Position>}
  */
-export const validatePosition = R.ifElse(
+export const validatePosition = Utils.errOnFalse(
+  CONST.ERROR.POSITION_INVALID,
   R.allPass([
     R.is(Object),
     R.compose(R.is(Number), R.prop('x')),
     R.compose(R.is(Number), R.prop('y')),
-  ]),
-  Either.of,
-  Utils.leaveError(CONST.ERROR.POSITION_INVALID)
+  ])
 );
 
 // =============================================================================
