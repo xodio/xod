@@ -1,9 +1,8 @@
 import R from 'ramda';
-import { Maybe, Either } from 'ramda-fantasy';
+import { Either } from 'ramda-fantasy';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
-import * as Utils from './utils';
 import * as Node from './node';
 import * as Link from './link';
 import * as Pin from './pin';

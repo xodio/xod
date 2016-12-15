@@ -1,4 +1,3 @@
-import { Maybe } from 'ramda-fantasy';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 import shortid from 'shortid';
