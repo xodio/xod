@@ -203,7 +203,7 @@ export const isPinNode = R.either(
  * @function getPinCurriedValue
  * @param {string} key
  * @param {Node} node
- * @returns {Maybe<Nothing|PinValue>}
+ * @returns {Maybe<PinValue>}
  */
 export const getPinCurriedValue = R.useWith(
   Tools.path,
@@ -294,7 +294,7 @@ const dataTypeRegexp = getDataTypeRegExp(CONST.PIN_TYPE);
 export const getPinNodeDataType = R.compose(
   R.map(R.toLower),
   Tools.errOnNothing(CONST.ERROR.DATATYPE_INVALID),
-  Tools.match(dataTypeRegexp),
+  Tools.match(dataTypeRegexp, 1),
   getNodeType
 );
 

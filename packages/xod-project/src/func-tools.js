@@ -6,40 +6,43 @@ import { Maybe, Either } from 'ramda-fantasy';
 //
 // TODO: Disquss: Should we make docs for this functions or keep it private?
 
-// :: RegExp -> string -> Maybe<Nothing|string>
-export const match = R.curry(R.compose(
-  Maybe,
+// :: RegExp -> groupIndex -> string -> Maybe<string>
+export const match = R.curry(
+  (regExp, groupIndex, string) =>
   R.compose(
-    R.ifElse(
-      R.isEmpty,
-      R.always(null),
-      R.identity
+    Maybe,
+    R.compose(
+      R.ifElse(
+        R.isEmpty,
+        R.always(null),
+        R.identity
+      ),
+      R.prop(groupIndex)
     ),
-    R.prop(1)
-  ),
-  R.match
-));
+    R.match(regExp)
+  )(string)
+);
 
-// :: *|Maybe -> Maybe<Nothing|*>
+// :: *|Maybe -> Maybe<*>
 export const ensureMaybe = R.ifElse(
   R.is(Maybe),
   R.identity,
   Maybe
 );
 
-// :: string -> object -> Maybe<Nothing|*>
+// :: string -> object -> Maybe<*>
 export const prop = R.curry(R.compose(
   Maybe,
   R.prop
 ));
 
-// :: array -> object -> Maybe<Nothing|*>
+// :: array -> object -> Maybe<*>
 export const path = R.curry(R.compose(
   Maybe,
   R.path
 ));
 
-// :: function -> object -> Maybe<Nothing|*>
+// :: function -> object -> Maybe<*>
 export const find = R.curry(R.compose(
   Maybe,
   R.find
@@ -47,7 +50,6 @@ export const find = R.curry(R.compose(
 
 //
 // Functions with Either monad
-// Migrated from Utils
 //
 
 /**

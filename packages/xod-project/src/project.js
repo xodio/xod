@@ -173,7 +173,7 @@ export const listLibraryPatches = R.compose(
  * @function getPatchByPath
  * @param {string} path - full path of the patch to find, e.g. `"@/foo/bar"`
  * @param {Project} project - project bundle
- * @returns {Maybe<Nothing|Patch>} a patch with given path or Null if it wasn’t found
+ * @returns {Maybe<Patch>} a patch with given path or Null if it wasn’t found
  */
 export const getPatchByPath = R.curry(
   (path, project) =>
@@ -463,18 +463,5 @@ export const lsDirs = R.curry(
       R.keys,
       getPatches
     )(project);
-
-    // return R.compose(
-    //   R.uniq,
-    //   R.chain(
-    //     R.compose(
-    //       R.nth(1),
-    //       R.match(reg)
-    //     )
-    //   ),
-    //   R.filter(R.test(reg)),
-    //   R.keys,
-    //   getPatches
-    // )(project);
   }
 );

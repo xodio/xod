@@ -113,7 +113,7 @@ export const listNodes = R.compose(
  * @function getNodeById
  * @param {string} id - node ID to find
  * @param {Patch} patch - a patch where node should be searched
- * @returns {Maybe<Nothing|Node>} a node with given ID or `undefined` if it wasn’t not found
+ * @returns {Maybe<Node>} a node with given ID or `undefined` if it wasn’t not found
  */
 export const getNodeById = R.curry(
   (id, patch) => R.compose(
@@ -171,7 +171,7 @@ const getPins = R.propOr({}, 'pins');
  * @function getPinByKey
  * @param {string} key
  * @param {Patch} patch
- * @returns {Maybe<Nothing|Pin>}
+ * @returns {Maybe<Pin>}
  */
 export const getPinByKey = R.curry(
   (key, patch) => R.compose(
@@ -246,7 +246,7 @@ export const linkIdEquals = R.curry(
  * @function getLinkById
  * @param {string} id - a link ID to find
  * @param {Patch} patch - a patch to operate on
- * @returns {Maybe<Nothing|Link>} a link with given `id` or Null if not found
+ * @returns {Maybe<Link>} a link with given `id` or Null if not found
  */
 export const getLinkById = R.curry(
   (id, patch) => R.compose(
