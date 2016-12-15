@@ -7,7 +7,10 @@
   "main": "dist/index.js",
   "repository": {},
   "scripts": {
-    "doc": "documentation build --format html --output doc --sort-order alpha src/"
+    "doc": "documentation build --format html --output doc --sort-order alpha src/",
+    "build": "babel src/ -d dist/",
+    "dev": "npm run build -- --watch",
+    "test": "mocha test/**/*.spec.js"
   },
   "dependencies": {
     "ramda": "^0.22.1",
