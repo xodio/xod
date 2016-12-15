@@ -56,43 +56,6 @@ describe('Utils', () => {
   });
 
   // etc
-  describe('assocRight', () => {
-    const testObj = Utils.assocRight('test', 'testVal', {});
-
-    it('should return Either.Right', () => {
-      expect(testObj.isRight).to.be.true();
-    });
-    it('should contain object with new assigned value', () => {
-      /* istanbul ignore next */
-      Helper.expectEither(
-        val => {
-          expect(val)
-            .to.have.property('test')
-            .that.equals('testVal');
-        },
-        testObj
-      );
-    });
-  });
-  describe('err', () => {
-    const errMsg = 'error message';
-    const testObj = Utils.err(errMsg)();
-
-    it('should return Either.Left', () => {
-      expect(testObj.isLeft).to.be.true();
-    });
-    it('should contain Error', () => {
-      /* istanbul ignore next */
-      testObj.chain(val => {
-        expect(val)
-          .to.be.an.instanceof(Error)
-          .and.equal('testVal')
-          .and.have.property('message')
-          .that.equal(errMsg);
-      });
-    });
-  });
-
   describe('isPathLocal', () => {
     const localPath = '@/test';
     const libPath = 'vasya/superLibraru/test';
@@ -134,42 +97,14 @@ describe('Utils', () => {
       expect(shortid.isValid(id)).to.be.true();
     });
   });
-
-  describe('errOnFalse', () => {
-    it('should be Either.Left for false', () => {
-      const errMessage = 'test';
-      const res = Utils.errOnFalse(errMessage, () => false)({});
-      expect(res.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, res, errMessage);
+  describe('validateId', () => {
+    it('should return false for invalid id', () => {
+      const id = 'i have spaces и немного кириллицы';
+      expect(shortid.isValid(id)).to.be.false();
     });
-    it('should be Either.Right for true', () => {
-      const obj = {};
-      const res = Utils.errOnFalse('test', () => true)(obj);
-      expect(res.isRight).to.be.true();
-      Helper.expectEither(
-        val => expect(val).to.be.equal(obj),
-        res
-      );
-    });
-  });
-
-  describe('errOnNothing', () => {
-    it('should return Either.Left for Maybe.Nothing', () => {
-      const errMessage = 'test passed';
-      const nothing = Maybe.Nothing(); // eslint-disable-line new-cap
-      const either = Utils.errOnNothing(errMessage, nothing);
-      expect(either.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, either, errMessage);
-    });
-    it('should return Either.Right for Maybe.Just', () => {
-      const content = {};
-      const just = Maybe.of(content);
-      const either = Utils.errOnNothing({}, just);
-      expect(either.isRight).to.be.true();
-      Helper.expectEither(
-        val => expect(val).to.be.equal(content),
-        either
-      );
+    it('should be valid shortid', () => {
+      const id = '123aBc';
+      expect(shortid.isValid(id)).to.be.true();
     });
   });
 });

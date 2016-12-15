@@ -1,5 +1,6 @@
 import R from 'ramda';
 import * as CONST from './constants';
+import * as Tools from './func-tools';
 import * as Utils from './utils';
 import * as Node from './node';
 
@@ -149,7 +150,7 @@ const hasLinkRequiredProps = R.both(R.has('nodeId'), R.has('pinKey'));
  * @param {Link} link
  * @returns {Either<Error|Link>}
  */
-export const validateLinkId = Utils.errOnFalse(
+export const validateLinkId = Tools.errOnFalse(
   CONST.ERROR.LINK_ID_INVALID,
   R.compose(
     R.is(String),
@@ -164,7 +165,7 @@ export const validateLinkId = Utils.errOnFalse(
  * @param {Link} link
  * @returns {Either<Error|Link>}
  */
-export const validateLinkInput = Utils.errOnFalse(
+export const validateLinkInput = Tools.errOnFalse(
   CONST.ERROR.LINK_INPUT_INVALID,
   R.compose(
     hasLinkRequiredProps,
@@ -179,7 +180,7 @@ export const validateLinkInput = Utils.errOnFalse(
  * @param {Link} link
  * @returns {Either<Error|Link>}
  */
-export const validateLinkOutput = Utils.errOnFalse(
+export const validateLinkOutput = Tools.errOnFalse(
   CONST.ERROR.LINK_OUTPUT_INVALID,
   R.compose(
     hasLinkRequiredProps,

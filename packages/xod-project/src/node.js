@@ -1,6 +1,7 @@
 import R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 import * as Utils from './utils';
+import * as Tools from './func-tools';
 import * as CONST from './constants';
 
 /**
@@ -50,7 +51,7 @@ const getPathToPinProperty = R.curry(
  * @param {Position} position
  * @returns {Either<Error|Position>}
  */
-export const validatePosition = Utils.errOnFalse(
+export const validatePosition = Tools.errOnFalse(
   CONST.ERROR.POSITION_INVALID,
   R.allPass([
     R.is(Object),
@@ -205,15 +206,12 @@ export const isPinNode = R.either(
  * @param {Node} node
  * @returns {Maybe<Nothing|PinValue>}
  */
-export const getPinCurriedValue = R.compose(
-  Maybe,
-  R.useWith(
-    R.pathOr(null),
-    [
-      getPathToPinProperty('value'),
-      R.identity,
-    ]
-  )
+export const getPinCurriedValue = R.useWith(
+  Tools.path,
+  [
+    getPathToPinProperty('value'),
+    R.identity,
+  ]
 );
 
 /**
@@ -296,17 +294,8 @@ const dataTypeRegexp = getDataTypeRegExp(CONST.PIN_TYPE);
  */
 export const getPinNodeDataType = R.compose(
   R.map(R.toLower),
-  Utils.errOnNothing(CONST.ERROR.DATATYPE_INVALID),
-  Maybe,
-  R.compose(
-    R.ifElse(
-      R.isEmpty,
-      R.always(null),
-      R.identity
-    ),
-    R.prop(1)
-  ),
-  R.match(dataTypeRegexp),
+  Tools.errOnNothing(CONST.ERROR.DATATYPE_INVALID),
+  Tools.match(dataTypeRegexp),
   getNodeType
 );
 
@@ -317,11 +306,9 @@ export const getPinNodeDataType = R.compose(
  * @returns {Either<Error|string>}
  */
 export const getPinNodeDirection = R.compose(
-  Utils.errOnNothing(CONST.ERROR.PIN_DIRECTION_INVALID),
-  Maybe,
+  Tools.errOnNothing(CONST.ERROR.PIN_DIRECTION_INVALID),
   R.cond([
     [isInputPinNode, R.always(CONST.PIN_DIRECTION.INPUT)],
     [isOutputPinNode, R.always(CONST.PIN_DIRECTION.OUTPUT)],
-    [R.T, R.always(null)],
   ])
 );

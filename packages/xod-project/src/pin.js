@@ -1,4 +1,5 @@
 import R from 'ramda';
+import * as Tools from './func-tools';
 import * as Utils from './utils';
 import * as CONST from './constants';
 
@@ -52,7 +53,7 @@ export const getPinLabel = R.propOr('', 'label');
  * @param {Pin} pin
  * @returns {Pin}
  */
-export const setPinLabel = Utils.assocString('label');
+export const setPinLabel = Tools.assocString('label');
 
 /**
  * @function getPinDescription
@@ -67,7 +68,7 @@ export const getPinDescription = R.propOr('', 'description');
  * @param {Pin} pin
  * @returns {Pin}
  */
-export const setPinDescription = Utils.assocString('description');
+export const setPinDescription = Tools.assocString('description');
 
 /**
  * @function getPinOrder
@@ -82,27 +83,21 @@ export const getPinOrder = R.propOr(0, 'order');
  * @param {Pin} pin
  * @returns {Pin}
  */
-export const setPinOrder = Utils.assocNumber('order');
+export const setPinOrder = Tools.assocNumber('order');
 
 /**
  * @function isInputPin
  * @param {Pin} pin
  * @returns {boolean}
  */
-export const isInputPin = R.compose(
-  R.equals(CONST.PIN_DIRECTION.INPUT),
-  R.propOr(false, 'direction')
-);
+export const isInputPin = R.propEq('direction', CONST.PIN_DIRECTION.INPUT);
 
 /**
  * @function isOutputPin
  * @param {Pin} pin
  * @returns {boolean}
  */
-export const isOutputPin = R.compose(
-  R.equals(CONST.PIN_DIRECTION.OUTPUT),
-  R.propOr(false, 'direction')
-);
+export const isOutputPin = R.propEq('direction', CONST.PIN_DIRECTION.OUTPUT);
 
 /**
  * Validates for correct pin type
@@ -111,9 +106,9 @@ export const isOutputPin = R.compose(
  * @param {PIN_TYPE} type
  * @returns {Either<Error|PIN_TYPE>}
  */
-export const validatePinType = Utils.errOnFalse(
+export const validatePinType = Tools.errOnFalse(
   CONST.ERROR.PIN_TYPE_INVALID,
-  R.flip(Utils.isValueInDictionary)(CONST.PIN_TYPE)
+  R.flip(Tools.hasPropEq)(CONST.PIN_TYPE)
 );
 
 /**
@@ -123,9 +118,21 @@ export const validatePinType = Utils.errOnFalse(
  * @param {PIN_DIRECTION} type
  * @returns {Either<Error|PIN_DIRECTION>}
  */
-export const validatePinDirection = Utils.errOnFalse(
+export const validatePinDirection = Tools.errOnFalse(
   CONST.ERROR.PIN_DIRECTION_INVALID,
-  R.flip(Utils.isValueInDictionary)(CONST.PIN_DIRECTION)
+  R.flip(Tools.hasPropEq)(CONST.PIN_DIRECTION)
+);
+
+/**
+ * Validates for correct pin key
+ *
+ * @function validatePinKey
+ * @param {string} pinKey
+ * @returns {Either<Error|string>}
+ */
+export const validatePinKey = Tools.errOnFalse(
+  CONST.ERROR.PIN_KEY_INVALID,
+  Utils.validateId
 );
 
 /**
@@ -135,20 +142,10 @@ export const validatePinDirection = Utils.errOnFalse(
  * @param {Pin} pin
  * @returns {Either<Error|Pin>}
  */
-export const validatePin = pin => {
-  const type = getPinType(pin);
-  const direction = getPinDirection(pin);
-  const key = getPinKey(pin);
-
-  return validatePinType(type)
-    .chain(
-      () => validatePinDirection(direction)
-    ).chain(
-      () => Utils.validatePath(key)
-    ).map(
-      R.always(pin)
-    );
-};
+export const validatePin = pin => validatePinType(getPinType(pin))
+  .chain(() => validatePinDirection(getPinDirection(pin)))
+  .chain(() => validatePinKey(getPinKey(pin)))
+  .map(R.always(pin));
 
 /**
  * @function createPin

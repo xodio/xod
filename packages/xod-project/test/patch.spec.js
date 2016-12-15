@@ -421,13 +421,13 @@ describe('Patch', () => {
     it('should return unchanges Patch for non-existent pin/key', () => {
       expect(Patch.dissocPin('c', patch))
         .to.be.an('object')
-        .and.equals(patch);
+        .and.deep.equals(patch);
       expect(Patch.dissocPin({ key: 'c' }, patch))
         .to.be.an('object')
-        .and.equals(patch);
+        .and.deep.equals(patch);
     });
   });
-  // @TODO: Add test for adding pinNode (assocNode -> assocPin)
+  // TODO: Add test for adding pinNode (assocNode -> assocPin)
   describe('assocNode', () => {
     it('should return Patch with new Node', () => {
       const patch = {};
@@ -481,7 +481,7 @@ describe('Patch', () => {
         });
     });
   });
-  // @TODO: Add test for deleting pinNode
+  // TODO: Add test for deleting pinNode
   describe('dissocNode', () => {
     const patch = {
       nodes: {
@@ -535,10 +535,10 @@ describe('Patch', () => {
     it('should return unchanges Patch for non-existent node/id', () => {
       expect(Patch.dissocNode('@/non-existent', patch))
         .to.be.an('object')
-        .and.equals(patch);
+        .and.deep.equals(patch);
       expect(Patch.dissocNode({ id: '@/non-existent' }, patch))
         .to.be.an('object')
-        .and.equals(patch);
+        .and.deep.equals(patch);
     });
     it('should remove pin from patch on dissoc pinNode', () => {
       const patchWithPins = {
@@ -560,7 +560,7 @@ describe('Patch', () => {
     });
   });
   describe('assocLink', () => {
-    // @TODO: Add patch for assocLink
+    // TODO: Add patch for assocLink
     // const patch = {
     //   nodes: {
     //     in: { id: 'in' },
@@ -611,10 +611,10 @@ describe('Patch', () => {
     it('should return unchanges Patch for non-existent link/id', () => {
       expect(Patch.dissocLink('3', patch))
         .to.be.an('object')
-        .and.equals(patch);
+        .and.deep.equals(patch);
       expect(Patch.dissocLink({ id: '3' }, patch))
         .to.be.an('object')
-        .and.equals(patch);
+        .and.deep.equals(patch);
     });
   });
 

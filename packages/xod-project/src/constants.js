@@ -28,6 +28,7 @@ export const ERROR = {
   // pins
   PIN_TYPE_INVALID: 'Pin type should be one of possible values: `string`, `number`, `boolean`, `pulse`',
   PIN_DIRECTION_INVALID: 'Pin directions should be `input` or `output`.',
+  PIN_KEY_INVALID: 'Pin key should be generated with shortid',
   // other
   DATATYPE_INVALID: 'Invalid data type',
 };

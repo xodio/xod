@@ -42,6 +42,23 @@ describe('Pin', () => {
       );
     });
   });
+  describe('validatePinKey', () => {
+    it('should return Either.Left for invalid key', () => {
+      const pinKey = 'i have $paceZ и немного кириллицы';
+      const result = Pin.validatePinKey(pinKey);
+      expect(result.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, result, CONST.ERROR.PIN_KEY_INVALID);
+    });
+    it('should return Either.Right for valid key', () => {
+      const pinKey = '123aBc';
+      const result = Pin.validatePinKey(pinKey);
+      expect(result.isRight).to.be.true();
+      Helper.expectEither(
+        val => expect(val).to.be.equal(pinKey),
+        result
+      );
+    });
+  });
   describe('validatePin', () => {
     it('should return Either.Left for empty object', () => {
       const invalid = Pin.validatePin({});

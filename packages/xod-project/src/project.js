@@ -2,6 +2,7 @@ import R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
 
 import * as CONST from './constants';
+import * as Tools from './func-tools';
 import * as Utils from './utils';
 import * as Patch from './patch';
 import * as Node from './node';
@@ -41,7 +42,7 @@ export const getProjectDescription = R.propOr('', 'description');
  * @param {Project} project
  * @returns {Project}
  */
-export const setProjectDescription = Utils.assocString('description');
+export const setProjectDescription = Tools.assocString('description');
 
 /**
  * @function getProjectAuthors
@@ -84,17 +85,20 @@ export const getProjectLicense = R.propOr('', 'license');
  * @param {Project} project
  * @returns {Project}
  */
-export const setProjectLicense = Utils.assocString('license');
+export const setProjectLicense = Tools.assocString('license');
 
 /**
  * Converts project into Xodball: remove library patches, replace it with dependency list and etc.
  *
  * This functions validates project before archiving it and may return error of validation.
  *
+ * NOT IMPLEMENTED YET
+ *
  * @function archiveProject
  * @param {Project} project
  * @returns {Either<Error|Xodball>}
  */
+// TODO: Implement it!
 export const archiveProject = () => {};
 
  /**
@@ -104,10 +108,13 @@ export const archiveProject = () => {};
   * - JSON Schema test fails
   * - one of other validate function fails
   *
+  * NOT IMPLEMENTED YET
+  *
   * @function validateProject
   * @param {Project} project - project to operate on
   * @returns {Either<Error|Project>} validation result
   */
+// TODO: Implement it!
 export const validateProject = () => {};
 
 // =============================================================================
@@ -171,8 +178,7 @@ export const listLibraryPatches = R.compose(
 export const getPatchByPath = R.curry(
   (path, project) =>
   R.compose(
-    Maybe,
-    R.propOr(null, path),
+    Tools.prop(path),
     getPatches
   )(project)
 );
@@ -187,14 +193,10 @@ export const getPatchByPath = R.curry(
 export const getPatchPath = R.curry(
   (patch, project) =>
   R.compose(
-    Utils.errOnFalse(
-      CONST.ERROR.PATCH_NOT_FOUND,
-      R.complement(R.isNil)
-    ),
-    R.chain(R.path([0, 0])),
-    Maybe,
-    R.filter(p => p[1] === patch),
-    R.toPairs,
+    Tools.errOnNothing(CONST.ERROR.PATCH_NOT_FOUND),
+    R.head,
+    R.keys,
+    R.filter(val => val === patch),
     getPatches
   )(project)
 );
@@ -205,31 +207,31 @@ export const getPatchPath = R.curry(
  * @private
  * @function checkPinKeys
  * @param {Link} link
- * @param {Patch} curPatch
+ * @param {Patch} patch
  * @param {Project} project
  * @returns {Either<Error|Link>}
  */
-const checkPinKeys = (link, curPatch, project) => {
+const checkPinKeys = (link, patch, project) => {
+  // TODO: Move check function and child functions on the top-level
   const check = (nodeIdGetter, pinKeyGetter) => {
     const pinKey = pinKeyGetter(link);
     // :: patch -> Either
     const checkPinExists = R.compose(
-      Utils.errOnNothing(CONST.ERROR.PINS_NOT_FOUND),
+      Tools.errOnNothing(CONST.ERROR.PINS_NOT_FOUND),
       Patch.getPinByKey(pinKey)
     );
     // :: node -> Either
     const checkTypeExists = R.compose(
-      Utils.errOnNothing(CONST.ERROR.TYPE_NOT_FOUND),
+      Tools.errOnNothing(CONST.ERROR.TYPE_NOT_FOUND),
       getPatchByPath(R.__, project),
       Node.getNodeType
     );
     // :: link -> Either
-    // @TODO: Get rid of this check or get rid of part of validateLink method
-    const checkNodeExists = R.compose(
-      Utils.errOnNothing(CONST.ERROR.NODE_NOT_FOUND),
-      Patch.getNodeById(R.__, curPatch),
+    const checkNodeExists = R.curry(R.compose(
+      Tools.errOnNothing(CONST.ERROR.NODE_NOT_FOUND),
+      Patch.getNodeById(R.__, patch),
       nodeIdGetter
-    );
+    ));
 
     return R.compose(
       R.chain(checkPinExists),
@@ -240,29 +242,27 @@ const checkPinKeys = (link, curPatch, project) => {
 
   return check(Link.getLinkInputNodeId, Link.getLinkInputPinKey).chain(
     () => check(Link.getLinkOutputNodeId, Link.getLinkOutputPinKey)
-  ).map(
-    R.always(curPatch)
-  );
+  ).map(R.always(patch));
 };
 
 /**
  * Checks `patch` content to be valid:
  *
- * - all nodes have an existent types (patches),
+ * - all nodes have existent types (patches),
  * - valid pinKeys in the links
  * @function validatePatchContents
  * @param {Patch} patch
  * @param {Project} project
  * @returns {Either<Error|Patch>}
  */
-// @TODO: Try to simplify this mess :-D
+// TODO: Try to simplify this mess :-D
 export const validatePatchContents = R.curry(
   (patch, project) => {
     // :: patch -> Either
     const checkNodeTypes = R.compose(
       R.ifElse(
         R.equals(false),
-        Utils.err(CONST.ERROR.TYPE_NOT_FOUND),
+        Tools.err(CONST.ERROR.TYPE_NOT_FOUND),
         R.always(Either.of(patch))
       ),
       R.all(Maybe.isJust),
@@ -307,6 +307,7 @@ export const validatePatchContents = R.curry(
  * @param {Project} project - project to operate on
  * @returns {Either<Error|Project>} copy of the project with the updated patch
  */
+// TODO: Refactoring needed
 export const assocPatch = R.curry((path, patch, project) =>
   Utils.validatePath(path).chain(
     validPath => Patch.validatePatch(patch).chain(
@@ -331,6 +332,11 @@ export const dissocPatch = R.curry((path, project) =>
   R.dissocPath(['patches', path], project)
 );
 
+const isPathOccupied = R.curry(R.compose(
+  Maybe.isJust,
+  getPatchByPath
+));
+
 /**
  * Checks if a `patch` could be safely renamed given a new path.
  *
@@ -346,18 +352,16 @@ export const dissocPatch = R.curry((path, project) =>
  * @returns {Either<Error|Project>} validation result
  */
 export const validatePatchRebase = R.curry(
-  (newPath, oldPath, project) => {
-    const validPath = Utils.validatePath(newPath);
-    if (validPath.isLeft) { return validPath; }
-
-    const pathIsOccupied = getPatchByPath(newPath, project).isJust;
-    if (pathIsOccupied) { return Utils.err(CONST.ERROR.PATCH_PATH_OCCUPIED)(); }
-
-    const patch = getPatchByPath(oldPath, project);
-    if (patch.isNothing) { return Utils.err(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH)(); }
-
-    return Either.of(project);
-  }
+  (newPath, oldPath, project) => Utils.validatePath(newPath)
+    .chain(Tools.errOnFalse(
+      CONST.ERROR.PATCH_PATH_OCCUPIED,
+      R.complement(isPathOccupied(R.__, project))
+    ))
+    .chain(() => Tools.errOnNothing(
+      CONST.ERROR.PATCH_NOT_FOUND_BY_PATH,
+      getPatchByPath(oldPath, project)
+    ))
+    .map(R.always(project))
 );
 
 /**
@@ -383,7 +387,7 @@ export const rebasePatch = R.curry(
           const patch = getPatchByPath(oldPath, proj);
           const assocThatPatch = patch.chain(R.assocPath(['patches', newPath]));
 
-          // @TODO: Think about refactoring that piece of code :-D
+          // TODO: Think about refactoring that piece of code :-D
           // Patch -> Patch
           const updateReferences = R.when(
             R.has('nodes'),
@@ -449,15 +453,28 @@ export const lsDirs = R.curry(
 
     return R.compose(
       R.uniq,
-      R.chain(
+      R.reject(R.isNil),
+      R.map(
         R.compose(
           R.nth(1),
           R.match(reg)
         )
       ),
-      R.filter(R.test(reg)),
       R.keys,
       getPatches
     )(project);
+
+    // return R.compose(
+    //   R.uniq,
+    //   R.chain(
+    //     R.compose(
+    //       R.nth(1),
+    //       R.match(reg)
+    //     )
+    //   ),
+    //   R.filter(R.test(reg)),
+    //   R.keys,
+    //   getPatches
+    // )(project);
   }
 );

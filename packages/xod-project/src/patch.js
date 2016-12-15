@@ -2,6 +2,7 @@ import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 
 import * as CONST from './constants';
+import * as Tools from './func-tools';
 import * as Utils from './utils';
 import * as Node from './node';
 import * as Link from './link';
@@ -30,10 +31,7 @@ export const createPatch = () => ({
  * @param {Patch} patch
  * @returns {Patch} deeply cloned patch
  */
-export const duplicatePatch = R.compose(
-  JSON.parse,
-  JSON.stringify
-);
+export const duplicatePatch = R.clone;
 
 /**
  * @function getPatchLabel
@@ -72,7 +70,7 @@ export const listPatchPlatforms = R.compose(
  * @param {Patch} patch
  * @returns {Either<Error|Patch>}
  */
-export const validatePatch = Utils.errOnFalse(
+export const validatePatch = Tools.errOnFalse(
   CONST.ERROR.PATCH_INVALID,
   R.allPass([
     R.has('nodes'),
@@ -90,8 +88,8 @@ export const validatePatch = Utils.errOnFalse(
  * Checks that node id to be equal specified value
  *
  * @function nodeIdEquals
- * @param {string} id [description]
- * @param {NodeOrId} node [description]
+ * @param {string} id
+ * @param {NodeOrId} node
  * @returns {boolean}
  */
 export const nodeIdEquals = R.curry(
@@ -120,8 +118,7 @@ export const listNodes = R.compose(
  */
 export const getNodeById = R.curry(
   (id, patch) => R.compose(
-    Maybe,
-    R.find(nodeIdEquals(id)),
+    Tools.find(nodeIdEquals(id)),
     listNodes
   )(patch)
 );
@@ -158,15 +155,7 @@ export const assocPin = R.curry(
  * @returns {Patch}
  */
 export const dissocPin = R.curry(
-  (pinOrKey, patch) => {
-    const key = Pin.getPinKey(pinOrKey);
-
-    return R.ifElse(
-      R.pathSatisfies(R.complement(R.isNil), ['pins', key]),
-      R.dissocPath(['pins', key]),
-      R.identity
-    )(patch);
-  }
+  (pinOrKey, patch) => R.dissocPath(['pins', Pin.getPinKey(pinOrKey)], patch)
 );
 
 /**
@@ -187,8 +176,7 @@ const getPins = R.propOr({}, 'pins');
  */
 export const getPinByKey = R.curry(
   (key, patch) => R.compose(
-    Maybe,
-    R.prop(key),
+    Tools.prop(key),
     getPins
   )(patch)
 );
@@ -263,8 +251,7 @@ export const linkIdEquals = R.curry(
  */
 export const getLinkById = R.curry(
   (id, patch) => R.compose(
-    Maybe,
-    R.find(linkIdEquals(id)),
+    Tools.find(linkIdEquals(id)),
     listLinks
   )(patch)
 );
@@ -338,26 +325,17 @@ export const listLinksByPin = R.curry(
  */
 export const validateLink = R.curry(
   (link, patch) => Link.validateLinkId(link)
-    .chain(
-      Link.validateLinkInput
-    ).chain(
-      Link.validateLinkOutput
-    ).chain(
-      validLink => {
-        const inputNodeId = Link.getLinkInputNodeId(validLink);
-        const inputNode = getNodeById(inputNodeId, patch);
-        if (inputNode.isNothing) {
-          return Utils.err(CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND)();
-        }
-        const outputNodeId = Link.getLinkOutputNodeId(validLink);
-        const outputNode = getNodeById(outputNodeId, patch);
-        if (outputNode.isNothing) {
-          return Utils.err(CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND)();
-        }
-
-        return Either.of(validLink);
-      }
-    )
+    .chain(Link.validateLinkInput)
+    .chain(Link.validateLinkOutput)
+    .chain(() => Tools.errOnNothing(
+        CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND,
+        getNodeById(Link.getLinkInputNodeId(link), patch)
+    ))
+    .chain(() => Tools.errOnNothing(
+        CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND,
+        getNodeById(Link.getLinkOutputNodeId(link), patch)
+    ))
+    .map(R.always(link))
 );
 
 /**
@@ -391,15 +369,7 @@ export const assocLink = R.curry(
  * @returns {Patch} a copy of the `patch` with changes applied
  */
 export const dissocLink = R.curry(
-  (linkOrId, patch) => {
-    const id = Link.getLinkId(linkOrId);
-
-    return R.ifElse(
-      R.pathSatisfies(R.complement(R.isNil), ['links', id]),
-      R.dissocPath(['links', id]),
-      R.identity
-    )(patch);
-  }
+  (linkOrId, patch) => R.dissocPath(['links', Link.getLinkId(linkOrId)], patch)
 );
 
 
@@ -415,13 +385,12 @@ export const dissocLink = R.curry(
  * The node is searched by ID and its state
  * subtree is completely replaced with one given as argument.
  *
- * It’s up to you to keep the state integrity affected by the replacement.
- *
  * @function assocNode
  * @param {Node} node - new node
  * @param {Patch} patch - a patch with the `node`
  * @returns {Patch} a copy of the `patch` with the node replaced
  */
+// TODO: Refactoring needed
 export const assocNode = R.curry(
   (node, patch) => {
     const id = Node.getNodeId(node);
@@ -432,12 +401,12 @@ export const assocNode = R.curry(
           const newPatch = Node.getPinNodeDataType(pinNode).chain(
             type => Node.getPinNodeDirection(pinNode).chain(
               direction => Pin.createPin(id, type, direction).chain(
-                // @TODO: Add optional data (label, description, order) from node to pin
+                // TODO: Add optional data (label, description, order) from node to pin
                 newPin => assocPin(newPin, _patch)
               )
             )
           );
-          // @TODO: Think is it okay or we should return Either<Error|Patch> for invalid pinNodes?
+          // TODO: Think is it okay or we should return Either<Error|Patch> for invalid pinNodes?
           return Either.either(
             () => _patch,
             valid => valid,
@@ -468,6 +437,7 @@ export const assocNode = R.curry(
  * @param {Patch} patch - a patch where the node should be deleted
  * @returns {Patch} a copy of the `patch` with the node deleted
  */
+// TODO: Move child function into top-level
 export const dissocNode = R.curry(
   (nodeOrId, patch) => {
     const id = Node.getNodeId(nodeOrId);
@@ -484,11 +454,7 @@ export const dissocNode = R.curry(
       dissocPin(id),
       R.identity
     );
-    const removeNode = R.ifElse(
-      R.pathSatisfies(R.complement(R.isNil), ['nodes', id]),
-      R.dissocPath(['nodes', id]),
-      R.identity
-    );
+    const removeNode = R.dissocPath(['nodes', id]);
 
     return R.compose(
       removeNode,

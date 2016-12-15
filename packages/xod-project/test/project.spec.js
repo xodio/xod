@@ -141,10 +141,8 @@ describe('Project', () => {
     it('should return Either.Right with patch path', () => {
       const result = Project.getPatchPath(patch, project);
       expect(result.isRight).to.be.true();
-
-      /* istanbul ignore next */
       Helper.expectEither(
-        val => val === path,
+        val => expect(val).to.be.equal(path),
         result
       );
     });

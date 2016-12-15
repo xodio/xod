@@ -1,7 +1,7 @@
 import R from 'ramda';
-import { Maybe, Either } from 'ramda-fantasy';
 import shortid from 'shortid';
 
+import * as Tools from './func-tools';
 import * as CONST from './constants';
 /**
  * Contains resulting value or error
@@ -30,50 +30,6 @@ import * as CONST from './constants';
  * @property {number} x
  * @property {number} y
  */
-
- /**
-  * Associate value into some property and wrap it with Either.Right
-  * @function assocRight
-  * @param {string} propName
-  * @param {*} value
-  * @param {Project} project
-  * @returns {Either.Right<Project>}
-  */
-export const assocRight = R.curry(
-  R.compose(
-    Either.Right,
-    R.assoc
-  )
-);
-
- /**
-  * Returns an Error object wrapped into Either.Left
-  * @function err
-  * @param {string} errorMessage
-  * @returns {Either.Left<Error>}
-  */
-export const err = R.compose(
-  R.always,
-  Either.Left,
-  R.construct(Error)
-);
-
-/**
- * Returns function that checks condition and returns Either
- * Left with Error for false
- * Right with passed content for true
- * @function errOnFalse
- * @param {string} errorMessage
- * @param {function} condition
- * @returns {function}
- */
-export const errOnFalse = R.curry(
-  (errorMessage, condition) => R.ifElse(
-    condition,
-    Either.of,
-    err(errorMessage)
-  )
-);
 
 /**
  * @function getBaseName
@@ -107,7 +63,7 @@ export const isPathLibrary = R.test(/^[a-zA-Z0-9_\-/]+$/);
  * @param {string} path - string to check
  * @returns {Either<Error|string>} error or valid path
  */
-export const validatePath = errOnFalse(
+export const validatePath = Tools.errOnFalse(
   CONST.ERROR.PATH_INVALID,
   R.allPass([
     R.complement(R.isNil),
@@ -138,67 +94,9 @@ export const ensureEndsWithSlash = R.ifElse(
 export const generateId = shortid.generate;
 
 /**
- * Checks that value is exist in the dictionary (object).
- * @function isValueInDictionary
- * @param {*} value
- * @param {object} dictionary
+ * Validates an id of entities
+ * @function validateId
+ * @param {string} id
  * @returns {boolean}
  */
-export const isValueInDictionary = R.compose(
-  R.gt(R.__, 0),
-  R.length,
-  R.keys,
-  R.useWith(
-    R.pickBy,
-    [
-      R.equals,
-      R.identity,
-    ]
-  )
-);
-
-/**
- * Returns function that assoc string to a specified key
- * @function assocString
- * @param {string} key
- * @returns {function}
- */
-export const assocString = (key) => R.useWith(
-  R.assoc(key),
-  [
-    String,
-    R.identity,
-  ]
-);
-
-/**
- * Returns function that assoc number to a specified key
- * @function assocString
- * @param {string} key
- * @returns {function}
- */
-export const assocNumber = (key) => R.useWith(
-  R.assoc(key),
-  [
-    R.compose(
-      R.defaultTo(0),
-      Number
-    ),
-    R.identity,
-  ]
-);
-
-/**
- * Return Either.Right for Maybe.Just and Either.Left for Maybe.Nothing
- * @function errOnNothing
- * @param {string} errorMessage Error message for Maybe.Nothing
- * @param {Maybe<*>} maybe Maybe monad
- * @returns {Either<Error|*>}
- */
-export const errOnNothing = R.curry(
-  (errorMessage, maybe) => R.ifElse(
-    Maybe.isNothing,
-    err(errorMessage),
-    R.chain(Either.Right)
-  )(maybe)
-);
+export const validateId = R.test(/^[a-zA-Z0-9\-_]+$/);
