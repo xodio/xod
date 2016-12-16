@@ -184,24 +184,6 @@ export const getPatchByPath = R.curry(
 );
 
 /**
- *
- * @function getPatchPath
- * @param {Patch} patch
- * @param {Project} project
- * @returns {Either<Error|string>} path
- */
-export const getPatchPath = R.curry(
-  (patch, project) =>
-  R.compose(
-    Tools.errOnNothing(CONST.ERROR.PATCH_NOT_FOUND),
-    R.head,
-    R.keys,
-    R.filter(val => val === patch),
-    getPatches
-  )(project)
-);
-
-/**
  * Checks project for existance of patches and pins that used in link.
  *
  * @private
@@ -332,7 +314,7 @@ export const dissocPatch = R.curry((path, project) =>
   R.dissocPath(['patches', path], project)
 );
 
-const isPathOccupied = R.curry(R.compose(
+const doesPathExist = R.curry(R.compose(
   Maybe.isJust,
   getPatchByPath
 ));
@@ -355,7 +337,7 @@ export const validatePatchRebase = R.curry(
   (newPath, oldPath, project) => Utils.validatePath(newPath)
     .chain(Tools.errOnFalse(
       CONST.ERROR.PATCH_PATH_OCCUPIED,
-      R.complement(isPathOccupied(R.__, project))
+      R.complement(doesPathExist(R.__, project))
     ))
     .chain(() => Tools.errOnNothing(
       CONST.ERROR.PATCH_NOT_FOUND_BY_PATH,

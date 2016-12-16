@@ -128,25 +128,6 @@ describe('Project', () => {
       expect(maybe.getOrElse(null)).to.be.equal(patch);
     });
   });
-  describe('getPatchPath', () => {
-    const path = '@/test';
-    const patch = { path };
-    const project = { patches: { [path]: patch } };
-
-    it('should return Either.Left', () => {
-      const result = Project.getPatchPath({}, project);
-      expect(result.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, result, CONST.ERROR.PATCH_NOT_FOUND);
-    });
-    it('should return Either.Right with patch path', () => {
-      const result = Project.getPatchPath(patch, project);
-      expect(result.isRight).to.be.true();
-      Helper.expectEither(
-        val => expect(val).to.be.equal(path),
-        result
-      );
-    });
-  });
   describe('lsPatches', () => {
     const project = {
       patches: {
