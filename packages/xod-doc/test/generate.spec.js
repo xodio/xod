@@ -43,7 +43,7 @@ describe('Generate docs', () => {
         path.resolve(tmpPath, 'index.html')
         )
       )
-    .to.exist
+    .to.exist()
   );
 
   it('should create doc files', () => {
