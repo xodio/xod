@@ -6,6 +6,7 @@ import program from 'commander';
 import pack from './xodc-pack';
 import unpack from './xodc-unpack';
 import transpile from './xodc-transpile';
+import doc from 'xod-doc';
 
 program
   .version('0.0.1');
@@ -28,6 +29,13 @@ program
     .option('-o, --output [filename]', 'Write result of transpilation into file', false)
     .alias('t')
     .action(transpile);
+
+program
+  .command('doc <outputDir> <templatesDir> <projectDir>')
+    .description('Generate doc for project')
+    .option('-c, --clear [clear]', 'Clear output dir before generate documentation', false)
+    .alias('d')
+    .action(doc);
 
 program.parse(process.argv);
 

@@ -50,7 +50,7 @@ export const getProjects = (workspace) => readDir(workspace)
     )
   ));
 
-const loadProjectWithoutLibs = (projectPath, workspace) =>
+export const loadProjectWithoutLibs = (projectPath, workspace) =>
   readDir(path.resolve(workspace, projectPath))
     .then(files => files.filter(
       filename => (
@@ -90,4 +90,5 @@ export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) 
 export default {
   getProjects,
   loadProjectWithLibs,
+  loadProjectWithoutLibs,
 };

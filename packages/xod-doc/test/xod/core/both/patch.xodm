@@ -1,0 +1,27 @@
+{
+  "pins": {
+    "a": {
+      "index": 0,
+      "direction": "input",
+      "key": "a",
+      "type": "pulse",
+      "label": "A",
+      "description": "Left-hand side pulse"
+    },
+    "b": {
+      "index": 1,
+      "direction": "input",
+      "key": "b",
+      "type": "pulse",
+      "label": "B",
+      "description": "Right-hand side pulse"
+    },
+    "out": {
+      "index": 0,
+      "direction": "output",
+      "key": "out",
+      "type": "pulse",
+      "description": "Pulses if A and B pulses simultaneously"
+    }
+  }
+}

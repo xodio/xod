@@ -265,7 +265,7 @@ const getPatchNodes = R.pipe(
     R.pipe(
       R.prop('content'),
       // @TODO: Get rid off useless property 'patchNode'
-      R.pick(['id', 'patchNode', 'label', 'category', 'properties', 'pins']),
+      R.pick(['id', 'patchNode', 'label', 'category', 'properties', 'pins', 'description']),
       R.merge({ properties: {}, pins: {} })
     )
   ),
