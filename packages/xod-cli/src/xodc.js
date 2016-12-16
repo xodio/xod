@@ -6,7 +6,7 @@ import program from 'commander';
 import pack from './xodc-pack';
 import unpack from './xodc-unpack';
 import transpile from './xodc-transpile';
-import doc from 'xod-doc';
+import doc from './xodc-doc';
 
 program
   .version('0.0.1');

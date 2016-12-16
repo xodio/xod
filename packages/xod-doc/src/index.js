@@ -1,5 +1,5 @@
 import path from 'path';
-import { loadProjectWithLibs, pack, writeJSON } from 'xod-fs';
+import { loadProjectWithLibs, pack } from 'xod-fs';
 import handlebars from 'handlebars';
 import fs from 'fs';
 import ncp from 'recursive-copy';
@@ -61,8 +61,7 @@ function getAllTemplates(singleTpl, listTpl, outputPath, templatesPath) {
     ncp(path.join(templatesPath, 'assets'), path.join(outputPath, 'assets'))]);
 }
 
-export default (outputDir, templatesDir, projectDir, programm) => {
-  const clearDestination = programm.clear;
+export default (outputDir, templatesDir, projectDir, clearDestination) => {
   const outputPath = path.resolve(outputDir);
   const templatesPath = path.resolve(templatesDir);
   const projectPath = path.resolve(projectDir);
@@ -77,37 +76,27 @@ export default (outputDir, templatesDir, projectDir, programm) => {
 
   if (clearDestination) {
     if (fs.existsSync(outputPath)) {
-      rimraf(outputPath, () => fs.mkdir(outputPath));
+      rimraf(outputPath, () => fs.mkdirSync(outputPath));
     } else {
-      fs.mkdir(outputPath);
+      fs.mkdirSync(outputPath);
     }
   } else if (!fs.existsSync(outputPath)) {
-    fs.mkdir(outputPath);
+    fs.mkdirSync(outputPath);
   }
 
   return loadProjectWithLibs(projectPath, workspace)
-   .then(({ project, libs }) => pack(project, libs))
+    .then(({ project, libs }) => pack(project, libs))
     .then(packed => getAllTemplates(singleTpl, listTpl, outputPath, templatesPath).then(results => {
       const singleSource = results[0].toString();
       const listSource = results[1].toString();
       const preparedJSON = prepareJSON(packed.nodeTypes, libName, userName);
       preparedJSON.forEach(patch => {
         if (!fs.existsSync(path.join(outputPath, 'nodes'))) {
-          fs.mkdir(path.join(outputPath, 'nodes'));
+          fs.mkdirSync(path.join(outputPath, 'nodes'));
         }
-        fs.writeFile(path.join(outputPath, patch.link), renderToString(singleSource, patch),
-          singleError => {
-            if (singleError) console.error(singleError);
-          });
+        fs.writeFile(path.join(outputPath, patch.link), renderToString(singleSource, patch));
       });
-      fs.writeFile(path.join(outputPath, 'index.html'), renderToString(listSource, preparedJSON),
-        indexError => {
-          if (indexError) console.error(indexError);
-        });
+      fs.writeFile(path.join(outputPath, 'index.html'), renderToString(listSource, preparedJSON));
     })
-  )
-  .catch(err => {
-    console.error('err', err);
-    process.exit(1);
-  });
+  );
 };
