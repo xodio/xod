@@ -11,6 +11,9 @@ chai.use(chaiFiles);
 chai.use(chaiFs);
 chai.use(dirtyChai);
 
+function pathResolve(ending, rootPath = __dirname) {
+  return path.resolve(rootPath, ending);
+}
 
 describe('Generate docs', () => {
   const file = chaiFiles.file;
@@ -19,7 +22,12 @@ describe('Generate docs', () => {
   const tmpPath = path.join(__dirname, 'tmp');
 
   before((done) => {
-    doc(tmpPath, path.resolve(__dirname, 'layouts'), path.resolve(__dirname, 'xod/core'), true).then(() => done());
+    doc(
+      tmpPath,
+      pathResolve('layouts'),
+      pathResolve('xod/core'),
+      true)
+    .then(done);
   });
 
   it('shoult create folder tmp', () =>
@@ -31,7 +39,7 @@ describe('Generate docs', () => {
   it('shoult create folder nodes', () =>
     expect(
       dir(
-        path.resolve(tmpPath, 'nodes')
+        pathResolve('nodes', tmpPath)
         )
       )
     .to.exist()
@@ -40,7 +48,7 @@ describe('Generate docs', () => {
   it('shoult create index file', () =>
     expect(
       file(
-        path.resolve(tmpPath, 'index.html')
+        pathResolve('index.html', tmpPath)
         )
       )
     .to.exist()
@@ -48,19 +56,19 @@ describe('Generate docs', () => {
 
   it('should create doc files', () => {
     const files = packed.map(el => (el.link.replace('nodes/', '')));
-    expect(path.resolve(tmpPath, 'nodes')).to.be.a.directory().and.include.files(files);
+    expect(pathResolve('nodes', tmpPath)).to.be.a.directory().and.include.files(files);
   });
 
   it('files should contain not less than 1 match of patch label', () => {
     packed.forEach(el => {
       const re = new RegExp(`<h1>${el.label}</h1>`);
-      expect(file(path.resolve(tmpPath, el.link))).to.match(re);
+      expect(file(pathResolve(el.link, tmpPath))).to.match(re);
     });
   });
   it('index should contain all labels', () => {
     packed.forEach(el => {
       const re = new RegExp(el.label);
-      expect(file(path.resolve(tmpPath, 'index.html'))).to.match(re);
+      expect(file(pathResolve('index.html', tmpPath))).to.match(re);
     });
   });
 });
