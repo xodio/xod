@@ -1,0 +1,2931 @@
+[
+  {
+    "path": "./core/project.xod",
+    "content": {
+      "meta": {
+        "name": "XOD Core",
+        "author": "Amperka team"
+      },
+      "libs": []
+    }
+  },
+  {
+    "path": "./core/greater/patch.xodm",
+    "content": {
+      "pins": {
+        "a": {
+          "index": 0,
+          "direction": "input",
+          "key": "a",
+          "type": "number",
+          "label": "A",
+          "description": "Left-hand value to compare"
+        },
+        "b": {
+          "index": 1,
+          "direction": "input",
+          "key": "b",
+          "type": "number",
+          "label": "B",
+          "description": "Right-hand value to compare"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "bool",
+          "description": "True if A > B, false otherwise"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/greater_equal/patch.xodm",
+    "content": {
+      "patchNode": true,
+      "label": "greater-equal",
+      "category": "patch",
+      "properties": {},
+      "pins": {
+        "a477e7a1-322d-4c41-880a-bddce611e749": {
+          "key": "a477e7a1-322d-4c41-880a-bddce611e749",
+          "nodeId": "a477e7a1-322d-4c41-880a-bddce611e749",
+          "pinLabel": "A",
+          "label": "A",
+          "direction": "input",
+          "type": "number",
+          "index": "0"
+        },
+        "c0750270-88c2-437c-940d-3d7a578a1041": {
+          "key": "c0750270-88c2-437c-940d-3d7a578a1041",
+          "nodeId": "c0750270-88c2-437c-940d-3d7a578a1041",
+          "pinLabel": "B",
+          "label": "B",
+          "direction": "input",
+          "type": "number",
+          "index": "1"
+        },
+        "1964d794-3c62-418a-bfbe-6a19c89bd6bb": {
+          "key": "1964d794-3c62-418a-bfbe-6a19c89bd6bb",
+          "nodeId": "1964d794-3c62-418a-bfbe-6a19c89bd6bb",
+          "label": "Out",
+          "direction": "output",
+          "type": "bool",
+          "index": "0"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/greater_equal/patch.xodp",
+    "content": {
+      "nodes": {
+        "a477e7a1-322d-4c41-880a-bddce611e749": {
+          "typeId": "@/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 271,
+            "y": 122
+          },
+          "properties": {
+            "label": "A",
+            "pinLabel": "A"
+          },
+          "id": "a477e7a1-322d-4c41-880a-bddce611e749"
+        },
+        "c0750270-88c2-437c-940d-3d7a578a1041": {
+          "typeId": "@/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 439,
+            "y": 120
+          },
+          "properties": {
+            "label": "B",
+            "pinLabel": "B"
+          },
+          "id": "c0750270-88c2-437c-940d-3d7a578a1041"
+        },
+        "45de1c7c-b3ee-413f-90c1-ea3992de410d": {
+          "typeId": "@/less",
+          "pins": {},
+          "position": {
+            "x": 353,
+            "y": 249
+          },
+          "properties": {},
+          "id": "45de1c7c-b3ee-413f-90c1-ea3992de410d"
+        },
+        "2fa83daa-1e22-4e36-ab77-5eab2d116df2": {
+          "typeId": "@/not",
+          "pins": {},
+          "position": {
+            "x": 360,
+            "y": 358
+          },
+          "properties": {},
+          "id": "2fa83daa-1e22-4e36-ab77-5eab2d116df2"
+        },
+        "1964d794-3c62-418a-bfbe-6a19c89bd6bb": {
+          "typeId": "@/outputBool",
+          "pins": {},
+          "position": {
+            "x": 360,
+            "y": 479
+          },
+          "properties": {
+            "label": "Out"
+          },
+          "id": "1964d794-3c62-418a-bfbe-6a19c89bd6bb"
+        }
+      },
+      "links": {
+        "73d467c1-179e-45e7-92d8-57785eec1d13": {
+          "id": "73d467c1-179e-45e7-92d8-57785eec1d13",
+          "pins": [
+            {
+              "nodeId": "a477e7a1-322d-4c41-880a-bddce611e749",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "45de1c7c-b3ee-413f-90c1-ea3992de410d",
+              "pinKey": "a"
+            }
+          ]
+        },
+        "fb2add67-93b5-46a6-afec-45f32d473039": {
+          "id": "fb2add67-93b5-46a6-afec-45f32d473039",
+          "pins": [
+            {
+              "nodeId": "c0750270-88c2-437c-940d-3d7a578a1041",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "45de1c7c-b3ee-413f-90c1-ea3992de410d",
+              "pinKey": "b"
+            }
+          ]
+        },
+        "414d8f3a-24e7-4d38-b633-7bba325bce0f": {
+          "id": "414d8f3a-24e7-4d38-b633-7bba325bce0f",
+          "pins": [
+            {
+              "nodeId": "45de1c7c-b3ee-413f-90c1-ea3992de410d",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "2fa83daa-1e22-4e36-ab77-5eab2d116df2",
+              "pinKey": "in"
+            }
+          ]
+        },
+        "1126cbe7-451e-4711-8e95-f810741833da": {
+          "id": "1126cbe7-451e-4711-8e95-f810741833da",
+          "pins": [
+            {
+              "nodeId": "2fa83daa-1e22-4e36-ab77-5eab2d116df2",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "1964d794-3c62-418a-bfbe-6a19c89bd6bb",
+              "pinKey": "OUT"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/in_range/patch.xodm",
+    "content": {
+      "patchNode": true,
+      "label": "in-range",
+      "category": "patch",
+      "properties": {},
+      "pins": {
+        "cc0ccde0-1526-4424-a547-1dfd5a5a0d1f": {
+          "key": "cc0ccde0-1526-4424-a547-1dfd5a5a0d1f",
+          "nodeId": "cc0ccde0-1526-4424-a547-1dfd5a5a0d1f",
+          "pinLabel": "X",
+          "label": "X",
+          "direction": "input",
+          "type": "number",
+          "index": "0"
+        },
+        "6a361c77-4acf-42fe-8e96-a188a561a967": {
+          "key": "6a361c77-4acf-42fe-8e96-a188a561a967",
+          "nodeId": "6a361c77-4acf-42fe-8e96-a188a561a967",
+          "pinLabel": "MIN",
+          "label": "Min",
+          "direction": "input",
+          "type": "number",
+          "index": "1"
+        },
+        "a6698d0c-e304-4cd8-9363-42a4f7024813": {
+          "key": "a6698d0c-e304-4cd8-9363-42a4f7024813",
+          "nodeId": "a6698d0c-e304-4cd8-9363-42a4f7024813",
+          "pinLabel": "MAX",
+          "label": "Max",
+          "direction": "input",
+          "type": "number",
+          "index": "2"
+        },
+        "99813fd1-543e-4598-af0e-ed7e178c5ba8": {
+          "key": "99813fd1-543e-4598-af0e-ed7e178c5ba8",
+          "nodeId": "99813fd1-543e-4598-af0e-ed7e178c5ba8",
+          "pinLabel": "Out",
+          "label": "Out",
+          "direction": "output",
+          "type": "bool",
+          "index": "0"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/file_write/patch.xodm",
+    "content": {
+      "label": "File write",
+      "pure": false,
+      "pins": {
+        "fileName": {
+          "index": 0,
+          "direction": "input",
+          "key": "fileName",
+          "type": "string",
+          "injected": true,
+          "pinLabel": "NAME",
+          "label": "Filename"
+        },
+        "data": {
+          "index": 1,
+          "direction": "input",
+          "key": "data",
+          "type": "pulse",
+          "pinLabel": "DATA",
+          "label": "DATA"
+        },
+        "onSuccess": {
+          "index": 0,
+          "direction": "output",
+          "key": "onSuccess",
+          "type": "pulse",
+          "pinLabel": "onSc"
+        },
+        "onFailure": {
+          "index": 1,
+          "direction": "output",
+          "key": "onFailure",
+          "type": "string",
+          "pinLabel": "onFl"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/inputBool/patch.xodm",
+    "content": {
+      "label": "<InputBool>",
+      "category": "io",
+      "properties": [
+        {
+          "key": "pinLabel",
+          "type": "string",
+          "widget": "IOLabel",
+          "label": "Pin label",
+          "value": ""
+        }
+      ],
+      "pins": {
+        "PIN": {
+          "index": 0,
+          "direction": "output",
+          "key": "PIN",
+          "type": "bool"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/inputNumber/patch.xodm",
+    "content": {
+      "label": "<InputNumber>",
+      "category": "io",
+      "properties": [
+        {
+          "key": "pinLabel",
+          "type": "string",
+          "widget": "IOLabel",
+          "label": "Pin label",
+          "value": ""
+        }
+      ],
+      "pins": {
+        "PIN": {
+          "index": 0,
+          "direction": "output",
+          "key": "PIN",
+          "type": "number"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/inputPulse/patch.xodm",
+    "content": {
+      "label": "<InputPulse>",
+      "category": "io",
+      "properties": [
+        {
+          "key": "pinLabel",
+          "type": "string",
+          "widget": "IOLabel",
+          "label": "Pin label",
+          "value": ""
+        }
+      ],
+      "pins": {
+        "PIN": {
+          "index": 0,
+          "direction": "output",
+          "key": "PIN",
+          "type": "pulse"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/inputString/patch.xodm",
+    "content": {
+      "label": "<InputString>",
+      "category": "io",
+      "properties": [
+        {
+          "key": "pinLabel",
+          "type": "string",
+          "widget": "IOLabel",
+          "label": "Pin label",
+          "value": ""
+        }
+      ],
+      "pins": {
+        "PIN": {
+          "index": 0,
+          "direction": "output",
+          "key": "PIN",
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/latch/patch.xodm",
+    "content": {
+      "pins": {
+        "toggle": {
+          "index": 0,
+          "direction": "input",
+          "key": "toggle",
+          "type": "pulse",
+          "pinLabel": "TGL",
+          "label": "Toggle pulse",
+          "description": "Flips current state to opposite"
+        },
+        "set": {
+          "index": 1,
+          "direction": "input",
+          "key": "set",
+          "type": "pulse",
+          "pinLabel": "SET",
+          "label": "Set pulse",
+          "description": "Sets current state to `true`"
+        },
+        "reset": {
+          "index": 2,
+          "direction": "input",
+          "key": "reset",
+          "type": "pulse",
+          "modes": "pin",
+          "pinLabel": "RST",
+          "label": "Reset pulse",
+          "description": "Sets current state to `false`"
+        },
+        "state": {
+          "index": 0,
+          "direction": "output",
+          "key": "state",
+          "type": "bool",
+          "description": "Emits current latch state when changes"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/file_read/patch.xodm",
+    "content": {
+      "label": "File read",
+      "pure": false,
+      "pins": {
+        "fileName": {
+          "index": 0,
+          "direction": "input",
+          "key": "fileName",
+          "type": "string",
+          "injected": true,
+          "pinLabel": "NAME",
+          "label": "Filename"
+        },
+        "pulse": {
+          "index": 1,
+          "direction": "input",
+          "key": "pulse",
+          "type": "pulse",
+          "pinLabel": "PLS",
+          "label": "Pulse"
+        },
+        "data": {
+          "index": 0,
+          "direction": "output",
+          "key": "data",
+          "type": "string",
+          "pinLabel": "DATA"
+        },
+        "error": {
+          "index": 1,
+          "direction": "output",
+          "key": "error",
+          "type": "string",
+          "pinLabel": "ERR"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/led/patch.xodm",
+    "content": {
+      "label": "LED",
+      "category": "hardware",
+      "properties": [
+        {
+          "key": "pin",
+          "label": "Pin",
+          "type": "string",
+          "value": "LED1"
+        }
+      ],
+      "pins": {
+        "brightness": {
+          "index": 0,
+          "direction": "input",
+          "key": "brightness",
+          "type": "number",
+          "label": "Brightness",
+          "value": 0,
+          "description": "Shine brightness"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/equal/patch.xodm",
+    "content": {
+      "pins": {
+        "a": {
+          "index": 0,
+          "direction": "input",
+          "key": "a",
+          "type": "number",
+          "label": "A",
+          "description": "Left-hand value to compare"
+        },
+        "b": {
+          "index": 1,
+          "direction": "input",
+          "key": "b",
+          "type": "number",
+          "label": "B",
+          "description": "Right-hand value to compare"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "bool",
+          "description": "True if A equal to B, false otherwise"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/less/patch.xodm",
+    "content": {
+      "pins": {
+        "a": {
+          "index": 0,
+          "direction": "input",
+          "key": "a",
+          "type": "number",
+          "label": "A",
+          "description": "Left-hand value to compare"
+        },
+        "b": {
+          "index": 1,
+          "direction": "input",
+          "key": "b",
+          "type": "number",
+          "label": "B",
+          "description": "Right-hand value to compare"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "bool",
+          "description": "True if A < B, false otherwise"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/either/patch.xodm",
+    "content": {
+      "pins": {
+        "inp": {
+          "index": 0,
+          "direction": "input",
+          "key": "inp",
+          "type": "bool",
+          "pinLabel": "IN",
+          "label": "Value",
+          "description": "Selector value"
+        },
+        "trueValue": {
+          "index": 1,
+          "direction": "input",
+          "key": "trueValue",
+          "type": "number",
+          "label": "True output",
+          "pinLabel": "T",
+          "value": 1,
+          "description": "Output if selector is `true`"
+        },
+        "falseValue": {
+          "index": 2,
+          "direction": "input",
+          "key": "falseValue",
+          "type": "number",
+          "label": "False output",
+          "pinLabel": "F",
+          "value": 0,
+          "description": "Output if selector is `false`"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "number",
+          "description": "Selected output value"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/less_equal/patch.xodm",
+    "content": {
+      "patchNode": true,
+      "label": "less-equal",
+      "category": "patch",
+      "properties": {},
+      "pins": {
+        "a1c97a17-d0a9-48d7-9b07-7b988a6f4cee": {
+          "key": "a1c97a17-d0a9-48d7-9b07-7b988a6f4cee",
+          "nodeId": "a1c97a17-d0a9-48d7-9b07-7b988a6f4cee",
+          "pinLabel": "A",
+          "label": "A",
+          "direction": "input",
+          "type": "number",
+          "index": "0"
+        },
+        "e7ed6f6c-5d84-4e7b-944c-5b9dd1da278d": {
+          "key": "e7ed6f6c-5d84-4e7b-944c-5b9dd1da278d",
+          "nodeId": "e7ed6f6c-5d84-4e7b-944c-5b9dd1da278d",
+          "pinLabel": "B",
+          "label": "B",
+          "direction": "input",
+          "type": "number",
+          "index": "1"
+        },
+        "46528aa4-2157-483b-bf99-2c81b80e8821": {
+          "key": "46528aa4-2157-483b-bf99-2c81b80e8821",
+          "nodeId": "46528aa4-2157-483b-bf99-2c81b80e8821",
+          "label": "out",
+          "direction": "output",
+          "type": "bool",
+          "index": "0"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/compare/patch.xodm",
+    "content": {
+      "pins": {
+        "a": {
+          "index": 0,
+          "direction": "input",
+          "key": "a",
+          "pinLabel": "IN1",
+          "label": "First value",
+          "type": "number"
+        },
+        "b": {
+          "index": 1,
+          "direction": "input",
+          "key": "b",
+          "pinLabel": "IN2",
+          "label": "Second value",
+          "type": "number"
+        },
+        "equal": {
+          "index": 0,
+          "direction": "output",
+          "key": "equal",
+          "type": "pulse",
+          "pinLabel": "==",
+          "description": "Pulses if a = b"
+        },
+        "less": {
+          "index": 1,
+          "direction": "output",
+          "key": "less",
+          "type": "pulse",
+          "pinLabel": "<",
+          "description": "Pulses if a < b"
+        },
+        "greater": {
+          "index": 2,
+          "direction": "output",
+          "key": "greater",
+          "type": "pulse",
+          "pinLabel": ">",
+          "description": "Pulses if a > b"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/less_equal/patch.xodp",
+    "content": {
+      "nodes": {
+        "a1c97a17-d0a9-48d7-9b07-7b988a6f4cee": {
+          "typeId": "@/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 232,
+            "y": 76
+          },
+          "properties": {
+            "label": "A",
+            "pinLabel": "A"
+          },
+          "id": "a1c97a17-d0a9-48d7-9b07-7b988a6f4cee"
+        },
+        "e7ed6f6c-5d84-4e7b-944c-5b9dd1da278d": {
+          "typeId": "@/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 428,
+            "y": 78
+          },
+          "properties": {
+            "label": "B",
+            "pinLabel": "B"
+          },
+          "id": "e7ed6f6c-5d84-4e7b-944c-5b9dd1da278d"
+        },
+        "46528aa4-2157-483b-bf99-2c81b80e8821": {
+          "typeId": "@/outputBool",
+          "pins": {},
+          "position": {
+            "x": 320,
+            "y": 454
+          },
+          "properties": {
+            "label": "out"
+          },
+          "id": "46528aa4-2157-483b-bf99-2c81b80e8821"
+        },
+        "bd188e24-dd74-46c2-bdd0-a8764be91aaf": {
+          "typeId": "@/greater",
+          "pins": {},
+          "position": {
+            "x": 326,
+            "y": 196
+          },
+          "properties": {},
+          "id": "bd188e24-dd74-46c2-bdd0-a8764be91aaf"
+        },
+        "01c05d3b-0ea7-49f0-b2a2-bc2a94037b14": {
+          "typeId": "@/not",
+          "pins": {},
+          "position": {
+            "x": 324,
+            "y": 318
+          },
+          "properties": {},
+          "id": "01c05d3b-0ea7-49f0-b2a2-bc2a94037b14"
+        }
+      },
+      "links": {
+        "8b520011-9fe9-4b6e-81a8-6f2ef7c98aea": {
+          "id": "8b520011-9fe9-4b6e-81a8-6f2ef7c98aea",
+          "pins": [
+            {
+              "nodeId": "a1c97a17-d0a9-48d7-9b07-7b988a6f4cee",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "bd188e24-dd74-46c2-bdd0-a8764be91aaf",
+              "pinKey": "a"
+            }
+          ]
+        },
+        "5041cb3a-112c-422e-89f3-05f3d1b2cf28": {
+          "id": "5041cb3a-112c-422e-89f3-05f3d1b2cf28",
+          "pins": [
+            {
+              "nodeId": "e7ed6f6c-5d84-4e7b-944c-5b9dd1da278d",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "bd188e24-dd74-46c2-bdd0-a8764be91aaf",
+              "pinKey": "b"
+            }
+          ]
+        },
+        "d732dc8c-8758-4bc8-93ed-bcd761a27cda": {
+          "id": "d732dc8c-8758-4bc8-93ed-bcd761a27cda",
+          "pins": [
+            {
+              "nodeId": "bd188e24-dd74-46c2-bdd0-a8764be91aaf",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "01c05d3b-0ea7-49f0-b2a2-bc2a94037b14",
+              "pinKey": "in"
+            }
+          ]
+        },
+        "89c88297-ea11-4889-9c18-261bd709098c": {
+          "id": "89c88297-ea11-4889-9c18-261bd709098c",
+          "pins": [
+            {
+              "nodeId": "01c05d3b-0ea7-49f0-b2a2-bc2a94037b14",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "46528aa4-2157-483b-bf99-2c81b80e8821",
+              "pinKey": "OUT"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/constString/patch.xodm",
+    "content": {
+      "label": "<String>",
+      "category": "configuration",
+      "pins": {
+        "inValue": {
+          "index": 0,
+          "direction": "input",
+          "key": "inValue",
+          "type": "string",
+          "injected": true,
+          "pinLabel": "VAL",
+          "label": "Value",
+          "value": ""
+        },
+        "pulse": {
+          "index": 1,
+          "direction": "input",
+          "key": "pulse",
+          "type": "pulse",
+          "injected": true,
+          "pinLabel": "PLS",
+          "label": "Pulse"
+        },
+        "value": {
+          "index": 0,
+          "direction": "output",
+          "key": "value",
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/map/patch.xodm",
+    "content": {
+      "pins": {
+        "inp": {
+          "index": 0,
+          "direction": "input",
+          "key": "inp",
+          "type": "number",
+          "pinLabel": "IN",
+          "label": "Input",
+          "value": 0,
+          "description": "Input value to map"
+        },
+        "inA": {
+          "index": 1,
+          "direction": "input",
+          "key": "inA",
+          "type": "number",
+          "injected": true,
+          "pinLabel": "As",
+          "label": "Input range start",
+          "value": 0,
+          "description": "Input range start"
+        },
+        "inB": {
+          "index": 2,
+          "direction": "input",
+          "key": "inB",
+          "type": "number",
+          "injected": true,
+          "pinLabel": "Bs",
+          "label": "Input range end",
+          "value": 0,
+          "description": "Input range end"
+        },
+        "outA": {
+          "index": 3,
+          "direction": "input",
+          "key": "outA",
+          "type": "number",
+          "injected": true,
+          "pinLabel": "At",
+          "label": "Output range start",
+          "value": 0,
+          "description": "Output range start"
+        },
+        "outB": {
+          "index": 4,
+          "direction": "input",
+          "key": "outB",
+          "type": "number",
+          "injected": true,
+          "pinLabel": "Bt",
+          "label": "Output range end",
+          "value": 0,
+          "description": "Output range end"
+        },
+        "clip": {
+          "index": 5,
+          "direction": "input",
+          "key": "clip",
+          "type": "bool",
+          "injected": true,
+          "pinLabel": "CL",
+          "label": "Clip",
+          "value": false,
+          "description": "Clip result to output range"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "number",
+          "description": "Mapped value"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/constNumber/patch.xodm",
+    "content": {
+      "label": "<Number>",
+      "category": "configuration",
+      "pins": {
+        "inValue": {
+          "index": 0,
+          "direction": "input",
+          "key": "inValue",
+          "type": "number",
+          "injected": true,
+          "pinLabel": "VAL",
+          "label": "Value",
+          "value": 0
+        },
+        "pulse": {
+          "index": 1,
+          "direction": "input",
+          "key": "pulse",
+          "type": "pulse",
+          "injected": true,
+          "pinLabel": "PLS",
+          "label": "Pulse"
+        },
+        "value": {
+          "index": 0,
+          "direction": "output",
+          "key": "value",
+          "type": "number"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/not/patch.xodm",
+    "content": {
+      "label": "not",
+      "pins": {
+        "in": {
+          "index": 0,
+          "direction": "input",
+          "key": "in",
+          "type": "bool",
+          "label": "Input",
+          "description": "Value to be inverted"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "bool",
+          "description": "Resulting inverted value"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/concat/patch.xodm",
+    "content": {
+      "label": "concat",
+      "pins": {
+        "a": {
+          "index": 0,
+          "direction": "input",
+          "key": "a",
+          "type": "string",
+          "pinLabel": "A",
+          "label": "First string"
+        },
+        "b": {
+          "index": 1,
+          "direction": "input",
+          "key": "b",
+          "type": "string",
+          "pinLabel": "B",
+          "label": "Second string"
+        },
+        "result": {
+          "index": 0,
+          "direction": "output",
+          "key": "result",
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/or/patch.xodm",
+    "content": {
+      "label": "or",
+      "pins": {
+        "a": {
+          "index": 0,
+          "direction": "input",
+          "key": "a",
+          "type": "bool",
+          "description": "First input"
+        },
+        "b": {
+          "index": 1,
+          "direction": "input",
+          "key": "b",
+          "type": "bool",
+          "description": "Second input"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "bool",
+          "description": "\"true\" if a least one of inputs is \"true\""
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/clock/patch.xodm",
+    "content": {
+      "pure": false,
+      "pins": {
+        "interval": {
+          "index": 0,
+          "direction": "input",
+          "key": "interval",
+          "pinLabel": "INT",
+          "label": "Interval (sec)",
+          "type": "number",
+          "injected": true,
+          "value": 1
+        },
+        "tick": {
+          "index": 0,
+          "direction": "output",
+          "key": "tick",
+          "type": "pulse",
+          "description": "Emits pulse periodically"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/outputBool/patch.xodm",
+    "content": {
+      "label": "<OutputBool>",
+      "category": "io",
+      "properties": [
+        {
+          "key": "pinLabel",
+          "type": "string",
+          "widget": "IOLabel",
+          "label": "Pin label",
+          "value": ""
+        }
+      ],
+      "pins": {
+        "OUT": {
+          "index": 0,
+          "direction": "input",
+          "key": "OUT",
+          "type": "bool",
+          "label": "Value"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/constBool/patch.xodm",
+    "content": {
+      "label": "<Bool>",
+      "category": "configuration",
+      "pins": {
+        "inValue": {
+          "index": 0,
+          "direction": "input",
+          "key": "inValue",
+          "type": "bool",
+          "injected": true,
+          "pinLabel": "VAL",
+          "label": "Value",
+          "value": false
+        },
+        "pulse": {
+          "index": 1,
+          "direction": "input",
+          "key": "pulse",
+          "type": "pulse",
+          "injected": true,
+          "pinLabel": "PLS",
+          "label": "Pulse"
+        },
+        "value": {
+          "index": 0,
+          "direction": "output",
+          "key": "value",
+          "type": "bool"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/outputNumber/patch.xodm",
+    "content": {
+      "label": "<OutputNumber>",
+      "category": "io",
+      "properties": [
+        {
+          "key": "pinLabel",
+          "type": "string",
+          "widget": "IOLabel",
+          "label": "Pin label",
+          "value": ""
+        }
+      ],
+      "pins": {
+        "OUT": {
+          "index": 0,
+          "direction": "input",
+          "key": "OUT",
+          "type": "number",
+          "label": "Value"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/choose_range_3p/patch.xodp",
+    "content": {
+      "nodes": {
+        "7207d63c-514b-4b43-9ef1-87cd74e7c018": {
+          "typeId": "@/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 173,
+            "y": 140
+          },
+          "properties": {
+            "label": "X",
+            "pinLabel": "X"
+          },
+          "id": "7207d63c-514b-4b43-9ef1-87cd74e7c018"
+        },
+        "36c098f3-b1f4-49a9-93c4-225c1cb52bb4": {
+          "typeId": "@/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 315,
+            "y": 140
+          },
+          "properties": {
+            "label": "P1",
+            "pinLabel": "P1"
+          },
+          "id": "36c098f3-b1f4-49a9-93c4-225c1cb52bb4"
+        },
+        "37ca6128-488d-44fb-906c-de2197407e1d": {
+          "typeId": "@/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 452,
+            "y": 140
+          },
+          "properties": {
+            "label": "P2",
+            "pinLabel": "P2"
+          },
+          "id": "37ca6128-488d-44fb-906c-de2197407e1d"
+        },
+        "4947c7e4-34a6-4dca-8f4c-7c6261839078": {
+          "typeId": "@/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 589,
+            "y": 140
+          },
+          "properties": {
+            "label": "P3",
+            "pinLabel": "P3"
+          },
+          "id": "4947c7e4-34a6-4dca-8f4c-7c6261839078"
+        },
+        "b7181af1-9dc2-467d-b5c1-94d9e1a92cd3": {
+          "typeId": "@/choose_range_2p",
+          "pins": {},
+          "position": {
+            "x": 249,
+            "y": 294
+          },
+          "properties": {},
+          "id": "b7181af1-9dc2-467d-b5c1-94d9e1a92cd3"
+        },
+        "98b22c46-c315-4b89-ac7a-3b967454ab4b": {
+          "typeId": "@/outputPulse",
+          "pins": {},
+          "position": {
+            "x": 171,
+            "y": 538
+          },
+          "properties": {
+            "label": "LESS",
+            "pinLabel": "LESS"
+          },
+          "id": "98b22c46-c315-4b89-ac7a-3b967454ab4b"
+        },
+        "50c74602-e37e-4177-ab00-19fcbf645f04": {
+          "typeId": "@/outputPulse",
+          "pins": {},
+          "position": {
+            "x": 313,
+            "y": 538
+          },
+          "properties": {
+            "label": "MID1",
+            "pinLabel": "MID1"
+          },
+          "id": "50c74602-e37e-4177-ab00-19fcbf645f04"
+        },
+        "a1f84664-46e7-42ba-b91e-67a37cde973c": {
+          "typeId": "@/outputPulse",
+          "pins": {},
+          "position": {
+            "x": 456,
+            "y": 535
+          },
+          "properties": {
+            "label": "MID2",
+            "pinLabel": "MID2"
+          },
+          "id": "a1f84664-46e7-42ba-b91e-67a37cde973c"
+        },
+        "f28fd0c6-280c-4a6b-b143-c3a1398603bb": {
+          "typeId": "@/outputPulse",
+          "pins": {},
+          "position": {
+            "x": 598,
+            "y": 533
+          },
+          "properties": {
+            "label": "GE",
+            "pinLabel": "GE"
+          },
+          "id": "f28fd0c6-280c-4a6b-b143-c3a1398603bb"
+        },
+        "7af16f00-7833-44a7-8ae0-2dcb4b34f146": {
+          "typeId": "@/choose_range",
+          "pins": {},
+          "position": {
+            "x": 495,
+            "y": 297
+          },
+          "properties": {},
+          "id": "7af16f00-7833-44a7-8ae0-2dcb4b34f146"
+        },
+        "b0e33413-d8da-4260-900c-bb17ed4ee95e": {
+          "typeId": "@/both",
+          "pins": {},
+          "position": {
+            "x": 419,
+            "y": 405
+          },
+          "properties": {},
+          "id": "b0e33413-d8da-4260-900c-bb17ed4ee95e"
+        }
+      },
+      "links": {
+        "4c60fa07-f525-480a-8ea4-43b1b7764b39": {
+          "id": "4c60fa07-f525-480a-8ea4-43b1b7764b39",
+          "pins": [
+            {
+              "nodeId": "7207d63c-514b-4b43-9ef1-87cd74e7c018",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "b7181af1-9dc2-467d-b5c1-94d9e1a92cd3",
+              "pinKey": "be0b5f79-e8d5-4b6a-8168-5bbae5dc649d"
+            }
+          ]
+        },
+        "1534d91d-5cd8-4a86-8ab9-50a5b8a38086": {
+          "id": "1534d91d-5cd8-4a86-8ab9-50a5b8a38086",
+          "pins": [
+            {
+              "nodeId": "36c098f3-b1f4-49a9-93c4-225c1cb52bb4",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "b7181af1-9dc2-467d-b5c1-94d9e1a92cd3",
+              "pinKey": "128b1f8b-4577-465c-b18b-68a8be78b904"
+            }
+          ]
+        },
+        "e2840634-3411-4b1e-b664-4f102d8902c1": {
+          "id": "e2840634-3411-4b1e-b664-4f102d8902c1",
+          "pins": [
+            {
+              "nodeId": "37ca6128-488d-44fb-906c-de2197407e1d",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "b7181af1-9dc2-467d-b5c1-94d9e1a92cd3",
+              "pinKey": "c873d3be-5c87-45e8-8c28-b6422d2f5638"
+            }
+          ]
+        },
+        "b756b20a-3532-42f4-a75d-35eb3d1ef116": {
+          "id": "b756b20a-3532-42f4-a75d-35eb3d1ef116",
+          "pins": [
+            {
+              "nodeId": "b7181af1-9dc2-467d-b5c1-94d9e1a92cd3",
+              "pinKey": "a0c1d022-930b-4ab7-83a3-1d4bd12ffb24"
+            },
+            {
+              "nodeId": "98b22c46-c315-4b89-ac7a-3b967454ab4b",
+              "pinKey": "PIN"
+            }
+          ]
+        },
+        "5db6b137-cbf2-4bac-933f-392fb4304159": {
+          "id": "5db6b137-cbf2-4bac-933f-392fb4304159",
+          "pins": [
+            {
+              "nodeId": "b7181af1-9dc2-467d-b5c1-94d9e1a92cd3",
+              "pinKey": "d2fc4947-4ebb-4026-b8e4-c5f5c70c2c7e"
+            },
+            {
+              "nodeId": "50c74602-e37e-4177-ab00-19fcbf645f04",
+              "pinKey": "PIN"
+            }
+          ]
+        },
+        "1a98cc23-d5d2-4990-9f8b-2c125efbb2ca": {
+          "id": "1a98cc23-d5d2-4990-9f8b-2c125efbb2ca",
+          "pins": [
+            {
+              "nodeId": "4947c7e4-34a6-4dca-8f4c-7c6261839078",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "7af16f00-7833-44a7-8ae0-2dcb4b34f146",
+              "pinKey": "e03f07fd-7e67-47f6-a7aa-1b8dc4bb4f81"
+            }
+          ]
+        },
+        "16ed0c45-7e82-4452-9a65-f8aa61c2147a": {
+          "id": "16ed0c45-7e82-4452-9a65-f8aa61c2147a",
+          "pins": [
+            {
+              "nodeId": "7207d63c-514b-4b43-9ef1-87cd74e7c018",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "7af16f00-7833-44a7-8ae0-2dcb4b34f146",
+              "pinKey": "02a5129e-2d82-4e24-addc-54e35571e21d"
+            }
+          ]
+        },
+        "472702fe-e04b-47ed-a354-0219e8326e5d": {
+          "id": "472702fe-e04b-47ed-a354-0219e8326e5d",
+          "pins": [
+            {
+              "nodeId": "7af16f00-7833-44a7-8ae0-2dcb4b34f146",
+              "pinKey": "8e0924ad-6a50-409f-a330-28f695fd2512"
+            },
+            {
+              "nodeId": "f28fd0c6-280c-4a6b-b143-c3a1398603bb",
+              "pinKey": "PIN"
+            }
+          ]
+        },
+        "eb0f3e20-c87b-4e50-aa16-dda5a3ef2c3a": {
+          "id": "eb0f3e20-c87b-4e50-aa16-dda5a3ef2c3a",
+          "pins": [
+            {
+              "nodeId": "b7181af1-9dc2-467d-b5c1-94d9e1a92cd3",
+              "pinKey": "032f1e7f-ef6d-459c-b923-13d2a4b692b4"
+            },
+            {
+              "nodeId": "b0e33413-d8da-4260-900c-bb17ed4ee95e",
+              "pinKey": "a"
+            }
+          ]
+        },
+        "98fc0e76-7551-4326-a8cc-50e5c88ab190": {
+          "id": "98fc0e76-7551-4326-a8cc-50e5c88ab190",
+          "pins": [
+            {
+              "nodeId": "7af16f00-7833-44a7-8ae0-2dcb4b34f146",
+              "pinKey": "69d6b3fe-870d-4976-b858-14fb90e66a4b"
+            },
+            {
+              "nodeId": "b0e33413-d8da-4260-900c-bb17ed4ee95e",
+              "pinKey": "b"
+            }
+          ]
+        },
+        "bd575cf9-151f-4bc3-b5b0-12a923d19096": {
+          "id": "bd575cf9-151f-4bc3-b5b0-12a923d19096",
+          "pins": [
+            {
+              "nodeId": "b0e33413-d8da-4260-900c-bb17ed4ee95e",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "a1f84664-46e7-42ba-b91e-67a37cde973c",
+              "pinKey": "PIN"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/outputPulse/patch.xodm",
+    "content": {
+      "label": "<OutputPulse>",
+      "category": "io",
+      "properties": [
+        {
+          "key": "pinLabel",
+          "type": "string",
+          "widget": "IOLabel",
+          "label": "Pin label",
+          "value": ""
+        }
+      ],
+      "pins": {
+        "PIN": {
+          "index": 0,
+          "direction": "input",
+          "key": "PIN",
+          "type": "pulse"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/choose_range_3p/patch.xodm",
+    "content": {
+      "patchNode": true,
+      "label": "choose-range-3p",
+      "category": "patch",
+      "properties": {},
+      "pins": {
+        "7207d63c-514b-4b43-9ef1-87cd74e7c018": {
+          "key": "7207d63c-514b-4b43-9ef1-87cd74e7c018",
+          "nodeId": "7207d63c-514b-4b43-9ef1-87cd74e7c018",
+          "pinLabel": "X",
+          "label": "X",
+          "direction": "input",
+          "type": "number",
+          "index": "0"
+        },
+        "36c098f3-b1f4-49a9-93c4-225c1cb52bb4": {
+          "key": "36c098f3-b1f4-49a9-93c4-225c1cb52bb4",
+          "nodeId": "36c098f3-b1f4-49a9-93c4-225c1cb52bb4",
+          "pinLabel": "P1",
+          "label": "P1",
+          "direction": "input",
+          "type": "number",
+          "index": "1"
+        },
+        "37ca6128-488d-44fb-906c-de2197407e1d": {
+          "key": "37ca6128-488d-44fb-906c-de2197407e1d",
+          "nodeId": "37ca6128-488d-44fb-906c-de2197407e1d",
+          "pinLabel": "P2",
+          "label": "P2",
+          "direction": "input",
+          "type": "number",
+          "index": "2"
+        },
+        "4947c7e4-34a6-4dca-8f4c-7c6261839078": {
+          "key": "4947c7e4-34a6-4dca-8f4c-7c6261839078",
+          "nodeId": "4947c7e4-34a6-4dca-8f4c-7c6261839078",
+          "pinLabel": "P3",
+          "label": "P3",
+          "direction": "input",
+          "type": "number",
+          "index": "3"
+        },
+        "98b22c46-c315-4b89-ac7a-3b967454ab4b": {
+          "key": "98b22c46-c315-4b89-ac7a-3b967454ab4b",
+          "nodeId": "98b22c46-c315-4b89-ac7a-3b967454ab4b",
+          "pinLabel": "LESS",
+          "label": "LESS",
+          "direction": "output",
+          "type": "pulse",
+          "index": "0"
+        },
+        "50c74602-e37e-4177-ab00-19fcbf645f04": {
+          "key": "50c74602-e37e-4177-ab00-19fcbf645f04",
+          "nodeId": "50c74602-e37e-4177-ab00-19fcbf645f04",
+          "pinLabel": "MID1",
+          "label": "MID1",
+          "direction": "output",
+          "type": "pulse",
+          "index": "1"
+        },
+        "a1f84664-46e7-42ba-b91e-67a37cde973c": {
+          "key": "a1f84664-46e7-42ba-b91e-67a37cde973c",
+          "nodeId": "a1f84664-46e7-42ba-b91e-67a37cde973c",
+          "pinLabel": "MID2",
+          "label": "MID2",
+          "direction": "output",
+          "type": "pulse",
+          "index": "2"
+        },
+        "f28fd0c6-280c-4a6b-b143-c3a1398603bb": {
+          "key": "f28fd0c6-280c-4a6b-b143-c3a1398603bb",
+          "nodeId": "f28fd0c6-280c-4a6b-b143-c3a1398603bb",
+          "pinLabel": "GE",
+          "label": "GE",
+          "direction": "output",
+          "type": "pulse",
+          "index": "3"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/outputString/patch.xodm",
+    "content": {
+      "label": "<OutputString>",
+      "category": "io",
+      "properties": [
+        {
+          "key": "pinLabel",
+          "type": "string",
+          "widget": "IOLabel",
+          "label": "Pin label",
+          "value": ""
+        }
+      ],
+      "pins": {
+        "OUT": {
+          "index": 0,
+          "direction": "input",
+          "key": "OUT",
+          "type": "string",
+          "label": "Value"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/choose_range_2p/patch.xodp",
+    "content": {
+      "nodes": {
+        "032f1e7f-ef6d-459c-b923-13d2a4b692b4": {
+          "id": "032f1e7f-ef6d-459c-b923-13d2a4b692b4",
+          "pins": {},
+          "position": {
+            "x": 554,
+            "y": 457
+          },
+          "properties": {
+            "label": "GE",
+            "pinLabel": "GE"
+          },
+          "typeId": "@/outputPulse"
+        },
+        "128b1f8b-4577-465c-b18b-68a8be78b904": {
+          "id": "128b1f8b-4577-465c-b18b-68a8be78b904",
+          "pins": {},
+          "position": {
+            "x": 367,
+            "y": 117
+          },
+          "properties": {
+            "label": "P1",
+            "pinLabel": "P1"
+          },
+          "typeId": "@/inputNumber"
+        },
+        "2c2f60d9-ecce-4143-bee7-60c6e9c42d4c": {
+          "id": "2c2f60d9-ecce-4143-bee7-60c6e9c42d4c",
+          "pins": {},
+          "position": {
+            "x": 462,
+            "y": 256
+          },
+          "properties": {},
+          "typeId": "@/choose_range"
+        },
+        "86030327-dea6-4679-a2bf-2c08e154b9a0": {
+          "id": "86030327-dea6-4679-a2bf-2c08e154b9a0",
+          "pins": {},
+          "position": {
+            "x": 382,
+            "y": 361
+          },
+          "properties": {},
+          "typeId": "@/both"
+        },
+        "a0c1d022-930b-4ab7-83a3-1d4bd12ffb24": {
+          "id": "a0c1d022-930b-4ab7-83a3-1d4bd12ffb24",
+          "pins": {},
+          "position": {
+            "x": 191,
+            "y": 452
+          },
+          "properties": {
+            "label": "LESS",
+            "pinLabel": "LESS"
+          },
+          "typeId": "@/outputPulse"
+        },
+        "be0b5f79-e8d5-4b6a-8168-5bbae5dc649d": {
+          "id": "be0b5f79-e8d5-4b6a-8168-5bbae5dc649d",
+          "pins": {},
+          "position": {
+            "x": 189,
+            "y": 116
+          },
+          "properties": {
+            "label": "X",
+            "pinLabel": "X"
+          },
+          "typeId": "@/inputNumber"
+        },
+        "c873d3be-5c87-45e8-8c28-b6422d2f5638": {
+          "id": "c873d3be-5c87-45e8-8c28-b6422d2f5638",
+          "pins": {},
+          "position": {
+            "x": 553,
+            "y": 118
+          },
+          "properties": {
+            "label": "P2",
+            "pinLabel": "P2"
+          },
+          "typeId": "@/inputNumber"
+        },
+        "d2fc4947-4ebb-4026-b8e4-c5f5c70c2c7e": {
+          "id": "d2fc4947-4ebb-4026-b8e4-c5f5c70c2c7e",
+          "pins": {},
+          "position": {
+            "x": 402,
+            "y": 456
+          },
+          "properties": {
+            "label": "MID",
+            "pinLabel": "MID"
+          },
+          "typeId": "@/outputPulse"
+        },
+        "edd0e52e-699a-43ca-8fde-cfbfab5a5681": {
+          "id": "edd0e52e-699a-43ca-8fde-cfbfab5a5681",
+          "pins": {},
+          "position": {
+            "x": 271,
+            "y": 258
+          },
+          "properties": {},
+          "typeId": "@/choose_range"
+        }
+      },
+      "links": {
+        "07076c35-aaa3-4c5b-b0a8-e5bc2e5eee78": {
+          "id": "07076c35-aaa3-4c5b-b0a8-e5bc2e5eee78",
+          "pins": [
+            {
+              "nodeId": "c873d3be-5c87-45e8-8c28-b6422d2f5638",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "2c2f60d9-ecce-4143-bee7-60c6e9c42d4c",
+              "pinKey": "e03f07fd-7e67-47f6-a7aa-1b8dc4bb4f81"
+            }
+          ]
+        },
+        "08c55d19-257d-4d55-b125-203f9e9b3177": {
+          "id": "08c55d19-257d-4d55-b125-203f9e9b3177",
+          "pins": [
+            {
+              "nodeId": "be0b5f79-e8d5-4b6a-8168-5bbae5dc649d",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "2c2f60d9-ecce-4143-bee7-60c6e9c42d4c",
+              "pinKey": "02a5129e-2d82-4e24-addc-54e35571e21d"
+            }
+          ]
+        },
+        "204e08ba-019a-4bb9-978f-420cd8088ca3": {
+          "id": "204e08ba-019a-4bb9-978f-420cd8088ca3",
+          "pins": [
+            {
+              "nodeId": "be0b5f79-e8d5-4b6a-8168-5bbae5dc649d",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "edd0e52e-699a-43ca-8fde-cfbfab5a5681",
+              "pinKey": "02a5129e-2d82-4e24-addc-54e35571e21d"
+            }
+          ]
+        },
+        "31e58d4d-155f-4567-8c64-e964ffd1164d": {
+          "id": "31e58d4d-155f-4567-8c64-e964ffd1164d",
+          "pins": [
+            {
+              "nodeId": "2c2f60d9-ecce-4143-bee7-60c6e9c42d4c",
+              "pinKey": "8e0924ad-6a50-409f-a330-28f695fd2512"
+            },
+            {
+              "nodeId": "032f1e7f-ef6d-459c-b923-13d2a4b692b4",
+              "pinKey": "PIN"
+            }
+          ]
+        },
+        "a740f75d-1d21-4e36-a4e7-9f46bd145fe2": {
+          "id": "a740f75d-1d21-4e36-a4e7-9f46bd145fe2",
+          "pins": [
+            {
+              "nodeId": "128b1f8b-4577-465c-b18b-68a8be78b904",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "edd0e52e-699a-43ca-8fde-cfbfab5a5681",
+              "pinKey": "e03f07fd-7e67-47f6-a7aa-1b8dc4bb4f81"
+            }
+          ]
+        },
+        "ac63e660-3e13-4641-903f-80213a56d273": {
+          "id": "ac63e660-3e13-4641-903f-80213a56d273",
+          "pins": [
+            {
+              "nodeId": "edd0e52e-699a-43ca-8fde-cfbfab5a5681",
+              "pinKey": "69d6b3fe-870d-4976-b858-14fb90e66a4b"
+            },
+            {
+              "nodeId": "a0c1d022-930b-4ab7-83a3-1d4bd12ffb24",
+              "pinKey": "PIN"
+            }
+          ]
+        },
+        "e3590779-536e-4453-a7e0-00aee69302b3": {
+          "id": "e3590779-536e-4453-a7e0-00aee69302b3",
+          "pins": [
+            {
+              "nodeId": "2c2f60d9-ecce-4143-bee7-60c6e9c42d4c",
+              "pinKey": "69d6b3fe-870d-4976-b858-14fb90e66a4b"
+            },
+            {
+              "nodeId": "86030327-dea6-4679-a2bf-2c08e154b9a0",
+              "pinKey": "b"
+            }
+          ]
+        },
+        "fda94758-3e05-4409-abd2-f5e3dce7e7ca": {
+          "id": "fda94758-3e05-4409-abd2-f5e3dce7e7ca",
+          "pins": [
+            {
+              "nodeId": "edd0e52e-699a-43ca-8fde-cfbfab5a5681",
+              "pinKey": "8e0924ad-6a50-409f-a330-28f695fd2512"
+            },
+            {
+              "nodeId": "86030327-dea6-4679-a2bf-2c08e154b9a0",
+              "pinKey": "a"
+            }
+          ]
+        },
+        "20e97e44-6c82-4799-a73d-6eda913e239a": {
+          "id": "20e97e44-6c82-4799-a73d-6eda913e239a",
+          "pins": [
+            {
+              "nodeId": "86030327-dea6-4679-a2bf-2c08e154b9a0",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "d2fc4947-4ebb-4026-b8e4-c5f5c70c2c7e",
+              "pinKey": "PIN"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/pot/patch.xodm",
+    "content": {
+      "category": "hardware",
+      "properties": [
+        {
+          "key": "pin",
+          "label": "Pin",
+          "type": "string",
+          "value": "A6"
+        }
+      ],
+      "pins": {
+        "sample": {
+          "index": 0,
+          "direction": "input",
+          "key": "sample",
+          "type": "pulse",
+          "pinLabel": "PLS",
+          "label": "Sample pulse",
+          "description": "Sample current value"
+        },
+        "value": {
+          "index": 0,
+          "direction": "output",
+          "key": "value",
+          "type": "number",
+          "description": "Sampled potentiometer value"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/choose_range_2p/patch.xodm",
+    "content": {
+      "patchNode": true,
+      "label": "choose-range-2p",
+      "category": "patch",
+      "properties": {},
+      "pins": {
+        "032f1e7f-ef6d-459c-b923-13d2a4b692b4": {
+          "key": "032f1e7f-ef6d-459c-b923-13d2a4b692b4",
+          "nodeId": "032f1e7f-ef6d-459c-b923-13d2a4b692b4",
+          "pinLabel": "GE",
+          "label": "GE",
+          "direction": "output",
+          "type": "pulse",
+          "index": "0"
+        },
+        "a0c1d022-930b-4ab7-83a3-1d4bd12ffb24": {
+          "key": "a0c1d022-930b-4ab7-83a3-1d4bd12ffb24",
+          "nodeId": "a0c1d022-930b-4ab7-83a3-1d4bd12ffb24",
+          "pinLabel": "LESS",
+          "label": "LESS",
+          "direction": "output",
+          "type": "pulse",
+          "index": "1"
+        },
+        "d2fc4947-4ebb-4026-b8e4-c5f5c70c2c7e": {
+          "key": "d2fc4947-4ebb-4026-b8e4-c5f5c70c2c7e",
+          "nodeId": "d2fc4947-4ebb-4026-b8e4-c5f5c70c2c7e",
+          "pinLabel": "MID",
+          "label": "MID",
+          "direction": "output",
+          "type": "pulse",
+          "index": "2"
+        },
+        "128b1f8b-4577-465c-b18b-68a8be78b904": {
+          "key": "128b1f8b-4577-465c-b18b-68a8be78b904",
+          "nodeId": "128b1f8b-4577-465c-b18b-68a8be78b904",
+          "pinLabel": "P1",
+          "label": "P1",
+          "direction": "input",
+          "type": "number",
+          "index": "0"
+        },
+        "be0b5f79-e8d5-4b6a-8168-5bbae5dc649d": {
+          "key": "be0b5f79-e8d5-4b6a-8168-5bbae5dc649d",
+          "nodeId": "be0b5f79-e8d5-4b6a-8168-5bbae5dc649d",
+          "pinLabel": "X",
+          "label": "X",
+          "direction": "input",
+          "type": "number",
+          "index": "1"
+        },
+        "c873d3be-5c87-45e8-8c28-b6422d2f5638": {
+          "key": "c873d3be-5c87-45e8-8c28-b6422d2f5638",
+          "nodeId": "c873d3be-5c87-45e8-8c28-b6422d2f5638",
+          "pinLabel": "P2",
+          "label": "P2",
+          "direction": "input",
+          "type": "number",
+          "index": "2"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/servo/patch.xodm",
+    "content": {
+      "category": "hardware",
+      "properties": [
+        {
+          "key": "pin",
+          "label": "Pin",
+          "type": "string",
+          "value": "A10"
+        }
+      ],
+      "pins": {
+        "minPulse": {
+          "index": 0,
+          "direction": "input",
+          "key": "minPulse",
+          "type": "number",
+          "injected": true,
+          "pinLabel": "MIN",
+          "label": "Min Pulse (μs)",
+          "value": 700
+        },
+        "maxPulse": {
+          "index": 1,
+          "direction": "input",
+          "key": "maxPulse",
+          "type": "number",
+          "injected": true,
+          "pinLabel": "MAX",
+          "label": "Max Pulse (μs)",
+          "value": 2300
+        },
+        "value": {
+          "index": 2,
+          "direction": "input",
+          "key": "value",
+          "type": "number",
+          "pinLabel": "VAL",
+          "label": "Value",
+          "value": 1,
+          "description": "Rotation angle/value"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/choose/patch.xodm",
+    "content": {
+      "pins": {
+        "x": {
+          "index": 0,
+          "direction": "input",
+          "key": "x",
+          "type": "bool",
+          "description": "Boolean value to split"
+        },
+        "truePulse": {
+          "index": 0,
+          "direction": "output",
+          "key": "truePulse",
+          "type": "pulse",
+          "label": "T",
+          "description": "Pulses when X is true"
+        },
+        "falsePulse": {
+          "index": 1,
+          "direction": "output",
+          "key": "falsePulse",
+          "type": "pulse",
+          "label": "F",
+          "description": "Pulses when X is false"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/sort_pair/patch.xodm",
+    "content": {
+      "patchNode": true,
+      "label": "sort-pair",
+      "category": "patch",
+      "properties": {},
+      "pins": {
+        "3bbed37a-8dbe-4439-b24e-7baccb03b866": {
+          "key": "3bbed37a-8dbe-4439-b24e-7baccb03b866",
+          "nodeId": "3bbed37a-8dbe-4439-b24e-7baccb03b866",
+          "pinLabel": "A",
+          "label": "A",
+          "direction": "input",
+          "type": "number",
+          "index": "0"
+        },
+        "9f58a45e-d6ba-4ab1-b0bc-2f2b0db2d133": {
+          "key": "9f58a45e-d6ba-4ab1-b0bc-2f2b0db2d133",
+          "nodeId": "9f58a45e-d6ba-4ab1-b0bc-2f2b0db2d133",
+          "pinLabel": "B",
+          "label": "B",
+          "direction": "input",
+          "type": "number",
+          "index": "1"
+        },
+        "fd261709-3162-4ebf-a46b-baa904db5c45": {
+          "key": "fd261709-3162-4ebf-a46b-baa904db5c45",
+          "nodeId": "fd261709-3162-4ebf-a46b-baa904db5c45",
+          "pinLabel": "MIN",
+          "label": "Min",
+          "direction": "output",
+          "type": "number",
+          "index": "0"
+        },
+        "65192579-a9cd-4121-bd89-abc65fd162b0": {
+          "key": "65192579-a9cd-4121-bd89-abc65fd162b0",
+          "nodeId": "65192579-a9cd-4121-bd89-abc65fd162b0",
+          "pinLabel": "MAX",
+          "label": "Max",
+          "direction": "output",
+          "type": "number",
+          "index": "1"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/choose_range/patch.xodp",
+    "content": {
+      "nodes": {
+        "02a5129e-2d82-4e24-addc-54e35571e21d": {
+          "id": "02a5129e-2d82-4e24-addc-54e35571e21d",
+          "pins": {},
+          "position": {
+            "x": 226,
+            "y": 91
+          },
+          "properties": {
+            "label": "X",
+            "pinLabel": "X"
+          },
+          "typeId": "@/inputNumber"
+        },
+        "5d638839-dcd2-477b-b7e4-bb68eb036890": {
+          "id": "5d638839-dcd2-477b-b7e4-bb68eb036890",
+          "pins": {},
+          "position": {
+            "x": 332,
+            "y": 336
+          },
+          "properties": {},
+          "typeId": "@/choose"
+        },
+        "69d6b3fe-870d-4976-b858-14fb90e66a4b": {
+          "id": "69d6b3fe-870d-4976-b858-14fb90e66a4b",
+          "pins": {},
+          "position": {
+            "x": 242,
+            "y": 486
+          },
+          "properties": {
+            "label": "Less",
+            "pinLabel": "LESS"
+          },
+          "typeId": "@/outputPulse"
+        },
+        "8e0924ad-6a50-409f-a330-28f695fd2512": {
+          "id": "8e0924ad-6a50-409f-a330-28f695fd2512",
+          "pins": {},
+          "position": {
+            "x": 420,
+            "y": 482
+          },
+          "properties": {
+            "label": "GE",
+            "pinLabel": "GE"
+          },
+          "typeId": "@/outputPulse"
+        },
+        "b3b49a22-1129-4175-9ffe-1322f15835c1": {
+          "id": "b3b49a22-1129-4175-9ffe-1322f15835c1",
+          "pins": {},
+          "position": {
+            "x": 332,
+            "y": 251
+          },
+          "properties": {},
+          "typeId": "@/less"
+        },
+        "e03f07fd-7e67-47f6-a7aa-1b8dc4bb4f81": {
+          "id": "e03f07fd-7e67-47f6-a7aa-1b8dc4bb4f81",
+          "pins": {},
+          "position": {
+            "x": 460,
+            "y": 88
+          },
+          "properties": {
+            "label": "P",
+            "pinLabel": "P"
+          },
+          "typeId": "@/inputNumber"
+        }
+      },
+      "links": {
+        "0400f96c-73a5-439a-8ff0-0567559d81cf": {
+          "id": "0400f96c-73a5-439a-8ff0-0567559d81cf",
+          "pins": [
+            {
+              "nodeId": "e03f07fd-7e67-47f6-a7aa-1b8dc4bb4f81",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "b3b49a22-1129-4175-9ffe-1322f15835c1",
+              "pinKey": "b"
+            }
+          ]
+        },
+        "318ebdcc-7cd8-4143-b72e-b0161b879b8a": {
+          "id": "318ebdcc-7cd8-4143-b72e-b0161b879b8a",
+          "pins": [
+            {
+              "nodeId": "02a5129e-2d82-4e24-addc-54e35571e21d",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "b3b49a22-1129-4175-9ffe-1322f15835c1",
+              "pinKey": "a"
+            }
+          ]
+        },
+        "a0babe92-e6a6-4cc2-94ef-893e14a3f694": {
+          "id": "a0babe92-e6a6-4cc2-94ef-893e14a3f694",
+          "pins": [
+            {
+              "nodeId": "b3b49a22-1129-4175-9ffe-1322f15835c1",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "5d638839-dcd2-477b-b7e4-bb68eb036890",
+              "pinKey": "x"
+            }
+          ]
+        },
+        "b7c5535b-339a-4850-9d7c-9f21bbc719b2": {
+          "id": "b7c5535b-339a-4850-9d7c-9f21bbc719b2",
+          "pins": [
+            {
+              "nodeId": "5d638839-dcd2-477b-b7e4-bb68eb036890",
+              "pinKey": "truePulse"
+            },
+            {
+              "nodeId": "69d6b3fe-870d-4976-b858-14fb90e66a4b",
+              "pinKey": "PIN"
+            }
+          ]
+        },
+        "ebe5b9f7-8869-40e2-ac30-ff9b415484df": {
+          "id": "ebe5b9f7-8869-40e2-ac30-ff9b415484df",
+          "pins": [
+            {
+              "nodeId": "5d638839-dcd2-477b-b7e4-bb68eb036890",
+              "pinKey": "falsePulse"
+            },
+            {
+              "nodeId": "8e0924ad-6a50-409f-a330-28f695fd2512",
+              "pinKey": "PIN"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/sort_pair/patch.xodp",
+    "content": {
+      "nodes": {
+        "3bbed37a-8dbe-4439-b24e-7baccb03b866": {
+          "typeId": "@/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 134,
+            "y": 91
+          },
+          "properties": {
+            "label": "A",
+            "pinLabel": "A"
+          },
+          "id": "3bbed37a-8dbe-4439-b24e-7baccb03b866"
+        },
+        "9f58a45e-d6ba-4ab1-b0bc-2f2b0db2d133": {
+          "typeId": "@/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 671,
+            "y": 110
+          },
+          "properties": {
+            "label": "B",
+            "pinLabel": "B"
+          },
+          "id": "9f58a45e-d6ba-4ab1-b0bc-2f2b0db2d133"
+        },
+        "fd261709-3162-4ebf-a46b-baa904db5c45": {
+          "typeId": "@/outputNumber",
+          "pins": {},
+          "position": {
+            "x": 327,
+            "y": 497
+          },
+          "properties": {
+            "label": "Min",
+            "pinLabel": "MIN"
+          },
+          "id": "fd261709-3162-4ebf-a46b-baa904db5c45"
+        },
+        "65192579-a9cd-4121-bd89-abc65fd162b0": {
+          "typeId": "@/outputNumber",
+          "pins": {},
+          "position": {
+            "x": 528,
+            "y": 497
+          },
+          "properties": {
+            "label": "Max",
+            "pinLabel": "MAX"
+          },
+          "id": "65192579-a9cd-4121-bd89-abc65fd162b0"
+        },
+        "25e601bc-984d-4fa7-ba11-4663279f20dd": {
+          "typeId": "@/either",
+          "pins": {},
+          "position": {
+            "x": 332,
+            "y": 386
+          },
+          "properties": {},
+          "id": "25e601bc-984d-4fa7-ba11-4663279f20dd"
+        },
+        "444e1166-b8d3-4bf4-a229-380487a75968": {
+          "typeId": "@/either",
+          "pins": {},
+          "position": {
+            "x": 535,
+            "y": 383
+          },
+          "properties": {},
+          "id": "444e1166-b8d3-4bf4-a229-380487a75968"
+        },
+        "026f3679-45f3-4300-8507-235d1db27731": {
+          "typeId": "@/less",
+          "pins": {},
+          "position": {
+            "x": 422,
+            "y": 204
+          },
+          "properties": {},
+          "id": "026f3679-45f3-4300-8507-235d1db27731"
+        }
+      },
+      "links": {
+        "ead60ce1-6d52-457f-a26c-0a7d8ae29ecc": {
+          "id": "ead60ce1-6d52-457f-a26c-0a7d8ae29ecc",
+          "pins": [
+            {
+              "nodeId": "3bbed37a-8dbe-4439-b24e-7baccb03b866",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "026f3679-45f3-4300-8507-235d1db27731",
+              "pinKey": "a"
+            }
+          ]
+        },
+        "a3dc8598-a1b1-4348-88d6-78a5cbe4dfee": {
+          "id": "a3dc8598-a1b1-4348-88d6-78a5cbe4dfee",
+          "pins": [
+            {
+              "nodeId": "9f58a45e-d6ba-4ab1-b0bc-2f2b0db2d133",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "026f3679-45f3-4300-8507-235d1db27731",
+              "pinKey": "b"
+            }
+          ]
+        },
+        "a821161d-b187-4794-a82f-a6c2a00b2881": {
+          "id": "a821161d-b187-4794-a82f-a6c2a00b2881",
+          "pins": [
+            {
+              "nodeId": "026f3679-45f3-4300-8507-235d1db27731",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "25e601bc-984d-4fa7-ba11-4663279f20dd",
+              "pinKey": "inp"
+            }
+          ]
+        },
+        "b89d5334-f7c1-4289-b19a-659a18076c50": {
+          "id": "b89d5334-f7c1-4289-b19a-659a18076c50",
+          "pins": [
+            {
+              "nodeId": "026f3679-45f3-4300-8507-235d1db27731",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "444e1166-b8d3-4bf4-a229-380487a75968",
+              "pinKey": "inp"
+            }
+          ]
+        },
+        "b3e05a6a-3745-4144-9b86-cf42b7c399d7": {
+          "id": "b3e05a6a-3745-4144-9b86-cf42b7c399d7",
+          "pins": [
+            {
+              "nodeId": "3bbed37a-8dbe-4439-b24e-7baccb03b866",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "25e601bc-984d-4fa7-ba11-4663279f20dd",
+              "pinKey": "trueValue"
+            }
+          ]
+        },
+        "13510837-60d4-45e1-9c34-3c690af41266": {
+          "id": "13510837-60d4-45e1-9c34-3c690af41266",
+          "pins": [
+            {
+              "nodeId": "9f58a45e-d6ba-4ab1-b0bc-2f2b0db2d133",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "25e601bc-984d-4fa7-ba11-4663279f20dd",
+              "pinKey": "falseValue"
+            }
+          ]
+        },
+        "318c7e6a-78d3-47c8-afde-5fc12690b5cd": {
+          "id": "318c7e6a-78d3-47c8-afde-5fc12690b5cd",
+          "pins": [
+            {
+              "nodeId": "25e601bc-984d-4fa7-ba11-4663279f20dd",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "fd261709-3162-4ebf-a46b-baa904db5c45",
+              "pinKey": "OUT"
+            }
+          ]
+        },
+        "7f314a0d-76aa-4fb3-883e-976e1475afc2": {
+          "id": "7f314a0d-76aa-4fb3-883e-976e1475afc2",
+          "pins": [
+            {
+              "nodeId": "9f58a45e-d6ba-4ab1-b0bc-2f2b0db2d133",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "444e1166-b8d3-4bf4-a229-380487a75968",
+              "pinKey": "trueValue"
+            }
+          ]
+        },
+        "557a8c90-f8a8-4b1a-a436-50117830d925": {
+          "id": "557a8c90-f8a8-4b1a-a436-50117830d925",
+          "pins": [
+            {
+              "nodeId": "3bbed37a-8dbe-4439-b24e-7baccb03b866",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "444e1166-b8d3-4bf4-a229-380487a75968",
+              "pinKey": "falseValue"
+            }
+          ]
+        },
+        "3bba7e32-04cc-4e72-9ad4-267acacff6d5": {
+          "id": "3bba7e32-04cc-4e72-9ad4-267acacff6d5",
+          "pins": [
+            {
+              "nodeId": "444e1166-b8d3-4bf4-a229-380487a75968",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "65192579-a9cd-4121-bd89-abc65fd162b0",
+              "pinKey": "OUT"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/choose_range/patch.xodm",
+    "content": {
+      "patchNode": true,
+      "label": "choose-range",
+      "category": "patch",
+      "properties": {},
+      "pins": {
+        "02a5129e-2d82-4e24-addc-54e35571e21d": {
+          "key": "02a5129e-2d82-4e24-addc-54e35571e21d",
+          "nodeId": "02a5129e-2d82-4e24-addc-54e35571e21d",
+          "pinLabel": "X",
+          "label": "X",
+          "direction": "input",
+          "type": "number",
+          "index": "0"
+        },
+        "e03f07fd-7e67-47f6-a7aa-1b8dc4bb4f81": {
+          "key": "e03f07fd-7e67-47f6-a7aa-1b8dc4bb4f81",
+          "nodeId": "e03f07fd-7e67-47f6-a7aa-1b8dc4bb4f81",
+          "pinLabel": "P",
+          "label": "P",
+          "direction": "input",
+          "type": "number",
+          "index": "1"
+        },
+        "69d6b3fe-870d-4976-b858-14fb90e66a4b": {
+          "key": "69d6b3fe-870d-4976-b858-14fb90e66a4b",
+          "nodeId": "69d6b3fe-870d-4976-b858-14fb90e66a4b",
+          "pinLabel": "LESS",
+          "label": "Less",
+          "direction": "output",
+          "type": "pulse",
+          "index": "0"
+        },
+        "8e0924ad-6a50-409f-a330-28f695fd2512": {
+          "key": "8e0924ad-6a50-409f-a330-28f695fd2512",
+          "nodeId": "8e0924ad-6a50-409f-a330-28f695fd2512",
+          "pinLabel": "GE",
+          "label": "GE",
+          "direction": "output",
+          "type": "pulse",
+          "index": "1"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/split_bool/patch.xodm",
+    "content": {
+      "label": "Split",
+      "pins": {
+        "inp": {
+          "key": "inp",
+          "index": 0,
+          "direction": "input",
+          "type": "bool",
+          "label": "Input",
+          "description": "Input boolean value"
+        },
+        "outTrue": {
+          "key": "outTrue",
+          "index": 0,
+          "direction": "output",
+          "type": "pulse",
+          "pinLabel": "T",
+          "description": "Pulses if input is true"
+        },
+        "outFalse": {
+          "key": "outFalse",
+          "index": 1,
+          "direction": "output",
+          "type": "pulse",
+          "pinLabel": "F",
+          "description": "Pulses if input is false"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/buzzer/patch.xodm",
+    "content": {
+      "label": "Buzzer",
+      "category": "hardware",
+      "properties": [
+        {
+          "key": "pin",
+          "label": "Pin",
+          "type": "string",
+          "value": "A3"
+        }
+      ],
+      "pins": {
+        "freq": {
+          "index": 0,
+          "direction": "input",
+          "key": "freq",
+          "type": "number",
+          "pinLabel": "FREQ",
+          "label": "Frequency",
+          "description": "Frequency (Hz)"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/stdout/patch.xodm",
+    "content": {
+      "label": "stdout",
+      "pins": {
+        "value": {
+          "index": 0,
+          "direction": "input",
+          "key": "value",
+          "type": "string",
+          "label": "Value",
+          "value": "",
+          "description": "Value that should be written into process.stdout."
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/any/patch.xodm",
+    "content": {
+      "pins": {
+        "a": {
+          "index": 0,
+          "direction": "input",
+          "key": "a",
+          "type": "pulse",
+          "label": "A",
+          "description": "Left-hand side pulse"
+        },
+        "b": {
+          "index": 1,
+          "direction": "input",
+          "key": "b",
+          "type": "pulse",
+          "label": "B",
+          "description": "Right-hand side pulse"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "pulse",
+          "description": "Pulses when A or B, or both pulse"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/time/patch.xodm",
+    "content": {
+      "label": "Time",
+      "pins": {
+        "pulse": {
+          "index": 0,
+          "direction": "input",
+          "key": "pulse",
+          "type": "pulse",
+          "pinLabel": "PLS",
+          "label": "Pulse"
+        },
+        "value": {
+          "index": 0,
+          "direction": "output",
+          "key": "value",
+          "type": "number"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/both/patch.xodm",
+    "content": {
+      "pins": {
+        "a": {
+          "index": 0,
+          "direction": "input",
+          "key": "a",
+          "type": "pulse",
+          "label": "A",
+          "description": "Left-hand side pulse"
+        },
+        "b": {
+          "index": 1,
+          "direction": "input",
+          "key": "b",
+          "type": "pulse",
+          "label": "B",
+          "description": "Right-hand side pulse"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "pulse",
+          "description": "Pulses if A and B pulses simultaneously"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/triggerableNumber/patch.xodm",
+    "content": {
+      "label": "triggerableNumber",
+      "pins": {
+        "trigOn": {
+          "index": 0,
+          "direction": "input",
+          "key": "trigOn",
+          "type": "pulse",
+          "pinLabel": "PLS",
+          "label": "Pulse",
+          "description": "Pulse to trig on"
+        },
+        "value": {
+          "index": 1,
+          "direction": "input",
+          "key": "value",
+          "pinLabel": "VAL",
+          "label": "Value",
+          "type": "number",
+          "value": 0
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "number",
+          "description": "Output value"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/button/patch.xodm",
+    "content": {
+      "category": "hardware",
+      "properties": [
+        {
+          "key": "pin",
+          "label": "Pin",
+          "type": "string",
+          "value": "BTN1"
+        }
+      ],
+      "pins": {
+        "state": {
+          "index": 0,
+          "direction": "output",
+          "key": "state",
+          "type": "bool",
+          "description": "Emits `true` when pressed and `false` when released"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/ultrasonic_HC_SR04/patch.xodm",
+    "content": {
+      "label": "HC-SR04",
+      "category": "hardware",
+      "properties": [
+        {
+          "key": "pinTrig",
+          "label": "Pin trigger",
+          "type": "string",
+          "value": "C9"
+        },
+        {
+          "key": "pinEcho",
+          "label": "Pin echo",
+          "type": "string",
+          "value": "A8"
+        }
+      ],
+      "pure": false,
+      "pins": {
+        "sample": {
+          "index": 0,
+          "direction": "input",
+          "key": "sample",
+          "type": "pulse",
+          "pinLabel": "PLS",
+          "label": "Pulse",
+          "description": "Sample current value"
+        },
+        "units": {
+          "index": 1,
+          "direction": "input",
+          "key": "units",
+          "pinLabel": "UNT",
+          "label": "Units",
+          "type": "string",
+          "value": "mm"
+        },
+        "value": {
+          "index": 0,
+          "direction": "output",
+          "key": "value",
+          "type": "number",
+          "pinLabel": "DST",
+          "description": "Sampled distance (mm)"
+        },
+        "error": {
+          "index": 1,
+          "direction": "output",
+          "key": "error",
+          "type": "string",
+          "pinLabel": "ERR",
+          "description": "Operation error"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/and/patch.xodm",
+    "content": {
+      "label": "and",
+      "pins": {
+        "a": {
+          "index": 0,
+          "direction": "input",
+          "key": "a",
+          "type": "bool",
+          "description": "First input"
+        },
+        "b": {
+          "index": 1,
+          "direction": "input",
+          "key": "b",
+          "type": "bool",
+          "description": "Second input"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "bool",
+          "description": "\"true\" if both inputs are \"true\""
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/valveNumber/patch.xodm",
+    "content": {
+      "label": "valveNumber",
+      "pure": false,
+      "pins": {
+        "cond": {
+          "index": 0,
+          "direction": "input",
+          "key": "cond",
+          "type": "bool",
+          "description": "Condition"
+        },
+        "in": {
+          "index": 1,
+          "direction": "input",
+          "key": "in",
+          "type": "number",
+          "description": "Input"
+        },
+        "out": {
+          "index": 0,
+          "direction": "output",
+          "key": "out",
+          "type": "number",
+          "description": "Output (receives messages from the input if condition is \"true\")"
+        }
+      }
+    }
+  },
+  {
+    "path": "./core/in_range/patch.xodp",
+    "content": {
+      "nodes": {
+        "cc0ccde0-1526-4424-a547-1dfd5a5a0d1f": {
+          "typeId": "@/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 241,
+            "y": 117
+          },
+          "properties": {
+            "label": "X",
+            "pinLabel": "X"
+          },
+          "id": "cc0ccde0-1526-4424-a547-1dfd5a5a0d1f"
+        },
+        "6a361c77-4acf-42fe-8e96-a188a561a967": {
+          "typeId": "@/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 434,
+            "y": 114
+          },
+          "properties": {
+            "label": "Min",
+            "pinLabel": "MIN"
+          },
+          "id": "6a361c77-4acf-42fe-8e96-a188a561a967"
+        },
+        "a6698d0c-e304-4cd8-9363-42a4f7024813": {
+          "typeId": "@/inputNumber",
+          "pins": {},
+          "position": {
+            "x": 595,
+            "y": 116
+          },
+          "properties": {
+            "label": "Max",
+            "pinLabel": "MAX"
+          },
+          "id": "a6698d0c-e304-4cd8-9363-42a4f7024813"
+        },
+        "d692d3e8-e5fe-43f8-9234-23f697569c0e": {
+          "typeId": "@/greater_equal",
+          "pins": {},
+          "position": {
+            "x": 349,
+            "y": 270
+          },
+          "properties": {},
+          "id": "d692d3e8-e5fe-43f8-9234-23f697569c0e"
+        },
+        "b1338c34-29b1-4b83-ac83-91d4aecb183f": {
+          "typeId": "@/less",
+          "pins": {},
+          "position": {
+            "x": 520,
+            "y": 271
+          },
+          "properties": {},
+          "id": "b1338c34-29b1-4b83-ac83-91d4aecb183f"
+        },
+        "9ed078cb-537e-4c68-b01f-8a25c450ff35": {
+          "typeId": "@/and",
+          "pins": {},
+          "position": {
+            "x": 432,
+            "y": 407
+          },
+          "properties": {},
+          "id": "9ed078cb-537e-4c68-b01f-8a25c450ff35"
+        },
+        "99813fd1-543e-4598-af0e-ed7e178c5ba8": {
+          "typeId": "@/outputBool",
+          "pins": {},
+          "position": {
+            "x": 432,
+            "y": 541
+          },
+          "properties": {
+            "label": "Out",
+            "pinLabel": "Out"
+          },
+          "id": "99813fd1-543e-4598-af0e-ed7e178c5ba8"
+        }
+      },
+      "links": {
+        "4535581a-2a11-406d-8881-a8ba197c0427": {
+          "id": "4535581a-2a11-406d-8881-a8ba197c0427",
+          "pins": [
+            {
+              "nodeId": "cc0ccde0-1526-4424-a547-1dfd5a5a0d1f",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "d692d3e8-e5fe-43f8-9234-23f697569c0e",
+              "pinKey": "a477e7a1-322d-4c41-880a-bddce611e749"
+            }
+          ]
+        },
+        "2bde3b05-d5af-4420-9a96-c99e49ad4814": {
+          "id": "2bde3b05-d5af-4420-9a96-c99e49ad4814",
+          "pins": [
+            {
+              "nodeId": "6a361c77-4acf-42fe-8e96-a188a561a967",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "d692d3e8-e5fe-43f8-9234-23f697569c0e",
+              "pinKey": "c0750270-88c2-437c-940d-3d7a578a1041"
+            }
+          ]
+        },
+        "ef3d7979-b77b-4465-a5fa-515d2c81c26f": {
+          "id": "ef3d7979-b77b-4465-a5fa-515d2c81c26f",
+          "pins": [
+            {
+              "nodeId": "cc0ccde0-1526-4424-a547-1dfd5a5a0d1f",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "b1338c34-29b1-4b83-ac83-91d4aecb183f",
+              "pinKey": "a"
+            }
+          ]
+        },
+        "0623c218-8dbe-4449-b328-ec1c1807a119": {
+          "id": "0623c218-8dbe-4449-b328-ec1c1807a119",
+          "pins": [
+            {
+              "nodeId": "a6698d0c-e304-4cd8-9363-42a4f7024813",
+              "pinKey": "PIN"
+            },
+            {
+              "nodeId": "b1338c34-29b1-4b83-ac83-91d4aecb183f",
+              "pinKey": "b"
+            }
+          ]
+        },
+        "b31c5f57-9b36-4dba-be55-2864a56cdbbf": {
+          "id": "b31c5f57-9b36-4dba-be55-2864a56cdbbf",
+          "pins": [
+            {
+              "nodeId": "d692d3e8-e5fe-43f8-9234-23f697569c0e",
+              "pinKey": "1964d794-3c62-418a-bfbe-6a19c89bd6bb"
+            },
+            {
+              "nodeId": "9ed078cb-537e-4c68-b01f-8a25c450ff35",
+              "pinKey": "a"
+            }
+          ]
+        },
+        "6a713958-b941-4e2f-9d16-328e329cfee1": {
+          "id": "6a713958-b941-4e2f-9d16-328e329cfee1",
+          "pins": [
+            {
+              "nodeId": "b1338c34-29b1-4b83-ac83-91d4aecb183f",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "9ed078cb-537e-4c68-b01f-8a25c450ff35",
+              "pinKey": "b"
+            }
+          ]
+        },
+        "c0bf3d14-43e1-4d44-8cb5-345a4a11b353": {
+          "id": "c0bf3d14-43e1-4d44-8cb5-345a4a11b353",
+          "pins": [
+            {
+              "nodeId": "9ed078cb-537e-4c68-b01f-8a25c450ff35",
+              "pinKey": "out"
+            },
+            {
+              "nodeId": "99813fd1-543e-4598-af0e-ed7e178c5ba8",
+              "pinKey": "OUT"
+            }
+          ]
+        }
+      }
+    }
+  }
+]

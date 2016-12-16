@@ -1,0 +1,31 @@
+{
+  "name": "xod-doc",
+  "version": "0.0.1",
+  "description": "XOD project: Static documentation generator",
+  "scripts": {
+    "build": "babel src/ -d dist/",
+    "dev": "npm run build -- --watch",
+    "test": "mocha test/*.spec.js"
+  },
+  "repository": {},
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "dependencies": {
+    "handlebars": "^4.0.6",
+    "recursive-copy": "^2.0.5",
+    "rimraf": "^2.5.4",
+    "xod-fs": "^0.0.1",
+    "xod-js": "^0.0.1"
+  },
+  "engines": {
+    "node": "6.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-files": "^1.4.0",
+    "chai-fs": "^1.0.0",
+    "dirty-chai": "^1.2.2"
+  }
+}
