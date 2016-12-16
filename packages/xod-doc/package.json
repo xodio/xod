@@ -13,8 +13,6 @@
   "license": "MIT",
   "main": "dist/index.js",
   "dependencies": {
-    "cli-color": "^1.1.0",
-    "commander": "^2.9.0",
     "handlebars": "^4.0.6",
     "recursive-copy": "^2.0.5",
     "rimraf": "^2.5.4",
