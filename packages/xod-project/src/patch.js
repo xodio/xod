@@ -1,4 +1,11 @@
+import R from 'ramda';
+import { Either } from 'ramda-fantasy';
 
+import * as CONST from './constants';
+import * as Tools from './func-tools';
+import * as Node from './node';
+import * as Link from './link';
+import * as Pin from './pin';
 /**
  * An object representing single patch in a project
  * @typedef {Object} Patch
@@ -11,36 +18,26 @@
 
 /**
  * @function createPatch
- * @param {string} path - full path of the patch, e.g. `"@/foo/bar"`
- * @returns {Patch} newly created patch
+ * @returns {Patch} a validatePath error or newly created patch
  */
-// TODO: implement
-
+export const createPatch = () => ({
+  nodes: {},
+  links: [],
+});
 
 /**
  * @function duplicatePatch
- * @param {string} newPath - full path of the new patch, e.g. `"@/foo/bar"`
  * @param {Patch} patch
- * @returns {Either<Error|Patch>} duplicated patch with new path or error
+ * @returns {Patch} deeply cloned patch
  */
-
-/**
- * @function getPatchPath
- * @param {Patch} patch
- * @returns {Maybe<Null|string>}
- */
-
-/**
- * @function getPatchBaseName
- * @param {Patch} patch
- * @returns {Maybe<Null|string>}
- */
+export const duplicatePatch = R.clone;
 
 /**
  * @function getPatchLabel
  * @param {Patch} patch
  * @returns {string}
  */
+export const getPatchLabel = R.propOr('', 'label');
 
 /**
  * @function setPatchLabel
@@ -48,6 +45,10 @@
  * @param {Patch} patch
  * @returns {Patch} a copy of the `patch` with new label
  */
+export const setPatchLabel = R.useWith(
+  R.assoc('label'),
+  [String, R.identity]
+);
 
  /**
   * Returns a list of platforms for which a `patch` has native implementation
@@ -58,25 +59,23 @@
   * @param {Patch} patch
   * @returns {string[]}
   */
+export const listPatchPlatforms = R.compose(
+  R.keys,
+  R.propOr({}, 'impls')
+);
 
 /**
- * @function isPatchLocal
+ * @function validatePatch
  * @param {Patch} patch
- * @returns {boolean}
+ * @returns {Either<Error|Patch>}
  */
-
-/**
- * @function isPatchLibrary
- * @param {Patch} patch
- * @returns {boolean}
- */
-
-/**
- * @function getPatchTerminals
- * @param {Patch} patch
- * @returns {Node[]}
- */
- // TODO: implement
+export const validatePatch = Tools.errOnFalse(
+  CONST.ERROR.PATCH_INVALID,
+  R.allPass([
+    R.has('nodes'),
+    R.has('links'),
+  ])
+);
 
 // =============================================================================
 //
@@ -85,49 +84,131 @@
 // =============================================================================
 
 /**
+ * Checks that node id to be equal specified value
+ *
+ * @function nodeIdEquals
+ * @param {string} id
+ * @param {NodeOrId} node
+ * @returns {boolean}
+ */
+export const nodeIdEquals = R.curry(
+  (id, node) =>
+  R.compose(
+    R.equals(id),
+    Node.getNodeId
+  )(node)
+);
+
+/**
  * @function listNodes
  * @param {Patch} patch - a patch to get nodes from
  * @returns {Node[]} list of all nodes not sorted in any arbitrary order
  */
-// TODO: implement
+export const listNodes = R.compose(
+  R.values,
+  R.propOr([], 'nodes')
+);
 
 /**
  * @function getNodeById
  * @param {string} id - node ID to find
  * @param {Patch} patch - a patch where node should be searched
- * @returns {Maybe<Null|Node>} a node with given ID or `undefined` if it wasn’t not found
+ * @returns {Maybe<Node>} a node with given ID or `undefined` if it wasn’t not found
  */
-// TODO: implement
+export const getNodeById = R.curry(
+  (id, patch) => R.compose(
+    Tools.find(nodeIdEquals(id)),
+    listNodes
+  )(patch)
+);
+
+// =============================================================================
+//
+// Pins
+//
+// =============================================================================
 
 /**
- * Replaces a node with new one or inserts new one if it doesn’t exist yet.
+ * Returns new patch with new pin.
  *
- * The node is searched by ID and its state
- * subtree is completely replaced with one given as argument.
- *
- * It’s up to you to keep the state integrity affected by the replacement.
- *
- * @function assocNode
- * @param {Node} node - new node
- * @param {Patch} patch - a patch with the `node`
- * @returns {Patch} a copy of the `patch` with the node replaced
+ * @function assocPin
+ * @param {Pin} pin
+ * @param {Patch} patch
+ * @returns {Either<Error|Patch>}
  */
-// TODO: implement
+export const assocPin = R.curry(
+  (pin, patch) => Pin.validatePin(pin).map(
+    validPin => {
+      const key = Pin.getPinKey(validPin);
+      return R.assocPath(['pins', key], validPin, patch);
+    }
+  )
+);
 
 /**
- * Removes the `node` from the `patch`.
+ * Returns new patch without pin.
  *
- * Does nothing if the `node` is not in the `patch`.
- *
- * Also removes all links associated with the `node`.
- *
- * @function dissocNode
- * @param {NodeOrId} node - node to delete
- * @param {Patch} patch - a patch where the node should be deleted
- * @returns {Patch} a copy of the `patch` with the node deleted
+ * @function dissocPin
+ * @param {PinOrKey} key
+ * @param {Patch} patch
+ * @returns {Patch}
  */
-// TODO: implement
+export const dissocPin = R.curry(
+  (pinOrKey, patch) => R.dissocPath(['pins', Pin.getPinKey(pinOrKey)], patch)
+);
 
+/**
+ * @private
+ * @function getPins
+ * @param {Patch}
+ * @returns {Pins}
+ */
+const getPins = R.propOr({}, 'pins');
+
+/**
+ * Returns pin object by key
+ *
+ * @function getPinByKey
+ * @param {string} key
+ * @param {Patch} patch
+ * @returns {Maybe<Pin>}
+ */
+export const getPinByKey = R.curry(
+  (key, patch) => R.compose(
+    Tools.prop(key),
+    getPins
+  )(patch)
+);
+
+/**
+ * @function listPins
+ * @param {Patch} patch
+ * @returns {Pin[]}
+ */
+export const listPins = R.compose(
+  R.values,
+  getPins
+);
+
+/**
+ * @function listInputPins
+ * @param {Patch} patch
+ * @returns {Pin[]}
+ */
+export const listInputPins = R.compose(
+  R.filter(Pin.isInputPin),
+  listPins
+);
+
+/**
+ * @function listOutputPins
+ * @param {Patch} patch
+ * @returns {Pin[]}
+ */
+export const listOutputPins = R.compose(
+  R.filter(Pin.isOutputPin),
+  listPins
+);
 
 // =============================================================================
 //
@@ -140,15 +221,92 @@
  * @param {Patch} patch - a patch to operate on
  * @returns {Link[]} list of all links not sorted in any arbitrary order
  */
-// TODO: implement
+export const listLinks = R.compose(
+  R.values,
+  R.propOr({}, 'links')
+);
+
+/**
+ * Checks that link id to be equal specified value
+ *
+ * @function linkIdEquals
+ * @param {string} id [description]
+ * @param {LinkOrId} link [description]
+ * @returns {boolean}
+ */
+export const linkIdEquals = R.curry(
+  (id, link) =>
+  R.compose(
+    R.equals(id),
+    Link.getLinkId
+  )(link)
+);
 
 /**
  * @function getLinkById
  * @param {string} id - a link ID to find
  * @param {Patch} patch - a patch to operate on
- * @returns {Maybe<Null|Link>} a link with given `id` or Null if not found
+ * @returns {Maybe<Link>} a link with given `id` or Null if not found
  */
-// TODO: implement
+export const getLinkById = R.curry(
+  (id, patch) => R.compose(
+    Tools.find(linkIdEquals(id)),
+    listLinks
+  )(patch)
+);
+
+/**
+ * Returns list of all links are connected to specified node.
+ *
+ * @function listLinksByNode
+ * @param {NodeOrId} nodeOrId
+ * @param {Patch} patch
+ * @returns {Link[]}
+ */
+export const listLinksByNode = R.curry(
+  (nodeOrId, patch) => {
+    const id = Node.getNodeId(nodeOrId);
+    const list = listLinks(patch);
+
+    // :: Link -> boolean
+    const filterByNodeId = R.either(
+      Link.isLinkInputNodeIdEquals(id),
+      Link.isLinkOutputNodeIdEquals(id)
+    );
+
+    return R.filter(filterByNodeId, list);
+  }
+);
+
+/**
+ * Returns list of all links are connected to specified pin.
+ *
+ * @function listLinksByPin
+ * @param {string} pinKey
+ * @param {NodeOrId} nodeOrId
+ * @param {Patch} patch
+ * @returns {Link[]}
+ */
+export const listLinksByPin = R.curry(
+  (pinKey, nodeOrId, patch) => {
+    const id = Node.getNodeId(nodeOrId);
+    const list = listLinks(patch);
+
+    // :: Link -> boolean
+    const filterByNodeIdAndPinKey = R.either(
+      R.both(
+        Link.isLinkInputNodeIdEquals(id),
+        Link.isLinkInputPinKeyEquals(pinKey)
+      ),
+      R.both(
+        Link.isLinkOutputNodeIdEquals(id),
+        Link.isLinkOutputPinKeyEquals(pinKey)
+      )
+    );
+
+    return R.filter(filterByNodeIdAndPinKey, list);
+  }
+);
 
 /**
  * Checks if the `link` would be valid on the `patch`. I.e. it could be
@@ -164,7 +322,20 @@
  * @param {Patch} patch - a patch to operate on
  * @returns {Either<Error|Link>} validation errors or valid {@link Link}
  */
-// TODO: implement
+export const validateLink = R.curry(
+  (link, patch) => Link.validateLinkId(link)
+    .chain(Link.validateLinkInput)
+    .chain(Link.validateLinkOutput)
+    .chain(() => Tools.errOnNothing(
+        CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND,
+        getNodeById(Link.getLinkInputNodeId(link), patch)
+    ))
+    .chain(() => Tools.errOnNothing(
+        CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND,
+        getNodeById(Link.getLinkOutputNodeId(link), patch)
+    ))
+    .map(R.always(link))
+);
 
 /**
  * Replaces an existing `link` or inserts new one in the `patch`.
@@ -177,7 +348,14 @@
  * @returns {Either<Error|Patch>} error or a copy of the `patch` with changes applied
  * @see {@link validateLink}
  */
-// TODO: implement
+export const assocLink = R.curry(
+  (link, patch) => validateLink(link, patch).map(
+    validLink => {
+      const id = Link.getLinkId(validLink);
+      return R.assocPath(['links', id], validLink, patch);
+    }
+  )
+);
 
 /**
  * Removes the `link` from the `patch`.
@@ -189,4 +367,98 @@
  * @param {Patch} patch - a patch to operate on
  * @returns {Patch} a copy of the `patch` with changes applied
  */
-// TODO: implement
+export const dissocLink = R.curry(
+  (linkOrId, patch) => R.dissocPath(['links', Link.getLinkId(linkOrId)], patch)
+);
+
+
+// =============================================================================
+//
+// Nodes assoc/dissoc
+//
+// =============================================================================
+
+/**
+ * Replaces a node with new one or inserts new one if it doesn’t exist yet.
+ *
+ * The node is searched by ID and its state
+ * subtree is completely replaced with one given as argument.
+ *
+ * @function assocNode
+ * @param {Node} node - new node
+ * @param {Patch} patch - a patch with the `node`
+ * @returns {Patch} a copy of the `patch` with the node replaced
+ */
+// TODO: Refactoring needed
+export const assocNode = R.curry(
+  (node, patch) => {
+    const id = Node.getNodeId(node);
+    const addPin = R.curry(
+      (_node, _patch) => R.ifElse(
+        Node.isPinNode,
+        pinNode => {
+          const newPatch = Node.getPinNodeDataType(pinNode).chain(
+            type => Node.getPinNodeDirection(pinNode).chain(
+              direction => Pin.createPin(id, type, direction).chain(
+                // TODO: Add optional data (label, description, order) from node to pin
+                newPin => assocPin(newPin, _patch)
+              )
+            )
+          );
+          // TODO: Think is it okay or we should return Either<Error|Patch> for invalid pinNodes?
+          return Either.either(
+            () => _patch,
+            valid => valid,
+            newPatch
+          );
+        },
+        R.always(_patch)
+      )(_node)
+    );
+    const addNode = R.assocPath(['nodes', id]);
+
+    return R.compose(
+      addNode(node),
+      addPin(node)
+    )(patch);
+  }
+);
+
+/**
+ * Removes the `node` from the `patch`.
+ *
+ * Does nothing if the `node` is not in the `patch`.
+ *
+ * Also removes all links associated with the `node`.
+ *
+ * @function dissocNode
+ * @param {NodeOrId} node - node to delete
+ * @param {Patch} patch - a patch where the node should be deleted
+ * @returns {Patch} a copy of the `patch` with the node deleted
+ */
+// TODO: Move child function into top-level
+export const dissocNode = R.curry(
+  (nodeOrId, patch) => {
+    const id = Node.getNodeId(nodeOrId);
+    const links = listLinksByNode(id, patch);
+
+    const removeLinks = R.reduce(
+      R.flip(dissocLink)
+    );
+    const removePin = R.ifElse(
+      R.compose(
+        R.chain(Node.isPinNode),
+        getNodeById(id)
+      ),
+      dissocPin(id),
+      R.identity
+    );
+    const removeNode = R.dissocPath(['nodes', id]);
+
+    return R.compose(
+      removeNode,
+      removePin,
+      removeLinks
+    )(patch, links);
+  }
+);
