@@ -244,3 +244,10 @@ export const moveFolder = (changes) => ({
     parentId: changes.parentId,
   },
 });
+
+export const updateNodeTypes = (nodeTypes) => ({
+  type: ActionType.NODETYPES_UPDATE,
+  payload: {
+    nodeTypes,
+  },
+});
