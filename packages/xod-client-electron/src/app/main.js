@@ -4,7 +4,7 @@ import {
   BrowserWindow,
 } from 'electron';
 import devtron from 'devtron';
-import { savePatch, saveProject, loadProjectList, loadProject } from './remoteActions';
+import { savePatch, saveProject, loadProjectList, loadProject, changeWorkspace } from './remoteActions';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -66,6 +66,13 @@ const onReady = () => {
     event.sender.send('loadProject:process');
     loadProject(opts.path, opts.workspace, (data) => {
       event.sender.send('loadProject:complete', data);
+    });
+  });
+
+  ipcMain.on('changeWorkspace', (event, opts) => {
+    event.sender.send('changeWorkspace:process');
+    changeWorkspace(opts.path, (data) => {
+      event.sender.send('changeWorkspace:complete', data);
     });
   });
 

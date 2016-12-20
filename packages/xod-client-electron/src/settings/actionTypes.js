@@ -1,5 +1,7 @@
 export const SET_WORKSPACE = 'SET_WORKSPACE';
+export const CHANGE_WORKSPACE = 'CHANGE_WORKSPACE';
 
 export default {
   SET_WORKSPACE,
+  CHANGE_WORKSPACE,
 };
