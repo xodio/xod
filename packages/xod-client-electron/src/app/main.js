@@ -35,46 +35,23 @@ function createWindow() {
   });
 }
 
+const subscribeRemoteAction = (processName, remoteAction) => {
+  ipcMain.on(processName, (event, opts) => {
+    event.sender.send(`${processName}:process`);
+    remoteAction(opts,
+      data => { event.sender.send(`${processName}:complete`, data); }
+    );
+  });
+};
+
 const onReady = () => {
   devtron.install();
 
-  // Listen to IPC
-  // @TODO: Remove repeating code
-
-  ipcMain.on('savePatch', (event, opts) => {
-    event.sender.send('savePatch:process');
-    savePatch(opts, () => {
-      event.sender.send('savePatch:complete');
-    });
-  });
-
-  ipcMain.on('saveProject', (event, opts) => {
-    event.sender.send('saveProject:process');
-    saveProject(opts, () => {
-      event.sender.send('saveProject:complete');
-    });
-  });
-
-  ipcMain.on('loadProjectList', (event, opts) => {
-    event.sender.send('loadProjectList:process');
-    loadProjectList(opts, (data) => {
-      event.sender.send('loadProjectList:complete', data);
-    });
-  });
-
-  ipcMain.on('loadProject', (event, opts) => {
-    event.sender.send('loadProject:process');
-    loadProject(opts, (data) => {
-      event.sender.send('loadProject:complete', data);
-    });
-  });
-
-  ipcMain.on('changeWorkspace', (event, opts) => {
-    event.sender.send('changeWorkspace:process');
-    changeWorkspace(opts, (data) => {
-      event.sender.send('changeWorkspace:complete', data);
-    });
-  });
+  subscribeRemoteAction('savePatch', savePatch);
+  subscribeRemoteAction('saveProject', saveProject);
+  subscribeRemoteAction('loadProjectList', loadProjectList);
+  subscribeRemoteAction('loadProject', loadProject);
+  subscribeRemoteAction('changeWorkspace', changeWorkspace);
 
   createWindow();
 };
