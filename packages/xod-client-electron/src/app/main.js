@@ -4,7 +4,7 @@ import {
   BrowserWindow,
 } from 'electron';
 import devtron from 'devtron';
-import { savePatch, saveProject, loadProjectList, loadProject, changeWorkspace } from './remoteActions';
+import { savePatch, saveProject, loadProjectList, loadProject, changeWorkspace, checkWorkspace } from './remoteActions';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -51,6 +51,7 @@ const onReady = () => {
   subscribeRemoteAction('saveProject', saveProject);
   subscribeRemoteAction('loadProjectList', loadProjectList);
   subscribeRemoteAction('loadProject', loadProject);
+  subscribeRemoteAction('checkWorkspace', checkWorkspace);
   subscribeRemoteAction('changeWorkspace', changeWorkspace);
 
   createWindow();

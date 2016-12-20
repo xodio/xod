@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { save, getProjects, loadProjectWithLibs, loadLibs, arrangeByFiles, pack } from 'xod-fs';
+import { save, getProjects, loadProjectWithLibs, loadLibs, arrangeByFiles, pack, isDirectoryExists } from 'xod-fs';
 
 const extract = json => arrangeByFiles(JSON.parse(json));
 
@@ -30,20 +30,18 @@ export const loadProject = ({ path, workspace }, onFinish) =>
     .then(({ project, libs }) => pack(project, libs))
     .then(onFinish);
 
-export const checkWorkspace = ({ path }, onFinish) => {
-  if (typeof path !== 'string') { return onFinish({ valid: false, path }); }
-
-  return onFinish({
-    valid: true,
-    path,
-    nodeTypes: {},
-  });
-};
-
 export const changeWorkspace = ({ path }, onFinish) =>
   loadLibs(['xod/core'], path)
     .then(R.assoc('nodeTypes', R.__, { path }))
     .then(onFinish);
+
+export const checkWorkspace = ({ path }, onFinish) => {
+  const validPath = (typeof path === 'string' && isDirectoryExists(path));
+  if (!validPath) { return onFinish({ valid: false, path }); }
+
+  return changeWorkspace({ path }, R.assoc('valid', true))
+    .then(onFinish);
+};
 
 export default {
   savePatch,

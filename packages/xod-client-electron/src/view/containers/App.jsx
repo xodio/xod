@@ -21,7 +21,7 @@ import PopupProjectSelection from '../../projects/components/PopupProjectSelecti
 import PopupUploadProject from '../../upload/components/PopupUploadProject';
 import { getProjects } from '../../projects/selectors';
 import { getSettings, getWorkspace } from '../../settings/selectors';
-import { changeWorkspace } from '../../settings/actions';
+import { changeWorkspace, checkWorkspace } from '../../settings/actions';
 import { SaveProgressBar } from '../components/SaveProgressBar';
 
 const DEFAULT_CANVAS_WIDTH = 800;
@@ -68,6 +68,10 @@ class App extends React.Component {
     this.hidePopupCreateProject = this.hidePopupCreateProject.bind(this);
     this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
     this.hidePopupProjectSelection = this.hidePopupProjectSelection.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.actions.checkWorkspace({ path: this.props.workspace });
   }
 
   onResize() {
@@ -491,6 +495,7 @@ const mapDispatchToProps = (dispatch) => ({
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,
     deleteProcess: client.deleteProcess,
+    checkWorkspace,
     changeWorkspace,
   }, dispatch),
 });
