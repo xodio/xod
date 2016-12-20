@@ -43,35 +43,35 @@ const onReady = () => {
 
   ipcMain.on('savePatch', (event, opts) => {
     event.sender.send('savePatch:process');
-    savePatch(opts.json, opts.patchId, opts.workspace, () => {
+    savePatch(opts, () => {
       event.sender.send('savePatch:complete');
     });
   });
 
   ipcMain.on('saveProject', (event, opts) => {
     event.sender.send('saveProject:process');
-    saveProject(opts.json, opts.workspace, () => {
+    saveProject(opts, () => {
       event.sender.send('saveProject:complete');
     });
   });
 
   ipcMain.on('loadProjectList', (event, opts) => {
     event.sender.send('loadProjectList:process');
-    loadProjectList(opts.workspace, (data) => {
+    loadProjectList(opts, (data) => {
       event.sender.send('loadProjectList:complete', data);
     });
   });
 
   ipcMain.on('loadProject', (event, opts) => {
     event.sender.send('loadProject:process');
-    loadProject(opts.path, opts.workspace, (data) => {
+    loadProject(opts, (data) => {
       event.sender.send('loadProject:complete', data);
     });
   });
 
   ipcMain.on('changeWorkspace', (event, opts) => {
     event.sender.send('changeWorkspace:process');
-    changeWorkspace(opts.path, (data) => {
+    changeWorkspace(opts, (data) => {
       event.sender.send('changeWorkspace:complete', data);
     });
   });

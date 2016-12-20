@@ -39,12 +39,12 @@ export const createAsyncAction = ({
   eventName,
   actionType,
   messages: {
-    process: processMsg,
-    complete: completeMsg,
-  },
+    process: processMsg = '',
+    complete: completeMsg = '',
+  } = {},
   notify = true,
   silent = false,
-  onComplete,
+  onComplete = R.always(undefined),
 }) => opts => (dispatch, getState) => {
   const workspace = getWorkspace(getState().settings);
   let processId = null;
