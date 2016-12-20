@@ -74,6 +74,12 @@ class App extends React.Component {
     this.props.actions.checkWorkspace({ path: this.props.workspace });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.workspace !== nextProps.workspace && nextProps.workspace === null) {
+      this.showPopupSetWorkspace(this.hidePopupSetWorkspace);
+    }
+  }
+
   onResize() {
     this.setState(
       R.set(

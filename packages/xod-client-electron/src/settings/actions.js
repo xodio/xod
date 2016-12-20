@@ -21,6 +21,7 @@ export const checkWorkspace = createAsyncAction({
       dispatch(updateNodeTypes(data.nodeTypes));
       return;
     }
+
     // ask user to define workspace
     dispatch(setWorkspace(null));
   },
