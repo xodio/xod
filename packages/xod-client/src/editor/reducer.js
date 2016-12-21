@@ -14,6 +14,7 @@ import {
 import {
   PROJECT_CREATE,
   PROJECT_LOAD_DATA,
+  PROJECT_ONLY_LOAD_DATA,
 } from '../project/actionTypes';
 import { ENTITY, generateId } from 'xod-core';
 
@@ -58,6 +59,24 @@ const applyTabSort = (tab, payload) => {
 const tabHasPatch = (state, patchId) =>
   R.find(R.propEq('patchId', patchId))(R.values(state.tabs));
 
+const resetCurrentPatchId = (reducer, state, payload) => {
+  const newState = R.assoc('tabs', [], state);
+  const firstPatchId = R.pipe(
+    JSON.parse,
+    R.prop('patches'),
+    R.values,
+    R.head,
+    R.propOr(null, 'id')
+  )(payload);
+
+  return reducer(newState, {
+    type: EDITOR_SWITCH_PATCH,
+    payload: {
+      id: firstPatchId,
+    },
+  });
+};
+
 const editorReducer = (state = {}, action) => {
   switch (action.type) {
     case NODE_DELETE:
@@ -85,22 +104,10 @@ const editorReducer = (state = {}, action) => {
         },
       });
     }
-    case PROJECT_LOAD_DATA: {
-      const newState = R.assoc('tabs', [], state);
-      const firstPatchId = R.pipe(
-        JSON.parse,
-        R.prop('patches'),
-        R.values,
-        R.head,
-        R.propOr(null, 'id')
-      )(action.payload);
-      return editorReducer(newState, {
-        type: EDITOR_SWITCH_PATCH,
-        payload: {
-          id: firstPatchId,
-        },
-      });
-    }
+    case PROJECT_LOAD_DATA:
+      return resetCurrentPatchId(editorReducer, state, action.payload);
+    case PROJECT_ONLY_LOAD_DATA:
+      return resetCurrentPatchId(editorReducer, state, action.payload);
     case EDITOR_SWITCH_PATCH: {
       let newState = state;
       if (!tabHasPatch(state, action.payload.id)) {

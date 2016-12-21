@@ -144,6 +144,11 @@ export const loadProjectFromJSON = (json) => ({
   payload: json,
 });
 
+export const loadProjectOnlyFromJSON = json => ({
+  type: ActionType.PROJECT_ONLY_LOAD_DATA,
+  payload: json,
+});
+
 
 export const undoPatch = (id) => ({
   type: ActionType.getPatchUndoType(id),
