@@ -8,7 +8,7 @@ export const createProject = (projectName) => ({
   type: ActionType.PROJECT_CREATE,
   payload: {
     name: projectName,
-    mainPatchId: core.generateId(),
+    mainPatchId: `@/${core.generateId()}`,
   },
 });
 
