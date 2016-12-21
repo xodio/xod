@@ -51,10 +51,7 @@ export default (patchIds = []) => {
 
     if (action.type === PROJECT_ONLY_LOAD_DATA) {
       const project = parseProjectJSON(action.payload);
-      const merged = R.assoc('nodeTypes', state.nodeTypes, project);
-      console.log('PROJECT', project);
-      console.log('MERGED', merged);
-      return merged;
+      return R.assoc('nodeTypes', state.nodeTypes, project);
     }
 
     if (
