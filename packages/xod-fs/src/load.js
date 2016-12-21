@@ -77,7 +77,7 @@ const loadProjectWithoutLibs = (projectPath, workspace) =>
     .then(assignIdsToAllPatches);
 
 export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) =>
-  loadProjectWithoutLibs(resolvePath(projectPath), resolvePath(workspace))
+  loadProjectWithoutLibs(projectPath, resolvePath(workspace))
     .then(project => loadLibs(getProjectLibs(project), resolvePath(libDir))
       .then(libs => ({
         project,
