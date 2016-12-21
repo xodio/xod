@@ -3,6 +3,12 @@ import fs from 'fs';
 import path from 'path';
 import expandHomeDir from 'expand-home-dir';
 
+// :: string -> string
+export const resolvePath = R.compose(
+  path.resolve,
+  expandHomeDir
+);
+
 // :: string -> boolean
 export const isDirectoryExists = R.compose(
   R.tryCatch(
@@ -12,6 +18,5 @@ export const isDirectoryExists = R.compose(
     ),
     R.F
   ),
-  path.resolve,
-  expandHomeDir
+  resolvePath
 );
