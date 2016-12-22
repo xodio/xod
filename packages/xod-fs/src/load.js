@@ -3,7 +3,7 @@ import path from 'path';
 import { readDir, readJSON } from './read';
 import { resolvePath } from './utils';
 
-import loadLibs from './loadLibs';
+import { loadLibs } from './loadLibs';
 
 const hasId = R.has('id');
 const withIdFirst = (a, b) => ((!hasId(a) && hasId(b)) || -1);
