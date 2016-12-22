@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { ipcRenderer } from 'electron';
-import { addProcess, progressProcess, successProcess, deleteProcess, addConfirmation, loadProjectFromJSON } from 'xod-client';
+import { addProcess, progressProcess, successProcess, deleteProcess, addConfirmation, loadProjectOnlyFromJSON } from 'xod-client';
 
 import { getWorkspace } from '../settings/selectors';
 import * as ActionType from './actionTypes';
@@ -25,48 +25,58 @@ const processProgressed = ({
 const processCompleted = ({
   processId,
   actionType,
-  message = 'Process completed!',
-  notify = true,
   payload,
   onComplete = R.always(undefined),
 }, dispatch) => {
   dispatch(successProcess(processId, actionType, { data: payload }));
-  onComplete(payload, dispatch);
-  if (notify) {
-    dispatch(addConfirmation({ message }));
-  }
+
   setTimeout(() => {
     dispatch(deleteProcess(processId, actionType));
   }, 1000);
 };
 
-const createAsyncAction = ({
+export const createAsyncAction = ({
   eventName,
   actionType,
   messages: {
-    process: processMsg,
-    complete: completeMsg,
-  },
-  notify,
-  onComplete,
+    process: processMsg = '',
+    complete: completeMsg = '',
+  } = {},
+  notify = true,
+  silent = false,
+  onComplete = R.always(undefined),
 }) => opts => (dispatch, getState) => {
   const workspace = getWorkspace(getState().settings);
-  const processId = dispatch(addProcess(actionType));
+  let processId = null;
 
-  ipcRenderer.once(
-    `${eventName}:process`,
-    (sender, payload) => processProgressed(
-      { processId, actionType, message: processMsg, notify, payload },
-      dispatch
-    )
-  );
+  if (!silent) {
+    processId = dispatch(addProcess(actionType));
+
+    if (processMsg) {
+      ipcRenderer.once(
+        `${eventName}:process`,
+        (sender, payload) => processProgressed(
+          { processId, actionType, message: processMsg, notify, payload },
+          dispatch
+        )
+      );
+    }
+  }
+
   ipcRenderer.once(
     `${eventName}:complete`,
     (sender, payload) => {
-      processCompleted(
-        { processId, actionType, message: completeMsg, notify, payload, onComplete },
-        dispatch
-      );
+      if (!silent) {
+        processCompleted(
+          { processId, actionType, payload, onComplete },
+          dispatch
+        );
+      }
+      if (notify) {
+        dispatch(addConfirmation({ message: completeMsg }));
+      }
+
+      onComplete(payload, dispatch);
     }
   );
 
@@ -97,9 +107,7 @@ export const loadProject = createAsyncAction({
   },
   onComplete: (data, dispatch) => {
     const json = JSON.stringify(data); // @TODO: Remove excessive json stringify->parse (?)
-    dispatch(
-      loadProjectFromJSON(json)
-    );
+    dispatch(loadProjectOnlyFromJSON(json));
   },
 });
 

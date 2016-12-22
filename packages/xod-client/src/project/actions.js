@@ -8,7 +8,7 @@ export const createProject = (projectName) => ({
   type: ActionType.PROJECT_CREATE,
   payload: {
     name: projectName,
-    mainPatchId: core.generateId(),
+    mainPatchId: `@/${core.generateId()}`,
   },
 });
 
@@ -144,6 +144,11 @@ export const loadProjectFromJSON = (json) => ({
   payload: json,
 });
 
+export const loadProjectOnlyFromJSON = json => ({
+  type: ActionType.PROJECT_ONLY_LOAD_DATA,
+  payload: json,
+});
+
 
 export const undoPatch = (id) => ({
   type: ActionType.getPatchUndoType(id),
@@ -242,5 +247,12 @@ export const moveFolder = (changes) => ({
   payload: {
     id: changes.id,
     parentId: changes.parentId,
+  },
+});
+
+export const updateNodeTypes = (nodeTypes) => ({
+  type: ActionType.NODETYPES_UPDATE,
+  payload: {
+    nodeTypes,
   },
 });

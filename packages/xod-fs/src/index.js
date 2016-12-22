@@ -5,3 +5,4 @@ export { writeJSON, writeFile } from './write';
 export { readDir, readFile, readJSON } from './read';
 export { getProjects, loadProjectWithLibs } from './load';
 export { default as loadLibs } from './loadLibs';
+export { isDirectoryExists } from './utils';

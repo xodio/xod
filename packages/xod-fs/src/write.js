@@ -1,12 +1,11 @@
 import { curry } from 'ramda';
-import path from 'path';
 import fileSave from 'file-save';
-import expandHomeDir from 'expand-home-dir';
+import { resolvePath } from './utils';
 
 // :: outputPath -> data -> Promise
 export const writeFile = curry((outputPath, data) => new Promise(
   (resolve, reject) => {
-    const resolvedPath = path.resolve(expandHomeDir(outputPath));
+    const resolvedPath = resolvePath(outputPath);
     const fstream = fileSave(resolvedPath);
 
     fstream.write(data, 'utf8');

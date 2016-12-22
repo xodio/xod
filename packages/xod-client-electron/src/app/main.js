@@ -4,7 +4,7 @@ import {
   BrowserWindow,
 } from 'electron';
 import devtron from 'devtron';
-import { savePatch, saveProject, loadProjectList, loadProject } from './remoteActions';
+import { savePatch, saveProject, loadProjectList, loadProject, changeWorkspace, checkWorkspace } from './remoteActions';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -35,39 +35,24 @@ function createWindow() {
   });
 }
 
+const subscribeRemoteAction = (processName, remoteAction) => {
+  ipcMain.on(processName, (event, opts) => {
+    event.sender.send(`${processName}:process`);
+    remoteAction(opts,
+      data => { event.sender.send(`${processName}:complete`, data); }
+    );
+  });
+};
+
 const onReady = () => {
   devtron.install();
 
-  // Listen to IPC
-  // @TODO: Remove repeating code
-
-  ipcMain.on('savePatch', (event, opts) => {
-    event.sender.send('savePatch:process');
-    savePatch(opts.json, opts.patchId, opts.workspace, () => {
-      event.sender.send('savePatch:complete');
-    });
-  });
-
-  ipcMain.on('saveProject', (event, opts) => {
-    event.sender.send('saveProject:process');
-    saveProject(opts.json, opts.workspace, () => {
-      event.sender.send('saveProject:complete');
-    });
-  });
-
-  ipcMain.on('loadProjectList', (event, opts) => {
-    event.sender.send('loadProjectList:process');
-    loadProjectList(opts.workspace, (data) => {
-      event.sender.send('loadProjectList:complete', data);
-    });
-  });
-
-  ipcMain.on('loadProject', (event, opts) => {
-    event.sender.send('loadProject:process');
-    loadProject(opts.path, opts.workspace, (data) => {
-      event.sender.send('loadProject:complete', data);
-    });
-  });
+  subscribeRemoteAction('savePatch', savePatch);
+  subscribeRemoteAction('saveProject', saveProject);
+  subscribeRemoteAction('loadProjectList', loadProjectList);
+  subscribeRemoteAction('loadProject', loadProject);
+  subscribeRemoteAction('checkWorkspace', checkWorkspace);
+  subscribeRemoteAction('changeWorkspace', changeWorkspace);
 
   createWindow();
 };

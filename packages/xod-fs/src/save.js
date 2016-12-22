@@ -1,12 +1,13 @@
 import path from 'path';
 import expandHomeDir from 'expand-home-dir';
 import { curry } from 'ramda';
+import { resolvePath } from './utils';
 import { writeJSON } from './write';
 import { Backup } from './backup';
 
 // :: pathToWorkspace -> data -> Promise
 const saveData = curry((pathToWorkspace, data) => new Promise((resolve, reject) => {
-  const filePath = path.resolve(pathToWorkspace, data.path);
+  const filePath = path.resolve(resolvePath(pathToWorkspace), data.path);
   return writeJSON(filePath, data.content).then(resolve).catch(reject);
 }));
 
@@ -18,22 +19,23 @@ export default curry((pathToWorkspace, data) => {
     throw Object.assign(
       new Error("Can't save project: wrong data format was passed into save function."),
       {
-        path: pathToWorkspace,
+        path: resolvePath(pathToWorkspace),
         data,
       }
     );
   }
+  const workspace = resolvePath(pathToWorkspace);
   const isArray = (data instanceof Array);
   const dataToSave = isArray ? data : [data];
   const projectDir = dataToSave[0].path.split(path.sep)[1];
 
-  const pathToProject = expandHomeDir(path.resolve(pathToWorkspace, projectDir));
-  const pathToTemp = expandHomeDir(path.resolve(pathToWorkspace, './.tmp/'));
+  const pathToProject = expandHomeDir(path.resolve(workspace, projectDir));
+  const pathToTemp = expandHomeDir(path.resolve(workspace, './.tmp/'));
   const backup = new Backup(pathToProject, pathToTemp);
 
   return backup.make()
     .then(() => {
-      savingFiles = dataToSave.map(saveData(pathToWorkspace));
+      savingFiles = dataToSave.map(saveData(workspace));
 
       return Promise.all(savingFiles)
         .then(backup.clear)

@@ -3,6 +3,7 @@ import path from 'path';
 import chaiFiles from 'chai-files';
 import chaiFs from 'chai-fs';
 import dirtyChai from 'dirty-chai';
+import rimraf from 'rimraf';
 import doc from '../src/index';
 
 const packed = require('./mocks/pack.json');
@@ -19,7 +20,7 @@ describe('Generate docs', () => {
   const file = chaiFiles.file;
   const dir = chaiFiles.dir;
 
-  const tmpPath = path.join(__dirname, 'tmp');
+  const tmpPath = path.join(__dirname, '.tmp');
 
   before((done) => {
     doc(
@@ -28,6 +29,9 @@ describe('Generate docs', () => {
       pathResolve('xod/core'),
       true)
     .then(done);
+  });
+  after(() => {
+    rimraf.sync(tmpPath);
   });
 
   it('shoult create folder tmp', () =>

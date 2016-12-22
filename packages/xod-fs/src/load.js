@@ -1,6 +1,7 @@
 import R from 'ramda';
 import path from 'path';
 import { readDir, readJSON } from './read';
+import { resolvePath } from './utils';
 
 import loadLibs from './loadLibs';
 
@@ -76,14 +77,14 @@ const loadProjectWithoutLibs = (projectPath, workspace) =>
     .then(assignIdsToAllPatches);
 
 export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) =>
-  loadProjectWithoutLibs(projectPath, workspace)
-    .then(project => loadLibs(getProjectLibs(project), libDir)
+  loadProjectWithoutLibs(projectPath, resolvePath(workspace))
+    .then(project => loadLibs(getProjectLibs(project), resolvePath(libDir))
       .then(libs => ({
         project,
         libs,
       }))
       .catch(err => {
-        throw Object.assign(err, { path: libDir, libs: getProjectLibs(project) });
+        throw Object.assign(err, { path: resolvePath(libDir), libs: getProjectLibs(project) });
       })
     );
 

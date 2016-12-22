@@ -660,4 +660,23 @@ describe('Project reducer: ', () => {
       });
     });
   });
+
+  describe('Load nodetypes', () => {
+    let store;
+    beforeEach(() => {
+      store = mockStore(R.clone(projectShape));
+    });
+
+    it('should update nodeTypes', () => {
+      const testNodeType = { id: 'test' };
+      const action = Actions.updateNodeTypes({
+        test: testNodeType,
+      });
+      store.dispatch(action);
+      chai.expect(getNodeTypes(store.getState()))
+        .to.be.an('object')
+        .that.have.property('test')
+        .that.equal(testNodeType);
+    });
+  });
 });

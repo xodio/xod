@@ -2,7 +2,7 @@ import R from 'ramda';
 import path from 'path';
 import { hasNot } from 'xod-core';
 import { readDir, readJSON, readFile } from './read';
-import expandHomeDir from 'expand-home-dir';
+import { resolvePath } from './utils';
 
 const implAccordance = {
   js: 'any.js',
@@ -127,7 +127,7 @@ const mergePatchesAndMetas = R.pipe(
 );
 
 export default (libs, workspace) => {
-  const libsDir = path.resolve(expandHomeDir(workspace), 'lib');
+  const libsDir = path.resolve(resolvePath(workspace), 'lib');
   return scanLibsFolder(libs, libsDir)
     .then(readLibFiles)
     .then(mergePatchesAndMetas)

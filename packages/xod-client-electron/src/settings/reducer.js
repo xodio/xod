@@ -4,7 +4,7 @@ import {
 } from './actionTypes';
 
 const initialState = {
-  workspace: null,
+  workspace: '~/xod',
 };
 
 const settingsReducer = (state = initialState, action) => {
