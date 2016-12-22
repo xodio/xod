@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import path from 'path';
-import loadLibs from '../src/loadLibs';
+import { loadLibs, loadAllLibs } from '../src/loadLibs';
 import libsFixture from './fixtures/libs.json';
 
 const workspaceDir = './fixtures/workspace';
@@ -16,6 +16,23 @@ describe('Library loader', () => {
     loadLibs(['xod/core'], workspace)
       .then((data) => {
         expect(data).to.deep.equal(nodeTypes);
+        done();
+      })
+      .catch(done);
+  });
+
+  it('should load all libs from ./fixtures/workspace/lib', (done) => {
+    loadAllLibs(workspace)
+      .then((data) => {
+        expect(data).to.have.keys([
+          'user/utils/test',
+          'xod/core/and',
+          'xod/core/inputNumber',
+          'xod/core/led',
+          'xod/core/pot',
+          'xod/core/test',
+          'xod/math/test',
+        ]);
         done();
       })
       .catch(done);

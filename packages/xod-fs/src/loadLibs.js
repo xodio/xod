@@ -126,11 +126,36 @@ const mergePatchesAndMetas = R.pipe(
   R.flatten
 );
 
-export default (libs, workspace) => {
+export const loadLibs = (libs, workspace) => {
   const libsDir = path.resolve(resolvePath(workspace), 'lib');
   return scanLibsFolder(libs, libsDir)
     .then(readLibFiles)
     .then(mergePatchesAndMetas)
     .then(loadImpl(libsDir))
     .then(R.indexBy(R.prop('id')));
+};
+
+// extract libNames from paths to xod-files
+// for example: '/Users/vasya/xod/lib/xod/core/and/patch.xodm' -> 'xod/core'
+// :: string[] -> string[]
+const extractLibNamesFromFilenames = libsDir => R.compose(
+  R.uniq,
+  R.map(
+    R.compose(
+      R.join('/'),
+      R.take(2),
+      R.split(path.sep),
+      filename => path.relative(libsDir, filename)
+    )
+  )
+);
+
+export const loadAllLibs = (workspace) => {
+  const libsDir = path.resolve(resolvePath(workspace), 'lib');
+  return scanLibsFolder(['.'], libsDir)
+    .then(R.compose(
+      extractLibNamesFromFilenames(libsDir),
+      R.prop(['.'])
+    ))
+    .then(libs => loadLibs(libs, workspace));
 };
