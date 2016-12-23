@@ -54,6 +54,7 @@ export const find = R.curry(R.compose(
 
 /**
  * Returns an Error object wrapped into Either.Left
+ * @private
  * @function err
  * @param {string} errorMessage
  * @returns {Either.Left<Error>}
@@ -68,6 +69,7 @@ export const err = R.compose(
  * Returns function that checks condition and returns Either
  * Left with Error for false
  * Right with passed content for true
+ * @private
  * @function errOnFalse
  * @param {string} errorMessage
  * @param {function} condition
@@ -83,6 +85,7 @@ export const errOnFalse = R.curry(
 
 /**
  * Return Either.Right for Maybe.Just and Either.Left for Maybe.Nothing
+ * @private
  * @function errOnNothing
  * @param {string} errorMessage Error message for Maybe.Nothing
  * @param {*|Maybe<*>} data Data or Maybe monad
@@ -105,6 +108,7 @@ export const errOnNothing = R.curry(
 
 /**
  * Checks that value is exist in the dictionary (object).
+ * @private
  * @function hasPropEq
  * @param {*} value
  * @param {object} dictionary
