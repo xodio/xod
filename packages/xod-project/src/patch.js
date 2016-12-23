@@ -228,7 +228,7 @@ export const listLinks = R.compose(
 
 /**
  * Checks that link id to be equal specified value
- *
+ * @private
  * @function linkIdEquals
  * @param {string} id [description]
  * @param {LinkOrId} link [description]

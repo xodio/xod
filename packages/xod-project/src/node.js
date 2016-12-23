@@ -279,7 +279,7 @@ const getDataTypeRegExp = R.compose(
 
 /**
  * RegExp to extract data type from node type
- *
+ * @private
  * @name dataTypeRegexp
  * @type {RegExp}
  */

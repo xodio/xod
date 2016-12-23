@@ -32,6 +32,7 @@ import * as CONST from './constants';
  */
 
 /**
+ * @private
  * @function getBaseName
  * @param {string} path
  * @returns {string}
@@ -73,6 +74,7 @@ export const validatePath = Tools.errOnFalse(
 
 /**
  * Adds a slash to the end of string if it doesn't exist
+ * @private
  * @function ensureEndsWithSlash
  * @param {string} str
  * @returns {string}
@@ -88,6 +90,7 @@ export const ensureEndsWithSlash = R.ifElse(
 
 /**
  * Generates an id for entities
+ * @private
  * @function generateId
  * @returns {string}
  */
