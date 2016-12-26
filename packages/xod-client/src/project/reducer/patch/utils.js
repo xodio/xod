@@ -33,7 +33,7 @@ export const isPatchWithHistory = R.allPass([
 export const isPatchWithoutHistory = R.complement(isPatchWithHistory);
 
 // :: action -> patchId -> boolean
-export const isActionForThisPatch = R.curry((action, patchId) =>
+export const isActionNotForThisPatch = R.curry((action, patchId) =>
   (action && action.meta && action.meta.patchId && action.meta.patchId !== patchId));
 
 

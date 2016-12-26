@@ -9,7 +9,7 @@ import {
   getStatic,
   getHistory,
   isPatchWithoutHistory,
-  isActionForThisPatch,
+  isActionNotForThisPatch,
 } from './utils';
 import {
   getPatchUndoType,
@@ -18,7 +18,7 @@ import {
 } from '../../actionTypes';
 
 // filter function for redux-undo (true if it should be added into history)
-const keepHistory = (action) => !(R.pathEq(['meta', 'skipHistory'], true, action));
+const keepHistory = R.complement(R.pathEq(['meta', 'skipHistory'], true));
 
 const patchReducer = (id) => {
   const undoConfig = {
@@ -33,7 +33,7 @@ const patchReducer = (id) => {
 
   return (state = { id }, action) => {
     const tState = isPatchWithoutHistory(state) ? newPatch(state) : state;
-    if (isActionForThisPatch(action, id)) { return tState; }
+    if (isActionNotForThisPatch(action, id)) { return tState; }
 
     const staticResult = patchStatic(getStatic(tState), action);
     const historyResult = patchHistory(getHistory(tState), action);
