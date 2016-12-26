@@ -9,7 +9,7 @@ import {
   getStatic,
   getHistory,
   isPatchWithoutHistory,
-  isActionForThisPatch,
+  isActionNotForThisPatch,
 } from './utils';
 import {
   getPatchUndoType,
@@ -18,7 +18,7 @@ import {
 } from '../../actionTypes';
 
 // filter function for redux-undo (true if it should be added into history)
-const keepHistory = (action) => !(R.pathEq(['meta', 'skipHistory'], true, action));
+const keepHistory = R.complement(R.pathEq(['meta', 'skipHistory'], true));
 
 const patchReducer = (id) => {
   const undoConfig = {
@@ -29,14 +29,23 @@ const patchReducer = (id) => {
   };
 
   const patchStatic = patchStaticReducer(id);
-  const patchHistory = undoable(patchContentsReducer(id), undoConfig);
+  const patchHistory = undoable(patchContentsReducer(), undoConfig);
 
   return (state = { id }, action) => {
     const tState = isPatchWithoutHistory(state) ? newPatch(state) : state;
-    if (isActionForThisPatch(action, id)) { return tState; }
+    if (isActionNotForThisPatch(action, id)) { return tState; }
 
-    const staticResult = patchStatic(getStatic(tState), action);
-    const historyResult = patchHistory(getHistory(tState), action);
+    const staticOld = getStatic(tState);
+    const historyOld = getHistory(tState);
+
+    const staticNew = patchStatic(staticOld, action);
+    const historyNew = getHistory(patchHistory(historyOld, action));
+
+    const isStaticUpdated = R.equals(staticOld, staticNew);
+    const staticResult = isStaticUpdated ? staticOld : staticNew;
+
+    const isHistoryUpdated = R.equals(historyOld.present, historyNew.present);
+    const historyResult = isHistoryUpdated ? historyOld : historyNew;
 
     return R.merge({ static: staticResult }, historyResult);
   };
