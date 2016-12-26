@@ -29,14 +29,23 @@ const patchReducer = (id) => {
   };
 
   const patchStatic = patchStaticReducer(id);
-  const patchHistory = undoable(patchContentsReducer(id), undoConfig);
+  const patchHistory = undoable(patchContentsReducer(), undoConfig);
 
   return (state = { id }, action) => {
     const tState = isPatchWithoutHistory(state) ? newPatch(state) : state;
     if (isActionNotForThisPatch(action, id)) { return tState; }
 
-    const staticResult = patchStatic(getStatic(tState), action);
-    const historyResult = patchHistory(getHistory(tState), action);
+    const staticOld = getStatic(tState);
+    const historyOld = getHistory(tState);
+
+    const staticNew = patchStatic(staticOld, action);
+    const historyNew = getHistory(patchHistory(historyOld, action));
+
+    const isStaticUpdated = R.equals(staticOld, staticNew);
+    const staticResult = isStaticUpdated ? staticOld : staticNew;
+
+    const isHistoryUpdated = R.equals(historyOld.present, historyNew.present);
+    const historyResult = isHistoryUpdated ? historyOld : historyNew;
 
     return R.merge({ static: staticResult }, historyResult);
   };
