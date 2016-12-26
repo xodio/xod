@@ -411,6 +411,7 @@ class App extends React.Component {
         <client.Toolbar
           meta={this.props.meta}
           nodeTypes={this.props.nodeTypes}
+          selectedNodeType={this.props.selectedNodeType}
           onSelectNodeType={this.onSelectNodeType}
           onAddNodeClick={this.onAddNodeClick}
           buttons={this.getToolbarButtons()}
@@ -463,6 +464,7 @@ App.propTypes = {
   projectJSON: React.PropTypes.string,
   meta: React.PropTypes.object,
   nodeTypes: React.PropTypes.any.isRequired,
+  selectedNodeType: React.PropTypes.string,
   actions: React.PropTypes.objectOf(React.PropTypes.func),
   upload: React.PropTypes.object,
   workspace: React.PropTypes.string,
@@ -481,6 +483,7 @@ const mapStateToProps = (state) => {
     projectJSON: core.getProjectJSON(state),
     meta: core.getMeta(state),
     nodeTypes: core.dereferencedNodeTypes(state),
+    selectedNodeType: client.getSelectedNodeType(state),
     upload: getUploadProcess(state),
     workspace: getWorkspace(settings),
     saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),

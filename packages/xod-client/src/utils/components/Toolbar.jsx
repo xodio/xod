@@ -67,7 +67,7 @@ const Toolbar = ({
 Toolbar.propTypes = {
   meta: React.PropTypes.object,
   nodeTypes: React.PropTypes.object,
-  selectedNodeType: React.PropTypes.number,
+  selectedNodeType: React.PropTypes.string,
   onSelectNodeType: React.PropTypes.func,
   onAddNodeClick: React.PropTypes.func,
   buttons: React.PropTypes.arrayOf(
