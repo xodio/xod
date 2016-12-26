@@ -44,6 +44,12 @@ class Inspector extends React.Component {
     this.createWidgets(props);
   }
 
+  shouldComponentUpdate(nextProps) {
+    if (R.equals(this.props.selection, nextProps.selection)) { return false; }
+
+    return true;
+  }
+
   componentWillUpdate(nextProps) {
     this.createWidgets(nextProps);
   }
