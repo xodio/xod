@@ -6,7 +6,7 @@ export default {
   dragging: null,
   selection: [],
   linkingPin: null,
-  selectedNodeType: 'xod/core/button',
+  selectedNodeType: null,
   tabs: {
     1: {
       id: '1',

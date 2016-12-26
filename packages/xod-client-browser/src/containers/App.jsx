@@ -279,6 +279,7 @@ class App extends React.Component {
         <client.Toolbar
           meta={this.props.meta}
           nodeTypes={this.props.nodeTypes}
+          selectedNodeType={this.props.selectedNodeType}
           onSelectNodeType={this.onSelectNodeType}
           onAddNodeClick={this.onAddNodeClick}
           buttons={this.getToolbarButtons()}
