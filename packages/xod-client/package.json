@@ -5,7 +5,7 @@
   "scripts": {
     "build": "babel src/ -d dist/",
     "dev": "npm run build -- --watch",
-    "test": "mocha test/**/*.spec.js"
+    "test": "mocha test --recursive"
   },
   "repository": {},
   "keywords": [],
@@ -39,7 +39,7 @@
     "redux": "^3.0.5",
     "redux-api-middleware": "^1.0.2",
     "redux-thunk": "^2.1.0",
-    "redux-undo": "^1.0.0-beta8",
+    "redux-undo": "^0.6.1",
     "reselect": "^2.5.1",
     "xod-core": "^0.0.1",
     "xod-js": "^0.0.1"
