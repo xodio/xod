@@ -1,6 +1,5 @@
 import R from 'ramda';
 import {
-  NODE_DELETE,
   EDITOR_DESELECT_ALL,
   EDITOR_SELECT_NODE,
   EDITOR_SELECT_PIN,
@@ -15,6 +14,8 @@ import {
   PROJECT_CREATE,
   PROJECT_LOAD_DATA,
   PROJECT_ONLY_LOAD_DATA,
+  NODE_DELETE,
+  LINK_DELETE,
 } from '../project/actionTypes';
 import { ENTITY, generateId } from 'xod-core';
 
@@ -80,6 +81,7 @@ const resetCurrentPatchId = (reducer, state, payload) => {
 const editorReducer = (state = {}, action) => {
   switch (action.type) {
     case NODE_DELETE:
+    case LINK_DELETE:
     case EDITOR_DESELECT_ALL:
       return R.merge(state, {
         selection: [],
