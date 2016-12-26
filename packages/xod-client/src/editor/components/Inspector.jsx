@@ -45,7 +45,30 @@ class Inspector extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (R.equals(this.props.selection, nextProps.selection)) { return false; }
+    const oldSelection = this.props.selection;
+    const newSelection = nextProps.selection;
+    const sameSelection = R.equals(oldSelection, newSelection);
+
+    if (sameSelection && (newSelection.length === 0 || newSelection > 1)) { return false; }
+
+    if (sameSelection && newSelection.length === 1) {
+      const selection = newSelection[0];
+      const entity = selection.entity;
+      if (entity === ENTITY.LINK) return false;
+      if (entity === ENTITY.NODE) {
+        const oldNode = this.props.nodes[selection.id];
+        const newNode = nextProps.nodes[selection.id];
+        const sameNodes = R.equals(oldNode, newNode);
+        if (sameNodes) return false;
+        // const oldNodeType = this.props.nodeTypes[oldNode.typeId];
+        // const newNodeType = nextProps.nodeTypes[newNode.typeId];
+
+        // const oldProps = this.getInspectableProps(oldNodeType, oldNode);
+        // const newProps = this.getInspectableProps(newNodeType, newNode);
+
+        // if (R.equals(oldProps, newProps)) return false;
+      }
+    }
 
     return true;
   }
@@ -104,8 +127,7 @@ class Inspector extends React.Component {
 
   createWidgets(props) {
     const selection = props.selection;
-
-    if (selection.length === 0 || props.nodes[selection[0].id] === undefined) {
+    if (selection.length === 0) {
       this.createEmptySelectionWidgets();
     } else if (selection.length === 1) {
       const entity = (selection[0].entity);

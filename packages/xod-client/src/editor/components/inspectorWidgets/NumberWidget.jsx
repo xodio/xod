@@ -28,7 +28,9 @@ class NumberWidget extends React.Component {
   onBlur() {
     const newValue = this.parseVal(this.state.value);
     this.updateValue(newValue);
-    this.props.onPropUpdate(newValue);
+    if (newValue !== this.props.value) {
+      this.props.onPropUpdate(newValue);
+    }
   }
 
   onKeyDown(event) {

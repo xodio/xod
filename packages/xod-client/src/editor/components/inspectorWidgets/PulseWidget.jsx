@@ -32,7 +32,9 @@ class PulseWidget extends React.Component {
 
   onBlur() {
     const newValue = this.parseAndUpdate();
-    this.props.onPropUpdate(newValue);
+    if (newValue !== this.props.value) {
+      this.props.onPropUpdate(newValue);
+    }
   }
 
   onKeyDown(event) {

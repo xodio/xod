@@ -27,7 +27,9 @@ class StringWidget extends React.Component {
   }
 
   onBlur() {
-    this.props.onPropUpdate(this.state.value);
+    if (this.state.value !== this.props.value) {
+      this.props.onPropUpdate(this.state.value);
+    }
   }
 
   onKeyDown(event) {
