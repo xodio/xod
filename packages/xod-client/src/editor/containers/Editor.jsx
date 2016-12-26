@@ -27,7 +27,6 @@ class Editor extends React.Component {
     this.onPinModeSwitch = this.onPinModeSwitch.bind(this);
     this.setModeCreating = this.setModeCreating.bind(this);
     this.setModeDefault = this.setModeDefault.bind(this);
-    this.setSelectedNodeType = this.setSelectedNodeType.bind(this);
     this.getHotkeyHandlers = this.getHotkeyHandlers.bind(this);
 
     this.patchSize = this.props.size;
@@ -51,12 +50,6 @@ class Editor extends React.Component {
 
   setModeDefault() {
     this.setEditorMode(EDITOR_MODE.DEFAULT);
-  }
-
-  setSelectedNodeType(nodeTypeId) {
-    this.props.actions.setSelectedNodeType(
-      parseInt(nodeTypeId, 10)
-    );
   }
 
   getHotkeyHandlers() {
@@ -129,7 +122,6 @@ const mapDispatchToProps = (dispatch) => ({
     redo: ProjectActions.redoPatch,
 
     setMode: Actions.setMode,
-    setSelectedNodeType: Actions.setSelectedNodeType,
   }, dispatch),
 });
 
