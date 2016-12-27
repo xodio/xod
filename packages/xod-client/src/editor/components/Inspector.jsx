@@ -44,6 +44,28 @@ class Inspector extends React.Component {
     this.createWidgets(props);
   }
 
+  shouldComponentUpdate(nextProps) {
+    const oldSelection = this.props.selection;
+    const newSelection = nextProps.selection;
+    const sameSelection = R.equals(oldSelection, newSelection);
+
+    if (sameSelection && (newSelection.length === 0 || newSelection > 1)) { return false; }
+
+    if (sameSelection && newSelection.length === 1) {
+      const selection = newSelection[0];
+      const entity = selection.entity;
+      if (entity === ENTITY.LINK) return false;
+      if (entity === ENTITY.NODE) {
+        const oldNode = this.props.nodes[selection.id];
+        const newNode = nextProps.nodes[selection.id];
+        const sameNodes = R.equals(oldNode, newNode);
+        if (sameNodes) return false;
+      }
+    }
+
+    return true;
+  }
+
   componentWillUpdate(nextProps) {
     this.createWidgets(nextProps);
   }
@@ -98,8 +120,7 @@ class Inspector extends React.Component {
 
   createWidgets(props) {
     const selection = props.selection;
-
-    if (selection.length === 0 || props.nodes[selection[0].id] === undefined) {
+    if (selection.length === 0) {
       this.createEmptySelectionWidgets();
     } else if (selection.length === 1) {
       const entity = (selection[0].entity);

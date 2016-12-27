@@ -11,17 +11,6 @@ import R from 'ramda';
 
 export const copyNode = (node) => R.clone(node);
 
-const node = (state, action) => {
-  switch (action.type) {
-    case NODE_MOVE:
-      return R.set(R.lensProp('position'), action.payload.position, state);
-    case NODE_ADD:
-      return R.prop('payload', action);
-    default:
-      return state;
-  }
-};
-
 const parseVal = (val, type) => {
   if (type && PROPERTY_TYPE_PARSE.hasOwnProperty(type)) {
     return PROPERTY_TYPE_PARSE[type](val);
@@ -51,6 +40,14 @@ const getPropertyPath = (payload, add) => {
   return path;
 };
 
+const getDefaultPropertiesFromNodeType = R.compose(
+  R.reduce(
+    (acc, val) => R.assoc(R.prop('key', val), R.prop('value', val), acc),
+    {}
+  ),
+  R.pathOr([], ['nodeType', 'properties'])
+);
+
 export const nodes = (state = {}, action) => {
   let movedNode = null;
   let newNode = null;
@@ -64,7 +61,7 @@ export const nodes = (state = {}, action) => {
         typeId: action.payload.typeId,
         pins: getNodePins(action.payload),
         position: action.payload.position,
-        properties: {},
+        properties: getDefaultPropertiesFromNodeType(action.payload),
       });
 
       return R.set(R.lensProp(newNodeId), newNode, state);
@@ -73,7 +70,7 @@ export const nodes = (state = {}, action) => {
       return R.omit([action.payload.id.toString()], state);
 
     case NODE_MOVE:
-      movedNode = node(R.prop(action.payload.id, state), action);
+      movedNode = R.set(R.lensProp('position'), action.payload.position, R.prop(action.payload.id, state));
       return R.set(R.lensProp(action.payload.id), movedNode, state);
 
     case NODE_UPDATE_PROPERTY:

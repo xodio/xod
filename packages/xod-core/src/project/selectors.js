@@ -575,7 +575,7 @@ export const dereferencedNodeTypes = (state) => {
         label: R.prop('label', patch),
         path: getPatchNodePath(patch, state),
         category: NODE_CATEGORY.PATCHES,
-        properties: {},
+        properties: [],
         pins: R.pipe(
           R.values,
           R.indexBy(R.prop('key'))

@@ -21,14 +21,6 @@ export default function composeWidget(Component) {
       return (this.props.kind !== PROPERTY_KIND.PROP);
     }
 
-    isProperty() {
-
-    }
-
-    isPin() {
-
-    }
-
     isDisabled() {
       return this.isModeSwitchable() && !this.props.injected;
     }
