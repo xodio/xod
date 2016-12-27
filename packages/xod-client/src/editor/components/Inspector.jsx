@@ -60,13 +60,6 @@ class Inspector extends React.Component {
         const newNode = nextProps.nodes[selection.id];
         const sameNodes = R.equals(oldNode, newNode);
         if (sameNodes) return false;
-        // const oldNodeType = this.props.nodeTypes[oldNode.typeId];
-        // const newNodeType = nextProps.nodeTypes[newNode.typeId];
-
-        // const oldProps = this.getInspectableProps(oldNodeType, oldNode);
-        // const newProps = this.getInspectableProps(newNodeType, newNode);
-
-        // if (R.equals(oldProps, newProps)) return false;
       }
     }
 
