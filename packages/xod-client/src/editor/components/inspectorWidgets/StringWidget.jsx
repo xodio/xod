@@ -19,6 +19,10 @@ class StringWidget extends React.Component {
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
+  componentWillUnmount() {
+    this.onBlur();
+  }
+
   onChange(event) {
     const newValue = this.parseVal(event.target.value);
     this.setState(

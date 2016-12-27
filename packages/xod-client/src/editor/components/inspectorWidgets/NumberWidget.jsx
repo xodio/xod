@@ -20,6 +20,10 @@ class NumberWidget extends React.Component {
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
+  componentWillUnmount() {
+    this.onBlur();
+  }
+
   onChange(event) {
     const newValue = this.parseVal(event.target.value, true);
     this.updateValue(newValue);

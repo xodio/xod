@@ -19,6 +19,10 @@ class IOLabelWidget extends React.Component {
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
+  componentWillUnmount() {
+    this.onBlur();
+  }
+
   onChange(event) {
     const val = event.target.value;
     if (!(/^([a-zA-Z0-9]){0,4}$/.test(val))) { return; }

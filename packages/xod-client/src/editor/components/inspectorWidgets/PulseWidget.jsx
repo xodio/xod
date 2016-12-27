@@ -22,6 +22,10 @@ class PulseWidget extends React.Component {
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
+  componentWillUnmount() {
+    this.onBlur();
+  }
+
   onChange() {
     this.parseAndUpdate();
   }
