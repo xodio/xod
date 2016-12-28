@@ -2,16 +2,66 @@ import R from 'ramda';
 import React from 'react';
 import Widgets from './inspectorWidgets';
 import { noop } from '../../utils/ramda';
+import { KEYCODE } from '../../utils/constants';
 import { ENTITY, PIN_DIRECTION } from 'xod-core';
 import { WIDGET_TYPE, PROPERTY_KIND } from '../../project/constants';
 
+function up(event) {
+  event.preventDefault();
+  this.updateValue(
+    this.parseValue(event.target.value) + 1
+  );
+}
+function down(event) {
+  event.preventDefault();
+  this.updateValue(
+    this.parseValue(event.target.value) - 1
+  );
+}
+function dot(event) {
+  this.updateValue(
+    this.parseValue(`${event.target.value}.`)
+  );
+}
+
 const widgetAccordance = {
   [ENTITY.NODE]: {
-    [WIDGET_TYPE.BOOL]: Widgets.BoolWidget,
-    [WIDGET_TYPE.NUMBER]: Widgets.NumberWidget,
-    [WIDGET_TYPE.STRING]: Widgets.StringWidget,
-    [WIDGET_TYPE.PULSE]: Widgets.PulseWidget,
-    [WIDGET_TYPE.IO_LABEL]: Widgets.IOLabelWidget,
+    [WIDGET_TYPE.BOOL]: {
+      component: Widgets.BoolWidget,
+      props: { type: 'bool' },
+    },
+    [WIDGET_TYPE.NUMBER]: {
+      component: Widgets.NumberWidget,
+      props: {
+        type: 'number',
+        keyDownHandlers: {
+          [KEYCODE.UP]: up,
+          [KEYCODE.DOWN]: down,
+          [KEYCODE.DOT]: dot,
+          [KEYCODE.COMMA]: dot,
+        },
+      },
+    },
+    [WIDGET_TYPE.STRING]: {
+      component: Widgets.StringWidget,
+      props: { type: 'string' },
+    },
+    [WIDGET_TYPE.PULSE]: {
+      component: Widgets.PulseWidget,
+      props: {
+        type: 'pulse',
+        keyDownHandlers: {
+          [KEYCODE.UP]: up,
+          [KEYCODE.DOWN]: down,
+          [KEYCODE.DOT]: dot,
+          [KEYCODE.COMMA]: dot,
+        },
+      },
+    },
+    [WIDGET_TYPE.IO_LABEL]: {
+      component: Widgets.IOLabelWidget,
+      props: { type: 'string' },
+    },
   },
 };
 
@@ -166,7 +216,8 @@ class Inspector extends React.Component {
         const widgetType = prop.widget || prop.type;
         const factory = React.createFactory(
           Widgets.composeWidget(
-            widgetAccordance[ENTITY.NODE][widgetType]
+            widgetAccordance[ENTITY.NODE][widgetType].component,
+            widgetAccordance[ENTITY.NODE][widgetType].props
           )
         );
         const injected = prop.injected || false;

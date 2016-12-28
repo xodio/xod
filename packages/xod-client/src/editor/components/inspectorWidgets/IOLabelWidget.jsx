@@ -1,103 +1,62 @@
-import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
-import { KEYCODE } from '../../../utils/constants';
 import { noop } from '../../../utils/ramda';
-import { PROPERTY_TYPE_PARSE } from 'xod-core';
 
-class IOLabelWidget extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      initialValue: props.value,
-      value: props.value,
-    };
-
-    this.onChange = this.onChange.bind(this);
-    this.onBlur = this.onBlur.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
-  }
-
-  componentWillUnmount() {
-    this.onBlur();
-  }
-
-  onChange(event) {
+// Почему-то не этот компонент цепляется %)
+const IOLabelWidget = (props) => {
+  const cls = classNames('IOLabelWidget', {
+    'is-disabled': props.disabled,
+  });
+  const onChange = (event) => {
     const val = event.target.value;
     if (!(/^([a-zA-Z0-9]){0,4}$/.test(val))) { return; }
+    // props.onChange(event.target.value);
+  };
+  return (
+    <div className={cls}>
+      <input
+        type="text"
+        id={props.elementId}
+        value={props.value}
 
-    const newValue = this.parseVal(val);
-    this.setState(
-      R.assoc('value', newValue, this.state)
-    );
-  }
+        disabled={props.disabled}
+        autoFocus={props.focused}
 
-  onBlur() {
-    if (this.state.value !== this.props.value) {
-      this.props.onPropUpdate(this.state.value);
-    }
-  }
-
-  onKeyDown(event) {
-    const keycode = event.keycode || event.which;
-    if (keycode === KEYCODE.ENTER) {
-      event.target.blur();
-    }
-    if (keycode === KEYCODE.ESCAPE) {
-      this.setState(
-        R.assoc('value', this.state.initialValue, this.state)
-      );
-    }
-  }
-
-  parseVal(val) {
-    return PROPERTY_TYPE_PARSE.string(val);
-  }
-
-  render() {
-    const elementId = `widget_${this.props.keyName}`;
-    const val = this.state.value;
-
-    const cls = classNames('IOLabelWidget', {
-      'is-disabled': this.props.disabled,
-    });
-
-    return (
-      <div className={cls}>
-        <input
-          id={elementId}
-          type="text"
-          value={val}
-          disabled={this.props.disabled}
-          onChange={this.onChange}
-          onBlur={this.onBlur}
-          onKeyDown={this.onKeyDown}
-        />
-        <label
-          htmlFor={elementId}
-        >
-          {this.props.label}
-        </label>
-      </div>
-    );
-  }
-}
+        onChange={onChange}
+        onBlur={props.onBlur}
+        onFocus={props.onFocus}
+        onKeyDown={onKeyDown}
+      />
+      <label
+        htmlFor={props.elementId}
+      >LLL
+        {props.label}
+      </label>
+    </div>
+  );
+};
 
 IOLabelWidget.propTypes = {
-  nodeId: React.PropTypes.number,
-  keyName: React.PropTypes.string,
+  elementId: React.PropTypes.string.isRequired,
   label: React.PropTypes.string,
   value: React.PropTypes.string,
   disabled: React.PropTypes.bool,
-  onPropUpdate: React.PropTypes.func,
+  focused: React.PropTypes.bool,
+  onFocus: React.PropTypes.func,
+  onBlur: React.PropTypes.func,
+  onChange: React.PropTypes.func,
+  onKeyDown: React.PropTypes.func,
 };
 
 IOLabelWidget.defaultProps = {
   label: 'Unnamed property',
-  value: false,
+  value: 0,
   disabled: false,
-  onPropUpdate: noop,
+  focused: false,
+  onFocus: noop,
+  onBlur: noop,
+  onChange: noop,
+  onKeyDown: noop,
 };
 
 export default IOLabelWidget;
