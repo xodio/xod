@@ -8,7 +8,6 @@ export const LAYER = {
 export const ENTITY = {
   NODE: 'Node',
   LINK: 'Link',
-  PIN: 'Pin',
 };
 
 export const NODE_CATEGORY = {
