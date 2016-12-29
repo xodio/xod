@@ -92,6 +92,8 @@ Editor.propTypes = {
   nodeTypes: React.PropTypes.any.isRequired,
   size: React.PropTypes.object.isRequired,
   selection: React.PropTypes.array,
+  derefSelection: React.PropTypes.arrayOf(React.PropTypes.object),
+  propsForInspector: React.PropTypes.array,
   selectedNodeType: React.PropTypes.string,
   currentPatchId: React.PropTypes.string,
   mode: React.PropTypes.object,
@@ -103,11 +105,18 @@ const mapStateToProps = (state) => {
   const project = core.getProject(state);
   const curPatchId = EditorSelectors.getCurrentPatchId(state);
 
+  const derefNodes = core.dereferencedNodes(project, curPatchId);
+  const derefLinks = core.dereferencedLinks(project, curPatchId);
+  const selection = EditorSelectors.getSelection(state);
+  const derefSelection = EditorSelectors.dereferencedSelection(derefNodes, derefLinks, selection);
+
   return {
-    nodes: core.dereferencedNodes(project, curPatchId),
+    nodes: derefNodes,
     nodeTypes: core.dereferencedNodeTypes(state),
     editor: EditorSelectors.getEditor(state),
-    selection: EditorSelectors.getSelection(state),
+    selection,
+    derefSelection,
+    propsForInspector: EditorSelectors.dataForInspectorFromSelection(derefSelection),
     selectedNodeType: EditorSelectors.getSelectedNodeType(state),
     currentPatchId: curPatchId,
     mode: EditorSelectors.getModeChecks(state),

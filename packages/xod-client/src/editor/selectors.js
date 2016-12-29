@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 import core from 'xod-core';
 
 import { EDITOR_MODE } from './constants';
+import { PROPERTY_KIND } from '../project/constants';
 
 export const getEditor = R.prop('editor');
 
@@ -237,3 +238,82 @@ export const viewLinks = (state, dereferencedLinks) => {
 
   return R.map(markSelectedLink, dereferencedLinks);
 };
+
+export const dereferencedSelection = R.curry((derefNodes, derefLinks, selection) => {
+  const dereferenced = {
+    [core.ENTITY.NODE]: derefNodes,
+    [core.ENTITY.LINK]: derefLinks,
+  };
+
+  return R.map(
+    R.compose(
+      R.converge(
+        R.assoc('entity'),
+        [
+          R.head,
+          R.path(R.__, dereferenced),
+        ]
+      ),
+      R.props(['entity', 'id'])
+    ),
+    selection
+  );
+});
+
+// :: node -> propForInspector { injected, key, kind, label, type, value }
+const nodePropsForInspector = R.compose(
+  R.map(
+    R.applySpec({
+      kind: R.always(PROPERTY_KIND.PROP),
+      key: R.head,
+      type: R.always(core.PROPERTY_TYPE.STRING),
+      label: R.head,
+      value: R.last,
+      injected: R.F,
+    })
+  ),
+  R.toPairs,
+  R.prop('properties')
+);
+
+// :: node -> propForInspector { injected, key, kind, label, type, value }
+const nodePinsForInspector = R.compose(
+  R.map(
+    R.applySpec({
+      kind: R.always(PROPERTY_KIND.PIN),
+      key: R.prop('key'),
+      type: R.prop('type'),
+      label: R.prop('label'),
+      value: R.prop('value'),
+      injected: R.prop('injected'),
+    })
+  ),
+  R.sortBy(R.prop('index')),
+  R.values,
+  R.prop('pins')
+);
+
+// :: node -> propForInspector[]
+const extractNodeForInspector = R.converge(
+  R.concat,
+  [
+    nodePropsForInspector,
+    nodePinsForInspector,
+  ]
+);
+
+// :: link -> propForInspector[]
+const extractLinkForInspector = R.always({});
+
+// :: dereferencedSelection -> propForInspector[]
+export const dataForInspectorFromSelection = R.map(
+  R.applySpec({
+    entity: R.prop('entity'),
+    id: R.prop('id'),
+    props: R.ifElse(
+      R.propEq('entity', core.ENTITY.NODE),
+      extractNodeForInspector,
+      extractLinkForInspector
+    ),
+  })
+);
