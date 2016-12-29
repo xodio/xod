@@ -1,91 +1,22 @@
 import R from 'ramda';
 import React from 'react';
-import Widgets from './inspectorWidgets';
+import Widgets, { WIDGET_MAPPING, DEFAULT_NODE_PROPS } from './inspectorWidgets';
 import { noop } from '../../utils/ramda';
-import { KEYCODE } from '../../utils/constants';
-import { ENTITY, PIN_DIRECTION } from 'xod-core';
-import { WIDGET_TYPE, PROPERTY_KIND } from '../../project/constants';
+import { ENTITY } from 'xod-core';
 
-function up(event) {
-  event.preventDefault();
-  this.updateValue(
-    this.parseValue(event.target.value) + 1
-  );
-}
-function down(event) {
-  event.preventDefault();
-  this.updateValue(
-    this.parseValue(event.target.value) - 1
-  );
-}
-function dot(event) {
-  this.updateValue(
-    this.parseValue(`${event.target.value}.`)
-  );
-}
+const indexByKey = R.indexBy(R.prop('key'));
 
-const widgetAccordance = {
-  [ENTITY.NODE]: {
-    [WIDGET_TYPE.BOOL]: {
-      component: Widgets.BoolWidget,
-      props: { type: 'bool' },
-    },
-    [WIDGET_TYPE.NUMBER]: {
-      component: Widgets.NumberWidget,
-      props: {
-        type: 'number',
-        keyDownHandlers: {
-          [KEYCODE.UP]: up,
-          [KEYCODE.DOWN]: down,
-          [KEYCODE.DOT]: dot,
-          [KEYCODE.COMMA]: dot,
-        },
-      },
-    },
-    [WIDGET_TYPE.STRING]: {
-      component: Widgets.StringWidget,
-      props: { type: 'string' },
-    },
-    [WIDGET_TYPE.PULSE]: {
-      component: Widgets.PulseWidget,
-      props: {
-        type: 'pulse',
-        keyDownHandlers: {
-          [KEYCODE.UP]: up,
-          [KEYCODE.DOWN]: down,
-          [KEYCODE.DOT]: dot,
-          [KEYCODE.COMMA]: dot,
-        },
-      },
-    },
-    [WIDGET_TYPE.IO_LABEL]: {
-      component: Widgets.IOLabelWidget,
-      props: { type: 'string' },
-    },
-  },
-};
-
-const defaultProp = {
-  kind: PROPERTY_KIND.PROP,
-  injected: false,
-  type: 'string',
-  value: '',
-};
-
-const labelProp = {
-  kind: PROPERTY_KIND.PROP,
-  injected: false,
-  key: 'label',
-  label: 'Label',
-  type: 'string',
-  value: '',
-};
-
-const getProp = (obj, node, key) => R.pipe(
-  R.pathOr('', ['properties', key]),
-  R.assoc('value', R.__, {}), // eslint-disable-line
-  R.merge(obj)
-)(node);
+// :: defaultNodeProps -> inspectorProp[] -> inspectorProp[]
+const extendNodeProps = R.compose(
+  R.values,
+  R.useWith(
+    R.merge,
+    [
+      indexByKey,
+      indexByKey,
+    ]
+  )
+);
 
 class Inspector extends React.Component {
   constructor(props) {
@@ -94,89 +25,41 @@ class Inspector extends React.Component {
     this.createWidgets(props);
   }
 
-  shouldComponentUpdate(nextProps) {
-    const oldSelection = this.props.selection;
-    const newSelection = nextProps.selection;
-    const sameSelection = R.equals(oldSelection, newSelection);
-
-    if (sameSelection && (newSelection.length === 0 || newSelection > 1)) { return false; }
-
-    if (sameSelection && newSelection.length === 1) {
-      const selection = newSelection[0];
-      const entity = selection.entity;
-      if (entity === ENTITY.LINK) return false;
-      if (entity === ENTITY.NODE) {
-        const oldNode = this.props.nodes[selection.id];
-        const newNode = nextProps.nodes[selection.id];
-        const sameNodes = R.equals(oldNode, newNode);
-        if (sameNodes) return false;
-      }
-    }
-
-    return true;
-  }
+  // shouldComponentUpdate(nextProps) {
+    // const oldSelection = this.props.selection;
+    // const newSelection = nextProps.selection;
+    // const sameSelection = R.equals(oldSelection, newSelection);
+    //
+    // if (sameSelection && (newSelection.length === 0 || newSelection > 1)) { return false; }
+    //
+    // if (sameSelection && newSelection.length === 1) {
+    //   const selection = newSelection[0];
+    //   const entity = selection.entity;
+    //   if (entity === ENTITY.LINK) return false;
+    //   if (entity === ENTITY.NODE) {
+    //     const oldNode = this.props.nodes[selection.id];
+    //     const newNode = nextProps.nodes[selection.id];
+    //     const sameNodes = R.equals(oldNode, newNode);
+    //     if (sameNodes) return false;
+    //   }
+    // }
+    //
+    // return true;
+  // }
 
   componentWillUpdate(nextProps) {
     this.createWidgets(nextProps);
   }
 
-  getProperties(nodeType, node) {
-    const props = [
-      getProp(labelProp, node, 'label'),
-    ];
-
-    if (nodeType.properties) {
-      R.pipe(
-        R.values,
-        R.map(R.merge(defaultProp)),
-        R.map(prop => {
-          const nodeVal = R.pathOr(null, ['properties', prop.key], node);
-          if (nodeVal === null) { return prop; }
-          return R.assoc('value', nodeVal, prop);
-        }),
-        R.forEach(prop => props.push(prop))
-      )(nodeType.properties);
-    }
-
-    return props;
-  }
-
-  getPins(nodeType, node) {
-    if (!nodeType.hasOwnProperty('pins')) {
-      return [];
-    }
-
-    return R.pipe(
-      R.values,
-      R.reject(R.propEq('direction', PIN_DIRECTION.OUTPUT)),
-      R.map(pin =>
-        R.merge(
-          pin,
-          R.pick(['injected', 'value'], node.pins[pin.key])
-        )
-      ),
-      R.map(R.assoc('kind', PROPERTY_KIND.PIN))
-    )(nodeType.pins);
-  }
-
-  getInspectableProps(nodeType, node) {
-    const sortByIndex = R.sortBy(R.prop('index'));
-
-    return R.concat(
-      this.getProperties(nodeType, node),
-      sortByIndex(this.getPins(nodeType, node))
-    );
-  }
-
   createWidgets(props) {
-    const selection = props.selection;
+    const selection = props.data;
     if (selection.length === 0) {
       this.createEmptySelectionWidgets();
     } else if (selection.length === 1) {
       const entity = (selection[0].entity);
       switch (entity) {
         case ENTITY.NODE: {
-          this.createNodeWidgets(props, selection[0]);
+          this.createNodeWidgets(selection[0]);
           break;
         }
         case ENTITY.LINK:
@@ -199,10 +82,9 @@ class Inspector extends React.Component {
     ];
   }
 
-  createNodeWidgets(props, selection) {
-    const node = props.nodes[selection.id];
-    const nodeType = props.nodeTypes[node.typeId];
-    const properties = this.getInspectableProps(nodeType, node);
+  createNodeWidgets(selection) {
+    const nodeId = selection.id;
+    const properties = extendNodeProps(DEFAULT_NODE_PROPS, selection.props);
 
     if (properties.length === 0) {
       this.widgets = [
@@ -216,28 +98,28 @@ class Inspector extends React.Component {
         const widgetType = prop.widget || prop.type;
         const factory = React.createFactory(
           Widgets.composeWidget(
-            widgetAccordance[ENTITY.NODE][widgetType].component,
-            widgetAccordance[ENTITY.NODE][widgetType].props
+            WIDGET_MAPPING[ENTITY.NODE][widgetType].component,
+            WIDGET_MAPPING[ENTITY.NODE][widgetType].props
           )
         );
         const injected = prop.injected || false;
 
         widgets.push(
           factory({
-            key: `${node.id}_${prop.key}`,
-            keyName: `${node.id}_${prop.key}`,
+            key: `${nodeId}_${prop.key}`,
+            keyName: `${nodeId}_${prop.key}`,
             kind: prop.kind,
             label: prop.label,
             value: prop.value,
             injected,
             onPropUpdate: (newValue) => {
-              this.props.onPropUpdate(node.id, prop.kind, prop.key, newValue);
+              this.props.onPropUpdate(nodeId, prop.kind, prop.key, newValue);
             },
             onPinModeSwitch: () => {
               const newInjected = !injected;
               const val = (newInjected) ? prop.value : null;
 
-              this.props.onPinModeSwitch(node.id, prop.key, newInjected, val);
+              this.props.onPinModeSwitch(nodeId, prop.key, newInjected, val);
             },
           })
         );
@@ -280,17 +162,13 @@ class Inspector extends React.Component {
 }
 
 Inspector.propTypes = {
-  selection: React.PropTypes.array,
-  nodes: React.PropTypes.object,
-  nodeTypes: React.PropTypes.object,
+  data: React.PropTypes.arrayOf(React.PropTypes.object),
   onPropUpdate: React.PropTypes.func,
   onPinModeSwitch: React.PropTypes.func,
 };
 
 Inspector.defaultProps = {
-  selection: [],
-  nodes: {},
-  nodeTypes: {},
+  data: [],
   onPropUpdate: noop,
   onPinModeSwitch: noop,
 };

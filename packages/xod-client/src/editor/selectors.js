@@ -260,6 +260,18 @@ export const dereferencedSelection = R.curry((derefNodes, derefLinks, selection)
   );
 });
 
+// :: string -> string
+const capitalizeFirstLetter = R.converge(
+  R.concat,
+  [
+    R.compose(
+      R.toUpper,
+      R.head
+    ),
+    R.tail,
+  ]
+);
+
 // :: node -> propForInspector { injected, key, kind, label, type, value }
 const nodePropsForInspector = R.compose(
   R.map(
@@ -267,7 +279,7 @@ const nodePropsForInspector = R.compose(
       kind: R.always(PROPERTY_KIND.PROP),
       key: R.head,
       type: R.always(core.PROPERTY_TYPE.STRING),
-      label: R.head,
+      label: R.compose(capitalizeFirstLetter, R.head), // TODO: Get rid of this hack
       value: R.last,
       injected: R.F,
     })
@@ -289,6 +301,7 @@ const nodePinsForInspector = R.compose(
     })
   ),
   R.sortBy(R.prop('index')),
+  R.reject(R.propEq('direction', core.PIN_DIRECTION.OUTPUT)),
   R.values,
   R.prop('pins')
 );
