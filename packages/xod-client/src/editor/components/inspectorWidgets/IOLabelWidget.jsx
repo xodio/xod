@@ -10,7 +10,7 @@ const IOLabelWidget = (props) => {
   const onChange = (event) => {
     const val = event.target.value;
     if (!(/^([a-zA-Z0-9]){0,4}$/.test(val))) { return; }
-    // props.onChange(event.target.value);
+    props.onChange(event.target.value);
   };
   return (
     <div className={cls}>
@@ -25,11 +25,10 @@ const IOLabelWidget = (props) => {
         onChange={onChange}
         onBlur={props.onBlur}
         onFocus={props.onFocus}
-        onKeyDown={onKeyDown}
       />
       <label
         htmlFor={props.elementId}
-      >LLL
+      >
         {props.label}
       </label>
     </div>
