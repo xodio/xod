@@ -39,19 +39,19 @@ export default function composeWidget(Component, widgetProps) {
       )(widgetProps);
 
       this.onChange = this.onChange.bind(this);
+      this.onFocus = this.onFocus.bind(this);
       this.onBlur = this.onBlur.bind(this);
       this.onKeyDown = this.onKeyDown.bind(this);
+      this.pinModeSwitch = this.pinModeSwitch.bind(this);
     }
-    // componentWillUnmount() {
-      // What shall we do here to commit changed value,
-      // but prevent commit it twice (in Blur and here)?
-    // }
+    componentWillUnmount() {
+      this.commit();
+    }
 
     onFocus() {
-      this.props.onFocusChanged(true);
+      this.props.onFocusChanged();
     }
     onBlur() {
-      this.props.onFocusChanged(false);
       this.commit();
     }
     onChange(value) {
@@ -69,7 +69,7 @@ export default function composeWidget(Component, widgetProps) {
         return (
           <Switch
             injected={this.props.injected}
-            onSwitch={this.props.onPinModeSwitch}
+            onSwitch={this.pinModeSwitch}
           />
         );
       }
@@ -93,9 +93,21 @@ export default function composeWidget(Component, widgetProps) {
     }
 
     commit() {
-      if (this.state.value !== this.props.value) {
-        this.props.onPropUpdate(this.state.value);
+      if (this.state.value !== this.props.value && this.props.injected) {
+        this.props.onPropUpdate(
+          this.props.entityId,
+          this.props.kind,
+          this.props.keyName,
+          this.state.value
+        );
       }
+    }
+
+    pinModeSwitch() {
+      const newInjected = !this.props.injected;
+      const val = (newInjected) ? this.state.value : null;
+
+      this.props.onPinModeSwitch(this.props.entityId, this.props.keyName, newInjected, val);
     }
 
     parseValue(val) {
@@ -114,6 +126,7 @@ export default function composeWidget(Component, widgetProps) {
             disabled={this.isDisabled()}
             focused={this.props.focused && !this.isDisabled()}
             onBlur={this.onBlur}
+            onFocus={this.onFocus}
             onChange={this.onChange}
             onKeyDown={this.onKeyDown}
           />
@@ -123,6 +136,7 @@ export default function composeWidget(Component, widgetProps) {
   }
 
   Widget.propTypes = {
+    entityId: React.PropTypes.string.isRequired,
     keyName: React.PropTypes.string.isRequired, // ?
     kind: React.PropTypes.string,
     // type: React.PropTypes.string.isRequired,

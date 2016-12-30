@@ -18,143 +18,117 @@ const extendNodeProps = R.compose(
   )
 );
 
+// :: props.data -> [{entity, id}]
+const getEntitiesAndIds = R.map(R.pick(['entity', 'id']));
+
+// :: props.data -> newProps.data -> boolean
+const isSameSelection = R.useWith(R.equals, [getEntitiesAndIds, getEntitiesAndIds]);
+
+// :: entityId -> propKey -> string
+const getWidgetKey = R.curry((id, key) => `${id}_${key}`);
+
+// :: props.data -> boolean
+const isMany = R.compose(R.gt(R.__, 1), R.length);
+const isOne = R.compose(R.equals(1), R.length);
+const isEntity = entity => R.compose(R.equals(entity), R.prop('entity'), R.head);
+const isNode = R.both(isOne, isEntity(ENTITY.NODE));
+const isLink = R.both(isOne, isEntity(ENTITY.LINK));
+
+// :: props.data -> { compoenents, props }
+const createEmptySelectionWidgets = () => ({
+  components: { empty: Widgets.HintWidget },
+  props: { empty: { text: 'Select a node to edit its properties.' } },
+});
+
+// :: props.data -> { compoenents, props }
+const createNodeWidgets = (data) => {
+  const selection = data[0];
+  const nodeId = selection.id;
+  const properties = extendNodeProps(DEFAULT_NODE_PROPS, selection.props);
+
+  const result = R.reduce((acc, prop) => {
+    const widgetType = prop.widget || prop.type;
+    const injected = prop.injected || false;
+    const widgetKey = getWidgetKey(nodeId, prop.key);
+
+    const widget = Widgets.composeWidget(
+      WIDGET_MAPPING[ENTITY.NODE][widgetType].component,
+      WIDGET_MAPPING[ENTITY.NODE][widgetType].props
+    );
+    const props = {
+      entityId: nodeId,
+      key: widgetKey,
+      keyName: prop.key,
+      kind: prop.kind,
+      label: prop.label,
+      value: prop.value,
+      injected,
+    };
+
+    return R.compose(
+      R.assocPath(['components', widgetKey], widget),
+      R.assocPath(['props', widgetKey], props)
+    )(acc);
+  }, { components: {}, props: {} })(properties);
+
+  return result;
+};
+
+// :: props.data -> { components, props }
+const createLinkWidgets = () => ({
+  components: { empty: Widgets.HintWidget },
+  props: { empty: { text: 'Links have not any properties.' } },
+});
+
+// :: props.data -> { components, props }
+const createManyWidgets = (data) => ({
+  components: { empty: Widgets.HintWidget },
+  props: { empty: { text: `You have selected: ${data.length} elements.` } },
+});
+
+// :: props -> { compoenents, props }
+const createWidgets = R.compose(
+  R.cond([
+    [R.isEmpty, createEmptySelectionWidgets],
+    [isNode, createNodeWidgets],
+    [isLink, createLinkWidgets],
+    [isMany, createManyWidgets],
+  ]),
+  R.prop('data')
+);
+
 class Inspector extends React.Component {
   constructor(props) {
     super(props);
-
-    this.createWidgets(props);
+    this.state = createWidgets(props);
   }
 
-  // shouldComponentUpdate(nextProps) {
-    // const oldSelection = this.props.selection;
-    // const newSelection = nextProps.selection;
-    // const sameSelection = R.equals(oldSelection, newSelection);
-    //
-    // if (sameSelection && (newSelection.length === 0 || newSelection > 1)) { return false; }
-    //
-    // if (sameSelection && newSelection.length === 1) {
-    //   const selection = newSelection[0];
-    //   const entity = selection.entity;
-    //   if (entity === ENTITY.LINK) return false;
-    //   if (entity === ENTITY.NODE) {
-    //     const oldNode = this.props.nodes[selection.id];
-    //     const newNode = nextProps.nodes[selection.id];
-    //     const sameNodes = R.equals(oldNode, newNode);
-    //     if (sameNodes) return false;
-    //   }
-    // }
-    //
-    // return true;
-  // }
-
-  componentWillUpdate(nextProps) {
-    this.createWidgets(nextProps);
-  }
-
-  createWidgets(props) {
-    const selection = props.data;
-    if (selection.length === 0) {
-      this.createEmptySelectionWidgets();
-    } else if (selection.length === 1) {
-      const entity = (selection[0].entity);
-      switch (entity) {
-        case ENTITY.NODE: {
-          this.createNodeWidgets(selection[0]);
-          break;
-        }
-        case ENTITY.LINK:
-          this.createLinkWidgets();
-          break;
-        default:
-          this.widgets = [];
-          break;
-      }
-    } else {
-      this.createMultipleSelectionWidgets(selection);
-    }
-  }
-
-  createEmptySelectionWidgets() {
-    this.widgets = [
-      new Widgets.HintWidget({
-        text: 'Select a node to edit its properties.',
-      }),
-    ];
-  }
-
-  createNodeWidgets(selection) {
-    const nodeId = selection.id;
-    const properties = extendNodeProps(DEFAULT_NODE_PROPS, selection.props);
-
-    if (properties.length === 0) {
-      this.widgets = [
-        new Widgets.HintWidget({
-          text: 'There are no properties for the selected node.',
-        }),
-      ];
-    } else {
-      const widgets = [];
-      properties.forEach((prop) => {
-        const widgetType = prop.widget || prop.type;
-        const factory = React.createFactory(
-          Widgets.composeWidget(
-            WIDGET_MAPPING[ENTITY.NODE][widgetType].component,
-            WIDGET_MAPPING[ENTITY.NODE][widgetType].props
-          )
-        );
-        const injected = prop.injected || false;
-
-        widgets.push(
-          factory({
-            key: `${nodeId}_${prop.key}`,
-            keyName: `${nodeId}_${prop.key}`,
-            kind: prop.kind,
-            label: prop.label,
-            value: prop.value,
-            injected,
-            onPropUpdate: (newValue) => {
-              this.props.onPropUpdate(nodeId, prop.kind, prop.key, newValue);
-            },
-            onPinModeSwitch: () => {
-              const newInjected = !injected;
-              const val = (newInjected) ? prop.value : null;
-
-              this.props.onPinModeSwitch(nodeId, prop.key, newInjected, val);
-            },
-          })
-        );
-      });
-
-      this.widgets = widgets;
-    }
-  }
-
-  createLinkWidgets() {
-    this.widgets = [
-      new Widgets.HintWidget({
-        text: 'Links have not any properties.',
-      }),
-    ];
-  }
-
-  createMultipleSelectionWidgets(selection) {
-    this.widgets = [
-      new Widgets.HintWidget({
-        text: `You have selected: ${selection.length} elements.`,
-      }),
-    ];
+  componentWillReceiveProps(nextProps) {
+    const shouldCreateComponents = R.not(isSameSelection(this.props.data, nextProps.data));
+    const widgetsData = createWidgets(nextProps);
+    const dataToUpdate = (shouldCreateComponents) ? widgetsData : R.pick(['props'], widgetsData);
+    this.setState(dataToUpdate);
   }
 
   render() {
+    const widgets = R.compose(
+      R.values,
+      R.mapObjIndexed((Widget, key) =>
+        <li key={key}>
+          <Widget
+            {...this.state.props[key]}
+            onPropUpdate={this.props.onPropUpdate}
+            onPinModeSwitch={this.props.onPinModeSwitch}
+          />
+        </li>
+      )
+    )(this.state.components);
+
     return (
       <div className="Inspector">
         <small className="title">Inspector</small>
         <ul>
-          {this.widgets.map(widget =>
-            <li key={widget.key}>
-              {widget}
-            </li>
-          )}
+          {widgets}
         </ul>
       </div>
     );
