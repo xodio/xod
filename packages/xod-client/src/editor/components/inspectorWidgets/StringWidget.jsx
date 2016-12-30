@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { noop } from '../../../utils/ramda';
 
 const StringWidget = (props) => {
   const cls = classNames('StringWidget', {
@@ -17,11 +16,9 @@ const StringWidget = (props) => {
         value={props.value}
 
         disabled={props.disabled}
-        autoFocus={props.focused}
 
         onChange={onChange}
         onBlur={props.onBlur}
-        onFocus={props.onFocus}
         onKeyDown={props.onKeyDown}
       />
       <label
@@ -38,22 +35,15 @@ StringWidget.propTypes = {
   label: React.PropTypes.string,
   value: React.PropTypes.string,
   disabled: React.PropTypes.bool,
-  focused: React.PropTypes.bool,
-  onFocus: React.PropTypes.func,
-  onBlur: React.PropTypes.func,
-  onChange: React.PropTypes.func,
-  onKeyDown: React.PropTypes.func,
+  onBlur: React.PropTypes.func.isRequired,
+  onChange: React.PropTypes.func.isRequired,
+  onKeyDown: React.PropTypes.func.isRequired,
 };
 
 StringWidget.defaultProps = {
   label: 'Unnamed property',
   value: 0,
   disabled: false,
-  focused: false,
-  onFocus: noop,
-  onBlur: noop,
-  onChange: noop,
-  onKeyDown: noop,
 };
 
 export default StringWidget;
