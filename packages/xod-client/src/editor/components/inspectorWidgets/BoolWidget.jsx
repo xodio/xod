@@ -1,52 +1,44 @@
 import React from 'react';
 import classNames from 'classnames';
-import { noop } from '../../../utils/ramda';
-import { PROPERTY_TYPE_PARSE } from 'xod-core';
 
-function BoolWidget({ keyName, label, value, disabled, onPropUpdate }) {
-  const elementId = `widget_${keyName}`;
-  const onChange = (event) => {
-    const val = event.target.checked;
-    const newValue = PROPERTY_TYPE_PARSE.bool(val);
-    onPropUpdate(newValue);
-  };
-
+function BoolWidget(props) {
   const cls = classNames('BoolWidget', {
-    'is-disabled': disabled,
+    'is-disabled': props.disabled,
   });
-
+  const onChange = (event) => {
+    props.onChange(event.target.checked);
+  };
   return (
     <div className={cls}>
       <input
-        id={elementId}
+        id={props.elementId}
         type="checkbox"
         value="1"
-        checked={value}
-        disabled={disabled}
+        checked={props.value}
+        disabled={props.disabled}
         onChange={onChange}
       />
       <label
-        htmlFor={elementId}
+        htmlFor={props.elementId}
       >
-        {label}
+        {props.label}
       </label>
     </div>
   );
 }
 
 BoolWidget.propTypes = {
-  keyName: React.PropTypes.string,
+  elementId: React.PropTypes.string.isRequired,
   label: React.PropTypes.string,
   value: React.PropTypes.bool,
   disabled: React.PropTypes.bool,
-  onPropUpdate: React.PropTypes.func,
+  onChange: React.PropTypes.func.isRequired,
 };
 
 BoolWidget.defaultProps = {
   label: 'Unnamed property',
   value: false,
   disabled: false,
-  onPropUpdate: noop,
 };
 
 export default BoolWidget;

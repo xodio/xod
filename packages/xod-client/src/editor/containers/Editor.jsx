@@ -66,9 +66,7 @@ class Editor extends React.Component {
         <Sidebar>
           <ProjectBrowser />
           <Inspector
-            selection={this.props.selection}
-            nodes={this.props.nodes}
-            nodeTypes={this.props.nodeTypes}
+            data={this.props.propsForInspector}
             onPropUpdate={this.onPropUpdate}
             onPinModeSwitch={this.onPinModeSwitch}
           />
@@ -87,30 +85,26 @@ class Editor extends React.Component {
 }
 
 Editor.propTypes = {
-  nodes: React.PropTypes.any.isRequired,
   editor: React.PropTypes.any.isRequired,
-  nodeTypes: React.PropTypes.any.isRequired,
   size: React.PropTypes.object.isRequired,
-  selection: React.PropTypes.array,
-  selectedNodeType: React.PropTypes.string,
+  propsForInspector: React.PropTypes.arrayOf(React.PropTypes.object),
   currentPatchId: React.PropTypes.string,
-  mode: React.PropTypes.object,
-  actions: React.PropTypes.object,
-  p: React.PropTypes.any,
+  actions: React.PropTypes.objectOf(React.PropTypes.func),
 };
 
 const mapStateToProps = (state) => {
   const project = core.getProject(state);
   const curPatchId = EditorSelectors.getCurrentPatchId(state);
 
+  const derefNodes = core.dereferencedNodes(project, curPatchId);
+  const derefLinks = core.dereferencedLinks(project, curPatchId);
+  const selection = EditorSelectors.getSelection(state);
+  const derefSelection = EditorSelectors.dereferencedSelection(derefNodes, derefLinks, selection);
+
   return {
-    nodes: core.dereferencedNodes(project, curPatchId),
-    nodeTypes: core.dereferencedNodeTypes(state),
     editor: EditorSelectors.getEditor(state),
-    selection: EditorSelectors.getSelection(state),
-    selectedNodeType: EditorSelectors.getSelectedNodeType(state),
+    propsForInspector: EditorSelectors.dataForInspectorFromSelection(derefSelection),
     currentPatchId: curPatchId,
-    mode: EditorSelectors.getModeChecks(state),
   };
 };
 
