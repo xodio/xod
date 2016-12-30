@@ -49,7 +49,7 @@ export const PROPERTY_DEFAULT_VALUE = {
   BOOL: false,
   NUMBER: 0,
   STRING: '',
-  PULSE: 'once',
+  PULSE: false,
 };
 
 export const PROPERTY_TYPE_PARSE = {
@@ -60,7 +60,7 @@ export const PROPERTY_TYPE_PARSE = {
     return isNaN(newValue) ? '' : newValue;
   },
   [PROPERTY_TYPE.STRING]: v => String(v),
-  [PROPERTY_TYPE.PULSE]: v => (v !== null ? String(v) : PROPERTY_DEFAULT_VALUE.PULSE),
+  [PROPERTY_TYPE.PULSE]: v => !!v,
 };
 
 export const SIZE = {

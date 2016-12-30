@@ -56,10 +56,10 @@ export const WIDGET_MAPPING = {
       props: { type: 'string' },
     },
     [WIDGET_TYPE.PULSE]: {
-      component: PulseWidget,
+      component: BoolWidget,
       props: {
-        type: 'pulse',
-        keyDownHandlers: widgetNumberKeysDownHandlers,
+        type: 'bool',
+        commitOnChange: true,
       },
     },
     [WIDGET_TYPE.IO_LABEL]: {

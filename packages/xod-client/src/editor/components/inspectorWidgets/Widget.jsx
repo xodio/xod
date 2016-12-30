@@ -25,6 +25,7 @@ export default function composeWidget(Component, widgetProps) {
     constructor(props) {
       super(props);
       this.type = widgetProps.type;
+      this.commitOnChange = widgetProps.commitOnChange;
 
       const val = this.parseValue(props.value);
       this.state = {
@@ -87,13 +88,15 @@ export default function composeWidget(Component, widgetProps) {
 
     updateValue(value) {
       const newValue = this.parseValue(value);
+      const commitCallback = (this.commitOnChange) ? this.commit.bind(this) : noop;
+
       this.setState({
         value: newValue,
-      });
+      }, commitCallback);
     }
 
     commit() {
-      if (this.state.value !== this.props.value && this.props.injected) {
+      if (this.parseValue(this.state.value) !== this.parseValue(this.props.value)) {
         this.props.onPropUpdate(
           this.props.entityId,
           this.props.kind,

@@ -7,7 +7,7 @@ function BoolWidget(props) {
     'is-disabled': props.disabled,
   });
   const onChange = (event) => {
-    props.onChange(event.target.value);
+    props.onChange(event.target.checked);
   };
   return (
     <div className={cls}>
@@ -16,10 +16,7 @@ function BoolWidget(props) {
         type="checkbox"
         value="1"
         checked={props.value}
-        autoFocus={props.focused}
         disabled={props.disabled}
-        onFocus={props.onFocus}
-        onBlur={props.onBlur}
         onChange={onChange}
       />
       <label
