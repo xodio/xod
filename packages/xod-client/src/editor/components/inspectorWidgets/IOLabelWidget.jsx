@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 
-// Почему-то не этот компонент цепляется %)
 const IOLabelWidget = (props) => {
   const cls = classNames('IOLabelWidget', {
     'is-disabled': props.disabled,
@@ -22,6 +21,7 @@ const IOLabelWidget = (props) => {
 
         onChange={onChange}
         onBlur={props.onBlur}
+        onKeyDown={props.onKeyDown}
       />
       <label
         htmlFor={props.elementId}

@@ -278,7 +278,7 @@ const nodePropsForInspector = R.compose(
     R.applySpec({
       kind: R.always(PROPERTY_KIND.PROP),
       key: R.head,
-      type: R.always(core.PROPERTY_TYPE.STRING),
+      type: R.always(core.PROPERTY_TYPE.STRING), // TODO: Fix it and get from NodeType
       label: R.compose(capitalizeFirstLetter, R.head), // TODO: Get rid of this hack
       value: R.last,
       injected: R.F,
