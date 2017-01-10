@@ -1,0 +1,102 @@
+{
+  "authors": [
+    "Amperka team"
+  ],
+  "description": "",
+  "license": "",
+  "patches": {
+    "xod/core/inputNumber": {
+      "nodes": {},
+      "links": [],
+      "label": "<InputNumber>"
+    },
+    "xod/core/pot": {
+      "nodes": {},
+      "links": [],
+      "impls": {
+        "espruino": "// should be imported into impl.espruino\n"
+      }
+    },
+    "xod/core/and": {
+      "nodes": {},
+      "links": [],
+      "label": "and",
+      "impls": {
+        "js": "// should be imported into impl.js\n"
+      }
+    },
+    "xod/core/led": {
+      "nodes": {},
+      "links": [],
+      "label": "LED",
+      "impls": {
+        "espruino": "// should be imported into impl.espruino\n"
+      }
+    },
+    "@/sub/aux": {
+      "nodes": {
+        "H1BI-VcGIl": {
+          "id": "H1BI-VcGIl",
+          "type": "xod/core/led",
+          "position": {
+            "x": 310,
+            "y": 307
+          }
+        },
+        "SkE8bN9zUe": {
+          "id": "SkE8bN9zUe",
+          "type": "xod/core/inputNumber",
+          "position": {
+            "x": 276,
+            "y": 155
+          }
+        }
+      },
+      "links": [],
+      "label": "AUX",
+      "pins": {
+        "SkE8bN9zUe": {
+          "key": "SkE8bN9zUe",
+          "type": "number",
+          "direction": "input"
+        }
+      }
+    },
+    "@/main": {
+      "nodes": {
+        "SyXIbNqzIx": {
+          "id": "SyXIbNqzIx",
+          "type": "@/sub/aux",
+          "position": {
+            "x": 363,
+            "y": 322
+          }
+        },
+        "B1GUbN5fIg": {
+          "id": "B1GUbN5fIg",
+          "type": "xod/core/and",
+          "position": {
+            "x": 163,
+            "y": 314
+          }
+        },
+        "SkWIWV9MUe": {
+          "id": "SkWIWV9MUe",
+          "type": "xod/core/pot",
+          "position": {
+            "x": 292,
+            "y": 182
+          },
+          "pins": {
+            "sample": {
+              "curried": true,
+              "value": "once"
+            }
+          }
+        }
+      },
+      "links": [],
+      "label": "Main"
+    }
+  }
+}
