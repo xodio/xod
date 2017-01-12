@@ -40,8 +40,7 @@ const applyArrayOfFunctions = R.compose(
 
 // Getters from old bundle
 // :: Project -> [Patch ^ NodeType]
-const mergePatchesAndNodeTypes = R.compose(
-  R.values,
+export const mergePatchesAndNodeTypes = R.compose(
   R.converge(
     R.mergeWith(R.merge),
     [
@@ -62,6 +61,11 @@ const addLabel = oldPatch => Maybe(getLabel(oldPatch)).map(Patch.setPatchLabel);
 const assocPatchUnsafe = R.curry(
   (path, patch, project) => R.assocPath(['patches', path], patch, project)
 );
+// :: String -> String
+export const convertPinType = R.cond([
+  [R.equals('bool'), R.always('boolean')],
+  [R.T, R.identity],
+]);
 
 /**
  * Transforms old project bundle (v1) into new (v2)
@@ -152,6 +156,7 @@ export const toV2 = (bundle) => {
           getPatchesWithLinks(project),
         ]
       ),
+      R.values,
       mergePatchesAndNodeTypes
     )(projectOld)
   );
@@ -171,11 +176,6 @@ export const toV2 = (bundle) => {
     Maybe,
     R.path(['meta', 'author'])
   );
-  // :: String -> String
-  const convertPinType = R.cond([
-    [R.equals('bool'), R.always('boolean')],
-    [R.T, R.identity],
-  ]);
   // :: Patch -> Pin[]
   const getCustomPinsOnly = R.compose(
     R.reject(R.has('nodeId')),
@@ -216,6 +216,7 @@ export const toV2 = (bundle) => {
       .chain(apOrSkip(copyImpls(oldPatch)))
       .chain(assocPatchUnsafe(oldPatch.id))
     ),
+    R.values,
     mergePatchesAndNodeTypes
   );
 
