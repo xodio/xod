@@ -177,22 +177,9 @@ export const toV2 = (bundle) => {
     [R.T, R.identity],
   ]);
   // :: Patch -> Pin[]
-  const getCustomPinsOnly = R.converge(
-    R.reject,
-    [
-      R.compose(
-        R.useWith(
-          R.flip(R.contains),
-          [
-            R.identity,
-            R.prop('key'),
-          ]
-        ),
-        R.keys,
-        R.prop('nodes')
-      ),
-      propValues('pins'),
-    ]
+  const getCustomPinsOnly = R.compose(
+    R.reject(R.has('nodeId')),
+    propValues('pins')
   );
   // :: Patch -> Function
   const convertPatchPins = R.compose(
