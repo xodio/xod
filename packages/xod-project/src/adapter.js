@@ -7,22 +7,39 @@ import * as Project from './project';
 import * as Patch from './patch';
 import * as Node from './node';
 import * as Link from './link';
+import * as Pin from './pin';
 
 // utils
+// :: Maybe<Function> -> a -> Maybe<a>
 const apOrSkip = R.curry((maybeFn, val) => {
   const maybeVal = Maybe(val);
   const result = maybeFn.ap(maybeVal);
   return Maybe.isJust(result) ? result : maybeVal;
 });
+// :: a -> a | null
+const nullOnEmpty = R.when(
+  R.isEmpty,
+  R.always(null)
+);
+// :: a -> [Function] -> a
+const reduceChainOver = R.curry((overObj, fnList) =>
+  R.compose(
+    R.unnest,
+    R.reduce(R.flip(R.chain), Maybe.of(overObj))
+  )(fnList)
+);
+// :: String -> Object -> [a]
+const propValues = R.curry((key, obj) => R.compose(R.values, R.propOr({}, key))(obj));
 
-const propValues = key => R.compose(R.values, R.propOr({}, key));
+// :: [Function] -> Function
 const applyArrayOfFunctions = R.compose(
   R.apply(R.compose),
   R.append(R.identity),
   R.values
 );
 
-// old bundle getters
+// Getters from old bundle
+// :: Project -> [Patch ^ NodeType]
 const mergePatchesAndNodeTypes = R.compose(
   R.values,
   R.converge(
@@ -38,7 +55,10 @@ const getLabel = R.prop('label');
 const getNodes = propValues('nodes');
 const getLinks = propValues('links');
 
+// Setters for new bundle
+// :: Patch -> Maybe<Function>
 const addLabel = oldPatch => Maybe(getLabel(oldPatch)).map(Patch.setPatchLabel);
+// :: Path -> Patch -> Project ->
 const assocPatchUnsafe = R.curry(
   (path, patch, project) => R.assocPath(['patches', path], patch, project)
 );
@@ -101,35 +121,25 @@ export const toV2 = (bundle) => {
     getLinks
   );
   // :: Patch[] -> Patch[]
-  const getPatchesWithLinks = R.curry((newBundle, patches) =>
+  const getPatchesWithLinks = R.curry((project, patches) =>
     R.map(R.converge(
-      R.compose(
-        R.unnest,
-        R.reduce(R.flip(R.chain))
-      ),
+      reduceChainOver,
       [
         R.compose(
-          Project.getPatchByPath(R.__, newBundle),
+          R.unnest,
+          Project.getPatchByPath(R.__, project),
           R.prop('id')
         ),
         convertLinks,
       ]
     ))(patches)
   );
-  // :: BundleV1 -> BundleV2 -> BundleV2
-  // -- we can use commented lines when we fix next todo
-  // TODO: Add pins from nodeTypes into patches before add links!
+  // :: ProjectOld -> Project -> Project
   const convertLinksInPatches = R.curry(
-    (oldBundle, newBundle) => R.compose(
-      R.reduce(
-        // -- R.flip(R.chain),
-        // -- Maybe.of(newBundle)
-        R.flip(R.call),
-        newBundle
-      ),
+    (projectOld, project) => R.compose(
+      reduceChainOver(project),
       R.map(R.converge(
-        // -- Project.assocPatch,
-        assocPatchUnsafe,
+        Project.assocPatch,
         [
           R.head,
           R.last,
@@ -139,20 +149,17 @@ export const toV2 = (bundle) => {
         R.zip,
         [
           R.map(R.prop('id')),
-          getPatchesWithLinks(newBundle),
+          getPatchesWithLinks(project),
         ]
       ),
       mergePatchesAndNodeTypes
-    )(oldBundle)
+    )(projectOld)
   );
   // :: Patch -> Function
   const copyImpls = R.compose(
     R.map(R.assoc('impls')),
     Maybe,
-    R.when(
-      R.isEmpty,
-      R.always(null)
-    ),
+    nullOnEmpty,
     R.prop('impl')
   );
   // :: Project -> Function
@@ -164,11 +171,60 @@ export const toV2 = (bundle) => {
     Maybe,
     R.path(['meta', 'author'])
   );
+  // :: String -> String
+  const convertPinType = R.cond([
+    [R.equals('bool'), R.always('boolean')],
+    [R.T, R.identity],
+  ]);
+  // :: Patch -> Pin[]
+  const getCustomPinsOnly = R.converge(
+    R.reject,
+    [
+      R.compose(
+        R.useWith(
+          R.flip(R.contains),
+          [
+            R.identity,
+            R.prop('key'),
+          ]
+        ),
+        R.keys,
+        R.prop('nodes')
+      ),
+      propValues('pins'),
+    ]
+  );
+  // :: Patch -> Function
+  const convertPatchPins = R.compose(
+    R.flip(reduceChainOver),
+    R.when(
+      Maybe.isNothing,
+      R.always([R.identity])
+    ),
+    R.chain(R.compose(
+      R.map(R.compose(
+        R.chain(Patch.assocPin),
+        R.converge(
+          Pin.createPin,
+          [
+            R.prop('key'),
+            R.compose(convertPinType, R.prop('type')),
+            R.prop('direction'),
+          ]
+        )
+      )),
+      R.values
+    )),
+    Maybe,
+    nullOnEmpty,
+    getCustomPinsOnly
+  );
   // :: Project -> Function
   const convertPatches = R.compose(
     applyArrayOfFunctions,
     R.map(oldPatch => Maybe.of(Patch.createPatch())
       .chain(apOrSkip(addLabel(oldPatch)))
+      .map(convertPatchPins(oldPatch))
       .map(convertNodes(oldPatch))
       .chain(apOrSkip(copyImpls(oldPatch)))
       .chain(assocPatchUnsafe(oldPatch.id))
