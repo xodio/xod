@@ -72,17 +72,17 @@ const getLinks = propValues('links');
 
 // ================================================
 //
-// Setters for new bundle
+// Conversion functions
 //
 // ================================================
-
-// :: Patch -> Maybe Function
-const addLabel = oldPatch => Maybe(getLabel(oldPatch)).map(Patch.setPatchLabel);
 
 // :: Path -> Patch -> Project -> Project
 const assocPatchUnsafe = R.curry(
   (path, patch, project) => R.assocPath(['patches', path], patch, project)
 );
+
+// :: Patch -> Maybe Function
+const addLabel = oldPatch => Maybe(getLabel(oldPatch)).map(Patch.setPatchLabel);
 
 // :: String -> String
 export const convertPinType = R.cond([
@@ -90,161 +90,169 @@ export const convertPinType = R.cond([
   [R.T, R.identity],
 ]);
 
+// :: Node -> Node
+const updateNodeIdMap = R.curry((nodeIdMap, oldNode, newNode) => {
+  nodeIdMap[oldNode.id] = newNode.id; // eslint-disable-line
+  return newNode;
+});
+
+// :: NodeIdMap -> String -> String
+const getLinkNodeId = R.flip(R.prop);
+
+// :: NodeIdMap -> String -> String
+const getLinkPin = R.ifElse(
+  R.flip(R.has),
+  getLinkNodeId,
+  R.nthArg(1)
+);
+
+// :: Node -> Function
+const convertNodePins = R.compose(
+  applyArrayOfFunctions,
+  R.values,
+  R.mapObjIndexed((pin, key) => {
+    const setCurryPin = Maybe(pin.injected).map(Node.curryPin(key));
+    const setPinValue = Maybe(pin.value).map(Node.setPinCurriedValue(key));
+    return R.compose(
+      R.chain(R.identity),
+      R.chain(apOrSkip(setPinValue)),
+      apOrSkip(setCurryPin)
+    );
+  }),
+  R.prop('pins')
+);
+// :: NodeIdMap -> Patch -> Function
+const convertNodes = R.curry((nodeIdMap, patch) =>
+  R.compose(
+    applyArrayOfFunctions,
+    R.map(oldNode => Node.createNode(oldNode.position, oldNode.typeId)
+      .map(updateNodeIdMap(nodeIdMap, oldNode))
+      .map(convertNodePins(oldNode))
+      .chain(Patch.assocNode)
+    ),
+    getNodes
+  )(patch)
+);
+// :: NodeIdMap -> Patch -> Function
+const convertLinks = nodeIdMap => R.compose(
+  R.map(R.compose(
+    Patch.assocLink,
+    R.converge(
+      Link.createLink,
+      [
+        R.compose(getLinkPin(nodeIdMap), R.prop('pinKey'), R.head),
+        R.compose(getLinkNodeId(nodeIdMap), R.prop('nodeId'), R.head),
+        R.compose(getLinkPin(nodeIdMap), R.prop('pinKey'), R.last),
+        R.compose(getLinkNodeId(nodeIdMap), R.prop('nodeId'), R.last),
+      ]
+    ),
+    R.prop('pins')
+  )),
+  getLinks
+);
+// :: Project -> PatchOld -> Patch
+const getPatchByOldPatch = project => R.compose(
+  R.unnest,
+  Project.getPatchByPath(R.__, project),
+  R.prop('id')
+);
+// :: Project -> [PatchOld] -> [Patch]
+const getPatchesWithLinks = R.curry(
+  (nodeIdMap, project) => R.map(R.converge(
+    reduceChainOver,
+    [
+      getPatchByOldPatch(project),
+      convertLinks(nodeIdMap),
+    ]
+  ))
+);
+// :: NodeIdMap -> ProjectOld -> Project -> Project
+const convertLinksInPatches = R.curry(
+  (nodeIdMap, projectOld, project) => R.compose(
+    reduceChainOver(project),
+    R.map(R.apply(Project.assocPatch)),
+    R.converge(
+      R.zip,
+      [
+        R.map(R.prop('id')),
+        getPatchesWithLinks(nodeIdMap, project),
+      ]
+    ),
+    R.values,
+    mergePatchesAndNodeTypes
+  )(projectOld)
+);
+// :: Patch -> Function
+const copyImpls = R.compose(
+  R.map(R.assoc('impls')),
+  maybeEmpty,
+  R.prop('impl')
+);
+// :: Project -> Function
+const appendAuthor = R.compose(
+  R.map(R.compose(
+    R.over(R.lensProp('authors')),
+    R.append
+  )),
+  Maybe,
+  R.path(['meta', 'author'])
+);
+// :: Patch -> Pin[]
+const getCustomPinsOnly = R.compose(
+  R.reject(R.has('nodeId')),
+  propValues('pins')
+);
+// :: Patch -> Function
+const convertPatchPins = R.compose(
+  R.flip(reduceChainOver),
+  R.when(
+    Maybe.isNothing,
+    R.always([R.identity])
+  ),
+  R.chain(R.compose(
+    R.map(R.compose(
+      R.chain(Patch.assocPin),
+      R.converge(
+        Pin.createPin,
+        [
+          R.prop('key'),
+          R.compose(convertPinType, R.prop('type')),
+          R.prop('direction'),
+        ]
+      )
+    )),
+    R.values
+  )),
+  maybeEmpty,
+  getCustomPinsOnly
+);
+// :: NodeIdMap -> Project -> Function
+const convertPatches = R.curry((nodeIdMap, project) =>
+  R.compose(
+    applyArrayOfFunctions,
+    R.map(oldPatch => Maybe.of(Patch.createPatch())
+      .chain(apOrSkip(addLabel(oldPatch)))
+      .map(convertPatchPins(oldPatch))
+      .map(convertNodes(nodeIdMap, oldPatch))
+      .chain(apOrSkip(copyImpls(oldPatch)))
+      .chain(assocPatchUnsafe(oldPatch.id))
+    ),
+    R.values,
+    mergePatchesAndNodeTypes
+  )(project)
+);
+
 /**
  * Transforms old project bundle (v1) into new (v2)
  * @param {object} bundle
  * @returns {Project}
  */
 export const toV2 = (bundle) => {
-  const nodeIdMapping = {};
-  // :: Node -> Node
-  const updateNodeIdMap = R.curry((oldNode, newNode) => {
-    nodeIdMapping[oldNode.id] = newNode.id;
-    return newNode;
-  });
-  // :: Node -> Function
-  const convertNodePins = R.compose(
-    applyArrayOfFunctions,
-    R.values,
-    R.mapObjIndexed((pin, key) => {
-      const setCurryPin = Maybe(pin.injected).map(Node.curryPin(key));
-      const setPinValue = Maybe(pin.value).map(Node.setPinCurriedValue(key));
-      return R.compose(
-        R.chain(R.identity),
-        R.chain(apOrSkip(setPinValue)),
-        apOrSkip(setCurryPin)
-      );
-    }),
-    R.prop('pins')
-  );
-  // :: Patch -> Function
-  const convertNodes = R.compose(
-    applyArrayOfFunctions,
-    R.map(oldNode => Node.createNode(oldNode.position, oldNode.typeId)
-      .map(updateNodeIdMap(oldNode))
-      .map(convertNodePins(oldNode))
-      .chain(Patch.assocNode)
-    ),
-    getNodes
-  );
-  // :: NodeIdMap -> String -> String
-  const getLinkNodeId = R.flip(R.prop);
-  // :: NodeIdMap -> String -> String
-  const getLinkPin = R.ifElse(
-    R.flip(R.has),
-    getLinkNodeId,
-    R.nthArg(1)
-  );
-  // :: NodeIdMap -> Patch -> Function
-  const convertLinks = nodeIdMap => R.compose(
-    R.map(R.compose(
-      Patch.assocLink,
-      R.converge(
-        Link.createLink,
-        [
-          R.compose(getLinkPin(nodeIdMap), R.prop('pinKey'), R.head),
-          R.compose(getLinkNodeId(nodeIdMap), R.prop('nodeId'), R.head),
-          R.compose(getLinkPin(nodeIdMap), R.prop('pinKey'), R.last),
-          R.compose(getLinkNodeId(nodeIdMap), R.prop('nodeId'), R.last),
-        ]
-      ),
-      R.prop('pins')
-    )),
-    getLinks
-  );
-  // :: Project -> PatchOld -> Patch
-  const getPatchByOldPatch = project => R.compose(
-    R.unnest,
-    Project.getPatchByPath(R.__, project),
-    R.prop('id')
-  );
-  // :: Project -> [PatchOld] -> [Patch]
-  const getPatchesWithLinks = R.curry(
-    (nodeIdMap, project) => R.map(R.converge(
-      reduceChainOver,
-      [
-        getPatchByOldPatch(project),
-        convertLinks(nodeIdMap),
-      ]
-    ))
-  );
-  // :: NodeIdMap -> ProjectOld -> Project -> Project
-  const convertLinksInPatches = R.curry(
-    (nodeIdMap, projectOld, project) => R.compose(
-      reduceChainOver(project),
-      R.map(R.apply(Project.assocPatch)),
-      R.converge(
-        R.zip,
-        [
-          R.map(R.prop('id')),
-          getPatchesWithLinks(nodeIdMap, project),
-        ]
-      ),
-      R.values,
-      mergePatchesAndNodeTypes
-    )(projectOld)
-  );
-  // :: Patch -> Function
-  const copyImpls = R.compose(
-    R.map(R.assoc('impls')),
-    maybeEmpty,
-    R.prop('impl')
-  );
-  // :: Project -> Function
-  const appendAuthor = R.compose(
-    R.map(R.compose(
-      R.over(R.lensProp('authors')),
-      R.append
-    )),
-    Maybe,
-    R.path(['meta', 'author'])
-  );
-  // :: Patch -> Pin[]
-  const getCustomPinsOnly = R.compose(
-    R.reject(R.has('nodeId')),
-    propValues('pins')
-  );
-  // :: Patch -> Function
-  const convertPatchPins = R.compose(
-    R.flip(reduceChainOver),
-    R.when(
-      Maybe.isNothing,
-      R.always([R.identity])
-    ),
-    R.chain(R.compose(
-      R.map(R.compose(
-        R.chain(Patch.assocPin),
-        R.converge(
-          Pin.createPin,
-          [
-            R.prop('key'),
-            R.compose(convertPinType, R.prop('type')),
-            R.prop('direction'),
-          ]
-        )
-      )),
-      R.values
-    )),
-    maybeEmpty,
-    getCustomPinsOnly
-  );
-  // :: Project -> Function
-  const convertPatches = R.compose(
-    applyArrayOfFunctions,
-    R.map(oldPatch => Maybe.of(Patch.createPatch())
-      .chain(apOrSkip(addLabel(oldPatch)))
-      .map(convertPatchPins(oldPatch))
-      .map(convertNodes(oldPatch))
-      .chain(apOrSkip(copyImpls(oldPatch)))
-      .chain(assocPatchUnsafe(oldPatch.id))
-    ),
-    R.values,
-    mergePatchesAndNodeTypes
-  );
+  const nodeIdMap = {};
 
   return Maybe.of(Project.createProject())
     .chain(apOrSkip(appendAuthor(bundle)))
-    .map(convertPatches(bundle))
-    .map(convertLinksInPatches(nodeIdMapping, bundle))
+    .map(convertPatches(nodeIdMap, bundle))
+    .map(convertLinksInPatches(nodeIdMap, bundle))
     .chain(R.identity);
 };
