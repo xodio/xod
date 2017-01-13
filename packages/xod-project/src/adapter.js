@@ -44,7 +44,7 @@ const propValues = key => R.compose(R.values, R.propOr({}, key));
 
 // :: [Function] -> Function fn
 // fn :: a -> a
-const applyArrayOfFunctions = R.ifElse(
+const composeA = R.ifElse(
   R.isEmpty,
   R.always(R.identity),
   R.apply(R.compose)
@@ -114,7 +114,7 @@ const getLinkPin = R.ifElse(
 // :: NodeOld -> Function fn
 // fn :: Node -> Node
 const convertNodePins = R.compose(
-  applyArrayOfFunctions,
+  composeA,
   R.values,
   R.mapObjIndexed((pin, key) => {
     const setCurryPin = Maybe(pin.injected).map(Node.curryPin(key));
@@ -132,7 +132,7 @@ const convertNodePins = R.compose(
 // fn :: Patch -> Patch
 const convertNodes = R.curry((nodeIdMap, patchOld) =>
   R.compose(
-    applyArrayOfFunctions,
+    composeA,
     R.map(oldNode => Node.createNode(oldNode.position, oldNode.typeId)
       .map(updateNodeIdMap(nodeIdMap, oldNode))
       .map(convertNodePins(oldNode))
@@ -251,7 +251,7 @@ const convertPatchPins = R.compose(
 // fn :: Project -> Project
 const convertPatches = R.curry((nodeIdMap, projectOld) =>
   R.compose(
-    applyArrayOfFunctions,
+    composeA,
     R.map(oldPatch => Maybe.of(Patch.createPatch())
       .chain(apOrSkip(addLabel(oldPatch)))
       .map(convertPatchPins(oldPatch))
