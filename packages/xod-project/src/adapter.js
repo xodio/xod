@@ -42,7 +42,8 @@ const reduceChainOver = R.curry((overObj, fnList) =>
 // :: String -> Object -> [a]
 const propValues = key => R.compose(R.values, R.propOr({}, key));
 
-// :: [Function] -> Function
+// :: [Function] -> Function fn
+// fn :: a -> a
 const applyArrayOfFunctions = R.ifElse(
   R.isEmpty,
   R.always(R.identity),
@@ -65,8 +66,11 @@ export const mergePatchesAndNodeTypes = R.converge(
   ]
 );
 
+// :: {} -> String
 const getLabel = R.prop('label');
+// :: {} -> [a]
 const getNodes = propValues('nodes');
+// :: {} -> [a]
 const getLinks = propValues('links');
 
 
@@ -81,7 +85,8 @@ const assocPatchUnsafe = R.curry(
   (path, patch, project) => R.assocPath(['patches', path], patch, project)
 );
 
-// :: Patch -> Maybe Function
+// :: Patch -> Maybe fn
+// fn :: Patch -> Patch
 const addLabel = oldPatch => Maybe(getLabel(oldPatch)).map(Patch.setPatchLabel);
 
 // :: String -> String
@@ -106,7 +111,8 @@ const getLinkPin = R.ifElse(
   R.nthArg(1)
 );
 
-// :: Node -> Function
+// :: NodeOld -> Function fn
+// fn :: Node -> Node
 const convertNodePins = R.compose(
   applyArrayOfFunctions,
   R.values,
@@ -121,8 +127,10 @@ const convertNodePins = R.compose(
   }),
   R.prop('pins')
 );
-// :: NodeIdMap -> Patch -> Function
-const convertNodes = R.curry((nodeIdMap, patch) =>
+
+// :: NodeIdMap -> PatchOld -> Function fn
+// fn :: Patch -> Patch
+const convertNodes = R.curry((nodeIdMap, patchOld) =>
   R.compose(
     applyArrayOfFunctions,
     R.map(oldNode => Node.createNode(oldNode.position, oldNode.typeId)
@@ -131,9 +139,11 @@ const convertNodes = R.curry((nodeIdMap, patch) =>
       .chain(Patch.assocNode)
     ),
     getNodes
-  )(patch)
+  )(patchOld)
 );
-// :: NodeIdMap -> Patch -> Function
+
+// :: NodeIdMap -> PatchOld -> Function fn
+// fn :: Patch -> Patch
 const convertLinks = nodeIdMap => R.compose(
   R.map(R.compose(
     Patch.assocLink,
@@ -150,12 +160,14 @@ const convertLinks = nodeIdMap => R.compose(
   )),
   getLinks
 );
+
 // :: Project -> PatchOld -> Patch
 const getPatchByOldPatch = project => R.compose(
   R.unnest,
   Project.getPatchByPath(R.__, project),
   R.prop('id')
 );
+
 // :: Project -> [PatchOld] -> [Patch]
 const getPatchesWithLinks = R.curry(
   (nodeIdMap, project) => R.map(R.converge(
@@ -166,6 +178,7 @@ const getPatchesWithLinks = R.curry(
     ]
   ))
 );
+
 // :: NodeIdMap -> ProjectOld -> Project -> Project
 const convertLinksInPatches = R.curry(
   (nodeIdMap, projectOld, project) => R.compose(
@@ -182,13 +195,17 @@ const convertLinksInPatches = R.curry(
     mergePatchesAndNodeTypes
   )(projectOld)
 );
-// :: Patch -> Function
+
+// :: PatchOld -> Function fn
+// fn :: Patch -> Patch
 const copyImpls = R.compose(
   R.map(R.assoc('impls')),
   maybeEmpty,
   R.prop('impl')
 );
-// :: Project -> Function
+
+// :: ProjectOld -> Maybe Function fn
+// fn :: Project -> Project
 const appendAuthor = R.compose(
   R.map(R.compose(
     R.over(R.lensProp('authors')),
@@ -197,12 +214,15 @@ const appendAuthor = R.compose(
   Maybe,
   R.path(['meta', 'author'])
 );
+
 // :: Patch -> Pin[]
 const getCustomPinsOnly = R.compose(
   R.reject(R.has('nodeId')),
   propValues('pins')
 );
-// :: Patch -> Function
+
+// :: PatchOld -> Function fn
+// fn :: Patch -> Patch
 const convertPatchPins = R.compose(
   R.flip(reduceChainOver),
   R.when(
@@ -226,8 +246,10 @@ const convertPatchPins = R.compose(
   maybeEmpty,
   getCustomPinsOnly
 );
-// :: NodeIdMap -> Project -> Function
-const convertPatches = R.curry((nodeIdMap, project) =>
+
+// :: NodeIdMap -> ProjectOld -> Function fn
+// fn :: Project -> Project
+const convertPatches = R.curry((nodeIdMap, projectOld) =>
   R.compose(
     applyArrayOfFunctions,
     R.map(oldPatch => Maybe.of(Patch.createPatch())
@@ -239,7 +261,7 @@ const convertPatches = R.curry((nodeIdMap, project) =>
     ),
     R.values,
     mergePatchesAndNodeTypes
-  )(project)
+  )(projectOld)
 );
 
 /**
