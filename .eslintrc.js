@@ -37,9 +37,13 @@ module.exports = {
       allowAfterThis: true,
       allowAfterSuper: true
     }],
+    'new-cap': ['error', {
+      'capIsNewExceptions': ['Maybe', 'Either'],
+      'capIsNewExceptionPattern': '^(Maybe|Either)\..'
+    }],
 
     'import/no-extraneous-dependencies': ['error', {
-      devDependencies: ['**/*.spec.js', '**/xod-client-electron/**/*.js'] 
+      devDependencies: ['**/*.spec.js', '**/xod-client-electron/**/*.js']
     }],
 
     'arrow-parens': 'off', // TODO: enable and fix code

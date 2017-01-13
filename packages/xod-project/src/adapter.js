@@ -1,5 +1,3 @@
-/* eslint-disable new-cap */
-
 import R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 
@@ -9,58 +7,83 @@ import * as Node from './node';
 import * as Link from './link';
 import * as Pin from './pin';
 
-// utils
-// :: Maybe<Function> -> a -> Maybe<a>
+// ================================================
+//
+// Utility functions
+//
+// ================================================
+
+// :: Maybe Function -> a -> Maybe a
 const apOrSkip = R.curry((maybeFn, val) => {
   const maybeVal = Maybe(val);
   const result = maybeFn.ap(maybeVal);
   return Maybe.isJust(result) ? result : maybeVal;
 });
-// :: a -> a | null
-const nullOnEmpty = R.when(
+// :: a -> Maybe a
+const maybeEmpty = R.ifElse(
   R.isEmpty,
-  R.always(null)
+  Maybe.Nothing,
+  Maybe.of
 );
-// :: a -> [Function] -> a
+
+// :: a -> [Function fn] -> a
+// fn :: a -> Applicative a
+// For example,
+//   const t = key => R.compose(Maybe, R.assoc(key, true));
+//   reduceChainOver({}, [t('a'), t('b')]);
+//   { 'a': true, 'b': true }
 const reduceChainOver = R.curry((overObj, fnList) =>
   R.compose(
     R.unnest,
     R.reduce(R.flip(R.chain), Maybe.of(overObj))
   )(fnList)
 );
+
 // :: String -> Object -> [a]
-const propValues = R.curry((key, obj) => R.compose(R.values, R.propOr({}, key))(obj));
+const propValues = key => R.compose(R.values, R.propOr({}, key));
 
 // :: [Function] -> Function
-const applyArrayOfFunctions = R.compose(
-  R.apply(R.compose),
-  R.append(R.identity),
-  R.values
+const applyArrayOfFunctions = R.ifElse(
+  R.isEmpty,
+  R.always(R.identity),
+  R.apply(R.compose)
 );
 
+
+// ================================================
+//
 // Getters from old bundle
+//
+// ================================================
+
 // :: Project -> [Patch ^ NodeType]
-export const mergePatchesAndNodeTypes = R.compose(
-  R.converge(
-    R.mergeWith(R.merge),
-    [
-      R.prop('patches'),
-      R.prop('nodeTypes'),
-    ]
-  )
+export const mergePatchesAndNodeTypes = R.converge(
+  R.mergeWith(R.merge),
+  [
+    R.prop('patches'),
+    R.prop('nodeTypes'),
+  ]
 );
 
 const getLabel = R.prop('label');
 const getNodes = propValues('nodes');
 const getLinks = propValues('links');
 
+
+// ================================================
+//
 // Setters for new bundle
-// :: Patch -> Maybe<Function>
+//
+// ================================================
+
+// :: Patch -> Maybe Function
 const addLabel = oldPatch => Maybe(getLabel(oldPatch)).map(Patch.setPatchLabel);
-// :: Path -> Patch -> Project ->
+
+// :: Path -> Patch -> Project -> Project
 const assocPatchUnsafe = R.curry(
   (path, patch, project) => R.assocPath(['patches', path], patch, project)
 );
+
 // :: String -> String
 export const convertPinType = R.cond([
   [R.equals('bool'), R.always('boolean')],
@@ -70,18 +93,19 @@ export const convertPinType = R.cond([
 /**
  * Transforms old project bundle (v1) into new (v2)
  * @param {object} bundle
- * @returns {object}
+ * @returns {Project}
  */
 export const toV2 = (bundle) => {
-  const nodeIdMap = {};
+  const nodeIdMapping = {};
   // :: Node -> Node
   const updateNodeIdMap = R.curry((oldNode, newNode) => {
-    nodeIdMap[oldNode.id] = newNode.id;
+    nodeIdMapping[oldNode.id] = newNode.id;
     return newNode;
   });
   // :: Node -> Function
   const convertNodePins = R.compose(
     applyArrayOfFunctions,
+    R.values,
     R.mapObjIndexed((pin, key) => {
       const setCurryPin = Maybe(pin.injected).map(Node.curryPin(key));
       const setPinValue = Maybe(pin.value).map(Node.setPinCurriedValue(key));
@@ -103,57 +127,57 @@ export const toV2 = (bundle) => {
     ),
     getNodes
   );
-  // :: String -> String
-  const getLinkNodeId = nodeId => nodeIdMap[nodeId];
-  // :: String -> String
-  const getLinkPin = pinKey => Maybe(nodeIdMap[pinKey]).getOrElse(pinKey);
-  // :: Patch -> Function
-  const convertLinks = R.compose(
+  // :: NodeIdMap -> String -> String
+  const getLinkNodeId = R.flip(R.prop);
+  // :: NodeIdMap -> String -> String
+  const getLinkPin = R.ifElse(
+    R.flip(R.has),
+    getLinkNodeId,
+    R.nthArg(1)
+  );
+  // :: NodeIdMap -> Patch -> Function
+  const convertLinks = nodeIdMap => R.compose(
     R.map(R.compose(
       Patch.assocLink,
       R.converge(
         Link.createLink,
         [
-          R.compose(getLinkPin, R.prop('pinKey'), R.head),
-          R.compose(getLinkNodeId, R.prop('nodeId'), R.head),
-          R.compose(getLinkPin, R.prop('pinKey'), R.last),
-          R.compose(getLinkNodeId, R.prop('nodeId'), R.last),
+          R.compose(getLinkPin(nodeIdMap), R.prop('pinKey'), R.head),
+          R.compose(getLinkNodeId(nodeIdMap), R.prop('nodeId'), R.head),
+          R.compose(getLinkPin(nodeIdMap), R.prop('pinKey'), R.last),
+          R.compose(getLinkNodeId(nodeIdMap), R.prop('nodeId'), R.last),
         ]
       ),
       R.prop('pins')
     )),
     getLinks
   );
-  // :: Patch[] -> Patch[]
-  const getPatchesWithLinks = R.curry((project, patches) =>
-    R.map(R.converge(
+  // :: Project -> PatchOld -> Patch
+  const getPatchByOldPatch = project => R.compose(
+    R.unnest,
+    Project.getPatchByPath(R.__, project),
+    R.prop('id')
+  );
+  // :: Project -> [PatchOld] -> [Patch]
+  const getPatchesWithLinks = R.curry(
+    (nodeIdMap, project) => R.map(R.converge(
       reduceChainOver,
       [
-        R.compose(
-          R.unnest,
-          Project.getPatchByPath(R.__, project),
-          R.prop('id')
-        ),
-        convertLinks,
+        getPatchByOldPatch(project),
+        convertLinks(nodeIdMap),
       ]
-    ))(patches)
+    ))
   );
-  // :: ProjectOld -> Project -> Project
+  // :: NodeIdMap -> ProjectOld -> Project -> Project
   const convertLinksInPatches = R.curry(
-    (projectOld, project) => R.compose(
+    (nodeIdMap, projectOld, project) => R.compose(
       reduceChainOver(project),
-      R.map(R.converge(
-        Project.assocPatch,
-        [
-          R.head,
-          R.last,
-        ]
-      )),
+      R.map(R.apply(Project.assocPatch)),
       R.converge(
         R.zip,
         [
           R.map(R.prop('id')),
-          getPatchesWithLinks(project),
+          getPatchesWithLinks(nodeIdMap, project),
         ]
       ),
       R.values,
@@ -163,8 +187,7 @@ export const toV2 = (bundle) => {
   // :: Patch -> Function
   const copyImpls = R.compose(
     R.map(R.assoc('impls')),
-    Maybe,
-    nullOnEmpty,
+    maybeEmpty,
     R.prop('impl')
   );
   // :: Project -> Function
@@ -202,8 +225,7 @@ export const toV2 = (bundle) => {
       )),
       R.values
     )),
-    Maybe,
-    nullOnEmpty,
+    maybeEmpty,
     getCustomPinsOnly
   );
   // :: Project -> Function
@@ -223,6 +245,6 @@ export const toV2 = (bundle) => {
   return Maybe.of(Project.createProject())
     .chain(apOrSkip(appendAuthor(bundle)))
     .map(convertPatches(bundle))
-    .map(convertLinksInPatches(bundle))
+    .map(convertLinksInPatches(nodeIdMapping, bundle))
     .chain(R.identity);
 };
