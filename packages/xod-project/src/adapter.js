@@ -226,7 +226,7 @@ const getCustomPinsOnly = R.compose(
 
 // :: PatchOld -> Function fn
 // fn :: Patch -> Patch
-const convertPatchPins = R.curry((patchOld, patch) => R.compose(
+const convertPatchPins = R.compose(
   R.ifElse(
     Maybe.isNothing,
     R.nthArg(1), // TODO: Why we get second argument here, not just Nothing?
@@ -248,7 +248,7 @@ const convertPatchPins = R.curry((patchOld, patch) => R.compose(
   )),
   maybeEmpty,
   getCustomPinsOnly
-)(patchOld)(patch));
+);
 
 // :: ProjectOld -> Function fn
 // fn :: Project -> Tuple NodeIdMap Project
