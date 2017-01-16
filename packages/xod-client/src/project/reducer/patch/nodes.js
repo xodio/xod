@@ -1,3 +1,5 @@
+import R from 'ramda';
+
 import {
   NODE_MOVE,
   NODE_ADD,
@@ -5,14 +7,12 @@ import {
   NODE_UPDATE_PROPERTY,
   NODE_CHANGE_PIN_MODE,
 } from '../../actionTypes';
-
 import { PROPERTY_TYPE_PARSE } from 'xod-core';
-import R from 'ramda';
 
 export const copyNode = (node) => R.clone(node);
 
 const parseVal = (val, type) => {
-  if (type && PROPERTY_TYPE_PARSE.hasOwnProperty(type)) {
+  if (type && R.has(type, PROPERTY_TYPE_PARSE)) {
     return PROPERTY_TYPE_PARSE[type](val);
   }
 

@@ -53,7 +53,7 @@ const addTab = (state, action) => {
 };
 
 const applyTabSort = (tab, payload) => {
-  if (!payload.hasOwnProperty(tab.id)) { return tab; }
+  if (R.not(R.has(tab.id, payload))) { return tab; }
 
   return R.assoc('index', payload[tab.id].index, tab);
 };

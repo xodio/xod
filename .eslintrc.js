@@ -46,7 +46,6 @@ module.exports = {
     }],
 
     'arrow-parens': 'off', // TODO: enable and fix code
-    'no-prototype-builtins': 'off', // TODO: enable and fix code
     'no-undef': 'off', // TODO: enable and fix code
     'import/imports-first': 'off', // TODO: enable and fix code
     'import/prefer-default-export': 'off', // TODO: enable and fix code

@@ -8,11 +8,11 @@ const makeStyleReducer = (key, isStore = false) => function styleReducer(styles)
     result = this.styles.keys[key].reduce(
       (prev, cur) => {
         let p = prev;
-        const hasStyles = this.styles.styles[cur].hasOwnProperty(key);
+        const hasStyles = R.has(key, this.styles.styles[cur]);
         if (hasStyles) {
           const hasPropStyle = (
             typeof this.styles.styles[cur][key] === 'object' &&
-            this.styles.styles[cur][key].hasOwnProperty(val)
+            R.has(val, this.styles.styles[cur][key])
           );
           let updateWith;
           if (hasPropStyle) {
@@ -88,7 +88,7 @@ const Stylizer = {
       return Object.keys(styles).reduce(
         (prev, cur) => {
           const p = prev;
-          p[cur] = ((styles[cur].hasOwnProperty('normal')) ? styles[cur].normal : styles[cur]);
+          p[cur] = ((R.has('normal', styles[cur])) ? styles[cur].normal : styles[cur]);
           return p;
         }, {}
       );
