@@ -74,7 +74,6 @@ class SnackBarMessage extends React.Component {
 
     return (
       <li
-        ref="body"
         className={cls}
         onClick={this.onClick}
         dataId={message.id}
@@ -87,7 +86,6 @@ class SnackBarMessage extends React.Component {
 
 SnackBarMessage.propTypes = {
   message: React.PropTypes.object,
-  onHide: React.PropTypes.func,
 };
 
 export default SnackBarMessage;

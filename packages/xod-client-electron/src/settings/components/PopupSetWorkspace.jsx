@@ -47,7 +47,7 @@ class PopupSetWorkspace extends React.Component {
         </p>
       ),
       buttonLabel: 'Switch workspace directory',
-    }
+    };
   }
 
   changeWorkspace() {

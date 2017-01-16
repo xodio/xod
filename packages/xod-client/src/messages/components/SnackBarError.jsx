@@ -46,7 +46,6 @@ class SnackBarError extends React.Component {
     });
     return (
       <li
-        ref="body"
         className={cls}
         onClick={this.onClick}
         dataId={error.id}
@@ -63,7 +62,6 @@ class SnackBarError extends React.Component {
 
 SnackBarError.propTypes = {
   error: React.PropTypes.object,
-  onHide: React.PropTypes.func,
 };
 
 export default SnackBarError;

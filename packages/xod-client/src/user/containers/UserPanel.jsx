@@ -38,8 +38,11 @@ class UserPanel extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if (this.props.userId && !props.userId) {
-      this.closeMenu();
+    if (!props.userId) {
+      if (this.props.userId) {
+        this.closeMenu();
+      }
+
       return this.setPanel('unauth');
     }
 
@@ -92,11 +95,11 @@ class UserPanel extends React.Component {
     );
   }
 
-  getAuthorizedPanel(username) {
+  getAuthorizedPanel() {
     return (
       <div className="UserPanel authorized">
         <UserButton
-          username={username}
+          username={this.props.username}
           onClick={this.toggleMenu}
         />
         <UserMenu
@@ -119,7 +122,7 @@ class UserPanel extends React.Component {
       case 'unath':
         return this.getUnauthorizedPanel();
       case 'auth':
-        return this.getAuthorizedPanel(this.props.username);
+        return this.getAuthorizedPanel();
       case 'loading':
         return getLoadingPanel();
     }

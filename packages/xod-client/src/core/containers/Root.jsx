@@ -69,8 +69,8 @@ export default class Root extends React.Component {
     return (
       <Provider store={this.store}>
         <div>
-        {this.props.children}
-        {DevTools}
+          {this.props.children}
+          {DevTools}
         </div>
       </Provider>
     );

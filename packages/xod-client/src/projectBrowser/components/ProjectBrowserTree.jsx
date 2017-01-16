@@ -4,8 +4,28 @@ import classNames from 'classnames';
 import Tree from 'react-ui-tree';
 import { Icon } from 'react-fa';
 
+const hasLeaf = R.has('leaf');
 
 class ProjectBrowserTree extends React.Component {
+  static getActiveData(val) {
+    let selected = {
+      type: null,
+      id: null,
+    };
+
+    if (val !== null) {
+      let type = 'project';
+      if (val.id !== 0) { type = (val.leaf) ? 'patch' : 'folder'; }
+
+      selected = {
+        type,
+        id: (val.id !== undefined) ? val.id : null,
+      };
+    }
+
+    return selected;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,7 +47,7 @@ class ProjectBrowserTree extends React.Component {
 
   onClickNode(node) {
     const nodeRef = node;
-    if (!node.hasOwnProperty('leaf')) {
+    if (R.not(hasLeaf(node))) {
       nodeRef.collapsed = !nodeRef.collapsed;
     }
     this.setActive(nodeRef);
@@ -43,27 +63,8 @@ class ProjectBrowserTree extends React.Component {
     this.props.onChange(tree);
   }
 
-  getActiveData(val) {
-    let selected = {
-      type: null,
-      id: null,
-    };
-
-    if (val !== null) {
-      let type = 'project';
-      if (val.id !== 0) { type = (val.leaf) ? 'patch' : 'folder'; }
-
-      selected = {
-        type,
-        id: (val.id !== undefined) ? val.id : null,
-      };
-    }
-
-    return selected;
-  }
-
   setActive(val) {
-    const selected = this.getActiveData(val);
+    const selected = ProjectBrowserTree.getActiveData(val);
 
     this.setState(R.assoc('active', selected, this.state));
     this.props.onSelect(selected.type, selected.id);
@@ -78,7 +79,7 @@ class ProjectBrowserTree extends React.Component {
   }
 
   isNodeActive(node) {
-    const thatNode = this.getActiveData(node);
+    const thatNode = ProjectBrowserTree.getActiveData(node);
 
     return (
       thatNode && this.state.active &&
@@ -89,7 +90,7 @@ class ProjectBrowserTree extends React.Component {
 
   isNodeCurrent(node) {
     return (
-      node.hasOwnProperty('leaf') &&
+      hasLeaf(node) &&
       node.id === this.props.currentPatchId
     );
   }
@@ -108,14 +109,15 @@ class ProjectBrowserTree extends React.Component {
     if (node.collapsed) { iconName = 'folder-o'; }
 
     return (
-      <span
+      <a
+        tabIndex="0"
         className={nodeClassName}
         onClick={onClick}
         onDoubleClick={onDblClick}
       >
         <Icon name={iconName} className="icon" />
         {node.module}
-      </span>
+      </a>
     );
   }
 

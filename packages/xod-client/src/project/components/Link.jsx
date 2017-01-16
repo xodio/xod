@@ -1,8 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
+import { SIZE } from 'xod-core';
+
 import Stylizer from '../../utils/stylizer';
 import { noop } from '../../utils/ramda';
-import { SIZE } from 'xod-core';
 
 const linkStyles = {
   line: {

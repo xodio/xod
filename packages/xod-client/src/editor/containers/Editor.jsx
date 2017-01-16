@@ -85,7 +85,6 @@ class Editor extends React.Component {
 }
 
 Editor.propTypes = {
-  editor: React.PropTypes.any.isRequired,
   size: React.PropTypes.object.isRequired,
   propsForInspector: React.PropTypes.arrayOf(React.PropTypes.object),
   currentPatchId: React.PropTypes.string,
@@ -108,7 +107,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     updateNodeProperty: ProjectActions.updateNodeProperty,
     changePinMode: ProjectActions.changePinMode,

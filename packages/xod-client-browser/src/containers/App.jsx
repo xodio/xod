@@ -309,7 +309,7 @@ App.propTypes = {
   actions: React.PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   hasChanges: client.projectHasChanges(state),
   project: core.getProjectPojo(state),
   projectJSON: core.getProjectJSON(state),
@@ -318,7 +318,7 @@ const mapStateToProps = (state) => ({
   selectedNodeType: client.getSelectedNodeType(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     createProject: client.createProject,
     loadProjectFromJSON: client.loadProjectFromJSON,

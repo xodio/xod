@@ -2,6 +2,7 @@ import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { HotKeys } from 'react-hotkeys';
 import core from 'xod-core';
 
 import * as EditorActions from '../actions'; // @TODO: remove it!
@@ -9,9 +10,7 @@ import * as EditorSelectors from '../selectors';
 import * as ProjectActions from '../../project/actions';
 import { findRootSVG } from '../../utils/browser';
 
-import { HotKeys } from 'react-hotkeys';
 import { COMMAND } from '../../utils/constants';
-
 import PatchSVG from '../../project/components/PatchSVG';
 import BackgroundLayer from '../../project/components/BackgroundLayer';
 import NodesLayer from '../../project/components/NodesLayer';
@@ -214,7 +213,7 @@ class Patch extends React.Component {
     );
 
     return R.pipe(
-      R.map(node => {
+      R.map((node) => {
         const pvs = R.filter(R.propEq('nodeId', node.id), pinsValidation);
         if (pvs.length === 0) { return node; }
 
@@ -308,12 +307,10 @@ Patch.propTypes = {
   actions: React.PropTypes.objectOf(React.PropTypes.func),
   nodes: React.PropTypes.any,
   links: React.PropTypes.any,
-  patch: React.PropTypes.any,
   linkingPin: React.PropTypes.object,
   selection: React.PropTypes.array,
   selectedNodeType: React.PropTypes.string,
   patchId: React.PropTypes.string,
-  nodeTypes: React.PropTypes.object,
   mode: React.PropTypes.object,
   ghostNode: React.PropTypes.any,
   ghostLink: React.PropTypes.any,
@@ -344,7 +341,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     addAndSelectNode: EditorActions.addAndSelectNode,
     moveNode: ProjectActions.moveNode,

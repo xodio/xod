@@ -81,7 +81,7 @@ const createLinkWidgets = () => ({
 });
 
 // :: props.data -> { components, props }
-const createManyWidgets = (data) => ({
+const createManyWidgets = data => ({
   components: { empty: Widgets.HintWidget },
   props: { empty: { text: `You have selected: ${data.length} elements.` } },
 });

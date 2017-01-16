@@ -1,7 +1,8 @@
 import React from 'react';
-import SVGLayer from './SVGLayer';
-import Link from './Link';
 import { LAYER } from 'xod-core';
+
+import SVGLayer from './SVGLayer';
+import XODLink from './Link';
 
 const LinksLayer = ({ links, onClick }) => (
   <SVGLayer
@@ -9,7 +10,7 @@ const LinksLayer = ({ links, onClick }) => (
     className="LinksLayer"
   >
     {links.map(link =>
-      <Link
+      <XODLink
         key={link.id}
         id={link.id}
         from={link.from}

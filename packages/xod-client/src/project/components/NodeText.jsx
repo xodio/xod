@@ -1,6 +1,11 @@
 import React from 'react';
 
 class NodeText extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.label = null;
+  }
   componentDidMount() {
     this.labelBbox = this.getBbox();
     this.forceUpdate();
@@ -11,7 +16,11 @@ class NodeText extends React.Component {
   }
 
   getBbox() {
-    return this.refs.label.getBBox();
+    if (this.label) {
+      return this.label.getBBox();
+    }
+
+    return { width: 0, height: 0 };
   }
 
   getWidth() {
@@ -38,12 +47,14 @@ class NodeText extends React.Component {
   }
 
   render() {
+    const assignLabelRef = (ref) => { this.label = ref; };
+
     return (
       <text
         className="NodeText"
         {...this.getPosition()}
         textAnchor="middle"
-        ref="label"
+        ref={assignLabelRef}
       >
         {this.props.label}
       </text>

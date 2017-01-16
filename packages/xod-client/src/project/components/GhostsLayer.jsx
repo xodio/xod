@@ -1,10 +1,10 @@
 import R from 'ramda';
 import React from 'react';
+import { LAYER } from 'xod-core';
 
 import SVGLayer from './SVGLayer';
 import Node from './Node';
-import Link from './Link';
-import { LAYER } from 'xod-core';
+import XODLink from './Link';
 
 class GhostLayer extends React.Component {
   constructor(props) {
@@ -76,7 +76,7 @@ class GhostLayer extends React.Component {
     );
 
     return (
-      <Link
+      <XODLink
         key={link.id}
         id={link.id}
         from={link.from}
@@ -118,7 +118,7 @@ class GhostLayer extends React.Component {
 
 GhostLayer.propTypes = {
   mousePosition: React.PropTypes.objectOf(React.PropTypes.number),
-  mode: React.PropTypes.object,
+  mode: React.PropTypes.object, // eslint-disable-line
   ghostNode: React.PropTypes.any,
   ghostLink: React.PropTypes.any,
 };
