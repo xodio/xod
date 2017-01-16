@@ -1,3 +1,3 @@
 import SnackBar from './containers/SnackBar';
 
-export { SnackBar };
+export default SnackBar;

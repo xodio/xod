@@ -12,7 +12,7 @@ const generateReducers = R.reduce(
   {}
 );
 
-export const patches = (patchIds) => {
+export default (patchIds) => {
   const reducers = generateReducers(patchIds);
 
   return (state = {}, action) => {

@@ -1,7 +1,7 @@
 import R from 'ramda';
 import * as ActionType from '../actionTypes';
 
-export const meta = (state = {}, action) => {
+export default (state = {}, action) => {
   switch (action.type) {
     case ActionType.PROJECT_RENAME:
       return R.assoc('name', action.payload, state);

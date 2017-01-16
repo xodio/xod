@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import core from 'xod-core';
+import { HotKeys } from 'react-hotkeys';
 
 import * as Actions from '../actions';
 import * as ProjectActions from '../../project/actions';
 import * as EditorSelectors from '../selectors';
 
-import { HotKeys } from 'react-hotkeys';
 import { COMMAND } from '../../utils/constants';
 import { EDITOR_MODE } from '../../editor/constants';
 

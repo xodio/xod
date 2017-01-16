@@ -46,7 +46,6 @@ module.exports = {
       devDependencies: ['**/*.spec.js', '**/xod-client-electron/**/*.js']
     }],
 
-    'import/prefer-default-export': 'off', // TODO: enable and fix code
     'import/no-dynamic-require': 'off', // TODO: enable and fix code
   },
 };

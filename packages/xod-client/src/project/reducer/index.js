@@ -2,10 +2,10 @@ import R from 'ramda';
 import { parseProjectJSON } from 'xod-core';
 
 import applyReducers from '../../utils/applyReducers';
-import { meta } from './meta';
-import { patches, newPatch } from './patches';
-import { nodeTypes } from './nodetypes';
-import { foldersReducer } from './folders';
+import meta from './meta';
+import patches, { newPatch } from './patches';
+import nodeTypes from './nodetypes';
+import foldersReducer from './folders';
 import { ApiHelpers, ApiActionTypes } from '../../api';
 import {
   PROJECT_CREATE,
