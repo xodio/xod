@@ -22,6 +22,8 @@ module.exports = {
   ],
 
   globals: {
+    window: true,
+    document: true,
     describe: true,
     it: true,
     before: true,
@@ -46,7 +48,6 @@ module.exports = {
     }],
 
     'arrow-parens': 'off', // TODO: enable and fix code
-    'no-undef': 'off', // TODO: enable and fix code
     'import/imports-first': 'off', // TODO: enable and fix code
     'import/prefer-default-export': 'off', // TODO: enable and fix code
     'import/no-dynamic-require': 'off', // TODO: enable and fix code

@@ -135,7 +135,7 @@ class App extends React.Component {
 
   onImportChange(event) {
     const file = event.target.files[0];
-    const reader = new FileReader();
+    const reader = new window.FileReader();
 
     reader.onload = (e) => {
       this.onImport(e.target.result);
@@ -248,12 +248,7 @@ class App extends React.Component {
     return false;
   }
 
-  onElectronClose() { // eslint-disable-line class-methods-use-this
-    // @TODO
-    return true;
-  }
-
-  onBrowserClose(event) {
+  onCloseApp(event) { // eslint-disable-line class-methods-use-this
     let message = true;
 
     if (this.props.hasChanges) {
@@ -262,10 +257,6 @@ class App extends React.Component {
     }
 
     return message;
-  }
-
-  onCloseApp(event) {
-    return this.onElectronClose(event);
   }
 
   getSaveProgress() {

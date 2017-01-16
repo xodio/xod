@@ -23,7 +23,7 @@ export default (input, program) => {
 
   const transpile = transpilers[target];
   if (!transpile) {
-    throw new Error(`Unknown target "${target}". Supported targets are: ${R.keys(transpilers)}`);
+    throw new Error(`Unknown target "${target}". Supported targets are: ${Object.keys(transpilers)}`);
   }
 
   msg.notice(`Transpiling ${filename} for ${target} ...`);

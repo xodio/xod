@@ -29,8 +29,6 @@ class App extends React.Component {
       code: '',
     };
 
-    this.isElectronApp = (window && window.process && window.process.type);
-
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onUpload = this.onUpload.bind(this);
@@ -85,7 +83,7 @@ class App extends React.Component {
 
   onImportChange(event) {
     const file = event.target.files[0];
-    const reader = new FileReader();
+    const reader = new window.FileReader();
 
     reader.onload = (e) => {
       this.onImport(e.target.result);
@@ -146,7 +144,7 @@ class App extends React.Component {
     this.props.actions.setMode(client.EDITOR_MODE.CREATING_NODE);
   }
 
-  onKeyDown(event) {
+  onKeyDown(event) {  // eslint-disable-line class-methods-use-this
     const keyCode = event.keyCode || event.which;
 
     if (!client.isInputTarget(event) && keyCode === client.KEYCODE.BACKSPACE) {
@@ -156,12 +154,7 @@ class App extends React.Component {
     return false;
   }
 
-  onElectronClose() {
-    // @TODO
-    return true;
-  }
-
-  onBrowserClose(event) {
+  onCloseApp(event) { // eslint-disable-line class-methods-use-this
     let message = true;
 
     if (this.props.hasChanges) {
@@ -172,24 +165,18 @@ class App extends React.Component {
     return message;
   }
 
-  onCloseApp(event) {
-    if (this.isElectronApp) {
-      return this.onElectronClose(event);
-    }
-
-    return this.onBrowserClose(event);
-  }
-
   getToolbarLoadElement() {
     return (
       <label
         key="import"
         className="load-button"
+        htmlFor="importButton"
       >
         <input
           type="file"
           accept=".xodball"
           onChange={this.onImportChange}
+          id="importButton"
         />
         <span>
           Import project
