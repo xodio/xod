@@ -4,7 +4,7 @@ import * as PrepareTo from './actionPreparations';
 import { addError } from '../messages/actions';
 import { PROPERTY_ERRORS, NODETYPE_ERRORS } from '../messages/constants';
 
-export const createProject = (projectName) => ({
+export const createProject = projectName => ({
   type: ActionType.PROJECT_CREATE,
   payload: {
     name: projectName,
@@ -47,7 +47,7 @@ export const addNode = (typeId, position, patchId) => (dispatch, getState) => {
   return preparedData.payload.newNodeId;
 };
 
-export const deleteNode = (id) => (dispatch, getState) => {
+export const deleteNode = id => (dispatch, getState) => {
   const projectState = core.getProject(getState());
   const preparedData = PrepareTo.deleteNode(projectState, id);
 
@@ -85,14 +85,14 @@ export const addLink = (pin1, pin2) => (dispatch, getState) => {
   return preparedData.payload.newId;
 };
 
-export const deleteLink = (id) => ({
+export const deleteLink = id => ({
   type: ActionType.LINK_DELETE,
   payload: {
     id,
   },
 });
 
-export const updateMeta = (data) => ({
+export const updateMeta = data => ({
   type: ActionType.META_UPDATE,
   payload: data,
 });
@@ -139,7 +139,7 @@ export const changePinMode = (nodeId, pinKey, injected, val = null) => (dispatch
   });
 };
 
-export const loadProjectFromJSON = (json) => ({
+export const loadProjectFromJSON = json => ({
   type: ActionType.PROJECT_LOAD_DATA,
   payload: json,
 });
@@ -150,17 +150,17 @@ export const loadProjectOnlyFromJSON = json => ({
 });
 
 
-export const undoPatch = (id) => ({
+export const undoPatch = id => ({
   type: ActionType.getPatchUndoType(id),
   payload: {},
 });
 
-export const redoPatch = (id) => ({
+export const redoPatch = id => ({
   type: ActionType.getPatchRedoType(id),
   payload: {},
 });
 
-export const clearHistoryPatch = (id) => ({
+export const clearHistoryPatch = id => ({
   type: ActionType.getPatchClearHistoryType(id),
   payload: {},
 });
@@ -187,14 +187,14 @@ export const renamePatch = (id, label) => ({
   },
 });
 
-export const deletePatch = (id) => ({
+export const deletePatch = id => ({
   type: ActionType.PATCH_DELETE,
   payload: {
     id,
   },
 });
 
-export const movePatch = (changes) => ({
+export const movePatch = changes => ({
   type: ActionType.PATCH_MOVE,
   payload: {
     id: changes.id,
@@ -205,7 +205,7 @@ export const movePatch = (changes) => ({
   },
 });
 
-export const renameProject = (name) => ({
+export const renameProject = name => ({
   type: ActionType.PROJECT_RENAME,
   payload: name,
 });
@@ -228,7 +228,7 @@ export const renameFolder = (id, name) => ({
   },
 });
 
-export const deleteFolder = (id) => (dispatch, getState) => {
+export const deleteFolder = id => (dispatch, getState) => {
   const folders = core.getFoldersByFolderId(getState(), id);
   const patches = core.getPatchesByFolderId(getState(), id);
 
@@ -242,7 +242,7 @@ export const deleteFolder = (id) => (dispatch, getState) => {
   });
 };
 
-export const moveFolder = (changes) => ({
+export const moveFolder = changes => ({
   type: ActionType.FOLDER_MOVE,
   payload: {
     id: changes.id,
@@ -250,7 +250,7 @@ export const moveFolder = (changes) => ({
   },
 });
 
-export const updateNodeTypes = (nodeTypes) => ({
+export const updateNodeTypes = nodeTypes => ({
   type: ActionType.NODETYPES_UPDATE,
   payload: {
     nodeTypes,

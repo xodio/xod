@@ -48,7 +48,7 @@ describe('Utils', () => {
 
       /* istanbul ignore next */
       Helper.expectEither(
-        val => { expect(val).to.be.equal(path); },
+        (val) => { expect(val).to.be.equal(path); },
         result
       );
     });

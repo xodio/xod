@@ -25,7 +25,7 @@ const getFileType = R.pipe(
 const parsePath = R.pipe(
   R.split(path.sep),
   R.reject(R.equals('.')),
-  (projectPath) => ({
+  projectPath => ({
     type: getFileType(R.last(projectPath)),
     folder: R.pipe(
       R.slice(1, -2),
@@ -88,7 +88,7 @@ const getPatchIdFromPath = R.pipe(
 );
 
 // :: unpackedFileData { path, content } -> { path, type, folders, content }
-const extractPathData = unpackedFileData => {
+const extractPathData = (unpackedFileData) => {
   const patchPath = R.prop('path', unpackedFileData);
 
   const patchTypeAndFolder = parsePath(patchPath);
@@ -144,7 +144,7 @@ const recursiveCreateFolders = (foldersSource) => {
     R.groupBy(R.prop(0)),
     R.values,
     R.forEach(
-      group => {
+      (group) => {
         const name = group[0][0];
         const foldersLeft = R.map(R.tail)(group);
         const id = addFolder(name, parentId);
@@ -223,7 +223,7 @@ const getPatches = R.curry(
   (mergedData, folders, libs) => {
     const patches = R.pipe(
       filterPatches,
-      R.map(patch => {
+      R.map((patch) => {
         const picked = R.pipe(
           R.prop('content'),
           pickPatchContent
@@ -236,7 +236,7 @@ const getPatches = R.curry(
     const libPatches = R.pipe(
       R.values,
       filterLibPatches,
-      R.map(lib => {
+      R.map((lib) => {
         const picked = pickPatchContent(lib);
         return getPatch(folders, lib.folder, picked);
       }),

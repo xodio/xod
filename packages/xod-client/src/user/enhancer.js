@@ -113,7 +113,7 @@ export const authEnhancer = next => (reducer, initialState, enhancer) => {
       R.pipe(
         R.keys,
         R.forEach(
-          key => {
+          (key) => {
             if (stateValues[key]) {
               Cookies.set(key, stateValues[key]);
             } else {

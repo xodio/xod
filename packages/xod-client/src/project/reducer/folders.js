@@ -6,7 +6,7 @@ import {
   FOLDER_MOVE,
 } from '../actionTypes';
 
-const newFolder = (action) => ({
+const newFolder = action => ({
   id: action.payload.newId,
   name: action.payload.name || 'New folder',
   parentId: action.payload.parentId || null,

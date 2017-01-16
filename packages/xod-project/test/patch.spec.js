@@ -349,7 +349,7 @@ describe('Patch', () => {
       const newPatch = Patch.assocPin(pin, {});
 
       Helper.expectEither(
-        validPatch => {
+        (validPatch) => {
           expect(validPatch)
             .to.be.an('object')
             .that.have.property('pins')
@@ -375,7 +375,7 @@ describe('Patch', () => {
       const expectedPatch = R.assocPath(['pins', pin.key], pin, patchWithPins);
 
       Helper.expectEither(
-        validPatch => {
+        (validPatch) => {
           expect(validPatch)
             .to.be.an('object')
             .to.be.deep.equal(expectedPatch);
@@ -632,7 +632,7 @@ describe('Patch', () => {
 
       /* istanbul ignore next */
       Helper.expectEither(
-        rightPatch => { expect(rightPatch).to.be.equal(patch); },
+        (rightPatch) => { expect(rightPatch).to.be.equal(patch); },
         test
       );
     });

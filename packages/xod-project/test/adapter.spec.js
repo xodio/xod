@@ -36,7 +36,7 @@ const extractNodeIds = R.compose(
 );
 
 // :: [String] -> String -> String
-const replaceNodePinKey = (nodeIds) => R.when(
+const replaceNodePinKey = nodeIds => R.when(
   R.contains(R.__, nodeIds),
   R.always('nodePinKey')
 );

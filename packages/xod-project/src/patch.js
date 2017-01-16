@@ -138,7 +138,7 @@ export const getNodeById = R.curry(
  */
 export const assocPin = R.curry(
   (pin, patch) => Pin.validatePin(pin).map(
-    validPin => {
+    (validPin) => {
       const key = Pin.getPinKey(validPin);
       return R.assocPath(['pins', key], validPin, patch);
     }
@@ -350,7 +350,7 @@ export const validateLink = R.curry(
  */
 export const assocLink = R.curry(
   (link, patch) => validateLink(link, patch).map(
-    validLink => {
+    (validLink) => {
       const id = Link.getLinkId(validLink);
       return R.assocPath(['links', id], validLink, patch);
     }
@@ -396,7 +396,7 @@ export const assocNode = R.curry(
     const addPin = R.curry(
       (_node, _patch) => R.ifElse(
         Node.isPinNode,
-        pinNode => {
+        (pinNode) => {
           const newPatch = Node.getPinNodeDataType(pinNode).chain(
             type => Node.getPinNodeDirection(pinNode).chain(
               direction => Pin.createPin(id, type, direction).chain(

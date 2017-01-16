@@ -6,7 +6,7 @@ import client from 'xod-client';
 export const getUploadProcess = R.pipe(
   client.getProccesses,
   R.values,
-  R.filter((proc) => proc.type === UPLOAD),
+  R.filter(proc => proc.type === UPLOAD),
   R.head
 );
 

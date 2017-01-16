@@ -26,6 +26,6 @@ export const PATCH_MOVE = 'PATCH_MOVE';
 
 export const NODETYPES_UPDATE = 'NODETYPES_UPDATE';
 
-export const getPatchUndoType = (id) => `@@redux-undo/PATCH_${id}_UNDO`;
-export const getPatchRedoType = (id) => `@@redux-undo/PATCH_${id}_REDO`;
-export const getPatchClearHistoryType = (id) => `@@redux-undo/PATCH_${id}_CLEAR_HISTORY`;
+export const getPatchUndoType = id => `@@redux-undo/PATCH_${id}_UNDO`;
+export const getPatchRedoType = id => `@@redux-undo/PATCH_${id}_REDO`;
+export const getPatchClearHistoryType = id => `@@redux-undo/PATCH_${id}_CLEAR_HISTORY`;

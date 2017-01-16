@@ -26,7 +26,7 @@ export const upload = () => (dispatch, getState) => {
     UPLOAD
   ));
 
-  const fail = (err) => dispatch(client.failProcess(
+  const fail = err => dispatch(client.failProcess(
     newId,
     UPLOAD,
     { message: err.message }

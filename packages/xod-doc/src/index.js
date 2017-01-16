@@ -8,7 +8,7 @@ import rimraf from 'rimraf';
 function prepareJSON(data, libName, userName) {
   const res = [];
   const keys = Object.keys(data).sort();
-  keys.forEach(key => {
+  keys.forEach((key) => {
     const patch = data[key];
     patch.label = patch.label || key.replace('@/', '');
     let link = key.replace('/', '-').replace('@-', '');
@@ -17,7 +17,7 @@ function prepareJSON(data, libName, userName) {
     const inputs = [];
     const outputs = [];
     const { pins } = patch;
-    Object.keys(pins).forEach(pin => {
+    Object.keys(pins).forEach((pin) => {
       pins[pin].label = pins[pin].label || pins[pin].pinLabel;
       if (pins[pin].direction === 'input') {
         inputs.push(pins[pin]);
@@ -86,17 +86,18 @@ export default (outputDir, templatesDir, projectDir, clearDestination) => {
 
   return loadProjectWithLibs(projectPath, workspace)
     .then(({ project, libs }) => pack(project, libs))
-    .then(packed => getAllTemplates(singleTpl, listTpl, outputPath, templatesPath).then(results => {
-      const singleSource = results[0].toString();
-      const listSource = results[1].toString();
-      const preparedJSON = prepareJSON(packed.nodeTypes, libName, userName);
-      preparedJSON.forEach(patch => {
-        if (!fs.existsSync(path.join(outputPath, 'nodes'))) {
-          fs.mkdirSync(path.join(outputPath, 'nodes'));
-        }
-        fs.writeFile(path.join(outputPath, patch.link), renderToString(singleSource, patch));
-      });
-      fs.writeFile(path.join(outputPath, 'index.html'), renderToString(listSource, preparedJSON));
-    })
+    .then(packed => getAllTemplates(singleTpl, listTpl, outputPath, templatesPath)
+      .then((results) => {
+        const singleSource = results[0].toString();
+        const listSource = results[1].toString();
+        const preparedJSON = prepareJSON(packed.nodeTypes, libName, userName);
+        preparedJSON.forEach((patch) => {
+          if (!fs.existsSync(path.join(outputPath, 'nodes'))) {
+            fs.mkdirSync(path.join(outputPath, 'nodes'));
+          }
+          fs.writeFile(path.join(outputPath, patch.link), renderToString(singleSource, patch));
+        });
+        fs.writeFile(path.join(outputPath, 'index.html'), renderToString(listSource, preparedJSON));
+      })
   );
 };

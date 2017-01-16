@@ -17,7 +17,7 @@ describe('Loader', () => {
 
   it('should return an array of projects in workspace', (done) => {
     Loader.getProjects(workspace)
-      .then(projects => {
+      .then((projects) => {
         expect(projects).to.have.lengthOf(1);
         expect(projects).to.deep.equal([
           {

@@ -16,7 +16,7 @@ export function getViewableSize(defaultWidth = 0, defaultHeight = 0) {
   return sizes;
 }
 
-export const isInput = (event) => (
+export const isInput = event => (
   event.target.nodeName === 'INPUT' ||
   event.target.nodeName === 'TEXTAREA' ||
   event.target.nodeName === 'SELECT'

@@ -6,7 +6,7 @@ import { API_BASEPATH } from './routes';
 
 import { getProccesses, findProcessByPath } from '../processes/selectors';
 
-export const parseBody = (body) => JSON.stringify(body);
+export const parseBody = body => JSON.stringify(body);
 
 export const generateType = (route) => {
   const method = String(route.method).toUpperCase();
@@ -59,7 +59,7 @@ export const generateActionCreators = (route, callPath) => {
 
 const processPath = R.curry((parts, path) => R.pipe(
   R.split('/'),
-  R.map(part => {
+  R.map((part) => {
     if (part[0] === ':') {
       return parts[R.tail(part)];
     }

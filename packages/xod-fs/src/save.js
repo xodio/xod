@@ -39,7 +39,7 @@ export default curry((pathToWorkspace, data) => {
 
       return Promise.all(savingFiles)
         .then(backup.clear)
-        .catch(err => {
+        .catch((err) => {
           backup.restore()
             .then(() => { throw err; });
         });

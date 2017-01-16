@@ -21,7 +21,7 @@ describe('Pin', () => {
       const valid = Pin.validatePinType(type);
       expect(valid.isRight).to.be.true();
       Helper.expectEither(
-        val => { expect(val).to.be.equal(type); },
+        (val) => { expect(val).to.be.equal(type); },
         valid
       );
     });
@@ -37,7 +37,7 @@ describe('Pin', () => {
       const valid = Pin.validatePinDirection(direction);
       expect(valid.isRight).to.be.true();
       Helper.expectEither(
-        val => { expect(val).to.be.equal(direction); },
+        (val) => { expect(val).to.be.equal(direction); },
         valid
       );
     });
@@ -102,7 +102,7 @@ describe('Pin', () => {
       const newPin = Pin.createPin(key, type, direction);
       expect(newPin.isRight).to.be.true();
       Helper.expectEither(
-        pinObj => {
+        (pinObj) => {
           expect(pinObj)
             .to.be.an('object')
             .that.deep.equal({

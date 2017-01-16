@@ -164,7 +164,7 @@ describe('Runtime', () => {
 
       // sum
       createNode(3, {
-        evaluate: (e) => ({ out: e.inputs.a + e.inputs.b }),
+        evaluate: e => ({ out: e.inputs.a + e.inputs.b }),
         inputTypes: { a: Number, b: Number },
         outLinks: {
           out: [{ nodeId: 4, key: 'val' }],

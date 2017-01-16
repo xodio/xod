@@ -18,7 +18,7 @@ export default (projectDir, output) => {
     .then(() => {
       msg.success(`Packed project successfully written into ${output}`);
     })
-    .catch(err => {
+    .catch((err) => {
       msg.error(err);
       process.exit(1);
     });

@@ -124,7 +124,7 @@ export const hasPropEq = R.useWith(
  * @param {string} key
  * @returns {function}
  */
-export const assocString = (key) => R.useWith(
+export const assocString = key => R.useWith(
   R.assoc(key),
   [
     String,
@@ -138,7 +138,7 @@ export const assocString = (key) => R.useWith(
  * @param {string} key
  * @returns {function}
  */
-export const assocNumber = (key) => R.useWith(
+export const assocNumber = key => R.useWith(
   R.assoc(key),
   [
     R.compose(

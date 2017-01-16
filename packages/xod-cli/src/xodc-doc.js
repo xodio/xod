@@ -7,7 +7,7 @@ export default (outputDir, templatesDir, projectDir, programm) => {
     .then(() => {
       msg.success(`Packed project successfully written into ${outputDir}`);
     })
-    .catch(err => {
+    .catch((err) => {
       msg.error(err);
       process.exit(1);
     });

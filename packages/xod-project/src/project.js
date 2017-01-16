@@ -365,7 +365,7 @@ export const rebasePatch = R.curry(
   (newPath, oldPath, project) =>
     validatePatchRebase(newPath, oldPath, project)
       .map(
-        proj => {
+        (proj) => {
           const patch = getPatchByPath(oldPath, proj);
           const assocThatPatch = patch.chain(R.assocPath(['patches', newPath]));
 

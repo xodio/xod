@@ -52,13 +52,13 @@ describe('Backup', () => {
       .then(() => { rBackup = new Backup(dirpath, temppath); })
       .then(() => rBackup.make())
       .then(() => readDir(temppath))
-      .then(files => {
+      .then((files) => {
         expect(files).to.have.lengthOf(1);
       })
       .then(() => fs.renameSync(filepath, `${filepath}_broken`))
       .then(() => rBackup.restore())
       .then(() => readDir(dirpath))
-      .then(files => {
+      .then((files) => {
         expect(files).to.have.lengthOf(1);
         expect(files[0]).to.be.equal(filepath);
         done();

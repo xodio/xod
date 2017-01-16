@@ -17,21 +17,21 @@ import {
 
 import { LINK_ERRORS } from '../messages/constants';
 
-export const setNodeSelection = (id) => ({
+export const setNodeSelection = id => ({
   type: ActionType.EDITOR_SELECT_NODE,
   payload: {
     id,
   },
 });
 
-export const setLinkSelection = (id) => ({
+export const setLinkSelection = id => ({
   type: ActionType.EDITOR_SELECT_LINK,
   payload: {
     id,
   },
 });
 
-export const setMode = (mode) => (dispatch, getState) => {
+export const setMode = mode => (dispatch, getState) => {
   if (Selectors.getMode(getState()) === mode) {
     return;
   }
@@ -77,7 +77,7 @@ export const deselectAll = () => (dispatch, getState) => {
   }
 };
 
-export const selectNode = (id) => (dispatch, getState) => {
+export const selectNode = id => (dispatch, getState) => {
   const state = getState();
   const selection = Selectors.getSelection(state);
   const isSelected = Selectors.isNodeSelected(selection, id);
@@ -94,7 +94,7 @@ export const selectNode = (id) => (dispatch, getState) => {
   return result;
 };
 
-export const addAndSelectNode = (typeId, position, curPatchId) => dispatch => {
+export const addAndSelectNode = (typeId, position, curPatchId) => (dispatch) => {
   const newId = dispatch(addNode(typeId, position, curPatchId));
   dispatch(setMode(EDITOR_MODE.DEFAULT));
   dispatch(selectNode(newId));
@@ -130,7 +130,7 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
   dispatch(action);
 };
 
-export const selectLink = (id) => (dispatch, getState) => {
+export const selectLink = id => (dispatch, getState) => {
   const state = getState();
   const selection = Selectors.getSelection(state);
   const isSelected = Selectors.isLinkSelected(selection, id);
@@ -147,7 +147,7 @@ export const selectLink = (id) => (dispatch, getState) => {
   return result;
 };
 
-export const setSelectedNodeType = (id) => ({
+export const setSelectedNodeType = id => ({
   type: ActionType.EDITOR_SET_SELECTED_NODETYPE,
   payload: {
     id,
@@ -168,7 +168,7 @@ export const deleteSelection = () => (dispatch, getState) => {
   });
 };
 
-export const switchPatch = (id) => (dispatch, getState) => {
+export const switchPatch = id => (dispatch, getState) => {
   if (Selectors.getCurrentPatchId(getState()) === id) { return; }
 
   dispatch(deselectAll());
@@ -180,14 +180,14 @@ export const switchPatch = (id) => (dispatch, getState) => {
   });
 };
 
-export const closeTab = (id) => ({
+export const closeTab = id => ({
   type: ActionType.TAB_CLOSE,
   payload: {
     id,
   },
 });
 
-export const sortTabs = (newOrderObject) => ({
+export const sortTabs = newOrderObject => ({
   type: ActionType.TAB_SORT,
   payload: newOrderObject,
 });

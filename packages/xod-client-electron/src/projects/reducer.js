@@ -19,7 +19,7 @@ const createProjectMeta = R.merge({
 });
 
 // :: payload:loadedProjectList -> [ { path, name, author, libs, status, message }, ... ]
-const transformPayloadIntoProjectMetas = R.map(project => {
+const transformPayloadIntoProjectMetas = R.map((project) => {
   if (project.error) {
     return createProjectMeta({
       path: project.path,

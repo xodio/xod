@@ -9,7 +9,7 @@ import {
 } from '../../actionTypes';
 import { PROPERTY_TYPE_PARSE } from 'xod-core';
 
-export const copyNode = (node) => R.clone(node);
+export const copyNode = node => R.clone(node);
 
 const parseVal = (val, type) => {
   if (type && R.has(type, PROPERTY_TYPE_PARSE)) {
