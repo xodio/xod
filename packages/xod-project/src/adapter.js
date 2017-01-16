@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { Maybe } from 'ramda-fantasy';
+import { Tuple, Maybe } from 'ramda-fantasy';
 
 import * as Project from './project';
 import * as Patch from './patch';
@@ -26,13 +26,13 @@ const maybeEmpty = R.ifElse(
   Maybe.of
 );
 
-// :: a -> [Function fn] -> a
+// :: [Function fn] -> a -> a
 // fn :: a -> Applicative a
 // For example,
 //   const t = key => R.compose(Maybe, R.assoc(key, true));
-//   reduceChainOver({}, [t('a'), t('b')]);
+//   reduceChainOver([t('a'), t('b')], {});
 //   { 'a': true, 'b': true }
-const reduceChainOver = R.curry((overObj, fnList) =>
+const reduceChainOver = R.curry((fnList, overObj) =>
   R.compose(
     R.unnest,
     R.reduce(R.flip(R.chain), Maybe.of(overObj))
@@ -49,6 +49,9 @@ const composeA = R.ifElse(
   R.always(R.identity),
   R.apply(R.compose)
 );
+
+// :: Tuple a (b -> b) -> Tuple a b
+const composeT = R.curry((tuple, b) => tuple.map(fn => fn(b)));
 
 
 // ================================================
@@ -95,12 +98,6 @@ export const convertPinType = R.cond([
   [R.T, R.identity],
 ]);
 
-// :: Node -> Node
-const updateNodeIdMap = R.curry((nodeIdMap, oldNode, newNode) => {
-  nodeIdMap[oldNode.id] = newNode.id; // eslint-disable-line
-  return newNode;
-});
-
 // :: NodeIdMap -> String -> String
 const getLinkNodeId = R.flip(R.prop);
 
@@ -128,18 +125,25 @@ const convertNodePins = R.compose(
   R.prop('pins')
 );
 
-// :: NodeIdMap -> PatchOld -> Function fn
-// fn :: Patch -> Patch
-const convertNodes = R.curry((nodeIdMap, patchOld) =>
-  R.compose(
-    composeA,
-    R.map(oldNode => Node.createNode(oldNode.position, oldNode.typeId)
-      .map(updateNodeIdMap(nodeIdMap, oldNode))
-      .map(convertNodePins(oldNode))
-      .chain(Patch.assocNode)
-    ),
-    getNodes
-  )(patchOld)
+const mapNodeId = R.curry((oldNode, newNode) => ({ [oldNode.id]: newNode.id }));
+
+// :: PatchOld -> { NodeIdMap, Function fn }
+// fn :: Patch -> Tuple NodeIdMap Patch
+const convertNodes = R.compose(
+  composeT,
+  R.converge(
+    Tuple,
+    [
+      R.compose(R.mergeAll, R.pluck('nodeIdMap')),
+      R.compose(composeA, R.pluck('node')),
+    ]
+  ),
+  R.map(oldNode => Node.createNode(oldNode.position, oldNode.typeId)
+    .map(node => ({ nodeIdMap: mapNodeId(oldNode, node), node }))
+    .map(R.evolve({ node: convertNodePins(oldNode) }))
+    .chain(R.evolve({ node: Patch.assocNode }))
+  ),
+  getNodes
 );
 
 // :: NodeIdMap -> PatchOld -> Function fn
@@ -168,32 +172,31 @@ const getPatchByOldPatch = project => R.compose(
   R.prop('id')
 );
 
-// :: Project -> [PatchOld] -> [Patch]
-const getPatchesWithLinks = R.curry(
-  (nodeIdMap, project) => R.map(R.converge(
-    reduceChainOver,
-    [
-      getPatchByOldPatch(project),
-      convertLinks(nodeIdMap),
-    ]
-  ))
+// :: Tuple NodeIdMap Project -> [PatchOld] -> [Patch]
+const getPatchesWithLinks = R.compose(
+  R.map,
+  R.converge(reduceChainOver),
+  R.juxt([
+    R.compose(convertLinks, Tuple.fst),
+    R.compose(getPatchByOldPatch, Tuple.snd),
+  ])
 );
 
-// :: NodeIdMap -> ProjectOld -> Project -> Project
+// :: ProjectOld -> Tuple NodeIdMap Project -> Project
 const convertLinksInPatches = R.curry(
-  (nodeIdMap, projectOld, project) => R.compose(
-    reduceChainOver(project),
-    R.map(R.apply(Project.assocPatch)),
-    R.converge(
-      R.zip,
-      [
-        R.map(R.prop('id')),
-        getPatchesWithLinks(nodeIdMap, project),
-      ]
-    ),
-    R.values,
-    mergePatchesAndNodeTypes
-  )(projectOld)
+  (projectOld, tuple) => R.compose(
+      reduceChainOver(R.__, Tuple.snd(tuple)),
+      R.map(R.apply(Project.assocPatch)),
+      R.converge(
+        R.zip,
+        [
+          R.map(R.prop('id')),
+          getPatchesWithLinks(tuple),
+        ]
+      ),
+      R.values,
+      mergePatchesAndNodeTypes
+    )(projectOld)
 );
 
 // :: PatchOld -> Function fn
@@ -223,11 +226,11 @@ const getCustomPinsOnly = R.compose(
 
 // :: PatchOld -> Function fn
 // fn :: Patch -> Patch
-const convertPatchPins = R.compose(
-  R.flip(reduceChainOver),
-  R.when(
+const convertPatchPins = R.curry((patchOld, patch) => R.compose(
+  R.ifElse(
     Maybe.isNothing,
-    R.always([R.identity])
+    R.nthArg(1), // TODO: Why we get second argument here, not just Nothing?
+    reduceChainOver
   ),
   R.chain(R.compose(
     R.map(R.compose(
@@ -245,23 +248,28 @@ const convertPatchPins = R.compose(
   )),
   maybeEmpty,
   getCustomPinsOnly
-);
+)(patchOld)(patch));
 
-// :: NodeIdMap -> ProjectOld -> Function fn
-// fn :: Project -> Project
-const convertPatches = R.curry((nodeIdMap, projectOld) =>
-  R.compose(
-    composeA,
-    R.map(oldPatch => Maybe.of(Patch.createPatch())
-      .chain(apOrSkip(addLabel(oldPatch)))
-      .map(convertPatchPins(oldPatch))
-      .map(convertNodes(nodeIdMap, oldPatch))
-      .chain(apOrSkip(copyImpls(oldPatch)))
-      .chain(assocPatchUnsafe(oldPatch.id))
-    ),
-    R.values,
-    mergePatchesAndNodeTypes
-  )(projectOld)
+// :: ProjectOld -> Function fn
+// fn :: Project -> Tuple NodeIdMap Project
+const convertPatches = R.compose(
+  composeT,
+  R.converge(
+    Tuple,
+    [
+      R.compose(R.mergeAll, R.pluck(0)),
+      R.compose(composeA, R.pluck(1)),
+    ]
+  ),
+  R.map(oldPatch => Maybe.of(Patch.createPatch())
+    .chain(apOrSkip(addLabel(oldPatch)))
+    .chain(apOrSkip(copyImpls(oldPatch)))
+    .map(convertPatchPins(oldPatch))
+    .chain(convertNodes(oldPatch))
+    .map(assocPatchUnsafe(oldPatch.id))
+  ),
+  R.values,
+  mergePatchesAndNodeTypes
 );
 
 /**
@@ -269,12 +277,9 @@ const convertPatches = R.curry((nodeIdMap, projectOld) =>
  * @param {object} bundle
  * @returns {Project}
  */
-export const toV2 = (bundle) => {
-  const nodeIdMap = {};
-
-  return Maybe.of(Project.createProject())
+export const toV2 = (bundle) =>
+  Maybe.of(Project.createProject())
     .chain(apOrSkip(appendAuthor(bundle)))
-    .map(convertPatches(nodeIdMap, bundle))
-    .map(convertLinksInPatches(nodeIdMap, bundle))
+    .map(convertPatches(bundle))
+    .map(convertLinksInPatches(bundle))
     .chain(R.identity);
-};
