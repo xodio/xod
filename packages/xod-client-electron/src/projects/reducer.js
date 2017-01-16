@@ -1,8 +1,8 @@
 import R from 'ramda';
+import { STATUS } from 'xod-client';
 
 import { REDUCER_STATUS, PROJECT_STATUS } from './constants';
 import { LOAD_PROJECT_LIST } from '../view/actionTypes';
-import { STATUS } from 'xod-client';
 
 const initialState = {
   status: REDUCER_STATUS.INITIAL,

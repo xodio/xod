@@ -1,6 +1,5 @@
-import * as msg from './messages';
-
 import doc from 'xod-doc';
+import * as msg from './messages';
 
 export default (outputDir, templatesDir, projectDir, programm) => {
   doc(outputDir, templatesDir, projectDir, programm.clear)

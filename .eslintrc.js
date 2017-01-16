@@ -42,12 +42,10 @@ module.exports = {
       'capIsNewExceptions': ['Maybe', 'Either'],
       'capIsNewExceptionPattern': '^(Maybe|Either)\..'
     }],
-
     'import/no-extraneous-dependencies': ['error', {
       devDependencies: ['**/*.spec.js', '**/xod-client-electron/**/*.js']
     }],
 
-    'import/imports-first': 'off', // TODO: enable and fix code
     'import/prefer-default-export': 'off', // TODO: enable and fix code
     'import/no-dynamic-require': 'off', // TODO: enable and fix code
   },

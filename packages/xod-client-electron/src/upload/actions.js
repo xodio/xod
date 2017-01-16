@@ -1,10 +1,9 @@
-
+import { getProjectPojo } from 'xod-core';
 import client from 'xod-client';
+import { transpileForEspruino } from 'xod-js';
 import uploadToEspruino from 'xod-espruino-upload';
 
 import { UPLOAD } from './actionTypes';
-import { getProjectPojo } from 'xod-core';
-import { transpileForEspruino } from 'xod-js';
 
 export const upload = () => (dispatch, getState) => {
   const project = getProjectPojo(getState());

@@ -1,4 +1,6 @@
 import R from 'ramda';
+import { ENTITY, generateId } from 'xod-core';
+
 import {
   EDITOR_DESELECT_ALL,
   EDITOR_SELECT_NODE,
@@ -17,7 +19,6 @@ import {
   NODE_DELETE,
   LINK_DELETE,
 } from '../project/actionTypes';
-import { ENTITY, generateId } from 'xod-core';
 
 const addSelection = (entityName, action, state) => {
   const select = {
