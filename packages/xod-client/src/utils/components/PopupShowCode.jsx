@@ -38,7 +38,7 @@ class PopupShowCode extends React.Component {
         dialogStyles={{
           height: 'auto',
         }}
-        ref={this.assignRef}
+        ref={this.assignPopupRef}
         title="Transpiled code:"
         afterClose={this.props.onClose}
       >
