@@ -19,7 +19,7 @@ export const userInfo = R.pick(['user_id, username, userpic']);
 export const username = R.prop('username');
 
 // :: userState -> userpic
-export const userpic = R.prop('suerpic');
+export const userpic = R.prop('userpic');
 
 // :: userState -> [ project, ... ]
 export const projects = R.prop('projects');

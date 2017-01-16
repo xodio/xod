@@ -45,5 +45,7 @@ module.exports = {
     'import/no-extraneous-dependencies': ['error', {
       devDependencies: ['**/*.spec.js', '**/xod-client-electron/**/*.js']
     }],
+
+    'react/forbid-prop-types' : 'off' // TODO: enable and make custom propTypes
   },
 };

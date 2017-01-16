@@ -1,10 +1,10 @@
 import React from 'react';
-
-import PopupForm from '../../utils/components/PopupForm';
 import Formsy from 'formsy-react';
 import FormsyComponent from 'formsy-react-components';
 
-export class LoginForm extends React.Component {
+import PopupForm from '../../utils/components/PopupForm';
+
+class LoginForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -78,3 +78,5 @@ LoginForm.propTypes = {
   onSubmit: React.PropTypes.func,
   isVisible: React.PropTypes.bool,
 };
+
+export default LoginForm;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from 'react-fa';
 
-export const UserButton = ({ username, onClick }) => (
+const UserButton = ({ username, onClick }) => (
   <button
     className="UserButton"
     onClick={onClick}
@@ -15,3 +15,5 @@ UserButton.propTypes = {
   username: React.PropTypes.string.isRequired,
   onClick: React.PropTypes.func.isRequired,
 };
+
+export default UserButton;

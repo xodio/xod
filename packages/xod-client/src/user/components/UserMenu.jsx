@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Icon } from 'react-fa';
 
-export const UserMenu = ({ opened, buttons }) => {
+const UserMenu = ({ opened, buttons }) => {
   const classnames = classNames('UserMenu', {
     'is-opened': opened,
   });
@@ -40,3 +40,5 @@ UserMenu.defaultProps = {
   opened: false,
   buttons: [],
 };
+
+export default UserMenu;

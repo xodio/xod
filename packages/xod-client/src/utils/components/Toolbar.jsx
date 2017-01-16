@@ -64,20 +64,20 @@ const Toolbar = ({
   );
 };
 
+const ButtonPropType = React.PropTypes.shape({
+  key: React.PropTypes.string,
+  className: React.PropTypes.string,
+  onClick: React.PropTypes.func,
+  label: React.PropTypes.string,
+});
+
 Toolbar.propTypes = {
   meta: React.PropTypes.object,
   nodeTypes: React.PropTypes.object,
   selectedNodeType: React.PropTypes.string,
   onSelectNodeType: React.PropTypes.func,
   onAddNodeClick: React.PropTypes.func,
-  buttons: React.PropTypes.arrayOf(
-    React.PropTypes.shape({
-      key: React.PropTypes.string,
-      className: React.PropTypes.string,
-      onClick: React.PropTypes.func,
-      label: React.PropTypes.string,
-    })
-  ),
+  buttons: React.PropTypes.arrayOf(ButtonPropType),
 };
 
 export default Toolbar;
