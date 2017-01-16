@@ -30,7 +30,9 @@ export default function composeWidget(Component) {
         <div className="InspectorWidget">
           {this.getSwitch()}
           <Component
-            {...this.props}
+            label={this.props.label}
+            value={this.props.value}
+            onPropUpdate={this.props.onPropUpdate}
             disabled={this.isDisabled()}
           />
         </div>
@@ -39,12 +41,11 @@ export default function composeWidget(Component) {
   }
 
   Widget.propTypes = {
-    key: React.PropTypes.string,
-    label: React.PropTypes.string,
-    value: React.PropTypes.any,
+    label: React.PropTypes.string.isRequired,
+    value: React.PropTypes.any.isRequired,
     injected: React.PropTypes.bool,
     kind: React.PropTypes.string,
-    onPropUpdate: React.PropTypes.func,
+    onPropUpdate: React.PropTypes.func.isRequired,
     onPinModeSwitch: React.PropTypes.func,
   };
 

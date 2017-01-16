@@ -1,8 +1,9 @@
 import R from 'ramda';
 import React from 'react';
+import { ENTITY } from 'xod-core';
+
 import Widgets, { WIDGET_MAPPING, DEFAULT_NODE_PROPS } from './inspectorWidgets';
 import { noop } from '../../utils/ramda';
-import { ENTITY } from 'xod-core';
 
 const indexByKey = R.indexBy(R.prop('key'));
 

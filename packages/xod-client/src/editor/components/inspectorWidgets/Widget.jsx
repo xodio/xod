@@ -1,10 +1,11 @@
 import R from 'ramda';
 import React from 'react';
+import { PROPERTY_TYPE_PARSE } from 'xod-core';
+
 import { KEYCODE } from '../../../utils/constants';
 import { noop } from '../../../utils/ramda';
 import Switch from '../InspectorModeSwitch';
 import { PROPERTY_KIND } from '../../../project/constants';
-import { PROPERTY_TYPE_PARSE } from 'xod-core';
 
 export default function composeWidget(Component, widgetProps) {
   const commonKeyDownHandlers = {

@@ -43,9 +43,10 @@ module.exports = {
       'capIsNewExceptionPattern': '^(Maybe|Either)\..'
     }],
     'import/no-extraneous-dependencies': ['error', {
-      devDependencies: ['**/*.spec.js', '**/xod-client-electron/**/*.js']
+      devDependencies: ['**/*.spec.js', '**/xod-client-electron/**/*.js', '**/xod-client/**/DevTools.jsx']
     }],
 
+    'jsx-a11y/no-static-element-interactions' : 'off', // TODO: enable and fix
     'react/forbid-prop-types' : 'off' // TODO: enable and make custom propTypes
   },
 };

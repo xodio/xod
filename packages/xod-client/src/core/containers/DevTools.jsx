@@ -5,7 +5,6 @@ import DockMonitor from 'redux-devtools-dock-monitor';
 import FilterableLogMonitor from 'redux-devtools-filterable-log-monitor';
 import Dispatcher from 'redux-devtools-dispatch';
 
-
 export default createDevTools(
   <DockMonitor
     toggleVisibilityKey="ctrl-h"
