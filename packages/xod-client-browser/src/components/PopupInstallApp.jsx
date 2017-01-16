@@ -9,7 +9,7 @@ class PopupInstallApp extends React.Component {
     this.assignPopupRef = this.assignPopupRef.bind(this);
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.isVisible) {
+    if (!this.props.isVisible && nextProps.isVisible) {
       this.show();
     }
   }
@@ -48,7 +48,7 @@ class PopupInstallApp extends React.Component {
 }
 
 PopupInstallApp.propTypes = {
-  isVisible: React.PropTypes.bool, // eslint-disable-line
+  isVisible: React.PropTypes.bool,
   onClose: React.PropTypes.func,
 };
 
