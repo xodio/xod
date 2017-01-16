@@ -162,18 +162,13 @@ export const getNodeGhost = (state) => {
     R.values,
     R.reduce((p, prop) => R.assoc(prop.key, prop.value, p), {})
   )(nodeType);
-
   const nodeLabel = core.getNodeLabel(state, { typeId: nodeTypeId, properties: nodeProperties });
-
-  let pinCount = -1;
   const nodePins = R.pipe(
     R.values,
-    R.map((pin) => {
-      const id = { id: pinCount };
+    R.addIndex(R.map)((pin, index) => {
+      const id = { id: index };
       const pos = core.getPinPosition(nodeType.pins, pin.key, nodePosition);
       const radius = { radius: core.SIZE.PIN.radius };
-
-      pinCount--;
 
       return R.mergeAll([pin, id, pos, radius]);
     }),

@@ -31,7 +31,6 @@ module.exports = {
   },
 
   rules: {
-    'no-plusplus': 'off',
     'no-underscore-dangle': ['error', {
       allow: ["__"], /* Ramda’s R.__ */
       allowAfterThis: true,
