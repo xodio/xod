@@ -6,6 +6,7 @@ export * from './link';
 export * from './constants';
 export * from './utils';
 export * from './func-tools';
+export { toV2 } from './adapter';
 
 
 import * as project from './project';
@@ -16,8 +17,11 @@ import * as link from './link';
 import * as constants from './constants';
 import * as utils from './utils';
 import * as funcTools from './func-tools';
+import { toV2 } from './adapter';
 
-export default Object.assign({},
+export default Object.assign({
+  toV2,
+},
   project,
   patch,
   node,

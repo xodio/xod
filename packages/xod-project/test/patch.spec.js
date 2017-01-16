@@ -18,7 +18,7 @@ describe('Patch', () => {
       expect(patch).is.an('object');
     });
     it('should have key: nodes === {}', () => {
-      const patch = Patch.createPatch('@/test');
+      const patch = Patch.createPatch();
 
       expect(patch)
         .to.have.property('nodes')
@@ -26,7 +26,7 @@ describe('Patch', () => {
         .that.is.empty();
     });
     it('should have key: links === []', () => {
-      const patch = Patch.createPatch('@/test');
+      const patch = Patch.createPatch();
 
       expect(patch)
         .to.have.property('links')

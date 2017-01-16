@@ -13,12 +13,11 @@
   "main": "dist/index.js",
   "dependencies": {
     "co": "^4.6.0",
-    "espruino": "git+https://github.com/espruino/EspruinoTools.git#gh-pages",
+    "espruino": "0.0.30",
     "jquery": "^3.1.0"
   },
   "engines": {
     "node": "6.0.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
