@@ -45,7 +45,5 @@ module.exports = {
     'import/no-extraneous-dependencies': ['error', {
       devDependencies: ['**/*.spec.js', '**/xod-client-electron/**/*.js']
     }],
-
-    'import/no-dynamic-require': 'off', // TODO: enable and fix code
   },
 };

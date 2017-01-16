@@ -1,6 +1,10 @@
-import { genNodeTypes, getInitialState } from 'xod-core';
+// TODO: Replace this hard-coded state with nodeType providers and empty defaults
 
 /* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
+
+import { genNodeTypes, getInitialState } from 'xod-core';
+
 require('json5/lib/require');
 const nodeMetas = {
   'xod/core/button': require('../../../xod-core/nodes/meta/button.json5'),
