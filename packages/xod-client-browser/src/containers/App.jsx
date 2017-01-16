@@ -2,16 +2,14 @@ import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
+import EventListener from 'react-event-listener';
 import { HotKeys } from 'react-hotkeys';
 
 import core from 'xod-core';
 import client from 'xod-client';
-
 import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 
 import PopupInstallApp from '../components/PopupInstallApp';
-import EventListener from 'react-event-listener';
 
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
