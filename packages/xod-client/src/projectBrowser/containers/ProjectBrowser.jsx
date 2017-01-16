@@ -30,6 +30,9 @@ class ProjectBrowser extends React.Component {
     this.treeView = null;
     this.toolbar = null;
 
+    this.assignToolbar = this.assignToolbar.bind(this);
+    this.assignTreeView = this.assignTreeView.bind(this);
+
     this.onTreeChange = this.onTreeChange.bind(this);
     this.onSwitchPatch = this.onSwitchPatch.bind(this);
     this.onMissClick = this.onMissClick.bind(this);
@@ -190,10 +193,14 @@ class ProjectBrowser extends React.Component {
     );
   }
 
-  render() {
-    const assignToolbar = (toolbar) => { this.toolbar = toolbar; };
-    const assignTreeView = (treeView) => { this.treeView = treeView; };
+  assignToolbar(ref) {
+    this.toolbar = ref;
+  }
+  assignTreeView(ref) {
+    this.treeView = ref;
+  }
 
+  render() {
     return (
       <HotKeys
         handlers={this.getHotkeyHandlers()}
@@ -202,7 +209,7 @@ class ProjectBrowser extends React.Component {
       >
         <small className="title">Project browser</small>
         <ProjectBrowserToolbar
-          ref={assignToolbar}
+          ref={this.assignToolbar}
           hotkeys={this.onToolbarHotkeys}
           selection={this.state.selection}
           currentPatchId={this.props.currentPatchId}
@@ -216,7 +223,7 @@ class ProjectBrowser extends React.Component {
           onDeleteError={this.props.actions.addMessage}
         />
         <ProjectBrowserTree
-          ref={assignTreeView}
+          ref={this.assignTreeView}
           tree={this.props.tree}
           currentPatchId={this.props.currentPatchId}
           onSelect={this.onNodeSelect}

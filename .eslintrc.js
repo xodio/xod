@@ -43,7 +43,12 @@ module.exports = {
       'capIsNewExceptionPattern': '^(Maybe|Either)\..'
     }],
     'import/no-extraneous-dependencies': ['error', {
-      devDependencies: ['**/*.spec.js', '**/xod-client-electron/**/*.js', '**/xod-client/**/DevTools.jsx']
+      devDependencies: [
+        '**/*.spec.js',
+        '**/xod-client-electron/**/*.js',
+        '**/xod-client-electron/**/*.jsx',
+        '**/xod-client/**/DevTools.jsx'
+      ]
     }],
 
     'jsx-a11y/no-static-element-interactions' : 'off', // TODO: enable and fix

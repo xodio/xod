@@ -4,16 +4,16 @@ import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import { HotKeys } from 'react-hotkeys';
 import EventListener from 'react-event-listener';
 
 import core from 'xod-core';
 import client from 'xod-client';
-import actions from '../actions';
-import uploadActions from '../../upload/actions';
-import { getUploadProcess } from '../../upload/selectors';
 import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
+
+import * as actions from '../actions';
+import * as uploadActions from '../../upload/actions';
+import { getUploadProcess } from '../../upload/selectors';
 import { SAVE_PROJECT } from '../actionTypes';
 import { UPLOAD } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';

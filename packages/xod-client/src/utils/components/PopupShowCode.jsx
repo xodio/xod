@@ -6,6 +6,8 @@ class PopupShowCode extends React.Component {
     super(props);
 
     this.popup = null;
+
+    this.assignPopupRef = this.assignPopupRef.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     if (!this.props.isVisible && nextProps.isVisible) {
@@ -25,15 +27,18 @@ class PopupShowCode extends React.Component {
     }
   }
 
+  assignPopupRef(ref) {
+    this.popup = ref;
+  }
+
   render() {
-    const assignRef = (popup) => { this.popup = popup; };
     return (
       <SkyLight
         hideOnOverlayClicked
         dialogStyles={{
           height: 'auto',
         }}
-        ref={assignRef}
+        ref={this.assignRef}
         title="Transpiled code:"
         afterClose={this.props.onClose}
       >

@@ -17,6 +17,9 @@ class Node extends React.Component {
     this.pinListRef = null;
     this.testRef = null;
 
+    this.assignPinListRef = this.assignPinListRef.bind(this);
+    this.assignTextRef = this.assignTextRef.bind(this);
+
     this.width = this.props.width;
     this.originalWidth = this.props.width;
     this.height = this.props.height;
@@ -104,10 +107,14 @@ class Node extends React.Component {
     }
   }
 
-  render() {
-    const assignTextRef = (ref) => { this.textRef = ref; };
-    const assignPinListRef = (ref) => { this.pinListRef = ref; };
+  assignTextRef(ref) {
+    this.textRef = ref;
+  }
+  assignPinListRef(ref) {
+    this.pinListRef = ref;
+  }
 
+  render() {
     const position = this.getOriginPosition();
     const pins = R.pipe(
       R.values,
@@ -138,12 +145,12 @@ class Node extends React.Component {
         >
           <rect className="body" {...this.getRectProps()} />
           <NodeText
-            ref={assignTextRef}
+            ref={this.assignTextRef}
             position={textPosition}
             label={this.props.label}
           />
         </g>
-        <g className="pinlist" ref={assignPinListRef}>
+        <g className="pinlist" ref={this.assignPinListRef}>
           {pins.map(pin =>
             <Pin
               keyName={pin.key}

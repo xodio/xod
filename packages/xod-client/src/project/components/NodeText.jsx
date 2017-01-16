@@ -5,6 +5,8 @@ class NodeText extends React.Component {
     super(props);
 
     this.label = null;
+
+    this.assignLabelRef = this.assignLabelRef.bind(this);
   }
   componentDidMount() {
     this.labelBbox = this.getBbox();
@@ -46,15 +48,17 @@ class NodeText extends React.Component {
     return position;
   }
 
-  render() {
-    const assignLabelRef = (ref) => { this.label = ref; };
+  assignLabelRef(ref) {
+    this.label = ref;
+  }
 
+  render() {
     return (
       <text
         className="NodeText"
         {...this.getPosition()}
         textAnchor="middle"
-        ref={assignLabelRef}
+        ref={this.assignLabelRef}
       >
         {this.props.label}
       </text>

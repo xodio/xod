@@ -16,9 +16,11 @@
     "babel-polyfill": "^6.16.0",
     "classnames": "^2.2.5",
     "ramda": "^0.22.1",
+    "rc-progress": "^2.0.6",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-event-listener": "^0.3.0",
+    "react-fa": "^4.1.2",
     "react-hotkeys": "^0.9.0",
     "react-redux": "^4.4.5",
     "react-skylight": "^0.4.1",
@@ -28,9 +30,9 @@
     "serialport": "^4.0.6",
     "xod-client": "^0.0.1",
     "xod-core": "^0.0.1",
-    "xod-js": "^0.0.1",
     "xod-espruino-upload": "^0.0.1",
-    "xod-fs": "^0.0.1"
+    "xod-fs": "^0.0.1",
+    "xod-js": "^0.0.1"
   },
   "devDependencies": {
     "devtron": "^1.3.0",
