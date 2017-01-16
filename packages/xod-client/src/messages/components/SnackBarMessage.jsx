@@ -11,6 +11,7 @@ class SnackBarMessage extends React.Component {
 
     this.state = {
       hidden: true,
+      display: true,
     };
 
     this.hide = this.hide.bind(this);
@@ -55,10 +56,18 @@ class SnackBarMessage extends React.Component {
     );
   }
 
+  setDisplay(val) {
+    this.setState(
+      R.assoc('display', val, this.state)
+    );
+  }
+
   hide() {
     return new Promise((resolve) => {
       this.setHidden(true);
       setTimeout(resolve, ANIMATION_TIMEOUT);
+    }).then(() => {
+      this.setDisplay(false);
     });
   }
 
@@ -66,6 +75,7 @@ class SnackBarMessage extends React.Component {
     const message = this.props.message;
     const cls = classNames('SnackBarMessage', {
       hidden: this.state.hidden,
+      display: this.state.display,
       error: message.type === MESSAGE_TYPE.ERROR,
       confirmation: message.type === MESSAGE_TYPE.CONFIRMATION,
       notification: message.type === MESSAGE_TYPE.NOTIFICATION,
@@ -75,10 +85,14 @@ class SnackBarMessage extends React.Component {
     return (
       <li
         className={cls}
-        onClick={this.onClick}
         dataId={message.id}
       >
-        {messageContent}
+        <a
+          tabIndex={message.id}
+          onClick={this.onClick}
+        >
+          {messageContent}
+        </a>
       </li>
     );
   }
