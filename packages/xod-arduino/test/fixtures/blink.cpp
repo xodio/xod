@@ -1,12 +1,35 @@
 
+/*=============================================================================
+ *
+ *
+ * Configuration
+ *
+ *
+ =============================================================================*/
+
+#define NODE_COUNT          8
+#define MAX_OUTPUT_COUNT    3
+
+// Uncomment to trace the program in the Serial Monitor
+//#define XOD_DEBUG
+
+/*=============================================================================
+ *
+ *
+ * Runtime
+ *
+ *
+ =============================================================================*/
+
 #include <Arduino.h>
 #include <inttypes.h>
 
-///////////////////////////
-#define NODE_COUNT 8
-
-#define XOD_DEBUG
-#define DEBUG_SERIAL Serial
+//----------------------------------------------------------------------------
+// Debug routines
+//----------------------------------------------------------------------------
+#ifndef DEBUG_SERIAL
+#  define DEBUG_SERIAL Serial
+#endif
 
 #ifdef XOD_DEBUG
 #  define XOD_TRACE(x)      DEBUG_SERIAL.print(x)
@@ -20,40 +43,39 @@
 #  define XOD_TRACE_FLN(x)
 #endif
 
-
-///////////////////////////
-
-typedef double Number;
-typedef bool Logic;
-
-// OPTIMIZE: we should choose uint8_t if there are less than 255 nodes in total
-// and uint32_t if there are more than 65535
-typedef uint16_t NodeId;
-
-// OPTIMIZE: we should choose a proper type with a minimal enough capacity
-typedef uint16_t PinKey;
-#define PIN_KEY_OFFSET_BITS     13
-#define PIN_KEY_MSB_MASK        (PinKey(-1) << PIN_KEY_OFFSET_BITS)
-#define PIN_KEY_LSB_MASK        (~PIN_KEY_MSB_MASK)
-
-// OPTIMIZE: we should choose a proper type with a minimal enough capacity
-typedef uint16_t DirtyFlags;
-
-typedef unsigned long TimeMs;
-typedef void (*EvalFuncPtr)(NodeId nid, void* state);
-
-#define NO_NODE ((NodeId)-1)
-
-
-/*=============================================================================
- *
- *
- * Runtime
- *
- *
- =============================================================================*/
+//----------------------------------------------------------------------------
+// Type definitions
+//----------------------------------------------------------------------------
+#define PIN_KEY_OFFSET_BITS     (16 - MAX_OUTPUT_COUNT)
+#define NO_NODE                 ((NodeId)-1)
 
 namespace xod {
+    typedef double Number;
+    typedef bool Logic;
+
+    // OPTIMIZE: we should choose uint8_t if there are less than 255 nodes in total
+    // and uint32_t if there are more than 65535
+    typedef uint16_t NodeId;
+
+    // OPTIMIZE: we should choose a proper type with a minimal enough capacity
+    typedef uint16_t PinKey;
+
+    // OPTIMIZE: we should choose a proper type with a minimal enough capacity
+    typedef uint16_t DirtyFlags;
+
+    typedef unsigned long TimeMs;
+    typedef void (*EvalFuncPtr)(NodeId nid, void* state);
+}
+
+//----------------------------------------------------------------------------
+// Engine
+//----------------------------------------------------------------------------
+namespace xod {
+    extern void* storages[NODE_COUNT];
+    extern EvalFuncPtr evaluationFuncs[NODE_COUNT];
+    extern DirtyFlags dirtyFlags[NODE_COUNT];
+    extern NodeId topology[NODE_COUNT];
+
     template<typename T>
     struct OutputPin {
         T value;
@@ -66,16 +88,12 @@ namespace xod {
         PinKey pinKey;
     };
 
-    extern void* storages[NODE_COUNT];
-    extern EvalFuncPtr evaluationFuncs[NODE_COUNT];
-    extern DirtyFlags dirtyFlags[NODE_COUNT];
-    extern NodeId topology[NODE_COUNT];
 
     // TODO: replace with a compact list
     extern TimeMs schedule[NODE_COUNT]; 
 
     inline void* pinPtr(void* storage, PinKey key) {
-        const size_t offset = key & PIN_KEY_LSB_MASK;
+        const size_t offset = key & ~(PinKey(-1) << PIN_KEY_OFFSET_BITS);
         return (uint8_t*)storage + offset;
     }
 
@@ -201,6 +219,35 @@ namespace xod {
             }
         }
     }
+}
+
+//----------------------------------------------------------------------------
+// Entry point
+//----------------------------------------------------------------------------
+void setup() { 
+    // FIXME: looks like there is a rounding bug. Waiting for 1 second fights it
+    delay(1000); 
+#ifdef XOD_DEBUG
+    DEBUG_SERIAL.begin(9600);
+#endif
+    XOD_TRACE_FLN("Program started");
+    
+    XOD_TRACE_F("NODE_COUNT = ");
+    XOD_TRACE_LN(NODE_COUNT);
+    
+    XOD_TRACE_F("sizeof(NodeId) = ");
+    XOD_TRACE_LN(sizeof(NodeId));
+
+    XOD_TRACE_F("sizeof(PinKey) = ");
+    XOD_TRACE_LN(sizeof(PinKey));
+
+    XOD_TRACE_F("sizeof(DirtyFlags) = ");
+    XOD_TRACE_LN(sizeof(DirtyFlags));
+}
+
+void loop() {
+    xod::idle();
+    xod::runTransaction();
 }
 
 /*=============================================================================
@@ -513,35 +560,3 @@ namespace xod {
 }
 
 
-/*=============================================================================
- *
- *
- * Entry point
- *
- *
- =============================================================================*/
-void setup() { 
-    // FIXME: looks like there is a rounding bug. Waiting for 1 second fights it
-    delay(1000); 
-#ifdef XOD_DEBUG
-    DEBUG_SERIAL.begin(9600);
-#endif
-    XOD_TRACE_FLN("Program started");
-    
-    XOD_TRACE_F("NODE_COUNT = ");
-    XOD_TRACE_LN(NODE_COUNT);
-    
-    XOD_TRACE_F("sizeof(NodeId) = ");
-    XOD_TRACE_LN(sizeof(NodeId));
-
-    XOD_TRACE_F("sizeof(PinKey) = ");
-    XOD_TRACE_LN(sizeof(PinKey));
-
-    XOD_TRACE_F("sizeof(DirtyFlags) = ");
-    XOD_TRACE_LN(sizeof(DirtyFlags));
-}
-
-void loop() {
-    xod::idle();
-    xod::runTransaction();
-}
