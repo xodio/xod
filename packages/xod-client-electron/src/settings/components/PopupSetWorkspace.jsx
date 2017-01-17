@@ -1,11 +1,14 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
-
 import { remote } from 'electron';
 
 class PopupSetWorkspace extends React.Component {
   constructor(props) {
     super(props);
+
+    this.popup = null;
+
+    this.assignPopupRef = this.assignPopupRef.bind(this);
 
     this.onChange = this.onChange.bind(this);
     this.changeWorkspace = this.changeWorkspace.bind(this);
@@ -18,12 +21,10 @@ class PopupSetWorkspace extends React.Component {
     }
   }
 
-  show() {
-    this.refs.popup.show();
-  }
-
-  hide() {
-    this.refs.popup.hide();
+  onChange(selection) {
+    if (selection && selection.length > 0) {
+      this.props.onChange(selection[0]);
+    }
   }
 
   getWorkspaceView() {
@@ -32,7 +33,8 @@ class PopupSetWorkspace extends React.Component {
         currentWorkspace: (
           <p>
             To save your project you should choose a workspace directory.<br />
-            We'll put all your projects into this directory, but you can easily switch it in the future.
+            We&apos;ll put all your projects into this directory,
+            but you can easily switch it in the future.
           </p>
         ),
         buttonLabel: 'Select workspace directory',
@@ -47,7 +49,7 @@ class PopupSetWorkspace extends React.Component {
         </p>
       ),
       buttonLabel: 'Switch workspace directory',
-    }
+    };
   }
 
   changeWorkspace() {
@@ -58,10 +60,20 @@ class PopupSetWorkspace extends React.Component {
     }, this.onChange);
   }
 
-  onChange(selection) {
-    if (selection && selection.length > 0) {
-      this.props.onChange(selection[0]);
+  show() {
+    if (this.popup) {
+      this.popup.show();
     }
+  }
+
+  hide() {
+    if (this.popup) {
+      this.popup.hide();
+    }
+  }
+
+  assignPopupRef(ref) {
+    this.popup = ref;
   }
 
   render() {
@@ -72,7 +84,7 @@ class PopupSetWorkspace extends React.Component {
         dialogStyles={{
           height: 'auto',
         }}
-        ref="popup"
+        ref={this.assignPopupRef}
         title="Choose your workspace directory"
         afterClose={this.props.onClose}
       >
@@ -89,7 +101,7 @@ class PopupSetWorkspace extends React.Component {
 
 PopupSetWorkspace.propTypes = {
   workspace: React.PropTypes.string,
-  isVisible: React.PropTypes.bool,
+  isVisible: React.PropTypes.bool, // eslint-disable-line
   onChange: React.PropTypes.func,
   onClose: React.PropTypes.func,
 };

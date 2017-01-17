@@ -55,7 +55,7 @@ PulseWidget.propTypes = {
   value: React.PropTypes.string,
   disabled: React.PropTypes.bool,
   onBlur: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
+  onChange: React.PropTypes.func.isRequired, // eslint-disable-line
   onKeyDown: React.PropTypes.func.isRequired,
 };
 

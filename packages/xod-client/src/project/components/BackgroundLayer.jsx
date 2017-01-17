@@ -1,6 +1,7 @@
 import React from 'react';
-import SVGLayer from './SVGLayer';
 import { LAYER } from 'xod-core';
+
+import SVGLayer from './SVGLayer';
 
 const BackgroundLayer = ({ onClick }) => (
   <SVGLayer

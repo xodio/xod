@@ -2,6 +2,7 @@ import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { HotKeys } from 'react-hotkeys';
 import core from 'xod-core';
 
 import * as MessageActions from '../../messages/actions';
@@ -11,14 +12,26 @@ import * as EditorSelectors from '../../editor/selectors';
 import { COMMAND } from '../../utils/constants';
 import { findParentByClassName } from '../../utils/browser';
 
-import { HotKeys } from 'react-hotkeys';
-
 import ProjectBrowserTree from '../components/ProjectBrowserTree';
 import ProjectBrowserToolbar from '../components/ProjectBrowserToolbar';
 
 class ProjectBrowser extends React.Component {
+  static isMissClicked(event) {
+    const treeView = findParentByClassName(event.target, 'inner');
+    return (
+      (treeView && treeView.parentNode.className === 'm-node') ||
+      findParentByClassName(event.target, 'ProjectBrowserToolbar')
+    );
+  }
+
   constructor(props) {
     super(props);
+
+    this.treeView = null;
+    this.toolbar = null;
+
+    this.assignToolbar = this.assignToolbar.bind(this);
+    this.assignTreeView = this.assignTreeView.bind(this);
 
     this.onTreeChange = this.onTreeChange.bind(this);
     this.onSwitchPatch = this.onSwitchPatch.bind(this);
@@ -67,7 +80,7 @@ class ProjectBrowser extends React.Component {
   }
 
   onMissClick(event) {
-    if (this.isMissClicked(event)) { return; }
+    if (ProjectBrowser.isMissClicked(event)) { return; }
 
     this.deselect();
   }
@@ -77,7 +90,7 @@ class ProjectBrowser extends React.Component {
     const treeChanges = core.getTreeChanges(oldTree, newTree);
 
     const dispatchChange = (array, action) => {
-      array.forEach((item) => action(item));
+      array.forEach(item => action(item));
     };
 
     if (treeChanges.changed) {
@@ -128,7 +141,7 @@ class ProjectBrowser extends React.Component {
   }
 
   getPatchFolderId(id) {
-    if (!this.props.patches.hasOwnProperty(id)) { return ''; }
+    if (R.not(R.has(id, this.props.patches))) { return ''; }
     const patch = this.props.patches[id];
 
     return R.pipe(
@@ -157,33 +170,34 @@ class ProjectBrowser extends React.Component {
   }
 
   deselect() {
-    if (this.canBeDeselected()) {
-      this.refs.treeView.deselect();
+    if (this.canBeDeselected() && this.treeView) {
+      this.treeView.deselect();
     }
-  }
-
-  isMissClicked(event) {
-    const treeView = findParentByClassName(event.target, 'inner');
-    return (
-      treeView && treeView.parentNode.className === 'm-node' ||
-      findParentByClassName(event.target, 'ProjectBrowserToolbar')
-    );
   }
 
   canBeDeselected() {
     return (
       !(
-        this.refs.toolbar &&
-        this.refs.toolbar.getState('renaming') ||
-        this.refs.toolbar.getState('deleting') ||
-        this.refs.toolbar.getState('creatingPatch') ||
-        this.refs.toolbar.getState('creatingFolder') ||
-        this.state.selection === null
+        this.toolbar &&
+        (
+          this.toolbar.getState('renaming') ||
+          this.toolbar.getState('deleting') ||
+          this.toolbar.getState('creatingPatch') ||
+          this.toolbar.getState('creatingFolder') ||
+          this.state.selection === null
+        )
       ) &&
       (
-        this.refs.treeView && this.refs.treeView.deselect
+        this.treeView && this.treeView.deselect
       )
     );
+  }
+
+  assignToolbar(ref) {
+    this.toolbar = ref;
+  }
+  assignTreeView(ref) {
+    this.treeView = ref;
   }
 
   render() {
@@ -195,7 +209,7 @@ class ProjectBrowser extends React.Component {
       >
         <small className="title">Project browser</small>
         <ProjectBrowserToolbar
-          ref="toolbar"
+          ref={this.assignToolbar}
           hotkeys={this.onToolbarHotkeys}
           selection={this.state.selection}
           currentPatchId={this.props.currentPatchId}
@@ -209,7 +223,7 @@ class ProjectBrowser extends React.Component {
           onDeleteError={this.props.actions.addMessage}
         />
         <ProjectBrowserTree
-          ref="treeView"
+          ref={this.assignTreeView}
           tree={this.props.tree}
           currentPatchId={this.props.currentPatchId}
           onSelect={this.onNodeSelect}
@@ -228,7 +242,6 @@ ProjectBrowser.propTypes = {
   patches: React.PropTypes.object,
   folders: React.PropTypes.object,
   currentPatchId: React.PropTypes.string,
-  hotkeys: React.PropTypes.func,
 };
 
 const mapStateToProps = (state) => {
@@ -246,7 +259,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     switchPatch: EditorActions.switchPatch,
     addFolder: ProjectActions.addFolder,

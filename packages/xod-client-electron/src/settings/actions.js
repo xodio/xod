@@ -1,10 +1,11 @@
+import { updateNodeTypes } from 'xod-client';
+
 import {
   SET_WORKSPACE,
   CHECK_WORKSPACE,
   CHANGE_WORKSPACE,
 } from './actionTypes';
 import { createAsyncAction } from '../view/actions';
-import { updateNodeTypes } from 'xod-client';
 
 export const setWorkspace = newPath => ({
   type: SET_WORKSPACE,

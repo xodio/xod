@@ -1,4 +1,6 @@
 import R from 'ramda';
+import { ENTITY, generateId } from 'xod-core';
+
 import {
   EDITOR_DESELECT_ALL,
   EDITOR_SELECT_NODE,
@@ -17,7 +19,6 @@ import {
   NODE_DELETE,
   LINK_DELETE,
 } from '../project/actionTypes';
-import { ENTITY, generateId } from 'xod-core';
 
 const addSelection = (entityName, action, state) => {
   const select = {
@@ -53,7 +54,7 @@ const addTab = (state, action) => {
 };
 
 const applyTabSort = (tab, payload) => {
-  if (!payload.hasOwnProperty(tab.id)) { return tab; }
+  if (R.not(R.has(tab.id, payload))) { return tab; }
 
   return R.assoc('index', payload[tab.id].index, tab);
 };

@@ -27,7 +27,7 @@ Actions.user.login = (username, password) =>
 
 Actions.user.logout = () => call(Routes.user.logout);
 
-Actions.user.user = (userId) =>
+Actions.user.user = userId =>
   call(
     Routes.user.findById,
     {
@@ -39,7 +39,7 @@ Actions.user.user = (userId) =>
 
 Actions.user.me = () => Actions.user.user(getUserId());
 
-Actions.user.projects = (userId) =>
+Actions.user.projects = userId =>
   call(
     Routes.user.projects,
     {
@@ -49,7 +49,7 @@ Actions.user.projects = (userId) =>
     }
   );
 
-Actions.project.load = (projectId) =>
+Actions.project.load = projectId =>
   call(
     Routes.project.load,
     {

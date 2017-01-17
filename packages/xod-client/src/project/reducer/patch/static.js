@@ -6,7 +6,7 @@ const defaultState = {
   folderId: null,
 };
 
-export default (id) => (inputState = defaultState, action) => {
+export default id => (inputState = defaultState, action) => {
   const state = R.evolve({
     id: R.defaultTo(id),
   })(inputState);

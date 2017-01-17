@@ -12,12 +12,12 @@ export const getCurrentPatchId = R.pipe(
   R.prop('currentPatchId')
 );
 
-export const getSelection = (state) => R.pipe(
+export const getSelection = state => R.pipe(
   getEditor,
   R.prop('selection')
 )(state);
 
-export const getSelectedNodeType = (state) => R.pipe(
+export const getSelectedNodeType = state => R.pipe(
   getEditor,
   R.prop('selectedNodeType')
 )(state);
@@ -27,7 +27,7 @@ export const getSelectionByTypes = createSelector(
   (selection) => {
     let result = {};
     if (selection.length > 0) {
-      result = R.groupBy((s) => s.entity, selection);
+      result = R.groupBy(s => s.entity, selection);
     }
     result.Node = result.Node || [];
     result.Pin = result.Pin || [];
@@ -58,7 +58,7 @@ const isPinSelected = (linkingPin, node, pin) => (
   linkingPin.pinKey === pin.key
 );
 
-export const hasSelection = (state) => (
+export const hasSelection = state => (
   (
     state.editor.selection &&
     state.editor.selection.length > 0
@@ -68,12 +68,12 @@ export const hasSelection = (state) => (
   )
 );
 
-export const getLinkingPin = (state) => R.pipe(
+export const getLinkingPin = state => R.pipe(
   getEditor,
   R.prop('linkingPin')
 )(state);
 
-export const getMode = (state) => R.pipe(
+export const getMode = state => R.pipe(
   getEditor,
   R.prop('mode')
 )(state);
@@ -90,7 +90,7 @@ export const getModeChecks = (state) => {
   };
 };
 
-export const getTabs = (state) => R.pipe(
+export const getTabs = state => R.pipe(
   getEditor,
   R.prop('tabs')
 )(state);
@@ -125,7 +125,7 @@ export const getValidPins = (nodes, links, forPin) => {
     ),
   allPins);
 
-  return R.map(pin => {
+  return R.map((pin) => {
     const sameNode = (pin.nodeId === oPin.nodeId);
     const sameDirection = (pin.direction === oPin.direction);
     const sameType = (pin.type === oPin.type);
@@ -162,18 +162,13 @@ export const getNodeGhost = (state) => {
     R.values,
     R.reduce((p, prop) => R.assoc(prop.key, prop.value, p), {})
   )(nodeType);
-
   const nodeLabel = core.getNodeLabel(state, { typeId: nodeTypeId, properties: nodeProperties });
-
-  let pinCount = -1;
   const nodePins = R.pipe(
     R.values,
-    R.map((pin) => {
-      const id = { id: pinCount };
+    R.addIndex(R.map)((pin, index) => {
+      const id = { id: index };
       const pos = core.getPinPosition(nodeType.pins, pin.key, nodePosition);
       const radius = { radius: core.SIZE.PIN.radius };
-
-      pinCount--;
 
       return R.mergeAll([pin, id, pos, radius]);
     }),
@@ -215,8 +210,8 @@ export const viewNodes = (state, deferencedNodes) => {
   const selection = getSelection(state);
   const linkingPin = getLinkingPin(state);
 
-  return R.map(node => {
-    const markSelectedPin = (pin) =>
+  return R.map((node) => {
+    const markSelectedPin = pin =>
       R.assoc('isSelected', isPinSelected(linkingPin, node, pin), pin);
 
     return R.merge(node, {
@@ -234,7 +229,7 @@ export const viewLinks = (state, dereferencedLinks) => {
     R.prop('id'),
     isLinkSelected(selection)
   );
-  const markSelectedLink = (link) => R.assoc('isSelected', isSelected(link), link);
+  const markSelectedLink = link => R.assoc('isSelected', isSelected(link), link);
 
   return R.map(markSelectedLink, dereferencedLinks);
 };

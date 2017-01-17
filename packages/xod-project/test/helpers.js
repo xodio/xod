@@ -10,7 +10,7 @@ export const expectEither = R.curry((testFunction, object) => {
 });
 
 export const expectErrorMessage = R.curry((expect, err, originalMessage) => {
-  const check = errObj => {
+  const check = (errObj) => {
     expect(errObj).to.be.an('Error');
     expect(errObj.toString()).to.be.equal(new Error(originalMessage).toString());
   };

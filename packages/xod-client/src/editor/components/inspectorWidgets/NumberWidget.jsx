@@ -33,7 +33,10 @@ const NumberWidget = (props) => {
 NumberWidget.propTypes = {
   elementId: React.PropTypes.string.isRequired,
   label: React.PropTypes.string,
-  value: React.PropTypes.string,
+  value: React.PropTypes.oneOfType([
+    React.PropTypes.string,
+    React.PropTypes.number,
+  ]),
   disabled: React.PropTypes.bool,
   onBlur: React.PropTypes.func.isRequired,
   onChange: React.PropTypes.func.isRequired,

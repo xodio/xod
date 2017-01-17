@@ -19,6 +19,8 @@ class SnackBar extends React.Component {
       mouseover: false,
     };
 
+    this.addMessages(props.errors);
+
     this.hideError = this.hideError.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
@@ -80,12 +82,12 @@ class SnackBar extends React.Component {
     R.pipe(
       R.values,
       R.forEach((error) => {
-        if (this.errors.hasOwnProperty(error.id)) {
+        if (R.has(error.id, this.errors)) {
           return;
         }
 
         const assignRef = (el) => {
-          if (this.errors.hasOwnProperty(error.id)) {
+          if (R.has(error.id, this.errors)) {
             this.errors[error.id].ref = el;
           }
         };
@@ -97,7 +99,6 @@ class SnackBar extends React.Component {
             <SnackBarMessage
               ref={assignRef}
               key={error.id}
-              onHide={this.hideError}
               message={error}
             />
           ),
@@ -125,11 +126,11 @@ SnackBar.propTypes = {
   deleteMessage: React.PropTypes.func,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   errors: ErrorSelectors.getErrors(state),
 });
 
-const mapDispatchToProps = (dispatch) => (bindActionCreators({
+const mapDispatchToProps = dispatch => (bindActionCreators({
   deleteMessage,
 }, dispatch));
 

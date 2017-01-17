@@ -30,14 +30,16 @@ const TabsItem = ({ data, onClick, onClose }) => {
   );
 };
 
+const TabsDataPropType = React.PropTypes.shape({
+  id: React.PropTypes.string,
+  patchId: React.PropTypes.string,
+  index: React.PropTypes.number,
+  label: React.PropTypes.string,
+  isActive: React.PropTypes.boolean,
+});
+
 TabsItem.propTypes = {
-  data: React.PropTypes.shape({
-    id: React.PropTypes.string,
-    patchId: React.PropTypes.string,
-    index: React.PropTypes.number,
-    label: React.PropTypes.string,
-    isActive: React.PropTypes.boolean,
-  }),
+  data: TabsDataPropType,
   onClick: React.PropTypes.func,
   onClose: React.PropTypes.func,
 };

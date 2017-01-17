@@ -74,7 +74,7 @@ describe('Node', () => {
     it('should return Either.Right with node in new position', () => {
       const newNode = Node.setNodePosition({ x: 1, y: 1 }, { position: { x: 0, y: 0 } });
       Helper.expectEither(
-        node => {
+        (node) => {
           expect(node)
             .to.be.an('object')
             .that.have.property('position');

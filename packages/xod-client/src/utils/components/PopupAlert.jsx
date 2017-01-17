@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
-import { noop } from '../../utils/ramda';
-
 import EventListener from 'react-event-listener';
+
+import { noop } from '../../utils/ramda';
 import { KEYCODE } from '../../utils/constants';
 
 const PopupAlert = ({ title, children, closeText, className, onClose, isModal, isVisible }) => {

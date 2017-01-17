@@ -2,16 +2,14 @@ import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
+import EventListener from 'react-event-listener';
 import { HotKeys } from 'react-hotkeys';
 
 import core from 'xod-core';
 import client from 'xod-client';
-
 import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 
 import PopupInstallApp from '../components/PopupInstallApp';
-import EventListener from 'react-event-listener';
 
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
@@ -28,8 +26,6 @@ class App extends React.Component {
       popupCreateProject: false,
       code: '',
     };
-
-    this.isElectronApp = (window && window.process && window.process.type);
 
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onResize = this.onResize.bind(this);
@@ -85,7 +81,7 @@ class App extends React.Component {
 
   onImportChange(event) {
     const file = event.target.files[0];
-    const reader = new FileReader();
+    const reader = new window.FileReader();
 
     reader.onload = (e) => {
       this.onImport(e.target.result);
@@ -146,7 +142,7 @@ class App extends React.Component {
     this.props.actions.setMode(client.EDITOR_MODE.CREATING_NODE);
   }
 
-  onKeyDown(event) {
+  onKeyDown(event) {  // eslint-disable-line class-methods-use-this
     const keyCode = event.keyCode || event.which;
 
     if (!client.isInputTarget(event) && keyCode === client.KEYCODE.BACKSPACE) {
@@ -156,12 +152,7 @@ class App extends React.Component {
     return false;
   }
 
-  onElectronClose() {
-    // @TODO
-    return true;
-  }
-
-  onBrowserClose(event) {
+  onCloseApp(event) { // eslint-disable-line class-methods-use-this
     let message = true;
 
     if (this.props.hasChanges) {
@@ -172,24 +163,18 @@ class App extends React.Component {
     return message;
   }
 
-  onCloseApp(event) {
-    if (this.isElectronApp) {
-      return this.onElectronClose(event);
-    }
-
-    return this.onBrowserClose(event);
-  }
-
   getToolbarLoadElement() {
     return (
       <label
         key="import"
         className="load-button"
+        htmlFor="importButton"
       >
         <input
           type="file"
           accept=".xodball"
           onChange={this.onImportChange}
+          id="importButton"
         />
         <span>
           Import project
@@ -322,7 +307,7 @@ App.propTypes = {
   actions: React.PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   hasChanges: client.projectHasChanges(state),
   project: core.getProjectPojo(state),
   projectJSON: core.getProjectJSON(state),
@@ -331,7 +316,7 @@ const mapStateToProps = (state) => ({
   selectedNodeType: client.getSelectedNodeType(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     createProject: client.createProject,
     loadProjectFromJSON: client.loadProjectFromJSON,

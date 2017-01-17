@@ -22,6 +22,8 @@ module.exports = {
   ],
 
   globals: {
+    window: true,
+    document: true,
     describe: true,
     it: true,
     before: true,
@@ -31,7 +33,6 @@ module.exports = {
   },
 
   rules: {
-    'no-plusplus': 'off',
     'no-underscore-dangle': ['error', {
       allow: ["__"], /* Ramda’s R.__ */
       allowAfterThis: true,
@@ -41,16 +42,15 @@ module.exports = {
       'capIsNewExceptions': ['Maybe', 'Either'],
       'capIsNewExceptionPattern': '^(Maybe|Either)\..'
     }],
-
     'import/no-extraneous-dependencies': ['error', {
-      devDependencies: ['**/*.spec.js', '**/xod-client-electron/**/*.js']
+      devDependencies: [
+        '**/*.spec.js',
+        '**/xod-client-electron/**/*.js',
+        '**/xod-client-electron/**/*.jsx',
+        '**/xod-client/**/DevTools.jsx'
+      ]
     }],
 
-    'arrow-parens': 'off', // TODO: enable and fix code
-    'no-prototype-builtins': 'off', // TODO: enable and fix code
-    'no-undef': 'off', // TODO: enable and fix code
-    'import/imports-first': 'off', // TODO: enable and fix code
-    'import/prefer-default-export': 'off', // TODO: enable and fix code
-    'import/no-dynamic-require': 'off', // TODO: enable and fix code
+    'react/forbid-prop-types' : 'off' // TODO: enable and make custom propTypes
   },
 };

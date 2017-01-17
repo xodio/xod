@@ -171,7 +171,7 @@ describe('Link', () => {
       expect(newLink.isRight).to.be.true();
 
       Helper.expectEither(
-        val => {
+        (val) => {
           expect(val)
             .to.have.property('id')
             .that.is.a('string')

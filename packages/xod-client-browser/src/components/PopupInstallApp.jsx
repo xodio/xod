@@ -2,17 +2,32 @@ import React from 'react';
 import SkyLight from 'react-skylight';
 
 class PopupInstallApp extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.popup = null;
+    this.assignPopupRef = this.assignPopupRef.bind(this);
+  }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.isVisible) {
+    if (!this.props.isVisible && nextProps.isVisible) {
       this.show();
     }
   }
   show() {
-    this.refs.popup.show();
+    if (this.popup) {
+      this.popup.show();
+    }
   }
   hide() {
-    this.refs.popup.hide();
+    if (this.popup) {
+      this.popup.hide();
+    }
   }
+
+  assignPopupRef(ref) {
+    this.popup = ref;
+  }
+
   render() {
     return (
       <SkyLight
@@ -20,7 +35,7 @@ class PopupInstallApp extends React.Component {
         dialogStyles={{
           height: 'auto',
         }}
-        ref="popup"
+        ref={this.assignPopupRef}
         title="Oops! You need a desktop IDE!"
         afterClose={this.props.onClose}
       >

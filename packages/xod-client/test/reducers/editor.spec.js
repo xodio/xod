@@ -12,7 +12,7 @@ import projectReducer from '../../src/project/reducer';
 import { EDITOR_MODE } from '../../src/editor/constants';
 
 const mockStore = configureStore([thunk]);
-const testStore = (state) => createStore(
+const testStore = state => createStore(
   combineReducers({
     project: f => f || {},
     editor: editorReducer,
@@ -210,7 +210,7 @@ describe('Editor reducer', () => {
         },
       },
     };
-    const createTabsStore = (state) => createStore(
+    const createTabsStore = state => createStore(
       combineReducers({
         project: projectReducer(Object.keys(state.project.patches)),
         editor: editorReducer,

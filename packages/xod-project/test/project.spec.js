@@ -219,7 +219,7 @@ describe('Project', () => {
       const newProject = Project.validatePatchRebase(newPath, oldPath, project);
       /* istanbul ignore next */
       Helper.expectEither(
-        proj => {
+        (proj) => {
           expect(proj).to.be.equal(project);
         },
         newProject
@@ -388,7 +388,7 @@ describe('Project', () => {
 
       /* istanbul ignore next */
       Helper.expectEither(
-        proj => {
+        (proj) => {
           expect(proj)
             .to.have.property('patches')
             .that.have.property(newPath)
@@ -410,7 +410,7 @@ describe('Project', () => {
 
       /* istanbul ignore next */
       Helper.expectEither(
-        proj => {
+        (proj) => {
           expect(proj)
             .to.have.property('patches')
             .that.have.property(withNodesPath)

@@ -4,7 +4,7 @@ import expandHomeDir from 'expand-home-dir';
 import recReadDir from 'recursive-readdir';
 
 // :: rootPath -> Promise
-export const readDir = (rootPath) => new Promise(
+export const readDir = rootPath => new Promise(
   (resolve, reject) => {
     const resolvedPath = path.resolve(expandHomeDir(rootPath));
     recReadDir(resolvedPath, (err, files) => {
@@ -15,7 +15,7 @@ export const readDir = (rootPath) => new Promise(
 );
 
 // :: inputPath -> Promise
-export const readFile = (inputPath) => new Promise(
+export const readFile = inputPath => new Promise(
   (resolve, reject) => {
     const resolvedPath = path.resolve(expandHomeDir(inputPath));
     fs.readFile(resolvedPath, 'utf8', (err, data) => {
@@ -30,10 +30,10 @@ export const readFile = (inputPath) => new Promise(
 );
 
 // :: inputPath -> Promise
-export const readJSON = (inputPath) =>
+export const readJSON = inputPath =>
   readFile(inputPath)
     .then(JSON.parse)
-    .catch(err => { throw Object.assign(err, { path: inputPath }); });
+    .catch((err) => { throw Object.assign(err, { path: inputPath }); });
 
 export default {
   readDir,

@@ -3,7 +3,7 @@ import * as ProcessSelectors from './selectors';
 
 import { STATUS } from '../utils/constants';
 
-export const addProcess = (type) => (dispatch, getState) => {
+export const addProcess = type => (dispatch, getState) => {
   const processes = ProcessSelectors.getProccesses(getState());
   const newId = ProcessSelectors.getNewId(processes);
 
@@ -15,19 +15,19 @@ export const addProcess = (type) => (dispatch, getState) => {
   return newId;
 };
 
-export const progressProcess = (id, type, payload = {}) => (dispatch) => dispatch({
+export const progressProcess = (id, type, payload = {}) => dispatch => dispatch({
   type,
   payload: R.merge(payload, { id }),
   meta: { status: STATUS.PROGRESSED },
 });
 
-export const successProcess = (id, type, payload = {}) => (dispatch) => dispatch({
+export const successProcess = (id, type, payload = {}) => dispatch => dispatch({
   type,
   payload: R.merge(payload, { id }),
   meta: { status: STATUS.SUCCEEDED },
 });
 
-export const failProcess = (id, type, payload = {}) => (dispatch) => dispatch({
+export const failProcess = (id, type, payload = {}) => dispatch => dispatch({
   type,
   payload: R.merge(payload, { id }),
   meta: { status: STATUS.FAILED },

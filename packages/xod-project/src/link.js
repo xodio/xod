@@ -89,7 +89,7 @@ export const getLinkOutputPinKey = R.path(['output', 'pinKey']);
  * @param {function} getter
  * @returns {function}
  */
-const isGetterEqualTo = (getter) => R.useWith(
+const isGetterEqualTo = getter => R.useWith(
   R.equals,
   [
     R.identity,

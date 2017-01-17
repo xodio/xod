@@ -1,16 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import { getMeta, getId, getProjectPojo } from 'xod-core';
+import { Icon } from 'react-fa';
+
 import { projectHasChanges, projectCanBeLoaded } from '../../utils/selectors';
 import * as user from '../selectors';
 
-import { Icon } from 'react-fa';
-import { LoginButton } from '../components/LoginButton';
-import { LoginForm } from '../components/LoginForm';
-import { UserButton } from '../components/UserButton';
-import { UserMenu } from '../components/UserMenu';
+import LoginButton from '../components/LoginButton';
+import LoginForm from '../components/LoginForm';
+import UserButton from '../components/UserButton';
+import UserMenu from '../components/UserMenu';
 
 import { ApiActions } from '../../api';
 
@@ -39,7 +39,10 @@ class UserPanel extends React.Component {
 
   componentWillReceiveProps(props) {
     if (!props.userId) {
-      this.closeMenu();
+      if (this.props.userId) {
+        this.closeMenu();
+      }
+
       return this.setPanel('unauth');
     }
 
@@ -92,11 +95,11 @@ class UserPanel extends React.Component {
     );
   }
 
-  getAuthorizedPanel(username) {
+  getAuthorizedPanel() {
     return (
       <div className="UserPanel authorized">
         <UserButton
-          username={username}
+          username={this.props.username}
           onClick={this.toggleMenu}
         />
         <UserMenu
@@ -107,23 +110,21 @@ class UserPanel extends React.Component {
     );
   }
 
-  getLoadingPanel() {
-    return (
+  getPanel() {
+    const getLoadingPanel = () => (
       <div className="UserPanel loading">
         <Icon spin name="spinner" />
       </div>
     );
-  }
 
-  getPanel() {
     switch (this.state.panel) {
       default:
       case 'unath':
         return this.getUnauthorizedPanel();
       case 'auth':
-        return this.getAuthorizedPanel(this.props.username);
+        return this.getAuthorizedPanel();
       case 'loading':
-        return this.getLoadingPanel();
+        return getLoadingPanel();
     }
   }
 
@@ -195,11 +196,10 @@ UserPanel.propTypes = {
   projectPojo: React.PropTypes.object,
   userId: React.PropTypes.string,
   username: React.PropTypes.string,
-  userpic: React.PropTypes.string,
   actions: React.PropTypes.object,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const userData = user.user(state);
   const project = getProjectPojo(state);
   const meta = getMeta(project);
@@ -212,7 +212,6 @@ const mapStateToProps = state => {
     projectPojo: getProjectPojo(state),
     userId: user.userId(userData),
     username: user.username(userData),
-    userpic: user.userpic(userData),
   };
 };
 

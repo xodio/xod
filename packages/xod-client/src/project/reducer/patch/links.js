@@ -5,7 +5,7 @@ import {
   LINK_DELETE,
 } from '../../actionTypes';
 
-export const copyLink = (link) => R.clone(link);
+export const copyLink = link => R.clone(link);
 
 export const links = (state = {}, action) => {
   switch (action.type) {

@@ -39,7 +39,7 @@ const subscribeRemoteAction = (processName, remoteAction) => {
   ipcMain.on(processName, (event, opts) => {
     event.sender.send(`${processName}:process`);
     remoteAction(opts,
-      data => { event.sender.send(`${processName}:complete`, data); }
+      (data) => { event.sender.send(`${processName}:complete`, data); }
     );
   });
 };

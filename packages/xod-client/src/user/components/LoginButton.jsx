@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from 'react-fa';
 
-export const LoginButton = ({ onClick }) => (
+const LoginButton = ({ onClick }) => (
   <button
     className="LoginButton"
     onClick={onClick}
@@ -14,3 +14,5 @@ export const LoginButton = ({ onClick }) => (
 LoginButton.propTypes = {
   onClick: React.PropTypes.func,
 };
+
+export default LoginButton;

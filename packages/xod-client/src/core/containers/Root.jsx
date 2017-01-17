@@ -7,7 +7,7 @@ import core from 'xod-core';
 import DevTools from '../../utils/devtools';
 import generateReducers from '../reducer';
 import initialState from '../state';
-import { EditorMiddleware } from '../middlewares';
+import EditorMiddleware from '../middlewares';
 import { addNode, addLink } from '../actions';
 
 export default class Root extends React.Component {
@@ -69,8 +69,8 @@ export default class Root extends React.Component {
     return (
       <Provider store={this.store}>
         <div>
-        {this.props.children}
-        {DevTools}
+          {this.props.children}
+          {DevTools}
         </div>
       </Provider>
     );

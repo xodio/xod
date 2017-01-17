@@ -17,7 +17,7 @@ describe('Functional tools', () => {
     });
     it('should contain Error', () => {
       /* istanbul ignore next */
-      testObj.chain(val => {
+      testObj.chain((val) => {
         expect(val)
           .to.be.an.instanceof(Error)
           .and.equal('testVal')

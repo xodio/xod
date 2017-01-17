@@ -1,11 +1,11 @@
 import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
+import { SIZE } from 'xod-core';
+
 import Pin from './Pin';
 import NodeText from './NodeText';
 import { noop } from '../../utils/ramda';
-
-import { SIZE } from 'xod-core';
 
 class Node extends React.Component {
   constructor(props) {
@@ -13,6 +13,12 @@ class Node extends React.Component {
     this.id = this.props.id;
 
     this.pins = {};
+
+    this.pinListRef = null;
+    this.testRef = null;
+
+    this.assignPinListRef = this.assignPinListRef.bind(this);
+    this.assignTextRef = this.assignTextRef.bind(this);
 
     this.width = this.props.width;
     this.originalWidth = this.props.width;
@@ -36,7 +42,7 @@ class Node extends React.Component {
   }
 
   onMouseDown(event) {
-    if (this.refs.pinList.contains(event.target)) {
+    if (this.pinListRef && this.pinListRef.contains(event.target)) {
       event.preventDefault();
       return;
     }
@@ -88,7 +94,7 @@ class Node extends React.Component {
   }
 
   updateNodeWidth() {
-    const nodeText = this.refs.text;
+    const nodeText = this.textRef;
     const textWidth = nodeText.getWidth();
     let newWidth = textWidth + (SIZE.NODE_TEXT.margin.x * 2);
 
@@ -99,6 +105,13 @@ class Node extends React.Component {
       this.width = newWidth;
       this.forceUpdate();
     }
+  }
+
+  assignTextRef(ref) {
+    this.textRef = ref;
+  }
+  assignPinListRef(ref) {
+    this.pinListRef = ref;
   }
 
   render() {
@@ -130,17 +143,16 @@ class Node extends React.Component {
           onMouseOver={this.handleOver}
           onMouseOut={this.handleOut}
         >
-          <rect className="body" {...this.getRectProps()} ref="rect" />
+          <rect className="body" {...this.getRectProps()} />
           <NodeText
-            ref="text"
+            ref={this.assignTextRef}
             position={textPosition}
             label={this.props.label}
           />
         </g>
-        <g className="pinlist" ref="pinList">
-          {pins.map((pin) =>
+        <g className="pinlist" ref={this.assignPinListRef}>
+          {pins.map(pin =>
             <Pin
-              nodeId={this.id}
               keyName={pin.key}
               key={pin.key}
               {...pin}

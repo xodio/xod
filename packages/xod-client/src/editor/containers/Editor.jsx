@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import core from 'xod-core';
+import { HotKeys } from 'react-hotkeys';
 
 import * as Actions from '../actions';
 import * as ProjectActions from '../../project/actions';
 import * as EditorSelectors from '../selectors';
 
-import { HotKeys } from 'react-hotkeys';
 import { COMMAND } from '../../utils/constants';
 import { EDITOR_MODE } from '../../editor/constants';
 
@@ -85,7 +85,6 @@ class Editor extends React.Component {
 }
 
 Editor.propTypes = {
-  editor: React.PropTypes.any.isRequired,
   size: React.PropTypes.object.isRequired,
   propsForInspector: React.PropTypes.arrayOf(React.PropTypes.object),
   currentPatchId: React.PropTypes.string,
@@ -108,7 +107,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     updateNodeProperty: ProjectActions.updateNodeProperty,
     changePinMode: ProjectActions.changePinMode,

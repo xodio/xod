@@ -277,7 +277,7 @@ const convertPatches = R.compose(
  * @param {object} bundle
  * @returns {Project}
  */
-export const toV2 = (bundle) =>
+export const toV2 = bundle =>
   Maybe.of(Project.createProject())
     .chain(apOrSkip(appendAuthor(bundle)))
     .map(convertPatches(bundle))

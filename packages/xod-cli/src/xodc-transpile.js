@@ -23,7 +23,7 @@ export default (input, program) => {
 
   const transpile = transpilers[target];
   if (!transpile) {
-    throw new Error(`Unknown target "${target}". Supported targets are: ${R.keys(transpilers)}`);
+    throw new Error(`Unknown target "${target}". Supported targets are: ${Object.keys(transpilers)}`);
   }
 
   msg.notice(`Transpiling ${filename} for ${target} ...`);
@@ -57,13 +57,13 @@ export default (input, program) => {
     }
   })
     .then(project => transpile(project))
-    .then(code => {
+    .then((code) => {
       if (output) {
         return writeFile(output, code)
           .then(() => {
             msg.success(`Successfully transpiled to ${output}`);
           })
-          .catch(err => {
+          .catch((err) => {
             msg.error(err);
           });
       }
@@ -73,7 +73,7 @@ export default (input, program) => {
       process.exit(0);
       return code;
     })
-    .catch(err => {
+    .catch((err) => {
       msg.error(err);
       process.exit(1);
     });

@@ -1,5 +1,3 @@
-export const isChromeApp = window && window.chrome && chrome.app && chrome.app.runtime;
-
 export function getViewableSize(defaultWidth = 0, defaultHeight = 0) {
   const sizes = {
     width: defaultWidth,
@@ -18,19 +16,7 @@ export function getViewableSize(defaultWidth = 0, defaultHeight = 0) {
   return sizes;
 }
 
-export function getStyle(oElm, strCssRule) {
-  let strValue = '';
-  let strCss = strCssRule;
-  if (document.defaultView && document.defaultView.getComputedStyle) {
-    strValue = document.defaultView.getComputedStyle(oElm, '').getPropertyValue(strCssRule);
-  } else if (oElm.currentStyle) {
-    strCss = strCssRule.replace(/-(\w)/g, (strMatch, p1) => p1.toUpperCase());
-    strValue = oElm.currentStyle[strCss];
-  }
-  return strValue;
-}
-
-export const isInput = (event) => (
+export const isInput = event => (
   event.target.nodeName === 'INPUT' ||
   event.target.nodeName === 'TEXTAREA' ||
   event.target.nodeName === 'SELECT'

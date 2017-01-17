@@ -14,7 +14,7 @@ export const addMessage = (type, message) => ({
   },
 });
 
-export const deleteMessage = (id) => ({
+export const deleteMessage = id => ({
   type: ActionType.MESSAGE_DELETE,
   payload: {
     id,
@@ -25,6 +25,6 @@ export const deleteMessage = (id) => ({
   },
 });
 
-export const addError = (error) => addMessage(MESSAGE_TYPE.ERROR, error);
-export const addConfirmation = (error) => addMessage(MESSAGE_TYPE.CONFIRMATION, error);
-export const addNotification = (error) => addMessage(MESSAGE_TYPE.CONFIRMATION, error);
+export const addError = error => addMessage(MESSAGE_TYPE.ERROR, error);
+export const addConfirmation = error => addMessage(MESSAGE_TYPE.CONFIRMATION, error);
+export const addNotification = error => addMessage(MESSAGE_TYPE.CONFIRMATION, error);

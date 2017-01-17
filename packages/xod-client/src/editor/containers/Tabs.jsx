@@ -2,16 +2,14 @@ import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as Actions from '../actions';
-import * as EditorSelectors from '../selectors';
-
-import { swap, assocIndexes, indexById } from '../../utils/array';
-
 import {
   SortableContainer as sortableContainer,
   SortableElement as sortableElement,
 } from 'react-sortable-hoc';
 
+import * as Actions from '../actions';
+import * as EditorSelectors from '../selectors';
+import { swap, assocIndexes, indexById } from '../../utils/array';
 import TabsContainer from '../components/TabsContainer';
 import TabsItem from '../components/TabsItem';
 
@@ -109,12 +107,12 @@ Tabs.propTypes = {
   actions: React.PropTypes.objectOf(React.PropTypes.func),
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   tabs: EditorSelectors.getPreparedTabs(state),
   currentPatchId: EditorSelectors.getCurrentPatchId(state),
 });
 
-const mapDispatchToprops = (dispatch) => ({
+const mapDispatchToprops = dispatch => ({
   actions: bindActionCreators({
     switchPatch: Actions.switchPatch,
     closeTab: Actions.closeTab,

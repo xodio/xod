@@ -64,13 +64,13 @@ describe('Generate docs', () => {
   });
 
   it('files should contain not less than 1 match of patch label', () => {
-    packed.forEach(el => {
+    packed.forEach((el) => {
       const re = new RegExp(`<h1>${el.label}</h1>`);
       expect(file(pathResolve(el.link, tmpPath))).to.match(re);
     });
   });
   it('index should contain all labels', () => {
-    packed.forEach(el => {
+    packed.forEach((el) => {
       const re = new RegExp(el.label);
       expect(file(pathResolve('index.html', tmpPath))).to.match(re);
     });

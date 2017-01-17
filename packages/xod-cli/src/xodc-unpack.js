@@ -14,14 +14,14 @@ export default (xodball, workspace) => {
   let projectName = '<UNTITLED PROJECT>';
 
   readJSON(xodballPath)
-    .then(project => { projectName = project.meta.name; return project; })
+    .then((project) => { projectName = project.meta.name; return project; })
     .then(arrangeByFiles)
     .then(save(workspacePath))
     .then(() => {
       msg.success(`Successfully unpacked "${projectName}"`);
       process.exit(0);
     })
-    .catch(err => {
+    .catch((err) => {
       msg.error(err);
       process.exit(1);
     });

@@ -130,7 +130,6 @@ export default class Pin extends React.Component {
 }
 
 Pin.propTypes = {
-  nodeId: React.PropTypes.string.isRequired,
   keyName: React.PropTypes.string.isRequired,
   injected: React.PropTypes.bool,
   pinLabel: React.PropTypes.string,

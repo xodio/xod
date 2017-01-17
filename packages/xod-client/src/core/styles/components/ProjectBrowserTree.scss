@@ -59,6 +59,7 @@
       display: block;
       padding: 4px 6px 4px 10px;
       overflow: hidden;
+      outline: none;
 
       &.is-active {
         border-left: 100px solid #fff;
@@ -67,9 +68,15 @@
         margin-right: -100px;
         background: #fff;
         color: #006;
+
+        &:focus {
+          background: $color-button-primary-background;
+          border-left: 100px solid $color-button-primary-background;
+          border-right: 100px solid $color-button-primary-background;
+          color: $color-button-primary-text;
+        }
       }
       &.is-current {
-        // font-weight: bold;
         color: red;
       }
 
@@ -98,11 +105,4 @@
     }
   }
 
-}
-
-:focus .ProjectBrowserTree .node.is-active {
-  background: $color-button-primary-background;
-  border-left: 100px solid $color-button-primary-background;
-  border-right: 100px solid $color-button-primary-background;
-  color: $color-button-primary-text;
 }

@@ -4,16 +4,16 @@ import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import { HotKeys } from 'react-hotkeys';
 import EventListener from 'react-event-listener';
 
 import core from 'xod-core';
 import client from 'xod-client';
-import actions from '../actions';
-import uploadActions from '../../upload/actions';
-import { getUploadProcess } from '../../upload/selectors';
 import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
+
+import * as actions from '../actions';
+import * as uploadActions from '../../upload/actions';
+import { getUploadProcess } from '../../upload/selectors';
 import { SAVE_PROJECT } from '../actionTypes';
 import { UPLOAD } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
@@ -135,7 +135,7 @@ class App extends React.Component {
 
   onImportChange(event) {
     const file = event.target.files[0];
-    const reader = new FileReader();
+    const reader = new window.FileReader();
 
     reader.onload = (e) => {
       this.onImport(e.target.result);
@@ -248,12 +248,7 @@ class App extends React.Component {
     return false;
   }
 
-  onElectronClose() { // eslint-disable-line class-methods-use-this
-    // @TODO
-    return true;
-  }
-
-  onBrowserClose(event) {
+  onCloseApp(event) { // eslint-disable-line class-methods-use-this
     let message = true;
 
     if (this.props.hasChanges) {
@@ -262,10 +257,6 @@ class App extends React.Component {
     }
 
     return message;
-  }
-
-  onCloseApp(event) {
-    return this.onElectronClose(event);
   }
 
   getSaveProgress() {
@@ -491,7 +482,7 @@ const mapStateToProps = (state) => {
   });
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     createProject: client.createProject,
     loadProjectFromJSON: client.loadProjectFromJSON,

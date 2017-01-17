@@ -109,7 +109,7 @@ export const getPatchPath = R.curry((patch, xodball) => {
 // but if any node references to patch (this is patchNode),
 // so we'll replace this id with path, like '@/foldersPath/patchName'
 // :: patches -> patchesWithResolvedIds
-const resolvePatchIds = patches => {
+const resolvePatchIds = (patches) => {
   const pathMapping = R.reduce(
     (acc, patch) => {
       if (isLocalID(patch.id) === false) { return acc; }

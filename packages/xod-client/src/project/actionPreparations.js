@@ -129,7 +129,7 @@ export const addLink = (state, pin1, pin2) => {
   const nodes = core.dereferencedNodes(projectState, patchId);
   const pins = core.getAllPinsFromNodes(nodes);
 
-  const eqProps = (link) => R.both(
+  const eqProps = link => R.both(
     R.propEq('nodeId', link.nodeId),
     R.propEq('key', link.pinKey)
   );

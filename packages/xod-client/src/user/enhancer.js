@@ -1,5 +1,6 @@
 import R from 'ramda';
 import Cookies from 'js-cookie';
+
 import { notNil } from '../utils/ramda';
 import { ApiActions, CALL_API } from '../api';
 import { userLens, userIdLens, accessTokenLens } from '../user/selectors';
@@ -113,7 +114,7 @@ export const authEnhancer = next => (reducer, initialState, enhancer) => {
       R.pipe(
         R.keys,
         R.forEach(
-          key => {
+          (key) => {
             if (stateValues[key]) {
               Cookies.set(key, stateValues[key]);
             } else {
@@ -143,3 +144,5 @@ export const authEnhancer = next => (reducer, initialState, enhancer) => {
 
   return store;
 };
+
+export default authEnhancer;

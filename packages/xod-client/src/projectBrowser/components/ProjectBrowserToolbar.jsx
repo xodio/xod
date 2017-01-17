@@ -1,11 +1,11 @@
 import R from 'ramda';
 import React from 'react';
-import { noop } from '../../utils/ramda';
+import { Icon } from 'react-fa';
 
+import { noop } from '../../utils/ramda';
 import { COMMAND } from '../../utils/constants';
 import { PROJECT_BROWSER_ERRORS } from '../../messages/constants';
 
-import { Icon } from 'react-fa';
 import PopupPrompt from '../../utils/components/PopupPrompt';
 import PopupConfirm from '../../utils/components/PopupConfirm';
 
@@ -15,6 +15,8 @@ const initialState = {
   creatingPatch: false,
   creatingFolder: false,
 };
+
+const getPresentPatch = patch => R.propOr(patch, 'present', patch);
 
 class ProjectBrowserToolbar extends React.Component {
   constructor(props) {
@@ -100,11 +102,11 @@ class ProjectBrowserToolbar extends React.Component {
     return this.props.projectName;
   }
   getFolderName(id) {
-    if (!this.props.folders.hasOwnProperty(id)) { return ''; }
+    if (R.not(R.has(id, this.props.folders))) { return ''; }
     return this.props.folders[id].name;
   }
   getPatchName(id) {
-    if (!this.props.patches.hasOwnProperty(id)) { return ''; }
+    if (R.not(R.has(id, this.props.patches))) { return ''; }
     const patch = this.props.patches[id];
 
     return R.pipe(
@@ -138,10 +140,6 @@ class ProjectBrowserToolbar extends React.Component {
     };
   }
 
-  getPresentPatch(patch) {
-    return R.propOr(patch, 'present', patch);
-  }
-
   getState(key) {
     return this.state[key];
   }
@@ -166,7 +164,7 @@ class ProjectBrowserToolbar extends React.Component {
       const patches = R.values(this.props.patches);
       const folderChilds = R.filter(R.propEq('parentId', id))(folders);
       const patchChilds = R.filter(
-        patch => R.propEq('folderId', id)(this.getPresentPatch(patch))
+        patch => R.propEq('folderId', id)(getPresentPatch(patch))
       )(patches);
 
       haveChilds = ((folderChilds.length + patchChilds.length) > 0);
@@ -174,7 +172,7 @@ class ProjectBrowserToolbar extends React.Component {
 
     if (type === 'patch') {
       const patches = this.props.patches;
-      const patch = this.getPresentPatch(patches[id]);
+      const patch = getPresentPatch(patches[id]);
       haveChilds = (R.values(patch.nodes).length > 0);
     }
 

@@ -3,7 +3,7 @@ import fse from 'fs.extra';
 import rimraf from 'rimraf';
 import path from 'path';
 
-const lastDir = (dir) => dir.split(path.sep).filter(name => name !== '').pop();
+const lastDir = dir => dir.split(path.sep).filter(name => name !== '').pop();
 
 export class Backup {
   constructor(dataPath, tempPath) {
@@ -27,7 +27,7 @@ export class Backup {
       if (!this.isDataExist) { resolve('data is not exist'); return; }
       if (!this.isTempExist) { fs.mkdirSync(this.path.temp); }
 
-      fse.copyRecursive(this.path.data, this.path.dataTemp, err => {
+      fse.copyRecursive(this.path.data, this.path.dataTemp, (err) => {
         if (err) { reject(err); return; }
         this.stored = true;
         resolve();

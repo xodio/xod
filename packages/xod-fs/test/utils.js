@@ -1,7 +1,7 @@
 import R from 'ramda';
 import { mapIndexed } from 'xod-core';
 
-export const numerateFolders = initialFolders => {
+export const numerateFolders = (initialFolders) => {
   const accordance = {};
 
   return R.pipe(
@@ -14,7 +14,7 @@ export const numerateFolders = initialFolders => {
       }
     ),
     R.map(
-      folder => {
+      (folder) => {
         if (folder.parentId === null) {
           return folder;
         }

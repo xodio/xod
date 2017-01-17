@@ -1,12 +1,12 @@
-
 import R from 'ramda';
-import { UPLOAD } from './actionTypes';
 import client from 'xod-client';
+
+import { UPLOAD } from './actionTypes';
 
 export const getUploadProcess = R.pipe(
   client.getProccesses,
   R.values,
-  R.filter((proc) => proc.type === UPLOAD),
+  R.filter(proc => proc.type === UPLOAD),
   R.head
 );
 

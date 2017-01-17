@@ -1,7 +1,8 @@
 import React from 'react';
+import { LAYER } from 'xod-core';
+
 import SVGLayer from './SVGLayer';
 import Node from './Node';
-import { LAYER } from 'xod-core';
 
 const NodesLayer = ({ nodes, onMouseDown, onPinMouseUp, onPinMouseDown }) => (
   <SVGLayer

@@ -18,11 +18,11 @@ const isProject = R.pipe(
 // only patch.xodm have a patch id,
 // this method assign ids for patch.xodp by comparing paths
 // :: unpackedFiles -> unpackedFilesWithIds
-const assignIdsToAllPatches = files => {
+const assignIdsToAllPatches = (files) => {
   const mem = {};
   return R.pipe(
     R.sort(withIdFirst),
-    R.map(file => {
+    R.map((file) => {
       const dir = path.dirname(file.path);
       if (R.has(dir, mem)) { return R.assoc('id', mem[dir], file); }
       if (hasId(file)) { mem[dir] = file.id; }
@@ -37,12 +37,12 @@ const getProjectLibs = R.pipe(
   R.path(['content', 'libs'])
 );
 
-const readProjectMetaFile = (projectFile) => readJSON(projectFile)
+const readProjectMetaFile = projectFile => readJSON(projectFile)
   .then(data => Object.assign(data, {
     path: path.dirname(projectFile),
   }));
 
-export const getProjects = (workspace) => readDir(workspace)
+export const getProjects = workspace => readDir(workspace)
   .then(files => files.filter(filename => path.basename(filename) === 'project.xod'))
   .then(projects => Promise.all(
     projects.map(
@@ -63,7 +63,7 @@ const loadProjectWithoutLibs = (projectPath, workspace) =>
     .then(projects => Promise.all(
       projects.map(
         project => readJSON(project)
-          .then(data => {
+          .then((data) => {
             const result = {
               path: `./${path.relative(workspace, project)}`,
               content: data,
@@ -83,7 +83,7 @@ export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) 
         project,
         libs,
       }))
-      .catch(err => {
+      .catch((err) => {
         throw Object.assign(err, { path: resolvePath(libDir), libs: getProjectLibs(project) });
       })
     );
