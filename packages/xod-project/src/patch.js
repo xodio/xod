@@ -22,7 +22,7 @@ import * as Pin from './pin';
  */
 export const createPatch = () => ({
   nodes: {},
-  links: [],
+  links: {},
 });
 
 /**
