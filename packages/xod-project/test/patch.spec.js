@@ -89,9 +89,9 @@ describe('Patch', () => {
         .that.equals('[object Object]');
     });
   });
-  describe('listPatchPlatforms', () => {
+  describe('listImpls', () => {
     it('should return empty array for empty patch', () => {
-      expect(Patch.listPatchPlatforms({}))
+      expect(Patch.listImpls({}))
         .to.be.instanceof(Array)
         .to.be.empty();
     });
@@ -102,9 +102,39 @@ describe('Patch', () => {
           espruino: '',
         },
       };
-      expect(Patch.listPatchPlatforms(patch))
+      expect(Patch.listImpls(patch))
         .to.be.an('array')
         .to.have.members(['js', 'espruino']);
+    });
+  });
+  describe('hasImpl', () => {
+    it('should return false for empty', () => {
+      expect(Patch.hasImpl(['js'], {})).to.be.false();
+    });
+    it('should return false if impl not found', () => {
+      const patch = {
+        impls: {
+          js: '//ok',
+        },
+      };
+      expect(Patch.hasImpl(['cpp'], patch)).to.be.false();
+    });
+    it('should return true for the only correct impl', () => {
+      const patch = {
+        impls: {
+          js: '//ok',
+        },
+      };
+      expect(Patch.hasImpl(['js'], patch)).to.be.true();
+    });
+    it('should return true for a few existent impls', () => {
+      const patch = {
+        impls: {
+          js: '//ok',
+          nodejs: '//ok',
+        },
+      };
+      expect(Patch.hasImpl(['js', 'nodejs'], patch)).to.be.true();
     });
   });
 

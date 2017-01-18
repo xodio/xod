@@ -142,6 +142,16 @@ export const listPatches = R.compose(
 );
 
 /**
+ * @function listPatchPaths
+ * @param {Project} project - project bundle
+ * @returns {String[]} list of all patche paths not sorted in any arbitrary order
+ */
+export const listPatchPaths = R.compose(
+  R.keys,
+  getPatches
+);
+
+/**
  * Return a list of local patches (excluding external libraries)
  *
  * @function listLocalPatches
