@@ -25,12 +25,12 @@ describe('Patch', () => {
         .that.is.an('object')
         .that.is.empty();
     });
-    it('should have key: links === []', () => {
+    it('should have key: links === {}', () => {
       const patch = Patch.createPatch();
 
       expect(patch)
         .to.have.property('links')
-        .that.is.an('array')
+        .that.is.an('object')
         .that.is.empty();
     });
   });
