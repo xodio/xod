@@ -126,8 +126,28 @@ describe('Flatten', () => {
               id: 'a',
               type: '@/foo',
             },
+            b: {
+              id: 'b',
+              type: '@/bar',
+            },
+            c: {
+              id: 'c',
+              type: 'xod/core/or',
+            },
           },
-          links: {},
+          links: {
+            l: {
+              id: 'l',
+              output: {
+                nodeId: 'b',
+                pinKey: 'out',
+              },
+              input: {
+                nodeId: 'c',
+                pinKey: 'in2',
+              },
+            },
+          },
         },
         '@/foo': {
           nodes: {
@@ -135,12 +155,95 @@ describe('Flatten', () => {
               id: 'a',
               type: 'xod/core/or',
             },
+            b: {
+              id: 'b',
+              type: 'xod/core/or',
+            },
           },
-          links: {},
+          links: {
+            l: {
+              id: 'l',
+              output: {
+                nodeId: 'a',
+                pinKey: 'out',
+              },
+              input: {
+                nodeId: 'b',
+                pinKey: 'in1',
+              },
+            },
+          },
+        },
+        '@/bar': {
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/core/or',
+            },
+            b: {
+              id: 'b',
+              type: 'xod/core/outputBool',
+            },
+            c: {
+              id: 'c',
+              type: '@/foo',
+            },
+          },
+          links: {
+            l: {
+              id: 'l',
+              output: {
+                nodeId: 'a',
+                pinKey: 'out',
+              },
+              input: {
+                nodeId: 'b',
+                pinKey: 'in',
+              },
+            },
+          },
+          pins: {
+            b: {
+              key: 'b',
+              type: 'boolean',
+              direction: 'output',
+            },
+          },
         },
         'xod/core/or': {
           nodes: {},
           links: {},
+          pins: {
+            in1: {
+              key: 'in1',
+              type: 'boolean',
+              direction: 'input',
+            },
+            in2: {
+              key: 'in2',
+              type: 'boolean',
+              direction: 'input',
+            },
+            out: {
+              key: 'out',
+              type: 'boolean',
+              direction: 'output',
+            },
+          },
+          impls: {
+            js: '//ok',
+          },
+        },
+        'xod/core/outputBool': {
+          nodes: {},
+          links: {},
+          pins: {
+            in: {
+              key: 'in',
+              type: 'boolean',
+              direction: 'input',
+            },
+          },
           impls: {
             js: '//ok',
           },
@@ -158,8 +261,8 @@ describe('Flatten', () => {
             .to.be.deep.equal(['xod/core/or', '@/foo']);
           expect(newProject.patches['xod/core/or'])
             .to.be.deep.equal(project.patches['xod/core/or']);
-          expect(newProject.patches['@/foo'])
-            .to.be.deep.equal(project.patches['@/foo']);
+          expect(newProject.patches['@/foo'].nodes)
+            .to.be.deep.equal(project.patches['@/foo'].nodes);
         },
         flatProject
       );
@@ -172,9 +275,11 @@ describe('Flatten', () => {
       Helper.expectEither(
         (newProject) => {
           expect(R.keys(newProject.patches))
-            .to.be.deep.equal(['xod/core/or', '@/main']);
+            .to.be.deep.equal(['xod/core/or', 'xod/core/outputBool', '@/main']);
           expect(newProject.patches['xod/core/or'])
             .to.be.deep.equal(project.patches['xod/core/or']);
+          expect(newProject.patches['xod/core/outputBool'])
+            .to.be.deep.equal(project.patches['xod/core/outputBool']);
           expect(R.values(newProject.patches['@/main'].nodes)[0])
             .to.have.property('type')
             .that.equals('xod/core/or');
@@ -190,12 +295,29 @@ describe('Flatten', () => {
       Helper.expectEither(
         (newProject) => {
           expect(R.keys(newProject.patches))
-            .to.be.deep.equal(['xod/core/or', '@/main']);
+            .to.be.deep.equal(['xod/core/or', 'xod/core/outputBool', '@/main']);
           expect(newProject.patches['xod/core/or'])
             .to.be.deep.equal(project.patches['xod/core/or']);
+          expect(newProject.patches['xod/core/outputBool'])
+            .to.be.deep.equal(project.patches['xod/core/outputBool']);
           expect(R.values(newProject.patches['@/main'].nodes)[0])
             .to.have.property('id')
             .that.equal('a~a');
+        },
+        flatProject
+      );
+    });
+
+    it('should return flattened links', () => {
+      const flatProject = flatten(project, '@/main', ['js']);
+
+      expect(flatProject.isRight).to.be.true();
+      Helper.expectEither(
+        (newProject) => {
+          expect(R.keys(newProject.patches))
+            .to.be.deep.equal(['xod/core/or', 'xod/core/outputBool', '@/main']);
+          expect(R.values(newProject.patches['@/main'].links))
+            .to.have.lengthOf(2);
         },
         flatProject
       );

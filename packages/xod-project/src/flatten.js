@@ -98,7 +98,7 @@ const extractLinks = R.curry((project, implPatchPaths, parentNodeId, patch) => R
   R.chain(R.ifElse(
     isLinkBetweenImplNodes(implPatchPaths, patch),
     duplicateLinkPrefixed(parentNodeId),
-    R.identity // TODO: Recursive extracting links
+    R.always(null) // TODO: Recursive extracting links
   )),
   Patch.listLinks
 )(patch));
@@ -126,7 +126,8 @@ export default R.curry((project, path, impls) => {
       const nodes = extractNodes(project, implPatchPaths, null, originalPatch);
       const assocNodes = nodes.map(node => Patch.assocNode(node));
 
-      const links = extractLinks(project, implPatchPaths, null, originalPatch);
+      const links = extractLinks(project, implPatchPaths, null, originalPatch)
+        .filter(R.complement(R.isNil)); // TODO: Remove this hack
       const assocLinks = links.map(link => R.compose(
         explode,
         Patch.assocLink(link)
