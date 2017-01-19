@@ -18,18 +18,58 @@ describe('Flatten', () => {
               id: 'a',
               type: 'xod/core/or',
             },
+            b: {
+              id: 'b',
+              type: 'xod/core/or',
+            },
           },
-          links: {},
+          links: {
+            l: {
+              id: 'l',
+              output: {
+                nodeId: 'a',
+                pinKey: 'out',
+              },
+              input: {
+                nodeId: 'b',
+                pinKey: 'in1',
+              },
+            },
+          },
         },
         'xod/core/or': {
           nodes: {},
           links: {},
+          pins: {
+            in1: {
+              key: 'in1',
+              type: 'boolean',
+              direction: 'input',
+            },
+            in2: {
+              key: 'in2',
+              type: 'boolean',
+              direction: 'input',
+            },
+            out: {
+              key: 'out',
+              type: 'boolean',
+              direction: 'output',
+            },
+          },
           impls: {
             js: '//ok',
           },
         },
       },
     };
+
+    it('should return error if implementation not found', () => {
+      const flatProject = flatten(project, '@/main', ['cpp']);
+
+      expect(flatProject.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
+    });
 
     it('should ignore not referred patches', () => {
       const flatProject = flatten(project, 'xod/core/or', ['js']);
@@ -54,18 +94,26 @@ describe('Flatten', () => {
         (newProject) => {
           expect(R.keys(newProject.patches))
             .to.be.deep.equal(['xod/core/or', '@/main']);
-          expect(newProject.patches)
-            .to.be.deep.equal(project.patches);
+          expect(newProject.patches['@/main'].nodes)
+            .to.be.deep.equal(project.patches['@/main'].nodes);
         },
         flatProject
       );
     });
 
-    it('should return error if implementation not found', () => {
-      const flatProject = flatten(project, '@/main', ['cpp']);
+    it('should return patch with links', () => {
+      const flatProject = flatten(project, '@/main', ['js']);
 
-      expect(flatProject.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
+      expect(flatProject.isRight).to.be.true();
+      Helper.expectEither(
+        (newProject) => {
+          expect(R.keys(newProject.patches))
+            .to.be.deep.equal(['xod/core/or', '@/main']);
+          expect(newProject.patches['@/main'].links)
+            .to.be.deep.equal(project.patches['@/main'].links);
+        },
+        flatProject
+      );
     });
   });
 
