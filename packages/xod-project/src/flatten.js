@@ -50,7 +50,9 @@ const extractNodes = R.curry((project, implPatchPaths, parentNodeId, patch) => R
         const type = Node.getNodeType(node);
         const id = Node.getNodeId(node);
         return Project.getPatchByPath(type, project)
-          .chain(extractNodes(project, implPatchPaths, id));
+          .chain(
+            extractNodes(project, implPatchPaths, getPrefixedId(parentNodeId, id))
+          );
       }
     )
   ),
