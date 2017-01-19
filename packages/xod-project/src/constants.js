@@ -32,6 +32,10 @@ export const ERROR = {
   // other
   DATATYPE_INVALID: 'Invalid data type',
   IMPLEMENTATION_NOT_FOUND: 'Implementation not found',
+  // utils.explode
+  EXPLODE_NOTHING: 'Maybe is expected to be Just, but its Nothing',
+  EXPLODE_LEFT: 'Either expected to be Right, but its Left with value:',
+  EXPLODE_NOT_A_MONAD: 'Maybe or Either should be passed into explode function',
 };
 
 /**
