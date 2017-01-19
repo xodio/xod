@@ -5,6 +5,7 @@ import * as CONST from './constants';
 import * as Project from './project';
 import * as Patch from './patch';
 import * as Node from './node';
+import * as Link from './link';
 import { explode } from './utils';
 
 // :: Monad a -> Monad a
@@ -30,15 +31,15 @@ const isNodeToImplPatch = implPatchPaths => R.compose(
   Node.getNodeType
 );
 
-const duplicateNodePrefixed = R.curry((prefix, node) => R.compose(
-  (newNode) => {
-    const id = Node.getNodeId(newNode);
-    const newId = (prefix.length > 0) ? `${prefix}~${id}` : id;
-    return R.assoc('id', newId, newNode);
-  },
-  JSON.parse,
-  JSON.stringify
-)(node));
+// :: String -> String -> String
+const getPrefixedId = R.curry((prefix, id) => ((prefix) ? `${prefix}~${id}` : id));
+
+// :: String -> Node -> Node
+const duplicateNodePrefixed = R.curry((prefix, node) => {
+  const id = Node.getNodeId(node);
+  const newId = getPrefixedId(prefix, id);
+  return R.assoc('id', newId, node);
+});
 
 // :: Project -> String[] -> Patch -> Node[]
 const extractNodes = R.curry((project, implPatchPaths, parentNodeId, patch) => R.compose(
@@ -54,6 +55,50 @@ const extractNodes = R.curry((project, implPatchPaths, parentNodeId, patch) => R
     )
   ),
   Patch.listNodes
+)(patch));
+
+// :: String[] -> Patch -> NodeId
+const isNodeIdPointsToImplPatch = (implPatchPaths, patch) => R.compose(
+  R.contains(R.__, implPatchPaths),
+  Node.getNodeType,
+  explode,
+  Patch.getNodeById(R.__, patch)
+);
+
+// :: Link -> Boolean
+const isLinkBetweenImplNodes = (implPatchPaths, patch) => R.converge(
+  R.and,
+  [
+    R.compose(isNodeIdPointsToImplPatch(implPatchPaths, patch), Link.getLinkOutputNodeId),
+    R.compose(isNodeIdPointsToImplPatch(implPatchPaths, patch), Link.getLinkInputNodeId),
+  ]
+);
+
+// :: String -> Link -> Link
+const duplicateLinkPrefixed = R.curry((prefix, link) => {
+  const id = Link.getLinkId(link);
+  const outId = Link.getLinkOutputNodeId(link);
+  const inId = Link.getLinkInputNodeId(link);
+
+  const newId = getPrefixedId(prefix, id);
+  const newOutId = getPrefixedId(prefix, outId);
+  const newInId = getPrefixedId(prefix, inId);
+
+  return R.compose(
+    R.assocPath(['input', 'nodeId'], newInId),
+    R.assocPath(['output', 'nodeId'], newOutId),
+    R.assoc('id', newId)
+  )(link);
+});
+
+// :: Project -> String[] -> Patch -> Link[]
+const extractLinks = R.curry((project, implPatchPaths, parentNodeId, patch) => R.compose(
+  R.chain(R.ifElse(
+    isLinkBetweenImplNodes(implPatchPaths, patch),
+    duplicateLinkPrefixed(parentNodeId),
+    R.identity // TODO: Recursive extracting links
+  )),
+  Patch.listLinks
 )(patch));
 
 export default R.curry((project, path, impls) => {
@@ -76,9 +121,17 @@ export default R.curry((project, path, impls) => {
     R.always(R.identity),
     (originalPatch) => {
       const implPatchPaths = R.pluck(0, splittedImplPatches);
-      const nodes = extractNodes(project, implPatchPaths, '', originalPatch);
+      const nodes = extractNodes(project, implPatchPaths, null, originalPatch);
       const assocNodes = nodes.map(node => Patch.assocNode(node));
-      const newPatch = R.reduce((p, fn) => fn(p), Patch.createPatch(), assocNodes);
+
+      const links = extractLinks(project, implPatchPaths, null, originalPatch);
+      const assocLinks = links.map(link => R.compose(
+        explode,
+        Patch.assocLink(link)
+      ));
+
+      const patchUpdaters = R.concat(assocNodes, assocLinks);
+      const newPatch = R.reduce((p, fn) => fn(p), Patch.createPatch(), patchUpdaters);
 
       return R.chain(Project.assocPatch(path, newPatch));
     }
