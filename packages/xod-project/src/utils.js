@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { Maybe, Either } from 'ramda-fantasy';
 import shortid from 'shortid';
 
 import * as Tools from './func-tools';
@@ -41,6 +42,34 @@ export const getBaseName = R.compose(
   R.last,
   R.split('/')
 );
+
+/**
+ * @private
+ * @function explode
+ * @param {Maybe|Either}
+ * @returns {*}
+ * @throws Error
+ */
+export const explode = R.cond([
+  [Maybe.isJust, R.chain(R.identity)],
+  [Maybe.isNothing, () => { throw new Error(CONST.ERROR.EXPLODE_NOTHING); }],
+  [R.is(Either), Either.either(
+    (val) => { throw new Error(CONST.ERROR.EXPLODE_LEFT + val); },
+    R.identity
+  )],
+  [R.T, () => { throw new Error(CONST.ERROR.EXPLODE_NOT_A_MONAD); }],
+]);
+// R.compose(
+//   R.chain(R.identity),
+//   R.when(
+//     Either.isLeft,
+//
+//   ),
+//   R.when(
+//     Maybe.isNothing,
+//     () => { throw new Error('Maybe is expected to be Just, but its Nothing'); }
+//   )
+// );
 
 /**
  * @function isPathLocal

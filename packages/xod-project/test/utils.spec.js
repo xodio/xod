@@ -1,3 +1,4 @@
+import { Maybe, Either } from 'ramda-fantasy';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 import shortid from 'shortid';
@@ -10,6 +11,30 @@ import * as Helper from './helpers';
 chai.use(dirtyChai);
 
 describe('Utils', () => {
+  describe('explode', () => {
+    it('should return Maybe.Just value', () => {
+      expect(Utils.explode(Maybe.Just(25)))
+        .to.be.equal(25);
+    });
+    it('should throw error for Maybe.Nothing', () => {
+      const fn = () => Utils.explode(Maybe.Nothing());
+      expect(fn).to.throw(Error, CONST.ERROR.EXPLODE_NOTHING);
+    });
+    it('should return Either.Right value', () => {
+      expect(Utils.explode(Either.Right(25)))
+        .to.be.equal(25);
+    });
+    it('should throw error for Either.Left', () => {
+      const errMsg = 'err';
+      const fn = () => Utils.explode(Either.Left(errMsg));
+      expect(fn).to.throw(Error, CONST.ERROR.EXPLODE_LEFT + errMsg);
+    });
+    it('should throw error if its not Maybe or Either', () => {
+      const fn = () => Utils.explode(5);
+      expect(fn).to.throw(Error, CONST.ERROR.EXPLODE_NOT_A_MONAD);
+    });
+  });
+
   describe('getBaseName', () => {
     it('should return base name extracted from path', () => {
       const baseName = 'test';
