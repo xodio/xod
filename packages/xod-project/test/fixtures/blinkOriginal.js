@@ -1,4 +1,4 @@
-const projectA = {
+export default {
   patches: {
     '@/main': {
       nodes: {
