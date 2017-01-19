@@ -61,12 +61,12 @@ describe('Flatten', () => {
       );
     });
 
-    // its('should return error if implementation not found', () => {
-    //   const flatProject = flatten(project, '@/main', ['cpp']);
-    //
-    //   expect(flatProject.isLeft).to.be.true();
-    //   Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
-    // });
+    it('should return error if implementation not found', () => {
+      const flatProject = flatten(project, '@/main', ['cpp']);
+
+      expect(flatProject.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
+    });
   });
 
   describe('recursive', () => {

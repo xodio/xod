@@ -1,6 +1,7 @@
 import R from 'ramda';
-import { Maybe } from 'ramda-fantasy';
+import { Maybe, Either } from 'ramda-fantasy';
 
+import * as CONST from './constants';
 import * as Project from './project';
 import * as Patch from './patch';
 import * as Node from './node';
@@ -51,6 +52,11 @@ export default R.curry((project, path, impls) => {
   const implPatches = extractImplPatches(impls, project, path, patch);
   // [[path, Patch], ...]
   const splittedImplPatches = R.splitEvery(2, implPatches);
+
+  if (R.isEmpty(splittedImplPatches)) {
+    return Either.Left(new Error(CONST.ERROR.IMPLEMENTATION_NOT_FOUND));
+  }
+
   // [fn, ...]
   const assocImplPatches = splittedImplPatches.map(R.apply(Project.assocPatch));
 
