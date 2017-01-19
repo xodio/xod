@@ -1,3 +1,4 @@
+import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
@@ -119,6 +120,10 @@ describe('Utils', () => {
     it('should be valid shortid', () => {
       const id = Utils.generateId();
       expect(shortid.isValid(id)).to.be.true();
+    });
+    it('should return new ids each time', () => {
+      const ids = R.uniq(R.times(Utils.generateId, 5));
+      expect(ids).to.have.lengthOf(5);
     });
   });
   describe('validateId', () => {
