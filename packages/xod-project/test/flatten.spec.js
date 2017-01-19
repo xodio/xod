@@ -46,7 +46,7 @@ describe('Flatten', () => {
       );
     });
 
-    it('should return project with patch and its dependencies', () => {
+    it('should return patch and its dependencies', () => {
       const flatProject = flatten(project, '@/main', ['js']);
 
       expect(flatProject.isRight).to.be.true();
@@ -117,7 +117,7 @@ describe('Flatten', () => {
       );
     });
 
-    it('should return project with patch and its dependencies', () => {
+    it('should return patch and its dependencies', () => {
       const flatProject = flatten(project, '@/main', ['js']);
 
       expect(flatProject.isRight).to.be.true();
@@ -130,6 +130,24 @@ describe('Flatten', () => {
           expect(R.values(newProject.patches['@/main'].nodes)[0])
             .to.have.property('type')
             .that.equals('xod/core/or');
+        },
+        flatProject
+      );
+    });
+
+    it('should return nodes with prefixed ids', () => {
+      const flatProject = flatten(project, '@/main', ['js']);
+
+      expect(flatProject.isRight).to.be.true();
+      Helper.expectEither(
+        (newProject) => {
+          expect(R.keys(newProject.patches))
+            .to.be.deep.equal(['xod/core/or', '@/main']);
+          expect(newProject.patches['xod/core/or'])
+            .to.be.deep.equal(project.patches['xod/core/or']);
+          expect(R.values(newProject.patches['@/main'].nodes)[0])
+            .to.have.property('id')
+            .that.equal('a~a');
         },
         flatProject
       );
