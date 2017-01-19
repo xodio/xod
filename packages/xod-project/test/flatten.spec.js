@@ -46,7 +46,7 @@ describe('Flatten', () => {
       );
     });
 
-    it('should return patch with dependency', () => {
+    it('should return project with patch and its dependencies', () => {
       const flatProject = flatten(project, '@/main', ['js']);
 
       expect(flatProject.isRight).to.be.true();
@@ -117,7 +117,7 @@ describe('Flatten', () => {
       );
     });
 
-    it('should return patch with dependency', () => {
+    it('should return project with patch and its dependencies', () => {
       const flatProject = flatten(project, '@/main', ['js']);
 
       expect(flatProject.isRight).to.be.true();
