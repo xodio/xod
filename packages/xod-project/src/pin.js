@@ -100,6 +100,19 @@ export const isInputPin = R.propEq('direction', CONST.PIN_DIRECTION.INPUT);
 export const isOutputPin = R.propEq('direction', CONST.PIN_DIRECTION.OUTPUT);
 
 /**
+ * @function isTerminalPin
+ * @param {Pin} pin
+ * @returns {boolean}
+ */
+export const isTerminalPin = R.compose(
+  R.anyPass([
+    R.equals('__in__'),
+    R.equals('__out__'),
+  ]),
+  getPinKey
+);
+
+/**
  * Validates for correct pin type
  *
  * @function validatePinType

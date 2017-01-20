@@ -174,4 +174,16 @@ describe('Pin', () => {
       expect(Pin.isOutputPin({ direction: CONST.PIN_DIRECTION.OUTPUT })).to.be.true();
     });
   });
+  describe('isTerminalPin', () => {
+    it('should return false for empty pin', () => {
+      expect(Pin.isTerminalPin({})).to.be.false();
+    });
+    it('should return false for non-terminal pin', () => {
+      expect(Pin.isTerminalPin({ key: 'a' })).to.be.false();
+    });
+    it('should return true for terminal pin', () => {
+      expect(Pin.isTerminalPin({ key: '__in__' })).to.be.true();
+      expect(Pin.isTerminalPin({ key: '__out__' })).to.be.true();
+    });
+  });
 });

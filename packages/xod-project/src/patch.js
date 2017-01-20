@@ -224,6 +224,18 @@ export const listOutputPins = R.compose(
   listPins
 );
 
+/**
+ * Returns true if Patch is a Terminal
+ * @function isTerminalPatch
+ * @param {Patch} patch
+ * @returns {boolean}
+ */
+export const isTerminalPatch = R.compose(
+  R.contains(true),
+  R.map(Pin.isTerminalPin),
+  listPins
+);
+
 // =============================================================================
 //
 // Links

@@ -137,6 +137,38 @@ describe('Patch', () => {
       expect(Patch.hasImpl(['js', 'nodejs'], patch)).to.be.true();
     });
   });
+  describe('isTerminalPatch', () => {
+    it('should return false for empty', () => {
+      expect(Patch.isTerminalPatch({})).to.be.false();
+    });
+    it('should return false for patch without terminal pin', () => {
+      expect(Patch.isTerminalPatch({
+        pins: {
+          a: {
+            key: 'a',
+          },
+        },
+      })).to.be.false();
+    });
+    it('should return true for patch with terminal input pin', () => {
+      expect(Patch.isTerminalPatch({
+        pins: {
+          __in__: {
+            key: '__in__',
+          },
+        },
+      })).to.be.true();
+    });
+    it('should return true for patch with terminal output pin', () => {
+      expect(Patch.isTerminalPatch({
+        pins: {
+          __out__: {
+            key: '__out__',
+          },
+        },
+      })).to.be.true();
+    });
+  });
 
   // entity getters
   describe('listNodes', () => {
