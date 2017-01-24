@@ -10,6 +10,7 @@ module.exports = {
   plugins: [
     'react',
     'import',
+    'xod-fp',
   ],
 
   extends: [
@@ -33,6 +34,11 @@ module.exports = {
   },
 
   rules: {
+    'xod-fp/max-composition-depth': ['error', {
+      max: 11, // TODO: it should be lowered to 6
+      ignoreCurry: true,
+      ignoreMocha: true,
+    }],
     'no-underscore-dangle': ['error', {
       allow: ["__"], /* Ramda’s R.__ */
       allowAfterThis: true,
