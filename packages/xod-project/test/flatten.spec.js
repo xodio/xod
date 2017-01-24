@@ -287,10 +287,10 @@ describe('Flatten', () => {
       Helper.expectEither(
         (newProject) => {
           expect(R.keys(newProject.patches))
-            .to.be.deep.equal(['xod/core/or', 'xod/core/outputBool', '@/main']);
+            .to.be.deep.equal(['xod/core/or', 'castBoolean', '@/main']);
           expect(newProject.patches['xod/core/or'])
             .to.be.deep.equal(project.patches['xod/core/or']);
-          expect(newProject.patches['xod/core/outputBool'])
+          expect(newProject.patches.castBoolean)
             .to.be.deep.equal(CONST.CAST_PATCHES.BOOLEAN);
           expect(R.values(newProject.patches['@/main'].nodes)[0])
             .to.have.property('type')
@@ -307,10 +307,10 @@ describe('Flatten', () => {
       Helper.expectEither(
         (newProject) => {
           expect(R.keys(newProject.patches))
-            .to.be.deep.equal(['xod/core/or', 'xod/core/outputBool', '@/main']);
+            .to.be.deep.equal(['xod/core/or', 'castBoolean', '@/main']);
           expect(newProject.patches['xod/core/or'])
             .to.be.deep.equal(project.patches['xod/core/or']);
-          expect(newProject.patches['xod/core/outputBool'])
+          expect(newProject.patches.castBoolean)
             .to.be.deep.equal(CONST.CAST_PATCHES.BOOLEAN);
           expect(R.values(newProject.patches['@/main'].nodes)[0])
             .to.have.property('id')
@@ -329,7 +329,7 @@ describe('Flatten', () => {
         (newProject) => {
           console.log(JSON.stringify(newProject, 2));
           expect(R.keys(newProject.patches))
-            .to.be.deep.equal(['xod/core/or', 'xod/core/outputBool', '@/main']);
+            .to.be.deep.equal(['xod/core/or', 'castBoolean', '@/main']);
           expect(R.values(newProject.patches['@/main'].links))
             .to.have.lengthOf(3);
         },

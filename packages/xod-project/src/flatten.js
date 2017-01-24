@@ -8,6 +8,8 @@ import * as Node from './node';
 import * as Link from './link';
 import { explode } from './utils';
 
+const terminalRegExp = /^xod\/core\/(input|output)/;
+
 // :: Monad a -> Monad a
 const reduceChainOver = R.reduce(R.flip(R.chain));
 
@@ -23,14 +25,39 @@ const isEndpointPatch = impls => R.either(
   Patch.isTerminalPatch
 );
 
-// :: Patch -> String -> [String, Patch]
-const replaceTerminalsWithCast = R.curry((patch, path) => R.compose(
-  R.append(R.__, [path]),
+// :: String -> String
+const terminalTypeToCastType = R.compose(
   R.cond([
-    [R.equals('xod/core/inputBool'), R.always(CONST.CAST_PATCHES.BOOLEAN)],
-    [R.equals('xod/core/outputBool'), R.always(CONST.CAST_PATCHES.BOOLEAN)],
+    [R.equals('Bool'), R.always(CONST.CAST_PATHS.BOOLEAN)],
+    [R.equals('Number'), R.always(CONST.CAST_PATHS.NUMBER)],
+    [R.equals('String'), R.always(CONST.CAST_PATHS.STRING)],
+    [R.equals('Pulse'), R.always(CONST.CAST_PATHS.PULSE)],
+    [R.T, R.identity],
+  ]),
+  R.replace(terminalRegExp, '')
+);
+
+// :: String -> Patch
+const terminalTypeToCastPatch = patch => R.compose(
+  R.cond([
+    [R.equals('Bool'), R.always(CONST.CAST_PATCHES.BOOLEAN)],
+    [R.equals('Number'), R.always(CONST.CAST_PATCHES.NUMBER)],
+    [R.equals('String'), R.always(CONST.CAST_PATCHES.STRING)],
+    [R.equals('Pulse'), R.always(CONST.CAST_PATCHES.PULSE)],
     [R.T, R.always(patch)],
-  ]))(path));
+  ]),
+  R.replace(terminalRegExp, '')
+);
+
+// :: Patch -> String -> [String, Patch]
+const replaceTerminalsWithCast = R.curry((patch, path) => R.converge(
+  R.concat,
+  [
+    R.compose(R.of, terminalTypeToCastType),
+    // R.always([path]),
+    R.compose(R.of, terminalTypeToCastPatch(patch)),
+  ]
+)(path));
 
 // :: String[] -> Project -> Path -> [Path, Patch, ...]
 const extractImplPatches = R.curry((impls, project, path, patch) => R.ifElse(
@@ -54,7 +81,10 @@ const getNodeById = R.curry((patch, node) => R.compose(
 
 // :: String[] -> Node -> Boolean
 const isNodeToImplPatch = R.curry((implPatchPaths, node) => R.compose(
-  R.contains(R.__, implPatchPaths),
+  R.either(
+    R.contains(R.__, implPatchPaths),
+    R.test(terminalRegExp)
+  ),
   Node.getNodeType
 )(node));
 
@@ -70,8 +100,12 @@ const getPrefixedId = R.curry((prefix, id) => ((prefix) ? `${prefix}~${id}` : id
 // :: String -> Node -> Node
 const duplicateNodePrefixed = R.curry((prefix, node) => {
   const id = Node.getNodeId(node);
+  const type = Node.getNodeType(node);
   const newId = getPrefixedId(prefix, id);
-  return R.assoc('id', newId, node);
+  return R.compose(
+    R.assoc('id', newId),
+    R.assoc('type', terminalTypeToCastType(type))
+  )(node);
 });
 
 // :: Project -> String[] -> Patch -> Node[]

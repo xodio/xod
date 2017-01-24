@@ -61,22 +61,39 @@ export const PIN_DIRECTION = {
   INPUT: 'input',
   OUTPUT: 'output',
 };
+
+/**
+ * Enumeration of casting patch paths
+ * @private
+ * @name CAST_PATHS
+ * @enum {string}
+ */
+export const CAST_PATHS = {
+  STRING: 'castString',
+  NUMBER: 'castNumber',
+  BOOLEAN: 'castBoolean',
+  PULSE: 'castPulse',
+};
+
+// Utils to create cast patches without code repeating
+const castPins = type => ({
+  __in__: { key: '__in__', type, direction: PIN_DIRECTION.INPUT },
+  __out__: { key: '__out__', type, direction: PIN_DIRECTION.OUTPUT },
+});
+const createCastPatch = (type, impls) => ({
+  nodes: {}, links: {}, impls, pins: castPins(type),
+});
+
+/**
+ * Enumeration of casting patches
+ * Replaces terminal patches in flatten function
+ * @private
+ * @name CAST_PATCHES
+ * @enum {Patch}
+ */
 export const CAST_PATCHES = {
-  BOOLEAN: {
-    nodes: {},
-    links: {},
-    impls: {},
-    pins: {
-      __in__: {
-        key: '__in__',
-        type: PIN_TYPE.BOOLEAN,
-        direction: PIN_DIRECTION.INPUT,
-      },
-      __out__: {
-        key: '__out__',
-        type: PIN_TYPE.BOOLEAN,
-        direction: PIN_DIRECTION.OUTPUT,
-      },
-    },
-  },
+  STRING: createCastPatch(PIN_TYPE.STRING, {}),
+  NUMBER: createCastPatch(PIN_TYPE.NUMBER, {}),
+  BOOLEAN: createCastPatch(PIN_TYPE.BOOLEAN, {}),
+  PULSE: createCastPatch(PIN_TYPE.PULSE, {}),
 };
