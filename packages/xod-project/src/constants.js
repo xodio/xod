@@ -61,3 +61,22 @@ export const PIN_DIRECTION = {
   INPUT: 'input',
   OUTPUT: 'output',
 };
+export const CAST_PATCHES = {
+  BOOLEAN: {
+    nodes: {},
+    links: {},
+    impls: {},
+    pins: {
+      __in__: {
+        key: '__in__',
+        type: PIN_TYPE.BOOLEAN,
+        direction: PIN_DIRECTION.INPUT,
+      },
+      __out__: {
+        key: '__out__',
+        type: PIN_TYPE.BOOLEAN,
+        direction: PIN_DIRECTION.OUTPUT,
+      },
+    },
+  },
+};

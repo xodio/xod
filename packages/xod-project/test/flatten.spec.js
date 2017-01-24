@@ -134,17 +134,32 @@ describe('Flatten', () => {
               id: 'c',
               type: 'xod/core/or',
             },
+            d: {
+              id: 'd',
+              type: 'xod/core/or',
+            },
           },
           links: {
             l: {
               id: 'l',
               output: {
                 nodeId: 'b',
-                pinKey: 'out',
+                pinKey: 'b',
               },
               input: {
                 nodeId: 'c',
                 pinKey: 'in2',
+              },
+            },
+            l2: {
+              id: 'l2',
+              output: {
+                nodeId: 'd',
+                pinKey: 'out',
+              },
+              input: {
+                nodeId: 'c',
+                pinKey: 'in1',
               },
             },
           },
@@ -198,7 +213,7 @@ describe('Flatten', () => {
               },
               input: {
                 nodeId: 'b',
-                pinKey: 'in',
+                pinKey: '__in__',
               },
             },
           },
@@ -238,14 +253,11 @@ describe('Flatten', () => {
           nodes: {},
           links: {},
           pins: {
-            in: {
-              key: 'in',
+            __in__: {
+              key: '__in__',
               type: 'boolean',
               direction: 'input',
             },
-          },
-          impls: {
-            js: '//ok',
           },
         },
       },
@@ -279,7 +291,7 @@ describe('Flatten', () => {
           expect(newProject.patches['xod/core/or'])
             .to.be.deep.equal(project.patches['xod/core/or']);
           expect(newProject.patches['xod/core/outputBool'])
-            .to.be.deep.equal(project.patches['xod/core/outputBool']);
+            .to.be.deep.equal(CONST.CAST_PATCHES.BOOLEAN);
           expect(R.values(newProject.patches['@/main'].nodes)[0])
             .to.have.property('type')
             .that.equals('xod/core/or');
@@ -299,7 +311,7 @@ describe('Flatten', () => {
           expect(newProject.patches['xod/core/or'])
             .to.be.deep.equal(project.patches['xod/core/or']);
           expect(newProject.patches['xod/core/outputBool'])
-            .to.be.deep.equal(project.patches['xod/core/outputBool']);
+            .to.be.deep.equal(CONST.CAST_PATCHES.BOOLEAN);
           expect(R.values(newProject.patches['@/main'].nodes)[0])
             .to.have.property('id')
             .that.equal('a~a');
@@ -311,13 +323,15 @@ describe('Flatten', () => {
     it('should return flattened links', () => {
       const flatProject = flatten(project, '@/main', ['js']);
 
+
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
         (newProject) => {
+          console.log(JSON.stringify(newProject, 2));
           expect(R.keys(newProject.patches))
             .to.be.deep.equal(['xod/core/or', 'xod/core/outputBool', '@/main']);
           expect(R.values(newProject.patches['@/main'].links))
-            .to.have.lengthOf(2);
+            .to.have.lengthOf(3);
         },
         flatProject
       );
