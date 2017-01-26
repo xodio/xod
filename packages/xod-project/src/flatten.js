@@ -4,13 +4,97 @@ import { Maybe, Either } from 'ramda-fantasy';
 import * as CONST from './constants';
 import * as Project from './project';
 import * as Patch from './patch';
+import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
-import { explode } from './utils';
+import { explode, getCastPatch, getCastPath } from './utils';
 
 const terminalRegExp = /^xod\/core\/(input|output)/;
+const getTerminalPins = type => ([
+  { key: '__in__', type, direction: CONST.PIN_DIRECTION.INPUT },
+  { key: '__out__', type, direction: CONST.PIN_DIRECTION.OUTPUT },
+]);
+const getTerminalPath = type => `terminal${type}`;
+// :: String -> String
+const convertTerminalPath = R.compose(
+  getTerminalPath,
+  R.replace(terminalRegExp, '')
+);
+// :: Node[] -> Node[]
+const filterTerminalNodes = R.filter(R.compose(
+  R.test(/^terminal/),
+  Node.getNodeType
+));
+// :: Node[] -> Link[] -> Link[]
+const filterTerminalLinks = R.curry((nodes, links) => R.map(
+  R.converge(
+    R.concat,
+    [
+      R.compose(
+        R.of,
+        Node.getNodeType
+      ),
+      (node) => {
+        const nodeId = Node.getNodeId(node);
+        const terminalLinks = R.filter(R.either(
+          R.compose(R.equals(nodeId), Link.getLinkInputNodeId),
+          R.compose(R.equals(nodeId), Link.getLinkOutputNodeId)
+        ), links);
 
-// :: Monad a -> Monad a
+        return R.sort(
+          a => ((Link.getLinkOutputNodeId(a) === nodeId) ? 1 : -1),
+          terminalLinks
+        );
+      },
+    ]
+  ), nodes)
+);
+
+// :: Node[] -> String -> String
+const getNodeTypeByNodeId = R.curry((nodes, nodeId) => R.compose(
+  Node.getNodeType,
+  R.find(R.propEq('id', nodeId))
+)(nodes));
+
+// :: String -> String -> Patch[] -> String
+const getPinTypeFromImplPatches = R.curry((pinKey, nodeType, patches) => R.compose(
+  R.chain(Pin.getPinType),
+  Patch.getPinByKey(pinKey),
+  R.prop(1),
+  R.find(R.propEq(0, nodeType))
+)(patches));
+
+// :: Node[] -> [[Path, Patch]] -> [[Path, Link, Link]] -> [[PathOld, Path, Patch]]
+const convertTerminalToCastPatch = R.curry(
+  (nodes, splittedImplPatches, linksToTerminalNodes) =>
+    R.map((group) => {
+      const path = group[0];
+      const entryLink = group[1];
+
+      const entryPinKey = Link.getLinkOutputPinKey(entryLink);
+      const entryNodeId = Link.getLinkOutputNodeId(entryLink);
+      const entryNodeType = getNodeTypeByNodeId(nodes, entryNodeId);
+
+      const outputNodeId = Link.getLinkInputNodeId(entryLink);
+      const outputPinKey = Link.getLinkInputPinKey(entryLink);
+      const outputNodeType = getNodeTypeByNodeId(nodes, outputNodeId);
+
+      const entryPinType = getPinTypeFromImplPatches(
+        entryPinKey, entryNodeType, splittedImplPatches
+      );
+      const outputPinType = getPinTypeFromImplPatches(
+        outputPinKey, outputNodeType, splittedImplPatches
+      );
+
+      const castPatch = getCastPatch(entryPinType, outputPinType);
+      const castPath = getCastPath(entryPinType, outputPinType);
+
+      return [path, castPath, castPatch];
+    }
+  )(linksToTerminalNodes)
+);
+
+// :: Monad a -> Function[] -> Monad a
 const reduceChainOver = R.reduce(R.flip(R.chain));
 
 // :: Project -> String -> Patch
@@ -25,44 +109,27 @@ const isEndpointPatch = impls => R.either(
   Patch.isTerminalPatch
 );
 
-// :: String -> String
-const terminalTypeToCastType = R.compose(
-  R.cond([
-    [R.equals('Bool'), R.always(CONST.CAST_PATHS.BOOLEAN)],
-    [R.equals('Number'), R.always(CONST.CAST_PATHS.NUMBER)],
-    [R.equals('String'), R.always(CONST.CAST_PATHS.STRING)],
-    [R.equals('Pulse'), R.always(CONST.CAST_PATHS.PULSE)],
-    [R.T, R.identity],
-  ]),
-  R.replace(terminalRegExp, '')
-);
-
-// :: String -> Patch
-const terminalTypeToCastPatch = patch => R.compose(
-  R.cond([
-    [R.equals('Bool'), R.always(CONST.CAST_PATCHES.BOOLEAN)],
-    [R.equals('Number'), R.always(CONST.CAST_PATCHES.NUMBER)],
-    [R.equals('String'), R.always(CONST.CAST_PATCHES.STRING)],
-    [R.equals('Pulse'), R.always(CONST.CAST_PATCHES.PULSE)],
-    [R.T, R.always(patch)],
-  ]),
-  R.replace(terminalRegExp, '')
-);
-
 // :: Patch -> String -> [String, Patch]
-const replaceTerminalsWithCast = R.curry((patch, path) => R.converge(
-  R.concat,
-  [
-    R.compose(R.of, terminalTypeToCastType),
-    // R.always([path]),
-    R.compose(R.of, terminalTypeToCastPatch(patch)),
-  ]
-)(path));
+const extendTerminalPins = R.curry((patch, path) => R.ifElse(
+  Patch.isTerminalPatch,
+  R.compose(
+    R.concat([convertTerminalPath(path)]),
+    R.of,
+    R.chain(R.identity),
+    reduceChainOver(Maybe.of(patch)),
+    R.map(Patch.assocPin),
+    getTerminalPins,
+    Pin.getPinType,
+    R.head,
+    Patch.listPins
+  ),
+  R.always([path, patch])
+)(patch));
 
 // :: String[] -> Project -> Path -> [Path, Patch, ...]
 const extractImplPatches = R.curry((impls, project, path, patch) => R.ifElse(
     isEndpointPatch(impls),
-    endpointPatch => replaceTerminalsWithCast(endpointPatch, path),
+    endpointPatch => extendTerminalPins(endpointPatch, path),
     R.compose(
       R.chain(R.compose(
         type => Project.getPatchByPath(type, project)
@@ -101,10 +168,14 @@ const getPrefixedId = R.curry((prefix, id) => ((prefix) ? `${prefix}~${id}` : id
 const duplicateNodePrefixed = R.curry((prefix, node) => {
   const id = Node.getNodeId(node);
   const type = Node.getNodeType(node);
+  const newType = R.when(
+    R.test(terminalRegExp),
+    convertTerminalPath
+  )(type);
   const newId = getPrefixedId(prefix, id);
   return R.compose(
     R.assoc('id', newId),
-    R.assoc('type', terminalTypeToCastType(type))
+    R.assoc('type', newType)
   )(node);
 });
 
@@ -166,7 +237,7 @@ const extractLinks = R.curry((project, implPatchPaths, parentNodeId, patch) => R
       const newOutNodeId = getPrefixedId(parentNodeId, outNodeId);
 
       const inNode = getNodeById(patch, inNodeId);
-      const newInNodeId = getPrefixedId(parentNodeId, outNodeId);
+      const newInNodeId = getPrefixedId(parentNodeId, inNodeId);
 
       let newLink = Link.createLink();
       let inLinks = [];
@@ -211,13 +282,13 @@ export default R.curry((project, path, impls) => {
   const implPatches = extractImplPatches(impls, project, path, patch);
   // [[path, Patch], ...]
   const splittedImplPatches = R.splitEvery(2, implPatches);
+  // console.log('splittedImplPatches:', splittedImplPatches);
 
   if (R.isEmpty(splittedImplPatches)) {
     return Either.Left(new Error(CONST.ERROR.IMPLEMENTATION_NOT_FOUND));
   }
 
-  // [fn, ...]
-  const assocImplPatches = splittedImplPatches.map(R.apply(Project.assocPatch));
+  let splittedEndpointPatches = splittedImplPatches;
 
   const assocPatch = R.ifElse(
     Patch.hasImpl(impls),
@@ -225,7 +296,6 @@ export default R.curry((project, path, impls) => {
     (originalPatch) => {
       const implPatchPaths = R.pluck(0, splittedImplPatches);
       const nodes = extractNodes(project, implPatchPaths, null, originalPatch);
-      const assocNodes = nodes.map(node => Patch.assocNode(node));
 
       const links = extractLinks(project, implPatchPaths, null, originalPatch);
       const assocLinks = links.map(link => R.compose(
@@ -233,12 +303,39 @@ export default R.curry((project, path, impls) => {
         Patch.assocLink(link)
       ));
 
+      const terminalNodes = filterTerminalNodes(nodes);
+      const linksToTerminalNodes = filterTerminalLinks(terminalNodes, links);
+      const castPatches = convertTerminalToCastPatch(
+        nodes,
+        splittedImplPatches,
+        linksToTerminalNodes
+      );
+
+      // Replacing terminal node types with cast node types
+      const nodesWithCastNodes = R.map((node) => {
+        const type = Node.getNodeType(node);
+        const castPatch = R.find(R.propEq(0, type), castPatches);
+        return (castPatch) ? R.assoc('type', castPatch[1], node) : node;
+      }, nodes);
+
+      // Replace terminal patches in splittedImplPatches with casting patches
+      // TODO: Try to get rid of side effect!
+      splittedEndpointPatches = R.map((group) => {
+        const endpointPath = group[0];
+        const castPatch = R.find(R.propEq(0, endpointPath), castPatches);
+        return (castPatch) ? [castPatch[1], castPatch[2]] : group;
+      }, splittedImplPatches);
+
+      const assocNodes = nodesWithCastNodes.map(node => Patch.assocNode(node));
       const patchUpdaters = R.concat(assocNodes, assocLinks);
       const newPatch = R.reduce((p, fn) => fn(p), Patch.createPatch(), patchUpdaters);
 
       return R.chain(Project.assocPatch(path, newPatch));
     }
   )(patch);
+
+  // [fn, ...]
+  const assocImplPatches = splittedEndpointPatches.map(R.apply(Project.assocPatch));
 
   return R.compose(
     assocPatch,
