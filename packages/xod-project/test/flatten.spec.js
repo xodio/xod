@@ -204,6 +204,10 @@ describe('Flatten', () => {
               id: 'c',
               type: '@/foo',
             },
+            d: {
+              id: 'd',
+              type: 'xod/core/outputBool',
+            },
           },
           links: {
             l: {
@@ -221,6 +225,11 @@ describe('Flatten', () => {
           pins: {
             b: {
               key: 'b',
+              type: 'boolean',
+              direction: 'output',
+            },
+            d: {
+              key: 'd',
               type: 'boolean',
               direction: 'output',
             },
@@ -320,6 +329,20 @@ describe('Flatten', () => {
       );
     });
 
+    it('should remove unused terminals', () => {
+      const flatProject = flatten(project, '@/main', ['js']);
+
+      expect(flatProject.isRight).to.be.true();
+      Helper.expectEither(
+        (newProject) => {
+          // console.log(JSON.stringify(newProject));
+          expect(newProject.patches['@/main'].nodes)
+            .to.have.not.property('b~d');
+        },
+        flatProject
+      );
+    });
+
     it('should return flattened links', () => {
       const flatProject = flatten(project, '@/main', ['js']);
 
@@ -356,12 +379,196 @@ describe('Flatten', () => {
       // pulse to *
       fn(CONST.PIN_TYPE.PULSE, CONST.PIN_TYPE.PULSE);
     };
-    describe('typeA to outputTypeB', () => {
+
+    describe('no links to terminal', () => {
+      const project = {
+        patches: {
+          '@/main': {
+            nodes: {
+              a: {
+                id: 'a',
+                type: 'xod/core/number',
+              },
+              b: {
+                id: 'b',
+                type: 'xod/core/outputBool',
+              },
+            },
+            links: {},
+          },
+          'xod/core/number': {
+            nodes: {},
+            links: {},
+            pins: {
+              out: {
+                key: 'out',
+                type: 'number',
+                direction: 'output',
+              },
+            },
+            impls: {
+              js: '//OK',
+            },
+          },
+          'xod/core/outputBool': {
+            nodes: {},
+            links: {},
+            pins: {
+              __in__: {
+                key: '__in__',
+                type: 'boolean',
+                direction: 'input',
+              },
+            },
+          },
+        },
+      };
+
+      it('should return patches without cast patch', () => {
+        const flatProject = flatten(project, '@/main', ['js']);
+
+        expect(flatProject.isRight).to.be.true();
+        Helper.expectEither(
+          (newProject) => {
+            expect(R.keys(newProject.patches))
+              .to.be.deep.equal(['xod/core/number', '@/main']);
+          },
+          flatProject
+        );
+      });
+
+      it('should return @/main without cast node and link to it', () => {
+        const flatProject = flatten(project, '@/main', ['js']);
+
+        expect(flatProject.isRight).to.be.true();
+        Helper.expectEither(
+          (newProject) => {
+            expect(R.keys(newProject.patches['@/main'].nodes))
+              .to.be.deep.equal(['a']);
+            expect(R.values(newProject.patches['@/main'].links))
+              .to.have.lengthOf(0);
+          },
+          flatProject
+        );
+      });
+    });
+
+    describe('one link to terminal', () => {
+      const project = {
+        patches: {
+          '@/main': {
+            nodes: {
+              a: {
+                id: 'a',
+                type: 'xod/core/number',
+              },
+              b: {
+                id: 'b',
+                type: 'xod/core/outputBool',
+              },
+            },
+            links: {
+              l: {
+                id: 'l',
+                output: {
+                  nodeId: 'a',
+                  pinKey: 'out',
+                },
+                input: {
+                  nodeId: 'b',
+                  pinKey: '__in__',
+                },
+              },
+            },
+          },
+          'xod/core/number': {
+            nodes: {},
+            links: {},
+            pins: {
+              out: {
+                key: 'out',
+                type: 'number',
+                direction: 'output',
+              },
+            },
+            impls: {
+              js: '//OK',
+            },
+          },
+          'xod/core/outputBool': {
+            nodes: {},
+            links: {},
+            pins: {
+              __in__: {
+                key: '__in__',
+                type: 'boolean',
+                direction: 'input',
+              },
+            },
+          },
+        },
+      };
+
+      it('should return patches without cast patch', () => {
+        const flatProject = flatten(project, '@/main', ['js']);
+
+        expect(flatProject.isRight).to.be.true();
+        Helper.expectEither(
+          (newProject) => {
+            expect(R.keys(newProject.patches))
+              .to.be.deep.equal(['xod/core/number', '@/main']);
+          },
+          flatProject
+        );
+      });
+
+      it('should return @/main without cast node and link to it', () => {
+        const flatProject = flatten(project, '@/main', ['js']);
+
+        expect(flatProject.isRight).to.be.true();
+        Helper.expectEither(
+          (newProject) => {
+            expect(R.keys(newProject.patches['@/main'].nodes))
+              .to.be.deep.equal(['a']);
+            expect(R.values(newProject.patches['@/main'].links))
+              .to.have.lengthOf(0);
+          },
+          flatProject
+        );
+      });
+    });
+
+    describe('through output terminal', () => {
       const createCastOutputTest = (typeIn, typeOut) => {
-        it(getCastPath(typeIn, typeOut), () => {
+        it(`${typeIn} -> ${getCastPath(typeIn, typeOut)} -> ${typeOut}`, () => {
           const project = {
             patches: {
               '@/main': {
+                nodes: {
+                  a: {
+                    id: 'a',
+                    type: '@/foo',
+                  },
+                  b: {
+                    id: 'b',
+                    type: `xod/core/${typeOut}`,
+                  },
+                },
+                links: {
+                  l: {
+                    id: 'l',
+                    output: {
+                      nodeId: 'a',
+                      pinKey: 'b',
+                    },
+                    input: {
+                      nodeId: 'b',
+                      pinKey: 'in',
+                    },
+                  },
+                },
+              },
+              '@/foo': {
                 nodes: {
                   a: {
                     id: 'a',
@@ -407,6 +614,20 @@ describe('Flatten', () => {
                   js: '//OK',
                 },
               },
+              [`xod/core/${typeOut}`]: {
+                nodes: {},
+                links: {},
+                pins: {
+                  in: {
+                    key: 'in',
+                    type: typeOut,
+                    direction: 'input',
+                  },
+                },
+                impls: {
+                  js: '//OK',
+                },
+              },
               'xod/core/outputX': {
                 nodes: {},
                 links: {},
@@ -420,14 +641,33 @@ describe('Flatten', () => {
               },
             },
           };
+
+          if (typeOut === typeIn) {
+            project.patches[`xod/core/${typeOut}`].pins = {
+              in: {
+                key: 'in',
+                type: typeOut,
+                direction: 'input',
+              },
+              out: {
+                key: 'out',
+                type: typeOut,
+                direction: 'output',
+              },
+            };
+          }
+
           const flatProject = flatten(project, '@/main', ['js']);
           const expectedPath = getCastPath(typeIn, typeOut);
+          const expectedPaths = (typeIn === typeOut) ?
+            [`xod/core/${typeIn}`, expectedPath, '@/main'] :
+            [`xod/core/${typeIn}`, expectedPath, `xod/core/${typeOut}`, '@/main'];
 
           expect(flatProject.isRight).to.be.true();
           Helper.expectEither(
             (newProject) => {
               expect(R.keys(newProject.patches))
-                .to.be.deep.equal([`xod/core/${typeIn}`, expectedPath, '@/main']);
+                .to.be.deep.equal(expectedPaths);
               expect(newProject.patches[expectedPath])
                 .to.be.deep.equal(getCastPatch(typeIn, typeOut));
             },
@@ -438,13 +678,38 @@ describe('Flatten', () => {
       testTypes(createCastOutputTest);
     });
 
-    describe('inputTypeA to typeB', () => {
+    describe('through input terminal', () => {
       // inputX to Y
       const createCastInputTest = (typeIn, typeOut) => {
-        it(getCastPath(typeIn, typeOut), () => {
+        it(`${typeIn} -> ${getCastPath(typeIn, typeOut)} -> ${typeOut}`, () => {
           const project = {
             patches: {
               '@/main': {
+                nodes: {
+                  a: {
+                    id: 'a',
+                    type: `xod/core/${typeIn}`,
+                  },
+                  foo: {
+                    id: 'foo',
+                    type: '@/foo',
+                  },
+                },
+                links: {
+                  l: {
+                    id: 'l',
+                    output: {
+                      nodeId: 'a',
+                      pinKey: 'out',
+                    },
+                    input: {
+                      nodeId: 'foo',
+                      pinKey: 'b',
+                    },
+                  },
+                },
+              },
+              '@/foo': {
                 nodes: {
                   a: {
                     id: 'a',
@@ -471,7 +736,7 @@ describe('Flatten', () => {
                 pins: {
                   b: {
                     key: 'b',
-                    type: typeIn,
+                    type: typeOut,
                     direction: 'input',
                   },
                 },
@@ -490,115 +755,7 @@ describe('Flatten', () => {
                   js: '//OK',
                 },
               },
-              'xod/core/inputX': {
-                nodes: {},
-                links: {},
-                pins: {
-                  __out__: {
-                    key: '__out__',
-                    type: typeIn,
-                    direction: 'output',
-                  },
-                },
-              },
-            },
-          };
-          const flatProject = flatten(project, '@/main', ['js']);
-          const expectedPath = getCastPath(typeIn, typeOut);
-
-          expect(flatProject.isRight).to.be.true();
-          Helper.expectEither(
-            (newProject) => {
-              expect(R.keys(newProject.patches))
-                .to.be.deep.equal([`xod/core/${typeOut}`, expectedPath, '@/main']);
-              expect(newProject.patches[expectedPath])
-                .to.be.deep.equal(getCastPatch(typeIn, typeOut));
-            },
-            flatProject
-          );
-        });
-      };
-      testTypes(createCastInputTest);
-    });
-
-    describe('typeA to inputTypeB to typeA', () => {
-      // inputX to Y
-      const createCastInputTest = (typeIn, typeOut) => {
-        it(getCastPath(typeIn, typeOut), () => {
-          const project = {
-            patches: {
-              '@/main': {
-                nodes: {
-                  a: {
-                    id: 'a',
-                    type: `xod/core/out${typeIn}`,
-                  },
-                  foo: {
-                    id: 'foo',
-                    type: '@/foo',
-                  },
-                },
-                links: {
-                  l: {
-                    id: 'l',
-                    output: {
-                      nodeId: 'a',
-                      pinKey: 'out',
-                    },
-                    input: {
-                      nodeId: 'foo',
-                      pinKey: 'b',
-                    },
-                  },
-                },
-              },
-              '@/foo': {
-                nodes: {
-                  a: {
-                    id: 'a',
-                    type: `xod/core/${typeIn}`,
-                  },
-                  b: {
-                    id: 'b',
-                    type: 'xod/core/inputX',
-                  },
-                },
-                links: {
-                  l: {
-                    id: 'l',
-                    output: {
-                      nodeId: 'b',
-                      pinKey: '__out__',
-                    },
-                    input: {
-                      nodeId: 'a',
-                      pinKey: 'in',
-                    },
-                  },
-                },
-                pins: {
-                  b: {
-                    key: 'b',
-                    type: typeOut,
-                    direction: 'input',
-                  },
-                },
-              },
               [`xod/core/${typeIn}`]: {
-                nodes: {},
-                links: {},
-                pins: {
-                  in: {
-                    key: 'in',
-                    type: typeIn,
-                    direction: 'input',
-                  },
-                },
-                impls: {
-                  js: '//OK',
-                },
-              },
-              [`xod/core/out${typeIn}`]: {
                 nodes: {},
                 links: {},
                 pins: {
@@ -625,14 +782,33 @@ describe('Flatten', () => {
               },
             },
           };
+
+          if (typeOut === typeIn) {
+            project.patches[`xod/core/${typeOut}`].pins = {
+              in: {
+                key: 'in',
+                type: typeOut,
+                direction: 'input',
+              },
+              out: {
+                key: 'out',
+                type: typeOut,
+                direction: 'output',
+              },
+            };
+          }
+
           const flatProject = flatten(project, '@/main', ['js']);
           const expectedPath = getCastPath(typeIn, typeOut);
+          const expectedPaths = (typeIn === typeOut) ?
+            [`xod/core/${typeIn}`, expectedPath, '@/main'] :
+            [`xod/core/${typeIn}`, `xod/core/${typeOut}`, expectedPath, '@/main'];
 
           expect(flatProject.isRight).to.be.true();
           Helper.expectEither(
             (newProject) => {
               expect(R.keys(newProject.patches))
-                .to.be.deep.equal([`xod/core/out${typeIn}`, `xod/core/${typeIn}`, expectedPath, '@/main']);
+                .to.be.deep.equal(expectedPaths);
               expect(newProject.patches[expectedPath])
                 .to.be.deep.equal(getCastPatch(typeIn, typeOut));
             },
@@ -643,4 +819,194 @@ describe('Flatten', () => {
       testTypes(createCastInputTest);
     });
   });
+
+  describe('injected pins', () => {
+    const project = {
+      patches: {
+        '@/main': {
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/core/or',
+            },
+            b: {
+              id: 'b',
+              type: '@/foo',
+              pins: {
+                a2: {
+                  injected: true,
+                  value: 32,
+                },
+              },
+            },
+            c: {
+              id: 'c',
+              type: 'xod/core/or',
+            },
+          },
+          links: {
+            l: {
+              id: 'l',
+              output: {
+                nodeId: 'a',
+                pinKey: 'out',
+              },
+              input: {
+                nodeId: 'b',
+                pinKey: 'a',
+              },
+            },
+            l2: {
+              id: 'l2',
+              output: {
+                nodeId: 'b',
+                pinKey: 'c',
+              },
+              input: {
+                nodeId: 'c',
+                pinKey: 'in1',
+              },
+            },
+          },
+        },
+        '@/foo': {
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/core/inputNumber',
+            },
+            a2: {
+              id: 'a2',
+              type: 'xod/core/inputNumber',
+            },
+            b: {
+              id: 'b',
+              type: 'xod/core/or',
+            },
+            c: {
+              id: 'c',
+              type: 'xod/core/outputBool',
+            },
+          },
+          links: {
+            l: {
+              id: 'l',
+              output: {
+                nodeId: 'a',
+                pinKey: '__out__',
+              },
+              input: {
+                nodeId: 'b',
+                pinKey: 'in1',
+              },
+            },
+            l2: {
+              id: 'l2',
+              output: {
+                nodeId: 'a',
+                pinKey: '__out__',
+              },
+              input: {
+                nodeId: 'b',
+                pinKey: 'in2',
+              },
+            },
+            l3: {
+              id: 'l3',
+              output: {
+                nodeId: 'b',
+                pinKey: 'out',
+              },
+              input: {
+                nodeId: 'c',
+                pinKey: '__in__',
+              },
+            },
+          },
+          pins: {
+            a: {
+              key: 'a',
+              type: 'number',
+              direction: 'input',
+            },
+            a2: {
+              key: 'a2',
+              type: 'number',
+              direction: 'input',
+            },
+            c: {
+              key: 'c',
+              type: 'boolean',
+              direction: 'output',
+            },
+          },
+        },
+        'xod/core/or': {
+          nodes: {},
+          links: {},
+          pins: {
+            in1: {
+              key: 'in1',
+              type: 'boolean',
+              direction: 'input',
+            },
+            in2: {
+              key: 'in2',
+              type: 'boolean',
+              direction: 'input',
+            },
+            out: {
+              key: 'out',
+              type: 'boolean',
+              direction: 'output',
+            },
+          },
+          impls: {
+            js: '//ok',
+          },
+        },
+        'xod/core/outputBool': {
+          nodes: {},
+          links: {},
+          pins: {
+            __in__: {
+              key: '__in__',
+              type: 'boolean',
+              direction: 'input',
+            },
+          },
+        },
+        'xod/core/inputNumber': {
+          nodes: {},
+          links: {},
+          pins: {
+            __out__: {
+              key: '__out__',
+              type: 'number',
+              direction: 'output',
+            },
+          },
+        },
+      },
+    };
+
+    it('should return node b~b with injected pin a2', () => {
+      const flatProject = flatten(project, '@/main', ['js']);
+
+      expect(flatProject.isRight).to.be.true();
+      Helper.expectEither(
+        (newProject) => {
+          // console.log(JSON.stringify(newProject));
+          expect(newProject.patches['@/main'].nodes['b~b'])
+            .to.have.property('pins')
+            .that.deep.equal(project.patches['@/main'].nodes.b.pins);
+        },
+        flatProject
+      );
+    });
+  });
+
+  // Tests left:
+  // - injected pins
+  // - flatten with list of impls, check priority
 });

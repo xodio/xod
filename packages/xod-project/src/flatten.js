@@ -25,6 +25,11 @@ const filterTerminalNodes = R.filter(R.compose(
   R.test(/^terminal/),
   Node.getNodeType
 ));
+// :: Node -> boolean
+const isCastNode = R.compose(
+  R.test(/^cast-([a-zA-Z]+)-/),
+  Node.getNodeType
+);
 // :: Node[] -> Link[] -> Link[]
 const filterTerminalLinks = R.curry((nodes, links) => R.map(
   R.converge(
@@ -70,26 +75,31 @@ const convertTerminalToCastPatch = R.curry(
     R.map((group) => {
       const path = group[0];
       const entryLink = group[1];
+      let result = [path, null];
 
-      const entryPinKey = Link.getLinkOutputPinKey(entryLink);
-      const entryNodeId = Link.getLinkOutputNodeId(entryLink);
-      const entryNodeType = getNodeTypeByNodeId(nodes, entryNodeId);
+      if (entryLink) {
+        const outputPinKey = Link.getLinkOutputPinKey(entryLink);
+        const outputNodeId = Link.getLinkOutputNodeId(entryLink);
+        const outputNodeType = getNodeTypeByNodeId(nodes, outputNodeId);
 
-      const outputNodeId = Link.getLinkInputNodeId(entryLink);
-      const outputPinKey = Link.getLinkInputPinKey(entryLink);
-      const outputNodeType = getNodeTypeByNodeId(nodes, outputNodeId);
+        const inputNodeId = Link.getLinkInputNodeId(entryLink);
+        const inputPinKey = Link.getLinkInputPinKey(entryLink);
+        const inputNodeType = getNodeTypeByNodeId(nodes, inputNodeId);
 
-      const entryPinType = getPinTypeFromImplPatches(
-        entryPinKey, entryNodeType, splittedImplPatches
-      );
-      const outputPinType = getPinTypeFromImplPatches(
-        outputPinKey, outputNodeType, splittedImplPatches
-      );
+        const outputPinType = getPinTypeFromImplPatches(
+          outputPinKey, outputNodeType, splittedImplPatches
+        );
+        const inputPinType = getPinTypeFromImplPatches(
+          inputPinKey, inputNodeType, splittedImplPatches
+        );
 
-      const castPatch = getCastPatch(entryPinType, outputPinType);
-      const castPath = getCastPath(entryPinType, outputPinType);
+        const castPatch = getCastPatch(outputPinType, inputPinType);
+        const castPath = getCastPath(outputPinType, inputPinType);
 
-      return [path, castPath, castPatch];
+        result = [path, castPath, castPatch];
+      }
+
+      return result;
     }
   )(linksToTerminalNodes)
 );
@@ -275,6 +285,40 @@ const extractLinks = R.curry((project, implPatchPaths, parentNodeId, patch) => R
   Patch.listLinks
 )(patch));
 
+// :: Link[] -> Node -> Boolean
+const filterCastNodesWithBothLinks = R.curry((links, node) => {
+  if (R.not(isCastNode(node))) { return true; }
+
+  const nodeId = Node.getNodeId(node);
+  return R.compose(
+    R.equals(2),
+    R.length,
+    R.filter(R.either(
+      R.compose(R.equals(nodeId), Link.getLinkOutputNodeId),
+      R.compose(R.equals(nodeId), Link.getLinkInputNodeId)
+    ))
+  )(links);
+});
+
+// :: Node[] -> Link -> Boolean
+const filterLinksToExistingNodes = R.curry((nodes, link) => {
+  const nodeIds = R.pluck('id', nodes);
+  const isNodeExist = R.contains(R.__, nodeIds);
+
+  return R.both(
+    R.compose(isNodeExist, Link.getLinkOutputNodeId),
+    R.compose(isNodeExist, Link.getLinkInputNodeId)
+  )(link);
+});
+
+// :: Node[] -> [Path, Patch] -> Boolean
+const filterEndpointsByUsedNodes = R.curry((nodes, splittedPatch) => {
+  const nodeTypes = R.pluck('type', nodes);
+  const isNodeTypeExists = R.contains(R.__, nodeTypes);
+
+  return R.compose(isNodeTypeExists, R.prop(0))(splittedPatch);
+});
+
 export default R.curry((project, path, impls) => {
   const patch = explode(Project.getPatchByPath(path, project));
 
@@ -282,7 +326,6 @@ export default R.curry((project, path, impls) => {
   const implPatches = extractImplPatches(impls, project, path, patch);
   // [[path, Patch], ...]
   const splittedImplPatches = R.splitEvery(2, implPatches);
-  // console.log('splittedImplPatches:', splittedImplPatches);
 
   if (R.isEmpty(splittedImplPatches)) {
     return Either.Left(new Error(CONST.ERROR.IMPLEMENTATION_NOT_FOUND));
@@ -298,10 +341,6 @@ export default R.curry((project, path, impls) => {
       const nodes = extractNodes(project, implPatchPaths, null, originalPatch);
 
       const links = extractLinks(project, implPatchPaths, null, originalPatch);
-      const assocLinks = links.map(link => R.compose(
-        explode,
-        Patch.assocLink(link)
-      ));
 
       const terminalNodes = filterTerminalNodes(nodes);
       const linksToTerminalNodes = filterTerminalLinks(terminalNodes, links);
@@ -312,21 +351,35 @@ export default R.curry((project, path, impls) => {
       );
 
       // Replacing terminal node types with cast node types
-      const nodesWithCastNodes = R.map((node) => {
-        const type = Node.getNodeType(node);
-        const castPatch = R.find(R.propEq(0, type), castPatches);
-        return (castPatch) ? R.assoc('type', castPatch[1], node) : node;
-      }, nodes);
+      const nodesWithCastNodes = R.compose(
+        R.filter(filterCastNodesWithBothLinks(links)),
+        R.reject(R.isNil),
+        R.map((node) => {
+          const type = Node.getNodeType(node);
+          const castPatch = R.find(R.propEq(0, type), castPatches);
+          if (castPatch && castPatch[1] === null) return null;
+          return (castPatch) ? R.assoc('type', castPatch[1], node) : node;
+        })
+      )(nodes);
+
 
       // Replace terminal patches in splittedImplPatches with casting patches
       // TODO: Try to get rid of side effect!
-      splittedEndpointPatches = R.map((group) => {
-        const endpointPath = group[0];
-        const castPatch = R.find(R.propEq(0, endpointPath), castPatches);
-        return (castPatch) ? [castPatch[1], castPatch[2]] : group;
-      }, splittedImplPatches);
+      splittedEndpointPatches = R.compose(
+        R.filter(filterEndpointsByUsedNodes(nodesWithCastNodes)),
+        R.reject(R.isNil),
+        R.map((group) => {
+          const endpointPath = group[0];
+          const castPatch = R.find(R.propEq(0, endpointPath), castPatches);
+          if (castPatch && castPatch[1] === null) return null;
+          return (castPatch) ? [castPatch[1], castPatch[2]] : group;
+        })
+      )(splittedImplPatches);
+
+      const filteredLinks = R.filter(filterLinksToExistingNodes(nodesWithCastNodes), links);
 
       const assocNodes = nodesWithCastNodes.map(node => Patch.assocNode(node));
+      const assocLinks = filteredLinks.map(link => R.compose(explode, Patch.assocLink(link)));
       const patchUpdaters = R.concat(assocNodes, assocLinks);
       const newPatch = R.reduce((p, fn) => fn(p), Patch.createPatch(), patchUpdaters);
 
