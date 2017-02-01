@@ -199,7 +199,7 @@ export const getNodeTypeById = R.curry((state, id) => R.pipe(
 */
 
 export const getNodes = R.curry((patchId, state) => R.compose(
-  R.prop('nodes'),
+  R.propOr({}, 'nodes'),
   getPatchById(patchId)
 )(state));
 
