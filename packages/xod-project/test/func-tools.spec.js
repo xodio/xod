@@ -8,19 +8,6 @@ import * as Helper from './helpers';
 chai.use(dirtyChai);
 
 describe('Functional tools', () => {
-  describe('deepClone', () => {
-    const a = { a: 25, b: 'b', c: { c: true } };
-
-    it('should return new object', () => {
-      const cloned = Tools.deepClone(a);
-      expect(cloned).to.be.not.equal(a);
-      expect(cloned.c).to.be.not.equal(a.c);
-    });
-    it('should return deeply cloned object', () => {
-      expect(Tools.deepClone(a))
-        .to.be.deep.equal(a);
-    });
-  });
   describe('err', () => {
     const errMsg = 'error message';
     const testObj = Tools.err(errMsg)();

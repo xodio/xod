@@ -44,6 +44,10 @@ export const getBaseName = R.compose(
 );
 
 /**
+ * Function to rapidly extract a value from Maybe or Either monad.
+ * But it should be used only when we're sure that we should have a value,
+ * otherwise it will throw an exception.
+ *
  * @private
  * @function explode
  * @param {Maybe|Either}
@@ -52,24 +56,13 @@ export const getBaseName = R.compose(
  */
 export const explode = R.cond([
   [Maybe.isJust, R.chain(R.identity)],
-  [Maybe.isNothing, () => { throw new Error(CONST.ERROR.EXPLODE_NOTHING); }],
+  [Maybe.isNothing, () => { throw new Error('Maybe is expected to be Just, but its Nothing.'); }],
   [R.is(Either), Either.either(
-    (val) => { throw new Error(CONST.ERROR.EXPLODE_LEFT + val); },
+    (val) => { throw new Error(`Either expected to be Right, but its Left with value: ${val}`); },
     R.identity
   )],
-  [R.T, () => { throw new Error(CONST.ERROR.EXPLODE_NOT_A_MONAD); }],
+  [R.T, (input) => { throw new Error(`Maybe or Either should be passed into explode function. Passed: ${input}`); }],
 ]);
-// R.compose(
-//   R.chain(R.identity),
-//   R.when(
-//     Either.isLeft,
-//
-//   ),
-//   R.when(
-//     Maybe.isNothing,
-//     () => { throw new Error('Maybe is expected to be Just, but its Nothing'); }
-//   )
-// );
 
 /**
  * @function isPathLocal
@@ -172,9 +165,9 @@ export const getCastPatch = (typeIn, typeOut) => ({
 /**
  * Returns path for casting patch
  * @private
- * @function getCastPath
+ * @function getCastPatchPath
  * @param {PIN_TYPE} typeIn
  * @param {PIN_TYPE} typeOut
  * @returns {String}
  */
-export const getCastPath = (typeIn, typeOut) => `cast-${typeIn}-to-${typeOut}`;
+export const getCastPatchPath = (typeIn, typeOut) => `cast-${typeIn}-to-${typeOut}`;

@@ -142,9 +142,11 @@ export const listPatches = R.compose(
 );
 
 /**
+ * Returns a list of paths to patches in the project.
+ *
  * @function listPatchPaths
  * @param {Project} project - project bundle
- * @returns {String[]} list of all patche paths not sorted in any arbitrary order
+ * @returns {String[]} list of all patch paths not sorted in any arbitrary order
  */
 export const listPatchPaths = R.compose(
   R.keys,

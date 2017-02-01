@@ -23,9 +23,6 @@ export const match = R.curry(
   )(string)
 );
 
-// :: a -> a
-export const deepClone = R.compose(JSON.parse, JSON.stringify);
-
 // :: *|Maybe -> Maybe<*>
 export const ensureMaybe = R.ifElse(
   R.is(Maybe),

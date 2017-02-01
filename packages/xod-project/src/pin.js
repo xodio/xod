@@ -100,6 +100,8 @@ export const isInputPin = R.propEq('direction', CONST.PIN_DIRECTION.INPUT);
 export const isOutputPin = R.propEq('direction', CONST.PIN_DIRECTION.OUTPUT);
 
 /**
+ * Checks is that pin is pin of aterminal node.
+ *
  * @function isTerminalPin
  * @param {Pin} pin
  * @returns {boolean}

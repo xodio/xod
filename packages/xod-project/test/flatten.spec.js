@@ -4,7 +4,7 @@ import dirtyChai from 'dirty-chai';
 
 import * as Helper from './helpers';
 import * as CONST from '../src/constants';
-import { getCastPath, getCastPatch } from '../src/utils';
+import { getCastPatchPath, getCastPatch } from '../src/utils';
 import flatten from '../src/flatten';
 
 chai.use(dirtyChai);
@@ -537,7 +537,7 @@ describe('Flatten', () => {
 
     describe('through output terminal', () => {
       const createCastOutputTest = (typeIn, typeOut) => {
-        it(`${typeIn} -> ${getCastPath(typeIn, typeOut)} -> ${typeOut}`, () => {
+        it(`${typeIn} -> ${getCastPatchPath(typeIn, typeOut)} -> ${typeOut}`, () => {
           const project = {
             patches: {
               '@/main': {
@@ -655,7 +655,7 @@ describe('Flatten', () => {
           }
 
           const flatProject = flatten(project, '@/main', ['js']);
-          const expectedPath = getCastPath(typeIn, typeOut);
+          const expectedPath = getCastPatchPath(typeIn, typeOut);
           const expectedPaths = (typeIn === typeOut) ?
             [`xod/core/${typeIn}`, expectedPath, '@/main'] :
             [`xod/core/${typeIn}`, `xod/core/${typeOut}`, expectedPath, '@/main'];
@@ -677,7 +677,7 @@ describe('Flatten', () => {
 
     describe('through input terminal', () => {
       const createCastInputTest = (typeIn, typeOut) => {
-        it(`${typeIn} -> ${getCastPath(typeIn, typeOut)} -> ${typeOut}`, () => {
+        it(`${typeIn} -> ${getCastPatchPath(typeIn, typeOut)} -> ${typeOut}`, () => {
           const project = {
             patches: {
               '@/main': {
@@ -795,7 +795,7 @@ describe('Flatten', () => {
           }
 
           const flatProject = flatten(project, '@/main', ['js']);
-          const expectedPath = getCastPath(typeIn, typeOut);
+          const expectedPath = getCastPatchPath(typeIn, typeOut);
           const expectedPaths = (typeIn === typeOut) ?
             [`xod/core/${typeIn}`, expectedPath, '@/main'] :
             [`xod/core/${typeIn}`, `xod/core/${typeOut}`, expectedPath, '@/main'];

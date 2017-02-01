@@ -7,17 +7,20 @@ import * as Patch from './patch';
 import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
-import { explode, getCastPatch, getCastPath } from './utils';
+import { explode, getCastPatch, getCastPatchPath } from './utils';
+
 
 const terminalRegExp = /^xod\/core\/(input|output)/;
+// :: String -> Pin[]
 const getTerminalPins = type => ([
   { key: '__in__', type, direction: CONST.PIN_DIRECTION.INPUT },
   { key: '__out__', type, direction: CONST.PIN_DIRECTION.OUTPUT },
 ]);
-const getTerminalPath = type => `terminal${type}`;
+// :: String -> String
+const getTerminalType = type => `terminal${type}`;
 // :: String -> String
 const convertTerminalPath = R.compose(
-  getTerminalPath,
+  getTerminalType,
   R.replace(terminalRegExp, '')
 );
 // :: Node[] -> Node[]
@@ -37,7 +40,7 @@ const filterTerminalLinks = R.curry((nodes, links) => R.map(
   nodes
 ));
 
-// :: Monad a -> Function[] -> Monad a
+// :: Applicative f => f a -> [(a -> a)] -> f a
 const reduceChainOver = R.reduce(R.flip(R.chain));
 
 // :: Project -> String -> Patch
@@ -47,7 +50,7 @@ const getPatchByNodeType = R.curry((project, nodeType) => R.compose(
 )(nodeType));
 
 // :: String[] -> Patch -> Boolean
-const isEndpointPatch = impls => R.either(
+const isPatchFlattenable = impls => R.either(
   Patch.hasImpl(impls),
   Patch.isTerminalPatch
 );
@@ -71,7 +74,7 @@ const extendTerminalPins = R.curry((patch, path) => R.ifElse(
 
 // :: String[] -> Project -> Path -> [Path, Patch, ...]
 const extractImplPatches = R.curry((impls, project, path, patch) => R.ifElse(
-    isEndpointPatch(impls),
+    isPatchFlattenable(impls),
     endpointPatch => extendTerminalPins(endpointPatch, path),
     R.compose(
       R.chain(R.compose(
@@ -272,7 +275,7 @@ const createCastNode = R.curry((patchTuples, nodes, link) => R.compose(
     R.ifElse(
       R.equals,
       Maybe.Nothing,
-      R.compose(Maybe.of, getCastPath)
+      R.compose(Maybe.of, getCastPatchPath)
     ),
     [
       getPinType(patchTuples, nodes, Link.getLinkOutputNodeId, Link.getLinkOutputPinKey),
@@ -472,7 +475,45 @@ const removeTerminalPatches = R.reject(R.compose(
   R.prop(0)
 ));
 
-
+/**
+ * Flattens project
+ *
+ * To transpile project into any native language we need a flattened graph of nodes
+ * with implementations for target platform. It replaces all nodes with contents of
+ * their patches recursively, place nodes, which casts one type into another one
+ * on every link between pins with different types.
+ *
+ * **How we do it?**
+ *
+ * We start flattening from entry-point patch (second argument of function),
+ * so as a result we'll get only used patches.
+ *
+ * 1. Get all patches with defined implementations or inputs/outputs (further, "leaf patch");
+ * 2. Convert entry-point patch into the new patch:
+ *
+ *    2.1. Extract all nodes recursively.
+ *         Each patch-node will become array of leaf nodes.
+ *         Terminals will have a temporary type "terminal%TYPE%".
+ *
+ *    2.2. Update links in accordance with extracted nodes.
+ *         It have new ids, new pin keys and its flattened.
+ *
+ *    2.3. Replace terminal nodes and links with cast nodes and links.
+ *         It removes terminal nodes and places cast nodes (from type to type)
+ *         and creates a new links. Sometimes it just removes terminals, if
+ *         both pins have the same type (if we don't need a casting).
+ *         Also we copy injected pins from terminals, if they have it.
+ *
+ *    2.4. Assoc new nodes and new links to a new patch.
+ *
+ * 3. Add cast patches to a list of leaf patches and remove terminals.
+ * 4. Assoc leaf patches to a project
+ * 5. Assoc new patch to an old path.
+ * @function flatten
+ * @param {Project} project
+ * @param {string} path - Path of entry-point patch
+ * @param {string[]} impls - A list of target implementations
+ */
 export default R.curry((project, path, impls) => {
   const patch = explode(Project.getPatchByPath(path, project));
 

@@ -19,7 +19,7 @@ describe('Utils', () => {
     });
     it('should throw error for Maybe.Nothing', () => {
       const fn = () => Utils.explode(Maybe.Nothing());
-      expect(fn).to.throw(Error, CONST.ERROR.EXPLODE_NOTHING);
+      expect(fn).to.throw(Error);
     });
     it('should return Either.Right value', () => {
       expect(Utils.explode(Either.Right(25)))
@@ -28,11 +28,11 @@ describe('Utils', () => {
     it('should throw error for Either.Left', () => {
       const errMsg = 'err';
       const fn = () => Utils.explode(Either.Left(errMsg));
-      expect(fn).to.throw(Error, CONST.ERROR.EXPLODE_LEFT + errMsg);
+      expect(fn).to.throw(Error);
     });
     it('should throw error if its not Maybe or Either', () => {
       const fn = () => Utils.explode(5);
-      expect(fn).to.throw(Error, CONST.ERROR.EXPLODE_NOT_A_MONAD);
+      expect(fn).to.throw(Error);
     });
   });
 

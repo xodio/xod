@@ -89,7 +89,7 @@ export const createNode = R.curry(
  */
 export const duplicateNode = R.compose(
   newNode => R.assoc('id', Utils.generateId(), newNode),
-  Tools.deepClone
+  R.clone
 );
 
 /**
