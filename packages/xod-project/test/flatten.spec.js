@@ -270,6 +270,23 @@ describe('Flatten', () => {
             },
           },
         },
+        'xod/core/cast-boolean-to-boolean': {
+          nodes: {},
+          links: {},
+          pins: {
+            __in__: {
+              key: '__in__',
+              type: 'boolean',
+              direction: 'input',
+            },
+            __out__: {
+              key: '__out__',
+              type: 'boolean',
+              direction: 'input',
+            },
+          },
+          impls: {},
+        },
       },
     };
 
@@ -414,6 +431,23 @@ describe('Flatten', () => {
                 direction: 'input',
               },
             },
+          },
+          'xod/core/cast-boolean-to-number': {
+            nodes: {},
+            links: {},
+            pins: {
+              __in__: {
+                key: '__in__',
+                type: 'boolean',
+                direction: 'input',
+              },
+              __out__: {
+                key: '__out__',
+                type: 'boolean',
+                direction: 'input',
+              },
+            },
+            impls: {},
           },
         },
       };
@@ -636,6 +670,23 @@ describe('Flatten', () => {
                   },
                 },
               },
+              [`xod/core/cast-${typeIn}-to-${typeOut}`]: {
+                nodes: {},
+                links: {},
+                pins: {
+                  __in__: {
+                    key: '__in__',
+                    type: typeIn,
+                    direction: 'input',
+                  },
+                  __out__: {
+                    key: '__out__',
+                    type: typeOut,
+                    direction: 'input',
+                  },
+                },
+                impls: {},
+              },
             },
           };
 
@@ -655,7 +706,7 @@ describe('Flatten', () => {
           }
 
           const flatProject = flatten(project, '@/main', ['js']);
-          const expectedPath = getCastPatchPath(typeIn, typeOut);
+          const expectedPath = `xod/core/cast-${typeIn}-to-${typeOut}`; // getCastPatchPath(typeIn, typeOut);
           const expectedPaths = (typeIn === typeOut) ?
             [`xod/core/${typeIn}`, expectedPath, '@/main'] :
             [`xod/core/${typeIn}`, `xod/core/${typeOut}`, expectedPath, '@/main'];
@@ -666,7 +717,7 @@ describe('Flatten', () => {
               expect(R.keys(newProject.patches))
                 .to.be.deep.equal(expectedPaths);
               expect(newProject.patches[expectedPath])
-                .to.be.deep.equal(getCastPatch(typeIn, typeOut));
+                .to.be.deep.equal(project.patches[expectedPath]);
             },
             flatProject
           );
@@ -776,6 +827,23 @@ describe('Flatten', () => {
                   },
                 },
               },
+              [`xod/core/cast-${typeIn}-to-${typeOut}`]: {
+                nodes: {},
+                links: {},
+                pins: {
+                  __in__: {
+                    key: '__in__',
+                    type: typeIn,
+                    direction: 'input',
+                  },
+                  __out__: {
+                    key: '__out__',
+                    type: typeOut,
+                    direction: 'input',
+                  },
+                },
+                impls: {},
+              },
             },
           };
 
@@ -795,7 +863,7 @@ describe('Flatten', () => {
           }
 
           const flatProject = flatten(project, '@/main', ['js']);
-          const expectedPath = getCastPatchPath(typeIn, typeOut);
+          const expectedPath = `xod/core/cast-${typeIn}-to-${typeOut}`; // getCastPatchPath(typeIn, typeOut);
           const expectedPaths = (typeIn === typeOut) ?
             [`xod/core/${typeIn}`, expectedPath, '@/main'] :
             [`xod/core/${typeIn}`, `xod/core/${typeOut}`, expectedPath, '@/main'];
@@ -806,7 +874,7 @@ describe('Flatten', () => {
               expect(R.keys(newProject.patches))
                 .to.be.deep.equal(expectedPaths);
               expect(newProject.patches[expectedPath])
-                .to.be.deep.equal(getCastPatch(typeIn, typeOut));
+                .to.be.deep.equal(project.patches[expectedPath]);
             },
             flatProject
           );
@@ -1158,6 +1226,40 @@ describe('Flatten', () => {
               direction: 'output',
             },
           },
+        },
+        'xod/core/cast-boolean-to-number': {
+          nodes: {},
+          links: {},
+          pins: {
+            __in__: {
+              key: '__in__',
+              type: 'boolean',
+              direction: 'input',
+            },
+            __out__: {
+              key: '__out__',
+              type: 'number',
+              direction: 'input',
+            },
+          },
+          impls: {},
+        },
+        'xod/core/cast-number-to-boolean': {
+          nodes: {},
+          links: {},
+          pins: {
+            __in__: {
+              key: '__in__',
+              type: 'number',
+              direction: 'input',
+            },
+            __out__: {
+              key: '__out__',
+              type: 'boolean',
+              direction: 'input',
+            },
+          },
+          impls: {},
         },
       },
     };
