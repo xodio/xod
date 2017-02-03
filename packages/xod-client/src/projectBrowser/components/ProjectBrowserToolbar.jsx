@@ -138,10 +138,6 @@ class ProjectBrowserToolbar extends React.Component {
     };
   }
 
-  getState(key) { // TODO: unused?
-    return this.state[key];
-  }
-
   getActionButtons(selection) {
     let buttonRenderers = ['renderRenameButton', 'renderDeleteButton'];
 

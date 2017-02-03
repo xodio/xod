@@ -29,9 +29,7 @@ class ProjectBrowser extends React.Component {
     super(props);
 
     this.treeView = null;
-    this.toolbar = null;
 
-    this.assignToolbar = this.assignToolbar.bind(this);
     this.assignTreeView = this.assignTreeView.bind(this);
 
     this.onTreeChange = this.onTreeChange.bind(this);
@@ -179,14 +177,11 @@ class ProjectBrowser extends React.Component {
   canBeDeselected() {
     return (
       !(
-        this.toolbar &&
-        (
-          this.toolbar.getState('renaming') ||
-          this.toolbar.getState('deleting') ||
-          this.toolbar.getState('creatingPatch') ||
-          this.toolbar.getState('creatingFolder') ||
+          this.props.openPopups.renaming ||
+          this.props.openPopups.deleting ||
+          this.props.openPopups.creatingPatch ||
+          this.props.openPopups.creatingFolder ||
           this.state.selection === null
-        )
       ) &&
       (
         this.treeView && this.treeView.deselect
@@ -194,9 +189,6 @@ class ProjectBrowser extends React.Component {
     );
   }
 
-  assignToolbar(ref) {
-    this.toolbar = ref;
-  }
   assignTreeView(ref) {
     this.treeView = ref;
   }
@@ -210,7 +202,6 @@ class ProjectBrowser extends React.Component {
       >
         <small className="title">Project browser</small>
         <ProjectBrowserToolbar
-          ref={this.assignToolbar}
           hotkeys={this.onToolbarHotkeys}
           selection={this.state.selection}
           currentPatchId={this.props.currentPatchId}
