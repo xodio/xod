@@ -7,6 +7,7 @@ import core from 'xod-core';
 
 import * as MessageActions from '../../messages/actions';
 import * as ProjectActions from '../../project/actions';
+import * as ProjectBrowserActions from '../../projectBrowser/actions';
 import * as EditorActions from '../../editor/actions';
 import * as EditorSelectors from '../../editor/selectors';
 import { COMMAND } from '../../utils/constants';
@@ -213,6 +214,7 @@ class ProjectBrowser extends React.Component {
           hotkeys={this.onToolbarHotkeys}
           selection={this.state.selection}
           currentPatchId={this.props.currentPatchId}
+          openPopups={this.props.openPopups}
           projectName={this.props.projectName}
           patches={this.props.patches}
           folders={this.props.folders}
@@ -221,6 +223,9 @@ class ProjectBrowser extends React.Component {
           onPatchCreate={this.onPatchCreate}
           onFolderCreate={this.onFolderCreate}
           onDeleteError={this.props.actions.addMessage}
+          openPopup={this.props.actions.openPopup}
+          closePopup={this.props.actions.closePopup}
+          closeAllPopups={this.props.actions.closeAllPopups}
         />
         <ProjectBrowserTree
           ref={this.assignTreeView}
@@ -238,6 +243,7 @@ class ProjectBrowser extends React.Component {
 ProjectBrowser.propTypes = {
   tree: React.PropTypes.object.isRequired,
   actions: React.PropTypes.object,
+  openPopups: React.PropTypes.objectOf(React.PropTypes.bool).isRequired,
   projectName: React.PropTypes.string,
   patches: React.PropTypes.object,
   folders: React.PropTypes.object,
@@ -256,6 +262,7 @@ const mapStateToProps = (state) => {
     patches: core.getPatches(state),
     folders: core.getFolders(state),
     currentPatchId: curPatchId,
+    openPopups: state.projectBrowser.openPopups,
   };
 };
 
@@ -272,6 +279,9 @@ const mapDispatchToProps = dispatch => ({
     renameProject: ProjectActions.renameProject,
     movePatch: ProjectActions.movePatch,
     addMessage: MessageActions.addError,
+    openPopup: ProjectBrowserActions.openPopup,
+    closePopup: ProjectBrowserActions.closePopup,
+    closeAllPopups: ProjectBrowserActions.closeAllPopups,
   }, dispatch),
 });
 

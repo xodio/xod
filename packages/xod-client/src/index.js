@@ -6,6 +6,7 @@ import * as EditorActions from './editor/actions';
 import * as ProjectActions from './project/actions';
 import * as MessageActions from './messages/actions';
 import * as ProcessActions from './processes/actions';
+import * as ProjectBrowserActions from './projectBrowser/actions';
 
 import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
@@ -28,6 +29,7 @@ export * from './editor/actions';
 export * from './project/actions';
 export * from './messages/actions';
 export * from './processes/actions';
+export * from './projectBrowser/actions';
 
 export * from './editor/selectors';
 export * from './utils/selectors';
@@ -72,6 +74,7 @@ export default Object.assign({
   ProjectActions,
   MessageActions,
   ProcessActions,
+  ProjectBrowserActions,
 
   EditorConstants,
   MessageConstants,

@@ -22,8 +22,6 @@ class ProjectBrowserToolbar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = R.clone(initialState);
-
     this.onRenameClick = this.onRenameClick.bind(this);
     this.onRenamed = this.onRenamed.bind(this);
     this.onDeleteClick = this.onDeleteClick.bind(this);
@@ -42,29 +40,29 @@ class ProjectBrowserToolbar extends React.Component {
   }
 
   onPatchCreateClick() {
-    this.setState(R.assoc('creatingPatch', true, this.state));
+    this.props.openPopup('creatingPatch');
   }
 
   onPatchCreated(name) {
-    this.setState(R.assoc('creatingPatch', false, this.state));
+    this.props.closePopup('creatingPatch');
     this.props.onPatchCreate(name);
   }
 
   onFolderCreateClick() {
-    this.setState(R.assoc('creatingFolder', true, this.state));
+    this.props.openPopup('creatingFolder');
   }
 
   onFolderCreated(name) {
-    this.setState(R.assoc('creatingFolder', false, this.state));
+    this.props.closePopup('creatingFolder');
     this.props.onFolderCreate(name);
   }
 
   onRenameClick() {
-    this.setState(R.assoc('renaming', true, this.state));
+    this.props.openPopup('renaming');
   }
 
   onRenamed(name) {
-    this.setState(R.assoc('renaming', false, this.state));
+    this.props.closePopup('renaming');
     this.props.onRename(
       this.props.selection.type,
       this.props.selection.id,
@@ -86,16 +84,16 @@ class ProjectBrowserToolbar extends React.Component {
       return;
     }
 
-    this.setState(R.assoc('deleting', true, this.state));
+    this.props.openPopup('deleting');
   }
 
   onDeleted() {
-    this.setState(R.assoc('deleting', false, this.state));
+    this.props.closePopup('deleting');
     this.props.onDelete(this.props.selection.type, this.props.selection.id);
   }
 
   onPopupClosed() {
-    this.setState(R.merge(this.state, initialState));
+    this.props.closeAllPopups();
   }
 
   getProjectName() {
@@ -140,7 +138,7 @@ class ProjectBrowserToolbar extends React.Component {
     };
   }
 
-  getState(key) {
+  getState(key) { // TODO: unused?
     return this.state[key];
   }
 
@@ -180,13 +178,13 @@ class ProjectBrowserToolbar extends React.Component {
   }
 
   renderPopup() {
-    if (this.state.renaming) {
+    if (this.props.openPopups.renaming) {
       return this.renderRenamingPopup();
     }
-    if (this.state.deleting) {
+    if (this.props.openPopups.deleting) {
       return this.renderDeletingPopup();
     }
-    if (this.state.creatingPatch || this.state.creatingFolder) {
+    if (this.props.openPopups.creatingPatch || this.props.openPopups.creatingFolder) {
       return this.renderCreatingPopup();
     }
 
@@ -194,8 +192,10 @@ class ProjectBrowserToolbar extends React.Component {
   }
 
   renderCreatingPopup() {
-    const type = (this.state.creatingPatch) ? 'patch' : 'folder';
-    const confirmCallback = (this.state.creatingPatch) ? this.onPatchCreated : this.onFolderCreated;
+    const type = (this.props.openPopups.creatingPatch) ? 'patch' : 'folder';
+    const confirmCallback = (this.props.openPopups.creatingPatch)
+      ? this.onPatchCreated
+      : this.onFolderCreated;
 
     return (
       <PopupPrompt
@@ -302,6 +302,7 @@ class ProjectBrowserToolbar extends React.Component {
 
 ProjectBrowserToolbar.propTypes = {
   selection: React.PropTypes.object,
+  openPopups: React.PropTypes.object,
   currentPatchId: React.PropTypes.string,
   projectName: React.PropTypes.string,
   folders: React.PropTypes.object,
@@ -312,6 +313,9 @@ ProjectBrowserToolbar.propTypes = {
   onFolderCreate: React.PropTypes.func,
   hotkeys: React.PropTypes.func,
   onDeleteError: React.PropTypes.func,
+  openPopup: React.PropTypes.func,
+  closePopup: React.PropTypes.func,
+  closeAllPopups: React.PropTypes.func,
 };
 
 ProjectBrowserToolbar.defaultProps = {
