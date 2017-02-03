@@ -71,15 +71,15 @@ symbols.
 
 The code should follow some stylistic rules. These rules are based on
 [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript) with slight
-modifications and enforcements. See [ESLint configuration](./eslintrc.js) for
+modifications and enforcements. See [ESLint configuration](./.eslintrc.js) for
 details. To verify your code follows the rules run:
 
-   $ npm run lint
+    $ npm run lint
 
 In addition to the style ensure that:
 
 - Any function or another symbol that is exported out of a package is documented
-  with a [JSDoc comment](http://usejsdoc.org/index.html).
+  with a [JSDoc comments](http://usejsdoc.org/index.html).
 - New functionality is covered with unit tests.
 
 ### Performing commits
@@ -113,10 +113,10 @@ Try to keep the whole subject line under 74 symbols.
 To keep history clean we rebase topic branches rather than merge. Once you
 want to synchronize with the `master` going ahead do:
 
-  $ git checkout master
-  $ git pull
-  $ git checkout <feature-branch-name>
-  $ git rebase master
+    $ git checkout master
+    $ git pull
+    $ git checkout <feature-branch-name>
+    $ git rebase master
 
 Follow Git hints to resolve any conflicts.
 
@@ -128,8 +128,8 @@ other things.
 
 Run `npm run verify` to make sure your code doesn’t break anything.
 
-The checks are performed by [Travis CI](https://travis-ci.com) in any case,
-but ensuring your PR would not break anything in advance is a good habit.
+The checks are performed by [Travis CI](https://travis-ci.com/xodio/xod) in any
+case, but ensuring your PR would not break anything in advance is a good habit.
 
 ### Creating pull request
 
