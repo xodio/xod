@@ -5,16 +5,10 @@ import { Icon } from 'react-fa';
 import { noop } from '../../utils/ramda';
 import { COMMAND } from '../../utils/constants';
 import { PROJECT_BROWSER_ERRORS } from '../../messages/constants';
+import { POPUP_ID } from '../constants';
 
 import PopupPrompt from '../../utils/components/PopupPrompt';
 import PopupConfirm from '../../utils/components/PopupConfirm';
-
-const initialState = {
-  renaming: false,
-  deleting: false,
-  creatingPatch: false,
-  creatingFolder: false,
-};
 
 const getPresentPatch = patch => R.propOr(patch, 'present', patch);
 
@@ -40,29 +34,29 @@ class ProjectBrowserToolbar extends React.Component {
   }
 
   onPatchCreateClick() {
-    this.props.openPopup('creatingPatch');
+    this.props.openPopup(POPUP_ID.CREATING_PATCH);
   }
 
   onPatchCreated(name) {
-    this.props.closePopup('creatingPatch');
+    this.props.closePopup(POPUP_ID.CREATING_PATCH);
     this.props.onPatchCreate(name);
   }
 
   onFolderCreateClick() {
-    this.props.openPopup('creatingFolder');
+    this.props.openPopup(POPUP_ID.CREATING_FOLDER);
   }
 
   onFolderCreated(name) {
-    this.props.closePopup('creatingFolder');
+    this.props.closePopup(POPUP_ID.CREATING_FOLDER);
     this.props.onFolderCreate(name);
   }
 
   onRenameClick() {
-    this.props.openPopup('renaming');
+    this.props.openPopup(POPUP_ID.RENAMING);
   }
 
   onRenamed(name) {
-    this.props.closePopup('renaming');
+    this.props.closePopup(POPUP_ID.RENAMING);
     this.props.onRename(
       this.props.selection.type,
       this.props.selection.id,
@@ -84,11 +78,11 @@ class ProjectBrowserToolbar extends React.Component {
       return;
     }
 
-    this.props.openPopup('deleting');
+    this.props.openPopup(POPUP_ID.DELETING);
   }
 
   onDeleted() {
-    this.props.closePopup('deleting');
+    this.props.closePopup(POPUP_ID.DELETING);
     this.props.onDelete(this.props.selection.type, this.props.selection.id);
   }
 
@@ -174,13 +168,16 @@ class ProjectBrowserToolbar extends React.Component {
   }
 
   renderPopup() {
-    if (this.props.openPopups.renaming) {
+    if (this.props.openPopups[POPUP_ID.RENAMING]) {
       return this.renderRenamingPopup();
     }
-    if (this.props.openPopups.deleting) {
+    if (this.props.openPopups[POPUP_ID.DELETING]) {
       return this.renderDeletingPopup();
     }
-    if (this.props.openPopups.creatingPatch || this.props.openPopups.creatingFolder) {
+    if (
+      this.props.openPopups[POPUP_ID.CREATING_PATCH] ||
+      this.props.openPopups[POPUP_ID.CREATING_FOLDER]
+    ) {
       return this.renderCreatingPopup();
     }
 
@@ -188,10 +185,10 @@ class ProjectBrowserToolbar extends React.Component {
   }
 
   renderCreatingPopup() {
-    const type = (this.props.openPopups.creatingPatch) ? 'patch' : 'folder';
-    const confirmCallback = (this.props.openPopups.creatingPatch)
-      ? this.onPatchCreated
-      : this.onFolderCreated;
+    const isCreatingPatch = this.props.openPopups[POPUP_ID.CREATING_PATCH];
+
+    const type = isCreatingPatch ? 'patch' : 'folder';
+    const confirmCallback = isCreatingPatch ? this.onPatchCreated : this.onFolderCreated;
 
     return (
       <PopupPrompt
