@@ -214,8 +214,10 @@ class ProjectBrowser extends React.Component {
           onPatchCreate={this.onPatchCreate}
           onFolderCreate={this.onFolderCreate}
           onDeleteError={this.props.actions.addMessage}
-          openPopup={this.props.actions.openPopup}
-          closePopup={this.props.actions.closePopup}
+          onPatchCreateClick={this.props.actions.onPatchCreateClick}
+          onFolderCreateClick={this.props.actions.onFolderCreateClick}
+          onRenameClick={this.props.actions.onRenameClick}
+          onDeleteClick={this.props.actions.onDeleteClick}
           closeAllPopups={this.props.actions.closeAllPopups}
         />
         <ProjectBrowserTree
@@ -270,8 +272,10 @@ const mapDispatchToProps = dispatch => ({
     renameProject: ProjectActions.renameProject,
     movePatch: ProjectActions.movePatch,
     addMessage: MessageActions.addError,
-    openPopup: ProjectBrowserActions.openPopup,
-    closePopup: ProjectBrowserActions.closePopup,
+    onPatchCreateClick: ProjectBrowserActions.requestCreatePatch,
+    onFolderCreateClick: ProjectBrowserActions.requestCreateFolder,
+    onRenameClick: ProjectBrowserActions.requestRenamePatchOrFolder,
+    onDeleteClick: ProjectBrowserActions.requestDeletePatchOrFolder,
     closeAllPopups: ProjectBrowserActions.closeAllPopups,
   }, dispatch),
 });

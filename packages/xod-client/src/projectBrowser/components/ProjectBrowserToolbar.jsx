@@ -16,15 +16,9 @@ class ProjectBrowserToolbar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onRenameClick = this.onRenameClick.bind(this);
     this.onRenamed = this.onRenamed.bind(this);
     this.onDeleteClick = this.onDeleteClick.bind(this);
     this.onDeleted = this.onDeleted.bind(this);
-    this.onPopupClosed = this.onPopupClosed.bind(this);
-    this.onPatchCreateClick = this.onPatchCreateClick.bind(this);
-    this.onPatchCreated = this.onPatchCreated.bind(this);
-    this.onFolderCreateClick = this.onFolderCreateClick.bind(this);
-    this.onFolderCreated = this.onFolderCreated.bind(this);
 
     this.hotkeys = {};
   }
@@ -33,30 +27,8 @@ class ProjectBrowserToolbar extends React.Component {
     this.props.hotkeys(this.getHotkeyHandlers());
   }
 
-  onPatchCreateClick() {
-    this.props.openPopup(POPUP_ID.CREATING_PATCH);
-  }
-
-  onPatchCreated(name) {
-    this.props.closePopup(POPUP_ID.CREATING_PATCH);
-    this.props.onPatchCreate(name);
-  }
-
-  onFolderCreateClick() {
-    this.props.openPopup(POPUP_ID.CREATING_FOLDER);
-  }
-
-  onFolderCreated(name) {
-    this.props.closePopup(POPUP_ID.CREATING_FOLDER);
-    this.props.onFolderCreate(name);
-  }
-
-  onRenameClick() {
-    this.props.openPopup(POPUP_ID.RENAMING);
-  }
-
   onRenamed(name) {
-    this.props.closePopup(POPUP_ID.RENAMING);
+    // this.props.closePopup(POPUP_ID.RENAMING); // TODO
     this.props.onRename(
       this.props.selection.type,
       this.props.selection.id,
@@ -78,16 +50,12 @@ class ProjectBrowserToolbar extends React.Component {
       return;
     }
 
-    this.props.openPopup(POPUP_ID.DELETING);
+    // TODO: move logic above into action creator
+    this.props.onDeleteClick();
   }
 
   onDeleted() {
-    this.props.closePopup(POPUP_ID.DELETING);
     this.props.onDelete(this.props.selection.type, this.props.selection.id);
-  }
-
-  onPopupClosed() {
-    this.props.closeAllPopups();
   }
 
   getProjectName() {
@@ -125,9 +93,9 @@ class ProjectBrowserToolbar extends React.Component {
 
   getHotkeyHandlers() {
     return {
-      [COMMAND.ADD_PATCH]: this.onPatchCreateClick,
-      [COMMAND.ADD_FOLDER]: this.onFolderCreateClick,
-      [COMMAND.RENAME]: this.onRenameClick,
+      [COMMAND.ADD_PATCH]: this.props.onPatchCreateClick,
+      [COMMAND.ADD_FOLDER]: this.props.onFolderCreateClick,
+      [COMMAND.RENAME]: this.props.onRenameClick,
       [COMMAND.DELETE]: this.onDeleteClick,
     };
   }
@@ -188,13 +156,15 @@ class ProjectBrowserToolbar extends React.Component {
     const isCreatingPatch = this.props.openPopups[POPUP_ID.CREATING_PATCH];
 
     const type = isCreatingPatch ? 'patch' : 'folder';
-    const confirmCallback = isCreatingPatch ? this.onPatchCreated : this.onFolderCreated;
+    const confirmCallback = isCreatingPatch
+      ? this.props.onPatchCreate
+      : this.props.onFolderCreate;
 
     return (
       <PopupPrompt
         title={`Create new ${type}`}
         onConfirm={confirmCallback}
-        onClose={this.onPopupClosed}
+        onClose={this.props.closeAllPopups}
       >
         Type the name for new {type}:
       </PopupPrompt>
@@ -208,7 +178,7 @@ class ProjectBrowserToolbar extends React.Component {
       <PopupPrompt
         title={`Rename the ${selection.type}`}
         onConfirm={this.onRenamed}
-        onClose={this.onPopupClosed}
+        onClose={this.props.closeAllPopups}
       >
         Type new name for {selection.type} &laquo;{selection.name}&raquo;:
       </PopupPrompt>
@@ -222,7 +192,7 @@ class ProjectBrowserToolbar extends React.Component {
       <PopupConfirm
         title={`Delete the ${selection.type}`}
         onConfirm={this.onDeleted}
-        onClose={this.onPopupClosed}
+        onClose={this.props.closeAllPopups}
       >
         Are you sure you want to delete {selection.type} &laquo;{selection.name}&raquo;?
       </PopupConfirm>
@@ -234,7 +204,7 @@ class ProjectBrowserToolbar extends React.Component {
       <button
         key={`${selection.id}_rename`}
         title={`Rename ${selection.type}`}
-        onClick={this.onRenameClick}
+        onClick={this.props.onRenameClick}
       >
         <Icon name="pencil-square" />
       </button>
@@ -275,13 +245,13 @@ class ProjectBrowserToolbar extends React.Component {
         <div className="ProjectBrowserToolbar-left">
           <button
             title="Add patch"
-            onClick={this.onPatchCreateClick}
+            onClick={this.props.onPatchCreateClick}
           >
             <Icon name="file" />
           </button>
           <button
             title="Add folder"
-            onClick={this.onFolderCreateClick}
+            onClick={this.props.onFolderCreateClick}
           >
             <Icon name="folder" />
           </button>
@@ -300,15 +270,19 @@ ProjectBrowserToolbar.propTypes = {
   projectName: React.PropTypes.string,
   folders: React.PropTypes.object,
   patches: React.PropTypes.object,
-  onRename: React.PropTypes.func,
-  onDelete: React.PropTypes.func,
-  onPatchCreate: React.PropTypes.func,
-  onFolderCreate: React.PropTypes.func,
   hotkeys: React.PropTypes.func,
-  onDeleteError: React.PropTypes.func,
-  openPopup: React.PropTypes.func,
-  closePopup: React.PropTypes.func,
-  closeAllPopups: React.PropTypes.func,
+
+  onPatchCreateClick: React.PropTypes.func.isRequired,
+  onPatchCreate: React.PropTypes.func.isRequired,
+  onFolderCreateClick: React.PropTypes.func.isRequired,
+  onFolderCreate: React.PropTypes.func.isRequired,
+  onRenameClick: React.PropTypes.func.isRequired,
+  onRename: React.PropTypes.func.isRequired,
+  onDeleteClick: React.PropTypes.func.isRequired,
+  onDelete: React.PropTypes.func.isRequired,
+  onDeleteError: React.PropTypes.func.isRequired,
+
+  closeAllPopups: React.PropTypes.func.isRequired,
 };
 
 ProjectBrowserToolbar.defaultProps = {

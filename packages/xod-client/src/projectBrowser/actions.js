@@ -1,33 +1,27 @@
-import R from 'ramda';
-import * as actionTypes from './actionTypes';
-import { POPUP_ID } from './constants';
+import {
+  PATCH_CREATE_REQUESTED,
+  FOLDER_CREATE_REQUESTED,
+  RENAME_REQUESTED,
+  DELETE_REQUESTED,
+  CLOSE_ALL_POPUPS,
+} from './actionTypes';
 
-const validPopupIds = new Set(R.values(POPUP_ID));
-const validatePopupId = (popupId) => {
-  if (!validPopupIds.has(popupId)) {
-    throw new Error(`Unknown popup id ${popupId}`);
-  }
-
-  return popupId;
-};
-
-export const openPopup = R.pipe(
-  validatePopupId,
-  popupId => ({
-    type: actionTypes.PROJECT_BROWSER_OPEN_POPUP,
-    payload: { popupId },
-  })
-);
-export const closePopup = R.pipe(
-  validatePopupId,
-  popupId => ({
-    type: actionTypes.PROJECT_BROWSER_CLOSE_POPUP,
-    payload: { popupId },
-  })
-);
-
-export const closeAllPopups = () => ({
-  type: actionTypes.PROJECT_BROWSER_CLOSE_ALL_POPUPS,
+export const requestCreatePatch = () => ({
+  type: PATCH_CREATE_REQUESTED,
 });
 
-export const startCreatingPatch = R.partial(openPopup, [POPUP_ID.CREATING_PATCH]);
+export const requestCreateFolder = () => ({
+  type: FOLDER_CREATE_REQUESTED,
+});
+
+export const requestRenamePatchOrFolder = () => ({
+  type: RENAME_REQUESTED,
+});
+
+export const requestDeletePatchOrFolder = () => ({
+  type: DELETE_REQUESTED,
+});
+
+export const closeAllPopups = () => ({
+  type: CLOSE_ALL_POPUPS,
+});
