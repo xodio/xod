@@ -7,8 +7,7 @@ import * as Patch from './patch';
 import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
-import { explode, getCastPatch, getCastPatchPath } from './utils';
-
+import { explode, getCastPatchPath } from './utils';
 
 const terminalRegExp = /^xod\/core\/(input|output)/;
 // :: String -> Pin[]
@@ -45,7 +44,7 @@ const filterTerminalLinks = R.curry((nodes, links) => R.map(
 const reduceChainOver = R.reduce(R.flip(R.chain));
 
 // :: Project -> String -> Patch
-const getPatchByNodeType = R.curry((project, nodeType) => R.compose(
+const getPatchByPath = R.curry((project, nodeType) => R.compose(
   explode,
   Project.getPatchByPath(R.__, project)
 )(nodeType));
@@ -257,7 +256,7 @@ const extractLinksRecursive = R.curry(
     // input
     if (!isLeafNode(leafPatchPath, inNode)) {
       const inNodeType = Node.getNodeType(inNode);
-      const inPatch = getPatchByNodeType(project, inNodeType);
+      const inPatch = getPatchByPath(project, inNodeType);
       inLinks = recursiveFn(project, leafPatchPath, newInNodeId, inPatch);
       const inNodeIdWithPinKey = getPrefixedId(newInNodeId, inPinKey);
 
@@ -269,7 +268,7 @@ const extractLinksRecursive = R.curry(
     // output
     if (!isLeafNode(leafPatchPath, outNode)) {
       const outNodeType = Node.getNodeType(outNode);
-      const outPatch = getPatchByNodeType(project, outNodeType);
+      const outPatch = getPatchByPath(project, outNodeType);
       outLinks = recursiveFn(project, leafPatchPath, newOutNodeId, outPatch);
       const outNodeIdWithPinKey = getPrefixedId(newOutNodeId, outPinKey);
 
@@ -544,7 +543,7 @@ const createCastNodes = R.curry((patchTuples, nodes, links) => R.compose(
   R.map(splitLinkWithCastNode(patchTuples, nodes))
 )(links));
 
-const castTypeRegExp = /^cast-([a-zA-Z]+)-to-([a-zA-Z]+)$/;
+const castTypeRegExp = /^xod\/core\/cast-([a-zA-Z]+)-to-([a-zA-Z]+)$/;
 // :: String -> Boolean
 const testCastType = R.test(castTypeRegExp);
 
@@ -554,26 +553,14 @@ const getCastNodeTypes = R.compose(
   R.map(Node.getNodeType)
 );
 
-// :: String -> Patch
-const createCastPatchFromType = R.compose(
-  R.converge(
-    getCastPatch,
-    [
-      R.prop(1),
-      R.prop(2),
-    ]
-  ),
-  R.match(castTypeRegExp)
-);
-
-// :: String[] -> [[Path, Patch]] -> [[Path, Patch]]
-const addCastPatches = R.curry((castTypes, splittedLeafPatches) => R.compose(
+// :: Project -> String[] -> [[Path, Patch]] -> [[Path, Patch]]
+const addCastPatches = R.curry((project, castTypes, splittedLeafPatches) => R.compose(
   R.concat(splittedLeafPatches),
   R.map(
     R.converge(
       R.append,
       [
-        createCastPatchFromType,
+        getPatchByPath(project),
         R.of,
       ]
     )
@@ -676,7 +663,7 @@ export default R.curry((project, path, impls) => {
       // TODO: Try to get rid of the side effect
       newLeafPatches = R.compose(
         removeTerminalPatches,
-        addCastPatches(usedCastNodeTypes)
+        addCastPatches(project, usedCastNodeTypes)
       )(splittedLeafPatches);
 
       // (Patch -> Patch)[]

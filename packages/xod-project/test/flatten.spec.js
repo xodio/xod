@@ -4,8 +4,8 @@ import dirtyChai from 'dirty-chai';
 
 import * as Helper from './helpers';
 import * as CONST from '../src/constants';
-import { getCastPatchPath, getCastPatch } from '../src/utils';
 import flatten from '../src/flatten';
+import { getCastPatchPath } from '../src/utils';
 
 chai.use(dirtyChai);
 
@@ -1242,7 +1242,9 @@ describe('Flatten', () => {
               direction: 'input',
             },
           },
-          impls: {},
+          impls: {
+            js: '// BOOL2NUM',
+          },
         },
         'xod/core/cast-number-to-boolean': {
           nodes: {},
@@ -1259,7 +1261,9 @@ describe('Flatten', () => {
               direction: 'input',
             },
           },
-          impls: {},
+          impls: {
+            js: '// NUM2BOOL',
+          },
         },
       },
     };

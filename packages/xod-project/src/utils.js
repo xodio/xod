@@ -127,42 +127,6 @@ export const generateId = shortid.generate;
 export const validateId = R.test(/^[a-zA-Z0-9\-_]+$/);
 
 /**
- * Returns object with implementations for casting patches
- * @private
- * @function castImpls
- * @param {PIN_TYPE} typeIn
- * @param {PIN_TYPE} typeOut
- * @returns {object}
- */
-// TODO: Add implementations for each type of type conversion
-const castImpls = () => ({});
-
-/**
- * Return pins for casting patches
- * @private
- * @function castPins
- * @param {PIN_TYPE} typeIn
- * @param {PIN_TYPE} typeOut
- * @returns {Pin[]}
- */
-const castPins = (typeIn, typeOut) => ({
-  __in__: { key: '__in__', type: typeIn, direction: CONST.PIN_DIRECTION.INPUT },
-  __out__: { key: '__out__', type: typeOut, direction: CONST.PIN_DIRECTION.OUTPUT },
-});
-
-/**
- * Returns casting patch
- * @private
- * @function getCastPatch
- * @param {PIN_TYPE} typeIn
- * @param {PIN_TYPE} typeOut
- * @returns {Patch}
- */
-export const getCastPatch = (typeIn, typeOut) => ({
-  nodes: {}, links: {}, impls: castImpls(typeIn, typeOut), pins: castPins(typeIn, typeOut),
-});
-
-/**
  * Returns path for casting patch
  * @private
  * @function getCastPatchPath
@@ -170,4 +134,4 @@ export const getCastPatch = (typeIn, typeOut) => ({
  * @param {PIN_TYPE} typeOut
  * @returns {String}
  */
-export const getCastPatchPath = (typeIn, typeOut) => `cast-${typeIn}-to-${typeOut}`;
+export const getCastPatchPath = (typeIn, typeOut) => `xod/core/cast-${typeIn}-to-${typeOut}`;
