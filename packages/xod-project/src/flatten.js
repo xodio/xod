@@ -41,7 +41,7 @@ const filterTerminalLinks = R.curry((nodes, links) => R.map(
   nodes
 ));
 
-// :: Applicative f => f a -> [(a -> a)] -> f a
+// :: Applicative f => f a -> [(a -> Applicative a)] -> f a
 const reduceChainOver = R.reduce(R.flip(R.chain));
 
 // :: Project -> String -> Patch
@@ -51,18 +51,18 @@ const getPatchByNodeType = R.curry((project, nodeType) => R.compose(
 )(nodeType));
 
 // :: String[] -> Patch -> Boolean
-const isPatchFlattenable = impls => R.either(
+const isLeafPatch = impls => R.either(
   Patch.hasImpl(impls),
   Patch.isTerminalPatch
 );
 
-// :: Patch -> String -> [String, Patch]
+// :: Patch -> Path -> [Path, Patch]
 const extendTerminalPins = R.curry((patch, path) => R.ifElse(
   Patch.isTerminalPatch,
   R.compose(
     R.concat([convertTerminalPath(path)]),
     R.of,
-    R.chain(R.identity),
+    R.unnest,
     reduceChainOver(Maybe.of(patch)),
     R.map(Patch.assocPin),
     getTerminalPins,
@@ -82,12 +82,12 @@ const extractLeafPatchRecursive = R.curry((recursiveFn, impls, project, node) =>
 
 // :: String[] -> Project -> Path -> [Path, Patch, ...]
 const extractLeafPatches = R.curry((impls, project, path, patch) => R.ifElse(
-    isPatchFlattenable(impls),
-    leafPatch => extendTerminalPins(leafPatch, path),
-    R.compose(
-      R.chain(extractLeafPatchRecursive(extractLeafPatches, impls, project)),
-      Patch.listNodes
-    )
+  isLeafPatch(impls),
+  leafPatch => extendTerminalPins(leafPatch, path),
+  R.compose(
+    R.chain(extractLeafPatchRecursive(extractLeafPatches, impls, project)),
+    Patch.listNodes
+  )
 )(patch));
 
 // :: String -> Node
@@ -660,10 +660,10 @@ export default R.curry((project, path, impls) => {
 
   let newLeafPatches = R.clone(splittedLeafPatches);
 
-  // :: Project -> Project
+  // :: Project -> Either Error Project
   const assocPatch = R.ifElse(
     Patch.hasImpl(impls),
-    R.always(R.identity),
+    R.always(Either.Right),
     (originalPatch) => {
       // TODO: Refactoring needed
       const leafPatchPath = R.pluck(0, splittedLeafPatches);
@@ -687,7 +687,7 @@ export default R.curry((project, path, impls) => {
       // (Patch -> Patch)[] -> Patch
       const newPatch = R.reduce((p, fn) => fn(p), Patch.createPatch(), patchUpdaters);
 
-      return R.chain(Project.assocPatch(path, newPatch));
+      return Project.assocPatch(path, newPatch);
     }
   )(patch);
 
@@ -695,7 +695,7 @@ export default R.curry((project, path, impls) => {
   const assocImplPatches = newLeafPatches.map(R.apply(Project.assocPatch));
 
   return R.compose(
-    assocPatch,
+    R.chain(assocPatch),
     reduceChainOver(R.__, assocImplPatches),
     Maybe.of
   )(Project.createProject());
