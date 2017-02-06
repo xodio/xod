@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { Maybe, Either } from 'ramda-fantasy';
 import shortid from 'shortid';
 
 import * as Tools from './func-tools';
@@ -41,6 +42,27 @@ export const getBaseName = R.compose(
   R.last,
   R.split('/')
 );
+
+/**
+ * Function to rapidly extract a value from Maybe or Either monad.
+ * But it should be used only when we're sure that we should have a value,
+ * otherwise it will throw an exception.
+ *
+ * @private
+ * @function explode
+ * @param {Maybe|Either}
+ * @returns {*}
+ * @throws Error
+ */
+export const explode = R.cond([
+  [Maybe.isJust, R.chain(R.identity)],
+  [Maybe.isNothing, () => { throw new Error('Maybe is expected to be Just, but its Nothing.'); }],
+  [R.is(Either), Either.either(
+    (val) => { throw new Error(`Either expected to be Right, but its Left with value: ${val}`); },
+    R.identity
+  )],
+  [R.T, (input) => { throw new Error(`Maybe or Either should be passed into explode function. Passed: ${input}`); }],
+]);
 
 /**
  * @function isPathLocal
@@ -103,3 +125,49 @@ export const generateId = shortid.generate;
  * @returns {boolean}
  */
 export const validateId = R.test(/^[a-zA-Z0-9\-_]+$/);
+
+/**
+ * Returns object with implementations for casting patches
+ * @private
+ * @function castImpls
+ * @param {PIN_TYPE} typeIn
+ * @param {PIN_TYPE} typeOut
+ * @returns {object}
+ */
+// TODO: Add implementations for each type of type conversion
+const castImpls = () => ({});
+
+/**
+ * Return pins for casting patches
+ * @private
+ * @function castPins
+ * @param {PIN_TYPE} typeIn
+ * @param {PIN_TYPE} typeOut
+ * @returns {Pin[]}
+ */
+const castPins = (typeIn, typeOut) => ({
+  __in__: { key: '__in__', type: typeIn, direction: CONST.PIN_DIRECTION.INPUT },
+  __out__: { key: '__out__', type: typeOut, direction: CONST.PIN_DIRECTION.OUTPUT },
+});
+
+/**
+ * Returns casting patch
+ * @private
+ * @function getCastPatch
+ * @param {PIN_TYPE} typeIn
+ * @param {PIN_TYPE} typeOut
+ * @returns {Patch}
+ */
+export const getCastPatch = (typeIn, typeOut) => ({
+  nodes: {}, links: {}, impls: castImpls(typeIn, typeOut), pins: castPins(typeIn, typeOut),
+});
+
+/**
+ * Returns path for casting patch
+ * @private
+ * @function getCastPatchPath
+ * @param {PIN_TYPE} typeIn
+ * @param {PIN_TYPE} typeOut
+ * @returns {String}
+ */
+export const getCastPatchPath = (typeIn, typeOut) => `cast-${typeIn}-to-${typeOut}`;

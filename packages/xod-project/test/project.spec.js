@@ -446,6 +446,17 @@ describe('Project', () => {
           .and.have.lengthOf(2);
       });
     });
+    describe('listPatchPaths', () => {
+      it('should return empty array for empty project', () => {
+        expect(Project.listPatchPaths({}))
+          .to.be.instanceof(Array)
+          .and.to.be.empty();
+      });
+      it('should return array with two keys', () => {
+        expect(Project.listPatchPaths(project))
+          .to.be.deep.equal(['@/test', 'external/patch']);
+      });
+    });
     describe('listLocalPatches', () => {
       it('should return empty array for empty project', () => {
         expect(Project.listLocalPatches({}))

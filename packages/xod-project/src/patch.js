@@ -22,7 +22,7 @@ import * as Pin from './pin';
  */
 export const createPatch = () => ({
   nodes: {},
-  links: [],
+  links: {},
 });
 
 /**
@@ -51,18 +51,32 @@ export const setPatchLabel = R.useWith(
 );
 
  /**
-  * Returns a list of platforms for which a `patch` has native implementation
+  * Returns a list of implementations for which a `patch` has native implementation
   *
   * For example, `['js', 'arduino', 'espruino', 'nodejs']`.
   *
-  * @function listPatchPlatforms
+  * @function listImpls
   * @param {Patch} patch
   * @returns {string[]}
   */
-export const listPatchPlatforms = R.compose(
+export const listImpls = R.compose(
   R.keys,
   R.propOr({}, 'impls')
 );
+
+/**
+ * Returns true if patch has any of specified implementations.
+ *
+ * @function hasImpl
+ * @param {string[]} impls
+ * @param {Patch} patch
+ * @type {Boolean}
+ */
+export const hasImpl = R.curry((impls, patch) => R.compose(
+  R.complement(R.isEmpty),
+  R.intersection(impls),
+  listImpls
+)(patch));
 
 /**
  * @function validatePatch
@@ -207,6 +221,18 @@ export const listInputPins = R.compose(
  */
 export const listOutputPins = R.compose(
   R.filter(Pin.isOutputPin),
+  listPins
+);
+
+/**
+ * Returns true if Patch is a Terminal
+ * @function isTerminalPatch
+ * @param {Patch} patch
+ * @returns {boolean}
+ */
+export const isTerminalPatch = R.compose(
+  R.contains(true),
+  R.map(Pin.isTerminalPin),
   listPins
 );
 

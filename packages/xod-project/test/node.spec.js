@@ -42,6 +42,16 @@ describe('Node', () => {
       expect(newNode.position).deep.equal(node.position);
       expect(newNode.type).deep.equal(node.type);
     });
+    it('should return copy of node always with new id', () => {
+      const newNode1 = Node.duplicateNode(node);
+      const newNode2 = Node.duplicateNode(node);
+      const newNode3 = Node.duplicateNode(node);
+      const newNode4 = Node.duplicateNode(node);
+
+      expect(newNode1.id).not.equals(newNode2.id);
+      expect(newNode2.id).not.equals(newNode3.id);
+      expect(newNode3.id).not.equals(newNode4.id);
+    });
     it('should return not the same object', () => {
       expect(newNode).not.equals(node);
     });

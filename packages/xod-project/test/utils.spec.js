@@ -1,3 +1,5 @@
+import R from 'ramda';
+import { Maybe, Either } from 'ramda-fantasy';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 import shortid from 'shortid';
@@ -10,6 +12,30 @@ import * as Helper from './helpers';
 chai.use(dirtyChai);
 
 describe('Utils', () => {
+  describe('explode', () => {
+    it('should return Maybe.Just value', () => {
+      expect(Utils.explode(Maybe.Just(25)))
+        .to.be.equal(25);
+    });
+    it('should throw error for Maybe.Nothing', () => {
+      const fn = () => Utils.explode(Maybe.Nothing());
+      expect(fn).to.throw(Error);
+    });
+    it('should return Either.Right value', () => {
+      expect(Utils.explode(Either.Right(25)))
+        .to.be.equal(25);
+    });
+    it('should throw error for Either.Left', () => {
+      const errMsg = 'err';
+      const fn = () => Utils.explode(Either.Left(errMsg));
+      expect(fn).to.throw(Error);
+    });
+    it('should throw error if its not Maybe or Either', () => {
+      const fn = () => Utils.explode(5);
+      expect(fn).to.throw(Error);
+    });
+  });
+
   describe('getBaseName', () => {
     it('should return base name extracted from path', () => {
       const baseName = 'test';
@@ -94,6 +120,10 @@ describe('Utils', () => {
     it('should be valid shortid', () => {
       const id = Utils.generateId();
       expect(shortid.isValid(id)).to.be.true();
+    });
+    it('should return new ids each time', () => {
+      const ids = R.uniq(R.times(Utils.generateId, 5));
+      expect(ids).to.have.lengthOf(5);
     });
   });
   describe('validateId', () => {

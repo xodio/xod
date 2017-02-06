@@ -7,7 +7,7 @@
   "patches": {
     "xod/core/inputNumber": {
       "nodes": {},
-      "links": [],
+      "links": {},
       "label": "<InputNumber>",
       "pins": {
         "PIN": {
@@ -19,7 +19,7 @@
     },
     "xod/core/pot": {
       "nodes": {},
-      "links": [],
+      "links": {},
       "pins": {
         "sample": {
           "key": "sample",
@@ -38,7 +38,7 @@
     },
     "xod/core/and": {
       "nodes": {},
-      "links": [],
+      "links": {},
       "label": "and",
       "pins": {
         "a": {
@@ -63,7 +63,7 @@
     },
     "xod/core/led": {
       "nodes": {},
-      "links": [],
+      "links": {},
       "label": "LED",
       "pins": {
         "brightness": {

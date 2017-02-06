@@ -31,6 +31,7 @@ export const ERROR = {
   PIN_KEY_INVALID: 'Pin key should be generated with shortid',
   // other
   DATATYPE_INVALID: 'Invalid data type',
+  IMPLEMENTATION_NOT_FOUND: 'Implementation not found',
 };
 
 /**

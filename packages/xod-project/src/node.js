@@ -88,9 +88,8 @@ export const createNode = R.curry(
  * @returns {Node} cloned node with new id
  */
 export const duplicateNode = R.compose(
-  R.assoc('id', Utils.generateId()),
-  JSON.parse,
-  JSON.stringify
+  newNode => R.assoc('id', Utils.generateId(), newNode),
+  R.clone
 );
 
 /**
