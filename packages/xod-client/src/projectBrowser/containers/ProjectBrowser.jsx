@@ -11,6 +11,8 @@ import * as ProjectBrowserActions from '../../projectBrowser/actions';
 import * as EditorActions from '../../editor/actions';
 import * as EditorSelectors from '../../editor/selectors';
 import { COMMAND } from '../../utils/constants';
+import { POPUP_ID } from '../constants';
+import { allFieldsAreFalsy } from '../../utils/ramda';
 import { findParentByClassName } from '../../utils/browser';
 
 import ProjectBrowserTree from '../components/ProjectBrowserTree';
@@ -175,14 +177,12 @@ class ProjectBrowser extends React.Component {
   }
 
   canBeDeselected() {
+    // this means we are not in the process of renaming, deleting, etc
+    const allPopupsAreClosed = allFieldsAreFalsy(R.values(POPUP_ID))(this.props.openPopups);
+
     return (
-      !(
-          this.props.openPopups.renaming ||
-          this.props.openPopups.deleting ||
-          this.props.openPopups.creatingPatch ||
-          this.props.openPopups.creatingFolder ||
-          this.state.selection === null
-      ) &&
+      allPopupsAreClosed &&
+      this.state.selection !== null &&
       (
         this.treeView && this.treeView.deselect
       )
