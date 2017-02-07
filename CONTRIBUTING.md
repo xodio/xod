@@ -59,8 +59,8 @@ in a topic branch. Create a new branch like following:
 
 Use `<type>-<issue_number>-<slug>` notation for the branch name.
 
-The type should be one of: `fix` (bug fix), `feat` (user story implementation),
-`tweak`, `refactor`, or `doc`.
+The type should reflect underlying issue category. Use one of: `fix` (bug fix),
+`feat` (user story implementation), `tweak`, `refactor`, or `doc`.
 
 Slug should shortly reflect the issue purpose.
 
@@ -106,7 +106,7 @@ For the `<subject>` text:
 - Don’t capitalize the first letter
 - No dot (`.`) at the end
 
-Try to keep the whole subject line under 74 symbols.
+Try to keep the whole subject line under 72 symbols.
 
 ### Rebasing on master
 
@@ -140,7 +140,8 @@ Fill in the proposed [PULL_REQUEST_TEMPLATE](.github/PULL_REQUEST_TEMPLATE.md).
 
 ### Reviewing and fixing
 
-We strive to review any PR in one day.
+We strive to review any PR in one day. To be approved a PR should sustain
+a review by at least two team members.
 
 There could be code issues that should be fixed before a merge. Fix the issues
 and add these commits to the same PR.
