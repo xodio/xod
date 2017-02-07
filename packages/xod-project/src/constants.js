@@ -32,6 +32,7 @@ export const ERROR = {
   // other
   DATATYPE_INVALID: 'Invalid data type',
   IMPLEMENTATION_NOT_FOUND: 'Implementation not found',
+  CAST_PATCH_NOT_FOUND: 'Casting patch "{patchPath}" is not found in the project',
 };
 
 /**

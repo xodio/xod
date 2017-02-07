@@ -8,6 +8,7 @@ import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
 import { explode, getCastPatchPath } from './utils';
+import { errOnNothing } from './func-tools';
 
 const terminalRegExp = /^xod\/core\/(input|output)/;
 // :: String -> Pin[]
@@ -553,6 +554,12 @@ const getCastNodeTypes = R.compose(
   R.map(Node.getNodeType)
 );
 
+// :: Project -> String -> Either Error Patch
+const getPatchByPathOrError = R.curry((project, path) => R.compose(
+  errOnNothing(CONST.ERROR.CAST_PATCH_NOT_FOUND),
+  Project.getPatchByPath(R.__, project)
+)(path));
+
 // :: Project -> String[] -> [[Path, Patch]] -> [[Path, Patch]]
 const addCastPatches = R.curry((project, castTypes, splittedLeafPatches) => R.compose(
   R.concat(splittedLeafPatches),
@@ -560,7 +567,10 @@ const addCastPatches = R.curry((project, castTypes, splittedLeafPatches) => R.co
     R.converge(
       R.append,
       [
-        getPatchByPath(project),
+        R.compose(
+          R.unnest,
+          getPatchByPathOrError(project)
+        ),
         R.of,
       ]
     )
@@ -573,6 +583,15 @@ const removeTerminalPatches = R.reject(R.compose(
   R.test(/^terminal[a-zA-Z]+$/),
   R.prop(0)
 ));
+
+// :: [Path, Patch | Either Left] -> (Project -> Either Error Project)
+const leafPatchTupleToAssocFunction = R.ifElse(
+  R.compose(Either.isLeft, R.last),
+  // (Project -> Either Error)
+  R.compose(R.always, R.last),
+  // (Project -> Either Project)
+  R.apply(Project.assocPatch)
+);
 
 /**
  * Flattens project
@@ -615,7 +634,8 @@ const removeTerminalPatches = R.reject(R.compose(
  *
  *    2.4. Assoc new nodes and new links to a new patch.
  *
- * 3. Add cast patches to the list of leaf patches (from (1)) and remove terminal patches.
+ * 3. Get a list of used cast patches in the new patch and copy them
+ *    from project to the list of leaf patches (from (1)) and remove terminal patches.
  *
  * 4. Assoc leaf patches to a new project
  *
@@ -645,45 +665,40 @@ export default R.curry((project, path, impls) => {
     return Either.Left(new Error(CONST.ERROR.IMPLEMENTATION_NOT_FOUND));
   }
 
-  let newLeafPatches = R.clone(splittedLeafPatches);
-
-  // :: Project -> Either Error Project
-  const assocPatch = R.ifElse(
+  // :: Patch -> Patch
+  const convertedPatch = R.ifElse(
     Patch.hasImpl(impls),
-    R.always(Either.Right),
+    R.identity,
     (originalPatch) => {
-      // TODO: Refactoring needed
       const leafPatchPath = R.pluck(0, splittedLeafPatches);
       const nodes = extractNodes(project, leafPatchPath, null, originalPatch);
       const links = extractLinks(project, leafPatchPath, null, originalPatch);
-
       const [newNodes, newLinks] = createCastNodes(splittedLeafPatches, nodes, links);
-      const usedCastNodeTypes = getCastNodeTypes(newNodes);
-
-      // TODO: Try to get rid of the side effect
-      newLeafPatches = R.compose(
-        removeTerminalPatches,
-        addCastPatches(project, usedCastNodeTypes)
-      )(splittedLeafPatches);
 
       // (Patch -> Patch)[]
       const assocNodes = R.map(Patch.assocNode, newNodes);
       // (Patch -> Patch)[]
       const assocLinks = R.map(R.curryN(2, R.compose(explode, Patch.assocLink)), newLinks);
+
       const patchUpdaters = R.concat(assocNodes, assocLinks);
       // (Patch -> Patch)[] -> Patch
-      const newPatch = R.reduce((p, fn) => fn(p), Patch.createPatch(), patchUpdaters);
-
-      return Project.assocPatch(path, newPatch);
+      return R.reduce((p, fn) => fn(p), Patch.createPatch(), patchUpdaters);
     }
   )(patch);
 
-  // [fn, ...]
-  const assocImplPatches = newLeafPatches.map(R.apply(Project.assocPatch));
+  // Add used cast patches to a list of new leaf patches
+  const newNodes = Patch.listNodes(convertedPatch);
+  const usedCastNodeTypes = getCastNodeTypes(newNodes);
+  // :: (Project -> Either Error Project)[]
+  const assocLeafPatches = R.compose(
+    R.map(leafPatchTupleToAssocFunction),
+    removeTerminalPatches,
+    addCastPatches(project, usedCastNodeTypes)
+  )(splittedLeafPatches);
 
   return R.compose(
-    R.chain(assocPatch),
-    reduceChainOver(R.__, assocImplPatches),
+    R.chain(Project.assocPatch(path, convertedPatch)),
+    reduceChainOver(R.__, assocLeafPatches),
     Maybe.of
   )(Project.createProject());
 });

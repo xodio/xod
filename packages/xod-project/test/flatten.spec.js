@@ -1030,6 +1030,80 @@ describe('Flatten', () => {
         );
       });
     });
+
+    describe('without casting nodes in project', () => {
+      const project = {
+        patches: {
+          '@/main': {
+            nodes: {
+              a: {
+                id: 'a',
+                type: 'xod/core/or',
+              },
+              b: {
+                id: 'b',
+                type: 'xod/core/outputNumber',
+              },
+            },
+            links: {
+              l: {
+                id: 'l',
+                output: {
+                  nodeId: 'a',
+                  pinKey: 'out',
+                },
+                input: {
+                  nodeId: 'b',
+                  pinKey: '__in__',
+                },
+              },
+            },
+          },
+          'xod/core/or': {
+            nodes: {},
+            links: {},
+            pins: {
+              in1: {
+                key: 'in1',
+                type: 'boolean',
+                direction: 'input',
+              },
+              in2: {
+                key: 'in2',
+                type: 'boolean',
+                direction: 'input',
+              },
+              out: {
+                key: 'out',
+                type: 'boolean',
+                direction: 'output',
+              },
+            },
+            impls: {
+              js: '//ok',
+            },
+          },
+          'xod/core/outputNumber': {
+            nodes: {},
+            links: {},
+            pins: {
+              __in__: {
+                key: '__in__',
+                type: 'number',
+                direction: 'input',
+              },
+            },
+          },
+        },
+      };
+
+      it(`should return Either.Left with error "${CONST.ERROR.CAST_PATCH_NOT_FOUND}"`, () => {
+        const flatProject = flatten(project, '@/main', ['js']);
+
+        expect(flatProject.isLeft).to.be.true();
+        Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.CAST_PATCH_NOT_FOUND);
+      });
+    });
   });
 
   describe('injected pins', () => {
