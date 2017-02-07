@@ -5,9 +5,9 @@ import { POPUP_ID } from './constants';
 import {
   PATCH_CREATE_REQUESTED,
   FOLDER_CREATE_REQUESTED,
-  RENAME_REQUESTED,
-  DELETE_REQUESTED,
-  CLOSE_ALL_POPUPS,
+  PATCH_OR_FOLDER_RENAME_REQUESTED,
+  PATCH_OR_FOLDER_DELETE_REQUESTED,
+  POPUP_CANCEL,
 } from './actionTypes';
 
 import {
@@ -27,10 +27,10 @@ const popupsReducer = (state = {}, action) => {
     case FOLDER_CREATE_REQUESTED:
       return R.assoc(POPUP_ID.CREATING_FOLDER, true, state);
 
-    case RENAME_REQUESTED:
+    case PATCH_OR_FOLDER_RENAME_REQUESTED:
       return R.assoc(POPUP_ID.RENAMING, true, state);
 
-    case DELETE_REQUESTED:
+    case PATCH_OR_FOLDER_DELETE_REQUESTED:
       return R.assoc(POPUP_ID.DELETING, true, state);
 
     case PATCH_ADD:
@@ -47,7 +47,7 @@ const popupsReducer = (state = {}, action) => {
     case PATCH_DELETE:
       return R.assoc(POPUP_ID.DELETING, false, state);
 
-    case CLOSE_ALL_POPUPS:
+    case POPUP_CANCEL:
       return initialState.openPopups;
 
     default:

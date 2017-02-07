@@ -1,9 +1,9 @@
 import {
   PATCH_CREATE_REQUESTED,
   FOLDER_CREATE_REQUESTED,
-  RENAME_REQUESTED,
-  DELETE_REQUESTED,
-  CLOSE_ALL_POPUPS,
+  PATCH_OR_FOLDER_RENAME_REQUESTED,
+  PATCH_OR_FOLDER_DELETE_REQUESTED,
+  POPUP_CANCEL,
 } from './actionTypes';
 
 export const requestCreatePatch = () => ({
@@ -15,13 +15,13 @@ export const requestCreateFolder = () => ({
 });
 
 export const requestRenamePatchOrFolder = () => ({
-  type: RENAME_REQUESTED,
+  type: PATCH_OR_FOLDER_RENAME_REQUESTED,
 });
 
 export const requestDeletePatchOrFolder = () => ({
-  type: DELETE_REQUESTED,
+  type: PATCH_OR_FOLDER_DELETE_REQUESTED,
 });
 
-export const closeAllPopups = () => ({
-  type: CLOSE_ALL_POPUPS,
+export const cancelPopup = () => ({
+  type: POPUP_CANCEL,
 });

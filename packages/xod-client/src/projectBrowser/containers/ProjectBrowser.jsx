@@ -276,7 +276,7 @@ const mapDispatchToProps = dispatch => ({
     onFolderCreateClick: ProjectBrowserActions.requestCreateFolder,
     onRenameClick: ProjectBrowserActions.requestRenamePatchOrFolder,
     onDeleteClick: ProjectBrowserActions.requestDeletePatchOrFolder,
-    closeAllPopups: ProjectBrowserActions.closeAllPopups,
+    closeAllPopups: ProjectBrowserActions.cancelPopup,
   }, dispatch),
 });
 
