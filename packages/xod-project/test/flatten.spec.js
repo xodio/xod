@@ -270,23 +270,6 @@ describe('Flatten', () => {
             },
           },
         },
-        'xod/core/cast-boolean-to-boolean': {
-          nodes: {},
-          links: {},
-          pins: {
-            __in__: {
-              key: '__in__',
-              type: 'boolean',
-              direction: 'input',
-            },
-            __out__: {
-              key: '__out__',
-              type: 'boolean',
-              direction: 'input',
-            },
-          },
-          impls: {},
-        },
       },
     };
 
@@ -480,94 +463,6 @@ describe('Flatten', () => {
         );
       });
     });
-
-    // TODO: Turn on this test and make implementation!
-    /*
-    describe('one link to terminal', () => {
-      const project = {
-        patches: {
-          '@/main': {
-            nodes: {
-              a: {
-                id: 'a',
-                type: 'xod/core/number',
-              },
-              b: {
-                id: 'b',
-                type: 'xod/core/outputBool',
-              },
-            },
-            links: {
-              l: {
-                id: 'l',
-                output: {
-                  nodeId: 'a',
-                  pinKey: 'out',
-                },
-                input: {
-                  nodeId: 'b',
-                  pinKey: '__in__',
-                },
-              },
-            },
-          },
-          'xod/core/number': {
-            nodes: {},
-            links: {},
-            pins: {
-              out: {
-                key: 'out',
-                type: 'number',
-                direction: 'output',
-              },
-            },
-            impls: {
-              js: '//OK',
-            },
-          },
-          'xod/core/outputBool': {
-            nodes: {},
-            links: {},
-            pins: {
-              __in__: {
-                key: '__in__',
-                type: 'boolean',
-                direction: 'input',
-              },
-            },
-          },
-        },
-      };
-
-      it('should return patches without cast patch', () => {
-        const flatProject = flatten(project, '@/main', ['js']);
-
-        expect(flatProject.isRight).to.be.true();
-        Helper.expectEither(
-          (newProject) => {
-            expect(R.keys(newProject.patches))
-              .to.be.deep.equal(['xod/core/number', '@/main']);
-          },
-          flatProject
-        );
-      });
-
-      it('should return @/main without cast node and link to it', () => {
-        const flatProject = flatten(project, '@/main', ['js']);
-
-        expect(flatProject.isRight).to.be.true();
-        Helper.expectEither(
-          (newProject) => {
-            expect(R.keys(newProject.patches['@/main'].nodes))
-              .to.be.deep.equal(['a']);
-            expect(R.values(newProject.patches['@/main'].links))
-              .to.have.lengthOf(0);
-          },
-          flatProject
-        );
-      });
-    });
-    */
 
     describe('through output terminal', () => {
       const createCastOutputTest = (typeIn, typeOut) => {
@@ -883,7 +778,15 @@ describe('Flatten', () => {
       testDiffTypes(createCastInputTest);
     });
 
-    // TODO: Write test
+    // TODO: Write test:
+    //       it should remove terminal, link and there is should be no casting nodes
+    //       E.G. [Number]---[outputBool] --> [Number]
+    describe('one link to terminal', () => {});
+
+    // TODO: Write test:
+    //       it should replace terminal with two casting nodes and three links
+    //       E.G. [Number]---[outputBool]---[String] -->
+    //        --> [Number]---[cast-number-to-boolean]---[cast-boolean-to-string]---[String]
     describe('three different types', () => {});
 
     describe('with same types', () => {
@@ -1362,5 +1265,7 @@ describe('Flatten', () => {
     });
   });
 
-  // TODO: Add test for flatten with list of impls: check correct priority
+  // TODO: Write test:
+  //       Check correct priority when taking leaf patches.
+  describe('impls priority', () => {});
 });
