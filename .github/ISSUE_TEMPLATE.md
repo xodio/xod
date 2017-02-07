@@ -1,4 +1,6 @@
-<!-- Bug report and tweak template -->
+<!-- Choose one of templates below -->
+
+## Bug Report or Tweak Template <!-- Delete the header -->
 
 ### Steps to reproduce
 
@@ -26,7 +28,7 @@ description.
 
 
 
-<!-- Refactoring template -->
+## Refactoring Template <!-- Delete the header -->
 
 ### Rationale
 
@@ -40,7 +42,7 @@ Which backward compatibility would be dropped.
 
 
 
-<!-- Feature/story template -->
+## Feature/Story Template <!-- Delete the header -->
 
 ### Rationale
 
