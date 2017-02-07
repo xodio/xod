@@ -115,7 +115,7 @@ export const archiveProject = () => {};
   * @returns {Either<Error|Project>} validation result
   */
 // TODO: Implement it!
-export const validateProject = () => {};
+export const validateProject = project => Either.Right(project);
 
 // =============================================================================
 //
