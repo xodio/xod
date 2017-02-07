@@ -593,66 +593,14 @@ const leafPatchTupleToAssocFunction = R.ifElse(
   R.apply(Project.assocPatch)
 );
 
-/**
- * Flattens project
- *
- * To transpile project into any native language we need a flattened graph of nodes
- * with implementations for target platform. It replaces all nodes with contents of
- * their patches recursively, place nodes, which casts one type into another one
- * on every link between pins with different types.
- *
- * **How we do it?**
- *
- * We start flattening from entry-point patch (second argument of function),
- * so as a result we'll get only used patches.
- *
- * 1. Get all patches with defined implementations or terminal patches.
- *    And name them "leaf patches". We will reference to them later.
- *    Terminal nodes are replaced with a new temporary type "terminal%TYPE%"
- *    (e.g. inputBool becomes terminalBool).
- *    They get two pins: `__in__` and `__out__`.
- *
- * 2. Convert entry-point patch into a new patch:
- *
- *    2.1. Extract all nodes recursively.
- *         Each node will become array of new nodes,
- *         that have new ids and type of one of leaf patches.
- *         New ids get form "parentNodehId~subNodeId~nodeId".
- *
- *    2.2. Update links according to extracted nodes.
- *         Links will have new ids, new node ids, and pin keys.
- *         Link ids get form "parentNodeId~subNodeId~linkId".
- *         Pin keys stay intact unless link points to a terminal node.
- *         In this case the pin key is replaced with `__in__` or `__out__`.
- *
- *    2.3. Replace terminal nodes and links with cast nodes and links.
- *         It removes terminal nodes, places cast nodes (from type to type),
- *         and creates new links. Sometimes it just removes terminals, if
- *         both pins have the same type (if we don't need a casting).
- *         Also we copy injected pins from terminals, if they have it.
- *         E.g.
- *
- *    2.4. Assoc new nodes and new links to a new patch.
- *
- * 3. Get a list of used cast patches in the new patch and copy them
- *    from project to the list of leaf patches (from (1)) and remove terminal patches.
- *
- * 4. Assoc leaf patches to a new project
- *
- * 5. Assoc the new patch to the old path.
- *
- * @function flatten
- * @param {Project} project
- * @param {string} path - Path of entry-point patch
- * @param {string[]} impls - A list of target implementations
- * @returns {Either<Error|Project>}
- */
-export default R.curry((project, path, impls) => {
-  // TODO: add validation of project
-  // TODO: maybe<Patch> -> either<error|Patch>
-  const patch = explode(Project.getPatchByPath(path, project));
-
-  // Maybe [path, Patch, path, Patch, ...]
+//
+// All flattening is goes here (see flatten docs, 1-5)
+// Project and patch was validated in the parent function, so now we
+// have a completely valid Project and Patch.
+//
+// :: Project -> Path -> String[] -> Patch -> Either Error Project
+const flattenProject = R.curry((project, path, impls, patch) => {
+  // [path, Patch, path, Patch, ...]
   const implPatches = extractLeafPatches(impls, project, path, patch);
   // [[path, Patch], ...]
   const splittedLeafPatches = R.compose(
@@ -702,3 +650,70 @@ export default R.curry((project, path, impls) => {
     Maybe.of
   )(Project.createProject());
 });
+
+/**
+ * Flattens project
+ *
+ * To transpile project into any native language we need a flattened graph of nodes
+ * with implementations for target platform. It replaces all nodes with contents of
+ * their patches recursively, place nodes, which casts one type into another one
+ * on every link between pins with different types.
+ *
+ *
+ * **How we do it?**
+ * Before begin to flatten, we're check passed project for validity
+ * and check for existance of entry-point patch.
+ *
+ * Then we start flattening from entry-point patch (second argument of function),
+ * so as a result we'll get only used patches.
+ *
+ * 1. Get all patches with defined implementations or terminal patches.
+ *    And name them "leaf patches". We will reference to them later.
+ *    Terminal nodes are replaced with a new temporary type "terminal%TYPE%"
+ *    (e.g. inputBool becomes terminalBool).
+ *    They get two pins: `__in__` and `__out__`.
+ *
+ * 2. Convert entry-point patch into a new patch:
+ *
+ *    2.1. Extract all nodes recursively.
+ *         Each node will become array of new nodes,
+ *         that have new ids and type of one of leaf patches.
+ *         New ids get form "parentNodehId~subNodeId~nodeId".
+ *
+ *    2.2. Update links according to extracted nodes.
+ *         Links will have new ids, new node ids, and pin keys.
+ *         Link ids get form "parentNodeId~subNodeId~linkId".
+ *         Pin keys stay intact unless link points to a terminal node.
+ *         In this case the pin key is replaced with `__in__` or `__out__`.
+ *
+ *    2.3. Replace terminal nodes and links with cast nodes and links.
+ *         It removes terminal nodes, places cast nodes (from type to type),
+ *         and creates new links. Sometimes it just removes terminals, if
+ *         both pins have the same type (if we don't need a casting).
+ *         Also we copy injected pins from terminals, if they have it.
+ *         E.g.
+ *
+ *    2.4. Assoc new nodes and new links to a new patch.
+ *
+ * 3. Get a list of used cast patches in the new patch and copy them
+ *    from project to the list of leaf patches (from (1)) and remove terminal patches.
+ *
+ * 4. Assoc leaf patches to a new project
+ *
+ * 5. Assoc the new patch to the old path.
+ *
+ * @function flatten
+ * @param {Project} inputProject
+ * @param {string} path - Path of entry-point patch
+ * @param {string[]} impls - A list of target implementations
+ * @returns {Either<Error|Project>}
+ */
+export default R.curry((inputProject, path, impls) =>
+  Project.validateProject(inputProject).chain(project =>
+    R.compose(
+      R.chain(flattenProject(project, path, impls)),
+      errOnNothing(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH),
+      Project.getPatchByPath(path)
+    )(project)
+  )
+);
