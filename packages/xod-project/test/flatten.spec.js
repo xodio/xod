@@ -437,7 +437,6 @@ describe('Flatten', () => {
 
       it('should return patches without cast patch', () => {
         const flatProject = flatten(project, '@/main', ['js']);
-
         expect(flatProject.isRight).to.be.true();
         Helper.expectEither(
           (newProject) => {
@@ -934,7 +933,7 @@ describe('Flatten', () => {
       });
     });
 
-    describe('without casting nodes in project', () => {
+    describe('needed, but missing in the project', () => {
       const project = {
         patches: {
           '@/main': {
