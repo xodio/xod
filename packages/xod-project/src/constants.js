@@ -31,7 +31,7 @@ export const ERROR = {
   PIN_KEY_INVALID: 'Pin key should be generated with shortid',
   // other
   DATATYPE_INVALID: 'Invalid data type',
-  IMPLEMENTATION_NOT_FOUND: 'Implementation not found',
+  IMPLEMENTATION_NOT_FOUND: 'Implementation "{impl}" not found in the project',
   CAST_PATCH_NOT_FOUND: 'Casting patch "{patchPath}" is not found in the project',
 };
 

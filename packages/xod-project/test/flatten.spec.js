@@ -67,7 +67,6 @@ describe('Flatten', () => {
 
     it('should return error if implementation not found', () => {
       const flatProject = flatten(project, '@/main', ['cpp']);
-
       expect(flatProject.isLeft).to.be.true();
       Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
     });
@@ -1264,7 +1263,81 @@ describe('Flatten', () => {
     });
   });
 
-  // TODO: Write test:
-  //       Check correct priority when taking leaf patches.
-  describe('impls priority', () => {});
+  describe('implementations', () => {
+    const project = {
+      patches: {
+        '@/main': {
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/core/or',
+            },
+            b: {
+              id: 'b',
+              type: 'xod/core/and',
+            },
+          },
+          links: {},
+        },
+        'xod/core/or': {
+          nodes: {},
+          links: {},
+          impls: {
+            js: '// ok',
+            arduino: '// ok',
+          },
+        },
+        'xod/core/and': {
+          nodes: {},
+          links: {},
+          impls: {
+            js: '// ok',
+            cpp: '// ok',
+          },
+        },
+      },
+    };
+
+    describe('single', () => {
+      it('defined implementation exists', () => {
+        const flatProject = flatten(project, '@/main', ['js']);
+
+        expect(flatProject.isRight).to.be.true();
+        Helper.expectEither(
+          (newProject) => {
+            expect(newProject.patches['@/main'])
+              .to.be.deep.equal(project.patches['@/main']);
+          },
+          flatProject
+        );
+      });
+      it('no defined implementation in the project', () => {
+        const flatProject = flatten(project, '@/main', ['java']);
+        expect(flatProject.isLeft).to.be.true();
+        Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
+      });
+    });
+    describe('multiple', () => {
+      it('defined implementations exists', () => {
+        const flatProject = flatten(project, '@/main', ['arduino', 'cpp']);
+
+        expect(flatProject.isRight).to.be.true();
+        Helper.expectEither(
+          (newProject) => {
+            expect(newProject.patches['@/main'])
+              .to.be.deep.equal(project.patches['@/main']);
+          },
+          flatProject
+        );
+      });
+      it('no defined implementations in the project', () => {
+        const flatProject = flatten(project, '@/main', ['java', 'scala']);
+        expect(flatProject.isLeft).to.be.true();
+        Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
+      });
+    });
+    // TODO: Write test:
+    //       Check taking of patch with implementation even it has nodes
+    //       and recursively extracting nodes if not
+  });
 });
