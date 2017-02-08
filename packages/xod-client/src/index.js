@@ -12,6 +12,7 @@ import * as ProjectBrowserActions from './projectBrowser/actions';
 import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
 import * as BrowserUtils from './utils/browser';
+import * as MenuUtils from './utils/menu';
 
 import Root from './core/containers/Root';
 import { container as Editor, CreateNodeWidget } from './editor';
@@ -66,6 +67,7 @@ export default Object.assign({
   UserPanel,
   DevTools,
   Toolbar,
+  menu: MenuUtils,
 },
   UtilsSelectors,
   EditorSelectors,

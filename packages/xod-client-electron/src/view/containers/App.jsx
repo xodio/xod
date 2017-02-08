@@ -272,121 +272,65 @@ class App extends React.Component {
   }
 
   getMenuBarItems() {
+    const {
+      items,
+      onClick,
+      submenu,
+    } = client.menu;
+
+    const importProject = {
+      key: 'Import_Project',
+      children: (
+        <label
+          key="import"
+          className="load-button"
+          htmlFor="importButton"
+        >
+          <input
+            type="file"
+            accept=".xodball"
+            onChange={this.onImportChange}
+            id="importButton"
+          />
+          <span>
+            Import project
+          </span>
+        </label>
+      ),
+    };
+
     return [
-      {
-        key: 'File',
-        label: 'File',
-        submenu: [
-          {
-            key: 'New_Project',
-            label: 'New Project',
-            click: this.showPopupCreateProject,
-          },
-          {
-            key: 'openProject',
-            label: 'Open Project',
-            click: this.onOpenProjectClicked,
-          },
-          {
-            key: 'saveProject',
-            label: 'Save Project',
-            click: this.onSaveProject,
-          },
-          {
-            key: 'switchWorkspace',
-            label: 'Select Workspace',
-            click: this.showPopupSetWorkspace,
-          },
-          {
-            key: 'file_sep1',
-            type: 'separator',
-          },
-          {
-            key: 'Import_Project',
-            children: (
-              <label
-                key="import"
-                className="load-button"
-                htmlFor="importButton"
-              >
-                <input
-                  type="file"
-                  accept=".xodball"
-                  onChange={this.onImportChange}
-                  id="importButton"
-                />
-                <span>
-                  Import project
-                </span>
-              </label>
-            ),
-          },
-          {
-            key: 'Export_Project',
-            label: 'Export Project',
-            click: this.onExport,
-          },
-          {
-            key: 'file_sep2',
-            type: 'separator',
-          },
-          {
-            key: 'New_Patch',
-            label: 'New Patch',
-            click: this.props.actions.createPatch,
-            // TODO: is it okay to manually merge configs like this?
-            hotkey: client.HOTKEY[client.COMMAND.ADD_PATCH],
-          },
-          {
-            key: 'savePatch',
-            label: 'Save current patch',
-            click: this.onSavePatch,
-          },
-        ],
-      },
-      {
-        key: 'Edit',
-        label: 'Edit',
-        submenu: [
-          {
-            key: 'Undo',
-            label: 'Undo',
-            click: this.props.actions.undoCurrentPatch,
-            hotkey: client.HOTKEY[client.COMMAND.UNDO],
-          },
-          {
-            key: 'Redo',
-            label: 'Redo',
-            click: this.props.actions.redoCurrentPatch,
-            hotkey: client.HOTKEY[client.COMMAND.REDO],
-          },
-        ],
-      },
-      {
-        key: 'Deploy',
-        label: 'Deploy',
-        submenu: [
-          {
-            key: 'Show Code for Espruino',
-            label: 'Show Code for Espruino',
-            click: this.onShowCodeEspruino,
-          },
-          {
-            key: 'Upload to Espruino',
-            label: 'Upload to Espruino',
-            click: this.onUpload,
-          },
-          {
-            key: 'deploy_sep',
-            type: 'separator',
-          },
-          {
-            key: 'Show Code for NodeJS',
-            label: 'Show Code for NodeJS',
-            click: this.onShowCodeNodejs,
-          },
-        ],
-      },
+      submenu(
+        items.file,
+        [
+          onClick(items.newProject, this.showPopupCreateProject),
+          onClick(items.openProject, this.onOpenProjectClicked),
+          onClick(items.saveProject, this.onSaveProject),
+          onClick(items.selectWorkspace, this.showPopupSetWorkspace),
+          items.separator,
+          importProject,
+          onClick(items.exportProject, this.onExport),
+          items.separator,
+          onClick(items.newPatch, this.props.actions.createPatch),
+          onClick(items.savePatch, this.onSavePatch),
+        ]
+      ),
+      submenu(
+        items.edit,
+        [
+          onClick(items.undo, this.props.actions.undoCurrentPatch),
+          onClick(items.redo, this.props.actions.redoCurrentPatch),
+        ]
+      ),
+      submenu(
+        items.deploy,
+        [
+          onClick(items.showCodeForEspruino, this.onShowCodeEspruino),
+          onClick(items.uploadToEspruino, this.onUpload),
+          items.separator,
+          onClick(items.showCodeForNodeJS, this.onShowCodeNodejs),
+        ]
+      ),
     ];
   }
 
