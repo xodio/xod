@@ -13,6 +13,7 @@ export const COMMAND = {
   REDO: 'redo',
 };
 
+// TODO: is it ok that this config is shared between electron and browser versions?
 export const HOTKEY = {
   [COMMAND.SET_MODE_CREATING]: 'n',
   [COMMAND.DELETE_SELECTION]: ['del', 'backspace'],

@@ -44,27 +44,31 @@ class App extends React.Component {
 
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onResize = this.onResize.bind(this);
+
     this.onUpload = this.onUpload.bind(this);
     this.onShowCodeEspruino = this.onShowCodeEspruino.bind(this);
     this.onShowCodeNodejs = this.onShowCodeNodejs.bind(this);
+    // TODO: refactor to use electron's native features?
     this.onImportChange = this.onImportChange.bind(this);
     this.onImport = this.onImport.bind(this);
     this.onExport = this.onExport.bind(this);
     this.onSavePatch = this.onSavePatch.bind(this);
     this.onSaveProject = this.onSaveProject.bind(this);
+    this.onOpenProjectClicked = this.onOpenProjectClicked.bind(this);
+
     this.onSelectNodeType = this.onSelectNodeType.bind(this);
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
     this.onWorkspaceChange = this.onWorkspaceChange.bind(this);
     this.onCreateProject = this.onCreateProject.bind(this);
-    this.onOpenProjectClicked = this.onOpenProjectClicked.bind(this);
+    this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
+    this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
+
     this.onOpenProject = this.onOpenProject.bind(this);
 
     this.hideCodePopup = this.hideCodePopup.bind(this);
-    this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
     this.hidePopupSetWorkspace = this.hidePopupSetWorkspace.bind(this);
-    this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
     this.hidePopupCreateProject = this.hidePopupCreateProject.bind(this);
     this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
     this.hidePopupProjectSelection = this.hidePopupProjectSelection.bind(this);
@@ -267,82 +271,121 @@ class App extends React.Component {
     return 0;
   }
 
-  getToolbarLoadElement() {
-    return (
-      <label
-        key="import"
-        className="load-button"
-        htmlFor="importButton_Input"
-      >
-        <input
-          type="file"
-          accept=".xodball"
-          onChange={this.onImportChange}
-          id="importButton_Input"
-        />
-        <span>
-          Import project
-        </span>
-      </label>
-    );
-  }
-
-  getToolbarButtons() {
+  getMenuBarItems() {
     return [
       {
-        key: 'upload',
-        className: 'upload-button',
-        label: 'Upload',
-        onClick: this.onUpload,
+        key: 'File',
+        label: 'File',
+        submenu: [
+          {
+            key: 'New_Project',
+            label: 'New Project',
+            click: this.showPopupCreateProject,
+          },
+          {
+            key: 'openProject',
+            label: 'Open Project',
+            click: this.onOpenProjectClicked,
+          },
+          {
+            key: 'saveProject',
+            label: 'Save Project',
+            click: this.onSaveProject,
+          },
+          {
+            key: 'switchWorkspace',
+            label: 'Select Workspace',
+            click: this.showPopupSetWorkspace,
+          },
+          {
+            key: 'file_sep1',
+            type: 'separator',
+          },
+          {
+            key: 'Import_Project',
+            children: (
+              <label
+                key="import"
+                className="load-button"
+                htmlFor="importButton"
+              >
+                <input
+                  type="file"
+                  accept=".xodball"
+                  onChange={this.onImportChange}
+                  id="importButton"
+                />
+                <span>
+                  Import project
+                </span>
+              </label>
+            ),
+          },
+          {
+            key: 'Export_Project',
+            label: 'Export Project',
+            click: this.onExport,
+          },
+          {
+            key: 'file_sep2',
+            type: 'separator',
+          },
+          {
+            key: 'New_Patch',
+            label: 'New Patch',
+            click: this.props.actions.createPatch,
+            // TODO: is it okay to manually merge configs like this?
+            hotkey: client.HOTKEY[client.COMMAND.ADD_PATCH],
+          },
+          {
+            key: 'savePatch',
+            label: 'Save current patch',
+            click: this.onSavePatch,
+          },
+        ],
       },
       {
-        key: 'show-code-espruino',
-        className: 'show-code-button',
-        label: 'Show code for Espruino',
-        onClick: this.onShowCodeEspruino,
+        key: 'Edit',
+        label: 'Edit',
+        submenu: [
+          {
+            key: 'Undo',
+            label: 'Undo',
+            click: this.props.actions.undoCurrentPatch,
+            hotkey: client.HOTKEY[client.COMMAND.UNDO],
+          },
+          {
+            key: 'Redo',
+            label: 'Redo',
+            click: this.props.actions.redoCurrentPatch,
+            hotkey: client.HOTKEY[client.COMMAND.REDO],
+          },
+        ],
       },
       {
-        key: 'show-code-nodejs',
-        className: 'show-code-button',
-        label: 'Show code for NodeJS',
-        onClick: this.onShowCodeNodejs,
-      },
-      {
-        key: 'export',
-        className: 'save-button',
-        label: 'Export project',
-        onClick: this.onExport,
-      },
-      this.getToolbarLoadElement(),
-      {
-        key: 'saveProject',
-        className: 'save-button',
-        label: 'Save project',
-        onClick: this.onSaveProject,
-      },
-      {
-        key: 'openProject',
-        className: 'save-button',
-        label: 'Open project',
-        onClick: this.onOpenProjectClicked,
-      },
-      {
-        key: 'savePatch',
-        className: 'save-button',
-        label: 'Save current patch',
-        onClick: this.onSavePatch,
-      },
-      {
-        key: 'switchWorkspace',
-        className: 'save-button',
-        label: 'Workspace dir',
-        onClick: this.showPopupSetWorkspace,
-      },
-      {
-        key: 'newProject',
-        className: 'upload-button',
-        label: 'Create new project',
-        onClick: this.showPopupCreateProject,
+        key: 'Deploy',
+        label: 'Deploy',
+        submenu: [
+          {
+            key: 'Show Code for Espruino',
+            label: 'Show Code for Espruino',
+            click: this.onShowCodeEspruino,
+          },
+          {
+            key: 'Upload to Espruino',
+            label: 'Upload to Espruino',
+            click: this.onUpload,
+          },
+          {
+            key: 'deploy_sep',
+            type: 'separator',
+          },
+          {
+            key: 'Show Code for NodeJS',
+            label: 'Show Code for NodeJS',
+            click: this.onShowCodeNodejs,
+          },
+        ],
       },
     ];
   }
@@ -405,7 +448,7 @@ class App extends React.Component {
           selectedNodeType={this.props.selectedNodeType}
           onSelectNodeType={this.onSelectNodeType}
           onAddNodeClick={this.onAddNodeClick}
-          buttons={this.getToolbarButtons()}
+          menuBarItems={this.getMenuBarItems()}
         />
         <client.Editor size={this.state.size} />
         <client.SnackBar />
@@ -427,7 +470,7 @@ class App extends React.Component {
           onClose={this.hidePopupCreateProject}
         >
           <p>
-          Please, give a sonorous name to yor project:
+          Please, give a sonorous name to your project:
           </p>
         </client.PopupPrompt>
         <PopupSetWorkspace
@@ -495,6 +538,9 @@ const mapDispatchToProps = dispatch => ({
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,
     deleteProcess: client.deleteProcess,
+    createPatch: client.requestCreatePatch,
+    undoCurrentPatch: client.undoCurrentPatch,
+    redoCurrentPatch: client.redoCurrentPatch,
     checkWorkspace,
     changeWorkspace,
   }, dispatch),

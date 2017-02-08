@@ -163,58 +163,100 @@ class App extends React.Component {
     return message;
   }
 
-  getToolbarLoadElement() {
-    return (
-      <label
-        key="import"
-        className="load-button"
-        htmlFor="importButton"
-      >
-        <input
-          type="file"
-          accept=".xodball"
-          onChange={this.onImportChange}
-          id="importButton"
-        />
-        <span>
-          Import project
-        </span>
-      </label>
-    );
-  }
-
-  getToolbarButtons() {
+  getMenuBarItems() {
     return [
       {
-        key: 'upload',
-        className: 'upload-button',
-        label: 'Upload',
-        onClick: this.onUpload,
+        key: 'File',
+        label: 'File',
+        submenu: [
+          {
+            key: 'New_Project',
+            label: 'New Project',
+            click: this.showPopupCreateProject,
+          },
+          {
+            key: 'file_sep1',
+            type: 'separator',
+          },
+          {
+            key: 'Import_Project',
+            children: (
+              <label
+                key="import"
+                className="load-button"
+                htmlFor="importButton"
+              >
+                <input
+                  type="file"
+                  accept=".xodball"
+                  onChange={this.onImportChange}
+                  id="importButton"
+                />
+                <span>
+                  Import project
+                </span>
+              </label>
+            ),
+          },
+          {
+            key: 'Export_Project',
+            label: 'Export Project',
+            click: this.onExport,
+          },
+          {
+            key: 'file_sep2',
+            type: 'separator',
+          },
+          {
+            key: 'New_Patch',
+            label: 'New Patch',
+            click: this.props.actions.createPatch,
+            hotkey: client.HOTKEY[client.COMMAND.ADD_PATCH],
+          },
+        ],
       },
       {
-        key: 'show-code-espruino',
-        className: 'show-code-button',
-        label: 'Show code for Espruino',
-        onClick: this.onShowCodeEspruino,
+        key: 'Edit',
+        label: 'Edit',
+        submenu: [
+          {
+            key: 'Undo',
+            label: 'Undo',
+            click: this.props.actions.undoCurrentPatch,
+            hotkey: client.HOTKEY[client.COMMAND.UNDO],
+          },
+          {
+            key: 'Redo',
+            label: 'Redo',
+            click: this.props.actions.redoCurrentPatch,
+            hotkey: client.HOTKEY[client.COMMAND.REDO],
+          },
+        ],
       },
       {
-        key: 'show-code-nodejs',
-        className: 'show-code-button',
-        label: 'Show code for Nodejs',
-        onClick: this.onShowCodeNodejs,
-      },
-      {
-        key: 'export',
-        className: 'save-button',
-        label: 'Export project',
-        onClick: this.onExport,
-      },
-      this.getToolbarLoadElement(),
-      {
-        key: 'newProject',
-        className: 'upload-button',
-        label: 'Create new project',
-        onClick: this.showPopupCreateProject,
+        key: 'Deploy',
+        label: 'Deploy',
+        submenu: [
+          {
+            key: 'Show Code for Espruino',
+            label: 'Show Code for Espruino',
+            click: this.onShowCodeEspruino,
+          },
+          {
+            key: 'Upload to Espruino',
+            label: 'Upload to Espruino',
+            click: this.onUpload,
+          },
+          {
+            key: 'deploy_sep',
+            type: 'separator',
+          },
+          {
+            key: 'Show Code for NodeJS',
+            label: 'Show Code for NodeJS',
+            click: this.onShowCodeNodejs,
+          },
+        ],
       },
     ];
   }
@@ -267,7 +309,7 @@ class App extends React.Component {
           selectedNodeType={this.props.selectedNodeType}
           onSelectNodeType={this.onSelectNodeType}
           onAddNodeClick={this.onAddNodeClick}
-          buttons={this.getToolbarButtons()}
+          menuBarItems={this.getMenuBarItems()}
         />
         <client.Editor size={this.state.size} />
         <client.SnackBar />
@@ -324,6 +366,9 @@ const mapDispatchToProps = dispatch => ({
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,
     deleteProcess: client.deleteProcess,
+    createPatch: client.requestCreatePatch,
+    undoCurrentPatch: client.undoCurrentPatch,
+    redoCurrentPatch: client.redoCurrentPatch,
   }, dispatch),
 });
 
