@@ -83,7 +83,7 @@ const extendTerminalPins = R.curry((patch, path) => R.ifElse(
   R.always([path, patch])
 )(patch));
 
-// :: extractLeafPatches -> String[] -> Project -> Node -> [Path, Patch, ...]
+// :: Function extractLeafPatches -> String[] -> Project -> Node -> [Path, Patch, ...]
 const extractLeafPatchRecursive = R.curry((recursiveFn, impls, project, node) => R.compose(
   path => R.compose(
     R.chain(recursiveFn(impls, project, path)),
@@ -92,22 +92,22 @@ const extractLeafPatchRecursive = R.curry((recursiveFn, impls, project, node) =>
   Node.getNodeType
 )(node));
 
+// :: Function extractLeafPatches -> String[] -> Project -> Patch -> [Path, Patch, ...]
+const extractLeafPatchesFromNodes = R.curry((recursiveFn, impls, project, patch) =>
+  R.compose(
+    R.chain(extractLeafPatchRecursive(recursiveFn, impls, project)),
+    Patch.listNodes
+  )(patch)
+);
+
 // :: String[] -> Project -> Path -> [Either Error [Path, Patch]]
-const extractLeafPatches = R.curry((impls, project, path, patch) => R.ifElse(
-  isLeafPatchWithImpls(impls),
-  leafPatch => R.compose(
-    Either.of,
-    extendTerminalPins(R.__, path)
-  )(leafPatch),
-  R.ifElse(
-    isLeafPatchWithoutImpls(impls),
-    err(CONST.ERROR.IMPLEMENTATION_NOT_FOUND),
-    R.compose(
-      R.chain(extractLeafPatchRecursive(extractLeafPatches, impls, project)),
-      Patch.listNodes
-    )
-  )
-)(patch));
+const extractLeafPatches = R.curry((impls, project, path, patch) =>
+  R.cond([
+    [isLeafPatchWithImpls(impls), R.compose(R.of, Either.of, extendTerminalPins(R.__, path))],
+    [isLeafPatchWithoutImpls(impls), err(CONST.ERROR.IMPLEMENTATION_NOT_FOUND)],
+    [R.T, extractLeafPatchesFromNodes(extractLeafPatches, impls, project)],
+  ])(patch)
+);
 
 // :: String -> Node
 const getNodeById = R.curry((patch, node) => R.compose(
@@ -567,31 +567,25 @@ const castTypeRegExp = /^xod\/core\/cast-([a-zA-Z]+)-to-([a-zA-Z]+)$/;
 // :: String -> Boolean
 const testCastType = R.test(castTypeRegExp);
 
-// :: Node[] -> String[]
-const getCastNodeTypes = R.compose(
+// :: Patch -> String[]
+const getCastNodeTypesFromPatch = R.compose(
   R.filter(testCastType),
-  R.map(Node.getNodeType)
+  R.map(Node.getNodeType),
+  Patch.listNodes
 );
 
 // :: Project -> String -> Either Error Patch
-const getPatchByPathOrError = R.curry((project, path) => R.compose(
+const getEitherPatchByPath = R.curry((project, path) => R.compose(
   errOnNothing(CONST.ERROR.CAST_PATCH_NOT_FOUND),
   Project.getPatchByPath(R.__, project)
 )(path));
 
-// :: Project -> String[] -> [[Path, Patch]] -> [[Path, Patch]]
-const addCastPatches = R.curry((project, castTypes, splittedLeafPatches) => R.compose(
-  R.concat(splittedLeafPatches),
+// :: Project -> String[] -> [[Path, Patch]] -> [[Path, Either Error Patch]]
+const addCastPatches = R.curry((project, castTypes, leafPatches) => R.compose(
+  R.concat(R.map(Either.of, leafPatches)),
   R.map(
-    R.converge(
-      R.append,
-      [
-        R.compose(
-          R.unnest,
-          getPatchByPathOrError(project)
-        ),
-        R.of,
-      ]
+    path => getEitherPatchByPath(project, path).map(
+      patch => [path, patch]
     )
   ),
   R.uniq
@@ -602,21 +596,6 @@ const removeTerminalPatches = R.reject(R.compose(
   R.test(/^terminal[a-zA-Z]+$/),
   R.prop(0)
 ));
-
-// :: [Path, Patch | Either Left] -> (Project -> Either Error Project)
-const leafPatchTupleToAssocFunction = R.ifElse(
-  R.compose(Either.isLeft, R.last),
-  // (Project -> Either Error)
-  R.compose(R.always, R.last),
-  // (Project -> Either Project)
-  R.apply(Project.assocPatch)
-);
-
-// :: a | [a] -> [a]
-const ensureArray = R.unless(
-  R.is(Array),
-  R.of
-);
 
 // :: [[Path, Patch]] -> [[Path, Patch]]
 const filterTuplesByUniqPaths = R.uniqWith(R.eqBy(R.prop(0)));
@@ -686,24 +665,23 @@ const convertPatch = R.curry((project, impls, leafPatches, patch) => R.ifElse(
  */
 // :: Project -> Path -> String[] -> Patch -> [[Path, Patch]] -> Either Error Project
 const convertProject = R.curry((project, path, impls, patch, leafPatches) => {
-  // :: Patch -> Patch
+  // Patch
   const convertedPatch = convertPatch(project, impls, leafPatches, patch);
-
-  // Add used cast patches to a list of new leaf patches
-  const newNodes = Patch.listNodes(convertedPatch);
-  const usedCastNodeTypes = getCastNodeTypes(newNodes);
-  // :: (Project -> Either Error Project)[]
-  const assocLeafPatches = R.compose(
-    R.map(leafPatchTupleToAssocFunction),
-    removeTerminalPatches,
-    addCastPatches(project, usedCastNodeTypes)
-  )(leafPatches);
+  // String[]
+  const usedCastNodeTypes = getCastNodeTypesFromPatch(convertedPatch);
+  // Right Project
+  const newProject = Either.of(Project.createProject());
 
   return R.compose(
-    R.chain(Project.assocPatch(path, convertedPatch)),
-    reduceChainOver(R.__, assocLeafPatches),
-    Maybe.of
-  )(Project.createProject());
+    R.chain(reduceChainOver(newProject)),
+    R.map(R.compose(
+      R.map(R.apply(Project.assocPatch)),
+      R.append([path, convertedPatch]),
+      removeTerminalPatches
+    )),
+    R.sequence(Either.of),
+    addCastPatches(project, usedCastNodeTypes)
+  )(leafPatches);
 });
 
 //
@@ -734,7 +712,6 @@ const flattenProject = R.curry((project, path, impls, patch) =>
     R.chain(convertProject(project, path, impls, patch)),
     R.map(filterTuplesByUniqPaths),
     R.sequence(Either.of),
-    ensureArray,
     extractLeafPatches(impls, project, path)
   )(patch)
 );
