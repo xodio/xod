@@ -2,6 +2,7 @@ import * as EditorSelectors from './editor/selectors';
 import * as UtilsSelectors from './utils/selectors';
 import * as ProcessSelectors from './processes/selectors';
 
+import * as CoreActions from './core/actions';
 import * as EditorActions from './editor/actions';
 import * as ProjectActions from './project/actions';
 import * as MessageActions from './messages/actions';
@@ -70,6 +71,7 @@ export default Object.assign({
   EditorSelectors,
   ProcessSelectors,
 
+  CoreActions,
   EditorActions,
   ProjectActions,
   MessageActions,
