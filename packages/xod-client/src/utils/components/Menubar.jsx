@@ -47,7 +47,7 @@ const Menubar = ({ items }) => (
   <Menu
     mode="horizontal"
     selectedKeys={[]}
-    className="Menubar"
+    prefixCls="Menubar"
   >
     {R.map(renderMenuItem)(items)}
   </Menu>
