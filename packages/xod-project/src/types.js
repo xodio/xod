@@ -1,7 +1,7 @@
 
 import R from 'ramda';
 import $ from 'sanctuary-def';
-import def from 'hm-def';
+import HMDef from 'hm-def';
 import type from 'sanctuary-type-identifiers';
 
 //=============================================================================
@@ -86,4 +86,4 @@ const env = $.env.concat([
   ShortId,
 ]);
 
-export { def };
+export const def = HMDef.create({ checkTypes: true, env });
