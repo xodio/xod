@@ -7,9 +7,12 @@ import core from 'xod-core';
 
 import * as MessageActions from '../../messages/actions';
 import * as ProjectActions from '../../project/actions';
+import * as ProjectBrowserActions from '../../projectBrowser/actions';
 import * as EditorActions from '../../editor/actions';
 import * as EditorSelectors from '../../editor/selectors';
 import { COMMAND } from '../../utils/constants';
+import { POPUP_ID } from '../constants';
+import { propsAreFalsy } from '../../utils/ramda';
 import { findParentByClassName } from '../../utils/browser';
 
 import ProjectBrowserTree from '../components/ProjectBrowserTree';
@@ -28,9 +31,7 @@ class ProjectBrowser extends React.Component {
     super(props);
 
     this.treeView = null;
-    this.toolbar = null;
 
-    this.assignToolbar = this.assignToolbar.bind(this);
     this.assignTreeView = this.assignTreeView.bind(this);
 
     this.onTreeChange = this.onTreeChange.bind(this);
@@ -176,26 +177,18 @@ class ProjectBrowser extends React.Component {
   }
 
   canBeDeselected() {
+    // this means we are not in the process of renaming, deleting, etc
+    const allPopupsAreClosed = propsAreFalsy(R.values(POPUP_ID), this.props.openPopups);
+
     return (
-      !(
-        this.toolbar &&
-        (
-          this.toolbar.getState('renaming') ||
-          this.toolbar.getState('deleting') ||
-          this.toolbar.getState('creatingPatch') ||
-          this.toolbar.getState('creatingFolder') ||
-          this.state.selection === null
-        )
-      ) &&
+      allPopupsAreClosed &&
+      this.state.selection !== null &&
       (
         this.treeView && this.treeView.deselect
       )
     );
   }
 
-  assignToolbar(ref) {
-    this.toolbar = ref;
-  }
   assignTreeView(ref) {
     this.treeView = ref;
   }
@@ -209,10 +202,10 @@ class ProjectBrowser extends React.Component {
       >
         <small className="title">Project browser</small>
         <ProjectBrowserToolbar
-          ref={this.assignToolbar}
           hotkeys={this.onToolbarHotkeys}
           selection={this.state.selection}
           currentPatchId={this.props.currentPatchId}
+          openPopups={this.props.openPopups}
           projectName={this.props.projectName}
           patches={this.props.patches}
           folders={this.props.folders}
@@ -221,6 +214,11 @@ class ProjectBrowser extends React.Component {
           onPatchCreate={this.onPatchCreate}
           onFolderCreate={this.onFolderCreate}
           onDeleteError={this.props.actions.addMessage}
+          onPatchCreateClick={this.props.actions.onPatchCreateClick}
+          onFolderCreateClick={this.props.actions.onFolderCreateClick}
+          onRenameClick={this.props.actions.onRenameClick}
+          onDeleteClick={this.props.actions.onDeleteClick}
+          closeAllPopups={this.props.actions.closeAllPopups}
         />
         <ProjectBrowserTree
           ref={this.assignTreeView}
@@ -238,6 +236,7 @@ class ProjectBrowser extends React.Component {
 ProjectBrowser.propTypes = {
   tree: React.PropTypes.object.isRequired,
   actions: React.PropTypes.object,
+  openPopups: React.PropTypes.objectOf(React.PropTypes.bool).isRequired,
   projectName: React.PropTypes.string,
   patches: React.PropTypes.object,
   folders: React.PropTypes.object,
@@ -256,6 +255,7 @@ const mapStateToProps = (state) => {
     patches: core.getPatches(state),
     folders: core.getFolders(state),
     currentPatchId: curPatchId,
+    openPopups: state.projectBrowser.openPopups,
   };
 };
 
@@ -272,6 +272,11 @@ const mapDispatchToProps = dispatch => ({
     renameProject: ProjectActions.renameProject,
     movePatch: ProjectActions.movePatch,
     addMessage: MessageActions.addError,
+    onPatchCreateClick: ProjectBrowserActions.requestCreatePatch,
+    onFolderCreateClick: ProjectBrowserActions.requestCreateFolder,
+    onRenameClick: ProjectBrowserActions.requestRenamePatchOrFolder,
+    onDeleteClick: ProjectBrowserActions.requestDeletePatchOrFolder,
+    closeAllPopups: ProjectBrowserActions.cancelPopup,
   }, dispatch),
 });
 
