@@ -4,8 +4,8 @@ import dirtyChai from 'dirty-chai';
 
 import * as Helper from './helpers';
 import * as CONST from '../src/constants';
-import { getCastPatchPath, getCastPatch } from '../src/utils';
 import flatten from '../src/flatten';
+import { getCastPatchPath } from '../src/utils';
 
 chai.use(dirtyChai);
 
@@ -67,7 +67,6 @@ describe('Flatten', () => {
 
     it('should return error if implementation not found', () => {
       const flatProject = flatten(project, '@/main', ['cpp']);
-
       expect(flatProject.isLeft).to.be.true();
       Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
     });
@@ -415,83 +414,7 @@ describe('Flatten', () => {
               },
             },
           },
-        },
-      };
-
-      it('should return patches without cast patch', () => {
-        const flatProject = flatten(project, '@/main', ['js']);
-
-        expect(flatProject.isRight).to.be.true();
-        Helper.expectEither(
-          (newProject) => {
-            expect(R.keys(newProject.patches))
-              .to.be.deep.equal(['xod/core/number', '@/main']);
-          },
-          flatProject
-        );
-      });
-
-      it('should return @/main without cast node and link to it', () => {
-        const flatProject = flatten(project, '@/main', ['js']);
-
-        expect(flatProject.isRight).to.be.true();
-        Helper.expectEither(
-          (newProject) => {
-            expect(R.keys(newProject.patches['@/main'].nodes))
-              .to.be.deep.equal(['a']);
-            expect(R.values(newProject.patches['@/main'].links))
-              .to.have.lengthOf(0);
-          },
-          flatProject
-        );
-      });
-    });
-
-    // TODO: Turn on this test and make implementation!
-    /*
-    describe('one link to terminal', () => {
-      const project = {
-        patches: {
-          '@/main': {
-            nodes: {
-              a: {
-                id: 'a',
-                type: 'xod/core/number',
-              },
-              b: {
-                id: 'b',
-                type: 'xod/core/outputBool',
-              },
-            },
-            links: {
-              l: {
-                id: 'l',
-                output: {
-                  nodeId: 'a',
-                  pinKey: 'out',
-                },
-                input: {
-                  nodeId: 'b',
-                  pinKey: '__in__',
-                },
-              },
-            },
-          },
-          'xod/core/number': {
-            nodes: {},
-            links: {},
-            pins: {
-              out: {
-                key: 'out',
-                type: 'number',
-                direction: 'output',
-              },
-            },
-            impls: {
-              js: '//OK',
-            },
-          },
-          'xod/core/outputBool': {
+          'xod/core/cast-boolean-to-number': {
             nodes: {},
             links: {},
             pins: {
@@ -500,14 +423,19 @@ describe('Flatten', () => {
                 type: 'boolean',
                 direction: 'input',
               },
+              __out__: {
+                key: '__out__',
+                type: 'boolean',
+                direction: 'input',
+              },
             },
+            impls: {},
           },
         },
       };
 
       it('should return patches without cast patch', () => {
         const flatProject = flatten(project, '@/main', ['js']);
-
         expect(flatProject.isRight).to.be.true();
         Helper.expectEither(
           (newProject) => {
@@ -533,7 +461,6 @@ describe('Flatten', () => {
         );
       });
     });
-    */
 
     describe('through output terminal', () => {
       const createCastOutputTest = (typeIn, typeOut) => {
@@ -636,6 +563,23 @@ describe('Flatten', () => {
                   },
                 },
               },
+              [`xod/core/cast-${typeIn}-to-${typeOut}`]: {
+                nodes: {},
+                links: {},
+                pins: {
+                  __in__: {
+                    key: '__in__',
+                    type: typeIn,
+                    direction: 'input',
+                  },
+                  __out__: {
+                    key: '__out__',
+                    type: typeOut,
+                    direction: 'input',
+                  },
+                },
+                impls: {},
+              },
             },
           };
 
@@ -655,7 +599,7 @@ describe('Flatten', () => {
           }
 
           const flatProject = flatten(project, '@/main', ['js']);
-          const expectedPath = getCastPatchPath(typeIn, typeOut);
+          const expectedPath = `xod/core/cast-${typeIn}-to-${typeOut}`; // getCastPatchPath(typeIn, typeOut);
           const expectedPaths = (typeIn === typeOut) ?
             [`xod/core/${typeIn}`, expectedPath, '@/main'] :
             [`xod/core/${typeIn}`, `xod/core/${typeOut}`, expectedPath, '@/main'];
@@ -666,7 +610,7 @@ describe('Flatten', () => {
               expect(R.keys(newProject.patches))
                 .to.be.deep.equal(expectedPaths);
               expect(newProject.patches[expectedPath])
-                .to.be.deep.equal(getCastPatch(typeIn, typeOut));
+                .to.be.deep.equal(project.patches[expectedPath]);
             },
             flatProject
           );
@@ -776,6 +720,23 @@ describe('Flatten', () => {
                   },
                 },
               },
+              [`xod/core/cast-${typeIn}-to-${typeOut}`]: {
+                nodes: {},
+                links: {},
+                pins: {
+                  __in__: {
+                    key: '__in__',
+                    type: typeIn,
+                    direction: 'input',
+                  },
+                  __out__: {
+                    key: '__out__',
+                    type: typeOut,
+                    direction: 'input',
+                  },
+                },
+                impls: {},
+              },
             },
           };
 
@@ -795,7 +756,7 @@ describe('Flatten', () => {
           }
 
           const flatProject = flatten(project, '@/main', ['js']);
-          const expectedPath = getCastPatchPath(typeIn, typeOut);
+          const expectedPath = `xod/core/cast-${typeIn}-to-${typeOut}`; // getCastPatchPath(typeIn, typeOut);
           const expectedPaths = (typeIn === typeOut) ?
             [`xod/core/${typeIn}`, expectedPath, '@/main'] :
             [`xod/core/${typeIn}`, `xod/core/${typeOut}`, expectedPath, '@/main'];
@@ -806,7 +767,7 @@ describe('Flatten', () => {
               expect(R.keys(newProject.patches))
                 .to.be.deep.equal(expectedPaths);
               expect(newProject.patches[expectedPath])
-                .to.be.deep.equal(getCastPatch(typeIn, typeOut));
+                .to.be.deep.equal(project.patches[expectedPath]);
             },
             flatProject
           );
@@ -815,7 +776,15 @@ describe('Flatten', () => {
       testDiffTypes(createCastInputTest);
     });
 
-    // TODO: Write test
+    // TODO: Write test:
+    //       it should remove terminal, link and there is should be no casting nodes
+    //       E.G. [Number]---[outputBool] --> [Number]
+    describe('one link to terminal', () => {});
+
+    // TODO: Write test:
+    //       it should replace terminal with two casting nodes and three links
+    //       E.G. [Number]---[outputBool]---[String] -->
+    //        --> [Number]---[cast-number-to-boolean]---[cast-boolean-to-string]---[String]
     describe('three different types', () => {});
 
     describe('with same types', () => {
@@ -960,6 +929,80 @@ describe('Flatten', () => {
           },
           flatProject
         );
+      });
+    });
+
+    describe('needed, but missing in the project', () => {
+      const project = {
+        patches: {
+          '@/main': {
+            nodes: {
+              a: {
+                id: 'a',
+                type: 'xod/core/or',
+              },
+              b: {
+                id: 'b',
+                type: 'xod/core/outputNumber',
+              },
+            },
+            links: {
+              l: {
+                id: 'l',
+                output: {
+                  nodeId: 'a',
+                  pinKey: 'out',
+                },
+                input: {
+                  nodeId: 'b',
+                  pinKey: '__in__',
+                },
+              },
+            },
+          },
+          'xod/core/or': {
+            nodes: {},
+            links: {},
+            pins: {
+              in1: {
+                key: 'in1',
+                type: 'boolean',
+                direction: 'input',
+              },
+              in2: {
+                key: 'in2',
+                type: 'boolean',
+                direction: 'input',
+              },
+              out: {
+                key: 'out',
+                type: 'boolean',
+                direction: 'output',
+              },
+            },
+            impls: {
+              js: '//ok',
+            },
+          },
+          'xod/core/outputNumber': {
+            nodes: {},
+            links: {},
+            pins: {
+              __in__: {
+                key: '__in__',
+                type: 'number',
+                direction: 'input',
+              },
+            },
+          },
+        },
+      };
+
+      it(`should return Either.Left with error "${CONST.ERROR.CAST_PATCH_NOT_FOUND}"`, () => {
+        const flatProject = flatten(project, '@/main', ['js']);
+
+        expect(flatProject.isLeft).to.be.true();
+        Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.CAST_PATCH_NOT_FOUND);
       });
     });
   });
@@ -1159,6 +1202,44 @@ describe('Flatten', () => {
             },
           },
         },
+        'xod/core/cast-boolean-to-number': {
+          nodes: {},
+          links: {},
+          pins: {
+            __in__: {
+              key: '__in__',
+              type: 'boolean',
+              direction: 'input',
+            },
+            __out__: {
+              key: '__out__',
+              type: 'number',
+              direction: 'input',
+            },
+          },
+          impls: {
+            js: '// BOOL2NUM',
+          },
+        },
+        'xod/core/cast-number-to-boolean': {
+          nodes: {},
+          links: {},
+          pins: {
+            __in__: {
+              key: '__in__',
+              type: 'number',
+              direction: 'input',
+            },
+            __out__: {
+              key: '__out__',
+              type: 'boolean',
+              direction: 'input',
+            },
+          },
+          impls: {
+            js: '// NUM2BOOL',
+          },
+        },
       },
     };
 
@@ -1182,5 +1263,81 @@ describe('Flatten', () => {
     });
   });
 
-  // TODO: Add test for flatten with list of impls: check correct priority
+  describe('implementations', () => {
+    const project = {
+      patches: {
+        '@/main': {
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/core/or',
+            },
+            b: {
+              id: 'b',
+              type: 'xod/core/and',
+            },
+          },
+          links: {},
+        },
+        'xod/core/or': {
+          nodes: {},
+          links: {},
+          impls: {
+            js: '// ok',
+            arduino: '// ok',
+          },
+        },
+        'xod/core/and': {
+          nodes: {},
+          links: {},
+          impls: {
+            js: '// ok',
+            cpp: '// ok',
+          },
+        },
+      },
+    };
+
+    describe('single', () => {
+      it('defined implementation exists', () => {
+        const flatProject = flatten(project, '@/main', ['js']);
+
+        expect(flatProject.isRight).to.be.true();
+        Helper.expectEither(
+          (newProject) => {
+            expect(newProject.patches['@/main'])
+              .to.be.deep.equal(project.patches['@/main']);
+          },
+          flatProject
+        );
+      });
+      it('no defined implementation in the project', () => {
+        const flatProject = flatten(project, '@/main', ['java']);
+        expect(flatProject.isLeft).to.be.true();
+        Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
+      });
+    });
+    describe('multiple', () => {
+      it('defined implementations exists', () => {
+        const flatProject = flatten(project, '@/main', ['arduino', 'cpp']);
+
+        expect(flatProject.isRight).to.be.true();
+        Helper.expectEither(
+          (newProject) => {
+            expect(newProject.patches['@/main'])
+              .to.be.deep.equal(project.patches['@/main']);
+          },
+          flatProject
+        );
+      });
+      it('no defined implementations in the project', () => {
+        const flatProject = flatten(project, '@/main', ['java', 'scala']);
+        expect(flatProject.isLeft).to.be.true();
+        Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
+      });
+    });
+    // TODO: Write test:
+    //       Check taking of patch with implementation even it has nodes
+    //       and recursively extracting nodes if not
+  });
 });
