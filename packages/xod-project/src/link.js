@@ -3,6 +3,7 @@ import * as CONST from './constants';
 import * as Tools from './func-tools';
 import * as Utils from './utils';
 import * as Node from './node';
+import { def } from './types';
 
 /**
  * @typedef {Object} Link
@@ -51,7 +52,10 @@ export const getLinkId = R.ifElse(R.is(String), R.identity, R.prop('id'));
  * @param {Link}
  * @returns {string}
  */
-export const getLinkInputNodeId = R.path(['input', 'nodeId']);
+export const getLinkInputNodeId = def(
+  'getLinkInputNodeId :: Link -> NodeId',
+  R.path(['input', 'nodeId'])
+);
 
 /**
  * @function getLinkOutputNodeId
