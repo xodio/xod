@@ -27,6 +27,10 @@ export const items = {
     key: 'selectWorkspace',
     label: 'Select Workspace',
   },
+  importProject: {
+    key: 'importProject',
+    label: 'Import Project',
+  },
   exportProject: {
     key: 'exportProject',
     label: 'Export Project',
