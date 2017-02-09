@@ -33,6 +33,11 @@ const OneOfType = (typeName, types) => NullaryType(
   hasOneOfType(types)
 );
 
+const AliasType = (typeName, type) => NullaryType(
+  typeName,
+  hasType(type)
+);
+
 //=============================================================================
 //
 // Domain types
@@ -41,18 +46,18 @@ const OneOfType = (typeName, types) => NullaryType(
 
 const ObjectWithId = NullaryType('ObjectWithId', R.has('id'));
 
-export const ShortId = $.String;
-export const LinkId = ShortId;
-export const NodeId = ShortId;
-export const PinKey = $.String;
-export const PatchPath = $.String;
+export const ShortId = AliasType('ShortId', $.String);
+export const LinkId = AliasType('LinkId', ShortId);
+export const NodeId = AliasType('NodeId', ShortId);
+export const PinKey = AliasType('PinKey', $.String);
+export const PatchPath = AliasType('PatchPath', $.String);
 
-export const NodePosition = $.RecordType({
+export const NodePosition = Model('NodePosition', {
   x: $.Number,
   y: $.Number,
 });
 
-export const PinRef = $.RecordType({
+export const PinRef = Model('PinRef', {
   nodeId: NodeId,
   pinKey: PinKey,
 });

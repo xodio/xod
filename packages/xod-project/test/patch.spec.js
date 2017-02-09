@@ -312,7 +312,7 @@ describe('Patch', () => {
         1: {
           id: '1',
           input: { pinKey: 'fromPin', nodeId: '@/from' },
-          output: { pinKey: 'toPin', nodeIf: '@/to' },
+          output: { pinKey: 'toPin', nodeId: '@/to' },
         },
       },
       nodes: {
@@ -343,7 +343,7 @@ describe('Patch', () => {
         1: {
           id: '1',
           input: { pinKey: 'fromPin', nodeId: '@/from' },
-          output: { pinKey: 'toPin', nodeIf: '@/to' },
+          output: { pinKey: 'toPin', nodeId: '@/to' },
         },
       },
       nodes: {

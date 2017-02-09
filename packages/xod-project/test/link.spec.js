@@ -55,14 +55,9 @@ describe('Link', () => {
   });
   describe('getters', () => {
     const link = {
-      output: {
-        pinKey: 'fromPin',
-        nodeId: '@/from',
-      },
-      input: {
-        pinKey: 'toPin',
-        nodeId: '@/to',
-      },
+      id: '1',
+      output: { pinKey: 'fromPin', nodeId: '@/from' },
+      input: { pinKey: 'toPin', nodeId: '@/to' },
     };
 
     describe('getLinkInputNodeId', () => {
@@ -93,6 +88,7 @@ describe('Link', () => {
   // Checks
   describe('isLinkInputNodeIdEquals', () => {
     const link = {
+      id: '1',
       input: { pinKey: 'toPin', nodeId: '@/to' },
       output: { pinKey: 'fromPin', nodeId: '@/from' },
     };
@@ -109,6 +105,7 @@ describe('Link', () => {
   });
   describe('isLinkOutputNodeIdEquals', () => {
     const link = {
+      id: '1',
       input: { pinKey: 'toPin', nodeId: '@/to' },
       output: { pinKey: 'fromPin', nodeId: '@/from' },
     };
@@ -125,6 +122,7 @@ describe('Link', () => {
   });
   describe('isLinkInputPinKeyEquals', () => {
     const link = {
+      id: '1',
       input: { pinKey: 'toPin', nodeId: '@/to' },
       output: { pinKey: 'fromPin', nodeId: '@/from' },
     };
@@ -141,6 +139,7 @@ describe('Link', () => {
   });
   describe('isLinkOutputPinKeyEquals', () => {
     const link = {
+      id: '1',
       input: { pinKey: 'toPin', nodeId: '@/to' },
       output: { pinKey: 'fromPin', nodeId: '@/from' },
     };
@@ -159,6 +158,8 @@ describe('Link', () => {
   describe('validateLinkId', () => {
     const link = {
       id: '1',
+      input: { pinKey: 'toPin', nodeId: '@/to' },
+      output: { pinKey: 'fromPin', nodeId: '@/from' },
     };
 
     it('should return Either.Left for link without id', () => {

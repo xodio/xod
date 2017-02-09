@@ -53,7 +53,7 @@ export const getLinkId = R.ifElse(R.is(String), R.identity, R.prop('id'));
  * @returns {string}
  */
 export const getLinkInputNodeId = def(
-  'getLinkInputNodeId :: Link -> String',
+  'getLinkInputNodeId :: Link -> NodeId',
   R.path(['input', 'nodeId'])
 );
 
