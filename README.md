@@ -9,6 +9,7 @@ Deployment on localhost
 Install all dependencies and perform package cross-linking with:
 
     $ npm install
+    $ npm run build
 
 ### Browser IDE
 
@@ -86,3 +87,10 @@ To create a user in the DB:
 To destroy all data and reset the DB to an initial state:
 
     $ npm run reset
+
+Contributing
+------------
+
+Feel free to contribute to the project! The guidelines can be found [here](./CONTRIBUTING.md).
+
+Jetbrains users can benefit from this [XOD Jetbrains Live Template](tools/xod-jetbrains-live-template/xod-jetbrains-live-template.md).
