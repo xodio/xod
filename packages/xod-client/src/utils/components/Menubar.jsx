@@ -1,7 +1,28 @@
+import R from 'ramda';
 import React, { PropTypes } from 'react';
 import Menu, { SubMenu, MenuItem, Divider } from 'rc-menu';
 
 import { noop } from '../ramda';
+
+const capitalize = R.compose(
+  R.join(''),
+  R.juxt([R.compose(R.toUpper, R.head), R.tail])
+);
+
+function formatHotkey(hotkeys) {
+  if (Array.isArray(hotkeys)) {
+    return R.compose(
+      R.join(', '),
+      R.map(formatHotkey)
+    )(hotkeys);
+  }
+
+  return R.compose(
+    R.join('+'),
+    R.map(capitalize),
+    R.split('+')
+  )(hotkeys);
+}
 
 const renderMenubarItem = (item, index) => {
   const {
@@ -28,7 +49,7 @@ const renderMenubarItem = (item, index) => {
     );
   }
 
-  const labelPostfix = hotkey ? ` (${hotkey})` : '';
+  const labelPostfix = hotkey ? ` (${formatHotkey(hotkey)})` : '';
 
   return (
     <MenuItem key={key}>
@@ -66,7 +87,7 @@ menuBarItemType = PropTypes.shape({
   type: PropTypes.oneOf(['separator']),
   submenu: PropTypes.arrayOf(lazyMenuBarItemType),
   click: PropTypes.func,
-  hotkey: PropTypes.oneOfType([ // TODO: maybe convert it earlier?
+  hotkey: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.string),
   ]),
