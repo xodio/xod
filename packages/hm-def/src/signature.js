@@ -26,6 +26,9 @@ const lookup = R.flip(R.prop);
 const uncurry2 = R.uncurryN(2);
 const recurry2 = R.compose(R.curry, uncurry2);
 
+// :: Object -> String -> Boolean
+const typeEq = R.propEq('type')
+
 // :: TypeMap -> SignatureEntry -> Type
 const convertTypeConstructor = R.useWith(lookup, [
   R.identity,
@@ -54,10 +57,10 @@ const convertTypevar = R.memoize(R.compose($.TypeVariable, R.prop('text')));
 // :: TypeMap -> SignatureEntry -> Type
 function convertType(typeMap) {
   return R.cond([
-    [R.propEq('type', 'typeConstructor'), convertTypeConstructor(typeMap)],
-    [R.propEq('type', 'function'), convertFunction(typeMap)],
-    [R.propEq('type', 'list'), convertList(typeMap)],
-    [R.propEq('type', 'typevar'), convertTypevar],
+    [typeEq('typeConstructor'), convertTypeConstructor(typeMap)],
+    [typeEq('function'), convertFunction(typeMap)],
+    [typeEq('list'), convertList(typeMap)],
+    [typeEq('typevar'), convertTypevar],
   ]);
 }
 
