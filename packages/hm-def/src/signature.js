@@ -94,20 +94,18 @@ export const types = recurry2(convertTypes);
 // :: String -> String
 const stripNamespace = R.compose(R.last, R.split('/'));
 
+// Type -> Type
+const ensureParametrized = R.when(
+  R.is(Function),
+  fn => R.apply(fn, R.repeat($.Unknown, fn.length))
+);
+
 // :: Type -> String
 const shortName = R.compose(
   stripNamespace,
   R.prop('name'),
   ensureParametrized
 );
-
-// Type -> Type
-// stolen from sanctuary-def implementation
-function ensureParametrized(x) {
-  return typeof x === 'function' ?
-    x.apply(null, R.map(R.always($.Unknown), R.range(0, x.length))) :
-    x;
-}
 
 // :: [Type] -> TypeMap
 export const typemap = R.indexBy(shortName);
