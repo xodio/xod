@@ -67,12 +67,12 @@ export const listImpls = R.compose(
 /**
  * Returns true if patch has any of specified implementations.
  *
- * @function hasImpl
+ * @function hasImpls
  * @param {string[]} impls
  * @param {Patch} patch
  * @type {Boolean}
  */
-export const hasImpl = R.curry((impls, patch) => R.compose(
+export const hasImpls = R.curry((impls, patch) => R.compose(
   R.complement(R.isEmpty),
   R.intersection(impls),
   listImpls
