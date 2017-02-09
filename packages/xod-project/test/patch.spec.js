@@ -107,9 +107,9 @@ describe('Patch', () => {
         .to.have.members(['js', 'espruino']);
     });
   });
-  describe('hasImpl', () => {
+  describe('hasImpls', () => {
     it('should return false for empty', () => {
-      expect(Patch.hasImpl(['js'], {})).to.be.false();
+      expect(Patch.hasImpls(['js'], {})).to.be.false();
     });
     it('should return false if impl not found', () => {
       const patch = {
@@ -117,7 +117,7 @@ describe('Patch', () => {
           js: '//ok',
         },
       };
-      expect(Patch.hasImpl(['cpp'], patch)).to.be.false();
+      expect(Patch.hasImpls(['cpp'], patch)).to.be.false();
     });
     it('should return true for the only correct impl', () => {
       const patch = {
@@ -125,7 +125,7 @@ describe('Patch', () => {
           js: '//ok',
         },
       };
-      expect(Patch.hasImpl(['js'], patch)).to.be.true();
+      expect(Patch.hasImpls(['js'], patch)).to.be.true();
     });
     it('should return true for a few existent impls', () => {
       const patch = {
@@ -134,7 +134,7 @@ describe('Patch', () => {
           nodejs: '//ok',
         },
       };
-      expect(Patch.hasImpl(['js', 'nodejs'], patch)).to.be.true();
+      expect(Patch.hasImpls(['js', 'nodejs'], patch)).to.be.true();
     });
   });
   describe('isTerminalPatch', () => {
