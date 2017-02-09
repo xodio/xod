@@ -330,6 +330,17 @@ class App extends React.Component {
     ];
   }
 
+  getKeyMap() { // eslint-disable-line class-methods-use-this
+    const commandsBoundToNativeMenu = R.compose(
+      R.reject(R.isNil),
+      R.map(R.prop('command')),
+      R.values
+    )(client.menu.items);
+
+    console.log(commandsBoundToNativeMenu);
+
+    return R.omit(commandsBoundToNativeMenu, client.HOTKEY);
+  }
 
   initNativeMenu() {
     const template = this.getMenuBarItems();
@@ -341,16 +352,35 @@ class App extends React.Component {
         submenu: [
           { role: 'about' },
           { type: 'separator' },
-          {
-            role: 'services',
-            submenu: [],
-          },
+          { role: 'services', submenu: [] },
           { type: 'separator' },
           { role: 'hide' },
           { role: 'hideothers' },
           { role: 'unhide' },
           { type: 'separator' },
           { role: 'quit' },
+        ],
+      });
+
+      template.push({
+        label: 'View',
+        submenu: [
+          { role: 'reload' },
+          { role: 'toggledevtools' },
+          { type: 'separator' },
+          { role: 'resetzoom' },
+          { role: 'zoomin' },
+          { role: 'zoomout' },
+          { type: 'separator' },
+          { role: 'togglefullscreen' },
+        ],
+      });
+
+      template.push({
+        role: 'window',
+        submenu: [
+          { role: 'minimize' },
+          { role: 'close' },
         ],
       });
     }
@@ -404,7 +434,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <HotKeys keyMap={client.HOTKEY} id="App">
+      <HotKeys keyMap={this.getKeyMap()} id="App">
         <EventListener
           target={window}
           onResize={this.onResize}

@@ -28,6 +28,21 @@ export const HOTKEY = {
   [COMMAND.DELETE]: ['ctrl+del', 'ctrl+backspace'],
 };
 
+export const ELECTRON_ACCELERATOR = {
+  [COMMAND.SET_MODE_CREATING]: 'N',
+  [COMMAND.DELETE_SELECTION]: 'Backspace',
+
+  [COMMAND.DESELECT]: 'Escape',
+
+  [COMMAND.UNDO]: 'Ctrl+Z',
+  [COMMAND.REDO]: 'Ctrl+Shift+Z',
+
+  [COMMAND.ADD_PATCH]: 'Ctrl+N',
+  [COMMAND.ADD_FOLDER]: 'Ctrl+Shift+N',
+  [COMMAND.RENAME]: 'Ctrl+R',
+  [COMMAND.DELETE]: 'Ctrl+Backspace',
+};
+
 export const KEYCODE = {
   UP: 38,
   DOWN: 40,

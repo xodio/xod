@@ -1,8 +1,7 @@
 import R from 'ramda';
-import { HOTKEY, COMMAND } from './constants';
+import { HOTKEY, ELECTRON_ACCELERATOR, COMMAND } from './constants';
 
-// TODO: add keys automatically?
-export const items = {
+const rawItems = {
   separator: {
     type: 'separator',
   },
@@ -38,7 +37,7 @@ export const items = {
   newPatch: {
     key: 'newPatch',
     label: 'New Patch',
-    hotkey: HOTKEY[COMMAND.ADD_PATCH],
+    command: COMMAND.ADD_PATCH,
   },
   savePatch: {
     key: 'savePatch',
@@ -52,12 +51,12 @@ export const items = {
   undo: {
     key: 'undo',
     label: 'Undo',
-    hotkey: HOTKEY[COMMAND.UNDO],
+    command: COMMAND.UNDO,
   },
   redo: {
     key: 'redo',
     label: 'Redo',
-    hotkey: HOTKEY[COMMAND.REDO],
+    command: COMMAND.REDO,
   },
 
   deploy: {
@@ -77,6 +76,20 @@ export const items = {
     label: 'Show Code for NodeJS',
   },
 };
+
+const assignHotkeys = menuItem => R.when(
+  R.prop('command'),
+  R.merge(
+    {
+      hotkey: HOTKEY[menuItem.command],
+      accelerator: ELECTRON_ACCELERATOR[menuItem.command],
+    }
+  ),
+  menuItem
+);
+
+// TODO: also add keys automatically?
+export const items = R.map(assignHotkeys, rawItems);
 
 /** add click handler to menu item */
 export const onClick = R.flip(R.assoc('click'));
