@@ -29,11 +29,30 @@ const recurry2 = R.compose(R.curry, uncurry2);
 // :: Object -> String -> Boolean
 const typeEq = R.propEq('type')
 
+// :: SignatureEntry -> Boolean
+const hasChildren = R.compose(R.not, R.isEmpty, R.prop('children'));
+
 // :: TypeMap -> SignatureEntry -> Type
-const convertTypeConstructor = R.useWith(lookup, [
-  R.identity,
-  R.prop('text'),
-]);
+const lookupType = typeMap => entry => {
+  const name = entry.text;
+  const t = lookup(typeMap, name);
+  if (!t) {
+    const allTypes = R.keys(typeMap).join(', ');
+    throw new TypeError(`Type ${name} not found in env. Available types are: ${allTypes}`);
+  }
+  return t;
+};
+
+// :: TypeMap -> SignatureEntry -> Type
+const convertTypeConstructor = typeMap => entry => R.ifElse(
+  hasChildren,
+  R.compose(
+    R.apply(lookupType(typeMap)(entry)),
+    convertTypes(typeMap),
+    R.prop('children')
+  ),
+  lookupType(typeMap)
+)(entry);
 
 // :: TypeMap -> SignatureEntry -> Type
 const convertList = R.useWith(
@@ -57,10 +76,10 @@ const convertTypevar = R.memoize(R.compose($.TypeVariable, R.prop('text')));
 // :: TypeMap -> SignatureEntry -> Type
 function convertType(typeMap) {
   return R.cond([
-    [typeEq('typeConstructor'), convertTypeConstructor(typeMap)],
-    [typeEq('function'), convertFunction(typeMap)],
-    [typeEq('list'), convertList(typeMap)],
-    [typeEq('typevar'), convertTypevar],
+    [R.propEq('type', 'typeConstructor'), convertTypeConstructor(typeMap)],
+    [R.propEq('type', 'function'), convertFunction(typeMap)],
+    [R.propEq('type', 'list'), convertList(typeMap)],
+    [R.propEq('type', 'typevar'), convertTypevar],
   ]);
 }
 
@@ -75,8 +94,20 @@ export const types = recurry2(convertTypes);
 // :: String -> String
 const stripNamespace = R.compose(R.last, R.split('/'));
 
-// :: [Type] -> TypeMap
-export const typemap = R.indexBy(R.compose(
+// :: Type -> String
+const shortName = R.compose(
   stripNamespace,
-  R.prop('name')
-));
+  R.prop('name'),
+  ensureParametrized
+);
+
+// Type -> Type
+// stolen from sanctuary-def implementation
+function ensureParametrized(x) {
+  return typeof x === 'function' ?
+    x.apply(null, R.map(R.always($.Unknown), R.range(0, x.length))) :
+    x;
+}
+
+// :: [Type] -> TypeMap
+export const typemap = R.indexBy(shortName);

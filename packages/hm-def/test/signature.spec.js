@@ -19,6 +19,11 @@ function assertDeepEqual(actual, expected, message) {
   assert.deepEqual(wipeFunctions(actual), wipeFunctions(expected));
 }
 
+// Debugging utility
+function logHMP(sig) {
+  console.log(JSON.stringify(HMP.parse(sig), null, 2));
+}
+
 describe('Signature', () => {
   const sigTypes = (env, sig) => Sig.types(
     Sig.typemap(env),
@@ -59,5 +64,18 @@ describe('Signature', () => {
     const b = $.TypeVariable('b');
     const types = sigTypes($.env, 'foo :: a -> b -> a');
     assertDeepEqual(types, [a, b, a]);
+  });
+
+  it('should resolve maybes', () => {
+    const Maybe = $.UnaryType(
+      'my-package/Maybe',
+      'http://example.com/my-package#Maybe',
+      R.T,
+      R.always([]),
+    );
+
+    const env = R.append(Maybe, $.env);
+    const types = sigTypes(env, 'foo :: Maybe String -> String');
+    assertDeepEqual(types, [Maybe($.String), $.String]);
   });
 });
