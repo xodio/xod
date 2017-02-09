@@ -70,6 +70,7 @@ const Menubar = ({ items }) => (
     mode="horizontal"
     selectedKeys={[]}
     prefixCls="Menubar"
+    openSubMenuOnMouseEnter={false}
   >
     {items.map(renderMenubarItem)}
   </Menu>

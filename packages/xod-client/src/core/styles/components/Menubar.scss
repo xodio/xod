@@ -18,6 +18,7 @@ $menu-root-class: '.Menubar';
 
   .load-button {
     overflow: hidden;
+    cursor: pointer;
 
     input {
       position: absolute;
@@ -53,6 +54,7 @@ $menu-root-class: '.Menubar';
   &-submenu-active > &-submenu-title {
     color: $color-button-primary-text;
     background-color: $color-button-primary-background-hover;
+    cursor: pointer;
   }
 
   &-item-selected {
@@ -82,6 +84,7 @@ $menu-root-class: '.Menubar';
     display: block;
     padding: 7px;
     white-space: nowrap;
+    user-select: none;
   }
 
   &-item#{$menu-root-class}-item-disabled,
