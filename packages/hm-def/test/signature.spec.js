@@ -53,4 +53,11 @@ describe('Signature', () => {
     const types = sigTypes($.env, 'foo :: Number -> (Number -> Number)');
     assertDeepEqual(types, [$.Number, $.Function([$.Number, $.Number])]);
   });
+
+  it('should resolve typevars', () => {
+    const a = $.TypeVariable('a');
+    const b = $.TypeVariable('b');
+    const types = sigTypes($.env, 'foo :: a -> b -> a');
+    assertDeepEqual(types, [a, b, a]);
+  });
 });

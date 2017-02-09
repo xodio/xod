@@ -48,12 +48,16 @@ const convertFunction = R.useWith(
   ]
 );
 
+// :: SignatureEntry -> Type
+const convertTypevar = R.memoize(R.compose($.TypeVariable, R.prop('text')));
+
 // :: TypeMap -> SignatureEntry -> Type
 function convertType(typeMap) {
   return R.cond([
     [R.propEq('type', 'typeConstructor'), convertTypeConstructor(typeMap)],
     [R.propEq('type', 'function'), convertFunction(typeMap)],
     [R.propEq('type', 'list'), convertList(typeMap)],
+    [R.propEq('type', 'typevar'), convertTypevar],
   ]);
 }
 
