@@ -1,16 +1,17 @@
-import R from 'ramda';
 import React, { PropTypes } from 'react';
 import Menu, { SubMenu, MenuItem, Divider } from 'rc-menu';
 
 import { noop } from '../ramda';
 
-const renderMenuItem = (item) => {
+const renderMenubarItem = (item, index) => {
   const {
-    key, type,
+    key = index, // we can allow fallback to indices since we don't rearrange menu items
+    type,
     submenu,
-    click,
+    click = noop,
     children,
-    label, hotkey,
+    label,
+    hotkey,
   } = item;
 
   if (type === 'separator') {
@@ -22,7 +23,7 @@ const renderMenuItem = (item) => {
   if (Array.isArray(submenu)) {
     return (
       <SubMenu key={key} title={<span>{label}</span>}>
-        {R.map(renderMenuItem)(submenu)}
+        {submenu.map(renderMenubarItem)}
       </SubMenu>
     );
   }
@@ -33,7 +34,7 @@ const renderMenuItem = (item) => {
     <MenuItem key={key}>
       {/* because rc-menu does not support attaching callbacks directly to menu items */}
       {/* eslint-disable jsx-a11y/no-static-element-interactions */}
-      <div onClick={click || noop}>
+      <div onClick={click}>
         {
           children || (label + labelPostfix)
         }
@@ -49,17 +50,21 @@ const Menubar = ({ items }) => (
     selectedKeys={[]}
     prefixCls="Menubar"
   >
-    {R.map(renderMenuItem)(items)}
+    {items.map(renderMenubarItem)}
   </Menu>
 );
 
-const menuBarItemType = PropTypes.shape({
-  key: PropTypes.string.isRequired,
+// a trick to make recursive propType.
+// see https://github.com/facebook/react/issues/5676
+let menuBarItemType;
+const lazyMenuBarItemType = (...args) => menuBarItemType(...args);
+
+menuBarItemType = PropTypes.shape({
+  key: PropTypes.string,
   label: PropTypes.string,
   children: PropTypes.element,
   type: PropTypes.oneOf(['separator']),
-  // TODO: make proper recursive proptype? (see https://github.com/facebook/react/issues/5676)
-  submenu: PropTypes.arrayOf(PropTypes.object),
+  submenu: PropTypes.arrayOf(lazyMenuBarItemType),
   click: PropTypes.func,
   hotkey: PropTypes.oneOfType([ // TODO: maybe convert it earlier?
     PropTypes.string,
