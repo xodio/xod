@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { Either } from 'ramda-fantasy';
+import { Maybe, Either } from 'ramda-fantasy';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
@@ -77,6 +77,37 @@ export const hasImpls = R.curry((impls, patch) => R.compose(
   R.intersection(impls),
   listImpls
 )(patch));
+
+/**
+ * Returns an implementation, if it exists. Otherwise Nothing.
+ *
+ * @function getImpl
+ * @param {string} impl
+ * @param {Patch} patch
+ * @type {Maybe<string>}
+ */
+export const getImpl = R.curry((impl, patch) => R.compose(
+  Maybe,
+  R.path(['impls', impl])
+)(patch));
+
+/**
+ * Returns the first found in the patch implementation from the list,
+ * in order of priority from first to last.
+ * If no implementations found — returns Nothing.
+ *
+ * @function getImplByArray
+ * @param {string[]} impls
+ * @param {Patch} patch
+ * @type {Maybe<string>}
+ */
+export const getImplByArray = R.curry((impls, patch) => R.compose(
+  R.unnest,
+  Maybe,
+  R.head,
+  R.reject(Maybe.isNothing),
+  R.map(getImpl(R.__, patch))
+)(impls));
 
 /**
  * @function validatePatch

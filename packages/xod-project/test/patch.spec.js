@@ -137,6 +137,43 @@ describe('Patch', () => {
       expect(Patch.hasImpls(['js', 'nodejs'], patch)).to.be.true();
     });
   });
+  describe('getImpl', () => {
+    it('should return Nothing for empty patch', () => {
+      const impl = Patch.getImpl('js', {});
+      expect(impl.isNothing).to.be.true();
+    });
+    it('should return Nothing for patch without defined impl', () => {
+      const impl = Patch.getImpl('js', { impls: { cpp: '//ok' } });
+      expect(impl.isNothing).to.be.true();
+    });
+    it('should return Maybe with implementation for patch with defined impl', () => {
+      const value = '//ok';
+      const impl = Patch.getImpl('cpp', { impls: { cpp: value } });
+      expect(impl.isJust).to.be.true();
+      expect(impl.getOrElse(null)).to.be.equal(value);
+    });
+  });
+  describe('getImplByArray', () => {
+    it('should return Nothing for empty patch', () => {
+      const impl = Patch.getImplByArray(['js', 'nodejs'], {});
+      expect(impl.isNothing).to.be.true();
+    });
+    it('should return Nothing for patch without defined impl', () => {
+      const impl = Patch.getImplByArray(['js', 'nodejs'], { impls: { cpp: '//cpp' } });
+      expect(impl.isNothing).to.be.true();
+    });
+    it('should return Maybe with implementation (correct priority)', () => {
+      const getJsOrNode = Patch.getImplByArray(['js', 'nodejs']);
+
+      const js = getJsOrNode({ impls: { js: '//js', nodejs: '//node' } });
+      expect(js.isJust).to.be.true();
+      expect(js.getOrElse(null)).to.be.equal('//js');
+
+      const node = getJsOrNode({ impls: { nodejs: '//node' } });
+      expect(node.isJust).to.be.true();
+      expect(node.getOrElse(null)).to.be.equal('//node');
+    });
+  });
   describe('isTerminalPatch', () => {
     it('should return false for empty', () => {
       expect(Patch.isTerminalPatch({})).to.be.false();
