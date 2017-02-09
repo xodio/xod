@@ -24,6 +24,7 @@ export const constraints = sig => ({});
 const lookup = R.flip(R.prop);
 
 const uncurry2 = R.uncurryN(2);
+const recurry2 = R.compose(R.curry, uncurry2);
 
 // :: TypeMap -> SignatureEntry -> Type
 const convertTypeConstructor = R.useWith(lookup, [
@@ -40,15 +41,29 @@ const convertList = R.useWith(
 );
 
 // :: TypeMap -> SignatureEntry -> Type
+const convertFunction = R.useWith(
+  R.compose($.Function, uncurry2(convertTypes)), [
+    R.identity,
+    R.prop(['children'])
+  ]
+);
+
+// :: TypeMap -> SignatureEntry -> Type
 function convertType(typeMap) {
   return R.cond([
     [R.propEq('type', 'typeConstructor'), convertTypeConstructor(typeMap)],
+    [R.propEq('type', 'function'), convertFunction(typeMap)],
     [R.propEq('type', 'list'), convertList(typeMap)],
   ]);
 }
 
+// :: TypeMap -> [SignatureEntry] -> [Type]
+function convertTypes(typeMap) {
+  return R.map(convertType(typeMap));
+}
+
 // :: TypeMap -> ParsedSignature -> [Type]
-export const types = R.curry((typeMap, sig) => R.map(convertType(typeMap), sig));
+export const types = recurry2(convertTypes);
 
 // :: String -> String
 const stripNamespace = R.compose(R.last, R.split('/'));
