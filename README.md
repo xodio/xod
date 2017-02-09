@@ -90,4 +90,7 @@ To destroy all data and reset the DB to an initial state:
 
 Contributing
 ------------
+
 Feel free to contribute to the project! The guidelines can be found [here](./CONTRIBUTING.md).
+
+Jetbrains users can benefit from this [XOD Jetbrains Live Template](tools/xod-jetbrains-live-template/xod-jetbrains-live-template.md).
