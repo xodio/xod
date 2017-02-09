@@ -78,4 +78,18 @@ describe('Signature', () => {
     const types = sigTypes(env, 'foo :: Maybe String -> String');
     assertDeepEqual(types, [Maybe($.String), $.String]);
   });
+
+  it('should resolve eithers', () => {
+    const Either = $.BinaryType(
+      'my-package/Either',
+      'http://example.com/my-package#Either',
+      R.T,
+      R.always([]),
+      R.always([]),
+    );
+
+    const env = R.append(Either, $.env);
+    const types = sigTypes(env, 'foo :: Either String Number -> String');
+    assertDeepEqual(types, [Either($.String, $.Number), $.String]);
+  });
 });
