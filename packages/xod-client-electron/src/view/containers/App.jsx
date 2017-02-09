@@ -26,7 +26,7 @@ import { changeWorkspace, checkWorkspace } from '../../settings/actions';
 import { SaveProgressBar } from '../components/SaveProgressBar';
 
 // TODO: tweak webpack config to allow importing built-in electron package
-const { dialog } = window.require('electron').remote;
+const { app, dialog, Menu } = window.require('electron').remote;
 
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
@@ -75,6 +75,8 @@ class App extends React.Component {
     this.hidePopupCreateProject = this.hidePopupCreateProject.bind(this);
     this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
     this.hidePopupProjectSelection = this.hidePopupProjectSelection.bind(this);
+
+    this.initNativeMenu();
   }
 
   componentDidMount() {
@@ -328,6 +330,35 @@ class App extends React.Component {
     ];
   }
 
+
+  initNativeMenu() {
+    const template = this.getMenuBarItems();
+
+    if (process.platform === 'darwin') {
+      // on a mac the first menu always has to be like this
+      template.unshift({
+        label: app.getName(),
+        submenu: [
+          { role: 'about' },
+          { type: 'separator' },
+          {
+            role: 'services',
+            submenu: [],
+          },
+          { type: 'separator' },
+          { role: 'hide' },
+          { role: 'hideothers' },
+          { role: 'unhide' },
+          { type: 'separator' },
+          { role: 'quit' },
+        ],
+      });
+    }
+
+    const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
+  }
+
   showUploadProgressPopup() {
     this.setState({ popupUploadProject: true });
   }
@@ -386,7 +417,6 @@ class App extends React.Component {
           selectedNodeType={this.props.selectedNodeType}
           onSelectNodeType={this.onSelectNodeType}
           onAddNodeClick={this.onAddNodeClick}
-          menuBarItems={this.getMenuBarItems()}
         />
         <client.Editor size={this.state.size} />
         <client.SnackBar />
