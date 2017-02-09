@@ -1,0 +1,167 @@
+// below are styles for rc-menu component (https://github.com/react-component/menu)
+// extracted from styles that were included in package, then slightly modified
+// TODO: use more stuff from ../abstracts/variables.scss
+$menu-root-class: '.Menubar';
+
+#{$menu-root-class} {
+  outline: none;
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+  z-index: 99999;
+  color: #666;
+
+  display: inline-block;
+  margin-top: 0;
+  font-size: $font-size-m;
+  vertical-align: top;
+
+  .load-button {
+    overflow: hidden;
+    cursor: pointer;
+
+    input {
+      position: absolute;
+      top: -300px;
+    }
+  }
+
+  &-hidden {
+    display: none;
+  }
+
+  &-collapse {
+    overflow: hidden;
+
+    &-active {
+      transition: height 0.3s ease-out;
+    }
+  }
+
+  &-item-group-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  &-item-group-title {
+    color: #999;
+    line-height: 1.5;
+    padding: 8px 10px;
+    border-bottom: 1px solid #dedede;
+  }
+
+  &-item-active,
+  &-submenu-active > &-submenu-title {
+    color: $color-button-primary-text;
+    background-color: $color-button-primary-background-hover;
+    cursor: pointer;
+  }
+
+  &-item-selected {
+    background-color: #eaf8fe;
+    transform: translateZ(0);
+  }
+
+  &-submenu-selected {
+    background-color: #eaf8fe;
+  }
+
+  & > li#{&}-submenu {
+    padding: 0;
+  }
+
+  &-submenu-horizontal > & {
+    top: 100%;
+    left: 0;
+    position: absolute;
+    min-width: 160px;
+  }
+
+  &-item,
+  &-submenu-title {
+    margin: 0;
+    position: relative;
+    display: block;
+    padding: 7px;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  &-item#{$menu-root-class}-item-disabled,
+  &-submenu-title#{$menu-root-class}-item-disabled,
+  &-item#{$menu-root-class}-submenu-disabled,
+  &-submenu-title#{$menu-root-class}-submenu-disabled {
+    color: #777 !important;
+  }
+
+  & > &-item-divider {
+    height: 1px;
+    margin: 1px 0;
+    overflow: hidden;
+    padding: 0;
+    line-height: 0;
+    background-color: #e5e5e5;
+  }
+
+  &-submenu {
+    position: relative;
+
+    & > #{$menu-root-class} {
+      background-color: #fff;
+    }
+  }
+
+  &-horizontal {
+    background-color: #F3F5F7;
+  }
+  &-horizontal > &-item,
+  &-horizontal > &-submenu > &-submenu-title {
+    padding: 9px;
+  }
+  &-horizontal > &-submenu,
+  &-horizontal > &-item {
+    float: left;
+  }
+  &-horizontal > &-submenu-active,
+  &-horizontal > &-item-active {
+    background-color: #F3F5F7;
+    color: #2baee9;
+  }
+  &-horizontal:after {
+    content: "\20";
+    display: block;
+    height: 0;
+    clear: both;
+  }
+
+  &-submenu-vertical > & {
+    top: 0;
+    left: 100%;
+    position: absolute;
+    min-width: 160px;
+    margin-left: 4px;
+  }
+  &-vertical,
+  &-inline {
+    padding: 12px 0;
+
+    & > #{$menu-root-class}-item,
+    & > #{$menu-root-class}-submenu > #{$menu-root-class}-submenu-title {
+      padding: 9px;
+    }
+  }
+
+  &-vertical#{$menu-root-class}-sub {
+    padding: 0;
+  }
+  &-sub#{$menu-root-class}-inline {
+    padding: 0;
+
+    & > #{$menu-root-class}-item,
+    & > #{$menu-root-class}-submenu > #{$menu-root-class}-submenu-title {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      padding-right: 0;
+    }
+  }
+}

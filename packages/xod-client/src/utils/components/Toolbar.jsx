@@ -1,75 +1,43 @@
-import R from 'ramda';
 import React from 'react';
+
 import CreateNodeWidget from '../../editor/components/CreateNodeWidget';
 import UserPanel from '../../user/containers/UserPanel';
+import Menubar from './Menubar';
 
 const Toolbar = ({
   meta,
-  buttons,
+  menuBarItems,
   nodeTypes,
   selectedNodeType,
   onSelectNodeType,
   onAddNodeClick,
-}) => {
-  const buttonElements = () => {
-    if (!Array.isArray(buttons)) {
-      return null;
-    }
+}) => (
+  <div className="Toolbar">
+    <CreateNodeWidget
+      nodeTypes={nodeTypes}
+      selectedNodeType={selectedNodeType}
+      onNodeTypeChange={onSelectNodeType}
+      onAddNodeClick={onAddNodeClick}
+    />
 
-    return R.map(
-      (button) => {
-        if (React.isValidElement(button)) {
-          return button;
-        }
-
-        return (
-          <button
-            key={button.key}
-            className={button.className}
-            onClick={button.onClick}
-          >
-            {button.label}
-          </button>
-        );
-      }
-    )(buttons);
-  };
-
-  return (
-    <div className="Toolbar">
-      <CreateNodeWidget
-        nodeTypes={nodeTypes}
-        selectedNodeType={selectedNodeType}
-        onNodeTypeChange={onSelectNodeType}
-        onAddNodeClick={onAddNodeClick}
-      />
-
-      <div className="logo">
-        XOD
-      </div>
-
-      <div className="project-meta">
-        <span>
-          {meta.name}
-        </span>
-        <span>
-          {(meta.author) ? ` by ${meta.author}` : ''}
-        </span>
-      </div>
-
-      <UserPanel />
-
-      {buttonElements()}
+    <div className="logo">
+      XOD
     </div>
-  );
-};
 
-const ButtonPropType = React.PropTypes.shape({
-  key: React.PropTypes.string,
-  className: React.PropTypes.string,
-  onClick: React.PropTypes.func,
-  label: React.PropTypes.string,
-});
+    <Menubar items={menuBarItems} />
+
+    <div className="project-meta">
+      <span>
+        {meta.name}
+      </span>
+      <span>
+        {(meta.author) ? ` by ${meta.author}` : ''}
+      </span>
+    </div>
+
+    <UserPanel />
+  </div>
+);
 
 Toolbar.propTypes = {
   meta: React.PropTypes.object,
@@ -77,7 +45,7 @@ Toolbar.propTypes = {
   selectedNodeType: React.PropTypes.string,
   onSelectNodeType: React.PropTypes.func,
   onAddNodeClick: React.PropTypes.func,
-  buttons: React.PropTypes.arrayOf(ButtonPropType),
+  menuBarItems: Menubar.propTypes.items,
 };
 
 export default Toolbar;
