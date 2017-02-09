@@ -1,5 +1,6 @@
 
 import R from 'ramda';
+import $ from 'sanctuary-def';
 
 /*
 From https://www.npmjs.com/package/hindley-milner-parser-js:
@@ -19,15 +20,38 @@ HMP.parse('hello :: Foo a => a -> String');
 
 export const constraints = sig => ({});
 
-// :: String -> String
-const stripNamespace = R.compose(R.last, R.split('/'));
+// :: {s: a} -> s -> a
+const lookup = R.flip(R.prop);
+
+const uncurry2 = R.uncurryN(2);
+
+// :: TypeMap -> SignatureEntry -> Type
+const convertTypeConstructor = R.useWith(lookup, [
+  R.identity,
+  R.prop('text'),
+]);
+
+// :: TypeMap -> SignatureEntry -> Type
+const convertList = R.useWith(
+  R.compose($.Array, uncurry2(convertType)), [
+    R.identity,
+    R.path(['children', 0])
+  ]
+);
+
+// :: TypeMap -> SignatureEntry -> Type
+function convertType(typeMap) {
+  return R.cond([
+    [R.propEq('type', 'typeConstructor'), convertTypeConstructor(typeMap)],
+    [R.propEq('type', 'list'), convertList(typeMap)],
+  ]);
+}
 
 // :: TypeMap -> ParsedSignature -> [Type]
-export const types = R.curry((typemap, sig) => R.compose(
-  R.map(R.prop(R.__, typemap)),
-  R.pluck('text'), 
-  R.filter(R.propEq('type', 'typeConstructor'))
-)(sig));
+export const types = R.curry((typeMap, sig) => R.map(convertType(typeMap), sig));
+
+// :: String -> String
+const stripNamespace = R.compose(R.last, R.split('/'));
 
 // :: [Type] -> TypeMap
 export const typemap = R.indexBy(R.compose(
