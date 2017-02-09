@@ -163,59 +163,62 @@ class App extends React.Component {
     return message;
   }
 
-  getToolbarLoadElement() {
-    return (
-      <label
-        key="import"
-        className="load-button"
-        htmlFor="importButton"
-      >
-        <input
-          type="file"
-          accept=".xodball"
-          onChange={this.onImportChange}
-          id="importButton"
-        />
-        <span>
-          Import project
-        </span>
-      </label>
-    );
-  }
+  getMenuBarItems() {
+    const {
+      items,
+      onClick,
+      submenu,
+    } = client.menu;
 
-  getToolbarButtons() {
+    const importProject = {
+      key: 'Import_Project',
+      children: (
+        <label
+          key="import"
+          className="load-button"
+          htmlFor="importButton"
+        >
+          <input
+            type="file"
+            accept=".xodball"
+            onChange={this.onImportChange}
+            id="importButton"
+          />
+          <span>
+            Import project
+          </span>
+        </label>
+      ),
+    };
+
     return [
-      {
-        key: 'upload',
-        className: 'upload-button',
-        label: 'Upload',
-        onClick: this.onUpload,
-      },
-      {
-        key: 'show-code-espruino',
-        className: 'show-code-button',
-        label: 'Show code for Espruino',
-        onClick: this.onShowCodeEspruino,
-      },
-      {
-        key: 'show-code-nodejs',
-        className: 'show-code-button',
-        label: 'Show code for Nodejs',
-        onClick: this.onShowCodeNodejs,
-      },
-      {
-        key: 'export',
-        className: 'save-button',
-        label: 'Export project',
-        onClick: this.onExport,
-      },
-      this.getToolbarLoadElement(),
-      {
-        key: 'newProject',
-        className: 'upload-button',
-        label: 'Create new project',
-        onClick: this.showPopupCreateProject,
-      },
+      submenu(
+        items.file,
+        [
+          onClick(items.newProject, this.showPopupCreateProject),
+          items.separator,
+          importProject,
+          onClick(items.exportProject, this.onExport),
+          items.separator,
+          onClick(items.newPatch, this.props.actions.createPatch),
+        ]
+      ),
+      submenu(
+        items.edit,
+        [
+          onClick(items.undo, this.props.actions.undoCurrentPatch),
+          onClick(items.redo, this.props.actions.redoCurrentPatch),
+        ]
+      ),
+      submenu(
+        items.deploy,
+        [
+          onClick(items.showCodeForEspruino, this.onShowCodeEspruino),
+          onClick(items.uploadToEspruino, this.onUpload),
+          items.separator,
+          onClick(items.showCodeForNodeJS, this.onShowCodeNodejs),
+        ]
+      ),
     ];
   }
 
@@ -267,7 +270,7 @@ class App extends React.Component {
           selectedNodeType={this.props.selectedNodeType}
           onSelectNodeType={this.onSelectNodeType}
           onAddNodeClick={this.onAddNodeClick}
-          buttons={this.getToolbarButtons()}
+          menuBarItems={this.getMenuBarItems()}
         />
         <client.Editor size={this.state.size} />
         <client.SnackBar />
@@ -324,6 +327,9 @@ const mapDispatchToProps = dispatch => ({
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,
     deleteProcess: client.deleteProcess,
+    createPatch: client.requestCreatePatch,
+    undoCurrentPatch: client.undoCurrentPatch,
+    redoCurrentPatch: client.redoCurrentPatch,
   }, dispatch),
 });
 

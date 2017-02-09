@@ -2,6 +2,7 @@ import * as EditorSelectors from './editor/selectors';
 import * as UtilsSelectors from './utils/selectors';
 import * as ProcessSelectors from './processes/selectors';
 
+import * as CoreActions from './core/actions';
 import * as EditorActions from './editor/actions';
 import * as ProjectActions from './project/actions';
 import * as MessageActions from './messages/actions';
@@ -11,6 +12,7 @@ import * as ProjectBrowserActions from './projectBrowser/actions';
 import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
 import * as BrowserUtils from './utils/browser';
+import * as MenuUtils from './utils/menu';
 
 import Root from './core/containers/Root';
 import { container as Editor, CreateNodeWidget } from './editor';
@@ -65,11 +67,13 @@ export default Object.assign({
   UserPanel,
   DevTools,
   Toolbar,
+  menu: MenuUtils,
 },
   UtilsSelectors,
   EditorSelectors,
   ProcessSelectors,
 
+  CoreActions,
   EditorActions,
   ProjectActions,
   MessageActions,
