@@ -65,7 +65,7 @@ const renderMenubarItem = (item, index) => {
   );
 };
 
-const Menubar = ({ items }) => (
+const Menubar = ({ items = [] }) => (
   <Menu
     mode="horizontal"
     selectedKeys={[]}

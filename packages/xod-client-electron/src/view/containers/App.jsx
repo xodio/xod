@@ -1,5 +1,6 @@
 /* eslint-disable react/forbid-prop-types */
 
+import fs from 'fs';
 import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -23,6 +24,9 @@ import { getProjects } from '../../projects/selectors';
 import { getSettings, getWorkspace } from '../../settings/selectors';
 import { changeWorkspace, checkWorkspace } from '../../settings/actions';
 import { SaveProgressBar } from '../components/SaveProgressBar';
+
+// TODO: tweak webpack config to allow importing built-in electron package
+const { app, dialog, Menu } = window.require('electron').remote;
 
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
@@ -48,8 +52,7 @@ class App extends React.Component {
     this.onUpload = this.onUpload.bind(this);
     this.onShowCodeEspruino = this.onShowCodeEspruino.bind(this);
     this.onShowCodeNodejs = this.onShowCodeNodejs.bind(this);
-    // TODO: refactor to use electron's native features?
-    this.onImportChange = this.onImportChange.bind(this);
+    this.onImportClicked = this.onImportClicked.bind(this);
     this.onImport = this.onImport.bind(this);
     this.onExport = this.onExport.bind(this);
     this.onSavePatch = this.onSavePatch.bind(this);
@@ -72,6 +75,8 @@ class App extends React.Component {
     this.hidePopupCreateProject = this.hidePopupCreateProject.bind(this);
     this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
     this.hidePopupProjectSelection = this.hidePopupProjectSelection.bind(this);
+
+    this.initNativeMenu();
   }
 
   componentDidMount() {
@@ -137,15 +142,27 @@ class App extends React.Component {
     this.hidePopupProjectSelection();
   }
 
-  onImportChange(event) {
-    const file = event.target.files[0];
-    const reader = new window.FileReader();
+  onImportClicked() {
+    dialog.showOpenDialog(
+      {
+        properties: ['openFile'],
+        filters: [
+          { name: 'xodball', extensions: ['xodball'] },
+        ],
+      },
+      (filePaths) => {
+        if (!filePaths) return;
 
-    reader.onload = (e) => {
-      this.onImport(e.target.result);
-    };
+        fs.readFile(filePaths[0], 'utf8', (err, data) => {
+          if (err) {
+            // TODO: custom error message?
+            this.props.actions.addError(err);
+          }
 
-    reader.readAsText(file);
+          this.onImport(data);
+        });
+      }
+    );
   }
 
   onImport(json) {
@@ -278,27 +295,6 @@ class App extends React.Component {
       submenu,
     } = client.menu;
 
-    const importProject = {
-      key: 'Import_Project',
-      children: (
-        <label
-          key="import"
-          className="load-button"
-          htmlFor="importButton"
-        >
-          <input
-            type="file"
-            accept=".xodball"
-            onChange={this.onImportChange}
-            id="importButton"
-          />
-          <span>
-            Import project
-          </span>
-        </label>
-      ),
-    };
-
     return [
       submenu(
         items.file,
@@ -308,7 +304,7 @@ class App extends React.Component {
           onClick(items.saveProject, this.onSaveProject),
           onClick(items.selectWorkspace, this.showPopupSetWorkspace),
           items.separator,
-          importProject,
+          onClick(items.importProject, this.onImportClicked),
           onClick(items.exportProject, this.onExport),
           items.separator,
           onClick(items.newPatch, this.props.actions.createPatch),
@@ -332,6 +328,63 @@ class App extends React.Component {
         ]
       ),
     ];
+  }
+
+  getKeyMap() { // eslint-disable-line class-methods-use-this
+    const commandsBoundToNativeMenu = R.compose(
+      R.reject(R.isNil),
+      R.map(R.prop('command')),
+      R.values
+    )(client.menu.items);
+
+    return R.omit(commandsBoundToNativeMenu, client.HOTKEY);
+  }
+
+  initNativeMenu() {
+    const template = this.getMenuBarItems();
+
+    if (process.platform === 'darwin') {
+      // on a mac the first menu always has to be like this
+      template.unshift({
+        label: app.getName(),
+        submenu: [
+          { role: 'about' },
+          { type: 'separator' },
+          { role: 'services', submenu: [] },
+          { type: 'separator' },
+          { role: 'hide' },
+          { role: 'hideothers' },
+          { role: 'unhide' },
+          { type: 'separator' },
+          { role: 'quit' },
+        ],
+      });
+
+      template.push({
+        label: 'View',
+        submenu: [
+          { role: 'reload' },
+          { role: 'toggledevtools' },
+          { type: 'separator' },
+          { role: 'resetzoom' },
+          { role: 'zoomin' },
+          { role: 'zoomout' },
+          { type: 'separator' },
+          { role: 'togglefullscreen' },
+        ],
+      });
+
+      template.push({
+        role: 'window',
+        submenu: [
+          { role: 'minimize' },
+          { role: 'close' },
+        ],
+      });
+    }
+
+    const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
   }
 
   showUploadProgressPopup() {
@@ -379,7 +432,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <HotKeys keyMap={client.HOTKEY} id="App">
+      <HotKeys keyMap={this.getKeyMap()} id="App">
         <EventListener
           target={window}
           onResize={this.onResize}
@@ -392,7 +445,6 @@ class App extends React.Component {
           selectedNodeType={this.props.selectedNodeType}
           onSelectNodeType={this.onSelectNodeType}
           onAddNodeClick={this.onAddNodeClick}
-          menuBarItems={this.getMenuBarItems()}
         />
         <client.Editor size={this.state.size} />
         <client.SnackBar />
