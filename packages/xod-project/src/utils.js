@@ -2,8 +2,10 @@ import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 import shortid from 'shortid';
 
+import * as Node from './node';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
+
 /**
  * Contains resulting value or error
  *
@@ -135,3 +137,68 @@ export const validateId = R.test(/^[a-zA-Z0-9\-_]+$/);
  * @returns {String}
  */
 export const getCastPatchPath = (typeIn, typeOut) => `xod/core/cast-${typeIn}-to-${typeOut}`;
+
+// =============================================================================
+//
+// Transforming node ids in the patch
+//
+// =============================================================================
+
+/**
+ * Returns a map of original node ids to new ids,
+ * based on index.
+ *
+ * @private
+ * @function guidToIdx
+ * @param {Array<Node>} nodes
+ * @returns {Object.<string, number>}
+ */
+export const guidToIdx = R.compose(
+  R.fromPairs,
+  R.addIndex(R.map)(
+    (node, idx) => [Node.getNodeId(node), idx]
+  )
+);
+
+/**
+ * Returns a list of nodes with ids resolved
+ * according to nodeIdMap.
+ *
+ * @private
+ * @function resolveNodeIds
+ * @param {Object.<string, number>} nodeIdMap
+ * @param {Array<Node>} nodes
+ * @returns {Array<Node>}
+ */
+// :: nodeIdMap -> Node[] -> Node[]
+export const resolveNodeIds = R.curry((nodeIdMap, nodes) =>
+  R.map(
+    R.over(R.lensProp('id'), R.prop(R.__, nodeIdMap)),
+    nodes
+  )
+);
+
+// :: nodeIdMap -> PinRef -> PinRef
+const resolvePinRefId = R.curry((nodeIdMap, pinRef) =>
+  R.over(R.lensProp('nodeId'), R.prop(R.__, nodeIdMap), pinRef)
+);
+
+/**
+ * Returns a list of links with resolved nodeIds
+ * according to nodeIdMap.
+ *
+ * @private
+ * @function resolveNodeIds
+ * @param {Object.<string, number>} nodeIdMap
+ * @param {Array<Link>} links
+ * @returns {Array<Link>}
+ */
+export const resolveLinkNodeIds = R.curry((nodeIdMap, links) =>
+  R.map(
+    R.evolve({
+      input: resolvePinRefId(nodeIdMap),
+      output: resolvePinRefId(nodeIdMap),
+    }),
+    links
+  )
+);

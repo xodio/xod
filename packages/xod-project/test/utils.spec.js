@@ -80,6 +80,53 @@ describe('Utils', () => {
     });
   });
 
+  // transforming node ids
+  describe('renumering of nodeIds', () => {
+    const nodes = [
+      { id: 'a', was: 'a' },
+      { id: 'b', was: 'b' },
+      { id: 'c', was: 'c' },
+    ];
+    const links = [
+      { id: 'x', input: { nodeId: 'b' }, output: { nodeId: 'a' } },
+      { id: 'y', input: { nodeId: 'c' }, output: { nodeId: 'b' } },
+    ];
+    const nodesIdMap = Utils.guidToIdx(nodes);
+
+    const expectedNodes = [
+      { id: 0, was: 'a' },
+      { id: 1, was: 'b' },
+      { id: 2, was: 'c' },
+    ];
+    const expectedLinks = [
+      { id: 'x', input: { nodeId: 1 }, output: { nodeId: 0 } },
+      { id: 'y', input: { nodeId: 2 }, output: { nodeId: 1 } },
+    ];
+
+    it('guidToIdx: should return an empty map for empty nodes', () => {
+      expect(Utils.guidToIdx({}))
+        .to.be.an('object')
+        .and.to.be.empty();
+    });
+    it('guidToIdx: should return a map oldId to newId', () => {
+      expect(Utils.guidToIdx(nodes))
+        .to.be.deep.equal({
+          a: 0,
+          b: 1,
+          c: 2,
+        });
+    });
+
+    it('resolveNodeIds: should return nodes with new ids', () => {
+      expect(Utils.resolveNodeIds(nodesIdMap, nodes))
+        .to.be.deep.equal(expectedNodes);
+    });
+    it('resolveLinkNodeIds: should return links with resolved node ids', () => {
+      expect(Utils.resolveLinkNodeIds(nodesIdMap, links))
+        .to.be.deep.equal(expectedLinks);
+    });
+  });
+
   // etc
   describe('isPathLocal', () => {
     const localPath = '@/test';

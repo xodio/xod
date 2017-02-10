@@ -74,6 +74,26 @@ export const getLinkInputPinKey = R.path(['input', 'pinKey']);
  */
 export const getLinkOutputPinKey = R.path(['output', 'pinKey']);
 
+/**
+ * @function getLinkNodeIds
+ * @param {Link}
+ * @returns {Array<string>}
+ */
+export const getLinkNodeIds = R.juxt([
+  getLinkInputNodeId,
+  getLinkOutputNodeId,
+]);
+
+/**
+ * @function getLinkPinKeys
+ * @param {Link}
+ * @returns {Array<string>}
+ */
+export const getLinkPinKeys = R.juxt([
+  getLinkInputPinKey,
+  getLinkOutputPinKey,
+]);
+
 // =============================================================================
 //
 // Checks for equality

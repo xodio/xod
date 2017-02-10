@@ -789,4 +789,47 @@ describe('Patch', () => {
       );
     });
   });
+
+  // utils
+  describe('utils', () => {
+    const patch = {
+      nodes: {
+        a: { id: 'a' },
+        b: { id: 'b' },
+        c: { id: 'c' },
+      },
+      links: {
+        x: { id: 'x', input: { nodeId: 'b' }, output: { nodeId: 'a' } },
+        y: { id: 'y', input: { nodeId: 'c' }, output: { nodeId: 'b' } },
+      },
+      impls: {
+        js: '// ok',
+      },
+    };
+    const expectedPatch = {
+      nodes: {
+        0: { id: 0 },
+        1: { id: 1 },
+        2: { id: 2 },
+      },
+      links: {
+        x: { id: 'x', input: { nodeId: 1 }, output: { nodeId: 0 } },
+        y: { id: 'y', input: { nodeId: 2 }, output: { nodeId: 1 } },
+      },
+      impls: {
+        js: '// ok',
+      },
+    };
+
+    it('renumberNodes: should return same patch with nodes and links with new ids', () => {
+      expect(Patch.renumberNodes(patch))
+        .to.be.deep.equal(expectedPatch);
+    });
+    it('getTopology: should return correct topology', () => {
+      expect(Patch.getTopology(patch))
+        .to.be.deep.equal(['c', 'b', 'a']);
+      expect(Patch.getTopology(expectedPatch))
+        .to.be.deep.equal([2, 1, 0]);
+    });
+  });
 });

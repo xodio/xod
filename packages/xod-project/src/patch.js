@@ -6,6 +6,9 @@ import * as Tools from './func-tools';
 import * as Node from './node';
 import * as Link from './link';
 import * as Pin from './pin';
+import * as Utils from './utils';
+import { sortGraph } from './gmath';
+
 /**
  * An object representing single patch in a project
  * @typedef {Object} Patch
@@ -518,4 +521,47 @@ export const dissocNode = R.curry(
       removeLinks
     )(patch, links);
   }
+);
+
+// =============================================================================
+//
+// Utils
+//
+// =============================================================================
+
+/**
+ * Returns a copy of the patch with changed nodeIds and resolved links.
+ *
+ * @function renumberNodes
+ * @param {Patch} patch
+ * @returns {Patch}
+ */
+export const renumberNodes = (patch) => {
+  const nodes = listNodes(patch);
+  const links = listLinks(patch);
+
+  const nodeIdsMap = Utils.guidToIdx(nodes);
+  const newNodes = R.indexBy(Node.getNodeId, Utils.resolveNodeIds(nodeIdsMap, nodes));
+  const newLinks = R.indexBy(Link.getLinkId, Utils.resolveLinkNodeIds(nodeIdsMap, links));
+
+  return R.compose(
+    R.assoc('links', newLinks),
+    R.assoc('nodes', newNodes),
+    duplicatePatch
+  )(patch);
+};
+
+/**
+ * Returns a topology of nodes in the patch.
+ *
+ * @function getTopology
+ * @param {Patch} patch
+ * @returns {Array<string|number>}
+ */
+export const getTopology = R.converge(
+  sortGraph,
+  [
+    R.compose(R.map(Node.getNodeId), listNodes),
+    R.compose(R.map(Link.getLinkNodeIds), listLinks),
+  ]
 );
