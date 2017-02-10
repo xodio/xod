@@ -52,15 +52,15 @@ export const $Maybe = $.UnaryType(
   'ramda-fantasy/Maybe',
   'https://github.com/ramda/ramda-fantasy/blob/master/docs/Maybe.md',
   R.is(RF.Maybe),
-  maybe => maybe.isJust ? [maybe.value] : [],
+  maybe => (maybe.isJust ? [maybe.value] : [])
 );
 
 export const $Either = $.BinaryType(
   'ramda-fantasy/Either',
   'https://github.com/ramda/ramda-fantasy/blob/master/docs/Either.md',
   R.is(RF.Either),
-  either => either.isLeft ? [either.value] : [],
-  either => either.isRight ? [either.value] : []
+  either => (either.isLeft ? [either.value] : []),
+  either => (either.isRight ? [either.value] : [])
 );
 
 //-----------------------------------------------------------------------------

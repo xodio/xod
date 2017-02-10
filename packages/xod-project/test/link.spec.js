@@ -2,9 +2,6 @@ import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
 import * as Link from '../src/link';
-import * as CONST from '../src/constants';
-
-import * as Helper from './helpers';
 
 chai.use(dirtyChai);
 

@@ -1,6 +1,4 @@
 import R from 'ramda';
-import * as CONST from './constants';
-import * as Tools from './func-tools';
 import * as Utils from './utils';
 import * as Node from './node';
 import { def } from './types';
