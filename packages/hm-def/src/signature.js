@@ -71,7 +71,7 @@ const convertList = R.useWith(
 const convertFunction = R.useWith(
   R.compose($.Function, uncurry2(convertTypes)), [
     R.identity,
-    R.prop(['children']),
+    R.prop('children'),
   ]
 );
 
