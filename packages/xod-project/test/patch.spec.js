@@ -782,34 +782,50 @@ describe('Patch', () => {
 
   // utils
   describe('utils', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       nodes: {
         a: { id: 'a' },
         b: { id: 'b' },
         c: { id: 'c' },
       },
       links: {
-        x: { id: 'x', input: { nodeId: 'b' }, output: { nodeId: 'a' } },
-        y: { id: 'y', input: { nodeId: 'c' }, output: { nodeId: 'b' } },
+        x: {
+          id: 'x',
+          input: { nodeId: 'b', pinKey: 'x' },
+          output: { nodeId: 'a', pinKey: 'x' },
+        },
+        y: {
+          id: 'y',
+          input: { nodeId: 'c', pinKey: 'x' },
+          output: { nodeId: 'b', pinKey: 'x' },
+        },
       },
       impls: {
         js: '// ok',
       },
-    };
-    const expectedPatch = {
+    });
+    const expectedPatch = Helper.defaultizePatch({
       nodes: {
-        0: { id: 0 },
-        1: { id: 1 },
-        2: { id: 2 },
+        0: { id: '0' },
+        1: { id: '1' },
+        2: { id: '2' },
       },
       links: {
-        x: { id: 'x', input: { nodeId: 1 }, output: { nodeId: 0 } },
-        y: { id: 'y', input: { nodeId: 2 }, output: { nodeId: 1 } },
+        x: {
+          id: 'x',
+          input: { nodeId: '1', pinKey: 'x' },
+          output: { nodeId: '0', pinKey: 'x' },
+        },
+        y: {
+          id: 'y',
+          input: { nodeId: '2', pinKey: 'x' },
+          output: { nodeId: '1', pinKey: 'x' },
+        },
       },
       impls: {
         js: '// ok',
       },
-    };
+    });
 
     it('renumberNodes: should return same patch with nodes and links with new ids', () => {
       expect(Patch.renumberNodes(patch))
@@ -819,7 +835,7 @@ describe('Patch', () => {
       expect(Patch.getTopology(patch))
         .to.be.deep.equal(['c', 'b', 'a']);
       expect(Patch.getTopology(expectedPatch))
-        .to.be.deep.equal([2, 1, 0]);
+        .to.be.deep.equal(['2', '1', '0']);
     });
   });
 });

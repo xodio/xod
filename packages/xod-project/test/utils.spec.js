@@ -94,13 +94,13 @@ describe('Utils', () => {
     const nodesIdMap = Utils.guidToIdx(nodes);
 
     const expectedNodes = [
-      { id: 0, was: 'a' },
-      { id: 1, was: 'b' },
-      { id: 2, was: 'c' },
+      { id: '0', was: 'a' },
+      { id: '1', was: 'b' },
+      { id: '2', was: 'c' },
     ];
     const expectedLinks = [
-      { id: 'x', input: { nodeId: 1 }, output: { nodeId: 0 } },
-      { id: 'y', input: { nodeId: 2 }, output: { nodeId: 1 } },
+      { id: 'x', input: { nodeId: '1' }, output: { nodeId: '0' } },
+      { id: 'y', input: { nodeId: '2' }, output: { nodeId: '1' } },
     ];
 
     it('guidToIdx: should return an empty map for empty nodes', () => {
@@ -111,9 +111,9 @@ describe('Utils', () => {
     it('guidToIdx: should return a map oldId to newId', () => {
       expect(Utils.guidToIdx(nodes))
         .to.be.deep.equal({
-          a: 0,
-          b: 1,
-          c: 2,
+          a: '0',
+          b: '1',
+          c: '2',
         });
     });
 
