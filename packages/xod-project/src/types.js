@@ -48,6 +48,13 @@ const AliasType = (typeName, type) => NullaryType(
 //
 //-----------------------------------------------------------------------------
 
+export const $Maybe = $.UnaryType(
+  'ramda-fantasy/Maybe',
+  'https://github.com/ramda/ramda-fantasy/blob/master/docs/Maybe.md',
+  R.is(RF.Maybe),
+  maybe => maybe.isJust ? [maybe.value] : [],
+);
+
 export const $Either = $.BinaryType(
   'ramda-fantasy/Either',
   'https://github.com/ramda/ramda-fantasy/blob/master/docs/Either.md',
@@ -100,7 +107,6 @@ export const Patch = Model('Patch', {
   links: $.StrMap(Link),
   impls: $.StrMap(Source),
   pins: $.StrMap(Pin),
-  //label: Label,
 });
 
 export const NodeOrId = OneOfType('NodeOrId', [NodeId, ObjectWithId]);
@@ -114,9 +120,11 @@ export const LinkOrId = OneOfType('LinkOrId', [LinkId, ObjectWithId]);
 
 export const env = $.env.concat([
   $Either,
+  $Maybe,
   Link,
   LinkId,
   LinkOrId,
+  Node,
   NodeId,
   NodeOrId,
   Patch,

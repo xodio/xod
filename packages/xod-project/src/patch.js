@@ -166,7 +166,8 @@ export const listNodes = R.compose(
  * @param {Patch} patch - a patch where node should be searched
  * @returns {Maybe<Node>} a node with given ID or `undefined` if it wasn’t not found
  */
-export const getNodeById = R.curry(
+export const getNodeById = def(
+  'getNodeById :: NodeId -> Patch -> Maybe Node',
   (id, patch) => R.compose(
     Tools.find(nodeIdEquals(id)),
     listNodes

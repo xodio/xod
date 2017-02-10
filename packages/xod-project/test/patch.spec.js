@@ -241,15 +241,19 @@ describe('Patch', () => {
     });
   });
   describe('getNodeById', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       nodes: {
         rndId: { id: 'rndId' },
       },
-    };
+    });
 
     it('should Maybe.Nothing for non-existent node', () => {
-      expect(Patch.getNodeById('non-existent', {}).isNothing)
-        .to.be.true();
+      const maybeNode = Patch.getNodeById(
+        'non-existent',
+        Helper.defaultizePatch({})
+      );
+
+      expect(maybeNode.isNothing).to.be.true();
     });
     it('should Maybe.Just with node for existent node', () => {
       expect(Patch.getNodeById('rndId', patch).isJust)
@@ -259,12 +263,12 @@ describe('Patch', () => {
     });
   });
   describe('listLinks', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       links: {
         1: { id: '1' },
         2: { id: '2' },
       },
-    };
+    });
 
     it('should return an empty array for empty patch', () => {
       expect(Patch.listLinks({}))
@@ -291,11 +295,11 @@ describe('Patch', () => {
     });
   });
   describe('getLinkById', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       links: {
         1: { id: '1' },
       },
-    };
+    });
 
     it('should Maybe.Nothing for non-existent link', () => {
       expect(Patch.getLinkById('non-existent', {}).isNothing).to.be.true();
@@ -307,7 +311,7 @@ describe('Patch', () => {
   });
 
   describe('listLinksByNode', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       links: {
         1: {
           id: '1',
@@ -319,7 +323,7 @@ describe('Patch', () => {
         '@/from': { id: '@/from' },
         '@/to': { id: '@/to' },
       },
-    };
+    });
 
     it('should return empty array for non-existent node', () => {
       expect(Patch.listLinksByNode('@/non-existent', patch))
@@ -338,7 +342,7 @@ describe('Patch', () => {
     });
   });
   describe('listLinksByPin', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       links: {
         1: {
           id: '1',
@@ -350,7 +354,7 @@ describe('Patch', () => {
         '@/from': { id: '@/from' },
         '@/to': { id: '@/to' },
       },
-    };
+    });
 
     it('should return empty array for non-existent node', () => {
       expect(Patch.listLinksByPin('fromPin', '@/non-existent', patch))
@@ -375,12 +379,12 @@ describe('Patch', () => {
   });
 
   describe('pins', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       pins: {
         in: { key: 'in', direction: CONST.PIN_DIRECTION.INPUT },
         out: { key: 'out', direction: CONST.PIN_DIRECTION.OUTPUT },
       },
-    };
+    });
     describe('getPinByKey', () => {
       it('should return Maybe.Nothing for empty patch', () => {
         const res = Patch.getPinByKey('a', {});
@@ -484,12 +488,12 @@ describe('Patch', () => {
     });
   });
   describe('dissocPin', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       pins: {
         a: { key: 'a' },
         b: { key: 'b' },
       },
-    };
+    });
 
     it('should remove pin by key', () => {
       const newPatch = Patch.dissocPin('a', patch);
@@ -582,7 +586,7 @@ describe('Patch', () => {
   });
   // TODO: Add test for deleting pinNode
   describe('dissocNode', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       nodes: {
         rndId: { id: 'rndId' },
         rndId2: { id: 'rndId2' },
@@ -594,7 +598,7 @@ describe('Patch', () => {
           input: { pinKey: 'in', nodeId: 'rndId2' },
         },
       },
-    };
+    });
 
     it('should remove node by id', () => {
       const newPatch = Patch.dissocNode('rndId', patch);
@@ -640,7 +644,7 @@ describe('Patch', () => {
         .and.deep.equals(patch);
     });
     it('should remove pin from patch on dissoc pinNode', () => {
-      const patchWithPins = {
+      const patchWithPins = Helper.defaultizePatch({
         nodes: {
           a: { id: 'a', type: 'xod/core/inputNumber' },
           b: { id: 'b', type: 'xod/core/outputNumber' },
@@ -649,7 +653,7 @@ describe('Patch', () => {
           a: {},
           b: {},
         },
-      };
+      });
       const newPatch = Patch.dissocNode('a', patchWithPins);
       expect(newPatch)
       .to.be.an('object')
