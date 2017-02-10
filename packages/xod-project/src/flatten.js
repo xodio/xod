@@ -52,13 +52,13 @@ const getPatchByPath = R.curry((project, nodeType) => R.compose(
 
 // :: String[] -> Patch -> Boolean
 const isLeafPatchWithImpls = impls => R.either(
-  Patch.hasImpl(impls),
+  Patch.hasImpls(impls),
   Patch.isTerminalPatch
 );
 
 // :: String[] -> Patch -> Boolean
 const isLeafPatchWithoutImpls = impls => R.both(
-  R.complement(Patch.hasImpl(impls)),
+  R.complement(Patch.hasImpls(impls)),
   R.compose(
     R.equals(0),
     R.length,
@@ -626,7 +626,7 @@ const filterTuplesByUniqPaths = R.uniqWith(R.eqBy(R.prop(0)));
  */
  // :: Project  -> String[] -> [[Path, Patch]] -> Patch -> Patch
 const convertPatch = R.curry((project, impls, leafPatches, patch) => R.ifElse(
-  Patch.hasImpl(impls),
+  Patch.hasImpls(impls),
   R.identity,
   (originalPatch) => {
     const leafPatchPaths = R.pluck(0, leafPatches);

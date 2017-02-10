@@ -1,11 +1,14 @@
 import R from 'ramda';
-import { Either } from 'ramda-fantasy';
+import { Maybe, Either } from 'ramda-fantasy';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
 import * as Node from './node';
 import * as Link from './link';
 import * as Pin from './pin';
+import * as Utils from './utils';
+import { sortGraph } from './gmath';
+
 /**
  * An object representing single patch in a project
  * @typedef {Object} Patch
@@ -67,16 +70,47 @@ export const listImpls = R.compose(
 /**
  * Returns true if patch has any of specified implementations.
  *
- * @function hasImpl
+ * @function hasImpls
  * @param {string[]} impls
  * @param {Patch} patch
  * @type {Boolean}
  */
-export const hasImpl = R.curry((impls, patch) => R.compose(
+export const hasImpls = R.curry((impls, patch) => R.compose(
   R.complement(R.isEmpty),
   R.intersection(impls),
   listImpls
 )(patch));
+
+/**
+ * Returns an implementation, if it exists. Otherwise Nothing.
+ *
+ * @function getImpl
+ * @param {string} impl
+ * @param {Patch} patch
+ * @type {Maybe<string>}
+ */
+export const getImpl = R.curry((impl, patch) => R.compose(
+  Maybe,
+  R.path(['impls', impl])
+)(patch));
+
+/**
+ * Returns the first found in the patch implementation from the list,
+ * in order of priority from first to last.
+ * If no implementations found — returns Nothing.
+ *
+ * @function getImplByArray
+ * @param {string[]} impls
+ * @param {Patch} patch
+ * @type {Maybe<string>}
+ */
+export const getImplByArray = R.curry((impls, patch) => R.compose(
+  R.unnest,
+  Maybe,
+  R.head,
+  R.reject(Maybe.isNothing),
+  R.map(getImpl(R.__, patch))
+)(impls));
 
 /**
  * @function validatePatch
@@ -487,4 +521,47 @@ export const dissocNode = R.curry(
       removeLinks
     )(patch, links);
   }
+);
+
+// =============================================================================
+//
+// Utils
+//
+// =============================================================================
+
+/**
+ * Returns a copy of the patch with changed nodeIds and resolved links.
+ *
+ * @function renumberNodes
+ * @param {Patch} patch
+ * @returns {Patch}
+ */
+export const renumberNodes = (patch) => {
+  const nodes = listNodes(patch);
+  const links = listLinks(patch);
+
+  const nodeIdsMap = Utils.guidToIdx(nodes);
+  const newNodes = R.indexBy(Node.getNodeId, Utils.resolveNodeIds(nodeIdsMap, nodes));
+  const newLinks = R.indexBy(Link.getLinkId, Utils.resolveLinkNodeIds(nodeIdsMap, links));
+
+  return R.compose(
+    R.assoc('links', newLinks),
+    R.assoc('nodes', newNodes),
+    duplicatePatch
+  )(patch);
+};
+
+/**
+ * Returns a topology of nodes in the patch.
+ *
+ * @function getTopology
+ * @param {Patch} patch
+ * @returns {Array<string|number>}
+ */
+export const getTopology = R.converge(
+  sortGraph,
+  [
+    R.compose(R.map(Node.getNodeId), listNodes),
+    R.compose(R.map(Link.getLinkNodeIds), listLinks),
+  ]
 );

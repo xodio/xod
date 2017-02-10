@@ -107,9 +107,9 @@ describe('Patch', () => {
         .to.have.members(['js', 'espruino']);
     });
   });
-  describe('hasImpl', () => {
+  describe('hasImpls', () => {
     it('should return false for empty', () => {
-      expect(Patch.hasImpl(['js'], {})).to.be.false();
+      expect(Patch.hasImpls(['js'], {})).to.be.false();
     });
     it('should return false if impl not found', () => {
       const patch = {
@@ -117,7 +117,7 @@ describe('Patch', () => {
           js: '//ok',
         },
       };
-      expect(Patch.hasImpl(['cpp'], patch)).to.be.false();
+      expect(Patch.hasImpls(['cpp'], patch)).to.be.false();
     });
     it('should return true for the only correct impl', () => {
       const patch = {
@@ -125,7 +125,7 @@ describe('Patch', () => {
           js: '//ok',
         },
       };
-      expect(Patch.hasImpl(['js'], patch)).to.be.true();
+      expect(Patch.hasImpls(['js'], patch)).to.be.true();
     });
     it('should return true for a few existent impls', () => {
       const patch = {
@@ -134,7 +134,44 @@ describe('Patch', () => {
           nodejs: '//ok',
         },
       };
-      expect(Patch.hasImpl(['js', 'nodejs'], patch)).to.be.true();
+      expect(Patch.hasImpls(['js', 'nodejs'], patch)).to.be.true();
+    });
+  });
+  describe('getImpl', () => {
+    it('should return Nothing for empty patch', () => {
+      const impl = Patch.getImpl('js', {});
+      expect(impl.isNothing).to.be.true();
+    });
+    it('should return Nothing for patch without defined impl', () => {
+      const impl = Patch.getImpl('js', { impls: { cpp: '//ok' } });
+      expect(impl.isNothing).to.be.true();
+    });
+    it('should return Maybe with implementation for patch with defined impl', () => {
+      const value = '//ok';
+      const impl = Patch.getImpl('cpp', { impls: { cpp: value } });
+      expect(impl.isJust).to.be.true();
+      expect(impl.getOrElse(null)).to.be.equal(value);
+    });
+  });
+  describe('getImplByArray', () => {
+    it('should return Nothing for empty patch', () => {
+      const impl = Patch.getImplByArray(['js', 'nodejs'], {});
+      expect(impl.isNothing).to.be.true();
+    });
+    it('should return Nothing for patch without defined impl', () => {
+      const impl = Patch.getImplByArray(['js', 'nodejs'], { impls: { cpp: '//cpp' } });
+      expect(impl.isNothing).to.be.true();
+    });
+    it('should return Maybe with implementation (correct priority)', () => {
+      const getJsOrNode = Patch.getImplByArray(['js', 'nodejs']);
+
+      const js = getJsOrNode({ impls: { js: '//js', nodejs: '//node' } });
+      expect(js.isJust).to.be.true();
+      expect(js.getOrElse(null)).to.be.equal('//js');
+
+      const node = getJsOrNode({ impls: { nodejs: '//node' } });
+      expect(node.isJust).to.be.true();
+      expect(node.getOrElse(null)).to.be.equal('//node');
     });
   });
   describe('isTerminalPatch', () => {
@@ -750,6 +787,49 @@ describe('Patch', () => {
         validLink => expect(validLink).to.be.equal(link),
         valid
       );
+    });
+  });
+
+  // utils
+  describe('utils', () => {
+    const patch = {
+      nodes: {
+        a: { id: 'a' },
+        b: { id: 'b' },
+        c: { id: 'c' },
+      },
+      links: {
+        x: { id: 'x', input: { nodeId: 'b' }, output: { nodeId: 'a' } },
+        y: { id: 'y', input: { nodeId: 'c' }, output: { nodeId: 'b' } },
+      },
+      impls: {
+        js: '// ok',
+      },
+    };
+    const expectedPatch = {
+      nodes: {
+        0: { id: 0 },
+        1: { id: 1 },
+        2: { id: 2 },
+      },
+      links: {
+        x: { id: 'x', input: { nodeId: 1 }, output: { nodeId: 0 } },
+        y: { id: 'y', input: { nodeId: 2 }, output: { nodeId: 1 } },
+      },
+      impls: {
+        js: '// ok',
+      },
+    };
+
+    it('renumberNodes: should return same patch with nodes and links with new ids', () => {
+      expect(Patch.renumberNodes(patch))
+        .to.be.deep.equal(expectedPatch);
+    });
+    it('getTopology: should return correct topology', () => {
+      expect(Patch.getTopology(patch))
+        .to.be.deep.equal(['c', 'b', 'a']);
+      expect(Patch.getTopology(expectedPatch))
+        .to.be.deep.equal([2, 1, 0]);
     });
   });
 });
