@@ -737,12 +737,12 @@ describe('Patch', () => {
     });
   });
   describe('validateLink', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       nodes: {
         out: { id: 'out' },
         in: { id: 'in' },
       },
-    };
+    });
     const linkId = '1';
     const validInput = {
       nodeId: 'in',
@@ -753,25 +753,11 @@ describe('Patch', () => {
       pinKey: 'out',
     };
 
-    it('should return Either.Left for link without id', () => {
-      const err = Patch.validateLink({}, {});
-      expect(err.isLeft).to.be.true();
-    });
-    it('should return Either.Left if input property is not exist or invalid', () => {
-      const link = { id: linkId };
-      const err = Patch.validateLink(link, patch);
-      expect(err.isLeft).to.be.true();
-    });
     it('should return Either.Left for non-existent input node in the patch', () => {
       const link = { id: linkId, input: { nodeId: 'non-existent', pinKey: 'a' }, output: validOutput };
       const err = Patch.validateLink(link, patch);
       expect(err.isLeft).to.be.true();
       Helper.expectErrorMessage(expect, err, CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND);
-    });
-    it('should return Either.Left if output property is not exist or invalid', () => {
-      const link = { id: linkId, input: validInput };
-      const err = Patch.validateLink(link, patch);
-      expect(err.isLeft).to.be.true();
     });
     it('should return Either.Left for non-existent output node in the patch', () => {
       const link = { id: linkId, input: validInput, output: { nodeId: 'non-existent', pinKey: 'a' } };

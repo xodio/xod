@@ -8,6 +8,7 @@ import * as Link from './link';
 import * as Pin from './pin';
 import * as Utils from './utils';
 import { sortGraph } from './gmath';
+import { def } from './types';
 
 /**
  * An object representing single patch in a project
@@ -26,6 +27,8 @@ import { sortGraph } from './gmath';
 export const createPatch = () => ({
   nodes: {},
   links: {},
+  impls: {},
+  pins: {},
 });
 
 /**
@@ -382,10 +385,9 @@ export const listLinksByPin = R.curry(
  * @param {Patch} patch - a patch to operate on
  * @returns {Either<Error|Link>} validation errors or valid {@link Link}
  */
-export const validateLink = R.curry(
-  (link, patch) => Link.validateLinkId(link)
-    .chain(Link.validateLinkInput)
-    .chain(Link.validateLinkOutput)
+export const validateLink = def(
+  'validateLink :: Link -> Patch -> Either Error Link',
+  (link, patch) => Either.of(link)
     .chain(() => Tools.errOnNothing(
         CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND,
         getNodeById(Link.getLinkInputNodeId(link), patch)

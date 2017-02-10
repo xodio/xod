@@ -11,7 +11,7 @@ chai.use(dirtyChai);
 
 describe('Flatten', () => {
   describe('trivial', () => {
-    const project = {
+    const project = Helper.defaultizeProject({
       patches: {
         '@/main': {
           nodes: {
@@ -63,7 +63,7 @@ describe('Flatten', () => {
           },
         },
       },
-    };
+    });
 
     it('should return error if implementation not found', () => {
       const flatProject = flatten(project, '@/main', ['cpp']);
@@ -118,7 +118,7 @@ describe('Flatten', () => {
   });
 
   describe('recursive', () => {
-    const project = {
+    const project = Helper.defaultizeProject({
       patches: {
         '@/main': {
           nodes: {
@@ -270,7 +270,7 @@ describe('Flatten', () => {
           },
         },
       },
-    };
+    });
 
     it('should ignore not referred patches', () => {
       const flatProject = flatten(project, '@/foo', ['js']);
@@ -374,7 +374,7 @@ describe('Flatten', () => {
     };
 
     describe('no links to terminal', () => {
-      const project = {
+      const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
             nodes: {
@@ -432,7 +432,7 @@ describe('Flatten', () => {
             impls: {},
           },
         },
-      };
+      });
 
       it('should return patches without cast patch', () => {
         const flatProject = flatten(project, '@/main', ['js']);
@@ -465,7 +465,7 @@ describe('Flatten', () => {
     describe('through output terminal', () => {
       const createCastOutputTest = (typeIn, typeOut) => {
         it(`${typeIn} -> ${getCastPatchPath(typeIn, typeOut)} -> ${typeOut}`, () => {
-          const project = {
+          const project = Helper.defaultizeProject({
             patches: {
               '@/main': {
                 nodes: {
@@ -581,7 +581,7 @@ describe('Flatten', () => {
                 impls: {},
               },
             },
-          };
+          });
 
           if (typeOut === typeIn) {
             project.patches[`xod/core/${typeOut}`].pins = {
@@ -622,7 +622,7 @@ describe('Flatten', () => {
     describe('through input terminal', () => {
       const createCastInputTest = (typeIn, typeOut) => {
         it(`${typeIn} -> ${getCastPatchPath(typeIn, typeOut)} -> ${typeOut}`, () => {
-          const project = {
+          const project = Helper.defaultizeProject({
             patches: {
               '@/main': {
                 nodes: {
@@ -738,7 +738,7 @@ describe('Flatten', () => {
                 impls: {},
               },
             },
-          };
+          });
 
           if (typeOut === typeIn) {
             project.patches[`xod/core/${typeOut}`].pins = {
@@ -788,7 +788,7 @@ describe('Flatten', () => {
     describe('three different types', () => {});
 
     describe('with same types', () => {
-      const project = {
+      const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
             nodes: {
@@ -878,7 +878,7 @@ describe('Flatten', () => {
             },
           },
         },
-      };
+      });
 
       it('should return patches without cast patch', () => {
         const flatProject = flatten(project, '@/main', ['js']);
@@ -933,7 +933,7 @@ describe('Flatten', () => {
     });
 
     describe('needed, but missing in the project', () => {
-      const project = {
+      const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
             nodes: {
@@ -996,7 +996,7 @@ describe('Flatten', () => {
             },
           },
         },
-      };
+      });
 
       it(`should return Either.Left with error "${CONST.ERROR.CAST_PATCH_NOT_FOUND}"`, () => {
         const flatProject = flatten(project, '@/main', ['js']);
@@ -1008,7 +1008,7 @@ describe('Flatten', () => {
   });
 
   describe('injected pins', () => {
-    const project = {
+    const project = Helper.defaultizeProject({
       patches: {
         '@/main': {
           nodes: {
@@ -1241,7 +1241,7 @@ describe('Flatten', () => {
           },
         },
       },
-    };
+    });
 
     it('should return node b~b with injected pin a2', () => {
       const flatProject = flatten(project, '@/main', ['js']);
@@ -1264,7 +1264,7 @@ describe('Flatten', () => {
   });
 
   describe('implementations', () => {
-    const project = {
+    const project = Helper.defaultizeProject({
       patches: {
         '@/main': {
           nodes: {
@@ -1296,7 +1296,7 @@ describe('Flatten', () => {
           },
         },
       },
-    };
+    });
 
     describe('single', () => {
       it('defined implementation exists', () => {

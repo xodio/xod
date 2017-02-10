@@ -1,5 +1,6 @@
 
 import R from 'ramda';
+import RF from 'ramda-fantasy';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
 
@@ -43,17 +44,34 @@ const AliasType = (typeName, type) => NullaryType(
 
 //-----------------------------------------------------------------------------
 //
+// Fantasy land types
+//
+//-----------------------------------------------------------------------------
+
+export const $Either = $.BinaryType(
+  'ramda-fantasy/Either',
+  'https://github.com/ramda/ramda-fantasy/blob/master/docs/Either.md',
+  R.is(RF.Either),
+  either => either.isLeft ? [either.value] : [],
+  either => either.isRight ? [either.value] : []
+);
+
+//-----------------------------------------------------------------------------
+//
 // Domain types
 //
 //-----------------------------------------------------------------------------
 
 const ObjectWithId = NullaryType('ObjectWithId', R.has('id'));
 
+export const Label = AliasType('Label', $.String);
+export const Source = AliasType('Source', $.String);
 export const ShortId = AliasType('ShortId', $.String);
 export const LinkId = AliasType('LinkId', ShortId);
 export const NodeId = AliasType('NodeId', ShortId);
 export const PinKey = AliasType('PinKey', $.String);
 export const PatchPath = AliasType('PatchPath', $.String);
+export const Pin = AliasType('Pin', $.Object); // TODO: enforce model
 
 export const NodePosition = Model('NodePosition', {
   x: $.Number,
@@ -77,6 +95,14 @@ export const Link = Model('Link', {
   output: PinRef,
 });
 
+export const Patch = Model('Patch', {
+  nodes: $.StrMap(Node),
+  links: $.StrMap(Link),
+  impls: $.StrMap(Source),
+  pins: $.StrMap(Pin),
+  //label: Label,
+});
+
 export const NodeOrId = OneOfType('NodeOrId', [NodeId, ObjectWithId]);
 export const LinkOrId = OneOfType('LinkOrId', [LinkId, ObjectWithId]);
 
@@ -85,15 +111,18 @@ export const LinkOrId = OneOfType('LinkOrId', [LinkId, ObjectWithId]);
 // Environment
 //
 //-----------------------------------------------------------------------------
+
 export const env = $.env.concat([
+  $Either,
   Link,
-  PinRef,
-  PinKey,
-  NodeId,
   LinkId,
-  ShortId,
-  NodeOrId,
   LinkOrId,
+  NodeId,
+  NodeOrId,
+  Patch,
+  PinKey,
+  PinRef,
+  ShortId,
 ]);
 
 export const def = HMDef.create({ checkTypes: true, env });
