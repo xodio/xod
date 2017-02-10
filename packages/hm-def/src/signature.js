@@ -2,6 +2,9 @@
 import R from 'ramda';
 import $ from 'sanctuary-def';
 
+/* We need a recursion, so: */
+/* eslint-disable no-use-before-define */
+
 /*
 From https://www.npmjs.com/package/hindley-milner-parser-js:
 
@@ -18,6 +21,8 @@ HMP.parse('hello :: Foo a => a -> String');
 
 // type TypeMap = StrMap Type
 
+// TODO: implement, so
+// eslint-disable-next-line no-unused-vars
 export const constraints = sig => ({});
 
 // :: {s: a} -> s -> a
@@ -27,13 +32,13 @@ const uncurry2 = R.uncurryN(2);
 const recurry2 = R.compose(R.curry, uncurry2);
 
 // :: Object -> String -> Boolean
-const typeEq = R.propEq('type')
+const typeEq = R.propEq('type');
 
 // :: SignatureEntry -> Boolean
 const hasChildren = R.compose(R.not, R.isEmpty, R.prop('children'));
 
 // :: TypeMap -> SignatureEntry -> Type
-const lookupType = typeMap => entry => {
+const lookupType = typeMap => (entry) => {
   const name = entry.text;
   const t = lookup(typeMap, name);
   if (!t) {
@@ -58,7 +63,7 @@ const convertTypeConstructor = typeMap => entry => R.ifElse(
 const convertList = R.useWith(
   R.compose($.Array, uncurry2(convertType)), [
     R.identity,
-    R.path(['children', 0])
+    R.path(['children', 0]),
   ]
 );
 
@@ -66,7 +71,7 @@ const convertList = R.useWith(
 const convertFunction = R.useWith(
   R.compose($.Function, uncurry2(convertTypes)), [
     R.identity,
-    R.prop(['children'])
+    R.prop(['children']),
   ]
 );
 
@@ -76,10 +81,10 @@ const convertTypevar = R.memoize(R.compose($.TypeVariable, R.prop('text')));
 // :: TypeMap -> SignatureEntry -> Type
 function convertType(typeMap) {
   return R.cond([
-    [R.propEq('type', 'typeConstructor'), convertTypeConstructor(typeMap)],
-    [R.propEq('type', 'function'), convertFunction(typeMap)],
-    [R.propEq('type', 'list'), convertList(typeMap)],
-    [R.propEq('type', 'typevar'), convertTypevar],
+    [typeEq('typeConstructor'), convertTypeConstructor(typeMap)],
+    [typeEq('function'), convertFunction(typeMap)],
+    [typeEq('list'), convertList(typeMap)],
+    [typeEq('typevar'), convertTypevar],
   ]);
 }
 

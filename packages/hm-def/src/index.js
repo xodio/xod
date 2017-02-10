@@ -10,9 +10,9 @@ function create({ checkTypes, env }) {
     const sig = HMP.parse(signature);
     const sigTypes = Sig.types(Sig.typemap(env), sig.type.children);
     return $def(sig.name, Sig.constraints(sig), sigTypes, func);
-  }
+  };
 }
 
 export default {
-  create
+  create,
 };

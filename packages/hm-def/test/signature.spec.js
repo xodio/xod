@@ -2,8 +2,8 @@
 import R from 'ramda';
 import $ from 'sanctuary-def';
 import HMP from 'hindley-milner-parser-js';
-import * as Sig from '../src/signature';
 import { assert } from 'chai';
+import * as Sig from '../src/signature';
 
 // :: Any -> Any
 function wipeFunctions(x) {
@@ -16,13 +16,15 @@ function wipeFunctions(x) {
 }
 
 function assertDeepEqual(actual, expected, message) {
-  assert.deepEqual(wipeFunctions(actual), wipeFunctions(expected));
+  assert.deepEqual(wipeFunctions(actual), wipeFunctions(expected), message);
 }
 
 // Debugging utility
-function logHMP(sig) {
-  console.log(JSON.stringify(HMP.parse(sig), null, 2));
-}
+// eslint-disable-next-line no-unused-vars, no-console
+function logHMP(sig) { console.log(JSON.stringify(HMP.parse(sig), null, 2)); }
+
+/* Types are by convention starts with a capital leter, so: */
+/* eslint-disable new-cap */
 
 describe('Signature', () => {
   const sigTypes = (env, sig) => Sig.types(
@@ -71,7 +73,7 @@ describe('Signature', () => {
       'my-package/Maybe',
       'http://example.com/my-package#Maybe',
       R.T,
-      R.always([]),
+      R.always([])
     );
 
     const env = R.append(Maybe, $.env);
@@ -85,7 +87,7 @@ describe('Signature', () => {
       'http://example.com/my-package#Either',
       R.T,
       R.always([]),
-      R.always([]),
+      R.always([])
     );
 
     const env = R.append(Either, $.env);

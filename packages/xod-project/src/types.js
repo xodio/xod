@@ -2,13 +2,16 @@
 import R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
-import type from 'sanctuary-type-identifiers';
 
-//=============================================================================
+/* Types are by convention starts with a capital leter, so: */
+/* eslint-disable new-cap */
+
+//-----------------------------------------------------------------------------
 //
 // Type utilities
 //
-//=============================================================================
+//-----------------------------------------------------------------------------
+
 const NullaryType = (typeName, predicate) => $.NullaryType(
   `xod-project/${typeName}`,
   `http://xod.io/docs/dev/xod-project/#${typeName}`,
@@ -26,7 +29,7 @@ const hasOneOfType = types => R.anyPass(
 const Model = (typeName, schema) => NullaryType(
   typeName,
   hasType($.RecordType(schema))
-)
+);
 
 const OneOfType = (typeName, types) => NullaryType(
   typeName,
@@ -38,11 +41,11 @@ const AliasType = (typeName, type) => NullaryType(
   hasType(type)
 );
 
-//=============================================================================
+//-----------------------------------------------------------------------------
 //
 // Domain types
 //
-//=============================================================================
+//-----------------------------------------------------------------------------
 
 const ObjectWithId = NullaryType('ObjectWithId', R.has('id'));
 
@@ -74,14 +77,14 @@ export const Link = Model('Link', {
   output: PinRef,
 });
 
-export const NodeOrId = OneOfType('NodeOrId', [NodeId, ObjectWithId])
+export const NodeOrId = OneOfType('NodeOrId', [NodeId, ObjectWithId]);
 export const LinkOrId = OneOfType('LinkOrId', [LinkId, ObjectWithId]);
 
-//=============================================================================
+//-----------------------------------------------------------------------------
 //
 // Environment
 //
-//=============================================================================
+//-----------------------------------------------------------------------------
 export const env = $.env.concat([
   Link,
   PinRef,
