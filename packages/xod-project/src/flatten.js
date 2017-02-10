@@ -369,6 +369,7 @@ const getPinType = R.curry((patchTuples, nodes, idGetter, keyGetter, link) =>
 const createCastNode = R.curry((patchTuples, nodes, link) => R.compose(
   R.chain(type => ({
     id: `${Link.getLinkOutputNodeId(link)}-to-${Link.getLinkInputNodeId(link)}`,
+    position: { x: 0, y: 0 },
     type,
   })),
   // Link -> Maybe String

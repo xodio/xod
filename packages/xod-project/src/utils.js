@@ -156,7 +156,7 @@ export const getCastPatchPath = (typeIn, typeOut) => `xod/core/cast-${typeIn}-to
 export const guidToIdx = R.compose(
   R.fromPairs,
   R.addIndex(R.map)(
-    (node, idx) => [Node.getNodeId(node), idx]
+    (node, idx) => [Node.getNodeId(node), idx.toString()]
   )
 );
 

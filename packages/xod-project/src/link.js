@@ -1,8 +1,7 @@
 import R from 'ramda';
-import * as CONST from './constants';
-import * as Tools from './func-tools';
 import * as Utils from './utils';
 import * as Node from './node';
+import { def } from './types';
 
 /**
  * @typedef {Object} Link
@@ -23,7 +22,8 @@ import * as Node from './node';
  * @param {NodeOrId} outputNode - output node to link
  * @returns {Link} error or a link object created
  */
-export const createLink = R.curry(
+export const createLink = def(
+  'createLink :: PinKey -> NodeOrId -> PinKey -> NodeOrId -> Link',
   (inputPinKey, inputNode, outputPinKey, outputNode) => (
     {
       id: Utils.generateId(),
@@ -44,35 +44,50 @@ export const createLink = R.curry(
  * @param {LinkOrId} link
  * @returns {string}
  */
-export const getLinkId = R.ifElse(R.is(String), R.identity, R.prop('id'));
+export const getLinkId = def(
+  'getLinkId :: LinkOrId -> LinkId',
+  R.ifElse(R.is(String), R.identity, R.prop('id'))
+);
 
 /**
  * @function getLinkInputNodeId
  * @param {Link}
  * @returns {string}
  */
-export const getLinkInputNodeId = R.path(['input', 'nodeId']);
+export const getLinkInputNodeId = def(
+  'getLinkInputNodeId :: Link -> NodeId',
+  R.path(['input', 'nodeId'])
+);
 
 /**
  * @function getLinkOutputNodeId
  * @param {Link}
  * @returns {string}
  */
-export const getLinkOutputNodeId = R.path(['output', 'nodeId']);
+export const getLinkOutputNodeId = def(
+  'getLinkOutputNodeId :: Link -> NodeId',
+  R.path(['output', 'nodeId'])
+);
 
 /**
  * @function getLinkInputPinKey
  * @param {Link}
  * @returns {string}
  */
-export const getLinkInputPinKey = R.path(['input', 'pinKey']);
+export const getLinkInputPinKey = def(
+  'getLinkInputPinKey :: Link -> PinKey',
+  R.path(['input', 'pinKey'])
+);
 
 /**
  * @function getLinkOutputPinKey
  * @param {Link}
  * @returns {string}
  */
-export const getLinkOutputPinKey = R.path(['output', 'pinKey']);
+export const getLinkOutputPinKey = def(
+  'getLinkOutputPinKey :: Link -> PinKey',
+  R.path(['output', 'pinKey'])
+);
 
 /**
  * @function getLinkNodeIds
@@ -109,12 +124,12 @@ export const getLinkPinKeys = R.juxt([
  * @param {function} getter
  * @returns {function}
  */
-const isGetterEqualTo = getter => R.useWith(
-  R.equals,
-  [
+const isGetterEqualTo = def(
+  'isGetterEqualTo :: (b -> a) -> (a -> Boolean)',
+  getter => R.useWith(R.equals, [
     R.identity,
     getter,
-  ]
+  ])
 );
 
 /**
@@ -124,7 +139,10 @@ const isGetterEqualTo = getter => R.useWith(
  * @param {Link} link
  * @returns {boolean}
  */
-export const isLinkInputNodeIdEquals = isGetterEqualTo(getLinkInputNodeId);
+export const isLinkInputNodeIdEquals = def(
+  'isLinkInputNodeIdEquals :: NodeId -> Link -> Boolean',
+  isGetterEqualTo(getLinkInputNodeId)
+);
 
 /**
  * Returns true if links output node id equal to specified node id
@@ -133,7 +151,10 @@ export const isLinkInputNodeIdEquals = isGetterEqualTo(getLinkInputNodeId);
  * @param {Link} link
  * @returns {boolean}
  */
-export const isLinkOutputNodeIdEquals = isGetterEqualTo(getLinkOutputNodeId);
+export const isLinkOutputNodeIdEquals = def(
+  'isLinkOutputNodeIdEquals :: NodeId -> Link -> Boolean',
+  isGetterEqualTo(getLinkOutputNodeId)
+);
 
 /**
  * Returns true if input pin key equal to specified pin key
@@ -142,7 +163,10 @@ export const isLinkOutputNodeIdEquals = isGetterEqualTo(getLinkOutputNodeId);
  * @param {Link} link
  * @returns {boolean}
  */
-export const isLinkInputPinKeyEquals = isGetterEqualTo(getLinkInputPinKey);
+export const isLinkInputPinKeyEquals = def(
+  'isLinkInputPinKeyEquals :: PinKey -> Link -> Boolean',
+  isGetterEqualTo(getLinkInputPinKey)
+);
 
 /**
  * Returns true if input pin key equal to specified pin key
@@ -151,59 +175,7 @@ export const isLinkInputPinKeyEquals = isGetterEqualTo(getLinkInputPinKey);
  * @param {Link} link
  * @returns {boolean}
  */
-export const isLinkOutputPinKeyEquals = isGetterEqualTo(getLinkOutputPinKey);
-
-/**
- * Checks that input/output property has required properties
- *
- * @private
- * @function hasLinkRequiredProps
- * @param {object} io
- * @returns {boolean}
- */
-const hasLinkRequiredProps = R.both(R.has('nodeId'), R.has('pinKey'));
-
-/**
- * Checks that link has an id.
- *
- * @function validateLinkId
- * @param {Link} link
- * @returns {Either<Error|Link>}
- */
-export const validateLinkId = Tools.errOnFalse(
-  CONST.ERROR.LINK_ID_INVALID,
-  R.compose(
-    R.is(String),
-    R.prop('id')
-  )
-);
-
-/**
- * Checks that link input property is valid
- *
- * @function validateLinkInput
- * @param {Link} link
- * @returns {Either<Error|Link>}
- */
-export const validateLinkInput = Tools.errOnFalse(
-  CONST.ERROR.LINK_INPUT_INVALID,
-  R.compose(
-    hasLinkRequiredProps,
-    R.propOr({}, 'input')
-  )
-);
-
-/**
- * Checks that link output property is valid
- *
- * @function validateLinkOutput
- * @param {Link} link
- * @returns {Either<Error|Link>}
- */
-export const validateLinkOutput = Tools.errOnFalse(
-  CONST.ERROR.LINK_OUTPUT_INVALID,
-  R.compose(
-    hasLinkRequiredProps,
-    R.propOr({}, 'output')
-  )
+export const isLinkOutputPinKeyEquals = def(
+  'isLinkOutputPinKeyEquals :: PinKey -> Link -> Boolean',
+  isGetterEqualTo(getLinkOutputPinKey)
 );

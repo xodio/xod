@@ -2,9 +2,6 @@ import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
 import * as Link from '../src/link';
-import * as CONST from '../src/constants';
-
-import * as Helper from './helpers';
 
 chai.use(dirtyChai);
 
@@ -55,14 +52,9 @@ describe('Link', () => {
   });
   describe('getters', () => {
     const link = {
-      output: {
-        pinKey: 'fromPin',
-        nodeId: '@/from',
-      },
-      input: {
-        pinKey: 'toPin',
-        nodeId: '@/to',
-      },
+      id: '1',
+      output: { pinKey: 'fromPin', nodeId: '@/from' },
+      input: { pinKey: 'toPin', nodeId: '@/to' },
     };
 
     describe('getLinkInputNodeId', () => {
@@ -93,6 +85,7 @@ describe('Link', () => {
   // Checks
   describe('isLinkInputNodeIdEquals', () => {
     const link = {
+      id: '1',
       input: { pinKey: 'toPin', nodeId: '@/to' },
       output: { pinKey: 'fromPin', nodeId: '@/from' },
     };
@@ -109,6 +102,7 @@ describe('Link', () => {
   });
   describe('isLinkOutputNodeIdEquals', () => {
     const link = {
+      id: '1',
       input: { pinKey: 'toPin', nodeId: '@/to' },
       output: { pinKey: 'fromPin', nodeId: '@/from' },
     };
@@ -125,6 +119,7 @@ describe('Link', () => {
   });
   describe('isLinkInputPinKeyEquals', () => {
     const link = {
+      id: '1',
       input: { pinKey: 'toPin', nodeId: '@/to' },
       output: { pinKey: 'fromPin', nodeId: '@/from' },
     };
@@ -141,6 +136,7 @@ describe('Link', () => {
   });
   describe('isLinkOutputPinKeyEquals', () => {
     const link = {
+      id: '1',
       input: { pinKey: 'toPin', nodeId: '@/to' },
       output: { pinKey: 'fromPin', nodeId: '@/from' },
     };
@@ -154,58 +150,5 @@ describe('Link', () => {
     it('should return true for pinKey from output', () => {
       expect(Link.isLinkOutputPinKeyEquals(link.output.pinKey, link)).to.be.true();
     });
-  });
-
-  describe('validateLinkId', () => {
-    const link = {
-      id: '1',
-    };
-
-    it('should return Either.Left for link without id', () => {
-      const err = Link.validateLinkId({});
-      expect(err.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, err, CONST.ERROR.LINK_ID_INVALID);
-    });
-    it('should return Either.Right for link with id', () => {
-      const newLink = Link.validateLinkId(link);
-      expect(newLink.isRight).to.be.true();
-
-      Helper.expectEither(
-        (val) => {
-          expect(val)
-            .to.have.property('id')
-            .that.is.a('string')
-            .and.equal(link.id);
-        },
-        newLink
-      );
-    });
-  });
-  describe('validations', () => {
-    const testLinkIO = (methodName, propertyName, error) => {
-      describe(methodName, () => {
-        it(`should return Either.Left for invalid ${propertyName}`, () => {
-          const result = Link[methodName]({});
-          expect(result.isLeft).to.be.true();
-          Helper.expectErrorMessage(expect, result, error);
-
-          const result2 = Link[methodName]({ [propertyName]: { nodeId: 'a' } });
-          expect(result2.isLeft).to.be.true();
-          Helper.expectErrorMessage(expect, result2, error);
-        });
-        it(`should return Either.Right for valid ${propertyName}`, () => {
-          const link = { [propertyName]: { nodeId: 'a', pinKey: 'in' } };
-          const result = Link[methodName](link);
-          expect(result.isRight).to.be.true();
-          Helper.expectEither(
-            validLink => expect(validLink).to.be.equal(link),
-            result
-          );
-        });
-      });
-    };
-
-    testLinkIO('validateLinkInput', 'input', CONST.ERROR.LINK_INPUT_INVALID);
-    testLinkIO('validateLinkOutput', 'output', CONST.ERROR.LINK_OUTPUT_INVALID);
   });
 });

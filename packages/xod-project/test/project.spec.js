@@ -232,7 +232,7 @@ describe('Project', () => {
         '@/test': {},
       },
     };
-    const fullProject = {
+    const fullProject = Helper.defaultizeProject({
       patches: {
         '@/test': {
           pins: {
@@ -241,11 +241,11 @@ describe('Project', () => {
           },
         },
       },
-    };
+    });
     const patchWithNodeOnly = {
       nodes: { a: { id: 'a', type: '@/test' } },
     };
-    const fullPatch = {
+    const fullPatch = Helper.defaultizePatch({
       nodes: {
         a: { id: 'a', type: '@/test' },
         b: { id: 'b', type: '@/test' },
@@ -257,7 +257,7 @@ describe('Project', () => {
           output: { nodeId: 'b', pinKey: 'out' },
         },
       },
-    };
+    });
 
     it('should be Either.Left for non-existent type', () => {
       const result = Project.validatePatchContents(patchWithNodeOnly, {});

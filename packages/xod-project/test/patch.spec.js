@@ -241,15 +241,19 @@ describe('Patch', () => {
     });
   });
   describe('getNodeById', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       nodes: {
         rndId: { id: 'rndId' },
       },
-    };
+    });
 
     it('should Maybe.Nothing for non-existent node', () => {
-      expect(Patch.getNodeById('non-existent', {}).isNothing)
-        .to.be.true();
+      const maybeNode = Patch.getNodeById(
+        'non-existent',
+        Helper.defaultizePatch({})
+      );
+
+      expect(maybeNode.isNothing).to.be.true();
     });
     it('should Maybe.Just with node for existent node', () => {
       expect(Patch.getNodeById('rndId', patch).isJust)
@@ -259,12 +263,12 @@ describe('Patch', () => {
     });
   });
   describe('listLinks', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       links: {
         1: { id: '1' },
         2: { id: '2' },
       },
-    };
+    });
 
     it('should return an empty array for empty patch', () => {
       expect(Patch.listLinks({}))
@@ -291,11 +295,11 @@ describe('Patch', () => {
     });
   });
   describe('getLinkById', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       links: {
         1: { id: '1' },
       },
-    };
+    });
 
     it('should Maybe.Nothing for non-existent link', () => {
       expect(Patch.getLinkById('non-existent', {}).isNothing).to.be.true();
@@ -307,19 +311,19 @@ describe('Patch', () => {
   });
 
   describe('listLinksByNode', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       links: {
         1: {
           id: '1',
           input: { pinKey: 'fromPin', nodeId: '@/from' },
-          output: { pinKey: 'toPin', nodeIf: '@/to' },
+          output: { pinKey: 'toPin', nodeId: '@/to' },
         },
       },
       nodes: {
         '@/from': { id: '@/from' },
         '@/to': { id: '@/to' },
       },
-    };
+    });
 
     it('should return empty array for non-existent node', () => {
       expect(Patch.listLinksByNode('@/non-existent', patch))
@@ -338,19 +342,19 @@ describe('Patch', () => {
     });
   });
   describe('listLinksByPin', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       links: {
         1: {
           id: '1',
           input: { pinKey: 'fromPin', nodeId: '@/from' },
-          output: { pinKey: 'toPin', nodeIf: '@/to' },
+          output: { pinKey: 'toPin', nodeId: '@/to' },
         },
       },
       nodes: {
         '@/from': { id: '@/from' },
         '@/to': { id: '@/to' },
       },
-    };
+    });
 
     it('should return empty array for non-existent node', () => {
       expect(Patch.listLinksByPin('fromPin', '@/non-existent', patch))
@@ -375,12 +379,12 @@ describe('Patch', () => {
   });
 
   describe('pins', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       pins: {
         in: { key: 'in', direction: CONST.PIN_DIRECTION.INPUT },
         out: { key: 'out', direction: CONST.PIN_DIRECTION.OUTPUT },
       },
-    };
+    });
     describe('getPinByKey', () => {
       it('should return Maybe.Nothing for empty patch', () => {
         const res = Patch.getPinByKey('a', {});
@@ -484,12 +488,12 @@ describe('Patch', () => {
     });
   });
   describe('dissocPin', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       pins: {
         a: { key: 'a' },
         b: { key: 'b' },
       },
-    };
+    });
 
     it('should remove pin by key', () => {
       const newPatch = Patch.dissocPin('a', patch);
@@ -582,7 +586,7 @@ describe('Patch', () => {
   });
   // TODO: Add test for deleting pinNode
   describe('dissocNode', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       nodes: {
         rndId: { id: 'rndId' },
         rndId2: { id: 'rndId2' },
@@ -594,7 +598,7 @@ describe('Patch', () => {
           input: { pinKey: 'in', nodeId: 'rndId2' },
         },
       },
-    };
+    });
 
     it('should remove node by id', () => {
       const newPatch = Patch.dissocNode('rndId', patch);
@@ -640,7 +644,7 @@ describe('Patch', () => {
         .and.deep.equals(patch);
     });
     it('should remove pin from patch on dissoc pinNode', () => {
-      const patchWithPins = {
+      const patchWithPins = Helper.defaultizePatch({
         nodes: {
           a: { id: 'a', type: 'xod/core/inputNumber' },
           b: { id: 'b', type: 'xod/core/outputNumber' },
@@ -649,7 +653,7 @@ describe('Patch', () => {
           a: {},
           b: {},
         },
-      };
+      });
       const newPatch = Patch.dissocNode('a', patchWithPins);
       expect(newPatch)
       .to.be.an('object')
@@ -737,12 +741,12 @@ describe('Patch', () => {
     });
   });
   describe('validateLink', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       nodes: {
         out: { id: 'out' },
         in: { id: 'in' },
       },
-    };
+    });
     const linkId = '1';
     const validInput = {
       nodeId: 'in',
@@ -753,25 +757,11 @@ describe('Patch', () => {
       pinKey: 'out',
     };
 
-    it('should return Either.Left for link without id', () => {
-      const err = Patch.validateLink({}, {});
-      expect(err.isLeft).to.be.true();
-    });
-    it('should return Either.Left if input property is not exist or invalid', () => {
-      const link = { id: linkId };
-      const err = Patch.validateLink(link, patch);
-      expect(err.isLeft).to.be.true();
-    });
     it('should return Either.Left for non-existent input node in the patch', () => {
       const link = { id: linkId, input: { nodeId: 'non-existent', pinKey: 'a' }, output: validOutput };
       const err = Patch.validateLink(link, patch);
       expect(err.isLeft).to.be.true();
       Helper.expectErrorMessage(expect, err, CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND);
-    });
-    it('should return Either.Left if output property is not exist or invalid', () => {
-      const link = { id: linkId, input: validInput };
-      const err = Patch.validateLink(link, patch);
-      expect(err.isLeft).to.be.true();
     });
     it('should return Either.Left for non-existent output node in the patch', () => {
       const link = { id: linkId, input: validInput, output: { nodeId: 'non-existent', pinKey: 'a' } };
@@ -792,34 +782,50 @@ describe('Patch', () => {
 
   // utils
   describe('utils', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       nodes: {
         a: { id: 'a' },
         b: { id: 'b' },
         c: { id: 'c' },
       },
       links: {
-        x: { id: 'x', input: { nodeId: 'b' }, output: { nodeId: 'a' } },
-        y: { id: 'y', input: { nodeId: 'c' }, output: { nodeId: 'b' } },
+        x: {
+          id: 'x',
+          input: { nodeId: 'b', pinKey: 'x' },
+          output: { nodeId: 'a', pinKey: 'x' },
+        },
+        y: {
+          id: 'y',
+          input: { nodeId: 'c', pinKey: 'x' },
+          output: { nodeId: 'b', pinKey: 'x' },
+        },
       },
       impls: {
         js: '// ok',
       },
-    };
-    const expectedPatch = {
+    });
+    const expectedPatch = Helper.defaultizePatch({
       nodes: {
-        0: { id: 0 },
-        1: { id: 1 },
-        2: { id: 2 },
+        0: { id: '0' },
+        1: { id: '1' },
+        2: { id: '2' },
       },
       links: {
-        x: { id: 'x', input: { nodeId: 1 }, output: { nodeId: 0 } },
-        y: { id: 'y', input: { nodeId: 2 }, output: { nodeId: 1 } },
+        x: {
+          id: 'x',
+          input: { nodeId: '1', pinKey: 'x' },
+          output: { nodeId: '0', pinKey: 'x' },
+        },
+        y: {
+          id: 'y',
+          input: { nodeId: '2', pinKey: 'x' },
+          output: { nodeId: '1', pinKey: 'x' },
+        },
       },
       impls: {
         js: '// ok',
       },
-    };
+    });
 
     it('renumberNodes: should return same patch with nodes and links with new ids', () => {
       expect(Patch.renumberNodes(patch))
@@ -829,7 +835,7 @@ describe('Patch', () => {
       expect(Patch.getTopology(patch))
         .to.be.deep.equal(['c', 'b', 'a']);
       expect(Patch.getTopology(expectedPatch))
-        .to.be.deep.equal([2, 1, 0]);
+        .to.be.deep.equal(['2', '1', '0']);
     });
   });
 });

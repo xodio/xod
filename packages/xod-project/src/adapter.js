@@ -204,7 +204,7 @@ const convertLinksInPatches = R.curry(
 const copyImpls = R.compose(
   R.map(R.assoc('impls')),
   maybeEmpty,
-  R.prop('impl')
+  R.propOr({}, 'impl')
 );
 
 // :: ProjectOld -> Maybe Function fn
