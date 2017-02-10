@@ -337,8 +337,6 @@ class App extends React.Component {
       R.values
     )(client.menu.items);
 
-    console.log(commandsBoundToNativeMenu);
-
     return R.omit(commandsBoundToNativeMenu, client.HOTKEY);
   }
 
