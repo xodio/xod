@@ -25,9 +25,6 @@ HMP.parse('hello :: Foo a => a -> String');
 // eslint-disable-next-line no-unused-vars
 export const constraints = sig => ({});
 
-// :: {s: a} -> s -> a
-const lookup = R.flip(R.prop);
-
 const uncurry2 = R.uncurryN(2);
 const recurry2 = R.compose(R.curry, uncurry2);
 
@@ -40,7 +37,7 @@ const hasChildren = R.compose(R.not, R.isEmpty, R.prop('children'));
 // :: TypeMap -> SignatureEntry -> Type
 const lookupType = typeMap => (entry) => {
   const name = entry.text;
-  const t = lookup(typeMap, name);
+  const t = typeMap[name];
   if (!t) {
     const allTypes = R.keys(typeMap).join(', ');
     throw new TypeError(`Type ${name} not found in env. Available types are: ${allTypes}`);
