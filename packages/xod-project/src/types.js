@@ -82,13 +82,15 @@ export const LinkOrId = OneOfType('LinkOrId', [LinkId, ObjectWithId]);
 // Environment
 //
 //=============================================================================
-const env = $.env.concat([
+export const env = $.env.concat([
   Link,
   PinRef,
   PinKey,
   NodeId,
   LinkId,
   ShortId,
+  NodeOrId,
+  LinkOrId,
 ]);
 
 export const def = HMDef.create({ checkTypes: true, env });
