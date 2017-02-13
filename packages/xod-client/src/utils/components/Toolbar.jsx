@@ -2,7 +2,7 @@ import React from 'react';
 
 import CreateNodeWidget from '../../editor/components/CreateNodeWidget';
 import UserPanel from '../../user/containers/UserPanel';
-import Menubar from './Menubar';
+import Menubar, { propTypes as menubarPropTypes } from './Menubar';
 
 const Toolbar = ({
   meta,
@@ -45,7 +45,7 @@ Toolbar.propTypes = {
   selectedNodeType: React.PropTypes.string,
   onSelectNodeType: React.PropTypes.func,
   onAddNodeClick: React.PropTypes.func,
-  menuBarItems: Menubar.propTypes.items,
+  menuBarItems: menubarPropTypes,
 };
 
 export default Toolbar;
