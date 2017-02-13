@@ -304,6 +304,47 @@ const validateTranspileOpts = (opts) => {
   )(validity);
 };
 
+/**
+ * This functions accepts an object with options for transpilation.
+ * - project -- should contain whole project (v2)
+ * - path -- should contain a string of entry-point patch path
+ * - impls -- should contain an array of strings of target platforms (E.G., ['js', 'nodejs'])
+ * - launcher -- should contain a platform-specific launcher
+ *
+ * This function should be called from platform-specific transpilation functions
+ * (see target-espruino.js and target-nodejs.js).
+ *
+ * Basic steps of transpilation:
+ *
+ * 1. Validate for existance of all needed options.
+ *
+ * 2. Flatten project, using xod-project pkg.
+ *
+ * 3. Extract implementations from patches.
+ *
+ * 4. Transform entry-point patch
+ *
+ *    4.1. Replace curried pins with new nodes and listLinksByNode
+ *
+ *    4.2. Renumber nodes (and nodeIds in links pinRefs) using index (strings becomes integers)
+ *
+ * 5. Get topology of transformed entry-point patch
+ *
+ * 6. Transform nodes (runtime is using another shape of nodes, so we transform it).
+ *
+ * 7. Join lines using \n\n:
+ *    - runtime
+ *    - transpileImpl: implementations wrapped with closure and collected into one object
+ *    - transpileNodes: an object of nodes indexed by id
+ *    - transpileProject: topology and project definition
+ *    - launcher from options
+ *
+ * PROFIT
+ *
+ * @function transpile
+ * @param {Object} opts Options for transpilation. See docs above.
+ * @returns {String} Code that could be uploaded to target platform.
+ */
 export default function transpile(opts) {
   const validity = validateTranspileOpts(opts);
   if (!validity.valid) { throw new Error(validity.errors); }
