@@ -286,6 +286,7 @@ const validateTranspileOpts = (opts) => {
     },
     [
       { check: R.has('project'), error: 'Transpile options should have a `project` property.' },
+      { check: R.has('path'), error: 'Transpile options should have a `path` property.' },
       { check: R.has('impls'), error: 'Transpile options should have a `impls` property.' },
       { check: R.has('launcher'), error: 'Transpile options should have a `launcher` property.' },
     ]
