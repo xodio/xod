@@ -2,6 +2,7 @@ import R from 'ramda';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
+import { defaultizeProject } from 'xod-project';
 import * as Transpiler from '../src/transpiler';
 import easy from './fixtures/easy.txt';
 
@@ -9,7 +10,7 @@ chai.use(dirtyChai);
 
 describe('Transpiler', () => {
   describe('extractPatchImpls', () => {
-    const project = {
+    const project = defaultizeProject({
       patches: {
         '@/js': {
           impls: {
@@ -28,7 +29,7 @@ describe('Transpiler', () => {
           },
         },
       },
-    };
+    });
 
     it('should return an empty object for non-existing implementations', () => {
       const result = Transpiler.extractPatchImpls(['cpp'], project);
@@ -47,7 +48,7 @@ describe('Transpiler', () => {
   });
 
   describe('transformations', () => {
-    const project = {
+    const project = defaultizeProject({
       patches: {
         '@/main': {
           nodes: {
@@ -107,7 +108,7 @@ describe('Transpiler', () => {
           },
         },
       },
-    };
+    });
     const patchWithConst = R.mergeWith(R.merge,
       project.patches['@/main'],
       {
@@ -116,6 +117,8 @@ describe('Transpiler', () => {
             id: '0_in_A',
             type: '<<const>>',
             value: 10,
+            position: { x: 0, y: 0 },
+            pins: {},
           },
         },
         links: {
@@ -293,7 +296,7 @@ describe('Transpiler', () => {
 
   describe('end-to-end test', () => {
     it('easy project: should return transpiled code', () => {
-      const project = {
+      const project = defaultizeProject({
         patches: {
           '@/main': {
             nodes: {
@@ -353,7 +356,7 @@ describe('Transpiler', () => {
             },
           },
         },
-      };
+      });
       const result = Transpiler.default({
         project,
         path: '@/main',

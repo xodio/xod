@@ -90,6 +90,8 @@ export const createConstNode = R.curry((nodeId, curriedPinPair) => {
     id: newNodeId,
     value: curriedPinPair[1],
     type: '<<const>>',
+    position: { x: 0, y: 0 },
+    pins: {},
   };
 });
 
