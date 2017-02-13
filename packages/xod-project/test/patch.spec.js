@@ -842,9 +842,9 @@ describe('Patch', () => {
     });
     it('getTopology: should return correct topology', () => {
       expect(Patch.getTopology(patch))
-        .to.be.deep.equal(['c', 'b', 'a']);
+        .to.be.deep.equal(['a', 'b', 'c']);
       expect(Patch.getTopology(expectedPatch))
-        .to.be.deep.equal(['2', '1', '0']);
+        .to.be.deep.equal(['0', '1', '2']);
     });
   });
 });
