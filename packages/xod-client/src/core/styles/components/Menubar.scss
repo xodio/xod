@@ -26,6 +26,10 @@ $menu-root-class: '.Menubar';
     }
   }
 
+  .hotkey {
+    float: right;
+  }
+
   &-hidden {
     display: none;
   }

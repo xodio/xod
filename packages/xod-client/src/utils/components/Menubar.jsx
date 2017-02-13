@@ -49,16 +49,13 @@ const renderMenubarItem = (item, index) => {
     );
   }
 
-  const labelPostfix = hotkey ? ` (${formatHotkey(hotkey)})` : '';
-
   return (
     <MenuItem key={key}>
       {/* because rc-menu does not support attaching callbacks directly to menu items */}
       {/* eslint-disable jsx-a11y/no-static-element-interactions */}
       <div onClick={click}>
-        {
-          children || (label + labelPostfix)
-        }
+        { children || label }
+        { hotkey && <div className="hotkey">{formatHotkey(hotkey)}</div> }
       </div>
       {/* eslint-enable jsx-a11y/no-static-element-interactions */}
     </MenuItem>
