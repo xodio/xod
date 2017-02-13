@@ -12,9 +12,10 @@
   "license": "MIT",
   "main": "dist/index.js",
   "dependencies": {
-    "ramda": "^0.21.0",
+    "ramda": "^0.22.1",
+    "ramda-fantasy": "^0.7.0",
     "xod-core": "^0.0.1",
-    "xod-transformer": "^0.0.1"
+    "xod-project": "^0.0.1"
   },
   "engines": {
     "node": "6.0.0"
