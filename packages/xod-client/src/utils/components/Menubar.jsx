@@ -1,6 +1,7 @@
 import R from 'ramda';
 import React, { PropTypes } from 'react';
 import Menu, { SubMenu, MenuItem, Divider } from 'rc-menu';
+import enhanceWithClickOutside from 'react-click-outside';
 
 import { noop } from '../ramda';
 
@@ -62,16 +63,54 @@ const renderMenubarItem = (item, index) => {
   );
 };
 
-const Menubar = ({ items = [] }) => (
-  <Menu
-    mode="horizontal"
-    selectedKeys={[]}
-    prefixCls="Menubar"
-    openSubMenuOnMouseEnter={false}
-  >
-    {items.map(renderMenubarItem)}
-  </Menu>
-);
+class Menubar extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.onOpenChange = this.onOpenChange.bind(this);
+    this.closeAll = this.closeAll.bind(this);
+    this.handleClickOutside = this.closeAll;
+
+    this.state = {
+      openKeys: [],
+    };
+  }
+
+  onOpenChange(openKeys) {
+    this.setState({
+      openKeys,
+    });
+  }
+
+  closeAll() {
+    this.setState({
+      openKeys: [],
+    });
+  }
+
+  render() {
+    const { items } = this.props;
+    const { openKeys } = this.state;
+
+    const isOpen = !!openKeys.length;
+
+    return (
+      <Menu
+        mode="horizontal"
+        selectedKeys={[]}
+        openKeys={openKeys}
+        prefixCls="Menubar"
+        openSubMenuOnMouseEnter={isOpen}
+        closeSubMenuOnMouseLeave={!isOpen}
+        onSelect={this.closeAll}
+        onOpenChange={this.onOpenChange}
+      >
+        {items.map(renderMenubarItem)}
+      </Menu>
+    );
+  }
+}
+
 
 // a trick to make recursive propType.
 // see https://github.com/facebook/react/issues/5676
@@ -91,9 +130,15 @@ menuBarItemType = PropTypes.shape({
   ]),
 });
 
-Menubar.propTypes = {
+export const propTypes = {
   items: PropTypes.arrayOf(menuBarItemType),
 };
 
+Menubar.propTypes = propTypes;
 
-export default Menubar;
+Menubar.defaultProps = {
+  items: [],
+};
+
+
+export default enhanceWithClickOutside(Menubar);

@@ -54,8 +54,8 @@ $menu-root-class: '.Menubar';
     border-bottom: 1px solid #dedede;
   }
 
-  &-item-active,
-  &-submenu-active > &-submenu-title {
+  &-submenu-open > &-submenu-title,
+  &-item-active {
     color: $color-button-primary-text;
     background-color: $color-button-primary-background-hover;
     cursor: pointer;
@@ -89,6 +89,7 @@ $menu-root-class: '.Menubar';
     padding: 7px;
     white-space: nowrap;
     user-select: none;
+    cursor: pointer;
   }
 
   &-item#{$menu-root-class}-item-disabled,
@@ -126,7 +127,6 @@ $menu-root-class: '.Menubar';
   &-horizontal > &-item {
     float: left;
   }
-  &-horizontal > &-submenu-active,
   &-horizontal > &-item-active {
     background-color: #F3F5F7;
     color: #2baee9;
