@@ -367,7 +367,7 @@ describe('Transpiler', () => {
       // It will begins with [object Object] instead of real jsRuntime,
       // cause we use babel-loader in tests for /platform/*.js instead
       // of raw-loader to run tests for runtime.spec.js
-      expect(result).to.be.equal(easy);
+      expect(result.trim()).to.be.equal(easy.trim());
     });
   });
 });
