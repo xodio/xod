@@ -270,14 +270,10 @@ class App extends React.Component {
   }
 
   onCloseApp(event) { // eslint-disable-line class-methods-use-this
-    let message = true;
+    // TODO: Add confirm to prevent closing application with unsaved changes.
+    //       'You have not saved changes in your project. Are you sure want to close app?'
 
-    if (this.props.hasChanges) {
-      message = 'You have not saved changes in your project. Are you sure want to close app?';
-      if (event) { event.returnValue = message; } // eslint-disable-line
-    }
-
-    return message;
+    return true;
   }
 
   getSaveProgress() {
