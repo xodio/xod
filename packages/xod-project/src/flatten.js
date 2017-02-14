@@ -7,7 +7,7 @@ import * as Patch from './patch';
 import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
-import { explode, getCastPatchPath } from './utils';
+import { explode, getCastPatchPath, formatString } from './utils';
 import { err, errOnNothing } from './func-tools';
 
 const terminalRegExp = /^xod\/core\/(input|output)/;
@@ -103,9 +103,18 @@ const extractLeafPatchesFromNodes = R.curry((recursiveFn, impls, project, patch)
 // :: String[] -> Project -> Path -> [Either Error [Path, Patch]]
 const extractLeafPatches = R.curry((impls, project, path, patch) =>
   R.cond([
-    [isLeafPatchWithImpls(impls), R.compose(R.of, Either.of, extendTerminalPins(R.__, path))],
-    [isLeafPatchWithoutImpls(impls), err(CONST.ERROR.IMPLEMENTATION_NOT_FOUND)],
-    [R.T, extractLeafPatchesFromNodes(extractLeafPatches, impls, project)],
+    [
+      isLeafPatchWithImpls(impls),
+      R.compose(R.of, Either.of, extendTerminalPins(R.__, path)),
+    ],
+    [
+      isLeafPatchWithoutImpls(impls),
+      err(formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: impls })),
+    ],
+    [
+      R.T,
+      extractLeafPatchesFromNodes(extractLeafPatches, impls, project),
+    ],
   ])(patch)
 );
 
@@ -577,7 +586,7 @@ const getCastNodeTypesFromPatch = R.compose(
 
 // :: Project -> String -> Either Error Patch
 const getEitherPatchByPath = R.curry((project, path) => R.compose(
-  errOnNothing(CONST.ERROR.CAST_PATCH_NOT_FOUND),
+  errOnNothing(formatString(CONST.ERROR.CAST_PATCH_NOT_FOUND, { patchPath: path })),
   Project.getPatchByPath(R.__, project)
 )(path));
 

@@ -5,7 +5,7 @@ import dirtyChai from 'dirty-chai';
 import * as Helper from './helpers';
 import * as CONST from '../src/constants';
 import flatten from '../src/flatten';
-import { getCastPatchPath } from '../src/utils';
+import { getCastPatchPath, formatString } from '../src/utils';
 
 chai.use(dirtyChai);
 
@@ -68,7 +68,11 @@ describe('Flatten', () => {
     it('should return error if implementation not found', () => {
       const flatProject = flatten(project, '@/main', ['cpp']);
       expect(flatProject.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
+      Helper.expectErrorMessage(
+        expect,
+        flatProject,
+        formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: 'cpp' })
+      );
     });
 
     it('should ignore not referred patches', () => {
@@ -1002,7 +1006,11 @@ describe('Flatten', () => {
         const flatProject = flatten(project, '@/main', ['js']);
 
         expect(flatProject.isLeft).to.be.true();
-        Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.CAST_PATCH_NOT_FOUND);
+        Helper.expectErrorMessage(
+          expect,
+          flatProject,
+          formatString(CONST.ERROR.CAST_PATCH_NOT_FOUND, { patchPath: 'xod/core/cast-boolean-to-number' })
+        );
       });
     });
   });
@@ -1314,7 +1322,11 @@ describe('Flatten', () => {
       it('no defined implementation in the project', () => {
         const flatProject = flatten(project, '@/main', ['java']);
         expect(flatProject.isLeft).to.be.true();
-        Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
+        Helper.expectErrorMessage(
+          expect,
+          flatProject,
+          formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: 'java' })
+        );
       });
     });
     describe('multiple', () => {
@@ -1331,9 +1343,14 @@ describe('Flatten', () => {
         );
       });
       it('no defined implementations in the project', () => {
-        const flatProject = flatten(project, '@/main', ['java', 'scala']);
+        const impls = ['java', 'scala'];
+        const flatProject = flatten(project, '@/main', impls);
         expect(flatProject.isLeft).to.be.true();
-        Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
+        Helper.expectErrorMessage(
+          expect,
+          flatProject,
+          formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: impls })
+        );
       });
     });
     // TODO: Write test:
