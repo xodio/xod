@@ -6,6 +6,8 @@ import doc from './xodc-doc';
 import pack from './xodc-pack';
 import transpile from './xodc-transpile';
 import unpack from './xodc-unpack';
+import transpile from './xodc-transpile';
+import migrate from './xodc-migrate';
 
 function match(options, programs) {
   for (const [command, program] of Object.entries(programs)) {
