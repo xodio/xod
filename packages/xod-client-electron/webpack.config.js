@@ -74,6 +74,14 @@ const options = {
         ],
       },
       {
+        include: pkgpath('node_modules/font-awesome'),
+        test: /\.css$/,
+        loaders: [
+          'style',
+          'css',
+        ],
+      },
+      {
         test: /\.json$/,
         loader: 'json-loader',
       },
