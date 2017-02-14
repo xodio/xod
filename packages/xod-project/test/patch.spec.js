@@ -555,7 +555,7 @@ describe('Patch', () => {
         .to.have.property('1')
         .that.equals(node);
     });
-    it('should add pin by associating pinNode', () => {
+    it('should add pin by associating terminal node', () => {
       const node = Helper.defaultizeNode({
         id: '1',
         type: 'xod/core/inputNumber',
@@ -567,7 +567,7 @@ describe('Patch', () => {
         .that.have.property('1')
         .that.include.keys('key', 'type', 'direction');
     });
-    it('should update pin by associating pinNode', () => {
+    it('should update pin by associating terminal Node', () => {
       const patch = Helper.defaultizePatch({
         pins: {
           1: {
