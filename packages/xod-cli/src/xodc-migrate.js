@@ -4,6 +4,14 @@ import { readJSON, writeJSON } from 'xod-fs';
 import { toV2 } from 'xod-project';
 import * as msg from './messages';
 
+const catchLeft = (v2) => {
+  if (v2.isLeft) {
+    throw v2.value;
+  }
+
+  return v2;
+};
+
 const outputToFile = (output, xodball) => {
   if (output) {
     return writeJSON(output, xodball)
@@ -25,6 +33,7 @@ export default (input, output) => {
 
   readJSON(input)
     .then(toV2)
+    .then(catchLeft)
     .then(v2 => outputToFile(output, v2))
     .catch((err) => {
       msg.error(err);
