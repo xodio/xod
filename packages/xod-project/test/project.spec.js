@@ -242,9 +242,11 @@ describe('Project', () => {
         },
       },
     });
-    const patchWithNodeOnly = {
-      nodes: { a: { id: 'a', type: '@/test' } },
-    };
+    const patchWithNodeOnly = Helper.defaultizePatch({
+      nodes: {
+        a: { id: 'a', type: '@/test' },
+      },
+    });
     const fullPatch = Helper.defaultizePatch({
       nodes: {
         a: { id: 'a', type: '@/test' },
@@ -270,7 +272,7 @@ describe('Project', () => {
       Helper.expectErrorMessage(expect, result, CONST.ERROR.PINS_NOT_FOUND);
     });
     it('should be Either.Right for empty patch', () => {
-      const newPatch = { path: '@/test2' };
+      const newPatch = Helper.defaultizePatch({ path: '@/test2' });
       const result = Project.validatePatchContents(newPatch, smallProject);
       expect(result.isRight).to.be.true();
       Helper.expectEither(

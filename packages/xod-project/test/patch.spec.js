@@ -10,6 +10,9 @@ import * as Helper from './helpers';
 chai.use(dirtyChai);
 
 describe('Patch', () => {
+
+  const emptyPatch = Helper.defaultizePatch({});
+
   // constructors
   describe('createPatch', () => {
     it('should return Patch that is an object', () => {
@@ -35,7 +38,7 @@ describe('Patch', () => {
     });
   });
   describe('duplicatePatch', () => {
-    const patch = { nodes: {}, label: 'test' };
+    const patch = Helper.defaultizePatch({ nodes: {}, label: 'test' });
     it('should return new patch (not the same object)', () => {
       const newPatch = Patch.duplicatePatch(patch);
       expect(newPatch)
@@ -55,18 +58,15 @@ describe('Patch', () => {
 
   // properties
   describe('getPatchLabel', () => {
-    it('should return empty String for empty patch object', () => {
-      expect(Patch.getPatchLabel({})).to.be.equal('');
-    });
     it('should return patch label', () => {
-      const label = 'patchLabel';
-      expect(Patch.getPatchLabel({ label })).to.be.equal(label);
+      const patch = Helper.defaultizePatch({ label: 'patchLabel' });
+      expect(Patch.getPatchLabel(patch)).to.be.equal('patchLabel');
     });
   });
   describe('setPatchLabel', () => {
     it('should return patch with new label', () => {
       const newLabel = 'new label';
-      const patch = { label: 'old label' };
+      const patch = Helper.defaultizePatch({ label: 'old label' });
       const newPatch = Patch.setPatchLabel(newLabel, patch);
 
       expect(newPatch)
@@ -74,34 +74,20 @@ describe('Patch', () => {
         .that.is.a('string')
         .that.equals(newLabel);
     });
-    it('should always set a string to label', () => {
-      expect(Patch.setPatchLabel('test', {}))
-        .to.have.property('label')
-        .that.equals('test');
-      expect(Patch.setPatchLabel(5, {}))
-        .to.have.property('label')
-        .that.equals('5');
-      expect(Patch.setPatchLabel([1, 2], {}))
-        .to.have.property('label')
-        .that.equals('1,2');
-      expect(Patch.setPatchLabel({}, {}))
-        .to.have.property('label')
-        .that.equals('[object Object]');
-    });
   });
   describe('listImpls', () => {
     it('should return empty array for empty patch', () => {
-      expect(Patch.listImpls({}))
+      expect(Patch.listImpls(emptyPatch))
         .to.be.instanceof(Array)
         .to.be.empty();
     });
     it('should return array with keys: `js`, `espruino`', () => {
-      const patch = {
+      const patch = Helper.defaultizePatch({
         impls: {
           js: '',
           espruino: '',
         },
-      };
+      });
       expect(Patch.listImpls(patch))
         .to.be.an('array')
         .to.have.members(['js', 'espruino']);
@@ -109,67 +95,77 @@ describe('Patch', () => {
   });
   describe('hasImpls', () => {
     it('should return false for empty', () => {
-      expect(Patch.hasImpls(['js'], {})).to.be.false();
+      expect(Patch.hasImpls(['js'], emptyPatch)).to.be.false();
     });
     it('should return false if impl not found', () => {
-      const patch = {
+      const patch = Helper.defaultizePatch({
         impls: {
           js: '//ok',
         },
-      };
+      });
       expect(Patch.hasImpls(['cpp'], patch)).to.be.false();
     });
     it('should return true for the only correct impl', () => {
-      const patch = {
+      const patch = Helper.defaultizePatch({
         impls: {
           js: '//ok',
         },
-      };
+      });
       expect(Patch.hasImpls(['js'], patch)).to.be.true();
     });
     it('should return true for a few existent impls', () => {
-      const patch = {
+      const patch = Helper.defaultizePatch({
         impls: {
           js: '//ok',
           nodejs: '//ok',
         },
-      };
+      });
       expect(Patch.hasImpls(['js', 'nodejs'], patch)).to.be.true();
     });
   });
   describe('getImpl', () => {
     it('should return Nothing for empty patch', () => {
-      const impl = Patch.getImpl('js', {});
+      const impl = Patch.getImpl('js', emptyPatch);
       expect(impl.isNothing).to.be.true();
     });
     it('should return Nothing for patch without defined impl', () => {
-      const impl = Patch.getImpl('js', { impls: { cpp: '//ok' } });
+      const patch = Helper.defaultizePatch({ impls: { cpp: '//ok' } });
+      const impl = Patch.getImpl('js', patch);
       expect(impl.isNothing).to.be.true();
     });
     it('should return Maybe with implementation for patch with defined impl', () => {
-      const value = '//ok';
-      const impl = Patch.getImpl('cpp', { impls: { cpp: value } });
+      const patch = Helper.defaultizePatch({ impls: { cpp: '//ok' } });
+      const impl = Patch.getImpl('cpp', patch);
       expect(impl.isJust).to.be.true();
-      expect(impl.getOrElse(null)).to.be.equal(value);
+      expect(impl.getOrElse(null)).to.be.equal('//ok');
     });
   });
   describe('getImplByArray', () => {
     it('should return Nothing for empty patch', () => {
-      const impl = Patch.getImplByArray(['js', 'nodejs'], {});
+      const impl = Patch.getImplByArray(['js', 'nodejs'], emptyPatch);
       expect(impl.isNothing).to.be.true();
     });
     it('should return Nothing for patch without defined impl', () => {
-      const impl = Patch.getImplByArray(['js', 'nodejs'], { impls: { cpp: '//cpp' } });
+      const patch = Helper.defaultizePatch({ impls: { cpp: '//ok' } });
+      const impl = Patch.getImplByArray(['js', 'nodejs'], patch);
       expect(impl.isNothing).to.be.true();
     });
     it('should return Maybe with implementation (correct priority)', () => {
       const getJsOrNode = Patch.getImplByArray(['js', 'nodejs']);
 
-      const js = getJsOrNode({ impls: { js: '//js', nodejs: '//node' } });
+      const jsAndNodePatch = Helper.defaultizePatch({
+        impls: { js: '//js', nodejs: '//node' }
+      });
+
+      const nodeOnlyPatch = Helper.defaultizePatch({
+        impls: { nodejs: '//node' }
+      });
+
+      const js = getJsOrNode(jsAndNodePatch);
       expect(js.isJust).to.be.true();
       expect(js.getOrElse(null)).to.be.equal('//js');
 
-      const node = getJsOrNode({ impls: { nodejs: '//node' } });
+      const node = getJsOrNode(nodeOnlyPatch);
       expect(node.isJust).to.be.true();
       expect(node.getOrElse(null)).to.be.equal('//node');
     });
@@ -209,15 +205,15 @@ describe('Patch', () => {
 
   // entity getters
   describe('listNodes', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       nodes: {
         rndId: { id: 'rndId' },
         rndId2: { id: 'rndId2' },
       },
-    };
+    });
 
     it('should return an empty array for empty patch', () => {
-      expect(Patch.listNodes({}))
+      expect(Patch.listNodes(emptyPatch))
         .to.be.instanceof(Array)
         .to.be.empty();
     });
@@ -248,11 +244,7 @@ describe('Patch', () => {
     });
 
     it('should Maybe.Nothing for non-existent node', () => {
-      const maybeNode = Patch.getNodeById(
-        'non-existent',
-        Helper.defaultizePatch({})
-      );
-
+      const maybeNode = Patch.getNodeById('non-existent', emptyPatch);
       expect(maybeNode.isNothing).to.be.true();
     });
     it('should Maybe.Just with node for existent node', () => {
@@ -271,7 +263,7 @@ describe('Patch', () => {
     });
 
     it('should return an empty array for empty patch', () => {
-      expect(Patch.listLinks({}))
+      expect(Patch.listLinks(emptyPatch))
         .to.be.instanceof(Array)
         .to.be.empty();
     });
@@ -302,7 +294,7 @@ describe('Patch', () => {
     });
 
     it('should Maybe.Nothing for non-existent link', () => {
-      expect(Patch.getLinkById('non-existent', {}).isNothing).to.be.true();
+      expect(Patch.getLinkById('non-existent', emptyPatch).isNothing).to.be.true();
     });
     it('should Maybe.Just with link for existent link', () => {
       expect(Patch.getLinkById('1', patch).isJust).to.be.true();
@@ -331,7 +323,7 @@ describe('Patch', () => {
         .and.to.be.empty();
     });
     it('should return empty array for empty patch', () => {
-      expect(Patch.listLinksByNode('@/a', {}))
+      expect(Patch.listLinksByNode('@/a', emptyPatch))
         .to.be.instanceof(Array)
         .and.to.be.empty();
     });
@@ -362,7 +354,7 @@ describe('Patch', () => {
         .and.to.be.empty();
     });
     it('should return empty array for empty patch', () => {
-      expect(Patch.listLinksByPin('fromPin', '@/from', {}))
+      expect(Patch.listLinksByPin('fromPin', '@/from', emptyPatch))
         .to.be.instanceof(Array)
         .and.to.be.empty();
     });
@@ -533,9 +525,8 @@ describe('Patch', () => {
   // TODO: Add test for adding pinNode (assocNode -> assocPin)
   describe('assocNode', () => {
     it('should return Patch with new Node', () => {
-      const patch = {};
-      const node = { id: '1' };
-      const newPatch = Patch.assocNode(node, patch);
+      const node = Helper.defaultizeNode({ id: '1' });
+      const newPatch = Patch.assocNode(node, emptyPatch);
 
       expect(newPatch)
         .to.have.property('nodes')
@@ -543,8 +534,17 @@ describe('Patch', () => {
         .that.equals(node);
     });
     it('should replace old Node with same id', () => {
-      const patch = { nodes: { 1: { id: '1', label: 'old' } } };
-      const node = { id: '1', label: 'new' };
+      const patch = Helper.defaultizePatch({
+        nodes: {
+          1: { id: '1', label: 'old' }
+        }
+      });
+
+      const node = Helper.defaultizeNode({
+        id: '1',
+        label: 'new'
+      });
+
       const newPatch = Patch.assocNode(node, patch);
 
       expect(newPatch)
@@ -553,9 +553,11 @@ describe('Patch', () => {
         .that.equals(node);
     });
     it('should add pin by associating pinNode', () => {
-      const patch = {};
-      const node = { id: '1', type: 'xod/core/inputNumber' };
-      const newPatch = Patch.assocNode(node, patch);
+      const node = Helper.defaultizeNode({
+        id: '1',
+        type: 'xod/core/inputNumber'
+      });
+      const newPatch = Patch.assocNode(node, emptyPatch);
 
       expect(newPatch)
         .to.have.property('pins')
@@ -563,7 +565,7 @@ describe('Patch', () => {
         .that.have.keys(['key', 'type', 'direction']);
     });
     it('should update pin by associating pinNode', () => {
-      const patch = {
+      const patch = Helper.defaultizePatch({
         pins: {
           1: {
             key: '1',
@@ -571,8 +573,11 @@ describe('Patch', () => {
             direction: 'output',
           },
         },
-      };
-      const node = { id: '1', type: 'xod/core/inputNumber' };
+      });
+      const node = Helper.defaultizeNode({
+        id: '1',
+        type: 'xod/core/inputNumber'
+      });
       const newPatch = Patch.assocNode(node, patch);
       expect(newPatch)
         .to.have.property('pins')
@@ -678,12 +683,12 @@ describe('Patch', () => {
     // });
   });
   describe('dissocLink', () => {
-    const patch = {
+    const patch = Helper.defaultizePatch({
       links: {
         1: { id: '1' },
         2: { id: '2' },
       },
-    };
+    });
 
     it('should remove link by id', () => {
       const newPatch = Patch.dissocLink('1', patch);

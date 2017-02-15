@@ -131,6 +131,8 @@ export const env = $.env.concat([
   PinKey,
   PinRef,
   ShortId,
+  Label,
+  Source,
 ]);
 
 export const def = HMDef.create({ checkTypes: true, env });
