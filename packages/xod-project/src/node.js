@@ -206,6 +206,19 @@ export const isPinNode = def(
  // =============================================================================
 
 /**
+ * Gets all curried pins of node
+ *
+ * @function getCurriedPins
+ * @param {Node} node
+ * @returns {Object.<PinKey, PinValue>}
+ */
+export const getCurriedPins = R.compose(
+  R.map(R.prop('value')),
+  R.filter(R.propEq('curried', true)),
+  R.propOr({}, 'pins')
+);
+
+/**
  * Gets curried value of input pin.
  *
  * It will return value even if pin isn't curried.
