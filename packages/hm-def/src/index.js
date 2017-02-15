@@ -1,6 +1,6 @@
 
 import $ from 'sanctuary-def';
-import HMP from 'hindley-milner-parser-js';
+import HMP from 'hm-parser';
 import * as Sig from './signature';
 
 function create({ checkTypes, env }) {

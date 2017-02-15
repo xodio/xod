@@ -1,7 +1,7 @@
 
 import R from 'ramda';
 import $ from 'sanctuary-def';
-import HMP from 'hindley-milner-parser-js';
+import HMP from 'hm-parser';
 import { assert } from 'chai';
 import * as Sig from '../src/signature';
 
