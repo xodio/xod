@@ -16,13 +16,7 @@
   "engines": {
     "node": "7.4.0"
   },
-  "devDependencies": {
-    "babel-cli": "^6.22.2",
-    "babel-plugin-transform-object-rest-spread": "^6.22.0",
-    "babel-preset-es2015": "^6.22.0"
-  },
   "dependencies": {
-    "json-pointer": "^0.6.0",
     "ramda": "^0.23.0",
     "rest": "^2.0.0",
     "serialport": "^4.0.7",
@@ -30,10 +24,7 @@
   },
   "babel": {
     "presets": [
-      "es2015"
-    ],
-    "plugins": [
-      "transform-object-rest-spread"
+      "node6"
     ]
   }
 }
