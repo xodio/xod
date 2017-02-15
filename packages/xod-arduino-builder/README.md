@@ -19,7 +19,8 @@ node
 Import the builder and set utility display function:
 
 ```javascript
-const xab = require('./dist/index.js');
+const xab = require('xod-arduino-builder');
+const $HOME = process.env.HOME;
 const c = promise => promise.then(
   value => (console.log(value), Promise.resolve(value)),
   error => (console.error(error), Promise.reject(error))
@@ -29,8 +30,8 @@ const c = promise => promise.then(
 Set paths to Arduino IDE executable and packages:
 
 ```javascript
-c(xab.setArduinoIdePathExecutable('/home/alexander-matsievsky/programs/arduino-1.8.1/arduino'));
-c(xab.setArduinoIdePathPackages('/home/alexander-matsievsky/.arduino15/packages'));
+c(xab.setArduinoIdePathExecutable($HOME + '/programs/arduino-1.8.1/arduino'));
+c(xab.setArduinoIdePathPackages($HOME + '/.arduino15/packages'));
 ```
 
 View the raw [official Arduino package index](http://downloads.arduino.cc/packages/package_index.json):
@@ -70,7 +71,7 @@ const pab = {
 Compile the `file` for the selected `pab`:
 
 ```javascript
-const file = '/home/alexander-matsievsky/programs/arduino-1.8.1/examples/01.Basics/Blink/Blink.ino';
+const file = $HOME + '/programs/arduino-1.8.1/examples/01.Basics/Blink/Blink.ino';
 c(xab.verify(pab, file));
 ```
 
