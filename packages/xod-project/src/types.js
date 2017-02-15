@@ -19,8 +19,8 @@ const NullaryType = (typeName, predicate) => $.NullaryType(
   predicate
 );
 
-// :: Type -> (Any -> Boolean)
-const hasType = $.test([]);
+// :: Type -> Any -> Boolean
+const hasType = type => x => type._test(x);
 
 // :: [Type] -> (Any -> Boolean)
 const hasOneOfType = types => R.anyPass(
