@@ -7,8 +7,8 @@ import pack from './xodc-pack';
 import transpile from './xodc-transpile';
 import unpack from './xodc-unpack';
 
-function match(options, foobar) {
-  for (const [command, program] of Object.entries(foobar)) {
+function match(options, programs) {
+  for (const [command, program] of Object.entries(programs)) {
     if (options[command] === true) {
       program(options);
       break;
