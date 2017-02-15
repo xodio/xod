@@ -143,10 +143,6 @@ const isNodeIdPointsToImplPatch = R.curry((leafPatchPaths, patch, nodeId) => R.c
 const getPrefixedId = R.curry((prefix, id) => ((prefix) ? `${prefix}~${id}` : id));
 
 // :: String -> Node -> Node
-/**
- * [duplicateNodePrefixed description]
- * @type {[type]}
- */
 const duplicateNodePrefixed = R.curry((prefix, node) => {
   const id = Node.getNodeId(node);
   const type = Node.getNodeType(node);
