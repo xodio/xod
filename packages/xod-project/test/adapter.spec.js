@@ -8,11 +8,22 @@ import bundleV1 from './fixtures/bundle.v1.json';
 chai.use(dirtyChai);
 
 const overExtractedPins = R.over(R.lensIndex(2));
+
+// :: Pin -> PinV2
+const oldPinToNew = R.when(
+  R.has('injected'),
+  R.applySpec({
+    curried: R.prop('injected'),
+    value: R.prop('value'),
+  })
+);
+
+const emptyOrNil = R.either(R.isNil, R.isEmpty);
 // :: [] -> []
 const extractPinValues = R.ifElse(
-  R.propSatisfies(R.isNil, 2),
+  R.propSatisfies(emptyOrNil, 2),
   overExtractedPins(R.always({})),
-  overExtractedPins(R.map(R.values))
+  overExtractedPins(R.map(R.compose(R.values, oldPinToNew)))
 );
 // :: [] -> Function
 const extractNodesToCompare = keys => R.compose(
@@ -39,6 +50,12 @@ const extractNodeIds = R.compose(
 const replaceNodePinKey = nodeIds => R.when(
   R.contains(R.__, nodeIds),
   R.always('nodePinKey')
+);
+
+const getNodeByTypeFromPatch = type => R.compose(
+  R.find(R.propEq('type', type)),
+  R.values,
+  R.prop('nodes')
 );
 
 describe('Adapters', () => {
@@ -98,16 +115,32 @@ describe('Adapters', () => {
     });
     it('should have the same nodes', () => {
       const nodesOld = R.compose(
-        R.map(extractNodesToCompare(['typeId', 'position', 'pins'])),
+        R.map(extractNodesToCompare(['typeId', 'position'])),
         mergePatchesAndNodeTypes
       )(bundleV1);
 
       const nodesNew = R.compose(
-        R.map(extractNodesToCompare(['type', 'position', 'pins'])),
+        R.map(extractNodesToCompare(['type', 'position'])),
         R.prop('patches')
       )(bundleV2);
 
       expect(nodesNew).to.deep.equal(nodesOld);
+    });
+    it('should rekey pins', () => {
+      const node = getNodeByTypeFromPatch('@/sub/aux')(bundleV2.patches['@/main']);
+      const expectedPinKey = R.compose(
+        R.prop('id'),
+        getNodeByTypeFromPatch('xod/core/inputNumber')
+      )(bundleV2.patches['@/sub/aux']);
+
+      expect(node)
+      .to.have.property('pins')
+      .that.deep.equals({
+        [expectedPinKey]: {
+          curried: true,
+          value: 42,
+        },
+      });
     });
     it('should have the same nodeType pins', () => {
       const nodeIdsOld = R.compose(
