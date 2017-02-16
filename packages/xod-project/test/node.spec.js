@@ -88,22 +88,22 @@ describe('Node', () => {
   describe('setNodePosition', () => {
     it('should return Either.Right with node in new position', () => {
       const node = Helper.defaultizeNode({ position: { x: 1, y: 1 } });
-      const newNode = Node.setNodePosition({ x: 1, y: 1 }, node);
+      const either = Node.setNodePosition({ x: 1, y: 1 }, node);
       Helper.expectEither(
-        (node) => {
-          expect(node)
+        (newNode) => {
+          expect(newNode)
             .to.be.an('object')
             .that.have.property('position');
 
-          expect(node.position)
+          expect(newNode.position)
             .to.have.property('x')
             .to.be.equal(1);
 
-          expect(node.position)
+          expect(newNode.position)
             .to.have.property('y')
             .to.be.equal(1);
         },
-        newNode
+        either
       );
     });
   });
@@ -171,8 +171,8 @@ describe('Node', () => {
     it('should return Node with replaced curried value', () => {
       const node = Helper.defaultizeNode({
         pins: {
-          test: { value: false }
-        }
+          test: { value: false },
+        },
       });
 
       const newNode = Node.setPinCurriedValue('test', true, node);
@@ -187,8 +187,8 @@ describe('Node', () => {
     it('should return Node without affecting on other curried pins', () => {
       const node = Helper.defaultizeNode({
         pins: {
-          other: { value: false }
-        }
+          other: { value: false },
+        },
       });
 
       const newNode = Node.setPinCurriedValue('test', true, node);
@@ -225,8 +225,8 @@ describe('Node', () => {
     it('should return Node with curried `test` pin', () => {
       const node = Helper.defaultizeNode({
         pins: {
-          test: { curried: false }
-        }
+          test: { curried: false },
+        },
       });
 
       const newNode = Node.curryPin('test', true, node);
@@ -241,8 +241,8 @@ describe('Node', () => {
     it('should return Node without affecting on other curried pins', () => {
       const node = Helper.defaultizeNode({
         pins: {
-          other: { curried: false }
-        }
+          other: { curried: false },
+        },
       });
 
       const newNode = Node.curryPin('test', true, node);

@@ -149,10 +149,10 @@ export const getCastPatchPath = (typeIn, typeOut) => `xod/core/cast-${typeIn}-to
 export const defaultValueOfType = def(
   'defaultValueOfType :: DataType -> DataValue',
   R.cond([
-    [ R.equals(CONST.PIN_TYPE.STRING), R.always('') ],
-    [ R.equals(CONST.PIN_TYPE.NUMBER), R.always(0) ],
-    [ R.equals(CONST.PIN_TYPE.BOOLEAN), R.always(false) ],
-    [ R.equals(CONST.PIN_TYPE.PULSE), R.always(false) ],
+    [R.equals(CONST.PIN_TYPE.STRING), R.always('')],
+    [R.equals(CONST.PIN_TYPE.NUMBER), R.always(0)],
+    [R.equals(CONST.PIN_TYPE.BOOLEAN), R.always(false)],
+    [R.equals(CONST.PIN_TYPE.PULSE), R.always(false)],
   ])
 );
 

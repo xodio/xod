@@ -9,10 +9,9 @@ import * as Helper from './helpers';
 
 chai.use(dirtyChai);
 
+const emptyPatch = Helper.defaultizePatch({});
+
 describe('Patch', () => {
-
-  const emptyPatch = Helper.defaultizePatch({});
-
   // constructors
   describe('createPatch', () => {
     it('should return Patch that is an object', () => {
@@ -154,11 +153,11 @@ describe('Patch', () => {
       const getJsOrNode = Patch.getImplByArray(['js', 'nodejs']);
 
       const jsAndNodePatch = Helper.defaultizePatch({
-        impls: { js: '//js', nodejs: '//node' }
+        impls: { js: '//js', nodejs: '//node' },
       });
 
       const nodeOnlyPatch = Helper.defaultizePatch({
-        impls: { nodejs: '//node' }
+        impls: { nodejs: '//node' },
       });
 
       const js = getJsOrNode(jsAndNodePatch);
@@ -386,12 +385,12 @@ describe('Patch', () => {
         expect(res.isNothing).to.be.true();
       });
       it('should return Maybe.Just for patch with pin', () => {
-        const patch = Helper.defaultizePatch({
+        const aPatch = Helper.defaultizePatch({
           pins: {
             a: { key: 'a' },
-          }
+          },
         });
-        const res = Patch.getPinByKey('a', patch);
+        const res = Patch.getPinByKey('a', aPatch);
         expect(res.isJust).to.be.true();
         expect(res.getOrElse(null))
           .to.be.an('object')
@@ -540,13 +539,13 @@ describe('Patch', () => {
     it('should replace old Node with same id', () => {
       const patch = Helper.defaultizePatch({
         nodes: {
-          1: { id: '1', label: 'old' }
-        }
+          1: { id: '1', label: 'old' },
+        },
       });
 
       const node = Helper.defaultizeNode({
         id: '1',
-        label: 'new'
+        label: 'new',
       });
 
       const newPatch = Patch.assocNode(node, patch);
@@ -559,7 +558,7 @@ describe('Patch', () => {
     it('should add pin by associating pinNode', () => {
       const node = Helper.defaultizeNode({
         id: '1',
-        type: 'xod/core/inputNumber'
+        type: 'xod/core/inputNumber',
       });
       const newPatch = Patch.assocNode(node, emptyPatch);
 
@@ -580,7 +579,7 @@ describe('Patch', () => {
       });
       const node = Helper.defaultizeNode({
         id: '1',
-        type: 'xod/core/inputNumber'
+        type: 'xod/core/inputNumber',
       });
       const newPatch = Patch.assocNode(node, patch);
       expect(newPatch)

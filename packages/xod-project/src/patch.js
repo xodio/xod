@@ -63,7 +63,7 @@ export const setPatchLabel = def(
     R.assoc('label'),
     [String, R.identity]
   )
-)
+);
 
  /**
   * Returns a list of implementations for which a `patch` has native implementation
