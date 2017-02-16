@@ -209,7 +209,8 @@ export const getNodeById = def(
  * @param {Patch} patch
  * @returns {Either<Error|Patch>}
  */
-export const assocPin = R.curry(
+export const assocPin = def(
+  'assocPin :: Pin -> Patch -> Either Error Patch',
   (pin, patch) => Pin.validatePin(pin).map(
     (validPin) => {
       const key = Pin.getPinKey(validPin);

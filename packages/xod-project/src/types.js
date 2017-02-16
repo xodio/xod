@@ -3,6 +3,7 @@ import R from 'ramda';
 import RF from 'ramda-fantasy';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
+import * as C from './constants';
 
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */
@@ -13,10 +14,24 @@ import HMDef from 'hm-def';
 //
 //-----------------------------------------------------------------------------
 
+// :: String -> String
+const qualifiedTypeName = typeName => `xod-project/${typeName}`;
+
+// :: String -> String
+const typeUrl = typeName => `http://xod.io/docs/dev/xod-project/#${typeName}`;
+
+// :: (String, Any -> Boolean) -> Type
 const NullaryType = (typeName, predicate) => $.NullaryType(
-  `xod-project/${typeName}`,
-  `http://xod.io/docs/dev/xod-project/#${typeName}`,
+  qualifiedTypeName(typeName),
+  typeUrl(typeName),
   predicate
+);
+
+// :: (String, [Any]) -> Type
+const EnumType = (typeName, values) => $.EnumType(
+  qualifiedTypeName(typeName),
+  typeUrl(typeName),
+  values
 );
 
 // :: Type -> Any -> Boolean
@@ -78,7 +93,19 @@ export const LinkId = AliasType('LinkId', ShortId);
 export const NodeId = AliasType('NodeId', ShortId);
 export const PinKey = AliasType('PinKey', $.String);
 export const PatchPath = AliasType('PatchPath', $.String);
-export const Pin = AliasType('Pin', $.Object); // TODO: enforce model
+export const PinDirection = EnumType('PinDirection', R.values(C.PIN_DIRECTION));
+export const DataType = EnumType('DataType', R.values(C.PIN_TYPE));
+export const DataValue = NullaryType('DataValue', R.complement(R.isNil));
+
+export const Pin = Model('Pin', {
+  key: PinKey,
+  direction: PinDirection,
+  label: Label,
+  type: DataType,
+  value: DataValue,
+  order: $.Number,
+  description: $.String,
+});
 
 export const NodePosition = Model('NodePosition', {
   x: $.Number,
@@ -128,8 +155,12 @@ export const env = $.env.concat([
   NodeId,
   NodeOrId,
   Patch,
+  Pin,
   PinKey,
   PinRef,
+  PinDirection,
+  DataType,
+  DataValue,
   ShortId,
   Label,
   Source,

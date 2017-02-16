@@ -431,17 +431,13 @@ describe('Patch', () => {
 
   // entity setters
   describe('assocPin', () => {
-    it('should return Either.Left for invalid pin', () => {
-      const newPatch = Patch.assocPin({}, {});
-      expect(newPatch.isLeft).to.be.true();
-    });
     it('should return Either.Right with new patch with new pin', () => {
-      const pin = {
+      const pin = Helper.defaultizePin({
         key: 'A',
         type: CONST.PIN_TYPE.STRING,
         direction: CONST.PIN_DIRECTION.OUTPUT,
-      };
-      const newPatch = Patch.assocPin(pin, {});
+      });
+      const newPatch = Patch.assocPin(pin, emptyPatch);
 
       Helper.expectEither(
         (validPatch) => {
@@ -455,17 +451,17 @@ describe('Patch', () => {
       );
     });
     it('should not affect on other pins', () => {
-      const patchWithPins = {
+      const patchWithPins = Helper.defaultizePatch({
         pins: {
           A: { key: 'A', type: CONST.PIN_TYPE.NUMBER, direction: CONST.PIN_DIRECTION.INPUT },
           C: { key: 'C', type: CONST.PIN_TYPE.STRING, direction: CONST.PIN_DIRECTION.OUTPUT },
         },
-      };
-      const pin = {
+      });
+      const pin = Helper.defaultizePin({
         key: 'B',
         type: CONST.PIN_TYPE.BOOLEAN,
         direction: CONST.PIN_DIRECTION.INPUT,
-      };
+      });
       const newPatch = Patch.assocPin(pin, patchWithPins);
       const expectedPatch = R.assocPath(['pins', pin.key], pin, patchWithPins);
 
@@ -562,7 +558,7 @@ describe('Patch', () => {
       expect(newPatch)
         .to.have.property('pins')
         .that.have.property('1')
-        .that.have.keys(['key', 'type', 'direction']);
+        .that.include.keys('key', 'type', 'direction');
     });
     it('should update pin by associating pinNode', () => {
       const patch = Helper.defaultizePatch({
@@ -581,12 +577,13 @@ describe('Patch', () => {
       const newPatch = Patch.assocNode(node, patch);
       expect(newPatch)
         .to.have.property('pins')
-        .that.have.property('1')
-        .that.deep.equal({
-          key: '1',
-          type: 'number',
-          direction: 'input',
-        });
+        .that.have.property('1');
+
+
+      const newPin = newPatch.pins['1'];
+      expect(newPin).to.have.property('key', '1');
+      expect(newPin).to.have.property('type', 'number');
+      expect(newPin).to.have.property('direction', 'input');
     });
   });
   // TODO: Add test for deleting pinNode

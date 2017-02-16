@@ -5,6 +5,7 @@ import shortid from 'shortid';
 import * as Node from './node';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
+import { def } from './types';
 
 /**
  * Contains resulting value or error
@@ -137,6 +138,23 @@ export const validateId = R.test(/^[a-zA-Z0-9\-_]+$/);
  * @returns {String}
  */
 export const getCastPatchPath = (typeIn, typeOut) => `xod/core/cast-${typeIn}-to-${typeOut}`;
+
+/**
+ * Returns a default (empty) value for a given data type.
+ *
+ * @function defaultValueOfType
+ * @param {PIN_TYPE} t
+ * @returns {*}
+ */
+export const defaultValueOfType = def(
+  'defaultValueOfType :: DataType -> DataValue',
+  R.cond([
+    [ R.equals(CONST.PIN_TYPE.STRING), R.always('') ],
+    [ R.equals(CONST.PIN_TYPE.NUMBER), R.always(0) ],
+    [ R.equals(CONST.PIN_TYPE.BOOLEAN), R.always(false) ],
+    [ R.equals(CONST.PIN_TYPE.PULSE), R.always(false) ],
+  ])
+);
 
 // =============================================================================
 //

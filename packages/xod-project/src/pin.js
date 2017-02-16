@@ -1,7 +1,9 @@
 import R from 'ramda';
+import { Either } from 'ramda-fantasy';
 import * as Tools from './func-tools';
 import * as Utils from './utils';
 import * as CONST from './constants';
+import { def } from './types';
 
 /**
  * An object representing patch pin
@@ -114,53 +116,11 @@ export const isTerminalPin = R.compose(
   getPinKey
 );
 
-/**
- * Validates for correct pin type
- *
- * @function validatePinType
- * @param {PIN_TYPE} type
- * @returns {Either<Error|PIN_TYPE>}
- */
-export const validatePinType = Tools.errOnFalse(
-  CONST.ERROR.PIN_TYPE_INVALID,
-  R.flip(Tools.hasPropEq)(CONST.PIN_TYPE)
+// TODO: remove me
+export const validatePin = def(
+  'validatePin :: Pin -> Either Error Pin',
+  Either.of
 );
-
-/**
- * Validates for correct pin direction
- *
- * @function validatePinDirection
- * @param {PIN_DIRECTION} type
- * @returns {Either<Error|PIN_DIRECTION>}
- */
-export const validatePinDirection = Tools.errOnFalse(
-  CONST.ERROR.PIN_DIRECTION_INVALID,
-  R.flip(Tools.hasPropEq)(CONST.PIN_DIRECTION)
-);
-
-/**
- * Validates for correct pin key
- *
- * @function validatePinKey
- * @param {string} pinKey
- * @returns {Either<Error|string>}
- */
-export const validatePinKey = Tools.errOnFalse(
-  CONST.ERROR.PIN_KEY_INVALID,
-  Utils.validateId
-);
-
-/**
- * Validates pin correctness
- *
- * @function validatePin
- * @param {Pin} pin
- * @returns {Either<Error|Pin>}
- */
-export const validatePin = pin => validatePinType(getPinType(pin))
-  .chain(() => validatePinDirection(getPinDirection(pin)))
-  .chain(() => validatePinKey(getPinKey(pin)))
-  .map(R.always(pin));
 
 /**
  * @function createPin
@@ -169,6 +129,15 @@ export const validatePin = pin => validatePinType(getPinType(pin))
  * @param {PIN_DIRECTION} direction
  * @returns {Either<Error|Pin>}
  */
-export const createPin = R.curry(
-  (key, type, direction) => validatePin({ key, type, direction })
+export const createPin = def(
+  'createPin :: PinKey -> DataType -> PinDirection -> Either Error Pin',
+  (key, type, direction) => Either.of({
+    key,
+    type,
+    direction,
+    label: key,
+    description: '',
+    order: 0,
+    value: Utils.defaultValueOfType(type),
+  })
 );

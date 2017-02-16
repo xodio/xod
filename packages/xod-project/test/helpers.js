@@ -101,12 +101,22 @@ export const defaultizeNode = R.merge({
   type: '@/defaultType',
 });
 
+export const defaultizePin = R.merge({
+  key: '$$defaultPinKey',
+  direction: '$$defaultDirection',
+  label: '$$defaultLabel',
+  type: 'number',
+  value: 0,
+  order: 0,
+  description: '$$defaultDesription',
+});
+
 export const defaultizePatch = R.compose(
   R.evolve({
     nodes: R.map(defaultizeNode),
     links: R.map(defaultizeLink),
     impls: R.identity,
-    pins: R.identity,
+    pins: R.map(defaultizePin),
   }),
   R.merge({
     nodes: {},

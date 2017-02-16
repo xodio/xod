@@ -13,8 +13,8 @@ import { err, errOnNothing } from './func-tools';
 const terminalRegExp = /^xod\/core\/(input|output)/;
 // :: String -> Pin[]
 const getTerminalPins = type => ([
-  { key: '__in__', type, direction: CONST.PIN_DIRECTION.INPUT },
-  { key: '__out__', type, direction: CONST.PIN_DIRECTION.OUTPUT },
+  explode(Pin.createPin('__in__', type, CONST.PIN_DIRECTION.INPUT)),
+  explode(Pin.createPin('__out__', type, CONST.PIN_DIRECTION.OUTPUT)),
 ]);
 // :: String -> String
 const getTerminalType = type => `terminal${type}`;
