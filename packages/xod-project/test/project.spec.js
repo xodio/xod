@@ -227,11 +227,11 @@ describe('Project', () => {
     });
   });
   describe('validatePatchContents', () => {
-    const smallProject = {
+    const smallProject = Helper.defaultizeProject({
       patches: {
         '@/test': {},
       },
-    };
+    });
     const fullProject = Helper.defaultizeProject({
       patches: {
         '@/test': {

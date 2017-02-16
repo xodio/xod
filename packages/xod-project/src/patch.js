@@ -227,17 +227,10 @@ export const assocPin = def(
  * @param {Patch} patch
  * @returns {Patch}
  */
-export const dissocPin = R.curry(
+export const dissocPin = def(
+  'dissocPin :: PinOrKey -> Patch -> Patch',
   (pinOrKey, patch) => R.dissocPath(['pins', Pin.getPinKey(pinOrKey)], patch)
 );
-
-/**
- * @private
- * @function getPins
- * @param {Patch}
- * @returns {Pins}
- */
-const getPins = R.propOr({}, 'pins');
 
 /**
  * Returns pin object by key
@@ -247,10 +240,11 @@ const getPins = R.propOr({}, 'pins');
  * @param {Patch} patch
  * @returns {Maybe<Pin>}
  */
-export const getPinByKey = R.curry(
+export const getPinByKey = def(
+  'getPinByKey :: PinKey -> Patch -> Maybe Pin',
   (key, patch) => R.compose(
     Tools.prop(key),
-    getPins
+    R.prop('pins')
   )(patch)
 );
 
@@ -259,9 +253,12 @@ export const getPinByKey = R.curry(
  * @param {Patch} patch
  * @returns {Pin[]}
  */
-export const listPins = R.compose(
-  R.values,
-  getPins
+export const listPins = def(
+  'listPins :: Patch -> [Pin]',
+  R.compose(
+    R.values,
+    R.prop('pins')
+  )
 );
 
 /**
@@ -269,9 +266,12 @@ export const listPins = R.compose(
  * @param {Patch} patch
  * @returns {Pin[]}
  */
-export const listInputPins = R.compose(
-  R.filter(Pin.isInputPin),
-  listPins
+export const listInputPins = def(
+  'listInputPins :: Patch -> [Pin]',
+  R.compose(
+    R.filter(Pin.isInputPin),
+    listPins
+  )
 );
 
 /**
@@ -279,9 +279,12 @@ export const listInputPins = R.compose(
  * @param {Patch} patch
  * @returns {Pin[]}
  */
-export const listOutputPins = R.compose(
-  R.filter(Pin.isOutputPin),
-  listPins
+export const listOutputPins = def(
+  'listOutputPins :: Patch -> [Pin]',
+  R.compose(
+    R.filter(Pin.isOutputPin),
+    listPins
+  )
 );
 
 /**
@@ -290,10 +293,13 @@ export const listOutputPins = R.compose(
  * @param {Patch} patch
  * @returns {boolean}
  */
-export const isTerminalPatch = R.compose(
-  R.contains(true),
-  R.map(Pin.isTerminalPin),
-  listPins
+export const isTerminalPatch = def(
+  'isTerminalPatch :: Patch -> Boolean',
+  R.compose(
+    R.contains(true),
+    R.map(Pin.isTerminalPin),
+    listPins
+  )
 );
 
 // =============================================================================

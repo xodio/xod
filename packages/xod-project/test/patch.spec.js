@@ -172,7 +172,7 @@ describe('Patch', () => {
   });
   describe('isTerminalPatch', () => {
     it('should return false for empty', () => {
-      expect(Patch.isTerminalPatch({})).to.be.false();
+      expect(Patch.isTerminalPatch(emptyPatch)).to.be.false();
     });
     it('should return false for patch without terminal pin', () => {
       const patch = Helper.defaultizePatch({
@@ -382,11 +382,16 @@ describe('Patch', () => {
     });
     describe('getPinByKey', () => {
       it('should return Maybe.Nothing for empty patch', () => {
-        const res = Patch.getPinByKey('a', {});
+        const res = Patch.getPinByKey('a', emptyPatch);
         expect(res.isNothing).to.be.true();
       });
       it('should return Maybe.Just for patch with pin', () => {
-        const res = Patch.getPinByKey('a', { pins: { a: { key: 'a' } } });
+        const patch = Helper.defaultizePatch({
+          pins: {
+            a: { key: 'a' },
+          }
+        });
+        const res = Patch.getPinByKey('a', patch);
         expect(res.isJust).to.be.true();
         expect(res.getOrElse(null))
           .to.be.an('object')
@@ -396,7 +401,7 @@ describe('Patch', () => {
     });
     describe('listPins', () => {
       it('should return empty array for empty patch', () => {
-        expect(Patch.listPins({}))
+        expect(Patch.listPins(emptyPatch))
         .to.be.instanceof(Array)
         .and.to.be.empty();
       });
@@ -408,7 +413,7 @@ describe('Patch', () => {
     });
     describe('listInputPins', () => {
       it('should return empty array for empty patch', () => {
-        expect(Patch.listInputPins({}))
+        expect(Patch.listInputPins(emptyPatch))
         .to.be.instanceof(Array)
         .and.to.be.empty();
       });
@@ -420,7 +425,7 @@ describe('Patch', () => {
     });
     describe('listOutputPins', () => {
       it('should return empty array for empty patch', () => {
-        expect(Patch.listOutputPins({}))
+        expect(Patch.listOutputPins(emptyPatch))
         .to.be.instanceof(Array)
         .and.to.be.empty();
       });
