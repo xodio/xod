@@ -1550,7 +1550,7 @@ describe('Flatten', () => {
         (newProject) => {
           expect(newProject.patches['@/main'].nodes['f~a'])
             .to.have.property('pins')
-            .that.have.property('__in__')
+            .that.have.property('in')
             .that.deep.equal(project.patches['@/main'].nodes.f.pins.b);
         },
         flatProject

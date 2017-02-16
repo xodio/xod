@@ -298,9 +298,22 @@ const rejectContainedNodeIds = R.curry((nodeIds, nodes) => R.reject(
   nodes
 ));
 
-// :: Pins -> Nodes -> Link -> Node
-const assocInjectedPinToNodeByLink = R.curry((pins, nodes, link) => R.compose(
-    R.assoc('pins', pins),
+// :: Link -> Pin -> Pin
+const rekeyPinUsingLink = R.curry((link, pin) => {
+  if (R.isEmpty(pin)) { return {}; }
+
+  return R.useWith(
+    R.objOf,
+    [
+      Link.getLinkInputPinKey,
+      R.compose(R.head, R.values),
+    ]
+  )(link, pin);
+});
+
+// :: Pin -> Nodes -> Link -> Node
+const assocInjectedPinToNodeByLink = R.curry((pin, nodes, link) => R.compose(
+    R.assoc('pins', rekeyPinUsingLink(link, pin)),
     findNodeByNodeId(R.__, nodes),
     Link.getLinkInputNodeId
   )(link)
