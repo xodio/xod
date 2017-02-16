@@ -1,7 +1,9 @@
 import R from 'ramda';
+import { Either } from 'ramda-fantasy';
 import * as Utils from './utils';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
+import { def } from './types';
 
 /**
  * @typedef {Object} Node
@@ -33,30 +35,9 @@ import * as CONST from './constants';
  * @param {string} pinKey pin key
  * @returns {string[]} path like `['pins', 'pinKey', 'value']`
  */
-const getPathToPinProperty = R.curry(
+const getPathToPinProperty = def(
+  'getPathToPinProperty :: String -> String -> [String]',
   (propName, pinKey) => ['pins', pinKey, propName]
-);
-
- // =============================================================================
- //
- // Validation
- //
- // =============================================================================
-
-/**
- * Validate that position object has keys x and y with numbers.
- *
- * @function validatePosition
- * @param {Position} position
- * @returns {Either<Error|Position>}
- */
-export const validatePosition = Tools.errOnFalse(
-  CONST.ERROR.POSITION_INVALID,
-  R.allPass([
-    R.is(Object),
-    R.compose(R.is(Number), R.prop('x')),
-    R.compose(R.is(Number), R.prop('y')),
-  ])
 );
 
 // =============================================================================
@@ -71,15 +52,13 @@ export const validatePosition = Tools.errOnFalse(
  * @param {string} type - path to the patch, that will be the type of node to create
  * @returns {Either<Error|Node>} error or a new node
  */
-export const createNode = R.curry(
-  (position, type) =>
-    validatePosition(position)
-      .map(
-        R.assoc('position', R.__, {
-          id: Utils.generateId(),
-          type,
-        })
-      )
+export const createNode = def(
+  'createNode :: NodePosition -> PatchPath -> Either Error Node',
+  (position, type) => Either.of({
+    id: Utils.generateId(),
+    type,
+    position,
+  })
 );
 
 /**
@@ -87,9 +66,12 @@ export const createNode = R.curry(
  * @param {Node} node - node to clone
  * @returns {Node} cloned node with new id
  */
-export const duplicateNode = R.compose(
-  newNode => R.assoc('id', Utils.generateId(), newNode),
-  R.clone
+export const duplicateNode = def(
+  'duplicateNode :: Node -> Node',
+  R.compose(
+    newNode => R.assoc('id', Utils.generateId(), newNode),
+    R.clone
+  )
 );
 
 /**
@@ -97,21 +79,30 @@ export const duplicateNode = R.compose(
  * @param {NodeOrId} node
  * @returns {string}
  */
-export const getNodeId = R.ifElse(R.is(String), R.identity, R.prop('id'));
+export const getNodeId = def(
+  'getNodeId :: NodeOrId -> NodeId',
+  R.ifElse(R.is(String), R.identity, R.prop('id'))
+);
 
 /**
  * @function getNodeType
  * @param {Node} node
  * @returns {string}
  */
-export const getNodeType = R.prop('type');
+export const getNodeType = def(
+  'getNodeType :: Node -> PatchPath',
+  R.prop('type')
+);
 
 /**
  * @function getNodeLabel
  * @param {Node} node
  * @returns {string}
  */
-export const getNodeLabel = R.propOr('', 'label');
+export const getNodeLabel = def(
+  'getNodeLabel :: Node -> String',
+  R.prop('label')
+);
 
 /**
  * @function setNodeLabel
@@ -119,14 +110,20 @@ export const getNodeLabel = R.propOr('', 'label');
  * @param {Node} node
  * @returns {Node}
  */
-export const setNodeLabel = R.assoc('label');
+export const setNodeLabel = def(
+  'setNodeLabel :: String -> Node -> Node',
+  R.assoc('label')
+);
 
 /**
  * @function getNodeDescription
  * @param {Node} node
  * @returns {string}
  */
-export const getNodeDescription = R.propOr('', 'description');
+export const getNodeDescription = def(
+  'getNodeDescription :: Node -> String',
+  R.propOr('description')
+);
 
 /**
  * @function setNodeDescription
@@ -134,7 +131,10 @@ export const getNodeDescription = R.propOr('', 'description');
  * @param {Node} node
  * @returns {Node}
  */
-export const setNodeDescription = R.assoc('description');
+export const setNodeDescription = def(
+  'setNodeDescription :: String -> Node -> Node',
+  R.assoc('description')
+);
 
 /**
  * @function setNodePosition
@@ -142,12 +142,12 @@ export const setNodeDescription = R.assoc('description');
  * @param {Node} node - node to move
  * @returns {Either<Error|Node>} copy of node in new coordinates
  */
-export const setNodePosition = R.curry(
-  (position, node) =>
-    validatePosition(position)
-      .map(
-        R.assoc('position', R.__, node)
-      )
+export const setNodePosition = def(
+  'setNodePosition :: NodePosition -> Node -> Either Error Node',
+  R.compose(
+    Either.of,
+    R.assoc('position')
+  )
 );
 
 /**
@@ -155,16 +155,22 @@ export const setNodePosition = R.curry(
  * @param {Node} node
  * @returns {Position}
  */
-export const getNodePosition = R.prop('position');
+export const getNodePosition = def(
+  'getNodePosition :: Node -> NodePosition',
+  R.prop('position')
+);
 
 /**
  * @function isInputPinNode
  * @param {Node} node
  * @returns {boolean}
  */
-export const isInputPinNode = R.compose(
-  R.test(/^xod\/core\/input/),
-  getNodeType
+export const isInputPinNode = def(
+  'isInputPinNode :: Node -> Boolean',
+  R.compose(
+    R.test(/^xod\/core\/input/),
+    getNodeType
+  )
 );
 
 /**
@@ -172,9 +178,12 @@ export const isInputPinNode = R.compose(
  * @param {Node} node
  * @returns {boolean}
  */
-export const isOutputPinNode = R.compose(
-  R.test(/^xod\/core\/output/),
-  getNodeType
+export const isOutputPinNode = def(
+  'isOutputPinNode :: Node -> Boolean',
+  R.compose(
+    R.test(/^xod\/core\/output/),
+    getNodeType
+  )
 );
 
 /**
@@ -182,9 +191,12 @@ export const isOutputPinNode = R.compose(
  * @param {Node} node
  * @returns {boolean}
  */
-export const isPinNode = R.either(
-  isInputPinNode,
-  isOutputPinNode
+export const isPinNode = def(
+  'isPinNode :: Node -> Boolean',
+  R.either(
+    isInputPinNode,
+    isOutputPinNode
+  )
 );
 
  // =============================================================================
@@ -204,12 +216,15 @@ export const isPinNode = R.either(
  * @param {Node} node
  * @returns {Maybe<PinValue>}
  */
-export const getPinCurriedValue = R.useWith(
-  Tools.path,
-  [
-    getPathToPinProperty('value'),
-    R.identity,
-  ]
+export const getPinCurriedValue = def(
+  'getPinCurriedValue :: PinKey -> Node -> Maybe DataValue',
+  R.useWith(
+    Tools.path,
+    [
+      getPathToPinProperty('value'),
+      R.identity,
+    ]
+  )
 );
 
 /**
@@ -221,13 +236,16 @@ export const getPinCurriedValue = R.useWith(
  * @param {Node} node
  * @returns {Node}
  */
-export const setPinCurriedValue = R.useWith(
-  R.assocPath,
-  [
-    getPathToPinProperty('value'),
-    R.identity,
-    R.identity,
-  ]
+export const setPinCurriedValue = def(
+  'setPinCurriedValue :: PinKey -> DataValue -> Node -> Node',
+  R.useWith(
+    R.assocPath,
+    [
+      getPathToPinProperty('value'),
+      R.identity,
+      R.identity,
+    ]
+  )
 );
 
  /**
@@ -237,15 +255,18 @@ export const setPinCurriedValue = R.useWith(
   * @param {string} key
   * @param {boolean} curry
   * @param {Node} node
-  * @returns {Either<Error|Node>}
+  * @returns {Node}
   */
-export const curryPin = R.useWith(
-  R.assocPath,
-  [
-    getPathToPinProperty('curried'),
-    R.identity,
-    R.identity,
-  ]
+export const curryPin = def(
+  'curryPin :: PinKey -> Boolean -> Node -> Node',
+  R.useWith(
+    R.assocPath,
+    [
+      getPathToPinProperty('curried'),
+      R.identity,
+      R.identity,
+    ]
+  )
 );
 
 /**
@@ -254,12 +275,15 @@ export const curryPin = R.useWith(
  * @param {Node} node
  * @returns {boolean}
  */
-export const isPinCurried = R.useWith(
-  R.pathSatisfies(R.equals(true)),
-  [
-    getPathToPinProperty('curried'),
-    R.identity,
-  ]
+export const isPinCurried = def(
+  'isPinCurried :: PinKey -> Node -> Boolean',
+  R.useWith(
+    R.pathSatisfies(R.equals(true)),
+    [
+      getPathToPinProperty('curried'),
+      R.identity,
+    ]
+  )
 );
 
 /**
@@ -290,11 +314,14 @@ const dataTypeRegexp = getDataTypeRegExp(CONST.PIN_TYPE);
  * @param {Node} node
  * @returns {Either<Error|string>}
  */
-export const getPinNodeDataType = R.compose(
-  R.map(R.toLower),
-  Tools.errOnNothing(CONST.ERROR.DATATYPE_INVALID),
-  Tools.match(dataTypeRegexp, 1),
-  getNodeType
+export const getPinNodeDataType = def(
+  'getPinNodeDataType :: Node -> Either Error DataType',
+  R.compose(
+    R.map(R.toLower),
+    Tools.errOnNothing(CONST.ERROR.DATATYPE_INVALID),
+    Tools.match(dataTypeRegexp, 1),
+    getNodeType
+  )
 );
 
 /**
@@ -303,10 +330,13 @@ export const getPinNodeDataType = R.compose(
  * @param {Node} node
  * @returns {Either<Error|string>}
  */
-export const getPinNodeDirection = R.compose(
-  Tools.errOnNothing(CONST.ERROR.PIN_DIRECTION_INVALID),
-  R.cond([
-    [isInputPinNode, R.always(CONST.PIN_DIRECTION.INPUT)],
-    [isOutputPinNode, R.always(CONST.PIN_DIRECTION.OUTPUT)],
-  ])
+export const getPinNodeDirection = def(
+  'getPinNodeDirection :: Node -> Either Error PinDirection',
+  R.compose(
+    Tools.errOnNothing(CONST.ERROR.PIN_DIRECTION_INVALID),
+    R.cond([
+      [isInputPinNode, R.always(CONST.PIN_DIRECTION.INPUT)],
+      [isOutputPinNode, R.always(CONST.PIN_DIRECTION.OUTPUT)],
+    ])
+  )
 );

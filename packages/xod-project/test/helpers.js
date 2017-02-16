@@ -99,6 +99,7 @@ export const defaultizeNode = R.merge({
   id: '$$defaultNodeId',
   position: { x: 0, y: 0 },
   type: '@/defaultType',
+  label: '',
 });
 
 export const defaultizePin = R.merge({
