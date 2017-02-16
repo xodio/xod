@@ -177,10 +177,10 @@ const convertLinks = nodeIdMap => R.compose(
     R.converge(
       Link.createLink,
       [
-        R.compose(getLinkPin(nodeIdMap), R.prop('pinKey'), R.head),
-        R.compose(getLinkNodeId(nodeIdMap), R.prop('nodeId'), R.head),
         R.compose(getLinkPin(nodeIdMap), R.prop('pinKey'), R.last),
         R.compose(getLinkNodeId(nodeIdMap), R.prop('nodeId'), R.last),
+        R.compose(getLinkPin(nodeIdMap), R.prop('pinKey'), R.head),
+        R.compose(getLinkNodeId(nodeIdMap), R.prop('nodeId'), R.head),
       ]
     ),
     R.prop('pins')
