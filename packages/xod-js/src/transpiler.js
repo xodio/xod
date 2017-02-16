@@ -42,10 +42,10 @@ export const extractPatchImpls = R.curry((impls, project) => R.compose(
 // :: String -> JSType
 const convertToNativeTypes = R.cond([
   [R.equals(Project.PIN_TYPE.PULSE), R.always('<<identity>>')],
-  [R.equals(Project.PIN_TYPE.BOOL), R.always(Boolean)],
+  [R.equals(Project.PIN_TYPE.BOOLEAN), R.always(Boolean)],
   [R.equals(Project.PIN_TYPE.NUMBER), R.always(Number)],
   [R.equals(Project.PIN_TYPE.STRING), R.always(String)],
-  [R.T, () => { throw Error('Unknown type!'); }],
+  [R.T, (type) => { throw Error(`Unknown type "${type}"!`); }],
 ]);
 
 // :: Patch -> { pinKey: Function }
@@ -71,16 +71,10 @@ export const getOutLinks = R.curry((nodeId, patch) =>
   )(patch)
 );
 
-// :: Node -> Patch -> [[PinKey, PinValue]]
-export const getCurriedPins = R.curry((node, patch) =>
-  R.compose(
-    R.toPairs,
-    R.map(key => Project.getPinCurriedValue(key, node).getOrElse({})),
-    R.indexBy(Project.getPinKey),
-    R.filter(Project.isPinCurried(R.__, node)),
-    R.map(Project.getPinKey),
-    Project.listPins
-  )(patch)
+// :: Node -> [[PinKey, PinValue]]
+export const getCurriedPins = R.compose(
+  R.toPairs,
+  Project.getCurriedPins
 );
 
 // :: String -> [PinKey, PinValue] -> Node
@@ -127,13 +121,8 @@ const createConstNodeAndLink = R.converge(
 // :: Project -> Node -> (Patch -> Patch)[]
 const createConstantForNode = R.curry((project, node) =>
   R.compose(
-    Maybe.maybe([], R.identity),
-    R.map(R.compose(
-      R.map(createConstNodeAndLink(Project.getNodeId(node))),
-      getCurriedPins(node)
-    )),
-    Project.getPatchByPath(R.__, project),
-    Project.getNodeType
+    R.map(createConstNodeAndLink(Project.getNodeId(node))),
+    getCurriedPins
   )(node)
 );
 
@@ -143,6 +132,12 @@ const createConstants = R.curry((project, nodes) =>
     R.flatten,
     R.map(createConstantForNode(project))
   )(nodes)
+);
+
+// :: Patch -> Patch
+const clearNodePins = R.over(
+  R.lensProp('nodes'),
+  R.map(R.omit(['pins']))
 );
 
 // :: Project -> Patch -> Patch
@@ -161,6 +156,7 @@ export const addConstNodesToPatch = R.curry((project, patch) => {
 export const transformPatch = R.curry((path, project) =>
   Project.getPatchByPath(path, project)
   .map(addConstNodesToPatch(project))
+  .map(clearNodePins)
 );
 
 // :: Patch -> Project -> Node -> Node
@@ -356,6 +352,7 @@ export default function transpile(opts) {
       const impls = extractPatchImpls(opts.impls, proj);
 
       const entryPatch = transformPatch(opts.path, proj).chain(Project.renumberNodes);
+
       if (Maybe.isNothing(entryPatch)) {
         throw new Error('Entry patch was not found in the flattened project.');
       }
