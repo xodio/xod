@@ -85,6 +85,7 @@ export const $Either = $.BinaryType(
 //-----------------------------------------------------------------------------
 
 const ObjectWithId = NullaryType('ObjectWithId', R.has('id'));
+const ObjectWithKey = NullaryType('ObjectWithKey', R.has('key'));
 
 export const Label = AliasType('Label', $.String);
 export const Source = AliasType('Source', $.String);
@@ -100,7 +101,7 @@ export const DataValue = NullaryType('DataValue', R.complement(R.isNil));
 export const Pin = Model('Pin', {
   key: PinKey,
   direction: PinDirection,
-  label: Label,
+  label: $.String,
   type: DataType,
   value: DataValue,
   order: $.Number,
@@ -138,6 +139,7 @@ export const Patch = Model('Patch', {
 
 export const NodeOrId = OneOfType('NodeOrId', [NodeId, ObjectWithId]);
 export const LinkOrId = OneOfType('LinkOrId', [LinkId, ObjectWithId]);
+export const PinOrKey = OneOfType('PinOrKey', [PinKey, ObjectWithKey]);
 
 //-----------------------------------------------------------------------------
 //
@@ -156,6 +158,7 @@ export const env = $.env.concat([
   NodeOrId,
   Patch,
   Pin,
+  PinOrKey,
   PinKey,
   PinRef,
   PinDirection,

@@ -26,28 +26,40 @@ import { def } from './types';
  * @param {Pin} pin
  * @returns {PIN_TYPE}
  */
-export const getPinType = R.prop('type');
+export const getPinType = def(
+  'getPinType :: Pin -> DataType',
+  R.prop('type')
+);
 
 /**
  * @function getPinDirection
  * @param {Pin} pin
  * @returns {PIN_DIRECTION}
  */
-export const getPinDirection = R.prop('direction');
+export const getPinDirection = def(
+  'getPinDirection :: Pin -> PinDirection',
+  R.prop('direction')
+);
 
 /**
  * @function getPinKey
  * @param {Pin} pin
  * @returns {string}
  */
-export const getPinKey = R.ifElse(R.is(String), R.identity, R.prop('key'));
+export const getPinKey = def(
+  'getPinKey :: PinOrKey -> PinKey',
+  R.ifElse(R.is(String), R.identity, R.prop('key'))
+);
 
 /**
  * @function getPinLabel
  * @param {Pin} pin
  * @returns {string}
  */
-export const getPinLabel = R.propOr('', 'label');
+export const getPinLabel = def(
+  'getPinLabel :: Pin -> String',
+  R.prop('label')
+);
 
 /**
  * @function setPinLabel
@@ -55,14 +67,20 @@ export const getPinLabel = R.propOr('', 'label');
  * @param {Pin} pin
  * @returns {Pin}
  */
-export const setPinLabel = Tools.assocString('label');
+export const setPinLabel = def(
+  'setPinLabel :: String -> Pin -> Pin',
+  R.assoc('label')
+);
 
 /**
  * @function getPinDescription
  * @param {Pin} pin
  * @returns {string}
  */
-export const getPinDescription = R.propOr('', 'description');
+export const getPinDescription = def(
+  'getPinDescription :: Pin -> String',
+  R.prop('description')
+);
 
 /**
  * @function setPinDescription
@@ -70,14 +88,20 @@ export const getPinDescription = R.propOr('', 'description');
  * @param {Pin} pin
  * @returns {Pin}
  */
-export const setPinDescription = Tools.assocString('description');
+export const setPinDescription = def(
+  'setPinDescription :: String -> Pin -> Pin',
+  R.assoc('description')
+);
 
 /**
  * @function getPinOrder
  * @param {Pin} pin
  * @returns {number}
  */
-export const getPinOrder = R.propOr(0, 'order');
+export const getPinOrder = def(
+  'getPinOrder :: Pin -> Number',
+  R.prop('order')
+);
 
 /**
  * @function setPinOrder
@@ -85,35 +109,47 @@ export const getPinOrder = R.propOr(0, 'order');
  * @param {Pin} pin
  * @returns {Pin}
  */
-export const setPinOrder = Tools.assocNumber('order');
+export const setPinOrder = def(
+  'setPinOrder :: Number -> Pin -> Pin',
+  R.assoc('order')
+);
 
 /**
  * @function isInputPin
  * @param {Pin} pin
  * @returns {boolean}
  */
-export const isInputPin = R.propEq('direction', CONST.PIN_DIRECTION.INPUT);
+export const isInputPin = def(
+  'isInputPin :: Pin -> Boolean',
+  R.propEq('direction', CONST.PIN_DIRECTION.INPUT)
+);
 
 /**
  * @function isOutputPin
  * @param {Pin} pin
  * @returns {boolean}
  */
-export const isOutputPin = R.propEq('direction', CONST.PIN_DIRECTION.OUTPUT);
+export const isOutputPin = def(
+  'isOutputPin :: Pin -> Boolean',
+  R.propEq('direction', CONST.PIN_DIRECTION.OUTPUT)
+);
 
 /**
- * Checks is that pin is pin of aterminal node.
+ * Checks that a pin belongs to a terminal patch.
  *
  * @function isTerminalPin
  * @param {Pin} pin
  * @returns {boolean}
  */
-export const isTerminalPin = R.compose(
-  R.anyPass([
-    R.equals('__in__'),
-    R.equals('__out__'),
-  ]),
-  getPinKey
+export const isTerminalPin = def(
+  'isTerminalPin :: Pin -> Boolean',
+  R.compose(
+    R.anyPass([
+      R.equals('__in__'),
+      R.equals('__out__'),
+    ]),
+    getPinKey
+  )
 );
 
 // TODO: remove me

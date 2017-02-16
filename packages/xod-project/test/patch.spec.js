@@ -175,31 +175,34 @@ describe('Patch', () => {
       expect(Patch.isTerminalPatch({})).to.be.false();
     });
     it('should return false for patch without terminal pin', () => {
-      expect(Patch.isTerminalPatch({
+      const patch = Helper.defaultizePatch({
         pins: {
           a: {
             key: 'a',
           },
         },
-      })).to.be.false();
+      });
+      expect(Patch.isTerminalPatch(patch)).to.be.false();
     });
     it('should return true for patch with terminal input pin', () => {
-      expect(Patch.isTerminalPatch({
+      const patch = Helper.defaultizePatch({
         pins: {
           __in__: {
             key: '__in__',
           },
         },
-      })).to.be.true();
+      });
+      expect(Patch.isTerminalPatch(patch)).to.be.true();
     });
     it('should return true for patch with terminal output pin', () => {
-      expect(Patch.isTerminalPatch({
+      const patch = Helper.defaultizePatch({
         pins: {
           __out__: {
             key: '__out__',
           },
         },
-      })).to.be.true();
+      });
+      expect(Patch.isTerminalPatch(patch)).to.be.true();
     });
   });
 
