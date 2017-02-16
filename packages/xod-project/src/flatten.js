@@ -10,6 +10,47 @@ import * as Link from './link';
 import { explode, getCastPatchPath, formatString } from './utils';
 import { err, errOnNothing } from './func-tools';
 
+// =============================================================================
+//
+// Wrappers for project entities
+//
+// =============================================================================
+
+/* eslint-disable new-cap */
+function baseChain(f) { return f(this.value); }
+function baseGet() { return this.value; }
+
+function NodeWrapper(x) { this.value = x; }
+function LinkWrapper(x) { this.value = x; }
+
+const Wr = {
+  Node: x => new NodeWrapper(x),
+  Link: x => new LinkWrapper(x),
+  get: wrapper => wrapper.get(),
+  isNode: x => x.isNode,
+  isLink: x => x.isLink,
+};
+
+NodeWrapper.prototype.isNode = true;
+NodeWrapper.prototype.isLink = false;
+NodeWrapper.prototype.map = function mapNode(f) { return Wr.Node(f(this.value)); };
+NodeWrapper.prototype.chain = baseChain;
+NodeWrapper.prototype.get = baseGet;
+
+LinkWrapper.prototype.isNode = false;
+LinkWrapper.prototype.isLink = true;
+LinkWrapper.prototype.map = function mapLink(f) { return Wr.Link(f(this.value)); };
+LinkWrapper.prototype.chain = baseChain;
+LinkWrapper.prototype.get = baseGet;
+
+/* eslint-enable new-cap */
+
+// =============================================================================
+//
+// Utils
+//
+// =============================================================================
+
 const terminalRegExp = /^xod\/core\/(input|output)/;
 // :: String -> Pin[]
 const getTerminalPins = type => ([
@@ -133,206 +174,8 @@ const isLeafNode = R.curry((leafPatchPaths, node) => R.compose(
   Node.getNodeType
 )(node));
 
-// :: String[] -> Patch -> NodeId
-const isNodeIdPointsToImplPatch = R.curry((leafPatchPaths, patch, nodeId) => R.compose(
-  isLeafNode(leafPatchPaths),
-  getNodeById(patch)
-)(nodeId));
-
 // :: String -> String -> String
 const getPrefixedId = R.curry((prefix, id) => ((prefix) ? `${prefix}~${id}` : id));
-
-// :: String -> Node -> Node
-const duplicateNodePrefixed = R.curry((prefix, node) => {
-  const id = Node.getNodeId(node);
-  const type = Node.getNodeType(node);
-  const newType = R.when(
-    R.test(terminalRegExp),
-    convertTerminalPath
-  )(type);
-  const newId = getPrefixedId(prefix, id);
-  return R.compose(
-    R.assoc('id', newId),
-    R.assoc('type', newType)
-  )(node);
-});
-
-/**
- * See {@link flatten} docs (2.1)
- *
- * @private
- * @function extractNodesRecursive
- * @callback extractNodes
- * @param {Project} project
- * @param {Array<Path>} leafPatchPaths
- * @param {NodeId} parentNodeId
- * @param {Node} node
- * @returns {Array<Node>}
- */
-const extractNodesRecursive = R.curry(
-  (recursiveFn, project, leafPatchPaths, parentNodeId, node) => {
-    const type = Node.getNodeType(node);
-    const id = Node.getNodeId(node);
-    const prefixedId = getPrefixedId(parentNodeId, id);
-    const pinsPrefixed = R.compose(
-      R.fromPairs,
-      R.map(R.over(R.lensIndex(0), getPrefixedId(prefixedId))),
-      R.toPairs,
-      R.propOr({}, 'pins')
-    )(node);
-    const pinKeys = R.keys(pinsPrefixed);
-    const isPinKeyExist = R.contains(R.__, pinKeys);
-    const oldPatch = Project.getPatchByPath(type, project);
-
-    return R.compose(
-      R.map((newNode) => {
-        const nodeId = Node.getNodeId(newNode);
-        if (isPinKeyExist(nodeId)) {
-          return R.assocPath(['pins', '__in__'], pinsPrefixed[nodeId], newNode);
-        }
-        return newNode;
-      }),
-      R.chain(recursiveFn(project, leafPatchPaths, prefixedId))
-    )(oldPatch);
-  }
-);
-
-/**
- * Get a flattened list of nodes.
- * If node is a leaf node — just return itself
- * with updated id (e.g. "parentNodeId~nodeId"),
- * else — extract nodes recursively.
- *
- * See {@link flatten} docs (2.1)
- *
- * @private
- * @function extractNodes
- * @param {Project} project
- * @param {Array<Path>} leafPatchPaths
- * @param {NodeId} parentNodeId
- * @param {Patch} patch
- * @returns {Array<Node>}
- */
-const extractNodes = R.curry((project, leafPatchPaths, parentNodeId, patch) => R.compose(
-  R.chain(R.ifElse(
-      isLeafNode(leafPatchPaths),
-      duplicateNodePrefixed(parentNodeId),
-      extractNodesRecursive(extractNodes, project, leafPatchPaths, parentNodeId)
-    )
-  ),
-  Patch.listNodes
-)(patch));
-
-// :: Link -> Boolean
-const isLinkBetweenImplNodes = (leafPatchPaths, patch) => R.converge(
-  R.and,
-  [
-    R.compose(isNodeIdPointsToImplPatch(leafPatchPaths, patch), Link.getLinkOutputNodeId),
-    R.compose(isNodeIdPointsToImplPatch(leafPatchPaths, patch), Link.getLinkInputNodeId),
-  ]
-);
-
-// :: String -> Link -> Link
-const duplicateLinkPrefixed = R.curry((prefix, link) => {
-  const id = Link.getLinkId(link);
-  const outId = Link.getLinkOutputNodeId(link);
-  const outKey = Link.getLinkOutputPinKey(link);
-  const inId = Link.getLinkInputNodeId(link);
-  const inKey = Link.getLinkInputPinKey(link);
-
-  const newId = getPrefixedId(prefix, id);
-  const newOutId = getPrefixedId(prefix, outId);
-  const newInId = getPrefixedId(prefix, inId);
-
-  return R.assoc('id', newId, Link.createLink(inKey, newInId, outKey, newOutId));
-});
-
-/**
- * See {@link flatten} docs (2.2)
- *
- * @private
- * @function extractLinksRecursive
- * @callback extractLinks
- * @param {Project} project
- * @param {Array<Path>} leafPatchPaths
- * @param {NodeId} parentNodeId
- * @param {Patch} patch
- * @param {Link} link
- * @returns {Array<Link>}
- */
-const extractLinksRecursive = R.curry(
-  (recursiveFn, project, leafPatchPaths, parentNodeId, patch, link) => {
-    // TODO: Refactoring needed!
-    const outNodeId = Link.getLinkOutputNodeId(link);
-    const inNodeId = Link.getLinkInputNodeId(link);
-    const outPinKey = Link.getLinkOutputPinKey(link);
-    const inPinKey = Link.getLinkInputPinKey(link);
-
-    const outNode = getNodeById(patch, outNodeId);
-    const newOutNodeId = getPrefixedId(parentNodeId, outNodeId);
-
-    const inNode = getNodeById(patch, inNodeId);
-    const newInNodeId = getPrefixedId(parentNodeId, inNodeId);
-
-    let newLink = Link.createLink();
-    let inLinks = [];
-    let outLinks = [];
-
-    // input
-    if (!isLeafNode(leafPatchPaths, inNode)) {
-      const inNodeType = Node.getNodeType(inNode);
-      const inPatch = getPatchByPath(project, inNodeType);
-      inLinks = recursiveFn(project, leafPatchPaths, newInNodeId, inPatch);
-      const inNodeIdWithPinKey = getPrefixedId(newInNodeId, inPinKey);
-
-      newLink = newLink('__in__', inNodeIdWithPinKey);
-    } else {
-      newLink = newLink(inPinKey, inNodeId);
-    }
-
-    // output
-    if (!isLeafNode(leafPatchPaths, outNode)) {
-      const outNodeType = Node.getNodeType(outNode);
-      const outPatch = getPatchByPath(project, outNodeType);
-      outLinks = recursiveFn(project, leafPatchPaths, newOutNodeId, outPatch);
-      const outNodeIdWithPinKey = getPrefixedId(newOutNodeId, outPinKey);
-
-      newLink = newLink('__out__', outNodeIdWithPinKey);
-    } else {
-      newLink = newLink(outPinKey, outNodeId);
-    }
-
-    newLink = R.assoc('id', getPrefixedId(parentNodeId, Link.getLinkId(link)), newLink);
-
-    return R.concat([newLink], R.concat(inLinks, outLinks));
-  }
-);
-
-/**
- * Get a flattened list of links.
- * If link is between a leaf nodes — just return itself
- * with updated id (e.g. "parentNodeId~linkId"),
- * else — extract links recursively.
- *
- * See {@link flatten} docs (2.2)
- *
- * @private
- * @function extractLinks
- * @param {Project} project
- * @param {Array<Path>} leafPatchPaths
- * @param {NodeId} parentNodeId
- * @param {Patch} patch
- * @returns {Array<Link>}
- */
-const extractLinks = R.curry((project, leafPatchPaths, parentNodeId, patch) => R.compose(
-  R.uniqWith(R.eqBy(Link.getLinkId)),
-  R.chain(R.ifElse(
-    isLinkBetweenImplNodes(leafPatchPaths, patch),
-    duplicateLinkPrefixed(parentNodeId),
-    extractLinksRecursive(extractLinks, project, leafPatchPaths, parentNodeId, patch)
-  )),
-  Patch.listLinks
-)(patch));
 
 const getPinType = R.curry((patchTuples, nodes, idGetter, keyGetter, link) =>
   R.compose(
@@ -458,6 +301,7 @@ const rejectContainedNodeIds = R.curry((nodeIds, nodes) => R.reject(
 // :: Pins -> Nodes -> Link -> Node
 const assocInjectedPinToNodeByLink = R.curry((pins, nodes, link) => R.compose(
     R.assoc('pins', pins),
+    // -!- R.tap(a => console.log('assoc injected pins', pins, 'to', a)),
     findNodeByNodeId(R.__, nodes),
     Link.getLinkInputNodeId
   )(link)
@@ -468,6 +312,7 @@ const passPinsFromTerminalNodes = R.curry((nodes, terminalLinks, terminalNodes) 
   R.map(terminalNode =>
     R.compose(
       R.map(assocInjectedPinToNodeByLink(terminalNode.pins, nodes)),
+      // -!- R.tap(a => console.log('output link from terminal (', terminalNode, '): ', a)),
       filterOutputLinksByNodeId(R.__, terminalLinks),
       Node.getNodeId
     )(terminalNode),
@@ -606,6 +451,40 @@ const removeTerminalPatches = R.reject(R.compose(
 // :: [[Path, Patch]] -> [[Path, Patch]]
 const filterTuplesByUniqPaths = R.uniqWith(R.eqBy(R.prop(0)));
 
+// :: leafPatchesPaths -> String -> Patch -> Link -> Link
+const updateLinkNodeIds = R.curry((leafPaths, prefix, patch, link) => {
+  const inputNodeId = Link.getLinkInputNodeId(link);
+  const inputPinKey = Link.getLinkInputPinKey(link);
+  const isInputLeafNode = R.compose(
+    isLeafNode(leafPaths),
+    getNodeById(patch)
+  )(inputNodeId);
+  const newInputNodeId = (isInputLeafNode) ?
+    getPrefixedId(prefix, inputNodeId) :
+    getPrefixedId(prefix, getPrefixedId(inputNodeId, inputPinKey));
+  const newInputPinKey = (isInputLeafNode) ?
+    inputPinKey : '__in__';
+
+  const outputNodeId = Link.getLinkOutputNodeId(link);
+  const outputPinKey = Link.getLinkOutputPinKey(link);
+  const isOutputLeafNode = R.compose(
+    isLeafNode(leafPaths),
+    explode,
+    Patch.getNodeById(R.__, patch)
+  )(outputNodeId);
+  const newOutputNodeId = (isOutputLeafNode) ?
+    getPrefixedId(prefix, outputNodeId) :
+    getPrefixedId(prefix, getPrefixedId(outputNodeId, outputPinKey));
+  const newOutputPinKey = (isOutputLeafNode) ?
+    outputPinKey : '__out__';
+
+  return R.compose(
+    R.assoc('id', getPrefixedId(prefix, Link.getLinkId(link))),
+    Link.createLink
+  )(newInputPinKey, newInputNodeId, newOutputPinKey, newOutputNodeId);
+});
+
+
 // =============================================================================
 //
 // General flattening functions
@@ -614,8 +493,103 @@ const filterTuplesByUniqPaths = R.uniqWith(R.eqBy(R.prop(0)));
 //
 // Flow of general flattening function calls:
 //     flatten -> validateProject -> getPatchByPath (or Error) ->
-//  -> flattenProject -> extractLeafPatches -> convertProject
+//  -> flattenProject -> extractLeafPatches -> convertProject ->
+//  -> convertPatch -> extractPatches
 //
+
+
+// :: Patch -> NodePins -> Node -> NodePins
+const rekeyPins = R.curry((patch, pins, node) => {
+  const nodeId = Node.getNodeId(node);
+  const isTerminalNode = R.compose(
+    R.test(terminalRegExp),
+    R.prop('type')
+  )(node);
+
+  if (isTerminalNode && R.has(nodeId, pins)) {
+    return R.applySpec({
+      __in__: R.prop(nodeId),
+    })(pins);
+  }
+
+  return R.propOr({}, 'pins', node);
+});
+
+/**
+ * Extract all patches nodes and links recursvely.
+ *
+ * It returns nodes and links wrapped by NodeWrapper or LinkWrapper,
+ * and it can't unnest it in this function, cause it recursive.
+ *
+ * We have to unwrap it in the caller function, just by
+ * `R.map(R.map(R.unnest))` and we'll get `[Node[], Link[]]`.
+ *
+ * It represents a steps 2.1 and 2.2 from {@link flatten} docs.
+ *
+ * @private
+ * @function extractPatches
+ * @param {Project} project The original project
+ * @param {Array<Path>} leafPatchesPaths Paths to leaf patches
+ * @param {String|null} prefix Prefixed parent nodeId (prefixed) or null (for entry-point patch)
+ * @param {Array<NodePin>} pins Pins data from parent node or empty object
+ * @param {Patch} patch The patch from which should be extracted nodes and links
+ * @returns {Array<Array<NodeWrapper>, Array<LinkWrapper>>}
+ */
+// :: Project -> leafPatchesPaths -> String -> NodePins -> Patch -> [NodeWrapper[], LinkWrapper[]]
+export const extractPatches = R.curry((project, leafPaths, prefix, pins, patch) => {
+  // 1. extractPatches recursively from nodes and wrap with NodeWrapper leafNodes
+  const nodes = R.compose(
+    R.map(
+      R.ifElse(
+        isLeafNode(leafPaths),
+        R.compose(
+          Wr.Node,
+          // 1.3. update id
+          node => R.assoc('id', getPrefixedId(prefix, Node.getNodeId(node)), node),
+          // 1.2. convert node type from 'input|output' to 'terminal', if needed
+          R.over(
+            R.lensProp('type'),
+            R.when(
+              R.test(terminalRegExp),
+              convertTerminalPath
+            )
+          ),
+          // 1.1. Copy and rekey pins from parent node
+          node => R.assoc('pins', rekeyPins(patch, pins, node), node)
+        ),
+        R.converge(
+          extractPatches(project, leafPaths),
+          [
+            R.compose(getPrefixedId(prefix), Node.getNodeId),
+            R.propOr({}, 'pins'),
+            R.compose(getPatchByPath(project), Node.getNodeType),
+          ]
+        )
+      )
+    ),
+    Patch.listNodes
+  )(patch);
+  // 2. extract links inside this patch, update nodeIds using prefix and wrap with LinkWrapper
+  const links = R.compose(
+    R.map(R.compose(
+      Wr.Link,
+      updateLinkNodeIds(leafPaths, prefix, patch)
+    )),
+    Patch.listLinks
+  )(patch);
+
+  // 3. group by type
+  return R.compose(
+    R.converge(
+      R.append,
+      [
+        R.compose(R.concat(R.__, links), R.filter(Wr.isLink)),
+        R.compose(R.of, R.filter(Wr.isNode)),
+      ]
+    ),
+    R.flatten
+  )(nodes);
+});
 
 /**
  * Converting old patch into new patch.
@@ -636,8 +610,10 @@ const convertPatch = R.curry((project, impls, leafPatches, patch) => R.ifElse(
   R.identity,
   (originalPatch) => {
     const leafPatchPaths = R.pluck(0, leafPatches);
-    const nodes = extractNodes(project, leafPatchPaths, null, originalPatch);
-    const links = extractLinks(project, leafPatchPaths, null, originalPatch);
+    const flattenEntities = extractPatches(project, leafPatchPaths, null, {}, originalPatch);
+    const nodes = R.map(R.unnest, flattenEntities[0]);
+    const links = R.map(R.unnest, flattenEntities[1]);
+
     const [newNodes, newLinks] = createCastNodes(leafPatches, nodes, links);
 
     // (Patch -> Patch)[]
