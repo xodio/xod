@@ -1,0 +1,277 @@
+{
+  "authors": [],
+  "description": "",
+  "license": "",
+  "patches": {
+    "xod/core/digital_output": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.inputs.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
+      },
+      "pins": {
+        "pin": {
+          "key": "pin",
+          "type": "string",
+          "direction": "input"
+        },
+        "value": {
+          "key": "value",
+          "type": "number",
+          "direction": "input"
+        }
+      }
+    },
+    "xod/math/multiply": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a * e.inputs.b) };\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "number",
+          "direction": "input"
+        },
+        "b": {
+          "key": "b",
+          "type": "number",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "number",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/latch": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.setup = function(e) {\n  e.context.state = e.props.initialState;\n};\n\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
+      },
+      "pins": {
+        "toggle": {
+          "key": "toggle",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "set": {
+          "key": "set",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "reset": {
+          "key": "reset",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "state": {
+          "key": "state",
+          "type": "boolean",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/clock": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.context.intervalID) {\n    clearInterval(e.context.intervalID);\n  }\n\n  e.context.intervalID = setInterval(function() {\n    e.fire({ tick: PULSE });\n  }, e.inputs.interval * 1000);\n};\n"
+      },
+      "pins": {
+        "interval": {
+          "key": "interval",
+          "type": "number",
+          "direction": "input"
+        },
+        "tick": {
+          "key": "tick",
+          "type": "pulse",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/cast-boolean-to-number": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Number(e.inputs.__in__) };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "number",
+          "direction": "output"
+        }
+      }
+    },
+    "@/main": {
+      "nodes": {
+        "HJ7JC4UQFe~rkb1RV8XYl": {
+          "id": "HJ7JC4UQFe~rkb1RV8XYl",
+          "type": "xod/core/latch",
+          "position": {
+            "x": 271,
+            "y": 355
+          },
+          "pins": {}
+        },
+        "ByVJ0EI7te~BkK1RVLmYg": {
+          "id": "ByVJ0EI7te~BkK1RVLmYg",
+          "type": "xod/core/digital_output",
+          "position": {
+            "x": 305,
+            "y": 430
+          },
+          "pins": {
+            "pin": {
+              "curried": true,
+              "value": "LED1"
+            }
+          }
+        },
+        "ByVJ0EI7te~rkHyRVU7Kg": {
+          "id": "ByVJ0EI7te~rkHyRVU7Kg",
+          "type": "xod/math/multiply",
+          "position": {
+            "x": 354,
+            "y": 218
+          },
+          "pins": {}
+        },
+        "ByVJ0EI7te~BkUkCVLmtg": {
+          "id": "ByVJ0EI7te~BkUkCVLmtg",
+          "type": "xod/math/multiply",
+          "position": {
+            "x": 453,
+            "y": 298
+          },
+          "pins": {}
+        },
+        "HJ7JC4UQFe~SJMJAEIXFl-to-ByVJ0EI7te~SyDJCVLXte": {
+          "id": "HJ7JC4UQFe~SJMJAEIXFl-to-ByVJ0EI7te~SyDJCVLXte",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/core/cast-boolean-to-number",
+          "pins": {}
+        },
+        "HJ7JC4UQFe~BJl1AVIQtl": {
+          "id": "HJ7JC4UQFe~BJl1AVIQtl",
+          "type": "xod/core/clock",
+          "position": {
+            "x": 267,
+            "y": 215
+          },
+          "pins": {
+            "interval": {
+              "curried": true,
+              "value": 1
+            }
+          }
+        }
+      },
+      "links": {
+        "ByVJ0EI7te~SJlxkCN8QFx": {
+          "id": "ByVJ0EI7te~SJlxkCN8QFx",
+          "output": {
+            "nodeId": "ByVJ0EI7te~rkHyRVU7Kg",
+            "pinKey": "out"
+          },
+          "input": {
+            "nodeId": "ByVJ0EI7te~BkUkCVLmtg",
+            "pinKey": "a"
+          }
+        },
+        "ByVJ0EI7te~Bybl1CELQYx": {
+          "id": "ByVJ0EI7te~Bybl1CELQYx",
+          "output": {
+            "nodeId": "ByVJ0EI7te~BkUkCVLmtg",
+            "pinKey": "out"
+          },
+          "input": {
+            "nodeId": "ByVJ0EI7te~BkK1RVLmYg",
+            "pinKey": "value"
+          }
+        },
+        "HJ7JC4UQFe~ByhyCN87Yg": {
+          "id": "HJ7JC4UQFe~ByhyCN87Yg",
+          "output": {
+            "nodeId": "HJ7JC4UQFe~BJl1AVIQtl",
+            "pinKey": "tick"
+          },
+          "input": {
+            "nodeId": "HJ7JC4UQFe~rkb1RV8XYl",
+            "pinKey": "toggle"
+          }
+        },
+        "ByVJ0EI7te~HkRJCNUQKg": {
+          "id": "ByVJ0EI7te~HkRJCNUQKg",
+          "output": {
+            "nodeId": "HJ7JC4UQFe~SJMJAEIXFl-to-ByVJ0EI7te~SyDJCVLXte",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "ByVJ0EI7te~rkHyRVU7Kg",
+            "pinKey": "a"
+          }
+        },
+        "ByVJ0EI7te~ByXe1CELmYg": {
+          "id": "ByVJ0EI7te~ByXe1CELmYg",
+          "output": {
+            "nodeId": "HJ7JC4UQFe~SJMJAEIXFl-to-ByVJ0EI7te~SyDJCVLXte",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "ByVJ0EI7te~rkHyRVU7Kg",
+            "pinKey": "b"
+          }
+        },
+        "ByVJ0EI7te~H11lkC4LXKl": {
+          "id": "ByVJ0EI7te~H11lkC4LXKl",
+          "output": {
+            "nodeId": "HJ7JC4UQFe~SJMJAEIXFl-to-ByVJ0EI7te~SyDJCVLXte",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "ByVJ0EI7te~BkUkCVLmtg",
+            "pinKey": "b"
+          }
+        },
+        "ByVJ0EI7te~SJlxkCN8QFx": {
+          "id": "ByVJ0EI7te~SJlxkCN8QFx",
+          "output": {
+            "nodeId": "ByVJ0EI7te~rkHyRVU7Kg",
+            "pinKey": "out"
+          },
+          "input": {
+            "nodeId": "ByVJ0EI7te~BkUkCVLmtg",
+            "pinKey": "a"
+          }
+        },
+        "ryayR4LQYe-to-cast": {
+          "id": "ryayR4LQYe-to-cast",
+          "output": {
+            "nodeId": "HJ7JC4UQFe~rkb1RV8XYl",
+            "pinKey": "state"
+          },
+          "input": {
+            "nodeId": "HJ7JC4UQFe~SJMJAEIXFl-to-ByVJ0EI7te~SyDJCVLXte",
+            "pinKey": "__in__"
+          }
+        }
+      },
+      "impls": {},
+      "pins": {}
+    }
+  }
+}

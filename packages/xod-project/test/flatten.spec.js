@@ -7,6 +7,7 @@ import * as CONST from '../src/constants';
 import flatten, { extractPatches } from '../src/flatten';
 import { getCastPatchPath, formatString } from '../src/utils';
 import blinkingV2 from './fixtures/blinking.v2.json';
+import blinkingFlat from './fixtures/blinking.flat.json';
 
 chai.use(dirtyChai);
 
@@ -408,7 +409,7 @@ describe('Flatten', () => {
       const unnested = R.map(R.map(R.unnest), extracted);
       const nodes = unnested[0];
 
-      const terminalString = R.find(R.propEq('id', 'rk4zmsVmFx~HyufQsE7Kx'), nodes);
+      const terminalString = R.find(R.propEq('id', 'ByVJ0EI7te~Bku1CEI7Yl'), nodes);
       expect(terminalString)
       .to.have.property('pins')
       .that.deep.equals({
@@ -418,7 +419,7 @@ describe('Flatten', () => {
         },
       });
 
-      const terminalNumber = R.find(R.propEq('id', 'B1mMmjVQYx~B1MQi4mYe'), nodes);
+      const terminalNumber = R.find(R.propEq('id', 'HJ7JC4UQFe~SJ1ANIQFg'), nodes);
       expect(terminalNumber)
       .to.have.property('pins')
       .that.deep.equals({
@@ -794,6 +795,11 @@ describe('Flatten', () => {
         },
         flatProject
       );
+    });
+
+    it('should correctly flatten blinking.v2.json', () => {
+      const flattened = R.unnest(flatten(blinkingV2, '@/main', ['espruino', 'js']));
+      expect(flattened).to.deep.equal(blinkingFlat);
     });
   });
 
