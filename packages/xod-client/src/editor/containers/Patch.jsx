@@ -9,6 +9,7 @@ import * as EditorActions from '../actions'; // @TODO: remove it!
 import * as EditorSelectors from '../selectors';
 import * as ProjectActions from '../../project/actions';
 import { findRootSVG } from '../../utils/browser';
+import { notNil } from '../../utils/ramda';
 
 import { COMMAND } from '../../utils/constants';
 import PatchSVG from '../../project/components/PatchSVG';
@@ -21,37 +22,40 @@ class Patch extends React.Component {
   constructor(props) {
     super(props);
 
+    // contains mousePosition: {x, y} when dragging is in progress, otherwise empty
     this.dragging = {};
     this.state = {
       clickNodeId: null,
-      dragNodeId: null,
+      mousePosition: { x: 0, y: 0 },
     };
-    this.state.mousePosition = { x: 0, y: 0 };
 
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
-    this.onNodeSelect = this.onNodeSelect.bind(this);
+
     this.onNodeMouseDown = this.onNodeMouseDown.bind(this);
+    this.onNodeSelect = this.onNodeSelect.bind(this);
+
     this.onPinMouseDown = this.onPinMouseDown.bind(this);
     this.onPinMouseUp = this.onPinMouseUp.bind(this);
+
     this.onLinkClick = this.onLinkClick.bind(this);
 
     this.deselectAll = this.deselectAll.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const haveGhost = R.either(R.prop('ghostNode'), R.prop('ghostLink'));
-    const notNil = R.complement(R.isNil);
-    const isDraggingGhost = R.useWith(notNil, [haveGhost, haveGhost]);
+    const hasGhosts = R.compose(
+      notNil,
+      R.either(R.prop('ghostNode'), R.prop('ghostLink'))
+    );
 
     const isChangingMousePosition = nextState.mousePosition !== this.state.mousePosition;
 
-    const isDraggingNode = R.complement(R.isEmpty);
-
     const shouldNotUpdateMousePosition = (
       !(
-        isDraggingGhost(this.props, nextProps) ||
-        isDraggingNode(this.dragging)
+        hasGhosts(this.props) ||
+        hasGhosts(nextProps) ||
+        this.isDragging()
       ) &&
       isChangingMousePosition
     );
@@ -61,6 +65,10 @@ class Patch extends React.Component {
     return true;
   }
 
+  /**
+   * If a node with a given id can be selected, dispatches `selectNode` action
+   * @param id
+   */
   onNodeSelect(id) {
     const isSelected = EditorSelectors.isNodeSelected(this.props.selection, id);
     const isSelectable = (this.props.mode.isEditing);
@@ -77,13 +85,11 @@ class Patch extends React.Component {
     this.onNodeSelect(id);
     if (!isDraggable) { return; }
 
-    const node = this.props.nodes[id].position;
     this.dragging = {
       mousePosition: {
         x: event.clientX,
         y: event.clientY,
       },
-      elementPosition: node.position,
     };
 
     this.setClickNodeId(id);
@@ -130,16 +136,15 @@ class Patch extends React.Component {
   }
 
   onMouseUp(event) {
-    if (this.state.dragNodeId) {
-      const dragId = this.state.dragNodeId;
-      const draggedPos = this.props.nodes[dragId].position;
+    if (this.state.clickNodeId && this.isDragging()) {
+      const draggedNodeId = this.state.clickNodeId;
+      const draggedPos = this.props.nodes[draggedNodeId].position;
 
-      this.setDragNodeId(null);
-      this.props.actions.moveNode(dragId, draggedPos);
+      this.props.actions.moveNode(draggedNodeId, draggedPos);
     }
-    if (this.state.clickNodeId) {
-      this.setClickNodeId(null);
-    }
+
+    this.setClickNodeId(null);
+
     if (this.props.mode.isCreatingNode) {
       this.onCreateNode(event);
     }
@@ -160,37 +165,19 @@ class Patch extends React.Component {
   }
 
   getNodes() {
-    let nodes = R.values(this.props.nodes);
-    nodes = this.extendNodesByPinValidness(nodes);
-    return nodes;
+    const nodes = R.values(this.props.nodes);
+    return this.extendNodesByPinValidness(nodes);
   }
   getLinks() {
     return R.values(this.props.links);
   }
 
-  setDragNodeId(id) {
-    this.setState(
-      R.set(
-          R.lensProp('dragNodeId'),
-          id,
-          this.state
-        )
-    );
-  }
-
   setClickNodeId(id) {
-    const st = R.set(
-      R.lensProp('clickNodeId'),
-      id,
-      this.state
-    );
-    this.setState(st);
+    this.setState({ clickNodeId: id });
   }
 
-  setMousePosition(pos) {
-    this.setState(
-      R.assoc('mousePosition', pos, this.state)
-    );
+  setMousePosition(mousePosition) {
+    this.setState({ mousePosition });
   }
 
   getHotkeyHandlers() {
@@ -199,6 +186,10 @@ class Patch extends React.Component {
       [COMMAND.DELETE_SELECTION]: this.props.actions.deleteSelection,
       [COMMAND.DESELECT]: this.deselectAll,
     };
+  }
+
+  isDragging() {
+    return !R.isEmpty(this.dragging);
   }
 
   extendNodesByPinValidness(nodes) {
@@ -212,50 +203,45 @@ class Patch extends React.Component {
       this.props.linkingPin
     );
 
-    return R.pipe(
-      R.map((node) => {
+    return R.map(
+      (node) => {
         const pvs = R.filter(R.propEq('nodeId', node.id), pinsValidation);
         if (pvs.length === 0) { return node; }
 
-        const add = R.map(pv => R.assocPath(['pins', pv.pinKey, 'validness'], pv.validness), pvs);
-        return R.reduce((n, a) => a(n), node, add);
-      })
-    )(nodes);
+        const fns = R.map(
+          pv => R.assocPath(['pins', pv.pinKey, 'validness'], pv.validness),
+          pvs
+        );
+
+        return R.apply(R.pipe, fns)(node);
+      },
+      nodes
+    );
   }
 
-  dragNode(mousePosition) {
-    if (this.state.clickNodeId !== null || this.state.dragNodeId !== null) {
-      const dragId = this.state.clickNodeId || this.state.dragNodeId;
-      const draggedPos = this.props.nodes[dragId].position;
-      const deltaPosition = {
-        x: mousePosition.x - this.dragging.mousePosition.x,
-        y: mousePosition.y - this.dragging.mousePosition.y,
-      };
-
-      this.dragging = R.set(
-        R.lensProp('mousePosition'),
-        mousePosition,
-        this.dragging
-      );
-      const newPosition = {
-        x: draggedPos.x + deltaPosition.x,
-        y: draggedPos.y + deltaPosition.y,
-      };
-
-      this.props.actions.dragNode(dragId, newPosition);
-
-      if (this.state.dragNodeId !== dragId && this.state.clickNodeId !== null) {
-        this.setState(
-          R.merge(
-            this.state,
-            {
-              dragNodeId: dragId,
-              clickNodeId: null,
-            }
-          )
-        );
-      }
+  dragNode(mousePosition) { // TODO: pass deltaPosition here, manage this.dragging somewhere else
+    if (this.state.clickNodeId === null) {
+      return;
     }
+
+    const dragId = this.state.clickNodeId;
+    const draggedPos = this.props.nodes[dragId].position;
+    const deltaPosition = {
+      x: mousePosition.x - this.dragging.mousePosition.x,
+      y: mousePosition.y - this.dragging.mousePosition.y,
+    };
+
+    this.dragging = R.set(
+      R.lensProp('mousePosition'),
+      mousePosition,
+      this.dragging
+    );
+    const newPosition = {
+      x: draggedPos.x + deltaPosition.x,
+      y: draggedPos.y + deltaPosition.y,
+    };
+
+    this.props.actions.dragNode(dragId, newPosition);
   }
 
   deselectAll() {
