@@ -301,7 +301,6 @@ const rejectContainedNodeIds = R.curry((nodeIds, nodes) => R.reject(
 // :: Pins -> Nodes -> Link -> Node
 const assocInjectedPinToNodeByLink = R.curry((pins, nodes, link) => R.compose(
     R.assoc('pins', pins),
-    // -!- R.tap(a => console.log('assoc injected pins', pins, 'to', a)),
     findNodeByNodeId(R.__, nodes),
     Link.getLinkInputNodeId
   )(link)
@@ -312,7 +311,6 @@ const passPinsFromTerminalNodes = R.curry((nodes, terminalLinks, terminalNodes) 
   R.map(terminalNode =>
     R.compose(
       R.map(assocInjectedPinToNodeByLink(terminalNode.pins, nodes)),
-      // -!- R.tap(a => console.log('output link from terminal (', terminalNode, '): ', a)),
       filterOutputLinksByNodeId(R.__, terminalLinks),
       Node.getNodeId
     )(terminalNode),
@@ -498,12 +496,12 @@ const updateLinkNodeIds = R.curry((leafPaths, prefix, patch, link) => {
 //
 
 
-// :: Patch -> NodePins -> Node -> NodePins
-const rekeyPins = R.curry((patch, pins, node) => {
+// :: NodePins -> Node -> NodePins
+const rekeyPins = R.curry((pins, node) => {
   const nodeId = Node.getNodeId(node);
   const isTerminalNode = R.compose(
     R.test(terminalRegExp),
-    R.prop('type')
+    Node.getNodeType
   )(node);
 
   if (isTerminalNode && R.has(nodeId, pins)) {
@@ -555,7 +553,7 @@ export const extractPatches = R.curry((project, leafPaths, prefix, pins, patch) 
             )
           ),
           // 1.1. Copy and rekey pins from parent node
-          node => R.assoc('pins', rekeyPins(patch, pins, node), node)
+          node => R.assoc('pins', rekeyPins(pins, node), node)
         ),
         R.converge(
           extractPatches(project, leafPaths),
@@ -613,7 +611,6 @@ const convertPatch = R.curry((project, impls, leafPatches, patch) => R.ifElse(
     const flattenEntities = extractPatches(project, leafPatchPaths, null, {}, originalPatch);
     const nodes = R.map(R.unnest, flattenEntities[0]);
     const links = R.map(R.unnest, flattenEntities[1]);
-
     const [newNodes, newLinks] = createCastNodes(leafPatches, nodes, links);
 
     // (Patch -> Patch)[]

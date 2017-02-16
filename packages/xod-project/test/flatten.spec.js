@@ -6,6 +6,7 @@ import * as Helper from './helpers';
 import * as CONST from '../src/constants';
 import flatten, { extractPatches } from '../src/flatten';
 import { getCastPatchPath, formatString } from '../src/utils';
+import blinkingV2 from './fixtures/blinking.v2.json';
 
 chai.use(dirtyChai);
 
@@ -387,6 +388,45 @@ describe('Flatten', () => {
       expect(justNodeWithCurriedPinB).to.have.property('pins').that.deep.equals(
         project.patches['@/foo'].nodes.c.pins
       );
+    });
+    it('correct structure for blinking.v2.json', () => {
+      const extracted = extractPatches(
+        blinkingV2,
+        [
+          'xod/core/or',
+          'xod/core/digital_output',
+          'xod/core/latch',
+          'xod/core/clock',
+          'xod/core/inputNumber',
+          'xod/core/inputString',
+          'xod/math/multiply',
+        ],
+        null,
+        {},
+        blinkingV2.patches['@/main']
+      );
+      const unnested = R.map(R.map(R.unnest), extracted);
+      const nodes = unnested[0];
+
+      const terminalString = R.find(R.propEq('id', 'rk4zmsVmFx~HyufQsE7Kx'), nodes);
+      expect(terminalString)
+      .to.have.property('pins')
+      .that.deep.equals({
+        __in__: {
+          curried: true,
+          value: 'LED1',
+        },
+      });
+
+      const terminalNumber = R.find(R.propEq('id', 'B1mMmjVQYx~B1MQi4mYe'), nodes);
+      expect(terminalNumber)
+      .to.have.property('pins')
+      .that.deep.equals({
+        __in__: {
+          curried: true,
+          value: 1,
+        },
+      });
     });
   });
 

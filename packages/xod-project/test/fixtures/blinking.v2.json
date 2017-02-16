@@ -1,0 +1,1470 @@
+{
+  "authors": [
+    "Amperka team"
+  ],
+  "description": "",
+  "license": "",
+  "patches": {
+    "xod/math/subtrac": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a - e.inputs.b) };\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "number",
+          "direction": "input"
+        },
+        "b": {
+          "key": "b",
+          "type": "number",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "number",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/math/divide": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a / e.inputs.b) };\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "number",
+          "direction": "input"
+        },
+        "b": {
+          "key": "b",
+          "type": "number",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "number",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/math/multiply": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a * e.inputs.b) };\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "number",
+          "direction": "input"
+        },
+        "b": {
+          "key": "b",
+          "type": "number",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "number",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/math/add": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a + e.inputs.b) };\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "number",
+          "direction": "input"
+        },
+        "b": {
+          "key": "b",
+          "type": "number",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "number",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/valveNumber": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.cond) {\n    e.fire({ out: e.inputs.in });\n  }\n};\n"
+      },
+      "pins": {
+        "cond": {
+          "key": "cond",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "in": {
+          "key": "in",
+          "type": "number",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "number",
+          "direction": "output"
+        }
+      },
+      "label": "valveNumber"
+    },
+    "xod/core/ultrasonic_HC_SR04": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nvar sonic = require('@amperka/ultrasonic');\n\nmodule.exports.setup = function(e) {\n  var pinTrig = new Pin(e.props.pinTrig);\n  var pinEcho = new Pin(e.props.pinEcho);\n  e.context.device = sonic.connect({\n    trigPin: pinTrig,\n    echoPin: pinEcho\n  });\n  e.context.units = e.props.units;\n  e.context.isBusy = false;\n};\n\nmodule.exports.evaluate = function(e) {\n  if (e.context.isBusy) {\n    e.fire({ error: \"busy\" });\n  } else {\n    e.context.isBusy = true;\n    e.context.device.ping(function(err, value) {\n      e.context.isBusy = false;\n      if (err) {\n        e.fire({ error: err.msg });\n      } else {\n        e.fire({ value: value });\n      }\n    }, e.context.units);\n  }\n};\n"
+      },
+      "pins": {
+        "sample": {
+          "key": "sample",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "units": {
+          "key": "units",
+          "type": "string",
+          "direction": "input"
+        },
+        "value": {
+          "key": "value",
+          "type": "number",
+          "direction": "output"
+        },
+        "error": {
+          "key": "error",
+          "type": "string",
+          "direction": "output"
+        }
+      },
+      "label": "HC-SR04"
+    },
+    "xod/core/triggerableNumber": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.props.value };\n};\n"
+      },
+      "pins": {
+        "trigOn": {
+          "key": "trigOn",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "value": {
+          "key": "value",
+          "type": "number",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "number",
+          "direction": "output"
+        }
+      },
+      "label": "triggerableNumber"
+    },
+    "xod/core/time": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "module.exports.evaluate = function(e) {\n  return { value: new Date().getTime() };\n};\n"
+      },
+      "pins": {
+        "pulse": {
+          "key": "pulse",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "value": {
+          "key": "value",
+          "type": "number",
+          "direction": "output"
+        }
+      },
+      "label": "Time"
+    },
+    "xod/core/split_bool": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.inp) {\n    return { outTrue: PULSE };\n  } else {\n    return { outFalse: PULSE };\n  }\n};\n"
+      },
+      "pins": {
+        "inp": {
+          "key": "inp",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "outTrue": {
+          "key": "outTrue",
+          "type": "pulse",
+          "direction": "output"
+        },
+        "outFalse": {
+          "key": "outFalse",
+          "type": "pulse",
+          "direction": "output"
+        }
+      },
+      "label": "Split"
+    },
+    "xod/core/stdout": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "nodejs": "module.exports.evaluate = function(e) {\n  var val = String(e.inputs.value);\n  process.stdout.write(val);\n};\n"
+      },
+      "pins": {
+        "value": {
+          "key": "value",
+          "type": "string",
+          "direction": "input"
+        }
+      },
+      "label": "stdout"
+    },
+    "xod/core/servo": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var minPulse = +e.props.minPulse;\n  var maxPulse = +e.props.maxPulse;\n  var us = minPulse + (maxPulse - minPulse) * e.inputs.value;\n  analogWrite(e.context.pin, us / 20000, { freq: 50 });\n};\n"
+      },
+      "pins": {
+        "minPulse": {
+          "key": "minPulse",
+          "type": "number",
+          "direction": "input"
+        },
+        "maxPulse": {
+          "key": "maxPulse",
+          "type": "number",
+          "direction": "input"
+        },
+        "value": {
+          "key": "value",
+          "type": "number",
+          "direction": "input"
+        }
+      }
+    },
+    "xod/core/pot": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  return { value: analogRead(e.context.pin) };\n};\n"
+      },
+      "pins": {
+        "sample": {
+          "key": "sample",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "value": {
+          "key": "value",
+          "type": "number",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/outputString": {
+      "nodes": {},
+      "links": {},
+      "impls": {},
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "string",
+          "direction": "input"
+        }
+      },
+      "label": "<OutputString>"
+    },
+    "xod/core/outputPulse": {
+      "nodes": {},
+      "links": {},
+      "impls": {},
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "pulse",
+          "direction": "input"
+        }
+      },
+      "label": "<OutputPulse>"
+    },
+    "xod/core/outputNumber": {
+      "nodes": {},
+      "links": {},
+      "impls": {},
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "number",
+          "direction": "input"
+        }
+      },
+      "label": "<OutputNumber>"
+    },
+    "xod/core/outputBool": {
+      "nodes": {},
+      "links": {},
+      "impls": {},
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "boolean",
+          "direction": "input"
+        }
+      },
+      "label": "<OutputBool>"
+    },
+    "xod/core/or": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a || e.inputs.b };\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "b": {
+          "key": "b",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "boolean",
+          "direction": "output"
+        }
+      },
+      "label": "or"
+    },
+    "xod/core/not": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: !e.inputs.in };\n};\n"
+      },
+      "pins": {
+        "in": {
+          "key": "in",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "boolean",
+          "direction": "output"
+        }
+      },
+      "label": "not"
+    },
+    "xod/core/map": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var k = (inputs.inp - inputs.inA) / (inputs.inB - inputs.inA);\n  var out = inputs.outA + k * (inputs.outB - inputs.outA);\n\n  if (inputs.clip) {\n    if (inputs.outB > inputs.outA) {\n      out = Math.max(inputs.outA, out);\n      out = Math.min(inputs.outB, out);\n    } else {\n      out = Math.max(inputs.outB, out);\n      out = Math.min(inputs.outA, out);\n    }\n  }\n\n  return { out: out };\n};\n"
+      },
+      "pins": {
+        "inp": {
+          "key": "inp",
+          "type": "number",
+          "direction": "input"
+        },
+        "inA": {
+          "key": "inA",
+          "type": "number",
+          "direction": "input"
+        },
+        "inB": {
+          "key": "inB",
+          "type": "number",
+          "direction": "input"
+        },
+        "outA": {
+          "key": "outA",
+          "type": "number",
+          "direction": "input"
+        },
+        "outB": {
+          "key": "outB",
+          "type": "number",
+          "direction": "input"
+        },
+        "clip": {
+          "key": "clip",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "number",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/less": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n\n  if (a === undefined || b === undefined) {\n    return;\n  }\n\n  return { out: a < b };\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "number",
+          "direction": "input"
+        },
+        "b": {
+          "key": "b",
+          "type": "number",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "boolean",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/led": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var b = e.inputs.brightness;\n\n  // Adjust duty cycle as a power function to align brightness\n  // perception by human eye\n  var duty = b * b * b;\n\n  analogWrite(e.context.pin, duty);\n};\n"
+      },
+      "pins": {
+        "brightness": {
+          "key": "brightness",
+          "type": "number",
+          "direction": "input"
+        }
+      },
+      "label": "LED"
+    },
+    "xod/core/latch": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.setup = function(e) {\n  e.context.state = e.props.initialState;\n};\n\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
+      },
+      "pins": {
+        "toggle": {
+          "key": "toggle",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "set": {
+          "key": "set",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "reset": {
+          "key": "reset",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "state": {
+          "key": "state",
+          "type": "boolean",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/inputString": {
+      "nodes": {},
+      "links": {},
+      "impls": {},
+      "pins": {
+        "__out__": {
+          "key": "__out__",
+          "type": "string",
+          "direction": "output"
+        }
+      },
+      "label": "<InputString>"
+    },
+    "xod/core/inputNumber": {
+      "nodes": {},
+      "links": {},
+      "impls": {},
+      "pins": {
+        "__out__": {
+          "key": "__out__",
+          "type": "number",
+          "direction": "output"
+        }
+      },
+      "label": "<InputNumber>"
+    },
+    "xod/core/inputPulse": {
+      "nodes": {},
+      "links": {},
+      "impls": {},
+      "pins": {
+        "__out__": {
+          "key": "__out__",
+          "type": "pulse",
+          "direction": "output"
+        }
+      },
+      "label": "<InputPulse>"
+    },
+    "xod/core/inputBool": {
+      "nodes": {},
+      "links": {},
+      "impls": {},
+      "pins": {
+        "__out__": {
+          "key": "__out__",
+          "type": "boolean",
+          "direction": "output"
+        }
+      },
+      "label": "<InputBool>"
+    },
+    "xod/core/equal": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n\n  if (a === undefined || b === undefined) {\n    return;\n  }\n\n  return { out: a === b };\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "number",
+          "direction": "input"
+        },
+        "b": {
+          "key": "b",
+          "type": "number",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "boolean",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/file_write": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "nodejs": "var path = require('path');\nvar fs = require('fs');\n\nmodule.exports.evaluate = function(e) {\n  var filename = e.inputs.fileName;\n  var data = e.inputs.data;\n\n  fs.writeFile(filename, data, function (err) {\n    if (err) {\n      e.fire({ onFailure: err.toString() });\n      return;\n    }\n\n    e.fire({ onSuccess: PULSE });\n  });\n};\n"
+      },
+      "pins": {
+        "fileName": {
+          "key": "fileName",
+          "type": "string",
+          "direction": "input"
+        },
+        "data": {
+          "key": "data",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "onSuccess": {
+          "key": "onSuccess",
+          "type": "pulse",
+          "direction": "output"
+        },
+        "onFailure": {
+          "key": "onFailure",
+          "type": "string",
+          "direction": "output"
+        }
+      },
+      "label": "File write"
+    },
+    "xod/core/file_read": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "nodejs": "var path = require('path');\nvar fs = require('fs');\n\nmodule.exports.evaluate = function(e) {\n  var filename = e.inputs.fileName;\n\n  fs.readFile(filename, function (err, data) {\n    if (err) {\n      e.fire({ error: err.toString() });\n      return;\n    }\n\n    e.fire({ data: data });\n  });\n};\n"
+      },
+      "pins": {
+        "fileName": {
+          "key": "fileName",
+          "type": "string",
+          "direction": "input"
+        },
+        "pulse": {
+          "key": "pulse",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "data": {
+          "key": "data",
+          "type": "string",
+          "direction": "output"
+        },
+        "error": {
+          "key": "error",
+          "type": "string",
+          "direction": "output"
+        }
+      },
+      "label": "File read"
+    },
+    "xod/core/greater": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n\n  if (a === undefined || b === undefined) {\n    return;\n  }\n\n  return { out: a > b };\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "number",
+          "direction": "input"
+        },
+        "b": {
+          "key": "b",
+          "type": "number",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "boolean",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/either": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var out = e.inputs.inp ? e.inputs.trueValue : e.inputs.falseValue;\n  return { out: out };\n};\n"
+      },
+      "pins": {
+        "inp": {
+          "key": "inp",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "trueValue": {
+          "key": "trueValue",
+          "type": "number",
+          "direction": "input"
+        },
+        "falseValue": {
+          "key": "falseValue",
+          "type": "number",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "number",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/digital_output": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.inputs.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
+      },
+      "pins": {
+        "pin": {
+          "key": "pin",
+          "type": "string",
+          "direction": "input"
+        },
+        "value": {
+          "key": "value",
+          "type": "number",
+          "direction": "input"
+        }
+      }
+    },
+    "xod/core/digital_input": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.inputs.pin = new Pin(e.inputs.pin);\n\n  setWatch(function(evt) {\n    e.fire({ state: !evt.state });\n  }, e.inputs.pin, {\n    edge: 'both',\n    repeat: true,\n    debounce: 30\n  });\n};\n"
+      },
+      "pins": {
+        "pin": {
+          "key": "pin",
+          "type": "string",
+          "direction": "input"
+        },
+        "value": {
+          "key": "value",
+          "type": "number",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/constString": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n"
+      },
+      "pins": {
+        "inValue": {
+          "key": "inValue",
+          "type": "string",
+          "direction": "input"
+        },
+        "pulse": {
+          "key": "pulse",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "value": {
+          "key": "value",
+          "type": "string",
+          "direction": "output"
+        }
+      },
+      "label": "<String>"
+    },
+    "xod/core/constNumber": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n"
+      },
+      "pins": {
+        "inValue": {
+          "key": "inValue",
+          "type": "number",
+          "direction": "input"
+        },
+        "pulse": {
+          "key": "pulse",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "value": {
+          "key": "value",
+          "type": "number",
+          "direction": "output"
+        }
+      },
+      "label": "<Number>"
+    },
+    "xod/core/constBool": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n"
+      },
+      "pins": {
+        "inValue": {
+          "key": "inValue",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "pulse": {
+          "key": "pulse",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "value": {
+          "key": "value",
+          "type": "boolean",
+          "direction": "output"
+        }
+      },
+      "label": "<Bool>"
+    },
+    "xod/core/compare": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n  if (a < b) {\n    return { less: PULSE };\n  } else if (a > b) {\n    return { greater: PULSE };\n  } else {\n    return { equal: PULSE };\n  }\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "number",
+          "direction": "input"
+        },
+        "b": {
+          "key": "b",
+          "type": "number",
+          "direction": "input"
+        },
+        "equal": {
+          "key": "equal",
+          "type": "pulse",
+          "direction": "output"
+        },
+        "less": {
+          "key": "less",
+          "type": "pulse",
+          "direction": "output"
+        },
+        "greater": {
+          "key": "greater",
+          "type": "pulse",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/concat": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "module.exports.evaluate = function(e) {\n  return { result: (String(e.inputs.a) + String(e.inputs.b)) };\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "string",
+          "direction": "input"
+        },
+        "b": {
+          "key": "b",
+          "type": "string",
+          "direction": "input"
+        },
+        "result": {
+          "key": "result",
+          "type": "string",
+          "direction": "output"
+        }
+      },
+      "label": "concat"
+    },
+    "xod/core/choose": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.x) {\n    return { truePulse: PULSE };\n  } else {\n    return { falsePulse: PULSE };\n  }\n};\n"
+      },
+      "pins": {
+        "x": {
+          "key": "x",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "truePulse": {
+          "key": "truePulse",
+          "type": "pulse",
+          "direction": "output"
+        },
+        "falsePulse": {
+          "key": "falsePulse",
+          "type": "pulse",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/clock": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.context.intervalID) {\n    clearInterval(e.context.intervalID);\n  }\n\n  e.context.intervalID = setInterval(function() {\n    e.fire({ tick: PULSE });\n  }, e.inputs.interval * 1000);\n};\n"
+      },
+      "pins": {
+        "interval": {
+          "key": "interval",
+          "type": "number",
+          "direction": "input"
+        },
+        "tick": {
+          "key": "tick",
+          "type": "pulse",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/cast-string-to-pulse": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (Boolean(e.inputs.__in__) === false) return;\n\n  return { __out__: PULSE };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "string",
+          "direction": "input"
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "pulse",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/cast-pulse-to-number": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: 1 };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "number",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/cast-string-to-boolean": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Boolean(e.inputs.__in__) };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "string",
+          "direction": "input"
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "boolean",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/cast-pulse-to-boolean": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: true };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "boolean",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/cast-number-to-string": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "number",
+          "direction": "input"
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "boolean",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/cast-number-to-boolean": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Boolean(e.inputs.__in__) };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "number",
+          "direction": "input"
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "boolean",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/cast-number-to-pulse": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (Boolean(e.inputs.__in__) === false) return;\n\n  return { __out__: PULSE };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "number",
+          "direction": "input"
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "pulse",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/cast-boolean-to-string": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "string",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/button": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  var pin = new Pin(e.props.pin);\n\n  setWatch(function(evt) {\n    e.fire({ state: !evt.state });\n  }, pin, {\n    edge: 'both',\n    repeat: true,\n    debounce: 30\n  });\n};\n"
+      },
+      "pins": {
+        "state": {
+          "key": "state",
+          "type": "boolean",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/cast-boolean-to-number": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Number(e.inputs.__in__) };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "number",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/buzzer": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var f = e.inputs.freq;\n\n  if (f === 0) {\n    digitalWrite(e.context.pin, false);\n  } else {\n    analogWrite(e.context.pin, 0.5, { freq: f });\n  }\n};\n"
+      },
+      "pins": {
+        "freq": {
+          "key": "freq",
+          "type": "number",
+          "direction": "input"
+        }
+      },
+      "label": "Buzzer"
+    },
+    "xod/core/cast-boolean-to-pulse": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.__in__ === false) return;\n  return { __out__: PULSE };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "pulse",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/both": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.a && e.inputs.b) {\n    return { out: PULSE };\n  }\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "b": {
+          "key": "b",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "pulse",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/any": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.a || e.inputs.b) {\n    return { out: PULSE };\n  }\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "b": {
+          "key": "b",
+          "type": "pulse",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "pulse",
+          "direction": "output"
+        }
+      }
+    },
+    "xod/core/and": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a && e.inputs.b };\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "b": {
+          "key": "b",
+          "type": "boolean",
+          "direction": "input"
+        },
+        "out": {
+          "key": "out",
+          "type": "boolean",
+          "direction": "output"
+        }
+      },
+      "label": "and"
+    },
+    "@/led": {
+      "nodes": {
+        "SkFGQiEQFg": {
+          "id": "SkFGQiEQFg",
+          "type": "xod/core/digital_output",
+          "position": {
+            "x": 305,
+            "y": 430
+          },
+          "pins": {
+            "pin": {
+              "curried": false
+            }
+          }
+        },
+        "HyufQsE7Kx": {
+          "id": "HyufQsE7Kx",
+          "type": "xod/core/inputString",
+          "position": {
+            "x": 172,
+            "y": 104
+          },
+          "pins": {}
+        },
+        "ByDG7iVXtl": {
+          "id": "ByDG7iVXtl",
+          "type": "xod/core/inputNumber",
+          "position": {
+            "x": 418,
+            "y": 104
+          },
+          "pins": {}
+        },
+        "ByUz7oNQKx": {
+          "id": "ByUz7oNQKx",
+          "type": "xod/math/multiply",
+          "position": {
+            "x": 453,
+            "y": 298
+          },
+          "pins": {}
+        },
+        "SkrMms4mYg": {
+          "id": "SkrMms4mYg",
+          "type": "xod/math/multiply",
+          "position": {
+            "x": 354,
+            "y": 218
+          },
+          "pins": {}
+        }
+      },
+      "links": {
+        "BkRMQjEXKl": {
+          "id": "BkRMQjEXKl",
+          "output": {
+            "nodeId": "SkrMms4mYg",
+            "pinKey": "a"
+          },
+          "input": {
+            "nodeId": "ByDG7iVXtl",
+            "pinKey": "__out__"
+          }
+        },
+        "S11gfQjNXYx": {
+          "id": "S11gfQjNXYx",
+          "output": {
+            "nodeId": "ByUz7oNQKx",
+            "pinKey": "b"
+          },
+          "input": {
+            "nodeId": "ByDG7iVXtl",
+            "pinKey": "__out__"
+          }
+        },
+        "SygezQs4mtg": {
+          "id": "SygezQs4mtg",
+          "output": {
+            "nodeId": "ByUz7oNQKx",
+            "pinKey": "a"
+          },
+          "input": {
+            "nodeId": "SkrMms4mYg",
+            "pinKey": "out"
+          }
+        },
+        "BJZeGQi47tl": {
+          "id": "BJZeGQi47tl",
+          "output": {
+            "nodeId": "SkFGQiEQFg",
+            "pinKey": "value"
+          },
+          "input": {
+            "nodeId": "ByUz7oNQKx",
+            "pinKey": "out"
+          }
+        },
+        "BJzxfmoEXYg": {
+          "id": "BJzxfmoEXYg",
+          "output": {
+            "nodeId": "SkFGQiEQFg",
+            "pinKey": "pin"
+          },
+          "input": {
+            "nodeId": "HyufQsE7Kx",
+            "pinKey": "__out__"
+          }
+        },
+        "r17lz7iVXtl": {
+          "id": "r17lz7iVXtl",
+          "output": {
+            "nodeId": "SkrMms4mYg",
+            "pinKey": "b"
+          },
+          "input": {
+            "nodeId": "ByDG7iVXtl",
+            "pinKey": "__out__"
+          }
+        }
+      },
+      "impls": {},
+      "pins": {
+        "HyufQsE7Kx": {
+          "key": "HyufQsE7Kx",
+          "type": "string",
+          "direction": "input"
+        },
+        "ByDG7iVXtl": {
+          "key": "ByDG7iVXtl",
+          "type": "number",
+          "direction": "input"
+        }
+      },
+      "label": "Led"
+    },
+    "@/main": {
+      "nodes": {
+        "rk4zmsVmFx": {
+          "id": "rk4zmsVmFx",
+          "type": "@/led",
+          "position": {
+            "x": 237,
+            "y": 349
+          },
+          "pins": {
+            "HyufQsE7Kx": {
+              "curried": true,
+              "value": "LED1"
+            }
+          }
+        },
+        "B1mMmjVQYx": {
+          "id": "B1mMmjVQYx",
+          "type": "@/blink",
+          "position": {
+            "x": 238,
+            "y": 184
+          },
+          "pins": {
+            "B1MQi4mYe": {
+              "curried": true,
+              "value": 1
+            }
+          }
+        }
+      },
+      "links": {
+        "Hy6z7i4QFe": {
+          "id": "Hy6z7i4QFe",
+          "output": {
+            "nodeId": "rk4zmsVmFx",
+            "pinKey": "ByDG7iVXtl"
+          },
+          "input": {
+            "nodeId": "B1mMmjVQYx",
+            "pinKey": "S1zMmo4QKx"
+          }
+        }
+      },
+      "impls": {},
+      "pins": {},
+      "label": "Main"
+    },
+    "@/blink": {
+      "nodes": {
+        "S1zMmo4QKx": {
+          "id": "S1zMmo4QKx",
+          "type": "xod/core/outputBool",
+          "position": {
+            "x": 263,
+            "y": 508
+          },
+          "pins": {}
+        },
+        "r1bz7iEmYx": {
+          "id": "r1bz7iEmYx",
+          "type": "xod/core/latch",
+          "position": {
+            "x": 271,
+            "y": 355
+          },
+          "pins": {}
+        },
+        "SklMmiVmKe": {
+          "id": "SklMmiVmKe",
+          "type": "xod/core/clock",
+          "position": {
+            "x": 267,
+            "y": 215
+          },
+          "pins": {
+            "interval": {
+              "curried": false,
+              "value": 1
+            }
+          }
+        },
+        "B1MQi4mYe": {
+          "id": "B1MQi4mYe",
+          "type": "xod/core/inputNumber",
+          "position": {
+            "x": 268,
+            "y": 103
+          },
+          "pins": {}
+        }
+      },
+      "links": {
+        "Sy9M7jEXFx": {
+          "id": "Sy9M7jEXFx",
+          "output": {
+            "nodeId": "S1zMmo4QKx",
+            "pinKey": "__in__"
+          },
+          "input": {
+            "nodeId": "r1bz7iEmYx",
+            "pinKey": "state"
+          }
+        },
+        "HksfmsVQKe": {
+          "id": "HksfmsVQKe",
+          "output": {
+            "nodeId": "SklMmiVmKe",
+            "pinKey": "interval"
+          },
+          "input": {
+            "nodeId": "B1MQi4mYe",
+            "pinKey": "__out__"
+          }
+        },
+        "HJnGXo4mFg": {
+          "id": "HJnGXo4mFg",
+          "output": {
+            "nodeId": "r1bz7iEmYx",
+            "pinKey": "toggle"
+          },
+          "input": {
+            "nodeId": "SklMmiVmKe",
+            "pinKey": "tick"
+          }
+        }
+      },
+      "impls": {},
+      "pins": {
+        "S1zMmo4QKx": {
+          "key": "S1zMmo4QKx",
+          "type": "boolean",
+          "direction": "output"
+        },
+        "B1MQi4mYe": {
+          "key": "B1MQi4mYe",
+          "type": "number",
+          "direction": "input"
+        }
+      },
+      "label": "Blink"
+    }
+  }
+}
