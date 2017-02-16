@@ -369,30 +369,66 @@ const removeTerminalsAndPassPins = ([nodes, links]) => {
 
   const newLinks = R.compose(
     R.concat(linksWithoutTerminals),
+    R.flatten,
     R.map((linkPair) => {
-      const outputLink = R.find(
+      // to terminal
+      const sourceLink = R.find(
         R.compose(
           oneOfTerminalNodeIds,
           Link.getLinkInputNodeId
         ),
         linkPair
       );
-      const inputLink = R.find(
+      // from terminal
+      const destinationLink = R.find(
         R.compose(
           oneOfTerminalNodeIds,
           Link.getLinkOutputNodeId
         ),
         linkPair
       );
-      const linkId = Link.getLinkId(inputLink);
-      const newLink = Link.createLink(
-        Link.getLinkInputPinKey(inputLink),
-        Link.getLinkInputNodeId(inputLink),
-        Link.getLinkOutputPinKey(outputLink),
-        Link.getLinkOutputNodeId(outputLink)
+
+      const terminalNodeId = Link.getLinkOutputNodeId(destinationLink);
+
+      // get all links from terminal
+      const linksFromTerminal = R.filter(
+        R.compose(
+          R.equals(terminalNodeId),
+          Link.getLinkOutputNodeId
+        ),
+        R.flatten(terminalLinks)
       );
 
-      return R.assoc('id', linkId, newLink);
+      // Create new links for every link from terminal
+      // but take output from sourceLink
+      // E.G.
+      //     +------------+                          +------------+
+      //     |   latch    |                          | latch      |
+      //     +-----o------+       Links will         +-----o------+
+      //           |              be converted             |
+      //     +-----O------+       into next        +-------+-----+------+
+      //     | outputBool |       three links:     |             |      |
+      //     +-----+------+                        |             |      |
+      //           |                               |             |      |
+      //   +-------+-----+------+                  |             |      |
+      //   |             |      |                  |             |      |
+      // +-O------O-+  +-O------O-+              +-O------O-+  +-O------O-+
+      // |    or    |  |    or    |              |    or    |  |    or    |
+      // +----o-----+  +----o-----+              +----o-----+  +----o-----+
+      return R.map(
+        (link) => {
+          const linkId = Link.getLinkId(link);
+          const newLink = Link.createLink(
+            Link.getLinkInputPinKey(link),
+            Link.getLinkInputNodeId(link),
+            Link.getLinkOutputPinKey(sourceLink),
+            Link.getLinkOutputNodeId(sourceLink)
+          );
+
+          return R.assoc('id', linkId, newLink);
+        },
+        linksFromTerminal
+      );
     }),
     R.filter(R.compose(R.gt(R.__, 1), R.length))
   )(terminalLinks);
