@@ -1,0 +1,30 @@
+{
+  "name": "xod-arduino-builder",
+  "version": "0.0.1",
+  "description": "XOD project: Arduino Builder",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "babel src -d dist",
+    "dev": "npm run build -- --watch"
+  },
+  "author": "Alexander Matsievsky <am@amperka.ru>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xodio/xod.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": "7.4.0"
+  },
+  "dependencies": {
+    "ramda": "^0.23.0",
+    "rest": "^2.0.0",
+    "serialport": "^4.0.7",
+    "shelljs": "^0.7.6"
+  },
+  "babel": {
+    "presets": [
+      "node6"
+    ]
+  }
+}
