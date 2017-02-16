@@ -48,7 +48,7 @@ export const duplicatePatch = def(
  */
 export const getPatchLabel = def(
   'getPatchLabel :: Patch -> Label',
-  R.propOr('', 'label')
+  R.prop('label')
 );
 
 /**
@@ -76,7 +76,7 @@ export const setPatchLabel = def(
   */
 export const listImpls = def(
   'listImpls :: Patch -> [String]',
-  R.compose(R.keys, R.propOr({}, 'impls'))
+  R.compose(R.keys, R.prop('impls'))
 );
 
 /**
@@ -177,7 +177,7 @@ export const listNodes = def(
   'listNodes :: Patch -> [Node]',
   R.compose(
     R.values,
-    R.propOr([], 'nodes')
+    R.prop('nodes')
   )
 );
 
@@ -317,7 +317,7 @@ export const listLinks = def(
   'listLinks :: Patch -> [Link]',
   R.compose(
     R.values,
-    R.propOr({}, 'links')
+    R.prop('links')
   )
 );
 

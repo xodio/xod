@@ -122,7 +122,7 @@ export const setNodeLabel = def(
  */
 export const getNodeDescription = def(
   'getNodeDescription :: Node -> String',
-  R.propOr('description')
+  R.prop('description')
 );
 
 /**

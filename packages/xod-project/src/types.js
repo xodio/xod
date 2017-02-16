@@ -139,6 +139,13 @@ export const Patch = Model('Patch', {
   pins: $.StrMap(Pin),
 });
 
+export const Project = Model('Project', {
+  patches: $.StrMap(Patch),
+  authors: $.Array($.String),
+  license: $.String,
+  description: $.String,
+});
+
 export const NodeOrId = OneOfType('NodeOrId', [NodeId, ObjectWithId]);
 export const LinkOrId = OneOfType('LinkOrId', [LinkId, ObjectWithId]);
 export const PinOrKey = OneOfType('PinOrKey', [PinKey, ObjectWithKey]);
@@ -168,6 +175,7 @@ export const env = $.env.concat([
   PinDirection,
   DataType,
   DataValue,
+  Project,
   ShortId,
   Label,
   Source,

@@ -132,6 +132,9 @@ export const defaultizeProject = R.compose(
     patches: R.map(defaultizePatch),
   }),
   R.merge({
+    authors: [],
+    license: '',
+    description: '',
     patches: {},
   })
 );

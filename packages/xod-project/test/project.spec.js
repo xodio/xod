@@ -9,6 +9,8 @@ import * as Helper from './helpers';
 
 chai.use(dirtyChai);
 
+const emptyProject = Helper.defaultizeProject({});
+
 describe('Project', () => {
   describe('createProject', () => {
     it('should return object', () => {
@@ -44,24 +46,9 @@ describe('Project', () => {
     });
   });
 
-  // properties
-  describe('setProjectDescription', () => {
-    Helper.expectOptionalStringSetter(expect, Project.setProjectDescription, 'description');
-  });
-  describe('getProjectDescription', () => {
-    Helper.expectOptionalStringGetter(expect, Project.getProjectDescription, 'description');
-  });
-
-  describe('setProjectLicense', () => {
-    Helper.expectOptionalStringSetter(expect, Project.setProjectLicense, 'license');
-  });
-  describe('getProjectLicense', () => {
-    Helper.expectOptionalStringGetter(expect, Project.getProjectLicense, 'license');
-  });
-
   describe('setProjectAuthors', () => {
     it('should return Project with authors equal to empty array', () => {
-      expect(Project.setProjectAuthors([], {}))
+      expect(Project.setProjectAuthors([], emptyProject))
         .to.be.an('object')
         .that.have.property('authors')
         .to.be.instanceof(Array)
@@ -69,67 +56,51 @@ describe('Project', () => {
     });
     it('should return Project with assigned array into authors', () => {
       const authors = ['Vasya', 'Petya'];
-      expect(Project.setProjectAuthors(authors, {}))
+      expect(Project.setProjectAuthors(authors, emptyProject))
         .to.be.an('object')
         .that.have.property('authors')
         .that.deep.equal(authors);
     });
-    it('should return Project with single string in authors array', () => {
-      expect(Project.setProjectAuthors('Petya', {}))
-        .to.be.an('object')
-        .that.have.property('authors')
-        .that.have.property(0)
-        .that.equal('Petya');
-    });
-    it('should return Project with single string (number converted into string) in authors array', () => {
-      expect(Project.setProjectAuthors(6, {}))
-        .to.be.an('object')
-        .that.have.property('authors')
-        .that.have.property(0)
-        .that.equal('6');
-    });
   });
   describe('getProjectAuthors', () => {
     it('should return empty array even if Project is empty object', () => {
-      expect(Project.getProjectAuthors({})).to.be.empty();
+      expect(Project.getProjectAuthors(emptyProject)).to.be.empty();
     });
     it('should return array of authors', () => {
-      const fixture = {
+      const project = Helper.defaultizeProject({
         authors: ['Vasya', 'Petya'],
-      };
-      expect(Project.getProjectAuthors(fixture)).to.have.members(['Vasya', 'Petya']);
+      });
+      expect(Project.getProjectAuthors(project)).to.have.members(['Vasya', 'Petya']);
     });
   });
 
   // entity getters / search functions
   describe('getPatchByPath', () => {
     it('should return Nothing<Null> if project is empty object', () => {
-      const maybe = Project.getPatchByPath('test', {});
+      const maybe = Project.getPatchByPath('test', emptyProject);
       expect(maybe.isNothing).to.be.true();
     });
     it('should return Nothing<Null> if there is no patch with such path', () => {
-      const project = {
+      const project = Helper.defaultizeProject({
         patches: {
           '@/one': {},
         },
-      };
+      });
       const maybe = Project.getPatchByPath('@/two', project);
       expect(maybe.isNothing).to.be.true();
     });
     it('should return Just<{}> if project have a patch', () => {
-      const patch = {};
-      const project = {
+      const project = Helper.defaultizeProject({
         patches: {
-          '@/one': patch,
+          '@/one': {},
         },
-      };
+      });
       const maybe = Project.getPatchByPath('@/one', project);
       expect(maybe.isJust).to.be.true();
-      expect(maybe.getOrElse(null)).to.be.equal(patch);
     });
   });
   describe('lsPatches', () => {
-    const project = {
+    const project = Helper.defaultizeProject({
       patches: {
         '@/folder/patch': {},
         '@/folder/patch2': {},
@@ -137,7 +108,7 @@ describe('Project', () => {
         '@/folder2/patch4': {},
         '@/patch5': {},
       },
-    };
+    });
 
     it('should return an object with patches', () => {
       expect(Project.lsPatches('@/', project))
@@ -155,14 +126,14 @@ describe('Project', () => {
     });
   });
   describe('lsDirs', () => {
-    const project = {
+    const project = Helper.defaultizeProject({
       patches: {
         '@/folder/patch': {},
         '@/folder/subfolder/patch3': {},
         '@/folder2/patch4': {},
         '@/patch5': {},
       },
-    };
+    });
 
     it('should return a list of strings', () => {
       expect(Project.lsDirs('@/', project))
@@ -191,20 +162,21 @@ describe('Project', () => {
   describe('validatePatchRebase', () => {
     it('should return Either.Left if newPath contains invalid characters', () => {
       const patch = {};
-      const project = { patches: { '@/test': patch } };
-      const newProject = Project.validatePatchRebase('in√ålid path', patch, project);
+      const project = Helper.defaultizeProject({ patches: { '@/test': patch } });
+      const newProject = Project.validatePatchRebase('in√ålid path', '@/test', project);
 
       expect(newProject.isLeft).to.be.true();
     });
     it('should return Either.Left if patch is not in the project', () => {
-      const project = {};
-      const newProject = Project.validatePatchRebase('@/test', '@/patch', project);
+      const newProject = Project.validatePatchRebase('@/test', '@/patch', emptyProject);
 
       expect(newProject.isLeft).to.be.true();
       Helper.expectErrorMessage(expect, newProject, CONST.ERROR.PATCH_NOT_FOUND_BY_PATH);
     });
     it('should return Either.Left if another patch with same path already exist', () => {
-      const project = { patches: { '@/test': {}, '@/patch': {} } };
+      const project = Helper.defaultizeProject({
+        patches: { '@/test': {}, '@/patch': {} },
+      });
       const newProject = Project.validatePatchRebase('@/test', '@/patch', project);
 
       expect(newProject.isLeft).to.be.true();
@@ -214,7 +186,7 @@ describe('Project', () => {
       const patch = {};
       const oldPath = '@/test';
       const newPath = '@/anotherPath';
-      const project = { patches: { [oldPath]: patch } };
+      const project = Helper.defaultizeProject({ patches: { [oldPath]: patch } });
 
       const newProject = Project.validatePatchRebase(newPath, oldPath, project);
       /* istanbul ignore next */
@@ -262,7 +234,7 @@ describe('Project', () => {
     });
 
     it('should be Either.Left for non-existent type', () => {
-      const result = Project.validatePatchContents(patchWithNodeOnly, {});
+      const result = Project.validatePatchContents(patchWithNodeOnly, emptyProject);
       expect(result.isLeft).to.be.true();
       Helper.expectErrorMessage(expect, result, CONST.ERROR.TYPE_NOT_FOUND);
     });
@@ -301,17 +273,13 @@ describe('Project', () => {
   // entity setters
   describe('assocPatch', () => {
     it('should return Either.Left if path is not valid', () => {
-      const newProject = Project.assocPatch('', Patch.createPatch(), {});
-      expect(newProject.isLeft).to.be.true();
-    });
-    it('should return Either.Left if patch is not valid', () => {
-      const newProject = Project.assocPatch('@/test', {}, {});
+      const newProject = Project.assocPatch('', Patch.createPatch(), emptyProject);
       expect(newProject.isLeft).to.be.true();
     });
     it('should return Either.Right with associated patch', () => {
       const path = '@/test';
       const patch = Patch.createPatch();
-      const newProject = Project.assocPatch(path, patch, {});
+      const newProject = Project.assocPatch(path, patch, emptyProject);
       expect(newProject.isRight).to.be.true();
       /* istanbul ignore next */
       Helper.expectEither(
@@ -329,11 +297,11 @@ describe('Project', () => {
       const oldPatch = Patch.createPatch();
       const newPath = '@/new';
       const newPatch = Patch.createPatch();
-      const project = {
+      const project = Helper.defaultizeProject({
         patches: {
           [oldPath]: oldPatch,
         },
-      };
+      });
       const newProject = Project.assocPatch(newPath, newPatch, project);
 
       expect(newProject.isRight).to.be.true();
@@ -353,7 +321,7 @@ describe('Project', () => {
     it('should dissocPatch by path string', () => {
       const path = '@/test';
       const patch = {};
-      const project = { patches: { [path]: patch } };
+      const project = Helper.defaultizeProject({ patches: { [path]: patch } });
       const newProject = Project.dissocPatch(path, project);
       expect(newProject)
         .to.have.property('patches')
@@ -362,28 +330,31 @@ describe('Project', () => {
     it('should not affect on other patches', () => {
       const patch = { path: '@/test' };
       const anotherPatch = { path: '@/leave/me/alone' };
-      const project = { patches: { [patch.path]: patch, [anotherPatch.path]: anotherPatch } };
+      const project = Helper.defaultizeProject({
+        patches: {
+          [patch.path]: patch,
+          [anotherPatch.path]: anotherPatch,
+        },
+      });
       const newProject = Project.dissocPatch(patch.path, project);
       expect(newProject)
         .to.have.property('patches')
         .that.contain.all.keys([anotherPatch.path]);
     });
     it('should return project even if it has no patches', () => {
-      const project = {};
-      const newProject = Project.dissocPatch('@/test', project);
-      expect(newProject).to.be.equal(project);
+      const newProject = Project.dissocPatch('@/test', emptyProject);
+      expect(newProject).to.be.deep.equal(emptyProject);
     });
   });
   describe('rebasePatch', () => {
     it('should return Either.Left if something is not valid', () => {
-      expect(Project.rebasePatch('@/new', '@/old', {}).isLeft)
+      expect(Project.rebasePatch('@/new', '@/old', emptyProject).isLeft)
         .to.be.true();
     });
     it('should return Either.Right for correct values', () => {
-      const patch = {};
       const oldPath = '@/test';
       const newPath = '@/anotherPath';
-      const project = { patches: { [oldPath]: patch } };
+      const project = Helper.defaultizeProject({ patches: { [oldPath]: {} } });
 
       const newProject = Project.rebasePatch(newPath, oldPath, project);
       expect(newProject.isRight).to.be.true();
@@ -393,19 +364,24 @@ describe('Project', () => {
         (proj) => {
           expect(proj)
             .to.have.property('patches')
-            .that.have.property(newPath)
-            .that.equal(patch);
+            .that.have.property(newPath);
           expect(proj.patches).to.have.all.keys(newPath);
         },
         newProject
       );
     });
     it('should update all reference on changed path', () => {
-      const patch = {};
       const oldPath = '@/test';
       const newPath = '@/anotherPath';
       const withNodesPath = '@/withNodes';
-      const project = { patches: { [oldPath]: patch, '@/withNodes': { nodes: { 1: { type: oldPath } } } } };
+      const project = Helper.defaultizeProject({
+        patches: {
+          [oldPath]: {},
+          '@/withNodes': {
+            nodes: { 1: { type: oldPath } },
+          },
+        },
+      });
 
       const newProject = Project.rebasePatch(newPath, oldPath, project);
       expect(newProject.isRight).to.be.true();
@@ -429,16 +405,16 @@ describe('Project', () => {
   });
 
   describe('lists', () => {
-    const project = {
+    const project = Helper.defaultizeProject({
       patches: {
         '@/test': { path: '@/test' },
         'external/patch': { path: 'external/patch' },
       },
-    };
+    });
 
     describe('listPatches', () => {
       it('should return empty array for empty project', () => {
-        expect(Project.listPatches({}))
+        expect(Project.listPatches(emptyProject))
           .to.be.instanceof(Array)
           .and.to.be.empty();
       });
@@ -450,7 +426,7 @@ describe('Project', () => {
     });
     describe('listPatchPaths', () => {
       it('should return empty array for empty project', () => {
-        expect(Project.listPatchPaths({}))
+        expect(Project.listPatchPaths(emptyProject))
           .to.be.instanceof(Array)
           .and.to.be.empty();
       });
@@ -461,7 +437,7 @@ describe('Project', () => {
     });
     describe('listLocalPatches', () => {
       it('should return empty array for empty project', () => {
-        expect(Project.listLocalPatches({}))
+        expect(Project.listLocalPatches(emptyProject))
           .to.be.instanceof(Array)
           .and.to.be.empty();
       });
@@ -473,7 +449,7 @@ describe('Project', () => {
     });
     describe('listLibraryPatches', () => {
       it('should return empty array for empty project', () => {
-        expect(Project.listLibraryPatches({}))
+        expect(Project.listLibraryPatches(emptyProject))
           .to.be.instanceof(Array)
           .and.to.be.empty();
       });
