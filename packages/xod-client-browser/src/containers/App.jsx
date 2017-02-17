@@ -318,7 +318,7 @@ const mapStateToProps = state => ({
   hasChanges: client.projectHasChanges(state),
   project: core.getProjectPojo(state),
   projectJSON: core.getProjectJSON(state),
-  currentPatchId: client.currentPatchId(state),
+  currentPatchId: client.getCurrentPatchId(state),
   meta: core.getMeta(state),
   nodeTypes: core.dereferencedNodeTypes(state),
   selectedNodeType: client.getSelectedNodeType(state),
