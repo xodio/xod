@@ -62,13 +62,20 @@ module.exports = {
         ],
       },
       {
+        test: /node_modules\/font-awesome\/.*\.css$/,
+        loaders: [
+          'style',
+          'css',
+        ],
+      },
+      {
         test: /\.json5$/,
         loader: 'json5-loader',
       },
       {
         test: /json5\/lib\/require/,
         loader: 'null',
-      }
+      },
     ],
   },
   plugins: [
