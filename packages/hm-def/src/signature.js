@@ -5,6 +5,9 @@ import $ from 'sanctuary-def';
 /* We need a recursion, so: */
 /* eslint-disable no-use-before-define */
 
+/* Types are by convention starts with a capital leter, so: */
+/* eslint-disable new-cap */
+
 /*
 From https://www.npmjs.com/package/hindley-milner-parser-js:
 
@@ -72,22 +75,41 @@ const convertFunction = R.useWith(
   ]
 );
 
+// :: TypeMap -> SignatureEntry -> Pair(String, Type)
+const convertRecordField = typeMap => field => [
+  field.text,
+  convertType(typeMap)(field.children[0]),
+];
+
+// :: TypeMap -> SignatureEntry -> Type
+const convertRecord = typeMap => entry => $.RecordType(
+  R.compose(
+    R.fromPairs,
+    R.map(convertRecordField(typeMap)),
+    R.prop('children')
+  )(entry)
+);
+
 // :: SignatureEntry -> Type
 const convertTypevar = R.memoize(R.compose($.TypeVariable, R.prop('text')));
 
-// :: TypeMap -> SignatureEntry -> Type
+// :: TypeMap -> SignatureEntry -> Type|Null
 function convertType(typeMap) {
   return R.cond([
     [typeEq('typeConstructor'), convertTypeConstructor(typeMap)],
     [typeEq('function'), convertFunction(typeMap)],
     [typeEq('list'), convertList(typeMap)],
+    [typeEq('record'), convertRecord(typeMap)],
     [typeEq('typevar'), convertTypevar],
   ]);
 }
 
 // :: TypeMap -> [SignatureEntry] -> [Type]
 function convertTypes(typeMap) {
-  return R.map(convertType(typeMap));
+  return R.compose(
+    R.reject(R.isNil),
+    R.map(convertType(typeMap))
+  );
 }
 
 // :: TypeMap -> ParsedSignature -> [Type]

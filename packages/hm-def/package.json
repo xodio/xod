@@ -11,7 +11,7 @@
   "author": "XOD LLC",
   "license": "MIT",
   "dependencies": {
-    "hm-parser": "^0.1.1",
+    "hm-parser": "^0.1.2",
     "ramda": "^0.23.0",
     "sanctuary-def": "^0.9.0"
   },
