@@ -27,5 +27,7 @@
     type: 'number',
     description: 'Selected output value',
   }],
+  impl: {
+    js: "\nmodule.exports.evaluate = function(e) {\n  var out = e.inputs.inp ? e.inputs.trueValue : e.inputs.falseValue;\n  return { out: out };\n};\n",
+  },
 }
-

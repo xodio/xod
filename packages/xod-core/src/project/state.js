@@ -12,10 +12,8 @@ const mapNodeTypePins = meta => R.merge(
   mapDirectedNodeTypePins(PIN_DIRECTION.OUTPUT, 'outputs')(meta)
 );
 
-const removeNils = R.reject(R.isNil);
-
 // :: (String -> String -> String) -> Object -> Object
-export const genNodeTypes = R.uncurryN(2, getImpl => R.compose(
+export const genNodeTypes = R.compose(
   R.indexBy(R.prop('id')),
   R.values,
   R.mapObjIndexed((meta, id) => R.merge(
@@ -23,13 +21,9 @@ export const genNodeTypes = R.uncurryN(2, getImpl => R.compose(
     {
       id,
       pins: mapNodeTypePins(meta),
-      impl: removeNils({
-        js: getImpl('js', id, '.js'),
-        espruino: getImpl('espruino', id, '.js'),
-      }),
     }
   ))
-));
+);
 
 export const getInitialState = nodeTypes => ({
   meta: {

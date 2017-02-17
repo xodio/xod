@@ -11,4 +11,7 @@
     type: 'bool',
     description: 'Resulting inverted value',
   }],
+  impl: {
+    js: "\nmodule.exports.evaluate = function(e) {\n  return { out: !e.inputs.in };\n};",
+  },
 }

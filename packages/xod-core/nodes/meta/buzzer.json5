@@ -13,5 +13,8 @@
     label: 'Pin',
     type: 'string',
     value: 'A3',
-  }]
+  }],
+  impl: {
+    espruino: "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var f = e.inputs.freq;\n\n  if (f === 0) {\n    digitalWrite(e.context.pin, false);\n  } else {\n    analogWrite(e.context.pin, 0.5, { freq: f });\n  }\n};\n",
+  },
 }
