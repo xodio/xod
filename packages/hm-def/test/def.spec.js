@@ -1,5 +1,4 @@
 
-import R from 'ramda';
 import $ from 'sanctuary-def';
 import { assert } from 'chai';
 import HMD from '../src/index';

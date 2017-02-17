@@ -5,6 +5,9 @@ import $ from 'sanctuary-def';
 /* We need a recursion, so: */
 /* eslint-disable no-use-before-define */
 
+/* Types are by convention starts with a capital leter, so: */
+/* eslint-disable new-cap */
+
 /*
 From https://www.npmjs.com/package/hindley-milner-parser-js:
 
@@ -75,7 +78,7 @@ const convertFunction = R.useWith(
 // :: TypeMap -> SignatureEntry -> Pair(String, Type)
 const convertRecordField = typeMap => field => [
   field.text,
-  convertType(typeMap)(field.children[0])
+  convertType(typeMap)(field.children[0]),
 ];
 
 // :: TypeMap -> SignatureEntry -> Type
