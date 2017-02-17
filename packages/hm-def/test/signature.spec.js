@@ -99,4 +99,9 @@ describe('Signature', () => {
     const types = sigTypes($.env, 'foo :: () -> Number');
     assertDeepEqual(types, [$.Number]);
   });
+
+  it('should resolve records', () => {
+    const types = sigTypes($.env, 'foo :: { value :: Number } -> Number');
+    assertDeepEqual(types, [$.RecordType({ value: $.Number }), $.Number]);
+  });
 });

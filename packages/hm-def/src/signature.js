@@ -72,6 +72,21 @@ const convertFunction = R.useWith(
   ]
 );
 
+// :: TypeMap -> SignatureEntry -> Pair(String, Type)
+const convertRecordField = typeMap => field => [
+  field.text,
+  convertType(typeMap)(field.children[0])
+];
+
+// :: TypeMap -> SignatureEntry -> Type
+const convertRecord = typeMap => entry => $.RecordType(
+  R.compose(
+    R.fromPairs,
+    R.map(convertRecordField(typeMap)),
+    R.prop('children')
+  )(entry)
+);
+
 // :: SignatureEntry -> Type
 const convertTypevar = R.memoize(R.compose($.TypeVariable, R.prop('text')));
 
@@ -81,6 +96,7 @@ function convertType(typeMap) {
     [typeEq('typeConstructor'), convertTypeConstructor(typeMap)],
     [typeEq('function'), convertFunction(typeMap)],
     [typeEq('list'), convertList(typeMap)],
+    [typeEq('record'), convertRecord(typeMap)],
     [typeEq('typevar'), convertTypevar],
   ]);
 }

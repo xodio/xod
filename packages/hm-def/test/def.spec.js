@@ -25,4 +25,13 @@ describe('def', () => {
 
     assert.strictEqual(foo(), 42);
   });
+
+  it('should work with records', () => {
+    const foo = def(
+      'foo :: Number -> { value :: Number }',
+      x => ({ value: x })
+    );
+
+    assert.deepEqual(foo(42), { value: 42 });
+  });
 });
