@@ -10,6 +10,7 @@ import EventListener from 'react-event-listener';
 
 import core from 'xod-core';
 import client from 'xod-client';
+import { toV2 } from 'xod-project';
 import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 
 import * as actions from '../actions';
@@ -111,15 +112,17 @@ class App extends React.Component {
   }
 
   onShowCodeEspruino() {
+    const projectV2 = toV2(this.props.project);
     this.setState({
-      code: transpileForEspruino(this.props.project),
+      code: transpileForEspruino(projectV2, this.props.currentPatchId),
     });
     this.showCodePopup();
   }
 
   onShowCodeNodejs() {
+    const projectV2 = toV2(this.props.project);
     this.setState({
-      code: transpileForNodeJS(this.props.project),
+      code: transpileForNodeJS(projectV2, this.props.currentPatchId),
     });
     this.showCodePopup();
   }

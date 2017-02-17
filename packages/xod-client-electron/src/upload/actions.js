@@ -1,13 +1,17 @@
 import { getProjectPojo } from 'xod-core';
 import client from 'xod-client';
 import { transpileForEspruino } from 'xod-js';
+import { toV2 } from 'xod-project';
 import uploadToEspruino from 'xod-espruino-upload';
 
 import { UPLOAD } from './actionTypes';
 
 export const upload = () => (dispatch, getState) => {
-  const project = getProjectPojo(getState());
-  const code = transpileForEspruino(project);
+  const state = getState();
+  const project = getProjectPojo(state);
+  const curPatchId = client.getCurrentPatchId(state);
+  const projectV2 = toV2(project);
+  const code = transpileForEspruino(projectV2, curPatchId);
 
   const newId = dispatch(client.addProcess(UPLOAD));
 
