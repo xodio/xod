@@ -1,30 +1,25 @@
 #!/usr/bin/env node
 
 import { docopt } from 'docopt';
+import { runCommand } from './utils';
+
 import * as ab from './xodc-ab';
-import doc from './xodc-doc';
+import generateDoc from './xodc-doc';
 import pack from './xodc-pack';
 import transpile from './xodc-transpile';
 import unpack from './xodc-unpack';
-import transpile from './xodc-transpile';
 import migrate from './xodc-migrate';
 
-function match(options, programs) {
-  for (const [command, program] of Object.entries(programs)) {
-    if (options[command] === true) {
-      program(options);
-      break;
-    }
-  }
-}
-
-match(docopt(`
+// Config
+const version = '0.0.1';
+const doc = `
 XOD project: Command Line Interface
 
 Usage:
   xodc pack <projectDir> <output>
   xodc unpack <xodball> <workspace>
-  xodc transpile [--output=<filename>] [--target=<target>] <input>
+  xodc migrate <input> <output>
+  xodc transpile [--output=<filename>] [--target=<target>] <input> <path>
   xodc doc [--clear] <outputDir> <templatesDir> <projectDir>
   xodc ab set-executable <path>
   xodc ab set-packages <path>
@@ -39,6 +34,7 @@ Usage:
 Commands:
   pack                  Pack project directory into xodball.
   unpack                Unpack xodball into new project directory.
+  migrate               Migrate project into new version.
   transpile             Transpile project into device runtime.
   doc                   Generate doc for project.
   ab set-executable     Set path to Arduino IDE executable.
@@ -55,12 +51,15 @@ Options:
   --target=<target>     Target device for transpilation [default: espruino].
   --output=<filename>   Write result of transpilation into file.
   --clear               Clear output dir before generate documentation.
-`, { version: '0.0.1' }), {
+`;
+
+const programs = {
   pack: o => pack(o['<projectDir>'], o['<output>']),
   unpack: o => unpack(o['<xodball>'], o['<workspace>']),
-  transpile: o => transpile(o['<input>'], { target: o['--target'], output: o['--output'] }),
-  doc: o => doc(o['<outputDir>'], o['<templatesDir>'], o['<projectDir>'], { clear: o['--clear'] }),
-  ab: o => match(o, {
+  transpile: o => transpile(o['<input>'], o['<path>'], { target: o['--target'], output: o['--output'] }),
+  migrate: o => migrate(o['<input>'], o['<output>']),
+  doc: o => generateDoc(o['<outputDir>'], o['<templatesDir>'], o['<projectDir>'], { clear: o['--clear'] }),
+  ab: o => runCommand(o, {
     'set-executable': () => ab.setExecutable(o['<path>']),
     'set-packages': () => ab.setPackages(o['<path>']),
     'list-index': () => ab.listIndex(),
@@ -71,4 +70,7 @@ Options:
     compile: () => ab.compile(o['<package>'], o['<architecture>'], o['<board>'], o['<file>']),
     upload: () => ab.upload(o['<package>'], o['<architecture>'], o['<board>'], o['<port>'], o['<file>']),
   }),
-});
+};
+
+// Running command
+runCommand(docopt(doc, { version }), programs);
