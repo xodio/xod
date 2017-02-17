@@ -94,4 +94,9 @@ describe('Signature', () => {
     const types = sigTypes(env, 'foo :: Either String Number -> String');
     assertDeepEqual(types, [Either($.String, $.Number), $.String]);
   });
+
+  it('should resolve thunks', () => {
+    const types = sigTypes($.env, 'foo :: () -> Number');
+    assertDeepEqual(types, [$.Number]);
+  });
 });

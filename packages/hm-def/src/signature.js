@@ -75,7 +75,7 @@ const convertFunction = R.useWith(
 // :: SignatureEntry -> Type
 const convertTypevar = R.memoize(R.compose($.TypeVariable, R.prop('text')));
 
-// :: TypeMap -> SignatureEntry -> Type
+// :: TypeMap -> SignatureEntry -> Type|Null
 function convertType(typeMap) {
   return R.cond([
     [typeEq('typeConstructor'), convertTypeConstructor(typeMap)],
@@ -87,7 +87,10 @@ function convertType(typeMap) {
 
 // :: TypeMap -> [SignatureEntry] -> [Type]
 function convertTypes(typeMap) {
-  return R.map(convertType(typeMap));
+  return R.compose(
+    R.reject(R.isNil),
+    R.map(convertType(typeMap))
+  );
 }
 
 // :: TypeMap -> ParsedSignature -> [Type]
