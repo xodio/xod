@@ -99,6 +99,17 @@ export const defaultizeNode = R.merge({
   id: '$$defaultNodeId',
   position: { x: 0, y: 0 },
   type: '@/defaultType',
+  label: '',
+});
+
+export const defaultizePin = R.merge({
+  key: '$$defaultPinKey',
+  direction: '$$defaultDirection',
+  label: '$$defaultLabel',
+  type: 'number',
+  value: 0,
+  order: 0,
+  description: '$$defaultDesription',
 });
 
 export const defaultizePatch = R.compose(
@@ -106,7 +117,7 @@ export const defaultizePatch = R.compose(
     nodes: R.map(defaultizeNode),
     links: R.map(defaultizeLink),
     impls: R.identity,
-    pins: R.identity,
+    pins: R.map(defaultizePin),
   }),
   R.merge({
     nodes: {},
@@ -121,6 +132,9 @@ export const defaultizeProject = R.compose(
     patches: R.map(defaultizePatch),
   }),
   R.merge({
+    authors: [],
+    license: '',
+    description: '',
     patches: {},
   })
 );

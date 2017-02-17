@@ -1,7 +1,8 @@
 import R from 'ramda';
-import * as Tools from './func-tools';
+import { Either } from 'ramda-fantasy';
 import * as Utils from './utils';
 import * as CONST from './constants';
+import { def } from './types';
 
 /**
  * An object representing patch pin
@@ -24,28 +25,40 @@ import * as CONST from './constants';
  * @param {Pin} pin
  * @returns {PIN_TYPE}
  */
-export const getPinType = R.prop('type');
+export const getPinType = def(
+  'getPinType :: Pin -> DataType',
+  R.prop('type')
+);
 
 /**
  * @function getPinDirection
  * @param {Pin} pin
  * @returns {PIN_DIRECTION}
  */
-export const getPinDirection = R.prop('direction');
+export const getPinDirection = def(
+  'getPinDirection :: Pin -> PinDirection',
+  R.prop('direction')
+);
 
 /**
  * @function getPinKey
  * @param {Pin} pin
  * @returns {string}
  */
-export const getPinKey = R.ifElse(R.is(String), R.identity, R.prop('key'));
+export const getPinKey = def(
+  'getPinKey :: PinOrKey -> PinKey',
+  R.ifElse(R.is(String), R.identity, R.prop('key'))
+);
 
 /**
  * @function getPinLabel
  * @param {Pin} pin
  * @returns {string}
  */
-export const getPinLabel = R.propOr('', 'label');
+export const getPinLabel = def(
+  'getPinLabel :: Pin -> String',
+  R.prop('label')
+);
 
 /**
  * @function setPinLabel
@@ -53,14 +66,20 @@ export const getPinLabel = R.propOr('', 'label');
  * @param {Pin} pin
  * @returns {Pin}
  */
-export const setPinLabel = Tools.assocString('label');
+export const setPinLabel = def(
+  'setPinLabel :: String -> Pin -> Pin',
+  R.assoc('label')
+);
 
 /**
  * @function getPinDescription
  * @param {Pin} pin
  * @returns {string}
  */
-export const getPinDescription = R.propOr('', 'description');
+export const getPinDescription = def(
+  'getPinDescription :: Pin -> String',
+  R.prop('description')
+);
 
 /**
  * @function setPinDescription
@@ -68,14 +87,20 @@ export const getPinDescription = R.propOr('', 'description');
  * @param {Pin} pin
  * @returns {Pin}
  */
-export const setPinDescription = Tools.assocString('description');
+export const setPinDescription = def(
+  'setPinDescription :: String -> Pin -> Pin',
+  R.assoc('description')
+);
 
 /**
  * @function getPinOrder
  * @param {Pin} pin
  * @returns {number}
  */
-export const getPinOrder = R.propOr(0, 'order');
+export const getPinOrder = def(
+  'getPinOrder :: Pin -> Number',
+  R.prop('order')
+);
 
 /**
  * @function setPinOrder
@@ -83,84 +108,54 @@ export const getPinOrder = R.propOr(0, 'order');
  * @param {Pin} pin
  * @returns {Pin}
  */
-export const setPinOrder = Tools.assocNumber('order');
+export const setPinOrder = def(
+  'setPinOrder :: Number -> Pin -> Pin',
+  R.assoc('order')
+);
 
 /**
  * @function isInputPin
  * @param {Pin} pin
  * @returns {boolean}
  */
-export const isInputPin = R.propEq('direction', CONST.PIN_DIRECTION.INPUT);
+export const isInputPin = def(
+  'isInputPin :: Pin -> Boolean',
+  R.propEq('direction', CONST.PIN_DIRECTION.INPUT)
+);
 
 /**
  * @function isOutputPin
  * @param {Pin} pin
  * @returns {boolean}
  */
-export const isOutputPin = R.propEq('direction', CONST.PIN_DIRECTION.OUTPUT);
+export const isOutputPin = def(
+  'isOutputPin :: Pin -> Boolean',
+  R.propEq('direction', CONST.PIN_DIRECTION.OUTPUT)
+);
 
 /**
- * Checks is that pin is pin of aterminal node.
+ * Checks that a pin belongs to a terminal patch.
  *
  * @function isTerminalPin
  * @param {Pin} pin
  * @returns {boolean}
  */
-export const isTerminalPin = R.compose(
-  R.anyPass([
-    R.equals('__in__'),
-    R.equals('__out__'),
-  ]),
-  getPinKey
+export const isTerminalPin = def(
+  'isTerminalPin :: Pin -> Boolean',
+  R.compose(
+    R.anyPass([
+      R.equals('__in__'),
+      R.equals('__out__'),
+    ]),
+    getPinKey
+  )
 );
 
-/**
- * Validates for correct pin type
- *
- * @function validatePinType
- * @param {PIN_TYPE} type
- * @returns {Either<Error|PIN_TYPE>}
- */
-export const validatePinType = Tools.errOnFalse(
-  CONST.ERROR.PIN_TYPE_INVALID,
-  R.flip(Tools.hasPropEq)(CONST.PIN_TYPE)
+// TODO: remove me
+export const validatePin = def(
+  'validatePin :: Pin -> Either Error Pin',
+  Either.of
 );
-
-/**
- * Validates for correct pin direction
- *
- * @function validatePinDirection
- * @param {PIN_DIRECTION} type
- * @returns {Either<Error|PIN_DIRECTION>}
- */
-export const validatePinDirection = Tools.errOnFalse(
-  CONST.ERROR.PIN_DIRECTION_INVALID,
-  R.flip(Tools.hasPropEq)(CONST.PIN_DIRECTION)
-);
-
-/**
- * Validates for correct pin key
- *
- * @function validatePinKey
- * @param {string} pinKey
- * @returns {Either<Error|string>}
- */
-export const validatePinKey = Tools.errOnFalse(
-  CONST.ERROR.PIN_KEY_INVALID,
-  Utils.validateId
-);
-
-/**
- * Validates pin correctness
- *
- * @function validatePin
- * @param {Pin} pin
- * @returns {Either<Error|Pin>}
- */
-export const validatePin = pin => validatePinType(getPinType(pin))
-  .chain(() => validatePinDirection(getPinDirection(pin)))
-  .chain(() => validatePinKey(getPinKey(pin)))
-  .map(R.always(pin));
 
 /**
  * @function createPin
@@ -169,6 +164,15 @@ export const validatePin = pin => validatePinType(getPinType(pin))
  * @param {PIN_DIRECTION} direction
  * @returns {Either<Error|Pin>}
  */
-export const createPin = R.curry(
-  (key, type, direction) => validatePin({ key, type, direction })
+export const createPin = def(
+  'createPin :: PinKey -> DataType -> PinDirection -> Either Error Pin',
+  (key, type, direction) => Either.of({
+    key,
+    type,
+    direction,
+    label: key,
+    description: '',
+    order: 0,
+    value: Utils.defaultValueOfType(type),
+  })
 );

@@ -9,122 +9,16 @@ import * as Helper from './helpers';
 chai.use(dirtyChai);
 
 describe('Pin', () => {
-  // Validations
-  describe('validatePinType', () => {
-    it('should return Either.Left for invalid type', () => {
-      const invalid = Pin.validatePinType('a');
-      expect(invalid.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, invalid, CONST.ERROR.PIN_TYPE_INVALID);
-    });
-    it('should return Either.Right for valid type', () => {
-      const type = CONST.PIN_TYPE.NUMBER;
-      const valid = Pin.validatePinType(type);
-      expect(valid.isRight).to.be.true();
-      Helper.expectEither(
-        (val) => { expect(val).to.be.equal(type); },
-        valid
-      );
-    });
-  });
-  describe('validatePinDirection', () => {
-    it('should return Either.Left for invalid direction', () => {
-      const invalid = Pin.validatePinDirection('a');
-      expect(invalid.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, invalid, CONST.ERROR.PIN_DIRECTION_INVALID);
-    });
-    it('should return Either.Right for valid direction', () => {
-      const direction = CONST.PIN_DIRECTION.INPUT;
-      const valid = Pin.validatePinDirection(direction);
-      expect(valid.isRight).to.be.true();
-      Helper.expectEither(
-        (val) => { expect(val).to.be.equal(direction); },
-        valid
-      );
-    });
-  });
-  describe('validatePinKey', () => {
-    it('should return Either.Left for invalid key', () => {
-      const pinKey = 'i have $paceZ и немного кириллицы';
-      const result = Pin.validatePinKey(pinKey);
-      expect(result.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, result, CONST.ERROR.PIN_KEY_INVALID);
-    });
-    it('should return Either.Right for valid key', () => {
-      const pinKey = '123aBc';
-      const result = Pin.validatePinKey(pinKey);
-      expect(result.isRight).to.be.true();
-      Helper.expectEither(
-        val => expect(val).to.be.equal(pinKey),
-        result
-      );
-    });
-  });
-  describe('validatePin', () => {
-    it('should return Either.Left for empty object', () => {
-      const invalid = Pin.validatePin({});
-      expect(invalid.isLeft).to.be.true();
-    });
-    it('should return Either.Left for wrong type', () => {
-      const invalid = Pin.validatePin({ type: 'a' });
-      expect(invalid.isLeft).to.be.true();
-    });
-    it('should return Either.Left for wrong direction', () => {
-      const invalid = Pin.validatePin({ type: CONST.PIN_TYPE.NUMBER, direction: 'z' });
-      expect(invalid.isLeft).to.be.true();
-    });
-    it('should return Either.Left for wrong key', () => {
-      const invalid = Pin.validatePin({ type: CONST.PIN_TYPE.NUMBER, direction: CONST.PIN_DIRECTION.INPUT, key: 'неправильный ключ для пина' });
-      expect(invalid.isLeft).to.be.true();
-    });
-    it('should return Either.Right for valid pin', () => {
-      const valid = Pin.validatePin({
-        key: 'a',
-        type: CONST.PIN_TYPE.NUMBER,
-        direction: CONST.PIN_DIRECTION.INPUT,
-      });
-      expect(valid.isRight).to.be.true();
-    });
-  });
-  // constructors
-  describe('createPin', () => {
-    it('should return Either.Left for wrong pin type', () => {
-      const newPin = Pin.createPin('test', 'a', 'i');
-      expect(newPin.isLeft).to.be.true();
-    });
-    it('should return Either.Left for wrong pin direction', () => {
-      const newPin = Pin.createPin('test', CONST.PIN_TYPE.NUMBER, 'i');
-      expect(newPin.isLeft).to.be.true();
-    });
-    it('should return Either.Right with new Pin', () => {
-      const key = 'test';
-      const type = CONST.PIN_TYPE.NUMBER;
-      const direction = CONST.PIN_DIRECTION.INPUT;
-      const newPin = Pin.createPin(key, type, direction);
-      expect(newPin.isRight).to.be.true();
-      Helper.expectEither(
-        (pinObj) => {
-          expect(pinObj)
-            .to.be.an('object')
-            .that.deep.equal({
-              key,
-              type,
-              direction,
-            });
-        },
-        newPin
-      );
-    });
-  });
   // props required
   describe('getPinType', () => {
     it('should return pin type', () => {
-      const pin = { type: CONST.PIN_TYPE.NUMBER };
+      const pin = Helper.defaultizePin({ type: CONST.PIN_TYPE.NUMBER });
       expect(Pin.getPinType(pin)).to.be.equal(CONST.PIN_TYPE.NUMBER);
     });
   });
   describe('getPinKey', () => {
     it('should return pin key for pin object', () => {
-      const pin = { key: 'a' };
+      const pin = Helper.defaultizePin({ key: 'a' });
       expect(Pin.getPinKey(pin)).to.be.equal('a');
     });
     it('should return string for string', () => {
@@ -133,57 +27,52 @@ describe('Pin', () => {
     });
   });
   // props optional
-  describe('getPinLabel', () => {
-    Helper.expectOptionalStringGetter(expect, Pin.getPinLabel, 'label');
-  });
-  describe('setPinLabel', () => {
-    Helper.expectOptionalStringSetter(expect, Pin.setPinLabel, 'label');
-  });
-  describe('getPinDescription', () => {
-    Helper.expectOptionalStringGetter(expect, Pin.getPinDescription, 'description');
-  });
-  describe('setPinDescription', () => {
-    Helper.expectOptionalStringSetter(expect, Pin.setPinDescription, 'description');
-  });
-  describe('getPinOrder', () => {
-    Helper.expectOptionalNumberGetter(expect, Pin.getPinOrder, 'order');
-  });
-  describe('setPinOrder', () => {
-    Helper.expectOptionalNumberSetter(expect, Pin.setPinOrder, 'order');
+  describe('props', () => {
+    function expectGetterSetter(getter, setter, testValue) {
+      const pin = Helper.defaultizePin({});
+      const newPin = setter(testValue, pin);
+      const newValue = getter(newPin);
+      expect(newPin).not.equal(pin);
+      expect(newValue).to.equal(testValue);
+    }
+
+    it('should access label', () => {
+      expectGetterSetter(Pin.getPinLabel, Pin.setPinLabel, 'foo');
+    });
+
+    it('should access description', () => {
+      expectGetterSetter(Pin.getPinDescription, Pin.setPinDescription, 'foo bar baz');
+    });
+
+    it('should access order', () => {
+      expectGetterSetter(Pin.getPinOrder, Pin.setPinOrder, 42);
+    });
   });
   // is input / output
-  describe('isInputPin', () => {
-    it('should return false for empty pin', () => {
-      expect(Pin.isInputPin({})).to.be.false();
+  describe('isInputPin / isOutputPin', () => {
+    it('should honor output direction', () => {
+      const pin = Helper.defaultizePin({ direction: CONST.PIN_DIRECTION.OUTPUT });
+      expect(Pin.isInputPin(pin)).to.be.false();
+      expect(Pin.isOutputPin(pin)).to.be.true();
     });
-    it('should return false for pin with output direction', () => {
-      expect(Pin.isInputPin({ direction: CONST.PIN_DIRECTION.OUTPUT })).to.be.false();
-    });
-    it('should return true for pin with input direction', () => {
-      expect(Pin.isInputPin({ direction: CONST.PIN_DIRECTION.INPUT })).to.be.true();
-    });
-  });
-  describe('isOutputPin', () => {
-    it('should return false for empty pin', () => {
-      expect(Pin.isOutputPin({})).to.be.false();
-    });
-    it('should return false for pin with input direction', () => {
-      expect(Pin.isOutputPin({ direction: CONST.PIN_DIRECTION.INPUT })).to.be.false();
-    });
-    it('should return true for pin with output direction', () => {
-      expect(Pin.isOutputPin({ direction: CONST.PIN_DIRECTION.OUTPUT })).to.be.true();
+    it('should honor input direction', () => {
+      const pin = Helper.defaultizePin({ direction: CONST.PIN_DIRECTION.INPUT });
+      expect(Pin.isInputPin(pin)).to.be.true();
+      expect(Pin.isOutputPin(pin)).to.be.false();
     });
   });
   describe('isTerminalPin', () => {
-    it('should return false for empty pin', () => {
-      expect(Pin.isTerminalPin({})).to.be.false();
-    });
     it('should return false for non-terminal pin', () => {
-      expect(Pin.isTerminalPin({ key: 'a' })).to.be.false();
+      const pin = Helper.defaultizePin({ key: 'a' });
+      expect(Pin.isTerminalPin(pin)).to.be.false();
     });
-    it('should return true for terminal pin', () => {
-      expect(Pin.isTerminalPin({ key: '__in__' })).to.be.true();
-      expect(Pin.isTerminalPin({ key: '__out__' })).to.be.true();
+    it('should return true for terminal input', () => {
+      const pin = Helper.defaultizePin({ key: '__in__' });
+      expect(Pin.isTerminalPin(pin)).to.be.true();
+    });
+    it('should return true for terminal output', () => {
+      const pin = Helper.defaultizePin({ key: '__out__' });
+      expect(Pin.isTerminalPin(pin)).to.be.true();
     });
   });
 });

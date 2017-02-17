@@ -3,6 +3,7 @@ import R from 'ramda';
 import RF from 'ramda-fantasy';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
+import * as C from './constants';
 
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */
@@ -13,14 +14,30 @@ import HMDef from 'hm-def';
 //
 //-----------------------------------------------------------------------------
 
+// :: String -> String
+const qualifiedTypeName = typeName => `xod-project/${typeName}`;
+
+// :: String -> String
+const typeUrl = typeName => `http://xod.io/docs/dev/xod-project/#${typeName}`;
+
+// :: (String, Any -> Boolean) -> Type
 const NullaryType = (typeName, predicate) => $.NullaryType(
-  `xod-project/${typeName}`,
-  `http://xod.io/docs/dev/xod-project/#${typeName}`,
+  qualifiedTypeName(typeName),
+  typeUrl(typeName),
   predicate
 );
 
-// :: Type -> (Any -> Boolean)
-const hasType = $.test([]);
+// :: (String, [Any]) -> Type
+const EnumType = (typeName, values) => $.EnumType(
+  qualifiedTypeName(typeName),
+  typeUrl(typeName),
+  values
+);
+
+// :: Type -> Any -> Boolean
+// To keep checking fast we have to call private method of $.Type
+// eslint-disable-next-line no-underscore-dangle
+const hasType = type => x => type._test(x);
 
 // :: [Type] -> (Any -> Boolean)
 const hasOneOfType = types => R.anyPass(
@@ -70,6 +87,7 @@ export const $Either = $.BinaryType(
 //-----------------------------------------------------------------------------
 
 const ObjectWithId = NullaryType('ObjectWithId', R.has('id'));
+const ObjectWithKey = NullaryType('ObjectWithKey', R.has('key'));
 
 export const Label = AliasType('Label', $.String);
 export const Source = AliasType('Source', $.String);
@@ -78,7 +96,19 @@ export const LinkId = AliasType('LinkId', ShortId);
 export const NodeId = AliasType('NodeId', ShortId);
 export const PinKey = AliasType('PinKey', $.String);
 export const PatchPath = AliasType('PatchPath', $.String);
-export const Pin = AliasType('Pin', $.Object); // TODO: enforce model
+export const PinDirection = EnumType('PinDirection', R.values(C.PIN_DIRECTION));
+export const DataType = EnumType('DataType', R.values(C.PIN_TYPE));
+export const DataValue = NullaryType('DataValue', R.complement(R.isNil));
+
+export const Pin = Model('Pin', {
+  key: PinKey,
+  direction: PinDirection,
+  label: $.String,
+  type: DataType,
+  value: DataValue,
+  order: $.Number,
+  description: $.String,
+});
 
 export const NodePosition = Model('NodePosition', {
   x: $.Number,
@@ -109,8 +139,16 @@ export const Patch = Model('Patch', {
   pins: $.StrMap(Pin),
 });
 
+export const Project = Model('Project', {
+  patches: $.StrMap(Patch),
+  authors: $.Array($.String),
+  license: $.String,
+  description: $.String,
+});
+
 export const NodeOrId = OneOfType('NodeOrId', [NodeId, ObjectWithId]);
 export const LinkOrId = OneOfType('LinkOrId', [LinkId, ObjectWithId]);
+export const PinOrKey = OneOfType('PinOrKey', [PinKey, ObjectWithKey]);
 
 //-----------------------------------------------------------------------------
 //
@@ -127,10 +165,20 @@ export const env = $.env.concat([
   Node,
   NodeId,
   NodeOrId,
+  NodePosition,
   Patch,
+  PatchPath,
+  Pin,
+  PinOrKey,
   PinKey,
   PinRef,
+  PinDirection,
+  DataType,
+  DataValue,
+  Project,
   ShortId,
+  Label,
+  Source,
 ]);
 
 export const def = HMDef.create({ checkTypes: true, env });

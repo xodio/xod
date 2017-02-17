@@ -36,14 +36,20 @@ export const createPatch = () => ({
  * @param {Patch} patch
  * @returns {Patch} deeply cloned patch
  */
-export const duplicatePatch = R.clone;
+export const duplicatePatch = def(
+  'duplicatePatch :: Patch -> Patch',
+  R.clone
+);
 
 /**
  * @function getPatchLabel
  * @param {Patch} patch
  * @returns {string}
  */
-export const getPatchLabel = R.propOr('', 'label');
+export const getPatchLabel = def(
+  'getPatchLabel :: Patch -> Label',
+  R.prop('label')
+);
 
 /**
  * @function setPatchLabel
@@ -51,9 +57,12 @@ export const getPatchLabel = R.propOr('', 'label');
  * @param {Patch} patch
  * @returns {Patch} a copy of the `patch` with new label
  */
-export const setPatchLabel = R.useWith(
-  R.assoc('label'),
-  [String, R.identity]
+export const setPatchLabel = def(
+  'setPatchLabel :: Label -> Patch -> Patch',
+  R.useWith(
+    R.assoc('label'),
+    [String, R.identity]
+  )
 );
 
  /**
@@ -65,9 +74,9 @@ export const setPatchLabel = R.useWith(
   * @param {Patch} patch
   * @returns {string[]}
   */
-export const listImpls = R.compose(
-  R.keys,
-  R.propOr({}, 'impls')
+export const listImpls = def(
+  'listImpls :: Patch -> [String]',
+  R.compose(R.keys, R.prop('impls'))
 );
 
 /**
@@ -78,11 +87,14 @@ export const listImpls = R.compose(
  * @param {Patch} patch
  * @type {Boolean}
  */
-export const hasImpls = R.curry((impls, patch) => R.compose(
-  R.complement(R.isEmpty),
-  R.intersection(impls),
-  listImpls
-)(patch));
+export const hasImpls = def(
+  'hasImpls :: [String] -> Patch -> Boolean',
+  (impls, patch) => R.compose(
+    R.complement(R.isEmpty),
+    R.intersection(impls),
+    listImpls
+  )(patch)
+);
 
 /**
  * Returns an implementation, if it exists. Otherwise Nothing.
@@ -92,10 +104,13 @@ export const hasImpls = R.curry((impls, patch) => R.compose(
  * @param {Patch} patch
  * @type {Maybe<string>}
  */
-export const getImpl = R.curry((impl, patch) => R.compose(
-  Maybe,
-  R.path(['impls', impl])
-)(patch));
+export const getImpl = def(
+  'getImpl :: String -> Patch -> Maybe Source',
+  (impl, patch) => R.compose(
+    Maybe,
+    R.path(['impls', impl])
+  )(patch)
+);
 
 /**
  * Returns the first found in the patch implementation from the list,
@@ -107,13 +122,16 @@ export const getImpl = R.curry((impl, patch) => R.compose(
  * @param {Patch} patch
  * @type {Maybe<string>}
  */
-export const getImplByArray = R.curry((impls, patch) => R.compose(
-  R.unnest,
-  Maybe,
-  R.head,
-  R.reject(Maybe.isNothing),
-  R.map(getImpl(R.__, patch))
-)(impls));
+export const getImplByArray = def(
+  'getImplByArray :: [String] -> Patch -> Maybe Source',
+  (impls, patch) => R.compose(
+    R.unnest,
+    Maybe,
+    R.head,
+    R.reject(Maybe.isNothing),
+    R.map(getImpl(R.__, patch))
+  )(impls)
+);
 
 /**
  * @function validatePatch
@@ -142,9 +160,9 @@ export const validatePatch = Tools.errOnFalse(
  * @param {NodeOrId} node
  * @returns {boolean}
  */
-export const nodeIdEquals = R.curry(
-  (id, node) =>
-  R.compose(
+export const nodeIdEquals = def(
+  'nodeIdEquals :: NodeId -> NodeOrId -> Boolean',
+  (id, node) => R.compose(
     R.equals(id),
     Node.getNodeId
   )(node)
@@ -155,9 +173,12 @@ export const nodeIdEquals = R.curry(
  * @param {Patch} patch - a patch to get nodes from
  * @returns {Node[]} list of all nodes not sorted in any arbitrary order
  */
-export const listNodes = R.compose(
-  R.values,
-  R.propOr([], 'nodes')
+export const listNodes = def(
+  'listNodes :: Patch -> [Node]',
+  R.compose(
+    R.values,
+    R.prop('nodes')
+  )
 );
 
 /**
@@ -188,7 +209,8 @@ export const getNodeById = def(
  * @param {Patch} patch
  * @returns {Either<Error|Patch>}
  */
-export const assocPin = R.curry(
+export const assocPin = def(
+  'assocPin :: Pin -> Patch -> Either Error Patch',
   (pin, patch) => Pin.validatePin(pin).map(
     (validPin) => {
       const key = Pin.getPinKey(validPin);
@@ -205,17 +227,10 @@ export const assocPin = R.curry(
  * @param {Patch} patch
  * @returns {Patch}
  */
-export const dissocPin = R.curry(
+export const dissocPin = def(
+  'dissocPin :: PinOrKey -> Patch -> Patch',
   (pinOrKey, patch) => R.dissocPath(['pins', Pin.getPinKey(pinOrKey)], patch)
 );
-
-/**
- * @private
- * @function getPins
- * @param {Patch}
- * @returns {Pins}
- */
-const getPins = R.propOr({}, 'pins');
 
 /**
  * Returns pin object by key
@@ -225,10 +240,11 @@ const getPins = R.propOr({}, 'pins');
  * @param {Patch} patch
  * @returns {Maybe<Pin>}
  */
-export const getPinByKey = R.curry(
+export const getPinByKey = def(
+  'getPinByKey :: PinKey -> Patch -> Maybe Pin',
   (key, patch) => R.compose(
     Tools.prop(key),
-    getPins
+    R.prop('pins')
   )(patch)
 );
 
@@ -237,9 +253,12 @@ export const getPinByKey = R.curry(
  * @param {Patch} patch
  * @returns {Pin[]}
  */
-export const listPins = R.compose(
-  R.values,
-  getPins
+export const listPins = def(
+  'listPins :: Patch -> [Pin]',
+  R.compose(
+    R.values,
+    R.prop('pins')
+  )
 );
 
 /**
@@ -247,9 +266,12 @@ export const listPins = R.compose(
  * @param {Patch} patch
  * @returns {Pin[]}
  */
-export const listInputPins = R.compose(
-  R.filter(Pin.isInputPin),
-  listPins
+export const listInputPins = def(
+  'listInputPins :: Patch -> [Pin]',
+  R.compose(
+    R.filter(Pin.isInputPin),
+    listPins
+  )
 );
 
 /**
@@ -257,9 +279,12 @@ export const listInputPins = R.compose(
  * @param {Patch} patch
  * @returns {Pin[]}
  */
-export const listOutputPins = R.compose(
-  R.filter(Pin.isOutputPin),
-  listPins
+export const listOutputPins = def(
+  'listOutputPins :: Patch -> [Pin]',
+  R.compose(
+    R.filter(Pin.isOutputPin),
+    listPins
+  )
 );
 
 /**
@@ -268,10 +293,13 @@ export const listOutputPins = R.compose(
  * @param {Patch} patch
  * @returns {boolean}
  */
-export const isTerminalPatch = R.compose(
-  R.contains(true),
-  R.map(Pin.isTerminalPin),
-  listPins
+export const isTerminalPatch = def(
+  'isTerminalPatch :: Patch -> Boolean',
+  R.compose(
+    R.contains(true),
+    R.map(Pin.isTerminalPin),
+    listPins
+  )
 );
 
 // =============================================================================
@@ -285,9 +313,12 @@ export const isTerminalPatch = R.compose(
  * @param {Patch} patch - a patch to operate on
  * @returns {Link[]} list of all links not sorted in any arbitrary order
  */
-export const listLinks = R.compose(
-  R.values,
-  R.propOr({}, 'links')
+export const listLinks = def(
+  'listLinks :: Patch -> [Link]',
+  R.compose(
+    R.values,
+    R.prop('links')
+  )
 );
 
 /**
@@ -298,9 +329,9 @@ export const listLinks = R.compose(
  * @param {LinkOrId} link [description]
  * @returns {boolean}
  */
-export const linkIdEquals = R.curry(
-  (id, link) =>
-  R.compose(
+export const linkIdEquals = def(
+  'linkIdEquals :: LinkId -> LinkOrId -> Boolean',
+  (id, link) => R.compose(
     R.equals(id),
     Link.getLinkId
   )(link)
@@ -312,7 +343,8 @@ export const linkIdEquals = R.curry(
  * @param {Patch} patch - a patch to operate on
  * @returns {Maybe<Link>} a link with given `id` or Null if not found
  */
-export const getLinkById = R.curry(
+export const getLinkById = def(
+  'getLinkById :: LinkId -> Patch -> Maybe Link',
   (id, patch) => R.compose(
     Tools.find(linkIdEquals(id)),
     listLinks
@@ -327,7 +359,8 @@ export const getLinkById = R.curry(
  * @param {Patch} patch
  * @returns {Link[]}
  */
-export const listLinksByNode = R.curry(
+export const listLinksByNode = def(
+  'listLinksByNode :: NodeOrId -> Patch -> [Link]',
   (nodeOrId, patch) => {
     const id = Node.getNodeId(nodeOrId);
     const list = listLinks(patch);
@@ -351,7 +384,8 @@ export const listLinksByNode = R.curry(
  * @param {Patch} patch
  * @returns {Link[]}
  */
-export const listLinksByPin = R.curry(
+export const listLinksByPin = def(
+  'listLinksByPin :: PinKey -> NodeOrId -> Patch -> [Link]',
   (pinKey, nodeOrId, patch) => {
     const id = Node.getNodeId(nodeOrId);
     const list = listLinks(patch);
@@ -411,7 +445,8 @@ export const validateLink = def(
  * @returns {Either<Error|Patch>} error or a copy of the `patch` with changes applied
  * @see {@link validateLink}
  */
-export const assocLink = R.curry(
+export const assocLink = def(
+  'assocLink :: Link -> Patch -> Either Error Patch',
   (link, patch) => validateLink(link, patch).map(
     (validLink) => {
       const id = Link.getLinkId(validLink);
@@ -430,7 +465,8 @@ export const assocLink = R.curry(
  * @param {Patch} patch - a patch to operate on
  * @returns {Patch} a copy of the `patch` with changes applied
  */
-export const dissocLink = R.curry(
+export const dissocLink = def(
+  'dissocLink :: LinkOrId -> Patch -> Patch',
   (linkOrId, patch) => R.dissocPath(['links', Link.getLinkId(linkOrId)], patch)
 );
 
@@ -453,7 +489,8 @@ export const dissocLink = R.curry(
  * @returns {Patch} a copy of the `patch` with the node replaced
  */
 // TODO: Refactoring needed
-export const assocNode = R.curry(
+export const assocNode = def(
+  'assocNode :: Node -> Patch -> Patch',
   (node, patch) => {
     const id = Node.getNodeId(node);
     const addPin = R.curry(
@@ -500,7 +537,8 @@ export const assocNode = R.curry(
  * @returns {Patch} a copy of the `patch` with the node deleted
  */
 // TODO: Move child function into top-level
-export const dissocNode = R.curry(
+export const dissocNode = def(
+  'dissocNode :: NodeOrId -> Patch -> Patch',
   (nodeOrId, patch) => {
     const id = Node.getNodeId(nodeOrId);
     const links = listLinksByNode(id, patch);
@@ -539,32 +577,38 @@ export const dissocNode = R.curry(
  * @param {Patch} patch
  * @returns {Patch}
  */
-export const renumberNodes = (patch) => {
-  const nodes = listNodes(patch);
-  const links = listLinks(patch);
+export const renumberNodes = def(
+  'renumberNodes :: Patch -> Patch',
+  (patch) => {
+    const nodes = listNodes(patch);
+    const links = listLinks(patch);
 
-  const nodeIdsMap = Utils.guidToIdx(nodes);
-  const newNodes = R.indexBy(Node.getNodeId, Utils.resolveNodeIds(nodeIdsMap, nodes));
-  const newLinks = R.indexBy(Link.getLinkId, Utils.resolveLinkNodeIds(nodeIdsMap, links));
+    const nodeIdsMap = Utils.guidToIdx(nodes);
+    const newNodes = R.indexBy(Node.getNodeId, Utils.resolveNodeIds(nodeIdsMap, nodes));
+    const newLinks = R.indexBy(Link.getLinkId, Utils.resolveLinkNodeIds(nodeIdsMap, links));
 
-  return R.compose(
-    R.assoc('links', newLinks),
-    R.assoc('nodes', newNodes),
-    duplicatePatch
-  )(patch);
-};
+    return R.compose(
+      R.assoc('links', newLinks),
+      R.assoc('nodes', newNodes),
+      duplicatePatch
+    )(patch);
+  }
+);
 
 /**
  * Returns a topology of nodes in the patch.
  *
  * @function getTopology
  * @param {Patch} patch
- * @returns {Array<string|number>}
+ * @returns {Array<string>}
  */
-export const getTopology = R.converge(
-  sortGraph,
-  [
-    R.compose(R.map(Node.getNodeId), listNodes),
-    R.compose(R.map(Link.getLinkNodeIds), listLinks),
-  ]
+export const getTopology = def(
+  'getTopology :: Patch -> [NodeId]',
+  R.converge(
+    sortGraph,
+    [
+      R.compose(R.map(Node.getNodeId), listNodes),
+      R.compose(R.map(Link.getLinkNodeIds), listLinks),
+    ]
+  )
 );
