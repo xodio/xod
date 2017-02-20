@@ -2,7 +2,7 @@ import R from 'ramda';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
-import { defaultizeProject } from 'xod-project';
+import { defaultizeProject, createPatch } from 'xod-project';
 import * as Transpiler from '../src/transpiler';
 import easy from './fixtures/easy.txt';
 
@@ -173,7 +173,7 @@ describe('Transpiler', () => {
 
     describe('getInputTypes', () => {
       it('should return an empty object for empty patch', () => {
-        expect(Transpiler.getInputTypes({}))
+        expect(Transpiler.getInputTypes(createPatch()))
           .to.be.an('object')
           .and.empty();
       });
@@ -195,7 +195,7 @@ describe('Transpiler', () => {
 
     describe('getOutLinks', () => {
       it('should return an empty object for empty patch', () => {
-        expect(Transpiler.getOutLinks('0', {}))
+        expect(Transpiler.getOutLinks('0', createPatch()))
           .to.be.an('object')
           .and.empty();
       });
@@ -283,7 +283,7 @@ describe('Transpiler', () => {
 
     describe('transformNodes', () => {
       it('should return empty list for empty patch', () => {
-        expect(Transpiler.transformNodes({}, {}))
+        expect(Transpiler.transformNodes(createPatch(), {}))
           .to.be.an('array')
           .and.empty();
       });
