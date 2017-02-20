@@ -6,7 +6,7 @@ import * as link from './link';
 import * as constants from './constants';
 import * as utils from './utils';
 import * as funcTools from './func-tools';
-import * as defaults from './defaults';
+import * as types from './types';
 import flatten from './flatten';
 import { toV2 } from './adapter';
 
@@ -18,7 +18,7 @@ export * from './link';
 export * from './constants';
 export * from './utils';
 export * from './func-tools';
-export * from './defaults';
+export * from './types';
 export { toV2 } from './adapter';
 export { default as flatten } from './flatten';
 
@@ -34,5 +34,5 @@ export default Object.assign({
   constants,
   utils,
   funcTools,
-  defaults
+  types
 );

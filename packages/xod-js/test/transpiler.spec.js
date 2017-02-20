@@ -2,7 +2,8 @@ import R from 'ramda';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
-import { defaultizeProject, createPatch } from 'xod-project';
+import { createPatch } from 'xod-project';
+import { defaultizeProject } from 'xod-project/test/helpers';
 import * as Transpiler from '../src/transpiler';
 import easy from './fixtures/easy.txt';
 

@@ -1,8 +1,8 @@
 import R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
-// import transform from 'xod-transformer';
 import Project from 'xod-project';
 
+import { def } from './types';
 import { joinLines, joinLineBlocks } from './utils';
 
 import jsRuntime from '../platform/runtime';
@@ -303,20 +303,20 @@ const validateTranspileOpts = (opts) => {
 };
 
 /**
- * This functions accepts an object with options for transpilation.
- * - project -- should contain whole project (v2)
- * - path -- should contain a string of entry-point patch path
- * - impls -- should contain an array of strings of target platforms (E.G., ['js', 'nodejs'])
- * - launcher -- should contain a platform-specific launcher
+ * This function accepts an object with options for transpilation.
+ * - project -- a project (v2)
+ * - path -- a string of entry-point patch path
+ * - impls -- an array of strings of target platforms (e.g., ['js', 'nodejs'])
+ * - launcher -- a platform-specific launcher
  *
- * This function should be called from platform-specific transpilation functions
+ * This function is called from platform-specific transpilation functions
  * (see target-espruino.js and target-nodejs.js).
  *
  * Basic steps of transpilation:
  *
  * 1. Validate for existance of all needed options.
  *
- * 2. Flatten project, using xod-project pkg.
+ * 2. Flatten project.
  *
  * 3. Extract implementations from patches.
  *
@@ -343,32 +343,35 @@ const validateTranspileOpts = (opts) => {
  * @param {Object} opts Options for transpilation. See docs above.
  * @returns {String} Code that could be uploaded to target platform.
  */
-export default function transpile(opts) {
-  const validity = validateTranspileOpts(opts);
-  if (!validity.valid) { throw new Error(validity.errors); }
+export default def(
+  'transpile :: { project :: Project, path :: PatchPath, impls :: [Source], launcher :: String } -> String',
+  (opts) => {
+    const validity = validateTranspileOpts(opts);
+    if (!validity.valid) { throw new Error(validity.errors); }
 
-  return Project.flatten(opts.project, opts.path, opts.impls)
-    .chain((proj) => {
-      const impls = extractPatchImpls(opts.impls, proj);
+    return Project.flatten(opts.project, opts.path, opts.impls)
+      .chain((proj) => {
+        const impls = extractPatchImpls(opts.impls, proj);
 
-      const entryPatch = transformPatch(opts.path, proj).chain(Project.renumberNodes);
+        const entryPatch = transformPatch(opts.path, proj).chain(Project.renumberNodes);
 
-      if (Maybe.isNothing(entryPatch)) {
-        throw new Error('Entry patch was not found in the flattened project.');
-      }
+        if (Maybe.isNothing(entryPatch)) {
+          throw new Error('Entry patch was not found in the flattened project.');
+        }
 
-      const topology = Project.getTopology(entryPatch);
-      const nodes = transformNodes(entryPatch, proj);
+        const topology = Project.getTopology(entryPatch);
+        const nodes = transformNodes(entryPatch, proj);
 
-      return joinLineBlocks([
-        jsRuntime,
-        '// =====================================================================',
-        transpileImpl(impls),
-        '// =====================================================================',
-        transpileNodes(nodes),
-        transpileProject(topology),
-        opts.launcher,
-        '',
-      ]);
-    });
-}
+        return joinLineBlocks([
+          jsRuntime,
+          '// =====================================================================',
+          transpileImpl(impls),
+          '// =====================================================================',
+          transpileNodes(nodes),
+          transpileProject(topology),
+          opts.launcher,
+          '',
+        ]);
+      });
+  }
+);

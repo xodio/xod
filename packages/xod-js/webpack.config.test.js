@@ -10,11 +10,18 @@ const baseConfig = require('./webpack.config.js');
 
 delete baseConfig.externals;
 
-const pkgpath = subpath => path.join(__dirname, subpath);
+const pkgpath = subpath => path.resolve(__dirname, subpath);
 
 const config = merge.smart(baseConfig, {
   module: {
     loaders: [
+      {
+        include: /xod-project\/test/,
+        test: /.*\.js$/,
+        loaders: [
+          'babel?presets[]=es2015',
+        ],
+      },
       {
         test: /.*\.spec\.js$/,
         loaders: [
