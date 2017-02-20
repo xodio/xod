@@ -1,7 +1,23 @@
 
 .Link {
-  stroke: #2e8f6c;
+  stroke: grey;
   stroke-width: 2px;
+
+  &.string {
+    stroke: $color-datatype-string;
+  }
+
+  &.number {
+    stroke: $color-datatype-number;
+  }
+
+  &.bool {
+    stroke: $color-datatype-bool;
+  }
+
+  &.pulse {
+    stroke: $color-datatype-pulse;
+  }
 
   &:hover {
     .line {

@@ -198,6 +198,7 @@ export const getLinkGhost = (state, patchId) => {
   return {
     id: '',
     pins: [pin],
+    type: pin.type,
     from: addPoints(pin.position, node.position),
     to: { x: 0, y: 0 },
   };

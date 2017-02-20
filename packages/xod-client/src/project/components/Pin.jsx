@@ -100,9 +100,14 @@ export default class Pin extends React.Component {
     const onMouseOver = !this.isInjected() ? this.handleOver : noop;
     const onMouseOut = !this.isInjected() ? this.handleOut : noop;
 
+    const symbolClassNames = classNames(
+      'symbol', this.props.type,
+      { 'is-connected': this.props.isConnected }
+    );
+
     const symbol = !this.isInjected() ?
-      <circle className="symbol" {...this.getCircleProps()} /> :
-      <rect className="symbol" {...this.getRectProps()} />;
+      <circle className={symbolClassNames} {...this.getCircleProps()} /> :
+      <rect className={symbolClassNames} {...this.getRectProps()} />;
 
     return (
       <g
@@ -125,11 +130,13 @@ Pin.propTypes = {
   keyName: React.PropTypes.string.isRequired,
   injected: React.PropTypes.bool,
   pinLabel: React.PropTypes.string,
+  type: React.PropTypes.string,
   direction: React.PropTypes.string.isRequired,
   position: React.PropTypes.object.isRequired,
   onMouseUp: React.PropTypes.func.isRequired,
   onMouseDown: React.PropTypes.func.isRequired,
   isSelected: React.PropTypes.bool,
+  isConnected: React.PropTypes.bool,
   validness: React.PropTypes.number,
 };
 

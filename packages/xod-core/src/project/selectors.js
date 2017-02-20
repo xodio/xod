@@ -566,33 +566,6 @@ const getNodePins = (state, typeId) => R.pipe(
   R.head
 )(state);
 
-export const preparePins = (projectState, node) => {
-  const pins = getNodePins(projectState, node.typeId);
-
-  return R.map((pin) => {
-    const originalPin = R.pathOr({}, ['pins', pin.key], node); // TODO: explain it
-    const isSelected = { isSelected: false };
-    const defaultPin = { value: null, injected: false };
-    return R.mergeAll([defaultPin, pin, originalPin, isSelected]);
-  })(pins);
-};
-
-export const dereferencedNodes = (projectState, patchId) =>
-  R.pipe(
-    getNodes(patchId),
-    R.map((node) => {
-      const label = getNodeLabel(projectState, node);
-      const nodePins = preparePins(projectState, node);
-
-      return R.merge(node, {
-        label,
-        pins: nodePins,
-      });
-    })
-  )(projectState);
-
-export const dereferencedLinks = getLinks;
-
 export const getLinksConnectedWithPin = (projectState, nodeId, pinKey, patchId) => R.pipe(
   R.values,
   R.filter(
@@ -613,6 +586,56 @@ export const getLinksConnectedWithPin = (projectState, nodeId, pinKey, patchId) 
     )
   )
 )(getLinks(projectState, patchId));
+
+const isLinkConnected = R.curry(
+  (projectState, patchId, nodeId, pinKey) =>
+    !!getLinksConnectedWithPin(projectState, nodeId, pinKey, patchId).length
+);
+
+export const preparePins = (projectState, node, getIsLinkConnected) => {
+  const pins = getNodePins(projectState, node.typeId);
+
+  return R.map((pin) => {
+    const originalPin = R.pathOr({}, ['pins', pin.key], node); // TODO: explain it
+    const isSelected = { isSelected: false };
+    const isConnected = { isConnected: getIsLinkConnected(pin.key) };
+    const defaultPin = { value: null, injected: false };
+    return R.mergeAll([defaultPin, pin, originalPin, isConnected, isSelected]);
+  })(pins);
+};
+
+export const dereferencedNodes = (projectState, patchId) =>
+  R.pipe(
+    getNodes(patchId),
+    R.map((node) => {
+      const label = getNodeLabel(projectState, node);
+      const nodePins = preparePins(
+        projectState,
+        node,
+        isLinkConnected(projectState, patchId, node.id)
+      );
+
+      return R.merge(node, {
+        label,
+        pins: nodePins,
+      });
+    })
+  )(projectState);
+
+export const dereferencedLinks = (projectState, patchId) => {
+  const nodes = dereferencedNodes(projectState, patchId);
+  const links = getLinks(projectState, patchId);
+
+  return R.map((link) => {
+    const pins = R.map(data => R.merge(data, nodes[data.nodeId].pins[data.pinKey]), link.pins);
+    return R.merge(
+      link,
+      {
+        type: pins[0].type,
+      }
+    );
+  })(links);
+};
 
 export const getLinksConnectedWithNode = (projectState, nodeId, patchId) => R.pipe(
   R.values,
