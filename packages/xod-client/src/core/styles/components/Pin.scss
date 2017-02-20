@@ -1,15 +1,22 @@
-
 .Pin {
   .symbol {
-    fill: $color-canvas-face;
-    stroke: $color-canvas-face-stroke;
+    fill: #3d3d3d;
+    stroke: #2e8f6c;
+    stroke-width: 2px;
+    filter: url(#dropshadow);
   }
 
   .label {
-    font-family: $font-family-mono;
+    font-family: $font-family-condensed;
     font-weight: 500;
-    fill: $color-canvas-background-text;
+    font-size: 12px;
+    fill: white;
     dominant-baseline: central;
+  }
+
+  .label.output {
+    fill: black;
+    font-weight: 700; // black font looks thinner
   }
 
   &:hover {
@@ -20,7 +27,7 @@
 
   &.is-selected {
     .symbol {
-      stroke: $color-canvas-selected-faded;
+      stroke: $color-canvas-selected;
     }
   }
 
@@ -33,15 +40,6 @@
   &.is-almost-valid {
     .symbol {
       fill: $color-canvas-almost-ok;
-    }
-  }
-
-  &.is-property {
-    .pinLabel {
-      opacity: 0.5;
-    }
-    .symbol {
-      fill: $color-canvas-not-available;
     }
   }
 }

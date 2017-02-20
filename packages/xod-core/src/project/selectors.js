@@ -204,71 +204,6 @@ export const getNodes = R.curry((patchId, state) => R.compose(
 )(state));
 
 /*
-  Pin selectors
-*/
-
-const getVerticalPinOffsets = () => ({
-  [PIN_DIRECTION.INPUT]: -1 * SIZE.NODE.padding.y,
-  [PIN_DIRECTION.OUTPUT]: SIZE.NODE.padding.y - (SIZE.PIN.radius * 2),
-});
-
-const getPinsWidth = R.curry((withMargins, count) => {
-  const marginCount = (withMargins) ? count + 1 : count - 1;
-  return (marginCount * SIZE.PIN.margin) + (count * SIZE.PIN.radius * 2);
-});
-
-export const getGroupedPinsWidth = R.pipe(
-  R.values,
-  R.groupBy(R.prop('direction')),
-  R.mapObjIndexed(R.compose(getPinsWidth(true), R.length))
-);
-
-export const getNodeWidth = R.pipe(
-  R.values,
-  R.append(SIZE.NODE.minWidth),
-  R.reduce(R.max, -Infinity)
-);
-
-export const getPinPosition = (nodeTypePins, key, nodePosition) => {
-  const originalPin = nodeTypePins[key];
-  const direction = originalPin.direction;
-
-  const groups = R.pipe(
-    R.values,
-    R.groupBy(nPin => nPin.direction)
-  )(nodeTypePins);
-  const widths = R.pipe(
-    R.keys,
-    R.reduce((prev, dir) =>
-      R.assoc(
-        dir,
-        getPinsWidth(false, groups[dir].length),
-        prev
-      ),
-      {}
-    )
-  )(groups);
-  const vOffset = getVerticalPinOffsets();
-  const pinIndex = R.pipe(
-    R.find(R.propEq('key', key)),
-    R.prop('index')
-  )(groups[direction]);
-  const groupCenter = widths[direction] / 2;
-  const pinX = (
-    (-1 * groupCenter) +
-    (pinIndex * SIZE.PIN.radius * 2) +
-    (pinIndex * SIZE.PIN.margin)
-  );
-
-  return {
-    position: {
-      x: nodePosition.x + pinX,
-      y: nodePosition.y + vOffset[direction],
-    },
-  };
-};
-
-/*
   Link selectors
 */
 
@@ -635,12 +570,10 @@ export const preparePins = (projectState, node) => {
   const pins = getNodePins(projectState, node.typeId);
 
   return R.map((pin) => {
-    const originalPin = R.path(['pins', pin.key], node) || {};
-    const pinPosition = getPinPosition(pins, pin.key, node.position);
-    const radius = { radius: SIZE.PIN.radius };
+    const originalPin = R.pathOr({}, ['pins', pin.key], node); // TODO: explain it
     const isSelected = { isSelected: false };
     const defaultPin = { value: null, injected: false };
-    return R.mergeAll([defaultPin, pin, originalPin, pinPosition, radius, isSelected]);
+    return R.mergeAll([defaultPin, pin, originalPin, isSelected]);
   })(pins);
 };
 
@@ -650,32 +583,15 @@ export const dereferencedNodes = (projectState, patchId) =>
     R.map((node) => {
       const label = getNodeLabel(projectState, node);
       const nodePins = preparePins(projectState, node);
-      const pinsWidth = getGroupedPinsWidth(nodePins);
-      const nodeWidth = getNodeWidth(pinsWidth);
 
       return R.merge(node, {
         label,
         pins: nodePins,
-        width: nodeWidth,
       });
     })
   )(projectState);
 
-export const dereferencedLinks = (projectState, patchId) => {
-  const nodes = dereferencedNodes(projectState, patchId);
-  const links = getLinks(projectState, patchId);
-
-  return R.mapObjIndexed((link) => {
-    const pins = R.map(data => R.merge(data, nodes[data.nodeId].pins[data.pinKey]), link.pins);
-    return R.merge(
-      link,
-      {
-        from: addPinRadius(pins[0].position) || null,
-        to: addPinRadius(pins[1].position) || null,
-      }
-    );
-  })(links);
-};
+export const dereferencedLinks = getLinks;
 
 export const getLinksConnectedWithPin = (projectState, nodeId, pinKey, patchId) => R.pipe(
   R.values,

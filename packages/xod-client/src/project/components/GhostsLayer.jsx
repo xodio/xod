@@ -33,21 +33,11 @@ class GhostLayer extends React.Component {
   getNode() {
     if (!this.isCreatingNode() || !this.props.ghostNode) { return null; }
 
-    const updatePins = R.pipe(
-      R.values,
-      R.map(pin => R.assoc('position', {
-        x: pin.position.x + this.props.mousePosition.x,
-        y: pin.position.y + this.props.mousePosition.y,
-      }, pin)),
-      R.reduce((p, cur) => R.assoc(cur.id, cur, p), {})
-    );
-
     const node = R.merge(
       this.props.ghostNode,
       {
         position: this.props.mousePosition,
         isGhost: true,
-        pins: updatePins(this.props.ghostNode.pins),
       }
     );
 
@@ -57,6 +47,8 @@ class GhostLayer extends React.Component {
         id={node.id}
         label={node.label}
         position={node.position}
+        size={node.size}
+        outputPinsSectionHeight={node.outputPinsSectionHeight}
         width={node.width}
         pins={node.pins}
         isGhost={node.isGhost}

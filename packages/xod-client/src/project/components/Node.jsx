@@ -1,7 +1,6 @@
 import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
-import { SIZE } from 'xod-core';
 
 import Pin from './Pin';
 import NodeText from './NodeText';
@@ -12,33 +11,18 @@ class Node extends React.Component {
     super(props);
     this.id = this.props.id;
 
-    this.pins = {};
-
+    // needed for distinguishing between mouseDown events on pins and on node body
     this.pinListRef = null;
-    this.testRef = null;
 
     this.assignPinListRef = this.assignPinListRef.bind(this);
-    this.assignTextRef = this.assignTextRef.bind(this);
-
-    this.width = this.props.width;
-    this.originalWidth = this.props.width;
-    this.height = this.props.height;
 
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onPinMouseUp = this.onPinMouseUp.bind(this);
     this.onPinMouseDown = this.onPinMouseDown.bind(this);
   }
 
-  componentDidMount() {
-    this.updateNodeWidth();
-  }
-
   shouldComponentUpdate(newProps) {
     return R.not(R.equals(newProps, this.props));
-  }
-
-  componentDidUpdate() {
-    this.updateNodeWidth();
   }
 
   onMouseDown(event) {
@@ -58,100 +42,76 @@ class Node extends React.Component {
     this.props.onPinMouseDown(this.id, pinId);
   }
 
-  getOriginPosition() {
-    const position = R.clone(this.props.position);
-
-    position.x -= SIZE.NODE.padding.x + (this.width / 2);
-    position.y -= SIZE.NODE.padding.y + (this.height / 2);
-
-    return position;
-  }
-
-  getRectProps() {
-    return {
-      width: this.width,
-      height: this.height,
-      x: SIZE.NODE.padding.x,
-      y: SIZE.NODE.padding.y,
-    };
-  }
-
-  getBlockProps() {
-    return {
-      x: 0,
-      y: 0,
-      width: this.getRectProps().width + (SIZE.NODE.padding.x * 2),
-      height: this.getRectProps().height + (SIZE.NODE.padding.y * 2),
-    };
-  }
-
-  getTextProps() {
-    const rectSize = this.getRectProps();
-    return {
-      x: rectSize.x + (rectSize.width / 2),
-      y: rectSize.y + (rectSize.height / 2),
-    };
-  }
-
-  updateNodeWidth() {
-    const nodeText = this.textRef;
-    const textWidth = nodeText.getWidth();
-    let newWidth = textWidth + (SIZE.NODE_TEXT.margin.x * 2);
-
-    if (newWidth < SIZE.NODE.minWidth) {
-      newWidth = SIZE.NODE.minWidth;
-    }
-    if (this.width !== newWidth && newWidth >= this.originalWidth) {
-      this.width = newWidth;
-      this.forceUpdate();
-    }
-  }
-
-  assignTextRef(ref) {
-    this.textRef = ref;
-  }
   assignPinListRef(ref) {
     this.pinListRef = ref;
   }
 
   render() {
-    const position = this.getOriginPosition();
-    const pins = R.pipe(
-      R.values,
-      R.map(pin =>
-        R.assoc('position', {
-          x: pin.position.x - position.x,
-          y: pin.position.y - position.y,
-        }, pin)
-      )
-    )(this.props.pins);
-    const textPosition = this.getTextProps();
+    const {
+      size,
+      position,
+      pins,
+      outputPinsSectionHeight,
+      label,
+    } = this.props;
+
+    const pinsArr = R.values(pins);
 
     const cls = classNames('Node', {
       'is-selected': this.props.isSelected,
       'is-ghost': this.props.isGhost,
     });
 
+    const maskId = `${this.id}mask`;
+    const bodyRectProps = {
+      rx: 5,
+      ry: 5,
+      // size is set in root svg, let's occupy it all
+      width: '100%',
+      height: '100%',
+    };
+
     return (
       <svg
+        key={this.id}
         className={cls}
         {...position}
-        key={this.id}
+        {...size}
+        viewBox={`0 0 ${size.width} ${size.height}`}
         onMouseDown={this.onMouseDown}
       >
         <g
           onMouseOver={this.handleOver}
           onMouseOut={this.handleOut}
         >
-          <rect className="body" {...this.getRectProps()} />
-          <NodeText
-            ref={this.assignTextRef}
-            position={textPosition}
-            label={this.props.label}
+          <clipPath id={maskId}>
+            <rect
+              className="mask"
+              {...bodyRectProps}
+            />
+          </clipPath>
+          <rect
+            className="body"
+            clipPath={`url(#${maskId})`}
           />
+          <rect
+            className="outputPinsSection"
+            clipPath={`url(#${maskId})`}
+            x="0"
+            y={size.height - outputPinsSectionHeight}
+            width="100%"
+            height={outputPinsSectionHeight}
+          />
+          <rect
+            className="outline"
+            {...bodyRectProps}
+          />
+          <NodeText>
+            {label}
+          </NodeText>
         </g>
         <g className="pinlist" ref={this.assignPinListRef}>
-          {pins.map(pin =>
+          {pinsArr.map(pin =>
             <Pin
               keyName={pin.key}
               key={pin.key}
@@ -170,9 +130,9 @@ Node.propTypes = {
   id: React.PropTypes.string.isRequired,
   label: React.PropTypes.string.isRequired,
   pins: React.PropTypes.any.isRequired,
+  size: React.PropTypes.any.isRequired,
+  outputPinsSectionHeight: React.PropTypes.number.isRequired,
   position: React.PropTypes.object.isRequired,
-  width: React.PropTypes.number,
-  height: React.PropTypes.number,
   isSelected: React.PropTypes.bool,
   isGhost: React.PropTypes.bool,
   onMouseDown: React.PropTypes.func,
@@ -180,8 +140,6 @@ Node.propTypes = {
   onPinMouseDown: React.PropTypes.func,
 };
 Node.defaultProps = {
-  width: SIZE.NODE.minWidth,
-  height: SIZE.NODE.minHeight,
   isSelected: false,
   isGhost: false,
   onMouseDown: noop,
