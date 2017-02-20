@@ -409,7 +409,7 @@ describe('Flatten', () => {
       const unnested = R.map(R.map(R.unnest), extracted);
       const nodes = unnested[0];
 
-      const terminalString = R.find(R.propEq('id', 'ByVJ0EI7te~Bku1CEI7Yl'), nodes);
+      const terminalString = R.find(R.propEq('id', 'BJ4l0cVdKe~S1ulA9NuFx'), nodes);
       expect(terminalString)
       .to.have.property('pins')
       .that.deep.equals({
@@ -419,7 +419,7 @@ describe('Flatten', () => {
         },
       });
 
-      const terminalNumber = R.find(R.propEq('id', 'HJ7JC4UQFe~SJ1ANIQFg'), nodes);
+      const terminalNumber = R.find(R.propEq('id', 'SJ7g05EdFe~B1eR5EOYg'), nodes);
       expect(terminalNumber)
       .to.have.property('pins')
       .that.deep.equals({

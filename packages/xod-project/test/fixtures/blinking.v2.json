@@ -15,41 +15,29 @@
         "a": {
           "key": "a",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "a",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "b": {
           "key": "b",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "b",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "out": {
           "key": "out",
           "type": "number",
-          "direction": "output"
-        }
-      }
-    },
-    "xod/math/divide": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a / e.inputs.b) };\n};\n"
-      },
-      "pins": {
-        "a": {
-          "key": "a",
-          "type": "number",
-          "direction": "input"
-        },
-        "b": {
-          "key": "b",
-          "type": "number",
-          "direction": "input"
-        },
-        "out": {
-          "key": "out",
-          "type": "number",
-          "direction": "output"
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       }
     },
@@ -63,17 +51,65 @@
         "a": {
           "key": "a",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "a",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "b": {
           "key": "b",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "b",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "out": {
           "key": "out",
           "type": "number",
-          "direction": "output"
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": 0
+        }
+      }
+    },
+    "xod/math/divide": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a / e.inputs.b) };\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "number",
+          "direction": "input",
+          "label": "a",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "b": {
+          "key": "b",
+          "type": "number",
+          "direction": "input",
+          "label": "b",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "out": {
+          "key": "out",
+          "type": "number",
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       }
     },
@@ -87,17 +123,29 @@
         "a": {
           "key": "a",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "a",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "b": {
           "key": "b",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "b",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "out": {
           "key": "out",
           "type": "number",
-          "direction": "output"
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       }
     },
@@ -111,50 +159,32 @@
         "cond": {
           "key": "cond",
           "type": "boolean",
-          "direction": "input"
+          "direction": "input",
+          "label": "cond",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "in": {
           "key": "in",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "in",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "out": {
           "key": "out",
           "type": "number",
-          "direction": "output"
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       },
       "label": "valveNumber"
-    },
-    "xod/core/ultrasonic_HC_SR04": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "espruino": "\nvar sonic = require('@amperka/ultrasonic');\n\nmodule.exports.setup = function(e) {\n  var pinTrig = new Pin(e.props.pinTrig);\n  var pinEcho = new Pin(e.props.pinEcho);\n  e.context.device = sonic.connect({\n    trigPin: pinTrig,\n    echoPin: pinEcho\n  });\n  e.context.units = e.props.units;\n  e.context.isBusy = false;\n};\n\nmodule.exports.evaluate = function(e) {\n  if (e.context.isBusy) {\n    e.fire({ error: \"busy\" });\n  } else {\n    e.context.isBusy = true;\n    e.context.device.ping(function(err, value) {\n      e.context.isBusy = false;\n      if (err) {\n        e.fire({ error: err.msg });\n      } else {\n        e.fire({ value: value });\n      }\n    }, e.context.units);\n  }\n};\n"
-      },
-      "pins": {
-        "sample": {
-          "key": "sample",
-          "type": "pulse",
-          "direction": "input"
-        },
-        "units": {
-          "key": "units",
-          "type": "string",
-          "direction": "input"
-        },
-        "value": {
-          "key": "value",
-          "type": "number",
-          "direction": "output"
-        },
-        "error": {
-          "key": "error",
-          "type": "string",
-          "direction": "output"
-        }
-      },
-      "label": "HC-SR04"
     },
     "xod/core/triggerableNumber": {
       "nodes": {},
@@ -166,20 +196,78 @@
         "trigOn": {
           "key": "trigOn",
           "type": "pulse",
-          "direction": "input"
+          "direction": "input",
+          "label": "trigOn",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "value": {
           "key": "value",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "value",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "out": {
           "key": "out",
           "type": "number",
-          "direction": "output"
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       },
       "label": "triggerableNumber"
+    },
+    "xod/core/ultrasonic_HC_SR04": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nvar sonic = require('@amperka/ultrasonic');\n\nmodule.exports.setup = function(e) {\n  var pinTrig = new Pin(e.props.pinTrig);\n  var pinEcho = new Pin(e.props.pinEcho);\n  e.context.device = sonic.connect({\n    trigPin: pinTrig,\n    echoPin: pinEcho\n  });\n  e.context.units = e.props.units;\n  e.context.isBusy = false;\n};\n\nmodule.exports.evaluate = function(e) {\n  if (e.context.isBusy) {\n    e.fire({ error: \"busy\" });\n  } else {\n    e.context.isBusy = true;\n    e.context.device.ping(function(err, value) {\n      e.context.isBusy = false;\n      if (err) {\n        e.fire({ error: err.msg });\n      } else {\n        e.fire({ value: value });\n      }\n    }, e.context.units);\n  }\n};\n"
+      },
+      "pins": {
+        "sample": {
+          "key": "sample",
+          "type": "pulse",
+          "direction": "input",
+          "label": "sample",
+          "description": "",
+          "order": 0,
+          "value": false
+        },
+        "units": {
+          "key": "units",
+          "type": "string",
+          "direction": "input",
+          "label": "units",
+          "description": "",
+          "order": 0,
+          "value": ""
+        },
+        "value": {
+          "key": "value",
+          "type": "number",
+          "direction": "output",
+          "label": "value",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "error": {
+          "key": "error",
+          "type": "string",
+          "direction": "output",
+          "label": "error",
+          "description": "",
+          "order": 0,
+          "value": ""
+        }
+      },
+      "label": "HC-SR04"
     },
     "xod/core/time": {
       "nodes": {},
@@ -191,40 +279,23 @@
         "pulse": {
           "key": "pulse",
           "type": "pulse",
-          "direction": "input"
+          "direction": "input",
+          "label": "pulse",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "value": {
           "key": "value",
           "type": "number",
-          "direction": "output"
+          "direction": "output",
+          "label": "value",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       },
       "label": "Time"
-    },
-    "xod/core/split_bool": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.inp) {\n    return { outTrue: PULSE };\n  } else {\n    return { outFalse: PULSE };\n  }\n};\n"
-      },
-      "pins": {
-        "inp": {
-          "key": "inp",
-          "type": "boolean",
-          "direction": "input"
-        },
-        "outTrue": {
-          "key": "outTrue",
-          "type": "pulse",
-          "direction": "output"
-        },
-        "outFalse": {
-          "key": "outFalse",
-          "type": "pulse",
-          "direction": "output"
-        }
-      },
-      "label": "Split"
     },
     "xod/core/stdout": {
       "nodes": {},
@@ -236,10 +307,51 @@
         "value": {
           "key": "value",
           "type": "string",
-          "direction": "input"
+          "direction": "input",
+          "label": "value",
+          "description": "",
+          "order": 0,
+          "value": ""
         }
       },
       "label": "stdout"
+    },
+    "xod/core/split_bool": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.inp) {\n    return { outTrue: PULSE };\n  } else {\n    return { outFalse: PULSE };\n  }\n};\n"
+      },
+      "pins": {
+        "inp": {
+          "key": "inp",
+          "type": "boolean",
+          "direction": "input",
+          "label": "inp",
+          "description": "",
+          "order": 0,
+          "value": false
+        },
+        "outTrue": {
+          "key": "outTrue",
+          "type": "pulse",
+          "direction": "output",
+          "label": "outTrue",
+          "description": "",
+          "order": 0,
+          "value": false
+        },
+        "outFalse": {
+          "key": "outFalse",
+          "type": "pulse",
+          "direction": "output",
+          "label": "outFalse",
+          "description": "",
+          "order": 0,
+          "value": false
+        }
+      },
+      "label": "Split"
     },
     "xod/core/servo": {
       "nodes": {},
@@ -251,36 +363,29 @@
         "minPulse": {
           "key": "minPulse",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "minPulse",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "maxPulse": {
           "key": "maxPulse",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "maxPulse",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "value": {
           "key": "value",
           "type": "number",
-          "direction": "input"
-        }
-      }
-    },
-    "xod/core/pot": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  return { value: analogRead(e.context.pin) };\n};\n"
-      },
-      "pins": {
-        "sample": {
-          "key": "sample",
-          "type": "pulse",
-          "direction": "input"
-        },
-        "value": {
-          "key": "value",
-          "type": "number",
-          "direction": "output"
+          "direction": "input",
+          "label": "value",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       }
     },
@@ -292,23 +397,14 @@
         "__in__": {
           "key": "__in__",
           "type": "string",
-          "direction": "input"
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": ""
         }
       },
       "label": "<OutputString>"
-    },
-    "xod/core/outputPulse": {
-      "nodes": {},
-      "links": {},
-      "impls": {},
-      "pins": {
-        "__in__": {
-          "key": "__in__",
-          "type": "pulse",
-          "direction": "input"
-        }
-      },
-      "label": "<OutputPulse>"
     },
     "xod/core/outputNumber": {
       "nodes": {},
@@ -318,10 +414,58 @@
         "__in__": {
           "key": "__in__",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       },
       "label": "<OutputNumber>"
+    },
+    "xod/core/pot": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  return { value: analogRead(e.context.pin) };\n};\n"
+      },
+      "pins": {
+        "sample": {
+          "key": "sample",
+          "type": "pulse",
+          "direction": "input",
+          "label": "sample",
+          "description": "",
+          "order": 0,
+          "value": false
+        },
+        "value": {
+          "key": "value",
+          "type": "number",
+          "direction": "output",
+          "label": "value",
+          "description": "",
+          "order": 0,
+          "value": 0
+        }
+      }
+    },
+    "xod/core/outputPulse": {
+      "nodes": {},
+      "links": {},
+      "impls": {},
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "pulse",
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": false
+        }
+      },
+      "label": "<OutputPulse>"
     },
     "xod/core/outputBool": {
       "nodes": {},
@@ -331,7 +475,11 @@
         "__in__": {
           "key": "__in__",
           "type": "boolean",
-          "direction": "input"
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       },
       "label": "<OutputBool>"
@@ -346,17 +494,29 @@
         "a": {
           "key": "a",
           "type": "boolean",
-          "direction": "input"
+          "direction": "input",
+          "label": "a",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "b": {
           "key": "b",
           "type": "boolean",
-          "direction": "input"
+          "direction": "input",
+          "label": "b",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "out": {
           "key": "out",
           "type": "boolean",
-          "direction": "output"
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       },
       "label": "or"
@@ -371,59 +531,23 @@
         "in": {
           "key": "in",
           "type": "boolean",
-          "direction": "input"
+          "direction": "input",
+          "label": "in",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "out": {
           "key": "out",
           "type": "boolean",
-          "direction": "output"
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       },
       "label": "not"
-    },
-    "xod/core/map": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var k = (inputs.inp - inputs.inA) / (inputs.inB - inputs.inA);\n  var out = inputs.outA + k * (inputs.outB - inputs.outA);\n\n  if (inputs.clip) {\n    if (inputs.outB > inputs.outA) {\n      out = Math.max(inputs.outA, out);\n      out = Math.min(inputs.outB, out);\n    } else {\n      out = Math.max(inputs.outB, out);\n      out = Math.min(inputs.outA, out);\n    }\n  }\n\n  return { out: out };\n};\n"
-      },
-      "pins": {
-        "inp": {
-          "key": "inp",
-          "type": "number",
-          "direction": "input"
-        },
-        "inA": {
-          "key": "inA",
-          "type": "number",
-          "direction": "input"
-        },
-        "inB": {
-          "key": "inB",
-          "type": "number",
-          "direction": "input"
-        },
-        "outA": {
-          "key": "outA",
-          "type": "number",
-          "direction": "input"
-        },
-        "outB": {
-          "key": "outB",
-          "type": "number",
-          "direction": "input"
-        },
-        "clip": {
-          "key": "clip",
-          "type": "boolean",
-          "direction": "input"
-        },
-        "out": {
-          "key": "out",
-          "type": "number",
-          "direction": "output"
-        }
-      }
     },
     "xod/core/less": {
       "nodes": {},
@@ -435,17 +559,163 @@
         "a": {
           "key": "a",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "a",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "b": {
           "key": "b",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "b",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "out": {
           "key": "out",
           "type": "boolean",
-          "direction": "output"
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": false
+        }
+      }
+    },
+    "xod/core/map": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var k = (inputs.inp - inputs.inA) / (inputs.inB - inputs.inA);\n  var out = inputs.outA + k * (inputs.outB - inputs.outA);\n\n  if (inputs.clip) {\n    if (inputs.outB > inputs.outA) {\n      out = Math.max(inputs.outA, out);\n      out = Math.min(inputs.outB, out);\n    } else {\n      out = Math.max(inputs.outB, out);\n      out = Math.min(inputs.outA, out);\n    }\n  }\n\n  return { out: out };\n};\n"
+      },
+      "pins": {
+        "inp": {
+          "key": "inp",
+          "type": "number",
+          "direction": "input",
+          "label": "inp",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "inA": {
+          "key": "inA",
+          "type": "number",
+          "direction": "input",
+          "label": "inA",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "inB": {
+          "key": "inB",
+          "type": "number",
+          "direction": "input",
+          "label": "inB",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "outA": {
+          "key": "outA",
+          "type": "number",
+          "direction": "input",
+          "label": "outA",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "outB": {
+          "key": "outB",
+          "type": "number",
+          "direction": "input",
+          "label": "outB",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "clip": {
+          "key": "clip",
+          "type": "boolean",
+          "direction": "input",
+          "label": "clip",
+          "description": "",
+          "order": 0,
+          "value": false
+        },
+        "out": {
+          "key": "out",
+          "type": "number",
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": 0
+        }
+      }
+    },
+    "xod/core/inputString": {
+      "nodes": {},
+      "links": {},
+      "impls": {},
+      "pins": {
+        "__out__": {
+          "key": "__out__",
+          "type": "string",
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": ""
+        }
+      },
+      "label": "<InputString>"
+    },
+    "xod/core/latch": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
+      },
+      "pins": {
+        "toggle": {
+          "key": "toggle",
+          "type": "pulse",
+          "direction": "input",
+          "label": "toggle",
+          "description": "",
+          "order": 0,
+          "value": false
+        },
+        "set": {
+          "key": "set",
+          "type": "pulse",
+          "direction": "input",
+          "label": "set",
+          "description": "",
+          "order": 0,
+          "value": false
+        },
+        "reset": {
+          "key": "reset",
+          "type": "pulse",
+          "direction": "input",
+          "label": "reset",
+          "description": "",
+          "order": 0,
+          "value": false
+        },
+        "state": {
+          "key": "state",
+          "type": "boolean",
+          "direction": "output",
+          "label": "state",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       }
     },
@@ -459,65 +729,14 @@
         "brightness": {
           "key": "brightness",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "brightness",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       },
       "label": "LED"
-    },
-    "xod/core/latch": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "js": "\nmodule.exports.setup = function(e) {\n  e.context.state = e.props.initialState;\n};\n\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
-      },
-      "pins": {
-        "toggle": {
-          "key": "toggle",
-          "type": "pulse",
-          "direction": "input"
-        },
-        "set": {
-          "key": "set",
-          "type": "pulse",
-          "direction": "input"
-        },
-        "reset": {
-          "key": "reset",
-          "type": "pulse",
-          "direction": "input"
-        },
-        "state": {
-          "key": "state",
-          "type": "boolean",
-          "direction": "output"
-        }
-      }
-    },
-    "xod/core/inputString": {
-      "nodes": {},
-      "links": {},
-      "impls": {},
-      "pins": {
-        "__out__": {
-          "key": "__out__",
-          "type": "string",
-          "direction": "output"
-        }
-      },
-      "label": "<InputString>"
-    },
-    "xod/core/inputNumber": {
-      "nodes": {},
-      "links": {},
-      "impls": {},
-      "pins": {
-        "__out__": {
-          "key": "__out__",
-          "type": "number",
-          "direction": "output"
-        }
-      },
-      "label": "<InputNumber>"
     },
     "xod/core/inputPulse": {
       "nodes": {},
@@ -527,7 +746,11 @@
         "__out__": {
           "key": "__out__",
           "type": "pulse",
-          "direction": "output"
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       },
       "label": "<InputPulse>"
@@ -540,34 +763,31 @@
         "__out__": {
           "key": "__out__",
           "type": "boolean",
-          "direction": "output"
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       },
       "label": "<InputBool>"
     },
-    "xod/core/equal": {
+    "xod/core/inputNumber": {
       "nodes": {},
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n\n  if (a === undefined || b === undefined) {\n    return;\n  }\n\n  return { out: a === b };\n};\n"
-      },
+      "impls": {},
       "pins": {
-        "a": {
-          "key": "a",
+        "__out__": {
+          "key": "__out__",
           "type": "number",
-          "direction": "input"
-        },
-        "b": {
-          "key": "b",
-          "type": "number",
-          "direction": "input"
-        },
-        "out": {
-          "key": "out",
-          "type": "boolean",
-          "direction": "output"
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
-      }
+      },
+      "label": "<InputNumber>"
     },
     "xod/core/file_write": {
       "nodes": {},
@@ -579,55 +799,41 @@
         "fileName": {
           "key": "fileName",
           "type": "string",
-          "direction": "input"
+          "direction": "input",
+          "label": "fileName",
+          "description": "",
+          "order": 0,
+          "value": ""
         },
         "data": {
           "key": "data",
           "type": "pulse",
-          "direction": "input"
+          "direction": "input",
+          "label": "data",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "onSuccess": {
           "key": "onSuccess",
           "type": "pulse",
-          "direction": "output"
+          "direction": "output",
+          "label": "onSuccess",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "onFailure": {
           "key": "onFailure",
           "type": "string",
-          "direction": "output"
+          "direction": "output",
+          "label": "onFailure",
+          "description": "",
+          "order": 0,
+          "value": ""
         }
       },
       "label": "File write"
-    },
-    "xod/core/file_read": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "nodejs": "var path = require('path');\nvar fs = require('fs');\n\nmodule.exports.evaluate = function(e) {\n  var filename = e.inputs.fileName;\n\n  fs.readFile(filename, function (err, data) {\n    if (err) {\n      e.fire({ error: err.toString() });\n      return;\n    }\n\n    e.fire({ data: data });\n  });\n};\n"
-      },
-      "pins": {
-        "fileName": {
-          "key": "fileName",
-          "type": "string",
-          "direction": "input"
-        },
-        "pulse": {
-          "key": "pulse",
-          "type": "pulse",
-          "direction": "input"
-        },
-        "data": {
-          "key": "data",
-          "type": "string",
-          "direction": "output"
-        },
-        "error": {
-          "key": "error",
-          "type": "string",
-          "direction": "output"
-        }
-      },
-      "label": "File read"
     },
     "xod/core/greater": {
       "nodes": {},
@@ -639,65 +845,138 @@
         "a": {
           "key": "a",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "a",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "b": {
           "key": "b",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "b",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "out": {
           "key": "out",
           "type": "boolean",
-          "direction": "output"
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       }
     },
-    "xod/core/either": {
+    "xod/core/file_read": {
       "nodes": {},
       "links": {},
       "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  var out = e.inputs.inp ? e.inputs.trueValue : e.inputs.falseValue;\n  return { out: out };\n};\n"
+        "nodejs": "var path = require('path');\nvar fs = require('fs');\n\nmodule.exports.evaluate = function(e) {\n  var filename = e.inputs.fileName;\n\n  fs.readFile(filename, function (err, data) {\n    if (err) {\n      e.fire({ error: err.toString() });\n      return;\n    }\n\n    e.fire({ data: data });\n  });\n};\n"
       },
       "pins": {
-        "inp": {
-          "key": "inp",
-          "type": "boolean",
-          "direction": "input"
+        "fileName": {
+          "key": "fileName",
+          "type": "string",
+          "direction": "input",
+          "label": "fileName",
+          "description": "",
+          "order": 0,
+          "value": ""
         },
-        "trueValue": {
-          "key": "trueValue",
-          "type": "number",
-          "direction": "input"
+        "pulse": {
+          "key": "pulse",
+          "type": "pulse",
+          "direction": "input",
+          "label": "pulse",
+          "description": "",
+          "order": 0,
+          "value": false
         },
-        "falseValue": {
-          "key": "falseValue",
-          "type": "number",
-          "direction": "input"
+        "data": {
+          "key": "data",
+          "type": "string",
+          "direction": "output",
+          "label": "data",
+          "description": "",
+          "order": 0,
+          "value": ""
         },
-        "out": {
-          "key": "out",
-          "type": "number",
-          "direction": "output"
+        "error": {
+          "key": "error",
+          "type": "string",
+          "direction": "output",
+          "label": "error",
+          "description": "",
+          "order": 0,
+          "value": ""
         }
-      }
+      },
+      "label": "File read"
     },
     "xod/core/digital_output": {
       "nodes": {},
       "links": {},
       "impls": {
-        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.inputs.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
+        "espruino": "\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
       },
       "pins": {
         "pin": {
           "key": "pin",
           "type": "string",
-          "direction": "input"
+          "direction": "input",
+          "label": "pin",
+          "description": "",
+          "order": 0,
+          "value": ""
         },
         "value": {
           "key": "value",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "value",
+          "description": "",
+          "order": 0,
+          "value": 0
+        }
+      }
+    },
+    "xod/core/equal": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n\n  if (a === undefined || b === undefined) {\n    return;\n  }\n\n  return { out: a === b };\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "number",
+          "direction": "input",
+          "label": "a",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "b": {
+          "key": "b",
+          "type": "number",
+          "direction": "input",
+          "label": "b",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "out": {
+          "key": "out",
+          "type": "boolean",
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       }
     },
@@ -711,12 +990,65 @@
         "pin": {
           "key": "pin",
           "type": "string",
-          "direction": "input"
+          "direction": "input",
+          "label": "pin",
+          "description": "",
+          "order": 0,
+          "value": ""
         },
         "value": {
           "key": "value",
           "type": "number",
-          "direction": "output"
+          "direction": "output",
+          "label": "value",
+          "description": "",
+          "order": 0,
+          "value": 0
+        }
+      }
+    },
+    "xod/core/either": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var out = e.inputs.inp ? e.inputs.trueValue : e.inputs.falseValue;\n  return { out: out };\n};\n"
+      },
+      "pins": {
+        "inp": {
+          "key": "inp",
+          "type": "boolean",
+          "direction": "input",
+          "label": "inp",
+          "description": "",
+          "order": 0,
+          "value": false
+        },
+        "trueValue": {
+          "key": "trueValue",
+          "type": "number",
+          "direction": "input",
+          "label": "trueValue",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "falseValue": {
+          "key": "falseValue",
+          "type": "number",
+          "direction": "input",
+          "label": "falseValue",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "out": {
+          "key": "out",
+          "type": "number",
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       }
     },
@@ -730,17 +1062,29 @@
         "inValue": {
           "key": "inValue",
           "type": "string",
-          "direction": "input"
+          "direction": "input",
+          "label": "inValue",
+          "description": "",
+          "order": 0,
+          "value": ""
         },
         "pulse": {
           "key": "pulse",
           "type": "pulse",
-          "direction": "input"
+          "direction": "input",
+          "label": "pulse",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "value": {
           "key": "value",
           "type": "string",
-          "direction": "output"
+          "direction": "output",
+          "label": "value",
+          "description": "",
+          "order": 0,
+          "value": ""
         }
       },
       "label": "<String>"
@@ -755,20 +1099,96 @@
         "inValue": {
           "key": "inValue",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "inValue",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "pulse": {
           "key": "pulse",
           "type": "pulse",
-          "direction": "input"
+          "direction": "input",
+          "label": "pulse",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "value": {
           "key": "value",
           "type": "number",
-          "direction": "output"
+          "direction": "output",
+          "label": "value",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       },
       "label": "<Number>"
+    },
+    "xod/core/concat": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "module.exports.evaluate = function(e) {\n  return { result: (String(e.inputs.a) + String(e.inputs.b)) };\n};\n"
+      },
+      "pins": {
+        "a": {
+          "key": "a",
+          "type": "string",
+          "direction": "input",
+          "label": "a",
+          "description": "",
+          "order": 0,
+          "value": ""
+        },
+        "b": {
+          "key": "b",
+          "type": "string",
+          "direction": "input",
+          "label": "b",
+          "description": "",
+          "order": 0,
+          "value": ""
+        },
+        "result": {
+          "key": "result",
+          "type": "string",
+          "direction": "output",
+          "label": "result",
+          "description": "",
+          "order": 0,
+          "value": ""
+        }
+      },
+      "label": "concat"
+    },
+    "xod/core/clock": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.context.intervalID) {\n    clearInterval(e.context.intervalID);\n  }\n\n  e.context.intervalID = setInterval(function() {\n    e.fire({ tick: PULSE });\n  }, e.inputs.interval * 1000);\n};\n"
+      },
+      "pins": {
+        "interval": {
+          "key": "interval",
+          "type": "number",
+          "direction": "input",
+          "label": "interval",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "tick": {
+          "key": "tick",
+          "type": "pulse",
+          "direction": "output",
+          "label": "tick",
+          "description": "",
+          "order": 0,
+          "value": false
+        }
+      }
     },
     "xod/core/constBool": {
       "nodes": {},
@@ -780,17 +1200,29 @@
         "inValue": {
           "key": "inValue",
           "type": "boolean",
-          "direction": "input"
+          "direction": "input",
+          "label": "inValue",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "pulse": {
           "key": "pulse",
           "type": "pulse",
-          "direction": "input"
+          "direction": "input",
+          "label": "pulse",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "value": {
           "key": "value",
           "type": "boolean",
-          "direction": "output"
+          "direction": "output",
+          "label": "value",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       },
       "label": "<Bool>"
@@ -805,54 +1237,49 @@
         "a": {
           "key": "a",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "a",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "b": {
           "key": "b",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "b",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "equal": {
           "key": "equal",
           "type": "pulse",
-          "direction": "output"
+          "direction": "output",
+          "label": "equal",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "less": {
           "key": "less",
           "type": "pulse",
-          "direction": "output"
+          "direction": "output",
+          "label": "less",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "greater": {
           "key": "greater",
           "type": "pulse",
-          "direction": "output"
+          "direction": "output",
+          "label": "greater",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       }
-    },
-    "xod/core/concat": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "js": "module.exports.evaluate = function(e) {\n  return { result: (String(e.inputs.a) + String(e.inputs.b)) };\n};\n"
-      },
-      "pins": {
-        "a": {
-          "key": "a",
-          "type": "string",
-          "direction": "input"
-        },
-        "b": {
-          "key": "b",
-          "type": "string",
-          "direction": "input"
-        },
-        "result": {
-          "key": "result",
-          "type": "string",
-          "direction": "output"
-        }
-      },
-      "label": "concat"
     },
     "xod/core/choose": {
       "nodes": {},
@@ -864,36 +1291,29 @@
         "x": {
           "key": "x",
           "type": "boolean",
-          "direction": "input"
+          "direction": "input",
+          "label": "x",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "truePulse": {
           "key": "truePulse",
           "type": "pulse",
-          "direction": "output"
+          "direction": "output",
+          "label": "truePulse",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "falsePulse": {
           "key": "falsePulse",
           "type": "pulse",
-          "direction": "output"
-        }
-      }
-    },
-    "xod/core/clock": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.context.intervalID) {\n    clearInterval(e.context.intervalID);\n  }\n\n  e.context.intervalID = setInterval(function() {\n    e.fire({ tick: PULSE });\n  }, e.inputs.interval * 1000);\n};\n"
-      },
-      "pins": {
-        "interval": {
-          "key": "interval",
-          "type": "number",
-          "direction": "input"
-        },
-        "tick": {
-          "key": "tick",
-          "type": "pulse",
-          "direction": "output"
+          "direction": "output",
+          "label": "falsePulse",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       }
     },
@@ -907,31 +1327,20 @@
         "__in__": {
           "key": "__in__",
           "type": "string",
-          "direction": "input"
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": ""
         },
         "__out__": {
           "key": "__out__",
           "type": "pulse",
-          "direction": "output"
-        }
-      }
-    },
-    "xod/core/cast-pulse-to-number": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: 1 };\n};\n"
-      },
-      "pins": {
-        "__in__": {
-          "key": "__in__",
-          "type": "pulse",
-          "direction": "input"
-        },
-        "__out__": {
-          "key": "__out__",
-          "type": "number",
-          "direction": "output"
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       }
     },
@@ -945,69 +1354,20 @@
         "__in__": {
           "key": "__in__",
           "type": "string",
-          "direction": "input"
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": ""
         },
         "__out__": {
           "key": "__out__",
           "type": "boolean",
-          "direction": "output"
-        }
-      }
-    },
-    "xod/core/cast-pulse-to-boolean": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: true };\n};\n"
-      },
-      "pins": {
-        "__in__": {
-          "key": "__in__",
-          "type": "pulse",
-          "direction": "input"
-        },
-        "__out__": {
-          "key": "__out__",
-          "type": "boolean",
-          "direction": "output"
-        }
-      }
-    },
-    "xod/core/cast-number-to-string": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n"
-      },
-      "pins": {
-        "__in__": {
-          "key": "__in__",
-          "type": "number",
-          "direction": "input"
-        },
-        "__out__": {
-          "key": "__out__",
-          "type": "boolean",
-          "direction": "output"
-        }
-      }
-    },
-    "xod/core/cast-number-to-boolean": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Boolean(e.inputs.__in__) };\n};\n"
-      },
-      "pins": {
-        "__in__": {
-          "key": "__in__",
-          "type": "number",
-          "direction": "input"
-        },
-        "__out__": {
-          "key": "__out__",
-          "type": "boolean",
-          "direction": "output"
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       }
     },
@@ -1021,12 +1381,128 @@
         "__in__": {
           "key": "__in__",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "__out__": {
           "key": "__out__",
           "type": "pulse",
-          "direction": "output"
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": false
+        }
+      }
+    },
+    "xod/core/cast-number-to-string": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "number",
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "boolean",
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": false
+        }
+      }
+    },
+    "xod/core/cast-pulse-to-number": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: 1 };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "pulse",
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": false
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "number",
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": 0
+        }
+      }
+    },
+    "xod/core/cast-pulse-to-boolean": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: true };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "pulse",
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": false
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "boolean",
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": false
+        }
+      }
+    },
+    "xod/core/cast-number-to-boolean": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Boolean(e.inputs.__in__) };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "number",
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": 0
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "boolean",
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       }
     },
@@ -1040,26 +1516,20 @@
         "__in__": {
           "key": "__in__",
           "type": "boolean",
-          "direction": "input"
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "__out__": {
           "key": "__out__",
           "type": "string",
-          "direction": "output"
-        }
-      }
-    },
-    "xod/core/button": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "espruino": "\nmodule.exports.setup = function(e) {\n  var pin = new Pin(e.props.pin);\n\n  setWatch(function(evt) {\n    e.fire({ state: !evt.state });\n  }, pin, {\n    edge: 'both',\n    repeat: true,\n    debounce: 30\n  });\n};\n"
-      },
-      "pins": {
-        "state": {
-          "key": "state",
-          "type": "boolean",
-          "direction": "output"
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": ""
         }
       }
     },
@@ -1073,12 +1543,65 @@
         "__in__": {
           "key": "__in__",
           "type": "boolean",
-          "direction": "input"
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "__out__": {
           "key": "__out__",
           "type": "number",
-          "direction": "output"
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": 0
+        }
+      }
+    },
+    "xod/core/button": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  var pin = new Pin(e.props.pin);\n\n  setWatch(function(evt) {\n    e.fire({ state: !evt.state });\n  }, pin, {\n    edge: 'both',\n    repeat: true,\n    debounce: 30\n  });\n};\n"
+      },
+      "pins": {
+        "state": {
+          "key": "state",
+          "type": "boolean",
+          "direction": "output",
+          "label": "state",
+          "description": "",
+          "order": 0,
+          "value": false
+        }
+      }
+    },
+    "xod/core/cast-boolean-to-pulse": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.__in__ === false) return;\n  return { __out__: PULSE };\n};\n"
+      },
+      "pins": {
+        "__in__": {
+          "key": "__in__",
+          "type": "boolean",
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": false
+        },
+        "__out__": {
+          "key": "__out__",
+          "type": "pulse",
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       }
     },
@@ -1092,29 +1615,14 @@
         "freq": {
           "key": "freq",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "freq",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       },
       "label": "Buzzer"
-    },
-    "xod/core/cast-boolean-to-pulse": {
-      "nodes": {},
-      "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.__in__ === false) return;\n  return { __out__: PULSE };\n};\n"
-      },
-      "pins": {
-        "__in__": {
-          "key": "__in__",
-          "type": "boolean",
-          "direction": "input"
-        },
-        "__out__": {
-          "key": "__out__",
-          "type": "pulse",
-          "direction": "output"
-        }
-      }
     },
     "xod/core/both": {
       "nodes": {},
@@ -1126,17 +1634,56 @@
         "a": {
           "key": "a",
           "type": "pulse",
-          "direction": "input"
+          "direction": "input",
+          "label": "a",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "b": {
           "key": "b",
           "type": "pulse",
-          "direction": "input"
+          "direction": "input",
+          "label": "b",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "out": {
           "key": "out",
           "type": "pulse",
-          "direction": "output"
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": false
+        }
+      }
+    },
+    "xod/core/analog_output": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.evaluate = function(e) {\n  analogWrite(e.inputs.pin, e.inputs.value);\n};\n"
+      },
+      "pins": {
+        "pin": {
+          "key": "pin",
+          "type": "string",
+          "direction": "input",
+          "label": "pin",
+          "description": "",
+          "order": 0,
+          "value": ""
+        },
+        "value": {
+          "key": "value",
+          "type": "number",
+          "direction": "input",
+          "label": "value",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       }
     },
@@ -1150,17 +1697,65 @@
         "a": {
           "key": "a",
           "type": "pulse",
-          "direction": "input"
+          "direction": "input",
+          "label": "a",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "b": {
           "key": "b",
           "type": "pulse",
-          "direction": "input"
+          "direction": "input",
+          "label": "b",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "out": {
           "key": "out",
           "type": "pulse",
-          "direction": "output"
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": false
+        }
+      }
+    },
+    "xod/core/analog_input": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.evaluate = function(e) {\n  if (!e.inputs.pulse) { return; }\n\n  return { value: analogRead(e.inputs.pin) };\n};\n"
+      },
+      "pins": {
+        "pin": {
+          "key": "pin",
+          "type": "string",
+          "direction": "input",
+          "label": "pin",
+          "description": "",
+          "order": 0,
+          "value": ""
+        },
+        "pulse": {
+          "key": "pulse",
+          "type": "pulse",
+          "direction": "input",
+          "label": "pulse",
+          "description": "",
+          "order": 0,
+          "value": false
+        },
+        "value": {
+          "key": "value",
+          "type": "number",
+          "direction": "output",
+          "label": "value",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       }
     },
@@ -1174,25 +1769,37 @@
         "a": {
           "key": "a",
           "type": "boolean",
-          "direction": "input"
+          "direction": "input",
+          "label": "a",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "b": {
           "key": "b",
           "type": "boolean",
-          "direction": "input"
+          "direction": "input",
+          "label": "b",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "out": {
           "key": "out",
           "type": "boolean",
-          "direction": "output"
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       },
       "label": "and"
     },
     "@/led": {
       "nodes": {
-        "BkK1RVLmYg": {
-          "id": "BkK1RVLmYg",
+        "ryFxRcNdKg": {
+          "id": "ryFxRcNdKg",
           "type": "xod/core/digital_output",
           "position": {
             "x": 305,
@@ -1204,8 +1811,8 @@
             }
           }
         },
-        "Bku1CEI7Yl": {
-          "id": "Bku1CEI7Yl",
+        "S1ulA9NuFx": {
+          "id": "S1ulA9NuFx",
           "type": "xod/core/inputString",
           "position": {
             "x": 172,
@@ -1213,8 +1820,8 @@
           },
           "pins": {}
         },
-        "SyDJCVLXte": {
-          "id": "SyDJCVLXte",
+        "B1wg0qVOtg": {
+          "id": "B1wg0qVOtg",
           "type": "xod/core/inputNumber",
           "position": {
             "x": 418,
@@ -1222,8 +1829,8 @@
           },
           "pins": {}
         },
-        "BkUkCVLmtg": {
-          "id": "BkUkCVLmtg",
+        "rJUgCqNuKl": {
+          "id": "rJUgCqNuKl",
           "type": "xod/math/multiply",
           "position": {
             "x": 453,
@@ -1231,8 +1838,8 @@
           },
           "pins": {}
         },
-        "rkHyRVU7Kg": {
-          "id": "rkHyRVU7Kg",
+        "HkSgA94OYx": {
+          "id": "HkSgA94OYx",
           "type": "xod/math/multiply",
           "position": {
             "x": 354,
@@ -1242,113 +1849,121 @@
         }
       },
       "links": {
-        "HkRJCNUQKg": {
-          "id": "HkRJCNUQKg",
+        "Sy0eCq4dtl": {
+          "id": "Sy0eCq4dtl",
           "output": {
-            "nodeId": "SyDJCVLXte",
+            "nodeId": "B1wg0qVOtg",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "rkHyRVU7Kg",
+            "nodeId": "HkSgA94OYx",
             "pinKey": "a"
           }
         },
-        "H11lkC4LXKl": {
-          "id": "H11lkC4LXKl",
+        "Hykgx054dFx": {
+          "id": "Hykgx054dFx",
           "output": {
-            "nodeId": "SyDJCVLXte",
+            "nodeId": "B1wg0qVOtg",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "BkUkCVLmtg",
+            "nodeId": "rJUgCqNuKl",
             "pinKey": "b"
           }
         },
-        "SJlxkCN8QFx": {
-          "id": "SJlxkCN8QFx",
+        "SklgeRc4uKl": {
+          "id": "SklgeRc4uKl",
           "output": {
-            "nodeId": "rkHyRVU7Kg",
+            "nodeId": "HkSgA94OYx",
             "pinKey": "out"
           },
           "input": {
-            "nodeId": "BkUkCVLmtg",
+            "nodeId": "rJUgCqNuKl",
             "pinKey": "a"
           }
         },
-        "Bybl1CELQYx": {
-          "id": "Bybl1CELQYx",
+        "By-xeR5V_tx": {
+          "id": "By-xeR5V_tx",
           "output": {
-            "nodeId": "BkUkCVLmtg",
+            "nodeId": "rJUgCqNuKl",
             "pinKey": "out"
           },
           "input": {
-            "nodeId": "BkK1RVLmYg",
+            "nodeId": "ryFxRcNdKg",
             "pinKey": "value"
           }
         },
-        "S1flJR4IXYx": {
-          "id": "S1flJR4IXYx",
+        "BkMgl09VuYe": {
+          "id": "BkMgl09VuYe",
           "output": {
-            "nodeId": "Bku1CEI7Yl",
+            "nodeId": "S1ulA9NuFx",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "BkK1RVLmYg",
+            "nodeId": "ryFxRcNdKg",
             "pinKey": "pin"
           }
         },
-        "ByXe1CELmYg": {
-          "id": "ByXe1CELmYg",
+        "rymee0cE_Yx": {
+          "id": "rymee0cE_Yx",
           "output": {
-            "nodeId": "SyDJCVLXte",
+            "nodeId": "B1wg0qVOtg",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "rkHyRVU7Kg",
+            "nodeId": "HkSgA94OYx",
             "pinKey": "b"
           }
         }
       },
       "impls": {},
       "pins": {
-        "Bku1CEI7Yl": {
-          "key": "Bku1CEI7Yl",
+        "S1ulA9NuFx": {
+          "key": "S1ulA9NuFx",
           "type": "string",
-          "direction": "input"
+          "direction": "input",
+          "label": "S1ulA9NuFx",
+          "description": "",
+          "order": 0,
+          "value": ""
         },
-        "SyDJCVLXte": {
-          "key": "SyDJCVLXte",
+        "B1wg0qVOtg": {
+          "key": "B1wg0qVOtg",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "B1wg0qVOtg",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       },
       "label": "Led"
     },
     "@/main": {
       "nodes": {
-        "ByVJ0EI7te": {
-          "id": "ByVJ0EI7te",
+        "BJ4l0cVdKe": {
+          "id": "BJ4l0cVdKe",
           "type": "@/led",
           "position": {
             "x": 237,
             "y": 349
           },
           "pins": {
-            "Bku1CEI7Yl": {
+            "S1ulA9NuFx": {
               "curried": true,
               "value": "LED1"
             }
           }
         },
-        "HJ7JC4UQFe": {
-          "id": "HJ7JC4UQFe",
+        "SJ7g05EdFe": {
+          "id": "SJ7g05EdFe",
           "type": "@/blink",
           "position": {
             "x": 238,
             "y": 184
           },
           "pins": {
-            "SJ1ANIQFg": {
+            "B1eR5EOYg": {
               "curried": true,
               "value": 1
             }
@@ -1356,15 +1971,15 @@
         }
       },
       "links": {
-        "ryayR4LQYe": {
-          "id": "ryayR4LQYe",
+        "rk6l094Otl": {
+          "id": "rk6l094Otl",
           "output": {
-            "nodeId": "HJ7JC4UQFe",
-            "pinKey": "SJMJAEIXFl"
+            "nodeId": "SJ7g05EdFe",
+            "pinKey": "BJGgAcVOtx"
           },
           "input": {
-            "nodeId": "ByVJ0EI7te",
-            "pinKey": "SyDJCVLXte"
+            "nodeId": "BJ4l0cVdKe",
+            "pinKey": "B1wg0qVOtg"
           }
         }
       },
@@ -1374,8 +1989,8 @@
     },
     "@/blink": {
       "nodes": {
-        "SJMJAEIXFl": {
-          "id": "SJMJAEIXFl",
+        "BJGgAcVOtx": {
+          "id": "BJGgAcVOtx",
           "type": "xod/core/outputBool",
           "position": {
             "x": 263,
@@ -1383,8 +1998,8 @@
           },
           "pins": {}
         },
-        "rkb1RV8XYl": {
-          "id": "rkb1RV8XYl",
+        "rJWgAqVOtx": {
+          "id": "rJWgAqVOtx",
           "type": "xod/core/latch",
           "position": {
             "x": 271,
@@ -1392,8 +2007,8 @@
           },
           "pins": {}
         },
-        "BJl1AVIQtl": {
-          "id": "BJl1AVIQtl",
+        "rJxgAqV_tl": {
+          "id": "rJxgAqV_tl",
           "type": "xod/core/clock",
           "position": {
             "x": 267,
@@ -1406,8 +2021,8 @@
             }
           }
         },
-        "SJ1ANIQFg": {
-          "id": "SJ1ANIQFg",
+        "B1eR5EOYg": {
+          "id": "B1eR5EOYg",
           "type": "xod/core/inputNumber",
           "position": {
             "x": 268,
@@ -1417,51 +2032,59 @@
         }
       },
       "links": {
-        "B1cJRVUQte": {
-          "id": "B1cJRVUQte",
+        "H15x05VuYg": {
+          "id": "H15x05VuYg",
           "output": {
-            "nodeId": "rkb1RV8XYl",
+            "nodeId": "rJWgAqVOtx",
             "pinKey": "state"
           },
           "input": {
-            "nodeId": "SJMJAEIXFl",
+            "nodeId": "BJGgAcVOtx",
             "pinKey": "__in__"
           }
         },
-        "H1skREI7te": {
-          "id": "H1skREI7te",
+        "SkoxR5NOFl": {
+          "id": "SkoxR5NOFl",
           "output": {
-            "nodeId": "SJ1ANIQFg",
+            "nodeId": "B1eR5EOYg",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "BJl1AVIQtl",
+            "nodeId": "rJxgAqV_tl",
             "pinKey": "interval"
           }
         },
-        "ByhyCN87Yg": {
-          "id": "ByhyCN87Yg",
+        "H13l0qVOtg": {
+          "id": "H13l0qVOtg",
           "output": {
-            "nodeId": "BJl1AVIQtl",
+            "nodeId": "rJxgAqV_tl",
             "pinKey": "tick"
           },
           "input": {
-            "nodeId": "rkb1RV8XYl",
+            "nodeId": "rJWgAqVOtx",
             "pinKey": "toggle"
           }
         }
       },
       "impls": {},
       "pins": {
-        "SJMJAEIXFl": {
-          "key": "SJMJAEIXFl",
+        "BJGgAcVOtx": {
+          "key": "BJGgAcVOtx",
           "type": "boolean",
-          "direction": "output"
+          "direction": "output",
+          "label": "BJGgAcVOtx",
+          "description": "",
+          "order": 0,
+          "value": false
         },
-        "SJ1ANIQFg": {
-          "key": "SJ1ANIQFg",
+        "B1eR5EOYg": {
+          "key": "B1eR5EOYg",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "B1eR5EOYg",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       },
       "label": "Blink"

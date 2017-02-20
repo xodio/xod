@@ -7,18 +7,26 @@
       "nodes": {},
       "links": {},
       "impls": {
-        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.inputs.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
+        "espruino": "\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
       },
       "pins": {
         "pin": {
           "key": "pin",
           "type": "string",
-          "direction": "input"
+          "direction": "input",
+          "label": "pin",
+          "description": "",
+          "order": 0,
+          "value": ""
         },
         "value": {
           "key": "value",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "value",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       }
     },
@@ -32,17 +40,29 @@
         "a": {
           "key": "a",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "a",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "b": {
           "key": "b",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "b",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "out": {
           "key": "out",
           "type": "number",
-          "direction": "output"
+          "direction": "output",
+          "label": "out",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       }
     },
@@ -50,28 +70,44 @@
       "nodes": {},
       "links": {},
       "impls": {
-        "js": "\nmodule.exports.setup = function(e) {\n  e.context.state = e.props.initialState;\n};\n\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
       },
       "pins": {
         "toggle": {
           "key": "toggle",
           "type": "pulse",
-          "direction": "input"
+          "direction": "input",
+          "label": "toggle",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "set": {
           "key": "set",
           "type": "pulse",
-          "direction": "input"
+          "direction": "input",
+          "label": "set",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "reset": {
           "key": "reset",
           "type": "pulse",
-          "direction": "input"
+          "direction": "input",
+          "label": "reset",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "state": {
           "key": "state",
           "type": "boolean",
-          "direction": "output"
+          "direction": "output",
+          "label": "state",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       }
     },
@@ -85,12 +121,20 @@
         "interval": {
           "key": "interval",
           "type": "number",
-          "direction": "input"
+          "direction": "input",
+          "label": "interval",
+          "description": "",
+          "order": 0,
+          "value": 0
         },
         "tick": {
           "key": "tick",
           "type": "pulse",
-          "direction": "output"
+          "direction": "output",
+          "label": "tick",
+          "description": "",
+          "order": 0,
+          "value": false
         }
       }
     },
@@ -104,19 +148,27 @@
         "__in__": {
           "key": "__in__",
           "type": "boolean",
-          "direction": "input"
+          "direction": "input",
+          "label": "__in__",
+          "description": "",
+          "order": 0,
+          "value": false
         },
         "__out__": {
           "key": "__out__",
           "type": "number",
-          "direction": "output"
+          "direction": "output",
+          "label": "__out__",
+          "description": "",
+          "order": 0,
+          "value": 0
         }
       }
     },
     "@/main": {
       "nodes": {
-        "HJ7JC4UQFe~rkb1RV8XYl": {
-          "id": "HJ7JC4UQFe~rkb1RV8XYl",
+        "SJ7g05EdFe~rJWgAqVOtx": {
+          "id": "SJ7g05EdFe~rJWgAqVOtx",
           "type": "xod/core/latch",
           "position": {
             "x": 271,
@@ -124,8 +176,8 @@
           },
           "pins": {}
         },
-        "ByVJ0EI7te~BkK1RVLmYg": {
-          "id": "ByVJ0EI7te~BkK1RVLmYg",
+        "BJ4l0cVdKe~ryFxRcNdKg": {
+          "id": "BJ4l0cVdKe~ryFxRcNdKg",
           "type": "xod/core/digital_output",
           "position": {
             "x": 305,
@@ -138,8 +190,8 @@
             }
           }
         },
-        "ByVJ0EI7te~rkHyRVU7Kg": {
-          "id": "ByVJ0EI7te~rkHyRVU7Kg",
+        "BJ4l0cVdKe~HkSgA94OYx": {
+          "id": "BJ4l0cVdKe~HkSgA94OYx",
           "type": "xod/math/multiply",
           "position": {
             "x": 354,
@@ -147,8 +199,8 @@
           },
           "pins": {}
         },
-        "ByVJ0EI7te~BkUkCVLmtg": {
-          "id": "ByVJ0EI7te~BkUkCVLmtg",
+        "BJ4l0cVdKe~rJUgCqNuKl": {
+          "id": "BJ4l0cVdKe~rJUgCqNuKl",
           "type": "xod/math/multiply",
           "position": {
             "x": 453,
@@ -156,8 +208,8 @@
           },
           "pins": {}
         },
-        "HJ7JC4UQFe~SJMJAEIXFl-to-ByVJ0EI7te~SyDJCVLXte": {
-          "id": "HJ7JC4UQFe~SJMJAEIXFl-to-ByVJ0EI7te~SyDJCVLXte",
+        "SJ7g05EdFe~BJGgAcVOtx-to-BJ4l0cVdKe~B1wg0qVOtg": {
+          "id": "SJ7g05EdFe~BJGgAcVOtx-to-BJ4l0cVdKe~B1wg0qVOtg",
           "position": {
             "x": 0,
             "y": 0
@@ -165,8 +217,8 @@
           "type": "xod/core/cast-boolean-to-number",
           "pins": {}
         },
-        "HJ7JC4UQFe~BJl1AVIQtl": {
-          "id": "HJ7JC4UQFe~BJl1AVIQtl",
+        "SJ7g05EdFe~rJxgAqV_tl": {
+          "id": "SJ7g05EdFe~rJxgAqV_tl",
           "type": "xod/core/clock",
           "position": {
             "x": 267,
@@ -181,91 +233,80 @@
         }
       },
       "links": {
-        "ByVJ0EI7te~SJlxkCN8QFx": {
-          "id": "ByVJ0EI7te~SJlxkCN8QFx",
+        "BJ4l0cVdKe~SklgeRc4uKl": {
+          "id": "BJ4l0cVdKe~SklgeRc4uKl",
           "output": {
-            "nodeId": "ByVJ0EI7te~rkHyRVU7Kg",
+            "nodeId": "BJ4l0cVdKe~HkSgA94OYx",
             "pinKey": "out"
           },
           "input": {
-            "nodeId": "ByVJ0EI7te~BkUkCVLmtg",
+            "nodeId": "BJ4l0cVdKe~rJUgCqNuKl",
             "pinKey": "a"
           }
         },
-        "ByVJ0EI7te~Bybl1CELQYx": {
-          "id": "ByVJ0EI7te~Bybl1CELQYx",
+        "BJ4l0cVdKe~By-xeR5V_tx": {
+          "id": "BJ4l0cVdKe~By-xeR5V_tx",
           "output": {
-            "nodeId": "ByVJ0EI7te~BkUkCVLmtg",
+            "nodeId": "BJ4l0cVdKe~rJUgCqNuKl",
             "pinKey": "out"
           },
           "input": {
-            "nodeId": "ByVJ0EI7te~BkK1RVLmYg",
+            "nodeId": "BJ4l0cVdKe~ryFxRcNdKg",
             "pinKey": "value"
           }
         },
-        "HJ7JC4UQFe~ByhyCN87Yg": {
-          "id": "HJ7JC4UQFe~ByhyCN87Yg",
+        "SJ7g05EdFe~H13l0qVOtg": {
+          "id": "SJ7g05EdFe~H13l0qVOtg",
           "output": {
-            "nodeId": "HJ7JC4UQFe~BJl1AVIQtl",
+            "nodeId": "SJ7g05EdFe~rJxgAqV_tl",
             "pinKey": "tick"
           },
           "input": {
-            "nodeId": "HJ7JC4UQFe~rkb1RV8XYl",
+            "nodeId": "SJ7g05EdFe~rJWgAqVOtx",
             "pinKey": "toggle"
           }
         },
-        "ByVJ0EI7te~HkRJCNUQKg": {
-          "id": "ByVJ0EI7te~HkRJCNUQKg",
+        "BJ4l0cVdKe~Sy0eCq4dtl": {
+          "id": "BJ4l0cVdKe~Sy0eCq4dtl",
           "output": {
-            "nodeId": "HJ7JC4UQFe~SJMJAEIXFl-to-ByVJ0EI7te~SyDJCVLXte",
+            "nodeId": "SJ7g05EdFe~BJGgAcVOtx-to-BJ4l0cVdKe~B1wg0qVOtg",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "ByVJ0EI7te~rkHyRVU7Kg",
+            "nodeId": "BJ4l0cVdKe~HkSgA94OYx",
             "pinKey": "a"
           }
         },
-        "ByVJ0EI7te~ByXe1CELmYg": {
-          "id": "ByVJ0EI7te~ByXe1CELmYg",
+        "BJ4l0cVdKe~Hykgx054dFx": {
+          "id": "BJ4l0cVdKe~Hykgx054dFx",
           "output": {
-            "nodeId": "HJ7JC4UQFe~SJMJAEIXFl-to-ByVJ0EI7te~SyDJCVLXte",
+            "nodeId": "SJ7g05EdFe~BJGgAcVOtx-to-BJ4l0cVdKe~B1wg0qVOtg",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "ByVJ0EI7te~rkHyRVU7Kg",
+            "nodeId": "BJ4l0cVdKe~rJUgCqNuKl",
             "pinKey": "b"
           }
         },
-        "ByVJ0EI7te~H11lkC4LXKl": {
-          "id": "ByVJ0EI7te~H11lkC4LXKl",
+        "BJ4l0cVdKe~rymee0cE_Yx": {
+          "id": "BJ4l0cVdKe~rymee0cE_Yx",
           "output": {
-            "nodeId": "HJ7JC4UQFe~SJMJAEIXFl-to-ByVJ0EI7te~SyDJCVLXte",
+            "nodeId": "SJ7g05EdFe~BJGgAcVOtx-to-BJ4l0cVdKe~B1wg0qVOtg",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "ByVJ0EI7te~BkUkCVLmtg",
+            "nodeId": "BJ4l0cVdKe~HkSgA94OYx",
             "pinKey": "b"
           }
         },
-        "ByVJ0EI7te~SJlxkCN8QFx": {
-          "id": "ByVJ0EI7te~SJlxkCN8QFx",
+        "rk6l094Otl-to-cast": {
+          "id": "rk6l094Otl-to-cast",
           "output": {
-            "nodeId": "ByVJ0EI7te~rkHyRVU7Kg",
-            "pinKey": "out"
-          },
-          "input": {
-            "nodeId": "ByVJ0EI7te~BkUkCVLmtg",
-            "pinKey": "a"
-          }
-        },
-        "ryayR4LQYe-to-cast": {
-          "id": "ryayR4LQYe-to-cast",
-          "output": {
-            "nodeId": "HJ7JC4UQFe~rkb1RV8XYl",
+            "nodeId": "SJ7g05EdFe~rJWgAqVOtx",
             "pinKey": "state"
           },
           "input": {
-            "nodeId": "HJ7JC4UQFe~SJMJAEIXFl-to-ByVJ0EI7te~SyDJCVLXte",
+            "nodeId": "SJ7g05EdFe~BJGgAcVOtx-to-BJ4l0cVdKe~B1wg0qVOtg",
             "pinKey": "__in__"
           }
         }
