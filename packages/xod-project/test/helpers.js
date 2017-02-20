@@ -95,6 +95,8 @@ export const defaultizeLink = defaults.defaultizeLink;
 
 export const defaultizeNode = defaults.defaultizeNode;
 
+export const defaultizePin = defaults.defaultizePin;
+
 export const defaultizePatch = defaults.defaultizePatch;
 
 export const defaultizeProject = defaults.defaultizeProject;
