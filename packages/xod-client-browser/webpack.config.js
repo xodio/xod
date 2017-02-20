@@ -62,7 +62,8 @@ module.exports = {
         ],
       },
       {
-        test: /node_modules\/font-awesome\/.*\.css$/,
+        include: pkgpath('node_modules/font-awesome'),
+        test: /\.css$/,
         loaders: [
           'style',
           'css',
