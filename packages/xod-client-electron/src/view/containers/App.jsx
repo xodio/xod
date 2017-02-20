@@ -10,8 +10,6 @@ import EventListener from 'react-event-listener';
 
 import core from 'xod-core';
 import client from 'xod-client';
-import { toV2 } from 'xod-project';
-import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 
 import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
@@ -32,7 +30,7 @@ const { app, dialog, Menu } = window.require('electron').remote;
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
 
-class App extends React.Component {
+class App extends client.App {
   constructor(props) {
     super(props);
 
@@ -109,22 +107,6 @@ class App extends React.Component {
     this.props.actions.createProject(projectName);
     this.hidePopupCreateProject();
     this.onSaveProject();
-  }
-
-  onShowCodeEspruino() {
-    const projectV2 = toV2(this.props.project);
-    this.setState({
-      code: transpileForEspruino(projectV2, this.props.currentPatchId),
-    });
-    this.showCodePopup();
-  }
-
-  onShowCodeNodejs() {
-    const projectV2 = toV2(this.props.project);
-    this.setState({
-      code: transpileForNodeJS(projectV2, this.props.currentPatchId),
-    });
-    this.showCodePopup();
   }
 
   onOpenProjectClicked() {

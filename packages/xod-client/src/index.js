@@ -14,6 +14,7 @@ import * as UtilsConstants from './utils/constants';
 import * as BrowserUtils from './utils/browser';
 import * as MenuUtils from './utils/menu';
 
+import App from './core/containers/App';
 import Root from './core/containers/Root';
 import { container as Editor, CreateNodeWidget } from './editor';
 import SnackBar from './messages';
@@ -47,6 +48,7 @@ export { default as PopupPrompt } from './utils/components/PopupPrompt';
 export { default as PopupForm } from './utils/components/PopupForm';
 export { default as Toolbar } from './utils/components/Toolbar';
 
+export { default as App } from './core/containers/App';
 export { default as Root } from './core/containers/Root';
 export { container as Editor, CreateNodeWidget } from './editor';
 export { default as SnackBar } from './messages';
@@ -55,6 +57,7 @@ export { UserPanel } from './user';
 export { default as DevTools } from './core/containers/DevTools';
 
 export default Object.assign({
+  App,
   Root,
   Editor,
   CreateNodeWidget,

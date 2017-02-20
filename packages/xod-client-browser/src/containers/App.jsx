@@ -7,15 +7,13 @@ import { HotKeys } from 'react-hotkeys';
 
 import core from 'xod-core';
 import client from 'xod-client';
-import { toV2 } from 'xod-project';
-import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 
 import PopupInstallApp from '../components/PopupInstallApp';
 
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
 
-class App extends React.Component {
+class App extends client.App {
   constructor(props) {
     super(props);
 
@@ -64,22 +62,6 @@ class App extends React.Component {
 
   onUpload() {
     this.showInstallAppPopup();
-  }
-
-  onShowCodeEspruino() {
-    const projectV2 = toV2(this.props.project);
-    this.setState({
-      code: transpileForEspruino(projectV2, this.props.currentPatchId),
-    });
-    this.showCodePopup();
-  }
-
-  onShowCodeNodejs() {
-    const projectV2 = toV2(this.props.project);
-    this.setState({
-      code: transpileForNodeJS(projectV2, this.props.currentPatchId),
-    });
-    this.showCodePopup();
   }
 
   onImportChange(event) {
