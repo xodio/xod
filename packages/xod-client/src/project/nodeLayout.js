@@ -75,24 +75,15 @@ export const verticalSlotsForPinRows = rowsCount =>
  * @param {number} outputPinsCount
  * @returns {{width: number, height: number}} - horizontal and vertical slots needed for node
  */
-export const nodeSizeInSlots = (inputPinsCount, outputPinsCount) => {
-  const allPinRows = R.concat(
-    pinsCountPerRow(inputPinsCount),
-    pinsCountPerRow(outputPinsCount)
-  );
+export const nodeSizeInSlots = (inputPinsCount, outputPinsCount) =>
+  R.compose(
+    R.applySpec({
+      width: R.compose(horizontalSlotsForPinsRow, R.apply(Math.max)),
+      height: R.compose(verticalSlotsForPinRows, R.length),
+    }),
+    R.chain(pinsCountPerRow) // all pin rows together
+  )([inputPinsCount, outputPinsCount]);
 
-  const horizontalSlotsForNode = R.compose(
-    horizontalSlotsForPinsRow,
-    R.apply(Math.max)
-  )(allPinRows);
-
-  const verticalSlotsForNode = verticalSlotsForPinRows(allPinRows.length);
-
-  return {
-    width: horizontalSlotsForNode,
-    height: verticalSlotsForNode,
-  };
-};
 
 export const slotsWidthInPixels =
   slots => (slots * SLOT_SIZE.WIDTH) + (R.dec(slots) * SLOT_MARGIN.HORIZONTAL);
@@ -108,9 +99,6 @@ export const slotsToPixels = R.evolve({
   height: slotsHeightInPixels,
 });
 
-/**
- *
- */
 export const relativePinPosition = R.curry((rows, pinIndex) => {
   const pinsInFullRow = R.head(rows);
   const rowIndex = Math.floor(pinIndex / pinsInFullRow);

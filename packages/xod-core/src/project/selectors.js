@@ -566,31 +566,34 @@ const getNodePins = (state, typeId) => R.pipe(
   R.head
 )(state);
 
-export const getLinksConnectedWithPin = (projectState, nodeId, pinKey, patchId) => R.pipe(
-  R.values,
-  R.filter(
-    R.pipe(
-      R.prop('pins'),
-      R.find(
-        R.allPass([
-          R.propEq('nodeId', nodeId),
-          R.propEq('pinKey', pinKey),
-        ])
+export const getLinksConnectedWithPin = R.curry(
+  (projectState, nodeId, pinKey, patchId) => R.pipe(
+    R.values,
+    R.filter(
+      R.pipe(
+        R.prop('pins'),
+        R.find(
+          R.allPass([
+            R.propEq('nodeId', nodeId),
+            R.propEq('pinKey', pinKey),
+          ])
+        )
+      )
+    ),
+    R.map(
+      R.pipe(
+        R.prop('id'),
+        R.toString
       )
     )
-  ),
-  R.map(
-    R.pipe(
-      R.prop('id'),
-      R.toString
-    )
-  )
-)(getLinks(projectState, patchId));
-
-const isLinkConnected = R.curry(
-  (projectState, patchId, nodeId, pinKey) =>
-    !!getLinksConnectedWithPin(projectState, nodeId, pinKey, patchId).length
+  )(getLinks(projectState, patchId))
 );
+
+const isLinkConnected = R.curry(R.compose(
+  R.gt(R.__, 0),
+  R.length,
+  getLinksConnectedWithPin
+));
 
 export const preparePins = (projectState, node, getIsLinkConnected) => {
   const pins = getNodePins(projectState, node.typeId);
@@ -612,7 +615,7 @@ export const dereferencedNodes = (projectState, patchId) =>
       const nodePins = preparePins(
         projectState,
         node,
-        isLinkConnected(projectState, patchId, node.id)
+        isLinkConnected(projectState, node.id, R.__, patchId)
       );
 
       return R.merge(node, {
