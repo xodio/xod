@@ -20,7 +20,7 @@ import GhostsLayer from '../../project/components/GhostsLayer';
 import {
   addNodesPositioning,
   addLinksPositioning,
-} from '../nodePlacementUtils';
+} from '../../project/nodeLayout';
 
 class Patch extends React.Component {
   constructor(props) {

@@ -57,16 +57,16 @@ class GhostLayer extends React.Component {
   }
 
   getLink() {
-    if (!this.isLinking() || !this.props.ghostLink) { return null; }
+    const { ghostLink } = this.props;
 
-    const { id, from, type } = this.props.ghostLink;
+    if (!this.isLinking() || !ghostLink) { return null; }
 
     return (
       <XODLink
-        key={id}
-        id={id}
-        from={from}
-        type={type}
+        key={ghostLink.id}
+        id={ghostLink.id}
+        from={ghostLink.from}
+        type={ghostLink.type}
         to={this.props.mousePosition}
         isGhost
       />

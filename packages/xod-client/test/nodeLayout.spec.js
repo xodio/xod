@@ -5,7 +5,7 @@ import {
   pinsCountPerRow,
   nodeSizeInSlots,
   MAX_PINS_IN_ROW,
-} from '../src/editor/nodePlacementUtils';
+} from '../src/project/nodeLayout';
 
 
 describe('pinsCountPerRow', () => {

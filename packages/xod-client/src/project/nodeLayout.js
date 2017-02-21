@@ -1,5 +1,3 @@
-// TODO: pick a better file name
-
 import R from 'ramda';
 
 export const MAX_PINS_IN_ROW = 17;
@@ -48,11 +46,10 @@ export const pinsCountPerRow = (pinsCount) => {
 };
 
 /**
- * @param {number} pinsCount
+ * @param {number} pinsCount. Should be less than MAX_PINS_IN_ROW
  * @returns {number} - how many horizontal slots is required to fit a given number of pins
  */
 export const horizontalSlotsForPinsRow = (pinsCount) => {
-  // temporary assertion for better DX. TODO: remove later
   if (pinsCount > MAX_PINS_IN_ROW) {
     throw new Error('Exceeded maximum allowed amount of pins per row');
   }
@@ -70,12 +67,13 @@ export const horizontalSlotsForPinsRow = (pinsCount) => {
  * @returns {number} - vertical slots needed for a given amount of pin rows
  */
 export const verticalSlotsForPinRows = rowsCount =>
-  (rowsCount > 2 ? 2 : 1); // TODO: !!!
+  // TODO: we need design for extreme cases with a lot of pin rows. See #236
+  (rowsCount > 2 ? 2 : 1);
 
 /**
  * @param {number} inputPinsCount
  * @param {number} outputPinsCount
- * @returns {width: number, height: number} - horizontal and vertical slots needed for node
+ * @returns {{width: number, height: number}} - horizontal and vertical slots needed for node
  */
 export const nodeSizeInSlots = (inputPinsCount, outputPinsCount) => {
   const allPinRows = R.concat(
@@ -130,14 +128,12 @@ export const relativePinPosition = R.curry((rows, pinIndex) => {
  * pin center position in pixels relative to pins group(input or output)
  */
 export const relativePinPositionToPixels = R.curry(
-  (
-    nodeWidth,
-    {
+  (nodeWidth, relativePosition) => {
+    const {
       rowIndex,
       indexInRow,
       totalPinsInRow,
-    }
-  ) => {
+    } = relativePosition;
     /*
                                 [2]
                  |               |               |
@@ -159,13 +155,15 @@ export const relativePinPositionToPixels = R.curry(
     return { x, y };
   });
 
-const getOutputPinsSectionHeight = (outputRows) => {
-  if (R.head(outputRows) === 0) {
-    return 0;
-  }
-
-  return outputRows.length * (PIN_SIZE.HEIGHT + PIN_MARGIN.VERTICAL);
-};
+/**
+ * @param outputRows
+ * @returns {number}
+ */
+const getOutputPinsSectionHeight = R.ifElse(
+  R.compose(R.equals(0), R.head), // we have no output rows
+  R.always(0),
+  R.compose(R.multiply(PIN_SIZE.HEIGHT + PIN_MARGIN.VERTICAL), R.length)
+);
 
 /**
  * adds `size` and `outputPinsSectionHeight` to node and `position` to node's pins
@@ -227,7 +225,7 @@ export const addPoints = (a, b) => ({
  * @param links - dereferenced links
  */
 export const addLinksPositioning = (nodes, links) =>
-  R.mapObjIndexed((link) => {
+  R.map((link) => {
     const pins = R.map(
       data => R.merge(
         data,

@@ -4,7 +4,7 @@ import core from 'xod-core';
 
 import { EDITOR_MODE } from './constants';
 import { PROPERTY_KIND } from '../project/constants';
-import { addPoints, addNodePositioning } from './nodePlacementUtils';
+import { addPoints, addNodePositioning } from '../project/nodeLayout';
 
 export const getEditor = R.prop('editor');
 
