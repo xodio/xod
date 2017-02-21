@@ -125,6 +125,34 @@ describe('Node', () => {
     });
   });
 
+  describe('getCurriedPins', () => {
+    it('should return empty object for node without `pins` key', () => {
+      expect(Node.getCurriedPins({})).to.be.an('object').and.empty();
+    });
+    it('should return empty object for node without pins', () => {
+      expect(Node.getCurriedPins({ pins: {} })).to.be.an('object').and.empty();
+    });
+    it('should return object with shape { pinKey: pinValue }', () => {
+      const node = {
+        pins: {
+          a: {
+            curried: true,
+            value: true,
+          },
+          b: {
+            curried: true,
+            value: 10,
+          },
+        },
+      };
+
+      expect(Node.getCurriedPins(node)).to.be.deep.equal({
+        a: true,
+        b: 10,
+      });
+    });
+  });
+
   describe('getPinCurriedValue', () => {
     const node = Helper.defaultizeNode({
       pins: {

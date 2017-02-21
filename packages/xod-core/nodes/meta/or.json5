@@ -15,4 +15,7 @@
     type: 'bool',
     description: '"true" if a least one of inputs is "true"',
   }],
+  impl: {
+    js: "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a || e.inputs.b };\n};\n",
+  },
 }

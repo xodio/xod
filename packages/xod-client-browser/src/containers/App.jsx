@@ -7,14 +7,13 @@ import { HotKeys } from 'react-hotkeys';
 
 import core from 'xod-core';
 import client from 'xod-client';
-import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 
 import PopupInstallApp from '../components/PopupInstallApp';
 
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
 
-class App extends React.Component {
+class App extends client.App {
   constructor(props) {
     super(props);
 
@@ -63,20 +62,6 @@ class App extends React.Component {
 
   onUpload() {
     this.showInstallAppPopup();
-  }
-
-  onShowCodeEspruino() {
-    this.setState({
-      code: transpileForEspruino(this.props.project),
-    });
-    this.showCodePopup();
-  }
-
-  onShowCodeNodejs() {
-    this.setState({
-      code: transpileForNodeJS(this.props.project),
-    });
-    this.showCodePopup();
   }
 
   onImportChange(event) {
@@ -304,6 +289,7 @@ App.propTypes = {
   hasChanges: React.PropTypes.bool,
   project: React.PropTypes.object,
   projectJSON: React.PropTypes.string,
+  currentPatchId: React.PropTypes.string,
   meta: React.PropTypes.object,
   nodeTypes: React.PropTypes.any.isRequired,
   selectedNodeType: React.PropTypes.string,
@@ -314,6 +300,7 @@ const mapStateToProps = state => ({
   hasChanges: client.projectHasChanges(state),
   project: core.getProjectPojo(state),
   projectJSON: core.getProjectJSON(state),
+  currentPatchId: client.getCurrentPatchId(state),
   meta: core.getMeta(state),
   nodeTypes: core.dereferencedNodeTypes(state),
   selectedNodeType: client.getSelectedNodeType(state),

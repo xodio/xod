@@ -555,7 +555,7 @@ describe('Patch', () => {
         .to.have.property('1')
         .that.equals(node);
     });
-    it('should add pin by associating pinNode', () => {
+    it('should add pin by associating terminal node', () => {
       const node = Helper.defaultizeNode({
         id: '1',
         type: 'xod/core/inputNumber',
@@ -567,7 +567,7 @@ describe('Patch', () => {
         .that.have.property('1')
         .that.include.keys('key', 'type', 'direction');
     });
-    it('should update pin by associating pinNode', () => {
+    it('should update pin by associating terminal Node', () => {
       const patch = Helper.defaultizePatch({
         pins: {
           1: {
@@ -842,9 +842,9 @@ describe('Patch', () => {
     });
     it('getTopology: should return correct topology', () => {
       expect(Patch.getTopology(patch))
-        .to.be.deep.equal(['c', 'b', 'a']);
+        .to.be.deep.equal(['a', 'b', 'c']);
       expect(Patch.getTopology(expectedPatch))
-        .to.be.deep.equal(['2', '1', '0']);
+        .to.be.deep.equal(['0', '1', '2']);
     });
   });
 });

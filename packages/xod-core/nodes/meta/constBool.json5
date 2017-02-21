@@ -18,5 +18,8 @@
   outputs: [{
     key: 'value',
     type: 'bool',
-  }]
+  }],
+  impl: {
+    js: "\nmodule.exports.evaluate = function(e) {\n  e.fire({ value: e.inputs.value });\n};",
+  },
 }

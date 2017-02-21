@@ -206,6 +206,19 @@ export const isPinNode = def(
  // =============================================================================
 
 /**
+ * Gets all curried pins of node
+ *
+ * @function getCurriedPins
+ * @param {Node} node
+ * @returns {Object.<PinKey, PinValue>}
+ */
+export const getCurriedPins = R.compose(
+  R.map(R.prop('value')),
+  R.filter(R.propEq('curried', true)),
+  R.propOr({}, 'pins')
+);
+
+/**
  * Gets curried value of input pin.
  *
  * It will return value even if pin isn't curried.
@@ -297,7 +310,7 @@ export const isPinCurried = def(
 const getDataTypeRegExp = R.compose(
   pinTypes => new RegExp(`^xod/core/(?:input|output)(${pinTypes})`, 'i'),
   R.join('|'),
-  R.values
+  R.keys
 );
 
 /**
@@ -306,7 +319,7 @@ const getDataTypeRegExp = R.compose(
  * @name dataTypeRegexp
  * @type {RegExp}
  */
-const dataTypeRegexp = getDataTypeRegExp(CONST.PIN_TYPE);
+const dataTypeRegexp = getDataTypeRegExp(CONST.NODETYPE_TO_DATA_TYPES);
 
 /**
  * Returns data type extracted from pinNode type
@@ -317,7 +330,7 @@ const dataTypeRegexp = getDataTypeRegExp(CONST.PIN_TYPE);
 export const getPinNodeDataType = def(
   'getPinNodeDataType :: Node -> Either Error DataType',
   R.compose(
-    R.map(R.toLower),
+    R.map(R.prop(R.__, CONST.NODETYPE_TO_DATA_TYPES)),
     Tools.errOnNothing(CONST.ERROR.DATATYPE_INVALID),
     Tools.match(dataTypeRegexp, 1),
     getNodeType

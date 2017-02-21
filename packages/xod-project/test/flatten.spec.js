@@ -4,12 +4,433 @@ import dirtyChai from 'dirty-chai';
 
 import * as Helper from './helpers';
 import * as CONST from '../src/constants';
-import flatten from '../src/flatten';
-import { getCastPatchPath } from '../src/utils';
+import flatten, { extractPatches } from '../src/flatten';
+import { getCastPatchPath, formatString } from '../src/utils';
+import blinkingV2 from './fixtures/blinking.v2.json';
+import blinkingFlat from './fixtures/blinking.flat.json';
 
 chai.use(dirtyChai);
 
 describe('Flatten', () => {
+  describe('extractPatches', () => {
+    it('correct flattening structure for trivial project', () => {
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/main': {
+            nodes: {
+              a: {
+                id: 'a',
+                type: 'xod/core/or',
+                pins: {},
+              },
+              b: {
+                id: 'b',
+                type: 'xod/core/or',
+                pins: {},
+              },
+            },
+            links: {
+              l: {
+                id: 'l',
+                output: {
+                  nodeId: 'a',
+                  pinKey: 'out',
+                },
+                input: {
+                  nodeId: 'b',
+                  pinKey: 'in1',
+                },
+              },
+            },
+          },
+          'xod/core/or': {
+            nodes: {},
+            links: {},
+            pins: {
+              in1: {
+                key: 'in1',
+                type: 'boolean',
+                direction: 'input',
+              },
+              in2: {
+                key: 'in2',
+                type: 'boolean',
+                direction: 'input',
+              },
+              out: {
+                key: 'out',
+                type: 'boolean',
+                direction: 'output',
+              },
+            },
+            impls: {
+              js: '//ok',
+            },
+          },
+        },
+      });
+
+      const extracted = extractPatches(project, ['xod/core/or'], null, {}, project.patches['@/main']);
+      const result = R.map(R.map(R.unnest), extracted);
+
+      expect(result).to.be.deep.equal([
+        [
+          project.patches['@/main'].nodes.a,
+          project.patches['@/main'].nodes.b,
+        ],
+        [
+          project.patches['@/main'].links.l,
+        ],
+      ]);
+    });
+    it('correct flattening structure for nested project', () => {
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/main': {
+            nodes: {
+              a: {
+                id: 'a',
+                type: '@/foo',
+              },
+              b: {
+                id: 'b',
+                type: '@/bar',
+              },
+              c: {
+                id: 'c',
+                type: 'xod/core/or',
+              },
+              d: {
+                id: 'd',
+                type: 'xod/core/or',
+              },
+            },
+            links: {
+              l: {
+                id: 'l',
+                output: {
+                  nodeId: 'b',
+                  pinKey: 'b',
+                },
+                input: {
+                  nodeId: 'c',
+                  pinKey: 'in2',
+                },
+              },
+              l2: {
+                id: 'l2',
+                output: {
+                  nodeId: 'd',
+                  pinKey: 'out',
+                },
+                input: {
+                  nodeId: 'c',
+                  pinKey: 'in1',
+                },
+              },
+            },
+          },
+          '@/foo': {
+            nodes: {
+              a: {
+                id: 'a',
+                type: 'xod/core/or',
+              },
+              b: {
+                id: 'b',
+                type: 'xod/core/or',
+              },
+            },
+            links: {
+              l: {
+                id: 'l',
+                output: {
+                  nodeId: 'a',
+                  pinKey: 'out',
+                },
+                input: {
+                  nodeId: 'b',
+                  pinKey: 'in1',
+                },
+              },
+            },
+          },
+          '@/bar': {
+            nodes: {
+              a: {
+                id: 'a',
+                type: 'xod/core/or',
+              },
+              b: {
+                id: 'b',
+                type: 'xod/core/outputBool',
+              },
+              c: {
+                id: 'c',
+                type: '@/foo',
+              },
+              d: {
+                id: 'd',
+                type: 'xod/core/outputBool',
+              },
+            },
+            links: {
+              l: {
+                id: 'l',
+                output: {
+                  nodeId: 'a',
+                  pinKey: 'out',
+                },
+                input: {
+                  nodeId: 'b',
+                  pinKey: '__in__',
+                },
+              },
+            },
+            pins: {
+              b: {
+                key: 'b',
+                type: 'boolean',
+                direction: 'output',
+              },
+              d: {
+                key: 'd',
+                type: 'boolean',
+                direction: 'output',
+              },
+            },
+          },
+          'xod/core/or': {
+            nodes: {},
+            links: {},
+            pins: {
+              in1: {
+                key: 'in1',
+                type: 'boolean',
+                direction: 'input',
+              },
+              in2: {
+                key: 'in2',
+                type: 'boolean',
+                direction: 'input',
+              },
+              out: {
+                key: 'out',
+                type: 'boolean',
+                direction: 'output',
+              },
+            },
+            impls: {
+              js: '//ok',
+            },
+          },
+          'xod/core/outputBool': {
+            nodes: {},
+            links: {},
+            pins: {
+              __in__: {
+                key: '__in__',
+                type: 'boolean',
+                direction: 'input',
+              },
+            },
+          },
+        },
+      });
+
+      const extracted = extractPatches(
+        project,
+        ['xod/core/or', 'xod/core/outputBool'],
+        null,
+        {},
+        project.patches['@/main']
+      );
+
+      // get only ids and types
+      const nodes = R.map(R.compose(
+        R.applySpec({
+          id: R.prop('id'),
+          type: R.prop('type'),
+        }),
+        R.unnest
+      ))(extracted[0]);
+      // unnest links
+      const links = R.map(R.unnest)(extracted[1]);
+
+      expect([nodes, links]).to.be.deep.equal([
+        [
+          { id: 'a~a', type: 'xod/core/or' },
+          { id: 'a~b', type: 'xod/core/or' },
+          { id: 'b~a', type: 'xod/core/or' },
+          { id: 'b~b', type: 'terminalBool' },
+          { id: 'b~c~a', type: 'xod/core/or' },
+          { id: 'b~c~b', type: 'xod/core/or' },
+          { id: 'b~d', type: 'terminalBool' },
+          { id: 'c', type: 'xod/core/or' },
+          { id: 'd', type: 'xod/core/or' },
+        ],
+        [
+          {
+            id: 'a~l',
+            output: { nodeId: 'a~a', pinKey: 'out' },
+            input: { nodeId: 'a~b', pinKey: 'in1' },
+          },
+          {
+            id: 'b~c~l',
+            output: { nodeId: 'b~c~a', pinKey: 'out' },
+            input: { nodeId: 'b~c~b', pinKey: 'in1' },
+          },
+          {
+            id: 'b~l',
+            output: { nodeId: 'b~a', pinKey: 'out' },
+            input: { nodeId: 'b~b', pinKey: '__in__' },
+          },
+          {
+            id: 'l',
+            output: { nodeId: 'b~b', pinKey: '__out__' },
+            input: { nodeId: 'c', pinKey: 'in2' },
+          },
+          {
+            id: 'l2',
+            output: { nodeId: 'd', pinKey: 'out' },
+            input: { nodeId: 'c', pinKey: 'in1' },
+          },
+        ],
+      ]);
+    });
+    it('correctly pinned nodes', () => {
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/main': {
+            nodes: {
+              a: {
+                id: 'a',
+                type: '@/foo',
+                pins: {
+                  a: {
+                    curried: true,
+                    value: true,
+                  },
+                },
+              },
+              b: {
+                id: 'b',
+                type: '@/foo',
+              },
+            },
+            links: {},
+          },
+          '@/foo': {
+            nodes: {
+              a: {
+                id: 'a',
+                type: 'xod/core/inputBool',
+              },
+              b: {
+                id: 'b',
+                type: 'xod/core/number',
+              },
+              c: {
+                id: 'c',
+                type: 'xod/core/number',
+                pins: {
+                  in: {
+                    curried: true,
+                    value: 32,
+                  },
+                },
+              },
+            },
+            links: {
+              l: {
+                id: 'l',
+                output: { nodeId: 'a', pinKey: '__out__' },
+                input: { nodeId: 'b', pinKey: 'in' },
+              },
+            },
+            pins: {
+              a: {
+                key: 'a',
+                type: 'boolean',
+                direction: 'input',
+              },
+            },
+          },
+        },
+      });
+
+      const extracted = extractPatches(
+        project,
+        ['xod/core/inputBool', 'xod/core/number'],
+        null,
+        {},
+        project.patches['@/main']
+      );
+      const result = R.map(R.map(R.unnest), extracted);
+      const nodes = result[0];
+
+      const terminalA = R.find(R.propEq('id', 'a~a'), nodes);
+      expect(terminalA).to.have.property('pins').that.deep.equals({
+        __in__: {
+          curried: true,
+          value: true,
+        },
+      });
+
+      const terminalB = R.find(R.propEq('id', 'b~a'), nodes);
+      expect(terminalB).to.have.property('pins').that.empty();
+
+      const justNodeWithCurriedPinA = R.find(R.propEq('id', 'a~c'), nodes);
+      expect(justNodeWithCurriedPinA).to.have.property('pins').that.deep.equals(
+        project.patches['@/foo'].nodes.c.pins
+      );
+
+      const justNodeWithCurriedPinB = R.find(R.propEq('id', 'b~c'), nodes);
+      expect(justNodeWithCurriedPinB).to.have.property('pins').that.deep.equals(
+        project.patches['@/foo'].nodes.c.pins
+      );
+    });
+    it('correct structure for blinking.v2.json', () => {
+      const extracted = extractPatches(
+        blinkingV2,
+        [
+          'xod/core/or',
+          'xod/core/digital_output',
+          'xod/core/latch',
+          'xod/core/clock',
+          'xod/core/inputNumber',
+          'xod/core/inputString',
+          'xod/math/multiply',
+        ],
+        null,
+        {},
+        blinkingV2.patches['@/main']
+      );
+      const unnested = R.map(R.map(R.unnest), extracted);
+      const nodes = unnested[0];
+
+      const terminalString = R.find(R.propEq('id', 'BJ4l0cVdKe~S1ulA9NuFx'), nodes);
+      expect(terminalString)
+      .to.have.property('pins')
+      .that.deep.equals({
+        __in__: {
+          curried: true,
+          value: 'LED1',
+        },
+      });
+
+      const terminalNumber = R.find(R.propEq('id', 'SJ7g05EdFe~B1eR5EOYg'), nodes);
+      expect(terminalNumber)
+      .to.have.property('pins')
+      .that.deep.equals({
+        __in__: {
+          curried: true,
+          value: 1,
+        },
+      });
+    });
+  });
+
   describe('trivial', () => {
     const project = Helper.defaultizeProject({
       patches: {
@@ -18,10 +439,12 @@ describe('Flatten', () => {
             a: {
               id: 'a',
               type: 'xod/core/or',
+              pins: {},
             },
             b: {
               id: 'b',
               type: 'xod/core/or',
+              pins: {},
             },
           },
           links: {
@@ -65,10 +488,29 @@ describe('Flatten', () => {
       },
     });
 
+    it('extractPatches: it should return correct flattening structure', () => {
+      const extracted = extractPatches(project, ['xod/core/or'], null, {}, project.patches['@/main']);
+      const result = R.map(R.map(R.unnest), extracted);
+
+      expect(result).to.be.deep.equal([
+        [
+          project.patches['@/main'].nodes.a,
+          project.patches['@/main'].nodes.b,
+        ],
+        [
+          project.patches['@/main'].links.l,
+        ],
+      ]);
+    });
+
     it('should return error if implementation not found', () => {
       const flatProject = flatten(project, '@/main', ['cpp']);
       expect(flatProject.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
+      Helper.expectErrorMessage(
+        expect,
+        flatProject,
+        formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: 'cpp' })
+      );
     });
 
     it('should ignore not referred patches', () => {
@@ -169,10 +611,12 @@ describe('Flatten', () => {
             a: {
               id: 'a',
               type: 'xod/core/or',
+              pins: {},
             },
             b: {
               id: 'b',
               type: 'xod/core/or',
+              pins: {},
             },
           },
           links: {
@@ -341,17 +785,21 @@ describe('Flatten', () => {
     it('should return flattened links', () => {
       const flatProject = flatten(project, '@/main', ['js']);
 
-
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
         (newProject) => {
           expect(R.keys(newProject.patches))
             .to.be.deep.equal(['xod/core/or', '@/main']);
           expect(R.values(newProject.patches['@/main'].links))
-            .to.have.lengthOf(2);
+            .to.have.lengthOf(4);
         },
         flatProject
       );
+    });
+
+    it('should correctly flatten blinking.v2.json', () => {
+      const flattened = R.unnest(flatten(blinkingV2, '@/main', ['espruino', 'js']));
+      expect(flattened).to.deep.equal(blinkingFlat);
     });
   });
 
@@ -1002,248 +1450,348 @@ describe('Flatten', () => {
         const flatProject = flatten(project, '@/main', ['js']);
 
         expect(flatProject.isLeft).to.be.true();
-        Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.CAST_PATCH_NOT_FOUND);
+        Helper.expectErrorMessage(
+          expect,
+          flatProject,
+          formatString(CONST.ERROR.CAST_PATCH_NOT_FOUND, { patchPath: 'xod/core/cast-boolean-to-number' })
+        );
       });
     });
   });
 
-  describe('injected pins', () => {
-    const project = Helper.defaultizeProject({
-      patches: {
-        '@/main': {
-          nodes: {
-            a: {
-              id: 'a',
-              type: 'xod/core/or',
-            },
-            b: {
-              id: 'b',
-              type: '@/foo',
-              pins: {
-                a2: {
-                  injected: true,
-                  value: 32,
-                },
-                a3: {
-                  injected: true,
-                  value: 27,
+  describe('curried pins', () => {
+    it('should return original (unnested) nodes with curried pins', () => {
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/main': {
+            nodes: {
+              f: {
+                id: 'f',
+                type: '@/foo',
+                pins: {
+                  b: {
+                    curried: true,
+                    value: 32,
+                  },
                 },
               },
             },
-            c: {
-              id: 'c',
-              type: 'xod/core/or',
+            links: {},
+          },
+          '@/foo': {
+            nodes: {
+              a: {
+                id: 'a',
+                type: 'xod/core/number',
+              },
+              b: {
+                id: 'b',
+                type: 'xod/core/inputNumber',
+              },
+            },
+            links: {
+              l: {
+                id: 'l',
+                output: {
+                  nodeId: 'b',
+                  pinKey: '__out__',
+                },
+                input: {
+                  nodeId: 'a',
+                  pinKey: 'in',
+                },
+              },
+            },
+            pins: {
+              b: {
+                key: 'b',
+                type: 'number',
+                direction: 'input',
+              },
             },
           },
-          links: {
-            l: {
-              id: 'l',
-              output: {
-                nodeId: 'a',
-                pinKey: 'out',
-              },
-              input: {
-                nodeId: 'b',
-                pinKey: 'a',
+          'xod/core/inputNumber': {
+            nodes: {},
+            links: {},
+            pins: {
+              __out__: {
+                key: '__out__',
+                type: 'number',
+                direction: 'output',
               },
             },
-            l2: {
-              id: 'l2',
-              output: {
-                nodeId: 'b',
-                pinKey: 'c',
+          },
+          'xod/core/number': {
+            nodes: {},
+            links: {},
+            pins: {
+              in: {
+                key: 'in',
+                type: 'number',
+                direction: 'input',
               },
-              input: {
-                nodeId: 'c',
-                pinKey: 'in1',
+              out: {
+                key: 'out',
+                type: 'number',
+                direction: 'output',
               },
+            },
+            impls: {
+              js: '// ok',
             },
           },
         },
-        '@/foo': {
-          nodes: {
-            a: {
-              id: 'a',
-              type: 'xod/core/inputNumber',
-            },
-            a2: {
-              id: 'a2',
-              type: 'xod/core/inputNumber',
-            },
-            a3: {
-              id: 'a3',
-              type: 'xod/core/inputNumber',
-            },
-            b: {
-              id: 'b',
-              type: 'xod/core/or',
-            },
-            b2: {
-              id: 'b2',
-              type: 'xod/core/or',
-            },
-            c: {
-              id: 'c',
-              type: 'xod/core/outputBool',
-            },
-          },
-          links: {
-            l: {
-              id: 'l',
-              output: {
-                nodeId: 'a',
-                pinKey: '__out__',
-              },
-              input: {
-                nodeId: 'b',
-                pinKey: 'in1',
-              },
-            },
-            l2: {
-              id: 'l2',
-              output: {
-                nodeId: 'a2',
-                pinKey: '__out__',
-              },
-              input: {
-                nodeId: 'b',
-                pinKey: 'in2',
-              },
-            },
-            l3: {
-              id: 'l3',
-              output: {
-                nodeId: 'a3',
-                pinKey: '__out__',
-              },
-              input: {
-                nodeId: 'b2',
-                pinKey: 'in2',
-              },
-            },
-            l4: {
-              id: 'l4',
-              output: {
-                nodeId: 'b',
-                pinKey: 'out',
-              },
-              input: {
-                nodeId: 'c',
-                pinKey: '__in__',
-              },
-            },
-          },
-          pins: {
-            a: {
-              key: 'a',
-              type: 'number',
-              direction: 'input',
-            },
-            a2: {
-              key: 'a2',
-              type: 'number',
-              direction: 'input',
-            },
-            a3: {
-              key: 'a3',
-              type: 'number',
-              direction: 'input',
-            },
-            c: {
-              key: 'c',
-              type: 'boolean',
-              direction: 'output',
-            },
-          },
+      });
+
+      const flatProject = flatten(project, '@/main', ['js']);
+
+      expect(flatProject.isRight).to.be.true();
+      Helper.expectEither(
+        (newProject) => {
+          expect(newProject.patches['@/main'].nodes['f~a'])
+            .to.have.property('pins')
+            .that.have.property('in')
+            .that.deep.equal(project.patches['@/main'].nodes.f.pins.b);
         },
-        'xod/core/or': {
-          nodes: {},
-          links: {},
-          pins: {
-            in1: {
-              key: 'in1',
-              type: 'boolean',
-              direction: 'input',
-            },
-            in2: {
-              key: 'in2',
-              type: 'boolean',
-              direction: 'input',
-            },
-            out: {
-              key: 'out',
-              type: 'boolean',
-              direction: 'output',
-            },
-          },
-          impls: {
-            js: '//ok',
-          },
-        },
-        'xod/core/outputBool': {
-          nodes: {},
-          links: {},
-          pins: {
-            __in__: {
-              key: '__in__',
-              type: 'boolean',
-              direction: 'input',
-            },
-          },
-        },
-        'xod/core/inputNumber': {
-          nodes: {},
-          links: {},
-          pins: {
-            __out__: {
-              key: '__out__',
-              type: 'number',
-              direction: 'output',
-            },
-          },
-        },
-        'xod/core/cast-boolean-to-number': {
-          nodes: {},
-          links: {},
-          pins: {
-            __in__: {
-              key: '__in__',
-              type: 'boolean',
-              direction: 'input',
-            },
-            __out__: {
-              key: '__out__',
-              type: 'number',
-              direction: 'input',
-            },
-          },
-          impls: {
-            js: '// BOOL2NUM',
-          },
-        },
-        'xod/core/cast-number-to-boolean': {
-          nodes: {},
-          links: {},
-          pins: {
-            __in__: {
-              key: '__in__',
-              type: 'number',
-              direction: 'input',
-            },
-            __out__: {
-              key: '__out__',
-              type: 'boolean',
-              direction: 'input',
-            },
-          },
-          impls: {
-            js: '// NUM2BOOL',
-          },
-        },
-      },
+        flatProject
+      );
     });
 
-    it('should return node b~b with injected pin a2', () => {
+    it('should return cast-nodes with curried pins', () => {
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/main': {
+            nodes: {
+              a: {
+                id: 'a',
+                type: 'xod/core/or',
+              },
+              b: {
+                id: 'b',
+                type: '@/foo',
+                pins: {
+                  a2: {
+                    curried: true,
+                    value: 32,
+                  },
+                  a3: {
+                    curried: true,
+                    value: 27,
+                  },
+                },
+              },
+              c: {
+                id: 'c',
+                type: 'xod/core/or',
+              },
+            },
+            links: {
+              l: {
+                id: 'l',
+                output: {
+                  nodeId: 'a',
+                  pinKey: 'out',
+                },
+                input: {
+                  nodeId: 'b',
+                  pinKey: 'a',
+                },
+              },
+              l2: {
+                id: 'l2',
+                output: {
+                  nodeId: 'b',
+                  pinKey: 'c',
+                },
+                input: {
+                  nodeId: 'c',
+                  pinKey: 'in1',
+                },
+              },
+            },
+          },
+          '@/foo': {
+            nodes: {
+              a: {
+                id: 'a',
+                type: 'xod/core/inputNumber',
+              },
+              a2: {
+                id: 'a2',
+                type: 'xod/core/inputNumber',
+              },
+              a3: {
+                id: 'a3',
+                type: 'xod/core/inputNumber',
+              },
+              b: {
+                id: 'b',
+                type: 'xod/core/or',
+              },
+              b2: {
+                id: 'b2',
+                type: 'xod/core/or',
+              },
+              c: {
+                id: 'c',
+                type: 'xod/core/outputBool',
+              },
+            },
+            links: {
+              l: {
+                id: 'l',
+                output: {
+                  nodeId: 'a',
+                  pinKey: '__out__',
+                },
+                input: {
+                  nodeId: 'b',
+                  pinKey: 'in1',
+                },
+              },
+              l2: {
+                id: 'l2',
+                output: {
+                  nodeId: 'a2',
+                  pinKey: '__out__',
+                },
+                input: {
+                  nodeId: 'b',
+                  pinKey: 'in2',
+                },
+              },
+              l3: {
+                id: 'l3',
+                output: {
+                  nodeId: 'a3',
+                  pinKey: '__out__',
+                },
+                input: {
+                  nodeId: 'b2',
+                  pinKey: 'in2',
+                },
+              },
+              l4: {
+                id: 'l4',
+                output: {
+                  nodeId: 'b',
+                  pinKey: 'out',
+                },
+                input: {
+                  nodeId: 'c',
+                  pinKey: '__in__',
+                },
+              },
+            },
+            pins: {
+              a: {
+                key: 'a',
+                type: 'number',
+                direction: 'input',
+              },
+              a2: {
+                key: 'a2',
+                type: 'number',
+                direction: 'input',
+              },
+              a3: {
+                key: 'a3',
+                type: 'number',
+                direction: 'input',
+              },
+              c: {
+                key: 'c',
+                type: 'boolean',
+                direction: 'output',
+              },
+            },
+          },
+          'xod/core/or': {
+            nodes: {},
+            links: {},
+            pins: {
+              in1: {
+                key: 'in1',
+                type: 'boolean',
+                direction: 'input',
+              },
+              in2: {
+                key: 'in2',
+                type: 'boolean',
+                direction: 'input',
+              },
+              out: {
+                key: 'out',
+                type: 'boolean',
+                direction: 'output',
+              },
+            },
+            impls: {
+              js: '//ok',
+            },
+          },
+          'xod/core/outputBool': {
+            nodes: {},
+            links: {},
+            pins: {
+              __in__: {
+                key: '__in__',
+                type: 'boolean',
+                direction: 'input',
+              },
+            },
+          },
+          'xod/core/inputNumber': {
+            nodes: {},
+            links: {},
+            pins: {
+              __out__: {
+                key: '__out__',
+                type: 'number',
+                direction: 'output',
+              },
+            },
+          },
+          'xod/core/cast-boolean-to-number': {
+            nodes: {},
+            links: {},
+            pins: {
+              __in__: {
+                key: '__in__',
+                type: 'boolean',
+                direction: 'input',
+              },
+              __out__: {
+                key: '__out__',
+                type: 'number',
+                direction: 'input',
+              },
+            },
+            impls: {
+              js: '// BOOL2NUM',
+            },
+          },
+          'xod/core/cast-number-to-boolean': {
+            nodes: {},
+            links: {},
+            pins: {
+              __in__: {
+                key: '__in__',
+                type: 'number',
+                direction: 'input',
+              },
+              __out__: {
+                key: '__out__',
+                type: 'boolean',
+                direction: 'input',
+              },
+            },
+            impls: {
+              js: '// NUM2BOOL',
+            },
+          },
+        },
+      });
       const flatProject = flatten(project, '@/main', ['js']);
 
       expect(flatProject.isRight).to.be.true();
@@ -1271,10 +1819,12 @@ describe('Flatten', () => {
             a: {
               id: 'a',
               type: 'xod/core/or',
+              pins: {},
             },
             b: {
               id: 'b',
               type: 'xod/core/and',
+              pins: {},
             },
           },
           links: {},
@@ -1314,7 +1864,11 @@ describe('Flatten', () => {
       it('no defined implementation in the project', () => {
         const flatProject = flatten(project, '@/main', ['java']);
         expect(flatProject.isLeft).to.be.true();
-        Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
+        Helper.expectErrorMessage(
+          expect,
+          flatProject,
+          formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: 'java' })
+        );
       });
     });
     describe('multiple', () => {
@@ -1331,9 +1885,14 @@ describe('Flatten', () => {
         );
       });
       it('no defined implementations in the project', () => {
-        const flatProject = flatten(project, '@/main', ['java', 'scala']);
+        const impls = ['java', 'scala'];
+        const flatProject = flatten(project, '@/main', impls);
         expect(flatProject.isLeft).to.be.true();
-        Helper.expectErrorMessage(expect, flatProject, CONST.ERROR.IMPLEMENTATION_NOT_FOUND);
+        Helper.expectErrorMessage(
+          expect,
+          flatProject,
+          formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: impls })
+        );
       });
     });
     // TODO: Write test:

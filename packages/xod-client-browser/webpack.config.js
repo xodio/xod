@@ -25,6 +25,8 @@ module.exports = {
       pkgpath('node_modules'),
       pkgpath('node_modules/xod-client/node_modules'),
       pkgpath('node_modules/xod-client/node_modules/xod-core/node_modules'),
+      pkgpath('node_modules/xod-project/node_modules'),
+      pkgpath('node_modules/xod-project/node_modules/hm-def/node_modules'),
       pkgpath('node_modules/xod-js/node_modules'),
     ],
     extensions: ['', '.js', '.jsx', '.scss'],
@@ -60,13 +62,21 @@ module.exports = {
         ],
       },
       {
+        include: pkgpath('node_modules/font-awesome'),
+        test: /\.css$/,
+        loaders: [
+          'style',
+          'css',
+        ],
+      },
+      {
         test: /\.json5$/,
         loader: 'json5-loader',
       },
       {
         test: /json5\/lib\/require/,
         loader: 'null',
-      }
+      },
     ],
   },
   plugins: [

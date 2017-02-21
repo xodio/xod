@@ -14,6 +14,7 @@
     "ramda": "^0.22.1",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
+    "react-fa": "^4.1.2",
     "react-event-listener": "^0.3.0",
     "react-hotkeys": "^0.9.0",
     "react-redux": "^4.4.5",
@@ -22,6 +23,7 @@
     "redux-api-middleware": "^1.0.2",
     "redux-thunk": "^2.1.0",
     "xod-core": "^0.0.1",
+    "xod-project": "^0.0.1",
     "xod-client": "^0.0.1",
     "xod-js": "^0.0.1"
   },

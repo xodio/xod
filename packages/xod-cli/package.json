@@ -17,7 +17,9 @@
   "dependencies": {
     "cli-color": "^1.1.0",
     "docopt": "^0.6.2",
+    "ramda": "^0.23.0",
     "xod-arduino-builder": "^0.0.1",
+    "xod-project": "^0.0.1",
     "xod-doc": "^0.0.1",
     "xod-fs": "^0.0.1",
     "xod-js": "^0.0.1"

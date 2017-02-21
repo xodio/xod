@@ -7,6 +7,32 @@ import * as Tools from './func-tools';
 import * as CONST from './constants';
 import { def } from './types';
 
+
+/**
+ * Replace placeholders with replacements.
+ * E.G., if we pass next arguments we'll get the string
+ * "Hello, Alice! My name is Bob."
+ * Template: 'Hello, {stranger}! My name is {name}.'
+ * Replacements: { stranger: 'Alice', name: 'Bob' }
+ *
+ * @function formatString
+ * @param {string} template
+ * @param {Object} replacements
+ * @returns {String}
+ */
+export const formatString = R.curry((template, replacements) =>
+  R.compose(
+    R.reduce(
+      (str, fn) => fn(str),
+      template
+    ),
+    R.values,
+    R.mapObjIndexed(
+      (replacement, key) => R.replace(new RegExp(`\\{${key}\\}`, 'gi'), replacement)
+    )
+  )(replacements)
+);
+
 /**
  * Contains resulting value or error
  *

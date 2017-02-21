@@ -108,9 +108,31 @@ const getLinkPin = R.ifElse(
   R.nthArg(1)
 );
 
+// :: NodeIdMap -> Patch -> Patch
+const convertNodePins = R.curry((nodeIdMap, patch) =>
+  R.over(
+    R.lensProp('nodes'),
+    R.map(node =>
+      R.compose(
+        R.assoc('pins', R.__, node),
+        R.fromPairs,
+        R.map(([key, pin]) => {
+          if (R.has(key, nodeIdMap)) {
+            return [nodeIdMap[key], pin];
+          }
+          return [key, pin];
+        }),
+        R.toPairs,
+        R.prop('pins')
+      )(node)
+    ),
+    patch
+  )
+);
+
 // :: NodeOld -> Function fn
 // fn :: Node -> Node
-const convertNodePins = R.compose(
+const copyNodePins = R.compose(
   composeA,
   R.values,
   R.mapObjIndexed((pin, key) => {
@@ -138,9 +160,10 @@ const convertNodes = R.compose(
       R.compose(composeA, R.pluck('node')),
     ]
   ),
-  R.map(oldNode => Node.createNode(oldNode.position, oldNode.typeId)
+  R.map(oldNode =>
+    Node.createNode(oldNode.position, oldNode.typeId)
     .map(node => ({ nodeIdMap: mapNodeId(oldNode, node), node }))
-    .map(R.evolve({ node: convertNodePins(oldNode) }))
+    .map(R.evolve({ node: copyNodePins(oldNode) }))
     .chain(R.evolve({ node: Patch.assocNode }))
   ),
   getNodes
@@ -154,10 +177,10 @@ const convertLinks = nodeIdMap => R.compose(
     R.converge(
       Link.createLink,
       [
-        R.compose(getLinkPin(nodeIdMap), R.prop('pinKey'), R.head),
-        R.compose(getLinkNodeId(nodeIdMap), R.prop('nodeId'), R.head),
         R.compose(getLinkPin(nodeIdMap), R.prop('pinKey'), R.last),
         R.compose(getLinkNodeId(nodeIdMap), R.prop('nodeId'), R.last),
+        R.compose(getLinkPin(nodeIdMap), R.prop('pinKey'), R.head),
+        R.compose(getLinkNodeId(nodeIdMap), R.prop('nodeId'), R.head),
       ]
     ),
     R.prop('pins')
@@ -254,19 +277,33 @@ const convertPatchPins = R.compose(
 // fn :: Project -> Tuple NodeIdMap Project
 const convertPatches = R.compose(
   composeT,
-  R.converge(
-    Tuple,
-    [
-      R.compose(R.mergeAll, R.pluck(0)),
-      R.compose(composeA, R.pluck(1)),
-    ]
-  ),
+  (futurePatches) => {
+    const tuples = R.pluck(1, futurePatches);
+    const nodeIdMap = R.compose(
+      R.mergeAll,
+      R.map(Tuple.fst)
+    )(tuples);
+
+    const assocNodes = R.compose(
+      composeA,
+      R.values,
+      R.mapObjIndexed(
+        (tup, idx) => R.compose(
+          assocPatchUnsafe(futurePatches[idx][0]),
+          convertNodePins(nodeIdMap),
+          Tuple.snd
+        )(tup)
+      )
+    )(tuples);
+
+    return Tuple(nodeIdMap, assocNodes);
+  },
   R.map(oldPatch => Maybe.of(Patch.createPatch())
     .chain(apOrSkip(addLabel(oldPatch)))
     .chain(apOrSkip(copyImpls(oldPatch)))
     .map(convertPatchPins(oldPatch))
-    .chain(convertNodes(oldPatch))
-    .map(assocPatchUnsafe(oldPatch.id))
+    .map(convertNodes(oldPatch))
+    .chain(tuple => ([oldPatch.id, tuple]))
   ),
   R.values,
   mergePatchesAndNodeTypes

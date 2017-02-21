@@ -1,4 +1,4 @@
-// transpile|t <input>                    Transpile code
+// transpile|t <input> <patchPath>        Transpile code
 // -t --target [espruino|arduino|nodejs]  Transpile code for target device (espruino by default).
 // -o --output [filename.txt]             Output result into file (or stdout by default).
 
@@ -10,7 +10,7 @@ import { loadProjectWithLibs, pack, readJSON, writeFile } from 'xod-fs';
 import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 import * as msg from './messages';
 
-export default (input, program) => {
+export default (input, patchPath, program) => {
   const target = program.target;
   const output = program.output;
   const extension = path.extname(input);
@@ -56,7 +56,7 @@ export default (input, program) => {
       reject(new Error(`Unexpected input "${input}"`));
     }
   })
-    .then(project => transpile(project))
+    .then(project => transpile(project, patchPath))
     .then((code) => {
       if (output) {
         return writeFile(output, code)

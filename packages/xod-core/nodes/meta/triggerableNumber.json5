@@ -17,5 +17,8 @@
     key: 'out',
     type: 'number',
     description: 'Output value',
-  }]
+  }],
+  impl: {
+    js: "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.value };\n};\n",
+  },
 }

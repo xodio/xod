@@ -95,8 +95,8 @@ export const getLinkOutputPinKey = def(
  * @returns {Array<string>}
  */
 export const getLinkNodeIds = R.juxt([
-  getLinkInputNodeId,
   getLinkOutputNodeId,
+  getLinkInputNodeId,
 ]);
 
 /**

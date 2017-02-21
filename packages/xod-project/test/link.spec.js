@@ -81,6 +81,12 @@ describe('Link', () => {
         expect(result).to.be.equal(link.output.pinKey);
       });
     });
+    describe('getLinkNodeIds', () => {
+      it('should return Array with nodeIds: [output, input]', () => {
+        const result = Link.getLinkNodeIds(link);
+        expect(result).to.be.deep.equal(['@/from', '@/to']);
+      });
+    });
   });
   // Checks
   describe('isLinkInputNodeIdEquals', () => {

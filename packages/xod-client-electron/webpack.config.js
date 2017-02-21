@@ -33,6 +33,8 @@ const options = {
       pkgpath('node_modules'),
       pkgpath('node_modules/xod-client/node_modules'),
       pkgpath('node_modules/xod-client/node_modules/xod-core/node_modules'),
+      pkgpath('node_modules/xod-project/node_modules'),
+      pkgpath('node_modules/xod-project/node_modules/hm-def/node_modules'),
       pkgpath('node_modules/xod-js/node_modules'),
     ],
     extensions: ['', '.js', '.jsx', '.scss'],

@@ -30,4 +30,7 @@
     pinLabel: '>',
     description: 'Pulses if a > b',
   }],
+  impls: {
+    js: "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n  if (a < b) {\n    return { less: PULSE };\n  } else if (a > b) {\n    return { greater: PULSE };\n  } else {\n    return { equal: PULSE };\n  }\n};",
+  },
 }

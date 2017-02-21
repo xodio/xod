@@ -13,5 +13,8 @@
     label: 'Pin',
     type: 'string',
     value: 'LED1',
-  }]
+  }],
+  impl: {
+    espruino: "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var b = e.inputs.brightness;\n\n  // Adjust duty cycle as a power function to align brightness\n  // perception by human eye\n  var duty = b * b * b;\n\n  analogWrite(e.context.pin, duty);\n};\n",
+  },
 }

@@ -60,7 +60,7 @@ function identityNode() {
 
 function startUpConstantNode() {
   return {
-    setup: function(e) { e.fire({ value: e.props.value }); }
+    setup: function(e) { e.fire({ value: e.value }); }
   };
 }
 /* eslint-enable no-unused-vars */
@@ -77,8 +77,6 @@ function startUpConstantNode() {
   *   node’s setup function
   * @param {function} evaluate
   *   node’s evaluation function (aka implementation)
-  * @param {boolean} pure
-  *   whether `impl` should receive `fire` function as argument
   * @param {Object.<string, function>} inputTypes
   *   input type coercing functions
   * @param {Object.<string, Array.<OutLink>>} outLinks
@@ -90,10 +88,9 @@ function Node(args) {
   this._id = args.id;
   this._setup = args.setup || nullFunc;
   this._evaluate = args.evaluate || nullFunc;
-  this._pure = (args.pure === undefined) ? true : args.pure;
   this._inputTypes = args.inputTypes || {};
+  this._value = args.value || null;
   this._outLinks = args.outLinks || {};
-  this._props = args.props || {};
   this._nodes = args.nodes;
 
   this._context = {};
@@ -153,7 +150,7 @@ Node.prototype.isDirty = function() {
 Node.prototype.setup = function() {
   this._setup({
     fire: this.fire.bind(this),
-    props: this._props,
+    value: this._value,
     context: this._context
   });
 };
@@ -168,14 +165,13 @@ Node.prototype.evaluate = function() {
     return;
   }
 
-  fire = this._pure ? null : this.fire.bind(this);
+  fire = this.fire.bind(this);
   inputs = clone(this._cachedInputs);
 
   result = this._evaluate({
     inputs: inputs,
     fire: fire,
-    context: this._context,
-    props: this._props
+    context: this._context
   }) || {};
 
   // remove "outdated" pulses

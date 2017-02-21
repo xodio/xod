@@ -42,6 +42,7 @@
     "redux-thunk": "^2.1.0",
     "redux-undo": "^0.6.1",
     "reselect": "^2.5.1",
+    "xod-project": "^0.0.1",
     "xod-core": "^0.0.1",
     "xod-js": "^0.0.1"
   },

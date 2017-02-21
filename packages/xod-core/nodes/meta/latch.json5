@@ -24,5 +24,7 @@
     type: 'bool',
     description: 'Emits current latch state when changes',
   }],
+  impl: {
+    js: "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};",
+  },
 }
-

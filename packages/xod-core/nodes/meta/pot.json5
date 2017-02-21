@@ -17,5 +17,8 @@
     label: 'Pin',
     type: 'string',
     value: 'A6',
-  }]
+  }],
+  impl: {
+    espruino: "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  return { value: analogRead(e.context.pin) };\n};\n",
+  },
 }

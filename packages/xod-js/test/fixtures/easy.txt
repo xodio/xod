@@ -1,0 +1,78 @@
+[object Object]
+
+// =====================================================================
+
+var impl = {};
+
+impl['<<const>>'] = startUpConstantNode();
+
+// ---------------------------------------------------------------------
+impl['xod/nodes/test'] = {};
+(function(module, exports) {// ok})({exports: impl['xod/nodes/test']}, impl['xod/nodes/test']);
+
+// =====================================================================
+
+var nodes = {};
+
+nodes['0'] = new Node({
+  "id": "0",
+  "implId": "xod/nodes/test",
+  "inputTypes": {
+    "in_A": Number,
+    "in_B": Number
+  },
+  "outLinks": {
+    "out": [
+      {
+        "key": "in_A",
+        "nodeId": "1"
+      },
+      {
+        "key": "in_B",
+        "nodeId": "1"
+      }
+    ]
+  },
+  "setup": impl['xod/nodes/test'].setup,
+  "upkeep": impl['xod/nodes/test'].upkeep,
+  "evaluate": impl['xod/nodes/test'].evaluate,
+  "nodes": nodes
+});
+
+nodes['1'] = new Node({
+  "id": "1",
+  "implId": "xod/nodes/test",
+  "inputTypes": {
+    "in_A": Number,
+    "in_B": Number
+  },
+  "outLinks": {},
+  "setup": impl['xod/nodes/test'].setup,
+  "upkeep": impl['xod/nodes/test'].upkeep,
+  "evaluate": impl['xod/nodes/test'].evaluate,
+  "nodes": nodes
+});
+
+nodes['2'] = new Node({
+  "id": "2",
+  "implId": "<<const>>",
+  "inputTypes": {},
+  "outLinks": {
+    "value": [
+      {
+        "key": "in_A",
+        "nodeId": "0"
+      }
+    ]
+  },
+  "value": 10,
+  "setup": impl['<<const>>'].setup,
+  "upkeep": impl['<<const>>'].upkeep,
+  "evaluate": impl['<<const>>'].evaluate,
+  "nodes": nodes
+});
+
+var topology = ["2","0","1"];
+var project = new Project({ nodes: nodes, topology: topology });
+
+// yahoo!

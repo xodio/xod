@@ -35,22 +35,6 @@ const nodeMetas = {
 };
 /* eslint-enable global-require */
 
-function loadImpl(platform, key, ext) {
-  try {
-    /* eslint-disable global-require, prefer-template */
-    return require('!raw!../../../xod-js/platform/nodes/' + platform
-                   + '/' + key.replace('xod/core/', '') + ext);
-    /* eslint-enable global-require, prefer-template */
-  } catch (err) {
-    if (/Cannot find module/.test(err)) {
-      return null;
-    }
-
-    throw err;
-  }
-}
-
-export const nodeTypes = genNodeTypes(loadImpl, nodeMetas);
-
+export const nodeTypes = genNodeTypes(nodeMetas);
 const initialState = getInitialState(nodeTypes);
 export default initialState;

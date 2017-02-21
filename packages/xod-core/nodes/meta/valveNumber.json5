@@ -15,5 +15,7 @@
     type: 'number',
     description: 'Output (receives messages from the input if condition is "true")',
   }],
-  pure: false
+  impl: {
+    js: "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.cond) {\n    e.fire({ out: e.inputs.in });\n  }\n};\n",
+  },
 }

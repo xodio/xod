@@ -15,4 +15,7 @@
     type: 'bool',
     description: '"true" if both inputs are "true"',
   }],
+  impl: {
+    js: "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a && e.inputs.b };\n};",
+  },
 }
