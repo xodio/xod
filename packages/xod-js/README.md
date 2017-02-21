@@ -1,6 +1,6 @@
-# XOD-JS
+# xod-js
 
-This package provides functions that transpiles Project into javascript code.
+This package provides functions that transpiles Project into JavaScript code.
 
 Platform-specific functions always takes two arguments: Project and Path to an entry-point patch.
 
@@ -8,7 +8,7 @@ Now it supports platforms:
 - Espruino (`transpileForEspruino`)
 - NodeJS (`transpileForNodeJS`)
 
-## How it works
+## How It Works
 The transpiled code is a composition of a default javascript runtime, patch implementations
 and platform-specific launcher.
 
@@ -23,8 +23,8 @@ named `onInit` (that will be called automatically on init by Espruino).
 
 Also launchers could have a platform-specific hacks, resets and etc.
 
-## How to implement new javascript-based platform
-All Platform-specified functions is based on general `transpile` function, that accepts
+## How to Implement New JavaScript-based Platform
+All platform-specific functions are based on a general `transpile` function, that accepts
 an object with options:
 - Project
 - Path to entry-point patch
