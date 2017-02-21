@@ -119,6 +119,11 @@ export default class Pin extends React.Component {
         onMouseOut={onMouseOut}
       >
         <rect {...this.getHotspotProps()} />
+        <circle
+          className="linkingHighlight"
+          {...this.getCircleProps()}
+          r="15"
+        />
         {symbol}
         {pinLabel}
       </g>

@@ -1,3 +1,20 @@
+@mixin symbol-coloring($type-color) {
+  stroke: $type-color;
+
+  $hover-color: lighten($type-color, 25%);
+
+  &:hover {
+    stroke: $hover-color
+  }
+
+  &.is-connected {
+    fill: $type-color;
+    &:hover {
+      fill: $hover-color
+    }
+  }
+}
+
 .Pin {
   .symbol {
     fill: #3d3d3d;
@@ -5,36 +22,24 @@
     stroke-width: 2px;
     filter: url(#dropshadow);
 
-    &.string {
-      stroke: $color-datatype-string;
+    &:hover {
+      fill: color-canvas-hover($color-canvas-face);
+    }
 
-      &.is-connected {
-        fill: $color-datatype-string;
-      }
+    &.string {
+      @include symbol-coloring($color-datatype-string);
     }
 
     &.number {
-      stroke: $color-datatype-number;
-
-      &.is-connected {
-        fill: $color-datatype-number;
-      }
+      @include symbol-coloring($color-datatype-number);
     }
 
     &.bool {
-      stroke: $color-datatype-bool;
-
-      &.is-connected {
-        fill: $color-datatype-bool;
-      }
+      @include symbol-coloring($color-datatype-bool);
     }
 
     &.pulse {
-      stroke: $color-datatype-pulse;
-
-      &.is-connected {
-        fill: $color-datatype-pulse;
-      }
+      @include symbol-coloring($color-datatype-pulse);
     }
   }
 
@@ -42,8 +47,11 @@
     font-family: $font-family-condensed;
     font-weight: 500;
     font-size: 12px;
-    fill: white;
     dominant-baseline: central;
+  }
+
+  .label.input {
+    fill: white;
   }
 
   .label.output {
@@ -51,33 +59,24 @@
     font-weight: 700; // black font looks thinner
   }
 
-  &:hover {
-    .symbol {
-      fill: color-canvas-hover($color-canvas-face);
-    }
+  .linkingHighlight {
+    display: none;
+    fill: white;
+    fill-opacity: 0.5;
   }
 
+  &.is-valid,
+  &.is-almost-valid,
   &.is-selected {
-    .symbol {
-      stroke: $color-canvas-selected;
+    .linkingHighlight {
+      display: block;
+    }
+  }
+  &.is-selected {
+    .linkingHighlight {
+      fill: $color-canvas-selected;
     }
   }
 
-  &.is-valid {
-    .symbol {
-      fill: $color-canvas-ok;
-    }
-  }
 
-  &.is-almost-valid {
-    .symbol {
-      fill: $color-canvas-almost-ok;
-    }
-  }
-}
-
-:focus .Pin.is-selected {
-  .symbol {
-    stroke: $color-canvas-selected;
-  }
 }
