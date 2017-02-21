@@ -9,7 +9,7 @@
   }
 
   .outputPinsSection {
-    fill: #A7A7A7;
+    fill: $color-canvas-face-light;
   }
 
   .outline {
@@ -19,12 +19,12 @@
 
   &:hover {
     .outline {
-      stroke: white;
+      stroke: $color-highlight;
     }
 
     // TODO: do not separate NodeText styles?
     .NodeText {
-      fill: white;
+      fill: $color-highlight;
     }
   }
 

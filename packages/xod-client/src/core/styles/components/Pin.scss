@@ -17,13 +17,13 @@
 
 .Pin {
   .symbol {
-    fill: #3d3d3d;
-    stroke: white;
+    fill: $color-pin-fill;
+    stroke: $color-pin-fill; // pins borders are colored by type and don't have a 'default' color.
     stroke-width: 2px;
     filter: url(#dropshadow);
 
     &:hover {
-      fill: color-canvas-hover($color-canvas-face);
+      fill: color-canvas-hover($color-pin-fill);
     }
 
     &.string {
@@ -51,17 +51,17 @@
   }
 
   .label.input {
-    fill: white;
+    fill: $color-pinlabel-input;
   }
 
   .label.output {
-    fill: black;
+    fill: $color-pinlabel-output;
     font-weight: 700; // black font looks thinner
   }
 
   .linkingHighlight {
     display: none;
-    fill: white;
+    fill: $color-highlight;
     fill-opacity: 0.5;
   }
 
