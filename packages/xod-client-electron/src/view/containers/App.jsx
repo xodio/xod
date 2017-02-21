@@ -326,6 +326,21 @@ class App extends client.App {
   initNativeMenu() {
     const template = this.getMenuBarItems();
 
+    // Browser controls
+    template.push({
+      label: 'View',
+      submenu: [
+        { role: 'reload' },
+        { role: 'toggledevtools' },
+        { type: 'separator' },
+        { role: 'resetzoom' },
+        { role: 'zoomin' },
+        { role: 'zoomout' },
+        { type: 'separator' },
+        { role: 'togglefullscreen' },
+      ],
+    });
+
     if (process.platform === 'darwin') {
       // on a mac the first menu always has to be like this
       template.unshift({
@@ -340,20 +355,6 @@ class App extends client.App {
           { role: 'unhide' },
           { type: 'separator' },
           { role: 'quit' },
-        ],
-      });
-
-      template.push({
-        label: 'View',
-        submenu: [
-          { role: 'reload' },
-          { role: 'toggledevtools' },
-          { type: 'separator' },
-          { role: 'resetzoom' },
-          { role: 'zoomin' },
-          { role: 'zoomout' },
-          { type: 'separator' },
-          { role: 'togglefullscreen' },
         ],
       });
 
