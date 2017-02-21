@@ -1,29 +1,33 @@
 
 .Link {
-  stroke: $color-canvas-face-stroke;
-  stroke-width: 1px;
+  stroke: grey;
+  stroke-width: 2px;
+
+  &.string {
+    stroke: $color-datatype-string;
+  }
+
+  &.number {
+    stroke: $color-datatype-number;
+  }
+
+  &.bool {
+    stroke: $color-datatype-bool;
+  }
+
+  &.pulse {
+    stroke: $color-datatype-pulse;
+  }
 
   &:hover {
     .line {
-      stroke: color-canvas-hover($color-canvas-face-stroke);
+      stroke: white;
     }
   }
 
   &.is-selected {
     .line {
-      stroke: $color-canvas-selected-faded;
+      stroke: #4ed5ec;
     }
-  }
-
-  &.is-selected:hover {
-    .line {
-      stroke: color-canvas-hover($color-canvas-selected);
-    }
-  }
-}
-
-:focus .Link.is-selected {
-  .line {
-    stroke: $color-canvas-selected;
   }
 }

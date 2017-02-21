@@ -15,6 +15,8 @@ const NodesLayer = ({ nodes, onMouseDown, onPinMouseUp, onPinMouseDown }) => (
         id={node.id}
         label={node.label}
         position={node.position}
+        size={node.size}
+        outputPinsSectionHeight={node.outputPinsSectionHeight}
         pins={node.pins}
         width={node.width}
         isSelected={node.isSelected}

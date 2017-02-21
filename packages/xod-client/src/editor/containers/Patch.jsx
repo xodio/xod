@@ -17,6 +17,10 @@ import BackgroundLayer from '../../project/components/BackgroundLayer';
 import NodesLayer from '../../project/components/NodesLayer';
 import LinksLayer from '../../project/components/LinksLayer';
 import GhostsLayer from '../../project/components/GhostsLayer';
+import {
+  addNodesPositioning,
+  addLinksPositioning,
+} from '../../project/nodeLayout';
 
 class Patch extends React.Component {
   constructor(props) {
@@ -307,12 +311,16 @@ Patch.propTypes = {
 const mapStateToProps = (state) => {
   const project = core.getProject(state);
   const curPatchId = EditorSelectors.getCurrentPatchId(state);
+
   const defNodes = core.dereferencedNodes(project, curPatchId);
+  const nodesWithPositioning = addNodesPositioning(defNodes);
+
   const defLinks = core.dereferencedLinks(project, curPatchId);
+  const linksWithPositioning = addLinksPositioning(nodesWithPositioning, defLinks);
 
   return {
-    nodes: EditorSelectors.viewNodes(state, defNodes),
-    links: EditorSelectors.viewLinks(state, defLinks),
+    nodes: EditorSelectors.markSelectedNodes(state, nodesWithPositioning),
+    links: EditorSelectors.markSelectedLinks(state, linksWithPositioning),
 
     patch: core.getPatchById(project, curPatchId),
     nodeTypes: core.dereferencedNodeTypes(state),

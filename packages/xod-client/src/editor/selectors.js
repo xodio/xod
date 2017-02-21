@@ -4,6 +4,7 @@ import core from 'xod-core';
 
 import { EDITOR_MODE } from './constants';
 import { PROPERTY_KIND } from '../project/constants';
+import { addPoints, addNodePositioning } from '../project/nodeLayout';
 
 export const getEditor = R.prop('editor');
 
@@ -157,35 +158,31 @@ export const getNodeGhost = (state) => {
   const project = core.getProject(state);
   const nodePosition = { x: 0, y: 0 };
   const nodeType = core.getPreparedNodeTypeById(project, nodeTypeId);
+
   const nodeProperties = R.pipe(
     R.prop('properties'),
     R.values,
     R.reduce((p, prop) => R.assoc(prop.key, prop.value, p), {})
   )(nodeType);
+
   const nodeLabel = core.getNodeLabel(state, { typeId: nodeTypeId, properties: nodeProperties });
+
   const nodePins = R.pipe(
     R.values,
-    R.addIndex(R.map)((pin, index) => {
-      const id = { id: index };
-      const pos = core.getPinPosition(nodeType.pins, pin.key, nodePosition);
-      const radius = { radius: core.SIZE.PIN.radius };
-
-      return R.mergeAll([pin, id, pos, radius]);
-    }),
+    R.addIndex(R.map)(
+      (pin, index) => R.merge(pin, { id: index })
+    ),
     core.indexById
   )(nodeType.pins);
 
-  const pinsWidth = core.getGroupedPinsWidth(nodePins);
-  const nodeWidth = core.getNodeWidth(pinsWidth);
-  return {
+  return addNodePositioning({
     id: '',
     label: nodeLabel,
     typeId: nodeTypeId,
     position: nodePosition,
     pins: nodePins,
-    width: nodeWidth,
     properties: nodeProperties,
-  };
+  });
 };
 
 export const getLinkGhost = (state, patchId) => {
@@ -194,19 +191,21 @@ export const getLinkGhost = (state, patchId) => {
 
   const project = core.getProject(state);
   const nodes = core.dereferencedNodes(project, patchId);
-  const node = nodes[fromPin.nodeId];
+  const nodesWithPositioning = R.map(addNodePositioning, nodes);
+  const node = nodesWithPositioning[fromPin.nodeId];
   const pin = node.pins[fromPin.pinKey];
 
   return {
     id: '',
     pins: [pin],
-    from: core.addPinRadius(pin.position),
+    type: pin.type,
+    from: addPoints(pin.position, node.position),
     to: { x: 0, y: 0 },
   };
 };
 
-// :: dereferencedNodes -> viewNodes
-export const viewNodes = (state, deferencedNodes) => {
+// :: dereferencedNodes -> viewNodes -- Adds isSelected flags to nodes and their pins
+export const markSelectedNodes = (state, deferencedNodes) => {
   const selection = getSelection(state);
   const linkingPin = getLinkingPin(state);
 
@@ -221,8 +220,8 @@ export const viewNodes = (state, deferencedNodes) => {
   }, deferencedNodes);
 };
 
-// :: dereferencedLinks -> viewLinks
-export const viewLinks = (state, dereferencedLinks) => {
+// :: dereferencedLinks -> viewLinks -- Adds isSelected flags
+export const markSelectedLinks = (state, dereferencedLinks) => {
   const selection = getSelection(state);
 
   const isSelected = R.pipe(

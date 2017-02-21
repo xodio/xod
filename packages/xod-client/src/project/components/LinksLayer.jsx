@@ -15,6 +15,7 @@ const LinksLayer = ({ links, onClick }) => (
         id={link.id}
         from={link.from}
         to={link.to}
+        type={link.type}
         isSelected={link.isSelected}
         onClick={onClick}
       />

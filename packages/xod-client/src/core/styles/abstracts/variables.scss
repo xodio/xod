@@ -12,16 +12,27 @@ $font-size-xl: 28px;
 
 $color-basic-text: #000;
 
-$color-canvas-background: #808080;
+$color-canvas-background: #393939;
 $color-canvas-background-text: #000;
-$color-canvas-face: #444;
-$color-canvas-face-text: #eee;
+$color-canvas-face: #646464;
+$color-canvas-face-light: #A7A7A7;
+$color-canvas-face-text: #a7a7a7;
 $color-canvas-face-stroke: #000;
-$color-canvas-selected: #f00;
-$color-canvas-selected-faded: #c44;
+$color-canvas-selected: #4ed5ec;
+$color-highlight: white;
 $color-canvas-ok: #0f0;
 $color-canvas-almost-ok: #ab0;
 $color-canvas-not-available: #000;
+
+$color-datatype-string: #B99039;
+$color-datatype-number: #2e8f6c;
+$color-datatype-bool: #9F5497;
+$color-datatype-pulse: #6965BD;
+
+$color-pin-fill: #3d3d3d;
+
+$color-pinlabel-input: white;
+$color-pinlabel-output: black;
 
 $color-button-primary-background: #286aa7;
 $color-button-primary-text: #fff;

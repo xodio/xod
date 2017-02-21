@@ -1,30 +1,44 @@
 
 .Node {
+  overflow: visible;
+
   .body {
+    width: 100%;
+    height: 100%;
     fill: $color-canvas-face;
-    stroke: $color-canvas-face-stroke;
-    stroke-width: 1px;
+  }
+
+  .outputPinsSection {
+    fill: $color-canvas-face-light;
+  }
+
+  .outline {
+    fill: transparent;
+    stroke-width: 2px;
   }
 
   &:hover {
-    .body {
-      fill: color-canvas-hover($color-canvas-face);
+    .outline {
+      stroke: $color-highlight;
+    }
+
+    // TODO: do not separate NodeText styles?
+    .NodeText {
+      fill: $color-highlight;
     }
   }
 
   &.is-selected {
-    .body {
-      stroke: $color-canvas-selected-faded;
+    .outline {
+      stroke: $color-canvas-selected;
+    }
+
+    .NodeText {
+      fill: $color-canvas-selected;
     }
   }
 
   &.is-ghost {
     opacity: 0.8;
-  }
-}
-
-:focus .Node.is-selected {
-  .body {
-    stroke: $color-canvas-selected;
   }
 }

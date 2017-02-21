@@ -3,6 +3,9 @@ import classNames from 'classnames';
 import { PIN_DIRECTION, PIN_VALIDITY } from 'xod-core';
 import { noop } from '../../utils/ramda';
 
+const PIN_RADIUS = 6;
+const TEXT_OFFSET_FROM_PIN_BORDER = 10;
+
 export default class Pin extends React.Component {
   constructor(props) {
     super(props);
@@ -18,19 +21,15 @@ export default class Pin extends React.Component {
     this.props.onMouseDown(this.props.keyName);
   }
 
-  getPosition() {
-    const radius = this.props.radius;
-    return {
-      x: this.props.position.x + radius + 1,
-      y: this.props.position.y + radius + 1,
-    };
+  getPinCenter() {
+    return this.props.position;
   }
 
   getHotspotProps() {
-    const halfSide = this.props.radius + 1;
+    const halfSide = PIN_RADIUS + 1;
     return {
-      x: this.getPosition().x - halfSide,
-      y: this.getPosition().y - halfSide,
+      x: this.getPinCenter().x - halfSide,
+      y: this.getPinCenter().y - halfSide,
       width: halfSide * 2,
       height: halfSide * 2,
       fill: 'transparent',
@@ -39,35 +38,32 @@ export default class Pin extends React.Component {
 
   getCircleProps() {
     return {
-      cx: this.getPosition().x,
-      cy: this.getPosition().y,
-      r: this.props.radius,
+      cx: this.getPinCenter().x,
+      cy: this.getPinCenter().y,
+      r: PIN_RADIUS,
     };
   }
 
-  getTriangleProps() {
-    const r = this.props.radius;
-    const x = this.getPosition().x - r;
-    const y = this.getPosition().y - r;
-    const s = r * 2;
+  getRectProps() {
+    const x = this.getPinCenter().x - PIN_RADIUS;
+    const y = this.getPinCenter().y - PIN_RADIUS;
+    const side = PIN_RADIUS * 2;
 
     return {
-      points: [
-        `${x},${y}`,
-        `${x + s},${y}`,
-        `${x + (s / 2)},${y + s}`,
-      ].join(' '),
+      x,
+      y,
+      width: side,
+      height: side,
     };
   }
 
   getTextProps() {
-    const textMargin = this.props.radius * (this.isInput() ? 1 : -1);
-    const pos = this.getPosition();
+    const textVerticalOffset = PIN_RADIUS + TEXT_OFFSET_FROM_PIN_BORDER;
+    const pos = this.getPinCenter();
     return {
-      x: pos.x + textMargin + 2,
-      y: pos.y + 4,
-      transform: `rotate(-90 ${pos.x}, ${pos.y})`,
-      textAnchor: this.isInput() ? 'start' : 'end',
+      x: pos.x,
+      y: pos.y + (textVerticalOffset * (this.isInput() ? 1 : -1)),
+      textAnchor: 'middle',
     };
   }
 
@@ -79,10 +75,6 @@ export default class Pin extends React.Component {
     return (this.getDirection() === PIN_DIRECTION.INPUT);
   }
 
-  isOutput() {
-    return (this.getDirection() === PIN_DIRECTION.OUTPUT);
-  }
-
   isInjected() {
     return !!this.props.injected;
   }
@@ -90,7 +82,7 @@ export default class Pin extends React.Component {
   render() {
     const pinLabel = this.props.pinLabel ? (
       <text
-        className="pinLabel"
+        className={`label ${this.isInput() ? 'input' : 'output'}`}
         key={`pinText_${this.props.keyName}`}
         {...this.getTextProps()}
       >
@@ -108,9 +100,14 @@ export default class Pin extends React.Component {
     const onMouseOver = !this.isInjected() ? this.handleOver : noop;
     const onMouseOut = !this.isInjected() ? this.handleOut : noop;
 
+    const symbolClassNames = classNames(
+      'symbol', this.props.type,
+      { 'is-connected': this.props.isConnected }
+    );
+
     const symbol = !this.isInjected() ?
-      <circle className="symbol" {...this.getCircleProps()} /> :
-      <polygon className="symbol" {...this.getTriangleProps()} />;
+      <circle className={symbolClassNames} {...this.getCircleProps()} /> :
+      <rect className={symbolClassNames} {...this.getRectProps()} />;
 
     return (
       <g
@@ -122,6 +119,11 @@ export default class Pin extends React.Component {
         onMouseOut={onMouseOut}
       >
         <rect {...this.getHotspotProps()} />
+        <circle
+          className="linkingHighlight"
+          {...this.getCircleProps()}
+          r="15"
+        />
         {symbol}
         {pinLabel}
       </g>
@@ -133,12 +135,13 @@ Pin.propTypes = {
   keyName: React.PropTypes.string.isRequired,
   injected: React.PropTypes.bool,
   pinLabel: React.PropTypes.string,
+  type: React.PropTypes.string,
   direction: React.PropTypes.string.isRequired,
   position: React.PropTypes.object.isRequired,
-  radius: React.PropTypes.number.isRequired,
   onMouseUp: React.PropTypes.func.isRequired,
   onMouseDown: React.PropTypes.func.isRequired,
   isSelected: React.PropTypes.bool,
+  isConnected: React.PropTypes.bool,
   validness: React.PropTypes.number,
 };
 
