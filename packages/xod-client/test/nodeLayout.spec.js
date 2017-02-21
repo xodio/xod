@@ -2,34 +2,34 @@ import R from 'ramda';
 import { assert } from 'chai';
 
 import {
-  pinsCountPerRow,
+  pinCountPerRow,
   nodeSizeInSlots,
   MAX_PINS_IN_ROW,
 } from '../src/project/nodeLayout';
 
 
-describe('pinsCountPerRow', () => {
+describe('pinCountPerRow', () => {
   it('should return an array', () => {
-    assert.isArray(pinsCountPerRow(1));
+    assert.isArray(pinCountPerRow(1));
   });
 
   it('should return a single row if a number of pins is <= MAX_PINS_IN_ROW', () => {
     R.range(1, R.inc(MAX_PINS_IN_ROW)).forEach((pinsNumber) => {
       assert.deepEqual(
-        pinsCountPerRow(pinsNumber),
+        pinCountPerRow(pinsNumber),
         [pinsNumber]
       );
     });
   });
 
   it('should return more than one row if a number of pins is > MAX_PINS_IN_ROW', () => {
-    const rows = pinsCountPerRow(R.inc(MAX_PINS_IN_ROW));
+    const rows = pinCountPerRow(R.inc(MAX_PINS_IN_ROW));
     assert(rows.length > 1);
   });
 
   it('should return rows with pin counts that add up to the original number of pins passed', () => {
     [1, 16, 17, 33, 35, 1000].forEach((pinsNumber) => {
-      const sumOfPinsInRows = R.sum(pinsCountPerRow(pinsNumber));
+      const sumOfPinsInRows = R.sum(pinCountPerRow(pinsNumber));
       assert.equal(
         sumOfPinsInRows,
         pinsNumber
@@ -63,7 +63,7 @@ describe('pinsCountPerRow', () => {
     ].forEach(
       ([pinsNumber, expectedRows]) =>
         assert.deepEqual(
-          pinsCountPerRow(pinsNumber),
+          pinCountPerRow(pinsNumber),
           expectedRows
         )
     );

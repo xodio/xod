@@ -20,69 +20,69 @@ export const PIN_MARGIN = {
 };
 
 /**
- * @param {number} pinsCount
+ * @param {number} pinCount
  * @returns {number} - how many rows is needed for a given number of pins
  */
-export const rowsNumberForPins = pinsCount =>
-  Math.ceil(pinsCount / MAX_PINS_IN_ROW);
+export const rowCountForPins = pinCount =>
+  Math.ceil(pinCount / MAX_PINS_IN_ROW);
 
 /**
- * @param {number} pinsCount
+ * @param {number} pinCount
  * @returns {number[]} - number of pins in each row
  */
-export const pinsCountPerRow = (pinsCount) => {
-  const rowsNumber = rowsNumberForPins(pinsCount);
+export const pinCountPerRow = (pinCount) => {
+  const rowCount = rowCountForPins(pinCount);
 
-  if (rowsNumber <= 1) return [pinsCount];
+  if (rowCount <= 1) return [pinCount];
 
-  const pinsInFullRows = Math.ceil(pinsCount / rowsNumber);
-  const fullRowsCount = rowsNumber - 1;
-  const pinsInLastRow = pinsCount - (fullRowsCount * pinsInFullRows);
+  const pinsInFullRows = Math.ceil(pinCount / rowCount);
+  const numberOfFullRows = rowCount - 1;
+  const pinsInLastRow = pinCount - (numberOfFullRows * pinsInFullRows);
 
   return R.append(
     pinsInLastRow,
-    R.repeat(pinsInFullRows, fullRowsCount)
+    R.repeat(pinsInFullRows, numberOfFullRows)
   );
 };
 
 /**
- * @param {number} pinsCount. Should be less than MAX_PINS_IN_ROW
+ * @param {number} pinCount. Should be less than MAX_PINS_IN_ROW
  * @returns {number} - how many horizontal slots is required to fit a given number of pins
  */
-export const horizontalSlotsForPinsRow = (pinsCount) => {
-  if (pinsCount > MAX_PINS_IN_ROW) {
+export const horizontalSlotsForPinsRow = (pinCount) => {
+  if (pinCount > MAX_PINS_IN_ROW) {
     throw new Error('Exceeded maximum allowed amount of pins per row');
   }
 
-  if (pinsCount <= 3) return 1;
-  if (pinsCount <= 5) return 2;
-  if (pinsCount <= 8) return 3;
-  if (pinsCount <= 12) return 4;
-  if (pinsCount <= 15) return 5;
+  if (pinCount <= 3) return 1;
+  if (pinCount <= 5) return 2;
+  if (pinCount <= 8) return 3;
+  if (pinCount <= 12) return 4;
+  if (pinCount <= 15) return 5;
   return 6;
 };
 
 /**
- * @param {number} rowsCount - both input and output pin rows
+ * @param {number} rowCount - both input and output pin rows
  * @returns {number} - vertical slots needed for a given amount of pin rows
  */
-export const verticalSlotsForPinRows = rowsCount =>
+export const verticalSlotsForPinRows = rowCount =>
   // TODO: we need design for extreme cases with a lot of pin rows. See #236
-  (rowsCount > 2 ? 2 : 1);
+  (rowCount > 2 ? 2 : 1);
 
 /**
- * @param {number} inputPinsCount
- * @param {number} outputPinsCount
+ * @param {number} inputPinCount
+ * @param {number} outputPinCount
  * @returns {{width: number, height: number}} - horizontal and vertical slots needed for node
  */
-export const nodeSizeInSlots = (inputPinsCount, outputPinsCount) =>
+export const nodeSizeInSlots = (inputPinCount, outputPinCount) =>
   R.compose(
     R.applySpec({
       width: R.compose(horizontalSlotsForPinsRow, R.apply(Math.max)),
       height: R.compose(verticalSlotsForPinRows, R.length),
     }),
-    R.chain(pinsCountPerRow) // all pin rows together
-  )([inputPinsCount, outputPinsCount]);
+    R.chain(pinCountPerRow) // all pin rows together
+  )([inputPinCount, outputPinCount]);
 
 
 export const slotsWidthInPixels =
@@ -158,7 +158,7 @@ const getOutputPinsSectionHeight = R.ifElse(
  * @param node - dereferenced node
  */
 export const addNodePositioning = (node) => {
-  const pinsCountByDirection = R.compose(
+  const pinCountByDirection = R.compose(
     R.map(R.length),
     R.merge({ input: [], output: [] }),
     R.groupBy(R.prop('direction')),
@@ -166,15 +166,15 @@ export const addNodePositioning = (node) => {
   )(node.pins);
 
   const sizeInSlots = nodeSizeInSlots(
-    pinsCountByDirection.input,
-    pinsCountByDirection.output
+    pinCountByDirection.input,
+    pinCountByDirection.output
   );
 
   const size = slotsToPixels(sizeInSlots);
 
   const pinRows = R.map(
-    pinsCountPerRow,
-    pinsCountByDirection
+    pinCountPerRow,
+    pinCountByDirection
   );
 
   const outputPinsSectionHeight = getOutputPinsSectionHeight(pinRows.output);
