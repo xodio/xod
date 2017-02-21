@@ -212,7 +212,7 @@ Node.prototype._sendOutputs = function(signals) {
 /**
   * @param {Object.<number, Node>} args.nodes
   *   map from ID to Node instances
-  * @param {Array.<number, number>} args.topology
+  * @param {Array<number>} args.topology
   *   sorted node index list that defines an order
   *   of the graph traversal
   */

@@ -4,6 +4,7 @@
   "description": "XOD project: Espruino runtime",
   "scripts": {
     "build": "webpack --colors",
+    "doc": "documentation build --format html --output doc --sort-order alpha src/",
     "test": "mocha-webpack test/**/*.spec.js"
   },
   "repository": {},
