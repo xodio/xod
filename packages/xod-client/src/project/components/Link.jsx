@@ -2,47 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { SIZE } from 'xod-core';
 
-import Stylizer from '../../utils/stylizer';
 import { noop } from '../../utils/ramda';
-
-const linkStyles = {
-  line: {
-    normal: {
-      stroke: 'black',
-      strokeWidth: 2,
-    },
-    hover: {
-      stroke: 'red',
-    },
-    selected: {
-      stroke: 'red',
-    },
-  },
-  helper: {
-    normal: {
-      stroke: 'transparent',
-      strokeWidth: 8,
-    },
-    hover: {
-      stroke: 'yellow',
-    },
-  },
-};
 
 class Link extends React.Component {
   constructor(props) {
     super(props);
     this.elementId = `link_${this.props.id}`;
-
-    this.state = {
-      hovered: false,
-    };
-
-    Stylizer.assignStyles(this, linkStyles);
-    if (this.props.hoverable) {
-      Stylizer.hoverable(this, ['line', 'helper']);
-    }
-    Stylizer.selectable(this, ['line']);
 
     this.onClick = this.onClick.bind(this);
   }
@@ -88,8 +53,6 @@ class Link extends React.Component {
         className={cls}
         id={this.elementId}
         onClick={this.onClick}
-        onMouseOver={this.handleOver}
-        onMouseOut={this.handleOut}
         style={{ pointerEvents }}
       >
         <line
@@ -113,7 +76,6 @@ Link.propTypes = {
   type: React.PropTypes.string.isRequired,
   isSelected: React.PropTypes.bool,
   isGhost: React.PropTypes.bool,
-  hoverable: React.PropTypes.bool,
   onClick: React.PropTypes.func,
 };
 
