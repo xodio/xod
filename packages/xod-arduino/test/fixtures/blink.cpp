@@ -49,7 +49,7 @@
 #define PIN_KEY_OFFSET_BITS     (16 - MAX_OUTPUT_COUNT)
 #define NO_NODE                 ((NodeId)-1)
 
-namespace xod {
+namespace _program {
     typedef double Number;
     typedef bool Logic;
 
@@ -70,7 +70,7 @@ namespace xod {
 //----------------------------------------------------------------------------
 // Engine
 //----------------------------------------------------------------------------
-namespace xod {
+namespace _program {
     extern void* storages[NODE_COUNT];
     extern EvalFuncPtr evaluationFuncs[NODE_COUNT];
     extern DirtyFlags dirtyFlags[NODE_COUNT];
@@ -90,7 +90,7 @@ namespace xod {
 
 
     // TODO: replace with a compact list
-    extern TimeMs schedule[NODE_COUNT]; 
+    extern TimeMs schedule[NODE_COUNT];
 
     inline void* pinPtr(void* storage, PinKey key) {
         const size_t offset = key & ~(PinKey(-1) << PIN_KEY_OFFSET_BITS);
@@ -224,17 +224,17 @@ namespace xod {
 //----------------------------------------------------------------------------
 // Entry point
 //----------------------------------------------------------------------------
-void setup() { 
+void setup() {
     // FIXME: looks like there is a rounding bug. Waiting for 1 second fights it
-    delay(1000); 
+    delay(1000);
 #ifdef XOD_DEBUG
     DEBUG_SERIAL.begin(9600);
 #endif
     XOD_TRACE_FLN("Program started");
-    
+
     XOD_TRACE_F("NODE_COUNT = ");
     XOD_TRACE_LN(NODE_COUNT);
-    
+
     XOD_TRACE_F("sizeof(NodeId) = ");
     XOD_TRACE_LN(sizeof(NodeId));
 
@@ -246,8 +246,8 @@ void setup() {
 }
 
 void loop() {
-    xod::idle();
-    xod::runTransaction();
+    _program::idle();
+    _program::runTransaction();
 }
 
 /*=============================================================================
@@ -329,7 +329,7 @@ namespace xod { namespace core { namespace digital_output {
         if (isInputDirty(nid, Inputs::PIN)) {
             ::pinMode(pin, OUTPUT);
         }
-       
+
         ::digitalWrite(pin, val);
     }
 }}}
@@ -468,62 +468,62 @@ namespace xod { namespace core { namespace constant_number {
  *
  =============================================================================*/
 
-namespace xod {
+namespace _program {
     NodeId links_0_VAL[] = { 1, NO_NODE };
-    core::constant_number::Storage storage_0 = {
+    xod::core::constant_number::Storage storage_0 = {
         { }, // state
         { 0.2, links_0_VAL } // output_VAL
     };
 
     NodeId links_1_TICK[] = { 2, NO_NODE };
-    core::clock::Storage storage_1 = {
+    xod::core::clock::Storage storage_1 = {
         { }, // state
-        { NodeId(0), core::constant_number::Outputs::VAL }, // input_IVAL
+        { NodeId(0), xod::core::constant_number::Outputs::VAL }, // input_IVAL
         { 0, links_1_TICK } // output_TICK
     };
 
     NodeId links_2_OUT[] = { 3, NO_NODE };
-    core::latch::Storage storage_2 = {
+    xod::core::latch::Storage storage_2 = {
         { }, // state
-        { 1, core::clock::Outputs::TICK }, // input_TGL
+        { 1, xod::core::clock::Outputs::TICK }, // input_TGL
         { NO_NODE, 0 }, // input_SET
         { NO_NODE, 0 }, // input_RST
         { 0, links_2_OUT } // output_OUT
     };
 
     NodeId links_3_OUT[] = { 4, NO_NODE };
-    core::logic_to_real::Storage storage_3 = {
+    xod::core::logic_to_real::Storage storage_3 = {
         { }, // state
-        { NodeId(2), core::latch::Outputs::OUT }, // input_IN
+        { NodeId(2), xod::core::latch::Outputs::OUT }, // input_IN
         { 0, links_3_OUT } // output_OUT
     };
 
     NodeId links_4_OUT[] = { 5, NO_NODE };
-    core::multiply::Storage storage_4 = {
+    xod::core::multiply::Storage storage_4 = {
         { }, // state
-        { NodeId(3), core::logic_to_real::Outputs::OUT }, // input_IN1
-        { NodeId(3), core::logic_to_real::Outputs::OUT }, // input_IN2
+        { NodeId(3), xod::core::logic_to_real::Outputs::OUT }, // input_IN1
+        { NodeId(3), xod::core::logic_to_real::Outputs::OUT }, // input_IN2
         { 0, links_4_OUT } // output_OUT
     };
 
     NodeId links_5_OUT[] = { 7, NO_NODE };
-    core::real_to_logic::Storage storage_5 = {
+    xod::core::real_to_logic::Storage storage_5 = {
         { }, // state
-        { NodeId(4), core::multiply::Outputs::OUT }, // input_IN
+        { NodeId(4), xod::core::multiply::Outputs::OUT }, // input_IN
         { 0, links_5_OUT } // output_OUT
     };
 
     NodeId links_6_VAL[] = { 7, NO_NODE };
-    core::constant_number::Storage storage_6 = {
+    xod::core::constant_number::Storage storage_6 = {
         { }, // state
         { 13, links_6_VAL } // output_VAL
     };
 
     NodeId links_7_VAL[] = { NO_NODE };
-    core::digital_output::Storage storage_7 = {
+    xod::core::digital_output::Storage storage_7 = {
         { }, // state
-        { NodeId(5), core::real_to_logic::Outputs::OUT }, // input_VAL
-        { NodeId(6), core::constant_number::Outputs::VAL } // input_PIN
+        { NodeId(5), xod::core::real_to_logic::Outputs::OUT }, // input_VAL
+        { NodeId(6), xod::core::constant_number::Outputs::VAL } // input_PIN
     };
 
     void* storages[NODE_COUNT] = {
@@ -538,17 +538,17 @@ namespace xod {
     };
 
     EvalFuncPtr evaluationFuncs[NODE_COUNT] = {
-        (EvalFuncPtr)&core::constant_number::evaluate,
-        (EvalFuncPtr)&core::clock::evaluate,
-        (EvalFuncPtr)&core::latch::evaluate,
-        (EvalFuncPtr)&core::logic_to_real::evaluate,
-        (EvalFuncPtr)&core::multiply::evaluate,
-        (EvalFuncPtr)&core::real_to_logic::evaluate,
-        (EvalFuncPtr)&core::constant_number::evaluate,
-        (EvalFuncPtr)&core::digital_output::evaluate
+        (EvalFuncPtr)&xod::core::constant_number::evaluate,
+        (EvalFuncPtr)&xod::core::clock::evaluate,
+        (EvalFuncPtr)&xod::core::latch::evaluate,
+        (EvalFuncPtr)&xod::core::logic_to_real::evaluate,
+        (EvalFuncPtr)&xod::core::multiply::evaluate,
+        (EvalFuncPtr)&xod::core::real_to_logic::evaluate,
+        (EvalFuncPtr)&xod::core::constant_number::evaluate,
+        (EvalFuncPtr)&xod::core::digital_output::evaluate
     };
 
-    DirtyFlags dirtyFlags[NODE_COUNT] = { 
+    DirtyFlags dirtyFlags[NODE_COUNT] = {
         0xff, 0, 0, 0, 0, 0, 0xff, 0
     };
 
@@ -558,5 +558,3 @@ namespace xod {
 
     TimeMs schedule[NODE_COUNT] = { 0 };
 }
-
-
