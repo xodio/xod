@@ -14,6 +14,8 @@ import 'espruino/core/env';
 
 import co from 'co';
 
+window.Espruino = Espruino;
+
 // TODO: now console is an only adequate way to debug hardware interaction
 // so allow console.log while upload.
 /* eslint-disable no-console */
@@ -82,14 +84,9 @@ export default function upload(code, progressCallback) {
   setProgressListener(progressCallback);
 
   return co(function* asyncUpload() {
-    const code2 = yield transformForEspruino(code);
+    const espruinoCode = yield transformForEspruino(code);
 
-    const code3 = [
-      code2,
-      'save();',
-    ].join('\n');
-
-    console.log('Code is about to be uploaded:\n', code3);
+    console.log('Code is about to be uploaded:\n', espruinoCode);
 
     Espruino.Core.Serial.startListening((arrayBuffer) => {
       const uintArray = new Uint8Array(arrayBuffer);
@@ -110,7 +107,15 @@ export default function upload(code, progressCallback) {
     // so it could be tweaked for optimization.
     yield delay(1000);
 
-    yield writeToEspruino(code3);
+    // Clear any program that was saved as a plain JS code
+    // since we want to save it as an interpreter dump
+    yield writeToEspruino('E.setBootCode("");\n');
+
+    // Write the code and save espruino interpreter state
+    yield writeToEspruino([
+      espruinoCode,
+      'save();',
+    ].join('\n'));
 
     // Give a chance to process and save the code.
     // 1000 ms could be lowered.
