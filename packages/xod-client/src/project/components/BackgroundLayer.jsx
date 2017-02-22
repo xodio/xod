@@ -13,8 +13,8 @@ const slotPatternHtml = `
   <defs>
       <rect
         id="slot_shape"
-        x="${SLOT_MARGIN.HORIZONTAL}"
-        y="${SLOT_MARGIN.VERTICAL}"
+        x="${SLOT_MARGIN.HORIZONTAL / 2}"
+        y="${SLOT_MARGIN.VERTICAL / 2}"
         width="${SLOT_SIZE.WIDTH}"
         height="${SLOT_SIZE.HEIGHT}"
         rx="5" ry="5"

@@ -1,0 +1,11 @@
+.SnappingPreviewLayer {
+
+}
+.SnappingPreview {
+  fill: red;
+  fill-opacity: 0.5;
+
+  &.isValid {
+    fill: $color-canvas-selected;
+  }
+}

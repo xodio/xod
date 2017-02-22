@@ -231,3 +231,58 @@ export const addLinksPositioning = (nodes, links) =>
       }
     );
   })(links);
+
+
+// ============= snapping to slots grid ===================
+
+export const getSlotRow = y => Math.floor(y / (SLOT_SIZE.HEIGHT + SLOT_MARGIN.VERTICAL));
+export const getSlotColumn = x => Math.floor(x / (SLOT_SIZE.WIDTH + SLOT_MARGIN.HORIZONTAL));
+
+/**
+ * get position in slots
+ */
+export const getSlotPosition = R.evolve({
+  x: getSlotColumn,
+  y: getSlotRow,
+});
+
+/**
+ * convert position in slots to pixels
+ */
+export const slotPositionToPixels = ({ x, y }) => ({
+  /*
+   SLOT_MARGIN.HORIZONTAL / 2
+   <---->
+   +----------------------------+ ^ ^
+   |                            | | |SLOT_MARGIN.VERTICAL / 2
+   |    /------------------\    | | v
+   |    |                  |    | |
+   |    |                  |    | |
+   |    |                  |    | |
+   |    |                  |    | |SLOT_SIZE.HEIGHT + SLOT_MARGIN.VERTICAL
+   |    |                  |    | |
+   |    |                  |    | |
+   |    \------------------/    | |
+   |                            | |
+   +----------------------------+ v
+   <---------------------------->
+   SLOT_SIZE.WIDTH + SLOT_MARGIN.HORIZONTAL
+   */
+  x: (x * (SLOT_SIZE.WIDTH + SLOT_MARGIN.HORIZONTAL)) + (SLOT_MARGIN.HORIZONTAL / 2),
+  y: (y * (SLOT_SIZE.HEIGHT + SLOT_MARGIN.VERTICAL)) + (SLOT_MARGIN.VERTICAL / 2),
+});
+
+export const getSnappedPosition = R.compose(slotPositionToPixels, getSlotPosition);
+
+// TODO: works only for 1x1 nodes
+export const isValidPosition = (allNodes, draggedNodeId, snappedPosition) =>
+  R.compose(
+    R.not,
+    R.find(
+      R.compose(
+        R.equals(snappedPosition),
+        R.prop('position')
+      )
+    ),
+    R.omit(draggedNodeId)
+  )(allNodes);
