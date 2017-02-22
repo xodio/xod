@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 import SVGLayer from './SVGLayer';
 import {
-  getSnappedPosition,
+  snapNodePositionToSlots,
   isValidPosition,
   NODE_CORNER_RADIUS,
 } from '../nodeLayout';
@@ -22,12 +22,11 @@ class SnappingPreviewLayer extends React.Component {
     const {
       nodes,
       draggedNodeId,
-      mousePosition,
     } = this.props;
 
     if (!draggedNodeId) return null;
 
-    const dragGhostPosition = getSnappedPosition(mousePosition);
+    const dragGhostPosition = snapNodePositionToSlots(nodes[draggedNodeId].position);
 
     const isValid = isValidPosition(nodes, draggedNodeId, dragGhostPosition);
     const draggedNodeSize = nodes[draggedNodeId].size;
@@ -52,7 +51,6 @@ class SnappingPreviewLayer extends React.Component {
 }
 
 SnappingPreviewLayer.propTypes = {
-  mousePosition: React.PropTypes.objectOf(React.PropTypes.number),
   draggedNodeId: React.PropTypes.any,
   nodes: React.PropTypes.any,
 };

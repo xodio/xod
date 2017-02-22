@@ -205,10 +205,10 @@ export const addNodePositioning = (node) => {
 
 export const addNodesPositioning = R.map(addNodePositioning);
 
-export const addPoints = (a, b) => ({
+export const addPoints = R.curry((a, b) => ({
   x: a.x + b.x,
   y: a.y + b.y,
-});
+}));
 
 /**
  * @param nodes — dereferenced nodes with added positioning data
@@ -274,7 +274,15 @@ export const slotPositionToPixels = ({ x, y }) => ({
   y: (y * (SLOT_SIZE.HEIGHT + SLOT_MARGIN.VERTICAL)) + (SLOT_MARGIN.VERTICAL / 2),
 });
 
-export const getSnappedPosition = R.compose(slotPositionToPixels, getSlotPosition);
+/**
+ * @param node position
+ * @return node position snapped to slots grid
+ */
+export const snapNodePositionToSlots = R.compose(
+  slotPositionToPixels,
+  getSlotPosition,
+  addPoints({ x: SLOT_SIZE.WIDTH / 2, y: SLOT_SIZE.HEIGHT / 2 })
+);
 
 // TODO: works only for 1x1 nodes
 export const isValidPosition = (allNodes, draggedNodeId, snappedPosition) =>
