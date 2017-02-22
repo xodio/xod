@@ -14,8 +14,6 @@ import 'espruino/core/env';
 
 import co from 'co';
 
-window.Espruino = Espruino;
-
 // TODO: now console is an only adequate way to debug hardware interaction
 // so allow console.log while upload.
 /* eslint-disable no-console */
