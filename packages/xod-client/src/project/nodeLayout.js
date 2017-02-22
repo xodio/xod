@@ -214,18 +214,20 @@ export const addPoints = (a, b) => ({
  */
 export const addLinksPositioning = (nodes, links) =>
   R.map((link) => {
-    const pins = R.map(
-      data => R.merge(
-        data,
-        nodes[data.nodeId].pins[data.pinKey]
+    const [pinFrom, pinTo] = R.map(
+      pin => R.assoc(
+        'position',
+        nodes[pin.nodeId].pins[pin.pinKey].position,
+        pin
       ),
       link.pins
     );
+
     return R.merge(
       link,
       {
-        from: addPoints(nodes[pins[0].nodeId].position, pins[0].position) || null,
-        to: addPoints(nodes[pins[1].nodeId].position, pins[1].position) || null,
+        from: addPoints(nodes[pinFrom.nodeId].position, pinFrom.position) || null,
+        to: addPoints(nodes[pinTo.nodeId].position, pinTo.position) || null,
       }
     );
   })(links);
