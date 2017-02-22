@@ -2,7 +2,11 @@ import React from 'react';
 import cn from 'classnames';
 
 import SVGLayer from './SVGLayer';
-import { getSnappedPosition, isValidPosition } from '../nodeLayout';
+import {
+  getSnappedPosition,
+  isValidPosition,
+  NODE_CORNER_RADIUS,
+} from '../nodeLayout';
 
 class SnappingPreviewLayer extends React.Component {
   constructor(props) {
@@ -39,7 +43,8 @@ class SnappingPreviewLayer extends React.Component {
           className={className}
           {...dragGhostPosition}
           {...draggedNodeSize}
-          rx="5" ry="5"
+          rx={NODE_CORNER_RADIUS}
+          ry={NODE_CORNER_RADIUS}
         />
       </SVGLayer>
     );

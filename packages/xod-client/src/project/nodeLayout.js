@@ -19,6 +19,8 @@ export const PIN_MARGIN = {
   VERTICAL: 5,
 };
 
+export const NODE_CORNER_RADIUS = 5;
+
 /**
  * @param {number} pinCount
  * @returns {number} - how many rows is needed for a given number of pins

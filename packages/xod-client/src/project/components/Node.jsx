@@ -6,6 +6,8 @@ import Pin from './Pin';
 import NodeText from './NodeText';
 import { noop } from '../../utils/ramda';
 
+import { NODE_CORNER_RADIUS } from '../nodeLayout';
+
 class Node extends React.Component {
   constructor(props) {
     super(props);
@@ -64,8 +66,8 @@ class Node extends React.Component {
 
     const maskId = `${this.id}mask`;
     const bodyRectProps = {
-      rx: 5,
-      ry: 5,
+      rx: NODE_CORNER_RADIUS,
+      ry: NODE_CORNER_RADIUS,
       // size is set in root svg, let's occupy it all
       width: '100%',
       height: '100%',
