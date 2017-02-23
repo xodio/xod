@@ -14,6 +14,7 @@
     "postinstall": "npm run bootstrap",
     "start:xod-client-electron": "./tools/lerna-run-sorted start xod-client-electron",
     "start:xod-server": "./tools/lerna-run-sorted start xod-server",
+    "storybook": "./tools/lerna-serve storybook xod-client",
     "test": "./tools/lerna-run-sorted test",
     "verify": "npm-run-all build lint test"
   },
