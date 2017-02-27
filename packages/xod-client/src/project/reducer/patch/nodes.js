@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { PROPERTY_TYPE_PARSE } from 'xod-core';
+import { PROPERTY_TYPE_PARSE } from '../../../utils/inputFormatting';
 
 import {
   NODE_MOVE,

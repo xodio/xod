@@ -52,17 +52,6 @@ export const PROPERTY_DEFAULT_VALUE = {
   PULSE: false,
 };
 
-export const PROPERTY_TYPE_PARSE = {
-  [PROPERTY_TYPE.BOOL]: v => !!v,
-  [PROPERTY_TYPE.NUMBER]: (v, add) => {
-    const lastChar = (add && v[v.length - 1] === '.') ? '.' : null;
-    const newValue = parseFloat(v) + lastChar;
-    return isNaN(newValue) ? '' : newValue;
-  },
-  [PROPERTY_TYPE.STRING]: v => String(v),
-  [PROPERTY_TYPE.PULSE]: v => !!v,
-};
-
 export const SIZE = {
   NODE: {
     minWidth: 80,

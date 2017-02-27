@@ -35,7 +35,6 @@ const widgetKeyDownHandlers = {
 const widgetNumberKeysDownHandlers = {
   [KEYCODE.UP]: widgetKeyDownHandlers.up,
   [KEYCODE.DOWN]: widgetKeyDownHandlers.down,
-  [KEYCODE.DOT]: widgetKeyDownHandlers.dot,
   [KEYCODE.COMMA]: widgetKeyDownHandlers.dot,
 };
 
