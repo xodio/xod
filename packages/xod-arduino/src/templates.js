@@ -69,17 +69,14 @@ const templates = {
 // Rendering functions
 //
 // =============================================================================
-// :: TConfig -> String
 export const renderConfig = def(
   'renderConfig :: TConfig -> String',
   templates.config
 );
-// :: TPatch -> String
 export const renderGeneratedCode = def(
   'renderGeneratedCode :: TPatch -> String',
   templates.generatedCode
 );
-// :: TPatch -> String
 export const renderImpl = def(
   'renderImpl :: TPatch -> String',
   (data) => {
@@ -88,7 +85,6 @@ export const renderImpl = def(
     return Handlebars.compile(patchImpl, renderingOptions)({ GENERATED_CODE: generatedCode });
   }
 );
-// :: TPatch[] -> String
 export const renderImplList = def(
   'renderImplList :: [TPatch] -> String',
   R.compose(
@@ -103,13 +99,10 @@ export const renderImplList = def(
     )
   )
 );
-// :: TNode[] -> String
 export const renderProgram = def(
   'renderProgram :: [TNode] -> String',
   templates.program
 );
-
-// :: TProject -> String
 export const renderProject = def(
   'renderProject :: TProject -> String',
   (project) => {
