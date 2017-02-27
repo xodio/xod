@@ -1,3 +1,5 @@
+import R from 'ramda';
+
 export const LAYER = {
   BACKGROUND: 'background',
   LINKS: 'links',
@@ -52,12 +54,36 @@ export const PROPERTY_DEFAULT_VALUE = {
   PULSE: false,
 };
 
+const removeAllDotsExceptFirst = str =>
+  str.replace(/^([^.]*\.)(.*)$/, (a, b, c) => b + c.replace(/\./g, ''));
+
+const addLeadingZero = R.ifElse(
+  R.compose(R.equals('.'), R.head),
+  R.concat('0'),
+  R.identity
+);
+
+/**
+ * transform value when input is in process
+ */
+export const PROPERTY_TYPE_MASK = {
+  [PROPERTY_TYPE.BOOL]: R.identity,
+  [PROPERTY_TYPE.NUMBER]: R.compose(
+    addLeadingZero,
+    removeAllDotsExceptFirst,
+    R.replace(/[^0-9.]/g, ''),
+    R.toString
+  ),
+  [PROPERTY_TYPE.STRING]: R.identity,
+  [PROPERTY_TYPE.PULSE]: R.identity,
+};
+
 export const PROPERTY_TYPE_PARSE = {
   [PROPERTY_TYPE.BOOL]: v => !!v,
-  [PROPERTY_TYPE.NUMBER]: (v, add) => {
-    const lastChar = (add && v[v.length - 1] === '.') ? '.' : null;
-    const newValue = parseFloat(v) + lastChar;
-    return isNaN(newValue) ? '' : newValue;
+  [PROPERTY_TYPE.NUMBER]: (v) => {
+    const float = parseFloat(v, 10);
+    // TODO: danger: return type is still Number | String
+    return isNaN(float) ? '' : float;
   },
   [PROPERTY_TYPE.STRING]: v => String(v),
   [PROPERTY_TYPE.PULSE]: v => !!v,
