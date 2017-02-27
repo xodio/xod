@@ -130,11 +130,11 @@ menuBarItemType = PropTypes.shape({
   ]),
 });
 
-export const propTypes = {
-  items: PropTypes.arrayOf(menuBarItemType),
-};
+export const itemsPropTypes = PropTypes.arrayOf(menuBarItemType);
 
-Menubar.propTypes = propTypes;
+Menubar.propTypes = {
+  items: itemsPropTypes,
+};
 
 Menubar.defaultProps = {
   items: [],
