@@ -1,6 +1,6 @@
 import R from 'ramda';
 import React from 'react';
-import { PROPERTY_TYPE_PARSE } from 'xod-core';
+import { PROPERTY_TYPE_PARSE, PROPERTY_TYPE_MASK } from 'xod-core';
 
 import { KEYCODE } from '../../../utils/constants';
 import { noop } from '../../../utils/ramda';
@@ -88,7 +88,7 @@ export default function composeWidget(Component, widgetProps) {
     }
 
     updateValue(value) {
-      const newValue = this.parseValue(value);
+      const newValue = this.maskValue(value);
       const commitCallback = (this.commitOnChange) ? this.commit.bind(this) : noop;
 
       this.setState({
@@ -97,12 +97,13 @@ export default function composeWidget(Component, widgetProps) {
     }
 
     commit() {
-      if (this.parseValue(this.state.value) !== this.parseValue(this.props.value)) {
+      const parsedValue = this.parseValue(this.state.value);
+      if (parsedValue !== this.parseValue(this.props.value)) {
         this.props.onPropUpdate(
           this.props.entityId,
           this.props.kind,
           this.props.keyName,
-          this.state.value
+          parsedValue
         );
       }
     }
@@ -112,6 +113,10 @@ export default function composeWidget(Component, widgetProps) {
       const val = (newInjected) ? this.state.value : null;
 
       this.props.onPinModeSwitch(this.props.entityId, this.props.keyName, newInjected, val);
+    }
+
+    maskValue(val) {
+      return PROPERTY_TYPE_MASK[this.type](val);
     }
 
     parseValue(val) {
