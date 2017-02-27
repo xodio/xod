@@ -57,19 +57,16 @@ export const PROPERTY_DEFAULT_VALUE = {
 const removeAllDotsExceptFirst = str =>
   str.replace(/^([^.]*\.)(.*)$/, (a, b, c) => b + c.replace(/\./g, ''));
 
-const addLeadingZero = R.ifElse(
-  R.compose(R.equals('.'), R.head),
-  R.concat('0'),
-  R.identity
-);
-
 /**
- * transform value when input is in process
+ * transform value when input is in progress
  */
 export const PROPERTY_TYPE_MASK = {
   [PROPERTY_TYPE.BOOL]: R.identity,
   [PROPERTY_TYPE.NUMBER]: R.compose(
-    addLeadingZero,
+    R.when(
+      R.compose(R.equals('.'), R.head),
+      R.concat('0')
+    ),
     removeAllDotsExceptFirst,
     R.replace(/[^0-9.]/g, ''),
     R.toString
