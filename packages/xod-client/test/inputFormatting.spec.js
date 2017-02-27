@@ -1,5 +1,6 @@
 import { assert } from 'chai';
-import { PROPERTY_TYPE, PROPERTY_TYPE_MASK } from '../src/project/constants';
+import { PROPERTY_TYPE } from 'xod-core';
+import { PROPERTY_TYPE_MASK } from '../src/utils/inputFormatting';
 
 describe('number mask', () => {
   const numberMask = PROPERTY_TYPE_MASK[PROPERTY_TYPE.NUMBER];

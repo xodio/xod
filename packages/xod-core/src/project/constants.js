@@ -1,5 +1,3 @@
-import R from 'ramda';
-
 export const LAYER = {
   BACKGROUND: 'background',
   LINKS: 'links',
@@ -52,38 +50,6 @@ export const PROPERTY_DEFAULT_VALUE = {
   NUMBER: 0,
   STRING: '',
   PULSE: false,
-};
-
-const removeAllDotsExceptFirst = str =>
-  str.replace(/^([^.]*\.)(.*)$/, (a, b, c) => b + c.replace(/\./g, ''));
-
-/**
- * transform value when input is in progress
- */
-export const PROPERTY_TYPE_MASK = {
-  [PROPERTY_TYPE.BOOL]: R.identity,
-  [PROPERTY_TYPE.NUMBER]: R.compose(
-    R.when(
-      R.compose(R.equals('.'), R.head),
-      R.concat('0')
-    ),
-    removeAllDotsExceptFirst,
-    R.replace(/[^0-9.]/g, ''),
-    R.toString
-  ),
-  [PROPERTY_TYPE.STRING]: R.identity,
-  [PROPERTY_TYPE.PULSE]: R.identity,
-};
-
-export const PROPERTY_TYPE_PARSE = {
-  [PROPERTY_TYPE.BOOL]: v => !!v,
-  [PROPERTY_TYPE.NUMBER]: (v) => {
-    const float = parseFloat(v, 10);
-    // TODO: danger: return type is still Number | String
-    return isNaN(float) ? '' : float;
-  },
-  [PROPERTY_TYPE.STRING]: v => String(v),
-  [PROPERTY_TYPE.PULSE]: v => !!v,
 };
 
 export const SIZE = {
