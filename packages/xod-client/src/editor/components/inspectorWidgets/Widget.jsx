@@ -14,10 +14,10 @@ export default function composeWidget(Component, widgetProps) {
       this.commit();
     },
     [KEYCODE.ESCAPE]: function escape(event) {
-      if (this.state.value === this.state.initialValue) {
+      if (this.state.value === this.parseValue(this.props.value)) {
         event.target.blur();
       } else {
-        this.updateValue(this.state.initialValue);
+        this.updateValue(this.props.value);
       }
     },
   };
@@ -30,7 +30,6 @@ export default function composeWidget(Component, widgetProps) {
 
       const val = this.parseValue(props.value);
       this.state = {
-        initialValue: val,
         value: val,
       };
 
