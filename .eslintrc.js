@@ -53,7 +53,8 @@ module.exports = {
         '**/*.spec.js',
         '**/xod-client-electron/**/*.js',
         '**/xod-client-electron/**/*.jsx',
-        '**/xod-client/**/DevTools.jsx'
+        '**/xod-client/**/DevTools.jsx',
+        '**/xod-client/stories/*.jsx'
       ]
     }],
 
