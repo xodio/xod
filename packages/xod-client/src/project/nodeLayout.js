@@ -19,6 +19,8 @@ export const PIN_MARGIN = {
   VERTICAL: 5,
 };
 
+export const NODE_CORNER_RADIUS = 5;
+
 /**
  * @param {number} pinCount
  * @returns {number} - how many rows is needed for a given number of pins
@@ -203,10 +205,10 @@ export const addNodePositioning = (node) => {
 
 export const addNodesPositioning = R.map(addNodePositioning);
 
-export const addPoints = (a, b) => ({
+export const addPoints = R.curry((a, b) => ({
   x: a.x + b.x,
   y: a.y + b.y,
-});
+}));
 
 /**
  * @param nodes — dereferenced nodes with added positioning data
@@ -231,3 +233,66 @@ export const addLinksPositioning = (nodes, links) =>
       }
     );
   })(links);
+
+
+// ============= snapping to slots grid ===================
+
+export const getSlotRow = y => Math.floor(y / (SLOT_SIZE.HEIGHT + SLOT_MARGIN.VERTICAL));
+export const getSlotColumn = x => Math.floor(x / (SLOT_SIZE.WIDTH + SLOT_MARGIN.HORIZONTAL));
+
+/**
+ * get position in slots
+ */
+export const getSlotPosition = R.evolve({
+  x: getSlotColumn,
+  y: getSlotRow,
+});
+
+/**
+ * convert position in slots to pixels
+ */
+export const slotPositionToPixels = ({ x, y }) => ({
+  /*
+   SLOT_MARGIN.HORIZONTAL / 2
+   <---->
+   +----------------------------+ ^ ^
+   |                            | | |SLOT_MARGIN.VERTICAL / 2
+   |    /------------------\    | | v
+   |    |                  |    | |
+   |    |                  |    | |
+   |    |                  |    | |
+   |    |                  |    | |SLOT_SIZE.HEIGHT + SLOT_MARGIN.VERTICAL
+   |    |                  |    | |
+   |    |                  |    | |
+   |    \------------------/    | |
+   |                            | |
+   +----------------------------+ v
+   <---------------------------->
+   SLOT_SIZE.WIDTH + SLOT_MARGIN.HORIZONTAL
+   */
+  x: (x * (SLOT_SIZE.WIDTH + SLOT_MARGIN.HORIZONTAL)) + (SLOT_MARGIN.HORIZONTAL / 2),
+  y: (y * (SLOT_SIZE.HEIGHT + SLOT_MARGIN.VERTICAL)) + (SLOT_MARGIN.VERTICAL / 2),
+});
+
+/**
+ * @param node position
+ * @return node position snapped to slots grid
+ */
+export const snapNodePositionToSlots = R.compose(
+  slotPositionToPixels,
+  getSlotPosition,
+  addPoints({ x: SLOT_SIZE.WIDTH / 2, y: SLOT_SIZE.HEIGHT / 2 })
+);
+
+// TODO: works only for 1x1 nodes
+export const isValidPosition = (allNodes, draggedNodeId, snappedPosition) =>
+  R.compose(
+    R.not,
+    R.find(
+      R.compose(
+        R.equals(snappedPosition),
+        R.prop('position')
+      )
+    ),
+    R.omit(draggedNodeId)
+  )(allNodes);

@@ -17,9 +17,11 @@ import BackgroundLayer from '../../project/components/BackgroundLayer';
 import NodesLayer from '../../project/components/NodesLayer';
 import LinksLayer from '../../project/components/LinksLayer';
 import GhostsLayer from '../../project/components/GhostsLayer';
+import SnappingPreviewLayer from '../../project/components/SnappingPreviewLayer';
 import {
   addNodesPositioning,
   addLinksPositioning,
+  snapNodePositionToSlots,
 } from '../../project/nodeLayout';
 
 class Patch extends React.Component {
@@ -142,7 +144,7 @@ class Patch extends React.Component {
   onMouseUp(event) {
     if (this.state.clickNodeId && this.isDragging()) {
       const draggedNodeId = this.state.clickNodeId;
-      const draggedPos = this.props.nodes[draggedNodeId].position;
+      const draggedPos = snapNodePositionToSlots(this.props.nodes[draggedNodeId].position);
 
       this.props.actions.moveNode(draggedNodeId, draggedPos);
     }
@@ -182,6 +184,10 @@ class Patch extends React.Component {
 
   setMousePosition(mousePosition) {
     this.setState({ mousePosition });
+  }
+
+  getDraggedNodeId() {
+    return this.isDragging() && this.state.clickNodeId;
   }
 
   getHotkeyHandlers() {
@@ -269,6 +275,10 @@ class Patch extends React.Component {
             width={this.props.size.width}
             height={this.props.size.height}
             onClick={this.deselectAll}
+          />
+          <SnappingPreviewLayer
+            draggedNodeId={this.getDraggedNodeId()}
+            nodes={this.props.nodes}
           />
           <LinksLayer
             links={links}

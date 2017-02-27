@@ -6,6 +6,7 @@ import SVGLayer from './SVGLayer';
 import {
   SLOT_MARGIN,
   SLOT_SIZE,
+  NODE_CORNER_RADIUS,
 } from '../nodeLayout';
 
 /* eslint-disable react/no-danger */
@@ -13,11 +14,11 @@ const slotPatternHtml = `
   <defs>
       <rect
         id="slot_shape"
-        x="${SLOT_MARGIN.HORIZONTAL}"
-        y="${SLOT_MARGIN.VERTICAL}"
+        x="${SLOT_MARGIN.HORIZONTAL / 2}"
+        y="${SLOT_MARGIN.VERTICAL / 2}"
         width="${SLOT_SIZE.WIDTH}"
         height="${SLOT_SIZE.HEIGHT}"
-        rx="5" ry="5"
+        rx="${NODE_CORNER_RADIUS}" ry="${NODE_CORNER_RADIUS}"
       ></rect>
       <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="slot_inner_shadow">
           <!-- white shadow -->
