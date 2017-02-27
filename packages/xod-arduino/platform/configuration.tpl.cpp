@@ -1,5 +1,5 @@
-<%!-- Template for program configuration block --%>
-<%!-- Accepts the Config context --%>
+{{!-- Template for program configuration block --}}
+{{!-- Accepts the Config context --}}
 
 /*=============================================================================
  *
@@ -9,8 +9,8 @@
  *
  =============================================================================*/
 
-#define NODE_COUNT          <% NODE_COUNT %>
-#define MAX_OUTPUT_COUNT    <% MAX_OUTPUT_COUNT %>
+#define NODE_COUNT          {{ NODE_COUNT }}
+#define MAX_OUTPUT_COUNT    {{ MAX_OUTPUT_COUNT }}
 
 // Uncomment to trace the program in the Serial Monitor
-<%#unless XOD_DEBUG %>//<%/unless%>#define XOD_DEBUG
+{{#unless XOD_DEBUG}}//{{/unless}}#define XOD_DEBUG

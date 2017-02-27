@@ -14,7 +14,6 @@
   "main": "dist/index.js",
   "dependencies": {
     "handlebars": "^4.0.6",
-    "handlebars-delimiters": "git://github.com/kmilov/handlebars-delimiters#8b1b613a68a816d35ae8198b755eaf8da76b2410",
     "hm-def": "^0.1.0",
     "ramda": "^0.22.1",
     "ramda-fantasy": "^0.7.0",

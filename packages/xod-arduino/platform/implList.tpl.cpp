@@ -1,5 +1,5 @@
-<%!-- Template for program graph --%>
-<%!-- Accepts the context with list of Nodes --%>
+{{!-- Template for program graph --}}
+{{!-- Accepts the context with list of Nodes --}}
 /*=============================================================================
  *
  *
@@ -8,8 +8,8 @@
  *
  =============================================================================*/
 
-<%#each this %>
-namespace <% owner %> { namespace <% libName %> { namespace <% patchName %> {
-<% implementation %>
+{{#each this}}
+namespace {{ owner }} { namespace {{ libName }} { namespace {{ patchName }} {
+{{ implementation }}
 }}}
-<%/each %>
+{{/each}}

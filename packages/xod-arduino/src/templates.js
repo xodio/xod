@@ -1,6 +1,5 @@
 import R from 'ramda';
 import Handlebars from 'handlebars';
-import handlebarsDelimiters from 'handlebars-delimiters';
 
 import { def } from './types';
 
@@ -10,9 +9,6 @@ import implListTpl from '../platform/implList.tpl.cpp';
 import programTpl from '../platform/program.tpl.cpp';
 
 import runtime from '../platform/runtime.cpp';
-
-// Replace delimiters from {{ }} to <% %>
-handlebarsDelimiters(Handlebars, ['<%', '%>']);
 
 // =============================================================================
 //

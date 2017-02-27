@@ -1,7 +1,7 @@
 struct State {
 };
 
-<% GENERATED_CODE %>
+{{ GENERATED_CODE }}
 
 void evaluate(NodeId nid, State* state) {
     const Number in1 = getNumber(nid, Inputs::IN1);
