@@ -25,11 +25,6 @@ const config = merge.smart(baseConfig, {
         test: /\.cpp$/,
         loader: 'raw',
       },
-      {
-        include: pkgpath('platform'),
-        test: /\.cpp$/,
-        loader: 'raw',
-      },
     ],
   },
 });

@@ -8,8 +8,8 @@
  *
  =============================================================================*/
 
-<% #each nodes %>
+<%#each this %>
 namespace <% owner %> { namespace <% libName %> { namespace <% patchName %> {
-    <% implementation %>
+<% implementation %>
 }}}
-<% /each %>
+<%/each %>

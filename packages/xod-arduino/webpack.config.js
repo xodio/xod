@@ -11,6 +11,7 @@ module.exports = {
     filename: 'index.js',
     umdNamedDefine: true,
   },
+  target: 'node',
   externals: [
     'xod-core',
     'fs',
@@ -22,6 +23,9 @@ module.exports = {
       pkgpath('node_modules/xod-core/node_modules'),
     ],
     extensions: ['', '.js'],
+    alias: {
+      handlebars: 'handlebars/dist/handlebars.min.js',
+    },
   },
   module: {
     loaders: [
