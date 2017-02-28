@@ -19,6 +19,6 @@ enum Inputs : PinKey {
 
 enum Outputs : PinKey {
   {{#each outputs}}
-    {{ pinKey }} = offsetof(Storage, output_{{ pinKey }}) | (0 << PIN_KEY_OFFSET_BITS){{#unless @last}},{{/unless}}
+    {{ pinKey }} = offsetof(Storage, output_{{ pinKey }}) | ({{@index}} << PIN_KEY_OFFSET_BITS){{#unless @last}},{{/unless}}
   {{/each}}
 };
