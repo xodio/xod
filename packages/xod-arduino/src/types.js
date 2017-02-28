@@ -1,3 +1,4 @@
+import R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
 import { env as xEnv } from 'xod-project';
@@ -46,6 +47,7 @@ const AliasType = (typeName, type) => NullaryType(
 //-----------------------------------------------------------------------------
 const TNodeId = AliasType('TNodeId', $.Number);
 const TPinKey = AliasType('TPinKey', $.String);
+const DataValue = NullaryType('DataValue', R.complement(R.isNil));
 
 export const TConfig = Model('TConfig', {
   NODE_COUNT: $.Number,
@@ -56,7 +58,7 @@ export const TConfig = Model('TConfig', {
 const TPatchOutput = Model('TPatchOutput', {
   type: $.String,
   pinKey: $.String,
-  value: $.Any,
+  value: DataValue,
 });
 
 const TPatchInput = Model('TPatchInput', {
@@ -76,6 +78,7 @@ export const TPatch = Model('TPatch', {
 const TNodeOutput = Model('TNodeOutput', {
   to: $.Array(TNodeId),
   pinKey: TPinKey,
+  value: $.Nullable(DataValue),
 });
 
 const TNodeInput = Model('TNodeInput', {

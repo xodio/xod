@@ -1,3 +1,4 @@
+import R from 'ramda';
 import chai, { assert } from 'chai';
 import chaiString from 'chai-string';
 import * as T from '../src/templates';
@@ -9,6 +10,7 @@ import patchContextFixture from './fixtures/patchContext.cpp';
 import implFixture from './fixtures/impl.cpp';
 import implListFixture from './fixtures/implList.cpp';
 import programFixture from './fixtures/program.cpp';
+import programWithCustomValueFixture from './fixtures/program.customValue.cpp';
 import projectFixture from './fixtures/project.cpp';
 
 chai.use(chaiString);
@@ -51,6 +53,7 @@ describe('xod-arduino templates', () => {
         {
           to: [1],
           pinKey: 'OUT',
+          value: null,
         },
       ],
       inputs: [],
@@ -98,6 +101,18 @@ describe('xod-arduino templates', () => {
   it('program should render properly', () => {
     const result = T.renderProgram(nodes);
     assert.equalIgnoreSpaces(result, programFixture);
+  });
+
+  it('value of pin from patch should be overwritten by value from node', () => {
+    const nodePinValueLens = R.compose(
+      R.lensIndex(0),
+      R.lensProp('outputs'),
+      R.lensIndex(0),
+      R.lensProp('value')
+    );
+    const newNodes = R.set(nodePinValueLens, 5, nodes);
+    const result = T.renderProgram(newNodes);
+    assert.equalIgnoreSpaces(result, programWithCustomValueFixture);
   });
 
   it('should render everything and glue parts properly', () => {
