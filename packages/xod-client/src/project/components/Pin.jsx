@@ -1,10 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { PIN_DIRECTION, PIN_VALIDITY } from 'xod-core';
+import { PIN_VALIDITY } from 'xod-core';
 import { noop } from '../../utils/ramda';
-
-const PIN_RADIUS = 6;
-const TEXT_OFFSET_FROM_PIN_BORDER = 10;
+import { PIN_RADIUS } from '../nodeLayout';
 
 export default class Pin extends React.Component {
   constructor(props) {
@@ -57,39 +55,11 @@ export default class Pin extends React.Component {
     };
   }
 
-  getTextProps() {
-    const textVerticalOffset = PIN_RADIUS + TEXT_OFFSET_FROM_PIN_BORDER;
-    const pos = this.getPinCenter();
-    return {
-      x: pos.x,
-      y: pos.y + (textVerticalOffset * (this.isInput() ? 1 : -1)),
-      textAnchor: 'middle',
-    };
-  }
-
-  getDirection() {
-    return this.props.direction;
-  }
-
-  isInput() {
-    return (this.getDirection() === PIN_DIRECTION.INPUT);
-  }
-
   isInjected() {
     return !!this.props.injected;
   }
 
   render() {
-    const pinLabel = this.props.pinLabel ? (
-      <text
-        className={`label ${this.isInput() ? 'input' : 'output'}`}
-        key={`pinText_${this.props.keyName}`}
-        {...this.getTextProps()}
-      >
-        {this.props.pinLabel}
-      </text>
-    ) : null;
-
     const cls = classNames('Pin', {
       'is-property': this.isInjected(),
       'is-selected': this.props.isSelected,
@@ -125,7 +95,6 @@ export default class Pin extends React.Component {
           r="15"
         />
         {symbol}
-        {pinLabel}
       </g>
     );
   }
@@ -134,9 +103,7 @@ export default class Pin extends React.Component {
 Pin.propTypes = {
   keyName: React.PropTypes.string.isRequired,
   injected: React.PropTypes.bool,
-  pinLabel: React.PropTypes.string,
   type: React.PropTypes.string,
-  direction: React.PropTypes.string.isRequired,
   position: React.PropTypes.object.isRequired,
   onMouseUp: React.PropTypes.func.isRequired,
   onMouseDown: React.PropTypes.func.isRequired,

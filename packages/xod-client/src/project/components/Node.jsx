@@ -3,6 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import Pin from './Pin';
+import PinLabel from './PinLabel';
 import NodeText from './NodeText';
 import { noop } from '../../utils/ramda';
 
@@ -114,13 +115,20 @@ class Node extends React.Component {
         </g>
         <g className="pinlist" ref={this.assignPinListRef}>
           {pinsArr.map(pin =>
-            <Pin
-              keyName={pin.key}
-              key={pin.key}
-              {...pin}
-              onMouseUp={this.onPinMouseUp}
-              onMouseDown={this.onPinMouseDown}
-            />
+            <g key={pin.key}>
+              <Pin
+                keyName={pin.key}
+                {...pin}
+                key={`pin_${pin.key}`}
+                onMouseUp={this.onPinMouseUp}
+                onMouseDown={this.onPinMouseDown}
+              />
+              <PinLabel
+                keyName={pin.key}
+                {...pin}
+                key={`pinlabel_${pin.key}`}
+              />
+            </g>
           )}
         </g>
       </svg>

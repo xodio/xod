@@ -43,22 +43,6 @@
     }
   }
 
-  .label {
-    font-family: $font-family-condensed;
-    font-weight: 500;
-    font-size: 12px;
-    dominant-baseline: central;
-  }
-
-  .label.input {
-    fill: $color-pinlabel-input;
-  }
-
-  .label.output {
-    fill: $color-pinlabel-output;
-    font-weight: 700; // black font looks thinner
-  }
-
   .linkingHighlight {
     display: none;
     fill: $color-highlight;
@@ -77,6 +61,4 @@
       fill: $color-canvas-selected;
     }
   }
-
-
 }
