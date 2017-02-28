@@ -6,6 +6,7 @@
     "build": "babel src/ -d dist/",
     "dev": "npm run build -- --watch",
     "test": "mocha test --recursive",
+    "test:watch": "npm run test -- --watch",
     "storybook": "start-storybook --dont-track -p 9001 -c .storybook"
   },
   "repository": {},
