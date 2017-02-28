@@ -59,9 +59,13 @@ the development of this issue would make sense
 Provide some steps that an end-user would be able to perform when
 the feature could be considered as implemented. E.g.:
 
-- [] I can click a new Boo menu item
-- [] A dialog appears where I can enter Foo value
-- [] Clicking OK changes all nodes’ labels to the Foo value
+- [ ] I can click a new Boo menu item
+- [ ] A dialog appears where I can enter Foo value
+- [ ] Clicking OK changes all nodes’ labels to the Foo value
+
+### Out of scope
+
+Explicitly list functionality that is not intended to be done with this story.
 
 ### How to implement
 
