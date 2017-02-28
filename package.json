@@ -16,6 +16,7 @@
     "start:xod-server": "./tools/lerna-run-sorted start xod-server",
     "storybook": "./tools/lerna-serve storybook xod-client",
     "test": "./tools/lerna-run-sorted test",
+    "test:watch": "./tools/lerna-serve test:watch",
     "verify": "npm-run-all build lint test"
   },
   "devDependencies": {
