@@ -5,7 +5,7 @@ import * as T from '../src/templates';
 import inputImpl from './fixtures/impl.input.cpp';
 
 import configFixture from './fixtures/config.cpp';
-import generatedCodeFixture from './fixtures/generatedCode.cpp';
+import patchContextFixture from './fixtures/patchContext.cpp';
 import implFixture from './fixtures/impl.cpp';
 import implListFixture from './fixtures/implList.cpp';
 import programFixture from './fixtures/program.cpp';
@@ -80,9 +80,9 @@ describe('xod-arduino templates', () => {
     assert.equalIgnoreSpaces(result, configFixture);
   });
 
-  it('generatedCode should render properly', () => {
-    const result = T.renderGeneratedCode(patches[0]);
-    assert.equalIgnoreSpaces(result, generatedCodeFixture);
+  it('patchContext should render properly', () => {
+    const result = T.renderPatchContext(patches[0]);
+    assert.equalIgnoreSpaces(result, patchContextFixture);
   });
 
   it('implementation should render properly', () => {

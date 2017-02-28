@@ -4,7 +4,7 @@ import Handlebars from 'handlebars';
 import { def } from './types';
 
 import configTpl from '../platform/configuration.tpl.cpp';
-import generatedCodeTpl from '../platform/generatedCode.tpl.cpp';
+import patchContextTpl from '../platform/patchContext.tpl.cpp';
 import implListTpl from '../platform/implList.tpl.cpp';
 import programTpl from '../platform/program.tpl.cpp';
 
@@ -59,7 +59,7 @@ const renderingOptions = {
 // Basic templates
 const templates = {
   config: Handlebars.compile(configTpl, renderingOptions),
-  generatedCode: Handlebars.compile(generatedCodeTpl, renderingOptions),
+  patchContext: Handlebars.compile(patchContextTpl, renderingOptions),
   implList: Handlebars.compile(implListTpl, renderingOptions),
   program: Handlebars.compile(programTpl, renderingOptions),
 };
@@ -73,16 +73,16 @@ export const renderConfig = def(
   'renderConfig :: TConfig -> String',
   templates.config
 );
-export const renderGeneratedCode = def(
-  'renderGeneratedCode :: TPatch -> String',
-  templates.generatedCode
+export const renderPatchContext = def(
+  'renderPatchContext :: TPatch -> String',
+  templates.patchContext
 );
 export const renderImpl = def(
   'renderImpl :: TPatch -> String',
   (data) => {
     const patchImpl = R.prop('impl', data);
-    const generatedCode = templates.generatedCode(data);
-    return Handlebars.compile(patchImpl, renderingOptions)({ GENERATED_CODE: generatedCode });
+    const patchContext = renderPatchContext(data);
+    return Handlebars.compile(patchImpl, renderingOptions)({ GENERATED_CODE: patchContext });
   }
 );
 export const renderImplList = def(
