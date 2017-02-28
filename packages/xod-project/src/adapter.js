@@ -247,31 +247,26 @@ const getCustomPinsOnly = R.compose(
   propValues('pins')
 );
 
-// :: PatchOld -> Function fn
-// fn :: Patch -> Patch
-const convertPatchPins = R.compose(
-  R.ifElse(
-    Maybe.isNothing,
-    R.nthArg(1), // TODO: Why we get second argument here, not just Nothing?
-    reduceChainOver
-  ),
-  R.chain(R.compose(
-    R.map(R.compose(
-      R.chain(Patch.assocPin),
-      R.converge(
-        Pin.createPin,
-        [
-          R.prop('key'),
-          R.compose(convertPinType, R.prop('type')),
-          R.prop('direction'),
-        ]
-      )
-    )),
-    R.values
-  )),
-  maybeEmpty,
-  getCustomPinsOnly
-);
+// :: PinOld -> Pin
+const convertPin = R.converge(Pin.createPin, [
+  R.prop('key'),
+  R.compose(convertPinType, R.prop('type')),
+  R.prop('direction'),
+]);
+
+// :: PatchOld -> (Patch -> Patch)
+const convertPatchPins = oldPatch => (patch) => {
+  const converter = R.compose(
+    f => f(patch),
+    R.apply(R.pipe),
+    R.map(Patch.assocPin), // list of associators
+    R.pluck('value'), // extract value from always-right Either
+    R.map(convertPin)
+  );
+
+  const customPins = getCustomPinsOnly(oldPatch);
+  return customPins.length ? converter(customPins) : patch;
+};
 
 // :: ProjectOld -> Function fn
 // fn :: Project -> Tuple NodeIdMap Project

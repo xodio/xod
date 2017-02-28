@@ -194,16 +194,11 @@ export const getNodeById = def(
  * @function assocPin
  * @param {Pin} pin
  * @param {Patch} patch
- * @returns {Either<Error|Patch>}
+ * @returns {Patch}
  */
 export const assocPin = def(
-  'assocPin :: Pin -> Patch -> Either Error Patch',
-  (pin, patch) => Pin.validatePin(pin).map(
-    (validPin) => {
-      const key = Pin.getPinKey(validPin);
-      return R.assocPath(['pins', key], validPin, patch);
-    }
-  )
+  'assocPin :: Pin -> Patch -> Patch',
+  (pin, patch) => R.assocPath(['pins', Pin.getPinKey(pin)], pin, patch)
 );
 
 /**
@@ -486,7 +481,7 @@ export const assocNode = def(
         (pinNode) => {
           const newPatch = Node.getPinNodeDataType(pinNode).chain(
             type => Node.getPinNodeDirection(pinNode).chain(
-              direction => Pin.createPin(id, type, direction).chain(
+              direction => Pin.createPin(id, type, direction).map(
                 // TODO: Add optional data (label, description, order) from node to pin
                 newPin => assocPin(newPin, _patch)
               )

@@ -446,16 +446,11 @@ describe('Patch', () => {
       });
       const newPatch = Patch.assocPin(pin, emptyPatch);
 
-      Helper.expectEither(
-        (validPatch) => {
-          expect(validPatch)
-            .to.be.an('object')
-            .that.have.property('pins')
-            .that.have.property(pin.key)
-            .to.be.deep.equal(pin);
-        },
-        newPatch
-      );
+      expect(newPatch)
+        .to.be.an('object')
+        .that.have.property('pins')
+        .that.have.property(pin.key)
+        .to.be.deep.equal(pin);
     });
     it('should not affect on other pins', () => {
       const patchWithPins = Helper.defaultizePatch({
@@ -472,14 +467,9 @@ describe('Patch', () => {
       const newPatch = Patch.assocPin(pin, patchWithPins);
       const expectedPatch = R.assocPath(['pins', pin.key], pin, patchWithPins);
 
-      Helper.expectEither(
-        (validPatch) => {
-          expect(validPatch)
-            .to.be.an('object')
-            .to.be.deep.equal(expectedPatch);
-        },
-        newPatch
-      );
+      expect(newPatch)
+        .to.be.an('object')
+        .to.be.deep.equal(expectedPatch);
     });
   });
   describe('dissocPin', () => {

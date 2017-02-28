@@ -151,12 +151,6 @@ export const isTerminalPin = def(
   )
 );
 
-// TODO: remove me
-export const validatePin = def(
-  'validatePin :: Pin -> Either Error Pin',
-  Either.of
-);
-
 /**
  * @function createPin
  * @param {string} key

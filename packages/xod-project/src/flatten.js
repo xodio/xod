@@ -113,8 +113,8 @@ const extendTerminalPins = R.curry((patch, path) => R.ifElse(
   R.compose(
     R.concat([convertTerminalPath(path)]),
     R.of,
-    R.unnest,
-    reduceChainOver(Maybe.of(patch)),
+    f => f(patch), // TODO: make more DRY
+    R.apply(R.compose),
     R.map(Patch.assocPin),
     getTerminalPins,
     Pin.getPinType,
