@@ -119,7 +119,24 @@ const editorReducer = (state = {}, action) => {
       return R.assoc('currentPatchId', action.payload.id, newState);
     }
     case TAB_CLOSE:
-      return R.dissocPath(['tabs', action.payload.id.toString()], state);
+      return R.compose(
+        R.converge(
+          R.assoc('currentPatchId'),
+          [
+            R.compose( // get patch id from last of remaining tabs
+              R.unless(
+                R.isNil,
+                R.prop('patchId')
+              ),
+              R.last,
+              R.values,
+              R.prop('tabs')
+            ),
+            R.identity,
+          ]
+        ),
+        R.dissocPath(['tabs', action.payload.id.toString()])
+      )(state);
     case TAB_SORT:
       return R.assoc(
         'tabs',
