@@ -5,7 +5,8 @@
   "scripts": {
     "build": "babel src/ -d dist/",
     "dev": "npm run build -- --watch",
-    "test": "mocha test --recursive"
+    "test": "mocha test --recursive",
+    "storybook": "start-storybook --dont-track -p 9001 -c .storybook"
   },
   "repository": {},
   "keywords": [],
@@ -50,6 +51,7 @@
     "node": "6.0.0"
   },
   "devDependencies": {
+    "@kadira/storybook": "^2.35.3",
     "chai": "^3.5.0",
     "dirty-chai": "^1.2.2",
     "redux-devtools": "^3.3.1",
