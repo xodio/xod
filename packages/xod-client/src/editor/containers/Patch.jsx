@@ -15,6 +15,7 @@ import { COMMAND } from '../../utils/constants';
 import PatchSVG from '../../project/components/PatchSVG';
 import BackgroundLayer from '../../project/components/BackgroundLayer';
 import NodesLayer from '../../project/components/NodesLayer';
+import PinsLayer from '../../project/components/PinsLayer';
 import LinksLayer from '../../project/components/LinksLayer';
 import GhostsLayer from '../../project/components/GhostsLayer';
 import SnappingPreviewLayer from '../../project/components/SnappingPreviewLayer';
@@ -280,10 +281,6 @@ class Patch extends React.Component {
             draggedNodeId={this.getDraggedNodeId()}
             nodes={this.props.nodes}
           />
-          <LinksLayer
-            links={links}
-            onClick={this.onLinkClick}
-          />
           <NodesLayer
             nodes={nodes}
             onMouseDown={this.onNodeMouseDown}
@@ -295,6 +292,15 @@ class Patch extends React.Component {
             mode={this.props.mode}
             ghostNode={this.props.ghostNode}
             ghostLink={this.props.ghostLink}
+          />
+          <LinksLayer
+            links={links}
+            onClick={this.onLinkClick}
+          />
+          <PinsLayer
+            nodes={nodes}
+            onPinMouseDown={this.onPinMouseDown}
+            onPinMouseUp={this.onPinMouseUp}
           />
         </PatchSVG>
       </HotKeys>
