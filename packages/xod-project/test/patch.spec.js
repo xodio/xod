@@ -730,25 +730,6 @@ describe('Patch', () => {
     });
   });
 
-  // validations
-  describe('validatePatch', () => {
-    it('should return Either.Left for empty object', () => {
-      const patch = Patch.validatePatch({});
-      expect(patch.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, patch, CONST.ERROR.PATCH_INVALID);
-    });
-    it('should return Either.Right with valid patch', () => {
-      const patch = { nodes: {}, links: {} };
-      const test = Patch.validatePatch(patch);
-      expect(test.isRight).to.be.true();
-
-      /* istanbul ignore next */
-      Helper.expectEither(
-        (rightPatch) => { expect(rightPatch).to.be.equal(patch); },
-        test
-      );
-    });
-  });
   describe('validateLink', () => {
     const patch = Helper.defaultizePatch({
       nodes: {

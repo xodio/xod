@@ -22,7 +22,7 @@ import { def } from './types';
 
 /**
  * @function createPatch
- * @returns {Patch} a validatePath error or newly created patch
+ * @returns {Patch} newly created patch
  */
 export const createPatch = () => ({
   nodes: {},
@@ -131,19 +131,6 @@ export const getImplByArray = def(
     R.reject(Maybe.isNothing),
     R.map(getImpl(R.__, patch))
   )(impls)
-);
-
-/**
- * @function validatePatch
- * @param {Patch} patch
- * @returns {Either<Error|Patch>}
- */
-export const validatePatch = Tools.errOnFalse(
-  CONST.ERROR.PATCH_INVALID,
-  R.allPass([
-    R.has('nodes'),
-    R.has('links'),
-  ])
 );
 
 // =============================================================================
