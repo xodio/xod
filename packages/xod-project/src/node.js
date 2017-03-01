@@ -325,7 +325,7 @@ const dataTypeRegexp = getDataTypeRegExp(CONST.NODETYPE_TO_DATA_TYPES); // TODO:
  * Returns data type extracted from pinNode type
  * @function getPinNodeDataType
  * @param {Node} node
- * @returns {Either<Error|string>}
+ * @returns {DataType}
  */
 export const getPinNodeDataType = def(
   'getPinNodeDataType :: TerminalNode -> DataType',
