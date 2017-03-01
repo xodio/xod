@@ -54,8 +54,8 @@ LinkWrapper.prototype.get = baseGet;
 const terminalRegExp = /^xod\/core\/(input|output)/;
 // :: String -> Pin[]
 const getTerminalPins = type => ([
-  explode(Pin.createPin('__in__', type, CONST.PIN_DIRECTION.INPUT)),
-  explode(Pin.createPin('__out__', type, CONST.PIN_DIRECTION.OUTPUT)),
+  Pin.createPin('__in__', type, CONST.PIN_DIRECTION.INPUT),
+  Pin.createPin('__out__', type, CONST.PIN_DIRECTION.OUTPUT),
 ]);
 // :: String -> String
 const getTerminalType = type => `terminal${type}`;

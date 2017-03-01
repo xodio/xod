@@ -260,7 +260,6 @@ const convertPatchPins = oldPatch => (patch) => {
     f => f(patch),
     R.apply(R.pipe),
     R.map(Patch.assocPin), // list of associators
-    R.pluck('value'), // extract value from always-right Either
     R.map(convertPin)
   );
 

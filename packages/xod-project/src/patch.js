@@ -480,11 +480,9 @@ export const assocNode = def(
         Node.isPinNode,
         (pinNode) => {
           const newPatch = Node.getPinNodeDataType(pinNode).chain(
-            type => Node.getPinNodeDirection(pinNode).chain(
-              direction => Pin.createPin(id, type, direction).map(
-                // TODO: Add optional data (label, description, order) from node to pin
-                newPin => assocPin(newPin, _patch)
-              )
+            type => Node.getPinNodeDirection(pinNode).map(
+              // TODO: Add optional data (label, description, order) from node to pin
+              direction => assocPin(Pin.createPin(id, type, direction), _patch)
             )
           );
           // TODO: Think is it okay or we should return Either<Error|Patch> for invalid pinNodes?
