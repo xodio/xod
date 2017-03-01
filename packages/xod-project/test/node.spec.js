@@ -355,12 +355,12 @@ describe('Node', () => {
       expect(() => Node.getPinNodeDirection(nodeOfType('xod/core/invalidPinNode')))
         .to.throw(TypeError);
     });
-    it('should return Either.Right with `input` for `xod/core/inputSomething`', () => {
-      const res = Node.getPinNodeDirection(nodeOfType('xod/core/inputSomething'));
+    it('should return Either.Right with `input` for `xod/core/inputNumber`', () => {
+      const res = Node.getPinNodeDirection(nodeOfType('xod/core/inputNumber'));
       expect(res).to.be.equal('input');
     });
-    it('should return Either.Right with `output` for `xod/core/outputSomething`', () => {
-      const res = Node.getPinNodeDirection(nodeOfType('xod/core/outputSomething'));
+    it('should return Either.Right with `output` for `xod/core/outputNumber`', () => {
+      const res = Node.getPinNodeDirection(nodeOfType('xod/core/outputNumber'));
       expect(res).to.be.equal('output');
     });
   });

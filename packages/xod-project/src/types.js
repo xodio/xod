@@ -82,6 +82,19 @@ export const $Either = $.BinaryType(
 
 //-----------------------------------------------------------------------------
 //
+// Cheking utilities
+//
+//-----------------------------------------------------------------------------
+
+const dataTypes = R.values(C.PIN_TYPE);
+
+const terminalPatchPathRegExp =
+  new RegExp(`^xod/core/(input|output)(${dataTypes.join('|')})$`, 'i');
+
+const matchesTerminalPatchPath = R.test(terminalPatchPathRegExp);
+
+//-----------------------------------------------------------------------------
+//
 // Domain types
 //
 //-----------------------------------------------------------------------------
@@ -146,6 +159,14 @@ export const Project = Model('Project', {
   description: $.String,
 });
 
+export const TerminalNode = NullaryType(
+  'TerminalNode',
+  R.both(
+    hasType(Node),
+    R.propSatisfies(matchesTerminalPatchPath, 'type')
+  )
+);
+
 export const NodeOrId = OneOfType('NodeOrId', [NodeId, ObjectWithId]);
 export const LinkOrId = OneOfType('LinkOrId', [LinkId, ObjectWithId]);
 export const PinOrKey = OneOfType('PinOrKey', [PinKey, ObjectWithKey]);
@@ -166,6 +187,7 @@ export const env = $.env.concat([
   NodeId,
   NodeOrId,
   NodePosition,
+  TerminalNode,
   Patch,
   PatchPath,
   Pin,

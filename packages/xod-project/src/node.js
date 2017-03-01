@@ -344,10 +344,9 @@ export const getPinNodeDataType = def(
  * @returns {PinDireaction}
  */
 export const getPinNodeDirection = def(
-  'getPinNodeDirection :: Node -> PinDirection',
+  'getPinNodeDirection :: TerminalNode -> PinDirection',
   R.cond([
     [isInputPinNode, R.always(CONST.PIN_DIRECTION.INPUT)],
     [isOutputPinNode, R.always(CONST.PIN_DIRECTION.OUTPUT)],
-    [R.T, x => { throw new TypeError(`Node ${x} is not a pin node`) }],
   ])
 );
