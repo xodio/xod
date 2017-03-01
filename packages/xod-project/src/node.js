@@ -319,7 +319,7 @@ const getDataTypeRegExp = R.compose(
  * @name dataTypeRegexp
  * @type {RegExp}
  */
-const dataTypeRegexp = getDataTypeRegExp(CONST.NODETYPE_TO_DATA_TYPES);
+const dataTypeRegexp = getDataTypeRegExp(CONST.NODETYPE_TO_DATA_TYPES); // TODO: make DRY
 
 /**
  * Returns data type extracted from pinNode type
@@ -328,11 +328,11 @@ const dataTypeRegexp = getDataTypeRegExp(CONST.NODETYPE_TO_DATA_TYPES);
  * @returns {Either<Error|string>}
  */
 export const getPinNodeDataType = def(
-  'getPinNodeDataType :: Node -> Either Error DataType',
+  'getPinNodeDataType :: TerminalNode -> DataType',
   R.compose(
-    R.map(R.prop(R.__, CONST.NODETYPE_TO_DATA_TYPES)),
-    Tools.errOnNothing(CONST.ERROR.DATATYPE_INVALID),
-    Tools.match(dataTypeRegexp, 1),
+    R.prop(R.__, CONST.NODETYPE_TO_DATA_TYPES),
+    R.nth(1),
+    R.match(dataTypeRegexp),
     getNodeType
   )
 );

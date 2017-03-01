@@ -331,23 +331,16 @@ describe('Node', () => {
   // etc
   describe('getPinNodeDataType', () => {
     it('should return Either.Left with error for non-existent data-type', () => {
-      const res = Node.getPinNodeDataType(nodeOfType('xod/core/inputA'));
-      expect(res.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, res, CONST.ERROR.DATATYPE_INVALID);
+      expect(() => Node.getPinNodeDataType(nodeOfType('xod/core/inputA')))
+        .to.throw(TypeError);
     });
     it('should return Either.Right with `number` for xod/core/inputNumber', () => {
       const res = Node.getPinNodeDataType(nodeOfType('xod/core/inputNumber'));
-      Helper.expectEither(
-        val => expect(val).to.be.equal(CONST.PIN_TYPE.NUMBER),
-        res
-      );
+      expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
     });
     it('should return Either.Right with `number` for xod/core/outputNumber', () => {
       const res = Node.getPinNodeDataType(nodeOfType('xod/core/inputNumber'));
-      Helper.expectEither(
-        val => expect(val).to.be.equal(CONST.PIN_TYPE.NUMBER),
-        res
-      );
+      expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
     });
   });
   describe('getPinNodeDirection', () => {

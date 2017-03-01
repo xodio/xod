@@ -479,17 +479,10 @@ export const assocNode = def(
       (_node, _patch) => R.ifElse(
         Node.isPinNode,
         (pinNode) => {
-          const newPatch = Node.getPinNodeDataType(pinNode).map((type) => {
-            const direction = Node.getPinNodeDirection(pinNode);
-            const newPin = Pin.createPin(id, type, direction);
-            return assocPin(newPin, _patch);
-          });
-          // TODO: Think is it okay or we should return Either<Error|Patch> for invalid pinNodes?
-          return Either.either(
-            () => _patch,
-            valid => valid,
-            newPatch
-          );
+          const type = Node.getPinNodeDataType(pinNode);
+          const direction = Node.getPinNodeDirection(pinNode);
+          const newPin = Pin.createPin(id, type, direction);
+          return assocPin(newPin, _patch);
         },
         R.always(_patch)
       )(_node)
