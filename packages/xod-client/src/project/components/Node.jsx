@@ -48,6 +48,7 @@ class Node extends React.Component {
 
     const cls = classNames('Node', {
       'is-selected': this.props.isSelected,
+      'is-dragged': this.props.isDragged,
       'is-ghost': this.props.isGhost,
     });
 
@@ -128,6 +129,7 @@ Node.propTypes = {
   position: React.PropTypes.object.isRequired,
   isSelected: React.PropTypes.bool,
   isGhost: React.PropTypes.bool,
+  isDragged: React.PropTypes.bool,
   onMouseDown: React.PropTypes.func,
   onPinMouseUp: React.PropTypes.func,
   onPinMouseDown: React.PropTypes.func,
@@ -135,6 +137,7 @@ Node.propTypes = {
 Node.defaultProps = {
   isSelected: false,
   isGhost: false,
+  isDragged: false,
   onMouseDown: noop,
   onPinMouseUp: noop,
   onPinMouseDown: noop,
