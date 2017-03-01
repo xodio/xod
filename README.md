@@ -9,6 +9,9 @@ Deployment on localhost
 Install all dependencies and perform package cross-linking with:
 
     $ npm install
+
+Build the code:
+
     $ npm run build
 
 ### Browser IDE
@@ -19,7 +22,6 @@ Open <http://localhost:8080> in your browser.
 
 ### Desktop IDE
 
-    $ npm run build -- xod-client-electron
     $ npm run start:xod-client-electron
 
 ### Hub Server
@@ -91,6 +93,7 @@ To destroy all data and reset the DB to an initial state:
 Contributing
 ------------
 
-Feel free to contribute to the project! The guidelines can be found [here](./CONTRIBUTING.md).
+Feel free to contribute to the project! Make sure to read [contribution guidelines](./CONTRIBUTING.md).
 
-Jetbrains users can benefit from this [XOD Jetbrains Live Template](tools/xod-jetbrains-live-template/xod-jetbrains-live-template.md).
+Jetbrains users can benefit from [XOD Jetbrains Live
+Template](tools/xod-jetbrains-live-template/xod-jetbrains-live-template.md).
