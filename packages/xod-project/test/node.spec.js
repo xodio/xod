@@ -69,23 +69,19 @@ describe('Node', () => {
   describe('setNodePosition', () => {
     it('should return Either.Right with node in new position', () => {
       const node = Helper.defaultizeNode({ position: { x: 1, y: 1 } });
-      const either = Node.setNodePosition({ x: 1, y: 1 }, node);
-      Helper.expectEither(
-        (newNode) => {
-          expect(newNode)
-            .to.be.an('object')
-            .that.have.property('position');
+      const newNode = Node.setNodePosition({ x: 1, y: 1 }, node);
 
-          expect(newNode.position)
-            .to.have.property('x')
-            .to.be.equal(1);
+      expect(newNode)
+        .to.be.an('object')
+        .that.have.property('position');
 
-          expect(newNode.position)
-            .to.have.property('y')
-            .to.be.equal(1);
-        },
-        either
-      );
+      expect(newNode.position)
+        .to.have.property('x')
+        .to.be.equal(1);
+
+      expect(newNode.position)
+        .to.have.property('y')
+        .to.be.equal(1);
     });
   });
   describe('getNodeLabel', () => {

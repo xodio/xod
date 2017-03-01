@@ -140,14 +140,11 @@ export const setNodeDescription = def(
  * @function setNodePosition
  * @param {Position} position - new coordinates of node’s center
  * @param {Node} node - node to move
- * @returns {Either<Error|Node>} copy of node in new coordinates
+ * @returns {Node} copy of node in new coordinates
  */
 export const setNodePosition = def(
-  'setNodePosition :: NodePosition -> Node -> Either Error Node',
-  R.compose(
-    Either.of,
-    R.assoc('position')
-  )
+  'setNodePosition :: NodePosition -> Node -> Node',
+  R.assoc('position')
 );
 
 /**
