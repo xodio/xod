@@ -352,23 +352,16 @@ describe('Node', () => {
   });
   describe('getPinNodeDirection', () => {
     it('should return Either.Left with error for `xod/core/invalidPinNode`', () => {
-      const res = Node.getPinNodeDirection(nodeOfType('xod/core/invalidPinNode'));
-      expect(res.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, res, CONST.ERROR.PIN_DIRECTION_INVALID);
+      expect(() => Node.getPinNodeDirection(nodeOfType('xod/core/invalidPinNode')))
+        .to.throw(TypeError);
     });
     it('should return Either.Right with `input` for `xod/core/inputSomething`', () => {
       const res = Node.getPinNodeDirection(nodeOfType('xod/core/inputSomething'));
-      Helper.expectEither(
-        val => expect(val).to.be.equal('input'),
-        res
-      );
+      expect(res).to.be.equal('input');
     });
     it('should return Either.Right with `output` for `xod/core/outputSomething`', () => {
       const res = Node.getPinNodeDirection(nodeOfType('xod/core/outputSomething'));
-      Helper.expectEither(
-        val => expect(val).to.be.equal('output'),
-        res
-      );
+      expect(res).to.be.equal('output');
     });
   });
 });
