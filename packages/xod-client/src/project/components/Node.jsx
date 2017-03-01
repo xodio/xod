@@ -2,6 +2,7 @@ import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
 
+import Pin from './Pin';
 import PinLabel from './PinLabel';
 import NodeText from './NodeText';
 import { noop } from '../../utils/ramda';
@@ -13,6 +14,9 @@ class Node extends React.Component {
     super(props);
     this.id = this.props.id;
     this.onMouseDown = this.onMouseDown.bind(this);
+
+    this.onPinMouseUp = this.onPinMouseUp.bind(this);
+    this.onPinMouseDown = this.onPinMouseDown.bind(this);
   }
 
   shouldComponentUpdate(newProps) {
@@ -21,6 +25,14 @@ class Node extends React.Component {
 
   onMouseDown(event) {
     this.props.onMouseDown(event, this.id);
+  }
+
+  onPinMouseUp(pinId) {
+    this.props.onPinMouseUp(this.id, pinId);
+  }
+
+  onPinMouseDown(pinId) {
+    this.props.onPinMouseDown(this.id, pinId);
   }
 
   render() {
@@ -51,13 +63,12 @@ class Node extends React.Component {
     return (
       <svg
         key={this.id}
-        className={cls}
+        style={{ overflow: 'visible' }}
         {...position}
         {...size}
         viewBox={`0 0 ${size.width} ${size.height}`}
-        onMouseDown={this.onMouseDown}
       >
-        <g>
+        <g className={cls} onMouseDown={this.onMouseDown}>
           <clipPath id={maskId}>
             <rect
               className="mask"
@@ -84,13 +95,23 @@ class Node extends React.Component {
             {label}
           </NodeText>
         </g>
-        <g className="pinlist">
+
+        <g className="pins">
           {pinsArr.map(pin =>
-            <PinLabel
-              keyName={pin.key}
-              {...pin}
-              key={`pinlabel_${pin.key}`}
-            />
+            <g key={pin.key}>
+              <Pin
+                {...pin}
+                keyName={pin.key}
+                key={`pin_${pin.key}`}
+                onMouseUp={this.onPinMouseUp}
+                onMouseDown={this.onPinMouseDown}
+              />
+              <PinLabel
+                {...pin}
+                keyName={pin.key}
+                key={`pinlabel_${pin.key}`}
+              />
+            </g>
           )}
         </g>
       </svg>
@@ -108,11 +129,15 @@ Node.propTypes = {
   isSelected: React.PropTypes.bool,
   isGhost: React.PropTypes.bool,
   onMouseDown: React.PropTypes.func,
+  onPinMouseUp: React.PropTypes.func,
+  onPinMouseDown: React.PropTypes.func,
 };
 Node.defaultProps = {
   isSelected: false,
   isGhost: false,
   onMouseDown: noop,
+  onPinMouseUp: noop,
+  onPinMouseDown: noop,
 };
 
 export default Node;
