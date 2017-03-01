@@ -1,5 +1,4 @@
 import R from 'ramda';
-import { Either } from 'ramda-fantasy';
 import * as Utils from './utils';
 import * as CONST from './constants';
 import { def } from './types';
