@@ -1,29 +1,21 @@
 import React from 'react';
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 
 import '../src/core/styles/main.scss';
-import Pin from '../src/project/components/Pin';
-// because filters are defined there
-import PatchSVG from '../src/project/components/PatchSVG';
+import PinLabel from '../src/project/components/PinLabel';
 
 const pinCenter = { x: 70, y: 70 };
 
 const baseProps = {
   keyName: "my pin's keyname",
-  injected: false,
   pinLabel: 'PIN',
-  type: 'string',
   direction: 'input',
   position: pinCenter,
-  onMouseUp: action('mouseUp'),
-  onMouseDown: action('mouseDown'),
-  isSelected: false,
-  isConnected: false,
 };
 
-storiesOf('Pin', module)
+storiesOf('PinLabel', module)
   .addDecorator(story => (
-    <PatchSVG>
+    <svg>
       <rect width={pinCenter.x * 2} height={pinCenter.y * 2} fill="#676767" />
       <line x1={pinCenter.x} y1="0" x2={pinCenter.x} y2={pinCenter.y * 2} stroke="#373737" />
       <line x1="0" y1={pinCenter.y} x2={pinCenter.x * 2} y2={pinCenter.y} stroke="#373737" />
@@ -32,23 +24,18 @@ storiesOf('Pin', module)
         <tspan x=".3em" dy="1.2em">position passed to pin</tspan>
       </text>
       {story()}
-    </PatchSVG>
+    </svg>
   ))
-  .add('default', () => (
-    <Pin
+  .add('input', () => (
+    <PinLabel
       {...baseProps}
+      direction="input"
     />
   ))
-  .add('selected', () => (
-    <Pin
+  .add('output', () => (
+    <PinLabel
       {...baseProps}
-      isSelected
-    />
-  ))
-  .add('connected', () => (
-    <Pin
-      {...baseProps}
-      isConnected
+      direction="output"
     />
   ));
 

@@ -1,17 +1,8 @@
 @mixin symbol-coloring($type-color) {
   stroke: $type-color;
 
-  $hover-color: lighten($type-color, 25%);
-
-  &:hover {
-    stroke: $hover-color
-  }
-
   &.is-connected {
     fill: $type-color;
-    &:hover {
-      fill: $hover-color
-    }
   }
 }
 
@@ -21,10 +12,6 @@
     stroke: $color-pin-fill; // pins borders are colored by type and don't have a 'default' color.
     stroke-width: 2px;
     filter: url(#dropshadow);
-
-    &:hover {
-      fill: color-canvas-hover($color-pin-fill);
-    }
 
     &.string {
       @include symbol-coloring($color-datatype-string);
@@ -43,20 +30,24 @@
     }
   }
 
-  .label {
-    font-family: $font-family-condensed;
-    font-weight: 500;
-    font-size: 12px;
-    dominant-baseline: central;
-  }
+  &:hover {
+    .symbol {
+      &.string {
+        @include symbol-coloring(lighten($color-datatype-string, 25%));
+      }
 
-  .label.input {
-    fill: $color-pinlabel-input;
-  }
+      &.number {
+        @include symbol-coloring(lighten($color-datatype-number, 25%));
+      }
 
-  .label.output {
-    fill: $color-pinlabel-output;
-    font-weight: 700; // black font looks thinner
+      &.bool {
+        @include symbol-coloring(lighten($color-datatype-bool, 25%));
+      }
+
+      &.pulse {
+        @include symbol-coloring(lighten($color-datatype-pulse, 25%));
+      }
+    }
   }
 
   .linkingHighlight {
@@ -77,6 +68,4 @@
       fill: $color-canvas-selected;
     }
   }
-
-
 }

@@ -20,6 +20,8 @@ export const PIN_MARGIN = {
 };
 
 export const NODE_CORNER_RADIUS = 5;
+export const PIN_RADIUS = 6;
+export const TEXT_OFFSET_FROM_PIN_BORDER = 10;
 
 /**
  * @param {number} pinCount

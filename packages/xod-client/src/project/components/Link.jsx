@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { SIZE } from 'xod-core';
 
 import { noop } from '../../utils/ramda';
+import { PIN_RADIUS } from '../nodeLayout';
 
 class Link extends React.Component {
   constructor(props) {
@@ -48,6 +49,8 @@ class Link extends React.Component {
     const clickable = this.isClickable();
     const pointerEvents = (clickable) ? 'all' : 'none';
 
+    const linkEndRadius = PIN_RADIUS - 3;
+
     return (
       <g
         className={cls}
@@ -63,6 +66,20 @@ class Link extends React.Component {
         <line
           className="line"
           {...coords}
+        />
+        <circle
+          className="end"
+          cx={coords.x1}
+          cy={coords.y1}
+          r={linkEndRadius}
+          fill="black"
+        />
+        <circle
+          className="end"
+          cx={coords.x2}
+          cy={coords.y2}
+          r={linkEndRadius}
+          fill="black"
         />
       </g>
     );

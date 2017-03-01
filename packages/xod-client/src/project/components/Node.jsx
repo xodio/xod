@@ -3,6 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import Pin from './Pin';
+import PinLabel from './PinLabel';
 import NodeText from './NodeText';
 import { noop } from '../../utils/ramda';
 
@@ -12,13 +13,8 @@ class Node extends React.Component {
   constructor(props) {
     super(props);
     this.id = this.props.id;
-
-    // needed for distinguishing between mouseDown events on pins and on node body
-    this.pinListRef = null;
-
-    this.assignPinListRef = this.assignPinListRef.bind(this);
-
     this.onMouseDown = this.onMouseDown.bind(this);
+
     this.onPinMouseUp = this.onPinMouseUp.bind(this);
     this.onPinMouseDown = this.onPinMouseDown.bind(this);
   }
@@ -28,11 +24,6 @@ class Node extends React.Component {
   }
 
   onMouseDown(event) {
-    if (this.pinListRef && this.pinListRef.contains(event.target)) {
-      event.preventDefault();
-      return;
-    }
-
     this.props.onMouseDown(event, this.id);
   }
 
@@ -42,10 +33,6 @@ class Node extends React.Component {
 
   onPinMouseDown(pinId) {
     this.props.onPinMouseDown(this.id, pinId);
-  }
-
-  assignPinListRef(ref) {
-    this.pinListRef = ref;
   }
 
   render() {
@@ -76,16 +63,12 @@ class Node extends React.Component {
     return (
       <svg
         key={this.id}
-        className={cls}
+        style={{ overflow: 'visible' }}
         {...position}
         {...size}
         viewBox={`0 0 ${size.width} ${size.height}`}
-        onMouseDown={this.onMouseDown}
       >
-        <g
-          onMouseOver={this.handleOver}
-          onMouseOut={this.handleOut}
-        >
+        <g className={cls} onMouseDown={this.onMouseDown}>
           <clipPath id={maskId}>
             <rect
               className="mask"
@@ -112,15 +95,23 @@ class Node extends React.Component {
             {label}
           </NodeText>
         </g>
-        <g className="pinlist" ref={this.assignPinListRef}>
+
+        <g className="pins">
           {pinsArr.map(pin =>
-            <Pin
-              keyName={pin.key}
-              key={pin.key}
-              {...pin}
-              onMouseUp={this.onPinMouseUp}
-              onMouseDown={this.onPinMouseDown}
-            />
+            <g key={pin.key}>
+              <Pin
+                {...pin}
+                keyName={pin.key}
+                key={`pin_${pin.key}`}
+                onMouseUp={this.onPinMouseUp}
+                onMouseDown={this.onPinMouseDown}
+              />
+              <PinLabel
+                {...pin}
+                keyName={pin.key}
+                key={`pinlabel_${pin.key}`}
+              />
+            </g>
           )}
         </g>
       </svg>

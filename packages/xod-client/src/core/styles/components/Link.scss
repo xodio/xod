@@ -1,33 +1,40 @@
+@mixin link-parts-coloring($type-color) {
+  .line {
+    stroke: $type-color;
+  }
+
+  .end {
+    fill: $type-color;
+  }
+}
 
 .Link {
-  stroke: grey;
-  stroke-width: 2px;
+  .line {
+    stroke: grey;
+    stroke-width: 2px;
+  }
 
   &.string {
-    stroke: $color-datatype-string;
+    @include link-parts-coloring($color-datatype-string);
   }
 
   &.number {
-    stroke: $color-datatype-number;
+    @include link-parts-coloring($color-datatype-number);
   }
 
   &.bool {
-    stroke: $color-datatype-bool;
+    @include link-parts-coloring($color-datatype-bool);
   }
 
   &.pulse {
-    stroke: $color-datatype-pulse;
+    @include link-parts-coloring($color-datatype-pulse);
   }
 
   &:hover {
-    .line {
-      stroke: white;
-    }
+    @include link-parts-coloring(white);
   }
 
   &.is-selected {
-    .line {
-      stroke: #4ed5ec;
-    }
+    @include link-parts-coloring($color-canvas-selected);
   }
 }
