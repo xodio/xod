@@ -15,10 +15,10 @@ import { COMMAND } from '../../utils/constants';
 import PatchSVG from '../../project/components/PatchSVG';
 import BackgroundLayer from '../../project/components/BackgroundLayer';
 import NodesLayer from '../../project/components/NodesLayer';
-import PinsLayer from '../../project/components/PinsLayer';
 import LinksLayer from '../../project/components/LinksLayer';
 import GhostsLayer from '../../project/components/GhostsLayer';
 import SnappingPreviewLayer from '../../project/components/SnappingPreviewLayer';
+import DraggedNodeLayer from '../../project/components/DraggedNodeLayer';
 import {
   addNodesPositioning,
   addLinksPositioning,
@@ -48,6 +48,9 @@ class Patch extends React.Component {
     this.onLinkClick = this.onLinkClick.bind(this);
 
     this.deselectAll = this.deselectAll.bind(this);
+
+    this.getDraggedNodeId = this.getDraggedNodeId.bind(this);
+    this.extendNodesByPinValidness = this.extendNodesByPinValidness.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -172,8 +175,11 @@ class Patch extends React.Component {
   }
 
   getNodes() {
-    const nodes = R.values(this.props.nodes);
-    return this.extendNodesByPinValidness(nodes);
+    return R.compose(
+      this.extendNodesByPinValidness,
+      R.values,
+      R.omit([this.getDraggedNodeId()]) // we are rendering dragged node in a separate layer
+    )(this.props.nodes);
   }
   getLinks() {
     return R.values(this.props.links);
@@ -260,6 +266,7 @@ class Patch extends React.Component {
   }
 
   render() {
+    const draggedNodeId = this.getDraggedNodeId();
     const nodes = this.getNodes();
     const links = this.getLinks();
 
@@ -277,30 +284,29 @@ class Patch extends React.Component {
             height={this.props.size.height}
             onClick={this.deselectAll}
           />
-          <SnappingPreviewLayer
-            draggedNodeId={this.getDraggedNodeId()}
-            nodes={this.props.nodes}
-          />
           <NodesLayer
             nodes={nodes}
             onMouseDown={this.onNodeMouseDown}
             onPinMouseDown={this.onPinMouseDown}
             onPinMouseUp={this.onPinMouseUp}
           />
-          <GhostsLayer
-            mousePosition={this.state.mousePosition}
-            mode={this.props.mode}
-            ghostNode={this.props.ghostNode}
-            ghostLink={this.props.ghostLink}
+          <SnappingPreviewLayer
+            draggedNodeId={draggedNodeId}
+            nodes={this.props.nodes}
           />
           <LinksLayer
             links={links}
             onClick={this.onLinkClick}
           />
-          <PinsLayer
-            nodes={nodes}
-            onPinMouseDown={this.onPinMouseDown}
-            onPinMouseUp={this.onPinMouseUp}
+          <DraggedNodeLayer
+            draggedNodeId={draggedNodeId}
+            nodes={this.props.nodes}
+          />
+          <GhostsLayer
+            mousePosition={this.state.mousePosition}
+            mode={this.props.mode}
+            ghostNode={this.props.ghostNode}
+            ghostLink={this.props.ghostLink}
           />
         </PatchSVG>
       </HotKeys>
