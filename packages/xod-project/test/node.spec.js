@@ -13,23 +13,7 @@ const emptyNode = Helper.defaultizeNode({});
 const nodeOfType = type => Helper.defaultizeNode({ type });
 
 describe('Node', () => {
-  const checkNodeObject = (node) => {
-    expect(node).to.be.an('object');
-    expect(node).have.property('id');
-    expect(node).to.have.property('position');
-    expect(node).to.have.property('type');
-  };
-
   // constructors
-  describe('createNode', () => {
-    it('should return Either.Right with node', () => {
-      const newNode = Node.createNode({ x: 100, y: 100 }, '@/test');
-      Helper.expectEither(
-        checkNodeObject,
-        newNode
-      );
-    });
-  });
   describe('duplicateNode', () => {
     const node = Helper.defaultizeNode({
       id: 'test',
@@ -38,9 +22,6 @@ describe('Node', () => {
     });
     const newNode = Node.duplicateNode(node);
 
-    it('should return the node object', () => {
-      checkNodeObject(newNode);
-    });
     it('should return node object with same properties but new id', () => {
       expect(newNode.id).not.equals(node.id);
       expect(newNode.position).deep.equal(node.position);

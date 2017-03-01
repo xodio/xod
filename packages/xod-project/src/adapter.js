@@ -149,8 +149,7 @@ const copyNodePins = R.compose(
 
 const mapNodeId = R.curry((oldNode, newNode) => ({ [oldNode.id]: newNode.id }));
 
-// :: PatchOld -> { NodeIdMap, Function fn }
-// fn :: Patch -> Tuple NodeIdMap Patch
+// :: PatchOld -> { nodeIdMap :: NodeIdMap, node :: Patch -> Tuple NodeIdMap Patch }
 const convertNodes = R.compose(
   composeT,
   R.converge(
@@ -161,10 +160,13 @@ const convertNodes = R.compose(
     ]
   ),
   R.map(oldNode =>
-    Node.createNode(oldNode.position, oldNode.typeId)
-    .map(node => ({ nodeIdMap: mapNodeId(oldNode, node), node }))
-    .map(R.evolve({ node: copyNodePins(oldNode) }))
-    .chain(R.evolve({ node: Patch.assocNode }))
+    R.compose(
+      R.evolve({ node: Patch.assocNode }),
+      R.evolve({ node: copyNodePins(oldNode) }),
+      node => ({ nodeIdMap: mapNodeId(oldNode, node), node }),
+      R.apply(Node.createNode),
+      R.props(['position', 'typeId'])
+    )(oldNode)
   ),
   getNodes
 );

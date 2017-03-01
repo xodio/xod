@@ -50,11 +50,11 @@ const getPathToPinProperty = def(
  * @function createNode
  * @param {Position} position - coordinates of new node’s center
  * @param {string} type - path to the patch, that will be the type of node to create
- * @returns {Either<Error|Node>} error or a new node
+ * @returns {Node} new node
  */
 export const createNode = def(
-  'createNode :: NodePosition -> PatchPath -> Either Error Node',
-  (position, type) => Either.of({
+  'createNode :: NodePosition -> PatchPath -> Node',
+  (position, type) => ({
     id: Utils.generateId(),
     type,
     position,
