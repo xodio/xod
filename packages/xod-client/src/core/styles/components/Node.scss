@@ -1,7 +1,5 @@
 
 .Node {
-  overflow: visible;
-
   .body {
     width: 100%;
     height: 100%;
@@ -26,6 +24,10 @@
     .NodeText {
       fill: $color-highlight;
     }
+  }
+
+  &.is-dragged {
+    filter: url(#draggedNodeShadow);
   }
 
   &.is-selected {

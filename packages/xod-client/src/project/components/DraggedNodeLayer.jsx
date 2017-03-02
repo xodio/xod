@@ -39,6 +39,7 @@ class DraggedNodeLayer extends React.Component {
           width={node.width}
           isSelected={node.isSelected}
           isGhost={node.isGhost}
+          isDragged
         />
       </SVGLayer>
     );
