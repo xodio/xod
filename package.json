@@ -55,7 +55,6 @@
     "postcss": "^5.2.5",
     "postcss-loader": "^1.1.0",
     "raw-loader": "^0.5.1",
-    "react-hot-loader": "^1.3.0",
     "rimraf": "^2.5.4",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
