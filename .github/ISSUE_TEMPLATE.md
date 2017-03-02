@@ -1,4 +1,4 @@
-<!-- Choose one of templates below -->
+<!-- Choose one of the templates below -->
 
 ## Bug Report or Tweak Template <!-- Delete the header -->
 
@@ -18,7 +18,7 @@ What’s happen now
 
 ### Console output
 
-Are there any errors in the a console? Copy and paste the output
+Are there any errors in the console? Copy and paste the output
 with all details provided by the browser or application.
 
 ### How to fix
@@ -32,7 +32,7 @@ description.
 
 ### Rationale
 
-Why we should refactor? Will it make code more DRY, KISS, YAGNI?
+Why should we refactor? Will it make the code more DRY, KISS, YAGNI?
 
 ### Affected modules and packages
 
