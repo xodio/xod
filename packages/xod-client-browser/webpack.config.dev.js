@@ -1,4 +1,3 @@
-
 const path = require('path');
 const validate = require('webpack-validator');
 const merge = require('webpack-merge');
@@ -19,19 +18,10 @@ const config = merge.smart(baseConfig, {
   resolve: {
     modulesDirectories: [
       // search top-level node_modules for webpack-hot-loader
-      pkgpath('../../node_modules'), 
+      pkgpath('../../node_modules'),
     ],
     extensions: ['', '.js', '.jsx', '.scss'],
   },
-  module: {
-    loaders: [
-      {
-        include: pkgpath('src'),
-        test: /\.jsx?$/,
-        loaders: ['react-hot'],
-      },
-    ]
-  }
 });
 
 module.exports = validate(config);
