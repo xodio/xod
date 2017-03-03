@@ -61,10 +61,15 @@ class Node extends React.Component {
       height: '100%',
     };
 
+    const svgStyle = {
+      overflow: 'visible',
+      opacity: this.props.hidden ? 0 : 1, // setting visibility is breaking masks
+    };
+
     return (
       <svg
         key={this.id}
-        style={{ overflow: 'visible' }}
+        style={svgStyle}
         {...position}
         {...size}
         viewBox={`0 0 ${size.width} ${size.height}`}
@@ -130,6 +135,7 @@ Node.propTypes = {
   isSelected: React.PropTypes.bool,
   isGhost: React.PropTypes.bool,
   isDragged: React.PropTypes.bool,
+  hidden: React.PropTypes.bool,
   onMouseDown: React.PropTypes.func,
   onPinMouseUp: React.PropTypes.func,
   onPinMouseDown: React.PropTypes.func,
