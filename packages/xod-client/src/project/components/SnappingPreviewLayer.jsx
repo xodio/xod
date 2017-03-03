@@ -9,11 +9,6 @@ import {
 } from '../nodeLayout';
 
 class SnappingPreviewLayer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.displayName = 'SnappingPreviewLayer';
-  }
-
   shouldComponentUpdate(nextProps) {
     return !!(nextProps.draggedNodeId || this.props.draggedNodeId);
   }
@@ -22,25 +17,26 @@ class SnappingPreviewLayer extends React.Component {
     const {
       nodes,
       draggedNodeId,
+      draggedNodePosition,
     } = this.props;
 
     if (!draggedNodeId) return null;
 
-    const dragGhostPosition = snapNodePositionToSlots(nodes[draggedNodeId].position);
+    const ghostPosition = snapNodePositionToSlots(draggedNodePosition);
 
-    const isValid = isValidPosition(nodes, draggedNodeId, dragGhostPosition);
+    const isValid = isValidPosition(nodes, draggedNodeId, ghostPosition);
     const draggedNodeSize = nodes[draggedNodeId].size;
 
     const className = cn('SnappingPreview', { isValid });
 
     return (
       <SVGLayer
-        name={'TODO'}
+        name="SnappingPreviewLayer"
         className="SnappingPreviewLayer"
       >
         <rect
           className={className}
-          {...dragGhostPosition}
+          {...ghostPosition}
           {...draggedNodeSize}
           rx={NODE_CORNER_RADIUS}
           ry={NODE_CORNER_RADIUS}
@@ -50,9 +46,12 @@ class SnappingPreviewLayer extends React.Component {
   }
 }
 
+SnappingPreviewLayer.displayName = 'SnappingPreviewLayer';
+
 SnappingPreviewLayer.propTypes = {
   draggedNodeId: React.PropTypes.any,
-  nodes: React.PropTypes.any,
+  nodes: React.PropTypes.object.isRequired,
+  draggedNodePosition: React.PropTypes.any,
 };
 
 export default SnappingPreviewLayer;

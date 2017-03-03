@@ -8,7 +8,7 @@ const sortNodeTypes = R.compose(
   R.values
 );
 
-class CreateNodeWidget extends React.Component {
+class CreateNodeWidget extends React.PureComponent {
   constructor(props) {
     super(props);
 

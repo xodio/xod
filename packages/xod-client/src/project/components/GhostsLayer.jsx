@@ -9,7 +9,6 @@ import XODLink from './Link';
 class GhostLayer extends React.Component {
   constructor(props) {
     super(props);
-    this.displayName = 'GhostLayer';
     this.state = {
       active: false,
     };
@@ -102,6 +101,8 @@ class GhostLayer extends React.Component {
     );
   }
 }
+
+GhostLayer.displayName = 'GhostLayer';
 
 GhostLayer.propTypes = {
   mousePosition: React.PropTypes.objectOf(React.PropTypes.number),
