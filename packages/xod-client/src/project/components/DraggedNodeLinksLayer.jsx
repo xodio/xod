@@ -5,6 +5,21 @@ import SVGLayer from './SVGLayer';
 import XODLink from './Link';
 import { addPoints } from '../nodeLayout';
 
+const updatePinPositions = R.curry((node, newNodePosition, link) => {
+  const indexOfPinConnectedToTheDraggedNode =
+    R.findIndex(R.propEq('nodeId', node.id), link.pins);
+
+  const draggedPinKey = link.pins[indexOfPinConnectedToTheDraggedNode].pinKey;
+  const pinPosition = addPoints(
+    newNodePosition,
+    node.pins[draggedPinKey].position
+  );
+
+  const pinPositionKey = ['from', 'to'][indexOfPinConnectedToTheDraggedNode];
+
+  return R.assoc(pinPositionKey, pinPosition, link);
+});
+
 class DraggedNodeLinksLayer extends React.PureComponent {
   getLinksWithUpdatedPositions() {
     const {
@@ -14,20 +29,7 @@ class DraggedNodeLinksLayer extends React.PureComponent {
     } = this.props;
 
     return R.map(
-      (link) => {
-        const indexOfPinConnectedToTheDraggedNode =
-          R.findIndex(R.propEq('nodeId', node.id), link.pins);
-
-        const draggedPinKey = link.pins[indexOfPinConnectedToTheDraggedNode].pinKey;
-        const pinPosition = addPoints(
-          nodePosition,
-          node.pins[draggedPinKey].position
-        );
-
-        const pinPositionKey = ['from', 'to'][indexOfPinConnectedToTheDraggedNode];
-
-        return R.assoc(pinPositionKey, pinPosition, link);
-      },
+      updatePinPositions(node, nodePosition),
       links
     );
   }
