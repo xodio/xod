@@ -73,9 +73,6 @@ export const moveNode = (projectState, id, position) => {
   };
 };
 
-export const dragNode = (projectState, id, position) =>
-  R.assocPath(['meta', 'skipHistory'], true, moveNode(projectState, id, position));
-
 export const updateNodeProperty = (projectState, nodeId, propKind, propKey, propValue) => {
   const patch = core.getPatchByNodeId(projectState, nodeId);
   const patchId = core.getPatchId(patch);

@@ -3,36 +3,25 @@ import React from 'react';
 import SVGLayer from './SVGLayer';
 import Node from './Node';
 
-class DraggedNodeLayer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.displayName = 'DraggedNodeLayer';
-  }
-
-  shouldComponentUpdate(nextProps) {
-    return !!(nextProps.draggedNodeId || this.props.draggedNodeId);
-  }
-
+class DraggedNodeLayer extends React.PureComponent {
   render() {
     const {
-      nodes,
-      draggedNodeId,
+      node,
+      position,
     } = this.props;
 
-    if (!draggedNodeId) return null;
-
-    const node = nodes[draggedNodeId];
+    if (!node) return null;
 
     return (
       <SVGLayer
-        name="DraggedNode"
+        name="DraggedNodeLayer"
         className="DraggedNodeLayer"
       >
         <Node
           key={node.id}
           id={node.id}
           label={node.label}
-          position={node.position}
+          position={position}
           size={node.size}
           outputPinsSectionHeight={node.outputPinsSectionHeight}
           pins={node.pins}
@@ -46,9 +35,11 @@ class DraggedNodeLayer extends React.Component {
   }
 }
 
+DraggedNodeLayer.displayName = 'DraggedNodeLayer';
+
 DraggedNodeLayer.propTypes = {
-  draggedNodeId: React.PropTypes.any,
-  nodes: React.PropTypes.any,
+  position: React.PropTypes.any,
+  node: React.PropTypes.any,
 };
 
 export default DraggedNodeLayer;

@@ -212,6 +212,11 @@ export const addPoints = R.curry((a, b) => ({
   y: a.y + b.y,
 }));
 
+export const substractPoints = R.curry((a, b) => ({
+  x: a.x - b.x,
+  y: a.y - b.y,
+}));
+
 /**
  * @param nodes — dereferenced nodes with added positioning data
  * @param links - dereferenced links
@@ -289,12 +294,12 @@ export const snapNodePositionToSlots = R.compose(
 // TODO: works only for 1x1 nodes
 export const isValidPosition = (allNodes, draggedNodeId, snappedPosition) =>
   R.compose(
-    R.not,
-    R.find(
+    R.none(
       R.compose(
         R.equals(snappedPosition),
         R.prop('position')
       )
     ),
+    R.values,
     R.omit(draggedNodeId)
   )(allNodes);
