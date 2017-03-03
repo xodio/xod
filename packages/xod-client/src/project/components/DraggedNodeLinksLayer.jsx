@@ -24,10 +24,7 @@ class DraggedNodeLinksLayer extends React.PureComponent {
           node.pins[draggedPinKey].position
         );
 
-        const pinPositionKey =
-          indexOfPinConnectedToTheDraggedNode === 0
-            ? 'from'
-            : 'to';
+        const pinPositionKey = ['from', 'to'][indexOfPinConnectedToTheDraggedNode];
 
         return R.assoc(pinPositionKey, pinPosition, link);
       },
