@@ -4,13 +4,14 @@ import { LAYER } from 'xod-core';
 import SVGLayer from './SVGLayer';
 import Node from './Node';
 
-const NodesLayer = ({ nodes, onMouseDown, onPinMouseUp, onPinMouseDown }) => (
+const IdleNodesLayer = ({ nodes, draggedNodeId, onMouseDown, onPinMouseUp, onPinMouseDown }) => (
   <SVGLayer
     name={LAYER.NODES}
-    className="NodesLayer"
+    className="IdleNodesLayer"
   >
     {nodes.map(node =>
       <Node
+        hidden={node.id === draggedNodeId}
         key={node.id}
         id={node.id}
         label={node.label}
@@ -29,11 +30,12 @@ const NodesLayer = ({ nodes, onMouseDown, onPinMouseUp, onPinMouseDown }) => (
   </SVGLayer>
 );
 
-NodesLayer.propTypes = {
+IdleNodesLayer.propTypes = {
   nodes: React.PropTypes.arrayOf(React.PropTypes.object),
+  draggedNodeId: React.PropTypes.string,
   onMouseDown: React.PropTypes.func,
   onPinMouseUp: React.PropTypes.func,
   onPinMouseDown: React.PropTypes.func,
 };
 
-export default NodesLayer;
+export default IdleNodesLayer;

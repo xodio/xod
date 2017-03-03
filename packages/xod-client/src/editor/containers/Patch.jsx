@@ -13,7 +13,7 @@ import { findRootSVG } from '../../utils/browser';
 import { COMMAND } from '../../utils/constants';
 import PatchSVG from '../../project/components/PatchSVG';
 import BackgroundLayer from '../../project/components/BackgroundLayer';
-import IdleNodesLayer from '../../project/components/NodesLayer';
+import IdleNodesLayer from '../../project/components/IdleNodesLayer';
 import LinksLayer from '../../project/components/LinksLayer';
 import GhostsLayer from '../../project/components/GhostsLayer';
 import SnappingPreviewLayer from '../../project/components/SnappingPreviewLayer';
@@ -144,8 +144,7 @@ class Patch extends React.Component {
   getIdleNodes() {
     return R.compose(
       this.extendNodesByPinValidness,
-      R.values,
-      R.omit([this.getDraggedNodeId()])
+      R.values
     )(this.props.nodes);
   }
 
@@ -231,6 +230,7 @@ class Patch extends React.Component {
             onClick={this.props.actions.deselectAll}
           />
           <IdleNodesLayer
+            draggedNodeId={draggedNodeId}
             nodes={idleNodes}
             onMouseDown={this.onNodeMouseDown}
             onPinMouseDown={this.onPinMouseDown}
