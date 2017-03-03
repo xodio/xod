@@ -233,6 +233,15 @@ export const markSelectedLinks = (state, dereferencedLinks) => {
   return R.map(markSelectedLink, dereferencedLinks);
 };
 
+// :: NodeId -> Link -> Bool
+export const isLinkConnectedToNode = nodeId =>
+  R.compose(
+    R.any(
+      R.propEq('nodeId', nodeId)
+    ),
+    R.prop('pins')
+  );
+
 export const dereferencedSelection = R.curry((derefNodes, derefLinks, selection) => {
   const dereferenced = {
     [core.ENTITY.NODE]: derefNodes,
