@@ -67,7 +67,7 @@ describe('Node', () => {
     });
   });
   describe('setNodePosition', () => {
-    it('should return Either.Right with node in new position', () => {
+    it('should return node in new position', () => {
       const node = Helper.defaultizeNode({ position: { x: 1, y: 1 } });
       const newNode = Node.setNodePosition({ x: 1, y: 1 }, node);
 
@@ -307,29 +307,29 @@ describe('Node', () => {
   });
   // etc
   describe('getPinNodeDataType', () => {
-    it('should return Either.Left with error for non-existent data-type', () => {
+    it('should throw error for non-existent data-type', () => {
       expect(() => Node.getPinNodeDataType(nodeOfType('xod/core/inputA')))
         .to.throw(TypeError);
     });
-    it('should return Either.Right with `number` for xod/core/inputNumber', () => {
+    it('should return `number` for xod/core/inputNumber', () => {
       const res = Node.getPinNodeDataType(nodeOfType('xod/core/inputNumber'));
       expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
     });
-    it('should return Either.Right with `number` for xod/core/outputNumber', () => {
+    it('should return `number` for xod/core/outputNumber', () => {
       const res = Node.getPinNodeDataType(nodeOfType('xod/core/inputNumber'));
       expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
     });
   });
   describe('getPinNodeDirection', () => {
-    it('should return Either.Left with error for `xod/core/invalidPinNode`', () => {
+    it('should throw for `xod/core/invalidPinNode`', () => {
       expect(() => Node.getPinNodeDirection(nodeOfType('xod/core/invalidPinNode')))
         .to.throw(TypeError);
     });
-    it('should return Either.Right with `input` for `xod/core/inputNumber`', () => {
+    it('should return `input` for `xod/core/inputNumber`', () => {
       const res = Node.getPinNodeDirection(nodeOfType('xod/core/inputNumber'));
       expect(res).to.be.equal('input');
     });
-    it('should return Either.Right with `output` for `xod/core/outputNumber`', () => {
+    it('should return `output` for `xod/core/outputNumber`', () => {
       const res = Node.getPinNodeDirection(nodeOfType('xod/core/outputNumber'));
       expect(res).to.be.equal('output');
     });
