@@ -5,7 +5,9 @@ import { readDir, readJSON, readFile } from './read';
 import { resolvePath } from './utils';
 
 const implAccordance = {
+  cpp: 'any.cpp',
   js: 'any.js',
+  arduino: 'arduino.cpp',
   espruino: 'espruino.js',
   nodejs: 'nodejs.js',
 };
