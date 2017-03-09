@@ -409,7 +409,7 @@ export const getTreeChanges = (oldTree, newTree) => {
   return result;
 };
 
-const filterPatchNode = R.filter(R.propEq('category', NODE_CATEGORY.IO));
+const filterIOAkaTerminalNodes = R.filter(R.propEq('category', NODE_CATEGORY.IO));
 
 export const getPatchIOPin = (node, i) => {
   const pin = R.values(node.pins)[0];
@@ -434,11 +434,11 @@ export const getPatchIOPin = (node, i) => {
 export const getPatchIO = R.pipe(
   R.prop('nodes'),
   R.values,
-  filterPatchNode,
+  filterIOAkaTerminalNodes,
   R.groupBy(R.compose(R.prop('direction'), R.prop(0), R.values, R.prop('pins'))),
-  R.mapObjIndexed(R.pipe(
-    R.mapObjIndexed(getPatchIOPin),
-    R.values
+  R.map(R.pipe(
+    R.sortBy(R.path(['position', 'x'])),
+    R.addIndex(R.map)(getPatchIOPin)
   )),
   R.values,
   R.merge([[], []]),
@@ -460,7 +460,7 @@ export const getPatchNode = R.curry((state, patch) => {
   const isItPatchNode = R.pipe(
     R.prop('nodes'),
     R.values,
-    filterPatchNode,
+    filterIOAkaTerminalNodes,
     R.length,
     R.flip(R.gt)(0)
   );
