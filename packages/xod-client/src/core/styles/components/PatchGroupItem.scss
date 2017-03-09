@@ -1,0 +1,64 @@
+.PatchGroupItem {
+  color: $project-browser-color-text;
+  background-color: $project-browser-color-bg-row;
+  padding: 8px;
+  padding-left: 30px;
+  user-select: none;
+  position: relative;
+  cursor: pointer;
+
+  &__label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &.isOpen &__label {
+    color: $color-canvas-selected;
+  }
+
+  &.isSelected {
+    // TODO
+    color: red;
+  }
+
+  &__hover-buttons {
+    display: none;
+    background-color: $project-browser-color-bg-row-hover;
+    position: absolute;
+    height: 100%;
+    right: 0;
+    top: 0;
+    box-sizing: border-box;
+    padding: 7px 6px 8px 1px;
+    font-size: 14px; // for FA icons
+
+    &:before {
+      display:    block;
+      content:    '';
+      position:   absolute;
+      width:      8px;
+      height:     100%;
+      top:        0;
+      left:       -8px;
+      background: linear-gradient(to left, $project-browser-color-bg-row-hover, rgba(0, 0, 0, 0));
+    }
+  }
+
+  &:nth-child(even) {
+    background-color: $project-browser-color-bg-row-even;
+  }
+
+  &:hover {
+    color: $project-browser-color-text-hover;
+    background-color: $project-browser-color-bg-row-hover;
+
+    .PatchGroupItem__hover-buttons {
+      display: block;
+    }
+  }
+
+  .hover-button {
+    margin-right: 4px;
+  }
+}

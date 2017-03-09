@@ -1,5 +1,5 @@
 .PatchGroup {
-  background-color: $project-browser-color-bg;
+  background-color: $project-browser-color-bg-row;
 
   &__contentInner {
     border-top: 1px solid $project-browser-color-border;
@@ -13,7 +13,6 @@
     border: 1px solid $project-browser-color-border;
     border-bottom: none;
     padding: 10px 10px 10px 30px;
-    background: $project-browser-color-bg;
     color: $project-browser-color-text;
     user-select: none;
     cursor: pointer;
