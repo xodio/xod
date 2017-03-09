@@ -12,7 +12,7 @@ import { COMMAND } from '../../utils/constants';
 import { EDITOR_MODE } from '../../editor/constants';
 
 import Patch from './Patch';
-import { ProjectBrowser } from '../../projectBrowser';
+import ProjectBrowser from '../../projectBrowser/containers/ProjectBrowser';
 import Sidebar from '../../utils/components/Sidebar';
 import Workarea from '../../utils/components/Workarea';
 

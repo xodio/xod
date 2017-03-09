@@ -5,4 +5,5 @@ export default {
     creatingPatch: false,
     creatingFolder: false,
   },
+  selectedPatchId: null,
 };

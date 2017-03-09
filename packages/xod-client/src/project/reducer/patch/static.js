@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { PATCH_RENAME, PATCH_MOVE } from '../../actionTypes';
+import { PATCH_RENAME } from '../../actionTypes';
 
 const defaultState = {
   label: 'New patch',
@@ -13,11 +13,8 @@ export default id => (inputState = defaultState, action) => {
 
   switch (action.type) {
     case PATCH_RENAME: {
-      const newState = R.assoc('label', action.payload.label, state);
-      return newState;
+      return R.assoc('label', action.payload.label, state);
     }
-    case PATCH_MOVE:
-      return R.assoc('folderId', action.payload.folderId, state);
     default:
       return state;
   }

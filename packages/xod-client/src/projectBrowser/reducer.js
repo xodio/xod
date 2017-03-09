@@ -8,6 +8,7 @@ import {
   PATCH_OR_FOLDER_RENAME_REQUESTED,
   PATCH_OR_FOLDER_DELETE_REQUESTED,
   POPUP_CANCEL,
+  SET_SELECTION,
 } from './actionTypes';
 
 import {
@@ -55,10 +56,23 @@ const popupsReducer = (state = {}, action) => {
   }
 };
 
+const selectionReducer = (state, action) => {
+  switch (action.type) {
+    case SET_SELECTION:
+      // TODO: deselect only if there are no open popups?
+      return action.payload.id;
+    case PATCH_DELETE:
+      return null;
+    default:
+      return state;
+  }
+};
+
 export default (state = initialState, action) =>
   R.merge(
     state,
     {
       openPopups: popupsReducer(state.openPopups, action),
+      selectedPatchId: selectionReducer(state.selectedPatchId, action),
     }
   );

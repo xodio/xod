@@ -1,25 +1,10 @@
 import React from 'react';
 
-import CreateNodeWidget from '../../editor/components/CreateNodeWidget';
 import UserPanel from '../../user/containers/UserPanel';
 import Menubar, { itemsPropTypes as menubarItemsPropTypes } from './Menubar';
 
-const Toolbar = ({
-  meta,
-  menuBarItems,
-  nodeTypes,
-  selectedNodeType,
-  onSelectNodeType,
-  onAddNodeClick,
-}) => (
+const Toolbar = ({ meta, menuBarItems }) => (
   <div className="Toolbar">
-    <CreateNodeWidget
-      nodeTypes={nodeTypes}
-      selectedNodeType={selectedNodeType}
-      onNodeTypeChange={onSelectNodeType}
-      onAddNodeClick={onAddNodeClick}
-    />
-
     <div className="logo">
       XOD
     </div>
@@ -41,10 +26,6 @@ const Toolbar = ({
 
 Toolbar.propTypes = {
   meta: React.PropTypes.object,
-  nodeTypes: React.PropTypes.object,
-  selectedNodeType: React.PropTypes.string,
-  onSelectNodeType: React.PropTypes.func,
-  onAddNodeClick: React.PropTypes.func,
   menuBarItems: menubarItemsPropTypes,
 };
 

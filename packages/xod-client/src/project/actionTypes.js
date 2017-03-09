@@ -14,15 +14,9 @@ export const LINK_DELETE = 'LINK_DELETE';
 
 export const META_UPDATE = 'META_UPDATE';
 
-export const FOLDER_ADD = 'FOLDER_ADD';
-export const FOLDER_RENAME = 'FOLDER_RENAME';
-export const FOLDER_DELETE = 'FOLDER_DELETE';
-export const FOLDER_MOVE = 'FOLDER_MOVE';
-
 export const PATCH_ADD = 'PATCH_ADD';
 export const PATCH_RENAME = 'PATCH_RENAME';
 export const PATCH_DELETE = 'PATCH_DELETE';
-export const PATCH_MOVE = 'PATCH_MOVE';
 
 export const NODETYPES_UPDATE = 'NODETYPES_UPDATE';
 

@@ -5,7 +5,6 @@ import * as constants from './constants';
 import * as selectors from './selectors';
 import * as actions from './actions';
 import * as actionTypes from './actionTypes';
-import CreateNodeWidget from './components/CreateNodeWidget';
 
 export {
   reducer,
@@ -15,5 +14,4 @@ export {
   actions,
   actionTypes,
   state,
-  CreateNodeWidget,
 };

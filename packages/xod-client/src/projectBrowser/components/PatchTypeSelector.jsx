@@ -2,6 +2,8 @@ import R from 'ramda';
 import React from 'react';
 import cn from 'classnames';
 
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+
 class PatchTypeSelector extends React.Component {
   constructor(props) {
     super(props);
@@ -55,11 +57,10 @@ class PatchTypeSelector extends React.Component {
 PatchTypeSelector.displayName = 'PatchTypeSelector';
 
 PatchTypeSelector.propTypes = {
-  initialSelectedKey: React.PropTypes.string,
   options: React.PropTypes.arrayOf(
     React.PropTypes.shape({
-      key: React.PropTypes.string.isRequired,
-      name: React.PropTypes.string.isRequired,
+      key: React.PropTypes.string.isRequired, // eslint-disable-line react/no-unused-prop-types
+      name: React.PropTypes.string.isRequired, // eslint-disable-line react/no-unused-prop-types
     })
   ).isRequired,
   children: React.PropTypes.func.isRequired,

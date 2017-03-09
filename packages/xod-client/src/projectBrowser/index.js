@@ -2,7 +2,7 @@ import reducer from './reducer';
 import state from './state';
 import * as actions from './actions';
 import * as actionTypes from './actionTypes';
-import ProjectBrowser from './containers/ProjectBrowser';
+import { ProjectBrowser } from './containers/ProjectBrowser';
 
 export {
   reducer,
