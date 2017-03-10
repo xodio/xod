@@ -20,6 +20,7 @@ import PatchGroup from '../components/PatchGroup';
 import PatchGroupItem from '../components/PatchGroupItem';
 import PatchTypeSelector from '../components/PatchTypeSelector';
 import ProjectBrowserPopups from '../components/ProjectBrowserPopups';
+import ProjectBrowserToolbar from '../components/ProjectBrowserToolbar';
 
 const PATCH_TYPE = {
   ALL: 'all',
@@ -250,16 +251,9 @@ class ProjectBrowser2 extends React.Component {
           onPatchCreate={this.props.actions.addPatch}
           closeAllPopups={this.props.actions.closeAllPopups}
         />
-        <div className="ProjectBrowserToolbar">
-          <div className="ProjectBrowserToolbar-left">
-            <button
-              title="Add patch"
-              onClick={this.props.actions.requestCreatePatch}
-            >
-              <Icon name="file" />
-            </button>
-          </div>
-        </div>
+        <ProjectBrowserToolbar
+          onClickAddPatch={this.props.actions.requestCreatePatch}
+        />
         <PatchTypeSelector
           options={[
             { key: PATCH_TYPE.ALL, name: 'All' },
