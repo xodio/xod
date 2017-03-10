@@ -13,23 +13,7 @@ const emptyNode = Helper.defaultizeNode({});
 const nodeOfType = type => Helper.defaultizeNode({ type });
 
 describe('Node', () => {
-  const checkNodeObject = (node) => {
-    expect(node).to.be.an('object');
-    expect(node).have.property('id');
-    expect(node).to.have.property('position');
-    expect(node).to.have.property('type');
-  };
-
   // constructors
-  describe('createNode', () => {
-    it('should return Either.Right with node', () => {
-      const newNode = Node.createNode({ x: 100, y: 100 }, '@/test');
-      Helper.expectEither(
-        checkNodeObject,
-        newNode
-      );
-    });
-  });
   describe('duplicateNode', () => {
     const node = Helper.defaultizeNode({
       id: 'test',
@@ -38,9 +22,6 @@ describe('Node', () => {
     });
     const newNode = Node.duplicateNode(node);
 
-    it('should return the node object', () => {
-      checkNodeObject(newNode);
-    });
     it('should return node object with same properties but new id', () => {
       expect(newNode.id).not.equals(node.id);
       expect(newNode.position).deep.equal(node.position);
@@ -86,25 +67,21 @@ describe('Node', () => {
     });
   });
   describe('setNodePosition', () => {
-    it('should return Either.Right with node in new position', () => {
+    it('should return node in new position', () => {
       const node = Helper.defaultizeNode({ position: { x: 1, y: 1 } });
-      const either = Node.setNodePosition({ x: 1, y: 1 }, node);
-      Helper.expectEither(
-        (newNode) => {
-          expect(newNode)
-            .to.be.an('object')
-            .that.have.property('position');
+      const newNode = Node.setNodePosition({ x: 1, y: 1 }, node);
 
-          expect(newNode.position)
-            .to.have.property('x')
-            .to.be.equal(1);
+      expect(newNode)
+        .to.be.an('object')
+        .that.have.property('position');
 
-          expect(newNode.position)
-            .to.have.property('y')
-            .to.be.equal(1);
-        },
-        either
-      );
+      expect(newNode.position)
+        .to.have.property('x')
+        .to.be.equal(1);
+
+      expect(newNode.position)
+        .to.have.property('y')
+        .to.be.equal(1);
     });
   });
   describe('getNodeLabel', () => {
@@ -330,45 +307,31 @@ describe('Node', () => {
   });
   // etc
   describe('getPinNodeDataType', () => {
-    it('should return Either.Left with error for non-existent data-type', () => {
-      const res = Node.getPinNodeDataType(nodeOfType('xod/core/inputA'));
-      expect(res.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, res, CONST.ERROR.DATATYPE_INVALID);
+    it('should throw error for non-existent data-type', () => {
+      expect(() => Node.getPinNodeDataType(nodeOfType('xod/core/inputA')))
+        .to.throw(TypeError);
     });
-    it('should return Either.Right with `number` for xod/core/inputNumber', () => {
+    it('should return `number` for xod/core/inputNumber', () => {
       const res = Node.getPinNodeDataType(nodeOfType('xod/core/inputNumber'));
-      Helper.expectEither(
-        val => expect(val).to.be.equal(CONST.PIN_TYPE.NUMBER),
-        res
-      );
+      expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
     });
-    it('should return Either.Right with `number` for xod/core/outputNumber', () => {
+    it('should return `number` for xod/core/outputNumber', () => {
       const res = Node.getPinNodeDataType(nodeOfType('xod/core/inputNumber'));
-      Helper.expectEither(
-        val => expect(val).to.be.equal(CONST.PIN_TYPE.NUMBER),
-        res
-      );
+      expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
     });
   });
   describe('getPinNodeDirection', () => {
-    it('should return Either.Left with error for `xod/core/invalidPinNode`', () => {
-      const res = Node.getPinNodeDirection(nodeOfType('xod/core/invalidPinNode'));
-      expect(res.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, res, CONST.ERROR.PIN_DIRECTION_INVALID);
+    it('should throw for `xod/core/invalidPinNode`', () => {
+      expect(() => Node.getPinNodeDirection(nodeOfType('xod/core/invalidPinNode')))
+        .to.throw(TypeError);
     });
-    it('should return Either.Right with `input` for `xod/core/inputSomething`', () => {
-      const res = Node.getPinNodeDirection(nodeOfType('xod/core/inputSomething'));
-      Helper.expectEither(
-        val => expect(val).to.be.equal('input'),
-        res
-      );
+    it('should return `input` for `xod/core/inputNumber`', () => {
+      const res = Node.getPinNodeDirection(nodeOfType('xod/core/inputNumber'));
+      expect(res).to.be.equal('input');
     });
-    it('should return Either.Right with `output` for `xod/core/outputSomething`', () => {
-      const res = Node.getPinNodeDirection(nodeOfType('xod/core/outputSomething'));
-      Helper.expectEither(
-        val => expect(val).to.be.equal('output'),
-        res
-      );
+    it('should return `output` for `xod/core/outputNumber`', () => {
+      const res = Node.getPinNodeDirection(nodeOfType('xod/core/outputNumber'));
+      expect(res).to.be.equal('output');
     });
   });
 });

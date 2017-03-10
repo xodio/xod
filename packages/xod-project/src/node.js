@@ -1,5 +1,4 @@
 import R from 'ramda';
-import { Either } from 'ramda-fantasy';
 import * as Utils from './utils';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
@@ -50,11 +49,11 @@ const getPathToPinProperty = def(
  * @function createNode
  * @param {Position} position - coordinates of new node’s center
  * @param {string} type - path to the patch, that will be the type of node to create
- * @returns {Either<Error|Node>} error or a new node
+ * @returns {Node} new node
  */
 export const createNode = def(
-  'createNode :: NodePosition -> PatchPath -> Either Error Node',
-  (position, type) => Either.of({
+  'createNode :: NodePosition -> PatchPath -> Node',
+  (position, type) => ({
     id: Utils.generateId(),
     type,
     position,
@@ -140,14 +139,11 @@ export const setNodeDescription = def(
  * @function setNodePosition
  * @param {Position} position - new coordinates of node’s center
  * @param {Node} node - node to move
- * @returns {Either<Error|Node>} copy of node in new coordinates
+ * @returns {Node} copy of node in new coordinates
  */
 export const setNodePosition = def(
-  'setNodePosition :: NodePosition -> Node -> Either Error Node',
-  R.compose(
-    Either.of,
-    R.assoc('position')
-  )
+  'setNodePosition :: NodePosition -> Node -> Node',
+  R.assoc('position')
 );
 
 /**
@@ -319,20 +315,20 @@ const getDataTypeRegExp = R.compose(
  * @name dataTypeRegexp
  * @type {RegExp}
  */
-const dataTypeRegexp = getDataTypeRegExp(CONST.NODETYPE_TO_DATA_TYPES);
+const dataTypeRegexp = getDataTypeRegExp(CONST.NODETYPE_TO_DATA_TYPES); // TODO: make DRY
 
 /**
  * Returns data type extracted from pinNode type
  * @function getPinNodeDataType
  * @param {Node} node
- * @returns {Either<Error|string>}
+ * @returns {DataType}
  */
 export const getPinNodeDataType = def(
-  'getPinNodeDataType :: Node -> Either Error DataType',
+  'getPinNodeDataType :: TerminalNode -> DataType',
   R.compose(
-    R.map(R.prop(R.__, CONST.NODETYPE_TO_DATA_TYPES)),
-    Tools.errOnNothing(CONST.ERROR.DATATYPE_INVALID),
-    Tools.match(dataTypeRegexp, 1),
+    R.prop(R.__, CONST.NODETYPE_TO_DATA_TYPES),
+    R.nth(1),
+    R.match(dataTypeRegexp),
     getNodeType
   )
 );
@@ -341,15 +337,12 @@ export const getPinNodeDataType = def(
  * Returns pin direction extracted from pinNode type
  * @function getPinDirectionFromNodeType
  * @param {Node} node
- * @returns {Either<Error|string>}
+ * @returns {PinDireaction}
  */
 export const getPinNodeDirection = def(
-  'getPinNodeDirection :: Node -> Either Error PinDirection',
-  R.compose(
-    Tools.errOnNothing(CONST.ERROR.PIN_DIRECTION_INVALID),
-    R.cond([
-      [isInputPinNode, R.always(CONST.PIN_DIRECTION.INPUT)],
-      [isOutputPinNode, R.always(CONST.PIN_DIRECTION.OUTPUT)],
-    ])
-  )
+  'getPinNodeDirection :: TerminalNode -> PinDirection',
+  R.cond([
+    [isInputPinNode, R.always(CONST.PIN_DIRECTION.INPUT)],
+    [isOutputPinNode, R.always(CONST.PIN_DIRECTION.OUTPUT)],
+  ])
 );

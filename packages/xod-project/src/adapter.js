@@ -149,8 +149,7 @@ const copyNodePins = R.compose(
 
 const mapNodeId = R.curry((oldNode, newNode) => ({ [oldNode.id]: newNode.id }));
 
-// :: PatchOld -> { NodeIdMap, Function fn }
-// fn :: Patch -> Tuple NodeIdMap Patch
+// :: PatchOld -> { nodeIdMap :: NodeIdMap, node :: Patch -> Tuple NodeIdMap Patch }
 const convertNodes = R.compose(
   composeT,
   R.converge(
@@ -161,10 +160,13 @@ const convertNodes = R.compose(
     ]
   ),
   R.map(oldNode =>
-    Node.createNode(oldNode.position, oldNode.typeId)
-    .map(node => ({ nodeIdMap: mapNodeId(oldNode, node), node }))
-    .map(R.evolve({ node: copyNodePins(oldNode) }))
-    .chain(R.evolve({ node: Patch.assocNode }))
+    R.compose(
+      R.evolve({ node: Patch.assocNode }),
+      R.evolve({ node: copyNodePins(oldNode) }),
+      node => ({ nodeIdMap: mapNodeId(oldNode, node), node }),
+      R.apply(Node.createNode),
+      R.props(['position', 'typeId'])
+    )(oldNode)
   ),
   getNodes
 );
@@ -247,31 +249,25 @@ const getCustomPinsOnly = R.compose(
   propValues('pins')
 );
 
-// :: PatchOld -> Function fn
-// fn :: Patch -> Patch
-const convertPatchPins = R.compose(
-  R.ifElse(
-    Maybe.isNothing,
-    R.nthArg(1), // TODO: Why we get second argument here, not just Nothing?
-    reduceChainOver
-  ),
-  R.chain(R.compose(
-    R.map(R.compose(
-      R.chain(Patch.assocPin),
-      R.converge(
-        Pin.createPin,
-        [
-          R.prop('key'),
-          R.compose(convertPinType, R.prop('type')),
-          R.prop('direction'),
-        ]
-      )
-    )),
-    R.values
-  )),
-  maybeEmpty,
-  getCustomPinsOnly
-);
+// :: PinOld -> Pin
+const convertPin = R.converge(Pin.createPin, [
+  R.prop('key'),
+  R.compose(convertPinType, R.prop('type')),
+  R.prop('direction'),
+]);
+
+// :: PatchOld -> (Patch -> Patch)
+const convertPatchPins = oldPatch => (patch) => {
+  const converter = R.compose(
+    f => f(patch),
+    R.apply(R.pipe),
+    R.map(Patch.assocPin), // list of associators
+    R.map(convertPin)
+  );
+
+  const customPins = getCustomPinsOnly(oldPatch);
+  return customPins.length ? converter(customPins) : patch;
+};
 
 // :: ProjectOld -> Function fn
 // fn :: Project -> Tuple NodeIdMap Project

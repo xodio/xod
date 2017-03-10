@@ -1,5 +1,4 @@
 import R from 'ramda';
-import { Either } from 'ramda-fantasy';
 import * as Utils from './utils';
 import * as CONST from './constants';
 import { def } from './types';
@@ -151,22 +150,16 @@ export const isTerminalPin = def(
   )
 );
 
-// TODO: remove me
-export const validatePin = def(
-  'validatePin :: Pin -> Either Error Pin',
-  Either.of
-);
-
 /**
  * @function createPin
  * @param {string} key
  * @param {PIN_TYPE} type
  * @param {PIN_DIRECTION} direction
- * @returns {Either<Error|Pin>}
+ * @returns {Pin}
  */
 export const createPin = def(
-  'createPin :: PinKey -> DataType -> PinDirection -> Either Error Pin',
-  (key, type, direction) => Either.of({
+  'createPin :: PinKey -> DataType -> PinDirection -> Pin',
+  (key, type, direction) => ({
     key,
     type,
     direction,

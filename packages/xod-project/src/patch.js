@@ -22,7 +22,7 @@ import { def } from './types';
 
 /**
  * @function createPatch
- * @returns {Patch} a validatePath error or newly created patch
+ * @returns {Patch} newly created patch
  */
 export const createPatch = () => ({
   nodes: {},
@@ -133,19 +133,6 @@ export const getImplByArray = def(
   )(impls)
 );
 
-/**
- * @function validatePatch
- * @param {Patch} patch
- * @returns {Either<Error|Patch>}
- */
-export const validatePatch = Tools.errOnFalse(
-  CONST.ERROR.PATCH_INVALID,
-  R.allPass([
-    R.has('nodes'),
-    R.has('links'),
-  ])
-);
-
 // =============================================================================
 //
 // Nodes
@@ -207,16 +194,11 @@ export const getNodeById = def(
  * @function assocPin
  * @param {Pin} pin
  * @param {Patch} patch
- * @returns {Either<Error|Patch>}
+ * @returns {Patch}
  */
 export const assocPin = def(
-  'assocPin :: Pin -> Patch -> Either Error Patch',
-  (pin, patch) => Pin.validatePin(pin).map(
-    (validPin) => {
-      const key = Pin.getPinKey(validPin);
-      return R.assocPath(['pins', key], validPin, patch);
-    }
-  )
+  'assocPin :: Pin -> Patch -> Patch',
+  (pin, patch) => R.assocPath(['pins', Pin.getPinKey(pin)], pin, patch)
 );
 
 /**
@@ -497,20 +479,10 @@ export const assocNode = def(
       (_node, _patch) => R.ifElse(
         Node.isPinNode,
         (pinNode) => {
-          const newPatch = Node.getPinNodeDataType(pinNode).chain(
-            type => Node.getPinNodeDirection(pinNode).chain(
-              direction => Pin.createPin(id, type, direction).chain(
-                // TODO: Add optional data (label, description, order) from node to pin
-                newPin => assocPin(newPin, _patch)
-              )
-            )
-          );
-          // TODO: Think is it okay or we should return Either<Error|Patch> for invalid pinNodes?
-          return Either.either(
-            () => _patch,
-            valid => valid,
-            newPatch
-          );
+          const type = Node.getPinNodeDataType(pinNode);
+          const direction = Node.getPinNodeDirection(pinNode);
+          const newPin = Pin.createPin(id, type, direction);
+          return assocPin(newPin, _patch);
         },
         R.always(_patch)
       )(_node)

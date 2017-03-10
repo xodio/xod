@@ -285,10 +285,8 @@ export const assocPatch = def(
   'assocPatch :: PatchPath -> Patch -> Project -> Either Error Project',
   (path, patch, project) =>
     Utils.validatePath(path).chain(
-      validPath => Patch.validatePatch(patch).chain(
-        validPatch => validatePatchContents(validPatch, project).map(
-          R.assocPath(['patches', validPath], R.__, project)
-        )
+      validPath => validatePatchContents(patch, project).map(
+        R.assocPath(['patches', validPath], R.__, project)
       )
     )
 );

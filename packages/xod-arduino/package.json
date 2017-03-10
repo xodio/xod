@@ -14,7 +14,7 @@
   "main": "dist/index.js",
   "dependencies": {
     "handlebars": "^4.0.6",
-    "hm-def": "^0.1.0",
+    "hm-def": "^0.1.2",
     "ramda": "^0.22.1",
     "ramda-fantasy": "^0.7.0",
     "sanctuary-def": "^0.9.0",
