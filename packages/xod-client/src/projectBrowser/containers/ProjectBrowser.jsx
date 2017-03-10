@@ -51,7 +51,6 @@ class ProjectBrowser2 extends React.Component {
     };
 
     this.renderPatches = this.renderPatches.bind(this);
-    this.onRename = this.onRename.bind(this);
     this.deselectIfInLibrary = this.deselectIfInLibrary.bind(this);
     this.deselectIfInMyPatches = this.deselectIfInMyPatches.bind(this);
   }
@@ -60,14 +59,6 @@ class ProjectBrowser2 extends React.Component {
     // TODO: rewrite this when implementing "zombie" nodes
     this.props.actions.setSelectedNodeType(id);
     this.props.actions.setEditorMode(EDITOR_MODE.CREATING_NODE);
-  }
-
-  onRename(type, id, name) {
-    if (id) {
-      this.props.actions.renamePatch(id, name);
-    } else {
-      this.props.actions.renameProject(name);
-    }
   }
 
   getHotkeyHandlers() {
@@ -230,11 +221,13 @@ class ProjectBrowser2 extends React.Component {
         className="ProjectBrowser"
       >
         <ProjectBrowserPopups
-          selection={{ type: 'patch', id: this.props.selectedPatchId }}
+          selectedPatchId={this.props.selectedPatchId}
           openPopups={this.props.openPopups}
           patches={this.props.patches}
-          onDelete={this.props.actions.deletePatch}
-          onRename={this.onRename}
+          projectName={this.props.projectName}
+          onPatchDelete={this.props.actions.deletePatch}
+          onPatchRename={this.props.actions.renamePatch}
+          onProjectRename={this.props.actions.renameProject}
           onPatchCreate={this.props.actions.addPatch}
           closeAllPopups={this.props.actions.closeAllPopups}
         />

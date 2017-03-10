@@ -4,21 +4,19 @@ import { POPUP_ID } from './constants';
 
 import {
   PATCH_CREATE_REQUESTED,
-  FOLDER_CREATE_REQUESTED,
   PATCH_RENAME_REQUESTED,
   PATCH_DELETE_REQUESTED,
+  PROJECT_RENAME_REQUESTED,
   POPUP_CANCEL,
   SET_SELECTION,
   REMOVE_SELECTION,
 } from './actionTypes';
 
 import {
-  FOLDER_ADD,
-  FOLDER_RENAME,
-  FOLDER_DELETE,
   PATCH_ADD,
   PATCH_DELETE,
   PATCH_RENAME,
+  PROJECT_RENAME,
 } from '../project/actionTypes';
 
 const popupsReducer = (state = {}, action) => {
@@ -26,28 +24,26 @@ const popupsReducer = (state = {}, action) => {
     case PATCH_CREATE_REQUESTED:
       return R.assoc(POPUP_ID.CREATING_PATCH, true, state);
 
-    case FOLDER_CREATE_REQUESTED:
-      return R.assoc(POPUP_ID.CREATING_FOLDER, true, state);
-
     case PATCH_RENAME_REQUESTED:
-      return R.assoc(POPUP_ID.RENAMING, true, state);
+      return R.assoc(POPUP_ID.RENAMING_PATCH, true, state);
 
     case PATCH_DELETE_REQUESTED:
-      return R.assoc(POPUP_ID.DELETING, true, state);
+      return R.assoc(POPUP_ID.DELETING_PATCH, true, state);
+
+    case PROJECT_RENAME_REQUESTED:
+      return R.assoc(POPUP_ID.RENAMING_PROJECT, true, state);
 
     case PATCH_ADD:
       return R.assoc(POPUP_ID.CREATING_PATCH, false, state);
 
-    case FOLDER_ADD:
-      return R.assoc(POPUP_ID.CREATING_FOLDER, false, state);
-
-    case FOLDER_RENAME:
     case PATCH_RENAME:
-      return R.assoc(POPUP_ID.RENAMING, false, state);
+      return R.assoc(POPUP_ID.RENAMING_PATCH, false, state);
 
-    case FOLDER_DELETE:
     case PATCH_DELETE:
-      return R.assoc(POPUP_ID.DELETING, false, state);
+      return R.assoc(POPUP_ID.DELETING_PATCH, false, state);
+
+    case PROJECT_RENAME:
+      return R.assoc(POPUP_ID.RENAMING_PROJECT, false, state);
 
     case POPUP_CANCEL:
       return initialState.openPopups;

@@ -1,7 +1,6 @@
 import R from 'ramda';
 import React from 'react';
 
-import { noop } from '../../utils/ramda';
 import { POPUP_ID } from '../constants';
 
 import PopupPrompt from '../../utils/components/PopupPrompt';
@@ -11,29 +10,27 @@ class ProjectBrowserToolbar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onRenamed = this.onRenamed.bind(this);
-    this.onDeleted = this.onDeleted.bind(this);
+    this.onPatchDeleteConfirmed = this.onPatchDeleteConfirmed.bind(this);
+    this.onPatchRenameConfirmed = this.onPatchRenameConfirmed.bind(this);
   }
 
-  onRenamed(name) {
-    this.props.onRename(
-      this.props.selection.type,
-      this.props.selection.id,
-      name
-    );
+  onPatchDeleteConfirmed() {
+    this.props.onPatchDelete(this.props.selectedPatchId);
   }
 
-  onDeleted() {
-    this.props.onDelete(this.props.selection.type, this.props.selection.id);
+  onPatchRenameConfirmed(name) {
+    this.props.onPatchRename(this.props.selectedPatchId, name);
   }
 
   getProjectName() {
     return this.props.projectName;
   }
 
-  getPatchName(id) {
-    if (R.not(R.has(id, this.props.patches))) { return ''; }
-    const patch = this.props.patches[id];
+  getSelectedPatchName() {
+    const { selectedPatchId } = this.props;
+
+    if (R.not(R.has(selectedPatchId, this.props.patches))) { return ''; }
+    const patch = this.props.patches[selectedPatchId];
 
     return R.pipe(
       R.propOr(patch, 'present'),
@@ -41,22 +38,7 @@ class ProjectBrowserToolbar extends React.Component {
     )(patch);
   }
 
-  getSelectionInfo() {
-    if (this.props.selection === null) { return null; }
-    const { id, type } = this.props.selection;
-
-    const name = (id === null)
-      ? this.getProjectName()
-      : this.getPatchName(id);
-
-    return {
-      type,
-      id,
-      name,
-    };
-  }
-
-  renderCreatingPopup() {
+  renderPatchCreatingPopup() {
     return (
       <PopupPrompt
         title="Create new patch"
@@ -68,43 +50,61 @@ class ProjectBrowserToolbar extends React.Component {
     );
   }
 
-  renderRenamingPopup() {
-    const selection = this.getSelectionInfo();
+  renderPatchRenamingPopup() {
+    const selectedPatchName = this.getSelectedPatchName();
 
     return (
       <PopupPrompt
-        title={`Rename the ${selection.type}`}
-        onConfirm={this.onRenamed}
+        title="Rename patch"
+        onConfirm={this.onPatchRenameConfirmed}
         onClose={this.props.closeAllPopups}
       >
-        Type new name for {selection.type} &laquo;{selection.name}&raquo;:
+        Type new name for patch &laquo;{selectedPatchName}&raquo;:
       </PopupPrompt>
     );
   }
 
-  renderDeletingPopup() {
-    const selection = this.getSelectionInfo();
+  renderProjectRenamingPopup() {
+    const currentProjectName = this.getProjectName();
+
+    return (
+      <PopupPrompt
+        title="Rename project"
+        onConfirm={this.props.onProjectRename}
+        onClose={this.props.closeAllPopups}
+      >
+        Type new name for project &laquo;{currentProjectName}&raquo;:
+      </PopupPrompt>
+    );
+  }
+
+  renderPatchDeletingPopup() {
+    const selectedPatchName = this.getSelectedPatchName();
 
     return (
       <PopupConfirm
-        title={`Delete the ${selection.type}`}
-        onConfirm={this.onDeleted}
+        title="Delete the patch"
+        onConfirm={this.onPatchDeleteConfirmed}
         onClose={this.props.closeAllPopups}
       >
-        Are you sure you want to delete {selection.type} &laquo;{selection.name}&raquo;?
+        Are you sure you want to delete patch &laquo;{selectedPatchName}&raquo;?
       </PopupConfirm>
     );
   }
 
   render() {
-    if (this.props.openPopups[POPUP_ID.RENAMING]) {
-      return this.renderRenamingPopup();
+    if (this.props.openPopups[POPUP_ID.RENAMING_PATCH]) {
+      return this.renderPatchRenamingPopup();
     }
-    if (this.props.openPopups[POPUP_ID.DELETING]) {
-      return this.renderDeletingPopup();
+    if (this.props.openPopups[POPUP_ID.DELETING_PATCH]) {
+      return this.renderPatchDeletingPopup();
     }
     if (this.props.openPopups[POPUP_ID.CREATING_PATCH]) {
-      return this.renderCreatingPopup();
+      return this.renderPatchCreatingPopup();
+    }
+
+    if (this.props.openPopups[POPUP_ID.RENAMING_PROJECT]) {
+      return this.renderProjectRenamingPopup();
     }
 
     return null;
@@ -112,22 +112,21 @@ class ProjectBrowserToolbar extends React.Component {
 }
 
 ProjectBrowserToolbar.propTypes = {
-  selection: React.PropTypes.object,
+  selectedPatchId: React.PropTypes.string,
   openPopups: React.PropTypes.object,
   projectName: React.PropTypes.string,
   patches: React.PropTypes.object,
 
   onPatchCreate: React.PropTypes.func.isRequired,
-  onRename: React.PropTypes.func.isRequired,
-  onDelete: React.PropTypes.func.isRequired,
+  onProjectRename: React.PropTypes.func.isRequired,
+  onPatchRename: React.PropTypes.func.isRequired,
+  onPatchDelete: React.PropTypes.func.isRequired,
 
   closeAllPopups: React.PropTypes.func.isRequired,
 };
 
 ProjectBrowserToolbar.defaultProps = {
-  selection: null,
-  onRename: noop,
-  onDelete: noop,
+  selectedPatchId: null,
 };
 
 export default ProjectBrowserToolbar;

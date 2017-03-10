@@ -1,9 +1,12 @@
+import { POPUP_ID } from './constants';
+
 export default {
   openPopups: {
-    renaming: false,
-    deleting: false,
-    creatingPatch: false,
-    creatingFolder: false,
+    [POPUP_ID.CREATING_PATCH]: false,
+    [POPUP_ID.RENAMING_PATCH]: false,
+    [POPUP_ID.DELETING_PATCH]: false,
+
+    [POPUP_ID.RENAMING_PROJECT]: false,
   },
   selectedPatchId: null,
 };

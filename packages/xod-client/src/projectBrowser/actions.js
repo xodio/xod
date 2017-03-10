@@ -5,6 +5,7 @@ import {
   PATCH_CREATE_REQUESTED,
   PATCH_RENAME_REQUESTED,
   PATCH_DELETE_REQUESTED,
+  PROJECT_RENAME_REQUESTED,
   POPUP_CANCEL,
   SET_SELECTION,
   REMOVE_SELECTION,
@@ -60,6 +61,10 @@ export const requestDeletePatch = patchId => (dispatch, getState) => {
     payload: { id: selectedPatchId },
   });
 };
+
+export const requestRenameProject = () => ({
+  type: PROJECT_RENAME_REQUESTED,
+});
 
 export const cancelPopup = () => ({
   type: POPUP_CANCEL,
