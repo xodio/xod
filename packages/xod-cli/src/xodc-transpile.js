@@ -8,6 +8,7 @@ import fs from 'fs';
 import path from 'path';
 import { loadProjectWithLibs, pack, readJSON, writeFile } from 'xod-fs';
 import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
+import { transpileForArduino } from 'xod-arduino';
 import * as msg from './messages';
 
 export default (input, patchPath, program) => {
@@ -19,6 +20,7 @@ export default (input, patchPath, program) => {
   const transpilers = {
     nodejs: transpileForNodeJS,
     espruino: transpileForEspruino,
+    arduino: transpileForArduino,
   };
 
   const transpile = transpilers[target];
