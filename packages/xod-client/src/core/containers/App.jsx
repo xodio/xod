@@ -1,23 +1,27 @@
 import React from 'react';
 import { toV2 } from 'xod-project';
 import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
+import { transpileForArduino } from 'xod-arduino';
+
+const showTranspiledCode = (context, transpiler) => {
+  const projectV2 = toV2(context.props.project);
+  context.setState({
+    code: transpiler(projectV2, context.props.currentPatchId),
+  });
+  context.showCodePopup();
+};
 
 export default class App extends React.Component {
   onShowCodeEspruino() {
-    const projectV2 = toV2(this.props.project);
-    this.setState({
-      code: transpileForEspruino(projectV2, this.props.currentPatchId),
-    });
-    this.showCodePopup();
+    showTranspiledCode(this, transpileForEspruino);
+  }
+  onShowCodeNodejs() {
+    showTranspiledCode(this, transpileForNodeJS);
+  }
+  onShowCodeArduino() {
+    showTranspiledCode(this, transpileForArduino);
   }
 
-  onShowCodeNodejs() {
-    const projectV2 = toV2(this.props.project);
-    this.setState({
-      code: transpileForNodeJS(projectV2, this.props.currentPatchId),
-    });
-    this.showCodePopup();
-  }
   render() {
     return <div />;
   }
