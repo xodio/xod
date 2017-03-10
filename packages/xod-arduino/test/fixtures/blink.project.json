@@ -49,8 +49,8 @@
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a * e.inputs.b) };\n};\n"
       },
       "pins": {
-        "a": {
-          "key": "a",
+        "A": {
+          "key": "A",
           "type": "number",
           "direction": "input",
           "label": "a",
@@ -58,8 +58,8 @@
           "order": 0,
           "value": 0
         },
-        "b": {
-          "key": "b",
+        "B": {
+          "key": "B",
           "type": "number",
           "direction": "input",
           "label": "b",
@@ -67,8 +67,8 @@
           "order": 0,
           "value": 0
         },
-        "out": {
-          "key": "out",
+        "OUT": {
+          "key": "OUT",
           "type": "number",
           "direction": "output",
           "label": "out",
@@ -681,12 +681,12 @@
       "nodes": {},
       "links": {},
       "impls": {
-        "cpp": "struct State {\n    bool value;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    if (isInputDirty(nid, Inputs::RESET)) {\n        state->value = false;\n    } else if (isInputDirty(nid, Inputs::SET)) {\n        state->value = true;\n    } else {\n        state->value = !state->value;\n    }\n\n    emitLogic(nid, Outputs::STATE, state->value);\n}\n",
-        "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
+        "cpp": "struct State {\n    bool value;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    if (isInputDirty(nid, Inputs::RST)) {\n        state->value = false;\n    } else if (isInputDirty(nid, Inputs::SET)) {\n        state->value = true;\n    } else {\n        state->value = !state->value;\n    }\n\n    emitLogic(nid, Outputs::OUT, state->value);\n}\n",
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.TGL) {\n    newState = !e.context.state;\n  } else if (inputs.SET) {\n    newState = true;\n  } else /* if (inputs.RST) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { OUT: newState };\n};\n"
       },
       "pins": {
-        "reset": {
-          "key": "reset",
+        "RST": {
+          "key": "RST",
           "type": "pulse",
           "direction": "input",
           "label": "reset",
@@ -694,8 +694,8 @@
           "order": 0,
           "value": false
         },
-        "set": {
-          "key": "set",
+        "SET": {
+          "key": "SET",
           "type": "pulse",
           "direction": "input",
           "label": "set",
@@ -703,8 +703,8 @@
           "order": 0,
           "value": false
         },
-        "state": {
-          "key": "state",
+        "OUT": {
+          "key": "OUT",
           "type": "boolean",
           "direction": "output",
           "label": "state",
@@ -712,8 +712,8 @@
           "order": 0,
           "value": false
         },
-        "toggle": {
-          "key": "toggle",
+        "TGL": {
+          "key": "TGL",
           "type": "pulse",
           "direction": "input",
           "label": "toggle",
@@ -1004,12 +1004,12 @@
       "nodes": {},
       "links": {},
       "impls": {
-        "arduino": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    const int pin = (int)getNumber(nid, Inputs::PIN);\n    const bool val = getLogic(nid, Inputs::VALUE);\n\n    if (isInputDirty(nid, Inputs::PIN)) {\n        ::pinMode(pin, OUTPUT);\n    }\n\n    ::digitalWrite(pin, val);\n}\n",
-        "espruino": "\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
+        "arduino": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    const int pin = (int)getNumber(nid, Inputs::PIN);\n    const bool val = getLogic(nid, Inputs::VAL);\n\n    if (isInputDirty(nid, Inputs::PIN)) {\n        ::pinMode(pin, OUTPUT);\n    }\n\n    ::digitalWrite(pin, val);\n}\n",
+        "espruino": "\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.VAL);\n};\n"
       },
       "pins": {
-        "pin": {
-          "key": "pin",
+        "PIN": {
+          "key": "PIN",
           "type": "number",
           "direction": "input",
           "label": "pin",
@@ -1017,8 +1017,8 @@
           "order": 0,
           "value": 0
         },
-        "value": {
-          "key": "value",
+        "VAL": {
+          "key": "VAL",
           "type": "boolean",
           "direction": "input",
           "label": "value",
@@ -1261,12 +1261,12 @@
       "nodes": {},
       "links": {},
       "impls": {
-        "cpp": "struct State {\n    TimeMs nextTrig;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    TimeMs tNow = transactionTime();\n    TimeMs dt = getNumber(nid, Inputs::INTERVAL) * 1000;\n    TimeMs tNext = tNow + dt;\n\n    if (isInputDirty(nid, Inputs::INTERVAL)) {\n        if (dt == 0) {\n            state->nextTrig = 0;\n            clearTimeout(nid);\n        } else if (state->nextTrig < tNow || state->nextTrig > tNext) {\n            state->nextTrig = tNext;\n            setTimeout(nid, dt);\n        }\n    } else {\n        // It was a scheduled tick\n        emitLogic(nid, Outputs::TICK, 1);\n        state->nextTrig = tNext;\n        setTimeout(nid, dt);\n    }\n}\n",
+        "cpp": "struct State {\n    TimeMs nextTrig;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    TimeMs tNow = transactionTime();\n    TimeMs dt = getNumber(nid, Inputs::IVAL) * 1000;\n    TimeMs tNext = tNow + dt;\n\n    if (isInputDirty(nid, Inputs::IVAL)) {\n        if (dt == 0) {\n            state->nextTrig = 0;\n            clearTimeout(nid);\n        } else if (state->nextTrig < tNow || state->nextTrig > tNext) {\n            state->nextTrig = tNext;\n            setTimeout(nid, dt);\n        }\n    } else {\n        // It was a scheduled tick\n        emitLogic(nid, Outputs::TICK, 1);\n        state->nextTrig = tNext;\n        setTimeout(nid, dt);\n    }\n}\n",
         "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.context.intervalID) {\n    clearInterval(e.context.intervalID);\n  }\n\n  e.context.intervalID = setInterval(function() {\n    e.fire({ tick: PULSE });\n  }, e.inputs.interval * 1000);\n};\n"
       },
       "pins": {
-        "interval": {
-          "key": "interval",
+        "IVAL": {
+          "key": "IVAL",
           "type": "number",
           "direction": "input",
           "label": "interval",
@@ -1274,8 +1274,8 @@
           "order": 0,
           "value": 0
         },
-        "tick": {
-          "key": "tick",
+        "TICK": {
+          "key": "TICK",
           "type": "pulse",
           "direction": "output",
           "label": "tick",
@@ -1487,7 +1487,7 @@
       "nodes": {},
       "links": {},
       "impls": {
-        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitLogic(nid, Outputs::__OUT__, getNumber(nid, Inputs::__IN__));\n}\n",
+        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitLogic(nid, Outputs::__out__, getNumber(nid, Inputs::__in__));\n}\n",
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Boolean(e.inputs.__in__) };\n};\n"
       },
       "pins": {
@@ -1569,7 +1569,7 @@
       "nodes": {},
       "links": {},
       "impls": {
-        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitNumber(nid, Outputs::__OUT__, getLogic(nid, Inputs::__IN__));\n}\n",
+        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitNumber(nid, Outputs::__out__, getLogic(nid, Inputs::__in__));\n}\n",
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Number(e.inputs.__in__) };\n};\n"
       },
       "pins": {
@@ -2145,7 +2145,7 @@
           },
           "input": {
             "nodeId": "HkXMqe3zeox",
-            "pinKey": "a"
+            "pinKey": "A"
           }
         },
         "B1ejx2Geox": {
@@ -2156,29 +2156,29 @@
           },
           "input": {
             "nodeId": "HJ4MqxhGlog",
-            "pinKey": "b"
+            "pinKey": "B"
           }
         },
         "B1Wog2Mgix": {
           "id": "B1Wog2Mgix",
           "output": {
             "nodeId": "HkXMqe3zeox",
-            "pinKey": "out"
+            "pinKey": "OUT"
           },
           "input": {
             "nodeId": "HJ4MqxhGlog",
-            "pinKey": "a"
+            "pinKey": "A"
           }
         },
         "ByGjl2Glog": {
           "id": "ByGjl2Glog",
           "output": {
             "nodeId": "HJ4MqxhGlog",
-            "pinKey": "out"
+            "pinKey": "OUT"
           },
           "input": {
             "nodeId": "BkDfqe2zesx",
-            "pinKey": "value"
+            "pinKey": "VAL"
           }
         },
         "Hk7jehGeoe": {
@@ -2189,7 +2189,7 @@
           },
           "input": {
             "nodeId": "BkDfqe2zesx",
-            "pinKey": "pin"
+            "pinKey": "PIN"
           }
         },
         "HyVje2Meie": {
@@ -2200,7 +2200,7 @@
           },
           "input": {
             "nodeId": "HkXMqe3zeox",
-            "pinKey": "b"
+            "pinKey": "B"
           }
         }
       },
@@ -3268,7 +3268,7 @@
             "y": 215
           },
           "pins": {
-            "interval": {
+            "IVAL": {
               "curried": false,
               "value": 1
             }
@@ -3438,7 +3438,7 @@
           },
           "input": {
             "nodeId": "ByQqe3Gxse",
-            "pinKey": "b"
+            "pinKey": "B"
           }
         },
         "Bk_Xqlhflog": {
@@ -3449,7 +3449,7 @@
           },
           "input": {
             "nodeId": "ByQqe3Gxse",
-            "pinKey": "a"
+            "pinKey": "A"
           }
         },
         "BkYQclhfeog": {
@@ -3460,18 +3460,18 @@
           },
           "input": {
             "nodeId": "r1E5ghzlol",
-            "pinKey": "pin"
+            "pinKey": "PIN"
           }
         },
         "H19Xcx3zgjg": {
           "id": "H19Xcx3zgjg",
           "output": {
             "nodeId": "ByQqe3Gxse",
-            "pinKey": "out"
+            "pinKey": "OUT"
           },
           "input": {
             "nodeId": "r1E5ghzlol",
-            "pinKey": "value"
+            "pinKey": "VAL"
           }
         }
       },
@@ -3535,7 +3535,7 @@
             "y": 224
           },
           "pins": {
-            "interval": {
+            "IVAL": {
               "curried": false,
               "value": 1
             }
@@ -3547,11 +3547,11 @@
           "id": "rJNQ5x3Glsl",
           "output": {
             "nodeId": "H1ce2fxil",
-            "pinKey": "tick"
+            "pinKey": "TICK"
           },
           "input": {
             "nodeId": "rylqlnGxse",
-            "pinKey": "toggle"
+            "pinKey": "TGL"
           }
         },
         "rkrXqx3Gesg": {
@@ -3562,14 +3562,14 @@
           },
           "input": {
             "nodeId": "H1ce2fxil",
-            "pinKey": "interval"
+            "pinKey": "IVAL"
           }
         },
         "H18QcghMgil": {
           "id": "H18QcghMgil",
           "output": {
             "nodeId": "rylqlnGxse",
-            "pinKey": "state"
+            "pinKey": "OUT"
           },
           "input": {
             "nodeId": "B1Gce3fgie",

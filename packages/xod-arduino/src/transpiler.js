@@ -17,8 +17,8 @@ const CONST_PATCHES = {
     nodes: {},
     links: {},
     pins: {
-      val: {
-        key: 'val',
+      VAL: {
+        key: 'VAL',
         direction: 'output',
         label: 'value',
         type: 'string',
@@ -35,8 +35,8 @@ const CONST_PATCHES = {
     nodes: {},
     links: {},
     pins: {
-      val: {
-        key: 'val',
+      VAL: {
+        key: 'VAL',
         direction: 'output',
         label: 'value',
         type: 'number',
@@ -53,8 +53,8 @@ const CONST_PATCHES = {
     nodes: {},
     links: {},
     pins: {
-      val: {
-        key: 'val',
+      VAL: {
+        key: 'VAL',
         direction: 'output',
         label: 'value',
         type: 'boolean',
@@ -126,8 +126,8 @@ const placeConstNodesAndLinks = def(
         const value = data[1];
 
         return R.compose(
-          Project.setPinCurriedValue('val', value),
-          Project.curryPin('val', true),
+          Project.setPinCurriedValue('VAL', value),
+          Project.curryPin('VAL', true),
           R.unnest,
           Project.createNode({ x: 0, y: 0 })
         )(type);
@@ -154,7 +154,7 @@ const placeConstNodesAndLinks = def(
       (data, nodeId) => {
         const pinKey = data[0];
         const newNodeId = data[3];
-        return Project.createLink(pinKey, nodeId, 'val', newNodeId);
+        return Project.createLink(pinKey, nodeId, 'VAL', newNodeId);
       },
       curriedNodesDataWithNewIds
     );
@@ -239,13 +239,13 @@ const createTPatches = def(
       const outputs = R.compose(
         R.map(R.applySpec({
           type: R.compose(R.prop(R.__, TYPES_MAP), Project.getPinType),
-          pinKey: R.compose(R.toUpper, Project.getPinKey),
+          pinKey: Project.getPinKey,
           value: R.compose(Project.defaultValueOfType, Project.getPinType),
         })),
         Project.listOutputPins
       )(patch);
       const inputs = R.compose(
-        R.map(R.applySpec({ pinKey: R.compose(R.toUpper, Project.getPinKey) })),
+        R.map(R.applySpec({ pinKey: Project.getPinKey })),
         Project.listInputPins
       )(patch);
 
@@ -289,7 +289,7 @@ const getTNodeOutputs = def(
 
         return {
           to,
-          pinKey: R.toUpper(pinKey),
+          pinKey,
           value,
         };
       }),
@@ -323,8 +323,8 @@ const getTNodeInputs = def(
           getPatchByNodeId(project, entryPath, patches),
           Project.getLinkOutputNodeId
         ),
-        pinKey: R.compose(R.toUpper, Project.getLinkInputPinKey),
-        fromPinKey: R.compose(R.toUpper, Project.getLinkOutputPinKey),
+        pinKey: Project.getLinkInputPinKey,
+        fromPinKey: Project.getLinkOutputPinKey,
       })),
       R.filter(Project.isLinkInputNodeIdEquals(nodeId)),
       R.chain(Project.listLinksByNode(node)),
