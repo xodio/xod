@@ -22,6 +22,10 @@ const rawItems = {
     key: 'saveProject',
     label: 'Save Project',
   },
+  renameProject: {
+    key: 'renameProject',
+    label: 'Rename Project',
+  },
   selectWorkspace: {
     key: 'selectWorkspace',
     label: 'Select Workspace',
