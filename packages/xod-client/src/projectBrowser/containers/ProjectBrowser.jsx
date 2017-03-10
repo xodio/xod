@@ -303,7 +303,12 @@ const mapStateToProps = (state) => {
 
   const nodeTypes = core.dereferencedNodeTypes(state);
   const libs = R.compose(
-    R.groupBy(R.pipe(R.prop('id'), splitNames, R.head)),
+    R.map(
+      R.sort(R.ascend(R.prop('id')))
+    ),
+    R.groupBy(
+      R.pipe(R.prop('id'), splitNames, R.head)
+    ),
     R.values,
     R.omit(userPatchIds(nodeTypes))
   )(nodeTypes);
