@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import cn from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Icon } from 'react-fa';
@@ -15,6 +16,7 @@ import * as EditorSelectors from '../../editor/selectors';
 
 import { EDITOR_MODE } from '../../editor/constants';
 import { COMMAND } from '../../utils/constants';
+import { noop } from '../../utils/ramda';
 
 import PatchGroup from '../components/PatchGroup';
 import PatchGroupItem from '../components/PatchGroupItem';
@@ -99,23 +101,22 @@ class ProjectBrowser2 extends React.Component {
   }
 
   myPatchesHoveredButtons(id) {
-    const { currentPatchId } = this.props;
+    const { currentPatchId, nodeTypes } = this.props;
     const {
       requestRename,
       requestDelete,
     } = this.props.actions;
 
+    const patchIsAddable = R.pipe(R.keys, R.indexOf(id), R.lt(-1))(nodeTypes);
     // TODO: when we'll implement adding with dnd, this will not be sufficient
-    const addButton = currentPatchId === id
-      ? null
-      : (
-        <Icon
-          key="add"
-          name="plus-circle"
-          className="hover-button"
-          onClick={() => this.onAddNode(id)}
-        />
-      );
+    const canAdd = patchIsAddable && currentPatchId !== id;
+
+    const addButtonClassnames = cn('hover-button', {
+      disabled: !canAdd,
+    });
+    const addButtonAction = canAdd
+      ? () => this.onAddNode(id)
+      : noop;
 
     return [
       <Icon
@@ -130,7 +131,12 @@ class ProjectBrowser2 extends React.Component {
         className="hover-button"
         onClick={() => requestRename(id)}
       />,
-      addButton,
+      <Icon
+        key="add"
+        name="plus-circle"
+        className={addButtonClassnames}
+        onClick={addButtonAction}
+      />,
     ];
   }
 
@@ -228,7 +234,7 @@ class ProjectBrowser2 extends React.Component {
 
     // TODO: wrap in component with a custom scrollbar
     return (
-      <div style={{ height: 300, overflow: 'scroll', backgroundColor: '#3d3d3d' }}>
+      <div style={{ height: 400, overflow: 'scroll', backgroundColor: '#3d3d3d' }}>
         {rendererKeys.map(k => this.patchRenderers[k]())}
       </div>
     );
@@ -319,6 +325,7 @@ const mapStateToProps = (state) => {
     selectedPatchId: ProjectBrowserSelectors.getSelectedPatchId(state),
     patches: core.getPatches(state),
     openPopups: state.projectBrowser.openPopups,
+    nodeTypes,
     libs,
   };
 };
