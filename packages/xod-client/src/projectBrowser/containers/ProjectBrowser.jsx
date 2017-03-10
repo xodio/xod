@@ -53,6 +53,9 @@ class ProjectBrowser2 extends React.Component {
     this.renderPatches = this.renderPatches.bind(this);
     this.deselectIfInLibrary = this.deselectIfInLibrary.bind(this);
     this.deselectIfInMyPatches = this.deselectIfInMyPatches.bind(this);
+
+    this.onRenameHotkey = this.onRenameHotkey.bind(this);
+    this.onDeleteHotkey = this.onDeleteHotkey.bind(this);
   }
 
   onAddNode(id) {
@@ -61,28 +64,57 @@ class ProjectBrowser2 extends React.Component {
     this.props.actions.setEditorMode(EDITOR_MODE.CREATING_NODE);
   }
 
-  getHotkeyHandlers() {
+  onRenameHotkey() {
     const { selectedPatchId } = this.props;
-    const {
-      removeSelection,
-      requestDelete,
-      requestRename,
-      requestCreatePatch,
-    } = this.props.actions;
+    if (!selectedPatchId || !this.isSelectedPatchInCurrentProject()) return;
 
+    this.props.actions.requestRename(selectedPatchId);
+  }
+
+  onDeleteHotkey() {
+    const { selectedPatchId } = this.props;
+    if (!selectedPatchId || !this.isSelectedPatchInCurrentProject()) return;
+
+    this.props.actions.requestDelete(selectedPatchId);
+  }
+
+  getHotkeyHandlers() {
     return {
-      [COMMAND.ADD_PATCH]: requestCreatePatch,
-      [COMMAND.RENAME]: () => requestRename(selectedPatchId),
-      [COMMAND.DELETE]: () => requestDelete(selectedPatchId),
-      [COMMAND.ESCAPE]: removeSelection,
+      [COMMAND.ADD_PATCH]: this.props.actions.requestCreatePatch,
+      [COMMAND.RENAME]: this.onRenameHotkey,
+      [COMMAND.DELETE]: this.onDeleteHotkey,
+      [COMMAND.ESCAPE]: this.props.actions.removeSelection,
     };
   }
 
+  isSelectedPatchInCurrentProject() {
+    const { patches, selectedPatchId } = this.props;
+
+    return R.compose(
+      R.lt(-1),
+      R.indexOf(selectedPatchId),
+      R.keys
+    )(patches);
+  }
+
   myPatchesHoveredButtons(id) {
+    const { currentPatchId } = this.props;
     const {
       requestRename,
       requestDelete,
     } = this.props.actions;
+
+    // TODO: when we'll implement adding with dnd, this will not be sufficient
+    const addButton = currentPatchId === id
+      ? null
+      : (
+        <Icon
+          key="add"
+          name="plus-circle"
+          className="hover-button"
+          onClick={() => this.onAddNode(id)}
+        />
+      );
 
     return [
       <Icon
@@ -97,25 +129,12 @@ class ProjectBrowser2 extends React.Component {
         className="hover-button"
         onClick={() => requestRename(id)}
       />,
-      <Icon
-        key="add"
-        name="plus-circle"
-        className="hover-button"
-        onClick={() => this.onAddNode(id)}
-      />,
+      addButton,
     ];
   }
 
   deselectIfInMyPatches() {
-    const { patches, selectedPatchId } = this.props;
-
-    const isInMyPatches = R.compose(
-      R.lt(-1),
-      R.indexOf(selectedPatchId),
-      R.keys
-    )(patches);
-
-    if (isInMyPatches) {
+    if (this.isSelectedPatchInCurrentProject()) {
       this.props.actions.removeSelection();
     }
   }
