@@ -9,7 +9,7 @@
  =============================================================================*/
 
 namespace _program {
-  {{#each this}}
+  {{#each nodes}}
   {{mergePins }}
     {{#each outputs }}
     NodeId links_{{ ../id }}_{{ pinKey }}[] = { {{#each to }}{{ this }}, {{/each}}NO_NODE };
@@ -30,23 +30,24 @@ namespace _program {
   {{/each}}
 
     void* storages[NODE_COUNT] = {
-      {{#each this}}
+      {{#each nodes}}
         &storage_{{ id }}{{#unless @last }},{{/unless }}
       {{/each}}
     };
 
     EvalFuncPtr evaluationFuncs[NODE_COUNT] = {
-      {{#each this}}
+      {{#each nodes}}
         (EvalFuncPtr)&{{ patch/owner }}::{{ patch/libName }}::{{ patch/patchName }}::evaluate{{#unless @last }},{{/unless }}
       {{/each}}
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {
-      {{#each this}}{{#if patch.isDirty }}-1{{ else }}0{{/if }}{{#unless @last}}, {{/unless}}{{/each}}
+      {{#each nodes}}DirtyFlags({{#if patch.isDirty }}-1{{ else }}0{{/if }}){{#unless @last}},
+      {{/unless}}{{/each}}
     };
 
     NodeId topology[NODE_COUNT] = {
-      {{#each this}}{{ id }}{{#unless @last}}, {{/unless}}{{/each}}
+      {{#each topology}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
     };
 
     TimeMs schedule[NODE_COUNT] = { 0 };

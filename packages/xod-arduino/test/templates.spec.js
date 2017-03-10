@@ -76,6 +76,7 @@ describe('xod-arduino templates', () => {
     config,
     patches,
     nodes,
+    topology: [0, 1],
   };
 
   it('configuration should render properly', () => {
@@ -99,7 +100,7 @@ describe('xod-arduino templates', () => {
   });
 
   it('program should render properly', () => {
-    const result = T.renderProgram(nodes);
+    const result = T.renderProgram(project.topology, nodes);
     assert.equalIgnoreSpaces(result, programFixture);
   });
 
@@ -111,7 +112,7 @@ describe('xod-arduino templates', () => {
       R.lensProp('value')
     );
     const newNodes = R.set(nodePinValueLens, 5, nodes);
-    const result = T.renderProgram(newNodes);
+    const result = T.renderProgram(project.topology, newNodes);
     assert.equalIgnoreSpaces(result, programWithCustomValueFixture);
   });
 

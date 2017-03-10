@@ -105,15 +105,15 @@ export const renderImplList = def(
   )
 );
 export const renderProgram = def(
-  'renderProgram :: [TNode] -> String',
-  templates.program
+  'renderProgram :: [TNodeId] -> [TNode] -> String',
+  (topology, nodes) => templates.program({ topology, nodes })
 );
 export const renderProject = def(
   'renderProject :: TProject -> String',
   (project) => {
     const config = renderConfig(project.config);
     const impls = renderImplList(project.patches);
-    const program = renderProgram(project.nodes);
+    const program = renderProgram(project.topology, project.nodes);
 
     return R.join('\n')([
       config,

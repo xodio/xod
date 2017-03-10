@@ -34,7 +34,8 @@ namespace _program {
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {
-        0, 0
+        DirtyFlags(0),
+        DirtyFlags(0)
     };
 
     NodeId topology[NODE_COUNT] = {

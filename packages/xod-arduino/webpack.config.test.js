@@ -25,6 +25,11 @@ const config = merge.smart(baseConfig, {
         test: /\.cpp$/,
         loader: 'raw',
       },
+      {
+        include: pkgpath('test/fixtures/'),
+        test: /\.json/,
+        loader: 'json',
+      },
     ],
   },
 });
