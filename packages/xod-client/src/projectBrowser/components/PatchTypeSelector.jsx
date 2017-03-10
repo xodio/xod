@@ -2,6 +2,8 @@ import R from 'ramda';
 import React from 'react';
 import cn from 'classnames';
 
+import { noop } from '../../utils/ramda';
+
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
 class PatchTypeSelector extends React.Component {
@@ -28,7 +30,12 @@ class PatchTypeSelector extends React.Component {
   }
 
   onSelect(selectedOptionKey) {
+    if (selectedOptionKey === this.state.selectedOptionKey) {
+      return;
+    }
+
     this.setState({ selectedOptionKey });
+    this.props.onChange(selectedOptionKey);
   }
 
   render() {
@@ -63,7 +70,12 @@ PatchTypeSelector.propTypes = {
       name: React.PropTypes.string.isRequired, // eslint-disable-line react/no-unused-prop-types
     })
   ).isRequired,
+  onChange: React.PropTypes.func.isRequired,
   children: React.PropTypes.func.isRequired,
+};
+
+PatchTypeSelector.defaultProps = {
+  onChange: noop,
 };
 
 export default PatchTypeSelector;

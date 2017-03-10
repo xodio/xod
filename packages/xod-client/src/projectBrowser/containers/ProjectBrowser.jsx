@@ -33,6 +33,13 @@ const splitNames = R.compose(
   R.split('/')
 );
 
+const userPatchIds = R.compose(
+  R.filter(
+    R.pipe(R.head, R.equals('@'))
+  ),
+  R.keys
+);
+
 class ProjectBrowser2 extends React.Component {
   constructor(props) {
     super(props);
@@ -45,6 +52,8 @@ class ProjectBrowser2 extends React.Component {
 
     this.renderPatches = this.renderPatches.bind(this);
     this.onRename = this.onRename.bind(this);
+    this.deselectIfInLibrary = this.deselectIfInLibrary.bind(this);
+    this.deselectIfInMyPatches = this.deselectIfInMyPatches.bind(this);
   }
 
   onAddNode(id) {
@@ -62,11 +71,77 @@ class ProjectBrowser2 extends React.Component {
   }
 
   getHotkeyHandlers() {
+    const { selectedPatchId } = this.props;
+    const {
+      removeSelection,
+      requestDelete,
+      requestRename,
+      requestCreatePatch,
+    } = this.props.actions;
+
     return {
-      [COMMAND.ADD_PATCH]: this.props.actions.requestCreatePatch,
-      [COMMAND.RENAME]: this.props.actions.requestRename,
-      [COMMAND.DELETE]: this.props.actions.requestDelete,
-      [COMMAND.ESCAPE]: () => this.props.actions.setSelection(null),
+      [COMMAND.ADD_PATCH]: requestCreatePatch,
+      [COMMAND.RENAME]: () => requestRename(selectedPatchId),
+      [COMMAND.DELETE]: () => requestDelete(selectedPatchId),
+      [COMMAND.ESCAPE]: removeSelection,
+    };
+  }
+
+  myPatchesHoveredButtons(id) {
+    const {
+      requestRename,
+      requestDelete,
+    } = this.props.actions;
+
+    return [
+      <Icon
+        key="delete"
+        name="trash"
+        className="hover-button"
+        onClick={() => requestDelete(id)}
+      />,
+      <Icon
+        key="rename"
+        name="pencil"
+        className="hover-button"
+        onClick={() => requestRename(id)}
+      />,
+      <Icon
+        key="add"
+        name="plus-circle"
+        className="hover-button"
+        onClick={() => this.onAddNode(id)}
+      />,
+    ];
+  }
+
+  deselectIfInMyPatches() {
+    const { patches, selectedPatchId } = this.props;
+
+    const isInMyPatches = R.compose(
+      R.lt(-1),
+      R.indexOf(selectedPatchId),
+      R.keys
+    )(patches);
+
+    if (isInMyPatches) {
+      this.props.actions.removeSelection();
+    }
+  }
+
+  deselectIfInLibrary(libName) {
+    return () => {
+      const { libs, selectedPatchId } = this.props;
+
+      const isInClosedLib = R.compose(
+        R.pipe(R.isNil, R.not),
+        R.find(R.propEq('id', selectedPatchId)),
+        R.prop(libName)
+      )(libs);
+
+      if (isInClosedLib) {
+        this.props.actions.removeSelection();
+      }
     };
   }
 
@@ -79,28 +154,16 @@ class ProjectBrowser2 extends React.Component {
     } = this.props;
     const {
       switchPatch,
-      requestRename,
-      requestDelete,
       setSelection,
     } = this.props.actions;
 
-    const hoverButtons = [
-      <Icon
-        key="rename"
-        name="pencil"
-        className="hover-button"
-        onClick={requestRename}
-      />,
-      <Icon
-        key="delete"
-        name="trash"
-        className="hover-button"
-        onClick={requestDelete}
-      />,
-    ];
-
     return (
-      <PatchGroup type="my" name={projectName} key="@">
+      <PatchGroup
+        key="@"
+        type="my"
+        name={projectName}
+        onClose={this.deselectIfInMyPatches}
+      >
         {R.map(({ id, label }) => (
           <PatchGroupItem
             key={id}
@@ -109,7 +172,7 @@ class ProjectBrowser2 extends React.Component {
             onDoubleClick={() => switchPatch(id)}
             isSelected={id === selectedPatchId}
             onClick={() => setSelection(id)}
-            hoverButtons={hoverButtons}
+            hoverButtons={this.myPatchesHoveredButtons(id)}
           />
         ), R.values(patches))}
       </PatchGroup>
@@ -117,16 +180,16 @@ class ProjectBrowser2 extends React.Component {
   }
 
   renderLibraryPatches() {
-    const { nodeTypes, selectedPatchId } = this.props;
+    const { libs, selectedPatchId } = this.props;
     const { setSelection } = this.props.actions;
 
-    const libs = R.compose(
-      R.groupBy(R.pipe(R.prop('id'), splitNames, R.head)),
-      R.values
-    )(nodeTypes);
-
     return R.toPairs(libs).map(([libName, types]) => (
-      <PatchGroup type="library" name={libName} key={libName}>
+      <PatchGroup
+        key={libName}
+        type="library"
+        name={libName}
+        onClose={this.deselectIfInLibrary(libName)}
+      >
         {types.map(({ id }) =>
           <PatchGroupItem
             key={id}
@@ -191,6 +254,7 @@ class ProjectBrowser2 extends React.Component {
             { key: PATCH_TYPE.LIBRARY, name: 'Libraries' },
             { key: PATCH_TYPE.MY, name: 'My Patches' },
           ]}
+          onChange={this.props.actions.removeSelection}
         >
           {this.renderPatches}
         </PatchTypeSelector>
@@ -207,7 +271,7 @@ ProjectBrowser2.propTypes = {
   selectedPatchId: React.PropTypes.string,
   patches: React.PropTypes.object.isRequired,
   openPopups: React.PropTypes.object.isRequired,
-  nodeTypes: React.PropTypes.object.isRequired,
+  libs: React.PropTypes.object.isRequired,
   actions: React.PropTypes.shape({
     setSelectedNodeType: React.PropTypes.func.isRequired,
     setEditorMode: React.PropTypes.func.isRequired,
@@ -216,6 +280,7 @@ ProjectBrowser2.propTypes = {
     requestRename: React.PropTypes.func.isRequired,
     requestDelete: React.PropTypes.func.isRequired,
     setSelection: React.PropTypes.func.isRequired,
+    removeSelection: React.PropTypes.func.isRequired,
     addPatch: React.PropTypes.func.isRequired,
     renamePatch: React.PropTypes.func.isRequired,
     deletePatch: React.PropTypes.func.isRequired,
@@ -230,13 +295,20 @@ const mapStateToProps = (state) => {
   const projectName = core.getName(projectMeta);
   const currentPatchId = EditorSelectors.getCurrentPatchId(state);
 
+  const nodeTypes = core.dereferencedNodeTypes(state);
+  const libs = R.compose(
+    R.groupBy(R.pipe(R.prop('id'), splitNames, R.head)),
+    R.values,
+    R.omit(userPatchIds(nodeTypes))
+  )(nodeTypes);
+
   return {
     projectName,
     currentPatchId,
     selectedPatchId: ProjectBrowserSelectors.getSelectedPatchId(state),
     patches: core.getPatches(state),
     openPopups: state.projectBrowser.openPopups,
-    nodeTypes: core.dereferencedNodeTypes(state),
+    libs,
   };
 };
 
@@ -247,9 +319,10 @@ const mapDispatchToProps = dispatch => ({
     switchPatch: EditorActions.switchPatch,
 
     requestCreatePatch: ProjectBrowserActions.requestCreatePatch,
-    requestRename: ProjectBrowserActions.requestRenamePatchOrFolder,
-    requestDelete: ProjectBrowserActions.requestDeletePatchOrFolder,
+    requestRename: ProjectBrowserActions.requestRenamePatch,
+    requestDelete: ProjectBrowserActions.requestDeletePatch,
     setSelection: ProjectBrowserActions.setSelection,
+    removeSelection: ProjectBrowserActions.removeSelection,
 
     addPatch: ProjectActions.addPatch,
     renamePatch: ProjectActions.renamePatch,

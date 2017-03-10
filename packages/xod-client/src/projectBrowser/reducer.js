@@ -5,10 +5,11 @@ import { POPUP_ID } from './constants';
 import {
   PATCH_CREATE_REQUESTED,
   FOLDER_CREATE_REQUESTED,
-  PATCH_OR_FOLDER_RENAME_REQUESTED,
-  PATCH_OR_FOLDER_DELETE_REQUESTED,
+  PATCH_RENAME_REQUESTED,
+  PATCH_DELETE_REQUESTED,
   POPUP_CANCEL,
   SET_SELECTION,
+  REMOVE_SELECTION,
 } from './actionTypes';
 
 import {
@@ -28,10 +29,10 @@ const popupsReducer = (state = {}, action) => {
     case FOLDER_CREATE_REQUESTED:
       return R.assoc(POPUP_ID.CREATING_FOLDER, true, state);
 
-    case PATCH_OR_FOLDER_RENAME_REQUESTED:
+    case PATCH_RENAME_REQUESTED:
       return R.assoc(POPUP_ID.RENAMING, true, state);
 
-    case PATCH_OR_FOLDER_DELETE_REQUESTED:
+    case PATCH_DELETE_REQUESTED:
       return R.assoc(POPUP_ID.DELETING, true, state);
 
     case PATCH_ADD:
@@ -59,10 +60,14 @@ const popupsReducer = (state = {}, action) => {
 const selectionReducer = (state, action) => {
   switch (action.type) {
     case SET_SELECTION:
-      // TODO: deselect only if there are no open popups?
+    case PATCH_RENAME_REQUESTED:
+    case PATCH_DELETE_REQUESTED:
       return action.payload.id;
+
+    case REMOVE_SELECTION: // TODO: deselect only if there are no open popups?
     case PATCH_DELETE:
       return null;
+
     default:
       return state;
   }
