@@ -14,15 +14,8 @@ class PatchTypeSelector extends React.Component {
     // TODO: check that initialSelectedKey is equal to one of option's keys?
 
     const selectedOptionKey = R.ifElse(
-      R.pipe(R.prop('initialSelectedKey'), R.isNil),
-      R.compose(
-        R.unless(
-          R.isNil,
-          R.prop('key')
-        ),
-        R.head,
-        R.prop('options')
-      ),
+      R.propSatisfies(R.isNil, 'initialSelectedKey'),
+      R.path(['options', 0, 'key']),
       R.prop('initialSelectedKey')
     )(props);
 

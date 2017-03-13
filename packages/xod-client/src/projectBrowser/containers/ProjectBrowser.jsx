@@ -36,10 +36,10 @@ const splitNames = R.compose(
   R.split('/')
 );
 
-const userPatchIds = R.compose(
-  R.filter(
-    R.pipe(R.head, R.equals('@'))
-  ),
+const isPatchIdLocal = R.pipe(R.head, R.equals('@'));
+
+const listLocalPatchPaths = R.compose(
+  R.filter(isPatchIdLocal),
   R.keys
 );
 
@@ -49,13 +49,13 @@ class ProjectBrowser2 extends React.Component {
     this.state = {};
 
     this.patchRenderers = {
-      [PATCH_TYPE.MY]: this.renderMyPatches.bind(this),
+      [PATCH_TYPE.MY]: this.renderLocalPatches.bind(this),
       [PATCH_TYPE.LIBRARY]: this.renderLibraryPatches.bind(this),
     };
 
     this.renderPatches = this.renderPatches.bind(this);
     this.deselectIfInLibrary = this.deselectIfInLibrary.bind(this);
-    this.deselectIfInMyPatches = this.deselectIfInMyPatches.bind(this);
+    this.deselectIfInLocalPatches = this.deselectIfInLocalPatches.bind(this);
 
     this.onRenameHotkey = this.onRenameHotkey.bind(this);
     this.onDeleteHotkey = this.onDeleteHotkey.bind(this);
@@ -69,14 +69,14 @@ class ProjectBrowser2 extends React.Component {
 
   onRenameHotkey() {
     const { selectedPatchId } = this.props;
-    if (!selectedPatchId || !this.isSelectedPatchInCurrentProject()) return;
+    if (!selectedPatchId || !isPatchIdLocal(selectedPatchId)) return;
 
     this.props.actions.requestRename(selectedPatchId);
   }
 
   onDeleteHotkey() {
     const { selectedPatchId } = this.props;
-    if (!selectedPatchId || !this.isSelectedPatchInCurrentProject()) return;
+    if (!selectedPatchId || !isPatchIdLocal(selectedPatchId)) return;
 
     this.props.actions.requestDelete(selectedPatchId);
   }
@@ -90,24 +90,14 @@ class ProjectBrowser2 extends React.Component {
     };
   }
 
-  isSelectedPatchInCurrentProject() {
-    const { patches, selectedPatchId } = this.props;
-
-    return R.compose(
-      R.lt(-1),
-      R.indexOf(selectedPatchId),
-      R.keys
-    )(patches);
-  }
-
-  myPatchesHoveredButtons(id) {
+  localPatchesHoveredButtons(id) {
     const { currentPatchId, nodeTypes } = this.props;
     const {
       requestRename,
       requestDelete,
     } = this.props.actions;
 
-    const patchIsAddable = R.pipe(R.keys, R.indexOf(id), R.lt(-1))(nodeTypes);
+    const patchIsAddable = R.pipe(R.keys, R.contains(id))(nodeTypes);
     // TODO: when we'll implement adding with dnd, this will not be sufficient
     const canAdd = patchIsAddable && currentPatchId !== id;
 
@@ -140,8 +130,9 @@ class ProjectBrowser2 extends React.Component {
     ];
   }
 
-  deselectIfInMyPatches() {
-    if (this.isSelectedPatchInCurrentProject()) {
+  deselectIfInLocalPatches() {
+    const { selectedPatchId } = this.props;
+    if (selectedPatchId && isPatchIdLocal(selectedPatchId)) {
       this.props.actions.removeSelection();
     }
   }
@@ -151,7 +142,7 @@ class ProjectBrowser2 extends React.Component {
       const { libs, selectedPatchId } = this.props;
 
       const isInClosedLib = R.compose(
-        R.pipe(R.isNil, R.not),
+        R.complement(R.isNil),
         R.find(R.propEq('id', selectedPatchId)),
         R.prop(libName)
       )(libs);
@@ -162,7 +153,7 @@ class ProjectBrowser2 extends React.Component {
     };
   }
 
-  renderMyPatches() {
+  renderLocalPatches() {
     const {
       projectName,
       patches,
@@ -179,7 +170,7 @@ class ProjectBrowser2 extends React.Component {
         key="@"
         type="my"
         name={projectName}
-        onClose={this.deselectIfInMyPatches}
+        onClose={this.deselectIfInLocalPatches}
       >
         {R.map(({ id, label }) => (
           <PatchGroupItem
@@ -189,7 +180,7 @@ class ProjectBrowser2 extends React.Component {
             onDoubleClick={() => switchPatch(id)}
             isSelected={id === selectedPatchId}
             onClick={() => setSelection(id)}
-            hoverButtons={this.myPatchesHoveredButtons(id)}
+            hoverButtons={this.localPatchesHoveredButtons(id)}
           />
         ), R.values(patches))}
       </PatchGroup>
@@ -232,9 +223,9 @@ class ProjectBrowser2 extends React.Component {
       ? [PATCH_TYPE.MY, PATCH_TYPE.LIBRARY]
       : R.of(patchType);
 
-    // TODO: wrap in component with a custom scrollbar
+    // TODO: wrap in component with a custom scrollbar?
     return (
-      <div style={{ height: 400, overflow: 'scroll', backgroundColor: '#3d3d3d' }}>
+      <div className="patches-list">
         {rendererKeys.map(k => this.patchRenderers[k]())}
       </div>
     );
@@ -317,7 +308,7 @@ const mapStateToProps = (state) => {
       R.pipe(R.prop('id'), splitNames, R.head)
     ),
     R.values,
-    R.omit(userPatchIds(nodeTypes))
+    R.omit(listLocalPatchPaths(nodeTypes))
   )(nodeTypes);
 
   return {

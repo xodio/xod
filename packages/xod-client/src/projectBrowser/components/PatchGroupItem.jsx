@@ -23,7 +23,7 @@ const PatchGroupItem = (props) => {
   );
 
   return (
-    <div {...restProps} className={classNames} alt={label}>
+    <div {...restProps} className={classNames} title={label}>
       <div className="PatchGroupItem__label">
         {label}
       </div>
