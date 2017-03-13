@@ -124,10 +124,7 @@ const editorReducer = (state = {}, action) => {
           R.assoc('currentPatchId'),
           [
             R.compose( // get patch id from last of remaining tabs
-              R.unless(
-                R.isNil,
-                R.prop('patchId')
-              ),
+              R.propOr(null, 'patchId'),
               R.last,
               R.values,
               R.prop('tabs')
