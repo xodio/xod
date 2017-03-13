@@ -197,6 +197,10 @@ describe('Editor reducer', () => {
             id: '2',
             name: 'Second patch',
           },
+          3: {
+            id: '3',
+            name: 'Third patch',
+          },
         },
       },
       editor: {
@@ -205,6 +209,11 @@ describe('Editor reducer', () => {
           1: {
             id: '1',
             patchId: '1',
+            index: 0,
+          },
+          2: {
+            id: '2',
+            patchId: '2',
             index: 0,
           },
         },
@@ -228,15 +237,23 @@ describe('Editor reducer', () => {
     );
 
     it('should add new tab', () => {
-      store.dispatch(Actions.switchPatch(2));
+      store.dispatch(Actions.switchPatch('3'));
 
-      chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(2);
-      chai.expect(store.getState().editor.currentPatchId).to.be.equal(2);
+      chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(3);
+      chai.expect(store.getState().editor.currentPatchId).to.be.equal('3');
     });
-    it('should close the tab', () => {
+    it('should close a tab and switch to another one there are any left open', () => {
       store.dispatch(Actions.closeTab(1));
 
+      chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(1);
+      chai.expect(store.getState().editor.currentPatchId).to.be.equal('2');
+    });
+    it('should close the tab and set currentPatchId to null if that was the last tab', () => {
+      store.dispatch(Actions.closeTab(1));
+      store.dispatch(Actions.closeTab(2));
+
       chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(0);
+      chai.expect(store.getState().editor.currentPatchId).to.be.equal(null);
     });
     it('should sort tabs', () => true);
   });

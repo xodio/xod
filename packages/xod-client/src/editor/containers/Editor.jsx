@@ -61,23 +61,36 @@ class Editor extends React.Component {
   }
 
   render() {
+    const {
+      propsForInspector,
+      currentPatchId,
+    } = this.props;
+
+    const currentPatch = currentPatchId
+      ? (
+        <Patch
+          patchId={currentPatchId}
+          size={this.patchSize}
+          setModeCreating={this.setModeCreating}
+        />
+      )
+      : ( // TODO: some kind of welcome screen
+        <p>no open patch</p>
+      );
+
     return (
       <HotKeys handlers={this.getHotkeyHandlers()} className="Editor">
         <Sidebar>
           <ProjectBrowser />
           <Inspector
-            data={this.props.propsForInspector}
+            data={propsForInspector}
             onPropUpdate={this.onPropUpdate}
             onPinModeSwitch={this.onPinModeSwitch}
           />
         </Sidebar>
         <Workarea>
           <Tabs />
-          <Patch
-            patchId={this.props.currentPatchId}
-            size={this.patchSize}
-            setModeCreating={this.setModeCreating}
-          />
+          {currentPatch}
         </Workarea>
       </HotKeys>
     );
@@ -94,6 +107,12 @@ Editor.propTypes = {
 const mapStateToProps = (state) => {
   const project = core.getProject(state);
   const curPatchId = EditorSelectors.getCurrentPatchId(state);
+
+  if (!curPatchId) {
+    return {
+      currentPatchId: curPatchId,
+    };
+  }
 
   const derefNodes = core.dereferencedNodes(project, curPatchId);
   const derefLinks = core.dereferencedLinks(project, curPatchId);

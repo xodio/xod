@@ -43,7 +43,7 @@ const listLocalPatchPaths = R.compose(
   R.keys
 );
 
-class ProjectBrowser2 extends React.Component {
+class ProjectBrowser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -266,11 +266,11 @@ class ProjectBrowser2 extends React.Component {
   }
 }
 
-ProjectBrowser2.displayName = 'ProjectBrowser';
+ProjectBrowser.displayName = 'ProjectBrowser';
 
-ProjectBrowser2.propTypes = {
+ProjectBrowser.propTypes = {
   projectName: React.PropTypes.string.isRequired,
-  currentPatchId: React.PropTypes.string.isRequired,
+  currentPatchId: React.PropTypes.string,
   selectedPatchId: React.PropTypes.string,
   patches: React.PropTypes.object.isRequired,
   openPopups: React.PropTypes.object.isRequired,
@@ -344,4 +344,4 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectBrowser2);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectBrowser);
