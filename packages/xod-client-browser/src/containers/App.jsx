@@ -181,6 +181,7 @@ class App extends client.App {
         items.file,
         [
           onClick(items.newProject, this.showPopupCreateProject),
+          onClick(items.renameProject, this.props.actions.requestRenameProject),
           items.separator,
           importProject,
           onClick(items.exportProject, this.onExport),
@@ -309,6 +310,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     createProject: client.createProject,
+    requestRenameProject: client.requestRenameProject,
     loadProjectFromJSON: client.loadProjectFromJSON,
     setMode: client.setMode,
     addError: client.addError,

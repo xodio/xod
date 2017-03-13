@@ -4,4 +4,10 @@
     box-shadow: none;
     outline: none;
   }
+
+  .patches-list {
+    height: 400px;
+    overflow: scroll;
+    background-color: $sidebar-color-bg;
+  }
 }

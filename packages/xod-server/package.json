@@ -28,7 +28,7 @@
     "loopback-component-explorer": "^2.4.0",
     "loopback-connector-mongodb": "^1.15.2",
     "loopback-datasource-juggler": "^2.39.0",
-    "ramda": "^0.22.1",
+    "ramda": "^0.23.0",
     "serve-favicon": "^2.0.1",
     "strong-error-handler": "^1.0.1"
   },

@@ -194,61 +194,11 @@ export const deletePatch = id => ({
   },
 });
 
-export const movePatch = changes => ({
-  type: ActionType.PATCH_MOVE,
-  payload: {
-    id: changes.id,
-    folderId: changes.folderId,
-  },
-  meta: {
-    patchId: changes.id,
-  },
-});
-
 export const renameProject = name => ({
   type: ActionType.PROJECT_RENAME,
   payload: name,
 });
 
-export const addFolder = (name, parentId) => (dispatch, getState) => {
-  const projectState = core.getProject(getState());
-  const preparedData = PrepareTo.addFolder(projectState, name, parentId);
-  dispatch({
-    type: ActionType.FOLDER_ADD,
-    payload: preparedData,
-  });
-  return preparedData.newId;
-};
-
-export const renameFolder = (id, name) => ({
-  type: ActionType.FOLDER_RENAME,
-  payload: {
-    id,
-    name,
-  },
-});
-
-export const deleteFolder = id => (dispatch, getState) => {
-  const folders = core.getFoldersByFolderId(getState(), id);
-  const patches = core.getPatchesByFolderId(getState(), id);
-
-  folders.forEach(folder => dispatch(deleteFolder(folder.id)));
-  patches.forEach(patch => dispatch(deletePatch(patch.id)));
-  dispatch({
-    type: ActionType.FOLDER_DELETE,
-    payload: {
-      id,
-    },
-  });
-};
-
-export const moveFolder = changes => ({
-  type: ActionType.FOLDER_MOVE,
-  payload: {
-    id: changes.id,
-    parentId: changes.parentId,
-  },
-});
 
 export const updateNodeTypes = nodeTypes => ({
   type: ActionType.NODETYPES_UPDATE,

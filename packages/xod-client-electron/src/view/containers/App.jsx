@@ -285,6 +285,7 @@ class App extends client.App {
           onClick(items.newProject, this.showPopupCreateProject),
           onClick(items.openProject, this.onOpenProjectClicked),
           onClick(items.saveProject, this.onSaveProject),
+          onClick(items.renameProject, this.props.actions.requestRenameProject),
           onClick(items.selectWorkspace, this.showPopupSetWorkspace),
           items.separator,
           onClick(items.importProject, this.onImportClicked),
@@ -508,6 +509,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     createProject: client.createProject,
+    requestRenameProject: client.requestRenameProject,
     loadProjectFromJSON: client.loadProjectFromJSON,
     setMode: client.setMode,
     savePatch: actions.savePatch,

@@ -15,7 +15,7 @@
   "dependencies": {
     "babel-polyfill": "^6.16.0",
     "classnames": "^2.2.5",
-    "ramda": "^0.22.1",
+    "ramda": "^0.23.0",
     "rc-progress": "^2.0.6",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",

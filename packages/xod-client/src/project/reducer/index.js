@@ -5,7 +5,6 @@ import applyReducers from '../../utils/applyReducers';
 import meta from './meta';
 import patches, { newPatch } from './patches';
 import nodeTypes from './nodetypes';
-import foldersReducer from './folders';
 import { ApiHelpers, ApiActionTypes } from '../../api';
 import {
   PROJECT_CREATE,
@@ -19,7 +18,6 @@ export default (patchIds = []) => {
     meta,
     patches: patches(patchIds),
     nodeTypes,
-    folders: foldersReducer,
   };
 
   return (state = {}, action) => {

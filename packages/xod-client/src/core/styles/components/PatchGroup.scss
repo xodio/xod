@@ -1,0 +1,57 @@
+.PatchGroup {
+  background-color: $sidebar-color-bg;
+
+  &__contentInner {
+    border-top: 1px solid $sidebar-color-border;
+  }
+
+  &__trigger {
+    display: block;
+    font-family: $font-family-normal;
+    text-decoration: none;
+    position: relative;
+    border: 1px solid $sidebar-color-border;
+    border-bottom: none;
+    padding: 10px 10px 10px 30px;
+    color: $sidebar-color-text;
+    user-select: none;
+    cursor: pointer;
+
+    &:after {
+      font-family: 'FontAwesome';
+      content: '\f0da';
+      position: absolute;
+      right: 13px;
+      top: 12px;
+      display: block;
+      transition: transform 100ms;
+    }
+
+    &.my:before,
+    &.library:before {
+      font-family: 'FontAwesome';
+      font-size: 13px;
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      display: block;
+      content: '\f007'; // TODO: bg image
+    }
+
+    &.library:before {
+      content: '\f02d'; // TODO: bg image
+    }
+
+    &.is-open:after {
+      transform: rotateZ(90deg);
+    }
+
+    &.is-disabled {
+      opacity: 0.5;
+    }
+  }
+
+  &:last-child {
+    border-bottom: 1px solid $sidebar-color-border;
+  }
+}

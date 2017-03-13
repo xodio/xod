@@ -4,7 +4,9 @@
   overflow: hidden;
 
   font-size: $font-size-l;
-  margin: 0 8px 4px 8px;
+  padding: 3px;
+
+  background-color: $sidebar-color-bg;
 
   button {
     display: inline-block;
@@ -23,9 +25,10 @@
 
     cursor: pointer;
 
+    color: $sidebar-color-text;
+
     &:hover, &:focus {
-      color: $color-button-primary-background;
-      background: $color-button-primary-text;
+      color: $sidebar-color-text-hover;
     }
   }
 
@@ -34,9 +37,5 @@
   }
   &-right {
     float: right;
-  }
-
-  .fa-trash {
-    color: #900;
   }
 }
