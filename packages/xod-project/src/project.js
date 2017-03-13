@@ -416,6 +416,21 @@ export const rebasePatch = def(
 
 // =============================================================================
 //
+// Getters with traversing through project
+//
+// =============================================================================
+export const getNodePin = def(
+  'getNodePin :: PinKey -> Node -> Project -> Maybe Pin',
+  (pinKey, node, project) => R.compose(
+    R.chain(Patch.getPinByKey(pinKey)),
+    getPatchByPath(R.__, project),
+    Node.getNodeType
+  )(node)
+);
+
+
+// =============================================================================
+//
 // Virtual directories
 //
 // =============================================================================

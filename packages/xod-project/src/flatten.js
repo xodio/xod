@@ -1,13 +1,15 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 
+import { explode } from 'xod-func-tools';
+
 import * as CONST from './constants';
 import * as Project from './project';
 import * as Patch from './patch';
 import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
-import { explode, getCastPatchPath, formatString } from './utils';
+import { getCastPatchPath, formatString } from './utils';
 import { err, errOnNothing } from './func-tools';
 
 // =============================================================================

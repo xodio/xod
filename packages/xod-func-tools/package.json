@@ -1,30 +1,25 @@
 {
-  "name": "xod-project",
+  "name": "xod-func-tools",
   "version": "0.0.1",
-  "description": "API functions to work on XOD project state",
+  "description": "",
   "keywords": [],
+  "author": "",
   "license": "MIT",
   "main": "dist/index.js",
-  "repository": {},
   "scripts": {
     "doc": "documentation build --format html --output doc --sort-order alpha src/",
     "build": "babel src/ -d dist/",
     "dev": "npm run build -- --watch",
-    "test": "mocha test/**/*.spec.js",
-    "test:watch": "npm run test -- --watch"
+    "test": "mocha test/**/*.spec.js"
   },
   "dependencies": {
     "hm-def": "^0.1.2",
-    "ramda": "^0.23.0",
+    "ramda": "^0.22.1",
     "ramda-fantasy": "^0.7.0",
-    "sanctuary-def": "^0.9.0",
-    "shortid": "^2.2.6",
-    "xod-func-tools": "0.0.1"
+    "sanctuary-def": "^0.9.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "dirty-chai": "^1.2.2",
-    "documentation": "^4.0.0-beta12"
+    "chai": "^3.5.0"
   },
   "engines": {
     "node": "6.0.0"
