@@ -1,6 +1,7 @@
 import R from 'ramda';
 import React from 'react';
 import cn from 'classnames';
+import CustomScroll from 'react-custom-scroll';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Icon } from 'react-fa';
@@ -225,9 +226,11 @@ class ProjectBrowser extends React.Component {
 
     // TODO: wrap in component with a custom scrollbar?
     return (
-      <div className="patches-list">
-        {rendererKeys.map(k => this.patchRenderers[k]())}
-      </div>
+      <CustomScroll>
+        <div className="patches-list">
+          {rendererKeys.map(k => this.patchRenderers[k]())}
+        </div>
+      </CustomScroll>
     );
   }
 
