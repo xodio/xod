@@ -128,7 +128,6 @@ const placeConstNodesAndLinks = def(
         return R.compose(
           Project.setPinCurriedValue('VAL', value),
           Project.curryPin('VAL', true),
-          R.unnest,
           Project.createNode({ x: 0, y: 0 })
         )(type);
       },
