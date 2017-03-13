@@ -70,13 +70,6 @@ describe('Project reducer: ', () => {
           },
         },
       },
-      folders: {
-        1: {
-          id: '1',
-          parentId: null,
-          name: 'test',
-        },
-      },
     },
   };
 
@@ -400,55 +393,6 @@ describe('Project reducer: ', () => {
     });
   });
 
-  describe('Folders reducer', () => {
-    let store;
-    beforeEach(() => {
-      store = mockStore(projectShape);
-    });
-
-    it('should add folder without parentId', () => {
-      const newFolderId = store.dispatch(Actions.addFolder('Test folder'));
-      const folders = core.getFolders(store.getState());
-
-      chai.expect(R.keys(folders)).to.have.lengthOf(2);
-      chai.expect(folders[newFolderId].parentId).to.be.equal(null);
-    });
-
-    it('should add folder with correct parentId', () => {
-      const parentFolderId = '1';
-      const newFolderId = store.dispatch(Actions.addFolder('Test folder', parentFolderId));
-      const folders = core.getFolders(store.getState());
-
-      chai.expect(R.keys(folders)).to.have.lengthOf(2);
-      chai.expect(folders[newFolderId].parentId).to.be.equal(folders[parentFolderId].id);
-    });
-
-    it('should delete folder', () => {
-      store.dispatch(Actions.deleteFolder('1'));
-      const folders = core.getFolders(store.getState());
-
-      chai.expect(R.keys(folders)).to.have.lengthOf(0);
-    });
-
-    it('should move folder under another', () => {
-      const parentFolderId = '1';
-      const childFolderId = store.dispatch(Actions.addFolder('parent', parentFolderId));
-      store.dispatch(Actions.moveFolder({ id: childFolderId, parentId: null }));
-      const folders = core.getFolders(store.getState());
-
-      chai.expect(folders[childFolderId].parentId).to.be.equal(null);
-    });
-
-    it('should rename folder', () => {
-      const newFolderName = 'qwe123';
-      const lastFolderId = '1';
-      store.dispatch(Actions.renameFolder(lastFolderId, newFolderName));
-      const folders = core.getFolders(store.getState());
-
-      chai.expect(folders[lastFolderId].name).to.be.equal(newFolderName);
-    });
-  });
-
   describe('Patch reducer', () => {
     const mockState = projectShape;
     let store;
@@ -464,32 +408,12 @@ describe('Project reducer: ', () => {
       chai.expect(patches[newPatchId].folderId).to.be.equal(null);
     });
 
-    it('should add patch with correct folderId', () => {
-      const parentFolderId = '1';
-      const childPatchId = store.dispatch(Actions.addPatch('Test patch', parentFolderId));
-      const folders = core.getFolders(store.getState());
-      const patches = core.getPatches(store.getState());
-
-      chai.expect(R.keys(patches)).to.have.lengthOf(2);
-      chai.expect(patches[childPatchId].folderId).to.be.equal(folders[parentFolderId].id);
-    });
-
     it('should delete patch', () => {
       const lastPatchId = '@/1';
       store.dispatch(Actions.deletePatch(lastPatchId));
       const patches = core.getPatches(store.getState());
 
       chai.expect(R.keys(patches)).to.have.lengthOf(0);
-    });
-
-    it('should move patch under another folder', () => {
-      const lastPatchId = '@/1';
-      const rootFolderId = '1';
-      const parentFolderId = store.dispatch(Actions.addFolder('parent', rootFolderId));
-      store.dispatch(Actions.movePatch({ id: lastPatchId, folderId: parentFolderId }));
-      const patches = core.getPatches(store.getState());
-
-      chai.expect(patches[lastPatchId].folderId).to.be.equal(parentFolderId);
     });
 
     it('should rename patch', () => {
