@@ -12,22 +12,22 @@
     padding: 9px;
     text-align: center;
     cursor: pointer;
-    background-color: $project-browser-color-bg;
-    color: $project-browser-color-text;
+    background-color: $sidebar-color-bg-tabs;
+    color: $sidebar-color-text;
     font-family: $font-family-normal;
     font-size: $font-size-s;
     user-select: none;
-    border: 1px solid $project-browser-color-border;
+    border: 1px solid $sidebar-color-border;
     border-left: 0;
     border-bottom: 0;
 
     &:first-child {
-      border-left: 1px solid $project-browser-color-border;
+      border-left: 1px solid $sidebar-color-border;
     }
 
     &.selected {
-      background-color: $project-browser-color-bg-selected-tab;
-      color: $project-browser-color-text-selected-tab;
+      background-color: $sidebar-color-bg-tabs-selected;
+      color: $sidebar-color-text-selected-tab;
       cursor: default;
     }
   }

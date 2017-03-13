@@ -1,6 +1,6 @@
 .PatchGroupItem {
-  color: $project-browser-color-text;
-  background-color: $project-browser-color-bg-row;
+  color: $sidebar-color-text;
+  background-color: $sidebar-color-bg;
   padding: 8px;
   padding-left: 30px;
   user-select: none;
@@ -24,7 +24,7 @@
 
   &__hover-buttons {
     display: none;
-    background-color: $project-browser-color-bg-row-hover;
+    background-color: $sidebar-color-bg-hover;
     position: absolute;
     height: 100%;
     right: 0;
@@ -41,17 +41,17 @@
       height:     100%;
       top:        0;
       left:       -8px;
-      background: linear-gradient(to left, $project-browser-color-bg-row-hover, rgba(0, 0, 0, 0));
+      background: linear-gradient(to left, $sidebar-color-bg-hover, rgba(0, 0, 0, 0));
     }
   }
 
   &:nth-child(even) {
-    background-color: $project-browser-color-bg-row-even;
+    background-color: $sidebar-color-bg-even;
   }
 
   &:hover {
-    color: $project-browser-color-text-hover;
-    background-color: $project-browser-color-bg-row-hover;
+    color: $sidebar-color-text-hover;
+    background-color: $sidebar-color-bg-hover;
 
     .PatchGroupItem__hover-buttons {
       display: block;

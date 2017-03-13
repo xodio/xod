@@ -1,8 +1,8 @@
 .PatchGroup {
-  background-color: $project-browser-color-bg-row;
+  background-color: $sidebar-color-bg;
 
   &__contentInner {
-    border-top: 1px solid $project-browser-color-border;
+    border-top: 1px solid $sidebar-color-border;
   }
 
   &__trigger {
@@ -10,10 +10,10 @@
     font-family: $font-family-normal;
     text-decoration: none;
     position: relative;
-    border: 1px solid $project-browser-color-border;
+    border: 1px solid $sidebar-color-border;
     border-bottom: none;
     padding: 10px 10px 10px 30px;
-    color: $project-browser-color-text;
+    color: $sidebar-color-text;
     user-select: none;
     cursor: pointer;
 
@@ -52,6 +52,6 @@
   }
 
   &:last-child {
-    border-bottom: 1px solid $project-browser-color-border;
+    border-bottom: 1px solid $sidebar-color-border;
   }
 }
