@@ -283,6 +283,7 @@ ProjectBrowser2.propTypes = {
   selectedPatchId: React.PropTypes.string,
   patches: React.PropTypes.object.isRequired,
   openPopups: React.PropTypes.object.isRequired,
+  nodeTypes: React.PropTypes.object.isRequired,
   libs: React.PropTypes.object.isRequired,
   actions: React.PropTypes.shape({
     setSelectedNodeType: React.PropTypes.func.isRequired,

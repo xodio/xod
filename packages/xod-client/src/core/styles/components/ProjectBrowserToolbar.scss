@@ -4,7 +4,9 @@
   overflow: hidden;
 
   font-size: $font-size-l;
-  margin: 0 8px 4px 8px;
+  padding: 3px;
+
+  background-color: $project-browser-color-bg;
 
   button {
     display: inline-block;
@@ -23,9 +25,10 @@
 
     cursor: pointer;
 
+    color: $project-browser-color-text;
+
     &:hover, &:focus {
-      color: $color-button-primary-background;
-      background: $color-button-primary-text;
+      color: $project-browser-color-text-hover;
     }
   }
 
