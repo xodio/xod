@@ -6,6 +6,7 @@ import { runCommand } from './utils';
 import * as ab from './xodc-ab';
 import generateDoc from './xodc-doc';
 import pack from './xodc-pack';
+import publish from './xodc-publish';
 import transpile from './xodc-transpile';
 import unpack from './xodc-unpack';
 import migrate from './xodc-migrate';
@@ -21,6 +22,7 @@ Usage:
   xodc migrate <input> <output>
   xodc transpile [--output=<filename>] [--target=<target>] <input> <path>
   xodc doc [--clear] <outputDir> <templatesDir> <projectDir>
+  xodc publish <swaggerUrl> <libraryId> <libVersion>
   xodc ab set-executable <path>
   xodc ab set-packages <path>
   xodc ab list-index
@@ -37,6 +39,7 @@ Commands:
   migrate               Migrate project into new version.
   transpile             Transpile project into device runtime.
   doc                   Generate doc for project.
+  publish               Publish a new library version.
   ab set-executable     Set path to Arduino IDE executable.
   ab set-packages       Set path to Arduino IDE packages.
   ab list-inde          List the raw official Arduino package index.
@@ -59,6 +62,7 @@ const programs = {
   transpile: o => transpile(o['<input>'], o['<path>'], { target: o['--target'], output: o['--output'] }),
   migrate: o => migrate(o['<input>'], o['<output>']),
   doc: o => generateDoc(o['<outputDir>'], o['<templatesDir>'], o['<projectDir>'], { clear: o['--clear'] }),
+  publish: o => publish(o['<swaggerUrl>'], o['<libraryId>'], o['<libVersion>']),
   ab: o => runCommand(o, {
     'set-executable': () => ab.setExecutable(o['<path>']),
     'set-packages': () => ab.setPackages(o['<path>']),
