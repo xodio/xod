@@ -13,6 +13,7 @@ import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
 import * as BrowserUtils from './utils/browser';
 import * as MenuUtils from './utils/menu';
+import sanctuaryPropType from './utils/sanctuaryPropType';
 
 import App from './core/containers/App';
 import Root from './core/containers/Root';
@@ -40,6 +41,7 @@ export { getUpload } from './processes/selectors';
 
 export * from './utils/browser';
 export * from './utils/constants';
+export { default as sanctuaryPropType } from './utils/sanctuaryPropType';
 
 export { default as PopupShowCode } from './utils/components/PopupShowCode';
 export { default as PopupAlert } from './utils/components/PopupAlert';
@@ -71,6 +73,7 @@ export default Object.assign({
   DevTools,
   Toolbar,
   menu: MenuUtils,
+  sanctuaryPropType,
 },
   UtilsSelectors,
   EditorSelectors,
