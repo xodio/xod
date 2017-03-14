@@ -16,20 +16,20 @@ function j(object) {
 
 export default function publish(swaggerUrl, libraryId, libVersion) {
   run(new Swagger({ url: swaggerUrl, usePromise: true }).then(
-    client =>
+    (client) =>
       client.Library.readLibrary({ id: libraryId })
-        .catch(error =>
-          Promise.reject(`could not find library {id: ${libraryId}}.\nResponse: ${j(error.errObj)}`)
+        .catch((error) =>
+          Promise.reject(`could not find library {id: ${libraryId}}.\nResponse: ${j(error.errObj)}`),
         )
         .then(() =>
           client.Library.createLibVersion({ id: libraryId, libVersion })
-            .then(value =>
-              `successfully created new version for library {id: ${libraryId}}.\nNew version: ${j(value.obj)}`
+            .then((value) =>
+              `successfully created new version for library {id: ${libraryId}}.\nNew version: ${j(value.obj)}`,
             )
-            .catch(error =>
-              Promise.reject(`could not create new version for library {id: ${libraryId}}.\nResponse: ${j(error.errObj)}`)
-            )
+            .catch((error) =>
+              Promise.reject(`could not create new version for library {id: ${libraryId}}.\nResponse: ${j(error.errObj)}`),
+            ),
         ),
-    () => Promise.reject(`could not find swagger file at ${swaggerUrl}`)
+    (error) => Promise.reject(`could not find swagger file at ${swaggerUrl}`),
   ));
-}
+};
