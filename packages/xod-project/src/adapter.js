@@ -19,6 +19,17 @@ const apOrSkip = R.curry((maybeFn, val) => {
   const result = maybeFn.ap(maybeVal);
   return Maybe.isJust(result) ? result : maybeVal;
 });
+
+// TODO: is there a more idiomatic way to do this sort of stuff?
+// :: Maybe (a -> a) -> a -> a
+// example: maybeApply(Maybe(f), x)
+//   will return f(x) if Maybe(f) is Just f
+//   or will just return x if Maybe(f) is Nothing
+const maybeApply = R.curry((maybeFn, val) => {
+  const maybeResult = maybeFn.ap(Maybe.of(val));
+  return Maybe.maybe(val, R.identity, maybeResult);
+});
+
 // :: a -> Maybe a
 const maybeEmpty = R.ifElse(
   R.isEmpty,
@@ -243,6 +254,12 @@ const appendAuthor = R.compose(
   R.path(['meta', 'author'])
 );
 
+// :: ProjectOld -> (Project -> Project)
+const appendProjectName = R.compose(
+  R.assoc('name'),
+  R.pathOr('', ['meta', 'name'])
+);
+
 // :: Patch -> Pin[]
 const getCustomPinsOnly = R.compose(
   R.reject(R.has('nodeId')),
@@ -311,8 +328,10 @@ const convertPatches = R.compose(
  * @returns {Project}
  */
 export const toV2 = bundle =>
-  Maybe.of(Project.createProject())
-    .chain(apOrSkip(appendAuthor(bundle)))
-    .map(convertPatches(bundle))
-    .map(convertLinksInPatches(bundle))
-    .chain(R.identity);
+  R.compose(
+    convertLinksInPatches(bundle),
+    convertPatches(bundle),
+    appendProjectName(bundle),
+    maybeApply(appendAuthor(bundle))
+  )(Project.createProject());
+

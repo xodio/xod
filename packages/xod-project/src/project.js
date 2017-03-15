@@ -28,6 +28,7 @@ export const createProject = () => ({
   description: '',
   license: '',
   patches: {},
+  name: '',
 });
 
 /**

@@ -92,15 +92,20 @@ describe('Adapters', () => {
       bundleV2 = toV2(bundleV1);
     });
 
-    it('should have keys [authors, description, license, patches]', () => {
+    it('should have keys [authors, description, license, name, patches]', () => {
       expect(toV2({}))
         .to.be.an('object')
-        .and.have.all.keys('authors', 'description', 'license', 'patches');
+        .and.have.all.keys('authors', 'description', 'license', 'name', 'patches');
     });
     it('should have an author in authors array', () => {
       expect(bundleV2)
         .to.have.property('authors')
         .that.contains(bundleV1.meta.author);
+    });
+    it('should have a project name', () => {
+      expect(bundleV2)
+        .to.have.property('name')
+        .that.equals(bundleV1.meta.name);
     });
     it('should have the same patches', () => {
       const patchKeys = R.compose(

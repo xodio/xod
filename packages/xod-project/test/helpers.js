@@ -136,5 +136,6 @@ export const defaultizeProject = R.compose(
     license: '',
     description: '',
     patches: {},
+    name: '',
   })
 );
