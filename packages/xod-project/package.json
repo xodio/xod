@@ -10,7 +10,8 @@
     "doc": "documentation build --format html --output doc --sort-order alpha src/",
     "build": "babel src/ -d dist/",
     "dev": "npm run build -- --watch",
-    "test": "mocha test/**/*.spec.js"
+    "test": "mocha test/**/*.spec.js",
+    "test:watch": "npm run test -- --watch"
   },
   "dependencies": {
     "hm-def": "^0.1.2",

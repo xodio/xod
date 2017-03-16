@@ -28,7 +28,18 @@ export const createProject = () => ({
   description: '',
   license: '',
   patches: {},
+  name: '',
 });
+
+/**
+ * @function getProjectName
+ * @param {Project} project
+ * @returns {string}
+ */
+export const getProjectName = def(
+  'getProjectName :: Project -> String',
+  R.prop('name')
+);
 
 /**
  * @function getProjectDescription

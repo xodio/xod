@@ -154,6 +154,7 @@ export const Patch = Model('Patch', {
 
 export const Project = Model('Project', {
   patches: $.StrMap(Patch),
+  name: $.String,
   authors: $.Array($.String),
   license: $.String,
   description: $.String,
