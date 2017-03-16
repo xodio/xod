@@ -1,6 +1,8 @@
 import R from 'ramda';
 import { Either } from 'ramda-fantasy';
 
+import { PIN_DIRECTION, PIN_TYPE } from '../src/constants';
+
 export const expectEither = R.curry((testFunction, object) => {
   Either.either(
     (err) => { throw err; },
@@ -104,9 +106,9 @@ export const defaultizeNode = R.merge({
 
 export const defaultizePin = R.merge({
   key: '$$defaultPinKey',
-  direction: '$$defaultDirection',
+  direction: PIN_DIRECTION.INPUT,
   label: '$$defaultLabel',
-  type: 'number',
+  type: PIN_TYPE.NUMBER,
   value: 0,
   order: 0,
   description: '$$defaultDesription',

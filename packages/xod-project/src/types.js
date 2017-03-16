@@ -35,9 +35,7 @@ const EnumType = (typeName, values) => $.EnumType(
 );
 
 // :: Type -> Any -> Boolean
-// To keep checking fast we have to call private method of $.Type
-// eslint-disable-next-line no-underscore-dangle
-const hasType = type => x => type._test(x);
+const hasType = type => x => type.validate(x).isRight;
 
 // :: [Type] -> (Any -> Boolean)
 const hasOneOfType = types => R.anyPass(
