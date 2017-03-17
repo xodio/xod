@@ -803,8 +803,7 @@ describe('Flatten', () => {
 
     it('should correctly flatten blinking.v2.json', () => {
       const flattened = R.unnest(flatten(blinkingV2, '@/main', ['espruino', 'js']));
-      const expected = Helper.insertPatchPaths(blinkingFlat);
-      expect(flattened).to.deep.equal(expected);
+      expect(flattened).to.deep.equal(blinkingFlat);
     });
   });
 

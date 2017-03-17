@@ -126,6 +126,7 @@ export const defaultizePatch = R.compose(
     links: {},
     impls: {},
     pins: {},
+    path: '',
   })
 );
 

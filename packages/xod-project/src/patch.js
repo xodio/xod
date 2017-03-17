@@ -29,6 +29,7 @@ export const createPatch = () => ({
   links: {},
   impls: {},
   pins: {},
+  path: '',
 });
 
 /**
