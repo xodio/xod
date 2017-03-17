@@ -308,7 +308,10 @@ export const assocPatch = def(
   (path, patch, project) =>
     Utils.validatePath(path).chain(
       validPath => validatePatchContents(patch, project).map(
-        R.assocPath(['patches', validPath], R.__, project)
+        R.compose(
+          R.assocPath(['patches', validPath], R.__, project),
+          R.assoc('path', validPath)
+        )
       )
     )
 );
@@ -383,7 +386,7 @@ export const rebasePatch = def(
     validatePatchRebase(newPath, oldPath, project)
       .map(
         (proj) => {
-          const patch = getPatchByPath(oldPath, proj);
+          const patch = getPatchByPath(oldPath, proj).map(R.assoc('path', newPath));
           const assocThatPatch = patch.chain(R.assocPath(['patches', newPath]));
 
           // TODO: Think about refactoring that piece of code :-D

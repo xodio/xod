@@ -11,12 +11,15 @@ import blinkingFlat from './fixtures/blinking.flat.json';
 
 chai.use(dirtyChai);
 
+const makeDummyProject = R.compose(Helper.insertPatchPaths, Helper.defaultizeProject);
+
 describe('Flatten', () => {
   describe('extractPatches', () => {
     it('correct flattening structure for trivial project', () => {
-      const project = Helper.defaultizeProject({
+      const project = makeDummyProject({
         patches: {
           '@/main': {
+            path: '@/main',
             nodes: {
               a: {
                 id: 'a',
@@ -44,6 +47,7 @@ describe('Flatten', () => {
             },
           },
           'xod/core/or': {
+            path: 'xod/core/or',
             nodes: {},
             links: {},
             pins: {
@@ -84,7 +88,7 @@ describe('Flatten', () => {
       ]);
     });
     it('correct flattening structure for nested project', () => {
-      const project = Helper.defaultizeProject({
+      const project = makeDummyProject({
         patches: {
           '@/main': {
             nodes: {
@@ -299,7 +303,7 @@ describe('Flatten', () => {
       ]);
     });
     it('correctly pinned nodes', () => {
-      const project = Helper.defaultizeProject({
+      const project = makeDummyProject({
         patches: {
           '@/main': {
             nodes: {
@@ -432,7 +436,7 @@ describe('Flatten', () => {
   });
 
   describe('trivial', () => {
-    const project = Helper.defaultizeProject({
+    const project = makeDummyProject({
       patches: {
         '@/main': {
           nodes: {
@@ -560,7 +564,7 @@ describe('Flatten', () => {
   });
 
   describe('recursive', () => {
-    const project = Helper.defaultizeProject({
+    const project = makeDummyProject({
       patches: {
         '@/main': {
           nodes: {
@@ -799,7 +803,8 @@ describe('Flatten', () => {
 
     it('should correctly flatten blinking.v2.json', () => {
       const flattened = R.unnest(flatten(blinkingV2, '@/main', ['espruino', 'js']));
-      expect(flattened).to.deep.equal(blinkingFlat);
+      const expected = Helper.insertPatchPaths(blinkingFlat);
+      expect(flattened).to.deep.equal(expected);
     });
   });
 
@@ -822,7 +827,7 @@ describe('Flatten', () => {
     };
 
     describe('no links to terminal', () => {
-      const project = Helper.defaultizeProject({
+      const project = makeDummyProject({
         patches: {
           '@/main': {
             nodes: {
@@ -913,7 +918,7 @@ describe('Flatten', () => {
     describe('through output terminal', () => {
       const createCastOutputTest = (typeIn, typeOut) => {
         it(`${typeIn} -> ${getCastPatchPath(typeIn, typeOut)} -> ${typeOut}`, () => {
-          const project = Helper.defaultizeProject({
+          const project = makeDummyProject({
             patches: {
               '@/main': {
                 nodes: {
@@ -1070,7 +1075,7 @@ describe('Flatten', () => {
     describe('through input terminal', () => {
       const createCastInputTest = (typeIn, typeOut) => {
         it(`${typeIn} -> ${getCastPatchPath(typeIn, typeOut)} -> ${typeOut}`, () => {
-          const project = Helper.defaultizeProject({
+          const project = makeDummyProject({
             patches: {
               '@/main': {
                 nodes: {
@@ -1236,7 +1241,7 @@ describe('Flatten', () => {
     describe('three different types', () => {});
 
     describe('with same types', () => {
-      const project = Helper.defaultizeProject({
+      const project = makeDummyProject({
         patches: {
           '@/main': {
             nodes: {
@@ -1381,7 +1386,7 @@ describe('Flatten', () => {
     });
 
     describe('needed, but missing in the project', () => {
-      const project = Helper.defaultizeProject({
+      const project = makeDummyProject({
         patches: {
           '@/main': {
             nodes: {
@@ -1461,7 +1466,7 @@ describe('Flatten', () => {
 
   describe('curried pins', () => {
     it('should return original (unnested) nodes with curried pins', () => {
-      const project = Helper.defaultizeProject({
+      const project = makeDummyProject({
         patches: {
           '@/main': {
             nodes: {
@@ -1558,7 +1563,7 @@ describe('Flatten', () => {
     });
 
     it('should return cast-nodes with curried pins', () => {
-      const project = Helper.defaultizeProject({
+      const project = makeDummyProject({
         patches: {
           '@/main': {
             nodes: {
@@ -1812,7 +1817,7 @@ describe('Flatten', () => {
   });
 
   describe('implementations', () => {
-    const project = Helper.defaultizeProject({
+    const project = makeDummyProject({
       patches: {
         '@/main': {
           nodes: {
