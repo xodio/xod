@@ -10,6 +10,10 @@ import EventListener from 'react-event-listener';
 
 import core from 'xod-core';
 import client from 'xod-client';
+import {
+  getProjectName,
+  getProjectAuthors
+} from 'xod-project';
 
 import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
@@ -59,7 +63,6 @@ class App extends client.App {
     this.onSaveProject = this.onSaveProject.bind(this);
     this.onOpenProjectClicked = this.onOpenProjectClicked.bind(this);
 
-    this.onSelectNodeType = this.onSelectNodeType.bind(this);
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
@@ -175,7 +178,7 @@ class App extends client.App {
   }
 
   onExport() {
-    const projectName = this.props.meta.name;
+    const projectName = getProjectName(this.props.projectV2);
     const link = (document) ? document.createElement('a') : null;
     const url = `data:application/xod;charset=utf8,${encodeURIComponent(this.props.projectJSON)}`;
 
@@ -227,10 +230,6 @@ class App extends client.App {
         json: this.props.projectJSON,
       });
     }
-  }
-
-  onSelectNodeType(typeKey) {
-    this.props.actions.setSelectedNodeType(typeKey);
   }
 
   onAddNodeClick() {
@@ -425,11 +424,8 @@ class App extends client.App {
           onBeforeUnload={this.onCloseApp}
         />
         <client.Toolbar
-          meta={this.props.meta}
-          nodeTypes={this.props.nodeTypes}
-          selectedNodeType={this.props.selectedNodeType}
-          onSelectNodeType={this.onSelectNodeType}
-          onAddNodeClick={this.onAddNodeClick}
+          projectName={getProjectName(this.props.projectV2)}
+          projectAuthors={getProjectAuthors(this.props.projectV2)}
         />
         <client.Editor size={this.state.size} />
         <client.SnackBar />
@@ -451,7 +447,7 @@ class App extends client.App {
           onClose={this.hidePopupCreateProject}
         >
           <p>
-          Please, give a sonorous name to your project:
+            Please, give a sonorous name to your project:
           </p>
         </client.PopupPrompt>
         <PopupSetWorkspace
@@ -472,20 +468,15 @@ class App extends client.App {
   }
 }
 
-App.propTypes = {
+App.propTypes = R.merge(client.App.propTypes, {
   hasChanges: React.PropTypes.bool,
-  project: React.PropTypes.object,
   projects: React.PropTypes.object,
   projectJSON: React.PropTypes.string,
-  meta: React.PropTypes.object,
-  nodeTypes: React.PropTypes.any.isRequired,
-  selectedNodeType: React.PropTypes.string,
   actions: React.PropTypes.objectOf(React.PropTypes.func),
   upload: React.PropTypes.object,
   workspace: React.PropTypes.string,
   saveProcess: React.PropTypes.object,
-  currentPatchId: React.PropTypes.string,
-};
+});
 
 const mapStateToProps = (state) => {
   const processes = client.getProccesses(state);
@@ -493,12 +484,9 @@ const mapStateToProps = (state) => {
 
   return ({
     hasChanges: client.projectHasChanges(state),
-    project: core.getProjectPojo(state),
     projects: getProjects(state),
+    projectV2: client.getProjectV2(state),
     projectJSON: core.getProjectJSON(state),
-    meta: core.getMeta(state),
-    nodeTypes: core.dereferencedNodeTypes(state),
-    selectedNodeType: client.getSelectedNodeType(state),
     upload: getUploadProcess(state),
     workspace: getWorkspace(settings),
     saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),
@@ -518,7 +506,6 @@ const mapDispatchToProps = dispatch => ({
     loadProject: actions.loadProject,
     upload: uploadActions.upload,
     addError: client.addError,
-    setSelectedNodeType: client.setSelectedNodeType,
     deleteProcess: client.deleteProcess,
     createPatch: client.requestCreatePatch,
     undoCurrentPatch: client.undoCurrentPatch,

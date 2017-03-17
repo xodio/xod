@@ -7,6 +7,10 @@ import { HotKeys } from 'react-hotkeys';
 
 import core from 'xod-core';
 import client from 'xod-client';
+import {
+  getProjectName,
+  getProjectAuthors
+} from 'xod-project';
 
 import PopupInstallApp from '../components/PopupInstallApp';
 
@@ -76,7 +80,7 @@ class App extends client.App {
     reader.readAsText(file);
   }
 
-  onImport(json) {
+  onImport(json) { // TODO: #migrateToV2
     let project;
     let validJSON = true;
     let errorMessage = null;
@@ -254,11 +258,8 @@ class App extends client.App {
           onBeforeUnload={this.onCloseApp}
         />
         <client.Toolbar
-          meta={this.props.meta}
-          nodeTypes={this.props.nodeTypes}
-          selectedNodeType={this.props.selectedNodeType}
-          onSelectNodeType={this.onSelectNodeType}
-          onAddNodeClick={this.onAddNodeClick}
+          projectName={getProjectName(this.props.projectV2)}
+          projectAuthors={getProjectAuthors(this.props.projectV2)}
           menuBarItems={this.getMenuBarItems()}
         />
         <client.Editor size={this.state.size} />
@@ -281,7 +282,7 @@ class App extends client.App {
           onClose={this.hidePopupCreateProject}
         >
           <p>
-          Please, give a sonorous name to yor project:
+            Please, give a sonorous name to yor project:
           </p>
         </client.PopupPrompt>
       </HotKeys>
@@ -289,25 +290,19 @@ class App extends client.App {
   }
 }
 
-App.propTypes = {
+App.propTypes = R.merge(client.App.propTypes, {
   hasChanges: React.PropTypes.bool,
-  project: React.PropTypes.object,
   projectJSON: React.PropTypes.string,
-  currentPatchId: React.PropTypes.string,
-  meta: React.PropTypes.object,
-  nodeTypes: React.PropTypes.any.isRequired,
-  selectedNodeType: React.PropTypes.string,
   actions: React.PropTypes.object,
-};
+});
 
 const mapStateToProps = state => ({
-  hasChanges: client.projectHasChanges(state),
-  project: core.getProjectPojo(state),
-  projectJSON: core.getProjectJSON(state),
+  // TODO: reimplement when new undo/redo is ready #migrateToV2
+  hasChanges: false, // client.projectHasChanges(state),
+  projectV2: client.getProjectV2(state),
+  // TODO: now it is just JSON.stringify(project, null, 2)
+  projectJSON: core.getProjectJSON(state), // TODO: #migrateToV2
   currentPatchId: client.getCurrentPatchId(state),
-  meta: core.getMeta(state),
-  nodeTypes: core.dereferencedNodeTypes(state),
-  selectedNodeType: client.getSelectedNodeType(state),
 });
 
 const mapDispatchToProps = dispatch => ({
