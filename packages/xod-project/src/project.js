@@ -128,6 +128,13 @@ export const validateProject = Either.of;
 const getPatches = R.prop('patches');
 
 /**
+ * @function lensPatch
+ * @param {String} patchId
+ * @returns {Lens} a Ramda lens whose focus is a patch with the specified id.
+ */
+export const lensPatch = patchId => R.lensPath(['patches', patchId]);
+
+/**
  * @function listPatches
  * @param {Project} project - project bundle
  * @returns {Patch[]} list of all patches not sorted in any arbitrary order
