@@ -48,6 +48,9 @@ export const find = R.curry(R.compose(
   R.find
 ));
 
+// :: (a -> Either l a) -> a -> a
+export const rightOrInitial = R.curry((f, x) => Either.either(R.always(x), R.identity, f(x)));
+
 //
 // Functions with Either monad
 //
