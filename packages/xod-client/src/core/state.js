@@ -1,7 +1,10 @@
+import R from 'ramda';
+import { toV2 } from 'xod-project';
+import core from 'xod-core';
+
 import editorState from '../editor/state';
 import projectState from '../project/state';
 import projectBrowserState from '../projectBrowser/state';
-
 
 const initialState = {
   project: projectState,
@@ -11,4 +14,8 @@ const initialState = {
   processes: {},
 };
 
-export default initialState;
+export default R.assoc( // TODO: #migrateToV2
+  'projectV2',
+  toV2(core.getProjectPojo(initialState)),
+  initialState
+);

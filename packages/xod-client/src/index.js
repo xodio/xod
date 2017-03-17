@@ -1,6 +1,7 @@
 import * as EditorSelectors from './editor/selectors';
 import * as UtilsSelectors from './utils/selectors';
 import * as ProcessSelectors from './processes/selectors';
+import * as ProjectSelectors from './project/selectors';
 
 import * as CoreActions from './core/actions';
 import * as EditorActions from './editor/actions';
@@ -38,6 +39,7 @@ export * from './projectBrowser/actions';
 export * from './editor/selectors';
 export * from './utils/selectors';
 export { getUpload } from './processes/selectors';
+export * from './project/selectors';
 
 export * from './utils/browser';
 export * from './utils/constants';
@@ -78,6 +80,7 @@ export default Object.assign({
   UtilsSelectors,
   EditorSelectors,
   ProcessSelectors,
+  ProjectSelectors,
 
   CoreActions,
   EditorActions,

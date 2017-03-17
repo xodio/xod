@@ -2,6 +2,7 @@ import { merge } from 'ramda';
 import { combineReducers } from 'redux';
 
 import projectReducer from '../project/reducer';
+import projectV2Reducer from '../project/reducerV2';
 import projectBrowserReducer from '../projectBrowser/reducer';
 import editorReducer from '../editor/reducer';
 import errorsReducer from '../messages/reducer';
@@ -12,6 +13,7 @@ const combineRootReducers = (patchIds, extraReducers) => {
   const reducers = merge(
     {
       project: projectReducer(patchIds),
+      projectV2: projectV2Reducer, // TODO: #migrateToV2
       projectBrowser: projectBrowserReducer,
       editor: editorReducer,
       errors: errorsReducer,
@@ -24,7 +26,6 @@ const combineRootReducers = (patchIds, extraReducers) => {
   return combineReducers(reducers);
 };
 
-export const createReducer = (patchIds, extraReducers) =>
-  combineRootReducers(patchIds, extraReducers);
+export const createReducer = combineRootReducers;
 
 export default createReducer;

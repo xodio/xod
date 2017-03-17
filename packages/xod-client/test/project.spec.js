@@ -11,7 +11,14 @@ import * as PrepareTo from '../src/project/actionPreparations';
 function pin(nodeId, pinKey) {
   return { nodeId, pinKey };
 }
-const mockStore = state => createStore(generateReducers(['@/1']), state, applyMiddleware(thunk));
+const overrideProjectV2Reducer = {
+  projectV2: R.always({}),
+};
+const mockStore = state => createStore(
+  generateReducers(['@/1'], overrideProjectV2Reducer),
+  state,
+  applyMiddleware(thunk)
+);
 const getNodeTypes = state => core.dereferencedNodeTypes(state);
 
 describe('Project reducer: ', () => {
@@ -71,6 +78,7 @@ describe('Project reducer: ', () => {
         },
       },
     },
+    projectV2: {},
   };
 
   describe('Create new project', () => {
