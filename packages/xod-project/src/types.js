@@ -148,6 +148,7 @@ export const Patch = Model('Patch', {
   links: $.StrMap(Link),
   impls: $.StrMap(Source),
   pins: $.StrMap(Pin),
+  path: PatchPath,
 });
 
 export const Project = Model('Project', {

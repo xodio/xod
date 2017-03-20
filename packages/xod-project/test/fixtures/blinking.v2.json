@@ -7,6 +7,7 @@
   "license": "",
   "patches": {
     "xod/math/subtrac": {
+      "path": "xod/math/subtrac",
       "nodes": {},
       "links": {},
       "impls": {
@@ -43,6 +44,7 @@
       }
     },
     "xod/math/multiply": {
+      "path": "xod/math/multiply",
       "nodes": {},
       "links": {},
       "impls": {
@@ -79,6 +81,7 @@
       }
     },
     "xod/math/divide": {
+      "path": "xod/math/divide",
       "nodes": {},
       "links": {},
       "impls": {
@@ -115,6 +118,7 @@
       }
     },
     "xod/math/add": {
+      "path": "xod/math/add",
       "nodes": {},
       "links": {},
       "impls": {
@@ -151,6 +155,7 @@
       }
     },
     "xod/core/valveNumber": {
+      "path": "xod/core/valveNumber",
       "nodes": {},
       "links": {},
       "impls": {
@@ -188,6 +193,7 @@
       "label": "valveNumber"
     },
     "xod/core/triggerableNumber": {
+      "path": "xod/core/triggerableNumber",
       "nodes": {},
       "links": {},
       "impls": {
@@ -225,6 +231,7 @@
       "label": "triggerableNumber"
     },
     "xod/core/ultrasonic_HC_SR04": {
+      "path": "xod/core/ultrasonic_HC_SR04",
       "nodes": {},
       "links": {},
       "impls": {
@@ -271,6 +278,7 @@
       "label": "HC-SR04"
     },
     "xod/core/time": {
+      "path": "xod/core/time",
       "nodes": {},
       "links": {},
       "impls": {
@@ -299,6 +307,7 @@
       "label": "Time"
     },
     "xod/core/stdout": {
+      "path": "xod/core/stdout",
       "nodes": {},
       "links": {},
       "impls": {
@@ -318,6 +327,7 @@
       "label": "stdout"
     },
     "xod/core/split_bool": {
+      "path": "xod/core/split_bool",
       "nodes": {},
       "links": {},
       "impls": {
@@ -355,6 +365,7 @@
       "label": "Split"
     },
     "xod/core/servo": {
+      "path": "xod/core/servo",
       "nodes": {},
       "links": {},
       "impls": {
@@ -391,6 +402,7 @@
       }
     },
     "xod/core/outputString": {
+      "path": "xod/core/outputString",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -408,6 +420,7 @@
       "label": "<OutputString>"
     },
     "xod/core/outputNumber": {
+      "path": "xod/core/outputNumber",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -425,6 +438,7 @@
       "label": "<OutputNumber>"
     },
     "xod/core/pot": {
+      "path": "xod/core/pot",
       "nodes": {},
       "links": {},
       "impls": {
@@ -452,6 +466,7 @@
       }
     },
     "xod/core/outputPulse": {
+      "path": "xod/core/outputPulse",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -469,6 +484,7 @@
       "label": "<OutputPulse>"
     },
     "xod/core/outputBool": {
+      "path": "xod/core/outputBool",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -486,6 +502,7 @@
       "label": "<OutputBool>"
     },
     "xod/core/or": {
+      "path": "xod/core/or",
       "nodes": {},
       "links": {},
       "impls": {
@@ -523,6 +540,7 @@
       "label": "or"
     },
     "xod/core/not": {
+      "path": "xod/core/not",
       "nodes": {},
       "links": {},
       "impls": {
@@ -551,6 +569,7 @@
       "label": "not"
     },
     "xod/core/less": {
+      "path": "xod/core/less",
       "nodes": {},
       "links": {},
       "impls": {
@@ -587,6 +606,7 @@
       }
     },
     "xod/core/map": {
+      "path": "xod/core/map",
       "nodes": {},
       "links": {},
       "impls": {
@@ -659,6 +679,7 @@
       }
     },
     "xod/core/inputString": {
+      "path": "xod/core/inputString",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -676,6 +697,7 @@
       "label": "<InputString>"
     },
     "xod/core/latch": {
+      "path": "xod/core/latch",
       "nodes": {},
       "links": {},
       "impls": {
@@ -721,6 +743,7 @@
       }
     },
     "xod/core/led": {
+      "path": "xod/core/led",
       "nodes": {},
       "links": {},
       "impls": {
@@ -740,6 +763,7 @@
       "label": "LED"
     },
     "xod/core/inputPulse": {
+      "path": "xod/core/inputPulse",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -757,6 +781,7 @@
       "label": "<InputPulse>"
     },
     "xod/core/inputBool": {
+      "path": "xod/core/inputBool",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -774,6 +799,7 @@
       "label": "<InputBool>"
     },
     "xod/core/inputNumber": {
+      "path": "xod/core/inputNumber",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -791,6 +817,7 @@
       "label": "<InputNumber>"
     },
     "xod/core/file_write": {
+      "path": "xod/core/file_write",
       "nodes": {},
       "links": {},
       "impls": {
@@ -837,6 +864,7 @@
       "label": "File write"
     },
     "xod/core/greater": {
+      "path": "xod/core/greater",
       "nodes": {},
       "links": {},
       "impls": {
@@ -873,6 +901,7 @@
       }
     },
     "xod/core/file_read": {
+      "path": "xod/core/file_read",
       "nodes": {},
       "links": {},
       "impls": {
@@ -919,6 +948,7 @@
       "label": "File read"
     },
     "xod/core/digital_output": {
+      "path": "xod/core/digital_output",
       "nodes": {},
       "links": {},
       "impls": {
@@ -946,6 +976,7 @@
       }
     },
     "xod/core/equal": {
+      "path": "xod/core/equal",
       "nodes": {},
       "links": {},
       "impls": {
@@ -982,6 +1013,7 @@
       }
     },
     "xod/core/digital_input": {
+      "path": "xod/core/digital_input",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1009,6 +1041,7 @@
       }
     },
     "xod/core/either": {
+      "path": "xod/core/either",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1054,6 +1087,7 @@
       }
     },
     "xod/core/constString": {
+      "path": "xod/core/constString",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1091,6 +1125,7 @@
       "label": "<String>"
     },
     "xod/core/constNumber": {
+      "path": "xod/core/constNumber",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1128,6 +1163,7 @@
       "label": "<Number>"
     },
     "xod/core/concat": {
+      "path": "xod/core/concat",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1165,6 +1201,7 @@
       "label": "concat"
     },
     "xod/core/clock": {
+      "path": "xod/core/clock",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1192,6 +1229,7 @@
       }
     },
     "xod/core/constBool": {
+      "path": "xod/core/constBool",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1229,6 +1267,7 @@
       "label": "<Bool>"
     },
     "xod/core/compare": {
+      "path": "xod/core/compare",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1283,6 +1322,7 @@
       }
     },
     "xod/core/choose": {
+      "path": "xod/core/choose",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1319,6 +1359,7 @@
       }
     },
     "xod/core/cast-string-to-pulse": {
+      "path": "xod/core/cast-string-to-pulse",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1346,6 +1387,7 @@
       }
     },
     "xod/core/cast-string-to-boolean": {
+      "path": "xod/core/cast-string-to-boolean",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1373,6 +1415,7 @@
       }
     },
     "xod/core/cast-number-to-pulse": {
+      "path": "xod/core/cast-number-to-pulse",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1400,6 +1443,7 @@
       }
     },
     "xod/core/cast-number-to-string": {
+      "path": "xod/core/cast-number-to-string",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1427,6 +1471,7 @@
       }
     },
     "xod/core/cast-pulse-to-number": {
+      "path": "xod/core/cast-pulse-to-number",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1454,6 +1499,7 @@
       }
     },
     "xod/core/cast-pulse-to-boolean": {
+      "path": "xod/core/cast-pulse-to-boolean",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1481,6 +1527,7 @@
       }
     },
     "xod/core/cast-number-to-boolean": {
+      "path": "xod/core/cast-number-to-boolean",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1508,6 +1555,7 @@
       }
     },
     "xod/core/cast-boolean-to-string": {
+      "path": "xod/core/cast-boolean-to-string",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1535,6 +1583,7 @@
       }
     },
     "xod/core/cast-boolean-to-number": {
+      "path": "xod/core/cast-boolean-to-number",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1562,6 +1611,7 @@
       }
     },
     "xod/core/button": {
+      "path": "xod/core/button",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1580,6 +1630,7 @@
       }
     },
     "xod/core/cast-boolean-to-pulse": {
+      "path": "xod/core/cast-boolean-to-pulse",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1607,6 +1658,7 @@
       }
     },
     "xod/core/buzzer": {
+      "path": "xod/core/buzzer",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1626,6 +1678,7 @@
       "label": "Buzzer"
     },
     "xod/core/both": {
+      "path": "xod/core/both",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1662,6 +1715,7 @@
       }
     },
     "xod/core/analog_output": {
+      "path": "xod/core/analog_output",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1689,6 +1743,7 @@
       }
     },
     "xod/core/any": {
+      "path": "xod/core/any",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1725,6 +1780,7 @@
       }
     },
     "xod/core/analog_input": {
+      "path": "xod/core/analog_input",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1761,6 +1817,7 @@
       }
     },
     "xod/core/and": {
+      "path": "xod/core/and",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1798,6 +1855,7 @@
       "label": "and"
     },
     "@/led": {
+      "path": "@/led",
       "nodes": {
         "ryFxRcNdKg": {
           "id": "ryFxRcNdKg",
@@ -1941,6 +1999,7 @@
       "label": "Led"
     },
     "@/main": {
+      "path": "@/main",
       "nodes": {
         "BJ4l0cVdKe": {
           "id": "BJ4l0cVdKe",
@@ -1989,6 +2048,7 @@
       "label": "Main"
     },
     "@/blink": {
+      "path": "@/blink",
       "nodes": {
         "BJGgAcVOtx": {
           "id": "BJGgAcVOtx",

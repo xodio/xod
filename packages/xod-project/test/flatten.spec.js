@@ -11,12 +11,14 @@ import blinkingFlat from './fixtures/blinking.flat.json';
 
 chai.use(dirtyChai);
 
+
 describe('Flatten', () => {
   describe('extractPatches', () => {
     it('correct flattening structure for trivial project', () => {
       const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
+            path: '@/main',
             nodes: {
               a: {
                 id: 'a',
@@ -44,6 +46,7 @@ describe('Flatten', () => {
             },
           },
           'xod/core/or': {
+            path: 'xod/core/or',
             nodes: {},
             links: {},
             pins: {

@@ -5,6 +5,7 @@
   "license": "",
   "patches": {
     "xod/core/digital_output": {
+      "path": "xod/core/digital_output",
       "nodes": {},
       "links": {},
       "impls": {
@@ -32,6 +33,7 @@
       }
     },
     "xod/math/multiply": {
+      "path": "xod/math/multiply",
       "nodes": {},
       "links": {},
       "impls": {
@@ -68,6 +70,7 @@
       }
     },
     "xod/core/latch": {
+      "path": "xod/core/latch",
       "nodes": {},
       "links": {},
       "impls": {
@@ -113,6 +116,7 @@
       }
     },
     "xod/core/clock": {
+      "path": "xod/core/clock",
       "nodes": {},
       "links": {},
       "impls": {
@@ -140,6 +144,7 @@
       }
     },
     "xod/core/cast-boolean-to-number": {
+      "path": "xod/core/cast-boolean-to-number",
       "nodes": {},
       "links": {},
       "impls": {
@@ -167,6 +172,7 @@
       }
     },
     "@/main": {
+      "path": "@/main",
       "nodes": {
         "SJ7g05EdFe~rJWgAqVOtx": {
           "id": "SJ7g05EdFe~rJWgAqVOtx",

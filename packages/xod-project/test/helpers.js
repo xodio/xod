@@ -126,10 +126,16 @@ export const defaultizePatch = R.compose(
     links: {},
     impls: {},
     pins: {},
+    path: '',
   })
 );
 
+export const insertPatchPaths = R.evolve({
+  patches: R.mapObjIndexed((patch, path) => R.assoc('path', path, patch)),
+});
+
 export const defaultizeProject = R.compose(
+  insertPatchPaths,
   R.evolve({
     patches: R.map(defaultizePatch),
   }),

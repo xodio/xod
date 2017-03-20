@@ -1,3 +1,4 @@
+import R from 'ramda';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
@@ -287,7 +288,7 @@ describe('Project', () => {
           expect(proj)
             .to.have.property('patches')
             .that.have.property(path)
-            .that.equals(patch);
+            .that.deep.equals(R.assoc('path', path, patch));
         },
         newProject
       );
@@ -370,6 +371,28 @@ describe('Project', () => {
         newProject
       );
     });
+    it('should update path property of a moved patch', () => {
+      const oldPath = '@/test';
+      const newPath = '@/anotherPath';
+      const project = Helper.defaultizeProject({
+        patches: {
+          [oldPath]: { path: oldPath },
+        },
+      });
+
+      const newProject = Project.rebasePatch(newPath, oldPath, project);
+
+      Helper.expectEither(
+        (proj) => {
+          expect(proj)
+            .to.have.property('patches')
+            .that.have.property(newPath)
+            .that.have.property('path')
+            .that.equals(newPath);
+        },
+        newProject
+      );
+    });
     it('should update all reference on changed path', () => {
       const oldPath = '@/test';
       const newPath = '@/anotherPath';
@@ -377,7 +400,7 @@ describe('Project', () => {
       const project = Helper.defaultizeProject({
         patches: {
           [oldPath]: {},
-          '@/withNodes': {
+          [withNodesPath]: {
             nodes: { 1: { type: oldPath } },
           },
         },
