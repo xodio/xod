@@ -86,6 +86,21 @@ export const isPathLocal = R.test(/^@\/[a-zA-Z0-9_\-/]+$/);
 export const isPathLibrary = R.test(/^[a-zA-Z0-9_\-/]+$/);
 
 /**
+ * @function getLibraryName
+ * @param {string} path
+ * @returns {string}
+ */
+export const getLibraryName = R.ifElse(
+  isPathLibrary,
+  R.compose(
+    R.join('/'),
+    R.take(2),
+    R.split('/')
+  ),
+  R.always('@')
+);
+
+/**
  * Checks if a path is a valid for entities like
  * project path, patch path component, etc
  *

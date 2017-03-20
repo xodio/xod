@@ -138,6 +138,21 @@ describe('Utils', () => {
     });
   });
 
+  describe('getLibraryName', () => {
+    const localPath = '@/test';
+    const libName = 'vasya/superLibrary';
+    const libPath = `${libName}/test`;
+
+    it('should return library name for libPath', () => {
+      const result = Utils.getLibraryName(libPath);
+      expect(result).to.be.equal(libName);
+    });
+    it('should return @ for localPath', () => {
+      const result = Utils.getLibraryName(localPath);
+      expect(result).to.be.equal('@');
+    });
+  });
+
   describe('generateId', () => {
     it('should be valid shortid', () => {
       const id = Utils.generateId();

@@ -320,8 +320,7 @@ export const listOutputPins = def(
 export const isTerminalPatch = def(
   'isTerminalPatch :: Patch -> Boolean',
   R.compose(
-    R.contains(true),
-    R.map(Pin.isTerminalPin),
+    R.any(Pin.isTerminalPin),
     listPins
   )
 );
