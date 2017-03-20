@@ -255,7 +255,7 @@ const appendAuthor = R.compose(
 );
 
 // :: ProjectOld -> (Project -> Project)
-const appendProjectName = R.compose(
+const convertProjectName = R.compose(
   R.assoc('name'),
   R.pathOr('', ['meta', 'name'])
 );
@@ -331,7 +331,7 @@ export const toV2 = bundle =>
   R.compose(
     convertLinksInPatches(bundle),
     convertPatches(bundle),
-    appendProjectName(bundle),
+    convertProjectName(bundle),
     maybeApply(appendAuthor(bundle))
   )(Project.createProject());
 
