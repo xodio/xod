@@ -42,6 +42,17 @@ export const getProjectName = def(
 );
 
 /**
+ * @function setProjectName
+ * @param {string} new name
+ * @param {Project} project
+ * @returns {Project}
+ */
+export const setProjectName = def(
+  'setProjectName :: String -> Project -> Project',
+  R.assoc('name')
+);
+
+/**
  * @function getProjectDescription
  * @param {Project} project
  * @returns {string}
