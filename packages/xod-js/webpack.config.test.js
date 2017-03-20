@@ -16,7 +16,7 @@ const config = merge.smart(baseConfig, {
   module: {
     loaders: [
       {
-        include: /xod-project\/test/,
+        include: /xod-project\/(test|src)/,
         test: /.*\.js$/,
         loaders: [
           'babel?presets[]=es2015',
