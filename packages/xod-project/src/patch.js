@@ -66,6 +66,31 @@ export const setPatchLabel = def(
   )
 );
 
+/**
+ * @function getPatchPath
+ * @param {Patch} patch
+ * @returns {string}
+ */
+export const getPatchPath = def(
+  'getPatchPath :: Patch -> PatchPath',
+  R.prop('path')
+);
+
+/**
+ * @function setPatchPath
+ * @param {string} path
+ * @param {Patch} patch
+ * @returns {Patch} a copy of the `patch` with a new path
+ */
+export const setPatchPath = def(
+  'setPatchPath :: PatchPath -> Patch -> Patch',
+  R.useWith(
+    R.assoc('path'),
+    [String, R.identity]
+  )
+);
+
+
  /**
   * Returns a list of implementations for which a `patch` has native implementation
   *

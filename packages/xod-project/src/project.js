@@ -158,7 +158,7 @@ export const listPatchPaths = def(
 export const listLocalPatches = def(
   'listLocalPatches :: Project -> [Patch]',
   R.compose(
-    R.filter(R.propSatisfies(Utils.isPathLocal, 'path')),
+    R.filter(R.pipe(Patch.getPatchPath, Utils.isPathLocal)),
     listPatches
   )
 );
@@ -173,7 +173,7 @@ export const listLocalPatches = def(
 export const listLibraryPatches = def(
   'listLibraryPatches :: Project -> [Patch]',
   R.compose(
-    R.filter(R.propSatisfies(Utils.isPathLibrary, 'path')),
+    R.filter(R.pipe(Patch.getPatchPath, Utils.isPathLibrary)),
     listPatches
   )
 );
@@ -310,7 +310,7 @@ export const assocPatch = def(
       validPath => validatePatchContents(patch, project).map(
         R.compose(
           R.assocPath(['patches', validPath], R.__, project),
-          R.assoc('path', validPath)
+          Patch.setPatchPath(validPath)
         )
       )
     )
@@ -386,7 +386,7 @@ export const rebasePatch = def(
     validatePatchRebase(newPath, oldPath, project)
       .map(
         (proj) => {
-          const patch = getPatchByPath(oldPath, proj).map(R.assoc('path', newPath));
+          const patch = getPatchByPath(oldPath, proj).map(Patch.setPatchPath(newPath));
           const assocThatPatch = patch.chain(R.assocPath(['patches', newPath]));
 
           // TODO: Think about refactoring that piece of code :-D
