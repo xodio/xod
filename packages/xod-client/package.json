@@ -26,6 +26,7 @@
     "js-cookie": "^2.1.2",
     "json5": "^0.5.0",
     "ramda": "^0.23.0",
+    "ramda-fantasy": "^0.7.0",
     "rc-menu": "^5.0.9",
     "rc-progress": "^1.0.4",
     "rc-switch": "^1.4.2",
