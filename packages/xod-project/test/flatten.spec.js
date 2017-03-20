@@ -11,12 +11,11 @@ import blinkingFlat from './fixtures/blinking.flat.json';
 
 chai.use(dirtyChai);
 
-const makeDummyProject = R.compose(Helper.insertPatchPaths, Helper.defaultizeProject);
 
 describe('Flatten', () => {
   describe('extractPatches', () => {
     it('correct flattening structure for trivial project', () => {
-      const project = makeDummyProject({
+      const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
             path: '@/main',
@@ -88,7 +87,7 @@ describe('Flatten', () => {
       ]);
     });
     it('correct flattening structure for nested project', () => {
-      const project = makeDummyProject({
+      const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
             nodes: {
@@ -303,7 +302,7 @@ describe('Flatten', () => {
       ]);
     });
     it('correctly pinned nodes', () => {
-      const project = makeDummyProject({
+      const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
             nodes: {
@@ -436,7 +435,7 @@ describe('Flatten', () => {
   });
 
   describe('trivial', () => {
-    const project = makeDummyProject({
+    const project = Helper.defaultizeProject({
       patches: {
         '@/main': {
           nodes: {
@@ -564,7 +563,7 @@ describe('Flatten', () => {
   });
 
   describe('recursive', () => {
-    const project = makeDummyProject({
+    const project = Helper.defaultizeProject({
       patches: {
         '@/main': {
           nodes: {
@@ -826,7 +825,7 @@ describe('Flatten', () => {
     };
 
     describe('no links to terminal', () => {
-      const project = makeDummyProject({
+      const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
             nodes: {
@@ -917,7 +916,7 @@ describe('Flatten', () => {
     describe('through output terminal', () => {
       const createCastOutputTest = (typeIn, typeOut) => {
         it(`${typeIn} -> ${getCastPatchPath(typeIn, typeOut)} -> ${typeOut}`, () => {
-          const project = makeDummyProject({
+          const project = Helper.defaultizeProject({
             patches: {
               '@/main': {
                 nodes: {
@@ -1074,7 +1073,7 @@ describe('Flatten', () => {
     describe('through input terminal', () => {
       const createCastInputTest = (typeIn, typeOut) => {
         it(`${typeIn} -> ${getCastPatchPath(typeIn, typeOut)} -> ${typeOut}`, () => {
-          const project = makeDummyProject({
+          const project = Helper.defaultizeProject({
             patches: {
               '@/main': {
                 nodes: {
@@ -1240,7 +1239,7 @@ describe('Flatten', () => {
     describe('three different types', () => {});
 
     describe('with same types', () => {
-      const project = makeDummyProject({
+      const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
             nodes: {
@@ -1385,7 +1384,7 @@ describe('Flatten', () => {
     });
 
     describe('needed, but missing in the project', () => {
-      const project = makeDummyProject({
+      const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
             nodes: {
@@ -1465,7 +1464,7 @@ describe('Flatten', () => {
 
   describe('curried pins', () => {
     it('should return original (unnested) nodes with curried pins', () => {
-      const project = makeDummyProject({
+      const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
             nodes: {
@@ -1562,7 +1561,7 @@ describe('Flatten', () => {
     });
 
     it('should return cast-nodes with curried pins', () => {
-      const project = makeDummyProject({
+      const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
             nodes: {
@@ -1816,7 +1815,7 @@ describe('Flatten', () => {
   });
 
   describe('implementations', () => {
-    const project = makeDummyProject({
+    const project = Helper.defaultizeProject({
       patches: {
         '@/main': {
           nodes: {
