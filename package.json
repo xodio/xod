@@ -36,7 +36,7 @@
     "eslint-import-resolver-webpack": "^0.6.0",
     "eslint-plugin-import": "^1.16.0",
     "eslint-plugin-jsx-a11y": "^2.2.2",
-    "eslint-plugin-react": "^6.3.0",
+    "eslint-plugin-react": "6.10.0",
     "eslint-plugin-xod-fp": "^0.1.1",
     "exports-loader": "^0.6.3",
     "file-loader": "^0.9.0",
