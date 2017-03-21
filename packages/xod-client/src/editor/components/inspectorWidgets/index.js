@@ -42,7 +42,7 @@ export const WIDGET_MAPPING = {
   [ENTITY.NODE]: {
     [WIDGET_TYPE.BOOL]: {
       component: BoolWidget,
-      props: { type: 'bool' },
+      props: { type: 'boolean' },
     },
     [WIDGET_TYPE.NUMBER]: {
       component: NumberWidget,
@@ -58,7 +58,7 @@ export const WIDGET_MAPPING = {
     [WIDGET_TYPE.PULSE]: {
       component: BoolWidget,
       props: {
-        type: 'bool',
+        type: 'boolean',
         commitOnChange: true,
       },
     },
