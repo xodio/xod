@@ -194,6 +194,21 @@ export const getPatchByPath = def(
 );
 
 /**
+ * @function getPatchByPathUnsafe
+ * @param {string} path - full path of the patch to find, e.g. `"@/foo/bar"`
+ * @param {Project} project - project bundle
+ * @returns {Patch} a patch with given path
+ * @throws Error if patch was not found
+ */
+export const getPatchByPathUnsafe = def(
+  'getPatchByPath :: PatchPath -> Project -> Patch',
+  (path, project) => explodeMaybe(
+    Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path }),
+    getPatchByPath(path, project)
+  )
+);
+
+/**
  * Checks project for existance of patches and pins that used in link.
  *
  * @private

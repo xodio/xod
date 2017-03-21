@@ -101,6 +101,30 @@ describe('Project', () => {
       expect(maybe.isJust).to.be.true();
     });
   });
+  describe('getPatchByPathUnsafe', () => {
+    it('should throw error if project is empty object', () => {
+      const fn = () => Project.getPatchByPathUnsafe('test', emptyProject);
+      expect(fn).to.throw(Error, formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: 'test' }));
+    });
+    it('should throw error if there is no patch with such path', () => {
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/one': {},
+        },
+      });
+      const fn = () => Project.getPatchByPathUnsafe('@/two', project);
+      expect(fn).to.throw(Error, formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: '@/two' }));
+    });
+    it('should return Patch if project have a patch', () => {
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/one': {},
+        },
+      });
+      const patch = Project.getPatchByPathUnsafe('@/one', project);
+      expect(patch).to.be.deep.equal(project.patches['@/one']);
+    });
+  });
   describe('lsPatches', () => {
     const project = Helper.defaultizeProject({
       patches: {
