@@ -50,7 +50,8 @@ export const duplicatePatch = def(
  */
 export const getPatchLabel = def(
   'getPatchLabel :: Patch -> Label',
-  R.prop('label')
+  // TODO: when label field is included in type definition, remove fallback to ''
+  R.propOr('', 'label')
 );
 
 /**

@@ -15,11 +15,11 @@ class ProjectBrowserToolbar extends React.Component {
   }
 
   onPatchDeleteConfirmed() {
-    this.props.onPatchDelete(this.props.selectedPatchId);
+    this.props.onPatchDelete(this.props.selectedPatchPath);
   }
 
   onPatchRenameConfirmed(name) {
-    this.props.onPatchRename(this.props.selectedPatchId, name);
+    this.props.onPatchRename(this.props.selectedPatchPath, name);
   }
 
   getProjectName() {
@@ -27,15 +27,7 @@ class ProjectBrowserToolbar extends React.Component {
   }
 
   getSelectedPatchName() {
-    const { selectedPatchId } = this.props;
-
-    if (R.not(R.has(selectedPatchId, this.props.patches))) { return ''; }
-    const patch = this.props.patches[selectedPatchId];
-
-    return R.pipe(
-      R.propOr(patch, 'present'),
-      R.prop('label')
-    )(patch);
+    return this.props.selectedPatchName;
   }
 
   renderPatchCreatingPopup() {
@@ -43,7 +35,7 @@ class ProjectBrowserToolbar extends React.Component {
       <PopupPrompt
         title="Create new patch"
         onConfirm={this.props.onPatchCreate}
-        onClose={this.props.closeAllPopups}
+        onClose={this.props.onCloseAllPopups}
       >
         Type the name for new patch:
       </PopupPrompt>
@@ -57,7 +49,7 @@ class ProjectBrowserToolbar extends React.Component {
       <PopupPrompt
         title="Rename patch"
         onConfirm={this.onPatchRenameConfirmed}
-        onClose={this.props.closeAllPopups}
+        onClose={this.props.onCloseAllPopups}
       >
         Type new name for patch &laquo;{selectedPatchName}&raquo;:
       </PopupPrompt>
@@ -71,7 +63,7 @@ class ProjectBrowserToolbar extends React.Component {
       <PopupPrompt
         title="Rename project"
         onConfirm={this.props.onProjectRename}
-        onClose={this.props.closeAllPopups}
+        onClose={this.props.onCloseAllPopups}
       >
         Type new name for project &laquo;{currentProjectName}&raquo;:
       </PopupPrompt>
@@ -85,7 +77,7 @@ class ProjectBrowserToolbar extends React.Component {
       <PopupConfirm
         title="Delete the patch"
         onConfirm={this.onPatchDeleteConfirmed}
-        onClose={this.props.closeAllPopups}
+        onClose={this.props.onCloseAllPopups}
       >
         Are you sure you want to delete patch &laquo;{selectedPatchName}&raquo;?
       </PopupConfirm>
@@ -112,21 +104,21 @@ class ProjectBrowserToolbar extends React.Component {
 }
 
 ProjectBrowserToolbar.propTypes = {
-  selectedPatchId: React.PropTypes.string,
+  selectedPatchPath: React.PropTypes.string,
+  selectedPatchName: React.PropTypes.string,
   openPopups: React.PropTypes.object,
   projectName: React.PropTypes.string,
-  patches: React.PropTypes.object,
 
   onPatchCreate: React.PropTypes.func.isRequired,
   onProjectRename: React.PropTypes.func.isRequired,
   onPatchRename: React.PropTypes.func.isRequired,
   onPatchDelete: React.PropTypes.func.isRequired,
 
-  closeAllPopups: React.PropTypes.func.isRequired,
+  onCloseAllPopups: React.PropTypes.func.isRequired,
 };
 
 ProjectBrowserToolbar.defaultProps = {
-  selectedPatchId: null,
+  selectedPatchPath: null,
 };
 
 export default ProjectBrowserToolbar;
