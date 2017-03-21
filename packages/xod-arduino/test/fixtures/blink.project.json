@@ -1,9 +1,10 @@
 {
+  "name": "blinking-led",
   "authors": [
     "Amperka team"
   ],
-  "description": "",
   "license": "",
+  "description": "",
   "patches": {
     "xod/math/subtrac": {
       "nodes": {},
@@ -39,7 +40,8 @@
           "order": 0,
           "value": 0
         }
-      }
+      },
+      "path": "xod/math/subtrac"
     },
     "xod/math/multiply": {
       "nodes": {},
@@ -76,7 +78,8 @@
           "order": 0,
           "value": 0
         }
-      }
+      },
+      "path": "xod/math/multiply"
     },
     "xod/math/divide": {
       "nodes": {},
@@ -112,7 +115,8 @@
           "order": 0,
           "value": 0
         }
-      }
+      },
+      "path": "xod/math/divide"
     },
     "xod/math/add": {
       "nodes": {},
@@ -148,7 +152,8 @@
           "order": 0,
           "value": 0
         }
-      }
+      },
+      "path": "xod/math/add"
     },
     "xod/core/valveNumber": {
       "nodes": {},
@@ -185,7 +190,8 @@
           "value": 0
         }
       },
-      "label": "valveNumber"
+      "label": "valveNumber",
+      "path": "xod/core/valveNumber"
     },
     "xod/core/ultrasonic_HC_SR04": {
       "nodes": {},
@@ -231,7 +237,8 @@
           "value": 0
         }
       },
-      "label": "HC-SR04"
+      "label": "HC-SR04",
+      "path": "xod/core/ultrasonic_HC_SR04"
     },
     "xod/core/triggerableNumber": {
       "nodes": {},
@@ -268,7 +275,8 @@
           "value": 0
         }
       },
-      "label": "triggerableNumber"
+      "label": "triggerableNumber",
+      "path": "xod/core/triggerableNumber"
     },
     "xod/core/time": {
       "nodes": {},
@@ -296,7 +304,8 @@
           "value": 0
         }
       },
-      "label": "Time"
+      "label": "Time",
+      "path": "xod/core/time"
     },
     "xod/core/stdout": {
       "nodes": {},
@@ -315,9 +324,10 @@
           "value": ""
         }
       },
-      "label": "stdout"
+      "label": "stdout",
+      "path": "xod/core/stdout"
     },
-    "xod/core/split_bool": {
+    "xod/core/split_boolean": {
       "nodes": {},
       "links": {},
       "impls": {
@@ -352,7 +362,8 @@
           "value": false
         }
       },
-      "label": "Split"
+      "label": "Split",
+      "path": "xod/core/split_boolean"
     },
     "xod/core/servo": {
       "nodes": {},
@@ -388,7 +399,8 @@
           "order": 0,
           "value": 0
         }
-      }
+      },
+      "path": "xod/core/servo"
     },
     "xod/core/pot": {
       "nodes": {},
@@ -415,7 +427,8 @@
           "order": 0,
           "value": 0
         }
-      }
+      },
+      "path": "xod/core/pot"
     },
     "xod/core/outputString": {
       "nodes": {},
@@ -432,7 +445,8 @@
           "value": ""
         }
       },
-      "label": "<OutputString>"
+      "label": "<OutputString>",
+      "path": "xod/core/outputString"
     },
     "xod/core/outputPulse": {
       "nodes": {},
@@ -449,7 +463,8 @@
           "value": false
         }
       },
-      "label": "<OutputPulse>"
+      "label": "<OutputPulse>",
+      "path": "xod/core/outputPulse"
     },
     "xod/core/outputNumber": {
       "nodes": {},
@@ -466,9 +481,10 @@
           "value": 0
         }
       },
-      "label": "<OutputNumber>"
+      "label": "<OutputNumber>",
+      "path": "xod/core/outputNumber"
     },
-    "xod/core/outputBool": {
+    "xod/core/outputBoolean": {
       "nodes": {},
       "links": {},
       "impls": {},
@@ -483,7 +499,8 @@
           "value": false
         }
       },
-      "label": "<OutputBool>"
+      "label": "<OutputBool>",
+      "path": "xod/core/outputBoolean"
     },
     "xod/core/or": {
       "nodes": {},
@@ -520,7 +537,8 @@
           "value": false
         }
       },
-      "label": "or"
+      "label": "or",
+      "path": "xod/core/or"
     },
     "xod/core/not": {
       "nodes": {},
@@ -548,7 +566,8 @@
           "value": false
         }
       },
-      "label": "not"
+      "label": "not",
+      "path": "xod/core/not"
     },
     "xod/core/map": {
       "nodes": {},
@@ -620,7 +639,8 @@
           "order": 0,
           "value": 0
         }
-      }
+      },
+      "path": "xod/core/map"
     },
     "xod/core/less": {
       "nodes": {},
@@ -656,7 +676,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/less"
     },
     "xod/core/led": {
       "nodes": {},
@@ -675,7 +696,8 @@
           "value": 0
         }
       },
-      "label": "LED"
+      "label": "LED",
+      "path": "xod/core/led"
     },
     "xod/core/latch": {
       "nodes": {},
@@ -721,7 +743,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/latch"
     },
     "xod/core/inputString": {
       "nodes": {},
@@ -738,7 +761,8 @@
           "value": ""
         }
       },
-      "label": "<InputString>"
+      "label": "<InputString>",
+      "path": "xod/core/inputString"
     },
     "xod/core/inputPulse": {
       "nodes": {},
@@ -755,7 +779,8 @@
           "value": false
         }
       },
-      "label": "<InputPulse>"
+      "label": "<InputPulse>",
+      "path": "xod/core/inputPulse"
     },
     "xod/core/inputNumber": {
       "nodes": {},
@@ -772,9 +797,10 @@
           "value": 0
         }
       },
-      "label": "<InputNumber>"
+      "label": "<InputNumber>",
+      "path": "xod/core/inputNumber"
     },
-    "xod/core/inputBool": {
+    "xod/core/inputBoolean": {
       "nodes": {},
       "links": {},
       "impls": {},
@@ -789,7 +815,8 @@
           "value": false
         }
       },
-      "label": "<InputBool>"
+      "label": "<InputBool>",
+      "path": "xod/core/inputBoolean"
     },
     "xod/core/greater": {
       "nodes": {},
@@ -825,7 +852,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/greater"
     },
     "xod/core/file_write": {
       "nodes": {},
@@ -871,7 +899,8 @@
           "value": false
         }
       },
-      "label": "File write"
+      "label": "File write",
+      "path": "xod/core/file_write"
     },
     "xod/core/file_read": {
       "nodes": {},
@@ -917,7 +946,8 @@
           "value": false
         }
       },
-      "label": "File read"
+      "label": "File read",
+      "path": "xod/core/file_read"
     },
     "xod/core/equal": {
       "nodes": {},
@@ -953,7 +983,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/equal"
     },
     "xod/core/either": {
       "nodes": {},
@@ -998,7 +1029,8 @@
           "order": 0,
           "value": 0
         }
-      }
+      },
+      "path": "xod/core/either"
     },
     "xod/core/digital_output": {
       "nodes": {},
@@ -1026,7 +1058,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/digital_output"
     },
     "xod/core/digital_input": {
       "nodes": {},
@@ -1053,7 +1086,8 @@
           "order": 0,
           "value": 0
         }
-      }
+      },
+      "path": "xod/core/digital_input"
     },
     "xod/core/constString": {
       "nodes": {},
@@ -1090,7 +1124,8 @@
           "value": ""
         }
       },
-      "label": "<String>"
+      "label": "<String>",
+      "path": "xod/core/constString"
     },
     "xod/core/constNumber": {
       "nodes": {},
@@ -1127,9 +1162,10 @@
           "value": 0
         }
       },
-      "label": "<Number>"
+      "label": "<Number>",
+      "path": "xod/core/constNumber"
     },
-    "xod/core/constBool": {
+    "xod/core/constBoolean": {
       "nodes": {},
       "links": {},
       "impls": {
@@ -1164,7 +1200,8 @@
           "value": false
         }
       },
-      "label": "<Bool>"
+      "label": "<Bool>",
+      "path": "xod/core/constBoolean"
     },
     "xod/core/constant-number": {
       "nodes": {},
@@ -1182,7 +1219,8 @@
       },
       "impls": {
         "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    reemitNumber(nid, Outputs::VAL);\n}\n"
-      }
+      },
+      "path": "xod/core/constant-number"
     },
     "xod/core/constant-logic": {
       "nodes": {},
@@ -1200,7 +1238,8 @@
       },
       "impls": {
         "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    reemitLogic(nid, Outputs::VAL);\n}\n"
-      }
+      },
+      "path": "xod/core/constant-logic"
     },
     "xod/core/concat": {
       "nodes": {},
@@ -1237,7 +1276,8 @@
           "value": ""
         }
       },
-      "label": "concat"
+      "label": "concat",
+      "path": "xod/core/concat"
     },
     "xod/core/compare": {
       "nodes": {},
@@ -1291,7 +1331,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/compare"
     },
     "xod/core/clock": {
       "nodes": {},
@@ -1319,7 +1360,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/clock"
     },
     "xod/core/choose": {
       "nodes": {},
@@ -1355,7 +1397,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/choose"
     },
     "xod/core/cast-string-to-pulse": {
       "nodes": {},
@@ -1382,7 +1425,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/cast-string-to-pulse"
     },
     "xod/core/cast-string-to-boolean": {
       "nodes": {},
@@ -1409,7 +1453,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/cast-string-to-boolean"
     },
     "xod/core/cast-pulse-to-number": {
       "nodes": {},
@@ -1436,7 +1481,8 @@
           "order": 0,
           "value": 0
         }
-      }
+      },
+      "path": "xod/core/cast-pulse-to-number"
     },
     "xod/core/cast-pulse-to-boolean": {
       "nodes": {},
@@ -1463,7 +1509,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/cast-pulse-to-boolean"
     },
     "xod/core/cast-number-to-string": {
       "nodes": {},
@@ -1490,7 +1537,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/cast-number-to-string"
     },
     "xod/core/cast-number-to-pulse": {
       "nodes": {},
@@ -1517,7 +1565,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/cast-number-to-pulse"
     },
     "xod/core/cast-number-to-boolean": {
       "nodes": {},
@@ -1545,7 +1594,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/cast-number-to-boolean"
     },
     "xod/core/cast-boolean-to-string": {
       "nodes": {},
@@ -1572,7 +1622,8 @@
           "order": 0,
           "value": ""
         }
-      }
+      },
+      "path": "xod/core/cast-boolean-to-string"
     },
     "xod/core/cast-boolean-to-pulse": {
       "nodes": {},
@@ -1599,7 +1650,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/cast-boolean-to-pulse"
     },
     "xod/core/cast-boolean-to-number": {
       "nodes": {},
@@ -1627,7 +1679,8 @@
           "order": 0,
           "value": 0
         }
-      }
+      },
+      "path": "xod/core/cast-boolean-to-number"
     },
     "xod/core/buzzer": {
       "nodes": {},
@@ -1646,7 +1699,8 @@
           "value": 0
         }
       },
-      "label": "Buzzer"
+      "label": "Buzzer",
+      "path": "xod/core/buzzer"
     },
     "xod/core/button": {
       "nodes": {},
@@ -1664,7 +1718,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/button"
     },
     "xod/core/both": {
       "nodes": {},
@@ -1700,7 +1755,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/both"
     },
     "xod/core/any": {
       "nodes": {},
@@ -1736,7 +1792,8 @@
           "order": 0,
           "value": false
         }
-      }
+      },
+      "path": "xod/core/any"
     },
     "xod/core/and": {
       "nodes": {},
@@ -1773,7 +1830,8 @@
           "value": false
         }
       },
-      "label": "and"
+      "label": "and",
+      "path": "xod/core/and"
     },
     "xod/core/sort_pair": {
       "nodes": {
@@ -1992,7 +2050,8 @@
           "value": 0
         }
       },
-      "label": "sort-pair"
+      "label": "sort-pair",
+      "path": "xod/core/sort_pair"
     },
     "xod/core/less_equal": {
       "nodes": {
@@ -2025,7 +2084,7 @@
         },
         "B1Kf5xhGesg": {
           "id": "B1Kf5xhGesg",
-          "type": "xod/core/outputBool",
+          "type": "xod/core/outputBoolean",
           "position": {
             "x": 320,
             "y": 454
@@ -2118,7 +2177,8 @@
           "value": false
         }
       },
-      "label": "less-equal"
+      "label": "less-equal",
+      "path": "xod/core/less_equal"
     },
     "xod/core/led-new": {
       "nodes": {
@@ -2261,7 +2321,8 @@
           "value": 0
         }
       },
-      "label": "New patch"
+      "label": "New patch",
+      "path": "xod/core/led-new"
     },
     "xod/core/in_range": {
       "nodes": {
@@ -2312,7 +2373,7 @@
         },
         "ByTWce3fxjg": {
           "id": "ByTWce3fxjg",
-          "type": "xod/core/outputBool",
+          "type": "xod/core/outputBoolean",
           "position": {
             "x": 432,
             "y": 541
@@ -2447,7 +2508,8 @@
           "value": 0
         }
       },
-      "label": "in-range"
+      "label": "in-range",
+      "path": "xod/core/in_range"
     },
     "xod/core/greater_equal": {
       "nodes": {
@@ -2489,7 +2551,7 @@
         },
         "HywZql3zese": {
           "id": "HywZql3zese",
-          "type": "xod/core/outputBool",
+          "type": "xod/core/outputBoolean",
           "position": {
             "x": 360,
             "y": 479
@@ -2573,7 +2635,8 @@
           "value": false
         }
       },
-      "label": "greater-equal"
+      "label": "greater-equal",
+      "path": "xod/core/greater_equal"
     },
     "xod/core/choose_range_3p": {
       "nodes": {
@@ -2875,7 +2938,8 @@
           "value": 0
         }
       },
-      "label": "choose-range-3p"
+      "label": "choose-range-3p",
+      "path": "xod/core/choose_range_3p"
     },
     "xod/core/choose_range_2p": {
       "nodes": {
@@ -3119,7 +3183,8 @@
           "value": false
         }
       },
-      "label": "choose-range-2p"
+      "label": "choose-range-2p",
+      "path": "xod/core/choose_range_2p"
     },
     "xod/core/choose_range": {
       "nodes": {
@@ -3274,13 +3339,14 @@
           "value": 0
         }
       },
-      "label": "choose-range"
+      "label": "choose-range",
+      "path": "xod/core/choose_range"
     },
     "xod/core/blink": {
       "nodes": {
         "Bk2cx3Mgie": {
           "id": "Bk2cx3Mgie",
-          "type": "xod/core/outputBool",
+          "type": "xod/core/outputBoolean",
           "position": {
             "x": 263,
             "y": 508
@@ -3376,7 +3442,8 @@
           "value": 0
         }
       },
-      "label": "New patch"
+      "label": "New patch",
+      "path": "xod/core/blink"
     },
     "@/main": {
       "nodes": {
@@ -3424,7 +3491,8 @@
       },
       "impls": {},
       "pins": {},
-      "label": "Main"
+      "label": "Main",
+      "path": "@/main"
     },
     "@/led": {
       "nodes": {
@@ -3532,13 +3600,14 @@
           "value": 0
         }
       },
-      "label": "Led"
+      "label": "Led",
+      "path": "@/led"
     },
     "@/blink": {
       "nodes": {
         "B1Gce3fgie": {
           "id": "B1Gce3fgie",
-          "type": "xod/core/outputBool",
+          "type": "xod/core/outputBoolean",
           "position": {
             "x": 266,
             "y": 432
@@ -3634,7 +3703,8 @@
           "value": 0
         }
       },
-      "label": "Blink"
+      "label": "Blink",
+      "path": "@/blink"
     }
   }
 }
