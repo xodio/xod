@@ -1,5 +1,6 @@
 # xod-arduino
 
-This package provides functions that transpiles Project into Arduino CPP code.
+This package provides functions that transpile a Project into Arduino C++ code.
 
-Platform-specific functions always takes two arguments: Project and Path to an entry-point patch.
+    import transpileForArduino from 'xod-arduino';
+    transpileForArduino(project, '@/entryPointPatch'); // will return C++ code

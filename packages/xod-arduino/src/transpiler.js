@@ -40,10 +40,10 @@ const isCurriedInNodePin = R.curry((nodePinValues, nodeId, pin) => {
   return R.has(pinKey, nodePins);
 });
 
-// It copies patches of needed const*TYPE* into flatten project,
+// It copies patches of needed const*TYPE* into flat project,
 // Replaces curried pins with new nodes with curried value (inValue)
-// And create a links from it
-// And returns an unpdated flattened project
+// And creates links from them
+// And returns updated flat project
 const placeConstNodesAndLinks = def(
   'placeConstNodesAndLinks :: Project -> String -> Project -> Project',
   (flatProject, path, origProject) => {
@@ -220,10 +220,8 @@ const createTConfig = def(
 const createPatchNames = def(
   'createPatchNames :: String -> { owner :: String, libName :: String, patchName :: String }',
   (path) => {
-    const sPath = R.split('/', path);
-    const owner = sPath.shift();
-    const libName = sPath.shift();
-    const patchName = sPath.join('/').replace(/-/g, '_');
+    const [owner, libName, ...patchNameParts] = R.split('/', path);
+    const patchName = patchNameParts.join('/').replace(/-/g, '_');
 
     return {
       owner,
