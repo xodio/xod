@@ -194,23 +194,23 @@ const getNodeCount = def(
   )(patch)
 );
 
-// Creates a TConfig object from project and entry-point path
+const getOutputCount = def(
+  'getOutputCount :: Project -> Number',
+  R.compose(
+    R.reduce(R.max, 0),
+    R.map(R.compose(R.length, Project.listOutputPins)),
+    Project.listPatches
+  )
+);
+
+// Creates a TConfig object from entry-point path and project
 const createTConfig = def(
   'createTConfig :: PatchPath -> Project -> TConfig',
-  (path, project) => {
-    const nodeCount = getNodeCount(Project.getPatchByPathUnsafe(path, project));
-    const outputCount = R.compose(
-      R.reduce(R.max, 0),
-      R.map(R.compose(R.length, Project.listOutputPins)),
-      Project.listPatches
-    )(project);
-
-    return {
-      NODE_COUNT: nodeCount,
-      MAX_OUTPUT_COUNT: outputCount,
-      XOD_DEBUG: false,
-    };
-  }
+  (path, project) => R.applySpec({
+    NODE_COUNT: R.compose(getNodeCount, Project.getPatchByPathUnsafe(path)),
+    MAX_OUTPUT_COUNT: getOutputCount,
+    XOD_DEBUG: R.F,
+  })(project)
 );
 
 const createPatchNames = def(
