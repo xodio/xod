@@ -1166,6 +1166,42 @@
       },
       "label": "<Bool>"
     },
+    "xod/core/constant-number": {
+      "nodes": {},
+      "links": {},
+      "pins": {
+        "VAL": {
+          "key": "VAL",
+          "direction": "output",
+          "label": "value",
+          "type": "number",
+          "value": 0,
+          "order": 0,
+          "description": "Constant value"
+        }
+      },
+      "impls": {
+        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    reemitNumber(nid, Outputs::VAL);\n}\n"
+      }
+    },
+    "xod/core/constant-logic": {
+      "nodes": {},
+      "links": {},
+      "pins": {
+        "VAL": {
+          "key": "VAL",
+          "direction": "output",
+          "label": "value",
+          "type": "boolean",
+          "value": 0,
+          "order": 0,
+          "description": "Constant value"
+        }
+      },
+      "impls": {
+        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    reemitLogic(nid, Outputs::VAL);\n}\n"
+      }
+    },
     "xod/core/concat": {
       "nodes": {},
       "links": {},

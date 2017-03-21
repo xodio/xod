@@ -1,72 +1,18 @@
 import R from 'ramda';
-import { Either } from 'ramda-fantasy';
 
+import { explode } from 'xod-func-tools';
 import Project from 'xod-project';
 import { def } from './types';
 
 import { renderProject } from './templates';
 
 const ARDUINO_IMPLS = ['cpp', 'arduino'];
+const CONSTANT_VALUE_PINKEY = 'VAL'; // pinKey of output pin of constant patch, that curried and linked
 const CONST_NODETYPES = {
-  String: 'xod/core/constant_string',
-  Number: 'xod/core/constant_number',
-  Boolean: 'xod/core/consttant_logic',
-};
-const CONST_PATCHES = {
-  [CONST_NODETYPES.String]: {
-    nodes: {},
-    links: {},
-    pins: {
-      VAL: {
-        key: 'VAL',
-        direction: 'output',
-        label: 'value',
-        type: 'string',
-        value: '',
-        order: 0,
-        description: 'Constant value',
-      },
-    },
-    impls: {
-      cpp: '// what to do with constant strings?',
-    },
-  },
-  [CONST_NODETYPES.Number]: {
-    nodes: {},
-    links: {},
-    pins: {
-      VAL: {
-        key: 'VAL',
-        direction: 'output',
-        label: 'value',
-        type: 'number',
-        value: 0,
-        order: 0,
-        description: 'Constant value',
-      },
-    },
-    impls: {
-      cpp: '\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    reemitNumber(nid, Outputs::VAL);\n}\n',
-    },
-  },
-  [CONST_NODETYPES.Boolean]: {
-    nodes: {},
-    links: {},
-    pins: {
-      VAL: {
-        key: 'VAL',
-        direction: 'output',
-        label: 'value',
-        type: 'boolean',
-        value: false,
-        order: 0,
-        description: 'Constant value',
-      },
-    },
-    impls: {
-      cpp: '\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    reemitLogic(nid, Outputs::VAL);\n}\n',
-    },
-  },
+  string: 'xod/core/constant-string',
+  number: 'xod/core/constant-number',
+  boolean: 'xod/core/constant-logic',
+  pulse: 'xod/core/constant-logic',
 };
 const TYPES_MAP = {
   number: 'Number',
@@ -74,107 +20,173 @@ const TYPES_MAP = {
   boolean: 'Logic',
 };
 
+// :: Node -> Boolean
+const isNodeWithCurriedPins = R.compose(
+  R.complement(R.isEmpty),
+  Project.getCurriedPins
+);
+
+// :: { a: { b: c } } -> [c]
+const nestedValues = R.compose(
+  R.unnest,
+  R.map(R.values),
+  R.values
+);
+
+// :: { NodeId: { PinKey: DataValue } } -> NodeId -> Pin -> Boolean
+const isCurriedInNodePin = R.curry((nodePinValues, nodeId, pin) => {
+  const pinKey = Project.getPinKey(pin);
+  const nodePins = R.prop(nodeId, nodePinValues);
+  return R.has(pinKey, nodePins);
+});
+
 // It copies patches of needed const*TYPE* into flatten project,
 // Replaces curried pins with new nodes with curried value (inValue)
 // And create a links from it
 // And returns an unpdated flattened project
 const placeConstNodesAndLinks = def(
-  'placeConstNodesAndLinks :: Project -> String -> Project',
-  (flatProject, path) => {
-    const entryPointPatch = Project.getPatchByPath(path, flatProject);
+  'placeConstNodesAndLinks :: Project -> String -> Project -> Project',
+  (flatProject, path, origProject) => {
+    const entryPointPatch = explode(Project.getPatchByPath(path, flatProject));
+    const entryPointNodes = Project.listNodes(entryPointPatch);
+    const nodesWithCurriedPins = R.filter(isNodeWithCurriedPins, entryPointNodes);
+
     // 1. Get all curried nodes of entry-point patch
-    const curriedPinsOfNodes = R.compose(
+    // :: Patch -> { NodeId: { PinKey: DataValue } }
+    const nodePinValues = R.compose(
       R.reject(R.isEmpty),
-      R.mapObjIndexed(R.compose(
-        R.unnest,
-        R.toPairs,
-        Project.getCurriedPins
-      )),
-      R.indexBy(Project.getNodeId),
-      R.chain(Project.listNodes)
-    )(entryPointPatch);
-    // 2. Get all node types that needed to produce constants
-    const constNodeTypes = R.map(
-      R.compose(
-        R.prop(R.__, CONST_NODETYPES),
-        R.type,
-        R.last
-      ),
-      curriedPinsOfNodes
+      R.map(Project.getCurriedPins),
+      R.indexBy(Project.getNodeId)
+    )(entryPointNodes);
+    // 2. Get all node types that needed to produce constant nodes
+    // :: [Node] -> { NodeId: PatchPath }
+    const constNodeTypes = R.compose(
+      R.map(Project.getNodeType),
+      R.indexBy(Project.getNodeId)
+    )(nodesWithCurriedPins);
+    // 3. Get all pin types of nodes with curried pins
+    // :: { NodeId: PatchPath } -> { NodeId: { PinKey: PinType } }
+    // TODO: Add filtering of pins that aren't curried (filter by nodePinValues[nodeId][pinKey])
+    const nodePinTypes = R.mapObjIndexed(
+      (patchPath, nodeId) => R.compose(
+        R.map(Project.getPinType),
+        R.indexBy(Project.getPinKey),
+        R.filter(isCurriedInNodePin(nodePinValues, nodeId)),
+        Project.listPins,
+        explode,
+        Project.getPatchByPath(R.__, flatProject)
+      )(patchPath),
+      constNodeTypes
     );
+    // 4. Get all pin types of nodes with curried pins
+    // :: { NodeId: { PinKey: PinType } } -> { NodeId: { PinKey: PatchPath } }
+    const constPinPaths = R.map(R.map(R.prop(R.__, CONST_NODETYPES)), nodePinTypes);
+    // 5. Get uniq patch paths to copy patches
+    // :: { NodeId: { PinKey: PatchPath }} -> [PatchPath]
     const constPaths = R.compose(
       R.uniq,
-      R.values
-    )(constNodeTypes);
-    const appendNodeTypes = R.map(R.append, constNodeTypes);
-    const curriedNodesData = R.evolve(appendNodeTypes, curriedPinsOfNodes);
-    // 3. Get patches for constant nodes
-    const constPatches = R.map(R.prop(R.__, CONST_PATCHES), constPaths);
-    // 4. Make a list of tuples of const paths and const patches
+      nestedValues
+    )(constPinPaths);
+    // 6. Get patches for constant nodes from original project
+    // :: [PatchPath] -> [Patch]
+    const constPatches = R.map(
+      (constPath) => {
+        const patch = Project.getPatchByPath(constPath, origProject);
+        if (patch.isNothing) {
+          throw new Error(`Could not find the patch '${constPath}' in the project`);
+        }
+        return explode(patch);
+      }
+    )(constPaths);
+    // 7. Make a list of tuples of const paths and const patches
+    // :: [PatchPath] -> [Patch] -> { PatchPath: Patch }
     const constPatchPairs = R.zip(constPaths, constPatches);
-    // 5. Add these patches into flattenProject
+    // 8. Add these patches into flattenProject
+    // :: Project -> { PatchPath: Patch } -> Project
     const flattenProjectWithConstPatches = R.reduce(
-      (eitherProject, pair) => eitherProject.chain(Project.assocPatch(pair[0], pair[1])),
-      Either.of(flatProject),
+      (proj, pair) => explode(Project.assocPatch(pair[0], pair[1], proj)),
+      flatProject,
       constPatchPairs
     );
-    // 6. Add new nodes into entry-point patch with desired values and correct types
-    // 6.1. Create new nodes
-    const newConstNodes = R.map(
-      (data) => {
-        const type = data[2];
-        const value = data[1];
+    // 9. Add new nodes into entry-point patch with desired values and correct types
+    // 9.1. Create new nodes
+    // :: { NodeId: { PinKey: DataValue } } -> { NodeId: { PinKey: Node } }
+    const newConstNodes = R.mapObjIndexed(
+      (pinsData, nodeId) => R.mapObjIndexed(
+        (pinValue, pinKey) => {
+          const type = R.path([nodeId, pinKey], constPinPaths);
+
+          return R.compose(
+            Project.setPinCurriedValue(CONSTANT_VALUE_PINKEY, pinValue),
+            Project.curryPin(CONSTANT_VALUE_PINKEY, true),
+            Project.createNode({ x: 0, y: 0 })
+          )(type);
+        },
+        pinsData
+      ),
+      nodePinValues
+    );
+    // 9.2. Uncurry pins
+    // :: { NodeId: { PinKey: DataValue } } -> { NodeId: Node }
+    const uncurriedNodes = R.mapObjIndexed(
+      (pinData, nodeId) => {
+        const pinKeys = R.keys(pinData);
 
         return R.compose(
-          Project.setPinCurriedValue('VAL', value),
-          Project.curryPin('VAL', true),
-          Project.createNode({ x: 0, y: 0 })
-        )(type);
+          R.reduce(
+            (node, pinKey) => Project.curryPin(pinKey, false, node),
+            R.__,
+            pinKeys
+          ),
+          explode,
+          Project.getNodeById(nodeId)
+        )(entryPointPatch);
       },
-      curriedNodesData
+      nodePinValues
     );
-    const appendNodeIds = R.map(R.compose(R.append, Project.getNodeId), newConstNodes);
-    const curriedNodesDataWithNewIds = R.evolve(appendNodeIds, curriedNodesData);
-    // 6.2. Uncurry pins
-    const uncurriedNodes = R.mapObjIndexed(
-      (data, key) => R.compose(
-        R.chain(Project.curryPin(data[0], false)),
-        R.chain(Project.getNodeById(key))
-      )(entryPointPatch),
-      curriedNodesData
-    );
+    // 9.3. Assoc uncurried nodes into patch
+    // :: Patch -> { NodeId: Node } -> Patch
     const patchWithUncurriedNodes = R.reduce(
       R.flip(Project.assocNode),
-      R.unnest(entryPointPatch),
+      entryPointPatch,
       R.values(uncurriedNodes)
     );
-    // 6.3. Create new links
+    // 9.4. Create new links
+    // :: { NodeId: { PinKey: Node } } -> { NodeId: { PinKey: Link } }
     const newLinks = R.mapObjIndexed(
-      (data, nodeId) => {
-        const pinKey = data[0];
-        const newNodeId = data[3];
-        return Project.createLink(pinKey, nodeId, 'VAL', newNodeId);
-      },
-      curriedNodesDataWithNewIds
+      (pinsData, nodeId) => R.mapObjIndexed(
+        (node, pinKey) => {
+          const newNodeId = Project.getNodeId(node);
+
+          return Project.createLink(pinKey, nodeId, CONSTANT_VALUE_PINKEY, newNodeId);
+        },
+        pinsData
+      ),
+      newConstNodes
     );
-    // 6.4. Add new nodes (newConstNodes) and links (newLinks) into patch (patchWithUncurriedNodes)
+    // 9.5. Add new nodes (newConstNodes) and links (newLinks) into patch (patchWithUncurriedNodes)
+    // :: Patch -> { NodeId: { PinKey: Node } } -> Patch
     const patchWithNodes = R.reduce(
       R.flip(Project.assocNode),
       patchWithUncurriedNodes,
-      R.values(newConstNodes)
+      nestedValues(newConstNodes)
     );
+    // :: Patch -> { NodeId: { PinKey: Link } } -> Patch
     const patchWithLinks = R.reduce(
-      (patch, link) => patch.chain(Project.assocLink(link)),
-      Either.of(patchWithNodes),
-      R.values(newLinks)
+      (patch, link) => explode(Project.assocLink(link, patch)),
+      patchWithNodes,
+      nestedValues(newLinks)
     );
-    // 6.5. Assoc updated patch
-    const updatedFlattenProject = R.chain(
-      Project.assocPatch(path, R.unnest(patchWithLinks)),
+    // 9.6. Assoc updated patch
+    // :: PatchPath -> Patch -> Project -> Maybe Project
+    const updatedFlattenProject = Project.assocPatch(
+      path,
+      patchWithLinks,
       flattenProjectWithConstPatches
     );
+
     // PROFIT!
-    return R.unnest(updatedFlattenProject);
+    return explode(updatedFlattenProject);
   }
 );
 
@@ -362,8 +374,8 @@ export const transformProject = def(
   (project, path, impls) => {
     const flattenProject = R.compose(
       renumberProject(path),
-      // sort using topology before renumber!
-      R.chain(placeConstNodesAndLinks(R.__, path)),
+      placeConstNodesAndLinks(R.__, path, project),
+      explode,
       Project.flatten
     )(project, path, impls);
 

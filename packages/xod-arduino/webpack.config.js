@@ -3,6 +3,7 @@ const path = require('path');
 const pkgpath = subpath => path.join(__dirname, subpath);
 
 module.exports = {
+  devtool: 'source-map',
   entry: pkgpath('src/index.js'),
   output: {
     path: pkgpath('dist'),
