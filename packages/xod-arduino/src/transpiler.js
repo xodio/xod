@@ -45,7 +45,7 @@ const isCurriedInNodePin = R.curry((nodePinValues, nodeId, pin) => {
 // And creates links from them
 // And returns updated flat project
 const placeConstNodesAndLinks = def(
-  'placeConstNodesAndLinks :: Project -> String -> Project -> Project',
+  'placeConstNodesAndLinks :: Project -> PatchPath -> Project -> Project',
   (flatProject, path, origProject) => {
     const entryPointPatch = explode(Project.getPatchByPath(path, flatProject));
     const entryPointNodes = Project.listNodes(entryPointPatch);
@@ -200,7 +200,7 @@ const getNodeCount = def(
 
 // Creates a TConfig object from project and entry-point path
 const createTConfig = def(
-  'createTConfig :: Project -> String -> TConfig',
+  'createTConfig :: Project -> PatchPath -> TConfig',
   (project, path) => {
     const nodeCount = Project.getPatchByPath(path, project).chain(getNodeCount);
     const outputCount = R.compose(
@@ -218,7 +218,7 @@ const createTConfig = def(
 );
 
 const createPatchNames = def(
-  'createPatchNames :: String -> { owner :: String, libName :: String, patchName :: String }',
+  'createPatchNames :: PatchPath -> { owner :: String, libName :: String, patchName :: String }',
   (path) => {
     const [owner, libName, ...patchNameParts] = R.split('/', path);
     const patchName = patchNameParts.join('/').replace(/-/g, '_');
@@ -232,17 +232,17 @@ const createPatchNames = def(
 );
 
 const isConstPath = def(
-  'isConstPath :: String -> Boolean',
+  'isConstPath :: PatchPath -> Boolean',
   path => R.contains(path, R.values(CONST_NODETYPES))
 );
 
 const createTPatches = def(
-  'createTPatches :: Project -> String -> [TPatch]',
+  'createTPatches :: Project -> PatchPath -> [TPatch]',
   (project, entryPath) => R.compose(
     R.values,
     R.mapObjIndexed((patch, path) => {
       const names = createPatchNames(path);
-      const impl = R.unnest(Project.getImplByArray(ARDUINO_IMPLS, patch));
+      const impl = explode(Project.getImplByArray(ARDUINO_IMPLS, patch));
       const isDirty = isConstPath(path);
 
       const outputs = R.compose(
@@ -273,7 +273,7 @@ const createTPatches = def(
 );
 
 const findPatchByPath = def(
-  'findPatchByPath :: String -> [TPatch] -> TPatch',
+  'findPatchByPath :: PatchPath -> [TPatch] -> TPatch',
   (path, patches) => R.compose(
     R.find(R.__, patches),
     R.allPass,
@@ -284,7 +284,7 @@ const findPatchByPath = def(
 );
 
 const getTNodeOutputs = def(
-  'getTNodeOutputs :: Project -> String -> Node -> [TNodeOutput]',
+  'getTNodeOutputs :: Project -> PatchPath -> Node -> [TNodeOutput]',
   (project, entryPath, node) => {
     const nodeId = Project.getNodeId(node);
 
@@ -293,7 +293,7 @@ const getTNodeOutputs = def(
       R.mapObjIndexed((links, pinKey) => {
         const to = R.uniq(R.map(Project.getLinkInputNodeId, links));
         const value = (Project.isPinCurried(pinKey, node)) ?
-          R.unnest(Project.getPinCurriedValue(pinKey, node)) :
+          explode(Project.getPinCurriedValue(pinKey, node)) :
           null;
 
         return {
@@ -304,24 +304,26 @@ const getTNodeOutputs = def(
       }),
       R.groupBy(Project.getLinkOutputPinKey),
       R.filter(Project.isLinkOutputNodeIdEquals(nodeId)),
-      R.chain(Project.listLinksByNode(node)),
+      Project.listLinksByNode(node),
+      explode,
       Project.getPatchByPath
     )(entryPath, project);
   }
 );
 
 const getPatchByNodeId = def(
-  'getPatchByNodeId :: Project -> String -> [TPatch] -> String -> TPatch',
+  'getPatchByNodeId :: Project -> PatchPath -> [TPatch] -> NodeId -> TPatch',
   (project, entryPath, patches, nodeId) => R.compose(
     findPatchByPath(R.__, patches),
-    R.chain(Project.getNodeType),
+    Project.getNodeType,
+    explode,
     R.chain(Project.getNodeById(nodeId)),
     Project.getPatchByPath
   )(entryPath, project)
 );
 
 const getTNodeInputs = def(
-  'getTNodeInputs :: Project -> String -> [TPatch] -> Node -> [TNodeInput]',
+  'getTNodeInputs :: Project -> PatchPath -> [TPatch] -> Node -> [TNodeInput]',
   (project, entryPath, patches, node) => {
     const nodeId = Project.getNodeId(node);
 
@@ -336,14 +338,15 @@ const getTNodeInputs = def(
         fromPinKey: Project.getLinkOutputPinKey,
       })),
       R.filter(Project.isLinkInputNodeIdEquals(nodeId)),
-      R.chain(Project.listLinksByNode(node)),
+      Project.listLinksByNode(node),
+      explode,
       Project.getPatchByPath
     )(entryPath, project);
   }
 );
 
 const createTNodes = def(
-  'createTNodes :: Project -> String -> [TPatch] -> [TNode]',
+  'createTNodes :: Project -> PatchPath -> [TPatch] -> [TNode]',
   (project, entryPath, patches) => R.compose(
     R.map(R.applySpec({
       id: Project.getNodeId,
@@ -351,25 +354,27 @@ const createTNodes = def(
       outputs: getTNodeOutputs(project, entryPath),
       inputs: getTNodeInputs(project, entryPath, patches),
     })),
-    R.chain(Project.listNodes),
+    Project.listNodes,
+    explode,
     Project.getPatchByPath
   )(entryPath, project)
 );
 
 const renumberProject = def(
-  'renumberProject :: String -> Project -> Project',
+  'renumberProject :: PatchPath -> Project -> Project',
   (path, project) => R.compose(
-    R.unnest,
+    explode,
     Project.assocPatch(path, R.__, project),
-    R.chain(Project.renumberNodes),
+    Project.renumberNodes,
+    explode,
     Project.getPatchByPath
   )(path, project)
 );
 
 // Transforms Project into TProject
 export const transformProject = def(
-  'transformProject :: Project -> String -> [Source] -> TProject',
-  (project, path, impls) => {
+  'transformProject :: [Source] -> Project -> PatchPath -> TProject',
+  (impls, project, path) => {
     const flattenProject = R.compose(
       renumberProject(path),
       placeConstNodesAndLinks(R.__, path, project),
@@ -379,7 +384,8 @@ export const transformProject = def(
 
     const topology = R.compose(
       R.map(num => parseInt(num, 10)),
-      R.chain(Project.getTopology),
+      Project.getTopology,
+      explode,
       Project.getPatchByPath
     )(path, flattenProject);
 
@@ -397,9 +403,6 @@ export const transformProject = def(
 );
 
 export default def(
-  'transpile :: Project -> String -> String',
-  (project, path) => {
-    const projectContext = transformProject(project, path, ARDUINO_IMPLS);
-    return renderProject(projectContext);
-  }
+  'transpile :: Project -> PatchPath -> String',
+  R.compose(renderProject, transformProject(ARDUINO_IMPLS))
 );
