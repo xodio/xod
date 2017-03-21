@@ -1,6 +1,6 @@
 import R from 'ramda';
 
-import { explode } from 'xod-func-tools';
+import { explode, explodeMaybe } from 'xod-func-tools';
 import Project from 'xod-project';
 import { def } from './types';
 
@@ -47,7 +47,7 @@ const isCurriedInNodePin = R.curry((nodePinValues, nodeId, pin) => {
 const placeConstNodesAndLinks = def(
   'placeConstNodesAndLinks :: Project -> PatchPath -> Project -> Project',
   (flatProject, path, origProject) => {
-    const entryPointPatch = explode(Project.getPatchByPath(path, flatProject));
+    const entryPointPatch = Project.getPatchByPathUnsafe(path, flatProject);
     const entryPointNodes = Project.listNodes(entryPointPatch);
     const nodesWithCurriedPins = R.filter(isNodeWithCurriedPins, entryPointNodes);
 
@@ -73,8 +73,7 @@ const placeConstNodesAndLinks = def(
         R.indexBy(Project.getPinKey),
         R.filter(isCurriedInNodePin(nodePinValues, nodeId)),
         Project.listPins,
-        explode,
-        Project.getPatchByPath(R.__, flatProject)
+        Project.getPatchByPathUnsafe(R.__, flatProject)
       )(patchPath),
       constNodeTypes
     );
@@ -90,20 +89,17 @@ const placeConstNodesAndLinks = def(
     // 6. Get patches for constant nodes from original project
     // :: [PatchPath] -> [Patch]
     const constPatches = R.map(
-      (constPath) => {
-        const patch = Project.getPatchByPath(constPath, origProject);
-        if (patch.isNothing) {
-          throw new Error(`Could not find the patch '${constPath}' in the project`);
-        }
-        return explode(patch);
-      }
+      constPath => R.compose(
+        explodeMaybe(`Could not find the patch '${constPath}' in the project`),
+        Project.getPatchByPath(R.__, origProject)
+      )(constPath)
     )(constPaths);
     // 7. Make a list of tuples of const paths and const patches
     // :: [PatchPath] -> [Patch] -> { PatchPath: Patch }
     const constPatchPairs = R.zip(constPaths, constPatches);
-    // 8. Add these patches into flattenProject
+    // 8. Add these patches into flatProject
     // :: Project -> { PatchPath: Patch } -> Project
-    const flattenProjectWithConstPatches = R.reduce(
+    const flatProjectWithConstPatches = R.reduce(
       (proj, pair) => explode(Project.assocPatch(pair[0], pair[1], proj)),
       flatProject,
       constPatchPairs
@@ -182,7 +178,7 @@ const placeConstNodesAndLinks = def(
     const updatedFlattenProject = Project.assocPatch(
       path,
       patchWithLinks,
-      flattenProjectWithConstPatches
+      flatProjectWithConstPatches
     );
 
     // PROFIT!
@@ -305,8 +301,7 @@ const getTNodeOutputs = def(
       R.groupBy(Project.getLinkOutputPinKey),
       R.filter(Project.isLinkOutputNodeIdEquals(nodeId)),
       Project.listLinksByNode(node),
-      explode,
-      Project.getPatchByPath
+      Project.getPatchByPathUnsafe
     )(entryPath, project);
   }
 );
@@ -317,8 +312,8 @@ const getPatchByNodeId = def(
     findPatchByPath(R.__, patches),
     Project.getNodeType,
     explode,
-    R.chain(Project.getNodeById(nodeId)),
-    Project.getPatchByPath
+    Project.getNodeById(nodeId),
+    Project.getPatchByPathUnsafe
   )(entryPath, project)
 );
 
@@ -339,8 +334,7 @@ const getTNodeInputs = def(
       })),
       R.filter(Project.isLinkInputNodeIdEquals(nodeId)),
       Project.listLinksByNode(node),
-      explode,
-      Project.getPatchByPath
+      Project.getPatchByPathUnsafe
     )(entryPath, project);
   }
 );
@@ -355,8 +349,7 @@ const createTNodes = def(
       inputs: getTNodeInputs(project, entryPath, patches),
     })),
     Project.listNodes,
-    explode,
-    Project.getPatchByPath
+    Project.getPatchByPathUnsafe
   )(entryPath, project)
 );
 
@@ -366,8 +359,7 @@ const renumberProject = def(
     explode,
     Project.assocPatch(path, R.__, project),
     Project.renumberNodes,
-    explode,
-    Project.getPatchByPath
+    Project.getPatchByPathUnsafe
   )(path, project)
 );
 
@@ -375,23 +367,24 @@ const renumberProject = def(
 export const transformProject = def(
   'transformProject :: [Source] -> Project -> PatchPath -> TProject',
   (impls, project, path) => {
-    const flattenProject = R.compose(
-      renumberProject(path),
-      placeConstNodesAndLinks(R.__, path, project),
+    const flatProject = R.compose(
       explode,
+      R.map(R.compose(
+        renumberProject(path),
+        placeConstNodesAndLinks(R.__, path, project)
+      )),
       Project.flatten
     )(project, path, impls);
 
     const topology = R.compose(
       R.map(num => parseInt(num, 10)),
       Project.getTopology,
-      explode,
-      Project.getPatchByPath
-    )(path, flattenProject);
+      Project.getPatchByPathUnsafe
+    )(path, flatProject);
 
-    const config = createTConfig(flattenProject, path);
-    const patches = createTPatches(flattenProject, path);
-    const nodes = createTNodes(flattenProject, path, patches);
+    const config = createTConfig(flatProject, path);
+    const patches = createTPatches(flatProject, path);
+    const nodes = createTNodes(flatProject, path, patches);
 
     return {
       config,
