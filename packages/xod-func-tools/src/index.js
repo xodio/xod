@@ -20,4 +20,23 @@ export const explode = R.cond([
   [R.T, (input) => { throw new Error(`Maybe or Either should be passed into explode function. Passed: ${input}`); }],
 ]);
 
-export default { explode };
+/**
+ * Function to rapidly extract a value from Maybe.Just
+ * or throw a defined error message on Maybe.Nothing
+ *
+ * @private
+ * @function explodeMaybe
+ * @param {String} errorMessage
+ * @param {Maybe} maybeObject
+ * @returns {*}
+ * @throws Error
+ */
+export const explodeMaybe = R.curry((errorMessage, maybeObject) =>
+  R.cond([
+    [Maybe.isJust, R.unnest],
+    [Maybe.isNothing, () => { throw new Error(errorMessage); }],
+    [R.T, () => { throw new Error(`Maybe should be passed into explodeMaybe function. Passed: ${maybeObject}`); }],
+  ])(maybeObject)
+);
+
+export default { explode, explodeMaybe };
