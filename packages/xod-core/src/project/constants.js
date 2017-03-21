@@ -26,7 +26,7 @@ export const PIN_DIRECTION = {
 
 export const PIN_TYPE = {
   PULSE: 'pulse',
-  BOOL: 'bool',
+  BOOL: 'boolean',
   NUMBER: 'number',
   STRING: 'string',
 };
@@ -39,7 +39,7 @@ export const PIN_VALIDITY = {
 };
 
 export const PROPERTY_TYPE = {
-  BOOL: 'bool',
+  BOOL: 'boolean',
   NUMBER: 'number',
   STRING: 'string',
   PULSE: 'pulse',
