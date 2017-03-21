@@ -5,6 +5,7 @@ import dirtyChai from 'dirty-chai';
 import * as CONST from '../src/constants';
 import * as Patch from '../src/patch';
 import * as Project from '../src/project';
+import { formatString } from '../src/utils';
 
 import * as Helper from './helpers';
 
@@ -198,7 +199,7 @@ describe('Project', () => {
       const newProject = Project.validatePatchRebase('@/test', '@/patch', emptyProject);
 
       expect(newProject.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, newProject, CONST.ERROR.PATCH_NOT_FOUND_BY_PATH);
+      Helper.expectErrorMessage(expect, newProject, formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: '@/patch' }));
     });
     it('should return Either.Left if another patch with same path already exist', () => {
       const project = Helper.defaultizeProject({

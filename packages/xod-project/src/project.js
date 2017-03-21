@@ -1,5 +1,6 @@
 import R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
+import { explodeMaybe } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
@@ -182,7 +183,7 @@ export const listLibraryPatches = def(
  * @function getPatchByPath
  * @param {string} path - full path of the patch to find, e.g. `"@/foo/bar"`
  * @param {Project} project - project bundle
- * @returns {Maybe<Patch>} a patch with given path or Null if it wasn’t found
+ * @returns {Maybe<Patch>} a patch with given path
  */
 export const getPatchByPath = def(
   'getPatchByPath :: PatchPath -> Project -> Maybe Patch',
@@ -359,7 +360,7 @@ export const validatePatchRebase = def(
       R.complement(doesPathExist(R.__, project))
     ))
     .chain(() => Tools.errOnNothing(
-      CONST.ERROR.PATCH_NOT_FOUND_BY_PATH,
+      Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: oldPath }),
       getPatchByPath(oldPath, project)
     ))
     .map(R.always(project))

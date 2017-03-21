@@ -807,7 +807,7 @@ export default R.curry((inputProject, path, impls) =>
   Project.validateProject(inputProject).chain(project =>
     R.compose(
       R.chain(flattenProject(project, path, impls)),
-      errOnNothing(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH),
+      errOnNothing(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })),
       Project.getPatchByPath(path)
     )(project)
   )
