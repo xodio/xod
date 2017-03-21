@@ -196,9 +196,9 @@ const getNodeCount = def(
 
 // Creates a TConfig object from project and entry-point path
 const createTConfig = def(
-  'createTConfig :: Project -> PatchPath -> TConfig',
-  (project, path) => {
-    const nodeCount = Project.getPatchByPath(path, project).chain(getNodeCount);
+  'createTConfig :: PatchPath -> Project -> TConfig',
+  (path, project) => {
+    const nodeCount = getNodeCount(Project.getPatchByPathUnsafe(path, project));
     const outputCount = R.compose(
       R.reduce(R.max, 0),
       R.map(R.compose(R.length, Project.listOutputPins)),
@@ -227,14 +227,23 @@ const createPatchNames = def(
   }
 );
 
+const createTTopology = def(
+  'createTTopology :: PatchPath -> Project -> [Number]',
+  R.compose(
+    R.map(num => parseInt(num, 10)),
+    Project.getTopology,
+    Project.getPatchByPathUnsafe
+  )
+);
+
 const isConstPath = def(
   'isConstPath :: PatchPath -> Boolean',
   path => R.contains(path, R.values(CONST_NODETYPES))
 );
 
 const createTPatches = def(
-  'createTPatches :: Project -> PatchPath -> [TPatch]',
-  (project, entryPath) => R.compose(
+  'createTPatches :: PatchPath -> Project -> [TPatch]',
+  (entryPath, project) => R.compose(
     R.values,
     R.mapObjIndexed((patch, path) => {
       const names = createPatchNames(path);
@@ -340,8 +349,8 @@ const getTNodeInputs = def(
 );
 
 const createTNodes = def(
-  'createTNodes :: Project -> PatchPath -> [TPatch] -> [TNode]',
-  (project, entryPath, patches) => R.compose(
+  'createTNodes :: PatchPath -> [TPatch] -> Project -> [TNode]',
+  (entryPath, patches, project) => R.compose(
     R.map(R.applySpec({
       id: Project.getNodeId,
       patch: R.compose(findPatchByPath(R.__, patches), Project.getNodeType),
@@ -365,37 +374,26 @@ const renumberProject = def(
 
 // Transforms Project into TProject
 export const transformProject = def(
-  'transformProject :: [Source] -> Project -> PatchPath -> TProject',
-  (impls, project, path) => {
-    const flatProject = R.compose(
-      explode,
-      R.map(R.compose(
-        renumberProject(path),
-        placeConstNodesAndLinks(R.__, path, project)
-      )),
-      Project.flatten
-    )(project, path, impls);
-
-    const topology = R.compose(
-      R.map(num => parseInt(num, 10)),
-      Project.getTopology,
-      Project.getPatchByPathUnsafe
-    )(path, flatProject);
-
-    const config = createTConfig(flatProject, path);
-    const patches = createTPatches(flatProject, path);
-    const nodes = createTNodes(flatProject, path, patches);
-
-    return {
-      config,
-      patches,
-      nodes,
-      topology,
-    };
-  }
+  'transformProject :: [Source] -> Project -> PatchPath -> Either Error TProject',
+  (impls, project, path) => R.compose(
+    R.map(R.compose(
+      (proj) => {
+        const patches = createTPatches(path, proj);
+        return R.applySpec({
+          config: createTConfig(path),
+          patches: R.always(patches),
+          nodes: createTNodes(path, patches),
+          topology: createTTopology(path),
+        })(proj);
+      },
+      renumberProject(path),
+      placeConstNodesAndLinks(R.__, path, project)
+    )),
+    Project.flatten
+  )(project, path, impls)
 );
 
 export default def(
-  'transpile :: Project -> PatchPath -> String',
-  R.compose(renderProject, transformProject(ARDUINO_IMPLS))
+  'transpile :: Project -> PatchPath -> Either Error String',
+  R.compose(R.map(renderProject), transformProject(ARDUINO_IMPLS))
 );
