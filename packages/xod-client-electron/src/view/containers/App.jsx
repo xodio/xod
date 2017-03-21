@@ -12,7 +12,7 @@ import core from 'xod-core';
 import client from 'xod-client';
 import {
   getProjectName,
-  getProjectAuthors
+  getProjectAuthors,
 } from 'xod-project';
 
 import * as actions from '../actions';

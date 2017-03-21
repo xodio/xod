@@ -1,4 +1,3 @@
-import R from 'ramda';
 import React from 'react';
 
 import { POPUP_ID } from '../constants';

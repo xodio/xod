@@ -9,7 +9,7 @@ import core from 'xod-core';
 import client from 'xod-client';
 import {
   getProjectName,
-  getProjectAuthors
+  getProjectAuthors,
 } from 'xod-project';
 
 import PopupInstallApp from '../components/PopupInstallApp';
