@@ -7,7 +7,9 @@ import { bindActionCreators } from 'redux';
 import { Icon } from 'react-fa';
 import { HotKeys } from 'react-hotkeys';
 
+import $ from 'sanctuary-def';
 import {
+  Patch,
   getProjectName,
   listLocalPatches,
   listLibraryPatches,
@@ -24,7 +26,6 @@ import * as ProjectActions from '../../project/actions';
 import * as ProjectBrowserActions from '../actions';
 import * as EditorActions from '../../editor/actions';
 import * as MessagesActions from '../../messages/actions';
-import { PROJECT_BROWSER_ERRORS } from '../../messages/constants';
 
 import * as ProjectBrowserSelectors from '../selectors';
 import * as EditorSelectors from '../../editor/selectors';
@@ -33,6 +34,7 @@ import { getProjectV2 } from '../../project/selectors';
 import { EDITOR_MODE } from '../../editor/constants';
 import { COMMAND } from '../../utils/constants';
 import { noop } from '../../utils/ramda';
+import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
 import PatchGroup from '../components/PatchGroup';
 import PatchGroupItem from '../components/PatchGroupItem';
@@ -189,8 +191,8 @@ class ProjectBrowser extends React.Component {
   }
 
   renderLibraryPatches() {
-
-
+    const { libs, selectedPatchPath } = this.props;
+    const { setSelection } = this.props.actions;
 
     return R.toPairs(libs).map(([libName, libPatches]) => (
       <PatchGroup
@@ -275,9 +277,9 @@ ProjectBrowser.propTypes = {
   currentPatchPath: React.PropTypes.string,
   selectedPatchPath: React.PropTypes.string,
   selectedPatchLabel: React.PropTypes.string.isRequired,
-  localPatches: React.PropTypes.array.isRequired,
+  localPatches: sanctuaryPropType($.Array(Patch)),
   openPopups: React.PropTypes.object.isRequired,
-  libs: React.PropTypes.object.isRequired,
+  libs: sanctuaryPropType($.StrMap($.Array(Patch))),
   actions: React.PropTypes.shape({
     setSelectedNodeType: React.PropTypes.func.isRequired,
     setEditorMode: React.PropTypes.func.isRequired,
