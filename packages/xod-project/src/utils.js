@@ -1,5 +1,4 @@
 import R from 'ramda';
-import { Maybe, Either } from 'ramda-fantasy';
 import shortid from 'shortid';
 
 import * as Node from './node';
