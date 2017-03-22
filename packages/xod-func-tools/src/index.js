@@ -1,5 +1,10 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
+import * as types from './types';
+
+export * from './types';
+
+const def = types.def;
 
 /**
  * Function to rapidly extract a value from Maybe or Either monad.
@@ -31,12 +36,48 @@ export const explode = R.cond([
  * @returns {*}
  * @throws Error
  */
-export const explodeMaybe = R.curry((errorMessage, maybeObject) =>
-  R.cond([
+export const explodeMaybe = def(
+  'explodeMaybe :: String -> Maybe a -> a',
+  (errorMessage, maybeObject) => R.cond([
     [Maybe.isJust, R.unnest],
     [Maybe.isNothing, () => { throw new Error(errorMessage); }],
     [R.T, () => { throw new Error(`Maybe should be passed into explodeMaybe function. Passed: ${maybeObject}`); }],
   ])(maybeObject)
 );
 
-export default { explode, explodeMaybe };
+/**
+ * Function to extract value from `Either` by providing a function
+ * to handle the types of values contained in both `Left` and `Right`.
+ *
+ * This is hack to prevent errors on using `Either.either` with
+ * cross-package Eithers (`Either.either` checks for instanceof and
+ * it has other constuctors for some reason).
+ *
+ * @private
+ * @function foldEither
+ * @param {Function} leftFn
+ * @param {Function} rightFn
+ * @param {Either} eitherObject
+ * @returns {*}
+ * @throws Error
+ */
+export const foldEither = def(
+  'foldEither :: (a -> c) -> (b -> c) -> Either a b -> c',
+  (leftFn, rightFn, eitherObject) => {
+    const r = R.cond([
+      [R.prop('isLeft'), e => leftFn(e.value)],
+      [R.prop('isRight'), e => rightFn(e.value)],
+      [R.T, () => { throw new Error(`Either should be passed into foldEither function. Passed: ${eitherObject}`); }],
+    ])(eitherObject);
+    return r;
+  }
+);
+
+export default Object.assign(
+  {
+    explode,
+    explodeMaybe,
+    foldEither,
+  },
+  types
+);

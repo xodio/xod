@@ -1,7 +1,8 @@
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
+import { identity, F } from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 
-import { explode } from '../src/index';
+import { explode, foldEither } from '../src/index';
 
 describe('explode', () => {
   it('should return Maybe.Just value', () => {
@@ -24,5 +25,19 @@ describe('explode', () => {
   it('should throw error if its not Maybe or Either', () => {
     const fn = () => explode(5);
     expect(fn).to.throw(Error);
+  });
+});
+describe('foldEither', () => {
+  it('should return Left value for Left', () => {
+    assert.equal(
+      foldEither(identity, F, Either.Left('left')),
+      'left'
+    );
+  });
+  it('should return Right value for Right', () => {
+    assert.equal(
+      foldEither(F, identity, Either.Right('right')),
+      'right'
+    );
   });
 });

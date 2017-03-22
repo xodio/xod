@@ -16,7 +16,8 @@
     "hm-def": "^0.1.2",
     "ramda": "^0.22.1",
     "ramda-fantasy": "^0.7.0",
-    "sanctuary-def": "^0.9.0"
+    "sanctuary-def": "^0.9.0",
+    "sanctuary-type-identifiers": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0"
