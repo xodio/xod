@@ -27,9 +27,13 @@ module.exports = {
       pkgpath('node_modules/xod-client/node_modules/xod-core/node_modules'),
       pkgpath('node_modules/xod-project/node_modules'),
       pkgpath('node_modules/xod-project/node_modules/hm-def/node_modules'),
+      pkgpath('node_modules/xod-arduino/node_modules'),
       pkgpath('node_modules/xod-js/node_modules'),
     ],
     extensions: ['', '.js', '.jsx', '.scss'],
+    alias: {
+      handlebars: 'handlebars/dist/handlebars.js',
+    },
   },
   module: {
     loaders: [
