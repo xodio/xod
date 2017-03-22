@@ -1,4 +1,3 @@
-import { Either } from 'ramda-fantasy';
 import chai, { assert } from 'chai';
 import chaiString from 'chai-string';
 
@@ -14,11 +13,11 @@ describe('xod-arduino transpiler (end-to-end test)', () => {
   it('should return Either.Right with C++ code', () => {
     const r = transpile(blinkProject, '@/main');
     const cpp = explode(r);
-    assert.equal(Either.isRight(r), true);
+    assert.equal(r.isRight, true);
     assert.equalIgnoreSpaces(cpp, blinkCpp);
   });
   it('should return Either.Left with error if entry-point patch not found', () => {
     const r = transpile(blinkProject, '@/non-existing-patch');
-    assert.equal(Either.isLeft(r), true);
+    assert.equal(r.isLeft, true);
   });
 });
