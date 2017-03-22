@@ -1,9 +1,9 @@
-import R from 'ramda';
 import path from 'path';
-import { readDir, readJSON } from './read';
-import { resolvePath } from './utils';
+import R from 'ramda';
 
 import { loadLibs } from './loadLibs';
+import { readDir, readJSON } from './read';
+import { resolvePath } from './utils';
 
 const hasId = R.has('id');
 const withIdFirst = (a, b) => ((!hasId(a) && hasId(b)) || -1);
@@ -51,7 +51,7 @@ export const getProjects = workspace => readDir(workspace)
     )
   ));
 
-const loadProjectWithoutLibs = (projectPath, workspace) =>
+export const loadProjectWithoutLibs = (projectPath, workspace) =>
   readDir(path.resolve(workspace, projectPath))
     .then(files => files.filter(
       filename => (
@@ -84,11 +84,15 @@ export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) 
         libs,
       }))
       .catch((err) => {
-        throw Object.assign(err, { path: resolvePath(libDir), libs: getProjectLibs(project) });
+        throw Object.assign(err, {
+          path: resolvePath(libDir),
+          libs: getProjectLibs(project),
+        });
       })
     );
 
 export default {
   getProjects,
   loadProjectWithLibs,
+  loadProjectWithoutLibs,
 };

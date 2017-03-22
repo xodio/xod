@@ -5,11 +5,11 @@ import { runCommand } from './utils';
 
 import * as ab from './xodc-ab';
 import generateDoc from './xodc-doc';
+import migrate from './xodc-migrate';
 import pack from './xodc-pack';
 import publish from './xodc-publish';
 import transpile from './xodc-transpile';
 import unpack from './xodc-unpack';
-import migrate from './xodc-migrate';
 
 // Config
 const version = '0.0.1';
@@ -22,7 +22,7 @@ Usage:
   xodc migrate <input> <output>
   xodc transpile [--output=<filename>] [--target=<target>] <input> <path>
   xodc doc [--clear] <outputDir> <templatesDir> <projectDir>
-  xodc publish <swaggerUrl> <libraryId> <libVersion>
+  xodc publish --author=<author> --owner=<owner> [--message=<message>] [<projectDir>]
   xodc ab set-executable <path>
   xodc ab set-packages <path>
   xodc ab list-index
@@ -59,10 +59,13 @@ Options:
 const programs = {
   pack: o => pack(o['<projectDir>'], o['<output>']),
   unpack: o => unpack(o['<xodball>'], o['<workspace>']),
-  transpile: o => transpile(o['<input>'], o['<path>'], { target: o['--target'], output: o['--output'] }),
+  transpile: o => transpile(o['<input>'], o['<path>'], {
+    output: o['--output'],
+    target: o['--target'],
+  }),
   migrate: o => migrate(o['<input>'], o['<output>']),
   doc: o => generateDoc(o['<outputDir>'], o['<templatesDir>'], o['<projectDir>'], { clear: o['--clear'] }),
-  publish: o => publish(o['<swaggerUrl>'], o['<libraryId>'], o['<libVersion>']),
+  publish: o => publish(o['--author'], o['--owner'], o['--message'], o['<projectDir>'] || '.'),
   ab: o => runCommand(o, {
     'set-executable': () => ab.setExecutable(o['<path>']),
     'set-packages': () => ab.setPackages(o['<path>']),
