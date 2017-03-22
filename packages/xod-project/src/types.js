@@ -10,17 +10,20 @@ import * as C from './constants';
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */
 
+const packageName = 'xod-project';
+const docUrl = 'http://xod.io/docs/dev/xod-project/#';
+
 //-----------------------------------------------------------------------------
 //
 // Type utilities
 //
 //-----------------------------------------------------------------------------
 
-const NullaryType = xF.NullaryType('xod-project', 'http://xod.io/docs/dev/xod-project/#');
-const AliasType = xF.AliasType('xod-project', 'http://xod.io/docs/dev/xod-project/#');
-const EnumType = xF.EnumType('xod-project', 'http://xod.io/docs/dev/xod-project/#');
-const Model = xF.Model('xod-project', 'http://xod.io/docs/dev/xod-project/#');
-const OneOfType = xF.OneOfType('xod-project', 'http://xod.io/docs/dev/xod-project/#');
+const NullaryType = xF.NullaryType(packageName, docUrl);
+const AliasType = xF.AliasType(packageName, docUrl);
+const EnumType = xF.EnumType(packageName, docUrl);
+const Model = xF.Model(packageName, docUrl);
+const OneOfType = xF.OneOfType(packageName, docUrl);
 
 //-----------------------------------------------------------------------------
 //
