@@ -1,0 +1,4 @@
+--require babel-register
+--colors
+--timeout 10000
+--plugins babel-plugin-inline-import
