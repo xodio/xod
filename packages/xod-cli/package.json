@@ -21,10 +21,11 @@
     "swagger-client": "^2.1.32",
     "xod-arduino": "^0.0.1",
     "xod-arduino-builder": "^0.0.1",
+    "xod-func-tools": "^0.0.1",
+    "xod-project": "^0.0.1",
     "xod-doc": "^0.0.1",
     "xod-fs": "^0.0.1",
-    "xod-js": "^0.0.1",
-    "xod-project": "^0.0.1"
+    "xod-js": "^0.0.1"
   },
   "engines": {
     "node": "6.0.0"
