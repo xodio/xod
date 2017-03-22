@@ -3,7 +3,7 @@ import R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
 
-import { env as $env, createTypeUtils } from 'xod-func-tools';
+import xF from 'xod-func-tools';
 
 import * as C from './constants';
 
@@ -16,17 +16,11 @@ import * as C from './constants';
 //
 //-----------------------------------------------------------------------------
 
-const {
-  NullaryType,
-  EnumType,
-  Model,
-  OneOfType,
-  AliasType,
-  hasType,
-} = createTypeUtils(
-  'xod-project',
-  'http://xod.io/docs/dev/xod-project/#'
-);
+const NullaryType = xF.NullaryType('xod-project', 'http://xod.io/docs/dev/xod-project/#');
+const AliasType = xF.AliasType('xod-project', 'http://xod.io/docs/dev/xod-project/#');
+const EnumType = xF.EnumType('xod-project', 'http://xod.io/docs/dev/xod-project/#');
+const Model = xF.Model('xod-project', 'http://xod.io/docs/dev/xod-project/#');
+const OneOfType = xF.OneOfType('xod-project', 'http://xod.io/docs/dev/xod-project/#');
 
 //-----------------------------------------------------------------------------
 //
@@ -112,7 +106,7 @@ export const Project = Model('Project', {
 export const TerminalNode = NullaryType(
   'TerminalNode',
   R.both(
-    hasType(Node),
+    xF.hasType(Node),
     R.propSatisfies(matchesTerminalPatchPath, 'type')
   )
 );
@@ -127,7 +121,7 @@ export const PinOrKey = OneOfType('PinOrKey', [PinKey, ObjectWithKey]);
 //
 //-----------------------------------------------------------------------------
 
-export const env = $env.concat([
+export const env = xF.env.concat([
   Link,
   LinkId,
   LinkOrId,

@@ -12,76 +12,10 @@ import HMDef from 'hm-def';
 //
 //-----------------------------------------------------------------------------
 
-const removeLastSlash = R.replace(/\/$/, '');
-
-export const createTypeUtils = (typePath, docUrl) => {
-  // :: String -> String
-  const qualifiedTypeName = typeName => `${removeLastSlash(typePath)}/${typeName}`;
-
-  // :: String -> String
-  const typeUrl = typeName => `${docUrl}${typeName}`;
-
-  // :: (String, Any -> Boolean) -> Type
-  const NullaryType = (typeName, predicate) => $.NullaryType(
-    qualifiedTypeName(typeName),
-    typeUrl(typeName),
-    predicate
-  );
-
-  // :: (String, [Any]) -> Type
-  const EnumType = (typeName, values) => $.EnumType(
-    qualifiedTypeName(typeName),
-    typeUrl(typeName),
-    values
-  );
-
-  // :: Type -> Any -> Boolean
-  const hasType = type => x => type.validate(x).isRight;
-
-  // :: [Type] -> (Any -> Boolean)
-  const hasOneOfType = types => R.anyPass(
-    R.map(hasType, types)
-  );
-
-  const Model = (typeName, schema) => NullaryType(
-    typeName,
-    hasType($.RecordType(schema))
-  );
-
-  const OneOfType = (typeName, types) => NullaryType(
-    typeName,
-    hasOneOfType(types)
-  );
-
-  const AliasType = (typeName, type) => NullaryType(
-    typeName,
-    hasType(type)
-  );
-
-  return {
-    // type defs
-    NullaryType,
-    EnumType,
-    Model,
-    OneOfType,
-    AliasType,
-    // utils
-    hasType,
-    hasOneOfType,
-  };
-};
-
-const Utils = createTypeUtils('xod-func-tools', 'http://xod.io/docs/dev/xod-func-tools/#');
-
-//-----------------------------------------------------------------------------
-//
-// Fantasy land types
-//
-//-----------------------------------------------------------------------------
-
 // For some reason `type` function from 'sanctuary-type-identifiers' don't work
 // correctly with moands from 'ramda-fantasy'. So there is a little hack.
-const checkFantasyMonad = R.curry((expectedType, obj) => {
+// Also it used to test 'sanctuary-def/Type'.
+const checkTypeId = R.curry((expectedType, obj) => {
   const eq = fn => R.compose(R.equals(expectedType), fn);
   return R.anyPass([
     eq(R.path(['constructor', 'prototype', '@@type'])),
@@ -89,11 +23,98 @@ const checkFantasyMonad = R.curry((expectedType, obj) => {
   ])(obj);
 });
 
+const $Type = $.NullaryType(
+  'sanctuary-def/Type',
+  'https://github.com/sanctuary-js/sanctuary-def',
+  checkTypeId('sanctuary-def/Type')
+);
+
+// eslint-disable-next-line
+const _def = HMDef.create({ checkTypes: true, env: $.env.concat([ $Type ]) });
+
+const removeLastSlash = R.replace(/\/$/, '');
+const qualifiedTypeName = _def(
+  'qualifiedTypeName :: String -> String -> String',
+  (packageName, typeName) => `${removeLastSlash(packageName)}/${typeName}`
+);
+const typeUrl = _def(
+  'typeUrl :: String -> String -> String',
+  (docUrl, typeName) => `${docUrl}${typeName}`
+);
+
+export const hasType = _def(
+  'hasType :: Type -> (x -> Boolean)',
+  type => x => type.validate(x).isRight
+);
+
+export const hasOneOfType = _def(
+  'hasOneOfType :: [Type] -> (x -> Boolean)',
+  types => R.anyPass(
+    R.map(hasType, types)
+  )
+);
+
+export const NullaryType = _def(
+  // TODO: Replace `Function` with something like (Any -> Boolean)
+  'NullaryType :: String -> String -> String -> Function -> Type',
+  (packageName, docUrl, typeName, predicate) => $.NullaryType(
+    qualifiedTypeName(packageName, typeName),
+    typeUrl(docUrl, typeName),
+    predicate
+  )
+);
+
+export const EnumType = _def(
+  'EnumType :: String -> String -> String -> [a] -> Type',
+  (packageName, docUrl, typeName, values) => $.EnumType(
+    qualifiedTypeName(packageName, typeName),
+    typeUrl(docUrl, typeName),
+    values
+  )
+);
+
+export const Model = _def(
+  // TODO: Replace `a` with `StrMap Type` (there is error)
+  'Model :: String -> String -> String -> a -> Type',
+  (packageName, docUrl, typeName, schema) => NullaryType(
+    packageName,
+    docUrl,
+    typeName,
+    hasType($.RecordType(schema))
+  )
+);
+
+export const OneOfType = _def(
+  'OneOfType :: String -> String -> String -> [Type] -> Type',
+  (packageName, docUrl, typeName, types) => NullaryType(
+    packageName,
+    docUrl,
+    typeName,
+    hasOneOfType(types)
+  )
+);
+
+export const AliasType = _def(
+  'AliasType :: String -> String -> String -> Type -> Type',
+  (packageName, docUrl, typeName, type) => NullaryType(
+    packageName,
+    docUrl,
+    typeName,
+    hasType(type)
+  )
+);
+
+//-----------------------------------------------------------------------------
+//
+// Fantasy land types
+//
+//-----------------------------------------------------------------------------
+
 const maybeTypeId = 'ramda-fantasy/Maybe';
 export const $Maybe = $.UnaryType(
   maybeTypeId,
   'https://github.com/ramda/ramda-fantasy/blob/master/docs/Maybe.md',
-  checkFantasyMonad(maybeTypeId),
+  checkTypeId(maybeTypeId),
   maybe => (maybe.isJust ? [maybe.value] : [])
 );
 
@@ -101,7 +122,7 @@ const eitherTypeId = 'ramda-fantasy/Either';
 export const $Either = $.BinaryType(
   eitherTypeId,
   'https://github.com/ramda/ramda-fantasy/blob/master/docs/Either.md',
-  checkFantasyMonad(eitherTypeId),
+  checkTypeId(eitherTypeId),
   either => (either.isLeft ? [either.value] : []),
   either => (either.isRight ? [either.value] : [])
 );
