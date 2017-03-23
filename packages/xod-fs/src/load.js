@@ -51,8 +51,8 @@ export const getProjects = workspace => readDir(workspace)
     )
   ));
 
-export const loadProjectWithoutLibs = (projectPath, workspace) =>
-  readDir(path.resolve(workspace, projectPath))
+export const loadProjectWithoutLibs = projectPath =>
+  readDir(projectPath)
     .then(files => files.filter(
       filename => (
         path.basename(filename) === 'project.xod' ||
@@ -64,8 +64,9 @@ export const loadProjectWithoutLibs = (projectPath, workspace) =>
       projects.map(
         project => readJSON(project)
           .then((data) => {
+            const projectFolder = path.resolve(projectPath, '..');
             const result = {
-              path: `./${path.relative(workspace, project)}`,
+              path: `./${path.relative(projectFolder, project)}`,
               content: data,
             };
 
@@ -77,7 +78,7 @@ export const loadProjectWithoutLibs = (projectPath, workspace) =>
     .then(assignIdsToAllPatches);
 
 export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) =>
-  loadProjectWithoutLibs(projectPath, resolvePath(workspace))
+  loadProjectWithoutLibs(resolvePath(path.resolve(workspace, projectPath)))
     .then(project => loadLibs(getProjectLibs(project), resolvePath(libDir))
       .then(libs => ({
         project,
