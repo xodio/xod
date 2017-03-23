@@ -42,7 +42,7 @@ Commands:
   publish               Publish a new library version.
   ab set-executable     Set path to Arduino IDE executable.
   ab set-packages       Set path to Arduino IDE packages.
-  ab list-inde          List the raw official Arduino package index.
+  ab list-index         List the raw official Arduino package index.
   ab list-pav           List the processed official Arduino package index.
   ab list-port          List the available ports.
   ab list-boards        List the boards supported by the PAV.
