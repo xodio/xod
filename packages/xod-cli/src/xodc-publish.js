@@ -55,12 +55,12 @@ export default function publish(author, owner, projectDir) {
     ])
     .then(([client, publication]) =>
       client.Library.publishLibrary(publication)
-            .then(R.compose(
-              stringifySwaggerValue,
-              R.assocPath(['obj', 'content'], '<CONTENT>')
-            ))
             .catch(error => Promise.reject(stringifySwaggerError(error)))
     )
+    .then(R.compose(
+      stringifySwaggerValue,
+      R.assocPath(['obj', 'content'], '<CONTENT>')
+    ))
     .then(messages.success)
     .catch((error) => {
       messages.error(error);
