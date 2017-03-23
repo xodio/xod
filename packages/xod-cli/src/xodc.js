@@ -22,7 +22,7 @@ Usage:
   xodc migrate <input> <output>
   xodc transpile [--output=<filename>] [--target=<target>] <input> <path>
   xodc doc [--clear] <outputDir> <templatesDir> <projectDir>
-  xodc publish --author=<author> --owner=<owner> [<projectDir>]
+  xodc publish --author=<author> [--owner=<owner>] [<projectDir>]
   xodc ab set-executable <path>
   xodc ab set-packages <path>
   xodc ab list-index
@@ -65,7 +65,7 @@ const programs = {
   }),
   migrate: o => migrate(o['<input>'], o['<output>']),
   doc: o => generateDoc(o['<outputDir>'], o['<templatesDir>'], o['<projectDir>'], { clear: o['--clear'] }),
-  publish: o => publish(o['--author'], o['--owner'], o['<projectDir>'] || '.'),
+  publish: o => publish(o['--author'], o['--owner'] || o['--author'], o['<projectDir>'] || '.'),
   ab: o => runCommand(o, {
     'set-executable': () => ab.setExecutable(o['<path>']),
     'set-packages': () => ab.setPackages(o['<path>']),
