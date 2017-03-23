@@ -26,50 +26,30 @@ const checkTypeId = R.curry((expectedType, obj) => {
   ])(obj);
 });
 
-const $Any = $.NullaryType(
-  'xod-func-tools/Any',
-  '',
-  R.T
-);
-
-const $Type = $.NullaryType(
-  'sanctuary-def/Type',
-  'https://github.com/sanctuary-js/sanctuary-def',
-  checkTypeId('sanctuary-def/Type')
-);
-
-const def = HMDef.create({
-  checkTypes: true,
-  env: $.env.concat([
-    $Type,
-    $Any,
-  ]),
-});
-
 const removeLastSlash = R.replace(/\/$/, '');
-const qualifiedTypeName = def(
-  'qualifiedTypeName :: String -> String -> String',
+// qualifiedTypeName :: String -> String -> String
+const qualifiedTypeName = R.curry(
   (packageName, typeName) => `${removeLastSlash(packageName)}/${typeName}`
 );
-const typeUrl = def(
-  'typeUrl :: String -> String -> String',
+// typeUrl :: String -> String -> String
+const typeUrl = R.curry(
   (docUrl, typeName) => `${docUrl}${typeName}`
 );
 
-export const hasType = def(
-  'hasType :: Type -> (x -> Boolean)',
+// hasType :: Type -> (x -> Boolean)
+export const hasType = R.curry(
   type => x => type.validate(x).isRight
 );
 
-export const hasOneOfType = def(
-  'hasOneOfType :: [Type] -> (x -> Boolean)',
+// hasOneOfType :: [Type] -> (x -> Boolean)
+export const hasOneOfType = R.curry(
   types => R.anyPass(
     R.map(hasType, types)
   )
 );
 
-export const NullaryType = def(
-  'NullaryType :: String -> String -> String -> (Any -> Boolean) -> Type',
+// NullaryType :: String -> String -> String -> (Any -> Boolean) -> Type
+export const NullaryType = R.curry(
   (packageName, docUrl, typeName, predicate) => $.NullaryType(
     qualifiedTypeName(packageName, typeName),
     typeUrl(docUrl, typeName),
@@ -77,9 +57,8 @@ export const NullaryType = def(
   )
 );
 
-// TODO: Replace Function with (t a -> Array a) after fixing hm-def
-export const UnaryType = def(
-  'UnaryType :: String -> String -> String -> (Any -> Boolean) -> Function -> (Type -> Type)',
+// UnaryType :: String -> String -> String -> (Any -> Boolean) -> (t a -> Array a) -> (Type -> Type)
+export const UnaryType = R.curry(
   (packageName, docUrl, typeName, predicate, extractor) => $.UnaryType(
     qualifiedTypeName(packageName, typeName),
     typeUrl(docUrl, typeName),
@@ -88,9 +67,9 @@ export const UnaryType = def(
   )
 );
 
-// TODO: Replace Function with (t a b -> Array a) and (t a b -> Array b) after fixing hm-def
-export const BinaryType = def(
-  'BinaryType :: String -> String -> String -> (Any -> Boolean) -> Function -> Function -> (Type -> Type -> Type)',
+// BinaryType :: String -> String -> String -> (Any -> Boolean) -> (t a b -> Array a) ->
+// -> (t a b -> Array b) -> (Type -> Type -> Type)
+export const BinaryType = R.curry(
   (packageName, docUrl, typeName, predicate, extractorA, extractorB) => $.BinaryType(
     qualifiedTypeName(packageName, typeName),
     typeUrl(docUrl, typeName),
@@ -100,8 +79,8 @@ export const BinaryType = def(
   )
 );
 
-export const EnumType = def(
-  'EnumType :: String -> String -> String -> [a] -> Type',
+// EnumType :: String -> String -> String -> [a] -> Type
+export const EnumType = R.curry(
   (packageName, docUrl, typeName, values) => $.EnumType(
     qualifiedTypeName(packageName, typeName),
     typeUrl(docUrl, typeName),
@@ -109,10 +88,8 @@ export const EnumType = def(
   )
 );
 
-export const Model = def(
-  // TODO: Replace `a` with `StrMap Type` (there is error)
-  //       after fixing `hm-def`.
-  'Model :: String -> String -> String -> a -> Type',
+// Model :: String -> String -> String -> StrMap Type -> Type
+export const Model = R.curry(
   (packageName, docUrl, typeName, schema) => NullaryType(
     packageName,
     docUrl,
@@ -121,8 +98,8 @@ export const Model = def(
   )
 );
 
-export const OneOfType = def(
-  'OneOfType :: String -> String -> String -> [Type] -> Type',
+// OneOfType :: String -> String -> String -> [Type] -> Type
+export const OneOfType = R.curry(
   (packageName, docUrl, typeName, types) => NullaryType(
     packageName,
     docUrl,
@@ -131,8 +108,8 @@ export const OneOfType = def(
   )
 );
 
-export const AliasType = def(
-  'AliasType :: String -> String -> String -> Type -> Type',
+// AliasType :: String -> String -> String -> Type -> Type
+export const AliasType = R.curry(
   (packageName, docUrl, typeName, type) => NullaryType(
     packageName,
     docUrl,
@@ -199,6 +176,4 @@ export const env = $.env.concat([
   $Maybe,
 ]);
 
-const defType = HMDef.create({ checkTypes: true, env });
-
-export { defType as def };
+export const def = HMDef.create({ checkTypes: true, env });
