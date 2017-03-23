@@ -5,10 +5,11 @@ import { runCommand } from './utils';
 
 import * as ab from './xodc-ab';
 import generateDoc from './xodc-doc';
+import migrate from './xodc-migrate';
 import pack from './xodc-pack';
+import publish from './xodc-publish';
 import transpile from './xodc-transpile';
 import unpack from './xodc-unpack';
-import migrate from './xodc-migrate';
 
 // Config
 const version = '0.0.1';
@@ -21,6 +22,7 @@ Usage:
   xodc migrate <input> <output>
   xodc transpile [--output=<filename>] [--target=<target>] <input> <path>
   xodc doc [--clear] <outputDir> <templatesDir> <projectDir>
+  xodc publish --author=<author> [--owner=<owner>] [<projectDir>]
   xodc ab set-executable <path>
   xodc ab set-packages <path>
   xodc ab list-index
@@ -37,9 +39,10 @@ Commands:
   migrate               Migrate project into new version.
   transpile             Transpile project into device runtime.
   doc                   Generate doc for project.
+  publish               Publish a new library version.
   ab set-executable     Set path to Arduino IDE executable.
   ab set-packages       Set path to Arduino IDE packages.
-  ab list-inde          List the raw official Arduino package index.
+  ab list-index         List the raw official Arduino package index.
   ab list-pav           List the processed official Arduino package index.
   ab list-port          List the available ports.
   ab list-boards        List the boards supported by the PAV.
@@ -56,9 +59,13 @@ Options:
 const programs = {
   pack: o => pack(o['<projectDir>'], o['<output>']),
   unpack: o => unpack(o['<xodball>'], o['<workspace>']),
-  transpile: o => transpile(o['<input>'], o['<path>'], { target: o['--target'], output: o['--output'] }),
+  transpile: o => transpile(o['<input>'], o['<path>'], {
+    output: o['--output'],
+    target: o['--target'],
+  }),
   migrate: o => migrate(o['<input>'], o['<output>']),
   doc: o => generateDoc(o['<outputDir>'], o['<templatesDir>'], o['<projectDir>'], { clear: o['--clear'] }),
+  publish: o => publish(o['--author'], o['--owner'] || o['--author'], o['<projectDir>'] || '.'),
   ab: o => runCommand(o, {
     'set-executable': () => ab.setExecutable(o['<path>']),
     'set-packages': () => ab.setPackages(o['<path>']),

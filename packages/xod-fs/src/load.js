@@ -1,9 +1,9 @@
-import R from 'ramda';
 import path from 'path';
-import { readDir, readJSON } from './read';
-import { resolvePath } from './utils';
+import R from 'ramda';
 
 import { loadLibs } from './loadLibs';
+import { readDir, readJSON } from './read';
+import { resolvePath } from './utils';
 
 const hasId = R.has('id');
 const withIdFirst = (a, b) => ((!hasId(a) && hasId(b)) || -1);
@@ -51,8 +51,8 @@ export const getProjects = workspace => readDir(workspace)
     )
   ));
 
-const loadProjectWithoutLibs = (projectPath, workspace) =>
-  readDir(path.resolve(workspace, projectPath))
+export const loadProjectWithoutLibs = projectPath =>
+  readDir(projectPath)
     .then(files => files.filter(
       filename => (
         path.basename(filename) === 'project.xod' ||
@@ -64,8 +64,9 @@ const loadProjectWithoutLibs = (projectPath, workspace) =>
       projects.map(
         project => readJSON(project)
           .then((data) => {
+            const projectFolder = path.resolve(projectPath, '..');
             const result = {
-              path: `./${path.relative(workspace, project)}`,
+              path: `./${path.relative(projectFolder, project)}`,
               content: data,
             };
 
@@ -77,18 +78,22 @@ const loadProjectWithoutLibs = (projectPath, workspace) =>
     .then(assignIdsToAllPatches);
 
 export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) =>
-  loadProjectWithoutLibs(projectPath, resolvePath(workspace))
+  loadProjectWithoutLibs(resolvePath(path.resolve(workspace, projectPath)))
     .then(project => loadLibs(getProjectLibs(project), resolvePath(libDir))
       .then(libs => ({
         project,
         libs,
       }))
       .catch((err) => {
-        throw Object.assign(err, { path: resolvePath(libDir), libs: getProjectLibs(project) });
+        throw Object.assign(err, {
+          path: resolvePath(libDir),
+          libs: getProjectLibs(project),
+        });
       })
     );
 
 export default {
   getProjects,
   loadProjectWithLibs,
+  loadProjectWithoutLibs,
 };
