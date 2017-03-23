@@ -6,6 +6,9 @@ import HMDef from 'hm-def';
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */
 
+const pkgName = 'xod-func-tools';
+const dUrl = 'http://xod.io/docs/dev/xod-func-tools/#';
+
 //-----------------------------------------------------------------------------
 //
 // Type utilities
@@ -74,6 +77,29 @@ export const NullaryType = def(
   )
 );
 
+// TODO: Replace Function with (t a -> Array a) after fixing hm-def
+export const UnaryType = def(
+  'UnaryType :: String -> String -> String -> (Any -> Boolean) -> Function -> (Type -> Type)',
+  (packageName, docUrl, typeName, predicate, extractor) => $.UnaryType(
+    qualifiedTypeName(packageName, typeName),
+    typeUrl(docUrl, typeName),
+    predicate,
+    extractor
+  )
+);
+
+// TODO: Replace Function with (t a b -> Array a) and (t a b -> Array b) after fixing hm-def
+export const BinaryType = def(
+  'BinaryType :: String -> String -> String -> (Any -> Boolean) -> Function -> Function -> (Type -> Type -> Type)',
+  (packageName, docUrl, typeName, predicate, extractorA, extractorB) => $.BinaryType(
+    qualifiedTypeName(packageName, typeName),
+    typeUrl(docUrl, typeName),
+    predicate,
+    extractorA,
+    extractorB
+  )
+);
+
 export const EnumType = def(
   'EnumType :: String -> String -> String -> [a] -> Type',
   (packageName, docUrl, typeName, values) => $.EnumType(
@@ -117,6 +143,28 @@ export const AliasType = def(
 
 //-----------------------------------------------------------------------------
 //
+// General purpose types
+//
+//-----------------------------------------------------------------------------
+
+export const Map = BinaryType(
+  pkgName, dUrl,
+  'Map',
+  $.test([], $.Object),
+  R.keys,
+  R.values
+);
+
+export const Pair = BinaryType(
+  pkgName, dUrl,
+  'Pair',
+  x => x instanceof Array && x.length === 2,
+  R.compose(R.of, R.head),
+  R.compose(R.of, R.last)
+);
+
+//-----------------------------------------------------------------------------
+//
 // Fantasy land types
 //
 //-----------------------------------------------------------------------------
@@ -145,6 +193,8 @@ export const $Either = $.BinaryType(
 //-----------------------------------------------------------------------------
 
 export const env = $.env.concat([
+  Map,
+  Pair,
   $Either,
   $Maybe,
 ]);
