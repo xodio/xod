@@ -29,25 +29,31 @@ const TYPES_MAP = {
 // :: x -> Number
 const toInt = R.flip(parseInt)(10);
 
-// :: Node -> Boolean
-const isNodeWithCurriedPins = R.compose(
-  R.complement(R.isEmpty),
-  Project.getCurriedPins
+const isNodeWithCurriedPins = def(
+  'isNodeWithCurriedPins :: Node -> Boolean',
+  R.compose(
+    R.complement(R.isEmpty),
+    Project.getCurriedPins
+  )
 );
 
-// :: { a: { b: c } } -> [c]
-const nestedValues = R.compose(
-  R.unnest,
-  R.map(R.values),
-  R.values
+const nestedValues = def(
+  'nestedValues :: Map String (Map String a) -> [a]',
+  R.compose(
+    R.unnest,
+    R.map(R.values),
+    R.values
+  )
 );
 
-// :: { NodeId: { PinKey: DataValue } } -> NodeId -> Pin -> Boolean
-const isCurriedInNodePin = R.curry((nodePinValues, nodeId, pin) => {
-  const pinKey = Project.getPinKey(pin);
-  const nodePins = R.prop(nodeId, nodePinValues);
-  return R.has(pinKey, nodePins);
-});
+const isCurriedInNodePin = def(
+  'isCurriedInNodePin :: Map NodeId (Map PinKey DataValue) -> NodeId -> Pin -> Boolean',
+  R.curry((nodePinValues, nodeId, pin) => {
+    const pinKey = Project.getPinKey(pin);
+    const nodePins = R.prop(nodeId, nodePinValues);
+    return R.has(pinKey, nodePins);
+  })
+);
 
 const getNodeCount = def(
   'getNodeCount :: Patch -> Number',
@@ -128,179 +134,218 @@ const renumberProject = def(
   )(path, project)
 );
 
-// :: Patch -> { NodeId: { PinKey: DataValue } }
-const getMapOfNodePinValues = R.compose(
-  R.reject(R.isEmpty),
-  R.map(Project.getCurriedPins),
-  R.indexBy(Project.getNodeId)
+const getMapOfNodePinValues = def(
+  'getMapOfNodePinValues :: [Node] -> Map NodeId (Map PinKey DataValue)',
+  R.compose(
+    R.reject(R.isEmpty),
+    R.map(Project.getCurriedPins),
+    R.indexBy(Project.getNodeId)
+  )
 );
 
-// :: [Node] -> { NodeId: PatchPath }
-const getMapOfNodeTypes = R.compose(
-  R.map(Project.getNodeType),
-  R.indexBy(Project.getNodeId)
+const getMapOfNodeTypes = def(
+  'getMapOfNodeTypes :: [Node] -> Map NodeId PatchPath',
+  R.compose(
+    R.map(Project.getNodeType),
+    R.indexBy(Project.getNodeId)
+  )
 );
 
-// :: { NodeId: PatchPath } -> [Nodes] -> Project -> { NodeId: { PinKey: PinType } }
-const getMapOfNodePinTypes = R.curry((mapOfNodePinValues, curriedNodes, project) =>
-  R.mapObjIndexed(
-    (patchPath, nodeId) => R.compose(
-      R.map(Project.getPinType),
-      R.indexBy(Project.getPinKey),
-      R.filter(isCurriedInNodePin(mapOfNodePinValues, nodeId)),
-      Project.listPins,
-      Project.getPatchByPathUnsafe(R.__, project)
-    )(patchPath),
-    getMapOfNodeTypes(curriedNodes)
+const getMapOfNodePinTypes = def(
+  'getMapOfNodePinTypes :: Map NodeId (Map PinKey DataValue) -> [Node] -> Project -> Map NodeId (Map PinKey DataType)',
+  R.curry((mapOfNodePinValues, curriedNodes, project) =>
+    R.mapObjIndexed(
+      (patchPath, nodeId) => R.compose(
+        R.map(Project.getPinType),
+        R.indexBy(Project.getPinKey),
+        R.filter(isCurriedInNodePin(mapOfNodePinValues, nodeId)),
+        Project.listPins,
+        Project.getPatchByPathUnsafe(R.__, project)
+      )(patchPath),
+      getMapOfNodeTypes(curriedNodes)
+    )
   )
 );
 
 // :: { NodeId: { PinKey: PinType } } -> { NodeId: { PinKey: PatchPath } }
-const convertMapOfPinTypesIntoMapOfPinPaths = R.map(R.map(R.prop(R.__, CONST_NODETYPES)));
+const convertMapOfPinTypesIntoMapOfPinPaths = def(
+  'convertMapOfPinTypesIntoMapOfPinPaths :: Map NodeId (Map PinKey DataType) -> Map NodeId (Map PinKey PatchPath)',
+  R.map(R.map(R.prop(R.__, CONST_NODETYPES)))
+);
 
-// :: { NodeId: PatchPath } -> [Nodes] -> Project -> { NodeId: { PinKey: PatchPath } }
-const getMapOfPinPaths = R.curry((mapOfNodePinValues, curriedNodes, project) =>
+const getMapOfPinPaths = def(
+  'getMapOfPinPaths :: Map NodeId (Map PinKey DataValue) -> [Node] -> Project -> Map NodeId (Map PinKey PatchPath)',
+  R.curry((mapOfNodePinValues, curriedNodes, project) =>
+    R.compose(
+      convertMapOfPinTypesIntoMapOfPinPaths,
+      getMapOfNodePinTypes
+    )(mapOfNodePinValues, curriedNodes, project)
+  )
+);
+
+const getPathsFromMapOfPinPaths = def(
+  'getPathsFromMapOfPinPaths :: Map NodeId (Map PinKey PatchPath) -> [PatchPath]',
   R.compose(
-    convertMapOfPinTypesIntoMapOfPinPaths,
-    getMapOfNodePinTypes
-  )(mapOfNodePinValues, curriedNodes, project)
+    R.uniq,
+    nestedValues
+  )
 );
 
-// :: { NodeId: { PinKey: PatchPath }} -> [PatchPath]
-const getPathsFromMapOfPinPaths = R.compose(
-  R.uniq,
-  nestedValues
+const getPatchesFromProject = def(
+  'getPatchesFromProject :: [PatchPath] -> Project -> [Patch]',
+  R.curry((paths, project) => R.map(
+    path => R.compose(
+      explodeMaybe(`Could not find the patch '${path}' in the project`),
+      Project.getPatchByPath(R.__, project)
+    )(path)
+  )(paths))
 );
 
-// :: [PatchPath] -> Project -> [Patch]
-const getPatchesFromProject = R.curry((paths, project) => R.map(
-  path => R.compose(
-    explodeMaybe(`Could not find the patch '${path}' in the project`),
-    Project.getPatchByPath(R.__, project)
-  )(path)
-)(paths));
+const assocPatchesToProject = def(
+  'assocPatchesToProject :: [Pair PatchPath Patch] -> Project -> Project',
+  R.curry((patchPairs, project) => R.reduce(
+    (proj, pair) => explode(Project.assocPatch(pair[0], pair[1], proj)),
+    project,
+    patchPairs
+  ))
+);
 
-// :: { PatchPath: Patch } -> Project -> Project
-const assocPatchesToProject = R.curry((patchPairs, project) => R.reduce(
-  (proj, pair) => explode(Project.assocPatch(pair[0], pair[1], proj)),
-  project,
-  patchPairs
-));
+const createNodesWithCurriedPins = def(
+  'createNodesWithCurriedPins :: Map NodeId (Map PinKey DataValue) -> Map NodeId (Map PinKey PatchPath) -> Map NodeId (Map PinKey Node)',
+  R.curry((mapOfPinValues, mapOfPinPaths) =>
+    R.mapObjIndexed(
+      (pinsData, nodeId) => R.mapObjIndexed(
+        (pinValue, pinKey) => {
+          const type = R.path([nodeId, pinKey], mapOfPinPaths);
 
-// :: { NodeId: { PinKey: DataValue } } -> { NodeId: { PinKey: PatchPath } } ->
-//    -> { NodeId: { PinKey: Node } }
-const createNodesWithCurriedPins = R.curry((mapOfPinValues, mapOfPinPaths) =>
-  R.mapObjIndexed(
-    (pinsData, nodeId) => R.mapObjIndexed(
-      (pinValue, pinKey) => {
-        const type = R.path([nodeId, pinKey], mapOfPinPaths);
+          return R.compose(
+            Project.setPinCurriedValue(CONSTANT_VALUE_PINKEY, pinValue),
+            Project.curryPin(CONSTANT_VALUE_PINKEY, true),
+            Project.createNode({ x: 0, y: 0 })
+          )(type);
+        },
+        pinsData
+      ),
+      mapOfPinValues
+    )
+  )
+);
 
+const uncurryPins = def(
+  'uncurryPins :: Map NodeId (Map PinKey DataValue) -> Patch -> Map NodeId Node',
+  R.curry((mapOfPinValues, patch) =>
+    R.mapObjIndexed(
+      (pinData, nodeId) => {
+        const pinKeys = R.keys(pinData);
         return R.compose(
-          Project.setPinCurriedValue(CONSTANT_VALUE_PINKEY, pinValue),
-          Project.curryPin(CONSTANT_VALUE_PINKEY, true),
-          Project.createNode({ x: 0, y: 0 })
-        )(type);
+          R.reduce(
+            (node, pinKey) => Project.curryPin(pinKey, false, node),
+            R.__,
+            pinKeys
+          ),
+          explode,
+          Project.getNodeById(nodeId)
+        )(patch);
       },
-      pinsData
-    ),
-    mapOfPinValues
+      mapOfPinValues
+    )
   )
 );
 
-// :: { NodeId: { PinKey: DataValue } } -> Patch -> { NodeId: Node }
-const uncurryPins = R.curry((mapOfPinValues, patch) =>
-  R.mapObjIndexed(
-    (pinData, nodeId) => {
-      const pinKeys = R.keys(pinData);
-      return R.compose(
-        R.reduce(
-          (node, pinKey) => Project.curryPin(pinKey, false, node),
-          R.__,
-          pinKeys
-        ),
-        explode,
-        Project.getNodeById(nodeId)
-      )(patch);
-    },
-    mapOfPinValues
-  )
-);
-
-// :: { NodeId: Node } -> Patch -> Patch
-const assocUncurriedNodesToPatch = R.curry((nodesMap, patch) =>
-  R.reduce(
-    R.flip(Project.assocNode),
-    patch,
-    R.values(nodesMap)
+const assocUncurriedNodesToPatch = def(
+  'assocUncurriedNodesToPatch :: Map NodeId Node -> Patch -> Patch',
+  R.curry((nodesMap, patch) =>
+    R.reduce(
+      R.flip(Project.assocNode),
+      patch,
+      R.values(nodesMap)
+    )
   )
 );
 
 // :: { NodeId: { PinKey: Node } } -> { NodeId: { PinKey: Link } }
-const createLinksFromCurriedPins = R.mapObjIndexed(
-  (pinsData, nodeId) => R.mapObjIndexed(
-    (node, pinKey) => {
-      const newNodeId = Project.getNodeId(node);
-      return Project.createLink(pinKey, nodeId, CONSTANT_VALUE_PINKEY, newNodeId);
-    },
-    pinsData
+const createLinksFromCurriedPins = def(
+  'createLinksFromCurriedPins :: Map NodeId (Map PinKey Node) -> Map NodeId (Map PinKey Link)',
+  R.mapObjIndexed(
+    (pinsData, nodeId) => R.mapObjIndexed(
+      (node, pinKey) => {
+        const newNodeId = Project.getNodeId(node);
+        return Project.createLink(pinKey, nodeId, CONSTANT_VALUE_PINKEY, newNodeId);
+      },
+      pinsData
+    )
   )
 );
 
-// :: { NodeId: { PinKey: Node } } -> Patch -> Patch
-const assocNodesToPatch = R.curry((nodesMap, patch) =>
-  R.reduce(
-    R.flip(Project.assocNode),
-    patch,
-    nestedValues(nodesMap)
+const assocNodesToPatch = def(
+  'assocNodesToPatch :: Map NodeId (Map PinKey Node) -> Patch -> Patch',
+  R.curry((nodesMap, patch) =>
+    R.reduce(
+      R.flip(Project.assocNode),
+      patch,
+      nestedValues(nodesMap)
+    )
   )
 );
 
-// :: { NodeId: { PinKey: Link } } -> Patch -> Patch
-const assocLinksToPatch = R.curry((linksMap, patch) =>
-  R.reduce(
-    (p, link) => explode(Project.assocLink(link, p)),
-    patch,
-    nestedValues(linksMap)
+const assocLinksToPatch = def(
+  'assocLinksToPatch :: Map NodeId (Map PinKey Link) -> Patch -> Patch',
+  R.curry((linksMap, patch) =>
+    R.reduce(
+      (p, link) => explode(Project.assocLink(link, p)),
+      patch,
+      nestedValues(linksMap)
+    )
   )
 );
 
-// ::  { NodeId: { PinKey: DataValue } } -> Patch -> Patch
-const uncurryAndAssocNodes = R.curry((mapOfNodePinValues, patch) =>
-  R.compose(
-    assocUncurriedNodesToPatch(R.__, patch),
-    uncurryPins(mapOfNodePinValues)
-  )(patch)
+const uncurryAndAssocNodes = def(
+  'uncurryAndAssocNodes :: Map NodeId (Map PinKey DataValue) -> Patch -> Patch',
+  R.curry((mapOfNodePinValues, patch) =>
+    R.compose(
+      assocUncurriedNodesToPatch(R.__, patch),
+      uncurryPins(mapOfNodePinValues)
+    )(patch)
+  )
 );
 
-// :: { NodeId: { PinKey: PatchPath } } -> Project -> [[PatchPath, Patch]]
-const getTuplesOfPatches = R.curry((mapOfPinPaths, project) =>
-  R.compose(
-    R.converge(
-      R.zip,
-      [
-        R.identity,
-        getPatchesFromProject(R.__, project),
-      ]
-    ),
-    getPathsFromMapOfPinPaths
-  )(mapOfPinPaths)
+const getTuplesOfPatches = def(
+  'getTuplesOfPatches :: Map NodeId (Map PinKey PatchPath) -> Project -> [Pair PatchPath Patch]',
+  R.curry((mapOfPinPaths, project) =>
+    R.compose(
+      R.converge(
+        R.zip,
+        [
+          R.identity,
+          getPatchesFromProject(R.__, project),
+        ]
+      ),
+      getPathsFromMapOfPinPaths
+    )(mapOfPinPaths)
+  )
 );
 
 // :: { NodeId: { PinKey: PatchPath } } -> Project -> Project -> Project
-const copyConstPatches = R.curry((mapOfPinPaths, sourceProject, targetProject) =>
-  R.compose(
-    assocPatchesToProject(R.__, targetProject),
-    // Here is something went wrong!
-    getTuplesOfPatches
-  )(mapOfPinPaths, sourceProject)
+const copyConstPatches = def(
+  'copyConstPatches :: Map NodeId (Map PinKey PatchPath) -> Project -> Project -> Project',
+  R.curry((mapOfPinPaths, sourceProject, targetProject) =>
+    R.compose(
+      assocPatchesToProject(R.__, targetProject),
+      // Here is something went wrong!
+      getTuplesOfPatches
+    )(mapOfPinPaths, sourceProject)
+  )
 );
 
-const updatePatch = R.curry((mapOfLinks, mapOfNodes, mapOfPinValues, patch) =>
-  R.compose(
-    assocLinksToPatch(mapOfLinks),
-    assocNodesToPatch(mapOfNodes),
-    uncurryAndAssocNodes(mapOfPinValues)
-  )(patch)
+const updatePatch = def(
+  'updatePatch :: Map NodeId (Map PinKey Link) -> Map NodeId (Map PinKey Node) -> Map NodeId (Map PinKey DataValue) -> Patch -> Patch',
+  R.curry((mapOfLinks, mapOfNodes, mapOfPinValues, patch) =>
+    R.compose(
+      assocLinksToPatch(mapOfLinks),
+      assocNodesToPatch(mapOfNodes),
+      uncurryAndAssocNodes(mapOfPinValues)
+    )(patch)
+  )
 );
 
 //-----------------------------------------------------------------------------
