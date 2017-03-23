@@ -39,7 +39,6 @@ function getPublication(author, owner, projectDir) {
   }
   return xodFs.loadProjectWithoutLibs(closestProjectDir, closestWorkspaceDir)
               .then(xodFs.pack)
-
               .then(content => ({
                 libVersion: { author, content },
                 owner,
