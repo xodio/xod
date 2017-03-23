@@ -1,3 +1,4 @@
+import path from 'path';
 import R from 'ramda';
 import Swagger from 'swagger-client';
 import * as xodFs from 'xod-fs';
@@ -39,12 +40,27 @@ function getPublication(author, owner, projectDir) {
   }
   return xodFs.loadProjectWithoutLibs(closestProjectDir, closestWorkspaceDir)
               .then(xodFs.pack)
-              .then(content => ({
-                libVersion: { author, content },
-                owner,
-                semver: content.meta.version,
-                slug: content.meta.name,
-              }));
+              .then((content) => {
+                const xodFile = path.resolve(projectDir, 'project.xod');
+                if (!content.meta) {
+                  return Promise.reject(
+                    `could not find "meta" in "${xodFile}".`);
+                }
+                if (!content.meta.name) {
+                  return Promise.reject(
+                    `could not find "meta.name" in "${xodFile}".`);
+                }
+                if (!content.meta.version) {
+                  return Promise.reject(
+                    `could not find "meta.version" in "${xodFile}".`);
+                }
+                return {
+                  libVersion: { author, content },
+                  owner,
+                  semver: content.meta.version,
+                  slug: content.meta.name,
+                };
+              });
 }
 
 export default function publish(author, owner, projectDir) {
