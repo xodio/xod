@@ -2,9 +2,13 @@ import R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
 import { env as xEnv } from 'xod-project';
+import xF from 'xod-func-tools';
 
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */
+
+const packageName = 'xod-arduino';
+const docUrl = 'http://xod.io/docs/dev/xod-arduino/#';
 
 //-----------------------------------------------------------------------------
 //
@@ -12,33 +16,9 @@ import { env as xEnv } from 'xod-project';
 //
 //-----------------------------------------------------------------------------
 
-// :: String -> String
-const qualifiedTypeName = typeName => `xod-arduino/${typeName}`;
-
-// :: String -> String
-const typeUrl = typeName => `http://xod.io/docs/dev/xod-arduino/#${typeName}`;
-
-// :: (String, Any -> Boolean) -> Type
-const NullaryType = (typeName, predicate) => $.NullaryType(
-  qualifiedTypeName(typeName),
-  typeUrl(typeName),
-  predicate
-);
-
-// :: Type -> Any -> Boolean
-// To keep checking fast we have to call private method of $.Type
-// eslint-disable-next-line no-underscore-dangle
-const hasType = type => x => type._test(x);
-
-const Model = (typeName, schema) => NullaryType(
-  typeName,
-  hasType($.RecordType(schema))
-);
-
-const AliasType = (typeName, type) => NullaryType(
-  typeName,
-  hasType(type)
-);
+const NullaryType = xF.NullaryType(packageName, docUrl);
+const Model = xF.Model(packageName, docUrl);
+const AliasType = xF.AliasType(packageName, docUrl);
 
 //-----------------------------------------------------------------------------
 //

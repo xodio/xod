@@ -20,6 +20,9 @@ const TYPES_MAP = {
   boolean: 'Logic',
 };
 
+// :: x -> Number
+const toInt = R.flip(parseInt)(10);
+
 // :: Node -> Boolean
 const isNodeWithCurriedPins = R.compose(
   R.complement(R.isEmpty),
@@ -230,7 +233,7 @@ const createPatchNames = def(
 const createTTopology = def(
   'createTTopology :: PatchPath -> Project -> [Number]',
   R.compose(
-    R.map(num => parseInt(num, 10)),
+    R.map(toInt),
     Project.getTopology,
     Project.getPatchByPathUnsafe
   )
@@ -288,6 +291,17 @@ const findPatchByPath = def(
   )(path)
 );
 
+const getLinksInputNodeIds = def(
+  'getLinksInputNodeIds :: [Link] -> [TNodeId]',
+  R.compose(
+    R.uniq,
+    R.map(R.compose(
+      toInt,
+      Project.getLinkInputNodeId
+    ))
+  )
+);
+
 const getTNodeOutputs = def(
   'getTNodeOutputs :: Project -> PatchPath -> Node -> [TNodeOutput]',
   (project, entryPath, node) => {
@@ -296,7 +310,7 @@ const getTNodeOutputs = def(
     return R.compose(
       R.values,
       R.mapObjIndexed((links, pinKey) => {
-        const to = R.uniq(R.map(Project.getLinkInputNodeId, links));
+        const to = getLinksInputNodeIds(links);
         const value = (Project.isPinCurried(pinKey, node)) ?
           explode(Project.getPinCurriedValue(pinKey, node)) :
           null;
@@ -333,7 +347,7 @@ const getTNodeInputs = def(
 
     return R.compose(
       R.map(R.applySpec({
-        nodeId: Project.getLinkOutputNodeId,
+        nodeId: R.compose(toInt, Project.getLinkOutputNodeId),
         patch: R.compose(
           getPatchByNodeId(project, entryPath, patches),
           Project.getLinkOutputNodeId
@@ -352,7 +366,7 @@ const createTNodes = def(
   'createTNodes :: PatchPath -> [TPatch] -> Project -> [TNode]',
   (entryPath, patches, project) => R.compose(
     R.map(R.applySpec({
-      id: Project.getNodeId,
+      id: R.compose(toInt, Project.getNodeId),
       patch: R.compose(findPatchByPath(R.__, patches), Project.getNodeType),
       outputs: getTNodeOutputs(project, entryPath),
       inputs: getTNodeInputs(project, entryPath, patches),
