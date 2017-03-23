@@ -23,40 +23,50 @@ const checkTypeId = R.curry((expectedType, obj) => {
   ])(obj);
 });
 
+const $Any = $.NullaryType(
+  'xod-func-tools/Any',
+  '',
+  R.T
+);
+
 const $Type = $.NullaryType(
   'sanctuary-def/Type',
   'https://github.com/sanctuary-js/sanctuary-def',
   checkTypeId('sanctuary-def/Type')
 );
 
-// eslint-disable-next-line
-const _def = HMDef.create({ checkTypes: true, env: $.env.concat([ $Type ]) });
+const def = HMDef.create({
+  checkTypes: true,
+  env: $.env.concat([
+    $Type,
+    $Any,
+  ]),
+});
 
 const removeLastSlash = R.replace(/\/$/, '');
-const qualifiedTypeName = _def(
+const qualifiedTypeName = def(
   'qualifiedTypeName :: String -> String -> String',
   (packageName, typeName) => `${removeLastSlash(packageName)}/${typeName}`
 );
-const typeUrl = _def(
+const typeUrl = def(
   'typeUrl :: String -> String -> String',
   (docUrl, typeName) => `${docUrl}${typeName}`
 );
 
-export const hasType = _def(
+export const hasType = def(
   'hasType :: Type -> (x -> Boolean)',
   type => x => type.validate(x).isRight
 );
 
-export const hasOneOfType = _def(
+export const hasOneOfType = def(
   'hasOneOfType :: [Type] -> (x -> Boolean)',
   types => R.anyPass(
     R.map(hasType, types)
   )
 );
 
-export const NullaryType = _def(
-  // TODO: Replace `Function` with something like (Any -> Boolean)
-  'NullaryType :: String -> String -> String -> Function -> Type',
+export const NullaryType = def(
+  'NullaryType :: String -> String -> String -> (Any -> Boolean) -> Type',
   (packageName, docUrl, typeName, predicate) => $.NullaryType(
     qualifiedTypeName(packageName, typeName),
     typeUrl(docUrl, typeName),
@@ -64,7 +74,7 @@ export const NullaryType = _def(
   )
 );
 
-export const EnumType = _def(
+export const EnumType = def(
   'EnumType :: String -> String -> String -> [a] -> Type',
   (packageName, docUrl, typeName, values) => $.EnumType(
     qualifiedTypeName(packageName, typeName),
@@ -73,8 +83,9 @@ export const EnumType = _def(
   )
 );
 
-export const Model = _def(
+export const Model = def(
   // TODO: Replace `a` with `StrMap Type` (there is error)
+  //       after fixing `hm-def`.
   'Model :: String -> String -> String -> a -> Type',
   (packageName, docUrl, typeName, schema) => NullaryType(
     packageName,
@@ -84,7 +95,7 @@ export const Model = _def(
   )
 );
 
-export const OneOfType = _def(
+export const OneOfType = def(
   'OneOfType :: String -> String -> String -> [Type] -> Type',
   (packageName, docUrl, typeName, types) => NullaryType(
     packageName,
@@ -94,7 +105,7 @@ export const OneOfType = _def(
   )
 );
 
-export const AliasType = _def(
+export const AliasType = def(
   'AliasType :: String -> String -> String -> Type -> Type',
   (packageName, docUrl, typeName, type) => NullaryType(
     packageName,
@@ -138,4 +149,6 @@ export const env = $.env.concat([
   $Maybe,
 ]);
 
-export const def = HMDef.create({ checkTypes: true, env });
+const defType = HMDef.create({ checkTypes: true, env });
+
+export { defType as def };
