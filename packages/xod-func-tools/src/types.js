@@ -127,7 +127,7 @@ export const AliasType = R.curry(
 export const Map = BinaryType(
   pkgName, dUrl,
   'Map',
-  $.test([], $.Object),
+  x => typeof x === 'object',
   R.keys,
   R.values
 );
