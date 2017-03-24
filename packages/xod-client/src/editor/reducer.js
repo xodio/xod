@@ -49,7 +49,6 @@ const addTab = (state, action) => {
 
   return R.assocPath(['tabs', patchId], {
     id: patchId,
-    patchId,
     index: newIndex,
   }, state);
 };
@@ -126,7 +125,7 @@ const editorReducer = (state = {}, action) => {
           R.assoc('currentPatchId'),
           [
             R.compose( // get patch id from last of remaining tabs
-              R.propOr(null, 'patchId'),
+              R.propOr(null, 'id'),
               R.last,
               R.values,
               R.prop('tabs')

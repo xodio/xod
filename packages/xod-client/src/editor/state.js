@@ -8,9 +8,8 @@ export default {
   linkingPin: null,
   selectedNodeType: null,
   tabs: {
-    1: {
-      id: '1',
-      patchId: '@/1',
+    '@/1': {
+      id: '@/1',
       index: 0,
     },
   },
