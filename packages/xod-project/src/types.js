@@ -3,7 +3,7 @@ import R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
 
-import xF from 'xod-func-tools';
+import XF from 'xod-func-tools';
 
 import * as C from './constants';
 
@@ -19,11 +19,11 @@ const docUrl = 'http://xod.io/docs/dev/xod-project/#';
 //
 //-----------------------------------------------------------------------------
 
-const NullaryType = xF.NullaryType(packageName, docUrl);
-const AliasType = xF.AliasType(packageName, docUrl);
-const EnumType = xF.EnumType(packageName, docUrl);
-const Model = xF.Model(packageName, docUrl);
-const OneOfType = xF.OneOfType(packageName, docUrl);
+const NullaryType = XF.NullaryType(packageName, docUrl);
+const AliasType = XF.AliasType(packageName, docUrl);
+const EnumType = XF.EnumType(packageName, docUrl);
+const Model = XF.Model(packageName, docUrl);
+const OneOfType = XF.OneOfType(packageName, docUrl);
 
 //-----------------------------------------------------------------------------
 //
@@ -109,7 +109,7 @@ export const Project = Model('Project', {
 export const TerminalNode = NullaryType(
   'TerminalNode',
   R.both(
-    xF.hasType(Node),
+    XF.hasType(Node),
     R.propSatisfies(matchesTerminalPatchPath, 'type')
   )
 );
@@ -124,7 +124,7 @@ export const PinOrKey = OneOfType('PinOrKey', [PinKey, ObjectWithKey]);
 //
 //-----------------------------------------------------------------------------
 
-export const env = xF.env.concat([
+export const env = XF.env.concat([
   Link,
   LinkId,
   LinkOrId,
