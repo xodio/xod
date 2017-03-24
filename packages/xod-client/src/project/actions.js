@@ -52,9 +52,7 @@ export const deleteNode = id => (dispatch, getState) => {
   const preparedData = PrepareTo.deleteNode(projectState, id);
 
   if (preparedData.payload.nodeType.error) {
-    dispatch(addError({
-      message: NODETYPE_ERRORS[preparedData.payload.nodeType.error],
-    }));
+    dispatch(addError(NODETYPE_ERRORS[preparedData.payload.nodeType.error]));
     return;
   }
 
@@ -70,9 +68,7 @@ export const addLink = (pin1, pin2) => (dispatch, getState) => {
 
   if (preparedData.error) {
     const errorMessage = PROPERTY_ERRORS[preparedData.error];
-    dispatch(addError({
-      message: errorMessage,
-    }));
+    dispatch(addError(errorMessage));
     return new Error(errorMessage);
   }
 
@@ -126,9 +122,7 @@ export const changePinMode = (nodeId, pinKey, injected, val = null) => (dispatch
   );
 
   if (preparedData.error) {
-    dispatch(addError({
-      message: PROPERTY_ERRORS[preparedData.error],
-    }));
+    dispatch(addError(PROPERTY_ERRORS[preparedData.error]));
     return;
   }
 

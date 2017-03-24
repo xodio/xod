@@ -56,7 +56,7 @@ const doPinSelection = (nodeId, pinKey) => (dispatch, getState) => {
   const err = core.validatePin(getState(), { nodeId, pinKey });
 
   if (err) {
-    dispatch(addError({ message: LINK_ERRORS[err] }));
+    dispatch(addError(LINK_ERRORS[err]));
     return;
   }
 
@@ -121,7 +121,7 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
   if (selected) {
     const error = core.validateLink(state, pins);
     action = error ?
-      addError({ message: LINK_ERRORS[error] }) :
+      addError(LINK_ERRORS[error]) :
       addLink(pins[0], pins[1]);
     dispatch(setMode(EDITOR_MODE.DEFAULT));
   } else {
