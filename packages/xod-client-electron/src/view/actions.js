@@ -73,7 +73,7 @@ export const createAsyncAction = ({
         );
       }
       if (notify) {
-        dispatch(addConfirmation({ message: completeMsg }));
+        dispatch(addConfirmation(completeMsg));
       }
 
       onComplete(payload, dispatch);

@@ -6,7 +6,7 @@ const getTimestamp = () => new Date().getTime();
 
 export const addMessage = (type, message) => ({
   type: ActionType.MESSAGE_ADD,
-  payload: message,
+  payload: { message },
   meta: {
     type,
     timestamp: getTimestamp(),
@@ -25,6 +25,6 @@ export const deleteMessage = id => ({
   },
 });
 
-export const addError = error => addMessage(MESSAGE_TYPE.ERROR, error);
-export const addConfirmation = error => addMessage(MESSAGE_TYPE.CONFIRMATION, error);
-export const addNotification = error => addMessage(MESSAGE_TYPE.CONFIRMATION, error);
+export const addError = message => addMessage(MESSAGE_TYPE.ERROR, message);
+export const addConfirmation = message => addMessage(MESSAGE_TYPE.CONFIRMATION, message);
+export const addNotification = message => addMessage(MESSAGE_TYPE.NOTIFICATION, message);

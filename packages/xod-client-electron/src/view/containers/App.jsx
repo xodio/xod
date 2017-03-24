@@ -141,8 +141,7 @@ class App extends client.App {
 
         fs.readFile(filePaths[0], 'utf8', (err, data) => {
           if (err) {
-            // TODO: custom error message?
-            this.props.actions.addError(err);
+            this.props.actions.addError(err.message);
           }
 
           this.onImport(data);
@@ -168,9 +167,7 @@ class App extends client.App {
     }
 
     if (errorMessage) {
-      this.props.actions.addError({
-        message: errorMessage,
-      });
+      this.props.actions.addError(errorMessage);
       return;
     }
 

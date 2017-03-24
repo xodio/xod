@@ -52,7 +52,7 @@ export const requestDeletePatch = patchId => (dispatch, getState) => {
 
   const currentPatchId = getCurrentPatchId(state);
   if (selectedPatchId === currentPatchId) {
-    dispatch(addError({ message: PROJECT_BROWSER_ERRORS.CANT_DELETE_CURRENT_PATCH }));
+    dispatch(addError(PROJECT_BROWSER_ERRORS.CANT_DELETE_CURRENT_PATCH));
     return;
   }
 

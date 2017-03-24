@@ -11,6 +11,8 @@ import core from 'xod-core';
 import * as ProjectActions from '../../project/actions';
 import * as ProjectBrowserActions from '../actions';
 import * as EditorActions from '../../editor/actions';
+import * as MessagesActions from '../../messages/actions';
+import { PROJECT_BROWSER_ERRORS } from '../../messages/constants';
 
 import * as ProjectBrowserSelectors from '../selectors';
 import * as EditorSelectors from '../../editor/selectors';
@@ -38,11 +40,17 @@ const splitNames = R.compose(
 );
 
 const isPatchIdLocal = R.pipe(R.head, R.equals('@'));
+const isPatchLocal = R.compose(isPatchIdLocal, R.prop('id'));
 
 const listLocalPatchPaths = R.compose(
   R.filter(isPatchIdLocal),
   R.keys
 );
+
+const switchLibPatch = (switchFn, messageFn, id, patches) => {
+  if (R.has(id, patches)) return switchFn(id);
+  return messageFn(PROJECT_BROWSER_ERRORS.CANT_OPEN_LIBPATCH_WITHOUT_XOD_IMPL);
+};
 
 class ProjectBrowser extends React.Component {
   constructor(props) {
@@ -161,6 +169,7 @@ class ProjectBrowser extends React.Component {
       currentPatchId,
       selectedPatchId,
     } = this.props;
+    const localPatches = R.filter(isPatchLocal, R.values(patches));
     const {
       switchPatch,
       setSelection,
@@ -183,14 +192,14 @@ class ProjectBrowser extends React.Component {
             onClick={() => setSelection(id)}
             hoverButtons={this.localPatchesHoveredButtons(id)}
           />
-        ), R.values(patches))}
+        ), localPatches)}
       </PatchGroup>
     );
   }
 
   renderLibraryPatches() {
-    const { libs, selectedPatchId } = this.props;
-    const { setSelection } = this.props.actions;
+    const { libs, patches, selectedPatchId } = this.props;
+    const { switchPatch, setSelection, addNotification } = this.props.actions;
 
     return R.toPairs(libs).map(([libName, types]) => (
       <PatchGroup
@@ -205,6 +214,7 @@ class ProjectBrowser extends React.Component {
             label={R.pipe(splitNames, R.nth(1))(id)}
             isSelected={id === selectedPatchId}
             onClick={() => setSelection(id)}
+            onDoubleClick={() => switchLibPatch(switchPatch, addNotification, id, patches)}
             hoverButtons={[
               <Icon
                 key="add"
@@ -293,6 +303,7 @@ ProjectBrowser.propTypes = {
     deletePatch: React.PropTypes.func.isRequired,
     renameProject: React.PropTypes.func.isRequired,
     closeAllPopups: React.PropTypes.func.isRequired,
+    addNotification: React.PropTypes.func.isRequired,
   }),
 };
 
@@ -343,6 +354,8 @@ const mapDispatchToProps = dispatch => ({
     renameProject: ProjectActions.renameProject,
 
     closeAllPopups: ProjectBrowserActions.cancelPopup,
+
+    addNotification: MessagesActions.addNotification,
   }, dispatch),
 });
 
