@@ -19,9 +19,9 @@ export default (patchIds) => {
     switch (action.type) {
       case PATCH_ADD:
         return R.assoc(
-          action.payload.newId,
+          action.payload.id,
           newPatch({
-            id: action.payload.newId,
+            id: action.payload.id,
             label: action.payload.label,
             folderId: action.payload.folderId,
           }),
