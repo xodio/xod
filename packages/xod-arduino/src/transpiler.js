@@ -57,10 +57,10 @@ const isCurriedInNodePin = def(
 
 const getNodeCount = def(
   'getNodeCount :: Patch -> Number',
-  patch => R.compose(
+  R.compose(
     R.length,
     Project.listNodes
-  )(patch)
+  )
 );
 
 const getOutputCount = def(
@@ -118,8 +118,7 @@ const getPatchByNodeId = def(
   (project, entryPath, patches, nodeId) => R.compose(
     findPatchByPath(R.__, patches),
     Project.getNodeType,
-    explode,
-    Project.getNodeById(nodeId),
+    Project.getNodeByIdUnsafe(nodeId),
     Project.getPatchByPathUnsafe
   )(entryPath, project)
 );
@@ -173,10 +172,10 @@ const convertMapOfPinTypesIntoMapOfPinPaths = def(
 
 const getMapOfPinPaths = def(
   'getMapOfPinPaths :: Map NodeId (Map PinKey DataValue) -> [Node] -> Project -> Map NodeId (Map PinKey PatchPath)',
-  (mapOfNodePinValues, curriedNodes, project) => R.compose(
+  R.compose(
     convertMapOfPinTypesIntoMapOfPinPaths,
     getMapOfNodePinTypes
-  )(mapOfNodePinValues, curriedNodes, project)
+  )
 );
 
 const getPathsFromMapOfPinPaths = def(
@@ -190,11 +189,9 @@ const getPathsFromMapOfPinPaths = def(
 const getPatchesFromProject = def(
   'getPatchesFromProject :: [PatchPath] -> Project -> [Patch]',
   (paths, project) => R.map(
-    path => R.compose(
-      explodeMaybe(`Could not find the patch '${path}' in the project`),
-      Project.getPatchByPath(R.__, project)
-    )(path)
-  )(paths)
+    path => Project.getPatchByPathUnsafe(path, project),
+    paths
+  )
 );
 
 const assocPatchesToProject = def(
@@ -236,8 +233,7 @@ const uncurryPins = def(
           R.__,
           pinKeys
         ),
-        explode,
-        Project.getNodeById(nodeId)
+        Project.getNodeByIdUnsafe(nodeId)
       )(patch);
     },
     mapOfPinValues
@@ -312,7 +308,6 @@ const copyConstPatches = def(
   'copyConstPatches :: Map NodeId (Map PinKey PatchPath) -> Project -> Project -> Project',
   (mapOfPinPaths, sourceProject, targetProject) => R.compose(
     assocPatchesToProject(R.__, targetProject),
-    // Here is something went wrong!
     getTuplesOfPatches
   )(mapOfPinPaths, sourceProject)
 );
