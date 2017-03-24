@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { ENTITY, generateId } from 'xod-core';
+import { ENTITY } from 'xod-core';
 
 import {
   EDITOR_DESELECT_ALL,
@@ -16,6 +16,7 @@ import {
   PROJECT_CREATE,
   PROJECT_LOAD_DATA,
   PROJECT_ONLY_LOAD_DATA,
+  PATCH_DELETE,
   NODE_DELETE,
   LINK_DELETE,
 } from '../project/actionTypes';
@@ -44,11 +45,10 @@ const addTab = (state, action) => {
     R.values(tabs)
   );
   const newIndex = R.inc(lastIndex);
-  const newId = generateId();
+  const patchId = action.payload.id;
 
-  return R.assocPath(['tabs', newId], {
-    id: newId,
-    patchId: action.payload.id,
+  return R.assocPath(['tabs', patchId], {
+    id: patchId,
     index: newIndex,
   }, state);
 };
@@ -118,13 +118,14 @@ const editorReducer = (state = {}, action) => {
       }
       return R.assoc('currentPatchId', action.payload.id, newState);
     }
+    case PATCH_DELETE:
     case TAB_CLOSE:
       return R.compose(
         R.converge(
           R.assoc('currentPatchId'),
           [
             R.compose( // get patch id from last of remaining tabs
-              R.propOr(null, 'patchId'),
+              R.propOr(null, 'id'),
               R.last,
               R.values,
               R.prop('tabs')

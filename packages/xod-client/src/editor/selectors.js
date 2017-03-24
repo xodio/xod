@@ -104,12 +104,12 @@ export const getPreparedTabs = (state) => {
     getTabs,
     R.values,
     R.map((tab) => {
-      const patch = core.getPatchById(tab.patchId, projectState);
+      const patch = core.getPatchById(tab.id, projectState);
       return R.merge(
         tab,
         {
           label: patch.label,
-          isActive: (currentPatchId === tab.patchId),
+          isActive: (currentPatchId === tab.id),
         }
       );
     }),

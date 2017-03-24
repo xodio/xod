@@ -6,7 +6,7 @@ const TabsItem = ({ data, onClick, onClose }) => {
     'is-active': data.isActive,
   });
 
-  const handleClick = () => onClick(data.patchId);
+  const handleClick = () => onClick(data.id);
   const handleClose = (event) => {
     event.stopPropagation();
     onClose(data.id);
@@ -32,7 +32,6 @@ const TabsItem = ({ data, onClick, onClose }) => {
 
 const TabsDataPropType = React.PropTypes.shape({
   id: React.PropTypes.string,
-  patchId: React.PropTypes.string,
   index: React.PropTypes.number,
   label: React.PropTypes.string,
   isActive: React.PropTypes.boolean,
