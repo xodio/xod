@@ -15,7 +15,7 @@ export const ERROR = {
   // pathes
   PATH_INVALID: 'Path is empty or contains invalid characters',
   // nodes
-  NODE_NOT_FOUND: 'Node not found in the patch',
+  NODE_NOT_FOUND: 'Can\'t find the Node "{nodeId}" in the patch with path "{patchPath}"',
   POSITION_INVALID: 'Invalid position property',
   // links
   LINK_ID_INVALID: 'Link should have a generated id',

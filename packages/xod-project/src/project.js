@@ -237,8 +237,13 @@ const checkPinKeys = def(
       );
       // :: link -> Either
       const checkNodeExists = R.curry(R.compose(
-        Tools.errOnNothing(CONST.ERROR.NODE_NOT_FOUND),
-        Patch.getNodeById(R.__, patch),
+        nodeId => Tools.errOnNothing(
+          Utils.formatString(
+            CONST.ERROR.NODE_NOT_FOUND,
+            { nodeId, patchPath: Patch.getPatchPath(patch) }
+          ),
+          Patch.getNodeById(nodeId, patch)
+        ),
         nodeIdGetter
       ));
 

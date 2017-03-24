@@ -1,9 +1,10 @@
 import R from 'ramda';
-import chai, { expect } from 'chai';
+import chai, { expect, assert } from 'chai';
 import dirtyChai from 'dirty-chai';
 
 import * as Patch from '../src/patch';
 import * as CONST from '../src/constants';
+import { formatString } from '../src/utils';
 
 import * as Helper from './helpers';
 
@@ -254,6 +255,33 @@ describe('Patch', () => {
         .to.be.true();
       expect(Patch.getNodeById('rndId', patch).getOrElse(null))
         .to.be.equal(patch.nodes.rndId);
+    });
+  });
+  describe('getNodeByIdUnsafe', () => {
+    const patch = Helper.defaultizePatch({
+      path: 'testPath',
+      nodes: {
+        rndId: { id: 'rndId' },
+      },
+    });
+
+    it('should throw Error', () => {
+      const nodeId = 'non-existent';
+      const fn = () => Patch.getNodeByIdUnsafe(nodeId, patch);
+      expect(fn).to.throw(
+        Error,
+        formatString(
+          CONST.ERROR.NODE_NOT_FOUND,
+          {
+            nodeId,
+            patchPath: patch.path,
+          }
+        )
+      );
+    });
+    it('should return Node', () => {
+      const node = Patch.getNodeByIdUnsafe('rndId', patch);
+      assert.equal(node, patch.nodes.rndId);
     });
   });
   describe('listLinks', () => {
