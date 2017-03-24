@@ -1,14 +1,32 @@
-// transpile|t <input> <patchPath>        Transpile code
-// -t --target [espruino|arduino|nodejs]  Transpile code for target device (espruino by default).
-// -o --output [filename.txt]             Output result into file (or stdout by default).
-
-/* eslint-disable no-console */
+// xodc transpile [--output=<filename>] [--target=<target>] <input> <path>
 
 import fs from 'fs';
 import path from 'path';
+import { identity } from 'ramda';
+
+import { foldEither } from 'xod-func-tools';
 import { loadProjectWithLibs, pack, readJSON, writeFile } from 'xod-fs';
 import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
+import { transpileForArduino } from 'xod-arduino';
 import * as msg from './messages';
+
+const showErrorAndExit = (err) => {
+  msg.error(err);
+  process.exit(1);
+};
+
+// This is a hack to combine the work of transpilers, some of which
+// returns {String}, and other {Either Error String}
+const processEitherOrSkip = (target, eitherCode) => {
+  // TODO: Remove it when all other transpilers will return Either too
+  if (target !== 'arduino') return eitherCode;
+
+  return foldEither(
+    showErrorAndExit,
+    identity,
+    eitherCode
+  );
+};
 
 export default (input, patchPath, program) => {
   const target = program.target;
@@ -19,6 +37,7 @@ export default (input, patchPath, program) => {
   const transpilers = {
     nodejs: transpileForNodeJS,
     espruino: transpileForEspruino,
+    arduino: transpileForArduino,
   };
 
   const transpile = transpilers[target];
@@ -57,6 +76,7 @@ export default (input, patchPath, program) => {
     }
   })
     .then(project => transpile(project, patchPath))
+    .then(code => processEitherOrSkip(target, code))
     .then((code) => {
       if (output) {
         return writeFile(output, code)
@@ -73,8 +93,5 @@ export default (input, patchPath, program) => {
       process.exit(0);
       return code;
     })
-    .catch((err) => {
-      msg.error(err);
-      process.exit(1);
-    });
+    .catch(showErrorAndExit);
 };

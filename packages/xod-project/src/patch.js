@@ -1,5 +1,6 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
+import { explodeMaybe } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
@@ -196,16 +197,31 @@ export const listNodes = def(
 
 /**
  * @function getNodeById
- * @param {string} id - node ID to find
+ * @param {string} nodeId - NodeId to find
  * @param {Patch} patch - a patch where node should be searched
- * @returns {Maybe<Node>} a node with given ID or `undefined` if it wasn’t not found
+ * @returns {Maybe<Node>} a node with given ID
  */
 export const getNodeById = def(
   'getNodeById :: NodeId -> Patch -> Maybe Node',
-  (id, patch) => R.compose(
-    Tools.find(nodeIdEquals(id)),
+  (nodeId, patch) => R.compose(
+    Tools.find(nodeIdEquals(nodeId)),
     listNodes
   )(patch)
+);
+
+/**
+ * @function getNodeByIdUnsafe
+ * @param {string} nodeId - node ID to find
+ * @param {Patch} patch - a Patch where node should be searched
+ * @returns {Node} a Node with given ID
+ * @throws Error if Node was not found
+ */
+export const getNodeByIdUnsafe = def(
+  'getNodeByIdUnsafe :: NodeId -> Patch -> Node',
+  (nodeId, patch) => explodeMaybe(
+    Utils.formatString(CONST.ERROR.NODE_NOT_FOUND, { nodeId, patchPath: getPatchPath(patch) }),
+    getNodeById(nodeId, patch)
+  )
 );
 
 // =============================================================================

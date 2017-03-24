@@ -51,6 +51,7 @@ class App extends client.App {
     this.onUpload = this.onUpload.bind(this);
     this.onShowCodeEspruino = this.onShowCodeEspruino.bind(this);
     this.onShowCodeNodejs = this.onShowCodeNodejs.bind(this);
+    this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
     this.onImportClicked = this.onImportClicked.bind(this);
     this.onImport = this.onImport.bind(this);
     this.onExport = this.onExport.bind(this);
@@ -309,6 +310,8 @@ class App extends client.App {
           onClick(items.uploadToEspruino, this.onUpload),
           items.separator,
           onClick(items.showCodeForNodeJS, this.onShowCodeNodejs),
+          items.separator,
+          onClick(items.showCodeForArduino, this.onShowCodeArduino),
         ]
       ),
     ];

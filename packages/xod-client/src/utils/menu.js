@@ -79,6 +79,10 @@ const rawItems = {
     key: 'showCodeForNodeJS',
     label: 'Show Code for NodeJS',
   },
+  showCodeForArduino: {
+    key: 'showCodeForArduino',
+    label: 'Show Code For Arduino',
+  },
 };
 
 const assignHotkeys = menuItem => R.when(

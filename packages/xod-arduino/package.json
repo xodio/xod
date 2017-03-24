@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "description": "XOD project: Arduino transpiler",
   "scripts": {
-    "build": "webpack --colors",
+    "build": "babel src/ -d dist/",
+    "dev": "npm run build -- --watch",
     "doc": "documentation build --format html --output doc --sort-order alpha src/",
-    "test": "mocha-webpack test/**/*.spec.js"
+    "test": "mocha test/**/*.spec.js"
   },
   "repository": {},
   "keywords": [],
@@ -16,15 +17,15 @@
     "handlebars": "^4.0.6",
     "hm-def": "^0.1.2",
     "ramda": "^0.23.0",
-    "ramda-fantasy": "^0.7.0",
     "sanctuary-def": "^0.9.0",
-    "xod-core": "^0.0.1",
-    "xod-project": "^0.0.1"
+    "xod-project": "^0.0.1",
+    "xod-func-tools": "^0.0.1"
   },
   "engines": {
     "node": "6.0.0"
   },
   "devDependencies": {
+    "babel-plugin-inline-import": "^2.0.4",
     "chai": "^3.5.0",
     "chai-string": "^1.3.0",
     "dirty-chai": "^1.2.2"

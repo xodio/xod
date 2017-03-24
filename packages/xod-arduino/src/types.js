@@ -1,9 +1,14 @@
+import R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
 import { env as xEnv } from 'xod-project';
+import XF from 'xod-func-tools';
 
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */
+
+const packageName = 'xod-arduino';
+const docUrl = 'http://xod.io/docs/dev/xod-arduino/#';
 
 //-----------------------------------------------------------------------------
 //
@@ -11,33 +16,9 @@ import { env as xEnv } from 'xod-project';
 //
 //-----------------------------------------------------------------------------
 
-// :: String -> String
-const qualifiedTypeName = typeName => `xod-arduino/${typeName}`;
-
-// :: String -> String
-const typeUrl = typeName => `http://xod.io/docs/dev/xod-arduino/#${typeName}`;
-
-// :: (String, Any -> Boolean) -> Type
-const NullaryType = (typeName, predicate) => $.NullaryType(
-  qualifiedTypeName(typeName),
-  typeUrl(typeName),
-  predicate
-);
-
-// :: Type -> Any -> Boolean
-// To keep checking fast we have to call private method of $.Type
-// eslint-disable-next-line no-underscore-dangle
-const hasType = type => x => type._test(x);
-
-const Model = (typeName, schema) => NullaryType(
-  typeName,
-  hasType($.RecordType(schema))
-);
-
-const AliasType = (typeName, type) => NullaryType(
-  typeName,
-  hasType(type)
-);
+const NullaryType = XF.NullaryType(packageName, docUrl);
+const Model = XF.Model(packageName, docUrl);
+const AliasType = XF.AliasType(packageName, docUrl);
 
 //-----------------------------------------------------------------------------
 //
@@ -46,6 +27,7 @@ const AliasType = (typeName, type) => NullaryType(
 //-----------------------------------------------------------------------------
 const TNodeId = AliasType('TNodeId', $.Number);
 const TPinKey = AliasType('TPinKey', $.String);
+const DataValue = NullaryType('DataValue', R.complement(R.isNil));
 
 export const TConfig = Model('TConfig', {
   NODE_COUNT: $.Number,
@@ -56,7 +38,7 @@ export const TConfig = Model('TConfig', {
 const TPatchOutput = Model('TPatchOutput', {
   type: $.String,
   pinKey: $.String,
-  value: $.Any,
+  value: DataValue,
 });
 
 const TPatchInput = Model('TPatchInput', {
@@ -76,6 +58,7 @@ export const TPatch = Model('TPatch', {
 const TNodeOutput = Model('TNodeOutput', {
   to: $.Array(TNodeId),
   pinKey: TPinKey,
+  value: $.Nullable(DataValue),
 });
 
 const TNodeInput = Model('TNodeInput', {
@@ -96,6 +79,7 @@ export const TProject = Model('TProject', {
   config: TConfig,
   patches: $.Array(TPatch),
   nodes: $.Array(TNode),
+  topology: $.Array(TNodeId),
 });
 
 //-----------------------------------------------------------------------------

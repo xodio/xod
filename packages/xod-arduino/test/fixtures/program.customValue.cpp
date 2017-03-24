@@ -12,7 +12,7 @@ namespace _program {
         { }, // state
         { NO_NODE, 0 }, // input_IN1
         { NO_NODE, 0 }, // input_IN2
-        { 0, links_0_OUT } // output_OUT
+        { 5, links_0_OUT } // output_OUT
     };
 
     NodeId links_1_OUT[] = { NO_NODE };

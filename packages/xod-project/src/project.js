@@ -1,5 +1,6 @@
 import R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
+import { explodeMaybe } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
@@ -182,7 +183,7 @@ export const listLibraryPatches = def(
  * @function getPatchByPath
  * @param {string} path - full path of the patch to find, e.g. `"@/foo/bar"`
  * @param {Project} project - project bundle
- * @returns {Maybe<Patch>} a patch with given path or Null if it wasn’t found
+ * @returns {Maybe<Patch>} a patch with given path
  */
 export const getPatchByPath = def(
   'getPatchByPath :: PatchPath -> Project -> Maybe Patch',
@@ -190,6 +191,21 @@ export const getPatchByPath = def(
     Tools.prop(path),
     getPatches
   )(project)
+);
+
+/**
+ * @function getPatchByPathUnsafe
+ * @param {string} path - full path of the patch to find, e.g. `"@/foo/bar"`
+ * @param {Project} project - project bundle
+ * @returns {Patch} a patch with given path
+ * @throws Error if patch was not found
+ */
+export const getPatchByPathUnsafe = def(
+  'getPatchByPath :: PatchPath -> Project -> Patch',
+  (path, project) => explodeMaybe(
+    Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path }),
+    getPatchByPath(path, project)
+  )
 );
 
 /**
@@ -221,8 +237,13 @@ const checkPinKeys = def(
       );
       // :: link -> Either
       const checkNodeExists = R.curry(R.compose(
-        Tools.errOnNothing(CONST.ERROR.NODE_NOT_FOUND),
-        Patch.getNodeById(R.__, patch),
+        nodeId => Tools.errOnNothing(
+          Utils.formatString(
+            CONST.ERROR.NODE_NOT_FOUND,
+            { nodeId, patchPath: Patch.getPatchPath(patch) }
+          ),
+          Patch.getNodeById(nodeId, patch)
+        ),
         nodeIdGetter
       ));
 
@@ -359,7 +380,7 @@ export const validatePatchRebase = def(
       R.complement(doesPathExist(R.__, project))
     ))
     .chain(() => Tools.errOnNothing(
-      CONST.ERROR.PATCH_NOT_FOUND_BY_PATH,
+      Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: oldPath }),
       getPatchByPath(oldPath, project)
     ))
     .map(R.always(project))
@@ -413,6 +434,21 @@ export const rebasePatch = def(
         }
       )
 );
+
+// =============================================================================
+//
+// Getters with traversing through project
+//
+// =============================================================================
+export const getNodePin = def(
+  'getNodePin :: PinKey -> Node -> Project -> Maybe Pin',
+  (pinKey, node, project) => R.compose(
+    R.chain(Patch.getPinByKey(pinKey)),
+    getPatchByPath(R.__, project),
+    Node.getNodeType
+  )(node)
+);
+
 
 // =============================================================================
 //

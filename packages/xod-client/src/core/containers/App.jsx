@@ -1,23 +1,39 @@
 import React from 'react';
 import { toV2 } from 'xod-project';
 import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
+import { transpileForArduino } from 'xod-arduino';
+import { foldEither } from 'xod-func-tools';
+
+const transpile = (context, transpiler) => {
+  const projectV2 = toV2(context.props.project);
+  return transpiler(projectV2, context.props.currentPatchId);
+};
+
+const showCode = (context, code) => {
+  context.setState({ code });
+  context.showCodePopup();
+};
+
+const showError = (context, error) => {
+  context.props.actions.addError(error);
+};
 
 export default class App extends React.Component {
   onShowCodeEspruino() {
-    const projectV2 = toV2(this.props.project);
-    this.setState({
-      code: transpileForEspruino(projectV2, this.props.currentPatchId),
-    });
-    this.showCodePopup();
+    showCode(this, transpile(this, transpileForEspruino));
+  }
+  onShowCodeNodejs() {
+    showCode(this, transpile(this, transpileForNodeJS));
+  }
+  onShowCodeArduino() {
+    const eitherCode = transpile(this, transpileForArduino);
+    foldEither(
+      error => showError(this, error),
+      code => showCode(this, code),
+      eitherCode
+    );
   }
 
-  onShowCodeNodejs() {
-    const projectV2 = toV2(this.props.project);
-    this.setState({
-      code: transpileForNodeJS(projectV2, this.props.currentPatchId),
-    });
-    this.showCodePopup();
-  }
   render() {
     return <div />;
   }

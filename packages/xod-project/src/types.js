@@ -1,12 +1,17 @@
 
 import R from 'ramda';
-import RF from 'ramda-fantasy';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
+
+import XF from 'xod-func-tools';
+
 import * as C from './constants';
 
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */
+
+const packageName = 'xod-project';
+const docUrl = 'http://xod.io/docs/dev/xod-project/#';
 
 //-----------------------------------------------------------------------------
 //
@@ -14,69 +19,11 @@ import * as C from './constants';
 //
 //-----------------------------------------------------------------------------
 
-// :: String -> String
-const qualifiedTypeName = typeName => `xod-project/${typeName}`;
-
-// :: String -> String
-const typeUrl = typeName => `http://xod.io/docs/dev/xod-project/#${typeName}`;
-
-// :: (String, Any -> Boolean) -> Type
-const NullaryType = (typeName, predicate) => $.NullaryType(
-  qualifiedTypeName(typeName),
-  typeUrl(typeName),
-  predicate
-);
-
-// :: (String, [Any]) -> Type
-const EnumType = (typeName, values) => $.EnumType(
-  qualifiedTypeName(typeName),
-  typeUrl(typeName),
-  values
-);
-
-// :: Type -> Any -> Boolean
-const hasType = type => x => type.validate(x).isRight;
-
-// :: [Type] -> (Any -> Boolean)
-const hasOneOfType = types => R.anyPass(
-  R.map(hasType, types)
-);
-
-const Model = (typeName, schema) => NullaryType(
-  typeName,
-  hasType($.RecordType(schema))
-);
-
-const OneOfType = (typeName, types) => NullaryType(
-  typeName,
-  hasOneOfType(types)
-);
-
-const AliasType = (typeName, type) => NullaryType(
-  typeName,
-  hasType(type)
-);
-
-//-----------------------------------------------------------------------------
-//
-// Fantasy land types
-//
-//-----------------------------------------------------------------------------
-
-export const $Maybe = $.UnaryType(
-  'ramda-fantasy/Maybe',
-  'https://github.com/ramda/ramda-fantasy/blob/master/docs/Maybe.md',
-  R.is(RF.Maybe),
-  maybe => (maybe.isJust ? [maybe.value] : [])
-);
-
-export const $Either = $.BinaryType(
-  'ramda-fantasy/Either',
-  'https://github.com/ramda/ramda-fantasy/blob/master/docs/Either.md',
-  R.is(RF.Either),
-  either => (either.isLeft ? [either.value] : []),
-  either => (either.isRight ? [either.value] : [])
-);
+const NullaryType = XF.NullaryType(packageName, docUrl);
+const AliasType = XF.AliasType(packageName, docUrl);
+const EnumType = XF.EnumType(packageName, docUrl);
+const Model = XF.Model(packageName, docUrl);
+const OneOfType = XF.OneOfType(packageName, docUrl);
 
 //-----------------------------------------------------------------------------
 //
@@ -162,7 +109,7 @@ export const Project = Model('Project', {
 export const TerminalNode = NullaryType(
   'TerminalNode',
   R.both(
-    hasType(Node),
+    XF.hasType(Node),
     R.propSatisfies(matchesTerminalPatchPath, 'type')
   )
 );
@@ -177,9 +124,7 @@ export const PinOrKey = OneOfType('PinOrKey', [PinKey, ObjectWithKey]);
 //
 //-----------------------------------------------------------------------------
 
-export const env = $.env.concat([
-  $Either,
-  $Maybe,
+export const env = XF.env.concat([
   Link,
   LinkId,
   LinkOrId,

@@ -5,6 +5,7 @@ import dirtyChai from 'dirty-chai';
 import * as CONST from '../src/constants';
 import * as Patch from '../src/patch';
 import * as Project from '../src/project';
+import { formatString } from '../src/utils';
 
 import * as Helper from './helpers';
 
@@ -100,6 +101,30 @@ describe('Project', () => {
       expect(maybe.isJust).to.be.true();
     });
   });
+  describe('getPatchByPathUnsafe', () => {
+    it('should throw error if project is empty object', () => {
+      const fn = () => Project.getPatchByPathUnsafe('test', emptyProject);
+      expect(fn).to.throw(Error, formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: 'test' }));
+    });
+    it('should throw error if there is no patch with such path', () => {
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/one': {},
+        },
+      });
+      const fn = () => Project.getPatchByPathUnsafe('@/two', project);
+      expect(fn).to.throw(Error, formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: '@/two' }));
+    });
+    it('should return Patch if project have a patch', () => {
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/one': {},
+        },
+      });
+      const patch = Project.getPatchByPathUnsafe('@/one', project);
+      expect(patch).to.be.deep.equal(project.patches['@/one']);
+    });
+  });
   describe('lsPatches', () => {
     const project = Helper.defaultizeProject({
       patches: {
@@ -158,6 +183,32 @@ describe('Project', () => {
         ]);
     });
   });
+  describe('getNodePin', () => {
+    const pin = Helper.defaultizePin({ type: CONST.PIN_TYPE.NUMBER });
+    const project = Helper.defaultizeProject({
+      patches: {
+        'xod/core/test': {
+          pins: {
+            a: pin,
+          },
+        },
+      },
+    });
+
+    it('should return Nothing for unexisting patch', () => {
+      const maybe = Project.getNodePin('test', Helper.defaultizeNode({ type: 'unexisting/patch' }), emptyProject);
+      expect(maybe.isNothing).to.be.true();
+    });
+    it('should return Nothing for unexisting pin', () => {
+      const maybe = Project.getNodePin('b', Helper.defaultizeNode({ type: 'xod/core/test' }), project);
+      expect(maybe.isNothing).to.be.true();
+    });
+    it('should return Just<Pin> for existing pin', () => {
+      const maybe = Project.getNodePin('a', Helper.defaultizeNode({ type: 'xod/core/test' }), project);
+      expect(maybe.isJust).to.be.true();
+      expect(R.unnest(maybe)).to.be.deep.equal(pin);
+    });
+  });
 
   // validations
   describe('validatePatchRebase', () => {
@@ -172,7 +223,7 @@ describe('Project', () => {
       const newProject = Project.validatePatchRebase('@/test', '@/patch', emptyProject);
 
       expect(newProject.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, newProject, CONST.ERROR.PATCH_NOT_FOUND_BY_PATH);
+      Helper.expectErrorMessage(expect, newProject, formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: '@/patch' }));
     });
     it('should return Either.Left if another patch with same path already exist', () => {
       const project = Helper.defaultizeProject({
@@ -190,7 +241,6 @@ describe('Project', () => {
       const project = Helper.defaultizeProject({ patches: { [oldPath]: patch } });
 
       const newProject = Project.validatePatchRebase(newPath, oldPath, project);
-      /* istanbul ignore next */
       Helper.expectEither(
         (proj) => {
           expect(proj).to.be.equal(project);
@@ -282,7 +332,6 @@ describe('Project', () => {
       const patch = Patch.createPatch();
       const newProject = Project.assocPatch(path, patch, emptyProject);
       expect(newProject.isRight).to.be.true();
-      /* istanbul ignore next */
       Helper.expectEither(
         (proj) => {
           expect(proj)
@@ -306,7 +355,6 @@ describe('Project', () => {
       const newProject = Project.assocPatch(newPath, newPatch, project);
 
       expect(newProject.isRight).to.be.true();
-      /* istanbul ignore next */
       Helper.expectEither(
         (proj) => {
           expect(proj)
@@ -360,7 +408,6 @@ describe('Project', () => {
       const newProject = Project.rebasePatch(newPath, oldPath, project);
       expect(newProject.isRight).to.be.true();
 
-      /* istanbul ignore next */
       Helper.expectEither(
         (proj) => {
           expect(proj)
@@ -409,7 +456,6 @@ describe('Project', () => {
       const newProject = Project.rebasePatch(newPath, oldPath, project);
       expect(newProject.isRight).to.be.true();
 
-      /* istanbul ignore next */
       Helper.expectEither(
         (proj) => {
           expect(proj)
@@ -427,6 +473,7 @@ describe('Project', () => {
     });
   });
 
+  // lists
   describe('lists', () => {
     const project = Helper.defaultizeProject({
       patches: {

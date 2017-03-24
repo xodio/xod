@@ -20,8 +20,13 @@ const getPatchPins = direction => R.compose(
   indexByPinKey,
   R.path(['patch', direction])
 );
+const omitNullValues = R.map(R.when(
+  R.propSatisfies(R.isNil, 'value'),
+  R.omit(['value'])
+));
 const getNodePins = direction => R.compose(
   indexByPinKey,
+  omitNullValues,
   R.prop(direction)
 );
 const mergeAndListPins = (direction, node) => R.compose(
@@ -100,15 +105,15 @@ export const renderImplList = def(
   )
 );
 export const renderProgram = def(
-  'renderProgram :: [TNode] -> String',
-  templates.program
+  'renderProgram :: [TNodeId] -> [TNode] -> String',
+  (topology, nodes) => templates.program({ topology, nodes })
 );
 export const renderProject = def(
   'renderProject :: TProject -> String',
   (project) => {
     const config = renderConfig(project.config);
     const impls = renderImplList(project.patches);
-    const program = renderProgram(project.nodes);
+    const program = renderProgram(project.topology, project.nodes);
 
     return R.join('\n')([
       config,
