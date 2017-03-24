@@ -38,11 +38,10 @@ export const explode = R.cond([
  */
 export const explodeMaybe = def(
   'explodeMaybe :: String -> Maybe a -> a',
-  (errorMessage, maybeObject) => R.cond([
-    [Maybe.isJust, R.unnest],
-    [Maybe.isNothing, () => { throw new Error(errorMessage); }],
-    [R.T, () => { throw new Error(`Maybe should be passed into explodeMaybe function. Passed: ${maybeObject}`); }],
-  ])(maybeObject)
+  (errorMessage, maybeObject) => {
+    if (maybeObject.isJust) return maybeObject.value;
+    throw new Error(errorMessage);
+  }
 );
 
 /**
@@ -63,14 +62,9 @@ export const explodeMaybe = def(
  */
 export const foldEither = def(
   'foldEither :: (a -> c) -> (b -> c) -> Either a b -> c',
-  (leftFn, rightFn, eitherObject) => {
-    const r = R.cond([
-      [R.prop('isLeft'), e => leftFn(e.value)],
-      [R.prop('isRight'), e => rightFn(e.value)],
-      [R.T, () => { throw new Error(`Either should be passed into foldEither function. Passed: ${eitherObject}`); }],
-    ])(eitherObject);
-    return r;
-  }
+  (leftFn, rightFn, eitherObject) => (
+    eitherObject.isLeft ? leftFn(eitherObject.value) : rightFn(eitherObject.value)
+  )
 );
 
 export default Object.assign(
