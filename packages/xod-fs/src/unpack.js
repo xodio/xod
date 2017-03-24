@@ -1,6 +1,6 @@
-import R from 'ramda';
 import path from 'path';
-import { notNil, hasNot, localID, isLocalID } from 'xod-core';
+import R from 'ramda';
+import { hasNot, isLocalID, localID, notNil } from 'xod-core';
 
 // :: "./awesome_project/" -> "main" -> "patch.xodm" -> "./awesome_project/main/patch.xodm"
 const filePath = (projectPath, patchPath, fileName) => R.pipe(
@@ -101,7 +101,7 @@ export const getProjectPath = R.pipe(
 export const getPatchPath = R.curry((patch, xodball) => {
   const folders = foldersPaths(xodball);
   const folderPath = R.propOr('', patch.folderId, folders);
-  const patchName = fsSafeName(patch.label);
+  const patchName = R.compose(R.last, R.split('/'))(patch.id);
   return `${folderPath}${patchName}/`;
 });
 

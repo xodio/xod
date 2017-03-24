@@ -13,6 +13,4 @@ export { isDirectoryExists } from './utils';
 export {
   findClosestProjectDir,
   findClosestWorkspaceDir,
-  isProjectDir,
-  isWorkspaceDir,
 } from './find';
