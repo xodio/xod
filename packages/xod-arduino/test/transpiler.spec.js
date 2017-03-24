@@ -1,7 +1,7 @@
 import chai, { assert } from 'chai';
 import chaiString from 'chai-string';
 
-import { explode } from 'xod-func-tools';
+import { foldEither } from 'xod-func-tools';
 import transpile from '../src/transpiler';
 
 import blinkProject from './fixtures/blink.project.json';
@@ -11,10 +11,11 @@ chai.use(chaiString);
 
 describe('xod-arduino transpiler (end-to-end test)', () => {
   it('should return Either.Right with C++ code', () => {
-    const r = transpile(blinkProject, '@/main');
-    const cpp = explode(r);
-    assert.equal(r.isRight, true);
-    assert.equalIgnoreSpaces(cpp, blinkCpp);
+    foldEither(
+      (err) => { throw err; },
+      cpp => assert.equalIgnoreSpaces(cpp, blinkCpp),
+      transpile(blinkProject, '@/main')
+    );
   });
   it('should return Either.Left with error if entry-point patch not found', () => {
     const r = transpile(blinkProject, '@/non-existing-patch');
