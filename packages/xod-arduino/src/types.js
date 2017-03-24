@@ -2,7 +2,7 @@ import R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
 import { env as xEnv } from 'xod-project';
-import xF from 'xod-func-tools';
+import XF from 'xod-func-tools';
 
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */
@@ -16,9 +16,9 @@ const docUrl = 'http://xod.io/docs/dev/xod-arduino/#';
 //
 //-----------------------------------------------------------------------------
 
-const NullaryType = xF.NullaryType(packageName, docUrl);
-const Model = xF.Model(packageName, docUrl);
-const AliasType = xF.AliasType(packageName, docUrl);
+const NullaryType = XF.NullaryType(packageName, docUrl);
+const Model = XF.Model(packageName, docUrl);
+const AliasType = XF.AliasType(packageName, docUrl);
 
 //-----------------------------------------------------------------------------
 //
