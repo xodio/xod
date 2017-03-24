@@ -1,6 +1,6 @@
 import R from 'ramda';
 
-import { explode, explodeMaybe } from 'xod-func-tools';
+import { explode } from 'xod-func-tools';
 import Project from 'xod-project';
 import { def } from './types';
 
