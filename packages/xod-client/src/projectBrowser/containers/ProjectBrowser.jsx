@@ -38,11 +38,17 @@ const splitNames = R.compose(
 );
 
 const isPatchIdLocal = R.pipe(R.head, R.equals('@'));
+const isPatchLocal = R.compose(isPatchIdLocal, R.prop('id'));
 
 const listLocalPatchPaths = R.compose(
   R.filter(isPatchIdLocal),
   R.keys
 );
+
+const switchLibPatch = (switchFn, id, patches) => {
+  if (R.has(id, patches)) { switchFn(id); }
+  return false;
+};
 
 class ProjectBrowser extends React.Component {
   constructor(props) {
@@ -161,6 +167,7 @@ class ProjectBrowser extends React.Component {
       currentPatchId,
       selectedPatchId,
     } = this.props;
+    const localPatches = R.filter(isPatchLocal, R.values(patches));
     const {
       switchPatch,
       setSelection,
@@ -183,14 +190,14 @@ class ProjectBrowser extends React.Component {
             onClick={() => setSelection(id)}
             hoverButtons={this.localPatchesHoveredButtons(id)}
           />
-        ), R.values(patches))}
+        ), localPatches)}
       </PatchGroup>
     );
   }
 
   renderLibraryPatches() {
-    const { libs, selectedPatchId } = this.props;
-    const { setSelection } = this.props.actions;
+    const { libs, patches, selectedPatchId } = this.props;
+    const { switchPatch, setSelection } = this.props.actions;
 
     return R.toPairs(libs).map(([libName, types]) => (
       <PatchGroup
@@ -205,6 +212,7 @@ class ProjectBrowser extends React.Component {
             label={R.pipe(splitNames, R.nth(1))(id)}
             isSelected={id === selectedPatchId}
             onClick={() => setSelection(id)}
+            onDoubleClick={() => switchLibPatch(switchPatch, id, patches)}
             hoverButtons={[
               <Icon
                 key="add"
