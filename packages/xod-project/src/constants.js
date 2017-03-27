@@ -25,6 +25,7 @@ export const ERROR = {
   LINK_OUTPUT_NODE_NOT_FOUND: 'Output node of the link does not exist in this patch',
   // pins
   PIN_TYPE_INVALID: 'Pin type should be one of possible values: `string`, `number`, `boolean`, `pulse`',
+  PIN_NOT_FOUND: 'Can\'t find the Pin "{pinKey}" in the patch with path "{patchPath}"',
   PIN_KEY_INVALID: 'Pin key should be generated with shortid',
   // other
   DATATYPE_INVALID: 'Invalid data type',

@@ -274,6 +274,21 @@ export const getPinByKey = def(
 );
 
 /**
+ * @function getPinByKeyUnsafe
+ * @param {string} key
+ * @param {Patch} patch
+ * @returns {Pin}
+ * @throws Error if Pin was not found
+ */
+export const getPinByKeyUnsafe = def(
+  'getPinByKey :: PinKey -> Patch -> Pin',
+  (pinKey, patch) => explodeMaybe(
+    Utils.formatString(CONST.ERROR.PIN_NOT_FOUND, { pinKey, patchPath: getPatchPath(patch) }),
+    getPinByKey(pinKey, patch)
+  )
+);
+
+/**
  * @function listPins
  * @param {Patch} patch
  * @returns {Pin[]}
