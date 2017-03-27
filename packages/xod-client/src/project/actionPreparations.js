@@ -6,7 +6,7 @@ export const addPatch = (projectState, label, folderId) => {
   const newId = core.generatePatchSID();
 
   return {
-    newId,
+    id: newId,
     label,
     folderId,
   };
