@@ -44,8 +44,10 @@ export default function install(library, path$) {
     ])
     .then(([librarySymbol, client, workspaceDir]) => {
       const { owner, slug } = librarySymbol;
-      const ownerDir = path.resolve(workspaceDir, 'lib', owner);
-      const libraryDir = path.resolve(ownerDir, slug);
+      const ownerDir = path.resolve(
+        workspaceDir, 'lib', xodFs.fsSafeName(owner)
+      );
+      const libraryDir = path.resolve(ownerDir, xodFs.fsSafeName(slug));
       return checkLibraryDirConflict(libraryDir, librarySymbol)
         .then(() => getLibrary(client, librarySymbol))
         .then(xodFs.arrangeByFiles)
