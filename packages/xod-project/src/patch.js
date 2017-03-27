@@ -204,9 +204,9 @@ export const listNodes = def(
  */
 export const getNodeById = def(
   'getNodeById :: NodeId -> Patch -> Maybe Node',
-  (nodeId, patch) => R.compose(
-    Tools.find(nodeIdEquals(nodeId)),
-    listNodes
+  (id, patch) => R.compose(
+    Maybe,
+    R.path(['nodes', id])
   )(patch)
 );
 
