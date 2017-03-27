@@ -13,11 +13,11 @@ function getParentDirectories(path$) {
     return loop(parentPath, parentDirectories);
   }
 
-  return loop(path.resolve(__dirname, path$), []);
+  return loop(path.resolve(process.cwd(), path$), []);
 }
 
-export function isWorkspaceDir(path$) {
-  const path$$ = path.resolve(__dirname, path$, '.xodworkspace');
+function isWorkspaceDir(path$) {
+  const path$$ = path.resolve(process.cwd(), path$, '.xodworkspace');
   try {
     return fs.statSync(path$$).isFile();
   } catch (error) {
@@ -25,8 +25,8 @@ export function isWorkspaceDir(path$) {
   }
 }
 
-export function isProjectDir(path$) {
-  const path$$ = path.resolve(__dirname, path$, 'project.xod');
+function isProjectDir(path$) {
+  const path$$ = path.resolve(process.cwd(), path$, 'project.xod');
   try {
     return fs.statSync(path$$).isFile();
   } catch (error) {
@@ -35,9 +35,25 @@ export function isProjectDir(path$) {
 }
 
 export function findClosestWorkspaceDir(path$) {
-  return getParentDirectories(path$).find(isWorkspaceDir);
+  return new Promise((resolve, reject) => {
+    const closestWorkspaceDir = getParentDirectories(path$)
+      .find(isWorkspaceDir);
+    return closestWorkspaceDir
+      ? resolve(closestWorkspaceDir)
+      : reject(
+        `could not find workspace directory around "${path$}".`
+      );
+  });
 }
 
 export function findClosestProjectDir(path$) {
-  return getParentDirectories(path$).find(isProjectDir);
+  return new Promise((resolve, reject) => {
+    const closestProjectDir = getParentDirectories(path$)
+      .find(isProjectDir);
+    return closestProjectDir
+      ? resolve(closestProjectDir)
+      : reject(
+        `could not find project directory around "${path$}".`
+      );
+  });
 }

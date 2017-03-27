@@ -1,5 +1,5 @@
 export { default as pack } from './pack';
-export { arrangeByFiles } from './unpack';
+export { arrangeByFiles, fsSafeName } from './unpack';
 export { default as save } from './save';
 export { writeJSON, writeFile } from './write';
 export { readDir, readFile, readJSON } from './read';
@@ -13,6 +13,4 @@ export { isDirectoryExists } from './utils';
 export {
   findClosestProjectDir,
   findClosestWorkspaceDir,
-  isProjectDir,
-  isWorkspaceDir,
 } from './find';
