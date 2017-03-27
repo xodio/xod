@@ -9,6 +9,7 @@ import {
 
 import * as Actions from '../actions';
 import * as EditorSelectors from '../selectors';
+import * as ProjectSelectors from '../../project/selectors';
 import { swap, assocIndexes, indexById } from '../../utils/array';
 import TabsContainer from '../components/TabsContainer';
 import TabsItem from '../components/TabsItem';
@@ -108,7 +109,7 @@ Tabs.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  tabs: EditorSelectors.getPreparedTabs(state),
+  tabs: ProjectSelectors.getPreparedTabs(state),
   currentPatchId: EditorSelectors.getCurrentPatchId(state),
 });
 
