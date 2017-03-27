@@ -13,11 +13,11 @@ function getParentDirectories(path$) {
     return loop(parentPath, parentDirectories);
   }
 
-  return loop(path.resolve(__dirname, path$), []);
+  return loop(path.resolve(process.cwd(), path$), []);
 }
 
 function isWorkspaceDir(path$) {
-  const path$$ = path.resolve(__dirname, path$, '.xodworkspace');
+  const path$$ = path.resolve(process.cwd(), path$, '.xodworkspace');
   try {
     return fs.statSync(path$$).isFile();
   } catch (error) {
@@ -26,7 +26,7 @@ function isWorkspaceDir(path$) {
 }
 
 function isProjectDir(path$) {
-  const path$$ = path.resolve(__dirname, path$, 'project.xod');
+  const path$$ = path.resolve(process.cwd(), path$, 'project.xod');
   try {
     return fs.statSync(path$$).isFile();
   } catch (error) {
