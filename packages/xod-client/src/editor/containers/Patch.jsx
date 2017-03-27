@@ -257,7 +257,6 @@ class Patch extends React.Component {
           <GhostsLayer
             mousePosition={this.state.mousePosition}
             mode={this.props.mode}
-            ghostNode={this.props.ghostNode}
             ghostLink={this.props.ghostLink}
           />
         </PatchSVG>
@@ -276,7 +275,6 @@ Patch.propTypes = {
   selectedNodeType: React.PropTypes.string,
   patchId: React.PropTypes.string,
   mode: React.PropTypes.object,
-  ghostNode: React.PropTypes.any,
   ghostLink: React.PropTypes.any,
 
   setModeCreating: React.PropTypes.func,
@@ -304,7 +302,6 @@ const mapStateToProps = (state) => {
     patchId: EditorSelectors.getCurrentPatchId(state),
     mode: EditorSelectors.getModeChecks(state),
     linkingPin: EditorSelectors.getLinkingPin(state),
-    ghostNode: EditorSelectors.getNodeGhost(state, curPatchId),
     ghostLink: EditorSelectors.getLinkGhost(state, curPatchId),
   };
 };

@@ -68,8 +68,11 @@ class ProjectBrowser extends React.Component {
 
   onAddNode(patchPath) {
     // TODO: rewrite this when implementing "zombie" nodes
-    this.props.actions.setSelectedNodeType(patchPath);
-    this.props.actions.setEditorMode(EDITOR_MODE.CREATING_NODE);
+    this.props.actions.addNode(
+      patchPath,
+      { x: 50, y: 50 },
+      this.props.currentPatchPath
+    );
   }
 
   onRenameHotkey() {
@@ -281,8 +284,7 @@ ProjectBrowser.propTypes = {
   openPopups: React.PropTypes.object.isRequired,
   libs: sanctuaryPropType($.StrMap($.Array(Patch))),
   actions: React.PropTypes.shape({
-    setSelectedNodeType: React.PropTypes.func.isRequired,
-    setEditorMode: React.PropTypes.func.isRequired,
+    addNode: React.PropTypes.func.isRequired,
     switchPatch: React.PropTypes.func.isRequired,
     requestCreatePatch: React.PropTypes.func.isRequired,
     requestRename: React.PropTypes.func.isRequired,
@@ -345,6 +347,7 @@ const mapDispatchToProps = dispatch => ({
     setSelection: ProjectBrowserActions.setSelection,
     removeSelection: ProjectBrowserActions.removeSelection,
 
+    addNode: ProjectActions.addNode,
     addPatch: ProjectActions.addPatch,
     renamePatch: ProjectActions.renamePatch,
     deletePatch: ProjectActions.deletePatch,
