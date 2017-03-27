@@ -158,14 +158,14 @@ export const isTerminalPin = def(
  * @returns {Pin}
  */
 export const createPin = def(
-  'createPin :: PinKey -> DataType -> PinDirection -> Pin',
-  (key, type, direction) => ({
+  'createPin :: PinKey -> DataType -> PinDirection -> Number -> Pin',
+  (key, type, direction, order) => ({
     key,
     type,
     direction,
     label: key,
     description: '',
-    order: 0,
+    order,
     value: Utils.defaultValueOfType(type),
   })
 );

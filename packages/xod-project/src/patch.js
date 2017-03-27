@@ -523,7 +523,9 @@ export const assocNode = def(
         (pinNode) => {
           const type = Node.getPinNodeDataType(pinNode);
           const direction = Node.getPinNodeDirection(pinNode);
-          const newPin = Pin.createPin(id, type, direction);
+
+          // TODO: set pin order
+          const newPin = Pin.createPin(id, type, direction, 0);
           return assocPin(newPin, _patch);
         },
         R.always(_patch)

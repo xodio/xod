@@ -271,6 +271,7 @@ const convertPin = R.converge(Pin.createPin, [
   R.prop('key'),
   R.compose(convertPinType, R.prop('type')),
   R.prop('direction'),
+  R.prop('index'),
 ]);
 
 // :: PatchOld -> (Patch -> Patch)
