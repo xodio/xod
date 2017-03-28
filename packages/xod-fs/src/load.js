@@ -72,7 +72,7 @@ export const loadProjectWithoutLibs = projectPath =>
 
         if (data.id) { result.id = data.id; }
         if (base === 'patch.xodm') {
-          result.content.impls = fs
+          const impls = fs
             .readdirSync(dir)
             .filter(filename => !/^\.xod.?$/.test(path.extname(filename)))
             .map(filename => ([
@@ -80,6 +80,10 @@ export const loadProjectWithoutLibs = projectPath =>
               fs.readFileSync(path.resolve(dir, filename)).toString(),
             ]))
             .reduce((_, [k, v]) => Object.assign(_, { [k]: v }), {});
+
+          if (!R.isEmpty(impls)) {
+            result.content.impls = impls;
+          }
         }
         return result;
       })

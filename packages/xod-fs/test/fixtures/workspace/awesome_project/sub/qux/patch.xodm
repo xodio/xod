@@ -1,6 +1,5 @@
 {
-  "patchNode": true,
-  "label": "QUX",
+  "label": "AUX",
   "category": "patch",
   "properties": {},
   "pins": {

@@ -44,7 +44,7 @@
           "id": "89c69d91-b484-478d-8990-027e5f0a2e3e"
         },
         "4d716df5-81e7-4845-9b82-31a54c1634d7": {
-          "typeId": "@/sub/qux",
+          "typeId": "@/sub/aux",
           "pins": {},
           "position": {
             "x": 363,
@@ -85,10 +85,9 @@
     }
   },
   {
-    "path": "./awesome_project/sub/qux/patch.xodm",
+    "path": "./awesome_project/sub/aux/patch.xodm",
     "content": {
-      "patchNode": true,
-      "label": "QUX",
+      "label": "AUX",
       "category": "patch",
       "properties": {},
       "pins": {
@@ -103,7 +102,7 @@
     }
   },
   {
-    "path": "./awesome_project/sub/qux/patch.xodp",
+    "path": "./awesome_project/sub/aux/patch.xodp",
     "content": {
       "nodes": {
         "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
