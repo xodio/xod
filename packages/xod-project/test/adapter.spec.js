@@ -132,11 +132,11 @@ describe('Adapters', () => {
       expect(nodesNew).to.deep.equal(nodesOld);
     });
     it('should rekey pins', () => {
-      const node = getNodeByTypeFromPatch('@/sub/aux')(bundleV2.patches['@/main']);
+      const node = getNodeByTypeFromPatch('@/sub/qux')(bundleV2.patches['@/main']);
       const expectedPinKey = R.compose(
         R.prop('id'),
         getNodeByTypeFromPatch('xod/core/inputNumber')
-      )(bundleV2.patches['@/sub/aux']);
+      )(bundleV2.patches['@/sub/qux']);
 
       expect(node)
       .to.have.property('pins')

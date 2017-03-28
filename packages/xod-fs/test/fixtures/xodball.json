@@ -34,7 +34,7 @@
           "id": "89c69d91-b484-478d-8990-027e5f0a2e3e"
         },
         "4d716df5-81e7-4845-9b82-31a54c1634d7": {
-          "typeId": "@/sub/aux",
+          "typeId": "@/sub/qux",
           "pins": {},
           "position": {
             "x": 363,
@@ -67,10 +67,10 @@
         }
       }
     },
-    "@/sub/aux": {
-      "id": "@/sub/aux",
+    "@/sub/qux": {
+      "id": "@/sub/qux",
       "folderId": "1",
-      "label": "AUX",
+      "label": "QUX",
       "nodes": {
         "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
           "typeId": "xod/core/inputNumber",
@@ -115,10 +115,10 @@
     }
   },
   "nodeTypes": {
-    "@/sub/aux": {
-      "id": "@/sub/aux",
+    "@/sub/qux": {
+      "id": "@/sub/qux",
       "patchNode": true,
-      "label": "AUX",
+      "label": "QUX",
       "category": "patch",
       "properties": {},
       "pins": {
