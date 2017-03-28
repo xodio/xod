@@ -1,3 +1,4 @@
+import fs from 'fs';
 import path from 'path';
 import R from 'ramda';
 
@@ -43,7 +44,7 @@ const readProjectMetaFile = projectFile => readJSON(projectFile)
   }));
 
 export const getProjects = workspace => readDir(workspace)
-  .then(files => files.filter(filename => path.basename(filename) === 'project.xod'))
+  .then(files => files.filter(_ => path.basename(_) === 'project.xod'))
   .then(projects => Promise.all(
     projects.map(
       project => readProjectMetaFile(project)
@@ -60,21 +61,30 @@ export const loadProjectWithoutLibs = projectPath =>
         path.basename(filename) === 'patch.xodp'
       )
     ))
-    .then(projects => Promise.all(
-      projects.map(
-        project => readJSON(project)
-          .then((data) => {
-            const projectFolder = path.resolve(projectPath, '..');
-            const result = {
-              path: `./${path.relative(projectFolder, project)}`,
-              content: data,
-            };
+    .then(projects => projects.map(project =>
+      readJSON(project).then((data) => {
+        const { base, dir } = path.parse(project);
+        const projectFolder = path.resolve(projectPath, '..');
+        const result = {
+          path: `./${path.relative(projectFolder, project)}`,
+          content: data,
+        };
 
-            if (data.id) { result.id = data.id; }
-            return result;
-          })
-      )
+        if (data.id) { result.id = data.id; }
+        if (base === 'patch.xodm') {
+          result.content.impls = fs
+            .readdirSync(dir)
+            .filter(filename => !/^\.xod.?$/.test(path.extname(filename)))
+            .map(filename => ([
+              path.basename(filename),
+              fs.readFileSync(path.resolve(dir, filename)).toString(),
+            ]))
+            .reduce((_, [k, v]) => Object.assign(_, { [k]: v }), {});
+        }
+        return result;
+      })
     ))
+    .then(Promise.all.bind(Promise))
     .then(assignIdsToAllPatches);
 
 export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) =>

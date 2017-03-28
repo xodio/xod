@@ -170,6 +170,7 @@ export const extractPatches = xodball => R.pipe(
       patch: {
         nodes: patch.nodes,
         links: patch.links,
+        impls: patch.impls,
       },
     })
   ),
@@ -205,7 +206,12 @@ export const arrangeByFiles = (xodball) => {
             path: filePath(projectPath, patch.path, 'patch.xodp'),
             content: patch.patch,
           },
-        ]
+        ].concat(
+          R.toPairs(patch.patch.impls).map(([filename, content]) => ({
+            path: filePath(projectPath, patch.path, filename),
+            content,
+          }))
+        )
       ),
       []
     ),
