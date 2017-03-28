@@ -37,7 +37,7 @@ describe('Loader', () => {
   it('should load whole project, libs and pack it', (done) => {
     Loader.loadProjectWithLibs(projectPath, workspace)
       .then(({ project, libs }) => {
-        expect(project).to.deep.include.members(unpacked);
+        expect(project).to.deep.equal(unpacked);
         expect(libs).to.deep.equal(libsFixture);
 
         const packed = pack(project, libs);

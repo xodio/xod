@@ -150,6 +150,10 @@ const resolvePatchIds = (patches) => {
   )(patches);
 };
 
+// Like `R.objOf` but returns empty object {} if value is null or undefined
+// :: k -> v -> { k: v }
+const optionalObjOf = R.curry((key, val) => val == null ? {} : {[key] : val});
+
 // :: xodball -> [ patch: { path, meta, patch } ]
 export const extractPatches = xodball => R.pipe(
   R.prop('patches'),
@@ -167,11 +171,13 @@ export const extractPatches = xodball => R.pipe(
       meta: margeWithNodeType({
         label: patch.label,
       }, patch.id, xodball),
-      patch: {
-        nodes: patch.nodes,
-        links: patch.links,
-        impls: patch.impls,
-      },
+      patch: R.merge(
+        optionalObjOf('impls', patch.impls),
+        {
+          nodes: patch.nodes,
+          links: patch.links,
+        }
+      ),
     })
   ),
   resolvePatchIds

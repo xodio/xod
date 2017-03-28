@@ -87,7 +87,6 @@
   {
     "path": "./awesome_project/sub/aux/patch.xodm",
     "content": {
-      "patchNode": true,
       "label": "AUX",
       "category": "patch",
       "properties": {},
