@@ -75,7 +75,7 @@ export const getProjects = R.composeP(
 // Returns a promise of filename / content pair for a given
 // `filename` path relative to `dir`
 // :: String -> String -> Promise (Pair String String)
-const readImplFile = dir => filename => 
+const readImplFile = dir => filename =>
   fsp.readFile(path.resolve(dir, filename)).then(content => [
     filename,
     content,
@@ -117,7 +117,7 @@ export const loadProjectWithoutLibs = projectPath => R.composeP(
   R.filter(basenameAmong([
     'project.xod',
     'patch.xodm',
-    'patch.xodp'
+    'patch.xodp',
   ])),
   readDir
 )(projectPath);
