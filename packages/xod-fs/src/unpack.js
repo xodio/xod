@@ -1,5 +1,6 @@
 import path from 'path';
 import R from 'ramda';
+import XF from 'xod-func-tools';
 import { hasNot, isLocalID, localID, notNil } from 'xod-core';
 
 // :: "./awesome_project/" -> "main" -> "patch.xodm" -> "./awesome_project/main/patch.xodm"
@@ -150,11 +151,6 @@ const resolvePatchIds = (patches) => {
   )(patches);
 };
 
-const optionalObjOf = R.curry((key, val) => {
-  if (val == null) return {};
-  return { [key]: val };
-});
-
 // :: xodball -> [ patch: { path, meta, patch } ]
 export const extractPatches = xodball => R.pipe(
   R.prop('patches'),
@@ -173,7 +169,7 @@ export const extractPatches = xodball => R.pipe(
         label: patch.label,
       }, patch.id, xodball),
       patch: R.merge(
-        optionalObjOf('impls', patch.impls),
+        XF.optionalObjOf('impls', patch.impls),
         {
           nodes: patch.nodes,
           links: patch.links,

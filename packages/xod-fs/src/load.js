@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import R from 'ramda';
 
+import XF from 'xod-func-tools';
 import { loadLibs } from './loadLibs';
 import { readDir, readJSON } from './read';
 import { resolvePath } from './utils';
@@ -52,22 +53,14 @@ export const getProjects = workspace => readDir(workspace)
     )
   ));
 
-const omitNilValues = R.reject(R.isNil);
-const omitEmptyValues = R.reject(R.isEmpty);
-const isAmong = R.flip(R.contains);
-
-// Like `R.objOf` but returns empty object {} if value is null or undefined
-// :: k -> v -> { k: v }
-const optionalObjOf = R.curry((key, val) => val == null ? {} : {[key] : val});
-
-const readImplFiles = dir => {
+const readImplFiles = (dir) => {
   const pairs = fs
     .readdirSync(dir)
-    .filter(R.pipe(path.extname, isAmong(['.c', '.cpp', '.h', '.inl', '.js'])))
+    .filter(R.pipe(path.extname, XF.isAmong(['.c', '.cpp', '.h', '.inl', '.js'])))
     .map(filename => ([
       path.basename(filename),
       fs.readFileSync(path.resolve(dir, filename)).toString(),
-    ]))
+    ]));
 
   return R.fromPairs(pairs);
 };
@@ -86,11 +79,11 @@ export const loadProjectWithoutLibs = projectPath =>
         const { base, dir } = path.parse(xodfile);
         const projectFolder = path.resolve(projectPath, '..');
         const impls = (base === 'patch.xodm') ? readImplFiles(dir) : {};
-        return omitNilValues({
+        return XF.omitNilValues({
           path: `./${path.relative(projectFolder, xodfile)}`,
           content: R.merge(
             data,
-            omitEmptyValues({ impls })
+            XF.omitEmptyValues({ impls })
           ),
           id: data.id,
         });
