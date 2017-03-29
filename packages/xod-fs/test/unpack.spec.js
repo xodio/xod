@@ -52,7 +52,7 @@ describe('Unpack xodball', () => {
 
     expect(paths).to.deep.equal([
       'main/',
-      'sub/aux/',
+      'sub/qux/',
     ]);
   });
 

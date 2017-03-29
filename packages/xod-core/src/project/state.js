@@ -39,7 +39,7 @@ export const getInitialState = nodeTypes => ({
     },
     '@/2': {
       id: '@/2',
-      label: 'AUX',
+      label: 'QUX',
       nodes: {},
       links: {},
     },

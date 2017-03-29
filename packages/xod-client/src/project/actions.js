@@ -168,7 +168,7 @@ export const addPatch = (label, folderId) => (dispatch, getState) => {
     payload: preparedData,
   });
 
-  return preparedData.newId;
+  return preparedData.id;
 };
 
 export const renamePatch = (id, label) => ({

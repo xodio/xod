@@ -16,6 +16,7 @@ import {
   PROJECT_CREATE,
   PROJECT_LOAD_DATA,
   PROJECT_ONLY_LOAD_DATA,
+  PATCH_ADD,
   PATCH_DELETE,
   NODE_DELETE,
   LINK_DELETE,
@@ -30,10 +31,8 @@ const addSelection = (entityName, action, state) => {
   return R.set(R.lensProp('selection'), newSelection, state);
 };
 
-const addTab = (state, action) => {
-  if (!(action.payload && action.payload.id)) {
-    return state;
-  }
+const addTab = (state, patchId) => {
+  if (!patchId) return state;
 
   const tabs = R.prop('tabs')(state);
   const lastIndex = R.reduce(
@@ -45,7 +44,6 @@ const addTab = (state, action) => {
     R.values(tabs)
   );
   const newIndex = R.inc(lastIndex);
-  const patchId = action.payload.id;
 
   return R.assocPath(['tabs', patchId], {
     id: patchId,
@@ -77,6 +75,14 @@ const resetCurrentPatchId = (reducer, state, payload) => {
       id: firstPatchId,
     },
   });
+};
+
+const openPatchById = (patchId, state) => {
+  let newState = state;
+  if (!tabHasPatch(state, patchId)) {
+    newState = addTab(newState, patchId);
+  }
+  return R.assoc('currentPatchId', patchId, newState);
 };
 
 const editorReducer = (state = {}, action) => {
@@ -111,13 +117,9 @@ const editorReducer = (state = {}, action) => {
       return resetCurrentPatchId(editorReducer, state, action.payload);
     case PROJECT_ONLY_LOAD_DATA:
       return resetCurrentPatchId(editorReducer, state, action.payload);
-    case EDITOR_SWITCH_PATCH: {
-      let newState = state;
-      if (!tabHasPatch(state, action.payload.id)) {
-        newState = addTab(newState, action);
-      }
-      return R.assoc('currentPatchId', action.payload.id, newState);
-    }
+    case PATCH_ADD:
+    case EDITOR_SWITCH_PATCH:
+      return openPatchById(action.payload.id, state);
     case PATCH_DELETE:
     case TAB_CLOSE:
       return R.compose(
