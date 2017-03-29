@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fsp from 'fs-promise';
 import path from 'path';
 import R from 'ramda';
 
@@ -10,12 +10,33 @@ import { resolvePath } from './utils';
 const hasId = R.has('id');
 const withIdFirst = (a, b) => ((!hasId(a) && hasId(b)) || -1);
 
+// :: String -> String -> Boolean
+const basenameEquals = basename => R.compose(
+  R.equals(basename),
+  path.basename
+);
+
+// :: [String] -> String -> Boolean
+const basenameAmong = basenames => R.compose(
+  XF.isAmong(basenames),
+  path.basename
+);
+
+// :: [String] -> String -> Boolean
+const extAmong = extensions => R.compose(
+  XF.isAmong(extensions),
+  path.extname
+);
+
 // :: unpackedFile -> true|false
 const isProject = R.pipe(
   R.prop('path'),
   path.basename,
   R.equals('project.xod')
 );
+
+// :: [Promise a] -> Promise a
+const allPromises = promises => Promise.all(promises);
 
 // only patch.xodm have a patch id,
 // this method assign ids for patch.xodp by comparing paths
@@ -40,57 +61,66 @@ const getProjectLibs = R.pipe(
 );
 
 const readProjectMetaFile = projectFile => readJSON(projectFile)
-  .then(data => Object.assign(data, {
-    path: path.dirname(projectFile),
-  }));
+  .then(R.assoc('path', path.dirname(projectFile)))
+  .catch(err => ({ error: true, message: err.toString(), path: projectFile }));
 
-export const getProjects = workspace => readDir(workspace)
-  .then(files => files.filter(_ => path.basename(_) === 'project.xod'))
-  .then(projects => Promise.all(
-    projects.map(
-      project => readProjectMetaFile(project)
-        .catch(err => ({ error: true, message: err.toString(), path: project }))
-    )
-  ));
+// Returns a Promise of all project metas for given workspace path
+export const getProjects = R.composeP(
+  allPromises,
+  R.map(readProjectMetaFile),
+  R.filter(basenameEquals('project.xod')),
+  readDir
+);
 
-const readImplFiles = (dir) => {
-  const pairs = fs
-    .readdirSync(dir)
-    .filter(R.pipe(path.extname, XF.isAmong(['.c', '.cpp', '.h', '.inl', '.js'])))
-    .map(filename => ([
-      path.basename(filename),
-      fs.readFileSync(path.resolve(dir, filename)).toString(),
-    ]));
+// Returns a promise of filename / content pair for a given
+// `filename` path relative to `dir`
+// :: String -> String -> Promise (Pair String String)
+const readImplFile = dir => filename => 
+  fsp.readFile(path.resolve(dir, filename)).then(content => [
+    filename,
+    content,
+  ]);
 
-  return R.fromPairs(pairs);
-};
+// Returns a map with filenames in keys and contents in values of
+// all implementation source files in a directory given as argument
+// :: String -> Promise (StrMap String)
+const readImplFiles = dir => R.composeP(
+  R.fromPairs,
+  allPromises,
+  R.map(readImplFile(dir)),
+  R.filter(extAmong(['.c', '.cpp', '.h', '.inl', '.js'])),
+  fsp.readdir
+)(dir);
 
-export const loadProjectWithoutLibs = projectPath =>
-  readDir(projectPath)
-    .then(files => files.filter(
-      filename => (
-        path.basename(filename) === 'project.xod' ||
-        path.basename(filename) === 'patch.xodm' ||
-        path.basename(filename) === 'patch.xodp'
-      )
-    ))
-    .then(projects => projects.map(xodfile =>
-      readJSON(xodfile).then((data) => {
-        const { base, dir } = path.parse(xodfile);
-        const projectFolder = path.resolve(projectPath, '..');
-        const impls = (base === 'patch.xodm') ? readImplFiles(dir) : {};
-        return XF.omitNilValues({
-          path: `./${path.relative(projectFolder, xodfile)}`,
-          content: R.merge(
-            data,
-            XF.omitEmptyValues({ impls })
-          ),
-          id: data.id,
-        });
+// :: String -> String -> Promise { path :: String, content :: Object, id :: String }
+const readXodFile = projectPath => xodfile =>
+  readJSON(xodfile).then((data) => {
+    const { base, dir } = path.parse(xodfile);
+    const projectFolder = path.resolve(projectPath, '..');
+    const implPromise = (base === 'patch.xodm')
+      ? readImplFiles(dir)
+      : Promise.resolve({});
+
+    return implPromise.then(impls =>
+      XF.omitNilValues({
+        path: `./${path.relative(projectFolder, xodfile)}`,
+        content: R.merge(data, XF.omitEmptyValues({ impls })),
+        id: data.id,
       })
-    ))
-    .then(Promise.all.bind(Promise))
-    .then(assignIdsToAllPatches);
+    );
+  });
+
+export const loadProjectWithoutLibs = projectPath => R.composeP(
+  assignIdsToAllPatches,
+  allPromises,
+  R.map(readXodFile(projectPath)),
+  R.filter(basenameAmong([
+    'project.xod',
+    'patch.xodm',
+    'patch.xodp'
+  ])),
+  readDir
+)(projectPath);
 
 export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) =>
   loadProjectWithoutLibs(resolvePath(path.resolve(workspace, projectPath)))
