@@ -152,7 +152,10 @@ const resolvePatchIds = (patches) => {
 
 // Like `R.objOf` but returns empty object {} if value is null or undefined
 // :: k -> v -> { k: v }
-const optionalObjOf = R.curry((key, val) => val == null ? {} : {[key] : val});
+const optionalObjOf = R.curry((key, val) => {
+  if (val == null) return {};
+  return { [key]: val };
+});
 
 // :: xodball -> [ patch: { path, meta, patch } ]
 export const extractPatches = xodball => R.pipe(
