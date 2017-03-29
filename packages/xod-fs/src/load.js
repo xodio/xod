@@ -52,6 +52,26 @@ export const getProjects = workspace => readDir(workspace)
     )
   ));
 
+const omitNilValues = R.reject(R.isNil);
+const omitEmptyValues = R.reject(R.isEmpty);
+const isAmong = R.flip(R.contains);
+
+// Like `R.objOf` but returns empty object {} if value is null or undefined
+// :: k -> v -> { k: v }
+const optionalObjOf = R.curry((key, val) => val == null ? {} : {[key] : val});
+
+const readImplFiles = dir => {
+  const pairs = fs
+    .readdirSync(dir)
+    .filter(R.pipe(path.extname, isAmong(['.c', '.cpp', '.h', '.inl', '.js'])))
+    .map(filename => ([
+      path.basename(filename),
+      fs.readFileSync(path.resolve(dir, filename)).toString(),
+    ]))
+
+  return R.fromPairs(pairs);
+};
+
 export const loadProjectWithoutLibs = projectPath =>
   readDir(projectPath)
     .then(files => files.filter(
@@ -61,31 +81,19 @@ export const loadProjectWithoutLibs = projectPath =>
         path.basename(filename) === 'patch.xodp'
       )
     ))
-    .then(projects => projects.map(project =>
-      readJSON(project).then((data) => {
-        const { base, dir } = path.parse(project);
+    .then(projects => projects.map(xodfile =>
+      readJSON(xodfile).then((data) => {
+        const { base, dir } = path.parse(xodfile);
         const projectFolder = path.resolve(projectPath, '..');
-        const result = {
-          path: `./${path.relative(projectFolder, project)}`,
-          content: data,
-        };
-
-        if (data.id) { result.id = data.id; }
-        if (base === 'patch.xodm') {
-          const impls = fs
-            .readdirSync(dir)
-            .filter(filename => !/^\.xod.?$/.test(path.extname(filename)))
-            .map(filename => ([
-              path.basename(filename),
-              fs.readFileSync(path.resolve(dir, filename)).toString(),
-            ]))
-            .reduce((_, [k, v]) => Object.assign(_, { [k]: v }), {});
-
-          if (!R.isEmpty(impls)) {
-            result.content.impls = impls;
-          }
-        }
-        return result;
+        const impls = (base === 'patch.xodm') ? readImplFiles(dir) : {};
+        return omitNilValues({
+          path: `./${path.relative(projectFolder, xodfile)}`,
+          content: R.merge(
+            data,
+            omitEmptyValues({ impls })
+          ),
+          id: data.id,
+        });
       })
     ))
     .then(Promise.all.bind(Promise))
