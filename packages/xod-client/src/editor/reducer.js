@@ -31,7 +31,7 @@ const addSelection = (entityName, action, state) => {
   return R.set(R.lensProp('selection'), newSelection, state);
 };
 
-const addTab = (state, patchId) => {
+const addTab = R.curry((patchId, state) => {
   if (!patchId) return state;
 
   const tabs = R.prop('tabs')(state);
@@ -49,7 +49,7 @@ const addTab = (state, patchId) => {
     id: patchId,
     index: newIndex,
   }, state);
-};
+});
 
 const applyTabSort = (tab, payload) => {
   if (R.not(R.has(tab.id, payload))) { return tab; }
@@ -57,8 +57,9 @@ const applyTabSort = (tab, payload) => {
   return R.assoc('index', payload[tab.id].index, tab);
 };
 
-const isPatchOpened = (state, patchId) =>
-  R.any(R.propEq('id', patchId))(R.values(state.tabs));
+const isPatchOpened = R.curry((patchId, state) =>
+  R.any(R.propEq('id', patchId))(R.values(state.tabs))
+);
 
 const resetCurrentPatchId = (reducer, state, payload) => {
   const newState = R.assoc('tabs', [], state);
@@ -78,13 +79,10 @@ const resetCurrentPatchId = (reducer, state, payload) => {
   });
 };
 
-const openPatchById = (patchId, state) => {
-  let newState = state;
-  if (!isPatchOpened(state, patchId)) {
-    newState = addTab(newState, patchId);
-  }
-  return R.assoc('currentPatchId', patchId, newState);
-};
+const openPatchById = (patchId, state) => R.compose(
+  R.assoc('currentPatchId', patchId),
+  R.unless(isPatchOpened(patchId), addTab(patchId))
+)(state);
 
 const editorReducer = (state = {}, action) => {
   switch (action.type) {
