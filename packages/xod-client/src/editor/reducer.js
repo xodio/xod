@@ -56,8 +56,9 @@ const applyTabSort = (tab, payload) => {
 
   return R.assoc('index', payload[tab.id].index, tab);
 };
-const tabHasPatch = (state, patchId) =>
-  R.find(R.propEq('patchId', patchId))(R.values(state.tabs));
+
+const isPatchOpened = (state, patchId) =>
+  R.any(R.propEq('id', patchId))(R.values(state.tabs));
 
 const resetCurrentPatchId = (reducer, state, payload) => {
   const newState = R.assoc('tabs', [], state);
@@ -79,7 +80,7 @@ const resetCurrentPatchId = (reducer, state, payload) => {
 
 const openPatchById = (patchId, state) => {
   let newState = state;
-  if (!tabHasPatch(state, patchId)) {
+  if (!isPatchOpened(state, patchId)) {
     newState = addTab(newState, patchId);
   }
   return R.assoc('currentPatchId', patchId, newState);
