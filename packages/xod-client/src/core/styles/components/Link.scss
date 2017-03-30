@@ -22,8 +22,8 @@
     @include link-parts-coloring($color-datatype-number);
   }
 
-  &.bool {
-    @include link-parts-coloring($color-datatype-bool);
+  &.boolean {
+    @include link-parts-coloring($color-datatype-boolean);
   }
 
   &.pulse {

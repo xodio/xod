@@ -21,8 +21,8 @@
       @include symbol-coloring($color-datatype-number);
     }
 
-    &.bool {
-      @include symbol-coloring($color-datatype-bool);
+    &.boolean {
+      @include symbol-coloring($color-datatype-boolean);
     }
 
     &.pulse {
@@ -40,8 +40,8 @@
         @include symbol-coloring(lighten($color-datatype-number, 25%));
       }
 
-      &.bool {
-        @include symbol-coloring(lighten($color-datatype-bool, 25%));
+      &.boolean {
+        @include symbol-coloring(lighten($color-datatype-boolean, 25%));
       }
 
       &.pulse {
