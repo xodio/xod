@@ -67,11 +67,49 @@ export const foldEither = def(
   )
 );
 
+/**
+ * Returns an object provided with all `null` and `undefined` values omitted
+ */
+export const omitNilValues = def(
+  'omitNilValues :: Object -> Object',
+  R.reject(R.isNil)
+);
+
+/**
+ * Returns an object provided with all empty (in sense of R.isEmpty) values
+ * omitted
+ */
+export const omitEmptyValues = def(
+  'omitEmptyValues :: Object -> Object',
+  R.reject(R.isEmpty)
+);
+
+/**
+ * Checks if an element is among elements of a list
+ */
+export const isAmong = def(
+  'isAmong :: [a] -> a -> Boolean',
+  R.flip(R.contains)
+);
+
+/**
+ * Like `R.objOf` but returns empty object {} if value is `null` or `undefined`
+ */
+export const optionalObjOf = def(
+  // 'optionalObjOf :: String -> a -> StrMap a', // TODO fix hm-def
+  'optionalObjOf :: String -> a -> Object',
+  (key, val) => (val == null ? {} : { [key]: val })
+);
+
 export default Object.assign(
   {
     explode,
     explodeMaybe,
     foldEither,
+    omitNilValues,
+    omitEmptyValues,
+    isAmong,
+    optionalObjOf,
   },
   types
 );

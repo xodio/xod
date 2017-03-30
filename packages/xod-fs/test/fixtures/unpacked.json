@@ -87,7 +87,6 @@
   {
     "path": "./awesome_project/sub/qux/patch.xodm",
     "content": {
-      "patchNode": true,
       "label": "QUX",
       "category": "patch",
       "properties": {},

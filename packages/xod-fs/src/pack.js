@@ -213,7 +213,7 @@ const getPatch = R.curry(
 );
 
 // :: patchFile -> patch
-const pickPatchContent = R.pick(['id', 'label', 'nodes', 'links']);
+const pickPatchContent = R.pick(['id', 'label', 'nodes', 'links', 'impls']);
 
 // :: lib -> libMeta
 const removePatchContent = R.omit(['nodes', 'links', 'folder', 'folderId']);
@@ -264,8 +264,7 @@ const getPatchNodes = R.pipe(
   R.map(
     R.pipe(
       R.prop('content'),
-      // @TODO: Get rid off useless property 'patchNode'
-      R.pick(['id', 'patchNode', 'label', 'category', 'properties', 'pins', 'description']),
+      R.pick(['id', 'label', 'category', 'properties', 'pins', 'description']),
       R.merge({ properties: {}, pins: {} })
     )
   ),

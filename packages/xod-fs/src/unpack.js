@@ -1,5 +1,6 @@
 import path from 'path';
 import R from 'ramda';
+import XF from 'xod-func-tools';
 import { hasNot, isLocalID, localID, notNil } from 'xod-core';
 
 // :: "./awesome_project/" -> "main" -> "patch.xodm" -> "./awesome_project/main/patch.xodm"
@@ -167,10 +168,13 @@ export const extractPatches = xodball => R.pipe(
       meta: margeWithNodeType({
         label: patch.label,
       }, patch.id, xodball),
-      patch: {
-        nodes: patch.nodes,
-        links: patch.links,
-      },
+      patch: R.merge(
+        XF.optionalObjOf('impls', patch.impls),
+        {
+          nodes: patch.nodes,
+          links: patch.links,
+        }
+      ),
     })
   ),
   resolvePatchIds
@@ -205,7 +209,12 @@ export const arrangeByFiles = (xodball) => {
             path: filePath(projectPath, patch.path, 'patch.xodp'),
             content: patch.patch,
           },
-        ]
+        ].concat(
+          R.toPairs(patch.patch.impls).map(([filename, content]) => ({
+            path: filePath(projectPath, patch.path, filename),
+            content,
+          }))
+        )
       ),
       []
     ),
