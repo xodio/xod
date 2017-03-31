@@ -60,6 +60,16 @@ export const getPinLabel = def(
 );
 
 /**
+ * @function getPinValue
+ * @param {Pin} pin
+ * @returns {DataValue}
+ */
+export const getPinValue = def(
+  'getPinValue :: Pin -> DataValue',
+  R.prop('value')
+);
+
+/**
  * @function setPinLabel
  * @param {string} label
  * @param {Pin} pin
@@ -166,6 +176,6 @@ export const createPin = def(
     label: key,
     description: '',
     order,
-    value: Utils.defaultValueOfType(type),
+    value: Utils.defaultValueOfType(type), // TODO: support 'custom' default values
   })
 );
