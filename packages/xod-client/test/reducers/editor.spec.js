@@ -104,6 +104,7 @@ describe('Editor reducer', () => {
         selection: [],
         linkingPin: null,
       },
+      projectV2: {},
     };
     let store = null;
 

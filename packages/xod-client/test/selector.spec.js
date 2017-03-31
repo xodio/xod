@@ -4,7 +4,6 @@ import dirtyChai from 'dirty-chai';
 import core from 'xod-core';
 import initialState from '../src/core/state';
 import { LINK_ERRORS } from '../src/messages/constants';
-import * as EditorSelectors from '../src/editor/selectors';
 
 chai.use(dirtyChai);
 
@@ -105,50 +104,5 @@ describe('Project selector', () => {
   it('should return valid JSON', () => {
     const json = JSON.parse(core.getProjectJSON(state));
     chai.assert(core.validateProject(json));
-  });
-});
-
-describe('Editor selectors', () => {
-  describe('dereferencedSelection', () => {
-    const derefNodes = { a: { id: 'a' }, b: { id: 'b' } };
-    const derefLinks = { link: { id: 'link' } };
-
-    it('should return empty array for empty selection', () => {
-      const selection = [];
-      const res = EditorSelectors.dereferencedSelection(derefNodes, derefLinks, selection);
-      expect(res)
-        .to.be.instanceof(Array)
-        .and.to.be.empty();
-    });
-    it('should return array with node `a` reference and `entity` key equal `ENTITY.NODE`', () => {
-      const nodeId = 'a';
-      const selection = [{ entity: core.ENTITY.NODE, id: nodeId }];
-      const res = EditorSelectors.dereferencedSelection(derefNodes, derefLinks, selection);
-      expect(res)
-        .to.be.instanceof(Array)
-        .and.have.lengthOf(1);
-      expect(res[0])
-        .to.include({ id: nodeId, entity: core.ENTITY.NODE });
-    });
-    it('should return array with node `a`,`b` and link `link` reference', () => {
-      const selection = [
-        { entity: core.ENTITY.NODE, id: 'a' },
-        { entity: core.ENTITY.NODE, id: 'b' },
-        { entity: core.ENTITY.LINK, id: 'link' },
-      ];
-      const expectation = [
-        { id: 'a', entity: core.ENTITY.NODE },
-        { id: 'b', entity: core.ENTITY.NODE },
-        { id: 'link', entity: core.ENTITY.LINK },
-      ];
-      const res = EditorSelectors.dereferencedSelection(derefNodes, derefLinks, selection);
-      expect(res)
-        .to.be.instanceof(Array)
-        .and.have.lengthOf(3)
-        .and.deep.equal(expectation);
-    });
-  });
-  describe('extractPropertiesFromSelection', () => {
-
   });
 });
