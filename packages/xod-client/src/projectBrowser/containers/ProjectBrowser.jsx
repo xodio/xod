@@ -10,16 +10,11 @@ import { HotKeys } from 'react-hotkeys';
 import $ from 'sanctuary-def';
 import {
   Patch,
-  getProjectName,
-  listLocalPatches,
-  listLibraryPatches,
   getLibraryName,
   getPatchPath,
   isPathLocal,
   getBaseName,
   listPins,
-  getPatchLabel,
-  getPatchByPath,
 } from 'xod-project';
 
 import * as ProjectActions from '../../project/actions';
@@ -29,7 +24,6 @@ import * as MessagesActions from '../../messages/actions';
 
 import * as ProjectBrowserSelectors from '../selectors';
 import * as EditorSelectors from '../../editor/selectors';
-import { getProjectV2 } from '../../project/selectors';
 
 import { COMMAND } from '../../utils/constants';
 import { noop } from '../../utils/ramda';
@@ -298,40 +292,15 @@ ProjectBrowser.propTypes = {
   }),
 };
 
-const mapStateToProps = (state) => {
-  const currentPatchPath = EditorSelectors.getCurrentPatchId(state);
-
-  const projectV2 = getProjectV2(state);
-  const projectName = getProjectName(projectV2);
-  const localPatches = listLocalPatches(projectV2);
-
-  const libs = R.compose(
-    R.map(
-      R.sort(R.ascend(getPatchPath))
-    ),
-    R.groupBy(
-      R.pipe(getPatchPath, getLibraryName)
-    ),
-    listLibraryPatches
-  )(projectV2);
-
-  const selectedPatchPath = ProjectBrowserSelectors.getSelectedPatchId(state);
-
-  const selectedPatchLabel =
-    getPatchByPath(selectedPatchPath || '', projectV2)
-      .map(getPatchLabel)
-      .getOrElse('');
-
-  return {
-    projectName,
-    currentPatchPath,
-    selectedPatchPath,
-    selectedPatchLabel,
-    localPatches,
-    openPopups: state.projectBrowser.openPopups,
-    libs,
-  };
-};
+const mapStateToProps = state => ({
+  projectName: ProjectBrowserSelectors.getProjectName(state),
+  currentPatchPath: EditorSelectors.getCurrentPatchId(state),
+  selectedPatchPath: ProjectBrowserSelectors.getSelectedPatchId(state),
+  selectedPatchLabel: ProjectBrowserSelectors.getSelectedPatchLabel(state),
+  localPatches: ProjectBrowserSelectors.getLocalPatches(state),
+  openPopups: ProjectBrowserSelectors.getOpenPopups(state),
+  libs: ProjectBrowserSelectors.getLibs(state),
+});
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
