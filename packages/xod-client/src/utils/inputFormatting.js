@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { PROPERTY_TYPE } from 'xod-core';
+import { PROPERTY_TYPE } from '../editor/constants';
 
 const removeAllDotsExceptFirst = str =>
   str.replace(/^([^.]*\.)(.*)$/, (a, b, c) => b + c.replace(/\./g, ''));

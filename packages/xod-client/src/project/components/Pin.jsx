@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { PIN_VALIDITY } from 'xod-core';
+import { PIN_VALIDITY } from '../../editor/constants';
 import { noop } from '../../utils/ramda';
 import { PIN_RADIUS } from '../nodeLayout';
 

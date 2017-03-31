@@ -1,6 +1,6 @@
 import R from 'ramda';
 import React from 'react';
-import { ENTITY } from 'xod-core';
+import { ENTITY } from '../constants';
 
 import Widgets, { WIDGET_MAPPING, DEFAULT_NODE_PROPS } from './inspectorWidgets';
 import { noop } from '../../utils/ramda';

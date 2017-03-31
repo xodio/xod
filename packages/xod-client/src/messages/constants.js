@@ -2,7 +2,7 @@ import {
   LINK_ERRORS as LE,
   NODETYPE_ERRORS as NTE,
   PROPERTY_ERRORS as PE,
-} from 'xod-core';
+} from '../editor/constants';
 
 export const MESSAGE_TYPE = {
   ERROR: 'ERROR',

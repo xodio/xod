@@ -1,5 +1,5 @@
 import React from 'react';
-import { PIN_DIRECTION } from 'xod-core';
+import { PIN_DIRECTION } from '../../editor/constants';
 
 import { PIN_RADIUS, TEXT_OFFSET_FROM_PIN_BORDER } from '../nodeLayout';
 

@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { ENTITY } from 'xod-core';
+import { ENTITY } from './constants';
 
 import {
   EDITOR_DESELECT_ALL,

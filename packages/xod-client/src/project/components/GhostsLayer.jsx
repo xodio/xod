@@ -1,6 +1,6 @@
 import R from 'ramda';
 import React from 'react';
-import { LAYER } from 'xod-core';
+import { LAYER } from '../../editor/constants';
 
 import SVGLayer from './SVGLayer';
 import XODLink from './Link';

@@ -1,5 +1,3 @@
-import { ENTITY } from 'xod-core';
-
 import HintWidget from './HintWidget';
 import BoolWidget from './BoolWidget';
 import NumberWidget from './NumberWidget';
@@ -8,7 +6,7 @@ import StringWidget from './StringWidget';
 import IOLabelWidget from './IOLabelWidget';
 import composeWidget from './Widget';
 
-import { WIDGET_TYPE } from '../../constants';
+import { WIDGET_TYPE, ENTITY } from '../../constants';
 import { KEYCODE } from '../../../utils/constants';
 import { PROPERTY_KIND } from '../../../project/constants';
 
