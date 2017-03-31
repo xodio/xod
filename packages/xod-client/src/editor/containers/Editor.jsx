@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import core from 'xod-core';
 import { HotKeys } from 'react-hotkeys';
 
 import * as Actions from '../actions';
 import * as ProjectActions from '../../project/actions';
+import * as ProjectSelectors from '../../project/selectors';
 import * as EditorSelectors from '../selectors';
 
 import { COMMAND } from '../../utils/constants';
@@ -104,27 +104,11 @@ Editor.propTypes = {
   actions: React.PropTypes.objectOf(React.PropTypes.func),
 };
 
-const mapStateToProps = (state) => {
-  const project = core.getProject(state);
-  const curPatchId = EditorSelectors.getCurrentPatchId(state);
-
-  if (!curPatchId) {
-    return {
-      currentPatchId: curPatchId,
-    };
-  }
-
-  const derefNodes = core.dereferencedNodes(project, curPatchId);
-  const derefLinks = core.dereferencedLinks(project, curPatchId);
-  const selection = EditorSelectors.getSelection(state);
-  const derefSelection = EditorSelectors.dereferencedSelection(derefNodes, derefLinks, selection);
-
-  return {
-    editor: EditorSelectors.getEditor(state),
-    propsForInspector: EditorSelectors.dataForInspectorFromSelection(derefSelection),
-    currentPatchId: curPatchId,
-  };
-};
+const mapStateToProps = state => ({
+  editor: EditorSelectors.getEditor(state),
+  propsForInspector: ProjectSelectors.dataForInspectorFromSelection(state),
+  currentPatchId: EditorSelectors.getCurrentPatchId(state),
+});
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({

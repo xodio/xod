@@ -7,15 +7,17 @@ import { addPoints } from '../nodeLayout';
 
 const updatePinPositions = R.curry((node, newNodePosition, link) => {
   const indexOfPinConnectedToTheDraggedNode =
-    R.findIndex(R.propEq('nodeId', node.id), link.pins);
+    link.input.nodeId === node.id
+      ? 'input'
+      : 'output';
 
-  const draggedPinKey = link.pins[indexOfPinConnectedToTheDraggedNode].pinKey;
+  const draggedPinKey = link[indexOfPinConnectedToTheDraggedNode].pinKey;
   const pinPosition = addPoints(
     newNodePosition,
     node.pins[draggedPinKey].position
   );
 
-  const pinPositionKey = ['from', 'to'][indexOfPinConnectedToTheDraggedNode];
+  const pinPositionKey = { input: 'from', output: 'to' }[indexOfPinConnectedToTheDraggedNode];
 
   return R.assoc(pinPositionKey, pinPosition, link);
 });

@@ -31,7 +31,6 @@ import * as ProjectBrowserSelectors from '../selectors';
 import * as EditorSelectors from '../../editor/selectors';
 import { getProjectV2 } from '../../project/selectors';
 
-import { EDITOR_MODE } from '../../editor/constants';
 import { COMMAND } from '../../utils/constants';
 import { noop } from '../../utils/ramda';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
@@ -296,7 +295,6 @@ ProjectBrowser.propTypes = {
     deletePatch: React.PropTypes.func.isRequired,
     renameProject: React.PropTypes.func.isRequired,
     closeAllPopups: React.PropTypes.func.isRequired,
-    addNotification: React.PropTypes.func.isRequired,
   }),
 };
 

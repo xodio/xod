@@ -3,10 +3,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
-import core from 'xod-core';
 
-import * as EditorActions from '../actions'; // @TODO: remove it!
+import * as ProjectSelectors from '../../project/selectors';
+
+import * as EditorActions from '../actions';
 import * as EditorSelectors from '../selectors';
+import * as EditorUtils from '../utils';
+import * as ProjectUtils from '../../project/utils';
 import * as ProjectActions from '../../project/actions';
 import { findRootSVG } from '../../utils/browser';
 
@@ -20,8 +23,6 @@ import SnappingPreviewLayer from '../../project/components/SnappingPreviewLayer'
 import DraggedNodeLayer from '../../project/components/DraggedNodeLayer';
 import DraggedNodeLinksLayer from '../../project/components/DraggedNodeLinksLayer';
 import {
-  addNodesPositioning,
-  addLinksPositioning,
   snapNodePositionToSlots,
   substractPoints,
 } from '../../project/nodeLayout';
@@ -50,7 +51,6 @@ class Patch extends React.Component {
     this.onLinkClick = this.onLinkClick.bind(this);
 
     this.getDraggedNodeId = this.getDraggedNodeId.bind(this);
-    this.extendNodesByPinValidness = this.extendNodesByPinValidness.bind(this);
   }
 
   /**
@@ -58,7 +58,7 @@ class Patch extends React.Component {
    * @param id
    */
   onNodeSelect(id) {
-    const isSelected = EditorSelectors.isNodeSelected(this.props.selection, id);
+    const isSelected = EditorUtils.isNodeSelected(this.props.selection, id);
     const isSelectable = (this.props.mode.isEditing);
     const canSelectNode = (isSelectable && !isSelected);
 
@@ -107,7 +107,7 @@ class Patch extends React.Component {
     const svg = findRootSVG(event.target);
     const bbox = svg.getBoundingClientRect();
 
-    // TODO: could be optimized, but for now we are
+    // TODO: probably, could be optimized, but for now we are
     // always keeping an up-to-date mouse position in state
     this.setMousePosition({
       x: event.clientX - bbox.left,
@@ -141,13 +141,6 @@ class Patch extends React.Component {
     this.props.actions.addAndSelectNode(nodeTypeId, position, curPatchId);
   }
 
-  getIdleNodes() {
-    return R.compose(
-      this.extendNodesByPinValidness,
-      R.values
-    )(this.props.nodes);
-  }
-
   setMousePosition(mousePosition) {
     this.setState({ mousePosition });
   }
@@ -175,31 +168,16 @@ class Patch extends React.Component {
     };
   }
 
-  extendNodesByPinValidness(nodes) {
-    if (!this.props.linkingPin) {
-      return nodes;
+  getPinLinkabilityValidator() { // TODO: better name?
+    const { linkingPin, nodes } = this.props;
+
+    if (!linkingPin) {
+      return R.F;
     }
 
-    const pinsValidation = EditorSelectors.getValidPins(
-      this.props.nodes,
-      this.props.links,
-      this.props.linkingPin
-    );
+    const selectedPin = R.path([this.props.linkingPin.nodeId, 'pins', this.props.linkingPin.pinKey], nodes);
 
-    return R.map(
-      (node) => {
-        const pvs = R.filter(R.propEq('nodeId', node.id), pinsValidation);
-        if (pvs.length === 0) { return node; }
-
-        const fns = R.map(
-          pv => R.assocPath(['pins', pv.pinKey, 'validness'], pv.validness),
-          pvs
-        );
-
-        return R.apply(R.pipe, fns)(node);
-      },
-      nodes
-    );
+    return ProjectUtils.canPinsBeLinked(selectedPin);
   }
 
   render() {
@@ -209,11 +187,12 @@ class Patch extends React.Component {
     const draggedNode = this.props.nodes[draggedNodeId];
     const draggedNodePosition = this.getDraggedNodePosition();
 
-    const isDraggedNodeLink = EditorSelectors.isLinkConnectedToNode(draggedNodeId);
+    const isDraggedNodeLink = ProjectUtils.isLinkConnectedToNode(draggedNodeId);
     const draggedNodeLinks = R.filter(isDraggedNodeLink, links);
 
-    const idleNodes = this.getIdleNodes();
     const idleLinks = R.reject(isDraggedNodeLink, links);
+
+    const pinLinkabilityValidator = this.getPinLinkabilityValidator();
 
     return (
       <HotKeys
@@ -231,7 +210,10 @@ class Patch extends React.Component {
           />
           <IdleNodesLayer
             draggedNodeId={draggedNodeId}
-            nodes={idleNodes}
+            nodes={R.values(this.props.nodes)}
+            selection={this.props.selection}
+            linkingPin={this.props.linkingPin}
+            pinLinkabilityValidator={pinLinkabilityValidator}
             onMouseDown={this.onNodeMouseDown}
             onPinMouseDown={this.onPinMouseDown}
             onPinMouseUp={this.onPinMouseUp}
@@ -243,6 +225,7 @@ class Patch extends React.Component {
           />
           <LinksLayer
             links={idleLinks}
+            selection={this.props.selection}
             onClick={this.onLinkClick}
           />
           <DraggedNodeLayer
@@ -276,41 +259,24 @@ Patch.propTypes = {
   patchId: React.PropTypes.string,
   mode: React.PropTypes.object,
   ghostLink: React.PropTypes.any,
-
   setModeCreating: React.PropTypes.func,
 };
 
-const mapStateToProps = (state) => {
-  const project = core.getProject(state);
-  const curPatchId = EditorSelectors.getCurrentPatchId(state);
-
-  const defNodes = core.dereferencedNodes(project, curPatchId);
-  const nodesWithPositioning = addNodesPositioning(defNodes);
-
-  const defLinks = core.dereferencedLinks(project, curPatchId);
-  const linksWithPositioning = addLinksPositioning(nodesWithPositioning, defLinks);
-
-  return {
-    nodes: EditorSelectors.markSelectedNodes(state, nodesWithPositioning),
-    links: EditorSelectors.markSelectedLinks(state, linksWithPositioning),
-
-    patch: core.getPatchById(project, curPatchId),
-    nodeTypes: core.dereferencedNodeTypes(state),
-
-    selection: EditorSelectors.getSelection(state),
-    selectedNodeType: EditorSelectors.getSelectedNodeType(state),
-    patchId: EditorSelectors.getCurrentPatchId(state),
-    mode: EditorSelectors.getModeChecks(state),
-    linkingPin: EditorSelectors.getLinkingPin(state),
-    ghostLink: EditorSelectors.getLinkGhost(state, curPatchId),
-  };
-};
+const mapStateToProps = state => ({
+  nodes: ProjectSelectors.getRenderableNodes(state),
+  links: ProjectSelectors.getRenderableLinks(state),
+  selection: EditorSelectors.getSelection(state),
+  selectedNodeType: EditorSelectors.getSelectedNodeType(state),
+  linkingPin: EditorSelectors.getLinkingPin(state),
+  patchId: EditorSelectors.getCurrentPatchId(state),
+  mode: EditorSelectors.getModeChecks(state),
+  ghostLink: ProjectSelectors.getLinkGhost(state),
+});
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     addAndSelectNode: EditorActions.addAndSelectNode,
     moveNode: ProjectActions.moveNode,
-    dragNode: ProjectActions.dragNode,
     deselectAll: EditorActions.deselectAll,
     deleteSelection: EditorActions.deleteSelection,
     selectLink: EditorActions.selectLink,

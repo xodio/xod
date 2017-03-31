@@ -1,9 +1,16 @@
 import R from 'ramda';
-import core from 'xod-core';
 
 import { EDITOR_MODE } from './constants';
 import * as ActionType from './actionTypes';
 import * as Selectors from './selectors';
+import * as ProjectSelectors from '../project/selectors';
+
+import { isLinkSelected, isNodeSelected } from './utils';
+import {
+  getRenderablePin,
+  getPinSelectionError,
+  getLinkingError,
+} from '../project/utils';
 
 import {
   addNode,
@@ -53,7 +60,13 @@ export const setPinSelection = (nodeId, pinKey) => ({
 });
 
 const doPinSelection = (nodeId, pinKey) => (dispatch, getState) => {
-  const err = core.validatePin(getState(), { nodeId, pinKey });
+  const selectedPin = getRenderablePin(
+    nodeId,
+    pinKey,
+    ProjectSelectors.getRenderableNodes(getState())
+  );
+
+  const err = getPinSelectionError(selectedPin);
 
   if (err) {
     dispatch(addError(LINK_ERRORS[err]));
@@ -80,7 +93,7 @@ export const deselectAll = () => (dispatch, getState) => {
 export const selectNode = id => (dispatch, getState) => {
   const state = getState();
   const selection = Selectors.getSelection(state);
-  const isSelected = Selectors.isNodeSelected(selection, id);
+  const isSelected = isNodeSelected(selection, id);
   const deselect = dispatch(deselectAll());
   const result = [];
   if (deselect) {
@@ -101,39 +114,48 @@ export const addAndSelectNode = (typeId, position, curPatchId) => (dispatch) => 
 };
 
 export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
-  const data = {
-    nodeId,
-    pinKey,
-  };
   const state = getState();
-  const selected = state.editor.linkingPin;
+  const linkingFrom = state.editor.linkingPin;
 
   dispatch(deselectAll());
 
-  const pins = [selected, data];
+  if (!linkingFrom) {
+    dispatch(doPinSelection(nodeId, pinKey));
+    return;
+  }
 
-  if (R.equals(selected, data)) {
+  const linkingTo = { nodeId, pinKey };
+
+  if (R.equals(linkingFrom, linkingTo)) {
     // linking a pin to itself
     return;
   }
 
-  let action;
-  if (selected) {
-    const error = core.validateLink(state, pins);
-    action = error ?
-      addError(LINK_ERRORS[error]) :
-      addLink(pins[0], pins[1]);
-    dispatch(setMode(EDITOR_MODE.DEFAULT));
-  } else {
-    action = doPinSelection(nodeId, pinKey);
-  }
+  const nodes = ProjectSelectors.getRenderableNodes(state);
+  const renderablePinFrom = getRenderablePin(
+    linkingFrom.nodeId,
+    linkingFrom.pinKey,
+    nodes
+  );
+  const renderablePinTo = getRenderablePin(
+    linkingTo.nodeId,
+    linkingTo.pinKey,
+    nodes
+  );
+
+  const error = getLinkingError(renderablePinFrom, renderablePinTo);
+
+  const action = error ?
+    addError(LINK_ERRORS[error]) :
+    addLink(linkingFrom, linkingTo);
+  dispatch(setMode(EDITOR_MODE.DEFAULT));
   dispatch(action);
 };
 
 export const selectLink = id => (dispatch, getState) => {
   const state = getState();
   const selection = Selectors.getSelection(state);
-  const isSelected = Selectors.isLinkSelected(selection, id);
+  const isSelected = isLinkSelected(selection, id);
   const deselect = dispatch(deselectAll());
   const result = [];
   if (deselect) {
@@ -155,7 +177,9 @@ export const setSelectedNodeType = id => ({
 });
 
 export const deleteSelection = () => (dispatch, getState) => {
+  const currentPatchId = Selectors.getCurrentPatchId(getState());
   const selection = Selectors.getSelection(getState());
+
   const DELETE_ACTIONS = {
     Node: deleteNode,
     Link: deleteLink,
@@ -163,7 +187,7 @@ export const deleteSelection = () => (dispatch, getState) => {
 
   selection.forEach((select) => {
     dispatch(
-      DELETE_ACTIONS[select.entity](select.id)
+      DELETE_ACTIONS[select.entity](select.id, currentPatchId)
     );
   });
 };

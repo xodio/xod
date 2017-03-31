@@ -9,6 +9,12 @@ import { noop } from '../../utils/ramda';
 
 import { NODE_CORNER_RADIUS } from '../nodeLayout';
 
+const isPinSelected = (linkingPin, nodeId, pin) => (
+  linkingPin &&
+  linkingPin.nodeId === nodeId &&
+  linkingPin.pinKey === pin.key
+);
+
 class Node extends React.Component {
   constructor(props) {
     super(props);
@@ -37,11 +43,13 @@ class Node extends React.Component {
 
   render() {
     const {
+      id,
       size,
       position,
       pins,
       outputPinsSectionHeight,
       label,
+      linkingPin,
     } = this.props;
 
     const pinsArr = R.values(pins);
@@ -107,6 +115,8 @@ class Node extends React.Component {
             <g key={pin.key}>
               <Pin
                 {...pin}
+                isSelected={isPinSelected(linkingPin, id, pin)}
+                isAcceptingLinks={this.props.pinLinkabilityValidator(pin)}
                 keyName={pin.key}
                 key={`pin_${pin.key}`}
                 onMouseUp={this.onPinMouseUp}
@@ -136,6 +146,8 @@ Node.propTypes = {
   isGhost: React.PropTypes.bool,
   isDragged: React.PropTypes.bool,
   hidden: React.PropTypes.bool,
+  linkingPin: React.PropTypes.object,
+  pinLinkabilityValidator: React.PropTypes.func,
   onMouseDown: React.PropTypes.func,
   onPinMouseUp: React.PropTypes.func,
   onPinMouseDown: React.PropTypes.func,
@@ -144,6 +156,7 @@ Node.defaultProps = {
   isSelected: false,
   isGhost: false,
   isDragged: false,
+  pinLinkabilityValidator: R.F,
   onMouseDown: noop,
   onPinMouseUp: noop,
   onPinMouseDown: noop,

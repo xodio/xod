@@ -1,10 +1,12 @@
 import React from 'react';
 import { LAYER } from '../../editor/constants';
 
+import { isLinkSelected } from '../../editor/utils';
+
 import SVGLayer from './SVGLayer';
 import XODLink from './Link';
 
-const LinksLayer = ({ links, onClick }) => (
+const LinksLayer = ({ links, selection, onClick }) => (
   <SVGLayer
     name={LAYER.LINKS}
     className="LinksLayer"
@@ -16,7 +18,7 @@ const LinksLayer = ({ links, onClick }) => (
         from={link.from}
         to={link.to}
         type={link.type}
-        isSelected={link.isSelected}
+        isSelected={isLinkSelected(selection, link.id)}
         onClick={onClick}
       />
     )}
@@ -25,6 +27,7 @@ const LinksLayer = ({ links, onClick }) => (
 
 LinksLayer.propTypes = {
   links: React.PropTypes.arrayOf(React.PropTypes.object),
+  selection: React.PropTypes.arrayOf(React.PropTypes.object),
   onClick: React.PropTypes.func,
 };
 

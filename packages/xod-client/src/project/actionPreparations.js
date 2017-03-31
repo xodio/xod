@@ -1,6 +1,6 @@
-import R from 'ramda';
 import core from 'xod-core';
 import { PROPERTY_KIND } from './constants';
+import { getCurrentPatchId } from '../editor/selectors';
 
 export const addPatch = (projectState, label, folderId) => {
   const newId = core.generatePatchSID();
@@ -120,34 +120,13 @@ export const changePinMode = (projectState, nodeId, pinKey, injected, val) => {
 };
 
 export const addLink = (state, pin1, pin2) => {
-  const projectState = core.getProject(state);
-  const patch = core.getPatchByNodeId(projectState, pin1.nodeId);
-  const patchId = core.getPatchId(patch);
-  const nodes = core.dereferencedNodes(projectState, patchId);
-  const pins = core.getAllPinsFromNodes(nodes);
-
-  const eqProps = link => R.both(
-    R.propEq('nodeId', link.nodeId),
-    R.propEq('key', link.pinKey)
-  );
-  const findPin = R.compose(
-    R.flip(R.find)(pins),
-    eqProps
-  );
-  const isOutput = R.propEq('direction', core.PIN_DIRECTION.OUTPUT);
-
-  const fpin1 = findPin(pin1);
-  const isOutputData1 = isOutput(fpin1);
-
-  const fromPin = (isOutputData1) ? pin1 : pin2;
-  const toPin = (isOutputData1) ? pin2 : pin1;
-
+  const patchId = getCurrentPatchId(state);
   const newId = core.generateId();
 
   return {
     payload: {
       newId,
-      pins: [fromPin, toPin],
+      pins: [pin1, pin2],
     },
     meta: {
       patchId,

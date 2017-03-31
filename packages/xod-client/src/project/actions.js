@@ -81,10 +81,11 @@ export const addLink = (pin1, pin2) => (dispatch, getState) => {
   return preparedData.payload.newId;
 };
 
-export const deleteLink = id => ({
+export const deleteLink = (id, patchId) => ({
   type: ActionType.LINK_DELETE,
   payload: {
     id,
+    patchId,
   },
 });
 
