@@ -98,7 +98,8 @@ describe('projectV2 reducer', () => {
 
     it('should add a patch', () => {
       const newPatchLabel = 'Test patch';
-      const newPatchPath = store.dispatch(addPatch(newPatchLabel));
+      const addPatchAction = store.dispatch(addPatch(newPatchLabel));
+      const newPatchPath = addPatchAction.payload.id;
 
       const projectV2 = getProjectV2(store.getState());
       const maybeNewPatch = getPatchByPath(newPatchPath, projectV2);
@@ -112,7 +113,8 @@ describe('projectV2 reducer', () => {
     });
 
     it('should rename a patch', () => {
-      const patchPath = store.dispatch(addPatch('Initial label'));
+      const addPatchAction = store.dispatch(addPatch('Initial label'));
+      const patchPath = addPatchAction.payload.id;
       const newPatchLabel = 'new label';
       store.dispatch(renamePatch(patchPath, newPatchLabel));
 
@@ -128,7 +130,8 @@ describe('projectV2 reducer', () => {
 
     it('should delete a patch', () => {
       // TODO: this test looks silly
-      const patchPath = store.dispatch(addPatch('label'));
+      const addPatchAction = store.dispatch(addPatch('label'));
+      const patchPath = addPatchAction.payload.id;
       store.dispatch(deletePatch(patchPath));
 
       const projectV2 = getProjectV2(store.getState());
