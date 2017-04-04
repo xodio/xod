@@ -12,17 +12,10 @@ export const NODE_CHANGE_PIN_MODE = 'NODE_CHANGE_PIN_MODE';
 export const LINK_ADD = 'LINK_ADD';
 export const LINK_DELETE = 'LINK_DELETE';
 
-export const META_UPDATE = 'META_UPDATE';
-
 export const PATCH_ADD = 'PATCH_ADD';
 export const PATCH_RENAME = 'PATCH_RENAME';
 export const PATCH_DELETE = 'PATCH_DELETE';
 
-export const NODETYPES_UPDATE = 'NODETYPES_UPDATE';
-
-export const getPatchUndoType = id => `@@redux-undo/PATCH_${id}_UNDO`;
-export const getPatchRedoType = id => `@@redux-undo/PATCH_${id}_REDO`;
-export const getPatchClearHistoryType = id => `@@redux-undo/PATCH_${id}_CLEAR_HISTORY`;
 export const PATCH_HISTORY_UNDO = 'PATCH_HISTORY_UNDO';
 export const PATCH_HISTORY_REDO = 'PATCH_HISTORY_REDO';
 export const PATCH_HISTORY_SAVE = 'PATCH_HISTORY_SAVE';

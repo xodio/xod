@@ -1,84 +1,66 @@
-import core from 'xod-core';
+import { generateId } from 'xod-project';
 import * as ActionType from './actionTypes';
-import * as PrepareTo from './actionPreparations';
-import { addError } from '../messages/actions';
-import { PROPERTY_ERRORS, NODETYPE_ERRORS } from '../messages/constants';
+import { getCurrentPatchId } from '../editor/selectors';
 
 export const createProject = projectName => ({
   type: ActionType.PROJECT_CREATE,
   payload: {
     name: projectName,
-    mainPatchId: `@/${core.generateId()}`,
+    mainPatchId: '@/Main',
   },
 });
 
-export const moveNode = (id, position) => (dispatch, getState) => {
-  const projectState = core.getProject(getState());
-  const preparedData = PrepareTo.moveNode(projectState, id, position);
-
-  dispatch({
-    type: ActionType.NODE_MOVE,
-    payload: preparedData.payload,
-    meta: preparedData.meta,
-  });
-};
-
-export const dragNode = (id, position) => (dispatch, getState) => {
-  const projectState = core.getProject(getState());
-  const preparedData = PrepareTo.dragNode(projectState, id, position);
-
-  dispatch({
-    type: ActionType.NODE_MOVE,
-    payload: preparedData.payload,
-    meta: preparedData.meta,
-  });
-};
-
-export const addNode = (typeId, position, patchId) => (dispatch, getState) => {
-  const projectState = core.getProject(getState());
-  const preparedData = PrepareTo.addNode(projectState, typeId, position, patchId);
+export const addNode = (typeId, position, patchId) => (dispatch) => {
+  const newNodeId = generateId();
 
   dispatch({
     type: ActionType.NODE_ADD,
-    payload: preparedData.payload,
-    meta: preparedData.meta,
+    payload: {
+      typeId,
+      position,
+      newNodeId,
+      patchId,
+    },
   });
 
-  return preparedData.payload.newNodeId;
+  return newNodeId;
 };
 
 export const deleteNode = id => (dispatch, getState) => {
-  const projectState = core.getProject(getState());
-  const preparedData = PrepareTo.deleteNode(projectState, id);
-
-  if (preparedData.payload.nodeType.error) {
-    dispatch(addError(NODETYPE_ERRORS[preparedData.payload.nodeType.error]));
-    return;
-  }
+  const patchId = getCurrentPatchId(getState());
 
   dispatch({
     type: ActionType.NODE_DELETE,
-    payload: preparedData.payload,
-    meta: preparedData.meta,
+    payload: {
+      id,
+      patchId,
+    },
+  });
+};
+
+export const moveNode = (id, position) => (dispatch, getState) => {
+  const patchId = getCurrentPatchId(getState());
+
+  dispatch({
+    type: ActionType.NODE_MOVE,
+    payload: {
+      id,
+      position,
+      patchId,
+    },
   });
 };
 
 export const addLink = (pin1, pin2) => (dispatch, getState) => {
-  const preparedData = PrepareTo.addLink(getState(), pin1, pin2);
-
-  if (preparedData.error) {
-    const errorMessage = PROPERTY_ERRORS[preparedData.error];
-    dispatch(addError(errorMessage));
-    return new Error(errorMessage);
-  }
+  const patchId = getCurrentPatchId(getState());
 
   dispatch({
     type: ActionType.LINK_ADD,
-    payload: preparedData.payload,
-    meta: preparedData.meta,
+    payload: {
+      patchId,
+      pins: [pin1, pin2],
+    },
   });
-
-  return preparedData.payload.newId;
 };
 
 export const deleteLink = (id, patchId) => ({
@@ -89,48 +71,34 @@ export const deleteLink = (id, patchId) => ({
   },
 });
 
-export const updateMeta = data => ({
-  type: ActionType.META_UPDATE,
-  payload: data,
-});
-
 export const updateNodeProperty =
   (nodeId, propKind, propKey, propValue) => (dispatch, getState) => {
-    const projectState = core.getProject(getState());
-    const preparedData = PrepareTo.updateNodeProperty(
-      projectState,
-      nodeId,
-      propKind,
-      propKey,
-      propValue
-    );
+    const patchId = getCurrentPatchId(getState());
 
     dispatch({
       type: ActionType.NODE_UPDATE_PROPERTY,
-      payload: preparedData.payload,
-      meta: preparedData.meta,
+      payload: {
+        id: nodeId,
+        kind: propKind,
+        key: propKey,
+        value: propValue,
+        patchId,
+      },
     });
   };
 
 export const changePinMode = (nodeId, pinKey, injected, val = null) => (dispatch, getState) => {
-  const projectState = core.getProject(getState());
-  const preparedData = PrepareTo.changePinMode(
-    projectState,
-    nodeId,
-    pinKey,
-    injected,
-    val
-  );
-
-  if (preparedData.error) {
-    dispatch(addError(PROPERTY_ERRORS[preparedData.error]));
-    return;
-  }
+  const patchId = getCurrentPatchId(getState());
 
   dispatch({
     type: ActionType.NODE_CHANGE_PIN_MODE,
-    payload: preparedData.payload,
-    meta: preparedData.meta,
+    payload: {
+      id: nodeId,
+      key: pinKey,
+      injected,
+      value: val,
+      patchId,
+    },
   });
 };
 
@@ -145,40 +113,29 @@ export const loadProjectOnlyFromJSON = json => ({
 });
 
 
-export const undoPatch = id => ({
-  type: ActionType.getPatchUndoType(id),
-  payload: {},
+export const undoPatch = patchId => ({
+  type: ActionType.PATCH_HISTORY_UNDO,
+  payload: { patchId },
 });
 
-export const redoPatch = id => ({
-  type: ActionType.getPatchRedoType(id),
-  payload: {},
+export const redoPatch = patchId => ({
+  type: ActionType.PATCH_HISTORY_REDO,
+  payload: { patchId },
 });
 
-export const clearHistoryPatch = id => ({
-  type: ActionType.getPatchClearHistoryType(id),
-  payload: {},
+export const addPatch = label => ({
+  type: ActionType.PATCH_ADD,
+  payload: {
+    id: `@/${generateId()}`, // TODO: we must ask user for _this_ instead of a label
+    label,
+  },
 });
 
-export const addPatch = (label, folderId) => (dispatch, getState) => {
-  const projectState = core.getProject(getState());
-  const preparedData = PrepareTo.addPatch(projectState, label, folderId);
-
-  dispatch({
-    type: ActionType.PATCH_ADD,
-    payload: preparedData,
-  });
-
-  return preparedData.id;
-};
-
-export const renamePatch = (id, label) => ({
+export const renamePatch = (patchId, label) => ({
   type: ActionType.PATCH_RENAME,
   payload: {
     label,
-  },
-  meta: {
-    patchId: id,
+    patchId,
   },
 });
 
@@ -192,12 +149,4 @@ export const deletePatch = id => ({
 export const renameProject = name => ({
   type: ActionType.PROJECT_RENAME,
   payload: name,
-});
-
-
-export const updateNodeTypes = nodeTypes => ({
-  type: ActionType.NODETYPES_UPDATE,
-  payload: {
-    nodeTypes,
-  },
 });

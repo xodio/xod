@@ -1,5 +1,4 @@
 import R from 'ramda';
-import core from 'xod-core';
 
 import {
   PATCH_CREATE_REQUESTED,
@@ -11,7 +10,7 @@ import {
   REMOVE_SELECTION,
 } from './actionTypes';
 
-import { getSelectedPatchId } from './selectors';
+import { getSelectedPatchId, isSelectedPatchEmpty } from './selectors';
 import { getCurrentPatchId } from '../editor/selectors';
 
 import { addError } from '../messages/actions';
@@ -29,15 +28,6 @@ export const requestRenamePatch = patchId => ({
 });
 
 
-const canBeDeletedWithoutConfirmation = (selectedPatchId, state) =>
-  R.compose(
-    R.equals(0),
-    R.length,
-    R.keys,
-    R.path(['patches', selectedPatchId, 'present', 'nodes']), // TODO: use selector?
-    core.getProject
-  )(state);
-
 export const requestDeletePatch = patchId => (dispatch, getState) => {
   const state = getState();
   const selectedPatchId = patchId || getSelectedPatchId(state);
@@ -45,7 +35,7 @@ export const requestDeletePatch = patchId => (dispatch, getState) => {
     return;
   }
 
-  if (canBeDeletedWithoutConfirmation(selectedPatchId, state)) {
+  if (isSelectedPatchEmpty(state)) {
     dispatch(deletePatch(selectedPatchId));
     return;
   }

@@ -33,8 +33,7 @@ const selectNodePropertyUpdater = ({ kind, key, value }) => {
 export default (state = {}, action) => {
   switch (action.type) {
     case NODE_ADD: {
-      const { typeId, position, newNodeId } = action.payload;
-      const { patchId } = action.meta;
+      const { typeId, position, newNodeId, patchId } = action.payload;
 
       const newNode = R.compose(
         XP.assocInitialPinValues(R.view(XP.lensPatch(typeId), state)),
@@ -50,8 +49,7 @@ export default (state = {}, action) => {
     }
 
     case NODE_MOVE: {
-      const { id, position } = action.payload;
-      const { patchId } = action.meta;
+      const { id, position, patchId } = action.payload;
 
       const currentPatchLens = XP.lensPatch(patchId);
 
@@ -70,8 +68,7 @@ export default (state = {}, action) => {
     }
 
     case NODE_UPDATE_PROPERTY: {
-      const { id } = action.payload;
-      const { patchId } = action.meta;
+      const { id, patchId } = action.payload;
 
       const currentPatchLens = XP.lensPatch(patchId);
 
@@ -90,8 +87,7 @@ export default (state = {}, action) => {
     }
 
     case NODE_DELETE: {
-      const { id } = action.payload;
-      const { patchId } = action.meta;
+      const { id, patchId } = action.payload;
 
       return R.over(
         XP.lensPatch(patchId),
@@ -101,13 +97,12 @@ export default (state = {}, action) => {
     }
 
     case LINK_ADD: {
-      const { pins } = action.payload;
-      const patchPath = action.meta.patchId;
+      const { pins, patchId } = action.payload;
 
       const firstPinNodeType = R.compose(
         XP.getNodeType,
         XP.getNodeByIdUnsafe(pins[0].nodeId),
-        R.view(XP.lensPatch(patchPath))
+        R.view(XP.lensPatch(patchId))
       )(state);
 
       const inputPinIndex = R.compose(
@@ -126,7 +121,7 @@ export default (state = {}, action) => {
       const newLink = XP.createLink(input.pinKey, input.nodeId, output.pinKey, output.nodeId);
 
       return R.over(
-        XP.lensPatch(patchPath),
+        XP.lensPatch(patchId),
         XP.rightOrInitial(XP.assocLink(newLink)),
         state
       );
@@ -143,7 +138,7 @@ export default (state = {}, action) => {
     }
 
     case PATCH_ADD: {
-      const { newId, label } = action.payload;
+      const { id, label } = action.payload;
 
       const patch = R.pipe(
         XP.createPatch,
@@ -151,17 +146,16 @@ export default (state = {}, action) => {
       )();
 
       return XP.rightOrInitial(
-        XP.assocPatch(newId, patch),
+        XP.assocPatch(id, patch),
         state
       );
     }
 
     case PATCH_RENAME: {
-      const { label } = action.payload;
-      const patchPath = action.meta.patchId;
+      const { label, patchId } = action.payload;
 
       return R.over(
-        XP.lensPatch(patchPath),
+        XP.lensPatch(patchId),
         XP.setPatchLabel(label),
         state
       );
