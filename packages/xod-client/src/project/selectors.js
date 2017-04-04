@@ -156,13 +156,13 @@ export const getRenderableLinks = createMemoizedSelector(
     R.compose(
       addLinksPositioning(nodes),
       R.map((link) => {
-        const inputNodeId = XP.getLinkInputNodeId(link);
-        const inputPinKey = XP.getLinkInputPinKey(link);
+        const outputNodeId = XP.getLinkOutputNodeId(link);
+        const outputPinKey = XP.getLinkOutputPinKey(link);
 
         return R.merge(
           link,
           {
-            type: nodes[inputNodeId].pins[inputPinKey].type,
+            type: nodes[outputNodeId].pins[outputPinKey].type,
           }
         );
       })
