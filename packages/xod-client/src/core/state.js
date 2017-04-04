@@ -8,6 +8,7 @@ import projectBrowserState from '../projectBrowser/state';
 
 const initialState = {
   project: projectState,
+  projectHistory: {},
   projectBrowser: projectBrowserState,
   editor: editorState,
   errors: {},
