@@ -1,5 +1,4 @@
 import R from 'ramda';
-import { diff } from 'deep-diff';
 import { listPatches, getPatchPath } from 'xod-project';
 import { getProjectV2 } from './selectors';
 
