@@ -1,3 +1,4 @@
+import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -104,10 +105,10 @@ Editor.propTypes = {
   actions: React.PropTypes.objectOf(React.PropTypes.func),
 };
 
-const mapStateToProps = state => ({
-  editor: EditorSelectors.getEditor(state),
-  propsForInspector: ProjectSelectors.dataForInspectorFromSelection(state),
-  currentPatchId: EditorSelectors.getCurrentPatchId(state),
+const mapStateToProps = R.applySpec({
+  editor: EditorSelectors.getEditor,
+  propsForInspector: ProjectSelectors.dataForInspectorFromSelection,
+  currentPatchId: EditorSelectors.getCurrentPatchId,
 });
 
 const mapDispatchToProps = dispatch => ({

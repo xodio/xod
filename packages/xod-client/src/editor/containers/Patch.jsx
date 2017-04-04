@@ -262,15 +262,15 @@ Patch.propTypes = {
   setModeCreating: React.PropTypes.func,
 };
 
-const mapStateToProps = state => ({
-  nodes: ProjectSelectors.getRenderableNodes(state),
-  links: ProjectSelectors.getRenderableLinks(state),
-  selection: EditorSelectors.getSelection(state),
-  selectedNodeType: EditorSelectors.getSelectedNodeType(state),
-  linkingPin: EditorSelectors.getLinkingPin(state),
-  patchId: EditorSelectors.getCurrentPatchId(state),
-  mode: EditorSelectors.getModeChecks(state),
-  ghostLink: ProjectSelectors.getLinkGhost(state),
+const mapStateToProps = R.applySpec({
+  nodes: ProjectSelectors.getRenderableNodes,
+  links: ProjectSelectors.getRenderableLinks,
+  selection: EditorSelectors.getSelection,
+  selectedNodeType: EditorSelectors.getSelectedNodeType,
+  linkingPin: EditorSelectors.getLinkingPin,
+  patchId: EditorSelectors.getCurrentPatchId,
+  mode: EditorSelectors.getModeChecks,
+  ghostLink: ProjectSelectors.getLinkGhost,
 });
 
 const mapDispatchToProps = dispatch => ({

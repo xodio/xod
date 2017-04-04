@@ -292,14 +292,14 @@ ProjectBrowser.propTypes = {
   }),
 };
 
-const mapStateToProps = state => ({
-  projectName: ProjectBrowserSelectors.getProjectName(state),
-  currentPatchPath: EditorSelectors.getCurrentPatchId(state),
-  selectedPatchPath: ProjectBrowserSelectors.getSelectedPatchId(state),
-  selectedPatchLabel: ProjectBrowserSelectors.getSelectedPatchLabel(state),
-  localPatches: ProjectBrowserSelectors.getLocalPatches(state),
-  openPopups: ProjectBrowserSelectors.getOpenPopups(state),
-  libs: ProjectBrowserSelectors.getLibs(state),
+const mapStateToProps = R.applySpec({
+  projectName: ProjectBrowserSelectors.getProjectName,
+  currentPatchPath: EditorSelectors.getCurrentPatchId,
+  selectedPatchPath: ProjectBrowserSelectors.getSelectedPatchId,
+  selectedPatchLabel: ProjectBrowserSelectors.getSelectedPatchLabel,
+  localPatches: ProjectBrowserSelectors.getLocalPatches,
+  openPopups: ProjectBrowserSelectors.getOpenPopups,
+  libs: ProjectBrowserSelectors.getLibs,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -8,7 +8,6 @@ import {
 } from 'react-sortable-hoc';
 
 import * as Actions from '../actions';
-import * as EditorSelectors from '../selectors';
 import * as ProjectSelectors from '../../project/selectors';
 import { swap, assocIndexes, indexById } from '../../utils/array';
 import TabsContainer from '../components/TabsContainer';
@@ -108,9 +107,8 @@ Tabs.propTypes = {
   actions: React.PropTypes.objectOf(React.PropTypes.func),
 };
 
-const mapStateToProps = state => ({
-  tabs: ProjectSelectors.getPreparedTabs(state),
-  currentPatchId: EditorSelectors.getCurrentPatchId(state),
+const mapStateToProps = R.applySpec({
+  tabs: ProjectSelectors.getPreparedTabs,
 });
 
 const mapDispatchToprops = dispatch => ({
