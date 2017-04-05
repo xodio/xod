@@ -33,6 +33,18 @@ const initialState = {
   mousePosition: { x: 0, y: 0 },
 };
 
+const getPinLinkabilityValidator = ({ linkingPin, nodes }) => {
+  console.log('getPinLinkabilityValidator');
+
+  if (!linkingPin) {
+    return R.F;
+  }
+
+  const selectedPin = R.path([linkingPin.nodeId, 'pins', linkingPin.pinKey], nodes);
+
+  return ProjectUtils.canPinsBeLinked(selectedPin);
+};
+
 class Patch extends React.Component {
   constructor(props) {
     super(props);
@@ -51,6 +63,19 @@ class Patch extends React.Component {
     this.onLinkClick = this.onLinkClick.bind(this);
 
     this.getDraggedNodeId = this.getDraggedNodeId.bind(this);
+
+    this.pinLinkabilityValidator = getPinLinkabilityValidator(props);
+  }
+
+  componentWillUpdate(nextProps) {
+    if (
+      R.equals(nextProps.linkingPin, this.props.linkingPin) &&
+      R.equals(nextProps.nodes, this.props.nodes)
+    ) {
+      return;
+    }
+
+    this.pinLinkabilityValidator = getPinLinkabilityValidator(nextProps)
   }
 
   /**
@@ -168,18 +193,6 @@ class Patch extends React.Component {
     };
   }
 
-  getPinLinkabilityValidator() { // TODO: better name?
-    const { linkingPin, nodes } = this.props;
-
-    if (!linkingPin) {
-      return R.F;
-    }
-
-    const selectedPin = R.path([this.props.linkingPin.nodeId, 'pins', this.props.linkingPin.pinKey], nodes);
-
-    return ProjectUtils.canPinsBeLinked(selectedPin);
-  }
-
   render() {
     const links = R.values(this.props.links);
 
@@ -191,8 +204,6 @@ class Patch extends React.Component {
     const draggedNodeLinks = R.filter(isDraggedNodeLink, links);
 
     const idleLinks = R.reject(isDraggedNodeLink, links);
-
-    const pinLinkabilityValidator = this.getPinLinkabilityValidator();
 
     return (
       <HotKeys
@@ -213,7 +224,7 @@ class Patch extends React.Component {
             nodes={R.values(this.props.nodes)}
             selection={this.props.selection}
             linkingPin={this.props.linkingPin}
-            pinLinkabilityValidator={pinLinkabilityValidator}
+            pinLinkabilityValidator={this.pinLinkabilityValidator}
             onMouseDown={this.onNodeMouseDown}
             onPinMouseDown={this.onPinMouseDown}
             onPinMouseUp={this.onPinMouseUp}
