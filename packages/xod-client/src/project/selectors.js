@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 import XP from 'xod-project';
 
 import {
+  addNodePositioning,
   addNodesPositioning,
   addLinksPositioning,
   addPoints,
@@ -41,28 +42,36 @@ const getCurrentPatchLinks = createSelector(
   }
 );
 
+// returns object with a shape { nodeId: { pinKey: Boolean } }
+const getConnectedPins = createMemoizedSelector(
+  [getCurrentPatchLinks],
+  [R.equals],
+  R.compose(
+    R.reduce(
+      (acc, link) => R.compose(
+        R.assocPath([
+          XP.getLinkInputNodeId(link),
+          XP.getLinkInputPinKey(link),
+        ], true),
+        R.assocPath([
+          XP.getLinkOutputNodeId(link),
+          XP.getLinkOutputPinKey(link),
+        ], true)
+      )(acc),
+      {}
+    ),
+    R.values
+  )
+);
+
 // :: IndexedLinks -> IntermediateNode -> IntermediateNode
-const assocPinIsConnected = R.curry((links, node) =>
+const assocPinIsConnected = R.curry((connectedPins, node) =>
   R.over(
     R.lensProp('pins'),
     R.map(pin =>
       R.assoc(
         'isConnected',
-        R.compose(
-          R.any(
-            R.either(
-              R.both(
-                XP.isLinkInputNodeIdEquals(node.id),
-                XP.isLinkInputPinKeyEquals(pin.key)
-              ),
-              R.both(
-                XP.isLinkOutputNodeIdEquals(node.id),
-                XP.isLinkOutputPinKeyEquals(pin.key)
-              )
-            )
-          ),
-          R.values
-        )(links),
+        R.path([node.id, pin.key], connectedPins),
         pin
       )
     ),
@@ -132,15 +141,15 @@ const getCurrentPatchNodes = createSelector(
 
 // :: State -> StrMap RenderableNode
 export const getRenderableNodes = createMemoizedSelector(
-  [getProjectV2, getCurrentPatchNodes, getCurrentPatchLinks],
+  [getProjectV2, getCurrentPatchNodes, getConnectedPins],
   [R.T, R.equals, R.equals],
-  (projectV2, currentPatchNodes, currentPatchLinks) =>
+  (projectV2, currentPatchNodes, connectedPins) =>
     R.compose(
-      addNodesPositioning,
       R.map(
         R.compose(
+          addNodePositioning,
           addNodeLabel(projectV2),
-          assocPinIsConnected(currentPatchLinks),
+          assocPinIsConnected(connectedPins),
           assocNodeIdToPins,
           mergePinDataFromPatch(projectV2)
         )
@@ -223,12 +232,13 @@ export const getPreparedTabs = createSelector(
 // Inspector
 //
 
-const dereferencedSelection = createSelector(
+const dereferencedSelection = createMemoizedSelector(
   [getRenderableNodes, getRenderableLinks, getSelection],
-  (derefNodes, derefLinks, selection) => {
-    const dereferenced = {
-      [ENTITY.NODE]: derefNodes,
-      [ENTITY.LINK]: derefLinks,
+  [R.equals, R.equals, R.equals],
+  (renderableNodes, renderableLinks, selection) => {
+    const renderables = {
+      [ENTITY.NODE]: renderableNodes,
+      [ENTITY.LINK]: renderableLinks,
     };
 
     return R.map(
@@ -237,7 +247,7 @@ const dereferencedSelection = createSelector(
           R.assoc('entity'),
           [
             R.head,
-            R.path(R.__, dereferenced),
+            R.path(R.__, renderables),
           ]
         ),
         R.props(['entity', 'id'])
