@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 
 import XP from 'xod-project';
 
+import { createMemoizedSelector } from '../utils/selectorTools';
 import * as ProjectSelectors from '../project/selectors';
 
 export const getProjectBrowser = R.prop('projectBrowser');
@@ -35,8 +36,14 @@ export const getSelectedPatchLabel = createSelector(
       .getOrElse('')
 );
 
-export const getLibs = createSelector(
+const getLibraryPatchesList = createSelector(
   ProjectSelectors.getProjectV2,
+  XP.listLibraryPatches
+);
+
+export const getLibs = createMemoizedSelector(
+  [getLibraryPatchesList],
+  [R.equals],
   R.compose(
     R.map(
       R.sort(R.ascend(XP.getPatchPath))
@@ -44,7 +51,6 @@ export const getLibs = createSelector(
     R.groupBy(
       R.pipe(XP.getPatchPath, XP.getLibraryName)
     ),
-    XP.listLibraryPatches
   )
 );
 
