@@ -34,8 +34,6 @@ const initialState = {
 };
 
 const getPinLinkabilityValidator = ({ linkingPin, nodes }) => {
-  console.log('getPinLinkabilityValidator');
-
   if (!linkingPin) {
     return R.F;
   }
