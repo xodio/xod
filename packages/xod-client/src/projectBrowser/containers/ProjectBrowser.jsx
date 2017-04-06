@@ -146,7 +146,7 @@ class ProjectBrowser extends React.Component {
 
   deselectIfInLibrary(libName) {
     return () => {
-      if (getLibraryName(this.props.selectedPatchPath) === libName) {
+      if (getLibraryName(this.props.selectedPatchPath || '') === libName) {
         this.props.actions.removeSelection();
       }
     };

@@ -12,6 +12,7 @@ import {
   PATCH_RENAME,
   PATCH_DELETE,
   PROJECT_LOAD_DATA,
+  PROJECT_REPLACE_LIBS,
 } from './actionTypes';
 
 import { PROPERTY_KIND } from './constants';
@@ -35,6 +36,20 @@ export default (state = {}, action) => {
   switch (action.type) {
     case PROJECT_LOAD_DATA: {
       return action.payload;
+    }
+
+    case PROJECT_REPLACE_LIBS: {
+      const newLibsList = action.payload;
+
+      const oldLibsPaths = R.compose(
+        R.map(XP.getPatchPath),
+        XP.listLibraryPatches
+      )(state);
+
+      return R.compose(
+        XP.mergePatchesList(newLibsList),
+        XP.omitPatches(oldLibsPaths)
+      )(state);
     }
 
     case NODE_ADD: {

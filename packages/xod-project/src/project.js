@@ -351,6 +351,28 @@ export const assocPatch = def(
 );
 
 /**
+ * Inserts given patches into the `project`,
+ * replacing old ones with same paths.
+ *
+ * @function mergePatchesList
+ * @param {Patch[]} patches - patches to insert
+ * @param {Project} project - project to operate on
+ * @returns {Project} copy of the project with the patches inserted
+ */
+export const mergePatchesList = def(
+  'mergePatchesList :: [Patch] -> Project -> Project',
+  (patches, project) =>
+    // TODO: perform validation or switch to 'make a blueprint and then validate all' paradigm?
+    R.over(
+      R.lensProp('patches'),
+      R.flip(R.merge)(
+        R.indexBy(Patch.getPatchPath, patches)
+      ),
+      project
+    )
+);
+
+/**
  * Removes the `patch` from the `project`.
  *
  * Does nothing if the `patch` not found in `project`.
@@ -364,6 +386,24 @@ export const dissocPatch = def(
   'dissocPatch :: PatchPath -> Project -> Project',
   (path, project) =>
     R.dissocPath(['patches', path], project)
+);
+
+/**
+ * Removes `patch`es with given paths from the `project`.
+ *
+ * @function omitPatches
+ * @param {string[]} paths - paths to patches to remove
+ * @param {Project} project - project to operate on
+ * @returns {Project} copy of the project with the patches removed
+ */
+export const omitPatches = def(
+  'omitPatches :: [PatchPath] -> Project -> Project',
+  (paths, project) =>
+    R.over(
+      R.lensProp('patches'),
+      R.omit(paths),
+      project
+    )
 );
 
 const doesPathExist = def(

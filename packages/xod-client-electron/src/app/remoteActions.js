@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { save, getProjects, loadProjectWithLibs, loadAllLibs, arrangeByFiles, pack, isDirectoryExists } from 'xod-fs';
+import { save, getProjects, loadProjectWithLibs, loadAllLibsV2, arrangeByFiles, pack, isDirectoryExists } from 'xod-fs';
 
 const extract = json => arrangeByFiles(JSON.parse(json));
 
@@ -31,8 +31,8 @@ export const loadProject = ({ path, workspace }, onFinish) =>
     .then(onFinish);
 
 export const changeWorkspace = ({ path }, onFinish) =>
-  loadAllLibs(path)
-    .then(R.assoc('nodeTypes', R.__, { path }))
+  loadAllLibsV2(path)
+    .then(R.assoc('libs', R.__, { path }))
     .then(onFinish);
 
 export const checkWorkspace = ({ path }, onFinish) => {

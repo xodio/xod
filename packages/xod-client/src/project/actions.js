@@ -112,6 +112,10 @@ export const loadProjectOnlyFromJSON = json => ({
   payload: json,
 });
 
+export const replaceLibs = libs => ({
+  type: ActionType.PROJECT_REPLACE_LIBS,
+  payload: libs,
+});
 
 export const undoPatch = patchId => ({
   type: ActionType.PATCH_HISTORY_UNDO,

@@ -8,7 +8,7 @@ export {
   loadProjectWithLibs,
   loadProjectWithoutLibs,
 } from './load';
-export { loadLibs, loadAllLibs } from './loadLibs';
+export { loadLibs, loadAllLibs, loadAllLibsV2 } from './loadLibs';
 export { isDirectoryExists } from './utils';
 export {
   findClosestProjectDir,

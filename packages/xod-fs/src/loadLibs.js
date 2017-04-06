@@ -1,6 +1,7 @@
 import R from 'ramda';
 import path from 'path';
 import { hasNot } from 'xod-core';
+import { toV2, listLibraryPatches } from 'xod-project';
 import { readDir, readJSON, readFile } from './read';
 import { resolvePath } from './utils';
 
@@ -161,3 +162,16 @@ export const loadAllLibs = (workspace) => {
     ))
     .then(libs => loadLibs(libs, workspace));
 };
+
+export const loadAllLibsV2 = workspace =>
+  loadAllLibs(workspace)
+    .then(libs =>
+      R.compose(
+        listLibraryPatches,
+        toV2
+      )({
+        meta: { name: '', author: '' },
+        patches: {},
+        nodeTypes: libs,
+      })
+    );
