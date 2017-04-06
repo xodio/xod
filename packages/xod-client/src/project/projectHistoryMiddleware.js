@@ -37,8 +37,7 @@ export default ({ getState, dispatch }) => next => (action) => {
 
   // does not include added patches, but that's ok
   const changedPreviousPatchesList = R.filter(
-    // prev => !R.equals(prev, currentPatches[getPatchPath(prev)]),
-    prev => prev !== currentPatches[getPatchPath(prev)],
+    prev => !R.equals(prev, currentPatches[getPatchPath(prev)]),
     previousPatchesList
   );
 

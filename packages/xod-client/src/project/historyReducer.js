@@ -27,6 +27,8 @@ const getCurrentPatchState = (state, patchId) => R.compose(
   getProjectV2
 )(state);
 
+const HISTORY_LIMIT = 50;
+
 const moveThroughHistory = (patchId, takeReplacementFrom, putCurrentTo, state) => {
   const currentPatchState = getCurrentPatchState(state, patchId);
   const patchHistory = getHistoryForPatch(state, patchId);
@@ -63,7 +65,13 @@ export default (state, action) => {
       return R.assocPath(
         ['projectHistory', patchId],
         R.compose(
-          R.over(R.lensProp(HISTORY_DIRECTION.PAST), R.prepend(previousPatchState)),
+          R.over(
+            R.lensProp(HISTORY_DIRECTION.PAST),
+            R.compose(
+              R.take(HISTORY_LIMIT),
+              R.prepend(previousPatchState)
+            )
+          ),
           R.over(R.lensProp(HISTORY_DIRECTION.FUTURE), R.empty)
         )(patchHistory),
         state

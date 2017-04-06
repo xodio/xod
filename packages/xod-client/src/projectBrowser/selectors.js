@@ -50,7 +50,7 @@ export const getLibs = createMemoizedSelector(
     ),
     R.groupBy(
       R.pipe(XP.getPatchPath, XP.getLibraryName)
-    ),
+    )
   )
 );
 
