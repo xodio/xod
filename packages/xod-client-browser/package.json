@@ -23,7 +23,6 @@
     "redux-api-middleware": "^1.0.2",
     "redux-thunk": "^2.1.0",
     "xod-arduino": "^0.0.1",
-    "xod-core": "^0.0.1",
     "xod-project": "^0.0.1",
     "xod-client": "^0.0.1",
     "xod-js": "^0.0.1"
