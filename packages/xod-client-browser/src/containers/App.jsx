@@ -5,11 +5,11 @@ import { bindActionCreators } from 'redux';
 import EventListener from 'react-event-listener';
 import { HotKeys } from 'react-hotkeys';
 
-import core from 'xod-core';
 import client from 'xod-client';
 import {
   getProjectName,
   getProjectAuthors,
+  isValidProject,
 } from 'xod-project';
 
 import PopupInstallApp from '../components/PopupInstallApp';
@@ -80,7 +80,7 @@ class App extends client.App {
     reader.readAsText(file);
   }
 
-  onImport(json) { // TODO: #migrateToV2
+  onImport(json) {
     let project;
     let validJSON = true;
     let errorMessage = null;
@@ -92,24 +92,25 @@ class App extends client.App {
       errorMessage = client.SAVE_LOAD_ERRORS.NOT_A_JSON;
     }
 
-    if (validJSON && !core.validateProject(project)) {
+    if (validJSON && !isValidProject(project)) {
       errorMessage = client.SAVE_LOAD_ERRORS.INVALID_FORMAT;
     }
 
     if (errorMessage) {
-      this.props.actions.addError({
-        message: errorMessage,
-      });
+      this.props.actions.addError(errorMessage);
       return;
     }
 
-    this.props.actions.loadProjectFromJSON(json);
+    this.props.actions.loadProject(project);
   }
 
   onExport() {
-    const projectName = this.props.meta.name;
+    const { projectV2 } = this.props;
+    const projectJSON = JSON.stringify(projectV2, null, 2);
+
+    const projectName = getProjectName(projectV2);
     const link = (document) ? document.createElement('a') : null;
-    const url = `data:application/xod;charset=utf8,${encodeURIComponent(this.props.projectJSON)}`;
+    const url = `data:application/xod;charset=utf8,${encodeURIComponent(projectJSON)}`;
 
     if (link && link.download !== undefined) {
       link.href = url;
@@ -296,20 +297,17 @@ App.propTypes = R.merge(client.App.propTypes, {
   actions: React.PropTypes.object,
 });
 
-const mapStateToProps = state => ({
-  // TODO: reimplement when new undo/redo is ready #migrateToV2
-  hasChanges: false, // client.projectHasChanges(state),
-  projectV2: client.getProjectV2(state),
-  // TODO: now it is just JSON.stringify(project, null, 2)
-  projectJSON: core.getProjectJSON(state), // TODO: #migrateToV2
-  currentPatchId: client.getCurrentPatchId(state),
+const mapStateToProps = R.applySpec({
+  hasChanges: client.projectHasChanges,
+  projectV2: client.getProjectV2,
+  currentPatchId: client.getCurrentPatchId,
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     createProject: client.createProject,
     requestRenameProject: client.requestRenameProject,
-    loadProjectFromJSON: client.loadProjectFromJSON,
+    loadProject: client.loadProject,
     setMode: client.setMode,
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,

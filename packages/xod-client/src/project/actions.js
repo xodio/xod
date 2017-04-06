@@ -102,9 +102,9 @@ export const changePinMode = (nodeId, pinKey, injected, val = null) => (dispatch
   });
 };
 
-export const loadProjectFromJSON = json => ({
+export const loadProject = project => ({
   type: ActionType.PROJECT_LOAD_DATA,
-  payload: json,
+  payload: project,
 });
 
 export const loadProjectOnlyFromJSON = json => ({

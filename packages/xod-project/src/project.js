@@ -119,6 +119,12 @@ export const setProjectLicense = def(
 // TODO: remove
 export const validateProject = Either.of;
 
+// TODO: we need an actual validation fucntion
+export const isValidProject = R.compose(
+  Either.isRight,
+  validateProject
+);
+
 // =============================================================================
 //
 // Patches

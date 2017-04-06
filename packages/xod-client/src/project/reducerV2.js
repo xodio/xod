@@ -11,6 +11,7 @@ import {
   PATCH_ADD,
   PATCH_RENAME,
   PATCH_DELETE,
+  PROJECT_LOAD_DATA,
 } from './actionTypes';
 
 import { PROPERTY_KIND } from './constants';
@@ -32,6 +33,10 @@ const selectNodePropertyUpdater = ({ kind, key, value }) => {
 
 export default (state = {}, action) => {
   switch (action.type) {
+    case PROJECT_LOAD_DATA: {
+      return action.payload;
+    }
+
     case NODE_ADD: {
       const { typeId, position, newNodeId, patchId } = action.payload;
 

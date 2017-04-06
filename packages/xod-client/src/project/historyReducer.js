@@ -9,6 +9,7 @@ import {
   PATCH_HISTORY_REDO,
   PATCH_HISTORY_CLEAR_FOR_PATCH,
   PATCH_HISTORY_CLEAR_ALL,
+  PROJECT_LOAD_DATA,
 } from './actionTypes';
 
 const HISTORY_DIRECTION = {
@@ -85,6 +86,7 @@ export default (state, action) => {
       );
     }
 
+    case PROJECT_LOAD_DATA:
     case PATCH_HISTORY_CLEAR_ALL: {
       return R.over(
         R.lensProp('projectHistory'),

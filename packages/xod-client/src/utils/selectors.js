@@ -18,14 +18,8 @@ const dataForSync = (state) => {
   };
 };
 
-export const projectHasChanges = (state) => {
-  const { lastSyncProject, currentProject } = dataForSync(state);
-
-  return !(
-    lastSyncProject &&
-    lastSyncProject.pojo === JSON.stringify(currentProject)
-  );
-};
+// TODO: stub method. all the user stuff will be reimplemented
+export const projectHasChanges = () => false;
 
 export const projectCanBeLoaded = (state) => {
   const { projectId, lastSyncProject, currentProject } = dataForSync(state);

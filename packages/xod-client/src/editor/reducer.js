@@ -1,4 +1,6 @@
 import R from 'ramda';
+import XP from 'xod-project';
+
 import { ENTITY } from './constants';
 
 import {
@@ -64,11 +66,13 @@ const isPatchOpened = R.curry((patchId, state) =>
 const resetCurrentPatchId = (reducer, state, payload) => {
   const newState = R.assoc('tabs', [], state);
   const firstPatchId = R.pipe(
-    JSON.parse,
-    R.prop('patches'),
-    R.values,
+    XP.listLocalPatches,
     R.head,
-    R.propOr(null, 'id')
+    R.ifElse(
+      R.isNil,
+      R.always(null),
+      XP.getPatchPath
+    )
   )(payload);
 
   return reducer(newState, {
