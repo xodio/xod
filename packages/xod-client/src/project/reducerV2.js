@@ -11,6 +11,8 @@ import {
   PATCH_ADD,
   PATCH_RENAME,
   PATCH_DELETE,
+  PROJECT_CREATE,
+  PROJECT_RENAME,
   PROJECT_LOAD_DATA,
   PROJECT_REPLACE_LIBS,
 } from './actionTypes';
@@ -34,6 +36,30 @@ const selectNodePropertyUpdater = ({ kind, key, value }) => {
 
 export default (state = {}, action) => {
   switch (action.type) {
+    case PROJECT_CREATE: {
+      const { name, mainPatchId } = action.payload;
+
+      const oldLocalPatchesPaths = R.compose(
+        R.map(XP.getPatchPath),
+        XP.listLocalPatches
+      )(state);
+
+      const mainPatch = R.pipe(
+        XP.createPatch,
+        XP.setPatchPath(mainPatchId),
+        XP.setPatchLabel(XP.getBaseName(mainPatchId))
+      )();
+
+      return R.compose(
+        XP.rightOrInitial(XP.assocPatch(mainPatchId, mainPatch)),
+        XP.setProjectName(name),
+        XP.omitPatches(oldLocalPatchesPaths)
+      )(state);
+    }
+
+    case PROJECT_RENAME:
+      return XP.setProjectName(action.payload, state);
+
     case PROJECT_LOAD_DATA: {
       return action.payload;
     }
