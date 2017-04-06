@@ -73,7 +73,7 @@ class Patch extends React.Component {
       return;
     }
 
-    this.pinLinkabilityValidator = getPinLinkabilityValidator(nextProps)
+    this.pinLinkabilityValidator = getPinLinkabilityValidator(nextProps);
   }
 
   /**

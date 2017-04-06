@@ -5,7 +5,6 @@ import XP from 'xod-project';
 
 import {
   addNodePositioning,
-  addNodesPositioning,
   addLinksPositioning,
   addPoints,
 } from './nodeLayout';
