@@ -153,48 +153,6 @@ class App extends client.App {
     );
   }
 
-  onImport(json) {
-    let project;
-    let validJSON = true;
-    let errorMessage = null;
-
-    try {
-      project = JSON.parse(json);
-    } catch (err) {
-      validJSON = false;
-      errorMessage = client.SAVE_LOAD_ERRORS.NOT_A_JSON;
-    }
-
-    if (validJSON && !core.validateProject(project)) {
-      errorMessage = client.SAVE_LOAD_ERRORS.INVALID_FORMAT;
-    }
-
-    if (errorMessage) {
-      this.props.actions.addError(errorMessage);
-      return;
-    }
-
-    this.props.actions.loadProjectFromJSON(json);
-  }
-
-  onExport() {
-    const projectName = getProjectName(this.props.projectV2);
-    const link = (document) ? document.createElement('a') : null;
-    const url = `data:application/xod;charset=utf8,${encodeURIComponent(this.props.projectJSON)}`;
-
-    if (link && link.download !== undefined) {
-      link.href = url;
-      link.setAttribute('download', `${projectName}.xodball`);
-
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else {
-      window.open(url, '_blank');
-      window.focus();
-    }
-  }
-
   onWorkspaceChange(val) {
     this.hidePopupSetWorkspace();
     this.props.actions.changeWorkspace({ path: val });
@@ -498,7 +456,7 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     createProject: client.createProject,
     requestRenameProject: client.requestRenameProject,
-    loadProjectFromJSON: client.loadProjectFromJSON,
+    loadProjectData: client.loadProjectData,
     setMode: client.setMode,
     savePatch: actions.savePatch,
     saveProject: actions.saveProject,

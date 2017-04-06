@@ -9,7 +9,6 @@ import client from 'xod-client';
 import {
   getProjectName,
   getProjectAuthors,
-  isValidProject,
 } from 'xod-project';
 
 import PopupInstallApp from '../components/PopupInstallApp';
@@ -78,51 +77,6 @@ class App extends client.App {
     };
 
     reader.readAsText(file);
-  }
-
-  onImport(json) {
-    let project;
-    let validJSON = true;
-    let errorMessage = null;
-
-    try {
-      project = JSON.parse(json);
-    } catch (err) {
-      validJSON = false;
-      errorMessage = client.SAVE_LOAD_ERRORS.NOT_A_JSON;
-    }
-
-    if (validJSON && !isValidProject(project)) {
-      errorMessage = client.SAVE_LOAD_ERRORS.INVALID_FORMAT;
-    }
-
-    if (errorMessage) {
-      this.props.actions.addError(errorMessage);
-      return;
-    }
-
-    this.props.actions.loadProject(project);
-  }
-
-  onExport() {
-    const { projectV2 } = this.props;
-    const projectJSON = JSON.stringify(projectV2, null, 2);
-
-    const projectName = getProjectName(projectV2);
-    const link = (document) ? document.createElement('a') : null;
-    const url = `data:application/xod;charset=utf8,${encodeURIComponent(projectJSON)}`;
-
-    if (link && link.download !== undefined) {
-      link.href = url;
-      link.setAttribute('download', `${projectName}.xodball`);
-
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else {
-      window.open(url, '_blank');
-      window.focus();
-    }
   }
 
   onSelectNodeType(typeKey) {
@@ -307,7 +261,7 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     createProject: client.createProject,
     requestRenameProject: client.requestRenameProject,
-    loadProject: client.loadProject,
+    loadProjectData: client.loadProjectData,
     setMode: client.setMode,
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,
