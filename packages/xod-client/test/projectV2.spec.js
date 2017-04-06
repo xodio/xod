@@ -178,7 +178,7 @@ describe('projectV2 reducer', () => {
     });
   });
 
-  describe.only('Link management', () => {
+  describe('Link management', () => {
     let store = null;
     let testPatchPath = '';
     let potNodeId = '';

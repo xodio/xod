@@ -638,8 +638,14 @@ export const getTopology = def(
   R.converge(
     sortGraph,
     [
-      R.compose(R.map(Node.getNodeId), listNodes),
-      R.compose(R.map(Link.getLinkNodeIds), listLinks),
+      R.compose(
+        R.map(x => Node.getNodeId(x)),
+        listNodes
+      ),
+      R.compose(
+        R.map(Link.getLinkNodeIds),
+        listLinks
+      ),
     ]
   )
 );
