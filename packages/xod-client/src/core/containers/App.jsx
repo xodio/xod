@@ -1,4 +1,6 @@
+import R from 'ramda';
 import React from 'react';
+import { Either } from 'ramda-fantasy';
 import { Project, getProjectName, isValidProject } from 'xod-project';
 import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 import { transpileForArduino } from 'xod-arduino';
@@ -38,27 +40,22 @@ export default class App extends React.Component {
   }
 
   onImport(json) {
-    let project;
-    let validJSON = true;
-    let errorMessage = null;
+    const eitherProject = R.tryCatch(
+      R.pipe(JSON.parse, Either.of),
+      R.always(Either.Left(SAVE_LOAD_ERRORS.NOT_A_JSON))
+    )(json).chain(
+      R.ifElse(
+        isValidProject,
+        Either.of,
+        R.always(Either.Left(SAVE_LOAD_ERRORS.INVALID_FORMAT))
+      )
+    );
 
-    try {
-      project = JSON.parse(json);
-    } catch (err) {
-      validJSON = false;
-      errorMessage = SAVE_LOAD_ERRORS.NOT_A_JSON;
-    }
-
-    if (validJSON && !isValidProject(project)) {
-      errorMessage = SAVE_LOAD_ERRORS.INVALID_FORMAT;
-    }
-
-    if (errorMessage) {
-      this.props.actions.addError(errorMessage);
-      return;
-    }
-
-    this.props.actions.loadProjectData(project);
+    Either.either(
+      this.props.actions.addError,
+      this.props.actions.loadProjectData,
+      eitherProject
+    );
   }
 
   onExport() {
