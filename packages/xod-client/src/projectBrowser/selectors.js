@@ -53,13 +53,3 @@ export const getLibs = createMemoizedSelector(
     )
   )
 );
-
-export const isSelectedPatchEmpty = createSelector(
-  [getSelectedPatchId, ProjectSelectors.getProjectV2],
-  (selectedPatchId, projectV2) =>
-    R.compose(
-      R.isEmpty,
-      XP.listNodes,
-      R.view(XP.lensPatch(getSelectedPatchId))
-    )(projectV2)
-);

@@ -10,7 +10,8 @@ import {
   REMOVE_SELECTION,
 } from './actionTypes';
 
-import { getSelectedPatchId, isSelectedPatchEmpty } from './selectors';
+import { getSelectedPatchId } from './selectors';
+import { isPatchEmpty } from './utils';
 import { getCurrentPatchId } from '../editor/selectors';
 
 import { addError } from '../messages/actions';
@@ -27,7 +28,7 @@ export const requestRenamePatch = patchId => ({
   payload: { id: patchId },
 });
 
-
+// TODO: split into 'requestDeletePatch' and 'requestDeleteSelectedPatch'?
 export const requestDeletePatch = patchId => (dispatch, getState) => {
   const state = getState();
   const selectedPatchId = patchId || getSelectedPatchId(state);
@@ -35,7 +36,7 @@ export const requestDeletePatch = patchId => (dispatch, getState) => {
     return;
   }
 
-  if (isSelectedPatchEmpty(state)) {
+  if (isPatchEmpty(state, selectedPatchId)) {
     dispatch(deletePatch(selectedPatchId));
     return;
   }
