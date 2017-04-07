@@ -143,17 +143,16 @@ export const getRenderableNodes = createMemoizedSelector(
   [getProjectV2, getCurrentPatchNodes, getConnectedPins],
   [R.T, R.equals, R.equals],
   (projectV2, currentPatchNodes, connectedPins) =>
-    R.compose(
-      R.map(
-        R.compose(
-          addNodePositioning,
-          addNodeLabel(projectV2),
-          assocPinIsConnected(connectedPins),
-          assocNodeIdToPins,
-          mergePinDataFromPatch(projectV2)
-        )
-      )
-    )(currentPatchNodes)
+    R.map(
+      R.compose(
+        addNodePositioning,
+        addNodeLabel(projectV2),
+        assocPinIsConnected(connectedPins),
+        assocNodeIdToPins,
+        mergePinDataFromPatch(projectV2)
+      ),
+      currentPatchNodes
+    )
 );
 
 // :: State -> StrMap RenderableLink
@@ -204,9 +203,8 @@ export const getLinkGhost = createSelector(
 export const getPreparedTabs = createSelector(
   [getCurrentPatchId, getProjectV2, getTabs],
   (currentPatchId, projectV2, tabs) =>
-    R.compose(
-      R.indexBy(R.prop('id')),
-      R.map((tab) => {
+    R.map(
+      (tab) => {
         const patchId = tab.id;
 
         const label = R.compose(
@@ -221,9 +219,9 @@ export const getPreparedTabs = createSelector(
             isActive: (currentPatchId === tab.id),
           }
         );
-      }),
-      R.values
-    )(tabs)
+      },
+      tabs
+    )
 );
 
 
