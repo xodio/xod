@@ -15,10 +15,6 @@ export const LINK_ERRORS = {
   [LE.SAME_NODE]: 'Can\'t create link between pins of the same node!',
   [LE.ONE_LINK_FOR_INPUT_PIN]: 'Input pin can have only one link!',
   [LE.UNKNOWN_ERROR]: 'Unknown error!',
-  [LE.PROP_CANT_HAVE_LINKS]: [ // TODO: deprecated?
-    'Can\'t add a link into pin with mode "property".',
-    'You should change a mode of this pin first!',
-  ].join(' '),
   [LE.INCOMPATIBLE_TYPES]: 'Incompatible pin types!',
 };
 
