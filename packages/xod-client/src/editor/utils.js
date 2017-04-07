@@ -12,6 +12,13 @@ export const isEntitySelected = (selection, entityName, id) => R.pipe(
 export const isNodeSelected = R.curry(
   (selection, id) => isEntitySelected(selection, ENTITY.NODE, id)
 );
+
 export const isLinkSelected = R.curry(
   (selection, id) => isEntitySelected(selection, ENTITY.LINK, id)
+);
+
+export const isPinSelected = (linkingPin, renderablePin) => (
+  linkingPin &&
+  linkingPin.nodeId === renderablePin.nodeId &&
+  linkingPin.pinKey === renderablePin.key
 );

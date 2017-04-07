@@ -6,14 +6,9 @@ import Pin from './Pin';
 import PinLabel from './PinLabel';
 import NodeText from './NodeText';
 import { noop } from '../../utils/ramda';
+import { isPinSelected } from '../../editor/utils';
 
 import { NODE_CORNER_RADIUS } from '../nodeLayout';
-
-const isPinSelected = (linkingPin, nodeId, pin) => (
-  linkingPin &&
-  linkingPin.nodeId === nodeId &&
-  linkingPin.pinKey === pin.key
-);
 
 class Node extends React.Component {
   constructor(props) {
@@ -43,7 +38,6 @@ class Node extends React.Component {
 
   render() {
     const {
-      id,
       size,
       position,
       pins,
@@ -115,7 +109,7 @@ class Node extends React.Component {
             <g key={pin.key}>
               <Pin
                 {...pin}
-                isSelected={isPinSelected(linkingPin, id, pin)}
+                isSelected={isPinSelected(linkingPin, pin)}
                 isAcceptingLinks={this.props.pinLinkabilityValidator(pin)}
                 keyName={pin.key}
                 key={`pin_${pin.key}`}
