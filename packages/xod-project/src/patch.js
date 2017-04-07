@@ -516,6 +516,35 @@ export const dissocLink = def(
 //
 // =============================================================================
 
+const rebuildPins = def(
+  'rebuildPins :: Patch -> Patch',
+  (patch) => {
+    const pins = R.compose(
+      R.indexBy(Pin.getPinKey),
+      R.chain(R.identity),
+      R.values,
+      R.map(
+        R.compose(
+          R.addIndex(R.map)(
+            (node, order) => Pin.createPin(
+              Node.getNodeId(node),
+              Node.getPinNodeDataType(node),
+              Node.getPinNodeDirection(node),
+              order
+            )
+          ),
+          R.sortBy(R.pipe(Node.getNodePosition, R.prop('x')))
+        )
+      ),
+      R.groupBy(Node.getPinNodeDirection),
+      R.filter(Node.isPinNode),
+      listNodes
+    )(patch);
+
+    return R.assoc('pins', pins, patch);
+  }
+);
+
 /**
  * Replaces a node with new one or inserts new one if it doesn’t exist yet.
  *
@@ -527,32 +556,16 @@ export const dissocLink = def(
  * @param {Patch} patch - a patch with the `node`
  * @returns {Patch} a copy of the `patch` with the node replaced
  */
-// TODO: Refactoring needed
 export const assocNode = def(
   'assocNode :: Node -> Patch -> Patch',
-  (node, patch) => {
-    const id = Node.getNodeId(node);
-    const addPin = R.curry(
-      (_node, _patch) => R.ifElse(
-        Node.isPinNode,
-        (pinNode) => {
-          const type = Node.getPinNodeDataType(pinNode);
-          const direction = Node.getPinNodeDirection(pinNode);
-
-          // TODO: set pin order
-          const newPin = Pin.createPin(id, type, direction, 0);
-          return assocPin(newPin, _patch);
-        },
-        R.always(_patch)
-      )(_node)
-    );
-    const addNode = R.assocPath(['nodes', id]);
-
-    return R.compose(
-      addNode(node),
-      addPin(node)
-    )(patch);
-  }
+  (node, patch) =>
+    R.compose(
+      R.when(
+        R.always(Node.isPinNode(node)),
+        rebuildPins
+      ),
+      R.assocPath(['nodes', Node.getNodeId(node)], node)
+    )(patch)
 );
 
 /**
