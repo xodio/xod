@@ -33,6 +33,8 @@ const OneOfType = XF.OneOfType(packageName, docUrl);
 
 const dataTypes = R.values(C.PIN_TYPE);
 
+const notNil = R.complement(R.isNil);
+
 const terminalPatchPathRegExp =
   new RegExp(`^xod/core/(input|output)(${dataTypes.join('|')})$`, 'i');
 
@@ -44,8 +46,8 @@ const matchesTerminalPatchPath = R.test(terminalPatchPathRegExp);
 //
 //-----------------------------------------------------------------------------
 
-const ObjectWithId = NullaryType('ObjectWithId', R.has('id'));
-const ObjectWithKey = NullaryType('ObjectWithKey', R.has('key'));
+const ObjectWithId = NullaryType('ObjectWithId', R.both(notNil, R.has('id')));
+const ObjectWithKey = NullaryType('ObjectWithKey', R.both(notNil, R.has('key')));
 
 export const Label = AliasType('Label', $.String);
 export const Source = AliasType('Source', $.String);
@@ -56,7 +58,7 @@ export const PinKey = AliasType('PinKey', $.String);
 export const PatchPath = AliasType('PatchPath', $.String);
 export const PinDirection = EnumType('PinDirection', R.values(C.PIN_DIRECTION));
 export const DataType = EnumType('DataType', R.values(C.PIN_TYPE));
-export const DataValue = NullaryType('DataValue', R.complement(R.isNil));
+export const DataValue = NullaryType('DataValue', notNil);
 
 export const Pin = Model('Pin', {
   key: PinKey,
