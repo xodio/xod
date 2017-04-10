@@ -521,7 +521,7 @@ const rebuildPins = def(
   (patch) => {
     const pins = R.compose(
       R.indexBy(Pin.getPinKey),
-      R.chain(R.identity),
+      R.unnest,
       R.values,
       R.map(
         R.compose(
@@ -560,10 +560,7 @@ export const assocNode = def(
   'assocNode :: Node -> Patch -> Patch',
   (node, patch) =>
     R.compose(
-      R.when(
-        R.always(Node.isPinNode(node)),
-        rebuildPins
-      ),
+      Node.isPinNode(node) ? rebuildPins : R.identity,
       R.assocPath(['nodes', Node.getNodeId(node)], node)
     )(patch)
 );
