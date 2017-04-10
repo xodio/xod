@@ -34,5 +34,6 @@ export const createMemoizedSelector =
     };
   };
 
-// :: (a -> b) -> a -> a -> Boolean
-export const compareWith = R.curry((f, a, b) => R.equals(f(a), f(b)));
+export default {
+  createMemoizedSelector,
+};
