@@ -67,7 +67,6 @@ IdleNodesLayer.propTypes = {
   selection: React.PropTypes.arrayOf(React.PropTypes.object),
   linkingPin: React.PropTypes.object,
   draggedNodeId: React.PropTypes.string,
-  pinLinkabilityValidator: React.PropTypes.func,
   onMouseDown: React.PropTypes.func,
   onPinMouseUp: React.PropTypes.func,
   onPinMouseDown: React.PropTypes.func,
