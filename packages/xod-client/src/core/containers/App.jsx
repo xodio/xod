@@ -34,7 +34,7 @@ export default class App extends React.Component {
   onShowCodeArduino() {
     const eitherCode = transpile(this, transpileForArduino);
     foldEither(
-      error => showError(this, error),
+      error => showError(this, error.message),
       code => showCode(this, code),
       eitherCode
     );
