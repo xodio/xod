@@ -43,7 +43,7 @@ const addTab = R.curry((patchId, state) => {
       R.prop('index'),
       R.max(acc)
     )(tab),
-    -Infinity,
+    -1,
     R.values(tabs)
   );
   const newIndex = R.inc(lastIndex);
@@ -65,7 +65,7 @@ const isPatchOpened = R.curry((patchId, state) =>
 );
 
 const resetCurrentPatchId = (reducer, state, payload) => {
-  const newState = R.assoc('tabs', [], state);
+  const newState = R.assoc('tabs', {}, state);
   const firstPatchId = R.pipe(
     XP.listLocalPatches,
     R.head,
@@ -109,7 +109,7 @@ const editorReducer = (state = {}, action) => {
     case EDITOR_SET_SELECTED_NODETYPE:
       return R.assoc('selectedNodeType', action.payload.id, state);
     case PROJECT_CREATE: {
-      const newState = R.assoc('tabs', [], state);
+      const newState = R.assoc('tabs', {}, state);
       return editorReducer(newState, {
         type: EDITOR_SWITCH_PATCH,
         payload: {
@@ -118,9 +118,22 @@ const editorReducer = (state = {}, action) => {
       });
     }
     case PROJECT_OPEN:
-    case PROJECT_IMPORT:
+    case PROJECT_IMPORT: {
+      const newState = R.merge(state, {
+        currentPatchId: null,
+        selection: [],
+        tabs: {},
+        linkingPin: null,
+      });
+      return resetCurrentPatchId(editorReducer, newState, action.payload);
+    }
     case PROJECT_OPEN_WORKSPACE:
-      return resetCurrentPatchId(editorReducer, state, action.payload);
+      return R.merge(state, {
+        currentPatchId: null,
+        selection: [],
+        tabs: {},
+        linkingPin: null,
+      });
     case PATCH_ADD:
     case EDITOR_SWITCH_PATCH:
       return openPatchById(action.payload.id, state);
