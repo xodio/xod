@@ -9,7 +9,10 @@ import {
   PATCH_HISTORY_REDO,
   PATCH_HISTORY_CLEAR_FOR_PATCH,
   PATCH_HISTORY_CLEAR_ALL,
+  PROJECT_CREATE,
   PROJECT_OPEN,
+  PROJECT_IMPORT,
+  PROJECT_OPEN_WORKSPACE,
 } from './actionTypes';
 
 const HISTORY_DIRECTION = {
@@ -86,7 +89,10 @@ export default (state, action) => {
       );
     }
 
+    case PROJECT_CREATE:
     case PROJECT_OPEN:
+    case PROJECT_IMPORT:
+    case PROJECT_OPEN_WORKSPACE:
     case PATCH_HISTORY_CLEAR_ALL: {
       return R.over(
         R.lensProp('projectHistory'),
