@@ -21,7 +21,7 @@ import { createMemoizedSelector } from '../utils/selectorTools';
 
 
 export const getProject = R.prop('project');
-
+export const projectLens = R.lensProp('project');
 
 //
 // Patch
