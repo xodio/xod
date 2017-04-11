@@ -5,28 +5,10 @@ import {
   getProjects,
   loadProjectWithLibs,
   loadAllLibsV2,
-  arrangeByFiles,
   arrangeByFilesV2,
   pack,
   isDirectoryExists,
 } from 'xod-fs';
-
-const extract = json => arrangeByFiles(JSON.parse(json));
-
-export const savePatch = ({ json, patchId, workspace }, onFinish) => {
-  // TODO: this may lead to inconsistent state. 'savePatch' shall be removed.
-  const data = R.compose(
-    extract,
-    JSON.stringify,
-    R.over(
-      R.lensProp('patches'),
-      R.filter(R.propEq('id', patchId))
-    ),
-    JSON.parse
-  )(json);
-
-  return save(workspace, data).then(onFinish);
-};
 
 export const saveProject = ({ projectV2, workspace }, onFinish) => {
   const data = arrangeByFilesV2(projectV2);
@@ -56,7 +38,6 @@ export const checkWorkspace = ({ path }, onFinish) => {
 };
 
 export default {
-  savePatch,
   saveProject,
   loadProjectList,
   loadProject,

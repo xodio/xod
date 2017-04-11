@@ -8,7 +8,6 @@ import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
 import EventListener from 'react-event-listener';
 
-import core from 'xod-core';
 import client from 'xod-client';
 import {
   getProjectName,
@@ -59,7 +58,6 @@ class App extends client.App {
     this.onImportClicked = this.onImportClicked.bind(this);
     this.onImport = this.onImport.bind(this);
     this.onExport = this.onExport.bind(this);
-    this.onSavePatch = this.onSavePatch.bind(this);
     this.onSaveProject = this.onSaveProject.bind(this);
     this.onOpenProjectClicked = this.onOpenProjectClicked.bind(this);
 
@@ -163,20 +161,6 @@ class App extends client.App {
     }
   }
 
-  onSavePatch() {
-    // 1. Check for existing of workspace
-    //    if does not exists — show PopupSetWorkspace
-    if (!this.props.workspace) {
-      this.showPopupSetWorkspace(this.onSavePatch);
-    } else {
-      // 2. Save!
-      this.props.actions.savePatch({
-        projectV2: this.props.projectV2,
-        patchId: this.props.currentPatchId,
-      });
-    }
-  }
-
   onSaveProject() {
     // 1. Check for existing of workspace
     //    if does not exists — show PopupSetWorkspace
@@ -247,7 +231,6 @@ class App extends client.App {
           onClick(items.exportProject, this.onExport),
           items.separator,
           onClick(items.newPatch, this.props.actions.createPatch),
-          onClick(items.savePatch, this.onSavePatch),
         ]
       ),
       submenu(
@@ -429,7 +412,6 @@ class App extends client.App {
 App.propTypes = R.merge(client.App.propTypes, {
   hasChanges: React.PropTypes.bool,
   projects: React.PropTypes.object,
-  projectJSON: React.PropTypes.string,
   actions: React.PropTypes.objectOf(React.PropTypes.func),
   upload: React.PropTypes.object,
   workspace: React.PropTypes.string,
@@ -444,7 +426,6 @@ const mapStateToProps = (state) => {
     hasChanges: client.projectHasChanges(state),
     projects: getProjects(state),
     projectV2: client.getProjectV2(state),
-    projectJSON: core.getProjectJSON(state),
     upload: getUploadProcess(state),
     workspace: getWorkspace(settings),
     saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),
@@ -457,7 +438,6 @@ const mapDispatchToProps = dispatch => ({
     createProject: client.createProject,
     requestRenameProject: client.requestRenameProject,
     setMode: client.setMode,
-    savePatch: actions.savePatch,
     saveProject: actions.saveProject,
     loadProjectList: actions.loadProjectList,
     loadProject: actions.loadProject,

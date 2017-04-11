@@ -110,15 +110,6 @@ export const loadProject = createAsyncAction({
   },
 });
 
-export const savePatch = createAsyncAction({
-  eventName: 'savePatch',
-  actionType: ActionType.SAVE_PATCH,
-  messages: {
-    process: 'Saving in progress...',
-    complete: 'Patch has been saved successfully!',
-  },
-});
-
 export const saveProject = createAsyncAction({
   eventName: 'saveProject',
   actionType: ActionType.SAVE_PROJECT,
@@ -129,7 +120,6 @@ export const saveProject = createAsyncAction({
 });
 
 export default {
-  savePatch,
   saveProject,
   loadProject,
   loadProjectList,
