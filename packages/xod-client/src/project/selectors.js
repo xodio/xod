@@ -20,7 +20,7 @@ import {
 import { createMemoizedSelector } from '../utils/selectorTools';
 
 
-export const getProjectV2 = R.prop('projectV2');
+export const getProject = R.prop('project');
 
 
 //
@@ -29,15 +29,15 @@ export const getProjectV2 = R.prop('projectV2');
 
 // :: State -> IndexedLinks
 const getCurrentPatchLinks = createSelector(
-  [getProjectV2, getCurrentPatchId],
-  (projectV2, currentPatchPath) => {
+  [getProject, getCurrentPatchId],
+  (project, currentPatchPath) => {
     if (!currentPatchPath) return {};
 
     return R.compose(
       R.indexBy(R.prop('id')),
       XP.listLinks,
       R.view(XP.lensPatch(currentPatchPath))
-    )(projectV2);
+    )(project);
   }
 );
 
@@ -89,7 +89,7 @@ const assocNodeIdToPins = node =>
   );
 
 // :: Project -> IntermediateNode -> IntermediateNode
-const mergePinDataFromPatch = R.curry((projectV2, node) => {
+const mergePinDataFromPatch = R.curry((project, node) => {
   const type = XP.getNodeType(node);
 
   // TODO: this will change after rename
@@ -101,7 +101,7 @@ const mergePinDataFromPatch = R.curry((projectV2, node) => {
     R.indexBy(R.prop('key')),
     XP.listPins,
     R.view(XP.lensPatch(type))
-  )(projectV2);
+  )(project);
 
   const merged = R.mergeWith(R.merge, pinDataFromPatch, curriedPinsInfo);
 
@@ -113,10 +113,10 @@ const mergePinDataFromPatch = R.curry((projectV2, node) => {
 });
 
 // :: Project -> IntermediateNode -> IntermediateNode
-const addNodeLabel = R.curry((projectV2, node) => {
+const addNodeLabel = R.curry((project, node) => {
   const patch = R.view(
     XP.lensPatch(XP.getNodeType(node)),
-    projectV2
+    project
   );
 
   const label = node.label || XP.getPatchLabel(patch) || XP.getPatchPath(patch);
@@ -126,30 +126,30 @@ const addNodeLabel = R.curry((projectV2, node) => {
 
 // :: State -> StrMap Node
 const getCurrentPatchNodes = createSelector(
-  [getProjectV2, getCurrentPatchId],
-  (projectV2, currentPatchPath) => {
+  [getProject, getCurrentPatchId],
+  (project, currentPatchPath) => {
     if (!currentPatchPath) return {};
 
     return R.compose(
       R.indexBy(R.prop('id')),
       XP.listNodes,
       R.view(XP.lensPatch(currentPatchPath))
-    )(projectV2);
+    )(project);
   }
 );
 
 // :: State -> StrMap RenderableNode
 export const getRenderableNodes = createMemoizedSelector(
-  [getProjectV2, getCurrentPatchNodes, getConnectedPins],
+  [getProject, getCurrentPatchNodes, getConnectedPins],
   [R.T, R.equals, R.equals],
-  (projectV2, currentPatchNodes, connectedPins) =>
+  (project, currentPatchNodes, connectedPins) =>
     R.map(
       R.compose(
         addNodePositioning,
-        addNodeLabel(projectV2),
+        addNodeLabel(project),
         assocPinIsConnected(connectedPins),
         assocNodeIdToPins,
-        mergePinDataFromPatch(projectV2)
+        mergePinDataFromPatch(project)
       ),
       currentPatchNodes
     )
@@ -201,8 +201,8 @@ export const getLinkGhost = createSelector(
 
 // :: State -> EditorTabs
 export const getPreparedTabs = createSelector(
-  [getCurrentPatchId, getProjectV2, getTabs],
-  (currentPatchId, projectV2, tabs) =>
+  [getCurrentPatchId, getProject, getTabs],
+  (currentPatchId, project, tabs) =>
     R.map(
       (tab) => {
         const patchId = tab.id;
@@ -210,7 +210,7 @@ export const getPreparedTabs = createSelector(
         const label = R.compose(
           XP.getPatchLabel,
           R.view(XP.lensPatch(patchId))
-        )(projectV2);
+        )(project);
 
         return R.merge(
           tab,

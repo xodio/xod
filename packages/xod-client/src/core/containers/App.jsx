@@ -11,8 +11,8 @@ import { SAVE_LOAD_ERRORS } from '../../messages/constants';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
 const transpile = (context, transpiler) => {
-  const { projectV2, currentPatchId } = context.props;
-  return transpiler(projectV2, currentPatchId);
+  const { project, currentPatchId } = context.props;
+  return transpiler(project, currentPatchId);
 };
 
 const showCode = (context, code) => {
@@ -60,10 +60,10 @@ export default class App extends React.Component {
   }
 
   onExport() {
-    const { projectV2 } = this.props;
+    const { project } = this.props;
 
-    const projectJSON = getJSONForExport(projectV2);
-    const projectName = getProjectName(projectV2);
+    const projectJSON = getJSONForExport(project);
+    const projectName = getProjectName(project);
     const link = (document) ? document.createElement('a') : null;
     const url = `data:application/xod;charset=utf8,${encodeURIComponent(projectJSON)}`;
 
@@ -86,7 +86,7 @@ export default class App extends React.Component {
 }
 
 App.propTypes = {
-  projectV2: sanctuaryPropType(Project),
+  project: sanctuaryPropType(Project),
   currentPatchId: React.PropTypes.string, // eslint-disable-line react/no-unused-prop-types
   actions: React.PropTypes.shape({
     addError: React.PropTypes.func.isRequired,

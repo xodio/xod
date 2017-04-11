@@ -213,8 +213,8 @@ class App extends client.App {
           onBeforeUnload={this.onCloseApp}
         />
         <client.Toolbar
-          projectName={getProjectName(this.props.projectV2)}
-          projectAuthors={getProjectAuthors(this.props.projectV2)}
+          projectName={getProjectName(this.props.project)}
+          projectAuthors={getProjectAuthors(this.props.project)}
           menuBarItems={this.getMenuBarItems()}
         />
         <client.Editor size={this.state.size} />
@@ -253,7 +253,7 @@ App.propTypes = R.merge(client.App.propTypes, {
 
 const mapStateToProps = R.applySpec({
   hasChanges: client.projectHasChanges,
-  projectV2: client.getProjectV2,
+  project: client.getProject,
   currentPatchId: client.getCurrentPatchId,
 });
 

@@ -1,7 +1,7 @@
 import R from 'ramda';
 import { lensPatch, assocPatch, rightOrInitial, getPatchPath } from 'xod-project';
 
-import { getProjectV2 } from './selectors';
+import { getProject } from './selectors';
 
 import {
   PATCH_HISTORY_SAVE,
@@ -28,7 +28,7 @@ const getHistoryForPatch = (state, patchId) => R.pathOr(
 
 const getCurrentPatchState = (state, patchId) => R.compose(
   R.view(lensPatch(patchId)),
-  getProjectV2
+  getProject
 )(state);
 
 const HISTORY_LIMIT = 50;
@@ -43,7 +43,7 @@ const moveThroughHistory = (patchId, takeReplacementFrom, putCurrentTo, state) =
 
   return R.compose(
     R.over(
-      R.lensProp('projectV2'), // TODO
+      R.lensProp('project'), // TODO
       rightOrInitial(
         assocPatch(patchId, replacementPatchState)
       )

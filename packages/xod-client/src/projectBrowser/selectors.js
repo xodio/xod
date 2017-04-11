@@ -14,12 +14,12 @@ export const getSelectedPatchId = createSelector(
 );
 
 export const getProjectName = createSelector(
-  ProjectSelectors.getProjectV2,
+  ProjectSelectors.getProject,
   XP.getProjectName
 );
 
 export const getLocalPatches = createSelector(
-  ProjectSelectors.getProjectV2,
+  ProjectSelectors.getProject,
   XP.listLocalPatches
 );
 
@@ -29,15 +29,15 @@ export const getOpenPopups = createSelector(
 );
 
 export const getSelectedPatchLabel = createSelector(
-  [ProjectSelectors.getProjectV2, getSelectedPatchId],
-  (projectV2, selectedPatchPath) =>
-    XP.getPatchByPath(selectedPatchPath || '', projectV2)
+  [ProjectSelectors.getProject, getSelectedPatchId],
+  (project, selectedPatchPath) =>
+    XP.getPatchByPath(selectedPatchPath || '', project)
       .map(XP.getPatchLabel)
       .getOrElse('')
 );
 
 const getLibraryPatchesList = createSelector(
-  ProjectSelectors.getProjectV2,
+  ProjectSelectors.getProject,
   XP.listLibraryPatches
 );
 

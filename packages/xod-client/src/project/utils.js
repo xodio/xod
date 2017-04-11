@@ -80,14 +80,14 @@ export const getLinkingError = R.curry((pin1, pin2) => {
 // :: RenderablePin -> RenderablePin -> Boolean
 export const canPinsBeLinked = R.complement(getLinkingError);
 
-export const getJSONForExport = (projectV2) => {
+export const getJSONForExport = (project) => {
   const libPaths = R.compose(
     R.map(getPatchPath),
     listLibraryPatches
-  )(projectV2);
+  )(project);
 
   return R.compose(
     p => JSON.stringify(p, null, 2),
     omitPatches(libPaths)
-  )(projectV2);
+  )(project);
 };

@@ -169,7 +169,7 @@ class App extends client.App {
     } else {
       // 2. Save!
       this.props.actions.saveProject({
-        projectV2: this.props.projectV2,
+        project: this.props.project,
       });
     }
   }
@@ -365,8 +365,8 @@ class App extends client.App {
           onBeforeUnload={this.onCloseApp}
         />
         <client.Toolbar
-          projectName={getProjectName(this.props.projectV2)}
-          projectAuthors={getProjectAuthors(this.props.projectV2)}
+          projectName={getProjectName(this.props.project)}
+          projectAuthors={getProjectAuthors(this.props.project)}
         />
         <client.Editor size={this.state.size} />
         <client.SnackBar />
@@ -425,7 +425,7 @@ const mapStateToProps = (state) => {
   return ({
     hasChanges: client.projectHasChanges(state),
     projects: getProjects(state),
-    projectV2: client.getProjectV2(state),
+    project: client.getProject(state),
     upload: getUploadProcess(state),
     workspace: getWorkspace(settings),
     saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),

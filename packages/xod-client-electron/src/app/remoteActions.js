@@ -10,8 +10,8 @@ import {
   isDirectoryExists,
 } from 'xod-fs';
 
-export const saveProject = ({ projectV2, workspace }, onFinish) => {
-  const data = arrangeByFilesV2(projectV2);
+export const saveProject = ({ project, workspace }, onFinish) => {
+  const data = arrangeByFilesV2(project);
   return save(workspace, data).then(onFinish);
 };
 

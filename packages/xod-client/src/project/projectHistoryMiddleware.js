@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { listPatches, getPatchPath } from 'xod-project';
-import { getProjectV2 } from './selectors';
+import { getProject } from './selectors';
 
 import {
   PATCH_HISTORY_UNDO,
@@ -24,14 +24,14 @@ export default ({ getState, dispatch }) => next => (action) => {
     return;
   }
 
-  const previousPatchesList = R.compose(listPatches, getProjectV2, getState)();
+  const previousPatchesList = R.compose(listPatches, getProject, getState)();
 
   next(action);
 
   const currentPatches = R.compose(
     R.indexBy(getPatchPath),
     listPatches,
-    getProjectV2,
+    getProject,
     getState
   )();
 

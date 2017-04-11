@@ -1,7 +1,7 @@
 import { merge } from 'ramda';
 import { combineReducers } from 'redux';
 
-import projectV2Reducer from '../project/reducerV2';
+import projectReducer from '../project/reducer';
 import historyReducer from '../project/historyReducer';
 import projectBrowserReducer from '../projectBrowser/reducer';
 import editorReducer from '../editor/reducer';
@@ -11,8 +11,7 @@ import processesReducer from '../processes/reducer';
 const combineRootReducers = (extraReducers) => {
   const reducers = merge(
     {
-      project: (s = {}) => s,
-      projectV2: projectV2Reducer, // TODO: #migrateToV2
+      project: projectReducer,
       projectHistory: (s = {}) => s,
       projectBrowser: projectBrowserReducer,
       editor: editorReducer,

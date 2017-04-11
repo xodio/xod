@@ -17,7 +17,7 @@ import {
 } from 'xod-project';
 import initialState from '../src/core/state';
 import generateReducers from '../src/core/reducer';
-import { getProjectV2 } from '../src/project/selectors';
+import { getProject } from '../src/project/selectors';
 import {
   addPatch,
   renamePatch,
@@ -30,7 +30,7 @@ import {
   deleteLink,
 } from '../src/project/actions';
 
-describe('projectV2 reducer', () => {
+describe('project reducer', () => {
   describe('Patch management', () => {
     let store = null;
 
@@ -45,8 +45,8 @@ describe('projectV2 reducer', () => {
       const addPatchAction = store.dispatch(addPatch(newPatchLabel));
       const newPatchPath = addPatchAction.payload.id;
 
-      const projectV2 = getProjectV2(store.getState());
-      const maybeNewPatch = getPatchByPath(newPatchPath, projectV2);
+      const project = getProject(store.getState());
+      const maybeNewPatch = getPatchByPath(newPatchPath, project);
       assert.isTrue(Maybe.isJust(maybeNewPatch));
 
       const newPatch = maybeNewPatch.getOrElse(null);
@@ -62,8 +62,8 @@ describe('projectV2 reducer', () => {
       const newPatchLabel = 'new label';
       store.dispatch(renamePatch(patchPath, newPatchLabel));
 
-      const projectV2 = getProjectV2(store.getState());
-      const renamedPatch = getPatchByPath(patchPath, projectV2).getOrElse(null);
+      const project = getProject(store.getState());
+      const renamedPatch = getPatchByPath(patchPath, project).getOrElse(null);
 
       assert.isOk(renamedPatch);
       assert.equal(
@@ -77,8 +77,8 @@ describe('projectV2 reducer', () => {
       const patchPath = addPatchAction.payload.id;
       store.dispatch(deletePatch(patchPath));
 
-      const projectV2 = getProjectV2(store.getState());
-      const maybeDeletedPatch = getPatchByPath(patchPath, projectV2);
+      const project = getProject(store.getState());
+      const maybeDeletedPatch = getPatchByPath(patchPath, project);
 
       assert.isTrue(Maybe.isNothing(maybeDeletedPatch));
     });
@@ -102,7 +102,7 @@ describe('projectV2 reducer', () => {
       const maybeNode = R.compose(
         getNodeById(nodeId),
         R.view(lensPatch(testPatchPath)),
-        getProjectV2
+        getProject
       )(store.getState());
 
       assert.isTrue(Maybe.isJust(maybeNode));
@@ -115,7 +115,7 @@ describe('projectV2 reducer', () => {
       const maybeNode = R.compose(
         getNodeById(nodeId),
         R.view(lensPatch(testPatchPath)),
-        getProjectV2
+        getProject
       )(store.getState());
 
       const actualPosition = Maybe.maybe({}, getNodePosition, maybeNode);
@@ -133,7 +133,7 @@ describe('projectV2 reducer', () => {
       const maybeNode = R.compose(
         getNodeById(nodeId),
         R.view(lensPatch(testPatchPath)),
-        getProjectV2
+        getProject
       )(store.getState());
 
       const actualLabel = Maybe.maybe({}, getNodeLabel, maybeNode);
@@ -152,7 +152,7 @@ describe('projectV2 reducer', () => {
       const maybeNode = R.compose(
         getNodeById(nodeId),
         R.view(lensPatch(testPatchPath)),
-        getProjectV2
+        getProject
       )(store.getState());
 
       const maybePinValue = maybeNode.chain(getPinCurriedValue(pinKey));
@@ -171,7 +171,7 @@ describe('projectV2 reducer', () => {
       const maybeNode = R.compose(
         getNodeById(nodeId),
         R.view(lensPatch(testPatchPath)),
-        getProjectV2
+        getProject
       )(store.getState());
 
       assert.isTrue(Maybe.isNothing(maybeNode));
@@ -203,7 +203,7 @@ describe('projectV2 reducer', () => {
       const links = R.compose(
         listLinks,
         R.view(lensPatch(testPatchPath)),
-        getProjectV2
+        getProject
       )(store.getState());
 
       assert.equal(1, links.length);
@@ -220,7 +220,7 @@ describe('projectV2 reducer', () => {
         R.head,
         listLinks,
         R.view(lensPatch(testPatchPath)),
-        getProjectV2
+        getProject
       )(store.getState());
 
       store.dispatch(deleteLink(linkId, testPatchPath));
@@ -228,7 +228,7 @@ describe('projectV2 reducer', () => {
       const links = R.compose(
         listLinks,
         R.view(lensPatch(testPatchPath)),
-        getProjectV2
+        getProject
       )(store.getState());
 
       assert.equal(0, links.length);

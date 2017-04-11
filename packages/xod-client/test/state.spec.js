@@ -3,7 +3,7 @@ import initialState from '../src/core/state';
 
 describe('Initial state', () => {
   describe('should have reducers:', () => {
-    it.skip('project', () => {
+    it('project', () => {
       chai.expect(initialState).to.have.any.keys(['project']);
     });
     it('editor', () => {

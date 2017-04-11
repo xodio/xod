@@ -13,7 +13,7 @@ import { EDITOR_MODE } from '../../src/editor/constants';
 const mockStore = configureStore([thunk]);
 const testStore = state => createStore(
   combineReducers({
-    projectV2: f => f || {},
+    project: f => f || {},
     editor: editorReducer,
   }),
   state,
@@ -56,7 +56,7 @@ describe('Editor reducer', () => {
 
   describe('selecting entities', () => {
     const mockState = {
-      projectV2: {
+      project: {
         authors: [
           'Test Person',
         ],
