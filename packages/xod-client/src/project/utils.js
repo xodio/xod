@@ -1,6 +1,14 @@
 import R from 'ramda';
 
-import { getLinkNodeIds, isInputPin, isOutputPin, PIN_TYPE } from 'xod-project';
+import {
+  getLinkNodeIds,
+  isInputPin,
+  isOutputPin,
+  PIN_TYPE,
+  getPatchPath,
+  listLibraryPatches,
+  omitPatches,
+} from 'xod-project';
 
 import { LINK_ERRORS } from '../editor/constants';
 
@@ -71,3 +79,15 @@ export const getLinkingError = R.curry((pin1, pin2) => {
 
 // :: RenderablePin -> RenderablePin -> Boolean
 export const canPinsBeLinked = R.complement(getLinkingError);
+
+export const getJSONForExport = (projectV2) => {
+  const libPaths = R.compose(
+    R.map(getPatchPath),
+    listLibraryPatches
+  )(projectV2);
+
+  return R.compose(
+    p => JSON.stringify(p, null, 2),
+    omitPatches(libPaths)
+  )(projectV2);
+};

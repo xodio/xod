@@ -13,8 +13,9 @@ import {
   PATCH_DELETE,
   PROJECT_CREATE,
   PROJECT_RENAME,
-  PROJECT_LOAD_DATA,
-  PROJECT_REPLACE_LIBS,
+  PROJECT_OPEN,
+  PROJECT_OPEN_WORKSPACE,
+  PROJECT_IMPORT,
 } from './actionTypes';
 
 import { PROPERTY_KIND } from './constants';
@@ -57,25 +58,30 @@ export default (state = {}, action) => {
       )(state);
     }
 
+    case PROJECT_IMPORT: {
+      const importedProject = action.payload;
+
+      return XP.mergePatchesList(
+        XP.listLibraryPatches(state),
+        importedProject
+      );
+    }
+
     case PROJECT_RENAME:
       return XP.setProjectName(action.payload, state);
 
-    case PROJECT_LOAD_DATA: {
+    case PROJECT_OPEN: {
       return action.payload;
     }
 
-    case PROJECT_REPLACE_LIBS: {
-      const newLibsList = action.payload;
-
-      const oldLibsPaths = R.compose(
-        R.map(XP.getPatchPath),
-        XP.listLibraryPatches
-      )(state);
+    case PROJECT_OPEN_WORKSPACE: {
+      const libs = action.payload;
 
       return R.compose(
-        XP.mergePatchesList(newLibsList),
-        XP.omitPatches(oldLibsPaths)
-      )(state);
+        XP.mergePatchesList(libs),
+        XP.setProjectName('Untitled'),
+        XP.createProject
+      )();
     }
 
     case NODE_ADD: {

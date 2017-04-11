@@ -171,7 +171,7 @@ class App extends client.App {
     } else {
       // 2. Save!
       this.props.actions.savePatch({
-        json: this.props.projectJSON,
+        projectV2: this.props.projectV2,
         patchId: this.props.currentPatchId,
       });
     }
@@ -185,7 +185,7 @@ class App extends client.App {
     } else {
       // 2. Save!
       this.props.actions.saveProject({
-        json: this.props.projectJSON,
+        projectV2: this.props.projectV2,
       });
     }
   }
@@ -456,12 +456,12 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     createProject: client.createProject,
     requestRenameProject: client.requestRenameProject,
-    loadProjectData: client.loadProjectData,
     setMode: client.setMode,
     savePatch: actions.savePatch,
     saveProject: actions.saveProject,
     loadProjectList: actions.loadProjectList,
     loadProject: actions.loadProject,
+    importProject: client.importProject, // used in base App class
     upload: uploadActions.upload,
     addError: client.addError,
     deleteProcess: client.deleteProcess,

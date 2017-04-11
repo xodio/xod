@@ -1,4 +1,4 @@
-import { replaceLibs } from 'xod-client';
+import { openWorkspace } from 'xod-client';
 
 import {
   SET_WORKSPACE,
@@ -19,7 +19,7 @@ export const checkWorkspace = createAsyncAction({
   silent: true,
   onComplete: (data, dispatch) => {
     if (data.valid && data.libs) {
-      dispatch(replaceLibs(data.libs));
+      dispatch(openWorkspace(data.libs));
       return;
     }
 
@@ -37,7 +37,7 @@ export const changeWorkspace = createAsyncAction({
   silent: true,
   onComplete: (data, dispatch) => {
     dispatch(setWorkspace(data.path));
-    dispatch(replaceLibs(data.libs));
+    dispatch(openWorkspace(data.libs));
   },
 });
 

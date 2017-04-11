@@ -16,8 +16,8 @@ import {
 } from './actionTypes';
 import {
   PROJECT_CREATE,
-  PROJECT_LOAD_DATA,
-  PROJECT_ONLY_LOAD_DATA,
+  PROJECT_OPEN,
+  PROJECT_IMPORT,
   PATCH_ADD,
   PATCH_DELETE,
   NODE_DELETE,
@@ -116,9 +116,9 @@ const editorReducer = (state = {}, action) => {
         },
       });
     }
-    case PROJECT_LOAD_DATA:
+    case PROJECT_OPEN:
       return resetCurrentPatchId(editorReducer, state, action.payload);
-    case PROJECT_ONLY_LOAD_DATA:
+    case PROJECT_IMPORT:
       return resetCurrentPatchId(editorReducer, state, action.payload);
     case PATCH_ADD:
     case EDITOR_SWITCH_PATCH:

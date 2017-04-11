@@ -102,18 +102,18 @@ export const changePinMode = (nodeId, pinKey, injected, val = null) => (dispatch
   });
 };
 
-export const loadProjectData = project => ({
-  type: ActionType.PROJECT_LOAD_DATA,
+export const openProject = project => ({
+  type: ActionType.PROJECT_OPEN,
   payload: project,
 });
 
-export const loadProjectOnlyFromJSON = json => ({
-  type: ActionType.PROJECT_ONLY_LOAD_DATA,
+export const importProject = json => ({
+  type: ActionType.PROJECT_IMPORT,
   payload: json,
 });
 
-export const replaceLibs = libs => ({
-  type: ActionType.PROJECT_REPLACE_LIBS,
+export const openWorkspace = libs => ({
+  type: ActionType.PROJECT_OPEN_WORKSPACE,
   payload: libs,
 });
 

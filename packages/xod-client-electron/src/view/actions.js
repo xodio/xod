@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { ipcRenderer } from 'electron';
-import { addProcess, progressProcess, successProcess, deleteProcess, addConfirmation, loadProjectOnlyFromJSON } from 'xod-client';
+import { addProcess, progressProcess, successProcess, deleteProcess, addConfirmation, openProject } from 'xod-client';
 
 import { getWorkspace } from '../settings/selectors';
 import * as ActionType from './actionTypes';
@@ -106,8 +106,7 @@ export const loadProject = createAsyncAction({
     complete: 'Project has been loaded!',
   },
   onComplete: (data, dispatch) => {
-    const json = JSON.stringify(data); // @TODO: Remove excessive json stringify->parse (?)
-    dispatch(loadProjectOnlyFromJSON(json));
+    dispatch(openProject(data));
   },
 });
 

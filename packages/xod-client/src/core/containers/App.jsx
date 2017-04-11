@@ -6,6 +6,7 @@ import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 import { transpileForArduino } from 'xod-arduino';
 import { foldEither } from 'xod-func-tools';
 
+import { getJSONForExport } from '../../project/utils';
 import { SAVE_LOAD_ERRORS } from '../../messages/constants';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
@@ -53,15 +54,15 @@ export default class App extends React.Component {
 
     Either.either(
       this.props.actions.addError,
-      this.props.actions.loadProjectData,
+      this.props.actions.importProject,
       eitherProject
     );
   }
 
   onExport() {
     const { projectV2 } = this.props;
-    const projectJSON = JSON.stringify(projectV2, null, 2);
 
+    const projectJSON = getJSONForExport(projectV2);
     const projectName = getProjectName(projectV2);
     const link = (document) ? document.createElement('a') : null;
     const url = `data:application/xod;charset=utf8,${encodeURIComponent(projectJSON)}`;
@@ -89,6 +90,6 @@ App.propTypes = {
   currentPatchId: React.PropTypes.string, // eslint-disable-line react/no-unused-prop-types
   actions: React.PropTypes.shape({
     addError: React.PropTypes.func.isRequired,
-    loadProjectData: React.PropTypes.func.isRequired,
+    importProject: React.PropTypes.func.isRequired,
   }),
 };

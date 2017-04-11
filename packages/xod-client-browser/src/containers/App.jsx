@@ -261,7 +261,7 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     createProject: client.createProject,
     requestRenameProject: client.requestRenameProject,
-    loadProjectData: client.loadProjectData,
+    importProject: client.importProject, // used in base App class
     setMode: client.setMode,
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,
