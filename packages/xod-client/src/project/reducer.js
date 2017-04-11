@@ -1,5 +1,6 @@
 import R from 'ramda';
 import XP from 'xod-project';
+import { explode } from 'xod-func-tools';
 
 import {
   NODE_ADD,
@@ -52,7 +53,7 @@ export default (state = {}, action) => {
       )();
 
       return R.compose(
-        XP.rightOrInitial(XP.assocPatch(mainPatchId, mainPatch)),
+        explode(XP.assocPatch(mainPatchId, mainPatch)),
         XP.setProjectName(name),
         XP.omitPatches(oldLocalPatchesPaths)
       )(state);
@@ -174,7 +175,7 @@ export default (state = {}, action) => {
 
       return R.over(
         XP.lensPatch(patchId),
-        XP.rightOrInitial(XP.assocLink(newLink)),
+        explode(XP.assocLink(newLink)),
         state
       );
     }
@@ -197,7 +198,7 @@ export default (state = {}, action) => {
         XP.setPatchLabel(label)
       )();
 
-      return XP.rightOrInitial(
+      return explode(
         XP.assocPatch(id, patch),
         state
       );
