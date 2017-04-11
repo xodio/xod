@@ -53,7 +53,8 @@ export default (state = {}, action) => {
       )();
 
       return R.compose(
-        explode(XP.assocPatch(mainPatchId, mainPatch)),
+        explode,
+        XP.assocPatch(mainPatchId, mainPatch),
         XP.setProjectName(name),
         XP.omitPatches(oldLocalPatchesPaths)
       )(state);
@@ -175,7 +176,7 @@ export default (state = {}, action) => {
 
       return R.over(
         XP.lensPatch(patchId),
-        explode(XP.assocLink(newLink)),
+        R.pipe(XP.assocLink(newLink), explode),
         state
       );
     }
@@ -198,10 +199,10 @@ export default (state = {}, action) => {
         XP.setPatchLabel(label)
       )();
 
-      return explode(
-        XP.assocPatch(id, patch),
-        state
-      );
+      return R.compose(
+        explode,
+        XP.assocPatch(id, patch)
+      )(state);
     }
 
     case PATCH_RENAME: {

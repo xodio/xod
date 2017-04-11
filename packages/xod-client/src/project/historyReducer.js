@@ -45,9 +45,7 @@ const moveThroughHistory = (patchId, takeReplacementFrom, putCurrentTo, state) =
   return R.compose(
     R.over(
       projectLens,
-      explode(
-        assocPatch(patchId, replacementPatchState)
-      )
+      R.pipe(assocPatch(patchId, replacementPatchState), explode)
     ),
     R.assocPath(
       ['projectHistory', patchId],
