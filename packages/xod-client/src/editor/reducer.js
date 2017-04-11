@@ -18,6 +18,7 @@ import {
   PROJECT_CREATE,
   PROJECT_OPEN,
   PROJECT_IMPORT,
+  PROJECT_OPEN_WORKSPACE,
   PATCH_ADD,
   PATCH_DELETE,
   NODE_DELETE,
@@ -117,8 +118,8 @@ const editorReducer = (state = {}, action) => {
       });
     }
     case PROJECT_OPEN:
-      return resetCurrentPatchId(editorReducer, state, action.payload);
     case PROJECT_IMPORT:
+    case PROJECT_OPEN_WORKSPACE:
       return resetCurrentPatchId(editorReducer, state, action.payload);
     case PATCH_ADD:
     case EDITOR_SWITCH_PATCH:
