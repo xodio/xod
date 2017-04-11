@@ -79,7 +79,7 @@ export default (state = {}, action) => {
 
       return R.compose(
         XP.mergePatchesList(libs),
-        XP.setProjectName('Untitled'),
+        XP.setProjectName('untitled'),
         XP.createProject
       )();
     }
