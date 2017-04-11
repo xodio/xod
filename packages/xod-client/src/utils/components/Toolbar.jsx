@@ -1,7 +1,6 @@
 import R from 'ramda';
 import React from 'react';
 
-import UserPanel from '../../user/containers/UserPanel';
 import Menubar, { itemsPropTypes as menubarItemsPropTypes } from './Menubar';
 
 const renderProjectAuthors = R.compose(
@@ -29,7 +28,6 @@ const Toolbar = ({ projectName, projectAuthors, menuBarItems }) => (
       </span>
     </div>
 
-    <UserPanel />
   </div>
 );
 

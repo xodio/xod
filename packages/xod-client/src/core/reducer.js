@@ -7,7 +7,6 @@ import projectBrowserReducer from '../projectBrowser/reducer';
 import editorReducer from '../editor/reducer';
 import errorsReducer from '../messages/reducer';
 import processesReducer from '../processes/reducer';
-import userReducer from '../user/reducer';
 
 const combineRootReducers = (extraReducers) => {
   const reducers = merge(
@@ -19,7 +18,6 @@ const combineRootReducers = (extraReducers) => {
       editor: editorReducer,
       errors: errorsReducer,
       processes: processesReducer,
-      user: userReducer,
     },
     extraReducers
   );

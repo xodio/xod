@@ -21,7 +21,6 @@ import Root from './core/containers/Root';
 import { container as Editor, CreateNodeWidget } from './editor';
 import SnackBar from './messages';
 import * as MessageConstants from './messages/constants';
-import { UserPanel } from './user';
 import Toolbar from './utils/components/Toolbar';
 import PopupShowCode from './utils/components/PopupShowCode';
 import PopupAlert from './utils/components/PopupAlert';
@@ -57,7 +56,6 @@ export { default as Root } from './core/containers/Root';
 export { container as Editor, CreateNodeWidget } from './editor';
 export { default as SnackBar } from './messages';
 export * from './messages/constants';
-export { UserPanel } from './user';
 export { default as DevTools } from './core/containers/DevTools';
 
 export default Object.assign({
@@ -71,7 +69,6 @@ export default Object.assign({
   PopupPrompt,
   PopupForm,
   SnackBar,
-  UserPanel,
   DevTools,
   Toolbar,
   menu: MenuUtils,
