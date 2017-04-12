@@ -11,6 +11,10 @@ export const SLOT_MARGIN = {
   VERTICAL: 32,
 };
 
+export const LINK_HOTSPOT_SIZE = {
+  WIDTH: 8,
+};
+
 export const PIN_SIZE = { // including label, etc
   WIDTH: 22,
   HEIGHT: 20,

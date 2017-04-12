@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { PIN_VALIDITY } from '../../editor/constants';
 import { noop } from '../../utils/ramda';
 import { PIN_RADIUS } from '../nodeLayout';
 
@@ -109,8 +108,4 @@ Pin.propTypes = {
   isSelected: React.PropTypes.bool,
   isConnected: React.PropTypes.bool,
   isAcceptingLinks: React.PropTypes.bool,
-};
-
-Pin.defaultProps = {
-  validness: PIN_VALIDITY.NONE,
 };
