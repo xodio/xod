@@ -1,19 +1,23 @@
 import R from 'ramda';
 import React from 'react';
+import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
 
-import * as ProjectSelectors from '../../project/selectors';
-
 import * as EditorActions from '../actions';
 import * as EditorSelectors from '../selectors';
 import * as EditorUtils from '../utils';
-import * as ProjectUtils from '../../project/utils';
-import * as ProjectActions from '../../project/actions';
-import { findRootSVG } from '../../utils/browser';
 
+import * as ProjectActions from '../../project/actions';
+import * as ProjectSelectors from '../../project/selectors';
+import * as ProjectUtils from '../../project/utils';
+import { RenderableLink, RenderableNode } from '../../project/types';
+
+import { findRootSVG } from '../../utils/browser';
 import { COMMAND } from '../../utils/constants';
+import sanctuaryPropType from '../../utils/sanctuaryPropType';
+
 import PatchSVG from '../../project/components/PatchSVG';
 import BackgroundLayer from '../../project/components/BackgroundLayer';
 import IdleNodesLayer from '../../project/components/IdleNodesLayer';
@@ -22,6 +26,7 @@ import GhostsLayer from '../../project/components/GhostsLayer';
 import SnappingPreviewLayer from '../../project/components/SnappingPreviewLayer';
 import DraggedNodeLayer from '../../project/components/DraggedNodeLayer';
 import DraggedNodeLinksLayer from '../../project/components/DraggedNodeLinksLayer';
+
 import {
   snapNodePositionToSlots,
   substractPoints,
@@ -236,8 +241,8 @@ class Patch extends React.Component {
 Patch.propTypes = {
   size: React.PropTypes.any.isRequired,
   actions: React.PropTypes.objectOf(React.PropTypes.func),
-  nodes: React.PropTypes.any,
-  links: React.PropTypes.any,
+  nodes: sanctuaryPropType($.StrMap(RenderableNode)),
+  links: sanctuaryPropType($.StrMap(RenderableLink)),
   linkingPin: React.PropTypes.object,
   selection: React.PropTypes.array,
   selectedNodeType: React.PropTypes.string,

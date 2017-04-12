@@ -70,7 +70,7 @@ const assocPinIsConnected = R.curry((connectedPins, node) =>
     R.map(pin =>
       R.assoc(
         'isConnected',
-        R.path([node.id, pin.key], connectedPins),
+        !!R.path([node.id, pin.key], connectedPins),
         pin
       )
     ),
