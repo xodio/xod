@@ -1,4 +1,4 @@
-import { updateNodeTypes } from 'xod-client';
+import { openWorkspace } from 'xod-client';
 
 import {
   SET_WORKSPACE,
@@ -18,8 +18,8 @@ export const checkWorkspace = createAsyncAction({
   notify: false,
   silent: true,
   onComplete: (data, dispatch) => {
-    if (data.valid && data.nodeTypes) {
-      dispatch(updateNodeTypes(data.nodeTypes));
+    if (data.valid && data.libs) {
+      dispatch(openWorkspace(data.libs));
       return;
     }
 
@@ -37,7 +37,7 @@ export const changeWorkspace = createAsyncAction({
   silent: true,
   onComplete: (data, dispatch) => {
     dispatch(setWorkspace(data.path));
-    dispatch(updateNodeTypes(data.nodeTypes));
+    dispatch(openWorkspace(data.libs));
   },
 });
 

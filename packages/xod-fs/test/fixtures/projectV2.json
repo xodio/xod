@@ -1,0 +1,103 @@
+{
+  "authors": [
+    "Author 1",
+    "Author 2"
+  ],
+  "description": "",
+  "license": "",
+  "patches": {
+    "xod/core/inputNumber": {
+      "nodes": {},
+      "links": {},
+      "impls": {},
+      "pins": {
+        "PIN": {
+          "key": "PIN",
+          "type": "number",
+          "direction": "output",
+          "label": "PIN",
+          "description": "",
+          "order": 0,
+          "value": 0
+        }
+      },
+      "path": "xod/core/inputNumber",
+      "label": "<InputNumber>"
+    },
+    "xod/core/led": {
+      "nodes": {},
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var b = e.inputs.brightness;\n\n  // Adjust duty cycle as a power function to align brightness\n  // perception by human eye\n  var duty = b * b * b;\n\n  analogWrite(e.context.pin, duty);\n};\n"
+      },
+      "pins": {
+        "brightness": {
+          "key": "brightness",
+          "type": "number",
+          "direction": "input",
+          "label": "brightness",
+          "description": "",
+          "order": 0,
+          "value": 0
+        }
+      },
+      "path": "xod/core/led",
+      "label": "LED"
+    },
+    "@/Main": {
+      "nodes": {
+        "SJmGlirFpx": {
+          "id": "SJmGlirFpx",
+          "type": "xod/core/led",
+          "position": {
+            "x": 138,
+            "y": 224
+          },
+          "pins": {
+            "brightness": {
+              "key": "brightness",
+              "value": 0
+            }
+          }
+        },
+        "rJxbjrKpl": {
+          "id": "rJxbjrKpl",
+          "type": "xod/core/inputNumber",
+          "position": {
+            "x": 138,
+            "y": 16
+          },
+          "pins": {}
+        }
+      },
+      "links": {
+        "rJIWsrtae": {
+          "id": "rJIWsrtae",
+          "output": {
+            "nodeId": "rJxbjrKpl",
+            "pinKey": "PIN"
+          },
+          "input": {
+            "nodeId": "SJmGlirFpx",
+            "pinKey": "brightness"
+          }
+        }
+      },
+      "impls": {},
+      "pins": {
+        "rJxbjrKpl": {
+          "key": "rJxbjrKpl",
+          "type": "number",
+          "direction": "input",
+          "label": "My pin label",
+          "description": "My pin description",
+          "order": 0,
+          "value": 0
+        }
+      },
+      "path": "@/Main",
+      "label": "Main patch"
+    }
+  },
+  "name": "Awesome project"
+}

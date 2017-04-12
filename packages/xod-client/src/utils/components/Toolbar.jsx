@@ -1,9 +1,17 @@
+import R from 'ramda';
 import React from 'react';
 
-import UserPanel from '../../user/containers/UserPanel';
 import Menubar, { itemsPropTypes as menubarItemsPropTypes } from './Menubar';
 
-const Toolbar = ({ meta, menuBarItems }) => (
+const renderProjectAuthors = R.compose(
+  R.unless(
+    R.isEmpty,
+    R.concat(' by ')
+  ),
+  R.join(', ')
+);
+
+const Toolbar = ({ projectName, projectAuthors, menuBarItems }) => (
   <div className="Toolbar">
     <div className="logo">
       XOD
@@ -13,19 +21,19 @@ const Toolbar = ({ meta, menuBarItems }) => (
 
     <div className="project-meta">
       <span>
-        {meta.name}
+        {projectName}
       </span>
       <span>
-        {(meta.author) ? ` by ${meta.author}` : ''}
+        {renderProjectAuthors(projectAuthors)}
       </span>
     </div>
 
-    <UserPanel />
   </div>
 );
 
 Toolbar.propTypes = {
-  meta: React.PropTypes.object,
+  projectName: React.PropTypes.string.isRequired,
+  projectAuthors: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
   menuBarItems: menubarItemsPropTypes,
 };
 

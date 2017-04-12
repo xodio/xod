@@ -45,7 +45,7 @@ module.exports = {
       allowAfterSuper: true
     }],
     'new-cap': ['error', {
-      'capIsNewExceptions': ['Maybe', 'Either', 'Tuple'],
+      'capIsNewExceptions': ['Maybe', 'Either', 'Tuple', 'StrMap'],
       'capIsNewExceptionPattern': '^(Maybe|Either)\..'
     }],
     'import/no-extraneous-dependencies': ['error', {

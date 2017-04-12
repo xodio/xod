@@ -1,8 +1,6 @@
-import R from 'ramda';
 import React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import core from 'xod-core';
 
 import DevTools from '../../utils/devtools';
 import generateReducers from '../reducer';
@@ -15,20 +13,11 @@ export default class Root extends React.Component {
   constructor(props) {
     super(props);
 
-    this.patches = core.getPatches(initialState);
     this.store = createStore(
-      this.createReducers(this.patches, this.props.extraReducers),
+      generateReducers(this.props.extraReducers),
       initialState,
       EditorMiddleware
     );
-
-    this.store.subscribe(() => {
-      const rootState = this.store.getState();
-      const statePatches = core.getPatches(rootState);
-      if (core.isPatchesUpdated(statePatches, this.patches)) {
-        this.store.replaceReducer(this.createReducers(statePatches, this.props.extraReducers));
-      }
-    });
   }
 
   componentDidMount() {
@@ -48,21 +37,15 @@ export default class Root extends React.Component {
       this.store.dispatch(action);
     };
 
-    dispatchAddNode('xod/core/button', 100, 100);
-    dispatchAddNode('xod/core/pot', 400, 100);
-    dispatchAddNode('xod/core/led', 100, 400);
-    dispatchAddNode('xod/core/servo', 400, 400);
+    dispatchAddNode('xod/core/button', 138, 120);
+    dispatchAddNode('xod/core/pot', 394, 120);
+    dispatchAddNode('xod/core/led', 138, 432);
+    dispatchAddNode('xod/core/servo', 394, 432);
 
     dispatchAddLink(
       { nodeId: nodes[0], pinKey: 'state' },
       { nodeId: nodes[2], pinKey: 'brightness' }
     );
-  }
-
-  createReducers(patches, reducers) {
-    this.patches = patches;
-    const patchIds = R.keys(this.patches);
-    return generateReducers(patchIds, reducers);
   }
 
   render() {

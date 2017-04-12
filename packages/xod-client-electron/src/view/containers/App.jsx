@@ -8,8 +8,11 @@ import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
 import EventListener from 'react-event-listener';
 
-import core from 'xod-core';
 import client from 'xod-client';
+import {
+  getProjectName,
+  getProjectAuthors,
+} from 'xod-project';
 
 import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
@@ -55,11 +58,9 @@ class App extends client.App {
     this.onImportClicked = this.onImportClicked.bind(this);
     this.onImport = this.onImport.bind(this);
     this.onExport = this.onExport.bind(this);
-    this.onSavePatch = this.onSavePatch.bind(this);
     this.onSaveProject = this.onSaveProject.bind(this);
     this.onOpenProjectClicked = this.onOpenProjectClicked.bind(this);
 
-    this.onSelectNodeType = this.onSelectNodeType.bind(this);
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
@@ -150,48 +151,6 @@ class App extends client.App {
     );
   }
 
-  onImport(json) {
-    let project;
-    let validJSON = true;
-    let errorMessage = null;
-
-    try {
-      project = JSON.parse(json);
-    } catch (err) {
-      validJSON = false;
-      errorMessage = client.SAVE_LOAD_ERRORS.NOT_A_JSON;
-    }
-
-    if (validJSON && !core.validateProject(project)) {
-      errorMessage = client.SAVE_LOAD_ERRORS.INVALID_FORMAT;
-    }
-
-    if (errorMessage) {
-      this.props.actions.addError(errorMessage);
-      return;
-    }
-
-    this.props.actions.loadProjectFromJSON(json);
-  }
-
-  onExport() {
-    const projectName = this.props.meta.name;
-    const link = (document) ? document.createElement('a') : null;
-    const url = `data:application/xod;charset=utf8,${encodeURIComponent(this.props.projectJSON)}`;
-
-    if (link && link.download !== undefined) {
-      link.href = url;
-      link.setAttribute('download', `${projectName}.xodball`);
-
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else {
-      window.open(url, '_blank');
-      window.focus();
-    }
-  }
-
   onWorkspaceChange(val) {
     this.hidePopupSetWorkspace();
     this.props.actions.changeWorkspace({ path: val });
@@ -199,20 +158,6 @@ class App extends client.App {
     if (typeof this.state.popupSetWorkspaceCB === 'function') {
       this.state.popupSetWorkspaceCB();
       this.setState({ popupSetWorkspaceCB: null });
-    }
-  }
-
-  onSavePatch() {
-    // 1. Check for existing of workspace
-    //    if does not exists — show PopupSetWorkspace
-    if (!this.props.workspace) {
-      this.showPopupSetWorkspace(this.onSavePatch);
-    } else {
-      // 2. Save!
-      this.props.actions.savePatch({
-        json: this.props.projectJSON,
-        patchId: this.props.currentPatchId,
-      });
     }
   }
 
@@ -224,13 +169,9 @@ class App extends client.App {
     } else {
       // 2. Save!
       this.props.actions.saveProject({
-        json: this.props.projectJSON,
+        project: this.props.project,
       });
     }
-  }
-
-  onSelectNodeType(typeKey) {
-    this.props.actions.setSelectedNodeType(typeKey);
   }
 
   onAddNodeClick() {
@@ -290,7 +231,6 @@ class App extends client.App {
           onClick(items.exportProject, this.onExport),
           items.separator,
           onClick(items.newPatch, this.props.actions.createPatch),
-          onClick(items.savePatch, this.onSavePatch),
         ]
       ),
       submenu(
@@ -425,11 +365,8 @@ class App extends client.App {
           onBeforeUnload={this.onCloseApp}
         />
         <client.Toolbar
-          meta={this.props.meta}
-          nodeTypes={this.props.nodeTypes}
-          selectedNodeType={this.props.selectedNodeType}
-          onSelectNodeType={this.onSelectNodeType}
-          onAddNodeClick={this.onAddNodeClick}
+          projectName={getProjectName(this.props.project)}
+          projectAuthors={getProjectAuthors(this.props.project)}
         />
         <client.Editor size={this.state.size} />
         <client.SnackBar />
@@ -451,7 +388,7 @@ class App extends client.App {
           onClose={this.hidePopupCreateProject}
         >
           <p>
-          Please, give a sonorous name to your project:
+            Please, give a sonorous name to your project:
           </p>
         </client.PopupPrompt>
         <PopupSetWorkspace
@@ -472,20 +409,14 @@ class App extends client.App {
   }
 }
 
-App.propTypes = {
+App.propTypes = R.merge(client.App.propTypes, {
   hasChanges: React.PropTypes.bool,
-  project: React.PropTypes.object,
   projects: React.PropTypes.object,
-  projectJSON: React.PropTypes.string,
-  meta: React.PropTypes.object,
-  nodeTypes: React.PropTypes.any.isRequired,
-  selectedNodeType: React.PropTypes.string,
   actions: React.PropTypes.objectOf(React.PropTypes.func),
   upload: React.PropTypes.object,
   workspace: React.PropTypes.string,
   saveProcess: React.PropTypes.object,
-  currentPatchId: React.PropTypes.string,
-};
+});
 
 const mapStateToProps = (state) => {
   const processes = client.getProccesses(state);
@@ -493,12 +424,8 @@ const mapStateToProps = (state) => {
 
   return ({
     hasChanges: client.projectHasChanges(state),
-    project: core.getProjectPojo(state),
     projects: getProjects(state),
-    projectJSON: core.getProjectJSON(state),
-    meta: core.getMeta(state),
-    nodeTypes: core.dereferencedNodeTypes(state),
-    selectedNodeType: client.getSelectedNodeType(state),
+    project: client.getProject(state),
     upload: getUploadProcess(state),
     workspace: getWorkspace(settings),
     saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),
@@ -510,15 +437,13 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     createProject: client.createProject,
     requestRenameProject: client.requestRenameProject,
-    loadProjectFromJSON: client.loadProjectFromJSON,
     setMode: client.setMode,
-    savePatch: actions.savePatch,
     saveProject: actions.saveProject,
     loadProjectList: actions.loadProjectList,
     loadProject: actions.loadProject,
+    importProject: client.importProject, // used in base App class
     upload: uploadActions.upload,
     addError: client.addError,
-    setSelectedNodeType: client.setSelectedNodeType,
     deleteProcess: client.deleteProcess,
     createPatch: client.requestCreatePatch,
     undoCurrentPatch: client.undoCurrentPatch,

@@ -50,7 +50,8 @@ export const duplicatePatch = def(
  */
 export const getPatchLabel = def(
   'getPatchLabel :: Patch -> Label',
-  R.prop('label')
+  // TODO: when label field is included in type definition, remove fallback to ''
+  R.propOr('', 'label')
 );
 
 /**
@@ -203,9 +204,9 @@ export const listNodes = def(
  */
 export const getNodeById = def(
   'getNodeById :: NodeId -> Patch -> Maybe Node',
-  (nodeId, patch) => R.compose(
-    Tools.find(nodeIdEquals(nodeId)),
-    listNodes
+  (id, patch) => R.compose(
+    Maybe,
+    R.path(['nodes', id])
   )(patch)
 );
 
@@ -273,6 +274,21 @@ export const getPinByKey = def(
 );
 
 /**
+ * @function getPinByKeyUnsafe
+ * @param {string} key
+ * @param {Patch} patch
+ * @returns {Pin}
+ * @throws Error if Pin was not found
+ */
+export const getPinByKeyUnsafe = def(
+  'getPinByKey :: PinKey -> Patch -> Pin',
+  (pinKey, patch) => explodeMaybe(
+    Utils.formatString(CONST.ERROR.PIN_NOT_FOUND, { pinKey, patchPath: getPatchPath(patch) }),
+    getPinByKey(pinKey, patch)
+  )
+);
+
+/**
  * @function listPins
  * @param {Patch} patch
  * @returns {Pin[]}
@@ -320,8 +336,7 @@ export const listOutputPins = def(
 export const isTerminalPatch = def(
   'isTerminalPatch :: Patch -> Boolean',
   R.compose(
-    R.contains(true),
-    R.map(Pin.isTerminalPin),
+    R.any(Pin.isTerminalPin),
     listPins
   )
 );
@@ -501,6 +516,35 @@ export const dissocLink = def(
 //
 // =============================================================================
 
+const rebuildPins = def(
+  'rebuildPins :: Patch -> Patch',
+  (patch) => {
+    const pins = R.compose(
+      R.indexBy(Pin.getPinKey),
+      R.unnest,
+      R.values,
+      R.map(
+        R.compose(
+          R.addIndex(R.map)(
+            (node, order) => Pin.createPin(
+              Node.getNodeId(node),
+              Node.getPinNodeDataType(node),
+              Node.getPinNodeDirection(node),
+              order
+            )
+          ),
+          R.sortBy(R.pipe(Node.getNodePosition, R.prop('x')))
+        )
+      ),
+      R.groupBy(Node.getPinNodeDirection),
+      R.filter(Node.isPinNode),
+      listNodes
+    )(patch);
+
+    return R.assoc('pins', pins, patch);
+  }
+);
+
 /**
  * Replaces a node with new one or inserts new one if it doesn’t exist yet.
  *
@@ -512,30 +556,13 @@ export const dissocLink = def(
  * @param {Patch} patch - a patch with the `node`
  * @returns {Patch} a copy of the `patch` with the node replaced
  */
-// TODO: Refactoring needed
 export const assocNode = def(
   'assocNode :: Node -> Patch -> Patch',
-  (node, patch) => {
-    const id = Node.getNodeId(node);
-    const addPin = R.curry(
-      (_node, _patch) => R.ifElse(
-        Node.isPinNode,
-        (pinNode) => {
-          const type = Node.getPinNodeDataType(pinNode);
-          const direction = Node.getPinNodeDirection(pinNode);
-          const newPin = Pin.createPin(id, type, direction);
-          return assocPin(newPin, _patch);
-        },
-        R.always(_patch)
-      )(_node)
-    );
-    const addNode = R.assocPath(['nodes', id]);
-
-    return R.compose(
-      addNode(node),
-      addPin(node)
-    )(patch);
-  }
+  (node, patch) =>
+    R.compose(
+      Node.isPinNode(node) ? rebuildPins : R.identity,
+      R.assocPath(['nodes', Node.getNodeId(node)], node)
+    )(patch)
 );
 
 /**
@@ -621,8 +648,14 @@ export const getTopology = def(
   R.converge(
     sortGraph,
     [
-      R.compose(R.map(Node.getNodeId), listNodes),
-      R.compose(R.map(Link.getLinkNodeIds), listLinks),
+      R.compose(
+        R.map(x => Node.getNodeId(x)),
+        listNodes
+      ),
+      R.compose(
+        R.map(Link.getLinkNodeIds),
+        listLinks
+      ),
     ]
   )
 );

@@ -1,9 +1,8 @@
 import R from 'ramda';
 import React from 'react';
-import { LAYER } from 'xod-core';
+import { LAYER } from '../../editor/constants';
 
 import SVGLayer from './SVGLayer';
-import Node from './Node';
 import XODLink from './Link';
 
 class GhostLayer extends React.Component {
@@ -27,32 +26,6 @@ class GhostLayer extends React.Component {
     }
 
     return false;
-  }
-
-  getNode() {
-    if (!this.isCreatingNode() || !this.props.ghostNode) { return null; }
-
-    const node = R.merge(
-      this.props.ghostNode,
-      {
-        position: this.props.mousePosition,
-        isGhost: true,
-      }
-    );
-
-    return (
-      <Node
-        key={node.id}
-        id={node.id}
-        label={node.label}
-        position={node.position}
-        size={node.size}
-        outputPinsSectionHeight={node.outputPinsSectionHeight}
-        width={node.width}
-        pins={node.pins}
-        isGhost={node.isGhost}
-      />
-    );
   }
 
   getLink() {
@@ -87,7 +60,6 @@ class GhostLayer extends React.Component {
   }
 
   render() {
-    const ghostNode = this.getNode();
     const ghostLink = this.getLink();
 
     return (
@@ -95,7 +67,6 @@ class GhostLayer extends React.Component {
         name={LAYER.GHOSTS}
         className="GhostsLayer"
       >
-        {ghostNode}
         {ghostLink}
       </SVGLayer>
     );
@@ -107,7 +78,6 @@ GhostLayer.displayName = 'GhostLayer';
 GhostLayer.propTypes = {
   mousePosition: React.PropTypes.objectOf(React.PropTypes.number),
   mode: React.PropTypes.object, // eslint-disable-line
-  ghostNode: React.PropTypes.any,
   ghostLink: React.PropTypes.any,
 };
 

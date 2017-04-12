@@ -60,6 +60,16 @@ export const getPinLabel = def(
 );
 
 /**
+ * @function getPinValue
+ * @param {Pin} pin
+ * @returns {DataValue}
+ */
+export const getPinValue = def(
+  'getPinValue :: Pin -> DataValue',
+  R.prop('value')
+);
+
+/**
  * @function setPinLabel
  * @param {string} label
  * @param {Pin} pin
@@ -158,14 +168,14 @@ export const isTerminalPin = def(
  * @returns {Pin}
  */
 export const createPin = def(
-  'createPin :: PinKey -> DataType -> PinDirection -> Pin',
-  (key, type, direction) => ({
+  'createPin :: PinKey -> DataType -> PinDirection -> Number -> Pin',
+  (key, type, direction, order) => ({
     key,
     type,
     direction,
     label: key,
     description: '',
-    order: 0,
-    value: Utils.defaultValueOfType(type),
+    order,
+    value: Utils.defaultValueOfType(type), // TODO: support 'custom' default values
   })
 );

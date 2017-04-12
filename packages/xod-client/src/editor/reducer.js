@@ -1,5 +1,7 @@
 import R from 'ramda';
-import { ENTITY } from 'xod-core';
+import XP from 'xod-project';
+
+import { ENTITY } from './constants';
 
 import {
   EDITOR_DESELECT_ALL,
@@ -14,8 +16,9 @@ import {
 } from './actionTypes';
 import {
   PROJECT_CREATE,
-  PROJECT_LOAD_DATA,
-  PROJECT_ONLY_LOAD_DATA,
+  PROJECT_OPEN,
+  PROJECT_IMPORT,
+  PROJECT_OPEN_WORKSPACE,
   PATCH_ADD,
   PATCH_DELETE,
   NODE_DELETE,
@@ -40,7 +43,7 @@ const addTab = R.curry((patchId, state) => {
       R.prop('index'),
       R.max(acc)
     )(tab),
-    -Infinity,
+    -1,
     R.values(tabs)
   );
   const newIndex = R.inc(lastIndex);
@@ -62,13 +65,15 @@ const isPatchOpened = R.curry((patchId, state) =>
 );
 
 const resetCurrentPatchId = (reducer, state, payload) => {
-  const newState = R.assoc('tabs', [], state);
+  const newState = R.assoc('tabs', {}, state);
   const firstPatchId = R.pipe(
-    JSON.parse,
-    R.prop('patches'),
-    R.values,
+    XP.listLocalPatches,
     R.head,
-    R.propOr(null, 'id')
+    R.ifElse(
+      R.isNil,
+      R.always(null),
+      XP.getPatchPath
+    )
   )(payload);
 
   return reducer(newState, {
@@ -104,7 +109,7 @@ const editorReducer = (state = {}, action) => {
     case EDITOR_SET_SELECTED_NODETYPE:
       return R.assoc('selectedNodeType', action.payload.id, state);
     case PROJECT_CREATE: {
-      const newState = R.assoc('tabs', [], state);
+      const newState = R.assoc('tabs', {}, state);
       return editorReducer(newState, {
         type: EDITOR_SWITCH_PATCH,
         payload: {
@@ -112,10 +117,23 @@ const editorReducer = (state = {}, action) => {
         },
       });
     }
-    case PROJECT_LOAD_DATA:
-      return resetCurrentPatchId(editorReducer, state, action.payload);
-    case PROJECT_ONLY_LOAD_DATA:
-      return resetCurrentPatchId(editorReducer, state, action.payload);
+    case PROJECT_OPEN:
+    case PROJECT_IMPORT: {
+      const newState = R.merge(state, {
+        currentPatchId: null,
+        selection: [],
+        tabs: {},
+        linkingPin: null,
+      });
+      return resetCurrentPatchId(editorReducer, newState, action.payload);
+    }
+    case PROJECT_OPEN_WORKSPACE:
+      return R.merge(state, {
+        currentPatchId: null,
+        selection: [],
+        tabs: {},
+        linkingPin: null,
+      });
     case PATCH_ADD:
     case EDITOR_SWITCH_PATCH:
       return openPatchById(action.payload.id, state);

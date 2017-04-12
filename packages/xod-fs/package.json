@@ -19,6 +19,7 @@
     "recursive-readdir": "^2.1.0",
     "rimraf": "^2.5.4",
     "xod-core": "^0.0.1",
+    "xod-project": "^0.0.1",
     "xod-func-tools": "^0.0.1"
   },
   "devDependencies": {

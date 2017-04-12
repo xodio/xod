@@ -1,6 +1,7 @@
 import * as EditorSelectors from './editor/selectors';
 import * as UtilsSelectors from './utils/selectors';
 import * as ProcessSelectors from './processes/selectors';
+import * as ProjectSelectors from './project/selectors';
 
 import * as CoreActions from './core/actions';
 import * as EditorActions from './editor/actions';
@@ -13,13 +14,13 @@ import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
 import * as BrowserUtils from './utils/browser';
 import * as MenuUtils from './utils/menu';
+import sanctuaryPropType from './utils/sanctuaryPropType';
 
 import App from './core/containers/App';
 import Root from './core/containers/Root';
 import { container as Editor, CreateNodeWidget } from './editor';
 import SnackBar from './messages';
 import * as MessageConstants from './messages/constants';
-import { UserPanel } from './user';
 import Toolbar from './utils/components/Toolbar';
 import PopupShowCode from './utils/components/PopupShowCode';
 import PopupAlert from './utils/components/PopupAlert';
@@ -37,9 +38,11 @@ export * from './projectBrowser/actions';
 export * from './editor/selectors';
 export * from './utils/selectors';
 export { getUpload } from './processes/selectors';
+export * from './project/selectors';
 
 export * from './utils/browser';
 export * from './utils/constants';
+export { default as sanctuaryPropType } from './utils/sanctuaryPropType';
 
 export { default as PopupShowCode } from './utils/components/PopupShowCode';
 export { default as PopupAlert } from './utils/components/PopupAlert';
@@ -53,7 +56,6 @@ export { default as Root } from './core/containers/Root';
 export { container as Editor, CreateNodeWidget } from './editor';
 export { default as SnackBar } from './messages';
 export * from './messages/constants';
-export { UserPanel } from './user';
 export { default as DevTools } from './core/containers/DevTools';
 
 export default Object.assign({
@@ -67,14 +69,15 @@ export default Object.assign({
   PopupPrompt,
   PopupForm,
   SnackBar,
-  UserPanel,
   DevTools,
   Toolbar,
   menu: MenuUtils,
+  sanctuaryPropType,
 },
   UtilsSelectors,
   EditorSelectors,
   ProcessSelectors,
+  ProjectSelectors,
 
   CoreActions,
   EditorActions,

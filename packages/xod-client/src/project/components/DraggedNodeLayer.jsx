@@ -26,8 +26,8 @@ class DraggedNodeLayer extends React.PureComponent {
           outputPinsSectionHeight={node.outputPinsSectionHeight}
           pins={node.pins}
           width={node.width}
-          isSelected={node.isSelected}
           isGhost={node.isGhost}
+          isSelected
           isDragged
         />
       </SVGLayer>

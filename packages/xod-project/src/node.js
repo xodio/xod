@@ -1,4 +1,6 @@
 import R from 'ramda';
+import * as Pin from './pin';
+import * as Patch from './patch';
 import * as Utils from './utils';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
@@ -201,6 +203,25 @@ export const isPinNode = def(
  //
  // =============================================================================
 
+export const assocInitialPinValues = def(
+  'assocInitialPinValues :: Patch -> Node -> Node',
+  (patch, node) => R.assoc(
+    'pins',
+    R.compose(
+      R.indexBy(R.prop('key')),
+      R.map(
+        R.applySpec({
+          key: Pin.getPinKey,
+          value: Pin.getPinValue,
+          // TODO: curried?
+        })
+      ),
+      Patch.listInputPins
+    )(patch),
+    node
+  )
+);
+
 /**
  * Gets all curried pins of node
  *
@@ -210,7 +231,7 @@ export const isPinNode = def(
  */
 export const getCurriedPins = R.compose(
   R.map(R.prop('value')),
-  R.filter(R.propEq('curried', true)),
+  R.filter(R.propEq('curried', true)), // TODO: deprecated
   R.propOr({}, 'pins')
 );
 
@@ -266,7 +287,7 @@ export const setPinCurriedValue = def(
   * @param {Node} node
   * @returns {Node}
   */
-export const curryPin = def(
+export const curryPin = def( // TODO: deprecated
   'curryPin :: PinKey -> Boolean -> Node -> Node',
   R.useWith(
     R.assocPath,
@@ -284,7 +305,7 @@ export const curryPin = def(
  * @param {Node} node
  * @returns {boolean}
  */
-export const isPinCurried = def(
+export const isPinCurried = def( // TODO: deprecated
   'isPinCurried :: PinKey -> Node -> Boolean',
   R.useWith(
     R.pathSatisfies(R.equals(true)),

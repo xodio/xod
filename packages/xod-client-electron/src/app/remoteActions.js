@@ -1,24 +1,17 @@
 import R from 'ramda';
-import { save, getProjects, loadProjectWithLibs, loadAllLibs, arrangeByFiles, pack, isDirectoryExists } from 'xod-fs';
+import { toV2 } from 'xod-project';
+import {
+  save,
+  getProjects,
+  loadProjectWithLibs,
+  loadAllLibsV2,
+  arrangeByFilesV2,
+  pack,
+  isDirectoryExists,
+} from 'xod-fs';
 
-const extract = json => arrangeByFiles(JSON.parse(json));
-
-export const savePatch = ({ json, patchId, workspace }, onFinish) => {
-  const data = R.compose(
-    extract,
-    JSON.stringify,
-    R.over(
-      R.lensProp('patches'),
-      R.filter(R.propEq('id', patchId))
-    ),
-    JSON.parse
-  )(json);
-
-  return save(workspace, data).then(onFinish);
-};
-
-export const saveProject = ({ json, workspace }, onFinish) => {
-  const data = extract(json);
+export const saveProject = ({ project, workspace }, onFinish) => {
+  const data = arrangeByFilesV2(project);
   return save(workspace, data).then(onFinish);
 };
 
@@ -28,11 +21,12 @@ export const loadProjectList = ({ workspace }, onFinish) =>
 export const loadProject = ({ path, workspace }, onFinish) =>
   loadProjectWithLibs(path, workspace)
     .then(({ project, libs }) => pack(project, libs))
+    .then(toV2)
     .then(onFinish);
 
 export const changeWorkspace = ({ path }, onFinish) =>
-  loadAllLibs(path)
-    .then(R.assoc('nodeTypes', R.__, { path }))
+  loadAllLibsV2(path)
+    .then(R.assoc('libs', R.__, { path }))
     .then(onFinish);
 
 export const checkWorkspace = ({ path }, onFinish) => {
@@ -44,7 +38,6 @@ export const checkWorkspace = ({ path }, onFinish) => {
 };
 
 export default {
-  savePatch,
   saveProject,
   loadProjectList,
   loadProject,

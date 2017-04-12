@@ -8,7 +8,6 @@ import * as Actions from '../../src/editor/actions';
 import editorReducer from '../../src/editor/reducer';
 import { EDITOR_SET_MODE } from '../../src/editor/actionTypes';
 
-import projectReducer from '../../src/project/reducer';
 import { EDITOR_MODE } from '../../src/editor/constants';
 
 const mockStore = configureStore([thunk]);
@@ -58,48 +57,58 @@ describe('Editor reducer', () => {
   describe('selecting entities', () => {
     const mockState = {
       project: {
+        authors: [
+          'Test Person',
+        ],
+        description: '',
+        license: '',
+        name: 'Test project',
         patches: {
-          1: {
-            id: '1',
+          '@/1': {
             nodes: {
               1: {
                 id: '1',
-                typeId: 'core/test',
-                position: { x: 0, y: 0 },
+                type: 'xod/core/test',
+                position: {
+                  x: 138,
+                  y: 432,
+                },
                 pins: {
                   in: {
-                    mode: 'pin',
-                    value: null,
+                    key: 'in',
+                    value: 0,
                   },
                 },
-                properties: {},
               },
             },
             links: {},
+            impls: {},
+            pins: {},
+            path: '@/1',
+            label: 'Main',
           },
-        },
-        nodeTypes: {
-          'core/test': {
-            id: 'core/test',
-            category: 'hardware',
+          'xod/core/test': {
+            nodes: {},
+            links: {},
+            impls: {},
             pins: {
               in: {
-                index: 0,
-                direction: 'input',
                 key: 'in',
                 type: 'number',
-              },
-              out: {
-                index: 1,
-                direction: 'output',
-                key: 'out',
-                type: 'number',
+                direction: 'input',
+                label: 'in',
+                description: '',
+                order: 0,
+                value: 0,
               },
             },
+            path: 'xod/core/test',
+            label: 'Test patch',
           },
         },
       },
       editor: {
+        currentPatchId: '@/1',
         mode: EDITOR_MODE.DEFAULT,
         selection: [],
         linkingPin: null,
@@ -187,22 +196,6 @@ describe('Editor reducer', () => {
 
   describe('working with tabs', () => {
     const mockState = {
-      project: {
-        patches: {
-          1: {
-            id: '1',
-            name: 'First patch',
-          },
-          2: {
-            id: '2',
-            name: 'Second patch',
-          },
-          3: {
-            id: '3',
-            name: 'Third patch',
-          },
-        },
-      },
       editor: {
         currentPatchId: '1',
         tabs: {
@@ -221,7 +214,6 @@ describe('Editor reducer', () => {
     };
     const createTabsStore = state => createStore(
       combineReducers({
-        project: projectReducer(Object.keys(state.project.patches)),
         editor: editorReducer,
       }),
       state,

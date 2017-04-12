@@ -7,19 +7,27 @@ import { bindActionCreators } from 'redux';
 import { Icon } from 'react-fa';
 import { HotKeys } from 'react-hotkeys';
 
-import core from 'xod-core';
+import $ from 'sanctuary-def';
+import {
+  Patch,
+  getLibraryName,
+  getPatchPath,
+  isPathLocal,
+  getBaseName,
+  listPins,
+} from 'xod-project';
+
 import * as ProjectActions from '../../project/actions';
 import * as ProjectBrowserActions from '../actions';
 import * as EditorActions from '../../editor/actions';
 import * as MessagesActions from '../../messages/actions';
-import { PROJECT_BROWSER_ERRORS } from '../../messages/constants';
 
 import * as ProjectBrowserSelectors from '../selectors';
 import * as EditorSelectors from '../../editor/selectors';
 
-import { EDITOR_MODE } from '../../editor/constants';
 import { COMMAND } from '../../utils/constants';
 import { noop } from '../../utils/ramda';
+import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
 import PatchGroup from '../components/PatchGroup';
 import PatchGroupItem from '../components/PatchGroupItem';
@@ -31,25 +39,6 @@ const PATCH_TYPE = {
   ALL: 'all',
   MY: 'my',
   LIBRARY: 'library',
-};
-
-const splitNames = R.compose(
-  R.map(R.join('/')),
-  R.splitAt(2),
-  R.split('/')
-);
-
-const isPatchIdLocal = R.pipe(R.head, R.equals('@'));
-const isPatchLocal = R.compose(isPatchIdLocal, R.prop('id'));
-
-const listLocalPatchPaths = R.compose(
-  R.filter(isPatchIdLocal),
-  R.keys
-);
-
-const switchLibPatch = (switchFn, messageFn, id, patches) => {
-  if (R.has(id, patches)) return switchFn(id);
-  return messageFn(PROJECT_BROWSER_ERRORS.CANT_OPEN_LIBPATCH_WITHOUT_XOD_IMPL);
 };
 
 class ProjectBrowser extends React.Component {
@@ -70,24 +59,27 @@ class ProjectBrowser extends React.Component {
     this.onDeleteHotkey = this.onDeleteHotkey.bind(this);
   }
 
-  onAddNode(id) {
+  onAddNode(patchPath) {
     // TODO: rewrite this when implementing "zombie" nodes
-    this.props.actions.setSelectedNodeType(id);
-    this.props.actions.setEditorMode(EDITOR_MODE.CREATING_NODE);
+    this.props.actions.addNode(
+      patchPath,
+      { x: 50, y: 50 },
+      this.props.currentPatchPath
+    );
   }
 
   onRenameHotkey() {
-    const { selectedPatchId } = this.props;
-    if (!selectedPatchId || !isPatchIdLocal(selectedPatchId)) return;
+    const { selectedPatchPath } = this.props;
+    if (!isPathLocal(selectedPatchPath)) return;
 
-    this.props.actions.requestRename(selectedPatchId);
+    this.props.actions.requestRename(selectedPatchPath);
   }
 
   onDeleteHotkey() {
-    const { selectedPatchId } = this.props;
-    if (!selectedPatchId || !isPatchIdLocal(selectedPatchId)) return;
+    const { selectedPatchPath } = this.props;
+    if (!isPathLocal(selectedPatchPath)) return;
 
-    this.props.actions.requestDelete(selectedPatchId);
+    this.props.actions.requestDelete(selectedPatchPath);
   }
 
   getHotkeyHandlers() {
@@ -99,22 +91,29 @@ class ProjectBrowser extends React.Component {
     };
   }
 
-  localPatchesHoveredButtons(id) {
-    const { currentPatchId, nodeTypes } = this.props;
+  localPatchesHoveredButtons(patchPath) {
+    const { currentPatchPath, localPatches } = this.props;
     const {
       requestRename,
       requestDelete,
     } = this.props.actions;
 
-    const patchIsAddable = R.pipe(R.keys, R.contains(id))(nodeTypes);
-    // TODO: when we'll implement adding with dnd, this will not be sufficient
-    const canAdd = patchIsAddable && currentPatchId !== id;
+    const patch = R.find(
+      R.pipe(getPatchPath, R.equals(patchPath)),
+      localPatches
+    );
 
+    const hasPins = patch && R.pipe(listPins, R.complement(R.isEmpty))(patch);
+    // TODO: we also need detection of more complex cases
+    const isAddingRecursively = currentPatchPath === patchPath;
+
+    const canAdd = hasPins && !isAddingRecursively;
+    // TODO: when we'll implement adding with dnd, disabling button will not be sufficient
     const addButtonClassnames = cn('hover-button', {
       disabled: !canAdd,
     });
     const addButtonAction = canAdd
-      ? () => this.onAddNode(id)
+      ? () => this.onAddNode(patchPath)
       : noop;
 
     return [
@@ -122,13 +121,13 @@ class ProjectBrowser extends React.Component {
         key="delete"
         name="trash"
         className="hover-button"
-        onClick={() => requestDelete(id)}
+        onClick={() => requestDelete(patchPath)}
       />,
       <Icon
         key="rename"
         name="pencil"
         className="hover-button"
-        onClick={() => requestRename(id)}
+        onClick={() => requestRename(patchPath)}
       />,
       <Icon
         key="add"
@@ -140,23 +139,14 @@ class ProjectBrowser extends React.Component {
   }
 
   deselectIfInLocalPatches() {
-    const { selectedPatchId } = this.props;
-    if (selectedPatchId && isPatchIdLocal(selectedPatchId)) {
+    if (isPathLocal(this.props.selectedPatchPath)) {
       this.props.actions.removeSelection();
     }
   }
 
   deselectIfInLibrary(libName) {
     return () => {
-      const { libs, selectedPatchId } = this.props;
-
-      const isInClosedLib = R.compose(
-        R.complement(R.isNil),
-        R.find(R.propEq('id', selectedPatchId)),
-        R.prop(libName)
-      )(libs);
-
-      if (isInClosedLib) {
+      if (getLibraryName(this.props.selectedPatchPath || '') === libName) {
         this.props.actions.removeSelection();
       }
     };
@@ -165,11 +155,10 @@ class ProjectBrowser extends React.Component {
   renderLocalPatches() {
     const {
       projectName,
-      patches,
-      currentPatchId,
-      selectedPatchId,
+      localPatches,
+      currentPatchPath,
+      selectedPatchPath,
     } = this.props;
-    const localPatches = R.filter(isPatchLocal, R.values(patches));
     const {
       switchPatch,
       setSelection,
@@ -182,15 +171,15 @@ class ProjectBrowser extends React.Component {
         name={projectName}
         onClose={this.deselectIfInLocalPatches}
       >
-        {R.map(({ id, label }) => (
+        {R.map(({ path, label }) => (
           <PatchGroupItem
-            key={id}
+            key={path}
             label={label}
-            isOpen={id === currentPatchId}
-            onDoubleClick={() => switchPatch(id)}
-            isSelected={id === selectedPatchId}
-            onClick={() => setSelection(id)}
-            hoverButtons={this.localPatchesHoveredButtons(id)}
+            isOpen={path === currentPatchPath}
+            onDoubleClick={() => switchPatch(path)}
+            isSelected={path === selectedPatchPath}
+            onClick={() => setSelection(path)}
+            hoverButtons={this.localPatchesHoveredButtons(path)}
           />
         ), localPatches)}
       </PatchGroup>
@@ -198,29 +187,28 @@ class ProjectBrowser extends React.Component {
   }
 
   renderLibraryPatches() {
-    const { libs, patches, selectedPatchId } = this.props;
-    const { switchPatch, setSelection, addNotification } = this.props.actions;
+    const { libs, selectedPatchPath } = this.props;
+    const { setSelection } = this.props.actions;
 
-    return R.toPairs(libs).map(([libName, types]) => (
+    return R.toPairs(libs).map(([libName, libPatches]) => (
       <PatchGroup
         key={libName}
         type="library"
         name={libName}
         onClose={this.deselectIfInLibrary(libName)}
       >
-        {types.map(({ id }) =>
+        {libPatches.map(({ path }) =>
           <PatchGroupItem
-            key={id}
-            label={R.pipe(splitNames, R.nth(1))(id)}
-            isSelected={id === selectedPatchId}
-            onClick={() => setSelection(id)}
-            onDoubleClick={() => switchLibPatch(switchPatch, addNotification, id, patches)}
+            key={path}
+            label={getBaseName(path)}
+            isSelected={path === selectedPatchPath}
+            onClick={() => setSelection(path)}
             hoverButtons={[
               <Icon
                 key="add"
                 name="plus-circle"
                 className="hover-button"
-                onClick={() => this.onAddNode(id)}
+                onClick={() => this.onAddNode(path)}
               />,
             ]}
           />
@@ -234,7 +222,6 @@ class ProjectBrowser extends React.Component {
       ? [PATCH_TYPE.MY, PATCH_TYPE.LIBRARY]
       : R.of(patchType);
 
-    // TODO: wrap in component with a custom scrollbar?
     return (
       <CustomScroll>
         <div className="patches-list">
@@ -251,15 +238,15 @@ class ProjectBrowser extends React.Component {
         className="ProjectBrowser"
       >
         <ProjectBrowserPopups
-          selectedPatchId={this.props.selectedPatchId}
-          openPopups={this.props.openPopups}
-          patches={this.props.patches}
+          selectedPatchPath={this.props.selectedPatchPath}
+          selectedPatchName={this.props.selectedPatchLabel}
           projectName={this.props.projectName}
+          openPopups={this.props.openPopups}
           onPatchDelete={this.props.actions.deletePatch}
           onPatchRename={this.props.actions.renamePatch}
           onProjectRename={this.props.actions.renameProject}
           onPatchCreate={this.props.actions.addPatch}
-          closeAllPopups={this.props.actions.closeAllPopups}
+          onCloseAllPopups={this.props.actions.closeAllPopups}
         />
         <ProjectBrowserToolbar
           onClickAddPatch={this.props.actions.requestCreatePatch}
@@ -283,15 +270,14 @@ ProjectBrowser.displayName = 'ProjectBrowser';
 
 ProjectBrowser.propTypes = {
   projectName: React.PropTypes.string.isRequired,
-  currentPatchId: React.PropTypes.string,
-  selectedPatchId: React.PropTypes.string,
-  patches: React.PropTypes.object.isRequired,
+  currentPatchPath: React.PropTypes.string,
+  selectedPatchPath: React.PropTypes.string,
+  selectedPatchLabel: React.PropTypes.string.isRequired,
+  localPatches: sanctuaryPropType($.Array(Patch)),
   openPopups: React.PropTypes.object.isRequired,
-  nodeTypes: React.PropTypes.object.isRequired,
-  libs: React.PropTypes.object.isRequired,
+  libs: sanctuaryPropType($.StrMap($.Array(Patch))),
   actions: React.PropTypes.shape({
-    setSelectedNodeType: React.PropTypes.func.isRequired,
-    setEditorMode: React.PropTypes.func.isRequired,
+    addNode: React.PropTypes.func.isRequired,
     switchPatch: React.PropTypes.func.isRequired,
     requestCreatePatch: React.PropTypes.func.isRequired,
     requestRename: React.PropTypes.func.isRequired,
@@ -303,38 +289,18 @@ ProjectBrowser.propTypes = {
     deletePatch: React.PropTypes.func.isRequired,
     renameProject: React.PropTypes.func.isRequired,
     closeAllPopups: React.PropTypes.func.isRequired,
-    addNotification: React.PropTypes.func.isRequired,
   }),
 };
 
-const mapStateToProps = (state) => {
-  const project = core.getProject(state);
-  const projectMeta = core.getMeta(project);
-  const projectName = core.getName(projectMeta);
-  const currentPatchId = EditorSelectors.getCurrentPatchId(state);
-
-  const nodeTypes = core.dereferencedNodeTypes(state);
-  const libs = R.compose(
-    R.map(
-      R.sort(R.ascend(R.prop('id')))
-    ),
-    R.groupBy(
-      R.pipe(R.prop('id'), splitNames, R.head)
-    ),
-    R.values,
-    R.omit(listLocalPatchPaths(nodeTypes))
-  )(nodeTypes);
-
-  return {
-    projectName,
-    currentPatchId,
-    selectedPatchId: ProjectBrowserSelectors.getSelectedPatchId(state),
-    patches: core.getPatches(state),
-    openPopups: state.projectBrowser.openPopups,
-    nodeTypes,
-    libs,
-  };
-};
+const mapStateToProps = R.applySpec({
+  projectName: ProjectBrowserSelectors.getProjectName,
+  currentPatchPath: EditorSelectors.getCurrentPatchId,
+  selectedPatchPath: ProjectBrowserSelectors.getSelectedPatchId,
+  selectedPatchLabel: ProjectBrowserSelectors.getSelectedPatchLabel,
+  localPatches: ProjectBrowserSelectors.getLocalPatches,
+  openPopups: ProjectBrowserSelectors.getOpenPopups,
+  libs: ProjectBrowserSelectors.getLibs,
+});
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
@@ -348,6 +314,7 @@ const mapDispatchToProps = dispatch => ({
     setSelection: ProjectBrowserActions.setSelection,
     removeSelection: ProjectBrowserActions.removeSelection,
 
+    addNode: ProjectActions.addNode,
     addPatch: ProjectActions.addPatch,
     renamePatch: ProjectActions.renamePatch,
     deletePatch: ProjectActions.deletePatch,

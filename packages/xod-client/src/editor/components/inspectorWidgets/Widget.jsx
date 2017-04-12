@@ -4,7 +4,6 @@ import { PROPERTY_TYPE_PARSE, PROPERTY_TYPE_MASK } from '../../../utils/inputFor
 
 import { KEYCODE } from '../../../utils/constants';
 import { noop } from '../../../utils/ramda';
-import Switch from '../InspectorModeSwitch';
 import { PROPERTY_KIND } from '../../../project/constants';
 
 export default function composeWidget(Component, widgetProps) {
@@ -43,7 +42,6 @@ export default function composeWidget(Component, widgetProps) {
       this.onFocus = this.onFocus.bind(this);
       this.onBlur = this.onBlur.bind(this);
       this.onKeyDown = this.onKeyDown.bind(this);
-      this.pinModeSwitch = this.pinModeSwitch.bind(this);
     }
     componentWillUnmount() {
       this.commit();
@@ -65,25 +63,8 @@ export default function composeWidget(Component, widgetProps) {
       }
     }
 
-    getSwitch() {
-      if (this.isModeSwitchable()) {
-        return (
-          <Switch
-            injected={this.props.injected}
-            onSwitch={this.pinModeSwitch}
-          />
-        );
-      }
-
-      return null;
-    }
-
-    isModeSwitchable() {
-      return (this.props.kind !== PROPERTY_KIND.PROP);
-    }
-
     isDisabled() {
-      return this.isModeSwitchable() && !this.props.injected;
+      return (this.props.kind === PROPERTY_KIND.PIN) && !this.props.injected;
     }
 
     updateValue(value) {
@@ -107,13 +88,6 @@ export default function composeWidget(Component, widgetProps) {
       }
     }
 
-    pinModeSwitch() {
-      const newInjected = !this.props.injected;
-      const val = (newInjected) ? this.state.value : null;
-
-      this.props.onPinModeSwitch(this.props.entityId, this.props.keyName, newInjected, val);
-    }
-
     maskValue(val) {
       return PROPERTY_TYPE_MASK[this.type](val);
     }
@@ -126,7 +100,6 @@ export default function composeWidget(Component, widgetProps) {
       const elementId = `widget_${this.props.keyName}`;
       return (
         <div className="InspectorWidget">
-          {this.getSwitch()}
           <Component
             elementId={elementId}
             label={this.props.label}
@@ -147,7 +120,6 @@ export default function composeWidget(Component, widgetProps) {
     entityId: React.PropTypes.string.isRequired,
     keyName: React.PropTypes.string.isRequired, // ?
     kind: React.PropTypes.string,
-    // type: React.PropTypes.string.isRequired,
     label: React.PropTypes.string,
     value: React.PropTypes.oneOfType([
       React.PropTypes.string,
@@ -159,7 +131,6 @@ export default function composeWidget(Component, widgetProps) {
     focused: React.PropTypes.bool,
     // dispatchers
     onPropUpdate: React.PropTypes.func.isRequired,
-    onPinModeSwitch: React.PropTypes.func,
     onFocusChanged: React.PropTypes.func,
   };
 

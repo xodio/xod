@@ -11,6 +11,10 @@ export const SLOT_MARGIN = {
   VERTICAL: 32,
 };
 
+export const LINK_HOTSPOT_SIZE = {
+  WIDTH: 8,
+};
+
 export const PIN_SIZE = { // including label, etc
   WIDTH: 22,
   HEIGHT: 20,
@@ -187,7 +191,7 @@ export const addNodePositioning = (node) => {
     (pin) => {
       const relPxPosition = relativePinPositionToPixels(
         size.width,
-        relativePinPosition(pinRows[pin.direction], pin.index)
+        relativePinPosition(pinRows[pin.direction], pin.order)
       );
 
       // output pin positions start from the bottom
@@ -221,26 +225,25 @@ export const substractPoints = R.curry((a, b) => ({
  * @param nodes — dereferenced nodes with added positioning data
  * @param links - dereferenced links
  */
-export const addLinksPositioning = (nodes, links) =>
+export const addLinksPositioning = nodes =>
   R.map((link) => {
-    const [pinFrom, pinTo] = R.map(
+    const { input, output } = R.map(
       pin => R.assoc(
         'position',
         nodes[pin.nodeId].pins[pin.pinKey].position,
         pin
       ),
-      link.pins
+      R.pick(['input', 'output'], link)
     );
 
     return R.merge(
       link,
       {
-        from: addPoints(nodes[pinFrom.nodeId].position, pinFrom.position) || null,
-        to: addPoints(nodes[pinTo.nodeId].position, pinTo.position) || null,
+        from: addPoints(nodes[input.nodeId].position, input.position) || null,
+        to: addPoints(nodes[output.nodeId].position, output.position) || null,
       }
     );
-  })(links);
-
+  });
 
 // ============= snapping to slots grid ===================
 

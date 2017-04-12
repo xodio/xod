@@ -5,8 +5,11 @@ import { bindActionCreators } from 'redux';
 import EventListener from 'react-event-listener';
 import { HotKeys } from 'react-hotkeys';
 
-import core from 'xod-core';
 import client from 'xod-client';
+import {
+  getProjectName,
+  getProjectAuthors,
+} from 'xod-project';
 
 import PopupInstallApp from '../components/PopupInstallApp';
 
@@ -74,50 +77,6 @@ class App extends client.App {
     };
 
     reader.readAsText(file);
-  }
-
-  onImport(json) {
-    let project;
-    let validJSON = true;
-    let errorMessage = null;
-
-    try {
-      project = JSON.parse(json);
-    } catch (err) {
-      validJSON = false;
-      errorMessage = client.SAVE_LOAD_ERRORS.NOT_A_JSON;
-    }
-
-    if (validJSON && !core.validateProject(project)) {
-      errorMessage = client.SAVE_LOAD_ERRORS.INVALID_FORMAT;
-    }
-
-    if (errorMessage) {
-      this.props.actions.addError({
-        message: errorMessage,
-      });
-      return;
-    }
-
-    this.props.actions.loadProjectFromJSON(json);
-  }
-
-  onExport() {
-    const projectName = this.props.meta.name;
-    const link = (document) ? document.createElement('a') : null;
-    const url = `data:application/xod;charset=utf8,${encodeURIComponent(this.props.projectJSON)}`;
-
-    if (link && link.download !== undefined) {
-      link.href = url;
-      link.setAttribute('download', `${projectName}.xodball`);
-
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else {
-      window.open(url, '_blank');
-      window.focus();
-    }
   }
 
   onSelectNodeType(typeKey) {
@@ -254,11 +213,8 @@ class App extends client.App {
           onBeforeUnload={this.onCloseApp}
         />
         <client.Toolbar
-          meta={this.props.meta}
-          nodeTypes={this.props.nodeTypes}
-          selectedNodeType={this.props.selectedNodeType}
-          onSelectNodeType={this.onSelectNodeType}
-          onAddNodeClick={this.onAddNodeClick}
+          projectName={getProjectName(this.props.project)}
+          projectAuthors={getProjectAuthors(this.props.project)}
           menuBarItems={this.getMenuBarItems()}
         />
         <client.Editor size={this.state.size} />
@@ -281,7 +237,7 @@ class App extends client.App {
           onClose={this.hidePopupCreateProject}
         >
           <p>
-          Please, give a sonorous name to yor project:
+            Please, give a sonorous name to yor project:
           </p>
         </client.PopupPrompt>
       </HotKeys>
@@ -289,32 +245,23 @@ class App extends client.App {
   }
 }
 
-App.propTypes = {
+App.propTypes = R.merge(client.App.propTypes, {
   hasChanges: React.PropTypes.bool,
-  project: React.PropTypes.object,
   projectJSON: React.PropTypes.string,
-  currentPatchId: React.PropTypes.string,
-  meta: React.PropTypes.object,
-  nodeTypes: React.PropTypes.any.isRequired,
-  selectedNodeType: React.PropTypes.string,
   actions: React.PropTypes.object,
-};
+});
 
-const mapStateToProps = state => ({
-  hasChanges: client.projectHasChanges(state),
-  project: core.getProjectPojo(state),
-  projectJSON: core.getProjectJSON(state),
-  currentPatchId: client.getCurrentPatchId(state),
-  meta: core.getMeta(state),
-  nodeTypes: core.dereferencedNodeTypes(state),
-  selectedNodeType: client.getSelectedNodeType(state),
+const mapStateToProps = R.applySpec({
+  hasChanges: client.projectHasChanges,
+  project: client.getProject,
+  currentPatchId: client.getCurrentPatchId,
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     createProject: client.createProject,
     requestRenameProject: client.requestRenameProject,
-    loadProjectFromJSON: client.loadProjectFromJSON,
+    importProject: client.importProject, // used in base App class
     setMode: client.setMode,
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,

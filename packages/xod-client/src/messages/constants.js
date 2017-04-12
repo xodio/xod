@@ -2,7 +2,7 @@ import {
   LINK_ERRORS as LE,
   NODETYPE_ERRORS as NTE,
   PROPERTY_ERRORS as PE,
-} from 'xod-core';
+} from '../editor/constants';
 
 export const MESSAGE_TYPE = {
   ERROR: 'ERROR',
@@ -15,10 +15,7 @@ export const LINK_ERRORS = {
   [LE.SAME_NODE]: 'Can\'t create link between pins of the same node!',
   [LE.ONE_LINK_FOR_INPUT_PIN]: 'Input pin can have only one link!',
   [LE.UNKNOWN_ERROR]: 'Unknown error!',
-  [LE.PROP_CANT_HAVE_LINKS]: [
-    'Can\'t add a link into pin with mode "property".',
-    'You should change a mode of this pin first!',
-  ].join(' '),
+  [LE.INCOMPATIBLE_TYPES]: 'Incompatible pin types!',
 };
 
 export const SAVE_LOAD_ERRORS = {

@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { PIN_VALIDITY } from 'xod-core';
 import { noop } from '../../utils/ramda';
 import { PIN_RADIUS } from '../nodeLayout';
 
@@ -63,8 +62,7 @@ export default class Pin extends React.Component {
     const cls = classNames('Pin', {
       'is-property': this.isInjected(),
       'is-selected': this.props.isSelected,
-      'is-valid': this.props.validness === PIN_VALIDITY.VALID,
-      'is-almost-valid': this.props.validness === PIN_VALIDITY.ALMOST,
+      'is-accepting-links': this.props.isAcceptingLinks,
     });
 
     const onMouseOver = !this.isInjected() ? this.handleOver : noop;
@@ -109,9 +107,5 @@ Pin.propTypes = {
   onMouseDown: React.PropTypes.func.isRequired,
   isSelected: React.PropTypes.bool,
   isConnected: React.PropTypes.bool,
-  validness: React.PropTypes.number,
-};
-
-Pin.defaultProps = {
-  validness: PIN_VALIDITY.NONE,
+  isAcceptingLinks: React.PropTypes.bool,
 };

@@ -1,9 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { SIZE } from 'xod-core';
 
 import { noop } from '../../utils/ramda';
-import { PIN_RADIUS } from '../nodeLayout';
+import { PIN_RADIUS, LINK_HOTSPOT_SIZE } from '../nodeLayout';
 
 class Link extends React.Component {
   constructor(props) {
@@ -60,7 +59,7 @@ class Link extends React.Component {
       >
         <line
           stroke="transparent"
-          strokeWidth={SIZE.LINK_HOTSPOT.width}
+          strokeWidth={LINK_HOTSPOT_SIZE.WIDTH}
           {...coords}
         />
         <line
