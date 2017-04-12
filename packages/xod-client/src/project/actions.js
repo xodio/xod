@@ -6,7 +6,7 @@ export const createProject = projectName => ({
   type: ActionType.PROJECT_CREATE,
   payload: {
     name: projectName,
-    mainPatchId: '@/Main',
+    mainPatchId: '@/main',
   },
 });
 
