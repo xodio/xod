@@ -19,17 +19,19 @@ import {
   PROJECT_IMPORT,
 } from './actionTypes';
 
-import { PROPERTY_KIND } from './constants';
+import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from './constants';
 
 // TODO: rewrite the whole prop updating thing when xod-core is completely ditched
 const selectNodePropertyUpdater = ({ kind, key, value }) => {
-  if (kind === PROPERTY_KIND.PIN) {
+  if (kind === NODE_PROPERTY_KIND.PIN) {
     return XP.setPinCurriedValue(key, value);
   }
 
-  if (kind === PROPERTY_KIND.PROP) {
-    if (key === 'label') {
+  if (kind === NODE_PROPERTY_KIND.PROP) {
+    if (key === NODE_PROPERTY_KEY.LABEL) {
       return XP.setNodeLabel(value);
+    } else if (key === NODE_PROPERTY_KEY.DESCRIPTION) {
+      return XP.setNodeDescription(value);
     }
   }
 

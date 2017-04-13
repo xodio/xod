@@ -8,7 +8,7 @@ import {
   addLinksPositioning,
   addPoints,
 } from './nodeLayout';
-import { PROPERTY_KIND } from './constants';
+import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from './constants';
 import { ENTITY } from '../editor/constants';
 import {
   getSelection,
@@ -121,7 +121,7 @@ const addNodeLabel = R.curry((project, node) => {
 
   const label = node.label || R.pipe(XP.getPatchPath, XP.getBaseName)(patch);
 
-  return R.assoc('label', label, node);
+  return XP.setNodeLabel(label, node);
 });
 
 // :: State -> StrMap Node
@@ -258,17 +258,17 @@ const dereferencedSelection = createMemoizedSelector(
 // :: RenderableNode -> [ { injected, key, kind, label, type, value } ]
 const nodePropsForInspector = node => ([
   {
-    kind: PROPERTY_KIND.PROP,
+    kind: NODE_PROPERTY_KIND.PROP,
     injected: false,
-    key: 'label', // TODO: this is becoming a magic constant
+    key: NODE_PROPERTY_KEY.LABEL,
     label: 'Label',
     type: 'string',
     value: XP.getNodeLabel(node),
   },
   {
-    kind: PROPERTY_KIND.PROP,
+    kind: NODE_PROPERTY_KIND.PROP,
     injected: false,
-    key: 'description',
+    key: NODE_PROPERTY_KEY.DESCRIPTION,
     label: 'Description',
     type: 'string',
     value: XP.getNodeDescription(node),
@@ -279,7 +279,7 @@ const nodePropsForInspector = node => ([
 const nodePinsForInspector = R.compose(
   R.map(
     R.applySpec({
-      kind: R.always(PROPERTY_KIND.PIN),
+      kind: R.always(NODE_PROPERTY_KIND.PIN),
       key: R.prop('key'),
       type: R.prop('type'),
       label: R.prop('label'),

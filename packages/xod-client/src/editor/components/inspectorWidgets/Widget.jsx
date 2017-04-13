@@ -4,7 +4,7 @@ import { PROPERTY_TYPE_PARSE, PROPERTY_TYPE_MASK } from '../../../utils/inputFor
 
 import { KEYCODE } from '../../../utils/constants';
 import { noop } from '../../../utils/ramda';
-import { PROPERTY_KIND } from '../../../project/constants';
+import { NODE_PROPERTY_KIND } from '../../../project/constants';
 
 export default function composeWidget(Component, widgetProps) {
   const commonKeyDownHandlers = {
@@ -64,7 +64,7 @@ export default function composeWidget(Component, widgetProps) {
     }
 
     isDisabled() {
-      return (this.props.kind === PROPERTY_KIND.PIN) && !this.props.injected;
+      return (this.props.kind === NODE_PROPERTY_KIND.PIN) && !this.props.injected;
     }
 
     updateValue(value) {
