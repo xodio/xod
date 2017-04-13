@@ -1,6 +1,6 @@
 import {
   LINK_ERRORS as LE,
-  NODETYPE_ERRORS as NTE,
+  NODETYPE_ERROR_TYPES as NTE,
   PROPERTY_ERRORS as PE,
 } from '../editor/constants';
 
