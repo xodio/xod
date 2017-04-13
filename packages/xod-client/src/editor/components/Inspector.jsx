@@ -2,22 +2,8 @@ import R from 'ramda';
 import React from 'react';
 import { ENTITY } from '../constants';
 
-import Widgets, { WIDGET_MAPPING, DEFAULT_NODE_PROPS } from './inspectorWidgets';
+import Widgets, { WIDGET_MAPPING } from './inspectorWidgets';
 import { noop } from '../../utils/ramda';
-
-const indexByKey = R.indexBy(R.prop('key'));
-
-// :: defaultNodeProps -> inspectorProp[] -> inspectorProp[]
-const extendNodeProps = R.compose(
-  R.values,
-  R.useWith(
-    R.merge,
-    [
-      indexByKey,
-      indexByKey,
-    ]
-  )
-);
 
 // :: props.data -> [{entity, id}]
 const getEntitiesAndIds = R.map(R.pick(['entity', 'id']));
@@ -45,7 +31,6 @@ const createEmptySelectionWidgets = () => ({
 const createNodeWidgets = (data) => {
   const selection = data[0];
   const nodeId = selection.id;
-  const properties = extendNodeProps(DEFAULT_NODE_PROPS, selection.props);
 
   const result = R.reduce((acc, prop) => {
     const widgetType = prop.widget || prop.type;
@@ -70,7 +55,7 @@ const createNodeWidgets = (data) => {
       R.assocPath(['components', widgetKey], widget),
       R.assocPath(['props', widgetKey], props)
     )(acc);
-  }, { components: {}, props: {} })(properties);
+  }, { components: {}, props: {} })(selection.props);
 
   return result;
 };

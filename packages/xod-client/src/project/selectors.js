@@ -9,7 +9,7 @@ import {
   addPoints,
 } from './nodeLayout';
 import { PROPERTY_KIND } from './constants';
-import { ENTITY, PROPERTY_TYPE } from '../editor/constants';
+import { ENTITY } from '../editor/constants';
 import {
   getSelection,
   getCurrentPatchPath,
@@ -255,35 +255,27 @@ const dereferencedSelection = createMemoizedSelector(
   }
 );
 
-// :: String -> String
-const capitalizeFirstLetter = R.converge(
-  R.concat,
-  [
-    R.compose(
-      R.toUpper,
-      R.head
-    ),
-    R.tail,
-  ]
-);
+// :: RenderableNode -> [ { injected, key, kind, label, type, value } ]
+const nodePropsForInspector = node => ([
+  {
+    kind: PROPERTY_KIND.PROP,
+    injected: false,
+    key: 'label', // TODO: this is becoming a magic constant
+    label: 'Label',
+    type: 'string',
+    value: XP.getNodeLabel(node),
+  },
+  {
+    kind: PROPERTY_KIND.PROP,
+    injected: false,
+    key: 'description',
+    label: 'Description',
+    type: 'string',
+    value: XP.getNodeDescription(node),
+  },
+]);
 
-// :: RenderableNode -> PropForInspector { injected, key, kind, label, type, value }
-const nodePropsForInspector = R.compose( // TODO: deprecated?
-  R.map(
-    R.applySpec({
-      kind: R.always(PROPERTY_KIND.PROP),
-      key: R.head,
-      type: R.always(PROPERTY_TYPE.STRING), // TODO: Fix it and get from NodeType
-      label: R.compose(capitalizeFirstLetter, R.head), // TODO: Get rid of this hack
-      value: R.last,
-      injected: R.F,
-    })
-  ),
-  R.toPairs,
-  R.prop('properties')
-);
-
-// :: RenderableNode -> PropForInspector { injected, key, kind, label, type, value }
+// :: RenderableNode -> [ { injected, key, kind, label, type, value } ]
 const nodePinsForInspector = R.compose(
   R.map(
     R.applySpec({

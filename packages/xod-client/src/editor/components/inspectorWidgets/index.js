@@ -8,7 +8,6 @@ import composeWidget from './Widget';
 
 import { WIDGET_TYPE, ENTITY } from '../../constants';
 import { KEYCODE } from '../../../utils/constants';
-import { PROPERTY_KIND } from '../../../project/constants';
 
 const widgetKeyDownHandlers = {
   up: function up(event) {
@@ -67,17 +66,6 @@ export const WIDGET_MAPPING = {
   },
 };
 
-export const DEFAULT_NODE_PROPS = [
-  {
-    kind: PROPERTY_KIND.PROP,
-    injected: false,
-    key: 'label',
-    label: 'Label',
-    type: 'string',
-    value: '',
-  },
-];
-
 export default {
   HintWidget,
   BoolWidget,
@@ -88,5 +76,4 @@ export default {
   composeWidget,
 
   WIDGET_MAPPING,
-  DEFAULT_NODE_PROPS,
 };
