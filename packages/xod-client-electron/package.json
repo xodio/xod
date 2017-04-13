@@ -9,7 +9,7 @@
   "scripts": {
     "build:gui": "webpack --colors",
     "build:app": "babel src/app/ -d dist_xod/app/",
-    "build": "npm-run-all build:*",
+    "build": "yarn build:gui && yarn build:app",
     "start": "electron ./dist_xod/app/main.js",
     "electron-rebuild": "electron-rebuild",
     "pack": "build --dir",

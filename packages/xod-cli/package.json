@@ -4,7 +4,7 @@
   "description": "XOD project: Command Line Interface",
   "scripts": {
     "build": "babel src/ -d bin/",
-    "dev": "npm run build -- --watch"
+    "dev": "yarn run build -- --watch"
   },
   "bin": {
     "xodc": "./bin/xodc.js"

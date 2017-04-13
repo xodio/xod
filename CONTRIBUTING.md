@@ -74,7 +74,7 @@ The code should follow some stylistic rules. These rules are based on
 modifications and enforcements. See [ESLint configuration](./.eslintrc.js) for
 details. To verify your code follows the rules run:
 
-    $ npm run lint
+    $ yarn run lint
 
 In addition to the style ensure that:
 
@@ -126,7 +126,7 @@ There is a series of checks that should be passed for the code to have a
 chance to be merged into `master`. They are unit tests, linting and possibly
 other things.
 
-Run `npm run verify` to make sure your code doesn’t break anything.
+Run `yarn run verify` to make sure your code doesn’t break anything.
 
 The checks are performed by [Travis CI](https://travis-ci.com/xodio/xod) in any
 case, but ensuring your PR would not break anything in advance is a good habit.

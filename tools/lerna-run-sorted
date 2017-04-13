@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * CLI tool to run NPM commands on packages taking their
+ * CLI tool to run Yarn commands on packages taking their
  * dependency graph into account. Usage example:
  *
  * $ ./tools/lerna-run-sorted --tree build xod-client-browser
@@ -13,7 +13,7 @@ const SortedRunCommand = require('./lerna-ext/SortedRunCommand');
 
 program
   .version('0.0.0')
-  .arguments('<npm-command> [package]')
+  .arguments('<yarn-command> [package]')
   .option('--only', 'Do not run command on dependencies, just run it on package')
   .action((cmd, pkg) => {
     const flags = {

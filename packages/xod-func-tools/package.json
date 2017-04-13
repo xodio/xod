@@ -9,7 +9,7 @@
   "scripts": {
     "doc": "documentation build --format html --output doc --sort-order alpha src/",
     "build": "babel src/ -d dist/",
-    "dev": "npm run build -- --watch",
+    "dev": "yarn run build -- --watch",
     "test": "mocha test/**/*.spec.js"
   },
   "dependencies": {

@@ -48,8 +48,8 @@ jobs:
           - |
             rsync -a xod/ installed-xod/
             cd installed-xod
-            npm install --silent
-            npm run bootstrap
+            yarn install --silent
+            yarn run bootstrap
             symlinks -cr .
 
     - task: build
@@ -70,7 +70,7 @@ jobs:
           - |
             rsync -a installed-xod/ built-xod/
             cd built-xod
-            npm run build
+            yarn run build
 
     - task: test
       config:
@@ -83,7 +83,7 @@ jobs:
         - name: built-xod
         run:
           dir: built-xod
-          path: npm
+          path: yarn
           args: [test]
 
     - task: lint
@@ -97,7 +97,7 @@ jobs:
         - name: built-xod
         run:
           dir: built-xod
-          path: npm
+          path: yarn
           args: [run, lint]
 
     - get: master-version

@@ -19,9 +19,8 @@ git:
   depth: 5
 cache:
   directories:
-  - $HOME/.cache
   - $HOME/.electron
-  - $HOME/.nvm
   - node_modules
+  yarn: true
 
 script: ./tools/travis.sh

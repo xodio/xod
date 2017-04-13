@@ -2,7 +2,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "node ./tools/lerna-run-sorted build",
-    "clean": "npm-run-all clean:*",
+    "clean": "yarn run clean:dist && yarn run clean:node_modules",
     "clean:dist": "rimraf packages/*/dist",
     "clean:node_modules": "rimraf node_modules packages/*/node_modules",
     "dev": "node ./tools/lerna-serve dev",
@@ -11,13 +11,13 @@
     "electron-rebuild": "lerna run --scope xod-client-electron electron-rebuild",
     "lerna": "lerna",
     "lint": "eslint packages/*/src packages/*/test packages/xod-js/platform --ext js,jsx",
-    "postinstall": "npm run bootstrap",
+    "postinstall": "yarn run bootstrap",
     "start:xod-client-electron": "node ./tools/lerna-run-sorted start xod-client-electron",
     "start:xod-server": "node ./tools/lerna-run-sorted start xod-server",
     "storybook": "node ./tools/lerna-serve storybook xod-client",
     "test": "node ./tools/lerna-run-sorted test",
     "test:watch": "node ./tools/lerna-serve test:watch",
-    "verify": "npm-run-all build lint test"
+    "verify": "yarn run build && yarn run lint && yarn run test"
   },
   "devDependencies": {
     "@google-cloud/storage": "^1.1.0",
@@ -47,11 +47,10 @@
     "json-loader": "^0.5.4",
     "json5": "^0.4.0",
     "json5-loader": "^0.6.0",
-    "lerna": "2.0.0-beta.30",
+    "lerna": "^2.0.0-rc.4",
     "mocha": "^3.1.0",
     "mocha-webpack": "^0.6.0",
     "node-sass": "^3.10.1",
-    "npm-run-all": "^3.1.0",
     "null-loader": "^0.1.1",
     "nyc": "^10.0.0",
     "postcss": "^5.2.5",

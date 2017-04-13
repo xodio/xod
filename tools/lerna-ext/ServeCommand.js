@@ -1,4 +1,3 @@
-
 const chalk = require('chalk');
 const async = require('async');
 const escapeArgs = require('command-join');
@@ -6,7 +5,7 @@ const ChildProcessUtilities = require('lerna/lib/ChildProcessUtilities');
 const RunCommand = require('lerna/lib/commands/RunCommand');
 const withDependencies = require('./dependencies');
 
-const exceptLast = func => (value, idx, self) => 
+const exceptLast = func => (value, idx, self) =>
   ((idx === self.length - 1) ? value : func(value));
 
 function pipeOutput(source, target, label) {
@@ -32,7 +31,7 @@ function pipeOutput(source, target, label) {
 }
 
 /*
- * ServeCommand is an upgrade for `lerna run` for NPM-commands that
+ * ServeCommand is an upgrade for `lerna run` for Yarn-commands that
  * keep running forever by design, e.g. watch, start, etc.
  *
  * It correctly handles real-time output streams of the processes
@@ -71,7 +70,7 @@ class ServeCommand extends RunCommand {
       env: process.env
     };
 
-    const command = `npm run ${this.script} ${escapeArgs(this.args)}`;
+    const command = `yarn run ${this.script} ${escapeArgs(this.args)}`;
     const proc = ChildProcessUtilities.exec(command, opts, callback);
 
     pipeOutput(proc.stdout, process.stdout, pkg.name);
