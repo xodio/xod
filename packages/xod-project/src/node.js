@@ -59,6 +59,8 @@ export const createNode = def(
     id: Utils.generateId(),
     type,
     position,
+    label: '',
+    description: '',
   })
 );
 
