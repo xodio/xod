@@ -295,7 +295,7 @@ const nodePinsForInspector = R.compose(
       injected: R.complement(R.prop('isConnected')),
     })
   ),
-  R.sortBy(R.prop('index')),
+  R.sortBy(XP.getPinOrder),
   R.reject(XP.isOutputPin),
   R.values,
   R.prop('pins')
