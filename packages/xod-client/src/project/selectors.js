@@ -230,7 +230,7 @@ export const getPreparedTabs = createSelector(
 // Inspector
 //
 
-const dereferencedSelection = createMemoizedSelector(
+const getDereferencedSelection = createMemoizedSelector(
   [getRenderableNodes, getRenderableLinks, getSelection],
   [R.equals, R.equals, R.equals],
   (renderableNodes, renderableLinks, selection) => {
@@ -250,6 +250,26 @@ const dereferencedSelection = createMemoizedSelector(
         ),
         R.props(['entity', 'id'])
       ),
+      selection
+    );
+  }
+);
+
+// :: State -> [ RenderableSelection ]
+export const getRenderableSelection = createMemoizedSelector(
+  [getRenderableNodes, getRenderableLinks, getSelection],
+  [R.equals, R.equals, R.equals],
+  (renderableNodes, renderableLinks, selection) => {
+    const renderables = {
+      [SELECTION_ENTITY_TYPE.NODE]: renderableNodes,
+      [SELECTION_ENTITY_TYPE.LINK]: renderableLinks,
+    };
+
+    return R.map(
+      ({ entity, id }) => ({
+        entityType: entity,
+        data: renderables[entity][id],
+      }),
       selection
     );
   }
@@ -305,9 +325,9 @@ const extractNodeForInspector = R.converge(
 // :: a -> PropForInspector[]
 const extractLinkForInspector = R.always({});
 
-// :: dereferencedSelection -> PropForInspector[]
+// :: State -> PropForInspector[]
 export const dataForInspectorFromSelection = createSelector(
-  dereferencedSelection,
+  getDereferencedSelection,
   R.map(
     R.applySpec({
       entity: R.prop('entity'),

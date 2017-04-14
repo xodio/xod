@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
@@ -16,6 +17,9 @@ import Patch from './Patch';
 import ProjectBrowser from '../../projectBrowser/containers/ProjectBrowser';
 import Sidebar from '../../utils/components/Sidebar';
 import Workarea from '../../utils/components/Workarea';
+
+import { RenderableSelection } from '../../project/types';
+import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
 import Tabs from '../containers/Tabs';
 import Inspector from '../components/Inspector';
@@ -65,6 +69,7 @@ class Editor extends React.Component {
     const {
       propsForInspector,
       currentPatchPath,
+      selection,
     } = this.props;
 
     const currentPatch = currentPatchPath
@@ -85,6 +90,7 @@ class Editor extends React.Component {
           <ProjectBrowser />
           <Inspector
             data={propsForInspector}
+            selection={selection}
             onPropUpdate={this.onPropUpdate}
             onPinModeSwitch={this.onPinModeSwitch}
           />
@@ -101,13 +107,14 @@ class Editor extends React.Component {
 Editor.propTypes = {
   size: React.PropTypes.object.isRequired,
   propsForInspector: React.PropTypes.arrayOf(React.PropTypes.object),
+  selection: sanctuaryPropType($.Array(RenderableSelection)),
   currentPatchPath: React.PropTypes.string,
   actions: React.PropTypes.objectOf(React.PropTypes.func),
 };
 
 const mapStateToProps = R.applySpec({
-  editor: EditorSelectors.getEditor,
   propsForInspector: ProjectSelectors.dataForInspectorFromSelection,
+  selection: ProjectSelectors.getRenderableSelection,
   currentPatchPath: EditorSelectors.getCurrentPatchPath,
 });
 

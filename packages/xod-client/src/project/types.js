@@ -4,6 +4,8 @@ import $ from 'sanctuary-def';
 import XF from 'xod-func-tools';
 import XP from 'xod-project';
 
+import { SELECTION_ENTITY_TYPE } from '../editor/constants';
+
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */
 
@@ -11,6 +13,8 @@ const packageName = 'xod-client';
 const docUrl = 'http://xod.io/docs/dev/xod-client/#';
 
 const Model = XF.Model(packageName, docUrl);
+const OneOfType = XF.OneOfType(packageName, docUrl);
+const EnumType = XF.EnumType(packageName, docUrl);
 
 const ExtendedModel = (typeName, baseModel, schema) =>
   XF.NullaryType(
@@ -50,4 +54,19 @@ export const RenderableLink = ExtendedModel('RenderableLink', XP.Link, {
   type: XP.DataType,
   from: Point,
   to: Point,
+});
+
+const RenderableNodeOrLink = OneOfType(
+  'RenderableNodeOrLink',
+  [RenderableNode, RenderableLink]
+);
+
+export const SelectionEntityType = EnumType(
+  'SelectionEntityType',
+  R.values(SELECTION_ENTITY_TYPE)
+);
+
+export const RenderableSelection = Model('RenderableSelection', {
+  entityType: SelectionEntityType,
+  data: RenderableNodeOrLink,
 });
