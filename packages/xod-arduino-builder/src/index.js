@@ -149,7 +149,13 @@ export const listPAVs = () =>
 export const installPAV = pav =>
   getConfig(ARDUINO_IDE_PATH_EXECUTABLE)
     .then(arduino => shelljs.exec(`${arduino} --install-boards "${pav.package}:${pav.architecture}:${pav.version}"`))
-    .then(({ code }) => code === 0 || Promise.reject([module.id, 'could not install boards']));
+    .then(
+      ({ code }) => {
+        if (code === 255) { return 'This PAV is already installed.'; }
+        if (code === 0) { return Promise.resolve(); }
+        return Promise.reject([module.id, 'could not install boards']);
+      }
+    );
 
 /** Lists the boards supported by the selected {@link PAV}.
  * @param {PAV} pav - Selected {@link PAV}.
