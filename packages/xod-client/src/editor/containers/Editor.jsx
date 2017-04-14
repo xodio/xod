@@ -28,8 +28,6 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onPropUpdate = this.onPropUpdate.bind(this);
-    this.onPinModeSwitch = this.onPinModeSwitch.bind(this);
     this.setModeCreating = this.setModeCreating.bind(this);
     this.setModeDefault = this.setModeDefault.bind(this);
     this.getHotkeyHandlers = this.getHotkeyHandlers.bind(this);
@@ -37,24 +35,12 @@ class Editor extends React.Component {
     this.patchSize = this.props.size;
   }
 
-  onPropUpdate(nodeId, propKind, propKey, propValue) {
-    this.props.actions.updateNodeProperty(nodeId, propKind, propKey, propValue);
-  }
-
-  onPinModeSwitch(nodeId, pinKey, injected, val) {
-    this.props.actions.changePinMode(nodeId, pinKey, injected, val);
-  }
-
-  setEditorMode(mode) {
-    this.props.actions.setMode(mode);
-  }
-
   setModeCreating() {
-    this.setEditorMode(EDITOR_MODE.CREATING_NODE);
+    this.props.actions.setMode(EDITOR_MODE.CREATING_NODE);
   }
 
   setModeDefault() {
-    this.setEditorMode(EDITOR_MODE.DEFAULT);
+    this.props.actions.setMode(EDITOR_MODE.DEFAULT);
   }
 
   getHotkeyHandlers() {
@@ -67,7 +53,6 @@ class Editor extends React.Component {
 
   render() {
     const {
-      propsForInspector,
       currentPatchPath,
       selection,
     } = this.props;
@@ -89,10 +74,8 @@ class Editor extends React.Component {
         <Sidebar>
           <ProjectBrowser />
           <Inspector
-            data={propsForInspector}
             selection={selection}
-            onPropUpdate={this.onPropUpdate}
-            onPinModeSwitch={this.onPinModeSwitch}
+            onPropUpdate={this.props.actions.updateNodeProperty}
           />
         </Sidebar>
         <Workarea>
@@ -106,14 +89,17 @@ class Editor extends React.Component {
 
 Editor.propTypes = {
   size: React.PropTypes.object.isRequired,
-  propsForInspector: React.PropTypes.arrayOf(React.PropTypes.object),
   selection: sanctuaryPropType($.Array(RenderableSelection)),
   currentPatchPath: React.PropTypes.string,
-  actions: React.PropTypes.objectOf(React.PropTypes.func),
+  actions: React.PropTypes.shape({
+    updateNodeProperty: React.PropTypes.func.isRequired,
+    undo: React.PropTypes.func.isRequired,
+    redo: React.PropTypes.func.isRequired,
+    setMode: React.PropTypes.func.isRequired,
+  }),
 };
 
 const mapStateToProps = R.applySpec({
-  propsForInspector: ProjectSelectors.dataForInspectorFromSelection,
   selection: ProjectSelectors.getRenderableSelection,
   currentPatchPath: EditorSelectors.getCurrentPatchPath,
 });
@@ -121,10 +107,8 @@ const mapStateToProps = R.applySpec({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     updateNodeProperty: ProjectActions.updateNodeProperty,
-    changePinMode: ProjectActions.changePinMode,
     undo: ProjectActions.undoPatch,
     redo: ProjectActions.redoPatch,
-
     setMode: Actions.setMode,
   }, dispatch),
 });

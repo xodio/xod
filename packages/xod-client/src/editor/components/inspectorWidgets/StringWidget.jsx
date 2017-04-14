@@ -42,7 +42,7 @@ StringWidget.propTypes = {
 
 StringWidget.defaultProps = {
   label: 'Unnamed property',
-  value: 0,
+  value: '',
   disabled: false,
 };
 

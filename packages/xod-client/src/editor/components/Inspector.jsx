@@ -1,136 +1,75 @@
 import R from 'ramda';
+import $ from 'sanctuary-def';
 import React from 'react';
+
 import { SELECTION_ENTITY_TYPE } from '../constants';
 
-import Widgets, { WIDGET_MAPPING } from './inspectorWidgets';
-import { noop } from '../../utils/ramda';
+import NodeInspector from './NodeInspector';
+import Widgets from './inspectorWidgets';
+import { noop, isMany, isOne } from '../../utils/ramda';
 
-// :: props.data -> [{entity, id}]
-const getEntitiesAndIds = R.map(R.pick(['entity', 'id']));
+import { RenderableSelection } from '../../project/types';
+import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
-// :: props.data -> newProps.data -> boolean
-const isSameSelection = R.useWith(R.equals, [getEntitiesAndIds, getEntitiesAndIds]);
 
-// :: entityId -> propKey -> string
-const getWidgetKey = R.curry((id, key) => `${id}_${key}`);
-
-// :: props.data -> boolean
-const isMany = R.compose(R.gt(R.__, 1), R.length);
-const isOne = R.compose(R.equals(1), R.length);
-const isEntity = entity => R.compose(R.equals(entity), R.prop('entity'), R.head);
-const isNode = R.both(isOne, isEntity(SELECTION_ENTITY_TYPE.NODE));
-const isLink = R.both(isOne, isEntity(SELECTION_ENTITY_TYPE.LINK));
-
-// :: props.data -> { compoenents, props }
-const createEmptySelectionWidgets = () => ({
-  components: { empty: Widgets.HintWidget },
-  props: { empty: { text: 'Select a node to edit its properties.' } },
-});
-
-// :: props.data -> { compoenents, props }
-const createNodeWidgets = (data) => {
-  const selection = data[0];
-  const nodeId = selection.id;
-
-  const result = R.reduce((acc, prop) => {
-    const widgetType = prop.widget || prop.type;
-    const injected = prop.injected || false;
-    const widgetKey = getWidgetKey(nodeId, prop.key);
-
-    const widget = Widgets.composeWidget(
-      WIDGET_MAPPING[SELECTION_ENTITY_TYPE.NODE][widgetType].component,
-      WIDGET_MAPPING[SELECTION_ENTITY_TYPE.NODE][widgetType].props
-    );
-    const props = {
-      entityId: nodeId,
-      key: widgetKey,
-      keyName: prop.key,
-      kind: prop.kind,
-      label: prop.label,
-      value: prop.value,
-      injected,
-    };
-
-    return R.compose(
-      R.assocPath(['components', widgetKey], widget),
-      R.assocPath(['props', widgetKey], props)
-    )(acc);
-  }, { components: {}, props: {} })(selection.props);
-
-  return result;
-};
-
-// :: props.data -> { components, props }
-const createLinkWidgets = () => ({
-  components: { empty: Widgets.HintWidget },
-  props: { empty: { text: 'Links have not any properties.' } },
-});
-
-// :: props.data -> { components, props }
-const createManyWidgets = data => ({
-  components: { empty: Widgets.HintWidget },
-  props: { empty: { text: `You have selected: ${data.length} elements.` } },
-});
-
-// :: props -> { compoenents, props }
-const createWidgets = R.compose(
-  R.cond([
-    [R.isEmpty, createEmptySelectionWidgets],
-    [isNode, createNodeWidgets],
-    [isLink, createLinkWidgets],
-    [isMany, createManyWidgets],
-  ]),
-  R.prop('data')
+const InspectorMessage = ({ text }) => (
+  <div className="Inspector">
+    <Widgets.HintWidget
+      text={text}
+    />
+  </div>
 );
 
-class Inspector extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = createWidgets(props);
-  }
+InspectorMessage.propTypes = {
+  text: React.PropTypes.string.isRequired,
+};
 
-  componentWillReceiveProps(nextProps) {
-    const shouldCreateComponents = R.not(isSameSelection(this.props.data, nextProps.data));
-    const widgetsData = createWidgets(nextProps);
-    const dataToUpdate = (shouldCreateComponents) ? widgetsData : R.pick(['props'], widgetsData);
-    this.setState(dataToUpdate);
-  }
 
-  render() {
-    const widgets = R.compose(
-      R.values,
-      R.mapObjIndexed((Widget, key) =>
-        <li key={key}>
-          <Widget
-            {...this.state.props[key]}
-            onPropUpdate={this.props.onPropUpdate}
-            onPinModeSwitch={this.props.onPinModeSwitch}
-          />
-        </li>
-      )
-    )(this.state.components);
+// :: [ RenderableSelection ] -> Boolean
+const isEntity = entity => R.compose(R.equals(entity), R.prop('entityType'), R.head);
+const isSingleNode = R.both(isOne, isEntity(SELECTION_ENTITY_TYPE.NODE));
+const isSingleLink = R.both(isOne, isEntity(SELECTION_ENTITY_TYPE.LINK));
 
+const Inspector = ({
+  selection,
+  onPropUpdate,
+}) => {
+  if (isMany(selection)) {
     return (
-      <div className="Inspector">
-        <small className="title">Inspector</small>
-        <ul>
-          {widgets}
-        </ul>
-      </div>
+      <InspectorMessage
+        text={`You have selected: ${selection.length} elements.`}
+      />
+    );
+  } else if (isSingleLink(selection)) {
+    return (
+      <InspectorMessage
+        text="Links do not any properties."
+      />
+    );
+  } else if (isSingleNode(selection)) {
+    return (
+      <NodeInspector
+        node={selection[0].data}
+        onPropUpdate={onPropUpdate}
+      />
     );
   }
-}
+
+  return (
+    <InspectorMessage
+      text="Select a node to edit its properties."
+    />
+  );
+};
 
 Inspector.propTypes = {
-  data: React.PropTypes.arrayOf(React.PropTypes.object),
-  onPropUpdate: React.PropTypes.func,
-  onPinModeSwitch: React.PropTypes.func,
+  selection: sanctuaryPropType($.Array(RenderableSelection)),
+  onPropUpdate: React.PropTypes.func.isRequired,
 };
 
 Inspector.defaultProps = {
-  data: [],
+  selection: [],
   onPropUpdate: noop,
-  onPinModeSwitch: noop,
 };
 
 export default Inspector;

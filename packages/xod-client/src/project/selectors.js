@@ -8,7 +8,6 @@ import {
   addLinksPositioning,
   addPoints,
 } from './nodeLayout';
-import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from './constants';
 import { SELECTION_ENTITY_TYPE } from '../editor/constants';
 import {
   getSelection,
@@ -18,7 +17,6 @@ import {
 } from '../editor/selectors';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
-
 
 export const getProject = R.prop('project');
 export const projectLens = R.lensProp('project');
@@ -230,31 +228,6 @@ export const getPreparedTabs = createSelector(
 // Inspector
 //
 
-const getDereferencedSelection = createMemoizedSelector(
-  [getRenderableNodes, getRenderableLinks, getSelection],
-  [R.equals, R.equals, R.equals],
-  (renderableNodes, renderableLinks, selection) => {
-    const renderables = {
-      [SELECTION_ENTITY_TYPE.NODE]: renderableNodes,
-      [SELECTION_ENTITY_TYPE.LINK]: renderableLinks,
-    };
-
-    return R.map(
-      R.compose(
-        R.converge(
-          R.assoc('entity'),
-          [
-            R.head,
-            R.path(R.__, renderables),
-          ]
-        ),
-        R.props(['entity', 'id'])
-      ),
-      selection
-    );
-  }
-);
-
 // :: State -> [ RenderableSelection ]
 export const getRenderableSelection = createMemoizedSelector(
   [getRenderableNodes, getRenderableLinks, getSelection],
@@ -273,70 +246,4 @@ export const getRenderableSelection = createMemoizedSelector(
       selection
     );
   }
-);
-
-// :: RenderableNode -> [ { injected, key, kind, label, type, value } ]
-const nodePropsForInspector = node => ([
-  {
-    kind: NODE_PROPERTY_KIND.PROP,
-    injected: false,
-    key: NODE_PROPERTY_KEY.LABEL,
-    label: 'Label',
-    type: 'string',
-    value: XP.getNodeLabel(node),
-  },
-  {
-    kind: NODE_PROPERTY_KIND.PROP,
-    injected: false,
-    key: NODE_PROPERTY_KEY.DESCRIPTION,
-    label: 'Description',
-    type: 'string',
-    value: XP.getNodeDescription(node),
-  },
-]);
-
-// :: RenderableNode -> [ { injected, key, kind, label, type, value } ]
-const nodePinsForInspector = R.compose(
-  R.map(
-    R.applySpec({
-      kind: R.always(NODE_PROPERTY_KIND.PIN),
-      key: R.prop('key'),
-      type: R.prop('type'),
-      label: R.prop('label'),
-      value: R.prop('value'),
-      injected: R.complement(R.prop('isConnected')),
-    })
-  ),
-  R.sortBy(XP.getPinOrder),
-  R.reject(XP.isOutputPin),
-  R.values,
-  R.prop('pins')
-);
-
-// :: RenderableNode -> PropForInspector[]
-const extractNodeForInspector = R.converge(
-  R.concat,
-  [
-    nodePropsForInspector,
-    nodePinsForInspector,
-  ]
-);
-
-// :: a -> PropForInspector[]
-const extractLinkForInspector = R.always({});
-
-// :: State -> PropForInspector[]
-export const dataForInspectorFromSelection = createSelector(
-  getDereferencedSelection,
-  R.map(
-    R.applySpec({
-      entity: R.prop('entity'),
-      id: R.prop('id'),
-      props: R.ifElse(
-        R.propEq('entity', SELECTION_ENTITY_TYPE.NODE),
-        extractNodeForInspector,
-        extractLinkForInspector
-      ),
-    })
-  )
 );

@@ -118,7 +118,7 @@ export default function composeWidget(Component, widgetProps) {
 
   Widget.propTypes = {
     entityId: React.PropTypes.string.isRequired,
-    keyName: React.PropTypes.string.isRequired, // ?
+    keyName: React.PropTypes.string.isRequired, // one of NODE_PROPERTY_KEY or pin key
     kind: React.PropTypes.string,
     label: React.PropTypes.string,
     value: React.PropTypes.oneOfType([
