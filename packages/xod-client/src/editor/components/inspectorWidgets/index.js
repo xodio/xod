@@ -6,7 +6,7 @@ import StringWidget from './StringWidget';
 import IOLabelWidget from './IOLabelWidget';
 import composeWidget from './Widget';
 
-import { WIDGET_TYPE, ENTITY } from '../../constants';
+import { WIDGET_TYPE, SELECTION_ENTITY_TYPE } from '../../constants';
 import { KEYCODE } from '../../../utils/constants';
 
 const widgetKeyDownHandlers = {
@@ -36,7 +36,7 @@ const widgetNumberKeysDownHandlers = {
 };
 
 export const WIDGET_MAPPING = {
-  [ENTITY.NODE]: {
+  [SELECTION_ENTITY_TYPE.NODE]: {
     [WIDGET_TYPE.BOOL]: {
       component: BoolWidget,
       props: { type: 'boolean' },

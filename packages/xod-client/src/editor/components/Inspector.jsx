@@ -1,6 +1,6 @@
 import R from 'ramda';
 import React from 'react';
-import { ENTITY } from '../constants';
+import { SELECTION_ENTITY_TYPE } from '../constants';
 
 import Widgets, { WIDGET_MAPPING } from './inspectorWidgets';
 import { noop } from '../../utils/ramda';
@@ -18,8 +18,8 @@ const getWidgetKey = R.curry((id, key) => `${id}_${key}`);
 const isMany = R.compose(R.gt(R.__, 1), R.length);
 const isOne = R.compose(R.equals(1), R.length);
 const isEntity = entity => R.compose(R.equals(entity), R.prop('entity'), R.head);
-const isNode = R.both(isOne, isEntity(ENTITY.NODE));
-const isLink = R.both(isOne, isEntity(ENTITY.LINK));
+const isNode = R.both(isOne, isEntity(SELECTION_ENTITY_TYPE.NODE));
+const isLink = R.both(isOne, isEntity(SELECTION_ENTITY_TYPE.LINK));
 
 // :: props.data -> { compoenents, props }
 const createEmptySelectionWidgets = () => ({
@@ -38,8 +38,8 @@ const createNodeWidgets = (data) => {
     const widgetKey = getWidgetKey(nodeId, prop.key);
 
     const widget = Widgets.composeWidget(
-      WIDGET_MAPPING[ENTITY.NODE][widgetType].component,
-      WIDGET_MAPPING[ENTITY.NODE][widgetType].props
+      WIDGET_MAPPING[SELECTION_ENTITY_TYPE.NODE][widgetType].component,
+      WIDGET_MAPPING[SELECTION_ENTITY_TYPE.NODE][widgetType].props
     );
     const props = {
       entityId: nodeId,

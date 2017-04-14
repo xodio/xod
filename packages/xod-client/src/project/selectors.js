@@ -9,7 +9,7 @@ import {
   addPoints,
 } from './nodeLayout';
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from './constants';
-import { ENTITY } from '../editor/constants';
+import { SELECTION_ENTITY_TYPE } from '../editor/constants';
 import {
   getSelection,
   getCurrentPatchPath,
@@ -235,8 +235,8 @@ const dereferencedSelection = createMemoizedSelector(
   [R.equals, R.equals, R.equals],
   (renderableNodes, renderableLinks, selection) => {
     const renderables = {
-      [ENTITY.NODE]: renderableNodes,
-      [ENTITY.LINK]: renderableLinks,
+      [SELECTION_ENTITY_TYPE.NODE]: renderableNodes,
+      [SELECTION_ENTITY_TYPE.LINK]: renderableLinks,
     };
 
     return R.map(
@@ -313,7 +313,7 @@ export const dataForInspectorFromSelection = createSelector(
       entity: R.prop('entity'),
       id: R.prop('id'),
       props: R.ifElse(
-        R.propEq('entity', ENTITY.NODE),
+        R.propEq('entity', SELECTION_ENTITY_TYPE.NODE),
         extractNodeForInspector,
         extractLinkForInspector
       ),

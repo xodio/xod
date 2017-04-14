@@ -33,7 +33,7 @@ export const LAYER = {
   GHOSTS: 'ghosts',
 };
 
-export const ENTITY = {
+export const SELECTION_ENTITY_TYPE = {
   NODE: 'Node',
   LINK: 'Link',
 };

@@ -1,7 +1,7 @@
 import R from 'ramda';
 import XP from 'xod-project';
 
-import { ENTITY } from './constants';
+import { SELECTION_ENTITY_TYPE } from './constants';
 
 import {
   EDITOR_DESELECT_ALL,
@@ -135,9 +135,9 @@ const editorReducer = (state = {}, action) => {
         linkingPin: null,
       });
     case EDITOR_SELECT_NODE:
-      return addSelection(ENTITY.NODE, action, state);
+      return addSelection(SELECTION_ENTITY_TYPE.NODE, action, state);
     case EDITOR_SELECT_LINK:
-      return addSelection(ENTITY.LINK, action, state);
+      return addSelection(SELECTION_ENTITY_TYPE.LINK, action, state);
     case EDITOR_SELECT_PIN:
       return R.assoc('linkingPin', action.payload, state);
     case EDITOR_SET_MODE:
