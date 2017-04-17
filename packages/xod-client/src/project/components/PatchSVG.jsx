@@ -1,26 +1,7 @@
 import React from 'react';
 
-const shadowFilter = (id, dx, dy, deviation, slope = 0.5) =>
-  `<filter id="${id}" width="150%" height="150%">
-    <feGaussianBlur in="SourceAlpha" stdDeviation="${deviation}" />
-    <feOffset dx="${dx}" dy="${dy}" result="offsetblur" />
-    <feComponentTransfer>
-      <feFuncA type="linear" slope="${slope}" />
-    </feComponentTransfer>
-    <feMerge>
-      <feMergeNode />
-      <feMergeNode in="SourceGraphic" />
-    </feMerge>
-  </filter>`;
-
-// because React can't properly render some of these attributes
-/* eslint-disable react/no-danger */
-const filtersHTML = {
-  __html: [
-    shadowFilter('pinShadow', 1, 1, 1),
-    shadowFilter('draggedNodeShadow', 0, 1, 4, 0.85),
-  ].join(''),
-};
+import PinShadowFilter from './filters/PinShadowFilter';
+import DraggedNodeShadowFilter from './filters/DraggedNodeShadowFilter';
 
 const PatchSVG = ({ children, onMouseMove, onMouseUp }) => (
   <svg
@@ -31,7 +12,10 @@ const PatchSVG = ({ children, onMouseMove, onMouseUp }) => (
     onMouseMove={onMouseMove}
     onMouseUp={onMouseUp}
   >
-    <defs dangerouslySetInnerHTML={filtersHTML} />
+    <defs>
+      <PinShadowFilter />
+      <DraggedNodeShadowFilter />
+    </defs>
     {children}
   </svg>
 );
