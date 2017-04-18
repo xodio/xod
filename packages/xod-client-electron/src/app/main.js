@@ -1,10 +1,16 @@
+import R from 'ramda';
 import {
   app,
   ipcMain,
   BrowserWindow,
 } from 'electron';
 import devtron from 'devtron';
+import settings from 'electron-settings';
+import { resolvePath } from 'xod-fs';
 import { saveProject, loadProjectList, loadProject, changeWorkspace, checkWorkspace } from './remoteActions';
+import { checkArduinoIde, installPav, findPort, doTranspileForArduino, uploadToArduino } from './uploadActions';
+
+app.setName('xod');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -35,6 +41,21 @@ function createWindow() {
   });
 }
 
+const setDefaultSettings = () => {
+  if (R.isEmpty(settings.getAll())) {
+    settings.setAll({
+      arduino: {
+        paths: {
+          // TODO: Add paths for other OS
+          ide: '/Applications/Arduino.app/Contents/MacOS/Arduino',
+          packages: resolvePath('~/Library/Arduino15/packages/'),
+        },
+        pavs: [],
+      },
+    });
+  }
+};
+
 const subscribeRemoteAction = (processName, remoteAction) => {
   ipcMain.on(processName, (event, opts) => {
     event.sender.send(`${processName}:process`);
@@ -46,12 +67,36 @@ const subscribeRemoteAction = (processName, remoteAction) => {
 
 const onReady = () => {
   devtron.install();
+  setDefaultSettings();
 
+  // TODO: Replace actionTypes with constants (after removing webpack from this package)
   subscribeRemoteAction('saveProject', saveProject);
   subscribeRemoteAction('loadProjectList', loadProjectList);
   subscribeRemoteAction('loadProject', loadProject);
   subscribeRemoteAction('checkWorkspace', checkWorkspace);
   subscribeRemoteAction('changeWorkspace', changeWorkspace);
+
+  ipcMain.on('UPLOAD_TO_ARDUINO',
+    (event, payload) => {
+      let code;
+      let port;
+
+      let percentage = 0;
+      function reply(data) {
+        percentage += data.percentage;
+        event.sender.send('UPLOAD_TO_ARDUINO', R.merge(data, { percentage }));
+      }
+
+      doTranspileForArduino(payload, reply)
+      .then((transpiledCode) => { code = transpiledCode; })
+      .then(() => findPort(payload.pab, reply))
+      .then((foundPort) => { port = foundPort; })
+      .then(() => checkArduinoIde(settings.get('arduino.paths'), reply))
+      .then(() => installPav(payload.pab, reply))
+      .then(() => uploadToArduino(payload.pab, port, code, reply))
+      .catch(reply);
+    }
+  );
 
   createWindow();
 };

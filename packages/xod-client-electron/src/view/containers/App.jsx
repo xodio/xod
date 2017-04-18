@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
 import EventListener from 'react-event-listener';
+import { ipcRenderer, remote as remoteElectron } from 'electron';
 
 import client from 'xod-client';
 import {
@@ -18,7 +19,7 @@ import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
 import { getUploadProcess } from '../../upload/selectors';
 import { SAVE_PROJECT } from '../actionTypes';
-import { UPLOAD } from '../../upload/actionTypes';
+import { UPLOAD, UPLOAD_TO_ARDUINO } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
 import PopupProjectSelection from '../../projects/components/PopupProjectSelection';
 import PopupUploadProject from '../../upload/components/PopupUploadProject';
@@ -27,9 +28,7 @@ import { getSettings, getWorkspace } from '../../settings/selectors';
 import { changeWorkspace, checkWorkspace } from '../../settings/actions';
 import { SaveProgressBar } from '../components/SaveProgressBar';
 
-// TODO: tweak webpack config to allow importing built-in electron package
-const { app, dialog, Menu } = window.require('electron').remote;
-
+const { app, dialog, Menu } = remoteElectron;
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
 
@@ -52,6 +51,7 @@ class App extends client.App {
     this.onResize = this.onResize.bind(this);
 
     this.onUpload = this.onUpload.bind(this);
+    this.onUploadToArduino = this.onUploadToArduino.bind(this);
     this.onShowCodeEspruino = this.onShowCodeEspruino.bind(this);
     this.onShowCodeNodejs = this.onShowCodeNodejs.bind(this);
     this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
@@ -103,6 +103,39 @@ class App extends client.App {
   onUpload() {
     this.showUploadProgressPopup();
     this.props.actions.upload();
+  }
+
+  onUploadToArduino(pab) {
+    const { project, currentPatchId } = this.props;
+    const proc = this.props.actions.uploadToArduino();
+
+    this.showUploadProgressPopup();
+    ipcRenderer.send(UPLOAD_TO_ARDUINO, {
+      pab,
+      project,
+      patchId: currentPatchId,
+    });
+    ipcRenderer.on(UPLOAD_TO_ARDUINO, (event, payload) => {
+      // Success
+      if (payload.code === 0 && payload.type === 'UPLOAD') {
+        proc.success(payload.message);
+        return;
+      }
+      // Progress
+      if (payload.code === 0 && payload.type !== 'UPLOAD') {
+        proc.progress(payload.message, payload.percentage);
+        return;
+      }
+      // Error
+      if (payload.code === 1) {
+        proc.fail(payload);
+        if (payload.type === 'IDE') {
+          // TODO: show popup
+          console.error('Arduino IDE not found!');
+        }
+        return;
+      }
+    });
   }
 
   onCreateProject(projectName) {
@@ -249,6 +282,28 @@ class App extends client.App {
           onClick(items.showCodeForNodeJS, this.onShowCodeNodejs),
           items.separator,
           onClick(items.showCodeForArduino, this.onShowCodeArduino),
+          // TODO: Remove this hardcode and do a magic in the xod-arduino-builder
+          onClick(items.uploadToArduinoUno, () => this.onUploadToArduino(
+            {
+              package: 'arduino',
+              architecture: 'avr',
+              board: 'uno',
+            }
+          )),
+          onClick(items.uploadToArduinoLeonardo, () => this.onUploadToArduino(
+            {
+              package: 'arduino',
+              architecture: 'avr',
+              board: 'leonardo',
+            }
+          )),
+          onClick(items.uploadToArduinoM0, () => this.onUploadToArduino(
+            {
+              package: 'arduino',
+              architecture: 'samd',
+              board: 'mzero_bl',
+            }
+          )),
         ]
       ),
     ];
@@ -443,6 +498,7 @@ const mapDispatchToProps = dispatch => ({
     loadProject: actions.loadProject,
     importProject: client.importProject, // used in base App class
     upload: uploadActions.upload,
+    uploadToArduino: uploadActions.uploadToArduino,
     addError: client.addError,
     deleteProcess: client.deleteProcess,
     createPatch: client.requestCreatePatch,
