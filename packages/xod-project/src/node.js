@@ -358,7 +358,7 @@ export const getPinNodeDataType = def(
  * Returns pin direction extracted from pinNode type
  * @function getPinDirectionFromNodeType
  * @param {Node} node
- * @returns {PinDireaction}
+ * @returns {PinDirection}
  */
 export const getPinNodeDirection = def(
   'getPinNodeDirection :: TerminalNode -> PinDirection',
