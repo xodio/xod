@@ -26,7 +26,7 @@
     "react-skylight": "^0.4.1",
     "redux": "^3.0.5",
     "redux-thunk": "^2.1.0",
-    "serialport": "^4.0.6",
+    "serialport": "^4.0.7",
     "xod-arduino": "^0.0.1",
     "xod-client": "^0.0.1",
     "xod-espruino-upload": "^0.0.1",
