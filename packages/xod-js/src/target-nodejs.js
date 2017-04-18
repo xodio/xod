@@ -9,10 +9,10 @@ import nodejsLauncher from '../platform/nodejs/launcher';
  * @function transpileForNodeJS
  * @param {Project} project Whole project (v2)
  * @param {Path} path Path of entry-point patch
- * @returns {String} Transpiled code
+ * @returns {Either<Error,String>} Transpiled code or Error
  */
 export default def(
-  'transpileForNodeJS :: Project -> PatchPath -> String',
+  'transpileForNodeJS :: Project -> PatchPath -> Either Error String',
   (project, path) => runTranspile({
     project,
     path,
