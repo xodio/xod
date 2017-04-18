@@ -21,6 +21,7 @@ import { getUploadProcess } from '../../upload/selectors';
 import { SAVE_PROJECT } from '../actionTypes';
 import { UPLOAD, UPLOAD_TO_ARDUINO } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
+import PopupSetArduinoIDEPath from '../../settings/components/PopupSetArduinoIDEPath';
 import PopupProjectSelection from '../../projects/components/PopupProjectSelection';
 import PopupUploadProject from '../../upload/components/PopupUploadProject';
 import { getProjects } from '../../projects/selectors';
@@ -44,6 +45,7 @@ class App extends client.App {
       popupSetWorkspaceCB: null,
       popupCreateProject: false,
       popupProjectSelection: false,
+      popupArduinoNotFound: false,
       code: '',
     };
 
@@ -70,12 +72,16 @@ class App extends client.App {
     this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
 
     this.onOpenProject = this.onOpenProject.bind(this);
+    this.onArduinoPathChange = this.onArduinoPathChange.bind(this);
 
     this.hideCodePopup = this.hideCodePopup.bind(this);
     this.hidePopupSetWorkspace = this.hidePopupSetWorkspace.bind(this);
     this.hidePopupCreateProject = this.hidePopupCreateProject.bind(this);
     this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
     this.hidePopupProjectSelection = this.hidePopupProjectSelection.bind(this);
+
+    this.showArduinoIdeNotFoundPopup = this.showArduinoIdeNotFoundPopup.bind(this);
+    this.hideArduinoIdeNotFoundPopup = this.hideArduinoIdeNotFoundPopup.bind(this);
 
     this.initNativeMenu();
   }
@@ -105,9 +111,9 @@ class App extends client.App {
     this.props.actions.upload();
   }
 
-  onUploadToArduino(pab) {
+  onUploadToArduino(pab, processActions = null) {
     const { project, currentPatchId } = this.props;
-    const proc = this.props.actions.uploadToArduino();
+    const proc = (processActions !== null) ? processActions : this.props.actions.uploadToArduino();
 
     this.showUploadProgressPopup();
     ipcRenderer.send(UPLOAD_TO_ARDUINO, {
@@ -116,25 +122,31 @@ class App extends client.App {
       patchId: currentPatchId,
     });
     ipcRenderer.on(UPLOAD_TO_ARDUINO, (event, payload) => {
-      // Success
-      if (payload.code === 0 && payload.type === 'UPLOAD') {
-        proc.success(payload.message);
-        return;
-      }
       // Progress
       if (payload.code === 0 && payload.type !== 'UPLOAD') {
         proc.progress(payload.message, payload.percentage);
         return;
       }
+      // Success
+      if (payload.code === 0 && payload.type === 'UPLOAD') {
+        proc.success(payload.message);
+      }
       // Error
       if (payload.code === 1) {
-        proc.fail(payload);
         if (payload.type === 'IDE') {
-          // TODO: show popup
-          console.error('Arduino IDE not found!');
+          this.hideUploadProgressPopup();
+          this.showArduinoIdeNotFoundPopup();
+          ipcRenderer.once('SET_ARDUINO_IDE',
+            (evt, response) => {
+              if (response.code === 0) this.onUploadToArduino(pab, proc);
+            }
+          );
+          return;
         }
-        return;
+        proc.fail(payload);
       }
+      // Remove listener if process is finished.
+      ipcRenderer.removeAllListeners(UPLOAD_TO_ARDUINO);
     });
   }
 
@@ -233,6 +245,15 @@ class App extends client.App {
     }
 
     return true;
+  }
+
+  onArduinoPathChange(newPath) {
+    ipcRenderer.send('SET_ARDUINO_IDE', { path: newPath });
+    ipcRenderer.once('SET_ARDUINO_IDE',
+      (event, payload) => {
+        if (payload.code === 0) this.hideArduinoIdeNotFoundPopup();
+      }
+    );
   }
 
   getSaveProgress() {
@@ -399,6 +420,14 @@ class App extends client.App {
     this.setState({ popupProjectSelection: false });
   }
 
+  showArduinoIdeNotFoundPopup() {
+    this.setState({ popupArduinoNotFound: true });
+  }
+
+  hideArduinoIdeNotFoundPopup() {
+    this.setState({ popupArduinoNotFound: false });
+  }
+
   showPopupSetWorkspace(cb) {
     this.setState({ popupSetWorkspace: true });
     if (cb) {
@@ -451,6 +480,11 @@ class App extends client.App {
           isVisible={this.state.popupSetWorkspace}
           onChange={this.onWorkspaceChange}
           onClose={this.hidePopupSetWorkspace}
+        />
+        <PopupSetArduinoIDEPath
+          isVisible={this.state.popupArduinoNotFound}
+          onChange={this.onArduinoPathChange}
+          onClose={this.hideArduinoIdeNotFoundPopup}
         />
         <PopupProjectSelection
           projects={this.props.projects}

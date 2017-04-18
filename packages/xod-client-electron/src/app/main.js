@@ -9,6 +9,7 @@ import settings from 'electron-settings';
 import { resolvePath } from 'xod-fs';
 import { saveProject, loadProjectList, loadProject, changeWorkspace, checkWorkspace } from './remoteActions';
 import { checkArduinoIde, installPav, findPort, doTranspileForArduino, uploadToArduino } from './uploadActions';
+import { DEFAULT_ARDUINO_IDE_PATH, DEFAULT_ARDUINO_PACKAGES_PATH } from './constants';
 
 app.setName('xod');
 
@@ -46,11 +47,9 @@ const setDefaultSettings = () => {
     settings.setAll({
       arduino: {
         paths: {
-          // TODO: Add paths for other OS
-          ide: '/Applications/Arduino.app/Contents/MacOS/Arduino',
-          packages: resolvePath('~/Library/Arduino15/packages/'),
+          ide: R.propOr('', process.platform, DEFAULT_ARDUINO_IDE_PATH),
+          packages: resolvePath(DEFAULT_ARDUINO_PACKAGES_PATH[process.platform]),
         },
-        pavs: [],
       },
     });
   }
@@ -95,6 +94,15 @@ const onReady = () => {
       .then(() => installPav(payload.pab, reply))
       .then(() => uploadToArduino(payload.pab, port, code, reply))
       .catch(reply);
+    }
+  );
+  ipcMain.on('SET_ARDUINO_IDE',
+    (event, payload) => {
+      settings.set('arduino.paths.ide', payload.path);
+      event.sender.send('SET_ARDUINO_IDE', {
+        code: 0,
+        message: 'Path to Arduino IDE executable was changed.',
+      });
     }
   );
 

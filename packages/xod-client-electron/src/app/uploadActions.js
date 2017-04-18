@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { resolve } from 'path';
 import fs from 'fs';
 import { writeFile, isDirectoryExists, isFileExists } from 'xod-fs';
 import { foldEither } from 'xod-func-tools';
@@ -94,8 +95,10 @@ export const doTranspileForArduino = ({ pab, project, patchId }, success) => {
 };
 
 export const uploadToArduino = (pab, port, code, success) => {
-  // TODO: Replace path to temp directory (with workspace?)
-  const tmpPath = `${__dirname}/uploadCode.cpp`;
+  // TODO: Replace tmpPath with normal path.
+  //       Somehow app.getPath('temp') is not working.
+  //       Arduino IDE returns "readdirent: result is too long".
+  const tmpPath = resolve(__dirname, 'uploadCode.cpp');
   const result = {
     code: 0,
     type: 'UPLOAD',
