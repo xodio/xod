@@ -20,3 +20,15 @@ export const isDirectoryExists = R.compose(
   ),
   resolvePath
 );
+
+// :: string -> boolean
+export const isFileExists = R.compose(
+  R.tryCatch(
+    R.compose(
+      R.invoker(0, 'isFile'),
+      fs.statSync
+    ),
+    R.F
+  ),
+  resolvePath
+);
