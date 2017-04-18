@@ -56,13 +56,13 @@ const createPinWidgetsConfig = R.compose(
 );
 
 const NodeLabelWidget = Widgets.composeWidget(
-  Widgets.StringWidget,
+  Widgets.LabelWidget,
   WIDGET_MAPPING[SELECTION_ENTITY_TYPE.NODE][WIDGET_TYPE.STRING].props
 );
 
 const NodeDescriptionWidget = Widgets.composeWidget(
-  Widgets.StringWidget,
-  WIDGET_MAPPING[SELECTION_ENTITY_TYPE.NODE][WIDGET_TYPE.STRING].props
+  Widgets.DescriptionWidget,
+  WIDGET_MAPPING[SELECTION_ENTITY_TYPE.NODE][WIDGET_TYPE.TEXTAREA].props
 );
 
 const NodeInspector = ({ node, onPropUpdate }) => {
@@ -71,11 +71,16 @@ const NodeInspector = ({ node, onPropUpdate }) => {
 
   return (
     <div className="Inspector">
-      <div>Node: {baseName}</div>
+      <div className="inspectorTitle">Node: <span className="nodeName">{baseName}</span></div>
 
-      {/* TODO: help icon */}
+      <a
+        href={`https://xod.io/TODOREPLACEME/${type}`}
+        className="nodeHelp"
+      >
+        <span className="nodeHelpIcon" />
+      </a>
 
-      <div>{type}</div>
+      <div className="nodeType">{type}</div>
 
       <NodeLabelWidget
         entityId={XP.getNodeId(node)}
@@ -97,7 +102,7 @@ const NodeInspector = ({ node, onPropUpdate }) => {
         entityId={XP.getNodeId(node)}
         kind={NODE_PROPERTY_KIND.PROP}
         injected={false}
-        keyName={NODE_PROPERTY_KEY.DESCRIPTION}
+        keyName={NODE_PROPERTY_KEY.TEXTAREA}
         label="Description"
         value={XP.getNodeDescription(node)}
         onPropUpdate={onPropUpdate}

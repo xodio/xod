@@ -13,16 +13,11 @@ $font-size-xl: 28px;
 $color-basic-text: #000;
 
 $color-canvas-background: #393939;
-$color-canvas-background-text: #000;
 $color-canvas-face: #646464;
 $color-canvas-face-light: #A7A7A7;
 $color-canvas-face-text: #a7a7a7;
-$color-canvas-face-stroke: #000;
-$color-canvas-selected: #4ed5ec;
+$color-canvas-selected: #4ed5ed;
 $color-highlight: white;
-$color-canvas-ok: #0f0;
-$color-canvas-almost-ok: #ab0;
-$color-canvas-not-available: #000;
 
 $color-datatype-string: #B99039;
 $color-datatype-number: #2e8f6c;
@@ -79,3 +74,10 @@ $sidebar-color-border: #595959;
 $sidebar-color-bg-tabs: #373737;
 $sidebar-color-bg-tabs-selected: #cccccc;
 $sidebar-color-text-selected-tab: #000;
+
+$input-color-text: #cccccc;
+$input-color-bg: #373737;
+$input-color-border: #666666;
+$input-color-border-focus: $color-canvas-selected;
+
+$input-option-highlighted: #555555;

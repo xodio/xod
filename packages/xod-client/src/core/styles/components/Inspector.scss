@@ -1,75 +1,157 @@
 
 .Inspector {
   display: block;
+  position: relative;
   width: 100%;
   height: 100%;
   background: $sidebar-color-bg;
   color: $sidebar-color-text;
 
-  ul {
+  ul, li {
     padding: 0;
     margin: 0;
     list-style: none;
   }
+}
 
-  li {
-    padding: 4px 8px;
-    margin: 1px 0;
-    font-size: $font-size-m;
+.inspectorTitle {
+  font-size: $font-size-m;
+  padding: 14px 17px;
+  color: $input-color-border; // TODO: separate color?
+
+  .nodeName {
+    color: $color-canvas-selected; // TODO: separate color?
   }
+}
 
-  input:focus {
+.nodeType {
+  padding-left: 16px;
+  color: $sidebar-color-text;
+  font-size: $font-size-s;
+}
+
+.nodeHelp {
+  display: block;
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: $input-color-bg;
+
+  &:hover {
+    background-color: #555555;
+    box-shadow: 0 0 3px 0 rgba(0,0,0,0.5);
+  }
+}
+
+.nodeHelpIcon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: url(../assets/icons/guide.svg) no-repeat 4px 4px;
+  background-size: 16px 16px;
+  cursor: pointer;
+}
+
+.inspectorInput {
+  background-color: $input-color-bg;
+  color: $input-color-text;
+  border: 1px solid $input-color-border;
+  box-sizing: border-box;
+  padding: 6px 4px;
+
+  &:focus {
     outline: none;
+    border-color: $input-color-border-focus;
+  }
+
+  &:disabled {
+    opacity: 0.2;
   }
 }
 
-.HintWidget {
-  @include inspector-widget();
+.inspectorTextInput {
+  @extend .inspectorInput;
+
+  &--number {
+    text-align: right;
+  }
 }
 
-.BoolWidget {
-  @include inspector-widget();
+.nodeLabelTextInput {
+  background: url(../assets/icons/flag.svg) no-repeat 4px 4px;
+  background-size: 16px 16px;
+
+  padding-left: 24px;
+}
+
+.inspectorSelectInput {
+  @extend .inspectorInput;
+
+  -webkit-appearance: none;
+  border-radius: 0;
+  background: url(../assets/icons/dropdown.svg) no-repeat top 4px right 4px;
+  background-size: 16px 16px;
+}
+
+.Widget {
+  padding: 7px 17px;
+
+  //margin-bottom: 2px;
+  overflow: hidden;
+
+  font-size: $font-size-m;
+  font-family: $font-family-condensed;
+  line-height: $font-size-l;
+  vertical-align: baseline;
 
   label {
-    padding-right: 30px;
+    display: block;
   }
 }
 
-.NumberWidget {
-  @include inspector-widget();
+.PinWidget {
+  padding-bottom: 0;
+
+  .PinIcon {
+    pointer-events: none;
+    float: left;
+  }
 
   label {
-    padding-right: 60px;
+    float: left;
+    padding: 6px 4px;
+    // TODO: this could be dropped when all labels will be 4 chars max
+    max-width: 34px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-  input {
-    width: 55px;
-  }
-}
 
-.PulseWidget {
-  @include inspector-widget();
-
-  select {
-    width: 60px;
+  .inspectorTextInput,
+  .inspectorSelectInput {
     float: right;
-  }
-  input {
-    width: 30px;
+    width: 104px;
   }
 }
 
-.StringWidget {
-  @include inspector-widget();
+.LabelWidget {
+  padding: 14px 16px;
 
-  label {
-    padding-right: 105px;
+  .inspectorTextInput {
+    width: 100%;
   }
 }
 
-.IOLabelWidget {
-  @include inspector-widget();
+.DescriptionWidget {
+  padding: 14px 16px;
 
   label {
-    padding-right: 105px;
+    color: $input-color-border; // TODO
+  }
+
+  .inspectorTextInput {
+    width: 100%;
   }
 }

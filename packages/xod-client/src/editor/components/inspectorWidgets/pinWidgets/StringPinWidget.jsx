@@ -1,16 +1,16 @@
 import React from 'react';
-import classNames from 'classnames';
+
+import { PROPERTY_TYPE } from '../../../constants';
+import PinIcon from './PinIcon';
 
 const StringWidget = (props) => {
-  const cls = classNames('StringWidget', {
-    'is-disabled': props.disabled,
-  });
   const onChange = (event) => {
     props.onChange(event.target.value);
   };
   return (
-    <div className={cls}>
+    <div className="Widget PinWidget StringWidget">
       <input
+        className="inspectorTextInput"
         type="text"
         id={props.elementId}
         value={props.value}
@@ -20,6 +20,11 @@ const StringWidget = (props) => {
         onChange={onChange}
         onBlur={props.onBlur}
         onKeyDown={props.onKeyDown}
+      />
+      <PinIcon
+        id={props.elementId}
+        type={PROPERTY_TYPE.STRING}
+        isConnected={props.disabled}
       />
       <label
         htmlFor={props.elementId}

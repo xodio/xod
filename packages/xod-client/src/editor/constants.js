@@ -24,6 +24,7 @@ export const WIDGET_TYPE = {
   STRING: PROPERTY_TYPE.STRING,
   PULSE: PROPERTY_TYPE.PULSE,
   IO_LABEL: 'IOLabel',
+  TEXTAREA: 'textarea',
 };
 
 export const LAYER = {

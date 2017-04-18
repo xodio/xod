@@ -8,10 +8,6 @@ import { NODE_PROPERTY_KIND } from '../../../project/constants';
 
 export default function composeWidget(Component, widgetProps) {
   const commonKeyDownHandlers = {
-    [KEYCODE.ENTER]: function enter(event) {
-      event.preventDefault();
-      this.commit();
-    },
     [KEYCODE.ESCAPE]: function escape(event) {
       if (this.state.value === this.parseValue(this.props.value)) {
         event.target.blur();

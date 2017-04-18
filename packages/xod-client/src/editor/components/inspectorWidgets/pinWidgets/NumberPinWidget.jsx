@@ -1,16 +1,16 @@
 import React from 'react';
-import classNames from 'classnames';
+
+import { PROPERTY_TYPE } from '../../../constants';
+import PinIcon from './PinIcon';
 
 const NumberWidget = (props) => {
-  const cls = classNames('NumberWidget', {
-    'is-disabled': props.disabled,
-  });
   const onChange = (event) => {
     props.onChange(event.target.value);
   };
   return (
-    <div className={cls}>
+    <div className="Widget PinWidget NumberWidget">
       <input
+        className="inspectorTextInput inspectorTextInput--number"
         type="text"
         id={props.elementId}
         value={props.value}
@@ -21,7 +21,13 @@ const NumberWidget = (props) => {
         onBlur={props.onBlur}
         onKeyDown={props.onKeyDown}
       />
+      <PinIcon
+        id={props.elementId}
+        type={PROPERTY_TYPE.NUMBER}
+        isConnected={props.disabled}
+      />
       <label
+        className=""
         htmlFor={props.elementId}
       >
         {props.label}
