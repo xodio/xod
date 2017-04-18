@@ -51,6 +51,8 @@ import mime from 'rest/interceptor/mime';
 import SerialPort from 'serialport';
 import shelljs from 'shelljs';
 
+const catchRestError = err => Promise.reject(R.prop('error', err));
+
 /** A url of the [official Arduino package index]{@link http://downloads.arduino.cc/packages/package_index.json}.
  * @constant
  * @type URL */
@@ -125,7 +127,8 @@ export const setArduinoIdePathPackages = arduinoIdePathPackages =>
  * @return {Promise<Object>} */
 export const listPackageIndex = () =>
   rest.wrap(mime).wrap(errorCode)({ path: ARDUINO_PACKAGE_INDEX_URL })
-    .then(R.prop('entity'));
+    .then(R.prop('entity'))
+    .catch(catchRestError);
 
 /** Lists the processed [official Arduino package index]{@link http://downloads.arduino.cc/packages/package_index.json}, optimized for {@link PAV} selection.
  * @return {Promise<Map<string, PAV[]>>} */
@@ -141,20 +144,26 @@ export const listPAVs = () =>
       }))
     ),
     R.prop('packages')
-  ));
+  )).catch(catchRestError);
 
 /** Installs the selected {@link PAV}.
  * @param {PAV} pav - Selected {@link PAV}.
  * @return {Promise<boolean>} */
 export const installPAV = pav =>
   getConfig(ARDUINO_IDE_PATH_EXECUTABLE)
-    .then(arduino => shelljs.exec(`${arduino} --install-boards "${pav.package}:${pav.architecture}:${pav.version}"`))
     .then(
-      ({ code }) => {
-        if (code === 255) { return 'This PAV is already installed.'; }
-        if (code === 0) { return Promise.resolve(); }
-        return Promise.reject([module.id, 'could not install boards']);
-      }
+      arduino => new Promise(
+        (resolve, reject) => {
+          shelljs.exec(
+            `${arduino} --install-boards ${pav.package}:${pav.architecture}:${pav.version}`,
+            (code) => {
+              if (code === 255) { return resolve('This PAV is already installed.'); }
+              if (code === 0) { return resolve(); }
+              return reject([module.id, 'could not install boards']);
+            }
+          );
+        }
+      )
     );
 
 /** Lists the boards supported by the selected {@link PAV}.
@@ -182,7 +191,15 @@ export const listPorts = () =>
  * @return {Promise<boolean>} */
 export const verify = (pab, file) =>
   getConfig(ARDUINO_IDE_PATH_EXECUTABLE)
-    .then(arduino => shelljs.exec(`${arduino} --verify --board "${pab.package}:${pab.architecture}:${pab.board}" "${file}"`))
+    .then(arduino => new Promise((resolve, reject) =>
+      shelljs.exec(
+        `${arduino} --verify --board "${pab.package}:${pab.architecture}:${pab.board}" "${file}"`,
+        (code, stdout, stderr) => {
+          if (code === 0) { return resolve(stdout); }
+          return reject(stderr);
+        }
+      )
+    ))
     .then(({ code }) => code === 0 || Promise.reject([module.id, 'could not build']));
 
 /** Compiles and uploads the file for the selected {@link PAB} at the specified {@link Port}.
@@ -192,5 +209,12 @@ export const verify = (pab, file) =>
  * @return {Promise<boolean>} */
 export const upload = (pab, port, file) =>
   getConfig(ARDUINO_IDE_PATH_EXECUTABLE)
-    .then(arduino => shelljs.exec(`${arduino} --upload --board "${pab.package}:${pab.architecture}:${pab.board}" --port "${port}" "${file}"`))
-    .then(({ code }) => code === 0 || Promise.reject([module.id, 'could not upload']));
+    .then(arduino => new Promise((resolve, reject) =>
+      shelljs.exec(
+        `${arduino} --upload --board "${pab.package}:${pab.architecture}:${pab.board}" --port "${port}" "${file}"`,
+        (code, stdout, stderr) => {
+          if (code === 0) { return resolve(stdout); }
+          return reject(stderr);
+        }
+      )
+    ));
