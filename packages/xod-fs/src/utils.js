@@ -10,25 +10,21 @@ export const resolvePath = R.compose(
 );
 
 // :: string -> boolean
-export const isDirectoryExists = R.compose(
-  R.tryCatch(
-    R.compose(
-      R.invoker(0, 'isDirectory'),
-      fs.statSync
-    ),
-    R.F
+export const isDirectoryExists = R.tryCatch(
+  R.compose(
+    R.invoker(0, 'isDirectory'),
+    fs.statSync,
+    resolvePath
   ),
-  resolvePath
+  R.F
 );
 
 // :: string -> boolean
-export const isFileExists = R.compose(
-  R.tryCatch(
-    R.compose(
-      R.invoker(0, 'isFile'),
-      fs.statSync
-    ),
-    R.F
+export const isFileExists = R.tryCatch(
+  R.compose(
+    R.invoker(0, 'isFile'),
+    fs.statSync,
+    resolvePath
   ),
-  resolvePath
+  R.F
 );
