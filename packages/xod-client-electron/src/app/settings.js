@@ -53,15 +53,3 @@ export default {
   setArduinoPackages,
   getArduinoPackages,
 };
-
-//   if (R.isEmpty(settings.getAll())) {
-//     settings.setAll({
-//       arduino: {
-//         paths: {
-//           ide: getFirstPlatformSpecificPath(DEFAULT_ARDUINO_IDE_PATH),
-//           packages: getFirstPlatformSpecificPath(DEFAULT_ARDUINO_PACKAGES_PATH),
-//         },
-//       },
-//     });
-//   }
-// };

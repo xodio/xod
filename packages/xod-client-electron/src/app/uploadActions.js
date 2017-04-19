@@ -1,7 +1,6 @@
 import R from 'ramda';
 import fs from 'fs';
 import { resolve } from 'path';
-import { app } from 'electron';
 import { writeFile, isDirectoryExists, isFileExists } from 'xod-fs';
 import { foldEither, notEmpty } from 'xod-func-tools';
 import { transpileForArduino } from 'xod-arduino';
