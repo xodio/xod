@@ -159,10 +159,23 @@ class ProjectBrowser extends React.Component {
       currentPatchPath,
       selectedPatchPath,
     } = this.props;
+
     const {
       switchPatch,
       setSelection,
     } = this.props.actions;
+
+    const renderItem = ({ path }) => (
+      <PatchGroupItem
+        key={path}
+        label={getBaseName(path)}
+        isOpen={path === currentPatchPath}
+        onDoubleClick={() => switchPatch(path)}
+        isSelected={path === selectedPatchPath}
+        onClick={() => setSelection(path)}
+        hoverButtons={this.localPatchesHoveredButtons(path)}
+      />
+    );
 
     return (
       <PatchGroup
@@ -171,17 +184,7 @@ class ProjectBrowser extends React.Component {
         name={projectName}
         onClose={this.deselectIfInLocalPatches}
       >
-        {R.map(({ path, label }) => (
-          <PatchGroupItem
-            key={path}
-            label={label}
-            isOpen={path === currentPatchPath}
-            onDoubleClick={() => switchPatch(path)}
-            isSelected={path === selectedPatchPath}
-            onClick={() => setSelection(path)}
-            hoverButtons={this.localPatchesHoveredButtons(path)}
-          />
-        ), localPatches)}
+        {R.map(renderItem, localPatches)}
       </PatchGroup>
     );
   }

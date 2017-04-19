@@ -208,7 +208,8 @@ export const getPreparedTabs = createSelector(
         const patchId = tab.id;
 
         const label = R.compose(
-          XP.getPatchLabel,
+          XP.getBaseName,
+          XP.getPatchPath,
           R.view(XP.lensPatch(patchId))
         )(project);
 
