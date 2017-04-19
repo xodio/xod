@@ -74,6 +74,7 @@ export const checkArduinoIde = (updatePaths, success) => {
 const getPAV = pab => R.composeP(
   R.last,
   R.prop(`${pab.package}:${pab.architecture}`),
+  R.prop('data'),
   xab.listPAVs
 )();
 
@@ -100,7 +101,7 @@ export const findPort = (pab, success) => {
   };
 
   return xab.listPorts()
-    .then(ports => R.compose(
+    .then(R.compose(
       R.ifElse(
         R.isNil,
         () => Promise.reject(new Error('Could not find Arduino device on opened ports.')),
@@ -109,8 +110,9 @@ export const findPort = (pab, success) => {
       R.propOr(null, 'comName'),
       R.find(
         R.propEq('vendorId', '0x2341') // TODO: Replace it with normal find function
-      )
-    )(ports))
+      ),
+      R.prop('data')
+    ))
     .then((port) => { success(result); return port; })
     .catch(throwError(result));
 };
@@ -126,7 +128,7 @@ export const doTranspileForArduino = ({ pab, project, patchId }, success) => {
   return Promise.resolve(project)
     .then(v2 => transpileForArduino(v2, patchId))
     .then(foldEither(
-      err => Promise.reject(new Error(err)),
+      err => Promise.reject(err),
       code => Promise.resolve(code)
     ))
     .then((code) => { success(result); return code; })
@@ -144,16 +146,21 @@ export const uploadToArduino = (pab, port, code, success) => {
     message: 'Code has been successfully uploaded.',
     percentage: 55,
   };
+  const updateMessageByData = R.compose(
+    R.assoc('message', R.__, result),
+    R.prop('data')
+  );
   const clearTmp = () => fs.unlinkSync(tmpPath);
 
   return writeFile(tmpPath, code)
     .then(({ path }) => xab.upload(pab, port, path))
-    .then((response) => { result.message = response; })
-    .catch((errorMessage) => {
-      clearTmp();
-      return Promise.reject(new Error(`Can't build or upload project to Arduino.\n${errorMessage}`));
-    })
-    .then(() => success(result))
+    .then(updateMessageByData)
+    .catch(R.compose(
+      err => Promise.reject(err),
+      R.tap(clearTmp),
+      updateMessageByData
+    ))
+    .then(success)
     .then(() => clearTmp())
     .catch(throwError(result));
 };

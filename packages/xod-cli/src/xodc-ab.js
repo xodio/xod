@@ -2,9 +2,9 @@ import * as ab from 'xod-arduino-builder';
 import * as messages from './messages';
 
 function run(promise, { success, error }) {
-  promise.then((value) => {
-    if (value) {
-      messages.notice(JSON.stringify(value, null, 2));
+  promise.then((response) => {
+    if (response && response.data) {
+      messages.notice(JSON.stringify(response.data, null, 2));
     }
     if (success) {
       messages.success(success);
