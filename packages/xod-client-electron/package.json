@@ -32,7 +32,8 @@
     "xod-espruino-upload": "^0.0.1",
     "xod-fs": "^0.0.1",
     "xod-js": "^0.0.1",
-    "xod-project": "^0.0.1"
+    "xod-project": "^0.0.1",
+    "xod-func-tools": "^0.0.1"
   },
   "devDependencies": {
     "devtron": "^1.3.0",
