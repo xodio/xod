@@ -76,13 +76,13 @@ const onReady = () => {
       }
 
       doTranspileForArduino(payload, reply)
-      .then((transpiledCode) => { code = transpiledCode; })
-      .then(() => findPort(payload.pab, reply))
-      .then((foundPort) => { port = foundPort; })
-      .then(() => checkArduinoIde(updateArduinoPaths, reply))
-      .then(() => installPav(payload.pab, reply))
-      .then(() => uploadToArduino(payload.pab, port, code, reply))
-      .catch(reply);
+        .then((transpiledCode) => { code = transpiledCode; })
+        .then(() => findPort(payload.pab, reply))
+        .then((foundPort) => { port = foundPort; })
+        .then(() => checkArduinoIde(updateArduinoPaths, reply))
+        .then(() => installPav(payload.pab, reply))
+        .then(() => uploadToArduino(payload.pab, port, code, reply))
+        .catch(reply);
     }
   );
   ipcMain.on('SET_ARDUINO_IDE',
