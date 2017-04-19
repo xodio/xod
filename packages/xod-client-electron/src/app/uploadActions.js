@@ -1,10 +1,15 @@
 import R from 'ramda';
-import { resolve } from 'path';
 import fs from 'fs';
+import { resolve } from 'path';
+import { app } from 'electron';
 import { writeFile, isDirectoryExists, isFileExists } from 'xod-fs';
-import { foldEither } from 'xod-func-tools';
+import { foldEither, notEmpty } from 'xod-func-tools';
 import { transpileForArduino } from 'xod-arduino';
 import * as xab from 'xod-arduino-builder';
+
+import { getArduinoIDE, getArduinoPackages } from './settings';
+import { getPlatformSpecificPaths } from './utils';
+import { DEFAULT_ARDUINO_IDE_PATH, DEFAULT_ARDUINO_PACKAGES_PATH } from './constants';
 
 // TODO: Replace types with constants (after removing webpack from this package)
 // TODO: Move messages to somewhere
@@ -13,21 +18,56 @@ const throwError = R.curry((defaultObject, err) => Promise.reject(
   R.merge(defaultObject, { code: 1, message: err.message })
 ));
 
-export const checkArduinoIde = ({ ide, packages }, success) => {
-  const ideExists = isFileExists(ide);
-  const pkgExists = isDirectoryExists(packages);
+// :: () -> String[]
+const getIDEPaths = () => R.concat(
+  R.of(getArduinoIDE()),
+  getPlatformSpecificPaths(DEFAULT_ARDUINO_IDE_PATH)
+);
+// :: () -> String[]
+const getPackagesPaths = () => R.concat(
+  R.of(getArduinoPackages()),
+  getPlatformSpecificPaths(DEFAULT_ARDUINO_PACKAGES_PATH)
+);
+
+// :: (a -> Boolean) -> (String[] -> String)
+const checkArrayOfStrings = pred => R.reduceWhile(R.complement(pred), (acc, str) => str, null);
+// :: String[] -> String
+const anyFileThatExist = checkArrayOfStrings(isFileExists);
+// :: String[] -> String
+const anyDirectoryThatExist = checkArrayOfStrings(isDirectoryExists);
+// :: Boolean -> Boolean -> Boolean
+const isBothTrue = R.compose(R.equals(true), R.and);
+// :: Number -> Boolean -> ... -> Boolean
+const isNthArgTrue = argNum => R.compose(R.equals(true), R.nthArg(argNum));
+
+export const checkArduinoIde = (updatePaths, success) => {
+  const ide = anyFileThatExist(getIDEPaths());
+  const packages = anyDirectoryThatExist(getPackagesPaths());
+
+  const ideExists = R.both(isFileExists, notEmpty)(ide);
+  const pkgExists = R.both(isDirectoryExists, notEmpty)(packages);
+
+  const message = R.cond([
+    [isBothTrue, R.always('Arduino IDE has been found. Checking for toolchain...')],
+    [isNthArgTrue(0), R.always('Arduino IDE not found.')],
+    [isNthArgTrue(1), R.always('Package folder not found.')],
+    [R.T, R.always('Arduino IDE and Packages folder are not found')],
+  ])(ideExists, pkgExists);
+
   const result = {
-    code: (ideExists && pkgExists) ? 0 : 1,
+    code: isBothTrue(ideExists, pkgExists) ? 0 : 1,
     type: 'IDE',
-    message: 'Arduino IDE has been found. Checking for toolchain...',
+    message,
     percentage: 5,
   };
 
-  if (!ideExists) { result.message = 'Arduino IDE not found.'; }
-  if (ideExists && !pkgExists) { result.message = 'Package folder not found.'; }
+  if (!isBothTrue(ideExists, pkgExists)) {
+    return Promise.reject(result);
+  }
 
   return xab.setArduinoIdePathPackages(packages)
     .then(() => xab.setArduinoIdePathExecutable(ide))
+    .then(() => updatePaths(ide, packages))
     .then(() => success(result))
     .catch(throwError(result));
 };
@@ -56,7 +96,7 @@ export const findPort = (pab, success) => {
   const result = {
     code: 0,
     type: 'PORT',
-    message: 'Port with connected Arduino was found. Preparing toolchain...',
+    message: 'Port with connected Arduino was found. Checking for installed Arduino IDE...',
     percentage: 5,
   };
 
@@ -98,7 +138,7 @@ export const uploadToArduino = (pab, port, code, success) => {
   // TODO: Replace tmpPath with normal path.
   //       Somehow app.getPath('temp') is not working.
   //       Arduino IDE returns "readdirent: result is too long".
-  const tmpPath = resolve(__dirname, 'uploadCode.cpp');
+  const tmpPath = resolve(__dirname, 'upload.tmp.cpp');
   const result = {
     code: 0,
     type: 'UPLOAD',

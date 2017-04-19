@@ -5,11 +5,9 @@ import {
   BrowserWindow,
 } from 'electron';
 import devtron from 'devtron';
-import settings from 'electron-settings';
-import { resolvePath } from 'xod-fs';
+import * as settings from './settings';
 import { saveProject, loadProjectList, loadProject, changeWorkspace, checkWorkspace } from './remoteActions';
 import { checkArduinoIde, installPav, findPort, doTranspileForArduino, uploadToArduino } from './uploadActions';
-import { DEFAULT_ARDUINO_IDE_PATH, DEFAULT_ARDUINO_PACKAGES_PATH } from './constants';
 
 app.setName('xod');
 
@@ -42,19 +40,6 @@ function createWindow() {
   });
 }
 
-const setDefaultSettings = () => {
-  if (R.isEmpty(settings.getAll())) {
-    settings.setAll({
-      arduino: {
-        paths: {
-          ide: R.propOr('', process.platform, DEFAULT_ARDUINO_IDE_PATH),
-          packages: resolvePath(DEFAULT_ARDUINO_PACKAGES_PATH[process.platform]),
-        },
-      },
-    });
-  }
-};
-
 const subscribeRemoteAction = (processName, remoteAction) => {
   ipcMain.on(processName, (event, opts) => {
     event.sender.send(`${processName}:process`);
@@ -66,7 +51,7 @@ const subscribeRemoteAction = (processName, remoteAction) => {
 
 const onReady = () => {
   devtron.install();
-  setDefaultSettings();
+  settings.setDefaults();
 
   // TODO: Replace actionTypes with constants (after removing webpack from this package)
   subscribeRemoteAction('saveProject', saveProject);
@@ -85,12 +70,16 @@ const onReady = () => {
         percentage += data.percentage;
         event.sender.send('UPLOAD_TO_ARDUINO', R.merge(data, { percentage }));
       }
+      function updateArduinoPaths(ide, packages) {
+        settings.setArduinoIDE(ide);
+        settings.setArduinoPackages(packages);
+      }
 
       doTranspileForArduino(payload, reply)
       .then((transpiledCode) => { code = transpiledCode; })
       .then(() => findPort(payload.pab, reply))
       .then((foundPort) => { port = foundPort; })
-      .then(() => checkArduinoIde(settings.get('arduino.paths'), reply))
+      .then(() => checkArduinoIde(updateArduinoPaths, reply))
       .then(() => installPav(payload.pab, reply))
       .then(() => uploadToArduino(payload.pab, port, code, reply))
       .catch(reply);
@@ -98,7 +87,7 @@ const onReady = () => {
   );
   ipcMain.on('SET_ARDUINO_IDE',
     (event, payload) => {
-      settings.set('arduino.paths.ide', payload.path);
+      settings.setArduinoIDE(payload.path);
       event.sender.send('SET_ARDUINO_IDE', {
         code: 0,
         message: 'Path to Arduino IDE executable was changed.',
