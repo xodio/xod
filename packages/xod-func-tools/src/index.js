@@ -101,6 +101,9 @@ export const optionalObjOf = def(
   (key, val) => (val == null ? {} : { [key]: val })
 );
 
+export const notNil = R.complement(R.isNil);
+export const notEmpty = R.complement(R.isEmpty);
+
 export default Object.assign(
   {
     explode,
@@ -110,6 +113,8 @@ export default Object.assign(
     omitEmptyValues,
     isAmong,
     optionalObjOf,
+    notNil,
+    notEmpty,
   },
   types
 );
