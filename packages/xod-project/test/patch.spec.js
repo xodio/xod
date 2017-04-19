@@ -56,25 +56,6 @@ describe('Patch', () => {
     });
   });
 
-  // properties
-  describe('getPatchLabel', () => {
-    it('should return patch label', () => {
-      const patch = Helper.defaultizePatch({ label: 'patchLabel' });
-      expect(Patch.getPatchLabel(patch)).to.be.equal('patchLabel');
-    });
-  });
-  describe('setPatchLabel', () => {
-    it('should return patch with new label', () => {
-      const newLabel = 'new label';
-      const patch = Helper.defaultizePatch({ label: 'old label' });
-      const newPatch = Patch.setPatchLabel(newLabel, patch);
-
-      expect(newPatch)
-        .to.have.property('label')
-        .that.is.a('string')
-        .that.equals(newLabel);
-    });
-  });
   describe('listImpls', () => {
     it('should return empty array for empty patch', () => {
       expect(Patch.listImpls(emptyPatch))
