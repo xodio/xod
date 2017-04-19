@@ -10,34 +10,15 @@ import { getJSONForExport } from '../../project/utils';
 import { SAVE_LOAD_ERRORS } from '../../messages/constants';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
-const transpile = (context, transpiler) => {
-  const { project, currentPatchId } = context.props;
-  return transpiler(project, currentPatchId);
-};
-
-const showCode = (context, code) => {
-  context.setState({ code });
-  context.showCodePopup();
-};
-
-const showError = (context, error) => {
-  context.props.actions.addError(error);
-};
-
 export default class App extends React.Component {
   onShowCodeEspruino() {
-    showCode(this, transpile(this, transpileForEspruino));
+    this.transpile(transpileForEspruino);
   }
   onShowCodeNodejs() {
-    showCode(this, transpile(this, transpileForNodeJS));
+    this.transpile(transpileForNodeJS);
   }
   onShowCodeArduino() {
-    const eitherCode = transpile(this, transpileForArduino);
-    foldEither(
-      error => showError(this, error.message),
-      code => showCode(this, code),
-      eitherCode
-    );
+    this.transpile(transpileForArduino);
   }
 
   onImport(json) {
@@ -78,6 +59,21 @@ export default class App extends React.Component {
       window.open(url, '_blank');
       window.focus();
     }
+  }
+
+  transpile(transpiler) {
+    const { project, currentPatchId } = this.props;
+    const eitherCode = transpiler(project, currentPatchId);
+    foldEither(
+      (error) => {
+        this.props.actions.addError(error.message);
+      },
+      (code) => {
+        this.setState({ code });
+        this.showCodePopup();
+      },
+      eitherCode
+    );
   }
 
   render() {
