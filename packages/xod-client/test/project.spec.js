@@ -5,7 +5,10 @@ import { assert } from 'chai';
 import { Maybe } from 'ramda-fantasy';
 
 import {
+  getProjectName,
   lensPatch,
+  listLocalPatches,
+  listLibraryPatches,
   getPatchByPath,
   getPatchPath,
   getBaseName,
@@ -20,6 +23,8 @@ import initialState from '../src/core/state';
 import generateReducers from '../src/core/reducer';
 import { getProject } from '../src/project/selectors';
 import {
+  createProject,
+  renameProject,
   addPatch,
   renamePatch,
   deletePatch,
@@ -32,6 +37,65 @@ import {
 } from '../src/project/actions';
 
 describe('project reducer', () => {
+  describe('Project management', () => {
+    let store = null;
+
+    beforeEach(
+      () => {
+        store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
+      }
+    );
+
+    it('should create a project', () => {
+      const newProjectName = 'new-test-project';
+      const initialProject = getProject(store.getState());
+      store.dispatch(createProject(newProjectName));
+
+      const newProject = getProject(store.getState());
+      assert.notEqual(initialProject, newProject);
+      assert.equal(
+        newProjectName,
+        getProjectName(newProject)
+      );
+      assert.deepEqual(
+        [
+          {
+            impls: {},
+            links: {},
+            nodes: {},
+            path: '@/main',
+            pins: {},
+          },
+        ],
+        listLocalPatches(newProject),
+        'new project has an empty patch with a name "main"'
+      );
+      assert.deepEqual(
+        listLibraryPatches(initialProject),
+        listLibraryPatches(newProject),
+        'new project has the same library patches'
+      );
+    });
+
+    it('should rename a project', () => {
+      const initialProject = getProject(store.getState());
+      const newName = 'new-name-for-my-project';
+      store.dispatch(renameProject(newName));
+
+      const renamedProject = getProject(store.getState());
+
+      assert.equal(
+        newName,
+        getProjectName(renamedProject)
+      );
+      assert.deepEqual( // isTrue(R.eqBy(...)) will not provide a nice diff
+        R.omit(['name'], initialProject),
+        R.omit(['name'], renamedProject),
+        'everything except the name stays the same'
+      );
+    });
+  });
+
   describe('Patch management', () => {
     let store = null;
 
