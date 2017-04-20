@@ -1,9 +1,11 @@
 import { propOr } from 'ramda';
 import React from 'react';
 import SkyLight from 'react-skylight';
-import { remote } from 'electron';
+import { shell, remote } from 'electron';
 
 import { DEFAULT_APPLICATION_DIRECTORY } from '../constants';
+
+const openDownloadPage = () => shell.openExternal('https://www.arduino.cc/en/Main/Software#download');
 
 class PopupSetArduinoIDEPath extends React.Component {
   constructor(props) {
@@ -12,7 +14,6 @@ class PopupSetArduinoIDEPath extends React.Component {
     this.assignPopupRef = this.assignPopupRef.bind(this);
     this.onChange = this.onChange.bind(this);
     this.browseIDE = this.browseIDE.bind(this);
-    this.openDownloadPage = this.openDownloadPage.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.isVisible) {
@@ -23,10 +24,7 @@ class PopupSetArduinoIDEPath extends React.Component {
   }
   onChange(selection) {
     if (selection && selection.length > 0) {
-      let path = selection[0];
-      if (process.platform === 'darwin') {
-        path += '/Contents/MacOS/Arduino';
-      }
+      const path = selection[0] + (process.platform === 'darwin' ? '/Contents/MacOS/Arduino' : '');
 
       this.props.onChange(path);
     }
@@ -39,18 +37,6 @@ class PopupSetArduinoIDEPath extends React.Component {
       properties: ['openFile'],
       buttonLabel: 'Choose Arduino',
     }, this.onChange);
-  }
-  openDownloadPage() {
-    const win = new remote.BrowserWindow({
-      width: 800,
-      height: 360,
-      center: true,
-      show: false,
-      autoHideMenuBar: true,
-    });
-    win.loadURL('https://www.arduino.cc/en/Main/Software#download');
-    win.once('ready-to-show', () => win.show());
-    win.on('closed', () => this.browseIDE());
   }
 
   show() {
@@ -77,27 +63,24 @@ class PopupSetArduinoIDEPath extends React.Component {
           height: 'auto',
         }}
         ref={this.assignPopupRef}
-        title="Choose your workspace directory"
+        title="Setup Arduino IDE"
         afterClose={this.props.onClose}
       >
         <p>
-          <strong>Could not find Arduino IDE executable.</strong><br />
-          Please, click the button bellow and choose Arduino IDE, that installed on your computer.
+          <strong>Could not find Arduino IDE executable.</strong>
         </p>
         <p>
           <button onClick={this.browseIDE}>
-            Browse for Arduino IDE
+            Point to installed Arduino IDE
           </button>
         </p>
         <hr />
         <p>
           <strong>Don&apos;t have an installed Arduino IDE?</strong><br />
-          It&apos;s a pitty, but you have to install it to upload XOD-programms
-          on Arduino devices.<br />
-          So just download and install latest Arduino from official website:
+          You need an installed Arduino IDE to compile and upload XOD programs to Arduino boards.
         </p>
-        <button onClick={this.openDownloadPage}>
-          Open download page
+        <button onClick={openDownloadPage}>
+          Download & install Arduino IDE
         </button>
       </SkyLight>
     );
