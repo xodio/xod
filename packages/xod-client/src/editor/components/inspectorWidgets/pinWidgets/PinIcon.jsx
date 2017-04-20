@@ -2,11 +2,12 @@ import React from 'react';
 
 import { noop } from '../../../../utils/ramda';
 import Pin from '../../../../project/components/Pin';
+import { PIN_RADIUS_WITH_SHADOW } from '../../../../project/nodeLayout';
 
-const pinPos = { x: 10, y: 14 };
+const pinPos = { x: PIN_RADIUS_WITH_SHADOW, y: PIN_RADIUS_WITH_SHADOW };
 
 const PinIcon = ({ id, type, isConnected }) => (
-  <svg width="20" height="28" className="PinIcon">
+  <svg width={PIN_RADIUS_WITH_SHADOW * 2} height={PIN_RADIUS_WITH_SHADOW * 2} className="PinIcon">
     <Pin
       keyName={`widgetPinIcon_${id}`}
       type={type}

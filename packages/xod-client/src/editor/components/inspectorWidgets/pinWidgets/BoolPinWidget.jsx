@@ -6,7 +6,6 @@ import PinIcon from './PinIcon';
 function BoolWidget(props) {
   const onChange = (event) => {
     const boolValue = JSON.parse(event.target.value);
-    console.log(boolValue);
     props.onChange(boolValue);
   };
   return (
