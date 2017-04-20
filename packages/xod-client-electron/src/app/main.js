@@ -5,9 +5,12 @@ import {
   BrowserWindow,
 } from 'electron';
 import devtron from 'devtron';
+import { tapP } from 'xod-func-tools';
+
 import * as settings from './settings';
 import { saveProject, loadProjectList, loadProject, changeWorkspace, checkWorkspace } from './remoteActions';
 import { checkArduinoIde, installPav, findPort, doTranspileForArduino, uploadToArduino } from './uploadActions';
+import * as messages from './messages';
 
 app.setName('xod');
 
@@ -62,43 +65,69 @@ const onReady = () => {
 
   ipcMain.on('UPLOAD_TO_ARDUINO',
     (event, payload) => {
-      let percentage = 0;
+      // Messages
+      const send = status => R.compose(
+        data => (arg) => { event.sender.send('UPLOAD_TO_ARDUINO', data); return arg; },
+        R.assoc(status, true),
+        (message, percentage, errCode = null) => ({
+          success: false,
+          progress: false,
+          failure: false,
+          errorCode: errCode,
+          message,
+          percentage,
+        })
+      );
+      const sendSuccess = send('success');
+      const sendProgress = send('progress');
+      const sendFailure = send('failure');
+      const convertAndSendError = err => R.compose(
+        msg => sendFailure(msg, 0, err.errorCode)(),
+        R.propOr(err.message, R.__, messages),
+        R.prop('errorCode')
+      )(err);
 
-      function reply(data) {
-        percentage += data.percentage;
-        event.sender.send('UPLOAD_TO_ARDUINO', R.merge(data, { percentage }));
-      }
-
-      const updateArduinoPaths = (ide, packages) => R.compose(
+      const updateArduinoPaths = ({ ide, packages }) => R.compose(
         settings.save,
         settings.setArduinoPackages(packages),
         settings.setArduinoIDE(ide),
         settings.load
       )();
 
-      doTranspileForArduino(payload, reply)
-        .then(R.applySpec({
-          code: R.identity,
-          port: () => findPort(payload.pab, reply),
-        }))
-        .then(R.tap(() => checkArduinoIde(updateArduinoPaths, reply)))
-        .then(R.tap(() => installPav(payload.pab, reply)))
-        .then(({ code, port }) => uploadToArduino(payload.pab, port, code, reply))
-        .catch(reply);
+      const getArduinoPaths = R.compose(
+        R.applySpec({
+          ide: settings.getArduinoIDE,
+          packages: settings.getArduinoPackages,
+        }),
+        settings.load
+      );
+
+      R.pipeP(
+        doTranspileForArduino,
+        sendProgress(messages.CODE_TRANSPILED, 10),
+        code => findPort().then(port => ({ code, port })),
+        sendProgress(messages.PORT_FOUND, 15),
+        tapP(() => checkArduinoIde(getArduinoPaths(), process.platform).then(updateArduinoPaths)),
+        sendProgress(messages.IDE_FOUND, 20),
+        tapP(() => installPav(payload.pab)),
+        sendProgress(messages.TOOLCHAIN_INSTALLED, 30),
+        ({ code, port }) => uploadToArduino(payload.pab, port, code),
+        stdout => sendSuccess(stdout, 100)()
+      )(payload).catch(convertAndSendError);
     }
   );
   ipcMain.on('SET_ARDUINO_IDE',
-    (event, payload) => R.compose(
-      R.tap(
+    (event, payload) => {
+      R.compose(
         () => event.sender.send('SET_ARDUINO_IDE', {
           code: 0,
-          message: 'Path to Arduino IDE executable was changed.',
-        })
-      ),
-      settings.save,
-      settings.setArduinoIDE(payload.path),
-      settings.load
-    )()
+          message: messages.ARDUINO_PATH_CHANGED,
+        }),
+        settings.save,
+        settings.setArduinoIDE(payload.path),
+        settings.load
+      )();
+    }
   );
 
   createWindow();

@@ -29,6 +29,8 @@ import { getSettings, getWorkspace } from '../../settings/selectors';
 import { changeWorkspace, checkWorkspace } from '../../settings/actions';
 import { SaveProgressBar } from '../components/SaveProgressBar';
 
+import { IDE_NOT_FOUND } from '../../app/errorCodes';
+
 const { app, dialog, Menu } = remoteElectron;
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
@@ -122,18 +124,15 @@ class App extends client.App {
       patchId: currentPatchId,
     });
     ipcRenderer.on(UPLOAD_TO_ARDUINO, (event, payload) => {
-      // Progress
-      if (payload.code === 0 && payload.type !== 'UPLOAD') {
+      if (payload.progress) {
         proc.progress(payload.message, payload.percentage);
         return;
       }
-      // Success
-      if (payload.code === 0 && payload.type === 'UPLOAD') {
+      if (payload.success) {
         proc.success(payload.message);
       }
-      // Error
-      if (payload.code === 1) {
-        if (payload.type === 'IDE') {
+      if (payload.failure) {
+        if (payload.errorCode === IDE_NOT_FOUND) {
           this.hideUploadProgressPopup();
           this.showArduinoIdeNotFoundPopup();
           ipcRenderer.once('SET_ARDUINO_IDE',
@@ -141,9 +140,8 @@ class App extends client.App {
               if (response.code === 0) this.onUploadToArduino(pab, proc);
             }
           );
-          return;
         }
-        proc.fail(payload);
+        proc.fail(payload.message);
       }
       // Remove listener if process is finished.
       ipcRenderer.removeAllListeners(UPLOAD_TO_ARDUINO);

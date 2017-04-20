@@ -15,8 +15,8 @@ const progressUpload = (dispatch, id) => (message, percentage) => dispatch(
 const succeedUpload = (dispatch, id) => (message = '') => dispatch(
   client.successProcess(id, UPLOAD, { message })
 );
-const failUpload = (dispatch, id) => err => dispatch(
-  client.failProcess(id, UPLOAD, { message: err.message })
+const failUpload = (dispatch, id) => message => dispatch(
+  client.failProcess(id, UPLOAD, { message })
 );
 
 const getTranspiledCode = (transpiler, state) => {
