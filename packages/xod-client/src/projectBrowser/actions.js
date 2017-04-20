@@ -25,7 +25,7 @@ export const requestCreatePatch = () => ({
 
 export const requestRenamePatch = patchPath => ({
   type: PATCH_RENAME_REQUESTED,
-  payload: { id: patchPath },
+  payload: { patchPath },
 });
 
 // TODO: split into 'requestDeletePatch' and 'requestDeleteSelectedPatch'?
@@ -49,7 +49,7 @@ export const requestDeletePatch = patchPath => (dispatch, getState) => {
 
   dispatch({
     type: PATCH_DELETE_REQUESTED,
-    payload: { id: selectedPatchPath },
+    payload: { patchPath: selectedPatchPath },
   });
 };
 
@@ -63,7 +63,7 @@ export const cancelPopup = () => ({
 
 export const setSelection = selectedPatchPath => ({
   type: SET_SELECTION,
-  payload: { id: selectedPatchPath },
+  payload: { patchPath: selectedPatchPath },
 });
 
 export const removeSelection = () => ({

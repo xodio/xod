@@ -192,14 +192,14 @@ export const deleteSelection = () => (dispatch, getState) => {
   });
 };
 
-export const switchPatch = id => (dispatch, getState) => {
-  if (Selectors.getCurrentPatchPath(getState()) === id) { return; }
+export const switchPatch = patchPath => (dispatch, getState) => {
+  if (Selectors.getCurrentPatchPath(getState()) === patchPath) { return; }
 
   dispatch(deselectAll());
   dispatch({
     type: ActionType.EDITOR_SWITCH_PATCH,
     payload: {
-      id,
+      patchPath,
     },
   });
 };

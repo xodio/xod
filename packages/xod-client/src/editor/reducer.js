@@ -80,15 +80,32 @@ const resetCurrentPatchPath = (reducer, state, payload) => {
   return reducer(newState, {
     type: EDITOR_SWITCH_PATCH,
     payload: {
-      id: firstPatchPath,
+      patchPath: firstPatchPath,
     },
   });
 };
 
-const openPatchById = (patchPath, state) => R.compose(
+const openPatchByPath = (patchPath, state) => R.compose(
   R.assoc('currentPatchPath', patchPath),
   R.unless(isPatchOpened(patchPath), addTab(patchPath))
 )(state);
+
+const closeTabById = (tabId, state) =>
+  R.compose(
+    R.converge(
+      R.assoc('currentPatchPath'),
+      [
+        R.compose( // get patch id from last of remaining tabs
+          R.propOr(null, 'id'),
+          R.last,
+          R.values,
+          R.prop('tabs')
+        ),
+        R.identity,
+      ]
+    ),
+    R.dissocPath(['tabs', tabId])
+  )(state);
 
 const renamePatchInTabs = (newPatchPath, oldPatchPath) => (tabs) => {
   const oldPatchTab = R.prop(oldPatchPath, tabs);
@@ -132,7 +149,7 @@ const editorReducer = (state = {}, action) => {
       return editorReducer(newState, {
         type: EDITOR_SWITCH_PATCH,
         payload: {
-          id: action.payload.mainPatchPath,
+          patchPath: action.payload.mainPatchPath,
         },
       });
     }
@@ -155,7 +172,7 @@ const editorReducer = (state = {}, action) => {
       });
     case PATCH_ADD:
     case EDITOR_SWITCH_PATCH:
-      return openPatchById(action.payload.id, state);
+      return openPatchByPath(action.payload.patchPath, state);
     case PATCH_RENAME: {
       const { newPatchPath, oldPatchPath } = action.payload;
 
@@ -174,22 +191,9 @@ const editorReducer = (state = {}, action) => {
       )(state);
     }
     case PATCH_DELETE:
+      return closeTabById(action.payload.patchPath, state);
     case TAB_CLOSE:
-      return R.compose(
-        R.converge(
-          R.assoc('currentPatchPath'),
-          [
-            R.compose( // get patch id from last of remaining tabs
-              R.propOr(null, 'id'),
-              R.last,
-              R.values,
-              R.prop('tabs')
-            ),
-            R.identity,
-          ]
-        ),
-        R.dissocPath(['tabs', action.payload.id.toString()])
-      )(state);
+      return closeTabById(action.payload.id, state);
     case TAB_SORT:
       return R.assoc(
         'tabs',

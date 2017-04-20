@@ -48,8 +48,7 @@ export default (state = {}, action) => {
 
       const mainPatch = R.pipe(
         XP.createPatch,
-        XP.setPatchPath(mainPatchPath),
-        XP.setPatchLabel(XP.getBaseName(mainPatchPath))
+        XP.setPatchPath(mainPatchPath)
       )();
 
       return R.compose(
@@ -192,13 +191,13 @@ export default (state = {}, action) => {
     }
 
     case PATCH_ADD: {
-      const { id } = action.payload;
+      const { patchPath } = action.payload;
 
       const patch = XP.createPatch();
 
       return R.compose(
         explode,
-        XP.assocPatch(id, patch)
+        XP.assocPatch(patchPath, patch)
       )(state);
     }
 
@@ -208,7 +207,7 @@ export default (state = {}, action) => {
     }
 
     case PATCH_DELETE: {
-      const patchPath = action.payload.id;
+      const { patchPath } = action.payload;
 
       return XP.dissocPatch(patchPath, state);
     }

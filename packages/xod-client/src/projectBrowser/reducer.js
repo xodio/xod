@@ -58,7 +58,7 @@ const selectionReducer = (state, action) => {
     case SET_SELECTION:
     case PATCH_RENAME_REQUESTED:
     case PATCH_DELETE_REQUESTED:
-      return action.payload.id;
+      return action.payload.patchPath;
 
     case REMOVE_SELECTION: // TODO: deselect only if there are no open popups?
     case PATCH_DELETE:

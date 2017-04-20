@@ -14,7 +14,7 @@ const onlyLowercaseKebab = (event) => {
 
 const onlyLowercaseKebabHelpText = 'Only a-z, 0-9 and - are allowed';
 
-class ProjectBrowserToolbar extends React.Component {
+class ProjectBrowserPopups extends React.Component {
   constructor(props) {
     super(props);
 
@@ -115,7 +115,7 @@ class ProjectBrowserToolbar extends React.Component {
   }
 }
 
-ProjectBrowserToolbar.propTypes = {
+ProjectBrowserPopups.propTypes = {
   selectedPatchPath: React.PropTypes.string,
   selectedPatchName: React.PropTypes.string,
   openPopups: React.PropTypes.object,
@@ -129,8 +129,8 @@ ProjectBrowserToolbar.propTypes = {
   onCloseAllPopups: React.PropTypes.func.isRequired,
 };
 
-ProjectBrowserToolbar.defaultProps = {
+ProjectBrowserPopups.defaultProps = {
   selectedPatchPath: null,
 };
 
-export default ProjectBrowserToolbar;
+export default ProjectBrowserPopups;

@@ -43,7 +43,7 @@ describe('project reducer', () => {
 
     it('should add a patch', () => {
       const addPatchAction = store.dispatch(addPatch('test-patch'));
-      const newPatchPath = addPatchAction.payload.id;
+      const newPatchPath = addPatchAction.payload.patchPath;
 
       const project = getProject(store.getState());
       const maybeNewPatch = getPatchByPath(newPatchPath, project);
@@ -52,7 +52,7 @@ describe('project reducer', () => {
 
     it('should rename a patch', () => {
       const addPatchAction = store.dispatch(addPatch('initial-name'));
-      const initialPatchPath = addPatchAction.payload.id;
+      const initialPatchPath = addPatchAction.payload.patchPath;
       const newPatchName = 'new-patch-name';
       const renameAction = store.dispatch(renamePatch(initialPatchPath, newPatchName));
       const { newPatchPath } = renameAction.payload;
@@ -69,7 +69,7 @@ describe('project reducer', () => {
 
     it('should delete a patch', () => {
       const addPatchAction = store.dispatch(addPatch('label'));
-      const patchPath = addPatchAction.payload.id;
+      const patchPath = addPatchAction.payload.patchPath;
       store.dispatch(deletePatch(patchPath));
 
       const project = getProject(store.getState());
@@ -87,7 +87,7 @@ describe('project reducer', () => {
       () => {
         store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
         const addPatchAction = store.dispatch(addPatch('test-patch'));
-        testPatchPath = addPatchAction.payload.id;
+        testPatchPath = addPatchAction.payload.patchPath;
       }
     );
 
@@ -183,7 +183,7 @@ describe('project reducer', () => {
       () => {
         store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
         const addPatchAction = store.dispatch(addPatch('test-patch'));
-        testPatchPath = addPatchAction.payload.id;
+        testPatchPath = addPatchAction.payload.patchPath;
         potNodeId = store.dispatch(addNode('xod/core/pot', { x: 100, y: 100 }, testPatchPath));
         ledNodeId = store.dispatch(addNode('xod/core/led', { x: 500, y: 500 }, testPatchPath));
       }

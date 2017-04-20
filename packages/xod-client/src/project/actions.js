@@ -142,7 +142,7 @@ export const addPatch = baseName => (dispatch, getState) => {
   return dispatch({
     type: ActionType.PATCH_ADD,
     payload: {
-      id: newPatchPath,
+      patchPath: newPatchPath,
     },
   });
 };
@@ -167,10 +167,10 @@ export const renamePatch = (oldPatchPath, newBaseName) => (dispatch, getState) =
   });
 };
 
-export const deletePatch = id => ({
+export const deletePatch = patchPath => ({
   type: ActionType.PATCH_DELETE,
   payload: {
-    id,
+    patchPath,
   },
 });
 
