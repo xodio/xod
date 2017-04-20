@@ -74,7 +74,6 @@ export const checkArduinoIde = (updatePaths, success) => {
 const getPAV = pab => R.composeP(
   R.last,
   R.prop(`${pab.package}:${pab.architecture}`),
-  R.prop('data'),
   xab.listPAVs
 )();
 
@@ -87,6 +86,10 @@ export const installPav = (pab, success) => {
   };
 
   return getPAV(pab)
+    .catch((err) => {
+      if (err === xab.REST_ERROR) return Promise.reject(new Error('REST ERROR'));
+      return err;
+    })
     .then(xab.installPAV)
     .then(() => success(result))
     .catch(throwError(result));
@@ -110,8 +113,7 @@ export const findPort = (pab, success) => {
       R.propOr(null, 'comName'),
       R.find(
         R.propEq('vendorId', '0x2341') // TODO: Replace it with normal find function
-      ),
-      R.prop('data')
+      )
     ))
     .then((port) => { success(result); return port; })
     .catch(throwError(result));
@@ -146,19 +148,17 @@ export const uploadToArduino = (pab, port, code, success) => {
     message: 'Code has been successfully uploaded.',
     percentage: 55,
   };
-  const updateMessageByData = R.compose(
-    R.assoc('message', R.__, result),
-    R.prop('data')
-  );
+  const updateMessage = R.assoc('message', R.__, result);
   const clearTmp = () => fs.unlinkSync(tmpPath);
 
   return writeFile(tmpPath, code)
     .then(({ path }) => xab.upload(pab, port, path))
-    .then(updateMessageByData)
+    .then(updateMessage)
     .catch(R.compose(
       err => Promise.reject(err),
       R.tap(clearTmp),
-      updateMessageByData
+      updateMessage,
+      R.prop('message')
     ))
     .then(success)
     .then(() => clearTmp())

@@ -17,10 +17,11 @@
     "node": "7.4.0"
   },
   "dependencies": {
+    "child-process-promise": "^2.2.1",
     "ramda": "^0.23.0",
     "rest": "^2.0.0",
     "serialport": "^4.0.7",
-    "shelljs": "^0.7.6"
+    "xod-fs": "^0.0.1"
   },
   "babel": {
     "presets": [
