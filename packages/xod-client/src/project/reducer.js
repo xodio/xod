@@ -192,12 +192,9 @@ export default (state = {}, action) => {
     }
 
     case PATCH_ADD: {
-      const { id, label } = action.payload;
+      const { id } = action.payload;
 
-      const patch = R.pipe(
-        XP.createPatch,
-        XP.setPatchLabel(label)
-      )();
+      const patch = XP.createPatch();
 
       return R.compose(
         explode,
@@ -206,13 +203,8 @@ export default (state = {}, action) => {
     }
 
     case PATCH_RENAME: {
-      const { label, patchId } = action.payload;
-
-      return R.over(
-        XP.lensPatch(patchId),
-        XP.setPatchLabel(label),
-        state
-      );
+      const { newPatchPath, oldPatchPath } = action.payload;
+      return explode(XP.rebasePatch(newPatchPath, oldPatchPath, state));
     }
 
     case PATCH_DELETE: {

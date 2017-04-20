@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { Maybe } from 'ramda-fantasy';
 
 import {
   getLinkNodeIds,
@@ -8,7 +9,10 @@ import {
   getPatchPath,
   listLibraryPatches,
   omitPatches,
+  getPatchByPath,
 } from 'xod-project';
+
+import { getProject } from './selectors';
 
 import { LINK_ERRORS } from '../editor/constants';
 
@@ -90,4 +94,14 @@ export const getJSONForExport = (project) => {
     p => JSON.stringify(p, null, 2),
     omitPatches(libPaths)
   )(project);
+};
+
+// :: State -> PatchPath -> Boolean
+export const isPatchPathTaken = (state, newPatchPath) => {
+  const maybeExistingPatch = R.compose(
+    getPatchByPath(newPatchPath),
+    getProject
+  )(state);
+
+  return Maybe.isJust(maybeExistingPatch);
 };

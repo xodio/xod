@@ -7,7 +7,8 @@ import { Maybe } from 'ramda-fantasy';
 import {
   lensPatch,
   getPatchByPath,
-  getPatchLabel,
+  getPatchPath,
+  getBaseName,
   getNodeById,
   getNodePosition,
   getNodeLabel,
@@ -41,34 +42,28 @@ describe('project reducer', () => {
     );
 
     it('should add a patch', () => {
-      const newPatchLabel = 'Test patch';
-      const addPatchAction = store.dispatch(addPatch(newPatchLabel));
+      const addPatchAction = store.dispatch(addPatch('test-patch'));
       const newPatchPath = addPatchAction.payload.id;
 
       const project = getProject(store.getState());
       const maybeNewPatch = getPatchByPath(newPatchPath, project);
       assert.isTrue(Maybe.isJust(maybeNewPatch));
-
-      const newPatch = maybeNewPatch.getOrElse(null);
-      assert.equal(
-        getPatchLabel(newPatch),
-        newPatchLabel
-      );
     });
 
     it('should rename a patch', () => {
-      const addPatchAction = store.dispatch(addPatch('Initial label'));
-      const patchPath = addPatchAction.payload.id;
-      const newPatchLabel = 'new label';
-      store.dispatch(renamePatch(patchPath, newPatchLabel));
+      const addPatchAction = store.dispatch(addPatch('initial-name'));
+      const initialPatchPath = addPatchAction.payload.id;
+      const newPatchName = 'new-patch-name';
+      const renameAction = store.dispatch(renamePatch(initialPatchPath, newPatchName));
+      const { newPatchPath } = renameAction.payload;
 
       const project = getProject(store.getState());
-      const renamedPatch = getPatchByPath(patchPath, project).getOrElse(null);
+      const renamedPatch = getPatchByPath(newPatchPath, project).getOrElse(null);
 
       assert.isOk(renamedPatch);
       assert.equal(
-        getPatchLabel(renamedPatch),
-        newPatchLabel
+        R.compose(getBaseName, getPatchPath)(renamedPatch),
+        newPatchName
       );
     });
 
@@ -91,7 +86,7 @@ describe('project reducer', () => {
     beforeEach(
       () => {
         store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
-        const addPatchAction = store.dispatch(addPatch('Test patch'));
+        const addPatchAction = store.dispatch(addPatch('test-patch'));
         testPatchPath = addPatchAction.payload.id;
       }
     );
@@ -187,7 +182,7 @@ describe('project reducer', () => {
     beforeEach(
       () => {
         store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
-        const addPatchAction = store.dispatch(addPatch('Test patch'));
+        const addPatchAction = store.dispatch(addPatch('test-patch'));
         testPatchPath = addPatchAction.payload.id;
         potNodeId = store.dispatch(addNode('xod/core/pot', { x: 100, y: 100 }, testPatchPath));
         ledNodeId = store.dispatch(addNode('xod/core/led', { x: 500, y: 500 }, testPatchPath));

@@ -21,6 +21,7 @@ import {
   PROJECT_OPEN_WORKSPACE,
   PATCH_ADD,
   PATCH_DELETE,
+  PATCH_RENAME,
   NODE_DELETE,
   LINK_DELETE,
 } from '../project/actionTypes';
@@ -89,6 +90,24 @@ const openPatchById = (patchId, state) => R.compose(
   R.unless(isPatchOpened(patchId), addTab(patchId))
 )(state);
 
+const renamePatchInTabs = (newPatchPath, oldPatchPath) => (tabs) => {
+  const oldPatchTab = R.prop(oldPatchPath, tabs);
+
+  if (!oldPatchTab) return tabs;
+
+  return R.compose(
+    R.dissoc(oldPatchPath),
+    R.assoc(
+      newPatchPath,
+      R.assoc(
+        'id',
+        newPatchPath,
+        oldPatchTab
+      )
+    )
+  )(tabs);
+};
+
 const editorReducer = (state = {}, action) => {
   switch (action.type) {
     case NODE_DELETE:
@@ -137,6 +156,23 @@ const editorReducer = (state = {}, action) => {
     case PATCH_ADD:
     case EDITOR_SWITCH_PATCH:
       return openPatchById(action.payload.id, state);
+    case PATCH_RENAME: {
+      const { newPatchPath, oldPatchPath } = action.payload;
+
+      return R.compose(
+        R.over(
+          R.lensProp('tabs'),
+          renamePatchInTabs(newPatchPath, oldPatchPath)
+        ),
+        R.over(
+          R.lensProp('currentPatchId'),
+          R.when(
+            R.equals(oldPatchPath),
+            R.always(newPatchPath)
+          )
+        )
+      )(state);
+    }
     case PATCH_DELETE:
     case TAB_CLOSE:
       return R.compose(

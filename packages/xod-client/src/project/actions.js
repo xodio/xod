@@ -1,5 +1,9 @@
 import { generateId } from 'xod-project';
+
+import { addError } from '../messages/actions';
+import { PROJECT_BROWSER_ERRORS } from '../messages/constants';
 import * as ActionType from './actionTypes';
+import { isPatchPathTaken } from './utils';
 import { getCurrentPatchId } from '../editor/selectors';
 
 export const createProject = projectName => ({
@@ -127,21 +131,41 @@ export const redoPatch = patchId => ({
   payload: { patchId },
 });
 
-export const addPatch = label => ({
-  type: ActionType.PATCH_ADD,
-  payload: {
-    id: `@/${generateId()}`, // TODO: we must ask user for _this_ instead of a label
-    label,
-  },
-});
+export const addPatch = baseName => (dispatch, getState) => {
+  const state = getState();
+  const newPatchPath = `@/${baseName}`;
 
-export const renamePatch = (patchId, label) => ({
-  type: ActionType.PATCH_RENAME,
-  payload: {
-    label,
-    patchId,
-  },
-});
+  if (isPatchPathTaken(state, newPatchPath)) {
+    return dispatch(addError(PROJECT_BROWSER_ERRORS.PATCH_NAME_TAKEN));
+  }
+
+  return dispatch({
+    type: ActionType.PATCH_ADD,
+    payload: {
+      id: newPatchPath,
+    },
+  });
+};
+
+export const renamePatch = (oldPatchPath, newBaseName) => (dispatch, getState) => {
+  const newPatchPath = `@/${newBaseName}`; // TODO: prepare for '@@'?
+  const state = getState();
+
+  if (
+    newPatchPath !== oldPatchPath &&
+    isPatchPathTaken(state, newPatchPath)
+  ) {
+    return dispatch(addError(PROJECT_BROWSER_ERRORS.PATCH_NAME_TAKEN));
+  }
+
+  return dispatch({
+    type: ActionType.PATCH_RENAME,
+    payload: {
+      newPatchPath,
+      oldPatchPath,
+    },
+  });
+};
 
 export const deletePatch = id => ({
   type: ActionType.PATCH_DELETE,

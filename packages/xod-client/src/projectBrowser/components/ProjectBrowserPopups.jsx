@@ -4,6 +4,15 @@ import { POPUP_ID } from '../constants';
 
 import PopupPrompt from '../../utils/components/PopupPrompt';
 import PopupConfirm from '../../utils/components/PopupConfirm';
+import { isLowercaseKebab } from '../../utils/inputFormatting';
+
+const onlyLowercaseKebab = (event) => {
+  if (!isLowercaseKebab(event.key)) {
+    event.preventDefault();
+  }
+};
+
+const onlyLowercaseKebabHelpText = 'Only a-z, 0-9 and - are allowed';
 
 class ProjectBrowserToolbar extends React.Component {
   constructor(props) {
@@ -35,6 +44,8 @@ class ProjectBrowserToolbar extends React.Component {
         title="Create new patch"
         onConfirm={this.props.onPatchCreate}
         onClose={this.props.onCloseAllPopups}
+        onInputKeyDown={onlyLowercaseKebab}
+        helpText={onlyLowercaseKebabHelpText}
       >
         Type the name for new patch:
       </PopupPrompt>
@@ -49,6 +60,8 @@ class ProjectBrowserToolbar extends React.Component {
         title="Rename patch"
         onConfirm={this.onPatchRenameConfirmed}
         onClose={this.props.onCloseAllPopups}
+        onInputKeyDown={onlyLowercaseKebab}
+        helpText={onlyLowercaseKebabHelpText}
       >
         Type new name for patch &laquo;{selectedPatchName}&raquo;:
       </PopupPrompt>

@@ -28,11 +28,12 @@ export const getOpenPopups = createSelector(
   R.prop('openPopups')
 );
 
+// TODO: this is not actually label anymore
 export const getSelectedPatchLabel = createSelector(
   [ProjectSelectors.getProject, getSelectedPatchId],
   (project, selectedPatchPath) =>
     XP.getPatchByPath(selectedPatchPath || '', project)
-      .map(XP.getPatchLabel)
+      .map(R.pipe(XP.getPatchPath, XP.getBaseName))
       .getOrElse('')
 );
 
