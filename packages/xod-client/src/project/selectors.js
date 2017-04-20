@@ -119,7 +119,7 @@ const addNodeLabel = R.curry((project, node) => {
     project
   );
 
-  const label = node.label || XP.getPatchPath(patch);
+  const label = node.label || R.pipe(XP.getPatchPath, XP.getBaseName)(patch);
 
   return R.assoc('label', label, node);
 });
