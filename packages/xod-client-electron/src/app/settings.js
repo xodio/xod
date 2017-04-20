@@ -1,5 +1,5 @@
 import R from 'ramda';
-import settings from 'electron-settings';
+import electronSettings from 'electron-settings';
 
 // =============================================================================
 //
@@ -9,36 +9,43 @@ import settings from 'electron-settings';
 export const DEFAULT_SETTINGS = {
   arduino: {
     paths: { ide: '', packages: '' },
+    pavs: [],
   },
 };
 
 // =============================================================================
 //
-// General purpose functions
+// Unpure save / load / setDefaults settings
 //
 // =============================================================================
 
-// Curried settings.set
-const set = R.curry((keyPath, value) => settings.set(keyPath, value));
+export const load = () => electronSettings.getAll();
 
-// Sets default settings
-export const setDefaults = () => R.when(
-  R.isEmpty,
-  () => settings.setAll(DEFAULT_SETTINGS)
-)(settings.getAll());
+export const save = settings => electronSettings.setAll(settings);
+
+export const setDefaults = R.compose(
+  R.when(R.isEmpty, () => save(DEFAULT_SETTINGS)),
+  load
+);
 
 // =============================================================================
 //
 // Arduino setters & getters
 //
 // =============================================================================
-const arduinoIde = 'arduino.paths.ide';
-const arduinoPackages = 'arduino.paths.packages';
+const arduino = R.lensProp('arduino');
+const arduinoIde = R.compose(arduino, R.lensPath(['paths', 'ide']));
+const arduinoPackages = R.compose(arduino, R.lensPath(['paths', 'packages']));
+const arduinoPAVs = R.compose(arduino, R.lensProp('pavs'));
 
-export const setArduinoIDE = set(arduinoIde);
-export const setArduinoPackages = set(arduinoPackages);
-export const getArduinoIDE = () => settings.get(arduinoIde);
-export const getArduinoPackages = () => settings.get(arduinoPackages);
+export const setArduinoIDE = R.set(arduinoIde);
+export const getArduinoIDE = R.view(arduinoIde);
+
+export const setArduinoPackages = R.set(arduinoPackages);
+export const getArduinoPackages = R.view(arduinoPackages);
+
+export const listPAVs = R.view(arduinoPAVs);
+export const assocPAVs = R.set(arduinoPAVs);
 
 
 // =============================================================================
@@ -47,9 +54,14 @@ export const getArduinoPackages = () => settings.get(arduinoPackages);
 //
 // =============================================================================
 export default {
+  load,
+  save,
   setDefaults,
+  // setters & getters
   setArduinoIDE,
   getArduinoIDE,
   setArduinoPackages,
   getArduinoPackages,
+  listPAVs,
+  assocPAVs,
 };

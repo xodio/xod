@@ -70,10 +70,12 @@ const onReady = () => {
         percentage += data.percentage;
         event.sender.send('UPLOAD_TO_ARDUINO', R.merge(data, { percentage }));
       }
-      function updateArduinoPaths(ide, packages) {
-        settings.setArduinoIDE(ide);
-        settings.setArduinoPackages(packages);
-      }
+      const updateArduinoPaths = (ide, packages) => R.compose(
+        settings.save,
+        settings.setArduinoPackages(packages),
+        settings.setArduinoIDE(ide),
+        settings.load
+      )();
 
       doTranspileForArduino(payload, reply)
         .then((transpiledCode) => { code = transpiledCode; })
@@ -86,13 +88,17 @@ const onReady = () => {
     }
   );
   ipcMain.on('SET_ARDUINO_IDE',
-    (event, payload) => {
-      settings.setArduinoIDE(payload.path);
-      event.sender.send('SET_ARDUINO_IDE', {
-        code: 0,
-        message: 'Path to Arduino IDE executable was changed.',
-      });
-    }
+    (event, payload) => R.compose(
+      R.tap(
+        () => event.sender.send('SET_ARDUINO_IDE', {
+          code: 0,
+          message: 'Path to Arduino IDE executable was changed.',
+        })
+      ),
+      settings.save,
+      settings.setArduinoIDE(payload.path),
+      settings.load
+    )()
   );
 
   createWindow();
