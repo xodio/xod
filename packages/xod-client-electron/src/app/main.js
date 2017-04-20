@@ -62,14 +62,13 @@ const onReady = () => {
 
   ipcMain.on('UPLOAD_TO_ARDUINO',
     (event, payload) => {
-      let code;
-      let port;
-
       let percentage = 0;
+
       function reply(data) {
         percentage += data.percentage;
         event.sender.send('UPLOAD_TO_ARDUINO', R.merge(data, { percentage }));
       }
+
       const updateArduinoPaths = (ide, packages) => R.compose(
         settings.save,
         settings.setArduinoPackages(packages),
@@ -78,12 +77,13 @@ const onReady = () => {
       )();
 
       doTranspileForArduino(payload, reply)
-        .then((transpiledCode) => { code = transpiledCode; })
-        .then(() => findPort(payload.pab, reply))
-        .then((foundPort) => { port = foundPort; })
-        .then(() => checkArduinoIde(updateArduinoPaths, reply))
-        .then(() => installPav(payload.pab, reply))
-        .then(() => uploadToArduino(payload.pab, port, code, reply))
+        .then(R.applySpec({
+          code: R.identity,
+          port: () => findPort(payload.pab, reply),
+        }))
+        .then(R.tap(() => checkArduinoIde(updateArduinoPaths, reply)))
+        .then(R.tap(() => installPav(payload.pab, reply)))
+        .then(({ code, port }) => uploadToArduino(payload.pab, port, code, reply))
         .catch(reply);
     }
   );
