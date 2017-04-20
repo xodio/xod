@@ -15,19 +15,6 @@ const showErrorAndExit = (err) => {
   process.exit(1);
 };
 
-// This is a hack to combine the work of transpilers, some of which
-// returns {String}, and other {Either Error String}
-const processEitherOrSkip = (target, eitherCode) => {
-  // TODO: Remove it when all other transpilers will return Either too
-  if (target !== 'arduino') return eitherCode;
-
-  return foldEither(
-    showErrorAndExit,
-    identity,
-    eitherCode
-  );
-};
-
 export default (input, patchPath, program) => {
   const target = program.target;
   const output = program.output;
@@ -76,7 +63,13 @@ export default (input, patchPath, program) => {
     }
   })
     .then(project => transpile(project, patchPath))
-    .then(code => processEitherOrSkip(target, code))
+    .then(eitherCode =>
+      foldEither(
+        showErrorAndExit,
+        identity,
+        eitherCode
+      )
+    )
     .then((code) => {
       if (output) {
         return writeFile(output, code)

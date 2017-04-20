@@ -17,7 +17,8 @@
     "ramda": "^0.23.0",
     "ramda-fantasy": "^0.7.0",
     "xod-core": "^0.0.1",
-    "xod-project": "^0.0.1"
+    "xod-project": "^0.0.1",
+    "xod-func-tools": "^0.0.1"
   },
   "engines": {
     "node": "6.0.0"

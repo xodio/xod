@@ -1,5 +1,6 @@
 import client from 'xod-client';
 import { transpileForEspruino } from 'xod-js';
+import { foldEither } from 'xod-func-tools';
 import uploadToEspruino from 'xod-espruino-upload';
 
 import { UPLOAD } from './actionTypes';
@@ -8,7 +9,7 @@ export const upload = () => (dispatch, getState) => {
   const state = getState();
   const project = client.getProject(state);
   const curPatchId = client.getCurrentPatchId(state);
-  const code = transpileForEspruino(project, curPatchId);
+  const eitherCode = transpileForEspruino(project, curPatchId);
 
   const newId = dispatch(client.addProcess(UPLOAD));
 
@@ -32,9 +33,15 @@ export const upload = () => (dispatch, getState) => {
     { message: err.message }
   ));
 
-  uploadToEspruino(code, progress)
-    .then(succeed)
-    .catch(fail);
+  foldEither(
+    fail,
+    (code) => {
+      uploadToEspruino(code, progress)
+        .then(succeed)
+        .catch(fail);
+    },
+    eitherCode
+  );
 };
 
 export default {

@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { Maybe } from 'ramda-fantasy';
+import { Maybe, Either } from 'ramda-fantasy';
 import Project from 'xod-project';
 
 import { def } from './types';
@@ -341,13 +341,15 @@ const validateTranspileOpts = (opts) => {
  *
  * @function transpile
  * @param {Object} opts Options for transpilation. See docs above.
- * @returns {String} Code that could be uploaded to target platform.
+ * @returns {Either<Error|String>} Code that could be uploaded to target platform or an Error.
  */
 export default def(
-  'transpile :: { project :: Project, path :: PatchPath, impls :: [Source], launcher :: String } -> String',
+  'transpile :: { project :: Project, path :: PatchPath, impls :: [Source], launcher :: String } -> Either Error String',
   (opts) => {
     const validity = validateTranspileOpts(opts);
-    if (!validity.valid) { throw new Error(validity.errors); }
+    if (!validity.valid) {
+      return Either.Left(new Error(validity.errors));
+    }
 
     return Project.flatten(opts.project, opts.path, opts.impls)
       .chain((proj) => {
@@ -356,13 +358,13 @@ export default def(
         const entryPatch = transformPatch(opts.path, proj).chain(Project.renumberNodes);
 
         if (Maybe.isNothing(entryPatch)) {
-          throw new Error('Entry patch was not found in the flattened project.');
+          return Either.Left(new Error('Entry patch was not found in the flattened project.'));
         }
 
         const topology = Project.getTopology(entryPatch);
         const nodes = transformNodes(entryPatch, proj);
 
-        return joinLineBlocks([
+        const code = joinLineBlocks([
           jsRuntime,
           '// =====================================================================',
           transpileImpl(impls),
@@ -372,6 +374,8 @@ export default def(
           opts.launcher,
           '',
         ]);
+
+        return Either.of(code);
       });
   }
 );

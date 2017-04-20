@@ -4,6 +4,7 @@ import dirtyChai from 'dirty-chai';
 
 import { createPatch } from 'xod-project';
 import { defaultizeProject } from 'xod-project/test/helpers';
+import { foldEither } from 'xod-func-tools';
 import * as Transpiler from '../src/transpiler';
 import easy from './fixtures/easy.txt';
 
@@ -358,17 +359,21 @@ describe('Transpiler', () => {
           },
         },
       });
-      const result = Transpiler.default({
+      const eitherResult = Transpiler.default({
         project,
         path: '@/main',
         impls: ['js'],
         launcher: '// yahoo!',
       });
 
-      // It will begins with [object Object] instead of real jsRuntime,
+      // It will begin with [object Object] instead of real jsRuntime,
       // cause we use babel-loader in tests for /platform/*.js instead
       // of raw-loader to run tests for runtime.spec.js
-      expect(result.trim()).to.be.equal(easy.trim());
+      foldEither(
+        err => expect.fail(err.message),
+        result => expect(result.trim()).to.be.equal(easy.trim()),
+        eitherResult
+      );
     });
   });
 });
