@@ -100,5 +100,8 @@ const env = xEnv.concat([
   TProject,
 ]);
 
-export const def = HMDef.create({ checkTypes: true, env });
+export const def = HMDef.create({
+  checkTypes: process.env.NODE_ENV !== 'production',
+  env,
+});
 export default def;

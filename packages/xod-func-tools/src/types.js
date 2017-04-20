@@ -176,4 +176,7 @@ export const env = $.env.concat([
   $Maybe,
 ]);
 
-export const def = HMDef.create({ checkTypes: true, env });
+export const def = HMDef.create({
+  checkTypes: process.env.NODE_ENV !== 'production',
+  env,
+});
