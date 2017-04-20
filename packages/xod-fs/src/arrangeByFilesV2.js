@@ -40,7 +40,6 @@ const convertPin = R.applySpec({
 });
 
 export const getXodmContents = R.applySpec({
-  label: XP.getPatchLabel,
   pins: R.pipe(
     XP.listPins,
     R.map(convertPin),
