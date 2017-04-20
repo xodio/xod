@@ -74,6 +74,6 @@ export default (state = initialState, action) =>
     state,
     {
       openPopups: popupsReducer(state.openPopups, action),
-      selectedPatchId: selectionReducer(state.selectedPatchId, action),
+      selectedPatchPath: selectionReducer(state.selectedPatchPath, action),
     }
   );

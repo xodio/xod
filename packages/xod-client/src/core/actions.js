@@ -2,16 +2,16 @@ import {
   undoPatch,
   redoPatch,
 } from '../project/actions';
-import { getCurrentPatchId } from '../editor/selectors';
+import { getCurrentPatchPath } from '../editor/selectors';
 
 export const undoCurrentPatch = () => (dispatch, getState) => {
-  const currentPatchId = getCurrentPatchId(getState());
-  if (currentPatchId) dispatch(undoPatch(currentPatchId));
+  const currentPatchPath = getCurrentPatchPath(getState());
+  if (currentPatchPath) dispatch(undoPatch(currentPatchPath));
 };
 
 export const redoCurrentPatch = () => (dispatch, getState) => {
-  const currentPatchId = getCurrentPatchId(getState());
-  if (currentPatchId) dispatch(redoPatch(currentPatchId));
+  const currentPatchPath = getCurrentPatchPath(getState());
+  if (currentPatchPath) dispatch(redoPatch(currentPatchPath));
 };
 
 export * from '../editor/actions';

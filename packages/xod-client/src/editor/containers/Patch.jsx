@@ -142,8 +142,8 @@ class Patch extends React.Component {
   onCreateNode() {
     const position = snapNodePositionToSlots(this.state.mousePosition);
     const nodeTypeId = this.props.selectedNodeType;
-    const curPatchId = this.props.patchId;
-    this.props.actions.addAndSelectNode(nodeTypeId, position, curPatchId);
+    const currentPatchPath = this.props.patchPath;
+    this.props.actions.addAndSelectNode(nodeTypeId, position, currentPatchPath);
   }
 
   setMousePosition(mousePosition) {
@@ -246,7 +246,7 @@ Patch.propTypes = {
   linkingPin: React.PropTypes.object,
   selection: React.PropTypes.array,
   selectedNodeType: React.PropTypes.string,
-  patchId: React.PropTypes.string,
+  patchPath: React.PropTypes.string,
   mode: React.PropTypes.object,
   ghostLink: React.PropTypes.any,
   setModeCreating: React.PropTypes.func,
@@ -258,7 +258,7 @@ const mapStateToProps = R.applySpec({
   selection: EditorSelectors.getSelection,
   selectedNodeType: EditorSelectors.getSelectedNodeType,
   linkingPin: EditorSelectors.getLinkingPin,
-  patchId: EditorSelectors.getCurrentPatchId,
+  patchPath: EditorSelectors.getCurrentPatchPath,
   mode: EditorSelectors.getModeChecks,
   ghostLink: ProjectSelectors.getLinkGhost,
 });

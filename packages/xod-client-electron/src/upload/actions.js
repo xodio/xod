@@ -8,8 +8,8 @@ import { UPLOAD } from './actionTypes';
 export const upload = () => (dispatch, getState) => {
   const state = getState();
   const project = client.getProject(state);
-  const curPatchId = client.getCurrentPatchId(state);
-  const eitherCode = transpileForEspruino(project, curPatchId);
+  const curPatchPath = client.getCurrentPatchPath(state);
+  const eitherCode = transpileForEspruino(project, curPatchPath);
 
   const newId = dispatch(client.addProcess(UPLOAD));
 

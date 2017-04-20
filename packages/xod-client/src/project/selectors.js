@@ -12,7 +12,7 @@ import { PROPERTY_KIND } from './constants';
 import { ENTITY, PROPERTY_TYPE } from '../editor/constants';
 import {
   getSelection,
-  getCurrentPatchId,
+  getCurrentPatchPath,
   getLinkingPin,
   getTabs,
 } from '../editor/selectors';
@@ -29,7 +29,7 @@ export const projectLens = R.lensProp('project');
 
 // :: State -> IndexedLinks
 const getCurrentPatchLinks = createSelector(
-  [getProject, getCurrentPatchId],
+  [getProject, getCurrentPatchPath],
   (project, currentPatchPath) => {
     if (!currentPatchPath) return {};
 
@@ -126,7 +126,7 @@ const addNodeLabel = R.curry((project, node) => {
 
 // :: State -> StrMap Node
 const getCurrentPatchNodes = createSelector(
-  [getProject, getCurrentPatchId],
+  [getProject, getCurrentPatchPath],
   (project, currentPatchPath) => {
     if (!currentPatchPath) return {};
 
@@ -201,23 +201,23 @@ export const getLinkGhost = createSelector(
 
 // :: State -> EditorTabs
 export const getPreparedTabs = createSelector(
-  [getCurrentPatchId, getProject, getTabs],
-  (currentPatchId, project, tabs) =>
+  [getCurrentPatchPath, getProject, getTabs],
+  (currentPatchPath, project, tabs) =>
     R.map(
       (tab) => {
-        const patchId = tab.id;
+        const patchPath = tab.id;
 
         const label = R.compose(
           XP.getBaseName,
           XP.getPatchPath,
-          R.view(XP.lensPatch(patchId))
+          R.view(XP.lensPatch(patchPath))
         )(project);
 
         return R.merge(
           tab,
           {
             label,
-            isActive: (currentPatchId === tab.id),
+            isActive: (currentPatchPath === tab.id),
           }
         );
       },

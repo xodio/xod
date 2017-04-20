@@ -39,7 +39,7 @@ const selectNodePropertyUpdater = ({ kind, key, value }) => {
 export default (state = {}, action) => {
   switch (action.type) {
     case PROJECT_CREATE: {
-      const { name, mainPatchId } = action.payload;
+      const { name, mainPatchPath } = action.payload;
 
       const oldLocalPatchesPaths = R.compose(
         R.map(XP.getPatchPath),
@@ -48,13 +48,13 @@ export default (state = {}, action) => {
 
       const mainPatch = R.pipe(
         XP.createPatch,
-        XP.setPatchPath(mainPatchId),
-        XP.setPatchLabel(XP.getBaseName(mainPatchId))
+        XP.setPatchPath(mainPatchPath),
+        XP.setPatchLabel(XP.getBaseName(mainPatchPath))
       )();
 
       return R.compose(
         explode,
-        XP.assocPatch(mainPatchId, mainPatch),
+        XP.assocPatch(mainPatchPath, mainPatch),
         XP.setProjectName(name),
         XP.omitPatches(oldLocalPatchesPaths)
       )(state);
@@ -87,7 +87,7 @@ export default (state = {}, action) => {
     }
 
     case NODE_ADD: {
-      const { typeId, position, newNodeId, patchId } = action.payload;
+      const { typeId, position, newNodeId, patchPath } = action.payload;
 
       const newNode = R.compose(
         XP.assocInitialPinValues(R.view(XP.lensPatch(typeId), state)),
@@ -96,16 +96,16 @@ export default (state = {}, action) => {
       )(position, typeId);
 
       return R.over(
-        XP.lensPatch(patchId), // TODO: can we have a situation where patch does not exist?
+        XP.lensPatch(patchPath), // TODO: can we have a situation where patch does not exist?
         XP.assocNode(newNode),
         state
       );
     }
 
     case NODE_MOVE: {
-      const { id, position, patchId } = action.payload;
+      const { id, position, patchPath } = action.payload;
 
-      const currentPatchLens = XP.lensPatch(patchId);
+      const currentPatchLens = XP.lensPatch(patchPath);
 
       const node = R.compose(
         XP.getNodeByIdUnsafe(id),
@@ -122,9 +122,9 @@ export default (state = {}, action) => {
     }
 
     case NODE_UPDATE_PROPERTY: {
-      const { id, patchId } = action.payload;
+      const { id, patchPath } = action.payload;
 
-      const currentPatchLens = XP.lensPatch(patchId);
+      const currentPatchLens = XP.lensPatch(patchPath);
 
       const node = R.compose(
         XP.getNodeByIdUnsafe(id),
@@ -141,22 +141,22 @@ export default (state = {}, action) => {
     }
 
     case NODE_DELETE: {
-      const { id, patchId } = action.payload;
+      const { id, patchPath } = action.payload;
 
       return R.over(
-        XP.lensPatch(patchId),
+        XP.lensPatch(patchPath),
         XP.dissocNode(id),
         state
       );
     }
 
     case LINK_ADD: {
-      const { pins, patchId } = action.payload;
+      const { pins, patchPath } = action.payload;
 
       const firstPinNodeType = R.compose(
         XP.getNodeType,
         XP.getNodeByIdUnsafe(pins[0].nodeId),
-        R.view(XP.lensPatch(patchId))
+        R.view(XP.lensPatch(patchPath))
       )(state);
 
       const inputPinIndex = R.compose(
@@ -175,17 +175,17 @@ export default (state = {}, action) => {
       const newLink = XP.createLink(input.pinKey, input.nodeId, output.pinKey, output.nodeId);
 
       return R.over(
-        XP.lensPatch(patchId),
+        XP.lensPatch(patchPath),
         R.pipe(XP.assocLink(newLink), explode),
         state
       );
     }
 
     case LINK_DELETE: {
-      const { id, patchId } = action.payload;
+      const { id, patchPath } = action.payload;
 
       return R.over(
-        XP.lensPatch(patchId),
+        XP.lensPatch(patchPath),
         XP.dissocLink(id),
         state
       );

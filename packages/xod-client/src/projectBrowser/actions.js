@@ -10,9 +10,9 @@ import {
   REMOVE_SELECTION,
 } from './actionTypes';
 
-import { getSelectedPatchId } from './selectors';
+import { getSelectedPatchPath } from './selectors';
 import { isPatchEmpty } from './utils';
-import { getCurrentPatchId } from '../editor/selectors';
+import { getCurrentPatchPath } from '../editor/selectors';
 
 import { addError } from '../messages/actions';
 import { deletePatch } from '../project/actions';
@@ -23,33 +23,33 @@ export const requestCreatePatch = () => ({
   type: PATCH_CREATE_REQUESTED,
 });
 
-export const requestRenamePatch = patchId => ({
+export const requestRenamePatch = patchPath => ({
   type: PATCH_RENAME_REQUESTED,
-  payload: { id: patchId },
+  payload: { id: patchPath },
 });
 
 // TODO: split into 'requestDeletePatch' and 'requestDeleteSelectedPatch'?
-export const requestDeletePatch = patchId => (dispatch, getState) => {
+export const requestDeletePatch = patchPath => (dispatch, getState) => {
   const state = getState();
-  const selectedPatchId = patchId || getSelectedPatchId(state);
-  if (R.isNil(selectedPatchId)) {
+  const selectedPatchPath = patchPath || getSelectedPatchPath(state);
+  if (R.isNil(selectedPatchPath)) {
     return;
   }
 
-  if (isPatchEmpty(state, selectedPatchId)) {
-    dispatch(deletePatch(selectedPatchId));
+  if (isPatchEmpty(state, selectedPatchPath)) {
+    dispatch(deletePatch(selectedPatchPath));
     return;
   }
 
-  const currentPatchId = getCurrentPatchId(state);
-  if (selectedPatchId === currentPatchId) {
+  const currentPatchPath = getCurrentPatchPath(state);
+  if (selectedPatchPath === currentPatchPath) {
     dispatch(addError(PROJECT_BROWSER_ERRORS.CANT_DELETE_CURRENT_PATCH));
     return;
   }
 
   dispatch({
     type: PATCH_DELETE_REQUESTED,
-    payload: { id: selectedPatchId },
+    payload: { id: selectedPatchPath },
   });
 };
 
@@ -61,9 +61,9 @@ export const cancelPopup = () => ({
   type: POPUP_CANCEL,
 });
 
-export const setSelection = selectedPatchId => ({
+export const setSelection = selectedPatchPath => ({
   type: SET_SELECTION,
-  payload: { id: selectedPatchId },
+  payload: { id: selectedPatchPath },
 });
 
 export const removeSelection = () => ({

@@ -297,8 +297,8 @@ ProjectBrowser.propTypes = {
 
 const mapStateToProps = R.applySpec({
   projectName: ProjectBrowserSelectors.getProjectName,
-  currentPatchPath: EditorSelectors.getCurrentPatchId,
-  selectedPatchPath: ProjectBrowserSelectors.getSelectedPatchId,
+  currentPatchPath: EditorSelectors.getCurrentPatchPath,
+  selectedPatchPath: ProjectBrowserSelectors.getSelectedPatchPath,
   selectedPatchLabel: ProjectBrowserSelectors.getSelectedPatchLabel,
   localPatches: ProjectBrowserSelectors.getLocalPatches,
   openPopups: ProjectBrowserSelectors.getOpenPopups,

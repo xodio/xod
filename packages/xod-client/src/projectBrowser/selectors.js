@@ -8,9 +8,9 @@ import * as ProjectSelectors from '../project/selectors';
 
 export const getProjectBrowser = R.prop('projectBrowser');
 
-export const getSelectedPatchId = createSelector(
+export const getSelectedPatchPath = createSelector(
   getProjectBrowser,
-  R.prop('selectedPatchId')
+  R.prop('selectedPatchPath')
 );
 
 export const getProjectName = createSelector(
@@ -30,7 +30,7 @@ export const getOpenPopups = createSelector(
 
 // TODO: this is not actually label anymore
 export const getSelectedPatchLabel = createSelector(
-  [ProjectSelectors.getProject, getSelectedPatchId],
+  [ProjectSelectors.getProject, getSelectedPatchPath],
   (project, selectedPatchPath) =>
     XP.getPatchByPath(selectedPatchPath || '', project)
       .map(R.pipe(XP.getPatchPath, XP.getBaseName))

@@ -62,12 +62,12 @@ class Tabs extends React.Component {
     this.onSortEnd = this.onSortEnd.bind(this);
   }
 
-  onSwitchPatch(patchId) {
-    return this.props.actions.switchPatch(patchId);
+  onSwitchPatch(patchPath) {
+    return this.props.actions.switchPatch(patchPath);
   }
 
-  onCloseTab(patchId) {
-    return this.props.actions.closeTab(patchId);
+  onCloseTab(patchPath) {
+    return this.props.actions.closeTab(patchPath);
   }
 
   onSortEnd(changes) {

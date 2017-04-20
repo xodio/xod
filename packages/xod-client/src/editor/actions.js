@@ -107,8 +107,8 @@ export const selectNode = id => (dispatch, getState) => {
   return result;
 };
 
-export const addAndSelectNode = (typeId, position, curPatchId) => (dispatch) => {
-  const newId = dispatch(addNode(typeId, position, curPatchId));
+export const addAndSelectNode = (typeId, position, currentPatchPath) => (dispatch) => {
+  const newId = dispatch(addNode(typeId, position, currentPatchPath));
   dispatch(setMode(EDITOR_MODE.DEFAULT));
   dispatch(selectNode(newId));
 };
@@ -177,7 +177,7 @@ export const setSelectedNodeType = id => ({
 });
 
 export const deleteSelection = () => (dispatch, getState) => {
-  const currentPatchId = Selectors.getCurrentPatchId(getState());
+  const currentPatchPath = Selectors.getCurrentPatchPath(getState());
   const selection = Selectors.getSelection(getState());
 
   const DELETE_ACTIONS = {
@@ -187,13 +187,13 @@ export const deleteSelection = () => (dispatch, getState) => {
 
   selection.forEach((select) => {
     dispatch(
-      DELETE_ACTIONS[select.entity](select.id, currentPatchId)
+      DELETE_ACTIONS[select.entity](select.id, currentPatchPath)
     );
   });
 };
 
 export const switchPatch = id => (dispatch, getState) => {
-  if (Selectors.getCurrentPatchId(getState()) === id) { return; }
+  if (Selectors.getCurrentPatchPath(getState()) === id) { return; }
 
   dispatch(deselectAll());
   dispatch({

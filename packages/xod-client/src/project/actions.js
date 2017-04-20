@@ -4,17 +4,17 @@ import { addError } from '../messages/actions';
 import { PROJECT_BROWSER_ERRORS } from '../messages/constants';
 import * as ActionType from './actionTypes';
 import { isPatchPathTaken } from './utils';
-import { getCurrentPatchId } from '../editor/selectors';
+import { getCurrentPatchPath } from '../editor/selectors';
 
 export const createProject = projectName => ({
   type: ActionType.PROJECT_CREATE,
   payload: {
     name: projectName,
-    mainPatchId: '@/main',
+    mainPatchPath: '@/main',
   },
 });
 
-export const addNode = (typeId, position, patchId) => (dispatch) => {
+export const addNode = (typeId, position, patchPath) => (dispatch) => {
   const newNodeId = generateId();
 
   dispatch({
@@ -23,7 +23,7 @@ export const addNode = (typeId, position, patchId) => (dispatch) => {
       typeId,
       position,
       newNodeId,
-      patchId,
+      patchPath,
     },
   });
 
@@ -31,53 +31,53 @@ export const addNode = (typeId, position, patchId) => (dispatch) => {
 };
 
 export const deleteNode = id => (dispatch, getState) => {
-  const patchId = getCurrentPatchId(getState());
+  const patchPath = getCurrentPatchPath(getState());
 
   dispatch({
     type: ActionType.NODE_DELETE,
     payload: {
       id,
-      patchId,
+      patchPath,
     },
   });
 };
 
 export const moveNode = (id, position) => (dispatch, getState) => {
-  const patchId = getCurrentPatchId(getState());
+  const patchPath = getCurrentPatchPath(getState());
 
   dispatch({
     type: ActionType.NODE_MOVE,
     payload: {
       id,
       position,
-      patchId,
+      patchPath,
     },
   });
 };
 
 export const addLink = (pin1, pin2) => (dispatch, getState) => {
-  const patchId = getCurrentPatchId(getState());
+  const patchPath = getCurrentPatchPath(getState());
 
   dispatch({
     type: ActionType.LINK_ADD,
     payload: {
-      patchId,
+      patchPath,
       pins: [pin1, pin2],
     },
   });
 };
 
-export const deleteLink = (id, patchId) => ({
+export const deleteLink = (id, patchPath) => ({
   type: ActionType.LINK_DELETE,
   payload: {
     id,
-    patchId,
+    patchPath,
   },
 });
 
 export const updateNodeProperty =
   (nodeId, propKind, propKey, propValue) => (dispatch, getState) => {
-    const patchId = getCurrentPatchId(getState());
+    const patchPath = getCurrentPatchPath(getState());
 
     dispatch({
       type: ActionType.NODE_UPDATE_PROPERTY,
@@ -86,13 +86,13 @@ export const updateNodeProperty =
         kind: propKind,
         key: propKey,
         value: propValue,
-        patchId,
+        patchPath,
       },
     });
   };
 
 export const changePinMode = (nodeId, pinKey, injected, val = null) => (dispatch, getState) => {
-  const patchId = getCurrentPatchId(getState());
+  const patchPath = getCurrentPatchPath(getState());
 
   dispatch({
     type: ActionType.NODE_CHANGE_PIN_MODE,
@@ -101,7 +101,7 @@ export const changePinMode = (nodeId, pinKey, injected, val = null) => (dispatch
       key: pinKey,
       injected,
       value: val,
-      patchId,
+      patchPath,
     },
   });
 };
@@ -121,14 +121,14 @@ export const openWorkspace = libs => ({
   payload: libs,
 });
 
-export const undoPatch = patchId => ({
+export const undoPatch = patchPath => ({
   type: ActionType.PATCH_HISTORY_UNDO,
-  payload: { patchId },
+  payload: { patchPath },
 });
 
-export const redoPatch = patchId => ({
+export const redoPatch = patchPath => ({
   type: ActionType.PATCH_HISTORY_REDO,
-  payload: { patchId },
+  payload: { patchPath },
 });
 
 export const addPatch = baseName => (dispatch, getState) => {

@@ -35,8 +35,8 @@ const addSelection = (entityName, action, state) => {
   return R.set(R.lensProp('selection'), newSelection, state);
 };
 
-const addTab = R.curry((patchId, state) => {
-  if (!patchId) return state;
+const addTab = R.curry((patchPath, state) => {
+  if (!patchPath) return state;
 
   const tabs = R.prop('tabs')(state);
   const lastIndex = R.reduce(
@@ -49,8 +49,8 @@ const addTab = R.curry((patchId, state) => {
   );
   const newIndex = R.inc(lastIndex);
 
-  return R.assocPath(['tabs', patchId], {
-    id: patchId,
+  return R.assocPath(['tabs', patchPath], {
+    id: patchPath,
     index: newIndex,
   }, state);
 });
@@ -61,13 +61,13 @@ const applyTabSort = (tab, payload) => {
   return R.assoc('index', payload[tab.id].index, tab);
 };
 
-const isPatchOpened = R.curry((patchId, state) =>
-  R.any(R.propEq('id', patchId))(R.values(state.tabs))
+const isPatchOpened = R.curry((patchPath, state) =>
+  R.any(R.propEq('id', patchPath))(R.values(state.tabs))
 );
 
-const resetCurrentPatchId = (reducer, state, payload) => {
+const resetCurrentPatchPath = (reducer, state, payload) => {
   const newState = R.assoc('tabs', {}, state);
-  const firstPatchId = R.pipe(
+  const firstPatchPath = R.pipe(
     XP.listLocalPatches,
     R.head,
     R.ifElse(
@@ -80,14 +80,14 @@ const resetCurrentPatchId = (reducer, state, payload) => {
   return reducer(newState, {
     type: EDITOR_SWITCH_PATCH,
     payload: {
-      id: firstPatchId,
+      id: firstPatchPath,
     },
   });
 };
 
-const openPatchById = (patchId, state) => R.compose(
-  R.assoc('currentPatchId', patchId),
-  R.unless(isPatchOpened(patchId), addTab(patchId))
+const openPatchById = (patchPath, state) => R.compose(
+  R.assoc('currentPatchPath', patchPath),
+  R.unless(isPatchOpened(patchPath), addTab(patchPath))
 )(state);
 
 const renamePatchInTabs = (newPatchPath, oldPatchPath) => (tabs) => {
@@ -132,23 +132,23 @@ const editorReducer = (state = {}, action) => {
       return editorReducer(newState, {
         type: EDITOR_SWITCH_PATCH,
         payload: {
-          id: action.payload.mainPatchId,
+          id: action.payload.mainPatchPath,
         },
       });
     }
     case PROJECT_OPEN:
     case PROJECT_IMPORT: {
       const newState = R.merge(state, {
-        currentPatchId: null,
+        currentPatchPath: null,
         selection: [],
         tabs: {},
         linkingPin: null,
       });
-      return resetCurrentPatchId(editorReducer, newState, action.payload);
+      return resetCurrentPatchPath(editorReducer, newState, action.payload);
     }
     case PROJECT_OPEN_WORKSPACE:
       return R.merge(state, {
-        currentPatchId: null,
+        currentPatchPath: null,
         selection: [],
         tabs: {},
         linkingPin: null,
@@ -165,7 +165,7 @@ const editorReducer = (state = {}, action) => {
           renamePatchInTabs(newPatchPath, oldPatchPath)
         ),
         R.over(
-          R.lensProp('currentPatchId'),
+          R.lensProp('currentPatchPath'),
           R.when(
             R.equals(oldPatchPath),
             R.always(newPatchPath)
@@ -177,7 +177,7 @@ const editorReducer = (state = {}, action) => {
     case TAB_CLOSE:
       return R.compose(
         R.converge(
-          R.assoc('currentPatchId'),
+          R.assoc('currentPatchPath'),
           [
             R.compose( // get patch id from last of remaining tabs
               R.propOr(null, 'id'),

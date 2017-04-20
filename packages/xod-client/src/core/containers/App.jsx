@@ -62,8 +62,8 @@ export default class App extends React.Component {
   }
 
   transpile(transpiler) {
-    const { project, currentPatchId } = this.props;
-    const eitherCode = transpiler(project, currentPatchId);
+    const { project, currentPatchPath } = this.props;
+    const eitherCode = transpiler(project, currentPatchPath);
     foldEither(
       (error) => {
         this.props.actions.addError(error.message);
@@ -83,7 +83,7 @@ export default class App extends React.Component {
 
 App.propTypes = {
   project: sanctuaryPropType(Project),
-  currentPatchId: React.PropTypes.string, // eslint-disable-line react/no-unused-prop-types
+  currentPatchPath: React.PropTypes.string, // eslint-disable-line react/no-unused-prop-types
   actions: React.PropTypes.shape({
     addError: React.PropTypes.func.isRequired,
     importProject: React.PropTypes.func.isRequired,

@@ -254,7 +254,7 @@ App.propTypes = R.merge(client.App.propTypes, {
 const mapStateToProps = R.applySpec({
   hasChanges: client.projectHasChanges,
   project: client.getProject,
-  currentPatchId: client.getCurrentPatchId,
+  currentPatchPath: client.getCurrentPatchPath,
 });
 
 const mapDispatchToProps = dispatch => ({
