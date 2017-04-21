@@ -23,7 +23,7 @@ import {
   doTranspileForArduino,
   uploadToArduino,
 } from './uploadActions';
-import * as messages from './messages';
+import * as MESSAGES from './messages';
 
 app.setName('xod');
 
@@ -96,7 +96,7 @@ const onReady = () => {
       const sendFailure = send('failure');
       const convertAndSendError = err => R.compose(
         msg => sendFailure(msg, 0, err.errorCode)(),
-        R.propOr(err.message, R.__, messages),
+        R.propOr(err.message, R.__, MESSAGES.ERRORS),
         R.prop('errorCode')
       )(err);
 
@@ -137,20 +137,20 @@ const onReady = () => {
 
       R.pipeP(
         doTranspileForArduino,
-        sendProgress(messages.CODE_TRANSPILED, 10),
+        sendProgress(MESSAGES.CODE_TRANSPILED, 10),
         code => findPort().then(port => ({ code, port })),
-        sendProgress(messages.PORT_FOUND, 15),
+        sendProgress(MESSAGES.PORT_FOUND, 15),
         tapP(
           () => checkArduinoIde(getArduinoPaths(), process.platform)
             .then(updateArduinoPaths)
         ),
-        sendProgress(messages.IDE_FOUND, 20),
+        sendProgress(MESSAGES.IDE_FOUND, 20),
         tapP(
           () => installPav(payload.pab)
             .catch(() => getInstalledPAV(payload.pab, listInstalledPAVs()))
             .then(R.tap(savePAV))
         ),
-        sendProgress(messages.TOOLCHAIN_INSTALLED, 30),
+        sendProgress(MESSAGES.TOOLCHAIN_INSTALLED, 30),
         ({ code, port }) => uploadToArduino(payload.pab, port, code),
         stdout => sendSuccess(stdout, 100)()
       )(payload).catch(convertAndSendError);
@@ -161,7 +161,7 @@ const onReady = () => {
       R.compose(
         () => event.sender.send('SET_ARDUINO_IDE', {
           code: 0,
-          message: messages.ARDUINO_PATH_CHANGED,
+          message: MESSAGES.ARDUINO_PATH_CHANGED,
         }),
         settings.save,
         settings.setArduinoIDE(payload.path),

@@ -7,7 +7,7 @@ import { transpileForArduino } from 'xod-arduino';
 import * as xab from 'xod-arduino-builder';
 
 import { DEFAULT_ARDUINO_IDE_PATH, DEFAULT_ARDUINO_PACKAGES_PATH } from './constants';
-import * as errorCode from './errorCodes';
+import * as ERROR_CODES from './errorCodes';
 
 const rejectWithCode = R.curry(
   (code, err) => Promise.reject(Object.assign(err, { errorCode: code }))
@@ -49,7 +49,7 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
   const pkgExists = R.both(isDirectoryExists, notEmpty)(pkgPath);
 
   if (!R.and(ideExists, pkgExists)) {
-    return rejectWithCode(errorCode.IDE_NOT_FOUND, new Error());
+    return rejectWithCode(ERROR_CODES.IDE_NOT_FOUND, new Error());
   }
 
   return xab.setArduinoIdePathPackages(pkgPath)
@@ -72,8 +72,8 @@ const getPAV = pab => R.composeP(
 export const installPav = pab => getPAV(pab)
   .then(tapP(xab.installPAV))
   .catch((err) => {
-    if (err === xab.REST_ERROR) return rejectWithCode(errorCode.INDEX_LIST_ERROR, new Error());
-    return rejectWithCode(errorCode.INSTALL_PAV, err);
+    if (err === xab.REST_ERROR) return rejectWithCode(ERROR_CODES.INDEX_LIST_ERROR, new Error());
+    return rejectWithCode(ERROR_CODES.INSTALL_PAV, err);
   });
 
 // :: PAB -> (PAV[] -> PAV[])
@@ -93,7 +93,7 @@ const sortByVersion = R.sort(R.descend(R.prop('version')));
 export const getInstalledPAV = (pab, pavs) => R.compose(
   pav => Promise.resolve(pav),
   R.defaultTo(
-    rejectWithCode(errorCode.NO_INSTALLED_PAVS, new Error())
+    rejectWithCode(ERROR_CODES.NO_INSTALLED_PAVS, new Error())
   ),
   R.head,
   sortByVersion,
@@ -112,13 +112,13 @@ export const findPort = () => xab.listPorts()
       R.propEq('vendorId', '0x2341') // TODO: Replace it with normal find function
     )
   ))
-  .catch(rejectWithCode(errorCode.PORT_NOT_FOUND));
+  .catch(rejectWithCode(ERROR_CODES.PORT_NOT_FOUND));
 
 export const doTranspileForArduino = ({ project, patchId }) =>
   Promise.resolve(project)
     .then(v2 => transpileForArduino(v2, patchId))
     .then(foldEither(
-      rejectWithCode(errorCode.TRANSPILE_ERROR),
+      rejectWithCode(ERROR_CODES.TRANSPILE_ERROR),
       code => Promise.resolve(code)
     ));
 
@@ -134,6 +134,6 @@ export const uploadToArduino = (pab, port, code) => {
     .then(R.tap(clearTmp))
     .catch((err) => {
       clearTmp();
-      return rejectWithCode(errorCode.UPLOAD_ERROR, err);
+      return rejectWithCode(ERROR_CODES.UPLOAD_ERROR, err);
     });
 };
