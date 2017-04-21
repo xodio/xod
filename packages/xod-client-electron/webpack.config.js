@@ -19,14 +19,14 @@ const options = {
   ],
   output: {
     filename: 'bundle.js',
-    path: pkgpath('dist'),
+    path: pkgpath('dist_xod'),
     publicPath: '',
   },
   devServer: {
     hot: true,
     host: 'localhost',
     port: 8080,
-    contentBase: pkgpath('dist'),
+    contentBase: pkgpath('dist_xod'),
   },
   resolve: {
     modulesDirectories: [
