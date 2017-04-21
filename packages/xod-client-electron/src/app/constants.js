@@ -1,5 +1,5 @@
 export const DEFAULT_ARDUINO_IDE_PATH = {
-  darwin: ['/pplications/Arduino.app/Contents/MacOS/Arduino'],
+  darwin: ['/Applications/Arduino.app/Contents/MacOS/Arduino'],
   win32: ['C:\\Program Files\\Arduino\\arduino.exe'],
   win64: ['C:\\Program Files (x86)\\Arduino\\arduino.exe'],
   linux: ['/usr/bin/arduino', '/usr/local/bin/arduino'],
