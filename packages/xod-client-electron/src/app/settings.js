@@ -19,8 +19,11 @@ export const DEFAULT_SETTINGS = {
 //
 // =============================================================================
 
+// TODO: Add catching broken settings (if user opens settings file and break it)
+//       On catch — show error to user and fallback to default settings.
 export const load = () => electronSettings.getAll();
 
+// TODO: Add schema and validating on save to prevent errors
 export const save = settings => electronSettings.setAll(settings);
 
 export const setDefaults = R.compose(
