@@ -2,7 +2,7 @@ import R from 'ramda';
 import fs from 'fs';
 import { resolve } from 'path';
 import { resolvePath, writeFile, isDirectoryExists, isFileExists } from 'xod-fs';
-import { foldEither, notEmpty } from 'xod-func-tools';
+import { foldEither, notEmpty, tapP } from 'xod-func-tools';
 import { transpileForArduino } from 'xod-arduino';
 import * as xab from 'xod-arduino-builder';
 
@@ -33,6 +33,14 @@ const anyFileThatExist = checkArrayOfStrings(isFileExists);
 // :: String[] -> String
 const anyDirectoryThatExist = checkArrayOfStrings(isDirectoryExists);
 
+
+/**
+ * Check paths to Arduino executables and packages
+ * @param {String} ide Path to executable, stored in settings
+ * @param {String} packages Path to packages folder, stored in settings
+ * @param {String} platform OS platform to get default paths
+ * @returns {Promise<Object, Error>} Promise with verified paths
+ */
 export const checkArduinoIde = ({ ide, packages }, platform) => {
   const idePath = anyFileThatExist(getIDEPaths(ide, platform));
   const pkgPath = anyDirectoryThatExist(getPackagesPaths(packages, platform));
@@ -46,21 +54,51 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
 
   return xab.setArduinoIdePathPackages(pkgPath)
     .then(() => xab.setArduinoIdePathExecutable(idePath))
-    .then(() => ({ ide, packages }));
+    .then(() => ({ ide: idePath, packages: pkgPath }));
 };
 
+// :: PAB -> PAV
 const getPAV = pab => R.composeP(
   R.last,
   R.prop(`${pab.package}:${pab.architecture}`),
   xab.listPAVs
 )();
 
+/**
+ * Install PAV for selected PAB
+ * @param {Object} pab See type PAB from `xod-arduino-builder`
+ * @returns {Promise<Object, Error>} Promise with PAV object or Error
+ */
 export const installPav = pab => getPAV(pab)
-  .then(xab.installPAV)
+  .then(tapP(xab.installPAV))
   .catch((err) => {
     if (err === xab.REST_ERROR) return rejectWithCode(errorCode.INDEX_LIST_ERROR, new Error());
     return rejectWithCode(errorCode.INSTALL_PAV, err);
   });
+
+// :: PAB -> (PAV[] -> PAV[])
+const filterByPab = pab => R.filter(R.both(
+  R.propEq('package', pab.package),
+  R.propEq('architecture', pab.architecture)
+));
+// :: PAV[] -> PAV[]
+const sortByVersion = R.sort(R.descend(R.prop('version')));
+
+/**
+ * Search installed PAV for PAB from a list of PAVs
+ * @param {Object} pab PAB object of target device
+ * @param {Array<Object>} pavs List of PAV objects, stored in settings
+ * @returns {Promise<Object, Error>} Promise with finded PAV or Error
+ */
+export const getInstalledPAV = (pab, pavs) => R.compose(
+  pav => Promise.resolve(pav),
+  R.defaultTo(
+    rejectWithCode(errorCode.NO_INSTALLED_PAVS, new Error())
+  ),
+  R.head,
+  sortByVersion,
+  filterByPab(pab)
+)(pavs);
 
 export const findPort = () => xab.listPorts()
   .then(R.compose(

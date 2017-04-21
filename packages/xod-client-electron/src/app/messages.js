@@ -13,4 +13,5 @@ export const ERRORS = {
   [errorCode.IDE_NOT_FOUND]: 'Arduino IDE is not found',
   [errorCode.INDEX_LIST_ERROR]: 'Could not get list of packages from Arduino.cc',
   [errorCode.INSTALL_PAV_ERROR]: 'Could not install PAV',
+  [errorCode.NO_INSTALLED_PAVS]: 'Could not install or find installed PAV for this device',
 };

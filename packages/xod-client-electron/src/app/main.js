@@ -8,8 +8,21 @@ import devtron from 'devtron';
 import { tapP } from 'xod-func-tools';
 
 import * as settings from './settings';
-import { saveProject, loadProjectList, loadProject, changeWorkspace, checkWorkspace } from './remoteActions';
-import { checkArduinoIde, installPav, findPort, doTranspileForArduino, uploadToArduino } from './uploadActions';
+import {
+  saveProject,
+  loadProjectList,
+  loadProject,
+  changeWorkspace,
+  checkWorkspace,
+} from './remoteActions';
+import {
+  checkArduinoIde,
+  installPav,
+  getInstalledPAV,
+  findPort,
+  doTranspileForArduino,
+  uploadToArduino,
+} from './uploadActions';
 import * as messages from './messages';
 
 app.setName('xod');
@@ -102,14 +115,41 @@ const onReady = () => {
         settings.load
       );
 
+      const listInstalledPAVs = R.compose(
+        settings.listPAVs,
+        settings.load
+      );
+      const appendPAV = R.curry(
+        (pav, allSettings) => R.compose(
+          settings.assocPAVs(R.__, allSettings),
+          R.unless(
+            R.find(R.equals(pav)),
+            R.append(pav)
+          ),
+          settings.listPAVs
+        )(allSettings)
+      );
+      const savePAV = pav => R.compose(
+        settings.save,
+        appendPAV(pav),
+        settings.load
+      )();
+
       R.pipeP(
         doTranspileForArduino,
         sendProgress(messages.CODE_TRANSPILED, 10),
         code => findPort().then(port => ({ code, port })),
         sendProgress(messages.PORT_FOUND, 15),
-        tapP(() => checkArduinoIde(getArduinoPaths(), process.platform).then(updateArduinoPaths)),
+        tapP(
+          () => checkArduinoIde(getArduinoPaths(), process.platform)
+            .then(updateArduinoPaths)
+        ),
         sendProgress(messages.IDE_FOUND, 20),
-        tapP(() => installPav(payload.pab)),
+        tapP(
+          () => installPav(payload.pab)
+            .catch(() => getInstalledPAV(payload.pab, listInstalledPAVs()))
+            .then(R.tap(savePAV))
+        ),
         sendProgress(messages.TOOLCHAIN_INSTALLED, 30),
         ({ code, port }) => uploadToArduino(payload.pab, port, code),
         stdout => sendSuccess(stdout, 100)()
