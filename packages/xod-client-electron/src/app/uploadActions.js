@@ -9,6 +9,13 @@ import * as xab from 'xod-arduino-builder';
 import { DEFAULT_ARDUINO_IDE_PATH, DEFAULT_ARDUINO_PACKAGES_PATH } from './constants';
 import * as ERROR_CODES from './errorCodes';
 
+// =============================================================================
+//
+// Utils
+//
+// =============================================================================
+
+// :: ERROR_CODE -> Error -> Promise.Reject<Error>
 const rejectWithCode = R.curry(
   (code, err) => Promise.reject(Object.assign(err, { errorCode: code }))
 );
@@ -25,7 +32,6 @@ const getPaths = R.curry(
 const getIDEPaths = getPaths(DEFAULT_ARDUINO_IDE_PATH);
 // :: String -> String -> String[]
 const getPackagesPaths = getPaths(DEFAULT_ARDUINO_PACKAGES_PATH);
-
 // :: (a -> Boolean) -> (String[] -> String)
 const checkArrayOfStrings = pred => R.reduceWhile(R.complement(pred), (acc, str) => str, null);
 // :: String[] -> String
@@ -33,6 +39,36 @@ const anyFileThatExist = checkArrayOfStrings(isFileExists);
 // :: String[] -> String
 const anyDirectoryThatExist = checkArrayOfStrings(isDirectoryExists);
 
+// :: PAB -> PAV
+const getPAV = pab => R.composeP(
+  R.last,
+  R.prop(`${pab.package}:${pab.architecture}`),
+  xab.listPAVs
+)();
+// :: PAB -> (PAV[] -> PAV[])
+const filterByPab = pab => R.filter(R.both(
+  R.propEq('package', pab.package),
+  R.propEq('architecture', pab.architecture)
+));
+// :: PAV[] -> PAV[]
+const sortByVersion = R.sort(R.descend(R.prop('version')));
+
+// :: Port[] -> Port
+const findPort = R.find(
+  R.anyPass([
+    R.propEq('vendorId', '0x2341'),
+    R.compose(
+      R.complement(R.test(/bluetooth/i)),
+      R.prop('comName')
+    ),
+  ])
+);
+
+// =============================================================================
+//
+// Upload actions
+//
+// =============================================================================
 
 /**
  * Check paths to Arduino executables and packages
@@ -57,13 +93,6 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
     .then(() => ({ ide: idePath, packages: pkgPath }));
 };
 
-// :: PAB -> PAV
-const getPAV = pab => R.composeP(
-  R.last,
-  R.prop(`${pab.package}:${pab.architecture}`),
-  xab.listPAVs
-)();
-
 /**
  * Install PAV for selected PAB
  * @param {Object} pab See type PAB from `xod-arduino-builder`
@@ -75,14 +104,6 @@ export const installPav = pab => getPAV(pab)
     if (err === xab.REST_ERROR) return rejectWithCode(ERROR_CODES.INDEX_LIST_ERROR, new Error());
     return rejectWithCode(ERROR_CODES.INSTALL_PAV, err);
   });
-
-// :: PAB -> (PAV[] -> PAV[])
-const filterByPab = pab => R.filter(R.both(
-  R.propEq('package', pab.package),
-  R.propEq('architecture', pab.architecture)
-));
-// :: PAV[] -> PAV[]
-const sortByVersion = R.sort(R.descend(R.prop('version')));
 
 /**
  * Search installed PAV for PAB from a list of PAVs
@@ -100,7 +121,12 @@ export const getInstalledPAV = (pab, pavs) => R.compose(
   filterByPab(pab)
 )(pavs);
 
-export const findPort = () => xab.listPorts()
+/**
+ * Get list of all serial ports and find one with connected Arduino device
+ * @returns {Promise<Object, Error>} Promise with Port object or Error
+ * @see {@link https://www.npmjs.com/package/serialport#listing-ports}
+ */
+export const getPort = () => xab.listPorts()
   .then(R.compose(
     R.ifElse(
       R.isNil,
@@ -108,12 +134,16 @@ export const findPort = () => xab.listPorts()
       port => Promise.resolve(port)
     ),
     R.propOr(null, 'comName'),
-    R.find(
-      R.propEq('vendorId', '0x2341') // TODO: Replace it with normal find function
-    )
+    findPort
   ))
   .catch(rejectWithCode(ERROR_CODES.PORT_NOT_FOUND));
 
+/**
+ * Transpile code for Arduino
+ * @param {Project} project
+ * @param {PatchPath} patchId Entry-point patch path
+ * @returns {Promise<String, Error>} Promise with transpiled code or Error
+ */
 export const doTranspileForArduino = ({ project, patchId }) =>
   Promise.resolve(project)
     .then(v2 => transpileForArduino(v2, patchId))
@@ -122,6 +152,13 @@ export const doTranspileForArduino = ({ project, patchId }) =>
       code => Promise.resolve(code)
     ));
 
+/**
+ * Upload transpiled code to specified device at specified port
+ * @param {Object} pab
+ * @param {Object} port
+ * @param {String} code
+ * @returns {Promise<String, Error>} Promise with Stdout or Error
+ */
 export const uploadToArduino = (pab, port, code) => {
   // TODO: Replace tmpPath with normal path.
   //       Somehow app.getPath('temp') is not working.

@@ -19,7 +19,7 @@ import {
   checkArduinoIde,
   installPav,
   getInstalledPAV,
-  findPort,
+  getPort,
   doTranspileForArduino,
   uploadToArduino,
 } from './uploadActions';
@@ -138,7 +138,7 @@ const onReady = () => {
       R.pipeP(
         doTranspileForArduino,
         sendProgress(MESSAGES.CODE_TRANSPILED, 10),
-        code => findPort().then(port => ({ code, port })),
+        code => getPort().then(port => ({ code, port })),
         sendProgress(MESSAGES.PORT_FOUND, 15),
         tapP(
           () => checkArduinoIde(getArduinoPaths(), process.platform)
