@@ -21,6 +21,7 @@ const rawItems = {
   saveProject: {
     key: 'saveProject',
     label: 'Save Project',
+    command: COMMAND.SAVE_PROJECT,
   },
   renameProject: {
     key: 'renameProject',
