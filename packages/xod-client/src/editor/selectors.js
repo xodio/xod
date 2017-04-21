@@ -5,9 +5,9 @@ import { EDITOR_MODE } from './constants';
 
 export const getEditor = R.prop('editor');
 
-export const getCurrentPatchId = R.pipe(
+export const getCurrentPatchPath = R.pipe(
   getEditor,
-  R.prop('currentPatchId')
+  R.prop('currentPatchPath')
 );
 
 // selection in editor

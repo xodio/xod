@@ -60,7 +60,6 @@ describe('arrangeByFilesV2 parts', () => {
           XP.listLocalPatches
         )(projectV2Fixture),
         [{
-          label: 'Main patch',
           pins: {
             rJxbjrKpl: {
               description: 'My pin description',
@@ -154,7 +153,6 @@ describe('arrangeByFilesV2 e2e', () => {
         },
         {
           content: {
-            label: 'Main patch',
             pins: {
               rJxbjrKpl: {
                 description: 'My pin description',

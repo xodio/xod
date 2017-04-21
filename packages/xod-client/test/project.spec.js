@@ -5,9 +5,13 @@ import { assert } from 'chai';
 import { Maybe } from 'ramda-fantasy';
 
 import {
+  getProjectName,
   lensPatch,
+  listLocalPatches,
+  listLibraryPatches,
   getPatchByPath,
-  getPatchLabel,
+  getPatchPath,
+  getBaseName,
   getNodeById,
   getNodePosition,
   getNodeLabel,
@@ -19,6 +23,8 @@ import initialState from '../src/core/state';
 import generateReducers from '../src/core/reducer';
 import { getProject } from '../src/project/selectors';
 import {
+  createProject,
+  renameProject,
   addPatch,
   renamePatch,
   deletePatch,
@@ -31,6 +37,65 @@ import {
 } from '../src/project/actions';
 
 describe('project reducer', () => {
+  describe('Project management', () => {
+    let store = null;
+
+    beforeEach(
+      () => {
+        store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
+      }
+    );
+
+    it('should create a project', () => {
+      const newProjectName = 'new-test-project';
+      const initialProject = getProject(store.getState());
+      store.dispatch(createProject(newProjectName));
+
+      const newProject = getProject(store.getState());
+      assert.notEqual(initialProject, newProject);
+      assert.equal(
+        newProjectName,
+        getProjectName(newProject)
+      );
+      assert.deepEqual(
+        [
+          {
+            impls: {},
+            links: {},
+            nodes: {},
+            path: '@/main',
+            pins: {},
+          },
+        ],
+        listLocalPatches(newProject),
+        'new project has an empty patch with a name "main"'
+      );
+      assert.deepEqual(
+        listLibraryPatches(initialProject),
+        listLibraryPatches(newProject),
+        'new project has the same library patches'
+      );
+    });
+
+    it('should rename a project', () => {
+      const initialProject = getProject(store.getState());
+      const newName = 'new-name-for-my-project';
+      store.dispatch(renameProject(newName));
+
+      const renamedProject = getProject(store.getState());
+
+      assert.equal(
+        newName,
+        getProjectName(renamedProject)
+      );
+      assert.deepEqual( // isTrue(R.eqBy(...)) will not provide a nice diff
+        R.omit(['name'], initialProject),
+        R.omit(['name'], renamedProject),
+        'everything except the name stays the same'
+      );
+    });
+  });
+
   describe('Patch management', () => {
     let store = null;
 
@@ -41,40 +106,34 @@ describe('project reducer', () => {
     );
 
     it('should add a patch', () => {
-      const newPatchLabel = 'Test patch';
-      const addPatchAction = store.dispatch(addPatch(newPatchLabel));
-      const newPatchPath = addPatchAction.payload.id;
+      const addPatchAction = store.dispatch(addPatch('test-patch'));
+      const newPatchPath = addPatchAction.payload.patchPath;
 
       const project = getProject(store.getState());
       const maybeNewPatch = getPatchByPath(newPatchPath, project);
       assert.isTrue(Maybe.isJust(maybeNewPatch));
-
-      const newPatch = maybeNewPatch.getOrElse(null);
-      assert.equal(
-        getPatchLabel(newPatch),
-        newPatchLabel
-      );
     });
 
     it('should rename a patch', () => {
-      const addPatchAction = store.dispatch(addPatch('Initial label'));
-      const patchPath = addPatchAction.payload.id;
-      const newPatchLabel = 'new label';
-      store.dispatch(renamePatch(patchPath, newPatchLabel));
+      const addPatchAction = store.dispatch(addPatch('initial-name'));
+      const initialPatchPath = addPatchAction.payload.patchPath;
+      const newPatchName = 'new-patch-name';
+      const renameAction = store.dispatch(renamePatch(initialPatchPath, newPatchName));
+      const { newPatchPath } = renameAction.payload;
 
       const project = getProject(store.getState());
-      const renamedPatch = getPatchByPath(patchPath, project).getOrElse(null);
+      const renamedPatch = getPatchByPath(newPatchPath, project).getOrElse(null);
 
       assert.isOk(renamedPatch);
       assert.equal(
-        getPatchLabel(renamedPatch),
-        newPatchLabel
+        R.compose(getBaseName, getPatchPath)(renamedPatch),
+        newPatchName
       );
     });
 
     it('should delete a patch', () => {
       const addPatchAction = store.dispatch(addPatch('label'));
-      const patchPath = addPatchAction.payload.id;
+      const patchPath = addPatchAction.payload.patchPath;
       store.dispatch(deletePatch(patchPath));
 
       const project = getProject(store.getState());
@@ -91,8 +150,8 @@ describe('project reducer', () => {
     beforeEach(
       () => {
         store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
-        const addPatchAction = store.dispatch(addPatch('Test patch'));
-        testPatchPath = addPatchAction.payload.id;
+        const addPatchAction = store.dispatch(addPatch('test-patch'));
+        testPatchPath = addPatchAction.payload.patchPath;
       }
     );
 
@@ -187,8 +246,8 @@ describe('project reducer', () => {
     beforeEach(
       () => {
         store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
-        const addPatchAction = store.dispatch(addPatch('Test patch'));
-        testPatchPath = addPatchAction.payload.id;
+        const addPatchAction = store.dispatch(addPatch('test-patch'));
+        testPatchPath = addPatchAction.payload.patchPath;
         potNodeId = store.dispatch(addNode('xod/core/pot', { x: 100, y: 100 }, testPatchPath));
         ledNodeId = store.dispatch(addNode('xod/core/led', { x: 500, y: 500 }, testPatchPath));
       }

@@ -26,6 +26,7 @@ export const SAVE_LOAD_ERRORS = {
 export const PROJECT_BROWSER_ERRORS = {
   CANT_OPEN_LIBPATCH_WITHOUT_XOD_IMPL: 'This patch has only native implementation and can\'t be opened',
   CANT_DELETE_CURRENT_PATCH: 'Current patch cannot been deleted. Switch to another patch before!',
+  PATCH_NAME_TAKEN: 'This patch name is already taken!',
 };
 
 export const NODETYPE_ERRORS = {

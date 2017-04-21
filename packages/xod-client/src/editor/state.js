@@ -1,7 +1,7 @@
 import { EDITOR_MODE } from './constants';
 
 export default {
-  currentPatchId: '@/1',
+  currentPatchPath: '@/1',
   mode: EDITOR_MODE.EDITING,
   dragging: null,
   selection: [],

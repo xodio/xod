@@ -44,13 +44,13 @@ export default ({ getState, dispatch }) => next => (action) => {
   if (changedPreviousPatchesList.length === 1) {
     const previousPatchState = R.head(changedPreviousPatchesList);
 
-    const changedPatchId = getPatchPath(previousPatchState);
-    if (!currentPatches[changedPatchId]) {
+    const changedPatchPath = getPatchPath(previousPatchState);
+    if (!currentPatches[changedPatchPath]) {
       // patch was deleted, but nothing else was affected
       dispatch({
         type: PATCH_HISTORY_CLEAR_FOR_PATCH,
         payload: {
-          patchId: changedPatchId,
+          patchPath: changedPatchPath,
         },
       });
       return;

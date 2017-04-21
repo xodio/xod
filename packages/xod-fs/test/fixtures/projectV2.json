@@ -21,8 +21,7 @@
           "value": 0
         }
       },
-      "path": "xod/core/inputNumber",
-      "label": "<InputNumber>"
+      "path": "xod/core/inputNumber"
     },
     "xod/core/led": {
       "nodes": {},
@@ -41,8 +40,7 @@
           "value": 0
         }
       },
-      "path": "xod/core/led",
-      "label": "LED"
+      "path": "xod/core/led"
     },
     "@/Main": {
       "nodes": {
@@ -95,8 +93,7 @@
           "value": 0
         }
       },
-      "path": "@/Main",
-      "label": "Main patch"
+      "path": "@/Main"
     }
   },
   "name": "Awesome project"

@@ -8,5 +8,5 @@ export default {
 
     [POPUP_ID.RENAMING_PROJECT]: false,
   },
-  selectedPatchId: null,
+  selectedPatchPath: null,
 };

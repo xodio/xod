@@ -429,7 +429,7 @@ const mapStateToProps = (state) => {
     upload: getUploadProcess(state),
     workspace: getWorkspace(settings),
     saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),
-    currentPatchId: client.getCurrentPatchId(state),
+    currentPatchPath: client.getCurrentPatchPath(state),
   });
 };
 

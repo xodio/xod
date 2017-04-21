@@ -44,31 +44,6 @@ export const duplicatePatch = def(
 );
 
 /**
- * @function getPatchLabel
- * @param {Patch} patch
- * @returns {string}
- */
-export const getPatchLabel = def(
-  'getPatchLabel :: Patch -> Label',
-  // TODO: when label field is included in type definition, remove fallback to ''
-  R.propOr('', 'label')
-);
-
-/**
- * @function setPatchLabel
- * @param {string} label
- * @param {Patch} patch
- * @returns {Patch} a copy of the `patch` with new label
- */
-export const setPatchLabel = def(
-  'setPatchLabel :: Label -> Patch -> Patch',
-  R.useWith(
-    R.assoc('label'),
-    [String, R.identity]
-  )
-);
-
-/**
  * @function getPatchPath
  * @param {Patch} patch
  * @returns {string}

@@ -56,21 +56,21 @@ class Editor extends React.Component {
   getHotkeyHandlers() {
     return {
       [COMMAND.SET_MODE_DEFAULT]: this.setModeDefault,
-      [COMMAND.UNDO]: () => this.props.actions.undo(this.props.currentPatchId),
-      [COMMAND.REDO]: () => this.props.actions.redo(this.props.currentPatchId),
+      [COMMAND.UNDO]: () => this.props.actions.undo(this.props.currentPatchPath),
+      [COMMAND.REDO]: () => this.props.actions.redo(this.props.currentPatchPath),
     };
   }
 
   render() {
     const {
       propsForInspector,
-      currentPatchId,
+      currentPatchPath,
     } = this.props;
 
-    const currentPatch = currentPatchId
+    const currentPatch = currentPatchPath
       ? (
         <Patch
-          patchId={currentPatchId}
+          patchPath={currentPatchPath}
           size={this.patchSize}
           setModeCreating={this.setModeCreating}
         />
@@ -101,14 +101,14 @@ class Editor extends React.Component {
 Editor.propTypes = {
   size: React.PropTypes.object.isRequired,
   propsForInspector: React.PropTypes.arrayOf(React.PropTypes.object),
-  currentPatchId: React.PropTypes.string,
+  currentPatchPath: React.PropTypes.string,
   actions: React.PropTypes.objectOf(React.PropTypes.func),
 };
 
 const mapStateToProps = R.applySpec({
   editor: EditorSelectors.getEditor,
   propsForInspector: ProjectSelectors.dataForInspectorFromSelection,
-  currentPatchId: EditorSelectors.getCurrentPatchId,
+  currentPatchPath: EditorSelectors.getCurrentPatchPath,
 });
 
 const mapDispatchToProps = dispatch => ({

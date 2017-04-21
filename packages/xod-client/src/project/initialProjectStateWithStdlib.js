@@ -8,7 +8,6 @@ export default {
   patches: {
     '@/1': {
       impls: {},
-      label: 'Main',
       links: {},
       nodes: {},
       path: '@/1',
@@ -16,7 +15,6 @@ export default {
     },
     '@/2': {
       impls: {},
-      label: 'QUX',
       links: {},
       nodes: {},
       path: '@/2',
@@ -26,7 +24,6 @@ export default {
       impls: {
         js: '\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a && e.inputs.b };\n};\n',
       },
-      label: 'and',
       links: {},
       nodes: {},
       path: 'xod/core/and',
@@ -259,7 +256,6 @@ export default {
       impls: {
         espruino: '\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var f = e.inputs.freq;\n\n  if (f === 0) {\n    digitalWrite(e.context.pin, false);\n  } else {\n    analogWrite(e.context.pin, 0.5, { freq: f });\n  }\n};\n',
       },
-      label: 'Buzzer',
       links: {},
       nodes: {},
       path: 'xod/core/buzzer',
@@ -596,7 +592,6 @@ export default {
     },
     'xod/core/choose_range': {
       impls: {},
-      label: 'choose-range',
       links: {
         BJIgthfVqpx: {
           id: 'BJIgthfVqpx',
@@ -752,7 +747,6 @@ export default {
     },
     'xod/core/choose_range_2p': {
       impls: {},
-      label: 'choose-range-2p',
       links: {
         H1alKhzEqpl: {
           id: 'H1alKhzEqpl',
@@ -997,7 +991,6 @@ export default {
     },
     'xod/core/choose_range_3p': {
       impls: {},
-      label: 'choose-range-3p',
       links: {
         'B1O-F2zN56g': {
           id: 'B1O-F2zN56g',
@@ -1386,7 +1379,6 @@ export default {
       impls: {
         js: 'module.exports.evaluate = function(e) {\n  return { result: (String(e.inputs.a) + String(e.inputs.b)) };\n};\n',
       },
-      label: 'concat',
       links: {},
       nodes: {},
       path: 'xod/core/concat',
@@ -1424,7 +1416,6 @@ export default {
       impls: {
         js: '\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n',
       },
-      label: '<Bool>',
       links: {},
       nodes: {},
       path: 'xod/core/constBool',
@@ -1462,7 +1453,6 @@ export default {
       impls: {
         js: '\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n',
       },
-      label: '<Number>',
       links: {},
       nodes: {},
       path: 'xod/core/constNumber',
@@ -1500,7 +1490,6 @@ export default {
       impls: {
         js: '\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n',
       },
-      label: '<String>',
       links: {},
       nodes: {},
       path: 'xod/core/constString',
@@ -1716,7 +1705,6 @@ export default {
       impls: {
         nodejs: "var path = require('path');\nvar fs = require('fs');\n\nmodule.exports.evaluate = function(e) {\n  var filename = e.inputs.fileName;\n\n  fs.readFile(filename, function (err, data) {\n    if (err) {\n      e.fire({ error: err.toString() });\n      return;\n    }\n\n    e.fire({ data: data });\n  });\n};\n",
       },
-      label: 'File read',
       links: {},
       nodes: {},
       path: 'xod/core/file_read',
@@ -1763,7 +1751,6 @@ export default {
       impls: {
         nodejs: "var path = require('path');\nvar fs = require('fs');\n\nmodule.exports.evaluate = function(e) {\n  var filename = e.inputs.fileName;\n  var data = e.inputs.data;\n\n  fs.writeFile(filename, data, function (err) {\n    if (err) {\n      e.fire({ onFailure: err.toString() });\n      return;\n    }\n\n    e.fire({ onSuccess: PULSE });\n  });\n};\n",
       },
-      label: 'File write',
       links: {},
       nodes: {},
       path: 'xod/core/file_write',
@@ -1845,7 +1832,6 @@ export default {
     },
     'xod/core/greater_equal': {
       impls: {},
-      label: 'greater-equal',
       links: {
         BykfK2G49Tx: {
           id: 'BykfK2G49Tx',
@@ -1972,7 +1958,6 @@ export default {
     },
     'xod/core/in_range': {
       impls: {},
-      label: 'in-range',
       links: {
         BJgMYhMEqpx: {
           id: 'BJgMYhMEqpx',
@@ -2159,7 +2144,6 @@ export default {
     },
     'xod/core/inputBool': {
       impls: {},
-      label: '<InputBool>',
       links: {},
       nodes: {},
       path: 'xod/core/inputBool',
@@ -2177,7 +2161,6 @@ export default {
     },
     'xod/core/inputBoolean': {
       impls: {},
-      label: '<InputBool>',
       links: {},
       nodes: {},
       path: 'xod/core/inputBoolean',
@@ -2195,7 +2178,6 @@ export default {
     },
     'xod/core/inputNumber': {
       impls: {},
-      label: '<InputNumber>',
       links: {},
       nodes: {},
       path: 'xod/core/inputNumber',
@@ -2213,7 +2195,6 @@ export default {
     },
     'xod/core/inputPulse': {
       impls: {},
-      label: '<InputPulse>',
       links: {},
       nodes: {},
       path: 'xod/core/inputPulse',
@@ -2231,7 +2212,6 @@ export default {
     },
     'xod/core/inputString': {
       impls: {},
-      label: '<InputString>',
       links: {},
       nodes: {},
       path: 'xod/core/inputString',
@@ -2298,7 +2278,6 @@ export default {
       impls: {
         espruino: '\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var b = e.inputs.brightness;\n\n  // Adjust duty cycle as a power function to align brightness\n  // perception by human eye\n  var duty = b * b * b;\n\n  analogWrite(e.context.pin, duty);\n};\n',
       },
-      label: 'LED',
       links: {},
       nodes: {},
       path: 'xod/core/led',
@@ -2496,7 +2475,6 @@ export default {
     },
     'xod/core/less_equal': {
       impls: {},
-      label: 'less-equal',
       links: {
         B1lQKhzN5al: {
           id: 'B1lQKhzN5al',
@@ -2698,7 +2676,6 @@ export default {
       impls: {
         js: '\nmodule.exports.evaluate = function(e) {\n  return { out: !e.inputs.in };\n};\n',
       },
-      label: 'not',
       links: {},
       nodes: {},
       path: 'xod/core/not',
@@ -2727,7 +2704,6 @@ export default {
       impls: {
         js: '\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a || e.inputs.b };\n};\n',
       },
-      label: 'or',
       links: {},
       nodes: {},
       path: 'xod/core/or',
@@ -2763,7 +2739,6 @@ export default {
     },
     'xod/core/outputBoolean': {
       impls: {},
-      label: '<OutputBool>',
       links: {},
       nodes: {},
       path: 'xod/core/outputBoolean',
@@ -2781,7 +2756,6 @@ export default {
     },
     'xod/core/outputNumber': {
       impls: {},
-      label: '<OutputNumber>',
       links: {},
       nodes: {},
       path: 'xod/core/outputNumber',
@@ -2799,7 +2773,6 @@ export default {
     },
     'xod/core/outputPulse': {
       impls: {},
-      label: '<OutputPulse>',
       links: {},
       nodes: {},
       path: 'xod/core/outputPulse',
@@ -2817,7 +2790,6 @@ export default {
     },
     'xod/core/outputString': {
       impls: {},
-      label: '<OutputString>',
       links: {},
       nodes: {},
       path: 'xod/core/outputString',
@@ -2900,7 +2872,6 @@ export default {
     },
     'xod/core/sort_pair': {
       impls: {},
-      label: 'sort-pair',
       links: {
         B17mF3zEcTg: {
           id: 'B17mF3zEcTg',
@@ -3122,7 +3093,6 @@ export default {
       impls: {
         js: '\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.inp) {\n    return { outTrue: PULSE };\n  } else {\n    return { outFalse: PULSE };\n  }\n};\n',
       },
-      label: 'Split',
       links: {},
       nodes: {},
       path: 'xod/core/split_bool',
@@ -3160,7 +3130,6 @@ export default {
       impls: {
         nodejs: 'module.exports.evaluate = function(e) {\n  var val = String(e.inputs.value);\n  process.stdout.write(val);\n};\n',
       },
-      label: 'stdout',
       links: {},
       nodes: {},
       path: 'xod/core/stdout',
@@ -3180,7 +3149,6 @@ export default {
       impls: {
         js: 'module.exports.evaluate = function(e) {\n  return { value: new Date().getTime() };\n};\n',
       },
-      label: 'Time',
       links: {},
       nodes: {},
       path: 'xod/core/time',
@@ -3209,7 +3177,6 @@ export default {
       impls: {
         js: '\nmodule.exports.evaluate = function(e) {\n  return { out: e.props.value };\n};\n',
       },
-      label: 'triggerableNumber',
       links: {},
       nodes: {},
       path: 'xod/core/triggerableNumber',
@@ -3247,7 +3214,6 @@ export default {
       impls: {
         espruino: "\nvar sonic = require('@amperka/ultrasonic');\n\nmodule.exports.setup = function(e) {\n  var pinTrig = new Pin(e.props.pinTrig);\n  var pinEcho = new Pin(e.props.pinEcho);\n  e.context.device = sonic.connect({\n    trigPin: pinTrig,\n    echoPin: pinEcho\n  });\n  e.context.units = e.props.units;\n  e.context.isBusy = false;\n};\n\nmodule.exports.evaluate = function(e) {\n  if (e.context.isBusy) {\n    e.fire({ error: \"busy\" });\n  } else {\n    e.context.isBusy = true;\n    e.context.device.ping(function(err, value) {\n      e.context.isBusy = false;\n      if (err) {\n        e.fire({ error: err.msg });\n      } else {\n        e.fire({ value: value });\n      }\n    }, e.context.units);\n  }\n};\n",
       },
-      label: 'HC-SR04',
       links: {},
       nodes: {},
       path: 'xod/core/ultrasonic_HC_SR04',
@@ -3294,7 +3260,6 @@ export default {
       impls: {
         js: '\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.cond) {\n    e.fire({ out: e.inputs.in });\n  }\n};\n',
       },
-      label: 'valveNumber',
       links: {},
       nodes: {},
       path: 'xod/core/valveNumber',

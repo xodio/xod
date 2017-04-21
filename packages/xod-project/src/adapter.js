@@ -80,8 +80,6 @@ export const mergePatchesAndNodeTypes = R.converge(
   ]
 );
 
-// :: {} -> String
-const getLabel = R.prop('label');
 // :: {} -> [a]
 const getNodes = propValues('nodes');
 // :: {} -> [a]
@@ -98,10 +96,6 @@ const getLinks = propValues('links');
 const assocPatchUnsafe = R.curry(
   (path, patch, project) => R.assocPath(['patches', path], patch, project)
 );
-
-// :: Patch -> Maybe fn
-// fn :: Patch -> Patch
-const addLabel = oldPatch => Maybe(getLabel(oldPatch)).map(Patch.setPatchLabel);
 
 // :: String -> String
 export const convertPinType = R.cond([
@@ -313,7 +307,6 @@ const convertPatches = R.compose(
     return Tuple(nodeIdMap, assocNodes);
   },
   R.map(oldPatch => Maybe.of(Patch.createPatch())
-    .chain(apOrSkip(addLabel(oldPatch)))
     .chain(apOrSkip(copyImpls(oldPatch)))
     .map(convertPatchPins(oldPatch))
     .map(convertNodes(oldPatch))

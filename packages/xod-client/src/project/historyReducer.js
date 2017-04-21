@@ -21,22 +21,22 @@ const HISTORY_DIRECTION = {
   FUTURE: 'future',
 };
 
-const getHistoryForPatch = (state, patchId) => R.pathOr(
+const getHistoryForPatch = (state, patchPath) => R.pathOr(
   { [HISTORY_DIRECTION.PAST]: [], [HISTORY_DIRECTION.FUTURE]: [] },
-  ['projectHistory', patchId],
+  ['projectHistory', patchPath],
   state
 );
 
-const getCurrentPatchState = (state, patchId) => R.compose(
-  R.view(lensPatch(patchId)),
+const getCurrentPatchState = (state, patchPath) => R.compose(
+  R.view(lensPatch(patchPath)),
   getProject
 )(state);
 
 const HISTORY_LIMIT = 50;
 
-const moveThroughHistory = (patchId, takeReplacementFrom, putCurrentTo, state) => {
-  const currentPatchState = getCurrentPatchState(state, patchId);
-  const patchHistory = getHistoryForPatch(state, patchId);
+const moveThroughHistory = (patchPath, takeReplacementFrom, putCurrentTo, state) => {
+  const currentPatchState = getCurrentPatchState(state, patchPath);
+  const patchHistory = getHistoryForPatch(state, patchPath);
 
   if (R.isEmpty(patchHistory[takeReplacementFrom])) return state;
 
@@ -45,10 +45,10 @@ const moveThroughHistory = (patchId, takeReplacementFrom, putCurrentTo, state) =
   return R.compose(
     R.over(
       projectLens,
-      R.pipe(assocPatch(patchId, replacementPatchState), explode)
+      R.pipe(assocPatch(patchPath, replacementPatchState), explode)
     ),
     R.assocPath(
-      ['projectHistory', patchId],
+      ['projectHistory', patchPath],
       R.compose(
         R.over(R.lensProp(takeReplacementFrom), R.tail),
         R.over(R.lensProp(putCurrentTo), R.prepend(currentPatchState))
@@ -62,11 +62,11 @@ export default (state, action) => {
     case PATCH_HISTORY_SAVE: {
       const { previousPatchState } = action.payload;
 
-      const patchId = getPatchPath(previousPatchState);
-      const patchHistory = getHistoryForPatch(state, patchId);
+      const patchPath = getPatchPath(previousPatchState);
+      const patchHistory = getHistoryForPatch(state, patchPath);
 
       return R.assocPath(
-        ['projectHistory', patchId],
+        ['projectHistory', patchPath],
         R.compose(
           R.over(
             R.lensProp(HISTORY_DIRECTION.PAST),
@@ -83,7 +83,7 @@ export default (state, action) => {
 
     case PATCH_HISTORY_CLEAR_FOR_PATCH: {
       return R.dissocPath(
-        ['projectHistory', action.payload.patchId],
+        ['projectHistory', action.payload.patchPath],
         state
       );
     }
@@ -102,7 +102,7 @@ export default (state, action) => {
 
     case PATCH_HISTORY_UNDO: {
       return moveThroughHistory(
-        action.payload.patchId,
+        action.payload.patchPath,
         HISTORY_DIRECTION.PAST,
         HISTORY_DIRECTION.FUTURE,
         state
@@ -111,7 +111,7 @@ export default (state, action) => {
 
     case PATCH_HISTORY_REDO: {
       return moveThroughHistory(
-        action.payload.patchId,
+        action.payload.patchPath,
         HISTORY_DIRECTION.FUTURE,
         HISTORY_DIRECTION.PAST,
         state

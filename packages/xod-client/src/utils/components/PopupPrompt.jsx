@@ -8,6 +8,7 @@ import { KEYCODE } from '../../utils/constants';
 
 const PopupPrompt = ({
   title,
+  helpText,
   children,
   confirmText,
   cancelText,
@@ -57,6 +58,7 @@ const PopupPrompt = ({
             <div className="PopupFields">
               <input name="answer" type={inputType} onKeyDown={onInputKeyDown} autoFocus />
             </div>
+            <span className="helpText">{helpText}</span>
           </div>
           <div className="PopupButtons">
             <button
@@ -81,6 +83,7 @@ const PopupPrompt = ({
 
 PopupPrompt.propTypes = {
   title: React.PropTypes.string,
+  helpText: React.PropTypes.string,
   children: React.PropTypes.any,
   confirmText: React.PropTypes.string,
   cancelText: React.PropTypes.string,
@@ -94,6 +97,7 @@ PopupPrompt.propTypes = {
 };
 PopupPrompt.defaultProps = {
   title: 'We have a question...',
+  helpText: '',
   confirmText: 'Confirm',
   cancelText: 'Cancel',
   className: '',

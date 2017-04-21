@@ -108,7 +108,7 @@ describe('Editor reducer', () => {
         },
       },
       editor: {
-        currentPatchId: '@/1',
+        currentPatchPath: '@/1',
         mode: EDITOR_MODE.DEFAULT,
         selection: [],
         linkingPin: null,
@@ -197,17 +197,15 @@ describe('Editor reducer', () => {
   describe('working with tabs', () => {
     const mockState = {
       editor: {
-        currentPatchId: '1',
+        currentPatchPath: '1',
         tabs: {
           1: {
             id: '1',
-            patchId: '1',
             index: 0,
           },
           2: {
             id: '2',
-            patchId: '2',
-            index: 0,
+            index: 1,
           },
         },
       },
@@ -232,20 +230,20 @@ describe('Editor reducer', () => {
       store.dispatch(Actions.switchPatch('3'));
 
       chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(3);
-      chai.expect(store.getState().editor.currentPatchId).to.be.equal('3');
+      chai.expect(store.getState().editor.currentPatchPath).to.be.equal('3');
     });
     it('should close a tab and switch to another one there are any left open', () => {
       store.dispatch(Actions.closeTab(1));
 
       chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(1);
-      chai.expect(store.getState().editor.currentPatchId).to.be.equal('2');
+      chai.expect(store.getState().editor.currentPatchPath).to.be.equal('2');
     });
-    it('should close the tab and set currentPatchId to null if that was the last tab', () => {
+    it('should close the tab and set currentPatchPath to null if that was the last tab', () => {
       store.dispatch(Actions.closeTab(1));
       store.dispatch(Actions.closeTab(2));
 
       chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(0);
-      chai.expect(store.getState().editor.currentPatchId).to.be.equal(null);
+      chai.expect(store.getState().editor.currentPatchPath).to.be.equal(null);
     });
     it('should sort tabs', () => true);
   });
