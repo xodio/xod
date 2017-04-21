@@ -61,4 +61,11 @@ describe('tapP', () => {
     Promise.resolve(1)
       .then(tapP(promiseFn));
   });
+  it('should return Promise.reject if inside function return Promise.reject', () => {
+    const promiseFn = () => Promise.reject('reject');
+
+    Promise.resolve(1)
+      .then(tapP(promiseFn))
+      .catch(out => assert.equal(out, 'reject'));
+  });
 });
