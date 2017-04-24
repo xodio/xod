@@ -75,6 +75,8 @@ const NodeInspector = ({ node, onPropUpdate }) => {
 
       <a
         href={`https://xod.io/TODOREPLACEME/${type}`}
+        target="_blank"
+        rel="noopener noreferrer"
         className="nodeHelp"
       >
         <span className="nodeHelpIcon" />
