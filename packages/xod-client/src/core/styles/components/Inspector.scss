@@ -18,6 +18,7 @@
   font-size: $font-size-m;
   padding: 14px 17px;
   color: $input-color-border; // TODO: separate color?
+  cursor: default;
 
   .nodeName {
     color: $color-canvas-selected; // TODO: separate color?
@@ -28,6 +29,7 @@
   padding-left: 16px;
   color: $sidebar-color-text;
   font-size: $font-size-s;
+  cursor: default;
 }
 
 .nodeHelp {
