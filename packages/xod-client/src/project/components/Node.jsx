@@ -1,6 +1,7 @@
 import R from 'ramda';
 import React from 'react';
 import classNames from 'classnames';
+import { getBaseName } from 'xod-project';
 
 import Pin from './Pin';
 import PinLabel from './PinLabel';
@@ -43,6 +44,7 @@ class Node extends React.Component {
       pins,
       outputPinsSectionHeight,
       label,
+      type,
       linkingPin,
     } = this.props;
 
@@ -67,6 +69,8 @@ class Node extends React.Component {
       overflow: 'visible',
       opacity: this.props.hidden ? 0 : 1, // setting visibility is breaking masks
     };
+
+    const nodeLabel = label || getBaseName(type);
 
     return (
       <svg
@@ -100,7 +104,7 @@ class Node extends React.Component {
             {...bodyRectProps}
           />
           <NodeText>
-            {label}
+            {nodeLabel}
           </NodeText>
         </g>
 
@@ -132,6 +136,7 @@ class Node extends React.Component {
 Node.propTypes = {
   id: React.PropTypes.string.isRequired,
   label: React.PropTypes.string.isRequired,
+  type: React.PropTypes.string.isRequired,
   pins: React.PropTypes.any.isRequired,
   size: React.PropTypes.any.isRequired,
   outputPinsSectionHeight: React.PropTypes.number.isRequired,

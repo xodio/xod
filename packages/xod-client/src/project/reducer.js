@@ -30,7 +30,7 @@ const selectNodePropertyUpdater = ({ kind, key, value }) => {
   if (kind === NODE_PROPERTY_KIND.PROP) {
     if (key === NODE_PROPERTY_KEY.LABEL) {
       return XP.setNodeLabel(value);
-    } else if (key === NODE_PROPERTY_KEY.TEXTAREA) {
+    } else if (key === NODE_PROPERTY_KEY.DESCRIPTION) {
       return XP.setNodeDescription(value);
     }
   }

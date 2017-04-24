@@ -110,18 +110,6 @@ const mergePinDataFromPatch = R.curry((project, node) => {
   );
 });
 
-// :: Project -> IntermediateNode -> IntermediateNode
-const addNodeLabel = R.curry((project, node) => {
-  const patch = R.view(
-    XP.lensPatch(XP.getNodeType(node)),
-    project
-  );
-
-  const label = node.label || R.pipe(XP.getPatchPath, XP.getBaseName)(patch);
-
-  return XP.setNodeLabel(label, node);
-});
-
 // :: State -> StrMap Node
 const getCurrentPatchNodes = createSelector(
   [getProject, getCurrentPatchPath],
@@ -144,7 +132,6 @@ export const getRenderableNodes = createMemoizedSelector(
     R.map(
       R.compose(
         addNodePositioning,
-        addNodeLabel(project),
         assocPinIsConnected(connectedPins),
         assocNodeIdToPins,
         mergePinDataFromPatch(project)

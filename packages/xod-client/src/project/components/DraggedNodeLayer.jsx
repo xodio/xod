@@ -21,6 +21,7 @@ class DraggedNodeLayer extends React.PureComponent {
           key={node.id}
           id={node.id}
           label={node.label}
+          type={node.type}
           position={position}
           size={node.size}
           outputPinsSectionHeight={node.outputPinsSectionHeight}

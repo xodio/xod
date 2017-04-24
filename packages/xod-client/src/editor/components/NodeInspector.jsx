@@ -88,7 +88,7 @@ const NodeInspector = ({ node, onPropUpdate }) => {
 
       <NodeLabelWidget
         entityId={nodeId}
-        key={nodeId}
+        key={`node_label_${nodeId}`}
         kind={NODE_PROPERTY_KIND.PROP}
         injected={false}
         keyName={NODE_PROPERTY_KEY.LABEL}
@@ -105,10 +105,10 @@ const NodeInspector = ({ node, onPropUpdate }) => {
 
       <NodeDescriptionWidget
         entityId={nodeId}
-        key={nodeId}
+        key={`node_description_${nodeId}`}
         kind={NODE_PROPERTY_KIND.PROP}
         injected={false}
-        keyName={NODE_PROPERTY_KEY.TEXTAREA}
+        keyName={NODE_PROPERTY_KEY.DESCRIPTION}
         label="Description"
         value={XP.getNodeDescription(node)}
         onPropUpdate={onPropUpdate}
