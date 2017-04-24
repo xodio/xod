@@ -69,6 +69,8 @@ const NodeInspector = ({ node, onPropUpdate }) => {
   const type = XP.getNodeType(node);
   const baseName = XP.getBaseName(type);
 
+  const nodeId = XP.getNodeId(node);
+
   return (
     <div className="Inspector">
       <div className="inspectorTitle">Node: <span className="nodeName">{baseName}</span></div>
@@ -85,7 +87,8 @@ const NodeInspector = ({ node, onPropUpdate }) => {
       <div className="nodeType">{type}</div>
 
       <NodeLabelWidget
-        entityId={XP.getNodeId(node)}
+        entityId={nodeId}
+        key={nodeId}
         kind={NODE_PROPERTY_KIND.PROP}
         injected={false}
         keyName={NODE_PROPERTY_KEY.LABEL}
@@ -101,7 +104,8 @@ const NodeInspector = ({ node, onPropUpdate }) => {
       />
 
       <NodeDescriptionWidget
-        entityId={XP.getNodeId(node)}
+        entityId={nodeId}
+        key={nodeId}
         kind={NODE_PROPERTY_KIND.PROP}
         injected={false}
         keyName={NODE_PROPERTY_KEY.TEXTAREA}
