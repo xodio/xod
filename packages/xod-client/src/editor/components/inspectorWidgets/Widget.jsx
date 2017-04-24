@@ -4,14 +4,10 @@ import { PROPERTY_TYPE_PARSE, PROPERTY_TYPE_MASK } from '../../../utils/inputFor
 
 import { KEYCODE } from '../../../utils/constants';
 import { noop } from '../../../utils/ramda';
-import { PROPERTY_KIND } from '../../../project/constants';
+import { NODE_PROPERTY_KIND } from '../../../project/constants';
 
 export default function composeWidget(Component, widgetProps) {
   const commonKeyDownHandlers = {
-    [KEYCODE.ENTER]: function enter(event) {
-      event.preventDefault();
-      this.commit();
-    },
     [KEYCODE.ESCAPE]: function escape(event) {
       if (this.state.value === this.parseValue(this.props.value)) {
         event.target.blur();
@@ -64,7 +60,7 @@ export default function composeWidget(Component, widgetProps) {
     }
 
     isDisabled() {
-      return (this.props.kind === PROPERTY_KIND.PIN) && !this.props.injected;
+      return (this.props.kind === NODE_PROPERTY_KIND.PIN) && !this.props.injected;
     }
 
     updateValue(value) {
@@ -118,7 +114,7 @@ export default function composeWidget(Component, widgetProps) {
 
   Widget.propTypes = {
     entityId: React.PropTypes.string.isRequired,
-    keyName: React.PropTypes.string.isRequired, // ?
+    keyName: React.PropTypes.string.isRequired, // one of NODE_PROPERTY_KEY or pin key
     kind: React.PropTypes.string,
     label: React.PropTypes.string,
     value: React.PropTypes.oneOfType([

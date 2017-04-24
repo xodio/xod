@@ -10,7 +10,6 @@ const pinCenter = { x: 70, y: 70 };
 
 const baseProps = {
   keyName: "my pin's keyname",
-  injected: false,
   pinLabel: 'PIN',
   type: 'string',
   direction: 'input',

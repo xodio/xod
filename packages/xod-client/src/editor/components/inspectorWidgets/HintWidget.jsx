@@ -2,7 +2,7 @@ import React from 'react';
 
 function HintWidget({ text }) {
   return (
-    <div className="HintWidget">
+    <div className="Widget">
       <span>{text}</span>
     </div>
   );

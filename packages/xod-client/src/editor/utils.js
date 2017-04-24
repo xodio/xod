@@ -1,6 +1,6 @@
 import R from 'ramda';
 
-import { ENTITY } from './constants';
+import { SELECTION_ENTITY_TYPE } from './constants';
 
 export const isEntitySelected = (selection, entityName, id) => R.pipe(
   R.filter(R.propEq('entity', entityName)),
@@ -10,11 +10,11 @@ export const isEntitySelected = (selection, entityName, id) => R.pipe(
 )(selection);
 
 export const isNodeSelected = R.curry(
-  (selection, id) => isEntitySelected(selection, ENTITY.NODE, id)
+  (selection, id) => isEntitySelected(selection, SELECTION_ENTITY_TYPE.NODE, id)
 );
 
 export const isLinkSelected = R.curry(
-  (selection, id) => isEntitySelected(selection, ENTITY.LINK, id)
+  (selection, id) => isEntitySelected(selection, SELECTION_ENTITY_TYPE.LINK, id)
 );
 
 export const isPinSelected = (linkingPin, renderablePin) => (

@@ -12,15 +12,15 @@ export const getCurrentPatchPath = R.pipe(
 
 // selection in editor
 
-export const getSelection = state => R.pipe(
+export const getSelection = R.pipe(
   getEditor,
   R.prop('selection')
-)(state);
+);
 
-export const getSelectedNodeType = state => R.pipe(
+export const getSelectedNodeType = R.pipe(
   getEditor,
   R.prop('selectedNodeType')
-)(state);
+);
 
 export const getSelectionByTypes = createSelector(
   getSelection,
@@ -50,18 +50,18 @@ export const hasSelection = state => (
 
 // linking pin
 
-export const getLinkingPin = state => R.pipe(
+export const getLinkingPin = R.pipe(
   getEditor,
   R.prop('linkingPin')
-)(state);
+);
 
 
 // editor mode
 
-export const getMode = state => R.pipe(
+export const getMode = R.pipe(
   getEditor,
   R.prop('mode')
-)(state);
+);
 
 export const getModeChecks = (state) => {
   const mode = getMode(state);
@@ -78,7 +78,7 @@ export const getModeChecks = (state) => {
 
 // tabs
 
-export const getTabs = state => R.pipe(
+export const getTabs = R.pipe(
   getEditor,
   R.prop('tabs')
-)(state);
+);

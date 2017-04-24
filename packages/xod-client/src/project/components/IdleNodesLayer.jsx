@@ -42,6 +42,7 @@ const IdleNodesLayer = ({
               key={node.id}
               id={node.id}
               label={node.label}
+              type={node.type}
               position={node.position}
               size={node.size}
               outputPinsSectionHeight={node.outputPinsSectionHeight}

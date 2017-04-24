@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { noop } from '../../utils/ramda';
-import { PIN_RADIUS } from '../nodeLayout';
+import { PIN_RADIUS, PIN_HIGHLIGHT_RADIUS } from '../nodeLayout';
 
 export default class Pin extends React.Component {
   constructor(props) {
@@ -33,49 +32,21 @@ export default class Pin extends React.Component {
     };
   }
 
-  getCircleProps() {
-    return {
-      cx: this.getPinCenter().x,
-      cy: this.getPinCenter().y,
-      r: PIN_RADIUS,
-    };
-  }
-
-  getRectProps() {
-    const x = this.getPinCenter().x - PIN_RADIUS;
-    const y = this.getPinCenter().y - PIN_RADIUS;
-    const side = PIN_RADIUS * 2;
-
-    return {
-      x,
-      y,
-      width: side,
-      height: side,
-    };
-  }
-
-  isInjected() {
-    return !!this.props.injected;
-  }
-
   render() {
     const cls = classNames('Pin', {
-      'is-property': this.isInjected(),
       'is-selected': this.props.isSelected,
       'is-accepting-links': this.props.isAcceptingLinks,
     });
-
-    const onMouseOver = !this.isInjected() ? this.handleOver : noop;
-    const onMouseOut = !this.isInjected() ? this.handleOut : noop;
 
     const symbolClassNames = classNames(
       'symbol', this.props.type,
       { 'is-connected': this.props.isConnected }
     );
 
-    const symbol = !this.isInjected() ?
-      <circle className={symbolClassNames} {...this.getCircleProps()} /> :
-      <rect className={symbolClassNames} {...this.getRectProps()} />;
+    const pinCircleCenter = {
+      cx: this.getPinCenter().x,
+      cy: this.getPinCenter().y,
+    };
 
     return (
       <g
@@ -83,16 +54,20 @@ export default class Pin extends React.Component {
         id={this.props.keyName}
         onMouseUp={this.onMouseUp}
         onMouseDown={this.onMouseDown}
-        onMouseOver={onMouseOver}
-        onMouseOut={onMouseOut}
+        onMouseOver={this.handleOver}
+        onMouseOut={this.handleOut}
       >
         <rect {...this.getHotspotProps()} />
         <circle
           className="linkingHighlight"
-          {...this.getCircleProps()}
-          r="15"
+          {...pinCircleCenter}
+          r={PIN_HIGHLIGHT_RADIUS}
         />
-        {symbol}
+        <circle
+          className={symbolClassNames}
+          {...pinCircleCenter}
+          r={PIN_RADIUS}
+        />
       </g>
     );
   }
@@ -100,7 +75,6 @@ export default class Pin extends React.Component {
 
 Pin.propTypes = {
   keyName: React.PropTypes.string.isRequired,
-  injected: React.PropTypes.bool,
   type: React.PropTypes.string,
   position: React.PropTypes.object.isRequired,
   onMouseUp: React.PropTypes.func.isRequired,

@@ -25,6 +25,8 @@ export const PIN_MARGIN = {
 
 export const NODE_CORNER_RADIUS = 5;
 export const PIN_RADIUS = 6;
+export const PIN_RADIUS_WITH_SHADOW = PIN_RADIUS + 4;
+export const PIN_HIGHLIGHT_RADIUS = 15;
 export const TEXT_OFFSET_FROM_PIN_BORDER = 10;
 
 /**

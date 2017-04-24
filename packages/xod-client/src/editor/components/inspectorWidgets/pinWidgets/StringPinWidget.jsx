@@ -1,25 +1,37 @@
 import React from 'react';
-import classNames from 'classnames';
+
+import { PROPERTY_TYPE } from '../../../constants';
+import PinIcon from './PinIcon';
+import LinkedInput from './LinkedInput';
 
 const StringWidget = (props) => {
-  const cls = classNames('StringWidget', {
-    'is-disabled': props.disabled,
-  });
   const onChange = (event) => {
     props.onChange(event.target.value);
   };
-  return (
-    <div className={cls}>
+
+  const input = props.disabled
+    ? (
+      <LinkedInput id={props.elementId} />
+    ) : (
       <input
+        className="inspectorTextInput"
         type="text"
         id={props.elementId}
         value={props.value}
 
-        disabled={props.disabled}
-
         onChange={onChange}
         onBlur={props.onBlur}
         onKeyDown={props.onKeyDown}
+      />
+    );
+
+  return (
+    <div className="Widget PinWidget StringWidget">
+      {input}
+      <PinIcon
+        id={props.elementId}
+        type={PROPERTY_TYPE.STRING}
+        isConnected={props.disabled}
       />
       <label
         htmlFor={props.elementId}
@@ -42,7 +54,7 @@ StringWidget.propTypes = {
 
 StringWidget.defaultProps = {
   label: 'Unnamed property',
-  value: 0,
+  value: '',
   disabled: false,
 };
 

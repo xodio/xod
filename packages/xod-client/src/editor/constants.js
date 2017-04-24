@@ -24,6 +24,7 @@ export const WIDGET_TYPE = {
   STRING: PROPERTY_TYPE.STRING,
   PULSE: PROPERTY_TYPE.PULSE,
   IO_LABEL: 'IOLabel',
+  TEXTAREA: 'textarea',
 };
 
 export const LAYER = {
@@ -33,12 +34,12 @@ export const LAYER = {
   GHOSTS: 'ghosts',
 };
 
-export const ENTITY = {
+export const SELECTION_ENTITY_TYPE = {
   NODE: 'Node',
   LINK: 'Link',
 };
 
-export const NODETYPE_ERRORS = {
+export const NODETYPE_ERROR_TYPES = {
   CANT_DELETE_USED_PIN_OF_PATCHNODE: 'CANT_DELETE_USED_PIN_OF_PATCHNODE',
   CANT_DELETE_USED_PATCHNODE: 'CANT_DELETE_USED_PATCHNODE',
 };

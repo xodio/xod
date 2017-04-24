@@ -91,21 +91,6 @@ export const updateNodeProperty =
     });
   };
 
-export const changePinMode = (nodeId, pinKey, injected, val = null) => (dispatch, getState) => {
-  const patchPath = getCurrentPatchPath(getState());
-
-  dispatch({
-    type: ActionType.NODE_CHANGE_PIN_MODE,
-    payload: {
-      id: nodeId,
-      key: pinKey,
-      injected,
-      value: val,
-      patchPath,
-    },
-  });
-};
-
 export const openProject = project => ({
   type: ActionType.PROJECT_OPEN,
   payload: project,

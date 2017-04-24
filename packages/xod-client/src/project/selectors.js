@@ -8,8 +8,7 @@ import {
   addLinksPositioning,
   addPoints,
 } from './nodeLayout';
-import { PROPERTY_KIND } from './constants';
-import { ENTITY, PROPERTY_TYPE } from '../editor/constants';
+import { SELECTION_ENTITY_TYPE } from '../editor/constants';
 import {
   getSelection,
   getCurrentPatchPath,
@@ -18,7 +17,6 @@ import {
 } from '../editor/selectors';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
-
 
 export const getProject = R.prop('project');
 export const projectLens = R.lensProp('project');
@@ -112,18 +110,6 @@ const mergePinDataFromPatch = R.curry((project, node) => {
   );
 });
 
-// :: Project -> IntermediateNode -> IntermediateNode
-const addNodeLabel = R.curry((project, node) => {
-  const patch = R.view(
-    XP.lensPatch(XP.getNodeType(node)),
-    project
-  );
-
-  const label = node.label || R.pipe(XP.getPatchPath, XP.getBaseName)(patch);
-
-  return R.assoc('label', label, node);
-});
-
 // :: State -> StrMap Node
 const getCurrentPatchNodes = createSelector(
   [getProject, getCurrentPatchPath],
@@ -146,7 +132,6 @@ export const getRenderableNodes = createMemoizedSelector(
     R.map(
       R.compose(
         addNodePositioning,
-        addNodeLabel(project),
         assocPinIsConnected(connectedPins),
         assocNodeIdToPins,
         mergePinDataFromPatch(project)
@@ -230,101 +215,22 @@ export const getPreparedTabs = createSelector(
 // Inspector
 //
 
-const dereferencedSelection = createMemoizedSelector(
+// :: State -> [ RenderableSelection ]
+export const getRenderableSelection = createMemoizedSelector(
   [getRenderableNodes, getRenderableLinks, getSelection],
   [R.equals, R.equals, R.equals],
   (renderableNodes, renderableLinks, selection) => {
     const renderables = {
-      [ENTITY.NODE]: renderableNodes,
-      [ENTITY.LINK]: renderableLinks,
+      [SELECTION_ENTITY_TYPE.NODE]: renderableNodes,
+      [SELECTION_ENTITY_TYPE.LINK]: renderableLinks,
     };
 
     return R.map(
-      R.compose(
-        R.converge(
-          R.assoc('entity'),
-          [
-            R.head,
-            R.path(R.__, renderables),
-          ]
-        ),
-        R.props(['entity', 'id'])
-      ),
+      ({ entity, id }) => ({
+        entityType: entity,
+        data: renderables[entity][id],
+      }),
       selection
     );
   }
-);
-
-// :: String -> String
-const capitalizeFirstLetter = R.converge(
-  R.concat,
-  [
-    R.compose(
-      R.toUpper,
-      R.head
-    ),
-    R.tail,
-  ]
-);
-
-// :: RenderableNode -> PropForInspector { injected, key, kind, label, type, value }
-const nodePropsForInspector = R.compose( // TODO: deprecated?
-  R.map(
-    R.applySpec({
-      kind: R.always(PROPERTY_KIND.PROP),
-      key: R.head,
-      type: R.always(PROPERTY_TYPE.STRING), // TODO: Fix it and get from NodeType
-      label: R.compose(capitalizeFirstLetter, R.head), // TODO: Get rid of this hack
-      value: R.last,
-      injected: R.F,
-    })
-  ),
-  R.toPairs,
-  R.prop('properties')
-);
-
-// :: RenderableNode -> PropForInspector { injected, key, kind, label, type, value }
-const nodePinsForInspector = R.compose(
-  R.map(
-    R.applySpec({
-      kind: R.always(PROPERTY_KIND.PIN),
-      key: R.prop('key'),
-      type: R.prop('type'),
-      label: R.prop('label'),
-      value: R.prop('value'),
-      injected: R.complement(R.prop('isConnected')),
-    })
-  ),
-  R.sortBy(R.prop('index')),
-  R.reject(XP.isOutputPin),
-  R.values,
-  R.prop('pins')
-);
-
-// :: RenderableNode -> PropForInspector[]
-const extractNodeForInspector = R.converge(
-  R.concat,
-  [
-    nodePropsForInspector,
-    nodePinsForInspector,
-  ]
-);
-
-// :: a -> PropForInspector[]
-const extractLinkForInspector = R.always({});
-
-// :: dereferencedSelection -> PropForInspector[]
-export const dataForInspectorFromSelection = createSelector(
-  dereferencedSelection,
-  R.map(
-    R.applySpec({
-      entity: R.prop('entity'),
-      id: R.prop('id'),
-      props: R.ifElse(
-        R.propEq('entity', ENTITY.NODE),
-        extractNodeForInspector,
-        extractLinkForInspector
-      ),
-    })
-  )
 );

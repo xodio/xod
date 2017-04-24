@@ -1,14 +1,17 @@
+import R from 'ramda';
+
 import HintWidget from './HintWidget';
-import BoolWidget from './BoolWidget';
-import NumberWidget from './NumberWidget';
-import PulseWidget from './PulseWidget';
-import StringWidget from './StringWidget';
+import BoolWidget from './pinWidgets/BoolPinWidget';
+import NumberWidget from './pinWidgets/NumberPinWidget';
+import PulseWidget from './pinWidgets/PulsePinWidget';
+import StringWidget from './pinWidgets/StringPinWidget';
 import IOLabelWidget from './IOLabelWidget';
+import DescriptionWidget from './DescriptionWidget';
+import LabelWidget from './LabelWidget';
 import composeWidget from './Widget';
 
-import { WIDGET_TYPE, ENTITY } from '../../constants';
+import { WIDGET_TYPE, SELECTION_ENTITY_TYPE } from '../../constants';
 import { KEYCODE } from '../../../utils/constants';
-import { PROPERTY_KIND } from '../../../project/constants';
 
 const widgetKeyDownHandlers = {
   up: function up(event) {
@@ -36,47 +39,48 @@ const widgetNumberKeysDownHandlers = {
   [KEYCODE.COMMA]: widgetKeyDownHandlers.dot,
 };
 
+const submitOnEnter = {
+  [KEYCODE.ENTER]: function enter(event) {
+    event.preventDefault();
+    this.commit();
+  },
+};
+
 export const WIDGET_MAPPING = {
-  [ENTITY.NODE]: {
+  [SELECTION_ENTITY_TYPE.NODE]: {
     [WIDGET_TYPE.BOOL]: {
-      component: BoolWidget,
-      props: { type: 'boolean' },
-    },
-    [WIDGET_TYPE.NUMBER]: {
-      component: NumberWidget,
-      props: {
-        type: 'number',
-        keyDownHandlers: widgetNumberKeysDownHandlers,
-      },
-    },
-    [WIDGET_TYPE.STRING]: {
-      component: StringWidget,
-      props: { type: 'string' },
-    },
-    [WIDGET_TYPE.PULSE]: {
       component: BoolWidget,
       props: {
         type: 'boolean',
         commitOnChange: true,
       },
     },
-    [WIDGET_TYPE.IO_LABEL]: {
-      component: IOLabelWidget,
+    [WIDGET_TYPE.NUMBER]: {
+      component: NumberWidget,
+      props: {
+        type: 'number',
+        keyDownHandlers: R.merge(widgetNumberKeysDownHandlers, submitOnEnter),
+      },
+    },
+    [WIDGET_TYPE.STRING]: {
+      component: StringWidget,
+      props: {
+        type: 'string',
+        keyDownHandlers: submitOnEnter,
+      },
+    },
+    [WIDGET_TYPE.PULSE]: {
+      component: PulseWidget,
+      props: {
+        type: 'boolean',
+      },
+    },
+    [WIDGET_TYPE.TEXTAREA]: {
+      component: DescriptionWidget,
       props: { type: 'string' },
     },
   },
 };
-
-export const DEFAULT_NODE_PROPS = [
-  {
-    kind: PROPERTY_KIND.PROP,
-    injected: false,
-    key: 'label',
-    label: 'Label',
-    type: 'string',
-    value: '',
-  },
-];
 
 export default {
   HintWidget,
@@ -85,8 +89,9 @@ export default {
   PulseWidget,
   StringWidget,
   IOLabelWidget,
+  DescriptionWidget,
+  LabelWidget,
   composeWidget,
 
   WIDGET_MAPPING,
-  DEFAULT_NODE_PROPS,
 };

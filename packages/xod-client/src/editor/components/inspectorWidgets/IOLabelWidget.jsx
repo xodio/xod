@@ -2,9 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 const IOLabelWidget = (props) => {
-  const cls = classNames('IOLabelWidget', {
-    'is-disabled': props.disabled,
-  });
+  const cls = classNames('IOLabelWidget', {});
   const onChange = (event) => {
     const val = event.target.value;
     if (!(/^([a-zA-Z0-9]){0,4}$/.test(val))) { return; }

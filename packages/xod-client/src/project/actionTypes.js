@@ -8,7 +8,6 @@ export const NODE_MOVE = 'NODE_MOVE';
 export const NODE_ADD = 'NODE_ADD';
 export const NODE_DELETE = 'NODE_DELETE';
 export const NODE_UPDATE_PROPERTY = 'NODE_UPDATE_PROPERTY';
-export const NODE_CHANGE_PIN_MODE = 'NODE_CHANGE_PIN_MODE';
 
 export const LINK_ADD = 'LINK_ADD';
 export const LINK_DELETE = 'LINK_DELETE';

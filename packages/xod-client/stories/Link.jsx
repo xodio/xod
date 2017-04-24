@@ -44,7 +44,7 @@ storiesOf('Link', module)
   .add('bool', () => (
     <XODLink
       {...baseProps}
-      type="bool"
+      type="boolean"
     />
   ))
   .add('number', () => (
