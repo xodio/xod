@@ -78,6 +78,12 @@
   &--number {
     text-align: right;
   }
+
+  &--linked {
+    text-align: center;
+    font-style: italic;
+    user-select: none;
+  }
 }
 
 .nodeLabelTextInput {

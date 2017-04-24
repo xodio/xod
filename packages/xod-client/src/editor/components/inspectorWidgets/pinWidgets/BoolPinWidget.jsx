@@ -2,19 +2,22 @@ import React from 'react';
 
 import { PROPERTY_TYPE } from '../../../constants';
 import PinIcon from './PinIcon';
+import LinkedInput from './LinkedInput';
 
 function BoolWidget(props) {
   const onChange = (event) => {
     const boolValue = JSON.parse(event.target.value);
     props.onChange(boolValue);
   };
-  return (
-    <div className="Widget PinWidget BoolWidget">
+
+  const input = props.disabled
+    ? (
+      <LinkedInput id={props.elementId} />
+    ) : (
       <select
         className="inspectorSelectInput"
         id={props.elementId}
         value={JSON.stringify(props.value)}
-        disabled={props.disabled}
         onChange={onChange}
         onFocus={props.onFocus}
         onBlur={props.onBlur}
@@ -22,6 +25,11 @@ function BoolWidget(props) {
         <option value="false">false</option>
         <option value="true">true</option>
       </select>
+    );
+
+  return (
+    <div className="Widget PinWidget BoolWidget">
+      {input}
       <PinIcon
         id={props.elementId}
         type={PROPERTY_TYPE.BOOL}

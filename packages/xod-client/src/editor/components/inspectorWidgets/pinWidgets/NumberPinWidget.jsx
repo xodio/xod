@@ -2,25 +2,32 @@ import React from 'react';
 
 import { PROPERTY_TYPE } from '../../../constants';
 import PinIcon from './PinIcon';
+import LinkedInput from './LinkedInput';
 
 const NumberWidget = (props) => {
   const onChange = (event) => {
     props.onChange(event.target.value);
   };
-  return (
-    <div className="Widget PinWidget NumberWidget">
+
+  const input = props.disabled
+    ? (
+      <LinkedInput id={props.elementId} />
+    ) : (
       <input
         className="inspectorTextInput inspectorTextInput--number"
         type="text"
         id={props.elementId}
         value={props.value}
 
-        disabled={props.disabled}
-
         onChange={onChange}
         onBlur={props.onBlur}
         onKeyDown={props.onKeyDown}
       />
+    );
+
+  return (
+    <div className="Widget PinWidget NumberWidget">
+      {input}
       <PinIcon
         id={props.elementId}
         type={PROPERTY_TYPE.NUMBER}

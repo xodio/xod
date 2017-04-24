@@ -9,7 +9,7 @@ const PulseWidget = props => (
       className="inspectorTextInput"
       id={props.elementId}
       type="text"
-      value="TODO: help text"
+      value="pulse"
       disabled
     />
     <PinIcon
