@@ -26,7 +26,7 @@ export * from './errors';
 // =============================================================================
 
 /**
- * Function that execute shell command and unifies result.
+ * Function that executes shell command and unifies result.
  * @type {Function}
  * @param {String} cmd Command to execute in shell
  * @returns {Promise.Resolved<ExecResult>} Promise resolved with unified {@link ExecResult}
@@ -36,7 +36,7 @@ const unifyExec = cmd => exec(cmd)
   .catch(r => ({ code: r.code, stdout: r.stdout, stderr: r.stderr }));
 
 /**
- * Function that resolvs/rejects Promise in dependency of code number
+ * Function that resolvs/rejects Promise depending on code number
  * @type {Function}
  * @param {ExecResult} execResult {@link ExecResult}
  * @returns {Promise<String, String>} Promise resolved with `stdout` or rejected with `stderr`
@@ -100,8 +100,7 @@ const parseTxtConfig = R.compose(
  * @return {Map<string, PAV[]} */
 export const listPAVs = R.compose(
   R.groupBy(pav => `${pav.package}:${pav.architecture}`),
-  R.unnest,
-  R.map(({ name, platforms }) =>
+  R.chain(({ name, platforms }) =>
     platforms.map(({ architecture, version }) => ({
       package: name,
       architecture,
