@@ -15,7 +15,7 @@ import * as ERROR_CODES from './errorCodes';
 //
 // =============================================================================
 
-// :: ERROR_CODE -> Error -> Promise.Reject<Error>
+// :: ERROR_CODE -> Error -> Promise.Reject Error
 const rejectWithCode = R.curry(
   (code, err) => Promise.reject(Object.assign(err, { errorCode: code }))
 );
@@ -40,10 +40,11 @@ const anyFileThatExist = checkArrayOfStrings(isFileExists);
 const anyDirectoryThatExist = checkArrayOfStrings(isDirectoryExists);
 
 // :: PAB -> PAV
-const getPAV = pab => R.composeP(
-  R.last,
+const getPAV = pab => R.pipeP(
+  xab.loadPackageIndex,
+  xab.listPAVs,
   R.prop(`${pab.package}:${pab.architecture}`),
-  xab.listPAVs
+  R.last
 )();
 // :: PAB -> (PAV[] -> PAV[])
 const filterByPab = pab => R.filter(R.both(
@@ -62,6 +63,12 @@ const findPort = R.find(
       R.prop('comName')
     ),
   ])
+);
+
+// :: () -> Promise String Error
+const getArduinoIDE = R.pipeP(
+  xab.loadConfig,
+  xab.getArduinoIdePathExecutable
 );
 
 // =============================================================================
@@ -88,9 +95,13 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
     return rejectWithCode(ERROR_CODES.IDE_NOT_FOUND, new Error());
   }
 
-  return xab.setArduinoIdePathPackages(pkgPath)
-    .then(() => xab.setArduinoIdePathExecutable(idePath))
-    .then(() => ({ ide: idePath, packages: pkgPath }));
+  return R.pipeP(
+    xab.loadConfig,
+    xab.setArduinoIdePathPackages(pkgPath),
+    xab.setArduinoIdePathExecutable(idePath),
+    xab.saveConfig,
+    () => ({ ide: idePath, packages: pkgPath })
+  )();
 };
 
 /**
@@ -98,8 +109,10 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
  * @param {Object} pab See type PAB from `xod-arduino-builder`
  * @returns {Promise<Object, Error>} Promise with PAV object or Error
  */
-export const installPav = pab => getPAV(pab)
-  .then(tapP(xab.installPAV))
+export const installPav = pab => Promise.all([getPAV(pab), getArduinoIDE()])
+  .then(tapP(
+    ([pav, idePath]) => xab.installPAV(pav, idePath)
+  ))
   .catch((err) => {
     if (err === xab.REST_ERROR) return rejectWithCode(ERROR_CODES.INDEX_LIST_ERROR, new Error());
     return rejectWithCode(ERROR_CODES.INSTALL_PAV, err);
@@ -166,8 +179,10 @@ export const uploadToArduino = (pab, port, code) => {
   const tmpPath = resolve(__dirname, 'upload.tmp.cpp');
   const clearTmp = () => fs.unlinkSync(tmpPath);
 
-  return writeFile(tmpPath, code)
-    .then(({ path }) => xab.upload(pab, port, path))
+  return Promise.all([writeFile(tmpPath, code), getArduinoIDE()])
+    .then(
+      ([{ path }, idePath]) => xab.upload(pab, port, path, idePath)
+    )
     .then(R.tap(clearTmp))
     .catch((err) => {
       clearTmp();
