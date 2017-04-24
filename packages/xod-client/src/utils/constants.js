@@ -11,6 +11,8 @@ export const COMMAND = {
 
   UNDO: 'undo',
   REDO: 'redo',
+
+  SAVE_PROJECT: 'saveProject',
 };
 
 export const HOTKEY = {
@@ -26,6 +28,8 @@ export const HOTKEY = {
   [COMMAND.ADD_FOLDER]: 'ctrl+shift+n',
   [COMMAND.RENAME]: 'ctrl+r',
   [COMMAND.DELETE]: ['ctrl+del', 'ctrl+backspace'],
+
+  [COMMAND.SAVE_PROJECT]: ['ctrl+s'],
 };
 
 export const ELECTRON_ACCELERATOR = {
@@ -41,6 +45,8 @@ export const ELECTRON_ACCELERATOR = {
   [COMMAND.ADD_FOLDER]: 'Ctrl+Shift+N',
   [COMMAND.RENAME]: 'Ctrl+R',
   [COMMAND.DELETE]: 'Ctrl+Backspace',
+
+  [COMMAND.SAVE_PROJECT]: 'Ctrl+S',
 };
 
 export const KEYCODE = {
