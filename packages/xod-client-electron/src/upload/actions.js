@@ -26,15 +26,16 @@ const getTranspiledCode = (transpiler, state) => {
 };
 
 export const upload = () => (dispatch, getState) => {
-  const code = getTranspiledCode(transpileForEspruino, getState());
+  const eitherCode = getTranspiledCode(transpileForEspruino, getState());
   const processId = dispatch(client.addProcess(UPLOAD));
+  const fail = failUpload(dispatch, processId);
 
   foldEither(
     fail,
     (code) => {
       uploadToEspruino(code, progressUpload(dispatch, processId))
         .then(succeedUpload(dispatch, processId))
-        .catch(failUpload(dispatch, processId));
+        .catch(fail);
     },
     eitherCode
   );
