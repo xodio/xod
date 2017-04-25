@@ -71,3 +71,7 @@ Explicitly list functionality that is not intended to be done with this story.
 
 If you have an idea on how to implement it, provide a short
 description.
+
+### How to test
+
+How we can test what’s implemented?
