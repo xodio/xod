@@ -4,7 +4,21 @@ import {
   BrowserWindow,
 } from 'electron';
 import devtron from 'devtron';
-import { saveProject, loadProjectList, loadProject, changeWorkspace, checkWorkspace } from './remoteActions';
+
+import {
+  saveProject,
+  loadProjectList,
+  loadProject,
+  changeWorkspace,
+  checkWorkspace,
+} from './remoteActions';
+import {
+  uploadToArduinoHandler,
+  setArduinoIDEHandler,
+} from './arduinoActions';
+import * as settings from './settings';
+
+app.setName('xod');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -46,12 +60,17 @@ const subscribeRemoteAction = (processName, remoteAction) => {
 
 const onReady = () => {
   devtron.install();
+  settings.setDefaults();
 
+  // TODO: Replace actionTypes with constants (after removing webpack from this package)
   subscribeRemoteAction('saveProject', saveProject);
   subscribeRemoteAction('loadProjectList', loadProjectList);
   subscribeRemoteAction('loadProject', loadProject);
   subscribeRemoteAction('checkWorkspace', checkWorkspace);
   subscribeRemoteAction('changeWorkspace', changeWorkspace);
+
+  ipcMain.on('UPLOAD_TO_ARDUINO', uploadToArduinoHandler);
+  ipcMain.on('SET_ARDUINO_IDE', setArduinoIDEHandler);
 
   createWindow();
 };

@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
 import EventListener from 'react-event-listener';
+import { ipcRenderer, remote as remoteElectron } from 'electron';
 
 import client from 'xod-client';
 import {
@@ -18,8 +19,9 @@ import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
 import { getUploadProcess } from '../../upload/selectors';
 import { SAVE_PROJECT } from '../actionTypes';
-import { UPLOAD } from '../../upload/actionTypes';
+import { UPLOAD, UPLOAD_TO_ARDUINO } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
+import PopupSetArduinoIDEPath from '../../settings/components/PopupSetArduinoIDEPath';
 import PopupProjectSelection from '../../projects/components/PopupProjectSelection';
 import PopupUploadProject from '../../upload/components/PopupUploadProject';
 import { getProjects } from '../../projects/selectors';
@@ -27,9 +29,9 @@ import { getSettings, getWorkspace } from '../../settings/selectors';
 import { changeWorkspace, checkWorkspace } from '../../settings/actions';
 import { SaveProgressBar } from '../components/SaveProgressBar';
 
-// TODO: tweak webpack config to allow importing built-in electron package
-const { app, dialog, Menu } = window.require('electron').remote;
+import { IDE_NOT_FOUND } from '../../app/errorCodes';
 
+const { app, dialog, Menu } = remoteElectron;
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
 
@@ -45,6 +47,7 @@ class App extends client.App {
       popupSetWorkspaceCB: null,
       popupCreateProject: false,
       popupProjectSelection: false,
+      popupArduinoNotFound: false,
       code: '',
     };
 
@@ -52,6 +55,7 @@ class App extends client.App {
     this.onResize = this.onResize.bind(this);
 
     this.onUpload = this.onUpload.bind(this);
+    this.onUploadToArduino = this.onUploadToArduino.bind(this);
     this.onShowCodeEspruino = this.onShowCodeEspruino.bind(this);
     this.onShowCodeNodejs = this.onShowCodeNodejs.bind(this);
     this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
@@ -70,12 +74,16 @@ class App extends client.App {
     this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
 
     this.onOpenProject = this.onOpenProject.bind(this);
+    this.onArduinoPathChange = this.onArduinoPathChange.bind(this);
 
     this.hideCodePopup = this.hideCodePopup.bind(this);
     this.hidePopupSetWorkspace = this.hidePopupSetWorkspace.bind(this);
     this.hidePopupCreateProject = this.hidePopupCreateProject.bind(this);
     this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
     this.hidePopupProjectSelection = this.hidePopupProjectSelection.bind(this);
+
+    this.showArduinoIdeNotFoundPopup = this.showArduinoIdeNotFoundPopup.bind(this);
+    this.hideArduinoIdeNotFoundPopup = this.hideArduinoIdeNotFoundPopup.bind(this);
 
     this.initNativeMenu();
   }
@@ -103,6 +111,41 @@ class App extends client.App {
   onUpload() {
     this.showUploadProgressPopup();
     this.props.actions.upload();
+  }
+
+  onUploadToArduino(pab, processActions = null) {
+    const { project, currentPatchPath } = this.props;
+    const proc = (processActions !== null) ? processActions : this.props.actions.uploadToArduino();
+
+    this.showUploadProgressPopup();
+    ipcRenderer.send(UPLOAD_TO_ARDUINO, {
+      pab,
+      project,
+      patchPath: currentPatchPath,
+    });
+    ipcRenderer.on(UPLOAD_TO_ARDUINO, (event, payload) => {
+      if (payload.progress) {
+        proc.progress(payload.message, payload.percentage);
+        return;
+      }
+      if (payload.success) {
+        proc.success(payload.message);
+      }
+      if (payload.failure) {
+        if (payload.errorCode === IDE_NOT_FOUND) {
+          this.hideUploadProgressPopup();
+          this.showArduinoIdeNotFoundPopup();
+          ipcRenderer.once('SET_ARDUINO_IDE',
+            (evt, response) => {
+              if (response.code === 0) this.onUploadToArduino(pab, proc);
+            }
+          );
+        }
+        proc.fail(payload.message);
+      }
+      // Remove listener if process is finished.
+      ipcRenderer.removeAllListeners(UPLOAD_TO_ARDUINO);
+    });
   }
 
   onCreateProject(projectName) {
@@ -202,6 +245,15 @@ class App extends client.App {
     return true;
   }
 
+  onArduinoPathChange(newPath) {
+    ipcRenderer.send('SET_ARDUINO_IDE', { path: newPath });
+    ipcRenderer.once('SET_ARDUINO_IDE',
+      (event, payload) => {
+        if (payload.code === 0) this.hideArduinoIdeNotFoundPopup();
+      }
+    );
+  }
+
   getSaveProgress() {
     if (this.props.saveProcess && this.props.saveProcess.progress) {
       return this.props.saveProcess.progress;
@@ -249,6 +301,28 @@ class App extends client.App {
           onClick(items.showCodeForNodeJS, this.onShowCodeNodejs),
           items.separator,
           onClick(items.showCodeForArduino, this.onShowCodeArduino),
+          // TODO: Remove this hardcode and do a magic in the xod-arduino-builder
+          onClick(items.uploadToArduinoUno, () => this.onUploadToArduino(
+            {
+              package: 'arduino',
+              architecture: 'avr',
+              board: 'uno',
+            }
+          )),
+          onClick(items.uploadToArduinoLeonardo, () => this.onUploadToArduino(
+            {
+              package: 'arduino',
+              architecture: 'avr',
+              board: 'leonardo',
+            }
+          )),
+          onClick(items.uploadToArduinoM0, () => this.onUploadToArduino(
+            {
+              package: 'arduino',
+              architecture: 'samd',
+              board: 'mzero_bl',
+            }
+          )),
         ]
       ),
     ];
@@ -344,6 +418,14 @@ class App extends client.App {
     this.setState({ popupProjectSelection: false });
   }
 
+  showArduinoIdeNotFoundPopup() {
+    this.setState({ popupArduinoNotFound: true });
+  }
+
+  hideArduinoIdeNotFoundPopup() {
+    this.setState({ popupArduinoNotFound: false });
+  }
+
   showPopupSetWorkspace(cb) {
     this.setState({ popupSetWorkspace: true });
     if (cb) {
@@ -397,6 +479,11 @@ class App extends client.App {
           onChange={this.onWorkspaceChange}
           onClose={this.hidePopupSetWorkspace}
         />
+        <PopupSetArduinoIDEPath
+          isVisible={this.state.popupArduinoNotFound}
+          onChange={this.onArduinoPathChange}
+          onClose={this.hideArduinoIdeNotFoundPopup}
+        />
         <PopupProjectSelection
           projects={this.props.projects}
           isVisible={this.state.popupProjectSelection}
@@ -443,6 +530,7 @@ const mapDispatchToProps = dispatch => ({
     loadProject: actions.loadProject,
     importProject: client.importProject, // used in base App class
     upload: uploadActions.upload,
+    uploadToArduino: uploadActions.uploadToArduino,
     addError: client.addError,
     deleteProcess: client.deleteProcess,
     createPatch: client.requestCreatePatch,

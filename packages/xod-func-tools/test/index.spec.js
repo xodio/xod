@@ -2,7 +2,7 @@ import { assert, expect } from 'chai';
 import { identity, F } from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 
-import { explode, foldEither } from '../src/index';
+import { explode, foldEither, tapP } from '../src/index';
 
 describe('explode', () => {
   it('should return Maybe.Just value', () => {
@@ -39,5 +39,33 @@ describe('foldEither', () => {
       foldEither(F, identity, Either.Right('right')),
       'right'
     );
+  });
+});
+describe('tapP', () => {
+  it('should return the same value', () => {
+    const promiseFn = () => new Promise((resolve) => {
+      setTimeout(() => resolve(true), 5);
+    });
+
+    Promise.resolve(1)
+      .then(tapP(promiseFn))
+      .then(value => assert.equal(value, 1));
+  });
+  it('should pass argument into promiseFn', () => {
+    const promiseFn = arg => new Promise((resolve) => {
+      const newValue = arg + 5;
+      assert.equal(newValue, 6);
+      setTimeout(() => resolve(newValue), 5);
+    });
+
+    Promise.resolve(1)
+      .then(tapP(promiseFn));
+  });
+  it('should return Promise.reject if inner function return Promise.reject', () => {
+    const promiseFn = () => Promise.reject('reject');
+
+    Promise.resolve(1)
+      .then(tapP(promiseFn))
+      .catch(out => assert.equal(out, 'reject'));
   });
 });

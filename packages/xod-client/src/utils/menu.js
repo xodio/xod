@@ -84,6 +84,18 @@ const rawItems = {
     key: 'showCodeForArduino',
     label: 'Show Code For Arduino',
   },
+  uploadToArduinoUno: {
+    key: 'uploadToArduinoUno',
+    label: 'Upload to Arduino Uno',
+  },
+  uploadToArduinoLeonardo: {
+    key: 'uploadToArduinoLeonardo',
+    label: 'Upload to Arduino Leonardo',
+  },
+  uploadToArduinoM0: {
+    key: 'uploadToArduinoM0',
+    label: 'Upload to Arduino M0',
+  },
 };
 
 const assignHotkeys = menuItem => R.when(

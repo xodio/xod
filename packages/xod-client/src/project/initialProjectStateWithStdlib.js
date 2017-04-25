@@ -1569,19 +1569,19 @@ export default {
       nodes: {},
       path: 'xod/core/digital_input',
       pins: {
-        pin: {
+        PIN: {
           description: '',
           direction: 'input',
-          key: 'pin',
+          key: 'PIN',
           label: 'pin',
           order: 0,
           type: 'string',
           value: '',
         },
-        value: {
+        VALUE: {
           description: '',
           direction: 'output',
-          key: 'value',
+          key: 'VALUE',
           label: 'value',
           order: 0,
           type: 'number',
@@ -1598,19 +1598,19 @@ export default {
       nodes: {},
       path: 'xod/core/digital_output',
       pins: {
-        pin: {
+        PIN: {
           description: '',
           direction: 'input',
-          key: 'pin',
+          key: 'PIN',
           label: 'pin',
           order: 0,
           type: 'number',
           value: 0,
         },
-        value: {
+        VALUE: {
           description: '',
           direction: 'input',
-          key: 'value',
+          key: 'VALUE',
           label: 'value',
           order: 1,
           type: 'boolean',

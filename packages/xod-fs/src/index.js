@@ -10,7 +10,7 @@ export {
   loadProjectWithoutLibs,
 } from './load';
 export { loadLibs, loadAllLibs, loadAllLibsV2 } from './loadLibs';
-export { isDirectoryExists } from './utils';
+export { resolvePath, isDirectoryExists, isFileExists } from './utils';
 export {
   findClosestProjectDir,
   findClosestWorkspaceDir,
