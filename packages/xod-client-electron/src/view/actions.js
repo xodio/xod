@@ -105,14 +105,14 @@ export const createAsyncAction = ({
   ipcRenderer.once(
     `${eventName}:error`,
     (sender, err) => {
+      // eslint-disable-next-line no-console
+      console.error(err); // we won't see these errors otherwise
+
       if (!silent) {
         processFailed(
           { processId, actionType, payload: err },
           dispatch
         );
-      }
-      if (process.env.NODE_ENV !== 'production') {
-        console.error(err); // eslint-disable-line no-console
       }
       if (notify) {
         dispatch(addError(errorMsg));
