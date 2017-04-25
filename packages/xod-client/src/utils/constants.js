@@ -4,8 +4,11 @@ export const COMMAND = {
 
   DESELECT: 'deselect',
 
+  NEW_PROJECT: 'newProject',
+  OPEN_PROJECT: 'openProject',
+  RENAME_PROJECT: 'renameProject',
+
   ADD_PATCH: 'addPatch',
-  ADD_FOLDER: 'addFolder',
   RENAME: 'rename',
   DELETE: 'delete',
 
@@ -28,8 +31,8 @@ export const HOTKEY = {
   [COMMAND.UNDO]: 'ctrl+z',
   [COMMAND.REDO]: ['ctrl+y', 'ctrl+shift+z'],
 
+  [COMMAND.RENAME_PROJECT]: 'ctrl+shift+r',
   [COMMAND.ADD_PATCH]: 'ctrl+n',
-  [COMMAND.ADD_FOLDER]: 'ctrl+shift+n',
   [COMMAND.RENAME]: 'ctrl+r',
   [COMMAND.DELETE]: ['ctrl+del', 'ctrl+backspace'],
 
@@ -42,15 +45,22 @@ export const ELECTRON_ACCELERATOR = {
 
   [COMMAND.DESELECT]: 'Escape',
 
-  [COMMAND.UNDO]: 'Ctrl+Z',
-  [COMMAND.REDO]: 'Ctrl+Shift+Z',
+  [COMMAND.UNDO]: 'CmdOrCtrl+Z',
+  [COMMAND.REDO]: 'CmdOrCtrl+Shift+Z',
 
-  [COMMAND.ADD_PATCH]: 'Ctrl+N',
-  [COMMAND.ADD_FOLDER]: 'Ctrl+Shift+N',
-  [COMMAND.RENAME]: 'Ctrl+R',
-  [COMMAND.DELETE]: 'Ctrl+Backspace',
+  [COMMAND.NEW_PROJECT]: 'CmdOrCtrl+Shift+N',
+  [COMMAND.OPEN_PROJECT]: 'CmdOrCtrl+O',
+  [COMMAND.RENAME_PROJECT]: 'CmdOrCtrl+Shift+R',
 
-  [COMMAND.SAVE_PROJECT]: 'Ctrl+S',
+  [COMMAND.ADD_PATCH]: 'CmdOrCtrl+N',
+  [COMMAND.RENAME]: 'CmdOrCtrl+R',
+  [COMMAND.DELETE]: 'CmdOrCtrl+Backspace',
+
+  [COMMAND.CUT]: 'CmdOrCtrl+X',
+  [COMMAND.COPY]: 'CmdOrCtrl+C',
+  [COMMAND.PASTE]: 'CmdOrCtrl+V',
+
+  [COMMAND.SAVE_PROJECT]: 'CmdOrCtrl+S',
 };
 
 export const KEYCODE = {
