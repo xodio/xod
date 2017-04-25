@@ -64,18 +64,21 @@ const rawItems = {
     command: COMMAND.REDO,
   },
   cut: {
+    key: 'cut',
     label: 'Cut',
-    accelerator: 'CmdOrCtrl+X',
     role: 'cut',
+    command: COMMAND.CUT,
   },
   copy: {
+    key: 'copy',
     label: 'Copy',
-    accelerator: 'CmdOrCtrl+C',
+    command: COMMAND.COPY,
     role: 'copy',
   },
   paste: {
+    key: 'paste',
     label: 'Paste',
-    accelerator: 'CmdOrCtrl+V',
+    command: COMMAND.PASTE,
     role: 'paste',
   },
 

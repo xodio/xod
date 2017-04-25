@@ -12,6 +12,10 @@ export const COMMAND = {
   UNDO: 'undo',
   REDO: 'redo',
 
+  CUT: 'cut',
+  COPY: 'copy',
+  PASTE: 'paste',
+
   SAVE_PROJECT: 'saveProject',
 };
 
