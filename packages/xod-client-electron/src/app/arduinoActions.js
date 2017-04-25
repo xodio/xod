@@ -156,12 +156,12 @@ export const getPort = () => xab.listPorts()
 /**
  * Transpile code for Arduino
  * @param {Project} project
- * @param {PatchPath} patchId Entry-point patch path
+ * @param {PatchPath} patchPath Entry-point patch path
  * @returns {Promise<String, Error>} Promise with transpiled code or Error
  */
-export const doTranspileForArduino = ({ project, patchId }) =>
+export const doTranspileForArduino = ({ project, patchPath }) =>
   Promise.resolve(project)
-    .then(v2 => transpileForArduino(v2, patchId))
+    .then(v2 => transpileForArduino(v2, patchPath))
     .then(foldEither(
       rejectWithCode(ERROR_CODES.TRANSPILE_ERROR),
       code => Promise.resolve(code)

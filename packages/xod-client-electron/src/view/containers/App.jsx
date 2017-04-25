@@ -114,14 +114,14 @@ class App extends client.App {
   }
 
   onUploadToArduino(pab, processActions = null) {
-    const { project, currentPatchId } = this.props;
+    const { project, currentPatchPath } = this.props;
     const proc = (processActions !== null) ? processActions : this.props.actions.uploadToArduino();
 
     this.showUploadProgressPopup();
     ipcRenderer.send(UPLOAD_TO_ARDUINO, {
       pab,
       project,
-      patchId: currentPatchId,
+      patchPath: currentPatchPath,
     });
     ipcRenderer.on(UPLOAD_TO_ARDUINO, (event, payload) => {
       if (payload.progress) {
