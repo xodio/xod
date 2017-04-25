@@ -290,6 +290,10 @@ class App extends client.App {
         [
           onClick(items.undo, this.props.actions.undoCurrentPatch),
           onClick(items.redo, this.props.actions.redoCurrentPatch),
+          items.separator,
+          items.cut,
+          items.copy,
+          items.paste,
         ]
       ),
       submenu(

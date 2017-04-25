@@ -63,6 +63,21 @@ const rawItems = {
     label: 'Redo',
     command: COMMAND.REDO,
   },
+  cut: {
+    label: 'Cut',
+    accelerator: 'CmdOrCtrl+X',
+    role: 'cut',
+  },
+  copy: {
+    label: 'Copy',
+    accelerator: 'CmdOrCtrl+C',
+    role: 'copy',
+  },
+  paste: {
+    label: 'Paste',
+    accelerator: 'CmdOrCtrl+V',
+    role: 'paste',
+  },
 
   deploy: {
     key: 'deploy',
