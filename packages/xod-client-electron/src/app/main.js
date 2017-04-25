@@ -54,13 +54,10 @@ function createWindow() {
 // if we don't do this, we get empty objects on the other side instead of errors
 const errorToPlainObject = R.when(
   R.is(Error),
-  (err) => {
-    const plainObject = {};
-    Object.getOwnPropertyNames(err).forEach((key) => {
-      plainObject[key] = err[key];
-    });
-    return plainObject;
-  }
+  R.converge(R.pick, [
+    Object.getOwnPropertyNames,
+    R.identity,
+  ])
 );
 
 const subscribeRemoteAction = (processName, remoteAction) => {
