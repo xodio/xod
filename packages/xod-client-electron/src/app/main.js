@@ -1,13 +1,10 @@
-import R from 'ramda';
 import {
   app,
   ipcMain,
   BrowserWindow,
 } from 'electron';
 import devtron from 'devtron';
-import { tapP } from 'xod-func-tools';
 
-import * as settings from './settings';
 import {
   saveProject,
   loadProjectList,
@@ -16,14 +13,10 @@ import {
   checkWorkspace,
 } from './remoteActions';
 import {
-  checkArduinoIde,
-  installPav,
-  getInstalledPAV,
-  getPort,
-  doTranspileForArduino,
-  uploadToArduino,
-} from './uploadActions';
-import * as MESSAGES from './messages';
+  uploadToArduinoHandler,
+  setArduinoIDEHandler,
+} from './arduinoActions';
+import * as settings from './settings';
 
 app.setName('xod');
 
@@ -76,99 +69,8 @@ const onReady = () => {
   subscribeRemoteAction('checkWorkspace', checkWorkspace);
   subscribeRemoteAction('changeWorkspace', changeWorkspace);
 
-  ipcMain.on('UPLOAD_TO_ARDUINO',
-    (event, payload) => {
-      // Messages
-      const send = status => R.compose(
-        data => (arg) => { event.sender.send('UPLOAD_TO_ARDUINO', data); return arg; },
-        R.assoc(status, true),
-        (message, percentage, errCode = null) => ({
-          success: false,
-          progress: false,
-          failure: false,
-          errorCode: errCode,
-          message,
-          percentage,
-        })
-      );
-      const sendSuccess = send('success');
-      const sendProgress = send('progress');
-      const sendFailure = send('failure');
-      const convertAndSendError = err => R.compose(
-        msg => sendFailure(msg, 0, err.errorCode)(),
-        R.propOr(err.message, R.__, MESSAGES.ERRORS),
-        R.prop('errorCode')
-      )(err);
-
-      const updateArduinoPaths = ({ ide, packages }) => R.compose(
-        settings.save,
-        settings.setArduinoPackages(packages),
-        settings.setArduinoIDE(ide),
-        settings.load
-      )();
-
-      const getArduinoPaths = R.compose(
-        R.applySpec({
-          ide: settings.getArduinoIDE,
-          packages: settings.getArduinoPackages,
-        }),
-        settings.load
-      );
-
-      const listInstalledPAVs = R.compose(
-        settings.listPAVs,
-        settings.load
-      );
-      const appendPAV = R.curry(
-        (pav, allSettings) => R.compose(
-          settings.assocPAVs(R.__, allSettings),
-          R.unless(
-            R.find(R.equals(pav)),
-            R.append(pav)
-          ),
-          settings.listPAVs
-        )(allSettings)
-      );
-      const savePAV = pav => R.compose(
-        settings.save,
-        appendPAV(pav),
-        settings.load
-      )();
-
-      R.pipeP(
-        doTranspileForArduino,
-        sendProgress(MESSAGES.CODE_TRANSPILED, 10),
-        code => getPort().then(port => ({ code, port })),
-        sendProgress(MESSAGES.PORT_FOUND, 15),
-        tapP(
-          () => checkArduinoIde(getArduinoPaths(), process.platform)
-            .then(updateArduinoPaths)
-        ),
-        sendProgress(MESSAGES.IDE_FOUND, 20),
-        tapP(
-          () => installPav(payload.pab)
-            .catch(() => getInstalledPAV(payload.pab, listInstalledPAVs()))
-            .then(R.tap(savePAV))
-        ),
-        sendProgress(MESSAGES.TOOLCHAIN_INSTALLED, 30),
-        ({ code, port }) => uploadToArduino(payload.pab, port, code),
-        stdout => sendSuccess(stdout, 100)()
-      )(payload).catch(convertAndSendError);
-    }
-  );
-  ipcMain.on('SET_ARDUINO_IDE',
-    (event, payload) => {
-      R.compose(
-        () => event.sender.send('SET_ARDUINO_IDE', {
-          code: 0,
-          message: MESSAGES.ARDUINO_PATH_CHANGED,
-        }),
-        settings.save,
-        settings.setArduinoIDE(payload.path),
-        settings.load
-      )();
-    }
-  );
+  ipcMain.on('UPLOAD_TO_ARDUINO', uploadToArduinoHandler);
+  ipcMain.on('SET_ARDUINO_IDE', setArduinoIDEHandler);
 
   createWindow();
 };
