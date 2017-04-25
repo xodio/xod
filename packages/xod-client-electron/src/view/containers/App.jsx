@@ -35,6 +35,23 @@ const { app, dialog, Menu } = remoteElectron;
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
 
+const onContextMenu = (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+
+  const { items } = client.menu;
+  const InputMenu = Menu.buildFromTemplate([
+    items.cut,
+    items.copy,
+    items.paste,
+  ]);
+
+  const node = event.target;
+  const isEditable = (node.nodeName.match(/^(input|textarea)$/i) || node.isContentEditable);
+  const isEnabled = !node.disabled;
+  if (isEditable && isEnabled) { InputMenu.popup(remoteElectron.getCurrentWindow()); }
+};
+
 class App extends client.App {
   constructor(props) {
     super(props);
@@ -443,7 +460,7 @@ class App extends client.App {
 
   render() {
     return (
-      <HotKeys keyMap={this.getKeyMap()} id="App">
+      <HotKeys keyMap={this.getKeyMap()} id="App" onContextMenu={onContextMenu}>
         <EventListener
           target={window}
           onResize={this.onResize}
