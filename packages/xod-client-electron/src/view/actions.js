@@ -31,29 +31,21 @@ const processProgressed = ({
   )
 );
 
-const processCompleted = ({
+const finishProcess = action => ({
   processId,
   actionType,
   payload,
 }, dispatch) => {
-  dispatch(successProcess(processId, actionType, { data: payload }));
+  dispatch(action(processId, actionType, { data: payload }));
 
   setTimeout(() => {
     dispatch(deleteProcess(processId, actionType));
   }, 1000);
 };
 
-const processFailed = ({
-  processId,
-  actionType,
-  payload,
-}, dispatch) => {
-  dispatch(failProcess(processId, actionType, { data: payload }));
+const processCompleted = finishProcess(successProcess);
 
-  setTimeout(() => {
-    dispatch(deleteProcess(processId, actionType));
-  }, 1000);
-};
+const processFailed = finishProcess(failProcess);
 
 export const createAsyncAction = ({
   eventName,
