@@ -13,10 +13,12 @@ const rawItems = {
   newProject: {
     key: 'newProject',
     label: 'New Project',
+    command: COMMAND.NEW_PROJECT,
   },
   openProject: {
     key: 'openProject',
     label: 'Open Project',
+    command: COMMAND.OPEN_PROJECT,
   },
   saveProject: {
     key: 'saveProject',
@@ -26,6 +28,7 @@ const rawItems = {
   renameProject: {
     key: 'renameProject',
     label: 'Rename Project',
+    command: COMMAND.RENAME_PROJECT,
   },
   selectWorkspace: {
     key: 'selectWorkspace',
@@ -44,10 +47,6 @@ const rawItems = {
     label: 'New Patch',
     command: COMMAND.ADD_PATCH,
   },
-  savePatch: {
-    key: 'savePatch',
-    label: 'Save current patch',
-  },
 
   edit: {
     key: 'edit',
@@ -62,6 +61,24 @@ const rawItems = {
     key: 'redo',
     label: 'Redo',
     command: COMMAND.REDO,
+  },
+  cut: {
+    key: 'cut',
+    label: 'Cut',
+    role: 'cut',
+    command: COMMAND.CUT,
+  },
+  copy: {
+    key: 'copy',
+    label: 'Copy',
+    command: COMMAND.COPY,
+    role: 'copy',
+  },
+  paste: {
+    key: 'paste',
+    label: 'Paste',
+    command: COMMAND.PASTE,
+    role: 'paste',
   },
 
   deploy: {

@@ -1,3 +1,4 @@
+import R from 'ramda';
 import {
   app,
   ipcMain,
@@ -49,11 +50,22 @@ function createWindow() {
   });
 }
 
+// for IPC. see https://electron.atom.io/docs/api/remote/#remote-objects
+// if we don't do this, we get empty objects on the other side instead of errors
+const errorToPlainObject = R.when(
+  R.is(Error),
+  R.converge(R.pick, [
+    Object.getOwnPropertyNames,
+    R.identity,
+  ])
+);
+
 const subscribeRemoteAction = (processName, remoteAction) => {
   ipcMain.on(processName, (event, opts) => {
     event.sender.send(`${processName}:process`);
     remoteAction(opts,
-      (data) => { event.sender.send(`${processName}:complete`, data); }
+      (data) => { event.sender.send(`${processName}:complete`, data); },
+      (err) => { event.sender.send(`${processName}:error`, errorToPlainObject(err)); }
     );
   });
 };

@@ -1,6 +1,15 @@
 import R from 'ramda';
 import { ipcRenderer } from 'electron';
-import { addProcess, progressProcess, successProcess, deleteProcess, addConfirmation, openProject } from 'xod-client';
+import {
+  addProcess,
+  progressProcess,
+  successProcess,
+  deleteProcess,
+  failProcess,
+  addConfirmation,
+  addError,
+  openProject,
+} from 'xod-client';
 
 import { getWorkspace } from '../settings/selectors';
 import * as ActionType from './actionTypes';
@@ -22,18 +31,21 @@ const processProgressed = ({
   )
 );
 
-const processCompleted = ({
+const finishProcess = action => ({
   processId,
   actionType,
   payload,
-  onComplete = R.always(undefined),
 }, dispatch) => {
-  dispatch(successProcess(processId, actionType, { data: payload }));
+  dispatch(action(processId, actionType, { data: payload }));
 
   setTimeout(() => {
     dispatch(deleteProcess(processId, actionType));
   }, 1000);
 };
+
+const processCompleted = finishProcess(successProcess);
+
+const processFailed = finishProcess(failProcess);
 
 export const createAsyncAction = ({
   eventName,
@@ -41,10 +53,12 @@ export const createAsyncAction = ({
   messages: {
     process: processMsg = '',
     complete: completeMsg = '',
+    error: errorMsg = '',
   } = {},
   notify = true,
   silent = false,
   onComplete = R.always(undefined),
+  onError = R.always(undefined),
 }) => opts => (dispatch, getState) => {
   const workspace = getWorkspace(getState().settings);
   let processId = null;
@@ -68,7 +82,7 @@ export const createAsyncAction = ({
     (sender, payload) => {
       if (!silent) {
         processCompleted(
-          { processId, actionType, payload, onComplete },
+          { processId, actionType, payload },
           dispatch
         );
       }
@@ -77,6 +91,26 @@ export const createAsyncAction = ({
       }
 
       onComplete(payload, dispatch);
+    }
+  );
+
+  ipcRenderer.once(
+    `${eventName}:error`,
+    (sender, err) => {
+      // eslint-disable-next-line no-console
+      console.error(err); // we won't see these errors otherwise
+
+      if (!silent) {
+        processFailed(
+          { processId, actionType, payload: err },
+          dispatch
+        );
+      }
+      if (notify) {
+        dispatch(addError(errorMsg));
+      }
+
+      onError(err, dispatch);
     }
   );
 
@@ -94,6 +128,7 @@ export const loadProjectList = createAsyncAction({
   messages: {
     process: 'Receiving of project list...',
     complete: 'Project list has been received!',
+    error: 'Failed to load project list.',
   },
   notify: false,
 });
@@ -104,6 +139,7 @@ export const loadProject = createAsyncAction({
   messages: {
     process: 'Loading project...',
     complete: 'Project has been loaded!',
+    error: 'Failed to load project.',
   },
   onComplete: (data, dispatch) => {
     dispatch(openProject(data));
@@ -116,6 +152,7 @@ export const saveProject = createAsyncAction({
   messages: {
     process: 'Saving in progress...',
     complete: 'Project has been saved successfully!',
+    error: 'Failed to save project.',
   },
 });
 
