@@ -26,6 +26,10 @@ export const checkWorkspace = createAsyncAction({
     // ask user to define workspace
     dispatch(setWorkspace(null));
   },
+  onError: (data, dispatch) => {
+    // ask again
+    dispatch(setWorkspace(null));
+  },
 });
 
 export const changeWorkspace = createAsyncAction({
@@ -33,11 +37,16 @@ export const changeWorkspace = createAsyncAction({
   actionType: CHANGE_WORKSPACE,
   messages: {
     complete: 'Workspace has been changed!',
+    error: 'Failed to change workspace.',
   },
   silent: true,
   onComplete: (data, dispatch) => {
     dispatch(setWorkspace(data.path));
     dispatch(openWorkspace(data.libs));
+  },
+  onError: (data, dispatch) => {
+    // ask again
+    dispatch(setWorkspace(null));
   },
 });
 
