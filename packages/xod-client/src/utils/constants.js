@@ -31,6 +31,7 @@ export const HOTKEY = {
   [COMMAND.UNDO]: 'ctrl+z',
   [COMMAND.REDO]: ['ctrl+y', 'ctrl+shift+z'],
 
+  [COMMAND.NEW_PROJECT]: 'ctrl+shift+n',
   [COMMAND.RENAME_PROJECT]: 'ctrl+shift+r',
   [COMMAND.ADD_PATCH]: 'ctrl+n',
   [COMMAND.RENAME]: 'ctrl+r',
