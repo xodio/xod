@@ -31,6 +31,12 @@ class PopupUploadProject extends React.Component {
     const message = (this.props.upload.message) ?
       (<p>{this.props.upload.message}</p>) : null;
 
+    const preStyle = {
+      overflow: 'auto',
+      maxWidth: 'auto',
+      maxHeight: '300px',
+    };
+
     switch (this.props.upload.status) {
       case client.STATUS.SUCCEEDED:
         return (
@@ -47,7 +53,9 @@ class PopupUploadProject extends React.Component {
             <p>
               Oops! Error occured.
             </p>
-            {message}
+            <pre style={preStyle}>
+              {message}
+            </pre>
           </div>
         );
       default:
