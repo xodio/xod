@@ -14,7 +14,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": "7.4.0"
+    "node": "6.0.0"
   },
   "dependencies": {
     "child-process-promise": "^2.2.1",
