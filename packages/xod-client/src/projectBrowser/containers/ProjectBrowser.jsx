@@ -106,15 +106,7 @@ class ProjectBrowser extends React.Component {
     const hasPins = patch && R.pipe(listPins, R.complement(R.isEmpty))(patch);
     // TODO: we also need detection of more complex cases
     const isAddingRecursively = currentPatchPath === patchPath;
-
     const canAdd = hasPins && !isAddingRecursively;
-    // TODO: when we'll implement adding with dnd, disabling button will not be sufficient
-    const addButtonClassnames = cn('hover-button', {
-      disabled: !canAdd,
-    });
-    const addButtonAction = canAdd
-      ? () => this.onAddNode(patchPath)
-      : noop;
 
     return [
       <Icon
@@ -129,13 +121,12 @@ class ProjectBrowser extends React.Component {
         className="hover-button"
         onClick={() => requestRename(patchPath)}
       />,
-      <Icon
-        key="add"
-        name="plus-circle"
-        className={addButtonClassnames}
-        onClick={addButtonAction}
-      />,
+      this.renderAddNodeButton(patchPath, canAdd),
     ];
+  }
+
+  libraryPatchesHoveredButtons(path) {
+    return [this.renderAddNodeButton(path)];
   }
 
   deselectIfInLocalPatches() {
@@ -150,6 +141,23 @@ class ProjectBrowser extends React.Component {
         this.props.actions.removeSelection();
       }
     };
+  }
+
+  renderAddNodeButton(path, enabled = true) {
+    const { currentPatchPath } = this.props;
+
+    const canAdd = enabled && !!currentPatchPath;
+    const addButtonClassnames = cn('hover-button', { disabled: !canAdd });
+    const addButtonAction = canAdd ? () => this.onAddNode(path) : noop;
+
+    return (
+      <Icon
+        key="add"
+        name="plus-circle"
+        className={addButtonClassnames}
+        onClick={addButtonAction}
+      />
+    );
   }
 
   renderLocalPatches() {
@@ -206,14 +214,7 @@ class ProjectBrowser extends React.Component {
             label={getBaseName(path)}
             isSelected={path === selectedPatchPath}
             onClick={() => setSelection(path)}
-            hoverButtons={[
-              <Icon
-                key="add"
-                name="plus-circle"
-                className="hover-button"
-                onClick={() => this.onAddNode(path)}
-              />,
-            ]}
+            hoverButtons={this.libraryPatchesHoveredButtons(path)}
           />
         )}
       </PatchGroup>
