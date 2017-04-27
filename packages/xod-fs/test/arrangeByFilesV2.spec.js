@@ -113,7 +113,10 @@ describe('arrangeByFilesV2 parts', () => {
                   x: 138,
                   y: 224,
                 },
-                properties: {},
+                properties: {
+                  label: 'my led',
+                  description: 'description for my led',
+                },
                 typeId: 'xod/core/led',
               },
               rJxbjrKpl: {
@@ -123,7 +126,10 @@ describe('arrangeByFilesV2 parts', () => {
                   x: 138,
                   y: 16,
                 },
-                properties: {},
+                properties: {
+                  label: '',
+                  description: '',
+                },
                 typeId: 'xod/core/inputNumber',
               },
             },
@@ -197,7 +203,10 @@ describe('arrangeByFilesV2 e2e', () => {
                   x: 138,
                   y: 224,
                 },
-                properties: {},
+                properties: {
+                  label: 'my led',
+                  description: 'description for my led',
+                },
                 typeId: 'xod/core/led',
               },
               rJxbjrKpl: {
@@ -207,7 +216,10 @@ describe('arrangeByFilesV2 e2e', () => {
                   x: 138,
                   y: 16,
                 },
-                properties: {},
+                properties: {
+                  label: '',
+                  description: '',
+                },
                 typeId: 'xod/core/inputNumber',
               },
             },
