@@ -14,7 +14,10 @@ export const DEFAULT_ARDUINO_PACKAGES_PATH = {
   linux: ['~/.arduino15/packages/'],
 };
 
+export const DEFAULT_WORKSPACE_PATH = '~/xod/';
+
 export default {
   DEFAULT_ARDUINO_IDE_PATH,
   DEFAULT_ARDUINO_PACKAGES_PATH,
+  DEFAULT_WORKSPACE_PATH,
 };
