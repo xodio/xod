@@ -56,7 +56,9 @@
               "key": "brightness",
               "value": 0
             }
-          }
+          },
+          "label": "my led",
+          "description": "description for my led"
         },
         "rJxbjrKpl": {
           "id": "rJxbjrKpl",
@@ -65,7 +67,10 @@
             "x": 138,
             "y": 16
           },
-          "pins": {}
+          "pins": {},
+          "label": "",
+          "description": ""
+
         }
       },
       "links": {
