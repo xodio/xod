@@ -7,7 +7,7 @@ import { transpileForArduino } from 'xod-arduino';
 import * as xab from 'xod-arduino-builder';
 
 import { DEFAULT_ARDUINO_IDE_PATH, DEFAULT_ARDUINO_PACKAGES_PATH } from './constants';
-import * as ERROR_CODES from './errorCodes';
+import rejectWithCode, * as ERROR_CODES from './errorCodes';
 import * as settings from './settings';
 import * as MESSAGES from './messages';
 
@@ -16,11 +16,6 @@ import * as MESSAGES from './messages';
 // Utils
 //
 // =============================================================================
-
-// :: ERROR_CODE -> Error -> Promise.Reject Error
-const rejectWithCode = R.curry(
-  (code, err) => Promise.reject(Object.assign(err, { errorCode: code }))
-);
 
 // :: String[] -> String -> String -> String[]
 const getPaths = R.curry(
