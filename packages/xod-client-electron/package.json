@@ -12,6 +12,7 @@
     "build": "yarn build:gui && yarn build:app",
     "start": "electron ./src-babel/app/main.js",
     "electron-rebuild": "electron-rebuild",
+    "test": "electron-mocha ./test",
     "pack": "build --dir",
     "dist": "build"
   },
@@ -42,9 +43,11 @@
   },
   "devDependencies": {
     "babel-cli": "^6.16.0",
+    "chai": "^3.5.0",
     "devtron": "^1.3.0",
     "electron": "^1.4.1",
     "electron-builder": "^17.1.1",
+    "electron-mocha": "^3.4.0",
     "electron-rebuild": "^1.4.0",
     "npm-run-all": "^3.1.0",
     "webpack": "^1.13.2",
