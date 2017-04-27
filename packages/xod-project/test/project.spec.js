@@ -3,6 +3,7 @@ import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 
 import * as CONST from '../src/constants';
+import * as Node from '../src/node';
 import * as Patch from '../src/patch';
 import * as Project from '../src/project';
 import { formatString } from '../src/utils';
@@ -79,7 +80,7 @@ describe('Project', () => {
   // entity getters / search functions
   describe('getPatchByPath', () => {
     it('should return Nothing<Null> if project is empty object', () => {
-      const maybe = Project.getPatchByPath('test', emptyProject);
+      const maybe = Project.getPatchByPath('does/not/exist', emptyProject);
       expect(maybe.isNothing).to.be.true();
     });
     it('should return Nothing<Null> if there is no patch with such path', () => {
@@ -103,8 +104,8 @@ describe('Project', () => {
   });
   describe('getPatchByPathUnsafe', () => {
     it('should throw error if project is empty object', () => {
-      const fn = () => Project.getPatchByPathUnsafe('test', emptyProject);
-      expect(fn).to.throw(Error, formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: 'test' }));
+      const fn = () => Project.getPatchByPathUnsafe('does/not/exist', emptyProject);
+      expect(fn).to.throw(Error, formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: 'does/not/exist' }));
     });
     it('should throw error if there is no patch with such path', () => {
       const project = Helper.defaultizeProject({
@@ -196,7 +197,7 @@ describe('Project', () => {
     });
 
     it('should return Nothing for unexisting patch', () => {
-      const maybe = Project.getNodePin('test', Helper.defaultizeNode({ type: 'unexisting/patch' }), emptyProject);
+      const maybe = Project.getNodePin('test', Helper.defaultizeNode({ type: 'test/unexisting/patch' }), emptyProject);
       expect(maybe.isNothing).to.be.true();
     });
     it('should return Nothing for unexisting pin', () => {
@@ -212,13 +213,6 @@ describe('Project', () => {
 
   // validations
   describe('validatePatchRebase', () => {
-    it('should return Either.Left if newPath contains invalid characters', () => {
-      const patch = {};
-      const project = Helper.defaultizeProject({ patches: { '@/test': patch } });
-      const newProject = Project.validatePatchRebase('in√ålid path', '@/test', project);
-
-      expect(newProject.isLeft).to.be.true();
-    });
     it('should return Either.Left if patch is not in the project', () => {
       const newProject = Project.validatePatchRebase('@/test', '@/patch', emptyProject);
 
@@ -323,8 +317,14 @@ describe('Project', () => {
 
   // entity setters
   describe('assocPatch', () => {
-    it('should return Either.Left if path is not valid', () => {
-      const newProject = Project.assocPatch('', Patch.createPatch(), emptyProject);
+    it('should return Either.Left if patch is not valid', () => {
+      const invalidPatch = R.pipe(
+        Patch.createPatch,
+        Patch.assocNode(
+          Node.createNode({ x: 0, y: 0 }, 'not/existing/type')
+        )
+      )();
+      const newProject = Project.assocPatch('@/test', invalidPatch, emptyProject);
       expect(newProject.isLeft).to.be.true();
     });
     it('should return Either.Right with associated patch', () => {
@@ -378,7 +378,7 @@ describe('Project', () => {
     });
     it('should not affect on other patches', () => {
       const patch = { path: '@/test' };
-      const anotherPatch = { path: '@/leave/me/alone' };
+      const anotherPatch = { path: '@/leave-me-alone' };
       const project = Helper.defaultizeProject({
         patches: {
           [patch.path]: patch,
@@ -478,7 +478,7 @@ describe('Project', () => {
     const project = Helper.defaultizeProject({
       patches: {
         '@/test': { path: '@/test' },
-        'external/patch': { path: 'external/patch' },
+        'some/external/patch': { path: 'some/external/patch' },
       },
     });
 
@@ -502,7 +502,7 @@ describe('Project', () => {
       });
       it('should return array with two keys', () => {
         expect(Project.listPatchPaths(project))
-          .to.be.deep.equal(['@/test', 'external/patch']);
+          .to.be.deep.equal(['@/test', 'some/external/patch']);
       });
     });
     describe('listLocalPatches', () => {
@@ -526,7 +526,7 @@ describe('Project', () => {
       it('should return array with one pin', () => {
         expect(Project.listLibraryPatches(project))
           .to.be.instanceof(Array)
-          .and.have.all.members([project.patches['external/patch']]);
+          .and.have.all.members([project.patches['some/external/patch']]);
       });
     });
   });

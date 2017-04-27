@@ -327,7 +327,7 @@ export const isPinCurried = def( // TODO: deprecated
  * @returns {RegExp}
  */
 const getDataTypeRegExp = R.compose(
-  pinTypes => new RegExp(`^xod/core/(?:input|output)(${pinTypes})`, 'i'),
+  pinTypes => new RegExp(`^xod/core/(?:input|output)-(${pinTypes})`, 'i'),
   R.join('|'),
   R.keys
 );

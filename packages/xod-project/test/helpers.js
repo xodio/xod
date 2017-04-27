@@ -100,7 +100,7 @@ export const defaultizeLink = R.merge({
 export const defaultizeNode = R.merge({
   id: '$$defaultNodeId',
   position: { x: 0, y: 0 },
-  type: '@/defaultType',
+  type: '@/default-type',
   label: '',
 });
 
@@ -126,7 +126,7 @@ export const defaultizePatch = R.compose(
     links: {},
     impls: {},
     pins: {},
-    path: '',
+    path: '@/default-patch-path',
   })
 );
 
@@ -144,6 +144,6 @@ export const defaultizeProject = R.compose(
     license: '',
     description: '',
     patches: {},
-    name: '',
+    name: 'test-project-name',
   })
 );

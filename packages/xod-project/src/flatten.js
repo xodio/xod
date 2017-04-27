@@ -53,22 +53,24 @@ LinkWrapper.prototype.get = baseGet;
 //
 // =============================================================================
 
-const terminalRegExp = /^xod\/core\/(input|output)/;
+const terminalRegExp = /^xod\/core\/(input|output)-/;
 // :: String -> Pin[]
 const getTerminalPins = type => ([
   Pin.createPin('__in__', type, CONST.PIN_DIRECTION.INPUT, 0),
   Pin.createPin('__out__', type, CONST.PIN_DIRECTION.OUTPUT, 0),
 ]);
 // :: String -> String
-const getTerminalType = type => `terminal${type}`;
+const getTerminalType = type => `xod/internal/terminal-${type}`;
 // :: String -> String
 const convertTerminalPath = R.compose(
   getTerminalType,
   R.replace(terminalRegExp, '')
 );
+// :: PatchPath -> Boolean
+const isTerminalNodeType = R.test(/^xod\/internal\/terminal-/);
 // :: Node[] -> Node[]
 const filterTerminalNodes = R.filter(R.compose(
-  R.test(/^terminal/),
+  isTerminalNodeType,
   Node.getNodeType
 ));
 // :: Node[] -> Link[] -> Link[]
@@ -493,7 +495,7 @@ const addCastPatches = R.curry((project, castTypes, leafPatches) => R.compose(
 
 // :: [[Path, Patch]] -> [[Path, Patch]]
 const removeTerminalPatches = R.reject(R.compose(
-  R.test(/^terminal[a-zA-Z]+$/),
+  isTerminalNodeType,
   R.prop(0)
 ));
 
@@ -764,8 +766,8 @@ const flattenProject = R.curry((project, path, impls, patch) =>
  *
  * 1. Get all patches with defined implementations or terminal patches.
  *    And name them "leaf patches". We will reference to them later.
- *    Terminal nodes are replaced with a new temporary type "terminal%TYPE%"
- *    (e.g. inputBool becomes terminalBool).
+ *    Terminal nodes are replaced with a new temporary type "xod/internal/terminal-%TYPE%"
+ *    (e.g. xod/core/input-bool becomes xod/internal/terminal-bool).
  *    They get two pins: `__in__` and `__out__`.
  *
  * 2. Convert entry-point patch into a new patch:

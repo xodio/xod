@@ -93,7 +93,14 @@ describe('Adapters', () => {
     });
 
     it('should have keys [authors, description, license, name, patches]', () => {
-      expect(toV2({}))
+      const primitiveV1 = {
+        meta: {
+          name: 'awesome-project',
+          author: 'Amperka team',
+        },
+      };
+
+      expect(toV2(primitiveV1))
         .to.be.an('object')
         .and.have.all.keys('authors', 'description', 'license', 'name', 'patches');
     });
@@ -132,11 +139,11 @@ describe('Adapters', () => {
       expect(nodesNew).to.deep.equal(nodesOld);
     });
     it('should rekey pins', () => {
-      const node = getNodeByTypeFromPatch('@/sub/qux')(bundleV2.patches['@/main']);
+      const node = getNodeByTypeFromPatch('@/qux')(bundleV2.patches['@/main']);
       const expectedPinKey = R.compose(
         R.prop('id'),
-        getNodeByTypeFromPatch('xod/core/inputNumber')
-      )(bundleV2.patches['@/sub/qux']);
+        getNodeByTypeFromPatch('xod/core/input-number')
+      )(bundleV2.patches['@/qux']);
 
       expect(node)
       .to.have.property('pins')

@@ -2,7 +2,7 @@
   "authors": [
     "Amperka team"
   ],
-  "name": "Awesome project",
+  "name": "awesome-project",
   "description": "",
   "license": "",
   "patches": {
@@ -154,8 +154,8 @@
         }
       }
     },
-    "xod/core/valveNumber": {
-      "path": "xod/core/valveNumber",
+    "xod/core/valve-number": {
+      "path": "xod/core/valve-number",
       "nodes": {},
       "links": {},
       "impls": {
@@ -190,10 +190,10 @@
           "value": 0
         }
       },
-      "label": "valveNumber"
+      "label": "valve-number"
     },
-    "xod/core/triggerableNumber": {
-      "path": "xod/core/triggerableNumber",
+    "xod/core/triggerable-number": {
+      "path": "xod/core/triggerable-number",
       "nodes": {},
       "links": {},
       "impls": {
@@ -228,10 +228,10 @@
           "value": 0
         }
       },
-      "label": "triggerableNumber"
+      "label": "triggerable-number"
     },
-    "xod/core/ultrasonic_HC_SR04": {
-      "path": "xod/core/ultrasonic_HC_SR04",
+    "xod/core/ultrasonic-hc-sr04": {
+      "path": "xod/core/ultrasonic-hc-sr04",
       "nodes": {},
       "links": {},
       "impls": {
@@ -326,8 +326,8 @@
       },
       "label": "stdout"
     },
-    "xod/core/split_bool": {
-      "path": "xod/core/split_bool",
+    "xod/core/split-bool": {
+      "path": "xod/core/split-bool",
       "nodes": {},
       "links": {},
       "impls": {
@@ -401,8 +401,8 @@
         }
       }
     },
-    "xod/core/outputString": {
-      "path": "xod/core/outputString",
+    "xod/core/output-string": {
+      "path": "xod/core/output-string",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -419,8 +419,8 @@
       },
       "label": "<OutputString>"
     },
-    "xod/core/outputNumber": {
-      "path": "xod/core/outputNumber",
+    "xod/core/output-number": {
+      "path": "xod/core/output-number",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -465,8 +465,8 @@
         }
       }
     },
-    "xod/core/outputPulse": {
-      "path": "xod/core/outputPulse",
+    "xod/core/output-pulse": {
+      "path": "xod/core/output-pulse",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -483,8 +483,8 @@
       },
       "label": "<OutputPulse>"
     },
-    "xod/core/outputBool": {
-      "path": "xod/core/outputBool",
+    "xod/core/output-bool": {
+      "path": "xod/core/output-bool",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -678,8 +678,8 @@
         }
       }
     },
-    "xod/core/inputString": {
-      "path": "xod/core/inputString",
+    "xod/core/input-string": {
+      "path": "xod/core/input-string",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -762,8 +762,8 @@
       },
       "label": "LED"
     },
-    "xod/core/inputPulse": {
-      "path": "xod/core/inputPulse",
+    "xod/core/input-pulse": {
+      "path": "xod/core/input-pulse",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -780,8 +780,8 @@
       },
       "label": "<InputPulse>"
     },
-    "xod/core/inputBool": {
-      "path": "xod/core/inputBool",
+    "xod/core/input-bool": {
+      "path": "xod/core/input-bool",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -798,8 +798,8 @@
       },
       "label": "<InputBool>"
     },
-    "xod/core/inputNumber": {
-      "path": "xod/core/inputNumber",
+    "xod/core/input-number": {
+      "path": "xod/core/input-number",
       "nodes": {},
       "links": {},
       "impls": {},
@@ -816,8 +816,8 @@
       },
       "label": "<InputNumber>"
     },
-    "xod/core/file_write": {
-      "path": "xod/core/file_write",
+    "xod/core/file-write": {
+      "path": "xod/core/file-write",
       "nodes": {},
       "links": {},
       "impls": {
@@ -900,8 +900,8 @@
         }
       }
     },
-    "xod/core/file_read": {
-      "path": "xod/core/file_read",
+    "xod/core/file-read": {
+      "path": "xod/core/file-read",
       "nodes": {},
       "links": {},
       "impls": {
@@ -947,8 +947,8 @@
       },
       "label": "File read"
     },
-    "xod/core/digital_output": {
-      "path": "xod/core/digital_output",
+    "xod/core/digital-output": {
+      "path": "xod/core/digital-output",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1012,8 +1012,8 @@
         }
       }
     },
-    "xod/core/digital_input": {
-      "path": "xod/core/digital_input",
+    "xod/core/digital-input": {
+      "path": "xod/core/digital-input",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1086,8 +1086,8 @@
         }
       }
     },
-    "xod/core/constString": {
-      "path": "xod/core/constString",
+    "xod/core/const-string": {
+      "path": "xod/core/const-string",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1124,8 +1124,8 @@
       },
       "label": "<String>"
     },
-    "xod/core/constNumber": {
-      "path": "xod/core/constNumber",
+    "xod/core/const-number": {
+      "path": "xod/core/const-number",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1228,8 +1228,8 @@
         }
       }
     },
-    "xod/core/constBool": {
-      "path": "xod/core/constBool",
+    "xod/core/const-bool": {
+      "path": "xod/core/const-bool",
       "nodes": {},
       "links": {},
       "impls": {
@@ -1859,7 +1859,7 @@
       "nodes": {
         "ryFxRcNdKg": {
           "id": "ryFxRcNdKg",
-          "type": "xod/core/digital_output",
+          "type": "xod/core/digital-output",
           "position": {
             "x": 305,
             "y": 430
@@ -1872,7 +1872,7 @@
         },
         "S1ulA9NuFx": {
           "id": "S1ulA9NuFx",
-          "type": "xod/core/inputString",
+          "type": "xod/core/input-string",
           "position": {
             "x": 172,
             "y": 104
@@ -1881,7 +1881,7 @@
         },
         "B1wg0qVOtg": {
           "id": "B1wg0qVOtg",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 418,
             "y": 104
@@ -2052,7 +2052,7 @@
       "nodes": {
         "BJGgAcVOtx": {
           "id": "BJGgAcVOtx",
-          "type": "xod/core/outputBool",
+          "type": "xod/core/output-bool",
           "position": {
             "x": 263,
             "y": 508
@@ -2084,7 +2084,7 @@
         },
         "B1eR5EOYg": {
           "id": "B1eR5EOYg",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 268,
             "y": 103
