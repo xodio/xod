@@ -11,10 +11,8 @@ import $ from 'sanctuary-def';
 import {
   Patch,
   getLibraryName,
-  getPatchPath,
   isPathLocal,
   getBaseName,
-  listPins,
 } from 'xod-project';
 
 import * as ProjectActions from '../../project/actions';
@@ -92,29 +90,10 @@ class ProjectBrowser extends React.Component {
   }
 
   localPatchesHoveredButtons(patchPath) {
-    const { currentPatchPath, localPatches } = this.props;
     const {
       requestRename,
       requestDelete,
     } = this.props.actions;
-
-    const patch = R.find(
-      R.pipe(getPatchPath, R.equals(patchPath)),
-      localPatches
-    );
-
-    const hasPins = patch && R.pipe(listPins, R.complement(R.isEmpty))(patch);
-    // TODO: we also need detection of more complex cases
-    const isAddingRecursively = currentPatchPath === patchPath;
-
-    const canAdd = hasPins && !isAddingRecursively;
-    // TODO: when we'll implement adding with dnd, disabling button will not be sufficient
-    const addButtonClassnames = cn('hover-button', {
-      disabled: !canAdd,
-    });
-    const addButtonAction = canAdd
-      ? () => this.onAddNode(patchPath)
-      : noop;
 
     return [
       <Icon
@@ -129,13 +108,12 @@ class ProjectBrowser extends React.Component {
         className="hover-button"
         onClick={() => requestRename(patchPath)}
       />,
-      <Icon
-        key="add"
-        name="plus-circle"
-        className={addButtonClassnames}
-        onClick={addButtonAction}
-      />,
+      this.renderAddNodeButton(patchPath),
     ];
+  }
+
+  libraryPatchesHoveredButtons(path) {
+    return [this.renderAddNodeButton(path)];
   }
 
   deselectIfInLocalPatches() {
@@ -150,6 +128,25 @@ class ProjectBrowser extends React.Component {
         this.props.actions.removeSelection();
       }
     };
+  }
+
+  renderAddNodeButton(patchPath) {
+    const { currentPatchPath } = this.props;
+
+    const isCurrentPatch = currentPatchPath === patchPath;
+    const canAdd = !isCurrentPatch;
+
+    const classNames = cn('hover-button', { disabled: !canAdd });
+    const action = canAdd ? () => this.onAddNode(patchPath) : noop;
+
+    return (
+      <Icon
+        key="add"
+        name="plus-circle"
+        className={classNames}
+        onClick={action}
+      />
+    );
   }
 
   renderLocalPatches() {
@@ -206,14 +203,7 @@ class ProjectBrowser extends React.Component {
             label={getBaseName(path)}
             isSelected={path === selectedPatchPath}
             onClick={() => setSelection(path)}
-            hoverButtons={[
-              <Icon
-                key="add"
-                name="plus-circle"
-                className="hover-button"
-                onClick={() => this.onAddNode(path)}
-              />,
-            ]}
+            hoverButtons={this.libraryPatchesHoveredButtons(path)}
           />
         )}
       </PatchGroup>
