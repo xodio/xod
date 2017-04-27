@@ -11,10 +11,8 @@ import $ from 'sanctuary-def';
 import {
   Patch,
   getLibraryName,
-  getPatchPath,
   isPathLocal,
   getBaseName,
-  listPins,
 } from 'xod-project';
 
 import * as ProjectActions from '../../project/actions';
@@ -92,21 +90,10 @@ class ProjectBrowser extends React.Component {
   }
 
   localPatchesHoveredButtons(patchPath) {
-    const { currentPatchPath, localPatches } = this.props;
     const {
       requestRename,
       requestDelete,
     } = this.props.actions;
-
-    const patch = R.find(
-      R.pipe(getPatchPath, R.equals(patchPath)),
-      localPatches
-    );
-
-    const hasPins = patch && R.pipe(listPins, R.complement(R.isEmpty))(patch);
-    // TODO: we also need detection of more complex cases
-    const isAddingRecursively = currentPatchPath === patchPath;
-    const canAdd = hasPins && !isAddingRecursively;
 
     return [
       <Icon
@@ -121,7 +108,7 @@ class ProjectBrowser extends React.Component {
         className="hover-button"
         onClick={() => requestRename(patchPath)}
       />,
-      this.renderAddNodeButton(patchPath, canAdd),
+      this.renderAddNodeButton(patchPath),
     ];
   }
 
@@ -143,19 +130,21 @@ class ProjectBrowser extends React.Component {
     };
   }
 
-  renderAddNodeButton(path, enabled = true) {
+  renderAddNodeButton(patchPath) {
     const { currentPatchPath } = this.props;
 
-    const canAdd = enabled && !!currentPatchPath;
-    const addButtonClassnames = cn('hover-button', { disabled: !canAdd });
-    const addButtonAction = canAdd ? () => this.onAddNode(path) : noop;
+    const isCurrentPatch = currentPatchPath === patchPath;
+    const canAdd = !isCurrentPatch;
+
+    const classNames = cn('hover-button', { disabled: !canAdd });
+    const action = canAdd ? () => this.onAddNode(patchPath) : noop;
 
     return (
       <Icon
         key="add"
         name="plus-circle"
-        className={addButtonClassnames}
-        onClick={addButtonAction}
+        className={classNames}
+        onClick={action}
       />
     );
   }
