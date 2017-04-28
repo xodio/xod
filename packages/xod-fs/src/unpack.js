@@ -3,15 +3,18 @@ import R from 'ramda';
 import XF from 'xod-func-tools';
 import { hasNot, isLocalID, localID, notNil } from 'xod-core';
 
-// :: "./awesome_project/" -> "main" -> "patch.xodm" -> "./awesome_project/main/patch.xodm"
+// :: "./awesome-project/" -> "main" -> "patch.xodm" -> "./awesome-project/main/patch.xodm"
 const filePath = (projectPath, patchPath, fileName) => R.pipe(
   R.concat(R.defaultTo('', patchPath)),
   R.concat(projectPath)
 )(fileName);
 
-// :: "Awesome name" -> "awesome_name"
-export const fsSafeName = R.pipe(
-  R.replace(/[^a-z0-9]/gi, '_'),
+// :: "--  Awesome name  --" -> "awesome-name"
+export const fsSafeName = R.compose(
+  R.replace(/-$/g, ''),
+  R.replace(/^-/g, ''),
+  R.replace(/(-)\1+/g, '-'),
+  R.replace(/[^a-z0-9]/gi, '-'),
   R.toLower
 );
 

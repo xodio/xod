@@ -29,7 +29,7 @@ describe('Unpack xodball', () => {
 
   it('should return correct project folder', () => {
     const projectPath = Unpack.getProjectPath(xodball);
-    expect(projectPath).to.be.equal('./awesome_project/');
+    expect(projectPath).to.be.equal('./awesome-project/');
   });
 
   it('should return correct patch folders', () => {

@@ -35,7 +35,7 @@ describe('arrangeByFilesV2 parts', () => {
     it('should convert project name to path', () => {
       assert.deepEqual(
         getProjectPathV2(projectV2Fixture),
-        './awesome_project'
+        './awesome-project'
       );
     });
   });
@@ -155,7 +155,7 @@ describe('arrangeByFilesV2 e2e', () => {
               name: 'Awesome project',
             },
           },
-          path: './awesome_project/project.xod',
+          path: './awesome-project/project.xod',
         },
         {
           content: {
@@ -171,7 +171,7 @@ describe('arrangeByFilesV2 e2e', () => {
               },
             },
           },
-          path: './awesome_project/Main/patch.xodm',
+          path: './awesome-project/Main/patch.xodm',
         },
         {
           content: {
@@ -224,7 +224,7 @@ describe('arrangeByFilesV2 e2e', () => {
               },
             },
           },
-          path: './awesome_project/Main/patch.xodp',
+          path: './awesome-project/Main/patch.xodp',
         },
       ]
     );
