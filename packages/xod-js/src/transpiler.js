@@ -83,7 +83,7 @@ export const createConstNode = R.curry((nodeId, curriedPinPair) => {
   return {
     id: newNodeId,
     value: curriedPinPair[1],
-    type: '<<const>>',
+    type: 'xod/internal/const',
     position: { x: 0, y: 0 },
     pins: {},
   };
@@ -222,7 +222,7 @@ function transpileImpl(impl) {
 
   return joinLineBlocks([
     'var impl = {};',
-    "impl['<<const>>'] = startUpConstantNode();",
+    "impl['xod/internal/const'] = startUpConstantNode();",
     items(impl),
   ]);
 }

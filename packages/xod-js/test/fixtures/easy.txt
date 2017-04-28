@@ -4,7 +4,7 @@
 
 var impl = {};
 
-impl['<<const>>'] = startUpConstantNode();
+impl['xod/internal/const'] = startUpConstantNode();
 
 // ---------------------------------------------------------------------
 impl['xod/nodes/test'] = {};
@@ -55,7 +55,7 @@ nodes['1'] = new Node({
 
 nodes['2'] = new Node({
   "id": "2",
-  "implId": "<<const>>",
+  "implId": "xod/internal/const",
   "inputTypes": {},
   "outLinks": {
     "value": [
@@ -66,9 +66,9 @@ nodes['2'] = new Node({
     ]
   },
   "value": 10,
-  "setup": impl['<<const>>'].setup,
-  "upkeep": impl['<<const>>'].upkeep,
-  "evaluate": impl['<<const>>'].evaluate,
+  "setup": impl['xod/internal/const'].setup,
+  "upkeep": impl['xod/internal/const'].upkeep,
+  "evaluate": impl['xod/internal/const'].evaluate,
   "nodes": nodes
 });
 
