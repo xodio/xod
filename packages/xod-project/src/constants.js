@@ -33,6 +33,11 @@ export const ERROR = {
   CAST_PATCH_NOT_FOUND: 'Casting patch "{patchPath}" is not found in the project',
 };
 
+export const IDENTIFIER_RULES =
+  `Only a-z, 0-9 and - are allowed. 
+  Name must not begin or end with a hypen, 
+  or contain more than one hypen in a row`;
+
 /**
  * Enumeration of possible pin types
  *
