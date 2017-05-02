@@ -221,19 +221,6 @@ export const assocPin = def(
 );
 
 /**
- * Returns new patch without pin.
- *
- * @function dissocPin
- * @param {PinOrKey} key
- * @param {Patch} patch
- * @returns {Patch}
- */
-export const dissocPin = def(
-  'dissocPin :: PinOrKey -> Patch -> Patch',
-  (pinOrKey, patch) => R.dissocPath(['pins', Pin.getPinKey(pinOrKey)], patch)
-);
-
-/**
  * Returns pin object by key
  *
  * @function getPinByKey
@@ -563,19 +550,19 @@ export const dissocNode = def(
     const removeLinks = R.reduce(
       R.flip(dissocLink)
     );
-    const removePin = R.ifElse(
+    const removeNode = R.dissocPath(['nodes', id]);
+    const rebuildPinsIfPinNode = R.ifElse(
       R.compose(
         R.chain(Node.isPinNode),
         getNodeById(id)
       ),
-      dissocPin(id),
+      rebuildPins,
       R.identity
     );
-    const removeNode = R.dissocPath(['nodes', id]);
 
     return R.compose(
+      rebuildPinsIfPinNode,
       removeNode,
-      removePin,
       removeLinks
     )(patch, links);
   }

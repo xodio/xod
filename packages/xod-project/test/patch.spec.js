@@ -481,49 +481,7 @@ describe('Patch', () => {
         .to.be.deep.equal(expectedPatch);
     });
   });
-  describe('dissocPin', () => {
-    const patch = Helper.defaultizePatch({
-      pins: {
-        a: { key: 'a' },
-        b: { key: 'b' },
-      },
-    });
 
-    it('should remove pin by key', () => {
-      const newPatch = Patch.dissocPin('a', patch);
-
-      expect(newPatch)
-        .to.be.an('object')
-        .that.have.property('pins')
-        .that.not.have.keys(['a']);
-    });
-    it('should remove pin by Pin object', () => {
-      const pin = patch.pins.b;
-      const newPatch = Patch.dissocPin(pin, patch);
-
-      expect(newPatch)
-        .to.be.an('object')
-        .that.have.property('pins')
-        .that.not.have.keys(['b']);
-    });
-    it('should not affect on other pins', () => {
-      const newPatch = Patch.dissocPin('a', patch);
-
-      expect(newPatch)
-        .to.be.an('object')
-        .that.have.property('pins')
-        .that.have.keys(['b'])
-        .and.not.have.keys(['a']);
-    });
-    it('should return unchanges Patch for non-existent pin/key', () => {
-      expect(Patch.dissocPin('c', patch))
-        .to.be.an('object')
-        .and.deep.equals(patch);
-      expect(Patch.dissocPin({ key: 'c' }, patch))
-        .to.be.an('object')
-        .and.deep.equals(patch);
-    });
-  });
   // TODO: Add test for adding pinNode (assocNode -> assocPin)
   describe('assocNode', () => {
     it('should return Patch with new Node', () => {
@@ -592,6 +550,7 @@ describe('Patch', () => {
       expect(newPin).to.have.property('direction', 'input');
     });
   });
+
   // TODO: Add test for deleting pinNode
   describe('dissocNode', () => {
     const patch = Helper.defaultizePatch({

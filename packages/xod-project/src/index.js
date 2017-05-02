@@ -12,7 +12,6 @@ export {
   getNodeById,
   getNodeByIdUnsafe,
   assocPin,
-  dissocPin,
   getPinByKey,
   getPinByKeyUnsafe,
   listPins,
