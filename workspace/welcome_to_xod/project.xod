@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "name": "welcome-to-xod",
+    "author": ""
+  },
+  "libs": [
+    "xod/core"
+  ]
+}
