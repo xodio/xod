@@ -29,7 +29,7 @@ export const createProject = () => ({
   description: '',
   license: '',
   patches: {},
-  name: '',
+  name: 'untitled',
 });
 
 /**
@@ -340,12 +340,10 @@ export const validatePatchContents = def(
 export const assocPatch = def(
   'assocPatch :: PatchPath -> Patch -> Project -> Either Error Project',
   (path, patch, project) =>
-    Utils.validatePath(path).chain(
-      validPath => validatePatchContents(patch, project).map(
-        R.compose(
-          R.assocPath(['patches', validPath], R.__, project),
-          Patch.setPatchPath(validPath)
-        )
+    validatePatchContents(patch, project).map(
+      R.compose(
+        R.assocPath(['patches', path], R.__, project),
+        Patch.setPatchPath(path)
       )
     )
 );
@@ -427,11 +425,14 @@ const doesPathExist = def(
  */
 export const validatePatchRebase = def(
   'validatePatchRebase :: PatchPath -> PatchPath -> Project -> Either Error Project',
-  (newPath, oldPath, project) => Utils.validatePath(newPath)
-    .chain(Tools.errOnFalse(
-      CONST.ERROR.PATCH_PATH_OCCUPIED,
-      R.complement(doesPathExist(R.__, project))
-    ))
+  (newPath, oldPath, project) =>
+    Either.of(newPath)
+    .chain(
+      Tools.errOnFalse(
+        CONST.ERROR.PATCH_PATH_OCCUPIED,
+        R.complement(doesPathExist(R.__, project))
+      )
+    )
     .chain(() => Tools.errOnNothing(
       Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: oldPath }),
       getPatchByPath(oldPath, project)

@@ -262,30 +262,30 @@ describe('Node', () => {
   });
   // checks
   describe('isInputPinNode', () => {
-    it('should return false for type not equal to xod/core/input*', () => {
-      expect(Node.isInputPinNode(nodeOfType('@/test/input'))).to.be.false();
+    it('should return false for type not equal to xod/core/input-*', () => {
+      expect(Node.isInputPinNode(nodeOfType('@/input'))).to.be.false();
     });
-    it('should return true for type equal to xod/core/input*', () => {
-      expect(Node.isInputPinNode(nodeOfType('xod/core/inputNumber'))).to.be.true();
+    it('should return true for type equal to xod/core/input-*', () => {
+      expect(Node.isInputPinNode(nodeOfType('xod/core/input-number'))).to.be.true();
     });
   });
   describe('isOutputPinNode', () => {
-    it('should return false for type not equal to xod/core/output*', () => {
-      expect(Node.isOutputPinNode(nodeOfType('@/test/output'))).to.be.false();
+    it('should return false for type not equal to xod/core/output-*', () => {
+      expect(Node.isOutputPinNode(nodeOfType('test/test/output'))).to.be.false();
     });
-    it('should return true for type equal to xod/core/output*', () => {
-      expect(Node.isOutputPinNode(nodeOfType('xod/core/outputNumber'))).to.be.true();
+    it('should return true for type equal to xod/core/output-*', () => {
+      expect(Node.isOutputPinNode(nodeOfType('xod/core/output-number'))).to.be.true();
     });
   });
   describe('isPinNode', () => {
-    it('should return false for type not equal to xod/core/input* or xod/core/output*', () => {
-      expect(Node.isPinNode(nodeOfType('@/test/output'))).to.be.false();
+    it('should return false for type not equal to xod/core/input-* or xod/core/output-*', () => {
+      expect(Node.isPinNode(nodeOfType('test/test/output'))).to.be.false();
     });
     it('should return true for type equal to xod/core/input*', () => {
-      expect(Node.isPinNode(nodeOfType('xod/core/inputNumber'))).to.be.true();
+      expect(Node.isPinNode(nodeOfType('xod/core/input-number'))).to.be.true();
     });
     it('should return true for type equal to xod/core/output*', () => {
-      expect(Node.isPinNode(nodeOfType('xod/core/outputNumber'))).to.be.true();
+      expect(Node.isPinNode(nodeOfType('xod/core/output-number'))).to.be.true();
     });
   });
   describe('isPinCurried', () => {
@@ -308,29 +308,29 @@ describe('Node', () => {
   // etc
   describe('getPinNodeDataType', () => {
     it('should throw error for non-existent data-type', () => {
-      expect(() => Node.getPinNodeDataType(nodeOfType('xod/core/inputA')))
+      expect(() => Node.getPinNodeDataType(nodeOfType('xod/core/input-a')))
         .to.throw(TypeError);
     });
-    it('should return `number` for xod/core/inputNumber', () => {
-      const res = Node.getPinNodeDataType(nodeOfType('xod/core/inputNumber'));
+    it('should return `number` for xod/core/input-number', () => {
+      const res = Node.getPinNodeDataType(nodeOfType('xod/core/input-number'));
       expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
     });
-    it('should return `number` for xod/core/outputNumber', () => {
-      const res = Node.getPinNodeDataType(nodeOfType('xod/core/inputNumber'));
+    it('should return `number` for xod/core/output-number', () => {
+      const res = Node.getPinNodeDataType(nodeOfType('xod/core/input-number'));
       expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
     });
   });
   describe('getPinNodeDirection', () => {
-    it('should throw for `xod/core/invalidPinNode`', () => {
-      expect(() => Node.getPinNodeDirection(nodeOfType('xod/core/invalidPinNode')))
+    it('should throw for `xod/core/invalid-pin-node`', () => {
+      expect(() => Node.getPinNodeDirection(nodeOfType('xod/core/invalid-pin-node')))
         .to.throw(TypeError);
     });
-    it('should return `input` for `xod/core/inputNumber`', () => {
-      const res = Node.getPinNodeDirection(nodeOfType('xod/core/inputNumber'));
+    it('should return `input` for `xod/core/input-number`', () => {
+      const res = Node.getPinNodeDirection(nodeOfType('xod/core/input-number'));
       expect(res).to.be.equal('input');
     });
-    it('should return `output` for `xod/core/outputNumber`', () => {
-      const res = Node.getPinNodeDirection(nodeOfType('xod/core/outputNumber'));
+    it('should return `output` for `xod/core/output-number`', () => {
+      const res = Node.getPinNodeDirection(nodeOfType('xod/core/output-number'));
       expect(res).to.be.equal('output');
     });
   });

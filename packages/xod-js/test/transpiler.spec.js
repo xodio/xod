@@ -117,7 +117,7 @@ describe('Transpiler', () => {
         nodes: {
           '0_in_A': {
             id: '0_in_A',
-            type: '<<const>>',
+            type: 'xod/internal/const',
             value: 10,
             position: { x: 0, y: 0 },
             pins: {},
@@ -161,7 +161,7 @@ describe('Transpiler', () => {
       },
       {
         id: '0_in_A',
-        implId: '<<const>>',
+        implId: 'xod/internal/const',
         value: 10,
         inputTypes: {},
         outLinks: {
@@ -253,7 +253,7 @@ describe('Transpiler', () => {
 
     describe('transformPatch', () => {
       it('should return Maybe.Nothing for non-existing path', () => {
-        expect(Transpiler.transformPatch('z', project).isNothing).to.be.true();
+        expect(Transpiler.transformPatch('non/existing/path', project).isNothing).to.be.true();
       });
       it('should return Maybe.Just for existing path with transformed patch', () => {
         const newPatch = Transpiler.transformPatch('@/main', project);
@@ -276,7 +276,7 @@ describe('Transpiler', () => {
         expect(Transpiler.transformNode(patch, project, node))
           .to.be.deep.equal(expectedNodes[1]);
       });
-      it('should return the transformed <<const>> node', () => {
+      it('should return the transformed xod/internal/const node', () => {
         const node = patchWithConst.nodes['0_in_A'];
         expect(Transpiler.transformNode(patchWithConst, project, node))
           .to.be.deep.equal(expectedNodes[2]);

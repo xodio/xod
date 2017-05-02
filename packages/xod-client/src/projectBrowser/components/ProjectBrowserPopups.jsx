@@ -1,18 +1,12 @@
 import React from 'react';
 
+import { isValidIdentifier, IDENTIFIER_RULES } from 'xod-project';
+
 import { POPUP_ID } from '../constants';
 
 import PopupPrompt from '../../utils/components/PopupPrompt';
 import PopupConfirm from '../../utils/components/PopupConfirm';
-import { isLowercaseKebab } from '../../utils/inputFormatting';
-
-const onlyLowercaseKebab = (event) => {
-  if (!isLowercaseKebab(event.key)) {
-    event.preventDefault();
-  }
-};
-
-const onlyLowercaseKebabHelpText = 'Only a-z, 0-9 and - are allowed';
+import { lowercaseKebabMask } from '../../utils/inputFormatting';
 
 class ProjectBrowserPopups extends React.Component {
   constructor(props) {
@@ -41,11 +35,13 @@ class ProjectBrowserPopups extends React.Component {
   renderPatchCreatingPopup() {
     return (
       <PopupPrompt
+        key="new_patch"
         title="Create new patch"
         onConfirm={this.props.onPatchCreate}
         onClose={this.props.onCloseAllPopups}
-        onInputKeyDown={onlyLowercaseKebab}
-        helpText={onlyLowercaseKebabHelpText}
+        inputMask={lowercaseKebabMask}
+        inputValidator={isValidIdentifier}
+        helpText={IDENTIFIER_RULES}
       >
         Type the name for new patch:
       </PopupPrompt>
@@ -57,11 +53,13 @@ class ProjectBrowserPopups extends React.Component {
 
     return (
       <PopupPrompt
+        key="rename_patch"
         title="Rename patch"
         onConfirm={this.onPatchRenameConfirmed}
         onClose={this.props.onCloseAllPopups}
-        onInputKeyDown={onlyLowercaseKebab}
-        helpText={onlyLowercaseKebabHelpText}
+        inputMask={lowercaseKebabMask}
+        inputValidator={isValidIdentifier}
+        helpText={IDENTIFIER_RULES}
       >
         Type new name for patch &laquo;{selectedPatchName}&raquo;:
       </PopupPrompt>
@@ -73,9 +71,13 @@ class ProjectBrowserPopups extends React.Component {
 
     return (
       <PopupPrompt
+        key="rename_project"
         title="Rename project"
         onConfirm={this.props.onProjectRename}
         onClose={this.props.onCloseAllPopups}
+        inputMask={lowercaseKebabMask}
+        inputValidator={isValidIdentifier}
+        helpText={IDENTIFIER_RULES}
       >
         Type new name for project &laquo;{currentProjectName}&raquo;:
       </PopupPrompt>
@@ -87,6 +89,7 @@ class ProjectBrowserPopups extends React.Component {
 
     return (
       <PopupConfirm
+        key="delete_patch"
         title="Delete the patch"
         onConfirm={this.onPatchDeleteConfirmed}
         onClose={this.props.onCloseAllPopups}

@@ -166,7 +166,7 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/core/outputBool',
+                type: 'xod/core/output-bool',
               },
               c: {
                 id: 'c',
@@ -174,7 +174,7 @@ describe('Flatten', () => {
               },
               d: {
                 id: 'd',
-                type: 'xod/core/outputBool',
+                type: 'xod/core/output-bool',
               },
             },
             links: {
@@ -227,7 +227,7 @@ describe('Flatten', () => {
               js: '//ok',
             },
           },
-          'xod/core/outputBool': {
+          'xod/core/output-bool': {
             nodes: {},
             links: {},
             pins: {
@@ -243,7 +243,7 @@ describe('Flatten', () => {
 
       const extracted = extractPatches(
         project,
-        ['xod/core/or', 'xod/core/outputBool'],
+        ['xod/core/or', 'xod/core/output-bool'],
         null,
         {},
         project.patches['@/main']
@@ -265,10 +265,10 @@ describe('Flatten', () => {
           { id: 'a~a', type: 'xod/core/or' },
           { id: 'a~b', type: 'xod/core/or' },
           { id: 'b~a', type: 'xod/core/or' },
-          { id: 'b~b', type: 'terminalBool' },
+          { id: 'b~b', type: 'xod/internal/terminal-bool' },
           { id: 'b~c~a', type: 'xod/core/or' },
           { id: 'b~c~b', type: 'xod/core/or' },
-          { id: 'b~d', type: 'terminalBool' },
+          { id: 'b~d', type: 'xod/internal/terminal-bool' },
           { id: 'c', type: 'xod/core/or' },
           { id: 'd', type: 'xod/core/or' },
         ],
@@ -327,7 +327,7 @@ describe('Flatten', () => {
             nodes: {
               a: {
                 id: 'a',
-                type: 'xod/core/inputBool',
+                type: 'xod/core/input-bool',
               },
               b: {
                 id: 'b',
@@ -364,7 +364,7 @@ describe('Flatten', () => {
 
       const extracted = extractPatches(
         project,
-        ['xod/core/inputBool', 'xod/core/number'],
+        ['xod/core/input-bool', 'xod/core/number'],
         null,
         {},
         project.patches['@/main']
@@ -398,11 +398,11 @@ describe('Flatten', () => {
         blinkingV2,
         [
           'xod/core/or',
-          'xod/core/digital_output',
+          'xod/core/digital-output',
           'xod/core/latch',
           'xod/core/clock',
-          'xod/core/inputNumber',
-          'xod/core/inputString',
+          'xod/core/input-number',
+          'xod/core/input-string',
           'xod/math/multiply',
         ],
         null,
@@ -644,7 +644,7 @@ describe('Flatten', () => {
             },
             b: {
               id: 'b',
-              type: 'xod/core/outputBool',
+              type: 'xod/core/output-bool',
             },
             c: {
               id: 'c',
@@ -652,7 +652,7 @@ describe('Flatten', () => {
             },
             d: {
               id: 'd',
-              type: 'xod/core/outputBool',
+              type: 'xod/core/output-bool',
             },
           },
           links: {
@@ -705,7 +705,7 @@ describe('Flatten', () => {
             js: '//ok',
           },
         },
-        'xod/core/outputBool': {
+        'xod/core/output-bool': {
           nodes: {},
           links: {},
           pins: {
@@ -835,7 +835,7 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/core/outputBool',
+                type: 'xod/core/output-bool',
               },
             },
             links: {},
@@ -854,7 +854,7 @@ describe('Flatten', () => {
               js: '//OK',
             },
           },
-          'xod/core/outputBool': {
+          'xod/core/output-bool': {
             nodes: {},
             links: {},
             pins: {
@@ -951,7 +951,7 @@ describe('Flatten', () => {
                   },
                   b: {
                     id: 'b',
-                    type: `xod/core/output${typeOut}`,
+                    type: `xod/core/output-${typeOut}`,
                   },
                 },
                 links: {
@@ -1003,7 +1003,7 @@ describe('Flatten', () => {
                   js: '//OK',
                 },
               },
-              [`xod/core/output${typeOut}`]: {
+              [`xod/core/output-${typeOut}`]: {
                 nodes: {},
                 links: {},
                 pins: {
@@ -1108,7 +1108,7 @@ describe('Flatten', () => {
                   },
                   b: {
                     id: 'b',
-                    type: `xod/core/input${typeOut}`,
+                    type: `xod/core/input-${typeOut}`,
                   },
                 },
                 links: {
@@ -1160,7 +1160,7 @@ describe('Flatten', () => {
                   js: '//OK',
                 },
               },
-              [`xod/core/input${typeOut}`]: {
+              [`xod/core/input-${typeOut}`]: {
                 nodes: {},
                 links: {},
                 pins: {
@@ -1229,12 +1229,12 @@ describe('Flatten', () => {
 
     // TODO: Write test:
     //       it should remove terminal, link and there is should be no casting nodes
-    //       E.G. [Number]---[outputBool] --> [Number]
+    //       E.G. [Number]---[output-bool] --> [Number]
     describe('one link to terminal', () => {});
 
     // TODO: Write test:
     //       it should replace terminal with two casting nodes and three links
-    //       E.G. [Number]---[outputBool]---[String] -->
+    //       E.G. [Number]---[output-bool]---[String] -->
     //        --> [Number]---[cast-number-to-boolean]---[cast-boolean-to-string]---[String]
     describe('three different types', () => {});
 
@@ -1274,7 +1274,7 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/core/outputNumber',
+                type: 'xod/core/output-number',
               },
             },
             links: {
@@ -1317,7 +1317,7 @@ describe('Flatten', () => {
               js: '//OK',
             },
           },
-          'xod/core/outputNumber': {
+          'xod/core/output-number': {
             nodes: {},
             links: {},
             pins: {
@@ -1394,7 +1394,7 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/core/outputNumber',
+                type: 'xod/core/output-number',
               },
             },
             links: {
@@ -1435,7 +1435,7 @@ describe('Flatten', () => {
               js: '//ok',
             },
           },
-          'xod/core/outputNumber': {
+          'xod/core/output-number': {
             nodes: {},
             links: {},
             pins: {
@@ -1489,7 +1489,7 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/core/inputNumber',
+                type: 'xod/core/input-number',
               },
             },
             links: {
@@ -1513,7 +1513,7 @@ describe('Flatten', () => {
               },
             },
           },
-          'xod/core/inputNumber': {
+          'xod/core/input-number': {
             nodes: {},
             links: {},
             pins: {
@@ -1617,15 +1617,15 @@ describe('Flatten', () => {
             nodes: {
               a: {
                 id: 'a',
-                type: 'xod/core/inputNumber',
+                type: 'xod/core/input-number',
               },
               a2: {
                 id: 'a2',
-                type: 'xod/core/inputNumber',
+                type: 'xod/core/input-number',
               },
               a3: {
                 id: 'a3',
-                type: 'xod/core/inputNumber',
+                type: 'xod/core/input-number',
               },
               b: {
                 id: 'b',
@@ -1637,7 +1637,7 @@ describe('Flatten', () => {
               },
               c: {
                 id: 'c',
-                type: 'xod/core/outputBool',
+                type: 'xod/core/output-bool',
               },
             },
             links: {
@@ -1733,7 +1733,7 @@ describe('Flatten', () => {
               js: '//ok',
             },
           },
-          'xod/core/outputBool': {
+          'xod/core/output-bool': {
             nodes: {},
             links: {},
             pins: {
@@ -1744,7 +1744,7 @@ describe('Flatten', () => {
               },
             },
           },
-          'xod/core/inputNumber': {
+          'xod/core/input-number': {
             nodes: {},
             links: {},
             pins: {

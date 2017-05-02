@@ -155,7 +155,7 @@
       },
       "path": "xod/math/add"
     },
-    "xod/core/valveNumber": {
+    "xod/core/valve-number": {
       "nodes": {},
       "links": {},
       "impls": {
@@ -191,9 +191,9 @@
         }
       },
       "label": "valveNumber",
-      "path": "xod/core/valveNumber"
+      "path": "xod/core/valve-number"
     },
-    "xod/core/ultrasonic_HC_SR04": {
+    "xod/core/ultrasonic-hc-sr04": {
       "nodes": {},
       "links": {},
       "impls": {
@@ -238,9 +238,9 @@
         }
       },
       "label": "HC-SR04",
-      "path": "xod/core/ultrasonic_HC_SR04"
+      "path": "xod/core/ultrasonic-hc-sr04"
     },
-    "xod/core/triggerableNumber": {
+    "xod/core/triggerable-number": {
       "nodes": {},
       "links": {},
       "impls": {
@@ -275,8 +275,8 @@
           "value": 0
         }
       },
-      "label": "triggerableNumber",
-      "path": "xod/core/triggerableNumber"
+      "label": "triggerable-number",
+      "path": "xod/core/triggerable-number"
     },
     "xod/core/time": {
       "nodes": {},
@@ -327,7 +327,7 @@
       "label": "stdout",
       "path": "xod/core/stdout"
     },
-    "xod/core/split_boolean": {
+    "xod/core/split-boolean": {
       "nodes": {},
       "links": {},
       "impls": {
@@ -363,7 +363,7 @@
         }
       },
       "label": "Split",
-      "path": "xod/core/split_boolean"
+      "path": "xod/core/split-boolean"
     },
     "xod/core/servo": {
       "nodes": {},
@@ -430,7 +430,7 @@
       },
       "path": "xod/core/pot"
     },
-    "xod/core/outputString": {
+    "xod/core/output-string": {
       "nodes": {},
       "links": {},
       "impls": {},
@@ -446,9 +446,9 @@
         }
       },
       "label": "<OutputString>",
-      "path": "xod/core/outputString"
+      "path": "xod/core/output-string"
     },
-    "xod/core/outputPulse": {
+    "xod/core/output-pulse": {
       "nodes": {},
       "links": {},
       "impls": {},
@@ -464,9 +464,9 @@
         }
       },
       "label": "<OutputPulse>",
-      "path": "xod/core/outputPulse"
+      "path": "xod/core/output-pulse"
     },
-    "xod/core/outputNumber": {
+    "xod/core/output-number": {
       "nodes": {},
       "links": {},
       "impls": {},
@@ -482,9 +482,9 @@
         }
       },
       "label": "<OutputNumber>",
-      "path": "xod/core/outputNumber"
+      "path": "xod/core/output-number"
     },
-    "xod/core/outputBoolean": {
+    "xod/core/output-boolean": {
       "nodes": {},
       "links": {},
       "impls": {},
@@ -500,7 +500,7 @@
         }
       },
       "label": "<OutputBool>",
-      "path": "xod/core/outputBoolean"
+      "path": "xod/core/output-boolean"
     },
     "xod/core/or": {
       "nodes": {},
@@ -746,7 +746,7 @@
       },
       "path": "xod/core/latch"
     },
-    "xod/core/inputString": {
+    "xod/core/input-string": {
       "nodes": {},
       "links": {},
       "impls": {},
@@ -762,9 +762,9 @@
         }
       },
       "label": "<InputString>",
-      "path": "xod/core/inputString"
+      "path": "xod/core/input-string"
     },
-    "xod/core/inputPulse": {
+    "xod/core/input-pulse": {
       "nodes": {},
       "links": {},
       "impls": {},
@@ -780,9 +780,9 @@
         }
       },
       "label": "<InputPulse>",
-      "path": "xod/core/inputPulse"
+      "path": "xod/core/input-pulse"
     },
-    "xod/core/inputNumber": {
+    "xod/core/input-number": {
       "nodes": {},
       "links": {},
       "impls": {},
@@ -798,9 +798,9 @@
         }
       },
       "label": "<InputNumber>",
-      "path": "xod/core/inputNumber"
+      "path": "xod/core/input-number"
     },
-    "xod/core/inputBoolean": {
+    "xod/core/input-boolean": {
       "nodes": {},
       "links": {},
       "impls": {},
@@ -816,7 +816,7 @@
         }
       },
       "label": "<InputBool>",
-      "path": "xod/core/inputBoolean"
+      "path": "xod/core/input-boolean"
     },
     "xod/core/greater": {
       "nodes": {},
@@ -855,7 +855,7 @@
       },
       "path": "xod/core/greater"
     },
-    "xod/core/file_write": {
+    "xod/core/file-write": {
       "nodes": {},
       "links": {},
       "impls": {
@@ -900,9 +900,9 @@
         }
       },
       "label": "File write",
-      "path": "xod/core/file_write"
+      "path": "xod/core/file-write"
     },
-    "xod/core/file_read": {
+    "xod/core/file-read": {
       "nodes": {},
       "links": {},
       "impls": {
@@ -947,7 +947,7 @@
         }
       },
       "label": "File read",
-      "path": "xod/core/file_read"
+      "path": "xod/core/file-read"
     },
     "xod/core/equal": {
       "nodes": {},
@@ -1032,7 +1032,7 @@
       },
       "path": "xod/core/either"
     },
-    "xod/core/digital_output": {
+    "xod/core/digital-output": {
       "nodes": {},
       "links": {},
       "impls": {
@@ -1059,9 +1059,9 @@
           "value": false
         }
       },
-      "path": "xod/core/digital_output"
+      "path": "xod/core/digital-output"
     },
-    "xod/core/digital_input": {
+    "xod/core/digital-input": {
       "nodes": {},
       "links": {},
       "impls": {
@@ -1087,9 +1087,9 @@
           "value": 0
         }
       },
-      "path": "xod/core/digital_input"
+      "path": "xod/core/digital-input"
     },
-    "xod/core/constString": {
+    "xod/core/const-string": {
       "nodes": {},
       "links": {},
       "impls": {
@@ -1125,9 +1125,9 @@
         }
       },
       "label": "<String>",
-      "path": "xod/core/constString"
+      "path": "xod/core/const-string"
     },
-    "xod/core/constNumber": {
+    "xod/core/const-number": {
       "nodes": {},
       "links": {},
       "impls": {
@@ -1163,9 +1163,9 @@
         }
       },
       "label": "<Number>",
-      "path": "xod/core/constNumber"
+      "path": "xod/core/const-number"
     },
-    "xod/core/constBoolean": {
+    "xod/core/const-boolean": {
       "nodes": {},
       "links": {},
       "impls": {
@@ -1201,7 +1201,7 @@
         }
       },
       "label": "<Bool>",
-      "path": "xod/core/constBoolean"
+      "path": "xod/core/const-boolean"
     },
     "xod/core/constant-number": {
       "nodes": {},
@@ -1833,11 +1833,11 @@
       "label": "and",
       "path": "xod/core/and"
     },
-    "xod/core/sort_pair": {
+    "xod/core/sort-pair": {
       "nodes": {
         "rJmmql3flix": {
           "id": "rJmmql3flix",
-          "type": "xod/core/outputNumber",
+          "type": "xod/core/output-number",
           "position": {
             "x": 327,
             "y": 497
@@ -1846,7 +1846,7 @@
         },
         "B1zQ5xhzlil": {
           "id": "B1zQ5xhzlil",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 671,
             "y": 110
@@ -1855,7 +1855,7 @@
         },
         "HJbQcgnfgix": {
           "id": "HJbQcgnfgix",
-          "type": "xod/core/outputNumber",
+          "type": "xod/core/output-number",
           "position": {
             "x": 528,
             "y": 497
@@ -1873,7 +1873,7 @@
         },
         "S117ql3Mejx": {
           "id": "S117ql3Mejx",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 134,
             "y": 91
@@ -2051,13 +2051,13 @@
         }
       },
       "label": "sort-pair",
-      "path": "xod/core/sort_pair"
+      "path": "xod/core/sort-pair"
     },
-    "xod/core/less_equal": {
+    "xod/core/less-equal": {
       "nodes": {
         "rJhz5l3flog": {
           "id": "rJhz5l3flog",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 428,
             "y": 78
@@ -2075,7 +2075,7 @@
         },
         "By9G5g3Mesx": {
           "id": "By9G5g3Mesx",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 232,
             "y": 76
@@ -2084,7 +2084,7 @@
         },
         "B1Kf5xhGesg": {
           "id": "B1Kf5xhGesg",
-          "type": "xod/core/outputBoolean",
+          "type": "xod/core/output-boolean",
           "position": {
             "x": 320,
             "y": 454
@@ -2178,13 +2178,13 @@
         }
       },
       "label": "less-equal",
-      "path": "xod/core/less_equal"
+      "path": "xod/core/less-equal"
     },
     "xod/core/led-new": {
       "nodes": {
         "BkDfqe2zesx": {
           "id": "BkDfqe2zesx",
-          "type": "xod/core/digital_output",
+          "type": "xod/core/digital-output",
           "position": {
             "x": 305,
             "y": 430
@@ -2197,7 +2197,7 @@
         },
         "H18f5ehMxjl": {
           "id": "H18f5ehMxjl",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 172,
             "y": 104
@@ -2206,7 +2206,7 @@
         },
         "rySGcl2zlig": {
           "id": "rySGcl2zlig",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 418,
             "y": 104
@@ -2324,11 +2324,11 @@
       "label": "New patch",
       "path": "xod/core/led-new"
     },
-    "xod/core/in_range": {
+    "xod/core/in-range": {
       "nodes": {
         "rkzG5gnzxjl": {
           "id": "rkzG5gnzxjl",
-          "type": "xod/core/greater_equal",
+          "type": "xod/core/greater-equal",
           "position": {
             "x": 349,
             "y": 270
@@ -2337,7 +2337,7 @@
         },
         "HkWf5g2feix": {
           "id": "HkWf5g2feix",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 241,
             "y": 117
@@ -2355,7 +2355,7 @@
         },
         "SJyM5ghzgjx": {
           "id": "SJyM5ghzgjx",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 595,
             "y": 116
@@ -2373,7 +2373,7 @@
         },
         "ByTWce3fxjg": {
           "id": "ByTWce3fxjg",
-          "type": "xod/core/outputBoolean",
+          "type": "xod/core/output-boolean",
           "position": {
             "x": 432,
             "y": 541
@@ -2382,7 +2382,7 @@
         },
         "Bk2Wqg3fgjl": {
           "id": "Bk2Wqg3fgjl",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 434,
             "y": 114
@@ -2509,13 +2509,13 @@
         }
       },
       "label": "in-range",
-      "path": "xod/core/in_range"
+      "path": "xod/core/in-range"
     },
-    "xod/core/greater_equal": {
+    "xod/core/greater-equal": {
       "nodes": {
         "Bki-qehzljx": {
           "id": "Bki-qehzljx",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 439,
             "y": 120
@@ -2524,7 +2524,7 @@
         },
         "H1qZ5g3Ggse": {
           "id": "H1qZ5g3Ggse",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 271,
             "y": 122
@@ -2551,7 +2551,7 @@
         },
         "HywZql3zese": {
           "id": "HywZql3zese",
-          "type": "xod/core/outputBoolean",
+          "type": "xod/core/output-boolean",
           "position": {
             "x": 360,
             "y": 479
@@ -2636,13 +2636,13 @@
         }
       },
       "label": "greater-equal",
-      "path": "xod/core/greater_equal"
+      "path": "xod/core/greater-equal"
     },
-    "xod/core/choose_range_3p": {
+    "xod/core/choose-range-3p": {
       "nodes": {
         "SyIZqlhMeie": {
           "id": "SyIZqlhMeie",
-          "type": "xod/core/outputPulse",
+          "type": "xod/core/output-pulse",
           "position": {
             "x": 598,
             "y": 533
@@ -2651,7 +2651,7 @@
         },
         "rkSW5e2Glje": {
           "id": "rkSW5e2Glje",
-          "type": "xod/core/choose_range_2p",
+          "type": "xod/core/choose-range-2p",
           "position": {
             "x": 249,
             "y": 294
@@ -2669,7 +2669,7 @@
         },
         "SJX-ce3zeog": {
           "id": "SJX-ce3zeog",
-          "type": "xod/core/outputPulse",
+          "type": "xod/core/output-pulse",
           "position": {
             "x": 456,
             "y": 535
@@ -2678,7 +2678,7 @@
         },
         "SJfb9xhfxjg": {
           "id": "SJfb9xhfxjg",
-          "type": "xod/core/outputPulse",
+          "type": "xod/core/output-pulse",
           "position": {
             "x": 171,
             "y": 538
@@ -2687,7 +2687,7 @@
         },
         "HkbWqg2zejx": {
           "id": "HkbWqg2zejx",
-          "type": "xod/core/choose_range",
+          "type": "xod/core/choose-range",
           "position": {
             "x": 495,
             "y": 297
@@ -2696,7 +2696,7 @@
         },
         "SkgZqxnflig": {
           "id": "SkgZqxnflig",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 173,
             "y": 140
@@ -2705,7 +2705,7 @@
         },
         "HJkZqxnMxoe": {
           "id": "HJkZqxnMxoe",
-          "type": "xod/core/outputPulse",
+          "type": "xod/core/output-pulse",
           "position": {
             "x": 313,
             "y": 538
@@ -2714,7 +2714,7 @@
         },
         "Hy0e5e2fxix": {
           "id": "Hy0e5e2fxix",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 589,
             "y": 140
@@ -2723,7 +2723,7 @@
         },
         "S1agqlhMgje": {
           "id": "S1agqlhMgje",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 452,
             "y": 140
@@ -2732,7 +2732,7 @@
         },
         "S1heqxnzgoe": {
           "id": "S1heqxnzgoe",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 315,
             "y": 140
@@ -2939,13 +2939,13 @@
         }
       },
       "label": "choose-range-3p",
-      "path": "xod/core/choose_range_3p"
+      "path": "xod/core/choose-range-3p"
     },
-    "xod/core/choose_range_2p": {
+    "xod/core/choose-range-2p": {
       "nodes": {
         "HJjx9xnzgse": {
           "id": "HJjx9xnzgse",
-          "type": "xod/core/choose_range",
+          "type": "xod/core/choose-range",
           "position": {
             "x": 271,
             "y": 258
@@ -2954,7 +2954,7 @@
         },
         "r1ceqxnzgse": {
           "id": "r1ceqxnzgse",
-          "type": "xod/core/outputPulse",
+          "type": "xod/core/output-pulse",
           "position": {
             "x": 402,
             "y": 456
@@ -2963,7 +2963,7 @@
         },
         "Sytl9lnfljl": {
           "id": "Sytl9lnfljl",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 553,
             "y": 118
@@ -2972,7 +2972,7 @@
         },
         "Hk_x5x2flie": {
           "id": "Hk_x5x2flie",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 189,
             "y": 116
@@ -2981,7 +2981,7 @@
         },
         "HkDg9e3flix": {
           "id": "HkDg9e3flix",
-          "type": "xod/core/outputPulse",
+          "type": "xod/core/output-pulse",
           "position": {
             "x": 191,
             "y": 452
@@ -2999,7 +2999,7 @@
         },
         "HJSxqe2Mgjg": {
           "id": "HJSxqe2Mgjg",
-          "type": "xod/core/choose_range",
+          "type": "xod/core/choose-range",
           "position": {
             "x": 462,
             "y": 256
@@ -3008,7 +3008,7 @@
         },
         "r1Nxcg2zgjg": {
           "id": "r1Nxcg2zgjg",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 367,
             "y": 117
@@ -3017,7 +3017,7 @@
         },
         "Symlqehzxsg": {
           "id": "Symlqehzxsg",
-          "type": "xod/core/outputPulse",
+          "type": "xod/core/output-pulse",
           "position": {
             "x": 554,
             "y": 457
@@ -3184,13 +3184,13 @@
         }
       },
       "label": "choose-range-2p",
-      "path": "xod/core/choose_range_2p"
+      "path": "xod/core/choose-range-2p"
     },
-    "xod/core/choose_range": {
+    "xod/core/choose-range": {
       "nodes": {
         "B1GlcghGgil": {
           "id": "B1GlcghGgil",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 460,
             "y": 88
@@ -3208,7 +3208,7 @@
         },
         "B1ll9e3zxil": {
           "id": "B1ll9e3zxil",
-          "type": "xod/core/outputPulse",
+          "type": "xod/core/output-pulse",
           "position": {
             "x": 420,
             "y": 482
@@ -3217,7 +3217,7 @@
         },
         "S1yg9ehzeil": {
           "id": "S1yg9ehzeil",
-          "type": "xod/core/outputPulse",
+          "type": "xod/core/output-pulse",
           "position": {
             "x": 242,
             "y": 486
@@ -3235,7 +3235,7 @@
         },
         "r1a5gnzgoe": {
           "id": "r1a5gnzgoe",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 226,
             "y": 91
@@ -3340,13 +3340,13 @@
         }
       },
       "label": "choose-range",
-      "path": "xod/core/choose_range"
+      "path": "xod/core/choose-range"
     },
     "xod/core/blink": {
       "nodes": {
         "Bk2cx3Mgie": {
           "id": "Bk2cx3Mgie",
-          "type": "xod/core/outputBoolean",
+          "type": "xod/core/output-boolean",
           "position": {
             "x": 263,
             "y": 508
@@ -3378,7 +3378,7 @@
         },
         "HyK9g3Glig": {
           "id": "HyK9g3Glig",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 268,
             "y": 103
@@ -3498,7 +3498,7 @@
       "nodes": {
         "HJUce2Gxox": {
           "id": "HJUce2Gxox",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 138,
             "y": 120
@@ -3507,7 +3507,7 @@
         },
         "HJHcl2zxse": {
           "id": "HJHcl2zxse",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 266,
             "y": 120
@@ -3516,7 +3516,7 @@
         },
         "r1E5ghzlol": {
           "id": "r1E5ghzlol",
-          "type": "xod/core/digital_output",
+          "type": "xod/core/digital-output",
           "position": {
             "x": 138,
             "y": 328
@@ -3607,7 +3607,7 @@
       "nodes": {
         "B1Gce3fgie": {
           "id": "B1Gce3fgie",
-          "type": "xod/core/outputBoolean",
+          "type": "xod/core/output-boolean",
           "position": {
             "x": 266,
             "y": 432
@@ -3616,7 +3616,7 @@
         },
         "Skb5l2fxol": {
           "id": "Skb5l2fxol",
-          "type": "xod/core/inputNumber",
+          "type": "xod/core/input-number",
           "position": {
             "x": 266,
             "y": 120

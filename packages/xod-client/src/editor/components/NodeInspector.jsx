@@ -1,6 +1,6 @@
 import R from 'ramda';
 import React from 'react';
-import XP from 'xod-project';
+import * as XP from 'xod-project';
 
 import { SELECTION_ENTITY_TYPE, WIDGET_TYPE } from '../constants';
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from '../../project/constants';

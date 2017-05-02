@@ -1,6 +1,6 @@
 [
   {
-    "path": "./awesome_project/project.xod",
+    "path": "./awesome-project/project.xod",
     "content": {
       "meta": {
         "name": "Awesome project",
@@ -10,13 +10,13 @@
     }
   },
   {
-    "path": "./awesome_project/main/patch.xodm",
+    "path": "./awesome-project/main/patch.xodm",
     "content": {
       "label": "Main"
     }
   },
   {
-    "path": "./awesome_project/main/patch.xodp",
+    "path": "./awesome-project/main/patch.xodp",
     "content": {
       "nodes": {
         "2c03e470-fefd-4f58-be6a-58d209d9158c": {
@@ -85,7 +85,7 @@
     }
   },
   {
-    "path": "./awesome_project/sub/qux/patch.xodm",
+    "path": "./awesome-project/sub/qux/patch.xodm",
     "content": {
       "label": "QUX",
       "category": "patch",
@@ -102,7 +102,7 @@
     }
   },
   {
-    "path": "./awesome_project/sub/qux/patch.xodp",
+    "path": "./awesome-project/sub/qux/patch.xodp",
     "content": {
       "nodes": {
         "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {

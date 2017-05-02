@@ -30,7 +30,7 @@ export const createPatch = () => ({
   links: {},
   impls: {},
   pins: {},
-  path: '',
+  path: '@/untitled-patch',
 });
 
 /**
@@ -54,6 +54,7 @@ export const getPatchPath = def(
 );
 
 /**
+ * @private
  * @function setPatchPath
  * @param {string} path
  * @param {Patch} patch
@@ -508,7 +509,7 @@ const rebuildPins = def(
               order
             )
           ),
-          R.sortBy(R.pipe(Node.getNodePosition, R.prop('x')))
+          R.sortBy(R.pipe(Node.getNodePosition, R.prop('x'))) // TODO: by x, then by y
         )
       ),
       R.groupBy(Node.getPinNodeDirection),

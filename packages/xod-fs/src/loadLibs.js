@@ -170,7 +170,7 @@ export const loadAllLibsV2 = workspace =>
         listLibraryPatches,
         toV2
       )({
-        meta: { name: '', author: '' },
+        meta: { name: 'libs', author: '' },
         patches: {},
         nodeTypes: libs,
       })

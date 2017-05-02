@@ -8,7 +8,7 @@ import { readDir } from '../src/read';
 import { writeJSON } from '../src/write';
 
 describe('Backup', () => {
-  const projectPath = path.resolve(__dirname, './fixtures/workspace/awesome_project/');
+  const projectPath = path.resolve(__dirname, './fixtures/workspace/awesome-project/');
   const tempPath = path.resolve(__dirname, './.tmp/');
   const backup = new Backup(projectPath, tempPath);
 

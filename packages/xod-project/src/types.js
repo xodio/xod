@@ -36,9 +36,36 @@ const dataTypes = R.values(C.PIN_TYPE);
 const notNil = R.complement(R.isNil);
 
 const terminalPatchPathRegExp =
-  new RegExp(`^xod/core/(input|output)(${dataTypes.join('|')})$`, 'i');
+  new RegExp(`^xod/core/(input|output)-(${dataTypes.join('|')})$`, 'i');
 
 const matchesTerminalPatchPath = R.test(terminalPatchPathRegExp);
+
+// :: String -> Boolean
+const isValidIdentifier = R.allPass([
+  R.test(/[a-z0-9-]+/), // only lowercase alphanumeric and hypen
+  R.complement(R.test(/^-/)), // can't start with hypen
+  R.complement(R.test(/-$/)), // can't end with hypen
+  R.complement(R.test(/--/)), // only one hypen in row
+]);
+
+// :: String -> Boolean
+const isValidPatchPath = R.both(
+  R.is(String),
+  R.pipe(
+    R.split('/'),
+    R.either(
+      R.allPass([ // local path
+        R.pipe(R.length, R.equals(2)),
+        R.pipe(R.head, R.equals('@')),
+        R.pipe(R.last, isValidIdentifier),
+      ]),
+      R.allPass([ // library path
+        R.pipe(R.length, R.equals(3)),
+        R.all(isValidIdentifier),
+      ])
+    )
+  )
+);
 
 //-----------------------------------------------------------------------------
 //
@@ -55,7 +82,8 @@ export const ShortId = AliasType('ShortId', $.String);
 export const LinkId = AliasType('LinkId', ShortId);
 export const NodeId = AliasType('NodeId', ShortId);
 export const PinKey = AliasType('PinKey', $.String);
-export const PatchPath = AliasType('PatchPath', $.String);
+export const Identifier = NullaryType('Identifier', isValidIdentifier);
+export const PatchPath = NullaryType('PatchPath', isValidPatchPath);
 export const PinDirection = EnumType('PinDirection', R.values(C.PIN_DIRECTION));
 export const DataType = EnumType('DataType', R.values(C.PIN_TYPE));
 export const DataValue = NullaryType('DataValue', notNil);
@@ -102,7 +130,7 @@ export const Patch = Model('Patch', {
 
 export const Project = Model('Project', {
   patches: $.StrMap(Patch),
-  name: $.String,
+  name: Identifier,
   authors: $.Array($.String),
   license: $.String,
   description: $.String,

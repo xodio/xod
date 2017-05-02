@@ -4,8 +4,7 @@ import shortid from 'shortid';
 import * as Node from './node';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
-import { def } from './types';
-
+import { PatchPath, Identifier, def } from './types';
 
 /**
  * Replace placeholders with replacements.
@@ -100,6 +99,11 @@ export const getLibraryName = R.ifElse(
   R.always('@')
 );
 
+/* eslint-disable no-underscore-dangle */
+export const isValidPatchPath = PatchPath._test;
+export const isValidIdentifier = Identifier._test;
+/* eslint-enable no-underscore-dangle */
+
 /**
  * Checks if a path is a valid for entities like
  * project path, patch path component, etc
@@ -110,10 +114,7 @@ export const getLibraryName = R.ifElse(
  */
 export const validatePath = Tools.errOnFalse(
   CONST.ERROR.PATH_INVALID,
-  R.allPass([
-    R.complement(R.isNil),
-    R.test(/^(@\/)?[a-zA-Z0-9_\-/]+$/),
-  ])
+  isValidPatchPath
 );
 
 /**

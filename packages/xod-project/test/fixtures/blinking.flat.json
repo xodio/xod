@@ -1,11 +1,11 @@
 {
-  "name": "",
+  "name": "untitled",
   "authors": [],
   "description": "",
   "license": "",
   "patches": {
-    "xod/core/digital_output": {
-      "path": "xod/core/digital_output",
+    "xod/core/digital-output": {
+      "path": "xod/core/digital-output",
       "nodes": {},
       "links": {},
       "impls": {
@@ -185,7 +185,7 @@
         },
         "BJ4l0cVdKe~ryFxRcNdKg": {
           "id": "BJ4l0cVdKe~ryFxRcNdKg",
-          "type": "xod/core/digital_output",
+          "type": "xod/core/digital-output",
           "position": {
             "x": 305,
             "y": 430

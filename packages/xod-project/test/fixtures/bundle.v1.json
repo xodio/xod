@@ -1,13 +1,13 @@
 {
   "meta": {
-    "name": "Awesome project",
+    "name": "awesome-project",
     "author": "Amperka team"
   },
   "patches": {
     "@/main": {
       "id": "@/main",
       "folderId": null,
-      "label": "Main",
+      "label": "main",
       "nodes": {
         "2c03e470-fefd-4f58-be6a-58d209d9158c": {
           "typeId": "xod/core/pot",
@@ -35,8 +35,7 @@
           "id": "89c69d91-b484-478d-8990-027e5f0a2e3e"
         },
         "4d716df5-81e7-4845-9b82-31a54c1634d7": {
-          "typeId": "@/sub/qux",
-          "pins": {},
+          "typeId": "@/qux",
           "position": {
             "x": 363,
             "y": 322
@@ -74,13 +73,13 @@
         }
       }
     },
-    "@/sub/qux": {
-      "id": "@/sub/qux",
-      "folderId": "1",
+    "@/qux": {
+      "id": "@/qux",
+      "folderId": null,
       "label": "QUX",
       "nodes": {
         "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
-          "typeId": "xod/core/inputNumber",
+          "typeId": "xod/core/input-number",
           "pins": {},
           "position": {
             "x": 276,
@@ -115,8 +114,8 @@
     }
   },
   "nodeTypes": {
-    "@/sub/qux": {
-      "id": "@/sub/qux",
+    "@/qux": {
+      "id": "@/qux",
       "patchNode": true,
       "label": "QUX",
       "category": "patch",
@@ -217,8 +216,8 @@
         "espruino": "// should be imported into impl.espruino\n"
       }
     },
-    "xod/core/inputNumber": {
-      "label": "<InputNumber>",
+    "xod/core/input-number": {
+      "label": "<input-number>",
       "category": "io",
       "properties": [{
         "key": "pinLabel",
@@ -227,7 +226,7 @@
         "label": "Pin label",
         "value": ""
       }],
-      "id": "xod/core/inputNumber",
+      "id": "xod/core/input-number",
       "pins": {
         "PIN": {
           "index": 0,

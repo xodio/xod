@@ -16,7 +16,7 @@ const sortByPath = R.sortBy(R.prop('path'));
 
 describe('Loader', () => {
   const workspace = path.resolve(__dirname, tempDir);
-  const projectPath = 'awesome_project';
+  const projectPath = 'awesome-project';
 
   it('should return an array of projects in workspace', (done) => {
     Loader.getProjects(workspace)

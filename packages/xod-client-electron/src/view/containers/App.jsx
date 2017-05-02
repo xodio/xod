@@ -13,6 +13,8 @@ import client from 'xod-client';
 import {
   getProjectName,
   getProjectAuthors,
+  isValidIdentifier,
+  IDENTIFIER_RULES,
 } from 'xod-project';
 
 import * as actions from '../actions';
@@ -489,6 +491,9 @@ class App extends client.App {
           isVisible={this.state.popupCreateProject}
           onConfirm={this.onCreateProject}
           onClose={this.hidePopupCreateProject}
+          inputMask={client.lowercaseKebabMask}
+          inputValidator={isValidIdentifier}
+          helpText={IDENTIFIER_RULES}
         >
           <p>
             Please, give a sonorous name to your project:
