@@ -11,6 +11,10 @@ export const INSTALL_PAV_ERROR = 'INSTALL_PAV_ERROR';
 export const NO_INSTALLED_PAVS = 'NO_INSTALLED_PAVS';
 
 export const INVALID_WORKSPACE_PATH = 'INVALID_WORKSPACE_PATH';
+export const WORKSPACE_DIR_NOT_EMPTY = 'WORKSPACE_DIR_NOT_EMPTY'; // not empty & without xod-workspace
+export const WORKSPACE_DIR_NOT_EXIST = 'WORKSPACE_DIR_NOT_EXIST'; // or empty
+
+export const CANT_CREATE_WORKSPACE_FILE = 'CANT_CREATE_WORKSPACE_FILE';
 
 // :: ERROR_CODE -> Error -> Promise.Reject Error
 export default curry(

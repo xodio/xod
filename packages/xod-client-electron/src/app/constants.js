@@ -14,10 +14,12 @@ export const DEFAULT_ARDUINO_PACKAGES_PATH = {
   linux: ['~/.arduino15/packages/'],
 };
 
+export const WORKSPACE_FILENAME = '.xod-workspace';
 export const DEFAULT_WORKSPACE_PATH = '~/xod/';
 
 export default {
   DEFAULT_ARDUINO_IDE_PATH,
   DEFAULT_ARDUINO_PACKAGES_PATH,
+  WORKSPACE_FILENAME,
   DEFAULT_WORKSPACE_PATH,
 };
