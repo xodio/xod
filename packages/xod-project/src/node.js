@@ -319,26 +319,16 @@ export const isPinCurried = def( // TODO: deprecated
 );
 
 /**
- * Returns regExp to extract data type from node type.
- *
- * @private
- * @function getDataTypeRegExp
- * @param {PIN_TYPES} pinTypes
- * @returns {RegExp}
- */
-const getDataTypeRegExp = R.compose(
-  pinTypes => new RegExp(`^xod/core/(?:input|output)-(${pinTypes})`, 'i'),
-  R.join('|'),
-  R.keys
-);
-
-/**
  * RegExp to extract data type from node type
  * @private
  * @name dataTypeRegexp
  * @type {RegExp}
  */
-const dataTypeRegexp = getDataTypeRegExp(CONST.NODETYPE_TO_DATA_TYPES); // TODO: make DRY
+const dataTypeRegexp = R.compose(
+  pinTypes => new RegExp(`^xod/core/(?:input|output)-(${pinTypes})`, 'i'),
+  R.join('|'),
+  R.values
+)(CONST.PIN_TYPE);
 
 /**
  * Returns data type extracted from pinNode type
@@ -349,7 +339,6 @@ const dataTypeRegexp = getDataTypeRegExp(CONST.NODETYPE_TO_DATA_TYPES); // TODO:
 export const getPinNodeDataType = def(
   'getPinNodeDataType :: TerminalNode -> DataType',
   R.compose(
-    R.prop(R.__, CONST.NODETYPE_TO_DATA_TYPES),
     R.nth(1),
     R.match(dataTypeRegexp),
     getNodeType

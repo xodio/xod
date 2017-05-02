@@ -50,19 +50,6 @@ export const PIN_TYPE = {
   BOOLEAN: 'boolean',
   PULSE: 'pulse',
 };
-/**
- * Enumeration of nodeTypes that references to data type.
- * E.G., inputBool === Boolean, constPulse === Pulse and etc.
- *
- * @name NODETYPE_TO_DATA_TYPES
- * @enum {PIN_TYPE}
- */
-export const NODETYPE_TO_DATA_TYPES = { // TODO: now this is just { number: 'number', etc }
-  number: PIN_TYPE.NUMBER,
-  string: PIN_TYPE.STRING,
-  bool: PIN_TYPE.BOOLEAN,
-  pulse: PIN_TYPE.PULSE,
-};
 
  /**
   * Enumeration of possible pin directions
