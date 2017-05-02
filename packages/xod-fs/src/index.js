@@ -14,3 +14,5 @@ export {
   findClosestProjectDir,
   findClosestWorkspaceDir,
 } from './find';
+export { default as copy } from './core/copy';
+export { default as rmrf } from './core/rmrf';
