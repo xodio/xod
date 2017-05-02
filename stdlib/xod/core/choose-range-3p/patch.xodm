@@ -1,0 +1,77 @@
+{
+  "label": "choose-range-3p",
+  "pins": {
+    "7207d63c-514b-4b43-9ef1-87cd74e7c018": {
+      "key": "7207d63c-514b-4b43-9ef1-87cd74e7c018",
+      "nodeId": "7207d63c-514b-4b43-9ef1-87cd74e7c018",
+      "pinLabel": "X",
+      "label": "X",
+      "direction": "input",
+      "type": "number",
+      "index": 0
+    },
+    "36c098f3-b1f4-49a9-93c4-225c1cb52bb4": {
+      "key": "36c098f3-b1f4-49a9-93c4-225c1cb52bb4",
+      "nodeId": "36c098f3-b1f4-49a9-93c4-225c1cb52bb4",
+      "pinLabel": "P1",
+      "label": "P1",
+      "direction": "input",
+      "type": "number",
+      "index": 1
+    },
+    "37ca6128-488d-44fb-906c-de2197407e1d": {
+      "key": "37ca6128-488d-44fb-906c-de2197407e1d",
+      "nodeId": "37ca6128-488d-44fb-906c-de2197407e1d",
+      "pinLabel": "P2",
+      "label": "P2",
+      "direction": "input",
+      "type": "number",
+      "index": 2
+    },
+    "4947c7e4-34a6-4dca-8f4c-7c6261839078": {
+      "key": "4947c7e4-34a6-4dca-8f4c-7c6261839078",
+      "nodeId": "4947c7e4-34a6-4dca-8f4c-7c6261839078",
+      "pinLabel": "P3",
+      "label": "P3",
+      "direction": "input",
+      "type": "number",
+      "index": 3
+    },
+    "98b22c46-c315-4b89-ac7a-3b967454ab4b": {
+      "key": "98b22c46-c315-4b89-ac7a-3b967454ab4b",
+      "nodeId": "98b22c46-c315-4b89-ac7a-3b967454ab4b",
+      "pinLabel": "LESS",
+      "label": "LESS",
+      "direction": "output",
+      "type": "pulse",
+      "index": 0
+    },
+    "50c74602-e37e-4177-ab00-19fcbf645f04": {
+      "key": "50c74602-e37e-4177-ab00-19fcbf645f04",
+      "nodeId": "50c74602-e37e-4177-ab00-19fcbf645f04",
+      "pinLabel": "MID1",
+      "label": "MID1",
+      "direction": "output",
+      "type": "pulse",
+      "index": 1
+    },
+    "a1f84664-46e7-42ba-b91e-67a37cde973c": {
+      "key": "a1f84664-46e7-42ba-b91e-67a37cde973c",
+      "nodeId": "a1f84664-46e7-42ba-b91e-67a37cde973c",
+      "pinLabel": "MID2",
+      "label": "MID2",
+      "direction": "output",
+      "type": "pulse",
+      "index": 2
+    },
+    "f28fd0c6-280c-4a6b-b143-c3a1398603bb": {
+      "key": "f28fd0c6-280c-4a6b-b143-c3a1398603bb",
+      "nodeId": "f28fd0c6-280c-4a6b-b143-c3a1398603bb",
+      "pinLabel": "GE",
+      "label": "GE",
+      "direction": "output",
+      "type": "pulse",
+      "index": 3
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "pins": {
+    "inp": {
+      "index": 0,
+      "direction": "input",
+      "key": "inp",
+      "type": "number",
+      "pinLabel": "IN",
+      "label": "Input",
+      "value": 0,
+      "description": "Input value to map"
+    },
+    "inA": {
+      "index": 1,
+      "direction": "input",
+      "key": "inA",
+      "type": "number",
+      "injected": true,
+      "pinLabel": "As",
+      "label": "Input range start",
+      "value": 0,
+      "description": "Input range start"
+    },
+    "inB": {
+      "index": 2,
+      "direction": "input",
+      "key": "inB",
+      "type": "number",
+      "injected": true,
+      "pinLabel": "Bs",
+      "label": "Input range end",
+      "value": 0,
+      "description": "Input range end"
+    },
+    "outA": {
+      "index": 3,
+      "direction": "input",
+      "key": "outA",
+      "type": "number",
+      "injected": true,
+      "pinLabel": "At",
+      "label": "Output range start",
+      "value": 0,
+      "description": "Output range start"
+    },
+    "outB": {
+      "index": 4,
+      "direction": "input",
+      "key": "outB",
+      "type": "number",
+      "injected": true,
+      "pinLabel": "Bt",
+      "label": "Output range end",
+      "value": 0,
+      "description": "Output range end"
+    },
+    "clip": {
+      "index": 5,
+      "direction": "input",
+      "key": "clip",
+      "type": "boolean",
+      "injected": true,
+      "pinLabel": "CL",
+      "label": "Clip",
+      "value": false,
+      "description": "Clip result to output range"
+    },
+    "out": {
+      "index": 0,
+      "direction": "output",
+      "key": "out",
+      "type": "number",
+      "description": "Mapped value"
+    }
+  }
+}

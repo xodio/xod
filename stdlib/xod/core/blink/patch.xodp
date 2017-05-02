@@ -1,0 +1,95 @@
+{
+  "nodes": {
+    "BkXpu3lYx": {
+      "id": "BkXpu3lYx",
+      "pins": {},
+      "position": {
+        "x": 268,
+        "y": 103
+      },
+      "properties": {
+        "label": "Interval (s)",
+        "pinLabel": "INT"
+      },
+      "typeId": "xod/core/input-number"
+    },
+    "SJbCdheYx": {
+      "id": "SJbCdheYx",
+      "pins": {
+        "interval": {
+          "injected": false,
+          "value": 1
+        }
+      },
+      "position": {
+        "x": 267,
+        "y": 215
+      },
+      "properties": {},
+      "typeId": "xod/core/clock"
+    },
+    "r16CdhxYe": {
+      "id": "r16CdhxYe",
+      "pins": {},
+      "position": {
+        "x": 271,
+        "y": 355
+      },
+      "properties": {},
+      "typeId": "xod/core/latch"
+    },
+    "ryikKheFg": {
+      "id": "ryikKheFg",
+      "pins": {},
+      "position": {
+        "x": 263,
+        "y": 508
+      },
+      "properties": {
+        "pinLabel": ""
+      },
+      "typeId": "xod/core/output-boolean"
+    }
+  },
+  "links": {
+    "B13JYnxKx": {
+      "id": "B13JYnxKx",
+      "pins": [
+        {
+          "nodeId": "r16CdhxYe",
+          "pinKey": "state"
+        },
+        {
+          "nodeId": "ryikKheFg",
+          "pinKey": "__in__"
+        }
+      ]
+    },
+    "H1VAd3eFg": {
+      "id": "H1VAd3eFg",
+      "pins": [
+        {
+          "nodeId": "BkXpu3lYx",
+          "pinKey": "__out__"
+        },
+        {
+          "nodeId": "SJbCdheYx",
+          "pinKey": "interval"
+        }
+      ]
+    },
+    "HJCA_2xFe": {
+      "id": "HJCA_2xFe",
+      "pins": [
+        {
+          "nodeId": "SJbCdheYx",
+          "pinKey": "tick"
+        },
+        {
+          "nodeId": "r16CdhxYe",
+          "pinKey": "toggle"
+        }
+      ]
+    }
+  }
+}

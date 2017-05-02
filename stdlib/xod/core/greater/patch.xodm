@@ -1,0 +1,27 @@
+{
+  "pins": {
+    "a": {
+      "index": 0,
+      "direction": "input",
+      "key": "a",
+      "type": "number",
+      "label": "A",
+      "description": "Left-hand value to compare"
+    },
+    "b": {
+      "index": 1,
+      "direction": "input",
+      "key": "b",
+      "type": "number",
+      "label": "B",
+      "description": "Right-hand value to compare"
+    },
+    "out": {
+      "index": 0,
+      "direction": "output",
+      "key": "out",
+      "type": "boolean",
+      "description": "True if A > B, false otherwise"
+    }
+  }
+}

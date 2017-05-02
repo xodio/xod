@@ -1,0 +1,31 @@
+{
+  "label": "less-equal",
+  "pins": {
+    "a1c97a17-d0a9-48d7-9b07-7b988a6f4cee": {
+      "key": "a1c97a17-d0a9-48d7-9b07-7b988a6f4cee",
+      "nodeId": "a1c97a17-d0a9-48d7-9b07-7b988a6f4cee",
+      "pinLabel": "A",
+      "label": "A",
+      "direction": "input",
+      "type": "number",
+      "index": 0
+    },
+    "e7ed6f6c-5d84-4e7b-944c-5b9dd1da278d": {
+      "key": "e7ed6f6c-5d84-4e7b-944c-5b9dd1da278d",
+      "nodeId": "e7ed6f6c-5d84-4e7b-944c-5b9dd1da278d",
+      "pinLabel": "B",
+      "label": "B",
+      "direction": "input",
+      "type": "number",
+      "index": 1
+    },
+    "46528aa4-2157-483b-bf99-2c81b80e8821": {
+      "key": "46528aa4-2157-483b-bf99-2c81b80e8821",
+      "nodeId": "46528aa4-2157-483b-bf99-2c81b80e8821",
+      "label": "out",
+      "direction": "output",
+      "type": "boolean",
+      "index": 0
+    }
+  }
+}

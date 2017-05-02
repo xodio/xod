@@ -1,0 +1,27 @@
+{
+  "label": "valveNumber",
+  "pure": false,
+  "pins": {
+    "cond": {
+      "index": 0,
+      "direction": "input",
+      "key": "cond",
+      "type": "boolean",
+      "description": "Condition"
+    },
+    "in": {
+      "index": 1,
+      "direction": "input",
+      "key": "in",
+      "type": "number",
+      "description": "Input"
+    },
+    "out": {
+      "index": 0,
+      "direction": "output",
+      "key": "out",
+      "type": "number",
+      "description": "Output (receives messages from the input if condition is \"true\")"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "pins": {
+    "a": {
+      "index": 0,
+      "direction": "input",
+      "key": "a",
+      "type": "number",
+      "label": "Input A",
+      "value": ""
+    },
+    "b": {
+      "index": 1,
+      "direction": "input",
+      "key": "b",
+      "type": "number",
+      "label": "Input B",
+      "value": ""
+    },
+    "out": {
+      "index": 0,
+      "direction": "output",
+      "key": "out",
+      "type": "number",
+      "label": "Result",
+      "value": ""
+    }
+  }
+}

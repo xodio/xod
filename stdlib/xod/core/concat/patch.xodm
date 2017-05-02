@@ -1,0 +1,27 @@
+{
+  "label": "concat",
+  "pins": {
+    "a": {
+      "index": 0,
+      "direction": "input",
+      "key": "a",
+      "type": "string",
+      "pinLabel": "A",
+      "label": "First string"
+    },
+    "b": {
+      "index": 1,
+      "direction": "input",
+      "key": "b",
+      "type": "string",
+      "pinLabel": "B",
+      "label": "Second string"
+    },
+    "result": {
+      "index": 0,
+      "direction": "output",
+      "key": "result",
+      "type": "string"
+    }
+  }
+}

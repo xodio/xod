@@ -1,0 +1,41 @@
+{
+  "label": "sort-pair",
+  "pins": {
+    "3bbed37a-8dbe-4439-b24e-7baccb03b866": {
+      "key": "3bbed37a-8dbe-4439-b24e-7baccb03b866",
+      "nodeId": "3bbed37a-8dbe-4439-b24e-7baccb03b866",
+      "pinLabel": "A",
+      "label": "A",
+      "direction": "input",
+      "type": "number",
+      "index": 0
+    },
+    "9f58a45e-d6ba-4ab1-b0bc-2f2b0db2d133": {
+      "key": "9f58a45e-d6ba-4ab1-b0bc-2f2b0db2d133",
+      "nodeId": "9f58a45e-d6ba-4ab1-b0bc-2f2b0db2d133",
+      "pinLabel": "B",
+      "label": "B",
+      "direction": "input",
+      "type": "number",
+      "index": 1
+    },
+    "fd261709-3162-4ebf-a46b-baa904db5c45": {
+      "key": "fd261709-3162-4ebf-a46b-baa904db5c45",
+      "nodeId": "fd261709-3162-4ebf-a46b-baa904db5c45",
+      "pinLabel": "MIN",
+      "label": "Min",
+      "direction": "output",
+      "type": "number",
+      "index": 0
+    },
+    "65192579-a9cd-4121-bd89-abc65fd162b0": {
+      "key": "65192579-a9cd-4121-bd89-abc65fd162b0",
+      "nodeId": "65192579-a9cd-4121-bd89-abc65fd162b0",
+      "pinLabel": "MAX",
+      "label": "Max",
+      "direction": "output",
+      "type": "number",
+      "index": 1
+    }
+  }
+}

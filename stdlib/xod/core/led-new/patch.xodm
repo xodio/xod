@@ -1,0 +1,22 @@
+{
+  "pins": {
+    "S1rlK2eYl": {
+      "key": "S1rlK2eYl",
+      "nodeId": "S1rlK2eYl",
+      "pinLabel": "BRT",
+      "label": "Brightness",
+      "direction": "input",
+      "type": "number",
+      "index": 0
+    },
+    "SJ7fK2eFe": {
+      "key": "SJ7fK2eFe",
+      "nodeId": "SJ7fK2eFe",
+      "pinLabel": "HPIN",
+      "label": "Hardware pin",
+      "direction": "input",
+      "type": "number",
+      "index": 1
+    }
+  }
+}

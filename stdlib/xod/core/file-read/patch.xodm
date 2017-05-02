@@ -1,0 +1,37 @@
+{
+  "label": "File read",
+  "pure": false,
+  "pins": {
+    "fileName": {
+      "index": 0,
+      "direction": "input",
+      "key": "fileName",
+      "type": "string",
+      "injected": true,
+      "pinLabel": "NAME",
+      "label": "Filename"
+    },
+    "pulse": {
+      "index": 1,
+      "direction": "input",
+      "key": "pulse",
+      "type": "pulse",
+      "pinLabel": "PLS",
+      "label": "Pulse"
+    },
+    "data": {
+      "index": 0,
+      "direction": "output",
+      "key": "data",
+      "type": "string",
+      "pinLabel": "DATA"
+    },
+    "error": {
+      "index": 1,
+      "direction": "output",
+      "key": "error",
+      "type": "string",
+      "pinLabel": "ERR"
+    }
+  }
+}

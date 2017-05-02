@@ -1,0 +1,14 @@
+{
+  "label": "stdout",
+  "pins": {
+    "value": {
+      "index": 0,
+      "direction": "input",
+      "key": "value",
+      "type": "string",
+      "label": "Value",
+      "value": "",
+      "description": "Value that should be written into process.stdout."
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "label": "or",
+  "pins": {
+    "a": {
+      "index": 0,
+      "direction": "input",
+      "key": "a",
+      "type": "boolean",
+      "description": "First input"
+    },
+    "b": {
+      "index": 1,
+      "direction": "input",
+      "key": "b",
+      "type": "boolean",
+      "description": "Second input"
+    },
+    "out": {
+      "index": 0,
+      "direction": "output",
+      "key": "out",
+      "type": "boolean",
+      "description": "\"true\" if a least one of inputs is \"true\""
+    }
+  }
+}

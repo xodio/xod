@@ -1,0 +1,19 @@
+{
+  "label": "Time",
+  "pins": {
+    "pulse": {
+      "index": 0,
+      "direction": "input",
+      "key": "pulse",
+      "type": "pulse",
+      "pinLabel": "PLS",
+      "label": "Pulse"
+    },
+    "value": {
+      "index": 0,
+      "direction": "output",
+      "key": "value",
+      "type": "number"
+    }
+  }
+}

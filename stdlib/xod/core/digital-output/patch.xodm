@@ -1,0 +1,20 @@
+{
+  "pins": {
+    "pin": {
+      "index": 0,
+      "direction": "input",
+      "key": "pin",
+      "type": "number",
+      "label": "Hardware pin",
+      "value": 0
+    },
+    "value": {
+      "index": 1,
+      "direction": "input",
+      "key": "value",
+      "type": "boolean",
+      "label": "Value for output",
+      "value": false
+    }
+  }
+}

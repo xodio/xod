@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "name": "core",
+    "version": "0.0.1",
+    "author": "Amperka team"
+  },
+  "libs": [
+  ]
+}

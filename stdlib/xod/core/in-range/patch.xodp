@@ -1,0 +1,179 @@
+{
+  "nodes": {
+    "cc0ccde0-1526-4424-a547-1dfd5a5a0d1f": {
+      "typeId": "@/input-number",
+      "pins": {},
+      "position": {
+        "x": 241,
+        "y": 117
+      },
+      "properties": {
+        "label": "X",
+        "pinLabel": "X"
+      },
+      "id": "cc0ccde0-1526-4424-a547-1dfd5a5a0d1f"
+    },
+    "6a361c77-4acf-42fe-8e96-a188a561a967": {
+      "typeId": "@/input-number",
+      "pins": {},
+      "position": {
+        "x": 434,
+        "y": 114
+      },
+      "properties": {
+        "label": "Min",
+        "pinLabel": "MIN"
+      },
+      "id": "6a361c77-4acf-42fe-8e96-a188a561a967"
+    },
+    "a6698d0c-e304-4cd8-9363-42a4f7024813": {
+      "typeId": "@/input-number",
+      "pins": {},
+      "position": {
+        "x": 595,
+        "y": 116
+      },
+      "properties": {
+        "label": "Max",
+        "pinLabel": "MAX"
+      },
+      "id": "a6698d0c-e304-4cd8-9363-42a4f7024813"
+    },
+    "d692d3e8-e5fe-43f8-9234-23f697569c0e": {
+      "typeId": "@/greater-equal",
+      "pins": {},
+      "position": {
+        "x": 349,
+        "y": 270
+      },
+      "properties": {},
+      "id": "d692d3e8-e5fe-43f8-9234-23f697569c0e"
+    },
+    "b1338c34-29b1-4b83-ac83-91d4aecb183f": {
+      "typeId": "@/less",
+      "pins": {},
+      "position": {
+        "x": 520,
+        "y": 271
+      },
+      "properties": {},
+      "id": "b1338c34-29b1-4b83-ac83-91d4aecb183f"
+    },
+    "9ed078cb-537e-4c68-b01f-8a25c450ff35": {
+      "typeId": "@/and",
+      "pins": {},
+      "position": {
+        "x": 432,
+        "y": 407
+      },
+      "properties": {},
+      "id": "9ed078cb-537e-4c68-b01f-8a25c450ff35"
+    },
+    "99813fd1-543e-4598-af0e-ed7e178c5ba8": {
+      "typeId": "@/output-boolean",
+      "pins": {},
+      "position": {
+        "x": 432,
+        "y": 541
+      },
+      "properties": {
+        "label": "Out",
+        "pinLabel": "Out"
+      },
+      "id": "99813fd1-543e-4598-af0e-ed7e178c5ba8"
+    }
+  },
+  "links": {
+    "4535581a-2a11-406d-8881-a8ba197c0427": {
+      "id": "4535581a-2a11-406d-8881-a8ba197c0427",
+      "pins": [
+        {
+          "nodeId": "cc0ccde0-1526-4424-a547-1dfd5a5a0d1f",
+          "pinKey": "__out__"
+        },
+        {
+          "nodeId": "d692d3e8-e5fe-43f8-9234-23f697569c0e",
+          "pinKey": "a477e7a1-322d-4c41-880a-bddce611e749"
+        }
+      ]
+    },
+    "2bde3b05-d5af-4420-9a96-c99e49ad4814": {
+      "id": "2bde3b05-d5af-4420-9a96-c99e49ad4814",
+      "pins": [
+        {
+          "nodeId": "6a361c77-4acf-42fe-8e96-a188a561a967",
+          "pinKey": "__out__"
+        },
+        {
+          "nodeId": "d692d3e8-e5fe-43f8-9234-23f697569c0e",
+          "pinKey": "c0750270-88c2-437c-940d-3d7a578a1041"
+        }
+      ]
+    },
+    "ef3d7979-b77b-4465-a5fa-515d2c81c26f": {
+      "id": "ef3d7979-b77b-4465-a5fa-515d2c81c26f",
+      "pins": [
+        {
+          "nodeId": "cc0ccde0-1526-4424-a547-1dfd5a5a0d1f",
+          "pinKey": "__out__"
+        },
+        {
+          "nodeId": "b1338c34-29b1-4b83-ac83-91d4aecb183f",
+          "pinKey": "a"
+        }
+      ]
+    },
+    "0623c218-8dbe-4449-b328-ec1c1807a119": {
+      "id": "0623c218-8dbe-4449-b328-ec1c1807a119",
+      "pins": [
+        {
+          "nodeId": "a6698d0c-e304-4cd8-9363-42a4f7024813",
+          "pinKey": "__out__"
+        },
+        {
+          "nodeId": "b1338c34-29b1-4b83-ac83-91d4aecb183f",
+          "pinKey": "b"
+        }
+      ]
+    },
+    "b31c5f57-9b36-4dba-be55-2864a56cdbbf": {
+      "id": "b31c5f57-9b36-4dba-be55-2864a56cdbbf",
+      "pins": [
+        {
+          "nodeId": "d692d3e8-e5fe-43f8-9234-23f697569c0e",
+          "pinKey": "1964d794-3c62-418a-bfbe-6a19c89bd6bb"
+        },
+        {
+          "nodeId": "9ed078cb-537e-4c68-b01f-8a25c450ff35",
+          "pinKey": "a"
+        }
+      ]
+    },
+    "6a713958-b941-4e2f-9d16-328e329cfee1": {
+      "id": "6a713958-b941-4e2f-9d16-328e329cfee1",
+      "pins": [
+        {
+          "nodeId": "b1338c34-29b1-4b83-ac83-91d4aecb183f",
+          "pinKey": "out"
+        },
+        {
+          "nodeId": "9ed078cb-537e-4c68-b01f-8a25c450ff35",
+          "pinKey": "b"
+        }
+      ]
+    },
+    "c0bf3d14-43e1-4d44-8cb5-345a4a11b353": {
+      "id": "c0bf3d14-43e1-4d44-8cb5-345a4a11b353",
+      "pins": [
+        {
+          "nodeId": "9ed078cb-537e-4c68-b01f-8a25c450ff35",
+          "pinKey": "out"
+        },
+        {
+          "nodeId": "99813fd1-543e-4598-af0e-ed7e178c5ba8",
+          "pinKey": "__in__"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "pins": {
+    "BkXpu3lYx": {
+      "key": "BkXpu3lYx",
+      "nodeId": "BkXpu3lYx",
+      "pinLabel": "INT",
+      "label": "Interval (s)",
+      "direction": "input",
+      "type": "number",
+      "index": 0
+    },
+    "ryikKheFg": {
+      "key": "ryikKheFg",
+      "nodeId": "ryikKheFg",
+      "pinLabel": "",
+      "direction": "output",
+      "type": "boolean",
+      "index": 0
+    }
+  }
+}

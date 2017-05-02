@@ -1,0 +1,20 @@
+{
+  "category": "hardware",
+  "properties": [
+    {
+      "key": "pin",
+      "label": "Pin",
+      "type": "string",
+      "value": "BTN1"
+    }
+  ],
+  "pins": {
+    "state": {
+      "index": 0,
+      "direction": "output",
+      "key": "state",
+      "type": "boolean",
+      "description": "Emits `true` when pressed and `false` when released"
+    }
+  }
+}

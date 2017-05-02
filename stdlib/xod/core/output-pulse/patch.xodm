@@ -1,0 +1,21 @@
+{
+  "label": "<OutputPulse>",
+  "category": "io",
+  "properties": [
+    {
+      "key": "pinLabel",
+      "type": "string",
+      "widget": "IOLabel",
+      "label": "Pin label",
+      "value": ""
+    }
+  ],
+  "pins": {
+    "__in__": {
+      "index": 0,
+      "direction": "input",
+      "key": "__in__",
+      "type": "pulse"
+    }
+  }
+}

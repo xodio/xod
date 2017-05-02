@@ -1,0 +1,144 @@
+{
+  "nodes": {
+    "ByFmY2gtx": {
+      "id": "ByFmY2gtx",
+      "pins": {},
+      "position": {
+        "x": 354,
+        "y": 218
+      },
+      "properties": {},
+      "typeId": "xod/math/multiply"
+    },
+    "S1o7K2lFg": {
+      "id": "S1o7K2lFg",
+      "pins": {},
+      "position": {
+        "x": 453,
+        "y": 298
+      },
+      "properties": {},
+      "typeId": "xod/math/multiply"
+    },
+    "S1rlK2eYl": {
+      "id": "S1rlK2eYl",
+      "pins": {},
+      "position": {
+        "x": 418,
+        "y": 104
+      },
+      "properties": {
+        "label": "Brightness",
+        "pinLabel": "BRT"
+      },
+      "typeId": "xod/core/input-number"
+    },
+    "SJ7fK2eFe": {
+      "id": "SJ7fK2eFe",
+      "pins": {},
+      "position": {
+        "x": 172,
+        "y": 104
+      },
+      "properties": {
+        "label": "Hardware pin",
+        "pinLabel": "HPIN"
+      },
+      "typeId": "xod/core/input-number"
+    },
+    "rkvVKhgYe": {
+      "id": "rkvVKhgYe",
+      "pins": {
+        "pin": {
+          "injected": false
+        }
+      },
+      "position": {
+        "x": 305,
+        "y": 430
+      },
+      "properties": {},
+      "typeId": "xod/core/digital-output"
+    }
+  },
+  "links": {
+    "ByjBFhlKx": {
+      "id": "ByjBFhlKx",
+      "pins": [
+        {
+          "nodeId": "S1rlK2eYl",
+          "pinKey": "__out__"
+        },
+        {
+          "nodeId": "ByFmY2gtx",
+          "pinKey": "a"
+        }
+      ]
+    },
+    "HJg8t2gtl": {
+      "id": "HJg8t2gtl",
+      "pins": [
+        {
+          "nodeId": "S1rlK2eYl",
+          "pinKey": "__out__"
+        },
+        {
+          "nodeId": "S1o7K2lFg",
+          "pinKey": "b"
+        }
+      ]
+    },
+    "SJRSFheKe": {
+      "id": "SJRSFheKe",
+      "pins": [
+        {
+          "nodeId": "ByFmY2gtx",
+          "pinKey": "out"
+        },
+        {
+          "nodeId": "S1o7K2lFg",
+          "pinKey": "a"
+        }
+      ]
+    },
+    "rJfLY2xFl": {
+      "id": "rJfLY2xFl",
+      "pins": [
+        {
+          "nodeId": "S1o7K2lFg",
+          "pinKey": "out"
+        },
+        {
+          "nodeId": "rkvVKhgYe",
+          "pinKey": "value"
+        }
+      ]
+    },
+    "rk04K2xYx": {
+      "id": "rk04K2xYx",
+      "pins": [
+        {
+          "nodeId": "SJ7fK2eFe",
+          "pinKey": "__out__"
+        },
+        {
+          "nodeId": "rkvVKhgYe",
+          "pinKey": "pin"
+        }
+      ]
+    },
+    "ry2BYhlKl": {
+      "id": "ry2BYhlKl",
+      "pins": [
+        {
+          "nodeId": "S1rlK2eYl",
+          "pinKey": "__out__"
+        },
+        {
+          "nodeId": "ByFmY2gtx",
+          "pinKey": "b"
+        }
+      ]
+    }
+  }
+}

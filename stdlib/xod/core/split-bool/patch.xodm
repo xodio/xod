@@ -1,0 +1,29 @@
+{
+  "label": "Split",
+  "pins": {
+    "inp": {
+      "key": "inp",
+      "index": 0,
+      "direction": "input",
+      "type": "boolean",
+      "label": "Input",
+      "description": "Input boolean value"
+    },
+    "outTrue": {
+      "key": "outTrue",
+      "index": 0,
+      "direction": "output",
+      "type": "pulse",
+      "pinLabel": "T",
+      "description": "Pulses if input is true"
+    },
+    "outFalse": {
+      "key": "outFalse",
+      "index": 1,
+      "direction": "output",
+      "type": "pulse",
+      "pinLabel": "F",
+      "description": "Pulses if input is false"
+    }
+  }
+}

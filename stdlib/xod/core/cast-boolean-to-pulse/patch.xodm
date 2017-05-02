@@ -1,0 +1,16 @@
+{
+  "pins": {
+    "__in__": {
+      "index": 0,
+      "direction": "input",
+      "key": "__in__",
+      "type": "boolean"
+    },
+    "__out__": {
+      "index": 0,
+      "direction": "output",
+      "key": "__out__",
+      "type": "pulse"
+    }
+  }
+}
