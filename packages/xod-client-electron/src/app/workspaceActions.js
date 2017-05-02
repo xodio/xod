@@ -4,6 +4,8 @@ import FS from 'fs';
 import {
   resolvePath,
   writeFile,
+  copy,
+  getProjects,
   isDirectoryExists,
   isFileExists,
 } from 'xod-fs';
@@ -16,6 +18,9 @@ import * as settings from './settings';
 import {
   DEFAULT_WORKSPACE_PATH,
   WORKSPACE_FILENAME,
+  PATH_TO_DEFAULT_WORKSPACE,
+  LIBS_FOLDERNAME,
+  DEFAULT_PROJECT_NAME,
 } from './constants';
 
 // =============================================================================
@@ -36,7 +41,33 @@ export const validatePath = path => Promise.resolve(path)
   .then(resolvePath)
   .catch(rejectWithCode(ERROR_CODES.INVALID_WORKSPACE_PATH));
 
-export const createWorkspaceFile = () => '';
+const createWorkspaceFile = () => '';
+
+// :: Path -> Path
+const resolveStdLibDestination = path => P.resolve(path, LIBS_FOLDERNAME);
+// :: Path -> Path
+const resolveDefaultProjectDestination = path => P.resolve(path, DEFAULT_PROJECT_NAME);
+
+// :: () -> Path
+const getStdLibPath = () => P.resolve(
+  __dirname, PATH_TO_DEFAULT_WORKSPACE, LIBS_FOLDERNAME
+);
+// :: () -> Path
+const getDefaultProjectPath = () => P.resolve(
+  __dirname, PATH_TO_DEFAULT_WORKSPACE, DEFAULT_PROJECT_NAME
+);
+
+// :: Path -> ProjectMeta[] -> ProjectMeta[]
+export const filterLocalProjects = R.curry((workspacePath, projects) => R.reject(
+R.compose(
+  R.equals(LIBS_FOLDERNAME),
+  R.head,
+  R.split(P.sep),
+  projectPath => P.relative(workspacePath, projectPath),
+  R.prop('path')
+),
+projects
+));
 
 // =============================================================================
 //
@@ -109,16 +140,28 @@ export const spawnWorkspaceFile = path => Promise.resolve(path)
   .then(R.always(path))
   .catch(rejectWithCode(ERROR_CODES.CANT_CREATE_WORKSPACE_FILE));
 
+// :: Path -> Promise Path Error
+export const spawnStdLib = path => Promise.resolve(path)
+  .then(resolveStdLibDestination)
+  .then(copy(getStdLibPath()))
+  .then(R.always(path))
+  .catch(rejectWithCode(ERROR_CODES.CANT_COPY_STDLIB));
+
+// :: Path -> Promise Path Error
+export const spawnDefaultProject = path => Promise.resolve(path)
+  .then(resolveDefaultProjectDestination)
+  .then(copy(getDefaultProjectPath()))
+  .then(R.always(path))
+  .catch(rejectWithCode(ERROR_CODES.CANT_COPY_DEFAULT_PROJECT));
+
+// :: Path -> Promise ProjectMeta[] Error
+export const enumerateProjects = path => getProjects(path)
+  .catch(rejectWithCode(ERROR_CODES.CANT_ENUMERATE_PROJECTS));
+
 // =============================================================================
 //
 // Compositions of steps to get coherent workspace
 //
 // =============================================================================
 
-export const onIDELaunch = R.pipeP(
-  loadWorkspacePath,
-  path => validatePath(path).catch(getHomeDir),
-  validateWorkspace
-);
-
-export default {};
+// TODO

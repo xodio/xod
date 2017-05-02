@@ -15,6 +15,9 @@ export const WORKSPACE_DIR_NOT_EMPTY = 'WORKSPACE_DIR_NOT_EMPTY'; // not empty &
 export const WORKSPACE_DIR_NOT_EXIST = 'WORKSPACE_DIR_NOT_EXIST'; // or empty
 
 export const CANT_CREATE_WORKSPACE_FILE = 'CANT_CREATE_WORKSPACE_FILE';
+export const CANT_COPY_STDLIB = 'CANT_COPY_STDLIB';
+export const CANT_COPY_DEFAULT_PROJECT = 'CANT_COPY_DEFAULT_PROJECT';
+export const CANT_ENUMERATE_PROJECTS = 'CANT_ENUMERATE_PROJECTS';
 
 // :: ERROR_CODE -> Error -> Promise.Reject Error
 export default curry(
