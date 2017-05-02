@@ -33,7 +33,19 @@ export {
   getTopology,
 } from './patch';
 export * from './node';
-export * from './pin';
+export {
+  getPinType,
+  getPinDirection,
+  getPinKey,
+  getPinLabel,
+  getPinValue,
+  getPinDescription,
+  getPinOrder,
+  isInputPin,
+  isOutputPin,
+  isTerminalPin,
+  createPin,
+} from './pin';
 export * from './link';
 export * from './constants';
 export * from './utils';

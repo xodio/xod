@@ -70,6 +70,7 @@ export const getPinValue = def(
 );
 
 /**
+ * @private
  * @function setPinLabel
  * @param {string} label
  * @param {Pin} pin
@@ -91,6 +92,7 @@ export const getPinDescription = def(
 );
 
 /**
+ * @private
  * @function setPinDescription
  * @param {string} description
  * @param {Pin} pin
@@ -112,6 +114,7 @@ export const getPinOrder = def(
 );
 
 /**
+ * @private
  * @function setPinOrder
  * @param {number} order
  * @param {Pin} pin
