@@ -1,7 +1,7 @@
 import R from 'ramda';
 
 import { explode } from 'xod-func-tools';
-import Project from 'xod-project';
+import * as Project from 'xod-project';
 import { def } from './types';
 
 import { renderProject } from './templates';

@@ -1,7 +1,7 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
 
-import XP from 'xod-project';
+import * as XP from 'xod-project';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
 import * as ProjectSelectors from '../project/selectors';

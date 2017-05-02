@@ -1,7 +1,7 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
 
-import XP from 'xod-project';
+import * as XP from 'xod-project';
 
 import {
   addNodePositioning,

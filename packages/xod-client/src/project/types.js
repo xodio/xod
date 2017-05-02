@@ -2,7 +2,7 @@ import R from 'ramda';
 import $ from 'sanctuary-def';
 
 import XF from 'xod-func-tools';
-import XP from 'xod-project';
+import * as XP from 'xod-project';
 
 import { SELECTION_ENTITY_TYPE } from '../editor/constants';
 

@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
-import Project from 'xod-project';
+import * as Project from 'xod-project';
 
 import { def } from './types';
 import { joinLines, joinLineBlocks } from './utils';

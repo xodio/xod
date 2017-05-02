@@ -1,5 +1,5 @@
 import R from 'ramda';
-import XP from 'xod-project';
+import * as XP from 'xod-project';
 import { explode } from 'xod-func-tools';
 
 import {
