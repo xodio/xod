@@ -54,6 +54,7 @@ export const getPatchPath = def(
 );
 
 /**
+ * @private
  * @function setPatchPath
  * @param {string} path
  * @param {Patch} patch
