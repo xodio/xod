@@ -44,7 +44,6 @@ export {
   isInputPin,
   isOutputPin,
   isTerminalPin,
-  createPin,
 } from './pin';
 export * from './link';
 export * from './constants';

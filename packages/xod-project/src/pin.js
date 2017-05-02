@@ -164,6 +164,7 @@ export const isTerminalPin = def(
 );
 
 /**
+ * @private
  * @function createPin
  * @param {string} key
  * @param {PIN_TYPE} type
