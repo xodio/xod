@@ -68,7 +68,6 @@ export const setPatchPath = def(
   )
 );
 
-
  /**
   * Returns a list of implementations for which a `patch` has native implementation
   *
@@ -210,12 +209,13 @@ export const getNodeByIdUnsafe = def(
 /**
  * Returns new patch with new pin.
  *
+ * @private
  * @function assocPin
  * @param {Pin} pin
  * @param {Patch} patch
  * @returns {Patch}
  */
-export const assocPin = def(
+export const assocPin = def( // TODO: completely remove later
   'assocPin :: Pin -> Patch -> Patch',
   (pin, patch) => R.assocPath(['pins', Pin.getPinKey(pin)], pin, patch)
 );
