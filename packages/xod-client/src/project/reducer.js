@@ -48,10 +48,7 @@ export default (state = {}, action) => {
         XP.listLocalPatches
       )(state);
 
-      const mainPatch = R.pipe(
-        XP.createPatch,
-        XP.setPatchPath(mainPatchPath)
-      )();
+      const mainPatch = XP.createPatch();
 
       return R.compose(
         explode,
