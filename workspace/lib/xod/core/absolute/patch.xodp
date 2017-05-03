@@ -1,0 +1,36 @@
+{
+  "nodes": {
+    "B1LNICdSDJW": {
+      "id": "B1LNICdSDJW",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "pins": {
+        "__in__": {
+          "injected": false,
+          "value": 0
+        }
+      },
+      "properties": {
+        "label": "ABSX",
+        "description": ""
+      },
+      "typeId": "@/output-number"
+    },
+    "H1SVIAuBDJZ": {
+      "id": "H1SVIAuBDJZ",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "X",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    }
+  },
+  "links": {}
+}

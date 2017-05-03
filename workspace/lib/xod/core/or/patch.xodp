@@ -1,0 +1,49 @@
+{
+  "nodes": {
+    "BJaG80urD1-": {
+      "id": "BJaG80urD1-",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "A",
+        "description": ""
+      },
+      "typeId": "@/input-boolean"
+    },
+    "HJCfI0dBDkb": {
+      "id": "HJCfI0dBDkb",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "B",
+        "description": ""
+      },
+      "typeId": "@/input-boolean"
+    },
+    "SJyXI0OrD1-": {
+      "id": "SJyXI0OrD1-",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "pins": {
+        "__in__": {
+          "injected": false,
+          "value": false
+        }
+      },
+      "properties": {
+        "label": "OR",
+        "description": ""
+      },
+      "typeId": "@/output-boolean"
+    }
+  },
+  "links": {}
+}

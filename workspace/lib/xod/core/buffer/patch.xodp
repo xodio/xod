@@ -1,0 +1,67 @@
+{
+  "nodes": {
+    "B1zQ8CdSvJ-": {
+      "id": "B1zQ8CdSvJ-",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "pins": {
+        "__in__": {
+          "injected": false,
+          "value": false
+        }
+      },
+      "properties": {
+        "label": "CHNG",
+        "description": ""
+      },
+      "typeId": "@/output-pulse"
+    },
+    "HkXm80uHPyb": {
+      "id": "HkXm80uHPyb",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "NEW",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    },
+    "Hy-QUR_BPkZ": {
+      "id": "Hy-QUR_BPkZ",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "UPD",
+        "description": ""
+      },
+      "typeId": "@/input-pulse"
+    },
+    "r1lQLAOBwJb": {
+      "id": "r1lQLAOBwJb",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "pins": {
+        "__in__": {
+          "injected": false,
+          "value": 0
+        }
+      },
+      "properties": {
+        "label": "MEM",
+        "description": ""
+      },
+      "typeId": "@/output-number"
+    }
+  },
+  "links": {}
+}

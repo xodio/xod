@@ -1,0 +1,49 @@
+{
+  "nodes": {
+    "B1gN80uHvk-": {
+      "id": "B1gN80uHvk-",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "pins": {
+        "__in__": {
+          "injected": false,
+          "value": false
+        }
+      },
+      "properties": {
+        "label": "AND",
+        "description": ""
+      },
+      "typeId": "@/output-boolean"
+    },
+    "SJMVU0urvkZ": {
+      "id": "SJMVU0urvkZ",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "A",
+        "description": ""
+      },
+      "typeId": "@/input-boolean"
+    },
+    "r1bVLR_BPJW": {
+      "id": "r1bVLR_BPJW",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "B",
+        "description": ""
+      },
+      "typeId": "@/input-boolean"
+    }
+  },
+  "links": {}
+}

@@ -1,0 +1,49 @@
+{
+  "nodes": {
+    "BkIZIA_rDk-": {
+      "id": "BkIZIA_rDk-",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "IVAL",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    },
+    "ByHWU0drvkW": {
+      "id": "ByHWU0drvkW",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "RST",
+        "description": ""
+      },
+      "typeId": "@/input-pulse"
+    },
+    "rJVZUAdHwk-": {
+      "id": "rJVZUAdHwk-",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "pins": {
+        "__in__": {
+          "injected": false,
+          "value": false
+        }
+      },
+      "properties": {
+        "label": "TICK",
+        "description": ""
+      },
+      "typeId": "@/output-pulse"
+    }
+  },
+  "links": {}
+}

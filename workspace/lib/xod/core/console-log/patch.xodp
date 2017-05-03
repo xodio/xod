@@ -1,0 +1,31 @@
+{
+  "nodes": {
+    "HJdO9HwJ-": {
+      "id": "HJdO9HwJ-",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "LINE",
+        "description": ""
+      },
+      "typeId": "@/input-string"
+    },
+    "S1n95SDJb": {
+      "id": "S1n95SDJb",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "DUMP",
+        "description": ""
+      },
+      "typeId": "@/input-pulse"
+    }
+  },
+  "links": {}
+}

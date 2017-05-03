@@ -1,0 +1,36 @@
+{
+  "nodes": {
+    "BkF78AurDJW": {
+      "id": "BkF78AurDJW",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "X",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    },
+    "rkO7L0uSP1Z": {
+      "id": "rkO7L0uSP1Z",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "pins": {
+        "__in__": {
+          "injected": false,
+          "value": 0
+        }
+      },
+      "properties": {
+        "label": "RND",
+        "description": ""
+      },
+      "typeId": "@/output-number"
+    }
+  },
+  "links": {}
+}

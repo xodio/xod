@@ -1,0 +1,49 @@
+{
+  "nodes": {
+    "B1ZUA_Hv1W": {
+      "id": "B1ZUA_Hv1W",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "PORT",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    },
+    "B1gI0urv1W": {
+      "id": "B1gI0urv1W",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "pins": {
+        "__in__": {
+          "injected": false,
+          "value": false
+        }
+      },
+      "properties": {
+        "label": "SIG",
+        "description": ""
+      },
+      "typeId": "@/output-boolean"
+    },
+    "SyLCdSwJZ": {
+      "id": "SyLCdSwJZ",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "UPD",
+        "description": ""
+      },
+      "typeId": "@/input-pulse"
+    }
+  },
+  "links": {}
+}

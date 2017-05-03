@@ -1,0 +1,44 @@
+{
+  "nodes": {
+    "HJjZLRdBw1-": {
+      "id": "HJjZLRdBw1-",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "LHS",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    },
+    "HktZUCdrPkZ": {
+      "id": "HktZUCdrPkZ",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "pins": {},
+      "properties": {
+        "label": "LT",
+        "description": ""
+      },
+      "typeId": "@/input-boolean"
+    },
+    "SJqZ8COrDkW": {
+      "id": "SJqZ8COrDkW",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "RHS",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    }
+  },
+  "links": {}
+}

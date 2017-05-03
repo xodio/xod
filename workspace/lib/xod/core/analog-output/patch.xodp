@@ -1,0 +1,44 @@
+{
+  "nodes": {
+    "Sy3ttSwkW": {
+      "id": "Sy3ttSwkW",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "PORT",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    },
+    "rJ4KKSDJW": {
+      "id": "rJ4KKSDJW",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "UPD",
+        "description": ""
+      },
+      "typeId": "@/input-pulse"
+    },
+    "rkodYHD1W": {
+      "id": "rkodYHD1W",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "DAC",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    }
+  },
+  "links": {}
+}

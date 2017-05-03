@@ -1,0 +1,49 @@
+{
+  "nodes": {
+    "B1GfLR_SPk-": {
+      "id": "B1GfLR_SPk-",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "X",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    },
+    "BkQzLCurwJZ": {
+      "id": "BkQzLCurwJZ",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "pins": {
+        "__in__": {
+          "injected": false,
+          "value": 0
+        }
+      },
+      "properties": {
+        "label": "PROD",
+        "description": ""
+      },
+      "typeId": "@/output-number"
+    },
+    "SJ4zUC_BD1-": {
+      "id": "SJ4zUC_BD1-",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "Y",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    }
+  },
+  "links": {}
+}

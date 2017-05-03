@@ -1,0 +1,80 @@
+{
+  "nodes": {
+    "B1RU0OrDkb": {
+      "id": "B1RU0OrDkb",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "RST",
+        "description": ""
+      },
+      "typeId": "@/input-pulse"
+    },
+    "Bkh8A_Sv1-": {
+      "id": "Bkh8A_Sv1-",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "SET",
+        "description": ""
+      },
+      "typeId": "@/input-pulse"
+    },
+    "HkyxURuSPyW": {
+      "id": "HkyxURuSPyW",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "pins": {
+        "__in__": {
+          "injected": false,
+          "value": false
+        }
+      },
+      "properties": {
+        "label": "MEM",
+        "description": ""
+      },
+      "typeId": "@/output-boolean"
+    },
+    "HyjUA_HvkW": {
+      "id": "HyjUA_HvkW",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "pins": {
+        "__in__": {
+          "injected": false,
+          "value": false
+        }
+      },
+      "properties": {
+        "label": "CHNG",
+        "description": ""
+      },
+      "typeId": "@/output-pulse"
+    },
+    "ryTIROHwkW": {
+      "id": "ryTIROHwkW",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "TGL",
+        "description": ""
+      },
+      "typeId": "@/input-pulse"
+    }
+  },
+  "links": {}
+}

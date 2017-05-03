@@ -1,0 +1,23 @@
+{
+  "nodes": {
+    "ryVmUAOrvkb": {
+      "id": "ryVmUAOrvkb",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "pins": {
+        "__in__": {
+          "injected": false,
+          "value": false
+        }
+      },
+      "properties": {
+        "label": "BOOT",
+        "description": ""
+      },
+      "typeId": "@/output-pulse"
+    }
+  },
+  "links": {}
+}

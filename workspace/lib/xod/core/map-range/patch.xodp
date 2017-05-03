@@ -1,0 +1,88 @@
+{
+  "nodes": {
+    "BJlzICOSv1-": {
+      "id": "BJlzICOSv1-",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "X",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    },
+    "H12bIR_SPyZ": {
+      "id": "H12bIR_SPyZ",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "pins": {
+        "__in__": {
+          "injected": false,
+          "value": 0
+        }
+      },
+      "properties": {
+        "label": "Xm",
+        "description": ""
+      },
+      "typeId": "@/output-number"
+    },
+    "HJCWLAdSwyW": {
+      "id": "HJCWLAdSwyW",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "Smax",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    },
+    "rJbGU0_Hv1Z": {
+      "id": "rJbGU0_Hv1Z",
+      "position": {
+        "x": 394,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "Tmin",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    },
+    "rkpbU0OrwyZ": {
+      "id": "rkpbU0OrwyZ",
+      "position": {
+        "x": 522,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "Tmax",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    },
+    "ry1z8CuBDy-": {
+      "id": "ry1z8CuBDy-",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "pins": {},
+      "properties": {
+        "label": "Smin",
+        "description": ""
+      },
+      "typeId": "@/input-number"
+    }
+  },
+  "links": {}
+}
