@@ -29,7 +29,8 @@ module.exports = {
         loader: 'babel?presets[]=es2015',
       },
       {
-        test: /node_modules\/espruino\/espruino\.js$/,
+        include: pkgpath('node_modules/espruino/espruino'),
+        test: /\.js$/,
         loaders: [
           //'globals-loader?./src/shame.js',
           'exports?Espruino',
@@ -37,7 +38,8 @@ module.exports = {
         ],
       },
       {
-        test: /node_modules\/espruino\/.+\.js$/,
+        include: pkgpath('node_modules/espruino'),
+        test: /\.js$/,
         loaders: [
           //'globals-loader?./src/shame.js',
           'imports?Espruino=espruino/espruino,$=jquery',
