@@ -24,4 +24,4 @@ cache:
   - $HOME/.nvm
   - node_modules
 
-script: ./.travis.sh
+script: ./tools/travis.sh
