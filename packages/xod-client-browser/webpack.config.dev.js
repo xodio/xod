@@ -15,13 +15,6 @@ const config = merge.smart(baseConfig, {
     port: 8080,
     contentBase: pkgpath('dist'),
   },
-  resolve: {
-    modulesDirectories: [
-      // search top-level node_modules for webpack-hot-loader
-      pkgpath('../../node_modules'),
-    ],
-    extensions: ['', '.js', '.jsx', '.scss'],
-  },
 });
 
 module.exports = validate(config);

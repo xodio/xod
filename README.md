@@ -67,6 +67,16 @@ Maintenance Scripts
 * `yarn run bootsrap` creates all necessary links between local packages and
   installs their dependencies
 
+### Distributing
+
+* Creates a distribution artifact corresponding to host's platform:
+    
+    ```bash
+    yarn install
+    yarn run verify
+    yarn run electron-dist
+    ```
+
 Contributing
 ------------
 

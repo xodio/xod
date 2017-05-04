@@ -3,14 +3,14 @@
   "description": "XOD visual programming language IDE",
   "homepage": "https://xod.io/",
   "license": "MIT",
-  "main": "dist_xod/app/main.js",
+  "main": "src-babel/app/main.js",
   "name": "xod-client-electron",
   "version": "0.0.1",
   "scripts": {
     "build:gui": "webpack --colors",
-    "build:app": "babel src/app/ -d dist_xod/app/",
+    "build:app": "babel src/app/ -d src-babel/app/",
     "build": "yarn build:gui && yarn build:app",
-    "start": "electron ./dist_xod/app/main.js",
+    "start": "electron ./src-babel/app/main.js",
     "electron-rebuild": "electron-rebuild",
     "pack": "build --dir",
     "dist": "build"
@@ -52,11 +52,6 @@
   },
   "build": {
     "appId": "io.xod.ide",
-    "files": [
-      "build",
-      "dist_xod",
-      "node_modules"
-    ],
     "linux": {
       "target": [
         "deb",

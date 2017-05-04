@@ -2,7 +2,7 @@ const chalk = require('chalk');
 const async = require('async');
 const escapeArgs = require('command-join');
 const ChildProcessUtilities = require('lerna/lib/ChildProcessUtilities');
-const RunCommand = require('lerna/lib/commands/RunCommand');
+const RunCommand = require('lerna/lib/commands/RunCommand').default;
 const withDependencies = require('./dependencies');
 
 const exceptLast = func => (value, idx, self) =>
