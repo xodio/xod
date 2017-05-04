@@ -169,6 +169,8 @@ const convertNodes = R.compose(
       R.evolve({ node: Patch.assocNode }),
       R.evolve({ node: copyNodePins(oldNode) }),
       node => ({ nodeIdMap: mapNodeId(oldNode, node), node }),
+      Node.setNodeDescription(R.pathOr('', ['properties', 'description'], oldNode)),
+      Node.setNodeLabel(R.pathOr('', ['properties', 'label'], oldNode)),
       R.apply(Node.createNode),
       R.props(['position', 'typeId'])
     )(oldNode)

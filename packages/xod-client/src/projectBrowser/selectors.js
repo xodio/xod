@@ -1,7 +1,7 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
 
-import XP from 'xod-project';
+import * as XP from 'xod-project';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
 import * as ProjectSelectors from '../project/selectors';
@@ -31,10 +31,13 @@ export const getOpenPopups = createSelector(
 // TODO: this is not actually label anymore
 export const getSelectedPatchLabel = createSelector(
   [ProjectSelectors.getProject, getSelectedPatchPath],
-  (project, selectedPatchPath) =>
-    XP.getPatchByPath(selectedPatchPath || '', project)
-      .map(R.pipe(XP.getPatchPath, XP.getBaseName))
-      .getOrElse('')
+  (project, selectedPatchPath) => (
+    selectedPatchPath
+      ? XP.getPatchByPath(selectedPatchPath, project)
+        .map(R.pipe(XP.getPatchPath, XP.getBaseName))
+        .getOrElse('')
+      : ''
+  )
 );
 
 const getLibraryPatchesList = createSelector(

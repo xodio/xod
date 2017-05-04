@@ -1,5 +1,5 @@
 import R from 'ramda';
-import XP from 'xod-project';
+import * as XP from 'xod-project';
 import { explode } from 'xod-func-tools';
 
 import {
@@ -48,10 +48,7 @@ export default (state = {}, action) => {
         XP.listLocalPatches
       )(state);
 
-      const mainPatch = R.pipe(
-        XP.createPatch,
-        XP.setPatchPath(mainPatchPath)
-      )();
+      const mainPatch = XP.createPatch();
 
       return R.compose(
         explode,

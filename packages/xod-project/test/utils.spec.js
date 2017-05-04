@@ -1,5 +1,5 @@
 import R from 'ramda';
-import chai, { expect } from 'chai';
+import chai, { expect, assert } from 'chai';
 import dirtyChai from 'dirty-chai';
 import shortid from 'shortid';
 
@@ -20,32 +20,82 @@ describe('Utils', () => {
     });
   });
 
+  describe('isValidIdentifier', () => {
+    it('should ensure that Identifier is alphanumeric, in lowercase and kebabcase', () => {
+      assert.isTrue(Utils.isValidIdentifier('a'));
+      assert.isTrue(Utils.isValidIdentifier('1'));
+      assert.isTrue(Utils.isValidIdentifier('a-1'));
+      assert.isTrue(Utils.isValidIdentifier('1-a'));
+      assert.isTrue(Utils.isValidIdentifier('lower'));
+      assert.isTrue(Utils.isValidIdentifier('lower-kebab'));
+      assert.isTrue(Utils.isValidIdentifier('lower-kebab-123'));
+
+      assert.isFalse(Utils.isValidIdentifier(''));
+      assert.isFalse(Utils.isValidIdentifier('A'));
+      assert.isFalse(Utils.isValidIdentifier('@'));
+      assert.isFalse(Utils.isValidIdentifier('snake_case'));
+      assert.isFalse(Utils.isValidIdentifier('camelCase'));
+      assert.isFalse(Utils.isValidIdentifier('foo/bar'));
+    });
+    it('should ensure that Identifier does not start or end with hypen', () => {
+      assert.isFalse(Utils.isValidIdentifier('-'));
+      assert.isFalse(Utils.isValidIdentifier('-something'));
+      assert.isFalse(Utils.isValidIdentifier('something-'));
+    });
+    it('should ensure that Identifier does not contain more than one hypen in a row', () => {
+      assert.isFalse(Utils.isValidIdentifier('foo--bar'));
+      assert.isFalse(Utils.isValidIdentifier('foo---bar'));
+    });
+  });
+
+  describe('isValidPatchPath', () => {
+    it('should accept local paths(@/some-valid-identifier)', () => {
+      assert.isTrue(Utils.isValidPatchPath('@/some-identifier'));
+
+      assert.isFalse(Utils.isValidPatchPath('@'));
+      assert.isFalse(Utils.isValidPatchPath('@/'));
+      assert.isFalse(Utils.isValidPatchPath('@/notAValidIdentifier'));
+      assert.isFalse(Utils.isValidPatchPath('@/not_a_valid_identifier'));
+      assert.isFalse(Utils.isValidPatchPath('@/extra/slashes'));
+    });
+    it('should accept library paths(author/lib-name/some-valid-identifier)', () => {
+      assert.isTrue(Utils.isValidPatchPath('a/b/c'));
+      assert.isTrue(Utils.isValidPatchPath('author/lib-name/some-identifier'));
+
+      assert.isFalse(Utils.isValidPatchPath('//'));
+      assert.isFalse(Utils.isValidPatchPath('invalid@author/lib-name/some-identifier'));
+      assert.isFalse(Utils.isValidPatchPath('author/@invalid@libname@/some-identifier'));
+      assert.isFalse(Utils.isValidPatchPath('author/lib-name/invalid@identifier'));
+
+      assert.isFalse(Utils.isValidPatchPath('not-enough/slashes'));
+      assert.isFalse(Utils.isValidPatchPath('way/too/much/slashes'));
+    });
+  });
+
   describe('validatePath', () => {
     it('should be Either.Left for not valid paths', () => {
       const err1 = Utils.validatePath('');
       const err2 = Utils.validatePath('dots.in.names');
-      expect(err1.isLeft).to.be.true();
-      expect(Utils.validatePath('кириллица').isLeft).to.be.true();
-      expect(Utils.validatePath('spa ce').isLeft).to.be.true();
-      expect(Utils.validatePath('spçiålÇhÅr$').isLeft).to.be.true();
-      expect(err2.isLeft).to.be.true();
+      assert.isTrue(err1.isLeft);
+      assert.isTrue(Utils.validatePath('кириллица').isLeft);
+      assert.isTrue(Utils.validatePath('spa ce').isLeft);
+      assert.isTrue(Utils.validatePath('spçiålÇhÅr$').isLeft);
+
+      assert.isTrue(Utils.validatePath('@/folder/subfolder/patchName').isLeft);
+      assert.isTrue(Utils.validatePath('@/patch_name_underscored').isLeft);
+      assert.isTrue(err2.isLeft);
 
       Helper.expectErrorMessage(expect, err1, CONST.ERROR.PATH_INVALID);
       Helper.expectErrorMessage(expect, err2, CONST.ERROR.PATH_INVALID);
     });
     it('should be Either.Right for valid paths', () => {
-      expect(Utils.validatePath('@/patchName').isRight).to.be.true();
-      expect(Utils.validatePath('@/folder/subfolder/patchName').isRight).to.be.true();
-      expect(Utils.validatePath('@/folder_underscored/patch_name_underscored').isRight).to.be.true();
-      expect(Utils.validatePath('@/folder-dashed/patch-name-dashed').isRight).to.be.true();
-      expect(Utils.validatePath('not/a/local/patchName').isRight).to.be.true();
-      expect(Utils.validatePath('not/a/local/patch-name-dashed').isRight).to.be.true();
-      expect(Utils.validatePath('not/a/local/patch_name_underscored').isRight).to.be.true();
+      assert.isTrue(Utils.validatePath('@/patch-name').isRight);
+      assert.isTrue(Utils.validatePath('author-name/library-name/patch-name').isRight);
     });
     it('should be Either.Right should containt correct value', () => {
-      const path = '@/folder/subFolder/patchName';
+      const path = '@/patchName';
       const result = Utils.validatePath(path);
-      expect(result.isRight).to.be.true();
+      assert.isTrue(result.isRight);
 
       /* istanbul ignore next */
       Helper.expectEither(

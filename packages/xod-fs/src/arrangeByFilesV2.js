@@ -57,7 +57,10 @@ const convertNode = R.applySpec({
       value: R.prop('value'),
     }))
   ),
-  properties: R.always({}), // TODO: label? description?
+  properties: R.applySpec({
+    label: XP.getNodeLabel,
+    description: XP.getNodeDescription,
+  }),
   typeId: XP.getNodeType,
 });
 

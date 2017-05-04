@@ -1,4 +1,4 @@
-import { generateId } from 'xod-project';
+import { generateId, isValidIdentifier } from 'xod-project';
 
 import { addError } from '../messages/actions';
 import { PROJECT_BROWSER_ERRORS } from '../messages/constants';
@@ -6,13 +6,19 @@ import * as ActionType from './actionTypes';
 import { isPatchPathTaken } from './utils';
 import { getCurrentPatchPath } from '../editor/selectors';
 
-export const createProject = projectName => ({
-  type: ActionType.PROJECT_CREATE,
-  payload: {
-    name: projectName,
-    mainPatchPath: '@/main',
-  },
-});
+export const createProject = projectName => (dispatch) => {
+  if (!isValidIdentifier(projectName)) {
+    return dispatch(addError(PROJECT_BROWSER_ERRORS.INVALID_PROJECT_NAME));
+  }
+
+  return dispatch({
+    type: ActionType.PROJECT_CREATE,
+    payload: {
+      name: projectName,
+      mainPatchPath: '@/main',
+    },
+  });
+};
 
 export const addNode = (typeId, position, patchPath) => (dispatch) => {
   const newNodeId = generateId();
@@ -117,6 +123,10 @@ export const redoPatch = patchPath => ({
 });
 
 export const addPatch = baseName => (dispatch, getState) => {
+  if (!isValidIdentifier(baseName)) {
+    return dispatch(addError(PROJECT_BROWSER_ERRORS.INVALID_PATCH_NAME));
+  }
+
   const state = getState();
   const newPatchPath = `@/${baseName}`;
 

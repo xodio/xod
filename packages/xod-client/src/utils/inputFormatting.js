@@ -1,10 +1,10 @@
 import R from 'ramda';
 import { PROPERTY_TYPE } from '../editor/constants';
 
+export const lowercaseKebabMask = R.replace(/[^a-z0-9-]/g, '');
+
 const removeAllDotsExceptFirst = str =>
   str.replace(/^([^.]*\.)(.*)$/, (a, b, c) => b + c.replace(/\./g, ''));
-
-export const isLowercaseKebab = R.test(/[a-z0-9-]/);
 
 /**
  * transform value when input is in progress

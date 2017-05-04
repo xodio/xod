@@ -139,7 +139,7 @@ export default {
             x: 263,
             y: 508,
           },
-          type: 'xod/core/outputBoolean',
+          type: 'xod/core/output-boolean',
         },
         SJbd3z45ag: {
           id: 'SJbd3z45ag',
@@ -157,7 +157,7 @@ export default {
             x: 268,
             y: 103,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         Sye_2f45ax: {
           id: 'Sye_2f45ax',
@@ -590,7 +590,7 @@ export default {
         },
       },
     },
-    'xod/core/choose_range': {
+    'xod/core/choose-range': {
       impls: {},
       links: {
         BJIgthfVqpx: {
@@ -657,7 +657,7 @@ export default {
             x: 420,
             y: 482,
           },
-          type: 'xod/core/outputPulse',
+          type: 'xod/core/output-pulse',
         },
         BJHu2GV5al: {
           id: 'BJHu2GV5al',
@@ -666,7 +666,7 @@ export default {
             x: 242,
             y: 486,
           },
-          type: 'xod/core/outputPulse',
+          type: 'xod/core/output-pulse',
         },
         H1PuhzVcax: {
           id: 'H1PuhzVcax',
@@ -693,7 +693,7 @@ export default {
             x: 226,
             y: 91,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         rk__hGVcpe: {
           id: 'rk__hGVcpe',
@@ -702,10 +702,10 @@ export default {
             x: 460,
             y: 88,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
       },
-      path: 'xod/core/choose_range',
+      path: 'xod/core/choose-range',
       pins: {
         B1Iu3fV9pe: {
           description: '',
@@ -745,7 +745,7 @@ export default {
         },
       },
     },
-    'xod/core/choose_range_2p': {
+    'xod/core/choose-range-2p': {
       impls: {},
       links: {
         H1alKhzEqpl: {
@@ -856,7 +856,7 @@ export default {
             x: 462,
             y: 256,
           },
-          type: 'xod/core/choose_range',
+          type: 'xod/core/choose-range',
         },
         BJqu3zV9ax: {
           id: 'BJqu3zV9ax',
@@ -865,7 +865,7 @@ export default {
             x: 367,
             y: 117,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         ByCO2fNqag: {
           id: 'ByCO2fNqag',
@@ -874,7 +874,7 @@ export default {
             x: 189,
             y: 116,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         H1aOnfEcpe: {
           id: 'H1aOnfEcpe',
@@ -883,7 +883,7 @@ export default {
             x: 191,
             y: 452,
           },
-          type: 'xod/core/outputPulse',
+          type: 'xod/core/output-pulse',
         },
         SJ2u2zVqTe: {
           id: 'SJ2u2zVqTe',
@@ -901,7 +901,7 @@ export default {
             x: 554,
             y: 457,
           },
-          type: 'xod/core/outputPulse',
+          type: 'xod/core/output-pulse',
         },
         rJWlOnGNqal: {
           id: 'rJWlOnGNqal',
@@ -910,7 +910,7 @@ export default {
             x: 271,
             y: 258,
           },
-          type: 'xod/core/choose_range',
+          type: 'xod/core/choose-range',
         },
         rk1guhzVqpl: {
           id: 'rk1guhzVqpl',
@@ -919,7 +919,7 @@ export default {
             x: 553,
             y: 118,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         rygeO3zE5Te: {
           id: 'rygeO3zE5Te',
@@ -928,10 +928,10 @@ export default {
             x: 402,
             y: 456,
           },
-          type: 'xod/core/outputPulse',
+          type: 'xod/core/output-pulse',
         },
       },
-      path: 'xod/core/choose_range_2p',
+      path: 'xod/core/choose-range-2p',
       pins: {
         BJqu3zV9ax: {
           description: '',
@@ -989,7 +989,7 @@ export default {
         },
       },
     },
-    'xod/core/choose_range_3p': {
+    'xod/core/choose-range-3p': {
       impls: {},
       links: {
         'B1O-F2zN56g': {
@@ -1122,7 +1122,7 @@ export default {
             x: 313,
             y: 538,
           },
-          type: 'xod/core/outputPulse',
+          type: 'xod/core/output-pulse',
         },
         BJXxO2zVqpx: {
           id: 'BJXxO2zVqpx',
@@ -1131,7 +1131,7 @@ export default {
             x: 315,
             y: 140,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         BkFxdnzNcpg: {
           id: 'BkFxdnzNcpg',
@@ -1140,7 +1140,7 @@ export default {
             x: 456,
             y: 535,
           },
-          type: 'xod/core/outputPulse',
+          type: 'xod/core/output-pulse',
         },
         ByHe_hGEc6l: {
           id: 'ByHe_hGEc6l',
@@ -1149,7 +1149,7 @@ export default {
             x: 589,
             y: 140,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         HkVeOnzV9ae: {
           id: 'HkVeOnzV9ae',
@@ -1158,7 +1158,7 @@ export default {
             x: 452,
             y: 140,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         Hkwedhz456l: {
           id: 'Hkwedhz456l',
@@ -1167,7 +1167,7 @@ export default {
             x: 171,
             y: 538,
           },
-          type: 'xod/core/outputPulse',
+          type: 'xod/core/output-pulse',
         },
         Hy8eu3MNqTl: {
           id: 'Hy8eu3MNqTl',
@@ -1176,7 +1176,7 @@ export default {
             x: 249,
             y: 294,
           },
-          type: 'xod/core/choose_range_2p',
+          type: 'xod/core/choose-range-2p',
         },
         HycgdhfNqpe: {
           id: 'HycgdhfNqpe',
@@ -1185,7 +1185,7 @@ export default {
             x: 598,
             y: 533,
           },
-          type: 'xod/core/outputPulse',
+          type: 'xod/core/output-pulse',
         },
         S12ld3MNcax: {
           id: 'S12ld3MNcax',
@@ -1203,7 +1203,7 @@ export default {
             x: 173,
             y: 140,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         Skog_nME5Tg: {
           id: 'Skog_nME5Tg',
@@ -1212,10 +1212,10 @@ export default {
             x: 495,
             y: 297,
           },
-          type: 'xod/core/choose_range',
+          type: 'xod/core/choose-range',
         },
       },
-      path: 'xod/core/choose_range_3p',
+      path: 'xod/core/choose-range-3p',
       pins: {
         B1_x_3G4q6x: {
           description: '',
@@ -1412,13 +1412,13 @@ export default {
         },
       },
     },
-    'xod/core/constBool': {
+    'xod/core/const-bool': {
       impls: {
         js: '\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n',
       },
       links: {},
       nodes: {},
-      path: 'xod/core/constBool',
+      path: 'xod/core/const-bool',
       pins: {
         inValue: {
           description: '',
@@ -1449,13 +1449,13 @@ export default {
         },
       },
     },
-    'xod/core/constNumber': {
+    'xod/core/const-number': {
       impls: {
         js: '\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n',
       },
       links: {},
       nodes: {},
-      path: 'xod/core/constNumber',
+      path: 'xod/core/const-number',
       pins: {
         inValue: {
           description: '',
@@ -1486,13 +1486,13 @@ export default {
         },
       },
     },
-    'xod/core/constString': {
+    'xod/core/const-string': {
       impls: {
         js: '\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n',
       },
       links: {},
       nodes: {},
-      path: 'xod/core/constString',
+      path: 'xod/core/const-string',
       pins: {
         inValue: {
           description: '',
@@ -1561,13 +1561,13 @@ export default {
         },
       },
     },
-    'xod/core/digital_input': {
+    'xod/core/digital-input': {
       impls: {
         espruino: "\nmodule.exports.setup = function(e) {\n  e.inputs.pin = new Pin(e.inputs.pin);\n\n  setWatch(function(evt) {\n    e.fire({ state: !evt.state });\n  }, e.inputs.pin, {\n    edge: 'both',\n    repeat: true,\n    debounce: 30\n  });\n};\n",
       },
       links: {},
       nodes: {},
-      path: 'xod/core/digital_input',
+      path: 'xod/core/digital-input',
       pins: {
         PIN: {
           description: '',
@@ -1589,14 +1589,14 @@ export default {
         },
       },
     },
-    'xod/core/digital_output': {
+    'xod/core/digital-output': {
       impls: {
         arduino: 'struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    const int pin = (int)getNumber(nid, Inputs::PIN);\n    const bool val = getLogic(nid, Inputs::VALUE);\n\n    if (isInputDirty(nid, Inputs::PIN)) {\n        ::pinMode(pin, OUTPUT);\n    }\n\n    ::digitalWrite(pin, val);\n}\n',
         espruino: '\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n',
       },
       links: {},
       nodes: {},
-      path: 'xod/core/digital_output',
+      path: 'xod/core/digital-output',
       pins: {
         PIN: {
           description: '',
@@ -1701,13 +1701,13 @@ export default {
         },
       },
     },
-    'xod/core/file_read': {
+    'xod/core/file-read': {
       impls: {
         nodejs: "var path = require('path');\nvar fs = require('fs');\n\nmodule.exports.evaluate = function(e) {\n  var filename = e.inputs.fileName;\n\n  fs.readFile(filename, function (err, data) {\n    if (err) {\n      e.fire({ error: err.toString() });\n      return;\n    }\n\n    e.fire({ data: data });\n  });\n};\n",
       },
       links: {},
       nodes: {},
-      path: 'xod/core/file_read',
+      path: 'xod/core/file-read',
       pins: {
         data: {
           description: '',
@@ -1747,13 +1747,13 @@ export default {
         },
       },
     },
-    'xod/core/file_write': {
+    'xod/core/file-write': {
       impls: {
         nodejs: "var path = require('path');\nvar fs = require('fs');\n\nmodule.exports.evaluate = function(e) {\n  var filename = e.inputs.fileName;\n  var data = e.inputs.data;\n\n  fs.writeFile(filename, data, function (err) {\n    if (err) {\n      e.fire({ onFailure: err.toString() });\n      return;\n    }\n\n    e.fire({ onSuccess: PULSE });\n  });\n};\n",
       },
       links: {},
       nodes: {},
-      path: 'xod/core/file_write',
+      path: 'xod/core/file-write',
       pins: {
         data: {
           description: '',
@@ -1830,7 +1830,7 @@ export default {
         },
       },
     },
-    'xod/core/greater_equal': {
+    'xod/core/greater-equal': {
       impls: {},
       links: {
         BykfK2G49Tx: {
@@ -1904,7 +1904,7 @@ export default {
             x: 271,
             y: 122,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         'SJb-u2f4qal': {
           id: 'SJb-u2f4qal',
@@ -1913,7 +1913,7 @@ export default {
             x: 360,
             y: 479,
           },
-          type: 'xod/core/outputBoolean',
+          type: 'xod/core/output-boolean',
         },
         r10lu2MVq6g: {
           id: 'r10lu2MVq6g',
@@ -1922,10 +1922,10 @@ export default {
             x: 439,
             y: 120,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
       },
-      path: 'xod/core/greater_equal',
+      path: 'xod/core/greater-equal',
       pins: {
         HJ6gO2fVcpx: {
           description: '',
@@ -1956,7 +1956,7 @@ export default {
         },
       },
     },
-    'xod/core/in_range': {
+    'xod/core/in-range': {
       impls: {},
       links: {
         BJgMYhMEqpx: {
@@ -2045,7 +2045,7 @@ export default {
             x: 241,
             y: 117,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         HJIZ_2f4qag: {
           id: 'HJIZ_2f4qag',
@@ -2063,7 +2063,7 @@ export default {
             x: 595,
             y: 116,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         HJrb_nz4qTx: {
           id: 'HJrb_nz4qTx',
@@ -2072,7 +2072,7 @@ export default {
             x: 349,
             y: 270,
           },
-          type: 'xod/core/greater_equal',
+          type: 'xod/core/greater-equal',
         },
         Hy_bd3MNcax: {
           id: 'Hy_bd3MNcax',
@@ -2081,7 +2081,7 @@ export default {
             x: 432,
             y: 541,
           },
-          type: 'xod/core/outputBoolean',
+          type: 'xod/core/output-boolean',
         },
         HywZO2zE9ag: {
           id: 'HywZO2zE9ag',
@@ -2099,10 +2099,10 @@ export default {
             x: 434,
             y: 114,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
       },
-      path: 'xod/core/in_range',
+      path: 'xod/core/in-range',
       pins: {
         BJGbOnfE5pl: {
           description: '',
@@ -2142,11 +2142,11 @@ export default {
         },
       },
     },
-    'xod/core/inputBool': {
+    'xod/core/input-bool': {
       impls: {},
       links: {},
       nodes: {},
-      path: 'xod/core/inputBool',
+      path: 'xod/core/input-bool',
       pins: {
         __out__: {
           description: '',
@@ -2159,11 +2159,11 @@ export default {
         },
       },
     },
-    'xod/core/inputBoolean': {
+    'xod/core/input-boolean': {
       impls: {},
       links: {},
       nodes: {},
-      path: 'xod/core/inputBoolean',
+      path: 'xod/core/input-boolean',
       pins: {
         __out__: {
           description: '',
@@ -2176,11 +2176,11 @@ export default {
         },
       },
     },
-    'xod/core/inputNumber': {
+    'xod/core/input-number': {
       impls: {},
       links: {},
       nodes: {},
-      path: 'xod/core/inputNumber',
+      path: 'xod/core/input-number',
       pins: {
         __out__: {
           description: '',
@@ -2193,11 +2193,11 @@ export default {
         },
       },
     },
-    'xod/core/inputPulse': {
+    'xod/core/input-pulse': {
       impls: {},
       links: {},
       nodes: {},
-      path: 'xod/core/inputPulse',
+      path: 'xod/core/input-pulse',
       pins: {
         __out__: {
           description: '',
@@ -2210,11 +2210,11 @@ export default {
         },
       },
     },
-    'xod/core/inputString': {
+    'xod/core/input-string': {
       impls: {},
       links: {},
       nodes: {},
-      path: 'xod/core/inputString',
+      path: 'xod/core/input-string',
       pins: {
         __out__: {
           description: '',
@@ -2371,7 +2371,7 @@ export default {
             x: 418,
             y: 104,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         HJfKnfVcpe: {
           id: 'HJfKnfVcpe',
@@ -2380,7 +2380,7 @@ export default {
             x: 172,
             y: 104,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         HylFhM45pg: {
           id: 'HylFhM45pg',
@@ -2411,7 +2411,7 @@ export default {
             x: 305,
             y: 430,
           },
-          type: 'xod/core/digital_output',
+          type: 'xod/core/digital-output',
         },
       },
       path: 'xod/core/led-new',
@@ -2473,7 +2473,7 @@ export default {
         },
       },
     },
-    'xod/core/less_equal': {
+    'xod/core/less-equal': {
       impls: {},
       links: {
         B1lQKhzN5al: {
@@ -2529,7 +2529,7 @@ export default {
             x: 232,
             y: 76,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         ByrK2zNq6e: {
           id: 'ByrK2zNq6e',
@@ -2538,7 +2538,7 @@ export default {
             x: 428,
             y: 78,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         HkUt2MV5pg: {
           id: 'HkUt2MV5pg',
@@ -2547,7 +2547,7 @@ export default {
             x: 320,
             y: 454,
           },
-          type: 'xod/core/outputBoolean',
+          type: 'xod/core/output-boolean',
         },
         SJuYhM49pg: {
           id: 'SJuYhM49pg',
@@ -2568,7 +2568,7 @@ export default {
           type: 'xod/core/greater',
         },
       },
-      path: 'xod/core/less_equal',
+      path: 'xod/core/less-equal',
       pins: {
         BJNtnM45al: {
           description: '',
@@ -2737,11 +2737,11 @@ export default {
         },
       },
     },
-    'xod/core/outputBoolean': {
+    'xod/core/output-boolean': {
       impls: {},
       links: {},
       nodes: {},
-      path: 'xod/core/outputBoolean',
+      path: 'xod/core/output-boolean',
       pins: {
         __in__: {
           description: '',
@@ -2754,11 +2754,11 @@ export default {
         },
       },
     },
-    'xod/core/outputNumber': {
+    'xod/core/output-number': {
       impls: {},
       links: {},
       nodes: {},
-      path: 'xod/core/outputNumber',
+      path: 'xod/core/output-number',
       pins: {
         __in__: {
           description: '',
@@ -2771,11 +2771,11 @@ export default {
         },
       },
     },
-    'xod/core/outputPulse': {
+    'xod/core/output-pulse': {
       impls: {},
       links: {},
       nodes: {},
-      path: 'xod/core/outputPulse',
+      path: 'xod/core/output-pulse',
       pins: {
         __in__: {
           description: '',
@@ -2788,11 +2788,11 @@ export default {
         },
       },
     },
-    'xod/core/outputString': {
+    'xod/core/output-string': {
       impls: {},
       links: {},
       nodes: {},
-      path: 'xod/core/outputString',
+      path: 'xod/core/output-string',
       pins: {
         __in__: {
           description: '',
@@ -2870,7 +2870,7 @@ export default {
         },
       },
     },
-    'xod/core/sort_pair': {
+    'xod/core/sort-pair': {
       impls: {},
       links: {
         B17mF3zEcTg: {
@@ -2992,7 +2992,7 @@ export default {
             x: 671,
             y: 110,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
         BJ6KhzV5Te: {
           id: 'BJ6KhzV5Te',
@@ -3010,7 +3010,7 @@ export default {
             x: 327,
             y: 497,
           },
-          type: 'xod/core/outputNumber',
+          type: 'xod/core/output-number',
         },
         BkyeKhzV56l: {
           id: 'BkyeKhzV56l',
@@ -3028,7 +3028,7 @@ export default {
             x: 528,
             y: 497,
           },
-          type: 'xod/core/outputNumber',
+          type: 'xod/core/output-number',
         },
         HJRtnME96g: {
           id: 'HJRtnME96g',
@@ -3046,10 +3046,10 @@ export default {
             x: 134,
             y: 91,
           },
-          type: 'xod/core/inputNumber',
+          type: 'xod/core/input-number',
         },
       },
-      path: 'xod/core/sort_pair',
+      path: 'xod/core/sort-pair',
       pins: {
         B15Y3z45ae: {
           description: '',
@@ -3089,13 +3089,13 @@ export default {
         },
       },
     },
-    'xod/core/split_bool': {
+    'xod/core/split-bool': {
       impls: {
         js: '\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.inp) {\n    return { outTrue: PULSE };\n  } else {\n    return { outFalse: PULSE };\n  }\n};\n',
       },
       links: {},
       nodes: {},
-      path: 'xod/core/split_bool',
+      path: 'xod/core/split-bool',
       pins: {
         inp: {
           description: '',
@@ -3173,13 +3173,13 @@ export default {
         },
       },
     },
-    'xod/core/triggerableNumber': {
+    'xod/core/triggerable-number': {
       impls: {
         js: '\nmodule.exports.evaluate = function(e) {\n  return { out: e.props.value };\n};\n',
       },
       links: {},
       nodes: {},
-      path: 'xod/core/triggerableNumber',
+      path: 'xod/core/triggerable-number',
       pins: {
         out: {
           description: '',
@@ -3210,13 +3210,13 @@ export default {
         },
       },
     },
-    'xod/core/ultrasonic_HC_SR04': {
+    'xod/core/ultrasonic-hc-sr04': {
       impls: {
         espruino: "\nvar sonic = require('@amperka/ultrasonic');\n\nmodule.exports.setup = function(e) {\n  var pinTrig = new Pin(e.props.pinTrig);\n  var pinEcho = new Pin(e.props.pinEcho);\n  e.context.device = sonic.connect({\n    trigPin: pinTrig,\n    echoPin: pinEcho\n  });\n  e.context.units = e.props.units;\n  e.context.isBusy = false;\n};\n\nmodule.exports.evaluate = function(e) {\n  if (e.context.isBusy) {\n    e.fire({ error: \"busy\" });\n  } else {\n    e.context.isBusy = true;\n    e.context.device.ping(function(err, value) {\n      e.context.isBusy = false;\n      if (err) {\n        e.fire({ error: err.msg });\n      } else {\n        e.fire({ value: value });\n      }\n    }, e.context.units);\n  }\n};\n",
       },
       links: {},
       nodes: {},
-      path: 'xod/core/ultrasonic_HC_SR04',
+      path: 'xod/core/ultrasonic-hc-sr04',
       pins: {
         error: {
           description: '',

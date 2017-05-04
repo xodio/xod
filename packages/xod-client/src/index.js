@@ -42,6 +42,7 @@ export * from './project/selectors';
 
 export * from './utils/browser';
 export * from './utils/constants';
+export { lowercaseKebabMask } from './utils/inputFormatting';
 export { default as sanctuaryPropType } from './utils/sanctuaryPropType';
 
 export { default as PopupShowCode } from './utils/components/PopupShowCode';

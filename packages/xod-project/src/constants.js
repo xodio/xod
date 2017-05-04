@@ -33,6 +33,11 @@ export const ERROR = {
   CAST_PATCH_NOT_FOUND: 'Casting patch "{patchPath}" is not found in the project',
 };
 
+export const IDENTIFIER_RULES =
+  `Only a-z, 0-9 and - are allowed. 
+  Name must not begin or end with a hypen, 
+  or contain more than one hypen in a row`;
+
 /**
  * Enumeration of possible pin types
  *
@@ -44,19 +49,6 @@ export const PIN_TYPE = {
   NUMBER: 'number',
   BOOLEAN: 'boolean',
   PULSE: 'pulse',
-};
-/**
- * Enumeration of nodeTypes that references to data type.
- * E.G., inputBool === Boolean, constPulse === Pulse and etc.
- *
- * @name NODETYPE_TO_DATA_TYPES
- * @enum {PIN_TYPE}
- */
-export const NODETYPE_TO_DATA_TYPES = {
-  Number: PIN_TYPE.NUMBER,
-  String: PIN_TYPE.STRING,
-  Bool: PIN_TYPE.BOOLEAN,
-  Pulse: PIN_TYPE.PULSE,
 };
 
  /**

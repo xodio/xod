@@ -240,7 +240,7 @@ describe('Patch', () => {
   });
   describe('getNodeByIdUnsafe', () => {
     const patch = Helper.defaultizePatch({
-      path: 'testPath',
+      path: 'test/test/test',
       nodes: {
         rndId: { id: 'rndId' },
       },
@@ -557,7 +557,7 @@ describe('Patch', () => {
     it('should add pin by associating terminal node', () => {
       const node = Helper.defaultizeNode({
         id: '1',
-        type: 'xod/core/inputNumber',
+        type: 'xod/core/input-number',
       });
       const newPatch = Patch.assocNode(node, emptyPatch);
 
@@ -578,7 +578,7 @@ describe('Patch', () => {
       });
       const node = Helper.defaultizeNode({
         id: '1',
-        type: 'xod/core/inputNumber',
+        type: 'xod/core/input-number',
       });
       const newPatch = Patch.assocNode(node, patch);
       expect(newPatch)
@@ -654,8 +654,8 @@ describe('Patch', () => {
     it('should remove pin from patch on dissoc pinNode', () => {
       const patchWithPins = Helper.defaultizePatch({
         nodes: {
-          a: { id: 'a', type: 'xod/core/inputNumber' },
-          b: { id: 'b', type: 'xod/core/outputNumber' },
+          a: { id: 'a', type: 'xod/core/input-number' },
+          b: { id: 'b', type: 'xod/core/output-number' },
         },
         pins: {
           a: {},
