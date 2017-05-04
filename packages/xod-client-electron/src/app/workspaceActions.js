@@ -1,16 +1,24 @@
 import R from 'ramda';
 import P from 'path';
 import FS from 'fs';
+import EventEmitter from 'events';
+
+import XP from 'xod-project';
 import {
   resolvePath,
   writeFile,
   copy,
+  save,
   getProjects,
   isDirectoryExists,
   isFileExists,
+  loadProjectWithLibs,
+  pack,
+  arrangeByFilesV2,
 } from 'xod-fs';
 import {
   notEmpty,
+  explode,
 } from 'xod-func-tools';
 
 import rejectWithCode, * as ERROR_CODES from './errorCodes';
@@ -21,13 +29,60 @@ import {
   PATH_TO_DEFAULT_WORKSPACE,
   LIBS_FOLDERNAME,
   DEFAULT_PROJECT_NAME,
+  EVENT_REQUEST_SELECT_PROJECT,
+  EVENT_SELECT_PROJECT,
+  EVENT_CREATE_PROJECT,
+  EVENT_REQUEST_OPEN_PROJECT,
+  EVENT_REQUEST_CREATE_WORKSPACE,
+  EVENT_SWITCH_WORKSPACE,
+  EVENT_WORKSPACE_ERROR,
+  EVENT_CREATE_WORKSPACE,
 } from './constants';
+
+// =============================================================================
+//
+// IPC & Event publications
+//
+// =============================================================================
+const WorkspaceEvents = new EventEmitter();
+const emitSelectProject = data => WorkspaceEvents.emit(EVENT_SELECT_PROJECT, data);
+
+// pub through rendererWindow.WebContents.send(...)
+// :: (a -> ()) -> Error -> Promise.Rejected Error
+const handleError = R.curry((send, err) => {
+  send(EVENT_WORKSPACE_ERROR, err);
+  return Promise.reject(err);
+});
+// :: (String -> a -> ()) -> Path -> Boolean -> ()
+const requestCreateWorkspace = R.curry(
+  (send, path, force = false) => send(EVENT_REQUEST_CREATE_WORKSPACE, { path, force })
+);
+// :: (String -> a -> ()) -> ProjectMeta[] -> ()
+const requestSelectProject = R.curry(
+  (send, projectMetas) => send(EVENT_REQUEST_SELECT_PROJECT, projectMetas)
+);
+// :: (String -> a -> ()) -> Project -> ()
+const requestOpenProject = R.curry(
+  (send, project) => send(EVENT_REQUEST_OPEN_PROJECT, project)
+);
 
 // =============================================================================
 //
 // Utils
 //
 // =============================================================================
+
+// :: ProjectMeta -> String
+const getProjectMetaName = R.path(['meta', 'name']);
+// :: ProjectMeta -> Path
+const getProjectMetaPath = R.prop('path');
+// :: ProjectMeta[] -> ProjectMeta
+const filterDefaultProject = R.filter(
+  R.compose(
+    R.equals(DEFAULT_PROJECT_NAME),
+    getProjectMetaName
+  )
+);
 
 // :: Path -> Promise Path Error
 export const validatePath = path => Promise.resolve(path)
@@ -36,7 +91,7 @@ export const validatePath = path => Promise.resolve(path)
       R.is(String),
       notEmpty,
     ]),
-    Promise.reject(new Error())
+    () => Promise.reject(new Error())
   ))
   .then(resolvePath)
   .catch(rejectWithCode(ERROR_CODES.INVALID_WORKSPACE_PATH));
@@ -64,16 +119,58 @@ R.compose(
   R.head,
   R.split(P.sep),
   projectPath => P.relative(workspacePath, projectPath),
-  R.prop('path')
+  getProjectMetaPath
 ),
 projects
 ));
 
+// :: String -> ProjectMeta[] -> ProjectMeta
+const findProjectMetaByName = R.curry(
+  (nameToFind, projectMetas) => R.find(
+    R.pathEq(['meta', 'name'], nameToFind),
+    projectMetas
+  )
+);
+
+// :: (Error -> a) -> Error -> Promise a Error
+const catchInvalidWorkspace = R.curry(
+  (catchFn, err) => R.ifElse(
+    R.compose(
+      R.contains(R.__, [
+        ERROR_CODES.INVALID_WORKSPACE_PATH,
+        ERROR_CODES.WORKSPACE_DIR_NOT_EXIST,
+        ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY,
+      ]),
+      R.prop('errorCode')
+    ),
+    catchFn,
+    () => Promise.reject(err)
+  )(err)
+);
+
+// :: String -> Project
+const createEmptyProject = projectName => R.compose(
+    XP.assocPatch('@/main', XP.createPatch()), // TODO: Get rid of "@" after fix xod-project/setPatchPath
+    XP.setProjectName(projectName),
+    XP.createProject
+  )();
+
 // =============================================================================
 //
-// Unpure things
+// Impure functions
 //
 // =============================================================================
+
+// :: Path -> String -> String
+const createAndSaveNewProject = R.curry(
+  (workspacePath, projectName) => R.pipeP(
+    () => Promise.resolve(createEmptyProject(projectName)),
+    explode,
+    arrangeByFilesV2,
+    save(workspacePath),
+    R.always(projectName)
+  )().catch(rejectWithCode(ERROR_CODES.CANT_CREATE_NEW_PROJECT))
+);
 
 // :: () -> Promise.Resolved Path
 export const loadWorkspacePath = R.compose(
@@ -160,8 +257,171 @@ export const enumerateProjects = path => getProjects(path)
 
 // =============================================================================
 //
-// Compositions of steps to get coherent workspace
+// Compositions of steps
 //
 // =============================================================================
 
-// TODO
+// :: Path -> Promise Path Error
+const ensurePath = path => validatePath(path).catch(getHomeDir);
+
+// :: Path -> Promise Path Error
+const spawnWorkspace = path => spawnWorkspaceFile(path).then(spawnStdLib);
+
+// :: Path -> Promise Path Error
+const ensureWorkspace = path => validateWorkspace(path)
+  .catch(() => spawnWorkspace(path));
+
+// :: Path -> Promise ProjectMeta[] Error
+const spawnAndLoadDefaultProject = (send, path) => spawnDefaultProject(path)
+  .then(enumerateProjects)
+  .then(filterDefaultProject)
+  .then(R.tap(R.compose(
+    emitSelectProject,
+    R.head
+  )));
+
+// :: Path -> Promise ProjectMeta[] Error
+export const loadProjectsOrSpawnDefault = R.curry(
+  (send, path) => R.pipeP(
+    enumerateProjects,
+    filterLocalProjects(path),
+    R.ifElse(
+      R.isEmpty,
+      () => spawnAndLoadDefaultProject(send, path),
+      R.tap(requestSelectProject(send))
+    )
+  )(path)
+);
+
+// =============================================================================
+//
+// Handlers
+//
+// =============================================================================
+
+// :: (String -> a -> ()) -> (() -> Promise Path Error) -> Promise ProjectMeta[] Error
+export const onOpenProject = R.curry(
+  (send, workspaceGetter) => R.pipeP(
+    workspaceGetter,
+    loadProjectsOrSpawnDefault(send)
+  )()
+  .catch(handleError(send))
+);
+
+// :: Path -> ProjectMeta -> Promise Project Error
+export const onSelectProject = R.curry(
+  (send, workspacePath, projectMeta) => Promise.resolve(projectMeta)
+    .then(getProjectMetaPath)
+    .then(path => loadProjectWithLibs(path, workspacePath))
+    .then(({ project, libs }) => pack(project, libs))
+    // TODO: Get rid of next then, when we'll get rid of V1
+    .then((v1) => {
+      const convertedProject = XP.toV2(v1);
+      return (convertedProject.isLeft) ?
+        Promise.reject(convertedProject.value) :
+        convertedProject;
+    })
+    .then(requestOpenProject(send))
+    .catch(rejectWithCode(ERROR_CODES.CANT_OPEN_SELECTED_PROJECT))
+);
+
+// :: (String -> a -> ()) -> (() -> Promise Path Error) ->
+//    -> (Path -> Promise Path Error) -> Path -> Promise ProjectMeta[] Error
+export const onIDELaunch = R.curry(
+  (send, workspaceGetter, pathSaver) => R.pipeP(
+    workspaceGetter,
+    ensurePath,
+    ensureWorkspace,
+    pathSaver,
+    loadProjectsOrSpawnDefault(send)
+  )().catch(handleError(send))
+);
+
+// :: (String -> a -> ()) -> (Path -> Promise Path Error) -> Path -> Promise ProjectMeta[] Error
+export const onWorkspaceCreate = R.curry(
+  (send, pathSaver, path) => R.pipeP(
+    spawnWorkspace,
+    pathSaver,
+    loadProjectsOrSpawnDefault(send)
+  )(path).catch(handleError(send))
+);
+
+// :: (String -> a -> ()) -> (Path -> Promise Path Error) -> Path -> Promise ProjectMeta[] Error
+export const onSwitchWorkspace = R.curry(
+  (send, pathSaver, path) => validateWorkspace(path)
+    .then(pathSaver)
+    .then(loadProjectsOrSpawnDefault(send))
+    .catch(catchInvalidWorkspace((err) => {
+      const force = (err.errorCode === ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY);
+      requestCreateWorkspace(send, path, force);
+    }))
+    .catch(handleError(send))
+);
+
+// :: (String -> a -> ()) -> Path -> String -> ProjectMeta
+// With side-effect: emitSelectProject
+export const onCreateProject = R.curry(
+  (send, workspacePath, projectName) => R.pipeP(
+    createAndSaveNewProject,
+    () => enumerateProjects(workspacePath),
+    findProjectMetaByName(projectName),
+    R.tap(emitSelectProject)
+  )(workspacePath, projectName)
+    .catch(handleError(send))
+);
+
+// =============================================================================
+//
+// IPC & Events subscriptions
+//
+// =============================================================================
+
+// Pass through IPC event into EventEmitter
+export const subscribeSelectProject = ipcMain => ipcMain.on(
+  EVENT_SELECT_PROJECT,
+  (event, projectMeta) => emitSelectProject({ send: event.sender.send, projectMeta })
+);
+
+// onSelectProject
+export const subscribeSelectProjectEvent = () => WorkspaceEvents.on(
+  EVENT_SELECT_PROJECT,
+  ({ send, projectMeta }) => onSelectProject(loadWorkspacePath(), projectMeta)
+    .catch(handleError(send))
+);
+
+// onOpenProject
+export const subscribeOpenProject = ipcMain => ipcMain.on(
+  EVENT_CREATE_PROJECT,
+  event => onOpenProject(event.sender.send, loadWorkspacePath)
+);
+
+// onCreateProject
+export const subscribeCreateProject = ipcMain => ipcMain.on(
+  EVENT_CREATE_PROJECT,
+  (event, projectName) => onCreateProject(event.sender.send, loadWorkspacePath(), projectName)
+);
+
+// onCreateWorkspace
+export const subscribeCreateWorkspace = ipcMain => ipcMain.on(
+  EVENT_CREATE_WORKSPACE,
+  (event, path) => onWorkspaceCreate(event.sender.send, saveWorkspacePath, path)
+);
+
+// onSwitchWorkspace
+export const subscrubeSwitchWorkspace = ipcMain => ipcMain.on(
+  EVENT_SWITCH_WORKSPACE,
+  (event, path) => onSwitchWorkspace(event.sender.send, saveWorkspacePath, path)
+);
+
+// :: ipcMain -> ipcMain
+export const subscribeAll = R.tap(R.compose(
+  R.ap([
+    subscribeSelectProject,
+    subscribeSelectProjectEvent,
+    subscribeOpenProject,
+    subscribeCreateProject,
+    subscribeCreateWorkspace,
+    subscrubeSwitchWorkspace,
+  ]),
+  R.of
+));
