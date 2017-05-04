@@ -4,7 +4,6 @@ import {
   ipcMain,
   BrowserWindow,
 } from 'electron';
-import devtron from 'devtron';
 
 import {
   saveProject,
@@ -71,7 +70,10 @@ const subscribeRemoteAction = (processName, remoteAction) => {
 };
 
 const onReady = () => {
-  devtron.install();
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line global-require
+    require('devtron').install();
+  }
   settings.setDefaults();
 
   // TODO: Replace actionTypes with constants (after removing webpack from this package)

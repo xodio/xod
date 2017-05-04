@@ -1,0 +1,27 @@
+version: '{build}'
+
+platform:
+- x64
+
+clone_depth: 5
+cache:
+- '%APPDATA%\npm-cache'
+- '%USERPROFILE%\.electron'
+- node_modules
+
+init:
+- git config --global core.autocrlf input
+
+install:
+- ps: Install-Product node 6.0.0 x64
+- npm install
+
+build_script:
+- ps: |
+    npm run build
+    npm run lint
+    if (!$env:APPVEYOR_REPO_TAG) {
+        npm run electron-dist
+    }
+
+test: off

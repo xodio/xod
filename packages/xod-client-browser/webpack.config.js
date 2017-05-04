@@ -54,13 +54,15 @@ module.exports = {
         ],
       },
       {
-        test: /assets\/.*\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)?$/,
+        include: assetsPath,
+        test: /\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)?$/,
         loaders: [
           `file?name=assets/[path][name].[ext]?[hash:6]&context=${assetsPath}`,
         ],
       },
       {
-        test: /node_modules\/font-awesome\/.*\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)(\?\S*)?$/,
+        include: pkgpath('node_modules/font-awesome'),
+        test: /\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)(\?\S*)?$/,
         loaders: [
           'file?name=assets/font-awesome/[name].[ext]?[hash:6]',
         ],
@@ -78,7 +80,8 @@ module.exports = {
         loader: 'json5-loader',
       },
       {
-        test: /json5\/lib\/require/,
+        include: pkgpath('json5/lib/require'),
+        test: /.?/,
         loader: 'null',
       },
     ],

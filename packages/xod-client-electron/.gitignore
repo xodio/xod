@@ -3,4 +3,5 @@ node_modules/*
 .idea/
 xod.iml
 dist/
+dist_xod/
 .tmp/

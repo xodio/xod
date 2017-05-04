@@ -1,9 +1,27 @@
-sudo: required
 dist: trusty
-before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y build-essential libudev-dev
+sudo: false
+addons:
+  apt:
+    packages:
+    - libudev-dev
+    - rpm
+
+osx_image: xcode8.3
+
 language: node_js
-node_js:
-  - "6"
-script: "npm run ci"
+node_js: 6.0.0
+
+matrix:
+  include:
+  - os: osx
+
+git:
+  depth: 5
+cache:
+  directories:
+  - $HOME/.cache
+  - $HOME/.electron
+  - $HOME/.nvm
+  - node_modules
+
+script: ./tools/travis.sh
