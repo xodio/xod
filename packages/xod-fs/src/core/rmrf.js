@@ -1,7 +1,7 @@
-import rimraf from 'rimraf';
+import { remove } from 'fs-extra';
 
 export default path => new Promise(
-  (resolve, reject) => rimraf(path, (err) => {
+  (resolve, reject) => remove(path, (err) => {
     if (err) { reject(err); return; }
     resolve();
   })

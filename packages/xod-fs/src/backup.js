@@ -1,6 +1,5 @@
 import fs from 'fs';
 import fse from 'fs-extra';
-import rimraf from 'rimraf';
 import path from 'path';
 
 const lastDir = dir => dir.split(path.sep).filter(name => name !== '').pop();
@@ -38,10 +37,10 @@ export class Backup {
   clear() {
     if (!this.stored) { return; }
 
-    rimraf.sync(this.path.dataTemp);
+    fse.removeSync(this.path.dataTemp);
     const tempContents = fs.readdirSync(this.path.temp);
     if (tempContents.length === 0) {
-      rimraf.sync(this.path.temp);
+      fse.removeSync(this.path.temp);
     }
     this.stored = false;
   }
@@ -50,7 +49,7 @@ export class Backup {
     if (!this.stored) { return Promise.resolve(); }
 
     return new Promise((resolve, reject) => {
-      rimraf.sync(this.path.data);
+      fse.removeSync(this.path.data);
       fse.copy(this.path.dataTemp, this.path.data, (err) => {
         if (err) { reject(err); return; }
         this.clear();
