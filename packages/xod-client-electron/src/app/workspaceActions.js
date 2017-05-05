@@ -30,7 +30,7 @@ import {
   LIBS_FOLDERNAME,
   DEFAULT_PROJECT_NAME,
   EVENT_REQUEST_SELECT_PROJECT,
-  EVENT_SELECT_PROJECT,
+  EVENT_OPEN_PROJECT,
   EVENT_CREATE_PROJECT,
   EVENT_REQUEST_OPEN_PROJECT,
   EVENT_REQUEST_CREATE_WORKSPACE,
@@ -45,7 +45,7 @@ import {
 //
 // =============================================================================
 const WorkspaceEvents = new EventEmitter();
-const emitSelectProject = data => WorkspaceEvents.emit(EVENT_SELECT_PROJECT, data);
+const emitSelectProject = data => WorkspaceEvents.emit(EVENT_OPEN_PROJECT, data);
 
 // pub through rendererWindow.WebContents.send(...)
 // :: (a -> ()) -> Error -> Promise.Rejected Error
@@ -161,13 +161,21 @@ const createEmptyProject = projectName => R.compose(
 //
 // =============================================================================
 
+// :: Path -> Project -> Promise Project Error
+export const saveProject = R.curry(
+  (workspacePath, project) => Promise.resolve(project)
+    .then(arrangeByFilesV2)
+    .then(save(workspacePath))
+    .then(R.always(project))
+    .catch(rejectWithCode(ERROR_CODES.CANT_SAVE_PROJECT))
+);
+
 // :: Path -> String -> String
 const createAndSaveNewProject = R.curry(
   (workspacePath, projectName) => R.pipeP(
     () => Promise.resolve(createEmptyProject(projectName)),
     explode,
-    arrangeByFilesV2,
-    save(workspacePath),
+    saveProject,
     R.always(projectName)
   )().catch(rejectWithCode(ERROR_CODES.CANT_CREATE_NEW_PROJECT))
 );
@@ -326,7 +334,7 @@ export const onSelectProject = R.curry(
 );
 
 // :: (String -> a -> ()) -> (() -> Promise Path Error) ->
-//    -> (Path -> Promise Path Error) -> Path -> Promise ProjectMeta[] Error
+//    -> (Path -> Promise Path Error) -> Promise ProjectMeta[] Error
 export const onIDELaunch = R.curry(
   (send, workspaceGetter, pathSaver) => R.pipeP(
     workspaceGetter,
@@ -378,13 +386,13 @@ export const onCreateProject = R.curry(
 
 // Pass through IPC event into EventEmitter
 export const subscribeSelectProject = ipcMain => ipcMain.on(
-  EVENT_SELECT_PROJECT,
+  EVENT_OPEN_PROJECT,
   (event, projectMeta) => emitSelectProject({ send: event.sender.send, projectMeta })
 );
 
 // onSelectProject
 export const subscribeSelectProjectEvent = () => WorkspaceEvents.on(
-  EVENT_SELECT_PROJECT,
+  EVENT_OPEN_PROJECT,
   ({ send, projectMeta }) => onSelectProject(loadWorkspacePath(), projectMeta)
     .catch(handleError(send))
 );
@@ -413,8 +421,14 @@ export const subscrubeSwitchWorkspace = ipcMain => ipcMain.on(
   (event, path) => onSwitchWorkspace(event.sender.send, saveWorkspacePath, path)
 );
 
+// =============================================================================
+//
+// Handy functions to call from main process
+//
+// =============================================================================
+
 // :: ipcMain -> ipcMain
-export const subscribeAll = R.tap(R.compose(
+export const subscribeWorkspaceEvents = R.tap(R.compose(
   R.ap([
     subscribeSelectProject,
     subscribeSelectProjectEvent,
@@ -425,3 +439,8 @@ export const subscribeAll = R.tap(R.compose(
   ]),
   R.of
 ));
+
+// :: (String -> a -> ()) -> Promise ProjectMeta[] Error
+export const prepareWorkspaceOnLaunch = send => onIDELaunch(
+  send, loadWorkspacePath, saveWorkspacePath
+);

@@ -8,7 +8,7 @@ import {
   WORKSPACE_FILENAME,
   LIBS_FOLDERNAME,
   DEFAULT_PROJECT_NAME,
-  EVENT_SELECT_PROJECT,
+  EVENT_OPEN_PROJECT,
   EVENT_REQUEST_SELECT_PROJECT,
   EVENT_REQUEST_CREATE_WORKSPACE,
   EVENT_WORKSPACE_ERROR,
@@ -255,7 +255,7 @@ describe('End-to-End', () => {
 
     it('should create, save and request to open new project', (done) => {
       const sendMock = (eventName, projectMeta) => {
-        assert.equal(eventName, EVENT_SELECT_PROJECT);
+        assert.equal(eventName, EVENT_OPEN_PROJECT);
         assert.equal(projectMeta.meta.name, 'test');
       };
       WA.onCreateProject(sendMock, PATH.EMPTY_WORKSPACE, 'test')
@@ -293,7 +293,7 @@ describe('End-to-End', () => {
   describe('onWorkspaceCreate', () => {
     it('should spawn workspace, stdlib, save path, spawn default project and request to open it', (done) => {
       const sendMock = (eventName, projectMeta) => {
-        assert.equal(eventName, EVENT_SELECT_PROJECT);
+        assert.equal(eventName, EVENT_OPEN_PROJECT);
         assert.equal(projectMeta.meta.name, DEFAULT_PROJECT_NAME);
       };
       WA.onWorkspaceCreate(
