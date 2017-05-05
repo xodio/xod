@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 
 import fs from 'fs';
+import { removeSync } from 'fs-extra';
 import path from 'path';
 import recReadDir from 'recursive-readdir';
-import rimraf from 'rimraf';
 
 import save from '../src/save';
 import { arrangeByFiles } from '../src/unpack';
@@ -18,11 +18,11 @@ const onError = done => err => done(err);
 
 describe('Saver', () => {
   before(() => {
-    rimraf.sync(`${tempDir}/test.json`);
-    rimraf.sync(workspacePath);
+    removeSync(`${tempDir}/test.json`);
+    removeSync(workspacePath);
   });
   after(() => {
-    rimraf.sync(tempDir);
+    removeSync(tempDir);
   });
 
   it('should save a test file in a temp directory', (done) => {
