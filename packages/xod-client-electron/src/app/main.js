@@ -13,6 +13,10 @@ import {
   checkWorkspace,
 } from './remoteActions';
 import {
+  subscribeWorkspaceEvents,
+  prepareWorkspaceOnLaunch,
+} from './workspaceActions';
+import {
   uploadToArduinoHandler,
   setArduinoIDEHandler,
 } from './arduinoActions';
@@ -32,6 +36,7 @@ function createWindow() {
     minWidth: 800,
     minHeight: 600,
     title: 'XOD IDE',
+    show: false,
   });
   win.maximize();
   // and load the index.html of the app.
@@ -47,6 +52,8 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
+
+  win.on('ready-to-show', win.show);
 }
 
 // for IPC. see https://electron.atom.io/docs/api/remote/#remote-objects
@@ -87,6 +94,11 @@ const onReady = () => {
   ipcMain.on('SET_ARDUINO_IDE', setArduinoIDEHandler);
 
   createWindow();
+
+  win.webContents.on('did-finish-load', () => {
+    prepareWorkspaceOnLaunch((eventName, data) => win.webContents.send(eventName, data));
+    subscribeWorkspaceEvents(ipcMain);
+  });
 };
 
 // This method will be called when Electron has finished
