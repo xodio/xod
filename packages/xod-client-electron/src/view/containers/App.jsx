@@ -31,7 +31,7 @@ import { getSettings, getWorkspace } from '../../settings/selectors';
 import { changeWorkspace, checkWorkspace } from '../../settings/actions';
 import { SaveProgressBar } from '../components/SaveProgressBar';
 
-import { IDE_NOT_FOUND } from '../../app/errorCodes';
+import { IDE_NOT_FOUND } from '../../shared/errorCodes';
 
 const { app, dialog, Menu } = remoteElectron;
 const DEFAULT_CANVAS_WIDTH = 800;

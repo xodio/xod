@@ -21,23 +21,17 @@ import {
   explode,
 } from 'xod-func-tools';
 
-import rejectWithCode, * as ERROR_CODES from './errorCodes';
 import * as settings from './settings';
+import rejectWithCode, * as ERROR_CODES from '../shared/errorCodes';
 import {
   DEFAULT_WORKSPACE_PATH,
   WORKSPACE_FILENAME,
   PATH_TO_DEFAULT_WORKSPACE,
   LIBS_FOLDERNAME,
   DEFAULT_PROJECT_NAME,
-  EVENT_REQUEST_SELECT_PROJECT,
-  EVENT_OPEN_PROJECT,
-  EVENT_CREATE_PROJECT,
-  EVENT_REQUEST_OPEN_PROJECT,
-  EVENT_REQUEST_CREATE_WORKSPACE,
-  EVENT_SWITCH_WORKSPACE,
-  EVENT_WORKSPACE_ERROR,
-  EVENT_CREATE_WORKSPACE,
 } from './constants';
+import * as EVENTS from '../shared/events';
+
 
 // =============================================================================
 //
@@ -45,26 +39,28 @@ import {
 //
 // =============================================================================
 const WorkspaceEvents = new EventEmitter();
-const emitSelectProject = data => WorkspaceEvents.emit(EVENT_OPEN_PROJECT, data);
+const emitSelectProject = data => WorkspaceEvents.emit(EVENTS.SELECT_PROJECT, data);
 
 // pub through rendererWindow.WebContents.send(...)
 // :: (a -> ()) -> Error -> Promise.Rejected Error
-const handleError = R.curry((send, err) => {
-  send(EVENT_WORKSPACE_ERROR, err);
-  return Promise.reject(err);
-});
+// const handleError = R.curry((send, err) => {
+//   send(EVENTS.WORKSPACE_ERROR, err);
+//   return Promise.reject(err);
+// });
 // :: (String -> a -> ()) -> Path -> Boolean -> ()
 const requestCreateWorkspace = R.curry(
-  (send, path, force = false) => send(EVENT_REQUEST_CREATE_WORKSPACE, { path, force })
+  (send, path, force = false) => send(EVENTS.REQUEST_CREATE_WORKSPACE, { path, force })
 );
 // :: (String -> a -> ()) -> ProjectMeta[] -> ()
 const requestSelectProject = R.curry(
-  (send, projectMetas) => send(EVENT_REQUEST_SELECT_PROJECT, projectMetas)
+  (send, projectMetas) => send(EVENTS.REQUEST_SELECT_PROJECT, projectMetas)
 );
 // :: (String -> a -> ()) -> Project -> ()
-const requestOpenProject = R.curry(
-  (send, project) => send(EVENT_REQUEST_OPEN_PROJECT, project)
+const requestShowProject = R.curry(
+  (send, project) => send(EVENTS.REQUEST_SHOW_PROJECT, project)
 );
+// :: (String -> a -> ()) -> ()
+const notifySaveProjectComplete = send => () => send(EVENTS.SAVE_PROJECT, true);
 
 // =============================================================================
 //
@@ -307,6 +303,15 @@ export const loadProjectsOrSpawnDefault = R.curry(
 //
 // =============================================================================
 
+// :: (String -> a -> ()) -> (() -> Promise Path Error) -> Project -> Promise Project Error
+export const onSaveProject = R.curry(
+  (send, workspaceGetter, project) => R.pipeP(
+    workspaceGetter,
+    saveProject(R.__, project),
+    R.tap(notifySaveProjectComplete(send))
+  )()
+);
+
 // :: (String -> a -> ()) -> (() -> Promise Path Error) -> Promise ProjectMeta[] Error
 export const onOpenProject = R.curry(
   (send, workspaceGetter) => R.pipeP(
@@ -329,7 +334,7 @@ export const onSelectProject = R.curry(
         Promise.reject(convertedProject.value) :
         convertedProject;
     })
-    .then(requestOpenProject(send))
+    .then(requestShowProject(send))
     .catch(rejectWithCode(ERROR_CODES.CANT_OPEN_SELECTED_PROJECT))
 );
 
@@ -384,41 +389,75 @@ export const onCreateProject = R.curry(
 //
 // =============================================================================
 
-// Pass through IPC event into EventEmitter
-export const subscribeSelectProject = ipcMain => ipcMain.on(
-  EVENT_OPEN_PROJECT,
-  (event, projectMeta) => emitSelectProject({ send: event.sender.send, projectMeta })
-);
+// :: ipcEvent -> (String -> Any -> ())
+const ipcSender = event => (eventName, arg) => event.sender.send(eventName, arg);
 
 // onSelectProject
 export const subscribeSelectProjectEvent = () => WorkspaceEvents.on(
-  EVENT_OPEN_PROJECT,
-  ({ send, projectMeta }) => onSelectProject(loadWorkspacePath(), projectMeta)
-    .catch(handleError(send))
+  EVENTS.SELECT_PROJECT,
+  ({ send, projectMeta }) => onSelectProject(
+    send,
+    loadWorkspacePath(),
+    projectMeta
+  )
+);
+
+// Pass through IPC event into EventEmitter
+export const subscribeSelectProject = ipcMain => ipcMain.on(
+  EVENTS.SELECT_PROJECT,
+  (event, projectMeta) => emitSelectProject({
+    send: ipcSender(event),
+    projectMeta,
+  })
+);
+
+// onSaveProject
+export const subscribeSaveProject = ipcMain => ipcMain.on(
+  EVENTS.SAVE_PROJECT,
+  (event, project) => onSaveProject(
+    ipcSender(event),
+    loadWorkspacePath,
+    project
+  )
 );
 
 // onOpenProject
 export const subscribeOpenProject = ipcMain => ipcMain.on(
-  EVENT_CREATE_PROJECT,
-  event => onOpenProject(event.sender.send, loadWorkspacePath)
+  EVENTS.OPEN_PROJECT,
+  event => onOpenProject(
+    ipcSender(event),
+    loadWorkspacePath
+  )
 );
 
 // onCreateProject
 export const subscribeCreateProject = ipcMain => ipcMain.on(
-  EVENT_CREATE_PROJECT,
-  (event, projectName) => onCreateProject(event.sender.send, loadWorkspacePath(), projectName)
+  EVENTS.CREATE_PROJECT,
+  (event, projectName) => onCreateProject(
+    ipcSender(event),
+    loadWorkspacePath(),
+    projectName
+  )
 );
 
 // onCreateWorkspace
 export const subscribeCreateWorkspace = ipcMain => ipcMain.on(
-  EVENT_CREATE_WORKSPACE,
-  (event, path) => onWorkspaceCreate(event.sender.send, saveWorkspacePath, path)
+  EVENTS.CREATE_WORKSPACE,
+  (event, path) => onWorkspaceCreate(
+    ipcSender(event),
+    saveWorkspacePath,
+    path
+  )
 );
 
 // onSwitchWorkspace
-export const subscrubeSwitchWorkspace = ipcMain => ipcMain.on(
-  EVENT_SWITCH_WORKSPACE,
-  (event, path) => onSwitchWorkspace(event.sender.send, saveWorkspacePath, path)
+export const subscribeSwitchWorkspace = ipcMain => ipcMain.on(
+  EVENTS.SWITCH_WORKSPACE,
+  (event, path) => onSwitchWorkspace(
+    ipcSender(event),
+    saveWorkspacePath,
+    path
+  )
 );
 
 // =============================================================================
@@ -432,10 +471,11 @@ export const subscribeWorkspaceEvents = R.tap(R.compose(
   R.ap([
     subscribeSelectProject,
     subscribeSelectProjectEvent,
+    subscribeSaveProject,
     subscribeOpenProject,
     subscribeCreateProject,
     subscribeCreateWorkspace,
-    subscrubeSwitchWorkspace,
+    subscribeSwitchWorkspace,
   ]),
   R.of
 ));

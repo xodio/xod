@@ -7,9 +7,9 @@ import { transpileForArduino } from 'xod-arduino';
 import * as xab from 'xod-arduino-builder';
 
 import { DEFAULT_ARDUINO_IDE_PATH, DEFAULT_ARDUINO_PACKAGES_PATH } from './constants';
-import rejectWithCode, * as ERROR_CODES from './errorCodes';
 import * as settings from './settings';
-import * as MESSAGES from './messages';
+import * as MESSAGES from '../shared/messages';
+import rejectWithCode, * as ERROR_CODES from '../shared/errorCodes';
 
 // =============================================================================
 //
