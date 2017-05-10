@@ -6,6 +6,7 @@ const autoprefixer = require('autoprefixer');
 
 const pkgpath = subpath => path.join(__dirname, subpath);
 const assetsPath = fs.realpathSync(pkgpath('node_modules/xod-client/src/core/assets'));
+const fontAwesomePath = fs.realpathSync(pkgpath('node_modules/xod-client/node_modules/font-awesome'));
 
 module.exports = {
   devtool: 'source-map',
@@ -47,23 +48,24 @@ module.exports = {
         ],
       },
       {
-        test: /\bassets\/.+?\.(jpe?g|png|gif|svg|ttf|eot|woff|woff2)?$/,
+        test: /\.css$/,
+        loaders: [
+          'style',
+          'css',
+        ],
+      },
+      {
+        include: assetsPath,
+        test: /\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)$/,
         loaders: [
           `file?name=assets/[path][name].[ext]?[hash:6]&context=${assetsPath}`,
         ],
       },
       {
-        test: /\bfont-awesome\/.+?\.(jpe?g|png|gif|ttf|eot|svg|woff|woff2)(\?\S*)?$/,
+        include: fontAwesomePath,
+        test: /\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)(\?\S*)?$/,
         loaders: [
           'file?name=assets/font-awesome/[name].[ext]?[hash:6]',
-        ],
-      },
-      {
-        include: pkgpath('node_modules/font-awesome'),
-        test: /\.css$/,
-        loaders: [
-          'style',
-          'css',
         ],
       },
       {

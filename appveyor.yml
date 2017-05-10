@@ -14,7 +14,7 @@ init:
 - git config --system core.longpaths true
 
 install:
-- ps: Install-Product node 6.0.0 x64
+- ps: Install-Product node 6 x64
 - yarn install
 
 build_script:

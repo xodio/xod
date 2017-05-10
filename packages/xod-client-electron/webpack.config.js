@@ -7,6 +7,7 @@ const webpackTargetElectronRenderer = require('webpack-target-electron-renderer'
 
 const pkgpath = subpath => path.resolve(__dirname, subpath);
 const assetsPath = fs.realpathSync(pkgpath('node_modules/xod-client/src/core/assets'));
+const fontAwesomePath = fs.realpathSync(pkgpath('node_modules/xod-client/node_modules/font-awesome'));
 
 const options = {
   devtool: 'source-map',
@@ -61,23 +62,24 @@ const options = {
         ],
       },
       {
-        test: /\bassets\/.+?\.(jpe?g|png|gif|ttf|eot|svg|woff|woff2)?$/,
+        test: /\.css$/,
+        loaders: [
+          'style',
+          'css',
+        ],
+      },
+      {
+        include: assetsPath,
+        test: /\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)$/,
         loaders: [
           `file?name=assets/[path][name].[ext]?[hash:6]&context=${assetsPath}`,
         ],
       },
       {
-        test: /\bfont-awesome\/.+?\.(jpe?g|png|gif|ttf|eot|svg|woff|woff2)(\?\S*)?$/,
+        include: [fontAwesomePath, pkgpath('node_modules/font-awesome')],
+        test: /\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)(\?\S*)?$/,
         loaders: [
           'file?name=assets/font-awesome/[name].[ext]?[hash:6]',
-        ],
-      },
-      {
-        include: pkgpath('node_modules/font-awesome'),
-        test: /\.css$/,
-        loaders: [
-          'style',
-          'css',
         ],
       },
       {
