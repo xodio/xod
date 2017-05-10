@@ -1,6 +1,5 @@
 const chalk = require('chalk');
 const async = require('async');
-const escapeArgs = require('command-join');
 const ChildProcessUtilities = require('lerna/lib/ChildProcessUtilities');
 const RunCommand = require('lerna/lib/commands/RunCommand').default;
 const withDependencies = require('./dependencies');
@@ -15,6 +14,7 @@ function pipeOutput(source, target, label) {
 
   source.on('data', data =>
     data
+      .toString('utf8')
       .split('\n')
       .map(exceptLast(l => l + '\n'))
       .forEach(pipe)
@@ -70,11 +70,17 @@ class ServeCommand extends RunCommand {
       env: process.env
     };
 
-    const command = `yarn run ${this.script} ${escapeArgs(this.args)}`;
-    const proc = ChildProcessUtilities.exec(command, opts, callback);
+    //const command = `yarn run ${this.script} ${escapeArgs(this.args)}`;
+    const proc = ChildProcessUtilities.exec(
+      'yarn',
+      ['run', this.script, ... this.args],
+      opts,
+      callback
+    );
 
     pipeOutput(proc.stdout, process.stdout, pkg.name);
     pipeOutput(proc.stderr, process.stderr, pkg.name);
+    proc.catch(err => console.error('Failed to run package command:', err));
   }
 }
 
