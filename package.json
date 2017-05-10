@@ -7,7 +7,7 @@
     "clean:node_modules": "rimraf node_modules packages/*/node_modules",
     "dev": "node ./tools/lerna-serve dev",
     "doc": "node ./tools/lerna-run-sorted doc",
-    "electron-dist": "lerna run --scope xod-client-electron dist",
+    "electron-dist": "node ./tools/lerna-abs-symlinks && lerna run --scope xod-client-electron dist",
     "electron-rebuild": "lerna run --scope xod-client-electron electron-rebuild",
     "lerna": "lerna",
     "lint": "eslint packages/*/src packages/*/test packages/xod-js/platform --ext js,jsx",
