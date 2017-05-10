@@ -19,8 +19,10 @@ import * as ProjectActions from '../../project/actions';
 import * as ProjectBrowserActions from '../actions';
 import * as EditorActions from '../../editor/actions';
 import * as MessagesActions from '../../messages/actions';
+import * as PopupActions from '../../popups/actions';
 
 import * as ProjectBrowserSelectors from '../selectors';
+import * as PopupSelectors from '../../popups/selectors';
 import * as EditorSelectors from '../../editor/selectors';
 
 import { COMMAND } from '../../utils/constants';
@@ -234,7 +236,7 @@ class ProjectBrowser extends React.Component {
           selectedPatchPath={this.props.selectedPatchPath}
           selectedPatchName={this.props.selectedPatchLabel}
           projectName={this.props.projectName}
-          openPopups={this.props.openPopups}
+          popups={this.props.popups}
           onPatchDelete={this.props.actions.deletePatch}
           onPatchRename={this.props.actions.renamePatch}
           onProjectRename={this.props.actions.renameProject}
@@ -267,7 +269,7 @@ ProjectBrowser.propTypes = {
   selectedPatchPath: React.PropTypes.string,
   selectedPatchLabel: React.PropTypes.string.isRequired,
   localPatches: sanctuaryPropType($.Array(Patch)),
-  openPopups: React.PropTypes.object.isRequired,
+  popups: React.PropTypes.object.isRequired,
   libs: sanctuaryPropType($.StrMap($.Array(Patch))),
   actions: React.PropTypes.shape({
     addNode: React.PropTypes.func.isRequired,
@@ -291,7 +293,7 @@ const mapStateToProps = R.applySpec({
   selectedPatchPath: ProjectBrowserSelectors.getSelectedPatchPath,
   selectedPatchLabel: ProjectBrowserSelectors.getSelectedPatchLabel,
   localPatches: ProjectBrowserSelectors.getLocalPatches,
-  openPopups: ProjectBrowserSelectors.getOpenPopups,
+  popups: PopupSelectors.getProjectBrowserPopups,
   libs: ProjectBrowserSelectors.getLibs,
 });
 
@@ -313,7 +315,7 @@ const mapDispatchToProps = dispatch => ({
     deletePatch: ProjectActions.deletePatch,
     renameProject: ProjectActions.renameProject,
 
-    closeAllPopups: ProjectBrowserActions.cancelPopup,
+    closeAllPopups: PopupActions.hideAllPopups,
 
     addNotification: MessagesActions.addNotification,
   }, dispatch),

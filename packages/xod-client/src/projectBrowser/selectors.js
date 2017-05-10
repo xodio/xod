@@ -23,11 +23,6 @@ export const getLocalPatches = createSelector(
   XP.listLocalPatches
 );
 
-export const getOpenPopups = createSelector(
-  getProjectBrowser,
-  R.prop('openPopups')
-);
-
 // TODO: this is not actually label anymore
 export const getSelectedPatchLabel = createSelector(
   [ProjectSelectors.getProject, getSelectedPatchPath],
