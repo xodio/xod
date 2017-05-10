@@ -51,12 +51,12 @@ Maintenance Scripts
 
 * `yarn run build` builds all packages
 * `yarn run build -- <name> --only` builds a package with specified `<name>`,
-  e.g. `yarn run build -- xod-core --only`
+  e.g. `yarn run build -- xod-cli --only`
 * `yarn run build -- <name>` builds a package with specified `<name>`
   and all its dependencies, e.g. `yarn run build -- xod-client-electron`
 * `yarn run dev -- <name> --only` builds a package with specified `<name>` and
   stays in watch mode with auto-rebuild when its files change,
-  e.g. `yarn run dev -- xod-core --only`
+  e.g. `yarn run dev -- xod-cli --only`
 * `yarn run dev -- <name>` builds a package with specified `<name>` and all
   its dependencies, then stay in watch mode looking for changes in that
   package or any of its dependencies;

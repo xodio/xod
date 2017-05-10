@@ -203,7 +203,7 @@ function transpileImpl(impl) {
         const itemRef = `impl['${implId}']`;
         let lines = [];
 
-        // TODO: move such predicates to xod-core
+        // TODO: use functions from xod-project, unhardcode regexes
         if (/^xod\/core\/input/.test(implId) || /^xod\/core\/output/.test(implId)) {
           lines = [`${itemRef} = identityNode();`];
         } else {

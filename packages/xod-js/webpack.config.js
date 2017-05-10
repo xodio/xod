@@ -15,7 +15,6 @@ module.exports = {
     umdNamedDefine: true
   },
   externals: [
-    'xod-core',
     'fs',
   ],
   module: {

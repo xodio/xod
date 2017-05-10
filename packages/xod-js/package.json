@@ -16,7 +16,6 @@
     "hm-def": "^0.1.2",
     "ramda": "^0.23.0",
     "ramda-fantasy": "^0.7.0",
-    "xod-core": "^0.0.1",
     "xod-project": "^0.0.1",
     "xod-func-tools": "^0.0.1"
   },

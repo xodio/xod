@@ -1,5 +1,4 @@
 import R from 'ramda';
-import { mapIndexed } from 'xod-core';
 
 export const numerateFolders = (initialFolders) => {
   const accordance = {};
@@ -7,7 +6,7 @@ export const numerateFolders = (initialFolders) => {
   return R.pipe(
     R.values,
     R.sortBy(R.prop('name')),
-    mapIndexed(
+    R.mapObjIndexed(
       (folder, idx) => {
         accordance[folder.id] = idx;
         return R.assoc('id', idx, folder);
