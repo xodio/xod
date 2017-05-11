@@ -33,6 +33,8 @@ import PopupPrompt from './utils/components/PopupPrompt';
 import PopupForm from './utils/components/PopupForm';
 import DevTools from './core/containers/DevTools';
 
+import initialState from './core/state';
+
 export * from './editor/actions';
 export * from './project/actions';
 export * from './messages/actions';
@@ -66,6 +68,8 @@ export { default as SnackBar } from './messages';
 export * from './messages/constants';
 export { default as DevTools } from './core/containers/DevTools';
 
+export { default as initialState } from './core/state';
+
 export default Object.assign({
   App,
   Root,
@@ -81,6 +85,7 @@ export default Object.assign({
   Toolbar,
   menu: MenuUtils,
   sanctuaryPropType,
+  initialState,
 },
   UtilsSelectors,
   EditorSelectors,

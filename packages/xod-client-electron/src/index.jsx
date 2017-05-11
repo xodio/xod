@@ -1,8 +1,8 @@
 /* eslint-env browser */
-
+import { merge } from 'ramda';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Root } from 'xod-client';
+import { Root, initialState } from 'xod-client';
 import App from './view/containers/App';
 
 import settingsReducer from './settings/reducer';
@@ -13,9 +13,17 @@ const extraReducers = {
   projects: projectsReducer,
 };
 
+const electronInitialState = merge(initialState, {
+  editor: merge(initialState.editor, {
+    currentPatchPath: null,
+    tabs: {},
+  }),
+});
+
 ReactDOM.render(
   <Root
     extraReducers={extraReducers}
+    initialState={electronInitialState}
   >
     <App />
   </Root>,
