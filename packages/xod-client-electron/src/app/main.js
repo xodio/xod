@@ -1,26 +1,24 @@
-import R from 'ramda';
 import {
   app,
   ipcMain,
   BrowserWindow,
 } from 'electron';
 
-import {
-  saveProject,
-  loadProjectList,
-  loadProject,
-  changeWorkspace,
-  checkWorkspace,
-} from './remoteActions';
-import {
-  subscribeWorkspaceEvents,
-  prepareWorkspaceOnLaunch,
-} from './workspaceActions';
+// import {
+//   // saveProject,
+//   loadProjectList,
+//   loadProject,
+//   changeWorkspace,
+//   checkWorkspace,
+// } from './remoteActions';
+import * as WA from './workspaceActions';
+import { errorToPlainObject } from './utils';
 import {
   uploadToArduinoHandler,
   setArduinoIDEHandler,
 } from './arduinoActions';
 import * as settings from './settings';
+import * as EVENTS from '../shared/events';
 
 app.setName('xod');
 
@@ -56,23 +54,12 @@ function createWindow() {
   win.on('ready-to-show', win.show);
 }
 
-// for IPC. see https://electron.atom.io/docs/api/remote/#remote-objects
-// if we don't do this, we get empty objects on the other side instead of errors
-const errorToPlainObject = R.when(
-  R.is(Error),
-  R.converge(R.pick, [
-    Object.getOwnPropertyNames,
-    R.identity,
-  ])
-);
-
 const subscribeRemoteAction = (processName, remoteAction) => {
-  ipcMain.on(processName, (event, opts) => {
+  ipcMain.on(processName, (event, data) => {
     event.sender.send(`${processName}:process`);
-    remoteAction(opts,
-      (data) => { event.sender.send(`${processName}:complete`, data); },
-      (err) => { event.sender.send(`${processName}:error`, errorToPlainObject(err)); }
-    );
+    remoteAction(event, data)
+      .then((result) => { event.sender.send(`${processName}:complete`, result); })
+      .catch((err) => { event.sender.send(`${processName}:error`, errorToPlainObject(err)); });
   });
 };
 
@@ -83,21 +70,15 @@ const onReady = () => {
   }
   settings.setDefaults();
 
-  // TODO: Replace actionTypes with constants (after removing webpack from this package)
-  subscribeRemoteAction('saveProject', saveProject);
-  subscribeRemoteAction('loadProjectList', loadProjectList);
-  subscribeRemoteAction('loadProject', loadProject);
-  subscribeRemoteAction('checkWorkspace', checkWorkspace);
-  subscribeRemoteAction('changeWorkspace', changeWorkspace);
+  subscribeRemoteAction(EVENTS.SAVE_PROJECT, WA.subscribeSaveProject);
 
+  WA.subscribeWorkspaceEvents(ipcMain);
   ipcMain.on('UPLOAD_TO_ARDUINO', uploadToArduinoHandler);
   ipcMain.on('SET_ARDUINO_IDE', setArduinoIDEHandler);
 
   createWindow();
-
   win.webContents.on('did-finish-load', () => {
-    prepareWorkspaceOnLaunch((eventName, data) => win.webContents.send(eventName, data));
-    subscribeWorkspaceEvents(ipcMain);
+    WA.prepareWorkspaceOnLaunch((eventName, data) => win.webContents.send(eventName, data));
   });
 };
 

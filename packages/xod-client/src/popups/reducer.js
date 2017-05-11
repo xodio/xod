@@ -9,6 +9,7 @@ import {
   PROJECT_RENAME_REQUESTED,
 } from '../projectBrowser/actionTypes';
 import {
+  SHOW_POPUP,
   HIDE_ALL_POPUPS,
 } from './actionTypes';
 
@@ -103,6 +104,9 @@ const popupsReducer = (state = initialState, action) => {
 
     case HIDE_ALL_POPUPS:
       return initialState;
+
+    case SHOW_POPUP:
+      return showOnlyPopup(action.payload.id, action.payload.data, state);
 
     default:
       return state;

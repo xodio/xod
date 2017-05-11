@@ -30,6 +30,7 @@ import {
   LIBS_FOLDERNAME,
   DEFAULT_PROJECT_NAME,
 } from './constants';
+import { errorToPlainObject } from './utils';
 import * as EVENTS from '../shared/events';
 
 
@@ -38,15 +39,17 @@ import * as EVENTS from '../shared/events';
 // IPC & Event publications
 //
 // =============================================================================
-const WorkspaceEvents = new EventEmitter();
-const emitSelectProject = data => WorkspaceEvents.emit(EVENTS.SELECT_PROJECT, data);
+export const WorkspaceEvents = new EventEmitter();
+const emitSelectProject = R.curry(
+  (send, projectMeta) => WorkspaceEvents.emit(EVENTS.SELECT_PROJECT, { send, projectMeta })
+);
 
 // pub through rendererWindow.WebContents.send(...)
 // :: (a -> ()) -> Error -> Promise.Rejected Error
-// const handleError = R.curry((send, err) => {
-//   send(EVENTS.WORKSPACE_ERROR, err);
-//   return Promise.reject(err);
-// });
+const handleError = R.curry((send, err) => {
+  send(EVENTS.WORKSPACE_ERROR, errorToPlainObject(err));
+  return Promise.reject(err);
+});
 // :: (String -> a -> ()) -> Path -> Boolean -> ()
 const requestCreateWorkspace = R.curry(
   (send, path, force = false) => send(EVENTS.REQUEST_CREATE_WORKSPACE, { path, force })
@@ -61,6 +64,16 @@ const requestShowProject = R.curry(
 );
 // :: (String -> a -> ()) -> ()
 const notifySaveProjectComplete = send => () => send(EVENTS.SAVE_PROJECT, true);
+
+// :: (String -> a -> ()) -> Path -> Path -> Promise Path Error
+export const updateWorkspace = R.curry(
+  (send, oldPath, newPath) => {
+    if (oldPath !== newPath) {
+      send(EVENTS.UPDATE_WORKSPACE, newPath);
+    }
+    return Promise.resolve(newPath);
+  }
+);
 
 // =============================================================================
 //
@@ -176,14 +189,14 @@ const createAndSaveNewProject = R.curry(
   )().catch(rejectWithCode(ERROR_CODES.CANT_CREATE_NEW_PROJECT))
 );
 
-// :: () -> Promise.Resolved Path
+// :: () -> Promise Path Error
 export const loadWorkspacePath = R.compose(
   path => Promise.resolve(path),
   settings.getWorkspacePath,
   settings.load
 );
 
-// :: Path -> Promise.Resolved Path
+// :: Path -> Promise Path Error
 export const saveWorkspacePath = path => R.compose(
     R.always(Promise.resolve(path)),
     settings.save,
@@ -192,7 +205,7 @@ export const saveWorkspacePath = path => R.compose(
   )();
 
 
-// :: () -> Promise.Resolved String
+// :: () -> Promise String Error
 export const getHomeDir = () => Promise.resolve(DEFAULT_WORKSPACE_PATH);
 
 // :: Path -> Promise Path Error
@@ -216,16 +229,26 @@ const isWorkspaceFileExists = path => Promise.resolve(path)
   .then(p => P.resolve(p, WORKSPACE_FILENAME))
   .then(isFileExists);
 
+// :: Path -> Promise Boolean Error
+const isWorkspaceHasStdLib = path => Promise.resolve(path)
+  .then(resolveStdLibDestination)
+  .then(isDirectoryExists);
+
 // :: Path -> Promise Path Error
 export const isWorkspaceValid = path => Promise.all([
   isWorkspaceFileExists(path),
+  isWorkspaceHasStdLib(path),
   isWorkspaceDirEmpty(path),
-])
-  .then(R.any(R.equals(true)))
-  .then((isValid) => {
-    if (isValid) return path;
-    return rejectWithCode(ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY, new Error());
-  });
+]).then(
+    ([fileExist, libExist, dirEmpty]) => {
+      const hasFileAndLibs = (fileExist && libExist);
+      if (hasFileAndLibs) { return path; }
+      if (dirEmpty) {
+        return rejectWithCode(ERROR_CODES.WORKSPACE_DIR_NOT_EXIST, new Error());
+      }
+      return rejectWithCode(ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY, new Error());
+    }
+  );
 
 // :: Path -> Promise Path Error
 export const validateWorkspace = R.pipeP(
@@ -275,16 +298,16 @@ const spawnWorkspace = path => spawnWorkspaceFile(path).then(spawnStdLib);
 const ensureWorkspace = path => validateWorkspace(path)
   .catch(() => spawnWorkspace(path));
 
-// :: Path -> Promise ProjectMeta[] Error
+// :: (String -> a -> ()) ->Path -> Promise ProjectMeta[] Error
 const spawnAndLoadDefaultProject = (send, path) => spawnDefaultProject(path)
   .then(enumerateProjects)
   .then(filterDefaultProject)
   .then(R.tap(R.compose(
-    emitSelectProject,
+    emitSelectProject(send),
     R.head
   )));
 
-// :: Path -> Promise ProjectMeta[] Error
+// :: (String -> a -> ()) -> Path -> Promise ProjectMeta[] Error
 export const loadProjectsOrSpawnDefault = R.curry(
   (send, path) => R.pipeP(
     enumerateProjects,
@@ -305,27 +328,26 @@ export const loadProjectsOrSpawnDefault = R.curry(
 
 // :: (String -> a -> ()) -> (() -> Promise Path Error) -> Project -> Promise Project Error
 export const onSaveProject = R.curry(
-  (send, workspaceGetter, project) => R.pipeP(
-    workspaceGetter,
+  (send, pathGetter, project) => R.pipeP(
+    pathGetter,
     saveProject(R.__, project),
     R.tap(notifySaveProjectComplete(send))
-  )()
+  )().catch(handleError(send))
 );
 
 // :: (String -> a -> ()) -> (() -> Promise Path Error) -> Promise ProjectMeta[] Error
 export const onOpenProject = R.curry(
-  (send, workspaceGetter) => R.pipeP(
-    workspaceGetter,
+  (send, pathGetter) => R.pipeP(
+    pathGetter,
     loadProjectsOrSpawnDefault(send)
   )()
   .catch(handleError(send))
 );
 
-// :: Path -> ProjectMeta -> Promise Project Error
+// :: (String -> a -> ()) -> (() -> Path) -> Path -> Promise Project Error
 export const onSelectProject = R.curry(
-  (send, workspacePath, projectMeta) => Promise.resolve(projectMeta)
-    .then(getProjectMetaPath)
-    .then(path => loadProjectWithLibs(path, workspacePath))
+  (send, pathGetter, projectMeta) => pathGetter()
+    .then(workspacePath => loadProjectWithLibs(getProjectMetaPath(projectMeta), workspacePath))
     .then(({ project, libs }) => pack(project, libs))
     // TODO: Get rid of next then, when we'll get rid of V1
     .then((v1) => {
@@ -336,25 +358,30 @@ export const onSelectProject = R.curry(
     })
     .then(requestShowProject(send))
     .catch(rejectWithCode(ERROR_CODES.CANT_OPEN_SELECTED_PROJECT))
+    .catch(handleError(send))
 );
 
 // :: (String -> a -> ()) -> (() -> Promise Path Error) ->
 //    -> (Path -> Promise Path Error) -> Promise ProjectMeta[] Error
 export const onIDELaunch = R.curry(
-  (send, workspaceGetter, pathSaver) => R.pipeP(
-    workspaceGetter,
-    ensurePath,
-    ensureWorkspace,
-    pathSaver,
+  (send, pathGetter, pathSaver) => R.pipeP(
+    pathGetter,
+    oldPath => R.pipeP(
+      ensurePath,
+      ensureWorkspace,
+      pathSaver,
+      updateWorkspace(send, oldPath)
+    )(oldPath),
     loadProjectsOrSpawnDefault(send)
   )().catch(handleError(send))
 );
 
 // :: (String -> a -> ()) -> (Path -> Promise Path Error) -> Path -> Promise ProjectMeta[] Error
-export const onWorkspaceCreate = R.curry(
+export const onCreateWorkspace = R.curry(
   (send, pathSaver, path) => R.pipeP(
     spawnWorkspace,
     pathSaver,
+    updateWorkspace(send, ''),
     loadProjectsOrSpawnDefault(send)
   )(path).catch(handleError(send))
 );
@@ -363,6 +390,7 @@ export const onWorkspaceCreate = R.curry(
 export const onSwitchWorkspace = R.curry(
   (send, pathSaver, path) => validateWorkspace(path)
     .then(pathSaver)
+    .then(updateWorkspace(send, ''))
     .then(loadProjectsOrSpawnDefault(send))
     .catch(catchInvalidWorkspace((err) => {
       const force = (err.errorCode === ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY);
@@ -374,13 +402,14 @@ export const onSwitchWorkspace = R.curry(
 // :: (String -> a -> ()) -> Path -> String -> ProjectMeta
 // With side-effect: emitSelectProject
 export const onCreateProject = R.curry(
-  (send, workspacePath, projectName) => R.pipeP(
+  (send, pathGetter, projectName) => R.pipeP(
     createAndSaveNewProject,
-    () => enumerateProjects(workspacePath),
+    pathGetter,
+    enumerateProjects,
     findProjectMetaByName(projectName),
-    R.tap(emitSelectProject)
-  )(workspacePath, projectName)
-    .catch(handleError(send))
+    R.tap(emitSelectProject(send))
+  )(pathGetter, projectName)
+  .catch(handleError(send))
 );
 
 // =============================================================================
@@ -392,72 +421,45 @@ export const onCreateProject = R.curry(
 // :: ipcEvent -> (String -> Any -> ())
 const ipcSender = event => (eventName, arg) => event.sender.send(eventName, arg);
 
+// This event is subscribed by subscribeRemoteAction function
+export const subscribeSaveProject = R.curry(
+  (event, project) => onSaveProject(ipcSender(event), loadWorkspacePath, project)
+);
+
 // onSelectProject
 export const subscribeSelectProjectEvent = () => WorkspaceEvents.on(
   EVENTS.SELECT_PROJECT,
-  ({ send, projectMeta }) => onSelectProject(
-    send,
-    loadWorkspacePath(),
-    projectMeta
-  )
+  ({ send, projectMeta }) => onSelectProject(send, loadWorkspacePath, projectMeta)
 );
 
 // Pass through IPC event into EventEmitter
 export const subscribeSelectProject = ipcMain => ipcMain.on(
   EVENTS.SELECT_PROJECT,
-  (event, projectMeta) => emitSelectProject({
-    send: ipcSender(event),
-    projectMeta,
-  })
-);
-
-// onSaveProject
-export const subscribeSaveProject = ipcMain => ipcMain.on(
-  EVENTS.SAVE_PROJECT,
-  (event, project) => onSaveProject(
-    ipcSender(event),
-    loadWorkspacePath,
-    project
-  )
+  (event, projectMeta) => emitSelectProject(ipcSender(event), projectMeta)
 );
 
 // onOpenProject
 export const subscribeOpenProject = ipcMain => ipcMain.on(
   EVENTS.OPEN_PROJECT,
-  event => onOpenProject(
-    ipcSender(event),
-    loadWorkspacePath
-  )
+  event => onOpenProject(ipcSender(event), loadWorkspacePath)
 );
 
 // onCreateProject
 export const subscribeCreateProject = ipcMain => ipcMain.on(
   EVENTS.CREATE_PROJECT,
-  (event, projectName) => onCreateProject(
-    ipcSender(event),
-    loadWorkspacePath(),
-    projectName
-  )
+  (event, projectName) => onCreateProject(ipcSender(event), loadWorkspacePath, projectName)
 );
 
 // onCreateWorkspace
 export const subscribeCreateWorkspace = ipcMain => ipcMain.on(
   EVENTS.CREATE_WORKSPACE,
-  (event, path) => onWorkspaceCreate(
-    ipcSender(event),
-    saveWorkspacePath,
-    path
-  )
+  (event, path) => onCreateWorkspace(ipcSender(event), saveWorkspacePath, path)
 );
 
 // onSwitchWorkspace
 export const subscribeSwitchWorkspace = ipcMain => ipcMain.on(
   EVENTS.SWITCH_WORKSPACE,
-  (event, path) => onSwitchWorkspace(
-    ipcSender(event),
-    saveWorkspacePath,
-    path
-  )
+  (event, path) => onSwitchWorkspace(ipcSender(event), saveWorkspacePath, path)
 );
 
 // =============================================================================
@@ -471,7 +473,6 @@ export const subscribeWorkspaceEvents = R.tap(R.compose(
   R.ap([
     subscribeSelectProject,
     subscribeSelectProjectEvent,
-    subscribeSaveProject,
     subscribeOpenProject,
     subscribeCreateProject,
     subscribeCreateWorkspace,

@@ -2,6 +2,7 @@ import * as EditorSelectors from './editor/selectors';
 import * as UtilsSelectors from './utils/selectors';
 import * as ProcessSelectors from './processes/selectors';
 import * as ProjectSelectors from './project/selectors';
+import * as PopupSelectors from './popups/selectors';
 
 import * as CoreActions from './core/actions';
 import * as EditorActions from './editor/actions';
@@ -9,9 +10,12 @@ import * as ProjectActions from './project/actions';
 import * as MessageActions from './messages/actions';
 import * as ProcessActions from './processes/actions';
 import * as ProjectBrowserActions from './projectBrowser/actions';
+import * as PopupActions from './popups/actions';
 
 import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
+import * as PopupConstants from './popups/constants';
+
 import * as BrowserUtils from './utils/browser';
 import * as MenuUtils from './utils/menu';
 import sanctuaryPropType from './utils/sanctuaryPropType';
@@ -34,14 +38,17 @@ export * from './project/actions';
 export * from './messages/actions';
 export * from './processes/actions';
 export * from './projectBrowser/actions';
+export * from './popups/actions';
 
 export * from './editor/selectors';
 export * from './utils/selectors';
 export { getUpload } from './processes/selectors';
 export * from './project/selectors';
+export * from './popups/selectors';
 
 export * from './utils/browser';
 export * from './utils/constants';
+export * from './popups/constants';
 export { lowercaseKebabMask } from './utils/inputFormatting';
 export { default as sanctuaryPropType } from './utils/sanctuaryPropType';
 
@@ -79,6 +86,7 @@ export default Object.assign({
   EditorSelectors,
   ProcessSelectors,
   ProjectSelectors,
+  PopupSelectors,
 
   CoreActions,
   EditorActions,
@@ -86,9 +94,11 @@ export default Object.assign({
   MessageActions,
   ProcessActions,
   ProjectBrowserActions,
+  PopupActions,
 
   EditorConstants,
   MessageConstants,
   UtilsConstants,
-  BrowserUtils
+  BrowserUtils,
+  PopupConstants
 );
