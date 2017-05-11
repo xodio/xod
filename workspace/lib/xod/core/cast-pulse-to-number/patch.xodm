@@ -1,22 +1,16 @@
 {
   "pins": {
     "__in__": {
-      "key": "__in__",
       "index": 0,
       "direction": "input",
-      "type": "pulse",
-      "pinLabel": "__in__",
-      "label": "__in__",
-      "description": ""
+      "key": "__in__",
+      "type": "pulse"
     },
     "__out__": {
-      "key": "__out__",
       "index": 0,
       "direction": "output",
-      "type": "number",
-      "pinLabel": "__out__",
-      "label": "__out__",
-      "description": ""
+      "key": "__out__",
+      "type": "number"
     }
   }
 }

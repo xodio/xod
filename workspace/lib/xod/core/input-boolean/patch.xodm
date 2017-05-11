@@ -1,13 +1,21 @@
 {
+  "label": "<InputBool>",
+  "category": "io",
+  "properties": [
+    {
+      "key": "pinLabel",
+      "type": "string",
+      "widget": "IOLabel",
+      "label": "Pin label",
+      "value": ""
+    }
+  ],
   "pins": {
     "__out__": {
-      "key": "__out__",
       "index": 0,
       "direction": "output",
-      "type": "boolean",
-      "pinLabel": "__out__",
-      "label": "__out__",
-      "description": ""
+      "key": "__out__",
+      "type": "boolean"
     }
   }
 }

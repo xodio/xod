@@ -2,12 +2,12 @@
   "pins": {
     "VAL": {
       "key": "VAL",
-      "index": 0,
       "direction": "output",
+      "label": "value",
       "type": "number",
-      "pinLabel": "VAL",
-      "label": "VAL",
-      "description": ""
+      "value": 0,
+      "index": 0,
+      "description": "Constant value"
     }
   }
 }
