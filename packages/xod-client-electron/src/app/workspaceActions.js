@@ -3,7 +3,7 @@ import P from 'path';
 import FS from 'fs';
 import EventEmitter from 'events';
 
-import XP from 'xod-project';
+import * as XP from 'xod-project';
 import {
   resolvePath,
   writeFile,
