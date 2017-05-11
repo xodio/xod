@@ -7,8 +7,9 @@
   "name": "xod-client-electron",
   "version": "0.0.1",
   "scripts": {
+    "copy-workspace": "cpx \"src/workspace/**/*\" \"src-babel/workspace\"",
     "build:gui": "webpack --colors",
-    "build:app": "babel src/app/ -d src-babel/app/",
+    "build:app": "babel src/app/ -d src-babel/app/ && babel src/shared/ -d src-babel/shared/ && yarn copy-workspace",
     "build": "yarn build:gui && yarn build:app",
     "start": "electron ./src-babel/app/main.js",
     "electron-rebuild": "electron-rebuild",
@@ -44,6 +45,7 @@
   "devDependencies": {
     "babel-cli": "^6.16.0",
     "chai": "^3.5.0",
+    "cpx": "^1.5.0",
     "devtron": "^1.3.0",
     "electron": "^1.4.1",
     "electron-builder": "^17.1.1",
