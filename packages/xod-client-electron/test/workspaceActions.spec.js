@@ -157,6 +157,7 @@ describe('End-to-End', () => {
   const deleteTestFiles = () => Promise.all([
     rmrf(PATH.NOT_EXIST),
     rmrf(resolve(PATH.EMPTY_WORKSPACE, DEFAULT_PROJECT_NAME)),
+    rmrf(resolve(PATH.EMPTY_WORKSPACE, LIBS_FOLDERNAME)),
   ]);
 
   beforeEach(deleteTestFiles);
