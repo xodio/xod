@@ -27,9 +27,7 @@ import PopupSetArduinoIDEPath from '../../settings/components/PopupSetArduinoIDE
 import PopupCreateWorkspace from '../../settings/components/PopupCreateWorkspace';
 import PopupProjectSelection from '../../projects/components/PopupProjectSelection';
 import PopupUploadProject from '../../upload/components/PopupUploadProject';
-import { getProjects } from '../../projects/selectors';
 import { REDUCER_STATUS } from '../../projects/constants';
-import { changeWorkspace, checkWorkspace } from '../../settings/actions';
 import { SaveProgressBar } from '../components/SaveProgressBar';
 
 import * as ERROR_CODES from '../../shared/errorCodes';
@@ -534,7 +532,6 @@ const mapStateToProps = (state) => {
 
   return ({
     hasChanges: client.projectHasChanges(state),
-    projects: getProjects(state),
     project: client.getProject(state),
     upload: getUploadProcess(state),
     saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),
@@ -574,8 +571,6 @@ const mapDispatchToProps = dispatch => ({
     redoCurrentPatch: client.redoCurrentPatch,
     showPopup: client.showPopup,
     hideAllPopups: client.hideAllPopups,
-    checkWorkspace,
-    changeWorkspace,
   }, dispatch),
 });
 
