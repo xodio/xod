@@ -14,7 +14,7 @@ export default class Root extends React.Component {
 
     this.store = createStore(
       generateReducers(this.props.extraReducers),
-      props.initialState,
+      this.props.initialState,
       EditorMiddleware
     );
   }
@@ -31,7 +31,7 @@ export default class Root extends React.Component {
   }
 }
 
-React.defaultProps = {
+Root.defaultProps = {
   initialState: defaultInitialState,
 };
 
