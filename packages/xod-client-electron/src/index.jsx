@@ -1,5 +1,4 @@
 /* eslint-env browser */
-import { merge } from 'ramda';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Root, initialState } from 'xod-client';
@@ -13,17 +12,10 @@ const extraReducers = {
   projects: projectsReducer,
 };
 
-const electronInitialState = merge(initialState, {
-  editor: merge(initialState.editor, {
-    currentPatchPath: null,
-    tabs: {},
-  }),
-});
-
 ReactDOM.render(
   <Root
     extraReducers={extraReducers}
-    initialState={electronInitialState}
+    initialState={initialState} // TODO: Remove project and opened patch when possible
   >
     <App />
   </Root>,
