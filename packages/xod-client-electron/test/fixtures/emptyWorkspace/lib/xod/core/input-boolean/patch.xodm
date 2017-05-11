@@ -1,0 +1,21 @@
+{
+  "label": "<InputBool>",
+  "category": "io",
+  "properties": [
+    {
+      "key": "pinLabel",
+      "type": "string",
+      "widget": "IOLabel",
+      "label": "Pin label",
+      "value": ""
+    }
+  ],
+  "pins": {
+    "__out__": {
+      "index": 0,
+      "direction": "output",
+      "key": "__out__",
+      "type": "boolean"
+    }
+  }
+}

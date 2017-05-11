@@ -8,14 +8,10 @@ import {
   WORKSPACE_FILENAME,
   LIBS_FOLDERNAME,
   DEFAULT_PROJECT_NAME,
-  EVENT_OPEN_PROJECT,
-  EVENT_REQUEST_SELECT_PROJECT,
-  EVENT_REQUEST_CREATE_WORKSPACE,
-  EVENT_WORKSPACE_ERROR,
-  EVENT_REQUEST_OPEN_PROJECT,
 } from '../src/app/constants';
 import * as WA from '../src/app/workspaceActions';
-import * as ERROR_CODES from '../src/app/errorCodes';
+import * as ERROR_CODES from '../src/shared/errorCodes';
+import * as EVENTS from '../src/shared/events';
 
 const PATH = {
   FIXTURES: resolve(__dirname, './fixtures'),
@@ -172,9 +168,13 @@ describe('End-to-End', () => {
     return actualPath;
   };
   const sendMockDefault = (eventName, data) => {
-    assert.equal(eventName, EVENT_REQUEST_SELECT_PROJECT);
-    assert.lengthOf(data, 1);
-    assert.equal(data[0].meta.name, DEFAULT_PROJECT_NAME);
+    assert.oneOf(eventName, [
+      EVENTS.UPDATE_WORKSPACE,
+      EVENTS.REQUEST_SELECT_PROJECT,
+    ]);
+    if (eventName === EVENTS.REQUEST_SELECT_PROJECT) {
+      assert.equal(data[0].meta.name, DEFAULT_PROJECT_NAME);
+    }
   };
 
   describe('spawn workspace pipeline', () => {
@@ -196,10 +196,6 @@ describe('End-to-End', () => {
       WA.onIDELaunch(sendMockDefault, loadMock(PATH.WORKSPACE), saveMock(PATH.WORKSPACE))
         .then(() => done());
     });
-    it('not setted workspace: should fallback to homedir', (done) => {
-      const sendMock = (eventName) => { assert.equal(eventName, EVENT_REQUEST_SELECT_PROJECT); };
-      WA.onIDELaunch(sendMock, loadMock(''), saveMock('~/xod/')).then(() => done());
-    });
     it('not exist workspace: should spawn workspace in homedir, spawn default project and request to open it', (done) => {
       WA.onIDELaunch(sendMockDefault, loadMock(PATH.NOT_EXIST), saveMock(PATH.NOT_EXIST))
         .then(() => done());
@@ -213,7 +209,7 @@ describe('End-to-End', () => {
     });
     it('not existent workspace: requet User to confirm creation', (done) => {
       const sendMock = (eventName, { path, force }) => {
-        assert.equal(eventName, EVENT_REQUEST_CREATE_WORKSPACE);
+        assert.equal(eventName, EVENTS.REQUEST_CREATE_WORKSPACE);
         assert.equal(path, PATH.NOT_EXIST);
         assert.isFalse(force);
       };
@@ -222,7 +218,7 @@ describe('End-to-End', () => {
     });
     it('not empty folder: request User to confirm forced creation', (done) => {
       const sendMock = (eventName, { path, force }) => {
-        assert.equal(eventName, EVENT_REQUEST_CREATE_WORKSPACE);
+        assert.equal(eventName, EVENTS.REQUEST_CREATE_WORKSPACE);
         assert.equal(path, PATH.FIXTURES);
         assert.isTrue(force);
       };
@@ -238,7 +234,7 @@ describe('End-to-End', () => {
     });
     it('invalid workspace: show error and request to change workspace', (done) => {
       const sendMock = (eventName, err) => {
-        assert.equal(eventName, EVENT_WORKSPACE_ERROR);
+        assert.equal(eventName, EVENTS.WORKSPACE_ERROR);
         assert.equal(err.errorCode, ERROR_CODES.CANT_ENUMERATE_PROJECTS);
       };
       WA.onOpenProject(sendMock, loadMock(PATH.NOT_EXIST)).catch(() => done());
@@ -255,10 +251,10 @@ describe('End-to-End', () => {
 
     it('should create, save and request to open new project', (done) => {
       const sendMock = (eventName, projectMeta) => {
-        assert.equal(eventName, EVENT_OPEN_PROJECT);
+        assert.equal(eventName, EVENTS.REQUEST_SHOW_PROJECT);
         assert.equal(projectMeta.meta.name, 'test');
       };
-      WA.onCreateProject(sendMock, PATH.EMPTY_WORKSPACE, 'test')
+      WA.onCreateProject(sendMock, loadMock(PATH.EMPTY_WORKSPACE), 'test')
         .then(() => done());
     });
   });
@@ -266,12 +262,12 @@ describe('End-to-End', () => {
   describe('onSelectProject', () => {
     it('valid workspace and projectMeta: load project and request opening it in renderer', (done) => {
       const sendMock = (eventName, project) => {
-        assert.equal(eventName, EVENT_REQUEST_OPEN_PROJECT);
+        assert.equal(eventName, EVENTS.REQUEST_SHOW_PROJECT);
         assert.equal(getProjectName(project), DEFAULT_PROJECT_NAME);
       };
       WA.onSelectProject(
         sendMock,
-        PATH.WORKSPACE,
+        loadMock(PATH.WORKSPACE),
         { path: resolve(PATH.WORKSPACE, DEFAULT_PROJECT_NAME) }
       ).then(() => done());
     });
@@ -279,28 +275,53 @@ describe('End-to-End', () => {
       // it could be happen only if user clicked "Open Project",
       // then clean workspace, and then clicked to open one of project, that was deleted
       const sendMock = (eventName, err) => {
-        assert.equal(eventName, EVENT_WORKSPACE_ERROR);
+        assert.equal(eventName, EVENTS.WORKSPACE_ERROR);
         assert.equal(err.errorCode, ERROR_CODES.CANT_OPEN_SELECTED_PROJECT);
       };
       WA.onSelectProject(
         sendMock,
-        PATH.EMPTY_WORKSPACE,
+        loadMock(PATH.EMPTY_WORKSPACE),
         { path: resolve(PATH.EMPTY_WORKSPACE, DEFAULT_PROJECT_NAME) }
       ).catch(() => done());
     });
   });
 
-  describe('onWorkspaceCreate', () => {
-    it('should spawn workspace, stdlib, save path, spawn default project and request to open it', (done) => {
-      const sendMock = (eventName, projectMeta) => {
-        assert.equal(eventName, EVENT_OPEN_PROJECT);
-        assert.equal(projectMeta.meta.name, DEFAULT_PROJECT_NAME);
-      };
-      WA.onWorkspaceCreate(
-        sendMock,
+  describe('onCreateWorkspace', () => {
+    const subscribeOnSelectProject = (done, path) => WA.WorkspaceEvents.once(
+      EVENTS.SELECT_PROJECT,
+      ({ projectMeta }) => {
+        WA.onSelectProject(
+          (eventName, project) => {
+            assert.equal(eventName, EVENTS.REQUEST_SHOW_PROJECT);
+            assert.equal(getProjectName(project), DEFAULT_PROJECT_NAME);
+          },
+          loadMock(path),
+          projectMeta
+        ).then(() => done());
+      }
+    );
+
+    it('not existent workspace: spawn .xodworkspace, stdlib, save path, spawn default project and request to open it', (done) => {
+      subscribeOnSelectProject(done, PATH.NOT_EXIST);
+
+      WA.onCreateWorkspace(
+        (eventName) => {
+          assert.equal(eventName, EVENTS.UPDATE_WORKSPACE);
+        },
         saveMock(PATH.NOT_EXIST),
         PATH.NOT_EXIST
-      ).then(() => done());
+      );
+    });
+    it('empty workspace: spawn default project and request to open it', (done) => {
+      subscribeOnSelectProject(done, PATH.EMPTY_WORKSPACE);
+
+      WA.onCreateWorkspace(
+        (eventName) => {
+          assert.equal(eventName, EVENTS.UPDATE_WORKSPACE);
+        },
+        saveMock(PATH.EMPTY_WORKSPACE),
+        PATH.EMPTY_WORKSPACE
+      );
     });
   });
 });
