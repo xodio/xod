@@ -68,6 +68,9 @@ class PopupCreateWorkspace extends React.Component {
         dialogStyles={{
           height: 'auto',
         }}
+        closeButtonStyle={{
+          display: 'none',
+        }}
         ref={this.assignPopupRef}
         title="New workspace"
       >

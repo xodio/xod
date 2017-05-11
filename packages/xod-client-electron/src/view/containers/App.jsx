@@ -95,6 +95,7 @@ class App extends client.App {
     this.hideAllPopups = this.hideAllPopups.bind(this);
     this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
     this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
+    this.showPopupSetWorkspaceNotCancelable = this.showPopupSetWorkspaceNotCancelable.bind(this);
     this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
     this.showArduinoIdeNotFoundPopup = this.showArduinoIdeNotFoundPopup.bind(this);
     this.showCreateWorkspacePopup = this.showCreateWorkspacePopup.bind(this);
@@ -123,7 +124,7 @@ class App extends client.App {
       (event, data) => {
         // TODO: Catch CANT_OPEN_SELECTED_PROJECT and show something else
         //       (its strange to ask to switch workspace if project has broken).
-        this.showPopupSetWorkspace();
+        this.showPopupSetWorkspaceNotCancelable();
         this.props.actions.addError(MESSAGES.ERRORS[data.errorCode]);
       }
     );
@@ -436,7 +437,11 @@ class App extends client.App {
   }
 
   showPopupSetWorkspace() {
-    this.props.actions.showPopup(client.POPUP_ID.SWITCHING_WORKSPACE);
+    this.props.actions.showPopup(client.POPUP_ID.SWITCHING_WORKSPACE, { modal: false });
+  }
+
+  showPopupSetWorkspaceNotCancelable() {
+    this.props.actions.showPopup(client.POPUP_ID.SWITCHING_WORKSPACE, { modal: true });
   }
 
   showCreateWorkspacePopup(path, force) {
@@ -493,6 +498,7 @@ class App extends client.App {
         />
         <PopupSetWorkspace
           workspace={this.state.workspace}
+          isModal={R.propOr(false, 'modal', this.props.popupsData.switchWorkspace)}
           isVisible={this.props.popups.switchWorkspace}
           onChange={this.onWorkspaceChange}
           onClose={this.hideAllPopups}
@@ -509,7 +515,7 @@ class App extends client.App {
           data={this.props.popupsData.createWorkspace}
           isVisible={this.props.popups.createWorkspace}
           onCreateWorkspace={this.onWorkspaceCreate}
-          onClose={this.showPopupSetWorkspace}
+          onClose={this.showPopupSetWorkspaceNotCancelable}
         />
         <SaveProgressBar progress={this.getSaveProgress()} />
       </HotKeys>
@@ -548,6 +554,7 @@ const mapStateToProps = (state) => {
     popupsData: {
       projectSelection: client.getPopupData(client.POPUP_ID.OPENING_PROJECT)(state),
       createWorkspace: client.getPopupData(client.POPUP_ID.CREATING_WORKSPACE)(state),
+      switchWorkspace: client.getPopupData(client.POPUP_ID.SWITCHING_WORKSPACE)(state),
       showCode: client.getPopupData(client.POPUP_ID.SHOWING_CODE)(state),
     },
   });
