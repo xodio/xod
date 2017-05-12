@@ -52,7 +52,7 @@ describe('Saver', () => {
     const onFinish = () => {
       try {
         recReadDir(workspacePath, ['.DS_Store'], (err, files) => {
-          if (files.length === 5) {
+          if (files.length === 3) {
             done();
           } else {
             throw new Error('Wrong amount of files (not equal 5). Check .xodball or change amount in the test!');

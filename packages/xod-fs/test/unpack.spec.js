@@ -1,63 +1,80 @@
-import R from 'ramda';
-import { expect } from 'chai';
-import { isLocalID } from '../src/utils';
-import * as Unpack from '../src/unpack';
-import xodball from './fixtures/xodball.json';
-import unpacked from './fixtures/unpacked.json';
+import { assert } from 'chai';
 
-describe('Unpack xodball', () => {
-  it('should return project data, that contains meta and libs', () => {
-    const projectMeta = Unpack.extractProject(xodball);
-    expect(projectMeta).to.have.all.keys('meta', 'libs');
-    expect(projectMeta).to.deep.equal(unpacked[0].content);
-  });
+import simpleProject from './fixtures/simple-project.json';
 
-  it('should return same count of patches', () => {
-    const patchesCount = Unpack.extractPatches(xodball).length;
-    expect(patchesCount).to.be.equal((unpacked.length - 1) / 2);
-  });
+import {
+  arrangeByFiles,
+} from '../src/unpack';
 
-  it('should return patches that contains meta and patch data', () => {
-    const patches = Unpack.extractPatches(xodball);
-
-    patches.forEach((patch, i) => {
-      expect(patch).to.have.all.keys('meta', 'patch', 'path');
-      expect(patch.meta).to.deep.equal(unpacked[(i * 2) + 1].content);
-      expect(patch.patch).to.deep.equal(unpacked[(i * 2) + 2].content);
-    });
-  });
-
-  it('should return correct project folder', () => {
-    const projectPath = Unpack.getProjectPath(xodball);
-    expect(projectPath).to.be.equal('./awesome-project/');
-  });
-
-  it('should return correct patch folders', () => {
-    const patches = R.pipe(
-      R.values,
-      R.filter(
-        R.pipe(
-          R.prop('id'),
-          isLocalID
-        )
-      ),
-      R.indexBy(R.prop('id'))
-    )(xodball.patches);
-    const patchKeys = Object.keys(patches);
-    const paths = [];
-
-    patchKeys.forEach(
-      key => paths.push(Unpack.getPatchPath(patches[key], xodball))
+describe('arrangeByFiles', () => {
+  it('should split a project into an array of files described as {path, content}', () => {
+    assert.deepEqual(
+      arrangeByFiles(simpleProject),
+      [
+        {
+          content: {
+            authors: [
+              'Author 1',
+              'Author 2',
+            ],
+            description: '',
+            libs: [
+              'xod/core',
+            ],
+            license: '',
+            name: 'awesome-project',
+          },
+          path: './awesome-project/project.xod',
+        },
+        {
+          content: {
+            nodes: {
+              SJmGlirFpx: {
+                type: 'xod/core/led',
+                position: {
+                  x: 138,
+                  y: 224,
+                },
+                pins: {
+                  brightness: {
+                    key: 'brightness',
+                    value: 0,
+                  },
+                },
+                label: 'my led',
+                description: 'description for my led',
+              },
+              rJxbjrKpl: {
+                type: 'xod/built-in/input-number',
+                position: {
+                  x: 138,
+                  y: 16,
+                },
+                pins: {},
+                label: '',
+                description: '',
+              },
+            },
+            links: {
+              rJIWsrtae: {
+                output: {
+                  nodeId: 'rJxbjrKpl',
+                  pinKey: 'PIN',
+                },
+                input: {
+                  nodeId: 'SJmGlirFpx',
+                  pinKey: 'brightness',
+                },
+              },
+            },
+          },
+          path: './awesome-project/main/patch.xodp',
+        },
+        {
+          content: '//custom implementation by user to work faster on Arduino',
+          path: './awesome-project/main/arduino.cpp',
+        },
+      ]
     );
-
-    expect(paths).to.deep.equal([
-      'main/',
-      'sub/qux/',
-    ]);
-  });
-
-  it('should return restructured data ready to be passed into saver', () => {
-    const project = Unpack.arrangeByFiles(xodball);
-    expect(project).to.deep.equal(unpacked);
   });
 });

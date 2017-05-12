@@ -9,7 +9,6 @@ import pack from '../src/pack';
 import libsFixture from './fixtures/libs.json';
 import unpacked from './fixtures/unpacked.json';
 import xodball from './fixtures/xodball.json';
-import { expectEqualToXodball } from './utils';
 
 const tempDir = './fixtures/workspace';
 const sortByPath = R.sortBy(R.prop('path'));
@@ -24,10 +23,12 @@ describe('Loader', () => {
         expect(projects).to.have.lengthOf(1);
         expect(projects).to.deep.equal([
           {
-            meta: {
-              name: 'Awesome project',
-              author: 'Amperka team',
-            },
+            authors: [
+              'Amperka team',
+            ],
+            description: '',
+            license: '',
+            name: 'awesome-project',
             libs: ['xod/core'],
             path: path.resolve(workspace, projectPath),
           },
@@ -44,7 +45,7 @@ describe('Loader', () => {
         expect(libs).to.deep.equal(libsFixture);
 
         const packed = pack(project, libs);
-        expectEqualToXodball(packed, xodball, expect);
+        expect(packed).to.deep.equal(xodball);
         done();
       })
       .catch(done);

@@ -1,0 +1,27 @@
+{
+  "label": "LED",
+  "description": "",
+  "links": {},
+  "nodes": {
+    "noNativeImpl": {
+      "label": "",
+      "description": "",
+      "pins": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/built-in/not-implemented-in-xod"
+    },
+    "brightness": {
+      "label": "",
+      "description": "Shine brightness",
+      "pins": {},
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/built-in/input-number"
+    }
+  }
+}

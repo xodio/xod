@@ -1,117 +1,142 @@
 {
   "xod/core/led": {
     "label": "LED",
-    "category": "hardware",
-    "properties": [{
-      "key": "pin",
-      "label": "Pin",
-      "type": "string",
-      "value": "LED1"
-    }],
-    "id": "xod/core/led",
-    "pins": {
+    "description": "",
+    "links": {},
+    "nodes": {
+      "noNativeImpl": {
+        "id": "noNativeImpl",
+        "label": "",
+        "description": "",
+        "pins": {},
+        "position": {
+          "x": 100,
+          "y": 100
+        },
+        "type": "xod/built-in/not-implemented-in-xod"
+      },
       "brightness": {
-        "index": 0,
-        "direction": "input",
-        "key": "brightness",
-        "type": "number",
-        "label": "Brightness",
-        "value": 0,
-        "description": "Shine brightness"
+        "id": "brightness",
+        "label": "",
+        "description": "Shine brightness",
+        "pins": {},
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "type": "xod/built-in/input-number"
       }
     },
-    "impl": {
+    "path": "xod/core/led",
+    "impls": {
       "espruino": "// should be imported into impl.espruino\n"
     }
   },
   "xod/core/and": {
+    "path": "xod/core/and",
     "label": "and",
-    "id": "xod/core/and",
-    "pins": {
+    "description": "",
+    "links": {},
+    "nodes": {
+      "noNativeImpl": {
+        "id": "noNativeImpl",
+        "label": "",
+        "description": "",
+        "pins": {},
+        "position": {
+          "x": 100,
+          "y": 100
+        },
+        "type": "xod/built-in/not-implemented-in-xod"
+      },
       "a": {
-        "index": 0,
-        "direction": "input",
-        "key": "a",
-        "type": "bool",
-        "description": "First input"
+        "id": "a",
+        "label": "First input",
+        "description": "",
+        "pins": {},
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "type": "xod/built-in/input-boolean"
       },
       "b": {
-        "index": 1,
-        "direction": "input",
-        "key": "b",
-        "type": "bool",
-        "description": "Second input"
+        "id": "b",
+        "label": "Second input",
+        "description": "",
+        "pins": {},
+        "position": {
+          "x": 200,
+          "y": 0
+        },
+        "type": "xod/built-in/input-boolean"
       },
       "out": {
-        "index": 0,
-        "direction": "output",
-        "key": "out",
-        "type": "bool",
-        "description": "\"true\" if both inputs are \"true\""
+        "id": "out",
+        "label": "output",
+        "description": "\"true\" if both inputs are \"true\"",
+        "pins": {},
+        "position": {
+          "x": 0,
+          "y": 300
+        },
+        "type": "xod/built-in/output-boolean"
       }
     },
-    "impl": {
+    "impls": {
       "js": "// should be imported into impl.js\n"
     }
   },
   "xod/core/pot": {
-    "category": "hardware",
-    "properties": [{
-      "key": "pin",
-      "label": "Pin",
-      "type": "string",
-      "value": "A6"
-    }],
-    "id": "xod/core/pot",
-    "pins": {
+    "label": "pot",
+    "description": "",
+    "links": {},
+    "nodes": {
+      "noNativeImpl": {
+        "id": "noNativeImpl",
+        "label": "",
+        "description": "",
+        "pins": {},
+        "position": {
+          "x": 100,
+          "y": 100
+        },
+        "type": "xod/built-in/not-implemented-in-xod"
+      },
       "sample": {
-        "index": 0,
-        "direction": "input",
-        "key": "sample",
-        "type": "pulse",
-        "pinLabel": "PLS",
-        "label": "Sample pulse",
-        "description": "Sample current value"
+        "id": "sample",
+        "label": "",
+        "description": "Sample current value",
+        "pins": {},
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "type": "xod/built-in/input-pulse"
       },
       "value": {
-        "index": 0,
-        "direction": "output",
-        "key": "value",
-        "type": "number",
-        "description": "Sampled potentiometer value"
+        "id": "value",
+        "label": "",
+        "description": "Sampled potentiometer value",
+        "pins": {},
+        "position": {
+          "x": 0,
+          "y": 300
+        },
+        "type": "xod/built-in/output-number"
       }
     },
-    "impl": {
+    "path": "xod/core/pot",
+    "impls": {
       "espruino": "// should be imported into impl.espruino\n"
     }
   },
-  "xod/core/inputNumber": {
-    "label": "<InputNumber>",
-    "category": "io",
-    "properties": [{
-      "key": "pinLabel",
-      "type": "string",
-      "widget": "IOLabel",
-      "label": "Pin label",
-      "value": ""
-    }],
-    "id": "xod/core/inputNumber",
-    "pins": {
-      "PIN": {
-        "index": 0,
-        "direction": "output",
-        "key": "PIN",
-        "type": "number"
-      }
-    },
-    "impl": {}
-  },
   "xod/core/test": {
-    "label": "Test",
-    "id": "xod/core/test",
-    "pins": {},
+    "path": "xod/core/test",
     "nodes": {},
     "links": {},
-    "impl": {}
+    "label": "Test",
+    "description": "",
+    "impls": {}
   }
 }

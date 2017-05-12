@@ -1,11 +1,9 @@
 import R from 'ramda';
 import path from 'path';
-import { hasNo } from 'xod-func-tools';
-import { toV2, listLibraryPatches } from 'xod-project';
 import { readDir, readJSON, readFile } from './read';
-import { resolvePath } from './utils';
+import { resolvePath, reassignIds, getPatchName, hasExt } from './utils';
 
-const implAccordance = {
+export const IMPL_FILENAMES = {
   cpp: 'any.cpp',
   js: 'any.js',
   arduino: 'arduino.cpp',
@@ -13,23 +11,12 @@ const implAccordance = {
   nodejs: 'nodejs.js',
 };
 
-const implTypes = Object.keys(implAccordance);
-
-const getPatchName = (metaPath) => {
-  const parts = metaPath.split(path.sep);
-  return parts[parts.length - 2];
-};
-
-const hasExt = R.curry((ext, filename) => R.equals(path.extname(filename), ext));
-const isXodPatchFile = hasExt('.xodp');
-const isXodMetaFile = hasExt('.xodm');
-
-const isXodFile = R.anyPass([isXodMetaFile, isXodPatchFile]);
+const implTypes = Object.keys(IMPL_FILENAMES);
 
 const scanLibsFolder = (libs, libsDir) => Promise.all(
   libs.map(
     lib => readDir(path.resolve(libsDir, lib))
-      .then(R.filter(isXodFile))
+      .then(R.filter(hasExt('.xodp')))
       .catch((err) => {
         throw Object.assign(err, {
           path: path.resolve(libsDir, lib),
@@ -38,17 +25,6 @@ const scanLibsFolder = (libs, libsDir) => Promise.all(
       })
   ))
   .then(R.zipObj(libs));
-
-const replaceNodeTypeIdWithLibName = R.curry(
-  (name, node) => {
-    const typeId = R.prop('typeId', node);
-
-    if (typeId[0] !== '@') { return node; }
-    const newTypeId = typeId.replace(/@/, name);
-
-    return R.assoc('typeId', newTypeId, node);
-  }
-);
 
 const readLibFiles = (libfiles) => {
   const libNames = Object.keys(libfiles);
@@ -61,18 +37,9 @@ const readLibFiles = (libfiles) => {
       files.map(patchPath =>
         readJSON(patchPath)
           .then((loaded) => {
-            const data = R.assoc('id', `${name}/${getPatchName(patchPath)}`, loaded);
+            const data = R.assoc('path', `${name}/${getPatchName(patchPath)}`, loaded);
 
-            if (hasNo('nodes', data)) {
-              return R.assoc('impl', {}, data);
-            }
-
-            return R.evolve(
-              {
-                nodes: R.mapObjIndexed(replaceNodeTypeIdWithLibName(name)),
-              },
-              data
-            );
+            return reassignIds(data);
           })
       )
     );
@@ -80,14 +47,15 @@ const readLibFiles = (libfiles) => {
 
   return Promise.all(libPromises);
 };
-const loadImpl = libsDir => (metas) => {
-  const metaPromises = [];
 
-  metas.forEach(meta => metaPromises.push(
+const loadImpl = libsDir => (patches) => {
+  const patchPromises = [];
+
+  patches.forEach(patch => patchPromises.push(
     new Promise((resolve) => {
-      const patchDir = path.resolve(libsDir, meta.id);
+      const patchDir = path.resolve(libsDir, patch.path);
       const implPromises = implTypes.map((type) => {
-        const implPath = path.resolve(patchDir, implAccordance[type]);
+        const implPath = path.resolve(patchDir, IMPL_FILENAMES[type]);
         return readFile(implPath)
           .then(data => ([type, data]))
           .catch((err) => {
@@ -111,31 +79,19 @@ const loadImpl = libsDir => (metas) => {
 
           return notEmptyImpls;
         })
-        .then((impl) => {
-          meta.impl = impl; // eslint-disable-line
-          return resolve(meta);
-        });
+        .then(impls => resolve(R.assoc('impls', impls, patch)));
     })
   ));
 
-  return Promise.all(metaPromises);
+  return Promise.all(patchPromises);
 };
-
-// :: libs [patch_1_Meta, patch_1_Content] -> mergedLibs [patch_1]
-const mergePatchesAndMetas = R.pipe(
-  R.groupBy(R.prop('id')),
-  R.values,
-  R.map(R.mergeAll),
-  R.flatten
-);
 
 export const loadLibs = (libs, workspace) => {
   const libsDir = path.resolve(resolvePath(workspace), 'lib');
   return scanLibsFolder(libs, libsDir)
     .then(readLibFiles)
-    .then(mergePatchesAndMetas)
     .then(loadImpl(libsDir))
-    .then(R.indexBy(R.prop('id')));
+    .then(R.indexBy(R.prop('path')));
 };
 
 // extract libNames from paths to xod-files
@@ -162,16 +118,3 @@ export const loadAllLibs = (workspace) => {
     ))
     .then(libs => loadLibs(libs, workspace));
 };
-
-export const loadAllLibsV2 = workspace =>
-  loadAllLibs(workspace)
-    .then(libs =>
-      R.compose(
-        listLibraryPatches,
-        toV2
-      )({
-        meta: { name: 'libs', author: '' },
-        patches: {},
-        nodeTypes: libs,
-      })
-    );

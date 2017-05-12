@@ -1,4 +1,6 @@
 {
   "nodes": {},
-  "links": {}
+  "links": {},
+  "label": "Test",
+  "description": ""
 }

@@ -29,8 +29,16 @@ export const isFileExists = R.tryCatch(
   R.F
 );
 
+const assocIds = R.mapObjIndexed((entity, id) => R.assoc('id', id, entity));
 
-// TODO: remove rudimental utilities
-const removeTrailingSlash = text => text.replace(/\/$/, '');
-export const localID = sid => `@/${removeTrailingSlash(sid)}`;
-export const isLocalID = id => (typeof id === 'string' && id[0] === '@');
+export const reassignIds = R.evolve({
+  nodes: assocIds,
+  links: assocIds,
+});
+
+export const getPatchName = (patchPath) => {
+  const parts = patchPath.split(path.sep);
+  return parts[parts.length - 2];
+};
+
+export const hasExt = R.curry((ext, filename) => R.equals(path.extname(filename), ext));
