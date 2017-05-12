@@ -1,4 +1,5 @@
-import { assert } from 'chai';
+import chai, { assert, expect } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import { resolve } from 'path';
 import fs from 'fs';
 import { isFileExist, isDirectoryExist, rmrf } from 'xod-fs';
@@ -13,9 +14,11 @@ import * as WA from '../src/app/workspaceActions';
 import * as ERROR_CODES from '../src/shared/errorCodes';
 import * as EVENTS from '../src/shared/events';
 
+chai.use(chaiAsPromised);
+
 const PATH = {
   FIXTURES: resolve(__dirname, './fixtures'),
-  WORKSPACE: resolve(__dirname, './fixtures/validWorkspace'),
+  VALID_WORKSPACE: resolve(__dirname, './fixtures/validWorkspace'),
   EMPTY_WORKSPACE: resolve(__dirname, './fixtures/emptyWorkspace'),
   NOT_EXIST: resolve(__dirname, './fixtures/notExist'),
 };
@@ -25,38 +28,57 @@ describe('Utils', () => {
   beforeEach(deleteFolder);
   afterEach(deleteFolder);
 
-  describe('validatePath', () => {
+  describe('resolveWorkspacePath', () => {
     it('Promise.Resolved Path for valid value', (done) => {
-      WA.validatePath(PATH.WORKSPACE).then((path) => {
-        assert.equal(PATH.WORKSPACE, path);
+      WA.resolveWorkspacePath(PATH.VALID_WORKSPACE).then((path) => {
+        assert.equal(PATH.VALID_WORKSPACE, path);
         done();
       });
     });
     it('Promise.Rejected ERROR_CODE for null value', (done) => {
       const errCode = ERROR_CODES.INVALID_WORKSPACE_PATH;
-      WA.validatePath(null).catch((err) => {
+      WA.resolveWorkspacePath(null).catch((err) => {
         assert.equal(errCode, err.errorCode);
         done();
       });
     });
     it('Promise.Rejected INVALID_WORKSPACE_PATH for empty string', (done) => {
       const errCode = ERROR_CODES.INVALID_WORKSPACE_PATH;
-      WA.validatePath('').catch((err) => {
+      WA.resolveWorkspacePath('').catch((err) => {
         assert.equal(errCode, err.errorCode);
         done();
       });
     });
   });
 
+  describe('isWorkspaceValid', () => {
+    it(
+      'valid workspace: return Promise.Resolved Path',
+      () => assert.eventually.equal(WA.isWorkspaceValid(PATH.VALID_WORKSPACE), PATH.VALID_WORKSPACE)
+    );
+    it(
+      'empty workspace: return Promise.Rejected Error WORKSPACE_DIR_NOT_EMPTY',
+      () => expect(WA.isWorkspaceValid(PATH.EMPTY_WORKSPACE))
+        .to.eventually.be.rejected
+        .and.have.property('errorCode', ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY)
+    );
+    it(
+      'not existent workspace: return Promise.Rejected Error WORKSPACE_DIR_NOT_EXIST_OR_EMPTY',
+      () => expect(WA.isWorkspaceValid(PATH.NOT_EXIST))
+        .to.eventually.be.rejected
+        .and.have.property('errorCode', ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY)
+    );
+  });
+
   describe('validateWorkspace', () => {
     it('Promise.Resolved Path for valid workspace', (done) => {
-      WA.validateWorkspace(PATH.WORKSPACE).then((validPath) => {
-        assert.equal(validPath, PATH.WORKSPACE);
+      WA.validateWorkspace(PATH.VALID_WORKSPACE).then((validPath) => {
+        assert.equal(validPath, PATH.VALID_WORKSPACE);
         done();
       });
     });
-    it('Promise.Rejected Error WORKSPACE_DIR_NOT_EXIST for not existent directory', (done) => {
-      const errCode = ERROR_CODES.WORKSPACE_DIR_NOT_EXIST;
+    it('Promise.Rejected Error WORKSPACE_DIR_NOT_EXIST_OR_EMPTY for not existent directory', (done) => {
+      const errCode = ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY;
       WA.validateWorkspace(PATH.NOT_EXIST).catch((err) => {
         assert.equal(errCode, err.errorCode);
         done();
@@ -123,7 +145,7 @@ describe('Utils', () => {
 
   describe('enumerateProjects', () => {
     it('Promise.Resolve ProjectMeta for valid workspace', (done) => {
-      WA.enumerateProjects(PATH.WORKSPACE).then((projects) => {
+      WA.enumerateProjects(PATH.VALID_WORKSPACE).then((projects) => {
         assert.isAbove(projects.length, 0);
         done();
       });
@@ -179,14 +201,14 @@ describe('End-to-End', () => {
   };
 
   describe('spawn workspace pipeline', () => {
-    it('should spawn everything and enumerate all projects (including libs)', (done) => {
+    it('should spawn everything and enumerate all projects (not libs)', (done) => {
       Promise.resolve(PATH.NOT_EXIST)
         .then(WA.spawnWorkspaceFile)
         .then(WA.spawnStdLib)
         .then(WA.spawnDefaultProject)
         .then(WA.enumerateProjects)
         .then((projects) => {
-          assert.isAbove(projects.length, 1);
+          assert.lengthOf(projects, 1);
           done();
         });
     });
@@ -194,7 +216,7 @@ describe('End-to-End', () => {
 
   describe('onIDELaunch', () => {
     it('valid workspace with local project: should request User to select project', (done) => {
-      WA.onIDELaunch(sendMockDefault, loadMock(PATH.WORKSPACE), saveMock(PATH.WORKSPACE))
+      WA.onIDELaunch(sendMockDefault, loadMock(PATH.VALID_WORKSPACE), saveMock(PATH.VALID_WORKSPACE))
         .then(() => done());
     });
     it('not exist workspace: should spawn workspace in homedir, spawn default project and request to open it', (done) => {
@@ -205,7 +227,7 @@ describe('End-to-End', () => {
 
   describe('onSwitchWorkspace', () => {
     it('valid workspace: Promise.Resolved ProjectMeta[]', (done) => {
-      WA.onSwitchWorkspace(sendMockDefault, saveMock(PATH.WORKSPACE), PATH.WORKSPACE)
+      WA.onSwitchWorkspace(sendMockDefault, saveMock(PATH.VALID_WORKSPACE), PATH.VALID_WORKSPACE)
         .then(() => done());
     });
     it('not existent workspace: requet User to confirm creation', (done) => {
@@ -230,7 +252,7 @@ describe('End-to-End', () => {
 
   describe('onOpenProject', () => {
     it('valid workspace: Promise.Resolved ProjectMeta[]', (done) => {
-      WA.onOpenProject(sendMockDefault, loadMock(PATH.WORKSPACE))
+      WA.onOpenProject(sendMockDefault, loadMock(PATH.VALID_WORKSPACE))
         .then(() => done());
     });
     it('invalid workspace: show error and request to change workspace', (done) => {
@@ -268,8 +290,8 @@ describe('End-to-End', () => {
       };
       WA.onSelectProject(
         sendMock,
-        loadMock(PATH.WORKSPACE),
-        { path: resolve(PATH.WORKSPACE, DEFAULT_PROJECT_NAME) }
+        loadMock(PATH.VALID_WORKSPACE),
+        { path: resolve(PATH.VALID_WORKSPACE, DEFAULT_PROJECT_NAME) }
       ).then(() => done());
     });
     it('invalid workspace but valid projectMeta: show error and ask to change workspace', (done) => {
