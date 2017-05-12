@@ -48,5 +48,4 @@ export * from './constants';
 export * from './utils';
 export * from './func-tools';
 export * from './types';
-export { toV2 } from './adapter';
 export { default as flatten } from './flatten';
