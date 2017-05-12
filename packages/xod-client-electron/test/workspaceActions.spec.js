@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import { resolve } from 'path';
 import fs from 'fs';
-import { isFileExists, isDirectoryExists, rmrf } from 'xod-fs';
+import { isFileExist, isDirectoryExist, rmrf } from 'xod-fs';
 import { getProjectName } from 'xod-project';
 
 import {
@@ -79,7 +79,7 @@ describe('Utils', () => {
       WA.spawnWorkspaceFile(PATH.NOT_EXIST).then((path) => {
         const filePath = resolve(path, WORKSPACE_FILENAME);
         assert.equal(testFile, filePath);
-        assert.equal(isFileExists(filePath), true);
+        assert.equal(isFileExist(filePath), true);
         done();
       });
     });
@@ -92,7 +92,7 @@ describe('Utils', () => {
 
     it('Promise.Resolved Path for successfull spawnking', (done) => {
       WA.spawnStdLib(PATH.NOT_EXIST).then(() => {
-        assert.equal(isDirectoryExists(destFolder), true);
+        assert.equal(isDirectoryExist(destFolder), true);
         fs.readdir(destFolder, (err, files) => {
           assert.isAbove(files.length, 0);
           assert.includeMembers(files, ['xod']);
@@ -109,7 +109,7 @@ describe('Utils', () => {
 
     it('Promise.Resolved Path for successfull spawnking', (done) => {
       WA.spawnDefaultProject(PATH.NOT_EXIST).then(() => {
-        assert.equal(isDirectoryExists(destFolder), true);
+        assert.equal(isDirectoryExist(destFolder), true);
         fs.readdir(destFolder, (err, files) => {
           assert.isAbove(files.length, 0);
           assert.includeMembers(files, ['project.xod', 'main']);

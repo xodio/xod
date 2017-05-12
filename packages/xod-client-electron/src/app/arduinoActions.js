@@ -1,7 +1,7 @@
 import R from 'ramda';
 import fs from 'fs';
 import { resolve } from 'path';
-import { resolvePath, writeFile, isDirectoryExists, isFileExists } from 'xod-fs';
+import { resolvePath, writeFile, isDirectoryExist, isFileExist } from 'xod-fs';
 import { foldEither, notEmpty, tapP } from 'xod-func-tools';
 import { transpileForArduino } from 'xod-arduino';
 import * as xab from 'xod-arduino-builder';
@@ -32,9 +32,9 @@ const getPackagesPaths = getPaths(DEFAULT_ARDUINO_PACKAGES_PATH);
 // :: (a -> Boolean) -> (String[] -> String)
 const checkArrayOfStrings = pred => R.reduceWhile(R.complement(pred), (acc, str) => str, null);
 // :: String[] -> String
-const anyFileThatExist = checkArrayOfStrings(isFileExists);
+const anyFileThatExist = checkArrayOfStrings(isFileExist);
 // :: String[] -> String
-const anyDirectoryThatExist = checkArrayOfStrings(isDirectoryExists);
+const anyDirectoryThatExist = checkArrayOfStrings(isDirectoryExist);
 
 // :: PAB -> PAV
 const getPAV = pab => R.pipeP(
@@ -85,8 +85,8 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
   const idePath = anyFileThatExist(getIDEPaths(ide, platform));
   const pkgPath = anyDirectoryThatExist(getPackagesPaths(packages, platform));
 
-  const ideExists = R.both(isFileExists, notEmpty)(idePath);
-  const pkgExists = R.both(isDirectoryExists, notEmpty)(pkgPath);
+  const ideExists = R.both(isFileExist, notEmpty)(idePath);
+  const pkgExists = R.both(isDirectoryExist, notEmpty)(pkgPath);
 
   if (!R.and(ideExists, pkgExists)) {
     return rejectWithCode(ERROR_CODES.IDE_NOT_FOUND, new Error());

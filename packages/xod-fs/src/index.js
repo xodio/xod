@@ -8,8 +8,8 @@ export {
   loadProjectWithLibs,
   loadProjectWithoutLibs,
 } from './load';
-export { loadLibs, loadAllLibs } from './loadLibs';
-export { resolvePath, isDirectoryExists, isFileExists } from './utils';
+export { loadLibs, loadAllLibs, loadAllLibs } from './loadLibs';
+export { resolvePath, isDirectoryExist, isFileExist } from './utils';
 export {
   findClosestProjectDir,
   findClosestWorkspaceDir,

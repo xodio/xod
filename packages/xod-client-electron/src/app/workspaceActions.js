@@ -10,8 +10,8 @@ import {
   copy,
   save,
   getProjects,
-  isDirectoryExists,
-  isFileExists,
+  isDirectoryExist,
+  isFileExist,
   loadProjectWithLibs,
   pack,
   arrangeByFilesV2,
@@ -210,7 +210,7 @@ export const getHomeDir = () => Promise.resolve(DEFAULT_WORKSPACE_PATH);
 
 // :: Path -> Promise Path Error
 const isWorkspaceDirExists = path => Promise.resolve(path)
-  .then(isDirectoryExists)
+  .then(isDirectoryExist)
   .then((exist) => {
     if (exist) return path;
     return rejectWithCode(ERROR_CODES.WORKSPACE_DIR_NOT_EXIST, new Error());
@@ -227,12 +227,12 @@ const isWorkspaceDirEmpty = path => new Promise(
 // :: Path -> Promise Boolean Error
 const isWorkspaceFileExists = path => Promise.resolve(path)
   .then(p => P.resolve(p, WORKSPACE_FILENAME))
-  .then(isFileExists);
+  .then(isFileExist);
 
 // :: Path -> Promise Boolean Error
 const isWorkspaceHasStdLib = path => Promise.resolve(path)
   .then(resolveStdLibDestination)
-  .then(isDirectoryExists);
+  .then(isDirectoryExist);
 
 // :: Path -> Promise Path Error
 export const isWorkspaceValid = path => Promise.all([
