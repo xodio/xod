@@ -1,3 +1,5 @@
+import { resolve } from 'path';
+
 // =============================================================================
 //
 // Paths and file names
@@ -23,6 +25,6 @@ export const DEFAULT_ARDUINO_PACKAGES_PATH = {
 export const WORKSPACE_FILENAME = '.xodworkspace';
 export const DEFAULT_WORKSPACE_PATH = '~/xod/';
 
-export const PATH_TO_DEFAULT_WORKSPACE = '../workspace';
+export const PATH_TO_DEFAULT_WORKSPACE = resolve(__dirname, '../workspace');
 export const LIBS_FOLDERNAME = 'lib';
 export const DEFAULT_PROJECT_NAME = 'welcome-to-xod';

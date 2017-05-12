@@ -113,13 +113,9 @@ const resolveStdLibDestination = path => P.resolve(path, LIBS_FOLDERNAME);
 const resolveDefaultProjectDestination = path => P.resolve(path, DEFAULT_PROJECT_NAME);
 
 // :: () -> Path
-const getStdLibPath = () => P.resolve(
-  __dirname, PATH_TO_DEFAULT_WORKSPACE, LIBS_FOLDERNAME
-);
+const getStdLibPath = () => path.resolve(PATH_TO_DEFAULT_WORKSPACE, LIBS_FOLDERNAME);
 // :: () -> Path
-const getDefaultProjectPath = () => P.resolve(
-  __dirname, PATH_TO_DEFAULT_WORKSPACE, DEFAULT_PROJECT_NAME
-);
+const getDefaultProjectPath = () => path.resolve(PATH_TO_DEFAULT_WORKSPACE, DEFAULT_PROJECT_NAME);
 
 // :: Path -> ProjectMeta[] -> ProjectMeta[]
 export const filterLocalProjects = R.curry((workspacePath, projects) => R.reject(
