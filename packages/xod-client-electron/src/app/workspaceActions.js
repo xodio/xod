@@ -55,7 +55,7 @@ const requestCreateWorkspace = R.curry(
   (send, workspacePath, force = false) => send(
     EVENTS.REQUEST_CREATE_WORKSPACE,
     {
-      workspacePath,
+      path: workspacePath,
       force,
     }
   )
