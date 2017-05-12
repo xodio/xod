@@ -70,14 +70,14 @@ const options = {
       },
       {
         include: assetsPath,
-        test: /\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)$/,
+        test: /\.(jpe?g|png|gif|svg|ttf|eot|woff|woff2)$/,
         loaders: [
           `file?name=assets/[path][name].[ext]?[hash:6]&context=${assetsPath}`,
         ],
       },
       {
         include: [fontAwesomePath, pkgpath('node_modules/font-awesome')],
-        test: /\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)(\?\S*)?$/,
+        test: /\.(jpe?g|png|gif|svg|ttf|eot|woff|woff2)(\?\S*)?$/,
         loaders: [
           'file?name=assets/font-awesome/[name].[ext]?[hash:6]',
         ],
