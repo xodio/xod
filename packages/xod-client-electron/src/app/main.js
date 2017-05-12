@@ -63,7 +63,7 @@ const onReady = () => {
   }
   settings.setDefaults();
 
-  subscribeToRemoteAction(EVENTS.SAVE_PROJECT, WA.subscribeSaveProject);
+  subscribeToRemoteAction(EVENTS.SAVE_PROJECT, WA.subscribeToSaveProject);
 
   WA.subscribeToWorkspaceEvents(ipcMain);
   ipcMain.on('UPLOAD_TO_ARDUINO', uploadToArduinoHandler);
