@@ -95,7 +95,7 @@ class App extends client.App {
     this.hideAllPopups = this.hideAllPopups.bind(this);
     this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
     this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
-    this.showPopupSetWorkspaceNotCancelable = this.showPopupSetWorkspaceNotCancelable.bind(this);
+    this.showPopupSetWorkspaceNotCancellable = this.showPopupSetWorkspaceNotCancellable.bind(this);
     this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
     this.showArduinoIdeNotFoundPopup = this.showArduinoIdeNotFoundPopup.bind(this);
     this.showCreateWorkspacePopup = this.showCreateWorkspacePopup.bind(this);
@@ -124,7 +124,7 @@ class App extends client.App {
       (event, data) => {
         // TODO: Catch CANT_OPEN_SELECTED_PROJECT and show something else
         //       (its strange to ask to switch workspace if project has broken).
-        this.showPopupSetWorkspaceNotCancelable();
+        this.showPopupSetWorkspaceNotCancellable();
         this.props.actions.addError(MESSAGES.ERRORS[data.errorCode]);
       }
     );
@@ -437,11 +437,11 @@ class App extends client.App {
   }
 
   showPopupSetWorkspace() {
-    this.props.actions.showPopup(client.POPUP_ID.SWITCHING_WORKSPACE, { modal: false });
+    this.props.actions.showPopup(client.POPUP_ID.SWITCHING_WORKSPACE, { disposable: false });
   }
 
-  showPopupSetWorkspaceNotCancelable() {
-    this.props.actions.showPopup(client.POPUP_ID.SWITCHING_WORKSPACE, { modal: true });
+  showPopupSetWorkspaceNotCancellable() {
+    this.props.actions.showPopup(client.POPUP_ID.SWITCHING_WORKSPACE, { disposable: true });
   }
 
   showCreateWorkspacePopup(path, force) {
@@ -498,7 +498,7 @@ class App extends client.App {
         />
         <PopupSetWorkspace
           workspace={this.state.workspace}
-          isModal={R.propOr(false, 'modal', this.props.popupsData.switchWorkspace)}
+          isDisposable={R.propOr(false, 'disposable', this.props.popupsData.switchWorkspace)}
           isVisible={this.props.popups.switchWorkspace}
           onChange={this.onWorkspaceChange}
           onClose={this.hideAllPopups}
@@ -515,7 +515,7 @@ class App extends client.App {
           data={this.props.popupsData.createWorkspace}
           isVisible={this.props.popups.createWorkspace}
           onCreateWorkspace={this.onWorkspaceCreate}
-          onClose={this.showPopupSetWorkspaceNotCancelable}
+          onClose={this.showPopupSetWorkspaceNotCancellable}
         />
         <SaveProgressBar progress={this.getSaveProgress()} />
       </HotKeys>

@@ -28,7 +28,7 @@ class PopupSetWorkspace extends React.Component {
     }
   }
   onClose() {
-    if (!this.props.isModal) {
+    if (!this.props.isDisposable) {
       this.props.onClose();
     }
   }
@@ -86,12 +86,12 @@ class PopupSetWorkspace extends React.Component {
     const { currentWorkspace, buttonLabel } = this.getWorkspaceView();
     return (
       <SkyLight
-        hideOnOverlayClicked={!this.props.isModal}
+        hideOnOverlayClicked={!this.props.isDisposable}
         dialogStyles={{
           height: 'auto',
         }}
         // TODO: Replace this hack with real preventing of closing dialog:
-        closeButtonStyle={(this.props.isModal) ? { display: 'none' } : {}}
+        closeButtonStyle={(this.props.isDisposable) ? { display: 'none' } : {}}
         ref={this.assignPopupRef}
         title="Choose your workspace directory"
         afterClose={this.onClose}
@@ -109,7 +109,7 @@ class PopupSetWorkspace extends React.Component {
 
 PopupSetWorkspace.propTypes = {
   workspace: React.PropTypes.string,
-  isModal: React.PropTypes.bool,
+  isDisposable: React.PropTypes.bool,
   isVisible: React.PropTypes.bool, // eslint-disable-line
   onChange: React.PropTypes.func,
   onClose: React.PropTypes.func,
