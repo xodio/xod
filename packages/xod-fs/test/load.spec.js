@@ -17,8 +17,8 @@ describe('Loader', () => {
   const workspace = path.resolve(__dirname, tempDir);
   const projectPath = 'awesome-project';
 
-  it('should return an array of projects in workspace', (done) => {
-    Loader.getProjects(workspace)
+  it('getLocalProjects: should return an array of local projects in workspace', (done) => {
+    Loader.getLocalProjects(workspace)
       .then((projects) => {
         expect(projects).to.have.lengthOf(1);
         expect(projects).to.deep.equal([
@@ -38,7 +38,16 @@ describe('Loader', () => {
       .catch(done);
   });
 
-  it('should load whole project, libs and pack it', (done) => {
+  it('getProjects: should return an array of projects in workspace, including libs', (done) => {
+    Loader.getProjects(workspace)
+      .then((projects) => {
+        expect(projects).to.have.lengthOf(4);
+        done();
+      })
+      .catch(done);
+  });
+
+  it('loadProjectWithLibs: should load whole project, libs and pack it', (done) => {
     Loader.loadProjectWithLibs(projectPath, workspace)
       .then(({ project, libs }) => {
         expect(sortByPath(project)).to.deep.equal(sortByPath(unpacked));
@@ -51,7 +60,7 @@ describe('Loader', () => {
       .catch(done);
   });
 
-  it('should load patch implementations', (done) => {
+  it('loadProjectWithoutLibs: should load project without libs, but with patch implementations', (done) => {
     const xodCore = path.resolve(workspace, './lib/xod/core');
     const xodCoreOwner = path.resolve(xodCore, '..');
     Loader.loadProjectWithoutLibs(xodCore)

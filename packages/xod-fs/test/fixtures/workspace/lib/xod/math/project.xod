@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "name": "math",
+    "author": "xod"
+  },
+  "libs": [
+    "xod/core"
+  ]
+}

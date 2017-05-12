@@ -13,8 +13,7 @@
   "dependencies": {
     "expand-home-dir": "0.0.3",
     "file-save": "^0.2.0",
-    "fs-extra": "^3.0.0",
-    "fs-promise": "^2.0.2",
+    "fs-extra": "^3.0.1",
     "ramda": "^0.23.0",
     "recursive-readdir": "^2.1.0",
     "xod-func-tools": "^0.0.1",

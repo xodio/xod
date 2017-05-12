@@ -5,6 +5,7 @@ export { writeJSON, writeFile } from './write';
 export { readDir, readFile, readJSON } from './read';
 export {
   getProjects,
+  getLocalProjects,
   loadProjectWithLibs,
   loadProjectWithoutLibs,
 } from './load';
