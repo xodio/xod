@@ -101,7 +101,15 @@ export const createAsyncAction = ({
       `${eventName}:error`,
       (sender, err) => {
         // eslint-disable-next-line no-console
-        console.error(err); // we won't see these errors otherwise
+        console.error(
+          `Unhandled error returned in event '${eventName}' (started by action '${actionType}'). See details:`,
+          {
+            eventName,
+            actionType,
+            data,
+            error: err,
+          }
+        );
 
         if (!silent) {
           processFailed(
