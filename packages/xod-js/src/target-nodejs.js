@@ -7,7 +7,7 @@ import nodejsLauncher from '../platform/nodejs/launcher';
  * Runs transpilation for NodeJS target.
  *
  * @function transpileForNodeJS
- * @param {Project} project Whole project (v2)
+ * @param {Project} project Whole project
  * @param {Path} path Path of entry-point patch
  * @returns {Either<Error,String>} Transpiled code or Error
  */
