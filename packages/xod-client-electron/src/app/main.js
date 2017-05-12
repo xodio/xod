@@ -47,7 +47,7 @@ function createWindow() {
   win.on('ready-to-show', win.show);
 }
 
-const subscribeRemoteAction = (processName, remoteAction) => {
+const subscribeToRemoteAction = (processName, remoteAction) => {
   ipcMain.on(processName, (event, data) => {
     event.sender.send(`${processName}:process`);
     remoteAction(event, data)
@@ -63,9 +63,9 @@ const onReady = () => {
   }
   settings.setDefaults();
 
-  subscribeRemoteAction(EVENTS.SAVE_PROJECT, WA.subscribeSaveProject);
+  subscribeToRemoteAction(EVENTS.SAVE_PROJECT, WA.subscribeSaveProject);
 
-  WA.subscribeWorkspaceEvents(ipcMain);
+  WA.subscribeToWorkspaceEvents(ipcMain);
   ipcMain.on('UPLOAD_TO_ARDUINO', uploadToArduinoHandler);
   ipcMain.on('SET_ARDUINO_IDE', setArduinoIDEHandler);
 

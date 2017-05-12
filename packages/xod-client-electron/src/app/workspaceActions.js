@@ -1,6 +1,6 @@
 import R from 'ramda';
-import P from 'path';
-import FS from 'fs';
+import path from 'path';
+import fs from 'fs';
 import EventEmitter from 'events';
 
 import * as XP from 'xod-project';
@@ -52,7 +52,13 @@ const handleError = R.curry((send, err) => {
 });
 // :: (String -> a -> ()) -> Path -> Boolean -> ()
 const requestCreateWorkspace = R.curry(
-  (send, path, force = false) => send(EVENTS.REQUEST_CREATE_WORKSPACE, { path, force })
+  (send, workspacePath, force = false) => send(
+    EVENTS.REQUEST_CREATE_WORKSPACE,
+    {
+      workspacePath,
+      force,
+    }
+  )
 );
 // :: (String -> a -> ()) -> ProjectMeta[] -> ()
 const requestSelectProject = R.curry(
@@ -94,7 +100,7 @@ const filterDefaultProject = R.filter(
 );
 
 // :: Path -> Promise Path Error
-export const validatePath = path => Promise.resolve(path)
+export const validatePath = workspacePath => Promise.resolve(workspacePath)
   .then(R.unless(
     R.allPass([
       R.is(String),
@@ -105,12 +111,14 @@ export const validatePath = path => Promise.resolve(path)
   .then(resolvePath)
   .catch(rejectWithCode(ERROR_CODES.INVALID_WORKSPACE_PATH));
 
-const createWorkspaceFile = () => '';
-
 // :: Path -> Path
-const resolveStdLibDestination = path => P.resolve(path, LIBS_FOLDERNAME);
+const resolveStdLibDestination = workspacePath => path.resolve(
+  workspacePath, LIBS_FOLDERNAME
+);
 // :: Path -> Path
-const resolveDefaultProjectDestination = path => P.resolve(path, DEFAULT_PROJECT_NAME);
+const resolveDefaultProjectDestination = workspacePath => path.resolve(
+  workspacePath, DEFAULT_PROJECT_NAME
+);
 
 // :: () -> Path
 const getStdLibPath = () => path.resolve(PATH_TO_DEFAULT_WORKSPACE, LIBS_FOLDERNAME);
@@ -118,16 +126,18 @@ const getStdLibPath = () => path.resolve(PATH_TO_DEFAULT_WORKSPACE, LIBS_FOLDERN
 const getDefaultProjectPath = () => path.resolve(PATH_TO_DEFAULT_WORKSPACE, DEFAULT_PROJECT_NAME);
 
 // :: Path -> ProjectMeta[] -> ProjectMeta[]
-export const filterLocalProjects = R.curry((workspacePath, projects) => R.reject(
-R.compose(
-  R.equals(LIBS_FOLDERNAME),
-  R.head,
-  R.split(P.sep),
-  projectPath => P.relative(workspacePath, projectPath),
-  getProjectMetaPath
-),
-projects
-));
+export const filterLocalProjects = R.curry(
+  (workspacePath, projects) => R.reject(
+    R.compose(
+      R.equals(LIBS_FOLDERNAME),
+      R.head,
+      R.split(path.sep),
+      projectPath => path.relative(workspacePath, projectPath),
+      getProjectMetaPath
+    ),
+    projects
+  )
+);
 
 // :: String -> ProjectMeta[] -> ProjectMeta
 const findProjectMetaByName = R.curry(
@@ -187,58 +197,54 @@ const createAndSaveNewProject = R.curry(
 
 // :: () -> Promise Path Error
 export const loadWorkspacePath = R.compose(
-  path => Promise.resolve(path),
+  workspacePath => Promise.resolve(workspacePath),
   settings.getWorkspacePath,
   settings.load
 );
 
 // :: Path -> Promise Path Error
-export const saveWorkspacePath = path => R.compose(
-    R.always(Promise.resolve(path)),
+export const saveWorkspacePath = workspacePath => R.compose(
+    R.always(Promise.resolve(workspacePath)),
     settings.save,
-    settings.setWorkspacePath(path),
+    settings.setWorkspacePath(workspacePath),
     settings.load
   )();
 
-
-// :: () -> Promise String Error
-export const getHomeDir = () => Promise.resolve(DEFAULT_WORKSPACE_PATH);
-
 // :: Path -> Promise Path Error
-const isWorkspaceDirExists = path => Promise.resolve(path)
+const isWorkspaceDirExists = workspacePath => Promise.resolve(workspacePath)
   .then(isDirectoryExist)
   .then((exist) => {
-    if (exist) return path;
+    if (exist) return workspacePath;
     return rejectWithCode(ERROR_CODES.WORKSPACE_DIR_NOT_EXIST, new Error());
   });
 
 // :: Path -> Promise Boolean Error
-const isWorkspaceDirEmpty = path => new Promise(
-  (resolve, reject) => FS.readdir(path, (err, files) => {
+const isWorkspaceDirEmpty = workspacePath => new Promise(
+  (resolve, reject) => fs.readdir(workspacePath, (err, files) => {
     if (err) return reject(err);
     return resolve(!files.length);
   })
 );
 
 // :: Path -> Promise Boolean Error
-const isWorkspaceFileExists = path => Promise.resolve(path)
-  .then(p => P.resolve(p, WORKSPACE_FILENAME))
+const isWorkspaceFileExists = workspacePath => Promise.resolve(workspacePath)
+  .then(p => path.resolve(p, WORKSPACE_FILENAME))
   .then(isFileExist);
 
 // :: Path -> Promise Boolean Error
-const isWorkspaceHasStdLib = path => Promise.resolve(path)
+const isWorkspaceHasStdLib = workspacePath => Promise.resolve(workspacePath)
   .then(resolveStdLibDestination)
   .then(isDirectoryExist);
 
 // :: Path -> Promise Path Error
-export const isWorkspaceValid = path => Promise.all([
-  isWorkspaceFileExists(path),
-  isWorkspaceHasStdLib(path),
-  isWorkspaceDirEmpty(path),
+export const isWorkspaceValid = workspacePath => Promise.all([
+  isWorkspaceFileExists(workspacePath),
+  isWorkspaceHasStdLib(workspacePath),
+  isWorkspaceDirEmpty(workspacePath),
 ]).then(
     ([fileExist, libExist, dirEmpty]) => {
       const hasFileAndLibs = (fileExist && libExist);
-      if (hasFileAndLibs) { return path; }
+      if (hasFileAndLibs) { return workspacePath; }
       if (dirEmpty) {
         return rejectWithCode(ERROR_CODES.WORKSPACE_DIR_NOT_EXIST, new Error());
       }
@@ -254,48 +260,42 @@ export const validateWorkspace = R.pipeP(
 );
 
 // :: Path -> Promise Path Error
-export const spawnWorkspaceFile = path => Promise.resolve(path)
-  .then(p => P.resolve(p, WORKSPACE_FILENAME))
-  .then(p => writeFile(p, createWorkspaceFile()))
-  .then(R.always(path))
+export const spawnWorkspaceFile = workspacePath => Promise.resolve(workspacePath)
+  .then(p => path.resolve(p, WORKSPACE_FILENAME))
+  .then(p => writeFile(p, ''))
+  .then(R.always(workspacePath))
   .catch(rejectWithCode(ERROR_CODES.CANT_CREATE_WORKSPACE_FILE));
 
 // :: Path -> Promise Path Error
-export const spawnStdLib = path => Promise.resolve(path)
+export const spawnStdLib = workspacePath => Promise.resolve(workspacePath)
   .then(resolveStdLibDestination)
   .then(copy(getStdLibPath()))
-  .then(R.always(path))
+  .then(R.always(workspacePath))
   .catch(rejectWithCode(ERROR_CODES.CANT_COPY_STDLIB));
 
 // :: Path -> Promise Path Error
-export const spawnDefaultProject = path => Promise.resolve(path)
+export const spawnDefaultProject = workspacePath => Promise.resolve(workspacePath)
   .then(resolveDefaultProjectDestination)
   .then(copy(getDefaultProjectPath()))
-  .then(R.always(path))
+  .then(R.always(workspacePath))
   .catch(rejectWithCode(ERROR_CODES.CANT_COPY_DEFAULT_PROJECT));
 
 // :: Path -> Promise ProjectMeta[] Error
-export const enumerateProjects = path => getProjects(path)
+export const enumerateProjects = workspacePath => getProjects(workspacePath)
   .catch(rejectWithCode(ERROR_CODES.CANT_ENUMERATE_PROJECTS));
 
-// =============================================================================
-//
-// Compositions of steps
-//
-// =============================================================================
+// :: Path -> Promise Path Error
+const ensurePath = workspacePath => validatePath(workspacePath).catch(() => DEFAULT_WORKSPACE_PATH);
 
 // :: Path -> Promise Path Error
-const ensurePath = path => validatePath(path).catch(getHomeDir);
+const spawnWorkspace = workspacePath => spawnWorkspaceFile(workspacePath).then(spawnStdLib);
 
 // :: Path -> Promise Path Error
-const spawnWorkspace = path => spawnWorkspaceFile(path).then(spawnStdLib);
-
-// :: Path -> Promise Path Error
-const ensureWorkspace = path => validateWorkspace(path)
-  .catch(() => spawnWorkspace(path));
+const ensureWorkspace = workspacePath => validateWorkspace(workspacePath)
+  .catch(() => spawnWorkspace(workspacePath));
 
 // :: (String -> a -> ()) ->Path -> Promise ProjectMeta[] Error
-const spawnAndLoadDefaultProject = (send, path) => spawnDefaultProject(path)
+const spawnAndLoadDefaultProject = (send, workspacePath) => spawnDefaultProject(workspacePath)
   .then(enumerateProjects)
   .then(filterDefaultProject)
   .then(R.tap(R.compose(
@@ -305,15 +305,15 @@ const spawnAndLoadDefaultProject = (send, path) => spawnDefaultProject(path)
 
 // :: (String -> a -> ()) -> Path -> Promise ProjectMeta[] Error
 export const loadProjectsOrSpawnDefault = R.curry(
-  (send, path) => R.pipeP(
+  (send, workspacePath) => R.pipeP(
     enumerateProjects,
-    filterLocalProjects(path),
+    filterLocalProjects(workspacePath),
     R.ifElse(
       R.isEmpty,
-      () => spawnAndLoadDefaultProject(send, path),
+      () => spawnAndLoadDefaultProject(send, workspacePath),
       R.tap(requestSelectProject(send))
     )
-  )(path)
+  )(workspacePath)
 );
 
 // =============================================================================
@@ -374,23 +374,23 @@ export const onIDELaunch = R.curry(
 
 // :: (String -> a -> ()) -> (Path -> Promise Path Error) -> Path -> Promise ProjectMeta[] Error
 export const onCreateWorkspace = R.curry(
-  (send, pathSaver, path) => R.pipeP(
+  (send, pathSaver, workspacePath) => R.pipeP(
     spawnWorkspace,
     pathSaver,
     updateWorkspace(send, ''),
     loadProjectsOrSpawnDefault(send)
-  )(path).catch(handleError(send))
+  )(workspacePath).catch(handleError(send))
 );
 
 // :: (String -> a -> ()) -> (Path -> Promise Path Error) -> Path -> Promise ProjectMeta[] Error
 export const onSwitchWorkspace = R.curry(
-  (send, pathSaver, path) => validateWorkspace(path)
+  (send, pathSaver, workspacePath) => validateWorkspace(workspacePath)
     .then(pathSaver)
     .then(updateWorkspace(send, ''))
     .then(loadProjectsOrSpawnDefault(send))
     .catch(catchInvalidWorkspace((err) => {
       const force = (err.errorCode === ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY);
-      requestCreateWorkspace(send, path, force);
+      requestCreateWorkspace(send, workspacePath, force);
     }))
     .catch(handleError(send))
 );
@@ -418,44 +418,44 @@ export const onCreateProject = R.curry(
 const ipcSender = event => (eventName, arg) => event.sender.send(eventName, arg);
 
 // This event is subscribed by subscribeRemoteAction function
-export const subscribeSaveProject = R.curry(
+export const subscribeToSaveProject = R.curry(
   (event, project) => onSaveProject(ipcSender(event), loadWorkspacePath, project)
 );
 
 // onSelectProject
-export const subscribeSelectProjectEvent = () => WorkspaceEvents.on(
+export const subscribeToSelectProjectEvent = () => WorkspaceEvents.on(
   EVENTS.SELECT_PROJECT,
   ({ send, projectMeta }) => onSelectProject(send, loadWorkspacePath, projectMeta)
 );
 
 // Pass through IPC event into EventEmitter
-export const subscribeSelectProject = ipcMain => ipcMain.on(
+export const subscribeToSelectProject = ipcMain => ipcMain.on(
   EVENTS.SELECT_PROJECT,
   (event, projectMeta) => emitSelectProject(ipcSender(event), projectMeta)
 );
 
 // onOpenProject
-export const subscribeOpenProject = ipcMain => ipcMain.on(
+export const subscribeToOpenProject = ipcMain => ipcMain.on(
   EVENTS.OPEN_PROJECT,
   event => onOpenProject(ipcSender(event), loadWorkspacePath)
 );
 
 // onCreateProject
-export const subscribeCreateProject = ipcMain => ipcMain.on(
+export const subscribeToCreateProject = ipcMain => ipcMain.on(
   EVENTS.CREATE_PROJECT,
   (event, projectName) => onCreateProject(ipcSender(event), loadWorkspacePath, projectName)
 );
 
 // onCreateWorkspace
-export const subscribeCreateWorkspace = ipcMain => ipcMain.on(
+export const subscribeToCreateWorkspace = ipcMain => ipcMain.on(
   EVENTS.CREATE_WORKSPACE,
-  (event, path) => onCreateWorkspace(ipcSender(event), saveWorkspacePath, path)
+  (event, workspacePath) => onCreateWorkspace(ipcSender(event), saveWorkspacePath, workspacePath)
 );
 
 // onSwitchWorkspace
-export const subscribeSwitchWorkspace = ipcMain => ipcMain.on(
+export const subscribeToSwitchWorkspace = ipcMain => ipcMain.on(
   EVENTS.SWITCH_WORKSPACE,
-  (event, path) => onSwitchWorkspace(ipcSender(event), saveWorkspacePath, path)
+  (event, workspacePath) => onSwitchWorkspace(ipcSender(event), saveWorkspacePath, workspacePath)
 );
 
 // =============================================================================
@@ -465,14 +465,14 @@ export const subscribeSwitchWorkspace = ipcMain => ipcMain.on(
 // =============================================================================
 
 // :: ipcMain -> ipcMain
-export const subscribeWorkspaceEvents = R.tap(R.compose(
+export const subscribeToWorkspaceEvents = R.tap(R.compose(
   R.ap([
-    subscribeSelectProject,
-    subscribeSelectProjectEvent,
-    subscribeOpenProject,
-    subscribeCreateProject,
-    subscribeCreateWorkspace,
-    subscribeSwitchWorkspace,
+    subscribeToSelectProject,
+    subscribeToSelectProjectEvent,
+    subscribeToOpenProject,
+    subscribeToCreateProject,
+    subscribeToCreateWorkspace,
+    subscribeToSwitchWorkspace,
   ]),
   R.of
 ));
