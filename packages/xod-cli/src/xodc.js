@@ -6,7 +6,6 @@ import { runCommand } from './utils';
 import * as ab from './xodc-ab';
 import generateDoc from './xodc-doc';
 import install from './xodc-install';
-import migrate from './xodc-migrate';
 import pack from './xodc-pack';
 import publish from './xodc-publish';
 import transpile from './xodc-transpile';
@@ -66,7 +65,6 @@ const programs = {
     output: o['--output'],
     target: o['--target'],
   }),
-  migrate: o => migrate(o['<input>'], o['<output>']),
   doc: o => generateDoc(
     o['<outputDir>'], o['<templatesDir>'], o['<projectDir>'],
     { clear: o['--clear'] }
