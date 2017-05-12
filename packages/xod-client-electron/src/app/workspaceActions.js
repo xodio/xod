@@ -130,20 +130,6 @@ const getStdLibPath = () => path.resolve(PATH_TO_DEFAULT_WORKSPACE, LIBS_FOLDERN
 // :: () -> Path
 const getDefaultProjectPath = () => path.resolve(PATH_TO_DEFAULT_WORKSPACE, DEFAULT_PROJECT_NAME);
 
-// :: Path -> ProjectMeta[] -> ProjectMeta[]
-export const filterLocalProjects = R.curry(
-  (workspacePath, projects) => R.reject(
-    R.compose(
-      R.equals(LIBS_FOLDERNAME),
-      R.head,
-      R.split(path.sep),
-      projectPath => path.relative(workspacePath, projectPath),
-      getProjectMetaPath
-    ),
-    projects
-  )
-);
-
 // :: String -> ProjectMeta[] -> ProjectMeta
 const findProjectMetaByName = R.curry(
   (nameToFind, projectMetas) => R.find(
