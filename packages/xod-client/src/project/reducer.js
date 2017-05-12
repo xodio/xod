@@ -21,7 +21,7 @@ import {
 
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from './constants';
 
-// TODO: rewrite the whole prop updating thing when xod-core is completely ditched
+// TODO: rewrite this?
 const selectNodePropertyUpdater = ({ kind, key, value }) => {
   if (kind === NODE_PROPERTY_KIND.PIN) {
     return XP.setPinCurriedValue(key, value);
