@@ -103,6 +103,7 @@ export const optionalObjOf = def(
 
 export const notNil = R.complement(R.isNil);
 export const notEmpty = R.complement(R.isEmpty);
+export const hasNo = R.complement(R.has);
 
 /**
  * Like `R.tap` but works with Promises.
@@ -116,6 +117,7 @@ export default Object.assign(
     explode,
     explodeMaybe,
     foldEither,
+    hasNo,
     omitNilValues,
     omitEmptyValues,
     isAmong,

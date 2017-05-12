@@ -1,6 +1,6 @@
 import R from 'ramda';
 import path from 'path';
-import { hasNot } from 'xod-core';
+import { hasNo } from 'xod-func-tools';
 import { toV2, listLibraryPatches } from 'xod-project';
 import { readDir, readJSON, readFile } from './read';
 import { resolvePath } from './utils';
@@ -63,7 +63,7 @@ const readLibFiles = (libfiles) => {
           .then((loaded) => {
             const data = R.assoc('id', `${name}/${getPatchName(patchPath)}`, loaded);
 
-            if (hasNot('nodes', data)) {
+            if (hasNo('nodes', data)) {
               return R.assoc('impl', {}, data);
             }
 

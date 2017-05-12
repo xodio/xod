@@ -5,7 +5,7 @@ platform:
 
 clone_depth: 5
 cache:
-- '%APPDATA%\npm-cache'
+- '%LOCALAPPDATA%\Yarn'
 - '%USERPROFILE%\.electron'
 - node_modules
 
@@ -14,15 +14,15 @@ init:
 - git config --system core.longpaths true
 
 install:
-- ps: Install-Product node 6.0.0 x64
-- npm install
+- ps: Install-Product node 6 x64
+- yarn install
 
 build_script:
-- npm run build
+- yarn run build
 - ps: |
     $tags=(git tag --points-at $env:APPVEYOR_REPO_COMMIT)
     if ($tags) {
-      npm run electron-dist
+      yarn run electron-dist
       $config = New-TemporaryFile
       echo $env:GOOGLE_CLOUD_STORAGE_CONFIG | node -e "console.log(new Buffer ('$env:GOOGLE_CLOUD_STORAGE_CONFIG', 'base64').toString('utf8').trim())" > $config
       (Get-Content -Path $config) | %{ $_.Replace("\xEF\xBB\xBF", "") } | Set-Content -Path $config

@@ -7,6 +7,7 @@ const webpackTargetElectronRenderer = require('webpack-target-electron-renderer'
 
 const pkgpath = subpath => path.resolve(__dirname, subpath);
 const assetsPath = fs.realpathSync(pkgpath('node_modules/xod-client/src/core/assets'));
+const fontAwesomePath = fs.realpathSync(pkgpath('node_modules/xod-client/node_modules/font-awesome'));
 
 const options = {
   devtool: 'source-map',
@@ -19,28 +20,21 @@ const options = {
   ],
   output: {
     filename: 'bundle.js',
-    path: pkgpath('dist_xod'),
+    path: pkgpath('src-babel'),
     publicPath: '',
   },
   devServer: {
     hot: true,
     host: 'localhost',
     port: 8080,
-    contentBase: pkgpath('dist_xod'),
+    contentBase: pkgpath('src-babel'),
   },
   resolve: {
-    modulesDirectories: [
-      pkgpath('node_modules'),
-      pkgpath('node_modules/xod-client/node_modules'),
-      pkgpath('node_modules/xod-client/node_modules/xod-core/node_modules'),
-      pkgpath('node_modules/xod-project/node_modules'),
-      pkgpath('node_modules/xod-project/node_modules/hm-def/node_modules'),
-      pkgpath('node_modules/xod-arduino/node_modules'),
-      pkgpath('node_modules/xod-js/node_modules'),
-    ],
-    extensions: ['', '.js', '.jsx', '.scss'],
+    extensions: ['', '.webpack.js', '.web.js', '.js', '.json', '.jsx'],
     alias: {
       handlebars: 'handlebars/dist/handlebars.js',
+      /** @see {@link http://stackoverflow.com/a/32444088} */
+      react: pkgpath('node_modules/xod-client/node_modules/react'),
     },
   },
   externals: {
@@ -68,25 +62,24 @@ const options = {
         ],
       },
       {
+        test: /\.css$/,
+        loaders: [
+          'style',
+          'css',
+        ],
+      },
+      {
         include: assetsPath,
-        test: /\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)?$/,
+        test: /\.(jpe?g|png|gif|svg|ttf|eot|woff|woff2)$/,
         loaders: [
           `file?name=assets/[path][name].[ext]?[hash:6]&context=${assetsPath}`,
         ],
       },
       {
-        include: pkgpath('node_modules/font-awesome'),
-        test: /\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)(\?\S*)?$/,
+        include: [fontAwesomePath, pkgpath('node_modules/font-awesome')],
+        test: /\.(jpe?g|png|gif|svg|ttf|eot|woff|woff2)(\?\S*)?$/,
         loaders: [
           'file?name=assets/font-awesome/[name].[ext]?[hash:6]',
-        ],
-      },
-      {
-        include: pkgpath('node_modules/font-awesome'),
-        test: /\.css$/,
-        loaders: [
-          'style',
-          'css',
         ],
       },
       {

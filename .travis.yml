@@ -1,27 +1,31 @@
-dist: trusty
-sudo: false
+language: node_js
+
+matrix:
+  include:
+  - os: linux
+    node_js: '6'
+    sudo: false
+    dist: trusty
+  - os: osx
+    node_js: '6'
+    osx_image: xcode8.3
+
 addons:
   apt:
     packages:
     - libudev-dev
     - rpm
 
-osx_image: xcode8.3
-
-language: node_js
-node_js: 6.0.0
-
-matrix:
-  include:
-  - os: osx
-
 git:
   depth: 5
+
 cache:
   directories:
-  - $HOME/.cache
   - $HOME/.electron
-  - $HOME/.nvm
   - node_modules
+  yarn: true
+
+install:
+- yarn install
 
 script: ./tools/travis.sh

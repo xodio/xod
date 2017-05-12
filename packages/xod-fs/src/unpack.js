@@ -1,7 +1,7 @@
 import path from 'path';
 import R from 'ramda';
 import XF from 'xod-func-tools';
-import { hasNot, isLocalID, localID, notNil } from 'xod-core';
+import { isLocalID, localID } from './utils';
 
 // :: "./awesome-project/" -> "main" -> "patch.xodm" -> "./awesome-project/main/patch.xodm"
 const filePath = (projectPath, patchPath, fileName) => R.pipe(
@@ -42,7 +42,7 @@ const foldersPaths = R.pipe(
   R.values,
   R.sort(
     R.allPass([
-      notNil,
+      XF.notNil,
       R.gte,
     ])
   ),
@@ -78,7 +78,7 @@ const extractLibs = R.pipe(
 
 // :: patchMeta -> xodball -> patchNodeMeta
 const margeWithNodeType = (obj, patchId, xodball) => {
-  if (hasNot(patchId, xodball.nodeTypes)) { return obj; }
+  if (XF.hasNo(patchId, xodball.nodeTypes)) { return obj; }
 
   return R.pipe(
     R.path(['nodeTypes', patchId]),
@@ -132,7 +132,7 @@ const resolvePatchIds = (patches) => {
 
   const resolveNode = (node) => {
     const typeId = node.typeId;
-    if (hasNot(typeId, pathMapping)) { return node; }
+    if (XF.hasNo(typeId, pathMapping)) { return node; }
     return R.assoc('typeId', pathMapping[typeId], node);
   };
 

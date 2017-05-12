@@ -6,6 +6,7 @@ const autoprefixer = require('autoprefixer');
 
 const pkgpath = subpath => path.join(__dirname, subpath);
 const assetsPath = fs.realpathSync(pkgpath('node_modules/xod-client/src/core/assets'));
+const fontAwesomePath = fs.realpathSync(pkgpath('node_modules/xod-client/node_modules/font-awesome'));
 
 module.exports = {
   devtool: 'source-map',
@@ -21,18 +22,11 @@ module.exports = {
     publicPath: '',
   },
   resolve: {
-    modulesDirectories: [
-      pkgpath('node_modules'),
-      pkgpath('node_modules/xod-client/node_modules'),
-      pkgpath('node_modules/xod-client/node_modules/xod-core/node_modules'),
-      pkgpath('node_modules/xod-project/node_modules'),
-      pkgpath('node_modules/xod-project/node_modules/hm-def/node_modules'),
-      pkgpath('node_modules/xod-arduino/node_modules'),
-      pkgpath('node_modules/xod-js/node_modules'),
-    ],
-    extensions: ['', '.js', '.jsx', '.scss'],
+    extensions: ['', '.webpack.js', '.web.js', '.js', '.json', '.jsx'],
     alias: {
       handlebars: 'handlebars/dist/handlebars.js',
+      /** @see {@link http://stackoverflow.com/a/32444088} */
+      react: pkgpath('node_modules/xod-client/node_modules/react'),
     },
   },
   module: {
@@ -54,25 +48,24 @@ module.exports = {
         ],
       },
       {
+        test: /\.css$/,
+        loaders: [
+          'style',
+          'css',
+        ],
+      },
+      {
         include: assetsPath,
-        test: /\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)?$/,
+        test: /\.(jpe?g|png|gif|svg|ttf|eot|woff|woff2)$/,
         loaders: [
           `file?name=assets/[path][name].[ext]?[hash:6]&context=${assetsPath}`,
         ],
       },
       {
-        include: pkgpath('node_modules/font-awesome'),
-        test: /\.(jpe?g|png|gif|svg|ttf|eot|svg|woff|woff2)(\?\S*)?$/,
+        include: fontAwesomePath,
+        test: /\.(jpe?g|png|gif|svg|ttf|eot|woff|woff2)(\?\S*)?$/,
         loaders: [
           'file?name=assets/font-awesome/[name].[ext]?[hash:6]',
-        ],
-      },
-      {
-        include: pkgpath('node_modules/font-awesome'),
-        test: /\.css$/,
-        loaders: [
-          'style',
-          'css',
         ],
       },
       {

@@ -1,0 +1,45 @@
+#!/usr/bin/env node
+
+/*
+ * This script replaces all cross-package symlinks bootsrapped by Lerna with
+ * the same links but guaranted to be absolute.
+ *
+ * It is required to work around incorrect tree walking of electron-builder
+ * which otherwise look for second-level deps in node_modules of first-level
+ * deps, although it should look at root `packages/`
+ */
+
+const fs = require('fs');
+const path = require('path');
+const PackageUtilities = require('lerna/lib/PackageUtilities');
+
+const rootPath = path.resolve(__dirname, '..');
+
+function absolutizePair(parent, child) {
+  const pathToSymlink = path.resolve(parent.nodeModulesLocation, child.name);
+  if (!fs.existsSync(pathToSymlink)) {
+    return;
+  }
+
+  const symlinkTarget = fs.realpathSync(pathToSymlink);
+  fs.unlinkSync(pathToSymlink);
+  fs.symlinkSync(symlinkTarget, pathToSymlink);
+}
+
+function absolutizeAll() {
+  const packages = PackageUtilities.getPackages({
+    packageConfigs: ['packages/*'],
+    rootPath,
+  });
+
+  for (const parent of packages) {
+    for (const child of packages) {
+      absolutizePair(parent, child);
+    }
+  }
+}
+
+// Windows already have abs links
+if (process.platform !== "win32") {
+  absolutizeAll();
+}

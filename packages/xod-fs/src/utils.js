@@ -28,3 +28,9 @@ export const isFileExists = R.tryCatch(
   ),
   R.F
 );
+
+
+// TODO: remove rudimental utilities
+const removeTrailingSlash = text => text.replace(/\/$/, '');
+export const localID = sid => `@/${removeTrailingSlash(sid)}`;
+export const isLocalID = id => (typeof id === 'string' && id[0] === '@');

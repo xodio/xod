@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { expect } from 'chai';
-import { isLocalID } from 'xod-core';
+import { isLocalID } from '../src/utils';
 import * as Unpack from '../src/unpack';
 import xodball from './fixtures/xodball.json';
 import unpacked from './fixtures/unpacked.json';

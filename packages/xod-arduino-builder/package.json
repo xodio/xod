@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "babel src -d dist",
-    "dev": "npm run build -- --watch"
+    "dev": "yarn run build -- --watch"
   },
   "author": "Alexander Matsievsky <am@amperka.ru>",
   "repository": {

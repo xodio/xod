@@ -1,6 +1,7 @@
 import path from 'path';
 import R from 'ramda';
-import { generateId, localID } from 'xod-core';
+import { generateId } from 'xod-project';
+import { localID } from './utils';
 
 const indexById = R.indexBy(R.prop('id'));
 

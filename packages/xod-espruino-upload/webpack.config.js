@@ -14,13 +14,6 @@ module.exports = {
   externals: {
     serialport: true,
   },
-  resolve: {
-    modulesDirectories: [
-      'node_modules',
-      pkgpath('node_modules'),
-    ],
-    extensions: ['', '.js'],
-  },
   module: {
     loaders: [
       {

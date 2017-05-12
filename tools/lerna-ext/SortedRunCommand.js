@@ -1,6 +1,5 @@
-
 const async = require('async');
-const RunCommand = require('lerna/lib/commands/RunCommand');
+const RunCommand = require('lerna/lib/commands/RunCommand').default;
 const topologicallyBatchPackages = require('./batch');
 const withDependencies = require('./dependencies');
 

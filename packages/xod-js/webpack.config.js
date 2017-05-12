@@ -15,17 +15,8 @@ module.exports = {
     umdNamedDefine: true
   },
   externals: [
-    'xod-core',
     'fs',
   ],
-  resolve: {
-    modulesDirectories: [
-      'node_modules',
-      pkgpath('node_modules'),
-      pkgpath('node_modules/xod-core/node_modules'),
-    ],
-    extensions: ['', '.js'],
-  },
   module: {
     loaders: [
       {
