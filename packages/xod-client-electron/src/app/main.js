@@ -4,13 +4,6 @@ import {
   BrowserWindow,
 } from 'electron';
 
-// import {
-//   // saveProject,
-//   loadProjectList,
-//   loadProject,
-//   changeWorkspace,
-//   checkWorkspace,
-// } from './remoteActions';
 import * as WA from './workspaceActions';
 import { errorToPlainObject } from './utils';
 import {
