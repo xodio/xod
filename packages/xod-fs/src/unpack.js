@@ -4,19 +4,13 @@ import * as XP from 'xod-project';
 
 import { IMPL_FILENAMES } from './loadLibs';
 
-// "--  Awesome name  --" -> "awesome-name"
-export const fsSafeName = R.compose(
-  R.replace(/-$/g, ''),
-  R.replace(/^-/g, ''),
-  R.replace(/(-)\1+/g, '-'),
-  R.replace(/[^a-z0-9]/gi, '-'),
-  R.toLower
-);
+export const fsSafeName = XP.toIdentifier;
 
 const getLibNames = R.compose(
-  R.reject(R.equals('xod/built-in')), // TODO: hardcoded magic name
   R.uniq,
-  R.map(R.pipe(XP.getPatchPath, XP.getLibraryName)),
+  R.map(XP.getLibraryName),
+  R.reject(XP.isPathBuiltIn),
+  R.map(XP.getPatchPath),
   XP.listLibraryPatches
 );
 
