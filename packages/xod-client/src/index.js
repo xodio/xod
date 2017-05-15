@@ -16,6 +16,8 @@ import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
 import * as PopupConstants from './popups/constants';
 
+import popupsReducer, { showOnlyPopup, hideOnePopup } from './popups/reducer';
+
 import * as BrowserUtils from './utils/browser';
 import * as MenuUtils from './utils/menu';
 import sanctuaryPropType from './utils/sanctuaryPropType';
@@ -70,6 +72,8 @@ export { default as DevTools } from './core/containers/DevTools';
 
 export { default as initialState } from './core/state';
 
+export { default as popupsReducer, showOnlyPopup, hideOnePopup } from './popups/reducer';
+
 export default Object.assign({
   App,
   Root,
@@ -86,6 +90,9 @@ export default Object.assign({
   menu: MenuUtils,
   sanctuaryPropType,
   initialState,
+  popupsReducer,
+  showOnlyPopup,
+  hideOnePopup,
 },
   UtilsSelectors,
   EditorSelectors,

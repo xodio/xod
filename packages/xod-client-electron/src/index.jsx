@@ -4,7 +4,11 @@ import ReactDOM from 'react-dom';
 import { Root, initialState } from 'xod-client';
 import App from './view/containers/App';
 
-const extraReducers = {};
+import popupsReducer from './popups/reducer';
+
+const extraReducers = {
+  popups: popupsReducer,
+};
 
 ReactDOM.render(
   <Root

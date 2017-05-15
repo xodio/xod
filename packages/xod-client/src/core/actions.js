@@ -2,6 +2,9 @@ import {
   undoPatch,
   redoPatch,
 } from '../project/actions';
+import {
+  SHOW_CODE,
+} from './actionTypes';
 import { getCurrentPatchPath } from '../editor/selectors';
 
 export const undoCurrentPatch = () => (dispatch, getState) => {
@@ -13,6 +16,11 @@ export const redoCurrentPatch = () => (dispatch, getState) => {
   const currentPatchPath = getCurrentPatchPath(getState());
   if (currentPatchPath) dispatch(redoPatch(currentPatchPath));
 };
+
+export const showCode = code => ({
+  actionType: SHOW_CODE,
+  payload: { code },
+});
 
 export * from '../editor/actions';
 export * from '../project/actions';

@@ -69,8 +69,7 @@ export default class App extends React.Component {
         this.props.actions.addError(error.message);
       },
       (code) => {
-        this.setState({ code });
-        this.showCodePopup();
+        this.props.actions.showCode(code);
       },
       eitherCode
     );
@@ -87,5 +86,6 @@ App.propTypes = {
   actions: React.PropTypes.shape({
     addError: React.PropTypes.func.isRequired,
     importProject: React.PropTypes.func.isRequired,
+    showCode: React.PropTypes.func.isRequired,
   }),
 };

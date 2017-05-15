@@ -20,6 +20,7 @@ import {
 import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
 import { getUploadProcess } from '../../upload/selectors';
+import * as settingsActions from '../../settings/actions';
 import { SAVE_PROJECT } from '../actionTypes';
 import { UPLOAD, UPLOAD_TO_ARDUINO } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
@@ -93,10 +94,10 @@ class App extends client.App {
     this.onArduinoPathChange = this.onArduinoPathChange.bind(this);
 
     this.hideAllPopups = this.hideAllPopups.bind(this);
+    this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
     this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
     this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
     this.showPopupSetWorkspaceNotCancellable = this.showPopupSetWorkspaceNotCancellable.bind(this);
-    this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
     this.showArduinoIdeNotFoundPopup = this.showArduinoIdeNotFoundPopup.bind(this);
     this.showCreateWorkspacePopup = this.showCreateWorkspacePopup.bind(this);
 
@@ -141,7 +142,6 @@ class App extends client.App {
   }
 
   onUpload() {
-    this.showUploadProgressPopup();
     this.props.actions.upload();
   }
 
@@ -149,7 +149,6 @@ class App extends client.App {
     const { project, currentPatchPath } = this.props;
     const proc = (processActions !== null) ? processActions : this.props.actions.uploadToArduino();
 
-    this.showUploadProgressPopup();
     ipcRenderer.send(UPLOAD_TO_ARDUINO, {
       pab,
       project,
@@ -165,7 +164,6 @@ class App extends client.App {
       }
       if (payload.failure) {
         if (payload.errorCode === ERROR_CODES.IDE_NOT_FOUND) {
-          this.hideAllPopups();
           this.showArduinoIdeNotFoundPopup();
           ipcRenderer.once('SET_ARDUINO_IDE',
             (evt, response) => {
@@ -223,12 +221,12 @@ class App extends client.App {
   }
 
   onWorkspaceChange(val) {
-    this.hideAllPopups();
+    this.props.actions.switchWorkspace(val);
     ipcRenderer.send(EVENTS.SWITCH_WORKSPACE, val);
   }
 
   onWorkspaceCreate(path) {
-    this.hideAllPopups();
+    this.props.actions.createWorkspace(path);
     ipcRenderer.send(EVENTS.CREATE_WORKSPACE, path);
   }
 
@@ -241,7 +239,6 @@ class App extends client.App {
   }
 
   onUploadPopupClose(id) {
-    this.hideAllPopups();
     this.props.actions.deleteProcess(id, UPLOAD);
   }
 
@@ -409,16 +406,8 @@ class App extends client.App {
     Menu.setApplicationMenu(menu);
   }
 
-  showUploadProgressPopup() {
-    this.props.actions.showPopup(client.POPUP_ID.UPLOADING);
-  }
-
-  showCodePopup() {
-    this.props.actions.showPopup(client.POPUP_ID.SHOWING_CODE, { code: this.state.code });
-  }
-
   showPopupCreateProject() {
-    this.props.actions.showPopup(client.POPUP_ID.CREATING_PROJECT);
+    this.props.actions.requestCreateProject();
   }
 
   showPopupProjectSelection(projects) {
@@ -429,23 +418,23 @@ class App extends client.App {
       status: REDUCER_STATUS.PENDING,
     };
 
-    this.props.actions.showPopup(client.POPUP_ID.OPENING_PROJECT, data);
+    this.props.actions.requestOpenProject(data);
   }
 
   showArduinoIdeNotFoundPopup() {
-    this.props.actions.showPopup(client.POPUP_ID.ARDUINO_IDE_NOT_FOUND);
+    this.props.actions.requestInstallArduinoIDE();
   }
 
   showPopupSetWorkspace() {
-    this.props.actions.showPopup(client.POPUP_ID.SWITCHING_WORKSPACE, { disposable: false });
+    this.props.actions.requestSwitchWorkspace({ disposable: false });
   }
 
   showPopupSetWorkspaceNotCancellable() {
-    this.props.actions.showPopup(client.POPUP_ID.SWITCHING_WORKSPACE, { disposable: true });
+    this.props.actions.requestSwitchWorkspace({ disposable: true });
   }
 
   showCreateWorkspacePopup(path, force) {
-    this.props.actions.showPopup(client.POPUP_ID.CREATING_WORKSPACE, { path, force });
+    this.props.actions.requestCreateWorkspace(path, force);
   }
 
   hideAllPopups() {
@@ -562,6 +551,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
+    requestCreateProject: client.requestCreateProject,
+    requestOpenProject: client.requestOpenProject,
+    requestInstallArduinoIDE: uploadActions.requestInstallArduinoIDE,
+    requestSwitchWorkspace: settingsActions.requestSwitchWorkspace,
+    requestCreateWorkspace: settingsActions.requestCreateWorkspace,
+    createWorkspace: settingsActions.createWorkspace,
+    switchWorkspace: settingsActions.switchWorkspace,
     createProject: client.createProject,
     requestRenameProject: client.requestRenameProject,
     setMode: client.setMode,

@@ -3,7 +3,7 @@ import { transpileForEspruino } from 'xod-js';
 import { foldEither } from 'xod-func-tools';
 import uploadToEspruino from 'xod-espruino-upload';
 
-import { UPLOAD } from './actionTypes';
+import { UPLOAD, REQUEST_INSTALL_ARDUINO_IDE } from './actionTypes';
 
 const progressUpload = (dispatch, id) => (message, percentage) => dispatch(
   client.progressProcess(
@@ -49,6 +49,11 @@ export const uploadToArduino = () => (dispatch) => {
     progress: progressUpload(dispatch, processId),
   };
 };
+
+export const requestInstallArduinoIDE = () => ({
+  type: REQUEST_INSTALL_ARDUINO_IDE,
+  payload: {},
+});
 
 export default {
   upload,
