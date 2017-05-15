@@ -9,6 +9,8 @@ import * as Patch from './patch';
 import * as Node from './node';
 import * as Link from './link';
 import { def } from './types';
+import { BUILT_IN_PATCH_PATHS } from './builtInPatches';
+import * as PatchPathUtils from './patchPathUtils';
 
 /**
  * Root of a project’s state tree
@@ -131,14 +133,37 @@ export const isValidProject = R.compose(
 //
 // =============================================================================
 
-const getPatches = R.prop('patches');
+/*
+ Just empty patches.
+ Pins etc will be hardcoded elsewhere.
+ */
+export const BUILT_IN_PATCHES = R.compose(
+  R.indexBy(Patch.getPatchPath),
+  R.map(
+    path =>
+      R.pipe(
+        Patch.createPatch,
+        Patch.setPatchPath(path)
+      )()
+  )
+)(BUILT_IN_PATCH_PATHS);
+
+const getPatches =
+  R.compose(
+    R.merge(BUILT_IN_PATCHES),
+    R.prop('patches')
+  );
 
 /**
  * @function lensPatch
  * @param {String} patchId
  * @returns {Lens} a Ramda lens whose focus is a patch with the specified id.
  */
-export const lensPatch = patchId => R.lensPath(['patches', patchId]);
+export const lensPatch = patchId =>
+  R.compose(
+    R.lens(getPatches, R.assoc('patches')),
+    R.lensProp(patchId)
+  );
 
 /**
  * @function listPatches
@@ -151,6 +176,16 @@ export const listPatches = def(
 );
 
 /**
+ * @function listPatchesWithoutBuiltIns
+ * @param {Project} project - project bundle
+ * @returns {Patch[]} list of patches that were added to project, excluding built-ins
+ */
+export const listPatchesWithoutBuiltIns = def(
+  'listPatches :: Project -> [Patch]',
+  R.compose(R.values, R.prop('patches'))
+);
+
+/**
  * Returns a list of paths to patches in the project.
  *
  * @function listPatchPaths
@@ -159,7 +194,7 @@ export const listPatches = def(
  */
 export const listPatchPaths = def(
   'listPatchPaths :: Project -> [PatchPath]',
-  R.compose(R.keys, R.prop('patches'))
+  R.compose(R.keys, getPatches)
 );
 
 /**
@@ -172,7 +207,7 @@ export const listPatchPaths = def(
 export const listLocalPatches = def(
   'listLocalPatches :: Project -> [Patch]',
   R.compose(
-    R.filter(R.pipe(Patch.getPatchPath, Utils.isPathLocal)),
+    R.filter(R.pipe(Patch.getPatchPath, PatchPathUtils.isPathLocal)),
     listPatches
   )
 );
@@ -187,7 +222,7 @@ export const listLocalPatches = def(
 export const listLibraryPatches = def(
   'listLibraryPatches :: Project -> [Patch]',
   R.compose(
-    R.filter(R.pipe(Patch.getPatchPath, Utils.isPathLibrary)),
+    R.filter(R.pipe(Patch.getPatchPath, PatchPathUtils.isPathLibrary)),
     listPatches
   )
 );
@@ -222,7 +257,7 @@ export const getPatchByPathUnsafe = def(
 );
 
 /**
- * Checks project for existance of patches and pins that used in link.
+ * Checks project for existence of patches and pins that used in link.
  *
  * @private
  * @function checkPinKeys
@@ -362,7 +397,7 @@ export const mergePatchesList = def(
   (patches, project) =>
     // TODO: perform validation or switch to 'make a blueprint and then validate all' paradigm?
     R.over(
-      R.lensProp('patches'),
+      R.lensProp('patches'), // TODO: is direct access to patches ok here?
       R.flip(R.merge)(
         R.indexBy(Patch.getPatchPath, patches)
       ),
@@ -383,7 +418,7 @@ export const mergePatchesList = def(
 export const dissocPatch = def(
   'dissocPatch :: PatchPath -> Project -> Project',
   (path, project) =>
-    R.dissocPath(['patches', path], project)
+    R.dissocPath(['patches', path], project) // TODO: is direct access to patches ok here?
 );
 
 /**
@@ -398,7 +433,7 @@ export const omitPatches = def(
   'omitPatches :: [PatchPath] -> Project -> Project',
   (paths, project) =>
     R.over(
-      R.lensProp('patches'),
+      R.lensProp('patches'), // TODO: is direct access to patches ok here?
       R.omit(paths),
       project
     )
@@ -509,6 +544,8 @@ export const getNodePin = def(
 // Virtual directories
 //
 // =============================================================================
+
+// TODO: these are not used at all.
 
 /**
  * Returns list of patches in the specified directory.

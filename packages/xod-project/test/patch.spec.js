@@ -2,6 +2,7 @@ import R from 'ramda';
 import chai, { expect, assert } from 'chai';
 import dirtyChai from 'dirty-chai';
 
+import * as Pin from '../src/pin';
 import * as Patch from '../src/patch';
 import * as CONST from '../src/constants';
 import { formatString } from '../src/utils';
@@ -167,9 +168,10 @@ describe('Patch', () => {
     });
     it('should return true for patch with terminal input pin', () => {
       const patch = Helper.defaultizePatch({
-        pins: {
+        nodes: {
           __in__: {
-            key: '__in__',
+            id: '__in__',
+            type: 'xod/built-in/input-number',
           },
         },
       });
@@ -177,9 +179,10 @@ describe('Patch', () => {
     });
     it('should return true for patch with terminal output pin', () => {
       const patch = Helper.defaultizePatch({
-        pins: {
+        nodes: {
           __out__: {
-            key: '__out__',
+            id: '__out__',
+            type: 'xod/built-in/output-number',
           },
         },
       });
@@ -383,20 +386,52 @@ describe('Patch', () => {
 
   describe('pins', () => {
     const patch = Helper.defaultizePatch({
-      pins: {
-        in: { key: 'in', direction: CONST.PIN_DIRECTION.INPUT },
-        out: { key: 'out', direction: CONST.PIN_DIRECTION.OUTPUT },
+      nodes: {
+        in: {
+          id: 'in',
+          type: 'xod/built-in/input-boolean',
+        },
+        out: {
+          id: 'out',
+          type: 'xod/built-in/output-boolean',
+        },
       },
     });
+
+    const expectedPins = {
+      in: {
+        key: 'in',
+        direction: CONST.PIN_DIRECTION.INPUT,
+        type: 'boolean',
+        label: 'in',
+        description: '',
+        order: 0,
+        value: false,
+      },
+      out: {
+        key: 'out',
+        direction: CONST.PIN_DIRECTION.OUTPUT,
+        type: 'boolean',
+        label: 'out',
+        description: '',
+        order: 0,
+        value: false,
+      },
+    };
+
     describe('getPinByKey', () => {
       it('should return Maybe.Nothing for empty patch', () => {
         const res = Patch.getPinByKey('a', emptyPatch);
         expect(res.isNothing).to.be.true();
       });
-      it('should return Maybe.Just for patch with pin', () => {
+      it('should return Maybe.Just for patch with pin node', () => {
         const aPatch = Helper.defaultizePatch({
-          pins: {
-            a: { key: 'a' },
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/built-in/input-boolean',
+              position: { x: 0, y: 0 },
+            },
           },
         });
         const res = Patch.getPinByKey('a', aPatch);
@@ -414,9 +449,10 @@ describe('Patch', () => {
         .and.to.be.empty();
       });
       it('should return array with two pins', () => {
-        expect(Patch.listPins(patch))
-        .to.be.instanceof(Array)
-        .and.have.all.members([patch.pins.in, patch.pins.out]);
+        assert.sameDeepMembers(
+          [expectedPins.in, expectedPins.out],
+          Patch.listPins(patch)
+        );
       });
     });
     describe('listInputPins', () => {
@@ -426,9 +462,10 @@ describe('Patch', () => {
         .and.to.be.empty();
       });
       it('should return array with one pin', () => {
-        expect(Patch.listInputPins(patch))
-        .to.be.instanceof(Array)
-        .and.have.all.members([patch.pins.in]);
+        assert.sameDeepMembers(
+          [expectedPins.in],
+          Patch.listInputPins(patch)
+        );
       });
     });
     describe('listOutputPins', () => {
@@ -438,51 +475,15 @@ describe('Patch', () => {
         .and.to.be.empty();
       });
       it('should return array with one pin', () => {
-        expect(Patch.listOutputPins(patch))
-        .to.be.instanceof(Array)
-        .and.have.all.members([patch.pins.out]);
+        assert.sameDeepMembers(
+          [expectedPins.out],
+          Patch.listOutputPins(patch)
+        );
       });
     });
   });
 
   // entity setters
-  describe('assocPin', () => {
-    it('should return Either.Right with new patch with new pin', () => {
-      const pin = Helper.defaultizePin({
-        key: 'A',
-        type: CONST.PIN_TYPE.STRING,
-        direction: CONST.PIN_DIRECTION.OUTPUT,
-      });
-      const newPatch = Patch.assocPin(pin, emptyPatch);
-
-      expect(newPatch)
-        .to.be.an('object')
-        .that.have.property('pins')
-        .that.have.property(pin.key)
-        .to.be.deep.equal(pin);
-    });
-    it('should not affect on other pins', () => {
-      const patchWithPins = Helper.defaultizePatch({
-        pins: {
-          A: { key: 'A', type: CONST.PIN_TYPE.NUMBER, direction: CONST.PIN_DIRECTION.INPUT },
-          C: { key: 'C', type: CONST.PIN_TYPE.STRING, direction: CONST.PIN_DIRECTION.OUTPUT },
-        },
-      });
-      const pin = Helper.defaultizePin({
-        key: 'B',
-        type: CONST.PIN_TYPE.BOOLEAN,
-        direction: CONST.PIN_DIRECTION.INPUT,
-      });
-      const newPatch = Patch.assocPin(pin, patchWithPins);
-      const expectedPatch = R.assocPath(['pins', pin.key], pin, patchWithPins);
-
-      expect(newPatch)
-        .to.be.an('object')
-        .to.be.deep.equal(expectedPatch);
-    });
-  });
-
-  // TODO: Add test for adding pinNode (assocNode -> assocPin)
   describe('assocNode', () => {
     it('should return Patch with new Node', () => {
       const node = Helper.defaultizeNode({ id: '1' });
@@ -515,14 +516,16 @@ describe('Patch', () => {
     it('should add pin by associating terminal node', () => {
       const node = Helper.defaultizeNode({
         id: '1',
-        type: 'xod/core/input-number',
+        type: 'xod/built-in/input-number',
       });
       const newPatch = Patch.assocNode(node, emptyPatch);
 
-      expect(newPatch)
-        .to.have.property('pins')
-        .that.have.property('1')
-        .that.include.keys('key', 'type', 'direction');
+      const expectedPin = Pin.createPin('1', 'number', 'input', 0);
+
+      assert.deepEqual(
+        [expectedPin],
+        Patch.listPins(newPatch)
+      );
     });
     it('should update pin by associating terminal Node', () => {
       const patch = Helper.defaultizePatch({
@@ -536,22 +539,19 @@ describe('Patch', () => {
       });
       const node = Helper.defaultizeNode({
         id: '1',
-        type: 'xod/core/input-number',
+        type: 'xod/built-in/input-number',
       });
       const newPatch = Patch.assocNode(node, patch);
-      expect(newPatch)
-        .to.have.property('pins')
-        .that.have.property('1');
 
+      const expectedPin = Pin.createPin('1', 'number', 'input', 0);
 
-      const newPin = newPatch.pins['1'];
-      expect(newPin).to.have.property('key', '1');
-      expect(newPin).to.have.property('type', 'number');
-      expect(newPin).to.have.property('direction', 'input');
+      assert.deepEqual(
+        [expectedPin],
+        Patch.listPins(newPatch)
+      );
     });
   });
 
-  // TODO: Add test for deleting pinNode
   describe('dissocNode', () => {
     const patch = Helper.defaultizePatch({
       nodes: {
@@ -613,20 +613,18 @@ describe('Patch', () => {
     it('should remove pin from patch on dissoc pinNode', () => {
       const patchWithPins = Helper.defaultizePatch({
         nodes: {
-          a: { id: 'a', type: 'xod/core/input-number' },
-          b: { id: 'b', type: 'xod/core/output-number' },
-        },
-        pins: {
-          a: {},
-          b: {},
+          a: { id: 'a', type: 'xod/built-in/input-number' },
+          b: { id: 'b', type: 'xod/built-in/output-number' },
         },
       });
       const newPatch = Patch.dissocNode('a', patchWithPins);
-      expect(newPatch)
-      .to.be.an('object')
-      .that.have.property('pins')
-      .that.have.keys(['b'])
-      .and.have.not.keys(['a']);
+      assert.deepEqual(
+        ['b'],
+        R.compose(
+          R.map(Pin.getPinKey),
+          Patch.listPins
+        )(newPatch)
+      );
     });
   });
   describe('assocLink', () => {

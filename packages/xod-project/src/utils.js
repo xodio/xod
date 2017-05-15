@@ -2,9 +2,8 @@ import R from 'ramda';
 import shortid from 'shortid';
 
 import * as Node from './node';
-import * as Tools from './func-tools';
 import * as CONST from './constants';
-import { PatchPath, Identifier, def } from './types';
+import { def } from './types';
 
 /**
  * Replace placeholders with replacements.
@@ -60,64 +59,6 @@ export const formatString = R.curry((template, replacements) =>
  */
 
 /**
- * @private
- * @function getBaseName
- * @param {string} path
- * @returns {string}
- */
-export const getBaseName = R.compose(
-  R.last,
-  R.split('/')
-);
-
-/**
- * @function isPathLocal
- * @param {string} path
- * @returns {boolean}
- */
-export const isPathLocal = R.test(/^@\/[a-zA-Z0-9_\-/]+$/);
-
-/**
- * @function isPathLibrary
- * @param {string} path
- * @returns {boolean}
- */
-export const isPathLibrary = R.test(/^[a-zA-Z0-9_\-/]+$/);
-
-/**
- * @function getLibraryName
- * @param {string} path
- * @returns {string}
- */
-export const getLibraryName = R.ifElse(
-  isPathLibrary,
-  R.compose(
-    R.join('/'),
-    R.take(2),
-    R.split('/')
-  ),
-  R.always('@')
-);
-
-/* eslint-disable no-underscore-dangle */
-export const isValidPatchPath = PatchPath._test;
-export const isValidIdentifier = Identifier._test;
-/* eslint-enable no-underscore-dangle */
-
-/**
- * Checks if a path is a valid for entities like
- * project path, patch path component, etc
- *
- * @function validatePath
- * @param {string} path - string to check
- * @returns {Either<Error|string>} error or valid path
- */
-export const validatePath = Tools.errOnFalse(
-  CONST.ERROR.PATH_INVALID,
-  isValidPatchPath
-);
-
-/**
  * Adds a slash to the end of string if it doesn't exist
  * @private
  * @function ensureEndsWithSlash
@@ -148,16 +89,6 @@ export const generateId = shortid.generate;
  * @returns {boolean}
  */
 export const validateId = R.test(/^[a-zA-Z0-9\-_]+$/);
-
-/**
- * Returns path for casting patch
- * @private
- * @function getCastPatchPath
- * @param {PIN_TYPE} typeIn
- * @param {PIN_TYPE} typeOut
- * @returns {String}
- */
-export const getCastPatchPath = (typeIn, typeOut) => `xod/core/cast-${typeIn}-to-${typeOut}`;
 
 /**
  * Returns a default (empty) value for a given data type.

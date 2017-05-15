@@ -168,7 +168,7 @@ export const getNodePosition = def(
 export const isInputPinNode = def(
   'isInputPinNode :: Node -> Boolean',
   R.compose(
-    R.test(/^xod\/core\/input/),
+    R.test(/^xod\/built-in\/input-/),
     getNodeType
   )
 );
@@ -181,7 +181,7 @@ export const isInputPinNode = def(
 export const isOutputPinNode = def(
   'isOutputPinNode :: Node -> Boolean',
   R.compose(
-    R.test(/^xod\/core\/output/),
+    R.test(/^xod\/built-in\/output-/),
     getNodeType
   )
 );
@@ -325,7 +325,7 @@ export const isPinCurried = def( // TODO: deprecated
  * @type {RegExp}
  */
 const dataTypeRegexp = R.compose(
-  pinTypes => new RegExp(`^xod/core/(?:input|output)-(${pinTypes})`, 'i'),
+  pinTypes => new RegExp(`^xod/built-in/(?:input|output)-(${pinTypes})`, 'i'),
   R.join('|'),
   R.values
 )(CONST.PIN_TYPE);

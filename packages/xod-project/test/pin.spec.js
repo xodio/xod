@@ -67,11 +67,15 @@ describe('Pin', () => {
       expect(Pin.isTerminalPin(pin)).to.be.false();
     });
     it('should return true for terminal input', () => {
-      const pin = Helper.defaultizePin({ key: '__in__' });
+      const pin = Helper.defaultizePin({
+        key: CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.INPUT],
+      });
       expect(Pin.isTerminalPin(pin)).to.be.true();
     });
     it('should return true for terminal output', () => {
-      const pin = Helper.defaultizePin({ key: '__out__' });
+      const pin = Helper.defaultizePin({
+        key: CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.OUTPUT],
+      });
       expect(Pin.isTerminalPin(pin)).to.be.true();
     });
   });

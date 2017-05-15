@@ -6,169 +6,191 @@
   "patches": {
     "xod/core/digital-output": {
       "path": "xod/core/digital-output",
-      "nodes": {},
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/built-in/not-implemented-in-xod"
+        },
+        "pin": {
+          "id": "pin",
+          "type": "xod/built-in/input-string",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "value": {
+          "id": "value",
+          "type": "xod/built-in/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      },
       "links": {},
       "impls": {
         "espruino": "\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
-      },
-      "pins": {
-        "pin": {
-          "key": "pin",
-          "type": "string",
-          "direction": "input",
-          "label": "pin",
-          "description": "",
-          "order": 0,
-          "value": ""
-        },
-        "value": {
-          "key": "value",
-          "type": "number",
-          "direction": "input",
-          "label": "value",
-          "description": "",
-          "order": 0,
-          "value": 0
-        }
       }
     },
     "xod/math/multiply": {
       "path": "xod/math/multiply",
-      "nodes": {},
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/built-in/not-implemented-in-xod"
+        },
+        "a": {
+          "id": "a",
+          "type": "xod/built-in/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "b": {
+          "id": "b",
+          "type": "xod/built-in/input-number",
+          "position": {
+            "x": 100,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/built-in/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
       "links": {},
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a * e.inputs.b) };\n};\n"
-      },
-      "pins": {
-        "a": {
-          "key": "a",
-          "type": "number",
-          "direction": "input",
-          "label": "a",
-          "description": "",
-          "order": 0,
-          "value": 0
-        },
-        "b": {
-          "key": "b",
-          "type": "number",
-          "direction": "input",
-          "label": "b",
-          "description": "",
-          "order": 0,
-          "value": 0
-        },
-        "out": {
-          "key": "out",
-          "type": "number",
-          "direction": "output",
-          "label": "out",
-          "description": "",
-          "order": 0,
-          "value": 0
-        }
       }
     },
     "xod/core/latch": {
       "path": "xod/core/latch",
-      "nodes": {},
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/built-in/not-implemented-in-xod"
+        },
+        "toggle": {
+          "id": "toggle",
+          "type": "xod/built-in/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "set": {
+          "id": "set",
+          "type": "xod/built-in/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "reset": {
+          "id": "reset",
+          "type": "xod/built-in/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "state": {
+          "id": "state",
+          "type": "xod/built-in/output-boolean",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
       "links": {},
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
-      },
-      "pins": {
-        "toggle": {
-          "key": "toggle",
-          "type": "pulse",
-          "direction": "input",
-          "label": "toggle",
-          "description": "",
-          "order": 0,
-          "value": false
-        },
-        "set": {
-          "key": "set",
-          "type": "pulse",
-          "direction": "input",
-          "label": "set",
-          "description": "",
-          "order": 0,
-          "value": false
-        },
-        "reset": {
-          "key": "reset",
-          "type": "pulse",
-          "direction": "input",
-          "label": "reset",
-          "description": "",
-          "order": 0,
-          "value": false
-        },
-        "state": {
-          "key": "state",
-          "type": "boolean",
-          "direction": "output",
-          "label": "state",
-          "description": "",
-          "order": 0,
-          "value": false
-        }
       }
     },
     "xod/core/clock": {
       "path": "xod/core/clock",
-      "nodes": {},
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/built-in/not-implemented-in-xod"
+        },
+        "interval": {
+          "id": "interval",
+          "type": "xod/built-in/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "tick": {
+          "id": "tick",
+          "type": "xod/built-in/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
       "links": {},
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.context.intervalID) {\n    clearInterval(e.context.intervalID);\n  }\n\n  e.context.intervalID = setInterval(function() {\n    e.fire({ tick: PULSE });\n  }, e.inputs.interval * 1000);\n};\n"
-      },
-      "pins": {
-        "interval": {
-          "key": "interval",
-          "type": "number",
-          "direction": "input",
-          "label": "interval",
-          "description": "",
-          "order": 0,
-          "value": 0
-        },
-        "tick": {
-          "key": "tick",
-          "type": "pulse",
-          "direction": "output",
-          "label": "tick",
-          "description": "",
-          "order": 0,
-          "value": false
-        }
       }
     },
     "xod/core/cast-boolean-to-number": {
       "path": "xod/core/cast-boolean-to-number",
-      "nodes": {},
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/built-in/not-implemented-in-xod"
+        },
+        "__in__": {
+          "id": "__in__",
+          "type": "xod/built-in/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "__out__": {
+          "id": "__out__",
+          "type": "xod/built-in/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
       "links": {},
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Number(e.inputs.__in__) };\n};\n"
-      },
-      "pins": {
-        "__in__": {
-          "key": "__in__",
-          "type": "boolean",
-          "direction": "input",
-          "label": "__in__",
-          "description": "",
-          "order": 0,
-          "value": false
-        },
-        "__out__": {
-          "key": "__out__",
-          "type": "number",
-          "direction": "output",
-          "label": "__out__",
-          "description": "",
-          "order": 0,
-          "value": 0
-        }
       }
     },
     "@/main": {
@@ -176,12 +198,12 @@
       "nodes": {
         "SJ7g05EdFe~rJWgAqVOtx": {
           "id": "SJ7g05EdFe~rJWgAqVOtx",
+          "pins": {},
           "type": "xod/core/latch",
           "position": {
             "x": 271,
             "y": 355
-          },
-          "pins": {}
+          }
         },
         "BJ4l0cVdKe~ryFxRcNdKg": {
           "id": "BJ4l0cVdKe~ryFxRcNdKg",
@@ -199,21 +221,21 @@
         },
         "BJ4l0cVdKe~HkSgA94OYx": {
           "id": "BJ4l0cVdKe~HkSgA94OYx",
+          "pins": {},
           "type": "xod/math/multiply",
           "position": {
             "x": 354,
             "y": 218
-          },
-          "pins": {}
+          }
         },
         "BJ4l0cVdKe~rJUgCqNuKl": {
           "id": "BJ4l0cVdKe~rJUgCqNuKl",
+          "pins": {},
           "type": "xod/math/multiply",
           "position": {
             "x": 453,
             "y": 298
-          },
-          "pins": {}
+          }
         },
         "SJ7g05EdFe~BJGgAcVOtx-to-BJ4l0cVdKe~B1wg0qVOtg": {
           "id": "SJ7g05EdFe~BJGgAcVOtx-to-BJ4l0cVdKe~B1wg0qVOtg",
@@ -221,8 +243,7 @@
             "x": 0,
             "y": 0
           },
-          "type": "xod/core/cast-boolean-to-number",
-          "pins": {}
+          "type": "xod/core/cast-boolean-to-number"
         },
         "SJ7g05EdFe~rJxgAqV_tl": {
           "id": "SJ7g05EdFe~rJxgAqV_tl",
@@ -318,8 +339,7 @@
           }
         }
       },
-      "impls": {},
-      "pins": {}
+      "impls": {}
     }
   }
 }

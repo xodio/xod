@@ -155,10 +155,7 @@ export const isOutputPin = def(
 export const isTerminalPin = def(
   'isTerminalPin :: Pin -> Boolean',
   R.compose(
-    R.anyPass([
-      R.equals('__in__'),
-      R.equals('__out__'),
-    ]),
+    R.flip(R.contains)(R.values(CONST.TERMINAL_PIN_KEYS)),
     getPinKey
   )
 );
