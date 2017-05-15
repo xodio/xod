@@ -202,12 +202,11 @@ export const saveWorkspacePath = workspacePath => R.compose(
   )();
 
 // :: Path -> Promise Path Error
-const doesWorkspaceDirExist = workspacePath => Promise.resolve(workspacePath)
-  .then(isDirectoryExist)
-  .then((exist) => {
-    if (exist) return workspacePath;
-    return rejectWithCode(ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY, new Error());
-  });
+const doesWorkspaceDirExist = R.ifElse(
+  isDirectoryExist,
+  Promise.resolve.bind(Promise),
+  () => rejectWithCode(ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY, new Error())
+);
 
 // :: Path -> Boolean
 const isWorkspaceDirEmptyOrNotExist = R.tryCatch(
