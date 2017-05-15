@@ -83,25 +83,34 @@ describe('Editor reducer', () => {
             },
             links: {},
             impls: {},
-            pins: {},
             path: '@/1',
             label: 'Main',
           },
           'xod/core/test': {
-            nodes: {},
-            links: {},
-            impls: {},
-            pins: {
-              in: {
-                key: 'in',
-                type: 'number',
-                direction: 'input',
-                label: 'in',
+            nodes: {
+              noNativeImpl: {
                 description: '',
-                order: 0,
-                value: 0,
+                id: 'noNativeImpl',
+                label: '',
+                position: {
+                  x: 100,
+                  y: 100,
+                },
+                type: 'xod/built-in/not-implemented-in-xod',
+              },
+              in: {
+                id: 'in',
+                type: 'xod/built-in/input-number',
+                position: {
+                  x: 0,
+                  y: 0,
+                },
+                label: '',
+                description: '',
               },
             },
+            links: {},
+            impls: {},
             path: 'xod/core/test',
             label: 'Test patch',
           },

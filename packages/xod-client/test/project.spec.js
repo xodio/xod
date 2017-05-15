@@ -64,7 +64,6 @@ describe('project reducer', () => {
             links: {},
             nodes: {},
             path: '@/main',
-            pins: {},
           },
         ],
         listLocalPatches(newProject),
