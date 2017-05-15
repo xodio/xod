@@ -520,7 +520,7 @@ describe('Patch', () => {
       });
       const newPatch = Patch.assocNode(node, emptyPatch);
 
-      const expectedPin = Pin.createPin('1', 'number', 'input', 0);
+      const expectedPin = Pin.createPin('1', 'number', 'input', 0, '');
 
       assert.deepEqual(
         [expectedPin],
@@ -543,7 +543,7 @@ describe('Patch', () => {
       });
       const newPatch = Patch.assocNode(node, patch);
 
-      const expectedPin = Pin.createPin('1', 'number', 'input', 0);
+      const expectedPin = Pin.createPin('1', 'number', 'input', 0, '');
 
       assert.deepEqual(
         [expectedPin],

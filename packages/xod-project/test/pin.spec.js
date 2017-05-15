@@ -26,28 +26,28 @@ describe('Pin', () => {
       expect(Pin.getPinKey(pin)).to.be.equal('a');
     });
   });
-  // props optional
-  describe('props', () => {
-    function expectGetterSetter(getter, setter, testValue) {
-      const pin = Helper.defaultizePin({});
-      const newPin = setter(testValue, pin);
-      const newValue = getter(newPin);
-      expect(newPin).not.equal(pin);
-      expect(newValue).to.equal(testValue);
-    }
 
-    it('should access label', () => {
-      expectGetterSetter(Pin.getPinLabel, Pin.setPinLabel, 'foo');
-    });
-
-    it('should access description', () => {
-      expectGetterSetter(Pin.getPinDescription, Pin.setPinDescription, 'foo bar baz');
-    });
-
-    it('should access order', () => {
-      expectGetterSetter(Pin.getPinOrder, Pin.setPinOrder, 42);
+  describe('getPinLabel', () => {
+    it('should return pin label', () => {
+      const pin = Helper.defaultizePin({ label: 'LED1' });
+      expect(Pin.getPinLabel(pin)).to.be.equal('LED1');
     });
   });
+
+  describe('getPinDescription', () => {
+    it('should return pin description', () => {
+      const pin = Helper.defaultizePin({ description: 'my awesome pin' });
+      expect(Pin.getPinDescription(pin)).to.be.equal('my awesome pin');
+    });
+  });
+
+  describe('getPinOrder', () => {
+    it('should return pin order', () => {
+      const pin = Helper.defaultizePin({ order: 66 });
+      expect(Pin.getPinOrder(pin)).to.be.equal(66);
+    });
+  });
+
   // is input / output
   describe('isInputPin / isOutputPin', () => {
     it('should honor output direction', () => {

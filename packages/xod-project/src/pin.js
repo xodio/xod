@@ -70,18 +70,6 @@ export const getPinValue = def(
 );
 
 /**
- * @private
- * @function setPinLabel
- * @param {string} label
- * @param {Pin} pin
- * @returns {Pin}
- */
-export const setPinLabel = def(
-  'setPinLabel :: String -> Pin -> Pin',
-  R.assoc('label')
-);
-
-/**
  * @function getPinDescription
  * @param {Pin} pin
  * @returns {string}
@@ -92,18 +80,6 @@ export const getPinDescription = def(
 );
 
 /**
- * @private
- * @function setPinDescription
- * @param {string} description
- * @param {Pin} pin
- * @returns {Pin}
- */
-export const setPinDescription = def(
-  'setPinDescription :: String -> Pin -> Pin',
-  R.assoc('description')
-);
-
-/**
  * @function getPinOrder
  * @param {Pin} pin
  * @returns {number}
@@ -111,18 +87,6 @@ export const setPinDescription = def(
 export const getPinOrder = def(
   'getPinOrder :: Pin -> Number',
   R.prop('order')
-);
-
-/**
- * @private
- * @function setPinOrder
- * @param {number} order
- * @param {Pin} pin
- * @returns {Pin}
- */
-export const setPinOrder = def(
-  'setPinOrder :: Number -> Pin -> Pin',
-  R.assoc('order')
 );
 
 /**
@@ -169,13 +133,13 @@ export const isTerminalPin = def(
  * @returns {Pin}
  */
 export const createPin = def(
-  'createPin :: PinKey -> DataType -> PinDirection -> Number -> Pin',
-  (key, type, direction, order) => ({
+  'createPin :: PinKey -> DataType -> PinDirection -> Number -> String -> Pin',
+  (key, type, direction, order, description) => ({
     key,
     type,
     direction,
     label: key,
-    description: '',
+    description,
     order,
     value: Utils.defaultValueOfType(type), // TODO: support 'custom' default values
   })

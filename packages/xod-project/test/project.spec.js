@@ -197,7 +197,7 @@ describe('Project', () => {
       },
     });
 
-    const expectedPin = Pin.createPin('a', 'number', 'input', 0);
+    const expectedPin = Pin.createPin('a', 'number', 'input', 0, '');
 
     it('should return Nothing for unexisting patch', () => {
       const maybe = Project.getNodePin('test', Helper.defaultizeNode({ type: 'test/unexisting/patch' }), emptyProject);

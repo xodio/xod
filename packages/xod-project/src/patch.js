@@ -220,7 +220,8 @@ const computePins = R.memoize(patch =>
             Node.getNodeId(node),
             Node.getPinNodeDataType(node),
             Node.getPinNodeDirection(node),
-            order
+            order,
+            '' // TODO: where do we get pin descriptions now?
           )
         ),
         R.sortBy(R.pipe(Node.getNodePosition, R.prop('x'))) // TODO: by x, then by y
