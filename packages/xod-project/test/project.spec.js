@@ -216,6 +216,19 @@ describe('Project', () => {
 
   // validations
   describe('validatePatchRebase', () => {
+    it('should return Either.Left if we try to rebase a built-in patch', () => {
+      const project = Helper.defaultizeProject({
+        patches: { '@/test': {}, '@/patch': {} },
+      });
+      const newProject = Project.validatePatchRebase(
+        'my/own/input-boolean',
+        'xod/patch-nodes/input-boolean',
+        project
+      );
+
+      expect(newProject.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, newProject, CONST.ERROR.PATCH_REBASING_BUILT_IN);
+    });
     it('should return Either.Left if patch is not in the project', () => {
       const newProject = Project.validatePatchRebase('@/test', '@/patch', emptyProject);
 

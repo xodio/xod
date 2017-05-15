@@ -12,6 +12,7 @@ export const ERROR = {
   // patches
   PATCH_NOT_FOUND_BY_PATH: 'Can\'t find the patch in the project with specified path: "{patchPath}"',
   PATCH_PATH_OCCUPIED: 'Another patch with the same path already exists',
+  PATCH_REBASING_BUILT_IN: 'Can\'t rebase built-in patch',
   // pathes
   PATH_INVALID: 'Path is empty or contains invalid characters',
   // nodes

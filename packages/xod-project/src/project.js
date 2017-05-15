@@ -400,7 +400,7 @@ export const mergePatchesList = def(
   (patches, project) =>
     // TODO: perform validation or switch to 'make a blueprint and then validate all' paradigm?
     R.over(
-      R.lensProp('patches'), // TODO: is direct access to patches ok here?
+      R.lensProp('patches'),
       R.flip(R.merge)(
         R.indexBy(Patch.getPatchPath, patches)
       ),
@@ -421,7 +421,7 @@ export const mergePatchesList = def(
 export const dissocPatch = def(
   'dissocPatch :: PatchPath -> Project -> Project',
   (path, project) =>
-    R.dissocPath(['patches', path], project) // TODO: is direct access to patches ok here?
+    R.dissocPath(['patches', path], project)
 );
 
 /**
@@ -436,7 +436,7 @@ export const omitPatches = def(
   'omitPatches :: [PatchPath] -> Project -> Project',
   (paths, project) =>
     R.over(
-      R.lensProp('patches'), // TODO: is direct access to patches ok here?
+      R.lensProp('patches'),
       R.omit(paths),
       project
     )
@@ -464,8 +464,10 @@ const doesPathExist = def(
 export const validatePatchRebase = def(
   'validatePatchRebase :: PatchPath -> PatchPath -> Project -> Either Error Project',
   (newPath, oldPath, project) =>
-    Either.of(newPath)
-    .chain(
+    (isPathBuiltIn(oldPath)
+      ? Tools.err(CONST.ERROR.PATCH_REBASING_BUILT_IN)()
+      : Either.of(newPath)
+    ).chain(
       Tools.errOnFalse(
         CONST.ERROR.PATCH_PATH_OCCUPIED,
         R.complement(doesPathExist(R.__, project))
