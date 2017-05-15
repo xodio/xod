@@ -42,6 +42,24 @@ export const getXodpContents = R.compose(
 
 const filePath = R.unapply(R.join(path.sep));
 
+const getXodpFile = R.curry((projectPath, patch) => ({
+  path: filePath(projectPath, getPatchFolderName(patch), 'patch.xodp'),
+  content: getXodpContents(patch),
+}));
+
+const getImplFiles = R.curry(
+  (projectPath, patch) => R.compose(
+    R.map(
+      ([implName, content]) => ({
+        path: filePath(projectPath, getPatchFolderName(patch), IMPL_FILENAMES[implName]),
+        content,
+      })
+    ),
+    R.toPairs,
+    R.prop('impls')
+  )(patch)
+);
+
 // :: Project -> [ { path :: String, content :: Object } ]
 export const arrangeByFiles = (project) => {
   const projectPath = getProjectPath(project);
@@ -52,16 +70,12 @@ export const arrangeByFiles = (project) => {
 
   const patchFiles = R.compose(
     R.chain(
-      patch => [
-        {
-          path: filePath(projectPath, getPatchFolderName(patch), 'patch.xodp'),
-          content: getXodpContents(patch),
-        },
-      ].concat(
-        R.toPairs(patch.impls).map(([implName, content]) => ({
-          path: filePath(projectPath, getPatchFolderName(patch), IMPL_FILENAMES[implName]),
-          content,
-        }))
+      R.converge(
+        R.prepend,
+        [
+          getXodpFile(projectPath),
+          getImplFiles(projectPath),
+        ]
       )
     ),
     XP.listLocalPatches
