@@ -148,6 +148,9 @@ export const BUILT_IN_PATCHES = R.compose(
   )
 )(BUILT_IN_PATCH_PATHS);
 
+// :: String -> Boolean
+export const isPathBuiltIn = R.flip(R.contains)(BUILT_IN_PATCH_PATHS);
+
 const getPatches =
   R.compose(
     R.merge(BUILT_IN_PATCHES),

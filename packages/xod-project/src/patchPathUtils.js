@@ -145,16 +145,6 @@ export const isTerminalPatchPath = R.test(terminalPatchPathRegExp);
 // ::
 export const getTerminalPath = R.curry((direction, type) => `${TERMINALS_LIB_NAME}/${direction}-${type}`);
 
-
-//
-// utils for built-in patches
-//
-
-export const isPathBuiltIn = R.either(
-  R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
-  isTerminalPatchPath
-);
-
 //
 // utils for cast patches
 //
