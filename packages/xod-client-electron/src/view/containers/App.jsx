@@ -59,7 +59,6 @@ const onContextMenu = (event) => {
 const defaultState = {
   size: client.getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
   workspace: '',
-  code: '',
 };
 
 class App extends client.App {
@@ -180,7 +179,6 @@ class App extends client.App {
 
   onCreateProject(projectName) {
     this.props.actions.createProject(projectName);
-    this.hideAllPopups();
     this.onSaveProject();
   }
 
@@ -189,9 +187,8 @@ class App extends client.App {
     this.showPopupProjectSelection();
   }
 
-  onSelectProject(projectMeta) {
+  onSelectProject(projectMeta) { // eslint-disable-line
     ipcRenderer.send(EVENTS.SELECT_PROJECT, projectMeta);
-    this.hideAllPopups();
   }
 
   onLoadProject(project) {
@@ -572,7 +569,7 @@ const mapDispatchToProps = dispatch => ({
     createPatch: client.requestCreatePatch,
     undoCurrentPatch: client.undoCurrentPatch,
     redoCurrentPatch: client.redoCurrentPatch,
-    showPopup: client.showPopup,
+    showCode: client.showCode,
     hideAllPopups: client.hideAllPopups,
   }, dispatch),
 });

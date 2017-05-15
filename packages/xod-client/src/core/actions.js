@@ -18,7 +18,7 @@ export const redoCurrentPatch = () => (dispatch, getState) => {
 };
 
 export const showCode = code => ({
-  actionType: SHOW_CODE,
+  type: SHOW_CODE,
   payload: { code },
 });
 

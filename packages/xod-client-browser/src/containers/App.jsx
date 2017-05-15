@@ -24,9 +24,8 @@ class App extends client.App {
       size: client.getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
       popupInstallApp: false,
       popupUploadProject: false,
-      popupShowCode: false,
       popupCreateProject: false,
-      code: '',
+      workspace: '',
     };
 
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -44,7 +43,6 @@ class App extends client.App {
     this.onCreateProject = this.onCreateProject.bind(this);
 
     this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
-    this.hideCodePopup = this.hideCodePopup.bind(this);
     this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
     this.hidePopupCreateProject = this.hidePopupCreateProject.bind(this);
   }
@@ -186,14 +184,6 @@ class App extends client.App {
     this.setState({ popupUploadProject: false });
   }
 
-  showCodePopup() {
-    this.setState({ popupShowCode: true });
-  }
-
-  hideCodePopup() {
-    this.setState({ popupShowCode: false });
-  }
-
   showPopupCreateProject() {
     this.setState({ popupCreateProject: true });
   }
@@ -225,9 +215,9 @@ class App extends client.App {
           onClose={this.hideInstallAppPopup}
         />
         <client.PopupShowCode
-          isVisible={this.state.popupShowCode}
-          code={this.state.code}
-          onClose={this.hideCodePopup}
+          isVisible={this.props.popups.showCode}
+          code={this.props.popupsData.showCode.code}
+          onClose={this.props.actions.hideAllPopups}
         />
         <client.PopupPrompt
           title="Create new project"
@@ -249,12 +239,20 @@ App.propTypes = R.merge(client.App.propTypes, {
   hasChanges: React.PropTypes.bool,
   projectJSON: React.PropTypes.string,
   actions: React.PropTypes.object,
+  popups: React.PropTypes.objectOf(React.PropTypes.bool),
+  popupsData: React.PropTypes.objectOf(React.PropTypes.object),
 });
 
 const mapStateToProps = R.applySpec({
   hasChanges: client.projectHasChanges,
   project: client.getProject,
   currentPatchPath: client.getCurrentPatchPath,
+  popups: {
+    showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE),
+  },
+  popupsData: {
+    showCode: client.getPopupData(client.POPUP_ID.SHOWING_CODE),
+  },
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -269,6 +267,8 @@ const mapDispatchToProps = dispatch => ({
     createPatch: client.requestCreatePatch,
     undoCurrentPatch: client.undoCurrentPatch,
     redoCurrentPatch: client.redoCurrentPatch,
+    showCode: client.showCode,
+    hideAllPopups: client.hideAllPopups,
   }, dispatch),
 });
 
