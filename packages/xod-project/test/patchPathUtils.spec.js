@@ -105,13 +105,13 @@ describe('PatchPathUtils', () => {
 
   describe('isPathLocal', () => {
     const localPath = '@/test';
-    const libPath = 'vasya/superLibraru/test';
+    const libPath = 'vasya/super-library/test';
 
     it('should return true for localPath', () => {
       const result = PatchPathUtils.isPathLocal(localPath);
       expect(result).to.be.true();
     });
-    it('should return false for not a patch', () => {
+    it('should return false for not a path', () => {
       const result = PatchPathUtils.isPathLocal({});
       expect(result).to.be.false();
     });
@@ -128,7 +128,7 @@ describe('PatchPathUtils', () => {
       const result = PatchPathUtils.isPathLibrary(libPath);
       expect(result).to.be.true();
     });
-    it('should return false for not a patch', () => {
+    it('should return false for not a path', () => {
       const result = PatchPathUtils.isPathLocal({});
       expect(result).to.be.false();
     });

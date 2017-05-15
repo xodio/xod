@@ -461,13 +461,9 @@ const createCastNodes = R.curry((patchTuples, nodes, links) => R.compose(
   R.map(splitLinkWithCastNode(patchTuples, nodes))
 )(links));
 
-const castTypeRegExp = /^xod\/core\/cast-([a-zA-Z]+)-to-([a-zA-Z]+)$/;
-// :: String -> Boolean
-const testCastType = R.test(castTypeRegExp);
-
 // :: Patch -> String[]
 const getCastNodeTypesFromPatch = R.compose(
-  R.filter(testCastType),
+  R.filter(PatchPathUtils.isCastPatchPath),
   R.map(Node.getNodeType),
   Patch.listNodes
 );

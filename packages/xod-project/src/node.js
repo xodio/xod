@@ -5,7 +5,7 @@ import * as Utils from './utils';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
 import { def } from './types';
-import { isInputTerminalPath, isOutputTerminalPath } from "./patchPathUtils";
+import { isInputTerminalPath, isOutputTerminalPath, getTerminalDataType } from './patchPathUtils';
 
 /**
  * @typedef {Object} Node
@@ -320,18 +320,6 @@ export const isPinCurried = def( // TODO: deprecated
 );
 
 /**
- * RegExp to extract data type from node type
- * @private
- * @name dataTypeRegexp
- * @type {RegExp}
- */
-const dataTypeRegexp = R.compose(
-  pinTypes => new RegExp(`^xod/built-in/(?:input|output)-(${pinTypes})`, 'i'),
-  R.join('|'),
-  R.values
-)(CONST.PIN_TYPE);
-
-/**
  * Returns data type extracted from pinNode type
  * @function getPinNodeDataType
  * @param {Node} node
@@ -340,8 +328,7 @@ const dataTypeRegexp = R.compose(
 export const getPinNodeDataType = def(
   'getPinNodeDataType :: TerminalNode -> DataType',
   R.compose(
-    R.nth(1),
-    R.match(dataTypeRegexp),
+    getTerminalDataType,
     getNodeType
   )
 );

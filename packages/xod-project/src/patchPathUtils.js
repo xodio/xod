@@ -24,18 +24,27 @@ export const toIdentifier = R.compose(
 // general-purpose utils
 //
 
+// :: ([String] -> Boolean) -> * -> Boolean
+const checkPathParts = partsChecker =>
+  R.both(
+    R.is(String),
+    R.compose(
+      partsChecker,
+      R.split('/')
+    )
+  );
+
 /**
  * @function isPathLocal
  * @param {string} path
  * @returns {boolean}
  */
-export const isPathLocal = R.compose(
+export const isPathLocal = checkPathParts(
   R.allPass([
     R.pipe(R.length, R.equals(2)),
     R.pipe(R.head, R.equals('@')),
     R.pipe(R.last, isValidIdentifier),
-  ]),
-  R.split('/')
+  ])
 );
 
 export const getLocalPath = baseName => `@/${baseName}`;
@@ -45,22 +54,15 @@ export const getLocalPath = baseName => `@/${baseName}`;
  * @param {string} path
  * @returns {boolean}
  */
-export const isPathLibrary = R.compose(
+export const isPathLibrary = checkPathParts(
   R.allPass([
     R.pipe(R.length, R.equals(3)),
     R.all(isValidIdentifier),
-  ]),
-  R.split('/')
+  ])
 );
 
 // :: * -> Boolean
-export const isValidPatchPath = R.both(
-  R.is(String),
-  R.either(
-    isPathLocal,
-    isPathLibrary
-  )
-);
+export const isValidPatchPath = R.either(isPathLocal, isPathLibrary);
 
 /**
  * Checks if a path is a valid for entities like
@@ -87,29 +89,6 @@ export const getBaseName = R.compose(
 );
 
 /**
- * @function isPathBuiltIn
- * @param {string} path
- * @returns {boolean}
- */
-export const isPathBuiltIn = path => path.startsWith('xod/built-in/');
-
-const dataTypes = R.values(CONST.PIN_TYPE);
-
-// TODO: replace with R.contains for stricter checks?
-const terminalPatchPathRegExp =
-  new RegExp(`^xod/built-in/(input|output)-(${dataTypes.join('|')})$`);
-
-export const isTerminalPatchPath = R.test(terminalPatchPathRegExp);
-
-export const isInputTerminalPath = R.test(/^xod\/built-in\/input-/);
-
-export const isOutputTerminalPath = R.test(/^xod\/built-in\/output-/);
-
-export const getTerminalPath = R.curry(
-  (direction, type) => `xod/built-in/${direction}-${type}`
-);
-
-/**
  * @function getLibraryName
  * @param {string} path
  * @returns {string}
@@ -124,6 +103,68 @@ export const getLibraryName = R.ifElse(
   R.always('@')
 );
 
+//
+// Utils for terminal patches
+//
+
+const TERMINALS_LIB_NAME = 'xod/built-in';
+
+const directions = R.values(CONST.PIN_DIRECTION);
+const dataTypes = R.values(CONST.PIN_TYPE);
+
+const terminalPatchPathRegExp =
+  new RegExp(`^${TERMINALS_LIB_NAME}/(${directions.join('|')})-(${dataTypes.join('|')})$`);
+
+// :: String -> Direction
+export const getTerminalDirection = R.compose(
+  R.nth(1),
+  R.match(terminalPatchPathRegExp)
+);
+
+// :: String -> DataType
+export const getTerminalDataType = R.compose(
+  R.nth(2),
+  R.match(terminalPatchPathRegExp)
+);
+
+// :: String -> Boolean
+export const isInputTerminalPath = R.compose(
+  R.equals(CONST.PIN_DIRECTION.INPUT),
+  getTerminalDirection
+);
+
+// :: String -> Boolean
+export const isOutputTerminalPath = R.compose(
+  R.equals(CONST.PIN_DIRECTION.OUTPUT),
+  getTerminalDirection
+);
+
+// :: String -> Boolean
+export const isTerminalPatchPath = R.test(terminalPatchPathRegExp);
+
+// ::
+export const getTerminalPath = R.curry((direction, type) => `${TERMINALS_LIB_NAME}/${direction}-${type}`);
+
+
+//
+// utils for built-in patches
+//
+
+export const isPathBuiltIn = R.either(
+  R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
+  isTerminalPatchPath
+);
+
+//
+// utils for cast patches
+//
+
+const castTypeRegExp =
+  new RegExp(`xod/core/cast-(${dataTypes.join('|')})-to-(${dataTypes.join('|')})$`);
+
+// :: String -> Boolean
+export const isCastPatchPath = R.test(castTypeRegExp);
+
 /**
  * Returns path for casting patch
  * @private
@@ -136,18 +177,20 @@ export const getCastPatchPath = (typeIn, typeOut) => `xod/core/cast-${typeIn}-to
 
 
 //
-// Internal (used only in flatten)
+// utils for 'internal' terminals (used only in flatten)
 //
 
 // :: String -> String
 export const getInternalTerminalPath = type => `xod/internal/terminal-${type}`;
 
-const terminalRegExp = /^xod\/built-in\/(input|output)-/;
 // :: String -> String
 export const convertToInternalTerminalPath = R.compose(
   getInternalTerminalPath,
-  R.replace(terminalRegExp, '')
+  getTerminalDataType
 );
-// :: PatchPath -> Boolean
-export const isInternalTerminalNodeType = R.test(/^xod\/internal\/terminal-/);
 
+const internalTerminalRegExp =
+  new RegExp(`xod/internal/terminal-(${dataTypes.join('|')})$`);
+
+// :: PatchPath -> Boolean
+export const isInternalTerminalNodeType = R.test(internalTerminalRegExp);
