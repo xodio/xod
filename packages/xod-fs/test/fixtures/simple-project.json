@@ -16,11 +16,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "brightness": {
           "id": "brightness",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -55,7 +55,7 @@
         },
         "rJxbjrKpl": {
           "id": "rJxbjrKpl",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 138,
             "y": 16

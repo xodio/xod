@@ -32,11 +32,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         a: {
           id: 'a',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 0,
             y: 0,
@@ -46,7 +46,7 @@ export default {
         },
         b: {
           id: 'b',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 200,
             y: 0,
@@ -56,7 +56,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -81,11 +81,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         a: {
           id: 'a',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 0,
             y: 0,
@@ -95,7 +95,7 @@ export default {
         },
         b: {
           id: 'b',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 200,
             y: 0,
@@ -105,7 +105,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 0,
             y: 300,
@@ -212,11 +212,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         a: {
           id: 'a',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 0,
             y: 0,
@@ -226,7 +226,7 @@ export default {
         },
         b: {
           id: 'b',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 200,
             y: 0,
@@ -236,7 +236,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 0,
             y: 300,
@@ -261,11 +261,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         state: {
           id: 'state',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -290,11 +290,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         freq: {
           id: 'freq',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -320,11 +320,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __in__: {
           id: '__in__',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 0,
             y: 0,
@@ -334,7 +334,7 @@ export default {
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -359,11 +359,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __in__: {
           id: '__in__',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 0,
             y: 0,
@@ -373,7 +373,7 @@ export default {
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 0,
             y: 300,
@@ -398,11 +398,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __in__: {
           id: '__in__',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 0,
             y: 0,
@@ -412,7 +412,7 @@ export default {
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-string',
+          type: 'xod/patch-nodes/output-string',
           position: {
             x: 0,
             y: 300,
@@ -438,11 +438,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __in__: {
           id: '__in__',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -452,7 +452,7 @@ export default {
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -477,11 +477,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __in__: {
           id: '__in__',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -491,7 +491,7 @@ export default {
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 0,
             y: 300,
@@ -516,11 +516,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __in__: {
           id: '__in__',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -530,7 +530,7 @@ export default {
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -555,11 +555,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __in__: {
           id: '__in__',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 0,
             y: 0,
@@ -569,7 +569,7 @@ export default {
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -594,11 +594,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __in__: {
           id: '__in__',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 0,
             y: 0,
@@ -608,7 +608,7 @@ export default {
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -633,11 +633,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __in__: {
           id: '__in__',
-          type: 'xod/built-in/input-string',
+          type: 'xod/patch-nodes/input-string',
           position: {
             x: 0,
             y: 0,
@@ -647,7 +647,7 @@ export default {
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -672,11 +672,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __in__: {
           id: '__in__',
-          type: 'xod/built-in/input-string',
+          type: 'xod/patch-nodes/input-string',
           position: {
             x: 0,
             y: 0,
@@ -686,7 +686,7 @@ export default {
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 0,
             y: 300,
@@ -711,11 +711,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         falsePulse: {
           id: 'falsePulse',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 200,
             y: 300,
@@ -725,7 +725,7 @@ export default {
         },
         truePulse: {
           id: 'truePulse',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 0,
             y: 300,
@@ -735,7 +735,7 @@ export default {
         },
         x: {
           id: 'x',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 0,
             y: 0,
@@ -1294,11 +1294,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         interval: {
           id: 'interval',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -1308,7 +1308,7 @@ export default {
         },
         tick: {
           id: 'tick',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 0,
             y: 300,
@@ -1333,11 +1333,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         a: {
           id: 'a',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -1347,7 +1347,7 @@ export default {
         },
         b: {
           id: 'b',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 200,
             y: 0,
@@ -1357,7 +1357,7 @@ export default {
         },
         equal: {
           id: 'equal',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 0,
             y: 300,
@@ -1367,7 +1367,7 @@ export default {
         },
         greater: {
           id: 'greater',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 400,
             y: 300,
@@ -1377,7 +1377,7 @@ export default {
         },
         less: {
           id: 'less',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 200,
             y: 300,
@@ -1402,11 +1402,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         a: {
           id: 'a',
-          type: 'xod/built-in/input-string',
+          type: 'xod/patch-nodes/input-string',
           position: {
             x: 0,
             y: 0,
@@ -1416,7 +1416,7 @@ export default {
         },
         b: {
           id: 'b',
-          type: 'xod/built-in/input-string',
+          type: 'xod/patch-nodes/input-string',
           position: {
             x: 200,
             y: 0,
@@ -1426,7 +1426,7 @@ export default {
         },
         result: {
           id: 'result',
-          type: 'xod/built-in/output-string',
+          type: 'xod/patch-nodes/output-string',
           position: {
             x: 0,
             y: 300,
@@ -1451,11 +1451,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         inValue: {
           id: 'inValue',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 0,
             y: 0,
@@ -1465,7 +1465,7 @@ export default {
         },
         pulse: {
           id: 'pulse',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 200,
             y: 0,
@@ -1475,7 +1475,7 @@ export default {
         },
         value: {
           id: 'value',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -1500,11 +1500,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         inValue: {
           id: 'inValue',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -1514,7 +1514,7 @@ export default {
         },
         pulse: {
           id: 'pulse',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 200,
             y: 0,
@@ -1524,7 +1524,7 @@ export default {
         },
         value: {
           id: 'value',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -1549,11 +1549,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         inValue: {
           id: 'inValue',
-          type: 'xod/built-in/input-string',
+          type: 'xod/patch-nodes/input-string',
           position: {
             x: 0,
             y: 0,
@@ -1563,7 +1563,7 @@ export default {
         },
         pulse: {
           id: 'pulse',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 200,
             y: 0,
@@ -1573,7 +1573,7 @@ export default {
         },
         value: {
           id: 'value',
-          type: 'xod/built-in/output-string',
+          type: 'xod/patch-nodes/output-string',
           position: {
             x: 0,
             y: 300,
@@ -1598,11 +1598,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         VAL: {
           id: 'VAL',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -1627,11 +1627,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         VAL: {
           id: 'VAL',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -1656,11 +1656,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         PIN: {
           id: 'PIN',
-          type: 'xod/built-in/input-string',
+          type: 'xod/patch-nodes/input-string',
           position: {
             x: 0,
             y: 0,
@@ -1670,7 +1670,7 @@ export default {
         },
         VALUE: {
           id: 'VALUE',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -1696,11 +1696,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         PIN: {
           id: 'PIN',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -1710,7 +1710,7 @@ export default {
         },
         VALUE: {
           id: 'VALUE',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 200,
             y: 0,
@@ -1735,11 +1735,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         falseValue: {
           id: 'falseValue',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 400,
             y: 0,
@@ -1749,7 +1749,7 @@ export default {
         },
         inp: {
           id: 'inp',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 0,
             y: 0,
@@ -1759,7 +1759,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -1769,7 +1769,7 @@ export default {
         },
         trueValue: {
           id: 'trueValue',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 200,
             y: 0,
@@ -1794,11 +1794,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         a: {
           id: 'a',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -1808,7 +1808,7 @@ export default {
         },
         b: {
           id: 'b',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 200,
             y: 0,
@@ -1818,7 +1818,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -1843,11 +1843,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         data: {
           id: 'data',
-          type: 'xod/built-in/output-string',
+          type: 'xod/patch-nodes/output-string',
           position: {
             x: 0,
             y: 300,
@@ -1857,7 +1857,7 @@ export default {
         },
         error: {
           id: 'error',
-          type: 'xod/built-in/output-string',
+          type: 'xod/patch-nodes/output-string',
           position: {
             x: 200,
             y: 300,
@@ -1867,7 +1867,7 @@ export default {
         },
         fileName: {
           id: 'fileName',
-          type: 'xod/built-in/input-string',
+          type: 'xod/patch-nodes/input-string',
           position: {
             x: 0,
             y: 0,
@@ -1877,7 +1877,7 @@ export default {
         },
         pulse: {
           id: 'pulse',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 200,
             y: 0,
@@ -1902,11 +1902,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         data: {
           id: 'data',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 200,
             y: 0,
@@ -1916,7 +1916,7 @@ export default {
         },
         fileName: {
           id: 'fileName',
-          type: 'xod/built-in/input-string',
+          type: 'xod/patch-nodes/input-string',
           position: {
             x: 0,
             y: 0,
@@ -1926,7 +1926,7 @@ export default {
         },
         onFailure: {
           id: 'onFailure',
-          type: 'xod/built-in/output-string',
+          type: 'xod/patch-nodes/output-string',
           position: {
             x: 200,
             y: 300,
@@ -1936,7 +1936,7 @@ export default {
         },
         onSuccess: {
           id: 'onSuccess',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 0,
             y: 300,
@@ -1961,11 +1961,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         a: {
           id: 'a',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -1975,7 +1975,7 @@ export default {
         },
         b: {
           id: 'b',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 200,
             y: 0,
@@ -1985,7 +1985,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -2253,11 +2253,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -2280,11 +2280,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -2307,11 +2307,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -2334,11 +2334,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 0,
             y: 300,
@@ -2361,11 +2361,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __out__: {
           id: '__out__',
-          type: 'xod/built-in/output-string',
+          type: 'xod/patch-nodes/output-string',
           position: {
             x: 0,
             y: 300,
@@ -2391,11 +2391,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         reset: {
           id: 'reset',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 400,
             y: 0,
@@ -2405,7 +2405,7 @@ export default {
         },
         set: {
           id: 'set',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 200,
             y: 0,
@@ -2415,7 +2415,7 @@ export default {
         },
         state: {
           id: 'state',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -2425,7 +2425,7 @@ export default {
         },
         toggle: {
           id: 'toggle',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 0,
             y: 0,
@@ -2450,11 +2450,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         brightness: {
           id: 'brightness',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -2602,11 +2602,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         a: {
           id: 'a',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -2616,7 +2616,7 @@ export default {
         },
         b: {
           id: 'b',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 200,
             y: 0,
@@ -2626,7 +2626,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -2748,11 +2748,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         clip: {
           id: 'clip',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 1000,
             y: 0,
@@ -2762,7 +2762,7 @@ export default {
         },
         inA: {
           id: 'inA',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 200,
             y: 0,
@@ -2772,7 +2772,7 @@ export default {
         },
         inB: {
           id: 'inB',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 400,
             y: 0,
@@ -2782,7 +2782,7 @@ export default {
         },
         inp: {
           id: 'inp',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -2792,7 +2792,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -2802,7 +2802,7 @@ export default {
         },
         outA: {
           id: 'outA',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 600,
             y: 0,
@@ -2812,7 +2812,7 @@ export default {
         },
         outB: {
           id: 'outB',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 800,
             y: 0,
@@ -2837,11 +2837,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         in: {
           id: 'in',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 0,
             y: 0,
@@ -2851,7 +2851,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -2876,11 +2876,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         a: {
           id: 'a',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 0,
             y: 0,
@@ -2890,7 +2890,7 @@ export default {
         },
         b: {
           id: 'b',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 200,
             y: 0,
@@ -2900,7 +2900,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
           position: {
             x: 0,
             y: 300,
@@ -2923,11 +2923,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __in__: {
           id: '__in__',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 0,
             y: 0,
@@ -2950,11 +2950,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __in__: {
           id: '__in__',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -2977,11 +2977,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __in__: {
           id: '__in__',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 0,
             y: 0,
@@ -3004,11 +3004,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         __in__: {
           id: '__in__',
-          type: 'xod/built-in/input-string',
+          type: 'xod/patch-nodes/input-string',
           position: {
             x: 0,
             y: 0,
@@ -3033,11 +3033,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         sample: {
           id: 'sample',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 0,
             y: 0,
@@ -3047,7 +3047,7 @@ export default {
         },
         value: {
           id: 'value',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -3072,11 +3072,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         maxPulse: {
           id: 'maxPulse',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 200,
             y: 0,
@@ -3086,7 +3086,7 @@ export default {
         },
         minPulse: {
           id: 'minPulse',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -3096,7 +3096,7 @@ export default {
         },
         value: {
           id: 'value',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 400,
             y: 0,
@@ -3302,11 +3302,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         inp: {
           id: 'inp',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 0,
             y: 0,
@@ -3316,7 +3316,7 @@ export default {
         },
         outFalse: {
           id: 'outFalse',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 200,
             y: 300,
@@ -3326,7 +3326,7 @@ export default {
         },
         outTrue: {
           id: 'outTrue',
-          type: 'xod/built-in/output-pulse',
+          type: 'xod/patch-nodes/output-pulse',
           position: {
             x: 0,
             y: 300,
@@ -3351,11 +3351,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         value: {
           id: 'value',
-          type: 'xod/built-in/input-string',
+          type: 'xod/patch-nodes/input-string',
           position: {
             x: 0,
             y: 0,
@@ -3380,11 +3380,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         pulse: {
           id: 'pulse',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 0,
             y: 0,
@@ -3394,7 +3394,7 @@ export default {
         },
         value: {
           id: 'value',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -3419,11 +3419,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -3433,7 +3433,7 @@ export default {
         },
         trigOn: {
           id: 'trigOn',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 0,
             y: 0,
@@ -3443,7 +3443,7 @@ export default {
         },
         value: {
           id: 'value',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 200,
             y: 0,
@@ -3468,11 +3468,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         error: {
           id: 'error',
-          type: 'xod/built-in/output-string',
+          type: 'xod/patch-nodes/output-string',
           position: {
             x: 200,
             y: 300,
@@ -3482,7 +3482,7 @@ export default {
         },
         sample: {
           id: 'sample',
-          type: 'xod/built-in/input-pulse',
+          type: 'xod/patch-nodes/input-pulse',
           position: {
             x: 0,
             y: 0,
@@ -3492,7 +3492,7 @@ export default {
         },
         units: {
           id: 'units',
-          type: 'xod/built-in/input-string',
+          type: 'xod/patch-nodes/input-string',
           position: {
             x: 200,
             y: 0,
@@ -3502,7 +3502,7 @@ export default {
         },
         value: {
           id: 'value',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -3527,11 +3527,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         cond: {
           id: 'cond',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
           position: {
             x: 0,
             y: 0,
@@ -3541,7 +3541,7 @@ export default {
         },
         in: {
           id: 'in',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 200,
             y: 0,
@@ -3551,7 +3551,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -3576,11 +3576,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         a: {
           id: 'a',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -3590,7 +3590,7 @@ export default {
         },
         b: {
           id: 'b',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 200,
             y: 0,
@@ -3600,7 +3600,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -3625,11 +3625,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         a: {
           id: 'a',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -3639,7 +3639,7 @@ export default {
         },
         b: {
           id: 'b',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 200,
             y: 0,
@@ -3649,7 +3649,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -3675,11 +3675,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         a: {
           id: 'a',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -3689,7 +3689,7 @@ export default {
         },
         b: {
           id: 'b',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 200,
             y: 0,
@@ -3699,7 +3699,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,
@@ -3724,11 +3724,11 @@ export default {
             x: 100,
             y: 100,
           },
-          type: 'xod/built-in/not-implemented-in-xod',
+          type: 'xod/patch-nodes/not-implemented-in-xod',
         },
         a: {
           id: 'a',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 0,
             y: 0,
@@ -3738,7 +3738,7 @@ export default {
         },
         b: {
           id: 'b',
-          type: 'xod/built-in/input-number',
+          type: 'xod/patch-nodes/input-number',
           position: {
             x: 200,
             y: 0,
@@ -3748,7 +3748,7 @@ export default {
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-number',
+          type: 'xod/patch-nodes/output-number',
           position: {
             x: 0,
             y: 300,

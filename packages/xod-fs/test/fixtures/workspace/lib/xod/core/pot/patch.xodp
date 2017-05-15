@@ -11,7 +11,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/built-in/not-implemented-in-xod"
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     "sample": {
       "label": "",
@@ -21,7 +21,7 @@
         "x": 0,
         "y": 0
       },
-      "type": "xod/built-in/input-pulse"
+      "type": "xod/patch-nodes/input-pulse"
     },
     "value": {
       "label": "",
@@ -31,7 +31,7 @@
         "x": 0,
         "y": 300
       },
-      "type": "xod/built-in/output-number"
+      "type": "xod/patch-nodes/output-number"
     }
   }
 }

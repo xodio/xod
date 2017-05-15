@@ -191,7 +191,7 @@ describe('Project', () => {
       patches: {
         'xod/core/test': {
           nodes: {
-            a: { id: 'a', type: 'xod/built-in/input-number' },
+            a: { id: 'a', type: 'xod/patch-nodes/input-number' },
           },
         },
       },
@@ -256,8 +256,8 @@ describe('Project', () => {
       patches: {
         '@/test': {
           nodes: {
-            in: { id: 'in', type: 'xod/built-in/input-number' },
-            out: { id: 'out', type: 'xod/built-in/output-number' },
+            in: { id: 'in', type: 'xod/patch-nodes/input-number' },
+            out: { id: 'out', type: 'xod/patch-nodes/output-number' },
           },
         },
       },

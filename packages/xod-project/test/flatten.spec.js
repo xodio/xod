@@ -50,22 +50,22 @@ describe('Flatten', () => {
               in1: {
                 id: 'in1',
                 position: { x: 0, y: 0 },
-                type: 'xod/built-in/input-boolean',
+                type: 'xod/patch-nodes/input-boolean',
               },
               in2: {
                 id: 'in2',
                 position: { x: 200, y: 0 },
-                type: 'xod/built-in/input-boolean',
+                type: 'xod/patch-nodes/input-boolean',
               },
               out: {
                 id: 'out',
                 position: { x: 0, y: 300 },
-                type: 'xod/built-in/output-boolean',
+                type: 'xod/patch-nodes/output-boolean',
               },
               noNativeImpl: {
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
-                type: 'xod/built-in/not-implemented-in-xod',
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             },
             links: {},
@@ -169,7 +169,7 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/built-in/output-boolean',
+                type: 'xod/patch-nodes/output-boolean',
               },
               c: {
                 id: 'c',
@@ -177,7 +177,7 @@ describe('Flatten', () => {
               },
               d: {
                 id: 'd',
-                type: 'xod/built-in/output-boolean',
+                type: 'xod/patch-nodes/output-boolean',
               },
             },
             links: {
@@ -199,22 +199,22 @@ describe('Flatten', () => {
               in1: {
                 id: 'in1',
                 position: { x: 0, y: 0 },
-                type: 'xod/built-in/input-boolean',
+                type: 'xod/patch-nodes/input-boolean',
               },
               in2: {
                 id: 'in2',
                 position: { x: 200, y: 0 },
-                type: 'xod/built-in/input-boolean',
+                type: 'xod/patch-nodes/input-boolean',
               },
               out: {
                 id: 'out',
                 position: { x: 0, y: 300 },
-                type: 'xod/built-in/output-boolean',
+                type: 'xod/patch-nodes/output-boolean',
               },
               noNativeImpl: {
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
-                type: 'xod/built-in/not-implemented-in-xod',
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             },
             links: {},
@@ -227,7 +227,7 @@ describe('Flatten', () => {
 
       const extracted = extractPatches(
         project,
-        ['xod/core/or', 'xod/built-in/output-boolean'],
+        ['xod/core/or', 'xod/patch-nodes/output-boolean'],
         null,
         {},
         project.patches['@/main']
@@ -311,7 +311,7 @@ describe('Flatten', () => {
             nodes: {
               a: {
                 id: 'a',
-                type: 'xod/built-in/input-boolean',
+                type: 'xod/patch-nodes/input-boolean',
               },
               b: {
                 id: 'b',
@@ -341,7 +341,7 @@ describe('Flatten', () => {
 
       const extracted = extractPatches(
         project,
-        ['xod/built-in/input-boolean', 'xod/core/number'],
+        ['xod/patch-nodes/input-boolean', 'xod/core/number'],
         null,
         {},
         project.patches['@/main']
@@ -378,8 +378,8 @@ describe('Flatten', () => {
           'xod/core/digital-output',
           'xod/core/latch',
           'xod/core/clock',
-          'xod/built-in/input-number',
-          'xod/built-in/input-string',
+          'xod/patch-nodes/input-number',
+          'xod/patch-nodes/input-string',
           'xod/math/multiply',
         ],
         null,
@@ -444,22 +444,22 @@ describe('Flatten', () => {
             in1: {
               id: 'in1',
               position: { x: 0, y: 0 },
-              type: 'xod/built-in/input-boolean',
+              type: 'xod/patch-nodes/input-boolean',
             },
             in2: {
               id: 'in2',
               position: { x: 200, y: 0 },
-              type: 'xod/built-in/input-boolean',
+              type: 'xod/patch-nodes/input-boolean',
             },
             out: {
               id: 'out',
               position: { x: 0, y: 300 },
-              type: 'xod/built-in/output-boolean',
+              type: 'xod/patch-nodes/output-boolean',
             },
             noNativeImpl: {
               id: 'noNativeImpl',
               position: { x: 100, y: 100 },
-              type: 'xod/built-in/not-implemented-in-xod',
+              type: 'xod/patch-nodes/not-implemented-in-xod',
             },
           },
           links: {},
@@ -621,7 +621,7 @@ describe('Flatten', () => {
             },
             b: {
               id: 'b',
-              type: 'xod/built-in/output-boolean',
+              type: 'xod/patch-nodes/output-boolean',
             },
             c: {
               id: 'c',
@@ -629,7 +629,7 @@ describe('Flatten', () => {
             },
             d: {
               id: 'd',
-              type: 'xod/built-in/output-boolean',
+              type: 'xod/patch-nodes/output-boolean',
             },
           },
           links: {
@@ -651,22 +651,22 @@ describe('Flatten', () => {
             in1: {
               id: 'in1',
               position: { x: 0, y: 0 },
-              type: 'xod/built-in/input-boolean',
+              type: 'xod/patch-nodes/input-boolean',
             },
             in2: {
               id: 'in2',
               position: { x: 200, y: 0 },
-              type: 'xod/built-in/input-boolean',
+              type: 'xod/patch-nodes/input-boolean',
             },
             out: {
               id: 'out',
               position: { x: 0, y: 300 },
-              type: 'xod/built-in/output-boolean',
+              type: 'xod/patch-nodes/output-boolean',
             },
             noNativeImpl: {
               id: 'noNativeImpl',
               position: { x: 100, y: 100 },
-              type: 'xod/built-in/not-implemented-in-xod',
+              type: 'xod/patch-nodes/not-implemented-in-xod',
             },
           },
           links: {},
@@ -793,7 +793,7 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/built-in/output-boolean',
+                type: 'xod/patch-nodes/output-boolean',
               },
             },
             links: {},
@@ -803,12 +803,12 @@ describe('Flatten', () => {
               noNativeImpl: {
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
-                type: 'xod/built-in/not-implemented-in-xod',
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
               out: {
                 id: 'out',
                 position: { x: 0, y: 300 },
-                type: 'xod/built-in/output-number',
+                type: 'xod/patch-nodes/output-number',
               },
             },
             links: {},
@@ -821,16 +821,16 @@ describe('Flatten', () => {
               __in__: {
                 id: '__in__',
                 position: { x: 0, y: 0 },
-                type: 'xod/built-in/input-boolean',
+                type: 'xod/patch-nodes/input-boolean',
               },
               __out__: {
                 id: '__out__',
                 position: { x: 0, y: 300 },
-                type: 'xod/built-in/input-number' },
+                type: 'xod/patch-nodes/input-number' },
               noNativeImpl: {
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
-                type: 'xod/built-in/not-implemented-in-xod',
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             },
             links: {},
@@ -905,7 +905,7 @@ describe('Flatten', () => {
                   },
                   b: {
                     id: 'b',
-                    type: `xod/built-in/output-${typeOut}`,
+                    type: `xod/patch-nodes/output-${typeOut}`,
                   },
                 },
                 links: {
@@ -927,12 +927,12 @@ describe('Flatten', () => {
                   out: {
                     id: 'out',
                     position: { x: 0, y: 300 },
-                    type: `xod/built-in/output-${typeIn}`,
+                    type: `xod/patch-nodes/output-${typeIn}`,
                   },
                   noNativeImpl: {
                     id: 'noNativeImpl',
                     position: { x: 100, y: 100 },
-                    type: 'xod/built-in/not-implemented-in-xod',
+                    type: 'xod/patch-nodes/not-implemented-in-xod',
                   },
                 },
                 links: {},
@@ -945,12 +945,12 @@ describe('Flatten', () => {
                   in: {
                     id: 'in',
                     position: { x: 0, y: 0 },
-                    type: `xod/built-in/input-${typeOut}`,
+                    type: `xod/patch-nodes/input-${typeOut}`,
                   },
                   noNativeImpl: {
                     id: 'noNativeImpl',
                     position: { x: 100, y: 100 },
-                    type: 'xod/built-in/not-implemented-in-xod',
+                    type: 'xod/patch-nodes/not-implemented-in-xod',
                   },
                 },
                 links: {},
@@ -963,17 +963,17 @@ describe('Flatten', () => {
                   __in__: {
                     id: '__in__',
                     position: { x: 0, y: 0 },
-                    type: `xod/built-in/input-${typeIn}`,
+                    type: `xod/patch-nodes/input-${typeIn}`,
                   },
                   __out__: {
                     id: '__out__',
                     position: { x: 0, y: 300 },
-                    type: `xod/built-in/input-${typeOut}`,
+                    type: `xod/patch-nodes/input-${typeOut}`,
                   },
                   noNativeImpl: {
                     id: 'noNativeImpl',
                     position: { x: 100, y: 100 },
-                    type: 'xod/built-in/not-implemented-in-xod',
+                    type: 'xod/patch-nodes/not-implemented-in-xod',
                   },
                 },
                 links: {},
@@ -987,17 +987,17 @@ describe('Flatten', () => {
               in: {
                 id: 'in',
                 position: { x: 0, y: 0 },
-                type: `xod/built-in/input-${typeOut}`,
+                type: `xod/patch-nodes/input-${typeOut}`,
               },
               out: {
                 id: 'out',
                 position: { x: 0, y: 300 },
-                type: `xod/built-in/output-${typeIn}`,
+                type: `xod/patch-nodes/output-${typeIn}`,
               },
               noNativeImpl: {
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
-                type: 'xod/built-in/not-implemented-in-xod',
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             };
           }
@@ -1061,7 +1061,7 @@ describe('Flatten', () => {
                   },
                   b: {
                     id: 'b',
-                    type: `xod/built-in/input-${typeOut}`,
+                    type: `xod/patch-nodes/input-${typeOut}`,
                   },
                 },
                 links: {
@@ -1083,12 +1083,12 @@ describe('Flatten', () => {
                   in: {
                     id: 'in',
                     position: { x: 0, y: 0 },
-                    type: `xod/built-in/input-${typeOut}`,
+                    type: `xod/patch-nodes/input-${typeOut}`,
                   },
                   noNativeImpl: {
                     id: 'noNativeImpl',
                     position: { x: 100, y: 100 },
-                    type: 'xod/built-in/not-implemented-in-xod',
+                    type: 'xod/patch-nodes/not-implemented-in-xod',
                   },
                 },
                 links: {},
@@ -1101,12 +1101,12 @@ describe('Flatten', () => {
                   out: {
                     id: 'out',
                     position: { x: 0, y: 0 },
-                    type: `xod/built-in/output-${typeIn}`,
+                    type: `xod/patch-nodes/output-${typeIn}`,
                   },
                   noNativeImpl: {
                     id: 'noNativeImpl',
                     position: { x: 100, y: 100 },
-                    type: 'xod/built-in/not-implemented-in-xod',
+                    type: 'xod/patch-nodes/not-implemented-in-xod',
                   },
                 },
                 links: {},
@@ -1119,17 +1119,17 @@ describe('Flatten', () => {
                   __in__: {
                     id: '__in__',
                     position: { x: 0, y: 0 },
-                    type: `xod/built-in/input-${typeIn}`,
+                    type: `xod/patch-nodes/input-${typeIn}`,
                   },
                   __out__: {
                     id: '__out__',
                     position: { x: 0, y: 300 },
-                    type: `xod/built-in/input-${typeOut}`,
+                    type: `xod/patch-nodes/input-${typeOut}`,
                   },
                   noNativeImpl: {
                     id: 'noNativeImpl',
                     position: { x: 100, y: 100 },
-                    type: 'xod/built-in/not-implemented-in-xod',
+                    type: 'xod/patch-nodes/not-implemented-in-xod',
                   },
                 },
                 links: {},
@@ -1143,17 +1143,17 @@ describe('Flatten', () => {
               in: {
                 id: 'in',
                 position: { x: 0, y: 0 },
-                type: `xod/built-in/input-${typeOut}`,
+                type: `xod/patch-nodes/input-${typeOut}`,
               },
               out: {
                 id: 'out',
                 position: { x: 0, y: 300 },
-                type: `xod/built-in/output-${typeIn}`,
+                type: `xod/patch-nodes/output-${typeIn}`,
               },
               noNativeImpl: {
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
-                type: 'xod/built-in/not-implemented-in-xod',
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             };
           }
@@ -1226,7 +1226,7 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/built-in/output-number',
+                type: 'xod/patch-nodes/output-number',
               },
             },
             links: {
@@ -1248,17 +1248,17 @@ describe('Flatten', () => {
               in: {
                 id: 'in',
                 position: { x: 0, y: 0 },
-                type: 'xod/built-in/input-number',
+                type: 'xod/patch-nodes/input-number',
               },
               noNativeImpl: {
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
-                type: 'xod/built-in/not-implemented-in-xod',
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
               out: {
                 id: 'out',
                 position: { x: 0, y: 300 },
-                type: 'xod/built-in/output-number',
+                type: 'xod/patch-nodes/output-number',
               },
             },
             links: {},
@@ -1332,7 +1332,7 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/built-in/output-number',
+                type: 'xod/patch-nodes/output-number',
               },
             },
             links: {
@@ -1354,22 +1354,22 @@ describe('Flatten', () => {
               in1: {
                 id: 'in1',
                 position: { x: 0, y: 0 },
-                type: 'xod/built-in/input-boolean',
+                type: 'xod/patch-nodes/input-boolean',
               },
               in2: {
                 id: 'in2',
                 position: { x: 200, y: 0 },
-                type: 'xod/built-in/input-boolean',
+                type: 'xod/patch-nodes/input-boolean',
               },
               out: {
                 id: 'out',
                 position: { x: 0, y: 300 },
-                type: 'xod/built-in/output-boolean',
+                type: 'xod/patch-nodes/output-boolean',
               },
               noNativeImpl: {
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
-                type: 'xod/built-in/not-implemented-in-xod',
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             },
             links: {},
@@ -1420,7 +1420,7 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/built-in/input-number',
+                type: 'xod/patch-nodes/input-number',
               },
             },
             links: {
@@ -1442,17 +1442,17 @@ describe('Flatten', () => {
               in: {
                 id: 'in',
                 position: { x: 0, y: 0 },
-                type: 'xod/built-in/input-number',
+                type: 'xod/patch-nodes/input-number',
               },
               noNativeImpl: {
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
-                type: 'xod/built-in/not-implemented-in-xod',
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
               out: {
                 id: 'out',
                 position: { x: 0, y: 300 },
-                type: 'xod/built-in/output-number',
+                type: 'xod/patch-nodes/output-number',
               },
             },
             links: {},
@@ -1534,15 +1534,15 @@ describe('Flatten', () => {
             nodes: {
               a: {
                 id: 'a',
-                type: 'xod/built-in/input-number',
+                type: 'xod/patch-nodes/input-number',
               },
               a2: {
                 id: 'a2',
-                type: 'xod/built-in/input-number',
+                type: 'xod/patch-nodes/input-number',
               },
               a3: {
                 id: 'a3',
-                type: 'xod/built-in/input-number',
+                type: 'xod/patch-nodes/input-number',
               },
               b: {
                 id: 'b',
@@ -1554,7 +1554,7 @@ describe('Flatten', () => {
               },
               c: {
                 id: 'c',
-                type: 'xod/built-in/output-boolean',
+                type: 'xod/patch-nodes/output-boolean',
               },
             },
             links: {
@@ -1609,22 +1609,22 @@ describe('Flatten', () => {
               in1: {
                 id: 'in1',
                 position: { x: 0, y: 0 },
-                type: 'xod/built-in/input-boolean',
+                type: 'xod/patch-nodes/input-boolean',
               },
               in2: {
                 id: 'in2',
                 position: { x: 200, y: 0 },
-                type: 'xod/built-in/input-boolean',
+                type: 'xod/patch-nodes/input-boolean',
               },
               out: {
                 id: 'out',
                 position: { x: 0, y: 300 },
-                type: 'xod/built-in/output-boolean',
+                type: 'xod/patch-nodes/output-boolean',
               },
               noNativeImpl: {
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
-                type: 'xod/built-in/not-implemented-in-xod',
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             },
             links: {},
@@ -1637,16 +1637,16 @@ describe('Flatten', () => {
               __in__: {
                 id: '__in__',
                 position: { x: 0, y: 0 },
-                type: 'xod/built-in/input-boolean',
+                type: 'xod/patch-nodes/input-boolean',
               },
               __out__: {
                 id: '__out__',
                 position: { x: 0, y: 300 },
-                type: 'xod/built-in/input-number' },
+                type: 'xod/patch-nodes/input-number' },
               noNativeImpl: {
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
-                type: 'xod/built-in/not-implemented-in-xod',
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             },
             links: {},
@@ -1659,16 +1659,16 @@ describe('Flatten', () => {
               __in__: {
                 id: '__in__',
                 position: { x: 0, y: 0 },
-                type: 'xod/built-in/input-number',
+                type: 'xod/patch-nodes/input-number',
               },
               __out__: {
                 id: '__out__',
                 position: { x: 0, y: 300 },
-                type: 'xod/built-in/input-boolean' },
+                type: 'xod/patch-nodes/input-boolean' },
               noNativeImpl: {
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
-                type: 'xod/built-in/not-implemented-in-xod',
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             },
             links: {},
@@ -1718,7 +1718,7 @@ describe('Flatten', () => {
             noNativeImpl: {
               id: 'noNativeImpl',
               position: { x: 100, y: 100 },
-              type: 'xod/built-in/not-implemented-in-xod',
+              type: 'xod/patch-nodes/not-implemented-in-xod',
             },
           },
           links: {},
@@ -1732,7 +1732,7 @@ describe('Flatten', () => {
             noNativeImpl: {
               id: 'noNativeImpl',
               position: { x: 100, y: 100 },
-              type: 'xod/built-in/not-implemented-in-xod',
+              type: 'xod/patch-nodes/not-implemented-in-xod',
             },
           },
           links: {},

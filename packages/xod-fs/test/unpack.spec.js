@@ -45,7 +45,7 @@ describe('arrangeByFiles', () => {
                 description: 'description for my led',
               },
               rJxbjrKpl: {
-                type: 'xod/built-in/input-number',
+                type: 'xod/patch-nodes/input-number',
                 position: {
                   x: 138,
                   y: 16,

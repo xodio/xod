@@ -13,7 +13,7 @@
           "x": 100,
           "y": 100
         },
-        "type": "xod/built-in/not-implemented-in-xod"
+        "type": "xod/patch-nodes/not-implemented-in-xod"
       },
       "brightness": {
         "id": "brightness",
@@ -24,7 +24,7 @@
           "x": 0,
           "y": 0
         },
-        "type": "xod/built-in/input-number"
+        "type": "xod/patch-nodes/input-number"
       }
     },
     "path": "xod/core/led",
@@ -47,7 +47,7 @@
           "x": 100,
           "y": 100
         },
-        "type": "xod/built-in/not-implemented-in-xod"
+        "type": "xod/patch-nodes/not-implemented-in-xod"
       },
       "a": {
         "id": "a",
@@ -58,7 +58,7 @@
           "x": 0,
           "y": 0
         },
-        "type": "xod/built-in/input-boolean"
+        "type": "xod/patch-nodes/input-boolean"
       },
       "b": {
         "id": "b",
@@ -69,7 +69,7 @@
           "x": 200,
           "y": 0
         },
-        "type": "xod/built-in/input-boolean"
+        "type": "xod/patch-nodes/input-boolean"
       },
       "out": {
         "id": "out",
@@ -80,7 +80,7 @@
           "x": 0,
           "y": 300
         },
-        "type": "xod/built-in/output-boolean"
+        "type": "xod/patch-nodes/output-boolean"
       }
     },
     "impls": {
@@ -101,7 +101,7 @@
           "x": 100,
           "y": 100
         },
-        "type": "xod/built-in/not-implemented-in-xod"
+        "type": "xod/patch-nodes/not-implemented-in-xod"
       },
       "sample": {
         "id": "sample",
@@ -112,7 +112,7 @@
           "x": 0,
           "y": 0
         },
-        "type": "xod/built-in/input-pulse"
+        "type": "xod/patch-nodes/input-pulse"
       },
       "value": {
         "id": "value",
@@ -123,7 +123,7 @@
           "x": 0,
           "y": 300
         },
-        "type": "xod/built-in/output-number"
+        "type": "xod/patch-nodes/output-number"
       }
     },
     "path": "xod/core/pot",

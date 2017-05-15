@@ -171,7 +171,7 @@ describe('Patch', () => {
         nodes: {
           __in__: {
             id: '__in__',
-            type: 'xod/built-in/input-number',
+            type: 'xod/patch-nodes/input-number',
           },
         },
       });
@@ -182,7 +182,7 @@ describe('Patch', () => {
         nodes: {
           __out__: {
             id: '__out__',
-            type: 'xod/built-in/output-number',
+            type: 'xod/patch-nodes/output-number',
           },
         },
       });
@@ -389,11 +389,11 @@ describe('Patch', () => {
       nodes: {
         in: {
           id: 'in',
-          type: 'xod/built-in/input-boolean',
+          type: 'xod/patch-nodes/input-boolean',
         },
         out: {
           id: 'out',
-          type: 'xod/built-in/output-boolean',
+          type: 'xod/patch-nodes/output-boolean',
         },
       },
     });
@@ -429,7 +429,7 @@ describe('Patch', () => {
           nodes: {
             a: {
               id: 'a',
-              type: 'xod/built-in/input-boolean',
+              type: 'xod/patch-nodes/input-boolean',
               position: { x: 0, y: 0 },
             },
           },
@@ -516,7 +516,7 @@ describe('Patch', () => {
     it('should add pin by associating terminal node', () => {
       const node = Helper.defaultizeNode({
         id: '1',
-        type: 'xod/built-in/input-number',
+        type: 'xod/patch-nodes/input-number',
       });
       const newPatch = Patch.assocNode(node, emptyPatch);
 
@@ -539,7 +539,7 @@ describe('Patch', () => {
       });
       const node = Helper.defaultizeNode({
         id: '1',
-        type: 'xod/built-in/input-number',
+        type: 'xod/patch-nodes/input-number',
       });
       const newPatch = Patch.assocNode(node, patch);
 
@@ -613,8 +613,8 @@ describe('Patch', () => {
     it('should remove pin from patch on dissoc pinNode', () => {
       const patchWithPins = Helper.defaultizePatch({
         nodes: {
-          a: { id: 'a', type: 'xod/built-in/input-number' },
-          b: { id: 'b', type: 'xod/built-in/output-number' },
+          a: { id: 'a', type: 'xod/patch-nodes/input-number' },
+          b: { id: 'b', type: 'xod/patch-nodes/output-number' },
         },
       });
       const newPatch = Patch.dissocNode('a', patchWithPins);

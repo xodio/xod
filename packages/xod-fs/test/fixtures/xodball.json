@@ -19,7 +19,7 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod",
+          "type": "xod/patch-nodes/not-implemented-in-xod",
           "id": "noNativeImpl"
         },
         "a": {
@@ -30,7 +30,7 @@
             "x": 0,
             "y": 0
           },
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "id": "a"
         },
         "b": {
@@ -41,7 +41,7 @@
             "x": 200,
             "y": 0
           },
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "id": "b"
         },
         "out": {
@@ -52,7 +52,7 @@
             "x": 0,
             "y": 300
           },
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "id": "out"
         }
       },
@@ -74,7 +74,7 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod",
+          "type": "xod/patch-nodes/not-implemented-in-xod",
           "id": "noNativeImpl"
         },
         "brightness": {
@@ -85,7 +85,7 @@
             "x": 0,
             "y": 0
           },
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "id": "brightness"
         }
       },
@@ -107,7 +107,7 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod",
+          "type": "xod/patch-nodes/not-implemented-in-xod",
           "id": "noNativeImpl"
         },
         "sample": {
@@ -118,7 +118,7 @@
             "x": 0,
             "y": 0
           },
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "id": "sample"
         },
         "value": {
@@ -129,7 +129,7 @@
             "x": 0,
             "y": 300
           },
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "id": "value"
         }
       },
@@ -208,7 +208,7 @@
     "@/qux": {
       "nodes": {
         "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "pins": {},
           "position": {
             "x": 276,

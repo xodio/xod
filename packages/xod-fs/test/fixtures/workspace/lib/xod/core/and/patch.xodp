@@ -11,7 +11,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/built-in/not-implemented-in-xod"
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     "a": {
       "label": "First input",
@@ -21,7 +21,7 @@
         "x": 0,
         "y": 0
       },
-      "type": "xod/built-in/input-boolean"
+      "type": "xod/patch-nodes/input-boolean"
     },
     "b": {
       "label": "Second input",
@@ -31,7 +31,7 @@
         "x": 200,
         "y": 0
       },
-      "type": "xod/built-in/input-boolean"
+      "type": "xod/patch-nodes/input-boolean"
     },
     "out": {
       "label": "output",
@@ -41,7 +41,7 @@
         "x": 0,
         "y": 300
       },
-      "type": "xod/built-in/output-boolean"
+      "type": "xod/patch-nodes/output-boolean"
     }
   }
 }

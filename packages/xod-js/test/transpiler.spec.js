@@ -113,11 +113,11 @@ describe('Transpiler', () => {
                 x: 100,
                 y: 100,
               },
-              type: 'xod/built-in/not-implemented-in-xod',
+              type: 'xod/patch-nodes/not-implemented-in-xod',
             },
             in_A: {
               id: 'in_A',
-              type: 'xod/built-in/input-number',
+              type: 'xod/patch-nodes/input-number',
               position: {
                 x: 0,
                 y: 0,
@@ -127,7 +127,7 @@ describe('Transpiler', () => {
             },
             in_B: {
               id: 'in_B',
-              type: 'xod/built-in/input-string',
+              type: 'xod/patch-nodes/input-string',
               position: {
                 x: 200,
                 y: 0,
@@ -137,7 +137,7 @@ describe('Transpiler', () => {
             },
             out: {
               id: 'out',
-              type: 'xod/built-in/output-boolean',
+              type: 'xod/patch-nodes/output-boolean',
               position: {
                 x: 0,
                 y: 300,
@@ -403,11 +403,11 @@ describe('Transpiler', () => {
                   x: 100,
                   y: 100,
                 },
-                type: 'xod/built-in/not-implemented-in-xod',
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
               in_A: {
                 id: 'in_A',
-                type: 'xod/built-in/input-number',
+                type: 'xod/patch-nodes/input-number',
                 position: {
                   x: 0,
                   y: 0,
@@ -417,7 +417,7 @@ describe('Transpiler', () => {
               },
               in_B: {
                 id: 'in_B',
-                type: 'xod/built-in/input-number',
+                type: 'xod/patch-nodes/input-number',
                 position: {
                   x: 200,
                   y: 0,
@@ -427,7 +427,7 @@ describe('Transpiler', () => {
               },
               out: {
                 id: 'out',
-                type: 'xod/built-in/output-number',
+                type: 'xod/patch-nodes/output-number',
                 position: {
                   x: 0,
                   y: 300,

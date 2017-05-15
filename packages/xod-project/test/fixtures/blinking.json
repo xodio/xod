@@ -15,11 +15,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
           "id": "a",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -27,7 +27,7 @@
         },
         "b": {
           "id": "b",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 100,
             "y": 0
@@ -35,7 +35,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -56,11 +56,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
           "id": "a",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -68,7 +68,7 @@
         },
         "b": {
           "id": "b",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 100,
             "y": 0
@@ -76,7 +76,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -97,11 +97,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
           "id": "a",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -109,7 +109,7 @@
         },
         "b": {
           "id": "b",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -117,7 +117,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -138,11 +138,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
           "id": "a",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -150,7 +150,7 @@
         },
         "b": {
           "id": "b",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 100,
             "y": 0
@@ -158,7 +158,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -179,11 +179,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "cond": {
           "id": "cond",
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
@@ -191,7 +191,7 @@
         },
         "in": {
           "id": "in",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -199,7 +199,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -221,11 +221,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "trigOn": {
           "id": "trigOn",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -233,7 +233,7 @@
         },
         "value": {
           "id": "value",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 200,
             "y": 0
@@ -241,7 +241,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -263,11 +263,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "sample": {
           "id": "sample",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -275,7 +275,7 @@
         },
         "units": {
           "id": "units",
-          "type": "xod/built-in/input-string",
+          "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
@@ -283,7 +283,7 @@
         },
         "value": {
           "id": "value",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -291,7 +291,7 @@
         },
         "error": {
           "id": "error",
-          "type": "xod/built-in/output-string",
+          "type": "xod/patch-nodes/output-string",
           "position": {
             "x": 0,
             "y": 300
@@ -313,11 +313,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "pulse": {
           "id": "pulse",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -325,7 +325,7 @@
         },
         "value": {
           "id": "value",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -347,11 +347,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "value": {
           "id": "value",
-          "type": "xod/built-in/input-string",
+          "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
@@ -373,11 +373,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inp": {
           "id": "inp",
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
@@ -385,7 +385,7 @@
         },
         "outTrue": {
           "id": "outTrue",
-          "type": "xod/built-in/output-pulse",
+          "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
@@ -393,7 +393,7 @@
         },
         "outFalse": {
           "id": "outFalse",
-          "type": "xod/built-in/output-pulse",
+          "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
@@ -415,11 +415,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "minPulse": {
           "id": "minPulse",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -427,7 +427,7 @@
         },
         "maxPulse": {
           "id": "maxPulse",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -435,7 +435,7 @@
         },
         "value": {
           "id": "value",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -456,11 +456,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "sample": {
           "id": "sample",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -468,7 +468,7 @@
         },
         "value": {
           "id": "value",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -489,11 +489,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
           "id": "a",
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
@@ -501,7 +501,7 @@
         },
         "b": {
           "id": "b",
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
@@ -509,7 +509,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
@@ -531,11 +531,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "in": {
           "id": "in",
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
@@ -543,7 +543,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
@@ -565,11 +565,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
           "id": "a",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -577,7 +577,7 @@
         },
         "b": {
           "id": "b",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -585,7 +585,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
@@ -606,11 +606,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inp": {
           "id": "inp",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -618,7 +618,7 @@
         },
         "inA": {
           "id": "inA",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -626,7 +626,7 @@
         },
         "inB": {
           "id": "inB",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -634,7 +634,7 @@
         },
         "outA": {
           "id": "outA",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -642,7 +642,7 @@
         },
         "outB": {
           "id": "outB",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -650,7 +650,7 @@
         },
         "clip": {
           "id": "clip",
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
@@ -658,7 +658,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -679,11 +679,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "toggle": {
           "id": "toggle",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -691,7 +691,7 @@
         },
         "set": {
           "id": "set",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -699,7 +699,7 @@
         },
         "reset": {
           "id": "reset",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -707,7 +707,7 @@
         },
         "state": {
           "id": "state",
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
@@ -728,11 +728,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "brightness": {
           "id": "brightness",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -754,11 +754,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "fileName": {
           "id": "fileName",
-          "type": "xod/built-in/input-string",
+          "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
@@ -766,7 +766,7 @@
         },
         "data": {
           "id": "data",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -774,7 +774,7 @@
         },
         "onSuccess": {
           "id": "onSuccess",
-          "type": "xod/built-in/output-pulse",
+          "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
@@ -782,7 +782,7 @@
         },
         "onFailure": {
           "id": "onFailure",
-          "type": "xod/built-in/output-string",
+          "type": "xod/patch-nodes/output-string",
           "position": {
             "x": 0,
             "y": 300
@@ -804,11 +804,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
           "id": "a",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -816,7 +816,7 @@
         },
         "b": {
           "id": "b",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -824,7 +824,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
@@ -845,11 +845,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "fileName": {
           "id": "fileName",
-          "type": "xod/built-in/input-string",
+          "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
@@ -857,7 +857,7 @@
         },
         "pulse": {
           "id": "pulse",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -865,7 +865,7 @@
         },
         "data": {
           "id": "data",
-          "type": "xod/built-in/output-string",
+          "type": "xod/patch-nodes/output-string",
           "position": {
             "x": 0,
             "y": 300
@@ -873,7 +873,7 @@
         },
         "error": {
           "id": "error",
-          "type": "xod/built-in/output-string",
+          "type": "xod/patch-nodes/output-string",
           "position": {
             "x": 0,
             "y": 300
@@ -895,11 +895,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "pin": {
           "id": "pin",
-          "type": "xod/built-in/input-string",
+          "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
@@ -907,7 +907,7 @@
         },
         "value": {
           "id": "value",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -928,11 +928,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
           "id": "a",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -940,7 +940,7 @@
         },
         "b": {
           "id": "b",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -948,7 +948,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
@@ -969,11 +969,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "pin": {
           "id": "pin",
-          "type": "xod/built-in/input-string",
+          "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
@@ -981,7 +981,7 @@
         },
         "value": {
           "id": "value",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -1002,11 +1002,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inp": {
           "id": "inp",
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
@@ -1014,7 +1014,7 @@
         },
         "trueValue": {
           "id": "trueValue",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -1022,7 +1022,7 @@
         },
         "falseValue": {
           "id": "falseValue",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -1030,7 +1030,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -1051,11 +1051,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inValue": {
           "id": "inValue",
-          "type": "xod/built-in/input-string",
+          "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
@@ -1063,7 +1063,7 @@
         },
         "pulse": {
           "id": "pulse",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -1071,7 +1071,7 @@
         },
         "value": {
           "id": "value",
-          "type": "xod/built-in/output-string",
+          "type": "xod/patch-nodes/output-string",
           "position": {
             "x": 0,
             "y": 300
@@ -1093,11 +1093,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inValue": {
           "id": "inValue",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -1105,7 +1105,7 @@
         },
         "pulse": {
           "id": "pulse",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -1113,7 +1113,7 @@
         },
         "value": {
           "id": "value",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -1135,11 +1135,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
           "id": "a",
-          "type": "xod/built-in/input-string",
+          "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
@@ -1147,7 +1147,7 @@
         },
         "b": {
           "id": "b",
-          "type": "xod/built-in/input-string",
+          "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
@@ -1155,7 +1155,7 @@
         },
         "result": {
           "id": "result",
-          "type": "xod/built-in/output-string",
+          "type": "xod/patch-nodes/output-string",
           "position": {
             "x": 0,
             "y": 300
@@ -1177,11 +1177,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "interval": {
           "id": "interval",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -1189,7 +1189,7 @@
         },
         "tick": {
           "id": "tick",
-          "type": "xod/built-in/output-pulse",
+          "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
@@ -1210,11 +1210,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inValue": {
           "id": "inValue",
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
@@ -1222,7 +1222,7 @@
         },
         "pulse": {
           "id": "pulse",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -1230,7 +1230,7 @@
         },
         "value": {
           "id": "value",
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
@@ -1252,11 +1252,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
           "id": "a",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -1264,7 +1264,7 @@
         },
         "b": {
           "id": "b",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -1272,7 +1272,7 @@
         },
         "equal": {
           "id": "equal",
-          "type": "xod/built-in/output-pulse",
+          "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
@@ -1280,7 +1280,7 @@
         },
         "less": {
           "id": "less",
-          "type": "xod/built-in/output-pulse",
+          "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
@@ -1288,7 +1288,7 @@
         },
         "greater": {
           "id": "greater",
-          "type": "xod/built-in/output-pulse",
+          "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
@@ -1309,11 +1309,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "x": {
           "id": "x",
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
@@ -1321,7 +1321,7 @@
         },
         "truePulse": {
           "id": "truePulse",
-          "type": "xod/built-in/output-pulse",
+          "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
@@ -1329,7 +1329,7 @@
         },
         "falsePulse": {
           "id": "falsePulse",
-          "type": "xod/built-in/output-pulse",
+          "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
@@ -1350,11 +1350,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
           "id": "__in__",
-          "type": "xod/built-in/input-string",
+          "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
@@ -1362,7 +1362,7 @@
         },
         "__out__": {
           "id": "__out__",
-          "type": "xod/built-in/output-pulse",
+          "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
@@ -1383,11 +1383,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
           "id": "__in__",
-          "type": "xod/built-in/input-string",
+          "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
@@ -1395,7 +1395,7 @@
         },
         "__out__": {
           "id": "__out__",
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
@@ -1416,11 +1416,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
           "id": "__in__",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -1428,7 +1428,7 @@
         },
         "__out__": {
           "id": "__out__",
-          "type": "xod/built-in/output-pulse",
+          "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
@@ -1449,11 +1449,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
           "id": "__in__",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -1461,7 +1461,7 @@
         },
         "__out__": {
           "id": "__out__",
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
@@ -1482,11 +1482,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
           "id": "__in__",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -1494,7 +1494,7 @@
         },
         "__out__": {
           "id": "__out__",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -1515,11 +1515,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
           "id": "__in__",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -1527,7 +1527,7 @@
         },
         "__out__": {
           "id": "__out__",
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
@@ -1548,11 +1548,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
           "id": "__in__",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -1560,7 +1560,7 @@
         },
         "__out__": {
           "id": "__out__",
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
@@ -1581,11 +1581,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
           "id": "__in__",
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
@@ -1593,7 +1593,7 @@
         },
         "__out__": {
           "id": "__out__",
-          "type": "xod/built-in/output-string",
+          "type": "xod/patch-nodes/output-string",
           "position": {
             "x": 0,
             "y": 300
@@ -1614,11 +1614,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
           "id": "__in__",
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
@@ -1626,7 +1626,7 @@
         },
         "__out__": {
           "id": "__out__",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -1647,11 +1647,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "state": {
           "id": "state",
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
@@ -1672,11 +1672,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
           "id": "__in__",
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
@@ -1684,7 +1684,7 @@
         },
         "__out__": {
           "id": "__out__",
-          "type": "xod/built-in/output-pulse",
+          "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
@@ -1705,11 +1705,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "freq": {
           "id": "freq",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -1731,11 +1731,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
           "id": "a",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -1743,7 +1743,7 @@
         },
         "b": {
           "id": "b",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -1751,7 +1751,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-pulse",
+          "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
@@ -1772,11 +1772,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "pin": {
           "id": "pin",
-          "type": "xod/built-in/input-string",
+          "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
@@ -1784,7 +1784,7 @@
         },
         "value": {
           "id": "value",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
@@ -1805,11 +1805,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
           "id": "a",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -1817,7 +1817,7 @@
         },
         "b": {
           "id": "b",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -1825,7 +1825,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-pulse",
+          "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
@@ -1846,11 +1846,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "pin": {
           "id": "pin",
-          "type": "xod/built-in/input-string",
+          "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
@@ -1858,7 +1858,7 @@
         },
         "pulse": {
           "id": "pulse",
-          "type": "xod/built-in/input-pulse",
+          "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
@@ -1866,7 +1866,7 @@
         },
         "value": {
           "id": "value",
-          "type": "xod/built-in/output-number",
+          "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
@@ -1887,11 +1887,11 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/built-in/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
           "id": "a",
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
@@ -1899,7 +1899,7 @@
         },
         "b": {
           "id": "b",
-          "type": "xod/built-in/input-boolean",
+          "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
@@ -1907,7 +1907,7 @@
         },
         "out": {
           "id": "out",
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
@@ -1938,7 +1938,7 @@
         },
         "S1ulA9NuFx": {
           "id": "S1ulA9NuFx",
-          "type": "xod/built-in/input-string",
+          "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 172,
             "y": 104
@@ -1947,7 +1947,7 @@
         },
         "B1wg0qVOtg": {
           "id": "B1wg0qVOtg",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 418,
             "y": 104
@@ -2097,7 +2097,7 @@
       "nodes": {
         "BJGgAcVOtx": {
           "id": "BJGgAcVOtx",
-          "type": "xod/built-in/output-boolean",
+          "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 263,
             "y": 508
@@ -2129,7 +2129,7 @@
         },
         "B1eR5EOYg": {
           "id": "B1eR5EOYg",
-          "type": "xod/built-in/input-number",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 268,
             "y": 103

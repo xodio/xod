@@ -777,7 +777,7 @@ const flattenProject = R.curry((project, path, impls, patch) =>
  * 1. Get all patches with defined implementations or terminal patches.
  *    And name them "leaf patches". We will reference them later.
  *    Terminal nodes are replaced with a new temporary type "xod/internal/terminal-%TYPE%"
- *    (e.g. xod/built-in/input-boolean becomes xod/internal/terminal-boolean).
+ *    (e.g. xod/patch-nodes/input-boolean becomes xod/internal/terminal-boolean).
  *    They get two pins: `__in__` and `__out__`.
  *
  * 2. Convert entry-point patch into a new patch:

@@ -96,11 +96,11 @@ describe('Editor reducer', () => {
                   x: 100,
                   y: 100,
                 },
-                type: 'xod/built-in/not-implemented-in-xod',
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
               in: {
                 id: 'in',
-                type: 'xod/built-in/input-number',
+                type: 'xod/patch-nodes/input-number',
                 position: {
                   x: 0,
                   y: 0,

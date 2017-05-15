@@ -262,30 +262,30 @@ describe('Node', () => {
   });
   // checks
   describe('isInputPinNode', () => {
-    it('should return false for type not equal to xod/built-in/input-*', () => {
+    it('should return false for type not equal to xod/patch-nodes/input-*', () => {
       expect(Node.isInputPinNode(nodeOfType('@/input'))).to.be.false();
     });
-    it('should return true for type equal to xod/built-in/input-*', () => {
-      expect(Node.isInputPinNode(nodeOfType('xod/built-in/input-number'))).to.be.true();
+    it('should return true for type equal to xod/patch-nodes/input-*', () => {
+      expect(Node.isInputPinNode(nodeOfType('xod/patch-nodes/input-number'))).to.be.true();
     });
   });
   describe('isOutputPinNode', () => {
-    it('should return false for type not equal to xod/built-in/output-*', () => {
+    it('should return false for type not equal to xod/patch-nodes/output-*', () => {
       expect(Node.isOutputPinNode(nodeOfType('test/test/output'))).to.be.false();
     });
-    it('should return true for type equal to xod/built-in/output-*', () => {
-      expect(Node.isOutputPinNode(nodeOfType('xod/built-in/output-number'))).to.be.true();
+    it('should return true for type equal to xod/patch-nodes/output-*', () => {
+      expect(Node.isOutputPinNode(nodeOfType('xod/patch-nodes/output-number'))).to.be.true();
     });
   });
   describe('isPinNode', () => {
-    it('should return false for type not equal to xod/built-in/input-* or xod/built-in/output-*', () => {
+    it('should return false for type not equal to xod/patch-nodes/input-* or xod/patch-nodes/output-*', () => {
       expect(Node.isPinNode(nodeOfType('test/test/output'))).to.be.false();
     });
-    it('should return true for type equal to xod/built-in/input*', () => {
-      expect(Node.isPinNode(nodeOfType('xod/built-in/input-number'))).to.be.true();
+    it('should return true for type equal to xod/patch-nodes/input*', () => {
+      expect(Node.isPinNode(nodeOfType('xod/patch-nodes/input-number'))).to.be.true();
     });
-    it('should return true for type equal to xod/built-in/output*', () => {
-      expect(Node.isPinNode(nodeOfType('xod/built-in/output-number'))).to.be.true();
+    it('should return true for type equal to xod/patch-nodes/output*', () => {
+      expect(Node.isPinNode(nodeOfType('xod/patch-nodes/output-number'))).to.be.true();
     });
   });
   describe('isPinCurried', () => {
@@ -308,29 +308,29 @@ describe('Node', () => {
   // etc
   describe('getPinNodeDataType', () => {
     it('should throw error for non-existent data-type', () => {
-      expect(() => Node.getPinNodeDataType(nodeOfType('xod/built-in/input-a')))
+      expect(() => Node.getPinNodeDataType(nodeOfType('xod/patch-nodes/input-a')))
         .to.throw(TypeError);
     });
-    it('should return `number` for xod/built-in/input-number', () => {
-      const res = Node.getPinNodeDataType(nodeOfType('xod/built-in/input-number'));
+    it('should return `number` for xod/patch-nodes/input-number', () => {
+      const res = Node.getPinNodeDataType(nodeOfType('xod/patch-nodes/input-number'));
       expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
     });
-    it('should return `number` for xod/built-in/output-number', () => {
-      const res = Node.getPinNodeDataType(nodeOfType('xod/built-in/input-number'));
+    it('should return `number` for xod/patch-nodes/output-number', () => {
+      const res = Node.getPinNodeDataType(nodeOfType('xod/patch-nodes/input-number'));
       expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
     });
   });
   describe('getPinNodeDirection', () => {
-    it('should throw for `xod/built-in/invalid-pin-node`', () => {
-      expect(() => Node.getPinNodeDirection(nodeOfType('xod/built-in/invalid-pin-node')))
+    it('should throw for `xod/patch-nodes/invalid-pin-node`', () => {
+      expect(() => Node.getPinNodeDirection(nodeOfType('xod/patch-nodes/invalid-pin-node')))
         .to.throw(TypeError);
     });
-    it('should return `input` for `xod/built-in/input-number`', () => {
-      const res = Node.getPinNodeDirection(nodeOfType('xod/built-in/input-number'));
+    it('should return `input` for `xod/patch-nodes/input-number`', () => {
+      const res = Node.getPinNodeDirection(nodeOfType('xod/patch-nodes/input-number'));
       expect(res).to.be.equal('input');
     });
-    it('should return `output` for `xod/built-in/output-number`', () => {
-      const res = Node.getPinNodeDirection(nodeOfType('xod/built-in/output-number'));
+    it('should return `output` for `xod/patch-nodes/output-number`', () => {
+      const res = Node.getPinNodeDirection(nodeOfType('xod/patch-nodes/output-number'));
       expect(res).to.be.equal('output');
     });
   });

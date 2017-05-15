@@ -85,4 +85,4 @@ export const TERMINAL_PIN_KEYS = {
  * @name NOT_IMPLEMENTED_IN_XOD_PATH
  * @type {string}
  */
-export const NOT_IMPLEMENTED_IN_XOD_PATH = 'xod/built-in/not-implemented-in-xod';
+export const NOT_IMPLEMENTED_IN_XOD_PATH = 'xod/patch-nodes/not-implemented-in-xod';

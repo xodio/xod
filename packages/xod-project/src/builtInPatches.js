@@ -36,7 +36,7 @@ const getInputPatchPins = type => ({
   },
 });
 
-export const BUILT_IN_PATCH_PINS = R.compose(
+export const PINS_OF_PATCH_NODES = R.compose(
   R.fromPairs,
   R.append([
     NOT_IMPLEMENTED_IN_XOD_PATH,
@@ -55,7 +55,7 @@ export const BUILT_IN_PATCH_PINS = R.compose(
   R.values
 )(PIN_TYPE);
 
-export const BUILT_IN_PATCH_PATHS = R.keys(BUILT_IN_PATCH_PINS);
+export const BUILT_IN_PATCH_PATHS = R.keys(PINS_OF_PATCH_NODES);
 
 const TERMINAL_NODE_PINS = R.compose(
   R.fromPairs,
@@ -77,6 +77,6 @@ const TERMINAL_NODE_PINS = R.compose(
 // :: PatchPath -> (StrMap Pin) | Null
 export const getPinsForBuiltInPatchPath =
   R.flip(R.prop)(R.merge(
-    BUILT_IN_PATCH_PINS,
+    PINS_OF_PATCH_NODES,
     TERMINAL_NODE_PINS
   ));

@@ -107,7 +107,7 @@ export const getLibraryName = R.ifElse(
 // Utils for terminal patches
 //
 
-const TERMINALS_LIB_NAME = 'xod/built-in';
+const TERMINALS_LIB_NAME = 'xod/patch-nodes';
 
 const directions = R.values(CONST.PIN_DIRECTION);
 const dataTypes = R.values(CONST.PIN_TYPE);
