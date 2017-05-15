@@ -3,6 +3,8 @@ import path from 'path';
 import R from 'ramda';
 
 import XF from 'xod-func-tools';
+import XP from 'xod-project';
+
 import { loadLibs } from './loadLibs';
 import { readDir, readJSON } from './read';
 import { resolvePath, reassignIds, getPatchName } from './utils';
@@ -87,7 +89,7 @@ const readXodFile = projectPath => xodfile =>
           ? R.identity
           : R.compose(
             R.merge(R.__, { impls }),
-            R.assoc('path', `@/${getPatchName(xodfile)}`),
+            R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
             reassignIds
           );
 
