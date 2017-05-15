@@ -26,8 +26,8 @@
     through2 "^2.0.3"
 
 "@google-cloud/storage@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@google-cloud/storage/-/storage-1.1.0.tgz#5e905a1aed4c196d5ce75dcdb5e4cd7ce29a0860"
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@google-cloud/storage/-/storage-1.1.1.tgz#6590b5ce6e779556c9cc7043bd6449d6bc0781de"
   dependencies:
     "@google-cloud/common" "^0.13.0"
     arrify "^1.0.0"
@@ -6204,20 +6204,6 @@ restore-cursor@^2.0.0:
     onetime "^2.0.0"
     signal-exit "^3.0.2"
 
-retry-request@^1.3.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/retry-request/-/retry-request-1.3.2.tgz#59ad24e71f8ae3f312d5f7b4bcf467a5e5a57bd6"
-  dependencies:
-    request "2.76.0"
-    through2 "^2.0.0"
-
-retry-request@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/retry-request/-/retry-request-2.0.1.tgz#fce3d5cc53e307c7dd1b4a6395bbfac1ea5ae664"
-  dependencies:
-    request "^2.81.0"
-    through2 "^2.0.0"
-
 right-align@^0.1.1:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/right-align/-/right-align-0.1.3.tgz#61339b722fe6a3515689210d24e14c96148613ef"
@@ -7398,14 +7384,6 @@ wrappy@1:
 write-file-atomic@^1.1.2, write-file-atomic@^1.1.4, write-file-atomic@^1.3.3:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/write-file-atomic/-/write-file-atomic-1.3.4.tgz#f807a4f0b1d9e913ae7a48112e6cc3af1991b45f"
-  dependencies:
-    graceful-fs "^4.1.11"
-    imurmurhash "^0.1.4"
-    slide "^1.1.5"
-
-write-file-atomic@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/write-file-atomic/-/write-file-atomic-2.0.0.tgz#bb99a5440d0d31dd860a68da392bffeef66251a1"
   dependencies:
     graceful-fs "^4.1.11"
     imurmurhash "^0.1.4"
