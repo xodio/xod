@@ -128,64 +128,6 @@ describe('Project', () => {
       expect(patch).to.be.deep.equal(project.patches['@/one']);
     });
   });
-  describe('lsPatches', () => {
-    const project = Helper.defaultizeProject({
-      patches: {
-        '@/folder/patch': {},
-        '@/folder/patch2': {},
-        '@/folder/subfolder/patch3': {},
-        '@/folder2/patch4': {},
-        '@/patch5': {},
-      },
-    });
-
-    it('should return an object with patches', () => {
-      expect(Project.lsPatches('@/', project))
-        .to.be.an('object');
-      expect(Project.lsPatches('@', project))
-        .to.be.an('object');
-    });
-    it('should return only patches in the specified path', () => {
-      expect(Project.lsPatches('@/folder', project))
-        .to.be.an('object')
-        .that.have.all.keys([
-          '@/folder/patch',
-          '@/folder/patch2',
-        ]);
-    });
-  });
-  describe('lsDirs', () => {
-    const project = Helper.defaultizeProject({
-      patches: {
-        '@/folder/patch': {},
-        '@/folder/subfolder/patch3': {},
-        '@/folder2/patch4': {},
-        '@/patch5': {},
-      },
-    });
-
-    it('should return a list of strings', () => {
-      expect(Project.lsDirs('@/', project))
-        .to.be.instanceof(Array);
-      expect(Project.lsDirs('@', project))
-      .to.be.instanceof(Array);
-    });
-    it('should return only dirs in the specified path', () => {
-      expect(Project.lsDirs('@/folder', project))
-        .to.be.instanceof(Array)
-        .that.have.members([
-          'subfolder',
-        ]);
-    });
-    it('should return only unique dirs', () => {
-      expect(Project.lsDirs('@', project))
-        .to.be.instanceof(Array)
-        .that.have.members([
-          'folder',
-          'folder2',
-        ]);
-    });
-  });
   describe('getNodePin', () => {
     const project = Helper.defaultizeProject({
       patches: {
