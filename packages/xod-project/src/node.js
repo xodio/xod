@@ -5,6 +5,7 @@ import * as Utils from './utils';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
 import { def } from './types';
+import { isInputTerminalPath, isOutputTerminalPath } from "./patchPathUtils";
 
 /**
  * @typedef {Object} Node
@@ -168,7 +169,7 @@ export const getNodePosition = def(
 export const isInputPinNode = def(
   'isInputPinNode :: Node -> Boolean',
   R.compose(
-    R.test(/^xod\/built-in\/input-/),
+    isInputTerminalPath,
     getNodeType
   )
 );
@@ -181,7 +182,7 @@ export const isInputPinNode = def(
 export const isOutputPinNode = def(
   'isOutputPinNode :: Node -> Boolean',
   R.compose(
-    R.test(/^xod\/built-in\/output-/),
+    isOutputTerminalPath,
     getNodeType
   )
 );

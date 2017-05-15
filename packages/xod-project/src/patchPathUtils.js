@@ -24,22 +24,41 @@ export const toIdentifier = R.compose(
 // general-purpose utils
 //
 
-// :: String -> Boolean
+/**
+ * @function isPathLocal
+ * @param {string} path
+ * @returns {boolean}
+ */
+export const isPathLocal = R.compose(
+  R.allPass([
+    R.pipe(R.length, R.equals(2)),
+    R.pipe(R.head, R.equals('@')),
+    R.pipe(R.last, isValidIdentifier),
+  ]),
+  R.split('/')
+);
+
+export const getLocalPath = baseName => `@/${baseName}`;
+
+/**
+ * @function isPathLibrary
+ * @param {string} path
+ * @returns {boolean}
+ */
+export const isPathLibrary = R.compose(
+  R.allPass([
+    R.pipe(R.length, R.equals(3)),
+    R.all(isValidIdentifier),
+  ]),
+  R.split('/')
+);
+
+// :: * -> Boolean
 export const isValidPatchPath = R.both(
   R.is(String),
-  R.pipe(
-    R.split('/'),
-    R.either(
-      R.allPass([ // local path
-        R.pipe(R.length, R.equals(2)),
-        R.pipe(R.head, R.equals('@')),
-        R.pipe(R.last, isValidIdentifier),
-      ]),
-      R.allPass([ // library path
-        R.pipe(R.length, R.equals(3)),
-        R.all(isValidIdentifier),
-      ])
-    )
+  R.either(
+    isPathLocal,
+    isPathLibrary
   )
 );
 
@@ -68,20 +87,6 @@ export const getBaseName = R.compose(
 );
 
 /**
- * @function isPathLocal
- * @param {string} path
- * @returns {boolean}
- */
-export const isPathLocal = R.test(/^@\/[a-z0-9\-/]+$/);
-
-/**
- * @function isPathLibrary
- * @param {string} path
- * @returns {boolean}
- */
-export const isPathLibrary = R.test(/^[a-z0-9\-/]+$/);
-
-/**
  * @function isPathBuiltIn
  * @param {string} path
  * @returns {boolean}
@@ -95,6 +100,10 @@ const terminalPatchPathRegExp =
   new RegExp(`^xod/built-in/(input|output)-(${dataTypes.join('|')})$`);
 
 export const isTerminalPatchPath = R.test(terminalPatchPathRegExp);
+
+export const isInputTerminalPath = R.test(/^xod\/built-in\/input-/);
+
+export const isOutputTerminalPath = R.test(/^xod\/built-in\/output-/);
 
 export const getTerminalPath = R.curry(
   (direction, type) => `xod/built-in/${direction}-${type}`

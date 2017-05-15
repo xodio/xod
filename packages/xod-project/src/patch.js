@@ -11,6 +11,7 @@ import * as Utils from './utils';
 import { sortGraph } from './gmath';
 import { def } from './types';
 import { getPinsForBuiltInPatchPath } from './builtInPatches';
+import { getLocalPath } from './patchPathUtils';
 
 /**
  * An object representing single patch in a project
@@ -30,7 +31,7 @@ export const createPatch = () => ({
   nodes: {},
   links: {},
   impls: {},
-  path: '@/untitled-patch',
+  path: getLocalPath('untitled-patch'),
 });
 
 /**

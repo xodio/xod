@@ -229,7 +229,7 @@ export const listLibraryPatches = def(
 
 /**
  * @function getPatchByPath
- * @param {string} path - full path of the patch to find, e.g. `"@/foo/bar"`
+ * @param {string} path - full path of the patch to find, e.g. `"@/bar"`
  * @param {Project} project - project bundle
  * @returns {Maybe<Patch>} a patch with given path
  */
@@ -243,7 +243,7 @@ export const getPatchByPath = def(
 
 /**
  * @function getPatchByPathUnsafe
- * @param {string} path - full path of the patch to find, e.g. `"@/foo/bar"`
+ * @param {string} path - full path of the patch to find, e.g. `"@/foo"`
  * @param {Project} project - project bundle
  * @returns {Patch} a patch with given path
  * @throws Error if patch was not found
