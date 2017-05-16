@@ -75,7 +75,7 @@ const TERMINAL_NODE_PINS = R.compose(
 )(PIN_TYPE);
 
 // :: PatchPath -> (StrMap Pin) | Null
-export const getPinsForBuiltInPatchPath =
+export const getHardcodedPinsForPatchPath =
   R.flip(R.prop)(R.merge(
     PINS_OF_PATCH_NODES,
     TERMINAL_NODE_PINS

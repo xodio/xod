@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
-import { explodeMaybe } from 'xod-func-tools';
+import { explodeMaybe, notNil } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
@@ -10,7 +10,7 @@ import * as Pin from './pin';
 import * as Utils from './utils';
 import { sortGraph } from './gmath';
 import { def } from './types';
-import { getPinsForBuiltInPatchPath } from './builtInPatches';
+import { getHardcodedPinsForPatchPath } from './builtInPatches';
 import { getLocalPath } from './patchPathUtils';
 
 /**
@@ -233,15 +233,18 @@ const computePins = R.memoize(patch =>
   )(patch)
 );
 
-const getPinsForBuiltInPatch =
-  R.pipe(getPatchPath, getPinsForBuiltInPatchPath);
+const getHardcodedPinsForPatch =
+  R.pipe(getPatchPath, getHardcodedPinsForPatchPath);
 
-const getPins = patch =>
-  R.ifElse(
-    getPinsForBuiltInPatch,
-    getPinsForBuiltInPatch,
-    computePins
-  )(patch);
+// not isPathBuiltIn, because it does not cover internal patches
+const patchHasHardcodedPins =
+  R.pipe(getHardcodedPinsForPatch, notNil);
+
+const getPins = R.ifElse(
+  patchHasHardcodedPins,
+  getHardcodedPinsForPatch,
+  computePins
+);
 
 /**
  * Returns pin object by key
