@@ -107,6 +107,8 @@ export const defaultValueOfType = def(
   ])
 );
 
+export const canCastTypes = R.curry((from, to) => CONST.TYPES_COMPATIBILITY[from][to]);
+
 // =============================================================================
 //
 // Transforming node ids in the patch
