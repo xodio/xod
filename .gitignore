@@ -1,6 +1,5 @@
 .idea/
 dist/
-dist_xod/
 .tmp/
 doc/_build
 *.orig
