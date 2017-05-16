@@ -1,8 +1,7 @@
 import chai, { assert, expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { resolve } from 'path';
-import fs from 'fs';
-import { doesFileExist, doesDirectoryExist, rmrf } from 'xod-fs';
+import { rmrf, spawnDefaultProject } from 'xod-fs';
 import { getProjectName } from 'xod-project';
 
 import * as WA from '../src/app/workspaceActions';
@@ -83,38 +82,6 @@ describe('Utils', () => {
     );
   });
 
-  describe('spawnWorkspaceFile', () => {
-    it('resolves Path for successfull spawning',
-      () => WA.spawnWorkspaceFile(fixture('./notExistWorkspace'))
-        .then((path) => {
-          assert.equal(path, fixture('./notExistWorkspace'));
-          assert.ok(doesFileExist(fixture('./notExistWorkspace/.xodworkspace')));
-        })
-    );
-  });
-
-  describe('spawnStdLib', () => {
-    it('resolves Path for successfull spawnking',
-      () => WA.spawnStdLib(fixture('./notExistWorkspace')).then(() => {
-        assert.ok(doesDirectoryExist(fixture('./notExistWorkspace/lib')));
-        fs.readdir(fixture('./notExistWorkspace/lib'), (err, files) => {
-          assert.includeMembers(files, ['xod']);
-        });
-      })
-    );
-  });
-
-  describe('spawnDefaultProject', () => {
-    it('resolves Path for successfull spawnking',
-      () => WA.spawnDefaultProject(fixture('./notExistWorkspace')).then(() => {
-        assert.ok(doesDirectoryExist(fixture('./notExistWorkspace/welcome-to-xod')));
-        fs.readdir(fixture('./notExistWorkspace/welcome-to-xod'), (err, files) => {
-          assert.includeMembers(files, ['project.xod', 'main']);
-        });
-      })
-    );
-  });
-
   describe('enumerateProjects', () => {
     it('resolves ProjectMeta for valid workspace',
       () => assert.eventually.lengthOf(
@@ -170,9 +137,8 @@ describe('IDE', () => {
   describe('could spawn whole workspace', () => {
     it('resolves a list of local projects',
       () => Promise.resolve(fixture('./notExistWorkspace'))
-        .then(WA.spawnWorkspaceFile)
-        .then(WA.spawnStdLib)
-        .then(WA.spawnDefaultProject)
+        .then(WA.spawnWorkspace)
+        .then(spawnDefaultProject(WA.getDefaultProjectPath()))
         .then(WA.enumerateProjects)
         .then((projects) => {
           assert.lengthOf(projects, 1);
