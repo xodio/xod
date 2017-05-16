@@ -12,6 +12,7 @@ export const ERROR = {
   // patches
   PATCH_NOT_FOUND_BY_PATH: 'Can\'t find the patch in the project with specified path: "{patchPath}"',
   PATCH_PATH_OCCUPIED: 'Another patch with the same path already exists',
+  PATCH_REBASING_BUILT_IN: 'Can\'t rebase built-in patch',
   // pathes
   PATH_INVALID: 'Path is empty or contains invalid characters',
   // nodes
@@ -61,3 +62,28 @@ export const PIN_DIRECTION = {
   INPUT: 'input',
   OUTPUT: 'output',
 };
+
+/**
+ * 'Magic' pin keys for terminal nodes.
+ * See {@link flatten}
+ *
+ * @name TERMINAL_PIN_KEYS
+ * @enum {string}
+ */
+export const TERMINAL_PIN_KEYS = {
+  [PIN_DIRECTION.INPUT]: '__in__',
+  [PIN_DIRECTION.OUTPUT]: '__out__',
+};
+
+/**
+ * Path for a 'magic' patch, whose instance is placed
+ * to mark patches that are not implemented in XOD.
+ *
+ * Such patches usually contain only terminal nodes
+ * and provide implementations in target platforms
+ * native languages.
+ *
+ * @name NOT_IMPLEMENTED_IN_XOD_PATH
+ * @type {string}
+ */
+export const NOT_IMPLEMENTED_IN_XOD_PATH = 'xod/patch-nodes/not-implemented-in-xod';

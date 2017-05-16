@@ -404,7 +404,8 @@ const createTPatches = def(
       );
     }),
     R.omit([entryPath]),
-    R.converge(R.zipObj, [Project.listPatchPaths, Project.listPatches])
+    R.indexBy(Project.getPatchPath),
+    Project.listPatchesWithoutBuiltIns
   )(project)
 );
 

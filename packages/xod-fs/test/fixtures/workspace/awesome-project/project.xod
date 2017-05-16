@@ -1,8 +1,10 @@
 {
-  "meta": {
-    "name": "Awesome project",
-    "author": "Amperka team"
-  },
+  "authors": [
+    "Amperka team"
+  ],
+  "description": "",
+  "license": "",
+  "name": "awesome-project",
   "libs": [
     "xod/core"
   ]

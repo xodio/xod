@@ -11,8 +11,6 @@ export {
   listNodes,
   getNodeById,
   getNodeByIdUnsafe,
-  assocPin,
-  dissocPin,
   getPinByKey,
   getPinByKeyUnsafe,
   listPins,
@@ -33,11 +31,22 @@ export {
   getTopology,
 } from './patch';
 export * from './node';
-export * from './pin';
+export {
+  getPinType,
+  getPinDirection,
+  getPinKey,
+  getPinLabel,
+  getPinValue,
+  getPinDescription,
+  getPinOrder,
+  isInputPin,
+  isOutputPin,
+  isTerminalPin,
+} from './pin';
 export * from './link';
 export * from './constants';
 export * from './utils';
 export * from './func-tools';
 export * from './types';
-export { toV2 } from './adapter';
 export { default as flatten } from './flatten';
+export * from './patchPathUtils';

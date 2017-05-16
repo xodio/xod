@@ -6,43 +6,36 @@
   "description": "",
   "license": "",
   "patches": {
-    "xod/core/inputNumber": {
-      "nodes": {},
-      "links": {},
-      "impls": {},
-      "pins": {
-        "PIN": {
-          "key": "PIN",
-          "type": "number",
-          "direction": "output",
-          "label": "PIN",
+    "xod/core/led": {
+      "nodes": {
+        "noNativeImpl": {
           "description": "",
-          "order": 0,
-          "value": 0
+          "id": "noNativeImpl",
+          "label": "",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "brightness": {
+          "id": "brightness",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "label": "",
+          "description": ""
         }
       },
-      "path": "xod/core/inputNumber"
-    },
-    "xod/core/led": {
-      "nodes": {},
       "links": {},
       "impls": {
         "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var b = e.inputs.brightness;\n\n  // Adjust duty cycle as a power function to align brightness\n  // perception by human eye\n  var duty = b * b * b;\n\n  analogWrite(e.context.pin, duty);\n};\n"
       },
-      "pins": {
-        "brightness": {
-          "key": "brightness",
-          "type": "number",
-          "direction": "input",
-          "label": "brightness",
-          "description": "",
-          "order": 0,
-          "value": 0
-        }
-      },
       "path": "xod/core/led"
     },
-    "@/Main": {
+    "@/main": {
       "nodes": {
         "SJmGlirFpx": {
           "id": "SJmGlirFpx",
@@ -62,7 +55,7 @@
         },
         "rJxbjrKpl": {
           "id": "rJxbjrKpl",
-          "type": "xod/core/inputNumber",
+          "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 138,
             "y": 16
@@ -70,7 +63,6 @@
           "pins": {},
           "label": "",
           "description": ""
-
         }
       },
       "links": {
@@ -86,20 +78,11 @@
           }
         }
       },
-      "impls": {},
-      "pins": {
-        "rJxbjrKpl": {
-          "key": "rJxbjrKpl",
-          "type": "number",
-          "direction": "input",
-          "label": "My pin label",
-          "description": "My pin description",
-          "order": 0,
-          "value": 0
-        }
+      "impls": {
+        "arduino": "//custom implementation by user to work faster on Arduino"
       },
-      "path": "@/Main"
+      "path": "@/main"
     }
   },
-  "name": "Awesome project"
+  "name": "awesome-project"
 }

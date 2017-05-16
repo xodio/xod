@@ -2,145 +2,119 @@
   {
     "path": "./awesome-project/project.xod",
     "content": {
-      "meta": {
-        "name": "Awesome project",
-        "author": "Amperka team"
+      "authors": [
+        "Amperka team"
+      ],
+      "description": "",
+      "license": "",
+      "name": "awesome-project",
+      "libs": [
+        "xod/core"
+      ]
+    }
+  },
+  {
+    "content": {
+      "path": "@/main",
+      "description": "",
+      "label": "Main",
+      "impls": {},
+      "links": {
+        "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f": {
+          "id": "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f",
+          "input": {
+            "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
+            "pinKey": "value"
+          },
+          "output": {
+            "nodeId": "4d716df5-81e7-4845-9b82-31a54c1634d7",
+            "pinKey": "38395ee5-8634-40f9-b7fa-dfe9eee208e8"
+          }
+        },
+        "3ed564cd-71e5-4ad3-9361-e7b9719bc82a": {
+          "id": "3ed564cd-71e5-4ad3-9361-e7b9719bc82a",
+          "input": {
+            "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
+            "pinKey": "value"
+          },
+          "output": {
+            "nodeId": "89c69d91-b484-478d-8990-027e5f0a2e3e",
+            "pinKey": "b"
+          }
+        }
       },
-      "libs": ["xod/core"]
-    }
-  },
-  {
-    "path": "./awesome-project/main/patch.xodm",
-    "content": {
-      "label": "Main"
-    }
-  },
-  {
-    "path": "./awesome-project/main/patch.xodp",
-    "content": {
       "nodes": {
         "2c03e470-fefd-4f58-be6a-58d209d9158c": {
-          "typeId": "xod/core/pot",
-          "pins": {
-            "sample": {
-              "injected": true
-            }
-          },
+          "id": "2c03e470-fefd-4f58-be6a-58d209d9158c",
+          "pins": {},
           "position": {
             "x": 292,
             "y": 182
           },
-          "properties": {},
-          "id": "2c03e470-fefd-4f58-be6a-58d209d9158c"
-        },
-        "89c69d91-b484-478d-8990-027e5f0a2e3e": {
-          "typeId": "xod/core/and",
-          "pins": {},
-          "position": {
-            "x": 163,
-            "y": 314
-          },
-          "properties": {},
-          "id": "89c69d91-b484-478d-8990-027e5f0a2e3e"
+          "type": "xod/core/pot"
         },
         "4d716df5-81e7-4845-9b82-31a54c1634d7": {
-          "typeId": "@/sub/qux",
+          "id": "4d716df5-81e7-4845-9b82-31a54c1634d7",
           "pins": {},
           "position": {
             "x": 363,
             "y": 322
           },
-          "properties": {},
-          "id": "4d716df5-81e7-4845-9b82-31a54c1634d7"
-        }
-      },
-      "links": {
-        "3ed564cd-71e5-4ad3-9361-e7b9719bc82a": {
-          "id": "3ed564cd-71e5-4ad3-9361-e7b9719bc82a",
-          "pins": [
-            {
-              "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
-              "pinKey": "value"
-            },
-            {
-              "nodeId": "89c69d91-b484-478d-8990-027e5f0a2e3e",
-              "pinKey": "b"
-            }
-          ]
+          "type": "@/qux"
         },
-        "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f": {
-          "id": "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f",
-          "pins": [
-            {
-              "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
-              "pinKey": "value"
-            },
-            {
-              "nodeId": "4d716df5-81e7-4845-9b82-31a54c1634d7",
-              "pinKey": "38395ee5-8634-40f9-b7fa-dfe9eee208e8"
-            }
-          ]
+        "89c69d91-b484-478d-8990-027e5f0a2e3e": {
+          "id": "89c69d91-b484-478d-8990-027e5f0a2e3e",
+          "pins": {},
+          "position": {
+            "x": 163,
+            "y": 314
+          },
+          "type": "xod/core/and"
         }
       }
-    }
+    },
+    "path": "./awesome-project/main/patch.xodp"
   },
   {
-    "path": "./awesome-project/sub/qux/patch.xodm",
+    "path": "./awesome-project/qux/patch.xodp",
     "content": {
-      "label": "QUX",
-      "category": "patch",
-      "properties": {},
-      "pins": {
-        "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
-          "key": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
-          "nodeId": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
-          "direction": "input",
-          "type": "number",
-          "index": "0"
-        }
-      }
-    }
-  },
-  {
-    "path": "./awesome-project/sub/qux/patch.xodp",
-    "content": {
+      "path": "@/qux",
+      "impls": {},
       "nodes": {
         "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
-          "typeId": "xod/core/inputNumber",
+          "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
+          "type": "xod/patch-nodes/input-number",
           "pins": {},
           "position": {
             "x": 276,
             "y": 155
-          },
-          "properties": {},
-          "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8"
+          }
         },
         "4da4c29d-f482-47c2-825e-a969084b1116": {
-          "typeId": "xod/core/led",
+          "id": "4da4c29d-f482-47c2-825e-a969084b1116",
+          "type": "xod/core/led",
           "pins": {},
           "position": {
             "x": 310,
             "y": 307
-          },
-          "properties": {},
-          "id": "4da4c29d-f482-47c2-825e-a969084b1116"
+          }
         }
       },
       "links": {
         "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1": {
           "id": "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1",
-          "pins": [
-            {
-              "nodeId": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
-              "pinKey": "PIN"
-            },
-            {
-              "nodeId": "4da4c29d-f482-47c2-825e-a969084b1116",
-              "pinKey": "brightness"
-            }
-          ]
+          "input": {
+            "nodeId": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
+            "pinKey": "PIN"
+          },
+          "output": {
+            "nodeId": "4da4c29d-f482-47c2-825e-a969084b1116",
+            "pinKey": "brightness"
+          }
         }
-      }
+      },
+      "label": "QUX",
+      "description": ""
     }
   }
 ]

@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
-import { explodeMaybe } from 'xod-func-tools';
+import { explodeMaybe, notNil } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
@@ -10,6 +10,8 @@ import * as Pin from './pin';
 import * as Utils from './utils';
 import { sortGraph } from './gmath';
 import { def } from './types';
+import { getHardcodedPinsForPatchPath } from './builtInPatches';
+import { getLocalPath } from './patchPathUtils';
 
 /**
  * An object representing single patch in a project
@@ -29,8 +31,7 @@ export const createPatch = () => ({
   nodes: {},
   links: {},
   impls: {},
-  pins: {},
-  path: '@/untitled-patch',
+  path: getLocalPath('untitled-patch'),
 });
 
 /**
@@ -67,7 +68,6 @@ export const setPatchPath = def(
     [String, R.identity]
   )
 );
-
 
  /**
   * Returns a list of implementations for which a `patch` has native implementation
@@ -207,30 +207,43 @@ export const getNodeByIdUnsafe = def(
 //
 // =============================================================================
 
-/**
- * Returns new patch with new pin.
- *
- * @function assocPin
- * @param {Pin} pin
- * @param {Patch} patch
- * @returns {Patch}
- */
-export const assocPin = def(
-  'assocPin :: Pin -> Patch -> Patch',
-  (pin, patch) => R.assocPath(['pins', Pin.getPinKey(pin)], pin, patch)
+// :: Patch -> StrMap Pins
+const computePins = R.memoize(patch =>
+  R.compose(
+    R.indexBy(Pin.getPinKey),
+    R.unnest,
+    R.values,
+    R.map(
+      R.compose(
+        R.addIndex(R.map)(
+          (node, order) => Pin.createPin(
+            Node.getNodeId(node),
+            Node.getPinNodeDataType(node),
+            Node.getPinNodeDirection(node),
+            order,
+            '' // TODO: where do we get pin descriptions now?
+          )
+        ),
+        R.sortBy(R.pipe(Node.getNodePosition, R.prop('x'))) // TODO: by x, then by y
+      )
+    ),
+    R.groupBy(Node.getPinNodeDirection),
+    R.filter(Node.isPinNode),
+    listNodes
+  )(patch)
 );
 
-/**
- * Returns new patch without pin.
- *
- * @function dissocPin
- * @param {PinOrKey} key
- * @param {Patch} patch
- * @returns {Patch}
- */
-export const dissocPin = def(
-  'dissocPin :: PinOrKey -> Patch -> Patch',
-  (pinOrKey, patch) => R.dissocPath(['pins', Pin.getPinKey(pinOrKey)], patch)
+const getHardcodedPinsForPatch =
+  R.pipe(getPatchPath, getHardcodedPinsForPatchPath);
+
+// not isPathBuiltIn, because it does not cover internal patches
+const patchHasHardcodedPins =
+  R.pipe(getHardcodedPinsForPatch, notNil);
+
+const getPins = R.ifElse(
+  patchHasHardcodedPins,
+  getHardcodedPinsForPatch,
+  computePins
 );
 
 /**
@@ -245,7 +258,7 @@ export const getPinByKey = def(
   'getPinByKey :: PinKey -> Patch -> Maybe Pin',
   (key, patch) => R.compose(
     Tools.prop(key),
-    R.prop('pins')
+    getPins
   )(patch)
 );
 
@@ -273,7 +286,7 @@ export const listPins = def(
   'listPins :: Patch -> [Pin]',
   R.compose(
     R.values,
-    R.prop('pins')
+    getPins
   )
 );
 
@@ -492,35 +505,6 @@ export const dissocLink = def(
 //
 // =============================================================================
 
-const rebuildPins = def(
-  'rebuildPins :: Patch -> Patch',
-  (patch) => {
-    const pins = R.compose(
-      R.indexBy(Pin.getPinKey),
-      R.unnest,
-      R.values,
-      R.map(
-        R.compose(
-          R.addIndex(R.map)(
-            (node, order) => Pin.createPin(
-              Node.getNodeId(node),
-              Node.getPinNodeDataType(node),
-              Node.getPinNodeDirection(node),
-              order
-            )
-          ),
-          R.sortBy(R.pipe(Node.getNodePosition, R.prop('x'))) // TODO: by x, then by y
-        )
-      ),
-      R.groupBy(Node.getPinNodeDirection),
-      R.filter(Node.isPinNode),
-      listNodes
-    )(patch);
-
-    return R.assoc('pins', pins, patch);
-  }
-);
-
 /**
  * Replaces a node with new one or inserts new one if it doesn’t exist yet.
  *
@@ -533,12 +517,9 @@ const rebuildPins = def(
  * @returns {Patch} a copy of the `patch` with the node replaced
  */
 export const assocNode = def(
-  'assocNode :: Node -> Patch -> Patch',
+  'assocNode :: Node -> Patch -> Patch', // TODO: inconsistency with Project.assocPatch
   (node, patch) =>
-    R.compose(
-      Node.isPinNode(node) ? rebuildPins : R.identity,
-      R.assocPath(['nodes', Node.getNodeId(node)], node)
-    )(patch)
+    R.assocPath(['nodes', Node.getNodeId(node)], node, patch)
 );
 
 /**
@@ -563,19 +544,10 @@ export const dissocNode = def(
     const removeLinks = R.reduce(
       R.flip(dissocLink)
     );
-    const removePin = R.ifElse(
-      R.compose(
-        R.chain(Node.isPinNode),
-        getNodeById(id)
-      ),
-      dissocPin(id),
-      R.identity
-    );
     const removeNode = R.dissocPath(['nodes', id]);
 
     return R.compose(
       removeNode,
-      removePin,
       removeLinks
     )(patch, links);
   }

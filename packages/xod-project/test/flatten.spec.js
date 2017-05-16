@@ -5,8 +5,9 @@ import dirtyChai from 'dirty-chai';
 import * as Helper from './helpers';
 import * as CONST from '../src/constants';
 import flatten, { extractPatches } from '../src/flatten';
-import { getCastPatchPath, formatString } from '../src/utils';
-import blinkingV2 from './fixtures/blinking.v2.json';
+import { formatString } from '../src/utils';
+import { getCastPatchPath } from '../src/patchPathUtils';
+import blinking from './fixtures/blinking.json';
 import blinkingFlat from './fixtures/blinking.flat.json';
 
 chai.use(dirtyChai);
@@ -23,12 +24,10 @@ describe('Flatten', () => {
               a: {
                 id: 'a',
                 type: 'xod/core/or',
-                pins: {},
               },
               b: {
                 id: 'b',
                 type: 'xod/core/or',
-                pins: {},
               },
             },
             links: {
@@ -47,25 +46,29 @@ describe('Flatten', () => {
           },
           'xod/core/or': {
             path: 'xod/core/or',
-            nodes: {},
-            links: {},
-            pins: {
+            nodes: {
               in1: {
-                key: 'in1',
-                type: 'boolean',
-                direction: 'input',
+                id: 'in1',
+                position: { x: 0, y: 0 },
+                type: 'xod/patch-nodes/input-boolean',
               },
               in2: {
-                key: 'in2',
-                type: 'boolean',
-                direction: 'input',
+                id: 'in2',
+                position: { x: 200, y: 0 },
+                type: 'xod/patch-nodes/input-boolean',
               },
               out: {
-                key: 'out',
-                type: 'boolean',
-                direction: 'output',
+                id: 'out',
+                position: { x: 0, y: 300 },
+                type: 'xod/patch-nodes/output-boolean',
+              },
+              noNativeImpl: {
+                id: 'noNativeImpl',
+                position: { x: 100, y: 100 },
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             },
+            links: {},
             impls: {
               js: '//ok',
             },
@@ -166,7 +169,7 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/core/output-bool',
+                type: 'xod/patch-nodes/output-boolean',
               },
               c: {
                 id: 'c',
@@ -174,7 +177,7 @@ describe('Flatten', () => {
               },
               d: {
                 id: 'd',
-                type: 'xod/core/output-bool',
+                type: 'xod/patch-nodes/output-boolean',
               },
             },
             links: {
@@ -190,52 +193,33 @@ describe('Flatten', () => {
                 },
               },
             },
-            pins: {
-              b: {
-                key: 'b',
-                type: 'boolean',
-                direction: 'output',
-              },
-              d: {
-                key: 'd',
-                type: 'boolean',
-                direction: 'output',
-              },
-            },
           },
           'xod/core/or': {
-            nodes: {},
-            links: {},
-            pins: {
+            nodes: {
               in1: {
-                key: 'in1',
-                type: 'boolean',
-                direction: 'input',
+                id: 'in1',
+                position: { x: 0, y: 0 },
+                type: 'xod/patch-nodes/input-boolean',
               },
               in2: {
-                key: 'in2',
-                type: 'boolean',
-                direction: 'input',
+                id: 'in2',
+                position: { x: 200, y: 0 },
+                type: 'xod/patch-nodes/input-boolean',
               },
               out: {
-                key: 'out',
-                type: 'boolean',
-                direction: 'output',
+                id: 'out',
+                position: { x: 0, y: 300 },
+                type: 'xod/patch-nodes/output-boolean',
+              },
+              noNativeImpl: {
+                id: 'noNativeImpl',
+                position: { x: 100, y: 100 },
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             },
+            links: {},
             impls: {
               js: '//ok',
-            },
-          },
-          'xod/core/output-bool': {
-            nodes: {},
-            links: {},
-            pins: {
-              __in__: {
-                key: '__in__',
-                type: 'boolean',
-                direction: 'input',
-              },
             },
           },
         },
@@ -243,7 +227,7 @@ describe('Flatten', () => {
 
       const extracted = extractPatches(
         project,
-        ['xod/core/or', 'xod/core/output-bool'],
+        ['xod/core/or', 'xod/patch-nodes/output-boolean'],
         null,
         {},
         project.patches['@/main']
@@ -265,10 +249,10 @@ describe('Flatten', () => {
           { id: 'a~a', type: 'xod/core/or' },
           { id: 'a~b', type: 'xod/core/or' },
           { id: 'b~a', type: 'xod/core/or' },
-          { id: 'b~b', type: 'xod/internal/terminal-bool' },
+          { id: 'b~b', type: 'xod/internal/terminal-boolean' },
           { id: 'b~c~a', type: 'xod/core/or' },
           { id: 'b~c~b', type: 'xod/core/or' },
-          { id: 'b~d', type: 'xod/internal/terminal-bool' },
+          { id: 'b~d', type: 'xod/internal/terminal-boolean' },
           { id: 'c', type: 'xod/core/or' },
           { id: 'd', type: 'xod/core/or' },
         ],
@@ -309,7 +293,7 @@ describe('Flatten', () => {
               a: {
                 id: 'a',
                 type: '@/foo',
-                pins: {
+                pins: { // TODO: curriedPins
                   a: {
                     curried: true,
                     value: true,
@@ -327,7 +311,7 @@ describe('Flatten', () => {
             nodes: {
               a: {
                 id: 'a',
-                type: 'xod/core/input-bool',
+                type: 'xod/patch-nodes/input-boolean',
               },
               b: {
                 id: 'b',
@@ -336,7 +320,7 @@ describe('Flatten', () => {
               c: {
                 id: 'c',
                 type: 'xod/core/number',
-                pins: {
+                pins: { // TODO: curriedPins
                   in: {
                     curried: true,
                     value: 32,
@@ -351,20 +335,13 @@ describe('Flatten', () => {
                 input: { nodeId: 'b', pinKey: 'in' },
               },
             },
-            pins: {
-              a: {
-                key: 'a',
-                type: 'boolean',
-                direction: 'input',
-              },
-            },
           },
         },
       });
 
       const extracted = extractPatches(
         project,
-        ['xod/core/input-bool', 'xod/core/number'],
+        ['xod/patch-nodes/input-boolean', 'xod/core/number'],
         null,
         {},
         project.patches['@/main']
@@ -393,21 +370,21 @@ describe('Flatten', () => {
         project.patches['@/foo'].nodes.c.pins
       );
     });
-    it('correct structure for blinking.v2.json', () => {
+    it('correct structure for blinking.json', () => {
       const extracted = extractPatches(
-        blinkingV2,
+        blinking,
         [
           'xod/core/or',
           'xod/core/digital-output',
           'xod/core/latch',
           'xod/core/clock',
-          'xod/core/input-number',
-          'xod/core/input-string',
+          'xod/patch-nodes/input-number',
+          'xod/patch-nodes/input-string',
           'xod/math/multiply',
         ],
         null,
         {},
-        blinkingV2.patches['@/main']
+        blinking.patches['@/main']
       );
       const unnested = R.map(R.map(R.unnest), extracted);
       const nodes = unnested[0];
@@ -442,12 +419,10 @@ describe('Flatten', () => {
             a: {
               id: 'a',
               type: 'xod/core/or',
-              pins: {},
             },
             b: {
               id: 'b',
               type: 'xod/core/or',
-              pins: {},
             },
           },
           links: {
@@ -465,25 +440,29 @@ describe('Flatten', () => {
           },
         },
         'xod/core/or': {
-          nodes: {},
-          links: {},
-          pins: {
+          nodes: {
             in1: {
-              key: 'in1',
-              type: 'boolean',
-              direction: 'input',
+              id: 'in1',
+              position: { x: 0, y: 0 },
+              type: 'xod/patch-nodes/input-boolean',
             },
             in2: {
-              key: 'in2',
-              type: 'boolean',
-              direction: 'input',
+              id: 'in2',
+              position: { x: 200, y: 0 },
+              type: 'xod/patch-nodes/input-boolean',
             },
             out: {
-              key: 'out',
-              type: 'boolean',
-              direction: 'output',
+              id: 'out',
+              position: { x: 0, y: 300 },
+              type: 'xod/patch-nodes/output-boolean',
+            },
+            noNativeImpl: {
+              id: 'noNativeImpl',
+              position: { x: 100, y: 100 },
+              type: 'xod/patch-nodes/not-implemented-in-xod',
             },
           },
+          links: {},
           impls: {
             js: '//ok',
           },
@@ -614,12 +593,10 @@ describe('Flatten', () => {
             a: {
               id: 'a',
               type: 'xod/core/or',
-              pins: {},
             },
             b: {
               id: 'b',
               type: 'xod/core/or',
-              pins: {},
             },
           },
           links: {
@@ -644,7 +621,7 @@ describe('Flatten', () => {
             },
             b: {
               id: 'b',
-              type: 'xod/core/output-bool',
+              type: 'xod/patch-nodes/output-boolean',
             },
             c: {
               id: 'c',
@@ -652,7 +629,7 @@ describe('Flatten', () => {
             },
             d: {
               id: 'd',
-              type: 'xod/core/output-bool',
+              type: 'xod/patch-nodes/output-boolean',
             },
           },
           links: {
@@ -668,52 +645,33 @@ describe('Flatten', () => {
               },
             },
           },
-          pins: {
-            b: {
-              key: 'b',
-              type: 'boolean',
-              direction: 'output',
-            },
-            d: {
-              key: 'd',
-              type: 'boolean',
-              direction: 'output',
-            },
-          },
         },
         'xod/core/or': {
-          nodes: {},
-          links: {},
-          pins: {
+          nodes: {
             in1: {
-              key: 'in1',
-              type: 'boolean',
-              direction: 'input',
+              id: 'in1',
+              position: { x: 0, y: 0 },
+              type: 'xod/patch-nodes/input-boolean',
             },
             in2: {
-              key: 'in2',
-              type: 'boolean',
-              direction: 'input',
+              id: 'in2',
+              position: { x: 200, y: 0 },
+              type: 'xod/patch-nodes/input-boolean',
             },
             out: {
-              key: 'out',
-              type: 'boolean',
-              direction: 'output',
+              id: 'out',
+              position: { x: 0, y: 300 },
+              type: 'xod/patch-nodes/output-boolean',
+            },
+            noNativeImpl: {
+              id: 'noNativeImpl',
+              position: { x: 100, y: 100 },
+              type: 'xod/patch-nodes/not-implemented-in-xod',
             },
           },
+          links: {},
           impls: {
             js: '//ok',
-          },
-        },
-        'xod/core/output-bool': {
-          nodes: {},
-          links: {},
-          pins: {
-            __in__: {
-              key: '__in__',
-              type: 'boolean',
-              direction: 'input',
-            },
           },
         },
       },
@@ -800,8 +758,8 @@ describe('Flatten', () => {
       );
     });
 
-    it('should correctly flatten blinking.v2.json', () => {
-      const flattened = R.unnest(flatten(blinkingV2, '@/main', ['espruino', 'js']));
+    it('should correctly flatten blinking.json', () => {
+      const flattened = R.unnest(flatten(blinking, '@/main', ['espruino', 'js']));
       expect(flattened).to.deep.equal(blinkingFlat);
     });
   });
@@ -835,51 +793,47 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/core/output-bool',
+                type: 'xod/patch-nodes/output-boolean',
               },
             },
             links: {},
           },
           'xod/core/number': {
-            nodes: {},
-            links: {},
-            pins: {
+            nodes: {
+              noNativeImpl: {
+                id: 'noNativeImpl',
+                position: { x: 100, y: 100 },
+                type: 'xod/patch-nodes/not-implemented-in-xod',
+              },
               out: {
-                key: 'out',
-                type: 'number',
-                direction: 'output',
+                id: 'out',
+                position: { x: 0, y: 300 },
+                type: 'xod/patch-nodes/output-number',
               },
             },
+            links: {},
             impls: {
               js: '//OK',
             },
           },
-          'xod/core/output-bool': {
-            nodes: {},
-            links: {},
-            pins: {
-              __in__: {
-                key: '__in__',
-                type: 'boolean',
-                direction: 'input',
-              },
-            },
-          },
           'xod/core/cast-boolean-to-number': {
-            nodes: {},
-            links: {},
-            pins: {
+            nodes: {
               __in__: {
-                key: '__in__',
-                type: 'boolean',
-                direction: 'input',
+                id: '__in__',
+                position: { x: 0, y: 0 },
+                type: 'xod/patch-nodes/input-boolean',
               },
               __out__: {
-                key: '__out__',
-                type: 'boolean',
-                direction: 'input',
+                id: '__out__',
+                position: { x: 0, y: 300 },
+                type: 'xod/patch-nodes/input-number' },
+              noNativeImpl: {
+                id: 'noNativeImpl',
+                position: { x: 100, y: 100 },
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             },
+            links: {},
             impls: {},
           },
         },
@@ -951,7 +905,7 @@ describe('Flatten', () => {
                   },
                   b: {
                     id: 'b',
-                    type: `xod/core/output-${typeOut}`,
+                    type: `xod/patch-nodes/output-${typeOut}`,
                   },
                 },
                 links: {
@@ -967,84 +921,83 @@ describe('Flatten', () => {
                     },
                   },
                 },
-                pins: {
-                  b: {
-                    key: 'b',
-                    type: typeOut,
-                    direction: 'output',
-                  },
-                },
               },
               [`xod/core/${typeIn}`]: {
-                nodes: {},
-                links: {},
-                pins: {
+                nodes: {
                   out: {
-                    key: 'out',
-                    type: typeIn,
-                    direction: 'output',
+                    id: 'out',
+                    position: { x: 0, y: 300 },
+                    type: `xod/patch-nodes/output-${typeIn}`,
+                  },
+                  noNativeImpl: {
+                    id: 'noNativeImpl',
+                    position: { x: 100, y: 100 },
+                    type: 'xod/patch-nodes/not-implemented-in-xod',
                   },
                 },
+                links: {},
                 impls: {
                   js: '//OK',
                 },
               },
               [`xod/core/${typeOut}`]: {
-                nodes: {},
-                links: {},
-                pins: {
+                nodes: {
                   in: {
-                    key: 'in',
-                    type: typeOut,
-                    direction: 'input',
+                    id: 'in',
+                    position: { x: 0, y: 0 },
+                    type: `xod/patch-nodes/input-${typeOut}`,
+                  },
+                  noNativeImpl: {
+                    id: 'noNativeImpl',
+                    position: { x: 100, y: 100 },
+                    type: 'xod/patch-nodes/not-implemented-in-xod',
                   },
                 },
+                links: {},
                 impls: {
                   js: '//OK',
                 },
               },
-              [`xod/core/output-${typeOut}`]: {
-                nodes: {},
-                links: {},
-                pins: {
-                  __in__: {
-                    key: '__in__',
-                    type: typeOut,
-                    direction: 'input',
-                  },
-                },
-              },
               [`xod/core/cast-${typeIn}-to-${typeOut}`]: {
-                nodes: {},
-                links: {},
-                pins: {
+                nodes: {
                   __in__: {
-                    key: '__in__',
-                    type: typeIn,
-                    direction: 'input',
+                    id: '__in__',
+                    position: { x: 0, y: 0 },
+                    type: `xod/patch-nodes/input-${typeIn}`,
                   },
                   __out__: {
-                    key: '__out__',
-                    type: typeOut,
-                    direction: 'input',
+                    id: '__out__',
+                    position: { x: 0, y: 300 },
+                    type: `xod/patch-nodes/input-${typeOut}`,
+                  },
+                  noNativeImpl: {
+                    id: 'noNativeImpl',
+                    position: { x: 100, y: 100 },
+                    type: 'xod/patch-nodes/not-implemented-in-xod',
                   },
                 },
+                links: {},
                 impls: {},
               },
             },
           });
 
-          if (typeOut === typeIn) {
-            project.patches[`xod/core/${typeOut}`].pins = {
+          if (typeOut === typeIn) { // TODO: explain what exactly is happening here
+            project.patches[`xod/core/${typeOut}`].nodes = {
               in: {
-                key: 'in',
-                type: typeOut,
-                direction: 'input',
+                id: 'in',
+                position: { x: 0, y: 0 },
+                type: `xod/patch-nodes/input-${typeOut}`,
               },
               out: {
-                key: 'out',
-                type: typeOut,
-                direction: 'output',
+                id: 'out',
+                position: { x: 0, y: 300 },
+                type: `xod/patch-nodes/output-${typeIn}`,
+              },
+              noNativeImpl: {
+                id: 'noNativeImpl',
+                position: { x: 100, y: 100 },
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             };
           }
@@ -1108,7 +1061,7 @@ describe('Flatten', () => {
                   },
                   b: {
                     id: 'b',
-                    type: `xod/core/input-${typeOut}`,
+                    type: `xod/patch-nodes/input-${typeOut}`,
                   },
                 },
                 links: {
@@ -1124,84 +1077,83 @@ describe('Flatten', () => {
                     },
                   },
                 },
-                pins: {
-                  b: {
-                    key: 'b',
-                    type: typeOut,
-                    direction: 'input',
-                  },
-                },
               },
               [`xod/core/${typeOut}`]: {
-                nodes: {},
-                links: {},
-                pins: {
+                nodes: {
                   in: {
-                    key: 'in',
-                    type: typeOut,
-                    direction: 'input',
+                    id: 'in',
+                    position: { x: 0, y: 0 },
+                    type: `xod/patch-nodes/input-${typeOut}`,
+                  },
+                  noNativeImpl: {
+                    id: 'noNativeImpl',
+                    position: { x: 100, y: 100 },
+                    type: 'xod/patch-nodes/not-implemented-in-xod',
                   },
                 },
+                links: {},
                 impls: {
                   js: '//OK',
                 },
               },
               [`xod/core/${typeIn}`]: {
-                nodes: {},
-                links: {},
-                pins: {
+                nodes: {
                   out: {
-                    key: 'out',
-                    type: typeIn,
-                    direction: 'output',
+                    id: 'out',
+                    position: { x: 0, y: 0 },
+                    type: `xod/patch-nodes/output-${typeIn}`,
+                  },
+                  noNativeImpl: {
+                    id: 'noNativeImpl',
+                    position: { x: 100, y: 100 },
+                    type: 'xod/patch-nodes/not-implemented-in-xod',
                   },
                 },
+                links: {},
                 impls: {
                   js: '//OK',
                 },
               },
-              [`xod/core/input-${typeOut}`]: {
-                nodes: {},
-                links: {},
-                pins: {
-                  __out__: {
-                    key: '__out__',
-                    type: typeOut,
-                    direction: 'output',
-                  },
-                },
-              },
               [`xod/core/cast-${typeIn}-to-${typeOut}`]: {
-                nodes: {},
-                links: {},
-                pins: {
+                nodes: {
                   __in__: {
-                    key: '__in__',
-                    type: typeIn,
-                    direction: 'input',
+                    id: '__in__',
+                    position: { x: 0, y: 0 },
+                    type: `xod/patch-nodes/input-${typeIn}`,
                   },
                   __out__: {
-                    key: '__out__',
-                    type: typeOut,
-                    direction: 'input',
+                    id: '__out__',
+                    position: { x: 0, y: 300 },
+                    type: `xod/patch-nodes/input-${typeOut}`,
+                  },
+                  noNativeImpl: {
+                    id: 'noNativeImpl',
+                    position: { x: 100, y: 100 },
+                    type: 'xod/patch-nodes/not-implemented-in-xod',
                   },
                 },
+                links: {},
                 impls: {},
               },
             },
           });
 
           if (typeOut === typeIn) {
-            project.patches[`xod/core/${typeOut}`].pins = {
+            project.patches[`xod/core/${typeOut}`].nodes = {
               in: {
-                key: 'in',
-                type: typeOut,
-                direction: 'input',
+                id: 'in',
+                position: { x: 0, y: 0 },
+                type: `xod/patch-nodes/input-${typeOut}`,
               },
               out: {
-                key: 'out',
-                type: typeOut,
-                direction: 'output',
+                id: 'out',
+                position: { x: 0, y: 300 },
+                type: `xod/patch-nodes/output-${typeIn}`,
+              },
+              noNativeImpl: {
+                id: 'noNativeImpl',
+                position: { x: 100, y: 100 },
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             };
           }
@@ -1274,7 +1226,7 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/core/output-number',
+                type: 'xod/patch-nodes/output-number',
               },
             },
             links: {
@@ -1290,42 +1242,28 @@ describe('Flatten', () => {
                 },
               },
             },
-            pins: {
-              b: {
-                key: 'b',
-                type: 'number',
-                direction: 'output',
-              },
-            },
           },
           'xod/core/number': {
-            nodes: {},
-            links: {},
-            pins: {
+            nodes: {
               in: {
-                key: 'in',
-                type: 'number',
-                direction: 'input',
+                id: 'in',
+                position: { x: 0, y: 0 },
+                type: 'xod/patch-nodes/input-number',
+              },
+              noNativeImpl: {
+                id: 'noNativeImpl',
+                position: { x: 100, y: 100 },
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
               out: {
-                key: 'out',
-                type: 'number',
-                direction: 'output',
+                id: 'out',
+                position: { x: 0, y: 300 },
+                type: 'xod/patch-nodes/output-number',
               },
             },
+            links: {},
             impls: {
               js: '//OK',
-            },
-          },
-          'xod/core/output-number': {
-            nodes: {},
-            links: {},
-            pins: {
-              __in__: {
-                key: '__in__',
-                type: 'number',
-                direction: 'input',
-              },
             },
           },
         },
@@ -1394,7 +1332,7 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/core/output-number',
+                type: 'xod/patch-nodes/output-number',
               },
             },
             links: {
@@ -1412,38 +1350,31 @@ describe('Flatten', () => {
             },
           },
           'xod/core/or': {
-            nodes: {},
-            links: {},
-            pins: {
+            nodes: {
               in1: {
-                key: 'in1',
-                type: 'boolean',
-                direction: 'input',
+                id: 'in1',
+                position: { x: 0, y: 0 },
+                type: 'xod/patch-nodes/input-boolean',
               },
               in2: {
-                key: 'in2',
-                type: 'boolean',
-                direction: 'input',
+                id: 'in2',
+                position: { x: 200, y: 0 },
+                type: 'xod/patch-nodes/input-boolean',
               },
               out: {
-                key: 'out',
-                type: 'boolean',
-                direction: 'output',
+                id: 'out',
+                position: { x: 0, y: 300 },
+                type: 'xod/patch-nodes/output-boolean',
+              },
+              noNativeImpl: {
+                id: 'noNativeImpl',
+                position: { x: 100, y: 100 },
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             },
+            links: {},
             impls: {
               js: '//ok',
-            },
-          },
-          'xod/core/output-number': {
-            nodes: {},
-            links: {},
-            pins: {
-              __in__: {
-                key: '__in__',
-                type: 'number',
-                direction: 'input',
-              },
             },
           },
         },
@@ -1471,7 +1402,7 @@ describe('Flatten', () => {
               f: {
                 id: 'f',
                 type: '@/foo',
-                pins: {
+                pins: { // TODO: curriedPins
                   b: {
                     curried: true,
                     value: 32,
@@ -1489,7 +1420,7 @@ describe('Flatten', () => {
               },
               b: {
                 id: 'b',
-                type: 'xod/core/input-number',
+                type: 'xod/patch-nodes/input-number',
               },
             },
             links: {
@@ -1505,40 +1436,26 @@ describe('Flatten', () => {
                 },
               },
             },
-            pins: {
-              b: {
-                key: 'b',
-                type: 'number',
-                direction: 'input',
-              },
-            },
-          },
-          'xod/core/input-number': {
-            nodes: {},
-            links: {},
-            pins: {
-              __out__: {
-                key: '__out__',
-                type: 'number',
-                direction: 'output',
-              },
-            },
           },
           'xod/core/number': {
-            nodes: {},
-            links: {},
-            pins: {
+            nodes: {
               in: {
-                key: 'in',
-                type: 'number',
-                direction: 'input',
+                id: 'in',
+                position: { x: 0, y: 0 },
+                type: 'xod/patch-nodes/input-number',
+              },
+              noNativeImpl: {
+                id: 'noNativeImpl',
+                position: { x: 100, y: 100 },
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
               out: {
-                key: 'out',
-                type: 'number',
-                direction: 'output',
+                id: 'out',
+                position: { x: 0, y: 300 },
+                type: 'xod/patch-nodes/output-number',
               },
             },
+            links: {},
             impls: {
               js: '// ok',
             },
@@ -1572,7 +1489,7 @@ describe('Flatten', () => {
               b: {
                 id: 'b',
                 type: '@/foo',
-                pins: {
+                pins: { // TODO: curriedPins
                   a2: {
                     curried: true,
                     value: 32,
@@ -1617,15 +1534,15 @@ describe('Flatten', () => {
             nodes: {
               a: {
                 id: 'a',
-                type: 'xod/core/input-number',
+                type: 'xod/patch-nodes/input-number',
               },
               a2: {
                 id: 'a2',
-                type: 'xod/core/input-number',
+                type: 'xod/patch-nodes/input-number',
               },
               a3: {
                 id: 'a3',
-                type: 'xod/core/input-number',
+                type: 'xod/patch-nodes/input-number',
               },
               b: {
                 id: 'b',
@@ -1637,7 +1554,7 @@ describe('Flatten', () => {
               },
               c: {
                 id: 'c',
-                type: 'xod/core/output-bool',
+                type: 'xod/patch-nodes/output-boolean',
               },
             },
             links: {
@@ -1686,109 +1603,75 @@ describe('Flatten', () => {
                 },
               },
             },
-            pins: {
-              a: {
-                key: 'a',
-                type: 'number',
-                direction: 'input',
-              },
-              a2: {
-                key: 'a2',
-                type: 'number',
-                direction: 'input',
-              },
-              a3: {
-                key: 'a3',
-                type: 'number',
-                direction: 'input',
-              },
-              c: {
-                key: 'c',
-                type: 'boolean',
-                direction: 'output',
-              },
-            },
           },
           'xod/core/or': {
-            nodes: {},
-            links: {},
-            pins: {
+            nodes: {
               in1: {
-                key: 'in1',
-                type: 'boolean',
-                direction: 'input',
+                id: 'in1',
+                position: { x: 0, y: 0 },
+                type: 'xod/patch-nodes/input-boolean',
               },
               in2: {
-                key: 'in2',
-                type: 'boolean',
-                direction: 'input',
+                id: 'in2',
+                position: { x: 200, y: 0 },
+                type: 'xod/patch-nodes/input-boolean',
               },
               out: {
-                key: 'out',
-                type: 'boolean',
-                direction: 'output',
+                id: 'out',
+                position: { x: 0, y: 300 },
+                type: 'xod/patch-nodes/output-boolean',
+              },
+              noNativeImpl: {
+                id: 'noNativeImpl',
+                position: { x: 100, y: 100 },
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             },
+            links: {},
             impls: {
               js: '//ok',
             },
           },
-          'xod/core/output-bool': {
-            nodes: {},
-            links: {},
-            pins: {
-              __in__: {
-                key: '__in__',
-                type: 'boolean',
-                direction: 'input',
-              },
-            },
-          },
-          'xod/core/input-number': {
-            nodes: {},
-            links: {},
-            pins: {
-              __out__: {
-                key: '__out__',
-                type: 'number',
-                direction: 'output',
-              },
-            },
-          },
           'xod/core/cast-boolean-to-number': {
-            nodes: {},
-            links: {},
-            pins: {
+            nodes: {
               __in__: {
-                key: '__in__',
-                type: 'boolean',
-                direction: 'input',
+                id: '__in__',
+                position: { x: 0, y: 0 },
+                type: 'xod/patch-nodes/input-boolean',
               },
               __out__: {
-                key: '__out__',
-                type: 'number',
-                direction: 'input',
+                id: '__out__',
+                position: { x: 0, y: 300 },
+                type: 'xod/patch-nodes/input-number' },
+              noNativeImpl: {
+                id: 'noNativeImpl',
+                position: { x: 100, y: 100 },
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             },
+            links: {},
             impls: {
               js: '// BOOL2NUM',
             },
           },
           'xod/core/cast-number-to-boolean': {
-            nodes: {},
-            links: {},
-            pins: {
+            nodes: {
               __in__: {
-                key: '__in__',
-                type: 'number',
-                direction: 'input',
+                id: '__in__',
+                position: { x: 0, y: 0 },
+                type: 'xod/patch-nodes/input-number',
               },
               __out__: {
-                key: '__out__',
-                type: 'boolean',
-                direction: 'input',
+                id: '__out__',
+                position: { x: 0, y: 300 },
+                type: 'xod/patch-nodes/input-boolean' },
+              noNativeImpl: {
+                id: 'noNativeImpl',
+                position: { x: 100, y: 100 },
+                type: 'xod/patch-nodes/not-implemented-in-xod',
               },
             },
+            links: {},
             impls: {
               js: '// NUM2BOOL',
             },
@@ -1822,18 +1705,22 @@ describe('Flatten', () => {
             a: {
               id: 'a',
               type: 'xod/core/or',
-              pins: {},
             },
             b: {
               id: 'b',
               type: 'xod/core/and',
-              pins: {},
             },
           },
           links: {},
         },
         'xod/core/or': {
-          nodes: {},
+          nodes: {
+            noNativeImpl: {
+              id: 'noNativeImpl',
+              position: { x: 100, y: 100 },
+              type: 'xod/patch-nodes/not-implemented-in-xod',
+            },
+          },
           links: {},
           impls: {
             js: '// ok',
@@ -1841,7 +1728,13 @@ describe('Flatten', () => {
           },
         },
         'xod/core/and': {
-          nodes: {},
+          nodes: {
+            noNativeImpl: {
+              id: 'noNativeImpl',
+              position: { x: 100, y: 100 },
+              type: 'xod/patch-nodes/not-implemented-in-xod',
+            },
+          },
           links: {},
           impls: {
             js: '// ok',

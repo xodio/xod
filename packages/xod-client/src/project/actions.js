@@ -1,4 +1,4 @@
-import { generateId, isValidIdentifier } from 'xod-project';
+import { generateId, isValidIdentifier, getLocalPath } from 'xod-project';
 
 import { addError } from '../messages/actions';
 import { PROJECT_BROWSER_ERRORS } from '../messages/constants';
@@ -15,7 +15,7 @@ export const createProject = projectName => (dispatch) => {
     type: ActionType.PROJECT_CREATE,
     payload: {
       name: projectName,
-      mainPatchPath: '@/main',
+      mainPatchPath: getLocalPath('main'),
     },
   });
 };
@@ -128,7 +128,7 @@ export const addPatch = baseName => (dispatch, getState) => {
   }
 
   const state = getState();
-  const newPatchPath = `@/${baseName}`;
+  const newPatchPath = getLocalPath(baseName);
 
   if (isPatchPathTaken(state, newPatchPath)) {
     return dispatch(addError(PROJECT_BROWSER_ERRORS.PATCH_NAME_TAKEN));
@@ -143,7 +143,7 @@ export const addPatch = baseName => (dispatch, getState) => {
 };
 
 export const renamePatch = (oldPatchPath, newBaseName) => (dispatch, getState) => {
-  const newPatchPath = `@/${newBaseName}`; // TODO: prepare for '@@'?
+  const newPatchPath = getLocalPath(newBaseName);
   const state = getState();
 
   if (

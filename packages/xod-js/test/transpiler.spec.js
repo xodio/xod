@@ -57,7 +57,10 @@ describe('Transpiler', () => {
             0: {
               id: '0',
               type: 'xod/nodes/test',
-              position: { x: 0, y: 0 },
+              position: {
+                x: 0,
+                y: 0,
+              },
               pins: {
                 in_A: {
                   value: 10,
@@ -68,43 +71,82 @@ describe('Transpiler', () => {
             1: {
               id: '1',
               type: 'xod/nodes/test',
-              position: { x: 0, y: 0 },
+              position: {
+                x: 200,
+                y: 0,
+              },
               pins: {},
             },
           },
           links: {
             l1: {
               id: 'l1',
-              input: { nodeId: '1', pinKey: 'in_A' },
-              output: { nodeId: '0', pinKey: 'out' },
+              input: {
+                nodeId: '1',
+                pinKey: 'in_A',
+              },
+              output: {
+                nodeId: '0',
+                pinKey: 'out',
+              },
             },
             l2: {
               id: 'l2',
-              input: { nodeId: '1', pinKey: 'in_B' },
-              output: { nodeId: '0', pinKey: 'out' },
+              input: {
+                nodeId: '1',
+                pinKey: 'in_B',
+              },
+              output: {
+                nodeId: '0',
+                pinKey: 'out',
+              },
             },
           },
         },
         'xod/nodes/test': {
-          nodes: {},
-          links: {},
-          pins: {
+          nodes: {
+            noNativeImpl: {
+              description: '',
+              id: 'noNativeImpl',
+              label: '',
+              position: {
+                x: 100,
+                y: 100,
+              },
+              type: 'xod/patch-nodes/not-implemented-in-xod',
+            },
             in_A: {
-              key: 'in_A',
-              type: 'number',
-              direction: 'input',
+              id: 'in_A',
+              type: 'xod/patch-nodes/input-number',
+              position: {
+                x: 0,
+                y: 0,
+              },
+              label: '',
+              description: '',
             },
             in_B: {
-              key: 'in_B',
-              type: 'string',
-              direction: 'input',
+              id: 'in_B',
+              type: 'xod/patch-nodes/input-string',
+              position: {
+                x: 200,
+                y: 0,
+              },
+              label: '',
+              description: '',
             },
             out: {
-              key: 'out',
-              type: 'boolean',
-              direction: 'output',
+              id: 'out',
+              type: 'xod/patch-nodes/output-boolean',
+              position: {
+                x: 0,
+                y: 300,
+              },
+              label: '',
+              description: '',
             },
           },
+          links: {},
           impls: {
             js: '// ok',
           },
@@ -305,7 +347,10 @@ describe('Transpiler', () => {
               0: {
                 id: '0',
                 type: 'xod/nodes/test',
-                position: { x: 0, y: 0 },
+                position: {
+                  x: 0,
+                  y: 0,
+                },
                 pins: {
                   in_A: {
                     value: 10,
@@ -316,43 +361,82 @@ describe('Transpiler', () => {
               1: {
                 id: '1',
                 type: 'xod/nodes/test',
-                position: { x: 0, y: 0 },
+                position: {
+                  x: 0,
+                  y: 0,
+                },
                 pins: {},
               },
             },
             links: {
               l1: {
                 id: 'l1',
-                input: { nodeId: '1', pinKey: 'in_A' },
-                output: { nodeId: '0', pinKey: 'out' },
+                input: {
+                  nodeId: '1',
+                  pinKey: 'in_A',
+                },
+                output: {
+                  nodeId: '0',
+                  pinKey: 'out',
+                },
               },
               l2: {
                 id: 'l2',
-                input: { nodeId: '1', pinKey: 'in_B' },
-                output: { nodeId: '0', pinKey: 'out' },
+                input: {
+                  nodeId: '1',
+                  pinKey: 'in_B',
+                },
+                output: {
+                  nodeId: '0',
+                  pinKey: 'out',
+                },
               },
             },
           },
           'xod/nodes/test': {
-            nodes: {},
-            links: {},
-            pins: {
+            nodes: {
+              noNativeImpl: {
+                description: '',
+                id: 'noNativeImpl',
+                label: '',
+                position: {
+                  x: 100,
+                  y: 100,
+                },
+                type: 'xod/patch-nodes/not-implemented-in-xod',
+              },
               in_A: {
-                key: 'in_A',
-                type: 'number',
-                direction: 'input',
+                id: 'in_A',
+                type: 'xod/patch-nodes/input-number',
+                position: {
+                  x: 0,
+                  y: 0,
+                },
+                label: '',
+                description: '',
               },
               in_B: {
-                key: 'in_B',
-                type: 'number',
-                direction: 'input',
+                id: 'in_B',
+                type: 'xod/patch-nodes/input-number',
+                position: {
+                  x: 200,
+                  y: 0,
+                },
+                label: '',
+                description: '',
               },
               out: {
-                key: 'out',
-                type: 'number',
-                direction: 'output',
+                id: 'out',
+                type: 'xod/patch-nodes/output-number',
+                position: {
+                  x: 0,
+                  y: 300,
+                },
+                label: '',
+                description: '',
               },
             },
+            links: {},
             impls: {
               js: '// ok',
             },

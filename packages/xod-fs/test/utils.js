@@ -25,10 +25,3 @@ export const numerateFolders = (initialFolders) => {
 
 // :: patches { { folderId: ???, ... } } -> patches { { folderId: '0', ... } }
 export const replaceFolderId = R.map(R.assoc('folderId', '0'));
-
-export const expectEqualToXodball = (packed, xodball, expect) => {
-  expect(packed.meta).to.deep.equal(xodball.meta);
-  expect(replaceFolderId(packed.patches)).to.deep.equal(replaceFolderId(xodball.patches));
-  expect(numerateFolders(packed.folders)).to.deep.equal(numerateFolders(xodball.folders));
-  expect(packed.nodeTypes).to.deep.equal(xodball.nodeTypes);
-};

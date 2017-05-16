@@ -64,7 +64,6 @@ describe('project reducer', () => {
             links: {},
             nodes: {},
             path: '@/main',
-            pins: {},
           },
         ],
         listLocalPatches(newProject),
@@ -156,7 +155,7 @@ describe('project reducer', () => {
     );
 
     it('should add a node', () => {
-      const nodeId = store.dispatch(addNode('xod/core/button', { x: 0, y: 0 }, testPatchPath));
+      const nodeId = store.dispatch(addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, testPatchPath));
 
       const maybeNode = R.compose(
         getNodeById(nodeId),
@@ -167,7 +166,7 @@ describe('project reducer', () => {
       assert.isTrue(Maybe.isJust(maybeNode));
     });
     it('should move a node', () => {
-      const nodeId = store.dispatch(addNode('xod/core/button', { x: 0, y: 0 }, testPatchPath));
+      const nodeId = store.dispatch(addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, testPatchPath));
       const desiredPosition = { x: 111, y: 222 };
       store.dispatch(moveNode(nodeId, desiredPosition));
 
@@ -185,7 +184,7 @@ describe('project reducer', () => {
       );
     });
     it('should update node label', () => {
-      const nodeId = store.dispatch(addNode('xod/core/button', { x: 0, y: 0 }, testPatchPath));
+      const nodeId = store.dispatch(addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, testPatchPath));
       const desiredLabel = 'desired label';
       store.dispatch(updateNodeProperty(nodeId, 'property', 'label', desiredLabel));
 
@@ -203,9 +202,9 @@ describe('project reducer', () => {
       );
     });
     it('should update node\'s pin value ', () => {
-      const nodeId = store.dispatch(addNode('xod/core/pot', { x: 0, y: 0 }, testPatchPath));
-      const pinKey = 'sample';
-      const desiredPinValue = true;
+      const nodeId = store.dispatch(addNode('xod/patch-nodes/output-number', { x: 0, y: 0 }, testPatchPath));
+      const pinKey = '__in__';
+      const desiredPinValue = 42;
       store.dispatch(updateNodeProperty(nodeId, 'pin', pinKey, desiredPinValue));
 
       const maybeNode = R.compose(
@@ -224,7 +223,7 @@ describe('project reducer', () => {
       );
     });
     it('should delete a node', () => {
-      const nodeId = store.dispatch(addNode('xod/core/button', { x: 0, y: 0 }, testPatchPath));
+      const nodeId = store.dispatch(addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, testPatchPath));
       store.dispatch(deleteNode(nodeId));
 
       const maybeNode = R.compose(
@@ -240,23 +239,23 @@ describe('project reducer', () => {
   describe('Link management', () => {
     let store = null;
     let testPatchPath = '';
-    let potNodeId = '';
-    let ledNodeId = '';
+    let inNodeId = '';
+    let outNodeId = '';
 
     beforeEach(
       () => {
         store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
         const addPatchAction = store.dispatch(addPatch('test-patch'));
         testPatchPath = addPatchAction.payload.patchPath;
-        potNodeId = store.dispatch(addNode('xod/core/pot', { x: 100, y: 100 }, testPatchPath));
-        ledNodeId = store.dispatch(addNode('xod/core/led', { x: 500, y: 500 }, testPatchPath));
+        inNodeId = store.dispatch(addNode('xod/patch-nodes/input-number', { x: 100, y: 100 }, testPatchPath));
+        outNodeId = store.dispatch(addNode('xod/patch-nodes/output-number', { x: 500, y: 500 }, testPatchPath));
       }
     );
 
     it('should add a link', () => {
       store.dispatch(addLink(
-        { nodeId: potNodeId, pinKey: 'value' },
-        { nodeId: ledNodeId, pinKey: 'brightness' }
+        { nodeId: inNodeId, pinKey: '__out__' },
+        { nodeId: outNodeId, pinKey: '__in__' }
       ));
 
       const links = R.compose(
@@ -270,8 +269,8 @@ describe('project reducer', () => {
 
     it('should delete a link', () => {
       store.dispatch(addLink(
-        { nodeId: potNodeId, pinKey: 'value' },
-        { nodeId: ledNodeId, pinKey: 'brightness' }
+        { nodeId: inNodeId, pinKey: '__out__' },
+        { nodeId: outNodeId, pinKey: '__in__' }
       ));
 
       const linkId = R.compose(

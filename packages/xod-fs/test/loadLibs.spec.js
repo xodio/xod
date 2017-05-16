@@ -11,7 +11,7 @@ describe('Library loader', () => {
 
   it('should load xod/core libs from ./fixtures/workspace/lib', (done) => {
     const nodeTypes = Object.assign({}, libsFixture);
-    delete nodeTypes['@/sub/qux']; // lib loader don't know anything about patch nodes!
+    delete nodeTypes['@/qux']; // lib loader don't know anything about patch nodes!
 
     loadLibs(['xod/core'], workspace)
       .then((data) => {
@@ -27,7 +27,6 @@ describe('Library loader', () => {
         expect(data).to.have.keys([
           'user/utils/test',
           'xod/core/and',
-          'xod/core/inputNumber',
           'xod/core/led',
           'xod/core/pot',
           'xod/core/test',

@@ -1,0 +1,2179 @@
+{
+  "authors": [
+    "Amperka team"
+  ],
+  "name": "awesome-project",
+  "description": "",
+  "license": "",
+  "patches": {
+    "xod/math/subtrac": {
+      "path": "xod/math/subtrac",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "a": {
+          "id": "a",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "b": {
+          "id": "b",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 100,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a - e.inputs.b) };\n};\n"
+      }
+    },
+    "xod/math/multiply": {
+      "path": "xod/math/multiply",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "a": {
+          "id": "a",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "b": {
+          "id": "b",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 100,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a * e.inputs.b) };\n};\n"
+      }
+    },
+    "xod/math/divide": {
+      "path": "xod/math/divide",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "a": {
+          "id": "a",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "b": {
+          "id": "b",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a / e.inputs.b) };\n};\n"
+      }
+    },
+    "xod/math/add": {
+      "path": "xod/math/add",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "a": {
+          "id": "a",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "b": {
+          "id": "b",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 100,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a + e.inputs.b) };\n};\n"
+      }
+    },
+    "xod/core/valve-number": {
+      "path": "xod/core/valve-number",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "cond": {
+          "id": "cond",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "in": {
+          "id": "in",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.cond) {\n    e.fire({ out: e.inputs.in });\n  }\n};\n"
+      },
+      "label": "valve-number"
+    },
+    "xod/core/triggerable-number": {
+      "path": "xod/core/triggerable-number",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "trigOn": {
+          "id": "trigOn",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "value": {
+          "id": "value",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 200,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.props.value };\n};\n"
+      },
+      "label": "triggerable-number"
+    },
+    "xod/core/ultrasonic-hc-sr04": {
+      "path": "xod/core/ultrasonic-hc-sr04",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "sample": {
+          "id": "sample",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "units": {
+          "id": "units",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "value": {
+          "id": "value",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        },
+        "error": {
+          "id": "error",
+          "type": "xod/patch-nodes/output-string",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "espruino": "\nvar sonic = require('@amperka/ultrasonic');\n\nmodule.exports.setup = function(e) {\n  var pinTrig = new Pin(e.props.pinTrig);\n  var pinEcho = new Pin(e.props.pinEcho);\n  e.context.device = sonic.connect({\n    trigPin: pinTrig,\n    echoPin: pinEcho\n  });\n  e.context.units = e.props.units;\n  e.context.isBusy = false;\n};\n\nmodule.exports.evaluate = function(e) {\n  if (e.context.isBusy) {\n    e.fire({ error: \"busy\" });\n  } else {\n    e.context.isBusy = true;\n    e.context.device.ping(function(err, value) {\n      e.context.isBusy = false;\n      if (err) {\n        e.fire({ error: err.msg });\n      } else {\n        e.fire({ value: value });\n      }\n    }, e.context.units);\n  }\n};\n"
+      },
+      "label": "HC-SR04"
+    },
+    "xod/core/time": {
+      "path": "xod/core/time",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "pulse": {
+          "id": "pulse",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "value": {
+          "id": "value",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "module.exports.evaluate = function(e) {\n  return { value: new Date().getTime() };\n};\n"
+      },
+      "label": "Time"
+    },
+    "xod/core/stdout": {
+      "path": "xod/core/stdout",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "value": {
+          "id": "value",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "nodejs": "module.exports.evaluate = function(e) {\n  var val = String(e.inputs.value);\n  process.stdout.write(val);\n};\n"
+      },
+      "label": "stdout"
+    },
+    "xod/core/split-bool": {
+      "path": "xod/core/split-bool",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "inp": {
+          "id": "inp",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "outTrue": {
+          "id": "outTrue",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        },
+        "outFalse": {
+          "id": "outFalse",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.inp) {\n    return { outTrue: PULSE };\n  } else {\n    return { outFalse: PULSE };\n  }\n};\n"
+      },
+      "label": "Split"
+    },
+    "xod/core/servo": {
+      "path": "xod/core/servo",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "minPulse": {
+          "id": "minPulse",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "maxPulse": {
+          "id": "maxPulse",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "value": {
+          "id": "value",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var minPulse = +e.props.minPulse;\n  var maxPulse = +e.props.maxPulse;\n  var us = minPulse + (maxPulse - minPulse) * e.inputs.value;\n  analogWrite(e.context.pin, us / 20000, { freq: 50 });\n};\n"
+      }
+    },
+    "xod/core/pot": {
+      "path": "xod/core/pot",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "sample": {
+          "id": "sample",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "value": {
+          "id": "value",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  return { value: analogRead(e.context.pin) };\n};\n"
+      }
+    },
+    "xod/core/or": {
+      "path": "xod/core/or",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "a": {
+          "id": "a",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "b": {
+          "id": "b",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a || e.inputs.b };\n};\n"
+      },
+      "label": "or"
+    },
+    "xod/core/not": {
+      "path": "xod/core/not",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "in": {
+          "id": "in",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: !e.inputs.in };\n};\n"
+      },
+      "label": "not"
+    },
+    "xod/core/less": {
+      "path": "xod/core/less",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "a": {
+          "id": "a",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "b": {
+          "id": "b",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n\n  if (a === undefined || b === undefined) {\n    return;\n  }\n\n  return { out: a < b };\n};\n"
+      }
+    },
+    "xod/core/map": {
+      "path": "xod/core/map",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "inp": {
+          "id": "inp",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "inA": {
+          "id": "inA",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "inB": {
+          "id": "inB",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "outA": {
+          "id": "outA",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "outB": {
+          "id": "outB",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "clip": {
+          "id": "clip",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var k = (inputs.inp - inputs.inA) / (inputs.inB - inputs.inA);\n  var out = inputs.outA + k * (inputs.outB - inputs.outA);\n\n  if (inputs.clip) {\n    if (inputs.outB > inputs.outA) {\n      out = Math.max(inputs.outA, out);\n      out = Math.min(inputs.outB, out);\n    } else {\n      out = Math.max(inputs.outB, out);\n      out = Math.min(inputs.outA, out);\n    }\n  }\n\n  return { out: out };\n};\n"
+      }
+    },
+    "xod/core/latch": {
+      "path": "xod/core/latch",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "toggle": {
+          "id": "toggle",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "set": {
+          "id": "set",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "reset": {
+          "id": "reset",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "state": {
+          "id": "state",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
+      }
+    },
+    "xod/core/led": {
+      "path": "xod/core/led",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "brightness": {
+          "id": "brightness",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var b = e.inputs.brightness;\n\n  // Adjust duty cycle as a power function to align brightness\n  // perception by human eye\n  var duty = b * b * b;\n\n  analogWrite(e.context.pin, duty);\n};\n"
+      },
+      "label": "LED"
+    },
+    "xod/core/file-write": {
+      "path": "xod/core/file-write",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "fileName": {
+          "id": "fileName",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "data": {
+          "id": "data",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "onSuccess": {
+          "id": "onSuccess",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        },
+        "onFailure": {
+          "id": "onFailure",
+          "type": "xod/patch-nodes/output-string",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "nodejs": "var path = require('path');\nvar fs = require('fs');\n\nmodule.exports.evaluate = function(e) {\n  var filename = e.inputs.fileName;\n  var data = e.inputs.data;\n\n  fs.writeFile(filename, data, function (err) {\n    if (err) {\n      e.fire({ onFailure: err.toString() });\n      return;\n    }\n\n    e.fire({ onSuccess: PULSE });\n  });\n};\n"
+      },
+      "label": "File write"
+    },
+    "xod/core/greater": {
+      "path": "xod/core/greater",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "a": {
+          "id": "a",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "b": {
+          "id": "b",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n\n  if (a === undefined || b === undefined) {\n    return;\n  }\n\n  return { out: a > b };\n};\n"
+      }
+    },
+    "xod/core/file-read": {
+      "path": "xod/core/file-read",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "fileName": {
+          "id": "fileName",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "pulse": {
+          "id": "pulse",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "data": {
+          "id": "data",
+          "type": "xod/patch-nodes/output-string",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        },
+        "error": {
+          "id": "error",
+          "type": "xod/patch-nodes/output-string",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "nodejs": "var path = require('path');\nvar fs = require('fs');\n\nmodule.exports.evaluate = function(e) {\n  var filename = e.inputs.fileName;\n\n  fs.readFile(filename, function (err, data) {\n    if (err) {\n      e.fire({ error: err.toString() });\n      return;\n    }\n\n    e.fire({ data: data });\n  });\n};\n"
+      },
+      "label": "File read"
+    },
+    "xod/core/digital-output": {
+      "path": "xod/core/digital-output",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "pin": {
+          "id": "pin",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "value": {
+          "id": "value",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
+      }
+    },
+    "xod/core/equal": {
+      "path": "xod/core/equal",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "a": {
+          "id": "a",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "b": {
+          "id": "b",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n\n  if (a === undefined || b === undefined) {\n    return;\n  }\n\n  return { out: a === b };\n};\n"
+      }
+    },
+    "xod/core/digital-input": {
+      "path": "xod/core/digital-input",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "pin": {
+          "id": "pin",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "value": {
+          "id": "value",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.inputs.pin = new Pin(e.inputs.pin);\n\n  setWatch(function(evt) {\n    e.fire({ state: !evt.state });\n  }, e.inputs.pin, {\n    edge: 'both',\n    repeat: true,\n    debounce: 30\n  });\n};\n"
+      }
+    },
+    "xod/core/either": {
+      "path": "xod/core/either",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "inp": {
+          "id": "inp",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "trueValue": {
+          "id": "trueValue",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "falseValue": {
+          "id": "falseValue",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var out = e.inputs.inp ? e.inputs.trueValue : e.inputs.falseValue;\n  return { out: out };\n};\n"
+      }
+    },
+    "xod/core/const-string": {
+      "path": "xod/core/const-string",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "inValue": {
+          "id": "inValue",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "pulse": {
+          "id": "pulse",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "value": {
+          "id": "value",
+          "type": "xod/patch-nodes/output-string",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n"
+      },
+      "label": "<String>"
+    },
+    "xod/core/const-number": {
+      "path": "xod/core/const-number",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "inValue": {
+          "id": "inValue",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "pulse": {
+          "id": "pulse",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "value": {
+          "id": "value",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n"
+      },
+      "label": "<Number>"
+    },
+    "xod/core/concat": {
+      "path": "xod/core/concat",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "a": {
+          "id": "a",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "b": {
+          "id": "b",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "result": {
+          "id": "result",
+          "type": "xod/patch-nodes/output-string",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "module.exports.evaluate = function(e) {\n  return { result: (String(e.inputs.a) + String(e.inputs.b)) };\n};\n"
+      },
+      "label": "concat"
+    },
+    "xod/core/clock": {
+      "path": "xod/core/clock",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "interval": {
+          "id": "interval",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "tick": {
+          "id": "tick",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.context.intervalID) {\n    clearInterval(e.context.intervalID);\n  }\n\n  e.context.intervalID = setInterval(function() {\n    e.fire({ tick: PULSE });\n  }, e.inputs.interval * 1000);\n};\n"
+      }
+    },
+    "xod/core/const-bool": {
+      "path": "xod/core/const-bool",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "inValue": {
+          "id": "inValue",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "pulse": {
+          "id": "pulse",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "value": {
+          "id": "value",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n"
+      },
+      "label": "<Bool>"
+    },
+    "xod/core/compare": {
+      "path": "xod/core/compare",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "a": {
+          "id": "a",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "b": {
+          "id": "b",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "equal": {
+          "id": "equal",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        },
+        "less": {
+          "id": "less",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        },
+        "greater": {
+          "id": "greater",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n  if (a < b) {\n    return { less: PULSE };\n  } else if (a > b) {\n    return { greater: PULSE };\n  } else {\n    return { equal: PULSE };\n  }\n};\n"
+      }
+    },
+    "xod/core/choose": {
+      "path": "xod/core/choose",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "x": {
+          "id": "x",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "truePulse": {
+          "id": "truePulse",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        },
+        "falsePulse": {
+          "id": "falsePulse",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.x) {\n    return { truePulse: PULSE };\n  } else {\n    return { falsePulse: PULSE };\n  }\n};\n"
+      }
+    },
+    "xod/core/cast-string-to-pulse": {
+      "path": "xod/core/cast-string-to-pulse",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "__in__": {
+          "id": "__in__",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "__out__": {
+          "id": "__out__",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (Boolean(e.inputs.__in__) === false) return;\n\n  return { __out__: PULSE };\n};\n"
+      }
+    },
+    "xod/core/cast-string-to-boolean": {
+      "path": "xod/core/cast-string-to-boolean",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "__in__": {
+          "id": "__in__",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "__out__": {
+          "id": "__out__",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Boolean(e.inputs.__in__) };\n};\n"
+      }
+    },
+    "xod/core/cast-number-to-pulse": {
+      "path": "xod/core/cast-number-to-pulse",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "__in__": {
+          "id": "__in__",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "__out__": {
+          "id": "__out__",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (Boolean(e.inputs.__in__) === false) return;\n\n  return { __out__: PULSE };\n};\n"
+      }
+    },
+    "xod/core/cast-number-to-string": {
+      "path": "xod/core/cast-number-to-string",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "__in__": {
+          "id": "__in__",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "__out__": {
+          "id": "__out__",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n"
+      }
+    },
+    "xod/core/cast-pulse-to-number": {
+      "path": "xod/core/cast-pulse-to-number",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "__in__": {
+          "id": "__in__",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "__out__": {
+          "id": "__out__",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: 1 };\n};\n"
+      }
+    },
+    "xod/core/cast-pulse-to-boolean": {
+      "path": "xod/core/cast-pulse-to-boolean",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "__in__": {
+          "id": "__in__",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "__out__": {
+          "id": "__out__",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: true };\n};\n"
+      }
+    },
+    "xod/core/cast-number-to-boolean": {
+      "path": "xod/core/cast-number-to-boolean",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "__in__": {
+          "id": "__in__",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "__out__": {
+          "id": "__out__",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Boolean(e.inputs.__in__) };\n};\n"
+      }
+    },
+    "xod/core/cast-boolean-to-string": {
+      "path": "xod/core/cast-boolean-to-string",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "__in__": {
+          "id": "__in__",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "__out__": {
+          "id": "__out__",
+          "type": "xod/patch-nodes/output-string",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n"
+      }
+    },
+    "xod/core/cast-boolean-to-number": {
+      "path": "xod/core/cast-boolean-to-number",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "__in__": {
+          "id": "__in__",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "__out__": {
+          "id": "__out__",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Number(e.inputs.__in__) };\n};\n"
+      }
+    },
+    "xod/core/button": {
+      "path": "xod/core/button",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "state": {
+          "id": "state",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  var pin = new Pin(e.props.pin);\n\n  setWatch(function(evt) {\n    e.fire({ state: !evt.state });\n  }, pin, {\n    edge: 'both',\n    repeat: true,\n    debounce: 30\n  });\n};\n"
+      }
+    },
+    "xod/core/cast-boolean-to-pulse": {
+      "path": "xod/core/cast-boolean-to-pulse",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "__in__": {
+          "id": "__in__",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "__out__": {
+          "id": "__out__",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.__in__ === false) return;\n  return { __out__: PULSE };\n};\n"
+      }
+    },
+    "xod/core/buzzer": {
+      "path": "xod/core/buzzer",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "freq": {
+          "id": "freq",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var f = e.inputs.freq;\n\n  if (f === 0) {\n    digitalWrite(e.context.pin, false);\n  } else {\n    analogWrite(e.context.pin, 0.5, { freq: f });\n  }\n};\n"
+      },
+      "label": "Buzzer"
+    },
+    "xod/core/both": {
+      "path": "xod/core/both",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "a": {
+          "id": "a",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "b": {
+          "id": "b",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.a && e.inputs.b) {\n    return { out: PULSE };\n  }\n};\n"
+      }
+    },
+    "xod/core/analog_output": {
+      "path": "xod/core/analog_output",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "pin": {
+          "id": "pin",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "value": {
+          "id": "value",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.evaluate = function(e) {\n  analogWrite(e.inputs.pin, e.inputs.value);\n};\n"
+      }
+    },
+    "xod/core/any": {
+      "path": "xod/core/any",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "a": {
+          "id": "a",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "b": {
+          "id": "b",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.a || e.inputs.b) {\n    return { out: PULSE };\n  }\n};\n"
+      }
+    },
+    "xod/core/analog_input": {
+      "path": "xod/core/analog_input",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "pin": {
+          "id": "pin",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "pulse": {
+          "id": "pulse",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "value": {
+          "id": "value",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "espruino": "\nmodule.exports.evaluate = function(e) {\n  if (!e.inputs.pulse) { return; }\n\n  return { value: analogRead(e.inputs.pin) };\n};\n"
+      }
+    },
+    "xod/core/and": {
+      "path": "xod/core/and",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "a": {
+          "id": "a",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "b": {
+          "id": "b",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "out": {
+          "id": "out",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 0,
+            "y": 300
+          }
+        }
+      },
+      "links": {},
+      "impls": {
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a && e.inputs.b };\n};\n"
+      },
+      "label": "and"
+    },
+    "@/led": {
+      "path": "@/led",
+      "nodes": {
+        "ryFxRcNdKg": {
+          "id": "ryFxRcNdKg",
+          "type": "xod/core/digital-output",
+          "position": {
+            "x": 305,
+            "y": 430
+          },
+          "pins": {
+            "pin": {
+              "curried": false
+            }
+          }
+        },
+        "S1ulA9NuFx": {
+          "id": "S1ulA9NuFx",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 172,
+            "y": 104
+          },
+          "pins": {}
+        },
+        "B1wg0qVOtg": {
+          "id": "B1wg0qVOtg",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 418,
+            "y": 104
+          },
+          "pins": {}
+        },
+        "rJUgCqNuKl": {
+          "id": "rJUgCqNuKl",
+          "type": "xod/math/multiply",
+          "position": {
+            "x": 453,
+            "y": 298
+          },
+          "pins": {}
+        },
+        "HkSgA94OYx": {
+          "id": "HkSgA94OYx",
+          "type": "xod/math/multiply",
+          "position": {
+            "x": 354,
+            "y": 218
+          },
+          "pins": {}
+        }
+      },
+      "links": {
+        "Sy0eCq4dtl": {
+          "id": "Sy0eCq4dtl",
+          "output": {
+            "nodeId": "B1wg0qVOtg",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "HkSgA94OYx",
+            "pinKey": "a"
+          }
+        },
+        "Hykgx054dFx": {
+          "id": "Hykgx054dFx",
+          "output": {
+            "nodeId": "B1wg0qVOtg",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "rJUgCqNuKl",
+            "pinKey": "b"
+          }
+        },
+        "SklgeRc4uKl": {
+          "id": "SklgeRc4uKl",
+          "output": {
+            "nodeId": "HkSgA94OYx",
+            "pinKey": "out"
+          },
+          "input": {
+            "nodeId": "rJUgCqNuKl",
+            "pinKey": "a"
+          }
+        },
+        "By-xeR5V_tx": {
+          "id": "By-xeR5V_tx",
+          "output": {
+            "nodeId": "rJUgCqNuKl",
+            "pinKey": "out"
+          },
+          "input": {
+            "nodeId": "ryFxRcNdKg",
+            "pinKey": "value"
+          }
+        },
+        "BkMgl09VuYe": {
+          "id": "BkMgl09VuYe",
+          "output": {
+            "nodeId": "S1ulA9NuFx",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "ryFxRcNdKg",
+            "pinKey": "pin"
+          }
+        },
+        "rymee0cE_Yx": {
+          "id": "rymee0cE_Yx",
+          "output": {
+            "nodeId": "B1wg0qVOtg",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "HkSgA94OYx",
+            "pinKey": "b"
+          }
+        }
+      },
+      "impls": {},
+      "label": "Led"
+    },
+    "@/main": {
+      "path": "@/main",
+      "nodes": {
+        "BJ4l0cVdKe": {
+          "id": "BJ4l0cVdKe",
+          "type": "@/led",
+          "position": {
+            "x": 237,
+            "y": 349
+          },
+          "pins": {
+            "S1ulA9NuFx": {
+              "curried": true,
+              "value": "LED1"
+            }
+          }
+        },
+        "SJ7g05EdFe": {
+          "id": "SJ7g05EdFe",
+          "type": "@/blink",
+          "position": {
+            "x": 238,
+            "y": 184
+          },
+          "pins": {
+            "B1eR5EOYg": {
+              "curried": true,
+              "value": 1
+            }
+          }
+        }
+      },
+      "links": {
+        "rk6l094Otl": {
+          "id": "rk6l094Otl",
+          "output": {
+            "nodeId": "SJ7g05EdFe",
+            "pinKey": "BJGgAcVOtx"
+          },
+          "input": {
+            "nodeId": "BJ4l0cVdKe",
+            "pinKey": "B1wg0qVOtg"
+          }
+        }
+      },
+      "impls": {},
+      "label": "Main"
+    },
+    "@/blink": {
+      "path": "@/blink",
+      "nodes": {
+        "BJGgAcVOtx": {
+          "id": "BJGgAcVOtx",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 263,
+            "y": 508
+          },
+          "pins": {}
+        },
+        "rJWgAqVOtx": {
+          "id": "rJWgAqVOtx",
+          "type": "xod/core/latch",
+          "position": {
+            "x": 271,
+            "y": 355
+          },
+          "pins": {}
+        },
+        "rJxgAqV_tl": {
+          "id": "rJxgAqV_tl",
+          "type": "xod/core/clock",
+          "position": {
+            "x": 267,
+            "y": 215
+          },
+          "pins": {
+            "interval": {
+              "curried": false,
+              "value": 1
+            }
+          }
+        },
+        "B1eR5EOYg": {
+          "id": "B1eR5EOYg",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 268,
+            "y": 103
+          },
+          "pins": {}
+        }
+      },
+      "links": {
+        "H15x05VuYg": {
+          "id": "H15x05VuYg",
+          "output": {
+            "nodeId": "rJWgAqVOtx",
+            "pinKey": "state"
+          },
+          "input": {
+            "nodeId": "BJGgAcVOtx",
+            "pinKey": "__in__"
+          }
+        },
+        "SkoxR5NOFl": {
+          "id": "SkoxR5NOFl",
+          "output": {
+            "nodeId": "B1eR5EOYg",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "rJxgAqV_tl",
+            "pinKey": "interval"
+          }
+        },
+        "H13l0qVOtg": {
+          "id": "H13l0qVOtg",
+          "output": {
+            "nodeId": "rJxgAqV_tl",
+            "pinKey": "tick"
+          },
+          "input": {
+            "nodeId": "rJWgAqVOtx",
+            "pinKey": "toggle"
+          }
+        }
+      },
+      "impls": {},
+      "label": "Blink"
+    }
+  }
+}

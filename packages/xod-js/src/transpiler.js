@@ -304,7 +304,7 @@ const validateTranspileOpts = (opts) => {
 
 /**
  * This function accepts an object with options for transpilation.
- * - project -- a project (v2)
+ * - project -- a project
  * - path -- a string of entry-point patch path
  * - impls -- an array of strings of target platforms (e.g., ['js', 'nodejs'])
  * - launcher -- a platform-specific launcher

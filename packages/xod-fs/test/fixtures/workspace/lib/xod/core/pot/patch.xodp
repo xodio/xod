@@ -1,0 +1,37 @@
+{
+  "label": "pot",
+  "description": "",
+  "links": {},
+  "nodes": {
+    "noNativeImpl": {
+      "label": "",
+      "description": "",
+      "pins": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    "sample": {
+      "label": "",
+      "description": "Sample current value",
+      "pins": {},
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    "value": {
+      "label": "",
+      "description": "Sampled potentiometer value",
+      "pins": {},
+      "position": {
+        "x": 0,
+        "y": 300
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  }
+}

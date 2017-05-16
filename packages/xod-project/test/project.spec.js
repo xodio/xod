@@ -1,12 +1,14 @@
 import R from 'ramda';
-import chai, { expect } from 'chai';
+import chai, { expect, assert } from 'chai';
 import dirtyChai from 'dirty-chai';
 
 import * as CONST from '../src/constants';
 import * as Node from '../src/node';
+import * as Pin from '../src/pin';
 import * as Patch from '../src/patch';
 import * as Project from '../src/project';
 import { formatString } from '../src/utils';
+import { BUILT_IN_PATCH_PATHS } from '../src/builtInPatches';
 
 import * as Helper from './helpers';
 
@@ -126,75 +128,18 @@ describe('Project', () => {
       expect(patch).to.be.deep.equal(project.patches['@/one']);
     });
   });
-  describe('lsPatches', () => {
-    const project = Helper.defaultizeProject({
-      patches: {
-        '@/folder/patch': {},
-        '@/folder/patch2': {},
-        '@/folder/subfolder/patch3': {},
-        '@/folder2/patch4': {},
-        '@/patch5': {},
-      },
-    });
-
-    it('should return an object with patches', () => {
-      expect(Project.lsPatches('@/', project))
-        .to.be.an('object');
-      expect(Project.lsPatches('@', project))
-        .to.be.an('object');
-    });
-    it('should return only patches in the specified path', () => {
-      expect(Project.lsPatches('@/folder', project))
-        .to.be.an('object')
-        .that.have.all.keys([
-          '@/folder/patch',
-          '@/folder/patch2',
-        ]);
-    });
-  });
-  describe('lsDirs', () => {
-    const project = Helper.defaultizeProject({
-      patches: {
-        '@/folder/patch': {},
-        '@/folder/subfolder/patch3': {},
-        '@/folder2/patch4': {},
-        '@/patch5': {},
-      },
-    });
-
-    it('should return a list of strings', () => {
-      expect(Project.lsDirs('@/', project))
-        .to.be.instanceof(Array);
-      expect(Project.lsDirs('@', project))
-      .to.be.instanceof(Array);
-    });
-    it('should return only dirs in the specified path', () => {
-      expect(Project.lsDirs('@/folder', project))
-        .to.be.instanceof(Array)
-        .that.have.members([
-          'subfolder',
-        ]);
-    });
-    it('should return only unique dirs', () => {
-      expect(Project.lsDirs('@', project))
-        .to.be.instanceof(Array)
-        .that.have.members([
-          'folder',
-          'folder2',
-        ]);
-    });
-  });
   describe('getNodePin', () => {
-    const pin = Helper.defaultizePin({ type: CONST.PIN_TYPE.NUMBER });
     const project = Helper.defaultizeProject({
       patches: {
         'xod/core/test': {
-          pins: {
-            a: pin,
+          nodes: {
+            a: { id: 'a', type: 'xod/patch-nodes/input-number' },
           },
         },
       },
     });
+
+    const expectedPin = Pin.createPin('a', 'number', 'input', 0, '');
 
     it('should return Nothing for unexisting patch', () => {
       const maybe = Project.getNodePin('test', Helper.defaultizeNode({ type: 'test/unexisting/patch' }), emptyProject);
@@ -207,12 +152,25 @@ describe('Project', () => {
     it('should return Just<Pin> for existing pin', () => {
       const maybe = Project.getNodePin('a', Helper.defaultizeNode({ type: 'xod/core/test' }), project);
       expect(maybe.isJust).to.be.true();
-      expect(R.unnest(maybe)).to.be.deep.equal(pin);
+      expect(R.unnest(maybe)).to.be.deep.equal(expectedPin);
     });
   });
 
   // validations
   describe('validatePatchRebase', () => {
+    it('should return Either.Left if we try to rebase a built-in patch', () => {
+      const project = Helper.defaultizeProject({
+        patches: { '@/test': {}, '@/patch': {} },
+      });
+      const newProject = Project.validatePatchRebase(
+        'my/own/input-boolean',
+        'xod/patch-nodes/input-boolean',
+        project
+      );
+
+      expect(newProject.isLeft).to.be.true();
+      Helper.expectErrorMessage(expect, newProject, CONST.ERROR.PATCH_REBASING_BUILT_IN);
+    });
     it('should return Either.Left if patch is not in the project', () => {
       const newProject = Project.validatePatchRebase('@/test', '@/patch', emptyProject);
 
@@ -252,9 +210,9 @@ describe('Project', () => {
     const fullProject = Helper.defaultizeProject({
       patches: {
         '@/test': {
-          pins: {
-            in: { key: 'in' },
-            out: { key: 'out' },
+          nodes: {
+            in: { id: 'in', type: 'xod/patch-nodes/input-number' },
+            out: { id: 'out', type: 'xod/patch-nodes/output-number' },
           },
         },
       },
@@ -483,26 +441,48 @@ describe('Project', () => {
     });
 
     describe('listPatches', () => {
-      it('should return empty array for empty project', () => {
-        expect(Project.listPatches(emptyProject))
-          .to.be.instanceof(Array)
-          .and.to.be.empty();
+      it('should return built-in patches for empty project', () => {
+        assert.sameMembers(
+          R.values(Project.BUILT_IN_PATCHES),
+          Project.listPatches(emptyProject)
+        );
       });
-      it('should return array with two patches', () => {
+      it('should return array with patches', () => {
         expect(Project.listPatches(project))
+          .to.be.instanceof(Array)
+          .and.have.lengthOf(2 + R.length(BUILT_IN_PATCH_PATHS));
+      });
+    });
+    describe('listPatchesWithoutBuiltIns', () => {
+      it('should return empty array for empty project', () => {
+        assert.deepEqual(
+          [],
+          Project.listPatchesWithoutBuiltIns(emptyProject)
+        );
+      });
+      it('should return array with patches for non-empty project', () => {
+        expect(Project.listPatchesWithoutBuiltIns(project))
           .to.be.instanceof(Array)
           .and.have.lengthOf(2);
       });
     });
     describe('listPatchPaths', () => {
-      it('should return empty array for empty project', () => {
-        expect(Project.listPatchPaths(emptyProject))
-          .to.be.instanceof(Array)
-          .and.to.be.empty();
+      it('should return array of built-in patch paths for empty project', () => {
+        assert.sameMembers(
+          BUILT_IN_PATCH_PATHS,
+          Project.listPatchPaths(emptyProject)
+        );
       });
       it('should return array with two keys', () => {
-        expect(Project.listPatchPaths(project))
-          .to.be.deep.equal(['@/test', 'some/external/patch']);
+        const expected = R.concat(
+          ['@/test', 'some/external/patch'],
+          BUILT_IN_PATCH_PATHS
+        );
+
+        assert.sameMembers(
+          expected,
+          Project.listPatchPaths(project)
+        );
       });
     });
     describe('listLocalPatches', () => {
@@ -518,15 +498,22 @@ describe('Project', () => {
       });
     });
     describe('listLibraryPatches', () => {
-      it('should return empty array for empty project', () => {
-        expect(Project.listLibraryPatches(emptyProject))
-          .to.be.instanceof(Array)
-          .and.to.be.empty();
+      it('should return built-in patches for empty project', () => {
+        assert.sameMembers(
+          R.values(Project.BUILT_IN_PATCHES),
+          Project.listLibraryPatches(emptyProject)
+        );
       });
-      it('should return array with one pin', () => {
-        expect(Project.listLibraryPatches(project))
-          .to.be.instanceof(Array)
-          .and.have.all.members([project.patches['some/external/patch']]);
+      it('should return array with one patch', () => {
+        const expected = R.concat(
+          [project.patches['some/external/patch']],
+          R.values(Project.BUILT_IN_PATCHES)
+        );
+
+        assert.sameMembers(
+          expected,
+          Project.listLibraryPatches(project)
+        );
       });
     });
   });

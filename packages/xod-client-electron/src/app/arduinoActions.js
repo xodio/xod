@@ -161,7 +161,7 @@ export const getPort = () => xab.listPorts()
  */
 export const doTranspileForArduino = ({ project, patchPath }) =>
   Promise.resolve(project)
-    .then(v2 => transpileForArduino(v2, patchPath))
+    .then(p => transpileForArduino(p, patchPath))
     .then(foldEither(
       rejectWithCode(ERROR_CODES.TRANSPILE_ERROR),
       code => Promise.resolve(code)

@@ -102,6 +102,7 @@ export const defaultizeNode = R.merge({
   position: { x: 0, y: 0 },
   type: '@/default-type',
   label: '',
+  pins: {}, // TODO: curriedPins
 });
 
 export const defaultizePin = R.merge({
@@ -119,13 +120,11 @@ export const defaultizePatch = R.compose(
     nodes: R.map(defaultizeNode),
     links: R.map(defaultizeLink),
     impls: R.identity,
-    pins: R.map(defaultizePin),
   }),
   R.merge({
     nodes: {},
     links: {},
     impls: {},
-    pins: {},
     path: '@/default-patch-path',
   })
 );

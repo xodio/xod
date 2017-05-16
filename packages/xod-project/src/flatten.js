@@ -9,8 +9,9 @@ import * as Patch from './patch';
 import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
-import { getCastPatchPath, formatString } from './utils';
+import { formatString } from './utils';
 import { err, errOnNothing } from './func-tools';
+import * as PatchPathUtils from './patchPathUtils';
 
 // =============================================================================
 //
@@ -53,24 +54,9 @@ LinkWrapper.prototype.get = baseGet;
 //
 // =============================================================================
 
-const terminalRegExp = /^xod\/core\/(input|output)-/;
-// :: String -> Pin[]
-const getTerminalPins = type => ([
-  Pin.createPin('__in__', type, CONST.PIN_DIRECTION.INPUT, 0),
-  Pin.createPin('__out__', type, CONST.PIN_DIRECTION.OUTPUT, 0),
-]);
-// :: String -> String
-const getTerminalType = type => `xod/internal/terminal-${type}`;
-// :: String -> String
-const convertTerminalPath = R.compose(
-  getTerminalType,
-  R.replace(terminalRegExp, '')
-);
-// :: PatchPath -> Boolean
-const isTerminalNodeType = R.test(/^xod\/internal\/terminal-/);
 // :: Node[] -> Node[]
-const filterTerminalNodes = R.filter(R.compose(
-  isTerminalNodeType,
+const filterInternalTerminalNodes = R.filter(R.compose(
+  PatchPathUtils.isInternalTerminalNodeType,
   Node.getNodeType
 ));
 // :: Node[] -> Link[] -> Link[]
@@ -96,37 +82,34 @@ const getPatchByPath = R.curry((project, nodeType) => R.compose(
 )(nodeType));
 
 // :: String[] -> Patch -> Boolean
-const isLeafPatchWithImpls = impls => R.either(
+const isLeafPatchWithImplsOrTerminal = impls => R.anyPass([
   Patch.hasImpls(impls),
-  Patch.isTerminalPatch
-);
+  Patch.isTerminalPatch,
+  R.pipe(Patch.getPatchPath, R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH)),
+]);
 
 // :: String[] -> Patch -> Boolean
 const isLeafPatchWithoutImpls = impls => R.both(
   R.complement(Patch.hasImpls(impls)),
   R.compose(
-    R.equals(0),
-    R.length,
+    R.contains(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
+    R.map(Node.getNodeType),
     Patch.listNodes
   )
 );
 
-// :: Patch -> Path -> Either.Right [Path, Patch]
-const extendTerminalPins = R.curry((patch, path) => R.ifElse(
-  Patch.isTerminalPatch,
-  R.compose(
-    R.concat([convertTerminalPath(path)]),
-    R.of,
-    f => f(patch), // TODO: make more DRY
-    R.apply(R.compose),
-    R.map(Patch.assocPin),
-    getTerminalPins,
-    Pin.getPinType,
-    R.head,
-    Patch.listPins
-  ),
-  R.always([path, patch])
-)(patch));
+// :: [Path, Patch] -> [Path, Patch]
+const extendTerminalPins = R.curry(([path, patch]) => {
+  if (!Patch.isTerminalPatch(patch)) {
+    return [path, patch];
+  }
+
+  const internalTerminalPath = PatchPathUtils.convertToInternalTerminalPath(path);
+  return [
+    internalTerminalPath,
+    Patch.setPatchPath(internalTerminalPath, Patch.createPatch()),
+  ];
+});
 
 // :: Function extractLeafPatches -> String[] -> Project -> Node -> [Path, Patch, ...]
 const extractLeafPatchRecursive = R.curry((recursiveFn, impls, project, node) => R.compose(
@@ -149,8 +132,8 @@ const extractLeafPatchesFromNodes = R.curry((recursiveFn, impls, project, patch)
 const extractLeafPatches = R.curry((impls, project, path, patch) =>
   R.cond([
     [
-      isLeafPatchWithImpls(impls),
-      R.compose(R.of, Either.of, extendTerminalPins(R.__, path)),
+      isLeafPatchWithImplsOrTerminal(impls),
+      R.compose(R.of, Either.of, leafPatch => ([path, leafPatch])),
     ],
     [
       isLeafPatchWithoutImpls(impls),
@@ -173,7 +156,7 @@ const getNodeById = R.curry((patch, node) => R.compose(
 const isLeafNode = R.curry((leafPatchPaths, node) => R.compose(
   R.either(
     R.contains(R.__, leafPatchPaths),
-    R.test(terminalRegExp)
+    PatchPathUtils.isTerminalPatchPath
   ),
   Node.getNodeType
 )(node));
@@ -216,10 +199,11 @@ const getPinType = R.curry((patchTuples, nodes, idGetter, keyGetter, link) =>
  * @param {Array<Array<Path, Patch>>} patchTuples
  * @param {Array<Node>} nodes
  * @param {Link} link
- * @returns {Node}
+ * @returns {Maybe<Node>}
  */
+// :: [[Path, Patch]] -> [Node] -> Link -> Maybe Node
 const createCastNode = R.curry((patchTuples, nodes, link) => R.compose(
-  R.chain(type => ({
+  R.map(type => ({
     id: `${Link.getLinkOutputNodeId(link)}-to-${Link.getLinkInputNodeId(link)}`,
     position: { x: 0, y: 0 },
     type,
@@ -229,7 +213,7 @@ const createCastNode = R.curry((patchTuples, nodes, link) => R.compose(
     R.ifElse(
       R.equals,
       Maybe.Nothing,
-      R.compose(Maybe.of, getCastPatchPath)
+      R.compose(Maybe.of, PatchPathUtils.getCastPatchPath)
     ),
     [
       getPinType(patchTuples, nodes, Link.getLinkOutputNodeId, Link.getLinkOutputPinKey),
@@ -252,28 +236,38 @@ const createCastNode = R.curry((patchTuples, nodes, link) => R.compose(
  * @param {Link} link
  * @returns {Array<Node|Null, Array<Link>>}
  */
-const splitLinkWithCastNode = R.curry((patchTuples, nodes, link) => {
-  const castNode = createCastNode(patchTuples, nodes, link);
+const splitLinkWithCastNode = R.curry((patchTuples, nodes, link) =>
+  Maybe.maybe(
+    [null, [link]],
+    (castNode) => {
+      const origLinkId = Link.getLinkId(link);
+      const fromNodeId = Link.getLinkOutputNodeId(link);
+      const fromPinKey = Link.getLinkOutputPinKey(link);
+      const toNodeId = Link.getLinkInputNodeId(link);
+      const toPinKey = Link.getLinkInputPinKey(link);
 
-  if (Maybe.isNothing(castNode)) {
-    return [null, [link]];
-  }
+      const toCastNode = R.assoc('id', `${origLinkId}-to-cast`,
+        Link.createLink(
+          CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.INPUT],
+          castNode.id,
+          fromPinKey,
+          fromNodeId
+        )
+      );
+      const fromCastNode = R.assoc('id', `${origLinkId}-from-cast`,
+        Link.createLink(
+          toPinKey,
+          toNodeId,
+          CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.OUTPUT],
+          castNode.id
+        )
+      );
 
-  const origLinkId = Link.getLinkId(link);
-  const fromNodeId = Link.getLinkOutputNodeId(link);
-  const fromPinKey = Link.getLinkOutputPinKey(link);
-  const toNodeId = Link.getLinkInputNodeId(link);
-  const toPinKey = Link.getLinkInputPinKey(link);
-
-  const toCastNode = R.assoc('id', `${origLinkId}-to-cast`,
-    Link.createLink('__in__', castNode.id, fromPinKey, fromNodeId)
-  );
-  const fromCastNode = R.assoc('id', `${origLinkId}-from-cast`,
-    Link.createLink(toPinKey, toNodeId, '__out__', castNode.id)
-  );
-
-  return [castNode, [toCastNode, fromCastNode]];
-});
+      return [castNode, [toCastNode, fromCastNode]];
+    },
+    createCastNode(patchTuples, nodes, link)
+  )
+);
 
 // :: String -> Link[] -> Link[]
 const filterOutputLinksByNodeId = R.curry((nodeId, links) => R.filter(
@@ -317,7 +311,7 @@ const rekeyPinUsingLink = R.curry((link, pin) => {
 
 // :: Pin -> Nodes -> Link -> Node
 const assocInjectedPinToNodeByLink = R.curry((pin, nodes, link) => R.compose(
-    R.assoc('pins', rekeyPinUsingLink(link, pin)),
+    R.assoc('pins', rekeyPinUsingLink(link, pin)), // TODO: curriedPins
     findNodeByNodeId(R.__, nodes),
     Link.getLinkInputNodeId
   )(link)
@@ -327,7 +321,7 @@ const assocInjectedPinToNodeByLink = R.curry((pin, nodes, link) => R.compose(
 const passPinsFromTerminalNodes = R.curry((nodes, terminalLinks, terminalNodes) =>
   R.map(terminalNode =>
     R.compose(
-      R.map(assocInjectedPinToNodeByLink(terminalNode.pins, nodes)),
+      R.map(assocInjectedPinToNodeByLink(terminalNode.pins, nodes)), // TODO: curriedPins
       filterOutputLinksByNodeId(R.__, terminalLinks),
       Node.getNodeId
     )(terminalNode),
@@ -338,10 +332,13 @@ const passPinsFromTerminalNodes = R.curry((nodes, terminalLinks, terminalNodes) 
 // TODO: Refactoring needed
 // :: [ Node[], Link[] ] -> [ Node[], Link[] ]
 const removeTerminalsAndPassPins = ([nodes, links]) => {
-  const terminalNodes = filterTerminalNodes(nodes);
+  const terminalNodes = filterInternalTerminalNodes(nodes);
   const terminalLinks = filterTerminalLinks(terminalNodes, links);
 
-  const terminalNodesWithPins = R.filter(R.has('pins'), terminalNodes);
+  const terminalNodesWithPins = R.reject(
+    R.pipe(R.prop('pins'), R.isEmpty),
+    terminalNodes
+  ); // TODO: curriedPins
   const nodesWithPins = R.compose(
     R.flatten,
     passPinsFromTerminalNodes(nodes, R.flatten(terminalLinks))
@@ -436,7 +433,6 @@ const removeTerminalsAndPassPins = ([nodes, links]) => {
     }),
     R.filter(R.compose(R.gt(R.__, 1), R.length))
   )(terminalLinks);
-
   return [newNodes, newLinks];
 };
 
@@ -465,13 +461,9 @@ const createCastNodes = R.curry((patchTuples, nodes, links) => R.compose(
   R.map(splitLinkWithCastNode(patchTuples, nodes))
 )(links));
 
-const castTypeRegExp = /^xod\/core\/cast-([a-zA-Z]+)-to-([a-zA-Z]+)$/;
-// :: String -> Boolean
-const testCastType = R.test(castTypeRegExp);
-
 // :: Patch -> String[]
 const getCastNodeTypesFromPatch = R.compose(
-  R.filter(testCastType),
+  R.filter(PatchPathUtils.isCastPatchPath),
   R.map(Node.getNodeType),
   Patch.listNodes
 );
@@ -495,7 +487,12 @@ const addCastPatches = R.curry((project, castTypes, leafPatches) => R.compose(
 
 // :: [[Path, Patch]] -> [[Path, Patch]]
 const removeTerminalPatches = R.reject(R.compose(
-  isTerminalNodeType,
+  PatchPathUtils.isInternalTerminalNodeType,
+  R.prop(0)
+));
+
+const removeNotImplementedInXodNodes = R.reject(R.compose(
+  R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
   R.prop(0)
 ));
 
@@ -510,11 +507,12 @@ const updateLinkNodeIds = R.curry((leafPaths, prefix, patch, link) => {
     isLeafNode(leafPaths),
     getNodeById(patch)
   )(inputNodeId);
+  // TODO: and here is why switching to labels as pin keys will be a bit of a pain
   const newInputNodeId = (isInputLeafNode) ?
     getPrefixedId(prefix, inputNodeId) :
     getPrefixedId(prefix, getPrefixedId(inputNodeId, inputPinKey));
   const newInputPinKey = (isInputLeafNode) ?
-    inputPinKey : '__in__';
+    inputPinKey : CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.INPUT];
 
   const outputNodeId = Link.getLinkOutputNodeId(link);
   const outputPinKey = Link.getLinkOutputPinKey(link);
@@ -527,7 +525,7 @@ const updateLinkNodeIds = R.curry((leafPaths, prefix, patch, link) => {
     getPrefixedId(prefix, outputNodeId) :
     getPrefixedId(prefix, getPrefixedId(outputNodeId, outputPinKey));
   const newOutputPinKey = (isOutputLeafNode) ?
-    outputPinKey : '__out__';
+    outputPinKey : CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.OUTPUT];
 
   return R.compose(
     R.assoc('id', getPrefixedId(prefix, Link.getLinkId(link))),
@@ -550,20 +548,21 @@ const updateLinkNodeIds = R.curry((leafPaths, prefix, patch, link) => {
 
 
 // :: NodePins -> Node -> NodePins
-const rekeyPins = R.curry((pins, node) => {
+const rekeyCurriedPins = R.curry((curriedPins, node) => { // TODO: better name?
   const nodeId = Node.getNodeId(node);
   const isTerminalNode = R.compose(
-    R.test(terminalRegExp),
+    PatchPathUtils.isTerminalPatchPath,
     Node.getNodeType
   )(node);
 
-  if (isTerminalNode && R.has(nodeId, pins)) {
+  if (isTerminalNode && R.has(nodeId, curriedPins)) {
     return R.applySpec({
-      __in__: R.prop(nodeId),
-    })(pins);
+      [CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.INPUT]]: R.prop(nodeId),
+      // TODO: no `__out__` because we can't "curry" output values?
+    })(curriedPins);
   }
 
-  return R.propOr({}, 'pins', node);
+  return R.propOr({}, 'pins', node); // TODO: curriedPins. TODO: use designated function to access?
 });
 
 /**
@@ -582,12 +581,12 @@ const rekeyPins = R.curry((pins, node) => {
  * @param {Project} project The original project
  * @param {Array<Path>} leafPatchesPaths Paths to leaf patches
  * @param {String|null} prefix Prefixed parent nodeId (prefixed) or null (for entry-point patch)
- * @param {Array<NodePin>} pins Pins data from parent node or empty object
+ * @param {Array<NodePin>} curriedPins Pins data from parent node or empty object
  * @param {Patch} patch The patch from which should be extracted nodes and links
  * @returns {Array<Array<NodeWrapper>, Array<LinkWrapper>>}
  */
 // :: Project -> leafPatchesPaths -> String -> NodePins -> Patch -> [NodeWrapper[], LinkWrapper[]]
-export const extractPatches = R.curry((project, leafPaths, prefix, pins, patch) => {
+export const extractPatches = R.curry((project, leafPaths, prefix, curriedPins, patch) => {
   // 1. extractPatches recursively from nodes and wrap with NodeWrapper leafNodes
   const nodes = R.compose(
     R.map(
@@ -601,21 +600,27 @@ export const extractPatches = R.curry((project, leafPaths, prefix, pins, patch) 
           R.over(
             R.lensProp('type'),
             R.when(
-              R.test(terminalRegExp),
-              convertTerminalPath
+              PatchPathUtils.isTerminalPatchPath,
+              PatchPathUtils.convertToInternalTerminalPath
             )
           ),
           // 1.1. Copy and rekey pins from parent node
-          node => R.assoc('pins', rekeyPins(pins, node), node)
+          node => R.assoc('pins', rekeyCurriedPins(curriedPins, node), node) // TODO: curriedPins
         ),
         R.converge(
           extractPatches(project, leafPaths),
           [
             R.compose(getPrefixedId(prefix), Node.getNodeId),
-            R.propOr({}, 'pins'),
+            R.propOr({}, 'pins'), // TODO: curriedPins
             R.compose(getPatchByPath(project), Node.getNodeType),
           ]
         )
+      )
+    ),
+    R.reject(
+      R.compose(
+        R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
+        Node.getNodeType
       )
     ),
     Patch.listNodes
@@ -709,6 +714,7 @@ const convertProject = R.curry((project, path, impls, patch, leafPatches) => {
     R.map(R.compose(
       R.map(R.apply(Project.assocPatch)),
       R.append([path, convertedPatch]),
+      removeNotImplementedInXodNodes,
       removeTerminalPatches
     )),
     R.sequence(Either.of),
@@ -717,7 +723,7 @@ const convertProject = R.curry((project, path, impls, patch, leafPatches) => {
 });
 
 //
-// It representing a first step of flattening.
+// It represents a first step of flattening.
 // (see flatten docs (1))
 // And then passing leafPatches into convertProject function, which represents estimated steps.
 //
@@ -733,18 +739,22 @@ const convertProject = R.curry((project, path, impls, patch, leafPatches) => {
  * @private
  * @function flattenProject
  * @param {Project} project
- * @param {String} path
- * @param {Array<String>} impls
- * @param {Patch} patch
+ * @param {String} path - Path to entry-point patch
+ * @param {Array<String>} impls - A list of target implementations
+ * @param {Patch} patch - Entry-point patch
  * @returns {Either<Error|Project>}
  */
 // :: Project -> Path -> String[] -> Patch -> Either Error Project
 const flattenProject = R.curry((project, path, impls, patch) =>
   R.compose(
     R.chain(convertProject(project, path, impls, patch)),
+    // TODO: extract preparing leaf patches into a separate function?
+    // end preparing leaf patches list
+    R.map(R.map(extendTerminalPins)),
     R.map(filterTuplesByUniqPaths),
     R.sequence(Either.of),
     extractLeafPatches(impls, project, path)
+    // start preparing leaf patches list
   )(patch)
 );
 
@@ -759,15 +769,15 @@ const flattenProject = R.curry((project, path, impls, patch) =>
  *
  * **How we do it?**
  * Before begin to flatten, we're check passed project for validity
- * and check for existance of entry-point patch.
+ * and check for existence of entry-point patch.
  *
  * Then we start flattening from entry-point patch (second argument of function),
  * so as a result we'll get only used patches.
  *
  * 1. Get all patches with defined implementations or terminal patches.
- *    And name them "leaf patches". We will reference to them later.
+ *    And name them "leaf patches". We will reference them later.
  *    Terminal nodes are replaced with a new temporary type "xod/internal/terminal-%TYPE%"
- *    (e.g. xod/core/input-bool becomes xod/internal/terminal-bool).
+ *    (e.g. xod/patch-nodes/input-boolean becomes xod/internal/terminal-boolean).
  *    They get two pins: `__in__` and `__out__`.
  *
  * 2. Convert entry-point patch into a new patch:

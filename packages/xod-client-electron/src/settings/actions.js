@@ -1,3 +1,4 @@
+import R from 'ramda';
 import { openWorkspace } from 'xod-client';
 
 import {
@@ -19,7 +20,7 @@ export const checkWorkspace = createAsyncAction({
   silent: true,
   onComplete: (data, dispatch) => {
     if (data.valid && data.libs) {
-      dispatch(openWorkspace(data.libs));
+      dispatch(openWorkspace(R.values(data.libs)));
       return;
     }
 
@@ -42,7 +43,7 @@ export const changeWorkspace = createAsyncAction({
   silent: true,
   onComplete: (data, dispatch) => {
     dispatch(setWorkspace(data.path));
-    dispatch(openWorkspace(data.libs));
+    dispatch(openWorkspace(R.values(data.libs)));
   },
   onError: (data, dispatch) => {
     // ask again

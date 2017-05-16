@@ -1,0 +1,47 @@
+{
+  "label": "and",
+  "description": "",
+  "links": {},
+  "nodes": {
+    "noNativeImpl": {
+      "label": "",
+      "description": "",
+      "pins": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    "a": {
+      "label": "First input",
+      "description": "",
+      "pins": {},
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    "b": {
+      "label": "Second input",
+      "description": "",
+      "pins": {},
+      "position": {
+        "x": 200,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    "out": {
+      "label": "output",
+      "description": "\"true\" if both inputs are \"true\"",
+      "pins": {},
+      "position": {
+        "x": 0,
+        "y": 300
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    }
+  }
+}

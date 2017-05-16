@@ -9,6 +9,8 @@ import * as Patch from './patch';
 import * as Node from './node';
 import * as Link from './link';
 import { def } from './types';
+import { BUILT_IN_PATCH_PATHS } from './builtInPatches';
+import * as PatchPathUtils from './patchPathUtils';
 
 /**
  * Root of a project’s state tree
@@ -131,14 +133,40 @@ export const isValidProject = R.compose(
 //
 // =============================================================================
 
-const getPatches = R.prop('patches');
+/*
+ Just empty patches.
+ Pins etc will be hardcoded elsewhere.
+ */
+export const BUILT_IN_PATCHES = R.compose(
+  R.indexBy(Patch.getPatchPath),
+  R.map(
+    path =>
+      R.pipe(
+        Patch.createPatch,
+        Patch.setPatchPath(path)
+      )()
+  )
+)(BUILT_IN_PATCH_PATHS);
+
+// :: String -> Boolean
+export const isPathBuiltIn = R.flip(R.contains)(BUILT_IN_PATCH_PATHS);
+
+const getPatches =
+  R.compose(
+    R.merge(BUILT_IN_PATCHES),
+    R.prop('patches')
+  );
 
 /**
  * @function lensPatch
  * @param {String} patchId
  * @returns {Lens} a Ramda lens whose focus is a patch with the specified id.
  */
-export const lensPatch = patchId => R.lensPath(['patches', patchId]);
+export const lensPatch = patchId =>
+  R.compose(
+    R.lens(getPatches, R.assoc('patches')),
+    R.lensProp(patchId)
+  );
 
 /**
  * @function listPatches
@@ -151,6 +179,16 @@ export const listPatches = def(
 );
 
 /**
+ * @function listPatchesWithoutBuiltIns
+ * @param {Project} project - project bundle
+ * @returns {Patch[]} list of patches that were added to project, excluding built-ins
+ */
+export const listPatchesWithoutBuiltIns = def(
+  'listPatches :: Project -> [Patch]',
+  R.compose(R.values, R.prop('patches'))
+);
+
+/**
  * Returns a list of paths to patches in the project.
  *
  * @function listPatchPaths
@@ -159,7 +197,7 @@ export const listPatches = def(
  */
 export const listPatchPaths = def(
   'listPatchPaths :: Project -> [PatchPath]',
-  R.compose(R.keys, R.prop('patches'))
+  R.compose(R.keys, getPatches)
 );
 
 /**
@@ -172,7 +210,7 @@ export const listPatchPaths = def(
 export const listLocalPatches = def(
   'listLocalPatches :: Project -> [Patch]',
   R.compose(
-    R.filter(R.pipe(Patch.getPatchPath, Utils.isPathLocal)),
+    R.filter(R.pipe(Patch.getPatchPath, PatchPathUtils.isPathLocal)),
     listPatches
   )
 );
@@ -187,14 +225,14 @@ export const listLocalPatches = def(
 export const listLibraryPatches = def(
   'listLibraryPatches :: Project -> [Patch]',
   R.compose(
-    R.filter(R.pipe(Patch.getPatchPath, Utils.isPathLibrary)),
+    R.filter(R.pipe(Patch.getPatchPath, PatchPathUtils.isPathLibrary)),
     listPatches
   )
 );
 
 /**
  * @function getPatchByPath
- * @param {string} path - full path of the patch to find, e.g. `"@/foo/bar"`
+ * @param {string} path - full path of the patch to find, e.g. `"@/bar"`
  * @param {Project} project - project bundle
  * @returns {Maybe<Patch>} a patch with given path
  */
@@ -208,7 +246,7 @@ export const getPatchByPath = def(
 
 /**
  * @function getPatchByPathUnsafe
- * @param {string} path - full path of the patch to find, e.g. `"@/foo/bar"`
+ * @param {string} path - full path of the patch to find, e.g. `"@/foo"`
  * @param {Project} project - project bundle
  * @returns {Patch} a patch with given path
  * @throws Error if patch was not found
@@ -222,7 +260,7 @@ export const getPatchByPathUnsafe = def(
 );
 
 /**
- * Checks project for existance of patches and pins that used in link.
+ * Checks project for existence of patches and pins that used in link.
  *
  * @private
  * @function checkPinKeys
@@ -426,8 +464,10 @@ const doesPathExist = def(
 export const validatePatchRebase = def(
   'validatePatchRebase :: PatchPath -> PatchPath -> Project -> Either Error Project',
   (newPath, oldPath, project) =>
-    Either.of(newPath)
-    .chain(
+    (isPathBuiltIn(oldPath)
+      ? Tools.err(CONST.ERROR.PATCH_REBASING_BUILT_IN)()
+      : Either.of(newPath)
+    ).chain(
       Tools.errOnFalse(
         CONST.ERROR.PATCH_PATH_OCCUPIED,
         R.complement(doesPathExist(R.__, project))
@@ -501,59 +541,4 @@ export const getNodePin = def(
     getPatchByPath(R.__, project),
     Node.getNodeType
   )(node)
-);
-
-
-// =============================================================================
-//
-// Virtual directories
-//
-// =============================================================================
-
-/**
- * Returns list of patches in the specified directory.
- *
- * @function lsPatches
- * @param {string} path
- * @param {Project} project
- * @returns {Patch[]}
- */
-export const lsPatches = R.curry(
-  (path, project) => {
-    const slashedPath = Utils.ensureEndsWithSlash(path);
-    const reg = new RegExp(`^${slashedPath}([a-zA-Z0-9_-])+$`);
-
-    return R.compose(
-      R.pickBy((val, key) => R.test(reg, key)),
-      getPatches
-    )(project);
-  }
-);
-
-/**
- * Returns list of directories in the specified directory.
- *
- * @function lsDirs
- * @param {string} path
- * @param {Project} project
- * @returns {string[]}
- */
-export const lsDirs = R.curry(
-  (path, project) => {
-    const slashedPath = Utils.ensureEndsWithSlash(path);
-    const reg = new RegExp(`^${slashedPath}([a-zA-Z0-9_-]+)(?:/).*`);
-
-    return R.compose(
-      R.uniq,
-      R.reject(R.isNil),
-      R.map(
-        R.compose(
-          R.nth(1),
-          R.match(reg)
-        )
-      ),
-      R.keys,
-      getPatches
-    )(project);
-  }
 );
