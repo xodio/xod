@@ -1,54 +1,47 @@
 {
+  "links": {
+    "HJ7KqFIOeZ": {
+      "input": {
+        "nodeId": "SJzK9tLOxZ",
+        "pinKey": "value"
+      },
+      "output": {
+        "nodeId": "S1ZF9KIdgZ",
+        "pinKey": "VAL"
+      }
+    }
+  },
   "nodes": {
-    "BkEeGXLJb": {
-      "id": "BkEeGXLJb",
+    "S1ZF9KIdgZ": {
+      "description": "",
+      "label": "",
+      "pins": {},
       "position": {
         "x": 138,
         "y": 16
       },
-      "pins": {},
-      "properties": {
-        "label": "",
-        "description": ""
-      },
-      "typeId": "xod/core/constant-number"
+      "type": "xod/core/constant-number"
     },
-    "HJzlfX8Jb": {
-      "id": "HJzlfX8Jb",
+    "SJzK9tLOxZ": {
+      "description": "",
+      "label": "",
+      "pins": {
+        "pin": {
+          "curried": false,
+          "value": 13
+        },
+        "value": {
+          "curried": false,
+          "value": false
+        }
+      },
       "position": {
         "x": 138,
         "y": 224
       },
-      "pins": {
-        "pin": {
-          "injected": false,
-          "value": 13
-        },
-        "value": {
-          "injected": false,
-          "value": false
-        }
-      },
-      "properties": {
-        "label": "",
-        "description": ""
-      },
-      "typeId": "xod/core/digital-output"
+      "type": "xod/core/digital-output"
     }
   },
-  "links": {
-    "HJaxzXUkZ": {
-      "id": "HJaxzXUkZ",
-      "pins": [
-        {
-          "nodeId": "HJzlfX8Jb",
-          "pinKey": "value"
-        },
-        {
-          "nodeId": "BkEeGXLJb",
-          "pinKey": "VAL"
-        }
-      ]
-    }
-  }
+  "label": "",
+  "description": ""
 }

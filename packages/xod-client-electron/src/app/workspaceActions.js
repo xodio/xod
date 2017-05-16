@@ -14,7 +14,7 @@ import {
   isFileExist,
   loadProjectWithLibs,
   pack,
-  arrangeByFilesV2,
+  arrangeByFiles,
 } from 'xod-fs';
 import {
   notEmpty,
@@ -88,10 +88,10 @@ export const updateWorkspace = R.curry(
 //
 // =============================================================================
 
-// :: ProjectMeta -> String
-const getProjectMetaName = R.path(['meta', 'name']);
 // :: ProjectMeta -> Path
 const getProjectMetaPath = R.prop('path');
+// :: ProjectMeta -> String
+const getProjectMetaName = R.prop('name');
 // :: ProjectMeta[] -> ProjectMeta
 const filterDefaultProject = R.filter(
   R.compose(
@@ -170,7 +170,7 @@ const createEmptyProject = projectName => R.compose(
 // :: Path -> Project -> Promise Project Error
 export const saveProject = R.curry(
   (workspacePath, project) => Promise.resolve(project)
-    .then(arrangeByFilesV2)
+    .then(arrangeByFiles)
     .then(save(workspacePath))
     .then(R.always(project))
     .catch(rejectWithCode(ERROR_CODES.CANT_SAVE_PROJECT))
@@ -279,7 +279,7 @@ export const enumerateProjects = workspacePath => getLocalProjects(workspacePath
 
 // :: Path -> Promise Path Error
 const ensurePath = workspacePath => resolveWorkspacePath(workspacePath)
-  .catch(() => DEFAULT_WORKSPACE_PATH);
+  .catch(() => resolvePath(DEFAULT_WORKSPACE_PATH));
 
 // :: Path -> Promise Path Error
 const spawnWorkspace = workspacePath => spawnWorkspaceFile(workspacePath).then(spawnStdLib);
@@ -338,13 +338,6 @@ export const onSelectProject = R.curry(
   (send, pathGetter, projectMeta) => pathGetter()
     .then(workspacePath => loadProjectWithLibs(getProjectMetaPath(projectMeta), workspacePath))
     .then(({ project, libs }) => pack(project, libs))
-    // TODO: Get rid of next then, when we'll get rid of V1
-    .then((v1) => {
-      const convertedProject = XP.toV2(v1);
-      return (convertedProject.isLeft) ?
-        Promise.reject(convertedProject.value) :
-        convertedProject;
-    })
     .then(requestShowProject(send))
     .catch(rejectWithCode(ERROR_CODES.CANT_OPEN_SELECTED_PROJECT))
     .catch(handleError(send))

@@ -1,0 +1,34 @@
+{
+  "links": {},
+  "nodes":  {
+    "noNativeImpl": {
+      "description": "",
+      "label": "",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    "pin": {
+      "type": "xod/patch-nodes/input-number",
+      "position": {
+        "x": 0,
+        "y": 300
+      },
+      "label": "PIN",
+      "description": "Hardware pin"
+    },
+    "value": {
+      "type": "xod/patch-nodes/input-boolean",
+      "position": {
+        "x": 200,
+        "y": 300
+      },
+      "label": "VAL",
+      "description": "Value for output"
+    }
+  },
+  "label": "",
+  "description": "Constant value"
+}

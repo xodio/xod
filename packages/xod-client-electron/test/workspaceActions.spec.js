@@ -168,7 +168,7 @@ describe('End-to-End', () => {
       EVENTS.REQUEST_SELECT_PROJECT,
     ]);
     if (eventName === EVENTS.REQUEST_SELECT_PROJECT) {
-      assert.equal(data[0].meta.name, DEFAULT_PROJECT_NAME);
+      assert.equal(data[0].name, DEFAULT_PROJECT_NAME);
     }
   };
 

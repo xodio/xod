@@ -1,0 +1,35 @@
+{
+    "links": {},
+    "nodes": {
+      "noNativeImpl": {
+        "description": "",
+        "label": "",
+        "position": {
+          "x": 100,
+          "y": 100
+        },
+        "type": "xod/patch-nodes/not-implemented-in-xod"
+      },
+      "__in__": {
+        "type": "xod/patch-nodes/input-string",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "label": "",
+        "description": ""
+      },
+      "__out__": {
+        "type": "xod/patch-nodes/output-pulse",
+        "position": {
+          "x": 0,
+          "y": 300
+        },
+        "label": "",
+        "description": ""
+      }
+    },
+    "label": "",
+    "description": ""
+  }
+  

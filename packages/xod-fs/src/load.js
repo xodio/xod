@@ -15,9 +15,6 @@ import {
   getPatchName,
 } from './utils';
 
-const hasId = R.has('id');
-const withIdFirst = (a, b) => ((!hasId(a) && hasId(b)) || -1);
-
 // :: String -> String -> Boolean
 const basenameEquals = basename => R.compose(
   R.equals(basename),

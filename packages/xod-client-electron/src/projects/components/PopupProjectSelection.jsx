@@ -33,7 +33,7 @@ const PopupProjectSelection = ({
     return (
       <li className="project" key={el.path}>
         <button onClick={onProjectSelect(el)}>
-          <p className="name">{el.meta.name} <span>by {el.meta.author}</span></p>
+          <p className="name">{el.name} <span>by {el.author}</span></p>
           <p className="path">
             <span>Path:</span>
             {el.path}

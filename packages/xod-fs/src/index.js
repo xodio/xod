@@ -9,7 +9,7 @@ export {
   loadProjectWithLibs,
   loadProjectWithoutLibs,
 } from './load';
-export { loadLibs, loadAllLibs, loadAllLibs } from './loadLibs';
+export { loadLibs, loadAllLibs } from './loadLibs';
 export { resolvePath, isDirectoryExist, isFileExist } from './utils';
 export {
   findClosestProjectDir,

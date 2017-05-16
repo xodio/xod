@@ -1,8 +1,10 @@
 {
-  "meta": {
-    "name": "welcome-to-xod",
-    "author": ""
-  },
+  "authors": [
+    ""
+  ],
+  "description": "",
+  "license": "",
+  "name": "welcome-to-xod",
   "libs": [
     "xod/core"
   ]
