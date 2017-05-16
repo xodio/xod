@@ -10,8 +10,8 @@ import {
   copy,
   save,
   getLocalProjects,
-  isDirectoryExist,
-  isFileExist,
+  doesDirectoryExist,
+  doesFileExist,
   loadProjectWithLibs,
   pack,
   arrangeByFiles,
@@ -203,7 +203,7 @@ export const saveWorkspacePath = workspacePath => R.compose(
 
 // :: Path -> Promise Path Error
 const doesWorkspaceDirExist = R.ifElse(
-  isDirectoryExist,
+  doesDirectoryExist,
   Promise.resolve.bind(Promise),
   () => rejectWithCode(ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY, new Error())
 );
@@ -219,13 +219,13 @@ const isWorkspaceDirEmptyOrNotExist = R.tryCatch(
 
 // :: Path -> Boolean
 const doesWorkspaceFileExist = R.compose(
-  isFileExist,
+  doesFileExist,
   workspacePath => path.resolve(workspacePath, WORKSPACE_FILENAME)
 );
 
 // :: Path -> Boolean
 const doesWorkspaceHaveStdLib = R.compose(
-  isDirectoryExist,
+  doesDirectoryExist,
   resolveStdLibPath
 );
 

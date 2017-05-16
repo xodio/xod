@@ -23,7 +23,7 @@ import {
   PROJECT_RENAME,
 } from '../project/actionTypes';
 import {
-  SHOW_CODE,
+  SHOW_CODE_REQUESTED,
 } from '../core/actionTypes';
 
 // =============================================================================
@@ -98,7 +98,7 @@ const popupsReducer = (state = initialState, action) => {
     case PROJECT_RENAME_REQUESTED:
       return showOnlyPopup(POPUP_ID.RENAMING_PROJECT, {}, state);
 
-    case SHOW_CODE:
+    case SHOW_CODE_REQUESTED:
       return showOnlyPopup(POPUP_ID.SHOWING_CODE, action.payload, state);
 
     case PATCH_ADD:

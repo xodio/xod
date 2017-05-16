@@ -9,8 +9,8 @@ import { loadLibs } from './loadLibs';
 import { readDir, readJSON } from './read';
 import {
   resolvePath,
-  isFileExist,
-  isDirectoryExist,
+  doesFileExist,
+  doesDirectoryExist,
   reassignIds,
   getPatchName,
 } from './utils';
@@ -64,13 +64,13 @@ const resolveProjectFile = dir => path.resolve(dir, 'project.xod');
 
 // :: Path -> Boolean
 const hasProjectFile = R.compose(
-  isFileExist,
+  doesFileExist,
   resolveProjectFile
 );
 
 // :: Path -> Boolean
 const isLocalProjectDirectory = R.allPass([
-  isDirectoryExist,
+  doesDirectoryExist,
   R.complement(beginsWithDot),
   hasProjectFile,
 ]);

@@ -3,7 +3,7 @@ import {
   redoPatch,
 } from '../project/actions';
 import {
-  SHOW_CODE,
+  SHOW_CODE_REQUESTED,
 } from './actionTypes';
 import { getCurrentPatchPath } from '../editor/selectors';
 
@@ -18,7 +18,7 @@ export const redoCurrentPatch = () => (dispatch, getState) => {
 };
 
 export const showCode = code => ({
-  type: SHOW_CODE,
+  type: SHOW_CODE_REQUESTED,
   payload: { code },
 });
 
