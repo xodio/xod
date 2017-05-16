@@ -1,13 +1,60 @@
 import R from 'ramda';
-import chai, { expect } from 'chai';
+import chai, { expect, assert } from 'chai';
 import dirtyChai from 'dirty-chai';
 import shortid from 'shortid';
 
 import * as Utils from '../src/utils';
+import { PIN_TYPE } from '../src/constants';
 
 chai.use(dirtyChai);
 
 describe('Utils', () => {
+  describe('canCastTypes constrains', () => {
+    const types = R.values(PIN_TYPE);
+
+    describe('pulse', () => {
+      const otherTypes = R.reject(R.equals(PIN_TYPE.PULSE), types);
+
+      it('cannot be casted to any other type', () => {
+        otherTypes.forEach(
+          type => assert.isFalse(
+            Utils.canCastTypes(PIN_TYPE.PULSE, type),
+            `should not be castable to ${type}`
+          )
+        );
+      });
+      it('cannot be casted from any other type', () => {
+        otherTypes.forEach(
+          type => assert.isFalse(
+            Utils.canCastTypes(type, PIN_TYPE.PULSE),
+            `should not be castable from ${type}`
+          )
+        );
+      });
+    });
+
+    describe('string', () => {
+      const otherTypes = R.reject(R.equals(PIN_TYPE.STRING), types);
+
+      it('cannot be casted to any other type', () => {
+        otherTypes.forEach(
+          type => assert.isFalse(
+            Utils.canCastTypes(PIN_TYPE.STRING, type),
+            `should not be castable to ${type}`
+          )
+        );
+      });
+      it('can be casted from any other type, except pulse', () => {
+        R.reject(R.equals(PIN_TYPE.PULSE), otherTypes).forEach(
+          type => assert.isTrue(
+            Utils.canCastTypes(type, PIN_TYPE.STRING),
+            `should be castable from ${type}`
+          )
+        );
+      });
+    });
+  });
+
   // transforming node ids
   describe('renumering of nodeIds', () => {
     const nodes = [
