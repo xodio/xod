@@ -107,7 +107,10 @@ export const defaultValueOfType = def(
   ])
 );
 
-export const canCastTypes = R.curry((from, to) => CONST.TYPES_COMPATIBILITY[from][to]);
+export const canCastTypes = def(
+  'canCastTypes :: DataType -> DataType -> Boolean',
+  (from, to) => CONST.TYPES_COMPATIBILITY[from][to]
+);
 
 // =============================================================================
 //
