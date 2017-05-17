@@ -79,6 +79,8 @@ describe('Editor reducer', () => {
                     value: 0,
                   },
                 },
+                label: '',
+                description: '',
               },
             },
             links: {},
