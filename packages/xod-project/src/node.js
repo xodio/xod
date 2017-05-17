@@ -217,7 +217,6 @@ export const assocInitialPinValues = def(
         R.applySpec({
           key: Pin.getPinKey,
           value: Pin.getPinValue,
-          // TODO: curried?
         })
       ),
       Patch.listInputPins
@@ -235,8 +234,7 @@ export const assocInitialPinValues = def(
  */
 export const getCurriedPins = R.compose(
   R.map(R.prop('value')),
-  R.filter(R.propEq('curried', true)), // TODO: deprecated
-  R.propOr({}, 'boundValues')
+  R.propOr({}, 'boundValues') // TODO: no propOr
 );
 
 /**
@@ -282,25 +280,9 @@ export const setPinCurriedValue = def(
   )
 );
 
- /**
-  * Enables or disables pin currying.
-  *
-  * @function curryPin
-  * @param {string} key
-  * @param {boolean} curry
-  * @param {Node} node
-  * @returns {Node}
-  */
-export const curryPin = def( // TODO: deprecated
-  'curryPin :: PinKey -> Boolean -> Node -> Node',
-  R.useWith(
-    R.assocPath,
-    [
-      getPathToPinProperty('curried'),
-      R.identity,
-      R.identity,
-    ]
-  )
+export const removeBoundValue = def(
+  'removeBoundValue :: PinKey -> Node -> Node',
+  R.uncurryN(2, pinKey => R.dissocPath(['boundValues', pinKey]))
 );
 
 /**

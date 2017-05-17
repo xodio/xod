@@ -206,60 +206,6 @@ describe('Node', () => {
         .to.be.false();
     });
   });
-  describe('curryPin', () => {
-    it('should return Node with curried `test` pin === true', () => {
-      const newNode = Node.curryPin('test', true, emptyNode);
-
-      expect(newNode)
-        .to.be.an('object')
-        .that.have.property('boundValues')
-        .that.have.property('test')
-        .that.have.property('curried')
-        .to.be.true();
-    });
-    it('should return Node with curried `test` pin === false', () => {
-      const newNode = Node.curryPin('test', false, emptyNode);
-
-      expect(newNode)
-        .to.be.an('object')
-        .that.have.property('boundValues')
-        .that.have.property('test')
-        .that.have.property('curried')
-        .to.be.false();
-    });
-    it('should return Node with curried `test` pin', () => {
-      const node = Helper.defaultizeNode({
-        boundValues: {
-          test: { curried: false },
-        },
-      });
-
-      const newNode = Node.curryPin('test', true, node);
-
-      expect(newNode)
-        .to.be.an('object')
-        .that.have.property('boundValues')
-        .that.have.property('test')
-        .that.have.property('curried')
-        .to.be.true();
-    });
-    it('should return Node without affecting on other curried pins', () => {
-      const node = Helper.defaultizeNode({
-        boundValues: {
-          other: { curried: false },
-        },
-      });
-
-      const newNode = Node.curryPin('test', true, node);
-
-      expect(newNode)
-        .to.be.an('object')
-        .that.have.property('boundValues')
-        .that.have.property('other')
-        .that.have.property('curried')
-        .to.be.false();
-    });
-  });
   // checks
   describe('isInputPinNode', () => {
     it('should return false for type not equal to xod/patch-nodes/input-*', () => {
