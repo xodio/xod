@@ -99,6 +99,7 @@ describe('Editor reducer', () => {
                   y: 100,
                 },
                 type: 'xod/patch-nodes/not-implemented-in-xod',
+                boundValues: {},
               },
               in: {
                 id: 'in',
@@ -109,6 +110,7 @@ describe('Editor reducer', () => {
                 },
                 label: '',
                 description: '',
+                boundValues: {},
               },
             },
             links: {},

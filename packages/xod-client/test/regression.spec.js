@@ -42,6 +42,7 @@ const initialProject = {
             y: 100,
           },
           type: 'xod/patch-nodes/not-implemented-in-xod',
+          boundValues: {},
         },
         state: {
           id: 'state',
@@ -52,6 +53,7 @@ const initialProject = {
           },
           label: '',
           description: '',
+          boundValues: {},
         },
       },
       path: 'xod/core/button',
