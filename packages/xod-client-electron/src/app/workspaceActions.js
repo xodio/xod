@@ -284,10 +284,6 @@ const ensurePath = workspacePath => resolveWorkspacePath(workspacePath)
 // :: Path -> Promise Path Error
 const spawnWorkspace = workspacePath => spawnWorkspaceFile(workspacePath).then(spawnStdLib);
 
-// :: Path -> Promise Path Error
-const ensureWorkspace = workspacePath => validateWorkspace(workspacePath)
-  .catch(() => spawnWorkspace(workspacePath));
-
 // :: (String -> a -> ()) ->Path -> Promise ProjectMeta[] Error
 const spawnAndLoadDefaultProject = (send, workspacePath) => spawnDefaultProject(workspacePath)
   .then(enumerateProjects)
@@ -350,12 +346,17 @@ export const onIDELaunch = R.curry(
     pathGetter,
     oldPath => R.pipeP(
       ensurePath,
-      ensureWorkspace,
       pathSaver,
+      validateWorkspace,
       updateWorkspace(send, oldPath)
     )(oldPath),
     loadProjectsOrSpawnDefault(send)
-  )().catch(handleError(send))
+  )()
+    .catch(catchInvalidWorkspace((err) => {
+      const force = (err.errorCode === ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY);
+      pathGetter().then(newPath => requestCreateWorkspace(send, newPath, force));
+    }))
+    .catch(handleError(send))
 );
 
 // :: (String -> a -> ()) -> (Path -> Promise Path Error) -> Path -> Promise ProjectMeta[] Error

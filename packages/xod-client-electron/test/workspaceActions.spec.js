@@ -2,7 +2,7 @@ import chai, { assert, expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { resolve } from 'path';
 import fs from 'fs';
-import { isFileExist, isDirectoryExist, rmrf } from 'xod-fs';
+import { doesFileExist, doesDirectoryExist, rmrf } from 'xod-fs';
 import { getProjectName } from 'xod-project';
 
 import {
@@ -101,7 +101,7 @@ describe('Utils', () => {
       () => WA.spawnWorkspaceFile(PATH.NOT_EXIST).then((path) => {
         const filePath = resolve(path, WORKSPACE_FILENAME);
         assert.equal(testFile, filePath);
-        assert.equal(isFileExist(filePath), true);
+        assert.equal(doesFileExist(filePath), true);
       })
     );
   });
@@ -110,7 +110,7 @@ describe('Utils', () => {
     const destFolder = resolve(PATH.NOT_EXIST, LIBS_FOLDERNAME);
     it('Promise.Resolved Path for successfull spawnking',
       () => WA.spawnStdLib(PATH.NOT_EXIST).then(() => {
-        assert.equal(isDirectoryExist(destFolder), true);
+        assert.equal(doesDirectoryExist(destFolder), true);
         fs.readdir(destFolder, (err, files) => {
           assert.isAbove(files.length, 0);
           assert.includeMembers(files, ['xod']);
@@ -123,7 +123,7 @@ describe('Utils', () => {
     const destFolder = resolve(PATH.NOT_EXIST, DEFAULT_PROJECT_NAME);
     it('Promise.Resolved Path for successfull spawnking',
       () => WA.spawnDefaultProject(PATH.NOT_EXIST).then(() => {
-        assert.equal(isDirectoryExist(destFolder), true);
+        assert.equal(doesDirectoryExist(destFolder), true);
         fs.readdir(destFolder, (err, files) => {
           assert.isAbove(files.length, 0);
           assert.includeMembers(files, ['project.xod', 'main']);
@@ -195,7 +195,11 @@ describe('End-to-End', () => {
     );
     it('not exist workspace: should spawn workspace in homedir, spawn default project and request to open it',
       () => WA.onIDELaunch(
-        sendMockDefault,
+        (eventName, { path, force }) => {
+          assert.equal(eventName, EVENTS.REQUEST_CREATE_WORKSPACE);
+          assert.equal(path, PATH.NOT_EXIST);
+          assert.isFalse(force);
+        },
         loadMock(PATH.NOT_EXIST),
         saveMock(PATH.NOT_EXIST)
       )
