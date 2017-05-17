@@ -416,18 +416,11 @@ const getTNodeOutputs = def(
 
     return R.compose(
       R.values,
-      R.mapObjIndexed((links, pinKey) => {
-        const to = getLinksInputNodeIds(links);
-        const value = (Project.isPinCurried(pinKey, node)) ?
-          explode(Project.getPinCurriedValue(pinKey, node)) :
-          null;
-
-        return {
-          to,
-          pinKey,
-          value,
-        };
-      }),
+      R.mapObjIndexed((links, pinKey) => ({
+        to: getLinksInputNodeIds(links),
+        pinKey,
+        value: Project.getPinCurriedValue(pinKey, node).getOrElse(null),
+      })),
       R.groupBy(Project.getLinkOutputPinKey),
       R.filter(Project.isLinkOutputNodeIdEquals(nodeId)),
       Project.listLinksByNode(node),
