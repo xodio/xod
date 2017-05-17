@@ -98,6 +98,6 @@ export const ensureWorkspacePath = R.tryCatch(
 );
 // :: Path -> Boolean
 export const doesWorkspaceFileExist = R.compose(
-  isFileExist,
+  doesFileExist,
   workspacePath => path.resolve(workspacePath, WORKSPACE_FILENAME)
 );
