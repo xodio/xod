@@ -45,6 +45,8 @@
       },
       "nodes": {
         "2c03e470-fefd-4f58-be6a-58d209d9158c": {
+          "label": "",
+          "description": "",
           "id": "2c03e470-fefd-4f58-be6a-58d209d9158c",
           "boundValues": {},
           "position": {
@@ -54,6 +56,8 @@
           "type": "xod/core/pot"
         },
         "4d716df5-81e7-4845-9b82-31a54c1634d7": {
+          "label": "",
+          "description": "",
           "id": "4d716df5-81e7-4845-9b82-31a54c1634d7",
           "boundValues": {},
           "position": {
@@ -63,6 +67,8 @@
           "type": "@/qux"
         },
         "89c69d91-b484-478d-8990-027e5f0a2e3e": {
+          "label": "",
+          "description": "",
           "id": "89c69d91-b484-478d-8990-027e5f0a2e3e",
           "boundValues": {},
           "position": {
@@ -82,6 +88,8 @@
       "impls": {},
       "nodes": {
         "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
+          "label": "",
+          "description": "",
           "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
           "type": "xod/patch-nodes/input-number",
           "boundValues": {},
@@ -91,6 +99,8 @@
           }
         },
         "4da4c29d-f482-47c2-825e-a969084b1116": {
+          "label": "",
+          "description": "",
           "id": "4da4c29d-f482-47c2-825e-a969084b1116",
           "type": "xod/core/led",
           "boundValues": {},

@@ -10,9 +10,9 @@
     "xod/core/led": {
       "nodes": {
         "noNativeImpl": {
+          "label": "",
           "description": "",
           "id": "noNativeImpl",
-          "label": "",
           "position": {
             "x": 100,
             "y": 100
@@ -20,14 +20,14 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "brightness": {
+          "label": "",
+          "description": "",
           "id": "brightness",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -39,6 +39,8 @@
     "@/main": {
       "nodes": {
         "SJmGlirFpx": {
+          "label": "my led",
+          "description": "description for my led",
           "id": "SJmGlirFpx",
           "type": "xod/core/led",
           "position": {
@@ -50,20 +52,18 @@
               "key": "brightness",
               "value": 0
             }
-          },
-          "label": "my led",
-          "description": "description for my led"
+          }
         },
         "rJxbjrKpl": {
+          "label": "",
+          "description": "",
           "id": "rJxbjrKpl",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 138,
             "y": 16
           },
-          "boundValues": {},
-          "label": "",
-          "description": ""
+          "boundValues": {}
         }
       },
       "links": {

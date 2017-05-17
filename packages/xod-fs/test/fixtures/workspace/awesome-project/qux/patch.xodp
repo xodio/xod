@@ -2,6 +2,8 @@
   "nodes": [
     {
       "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
+      "label": "",
+      "description": "",
       "type": "xod/patch-nodes/input-number",
       "boundValues": {},
       "position": {
@@ -11,6 +13,8 @@
     },
     {
       "id": "4da4c29d-f482-47c2-825e-a969084b1116",
+      "label": "",
+      "description": "",
       "type": "xod/core/led",
       "boundValues": {},
       "position": {
