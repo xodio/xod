@@ -12,6 +12,7 @@
         "noNativeImpl": {
           "label": "",
           "description": "",
+          "boundValues": {},
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -22,6 +23,7 @@
         "brightness": {
           "label": "",
           "description": "",
+          "boundValues": {},
           "id": "brightness",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -41,29 +43,29 @@
         "SJmGlirFpx": {
           "label": "my led",
           "description": "description for my led",
-          "id": "SJmGlirFpx",
-          "type": "xod/core/led",
-          "position": {
-            "x": 138,
-            "y": 224
-          },
           "boundValues": {
             "brightness": {
               "key": "brightness",
               "value": 0
             }
+          },
+          "id": "SJmGlirFpx",
+          "type": "xod/core/led",
+          "position": {
+            "x": 138,
+            "y": 224
           }
         },
         "rJxbjrKpl": {
           "label": "",
           "description": "",
+          "boundValues": {},
           "id": "rJxbjrKpl",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 138,
             "y": 16
-          },
-          "boundValues": {}
+          }
         }
       },
       "links": {
