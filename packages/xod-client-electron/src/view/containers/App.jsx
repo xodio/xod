@@ -32,7 +32,7 @@ import { REDUCER_STATUS } from '../../projects/constants';
 import { SaveProgressBar } from '../components/SaveProgressBar';
 
 import * as ERROR_CODES from '../../shared/errorCodes';
-import * as MESSAGES from '../../shared/messages';
+import formatError from '../../shared/errorFormatter';
 import * as EVENTS from '../../shared/events';
 
 const { app, dialog, Menu } = remoteElectron;
@@ -121,11 +121,11 @@ class App extends client.App {
     );
     ipcRenderer.on(
       EVENTS.WORKSPACE_ERROR,
-      (event, data) => {
+      (event, error) => {
         // TODO: Catch CANT_OPEN_SELECTED_PROJECT and show something else
         //       (its strange to ask to switch workspace if project has broken).
         this.showPopupSetWorkspaceNotCancellable();
-        this.props.actions.addError(MESSAGES.ERRORS[data.errorCode]);
+        this.props.actions.addError(formatError(error));
       }
     );
   }

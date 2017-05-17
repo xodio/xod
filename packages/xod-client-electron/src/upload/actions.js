@@ -21,8 +21,8 @@ const failUpload = (dispatch, id) => message => dispatch(
 
 const getTranspiledCode = (transpiler, state) => {
   const project = client.getProject(state);
-  const curPatchId = client.getCurrentPatchId(state);
-  return transpiler(project, curPatchId);
+  const curPatchPath = client.getCurrentPatchPath(state);
+  return transpiler(project, curPatchPath);
 };
 
 export const upload = () => (dispatch, getState) => {
@@ -31,7 +31,7 @@ export const upload = () => (dispatch, getState) => {
   const fail = failUpload(dispatch, processId);
 
   foldEither(
-    fail,
+    err => fail(err.message),
     (code) => {
       uploadToEspruino(code, progressUpload(dispatch, processId))
         .then(succeedUpload(dispatch, processId))

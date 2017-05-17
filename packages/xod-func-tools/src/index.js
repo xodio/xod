@@ -112,6 +112,12 @@ export const hasNo = R.complement(R.has);
  */
 export const tapP = promiseFn => arg => promiseFn(arg).then(R.always(arg));
 
+// :: ERROR_CODE -> Error -> Promise.Reject Error
+export const rejectWithCode = R.curry(
+  (code, err) => Promise.reject(Object.assign(err, { errorCode: code }))
+);
+
+
 export default Object.assign(
   {
     explode,

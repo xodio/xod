@@ -20,10 +20,11 @@ import {
   notEmpty,
   explode,
   isAmong,
+  rejectWithCode,
 } from 'xod-func-tools';
 
 import * as settings from './settings';
-import rejectWithCode, * as ERROR_CODES from '../shared/errorCodes';
+import * as ERROR_CODES from '../shared/errorCodes';
 import {
   DEFAULT_WORKSPACE_PATH,
   WORKSPACE_FILENAME,
@@ -112,7 +113,7 @@ const filterDefaultProject = R.filter(
 export const resolveWorkspacePath = workspacePath => Promise.resolve(workspacePath)
   .then(R.unless(
     R.allPass([R.is(String), notEmpty]),
-    () => rejectWithCode(ERROR_CODES.INVALID_WORKSPACE_PATH, new Error())
+    () => rejectWithCode(ERROR_CODES.INVALID_WORKSPACE_PATH, { path: workspacePath })
   ))
   .then(resolvePath);
 
@@ -179,11 +180,13 @@ export const saveProject = R.curry(
 // :: Path -> String -> String
 const createAndSaveNewProject = R.curry(
   (workspacePath, projectName) => R.pipeP(
-    () => Promise.resolve(createEmptyProject(projectName)),
-    explode,
+    () => R.pipeP(
+      Promise.resolve(createEmptyProject(projectName)),
+      explode
+    )().catch(rejectWithCode(ERROR_CODES.CANT_CREATE_NEW_PROJECT)),
     saveProject,
     R.always(projectName)
-  )().catch(rejectWithCode(ERROR_CODES.CANT_CREATE_NEW_PROJECT))
+  )()
 );
 
 // :: () -> Promise Path Error
@@ -205,7 +208,10 @@ export const saveWorkspacePath = workspacePath => R.compose(
 const doesWorkspaceDirExist = R.ifElse(
   doesDirectoryExist,
   Promise.resolve.bind(Promise),
-  () => rejectWithCode(ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY, new Error())
+  dirPath => rejectWithCode(
+    ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY,
+    { path: dirPath }
+  )
 );
 
 // :: Path -> Boolean
@@ -237,11 +243,17 @@ export const isWorkspaceValid = R.cond([
   ],
   [
     isWorkspaceDirEmptyOrNotExist,
-    () => rejectWithCode(ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY, new Error()),
+    dirPath => rejectWithCode(
+      ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY,
+      { path: dirPath }
+    ),
   ],
   [
     R.T,
-    () => rejectWithCode(ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY, new Error()),
+    dirPath => rejectWithCode(
+      ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY,
+      { path: dirPath }
+    ),
   ],
 ]);
 

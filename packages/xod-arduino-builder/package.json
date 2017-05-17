@@ -21,6 +21,7 @@
     "ramda": "^0.23.0",
     "rest": "^2.0.0",
     "serialport": "^4.0.7",
+    "xod-func-tools": "^0.0.1",
     "xod-fs": "^0.0.1"
   },
   "babel": {

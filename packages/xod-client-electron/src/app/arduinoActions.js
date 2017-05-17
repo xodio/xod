@@ -2,14 +2,15 @@ import R from 'ramda';
 import fs from 'fs';
 import { resolve } from 'path';
 import { resolvePath, writeFile, doesDirectoryExist, doesFileExist } from 'xod-fs';
-import { foldEither, notEmpty, tapP } from 'xod-func-tools';
+import { foldEither, notEmpty, tapP, rejectWithCode } from 'xod-func-tools';
 import { transpileForArduino } from 'xod-arduino';
 import * as xab from 'xod-arduino-builder';
 
 import { DEFAULT_ARDUINO_IDE_PATH, DEFAULT_ARDUINO_PACKAGES_PATH } from './constants';
 import * as settings from './settings';
 import * as MESSAGES from '../shared/messages';
-import rejectWithCode, * as ERROR_CODES from '../shared/errorCodes';
+import formatError from '../shared/errorFormatter';
+import * as ERROR_CODES from '../shared/errorCodes';
 
 // =============================================================================
 //
@@ -88,8 +89,11 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
   const ideExists = R.both(doesFileExist, notEmpty)(idePath);
   const pkgExists = R.both(doesDirectoryExist, notEmpty)(pkgPath);
 
-  if (!R.and(ideExists, pkgExists)) {
-    return rejectWithCode(ERROR_CODES.IDE_NOT_FOUND, new Error());
+  if (!ideExists) {
+    return rejectWithCode(ERROR_CODES.IDE_NOT_FOUND, { path: ide });
+  }
+  if (!pkgExists) {
+    return rejectWithCode(ERROR_CODES.PACKAGES_NOT_FOUND, { path: packages });
   }
 
   return R.pipeP(
@@ -111,7 +115,7 @@ export const installPav = pab => Promise.all([getPAV(pab), getArduinoIDE()])
     ([pav, idePath]) => xab.installPAV(pav, idePath)
   ))
   .catch((err) => {
-    if (err === xab.REST_ERROR) return rejectWithCode(ERROR_CODES.INDEX_LIST_ERROR, new Error());
+    if (err.errorCode === xab.REST_ERROR) return rejectWithCode(ERROR_CODES.INDEX_LIST_ERROR, err);
     return rejectWithCode(ERROR_CODES.INSTALL_PAV, err);
   });
 
@@ -124,7 +128,7 @@ export const installPav = pab => Promise.all([getPAV(pab), getArduinoIDE()])
 export const getInstalledPAV = (pab, pavs) => R.compose(
   pav => Promise.resolve(pav),
   R.defaultTo(
-    rejectWithCode(ERROR_CODES.NO_INSTALLED_PAVS, new Error())
+    rejectWithCode(ERROR_CODES.NO_INSTALLED_PAVS, { pab })
   ),
   R.head,
   sortByVersion,
@@ -137,15 +141,15 @@ export const getInstalledPAV = (pab, pavs) => R.compose(
  * @see {@link https://www.npmjs.com/package/serialport#listing-ports}
  */
 export const getPort = () => xab.listPorts()
-  .then(R.compose(
+  .then(ports => R.compose(
     R.ifElse(
       R.isNil,
-      () => Promise.reject(new Error()),
+      () => Promise.reject({ ports }),
       port => Promise.resolve(port)
     ),
     R.propOr(null, 'comName'),
     findPort
-  ))
+  )(ports))
   .catch(rejectWithCode(ERROR_CODES.PORT_NOT_FOUND));
 
 /**
@@ -212,8 +216,7 @@ export const uploadToArduinoHandler = (event, payload) => {
   const sendFailure = send('failure');
   const convertAndSendError = err => R.compose(
     msg => sendFailure(msg, 0, err.errorCode)(),
-    R.propOr(err.message, R.__, MESSAGES.ERRORS),
-    R.prop('errorCode')
+    formatError
   )(err);
 
   const updateArduinoPaths = ({ ide, packages }) => R.compose(
