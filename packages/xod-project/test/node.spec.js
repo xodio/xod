@@ -113,11 +113,9 @@ describe('Node', () => {
       const node = {
         boundValues: {
           a: {
-            curried: true,
             value: true,
           },
           b: {
-            curried: true,
             value: 10,
           },
         },
@@ -133,13 +131,8 @@ describe('Node', () => {
   describe('getPinCurriedValue', () => {
     const node = Helper.defaultizeNode({
       boundValues: {
-        existingAndCurried: {
-          curried: true,
+        existing: {
           value: 'hey-ho',
-        },
-        existingAndUncurried: {
-          curried: false,
-          value: 'ha-ha',
         },
       },
     });
@@ -154,11 +147,7 @@ describe('Node', () => {
       expect(value.isNothing).to.be.true();
     });
     it('should return Maybe.Just for defined value of curried pin', () => {
-      const pinName = 'existingAndCurried';
-      checkJust(pinName);
-    });
-    it('should return Maybe.Just for defined value of uncurried pin', () => {
-      const pinName = 'existingAndUncurried';
+      const pinName = 'existing';
       checkJust(pinName);
     });
   });

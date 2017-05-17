@@ -66,12 +66,17 @@ export const PinRef = Model('PinRef', {
   pinKey: PinKey,
 });
 
+export const BoundValue = Model('BoundValue', {
+  value: DataValue,
+});
+
 export const Node = Model('Node', {
   id: NodeId,
   position: NodePosition,
   type: PatchPath,
   label: $.String,
   description: $.String,
+  boundValues: $.StrMap(BoundValue),
 });
 
 export const Link = Model('Link', {
@@ -117,6 +122,7 @@ export const env = XF.env.concat([
   Link,
   LinkId,
   LinkOrId,
+  BoundValue,
   Node,
   NodeId,
   NodeOrId,

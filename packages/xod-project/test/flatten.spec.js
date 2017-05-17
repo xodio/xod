@@ -295,7 +295,6 @@ describe('Flatten', () => {
                 type: '@/foo',
                 boundValues: {
                   a: {
-                    curried: true,
                     value: true,
                   },
                 },
@@ -322,7 +321,6 @@ describe('Flatten', () => {
                 type: 'xod/core/number',
                 boundValues: {
                   in: {
-                    curried: true,
                     value: 32,
                   },
                 },
@@ -352,7 +350,6 @@ describe('Flatten', () => {
       const terminalA = R.find(R.propEq('id', 'a~a'), nodes);
       expect(terminalA).to.have.property('boundValues').that.deep.equals({
         __in__: {
-          curried: true,
           value: true,
         },
       });
@@ -394,7 +391,6 @@ describe('Flatten', () => {
       .to.have.property('boundValues')
       .that.deep.equals({
         __in__: {
-          curried: true,
           value: 'LED1',
         },
       });
@@ -404,7 +400,6 @@ describe('Flatten', () => {
       .to.have.property('boundValues')
       .that.deep.equals({
         __in__: {
-          curried: true,
           value: 1,
         },
       });
@@ -1404,7 +1399,6 @@ describe('Flatten', () => {
                 type: '@/foo',
                 boundValues: {
                   b: {
-                    curried: true,
                     value: 32,
                   },
                 },
@@ -1491,11 +1485,9 @@ describe('Flatten', () => {
                 type: '@/foo',
                 boundValues: {
                   a2: {
-                    curried: true,
                     value: 32,
                   },
                   a3: {
-                    curried: true,
                     value: 27,
                   },
                 },
