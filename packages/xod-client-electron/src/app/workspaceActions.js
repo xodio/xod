@@ -134,7 +134,10 @@ const getDefaultProjectPath = () => path.resolve(PATH_TO_DEFAULT_WORKSPACE, DEFA
 // :: String -> ProjectMeta[] -> ProjectMeta
 const findProjectMetaByName = R.curry(
   (nameToFind, projectMetas) => R.find(
-    R.pathEq(['meta', 'name'], nameToFind),
+    R.compose(
+      R.equals(nameToFind),
+      getProjectMetaName
+    ),
     projectMetas
   )
 );
@@ -179,14 +182,17 @@ export const saveProject = R.curry(
 
 // :: Path -> String -> String
 const createAndSaveNewProject = R.curry(
-  (workspacePath, projectName) => R.pipeP(
-    () => R.pipeP(
-      Promise.resolve(createEmptyProject(projectName)),
-      explode
-    )().catch(rejectWithCode(ERROR_CODES.CANT_CREATE_NEW_PROJECT)),
-    saveProject,
+  (pathGetter, projectName) => R.pipeP(
+    Promise.resolve.bind(Promise),
+    createEmptyProject,
+    explode,
+    project => R.pipeP(
+      pathGetter,
+      saveProject(R.__, project)
+    )(),
     R.always(projectName)
-  )()
+  )(projectName)
+    .catch(rejectWithCode(ERROR_CODES.CANT_CREATE_NEW_PROJECT))
 );
 
 // :: () -> Promise Path Error
