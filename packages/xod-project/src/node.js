@@ -304,23 +304,6 @@ export const curryPin = def( // TODO: deprecated
 );
 
 /**
- * @function isPinCurried
- * @param {string} key
- * @param {Node} node
- * @returns {boolean}
- */
-export const isPinCurried = def( // TODO: deprecated
-  'isPinCurried :: PinKey -> Node -> Boolean',
-  R.useWith(
-    R.pathSatisfies(R.equals(true)),
-    [
-      getPathToPinProperty('curried'),
-      R.identity,
-    ]
-  )
-);
-
-/**
  * Returns data type extracted from pinNode type
  * @function getPinNodeDataType
  * @param {Node} node

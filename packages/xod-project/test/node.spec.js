@@ -288,23 +288,6 @@ describe('Node', () => {
       expect(Node.isPinNode(nodeOfType('xod/patch-nodes/output-number'))).to.be.true();
     });
   });
-  describe('isPinCurried', () => {
-    it('should return false for non-existent pin', () => {
-      expect(Node.isPinCurried('test', emptyNode)).to.be.false();
-    });
-    it('should return false for pin without `curried` property equal to true', () => {
-      const node = Helper.defaultizeNode({ boundValues: { test: {} } });
-      expect(Node.isPinCurried('test', node)).to.be.false();
-    });
-    it('should return true for pin that curried', () => {
-      const node = Helper.defaultizeNode({ boundValues: { test: { value: 1, curried: true } } });
-      expect(Node.isPinCurried('test', node)).to.be.true();
-    });
-    it('should return true for pin that curried, even it haven\'t a value', () => {
-      const node = Helper.defaultizeNode({ boundValues: { test: { curried: true } } });
-      expect(Node.isPinCurried('test', node)).to.be.true();
-    });
-  });
   // etc
   describe('getPinNodeDataType', () => {
     it('should throw error for non-existent data-type', () => {
