@@ -207,6 +207,9 @@ const createCastNode = R.curry((patchTuples, nodes, link) => R.compose(
     id: `${Link.getLinkOutputNodeId(link)}-to-${Link.getLinkInputNodeId(link)}`,
     position: { x: 0, y: 0 },
     type,
+    label: '',
+    description: '',
+    boundValues: {},
   })),
   // Link -> Maybe String
   R.converge(

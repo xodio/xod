@@ -102,6 +102,7 @@ export const defaultizeNode = R.merge({
   position: { x: 0, y: 0 },
   type: '@/default-type',
   label: '',
+  description: '',
   boundValues: {},
 });
 
@@ -125,6 +126,7 @@ export const defaultizePatch = R.compose(
     nodes: {},
     links: {},
     impls: {},
+    description: '',
     path: '@/default-patch-path',
     description: '',
   })

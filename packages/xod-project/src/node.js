@@ -62,7 +62,7 @@ export const createNode = def(
     position,
     label: '',
     description: '',
-    // TODO: boundValues: {},
+    boundValues: {},
   })
 );
 

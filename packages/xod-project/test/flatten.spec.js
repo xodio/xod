@@ -984,21 +984,21 @@ describe('Flatten', () => {
 
           if (typeOut === typeIn) { // TODO: explain what exactly is happening here
             project.patches[`xod/core/${typeOut}`].nodes = {
-              in: {
+              in: Helper.defaultizeNode({
                 id: 'in',
                 position: { x: 0, y: 0 },
                 type: `xod/patch-nodes/input-${typeOut}`,
-              },
-              out: {
+              }),
+              out: Helper.defaultizeNode({
                 id: 'out',
                 position: { x: 0, y: 300 },
                 type: `xod/patch-nodes/output-${typeIn}`,
-              },
-              noNativeImpl: {
+              }),
+              noNativeImpl: Helper.defaultizeNode({
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
                 type: 'xod/patch-nodes/not-implemented-in-xod',
-              },
+              }),
             };
           }
 
@@ -1140,21 +1140,21 @@ describe('Flatten', () => {
 
           if (typeOut === typeIn) {
             project.patches[`xod/core/${typeOut}`].nodes = {
-              in: {
+              in: Helper.defaultizeNode({
                 id: 'in',
                 position: { x: 0, y: 0 },
                 type: `xod/patch-nodes/input-${typeOut}`,
-              },
-              out: {
+              }),
+              out: Helper.defaultizeNode({
                 id: 'out',
                 position: { x: 0, y: 300 },
                 type: `xod/patch-nodes/output-${typeIn}`,
-              },
-              noNativeImpl: {
+              }),
+              noNativeImpl: Helper.defaultizeNode({
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
                 type: 'xod/patch-nodes/not-implemented-in-xod',
-              },
+              }),
             };
           }
 

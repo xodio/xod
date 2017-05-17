@@ -70,6 +70,8 @@ export const Node = Model('Node', {
   id: NodeId,
   position: NodePosition,
   type: PatchPath,
+  label: $.String,
+  description: $.String,
 });
 
 export const Link = Model('Link', {

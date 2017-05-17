@@ -12,6 +12,8 @@
       "path": "xod/math/subtrac",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -20,6 +22,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -28,6 +32,8 @@
           }
         },
         "b": {
+          "label": "",
+          "description": "",
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -36,6 +42,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -54,6 +62,8 @@
       "path": "xod/math/multiply",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -62,6 +72,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -70,6 +82,8 @@
           }
         },
         "b": {
+          "label": "",
+          "description": "",
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -78,6 +92,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -96,6 +112,8 @@
       "path": "xod/math/divide",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -104,6 +122,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -112,6 +132,8 @@
           }
         },
         "b": {
+          "label": "",
+          "description": "",
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -120,6 +142,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -138,6 +162,8 @@
       "path": "xod/math/add",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -146,6 +172,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -154,6 +182,8 @@
           }
         },
         "b": {
+          "label": "",
+          "description": "",
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -162,6 +192,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -180,6 +212,8 @@
       "path": "xod/core/valve-number",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -188,6 +222,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "cond": {
+          "label": "",
+          "description": "",
           "id": "cond",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -196,6 +232,8 @@
           }
         },
         "in": {
+          "label": "",
+          "description": "",
           "id": "in",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -204,6 +242,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -223,6 +263,8 @@
       "path": "xod/core/triggerable-number",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -231,6 +273,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "trigOn": {
+          "label": "",
+          "description": "",
           "id": "trigOn",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -239,6 +283,8 @@
           }
         },
         "value": {
+          "label": "",
+          "description": "",
           "id": "value",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -247,6 +293,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -266,6 +314,8 @@
       "path": "xod/core/ultrasonic-hc-sr04",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -274,6 +324,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "sample": {
+          "label": "",
+          "description": "",
           "id": "sample",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -282,6 +334,8 @@
           }
         },
         "units": {
+          "label": "",
+          "description": "",
           "id": "units",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -290,6 +344,8 @@
           }
         },
         "value": {
+          "label": "",
+          "description": "",
           "id": "value",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -298,6 +354,8 @@
           }
         },
         "error": {
+          "label": "",
+          "description": "",
           "id": "error",
           "type": "xod/patch-nodes/output-string",
           "position": {
@@ -317,6 +375,8 @@
       "path": "xod/core/time",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -325,6 +385,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "pulse": {
+          "label": "",
+          "description": "",
           "id": "pulse",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -333,6 +395,8 @@
           }
         },
         "value": {
+          "label": "",
+          "description": "",
           "id": "value",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -352,6 +416,8 @@
       "path": "xod/core/stdout",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -360,6 +426,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "value": {
+          "label": "",
+          "description": "",
           "id": "value",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -379,6 +447,8 @@
       "path": "xod/core/split-bool",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -387,6 +457,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inp": {
+          "label": "",
+          "description": "",
           "id": "inp",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -395,6 +467,8 @@
           }
         },
         "outTrue": {
+          "label": "",
+          "description": "",
           "id": "outTrue",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -403,6 +477,8 @@
           }
         },
         "outFalse": {
+          "label": "",
+          "description": "",
           "id": "outFalse",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -422,6 +498,8 @@
       "path": "xod/core/servo",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -430,6 +508,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "minPulse": {
+          "label": "",
+          "description": "",
           "id": "minPulse",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -438,6 +518,8 @@
           }
         },
         "maxPulse": {
+          "label": "",
+          "description": "",
           "id": "maxPulse",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -446,6 +528,8 @@
           }
         },
         "value": {
+          "label": "",
+          "description": "",
           "id": "value",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -464,6 +548,8 @@
       "path": "xod/core/pot",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -472,6 +558,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "sample": {
+          "label": "",
+          "description": "",
           "id": "sample",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -480,6 +568,8 @@
           }
         },
         "value": {
+          "label": "",
+          "description": "",
           "id": "value",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -498,6 +588,8 @@
       "path": "xod/core/or",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -506,6 +598,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
           "id": "a",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -514,6 +608,8 @@
           }
         },
         "b": {
+          "label": "",
+          "description": "",
           "id": "b",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -522,6 +618,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -541,6 +639,8 @@
       "path": "xod/core/not",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -549,6 +649,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "in": {
+          "label": "",
+          "description": "",
           "id": "in",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -557,6 +659,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -576,6 +680,8 @@
       "path": "xod/core/less",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -584,6 +690,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -592,6 +700,8 @@
           }
         },
         "b": {
+          "label": "",
+          "description": "",
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -600,6 +710,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -618,6 +730,8 @@
       "path": "xod/core/map",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -626,6 +740,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inp": {
+          "label": "",
+          "description": "",
           "id": "inp",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -634,6 +750,8 @@
           }
         },
         "inA": {
+          "label": "",
+          "description": "",
           "id": "inA",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -642,6 +760,8 @@
           }
         },
         "inB": {
+          "label": "",
+          "description": "",
           "id": "inB",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -650,6 +770,8 @@
           }
         },
         "outA": {
+          "label": "",
+          "description": "",
           "id": "outA",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -658,6 +780,8 @@
           }
         },
         "outB": {
+          "label": "",
+          "description": "",
           "id": "outB",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -666,6 +790,8 @@
           }
         },
         "clip": {
+          "label": "",
+          "description": "",
           "id": "clip",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -674,6 +800,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -692,6 +820,8 @@
       "path": "xod/core/latch",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -700,6 +830,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "toggle": {
+          "label": "",
+          "description": "",
           "id": "toggle",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -708,6 +840,8 @@
           }
         },
         "set": {
+          "label": "",
+          "description": "",
           "id": "set",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -716,6 +850,8 @@
           }
         },
         "reset": {
+          "label": "",
+          "description": "",
           "id": "reset",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -724,6 +860,8 @@
           }
         },
         "state": {
+          "label": "",
+          "description": "",
           "id": "state",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -742,6 +880,8 @@
       "path": "xod/core/led",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -750,6 +890,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "brightness": {
+          "label": "",
+          "description": "",
           "id": "brightness",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -769,6 +911,8 @@
       "path": "xod/core/file-write",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -777,6 +921,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "fileName": {
+          "label": "",
+          "description": "",
           "id": "fileName",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -785,6 +931,8 @@
           }
         },
         "data": {
+          "label": "",
+          "description": "",
           "id": "data",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -793,6 +941,8 @@
           }
         },
         "onSuccess": {
+          "label": "",
+          "description": "",
           "id": "onSuccess",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -801,6 +951,8 @@
           }
         },
         "onFailure": {
+          "label": "",
+          "description": "",
           "id": "onFailure",
           "type": "xod/patch-nodes/output-string",
           "position": {
@@ -820,6 +972,8 @@
       "path": "xod/core/greater",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -828,6 +982,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -836,6 +992,8 @@
           }
         },
         "b": {
+          "label": "",
+          "description": "",
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -844,6 +1002,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -862,6 +1022,8 @@
       "path": "xod/core/file-read",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -870,6 +1032,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "fileName": {
+          "label": "",
+          "description": "",
           "id": "fileName",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -878,6 +1042,8 @@
           }
         },
         "pulse": {
+          "label": "",
+          "description": "",
           "id": "pulse",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -886,6 +1052,8 @@
           }
         },
         "data": {
+          "label": "",
+          "description": "",
           "id": "data",
           "type": "xod/patch-nodes/output-string",
           "position": {
@@ -894,6 +1062,8 @@
           }
         },
         "error": {
+          "label": "",
+          "description": "",
           "id": "error",
           "type": "xod/patch-nodes/output-string",
           "position": {
@@ -913,6 +1083,8 @@
       "path": "xod/core/digital-output",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -921,6 +1093,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "pin": {
+          "label": "",
+          "description": "",
           "id": "pin",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -929,6 +1103,8 @@
           }
         },
         "value": {
+          "label": "",
+          "description": "",
           "id": "value",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -947,6 +1123,8 @@
       "path": "xod/core/equal",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -955,6 +1133,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -963,6 +1143,8 @@
           }
         },
         "b": {
+          "label": "",
+          "description": "",
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -971,6 +1153,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -989,6 +1173,8 @@
       "path": "xod/core/digital-input",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -997,6 +1183,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "pin": {
+          "label": "",
+          "description": "",
           "id": "pin",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -1005,6 +1193,8 @@
           }
         },
         "value": {
+          "label": "",
+          "description": "",
           "id": "value",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -1023,6 +1213,8 @@
       "path": "xod/core/either",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1031,6 +1223,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inp": {
+          "label": "",
+          "description": "",
           "id": "inp",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -1039,6 +1233,8 @@
           }
         },
         "trueValue": {
+          "label": "",
+          "description": "",
           "id": "trueValue",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -1047,6 +1243,8 @@
           }
         },
         "falseValue": {
+          "label": "",
+          "description": "",
           "id": "falseValue",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -1055,6 +1253,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -1073,6 +1273,8 @@
       "path": "xod/core/const-string",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1081,6 +1283,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inValue": {
+          "label": "",
+          "description": "",
           "id": "inValue",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -1089,6 +1293,8 @@
           }
         },
         "pulse": {
+          "label": "",
+          "description": "",
           "id": "pulse",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -1097,6 +1303,8 @@
           }
         },
         "value": {
+          "label": "",
+          "description": "",
           "id": "value",
           "type": "xod/patch-nodes/output-string",
           "position": {
@@ -1116,6 +1324,8 @@
       "path": "xod/core/const-number",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1124,6 +1334,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inValue": {
+          "label": "",
+          "description": "",
           "id": "inValue",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -1132,6 +1344,8 @@
           }
         },
         "pulse": {
+          "label": "",
+          "description": "",
           "id": "pulse",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -1140,6 +1354,8 @@
           }
         },
         "value": {
+          "label": "",
+          "description": "",
           "id": "value",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -1159,6 +1375,8 @@
       "path": "xod/core/concat",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1167,6 +1385,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
           "id": "a",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -1175,6 +1395,8 @@
           }
         },
         "b": {
+          "label": "",
+          "description": "",
           "id": "b",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -1183,6 +1405,8 @@
           }
         },
         "result": {
+          "label": "",
+          "description": "",
           "id": "result",
           "type": "xod/patch-nodes/output-string",
           "position": {
@@ -1202,6 +1426,8 @@
       "path": "xod/core/clock",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1210,6 +1436,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "interval": {
+          "label": "",
+          "description": "",
           "id": "interval",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -1218,6 +1446,8 @@
           }
         },
         "tick": {
+          "label": "",
+          "description": "",
           "id": "tick",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -1236,6 +1466,8 @@
       "path": "xod/core/const-bool",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1244,6 +1476,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inValue": {
+          "label": "",
+          "description": "",
           "id": "inValue",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -1252,6 +1486,8 @@
           }
         },
         "pulse": {
+          "label": "",
+          "description": "",
           "id": "pulse",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -1260,6 +1496,8 @@
           }
         },
         "value": {
+          "label": "",
+          "description": "",
           "id": "value",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -1279,6 +1517,8 @@
       "path": "xod/core/compare",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1287,6 +1527,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -1295,6 +1537,8 @@
           }
         },
         "b": {
+          "label": "",
+          "description": "",
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -1303,6 +1547,8 @@
           }
         },
         "equal": {
+          "label": "",
+          "description": "",
           "id": "equal",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -1311,6 +1557,8 @@
           }
         },
         "less": {
+          "label": "",
+          "description": "",
           "id": "less",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -1319,6 +1567,8 @@
           }
         },
         "greater": {
+          "label": "",
+          "description": "",
           "id": "greater",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -1337,6 +1587,8 @@
       "path": "xod/core/choose",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1345,6 +1597,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "x": {
+          "label": "",
+          "description": "",
           "id": "x",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -1353,6 +1607,8 @@
           }
         },
         "truePulse": {
+          "label": "",
+          "description": "",
           "id": "truePulse",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -1361,6 +1617,8 @@
           }
         },
         "falsePulse": {
+          "label": "",
+          "description": "",
           "id": "falsePulse",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -1379,6 +1637,8 @@
       "path": "xod/core/cast-string-to-pulse",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1387,6 +1647,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
           "id": "__in__",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -1395,6 +1657,8 @@
           }
         },
         "__out__": {
+          "label": "",
+          "description": "",
           "id": "__out__",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -1413,6 +1677,8 @@
       "path": "xod/core/cast-string-to-boolean",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1421,6 +1687,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
           "id": "__in__",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -1429,6 +1697,8 @@
           }
         },
         "__out__": {
+          "label": "",
+          "description": "",
           "id": "__out__",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -1447,6 +1717,8 @@
       "path": "xod/core/cast-number-to-pulse",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1455,6 +1727,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
           "id": "__in__",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -1463,6 +1737,8 @@
           }
         },
         "__out__": {
+          "label": "",
+          "description": "",
           "id": "__out__",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -1481,6 +1757,8 @@
       "path": "xod/core/cast-number-to-string",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1489,6 +1767,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
           "id": "__in__",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -1497,6 +1777,8 @@
           }
         },
         "__out__": {
+          "label": "",
+          "description": "",
           "id": "__out__",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -1515,6 +1797,8 @@
       "path": "xod/core/cast-pulse-to-number",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1523,6 +1807,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
           "id": "__in__",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -1531,6 +1817,8 @@
           }
         },
         "__out__": {
+          "label": "",
+          "description": "",
           "id": "__out__",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -1549,6 +1837,8 @@
       "path": "xod/core/cast-pulse-to-boolean",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1557,6 +1847,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
           "id": "__in__",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -1565,6 +1857,8 @@
           }
         },
         "__out__": {
+          "label": "",
+          "description": "",
           "id": "__out__",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -1583,6 +1877,8 @@
       "path": "xod/core/cast-number-to-boolean",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1591,6 +1887,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
           "id": "__in__",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -1599,6 +1897,8 @@
           }
         },
         "__out__": {
+          "label": "",
+          "description": "",
           "id": "__out__",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -1617,6 +1917,8 @@
       "path": "xod/core/cast-boolean-to-string",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1625,6 +1927,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
           "id": "__in__",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -1633,6 +1937,8 @@
           }
         },
         "__out__": {
+          "label": "",
+          "description": "",
           "id": "__out__",
           "type": "xod/patch-nodes/output-string",
           "position": {
@@ -1651,6 +1957,8 @@
       "path": "xod/core/cast-boolean-to-number",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1659,6 +1967,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
           "id": "__in__",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -1667,6 +1977,8 @@
           }
         },
         "__out__": {
+          "label": "",
+          "description": "",
           "id": "__out__",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -1685,6 +1997,8 @@
       "path": "xod/core/button",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1693,6 +2007,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "state": {
+          "label": "",
+          "description": "",
           "id": "state",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -1711,6 +2027,8 @@
       "path": "xod/core/cast-boolean-to-pulse",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1719,6 +2037,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
           "id": "__in__",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -1727,6 +2047,8 @@
           }
         },
         "__out__": {
+          "label": "",
+          "description": "",
           "id": "__out__",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -1745,6 +2067,8 @@
       "path": "xod/core/buzzer",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1753,6 +2077,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "freq": {
+          "label": "",
+          "description": "",
           "id": "freq",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -1772,6 +2098,8 @@
       "path": "xod/core/both",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1780,6 +2108,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
           "id": "a",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -1788,6 +2118,8 @@
           }
         },
         "b": {
+          "label": "",
+          "description": "",
           "id": "b",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -1796,6 +2128,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -1814,6 +2148,8 @@
       "path": "xod/core/analog_output",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1822,6 +2158,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "pin": {
+          "label": "",
+          "description": "",
           "id": "pin",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -1830,6 +2168,8 @@
           }
         },
         "value": {
+          "label": "",
+          "description": "",
           "id": "value",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -1848,6 +2188,8 @@
       "path": "xod/core/any",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1856,6 +2198,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
           "id": "a",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -1864,6 +2208,8 @@
           }
         },
         "b": {
+          "label": "",
+          "description": "",
           "id": "b",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -1872,6 +2218,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -1890,6 +2238,8 @@
       "path": "xod/core/analog_input",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1898,6 +2248,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "pin": {
+          "label": "",
+          "description": "",
           "id": "pin",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -1906,6 +2258,8 @@
           }
         },
         "pulse": {
+          "label": "",
+          "description": "",
           "id": "pulse",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -1914,6 +2268,8 @@
           }
         },
         "value": {
+          "label": "",
+          "description": "",
           "id": "value",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -1932,6 +2288,8 @@
       "path": "xod/core/and",
       "nodes": {
         "noNativeImpl": {
+          "label": "",
+          "description": "",
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -1940,6 +2298,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
           "id": "a",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -1948,6 +2308,8 @@
           }
         },
         "b": {
+          "label": "",
+          "description": "",
           "id": "b",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -1956,6 +2318,8 @@
           }
         },
         "out": {
+          "label": "",
+          "description": "",
           "id": "out",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -1975,6 +2339,8 @@
       "path": "@/led",
       "nodes": {
         "ryFxRcNdKg": {
+          "label": "",
+          "description": "",
           "id": "ryFxRcNdKg",
           "type": "xod/core/digital-output",
           "position": {
@@ -1988,6 +2354,8 @@
           }
         },
         "S1ulA9NuFx": {
+          "label": "",
+          "description": "",
           "id": "S1ulA9NuFx",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -1997,6 +2365,8 @@
           "boundValues": {}
         },
         "B1wg0qVOtg": {
+          "label": "",
+          "description": "",
           "id": "B1wg0qVOtg",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -2006,6 +2376,8 @@
           "boundValues": {}
         },
         "rJUgCqNuKl": {
+          "label": "",
+          "description": "",
           "id": "rJUgCqNuKl",
           "type": "xod/math/multiply",
           "position": {
@@ -2015,6 +2387,8 @@
           "boundValues": {}
         },
         "HkSgA94OYx": {
+          "label": "",
+          "description": "",
           "id": "HkSgA94OYx",
           "type": "xod/math/multiply",
           "position": {
@@ -2100,6 +2474,8 @@
       "path": "@/main",
       "nodes": {
         "BJ4l0cVdKe": {
+          "label": "",
+          "description": "",
           "id": "BJ4l0cVdKe",
           "type": "@/led",
           "position": {
@@ -2114,6 +2490,8 @@
           }
         },
         "SJ7g05EdFe": {
+          "label": "",
+          "description": "",
           "id": "SJ7g05EdFe",
           "type": "@/blink",
           "position": {
@@ -2149,6 +2527,8 @@
       "path": "@/blink",
       "nodes": {
         "BJGgAcVOtx": {
+          "label": "",
+          "description": "",
           "id": "BJGgAcVOtx",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -2158,6 +2538,8 @@
           "boundValues": {}
         },
         "rJWgAqVOtx": {
+          "label": "",
+          "description": "",
           "id": "rJWgAqVOtx",
           "type": "xod/core/latch",
           "position": {
@@ -2167,6 +2549,8 @@
           "boundValues": {}
         },
         "rJxgAqV_tl": {
+          "label": "",
+          "description": "",
           "id": "rJxgAqV_tl",
           "type": "xod/core/clock",
           "position": {
@@ -2181,6 +2565,8 @@
           }
         },
         "B1eR5EOYg": {
+          "label": "",
+          "description": "",
           "id": "B1eR5EOYg",
           "type": "xod/patch-nodes/input-number",
           "position": {
