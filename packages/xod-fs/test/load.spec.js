@@ -43,6 +43,13 @@ describe('Loader', () => {
       })
   );
 
+  it('getLocalProjects: should return an array of local projects in workspace', () =>
+    Loader.getLocalProjects(workspace)
+      .then((projects) => {
+        expect(projects).to.have.lengthOf(1);
+      })
+  );
+
   it('loadProjectWithLibs: should return project with libs', () =>
     Loader.loadProjectWithLibs(projectPath, workspace)
       .then(({ project, libs }) => {
