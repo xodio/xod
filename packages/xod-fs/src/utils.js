@@ -74,7 +74,10 @@ export const getProjectMetaName = R.prop('name');
 // :: String -> ProjectMeta[] -> ProjectMeta
 export const findProjectMetaByName = R.curry(
   (nameToFind, projectMetas) => R.find(
-    R.pathEq(['meta', 'name'], nameToFind),
+    R.compose(
+      R.equals(nameToFind),
+      getProjectMetaName
+    ),
     projectMetas
   )
 );
