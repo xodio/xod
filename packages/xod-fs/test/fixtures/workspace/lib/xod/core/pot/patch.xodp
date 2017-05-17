@@ -6,7 +6,7 @@
       "id": "noNativeImpl",
       "label": "",
       "description": "",
-      "pins": {},
+      "boundValues": {},
       "position": {
         "x": 100,
         "y": 100
@@ -17,7 +17,7 @@
       "id": "sample",
       "label": "",
       "description": "Sample current value",
-      "pins": {},
+      "boundValues": {},
       "position": {
         "x": 0,
         "y": 0
@@ -28,7 +28,7 @@
       "id": "value",
       "label": "",
       "description": "Sampled potentiometer value",
-      "pins": {},
+      "boundValues": {},
       "position": {
         "x": 0,
         "y": 300

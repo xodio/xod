@@ -1981,7 +1981,7 @@
             "x": 305,
             "y": 430
           },
-          "pins": {
+          "boundValues": {
             "pin": {
               "curried": false
             }
@@ -1994,7 +1994,7 @@
             "x": 172,
             "y": 104
           },
-          "pins": {}
+          "boundValues": {}
         },
         "B1wg0qVOtg": {
           "id": "B1wg0qVOtg",
@@ -2003,7 +2003,7 @@
             "x": 418,
             "y": 104
           },
-          "pins": {}
+          "boundValues": {}
         },
         "rJUgCqNuKl": {
           "id": "rJUgCqNuKl",
@@ -2012,7 +2012,7 @@
             "x": 453,
             "y": 298
           },
-          "pins": {}
+          "boundValues": {}
         },
         "HkSgA94OYx": {
           "id": "HkSgA94OYx",
@@ -2021,7 +2021,7 @@
             "x": 354,
             "y": 218
           },
-          "pins": {}
+          "boundValues": {}
         }
       },
       "links": {
@@ -2106,7 +2106,7 @@
             "x": 237,
             "y": 349
           },
-          "pins": {
+          "boundValues": {
             "S1ulA9NuFx": {
               "curried": true,
               "value": "LED1"
@@ -2120,7 +2120,7 @@
             "x": 238,
             "y": 184
           },
-          "pins": {
+          "boundValues": {
             "B1eR5EOYg": {
               "curried": true,
               "value": 1
@@ -2155,7 +2155,7 @@
             "x": 263,
             "y": 508
           },
-          "pins": {}
+          "boundValues": {}
         },
         "rJWgAqVOtx": {
           "id": "rJWgAqVOtx",
@@ -2164,7 +2164,7 @@
             "x": 271,
             "y": 355
           },
-          "pins": {}
+          "boundValues": {}
         },
         "rJxgAqV_tl": {
           "id": "rJxgAqV_tl",
@@ -2173,7 +2173,7 @@
             "x": 267,
             "y": 215
           },
-          "pins": {
+          "boundValues": {
             "interval": {
               "curried": false,
               "value": 1
@@ -2187,7 +2187,7 @@
             "x": 268,
             "y": 103
           },
-          "pins": {}
+          "boundValues": {}
         }
       },
       "links": {

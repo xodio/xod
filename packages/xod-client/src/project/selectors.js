@@ -90,8 +90,7 @@ const assocNodeIdToPins = node =>
 const mergePinDataFromPatch = R.curry((project, node) => {
   const type = XP.getNodeType(node);
 
-  // TODO: this will change after rename
-  const curriedPinsInfo = node.pins;
+  const { boundValues } = node;
 
   const pinDataFromPatch = R.compose(
     // TODO: add something like getPinsIndexedByKey to xod-project?
@@ -101,7 +100,7 @@ const mergePinDataFromPatch = R.curry((project, node) => {
     R.view(XP.lensPatch(type))
   )(project);
 
-  const merged = R.mergeWith(R.merge, pinDataFromPatch, curriedPinsInfo);
+  const merged = R.mergeWith(R.merge, pinDataFromPatch, boundValues);
 
   return R.assoc(
     'pins',

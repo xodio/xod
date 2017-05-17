@@ -311,7 +311,7 @@ const rekeyPinUsingLink = R.curry((link, pin) => {
 
 // :: Pin -> Nodes -> Link -> Node
 const assocInjectedPinToNodeByLink = R.curry((pin, nodes, link) => R.compose(
-    R.assoc('pins', rekeyPinUsingLink(link, pin)), // TODO: curriedPins
+    R.assoc('boundValues', rekeyPinUsingLink(link, pin)),
     findNodeByNodeId(R.__, nodes),
     Link.getLinkInputNodeId
   )(link)
@@ -321,7 +321,7 @@ const assocInjectedPinToNodeByLink = R.curry((pin, nodes, link) => R.compose(
 const passPinsFromTerminalNodes = R.curry((nodes, terminalLinks, terminalNodes) =>
   R.map(terminalNode =>
     R.compose(
-      R.map(assocInjectedPinToNodeByLink(terminalNode.pins, nodes)), // TODO: curriedPins
+      R.map(assocInjectedPinToNodeByLink(terminalNode.boundValues, nodes)),
       filterOutputLinksByNodeId(R.__, terminalLinks),
       Node.getNodeId
     )(terminalNode),
@@ -336,9 +336,9 @@ const removeTerminalsAndPassPins = ([nodes, links]) => {
   const terminalLinks = filterTerminalLinks(terminalNodes, links);
 
   const terminalNodesWithPins = R.reject(
-    R.pipe(R.prop('pins'), R.isEmpty),
+    R.pipe(R.prop('boundValues'), R.isEmpty),
     terminalNodes
-  ); // TODO: curriedPins
+  );
   const nodesWithPins = R.compose(
     R.flatten,
     passPinsFromTerminalNodes(nodes, R.flatten(terminalLinks))
@@ -548,21 +548,21 @@ const updateLinkNodeIds = R.curry((leafPaths, prefix, patch, link) => {
 
 
 // :: NodePins -> Node -> NodePins
-const rekeyCurriedPins = R.curry((curriedPins, node) => { // TODO: better name?
+const rekeyBoundValues = R.curry((boundValues, node) => { // TODO: better name?
   const nodeId = Node.getNodeId(node);
   const isTerminalNode = R.compose(
     PatchPathUtils.isTerminalPatchPath,
     Node.getNodeType
   )(node);
 
-  if (isTerminalNode && R.has(nodeId, curriedPins)) {
+  if (isTerminalNode && R.has(nodeId, boundValues)) {
     return R.applySpec({
       [CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.INPUT]]: R.prop(nodeId),
-      // TODO: no `__out__` because we can't "curry" output values?
-    })(curriedPins);
+      // TODO: no `__out__` because we can't "bind" output values?
+    })(boundValues);
   }
 
-  return R.propOr({}, 'pins', node); // TODO: curriedPins. TODO: use designated function to access?
+  return R.propOr({}, 'boundValues', node); // TODO: no propOr
 });
 
 /**
@@ -605,13 +605,13 @@ export const extractPatches = R.curry((project, leafPaths, prefix, curriedPins, 
             )
           ),
           // 1.1. Copy and rekey pins from parent node
-          node => R.assoc('pins', rekeyCurriedPins(curriedPins, node), node) // TODO: curriedPins
+          node => R.assoc('boundValues', rekeyBoundValues(curriedPins, node), node)
         ),
         R.converge(
           extractPatches(project, leafPaths),
           [
             R.compose(getPrefixedId(prefix), Node.getNodeId),
-            R.propOr({}, 'pins'), // TODO: curriedPins
+            R.propOr({}, 'boundValues'), // TODO: no propOr
             R.compose(getPatchByPath(project), Node.getNodeType),
           ]
         )

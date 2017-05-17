@@ -293,7 +293,7 @@ describe('Flatten', () => {
               a: {
                 id: 'a',
                 type: '@/foo',
-                pins: { // TODO: curriedPins
+                boundValues: {
                   a: {
                     curried: true,
                     value: true,
@@ -320,7 +320,7 @@ describe('Flatten', () => {
               c: {
                 id: 'c',
                 type: 'xod/core/number',
-                pins: { // TODO: curriedPins
+                boundValues: {
                   in: {
                     curried: true,
                     value: 32,
@@ -350,7 +350,7 @@ describe('Flatten', () => {
       const nodes = result[0];
 
       const terminalA = R.find(R.propEq('id', 'a~a'), nodes);
-      expect(terminalA).to.have.property('pins').that.deep.equals({
+      expect(terminalA).to.have.property('boundValues').that.deep.equals({
         __in__: {
           curried: true,
           value: true,
@@ -358,16 +358,16 @@ describe('Flatten', () => {
       });
 
       const terminalB = R.find(R.propEq('id', 'b~a'), nodes);
-      expect(terminalB).to.have.property('pins').that.empty();
+      expect(terminalB).to.have.property('boundValues').that.empty();
 
       const justNodeWithCurriedPinA = R.find(R.propEq('id', 'a~c'), nodes);
-      expect(justNodeWithCurriedPinA).to.have.property('pins').that.deep.equals(
-        project.patches['@/foo'].nodes.c.pins
+      expect(justNodeWithCurriedPinA).to.have.property('boundValues').that.deep.equals(
+        project.patches['@/foo'].nodes.c.boundValues
       );
 
       const justNodeWithCurriedPinB = R.find(R.propEq('id', 'b~c'), nodes);
-      expect(justNodeWithCurriedPinB).to.have.property('pins').that.deep.equals(
-        project.patches['@/foo'].nodes.c.pins
+      expect(justNodeWithCurriedPinB).to.have.property('boundValues').that.deep.equals(
+        project.patches['@/foo'].nodes.c.boundValues
       );
     });
     it('correct structure for blinking.json', () => {
@@ -391,7 +391,7 @@ describe('Flatten', () => {
 
       const terminalString = R.find(R.propEq('id', 'BJ4l0cVdKe~S1ulA9NuFx'), nodes);
       expect(terminalString)
-      .to.have.property('pins')
+      .to.have.property('boundValues')
       .that.deep.equals({
         __in__: {
           curried: true,
@@ -401,7 +401,7 @@ describe('Flatten', () => {
 
       const terminalNumber = R.find(R.propEq('id', 'SJ7g05EdFe~B1eR5EOYg'), nodes);
       expect(terminalNumber)
-      .to.have.property('pins')
+      .to.have.property('boundValues')
       .that.deep.equals({
         __in__: {
           curried: true,
@@ -1402,7 +1402,7 @@ describe('Flatten', () => {
               f: {
                 id: 'f',
                 type: '@/foo',
-                pins: { // TODO: curriedPins
+                boundValues: {
                   b: {
                     curried: true,
                     value: 32,
@@ -1469,9 +1469,9 @@ describe('Flatten', () => {
       Helper.expectEither(
         (newProject) => {
           expect(newProject.patches['@/main'].nodes['f~a'])
-            .to.have.property('pins')
+            .to.have.property('boundValues')
             .that.have.property('in')
-            .that.deep.equal(project.patches['@/main'].nodes.f.pins.b);
+            .that.deep.equal(project.patches['@/main'].nodes.f.boundValues.b);
         },
         flatProject
       );
@@ -1489,7 +1489,7 @@ describe('Flatten', () => {
               b: {
                 id: 'b',
                 type: '@/foo',
-                pins: { // TODO: curriedPins
+                boundValues: {
                   a2: {
                     curried: true,
                     value: 32,
@@ -1684,13 +1684,13 @@ describe('Flatten', () => {
       Helper.expectEither(
         (newProject) => {
           expect(newProject.patches['@/main'].nodes['b~a2-to-b~b'])
-            .to.have.property('pins')
+            .to.have.property('boundValues')
             .that.have.property('__in__')
-            .that.deep.equal(project.patches['@/main'].nodes.b.pins.a2);
+            .that.deep.equal(project.patches['@/main'].nodes.b.boundValues.a2);
           expect(newProject.patches['@/main'].nodes['b~a3-to-b~b2'])
-            .to.have.property('pins')
+            .to.have.property('boundValues')
             .that.have.property('__in__')
-            .that.deep.equal(project.patches['@/main'].nodes.b.pins.a3);
+            .that.deep.equal(project.patches['@/main'].nodes.b.boundValues.a3);
         },
         flatProject
       );

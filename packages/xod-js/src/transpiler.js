@@ -85,7 +85,7 @@ export const createConstNode = R.curry((nodeId, curriedPinPair) => {
     value: curriedPinPair[1],
     type: 'xod/internal/const',
     position: { x: 0, y: 0 },
-    pins: {},
+    boundValues: {},
   };
 });
 
@@ -135,9 +135,9 @@ const createConstants = R.curry((project, nodes) =>
 );
 
 // :: Patch -> Patch
-const clearNodePins = R.over(
+const clearNodeBoundValues = R.over(
   R.lensProp('nodes'),
-  R.map(R.omit(['pins']))
+  R.map(R.omit(['boundValues']))
 );
 
 // :: Project -> Patch -> Patch
@@ -156,7 +156,7 @@ export const addConstNodesToPatch = R.curry((project, patch) => {
 export const transformPatch = R.curry((path, project) =>
   Project.getPatchByPath(path, project)
   .map(addConstNodesToPatch(project))
-  .map(clearNodePins)
+  .map(clearNodeBoundValues)
 );
 
 // :: Patch -> Project -> Node -> Node

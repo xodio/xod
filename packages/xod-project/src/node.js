@@ -35,11 +35,11 @@ import { isInputTerminalPath, isOutputTerminalPath, getTerminalDataType } from '
  * @function getPathToPinProperty
  * @param {string} propName property name: `value` or `curried`
  * @param {string} pinKey pin key
- * @returns {string[]} path like `['pins', 'pinKey', 'value']`
+ * @returns {string[]} path like `['boundValues', 'pinKey', 'value']`
  */
 const getPathToPinProperty = def(
   'getPathToPinProperty :: String -> String -> [String]',
-  (propName, pinKey) => ['pins', pinKey, propName]
+  (propName, pinKey) => ['boundValues', pinKey, propName]
 );
 
 // =============================================================================
@@ -62,6 +62,7 @@ export const createNode = def(
     position,
     label: '',
     description: '',
+    // TODO: boundValues: {},
   })
 );
 
@@ -209,7 +210,7 @@ export const isPinNode = def(
 export const assocInitialPinValues = def(
   'assocInitialPinValues :: Patch -> Node -> Node',
   (patch, node) => R.assoc(
-    'pins',
+    'boundValues',
     R.compose(
       R.indexBy(R.prop('key')),
       R.map(
@@ -235,7 +236,7 @@ export const assocInitialPinValues = def(
 export const getCurriedPins = R.compose(
   R.map(R.prop('value')),
   R.filter(R.propEq('curried', true)), // TODO: deprecated
-  R.propOr({}, 'pins')
+  R.propOr({}, 'boundValues')
 );
 
 /**

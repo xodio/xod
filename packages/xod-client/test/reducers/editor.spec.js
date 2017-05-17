@@ -73,7 +73,7 @@ describe('Editor reducer', () => {
                   x: 138,
                   y: 432,
                 },
-                pins: {
+                boundValues: {
                   in: {
                     key: 'in',
                     value: 0,

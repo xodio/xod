@@ -37,7 +37,7 @@ describe('arrangeByFiles', () => {
                   x: 138,
                   y: 224,
                 },
-                pins: {
+                boundValues: {
                   brightness: {
                     key: 'brightness',
                     value: 0,
@@ -53,7 +53,7 @@ describe('arrangeByFiles', () => {
                   x: 138,
                   y: 16,
                 },
-                pins: {},
+                boundValues: {},
                 label: '',
                 description: '',
               },

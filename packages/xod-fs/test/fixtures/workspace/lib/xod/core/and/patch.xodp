@@ -6,7 +6,7 @@
       "id": "noNativeImpl",
       "label": "",
       "description": "",
-      "pins": {},
+      "boundValues": {},
       "position": {
         "x": 100,
         "y": 100
@@ -17,7 +17,7 @@
       "id": "a",
       "label": "First input",
       "description": "",
-      "pins": {},
+      "boundValues": {},
       "position": {
         "x": 0,
         "y": 0
@@ -28,7 +28,7 @@
       "id": "b",
       "label": "Second input",
       "description": "",
-      "pins": {},
+      "boundValues": {},
       "position": {
         "x": 200,
         "y": 0
@@ -39,7 +39,7 @@
       "id": "out",
       "label": "output",
       "description": "\"true\" if both inputs are \"true\"",
-      "pins": {},
+      "boundValues": {},
       "position": {
         "x": 0,
         "y": 300

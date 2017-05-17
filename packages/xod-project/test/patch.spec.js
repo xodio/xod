@@ -157,13 +157,7 @@ describe('Patch', () => {
       expect(Patch.isTerminalPatch(emptyPatch)).to.be.false();
     });
     it('should return false for patch without terminal pin', () => {
-      const patch = Helper.defaultizePatch({
-        pins: {
-          a: {
-            key: 'a',
-          },
-        },
-      });
+      const patch = Helper.defaultizePatch({});
       expect(Patch.isTerminalPatch(patch)).to.be.false();
     });
     it('should return true for patch with terminal input pin', () => {
@@ -527,26 +521,31 @@ describe('Patch', () => {
         Patch.listPins(newPatch)
       );
     });
-    it('should update pin by associating terminal Node', () => {
+    it('should update pin by associating terminal Node with the same id', () => {
       const patch = Helper.defaultizePatch({
-        pins: {
+        nodes: {
           1: {
-            key: '1',
-            type: 'string',
-            direction: 'output',
+            id: '1',
+            type: 'xod/patch-nodes/output-string',
           },
         },
       });
+
+      const expectedPinBeforeUpdate = Pin.createPin('1', 'string', 'output', 0, '');
+      assert.deepEqual(
+        [expectedPinBeforeUpdate],
+        Patch.listPins(patch)
+      );
+
       const node = Helper.defaultizeNode({
         id: '1',
         type: 'xod/patch-nodes/input-number',
       });
       const newPatch = Patch.assocNode(node, patch);
 
-      const expectedPin = Pin.createPin('1', 'number', 'input', 0, '');
-
+      const expectedPinAfterUpdate = Pin.createPin('1', 'number', 'input', 0, '');
       assert.deepEqual(
-        [expectedPin],
+        [expectedPinAfterUpdate],
         Patch.listPins(newPatch)
       );
     });

@@ -6,7 +6,7 @@
       "id": "noNativeImpl",
       "label": "",
       "description": "",
-      "pins": {},
+      "boundValues": {},
       "position": {
         "x": 100,
         "y": 100
@@ -17,7 +17,7 @@
       "id": "brightness",
       "label": "",
       "description": "Shine brightness",
-      "pins": {},
+      "boundValues": {},
       "position": {
         "x": 0,
         "y": 0

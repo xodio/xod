@@ -45,7 +45,7 @@
             "x": 138,
             "y": 224
           },
-          "pins": {
+          "boundValues": {
             "brightness": {
               "key": "brightness",
               "value": 0
@@ -61,7 +61,7 @@
             "x": 138,
             "y": 16
           },
-          "pins": {},
+          "boundValues": {},
           "label": "",
           "description": ""
         }

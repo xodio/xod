@@ -61,7 +61,7 @@ describe('Transpiler', () => {
                 x: 0,
                 y: 0,
               },
-              pins: {
+              boundValues: {
                 in_A: {
                   value: 10,
                   curried: true,
@@ -75,7 +75,7 @@ describe('Transpiler', () => {
                 x: 200,
                 y: 0,
               },
-              pins: {},
+              boundValues: {},
             },
           },
           links: {
@@ -162,7 +162,7 @@ describe('Transpiler', () => {
             type: 'xod/internal/const',
             value: 10,
             position: { x: 0, y: 0 },
-            pins: {},
+            boundValues: {},
           },
         },
         links: {
@@ -351,7 +351,7 @@ describe('Transpiler', () => {
                   x: 0,
                   y: 0,
                 },
-                pins: {
+                boundValues: {
                   in_A: {
                     value: 10,
                     curried: true,
@@ -365,7 +365,7 @@ describe('Transpiler', () => {
                   x: 0,
                   y: 0,
                 },
-                pins: {},
+                boundValues: {},
               },
             },
             links: {

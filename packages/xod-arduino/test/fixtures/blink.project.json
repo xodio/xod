@@ -2269,7 +2269,7 @@
             "x": 327,
             "y": 497
           },
-          "pins": {}
+          "boundValues": {}
         },
         "B1zQ5xhzlil": {
           "id": "B1zQ5xhzlil",
@@ -2278,7 +2278,7 @@
             "x": 671,
             "y": 110
           },
-          "pins": {}
+          "boundValues": {}
         },
         "HJbQcgnfgix": {
           "id": "HJbQcgnfgix",
@@ -2287,7 +2287,7 @@
             "x": 528,
             "y": 497
           },
-          "pins": {}
+          "boundValues": {}
         },
         "r1gQ5lhflie": {
           "id": "r1gQ5lhflie",
@@ -2296,7 +2296,7 @@
             "x": 535,
             "y": 383
           },
-          "pins": {}
+          "boundValues": {}
         },
         "S117ql3Mejx": {
           "id": "S117ql3Mejx",
@@ -2305,7 +2305,7 @@
             "x": 134,
             "y": 91
           },
-          "pins": {}
+          "boundValues": {}
         },
         "Hk0z9g2zlil": {
           "id": "Hk0z9g2zlil",
@@ -2314,7 +2314,7 @@
             "x": 332,
             "y": 386
           },
-          "pins": {}
+          "boundValues": {}
         },
         "rJTf5ehGejg": {
           "id": "rJTf5ehGejg",
@@ -2323,7 +2323,7 @@
             "x": 422,
             "y": 204
           },
-          "pins": {}
+          "boundValues": {}
         }
       },
       "links": {
@@ -2451,7 +2451,7 @@
             "x": 428,
             "y": 78
           },
-          "pins": {}
+          "boundValues": {}
         },
         "HkjMcg2feil": {
           "id": "HkjMcg2feil",
@@ -2460,7 +2460,7 @@
             "x": 326,
             "y": 196
           },
-          "pins": {}
+          "boundValues": {}
         },
         "By9G5g3Mesx": {
           "id": "By9G5g3Mesx",
@@ -2469,7 +2469,7 @@
             "x": 232,
             "y": 76
           },
-          "pins": {}
+          "boundValues": {}
         },
         "B1Kf5xhGesg": {
           "id": "B1Kf5xhGesg",
@@ -2478,7 +2478,7 @@
             "x": 320,
             "y": 454
           },
-          "pins": {}
+          "boundValues": {}
         },
         "BJ_Mqgnfejl": {
           "id": "BJ_Mqgnfejl",
@@ -2487,7 +2487,7 @@
             "x": 324,
             "y": 318
           },
-          "pins": {}
+          "boundValues": {}
         }
       },
       "links": {
@@ -2549,7 +2549,7 @@
             "x": 305,
             "y": 430
           },
-          "pins": {
+          "boundValues": {
             "pin": {
               "curried": false
             }
@@ -2562,7 +2562,7 @@
             "x": 172,
             "y": 104
           },
-          "pins": {}
+          "boundValues": {}
         },
         "rySGcl2zlig": {
           "id": "rySGcl2zlig",
@@ -2571,7 +2571,7 @@
             "x": 418,
             "y": 104
           },
-          "pins": {}
+          "boundValues": {}
         },
         "HJ4MqxhGlog": {
           "id": "HJ4MqxhGlog",
@@ -2580,7 +2580,7 @@
             "x": 453,
             "y": 298
           },
-          "pins": {}
+          "boundValues": {}
         },
         "HkXMqe3zeox": {
           "id": "HkXMqe3zeox",
@@ -2589,7 +2589,7 @@
             "x": 354,
             "y": 218
           },
-          "pins": {}
+          "boundValues": {}
         }
       },
       "links": {
@@ -2673,7 +2673,7 @@
             "x": 349,
             "y": 270
           },
-          "pins": {}
+          "boundValues": {}
         },
         "HkWf5g2feix": {
           "id": "HkWf5g2feix",
@@ -2682,7 +2682,7 @@
             "x": 241,
             "y": 117
           },
-          "pins": {}
+          "boundValues": {}
         },
         "B1xfqxnfgsx": {
           "id": "B1xfqxnfgsx",
@@ -2691,7 +2691,7 @@
             "x": 520,
             "y": 271
           },
-          "pins": {}
+          "boundValues": {}
         },
         "SJyM5ghzgjx": {
           "id": "SJyM5ghzgjx",
@@ -2700,7 +2700,7 @@
             "x": 595,
             "y": 116
           },
-          "pins": {}
+          "boundValues": {}
         },
         "SyAZcxnMlil": {
           "id": "SyAZcxnMlil",
@@ -2709,7 +2709,7 @@
             "x": 432,
             "y": 407
           },
-          "pins": {}
+          "boundValues": {}
         },
         "ByTWce3fxjg": {
           "id": "ByTWce3fxjg",
@@ -2718,7 +2718,7 @@
             "x": 432,
             "y": 541
           },
-          "pins": {}
+          "boundValues": {}
         },
         "Bk2Wqg3fgjl": {
           "id": "Bk2Wqg3fgjl",
@@ -2727,7 +2727,7 @@
             "x": 434,
             "y": 114
           },
-          "pins": {}
+          "boundValues": {}
         }
       },
       "links": {
@@ -2822,7 +2822,7 @@
             "x": 439,
             "y": 120
           },
-          "pins": {}
+          "boundValues": {}
         },
         "H1qZ5g3Ggse": {
           "id": "H1qZ5g3Ggse",
@@ -2831,7 +2831,7 @@
             "x": 271,
             "y": 122
           },
-          "pins": {}
+          "boundValues": {}
         },
         "HkKbcl3Mgil": {
           "id": "HkKbcl3Mgil",
@@ -2840,7 +2840,7 @@
             "x": 353,
             "y": 249
           },
-          "pins": {}
+          "boundValues": {}
         },
         "B1_Zcxnzgje": {
           "id": "B1_Zcxnzgje",
@@ -2849,7 +2849,7 @@
             "x": 360,
             "y": 358
           },
-          "pins": {}
+          "boundValues": {}
         },
         "HywZql3zese": {
           "id": "HywZql3zese",
@@ -2858,7 +2858,7 @@
             "x": 360,
             "y": 479
           },
-          "pins": {}
+          "boundValues": {}
         }
       },
       "links": {
@@ -2920,7 +2920,7 @@
             "x": 598,
             "y": 533
           },
-          "pins": {}
+          "boundValues": {}
         },
         "rkSW5e2Glje": {
           "id": "rkSW5e2Glje",
@@ -2929,7 +2929,7 @@
             "x": 249,
             "y": 294
           },
-          "pins": {}
+          "boundValues": {}
         },
         "SJEbqxhMgjg": {
           "id": "SJEbqxhMgjg",
@@ -2938,7 +2938,7 @@
             "x": 419,
             "y": 405
           },
-          "pins": {}
+          "boundValues": {}
         },
         "SJX-ce3zeog": {
           "id": "SJX-ce3zeog",
@@ -2947,7 +2947,7 @@
             "x": 456,
             "y": 535
           },
-          "pins": {}
+          "boundValues": {}
         },
         "SJfb9xhfxjg": {
           "id": "SJfb9xhfxjg",
@@ -2956,7 +2956,7 @@
             "x": 171,
             "y": 538
           },
-          "pins": {}
+          "boundValues": {}
         },
         "HkbWqg2zejx": {
           "id": "HkbWqg2zejx",
@@ -2965,7 +2965,7 @@
             "x": 495,
             "y": 297
           },
-          "pins": {}
+          "boundValues": {}
         },
         "SkgZqxnflig": {
           "id": "SkgZqxnflig",
@@ -2974,7 +2974,7 @@
             "x": 173,
             "y": 140
           },
-          "pins": {}
+          "boundValues": {}
         },
         "HJkZqxnMxoe": {
           "id": "HJkZqxnMxoe",
@@ -2983,7 +2983,7 @@
             "x": 313,
             "y": 538
           },
-          "pins": {}
+          "boundValues": {}
         },
         "Hy0e5e2fxix": {
           "id": "Hy0e5e2fxix",
@@ -2992,7 +2992,7 @@
             "x": 589,
             "y": 140
           },
-          "pins": {}
+          "boundValues": {}
         },
         "S1agqlhMgje": {
           "id": "S1agqlhMgje",
@@ -3001,7 +3001,7 @@
             "x": 452,
             "y": 140
           },
-          "pins": {}
+          "boundValues": {}
         },
         "S1heqxnzgoe": {
           "id": "S1heqxnzgoe",
@@ -3010,7 +3010,7 @@
             "x": 315,
             "y": 140
           },
-          "pins": {}
+          "boundValues": {}
         }
       },
       "links": {
@@ -3149,7 +3149,7 @@
             "x": 271,
             "y": 258
           },
-          "pins": {}
+          "boundValues": {}
         },
         "r1ceqxnzgse": {
           "id": "r1ceqxnzgse",
@@ -3158,7 +3158,7 @@
             "x": 402,
             "y": 456
           },
-          "pins": {}
+          "boundValues": {}
         },
         "Sytl9lnfljl": {
           "id": "Sytl9lnfljl",
@@ -3167,7 +3167,7 @@
             "x": 553,
             "y": 118
           },
-          "pins": {}
+          "boundValues": {}
         },
         "Hk_x5x2flie": {
           "id": "Hk_x5x2flie",
@@ -3176,7 +3176,7 @@
             "x": 189,
             "y": 116
           },
-          "pins": {}
+          "boundValues": {}
         },
         "HkDg9e3flix": {
           "id": "HkDg9e3flix",
@@ -3185,7 +3185,7 @@
             "x": 191,
             "y": 452
           },
-          "pins": {}
+          "boundValues": {}
         },
         "BJLgqxhfeoe": {
           "id": "BJLgqxhfeoe",
@@ -3194,7 +3194,7 @@
             "x": 382,
             "y": 361
           },
-          "pins": {}
+          "boundValues": {}
         },
         "HJSxqe2Mgjg": {
           "id": "HJSxqe2Mgjg",
@@ -3203,7 +3203,7 @@
             "x": 462,
             "y": 256
           },
-          "pins": {}
+          "boundValues": {}
         },
         "r1Nxcg2zgjg": {
           "id": "r1Nxcg2zgjg",
@@ -3212,7 +3212,7 @@
             "x": 367,
             "y": 117
           },
-          "pins": {}
+          "boundValues": {}
         },
         "Symlqehzxsg": {
           "id": "Symlqehzxsg",
@@ -3221,7 +3221,7 @@
             "x": 554,
             "y": 457
           },
-          "pins": {}
+          "boundValues": {}
         }
       },
       "links": {
@@ -3338,7 +3338,7 @@
             "x": 460,
             "y": 88
           },
-          "pins": {}
+          "boundValues": {}
         },
         "rJbgcx3Mxjl": {
           "id": "rJbgcx3Mxjl",
@@ -3347,7 +3347,7 @@
             "x": 332,
             "y": 251
           },
-          "pins": {}
+          "boundValues": {}
         },
         "B1ll9e3zxil": {
           "id": "B1ll9e3zxil",
@@ -3356,7 +3356,7 @@
             "x": 420,
             "y": 482
           },
-          "pins": {}
+          "boundValues": {}
         },
         "S1yg9ehzeil": {
           "id": "S1yg9ehzeil",
@@ -3365,7 +3365,7 @@
             "x": 242,
             "y": 486
           },
-          "pins": {}
+          "boundValues": {}
         },
         "H1R5e3feix": {
           "id": "H1R5e3feix",
@@ -3374,7 +3374,7 @@
             "x": 332,
             "y": 336
           },
-          "pins": {}
+          "boundValues": {}
         },
         "r1a5gnzgoe": {
           "id": "r1a5gnzgoe",
@@ -3383,7 +3383,7 @@
             "x": 226,
             "y": 91
           },
-          "pins": {}
+          "boundValues": {}
         }
       },
       "links": {
@@ -3456,7 +3456,7 @@
             "x": 263,
             "y": 508
           },
-          "pins": {}
+          "boundValues": {}
         },
         "r1iqlnGeol": {
           "id": "r1iqlnGeol",
@@ -3465,7 +3465,7 @@
             "x": 271,
             "y": 355
           },
-          "pins": {}
+          "boundValues": {}
         },
         "r195ghfxil": {
           "id": "r195ghfxil",
@@ -3474,7 +3474,7 @@
             "x": 267,
             "y": 215
           },
-          "pins": {
+          "boundValues": {
             "IVAL": {
               "curried": false,
               "value": 1
@@ -3488,7 +3488,7 @@
             "x": 268,
             "y": 103
           },
-          "pins": {}
+          "boundValues": {}
         }
       },
       "links": {
@@ -3539,7 +3539,7 @@
             "x": 266,
             "y": 224
           },
-          "pins": {
+          "boundValues": {
             "HJUce2Gxox": {
               "curried": true,
               "value": 13
@@ -3553,7 +3553,7 @@
             "x": 266,
             "y": 120
           },
-          "pins": {
+          "boundValues": {
             "Skb5l2fxol": {
               "curried": true,
               "value": 0.2
@@ -3587,7 +3587,7 @@
             "x": 138,
             "y": 120
           },
-          "pins": {}
+          "boundValues": {}
         },
         "HJHcl2zxse": {
           "id": "HJHcl2zxse",
@@ -3596,7 +3596,7 @@
             "x": 266,
             "y": 120
           },
-          "pins": {}
+          "boundValues": {}
         },
         "r1E5ghzlol": {
           "id": "r1E5ghzlol",
@@ -3605,7 +3605,7 @@
             "x": 138,
             "y": 328
           },
-          "pins": {}
+          "boundValues": {}
         },
         "ByQqe3Gxse": {
           "id": "ByQqe3Gxse",
@@ -3614,7 +3614,7 @@
             "x": 266,
             "y": 224
           },
-          "pins": {}
+          "boundValues": {}
         }
       },
       "links": {
@@ -3676,7 +3676,7 @@
             "x": 266,
             "y": 432
           },
-          "pins": {}
+          "boundValues": {}
         },
         "Skb5l2fxol": {
           "id": "Skb5l2fxol",
@@ -3685,7 +3685,7 @@
             "x": 266,
             "y": 120
           },
-          "pins": {}
+          "boundValues": {}
         },
         "rylqlnGxse": {
           "id": "rylqlnGxse",
@@ -3694,7 +3694,7 @@
             "x": 266,
             "y": 328
           },
-          "pins": {}
+          "boundValues": {}
         },
         "H1ce2fxil": {
           "id": "H1ce2fxil",
@@ -3703,7 +3703,7 @@
             "x": 266,
             "y": 224
           },
-          "pins": {
+          "boundValues": {
             "IVAL": {
               "curried": false,
               "value": 1
