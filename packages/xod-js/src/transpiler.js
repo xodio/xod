@@ -85,6 +85,8 @@ export const createConstNode = R.curry((nodeId, curriedPinPair) => {
     value: curriedPinPair[1],
     type: 'xod/internal/const',
     position: { x: 0, y: 0 },
+    label: '',
+    description: '',
     boundValues: {},
   };
 });

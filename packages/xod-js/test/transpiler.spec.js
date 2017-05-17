@@ -163,6 +163,8 @@ describe('Transpiler', () => {
             value: 10,
             position: { x: 0, y: 0 },
             boundValues: {},
+            label: '',
+            description: '',
           },
         },
         links: {
