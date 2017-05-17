@@ -10,6 +10,7 @@ import {
   addError,
 } from 'xod-client';
 import * as EVENTS from '../shared/events';
+import * as MESSAGES from '../shared/messages';
 
 import * as ActionType from './actionTypes';
 
@@ -138,9 +139,9 @@ export const saveProject = createAsyncAction({
   eventName: EVENTS.SAVE_PROJECT,
   actionType: ActionType.SAVE_PROJECT,
   messages: {
-    process: 'Saving in progress...',
-    complete: 'Project has been saved successfully!',
-    error: 'Failed to save project.',
+    process: MESSAGES.PROJECT_SAVE_PROCESSED,
+    complete: MESSAGES.PROJECT_SAVE_SUCCEED,
+    error: MESSAGES.PROJECT_SAVE_FAILED,
   },
 });
 

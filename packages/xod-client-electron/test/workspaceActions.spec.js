@@ -153,6 +153,19 @@ describe('End-to-End', () => {
       assert.equal(data[0].name, 'welcome-to-xod');
     }
   };
+  const subscribeOnSelectProject = (done, path, projectName) => WA.WorkspaceEvents.once(
+    EVENTS.SELECT_PROJECT,
+    ({ projectMeta }) => {
+      WA.onSelectProject(
+        (eventName, project) => {
+          assert.equal(eventName, EVENTS.REQUEST_SHOW_PROJECT);
+          assert.equal(getProjectName(project), projectName);
+        },
+        loadMock(path),
+        projectMeta
+      ).then(() => done());
+    }
+  );
 
   describe('spawn workspace pipeline', () => {
     it('should spawn everything and enumerate all projects (not libs)',
@@ -237,12 +250,15 @@ describe('End-to-End', () => {
     const deleteTestProject = () => rmrf(fixture('./emptyWorkspace/test'));
     afterEach(deleteTestProject);
 
-    it('should create, save and request to open new project', () => {
-      const sendMock = (eventName, projectMeta) => {
-        assert.equal(eventName, EVENTS.REQUEST_SHOW_PROJECT);
-        assert.equal(projectMeta.name, 'test');
-      };
-      WA.onCreateProject(sendMock, loadMock(fixture('./emptyWorkspace')), 'test');
+    it('should create, save and request to open new project', (done) => {
+      subscribeOnSelectProject(done, fixture('./emptyWorkspace'), 'test');
+      WA.onCreateProject(
+        (eventName) => {
+          assert.equal(eventName, EVENTS.SAVE_PROJECT);
+        },
+        loadMock(fixture('./emptyWorkspace')),
+        'test'
+      );
     });
   });
 
@@ -278,22 +294,8 @@ describe('End-to-End', () => {
   });
 
   describe('onCreateWorkspace', () => {
-    const subscribeOnSelectProject = (done, path) => WA.WorkspaceEvents.once(
-      EVENTS.SELECT_PROJECT,
-      ({ projectMeta }) => {
-        WA.onSelectProject(
-          (eventName, project) => {
-            assert.equal(eventName, EVENTS.REQUEST_SHOW_PROJECT);
-            assert.equal(getProjectName(project), 'welcome-to-xod');
-          },
-          loadMock(path),
-          projectMeta
-        ).then(() => done());
-      }
-    );
-
     it('not existent workspace: spawn .xodworkspace, stdlib, save path, spawn default project and request to open it', (done) => {
-      subscribeOnSelectProject(done, fixture('./notExistWorkspace'));
+      subscribeOnSelectProject(done, fixture('./notExistWorkspace'), 'welcome-to-xod');
 
       WA.onCreateWorkspace(
         (eventName) => {
@@ -304,7 +306,7 @@ describe('End-to-End', () => {
       );
     });
     it('empty workspace: spawn default project and request to open it', (done) => {
-      subscribeOnSelectProject(done, fixture('./emptyWorkspace'));
+      subscribeOnSelectProject(done, fixture('./emptyWorkspace'), 'welcome-to-xod');
 
       WA.onCreateWorkspace(
         (eventName) => {

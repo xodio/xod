@@ -405,6 +405,7 @@ export const onSwitchWorkspace = R.curry(
 export const onCreateProject = R.curry(
   (send, pathGetter, projectName) => R.pipeP(
     createAndSaveNewProject,
+    R.tap(notifySaveProjectComplete(send)),
     pathGetter,
     enumerateProjects,
     findProjectMetaByName(projectName),

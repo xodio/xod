@@ -34,6 +34,7 @@ import { SaveProgressBar } from '../components/SaveProgressBar';
 import * as ERROR_CODES from '../../shared/errorCodes';
 import formatError from '../../shared/errorFormatter';
 import * as EVENTS from '../../shared/events';
+import * as MESSAGES from '../../shared/messages';
 
 const { app, dialog, Menu } = remoteElectron;
 const DEFAULT_CANVAS_WIDTH = 800;
@@ -179,7 +180,10 @@ class App extends client.App {
 
   onCreateProject(projectName) {
     this.props.actions.createProject(projectName);
-    this.onSaveProject();
+    ipcRenderer.send(EVENTS.CREATE_PROJECT, projectName);
+    ipcRenderer.once(EVENTS.SAVE_PROJECT, () => {
+      this.props.actions.addConfirmation(MESSAGES.PROJECT_SAVE_SUCCEED);
+    });
   }
 
   onOpenProjectClicked() {

@@ -10,3 +10,7 @@ export const ARDUINO_PATH_CHANGED = 'Path to Arduino IDE executable was changed.
 export const SUCCESS = {
   [EVENTS.SAVE_PROJECT]: 'Project was successfully saved',
 };
+
+export const PROJECT_SAVE_PROCESSED = '';
+export const PROJECT_SAVE_FAILED = 'Failed to save project.';
+export const PROJECT_SAVE_SUCCEED = 'Project has been saved successfully!';
