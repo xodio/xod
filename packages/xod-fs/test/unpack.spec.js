@@ -71,6 +71,7 @@ describe('arrangeByFiles', () => {
                 },
               },
             ],
+            description: 'main patch description',
           },
           path: './awesome-project/main/patch.xodp',
         },
