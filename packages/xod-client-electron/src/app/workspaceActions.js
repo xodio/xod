@@ -1,26 +1,23 @@
 import R from 'ramda';
-import fs from 'fs';
 import EventEmitter from 'events';
 
 import * as XP from 'xod-project';
 import {
-  resolvePath,
   spawnWorkspaceFile,
   spawnStdLib,
   spawnDefaultProject,
-  save,
+  saveProject,
   getLocalProjects,
-  doesDirectoryExist,
-  doesWorkspaceFileExist,
+  validateWorkspace,
   loadProjectWithLibs,
   pack,
-  arrangeByFiles,
   getProjectMetaPath,
   filterDefaultProject,
   findProjectMetaByName,
   resolveLibPath,
   resolveDefaultProjectPath,
   ensureWorkspacePath,
+  ERROR_CODES as FS_ERROR_CODES,
 } from 'xod-fs';
 import {
   explode,
@@ -90,23 +87,6 @@ export const updateWorkspace = R.curry(
 //
 // =============================================================================
 
-/**
- * Checks that workspacePath is a string and not empty and resolves path
- * (including resolving of homedir character).
- * In case that the application settings doesn't contain any workspace path
- * it could return NULL. So this function will return Promise.Rejected Error.
- * @param {*} workspacePath
- * @returns {Promise<Path,Error>} Resolved path or error with code INVALID_WORKSPACE_PATH.
- */
-// :: Path -> Promise Path Error
-export const resolveWorkspacePath = R.tryCatch(
-  R.compose(
-    Promise.resolve.bind(Promise),
-    resolvePath
-  ),
-  () => rejectWithCode(ERROR_CODES.INVALID_WORKSPACE_PATH, new Error())
-);
-
 // :: () -> Path
 const getStdLibPath = () => resolveLibPath(PATH_TO_DEFAULT_WORKSPACE);
 // :: () -> Path
@@ -117,9 +97,9 @@ const catchInvalidWorkspace = R.curry(
   (catchFn, err) => R.ifElse(
     R.compose(
       isAmong([
-        ERROR_CODES.INVALID_WORKSPACE_PATH,
-        ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY,
-        ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY,
+        FS_ERROR_CODES.INVALID_WORKSPACE_PATH,
+        FS_ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY,
+        FS_ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY,
       ]),
       R.prop('errorCode')
     ),
@@ -140,15 +120,6 @@ const createEmptyProject = projectName => R.compose(
 // Impure functions
 //
 // =============================================================================
-
-// :: Path -> Project -> Promise Project Error
-export const saveProject = R.curry(
-  (workspacePath, project) => Promise.resolve(project)
-    .then(arrangeByFiles)
-    .then(save(workspacePath))
-    .then(R.always(project))
-    .catch(rejectWithCode(ERROR_CODES.CANT_SAVE_PROJECT))
-);
 
 // :: Path -> String -> String
 const createAndSaveNewProject = R.curry(
@@ -181,76 +152,14 @@ export const saveWorkspacePath = workspacePath => R.compose(
   )();
 
 // :: Path -> Promise Path Error
-const doesWorkspaceDirExist = R.ifElse(
-  doesDirectoryExist,
-  Promise.resolve.bind(Promise),
-  dirPath => rejectWithCode(
-    ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY,
-    { path: dirPath }
-  )
-);
-
-// :: Path -> Boolean
-const isWorkspaceDirEmptyOrNotExist = R.tryCatch(
-  R.compose(
-    R.isEmpty,
-    fs.readdirSync
-  ),
-  R.T
-);
-
-// :: Path -> Boolean
-const doesWorkspaceHaveStdLib = R.compose(
-  doessDirectoryExist,
-  resolveLibPath
-);
-
-// :: Path -> Promise Path Error
-export const isWorkspaceValid = R.cond([
-  [
-    R.both(doesWorkspaceFileExist, doesWorkspaceHaveStdLib),
-    Promise.resolve.bind(Promise),
-  ],
-  [
-    isWorkspaceDirEmptyOrNotExist,
-    dirPath => rejectWithCode(
-      ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY,
-      { path: dirPath }
-    ),
-  ],
-  [
-    R.T,
-    dirPath => rejectWithCode(
-      ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY,
-      { path: dirPath }
-    ),
-  ],
-]);
-
-// :: Path -> Promise Path Error
-export const validateWorkspace = R.pipeP(
-  resolveWorkspacePath,
-  doesWorkspaceDirExist,
-  isWorkspaceValid
-);
-
-// :: Path -> Promise ProjectMeta[] Error
-export const enumerateProjects = workspacePath => getLocalProjects(workspacePath)
-  .catch(rejectWithCode(ERROR_CODES.CANT_ENUMERATE_PROJECTS));
-
-// :: Path -> Promise Path Error
 const spawnWorkspace = workspacePath => spawnWorkspaceFile(workspacePath)
-  .catch(rejectWithCode(ERROR_CODES.CANT_CREATE_WORKSPACE_FILE))
-  .then(
-    p => spawnStdLib(getStdLibPath(), p)
-    .catch(rejectWithCode(ERROR_CODES.CANT_COPY_STDLIB))
-  );
+  .then(spawnStdLib(getStdLibPath()));
 
 // :: (String -> a -> ()) ->Path -> Promise ProjectMeta[] Error
 const spawnAndLoadDefaultProject = (send, workspacePath) =>
   spawnDefaultProject(getDefaultProjectPath(), workspacePath)
     .catch(rejectWithCode(ERROR_CODES.CANT_COPY_DEFAULT_PROJECT))
-    .then(enumerateProjects)
+    .then(getLocalProjects)
     .then(filterDefaultProject)
     .then(R.tap(R.compose(
       emitSelectProject(send),
@@ -260,7 +169,7 @@ const spawnAndLoadDefaultProject = (send, workspacePath) =>
 // :: (String -> a -> ()) -> Path -> Promise ProjectMeta[] Error
 export const loadProjectsOrSpawnDefault = R.curry(
   (send, workspacePath) => R.pipeP(
-    enumerateProjects,
+    getLocalProjects,
     R.ifElse(
       R.isEmpty,
       () => spawnAndLoadDefaultProject(send, workspacePath),
@@ -311,7 +220,6 @@ export const onIDELaunch = R.curry(
     oldPath => R.pipeP(
       Promise.resolve.bind(Promise),
       ensureWorkspacePath,
-      ensureWorkspace,
       pathSaver,
       validateWorkspace,
       updateWorkspace(send, oldPath)
@@ -319,7 +227,7 @@ export const onIDELaunch = R.curry(
     loadProjectsOrSpawnDefault(send)
   )()
     .catch(catchInvalidWorkspace((err) => {
-      const force = (err.errorCode === ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY);
+      const force = (err.errorCode === FS_ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY);
       pathGetter().then(newPath => requestCreateWorkspace(send, newPath, force));
     }))
     .catch(handleError(send))
@@ -342,7 +250,7 @@ export const onSwitchWorkspace = R.curry(
     .then(updateWorkspace(send, ''))
     .then(loadProjectsOrSpawnDefault(send))
     .catch(catchInvalidWorkspace((err) => {
-      const force = (err.errorCode === ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY);
+      const force = (err.errorCode === FS_ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY);
       requestCreateWorkspace(send, workspacePath, force);
     }))
     .catch(handleError(send))
@@ -355,7 +263,7 @@ export const onCreateProject = R.curry(
     createAndSaveNewProject,
     R.tap(notifySaveProjectComplete(send)),
     pathGetter,
-    enumerateProjects,
+    getLocalProjects,
     findProjectMetaByName(projectName),
     R.tap(emitSelectProject(send))
   )(pathGetter, projectName)

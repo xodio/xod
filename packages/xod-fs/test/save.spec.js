@@ -1,13 +1,16 @@
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 
 import fs from 'fs';
 import { removeSync } from 'fs-extra';
 import path from 'path';
 import recReadDir from 'recursive-readdir';
 
-import save from '../src/save';
+import { saveArrangedFiles, saveProject } from '../src/save';
 import { arrangeByFiles } from '../src/unpack';
+import * as ERROR_CODES from '../src/errorCodes';
+
 import xodball from './fixtures/xodball.json';
+import { expectRejectedWithCode } from './utils';
 
 const tempDirName = './fs-temp';
 const tempDir = path.resolve(__dirname, tempDirName);
@@ -16,7 +19,7 @@ const workspacePath = path.resolve(__dirname, workspace);
 
 const onError = done => err => done(err);
 
-describe('Saver', () => {
+describe('saveArrangedFiles', () => {
   before(() => {
     removeSync(`${tempDir}/test.json`);
     removeSync(workspacePath);
@@ -32,7 +35,7 @@ describe('Saver', () => {
       content: true,
     };
 
-    save(__dirname, testData)
+    saveArrangedFiles(__dirname, testData)
       .then(() => {
         const result = JSON.parse(
           fs.readFileSync(
@@ -63,8 +66,24 @@ describe('Saver', () => {
       }
     };
 
-    save(workspacePath, dataToSave)
+    saveArrangedFiles(workspacePath, dataToSave)
       .then(onFinish)
       .catch(onError(done));
   });
+});
+
+describe('saveProject', () => {
+  after(() => removeSync(tempDir));
+
+  it('should save project and return resolve project', () =>
+    saveProject(tempDir, xodball).then(
+      project => assert.equal(project, xodball)
+    )
+  );
+  it('should reject CANT_SAVE_PROJECT', () =>
+    expectRejectedWithCode(
+      saveProject(tempDir, {}),
+      ERROR_CODES.CANT_SAVE_PROJECT
+    )
+  );
 });

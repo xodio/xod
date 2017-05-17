@@ -1,4 +1,5 @@
-import { expect } from 'chai';
+import chai, { expect } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 
 import fs from 'fs';
 import path from 'path';
@@ -10,6 +11,14 @@ import libsFixture from './fixtures/libs.json';
 import unpacked from './fixtures/unpacked.json';
 import xodball from './fixtures/xodball.json';
 
+import {
+  fixture,
+  expectRejectedWithCode,
+} from './utils';
+import * as ERROR_CODES from '../src/errorCodes';
+
+chai.use(chaiAsPromised);
+
 const tempDir = './fixtures/workspace';
 const sortByPath = R.sortBy(R.prop('path'));
 
@@ -17,7 +26,7 @@ describe('Loader', () => {
   const workspace = path.resolve(__dirname, tempDir);
   const projectPath = 'awesome-project';
 
-  it('getLocalProjects: should return an array of local projects in workspace', () =>
+  it('getLocalProjects: return an array of local projects in workspace', () =>
     Loader.getLocalProjects(workspace)
       .then((projects) => {
         expect(projects).to.have.lengthOf(1);
@@ -37,21 +46,33 @@ describe('Loader', () => {
       })
   );
 
-  it('getProjects: should return an array of projects in workspace, including libs', () =>
+  it('getProjects: return an array of projects in workspace, including libs', () =>
     Loader.getProjects(workspace)
       .then((projects) => {
         expect(projects).to.have.lengthOf(4);
       })
   );
+  it('getProjects: reject CANT_ENUMERATE_PROJECTS for non-existent workspace',
+    () => expectRejectedWithCode(
+      Loader.getProjects(fixture('./notExistWorkspace')),
+      ERROR_CODES.CANT_ENUMERATE_PROJECTS
+    )
+  );
 
-  it('getLocalProjects: should return an array of local projects in workspace', () =>
+  it('getLocalProjects: return an array of local projects in workspace', () =>
     Loader.getLocalProjects(workspace)
       .then((projects) => {
         expect(projects).to.have.lengthOf(1);
       })
   );
+  it('getLocalProjects: reject CANT_ENUMERATE_PROJECTS for non-existent workspace',
+    () => expectRejectedWithCode(
+      Loader.getLocalProjects(fixture('./notExistWorkspace')),
+      ERROR_CODES.CANT_ENUMERATE_PROJECTS
+    )
+  );
 
-  it('loadProjectWithLibs: should return project with libs', () =>
+  it('loadProjectWithLibs: return project with libs', () =>
     Loader.loadProjectWithLibs(projectPath, workspace)
       .then(({ project, libs }) => {
         expect(sortByPath(project)).to.deep.equal(sortByPath(unpacked));
@@ -62,7 +83,7 @@ describe('Loader', () => {
       })
   );
 
-  it('loadProjectWithoutLibs: should return project without libs', (done) => {
+  it('loadProjectWithoutLibs: return project without libs', (done) => {
     const xodCore = path.resolve(workspace, './lib/xod/core');
     const xodCoreOwner = path.resolve(xodCore, '..');
 

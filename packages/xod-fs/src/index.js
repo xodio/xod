@@ -1,3 +1,5 @@
+import * as ERROR_CODES from './errorCodes';
+
 export { default as pack } from './pack';
 export { arrangeByFiles, fsSafeName } from './unpack';
 export { saveArrangedByFilesProject, saveProject } from './save';
@@ -11,19 +13,7 @@ export {
   loadProjectWithoutLibs,
 } from './load';
 export { loadLibs, loadAllLibs } from './loadLibs';
-export {
-  resolvePath,
-  doesDirectoryExist,
-  doesFileExist,
-  getProjectMetaPath,
-  getProjectMetaName,
-  findProjectMetaByName,
-  filterDefaultProject,
-  resolveLibPath,
-  resolveDefaultProjectPath,
-  ensureWorkspacePath,
-  doesWorkspaceFileExist,
-} from './utils';
+export * from './utils';
 export {
   findClosestProjectDir,
   findClosestWorkspaceDir,
@@ -33,3 +23,5 @@ export * from './constants';
 
 export { default as rmrf } from './core/rmrf';
 export { default as copy } from './core/copy';
+
+export { ERROR_CODES };

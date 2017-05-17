@@ -5,6 +5,7 @@ import expandHomeDir from 'expand-home-dir';
 
 import {
   notEmpty,
+  rejectWithCode,
 } from 'xod-func-tools';
 
 import {
@@ -13,6 +14,8 @@ import {
   LIBS_FOLDERNAME,
   WORKSPACE_FILENAME,
 } from './constants';
+
+import * as ERROR_CODES from './errorCodes';
 
 // :: string -> string
 export const resolvePath = R.ifElse(
@@ -83,6 +86,26 @@ export const filterDefaultProject = R.filter(
   )
 );
 
+/**
+ * Checks that workspacePath is a string and not empty and resolves path
+ * (including resolving of homedir character).
+ * In case that the application settings doesn't contain any workspace path
+ * it could return NULL. So this function will return Promise.Rejected Error.
+ * @param {*} workspacePath
+ * @returns {Promise<Path,Error>} Resolved path or error with code INVALID_WORKSPACE_PATH.
+ */
+// :: Path -> Promise Path Error
+export const resolveWorkspacePath = R.tryCatch(
+  R.compose(
+    Promise.resolve.bind(Promise),
+    resolvePath
+  ),
+  workspacePath => rejectWithCode(
+    ERROR_CODES.INVALID_WORKSPACE_PATH,
+    { path: workspacePath }
+  )
+);
+
 // :: Path -> Path
 export const resolveLibPath = workspacePath => path.resolve(
   workspacePath, LIBS_FOLDERNAME
@@ -96,8 +119,62 @@ export const ensureWorkspacePath = R.tryCatch(
   resolvePath,
   () => resolvePath(DEFAULT_WORKSPACE_PATH)
 );
+
+// :: Path -> Promise Path Error
+const doesWorkspaceDirExist = R.ifElse(
+  doesDirectoryExist,
+  Promise.resolve.bind(Promise),
+  dirPath => rejectWithCode(
+    ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY,
+    { path: dirPath }
+  )
+);
 // :: Path -> Boolean
-export const doesWorkspaceFileExist = R.compose(
+const doesWorkspaceFileExist = R.compose(
   doesFileExist,
   workspacePath => path.resolve(workspacePath, WORKSPACE_FILENAME)
+);
+
+// :: Path -> Boolean
+const isWorkspaceDirEmptyOrNotExist = R.tryCatch(
+  R.compose(
+    R.isEmpty,
+    fs.readdirSync
+  ),
+  R.T
+);
+
+// :: Path -> Boolean
+const doesWorkspaceHaveStdLib = R.compose(
+  doesDirectoryExist,
+  resolveLibPath
+);
+
+// :: Path -> Promise Path Error
+export const isWorkspaceValid = R.cond([
+  [
+    R.both(doesWorkspaceFileExist, doesWorkspaceHaveStdLib),
+    Promise.resolve.bind(Promise),
+  ],
+  [
+    isWorkspaceDirEmptyOrNotExist,
+    dirPath => rejectWithCode(
+      ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY,
+      { path: dirPath }
+    ),
+  ],
+  [
+    R.T,
+    dirPath => rejectWithCode(
+      ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY,
+      { path: dirPath }
+    ),
+  ],
+]);
+
+// :: Path -> Promise Path Error
+export const validateWorkspace = R.pipeP(
+  resolveWorkspacePath,
+  doesWorkspaceDirExist,
+  isWorkspaceValid
 );

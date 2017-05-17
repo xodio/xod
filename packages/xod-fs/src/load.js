@@ -7,6 +7,7 @@ import * as XP from 'xod-project';
 
 import { loadLibs } from './loadLibs';
 import { readDir, readJSON } from './read';
+import * as ERROR_CODES from './errorCodes';
 import {
   resolvePath,
   doesFileExist,
@@ -94,18 +95,20 @@ export const getLocalProjects = R.compose(
     R.filter(isLocalProjectDirectory),
     R.map(filename => path.resolve(workspacePath, filename)),
     fs.readdir
-  )(workspacePath),
+  )(workspacePath)
+    .catch(XF.rejectWithCode(ERROR_CODES.CANT_ENUMERATE_PROJECTS)),
   resolvePath
 );
 
 // Returns a Promise of all project metas for given workspace path
 // :: Path -> ProjectMeta[]
-export const getProjects = R.composeP(
+export const getProjects = workspacePath => R.composeP(
   allPromises,
   R.map(readProjectMetaFile),
   R.filter(basenameEquals('project.xod')),
   readDir
-);
+)(workspacePath)
+  .catch(XF.rejectWithCode(ERROR_CODES.CANT_ENUMERATE_PROJECTS));
 
 // Returns a promise of filename / content pair for a given
 // `filename` path relative to `dir`
