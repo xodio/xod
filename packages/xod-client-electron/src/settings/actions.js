@@ -1,57 +1,24 @@
-import R from 'ramda';
-import { openWorkspace } from 'xod-client';
-
 import {
-  SET_WORKSPACE,
-  CHECK_WORKSPACE,
-  CHANGE_WORKSPACE,
+  CREATE_WORKSPACE_REQUESTED,
+  SWITCH_WORKSPACE_REQUESTED,
+  CREATE_WORKSPACE,
+  SWITCH_WORKSPACE,
 } from './actionTypes';
-import { createAsyncAction } from '../view/actions';
 
-export const setWorkspace = newPath => ({
-  type: SET_WORKSPACE,
-  payload: newPath,
+export const requestCreateWorkspace = (path, force) => ({
+  type: CREATE_WORKSPACE_REQUESTED,
+  payload: { path, force },
+});
+export const requestSwitchWorkspace = opts => ({
+  type: SWITCH_WORKSPACE_REQUESTED,
+  payload: opts,
 });
 
-export const checkWorkspace = createAsyncAction({
-  eventName: 'checkWorkspace',
-  actionType: CHECK_WORKSPACE,
-  notify: false,
-  silent: true,
-  onComplete: (data, dispatch) => {
-    if (data.valid && data.libs) {
-      dispatch(openWorkspace(R.values(data.libs)));
-      return;
-    }
-
-    // ask user to define workspace
-    dispatch(setWorkspace(null));
-  },
-  onError: (data, dispatch) => {
-    // ask again
-    dispatch(setWorkspace(null));
-  },
+export const createWorkspace = path => ({
+  type: CREATE_WORKSPACE,
+  payload: { path },
 });
-
-export const changeWorkspace = createAsyncAction({
-  eventName: 'changeWorkspace',
-  actionType: CHANGE_WORKSPACE,
-  messages: {
-    complete: 'Workspace has been changed!',
-    error: 'Failed to change workspace.',
-  },
-  silent: true,
-  onComplete: (data, dispatch) => {
-    dispatch(setWorkspace(data.path));
-    dispatch(openWorkspace(R.values(data.libs)));
-  },
-  onError: (data, dispatch) => {
-    // ask again
-    dispatch(setWorkspace(null));
-  },
+export const switchWorkspace = path => ({
+  type: SWITCH_WORKSPACE,
+  payload: { path },
 });
-
-export default {
-  setWorkspace,
-  changeWorkspace,
-};

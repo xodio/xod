@@ -8,6 +8,7 @@ import mime from 'rest/interceptor/mime';
 import SerialPort from 'serialport';
 import { exec } from 'child-process-promise';
 import { writeJSON, readFile, readJSON } from 'xod-fs';
+import { rejectWithCode } from 'xod-func-tools';
 
 import {
   ARDUINO_PACKAGE_INDEX_URL,
@@ -136,7 +137,7 @@ export const loadConfig = () => readJSON(CONFIG_PATH).catch(() => DEFAULT_CONFIG
 export const loadPackageIndex = () =>
   rest.wrap(mime).wrap(errorCode)({ path: ARDUINO_PACKAGE_INDEX_URL })
     .then(R.prop('entity'))
-    .catch(() => Promise.reject(REST_ERROR));
+    .catch(rejectWithCode(REST_ERROR));
 
 /** Installs the selected {@link PAV}.
  * @type {Function}

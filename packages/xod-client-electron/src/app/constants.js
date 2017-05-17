@@ -1,3 +1,11 @@
+import { resolve } from 'path';
+
+// =============================================================================
+//
+// Paths and file names
+//
+// =============================================================================
+
 export const DEFAULT_ARDUINO_IDE_PATH = {
   darwin: ['/Applications/Arduino.app/Contents/MacOS/Arduino'],
   win32: ['C:\\Program Files\\Arduino\\arduino.exe'],
@@ -14,7 +22,9 @@ export const DEFAULT_ARDUINO_PACKAGES_PATH = {
   linux: ['~/.arduino15/packages/'],
 };
 
-export default {
-  DEFAULT_ARDUINO_IDE_PATH,
-  DEFAULT_ARDUINO_PACKAGES_PATH,
-};
+export const WORKSPACE_FILENAME = '.xodworkspace';
+export const DEFAULT_WORKSPACE_PATH = '~/xod/';
+
+export const PATH_TO_DEFAULT_WORKSPACE = resolve(__dirname, '../workspace');
+export const LIBS_FOLDERNAME = 'lib';
+export const DEFAULT_PROJECT_NAME = 'welcome-to-xod';

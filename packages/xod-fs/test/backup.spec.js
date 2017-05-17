@@ -1,7 +1,7 @@
 import { expect, assert } from 'chai';
 import fs from 'fs';
 import path from 'path';
-import rimraf from 'rimraf';
+import { removeSync } from 'fs-extra';
 
 import { Backup } from '../src/backup';
 import { readDir } from '../src/read';
@@ -14,8 +14,8 @@ describe('Backup', () => {
 
   const restoreTmpDir = path.resolve(__dirname, './fs-temp/');
 
-  before(() => rimraf.sync(restoreTmpDir));
-  after(() => rimraf.sync(restoreTmpDir));
+  before(() => removeSync(restoreTmpDir));
+  after(() => removeSync(restoreTmpDir));
 
   it('make() should create .tmp directory and copy files into it', (done) => {
     backup.make()

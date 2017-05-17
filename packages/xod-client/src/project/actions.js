@@ -6,6 +6,16 @@ import * as ActionType from './actionTypes';
 import { isPatchPathTaken } from './utils';
 import { getCurrentPatchPath } from '../editor/selectors';
 
+export const requestCreateProject = () => ({
+  type: ActionType.PROJECT_CREATE_REQUESTED,
+  payload: {},
+});
+
+export const requestOpenProject = data => ({
+  type: ActionType.PROJECT_OPEN_REQUESTED,
+  payload: data,
+});
+
 export const createProject = projectName => (dispatch) => {
   if (!isValidIdentifier(projectName)) {
     return dispatch(addError(PROJECT_BROWSER_ERRORS.INVALID_PROJECT_NAME));

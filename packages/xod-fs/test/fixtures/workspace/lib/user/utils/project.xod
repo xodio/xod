@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "name": "utils",
+    "author": "user"
+  },
+  "libs": [
+    "xod/core"
+  ]
+}

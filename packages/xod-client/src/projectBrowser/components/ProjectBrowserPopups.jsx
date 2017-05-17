@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { isValidIdentifier, IDENTIFIER_RULES } from 'xod-project';
-
-import { POPUP_ID } from '../constants';
+import { POPUP_ID } from '../../popups/constants';
+import { isPopupVisible } from '../../popups/selectors';
 
 import PopupPrompt from '../../utils/components/PopupPrompt';
 import PopupConfirm from '../../utils/components/PopupConfirm';
@@ -100,17 +100,17 @@ class ProjectBrowserPopups extends React.Component {
   }
 
   render() {
-    if (this.props.openPopups[POPUP_ID.RENAMING_PATCH]) {
+    if (isPopupVisible(POPUP_ID.RENAMING_PATCH, this.props.popups)) {
       return this.renderPatchRenamingPopup();
     }
-    if (this.props.openPopups[POPUP_ID.DELETING_PATCH]) {
+    if (isPopupVisible(POPUP_ID.DELETING_PATCH, this.props.popups)) {
       return this.renderPatchDeletingPopup();
     }
-    if (this.props.openPopups[POPUP_ID.CREATING_PATCH]) {
+    if (isPopupVisible(POPUP_ID.CREATING_PATCH, this.props.popups)) {
       return this.renderPatchCreatingPopup();
     }
 
-    if (this.props.openPopups[POPUP_ID.RENAMING_PROJECT]) {
+    if (isPopupVisible(POPUP_ID.RENAMING_PROJECT, this.props.popups)) {
       return this.renderProjectRenamingPopup();
     }
 
@@ -121,7 +121,7 @@ class ProjectBrowserPopups extends React.Component {
 ProjectBrowserPopups.propTypes = {
   selectedPatchPath: React.PropTypes.string,
   selectedPatchName: React.PropTypes.string,
-  openPopups: React.PropTypes.object,
+  popups: React.PropTypes.object,
   projectName: React.PropTypes.string,
 
   onPatchCreate: React.PropTypes.func.isRequired,

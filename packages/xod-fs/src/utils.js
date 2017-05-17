@@ -10,7 +10,7 @@ export const resolvePath = R.compose(
 );
 
 // :: string -> boolean
-export const isDirectoryExists = R.tryCatch(
+export const doesDirectoryExist = R.tryCatch(
   R.compose(
     R.invoker(0, 'isDirectory'),
     fs.statSync,
@@ -20,7 +20,7 @@ export const isDirectoryExists = R.tryCatch(
 );
 
 // :: string -> boolean
-export const isFileExists = R.tryCatch(
+export const doesFileExist = R.tryCatch(
   R.compose(
     R.invoker(0, 'isFile'),
     fs.statSync,

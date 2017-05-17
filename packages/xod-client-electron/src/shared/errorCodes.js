@@ -1,0 +1,25 @@
+// TODO: Strings could be replaced by Symbols,
+//       when we build all application with babel.
+// TODO: All these errorCodes should be moved into other packages
+
+export const TRANSPILE_ERROR = 'TRANSPILE_ERROR';
+
+export const PORT_NOT_FOUND = 'PORT_NOT_FOUND';
+export const IDE_NOT_FOUND = 'IDE_NOT_FOUND';
+export const PACKAGES_NOT_FOUND = 'PACKAGES_NOT_FOUND';
+export const UPLOAD_ERROR = 'UPLOAD_ERROR';
+export const INDEX_LIST_ERROR = 'INDEX_LIST_ERROR';
+export const INSTALL_PAV_ERROR = 'INSTALL_PAV_ERROR';
+export const NO_INSTALLED_PAVS = 'NO_INSTALLED_PAVS';
+
+export const INVALID_WORKSPACE_PATH = 'INVALID_WORKSPACE_PATH';
+export const WORKSPACE_DIR_NOT_EMPTY = 'WORKSPACE_DIR_NOT_EMPTY'; // & without xod-workspace
+export const WORKSPACE_DIR_NOT_EXIST_OR_EMPTY = 'WORKSPACE_DIR_NOT_EXIST_OR_EMPTY';
+export const CANT_CREATE_WORKSPACE_FILE = 'CANT_CREATE_WORKSPACE_FILE';
+export const CANT_COPY_STDLIB = 'CANT_COPY_STDLIB';
+export const CANT_COPY_DEFAULT_PROJECT = 'CANT_COPY_DEFAULT_PROJECT';
+export const CANT_ENUMERATE_PROJECTS = 'CANT_ENUMERATE_PROJECTS';
+export const CANT_SAVE_PROJECT = 'CANT_SAVE_PROJECT';
+
+export const CANT_CREATE_NEW_PROJECT = 'CANT_CREATE_NEW_PROJECT';
+export const CANT_OPEN_SELECTED_PROJECT = 'CANT_OPEN_SELECTED_PROJECT';

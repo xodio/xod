@@ -8,8 +8,10 @@ const PopupProjectSelection = ({
   isVisible,
   onSelect,
   onClose,
+  onSwitchWorkspace,
+  onCreateNewProject,
 }) => {
-  const onProjectSelect = path => () => onSelect(path);
+  const onProjectSelect = meta => () => onSelect(meta);
 
   const renderProjectElement = (el) => {
     if (el.status === PROJECT_STATUS.ERROR) {
@@ -30,7 +32,7 @@ const PopupProjectSelection = ({
 
     return (
       <li className="project" key={el.path}>
-        <button onClick={onProjectSelect(el.path)}>
+        <button onClick={onProjectSelect(el)}>
           <p className="name">{el.name} <span>by {el.author}</span></p>
           <p className="path">
             <span>Path:</span>
@@ -44,9 +46,14 @@ const PopupProjectSelection = ({
   const renderContent = () => {
     if (projects.status === REDUCER_STATUS.LOADED) {
       return (
-        <ul className="ProjectList">
-          {projects.list.map(renderProjectElement)}
-        </ul>
+        <div>
+          <ul className="ProjectList">
+            {projects.list.map(renderProjectElement)}
+          </ul>
+
+          <button onClick={onSwitchWorkspace}>Switch workspace</button>
+          <button onClick={onCreateNewProject}>Create new project</button>
+        </div>
       );
     }
 
@@ -75,6 +82,8 @@ PopupProjectSelection.propTypes = {
   isVisible: React.PropTypes.bool,
   onSelect: React.PropTypes.func,
   onClose: React.PropTypes.func,
+  onSwitchWorkspace: React.PropTypes.func,
+  onCreateNewProject: React.PropTypes.func,
 };
 
 PopupProjectSelection.defaultProps = {

@@ -1,0 +1,11 @@
+{
+  "authors": [
+    ""
+  ],
+  "description": "",
+  "license": "",
+  "name": "welcome-to-xod",
+  "libs": [
+    "xod/core"
+  ]
+}

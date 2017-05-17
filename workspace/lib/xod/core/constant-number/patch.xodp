@@ -1,0 +1,25 @@
+{
+  "links": {},
+  "nodes":  {
+    "noNativeImpl": {
+      "description": "",
+      "label": "",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    "VAL": {
+      "type": "xod/patch-nodes/output-number",
+      "position": {
+        "x": 0,
+        "y": 300
+      },
+      "label": "VAL",
+      "description": "Constant value"
+    }
+  },
+  "label": "",
+  "description": "Constant value"
+}

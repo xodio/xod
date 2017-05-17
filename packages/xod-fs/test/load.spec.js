@@ -17,8 +17,8 @@ describe('Loader', () => {
   const workspace = path.resolve(__dirname, tempDir);
   const projectPath = 'awesome-project';
 
-  it('should return an array of projects in workspace', (done) => {
-    Loader.getProjects(workspace)
+  it('getLocalProjects: should return an array of local projects in workspace', () =>
+    Loader.getLocalProjects(workspace)
       .then((projects) => {
         expect(projects).to.have.lengthOf(1);
         expect(projects).to.deep.equal([
@@ -33,12 +33,24 @@ describe('Loader', () => {
             path: path.resolve(workspace, projectPath),
           },
         ]);
-        done();
       })
-      .catch(done);
-  });
+  );
 
-  it('should load whole project, libs and pack it', (done) => {
+  it('getProjects: should return an array of projects in workspace, including libs', () =>
+    Loader.getProjects(workspace)
+      .then((projects) => {
+        expect(projects).to.have.lengthOf(4);
+      })
+  );
+
+  it('getLocalProjects: should return an array of local projects in workspace', () =>
+    Loader.getLocalProjects(workspace)
+      .then((projects) => {
+        expect(projects).to.have.lengthOf(1);
+      })
+  );
+
+  it('loadProjectWithLibs: should return project with libs', () =>
     Loader.loadProjectWithLibs(projectPath, workspace)
       .then(({ project, libs }) => {
         expect(sortByPath(project)).to.deep.equal(sortByPath(unpacked));
@@ -46,14 +58,13 @@ describe('Loader', () => {
 
         const packed = pack(project, libs);
         expect(packed).to.deep.equal(xodball);
-        done();
       })
-      .catch(done);
-  });
+  );
 
-  it('should load patch implementations', (done) => {
+  it('loadProjectWithoutLibs: should return project without libs', (done) => {
     const xodCore = path.resolve(workspace, './lib/xod/core');
     const xodCoreOwner = path.resolve(xodCore, '..');
+
     Loader.loadProjectWithoutLibs(xodCore)
       .then((project) => {
         const implsLoaded = shell
@@ -70,7 +81,6 @@ describe('Loader', () => {
         done(
           !implsLoaded && new Error('some implementations were not loaded')
         );
-      })
-      .catch(done);
+      });
   });
 });

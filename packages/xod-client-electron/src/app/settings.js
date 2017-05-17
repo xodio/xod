@@ -11,6 +11,7 @@ export const DEFAULT_SETTINGS = {
     paths: { ide: '', packages: '' },
     pavs: [],
   },
+  workspace: '',
 };
 
 // =============================================================================
@@ -30,6 +31,16 @@ export const setDefaults = R.compose(
   R.when(R.isEmpty, () => save(DEFAULT_SETTINGS)),
   load
 );
+
+// =============================================================================
+//
+// Workspace setters & getters
+//
+// =============================================================================
+const workspacePath = R.lensProp('workspace');
+
+export const setWorkspacePath = R.set(workspacePath);
+export const getWorkspacePath = R.view(workspacePath);
 
 // =============================================================================
 //

@@ -5,7 +5,6 @@ import {
   PATCH_RENAME_REQUESTED,
   PATCH_DELETE_REQUESTED,
   PROJECT_RENAME_REQUESTED,
-  POPUP_CANCEL,
   SET_SELECTION,
   REMOVE_SELECTION,
 } from './actionTypes';
@@ -55,10 +54,6 @@ export const requestDeletePatch = patchPath => (dispatch, getState) => {
 
 export const requestRenameProject = () => ({
   type: PROJECT_RENAME_REQUESTED,
-});
-
-export const cancelPopup = () => ({
-  type: POPUP_CANCEL,
 });
 
 export const setSelection = selectedPatchPath => ({

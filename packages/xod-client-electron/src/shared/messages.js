@@ -1,4 +1,4 @@
-import * as ERROR_CODES from './errorCodes';
+import * as EVENTS from './events';
 
 export const CODE_TRANSPILED = 'Project was successfully transpiled. Searching for device...';
 export const PORT_FOUND = 'Port with connected Arduino was found. Checking for installed Arduino IDE...';
@@ -7,10 +7,10 @@ export const TOOLCHAIN_INSTALLED = 'Toolchain is installed. Uploading...';
 
 export const ARDUINO_PATH_CHANGED = 'Path to Arduino IDE executable was changed.';
 
-export const ERRORS = {
-  [ERROR_CODES.PORT_NOT_FOUND]: 'Could not find Arduino device on opened ports',
-  [ERROR_CODES.IDE_NOT_FOUND]: 'Arduino IDE is not found',
-  [ERROR_CODES.INDEX_LIST_ERROR]: 'Could not get list of packages from Arduino.cc',
-  [ERROR_CODES.INSTALL_PAV_ERROR]: 'Could not install PAV',
-  [ERROR_CODES.NO_INSTALLED_PAVS]: 'Could not install or find installed PAV for this device',
+export const SUCCESS = {
+  [EVENTS.SAVE_PROJECT]: 'Project was successfully saved',
 };
+
+export const PROJECT_SAVE_PROCESSED = '';
+export const PROJECT_SAVE_FAILED = 'Failed to save project.';
+export const PROJECT_SAVE_SUCCEED = 'Project has been saved successfully!';

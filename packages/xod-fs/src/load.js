@@ -1,4 +1,4 @@
-import fsp from 'fs-promise';
+import fs from 'fs-extra';
 import path from 'path';
 import R from 'ramda';
 
@@ -7,7 +7,13 @@ import * as XP from 'xod-project';
 
 import { loadLibs } from './loadLibs';
 import { readDir, readJSON } from './read';
-import { resolvePath, reassignIds, getPatchName } from './utils';
+import {
+  resolvePath,
+  doesFileExist,
+  doesDirectoryExist,
+  reassignIds,
+  getPatchName,
+} from './utils';
 
 // :: String -> String -> Boolean
 const basenameEquals = basename => R.compose(
@@ -47,7 +53,53 @@ const readProjectMetaFile = projectFile => readJSON(projectFile)
   .then(R.assoc('path', path.dirname(projectFile)))
   .catch(err => ({ error: true, message: err.toString(), path: projectFile }));
 
+// :: String -> Boolean
+const beginsWithDot = R.compose(
+  R.equals('.'),
+  R.head
+);
+
+// :: Path -> Path
+const resolveProjectFile = dir => path.resolve(dir, 'project.xod');
+
+// :: Path -> Boolean
+const hasProjectFile = R.compose(
+  doesFileExist,
+  resolveProjectFile
+);
+
+// :: Path -> Boolean
+const isLocalProjectDirectory = R.allPass([
+  doesDirectoryExist,
+  R.complement(beginsWithDot),
+  hasProjectFile,
+]);
+
+// :: Path -> Promise ProjectMeta Error
+const readProjectDirectories = projectDirectory => R.compose(
+  R.composeP(
+    R.merge({
+      path: projectDirectory,
+    }),
+    fs.readJson
+  ),
+  resolveProjectFile
+)(projectDirectory);
+
+// :: Path -> Promise ProjectMeta[] Error
+export const getLocalProjects = R.compose(
+  workspacePath => R.composeP(
+    Promise.all.bind(Promise),
+    R.map(readProjectDirectories),
+    R.filter(isLocalProjectDirectory),
+    R.map(filename => path.resolve(workspacePath, filename)),
+    fs.readdir
+  )(workspacePath),
+  resolvePath
+);
+
 // Returns a Promise of all project metas for given workspace path
+// :: Path -> ProjectMeta[]
 export const getProjects = R.composeP(
   allPromises,
   R.map(readProjectMetaFile),
@@ -59,7 +111,7 @@ export const getProjects = R.composeP(
 // `filename` path relative to `dir`
 // :: String -> String -> Promise (Pair String String)
 const readImplFile = dir => filename =>
-  fsp.readFile(path.resolve(dir, filename)).then(content => [
+  fs.readFile(path.resolve(dir, filename)).then(content => [
     filename,
     content,
   ]);
@@ -72,7 +124,7 @@ const readImplFiles = dir => R.composeP(
   allPromises,
   R.map(readImplFile(dir)),
   R.filter(extAmong(['.c', '.cpp', '.h', '.inl', '.js'])),
-  fsp.readdir
+  fs.readdir
 )(dir);
 
 // :: String -> String -> Promise { path :: String, content :: Object, id :: String }

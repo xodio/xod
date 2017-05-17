@@ -7,6 +7,7 @@ import projectBrowserReducer from '../projectBrowser/reducer';
 import editorReducer from '../editor/reducer';
 import errorsReducer from '../messages/reducer';
 import processesReducer from '../processes/reducer';
+import popupsReducer from '../popups/reducer';
 
 const combineRootReducers = (extraReducers) => {
   const reducers = merge(
@@ -14,6 +15,7 @@ const combineRootReducers = (extraReducers) => {
       project: projectReducer,
       projectHistory: (s = {}) => s,
       projectBrowser: projectBrowserReducer,
+      popups: popupsReducer,
       editor: editorReducer,
       errors: errorsReducer,
       processes: processesReducer,
