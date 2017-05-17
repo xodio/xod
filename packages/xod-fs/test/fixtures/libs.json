@@ -1,6 +1,5 @@
 {
   "xod/core/led": {
-    "label": "LED",
     "description": "",
     "links": {},
     "nodes": {
@@ -34,7 +33,6 @@
   },
   "xod/core/and": {
     "path": "xod/core/and",
-    "label": "and",
     "description": "",
     "links": {},
     "nodes": {
@@ -88,7 +86,6 @@
     }
   },
   "xod/core/pot": {
-    "label": "pot",
     "description": "",
     "links": {},
     "nodes": {
@@ -135,7 +132,6 @@
     "path": "xod/core/test",
     "nodes": {},
     "links": {},
-    "label": "Test",
     "description": "",
     "impls": {}
   }

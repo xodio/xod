@@ -5,6 +5,7 @@
   ],
   "description": "",
   "license": "",
+  "version": "0.0.1",
   "patches": {
     "xod/core/led": {
       "nodes": {

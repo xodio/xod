@@ -30,6 +30,7 @@ describe('Loader', () => {
             license: '',
             name: 'awesome-project',
             libs: ['xod/core'],
+            version: '42',
             path: path.resolve(workspace, projectPath),
           },
         ]);

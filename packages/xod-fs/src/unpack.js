@@ -29,14 +29,12 @@ export const getProjectPath = R.pipe(
 
 export const getPatchFolderName = R.pipe(XP.getPatchPath, XP.getBaseName);
 
-const removeIds = R.map(R.dissoc('id'));
-
 export const getXodpContents = R.compose(
   R.dissoc('impls'),
   R.dissoc('path'),
   R.evolve({
-    nodes: removeIds,
-    links: removeIds,
+    nodes: R.values,
+    links: R.values,
   })
 );
 
