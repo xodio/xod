@@ -212,7 +212,6 @@ const createNodesWithCurriedPins = def(
 
         return R.compose(
           Project.setPinCurriedValue(CONSTANT_VALUE_PINKEY, pinValue),
-          Project.curryPin(CONSTANT_VALUE_PINKEY, true),
           Project.createNode({ x: 0, y: 0 })
         )(type);
       },
@@ -229,7 +228,7 @@ const uncurryPins = def(
       const pinKeys = R.keys(pinData);
       return R.compose(
         R.reduce(
-          (node, pinKey) => Project.curryPin(pinKey, false, node),
+          (node, pinKey) => Project.removeBoundValue(pinKey, node),
           R.__,
           pinKeys
         ),
