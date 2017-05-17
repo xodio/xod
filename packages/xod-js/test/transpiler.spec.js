@@ -64,7 +64,6 @@ describe('Transpiler', () => {
               boundValues: {
                 in_A: {
                   value: 10,
-                  curried: true,
                 },
               },
             },
@@ -356,7 +355,6 @@ describe('Transpiler', () => {
                 boundValues: {
                   in_A: {
                     value: 10,
-                    curried: true,
                   },
                 },
               },

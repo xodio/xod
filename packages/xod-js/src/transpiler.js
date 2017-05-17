@@ -139,7 +139,12 @@ const createConstants = R.curry((project, nodes) =>
 // :: Patch -> Patch
 const clearNodeBoundValues = R.over(
   R.lensProp('nodes'),
-  R.map(R.omit(['boundValues']))
+  R.map(
+    R.over(
+      R.lensProp('boundValues'),
+      R.empty
+    )
+  )
 );
 
 // :: Project -> Patch -> Patch
