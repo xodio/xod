@@ -234,7 +234,7 @@ export const assocInitialPinValues = def(
  */
 export const getCurriedPins = R.compose(
   R.map(R.prop('value')),
-  R.propOr({}, 'boundValues') // TODO: no propOr
+  R.prop('boundValues')
 );
 
 /**

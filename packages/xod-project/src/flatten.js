@@ -565,7 +565,7 @@ const rekeyBoundValues = R.curry((boundValues, node) => { // TODO: better name?
     })(boundValues);
   }
 
-  return R.propOr({}, 'boundValues', node); // TODO: no propOr
+  return R.prop('boundValues', node);
 });
 
 /**
@@ -614,7 +614,7 @@ export const extractPatches = R.curry((project, leafPaths, prefix, curriedPins, 
           extractPatches(project, leafPaths),
           [
             R.compose(getPrefixedId(prefix), Node.getNodeId),
-            R.propOr({}, 'boundValues'), // TODO: no propOr
+            R.prop('boundValues'),
             R.compose(getPatchByPath(project), Node.getNodeType),
           ]
         )

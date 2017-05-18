@@ -103,9 +103,6 @@ describe('Node', () => {
   });
 
   describe('getCurriedPins', () => {
-    it('should return empty object for node without `pins` key', () => {
-      expect(Node.getCurriedPins({})).to.be.an('object').and.empty();
-    });
     it('should return empty object for node without pins', () => {
       expect(Node.getCurriedPins({ boundValues: {} })).to.be.an('object').and.empty();
     });
