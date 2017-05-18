@@ -19,6 +19,7 @@ const initialProject = {
   ],
   description: '',
   license: '',
+  version: '',
   name: 'Awesome project',
   patches: {
     '@/main': {
@@ -26,6 +27,7 @@ const initialProject = {
       links: {},
       nodes: {},
       path: '@/main',
+      description: '',
     },
     'xod/core/button': {
       impls: {
@@ -57,6 +59,7 @@ const initialProject = {
         },
       },
       path: 'xod/core/button',
+      description: '',
     },
   },
 };

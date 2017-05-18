@@ -62,6 +62,7 @@ describe('Editor reducer', () => {
         ],
         description: '',
         license: '',
+        version: '',
         name: 'Test project',
         patches: {
           '@/1': {
@@ -86,7 +87,7 @@ describe('Editor reducer', () => {
             links: {},
             impls: {},
             path: '@/1',
-            label: 'Main',
+            description: 'Main patch',
           },
           'xod/core/test': {
             nodes: {
@@ -116,7 +117,7 @@ describe('Editor reducer', () => {
             links: {},
             impls: {},
             path: 'xod/core/test',
-            label: 'Test patch',
+            description: 'Test patch',
           },
         },
       },
