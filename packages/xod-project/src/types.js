@@ -89,8 +89,10 @@ export const Patch = Model('Patch', {
   description: $.String,
 });
 
+export const PatchMap = AliasType('PatchMap', $.StrMap(Patch));
+
 export const Project = Model('Project', {
-  patches: $.StrMap(Patch),
+  patches: PatchMap,
   name: Identifier,
   authors: $.Array($.String),
   license: $.String,
@@ -128,6 +130,7 @@ export const env = XF.env.concat([
   TerminalNode,
   Patch,
   PatchPath,
+  PatchMap,
   Pin,
   PinOrKey,
   PinKey,
