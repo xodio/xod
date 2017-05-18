@@ -199,6 +199,7 @@ export const assocInitialPinValues = def(
   (patch, node) => R.assoc(
     'boundValues',
     R.compose(
+      R.map(R.prop('value')),
       R.indexBy(R.prop('key')),
       R.map(
         R.applySpec({
