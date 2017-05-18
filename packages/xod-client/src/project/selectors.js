@@ -90,7 +90,12 @@ const assocNodeIdToPins = node =>
 const mergePinDataFromPatch = R.curry((project, node) => {
   const type = XP.getNodeType(node);
 
-  const { boundValues } = node;
+  const boundValues = R.compose(
+    R.map(R.applySpec({
+      value: R.identity,
+    })),
+    XP.getAllBoundValues
+  )(node);
 
   const pinDataFromPatch = R.compose(
     // TODO: add something like getPinsIndexedByKey to xod-project?
