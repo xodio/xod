@@ -47,7 +47,7 @@ export const DataType = EnumType('DataType', R.values(C.PIN_TYPE));
 export const DataValue = NullaryType('DataValue', XF.notNil);
 
 export const Pin = Model('Pin', {
-  key: PinKey,
+  key: NodeId,
   direction: PinDirection,
   label: PinKey,
   type: DataType,
