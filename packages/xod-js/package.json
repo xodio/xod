@@ -13,7 +13,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "dependencies": {
-    "hm-def": "^0.1.2",
+    "hm-def": "^0.2.0",
     "ramda": "^0.23.0",
     "ramda-fantasy": "^0.7.0",
     "xod-project": "^0.0.1",
