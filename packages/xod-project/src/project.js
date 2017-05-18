@@ -32,6 +32,7 @@ export const createProject = () => ({
   license: '',
   patches: {},
   name: 'untitled',
+  version: '',
 });
 
 /**
