@@ -265,18 +265,18 @@ describe('Transpiler', () => {
       });
     });
 
-    describe('getCurriedPins', () => {
+    describe('getAllBoundValues', () => {
       it('should return empty array for node without curried pins', () => {
         const typePatch = project.patches['xod/nodes/test'];
         const node = project.patches['@/main'].nodes['1'];
-        expect(Transpiler.getCurriedPins(node, typePatch))
+        expect(Transpiler.getAllBoundValues(node, typePatch))
           .to.be.an('array')
           .and.empty();
       });
       it('should return array with one pair [pinKey, pinValue] for node with one curried pin', () => {
         const typePatch = project.patches['xod/nodes/test'];
         const node = project.patches['@/main'].nodes['0'];
-        expect(Transpiler.getCurriedPins(node, typePatch))
+        expect(Transpiler.getAllBoundValues(node, typePatch))
           .to.be.deep.equal([['in_A', 10]]);
       });
     });

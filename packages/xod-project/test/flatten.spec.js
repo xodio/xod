@@ -357,13 +357,13 @@ describe('Flatten', () => {
       const terminalB = R.find(R.propEq('id', 'b~a'), nodes);
       expect(terminalB).to.have.property('boundValues').that.empty();
 
-      const justNodeWithCurriedPinA = R.find(R.propEq('id', 'a~c'), nodes);
-      expect(justNodeWithCurriedPinA).to.have.property('boundValues').that.deep.equals(
+      const justNodeWithBoundValueForPinA = R.find(R.propEq('id', 'a~c'), nodes);
+      expect(justNodeWithBoundValueForPinA).to.have.property('boundValues').that.deep.equals(
         project.patches['@/foo'].nodes.c.boundValues
       );
 
-      const justNodeWithCurriedPinB = R.find(R.propEq('id', 'b~c'), nodes);
-      expect(justNodeWithCurriedPinB).to.have.property('boundValues').that.deep.equals(
+      const justNodeWithBoundValueForPinB = R.find(R.propEq('id', 'b~c'), nodes);
+      expect(justNodeWithBoundValueForPinB).to.have.property('boundValues').that.deep.equals(
         project.patches['@/foo'].nodes.c.boundValues
       );
     });
@@ -1388,8 +1388,8 @@ describe('Flatten', () => {
     });
   });
 
-  describe('curried pins', () => {
-    it('should return original (unnested) nodes with curried pins', () => {
+  describe('bound values', () => {
+    it('should return original (unnested) nodes with bound values', () => {
       const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
@@ -1471,7 +1471,7 @@ describe('Flatten', () => {
       );
     });
 
-    it('should return cast-nodes with curried pins', () => {
+    it('should return cast-nodes with bound values', () => {
       const project = Helper.defaultizeProject({
         patches: {
           '@/main': {

@@ -226,30 +226,27 @@ export const assocInitialPinValues = def(
 );
 
 /**
- * Gets all curried pins of node
+ * Gets all bound values of node's pins
  *
- * @function getCurriedPins
+ * @function getAllBoundValues
  * @param {Node} node
  * @returns {Object.<PinKey, PinValue>}
  */
-export const getCurriedPins = R.compose(
+export const getAllBoundValues = R.compose(
   R.map(R.prop('value')),
   R.prop('boundValues')
 );
 
 /**
- * Gets curried value of input pin.
+ * Gets bound value of a pin.
  *
- * It will return value even if pin isn't curried.
- * In that case the last curried value or default one is returned.
- *
- * @function getPinCurriedValue
+ * @function getBoundValue
  * @param {string} key
  * @param {Node} node
  * @returns {Maybe<PinValue>}
  */
-export const getPinCurriedValue = def(
-  'getPinCurriedValue :: PinKey -> Node -> Maybe DataValue',
+export const getBoundValue = def(
+  'getBoundValue :: PinKey -> Node -> Maybe DataValue',
   R.useWith(
     Tools.path,
     [
@@ -260,16 +257,16 @@ export const getPinCurriedValue = def(
 );
 
 /**
- * Sets curried value to input pin.
+ * Sets bound value to a pin.
  *
- * @function setPinCurriedValue
+ * @function setBoundValue
  * @param {string} key
  * @param {*} value
  * @param {Node} node
  * @returns {Node}
  */
-export const setPinCurriedValue = def(
-  'setPinCurriedValue :: PinKey -> DataValue -> Node -> Node',
+export const setBoundValue = def(
+  'setBoundValue :: PinKey -> DataValue -> Node -> Node',
   R.useWith(
     R.assocPath,
     [

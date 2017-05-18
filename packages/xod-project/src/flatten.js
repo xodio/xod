@@ -584,12 +584,12 @@ const rekeyBoundValues = R.curry((boundValues, node) => { // TODO: better name?
  * @param {Project} project The original project
  * @param {Array<Path>} leafPatchesPaths Paths to leaf patches
  * @param {String|null} prefix Prefixed parent nodeId (prefixed) or null (for entry-point patch)
- * @param {Array<NodePin>} curriedPins Pins data from parent node or empty object
+ * @param {Array<NodePin>} boundValues Pins data from parent node or empty object
  * @param {Patch} patch The patch from which should be extracted nodes and links
  * @returns {Array<Array<NodeWrapper>, Array<LinkWrapper>>}
  */
 // :: Project -> leafPatchesPaths -> String -> NodePins -> Patch -> [NodeWrapper[], LinkWrapper[]]
-export const extractPatches = R.curry((project, leafPaths, prefix, curriedPins, patch) => {
+export const extractPatches = R.curry((project, leafPaths, prefix, boundValues, patch) => {
   // 1. extractPatches recursively from nodes and wrap with NodeWrapper leafNodes
   const nodes = R.compose(
     R.map(
@@ -608,7 +608,7 @@ export const extractPatches = R.curry((project, leafPaths, prefix, curriedPins, 
             )
           ),
           // 1.1. Copy and rekey pins from parent node
-          node => R.assoc('boundValues', rekeyBoundValues(curriedPins, node), node)
+          node => R.assoc('boundValues', rekeyBoundValues(boundValues, node), node)
         ),
         R.converge(
           extractPatches(project, leafPaths),
