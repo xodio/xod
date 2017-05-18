@@ -62,9 +62,7 @@ describe('Transpiler', () => {
                 y: 0,
               },
               boundValues: {
-                in_A: {
-                  value: 10,
-                },
+                in_A: 10,
               },
             },
             1: {
@@ -353,9 +351,7 @@ describe('Transpiler', () => {
                   y: 0,
                 },
                 boundValues: {
-                  in_A: {
-                    value: 10,
-                  },
+                  in_A: 10,
                 },
               },
               1: {
