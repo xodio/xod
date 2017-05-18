@@ -26,14 +26,17 @@ import * as PatchPathUtils from './patchPathUtils';
  * @function createProject
  * @returns {Project} newly created project
  */
-export const createProject = () => ({
-  authors: [],
-  description: '',
-  license: '',
-  patches: {},
-  name: 'untitled',
-  version: '',
-});
+export const createProject = def(
+  'createProject :: () -> Project',
+  () => ({
+    authors: [],
+    description: '',
+    license: '',
+    version: '',
+    patches: {},
+    name: 'untitled',
+  })
+);
 
 /**
  * @function getProjectName
