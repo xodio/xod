@@ -126,6 +126,7 @@ export const defaultizePatch = R.compose(
     links: {},
     impls: {},
     path: '@/default-patch-path',
+    description: '',
   })
 );
 
@@ -142,6 +143,7 @@ export const defaultizeProject = R.compose(
     authors: [],
     license: '',
     description: '',
+    version: '',
     patches: {},
     name: 'test-project-name',
   })

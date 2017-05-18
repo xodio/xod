@@ -1,6 +1,6 @@
 {
-  "links": {
-    "HJ7KqFIOeZ": {
+  "links": [
+    {
       "input": {
         "nodeId": "SJzK9tLOxZ",
         "pinKey": "value"
@@ -8,11 +8,12 @@
       "output": {
         "nodeId": "S1ZF9KIdgZ",
         "pinKey": "VAL"
-      }
+      },
+      "id": "HJ7KqFIOeZ"
     }
-  },
-  "nodes": {
-    "S1ZF9KIdgZ": {
+  ],
+  "nodes": [
+    {
       "description": "",
       "label": "",
       "pins": {},
@@ -20,9 +21,10 @@
         "x": 138,
         "y": 16
       },
-      "type": "xod/core/constant-number"
+      "type": "xod/core/constant-number",
+      "id": "S1ZF9KIdgZ"
     },
-    "SJzK9tLOxZ": {
+    {
       "description": "",
       "label": "",
       "pins": {
@@ -39,9 +41,10 @@
         "x": 138,
         "y": 224
       },
-      "type": "xod/core/digital-output"
+      "type": "xod/core/digital-output",
+      "id": "SJzK9tLOxZ"
     }
-  },
+  ],
   "label": "",
   "description": ""
 }

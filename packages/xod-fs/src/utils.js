@@ -29,11 +29,11 @@ export const doesFileExist = R.tryCatch(
   R.F
 );
 
-const assocIds = R.mapObjIndexed((entity, id) => R.assoc('id', id, entity));
+const indexByIds = R.indexBy(R.prop('id'));
 
 export const reassignIds = R.evolve({
-  nodes: assocIds,
-  links: assocIds,
+  nodes: indexByIds,
+  links: indexByIds,
 });
 
 export const getPatchName = (patchPath) => {

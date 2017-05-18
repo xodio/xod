@@ -1,9 +1,9 @@
 {
-  "label": "and",
   "description": "",
-  "links": {},
-  "nodes": {
-    "noNativeImpl": {
+  "links": [],
+  "nodes": [
+    {
+      "id": "noNativeImpl",
       "label": "",
       "description": "",
       "pins": {},
@@ -13,7 +13,8 @@
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
-    "a": {
+    {
+      "id": "a",
       "label": "First input",
       "description": "",
       "pins": {},
@@ -23,7 +24,8 @@
       },
       "type": "xod/patch-nodes/input-boolean"
     },
-    "b": {
+    {
+      "id": "b",
       "label": "Second input",
       "description": "",
       "pins": {},
@@ -33,7 +35,8 @@
       },
       "type": "xod/patch-nodes/input-boolean"
     },
-    "out": {
+    {
+      "id": "out",
       "label": "output",
       "description": "\"true\" if both inputs are \"true\"",
       "pins": {},
@@ -43,5 +46,5 @@
       },
       "type": "xod/patch-nodes/output-boolean"
     }
-  }
+  ]
 }

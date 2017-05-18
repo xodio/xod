@@ -1,4 +1,5 @@
 {
+  "version": "0.0.0",
   "authors": [
     "Amperka team"
   ],
@@ -7,6 +8,7 @@
   "license": "",
   "patches": {
     "xod/math/subtrac": {
+      "description": "",
       "path": "xod/math/subtrac",
       "nodes": {
         "noNativeImpl": {
@@ -48,6 +50,7 @@
       }
     },
     "xod/math/multiply": {
+      "description": "",
       "path": "xod/math/multiply",
       "nodes": {
         "noNativeImpl": {
@@ -89,6 +92,7 @@
       }
     },
     "xod/math/divide": {
+      "description": "",
       "path": "xod/math/divide",
       "nodes": {
         "noNativeImpl": {
@@ -130,6 +134,7 @@
       }
     },
     "xod/math/add": {
+      "description": "",
       "path": "xod/math/add",
       "nodes": {
         "noNativeImpl": {
@@ -171,6 +176,7 @@
       }
     },
     "xod/core/valve-number": {
+      "description": "",
       "path": "xod/core/valve-number",
       "nodes": {
         "noNativeImpl": {
@@ -213,6 +219,7 @@
       "label": "valve-number"
     },
     "xod/core/triggerable-number": {
+      "description": "",
       "path": "xod/core/triggerable-number",
       "nodes": {
         "noNativeImpl": {
@@ -255,6 +262,7 @@
       "label": "triggerable-number"
     },
     "xod/core/ultrasonic-hc-sr04": {
+      "description": "",
       "path": "xod/core/ultrasonic-hc-sr04",
       "nodes": {
         "noNativeImpl": {
@@ -305,6 +313,7 @@
       "label": "HC-SR04"
     },
     "xod/core/time": {
+      "description": "",
       "path": "xod/core/time",
       "nodes": {
         "noNativeImpl": {
@@ -339,6 +348,7 @@
       "label": "Time"
     },
     "xod/core/stdout": {
+      "description": "",
       "path": "xod/core/stdout",
       "nodes": {
         "noNativeImpl": {
@@ -365,6 +375,7 @@
       "label": "stdout"
     },
     "xod/core/split-bool": {
+      "description": "",
       "path": "xod/core/split-bool",
       "nodes": {
         "noNativeImpl": {
@@ -407,6 +418,7 @@
       "label": "Split"
     },
     "xod/core/servo": {
+      "description": "",
       "path": "xod/core/servo",
       "nodes": {
         "noNativeImpl": {
@@ -448,6 +460,7 @@
       }
     },
     "xod/core/pot": {
+      "description": "",
       "path": "xod/core/pot",
       "nodes": {
         "noNativeImpl": {
@@ -481,6 +494,7 @@
       }
     },
     "xod/core/or": {
+      "description": "",
       "path": "xod/core/or",
       "nodes": {
         "noNativeImpl": {
@@ -523,6 +537,7 @@
       "label": "or"
     },
     "xod/core/not": {
+      "description": "",
       "path": "xod/core/not",
       "nodes": {
         "noNativeImpl": {
@@ -557,6 +572,7 @@
       "label": "not"
     },
     "xod/core/less": {
+      "description": "",
       "path": "xod/core/less",
       "nodes": {
         "noNativeImpl": {
@@ -598,6 +614,7 @@
       }
     },
     "xod/core/map": {
+      "description": "",
       "path": "xod/core/map",
       "nodes": {
         "noNativeImpl": {
@@ -671,6 +688,7 @@
       }
     },
     "xod/core/latch": {
+      "description": "",
       "path": "xod/core/latch",
       "nodes": {
         "noNativeImpl": {
@@ -720,6 +738,7 @@
       }
     },
     "xod/core/led": {
+      "description": "",
       "path": "xod/core/led",
       "nodes": {
         "noNativeImpl": {
@@ -746,6 +765,7 @@
       "label": "LED"
     },
     "xod/core/file-write": {
+      "description": "",
       "path": "xod/core/file-write",
       "nodes": {
         "noNativeImpl": {
@@ -796,6 +816,7 @@
       "label": "File write"
     },
     "xod/core/greater": {
+      "description": "",
       "path": "xod/core/greater",
       "nodes": {
         "noNativeImpl": {
@@ -837,6 +858,7 @@
       }
     },
     "xod/core/file-read": {
+      "description": "",
       "path": "xod/core/file-read",
       "nodes": {
         "noNativeImpl": {
@@ -887,6 +909,7 @@
       "label": "File read"
     },
     "xod/core/digital-output": {
+      "description": "",
       "path": "xod/core/digital-output",
       "nodes": {
         "noNativeImpl": {
@@ -920,6 +943,7 @@
       }
     },
     "xod/core/equal": {
+      "description": "",
       "path": "xod/core/equal",
       "nodes": {
         "noNativeImpl": {
@@ -961,6 +985,7 @@
       }
     },
     "xod/core/digital-input": {
+      "description": "",
       "path": "xod/core/digital-input",
       "nodes": {
         "noNativeImpl": {
@@ -994,6 +1019,7 @@
       }
     },
     "xod/core/either": {
+      "description": "",
       "path": "xod/core/either",
       "nodes": {
         "noNativeImpl": {
@@ -1043,6 +1069,7 @@
       }
     },
     "xod/core/const-string": {
+      "description": "",
       "path": "xod/core/const-string",
       "nodes": {
         "noNativeImpl": {
@@ -1085,6 +1112,7 @@
       "label": "<String>"
     },
     "xod/core/const-number": {
+      "description": "",
       "path": "xod/core/const-number",
       "nodes": {
         "noNativeImpl": {
@@ -1127,6 +1155,7 @@
       "label": "<Number>"
     },
     "xod/core/concat": {
+      "description": "",
       "path": "xod/core/concat",
       "nodes": {
         "noNativeImpl": {
@@ -1169,6 +1198,7 @@
       "label": "concat"
     },
     "xod/core/clock": {
+      "description": "",
       "path": "xod/core/clock",
       "nodes": {
         "noNativeImpl": {
@@ -1202,6 +1232,7 @@
       }
     },
     "xod/core/const-bool": {
+      "description": "",
       "path": "xod/core/const-bool",
       "nodes": {
         "noNativeImpl": {
@@ -1244,6 +1275,7 @@
       "label": "<Bool>"
     },
     "xod/core/compare": {
+      "description": "",
       "path": "xod/core/compare",
       "nodes": {
         "noNativeImpl": {
@@ -1301,6 +1333,7 @@
       }
     },
     "xod/core/choose": {
+      "description": "",
       "path": "xod/core/choose",
       "nodes": {
         "noNativeImpl": {
@@ -1342,6 +1375,7 @@
       }
     },
     "xod/core/cast-string-to-pulse": {
+      "description": "",
       "path": "xod/core/cast-string-to-pulse",
       "nodes": {
         "noNativeImpl": {
@@ -1375,6 +1409,7 @@
       }
     },
     "xod/core/cast-string-to-boolean": {
+      "description": "",
       "path": "xod/core/cast-string-to-boolean",
       "nodes": {
         "noNativeImpl": {
@@ -1408,6 +1443,7 @@
       }
     },
     "xod/core/cast-number-to-pulse": {
+      "description": "",
       "path": "xod/core/cast-number-to-pulse",
       "nodes": {
         "noNativeImpl": {
@@ -1441,6 +1477,7 @@
       }
     },
     "xod/core/cast-number-to-string": {
+      "description": "",
       "path": "xod/core/cast-number-to-string",
       "nodes": {
         "noNativeImpl": {
@@ -1474,6 +1511,7 @@
       }
     },
     "xod/core/cast-pulse-to-number": {
+      "description": "",
       "path": "xod/core/cast-pulse-to-number",
       "nodes": {
         "noNativeImpl": {
@@ -1507,6 +1545,7 @@
       }
     },
     "xod/core/cast-pulse-to-boolean": {
+      "description": "",
       "path": "xod/core/cast-pulse-to-boolean",
       "nodes": {
         "noNativeImpl": {
@@ -1540,6 +1579,7 @@
       }
     },
     "xod/core/cast-number-to-boolean": {
+      "description": "",
       "path": "xod/core/cast-number-to-boolean",
       "nodes": {
         "noNativeImpl": {
@@ -1573,6 +1613,7 @@
       }
     },
     "xod/core/cast-boolean-to-string": {
+      "description": "",
       "path": "xod/core/cast-boolean-to-string",
       "nodes": {
         "noNativeImpl": {
@@ -1606,6 +1647,7 @@
       }
     },
     "xod/core/cast-boolean-to-number": {
+      "description": "",
       "path": "xod/core/cast-boolean-to-number",
       "nodes": {
         "noNativeImpl": {
@@ -1639,6 +1681,7 @@
       }
     },
     "xod/core/button": {
+      "description": "",
       "path": "xod/core/button",
       "nodes": {
         "noNativeImpl": {
@@ -1664,6 +1707,7 @@
       }
     },
     "xod/core/cast-boolean-to-pulse": {
+      "description": "",
       "path": "xod/core/cast-boolean-to-pulse",
       "nodes": {
         "noNativeImpl": {
@@ -1697,6 +1741,7 @@
       }
     },
     "xod/core/buzzer": {
+      "description": "",
       "path": "xod/core/buzzer",
       "nodes": {
         "noNativeImpl": {
@@ -1723,6 +1768,7 @@
       "label": "Buzzer"
     },
     "xod/core/both": {
+      "description": "",
       "path": "xod/core/both",
       "nodes": {
         "noNativeImpl": {
@@ -1764,6 +1810,7 @@
       }
     },
     "xod/core/analog_output": {
+      "description": "",
       "path": "xod/core/analog_output",
       "nodes": {
         "noNativeImpl": {
@@ -1797,6 +1844,7 @@
       }
     },
     "xod/core/any": {
+      "description": "",
       "path": "xod/core/any",
       "nodes": {
         "noNativeImpl": {
@@ -1838,6 +1886,7 @@
       }
     },
     "xod/core/analog_input": {
+      "description": "",
       "path": "xod/core/analog_input",
       "nodes": {
         "noNativeImpl": {
@@ -1879,6 +1928,7 @@
       }
     },
     "xod/core/and": {
+      "description": "",
       "path": "xod/core/and",
       "nodes": {
         "noNativeImpl": {
@@ -1921,6 +1971,7 @@
       "label": "and"
     },
     "@/led": {
+      "description": "",
       "path": "@/led",
       "nodes": {
         "ryFxRcNdKg": {
@@ -2045,6 +2096,7 @@
       "label": "Led"
     },
     "@/main": {
+      "description": "",
       "path": "@/main",
       "nodes": {
         "BJ4l0cVdKe": {
@@ -2093,6 +2145,7 @@
       "label": "Main"
     },
     "@/blink": {
+      "description": "",
       "path": "@/blink",
       "nodes": {
         "BJGgAcVOtx": {

@@ -1,6 +1,7 @@
 {
-  "nodes": {
-    "2c03e470-fefd-4f58-be6a-58d209d9158c": {
+  "nodes": [
+    {
+      "id": "2c03e470-fefd-4f58-be6a-58d209d9158c",
       "type": "xod/core/pot",
       "pins": {},
       "position": {
@@ -8,7 +9,8 @@
         "y": 182
       }
     },
-    "89c69d91-b484-478d-8990-027e5f0a2e3e": {
+    {
+      "id": "89c69d91-b484-478d-8990-027e5f0a2e3e",
       "type": "xod/core/and",
       "pins": {},
       "position": {
@@ -16,7 +18,8 @@
         "y": 314
       }
     },
-    "4d716df5-81e7-4845-9b82-31a54c1634d7": {
+    {
+      "id": "4d716df5-81e7-4845-9b82-31a54c1634d7",
       "type": "@/qux",
       "pins": {},
       "position": {
@@ -24,9 +27,10 @@
         "y": 322
       }
     }
-  },
-  "links": {
-    "3ed564cd-71e5-4ad3-9361-e7b9719bc82a": {
+  ],
+  "links": [
+    {
+      "id": "3ed564cd-71e5-4ad3-9361-e7b9719bc82a",
       "input": {
         "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
         "pinKey": "value"
@@ -36,7 +40,8 @@
         "pinKey": "b"
       }
     },
-    "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f": {
+    {
+      "id": "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f",
       "input": {
         "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
         "pinKey": "value"
@@ -46,7 +51,6 @@
         "pinKey": "38395ee5-8634-40f9-b7fa-dfe9eee208e8"
       }
     }
-  },
-  "label": "Main",
+  ],
   "description": ""
 }

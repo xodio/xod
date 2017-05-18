@@ -1,10 +1,12 @@
 {
+  "version": "",
   "name": "untitled",
   "authors": [],
   "description": "",
   "license": "",
   "patches": {
     "xod/core/digital-output": {
+      "description": "",
       "path": "xod/core/digital-output",
       "nodes": {
         "noNativeImpl": {
@@ -38,6 +40,7 @@
       }
     },
     "xod/math/multiply": {
+      "description": "",
       "path": "xod/math/multiply",
       "nodes": {
         "noNativeImpl": {
@@ -79,6 +82,7 @@
       }
     },
     "xod/core/latch": {
+      "description": "",
       "path": "xod/core/latch",
       "nodes": {
         "noNativeImpl": {
@@ -128,6 +132,7 @@
       }
     },
     "xod/core/clock": {
+      "description": "",
       "path": "xod/core/clock",
       "nodes": {
         "noNativeImpl": {
@@ -161,6 +166,7 @@
       }
     },
     "xod/core/cast-boolean-to-number": {
+      "description": "",
       "path": "xod/core/cast-boolean-to-number",
       "nodes": {
         "noNativeImpl": {
@@ -194,6 +200,7 @@
       }
     },
     "@/main": {
+      "description": "",
       "path": "@/main",
       "nodes": {
         "SJ7g05EdFe~rJWgAqVOtx": {

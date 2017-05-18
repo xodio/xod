@@ -160,7 +160,7 @@ const catchInvalidWorkspace = R.curry(
 
 // :: String -> Project
 const createEmptyProject = projectName => R.compose(
-    XP.assocPatch('@/main', XP.createPatch()), // TODO: Get rid of "@" after fix xod-project/setPatchPath
+    XP.assocPatch(XP.getLocalPath('main'), XP.createPatch()),
     XP.setProjectName(projectName),
     XP.createProject
   )();

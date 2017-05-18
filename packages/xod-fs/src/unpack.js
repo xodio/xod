@@ -2,6 +2,7 @@ import R from 'ramda';
 import path from 'path';
 import * as XP from 'xod-project';
 
+import { def } from './types';
 import { IMPL_FILENAMES } from './loadLibs';
 
 export const fsSafeName = XP.toIdentifier;
@@ -14,12 +15,14 @@ const getLibNames = R.compose(
   XP.listLibraryPatches
 );
 
-export const getProjectFileContents = project =>
-  R.compose(
-    R.assoc('libs', getLibNames(project)),
-    R.dissoc('patches')
-  )(project);
-
+export const getProjectFileContents = def(
+  'getProjectFileContents :: Project -> ProjectFileContents',
+  project =>
+    R.compose(
+      R.assoc('libs', getLibNames(project)),
+      R.dissoc('patches')
+    )(project)
+);
 
 export const getProjectPath = R.pipe(
   XP.getProjectName,
@@ -29,22 +32,23 @@ export const getProjectPath = R.pipe(
 
 export const getPatchFolderName = R.pipe(XP.getPatchPath, XP.getBaseName);
 
-const removeIds = R.map(R.dissoc('id'));
-
-export const getXodpContents = R.compose(
-  R.dissoc('impls'),
-  R.dissoc('path'),
-  R.evolve({
-    nodes: removeIds,
-    links: removeIds,
-  })
+export const getPatchFileContents = def(
+  'getPatchFileContents :: Patch -> PatchFileContents',
+  R.compose(
+    R.dissoc('impls'),
+    R.dissoc('path'),
+    R.evolve({
+      nodes: R.values,
+      links: R.values,
+    })
+  )
 );
 
 const filePath = R.unapply(R.join(path.sep));
 
 const getXodpFile = R.curry((projectPath, patch) => ({
   path: filePath(projectPath, getPatchFolderName(patch), 'patch.xodp'),
-  content: getXodpContents(patch),
+  content: getPatchFileContents(patch),
 }));
 
 const getImplFiles = R.curry(

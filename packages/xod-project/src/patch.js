@@ -32,6 +32,7 @@ export const createPatch = () => ({
   links: {},
   impls: {},
   path: getLocalPath('untitled-patch'),
+  description: '',
 });
 
 /**

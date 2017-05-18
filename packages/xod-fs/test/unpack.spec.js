@@ -22,14 +22,16 @@ describe('arrangeByFiles', () => {
               'xod/core',
             ],
             license: '',
+            version: '0.0.1',
             name: 'awesome-project',
           },
           path: './awesome-project/project.xod',
         },
         {
           content: {
-            nodes: {
-              SJmGlirFpx: {
+            nodes: [
+              {
+                id: 'SJmGlirFpx',
                 type: 'xod/core/led',
                 position: {
                   x: 138,
@@ -44,7 +46,8 @@ describe('arrangeByFiles', () => {
                 label: 'my led',
                 description: 'description for my led',
               },
-              rJxbjrKpl: {
+              {
+                id: 'rJxbjrKpl',
                 type: 'xod/patch-nodes/input-number',
                 position: {
                   x: 138,
@@ -54,9 +57,10 @@ describe('arrangeByFiles', () => {
                 label: '',
                 description: '',
               },
-            },
-            links: {
-              rJIWsrtae: {
+            ],
+            links: [
+              {
+                id: 'rJIWsrtae',
                 output: {
                   nodeId: 'rJxbjrKpl',
                   pinKey: 'PIN',
@@ -66,7 +70,8 @@ describe('arrangeByFiles', () => {
                   pinKey: 'brightness',
                 },
               },
-            },
+            ],
+            description: 'main patch description',
           },
           path: './awesome-project/main/patch.xodp',
         },

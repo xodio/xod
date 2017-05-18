@@ -5,6 +5,7 @@
   ],
   "description": "",
   "license": "",
+  "version": "0.0.1",
   "patches": {
     "xod/core/led": {
       "nodes": {
@@ -81,7 +82,8 @@
       "impls": {
         "arduino": "//custom implementation by user to work faster on Arduino"
       },
-      "path": "@/main"
+      "path": "@/main",
+      "description": "main patch description"
     }
   },
   "name": "awesome-project"

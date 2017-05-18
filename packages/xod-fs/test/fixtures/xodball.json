@@ -4,10 +4,10 @@
   ],
   "description": "",
   "license": "",
+  "version": "42",
   "name": "awesome-project",
   "patches": {
     "xod/core/and": {
-      "label": "and",
       "description": "",
       "links": {},
       "nodes": {
@@ -62,7 +62,6 @@
       }
     },
     "xod/core/led": {
-      "label": "LED",
       "description": "",
       "links": {},
       "nodes": {
@@ -95,7 +94,6 @@
       }
     },
     "xod/core/pot": {
-      "label": "pot",
       "description": "",
       "links": {},
       "nodes": {
@@ -141,7 +139,6 @@
     "xod/core/test": {
       "nodes": {},
       "links": {},
-      "label": "Test",
       "description": "",
       "path": "xod/core/test",
       "impls": {}
@@ -200,7 +197,6 @@
           "id": "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f"
         }
       },
-      "label": "Main",
       "description": "",
       "path": "@/main",
       "impls": {}
@@ -239,7 +235,6 @@
           "id": "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1"
         }
       },
-      "label": "QUX",
       "description": "",
       "path": "@/qux",
       "impls": {}

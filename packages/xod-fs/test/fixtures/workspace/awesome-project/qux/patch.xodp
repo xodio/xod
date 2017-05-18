@@ -1,6 +1,7 @@
 {
-  "nodes": {
-    "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
+  "nodes": [
+    {
+      "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
       "type": "xod/patch-nodes/input-number",
       "pins": {},
       "position": {
@@ -8,7 +9,8 @@
         "y": 155
       }
     },
-    "4da4c29d-f482-47c2-825e-a969084b1116": {
+    {
+      "id": "4da4c29d-f482-47c2-825e-a969084b1116",
       "type": "xod/core/led",
       "pins": {},
       "position": {
@@ -16,9 +18,10 @@
         "y": 307
       }
     }
-  },
-  "links": {
-    "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1": {
+  ],
+  "links": [
+    {
+      "id": "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1",
       "input": {
         "nodeId": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
         "pinKey": "PIN"
@@ -28,7 +31,6 @@
         "pinKey": "brightness"
       }
     }
-  },
-  "label": "QUX",
+  ],
   "description": ""
 }
