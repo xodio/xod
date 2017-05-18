@@ -15,7 +15,7 @@ import {
   getNodeById,
   getNodePosition,
   getNodeLabel,
-  getPinCurriedValue,
+  getBoundValue,
   listLinks,
   getLinkId,
 } from 'xod-project';
@@ -214,7 +214,7 @@ describe('project reducer', () => {
         getProject
       )(store.getState());
 
-      const maybePinValue = maybeNode.chain(getPinCurriedValue(pinKey));
+      const maybePinValue = maybeNode.chain(getBoundValue(pinKey));
 
       const actualPinValue = Maybe.maybe({}, R.identity, maybePinValue);
 

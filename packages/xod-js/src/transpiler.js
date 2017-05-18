@@ -72,9 +72,9 @@ export const getOutLinks = R.curry((nodeId, patch) =>
 );
 
 // :: Node -> [[PinKey, PinValue]]
-export const getCurriedPins = R.compose(
+export const getBoundValuePairs = R.compose(
   R.toPairs,
-  Project.getCurriedPins
+  Project.getAllBoundValues
 );
 
 // :: String -> [PinKey, PinValue] -> Node
@@ -85,7 +85,9 @@ export const createConstNode = R.curry((nodeId, curriedPinPair) => {
     value: curriedPinPair[1],
     type: 'xod/internal/const',
     position: { x: 0, y: 0 },
-    pins: {},
+    label: '',
+    description: '',
+    boundValues: {},
   };
 });
 
@@ -122,7 +124,7 @@ const createConstNodeAndLink = R.converge(
 const createConstantForNode = R.curry((project, node) =>
   R.compose(
     R.map(createConstNodeAndLink(Project.getNodeId(node))),
-    getCurriedPins
+    getBoundValuePairs
   )(node)
 );
 
@@ -135,9 +137,14 @@ const createConstants = R.curry((project, nodes) =>
 );
 
 // :: Patch -> Patch
-const clearNodePins = R.over(
+const clearNodeBoundValues = R.over(
   R.lensProp('nodes'),
-  R.map(R.omit(['pins']))
+  R.map(
+    R.over(
+      R.lensProp('boundValues'),
+      R.empty
+    )
+  )
 );
 
 // :: Project -> Patch -> Patch
@@ -156,7 +163,7 @@ export const addConstNodesToPatch = R.curry((project, patch) => {
 export const transformPatch = R.curry((path, project) =>
   Project.getPatchByPath(path, project)
   .map(addConstNodesToPatch(project))
-  .map(clearNodePins)
+  .map(clearNodeBoundValues)
 );
 
 // :: Patch -> Project -> Node -> Node

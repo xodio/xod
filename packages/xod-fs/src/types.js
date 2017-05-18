@@ -34,7 +34,6 @@ export const ProjectFileContents = Model('ProjectFileContents', {
   license: $.String,
   description: $.String,
   version: $.String,
-  libs: $.Array($.String),
 });
 
 //-----------------------------------------------------------------------------

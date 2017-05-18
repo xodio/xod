@@ -62,6 +62,7 @@ describe('Editor reducer', () => {
         ],
         description: '',
         license: '',
+        version: '',
         name: 'Test project',
         patches: {
           '@/1': {
@@ -73,18 +74,17 @@ describe('Editor reducer', () => {
                   x: 138,
                   y: 432,
                 },
-                pins: {
-                  in: {
-                    key: 'in',
-                    value: 0,
-                  },
+                boundValues: {
+                  in: 0,
                 },
+                label: '',
+                description: '',
               },
             },
             links: {},
             impls: {},
             path: '@/1',
-            label: 'Main',
+            description: 'Main patch',
           },
           'xod/core/test': {
             nodes: {
@@ -97,6 +97,7 @@ describe('Editor reducer', () => {
                   y: 100,
                 },
                 type: 'xod/patch-nodes/not-implemented-in-xod',
+                boundValues: {},
               },
               in: {
                 id: 'in',
@@ -107,12 +108,13 @@ describe('Editor reducer', () => {
                 },
                 label: '',
                 description: '',
+                boundValues: {},
               },
             },
             links: {},
             impls: {},
             path: 'xod/core/test',
-            label: 'Test patch',
+            description: 'Test patch',
           },
         },
       },

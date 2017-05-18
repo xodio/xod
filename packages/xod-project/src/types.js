@@ -70,6 +70,9 @@ export const Node = Model('Node', {
   id: NodeId,
   position: NodePosition,
   type: PatchPath,
+  label: $.String,
+  description: $.String,
+  boundValues: $.StrMap(DataValue),
 });
 
 export const Link = Model('Link', {
@@ -83,6 +86,7 @@ export const Patch = Model('Patch', {
   links: $.StrMap(Link),
   impls: $.StrMap(Source),
   path: PatchPath,
+  description: $.String,
 });
 
 export const Project = Model('Project', {
@@ -90,6 +94,7 @@ export const Project = Model('Project', {
   name: Identifier,
   authors: $.Array($.String),
   license: $.String,
+  version: $.String,
   description: $.String,
 });
 

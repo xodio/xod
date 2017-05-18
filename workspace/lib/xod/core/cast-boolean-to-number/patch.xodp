@@ -9,10 +9,12 @@
         "y": 100
       },
       "type": "xod/patch-nodes/not-implemented-in-xod",
+      "boundValues": {},
       "id": "noNativeImpl"
     },
     {
       "type": "xod/patch-nodes/input-boolean",
+      "boundValues": {},
       "position": {
         "x": 0,
         "y": 0
@@ -23,6 +25,7 @@
     },
     {
       "type": "xod/patch-nodes/output-number",
+      "boundValues": {},
       "position": {
         "x": 0,
         "y": 300
@@ -32,6 +35,5 @@
       "id": "__out__"
     }
   ],
-  "label": "",
   "description": ""
 }

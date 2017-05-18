@@ -19,6 +19,7 @@ const initialProject = {
   ],
   description: '',
   license: '',
+  version: '',
   name: 'Awesome project',
   patches: {
     '@/main': {
@@ -26,6 +27,7 @@ const initialProject = {
       links: {},
       nodes: {},
       path: '@/main',
+      description: '',
     },
     'xod/core/button': {
       impls: {
@@ -42,6 +44,7 @@ const initialProject = {
             y: 100,
           },
           type: 'xod/patch-nodes/not-implemented-in-xod',
+          boundValues: {},
         },
         state: {
           id: 'state',
@@ -52,9 +55,11 @@ const initialProject = {
           },
           label: '',
           description: '',
+          boundValues: {},
         },
       },
       path: 'xod/core/button',
+      description: '',
     },
   },
 };

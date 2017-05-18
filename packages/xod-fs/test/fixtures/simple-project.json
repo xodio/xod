@@ -10,9 +10,10 @@
     "xod/core/led": {
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -20,50 +21,49 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "brightness": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "brightness",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
       "impls": {
         "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var b = e.inputs.brightness;\n\n  // Adjust duty cycle as a power function to align brightness\n  // perception by human eye\n  var duty = b * b * b;\n\n  analogWrite(e.context.pin, duty);\n};\n"
       },
-      "path": "xod/core/led"
+      "path": "xod/core/led",
+      "description": ""
     },
     "@/main": {
       "nodes": {
         "SJmGlirFpx": {
+          "label": "my led",
+          "description": "description for my led",
+          "boundValues": {
+            "brightness": 0
+          },
           "id": "SJmGlirFpx",
           "type": "xod/core/led",
           "position": {
             "x": 138,
             "y": 224
-          },
-          "pins": {
-            "brightness": {
-              "key": "brightness",
-              "value": 0
-            }
-          },
-          "label": "my led",
-          "description": "description for my led"
+          }
         },
         "rJxbjrKpl": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "rJxbjrKpl",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 138,
             "y": 16
-          },
-          "pins": {},
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {

@@ -4,6 +4,7 @@
   ],
   "description": "",
   "license": "",
+  "version": "",
   "name": "welcome-to-xod",
   "libs": [
     "xod/core"

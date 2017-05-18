@@ -102,161 +102,85 @@ describe('Node', () => {
     });
   });
 
-  describe('getCurriedPins', () => {
-    it('should return empty object for node without `pins` key', () => {
-      expect(Node.getCurriedPins({})).to.be.an('object').and.empty();
-    });
-    it('should return empty object for node without pins', () => {
-      expect(Node.getCurriedPins({ pins: {} })).to.be.an('object').and.empty();
+  describe('getAllBoundValues', () => {
+    it('should return empty object for node without bound values', () => {
+      const node = Helper.defaultizeNode({ boundValues: {} });
+      expect(Node.getAllBoundValues(node)).to.be.an('object').and.empty();
     });
     it('should return object with shape { pinKey: pinValue }', () => {
-      const node = {
-        pins: {
-          a: {
-            curried: true,
-            value: true,
-          },
-          b: {
-            curried: true,
-            value: 10,
-          },
+      const node = Helper.defaultizeNode({
+        boundValues: {
+          a: true,
+          b: 10,
         },
-      };
+      });
 
-      expect(Node.getCurriedPins(node)).to.be.deep.equal({
+      expect(Node.getAllBoundValues(node)).to.be.deep.equal({
         a: true,
         b: 10,
       });
     });
   });
 
-  describe('getPinCurriedValue', () => {
+  describe('getBoundValue', () => {
     const node = Helper.defaultizeNode({
-      pins: {
-        existingAndCurried: {
-          curried: true,
-          value: 'hey-ho',
-        },
-        existingAndUncurried: {
-          curried: false,
-          value: 'ha-ha',
-        },
+      boundValues: {
+        existing: 'hey-ho',
       },
     });
     const checkJust = (pinName) => {
-      const value = Node.getPinCurriedValue(pinName, node);
+      const value = Node.getBoundValue(pinName, node);
       expect(value.isJust).to.be.true();
-      expect(value.getOrElse(null)).to.be.equal(node.pins[pinName].value);
+      expect(value.getOrElse(null)).to.be.equal(node.boundValues[pinName]);
     };
 
     it('should return Maybe.Nothing for undefined value', () => {
-      const value = Node.getPinCurriedValue('non-existent', node);
+      const value = Node.getBoundValue('non-existent', node);
       expect(value.isNothing).to.be.true();
     });
-    it('should return Maybe.Just for defined value of curried pin', () => {
-      const pinName = 'existingAndCurried';
-      checkJust(pinName);
-    });
-    it('should return Maybe.Just for defined value of uncurried pin', () => {
-      const pinName = 'existingAndUncurried';
+    it('should return Maybe.Just for defined bound value of a pin', () => {
+      const pinName = 'existing';
       checkJust(pinName);
     });
   });
-  describe('setPinCurriedValue', () => {
-    it('should return Node with new curried value', () => {
-      const newNode = Node.setPinCurriedValue('test', true, emptyNode);
+  describe('setBoundValue', () => {
+    it('should return Node with new bound pin value', () => {
+      const newNode = Node.setBoundValue('test', true, emptyNode);
 
       expect(newNode)
         .to.be.an('object')
-        .that.have.property('pins')
+        .that.have.property('boundValues')
         .that.have.property('test')
-        .that.have.property('value')
         .to.be.true();
     });
-    it('should return Node with replaced curried value', () => {
+    it('should return Node with replaced bound value', () => {
       const node = Helper.defaultizeNode({
-        pins: {
-          test: { value: false },
+        boundValues: {
+          test: false,
         },
       });
 
-      const newNode = Node.setPinCurriedValue('test', true, node);
+      const newNode = Node.setBoundValue('test', true, node);
 
       expect(newNode)
         .to.be.an('object')
-        .that.have.property('pins')
+        .that.have.property('boundValues')
         .that.have.property('test')
-        .that.have.property('value')
         .to.be.true();
     });
-    it('should return Node without affecting on other curried pins', () => {
+    it('should return Node without affecting other bound values', () => {
       const node = Helper.defaultizeNode({
-        pins: {
-          other: { value: false },
+        boundValues: {
+          other: false,
         },
       });
 
-      const newNode = Node.setPinCurriedValue('test', true, node);
+      const newNode = Node.setBoundValue('test', true, node);
 
       expect(newNode)
         .to.be.an('object')
-        .that.have.property('pins')
+        .that.have.property('boundValues')
         .that.have.property('other')
-        .that.have.property('value')
-        .to.be.false();
-    });
-  });
-  describe('curryPin', () => {
-    it('should return Node with curried `test` pin === true', () => {
-      const newNode = Node.curryPin('test', true, emptyNode);
-
-      expect(newNode)
-        .to.be.an('object')
-        .that.have.property('pins')
-        .that.have.property('test')
-        .that.have.property('curried')
-        .to.be.true();
-    });
-    it('should return Node with curried `test` pin === false', () => {
-      const newNode = Node.curryPin('test', false, emptyNode);
-
-      expect(newNode)
-        .to.be.an('object')
-        .that.have.property('pins')
-        .that.have.property('test')
-        .that.have.property('curried')
-        .to.be.false();
-    });
-    it('should return Node with curried `test` pin', () => {
-      const node = Helper.defaultizeNode({
-        pins: {
-          test: { curried: false },
-        },
-      });
-
-      const newNode = Node.curryPin('test', true, node);
-
-      expect(newNode)
-        .to.be.an('object')
-        .that.have.property('pins')
-        .that.have.property('test')
-        .that.have.property('curried')
-        .to.be.true();
-    });
-    it('should return Node without affecting on other curried pins', () => {
-      const node = Helper.defaultizeNode({
-        pins: {
-          other: { curried: false },
-        },
-      });
-
-      const newNode = Node.curryPin('test', true, node);
-
-      expect(newNode)
-        .to.be.an('object')
-        .that.have.property('pins')
-        .that.have.property('other')
-        .that.have.property('curried')
         .to.be.false();
     });
   });
@@ -286,23 +210,6 @@ describe('Node', () => {
     });
     it('should return true for type equal to xod/patch-nodes/output*', () => {
       expect(Node.isPinNode(nodeOfType('xod/patch-nodes/output-number'))).to.be.true();
-    });
-  });
-  describe('isPinCurried', () => {
-    it('should return false for non-existent pin', () => {
-      expect(Node.isPinCurried('test', emptyNode)).to.be.false();
-    });
-    it('should return false for pin without `curried` property equal to true', () => {
-      const node = Helper.defaultizeNode({ pins: { test: {} } });
-      expect(Node.isPinCurried('test', node)).to.be.false();
-    });
-    it('should return true for pin that curried', () => {
-      const node = Helper.defaultizeNode({ pins: { test: { value: 1, curried: true } } });
-      expect(Node.isPinCurried('test', node)).to.be.true();
-    });
-    it('should return true for pin that curried, even it haven\'t a value', () => {
-      const node = Helper.defaultizeNode({ pins: { test: { curried: true } } });
-      expect(Node.isPinCurried('test', node)).to.be.true();
     });
   });
   // etc

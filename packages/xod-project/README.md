@@ -70,7 +70,7 @@ Manipulate with entities only using API functions or you can get unhandled excep
 
    * **Check functions**
      If function checks something and returns boolean, it looks like a question.
-     For example, `isPinCurried`, `hasPins`.
+     For example, `isValidIdentifier`, `hasPins`.
 
 ### Getters, setters and their return values
 

@@ -6,19 +6,22 @@ export default {
   ],
   description: '',
   license: '',
-  name: 'Awesome project',
+  name: 'untitled',
+  version: '',
   patches: {
     '@/1': {
       impls: {},
       links: {},
       nodes: {},
       path: '@/1',
+      description: '',
     },
     '@/2': {
       impls: {},
       links: {},
       nodes: {},
       path: '@/2',
+      description: '',
     },
   },
 };

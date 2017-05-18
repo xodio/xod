@@ -61,11 +61,8 @@ describe('Transpiler', () => {
                 x: 0,
                 y: 0,
               },
-              pins: {
-                in_A: {
-                  value: 10,
-                  curried: true,
-                },
+              boundValues: {
+                in_A: 10,
               },
             },
             1: {
@@ -75,7 +72,7 @@ describe('Transpiler', () => {
                 x: 200,
                 y: 0,
               },
-              pins: {},
+              boundValues: {},
             },
           },
           links: {
@@ -162,7 +159,9 @@ describe('Transpiler', () => {
             type: 'xod/internal/const',
             value: 10,
             position: { x: 0, y: 0 },
-            pins: {},
+            boundValues: {},
+            label: '',
+            description: '',
           },
         },
         links: {
@@ -264,18 +263,16 @@ describe('Transpiler', () => {
       });
     });
 
-    describe('getCurriedPins', () => {
+    describe('getBoundValuePairs', () => {
       it('should return empty array for node without curried pins', () => {
-        const typePatch = project.patches['xod/nodes/test'];
         const node = project.patches['@/main'].nodes['1'];
-        expect(Transpiler.getCurriedPins(node, typePatch))
+        expect(Transpiler.getBoundValuePairs(node))
           .to.be.an('array')
           .and.empty();
       });
       it('should return array with one pair [pinKey, pinValue] for node with one curried pin', () => {
-        const typePatch = project.patches['xod/nodes/test'];
         const node = project.patches['@/main'].nodes['0'];
-        expect(Transpiler.getCurriedPins(node, typePatch))
+        expect(Transpiler.getBoundValuePairs(node))
           .to.be.deep.equal([['in_A', 10]]);
       });
     });
@@ -351,11 +348,8 @@ describe('Transpiler', () => {
                   x: 0,
                   y: 0,
                 },
-                pins: {
-                  in_A: {
-                    value: 10,
-                    curried: true,
-                  },
+                boundValues: {
+                  in_A: 10,
                 },
               },
               1: {
@@ -365,7 +359,7 @@ describe('Transpiler', () => {
                   x: 0,
                   y: 0,
                 },
-                pins: {},
+                boundValues: {},
               },
             },
             links: {

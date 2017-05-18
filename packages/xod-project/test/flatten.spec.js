@@ -293,11 +293,8 @@ describe('Flatten', () => {
               a: {
                 id: 'a',
                 type: '@/foo',
-                pins: { // TODO: curriedPins
-                  a: {
-                    curried: true,
-                    value: true,
-                  },
+                boundValues: {
+                  a: true,
                 },
               },
               b: {
@@ -320,11 +317,8 @@ describe('Flatten', () => {
               c: {
                 id: 'c',
                 type: 'xod/core/number',
-                pins: { // TODO: curriedPins
-                  in: {
-                    curried: true,
-                    value: 32,
-                  },
+                boundValues: {
+                  in: 32,
                 },
               },
             },
@@ -350,24 +344,21 @@ describe('Flatten', () => {
       const nodes = result[0];
 
       const terminalA = R.find(R.propEq('id', 'a~a'), nodes);
-      expect(terminalA).to.have.property('pins').that.deep.equals({
-        __in__: {
-          curried: true,
-          value: true,
-        },
+      expect(terminalA).to.have.property('boundValues').that.deep.equals({
+        __in__: true,
       });
 
       const terminalB = R.find(R.propEq('id', 'b~a'), nodes);
-      expect(terminalB).to.have.property('pins').that.empty();
+      expect(terminalB).to.have.property('boundValues').that.empty();
 
-      const justNodeWithCurriedPinA = R.find(R.propEq('id', 'a~c'), nodes);
-      expect(justNodeWithCurriedPinA).to.have.property('pins').that.deep.equals(
-        project.patches['@/foo'].nodes.c.pins
+      const justNodeWithBoundValueForPinA = R.find(R.propEq('id', 'a~c'), nodes);
+      expect(justNodeWithBoundValueForPinA).to.have.property('boundValues').that.deep.equals(
+        project.patches['@/foo'].nodes.c.boundValues
       );
 
-      const justNodeWithCurriedPinB = R.find(R.propEq('id', 'b~c'), nodes);
-      expect(justNodeWithCurriedPinB).to.have.property('pins').that.deep.equals(
-        project.patches['@/foo'].nodes.c.pins
+      const justNodeWithBoundValueForPinB = R.find(R.propEq('id', 'b~c'), nodes);
+      expect(justNodeWithBoundValueForPinB).to.have.property('boundValues').that.deep.equals(
+        project.patches['@/foo'].nodes.c.boundValues
       );
     });
     it('correct structure for blinking.json', () => {
@@ -391,22 +382,16 @@ describe('Flatten', () => {
 
       const terminalString = R.find(R.propEq('id', 'BJ4l0cVdKe~S1ulA9NuFx'), nodes);
       expect(terminalString)
-      .to.have.property('pins')
+      .to.have.property('boundValues')
       .that.deep.equals({
-        __in__: {
-          curried: true,
-          value: 'LED1',
-        },
+        __in__: 'LED1',
       });
 
       const terminalNumber = R.find(R.propEq('id', 'SJ7g05EdFe~B1eR5EOYg'), nodes);
       expect(terminalNumber)
-      .to.have.property('pins')
+      .to.have.property('boundValues')
       .that.deep.equals({
-        __in__: {
-          curried: true,
-          value: 1,
-        },
+        __in__: 1,
       });
     });
   });
@@ -984,21 +969,21 @@ describe('Flatten', () => {
 
           if (typeOut === typeIn) { // TODO: explain what exactly is happening here
             project.patches[`xod/core/${typeOut}`].nodes = {
-              in: {
+              in: Helper.defaultizeNode({
                 id: 'in',
                 position: { x: 0, y: 0 },
                 type: `xod/patch-nodes/input-${typeOut}`,
-              },
-              out: {
+              }),
+              out: Helper.defaultizeNode({
                 id: 'out',
                 position: { x: 0, y: 300 },
                 type: `xod/patch-nodes/output-${typeIn}`,
-              },
-              noNativeImpl: {
+              }),
+              noNativeImpl: Helper.defaultizeNode({
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
                 type: 'xod/patch-nodes/not-implemented-in-xod',
-              },
+              }),
             };
           }
 
@@ -1140,21 +1125,21 @@ describe('Flatten', () => {
 
           if (typeOut === typeIn) {
             project.patches[`xod/core/${typeOut}`].nodes = {
-              in: {
+              in: Helper.defaultizeNode({
                 id: 'in',
                 position: { x: 0, y: 0 },
                 type: `xod/patch-nodes/input-${typeOut}`,
-              },
-              out: {
+              }),
+              out: Helper.defaultizeNode({
                 id: 'out',
                 position: { x: 0, y: 300 },
                 type: `xod/patch-nodes/output-${typeIn}`,
-              },
-              noNativeImpl: {
+              }),
+              noNativeImpl: Helper.defaultizeNode({
                 id: 'noNativeImpl',
                 position: { x: 100, y: 100 },
                 type: 'xod/patch-nodes/not-implemented-in-xod',
-              },
+              }),
             };
           }
 
@@ -1393,8 +1378,8 @@ describe('Flatten', () => {
     });
   });
 
-  describe('curried pins', () => {
-    it('should return original (unnested) nodes with curried pins', () => {
+  describe('bound values', () => {
+    it('should return original (unnested) nodes with bound values', () => {
       const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
@@ -1402,11 +1387,8 @@ describe('Flatten', () => {
               f: {
                 id: 'f',
                 type: '@/foo',
-                pins: { // TODO: curriedPins
-                  b: {
-                    curried: true,
-                    value: 32,
-                  },
+                boundValues: {
+                  b: 32,
                 },
               },
             },
@@ -1469,15 +1451,15 @@ describe('Flatten', () => {
       Helper.expectEither(
         (newProject) => {
           expect(newProject.patches['@/main'].nodes['f~a'])
-            .to.have.property('pins')
+            .to.have.property('boundValues')
             .that.have.property('in')
-            .that.deep.equal(project.patches['@/main'].nodes.f.pins.b);
+            .that.equal(project.patches['@/main'].nodes.f.boundValues.b);
         },
         flatProject
       );
     });
 
-    it('should return cast-nodes with curried pins', () => {
+    it('should return cast-nodes with bound values', () => {
       const project = Helper.defaultizeProject({
         patches: {
           '@/main': {
@@ -1489,15 +1471,9 @@ describe('Flatten', () => {
               b: {
                 id: 'b',
                 type: '@/foo',
-                pins: { // TODO: curriedPins
-                  a2: {
-                    curried: true,
-                    value: 32,
-                  },
-                  a3: {
-                    curried: true,
-                    value: 27,
-                  },
+                boundValues: {
+                  a2: 32,
+                  a3: 27,
                 },
               },
               c: {
@@ -1684,13 +1660,13 @@ describe('Flatten', () => {
       Helper.expectEither(
         (newProject) => {
           expect(newProject.patches['@/main'].nodes['b~a2-to-b~b'])
-            .to.have.property('pins')
+            .to.have.property('boundValues')
             .that.have.property('__in__')
-            .that.deep.equal(project.patches['@/main'].nodes.b.pins.a2);
+            .that.equal(project.patches['@/main'].nodes.b.boundValues.a2);
           expect(newProject.patches['@/main'].nodes['b~a3-to-b~b2'])
-            .to.have.property('pins')
+            .to.have.property('boundValues')
             .that.have.property('__in__')
-            .that.deep.equal(project.patches['@/main'].nodes.b.pins.a3);
+            .that.equal(project.patches['@/main'].nodes.b.boundValues.a3);
         },
         flatProject
       );

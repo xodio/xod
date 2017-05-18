@@ -33,7 +33,7 @@ const isNodeWithCurriedPins = def(
   'isNodeWithCurriedPins :: Node -> Boolean',
   R.compose(
     R.complement(R.isEmpty),
-    Project.getCurriedPins
+    Project.getAllBoundValues
   )
 );
 
@@ -137,7 +137,7 @@ const getMapOfNodePinValues = def(
   'getMapOfNodePinValues :: [Node] -> Map NodeId (Map PinKey DataValue)',
   R.compose(
     R.reject(R.isEmpty),
-    R.map(Project.getCurriedPins),
+    R.map(Project.getAllBoundValues),
     R.indexBy(Project.getNodeId)
   )
 );
@@ -203,16 +203,15 @@ const assocPatchesToProject = def(
   )
 );
 
-const createNodesWithCurriedPins = def(
-  'createNodesWithCurriedPins :: Map NodeId (Map PinKey DataValue) -> Map NodeId (Map PinKey PatchPath) -> Map NodeId (Map PinKey Node)',
+const createNodesWithBoundValues = def(
+  'createNodesWithBoundValues :: Map NodeId (Map PinKey DataValue) -> Map NodeId (Map PinKey PatchPath) -> Map NodeId (Map PinKey Node)',
   (mapOfPinValues, mapOfPinPaths) => R.mapObjIndexed(
     (pinsData, nodeId) => R.mapObjIndexed(
       (pinValue, pinKey) => {
         const type = R.path([nodeId, pinKey], mapOfPinPaths);
 
         return R.compose(
-          Project.setPinCurriedValue(CONSTANT_VALUE_PINKEY, pinValue),
-          Project.curryPin(CONSTANT_VALUE_PINKEY, true),
+          Project.setBoundValue(CONSTANT_VALUE_PINKEY, pinValue),
           Project.createNode({ x: 0, y: 0 })
         )(type);
       },
@@ -222,14 +221,14 @@ const createNodesWithCurriedPins = def(
   )
 );
 
-const uncurryPins = def(
-  'uncurryPins :: Map NodeId (Map PinKey DataValue) -> Patch -> Map NodeId Node',
+const removeBoundValues = def(
+  'removeBoundValues :: Map NodeId (Map PinKey DataValue) -> Patch -> Map NodeId Node',
   (mapOfPinValues, patch) => R.mapObjIndexed(
     (pinData, nodeId) => {
       const pinKeys = R.keys(pinData);
       return R.compose(
         R.reduce(
-          (node, pinKey) => Project.curryPin(pinKey, false, node),
+          (node, pinKey) => Project.removeBoundValue(pinKey, node),
           R.__,
           pinKeys
         ),
@@ -285,7 +284,7 @@ const uncurryAndAssocNodes = def(
   'uncurryAndAssocNodes :: Map NodeId (Map PinKey DataValue) -> Patch -> Patch',
   (mapOfNodePinValues, patch) => R.compose(
     assocUncurriedNodesToPatch(R.__, patch),
-    uncurryPins(mapOfNodePinValues)
+    removeBoundValues(mapOfNodePinValues)
   )(patch)
 );
 
@@ -341,7 +340,7 @@ const placeConstNodesAndLinks = def(
     const nodePinValues = getMapOfNodePinValues(entryPointNodes);
     const pinPaths = getMapOfPinPaths(nodePinValues, nodesWithCurriedPins, flatProject);
 
-    const newConstNodes = createNodesWithCurriedPins(nodePinValues, pinPaths);
+    const newConstNodes = createNodesWithBoundValues(nodePinValues, pinPaths);
     const newLinks = createLinksFromCurriedPins(newConstNodes);
     const newPatch = updatePatch(newLinks, newConstNodes, nodePinValues, entryPointPatch);
 
@@ -416,18 +415,11 @@ const getTNodeOutputs = def(
 
     return R.compose(
       R.values,
-      R.mapObjIndexed((links, pinKey) => {
-        const to = getLinksInputNodeIds(links);
-        const value = (Project.isPinCurried(pinKey, node)) ?
-          explode(Project.getPinCurriedValue(pinKey, node)) :
-          null;
-
-        return {
-          to,
-          pinKey,
-          value,
-        };
-      }),
+      R.mapObjIndexed((links, pinKey) => ({
+        to: getLinksInputNodeIds(links),
+        pinKey,
+        value: Project.getBoundValue(pinKey, node).getOrElse(null),
+      })),
       R.groupBy(Project.getLinkOutputPinKey),
       R.filter(Project.isLinkOutputNodeIdEquals(nodeId)),
       Project.listLinksByNode(node),

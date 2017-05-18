@@ -29,19 +29,6 @@ import { isInputTerminalPath, isOutputTerminalPath, getTerminalDataType } from '
  * @typedef {(string|number|boolean|Pulse)} PinValue
  */
 
-/**
- * Returns path to pin property
- * @private
- * @function getPathToPinProperty
- * @param {string} propName property name: `value` or `curried`
- * @param {string} pinKey pin key
- * @returns {string[]} path like `['pins', 'pinKey', 'value']`
- */
-const getPathToPinProperty = def(
-  'getPathToPinProperty :: String -> String -> [String]',
-  (propName, pinKey) => ['pins', pinKey, propName]
-);
-
 // =============================================================================
 //
 // Node
@@ -62,6 +49,7 @@ export const createNode = def(
     position,
     label: '',
     description: '',
+    boundValues: {},
   })
 );
 
@@ -209,14 +197,14 @@ export const isPinNode = def(
 export const assocInitialPinValues = def(
   'assocInitialPinValues :: Patch -> Node -> Node',
   (patch, node) => R.assoc(
-    'pins',
+    'boundValues',
     R.compose(
+      R.map(R.prop('value')),
       R.indexBy(R.prop('key')),
       R.map(
         R.applySpec({
           key: Pin.getPinKey,
           value: Pin.getPinValue,
-          // TODO: curried?
         })
       ),
       Patch.listInputPins
@@ -226,97 +214,62 @@ export const assocInitialPinValues = def(
 );
 
 /**
- * Gets all curried pins of node
+ * Gets all bound values of node's pins
  *
- * @function getCurriedPins
+ * @function getAllBoundValues
  * @param {Node} node
  * @returns {Object.<PinKey, PinValue>}
  */
-export const getCurriedPins = R.compose(
-  R.map(R.prop('value')),
-  R.filter(R.propEq('curried', true)), // TODO: deprecated
-  R.propOr({}, 'pins')
+export const getAllBoundValues = def(
+  'getAllBoundValues :: Node -> StrMap DataValue',
+  R.prop('boundValues')
 );
 
+const pathToBoundValue = pinKey => ['boundValues', pinKey];
+
 /**
- * Gets curried value of input pin.
+ * Gets bound value of a pin.
  *
- * It will return value even if pin isn't curried.
- * In that case the last curried value or default one is returned.
- *
- * @function getPinCurriedValue
+ * @function getBoundValue
  * @param {string} key
  * @param {Node} node
  * @returns {Maybe<PinValue>}
  */
-export const getPinCurriedValue = def(
-  'getPinCurriedValue :: PinKey -> Node -> Maybe DataValue',
+export const getBoundValue = def(
+  'getBoundValue :: PinKey -> Node -> Maybe DataValue',
   R.useWith(
     Tools.path,
     [
-      getPathToPinProperty('value'),
+      pathToBoundValue,
       R.identity,
     ]
   )
 );
 
 /**
- * Sets curried value to input pin.
+ * Sets bound value to a pin.
  *
- * @function setPinCurriedValue
+ * @function setBoundValue
  * @param {string} key
  * @param {*} value
  * @param {Node} node
  * @returns {Node}
  */
-export const setPinCurriedValue = def(
-  'setPinCurriedValue :: PinKey -> DataValue -> Node -> Node',
+export const setBoundValue = def(
+  'setBoundValue :: PinKey -> DataValue -> Node -> Node',
   R.useWith(
     R.assocPath,
     [
-      getPathToPinProperty('value'),
+      pathToBoundValue,
       R.identity,
       R.identity,
     ]
   )
 );
 
- /**
-  * Enables or disables pin currying.
-  *
-  * @function curryPin
-  * @param {string} key
-  * @param {boolean} curry
-  * @param {Node} node
-  * @returns {Node}
-  */
-export const curryPin = def( // TODO: deprecated
-  'curryPin :: PinKey -> Boolean -> Node -> Node',
-  R.useWith(
-    R.assocPath,
-    [
-      getPathToPinProperty('curried'),
-      R.identity,
-      R.identity,
-    ]
-  )
-);
-
-/**
- * @function isPinCurried
- * @param {string} key
- * @param {Node} node
- * @returns {boolean}
- */
-export const isPinCurried = def( // TODO: deprecated
-  'isPinCurried :: PinKey -> Node -> Boolean',
-  R.useWith(
-    R.pathSatisfies(R.equals(true)),
-    [
-      getPathToPinProperty('curried'),
-      R.identity,
-    ]
-  )
+export const removeBoundValue = def(
+  'removeBoundValue :: PinKey -> Node -> Node',
+  R.uncurryN(2, pinKey => R.dissocPath(['boundValues', pinKey]))
 );
 
 /**

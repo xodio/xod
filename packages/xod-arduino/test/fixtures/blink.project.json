@@ -4,14 +4,17 @@
     "Amperka team"
   ],
   "license": "",
+  "version": "",
   "description": "",
   "patches": {
     "xod/math/subtrac": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -19,34 +22,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "b": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -56,11 +62,13 @@
       "path": "xod/math/subtrac"
     },
     "xod/math/multiply": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -68,34 +76,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "A": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "A",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "B": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "B",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 100,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "OUT": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "OUT",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -106,11 +117,13 @@
       "path": "xod/math/multiply"
     },
     "xod/math/divide": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -118,34 +131,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "b": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 100,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -155,11 +171,13 @@
       "path": "xod/math/divide"
     },
     "xod/math/add": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -167,34 +185,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "b": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 100,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -204,11 +225,13 @@
       "path": "xod/math/add"
     },
     "xod/core/valve-number": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -216,34 +239,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "cond": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "cond",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 100,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "in": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "in",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -254,11 +280,13 @@
       "path": "xod/core/valve-number"
     },
     "xod/core/ultrasonic-hc-sr04": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -266,44 +294,48 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "error": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "error",
           "type": "xod/patch-nodes/output-string",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "sample": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "sample",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 100,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "units": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "units",
           "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "value": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "value",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 200,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -314,11 +346,13 @@
       "path": "xod/core/ultrasonic-hc-sr04"
     },
     "xod/core/triggerable-number": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -326,34 +360,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "trigOn": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "trigOn",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 200,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "value": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "value",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -364,11 +401,13 @@
       "path": "xod/core/triggerable-number"
     },
     "xod/core/time": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -376,24 +415,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "pulse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "pulse",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "value": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "value",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -404,11 +445,13 @@
       "path": "xod/core/time"
     },
     "xod/core/stdout": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -416,14 +459,15 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "value": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "value",
           "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -434,11 +478,13 @@
       "path": "xod/core/stdout"
     },
     "xod/core/split-boolean": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -446,34 +492,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inp": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "inp",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "outFalse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "outFalse",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 200,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "outTrue": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "outTrue",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -484,11 +533,13 @@
       "path": "xod/core/split-boolean"
     },
     "xod/core/servo": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -496,34 +547,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "maxPulse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "maxPulse",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "minPulse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "minPulse",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "value": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "value",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -533,11 +587,13 @@
       "path": "xod/core/servo"
     },
     "xod/core/pot": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -545,24 +601,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "sample": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "sample",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "value": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "value",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -572,11 +630,13 @@
       "path": "xod/core/pot"
     },
     "xod/core/or": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -584,34 +644,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "a",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "b": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "b",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -622,11 +685,13 @@
       "path": "xod/core/or"
     },
     "xod/core/not": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -634,24 +699,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "in": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "in",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -662,11 +729,13 @@
       "path": "xod/core/not"
     },
     "xod/core/map": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -674,74 +743,81 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "clip": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "clip",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "inA": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "inA",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "inB": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "inB",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "inp": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "inp",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "outA": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "outA",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "outB": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "outB",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -751,11 +827,13 @@
       "path": "xod/core/map"
     },
     "xod/core/less": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -763,34 +841,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "b": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -800,11 +881,13 @@
       "path": "xod/core/less"
     },
     "xod/core/led": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -812,14 +895,15 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "brightness": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "brightness",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -830,11 +914,13 @@
       "path": "xod/core/led"
     },
     "xod/core/latch": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -842,44 +928,48 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "RST": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "RST",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "SET": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "SET",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 100,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "OUT": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "OUT",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "TGL": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "TGL",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -890,11 +980,13 @@
       "path": "xod/core/latch"
     },
     "xod/core/greater": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -902,34 +994,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "b": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -939,11 +1034,13 @@
       "path": "xod/core/greater"
     },
     "xod/core/file-write": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -951,44 +1048,48 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "data": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "data",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "fileName": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "fileName",
           "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "onFailure": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "onFailure",
           "type": "xod/patch-nodes/output-string",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "onSuccess": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "onSuccess",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -999,11 +1100,13 @@
       "path": "xod/core/file-write"
     },
     "xod/core/file-read": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1011,44 +1114,48 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "data": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "data",
           "type": "xod/patch-nodes/output-string",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "error": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "error",
           "type": "xod/patch-nodes/output-string",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "fileName": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "fileName",
           "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "pulse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "pulse",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1059,11 +1166,13 @@
       "path": "xod/core/file-read"
     },
     "xod/core/equal": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1071,34 +1180,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "b": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1108,11 +1220,13 @@
       "path": "xod/core/equal"
     },
     "xod/core/either": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1120,44 +1234,48 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "falseValue": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "falseValue",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "inp": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "inp",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "trueValue": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "trueValue",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1167,11 +1285,13 @@
       "path": "xod/core/either"
     },
     "xod/core/digital-output": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1179,24 +1299,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "PIN": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "PIN",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 200,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "VAL": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "VAL",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1207,11 +1329,13 @@
       "path": "xod/core/digital-output"
     },
     "xod/core/digital-input": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1219,24 +1343,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "pin": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "pin",
           "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "value": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "value",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1246,11 +1372,13 @@
       "path": "xod/core/digital-input"
     },
     "xod/core/const-string": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1258,34 +1386,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inValue": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "inValue",
           "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "pulse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "pulse",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "value": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "value",
           "type": "xod/patch-nodes/output-string",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1296,11 +1427,13 @@
       "path": "xod/core/const-string"
     },
     "xod/core/const-number": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1308,34 +1441,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inValue": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "inValue",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "pulse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "pulse",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "value": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "value",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1346,11 +1482,13 @@
       "path": "xod/core/const-number"
     },
     "xod/core/const-boolean": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1358,34 +1496,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "inValue": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "inValue",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "pulse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "pulse",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "value": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "value",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1396,11 +1537,13 @@
       "path": "xod/core/const-boolean"
     },
     "xod/core/constant-number": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1408,14 +1551,15 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "VAL": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "VAL",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1425,11 +1569,13 @@
       "path": "xod/core/constant-number"
     },
     "xod/core/constant-logic": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1437,14 +1583,15 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "VAL": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "VAL",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1454,11 +1601,13 @@
       "path": "xod/core/constant-logic"
     },
     "xod/core/concat": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1466,34 +1615,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "a",
           "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "b": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "b",
           "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "result": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "result",
           "type": "xod/patch-nodes/output-string",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1504,11 +1656,13 @@
       "path": "xod/core/concat"
     },
     "xod/core/compare": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1516,54 +1670,59 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "b": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "equal": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "equal",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "greater": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "greater",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "less": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "less",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1573,11 +1732,13 @@
       "path": "xod/core/compare"
     },
     "xod/core/clock": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1585,24 +1746,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "IVAL": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "IVAL",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "TICK": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "TICK",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1613,11 +1776,13 @@
       "path": "xod/core/clock"
     },
     "xod/core/choose": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1625,34 +1790,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "falsePulse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "falsePulse",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "truePulse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "truePulse",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "x": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "x",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1662,11 +1830,13 @@
       "path": "xod/core/choose"
     },
     "xod/core/cast-string-to-pulse": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1674,24 +1844,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__in__",
           "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "__out__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__out__",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1701,11 +1873,13 @@
       "path": "xod/core/cast-string-to-pulse"
     },
     "xod/core/cast-string-to-boolean": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1713,24 +1887,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__in__",
           "type": "xod/patch-nodes/input-string",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "__out__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__out__",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1740,11 +1916,13 @@
       "path": "xod/core/cast-string-to-boolean"
     },
     "xod/core/cast-pulse-to-number": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1752,24 +1930,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__in__",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "__out__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__out__",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1779,11 +1959,13 @@
       "path": "xod/core/cast-pulse-to-number"
     },
     "xod/core/cast-pulse-to-boolean": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1791,24 +1973,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__in__",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "__out__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__out__",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1818,11 +2002,13 @@
       "path": "xod/core/cast-pulse-to-boolean"
     },
     "xod/core/cast-number-to-string": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1830,24 +2016,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__in__",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "__out__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__out__",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1857,11 +2045,13 @@
       "path": "xod/core/cast-number-to-string"
     },
     "xod/core/cast-number-to-pulse": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1869,24 +2059,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__in__",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "__out__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__out__",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1896,11 +2088,13 @@
       "path": "xod/core/cast-number-to-pulse"
     },
     "xod/core/cast-number-to-boolean": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1908,24 +2102,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__in__",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "__out__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__out__",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1936,11 +2132,13 @@
       "path": "xod/core/cast-number-to-boolean"
     },
     "xod/core/cast-boolean-to-string": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1948,24 +2146,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__in__",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "__out__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__out__",
           "type": "xod/patch-nodes/output-string",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -1975,11 +2175,13 @@
       "path": "xod/core/cast-boolean-to-string"
     },
     "xod/core/cast-boolean-to-pulse": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -1987,24 +2189,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__in__",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "__out__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__out__",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -2014,11 +2218,13 @@
       "path": "xod/core/cast-boolean-to-pulse"
     },
     "xod/core/cast-boolean-to-number": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -2026,24 +2232,26 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "__in__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__in__",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "__out__": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "__out__",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -2054,11 +2262,13 @@
       "path": "xod/core/cast-boolean-to-number"
     },
     "xod/core/buzzer": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -2066,14 +2276,15 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "freq": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "freq",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -2084,11 +2295,13 @@
       "path": "xod/core/buzzer"
     },
     "xod/core/button": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -2096,14 +2309,15 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "state": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "state",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -2113,11 +2327,13 @@
       "path": "xod/core/button"
     },
     "xod/core/both": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -2125,34 +2341,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "a",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "b": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "b",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -2162,11 +2381,13 @@
       "path": "xod/core/both"
     },
     "xod/core/any": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -2174,34 +2395,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "a",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "b": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "b",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -2211,11 +2435,13 @@
       "path": "xod/core/any"
     },
     "xod/core/and": {
+      "description": "",
       "nodes": {
         "noNativeImpl": {
-          "description": "",
-          "id": "noNativeImpl",
           "label": "",
+          "description": "",
+          "boundValues": {},
+          "id": "noNativeImpl",
           "position": {
             "x": 100,
             "y": 100
@@ -2223,34 +2449,37 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "a": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "a",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "b": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "b",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
             "x": 0,
             "y": 0
-          },
-          "label": "",
-          "description": ""
+          }
         },
         "out": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "out",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 0,
             "y": 300
-          },
-          "label": "",
-          "description": ""
+          }
         }
       },
       "links": {},
@@ -2261,69 +2490,84 @@
       "path": "xod/core/and"
     },
     "xod/core/sort-pair": {
+      "description": "",
       "nodes": {
         "rJmmql3flix": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "rJmmql3flix",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 327,
             "y": 497
-          },
-          "pins": {}
+          }
         },
         "B1zQ5xhzlil": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "B1zQ5xhzlil",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 671,
             "y": 110
-          },
-          "pins": {}
+          }
         },
         "HJbQcgnfgix": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HJbQcgnfgix",
           "type": "xod/patch-nodes/output-number",
           "position": {
             "x": 528,
             "y": 497
-          },
-          "pins": {}
+          }
         },
         "r1gQ5lhflie": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "r1gQ5lhflie",
           "type": "xod/core/either",
           "position": {
             "x": 535,
             "y": 383
-          },
-          "pins": {}
+          }
         },
         "S117ql3Mejx": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "S117ql3Mejx",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 134,
             "y": 91
-          },
-          "pins": {}
+          }
         },
         "Hk0z9g2zlil": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "Hk0z9g2zlil",
           "type": "xod/core/either",
           "position": {
             "x": 332,
             "y": 386
-          },
-          "pins": {}
+          }
         },
         "rJTf5ehGejg": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "rJTf5ehGejg",
           "type": "xod/core/less",
           "position": {
             "x": 422,
             "y": 204
-          },
-          "pins": {}
+          }
         }
       },
       "links": {
@@ -2443,51 +2687,62 @@
       "path": "xod/core/sort-pair"
     },
     "xod/core/less-equal": {
+      "description": "",
       "nodes": {
         "rJhz5l3flog": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "rJhz5l3flog",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 428,
             "y": 78
-          },
-          "pins": {}
+          }
         },
         "HkjMcg2feil": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HkjMcg2feil",
           "type": "xod/core/greater",
           "position": {
             "x": 326,
             "y": 196
-          },
-          "pins": {}
+          }
         },
         "By9G5g3Mesx": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "By9G5g3Mesx",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 232,
             "y": 76
-          },
-          "pins": {}
+          }
         },
         "B1Kf5xhGesg": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "B1Kf5xhGesg",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 320,
             "y": 454
-          },
-          "pins": {}
+          }
         },
         "BJ_Mqgnfejl": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "BJ_Mqgnfejl",
           "type": "xod/core/not",
           "position": {
             "x": 324,
             "y": 318
-          },
-          "pins": {}
+          }
         }
       },
       "links": {
@@ -2541,55 +2796,62 @@
       "path": "xod/core/less-equal"
     },
     "xod/core/led-new": {
+      "description": "",
       "nodes": {
         "BkDfqe2zesx": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "BkDfqe2zesx",
           "type": "xod/core/digital-output",
           "position": {
             "x": 305,
             "y": 430
-          },
-          "pins": {
-            "pin": {
-              "curried": false
-            }
           }
         },
         "H18f5ehMxjl": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "H18f5ehMxjl",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 172,
             "y": 104
-          },
-          "pins": {}
+          }
         },
         "rySGcl2zlig": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "rySGcl2zlig",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 418,
             "y": 104
-          },
-          "pins": {}
+          }
         },
         "HJ4MqxhGlog": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HJ4MqxhGlog",
           "type": "xod/math/multiply",
           "position": {
             "x": 453,
             "y": 298
-          },
-          "pins": {}
+          }
         },
         "HkXMqe3zeox": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HkXMqe3zeox",
           "type": "xod/math/multiply",
           "position": {
             "x": 354,
             "y": 218
-          },
-          "pins": {}
+          }
         }
       },
       "links": {
@@ -2665,69 +2927,84 @@
       "path": "xod/core/led-new"
     },
     "xod/core/in-range": {
+      "description": "",
       "nodes": {
         "rkzG5gnzxjl": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "rkzG5gnzxjl",
           "type": "xod/core/greater-equal",
           "position": {
             "x": 349,
             "y": 270
-          },
-          "pins": {}
+          }
         },
         "HkWf5g2feix": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HkWf5g2feix",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 241,
             "y": 117
-          },
-          "pins": {}
+          }
         },
         "B1xfqxnfgsx": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "B1xfqxnfgsx",
           "type": "xod/core/less",
           "position": {
             "x": 520,
             "y": 271
-          },
-          "pins": {}
+          }
         },
         "SJyM5ghzgjx": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "SJyM5ghzgjx",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 595,
             "y": 116
-          },
-          "pins": {}
+          }
         },
         "SyAZcxnMlil": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "SyAZcxnMlil",
           "type": "xod/core/and",
           "position": {
             "x": 432,
             "y": 407
-          },
-          "pins": {}
+          }
         },
         "ByTWce3fxjg": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "ByTWce3fxjg",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 432,
             "y": 541
-          },
-          "pins": {}
+          }
         },
         "Bk2Wqg3fgjl": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "Bk2Wqg3fgjl",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 434,
             "y": 114
-          },
-          "pins": {}
+          }
         }
       },
       "links": {
@@ -2814,51 +3091,62 @@
       "path": "xod/core/in-range"
     },
     "xod/core/greater-equal": {
+      "description": "",
       "nodes": {
         "Bki-qehzljx": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "Bki-qehzljx",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 439,
             "y": 120
-          },
-          "pins": {}
+          }
         },
         "H1qZ5g3Ggse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "H1qZ5g3Ggse",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 271,
             "y": 122
-          },
-          "pins": {}
+          }
         },
         "HkKbcl3Mgil": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HkKbcl3Mgil",
           "type": "xod/core/less",
           "position": {
             "x": 353,
             "y": 249
-          },
-          "pins": {}
+          }
         },
         "B1_Zcxnzgje": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "B1_Zcxnzgje",
           "type": "xod/core/not",
           "position": {
             "x": 360,
             "y": 358
-          },
-          "pins": {}
+          }
         },
         "HywZql3zese": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HywZql3zese",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 360,
             "y": 479
-          },
-          "pins": {}
+          }
         }
       },
       "links": {
@@ -2912,105 +3200,128 @@
       "path": "xod/core/greater-equal"
     },
     "xod/core/choose-range-3p": {
+      "description": "",
       "nodes": {
         "SyIZqlhMeie": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "SyIZqlhMeie",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 598,
             "y": 533
-          },
-          "pins": {}
+          }
         },
         "rkSW5e2Glje": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "rkSW5e2Glje",
           "type": "xod/core/choose-range-2p",
           "position": {
             "x": 249,
             "y": 294
-          },
-          "pins": {}
+          }
         },
         "SJEbqxhMgjg": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "SJEbqxhMgjg",
           "type": "xod/core/both",
           "position": {
             "x": 419,
             "y": 405
-          },
-          "pins": {}
+          }
         },
         "SJX-ce3zeog": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "SJX-ce3zeog",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 456,
             "y": 535
-          },
-          "pins": {}
+          }
         },
         "SJfb9xhfxjg": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "SJfb9xhfxjg",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 171,
             "y": 538
-          },
-          "pins": {}
+          }
         },
         "HkbWqg2zejx": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HkbWqg2zejx",
           "type": "xod/core/choose-range",
           "position": {
             "x": 495,
             "y": 297
-          },
-          "pins": {}
+          }
         },
         "SkgZqxnflig": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "SkgZqxnflig",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 173,
             "y": 140
-          },
-          "pins": {}
+          }
         },
         "HJkZqxnMxoe": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HJkZqxnMxoe",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 313,
             "y": 538
-          },
-          "pins": {}
+          }
         },
         "Hy0e5e2fxix": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "Hy0e5e2fxix",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 589,
             "y": 140
-          },
-          "pins": {}
+          }
         },
         "S1agqlhMgje": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "S1agqlhMgje",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 452,
             "y": 140
-          },
-          "pins": {}
+          }
         },
         "S1heqxnzgoe": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "S1heqxnzgoe",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 315,
             "y": 140
-          },
-          "pins": {}
+          }
         }
       },
       "links": {
@@ -3141,87 +3452,106 @@
       "path": "xod/core/choose-range-3p"
     },
     "xod/core/choose-range-2p": {
+      "description": "",
       "nodes": {
         "HJjx9xnzgse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HJjx9xnzgse",
           "type": "xod/core/choose-range",
           "position": {
             "x": 271,
             "y": 258
-          },
-          "pins": {}
+          }
         },
         "r1ceqxnzgse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "r1ceqxnzgse",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 402,
             "y": 456
-          },
-          "pins": {}
+          }
         },
         "Sytl9lnfljl": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "Sytl9lnfljl",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 553,
             "y": 118
-          },
-          "pins": {}
+          }
         },
         "Hk_x5x2flie": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "Hk_x5x2flie",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 189,
             "y": 116
-          },
-          "pins": {}
+          }
         },
         "HkDg9e3flix": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HkDg9e3flix",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 191,
             "y": 452
-          },
-          "pins": {}
+          }
         },
         "BJLgqxhfeoe": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "BJLgqxhfeoe",
           "type": "xod/core/both",
           "position": {
             "x": 382,
             "y": 361
-          },
-          "pins": {}
+          }
         },
         "HJSxqe2Mgjg": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HJSxqe2Mgjg",
           "type": "xod/core/choose-range",
           "position": {
             "x": 462,
             "y": 256
-          },
-          "pins": {}
+          }
         },
         "r1Nxcg2zgjg": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "r1Nxcg2zgjg",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 367,
             "y": 117
-          },
-          "pins": {}
+          }
         },
         "Symlqehzxsg": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "Symlqehzxsg",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 554,
             "y": 457
-          },
-          "pins": {}
+          }
         }
       },
       "links": {
@@ -3330,60 +3660,73 @@
       "path": "xod/core/choose-range-2p"
     },
     "xod/core/choose-range": {
+      "description": "",
       "nodes": {
         "B1GlcghGgil": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "B1GlcghGgil",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 460,
             "y": 88
-          },
-          "pins": {}
+          }
         },
         "rJbgcx3Mxjl": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "rJbgcx3Mxjl",
           "type": "xod/core/less",
           "position": {
             "x": 332,
             "y": 251
-          },
-          "pins": {}
+          }
         },
         "B1ll9e3zxil": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "B1ll9e3zxil",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 420,
             "y": 482
-          },
-          "pins": {}
+          }
         },
         "S1yg9ehzeil": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "S1yg9ehzeil",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
             "x": 242,
             "y": 486
-          },
-          "pins": {}
+          }
         },
         "H1R5e3feix": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "H1R5e3feix",
           "type": "xod/core/choose",
           "position": {
             "x": 332,
             "y": 336
-          },
-          "pins": {}
+          }
         },
         "r1a5gnzgoe": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "r1a5gnzgoe",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 226,
             "y": 91
-          },
-          "pins": {}
+          }
         }
       },
       "links": {
@@ -3448,47 +3791,53 @@
       "path": "xod/core/choose-range"
     },
     "xod/core/blink": {
+      "description": "",
       "nodes": {
         "Bk2cx3Mgie": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "Bk2cx3Mgie",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 263,
             "y": 508
-          },
-          "pins": {}
+          }
         },
         "r1iqlnGeol": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "r1iqlnGeol",
           "type": "xod/core/latch",
           "position": {
             "x": 271,
             "y": 355
-          },
-          "pins": {}
+          }
         },
         "r195ghfxil": {
+          "label": "",
+          "description": "",
+          "boundValues": {
+            "IVAL": 1
+          },
           "id": "r195ghfxil",
           "type": "xod/core/clock",
           "position": {
             "x": 267,
             "y": 215
-          },
-          "pins": {
-            "IVAL": {
-              "curried": false,
-              "value": 1
-            }
           }
         },
         "HyK9g3Glig": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HyK9g3Glig",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 268,
             "y": 103
-          },
-          "pins": {}
+          }
         }
       },
       "links": {
@@ -3531,33 +3880,32 @@
       "path": "xod/core/blink"
     },
     "@/main": {
+      "description": "",
       "nodes": {
         "HJ_qghzlol": {
+          "label": "",
+          "description": "",
+          "boundValues": {
+            "HJUce2Gxox": 13
+          },
           "id": "HJ_qghzlol",
           "type": "@/led",
           "position": {
             "x": 266,
             "y": 224
-          },
-          "pins": {
-            "HJUce2Gxox": {
-              "curried": true,
-              "value": 13
-            }
           }
         },
         "ByDqlnfgsg": {
+          "label": "",
+          "description": "",
+          "boundValues": {
+            "Skb5l2fxol": 0.2
+          },
           "id": "ByDqlnfgsg",
           "type": "@/blink",
           "position": {
             "x": 266,
             "y": 120
-          },
-          "pins": {
-            "Skb5l2fxol": {
-              "curried": true,
-              "value": 0.2
-            }
           }
         }
       },
@@ -3579,42 +3927,51 @@
       "path": "@/main"
     },
     "@/led": {
+      "description": "",
       "nodes": {
         "HJUce2Gxox": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HJUce2Gxox",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 138,
             "y": 120
-          },
-          "pins": {}
+          }
         },
         "HJHcl2zxse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "HJHcl2zxse",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 266,
             "y": 120
-          },
-          "pins": {}
+          }
         },
         "r1E5ghzlol": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "r1E5ghzlol",
           "type": "xod/core/digital-output",
           "position": {
             "x": 138,
             "y": 328
-          },
-          "pins": {}
+          }
         },
         "ByQqe3Gxse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "ByQqe3Gxse",
           "type": "xod/math/multiply",
           "position": {
             "x": 266,
             "y": 224
-          },
-          "pins": {}
+          }
         }
       },
       "links": {
@@ -3668,46 +4025,50 @@
       "path": "@/led"
     },
     "@/blink": {
+      "description": "",
       "nodes": {
         "B1Gce3fgie": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "B1Gce3fgie",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
             "x": 266,
             "y": 432
-          },
-          "pins": {}
+          }
         },
         "Skb5l2fxol": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "Skb5l2fxol",
           "type": "xod/patch-nodes/input-number",
           "position": {
             "x": 266,
             "y": 120
-          },
-          "pins": {}
+          }
         },
         "rylqlnGxse": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "rylqlnGxse",
           "type": "xod/core/latch",
           "position": {
             "x": 266,
             "y": 328
-          },
-          "pins": {}
+          }
         },
         "H1ce2fxil": {
+          "label": "",
+          "description": "",
+          "boundValues": {},
           "id": "H1ce2fxil",
           "type": "xod/core/clock",
           "position": {
             "x": 266,
             "y": 224
-          },
-          "pins": {
-            "IVAL": {
-              "curried": false,
-              "value": 1
-            }
           }
         }
       },

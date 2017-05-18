@@ -22,6 +22,7 @@
         "y": 16
       },
       "type": "xod/core/constant-number",
+      "boundValues": {},
       "id": "S1ZF9KIdgZ"
     },
     {
@@ -42,9 +43,9 @@
         "y": 224
       },
       "type": "xod/core/digital-output",
+      "boundValues": {},
       "id": "SJzK9tLOxZ"
     }
   ],
-  "label": "",
   "description": ""
 }

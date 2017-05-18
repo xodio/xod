@@ -102,7 +102,8 @@ export const defaultizeNode = R.merge({
   position: { x: 0, y: 0 },
   type: '@/default-type',
   label: '',
-  pins: {}, // TODO: curriedPins
+  description: '',
+  boundValues: {},
 });
 
 export const defaultizePin = R.merge({

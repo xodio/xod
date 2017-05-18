@@ -24,7 +24,7 @@ import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from './constants';
 // TODO: rewrite this?
 const selectNodePropertyUpdater = ({ kind, key, value }) => {
   if (kind === NODE_PROPERTY_KIND.PIN) {
-    return XP.setPinCurriedValue(key, value);
+    return XP.setBoundValue(key, value);
   }
 
   if (kind === NODE_PROPERTY_KIND.PROP) {
