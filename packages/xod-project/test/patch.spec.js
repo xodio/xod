@@ -384,10 +384,12 @@ describe('Patch', () => {
         in: {
           id: 'in',
           type: 'xod/patch-nodes/input-boolean',
+          label: 'in',
         },
         out: {
           id: 'out',
           type: 'xod/patch-nodes/output-boolean',
+          label: 'out',
         },
       },
     });
