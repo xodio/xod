@@ -3819,9 +3819,7 @@
           "label": "",
           "description": "",
           "boundValues": {
-            "IVAL": {
-              "value": 1
-            }
+            "IVAL": 1
           },
           "id": "r195ghfxil",
           "type": "xod/core/clock",
@@ -3888,9 +3886,7 @@
           "label": "",
           "description": "",
           "boundValues": {
-            "HJUce2Gxox": {
-              "value": 13
-            }
+            "HJUce2Gxox": 13
           },
           "id": "HJ_qghzlol",
           "type": "@/led",
@@ -3903,9 +3899,7 @@
           "label": "",
           "description": "",
           "boundValues": {
-            "Skb5l2fxol": {
-              "value": 0.2
-            }
+            "Skb5l2fxol": 0.2
           },
           "id": "ByDqlnfgsg",
           "type": "@/blink",
