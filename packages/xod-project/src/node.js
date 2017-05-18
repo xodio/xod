@@ -220,9 +220,12 @@ export const assocInitialPinValues = def(
  * @param {Node} node
  * @returns {Object.<PinKey, PinValue>}
  */
-export const getAllBoundValues = R.prop('boundValues');
+export const getAllBoundValues = def(
+  'getAllBoundValues :: Node -> StrMap DataValue',
+  R.prop('boundValues')
+);
 
-const pathToBoundValue = R.curry(pinKey => ['boundValues', pinKey]);
+const pathToBoundValue = pinKey => ['boundValues', pinKey];
 
 /**
  * Gets bound value of a pin.
