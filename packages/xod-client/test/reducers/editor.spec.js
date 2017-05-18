@@ -75,10 +75,7 @@ describe('Editor reducer', () => {
                   y: 432,
                 },
                 boundValues: {
-                  in: {
-                    key: 'in',
-                    value: 0,
-                  },
+                  in: 0,
                 },
                 label: '',
                 description: '',
