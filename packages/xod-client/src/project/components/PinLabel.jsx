@@ -27,13 +27,13 @@ export default class Pin extends React.Component {
   }
 
   render() {
-    return this.props.pinLabel ? (
+    return this.props.label ? (
       <text
         className={`PinLabel ${this.isInput() ? 'input' : 'output'}`}
         key={`pinText_${this.props.keyName}`}
         {...this.getTextProps()}
       >
-        {this.props.pinLabel}
+        {this.props.label}
       </text>
     ) : null;
   }
@@ -41,7 +41,7 @@ export default class Pin extends React.Component {
 
 Pin.propTypes = {
   keyName: React.PropTypes.string.isRequired,
-  pinLabel: React.PropTypes.string,
+  label: React.PropTypes.string,
   direction: React.PropTypes.string.isRequired,
   position: React.PropTypes.object.isRequired,
 };
