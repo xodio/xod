@@ -104,19 +104,16 @@ describe('Node', () => {
 
   describe('getAllBoundValues', () => {
     it('should return empty object for node without bound values', () => {
-      expect(Node.getAllBoundValues({ boundValues: {} })).to.be.an('object').and.empty();
+      const node = Helper.defaultizeNode({ boundValues: {} });
+      expect(Node.getAllBoundValues(node)).to.be.an('object').and.empty();
     });
     it('should return object with shape { pinKey: pinValue }', () => {
-      const node = {
+      const node = Helper.defaultizeNode({
         boundValues: {
-          a: {
-            value: true,
-          },
-          b: {
-            value: 10,
-          },
+          a: true,
+          b: 10,
         },
-      };
+      });
 
       expect(Node.getAllBoundValues(node)).to.be.deep.equal({
         a: true,
@@ -128,15 +125,13 @@ describe('Node', () => {
   describe('getBoundValue', () => {
     const node = Helper.defaultizeNode({
       boundValues: {
-        existing: {
-          value: 'hey-ho',
-        },
+        existing: 'hey-ho',
       },
     });
     const checkJust = (pinName) => {
       const value = Node.getBoundValue(pinName, node);
       expect(value.isJust).to.be.true();
-      expect(value.getOrElse(null)).to.be.equal(node.boundValues[pinName].value);
+      expect(value.getOrElse(null)).to.be.equal(node.boundValues[pinName]);
     };
 
     it('should return Maybe.Nothing for undefined value', () => {
@@ -156,13 +151,12 @@ describe('Node', () => {
         .to.be.an('object')
         .that.have.property('boundValues')
         .that.have.property('test')
-        .that.have.property('value')
         .to.be.true();
     });
     it('should return Node with replaced bound value', () => {
       const node = Helper.defaultizeNode({
         boundValues: {
-          test: { value: false },
+          test: false,
         },
       });
 
@@ -172,13 +166,12 @@ describe('Node', () => {
         .to.be.an('object')
         .that.have.property('boundValues')
         .that.have.property('test')
-        .that.have.property('value')
         .to.be.true();
     });
     it('should return Node without affecting other bound values', () => {
       const node = Helper.defaultizeNode({
         boundValues: {
-          other: { value: false },
+          other: false,
         },
       });
 
@@ -188,7 +181,6 @@ describe('Node', () => {
         .to.be.an('object')
         .that.have.property('boundValues')
         .that.have.property('other')
-        .that.have.property('value')
         .to.be.false();
     });
   });

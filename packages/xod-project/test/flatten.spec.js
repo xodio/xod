@@ -294,9 +294,7 @@ describe('Flatten', () => {
                 id: 'a',
                 type: '@/foo',
                 boundValues: {
-                  a: {
-                    value: true,
-                  },
+                  a: true,
                 },
               },
               b: {
@@ -320,9 +318,7 @@ describe('Flatten', () => {
                 id: 'c',
                 type: 'xod/core/number',
                 boundValues: {
-                  in: {
-                    value: 32,
-                  },
+                  in: 32,
                 },
               },
             },
@@ -349,9 +345,7 @@ describe('Flatten', () => {
 
       const terminalA = R.find(R.propEq('id', 'a~a'), nodes);
       expect(terminalA).to.have.property('boundValues').that.deep.equals({
-        __in__: {
-          value: true,
-        },
+        __in__: true,
       });
 
       const terminalB = R.find(R.propEq('id', 'b~a'), nodes);
@@ -390,18 +384,14 @@ describe('Flatten', () => {
       expect(terminalString)
       .to.have.property('boundValues')
       .that.deep.equals({
-        __in__: {
-          value: 'LED1',
-        },
+        __in__: 'LED1',
       });
 
       const terminalNumber = R.find(R.propEq('id', 'SJ7g05EdFe~B1eR5EOYg'), nodes);
       expect(terminalNumber)
       .to.have.property('boundValues')
       .that.deep.equals({
-        __in__: {
-          value: 1,
-        },
+        __in__: 1,
       });
     });
   });
@@ -1398,9 +1388,7 @@ describe('Flatten', () => {
                 id: 'f',
                 type: '@/foo',
                 boundValues: {
-                  b: {
-                    value: 32,
-                  },
+                  b: 32,
                 },
               },
             },
@@ -1465,7 +1453,7 @@ describe('Flatten', () => {
           expect(newProject.patches['@/main'].nodes['f~a'])
             .to.have.property('boundValues')
             .that.have.property('in')
-            .that.deep.equal(project.patches['@/main'].nodes.f.boundValues.b);
+            .that.equal(project.patches['@/main'].nodes.f.boundValues.b);
         },
         flatProject
       );
@@ -1484,12 +1472,8 @@ describe('Flatten', () => {
                 id: 'b',
                 type: '@/foo',
                 boundValues: {
-                  a2: {
-                    value: 32,
-                  },
-                  a3: {
-                    value: 27,
-                  },
+                  a2: 32,
+                  a3: 27,
                 },
               },
               c: {
@@ -1678,11 +1662,11 @@ describe('Flatten', () => {
           expect(newProject.patches['@/main'].nodes['b~a2-to-b~b'])
             .to.have.property('boundValues')
             .that.have.property('__in__')
-            .that.deep.equal(project.patches['@/main'].nodes.b.boundValues.a2);
+            .that.equal(project.patches['@/main'].nodes.b.boundValues.a2);
           expect(newProject.patches['@/main'].nodes['b~a3-to-b~b2'])
             .to.have.property('boundValues')
             .that.have.property('__in__')
-            .that.deep.equal(project.patches['@/main'].nodes.b.boundValues.a3);
+            .that.equal(project.patches['@/main'].nodes.b.boundValues.a3);
         },
         flatProject
       );

@@ -272,9 +272,7 @@
           "label": "",
           "description": "",
           "boundValues": {
-            "pin": {
-              "value": "LED1"
-            }
+            "pin": "LED1"
           },
           "id": "BJ4l0cVdKe~ryFxRcNdKg",
           "type": "xod/core/digital-output",
@@ -320,9 +318,7 @@
           "label": "",
           "description": "",
           "boundValues": {
-            "interval": {
-              "value": 1
-            }
+            "interval": 1
           },
           "id": "SJ7g05EdFe~rJxgAqV_tl",
           "type": "xod/core/clock",

@@ -29,19 +29,6 @@ import { isInputTerminalPath, isOutputTerminalPath, getTerminalDataType } from '
  * @typedef {(string|number|boolean|Pulse)} PinValue
  */
 
-/**
- * Returns path to pin property
- * @private
- * @function getPathToPinProperty
- * @param {string} propName property name: `value` or `curried`
- * @param {string} pinKey pin key
- * @returns {string[]} path like `['boundValues', 'pinKey', 'value']`
- */
-const getPathToPinProperty = def(
-  'getPathToPinProperty :: String -> String -> [String]',
-  (propName, pinKey) => ['boundValues', pinKey, propName]
-);
-
 // =============================================================================
 //
 // Node
@@ -232,10 +219,9 @@ export const assocInitialPinValues = def(
  * @param {Node} node
  * @returns {Object.<PinKey, PinValue>}
  */
-export const getAllBoundValues = R.compose(
-  R.map(R.prop('value')),
-  R.prop('boundValues')
-);
+export const getAllBoundValues = R.prop('boundValues');
+
+const pathToBoundValue = R.curry(pinKey => ['boundValues', pinKey]);
 
 /**
  * Gets bound value of a pin.
@@ -250,7 +236,7 @@ export const getBoundValue = def(
   R.useWith(
     Tools.path,
     [
-      getPathToPinProperty('value'),
+      pathToBoundValue,
       R.identity,
     ]
   )
@@ -270,7 +256,7 @@ export const setBoundValue = def(
   R.useWith(
     R.assocPath,
     [
-      getPathToPinProperty('value'),
+      pathToBoundValue,
       R.identity,
       R.identity,
     ]

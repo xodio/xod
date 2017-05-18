@@ -2655,9 +2655,7 @@
           "label": "",
           "description": "",
           "boundValues": {
-            "S1ulA9NuFx": {
-              "value": "LED1"
-            }
+            "S1ulA9NuFx": "LED1"
           },
           "id": "BJ4l0cVdKe",
           "type": "@/led",
@@ -2670,9 +2668,7 @@
           "label": "",
           "description": "",
           "boundValues": {
-            "B1eR5EOYg": {
-              "value": 1
-            }
+            "B1eR5EOYg": 1
           },
           "id": "SJ7g05EdFe",
           "type": "@/blink",
@@ -2727,8 +2723,7 @@
         "rJxgAqV_tl": {
           "label": "",
           "description": "",
-          "boundValues": {
-          },
+          "boundValues": {},
           "id": "rJxgAqV_tl",
           "type": "xod/core/clock",
           "position": {
