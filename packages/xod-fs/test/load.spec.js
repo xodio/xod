@@ -32,15 +32,17 @@ describe('Loader', () => {
         expect(projects).to.have.lengthOf(1);
         expect(projects).to.deep.equal([
           {
-            authors: [
-              'Amperka team',
-            ],
-            description: '',
-            license: '',
-            name: 'awesome-project',
-            libs: ['xod/core'],
-            version: '42',
             path: path.resolve(workspace, projectPath),
+            content: {
+              authors: [
+                'Amperka team',
+              ],
+              description: '',
+              license: '',
+              name: 'awesome-project',
+              libs: ['xod/core'],
+              version: '42',
+            },
           },
         ]);
       })

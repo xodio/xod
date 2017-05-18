@@ -11,7 +11,7 @@ import {
   validateWorkspace,
   loadProjectWithLibs,
   pack,
-  getProjectMetaPath,
+  getFilePath,
   filterDefaultProject,
   findProjectMetaByName,
   resolveLibPath,
@@ -205,7 +205,7 @@ export const onOpenProject = R.curry(
 // :: (String -> a -> ()) -> (() -> Path) -> Path -> Promise Project Error
 export const onSelectProject = R.curry(
   (send, pathGetter, projectMeta) => pathGetter()
-    .then(workspacePath => loadProjectWithLibs(getProjectMetaPath(projectMeta), workspacePath))
+    .then(workspacePath => loadProjectWithLibs(getFilePath(projectMeta), workspacePath))
     .then(({ project, libs }) => pack(project, libs))
     .then(requestShowProject(send))
     .catch(rejectWithCode(ERROR_CODES.CANT_OPEN_SELECTED_PROJECT))

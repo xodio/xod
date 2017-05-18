@@ -1,7 +1,7 @@
 import chai, { assert, expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { resolve } from 'path';
-import { rmrf, spawnDefaultProject, getLocalProjects } from 'xod-fs';
+import { rmrf, spawnDefaultProject, getLocalProjects, getProjectMetaName } from 'xod-fs';
 import { getProjectName } from 'xod-project';
 
 import * as WA from '../src/app/workspaceActions';
@@ -35,7 +35,7 @@ describe('IDE', () => {
       EVENTS.REQUEST_SELECT_PROJECT,
     ]);
     if (eventName === EVENTS.REQUEST_SELECT_PROJECT) {
-      assert.equal(data[0].name, 'welcome-to-xod');
+      assert.equal(getProjectMetaName(data[0]), 'welcome-to-xod');
     }
   };
   const subscribeOnSelectProject = (done, path, projectName) => WA.WorkspaceEvents.once(
@@ -163,7 +163,7 @@ describe('IDE', () => {
       return WA.onSelectProject(
         sendMock,
         loadMock(fixture('./validWorkspace')),
-        { path: fixture('./validWorkspace/welcome-to-xod') }
+        { path: fixture('./validWorkspace/welcome-to-xod'), content: '' }
       );
     });
     it('if invalid workspace but valid projectMeta, shows error and requests to switch workspace', () => {
@@ -178,7 +178,7 @@ describe('IDE', () => {
         WA.onSelectProject(
           sendMock,
           loadMock(fixture('./emptyWorkspace')),
-          { path: fixture('./emptyWorkspace/welcome-to-xod') }
+          { path: fixture('./emptyWorkspace/welcome-to-xod'), content: '' }
         ),
         ERROR_CODES.CANT_OPEN_SELECTED_PROJECT
       );
