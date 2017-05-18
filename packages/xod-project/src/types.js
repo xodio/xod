@@ -90,6 +90,7 @@ export const Patch = Model('Patch', {
   links: $.StrMap(Link),
   impls: $.StrMap(Source),
   path: PatchPath,
+  description: $.String,
 });
 
 export const Project = Model('Project', {
@@ -97,6 +98,7 @@ export const Project = Model('Project', {
   name: Identifier,
   authors: $.Array($.String),
   license: $.String,
+  version: $.String,
   description: $.String,
 });
 

@@ -126,7 +126,6 @@ export const defaultizePatch = R.compose(
     nodes: {},
     links: {},
     impls: {},
-    description: '',
     path: '@/default-patch-path',
     description: '',
   })
