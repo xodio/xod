@@ -49,7 +49,7 @@ export const DataValue = NullaryType('DataValue', XF.notNil);
 export const Pin = Model('Pin', {
   key: PinKey,
   direction: PinDirection,
-  label: $.String,
+  label: PinKey,
   type: DataType,
   value: DataValue,
   order: $.Number,

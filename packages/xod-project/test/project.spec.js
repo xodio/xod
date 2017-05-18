@@ -133,13 +133,13 @@ describe('Project', () => {
       patches: {
         'xod/core/test': {
           nodes: {
-            a: { id: 'a', type: 'xod/patch-nodes/input-number' },
+            a: { id: 'a', type: 'xod/patch-nodes/input-number', label: 'A' },
           },
         },
       },
     });
 
-    const expectedPin = Pin.createPin('a', 'number', 'input', 0, '');
+    const expectedPin = Pin.createPin('a', 'number', 'input', 0, 'A', '');
 
     it('should return Nothing for unexisting patch', () => {
       const maybe = Project.getNodePin('test', Helper.defaultizeNode({ type: 'test/unexisting/patch' }), emptyProject);

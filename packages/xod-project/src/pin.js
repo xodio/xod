@@ -133,12 +133,12 @@ export const isTerminalPin = def(
  * @returns {Pin}
  */
 export const createPin = def(
-  'createPin :: PinKey -> DataType -> PinDirection -> Number -> String -> Pin',
-  (key, type, direction, order, description) => ({
-    key,
+  'createPin :: NodeId -> DataType -> PinDirection -> Number -> PinKey -> String -> Pin',
+  (nodeId, type, direction, order, label, description) => ({
+    key: nodeId,
     type,
     direction,
-    label: key,
+    label,
     description,
     order,
     value: Utils.defaultValueOfType(type), // TODO: support 'custom' default values

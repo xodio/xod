@@ -222,6 +222,7 @@ const computePins = R.memoize(patch =>
             Node.getPinNodeDataType(node),
             Node.getPinNodeDirection(node),
             order,
+            Node.getNodeLabel(node),
             '' // TODO: where do we get pin descriptions now?
           )
         ),
