@@ -1,35 +1,37 @@
 {
-    "links": {},
-    "nodes": {
-      "noNativeImpl": {
-        "description": "",
-        "label": "",
-        "position": {
-          "x": 100,
-          "y": 100
-        },
-        "type": "xod/patch-nodes/not-implemented-in-xod"
+  "links": [],
+  "nodes": [
+    {
+      "description": "",
+      "label": "",
+      "position": {
+        "x": 100,
+        "y": 100
       },
-      "__in__": {
-        "type": "xod/patch-nodes/input-number",
-        "position": {
-          "x": 0,
-          "y": 0
-        },
-        "label": "",
-        "description": ""
-      },
-      "__out__": {
-        "type": "xod/patch-nodes/output-pulse",
-        "position": {
-          "x": 0,
-          "y": 300
-        },
-        "label": "",
-        "description": ""
-      }
+      "type": "xod/patch-nodes/not-implemented-in-xod",
+      "id": "noNativeImpl"
     },
-    "label": "",
-    "description": ""
-  }
-  
+    {
+      "type": "xod/patch-nodes/input-number",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "label": "",
+      "description": "",
+      "id": "__in__"
+    },
+    {
+      "type": "xod/patch-nodes/output-pulse",
+      "position": {
+        "x": 0,
+        "y": 300
+      },
+      "label": "",
+      "description": "",
+      "id": "__out__"
+    }
+  ],
+  "label": "",
+  "description": ""
+}
