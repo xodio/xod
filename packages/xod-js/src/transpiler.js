@@ -72,7 +72,7 @@ export const getOutLinks = R.curry((nodeId, patch) =>
 );
 
 // :: Node -> [[PinKey, PinValue]]
-export const getAllBoundValues = R.compose(
+export const getBoundValuePairs = R.compose(
   R.toPairs,
   Project.getAllBoundValues
 );
@@ -124,7 +124,7 @@ const createConstNodeAndLink = R.converge(
 const createConstantForNode = R.curry((project, node) =>
   R.compose(
     R.map(createConstNodeAndLink(Project.getNodeId(node))),
-    getAllBoundValues
+    getBoundValuePairs
   )(node)
 );
 
