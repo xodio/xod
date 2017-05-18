@@ -107,6 +107,11 @@ export const defaultValueOfType = def(
   ])
 );
 
+export const canCastTypes = def(
+  'canCastTypes :: DataType -> DataType -> Boolean',
+  (from, to) => CONST.TYPES_COMPATIBILITY[from][to]
+);
+
 // =============================================================================
 //
 // Transforming node ids in the patch

@@ -5,11 +5,11 @@ import {
   getLinkNodeIds,
   isInputPin,
   isOutputPin,
-  PIN_TYPE,
   getPatchPath,
   listLibraryPatches,
   omitPatches,
   getPatchByPath,
+  canCastTypes,
 } from 'xod-project';
 
 import { getProject } from './selectors';
@@ -63,18 +63,7 @@ export const getLinkingError = R.curry((pin1, pin2) => {
   const inputPin = isInputPin(pin1) ? pin1 : pin2;
   const outputPin = isOutputPin(pin1) ? pin1 : pin2;
 
-  // types compatibility
-  if (inputPin.type === PIN_TYPE.PULSE && outputPin.type !== PIN_TYPE.PULSE) {
-    return LINK_ERRORS.INCOMPATIBLE_TYPES;
-  } else if (
-    inputPin.type === PIN_TYPE.STRING &&
-    !R.contains(outputPin.type, [PIN_TYPE.BOOLEAN, PIN_TYPE.NUMBER, PIN_TYPE.STRING])
-  ) {
-    return LINK_ERRORS.INCOMPATIBLE_TYPES;
-  } else if (
-    R.contains(outputPin.type, [PIN_TYPE.BOOLEAN, PIN_TYPE.NUMBER]) &&
-    !R.contains(outputPin.type, [PIN_TYPE.BOOLEAN, PIN_TYPE.NUMBER])
-  ) {
+  if (!canCastTypes(outputPin.type, inputPin.type)) {
     return LINK_ERRORS.INCOMPATIBLE_TYPES;
   }
 

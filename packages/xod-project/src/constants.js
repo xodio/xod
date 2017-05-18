@@ -52,6 +52,45 @@ export const PIN_TYPE = {
   PULSE: 'pulse',
 };
 
+/**
+ * A lookup table that answers the
+ * question 'can a type A be cast to type B?'
+ *
+ * @example
+ *   TYPES_COMPATIBILITY[PIN_TYPE.BOOLEAN][PIN_TYPE.STRING] // true
+ *   // boolean can be cast to string
+ *
+ * @name TYPES_COMPATIBILITY
+ */
+export const TYPES_COMPATIBILITY = {
+  [PIN_TYPE.BOOLEAN]: {
+    [PIN_TYPE.BOOLEAN]: true,
+    [PIN_TYPE.NUMBER]: true,
+    [PIN_TYPE.PULSE]: false,
+    [PIN_TYPE.STRING]: true,
+  },
+  [PIN_TYPE.NUMBER]: {
+    [PIN_TYPE.BOOLEAN]: true,
+    [PIN_TYPE.NUMBER]: true,
+    [PIN_TYPE.PULSE]: false,
+    [PIN_TYPE.STRING]: true,
+  },
+  // nothing can be cast to or from pulse
+  [PIN_TYPE.PULSE]: {
+    [PIN_TYPE.BOOLEAN]: false,
+    [PIN_TYPE.NUMBER]: false,
+    [PIN_TYPE.PULSE]: true,
+    [PIN_TYPE.STRING]: false,
+  },
+  // everything(except pulse) can be cast to string, but nothing can be cast from string
+  [PIN_TYPE.STRING]: {
+    [PIN_TYPE.BOOLEAN]: false,
+    [PIN_TYPE.NUMBER]: false,
+    [PIN_TYPE.PULSE]: false,
+    [PIN_TYPE.STRING]: true,
+  },
+};
+
  /**
   * Enumeration of possible pin directions
   *
