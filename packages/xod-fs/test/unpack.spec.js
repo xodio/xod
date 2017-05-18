@@ -38,10 +38,7 @@ describe('arrangeByFiles', () => {
                   y: 224,
                 },
                 boundValues: {
-                  brightness: {
-                    key: 'brightness',
-                    value: 0,
-                  },
+                  brightness: 0,
                 },
                 label: 'my led',
                 description: 'description for my led',

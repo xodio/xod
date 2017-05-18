@@ -45,10 +45,7 @@
           "label": "my led",
           "description": "description for my led",
           "boundValues": {
-            "brightness": {
-              "key": "brightness",
-              "value": 0
-            }
+            "brightness": 0
           },
           "id": "SJmGlirFpx",
           "type": "xod/core/led",
