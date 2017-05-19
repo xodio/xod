@@ -138,7 +138,7 @@ export const getProjects = workspacePath => R.composeP(
 // `filename` path relative to `dir`
 // :: String -> String -> Promise (Pair String String)
 const readImplFile = dir => filename =>
-  fs.readFile(path.resolve(dir, filename)).then(content => [
+  fs.readFile(path.resolve(dir, filename), 'utf8').then(content => [
     filename,
     content,
   ]);
