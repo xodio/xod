@@ -384,10 +384,12 @@ describe('Patch', () => {
         in: {
           id: 'in',
           type: 'xod/patch-nodes/input-boolean',
+          label: 'in',
         },
         out: {
           id: 'out',
           type: 'xod/patch-nodes/output-boolean',
+          label: 'out',
         },
       },
     });
@@ -511,10 +513,11 @@ describe('Patch', () => {
       const node = Helper.defaultizeNode({
         id: '1',
         type: 'xod/patch-nodes/input-number',
+        label: 'A',
       });
       const newPatch = Patch.assocNode(node, emptyPatch);
 
-      const expectedPin = Pin.createPin('1', 'number', 'input', 0, '');
+      const expectedPin = Pin.createPin('1', 'number', 'input', 0, 'A', '');
 
       assert.deepEqual(
         [expectedPin],
@@ -531,7 +534,7 @@ describe('Patch', () => {
         },
       });
 
-      const expectedPinBeforeUpdate = Pin.createPin('1', 'string', 'output', 0, '');
+      const expectedPinBeforeUpdate = Pin.createPin('1', 'string', 'output', 0, '', '');
       assert.deepEqual(
         [expectedPinBeforeUpdate],
         Patch.listPins(patch)
@@ -540,10 +543,11 @@ describe('Patch', () => {
       const node = Helper.defaultizeNode({
         id: '1',
         type: 'xod/patch-nodes/input-number',
+        label: 'A',
       });
       const newPatch = Patch.assocNode(node, patch);
 
-      const expectedPinAfterUpdate = Pin.createPin('1', 'number', 'input', 0, '');
+      const expectedPinAfterUpdate = Pin.createPin('1', 'number', 'input', 0, 'A', '');
       assert.deepEqual(
         [expectedPinAfterUpdate],
         Patch.listPins(newPatch)
