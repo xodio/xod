@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
-import { explodeMaybe } from 'xod-func-tools';
+import { explodeMaybe, notEmpty } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
@@ -543,3 +543,26 @@ export const getNodePin = def(
     Node.getNodeType
   )(node)
 );
+
+/**
+ * Checks if there are any links that are connected
+ * to a pin that a node with `terminalNodeId` represents.
+ */
+export const isTerminalNodeInUse = def(
+  'isTerminalNodeInUse :: PinKey -> PatchPath -> Project -> Boolean',
+  (terminalNodeId, patchPath, project) => R.compose(
+    R.any(
+      patch => R.compose(
+        notEmpty,
+        R.chain(node => Patch.listLinksByPin(terminalNodeId, node, patch)),
+        R.filter(R.compose(
+          R.equals(patchPath),
+          Node.getNodeType
+        )),
+        Patch.listNodes
+      )(patch)
+    ),
+    listLocalPatches // TODO: are only local patches enough?
+  )(project)
+);
+
