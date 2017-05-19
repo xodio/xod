@@ -538,12 +538,25 @@ export const rebasePatch = def(
 // Getters with traversing through project
 //
 // =============================================================================
+export const getPatchByNode = def(
+  'getPatchByNode :: Node -> Project -> Maybe Patch',
+  (node, project) => R.compose(
+    getPatchByPath(R.__, project),
+    Node.getNodeType
+  )(node)
+);
+export const getNodePins = def(
+  'getNodePins :: Node -> Project -> Maybe [Pin]',
+  (node, project) => R.compose(
+    R.map(Patch.listPins),
+    getPatchByNode(R.__, project)
+  )(node)
+);
 export const getNodePin = def(
   'getNodePin :: PinKey -> Node -> Project -> Maybe Pin',
   (pinKey, node, project) => R.compose(
     R.chain(Patch.getPinByKey(pinKey)),
-    getPatchByPath(R.__, project),
-    Node.getNodeType
+    getPatchByNode(R.__, project)
   )(node)
 );
 
