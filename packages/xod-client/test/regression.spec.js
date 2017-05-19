@@ -3,6 +3,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { default as chai, expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 import { explode } from 'xod-func-tools';
+import { defaultizeProject } from 'xod-project/test/helpers';
 
 import { transpileForEspruino } from 'xod-js';
 
@@ -13,7 +14,7 @@ import { getProject } from '../src/project/selectors';
 
 chai.use(dirtyChai);
 
-const initialProject = {
+const initialProject = defaultizeProject({
   authors: [
     'Amperka team',
   ],
@@ -22,47 +23,22 @@ const initialProject = {
   version: '',
   name: 'Awesome project',
   patches: {
-    '@/main': {
-      impls: {},
-      links: {},
-      nodes: {},
-      path: '@/main',
-      description: '',
-    },
+    '@/main': {},
     'xod/core/button': {
       impls: {
         espruino: "\nmodule.exports.setup = function(e) {\n  var pin = new Pin(e.props.pin);\n\n  setWatch(function(evt) {\n    e.fire({ state: !evt.state });\n  }, pin, {\n    edge: 'both',\n    repeat: true,\n    debounce: 30\n  });\n};\n",
       },
-      links: {},
       nodes: {
         noNativeImpl: {
-          description: '',
-          id: 'noNativeImpl',
-          label: '',
-          position: {
-            x: 100,
-            y: 100,
-          },
           type: 'xod/patch-nodes/not-implemented-in-xod',
-          boundValues: {},
         },
         state: {
-          id: 'state',
           type: 'xod/patch-nodes/output-boolean',
-          position: {
-            x: 0,
-            y: 300,
-          },
-          label: '',
-          description: '',
-          boundValues: {},
         },
       },
-      path: 'xod/core/button',
-      description: '',
     },
   },
-};
+});
 
 
 describe('xod-client regression -> xod-js', () => {

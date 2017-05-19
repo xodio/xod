@@ -1,10 +1,12 @@
-import { generateId, isValidIdentifier, getLocalPath } from 'xod-project';
+import * as XP from 'xod-project';
 
 import { addError } from '../messages/actions';
-import { PROJECT_BROWSER_ERRORS } from '../messages/constants';
+import { NODETYPE_ERROR_TYPES } from '../editor/constants';
+import { PROJECT_BROWSER_ERRORS, NODETYPE_ERRORS } from '../messages/constants';
 import * as ActionType from './actionTypes';
 import { isPatchPathTaken } from './utils';
 import { getCurrentPatchPath } from '../editor/selectors';
+import { getProject } from './selectors';
 
 export const requestCreateProject = () => ({
   type: ActionType.PROJECT_CREATE_REQUESTED,
@@ -17,7 +19,7 @@ export const requestOpenProject = data => ({
 });
 
 export const createProject = projectName => (dispatch) => {
-  if (!isValidIdentifier(projectName)) {
+  if (!XP.isValidIdentifier(projectName)) {
     return dispatch(addError(PROJECT_BROWSER_ERRORS.INVALID_PROJECT_NAME));
   }
 
@@ -25,13 +27,13 @@ export const createProject = projectName => (dispatch) => {
     type: ActionType.PROJECT_CREATE,
     payload: {
       name: projectName,
-      mainPatchPath: getLocalPath('main'),
+      mainPatchPath: XP.getLocalPath('main'),
     },
   });
 };
 
 export const addNode = (typeId, position, patchPath) => (dispatch) => {
-  const newNodeId = generateId();
+  const newNodeId = XP.generateId();
 
   dispatch({
     type: ActionType.NODE_ADD,
@@ -47,9 +49,23 @@ export const addNode = (typeId, position, patchPath) => (dispatch) => {
 };
 
 export const deleteNode = id => (dispatch, getState) => {
-  const patchPath = getCurrentPatchPath(getState());
+  const state = getState();
+  const project = getProject(state);
+  const patchPath = getCurrentPatchPath(state);
+  const patch = XP.getPatchByPathUnsafe(patchPath, project);
+  const node = XP.getNodeByIdUnsafe(id, patch);
 
-  dispatch({
+  // TODO: most of this probably should be moved to xod-project
+  if (
+    XP.isPinNode(node) &&
+    XP.isTerminalNodeInUse(id, patchPath, project)
+  ) {
+    return dispatch(
+      addError(NODETYPE_ERRORS[NODETYPE_ERROR_TYPES.CANT_DELETE_USED_PIN_OF_PATCHNODE])
+    );
+  }
+
+  return dispatch({
     type: ActionType.NODE_DELETE,
     payload: {
       id,
@@ -133,12 +149,12 @@ export const redoPatch = patchPath => ({
 });
 
 export const addPatch = baseName => (dispatch, getState) => {
-  if (!isValidIdentifier(baseName)) {
+  if (!XP.isValidIdentifier(baseName)) {
     return dispatch(addError(PROJECT_BROWSER_ERRORS.INVALID_PATCH_NAME));
   }
 
   const state = getState();
-  const newPatchPath = getLocalPath(baseName);
+  const newPatchPath = XP.getLocalPath(baseName);
 
   if (isPatchPathTaken(state, newPatchPath)) {
     return dispatch(addError(PROJECT_BROWSER_ERRORS.PATCH_NAME_TAKEN));
@@ -153,7 +169,7 @@ export const addPatch = baseName => (dispatch, getState) => {
 };
 
 export const renamePatch = (oldPatchPath, newBaseName) => (dispatch, getState) => {
-  const newPatchPath = getLocalPath(newBaseName);
+  const newPatchPath = XP.getLocalPath(newBaseName);
   const state = getState();
 
   if (
