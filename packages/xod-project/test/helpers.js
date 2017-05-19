@@ -116,10 +116,18 @@ export const defaultizePin = R.merge({
   description: '$$defaultDesription',
 });
 
+const assignIds = R.mapObjIndexed((entity, id) => R.assoc('id', id, entity));
+
 export const defaultizePatch = R.compose(
   R.evolve({
-    nodes: R.map(defaultizeNode),
-    links: R.map(defaultizeLink),
+    nodes: R.compose(
+      assignIds,
+      R.map(defaultizeNode)
+    ),
+    links: R.compose(
+      assignIds,
+      R.map(defaultizeLink)
+    ),
     impls: R.identity,
   }),
   R.merge({

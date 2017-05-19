@@ -519,4 +519,40 @@ describe('Project', () => {
   });
 
   // etc
+  describe.only('isTerminalNodeInUse', () => {
+    const project = Helper.defaultizeProject({
+      patches: {
+        '@/main': {
+          nodes: {
+            instanceOfPatchInQuestion: { type: '@/foo' },
+            someOtherNode: { type: 'xod/patch-nodes/input-number' },
+          },
+          links: {
+            someLink: {
+              input: { nodeId: 'instanceOfPatchInQuestion', pinKey: 'importantTerminal' },
+              output: { nodeId: 'someOtherNode', pinKey: '__out__' },
+            },
+          },
+        },
+        '@/foo': {
+          nodes: {
+            importantTerminal: { type: 'xod/patch-nodes/input-number' },
+            notImportantTerminal: { type: 'xod/patch-nodes/input-number' },
+          },
+        },
+      },
+    });
+
+    it('should return false for unused terminal nodes', () => {
+      expect(
+        Project.isTerminalNodeInUse('nonImportantTerminal', '@/foo', project)
+      ).to.be.false();
+    });
+
+    it('should return true for used terminal nodes', () => {
+      expect(
+        Project.isTerminalNodeInUse('importantTerminal', '@/foo', project)
+      ).to.be.true();
+    });
+  });
 });
