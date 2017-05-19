@@ -55,7 +55,7 @@ export const getPinKey = def(
  * @returns {string}
  */
 export const getPinLabel = def(
-  'getPinLabel :: Pin -> String',
+  'getPinLabel :: Pin -> PinLabel',
   R.prop('label')
 );
 
@@ -133,9 +133,9 @@ export const isTerminalPin = def(
  * @returns {Pin}
  */
 export const createPin = def(
-  'createPin :: NodeId -> DataType -> PinDirection -> Number -> PinKey -> String -> Pin',
-  (nodeId, type, direction, order, label, description) => ({
-    key: nodeId,
+  'createPin :: PinKey -> DataType -> PinDirection -> Number -> PinLabel -> String -> Pin',
+  (key, type, direction, order, label, description) => ({
+    key,
     type,
     direction,
     label,
