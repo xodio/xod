@@ -164,16 +164,6 @@ export const ensureWorkspacePath = R.tryCatch(
   () => resolvePath(DEFAULT_WORKSPACE_PATH)
 );
 
-// :: Path -> Promise Path Error
-const doesWorkspaceDirExist = R.ifElse(
-  doesDirectoryExist,
-  Promise.resolve.bind(Promise),
-  dirPath => rejectWithCode(
-    ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY,
-    { path: dirPath }
-  )
-);
-
 const doesWorkspaceFileExist = def(
   'doesWorkspaceFileExist :: Path -> Boolean',
   R.compose(
@@ -224,6 +214,5 @@ export const isWorkspaceValid = R.cond([
 // :: Path -> Promise Path Error
 export const validateWorkspace = R.pipeP(
   resolveWorkspacePath,
-  doesWorkspaceDirExist,
   isWorkspaceValid
 );
