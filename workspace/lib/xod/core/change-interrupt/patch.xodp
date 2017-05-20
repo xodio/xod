@@ -1,0 +1,54 @@
+{
+  "nodes": [
+    {
+      "id": "By8H5rDkZ",
+      "type": "xod/built-in/output-pulse",
+      "label": "FALL",
+      "description": "",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "boundValues": {
+        "__in__": false
+      }
+    },
+    {
+      "id": "rJxr9rDJZ",
+      "type": "xod/built-in/output-pulse",
+      "label": "RISE",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "boundValues": {
+        "__in__": false
+      }
+    },
+    {
+      "id": "rkuEqBD1W",
+      "type": "xod/built-in/input-number",
+      "label": "PORT",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "description": "",
+      "id": "noNativeImpl",
+      "label": "",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/built-in/not-implemented-in-xod",
+      "boundValues": {}
+    }
+  ],
+  "links": [],
+  "description": ""
+}

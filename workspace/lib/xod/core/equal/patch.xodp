@@ -1,0 +1,52 @@
+{
+  "nodes": [
+    {
+      "id": "H1E8AuSPkZ",
+      "type": "xod/built-in/output-boolean",
+      "label": "EQ",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "boundValues": {
+        "__in__": false
+      }
+    },
+    {
+      "id": "HJG8C_SPkb",
+      "type": "xod/built-in/input-number",
+      "label": "RHS",
+      "description": "",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "id": "rJXICuSwyW",
+      "type": "xod/built-in/input-number",
+      "label": "LHS",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "description": "",
+      "id": "noNativeImpl",
+      "label": "",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/built-in/not-implemented-in-xod",
+      "boundValues": {}
+    }
+  ],
+  "links": [],
+  "description": ""
+}

@@ -1,0 +1,50 @@
+{
+  "nodes": [
+    {
+      "id": "ByXnYHPyb",
+      "type": "xod/built-in/input-number",
+      "label": "DUTY",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "id": "rJsaFSvk-",
+      "type": "xod/built-in/input-number",
+      "label": "PORT",
+      "description": "",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "id": "rkAnKBvyZ",
+      "type": "xod/built-in/input-pulse",
+      "label": "UPD",
+      "description": "",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "description": "",
+      "id": "noNativeImpl",
+      "label": "",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/built-in/not-implemented-in-xod",
+      "boundValues": {}
+    }
+  ],
+  "links": [],
+  "description": ""
+}

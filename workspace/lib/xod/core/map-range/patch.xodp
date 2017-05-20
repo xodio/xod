@@ -1,0 +1,85 @@
+{
+  "nodes": [
+    {
+      "id": "BJlzICOSv1-",
+      "type": "xod/built-in/input-number",
+      "label": "X",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "id": "H12bIR_SPyZ",
+      "type": "xod/built-in/output-number",
+      "label": "Xm",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "boundValues": {
+        "__in__": 0
+      }
+    },
+    {
+      "id": "HJCWLAdSwyW",
+      "type": "xod/built-in/input-number",
+      "label": "Smax",
+      "description": "",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "id": "rJbGU0_Hv1Z",
+      "type": "xod/built-in/input-number",
+      "label": "Tmin",
+      "description": "",
+      "position": {
+        "x": 394,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "id": "rkpbU0OrwyZ",
+      "type": "xod/built-in/input-number",
+      "label": "Tmax",
+      "description": "",
+      "position": {
+        "x": 522,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "id": "ry1z8CuBDy-",
+      "type": "xod/built-in/input-number",
+      "label": "Smin",
+      "description": "",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "description": "",
+      "id": "noNativeImpl",
+      "label": "",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/built-in/not-implemented-in-xod",
+      "boundValues": {}
+    }
+  ],
+  "links": [],
+  "description": ""
+}

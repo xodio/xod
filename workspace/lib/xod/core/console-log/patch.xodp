@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "HJdO9HwJ-",
+      "type": "xod/built-in/input-string",
+      "label": "LINE",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "id": "S1n95SDJb",
+      "type": "xod/built-in/input-pulse",
+      "label": "DUMP",
+      "description": "",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "description": "",
+      "id": "noNativeImpl",
+      "label": "",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/built-in/not-implemented-in-xod",
+      "boundValues": {}
+    }
+  ],
+  "links": [],
+  "description": ""
+}

@@ -1,0 +1,30 @@
+{
+  "nodes": [
+    {
+      "id": "ryVmUAOrvkb",
+      "type": "xod/built-in/output-pulse",
+      "label": "BOOT",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "boundValues": {
+        "__in__": false
+      }
+    },
+    {
+      "description": "",
+      "id": "noNativeImpl",
+      "label": "",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/built-in/not-implemented-in-xod",
+      "boundValues": {}
+    }
+  ],
+  "links": [],
+  "description": ""
+}
