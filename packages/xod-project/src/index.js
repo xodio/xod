@@ -27,6 +27,7 @@ export {
   dissocLink,
   assocNode,
   dissocNode,
+  canBindToOutputs,
   renumberNodes,
   getTopology,
 } from './patch';

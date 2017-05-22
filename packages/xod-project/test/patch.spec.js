@@ -6,6 +6,7 @@ import * as Pin from '../src/pin';
 import * as Patch from '../src/patch';
 import * as CONST from '../src/constants';
 import { formatString } from '../src/utils';
+import * as PPU from '../src/patchPathUtils';
 
 import * as Helper from './helpers';
 
@@ -731,60 +732,108 @@ describe('Patch', () => {
 
   // utils
   describe('utils', () => {
-    const patch = Helper.defaultizePatch({
-      nodes: {
-        a: { id: 'a' },
-        b: { id: 'b' },
-        c: { id: 'c' },
-      },
-      links: {
-        x: {
-          id: 'x',
-          input: { nodeId: 'b', pinKey: 'x' },
-          output: { nodeId: 'a', pinKey: 'x' },
+    describe('topology utils', () => {
+      const patch = Helper.defaultizePatch({
+        nodes: {
+          a: { id: 'a' },
+          b: { id: 'b' },
+          c: { id: 'c' },
         },
-        y: {
-          id: 'y',
-          input: { nodeId: 'c', pinKey: 'x' },
-          output: { nodeId: 'b', pinKey: 'x' },
+        links: {
+          x: {
+            id: 'x',
+            input: { nodeId: 'b', pinKey: 'x' },
+            output: { nodeId: 'a', pinKey: 'x' },
+          },
+          y: {
+            id: 'y',
+            input: { nodeId: 'c', pinKey: 'x' },
+            output: { nodeId: 'b', pinKey: 'x' },
+          },
         },
-      },
-      impls: {
-        js: '// ok',
-      },
-    });
-    const expectedPatch = Helper.defaultizePatch({
-      nodes: {
-        0: { id: '0' },
-        1: { id: '1' },
-        2: { id: '2' },
-      },
-      links: {
-        x: {
-          id: 'x',
-          input: { nodeId: '1', pinKey: 'x' },
-          output: { nodeId: '0', pinKey: 'x' },
+        impls: {
+          js: '// ok',
         },
-        y: {
-          id: 'y',
-          input: { nodeId: '2', pinKey: 'x' },
-          output: { nodeId: '1', pinKey: 'x' },
+      });
+      const expectedPatch = Helper.defaultizePatch({
+        nodes: {
+          0: { id: '0' },
+          1: { id: '1' },
+          2: { id: '2' },
         },
-      },
-      impls: {
-        js: '// ok',
-      },
+        links: {
+          x: {
+            id: 'x',
+            input: { nodeId: '1', pinKey: 'x' },
+            output: { nodeId: '0', pinKey: 'x' },
+          },
+          y: {
+            id: 'y',
+            input: { nodeId: '2', pinKey: 'x' },
+            output: { nodeId: '1', pinKey: 'x' },
+          },
+        },
+        impls: {
+          js: '// ok',
+        },
+      });
+
+      it('renumberNodes: should return same patch with nodes and links with new ids', () => {
+        expect(Patch.renumberNodes(patch))
+          .to.be.deep.equal(expectedPatch);
+      });
+      it('getTopology: should return correct topology', () => {
+        expect(Patch.getTopology(patch))
+          .to.be.deep.equal(['a', 'b', 'c']);
+        expect(Patch.getTopology(expectedPatch))
+          .to.be.deep.equal(['0', '1', '2']);
+      });
     });
 
-    it('renumberNodes: should return same patch with nodes and links with new ids', () => {
-      expect(Patch.renumberNodes(patch))
-        .to.be.deep.equal(expectedPatch);
-    });
-    it('getTopology: should return correct topology', () => {
-      expect(Patch.getTopology(patch))
-        .to.be.deep.equal(['a', 'b', 'c']);
-      expect(Patch.getTopology(expectedPatch))
-        .to.be.deep.equal(['0', '1', '2']);
+    describe('canBindToOutputs', () => {
+      it('should return true for a patch with pulse inputs', () => {
+        const patch = Helper.defaultizePatch({
+          path: PPU.getLocalPath('my-patch'),
+          nodes: {
+            plsin: {
+              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.PULSE),
+            },
+          },
+        });
+        expect(Patch.canBindToOutputs(patch)).to.be.true();
+      });
+      it('should return true for a patch with pulse outputs', () => {
+        const patch = Helper.defaultizePatch({
+          path: PPU.getLocalPath('my-patch'),
+          nodes: {
+            plsout: { type: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.PULSE) },
+          },
+        });
+        expect(Patch.canBindToOutputs(patch)).to.be.true();
+      });
+      it('should return true for constant patches', () => {
+        const patch = Helper.defaultizePatch({
+          path: PPU.getConstantPatchPath(CONST.PIN_TYPE.NUMBER),
+          nodes: {
+            out: {
+              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.NUMBER),
+            },
+          },
+        });
+        expect(Patch.canBindToOutputs(patch)).to.be.true();
+      });
+      it('should return true for terminal patches', () => {
+        const patch = Helper.defaultizePatch({
+          path: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.NUMBER),
+        });
+        expect(Patch.canBindToOutputs(patch)).to.be.true();
+      });
+      it('should return false for a patch without pulse pins(a.k.a functional patch)', () => {
+        const patch = Helper.defaultizePatch({
+          path: PPU.getLocalPath('my-patch'),
+        });
+        expect(Patch.canBindToOutputs(patch)).to.be.false();
+      });
     });
   });
 });

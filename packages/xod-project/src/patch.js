@@ -11,7 +11,7 @@ import * as Utils from './utils';
 import { sortGraph } from './gmath';
 import { def } from './types';
 import { getHardcodedPinsForPatchPath } from './builtInPatches';
-import { getLocalPath } from './patchPathUtils';
+import { getLocalPath, isTerminalPatchPath, isConstantPatchPath } from './patchPathUtils';
 
 /**
  * An object representing single patch in a project
@@ -563,6 +563,24 @@ export const dissocNode = def(
 // Utils
 //
 // =============================================================================
+
+export const canBindToOutputs = def(
+  'canBindToOutputs :: Patch -> Boolean',
+  R.either(
+    R.compose( // it's one of 'allowed' types
+      R.anyPass([
+        isTerminalPatchPath,
+        isConstantPatchPath,
+      ]),
+      getPatchPath
+    ),
+    R.compose( // or it's an effect patch
+      R.contains(CONST.PIN_TYPE.PULSE),
+      R.map(Pin.getPinType),
+      listPins
+    )
+  )
+);
 
 /**
  * Returns a copy of the patch with changed nodeIds and resolved links.
