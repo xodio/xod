@@ -10,6 +10,7 @@ module.exports = {
   plugins: [
     'react',
     'import',
+    'mocha',
     'xod-fp',
   ],
 
@@ -57,6 +58,8 @@ module.exports = {
         '**/xod-client/stories/*.jsx'
       ]
     }],
+    'mocha/no-skipped-tests': 'error',
+    'mocha/no-exclusive-tests': 'error',
 
     'react/forbid-prop-types' : 'off' // TODO: enable and make custom propTypes
   },
