@@ -1,8 +1,7 @@
 import chai, { assert, expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { resolve } from 'path';
-import fs from 'fs';
-import { doesFileExist, doesDirectoryExist, rmrf } from 'xod-fs';
+import { rmrf, spawnDefaultProject, getLocalProjects, getProjectMetaName } from 'xod-fs';
 import { getProjectName } from 'xod-project';
 
 import * as WA from '../src/app/workspaceActions';
@@ -16,120 +15,6 @@ const fixture = path => resolve(__dirname, './fixtures', path);
 const expectRejectedWithCode = (promise, errorCode) => expect(promise)
   .to.eventually.be.rejected
   .and.have.property('errorCode', errorCode);
-
-describe('Utils', () => {
-  afterEach(() => rmrf(fixture('./notExistWorkspace')));
-
-  describe('resolveWorkspacePath', () => {
-    it('resolves Path for valid value',
-      () => assert.eventually.equal(
-        WA.resolveWorkspacePath(fixture('./validWorkspace')),
-        fixture('./validWorkspace')
-      )
-    );
-    it('rejects INVALID_WORKSPACE_PATH for null value',
-      () => expectRejectedWithCode(
-        WA.resolveWorkspacePath(null),
-        ERROR_CODES.INVALID_WORKSPACE_PATH
-      )
-    );
-    it('rejects INVALID_WORKSPACE_PATH for empty string',
-      () => expectRejectedWithCode(
-        WA.resolveWorkspacePath(''),
-        ERROR_CODES.INVALID_WORKSPACE_PATH
-      )
-    );
-  });
-
-  describe('isWorkspaceValid', () => {
-    it('resolves Path for valid workspace',
-      () => assert.eventually.equal(
-        WA.isWorkspaceValid(fixture('./validWorkspace')),
-        fixture('./validWorkspace')
-      )
-    );
-    it('rejects WORKSPACE_DIR_NOT_EMPTY for empty workspace',
-      () => expectRejectedWithCode(
-        WA.isWorkspaceValid(fixture('./emptyWorkspace')),
-        ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY
-      )
-    );
-    it('rejects WORKSPACE_DIR_NOT_EXIST_OR_EMPTY for non-existent directory',
-      () => expectRejectedWithCode(
-        WA.isWorkspaceValid(fixture('./notExistWorkspace')),
-        ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY
-      )
-    );
-  });
-
-  describe('validateWorkspace', () => {
-    it('resolves Path for valid workspace',
-      () => assert.eventually.equal(
-        WA.validateWorkspace(fixture('./validWorkspace')),
-        fixture('./validWorkspace')
-      )
-    );
-    it('rejects WORKSPACE_DIR_NOT_EXIST_OR_EMPTY for not existent directory',
-      () => expectRejectedWithCode(
-        WA.validateWorkspace(fixture('./notExistWorkspace')),
-        ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY
-      )
-    );
-    it('rejects WORKSPACE_DIR_NOT_EMPTY for not empty directory without workspace file',
-      () => expectRejectedWithCode(
-        WA.validateWorkspace(fixture('.')),
-        ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY
-      )
-    );
-  });
-
-  describe('spawnWorkspaceFile', () => {
-    it('resolves Path for successfull spawning',
-      () => WA.spawnWorkspaceFile(fixture('./notExistWorkspace'))
-        .then((path) => {
-          assert.equal(path, fixture('./notExistWorkspace'));
-          assert.ok(doesFileExist(fixture('./notExistWorkspace/.xodworkspace')));
-        })
-    );
-  });
-
-  describe('spawnStdLib', () => {
-    it('resolves Path for successfull spawnking',
-      () => WA.spawnStdLib(fixture('./notExistWorkspace')).then(() => {
-        assert.ok(doesDirectoryExist(fixture('./notExistWorkspace/lib')));
-        fs.readdir(fixture('./notExistWorkspace/lib'), (err, files) => {
-          assert.includeMembers(files, ['xod']);
-        });
-      })
-    );
-  });
-
-  describe('spawnDefaultProject', () => {
-    it('resolves Path for successfull spawnking',
-      () => WA.spawnDefaultProject(fixture('./notExistWorkspace')).then(() => {
-        assert.ok(doesDirectoryExist(fixture('./notExistWorkspace/welcome-to-xod')));
-        fs.readdir(fixture('./notExistWorkspace/welcome-to-xod'), (err, files) => {
-          assert.includeMembers(files, ['project.xod', 'main']);
-        });
-      })
-    );
-  });
-
-  describe('enumerateProjects', () => {
-    it('resolves ProjectMeta for valid workspace',
-      () => assert.eventually.lengthOf(
-        WA.enumerateProjects(fixture('./validWorkspace')),
-        1
-      )
-    );
-    it('rejects Error CANT_ENUMERATE_PROJECTS for non-existent workspace',
-      () => expectRejectedWithCode(
-        WA.enumerateProjects(fixture('./notExistWorkspace')),
-        ERROR_CODES.CANT_ENUMERATE_PROJECTS
-      )
-    );
-  });
-});
 
 describe('IDE', () => {
   const deleteTestFiles = () => Promise.all([
@@ -150,7 +35,7 @@ describe('IDE', () => {
       EVENTS.REQUEST_SELECT_PROJECT,
     ]);
     if (eventName === EVENTS.REQUEST_SELECT_PROJECT) {
-      assert.equal(data[0].name, 'welcome-to-xod');
+      assert.equal(getProjectMetaName(data[0]), 'welcome-to-xod');
     }
   };
   const subscribeOnSelectProject = (done, path, projectName) => WA.WorkspaceEvents.once(
@@ -170,10 +55,9 @@ describe('IDE', () => {
   describe('could spawn whole workspace', () => {
     it('resolves a list of local projects',
       () => Promise.resolve(fixture('./notExistWorkspace'))
-        .then(WA.spawnWorkspaceFile)
-        .then(WA.spawnStdLib)
-        .then(WA.spawnDefaultProject)
-        .then(WA.enumerateProjects)
+        .then(WA.spawnWorkspace)
+        .then(spawnDefaultProject(WA.getDefaultProjectPath()))
+        .then(getLocalProjects)
         .then((projects) => {
           assert.lengthOf(projects, 1);
         })
@@ -261,10 +145,9 @@ describe('IDE', () => {
         assert.equal(eventName, EVENTS.WORKSPACE_ERROR);
         assert.equal(err.errorCode, ERROR_CODES.CANT_ENUMERATE_PROJECTS);
       };
-      return expectRejectedWithCode(
-        WA.onOpenProject(sendMock, loadMock(fixture('./notExistWorkspace'))),
-        ERROR_CODES.CANT_ENUMERATE_PROJECTS
-      );
+      return expect(
+        WA.onOpenProject(sendMock, loadMock(fixture('./notExistWorkspace')))
+      ).to.eventually.be.rejected;
     });
     it('if workspace is empty, spawns default project and requests to open it',
       () => WA.onOpenProject(sendMockDefault, loadMock(fixture('./emptyWorkspace')))
@@ -280,7 +163,7 @@ describe('IDE', () => {
       return WA.onSelectProject(
         sendMock,
         loadMock(fixture('./validWorkspace')),
-        { path: fixture('./validWorkspace/welcome-to-xod') }
+        { path: fixture('./validWorkspace/welcome-to-xod'), content: '' }
       );
     });
     it('if invalid workspace but valid projectMeta, shows error and requests to switch workspace', () => {
@@ -295,7 +178,7 @@ describe('IDE', () => {
         WA.onSelectProject(
           sendMock,
           loadMock(fixture('./emptyWorkspace')),
-          { path: fixture('./emptyWorkspace/welcome-to-xod') }
+          { path: fixture('./emptyWorkspace/welcome-to-xod'), content: '' }
         ),
         ERROR_CODES.CANT_OPEN_SELECTED_PROJECT
       );

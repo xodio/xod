@@ -5,81 +5,106 @@ import R from 'ramda';
 import XF from 'xod-func-tools';
 import * as XP from 'xod-project';
 
+import { def } from './types';
+
 import { loadLibs } from './loadLibs';
 import { readDir, readJSON } from './read';
+import * as ERROR_CODES from './errorCodes';
 import {
   resolvePath,
   doesFileExist,
   doesDirectoryExist,
   reassignIds,
   getPatchName,
+  isProjectFile,
 } from './utils';
 
-// :: String -> String -> Boolean
-const basenameEquals = basename => R.compose(
-  R.equals(basename),
-  path.basename
-);
-
-// :: [String] -> String -> Boolean
-const basenameAmong = basenames => R.compose(
-  XF.isAmong(basenames),
-  path.basename
-);
-
-// :: [String] -> String -> Boolean
-const extAmong = extensions => R.compose(
-  XF.isAmong(extensions),
-  path.extname
-);
-
-// :: unpackedFile -> true|false
-const isProject = R.pipe(
-  R.prop('path'),
-  path.basename,
-  R.equals('project.xod')
-);
+// =============================================================================
+//
+// Utils
+//
+// =============================================================================
 
 // :: [Promise a] -> Promise a
 const allPromises = promises => Promise.all(promises);
 
-// :: project -> libs[]
+const basenameEquals = def(
+  'basenameEquals :: String -> Path -> Boolean',
+  (basename, filePath) => R.compose(
+    R.equals(basename),
+    path.basename
+  )(filePath)
+);
+
+const basenameAmong = def(
+  'basenameAmong :: [String] -> Path -> Boolean',
+  (basenames, filePath) => R.compose(
+    XF.isAmong(basenames),
+    path.basename
+  )(filePath)
+);
+
+const extAmong = def(
+  'extAmong :: [String] -> Path -> Boolean',
+  (extensions, filePath) => R.compose(
+    XF.isAmong(extensions),
+    path.extname
+  )(filePath)
+);
+
 const getProjectLibs = R.pipe(
-  R.find(isProject),
+  R.find(isProjectFile),
   R.path(['content', 'libs'])
 );
 
+const beginsWithDot = def(
+  'beginsWithDot :: String -> Boolean',
+  R.compose(
+    R.equals('.'),
+    R.head
+  )
+);
+
+const resolveProjectFile = def(
+  'resolveProjectFile :: Path -> Path',
+  dir => path.resolve(dir, 'project.xod')
+);
+
+const hasProjectFile = def(
+  'hasProjectFile :: Path -> Boolean',
+  R.compose(
+    doesFileExist,
+    resolveProjectFile
+  )
+);
+
+// :: Path -> Boolean
+const isLocalProjectDirectory = def(
+  'isLocalProjectDirectory :: Path -> Boolean',
+  R.allPass([
+    doesDirectoryExist,
+    R.complement(beginsWithDot),
+    hasProjectFile,
+  ])
+);
+
+// =============================================================================
+//
+// Reading of files
+//
+// =============================================================================
+
+// :: Path -> Promise (XodFile ProjectFileContents) Object
 const readProjectMetaFile = projectFile => readJSON(projectFile)
   .then(R.assoc('path', path.dirname(projectFile)))
   .catch(err => ({ error: true, message: err.toString(), path: projectFile }));
 
-// :: String -> Boolean
-const beginsWithDot = R.compose(
-  R.equals('.'),
-  R.head
-);
-
-// :: Path -> Path
-const resolveProjectFile = dir => path.resolve(dir, 'project.xod');
-
-// :: Path -> Boolean
-const hasProjectFile = R.compose(
-  doesFileExist,
-  resolveProjectFile
-);
-
-// :: Path -> Boolean
-const isLocalProjectDirectory = R.allPass([
-  doesDirectoryExist,
-  R.complement(beginsWithDot),
-  hasProjectFile,
-]);
-
 // :: Path -> Promise ProjectMeta Error
 const readProjectDirectories = projectDirectory => R.compose(
   R.composeP(
-    R.merge({
-      path: projectDirectory,
+    R.applySpec({
+      path: R.always(projectDirectory),
+      content: R.identity,
     }),
     fs.readJson
   ),
@@ -94,31 +119,33 @@ export const getLocalProjects = R.compose(
     R.filter(isLocalProjectDirectory),
     R.map(filename => path.resolve(workspacePath, filename)),
     fs.readdir
-  )(workspacePath),
+  )(workspacePath)
+    .catch(XF.rejectWithCode(ERROR_CODES.CANT_ENUMERATE_PROJECTS)),
   resolvePath
 );
 
 // Returns a Promise of all project metas for given workspace path
-// :: Path -> ProjectMeta[]
-export const getProjects = R.composeP(
+// :: Path -> Promise ProjectMeta[] Error
+export const getProjects = workspacePath => R.composeP(
   allPromises,
   R.map(readProjectMetaFile),
   R.filter(basenameEquals('project.xod')),
   readDir
-);
+)(workspacePath)
+  .catch(XF.rejectWithCode(ERROR_CODES.CANT_ENUMERATE_PROJECTS));
 
 // Returns a promise of filename / content pair for a given
 // `filename` path relative to `dir`
 // :: String -> String -> Promise (Pair String String)
 const readImplFile = dir => filename =>
-  fs.readFile(path.resolve(dir, filename)).then(content => [
+  fs.readFile(path.resolve(dir, filename), 'utf8').then(content => [
     filename,
     content,
   ]);
 
 // Returns a map with filenames in keys and contents in values of
 // all implementation source files in a directory given as argument
-// :: String -> Promise (StrMap String)
+// :: String -> Promise (StrMap String) Error
 const readImplFiles = dir => R.composeP(
   R.fromPairs,
   allPromises,
@@ -152,6 +179,7 @@ const readXodFile = projectPath => xodfile =>
       });
     });
 
+// :: Path -> Promise [File] Error
 export const loadProjectWithoutLibs = projectPath => R.composeP(
   allPromises,
   R.map(readXodFile(projectPath)),
@@ -162,23 +190,25 @@ export const loadProjectWithoutLibs = projectPath => R.composeP(
   readDir
 )(projectPath);
 
+// :: Path -> Path -> Path -> Promise [File] Error
 export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) =>
   loadProjectWithoutLibs(resolvePath(path.resolve(workspace, projectPath)))
-    .then(project => loadLibs(getProjectLibs(project), resolvePath(libDir))
-      .then(libs => ({
-        project,
-        libs,
-      }))
-      .catch((err) => {
-        throw Object.assign(err, {
-          path: resolvePath(libDir),
-          libs: getProjectLibs(project),
+    .then((projectFiles) => {
+      const projectLibs = getProjectLibs(projectFiles);
+      const libPath = resolvePath(libDir);
+      return loadLibs(projectLibs, libPath)
+        .then(libs => ({ project: projectFiles, libs }))
+        .catch((err) => {
+          throw Object.assign(err, {
+            path: libPath,
+            libs: projectLibs,
+          });
         });
-      })
-    );
+    });
 
 export default {
   getProjects,
+  getLocalProjects,
   loadProjectWithLibs,
   loadProjectWithoutLibs,
 };

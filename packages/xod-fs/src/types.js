@@ -1,6 +1,7 @@
+import R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
-import { Identifier, Node, Link, env as xpEnv } from 'xod-project';
+import { Identifier, Patch, Node, Link, env as xpEnv } from 'xod-project';
 import XF from 'xod-func-tools';
 
 /* Types are by convention starts with a capital leter, so: */
@@ -16,17 +17,52 @@ const docUrl = 'http://xod.io/docs/dev/xod-fs/#';
 //-----------------------------------------------------------------------------
 
 const Model = XF.Model(packageName, docUrl);
+const AliasType = XF.AliasType(packageName, docUrl);
+const NullaryType = XF.NullaryType(packageName, docUrl);
+const UnaryType = XF.UnaryType(packageName, docUrl);
+const OneOfType = XF.OneOfType(packageName, docUrl);
 
 //-----------------------------------------------------------------------------
 //
 // Domain types
 //
 //-----------------------------------------------------------------------------
+
+export const Path = NullaryType('Path', x => XF.hasType($.String, x) && XF.notEmpty(x));
+
+// :: x -> Boolean
+const isValidXodFile = R.converge(
+  R.and,
+  [
+    R.allPass([
+      R.has('path'),
+      R.has('content'),
+    ]),
+    R.compose(
+      XF.hasType(Path),
+      R.prop('path')
+    ),
+  ]
+);
+
+export const XodFile = UnaryType('XodFile',
+  isValidXodFile,
+  R.compose(
+    R.of,
+    R.prop('content')
+  )
+);
+
+export const ProjectLib = AliasType('ProjectLib', $.String);
+
 export const PatchFileContents = Model('PatchFileContents', {
   nodes: $.Array(Node),
   links: $.Array(Link),
   description: $.String,
 });
+
+export const PatchFile = AliasType('PatchFile', XodFile(PatchFileContents));
+export const PatchImplFile = AliasType('PatchImplFile', XodFile($.String));
 
 export const ProjectFileContents = Model('ProjectFileContents', {
   name: Identifier,
@@ -34,7 +70,15 @@ export const ProjectFileContents = Model('ProjectFileContents', {
   license: $.String,
   description: $.String,
   version: $.String,
+  libs: $.Array(ProjectLib),
 });
+
+export const ProjectFile = AliasType('ProjectFile', XodFile(ProjectFileContents));
+
+// TODO: Remove last `XodFile(Patch)` after refactoring of loadProject* and readXodFile functions
+export const AnyXodFile = OneOfType('AnyXodFile', [ProjectFile, PatchFile, PatchImplFile, XodFile(Patch)]);
+
+export const XodFileContent = OneOfType('XodFileContent', [ProjectFileContents, PatchFileContents, Patch, $.String]);
 
 //-----------------------------------------------------------------------------
 //
@@ -42,6 +86,14 @@ export const ProjectFileContents = Model('ProjectFileContents', {
 //
 //-----------------------------------------------------------------------------
 const env = xpEnv.concat([
+  Path,
+  XodFile,
+  AnyXodFile,
+  ProjectLib,
+  PatchFile,
+  PatchImplFile,
+  ProjectFile,
+  XodFileContent,
   PatchFileContents,
   ProjectFileContents,
 ]);

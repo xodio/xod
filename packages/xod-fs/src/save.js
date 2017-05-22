@@ -1,9 +1,13 @@
 import path from 'path';
-import expandHomeDir from 'expand-home-dir';
 import { curry } from 'ramda';
+import expandHomeDir from 'expand-home-dir';
+import { rejectWithCode } from 'xod-func-tools';
+
 import { resolvePath } from './utils';
 import { writeJSON } from './write';
 import { Backup } from './backup';
+import { arrangeByFiles } from './unpack';
+import * as ERROR_CODES from './errorCodes';
 
 // :: pathToWorkspace -> data -> Promise
 const saveData = curry((pathToWorkspace, data) => new Promise((resolve, reject) => {
@@ -12,7 +16,7 @@ const saveData = curry((pathToWorkspace, data) => new Promise((resolve, reject) 
 }));
 
 // :: pathToWorkspace -> data -> Promise
-export default curry((pathToWorkspace, data) => {
+export const saveArrangedFiles = curry((pathToWorkspace, data) => {
   let savingFiles = [];
 
   if (typeof data !== 'object') {
@@ -45,3 +49,14 @@ export default curry((pathToWorkspace, data) => {
         });
     });
 });
+
+// :: Path -> Project -> Promise Project Error
+export const saveProject = curry(
+  (workspacePath, project) => Promise.resolve(project)
+    .then(arrangeByFiles)
+    .then(saveArrangedFiles(workspacePath))
+    .then(() => project)
+    .catch(rejectWithCode(ERROR_CODES.CANT_SAVE_PROJECT))
+);
+
+export default saveProject;

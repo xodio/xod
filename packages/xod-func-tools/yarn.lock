@@ -69,13 +69,13 @@ ramda-fantasy@^0.7.0:
   dependencies:
     ramda ">=0.15.0"
 
-ramda@>=0.15.0, ramda@^0.22.1:
-  version "0.22.1"
-  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.22.1.tgz#031da0c3df417c5b33c96234757eb37033f36a0e"
-
-ramda@^0.23.0:
+ramda@>=0.15.0, ramda@^0.23.0:
   version "0.23.0"
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.23.0.tgz#ccd13fff73497a93974e3e86327bfd87bd6e8e2b"
+
+ramda@^0.22.1:
+  version "0.22.1"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.22.1.tgz#031da0c3df417c5b33c96234757eb37033f36a0e"
 
 randexp@^0.4.2:
   version "0.4.5"

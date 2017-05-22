@@ -1,26 +1,26 @@
 import R from 'ramda';
-import { hasExt } from './utils';
+import { getPatchPath } from 'xod-project';
 
-export default (unpackedData, libraryPatches = {}) => {
-  const project = R.compose(
-    R.dissoc('libs'),
-    R.prop('content'),
-    R.find(R.compose(
-      hasExt('.xod'),
-      R.prop('path')
-    ))
-  )(unpackedData);
+import { def } from './types';
+import { isProjectFile, isPatchFile, getFileContent } from './utils';
 
-  const projectPatches = R.compose(
-    R.indexBy(R.prop('path')),
-    R.map(R.prop('content')),
-    R.filter(R.compose(
-      hasExt('.xodp'),
-      R.prop('path')
-    ))
-  )(unpackedData);
+export default def(
+  'packProject :: [AnyXodFile] -> Map PatchPath Patch -> Project',
+  (unpackedData, libraryPatches = {}) => {
+    const project = R.compose(
+      R.dissoc('libs'),
+      getFileContent,
+      R.find(isProjectFile)
+    )(unpackedData);
 
-  const patches = R.merge(libraryPatches, projectPatches);
+    const projectPatches = R.compose(
+      R.indexBy(getPatchPath),
+      R.map(getFileContent),
+      R.filter(isPatchFile)
+    )(unpackedData);
 
-  return R.assoc('patches', patches, project);
-};
+    const patches = R.merge(libraryPatches, projectPatches);
+
+    return R.assoc('patches', patches, project);
+  }
+);

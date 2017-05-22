@@ -12,7 +12,6 @@ import blinkingFlat from './fixtures/blinking.flat.json';
 
 chai.use(dirtyChai);
 
-
 describe('Flatten', () => {
   describe('extractPatches', () => {
     it('correct flattening structure for trivial project', () => {

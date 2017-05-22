@@ -117,6 +117,7 @@ export const PinOrKey = OneOfType('PinOrKey', [PinKey, ObjectWithKey]);
 //-----------------------------------------------------------------------------
 
 export const env = XF.env.concat([
+  Identifier,
   Link,
   LinkId,
   LinkOrId,

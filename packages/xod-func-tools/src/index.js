@@ -130,6 +130,7 @@ export default Object.assign(
     optionalObjOf,
     notNil,
     notEmpty,
+    rejectWithCode,
   },
   types
 );

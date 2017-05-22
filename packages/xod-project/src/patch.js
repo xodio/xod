@@ -27,13 +27,16 @@ import { getLocalPath } from './patchPathUtils';
  * @function createPatch
  * @returns {Patch} newly created patch
  */
-export const createPatch = () => ({
-  nodes: {},
-  links: {},
-  impls: {},
-  path: getLocalPath('untitled-patch'),
-  description: '',
-});
+export const createPatch = def(
+  'createPatch :: () -> Patch',
+  () => ({
+    nodes: {},
+    links: {},
+    impls: {},
+    path: getLocalPath('untitled-patch'),
+    description: '',
+  })
+);
 
 /**
  * @function duplicatePatch

@@ -6,6 +6,7 @@
   "license": "",
   "version": "",
   "name": "welcome-to-xod",
+  "version": "0.0.1",
   "libs": [
     "xod/core"
   ]

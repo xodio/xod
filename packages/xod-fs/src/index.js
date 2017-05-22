@@ -1,7 +1,10 @@
+import * as ERROR_CODES from './errorCodes';
+
 export { default as pack } from './pack';
 export { arrangeByFiles, fsSafeName } from './unpack';
-export { default as save } from './save';
+export { saveArrangedByFilesProject, saveProject } from './save';
 export { writeJSON, writeFile } from './write';
+export { spawnWorkspaceFile, spawnStdLib, spawnDefaultProject } from './spawn';
 export { readDir, readFile, readJSON } from './read';
 export {
   getProjects,
@@ -10,10 +13,15 @@ export {
   loadProjectWithoutLibs,
 } from './load';
 export { loadLibs, loadAllLibs } from './loadLibs';
-export { resolvePath, doesDirectoryExist, doesFileExist } from './utils';
+export * from './utils';
 export {
   findClosestProjectDir,
   findClosestWorkspaceDir,
 } from './find';
-export { default as copy } from './core/copy';
+
+export * from './constants';
+
 export { default as rmrf } from './core/rmrf';
+export { default as copy } from './core/copy';
+
+export { ERROR_CODES };
