@@ -1,0 +1,52 @@
+{
+  "nodes": [
+    {
+      "id": "B1retBvyb",
+      "type": "xod/built-in/input-pulse",
+      "label": "UPD",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "id": "B1zbKSDy-",
+      "type": "xod/built-in/input-number",
+      "label": "PORT",
+      "description": "",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "id": "r1yGKrvyZ",
+      "type": "xod/built-in/output-number",
+      "label": "ADC",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "boundValues": {
+        "__in__": 0
+      }
+    },
+    {
+      "description": "",
+      "id": "noNativeImpl",
+      "label": "",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/built-in/not-implemented-in-xod",
+      "boundValues": {}
+    }
+  ],
+  "links": [],
+  "description": ""
+}

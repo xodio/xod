@@ -1,0 +1,76 @@
+{
+  "nodes": [
+    {
+      "id": "B1RU0OrDkb",
+      "type": "xod/built-in/input-pulse",
+      "label": "RST",
+      "description": "",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "id": "Bkh8A_Sv1-",
+      "type": "xod/built-in/input-pulse",
+      "label": "SET",
+      "description": "",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "id": "HkyxURuSPyW",
+      "type": "xod/built-in/output-boolean",
+      "label": "MEM",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "boundValues": {
+        "__in__": false
+      }
+    },
+    {
+      "id": "HyjUA_HvkW",
+      "type": "xod/built-in/output-pulse",
+      "label": "CHNG",
+      "description": "",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "boundValues": {
+        "__in__": false
+      }
+    },
+    {
+      "id": "ryTIROHwkW",
+      "type": "xod/built-in/input-pulse",
+      "label": "TGL",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "description": "",
+      "id": "noNativeImpl",
+      "label": "",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/built-in/not-implemented-in-xod",
+      "boundValues": {}
+    }
+  ],
+  "links": [],
+  "description": ""
+}

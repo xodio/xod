@@ -1,0 +1,41 @@
+{
+  "nodes": [
+    {
+      "id": "SklxICdHP1b",
+      "type": "xod/built-in/input-number",
+      "label": "X",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "boundValues": {}
+    },
+    {
+      "id": "rkWeUCdBDkZ",
+      "type": "xod/built-in/output-number",
+      "label": "FLR",
+      "description": "",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "boundValues": {
+        "__in__": 0
+      }
+    },
+    {
+      "description": "",
+      "id": "noNativeImpl",
+      "label": "",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/built-in/not-implemented-in-xod",
+      "boundValues": {}
+    }
+  ],
+  "links": [],
+  "description": ""
+}
