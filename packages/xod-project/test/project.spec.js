@@ -519,7 +519,7 @@ describe('Project', () => {
   });
 
   // etc
-  describe.only('isTerminalNodeInUse', () => {
+  describe('isTerminalNodeInUse', () => {
     const project = Helper.defaultizeProject({
       patches: {
         '@/main': {
