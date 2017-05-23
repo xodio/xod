@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { PROPERTY_TYPE } from '../../../constants';
-import PinIcon from './PinIcon';
+import PinWidget from './PinWidget';
 
 const PulseWidget = props => (
-  <div className="Widget PinWidget PulseWidget">
+  <PinWidget {...props}>
     <input
       className="inspectorTextInput"
       id={props.elementId}
@@ -12,29 +11,11 @@ const PulseWidget = props => (
       value="pulse"
       disabled
     />
-    <PinIcon
-      id={props.elementId}
-      type={PROPERTY_TYPE.PULSE}
-      isConnected={props.disabled}
-    />
-    <label
-      htmlFor={props.elementId}
-    >
-      {props.label}
-    </label>
-  </div>
+  </PinWidget>
 );
 
 PulseWidget.propTypes = {
   elementId: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string,
-  disabled: React.PropTypes.bool,
-};
-
-PulseWidget.defaultProps = {
-  label: 'Unnamed property',
-  value: 0,
-  disabled: false,
 };
 
 export default PulseWidget;

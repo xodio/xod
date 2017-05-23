@@ -60,7 +60,7 @@ export default function composeWidget(Component, widgetProps) {
     }
 
     isDisabled() {
-      return (this.props.kind === NODE_PROPERTY_KIND.PIN) && !this.props.injected;
+      return (this.props.kind === NODE_PROPERTY_KIND.PIN) && this.props.isConnected;
     }
 
     updateValue(value) {
@@ -99,6 +99,9 @@ export default function composeWidget(Component, widgetProps) {
           <Component
             elementId={elementId}
             label={this.props.label}
+            isConnected={this.props.isConnected}
+            isBindable={this.props.isBindable}
+            dataType={this.type}
             value={this.state.value}
             disabled={this.isDisabled()}
             focused={this.props.focused && !this.isDisabled()}
@@ -123,7 +126,8 @@ export default function composeWidget(Component, widgetProps) {
       React.PropTypes.bool,
       React.PropTypes.array,
     ]),
-    injected: React.PropTypes.bool,
+    isConnected: React.PropTypes.bool,
+    isBindable: React.PropTypes.bool,
     focused: React.PropTypes.bool,
     // dispatchers
     onPropUpdate: React.PropTypes.func.isRequired,

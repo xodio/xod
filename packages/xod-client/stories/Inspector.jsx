@@ -35,6 +35,7 @@ const nodeSelection = {
     position: somePoint,
     label: 'My label',
     description: 'My node description',
+    boundValues: {},
     pins: {
       samplePulse: {
         description: '',
@@ -46,6 +47,7 @@ const nodeSelection = {
         value: false,
         nodeId: 'ByWmOEefAg',
         isConnected: false,
+        isBindable: true,
         position: somePoint,
       },
       sampleStr: {
@@ -58,6 +60,7 @@ const nodeSelection = {
         value: 'foo',
         nodeId: 'ByWmOEefAg',
         isConnected: false,
+        isBindable: true,
         position: somePoint,
       },
       sampleNum: {
@@ -70,6 +73,7 @@ const nodeSelection = {
         value: 24,
         nodeId: 'ByWmOEefAg',
         isConnected: false,
+        isBindable: true,
         position: somePoint,
       },
       sampleBool: {
@@ -82,6 +86,7 @@ const nodeSelection = {
         value: true,
         nodeId: 'ByWmOEefAg',
         isConnected: false,
+        isBindable: true,
         position: somePoint,
       },
       sampleStrConnected: {
@@ -94,6 +99,7 @@ const nodeSelection = {
         value: 'foo',
         nodeId: 'ByWmOEefAg',
         isConnected: true,
+        isBindable: true,
         position: somePoint,
       },
       sampleNumConnected: {
@@ -106,6 +112,7 @@ const nodeSelection = {
         value: 24,
         nodeId: 'ByWmOEefAg',
         isConnected: true,
+        isBindable: true,
         position: somePoint,
       },
       sampleBoolConnected: {
@@ -118,18 +125,21 @@ const nodeSelection = {
         value: true,
         nodeId: 'ByWmOEefAg',
         isConnected: true,
+        isBindable: true,
         position: somePoint,
       },
       value: {
         description: '',
         direction: 'output',
         key: 'value',
-        label: 'value',
+        label: 'VAL',
         order: 0,
         type: 'number',
         value: 0,
         nodeId: 'ByWmOEefAg',
         isConnected: false,
+        // won't happen in real project because this node has pulse pins, but useful for UI demo
+        isBindable: false,
         position: somePoint,
       },
     },

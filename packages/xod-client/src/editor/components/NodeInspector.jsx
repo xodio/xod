@@ -11,7 +11,7 @@ import Widgets, { WIDGET_MAPPING } from './inspectorWidgets';
 import { RenderableNode } from '../../project/types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
-// :: entityId -> propKey -> string
+// :: RenderablePin -> String
 const getWidgetKey = R.converge(
   (id, key) => `${id}_${key}`,
   [
@@ -28,7 +28,8 @@ const getPinWidgetProps = R.applySpec({
   type: R.prop('type'),
   label: R.prop('label'),
   value: R.prop('value'),
-  injected: R.complement(R.prop('isConnected')),
+  isConnected: R.prop('isConnected'),
+  isBindable: R.prop('isBindable'),
 });
 
 // :: RenderableNode -> { components: {...}, props: {...} }
@@ -49,8 +50,12 @@ const createPinWidgetsConfig = R.compose(
     },
     { components: {}, props: {} }
   ),
-  R.sortBy(XP.getPinOrder),
-  R.reject(XP.isOutputPin),
+  R.apply(R.concat),
+  R.map(R.sort(R.ascend(XP.getPinOrder))),
+  R.juxt([
+    R.filter(XP.isInputPin),
+    R.filter(XP.isOutputPin),
+  ]),
   R.values,
   R.prop('pins')
 );
@@ -90,7 +95,8 @@ const NodeInspector = ({ node, onPropUpdate }) => {
         entityId={nodeId}
         key={`node_label_${nodeId}`}
         kind={NODE_PROPERTY_KIND.PROP}
-        injected={false}
+        isConnected={false}
+        isBindable
         keyName={NODE_PROPERTY_KEY.LABEL}
         label="Label"
         value={XP.getNodeLabel(node)}
@@ -107,7 +113,8 @@ const NodeInspector = ({ node, onPropUpdate }) => {
         entityId={nodeId}
         key={`node_description_${nodeId}`}
         kind={NODE_PROPERTY_KIND.PROP}
-        injected={false}
+        isConnected={false}
+        isBindable
         keyName={NODE_PROPERTY_KEY.DESCRIPTION}
         label="Description"
         value={XP.getNodeDescription(node)}

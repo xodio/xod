@@ -90,6 +90,9 @@ const assocNodeIdToPins = node =>
 const mergePinDataFromPatch = R.curry((project, node) => {
   const type = XP.getNodeType(node);
 
+  const patch = R.view(XP.lensPatch(type), project);
+  const canBindToOutputs = XP.canBindToOutputs(patch);
+
   const boundValues = R.compose(
     R.map(R.applySpec({
       value: R.identity,
@@ -98,12 +101,26 @@ const mergePinDataFromPatch = R.curry((project, node) => {
   )(node);
 
   const pinDataFromPatch = R.compose(
+    R.map(
+      R.converge(
+        R.assoc('isBindable'),
+        [
+          R.either(
+            XP.isInputPin,
+            R.both(
+              XP.isOutputPin,
+              R.always(canBindToOutputs)
+            )
+          ),
+          R.identity,
+        ]
+      )
+    ),
     // TODO: add something like getPinsIndexedByKey to xod-project?
     // + see other 'indexBy's below
     R.indexBy(R.prop('key')),
-    XP.listPins,
-    R.view(XP.lensPatch(type))
-  )(project);
+    XP.listPins
+  )(patch);
 
   const merged = R.mergeWith(R.merge, pinDataFromPatch, boundValues);
 
