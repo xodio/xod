@@ -383,13 +383,15 @@ const createTPatches = def(
       const outputs = R.compose(
         R.map(R.applySpec({
           type: R.compose(R.prop(R.__, TYPES_MAP), Project.getPinType),
-          pinKey: Project.getPinKey,
+          pinKey: Project.getPinLabel,
           value: R.compose(Project.defaultValueOfType, Project.getPinType),
         })),
+        Project.normalizePinLabels,
         Project.listOutputPins
       )(patch);
       const inputs = R.compose(
-        R.map(R.applySpec({ pinKey: Project.getPinKey })),
+        R.map(R.applySpec({ pinKey: Project.getPinLabel })),
+        Project.normalizePinLabels,
         Project.listInputPins
       )(patch);
 
@@ -408,17 +410,57 @@ const createTPatches = def(
   )(project)
 );
 
+const getPinLabelsMap = def(
+  'getPinLabelsMap :: [Pin] -> Map PinKey PinLabel',
+  R.compose(
+    R.map(Project.getPinLabel),
+    R.indexBy(Project.getPinKey)
+  )
+);
+
+const getNodePinLabels = def(
+  'getNodePinLabels :: Node -> Project -> Map PinKey PinLabel',
+  R.compose(
+    explode,
+    R.map(R.compose(
+      getPinLabelsMap,
+      Project.normalizePinLabels
+    )),
+    Project.getNodePins
+  )
+);
+
+// TODO: Remove it when `Project.getBoundValue` will return default values
+/**
+ * In case when `getBoundValue` doesn't contain a bound value
+ * we have to fallback to default pin value.
+ */
+const getDefaultPinValue = def(
+  'getDefaultPinValue :: PinKey -> Node -> Project -> DataValue',
+  (pinKey, node, project) => R.compose(
+    explode,
+    R.map(R.compose(
+      Project.defaultValueOfType,
+      Project.getPinType
+    )),
+    R.chain(Project.getPinByKey(pinKey)),
+    Project.getPatchByNode(R.__, project)
+  )(node)
+);
+
 const getTNodeOutputs = def(
   'getTNodeOutputs :: Project -> PatchPath -> Node -> [TNodeOutput]',
   (project, entryPath, node) => {
     const nodeId = Project.getNodeId(node);
+    const nodePins = getNodePinLabels(node, project);
 
     return R.compose(
       R.values,
       R.mapObjIndexed((links, pinKey) => ({
         to: getLinksInputNodeIds(links),
-        pinKey,
-        value: Project.getBoundValue(pinKey, node).getOrElse(null),
+        pinKey: nodePins[pinKey],
+        value: Project.getBoundValue(pinKey, node)
+          .getOrElse(getDefaultPinValue(pinKey, node, project)),
       })),
       R.groupBy(Project.getLinkOutputPinKey),
       R.filter(Project.isLinkOutputNodeIdEquals(nodeId)),
@@ -428,10 +470,32 @@ const getTNodeOutputs = def(
   }
 );
 
+const getOutputPinLabelByLink = def(
+  'getOutputPinLabelByLink :: Project -> Patch -> Link -> PinLabel',
+  (project, patch, link) => {
+    const pinKey = Project.getLinkOutputPinKey(link);
+    return R.compose(
+      explode,
+      R.map(R.compose(
+        Project.getPinLabel,
+        R.head,
+        Project.normalizePinLabels,
+        R.of
+      )),
+      R.chain(Project.getPinByKey(pinKey)),
+      R.chain(Project.getPatchByNode(R.__, project)),
+      Project.getNodeById(R.__, patch),
+      Project.getLinkOutputNodeId
+    )(link);
+  }
+);
+
 const getTNodeInputs = def(
   'getTNodeInputs :: Project -> PatchPath -> [TPatch] -> Node -> [TNodeInput]',
   (project, entryPath, patches, node) => {
+    const patch = Project.getPatchByPathUnsafe(entryPath, project);
     const nodeId = Project.getNodeId(node);
+    const nodePins = getNodePinLabels(node, project);
 
     return R.compose(
       R.map(R.applySpec({
@@ -440,13 +504,12 @@ const getTNodeInputs = def(
           getPatchByNodeId(project, entryPath, patches),
           Project.getLinkOutputNodeId
         ),
-        pinKey: Project.getLinkInputPinKey,
-        fromPinKey: Project.getLinkOutputPinKey,
+        pinKey: R.compose(R.prop(R.__, nodePins), Project.getLinkInputPinKey),
+        fromPinKey: getOutputPinLabelByLink(project, patch),
       })),
       R.filter(Project.isLinkInputNodeIdEquals(nodeId)),
-      Project.listLinksByNode(node),
-      Project.getPatchByPathUnsafe
-    )(entryPath, project);
+      Project.listLinksByNode(node)
+    )(patch);
   }
 );
 
@@ -487,5 +550,9 @@ export const transformProject = def(
 
 export default def(
   'transpile :: Project -> PatchPath -> Either Error String',
-  R.compose(R.map(renderProject), transformProject(ARDUINO_IMPLS))
+  R.compose(
+    R.map(renderProject),
+    // R.tap(a => console.log(JSON.stringify(explode(a), null, 2))),
+    transformProject(ARDUINO_IMPLS)
+  )
 );

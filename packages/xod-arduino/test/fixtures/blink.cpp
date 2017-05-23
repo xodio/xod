@@ -266,12 +266,12 @@ namespace _program {
 struct Storage {
     State state;
     PinRef input_VAL;
-    PinRef input_PIN;
+    PinRef input_PORT;
 };
 
 enum Inputs : PinKey {
     VAL = offsetof(Storage, input_VAL),
-    PIN = offsetof(Storage, input_PIN)
+    PORT = offsetof(Storage, input_PORT)
 };
 
 enum Outputs : PinKey {
@@ -279,10 +279,10 @@ enum Outputs : PinKey {
 
 
 void evaluate(NodeId nid, State* state) {
-    const int pin = (int)getNumber(nid, Inputs::PIN);
+    const int pin = (int)getNumber(nid, Inputs::PORT);
     const bool val = getLogic(nid, Inputs::VAL);
 
-    if (isInputDirty(nid, Inputs::PIN)) {
+    if (isInputDirty(nid, Inputs::PORT)) {
         ::pinMode(pin, OUTPUT);
     }
 
@@ -297,14 +297,14 @@ void evaluate(NodeId nid, State* state) {
 
 struct Storage {
     State state;
-    PinRef input_A;
-    PinRef input_B;
+    PinRef input_IN_0;
+    PinRef input_IN_1;
     OutputPin<Number> output_OUT;
 };
 
 enum Inputs : PinKey {
-    A = offsetof(Storage, input_A),
-    B = offsetof(Storage, input_B)
+    IN_0 = offsetof(Storage, input_IN_0),
+    IN_1 = offsetof(Storage, input_IN_1)
 };
 
 enum Outputs : PinKey {
@@ -313,8 +313,8 @@ enum Outputs : PinKey {
 
 
 void evaluate(NodeId nid, State* state) {
-    const Number in1 = getNumber(nid, Inputs::A);
-    const Number in2 = getNumber(nid, Inputs::B);
+    const Number in1 = getNumber(nid, Inputs::IN_0);
+    const Number in2 = getNumber(nid, Inputs::IN_1);
     emitNumber(nid, Outputs::OUT, in1 * in2);
 }
 
@@ -407,21 +407,21 @@ void evaluate(NodeId nid, State* state) {
 
 struct Storage {
     State state;
-    PinRef input___in__;
-    OutputPin<Logic> output___out__;
+    PinRef input_IN;
+    OutputPin<Logic> output_OUT;
 };
 
 enum Inputs : PinKey {
-    __in__ = offsetof(Storage, input___in__)
+    IN = offsetof(Storage, input_IN)
 };
 
 enum Outputs : PinKey {
-    __out__ = offsetof(Storage, output___out__) | (0 << PIN_KEY_OFFSET_BITS)
+    OUT = offsetof(Storage, output_OUT) | (0 << PIN_KEY_OFFSET_BITS)
 };
 
 
 void evaluate(NodeId nid, State* state) {
-    emitLogic(nid, Outputs::__out__, getNumber(nid, Inputs::__in__));
+    emitLogic(nid, Outputs::OUT, getNumber(nid, Inputs::IN));
 }
 
   }}}
@@ -432,21 +432,21 @@ void evaluate(NodeId nid, State* state) {
 
 struct Storage {
     State state;
-    PinRef input___in__;
-    OutputPin<Number> output___out__;
+    PinRef input_IN;
+    OutputPin<Number> output_OUT;
 };
 
 enum Inputs : PinKey {
-    __in__ = offsetof(Storage, input___in__)
+    IN = offsetof(Storage, input_IN)
 };
 
 enum Outputs : PinKey {
-    __out__ = offsetof(Storage, output___out__) | (0 << PIN_KEY_OFFSET_BITS)
+    OUT = offsetof(Storage, output_OUT) | (0 << PIN_KEY_OFFSET_BITS)
 };
 
 
 void evaluate(NodeId nid, State* state) {
-    emitNumber(nid, Outputs::__out__, getLogic(nid, Inputs::__in__));
+    emitNumber(nid, Outputs::OUT, getLogic(nid, Inputs::IN));
 }
 
   }}}
@@ -488,8 +488,8 @@ namespace _program {
     NodeId links_0_OUT[] = { 2, NO_NODE };
     xod::math::multiply::Storage storage_0 = {
         { }, // state
-        { NodeId(3), xod::core::cast_boolean_to_number::Outputs::__out__ }, // input_A
-        { NodeId(3), xod::core::cast_boolean_to_number::Outputs::__out__ }, // input_B
+        { NodeId(3), xod::core::cast_boolean_to_number::Outputs::OUT }, // input_IN_0
+        { NodeId(3), xod::core::cast_boolean_to_number::Outputs::OUT }, // input_IN_1
         { 0, links_0_OUT } // output_OUT
     };
 
@@ -502,24 +502,24 @@ namespace _program {
         { false, links_1_OUT } // output_OUT
     };
 
-    NodeId links_2___out__[] = { 4, NO_NODE };
+    NodeId links_2_OUT[] = { 4, NO_NODE };
     xod::core::cast_number_to_boolean::Storage storage_2 = {
         { }, // state
-        { NodeId(0), xod::math::multiply::Outputs::OUT }, // input___in__
-        { false, links_2___out__ } // output___out__
+        { NodeId(0), xod::math::multiply::Outputs::OUT }, // input_IN
+        { false, links_2_OUT } // output_OUT
     };
 
-    NodeId links_3___out__[] = { 0, NO_NODE };
+    NodeId links_3_OUT[] = { 0, NO_NODE };
     xod::core::cast_boolean_to_number::Storage storage_3 = {
         { }, // state
-        { NodeId(1), xod::core::latch::Outputs::OUT }, // input___in__
-        { 0, links_3___out__ } // output___out__
+        { NodeId(1), xod::core::latch::Outputs::OUT }, // input_IN
+        { 0, links_3_OUT } // output_OUT
     };
 
     xod::core::digital_output::Storage storage_4 = {
         { }, // state
-        { NodeId(2), xod::core::cast_number_to_boolean::Outputs::__out__ }, // input_VAL
-        { NodeId(6), xod::core::constant_number::Outputs::VAL }, // input_PIN
+        { NodeId(2), xod::core::cast_number_to_boolean::Outputs::OUT }, // input_VAL
+        { NodeId(6), xod::core::constant_number::Outputs::VAL }, // input_PORT
     };
 
     NodeId links_5_TICK[] = { 1, NO_NODE };
