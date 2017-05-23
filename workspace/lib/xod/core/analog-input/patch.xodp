@@ -1,52 +1,52 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
-      "id": "B1retBvyb",
-      "type": "xod/patch-nodes/input-pulse",
-      "label": "UPD",
+      "boundValues": {},
       "description": "",
-      "position": {
-        "x": 10,
-        "y": 16
-      },
-      "boundValues": {}
-    },
-    {
-      "id": "B1zbKSDy-",
-      "type": "xod/patch-nodes/input-number",
+      "id": "BJuORNheZ",
       "label": "PORT",
-      "description": "",
-      "position": {
-        "x": 138,
-        "y": 16
-      },
-      "boundValues": {}
-    },
-    {
-      "id": "r1yGKrvyZ",
-      "type": "xod/patch-nodes/output-number",
-      "label": "ADC",
-      "description": "",
       "position": {
         "x": 10,
-        "y": 224
+        "y": 16
       },
-      "boundValues": {
-        "__in__": 0
-      }
+      "type": "xod/patch-nodes/input-number"
     },
     {
+      "boundValues": {},
       "description": "",
-      "id": "noNativeImpl",
+      "id": "H1vY0E2xb",
       "label": "",
       "position": {
-        "x": 100,
-        "y": 100
+        "x": 138,
+        "y": 120
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {
+        "__in__": ""
+      },
+      "description": "",
+      "id": "SyBtREhlW",
+      "label": "ADC",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "SyKd0E2x-",
+      "label": "UPD",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }

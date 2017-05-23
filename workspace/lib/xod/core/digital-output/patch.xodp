@@ -1,39 +1,50 @@
 {
+  "description": "",
   "links": [],
   "nodes": [
     {
+      "boundValues": {},
       "description": "",
+      "id": "B134j4neZ",
+      "label": "PIN",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "HJ6HsEngZ",
+      "label": "VAL",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rJf8o4ngZ",
+      "label": "PLS",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rkwUj42xb",
       "label": "",
       "position": {
-        "x": 100,
-        "y": 100
+        "x": 138,
+        "y": 120
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {},
-      "id": "noNativeImpl"
-    },
-    {
-      "type": "xod/patch-nodes/input-number",
-      "boundValues": {},
-      "position": {
-        "x": 0,
-        "y": 300
-      },
-      "label": "PIN",
-      "description": "Hardware pin",
-      "id": "pin"
-    },
-    {
-      "type": "xod/patch-nodes/input-boolean",
-      "boundValues": {},
-      "position": {
-        "x": 200,
-        "y": 300
-      },
-      "label": "VAL",
-      "description": "Value for output",
-      "id": "value"
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     }
-  ],
-  "description": "Constant value"
+  ]
 }
