@@ -13,9 +13,30 @@ import { def } from './types';
   * @typedef {(Pin|string)} PinOrKey
   */
 
+/**
+ * @private
+ * @function createPin
+ * @param {string} key
+ * @param {PIN_TYPE} type
+ * @param {PIN_DIRECTION} direction
+ * @returns {Pin}
+ */
+export const createPin = def(
+  'createPin :: PinKey -> DataType -> PinDirection -> Number -> PinLabel -> String -> Pin',
+  (key, type, direction, order, label, description) => ({
+    key,
+    type,
+    direction,
+    label,
+    description,
+    order,
+    value: Utils.defaultValueOfType(type), // TODO: support 'custom' default values
+  })
+);
+
  // =============================================================================
  //
- // Pin
+ // Getters
  //
  // =============================================================================
 
@@ -124,23 +145,85 @@ export const isTerminalPin = def(
   )
 );
 
+// =============================================================================
+//
+// Setters
+// Only for private using in this module, cause Pins is a read-only entity.
+// Don't export them!
+//
+// =============================================================================
+
+const setPinLabel = def(
+  'setPinLabel :: PinLabel -> Pin -> Pin',
+  R.assoc('label')
+);
+
+// =============================================================================
+//
+// Utils
+//
+// =============================================================================
+
+const isPinLabelEmpty = def(
+  'isPinLabelEmpty :: Pin -> Boolean',
+  R.compose(
+    R.isEmpty,
+    getPinLabel
+  )
+);
+
 /**
- * @private
- * @function createPin
- * @param {string} key
- * @param {PIN_TYPE} type
- * @param {PIN_DIRECTION} direction
- * @returns {Pin}
+ * Returns a default Pin label by direction.
+ * Useful when label is empty, but we need to name
+ * a label somehow. So output Pin with empty label
+ * becomes a Pin with label "OUT".
  */
-export const createPin = def(
-  'createPin :: PinKey -> DataType -> PinDirection -> Number -> PinLabel -> String -> Pin',
-  (key, type, direction, order, label, description) => ({
-    key,
-    type,
-    direction,
-    label,
-    description,
-    order,
-    value: Utils.defaultValueOfType(type), // TODO: support 'custom' default values
-  })
+const getPinLabelByDirection = def(
+  'getPinLabelByDirection :: Pin -> PinLabel',
+  R.compose(
+    R.prop(R.__, CONST.PIN_LABEL_BY_DIRECTION),
+    getPinDirection
+  )
+);
+
+/**
+ * Returns a list of Pins with uniqalized Pin Labels.
+ * It adds a suffix "_N" (where N is a count of equal labels)
+ * to the label of each Pin.
+ * Also, if Pin has an empty label it became "IN" or "OUT"
+ * in dependency of its direction.
+ * E.G., Pin labels will be conerted into:
+ * - "A" -> "A_0"
+ * - "A" -> "A_1"
+ * - "B" -> "B_0"
+ * - "B" -> "B_1"
+ * - "C" -> "C"
+ * - "" (input) -> "IN_0"
+ * - "" (input) -> "IN_1"
+ * - "" (output) -> "OUT_0"
+ */
+export const normalizePinLabels = def(
+  'normalizePinLabels :: [Pin] -> [Pin]',
+  R.compose(
+    R.unnest,
+    R.values,
+    R.map(
+      R.when(
+        R.compose(
+          R.gt(R.__, 1),
+          R.length
+        ),
+        R.addIndex(R.map)(
+          (pin, idx) => setPinLabel(`${getPinLabel(pin)}_${idx}`, pin)
+        )
+      )
+    ),
+    R.groupBy(getPinLabel),
+    R.map(
+      R.when(
+        isPinLabelEmpty,
+        pin => setPinLabel(getPinLabelByDirection(pin), pin)
+      )
+    )
+  )
 );

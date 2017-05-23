@@ -221,7 +221,7 @@ export const assocInitialPinValues = def(
  * @returns {Object.<PinKey, PinValue>}
  */
 export const getAllBoundValues = def(
-  'getAllBoundValues :: Node -> StrMap DataValue',
+  'getAllBoundValues :: Node -> Map PinKey DataValue',
   R.prop('boundValues')
 );
 
