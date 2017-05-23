@@ -2,7 +2,7 @@
   "nodes": [
     {
       "id": "HJdO9HwJ-",
-      "type": "xod/built-in/input-string",
+      "type": "xod/patch-nodes/input-string",
       "label": "LINE",
       "description": "",
       "position": {
@@ -13,7 +13,7 @@
     },
     {
       "id": "S1n95SDJb",
-      "type": "xod/built-in/input-pulse",
+      "type": "xod/patch-nodes/input-pulse",
       "label": "DUMP",
       "description": "",
       "position": {
@@ -30,7 +30,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/built-in/not-implemented-in-xod",
+      "type": "xod/patch-nodes/not-implemented-in-xod",
       "boundValues": {}
     }
   ],
