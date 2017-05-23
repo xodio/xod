@@ -2,7 +2,7 @@
   "nodes": [
     {
       "id": "BkqLCOSw1W",
-      "type": "xod/built-in/output-number",
+      "type": "xod/patch-nodes/output-number",
       "label": "FRAC",
       "description": "",
       "position": {
@@ -15,7 +15,7 @@
     },
     {
       "id": "BytUCdHD1-",
-      "type": "xod/built-in/input-number",
+      "type": "xod/patch-nodes/input-number",
       "label": "Y",
       "description": "",
       "position": {
@@ -26,7 +26,7 @@
     },
     {
       "id": "SkdIRuBD1b",
-      "type": "xod/built-in/input-number",
+      "type": "xod/patch-nodes/input-number",
       "label": "X",
       "description": "",
       "position": {
@@ -43,7 +43,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/built-in/not-implemented-in-xod",
+      "type": "xod/patch-nodes/not-implemented-in-xod",
       "boundValues": {}
     }
   ],

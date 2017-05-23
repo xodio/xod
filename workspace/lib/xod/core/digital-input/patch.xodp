@@ -2,7 +2,7 @@
   "nodes": [
     {
       "id": "B1ZUA_Hv1W",
-      "type": "xod/built-in/input-number",
+      "type": "xod/patch-nodes/input-number",
       "label": "PORT",
       "description": "",
       "position": {
@@ -13,7 +13,7 @@
     },
     {
       "id": "B1gI0urv1W",
-      "type": "xod/built-in/output-boolean",
+      "type": "xod/patch-nodes/output-boolean",
       "label": "SIG",
       "description": "",
       "position": {
@@ -26,7 +26,7 @@
     },
     {
       "id": "SyLCdSwJZ",
-      "type": "xod/built-in/input-pulse",
+      "type": "xod/patch-nodes/input-pulse",
       "label": "UPD",
       "description": "",
       "position": {
@@ -43,7 +43,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/built-in/not-implemented-in-xod",
+      "type": "xod/patch-nodes/not-implemented-in-xod",
       "boundValues": {}
     }
   ],

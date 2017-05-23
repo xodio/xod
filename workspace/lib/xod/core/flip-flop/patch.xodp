@@ -2,7 +2,7 @@
   "nodes": [
     {
       "id": "B1RU0OrDkb",
-      "type": "xod/built-in/input-pulse",
+      "type": "xod/patch-nodes/input-pulse",
       "label": "RST",
       "description": "",
       "position": {
@@ -13,7 +13,7 @@
     },
     {
       "id": "Bkh8A_Sv1-",
-      "type": "xod/built-in/input-pulse",
+      "type": "xod/patch-nodes/input-pulse",
       "label": "SET",
       "description": "",
       "position": {
@@ -24,7 +24,7 @@
     },
     {
       "id": "HkyxURuSPyW",
-      "type": "xod/built-in/output-boolean",
+      "type": "xod/patch-nodes/output-boolean",
       "label": "MEM",
       "description": "",
       "position": {
@@ -37,7 +37,7 @@
     },
     {
       "id": "HyjUA_HvkW",
-      "type": "xod/built-in/output-pulse",
+      "type": "xod/patch-nodes/output-pulse",
       "label": "CHNG",
       "description": "",
       "position": {
@@ -50,7 +50,7 @@
     },
     {
       "id": "ryTIROHwkW",
-      "type": "xod/built-in/input-pulse",
+      "type": "xod/patch-nodes/input-pulse",
       "label": "TGL",
       "description": "",
       "position": {
@@ -67,7 +67,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/built-in/not-implemented-in-xod",
+      "type": "xod/patch-nodes/not-implemented-in-xod",
       "boundValues": {}
     }
   ],

@@ -2,7 +2,7 @@
   "nodes": [
     {
       "id": "ByHmL0uHPk-",
-      "type": "xod/built-in/output-pulse",
+      "type": "xod/patch-nodes/output-pulse",
       "label": "ANY",
       "description": "",
       "position": {
@@ -15,7 +15,7 @@
     },
     {
       "id": "ByU7LRuSPkW",
-      "type": "xod/built-in/input-pulse",
+      "type": "xod/patch-nodes/input-pulse",
       "label": "P2",
       "description": "",
       "position": {
@@ -26,7 +26,7 @@
     },
     {
       "id": "ryv7IRdSP1b",
-      "type": "xod/built-in/input-pulse",
+      "type": "xod/patch-nodes/input-pulse",
       "label": "P1",
       "description": "",
       "position": {
@@ -43,7 +43,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/built-in/not-implemented-in-xod",
+      "type": "xod/patch-nodes/not-implemented-in-xod",
       "boundValues": {}
     }
   ],

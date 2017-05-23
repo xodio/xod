@@ -2,7 +2,7 @@
   "nodes": [
     {
       "id": "By8H5rDkZ",
-      "type": "xod/built-in/output-pulse",
+      "type": "xod/patch-nodes/output-pulse",
       "label": "FALL",
       "description": "",
       "position": {
@@ -15,7 +15,7 @@
     },
     {
       "id": "rJxr9rDJZ",
-      "type": "xod/built-in/output-pulse",
+      "type": "xod/patch-nodes/output-pulse",
       "label": "RISE",
       "description": "",
       "position": {
@@ -28,7 +28,7 @@
     },
     {
       "id": "rkuEqBD1W",
-      "type": "xod/built-in/input-number",
+      "type": "xod/patch-nodes/input-number",
       "label": "PORT",
       "description": "",
       "position": {
@@ -45,7 +45,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/built-in/not-implemented-in-xod",
+      "type": "xod/patch-nodes/not-implemented-in-xod",
       "boundValues": {}
     }
   ],

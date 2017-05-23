@@ -2,7 +2,7 @@
   "nodes": [
     {
       "id": "BJnQUR_BwyZ",
-      "type": "xod/built-in/input-number",
+      "type": "xod/patch-nodes/input-number",
       "label": "X",
       "description": "",
       "position": {
@@ -13,7 +13,7 @@
     },
     {
       "id": "HkqmLAOrD1W",
-      "type": "xod/built-in/input-number",
+      "type": "xod/patch-nodes/input-number",
       "label": "Y",
       "description": "",
       "position": {
@@ -24,7 +24,7 @@
     },
     {
       "id": "SyomIRurDJ-",
-      "type": "xod/built-in/output-number",
+      "type": "xod/patch-nodes/output-number",
       "label": "SUM",
       "description": "",
       "position": {
@@ -43,7 +43,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/built-in/not-implemented-in-xod",
+      "type": "xod/patch-nodes/not-implemented-in-xod",
       "boundValues": {}
     }
   ],

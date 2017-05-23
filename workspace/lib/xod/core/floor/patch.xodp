@@ -2,7 +2,7 @@
   "nodes": [
     {
       "id": "SklxICdHP1b",
-      "type": "xod/built-in/input-number",
+      "type": "xod/patch-nodes/input-number",
       "label": "X",
       "description": "",
       "position": {
@@ -13,7 +13,7 @@
     },
     {
       "id": "rkWeUCdBDkZ",
-      "type": "xod/built-in/output-number",
+      "type": "xod/patch-nodes/output-number",
       "label": "FLR",
       "description": "",
       "position": {
@@ -32,7 +32,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/built-in/not-implemented-in-xod",
+      "type": "xod/patch-nodes/not-implemented-in-xod",
       "boundValues": {}
     }
   ],
