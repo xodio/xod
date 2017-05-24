@@ -585,7 +585,11 @@ const createTNodes = def(
   )(entryPath, project)
 );
 
-// Transforms Project into TProject
+/**
+ * Transforms Project into TProject.
+ * TProject is an object, that ready to be passed into renderer (handlebars)
+ * and it has a ready-to-use values, nothing needed to compute anymore.
+ */
 export const transformProject = def(
   'transformProject :: [Source] -> Project -> PatchPath -> Either Error TProject',
   (impls, project, path) => R.compose(

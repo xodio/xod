@@ -201,6 +201,11 @@ const getPinLabelByDirection = def(
  * - "" (input) -> "IN_0"
  * - "" (input) -> "IN_1"
  * - "" (output) -> "OUT_0"
+ *
+ * This function is useful for transpilers, that want to use
+ * normalized pin labels instead of shortIds (real pinKeys,
+ * that refers to NodeIds) and in the clients to show which
+ * pinKeys user can use in the native implementations.
  */
 export const normalizePinLabels = def(
   'normalizePinLabels :: [Pin] -> [Pin]',
