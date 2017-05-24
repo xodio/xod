@@ -6,7 +6,7 @@
       "boundValues": {},
       "description": "",
       "id": "B134j4neZ",
-      "label": "PIN",
+      "label": "PORT",
       "position": {
         "x": 10,
         "y": 16
@@ -17,7 +17,7 @@
       "boundValues": {},
       "description": "",
       "id": "HJ6HsEngZ",
-      "label": "VAL",
+      "label": "SIG",
       "position": {
         "x": 138,
         "y": 16
@@ -28,7 +28,7 @@
       "boundValues": {},
       "description": "",
       "id": "rJf8o4ngZ",
-      "label": "PLS",
+      "label": "UPD",
       "position": {
         "x": 266,
         "y": 16

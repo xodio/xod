@@ -5,5 +5,3 @@ struct State {};
 void evaluate(NodeId nid, State* state) {
   reemitNumber(nid, Outputs::VAL);
 }
-
-}}}

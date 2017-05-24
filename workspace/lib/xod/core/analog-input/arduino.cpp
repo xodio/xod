@@ -5,10 +5,10 @@ struct State {};
 void evaluate(NodeId nid, State* state) {
   const int pin = (int)getNumber(nid, Inputs::PORT);
   const bool val = getLogic(nid, Inputs::UPD);
-  const float pinValue = analogRead(A4) / 1023.00;
+  const Number pinValue = analogRead(pin) / 1023.00;
 
   if (isInputDirty(nid, Inputs::PORT)) {
-      ::pinMode(pin, OUTPUT);
+      ::pinMode(pin, INPUT);
   }
 
   emitNumber(nid, Outputs::VAL, pinValue);
