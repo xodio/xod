@@ -187,12 +187,12 @@ const getPinLabelByDirection = def(
 );
 
 /**
- * Returns a list of Pins with uniqalized Pin Labels.
- * It adds a suffix "_N" (where N is a count of equal labels)
+ * Returns a list of Pins with unique Pin Labels.
+ * It adds a suffix "_N" (where N is a counter of equal labels)
  * to the label of each Pin.
  * Also, if Pin has an empty label it became "IN" or "OUT"
  * in dependency of its direction.
- * E.G., Pin labels will be conerted into:
+ * E.G., Pin labels will be converted into:
  * - "A" -> "A_0"
  * - "A" -> "A_1"
  * - "B" -> "B_0"
