@@ -1,0 +1,411 @@
+{
+  "name": "pot-led",
+  "authors": [
+    "Amperka team"
+  ],
+  "license": "",
+  "version": "",
+  "description": "",
+  "patches": {
+    "@/main": {
+      "description": "",
+      "impls": {},
+      "links": {
+        "Hk0AcB2gb": {
+          "id": "Hk0AcB2gb",
+          "input": {
+            "nodeId": "SkIA9rhgZ",
+            "pinKey": "HJ6HsEngZ"
+          },
+          "output": {
+            "nodeId": "B1ypFr3eb",
+            "pinKey": "B19RYS3lW"
+          }
+        },
+        "Hy61or2g-": {
+          "id": "Hy61or2g-",
+          "input": {
+            "nodeId": "SkIA9rhgZ",
+            "pinKey": "rJf8o4ngZ"
+          },
+          "output": {
+            "nodeId": "BJ31JSng-",
+            "pinKey": "HJU8CE2lW"
+          }
+        },
+        "Sy_F5rheW": {
+          "id": "Sy_F5rheW",
+          "input": {
+            "nodeId": "B1ypFr3eb",
+            "pinKey": "rJg00Nhe-"
+          },
+          "output": {
+            "nodeId": "rycbkr3gW",
+            "pinKey": "SyBtREhlW"
+          }
+        },
+        "SymfkH2xZ": {
+          "id": "SymfkH2xZ",
+          "input": {
+            "nodeId": "rycbkr3gW",
+            "pinKey": "SyKd0E2x-"
+          },
+          "output": {
+            "nodeId": "BJ31JSng-",
+            "pinKey": "HJU8CE2lW"
+          }
+        }
+      },
+      "nodes": {
+        "B1ypFr3eb": {
+          "boundValues": {
+            "B19RYS3lW": false,
+            "HJbACN3gb": 0.33,
+            "rJg00Nhe-": 0
+          },
+          "description": "",
+          "id": "B1ypFr3eb",
+          "label": "",
+          "position": {
+            "x": 138,
+            "y": 224
+          },
+          "type": "xod/core/greater"
+        },
+        "BJ31JSng-": {
+          "boundValues": {
+            "B13SCNhl-": 0.2,
+            "BJJICN2lW": false
+          },
+          "description": "",
+          "id": "BJ31JSng-",
+          "label": "",
+          "position": {
+            "x": 138,
+            "y": 16
+          },
+          "type": "xod/core/clock"
+        },
+        "SkIA9rhgZ": {
+          "boundValues": {
+            "B134j4neZ": 7,
+            "HJ6HsEngZ": false,
+            "rJf8o4ngZ": false
+          },
+          "description": "",
+          "id": "SkIA9rhgZ",
+          "label": "",
+          "position": {
+            "x": 266,
+            "y": 328
+          },
+          "type": "xod/core/digital-output"
+        },
+        "rycbkr3gW": {
+          "boundValues": {
+            "BJuORNheZ": 18,
+            "SyKd0E2x-": false
+          },
+          "description": "",
+          "id": "rycbkr3gW",
+          "label": "",
+          "position": {
+            "x": 10,
+            "y": 120
+          },
+          "type": "xod/core/analog-input"
+        }
+      },
+      "path": "@/main"
+    },
+    "xod/core/digital-output": {
+      "description": "",
+      "impls": {
+        "arduino": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    const int pin = (int)getNumber(nid, Inputs::PORT);\n    const bool val = getLogic(nid, Inputs::SIG);\n\n    if (isInputDirty(nid, Inputs::PORT)) {\n        ::pinMode(pin, OUTPUT);\n    }\n\n    ::digitalWrite(pin, val);\n}\n",
+        "espruino": "\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
+      },
+      "links": {},
+      "nodes": {
+        "B134j4neZ": {
+          "boundValues": {},
+          "description": "",
+          "id": "B134j4neZ",
+          "label": "PORT",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "HJ6HsEngZ": {
+          "boundValues": {},
+          "description": "",
+          "id": "HJ6HsEngZ",
+          "label": "SIG",
+          "position": {
+            "x": 138,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-boolean"
+        },
+        "rJf8o4ngZ": {
+          "boundValues": {},
+          "description": "",
+          "id": "rJf8o4ngZ",
+          "label": "UPD",
+          "position": {
+            "x": 266,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        },
+        "rkwUj42xb": {
+          "boundValues": {},
+          "description": "",
+          "id": "rkwUj42xb",
+          "label": "",
+          "position": {
+            "x": 138,
+            "y": 120
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "xod/core/digital-output"
+    },
+    "xod/core/analog-input": {
+      "description": "",
+      "impls": {
+        "arduino": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n  const int pin = (int)getNumber(nid, Inputs::PORT);\n  const bool val = getLogic(nid, Inputs::UPD);\n  const Number pinValue = analogRead(pin) / 1023.00;\n\n  if (isInputDirty(nid, Inputs::PORT)) {\n      ::pinMode(pin, INPUT);\n  }\n\n  emitNumber(nid, Outputs::VAL, pinValue);\n}\n"
+      },
+      "links": {},
+      "nodes": {
+        "BJuORNheZ": {
+          "boundValues": {},
+          "description": "",
+          "id": "BJuORNheZ",
+          "label": "PORT",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "H1vY0E2xb": {
+          "boundValues": {},
+          "description": "",
+          "id": "H1vY0E2xb",
+          "label": "",
+          "position": {
+            "x": 138,
+            "y": 120
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "SyBtREhlW": {
+          "boundValues": {
+            "__in__": ""
+          },
+          "description": "",
+          "id": "SyBtREhlW",
+          "label": "VAL",
+          "position": {
+            "x": 138,
+            "y": 224
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "SyKd0E2x-": {
+          "boundValues": {},
+          "description": "",
+          "id": "SyKd0E2x-",
+          "label": "UPD",
+          "position": {
+            "x": 266,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        }
+      },
+      "path": "xod/core/analog-input"
+    },
+    "xod/core/constant-logic": {
+      "description": "Constant value",
+      "impls": {
+        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    reemitLogic(nid, Outputs::VAL);\n}\n"
+      },
+      "links": {},
+      "nodes": {
+        "VAL": {
+          "boundValues": {},
+          "description": "Constant value",
+          "id": "VAL",
+          "label": "VAL",
+          "position": {
+            "x": 0,
+            "y": 300
+          },
+          "type": "xod/patch-nodes/output-boolean"
+        },
+        "noNativeImpl": {
+          "boundValues": {},
+          "description": "",
+          "id": "noNativeImpl",
+          "label": "",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "xod/core/constant-logic"
+    },
+    "xod/core/constant-number": {
+      "description": "",
+      "impls": {
+        "cpp": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n  reemitNumber(nid, Outputs::VAL);\n}\n"
+      },
+      "links": {},
+      "nodes": {
+        "B1x2RV3eZ": {
+          "boundValues": {
+            "__in__": ""
+          },
+          "description": "",
+          "id": "B1x2RV3eZ",
+          "label": "VAL",
+          "position": {
+            "x": 10,
+            "y": 120
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "H1PnRN2lW": {
+          "boundValues": {},
+          "description": "",
+          "id": "H1PnRN2lW",
+          "label": "",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "xod/core/constant-number"
+    },
+    "xod/core/greater": {
+      "description": "",
+      "impls": {
+        "cpp": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n  double lhs = getNumber(nid, Inputs::LHS);\n  double rhs = getNumber(nid, Inputs::RHS);\n  bool result = (lhs > rhs);\n\n  emitLogic(nid, Outputs::GT, result);\n}\n"
+      },
+      "links": {},
+      "nodes": {
+        "B19RYS3lW": {
+          "boundValues": {
+            "__in__": ""
+          },
+          "description": "",
+          "id": "B19RYS3lW",
+          "label": "GT",
+          "position": {
+            "x": 138,
+            "y": 224
+          },
+          "type": "xod/patch-nodes/output-boolean"
+        },
+        "HJbACN3gb": {
+          "boundValues": {},
+          "description": "",
+          "id": "HJbACN3gb",
+          "label": "RHS",
+          "position": {
+            "x": 266,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "HyC0AE3eZ": {
+          "boundValues": {},
+          "description": "",
+          "id": "HyC0AE3eZ",
+          "label": "",
+          "position": {
+            "x": 138,
+            "y": 120
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "rJg00Nhe-": {
+          "boundValues": {},
+          "description": "",
+          "id": "rJg00Nhe-",
+          "label": "LHS",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "xod/core/greater"
+    },
+    "xod/core/clock": {
+      "description": "",
+      "impls": {
+        "cpp": "struct State {\n  TimeMs nextTrig;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    TimeMs tNow = transactionTime();\n    TimeMs dt = getNumber(nid, Inputs::IVAL) * 1000;\n    TimeMs tNext = tNow + dt;\n\n    if (isInputDirty(nid, Inputs::IVAL)) {\n        if (dt == 0) {\n            state->nextTrig = 0;\n            clearTimeout(nid);\n        } else if (state->nextTrig < tNow || state->nextTrig > tNext) {\n            state->nextTrig = tNext;\n            setTimeout(nid, dt);\n        }\n    } else {\n        // It was a scheduled tick\n        emitLogic(nid, Outputs::TICK, 1);\n        state->nextTrig = tNext;\n        setTimeout(nid, dt);\n    }\n}\n"
+      },
+      "links": {},
+      "nodes": {
+        "B13SCNhl-": {
+          "boundValues": {},
+          "description": "",
+          "id": "B13SCNhl-",
+          "label": "IVAL",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "BJJICN2lW": {
+          "boundValues": {},
+          "description": "",
+          "id": "BJJICN2lW",
+          "label": "RST",
+          "position": {
+            "x": 266,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        },
+        "BJKLAE3xW": {
+          "boundValues": {},
+          "description": "",
+          "id": "BJKLAE3xW",
+          "label": "",
+          "position": {
+            "x": 138,
+            "y": 120
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "HJU8CE2lW": {
+          "boundValues": {
+            "__in__": ""
+          },
+          "description": "",
+          "id": "HJU8CE2lW",
+          "label": "TICK",
+          "position": {
+            "x": 138,
+            "y": 224
+          },
+          "type": "xod/patch-nodes/output-pulse"
+        }
+      },
+      "path": "xod/core/clock"
+    }
+  }
+}
