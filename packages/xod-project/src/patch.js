@@ -564,6 +564,31 @@ export const dissocNode = def(
 //
 // =============================================================================
 
+/**
+ * Tells if a given patch is an 'effect patch'.
+ *
+ * An effect patch is a patch that performs some side-effects.
+ * Effect patches always have at least one pulse pin.
+ */
+export const isEffectPatch = def(
+  'isEffectPatch :: Patch -> Boolean',
+  R.compose(
+    R.contains(CONST.PIN_TYPE.PULSE),
+    R.map(Pin.getPinType),
+    listPins
+  )
+);
+
+/**
+ * Tells if a given patch is a 'functional patch'.
+ *
+ * A 'functional patch' is the opposite of an 'effect patch'.
+ * It performs only pure data transformations, and the
+ * value of it's outputs is determined only by it's inputs.
+ * Functional patches never have pulse pins.
+ */
+export const isFunctionalPatch = R.complement(isEffectPatch);
+
 export const canBindToOutputs = def(
   'canBindToOutputs :: Patch -> Boolean',
   R.either(
@@ -574,11 +599,7 @@ export const canBindToOutputs = def(
       ]),
       getPatchPath
     ),
-    R.compose( // or it's an effect patch
-      R.contains(CONST.PIN_TYPE.PULSE),
-      R.map(Pin.getPinType),
-      listPins
-    )
+    isEffectPatch
   )
 );
 

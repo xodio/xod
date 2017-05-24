@@ -790,6 +790,58 @@ describe('Patch', () => {
       });
     });
 
+    describe('isEffectPatch', () => {
+      it('should return true for a patch with pulse inputs', () => {
+        const someLocalPatch = Helper.defaultizePatch({
+          path: PPU.getLocalPath('my-patch'),
+          nodes: {
+            plsin: {
+              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.PULSE),
+            },
+          },
+        });
+        expect(Patch.isEffectPatch(someLocalPatch)).to.be.true();
+
+        const terminalPulse = Helper.defaultizePatch({
+          path: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.PULSE),
+        });
+        expect(Patch.canBindToOutputs(terminalPulse)).to.be.true();
+      });
+      it('should return true for a patch with pulse outputs', () => {
+        const someLocalPatch = Helper.defaultizePatch({
+          path: PPU.getLocalPath('my-patch'),
+          nodes: {
+            plsout: { type: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.PULSE) },
+          },
+        });
+        expect(Patch.isEffectPatch(someLocalPatch)).to.be.true();
+
+        const terminalPulse = Helper.defaultizePatch({
+          path: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.PULSE),
+        });
+        expect(Patch.canBindToOutputs(terminalPulse)).to.be.true();
+      });
+      it('should return false for a patch without pulse pins', () => {
+        const noPinsAtAll = Helper.defaultizePatch({
+          path: PPU.getLocalPath('my-patch'),
+        });
+        expect(Patch.isEffectPatch(noPinsAtAll)).to.be.false();
+
+        const withPins = Helper.defaultizePatch({
+          path: PPU.getLocalPath('my-patch'),
+          nodes: {
+            someInputNode: {
+              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.NUMBER),
+            },
+            someOutputNode: {
+              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.BOOLEAN),
+            },
+          },
+        });
+        expect(Patch.isEffectPatch(withPins)).to.be.false();
+      });
+    });
+
     describe('canBindToOutputs', () => {
       it('should return true for a patch with pulse inputs', () => {
         const patch = Helper.defaultizePatch({
