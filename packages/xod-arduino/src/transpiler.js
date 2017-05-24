@@ -7,9 +7,7 @@ import { def } from './types';
 import { renderProject } from './templates';
 
 const ARDUINO_IMPLS = ['cpp', 'arduino'];
-const CONSTANT_VALUE_PINKEY = 'VAL'; // pinKey of output pin of constant patch, that curried and linked
 const CONST_NODETYPES = {
-  string: 'xod/core/constant-string',
   number: 'xod/core/constant-number',
   boolean: 'xod/core/constant-logic',
   pulse: 'xod/core/constant-logic',
@@ -142,6 +140,32 @@ const getMapOfNodePinValues = def(
   )
 );
 
+const getMapOfNodePinsWithLinks = def(
+  'getMapOfNodePinsWithLinks :: [Node] -> [Link] -> Map NodeId [PinKey]',
+  (nodes, links) => R.compose(
+    R.map(R.compose(
+      R.map(Project.getLinkInputPinKey),
+      R.filter(R.__, links),
+      Project.isLinkInputNodeIdEquals,
+      Project.getNodeId
+    )),
+    R.indexBy(Project.getNodeId)
+  )(nodes)
+);
+
+const getMapOfNodeOutputPins = def(
+  'getMapOfNodeOutputPins :: [Node] -> Project -> Map NodeId [PinKey]',
+  (nodes, project) => R.compose(
+    R.map(R.compose(
+      R.map(Project.getPinKey),
+      Project.listOutputPins,
+      Project.getPatchByPathUnsafe(R.__, project),
+      Project.getNodeType
+    )),
+    R.indexBy(Project.getNodeId)
+  )(nodes)
+);
+
 const getMapOfNodeTypes = def(
   'getMapOfNodeTypes :: [Node] -> Map NodeId PatchPath',
   R.compose(
@@ -162,6 +186,23 @@ const getMapOfNodePinTypes = def(
     )(patchPath),
     getMapOfNodeTypes(curriedNodes)
   )
+);
+
+const getMapOfPathsToPinKeys = def(
+  'getMapOfPathsToPinKeys :: Map DataType PatchPath -> Project -> Map PatchPath PinKey',
+  (constantPaths, project) => R.compose(
+    R.fromPairs,
+    R.map(constPath => R.compose(
+        constPinKey => [constPath, constPinKey],
+        Project.getPinKey,
+        R.head,
+        Project.listOutputPins,
+        Project.getPatchByPathUnsafe(R.__, project)
+      )(constPath)
+    ),
+    R.uniq,
+    R.values
+  )(constantPaths)
 );
 
 // :: { NodeId: { PinKey: PinType } } -> { NodeId: { PinKey: PatchPath } }
@@ -204,14 +245,15 @@ const assocPatchesToProject = def(
 );
 
 const createNodesWithBoundValues = def(
-  'createNodesWithBoundValues :: Map NodeId (Map PinKey DataValue) -> Map NodeId (Map PinKey PatchPath) -> Map NodeId (Map PinKey Node)',
-  (mapOfPinValues, mapOfPinPaths) => R.mapObjIndexed(
+  'createNodesWithBoundValues :: Map NodeId (Map PinKey DataValue) -> Map NodeId (Map PinKey PatchPath) -> Map PatchPath PinKey -> Map NodeId (Map PinKey Node)',
+  (mapOfPinValues, mapOfPinPaths, mapOfPinKeys) => R.mapObjIndexed(
     (pinsData, nodeId) => R.mapObjIndexed(
       (pinValue, pinKey) => {
         const type = R.path([nodeId, pinKey], mapOfPinPaths);
+        const constPinKey = R.prop(type, mapOfPinKeys);
 
         return R.compose(
-          Project.setBoundValue(CONSTANT_VALUE_PINKEY, pinValue),
+          Project.setBoundValue(constPinKey, pinValue),
           Project.createNode({ x: 0, y: 0 })
         )(type);
       },
@@ -250,16 +292,18 @@ const assocUncurriedNodesToPatch = def(
 
 // :: { NodeId: { PinKey: Node } } -> { NodeId: { PinKey: Link } }
 const createLinksFromCurriedPins = def(
-  'createLinksFromCurriedPins :: Map NodeId (Map PinKey Node) -> Map NodeId (Map PinKey Link)',
-  R.mapObjIndexed(
+  'createLinksFromCurriedPins :: Map NodeId (Map PinKey Node) -> Map PinKey PinLabel -> Map NodeId (Map PinKey Link)',
+  (mapOfPinNodes, mapOfPinKeys) => R.mapObjIndexed(
     (pinsData, nodeId) => R.mapObjIndexed(
       (node, pinKey) => {
-        const newNodeId = Project.getNodeId(node);
-        return Project.createLink(pinKey, nodeId, CONSTANT_VALUE_PINKEY, newNodeId);
+        const constNodeId = Project.getNodeId(node);
+        const constNodeType = Project.getNodeType(node);
+
+        return Project.createLink(pinKey, nodeId, mapOfPinKeys[constNodeType], constNodeId);
       },
       pinsData
     )
-  )
+  )(mapOfPinNodes)
 );
 
 const assocNodesToPatch = def(
@@ -335,13 +379,27 @@ const placeConstNodesAndLinks = def(
   (flatProject, path, origProject) => {
     const entryPointPatch = Project.getPatchByPathUnsafe(path, flatProject);
     const entryPointNodes = Project.listNodes(entryPointPatch);
+    const entryPointLinks = Project.listLinks(entryPointPatch);
     const nodesWithCurriedPins = R.filter(isNodeWithCurriedPins, entryPointNodes);
 
-    const nodePinValues = getMapOfNodePinValues(entryPointNodes);
-    const pinPaths = getMapOfPinPaths(nodePinValues, nodesWithCurriedPins, flatProject);
+    const occupiedNodePins = getMapOfNodePinsWithLinks(entryPointNodes, entryPointLinks);
+    const outputNodePins = getMapOfNodeOutputPins(entryPointNodes, origProject);
+    const pinsToOmit = R.mergeWith(R.concat, occupiedNodePins, outputNodePins);
+    const nodePinValues = R.compose(
+      R.mapObjIndexed(
+        (pins, nodeId) => R.omit(
+          R.propOr([], nodeId, pinsToOmit),
+          pins
+        )
+      ),
+      getMapOfNodePinValues
+    )(entryPointNodes);
 
-    const newConstNodes = createNodesWithBoundValues(nodePinValues, pinPaths);
-    const newLinks = createLinksFromCurriedPins(newConstNodes);
+    const pinPaths = getMapOfPinPaths(nodePinValues, nodesWithCurriedPins, flatProject);
+    const constPinKeys = getMapOfPathsToPinKeys(CONST_NODETYPES, origProject);
+
+    const newConstNodes = createNodesWithBoundValues(nodePinValues, pinPaths, constPinKeys);
+    const newLinks = createLinksFromCurriedPins(newConstNodes, constPinKeys);
     const newPatch = updatePatch(newLinks, newConstNodes, nodePinValues, entryPointPatch);
 
     return R.compose(
@@ -552,7 +610,6 @@ export default def(
   'transpile :: Project -> PatchPath -> Either Error String',
   R.compose(
     R.map(renderProject),
-    // R.tap(a => console.log(JSON.stringify(explode(a), null, 2))),
     transformProject(ARDUINO_IMPLS)
   )
 );
