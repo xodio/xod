@@ -103,6 +103,17 @@ export const PIN_DIRECTION = {
 };
 
 /**
+ * Enumeration of possible pin labels by directions
+ *
+ * @name PIN_LABEL_BY_DIRECTION
+ * @enum {string}
+ */
+export const PIN_LABEL_BY_DIRECTION = {
+  [PIN_DIRECTION.INPUT]: 'IN',
+  [PIN_DIRECTION.OUTPUT]: 'OUT',
+};
+
+/**
  * 'Magic' pin keys for terminal nodes.
  * See {@link flatten}
  *

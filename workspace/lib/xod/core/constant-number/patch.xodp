@@ -1,28 +1,30 @@
 {
+  "description": "",
   "links": [],
   "nodes": [
     {
-      "description": "",
-      "label": "",
-      "position": {
-        "x": 100,
-        "y": 100
+      "boundValues": {
+        "__in__": ""
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {},
-      "id": "noNativeImpl"
+      "description": "",
+      "id": "B1x2RV3eZ",
+      "label": "VAL",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/output-number"
     },
     {
-      "type": "xod/patch-nodes/output-number",
       "boundValues": {},
+      "description": "",
+      "id": "H1PnRN2lW",
+      "label": "",
       "position": {
-        "x": 0,
-        "y": 300
+        "x": 10,
+        "y": 16
       },
-      "label": "VAL",
-      "description": "Constant value",
-      "id": "VAL"
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     }
-  ],
-  "description": "Constant value"
+  ]
 }

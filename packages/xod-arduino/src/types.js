@@ -1,7 +1,7 @@
 import R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
-import { env as xEnv } from 'xod-project';
+import { env as xEnv, PinKey, PinLabel } from 'xod-project';
 import XF from 'xod-func-tools';
 
 /* Types are by convention starts with a capital leter, so: */
@@ -19,6 +19,7 @@ const docUrl = 'http://xod.io/docs/dev/xod-arduino/#';
 const NullaryType = XF.NullaryType(packageName, docUrl);
 const Model = XF.Model(packageName, docUrl);
 const AliasType = XF.AliasType(packageName, docUrl);
+const OneOfType = XF.OneOfType(packageName, docUrl);
 
 //-----------------------------------------------------------------------------
 //
@@ -26,7 +27,7 @@ const AliasType = XF.AliasType(packageName, docUrl);
 //
 //-----------------------------------------------------------------------------
 const TNodeId = AliasType('TNodeId', $.Number);
-const TPinKey = AliasType('TPinKey', $.String);
+const TPinKey = OneOfType('TPinKey', [PinKey, PinLabel]);
 const DataValue = NullaryType('DataValue', R.complement(R.isNil));
 
 export const TConfig = Model('TConfig', {

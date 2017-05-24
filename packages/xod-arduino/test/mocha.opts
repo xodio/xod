@@ -1,4 +1,4 @@
 --require babel-register
 --colors
---timeout 30000
+--timeout 60000
 --plugins babel-plugin-inline-import

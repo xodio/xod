@@ -538,12 +538,38 @@ export const rebasePatch = def(
 // Getters with traversing through project
 //
 // =============================================================================
+/**
+ * Returns `Maybe Patch`, that is defined as a type of the Node.
+ * If specified Project contains specified Node it will return
+ * `Just Patch` guaranteed. Otherwise it could be `Nothing`.
+ */
+export const getPatchByNode = def(
+  'getPatchByNode :: Node -> Project -> Maybe Patch',
+  (node, project) => R.compose(
+    getPatchByPath(R.__, project),
+    Node.getNodeType
+  )(node)
+);
+/**
+ * Returns Maybe list of Pins, computed from the Patch,
+ * that is defined as a type of the specified Node.
+ */
+export const getNodePins = def(
+  'getNodePins :: Node -> Project -> Maybe [Pin]',
+  (node, project) => R.compose(
+    R.map(Patch.listPins),
+    getPatchByNode(R.__, project)
+  )(node)
+);
+/**
+ * Returns Maybe Pin, extracted from the Patch,
+ * that is defined as a type of the Node.
+ */
 export const getNodePin = def(
   'getNodePin :: PinKey -> Node -> Project -> Maybe Pin',
   (pinKey, node, project) => R.compose(
     R.chain(Patch.getPinByKey(pinKey)),
-    getPatchByPath(R.__, project),
-    Node.getNodeType
+    getPatchByNode(R.__, project)
   )(node)
 );
 
@@ -568,4 +594,3 @@ export const isTerminalNodeInUse = def(
     listLocalPatches // TODO: are only local patches enough?
   )(project)
 );
-

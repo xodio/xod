@@ -31,7 +31,11 @@ const getIDEPaths = getPaths(DEFAULT_ARDUINO_IDE_PATH);
 // :: String -> String -> String[]
 const getPackagesPaths = getPaths(DEFAULT_ARDUINO_PACKAGES_PATH);
 // :: (a -> Boolean) -> (String[] -> String)
-const checkArrayOfStrings = pred => R.reduceWhile(R.complement(pred), (acc, str) => str, null);
+const checkArrayOfStrings = pred => R.reduceWhile(
+  acc => R.either(R.isNil, R.complement(pred))(acc),
+  (acc, str) => str,
+  null
+);
 // :: String[] -> String
 const anyFileThatExist = checkArrayOfStrings(doesFileExist);
 // :: String[] -> String

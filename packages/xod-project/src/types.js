@@ -39,7 +39,8 @@ export const Source = AliasType('Source', $.String);
 export const ShortId = AliasType('ShortId', $.String);
 export const LinkId = AliasType('LinkId', ShortId);
 export const NodeId = AliasType('NodeId', ShortId);
-export const PinKey = AliasType('PinKey', $.String);
+export const PinKey = AliasType('PinKey', NodeId);
+export const PinLabel = AliasType('PinLabel', $.String);
 export const Identifier = NullaryType('Identifier', isValidIdentifier);
 export const PatchPath = NullaryType('PatchPath', isValidPatchPath);
 export const PinDirection = EnumType('PinDirection', R.values(C.PIN_DIRECTION));
@@ -47,9 +48,9 @@ export const DataType = EnumType('DataType', R.values(C.PIN_TYPE));
 export const DataValue = NullaryType('DataValue', XF.notNil);
 
 export const Pin = Model('Pin', {
-  key: NodeId,
+  key: PinKey,
   direction: PinDirection,
-  label: PinKey,
+  label: PinLabel,
   type: DataType,
   value: DataValue,
   order: $.Number,
@@ -131,6 +132,7 @@ export const env = XF.env.concat([
   Pin,
   PinOrKey,
   PinKey,
+  PinLabel,
   PinRef,
   PinDirection,
   DataType,

@@ -42,6 +42,7 @@ export {
   isInputPin,
   isOutputPin,
   isTerminalPin,
+  normalizePinLabels,
 } from './pin';
 export * from './link';
 export * from './constants';

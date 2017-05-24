@@ -128,6 +128,50 @@ describe('Project', () => {
       expect(patch).to.be.deep.equal(project.patches['@/one']);
     });
   });
+  describe('getPatchByNode', () => {
+    const project = Helper.defaultizeProject({
+      patches: {
+        'xod/core/test': {
+          nodes: {
+            a: { id: 'a', type: 'xod/patch-nodes/input-number', label: 'A' },
+          },
+        },
+      },
+    });
+
+    it('should return Nothing for unexisting patch', () => {
+      const maybe = Project.getPatchByNode(Helper.defaultizeNode({ type: 'test/unexisting/patch' }), project);
+      expect(maybe.isNothing).to.be.true();
+    });
+    it('should return Just<Patch> for existing patch in the project', () => {
+      const maybe = Project.getPatchByNode(Helper.defaultizeNode({ type: 'xod/core/test' }), project);
+      expect(maybe.isJust).to.be.true();
+      expect(R.unnest(maybe)).to.be.deep.equal(project.patches['xod/core/test']);
+    });
+  });
+  describe('getNodePins', () => {
+    const project = Helper.defaultizeProject({
+      patches: {
+        'xod/core/test': {
+          nodes: {
+            a: { id: 'a', type: 'xod/patch-nodes/input-number', label: 'A' },
+          },
+        },
+      },
+    });
+
+    const expectedPins = [Pin.createPin('a', 'number', 'input', 0, 'A', '')];
+
+    it('should return Nothing for unexisting patch', () => {
+      const maybe = Project.getNodePins(Helper.defaultizeNode({ type: 'test/unexisting/patch' }), emptyProject);
+      expect(maybe.isNothing).to.be.true();
+    });
+    it('should return Just<Pin[]> for existing pin', () => {
+      const maybe = Project.getNodePins(Helper.defaultizeNode({ type: 'xod/core/test' }), project);
+      expect(maybe.isJust).to.be.true();
+      expect(R.unnest(maybe)).to.be.deep.equal(expectedPins);
+    });
+  });
   describe('getNodePin', () => {
     const project = Helper.defaultizeProject({
       patches: {

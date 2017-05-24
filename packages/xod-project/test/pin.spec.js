@@ -79,4 +79,28 @@ describe('Pin', () => {
       expect(Pin.isTerminalPin(pin)).to.be.true();
     });
   });
+  describe('normalizePinLabels', () => {
+    it('should return list of pins with unique labels', () => {
+      const pins = [
+        { label: 'A' },
+        { label: 'A' },
+        { label: 'B' },
+        { label: 'IN', direction: CONST.PIN_DIRECTION.INPUT },
+        { label: '', direction: CONST.PIN_DIRECTION.INPUT },
+        { label: '', direction: CONST.PIN_DIRECTION.INPUT },
+        { label: '', direction: CONST.PIN_DIRECTION.OUTPUT },
+      ].map(Helper.defaultizePin);
+      const pinsExpected = [
+        { label: 'A_0' },
+        { label: 'A_1' },
+        { label: 'B' },
+        { label: 'IN_0', direction: CONST.PIN_DIRECTION.INPUT },
+        { label: 'IN_1', direction: CONST.PIN_DIRECTION.INPUT },
+        { label: 'IN_2', direction: CONST.PIN_DIRECTION.INPUT },
+        { label: 'OUT', direction: CONST.PIN_DIRECTION.OUTPUT },
+      ].map(Helper.defaultizePin);
+
+      expect(Pin.normalizePinLabels(pins)).to.be.deep.equal(pinsExpected);
+    });
+  });
 });

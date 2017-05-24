@@ -13,7 +13,7 @@
     },
     {
       "id": "HktZUCdrPkZ",
-      "type": "xod/patch-nodes/input-boolean",
+      "type": "xod/patch-nodes/output-boolean",
       "label": "LT",
       "description": "",
       "position": {

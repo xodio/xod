@@ -1,52 +1,52 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
-      "id": "r1YxLRdrwyZ",
-      "type": "xod/patch-nodes/input-number",
-      "label": "RHS",
+      "boundValues": {
+        "__in__": ""
+      },
       "description": "",
+      "id": "B19RYS3lW",
+      "label": "GT",
       "position": {
         "x": 138,
-        "y": 16
-      },
-      "boundValues": {}
-    },
-    {
-      "id": "rkoeU0_Bwkb",
-      "type": "xod/patch-nodes/output-boolean",
-      "label": "GT",
-      "description": "",
-      "position": {
-        "x": 10,
         "y": 224
       },
-      "boundValues": {
-        "__in__": false
-      }
+      "type": "xod/patch-nodes/output-boolean"
     },
     {
-      "id": "ry5eIAuBPkW",
-      "type": "xod/patch-nodes/input-number",
-      "label": "LHS",
+      "boundValues": {},
       "description": "",
+      "id": "HJbACN3gb",
+      "label": "RHS",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "HyC0AE3eZ",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rJg00Nhe-",
+      "label": "LHS",
       "position": {
         "x": 10,
         "y": 16
       },
-      "boundValues": {}
-    },
-    {
-      "description": "",
-      "id": "noNativeImpl",
-      "label": "",
-      "position": {
-        "x": 100,
-        "y": 100
-      },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-number"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }
