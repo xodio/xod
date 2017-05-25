@@ -1,3 +1,4 @@
+
 /*=============================================================================
  *
  *
@@ -11,7 +12,6 @@
 
 // Uncomment to trace the program in the Serial Monitor
 //#define XOD_DEBUG
-
 
 /*=============================================================================
  *
@@ -53,14 +53,29 @@ namespace _program {
     typedef double Number;
     typedef bool Logic;
 
-    // OPTIMIZE: we should choose uint8_t if there are less than 255 nodes in total
+    // TODO: optimize, we should choose uint8_t if there are less than 255 nodes in total
     // and uint32_t if there are more than 65535
     typedef uint16_t NodeId;
 
-    // OPTIMIZE: we should choose a proper type with a minimal enough capacity
+    /*
+     * PinKey is an address value used to find input’s or output’s data within
+     * node’s Storage.
+     *
+     * For inputs its value is simply an offset in bytes from the beginning of
+     * Storage structure instance. There will be a PinRef pointing to an upstream
+     * output at this address.
+     *
+     * For outputs the pin key consists of two parts ORed bitwise. Least
+     * significant bits (count defined by `PIN_KEY_OFFSET_BITS`) define an offset
+     * from the beginning of node’s Storage where output data could be found. It
+     * would be an OutputPin structure. Most significant bits define an index
+     * number of that output among all outputs of the node. The index is used to
+     * work with dirty flags bit-value.
+     */
+    // TODO: optimize, we should choose a proper type with a minimal enough capacity
     typedef uint16_t PinKey;
 
-    // OPTIMIZE: we should choose a proper type with a minimal enough capacity
+    // TODO: optimize, we should choose a proper type with a minimal enough capacity
     typedef uint16_t DirtyFlags;
 
     typedef unsigned long TimeMs;
@@ -76,6 +91,9 @@ namespace _program {
     extern DirtyFlags dirtyFlags[NODE_COUNT];
     extern NodeId topology[NODE_COUNT];
 
+    // TODO: replace with a compact list
+    extern TimeMs schedule[NODE_COUNT];
+
     template<typename T>
     struct OutputPin {
         T value;
@@ -88,25 +106,49 @@ namespace _program {
         PinKey pinKey;
     };
 
+    /*
+     * Input descriptor is a metaprogramming structure used to enforce an
+     * input’s type and store its PinKey as a zero-memory constant.
+     *
+     * A specialized descriptor is required by `getValue` function. Every
+     * input of every type node gets its own descriptor in generated code that
+     * can be accessed as Inputs::FOO. Where FOO is a pin identifier.
+     */
+    template<typename ValueT_, size_t offsetInStorage>
+    struct InputDescriptor {
+        typedef ValueT_ ValueT;
+        enum Offset : PinKey {
+            KEY = offsetInStorage
+        };
+    };
 
-    // TODO: replace with a compact list
-    extern TimeMs schedule[NODE_COUNT];
+    /*
+     * Output descriptor serve the same purpose as InputDescriptor but for
+     * ouputs.
+     */
+    template<typename ValueT_, size_t offsetInStorage, int index>
+    struct OutputDescriptor {
+        typedef ValueT_ ValueT;
+        enum Offset : PinKey {
+            KEY = offsetInStorage | (index << PIN_KEY_OFFSET_BITS)
+        };
+    };
 
-    inline void* pinPtr(void* storage, PinKey key) {
+    void* pinPtr(void* storage, PinKey key) {
         const size_t offset = key & ~(PinKey(-1) << PIN_KEY_OFFSET_BITS);
         return (uint8_t*)storage + offset;
     }
 
-    inline DirtyFlags dirtyPinBit(PinKey key) {
+    DirtyFlags dirtyPinBit(PinKey key) {
         const PinKey nbit = (key >> PIN_KEY_OFFSET_BITS) + 1;
         return 1 << nbit;
     }
 
-    inline bool isOutputDirty(NodeId nid, PinKey key) {
+    bool isOutputDirty(NodeId nid, PinKey key) {
         return dirtyFlags[nid] & dirtyPinBit(key);
     }
 
-    inline bool isInputDirty(NodeId nid, PinKey key) {
+    bool isInputDirtyImpl(NodeId nid, PinKey key) {
         PinRef* ref = (PinRef*)pinPtr(storages[nid], key);
         if (ref->nodeId == NO_NODE)
             return false;
@@ -114,15 +156,20 @@ namespace _program {
         return isOutputDirty(ref->nodeId, ref->pinKey);
     }
 
-    inline void markPinDirty(NodeId nid, PinKey key) {
+    template<typename InputT>
+    bool isInputDirty(NodeId nid) {
+        return isInputDirtyImpl(nid, InputT::KEY);
+    }
+
+    void markPinDirty(NodeId nid, PinKey key) {
         dirtyFlags[nid] |= dirtyPinBit(key);
     }
 
-    inline void markNodeDirty(NodeId nid) {
+    void markNodeDirty(NodeId nid) {
         dirtyFlags[nid] |= 0x1;
     }
 
-    inline bool isNodeDirty(NodeId nid) {
+    bool isNodeDirty(NodeId nid) {
         return dirtyFlags[nid] & 0x1;
     }
 
@@ -139,7 +186,7 @@ namespace _program {
     }
 
     template<typename T>
-    T getValue(NodeId nid, PinKey key) {
+    T getValueImpl(NodeId nid, PinKey key) {
         PinRef* ref = (PinRef*)pinPtr(storages[nid], key);
         if (ref->nodeId == NO_NODE)
             return (T)0;
@@ -147,16 +194,13 @@ namespace _program {
         return *(T*)pinPtr(storages[ref->nodeId], ref->pinKey);
     }
 
-    Number getNumber(NodeId nid, PinKey key) {
-        return getValue<Number>(nid, key);
-    }
-
-    Logic getLogic(NodeId nid, PinKey key) {
-        return getValue<Logic>(nid, key);
+    template<typename InputT>
+    typename InputT::ValueT getValue(NodeId nid) {
+        return getValueImpl<typename InputT::ValueT>(nid, InputT::KEY);
     }
 
     template<typename T>
-    void emitValue(NodeId nid, PinKey key, T value) {
+    void emitValueImpl(NodeId nid, PinKey key, T value) {
         OutputPin<T>* outputPin = (OutputPin<T>*)pinPtr(storages[nid], key);
 
         outputPin->value = value;
@@ -168,26 +212,20 @@ namespace _program {
         }
     }
 
-    void emitNumber(NodeId nid, PinKey key, Number value) {
-        emitValue<Number>(nid, key, value);
-    }
-
-    void emitLogic(NodeId nid, PinKey key, Logic value) {
-        emitValue<Logic>(nid, key, value);
+    template<typename OutputT>
+    void emitValue(NodeId nid, typename OutputT::ValueT value) {
+        emitValueImpl(nid, OutputT::KEY, value);
     }
 
     template<typename T>
-    void reemitValue(NodeId nid, PinKey key) {
+    void reemitValueImpl(NodeId nid, PinKey key) {
         OutputPin<T>* outputPin = (OutputPin<T>*)pinPtr(storages[nid], key);
-        emitValue<T>(nid, key, outputPin->value);
+        emitValueImpl<T>(nid, key, outputPin->value);
     }
 
-    void reemitNumber(NodeId nid, PinKey key) {
-        reemitValue<Number>(nid, key);
-    }
-
-    void reemitLogic(NodeId nid, PinKey key) {
-        reemitValue<Logic>(nid, key);
+    template<typename OutputT>
+    void reemitValue(NodeId nid) {
+        reemitValueImpl<typename OutputT::ValueT>(nid, OutputT::KEY);
     }
 
     void evaluateNode(NodeId nid) {
@@ -262,21 +300,19 @@ namespace _program {
   struct State {
 };
 
-
 struct Storage {
     State state;
     PinRef input_VAL;
     PinRef input_PORT;
 };
 
-enum Inputs : PinKey {
-    VAL = offsetof(Storage, input_VAL),
-    PORT = offsetof(Storage, input_PORT)
-};
+namespace Inputs {
+    using VAL = InputDescriptor<Logic, offsetof(Storage, input_VAL)>;
+    using PORT = InputDescriptor<Number, offsetof(Storage, input_PORT)>;
+}
 
-enum Outputs : PinKey {
-};
-
+namespace Outputs {
+}
 
 void evaluate(NodeId nid, State* state) {
     const int pin = (int)getNumber(nid, Inputs::PORT);
@@ -294,7 +330,6 @@ void evaluate(NodeId nid, State* state) {
   struct State {
 };
 
-
 struct Storage {
     State state;
     PinRef input_IN_0;
@@ -302,15 +337,14 @@ struct Storage {
     OutputPin<Number> output_OUT;
 };
 
-enum Inputs : PinKey {
-    IN_0 = offsetof(Storage, input_IN_0),
-    IN_1 = offsetof(Storage, input_IN_1)
-};
+namespace Inputs {
+    using IN_0 = InputDescriptor<Number, offsetof(Storage, input_IN_0)>;
+    using IN_1 = InputDescriptor<Number, offsetof(Storage, input_IN_1)>;
+}
 
-enum Outputs : PinKey {
-    OUT = offsetof(Storage, output_OUT) | (0 << PIN_KEY_OFFSET_BITS)
-};
-
+namespace Outputs {
+    using OUT = OutputDescriptor<Number, offsetof(Storage, output_OUT), 0>;
+}
 
 void evaluate(NodeId nid, State* state) {
     const Number in1 = getNumber(nid, Inputs::IN_0);
@@ -324,7 +358,6 @@ void evaluate(NodeId nid, State* state) {
     bool value;
 };
 
-
 struct Storage {
     State state;
     PinRef input_RST;
@@ -333,16 +366,15 @@ struct Storage {
     OutputPin<Logic> output_OUT;
 };
 
-enum Inputs : PinKey {
-    RST = offsetof(Storage, input_RST),
-    TGL = offsetof(Storage, input_TGL),
-    SET = offsetof(Storage, input_SET)
-};
+namespace Inputs {
+    using RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
+    using TGL = InputDescriptor<Logic, offsetof(Storage, input_TGL)>;
+    using SET = InputDescriptor<Logic, offsetof(Storage, input_SET)>;
+}
 
-enum Outputs : PinKey {
-    OUT = offsetof(Storage, output_OUT) | (0 << PIN_KEY_OFFSET_BITS)
-};
-
+namespace Outputs {
+    using OUT = OutputDescriptor<Logic, offsetof(Storage, output_OUT), 0>;
+}
 
 void evaluate(NodeId nid, State* state) {
     if (isInputDirty(nid, Inputs::RST)) {
@@ -362,21 +394,19 @@ void evaluate(NodeId nid, State* state) {
     TimeMs nextTrig;
 };
 
-
 struct Storage {
     State state;
     PinRef input_IVAL;
     OutputPin<Logic> output_TICK;
 };
 
-enum Inputs : PinKey {
-    IVAL = offsetof(Storage, input_IVAL)
-};
+namespace Inputs {
+    using IVAL = InputDescriptor<Number, offsetof(Storage, input_IVAL)>;
+}
 
-enum Outputs : PinKey {
-    TICK = offsetof(Storage, output_TICK) | (0 << PIN_KEY_OFFSET_BITS)
-};
-
+namespace Outputs {
+    using TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
+}
 
 void evaluate(NodeId nid, State* state) {
     TimeMs tNow = transactionTime();
@@ -404,21 +434,19 @@ void evaluate(NodeId nid, State* state) {
   struct State {
 };
 
-
 struct Storage {
     State state;
     PinRef input_IN;
     OutputPin<Logic> output_OUT;
 };
 
-enum Inputs : PinKey {
-    IN = offsetof(Storage, input_IN)
-};
+namespace Inputs {
+    using IN = InputDescriptor<Number, offsetof(Storage, input_IN)>;
+}
 
-enum Outputs : PinKey {
-    OUT = offsetof(Storage, output_OUT) | (0 << PIN_KEY_OFFSET_BITS)
-};
-
+namespace Outputs {
+    using OUT = OutputDescriptor<Logic, offsetof(Storage, output_OUT), 0>;
+}
 
 void evaluate(NodeId nid, State* state) {
     emitLogic(nid, Outputs::OUT, getNumber(nid, Inputs::IN));
@@ -429,21 +457,19 @@ void evaluate(NodeId nid, State* state) {
   struct State {
 };
 
-
 struct Storage {
     State state;
     PinRef input_IN;
     OutputPin<Number> output_OUT;
 };
 
-enum Inputs : PinKey {
-    IN = offsetof(Storage, input_IN)
-};
+namespace Inputs {
+    using IN = InputDescriptor<Logic, offsetof(Storage, input_IN)>;
+}
 
-enum Outputs : PinKey {
-    OUT = offsetof(Storage, output_OUT) | (0 << PIN_KEY_OFFSET_BITS)
-};
-
+namespace Outputs {
+    using OUT = OutputDescriptor<Number, offsetof(Storage, output_OUT), 0>;
+}
 
 void evaluate(NodeId nid, State* state) {
     emitNumber(nid, Outputs::OUT, getLogic(nid, Inputs::IN));
@@ -454,19 +480,17 @@ void evaluate(NodeId nid, State* state) {
   struct State {
 };
 
-
 struct Storage {
     State state;
     OutputPin<Number> output_VAL;
 };
 
-enum Inputs : PinKey {
-};
+namespace Inputs {
+}
 
-enum Outputs : PinKey {
-    VAL = offsetof(Storage, output_VAL) | (0 << PIN_KEY_OFFSET_BITS)
-};
-
+namespace Outputs {
+    using VAL = OutputDescriptor<Number, offsetof(Storage, output_VAL), 0>;
+}
 
 void evaluate(NodeId nid, State* state) {
     reemitNumber(nid, Outputs::VAL);

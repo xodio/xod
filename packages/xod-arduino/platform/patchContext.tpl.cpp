@@ -11,14 +11,14 @@ struct Storage {
   {{/each}}
 };
 
-enum Inputs : PinKey {
+namespace Inputs {
   {{#each inputs}}
-    {{ pinKey }} = offsetof(Storage, input_{{ pinKey }}){{#unless @last}},{{/unless}}
+    using {{ pinKey }} = InputDescriptor<{{ type }}, offsetof(Storage, input_{{ pinKey }})>;
   {{/each}}
 };
 
 enum Outputs : PinKey {
   {{#each outputs}}
-    {{ pinKey }} = offsetof(Storage, output_{{ pinKey }}) | ({{@index}} << PIN_KEY_OFFSET_BITS){{#unless @last}},{{/unless}}
+    using {{ pinKey }} = OutputDescriptor<{{ type }}, offsetof(Storage, input_{{ pinKey }}), {{@index}}>;
   {{/each}}
 };

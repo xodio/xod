@@ -448,7 +448,10 @@ const createTPatches = def(
         Project.listOutputPins
       )(patch);
       const inputs = R.compose(
-        R.map(R.applySpec({ pinKey: Project.getPinLabel })),
+        R.map(R.applySpec({
+          type: R.compose(R.prop(R.__, TYPES_MAP), Project.getPinType),
+          pinKey: Project.getPinLabel 
+        })),
         Project.normalizePinLabels,
         Project.listInputPins
       )(patch);
