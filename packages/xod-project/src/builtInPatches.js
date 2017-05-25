@@ -21,6 +21,7 @@ const getOutputPatchPins = type => ({
     description: '',
     order: 0,
     value: '',
+    isBindable: true,
   },
 });
 
@@ -33,6 +34,7 @@ const getInputPatchPins = type => ({
     description: '',
     order: 0,
     value: '',
+    isBindable: true, // terminal's pins are always bindable
   },
 });
 

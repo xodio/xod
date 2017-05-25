@@ -275,8 +275,27 @@ export const canBindToOutputs = def(
 const compareNodesPositionAxis = axis =>
   R.ascend(R.pipe(Node.getNodePosition, R.prop(axis)));
 
+// :: Patch -> Node -> Number -> Pin
+const createPinFromTerminalNode = R.curry((patch, node, order) => {
+  const areOutputsBindable = canBindToOutputs(patch);
+  const direction = Node.getPinNodeDirection(node);
+  const isBindable = direction === CONST.PIN_DIRECTION.INPUT
+    ? true // inputs are always bindable
+    : areOutputsBindable;
+
+  return Pin.createPin(
+    Node.getNodeId(node),
+    Node.getPinNodeDataType(node),
+    direction,
+    order,
+    Node.getNodeLabel(node),
+    '', // TODO: where do we get pin descriptions now?
+    isBindable
+  );
+});
+
 // :: Patch -> StrMap Pins
-const computePins = R.memoize(
+const computePins = R.memoize(patch =>
   R.compose(
     R.indexBy(Pin.getPinKey),
     R.unnest,
@@ -284,14 +303,7 @@ const computePins = R.memoize(
     R.map(
       R.compose(
         R.addIndex(R.map)(
-          (node, order) => Pin.createPin(
-            Node.getNodeId(node),
-            Node.getPinNodeDataType(node),
-            Node.getPinNodeDirection(node),
-            order,
-            Node.getNodeLabel(node),
-            '' // TODO: where do we get pin descriptions now?
-          )
+          createPinFromTerminalNode(patch)
         ),
         R.sortWith([
           compareNodesPositionAxis('x'),
@@ -302,7 +314,7 @@ const computePins = R.memoize(
     R.groupBy(Node.getPinNodeDirection),
     R.filter(Node.isPinNode),
     listNodes
-  )
+  )(patch)
 );
 
 const getPins = R.ifElse(

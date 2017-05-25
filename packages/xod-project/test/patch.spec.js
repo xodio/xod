@@ -404,6 +404,7 @@ describe('Patch', () => {
         description: '',
         order: 0,
         value: false,
+        isBindable: true,
       },
       out: {
         key: 'out',
@@ -413,6 +414,7 @@ describe('Patch', () => {
         description: '',
         order: 0,
         value: false,
+        isBindable: false,
       },
     };
 
@@ -517,6 +519,7 @@ describe('Patch', () => {
           description: '',
           order: 0,
           value: false,
+          isBindable: true,
         };
 
         const expectedPinsList = [
@@ -583,6 +586,7 @@ describe('Patch', () => {
           description: '',
           order: 0,
           value: false,
+          isBindable: true,
         };
 
         const expectedPinsList = [
@@ -646,7 +650,7 @@ describe('Patch', () => {
       });
       const newPatch = Patch.assocNode(node, emptyPatch);
 
-      const expectedPin = Pin.createPin('1', 'number', 'input', 0, 'A', '');
+      const expectedPin = Pin.createPin('1', 'number', 'input', 0, 'A', '', true);
 
       assert.deepEqual(
         [expectedPin],
@@ -663,7 +667,7 @@ describe('Patch', () => {
         },
       });
 
-      const expectedPinBeforeUpdate = Pin.createPin('1', 'string', 'output', 0, '', '');
+      const expectedPinBeforeUpdate = Pin.createPin('1', 'string', 'output', 0, '', '', false);
       assert.deepEqual(
         [expectedPinBeforeUpdate],
         Patch.listPins(patch)
@@ -676,7 +680,7 @@ describe('Patch', () => {
       });
       const newPatch = Patch.assocNode(node, patch);
 
-      const expectedPinAfterUpdate = Pin.createPin('1', 'number', 'input', 0, 'A', '');
+      const expectedPinAfterUpdate = Pin.createPin('1', 'number', 'input', 0, 'A', '', true);
       assert.deepEqual(
         [expectedPinAfterUpdate],
         Patch.listPins(newPatch)

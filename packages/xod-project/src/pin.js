@@ -22,14 +22,15 @@ import { def } from './types';
  * @returns {Pin}
  */
 export const createPin = def(
-  'createPin :: PinKey -> DataType -> PinDirection -> Number -> PinLabel -> String -> Pin',
-  (key, type, direction, order, label, description) => ({
+  'createPin :: PinKey -> DataType -> PinDirection -> Number -> PinLabel -> String -> Boolean -> Pin',
+  (key, type, direction, order, label, description, isBindable) => ({
     key,
     type,
     direction,
     label,
     description,
     order,
+    isBindable,
     value: Utils.defaultValueOfType(type), // TODO: support 'custom' default values
   })
 );
@@ -108,6 +109,17 @@ export const getPinDescription = def(
 export const getPinOrder = def(
   'getPinOrder :: Pin -> Number',
   R.prop('order')
+);
+
+/**
+ * Is it possible to bind a value to this pin?
+ *
+ * Only output pins of functional patches are unbindable.
+ * So this basically tells if this pin is an output pin of a functional patch.
+ */
+export const isPinBindable = def(
+  'isBindable :: Pin -> Boolean',
+  R.prop('isBindable')
 );
 
 /**

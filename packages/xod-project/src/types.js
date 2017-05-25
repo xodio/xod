@@ -55,6 +55,7 @@ export const Pin = Model('Pin', {
   value: DataValue,
   order: $.Number,
   description: $.String,
+  isBindable: $.Boolean,
 });
 
 export const NodePosition = Model('NodePosition', {

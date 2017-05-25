@@ -114,6 +114,7 @@ export const defaultizePin = R.merge({
   value: 0,
   order: 0,
   description: '$$defaultDesription',
+  isBindable: true,
 });
 
 const assignIds = R.mapObjIndexed((entity, id) => R.assoc('id', id, entity));
