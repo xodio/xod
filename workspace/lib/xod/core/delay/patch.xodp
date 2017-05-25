@@ -1,54 +1,57 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
+      "boundValues": {
+        "__in__": false
+      },
+      "description": "",
       "id": "B1GeLR_BPyZ",
-      "type": "xod/patch-nodes/output-boolean",
       "label": "ACT",
-      "description": "",
       "position": {
         "x": 10,
         "y": 224
       },
-      "boundValues": {
-        "__in__": false
-      }
+      "type": "xod/patch-nodes/output-boolean"
     },
     {
+      "boundValues": {
+        "__in__": false
+      },
+      "description": "",
       "id": "Bk4gU0drwJ-",
-      "type": "xod/patch-nodes/output-pulse",
       "label": "DONE",
-      "description": "",
       "position": {
         "x": 138,
         "y": 224
       },
-      "boundValues": {
-        "__in__": false
-      }
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "id": "H1mlUC_HDJZ",
-      "type": "xod/patch-nodes/input-pulse",
-      "label": "RST",
+      "boundValues": {},
       "description": "",
+      "id": "H1mlUC_HDJZ",
+      "label": "RST",
       "position": {
         "x": 138,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "id": "Skre8ROSv1-",
-      "type": "xod/patch-nodes/input-number",
-      "label": "T",
+      "boundValues": {},
       "description": "",
+      "id": "Skre8ROSv1-",
+      "label": "T",
       "position": {
         "x": 10,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-number"
     },
     {
+      "boundValues": {},
       "description": "",
       "id": "noNativeImpl",
       "label": "",
@@ -56,10 +59,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }

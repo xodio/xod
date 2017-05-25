@@ -1,74 +1,44 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
-      "id": "BJlzICOSv1-",
-      "type": "xod/patch-nodes/input-number",
-      "label": "X",
+      "boundValues": {},
       "description": "",
+      "id": "BJlzICOSv1-",
+      "label": "X",
       "position": {
         "x": 10,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-number"
     },
     {
-      "id": "H12bIR_SPyZ",
-      "type": "xod/patch-nodes/output-number",
-      "label": "Xm",
+      "boundValues": {
+        "__in__": 0
+      },
       "description": "",
+      "id": "H12bIR_SPyZ",
+      "label": "Xm",
       "position": {
         "x": 10,
         "y": 224
       },
-      "boundValues": {
-        "__in__": 0
-      }
+      "type": "xod/patch-nodes/output-number"
     },
     {
-      "id": "HJCWLAdSwyW",
-      "type": "xod/patch-nodes/input-number",
-      "label": "Smax",
+      "boundValues": {},
       "description": "",
+      "id": "HJCWLAdSwyW",
+      "label": "Smax",
       "position": {
         "x": 266,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-number"
     },
     {
-      "id": "rJbGU0_Hv1Z",
-      "type": "xod/patch-nodes/input-number",
-      "label": "Tmin",
-      "description": "",
-      "position": {
-        "x": 394,
-        "y": 16
-      },
-      "boundValues": {}
-    },
-    {
-      "id": "rkpbU0OrwyZ",
-      "type": "xod/patch-nodes/input-number",
-      "label": "Tmax",
-      "description": "",
-      "position": {
-        "x": 522,
-        "y": 16
-      },
-      "boundValues": {}
-    },
-    {
-      "id": "ry1z8CuBDy-",
-      "type": "xod/patch-nodes/input-number",
-      "label": "Smin",
-      "description": "",
-      "position": {
-        "x": 138,
-        "y": 16
-      },
-      "boundValues": {}
-    },
-    {
+      "boundValues": {},
       "description": "",
       "id": "noNativeImpl",
       "label": "",
@@ -76,10 +46,40 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rJbGU0_Hv1Z",
+      "label": "Tmin",
+      "position": {
+        "x": 394,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rkpbU0OrwyZ",
+      "label": "Tmax",
+      "position": {
+        "x": 522,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "ry1z8CuBDy-",
+      "label": "Smin",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }

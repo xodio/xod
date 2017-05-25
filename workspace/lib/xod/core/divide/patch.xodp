@@ -1,41 +1,44 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
-      "id": "BkqLCOSw1W",
-      "type": "xod/patch-nodes/output-number",
-      "label": "FRAC",
+      "boundValues": {
+        "__in__": 0
+      },
       "description": "",
+      "id": "BkqLCOSw1W",
+      "label": "FRAC",
       "position": {
         "x": 10,
         "y": 224
       },
-      "boundValues": {
-        "__in__": 0
-      }
+      "type": "xod/patch-nodes/output-number"
     },
     {
-      "id": "BytUCdHD1-",
-      "type": "xod/patch-nodes/input-number",
-      "label": "Y",
+      "boundValues": {},
       "description": "",
+      "id": "BytUCdHD1-",
+      "label": "Y",
       "position": {
         "x": 138,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-number"
     },
     {
-      "id": "SkdIRuBD1b",
-      "type": "xod/patch-nodes/input-number",
-      "label": "X",
+      "boundValues": {},
       "description": "",
+      "id": "SkdIRuBD1b",
+      "label": "X",
       "position": {
         "x": 10,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-number"
     },
     {
+      "boundValues": {},
       "description": "",
       "id": "noNativeImpl",
       "label": "",
@@ -43,10 +46,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }

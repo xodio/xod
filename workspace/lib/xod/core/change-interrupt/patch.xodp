@@ -1,43 +1,22 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
-      "id": "By8H5rDkZ",
-      "type": "xod/patch-nodes/output-pulse",
-      "label": "FALL",
+      "boundValues": {
+        "__in__": false
+      },
       "description": "",
+      "id": "By8H5rDkZ",
+      "label": "FALL",
       "position": {
         "x": 138,
         "y": 224
       },
-      "boundValues": {
-        "__in__": false
-      }
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "id": "rJxr9rDJZ",
-      "type": "xod/patch-nodes/output-pulse",
-      "label": "RISE",
-      "description": "",
-      "position": {
-        "x": 10,
-        "y": 224
-      },
-      "boundValues": {
-        "__in__": false
-      }
-    },
-    {
-      "id": "rkuEqBD1W",
-      "type": "xod/patch-nodes/input-number",
-      "label": "PORT",
-      "description": "",
-      "position": {
-        "x": 10,
-        "y": 16
-      },
-      "boundValues": {}
-    },
-    {
+      "boundValues": {},
       "description": "",
       "id": "noNativeImpl",
       "label": "",
@@ -45,10 +24,31 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {
+        "__in__": false
+      },
+      "description": "",
+      "id": "rJxr9rDJZ",
+      "label": "RISE",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rkuEqBD1W",
+      "label": "PORT",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }

@@ -1,39 +1,39 @@
 {
+  "description": "",
   "links": [],
   "nodes": [
     {
+      "boundValues": {},
       "description": "",
+      "id": "__in__",
+      "label": "",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "__out__",
+      "label": "",
+      "position": {
+        "x": 0,
+        "y": 300
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "noNativeImpl",
       "label": "",
       "position": {
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {},
-      "id": "noNativeImpl"
-    },
-    {
-      "type": "xod/patch-nodes/input-pulse",
-      "boundValues": {},
-      "position": {
-        "x": 0,
-        "y": 0
-      },
-      "label": "",
-      "description": "",
-      "id": "__in__"
-    },
-    {
-      "type": "xod/patch-nodes/output-number",
-      "boundValues": {},
-      "position": {
-        "x": 0,
-        "y": 300
-      },
-      "label": "",
-      "description": "",
-      "id": "__out__"
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     }
-  ],
-  "description": ""
+  ]
 }

@@ -1,52 +1,31 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
-      "id": "BJgZ80uBw1-",
-      "type": "xod/patch-nodes/input-number",
-      "label": "MIN",
+      "boundValues": {},
       "description": "",
+      "id": "BJgZ80uBw1-",
+      "label": "MIN",
       "position": {
         "x": 138,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-number"
     },
     {
+      "boundValues": {},
+      "description": "",
       "id": "BkmZL0uSv1W",
-      "type": "xod/patch-nodes/input-number",
       "label": "X",
-      "description": "",
       "position": {
         "x": 10,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-number"
     },
     {
-      "id": "rJWWUAdHDyW",
-      "type": "xod/patch-nodes/output-number",
-      "label": "XC",
-      "description": "",
-      "position": {
-        "x": 10,
-        "y": 224
-      },
-      "boundValues": {
-        "__in__": 0
-      }
-    },
-    {
-      "id": "ryzZIC_BDJW",
-      "type": "xod/patch-nodes/input-number",
-      "label": "MAX",
-      "description": "",
-      "position": {
-        "x": 266,
-        "y": 16
-      },
-      "boundValues": {}
-    },
-    {
+      "boundValues": {},
       "description": "",
       "id": "noNativeImpl",
       "label": "",
@@ -54,10 +33,31 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {
+        "__in__": 0
+      },
+      "description": "",
+      "id": "rJWWUAdHDyW",
+      "label": "XC",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "ryzZIC_BDJW",
+      "label": "MAX",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }

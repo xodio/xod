@@ -1,30 +1,33 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
-      "id": "BkdbLAuSPyZ",
-      "type": "xod/patch-nodes/output-number",
-      "label": "CEIL",
+      "boundValues": {
+        "__in__": 0
+      },
       "description": "",
+      "id": "BkdbLAuSPyZ",
+      "label": "CEIL",
       "position": {
         "x": 10,
         "y": 224
       },
-      "boundValues": {
-        "__in__": 0
-      }
+      "type": "xod/patch-nodes/output-number"
     },
     {
-      "id": "H1v-80uHDyZ",
-      "type": "xod/patch-nodes/input-number",
-      "label": "X",
+      "boundValues": {},
       "description": "",
+      "id": "H1v-80uHDyZ",
+      "label": "X",
       "position": {
         "x": 10,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-number"
     },
     {
+      "boundValues": {},
       "description": "",
       "id": "noNativeImpl",
       "label": "",
@@ -32,10 +35,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }

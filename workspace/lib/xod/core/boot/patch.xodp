@@ -1,19 +1,9 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
-      "id": "ryVmUAOrvkb",
-      "type": "xod/patch-nodes/output-pulse",
-      "label": "BOOT",
-      "description": "",
-      "position": {
-        "x": 10,
-        "y": 224
-      },
-      "boundValues": {
-        "__in__": false
-      }
-    },
-    {
+      "boundValues": {},
       "description": "",
       "id": "noNativeImpl",
       "label": "",
@@ -21,10 +11,20 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {
+        "__in__": false
+      },
+      "description": "",
+      "id": "ryVmUAOrvkb",
+      "label": "BOOT",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }
