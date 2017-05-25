@@ -1,51 +1,5 @@
 {
-  "links": [
-    {
-      "input": {
-        "nodeId": "SJzK9tLOxZ",
-        "pinKey": "value"
-      },
-      "output": {
-        "nodeId": "S1ZF9KIdgZ",
-        "pinKey": "VAL"
-      },
-      "id": "HJ7KqFIOeZ"
-    }
-  ],
-  "nodes": [
-    {
-      "description": "",
-      "label": "",
-      "pins": {},
-      "position": {
-        "x": 138,
-        "y": 16
-      },
-      "type": "xod/core/constant-number",
-      "boundValues": {},
-      "id": "S1ZF9KIdgZ"
-    },
-    {
-      "description": "",
-      "label": "",
-      "pins": {
-        "pin": {
-          "curried": false,
-          "value": 13
-        },
-        "value": {
-          "curried": false,
-          "value": false
-        }
-      },
-      "position": {
-        "x": 138,
-        "y": 224
-      },
-      "type": "xod/core/digital-output",
-      "boundValues": {},
-      "id": "SJzK9tLOxZ"
-    }
-  ],
+  "links": [],
+  "nodes": [],
   "description": ""
 }
