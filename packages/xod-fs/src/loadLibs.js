@@ -16,10 +16,6 @@ const implTypes = Object.keys(IMPL_FILENAMES);
 const scanLibsFolder = (libs, libsDir) => Promise.all(
   libs.map(
     lib => readDir(path.resolve(libsDir, lib))
-      .catch((err) => {
-        if (err.code === 'ENOENT') return Promise.resolve([]);
-        return Promise.reject(err);
-      })
       .then(R.filter(hasExt('.xodp')))
       .catch((err) => {
         throw Object.assign(err, {

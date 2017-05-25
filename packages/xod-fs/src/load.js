@@ -190,6 +190,13 @@ export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) 
     .then((projectFiles) => {
       const libPath = resolvePath(libDir);
       return loadAllLibs(workspace)
+        .catch((err) => {
+          // Catch error ENOENT in case if libsDir is not found.
+          // E.G. User deleted it before select project.
+          // So in this case we'll return just empty array of libs.
+          if (err.code === 'ENOENT') return Promise.resolve([]);
+          return Promise.reject(err);
+        })
         .then(libs => ({ project: projectFiles, libs }))
         .catch((err) => {
           throw Object.assign(err, {
