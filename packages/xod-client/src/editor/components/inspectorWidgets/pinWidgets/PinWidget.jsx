@@ -1,21 +1,40 @@
 import R from 'ramda';
 import React from 'react';
 
+import { PIN_DIRECTION } from 'xod-project';
+
 import PinIcon from './PinIcon';
 
-const getNonBindableReason = R.cond([
-  [R.complement(R.prop('isBindable')), R.always('defined by inputs')],
-  [R.prop('isConnected'), R.always('linked')],
+// TODO: move these checks
+
+const isLinkedInput = R.both(
+  R.pipe(R.prop('direction'), R.equals(PIN_DIRECTION.INPUT)),
+  R.prop('isConnected')
+);
+
+const isNonBindableOutput = R.both(
+  R.pipe(R.prop('direction'), R.equals(PIN_DIRECTION.OUTPUT)),
+  R.complement(R.prop('isBindable'))
+);
+
+const isBindingForbidden = R.either(
+  isLinkedInput,
+  isNonBindableOutput
+);
+
+const getReason = R.cond([
+  [isNonBindableOutput, R.always('defined by inputs')],
+  [isLinkedInput, R.always('linked')],
 ]);
 
 function PinWidget(props) {
-  const input = (props.isConnected || !props.isBindable)
+  const input = isBindingForbidden(props)
     ? (
       <input
         className="inspectorTextInput inspectorTextInput--not-bindable"
         type="text"
         disabled
-        value={getNonBindableReason(props)}
+        value={getReason(props)}
       />
     ) : props.children;
 
@@ -41,7 +60,7 @@ PinWidget.propTypes = {
   label: React.PropTypes.string,
   dataType: React.PropTypes.string,
   isConnected: React.PropTypes.bool,
-  isBindable: React.PropTypes.bool,
+  isBindable: React.PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
   children: React.PropTypes.element.isRequired,
 };
 

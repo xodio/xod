@@ -24,12 +24,13 @@ const getPinWidgetProps = R.applySpec({
   entityId: R.prop('nodeId'),
   kind: R.always(NODE_PROPERTY_KIND.PIN),
   key: getWidgetKey,
-  keyName: R.prop('key'),
-  type: R.prop('type'),
-  label: R.prop('label'),
+  keyName: XP.getPinKey,
+  type: XP.getPinType,
+  label: XP.getPinLabel,
   value: R.prop('value'),
+  direction: XP.getPinDirection,
   isConnected: R.prop('isConnected'),
-  isBindable: R.prop('isBindable'),
+  isBindable: XP.isPinBindable,
 });
 
 // :: RenderableNode -> { components: {...}, props: {...} }
@@ -95,8 +96,6 @@ const NodeInspector = ({ node, onPropUpdate }) => {
         entityId={nodeId}
         key={`node_label_${nodeId}`}
         kind={NODE_PROPERTY_KIND.PROP}
-        isConnected={false}
-        isBindable
         keyName={NODE_PROPERTY_KEY.LABEL}
         label="Label"
         value={XP.getNodeLabel(node)}
@@ -113,8 +112,6 @@ const NodeInspector = ({ node, onPropUpdate }) => {
         entityId={nodeId}
         key={`node_description_${nodeId}`}
         kind={NODE_PROPERTY_KIND.PROP}
-        isConnected={false}
-        isBindable
         keyName={NODE_PROPERTY_KEY.DESCRIPTION}
         label="Description"
         value={XP.getNodeDescription(node)}

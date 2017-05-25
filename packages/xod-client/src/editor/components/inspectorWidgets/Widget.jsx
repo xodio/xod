@@ -101,6 +101,7 @@ export default function composeWidget(Component, widgetProps) {
             label={this.props.label}
             isConnected={this.props.isConnected}
             isBindable={this.props.isBindable}
+            direction={this.props.direction}
             dataType={this.type}
             value={this.state.value}
             disabled={this.isDisabled()}
@@ -120,6 +121,7 @@ export default function composeWidget(Component, widgetProps) {
     keyName: React.PropTypes.string.isRequired, // one of NODE_PROPERTY_KEY or pin key
     kind: React.PropTypes.string,
     label: React.PropTypes.string,
+    direction: React.PropTypes.string,
     value: React.PropTypes.oneOfType([
       React.PropTypes.string,
       React.PropTypes.number,
@@ -139,6 +141,9 @@ export default function composeWidget(Component, widgetProps) {
     label: 'Unknown property',
     value: '',
     focused: false,
+    isConnected: false,
+    isBindable: true,
+    direction: '',
     onPropUpdate: noop,
     onPinModeSwitch: noop,
     onFocusChanged: noop,
