@@ -933,7 +933,7 @@ describe('Patch', () => {
         const terminalPulse = Helper.defaultizePatch({
           path: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.PULSE),
         });
-        expect(Patch.canBindToOutputs(terminalPulse)).to.be.true();
+        expect(Patch.isEffectPatch(terminalPulse)).to.be.true();
       });
       it('should return true for a patch with pulse outputs', () => {
         const someLocalPatch = Helper.defaultizePatch({
@@ -947,7 +947,7 @@ describe('Patch', () => {
         const terminalPulse = Helper.defaultizePatch({
           path: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.PULSE),
         });
-        expect(Patch.canBindToOutputs(terminalPulse)).to.be.true();
+        expect(Patch.isEffectPatch(terminalPulse)).to.be.true();
       });
       it('should return false for a patch without pulse pins', () => {
         const noPinsAtAll = Helper.defaultizePatch({
