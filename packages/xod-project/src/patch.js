@@ -211,6 +211,9 @@ export const getNodeByIdUnsafe = def(
 //
 // =============================================================================
 
+const compareNodesPositionAxis = axis =>
+  R.ascend(R.pipe(Node.getNodePosition, R.prop(axis)));
+
 // :: Patch -> StrMap Pins
 const computePins = R.memoize(
   R.compose(
@@ -229,7 +232,10 @@ const computePins = R.memoize(
             '' // TODO: where do we get pin descriptions now?
           )
         ),
-        R.sortBy(R.pipe(Node.getNodePosition, R.prop('x'))) // TODO: by x, then by y
+        R.sortWith([
+          compareNodesPositionAxis('x'),
+          compareNodesPositionAxis('y'),
+        ])
       )
     ),
     R.groupBy(Node.getPinNodeDirection),

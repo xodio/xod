@@ -478,6 +478,134 @@ describe('Patch', () => {
         );
       });
     });
+
+    describe('computing from terminals', () => {
+      it('should order pins by x coordinate of terminal nodes', () => {
+        const inputBooleanType = PPU.getTerminalPath(
+          CONST.PIN_DIRECTION.INPUT,
+          CONST.PIN_TYPE.BOOLEAN
+        );
+        /**
+        +-----+   +-----+   +-----+
+        |     |   |     |   |     |
+        |  0  |   |  1  |   |  2  |
+        |     |   |     |   |     |
+        +-----+   +-----+   +-----+
+         */
+        const testPatch = Helper.defaultizePatch({
+          nodes: {
+            in0: {
+              type: inputBooleanType,
+              position: { x: 0, y: 0 },
+            },
+            in1: {
+              type: inputBooleanType,
+              position: { x: 100, y: 0 },
+            },
+            in2: {
+              type: inputBooleanType,
+              position: { x: 200, y: 0 },
+            },
+          },
+        });
+
+        const expectedPinTemplate = {
+          key: '',
+          direction: CONST.PIN_DIRECTION.INPUT,
+          type: CONST.PIN_TYPE.BOOLEAN,
+          label: '',
+          description: '',
+          order: 0,
+          value: false,
+        };
+
+        const expectedPinsList = [
+          R.merge(expectedPinTemplate, {
+            key: 'in0',
+            order: 0,
+          }),
+          R.merge(expectedPinTemplate, {
+            key: 'in1',
+            order: 1,
+          }),
+          R.merge(expectedPinTemplate, {
+            key: 'in2',
+            order: 2,
+          }),
+        ];
+
+        assert.sameDeepMembers(
+          expectedPinsList,
+          Patch.listPins(testPatch)
+        );
+      });
+
+      it('should order pins with the same x coordinate of terminal nodes by y', () => {
+        const inputBooleanType = PPU.getTerminalPath(
+          CONST.PIN_DIRECTION.INPUT,
+          CONST.PIN_TYPE.BOOLEAN
+        );
+        /**
+         +-----+   +-----+
+         |     |   |     |
+         |  0  |   |  2  |
+         |     |   |     |
+         +-----+   +-----+
+
+         +-----+
+         |     |
+         |  1  |
+         |     |
+         +-----+
+         */
+        const testPatch = Helper.defaultizePatch({
+          nodes: {
+            in0: {
+              type: inputBooleanType,
+              position: { x: 0, y: 0 },
+            },
+            in1: {
+              type: inputBooleanType,
+              position: { x: 0, y: 100 },
+            },
+            in2: {
+              type: inputBooleanType,
+              position: { x: 100, y: 0 },
+            },
+          },
+        });
+
+        const expectedPinTemplate = {
+          key: '',
+          direction: CONST.PIN_DIRECTION.INPUT,
+          type: CONST.PIN_TYPE.BOOLEAN,
+          label: '',
+          description: '',
+          order: 0,
+          value: false,
+        };
+
+        const expectedPinsList = [
+          R.merge(expectedPinTemplate, {
+            key: 'in0',
+            order: 0,
+          }),
+          R.merge(expectedPinTemplate, {
+            key: 'in1',
+            order: 1,
+          }),
+          R.merge(expectedPinTemplate, {
+            key: 'in2',
+            order: 2,
+          }),
+        ];
+
+        assert.sameDeepMembers(
+          expectedPinsList,
+          Patch.listPins(testPatch)
+        );
+      });
+    });
   });
 
   // entity setters
