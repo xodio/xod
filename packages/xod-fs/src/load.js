@@ -7,7 +7,7 @@ import * as XP from 'xod-project';
 
 import { def } from './types';
 
-import { loadLibs } from './loadLibs';
+import { loadAllLibs } from './loadLibs';
 import { readDir, readJSON } from './read';
 import * as ERROR_CODES from './errorCodes';
 import {
@@ -196,7 +196,7 @@ export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) 
     .then((projectFiles) => {
       const projectLibs = getProjectLibs(projectFiles);
       const libPath = resolvePath(libDir);
-      return loadLibs(projectLibs, libPath)
+      return loadAllLibs(workspace)
         .then(libs => ({ project: projectFiles, libs }))
         .catch((err) => {
           throw Object.assign(err, {

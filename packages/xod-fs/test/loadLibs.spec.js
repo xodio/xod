@@ -1,3 +1,4 @@
+import R from 'ramda';
 import { expect } from 'chai';
 
 import path from 'path';
@@ -10,7 +11,8 @@ describe('Library loader', () => {
   const workspace = path.resolve(__dirname, workspaceDir);
 
   it('should load xod/core libs from ./fixtures/workspace/lib', (done) => {
-    const nodeTypes = Object.assign({}, libsFixture);
+    const coreLibsOnly = R.omit(['user/utils/test', 'xod/math/test'], libsFixture);
+    const nodeTypes = Object.assign({}, coreLibsOnly);
     delete nodeTypes['@/qux']; // lib loader don't know anything about patch nodes!
 
     loadLibs(['xod/core'], workspace)
