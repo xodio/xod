@@ -212,7 +212,7 @@ export const getNodeByIdUnsafe = def(
 // =============================================================================
 
 // :: Patch -> StrMap Pins
-const computePins = R.memoize(patch =>
+const computePins = R.memoize(
   R.compose(
     R.indexBy(Pin.getPinKey),
     R.unnest,
@@ -235,7 +235,7 @@ const computePins = R.memoize(patch =>
     R.groupBy(Node.getPinNodeDirection),
     R.filter(Node.isPinNode),
     listNodes
-  )(patch)
+  )
 );
 
 const getHardcodedPinsForPatch =
@@ -603,6 +603,25 @@ export const canBindToOutputs = def(
   )
 );
 
+export const assocInitialPinValues = def(
+  'assocInitialPinValues :: Patch -> Node -> Node',
+  (patch, node) => R.assoc(
+    'boundValues',
+    R.compose(
+      R.map(R.prop('value')),
+      R.indexBy(R.prop('key')),
+      R.map(
+        R.applySpec({
+          key: Pin.getPinKey,
+          value: Pin.getPinValue,
+        })
+      ),
+      listInputPins
+    )(patch),
+    node
+  )
+);
+
 /**
  * Returns a copy of the patch with changed nodeIds and resolved links.
  *
@@ -641,7 +660,7 @@ export const getTopology = def(
     sortGraph,
     [
       R.compose(
-        R.map(x => Node.getNodeId(x)),
+        R.map(Node.getNodeId),
         listNodes
       ),
       R.compose(

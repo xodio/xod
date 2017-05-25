@@ -1,6 +1,4 @@
 import R from 'ramda';
-import * as Pin from './pin';
-import * as Patch from './patch';
 import * as Utils from './utils';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
@@ -193,25 +191,6 @@ export const isPinNode = def(
  // Pins
  //
  // =============================================================================
-
-export const assocInitialPinValues = def(
-  'assocInitialPinValues :: Patch -> Node -> Node',
-  (patch, node) => R.assoc(
-    'boundValues',
-    R.compose(
-      R.map(R.prop('value')),
-      R.indexBy(R.prop('key')),
-      R.map(
-        R.applySpec({
-          key: Pin.getPinKey,
-          value: Pin.getPinValue,
-        })
-      ),
-      Patch.listInputPins
-    )(patch),
-    node
-  )
-);
 
 /**
  * Gets all bound values of node's pins
