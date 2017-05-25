@@ -511,35 +511,15 @@ describe('Patch', () => {
           },
         });
 
-        const expectedPinTemplate = {
-          key: '',
-          direction: CONST.PIN_DIRECTION.INPUT,
-          type: CONST.PIN_TYPE.BOOLEAN,
-          label: '',
-          description: '',
-          order: 0,
-          value: false,
-          isBindable: true,
-        };
+        const orderedPinKeys = R.compose(
+          R.map(Pin.getPinKey),
+          R.sortBy(Pin.getPinOrder),
+          Patch.listPins
+        )(testPatch);
 
-        const expectedPinsList = [
-          R.merge(expectedPinTemplate, {
-            key: 'in0',
-            order: 0,
-          }),
-          R.merge(expectedPinTemplate, {
-            key: 'in1',
-            order: 1,
-          }),
-          R.merge(expectedPinTemplate, {
-            key: 'in2',
-            order: 2,
-          }),
-        ];
-
-        assert.sameDeepMembers(
-          expectedPinsList,
-          Patch.listPins(testPatch)
+        assert.deepEqual(
+          orderedPinKeys,
+          ['in0', 'in1', 'in2']
         );
       });
 
@@ -578,35 +558,15 @@ describe('Patch', () => {
           },
         });
 
-        const expectedPinTemplate = {
-          key: '',
-          direction: CONST.PIN_DIRECTION.INPUT,
-          type: CONST.PIN_TYPE.BOOLEAN,
-          label: '',
-          description: '',
-          order: 0,
-          value: false,
-          isBindable: true,
-        };
+        const orderedPinKeys = R.compose(
+          R.map(Pin.getPinKey),
+          R.sortBy(Pin.getPinOrder),
+          Patch.listPins
+        )(testPatch);
 
-        const expectedPinsList = [
-          R.merge(expectedPinTemplate, {
-            key: 'in0',
-            order: 0,
-          }),
-          R.merge(expectedPinTemplate, {
-            key: 'in1',
-            order: 1,
-          }),
-          R.merge(expectedPinTemplate, {
-            key: 'in2',
-            order: 2,
-          }),
-        ];
-
-        assert.sameDeepMembers(
-          expectedPinsList,
-          Patch.listPins(testPatch)
+        assert.deepEqual(
+          orderedPinKeys,
+          ['in0', 'in1', 'in2']
         );
       });
     });
