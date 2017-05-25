@@ -143,6 +143,20 @@
       "path": "xod/core/test",
       "impls": {}
     },
+    "user/utils/test": {
+      "description": "",
+      "impls": {},
+      "links": {},
+      "nodes": {},
+      "path": "user/utils/test"
+    },
+    "xod/math/test": {
+      "description": "",
+      "impls": {},
+      "links": {},
+      "nodes": {},
+      "path": "xod/math/test"
+    },
     "@/main": {
       "nodes": {
         "2c03e470-fefd-4f58-be6a-58d209d9158c": {

@@ -7,7 +7,7 @@ import * as XP from 'xod-project';
 
 import { def } from './types';
 
-import { loadLibs } from './loadLibs';
+import { loadAllLibs } from './loadLibs';
 import { readDir, readJSON } from './read';
 import * as ERROR_CODES from './errorCodes';
 import {
@@ -16,7 +16,6 @@ import {
   doesDirectoryExist,
   reassignIds,
   getPatchName,
-  isProjectFile,
 } from './utils';
 
 // =============================================================================
@@ -50,11 +49,6 @@ const extAmong = def(
     XF.isAmong(extensions),
     path.extname
   )(filePath)
-);
-
-const getProjectLibs = R.pipe(
-  R.find(isProjectFile),
-  R.path(['content', 'libs'])
 );
 
 const beginsWithDot = def(
@@ -194,14 +188,20 @@ export const loadProjectWithoutLibs = projectPath => R.composeP(
 export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) =>
   loadProjectWithoutLibs(resolvePath(path.resolve(workspace, projectPath)))
     .then((projectFiles) => {
-      const projectLibs = getProjectLibs(projectFiles);
       const libPath = resolvePath(libDir);
-      return loadLibs(projectLibs, libPath)
+      return loadAllLibs(workspace)
+        .catch((err) => {
+          // Catch error ENOENT in case if libsDir is not found.
+          // E.G. User deleted it before select project.
+          // So in this case we'll return just empty array of libs.
+          if (err.code === 'ENOENT') return Promise.resolve([]);
+          return Promise.reject(err);
+        })
         .then(libs => ({ project: projectFiles, libs }))
         .catch((err) => {
           throw Object.assign(err, {
             path: libPath,
-            libs: projectLibs,
+            files: projectFiles,
           });
         });
     });

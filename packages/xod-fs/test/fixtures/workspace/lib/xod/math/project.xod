@@ -1,9 +1,7 @@
 {
-  "meta": {
-    "name": "math",
-    "author": "xod"
-  },
-  "libs": [
-    "xod/core"
-  ]
+  "name": "math",
+  "authors": ["xod"],
+  "description": "",
+  "license": "",
+  "version": "0.0.1"
 }

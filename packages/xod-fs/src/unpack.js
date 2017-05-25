@@ -7,24 +7,9 @@ import { IMPL_FILENAMES } from './loadLibs';
 
 export const fsSafeName = XP.toIdentifier;
 
-const getLibNames = def(
-  'getLibNames :: Project -> [ProjectLib]',
-  R.compose(
-    R.uniq,
-    R.map(XP.getLibraryName),
-    R.reject(XP.isPathBuiltIn),
-    R.map(XP.getPatchPath),
-    XP.listLibraryPatches
-  )
-);
-
 export const getProjectFileContents = def(
   'getProjectFileContents :: Project -> ProjectFileContents',
-  project =>
-    R.compose(
-      R.assoc('libs', getLibNames(project)),
-      R.dissoc('patches')
-    )(project)
+  R.dissoc('patches')
 );
 
 export const getProjectPath = def(

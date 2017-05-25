@@ -12,7 +12,7 @@ export {
   loadProjectWithLibs,
   loadProjectWithoutLibs,
 } from './load';
-export { loadLibs, loadAllLibs } from './loadLibs';
+export { loadAllLibs } from './loadLibs';
 export * from './utils';
 export {
   findClosestProjectDir,

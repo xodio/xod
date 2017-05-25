@@ -18,9 +18,6 @@ describe('arrangeByFiles', () => {
               'Author 2',
             ],
             description: '',
-            libs: [
-              'xod/core',
-            ],
             license: '',
             version: '0.0.1',
             name: 'awesome-project',

@@ -53,8 +53,6 @@ export const XodFile = UnaryType('XodFile',
   )
 );
 
-export const ProjectLib = AliasType('ProjectLib', $.String);
-
 export const PatchFileContents = Model('PatchFileContents', {
   nodes: $.Array(Node),
   links: $.Array(Link),
@@ -70,7 +68,6 @@ export const ProjectFileContents = Model('ProjectFileContents', {
   license: $.String,
   description: $.String,
   version: $.String,
-  libs: $.Array(ProjectLib),
 });
 
 export const ProjectFile = AliasType('ProjectFile', XodFile(ProjectFileContents));
@@ -89,7 +86,6 @@ const env = xpEnv.concat([
   Path,
   XodFile,
   AnyXodFile,
-  ProjectLib,
   PatchFile,
   PatchImplFile,
   ProjectFile,

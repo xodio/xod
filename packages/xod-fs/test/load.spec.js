@@ -40,7 +40,6 @@ describe('Loader', () => {
               description: '',
               license: '',
               name: 'awesome-project',
-              libs: ['xod/core'],
               version: '42',
             },
           },

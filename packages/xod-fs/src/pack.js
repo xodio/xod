@@ -8,7 +8,6 @@ export default def(
   'packProject :: [AnyXodFile] -> Map PatchPath Patch -> Project',
   (unpackedData, libraryPatches = {}) => {
     const project = R.compose(
-      R.dissoc('libs'),
       getFileContent,
       R.find(isProjectFile)
     )(unpackedData);
