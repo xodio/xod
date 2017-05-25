@@ -16,7 +16,6 @@ import {
   doesDirectoryExist,
   reassignIds,
   getPatchName,
-  isProjectFile,
 } from './utils';
 
 // =============================================================================
@@ -50,11 +49,6 @@ const extAmong = def(
     XF.isAmong(extensions),
     path.extname
   )(filePath)
-);
-
-const getProjectLibs = R.pipe(
-  R.find(isProjectFile),
-  R.path(['content', 'libs'])
 );
 
 const beginsWithDot = def(
@@ -194,14 +188,13 @@ export const loadProjectWithoutLibs = projectPath => R.composeP(
 export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) =>
   loadProjectWithoutLibs(resolvePath(path.resolve(workspace, projectPath)))
     .then((projectFiles) => {
-      const projectLibs = getProjectLibs(projectFiles);
       const libPath = resolvePath(libDir);
       return loadAllLibs(workspace)
         .then(libs => ({ project: projectFiles, libs }))
         .catch((err) => {
           throw Object.assign(err, {
             path: libPath,
-            libs: projectLibs,
+            files: projectFiles,
           });
         });
     });

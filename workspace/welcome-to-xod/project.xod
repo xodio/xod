@@ -1,13 +1,7 @@
 {
-  "authors": [
-    ""
-  ],
-  "description": "",
-  "license": "",
-  "version": "",
+  "authors": ["xod"],
+  "description": "Welcome project is just an example of simpliest project",
+  "license": "MIT",
   "name": "welcome-to-xod",
-  "version": "0.0.1",
-  "libs": [
-    "xod/core"
-  ]
+  "version": "0.0.1"
 }

@@ -8,10 +8,7 @@
       "description": "",
       "license": "",
       "version": "42",
-      "name": "awesome-project",
-      "libs": [
-        "xod/core"
-      ]
+      "name": "awesome-project"
     }
   },
   {

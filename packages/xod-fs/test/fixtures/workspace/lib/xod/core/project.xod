@@ -1,7 +1,7 @@
 {
-  "meta": {
-    "name": "core",
-    "author": "xod"
-  },
-  "libs": []
+  "name": "core",
+  "authors": ["xod"],
+  "description": "",
+  "license": "",
+  "version": "0.0.1"
 }
