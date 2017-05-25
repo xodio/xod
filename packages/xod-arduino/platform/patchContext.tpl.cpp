@@ -15,10 +15,10 @@ namespace Inputs {
   {{#each inputs}}
     using {{ pinKey }} = InputDescriptor<{{ type }}, offsetof(Storage, input_{{ pinKey }})>;
   {{/each}}
-};
+}
 
-enum Outputs : PinKey {
+namespace Outputs {
   {{#each outputs}}
-    using {{ pinKey }} = OutputDescriptor<{{ type }}, offsetof(Storage, input_{{ pinKey }}), {{@index}}>;
+    using {{ pinKey }} = OutputDescriptor<{{ type }}, offsetof(Storage, output_{{ pinKey }}), {{@index}}>;
   {{/each}}
-};
+}

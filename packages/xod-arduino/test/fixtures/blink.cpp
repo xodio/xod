@@ -13,6 +13,7 @@
 // Uncomment to trace the program in the Serial Monitor
 //#define XOD_DEBUG
 
+
 /*=============================================================================
  *
  *
@@ -295,9 +296,15 @@ void loop() {
  *
  *
  =============================================================================*/
+
 namespace _program {
-  namespace xod { namespace core { namespace digital_output {
-  struct State {
+
+//-----------------------------------------------------------------------------
+// xod/core/digital_output implementation
+//-----------------------------------------------------------------------------
+namespace xod { namespace core { namespace digital_output {
+
+struct State {
 };
 
 struct Storage {
@@ -325,9 +332,14 @@ void evaluate(NodeId nid, State* state) {
     ::digitalWrite(pin, val);
 }
 
-  }}}
-  namespace xod { namespace math { namespace multiply {
-  struct State {
+}}} // namespace xod::core::digital_output
+
+//-----------------------------------------------------------------------------
+// xod/math/multiply implementation
+//-----------------------------------------------------------------------------
+namespace xod { namespace math { namespace multiply {
+
+struct State {
 };
 
 struct Storage {
@@ -352,9 +364,14 @@ void evaluate(NodeId nid, State* state) {
     emitNumber(nid, Outputs::OUT, in1 * in2);
 }
 
-  }}}
-  namespace xod { namespace core { namespace latch {
-  struct State {
+}}} // namespace xod::math::multiply
+
+//-----------------------------------------------------------------------------
+// xod/core/latch implementation
+//-----------------------------------------------------------------------------
+namespace xod { namespace core { namespace latch {
+
+struct State {
     bool value;
 };
 
@@ -388,9 +405,14 @@ void evaluate(NodeId nid, State* state) {
     emitLogic(nid, Outputs::OUT, state->value);
 }
 
-  }}}
-  namespace xod { namespace core { namespace clock {
-  struct State {
+}}} // namespace xod::core::latch
+
+//-----------------------------------------------------------------------------
+// xod/core/clock implementation
+//-----------------------------------------------------------------------------
+namespace xod { namespace core { namespace clock {
+
+struct State {
     TimeMs nextTrig;
 };
 
@@ -429,9 +451,14 @@ void evaluate(NodeId nid, State* state) {
     }
 }
 
-  }}}
-  namespace xod { namespace core { namespace cast_number_to_boolean {
-  struct State {
+}}} // namespace xod::core::clock
+
+//-----------------------------------------------------------------------------
+// xod/core/cast_number_to_boolean implementation
+//-----------------------------------------------------------------------------
+namespace xod { namespace core { namespace cast_number_to_boolean {
+
+struct State {
 };
 
 struct Storage {
@@ -452,9 +479,14 @@ void evaluate(NodeId nid, State* state) {
     emitLogic(nid, Outputs::OUT, getNumber(nid, Inputs::IN));
 }
 
-  }}}
-  namespace xod { namespace core { namespace cast_boolean_to_number {
-  struct State {
+}}} // namespace xod::core::cast_number_to_boolean
+
+//-----------------------------------------------------------------------------
+// xod/core/cast_boolean_to_number implementation
+//-----------------------------------------------------------------------------
+namespace xod { namespace core { namespace cast_boolean_to_number {
+
+struct State {
 };
 
 struct Storage {
@@ -475,9 +507,14 @@ void evaluate(NodeId nid, State* state) {
     emitNumber(nid, Outputs::OUT, getLogic(nid, Inputs::IN));
 }
 
-  }}}
-  namespace xod { namespace core { namespace constant_number {
-  struct State {
+}}} // namespace xod::core::cast_boolean_to_number
+
+//-----------------------------------------------------------------------------
+// xod/core/constant_number implementation
+//-----------------------------------------------------------------------------
+namespace xod { namespace core { namespace constant_number {
+
+struct State {
 };
 
 struct Storage {
@@ -496,8 +533,9 @@ void evaluate(NodeId nid, State* state) {
     reemitNumber(nid, Outputs::VAL);
 }
 
-  }}}
-}
+}}} // namespace xod::core::constant_number
+
+} // namespace _program
 
 /*=============================================================================
  *
@@ -588,18 +626,18 @@ namespace _program {
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {
-      DirtyFlags(0),
-      DirtyFlags(0),
-      DirtyFlags(0),
-      DirtyFlags(0),
-      DirtyFlags(0),
-      DirtyFlags(0),
-      DirtyFlags(-1),
-      DirtyFlags(-1)
+        DirtyFlags(0),
+        DirtyFlags(0),
+        DirtyFlags(0),
+        DirtyFlags(0),
+        DirtyFlags(0),
+        DirtyFlags(0),
+        DirtyFlags(-1),
+        DirtyFlags(-1)
     };
 
     NodeId topology[NODE_COUNT] = {
-      6, 7, 5, 1, 3, 0, 2, 4
+        6, 7, 5, 1, 3, 0, 2, 4
     };
 
     TimeMs schedule[NODE_COUNT] = { 0 };

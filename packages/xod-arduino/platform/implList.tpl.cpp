@@ -7,10 +7,18 @@
  *
  *
  =============================================================================*/
+
 namespace _program {
-  {{#each this}}
-  namespace {{ owner }} { namespace {{ libName }} { namespace {{ patchName }} {
-  {{ implementation }}
-  }}}
-  {{/each}}
-}
+
+{{#each this}}
+//-----------------------------------------------------------------------------
+// {{ owner }}/{{ libName }}/{{ patchName }} implementation
+//-----------------------------------------------------------------------------
+namespace {{ owner }} { namespace {{ libName }} { namespace {{ patchName }} {
+
+{{ implementation }}
+
+}}} // namespace {{ owner }}::{{ libName }}::{{ patchName }}
+
+{{/each}}
+} // namespace _program

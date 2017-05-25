@@ -15,6 +15,7 @@ import runtime from '../platform/runtime.cpp';
 // Utils and helpers
 //
 // =============================================================================
+const trimTrailingWhitespace = R.replace(/\s+$/gm, '\n');
 const indexByPinKey = R.indexBy(R.prop('pinKey'));
 const getPatchPins = direction => R.compose(
   indexByPinKey,
@@ -93,6 +94,7 @@ export const renderImpl = def(
 export const renderImplList = def(
   'renderImplList :: [TPatch] -> String',
   R.compose(
+    trimTrailingWhitespace,
     templates.implList,
     R.map(
       R.applySpec({
@@ -104,9 +106,12 @@ export const renderImplList = def(
     )
   )
 );
+
 export const renderProgram = def(
   'renderProgram :: [TNodeId] -> [TNode] -> String',
-  (topology, nodes) => templates.program({ topology, nodes })
+  (topology, nodes) => trimTrailingWhitespace(
+    templates.program({ topology, nodes })
+  )
 );
 export const renderProject = def(
   'renderProject :: TProject -> String',
