@@ -277,11 +277,10 @@ const compareNodesPositionAxis = axis =>
 
 // :: Patch -> Node -> Number -> Pin
 const createPinFromTerminalNode = R.curry((patch, node, order) => {
-  const areOutputsBindable = canBindToOutputs(patch);
   const direction = Node.getPinNodeDirection(node);
   const isBindable = direction === CONST.PIN_DIRECTION.INPUT
     ? true // inputs are always bindable
-    : areOutputsBindable;
+    : canBindToOutputs(patch);
   const type = Node.getPinNodeDataType(node);
   const defaultValue = Node.getBoundValue(
     getPinKeyForTerminalDirection(direction),
@@ -294,7 +293,7 @@ const createPinFromTerminalNode = R.curry((patch, node, order) => {
     direction,
     order,
     Node.getNodeLabel(node),
-    '', // TODO: where do we get pin descriptions now?
+    Node.getNodeDescription(node),
     isBindable,
     defaultValue
   );
