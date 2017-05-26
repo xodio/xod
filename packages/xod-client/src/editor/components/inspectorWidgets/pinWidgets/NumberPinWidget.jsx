@@ -15,7 +15,13 @@ const NumberWidget = (props) => {
   );
 
   return (
-    <PinWidget {...props}>
+    <PinWidget
+      elementId={props.elementId}
+      label={props.label}
+      dataType={props.dataType}
+      isConnected={props.isConnected}
+      isBindable={props.isBindable}
+    >
       <input
         className="inspectorTextInput inspectorTextInput--number"
         type="text"
@@ -32,6 +38,11 @@ const NumberWidget = (props) => {
 
 NumberWidget.propTypes = {
   elementId: React.PropTypes.string.isRequired,
+  label: React.PropTypes.string,
+  dataType: React.PropTypes.string,
+  isConnected: React.PropTypes.bool,
+  isBindable: React.PropTypes.bool,
+
   value: React.PropTypes.oneOfType([
     React.PropTypes.string,
     React.PropTypes.number,
