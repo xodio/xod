@@ -196,6 +196,10 @@ export const isPinNode = def(
 /**
  * Gets all bound values of node's pins
  *
+ * Note that the returned object may not contain values
+ * for some of the existing pins(if they were not bound)
+ * or may contain values for pins that were deleted.
+ *
  * @function getAllBoundValues
  * @param {Node} node
  * @returns {Object.<PinKey, PinValue>}

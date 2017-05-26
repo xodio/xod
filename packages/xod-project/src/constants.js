@@ -109,6 +109,11 @@ export const PIN_DIRECTION = {
   OUTPUT: 'output',
 };
 
+export const OPPOSITE_DIRECTION = {
+  [PIN_DIRECTION.INPUT]: PIN_DIRECTION.OUTPUT,
+  [PIN_DIRECTION.OUTPUT]: PIN_DIRECTION.INPUT,
+};
+
 /**
  * Enumeration of possible pin labels by directions
  *

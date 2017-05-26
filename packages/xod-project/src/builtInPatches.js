@@ -3,6 +3,7 @@ import R from 'ramda';
 import {
   PIN_TYPE,
   PIN_DIRECTION as DIRECTION,
+  OPPOSITE_DIRECTION,
   TERMINAL_PIN_KEYS,
   NOT_IMPLEMENTED_IN_XOD_PATH,
   DEFAULT_VALUE_OF_TYPE,
@@ -23,21 +24,18 @@ import {
  * +----O----+   +----------+
  *
  */
-export const getPinKeyForTerminalDirection =
-  R.flip(R.prop)({
-    [DIRECTION.INPUT]: TERMINAL_PIN_KEYS[DIRECTION.OUTPUT],
-    [DIRECTION.OUTPUT]: TERMINAL_PIN_KEYS[DIRECTION.INPUT],
-  });
+export const getPinKeyForTerminalDirection = direction =>
+  TERMINAL_PIN_KEYS[OPPOSITE_DIRECTION[direction]];
 
 const getTerminalPins = R.curry((direction, type) => {
-  const pinKey = getPinKeyForTerminalDirection(direction);
+  const pinKey = TERMINAL_PIN_KEYS[OPPOSITE_DIRECTION[direction]];
 
   return {
     [pinKey]: {
       key: pinKey,
       type,
-      direction,
-      label: direction === DIRECTION.INPUT ? 'IN' : 'OUT',
+      direction: OPPOSITE_DIRECTION[direction],
+      label: direction === DIRECTION.INPUT ? 'OUT' : 'IN',
       description: '',
       order: 0,
       defaultValue: DEFAULT_VALUE_OF_TYPE[type],
