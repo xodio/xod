@@ -1,39 +1,20 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
-      "id": "ByXnYHPyb",
-      "type": "xod/patch-nodes/input-number",
-      "label": "DUTY",
+      "boundValues": {},
       "description": "",
+      "id": "ByXnYHPyb",
+      "label": "DUTY",
       "position": {
         "x": 10,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-number"
     },
     {
-      "id": "rJsaFSvk-",
-      "type": "xod/patch-nodes/input-number",
-      "label": "PORT",
-      "description": "",
-      "position": {
-        "x": 266,
-        "y": 16
-      },
-      "boundValues": {}
-    },
-    {
-      "id": "rkAnKBvyZ",
-      "type": "xod/patch-nodes/input-pulse",
-      "label": "UPD",
-      "description": "",
-      "position": {
-        "x": 138,
-        "y": 16
-      },
-      "boundValues": {}
-    },
-    {
+      "boundValues": {},
       "description": "",
       "id": "noNativeImpl",
       "label": "",
@@ -41,10 +22,29 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rJsaFSvk-",
+      "label": "PORT",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rkAnKBvyZ",
+      "label": "UPD",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }

@@ -1,41 +1,44 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
-      "id": "HkOV8CdSvyW",
-      "type": "xod/patch-nodes/input-boolean",
-      "label": "A",
+      "boundValues": {},
       "description": "",
+      "id": "HkOV8CdSvyW",
+      "label": "A",
       "position": {
         "x": 10,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "id": "Hkw48AdSPyb",
-      "type": "xod/patch-nodes/output-boolean",
-      "label": "XOR",
+      "boundValues": {
+        "__in__": false
+      },
       "description": "",
+      "id": "Hkw48AdSPyb",
+      "label": "XOR",
       "position": {
         "x": 10,
         "y": 224
       },
-      "boundValues": {
-        "__in__": false
-      }
+      "type": "xod/patch-nodes/output-boolean"
     },
     {
-      "id": "SkKNUR_SwyW",
-      "type": "xod/patch-nodes/input-boolean",
-      "label": "B",
+      "boundValues": {},
       "description": "",
+      "id": "SkKNUR_SwyW",
+      "label": "B",
       "position": {
         "x": 138,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-boolean"
     },
     {
+      "boundValues": {},
       "description": "",
       "id": "noNativeImpl",
       "label": "",
@@ -43,10 +46,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }

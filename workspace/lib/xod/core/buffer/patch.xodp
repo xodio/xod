@@ -1,54 +1,44 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
-      "id": "B1zQ8CdSvJ-",
-      "type": "xod/patch-nodes/output-pulse",
-      "label": "CHNG",
-      "description": "",
-      "position": {
-        "x": 138,
-        "y": 224
-      },
       "boundValues": {
         "__in__": false
-      }
+      },
+      "description": "",
+      "id": "B1zQ8CdSvJ-",
+      "label": "CHNG",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "id": "HkXm80uHPyb",
-      "type": "xod/patch-nodes/input-number",
-      "label": "NEW",
+      "boundValues": {},
       "description": "",
+      "id": "HkXm80uHPyb",
+      "label": "NEW",
       "position": {
         "x": 10,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-number"
     },
     {
-      "id": "Hy-QUR_BPkZ",
-      "type": "xod/patch-nodes/input-pulse",
-      "label": "UPD",
+      "boundValues": {},
       "description": "",
+      "id": "Hy-QUR_BPkZ",
+      "label": "UPD",
       "position": {
         "x": 138,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "id": "r1lQLAOBwJb",
-      "type": "xod/patch-nodes/output-number",
-      "label": "MEM",
-      "description": "",
-      "position": {
-        "x": 10,
-        "y": 224
-      },
-      "boundValues": {
-        "__in__": 0
-      }
-    },
-    {
+      "boundValues": {},
       "description": "",
       "id": "noNativeImpl",
       "label": "",
@@ -56,10 +46,20 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {
+        "__in__": 0
+      },
+      "description": "",
+      "id": "r1lQLAOBwJb",
+      "label": "MEM",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }

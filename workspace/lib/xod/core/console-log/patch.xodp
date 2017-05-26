@@ -1,28 +1,31 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
-      "id": "HJdO9HwJ-",
-      "type": "xod/patch-nodes/input-string",
-      "label": "LINE",
+      "boundValues": {},
       "description": "",
+      "id": "HJdO9HwJ-",
+      "label": "LINE",
       "position": {
         "x": 10,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-string"
     },
     {
-      "id": "S1n95SDJb",
-      "type": "xod/patch-nodes/input-pulse",
-      "label": "DUMP",
+      "boundValues": {},
       "description": "",
+      "id": "S1n95SDJb",
+      "label": "DUMP",
       "position": {
         "x": 138,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "boundValues": {},
       "description": "",
       "id": "noNativeImpl",
       "label": "",
@@ -30,10 +33,7 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }

@@ -1,52 +1,33 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
-      "id": "S13xLCuHvkW",
-      "type": "xod/patch-nodes/output-number",
-      "label": "R",
+      "boundValues": {
+        "__in__": 0
+      },
       "description": "",
+      "id": "S13xLCuHvkW",
+      "label": "R",
       "position": {
         "x": 10,
         "y": 224
       },
-      "boundValues": {
-        "__in__": 0
-      }
+      "type": "xod/patch-nodes/output-number"
     },
     {
-      "id": "S1yZIA_rDJZ",
-      "type": "xod/patch-nodes/input-boolean",
-      "label": "COND",
+      "boundValues": {},
       "description": "",
+      "id": "S1yZIA_rDJZ",
+      "label": "COND",
       "position": {
         "x": 10,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "id": "r1AgIROHDJW",
-      "type": "xod/patch-nodes/input-number",
-      "label": "F",
-      "description": "",
-      "position": {
-        "x": 266,
-        "y": 16
-      },
-      "boundValues": {}
-    },
-    {
-      "id": "ryTeUROHD1b",
-      "type": "xod/patch-nodes/input-number",
-      "label": "T",
-      "description": "",
-      "position": {
-        "x": 138,
-        "y": 16
-      },
-      "boundValues": {}
-    },
-    {
+      "boundValues": {},
       "description": "",
       "id": "noNativeImpl",
       "label": "",
@@ -54,10 +35,29 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "r1AgIROHDJW",
+      "label": "F",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "ryTeUROHD1b",
+      "label": "T",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }

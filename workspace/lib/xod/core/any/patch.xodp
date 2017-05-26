@@ -1,41 +1,33 @@
 {
+  "description": "",
+  "links": [],
   "nodes": [
     {
-      "id": "ByHmL0uHPk-",
-      "type": "xod/patch-nodes/output-pulse",
-      "label": "ANY",
+      "boundValues": {
+        "__in__": false
+      },
       "description": "",
+      "id": "ByHmL0uHPk-",
+      "label": "ANY",
       "position": {
         "x": 10,
         "y": 224
       },
-      "boundValues": {
-        "__in__": false
-      }
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "id": "ByU7LRuSPkW",
-      "type": "xod/patch-nodes/input-pulse",
-      "label": "P2",
+      "boundValues": {},
       "description": "",
+      "id": "ByU7LRuSPkW",
+      "label": "P2",
       "position": {
         "x": 138,
         "y": 16
       },
-      "boundValues": {}
+      "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "id": "ryv7IRdSP1b",
-      "type": "xod/patch-nodes/input-pulse",
-      "label": "P1",
-      "description": "",
-      "position": {
-        "x": 10,
-        "y": 16
-      },
-      "boundValues": {}
-    },
-    {
+      "boundValues": {},
       "description": "",
       "id": "noNativeImpl",
       "label": "",
@@ -43,10 +35,18 @@
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod",
-      "boundValues": {}
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "ryv7IRdSP1b",
+      "label": "P1",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
     }
-  ],
-  "links": [],
-  "description": ""
+  ]
 }
