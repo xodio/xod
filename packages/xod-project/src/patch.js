@@ -642,25 +642,6 @@ export const dissocNode = def(
 //
 // =============================================================================
 
-export const assocInitialPinValues = def(
-  'assocInitialPinValues :: Patch -> Node -> Node',
-  (patch, node) => R.assoc(
-    'boundValues',
-    R.compose(
-      R.map(R.prop('value')),
-      R.indexBy(R.prop('key')),
-      R.map(
-        R.applySpec({
-          key: Pin.getPinKey,
-          value: Pin.getPinValue,
-        })
-      ),
-      listInputPins
-    )(patch),
-    node
-  )
-);
-
 /**
  * Returns a copy of the patch with changed nodeIds and resolved links.
  *

@@ -30,7 +30,6 @@ export {
   canBindToOutputs,
   renumberNodes,
   getTopology,
-  assocInitialPinValues,
 } from './patch';
 export * from './node';
 export {
