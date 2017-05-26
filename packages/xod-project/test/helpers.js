@@ -111,7 +111,7 @@ export const defaultizePin = R.merge({
   direction: PIN_DIRECTION.INPUT,
   label: '$$defaultLabel',
   type: PIN_TYPE.NUMBER,
-  value: 0,
+  defaultValue: 0,
   order: 0,
   description: '$$defaultDesription',
   isBindable: true,

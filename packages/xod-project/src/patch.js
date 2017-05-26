@@ -10,7 +10,7 @@ import * as Pin from './pin';
 import * as Utils from './utils';
 import { sortGraph } from './gmath';
 import { def } from './types';
-import { getHardcodedPinsForPatchPath } from './builtInPatches';
+import { getHardcodedPinsForPatchPath, getPinKeyForTerminalDirection } from './builtInPatches';
 import { getLocalPath, isTerminalPatchPath, isConstantPatchPath } from './patchPathUtils';
 
 /**
@@ -282,15 +282,21 @@ const createPinFromTerminalNode = R.curry((patch, node, order) => {
   const isBindable = direction === CONST.PIN_DIRECTION.INPUT
     ? true // inputs are always bindable
     : areOutputsBindable;
+  const type = Node.getPinNodeDataType(node);
+  const defaultValue = Node.getBoundValue(
+    getPinKeyForTerminalDirection(direction),
+    node
+  ).getOrElse(Utils.defaultValueOfType(type));
 
   return Pin.createPin(
     Node.getNodeId(node),
-    Node.getPinNodeDataType(node),
+    type,
     direction,
     order,
     Node.getNodeLabel(node),
     '', // TODO: where do we get pin descriptions now?
-    isBindable
+    isBindable,
+    defaultValue
   );
 });
 

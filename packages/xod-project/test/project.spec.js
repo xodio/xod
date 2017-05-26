@@ -160,7 +160,7 @@ describe('Project', () => {
       },
     });
 
-    const expectedPins = [Pin.createPin('a', 'number', 'input', 0, 'A', '', true)];
+    const expectedPins = [Pin.createPin('a', 'number', 'input', 0, 'A', '', true, 0)];
 
     it('should return Nothing for unexisting patch', () => {
       const maybe = Project.getNodePins(Helper.defaultizeNode({ type: 'test/unexisting/patch' }), emptyProject);
@@ -183,7 +183,7 @@ describe('Project', () => {
       },
     });
 
-    const expectedPin = Pin.createPin('a', 'number', 'input', 0, 'A', '', true);
+    const expectedPin = Pin.createPin('a', 'number', 'input', 0, 'A', '', true, 0);
 
     it('should return Nothing for unexisting patch', () => {
       const maybe = Project.getNodePin('test', Helper.defaultizeNode({ type: 'test/unexisting/patch' }), emptyProject);

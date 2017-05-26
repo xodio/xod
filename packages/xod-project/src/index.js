@@ -38,7 +38,7 @@ export {
   getPinDirection,
   getPinKey,
   getPinLabel,
-  getPinValue,
+  getPinDefaultValue,
   getPinDescription,
   getPinOrder,
   isInputPin,

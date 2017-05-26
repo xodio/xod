@@ -2,9 +2,10 @@ import R from 'ramda';
 
 import {
   PIN_TYPE,
-  PIN_DIRECTION,
+  PIN_DIRECTION as DIRECTION,
   TERMINAL_PIN_KEYS,
   NOT_IMPLEMENTED_IN_XOD_PATH,
+  DEFAULT_VALUE_OF_TYPE,
 } from './constants';
 
 import {
@@ -12,30 +13,37 @@ import {
   getInternalTerminalPath,
 } from './patchPathUtils';
 
-const getOutputPatchPins = type => ({
-  [TERMINAL_PIN_KEYS[PIN_DIRECTION.INPUT]]: {
-    key: TERMINAL_PIN_KEYS[PIN_DIRECTION.INPUT],
-    type,
-    direction: PIN_DIRECTION.INPUT,
-    label: 'IN',
-    description: '',
-    order: 0,
-    value: '',
-    isBindable: true,
-  },
-});
+/**
+ * Input terminal patches have output pins, and vice versa:
+ *
+ * +---------+   +-----O----+
+ * |         |   |    IN    |
+ * | input-* |   | output-* |
+ * |   OUT   |   |          |
+ * +----O----+   +----------+
+ *
+ */
+export const getPinKeyForTerminalDirection =
+  R.flip(R.prop)({
+    [DIRECTION.INPUT]: TERMINAL_PIN_KEYS[DIRECTION.OUTPUT],
+    [DIRECTION.OUTPUT]: TERMINAL_PIN_KEYS[DIRECTION.INPUT],
+  });
 
-const getInputPatchPins = type => ({
-  [TERMINAL_PIN_KEYS[PIN_DIRECTION.OUTPUT]]: {
-    key: TERMINAL_PIN_KEYS[PIN_DIRECTION.OUTPUT],
-    type,
-    direction: PIN_DIRECTION.OUTPUT,
-    label: 'OUT',
-    description: '',
-    order: 0,
-    value: '',
-    isBindable: true, // terminal's pins are always bindable
-  },
+const getTerminalPins = R.curry((direction, type) => {
+  const pinKey = getPinKeyForTerminalDirection(direction);
+
+  return {
+    [pinKey]: {
+      key: pinKey,
+      type,
+      direction,
+      label: direction === DIRECTION.INPUT ? 'IN' : 'OUT',
+      description: '',
+      order: 0,
+      defaultValue: DEFAULT_VALUE_OF_TYPE[type],
+      isBindable: true, // terminal's pins are always bindable
+    },
+  };
 });
 
 export const PINS_OF_PATCH_NODES = R.compose(
@@ -45,13 +53,13 @@ export const PINS_OF_PATCH_NODES = R.compose(
     {},
   ]),
   R.ap([ // [[patchBaseName, patchPins]] for each type and direction
-    R.juxt([
-      getTerminalPath(PIN_DIRECTION.OUTPUT),
-      getOutputPatchPins,
+    R.juxt([ // TODO: make more DRY or more readable?
+      getTerminalPath(DIRECTION.OUTPUT),
+      getTerminalPins(DIRECTION.OUTPUT),
     ]),
     R.juxt([
-      getTerminalPath(PIN_DIRECTION.INPUT),
-      getInputPatchPins,
+      getTerminalPath(DIRECTION.INPUT),
+      getTerminalPins(DIRECTION.INPUT),
     ]),
   ]),
   R.values
@@ -66,10 +74,10 @@ const TERMINAL_NODE_PINS = R.compose(
       getInternalTerminalPath,
       R.converge(
         R.merge,
-        [
-          getInputPatchPins,
-          getOutputPatchPins,
-        ]
+        R.compose(
+          R.map(getTerminalPins),
+          R.values
+        )(DIRECTION)
       ),
     ])
   ),

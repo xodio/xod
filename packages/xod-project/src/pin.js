@@ -1,5 +1,4 @@
 import R from 'ramda';
-import * as Utils from './utils';
 import * as CONST from './constants';
 import { def } from './types';
 
@@ -22,8 +21,8 @@ import { def } from './types';
  * @returns {Pin}
  */
 export const createPin = def(
-  'createPin :: PinKey -> DataType -> PinDirection -> Number -> PinLabel -> String -> Boolean -> Pin',
-  (key, type, direction, order, label, description, isBindable) => ({
+  'createPin :: PinKey -> DataType -> PinDirection -> Number -> PinLabel -> String -> Boolean -> DataValue -> Pin',
+  (key, type, direction, order, label, description, isBindable, defaultValue) => ({
     key,
     type,
     direction,
@@ -31,7 +30,7 @@ export const createPin = def(
     description,
     order,
     isBindable,
-    value: Utils.defaultValueOfType(type), // TODO: support 'custom' default values
+    defaultValue,
   })
 );
 
@@ -82,13 +81,13 @@ export const getPinLabel = def(
 );
 
 /**
- * @function getPinValue
+ * @function getPinDefaultValue
  * @param {Pin} pin
  * @returns {DataValue}
  */
-export const getPinValue = def(
-  'getPinValue :: Pin -> DataValue',
-  R.prop('value')
+export const getPinDefaultValue = def(
+  'getPinDefaultValue :: Pin -> DataValue',
+  R.prop('defaultValue')
 );
 
 /**

@@ -52,7 +52,7 @@ export const Pin = Model('Pin', {
   direction: PinDirection,
   label: PinLabel,
   type: DataType,
-  value: DataValue,
+  defaultValue: DataValue,
   order: $.Number,
   description: $.String,
   isBindable: $.Boolean,

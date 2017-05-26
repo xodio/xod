@@ -1,4 +1,5 @@
 import R from 'ramda';
+import * as Pin from './pin';
 import * as Utils from './utils';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
@@ -223,6 +224,14 @@ export const getBoundValue = def(
       R.identity,
     ]
   )
+);
+
+export const getBoundValueOrDefault = def(
+  'getBoundValueOrDefault :: Pin -> Node -> DataValue',
+  (pin, node) => getBoundValue(
+    Pin.getPinKey(pin),
+    node
+  ).getOrElse(Pin.getPinDefaultValue(pin))
 );
 
 /**

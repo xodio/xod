@@ -52,6 +52,13 @@ export const PIN_TYPE = {
   PULSE: 'pulse',
 };
 
+export const DEFAULT_VALUE_OF_TYPE = {
+  [PIN_TYPE.STRING]: '',
+  [PIN_TYPE.NUMBER]: 0,
+  [PIN_TYPE.BOOLEAN]: false,
+  [PIN_TYPE.PULSE]: false,
+};
+
 /**
  * A lookup table that answers the
  * question 'can a type A be cast to type B?'
