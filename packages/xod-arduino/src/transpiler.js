@@ -436,7 +436,7 @@ const createTPatches = def(
     R.mapObjIndexed((patch, path) => {
       const names = createPatchNames(path);
       const impl = explode(Project.getImplByArray(ARDUINO_IMPLS, patch));
-      const isDirty = isConstPath(path);
+      const isDirty = R.either(isConstPath, R.equals('xod/core/boot'))(path);
 
       const outputs = R.compose(
         R.map(R.applySpec({
@@ -450,7 +450,7 @@ const createTPatches = def(
       const inputs = R.compose(
         R.map(R.applySpec({
           type: R.compose(R.prop(R.__, TYPES_MAP), Project.getPinType),
-          pinKey: Project.getPinLabel 
+          pinKey: Project.getPinLabel,
         })),
         Project.normalizePinLabels,
         Project.listInputPins

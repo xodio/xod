@@ -6,7 +6,7 @@
     "build": "babel src/ -d dist/",
     "dev": "yarn run build -- --watch",
     "doc": "documentation build --format html --output doc --sort-order alpha src/",
-    "test": "mocha test/**/*.spec.js"
+    "test": "BABEL_DISABLE_CACHE=1 mocha test/**/*.spec.js"
   },
   "repository": {},
   "keywords": [],
@@ -27,7 +27,7 @@
   "devDependencies": {
     "babel-plugin-inline-import": "^2.0.4",
     "chai": "^3.5.0",
-    "chai-string": "^1.3.0",
-    "dirty-chai": "^1.2.2"
+    "dirty-chai": "^1.2.2",
+    "xod-fs": "^0.0.1"
   }
 }

@@ -1,31 +1,29 @@
-import chai, { assert } from 'chai';
+import fs from 'fs';
+import path from 'path';
+import R from 'ramda';
+import { assert } from 'chai';
 
-import { foldEither } from 'xod-func-tools';
+import { explode } from 'xod-func-tools';
+import { loadProject } from 'xod-fs';
 import transpile from '../src/transpiler';
 
-import blinkProject from './fixtures/blink.project.json';
-import blinkCpp from './fixtures/blink.cpp';
-
-import potLedProject from './fixtures/pot-led.project.json';
-import potLedCpp from './fixtures/pot-led.cpp';
+const wsPath = subpath => path.resolve(__dirname, '../../../workspace', subpath);
 
 describe('xod-arduino transpiler (end-to-end tests)', () => {
   it('Transpile Blink project with "@/main" entry-point patch should return Either.Right with C++ code', () => {
-    foldEither(
-      (err) => { throw err; },
-      cpp => assert.strictEqual(cpp, blinkCpp, 'expected and actual C++ don’t match'),
-      transpile(blinkProject, '@/main')
-    );
+    const expectedCpp = fs.readFileSync(wsPath('blink/__fixtures__/arduino.cpp'), 'utf-8');
+    return loadProject(wsPath('blink'))
+      .then(transpile(R.__, '@/main'))
+      .then(explode)
+      .then(cpp =>
+        assert.strictEqual(cpp, expectedCpp, 'expected and actual C++ don’t match')
+      );
   });
-  it.skip('Transpile PotLed project with "@/main" entry-point patch should return Either.Right with C++ code', () => {
-    foldEither(
-      (err) => { throw err; },
-      cpp => assert.strictEqual(cpp, potLedCpp, 'expected and actual C++ don’t match'),
-      transpile(potLedProject, '@/main')
-    );
-  });
-  it('Transpile Blink project with non-existing-patch as entry-point should return Either.Left with error if entry-point patch not found', () => {
-    const r = transpile(blinkProject, '@/non-existing-patch');
-    assert.equal(r.isLeft, true);
-  });
+
+  it('Transpile Blink project with a non-existing-patch as entry-point should return Either.Left with error',
+    () =>
+      loadProject(wsPath('blink'))
+        .then(transpile(R.__, '@/non-existing-patch'))
+        .then(result => assert.ok(result.isLeft))
+  );
 });

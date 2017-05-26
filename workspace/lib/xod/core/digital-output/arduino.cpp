@@ -1,15 +1,21 @@
 struct State {
+    int configuredPort = -1;
 };
 
 {{ GENERATED_CODE }}
 
 void evaluate(NodeId nid, State* state) {
-    const int pin = (int)getNumber(nid, Inputs::PORT);
-    const bool val = getLogic(nid, Inputs::SIG);
+    if (!isInputDirty<Inputs::UPD>(nid))
+        return;
 
-    if (isInputDirty(nid, Inputs::PORT)) {
-        ::pinMode(pin, OUTPUT);
+    const int port = (int)getValue<Inputs::PORT>(nid);
+    if (port != state->configuredPort) {
+        ::pinMode(port, OUTPUT);
+        // Store configured port so to avoid repeating `pinMode` call if just
+        // SIG is updated
+        state->configuredPort = port;
     }
 
-    ::digitalWrite(pin, val);
+    const bool val = getValue<Inputs::SIG>(nid);
+    ::digitalWrite(port, val);
 }

@@ -1,5 +1,4 @@
-import R from 'ramda';
-import chai, { assert } from 'chai';
+import { assert } from 'chai';
 import * as T from '../src/templates';
 
 import inputImpl from './fixtures/impl.input.cpp';
