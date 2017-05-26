@@ -1,11 +1,18 @@
+import R from 'ramda';
 import React from 'react';
 
 import PinWidget from './PinWidget';
 
 const NumberWidget = (props) => {
-  const onChange = (event) => {
-    props.onChange(event.target.value);
-  };
+  const onChange = R.compose(
+    props.onChange,
+    R.when(
+      isNaN,
+      R.always(0)
+    ),
+    parseFloat,
+    R.path(['target', 'value'])
+  );
 
   return (
     <PinWidget {...props}>
