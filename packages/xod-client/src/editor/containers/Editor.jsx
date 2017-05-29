@@ -14,6 +14,7 @@ import { COMMAND } from '../../utils/constants';
 import { EDITOR_MODE } from '../../editor/constants';
 
 import Patch from './Patch';
+import NoPatch from '../components/NoPatch';
 import ProjectBrowser from '../../projectBrowser/containers/ProjectBrowser';
 import Sidebar from '../../utils/components/Sidebar';
 import Workarea from '../../utils/components/Workarea';
@@ -64,9 +65,8 @@ class Editor extends React.Component {
           size={this.patchSize}
           setModeCreating={this.setModeCreating}
         />
-      )
-      : ( // TODO: some kind of welcome screen
-        <p>no open patch</p>
+      ) : (
+        <NoPatch />
       );
 
     return (
