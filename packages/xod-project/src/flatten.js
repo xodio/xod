@@ -770,6 +770,27 @@ const flattenProject = R.curry((project, path, impls, patch) =>
 );
 
 /**
+ * If for some reason we choose a patch that is not implemented in XOD
+ * as an entry point(in most cases such patches will be leaf patches),
+ * check that it at least has required implementations.
+ */
+const checkEntryPatchImplementations = R.curry((impls, patch) =>
+  R.ifElse(
+    isLeafPatchWithoutImpls(impls),
+    err(
+      formatString(
+        CONST.ERROR.IMPLEMENTATION_NOT_FOUND,
+        {
+          impl: impls,
+          patchPath: Patch.getPatchPath(patch),
+        }
+      )
+    ),
+    Either.of
+  )(patch)
+);
+
+/**
  * Flattens project
  *
  * To transpile project into any native language we need a flattened graph of nodes
@@ -830,6 +851,7 @@ export default R.curry((inputProject, path, impls) =>
   Project.validateProject(inputProject).chain(project =>
     R.compose(
       R.chain(flattenProject(project, path, impls)),
+      R.chain(checkEntryPatchImplementations(impls)),
       errOnNothing(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })),
       Project.getPatchByPath(path)
     )(project)

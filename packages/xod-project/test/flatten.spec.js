@@ -1686,7 +1686,6 @@ describe('Flatten', () => {
               type: 'xod/core/and',
             },
           },
-          links: {},
         },
         'xod/core/or': {
           nodes: {
@@ -1696,7 +1695,6 @@ describe('Flatten', () => {
               type: 'xod/patch-nodes/not-implemented-in-xod',
             },
           },
-          links: {},
           impls: {
             js: '// ok',
             arduino: '// ok',
@@ -1710,7 +1708,6 @@ describe('Flatten', () => {
               type: 'xod/patch-nodes/not-implemented-in-xod',
             },
           },
-          links: {},
           impls: {
             js: '// ok',
             cpp: '// ok',
@@ -1763,6 +1760,32 @@ describe('Flatten', () => {
           expect,
           flatProject,
           formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: impls, patchPath: 'xod/core/or' })
+        );
+      });
+    });
+    describe('patch not implemented in xod as an entry point', () => {
+      it('should not be a valid entry point if it has no defined implementation', () => {
+        const flatProject = flatten(project, 'xod/core/or', ['java']);
+        expect(flatProject.isLeft).to.be.true();
+        Helper.expectErrorMessage(
+          expect,
+          flatProject,
+          formatString(
+            CONST.ERROR.IMPLEMENTATION_NOT_FOUND,
+            { impl: 'java', patchPath: 'xod/core/or' }
+          )
+        );
+      });
+      it('shoud be a valid entry point if it has required implementation', () => {
+        const flatProject = flatten(project, 'xod/core/or', ['js']);
+
+        expect(flatProject.isRight).to.be.true();
+        Helper.expectEither(
+          (newProject) => {
+            expect(newProject.patches['xod/core/or'])
+              .to.be.deep.equal(project.patches['xod/core/or']);
+          },
+          flatProject
         );
       });
     });
