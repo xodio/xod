@@ -27,6 +27,7 @@ const getPinWidgetProps = R.applySpec({
   keyName: XP.getPinKey,
   type: XP.getPinType,
   label: XP.getPinLabel,
+  normalizedLabel: R.prop('normalizedLabel'),
   value: R.prop('value'),
   direction: XP.getPinDirection,
   isConnected: R.prop('isConnected'),

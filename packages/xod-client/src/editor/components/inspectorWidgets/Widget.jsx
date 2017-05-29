@@ -99,6 +99,7 @@ export default function composeWidget(Component, widgetProps) {
           <Component
             elementId={elementId}
             label={this.props.label}
+            normalizedLabel={this.props.normalizedLabel}
             isConnected={this.props.isConnected}
             isBindable={this.props.isBindable}
             direction={this.props.direction}
@@ -121,6 +122,7 @@ export default function composeWidget(Component, widgetProps) {
     keyName: React.PropTypes.string.isRequired, // one of NODE_PROPERTY_KEY or pin key
     kind: React.PropTypes.string,
     label: React.PropTypes.string,
+    normalizedLabel: React.PropTypes.string,
     direction: React.PropTypes.string,
     value: React.PropTypes.oneOfType([
       React.PropTypes.string,
@@ -139,6 +141,7 @@ export default function composeWidget(Component, widgetProps) {
   Widget.defaultProps = {
     className: '',
     label: 'Unknown property',
+    normalizedLabel: '',
     value: '',
     focused: false,
     isConnected: false,

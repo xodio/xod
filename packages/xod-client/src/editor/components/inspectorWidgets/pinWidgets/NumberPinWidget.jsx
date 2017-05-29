@@ -18,6 +18,7 @@ const NumberWidget = (props) => {
     <PinWidget
       elementId={props.elementId}
       label={props.label}
+      normalizedLabel={props.normalizedLabel}
       dataType={props.dataType}
       isConnected={props.isConnected}
       isBindable={props.isBindable}
@@ -38,6 +39,7 @@ const NumberWidget = (props) => {
 
 NumberWidget.propTypes = {
   elementId: React.PropTypes.string.isRequired,
+  normalizedLabel: React.PropTypes.string.isRequired,
   label: React.PropTypes.string,
   dataType: React.PropTypes.string,
   isConnected: React.PropTypes.bool,
