@@ -1,4 +1,3 @@
-import fs from 'fs';
 import R from 'ramda';
 import chai, { expect, assert } from 'chai';
 import dirtyChai from 'dirty-chai';
