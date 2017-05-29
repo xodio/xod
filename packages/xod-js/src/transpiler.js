@@ -218,7 +218,7 @@ export const createConstNode = def(
     const newOutPinKey = getOutputPinKeyByPath(newNodeType, origProject);
 
     return R.compose(
-      R.assoc('id', newNodeId), // TODO: Maybe make `setNodeId` function in `xod-project`?
+      R.assoc('id', newNodeId), // TODO: Replace with `setNodeId` function from `xod-project` or make pure `createNode`?
       Project.setBoundValue(newOutPinKey, pinValue),
       Project.createNode({ x: 0, y: 0 })
     )(newNodeType);
@@ -235,7 +235,7 @@ export const createConstLink = def(
     const newNodeType = R.prop(pinType, CONST_NODETYPES);
     const outPinKey = getOutputPinKeyByPath(newNodeType, origProject);
     return R.compose(
-      R.assoc('id', `${newNodeId}-to-${nodeId}`), // TODO: Maybe make `setLinkId` function in `xod-project`?
+      R.assoc('id', `${newNodeId}-to-${nodeId}`), // TODO: Replace with `setLinkId` function from `xod-project` or make pure `createLink`?
       Project.createLink
     )(pinKey, nodeId, outPinKey, newNodeId);
   }
@@ -314,11 +314,10 @@ export const transformPatch = R.curry((path, origProject, project) =>
   .map(addConstNodesToPatch(origProject, project))
 );
 
-// TODO: Replace with the same function from `xod-project`` after merging of #527
 const isConstantNode = def(
   'isConstantNode :: Node -> Boolean',
   R.compose(
-    XF.isAmong(R.values(CONST_NODETYPES)),
+    Project.isConstantPatchPath,
     Project.getNodeType
   )
 );
