@@ -10,8 +10,8 @@ import * as Pin from './pin';
 import * as Utils from './utils';
 import { sortGraph } from './gmath';
 import { def } from './types';
-import { getHardcodedPinsForPatchPath } from './builtInPatches';
-import { getLocalPath } from './patchPathUtils';
+import { getHardcodedPinsForPatchPath, getPinKeyForTerminalDirection } from './builtInPatches';
+import { getLocalPath, isTerminalPatchPath, isConstantPatchPath } from './patchPathUtils';
 
 /**
  * An object representing single patch in a project
@@ -211,6 +211,94 @@ export const getNodeByIdUnsafe = def(
 //
 // =============================================================================
 
+const getHardcodedPinsForPatch =
+  R.pipe(getPatchPath, getHardcodedPinsForPatchPath);
+
+// not isPathBuiltIn, because it does not cover internal patches
+const patchHasHardcodedPins =
+  R.pipe(getHardcodedPinsForPatch, notNil);
+
+
+/**
+ * Tells if a given patch is an 'effect patch'.
+ *
+ * An effect patch is a patch that performs some side-effects.
+ * Effect patches always have at least one pulse pin.
+ */
+export const isEffectPatch = def(
+  'isEffectPatch :: Patch -> Boolean',
+  R.compose(
+    R.contains(CONST.PIN_TYPE.PULSE),
+    // we don't just use `listPins` here to be able
+    // to use this function in `computePins`,
+    // where a full pins list is not available yet
+    R.ifElse(
+      patchHasHardcodedPins,
+      R.compose(
+        R.map(Pin.getPinType),
+        R.values,
+        getHardcodedPinsForPatch
+      ),
+      R.compose(
+        R.map(Node.getPinNodeDataType),
+        R.filter(Node.isPinNode),
+        listNodes
+      )
+    )
+  )
+);
+
+/**
+ * Tells if a given patch is a 'functional patch'.
+ *
+ * A 'functional patch' is the opposite of an 'effect patch'.
+ * It performs only pure data transformations, and the
+ * value of it's outputs is determined only by it's inputs.
+ * Functional patches never have pulse pins.
+ */
+export const isFunctionalPatch = R.complement(isEffectPatch);
+
+export const canBindToOutputs = def(
+  'canBindToOutputs :: Patch -> Boolean',
+  R.either(
+    R.compose( // it's one of 'allowed' types
+      R.anyPass([
+        isTerminalPatchPath,
+        isConstantPatchPath,
+      ]),
+      getPatchPath
+    ),
+    isEffectPatch
+  )
+);
+
+const compareNodesPositionAxis = axis =>
+  R.ascend(R.pipe(Node.getNodePosition, R.prop(axis)));
+
+// :: Patch -> Node -> Number -> Pin
+const createPinFromTerminalNode = R.curry((patch, node, order) => {
+  const direction = Node.getPinNodeDirection(node);
+  const isBindable = direction === CONST.PIN_DIRECTION.INPUT
+    ? true // inputs are always bindable
+    : canBindToOutputs(patch);
+  const type = Node.getPinNodeDataType(node);
+  const defaultValue = Node.getBoundValue(
+    getPinKeyForTerminalDirection(direction),
+    node
+  ).getOrElse(Utils.defaultValueOfType(type));
+
+  return Pin.createPin(
+    Node.getNodeId(node),
+    type,
+    direction,
+    order,
+    Node.getNodeLabel(node),
+    Node.getNodeDescription(node),
+    isBindable,
+    defaultValue
+  );
+});
+
 // :: Patch -> StrMap Pins
 const computePins = R.memoize(patch =>
   R.compose(
@@ -220,16 +308,12 @@ const computePins = R.memoize(patch =>
     R.map(
       R.compose(
         R.addIndex(R.map)(
-          (node, order) => Pin.createPin(
-            Node.getNodeId(node),
-            Node.getPinNodeDataType(node),
-            Node.getPinNodeDirection(node),
-            order,
-            Node.getNodeLabel(node),
-            '' // TODO: where do we get pin descriptions now?
-          )
+          createPinFromTerminalNode(patch)
         ),
-        R.sortBy(R.pipe(Node.getNodePosition, R.prop('x'))) // TODO: by x, then by y
+        R.sortWith([
+          compareNodesPositionAxis('x'),
+          compareNodesPositionAxis('y'),
+        ])
       )
     ),
     R.groupBy(Node.getPinNodeDirection),
@@ -237,13 +321,6 @@ const computePins = R.memoize(patch =>
     listNodes
   )(patch)
 );
-
-const getHardcodedPinsForPatch =
-  R.pipe(getPatchPath, getHardcodedPinsForPatchPath);
-
-// not isPathBuiltIn, because it does not cover internal patches
-const patchHasHardcodedPins =
-  R.pipe(getHardcodedPinsForPatch, notNil);
 
 const getPins = R.ifElse(
   patchHasHardcodedPins,
@@ -602,7 +679,7 @@ export const getTopology = def(
     sortGraph,
     [
       R.compose(
-        R.map(x => Node.getNodeId(x)),
+        R.map(Node.getNodeId),
         listNodes
       ),
       R.compose(

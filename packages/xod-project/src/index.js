@@ -27,6 +27,7 @@ export {
   dissocLink,
   assocNode,
   dissocNode,
+  canBindToOutputs,
   renumberNodes,
   getTopology,
 } from './patch';
@@ -36,13 +37,14 @@ export {
   getPinDirection,
   getPinKey,
   getPinLabel,
-  getPinValue,
+  getPinDefaultValue,
   getPinDescription,
   getPinOrder,
   isInputPin,
   isOutputPin,
   isTerminalPin,
   normalizePinLabels,
+  isPinBindable,
 } from './pin';
 export * from './link';
 export * from './constants';

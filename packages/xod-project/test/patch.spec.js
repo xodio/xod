@@ -6,6 +6,7 @@ import * as Pin from '../src/pin';
 import * as Patch from '../src/patch';
 import * as CONST from '../src/constants';
 import { formatString } from '../src/utils';
+import * as PPU from '../src/patchPathUtils';
 
 import * as Helper from './helpers';
 
@@ -402,7 +403,8 @@ describe('Patch', () => {
         label: 'in',
         description: '',
         order: 0,
-        value: false,
+        defaultValue: false,
+        isBindable: true,
       },
       out: {
         key: 'out',
@@ -411,7 +413,8 @@ describe('Patch', () => {
         label: 'out',
         description: '',
         order: 0,
-        value: false,
+        defaultValue: false,
+        isBindable: false,
       },
     };
 
@@ -477,6 +480,161 @@ describe('Patch', () => {
         );
       });
     });
+
+    describe('computing from terminals', () => {
+      it('should order pins by x coordinate of terminal nodes', () => {
+        const inputBooleanType = PPU.getTerminalPath(
+          CONST.PIN_DIRECTION.INPUT,
+          CONST.PIN_TYPE.BOOLEAN
+        );
+        /**
+        +-----+   +-----+   +-----+
+        |     |   |     |   |     |
+        |  0  |   |  1  |   |  2  |
+        |     |   |     |   |     |
+        +-----+   +-----+   +-----+
+         */
+        const testPatch = Helper.defaultizePatch({
+          nodes: {
+            in0: {
+              type: inputBooleanType,
+              position: { x: 0, y: 0 },
+            },
+            in1: {
+              type: inputBooleanType,
+              position: { x: 100, y: 0 },
+            },
+            in2: {
+              type: inputBooleanType,
+              position: { x: 200, y: 0 },
+            },
+          },
+        });
+
+        const orderedPinKeys = R.compose(
+          R.map(Pin.getPinKey),
+          R.sortBy(Pin.getPinOrder),
+          Patch.listPins
+        )(testPatch);
+
+        assert.deepEqual(
+          orderedPinKeys,
+          ['in0', 'in1', 'in2']
+        );
+      });
+      it('should order pins with the same x coordinate of terminal nodes by y', () => {
+        const inputBooleanType = PPU.getTerminalPath(
+          CONST.PIN_DIRECTION.INPUT,
+          CONST.PIN_TYPE.BOOLEAN
+        );
+        /**
+         +-----+   +-----+
+         |     |   |     |
+         |  0  |   |  2  |
+         |     |   |     |
+         +-----+   +-----+
+
+         +-----+
+         |     |
+         |  1  |
+         |     |
+         +-----+
+         */
+        const testPatch = Helper.defaultizePatch({
+          nodes: {
+            in0: {
+              type: inputBooleanType,
+              position: { x: 0, y: 0 },
+            },
+            in1: {
+              type: inputBooleanType,
+              position: { x: 0, y: 100 },
+            },
+            in2: {
+              type: inputBooleanType,
+              position: { x: 100, y: 0 },
+            },
+          },
+        });
+
+        const orderedPinKeys = R.compose(
+          R.map(Pin.getPinKey),
+          R.sortBy(Pin.getPinOrder),
+          Patch.listPins
+        )(testPatch);
+
+        assert.deepEqual(
+          orderedPinKeys,
+          ['in0', 'in1', 'in2']
+        );
+      });
+      it('should extract defaultValue from terminal\'s bound values', () => {
+        const testPatch = Helper.defaultizePatch({
+          nodes: {
+            inStr: {
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.INPUT,
+                CONST.PIN_TYPE.STRING
+              ),
+              boundValues: {
+                [CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.OUTPUT]]: 'hello',
+              },
+            },
+            outNum: {
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.OUTPUT,
+                CONST.PIN_TYPE.NUMBER
+              ),
+              boundValues: {
+                [CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.INPUT]]: 42,
+              },
+            },
+          },
+        });
+
+        const pinDefaultValues = R.compose(
+          R.map(Pin.getPinDefaultValue),
+          R.indexBy(Pin.getPinKey),
+          Patch.listPins
+        )(testPatch);
+
+        assert.deepEqual(
+          { inStr: 'hello', outNum: 42 },
+          pinDefaultValues
+        );
+      });
+      it('should set defaultValue to default for type if terminal has no bound values', () => {
+        const testPatch = Helper.defaultizePatch({
+          nodes: {
+            inStr: {
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.INPUT,
+                CONST.PIN_TYPE.STRING
+              ),
+              boundValues: {},
+            },
+            outNum: {
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.OUTPUT,
+                CONST.PIN_TYPE.NUMBER
+              ),
+              boundValues: {},
+            },
+          },
+        });
+
+        const pinDefaultValues = R.compose(
+          R.map(Pin.getPinDefaultValue),
+          R.indexBy(Pin.getPinKey),
+          Patch.listPins
+        )(testPatch);
+
+        assert.deepEqual(
+          { inStr: '', outNum: 0 },
+          pinDefaultValues
+        );
+      });
+    });
   });
 
   // entity setters
@@ -517,7 +675,7 @@ describe('Patch', () => {
       });
       const newPatch = Patch.assocNode(node, emptyPatch);
 
-      const expectedPin = Pin.createPin('1', 'number', 'input', 0, 'A', '');
+      const expectedPin = Pin.createPin('1', 'number', 'input', 0, 'A', '', true, 0);
 
       assert.deepEqual(
         [expectedPin],
@@ -534,7 +692,7 @@ describe('Patch', () => {
         },
       });
 
-      const expectedPinBeforeUpdate = Pin.createPin('1', 'string', 'output', 0, '', '');
+      const expectedPinBeforeUpdate = Pin.createPin('1', 'string', 'output', 0, '', '', false, '');
       assert.deepEqual(
         [expectedPinBeforeUpdate],
         Patch.listPins(patch)
@@ -547,7 +705,7 @@ describe('Patch', () => {
       });
       const newPatch = Patch.assocNode(node, patch);
 
-      const expectedPinAfterUpdate = Pin.createPin('1', 'number', 'input', 0, 'A', '');
+      const expectedPinAfterUpdate = Pin.createPin('1', 'number', 'input', 0, 'A', '', true, 0);
       assert.deepEqual(
         [expectedPinAfterUpdate],
         Patch.listPins(newPatch)
@@ -731,60 +889,160 @@ describe('Patch', () => {
 
   // utils
   describe('utils', () => {
-    const patch = Helper.defaultizePatch({
-      nodes: {
-        a: { id: 'a' },
-        b: { id: 'b' },
-        c: { id: 'c' },
-      },
-      links: {
-        x: {
-          id: 'x',
-          input: { nodeId: 'b', pinKey: 'x' },
-          output: { nodeId: 'a', pinKey: 'x' },
+    describe('topology utils', () => {
+      const patch = Helper.defaultizePatch({
+        nodes: {
+          a: { id: 'a' },
+          b: { id: 'b' },
+          c: { id: 'c' },
         },
-        y: {
-          id: 'y',
-          input: { nodeId: 'c', pinKey: 'x' },
-          output: { nodeId: 'b', pinKey: 'x' },
+        links: {
+          x: {
+            id: 'x',
+            input: { nodeId: 'b', pinKey: 'x' },
+            output: { nodeId: 'a', pinKey: 'x' },
+          },
+          y: {
+            id: 'y',
+            input: { nodeId: 'c', pinKey: 'x' },
+            output: { nodeId: 'b', pinKey: 'x' },
+          },
         },
-      },
-      impls: {
-        js: '// ok',
-      },
-    });
-    const expectedPatch = Helper.defaultizePatch({
-      nodes: {
-        0: { id: '0' },
-        1: { id: '1' },
-        2: { id: '2' },
-      },
-      links: {
-        x: {
-          id: 'x',
-          input: { nodeId: '1', pinKey: 'x' },
-          output: { nodeId: '0', pinKey: 'x' },
+        impls: {
+          js: '// ok',
         },
-        y: {
-          id: 'y',
-          input: { nodeId: '2', pinKey: 'x' },
-          output: { nodeId: '1', pinKey: 'x' },
+      });
+      const expectedPatch = Helper.defaultizePatch({
+        nodes: {
+          0: { id: '0' },
+          1: { id: '1' },
+          2: { id: '2' },
         },
-      },
-      impls: {
-        js: '// ok',
-      },
+        links: {
+          x: {
+            id: 'x',
+            input: { nodeId: '1', pinKey: 'x' },
+            output: { nodeId: '0', pinKey: 'x' },
+          },
+          y: {
+            id: 'y',
+            input: { nodeId: '2', pinKey: 'x' },
+            output: { nodeId: '1', pinKey: 'x' },
+          },
+        },
+        impls: {
+          js: '// ok',
+        },
+      });
+
+      it('renumberNodes: should return same patch with nodes and links with new ids', () => {
+        expect(Patch.renumberNodes(patch))
+          .to.be.deep.equal(expectedPatch);
+      });
+      it('getTopology: should return correct topology', () => {
+        expect(Patch.getTopology(patch))
+          .to.be.deep.equal(['a', 'b', 'c']);
+        expect(Patch.getTopology(expectedPatch))
+          .to.be.deep.equal(['0', '1', '2']);
+      });
     });
 
-    it('renumberNodes: should return same patch with nodes and links with new ids', () => {
-      expect(Patch.renumberNodes(patch))
-        .to.be.deep.equal(expectedPatch);
+    describe('isEffectPatch', () => {
+      it('should return true for a patch with pulse inputs', () => {
+        const someLocalPatch = Helper.defaultizePatch({
+          path: PPU.getLocalPath('my-patch'),
+          nodes: {
+            plsin: {
+              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.PULSE),
+            },
+          },
+        });
+        expect(Patch.isEffectPatch(someLocalPatch)).to.be.true();
+
+        const terminalPulse = Helper.defaultizePatch({
+          path: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.PULSE),
+        });
+        expect(Patch.isEffectPatch(terminalPulse)).to.be.true();
+      });
+      it('should return true for a patch with pulse outputs', () => {
+        const someLocalPatch = Helper.defaultizePatch({
+          path: PPU.getLocalPath('my-patch'),
+          nodes: {
+            plsout: { type: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.PULSE) },
+          },
+        });
+        expect(Patch.isEffectPatch(someLocalPatch)).to.be.true();
+
+        const terminalPulse = Helper.defaultizePatch({
+          path: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.PULSE),
+        });
+        expect(Patch.isEffectPatch(terminalPulse)).to.be.true();
+      });
+      it('should return false for a patch without pulse pins', () => {
+        const noPinsAtAll = Helper.defaultizePatch({
+          path: PPU.getLocalPath('my-patch'),
+        });
+        expect(Patch.isEffectPatch(noPinsAtAll)).to.be.false();
+
+        const withPins = Helper.defaultizePatch({
+          path: PPU.getLocalPath('my-patch'),
+          nodes: {
+            someInputNode: {
+              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.NUMBER),
+            },
+            someOutputNode: {
+              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.BOOLEAN),
+            },
+          },
+        });
+        expect(Patch.isEffectPatch(withPins)).to.be.false();
+      });
     });
-    it('getTopology: should return correct topology', () => {
-      expect(Patch.getTopology(patch))
-        .to.be.deep.equal(['a', 'b', 'c']);
-      expect(Patch.getTopology(expectedPatch))
-        .to.be.deep.equal(['0', '1', '2']);
+
+    describe('canBindToOutputs', () => {
+      it('should return true for a patch with pulse inputs', () => {
+        const patch = Helper.defaultizePatch({
+          path: PPU.getLocalPath('my-patch'),
+          nodes: {
+            plsin: {
+              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.PULSE),
+            },
+          },
+        });
+        expect(Patch.canBindToOutputs(patch)).to.be.true();
+      });
+      it('should return true for a patch with pulse outputs', () => {
+        const patch = Helper.defaultizePatch({
+          path: PPU.getLocalPath('my-patch'),
+          nodes: {
+            plsout: { type: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.PULSE) },
+          },
+        });
+        expect(Patch.canBindToOutputs(patch)).to.be.true();
+      });
+      it('should return true for constant patches', () => {
+        const patch = Helper.defaultizePatch({
+          path: PPU.getConstantPatchPath(CONST.PIN_TYPE.NUMBER),
+          nodes: {
+            out: {
+              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.NUMBER),
+            },
+          },
+        });
+        expect(Patch.canBindToOutputs(patch)).to.be.true();
+      });
+      it('should return true for terminal patches', () => {
+        const patch = Helper.defaultizePatch({
+          path: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.NUMBER),
+        });
+        expect(Patch.canBindToOutputs(patch)).to.be.true();
+      });
+      it('should return false for a patch without pulse pins(a.k.a functional patch)', () => {
+        const patch = Helper.defaultizePatch({
+          path: PPU.getLocalPath('my-patch'),
+        });
+        expect(Patch.canBindToOutputs(patch)).to.be.false();
+      });
     });
   });
 });

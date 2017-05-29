@@ -1,6 +1,5 @@
 import R from 'ramda';
 import * as Pin from './pin';
-import * as Patch from './patch';
 import * as Utils from './utils';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
@@ -194,27 +193,12 @@ export const isPinNode = def(
  //
  // =============================================================================
 
-export const assocInitialPinValues = def(
-  'assocInitialPinValues :: Patch -> Node -> Node',
-  (patch, node) => R.assoc(
-    'boundValues',
-    R.compose(
-      R.map(R.prop('value')),
-      R.indexBy(R.prop('key')),
-      R.map(
-        R.applySpec({
-          key: Pin.getPinKey,
-          value: Pin.getPinValue,
-        })
-      ),
-      Patch.listInputPins
-    )(patch),
-    node
-  )
-);
-
 /**
  * Gets all bound values of node's pins
+ *
+ * Note that the returned object may not contain values
+ * for some of the existing pins(if they were not bound)
+ * or may contain values for pins that were deleted.
  *
  * @function getAllBoundValues
  * @param {Node} node
@@ -244,6 +228,14 @@ export const getBoundValue = def(
       R.identity,
     ]
   )
+);
+
+export const getBoundValueOrDefault = def(
+  'getBoundValueOrDefault :: Pin -> Node -> DataValue',
+  (pin, node) => getBoundValue(
+    Pin.getPinKey(pin),
+    node
+  ).getOrElse(Pin.getPinDefaultValue(pin))
 );
 
 /**

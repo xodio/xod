@@ -88,7 +88,6 @@ export default (state = {}, action) => {
       const { typeId, position, newNodeId, patchPath } = action.payload;
 
       const newNode = R.compose(
-        XP.assocInitialPinValues(R.view(XP.lensPatch(typeId), state)),
         R.assoc('id', newNodeId), // TODO: who should handle id generation?
         XP.createNode
       )(position, typeId);

@@ -1,5 +1,4 @@
 import R from 'ramda';
-import * as Utils from './utils';
 import * as CONST from './constants';
 import { def } from './types';
 
@@ -22,15 +21,16 @@ import { def } from './types';
  * @returns {Pin}
  */
 export const createPin = def(
-  'createPin :: PinKey -> DataType -> PinDirection -> Number -> PinLabel -> String -> Pin',
-  (key, type, direction, order, label, description) => ({
+  'createPin :: PinKey -> DataType -> PinDirection -> Number -> PinLabel -> String -> Boolean -> DataValue -> Pin',
+  (key, type, direction, order, label, description, isBindable, defaultValue) => ({
     key,
     type,
     direction,
     label,
     description,
     order,
-    value: Utils.defaultValueOfType(type), // TODO: support 'custom' default values
+    isBindable,
+    defaultValue,
   })
 );
 
@@ -81,13 +81,13 @@ export const getPinLabel = def(
 );
 
 /**
- * @function getPinValue
+ * @function getPinDefaultValue
  * @param {Pin} pin
  * @returns {DataValue}
  */
-export const getPinValue = def(
-  'getPinValue :: Pin -> DataValue',
-  R.prop('value')
+export const getPinDefaultValue = def(
+  'getPinDefaultValue :: Pin -> DataValue',
+  R.prop('defaultValue')
 );
 
 /**
@@ -108,6 +108,17 @@ export const getPinDescription = def(
 export const getPinOrder = def(
   'getPinOrder :: Pin -> Number',
   R.prop('order')
+);
+
+/**
+ * Is it possible to bind a value to this pin?
+ *
+ * Only output pins of functional patches are unbindable.
+ * So this basically tells if this pin is an output pin of a functional patch.
+ */
+export const isPinBindable = def(
+  'isBindable :: Pin -> Boolean',
+  R.prop('isBindable')
 );
 
 /**

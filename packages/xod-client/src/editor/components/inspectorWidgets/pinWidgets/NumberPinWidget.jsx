@@ -1,18 +1,27 @@
+import R from 'ramda';
 import React from 'react';
 
-import { PROPERTY_TYPE } from '../../../constants';
-import PinIcon from './PinIcon';
-import LinkedInput from './LinkedInput';
+import PinWidget from './PinWidget';
 
 const NumberWidget = (props) => {
-  const onChange = (event) => {
-    props.onChange(event.target.value);
-  };
+  const onChange = R.compose(
+    props.onChange,
+    R.when(
+      isNaN,
+      R.always(0)
+    ),
+    parseFloat,
+    R.path(['target', 'value'])
+  );
 
-  const input = props.disabled
-    ? (
-      <LinkedInput id={props.elementId} />
-    ) : (
+  return (
+    <PinWidget
+      elementId={props.elementId}
+      label={props.label}
+      dataType={props.dataType}
+      isConnected={props.isConnected}
+      isBindable={props.isBindable}
+    >
       <input
         className="inspectorTextInput inspectorTextInput--number"
         type="text"
@@ -23,34 +32,21 @@ const NumberWidget = (props) => {
         onBlur={props.onBlur}
         onKeyDown={props.onKeyDown}
       />
-    );
-
-  return (
-    <div className="Widget PinWidget NumberWidget">
-      {input}
-      <PinIcon
-        id={props.elementId}
-        type={PROPERTY_TYPE.NUMBER}
-        isConnected={props.disabled}
-      />
-      <label
-        className=""
-        htmlFor={props.elementId}
-      >
-        {props.label}
-      </label>
-    </div>
+    </PinWidget>
   );
 };
 
 NumberWidget.propTypes = {
   elementId: React.PropTypes.string.isRequired,
   label: React.PropTypes.string,
+  dataType: React.PropTypes.string,
+  isConnected: React.PropTypes.bool,
+  isBindable: React.PropTypes.bool,
+
   value: React.PropTypes.oneOfType([
     React.PropTypes.string,
     React.PropTypes.number,
   ]),
-  disabled: React.PropTypes.bool,
   onBlur: React.PropTypes.func.isRequired,
   onChange: React.PropTypes.func.isRequired,
   onKeyDown: React.PropTypes.func.isRequired,
@@ -59,7 +55,6 @@ NumberWidget.propTypes = {
 NumberWidget.defaultProps = {
   label: 'Unnamed property',
   value: 0,
-  disabled: false,
 };
 
 export default NumberWidget;

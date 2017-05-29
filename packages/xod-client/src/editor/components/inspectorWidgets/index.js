@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { PIN_TYPE } from 'xod-project';
 
 import HintWidget from './HintWidget';
 import BoolWidget from './pinWidgets/BoolPinWidget';
@@ -51,28 +52,28 @@ export const WIDGET_MAPPING = {
     [WIDGET_TYPE.BOOL]: {
       component: BoolWidget,
       props: {
-        type: 'boolean',
+        type: PIN_TYPE.BOOLEAN,
         commitOnChange: true,
       },
     },
     [WIDGET_TYPE.NUMBER]: {
       component: NumberWidget,
       props: {
-        type: 'number',
+        type: PIN_TYPE.NUMBER,
         keyDownHandlers: R.merge(widgetNumberKeysDownHandlers, submitOnEnter),
       },
     },
     [WIDGET_TYPE.STRING]: {
       component: StringWidget,
       props: {
-        type: 'string',
+        type: PIN_TYPE.STRING,
         keyDownHandlers: submitOnEnter,
       },
     },
     [WIDGET_TYPE.PULSE]: {
       component: PulseWidget,
       props: {
-        type: 'boolean',
+        type: PIN_TYPE.PULSE,
       },
     },
     [WIDGET_TYPE.TEXTAREA]: {

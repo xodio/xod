@@ -1,52 +1,41 @@
 import React from 'react';
 
-import { PROPERTY_TYPE } from '../../../constants';
-import PinIcon from './PinIcon';
-import LinkedInput from './LinkedInput';
+import PinWidget from './PinWidget';
 
 const StringWidget = (props) => {
   const onChange = (event) => {
     props.onChange(event.target.value);
   };
 
-  const input = props.disabled
-    ? (
-      <LinkedInput id={props.elementId} />
-    ) : (
+  return (
+    <PinWidget
+      elementId={props.elementId}
+      label={props.label}
+      dataType={props.dataType}
+      isConnected={props.isConnected}
+      isBindable={props.isBindable}
+    >
       <input
         className="inspectorTextInput"
         type="text"
         id={props.elementId}
         value={props.value}
-
         onChange={onChange}
         onBlur={props.onBlur}
         onKeyDown={props.onKeyDown}
       />
-    );
-
-  return (
-    <div className="Widget PinWidget StringWidget">
-      {input}
-      <PinIcon
-        id={props.elementId}
-        type={PROPERTY_TYPE.STRING}
-        isConnected={props.disabled}
-      />
-      <label
-        htmlFor={props.elementId}
-      >
-        {props.label}
-      </label>
-    </div>
+    </PinWidget>
   );
 };
 
 StringWidget.propTypes = {
   elementId: React.PropTypes.string.isRequired,
   label: React.PropTypes.string,
+  dataType: React.PropTypes.string,
+  isConnected: React.PropTypes.bool,
+  isBindable: React.PropTypes.bool,
+
   value: React.PropTypes.string,
-  disabled: React.PropTypes.bool,
   onBlur: React.PropTypes.func.isRequired,
   onChange: React.PropTypes.func.isRequired,
   onKeyDown: React.PropTypes.func.isRequired,

@@ -40,6 +40,7 @@ export const Size = Model('Point', {
 export const RenderablePin = ExtendedModel('RenderablePin', XP.Pin, {
   nodeId: XP.NodeId,
   isConnected: $.Boolean,
+  isBindable: $.Boolean,
   position: Point,
 });
 
