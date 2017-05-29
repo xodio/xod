@@ -11,6 +11,7 @@ function BoolWidget(props) {
     <PinWidget
       elementId={props.elementId}
       label={props.label}
+      normalizedLabel={props.normalizedLabel}
       dataType={props.dataType}
       isConnected={props.isConnected}
       isBindable={props.isBindable}
@@ -33,6 +34,7 @@ function BoolWidget(props) {
 BoolWidget.propTypes = {
   elementId: React.PropTypes.string.isRequired,
   label: React.PropTypes.string,
+  normalizedLabel: React.PropTypes.string.isRequired,
   dataType: React.PropTypes.string,
   isConnected: React.PropTypes.bool,
   isBindable: React.PropTypes.bool,

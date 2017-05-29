@@ -37,9 +37,8 @@ function PinWidget(props) {
         value={getReason(props)}
       />
     ) : props.children;
-
   return (
-    <div className="Widget PinWidget">
+    <div className="Widget PinWidget" title={props.normalizedLabel}>
       {input}
       <PinIcon
         id={props.elementId}
@@ -57,6 +56,7 @@ function PinWidget(props) {
 
 PinWidget.propTypes = {
   elementId: React.PropTypes.string.isRequired,
+  normalizedLabel: React.PropTypes.string.isRequired,
   label: React.PropTypes.string,
   dataType: React.PropTypes.string,
   isConnected: React.PropTypes.bool,

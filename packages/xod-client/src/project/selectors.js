@@ -96,9 +96,19 @@ const mergePinDataFromPatch = R.curry((project, node) => {
       XP.getBoundValueOrDefault(pin, node),
       pin
     )),
+    patchPins => R.compose(
+      R.mergeWith(R.merge, R.__, patchPins),
+      R.map(R.compose(
+        R.objOf('normalizedLabel'),
+        XP.getPinLabel
+      )),
+      R.indexBy(XP.getPinKey),
+      XP.normalizePinLabels,
+      R.values
+    )(patchPins),
     // TODO: add something like getPinsIndexedByKey to xod-project?
     // + see other 'indexBy's below
-    R.indexBy(R.prop('key')),
+    R.indexBy(XP.getPinKey),
     XP.listPins,
     XP.getPatchByPathUnsafe(type)
   )(project);
