@@ -7,6 +7,8 @@ import * as XP from 'xod-project';
 
 import { def } from './types';
 
+import pack from './pack';
+import { findClosestWorkspaceDir } from './find';
 import { loadAllLibs } from './loadLibs';
 import { readDir, readJSON } from './read';
 import * as ERROR_CODES from './errorCodes';
@@ -206,9 +208,23 @@ export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) 
         });
     });
 
+// :: Path -> Promise Project Error
+//
+// Loads a regular XOD project placed in a workspace. The workspace and project
+// name are determined by path provided. It is expected to be a path to the
+// project directory, e.g. `/path/to/workspace/my-proj`.
+//
+// Returns a Promise of complete `Project` (see `xod-project`).
+export const loadProject = projectPath =>
+  findClosestWorkspaceDir(projectPath)
+    .then(workspace => [path.relative(workspace, projectPath), workspace])
+    .then(R.apply(loadProjectWithLibs))
+    .then(({ project, libs }) => pack(project, libs));
+
 export default {
   getProjects,
   getLocalProjects,
+  loadProject,
   loadProjectWithLibs,
   loadProjectWithoutLibs,
 };

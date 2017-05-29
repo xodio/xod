@@ -5,34 +5,37 @@
  *
  *
  =============================================================================*/
+
 namespace _program {
-  namespace xod { namespace math { namespace multiply {
-      struct State {
-      };
 
+//-----------------------------------------------------------------------------
+// xod/math/multiply implementation
+//-----------------------------------------------------------------------------
+namespace xod { namespace math { namespace multiply {
 
-      struct Storage {
-          State state;
-          PinRef input_IN1;
-          PinRef input_IN2;
-          OutputPin<Number> output_OUT;
-      };
+struct State {
+};
 
-      enum Inputs : PinKey {
-          IN1 = offsetof(Storage, input_IN1),
-          IN2 = offsetof(Storage, input_IN2)
-      };
+struct Storage {
+    State state;
+    PinRef input_IN1;
+    PinRef input_IN2;
+    OutputPin<Number> output_OUT;
+};
 
-      enum Outputs : PinKey {
-          OUT = offsetof(Storage, output_OUT) | (0 << PIN_KEY_OFFSET_BITS)
-      };
-
-
-      void evaluate(NodeId nid, State* state) {
-          const Number in1 = getNumber(nid, Inputs::IN1);
-          const Number in2 = getNumber(nid, Inputs::IN2);
-          emitNumber(nid, Outputs::OUT, in1 * in2);
-      }
-
-  }}}
+namespace Inputs {
+    using IN1 = InputDescriptor<Number, offsetof(Storage, input_IN1)>;
+    using IN2 = InputDescriptor<Number, offsetof(Storage, input_IN2)>;
 }
+
+namespace Outputs {
+    using OUT = OutputDescriptor<Number, offsetof(Storage, output_OUT), 0>;
+}
+
+void evaluate(NodeId nid, State* state) {
+    /* Native implementation goes here */
+}
+
+}}} // namespace xod::math::multiply
+
+} // namespace _program

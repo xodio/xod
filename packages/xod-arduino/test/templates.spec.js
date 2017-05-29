@@ -1,19 +1,11 @@
-import R from 'ramda';
-import chai, { assert } from 'chai';
-import chaiString from 'chai-string';
+import { assert } from 'chai';
 import * as T from '../src/templates';
 
 import inputImpl from './fixtures/impl.input.cpp';
 
 import configFixture from './fixtures/config.cpp';
-import patchContextFixture from './fixtures/patchContext.cpp';
-import implFixture from './fixtures/impl.cpp';
 import implListFixture from './fixtures/implList.cpp';
 import programFixture from './fixtures/program.cpp';
-import programWithCustomValueFixture from './fixtures/program.customValue.cpp';
-import projectFixture from './fixtures/project.cpp';
-
-chai.use(chaiString);
 
 describe('xod-arduino templates', () => {
   let config;
@@ -41,9 +33,11 @@ describe('xod-arduino templates', () => {
         ],
         inputs: [
           {
+            type: 'Number',
             pinKey: 'IN1',
           },
           {
+            type: 'Number',
             pinKey: 'IN2',
           },
         ],
@@ -59,7 +53,7 @@ describe('xod-arduino templates', () => {
           {
             to: [1],
             pinKey: 'OUT',
-            value: null,
+            value: 42,
           },
         ],
         inputs: [],
@@ -88,43 +82,16 @@ describe('xod-arduino templates', () => {
 
   it('configuration should render properly', () => {
     const result = T.renderConfig(config);
-    assert.equalIgnoreSpaces(result, configFixture);
-  });
-
-  it('patchContext should render properly', () => {
-    const result = T.renderPatchContext(patches[0]);
-    assert.equalIgnoreSpaces(result, patchContextFixture);
-  });
-
-  it('implementation should render properly', () => {
-    const result = T.renderImpl(patches[0]);
-    assert.equalIgnoreSpaces(result, implFixture);
+    assert.strictEqual(result, configFixture);
   });
 
   it('implementation list should render properly', () => {
     const result = T.renderImplList(patches);
-    assert.equalIgnoreSpaces(result, implListFixture);
+    assert.strictEqual(result, implListFixture);
   });
 
   it('program should render properly', () => {
     const result = T.renderProgram(project.topology, nodes);
-    assert.equalIgnoreSpaces(result, programFixture);
-  });
-
-  it('value of pin from patch should be overwritten by value from node', () => {
-    const nodePinValueLens = R.compose(
-      R.lensIndex(0),
-      R.lensProp('outputs'),
-      R.lensIndex(0),
-      R.lensProp('value')
-    );
-    const newNodes = R.set(nodePinValueLens, 5, nodes);
-    const result = T.renderProgram(project.topology, newNodes);
-    assert.equalIgnoreSpaces(result, programWithCustomValueFixture);
-  });
-
-  it('should render everything and glue parts properly', () => {
-    const result = T.renderProject(project);
-    assert.equalIgnoreSpaces(result, projectFixture);
+    assert.strictEqual(result, programFixture);
   });
 });

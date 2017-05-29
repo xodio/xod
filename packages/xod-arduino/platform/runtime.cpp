@@ -39,14 +39,29 @@ namespace _program {
     typedef double Number;
     typedef bool Logic;
 
-    // OPTIMIZE: we should choose uint8_t if there are less than 255 nodes in total
+    // TODO: optimize, we should choose uint8_t if there are less than 255 nodes in total
     // and uint32_t if there are more than 65535
     typedef uint16_t NodeId;
 
-    // OPTIMIZE: we should choose a proper type with a minimal enough capacity
+    /*
+     * PinKey is an address value used to find input’s or output’s data within
+     * node’s Storage.
+     *
+     * For inputs its value is simply an offset in bytes from the beginning of
+     * Storage structure instance. There will be a PinRef pointing to an upstream
+     * output at this address.
+     *
+     * For outputs the pin key consists of two parts ORed bitwise. Least
+     * significant bits (count defined by `PIN_KEY_OFFSET_BITS`) define an offset
+     * from the beginning of node’s Storage where output data could be found. It
+     * would be an OutputPin structure. Most significant bits define an index
+     * number of that output among all outputs of the node. The index is used to
+     * work with dirty flags bit-value.
+     */
+    // TODO: optimize, we should choose a proper type with a minimal enough capacity
     typedef uint16_t PinKey;
 
-    // OPTIMIZE: we should choose a proper type with a minimal enough capacity
+    // TODO: optimize, we should choose a proper type with a minimal enough capacity
     typedef uint16_t DirtyFlags;
 
     typedef unsigned long TimeMs;
@@ -62,6 +77,9 @@ namespace _program {
     extern DirtyFlags dirtyFlags[NODE_COUNT];
     extern NodeId topology[NODE_COUNT];
 
+    // TODO: replace with a compact list
+    extern TimeMs schedule[NODE_COUNT];
+
     template<typename T>
     struct OutputPin {
         T value;
@@ -74,25 +92,49 @@ namespace _program {
         PinKey pinKey;
     };
 
+    /*
+     * Input descriptor is a metaprogramming structure used to enforce an
+     * input’s type and store its PinKey as a zero-memory constant.
+     *
+     * A specialized descriptor is required by `getValue` function. Every
+     * input of every type node gets its own descriptor in generated code that
+     * can be accessed as Inputs::FOO. Where FOO is a pin identifier.
+     */
+    template<typename ValueT_, size_t offsetInStorage>
+    struct InputDescriptor {
+        typedef ValueT_ ValueT;
+        enum Offset : PinKey {
+            KEY = offsetInStorage
+        };
+    };
 
-    // TODO: replace with a compact list
-    extern TimeMs schedule[NODE_COUNT];
+    /*
+     * Output descriptor serve the same purpose as InputDescriptor but for
+     * ouputs.
+     */
+    template<typename ValueT_, size_t offsetInStorage, int index>
+    struct OutputDescriptor {
+        typedef ValueT_ ValueT;
+        enum Offset : PinKey {
+            KEY = offsetInStorage | (index << PIN_KEY_OFFSET_BITS)
+        };
+    };
 
-    inline void* pinPtr(void* storage, PinKey key) {
+    void* pinPtr(void* storage, PinKey key) {
         const size_t offset = key & ~(PinKey(-1) << PIN_KEY_OFFSET_BITS);
         return (uint8_t*)storage + offset;
     }
 
-    inline DirtyFlags dirtyPinBit(PinKey key) {
+    DirtyFlags dirtyPinBit(PinKey key) {
         const PinKey nbit = (key >> PIN_KEY_OFFSET_BITS) + 1;
         return 1 << nbit;
     }
 
-    inline bool isOutputDirty(NodeId nid, PinKey key) {
+    bool isOutputDirty(NodeId nid, PinKey key) {
         return dirtyFlags[nid] & dirtyPinBit(key);
     }
 
-    inline bool isInputDirty(NodeId nid, PinKey key) {
+    bool isInputDirtyImpl(NodeId nid, PinKey key) {
         PinRef* ref = (PinRef*)pinPtr(storages[nid], key);
         if (ref->nodeId == NO_NODE)
             return false;
@@ -100,15 +142,20 @@ namespace _program {
         return isOutputDirty(ref->nodeId, ref->pinKey);
     }
 
-    inline void markPinDirty(NodeId nid, PinKey key) {
+    template<typename InputT>
+    bool isInputDirty(NodeId nid) {
+        return isInputDirtyImpl(nid, InputT::KEY);
+    }
+
+    void markPinDirty(NodeId nid, PinKey key) {
         dirtyFlags[nid] |= dirtyPinBit(key);
     }
 
-    inline void markNodeDirty(NodeId nid) {
+    void markNodeDirty(NodeId nid) {
         dirtyFlags[nid] |= 0x1;
     }
 
-    inline bool isNodeDirty(NodeId nid) {
+    bool isNodeDirty(NodeId nid) {
         return dirtyFlags[nid] & 0x1;
     }
 
@@ -125,7 +172,7 @@ namespace _program {
     }
 
     template<typename T>
-    T getValue(NodeId nid, PinKey key) {
+    T getValueImpl(NodeId nid, PinKey key) {
         PinRef* ref = (PinRef*)pinPtr(storages[nid], key);
         if (ref->nodeId == NO_NODE)
             return (T)0;
@@ -133,16 +180,13 @@ namespace _program {
         return *(T*)pinPtr(storages[ref->nodeId], ref->pinKey);
     }
 
-    Number getNumber(NodeId nid, PinKey key) {
-        return getValue<Number>(nid, key);
-    }
-
-    Logic getLogic(NodeId nid, PinKey key) {
-        return getValue<Logic>(nid, key);
+    template<typename InputT>
+    typename InputT::ValueT getValue(NodeId nid) {
+        return getValueImpl<typename InputT::ValueT>(nid, InputT::KEY);
     }
 
     template<typename T>
-    void emitValue(NodeId nid, PinKey key, T value) {
+    void emitValueImpl(NodeId nid, PinKey key, T value) {
         OutputPin<T>* outputPin = (OutputPin<T>*)pinPtr(storages[nid], key);
 
         outputPin->value = value;
@@ -154,26 +198,20 @@ namespace _program {
         }
     }
 
-    void emitNumber(NodeId nid, PinKey key, Number value) {
-        emitValue<Number>(nid, key, value);
-    }
-
-    void emitLogic(NodeId nid, PinKey key, Logic value) {
-        emitValue<Logic>(nid, key, value);
+    template<typename OutputT>
+    void emitValue(NodeId nid, typename OutputT::ValueT value) {
+        emitValueImpl(nid, OutputT::KEY, value);
     }
 
     template<typename T>
-    void reemitValue(NodeId nid, PinKey key) {
+    void reemitValueImpl(NodeId nid, PinKey key) {
         OutputPin<T>* outputPin = (OutputPin<T>*)pinPtr(storages[nid], key);
-        emitValue<T>(nid, key, outputPin->value);
+        emitValueImpl<T>(nid, key, outputPin->value);
     }
 
-    void reemitNumber(NodeId nid, PinKey key) {
-        reemitValue<Number>(nid, key);
-    }
-
-    void reemitLogic(NodeId nid, PinKey key) {
-        reemitValue<Logic>(nid, key);
+    template<typename OutputT>
+    void reemitValue(NodeId nid) {
+        reemitValueImpl<typename OutputT::ValueT>(nid, OutputT::KEY);
     }
 
     void evaluateNode(NodeId nid) {

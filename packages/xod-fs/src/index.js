@@ -9,6 +9,7 @@ export { readDir, readFile, readJSON } from './read';
 export {
   getProjects,
   getLocalProjects,
+  loadProject,
   loadProjectWithLibs,
   loadProjectWithoutLibs,
 } from './load';

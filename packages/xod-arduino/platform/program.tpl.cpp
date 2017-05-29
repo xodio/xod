@@ -11,14 +11,14 @@
 namespace _program {
   {{#each nodes}}
   {{mergePins }}
-    {{#each outputs }}
+  {{#each outputs }}
     NodeId links_{{ ../id }}_{{ pinKey }}[] = { {{#each to }}{{ this }}, {{/each}}NO_NODE };
     {{/each}}
     {{ patch/owner }}::{{ patch/libName }}::{{ patch/patchName }}::Storage storage_{{ id }} = {
         { }, // state
       {{#each inputs }}
         {{#exists nodeId }}
-        { NodeId({{ nodeId }}), {{ patch/owner }}::{{ patch/libName }}::{{ patch/patchName }}::Outputs::{{ fromPinKey  }} }, // input_{{ pinKey }}
+        { NodeId({{ nodeId }}), {{ patch/owner }}::{{ patch/libName }}::{{ patch/patchName }}::Outputs::{{ fromPinKey  }}::KEY }, // input_{{ pinKey }}
         {{else }}
         { NO_NODE, 0 }, // input_{{ pinKey }}
         {{/exists }}
@@ -42,12 +42,12 @@ namespace _program {
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {
-      {{#each nodes}}DirtyFlags({{#if patch.isDirty }}-1{{ else }}0{{/if }}){{#unless @last}},
-      {{/unless}}{{/each}}
+        {{#each nodes}}DirtyFlags({{#if patch.isDirty }}-1{{ else }}0{{/if }}){{#unless @last}},
+        {{/unless}}{{/each}}
     };
 
     NodeId topology[NODE_COUNT] = {
-      {{#each topology}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
+        {{#each topology}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
     };
 
     TimeMs schedule[NODE_COUNT] = { 0 };

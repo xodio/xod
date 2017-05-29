@@ -6,10 +6,10 @@ struct State {
 
 void evaluate(NodeId nid, State* state) {
     TimeMs tNow = transactionTime();
-    TimeMs dt = getNumber(nid, Inputs::IVAL) * 1000;
+    TimeMs dt = getValue<Inputs::IVAL>(nid) * 1000;
     TimeMs tNext = tNow + dt;
 
-    if (isInputDirty(nid, Inputs::IVAL)) {
+    if (isInputDirty<Inputs::RST>(nid)) {
         if (dt == 0) {
             state->nextTrig = 0;
             clearTimeout(nid);
@@ -19,7 +19,7 @@ void evaluate(NodeId nid, State* state) {
         }
     } else {
         // It was a scheduled tick
-        emitLogic(nid, Outputs::TICK, 1);
+        emitValue<Outputs::TICK>(nid, 1);
         state->nextTrig = tNext;
         setTimeout(nid, dt);
     }
