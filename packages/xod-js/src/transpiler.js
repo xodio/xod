@@ -111,15 +111,6 @@ const getNormalizedPinLabel = def(
   )(patch)
 );
 
-const getPatchByNodeIdUnsafe = def(
-  'getPatchByNodeIdUnsafe :: NodeId -> Patch -> Project -> Patch',
-  (nodeId, patch, project) => R.compose(
-    Project.getPatchByPathUnsafe(R.__, project),
-    Project.getNodeType,
-    Project.getNodeByIdUnsafe(R.__, patch)
-  )(nodeId)
-);
-
 // :: String -> Project -> Patch -> { pinKey: PinRef[] }
 export const getOutLinks = R.curry((nodeId, project, entryPatch) =>
   R.compose(
@@ -130,7 +121,7 @@ export const getOutLinks = R.curry((nodeId, project, entryPatch) =>
           [
             Project.getLinkInputPinKey,
             R.compose(
-              getPatchByNodeIdUnsafe(R.__, entryPatch, project),
+              Project.getPatchByNodeIdUnsafe(R.__, entryPatch, project),
               Project.getLinkInputNodeId
             ),
           ]
@@ -142,7 +133,7 @@ export const getOutLinks = R.curry((nodeId, project, entryPatch) =>
       getNormalizedPinLabel,
       [
         Project.getLinkOutputPinKey,
-        () => getPatchByNodeIdUnsafe(nodeId, entryPatch, project),
+        () => Project.getPatchByNodeIdUnsafe(nodeId, entryPatch, project),
       ]
     )),
     R.filter(Project.isLinkOutputNodeIdEquals(nodeId)),

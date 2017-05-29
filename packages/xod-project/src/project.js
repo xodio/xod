@@ -574,6 +574,39 @@ export const getNodePin = def(
 );
 
 /**
+ * Returns Patch, that are prototype of passed Node Id.
+ * But to do it function needs a three arguments:
+ * - NodeId
+ * - Patch - Patch, that contains Node with specified NodeId
+ * - Project - To find Patch, that are prototype of specified Node
+ *
+ * There is safe and unsafe versions:
+ */
+export const getPatchByNodeId = def(
+  'getPatchByNodeId :: NodeId -> Patch -> Project -> Maybe Patch',
+  (nodeId, patch, project) => R.compose(
+    R.chain(getPatchByPath(R.__, project)),
+    R.map(Node.getNodeType),
+    Patch.getNodeById(R.__, patch)
+  )(nodeId)
+);
+export const getPatchByNodeIdUnsafe = def(
+  'getPatchByNodeIdUnsafe :: NodeId -> Patch -> Project -> Patch',
+  (nodeId, patch, project) => R.compose(
+    explodeMaybe(
+      Utils.formatString(
+        CONST.ERROR.CANT_GET_PATCH_BY_NODEID,
+        {
+          nodeId,
+          patchPath: Patch.getPatchPath(patch),
+        }
+      )
+    ),
+    getPatchByNodeId
+  )(nodeId, patch, project)
+);
+
+/**
  * Checks if there are any links that are connected
  * to a pin that a node with `terminalNodeId` represents.
  */
