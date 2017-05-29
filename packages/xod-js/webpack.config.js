@@ -6,13 +6,14 @@ const libraryName = 'xod-js';
 const pkgpath = subpath => path.join(__dirname, subpath);
 
 module.exports = {
+  devtool: 'source-map',
   entry: pkgpath('src/index.js'),
   output: {
     path: pkgpath('dist'),
     libraryTarget: 'umd',
     library: libraryName,
     filename: 'index.js',
-    umdNamedDefine: true
+    umdNamedDefine: true,
   },
   externals: [
     'fs',

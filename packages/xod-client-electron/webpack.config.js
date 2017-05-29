@@ -44,6 +44,9 @@ const options = {
     serialport: 'commonjs serialport',
   },
   module: {
+    preLoaders: [
+      { test: /\.js$/, loader: 'source-map-loader' },
+    ],
     loaders: [
       {
         include: pkgpath('src'),
