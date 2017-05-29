@@ -475,7 +475,7 @@ describe('Flatten', () => {
       Helper.expectErrorMessage(
         expect,
         flatProject,
-        formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: 'cpp' })
+        formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: 'cpp', patchPath: 'xod/core/or' })
       );
     });
 
@@ -1738,7 +1738,7 @@ describe('Flatten', () => {
         Helper.expectErrorMessage(
           expect,
           flatProject,
-          formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: 'java' })
+          formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: 'java', patchPath: 'xod/core/or' })
         );
       });
     });
@@ -1762,7 +1762,7 @@ describe('Flatten', () => {
         Helper.expectErrorMessage(
           expect,
           flatProject,
-          formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: impls })
+          formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: impls, patchPath: 'xod/core/or' })
         );
       });
     });

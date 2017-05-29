@@ -137,7 +137,15 @@ const extractLeafPatches = R.curry((impls, project, path, patch) =>
     ],
     [
       isLeafPatchWithoutImpls(impls),
-      err(formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: impls })),
+      err(
+        formatString(
+          CONST.ERROR.IMPLEMENTATION_NOT_FOUND,
+          {
+            impl: impls,
+            patchPath: Patch.getPatchPath(patch),
+          }
+        )
+      ),
     ],
     [
       R.T,
