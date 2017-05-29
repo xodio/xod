@@ -174,7 +174,6 @@ export const getListOfPinData = def(
         ),
       })(pin);
     }),
-    Project.normalizePinLabels,
     getNodePins
   )(node, project)
 );
@@ -367,12 +366,7 @@ export const transformNode = R.curry((patch, project, node) => {
     // TODO: Replace it with actual binding of boundValues into outLinks!
     return R.compose(
       R.assoc('value', R.__, newNode),
-      (pin) => {
-        const pinKey = Project.getPinKey(pin);
-        const pinType = Project.getPinType(pin);
-        return Project.getBoundValue(pinKey, node)
-          .getOrElse(Project.defaultValueOfType(pinType));
-      },
+      Project.getBoundValueOrDefault(R.__, node),
       R.head,
       Project.listOutputPins,
       Project.getPatchByPathUnsafe(R.__, project)
@@ -557,11 +551,6 @@ export default def(
       .chain((proj) => {
         const entryPatch = Project.getPatchByPathUnsafe(opts.path, proj);
         const impls = extractPatchImpls(opts.impls, proj);
-
-        if (Maybe.isNothing(entryPatch)) {
-          return Either.Left(new Error('Entry patch was not found in the flattened project.'));
-        }
-
         const topology = Project.getTopology(entryPatch);
         const nodes = transformNodes(entryPatch, proj);
 

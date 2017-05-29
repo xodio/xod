@@ -1,6 +1,7 @@
 import R from 'ramda';
 import chai, { expect, assert } from 'chai';
 import dirtyChai from 'dirty-chai';
+import { Either } from 'ramda-fantasy';
 
 import { createPatch, listNodes, listLinks, getNodeId, getLinkId } from 'xod-project';
 import { defaultizeProject } from 'xod-project/test/helpers';
@@ -400,138 +401,152 @@ describe('Transpiler', () => {
   });
 
   describe('end-to-end test', () => {
-    it('easy project: should return transpiled code', () => {
-      const project = defaultizeProject({
-        patches: {
-          '@/main': {
-            nodes: {
-              0: {
-                id: '0',
-                type: 'xod/nodes/test',
-                position: {
-                  x: 0,
-                  y: 0,
-                },
-                boundValues: {
-                  in_A: 10,
-                },
+    const project = defaultizeProject({
+      patches: {
+        '@/main': {
+          nodes: {
+            0: {
+              id: '0',
+              type: 'xod/nodes/test',
+              position: {
+                x: 0,
+                y: 0,
               },
-              1: {
-                id: '1',
-                type: 'xod/nodes/test',
-                position: {
-                  x: 0,
-                  y: 0,
-                },
-                boundValues: {},
+              boundValues: {
+                in_A: 10,
               },
             },
-            links: {
-              l1: {
-                id: 'l1',
-                input: {
-                  nodeId: '1',
-                  pinKey: 'in_A',
-                },
-                output: {
-                  nodeId: '0',
-                  pinKey: 'out',
-                },
+            1: {
+              id: '1',
+              type: 'xod/nodes/test',
+              position: {
+                x: 0,
+                y: 0,
               },
-              l2: {
-                id: 'l2',
-                input: {
-                  nodeId: '1',
-                  pinKey: 'in_B',
-                },
-                output: {
-                  nodeId: '0',
-                  pinKey: 'out',
-                },
-              },
+              boundValues: {},
             },
           },
-          'xod/nodes/test': {
-            nodes: {
-              noNativeImpl: {
-                description: '',
-                id: 'noNativeImpl',
-                label: '',
-                position: {
-                  x: 100,
-                  y: 100,
-                },
-                type: 'xod/patch-nodes/not-implemented-in-xod',
+          links: {
+            l1: {
+              id: 'l1',
+              input: {
+                nodeId: '1',
+                pinKey: 'in_A',
               },
-              in_A: {
-                id: 'in_A',
-                type: 'xod/patch-nodes/input-number',
-                position: {
-                  x: 0,
-                  y: 0,
-                },
-                label: '',
-                description: '',
-              },
-              in_B: {
-                id: 'in_B',
-                type: 'xod/patch-nodes/input-number',
-                position: {
-                  x: 200,
-                  y: 0,
-                },
-                label: '',
-                description: '',
-              },
-              out: {
-                id: 'out',
-                type: 'xod/patch-nodes/output-number',
-                position: {
-                  x: 0,
-                  y: 300,
-                },
-                label: '',
-                description: '',
+              output: {
+                nodeId: '0',
+                pinKey: 'out',
               },
             },
-            links: {},
-            impls: {
-              js: '/*xod/nodes/test*/',
-            },
-          },
-          'xod/core/constant-number': {
-            description: '',
-            nodes: {
-              noNativeImpl: {
-                label: '',
-                description: '',
-                boundValues: {},
-                id: 'noNativeImpl',
-                position: {
-                  x: 100,
-                  y: 100,
-                },
-                type: 'xod/patch-nodes/not-implemented-in-xod',
+            l2: {
+              id: 'l2',
+              input: {
+                nodeId: '1',
+                pinKey: 'in_B',
               },
-              VAL: {
-                label: 'VAL',
-                description: '',
-                boundValues: {},
-                id: 'VAL',
-                type: 'xod/patch-nodes/output-number',
-                position: {
-                  x: 0,
-                  y: 300,
-                },
+              output: {
+                nodeId: '0',
+                pinKey: 'out',
               },
             },
-            links: {},
-            impls: { js: '/*xod/core/constant-number*/' },
-            path: 'xod/core/constant-number',
           },
         },
+        'xod/nodes/test': {
+          nodes: {
+            noNativeImpl: {
+              description: '',
+              id: 'noNativeImpl',
+              label: '',
+              position: {
+                x: 100,
+                y: 100,
+              },
+              type: 'xod/patch-nodes/not-implemented-in-xod',
+            },
+            in_A: {
+              id: 'in_A',
+              type: 'xod/patch-nodes/input-number',
+              position: {
+                x: 0,
+                y: 0,
+              },
+              label: '',
+              description: '',
+            },
+            in_B: {
+              id: 'in_B',
+              type: 'xod/patch-nodes/input-number',
+              position: {
+                x: 200,
+                y: 0,
+              },
+              label: '',
+              description: '',
+            },
+            out: {
+              id: 'out',
+              type: 'xod/patch-nodes/output-number',
+              position: {
+                x: 0,
+                y: 300,
+              },
+              label: '',
+              description: '',
+            },
+          },
+          links: {},
+          impls: {
+            js: '/*xod/nodes/test*/',
+          },
+        },
+        'xod/core/constant-number': {
+          description: '',
+          nodes: {
+            noNativeImpl: {
+              label: '',
+              description: '',
+              boundValues: {},
+              id: 'noNativeImpl',
+              position: {
+                x: 100,
+                y: 100,
+              },
+              type: 'xod/patch-nodes/not-implemented-in-xod',
+            },
+            VAL: {
+              label: 'VAL',
+              description: '',
+              boundValues: {},
+              id: 'VAL',
+              type: 'xod/patch-nodes/output-number',
+              position: {
+                x: 0,
+                y: 300,
+              },
+            },
+          },
+          links: {},
+          impls: { js: '/*xod/core/constant-number*/' },
+          path: 'xod/core/constant-number',
+        },
+      },
+    });
+
+    it('should return Either Error for not existent patch path', () => {
+      const eitherResult = Transpiler.default({
+        project,
+        path: '@/not-existent',
+        impls: ['js'],
+        launcher: '// yahoo!',
       });
 
+      foldEither(
+        err => assert.equal(err.message, 'Can\'t find the patch in the project with specified path: "@/not-existent"'),
+        result => expect.fail(result, Either.Left(), 'Expected error, but returned some result'),
+        eitherResult
+      );
+    });
+    it('easy project: should return transpiled code', () => {
       const eitherResult = Transpiler.default({
         project,
         path: '@/main',
@@ -543,7 +558,7 @@ describe('Transpiler', () => {
       // cause we use babel-loader in tests for /platform/*.js instead
       // of raw-loader to run tests for runtime.spec.js
       foldEither(
-        err => expect.fail(err.message),
+        err => expect.fail(err, easy.trim(), err.message),
         result => assert.strictEqual(result.trim(), easy.trim(), 'JS transpiled code is not equal to expected JS code'),
         eitherResult
       );
