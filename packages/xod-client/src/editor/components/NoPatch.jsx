@@ -3,6 +3,19 @@ import React from 'react';
 const NoPatch = () => (
   <div className="NoPatch" >
     <svg viewBox="55 112 894.66211 571.49609" className="logo">
+      <defs>
+        <filter id="inset-shadow">
+          <feOffset dx="3" dy="3" />
+          <feGaussianBlur stdDeviation="3" result="offset-blur" />
+          <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse" />
+          <feFlood floodColor="black" floodOpacity="1" result="color" />
+          <feComposite operator="in" in="color" in2="inverse" result="shadow" />
+          <feComponentTransfer in="shadow" result="shadow">
+            <feFuncA type="linear" slope=".25" />
+          </feComponentTransfer>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic" />
+        </filter>
+      </defs>
       <path
         d={`M 75.40039,112.28321 234.93555,388.60547 55,683.41602
             h 46.86133 L 257.71485,428.0625 405.14258,683.41602 h 46.18945
