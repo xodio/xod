@@ -30,6 +30,9 @@ module.exports = {
     },
   },
   module: {
+    preLoaders: [
+      { test: /\.js$/, loader: 'source-map-loader' },
+    ],
     loaders: [
       {
         include: pkgpath('src'),
