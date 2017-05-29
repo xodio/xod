@@ -11,8 +11,8 @@ import jsRuntime from '../platform/runtime';
 const CONST_NODETYPES = {
   [Project.PIN_TYPE.STRING]: 'xod/core/constant-string',
   [Project.PIN_TYPE.NUMBER]: 'xod/core/constant-number',
-  [Project.PIN_TYPE.BOOLEAN]: 'xod/core/constant-logic',
-  [Project.PIN_TYPE.PULSE]: 'xod/core/constant-logic',
+  [Project.PIN_TYPE.BOOLEAN]: 'xod/core/constant-boolean',
+  [Project.PIN_TYPE.PULSE]: 'xod/core/constant-boolean',
 };
 
 // =============================================================================
