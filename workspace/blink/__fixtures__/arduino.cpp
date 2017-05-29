@@ -491,9 +491,9 @@ void evaluate(NodeId nid, State* state) {
 }}} // namespace xod::core::constant_number
 
 //-----------------------------------------------------------------------------
-// xod/core/constant_logic implementation
+// xod/core/constant_boolean implementation
 //-----------------------------------------------------------------------------
-namespace xod { namespace core { namespace constant_logic {
+namespace xod { namespace core { namespace constant_boolean {
 
 struct State {
 };
@@ -514,7 +514,7 @@ void evaluate(NodeId nid, State* state) {
     reemitValue<Outputs::VAL>(nid);
 }
 
-}}} // namespace xod::core::constant_logic
+}}} // namespace xod::core::constant_boolean
 
 } // namespace _program
 
@@ -554,8 +554,8 @@ namespace _program {
     xod::core::flip_flop::Storage storage_3 = {
         { }, // state
         { NodeId(0), xod::core::clock::Outputs::TICK::KEY }, // input_TGL
-        { NodeId(7), xod::core::constant_logic::Outputs::VAL::KEY }, // input_SET
-        { NodeId(6), xod::core::constant_logic::Outputs::VAL::KEY }, // input_RST
+        { NodeId(7), xod::core::constant_boolean::Outputs::VAL::KEY }, // input_SET
+        { NodeId(6), xod::core::constant_boolean::Outputs::VAL::KEY }, // input_RST
         { false, links_3_MEM }, // output_MEM
         { false, links_3_CHNG } // output_CHNG
     };
@@ -573,13 +573,13 @@ namespace _program {
     };
 
     NodeId links_6_VAL[] = { 3, NO_NODE };
-    xod::core::constant_logic::Storage storage_6 = {
+    xod::core::constant_boolean::Storage storage_6 = {
         { }, // state
         { false, links_6_VAL } // output_VAL
     };
 
     NodeId links_7_VAL[] = { 3, NO_NODE };
-    xod::core::constant_logic::Storage storage_7 = {
+    xod::core::constant_boolean::Storage storage_7 = {
         { }, // state
         { false, links_7_VAL } // output_VAL
     };
@@ -602,8 +602,8 @@ namespace _program {
         (EvalFuncPtr)&xod::core::flip_flop::evaluate,
         (EvalFuncPtr)&xod::core::constant_number::evaluate,
         (EvalFuncPtr)&xod::core::constant_number::evaluate,
-        (EvalFuncPtr)&xod::core::constant_logic::evaluate,
-        (EvalFuncPtr)&xod::core::constant_logic::evaluate
+        (EvalFuncPtr)&xod::core::constant_boolean::evaluate,
+        (EvalFuncPtr)&xod::core::constant_boolean::evaluate
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {

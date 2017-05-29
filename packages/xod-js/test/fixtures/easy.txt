@@ -4,11 +4,13 @@
 
 var impl = {};
 
-impl['xod/internal/const'] = startUpConstantNode();
-
 // ---------------------------------------------------------------------
 impl['xod/nodes/test'] = {};
-(function(module, exports) {// ok})({exports: impl['xod/nodes/test']}, impl['xod/nodes/test']);
+(function(module, exports) {/*xod/nodes/test*/})({exports: impl['xod/nodes/test']}, impl['xod/nodes/test']);
+
+// ---------------------------------------------------------------------
+impl['xod/core/constant-number'] = {};
+(function(module, exports) {/*xod/core/constant-number*/})({exports: impl['xod/core/constant-number']}, impl['xod/core/constant-number']);
 
 // =====================================================================
 
@@ -18,17 +20,17 @@ nodes['0'] = new Node({
   "id": "0",
   "implId": "xod/nodes/test",
   "inputTypes": {
-    "in_A": Number,
-    "in_B": Number
+    "IN_0": Number,
+    "IN_1": Number
   },
   "outLinks": {
-    "out": [
+    "OUT": [
       {
-        "key": "in_A",
+        "key": "IN_0",
         "nodeId": "1"
       },
       {
-        "key": "in_B",
+        "key": "IN_1",
         "nodeId": "1"
       }
     ]
@@ -43,8 +45,8 @@ nodes['1'] = new Node({
   "id": "1",
   "implId": "xod/nodes/test",
   "inputTypes": {
-    "in_A": Number,
-    "in_B": Number
+    "IN_0": Number,
+    "IN_1": Number
   },
   "outLinks": {},
   "setup": impl['xod/nodes/test'].setup,
@@ -55,24 +57,43 @@ nodes['1'] = new Node({
 
 nodes['2'] = new Node({
   "id": "2",
-  "implId": "xod/internal/const",
+  "implId": "xod/core/constant-number",
   "inputTypes": {},
   "outLinks": {
-    "value": [
+    "VAL": [
       {
-        "key": "in_A",
+        "key": "IN_0",
         "nodeId": "0"
       }
     ]
   },
   "value": 10,
-  "setup": impl['xod/internal/const'].setup,
-  "upkeep": impl['xod/internal/const'].upkeep,
-  "evaluate": impl['xod/internal/const'].evaluate,
+  "setup": impl['xod/core/constant-number'].setup,
+  "upkeep": impl['xod/core/constant-number'].upkeep,
+  "evaluate": impl['xod/core/constant-number'].evaluate,
   "nodes": nodes
 });
 
-var topology = ["2","0","1"];
+nodes['3'] = new Node({
+  "id": "3",
+  "implId": "xod/core/constant-number",
+  "inputTypes": {},
+  "outLinks": {
+    "VAL": [
+      {
+        "key": "IN_1",
+        "nodeId": "0"
+      }
+    ]
+  },
+  "value": 0,
+  "setup": impl['xod/core/constant-number'].setup,
+  "upkeep": impl['xod/core/constant-number'].upkeep,
+  "evaluate": impl['xod/core/constant-number'].evaluate,
+  "nodes": nodes
+});
+
+var topology = ["2","3","0","1"];
 var project = new Project({ nodes: nodes, topology: topology });
 
 // yahoo!

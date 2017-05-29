@@ -9,8 +9,8 @@ import { renderProject } from './templates';
 const ARDUINO_IMPLS = ['cpp', 'arduino'];
 const CONST_NODETYPES = {
   number: 'xod/core/constant-number',
-  boolean: 'xod/core/constant-logic',
-  pulse: 'xod/core/constant-logic',
+  boolean: 'xod/core/constant-boolean',
+  pulse: 'xod/core/constant-boolean',
 };
 const TYPES_MAP = {
   number: 'Number',

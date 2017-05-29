@@ -13,6 +13,7 @@ export const ERROR = {
   PATCH_NOT_FOUND_BY_PATH: 'Can\'t find the patch in the project with specified path: "{patchPath}"',
   PATCH_PATH_OCCUPIED: 'Another patch with the same path already exists',
   PATCH_REBASING_BUILT_IN: 'Can\'t rebase built-in patch',
+  CANT_GET_PATCH_BY_NODEID: 'Can\'t find prototype Patch of Node with Id "{nodeId}" from Patch "{patchPath}"',
   // pathes
   PATH_INVALID: 'Path is empty or contains invalid characters',
   // nodes
@@ -35,8 +36,8 @@ export const ERROR = {
 };
 
 export const IDENTIFIER_RULES =
-  `Only a-z, 0-9 and - are allowed. 
-  Name must not begin or end with a hypen, 
+  `Only a-z, 0-9 and - are allowed.
+  Name must not begin or end with a hypen,
   or contain more than one hypen in a row`;
 
 /**

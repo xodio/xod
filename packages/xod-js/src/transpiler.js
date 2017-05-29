@@ -1,11 +1,49 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 import * as Project from 'xod-project';
+import * as XF from 'xod-func-tools';
 
 import { def } from './types';
 import { joinLines, joinLineBlocks } from './utils';
 
 import jsRuntime from '../platform/runtime';
+
+const CONST_NODETYPES = {
+  [Project.PIN_TYPE.STRING]: 'xod/core/constant-string',
+  [Project.PIN_TYPE.NUMBER]: 'xod/core/constant-number',
+  [Project.PIN_TYPE.BOOLEAN]: 'xod/core/constant-boolean',
+  [Project.PIN_TYPE.PULSE]: 'xod/core/constant-boolean',
+};
+
+// =============================================================================
+//
+// Functions for local types
+//
+// =============================================================================
+const getTPinKey = def(
+  'getTPinKey :: TPin -> PinKey',
+  R.prop('key')
+);
+const getTPinLabel = def(
+  'getTPinLabel :: TPin -> PinLabel',
+  R.prop('label')
+);
+const getTPinType = def(
+  'getTPinType :: TPin -> DataType',
+  R.prop('type')
+);
+const isOutputTPin = def(
+  'getTPinDirection :: TPin -> Boolean',
+  R.propEq('isOutput', true)
+);
+const isInputTPin = def(
+  'getTPinDirection :: TPin -> Boolean',
+  R.complement(isOutputTPin)
+);
+const getTPinValue = def(
+  'getTPinValue :: TPin -> DataValue',
+  R.prop('value')
+);
 
 // =============================================================================
 //
@@ -50,137 +88,289 @@ const convertToNativeTypes = R.cond([
 
 // :: Patch -> { pinKey: Function }
 export const getInputTypes = R.compose(
-  R.map(convertToNativeTypes),
-  R.map(Project.getPinType),
-  R.indexBy(Project.getPinKey),
-  Project.listInputPins
+  R.map(R.compose(
+    convertToNativeTypes,
+    Project.getPinType
+  )),
+  R.indexBy(Project.getPinLabel),
+  R.filter(Project.isInputPin),
+  Project.normalizePinLabels,
+  Project.listPins
 );
 
-// :: String -> Patch -> { pinKey: PinRef[] }
-export const getOutLinks = R.curry((nodeId, patch) =>
-  R.compose(
-    R.map(
-      R.map(R.applySpec({
-        key: Project.getLinkInputPinKey,
-        nodeId: Project.getLinkInputNodeId,
-      }))
-    ),
-    R.groupBy(Project.getLinkOutputPinKey),
-    R.filter(Project.isLinkOutputNodeIdEquals(nodeId)),
-    Project.listLinksByNode(nodeId)
+const getNormalizedPinLabel = def(
+  'getNormalizedPinLabel :: PinKey -> Patch -> PinLabel',
+  (pinKey, patch) => R.compose(
+    Project.getPinLabel,
+    R.find(R.compose(
+      R.equals(pinKey),
+      Project.getPinKey
+    )),
+    Project.normalizePinLabels,
+    Project.listPins
   )(patch)
 );
 
-// :: Node -> [[PinKey, PinValue]]
-export const getBoundValuePairs = R.compose(
-  R.toPairs,
-  Project.getAllBoundValues
-);
-
-// :: String -> [PinKey, PinValue] -> Node
-export const createConstNode = R.curry((nodeId, curriedPinPair) => {
-  const newNodeId = `${nodeId}_${curriedPinPair[0]}`;
-  return {
-    id: newNodeId,
-    value: curriedPinPair[1],
-    type: 'xod/internal/const',
-    position: { x: 0, y: 0 },
-    label: '',
-    description: '',
-    boundValues: {},
-  };
-});
-
-// :: String -> [PinKey, PinValue] -> Link
-export const createConstLink = R.curry((nodeId, curriedPinPair) => {
-  const newNodeId = `${nodeId}_${curriedPinPair[0]}`;
-  return {
-    id: `${newNodeId}-to-${nodeId}`,
-    input: { pinKey: curriedPinPair[0], nodeId },
-    output: { pinKey: 'value', nodeId: newNodeId },
-  };
-});
-
-// TODO: Make it more readable
-// :: String -> [PinKey, PinValue] -> (Patch -> Patch)[]
-const createConstNodeAndLink = R.converge(
-  (assocNode, assocLink) => ([
-    patch => Maybe.of(assocNode(patch)),
-    assocLink,
-  ]),
-  [
-    R.compose(
-      Project.assocNode,
-      createConstNode
-    ),
-    R.compose(
-      Project.assocLink,
-      createConstLink
-    ),
-  ]
-);
-
-// :: Project -> Node -> (Patch -> Patch)[]
-const createConstantForNode = R.curry((project, node) =>
+// :: String -> Project -> Patch -> { pinKey: PinRef[] }
+export const getOutLinks = R.curry((nodeId, project, entryPatch) =>
   R.compose(
-    R.map(createConstNodeAndLink(Project.getNodeId(node))),
-    getBoundValuePairs
+    R.map(
+      R.map(R.applySpec({
+        key: R.converge(
+          getNormalizedPinLabel,
+          [
+            Project.getLinkInputPinKey,
+            R.compose(
+              Project.getPatchByNodeIdUnsafe(R.__, entryPatch, project),
+              Project.getLinkInputNodeId
+            ),
+          ]
+        ),
+        nodeId: Project.getLinkInputNodeId,
+      }))
+    ),
+    R.groupBy(R.converge(
+      getNormalizedPinLabel,
+      [
+        Project.getLinkOutputPinKey,
+        () => Project.getPatchByNodeIdUnsafe(nodeId, entryPatch, project),
+      ]
+    )),
+    R.filter(Project.isLinkOutputNodeIdEquals(nodeId)),
+    Project.listLinksByNode(nodeId)
+  )(entryPatch)
+);
+
+const getNodePins = def(
+  'getNodePins :: Node -> Project -> [Pin]',
+  (node, project) => R.compose(
+    XF.explode,
+    R.map(R.compose(
+      Project.normalizePinLabels,
+      Project.listPins
+    )),
+    Project.getPatchByNode(R.__, project)
   )(node)
 );
 
-// :: Project -> Node[] -> (Patch -> Patch)[]
-const createConstants = R.curry((project, nodes) =>
-  R.compose(
-    R.flatten,
-    R.map(createConstantForNode(project))
-  )(nodes)
+export const getListOfPinData = def(
+  'getListOfPinData :: Project -> Node -> [TPin]',
+  (project, node) => R.compose(
+    R.map((pin) => {
+      const pinKey = Project.getPinKey(pin);
+      const pinType = Project.getPinType(pin);
+      return R.applySpec({
+        key: R.always(pinKey),
+        type: R.always(pinType),
+        isOutput: Project.isOutputPin,
+        label: Project.getPinLabel,
+        value: R.compose(
+          Maybe.maybe(
+            Project.defaultValueOfType(pinType),
+            R.identity
+          ),
+          Project.getBoundValue(R.__, node),
+          Project.getPinKey
+        ),
+      })(pin);
+    }),
+    getNodePins
+  )(node, project)
 );
 
-// :: Patch -> Patch
-const clearNodeBoundValues = R.over(
-  R.lensProp('nodes'),
-  R.map(
-    R.over(
-      R.lensProp('boundValues'),
-      R.empty
-    )
+const getNormalizedPinsByPatchPath = def(
+  'getNormalizedPinsByPatchPath :: PatchPath -> Project -> [Pin]',
+  R.compose(
+    Project.normalizePinLabels,
+    Project.listOutputPins,
+    Project.getPatchByPathUnsafe
   )
 );
 
+const getOutputPinKeyByPath = def(
+  'getOutputPinKeyByPath :: PatchPath -> Project -> PinKey',
+  R.compose(
+    Project.getPinKey,
+    R.head,
+    getNormalizedPinsByPatchPath
+  )
+);
+
+export const createConstNode = def(
+  'createConstNode :: Project -> Project -> NodeId -> TPin -> Node',
+  (origProject, project, nodeId, pin) => {
+    const pinType = getTPinType(pin);
+    const pinValue = getTPinValue(pin);
+    const pinLabel = getTPinLabel(pin);
+
+    const newNodeType = R.prop(pinType, CONST_NODETYPES);
+    const newNodeId = `${nodeId}_${pinLabel}`;
+    const newOutPinKey = getOutputPinKeyByPath(newNodeType, origProject);
+
+    return R.compose(
+      R.assoc('id', newNodeId), // TODO: Replace with `setNodeId` function from `xod-project` or make pure `createNode`?
+      Project.setBoundValue(newOutPinKey, pinValue),
+      Project.createNode({ x: 0, y: 0 })
+    )(newNodeType);
+  }
+);
+
+export const createConstLink = def(
+  'createConstLink :: Project -> Project -> NodeId -> TPin -> Link',
+  (origProject, project, nodeId, pin) => {
+    const pinType = getTPinType(pin);
+    const pinKey = getTPinKey(pin);
+    const pinLabel = getTPinLabel(pin);
+    const newNodeId = `${nodeId}_${pinLabel}`;
+    const newNodeType = R.prop(pinType, CONST_NODETYPES);
+    const outPinKey = getOutputPinKeyByPath(newNodeType, origProject);
+    return R.compose(
+      R.assoc('id', `${newNodeId}-to-${nodeId}`), // TODO: Replace with `setLinkId` function from `xod-project` or make pure `createLink`?
+      Project.createLink
+    )(pinKey, nodeId, outPinKey, newNodeId);
+  }
+);
+
+const createConstNodeAndLink = def(
+  'createConstNodeAndLink :: Project -> Project -> NodeId -> TPin -> [Patch -> Patch]',
+  R.converge(
+    (assocNodeFn, assocLinkFn) => [assocNodeFn, assocLinkFn],
+    [
+      R.compose(
+        node => patch => R.compose(Maybe.of, Project.assocNode(node))(patch),
+        createConstNode
+      ),
+      R.compose(
+        Project.assocLink,
+        createConstLink
+      ),
+    ]
+  )
+);
+
+const rejectOccupiedPins = def(
+  'rejectOccupiedPins :: Node -> Patch -> [TPin] -> [TPin]',
+  (node, patch, pins) => {
+    const nodeId = Project.getNodeId(node);
+    return R.compose(
+      pinKeys => R.reject(
+        R.compose(
+          XF.isAmong(pinKeys),
+          getTPinKey
+        ),
+        pins
+      ),
+      R.map(Project.getLinkInputPinKey),
+      R.filter(Project.isLinkInputNodeIdEquals(nodeId)),
+      Project.listLinksByNode(node)
+    )(patch);
+  }
+);
+
+const createConstantForNode = def(
+  'createConstantForNode :: Project -> Project -> Patch -> Node -> [Patch -> Patch]',
+  (origProject, project, patch, node) => R.compose(
+    R.unnest,
+    R.map(createConstNodeAndLink(origProject, project, Project.getNodeId(node))),
+    R.filter(isInputTPin),
+    rejectOccupiedPins(node, patch),
+    getListOfPinData(project)
+  )(node)
+);
+
+// :: Project -> Patch -> Node[] -> (Patch -> Patch)[]
+const createConstants = R.curry((origProject, project, patch, nodes) =>
+  R.compose(
+    R.flatten,
+    R.map(createConstantForNode(origProject, project, patch))
+  )(nodes)
+);
+
 // :: Project -> Patch -> Patch
-export const addConstNodesToPatch = R.curry((project, patch) => {
+export const addConstNodesToPatch = R.curry((origProject, project, patch) => {
   const nodes = Project.listNodes(patch);
-  const assocNodesAndLinks = createConstants(project, nodes);
+  const assocNodesAndLinks = createConstants(origProject, project, patch, nodes);
 
   return R.compose(
-    R.unnest,
+    XF.explode,
     R.reduce(R.flip(R.chain), R.__, assocNodesAndLinks),
     Maybe.of
   )(patch);
 });
 
 // :: Path -> Project -> Maybe Patch
-export const transformPatch = R.curry((path, project) =>
+export const transformPatch = R.curry((path, origProject, project) =>
   Project.getPatchByPath(path, project)
-  .map(addConstNodesToPatch(project))
-  .map(clearNodeBoundValues)
+  .map(addConstNodesToPatch(origProject, project))
+);
+
+const isConstantNode = def(
+  'isConstantNode :: Node -> Boolean',
+  R.compose(
+    Project.isConstantPatchPath,
+    Project.getNodeType
+  )
+);
+
+/**
+ * We need to copy `xod/core/constant-*` patches, that used in the entry-point patch.
+ * So we accept updated patch (with Nodes that points on needed constant patches),
+ * copy all needed patches from original Project into flattened one, and then
+ * assoc updated patch into flattened project.
+ */
+const copyConstPatchesAndAssocPatch = def(
+  'copyConstPatchesAndAssocPatch :: Patch -> Project -> Project -> Either Error Project',
+  (patch, origProject, project) => R.compose(
+    R.chain(Project.assocPatch(Project.getPatchPath(patch), patch)),
+    R.reduce(R.flip(R.chain), Either.of(project)),
+    R.map(R.compose(
+      R.converge(
+        Project.assocPatch,
+        [
+          Project.getPatchPath,
+          R.identity,
+        ]
+      ),
+      Project.getPatchByPathUnsafe(R.__, origProject),
+      Project.getNodeType
+    )),
+    R.filter(isConstantNode),
+    Project.listNodes
+  )(patch)
+);
+
+export const transformProject = def(
+  'transformProject :: PatchPath -> Project -> Project -> Project',
+  (path, origProject, project) => R.compose(
+    XF.explode,
+    R.chain(copyConstPatchesAndAssocPatch(R.__, origProject, project)),
+    R.map(Project.renumberNodes),
+    transformPatch(path, origProject)
+  )(origProject, project)
 );
 
 // :: Patch -> Project -> Node -> Node
 export const transformNode = R.curry((patch, project, node) => {
   const nodeId = Project.getNodeId(node);
   const type = Project.getNodeType(node);
-  const typePatch = Project.getPatchByPath(type, project);
+  const nodePatch = Project.getPatchByPathUnsafe(type, project);
 
   const newNode = {
     id: nodeId,
     implId: type,
-    inputTypes: typePatch.map(getInputTypes).getOrElse({}),
-    outLinks: getOutLinks(nodeId, patch),
+    inputTypes: getInputTypes(nodePatch),
+    outLinks: getOutLinks(nodeId, project, patch),
   };
 
-  if (R.has('value', node)) {
-    return R.assoc('value', node.value, newNode);
+  if (isConstantNode(node)) {
+    // TODO: Replace it with actual binding of boundValues into outLinks!
+    return R.compose(
+      R.assoc('value', R.__, newNode),
+      Project.getBoundValueOrDefault(R.__, node),
+      R.head,
+      Project.listOutputPins,
+      Project.getPatchByPathUnsafe(R.__, project)
+    )(type);
   }
 
   return newNode;
@@ -210,8 +400,7 @@ function transpileImpl(impl) {
         const itemRef = `impl['${implId}']`;
         let lines = [];
 
-        // TODO: use functions from xod-project, unhardcode regexes
-        if (/^xod\/core\/input/.test(implId) || /^xod\/core\/output/.test(implId)) {
+        if (Project.isTerminalPatchPath(implId)) {
           lines = [`${itemRef} = identityNode();`];
         } else {
           lines = [
@@ -229,7 +418,6 @@ function transpileImpl(impl) {
 
   return joinLineBlocks([
     'var impl = {};',
-    "impl['xod/internal/const'] = startUpConstantNode();",
     items(impl),
   ]);
 }
@@ -359,15 +547,10 @@ export default def(
     }
 
     return Project.flatten(opts.project, opts.path, opts.impls)
+      .map(transformProject(opts.path, opts.project))
       .chain((proj) => {
+        const entryPatch = Project.getPatchByPathUnsafe(opts.path, proj);
         const impls = extractPatchImpls(opts.impls, proj);
-
-        const entryPatch = transformPatch(opts.path, proj).chain(Project.renumberNodes);
-
-        if (Maybe.isNothing(entryPatch)) {
-          return Either.Left(new Error('Entry patch was not found in the flattened project.'));
-        }
-
         const topology = Project.getTopology(entryPatch);
         const nodes = transformNodes(entryPatch, proj);
 

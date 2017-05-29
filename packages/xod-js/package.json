@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "dirty-chai": "^1.2.2"
+    "dirty-chai": "^1.2.2",
+    "source-map-support": "^0.4.15"
   }
 }
