@@ -13,6 +13,13 @@ delete baseConfig.externals;
 const pkgpath = subpath => path.resolve(__dirname, subpath);
 
 const config = merge.smart(baseConfig, {
+  target: 'node',
+  devtool: 'source-map',
+  externals: [
+    'fs',
+    'ramda',
+    'sanctuary-def',
+  ],
   module: {
     loaders: [
       {
