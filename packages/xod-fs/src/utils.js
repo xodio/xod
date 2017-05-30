@@ -1,7 +1,6 @@
 import R from 'ramda';
 import fs from 'fs';
 import path from 'path';
-import expandHomeDir from 'expand-home-dir';
 
 import {
   rejectWithCode,
@@ -19,6 +18,17 @@ import {
 import * as ERROR_CODES from './errorCodes';
 
 const indexByIds = R.indexBy(R.prop('id'));
+
+export const expandHomeDir = (pathToResolve) => {
+  const homedir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
+
+  if (!pathToResolve) return pathToResolve;
+  if (pathToResolve === '~') return homedir;
+  if (pathToResolve.slice(0, 2) !== '~/') return pathToResolve;
+
+  return path.join(homedir, pathToResolve.slice(2));
+};
+
 
 export const reassignIds = R.evolve({
   nodes: indexByIds,

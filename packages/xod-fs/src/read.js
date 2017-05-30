@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import expandHomeDir from 'expand-home-dir';
 import recReadDir from 'recursive-readdir';
+
+import { expandHomeDir } from './utils';
 
 // :: rootPath -> Promise
 export const readDir = rootPath => new Promise(

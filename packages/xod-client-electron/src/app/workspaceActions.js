@@ -212,27 +212,6 @@ export const onSelectProject = R.curry(
     .catch(handleError(send))
 );
 
-// :: (String -> a -> ()) -> (() -> Promise Path Error) ->
-//    -> (Path -> Promise Path Error) -> Promise ProjectMeta[] Error
-export const onIDELaunch = R.curry(
-  (send, pathGetter, pathSaver) => R.pipeP(
-    pathGetter,
-    oldPath => R.pipeP(
-      Promise.resolve.bind(Promise),
-      ensureWorkspacePath,
-      pathSaver,
-      validateWorkspace,
-      updateWorkspace(send, oldPath)
-    )(oldPath),
-    loadProjectsOrSpawnDefault(send)
-  )()
-    .catch(catchInvalidWorkspace((err) => {
-      const force = (err.errorCode === FS_ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY);
-      pathGetter().then(newPath => requestCreateWorkspace(send, newPath, force));
-    }))
-    .catch(handleError(send))
-);
-
 // :: (String -> a -> ()) -> (Path -> Promise Path Error) -> Path -> Promise ProjectMeta[] Error
 export const onCreateWorkspace = R.curry(
   (send, pathSaver, workspacePath) => R.pipeP(
@@ -241,6 +220,36 @@ export const onCreateWorkspace = R.curry(
     updateWorkspace(send, ''),
     loadProjectsOrSpawnDefault(send)
   )(workspacePath).catch(handleError(send))
+);
+
+// :: (String -> a -> ()) -> (() -> Promise Path Error) ->
+//    -> (Path -> Promise Path Error) -> Promise ProjectMeta[] Error
+export const onIDELaunch = R.curry(
+  (send, pathGetter, pathSaver) => {
+    let oldPath = null;
+    let newPath = null;
+
+    return R.pipeP(
+      pathGetter,
+      R.tap((p) => { oldPath = p; }),
+      ensureWorkspacePath,
+      R.tap((p) => { newPath = p; }),
+      pathSaver,
+      validateWorkspace,
+      updateWorkspace(send, oldPath),
+      loadProjectsOrSpawnDefault(send)
+    )()
+      .catch(catchInvalidWorkspace(
+        (err) => {
+          const isHomeDir = (oldPath !== newPath);
+          const forceCreate = (err.errorCode === FS_ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY);
+          if (isHomeDir && !forceCreate) { return onCreateWorkspace(send, pathSaver, newPath); }
+          requestCreateWorkspace(send, newPath, forceCreate);
+          return [];
+        }
+      ))
+      .catch(handleError(send));
+  }
 );
 
 // :: (String -> a -> ()) -> (Path -> Promise Path Error) -> Path -> Promise ProjectMeta[] Error
