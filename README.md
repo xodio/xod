@@ -44,8 +44,16 @@ Maintenance Scripts
   and all packages it depends on directly or indirectly.
   E.g. `yarn run test -- xod-client`.
 * `yarn test` tests all packages
+* `yarn test-func` runs automated end-to-end functional tests.
+  You can set `XOD_DEBUG_TESTS` environment variable to keep IDE open on failure:
+  `XOD_DEBUG_TESTS=1 yarn test-func`
 * `yarn run verify` builds lints and tests; run this prior to pull request
 * `yarn run ci` installs and verifies; used as a script for CI-server
+
+Run `yarn start:spectron-repl` to start IDE under control of
+[Spectron](https://github.com/electron/spectron). Then you can use objects
+provided by REPL to query elements, click buttons, etc. It would help in
+creating functional tests for IDE.
 
 ### Building
 

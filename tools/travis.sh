@@ -4,6 +4,13 @@ set -ev
 
 yarn run verify
 
+if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+  # Run functional tests only on Linux since OSX currently fails to execute
+  # `yarn electron-rebuild` successfully. The offending module is fsevents
+  yarn run electron-rebuild;
+  yarn run test-func;
+fi
+
 tags=$(git tag --points-at "$TRAVIS_COMMIT")
 if [ -n "$tags" ]; then
     yarn run electron-dist

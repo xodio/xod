@@ -14,6 +14,7 @@
     "start": "electron ./src-babel/app/main.js",
     "electron-rebuild": "electron-rebuild",
     "test": "electron-mocha ./test",
+    "test-func": "mocha --opts test-func/mocha.opts test-func/**/*.spec.js",
     "pack": "build --dir",
     "dist": "build"
   },
@@ -52,7 +53,8 @@
     "electron-builder": "^17.1.1",
     "electron-mocha": "^3.4.0",
     "electron-rebuild": "^1.4.0",
-    "npm-run-all": "^3.1.0",
+    "fs-extra": "^3.0.1",
+    "fsp": "^0.1.2",
     "webpack": "^1.13.2",
     "webpack-target-electron-renderer": "^0.4.0"
   },
