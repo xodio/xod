@@ -6,7 +6,7 @@
       "boundValues": {},
       "description": "",
       "id": "HkDgIRdrv1W",
-      "label": "DRN",
+      "label": "TRIG",
       "position": {
         "x": 10,
         "y": 16
@@ -30,9 +30,22 @@
       },
       "description": "",
       "id": "SJUl8Aurv1W",
-      "label": "SRC",
+      "label": "T",
       "position": {
         "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundValues": {
+        "__in__": ""
+      },
+      "description": "",
+      "id": "SyM2ATB-b",
+      "label": "F",
+      "position": {
+        "x": 138,
         "y": 224
       },
       "type": "xod/patch-nodes/output-pulse"
