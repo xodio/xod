@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+
+const repl = require('repl');
+const Application = require('spectron').Application;
+
+const app = new Application({
+  path: './packages/xod-client-electron/node_modules/.bin/electron',
+  args: [
+    './packages/xod-client-electron',
+  ],
+});
+
+console.log('Starting XOD IDE...');
+
+app.start()
+  .then(function() {
+    console.log('\nIDE started.\n');
+    console.log('Use `app` and `client` objects to control the application');
+    console.log('For reference see:');
+    console.log('- https://github.com/electron/spectron');
+    console.log('- http://webdriver.io/api.html');
+    console.log('');
+  })
+  .then(function() {
+    const r = repl.start('> ');
+
+    Object.defineProperty(r.context, 'app', {
+      configurable: false,
+      enumerable: true,
+      value: app,
+    });
+
+    Object.defineProperty(r.context, 'client', {
+      configurable: false,
+      enumerable: true,
+      value: app.client,
+    });
+  });
