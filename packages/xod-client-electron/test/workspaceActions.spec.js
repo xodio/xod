@@ -1,7 +1,7 @@
 import chai, { assert, expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { resolve } from 'path';
-import { rmrf, spawnDefaultProject, getLocalProjects, getProjectMetaName } from 'xod-fs';
+import { rmrf, spawnDefaultProject, getLocalProjects, getProjectMetaName, resolvePath } from 'xod-fs';
 import { getProjectName } from 'xod-project';
 
 import * as WA from '../src/app/workspaceActions';
@@ -21,6 +21,7 @@ describe('IDE', () => {
     rmrf(fixture('./notExistWorkspace')),
     rmrf(fixture('./emptyWorkspace/welcome-to-xod')),
     rmrf(fixture('./emptyWorkspace/lib')),
+    rmrf(fixture('./xod')),
   ]);
   afterEach(deleteTestFiles);
 
@@ -72,16 +73,32 @@ describe('IDE', () => {
         saveMock(fixture('./validWorkspace'))
       )
     );
-    it('if workspace does not exist, spawns workspace and default project in homedir, and requests to open it',
+    it('if workspace does not exist, request to create workspace in specified path',
       () => WA.onIDELaunch(
-        (eventName, { path, force }) => {
+        (eventName, data) => {
           assert.equal(eventName, EVENTS.REQUEST_CREATE_WORKSPACE);
-          assert.equal(path, fixture('./notExistWorkspace'));
-          assert.isFalse(force);
+          assert.equal(data.path, fixture('./notExistWorkspace'));
+          assert.isFalse(data.force);
         },
         loadMock(fixture('./notExistWorkspace')),
         saveMock(fixture('./notExistWorkspace'))
       )
+    );
+
+    it('if workspace does not exist, spawns workspace and default project in homedir, and requests to open it',
+      () => {
+        // Change homedirectory to check spawning in homedir without questions
+        const homeVar = (process.platform === 'win32') ? 'USERPROFILE' : 'HOME';
+        const homedir = process.env[homeVar];
+        process.env[homeVar] = fixture('');
+        const homedirWorkspace = resolvePath('~/xod');
+
+        return WA.onIDELaunch(
+          sendMockDefault,
+          loadMock(''),
+          saveMock(homedirWorkspace)
+        ).then(() => { process.env[homeVar] = homedir; });
+      }
     );
   });
 
