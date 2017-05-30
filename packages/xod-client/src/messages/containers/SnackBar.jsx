@@ -15,9 +15,6 @@ class SnackBar extends React.Component {
     super(props);
 
     this.errors = {};
-    this.state = {
-      mouseover: false,
-    };
 
     this.addMessages(props.errors);
 
@@ -31,40 +28,28 @@ class SnackBar extends React.Component {
   }
 
   onMouseOver() {
-    if (this.state.mouseover) return;
-
-    this.setState(
-      R.assoc('mouseover', true, this.state)
-    );
+    R.pipe(
+      R.values,
+      R.forEach((error) => {
+        clearTimeout(error.timeout);
+      })
+    )(this.errors);
   }
 
   onMouseOut() {
-    if (!this.state.mouseover) return;
-
-    this.setState(
-      R.assoc('mouseover', false, this.state)
-    );
-
-    this.restartTimeouts();
+    R.pipe(
+      R.values,
+      R.forEach((error) => {
+        const { id } = error.data;
+        this.errors[id].timeout = this.setTimeout(id);
+      })
+    )(this.errors);
   }
 
   setTimeout(id) {
     return setTimeout(() => {
-      if (!this.state.mouseover) {
-        this.hideError(id);
-      }
+      this.hideError(id);
     }, ERROR_TIMEOUT);
-  }
-
-  restartTimeouts() {
-    R.pipe(
-      R.values,
-      R.forEach((error) => {
-        const id = error.data.id;
-        clearTimeout(error.timeout);
-        this.errors[id].timeout = this.setTimeout(id);
-      })
-    )(this.errors);
   }
 
   hideError(id) {
