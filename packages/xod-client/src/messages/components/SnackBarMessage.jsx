@@ -15,17 +15,12 @@ class SnackBarMessage extends React.Component {
     };
 
     this.hide = this.hide.bind(this);
-    this.onClick = this.onClick.bind(this);
   }
 
   componentDidMount() {
     setTimeout(() => {
       this.setHidden(false);
     });
-  }
-
-  onClick() {
-    this.hide();
   }
 
   getMessageContent() {
@@ -87,10 +82,7 @@ class SnackBarMessage extends React.Component {
         className={cls}
         dataId={message.id}
       >
-        <a
-          tabIndex={message.id}
-          onClick={this.onClick}
-        >
+        <a tabIndex={message.id} >
           {messageContent}
         </a>
       </li>
