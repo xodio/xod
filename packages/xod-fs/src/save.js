@@ -1,9 +1,8 @@
 import path from 'path';
 import { curry } from 'ramda';
-import expandHomeDir from 'expand-home-dir';
 import { rejectWithCode } from 'xod-func-tools';
 
-import { resolvePath } from './utils';
+import { resolvePath, expandHomeDir } from './utils';
 import { writeJSON } from './write';
 import { Backup } from './backup';
 import { arrangeByFiles } from './unpack';
