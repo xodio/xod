@@ -1,0 +1,40 @@
+.Button {
+  padding: 10px 30px;
+  color: #cccccc;
+  background-color: #444444;
+  border: 1px solid #777777;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #555555;
+    border-color: #777777;
+    box-shadow: 0 0 7px 0 rgba(0,0,0,0.5);
+  }
+
+  &:active {
+    background-color: #444444;
+    border-color: #999999;
+    box-shadow: none;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  &--light {
+    color: black;
+    background-color: #cccccc;
+
+    &:hover {
+      background-color: #cccccc;
+    }
+
+    &:active {
+      background-color: #cccccc;
+      border-color: #555555;
+    }
+  }
+}
