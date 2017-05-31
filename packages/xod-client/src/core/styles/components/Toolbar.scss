@@ -1,20 +1,5 @@
 .Toolbar {
-  font-size: $font-size-l;
-
   position: relative;
   display: block;
-  background-color: $color-ctrl-background;
-  color: $color-ctrl-background-text;
-
-  .logo {
-    display: inline-block;
-    padding: 5px 10px;
-    color: #7A838F; // TODO: will be replaced by SVG logo
-  }
-
-  .project-meta {
-    display: inline-block;
-    padding: 5px 10px;
-    margin: 0 5px;
-  }
+  background-color: $color-toolbar-background;
 }

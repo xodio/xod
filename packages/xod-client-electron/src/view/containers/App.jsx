@@ -11,8 +11,6 @@ import { ipcRenderer, remote as remoteElectron } from 'electron';
 
 import client from 'xod-client';
 import {
-  getProjectName,
-  getProjectAuthors,
   isValidIdentifier,
   IDENTIFIER_RULES,
 } from 'xod-project';
@@ -451,10 +449,7 @@ class App extends client.App {
           onKeyDown={this.onKeyDown}
           onBeforeUnload={this.onCloseApp}
         />
-        <client.Toolbar
-          projectName={getProjectName(this.props.project)}
-          projectAuthors={getProjectAuthors(this.props.project)}
-        />
+        <client.Toolbar />
         <client.Editor size={this.state.size} />
         <client.SnackBar />
         <client.PopupShowCode

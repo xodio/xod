@@ -1,6 +1,5 @@
 // below are styles for rc-menu component (https://github.com/react-component/menu)
 // extracted from styles that were included in package, then slightly modified
-// TODO: use more stuff from ../abstracts/variables.scss
 $menu-root-class: '.Menubar';
 
 #{$menu-root-class} {
@@ -9,7 +8,7 @@ $menu-root-class: '.Menubar';
   padding-left: 0;
   list-style: none;
   z-index: 99999;
-  color: #666;
+  color: $color-toolbar-foreground;
 
   display: inline-block;
   margin-top: 0;
@@ -48,26 +47,26 @@ $menu-root-class: '.Menubar';
   }
 
   &-item-group-title {
-    color: #999;
+    color: $color-toolbar-foreground;
     line-height: 1.5;
     padding: 8px 10px;
-    border-bottom: 1px solid #dedede;
+    border-bottom: 1px solid $color-toolbar-foreground;
   }
 
   &-submenu-open > &-submenu-title,
   &-item-active {
-    color: $color-button-primary-text;
-    background-color: $color-button-primary-background-hover;
+    color: $color-toolbar-background;
+    background-color: $color-toolbar-foreground;
     cursor: pointer;
   }
 
   &-item-selected {
-    background-color: #eaf8fe;
+    background-color: $color-toolbar-background;
     transform: translateZ(0);
   }
 
   &-submenu-selected {
-    background-color: #eaf8fe;
+    background-color: $color-toolbar-background;
   }
 
   & > li#{&}-submenu {
@@ -105,31 +104,32 @@ $menu-root-class: '.Menubar';
     overflow: hidden;
     padding: 0;
     line-height: 0;
-    background-color: #e5e5e5;
+    // TODO: ask UX designer
+    background-color: $color-toolbar-foreground;
   }
 
   &-submenu {
     position: relative;
 
     & > #{$menu-root-class} {
-      background-color: #fff;
+      background-color: $color-toolbar-background;
     }
   }
 
   &-horizontal {
-    background-color: #F3F5F7;
+    background-color: $color-toolbar-background;
   }
   &-horizontal > &-item,
   &-horizontal > &-submenu > &-submenu-title {
-    padding: 9px;
+    padding: 12px;
   }
   &-horizontal > &-submenu,
   &-horizontal > &-item {
     float: left;
   }
   &-horizontal > &-item-active {
-    background-color: #F3F5F7;
-    color: #2baee9;
+    background-color: $color-toolbar-background;
+    color: $color-toolbar-foreground;
   }
   &-horizontal:after {
     content: "\20";
