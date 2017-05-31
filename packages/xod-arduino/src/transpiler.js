@@ -77,17 +77,19 @@ const isConstPath = def(
   path => R.contains(path, R.values(CONST_NODETYPES))
 );
 
+const kebabToSnake = R.replace(/-/g, '_');
+
 const createPatchNames = def(
   'createPatchNames :: PatchPath -> { owner :: String, libName :: String, patchName :: String }',
   (path) => {
     const [owner, libName, ...patchNameParts] = R.split('/', path);
-    const patchName = patchNameParts.join('/').replace(/-/g, '_');
+    const patchName = patchNameParts.join('/');
 
-    return {
+    return R.map(kebabToSnake, {
       owner,
       libName,
       patchName,
-    };
+    });
   }
 );
 
