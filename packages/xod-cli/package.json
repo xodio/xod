@@ -4,7 +4,8 @@
   "description": "XOD project: Command Line Interface",
   "scripts": {
     "build": "babel src/ -d bin/",
-    "dev": "yarn run build -- --watch"
+    "dev": "yarn run build -- --watch",
+    "test": "mocha test/**/*.spec.js"
   },
   "bin": {
     "xodc": "./bin/xodc.js"
@@ -33,5 +34,10 @@
     "presets": [
       "es2015"
     ]
+  },
+  "devDependencies": {
+    "chai": "^4.0.0",
+    "child-process-promise": "^2.2.1",
+    "fs-extra": "^3.0.1"
   }
 }
