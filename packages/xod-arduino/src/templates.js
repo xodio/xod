@@ -8,7 +8,10 @@ import patchContextTpl from '../platform/patchContext.tpl.cpp';
 import implListTpl from '../platform/implList.tpl.cpp';
 import programTpl from '../platform/program.tpl.cpp';
 
-import runtime from '../platform/runtime.cpp';
+import preambleH from '../platform/preamble.h';
+import intrusivePtrH from '../platform/intrusive_ptr.h';
+import listH from '../platform/list.h';
+import runtimeCpp from '../platform/runtime.cpp';
 
 // =============================================================================
 //
@@ -51,6 +54,21 @@ Handlebars.registerHelper('exists', function existsHelper(variable, options) {
     options.fn(this) :
     options.inverse(this);
 });
+// Temporary switch to global C++ namespace
+Handlebars.registerHelper('global', function global(options) {
+  return [
+    '// --- Enter global namespace ---',
+    '}}}}',
+    options.fn(this),
+    'namespace _program {',
+    [
+      `namespace ${this.owner} {`,
+      `namespace ${this.libName} {`,
+      `namespace ${this.patchName} {`,
+    ].join(' '),
+    '// --- Back to local namespace ---',
+  ].join('\n');
+});
 
 // =============================================================================
 //
@@ -86,9 +104,15 @@ export const renderPatchContext = def(
 export const renderImpl = def(
   'renderImpl :: TPatch -> String',
   (data) => {
+    const ctx = R.applySpec({
+      owner: R.prop('owner'),
+      libName: R.prop('libName'),
+      patchName: R.prop('patchName'),
+      GENERATED_CODE: renderPatchContext,
+    })(data);
+
     const patchImpl = R.prop('impl', data);
-    const patchContext = renderPatchContext(data);
-    return Handlebars.compile(patchImpl, renderingOptions)({ GENERATED_CODE: patchContext });
+    return Handlebars.compile(patchImpl, renderingOptions)(ctx);
   }
 );
 export const renderImplList = def(
@@ -121,8 +145,11 @@ export const renderProject = def(
     const program = renderProgram(project.topology, project.nodes);
 
     return R.join('\n')([
+      preambleH,
+      intrusivePtrH,
+      listH,
       config,
-      runtime,
+      runtimeCpp,
       impls,
       program,
     ]);

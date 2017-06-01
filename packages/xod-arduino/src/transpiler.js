@@ -11,11 +11,13 @@ const CONST_NODETYPES = {
   number: 'xod/core/constant-number',
   boolean: 'xod/core/constant-boolean',
   pulse: 'xod/core/constant-boolean',
+  string: 'xod/core/constant-string',
 };
 const TYPES_MAP = {
   number: 'Number',
   pulse: 'Logic',
   boolean: 'Logic',
+  string: 'XString',
 };
 
 //-----------------------------------------------------------------------------
@@ -75,17 +77,19 @@ const isConstPath = def(
   path => R.contains(path, R.values(CONST_NODETYPES))
 );
 
+const kebabToSnake = R.replace(/-/g, '_');
+
 const createPatchNames = def(
   'createPatchNames :: PatchPath -> { owner :: String, libName :: String, patchName :: String }',
   (path) => {
     const [owner, libName, ...patchNameParts] = R.split('/', path);
-    const patchName = patchNameParts.join('/').replace(/-/g, '_');
+    const patchName = patchNameParts.join('/');
 
-    return {
+    return R.map(kebabToSnake, {
       owner,
       libName,
       patchName,
-    };
+    });
   }
 );
 
@@ -491,6 +495,18 @@ const getNodePinLabels = def(
   )
 );
 
+/**
+ * Converts JS-typed data value to a string that is valid and expected
+ * C++ literal representing that value
+ */
+const formatValueLiteral = def(
+  'formatValueLiteral :: DataValue -> String',
+  R.cond([
+    [R.equals(''), R.always('nullptr')],
+    [R.T, R.toString],
+  ])
+);
+
 // TODO: Remove it when `Project.getBoundValue` will return default values
 /**
  * In case when `getBoundValue` doesn't contain a bound value
@@ -520,8 +536,10 @@ const getTNodeOutputs = def(
       R.mapObjIndexed((links, pinKey) => ({
         to: getLinksInputNodeIds(links),
         pinKey: nodePins[pinKey],
-        value: Project.getBoundValue(pinKey, node)
-          .getOrElse(getDefaultPinValue(pinKey, node, project)),
+        value: formatValueLiteral(
+          Project.getBoundValue(pinKey, node)
+            .getOrElse(getDefaultPinValue(pinKey, node, project))
+        ),
       })),
       R.groupBy(Project.getLinkOutputPinKey),
       R.filter(Project.isLinkOutputNodeIdEquals(nodeId)),

@@ -3,7 +3,8 @@
   "plugins": [
     ["babel-plugin-inline-import", {
       "extensions": [
-        ".cpp"
+        ".cpp",
+        ".h"
       ]
     }]
   ]

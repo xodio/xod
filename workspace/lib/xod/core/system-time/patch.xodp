@@ -27,6 +27,19 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "boundValues": {
+        "__in__": ""
+      },
+      "description": "",
+      "id": "Sk9HScK-Z",
+      "label": "RDY",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
       "boundValues": {},
       "description": "",
       "id": "noNativeImpl",

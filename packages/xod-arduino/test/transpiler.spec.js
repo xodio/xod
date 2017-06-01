@@ -7,20 +7,27 @@ import { explode } from 'xod-func-tools';
 import { loadProject } from 'xod-fs';
 import transpile from '../src/transpiler';
 
-const wsPath = subpath => path.resolve(__dirname, '../../../workspace', subpath);
+// Returns patch relative to repo’s `workspace` subdir
+const wsPath = (...subpath) => path.resolve(__dirname, '../../../workspace', ...subpath);
 
-describe('xod-arduino transpiler (end-to-end tests)', () => {
-  it('Transpile Blink project with "@/main" entry-point patch should return Either.Right with C++ code', () => {
-    const expectedCpp = fs.readFileSync(wsPath('blink/__fixtures__/arduino.cpp'), 'utf-8');
-    return loadProject(wsPath('blink'))
-      .then(transpile(R.__, '@/main'))
-      .then(explode)
-      .then(cpp =>
-        assert.strictEqual(cpp, expectedCpp, 'expected and actual C++ don’t match')
-      );
+const testFixture = (projName) => {
+  const expectedCpp = fs.readFileSync(wsPath(projName, '__fixtures__/arduino.cpp'), 'utf-8');
+  return loadProject(wsPath(projName))
+    .then(transpile(R.__, '@/main'))
+    .then(explode)
+    .then(cpp =>
+      assert.strictEqual(cpp, expectedCpp, 'expected and actual C++ don’t match')
+    );
+};
+
+describe('xod-arduino transpiler', () => {
+  describe('correctly transpiles workspace fixture', () => {
+    specify('blink', () => testFixture('blink'));
+    specify('two-button-switch', () => testFixture('two-button-switch'));
+    specify('lcd-time', () => testFixture('lcd-time'));
   });
 
-  it('Transpile Blink project with a non-existing-patch as entry-point should return Either.Left with error',
+  it('returns error for non-existing-patch entry point',
     () =>
       loadProject(wsPath('blink'))
         .then(transpile(R.__, '@/non-existing-patch'))

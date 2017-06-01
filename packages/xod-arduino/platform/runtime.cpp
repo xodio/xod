@@ -7,9 +7,6 @@
  *
  =============================================================================*/
 
-#include <Arduino.h>
-#include <inttypes.h>
-
 //----------------------------------------------------------------------------
 // Debug routines
 //----------------------------------------------------------------------------
@@ -18,8 +15,8 @@
 #endif
 
 #ifdef XOD_DEBUG
-#  define XOD_TRACE(x)      DEBUG_SERIAL.print(x)
-#  define XOD_TRACE_LN(x)   DEBUG_SERIAL.println(x)
+#  define XOD_TRACE(x)      { DEBUG_SERIAL.print(x); DEBUG_SERIAL.flush(); }
+#  define XOD_TRACE_LN(x)   { DEBUG_SERIAL.println(x); DEBUG_SERIAL.flush(); }
 #  define XOD_TRACE_F(x)    XOD_TRACE(F(x))
 #  define XOD_TRACE_FLN(x)  XOD_TRACE_LN(F(x))
 #else
@@ -66,6 +63,8 @@ namespace _program {
 
     typedef unsigned long TimeMs;
     typedef void (*EvalFuncPtr)(NodeId nid, void* state);
+
+    typedef xod::List<char>::ListPtr XString;
 }
 
 //----------------------------------------------------------------------------
@@ -222,14 +221,16 @@ namespace _program {
     }
 
     void runTransaction() {
-        XOD_TRACE_FLN("Transaction started");
+        XOD_TRACE_F("Transaction started, t=");
+        XOD_TRACE_LN(millis());
         for (NodeId nid : topology) {
             if (isNodeDirty(nid))
                 evaluateNode(nid);
         }
 
         memset(dirtyFlags, 0, sizeof(dirtyFlags));
-        XOD_TRACE_FLN("Transaction completed");
+        XOD_TRACE_F("Transaction completed, t=");
+        XOD_TRACE_LN(millis());
     }
 
     void idle() {
@@ -255,18 +256,6 @@ void setup() {
     DEBUG_SERIAL.begin(9600);
 #endif
     XOD_TRACE_FLN("Program started");
-
-    XOD_TRACE_F("NODE_COUNT = ");
-    XOD_TRACE_LN(NODE_COUNT);
-
-    XOD_TRACE_F("sizeof(NodeId) = ");
-    XOD_TRACE_LN(sizeof(NodeId));
-
-    XOD_TRACE_F("sizeof(PinKey) = ");
-    XOD_TRACE_LN(sizeof(PinKey));
-
-    XOD_TRACE_F("sizeof(DirtyFlags) = ");
-    XOD_TRACE_LN(sizeof(DirtyFlags));
 }
 
 void loop() {
