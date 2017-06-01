@@ -54,6 +54,21 @@ Handlebars.registerHelper('exists', function existsHelper(variable, options) {
     options.fn(this) :
     options.inverse(this);
 });
+// Temporary switch to global C++ namespace
+Handlebars.registerHelper('global', function global(options) {
+  return [
+    '// --- Enter global namespace ---',
+    '}}}}',
+    options.fn(this),
+    'namespace _program {',
+    [
+      `namespace ${this.owner} {`,
+      `namespace ${this.libName} {`,
+      `namespace ${this.patchName} {`,
+    ].join(' '),
+    '// --- Back to local namespace ---',
+  ].join('\n');
+});
 
 // =============================================================================
 //
@@ -89,9 +104,15 @@ export const renderPatchContext = def(
 export const renderImpl = def(
   'renderImpl :: TPatch -> String',
   (data) => {
+    const ctx = R.applySpec({
+      owner: R.prop('owner'),
+      libName: R.prop('libName'),
+      patchName: R.prop('patchName'),
+      GENERATED_CODE: renderPatchContext,
+    })(data);
+
     const patchImpl = R.prop('impl', data);
-    const patchContext = renderPatchContext(data);
-    return Handlebars.compile(patchImpl, renderingOptions)({ GENERATED_CODE: patchContext });
+    return Handlebars.compile(patchImpl, renderingOptions)(ctx);
   }
 );
 export const renderImplList = def(
