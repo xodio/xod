@@ -6,11 +6,6 @@ import PinWidget from './PinWidget';
 const NumberWidget = (props) => {
   const onChange = R.compose(
     props.onChange,
-    R.when(
-      isNaN,
-      R.always(0)
-    ),
-    parseFloat,
     R.path(['target', 'value'])
   );
 
