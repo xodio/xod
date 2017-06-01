@@ -8,7 +8,10 @@ import patchContextTpl from '../platform/patchContext.tpl.cpp';
 import implListTpl from '../platform/implList.tpl.cpp';
 import programTpl from '../platform/program.tpl.cpp';
 
-import runtime from '../platform/runtime.cpp';
+import preambleH from '../platform/preamble.h';
+import intrusivePtrH from '../platform/intrusive_ptr.h';
+import listH from '../platform/list.h';
+import runtimeCpp from '../platform/runtime.cpp';
 
 // =============================================================================
 //
@@ -121,8 +124,11 @@ export const renderProject = def(
     const program = renderProgram(project.topology, project.nodes);
 
     return R.join('\n')([
+      preambleH,
+      intrusivePtrH,
+      listH,
       config,
-      runtime,
+      runtimeCpp,
       impls,
       program,
     ]);

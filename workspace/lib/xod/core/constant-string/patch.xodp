@@ -1,0 +1,30 @@
+{
+  "description": "",
+  "links": [],
+  "nodes": [
+    {
+      "boundValues": {
+        "__in__": ""
+      },
+      "description": "",
+      "id": "B1x2RV3eZ",
+      "label": "VAL",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "H1PnRN2lW",
+      "label": "",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}
