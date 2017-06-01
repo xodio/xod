@@ -45,6 +45,7 @@ export {
   isTerminalPin,
   normalizePinLabels,
   isPinBindable,
+  isPulsePin,
 } from './pin';
 export * from './link';
 export * from './constants';

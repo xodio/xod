@@ -156,6 +156,18 @@ export const isTerminalPin = def(
   )
 );
 
+/**
+ * Checks pin type to be Pulse
+ * TODO: Add functions for other types when needed.
+ */
+export const isPulsePin = def(
+  'isPulsePin :: Pin -> Boolean',
+  R.compose(
+    R.equals(CONST.PIN_TYPE.PULSE),
+    getPinType
+  )
+);
+
 // =============================================================================
 //
 // Setters
