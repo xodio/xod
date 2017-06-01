@@ -28,8 +28,7 @@ export const PROPERTY_TYPE_PARSE = {
   [PROPERTY_TYPE.BOOL]: v => !!v,
   [PROPERTY_TYPE.NUMBER]: (v) => {
     const float = parseFloat(v, 10);
-    // TODO: danger: return type is still Number | String
-    return isNaN(float) ? '' : float;
+    return isNaN(float) ? 0 : float;
   },
   [PROPERTY_TYPE.STRING]: v => String(v),
   [PROPERTY_TYPE.PULSE]: v => !!v,
