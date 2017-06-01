@@ -28,6 +28,7 @@ module.exports = {
     document: true,
     describe: true,
     it: true,
+    specify: true,
     before: true,
     beforeEach: true,
     after: true,
