@@ -17,11 +17,6 @@
     color: $color-canvas-selected;
   }
 
-  &.isSelected {
-    // TODO
-    color: red;
-  }
-
   &__hover-buttons {
     display: none;
     background-color: $sidebar-color-bg-hover;
@@ -47,6 +42,10 @@
 
   &:nth-child(even) {
     background-color: $sidebar-color-bg-even;
+  }
+
+  &.isSelected {
+    background-color: #616077;
   }
 
   &:hover {
