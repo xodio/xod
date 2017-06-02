@@ -449,7 +449,6 @@ class App extends client.App {
           onKeyDown={this.onKeyDown}
           onBeforeUnload={this.onCloseApp}
         />
-        <client.Toolbar />
         <client.Editor size={this.state.size} />
         <client.SnackBar />
         <client.PopupShowCode

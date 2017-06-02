@@ -71,12 +71,9 @@ class PopupPrompt extends React.Component {
     } = this.props;
 
     const wrapperClassNames = classNames('PopupPrompt', className);
-    const closeButtonStyle = (isModal) ?
-      { display: 'none' } :
-      { display: 'inline' };
 
     const isValid = this.isInputValid();
-    const inputClassNames = classNames({
+    const inputClassNames = classNames('inspectorTextInput', 'inspectorInput--full-width', {
       invalid: !isValid && this.state.inputValue !== '',
     });
     const isSubmitDisabled = !isValid || this.state.inputValue === '';
@@ -85,17 +82,16 @@ class PopupPrompt extends React.Component {
       <div className={wrapperClassNames}>
         <EventListener target={document} onKeyDown={this.onDocumentKeyDown} />
         <SkyLightStateless
-          dialogStyles={{ height: 'auto' }}
           isVisible={isVisible}
           title={title}
-          closeButtonStyle={closeButtonStyle}
+          isClosable={!isModal}
           onCloseClicked={this.onCloseClicked}
           onOverlayClicked={this.onCloseClicked}
         >
           <form onSubmit={this.onSubmit}>
-            <div className="PopupContent">
-              {children}
-              <div className="PopupFields">
+            <div className="ModalBody">
+              <div className="ModalContent">
+                {children}
                 <input
                   className={inputClassNames}
                   type={inputType}
@@ -103,24 +99,23 @@ class PopupPrompt extends React.Component {
                   onChange={this.onInputChange}
                   autoFocus
                 />
+                <p className="helpText">{helpText}</p>
               </div>
-              <span className="helpText">{helpText}</span>
-            </div>
-            <div className="PopupButtons">
-              <button
-                type="button"
-                className="PopupButton-Secondary"
-                onClick={onClose}
-              >
-                {cancelText}
-              </button>
-              <button
-                type="submit"
-                className="PopupButton-Primary"
-                disabled={isSubmitDisabled}
-              >
-                {confirmText}
-              </button>
+              <div className="ModalFooter">
+                <button
+                  type="submit"
+                  className="Button"
+                  disabled={isSubmitDisabled}
+                >
+                  {confirmText}
+                </button>
+                <button
+                  className="Button"
+                  onClick={onClose}
+                >
+                  {cancelText}
+                </button>
+              </div>
             </div>
           </form>
         </SkyLightStateless>

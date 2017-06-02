@@ -87,21 +87,21 @@ class PopupSetWorkspace extends React.Component {
     return (
       <SkyLight
         hideOnOverlayClicked={!this.props.isDisposable}
-        dialogStyles={{
-          height: 'auto',
-        }}
-        // TODO: Replace this hack with real preventing of closing dialog:
-        closeButtonStyle={(this.props.isDisposable) ? { display: 'none' } : {}}
+        isClosable={this.props.isDisposable}
         ref={this.assignPopupRef}
         title="Choose your workspace directory"
         afterClose={this.onClose}
       >
-        {currentWorkspace}
-        <p>
-          <button onClick={this.changeWorkspace}>
-            {buttonLabel}
-          </button>
-        </p>
+        <div className="ModalBody">
+          <div className="ModalContent">
+            {currentWorkspace}
+          </div>
+          <div className="ModalFooter">
+            <button className="Button" onClick={this.changeWorkspace}>
+              {buttonLabel}
+            </button>
+          </div>
+        </div>
       </SkyLight>
     );
   }

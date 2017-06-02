@@ -59,29 +59,31 @@ class PopupSetArduinoIDEPath extends React.Component {
     return (
       <SkyLight
         hideOnOverlayClicked
-        dialogStyles={{
-          height: 'auto',
-        }}
         ref={this.assignPopupRef}
         title="Setup Arduino IDE"
         afterClose={this.props.onClose}
       >
-        <p>
-          <strong>Could not find Arduino IDE executable.</strong>
-        </p>
-        <p>
-          <button onClick={this.browseIDE}>
-            Point to installed Arduino IDE
-          </button>
-        </p>
-        <hr />
-        <p>
-          <strong>Don&apos;t have an installed Arduino IDE?</strong><br />
-          You need an installed Arduino IDE to compile and upload XOD programs to Arduino boards.
-        </p>
-        <button onClick={openDownloadPage}>
-          Download & install Arduino IDE
-        </button>
+        <div className="ModalBody ModalBody--light">
+          <div className="ModalContent">
+            <p>
+              <strong>Could not find Arduino IDE executable.</strong>
+            </p>
+            <p>
+              <button className="Button Button--light" onClick={this.browseIDE}>
+                Point to installed Arduino IDE
+              </button>
+            </p>
+            <hr />
+            <p>
+              <strong>Don&apos;t have an installed Arduino IDE?</strong><br />
+              You need an installed Arduino IDE to compile
+              and upload XOD programs to Arduino boards.
+            </p>
+            <button className="Button Button--light" onClick={openDownloadPage}>
+              Download & install Arduino IDE
+            </button>
+          </div>
+        </div>
       </SkyLight>
     );
   }

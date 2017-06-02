@@ -9,9 +9,6 @@ import { KEYCODE } from '../../utils/constants';
 const PopupAlert = ({ title, children, closeText, className, onClose, isModal, isVisible }) => {
   const wrapperClassNames = classNames('PopupAlert', className);
   const onCloseClicked = (!isModal) ? onClose : noop;
-  const closeButtonStyle = (isModal) ?
-    { display: 'none' } :
-    { display: 'inline' };
 
   const onKeyDown = (event) => {
     const keycode = event.keycode || event.which;
@@ -24,24 +21,25 @@ const PopupAlert = ({ title, children, closeText, className, onClose, isModal, i
     <div className={wrapperClassNames}>
       <EventListener target={document} onKeyDown={onKeyDown} />
       <SkyLightStateless
-        dialogStyles={{ height: 'auto' }}
         isVisible={isVisible}
         title={title}
-        closeButtonStyle={closeButtonStyle}
+        isClosable={!isModal}
         onCloseClicked={onCloseClicked}
         onOverlayClicked={onCloseClicked}
       >
-        <div className="PopupContent">
-          {children}
-        </div>
-        <div className="PopupButtons">
-          <button
-            className="PopupButton-Primary"
-            onClick={onClose}
-            autoFocus
-          >
-            {closeText}
-          </button>
+        <div className="ModalBody">
+          <div className="ModalContent">
+            {children}
+          </div>
+          <div className="ModalFooter">
+            <button
+              className="Button"
+              onClick={onClose}
+              autoFocus
+            >
+              {closeText}
+            </button>
+          </div>
         </div>
       </SkyLightStateless>
     </div>

@@ -1,0 +1,43 @@
+.ModalBody {
+  color: #cccccc;
+  padding: 0 14px 14px 14px;
+
+  &--light {
+    color: black;
+    background-color: #cccccc;
+  }
+}
+
+.ModalContent {
+  padding-top: 14px;
+
+  .helpText {
+    margin: 7px 0 0 0;
+  }
+}
+
+.ModalFooter {
+  padding-top: 14px;
+
+  .Button {
+    margin-right: 14px;
+  }
+}
+
+.Codebox {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 300px;
+
+  font-family: $font-family-mono;
+  color: black;
+  background-color: #cccccc;
+}
+
+.ProgressBar {
+  height: 10px;
+  width: 100%;
+  border: 1px solid #373737;
+  border-radius: 10px;
+}

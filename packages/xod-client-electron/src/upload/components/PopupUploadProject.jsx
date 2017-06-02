@@ -99,22 +99,30 @@ class PopupUploadProject extends React.Component {
     const title = this.getTitle();
     const message = this.getMessage();
     const progress = this.getProgress();
-    const color = this.isFailed() ? '#d40000' : '#00d444';
-    const closeButtonStyle = this.canClose() ?
-      { display: 'inline' } :
-      { display: 'none' };
+    const color = this.isFailed() ? '#ed5b5b' : '#81c522';
 
     return (
       <SkyLightStateless
-        dialogStyles={{ height: 'auto' }}
         isVisible={this.props.isVisible}
         title={title}
-        closeButtonStyle={closeButtonStyle}
+        isClosable={this.canClose()}
         onCloseClicked={this.onClose}
         onOverlayClicked={this.onClose}
       >
-        <ProgressBar percent={progress} strokeWidth="4" strokeColor={color} />
-        {message}
+        <div className="ModalBody">
+          <ProgressBar
+            percent={progress}
+            strokeWidth="5"
+            strokeColor={color}
+            strokeLinecap="square"
+            trailWidth="5"
+            trailColor="#373737"
+            className="ProgressBar"
+          />
+          <div className="ModalContent">
+            {message}
+          </div>
+        </div>
       </SkyLightStateless>
     );
   }

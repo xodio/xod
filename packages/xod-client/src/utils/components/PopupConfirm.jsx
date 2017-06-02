@@ -19,9 +19,6 @@ const PopupConfirm = ({
 }) => {
   const wrapperClassNames = classNames('PopupConfirm', className);
   const onCloseClicked = (!isModal) ? onClose : noop;
-  const closeButtonStyle = (isModal) ?
-    { display: 'none' } :
-    { display: 'inline' };
 
   const onKeyDown = (event) => {
     const keycode = event.keycode || event.which;
@@ -34,30 +31,31 @@ const PopupConfirm = ({
     <div className={wrapperClassNames}>
       <EventListener target={document} onKeyDown={onKeyDown} />
       <SkyLightStateless
-        dialogStyles={{ height: 'auto' }}
         isVisible={isVisible}
         title={title}
-        closeButtonStyle={closeButtonStyle}
+        isClosable={!isModal}
         onCloseClicked={onCloseClicked}
         onOverlayClicked={onCloseClicked}
       >
-        <div className="PopupContent">
-          {children}
-        </div>
-        <div className="PopupButtons">
-          <button
-            className="PopupButton-Secondary"
-            onClick={onClose}
-          >
-            {cancelText}
-          </button>
-          <button
-            className="PopupButton-Primary"
-            onClick={onConfirm}
-            autoFocus
-          >
-            {confirmText}
-          </button>
+        <div className="ModalBody">
+          <div className="ModalContent">
+            {children}
+          </div>
+          <div className="ModalFooter">
+            <button
+              className="Button"
+              onClick={onConfirm}
+              autoFocus
+            >
+              {confirmText}
+            </button>
+            <button
+              className="Button"
+              onClick={onClose}
+            >
+              {cancelText}
+            </button>
+          </div>
         </div>
       </SkyLightStateless>
     </div>

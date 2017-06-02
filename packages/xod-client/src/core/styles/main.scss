@@ -18,7 +18,7 @@
   'components/Button',
   'components/Inspector',
   'components/Link',
-  'components/Menubar',
+  'components/Modals',
   'components/Node',
   'components/NodeText',
   'components/NoPatch',
@@ -36,7 +36,6 @@
   'components/ProjectBrowser',
   'components/ProjectBrowserToolbar',
   'components/Sidebar',
-  'components/SkyLight',
   'components/SnackBarList',
   'components/SnackBarMessage',
   'components/SnappingPreviewLayer',
@@ -46,4 +45,7 @@
   'components/Workarea';
 
 // overridden styles for 3rd party components
-@import  'components/CustomScroll';
+@import
+  'components/CustomScroll',
+  'components/Menubar',
+  'components/SkyLight';
