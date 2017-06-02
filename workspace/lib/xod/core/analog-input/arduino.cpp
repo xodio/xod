@@ -1,15 +1,21 @@
-struct State {};
+struct State {
+    int configuredPort = -1;
+};
 
 {{ GENERATED_CODE }}
 
 void evaluate(NodeId nid, State* state) {
-  const int pin = (int)getNumber(nid, Inputs::PORT);
-  const bool val = getLogic(nid, Inputs::UPD);
-  const Number pinValue = analogRead(pin) / 1023.00;
+    if (!isInputDirty<Inputs::UPD>(nid))
+        return;
 
-  if (isInputDirty(nid, Inputs::PORT)) {
-      ::pinMode(pin, INPUT);
-  }
+    const int port = (int)getValue<Inputs::PORT>(nid);
+    if (port != state->configuredPort) {
+        ::pinMode(port, INPUT);
+        // Store configured port so to avoid repeating `pinMode` on
+        // subsequent requests
+        state->configuredPort = port;
+    }
 
-  emitNumber(nid, Outputs::VAL, pinValue);
+    emitValue<Outputs::VAL>(nid, ::analogRead(port) / 1023.);
+    emitValue<Outputs::RDY>(nid, 1);
 }

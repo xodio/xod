@@ -1,0 +1,112 @@
+{
+  "description": "",
+  "links": [
+    {
+      "id": "BJKsijp-b",
+      "input": {
+        "nodeId": "ryegsjpW-",
+        "pinKey": "Hkqu9oaWb"
+      },
+      "output": {
+        "nodeId": "HJXqjj6ZZ",
+        "pinKey": "r1H_oipZb"
+      }
+    },
+    {
+      "id": "HySjssabb",
+      "input": {
+        "nodeId": "HJXqjj6ZZ",
+        "pinKey": "BJlHojaWZ"
+      },
+      "output": {
+        "nodeId": "SkUG5s6bb",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "HyuXsopWZ",
+      "input": {
+        "nodeId": "rk4-cs6-W",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ryegsjpW-",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "SyxQ5ipbb",
+      "input": {
+        "nodeId": "SkUG5s6bb",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "S19J9j6WZ",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "HJTIija-W": 0
+      },
+      "description": "",
+      "id": "HJXqjj6ZZ",
+      "label": "",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "@/format-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "S19J9j6WZ",
+      "label": "NUM",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "SJ4zUC_BD1-": 100
+      },
+      "description": "",
+      "id": "SkUG5s6bb",
+      "label": "",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "@/multiply"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rk4-cs6-W",
+      "label": "PERC",
+      "position": {
+        "x": 10,
+        "y": 432
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "boundValues": {
+        "BkeKcj6ZZ": "%"
+      },
+      "description": "",
+      "id": "ryegsjpW-",
+      "label": "",
+      "position": {
+        "x": 10,
+        "y": 328
+      },
+      "type": "@/concat"
+    }
+  ]
+}
