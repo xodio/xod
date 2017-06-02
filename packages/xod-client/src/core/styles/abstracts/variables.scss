@@ -10,8 +10,6 @@ $font-size-m: 11px;
 $font-size-l: 18px;
 $font-size-xl: 28px;
 
-$color-basic-text: #000;
-
 $color-canvas-background: #393939;
 $color-canvas-face: #646464;
 $color-canvas-face-light: #A7A7A7;
@@ -29,18 +27,6 @@ $color-pin-fill: #3d3d3d;
 $color-pinlabel-input: white;
 $color-pinlabel-output: black;
 
-$color-button-primary-background: #286aa7;
-$color-button-primary-text: #fff;
-$color-button-primary-background-hover: #0c77da;
-
-$color-button-secondary-background: #506b4c;
-$color-button-secondary-text: #fff;
-$color-button-secondary-background-hover: #5F8359;
-
-$color-button-alt-background: #777;
-$color-button-alt-text: #fff;
-$color-button-alt-background-hover: #999;
-
 $color-toolbar-background: #b3b3b3;
 $color-toolbar-foreground: #000;
 
@@ -52,14 +38,8 @@ $color-tabs-unactive-text: #BBB;
 $color-tabs-active-text: #EEE;
 $color-tabs-hover-text: #FFF;
 
-$color-user-menu-background: #777;
-$color-user-menu-text: #fff;
-$color-user-menu-hover: #999;
-$color-user-menu-separator: #444;
-
 $snackbar-width: 220px;
 $sidebar-width: 200px;
-
 
 $sidebar-color-bg: #3d3d3d;
 $sidebar-color-bg-even: #444444;
@@ -69,7 +49,6 @@ $sidebar-color-text: #cdcbc7;
 $sidebar-color-text-hover: white;
 
 $sidebar-color-border: #595959;
-
 
 $sidebar-color-bg-tabs: #373737;
 $sidebar-color-bg-tabs-selected: #cccccc;
