@@ -1,8 +1,10 @@
 import R from 'ramda';
 
+import { def } from './types';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
 import {
+  isPathLocal,
   isPathLibrary,
   isValidPatchPath,
   terminalPatchPathRegExp,
@@ -158,3 +160,13 @@ const internalTerminalRegExp =
 
 // :: PatchPath -> Boolean
 export const isInternalTerminalNodeType = R.test(internalTerminalRegExp);
+
+export const resolvePatchPath = def(
+  'resolvePatchPath :: PatchPath -> PatchPath -> PatchPath',
+  R.cond([
+    [(...args) => R.all(isPathLocal)(args), R.nthArg(0)],
+    [(...args) => R.all(isPathLibrary)(args), R.nthArg(0)],
+    [R.compose(isPathLibrary, R.nthArg(1)), (p1, p2) => `${getLibraryName(p2)}/${getBaseName(p1)}`],
+    [R.compose(isPathLocal, R.nthArg(1)), R.nthArg(0)],
+  ])
+);
