@@ -15,31 +15,31 @@
 
   &.error {
     a {
-      color: #b74f4f;
-      border-color: #b74f4f;
+      color: $color-error;
+      border-color: $color-error;
     }
   }
 
   &.confirmation {
     a {
-      border-color: #818181;
+      border-color: $message-border-color;
     }
   }
 
   &.notification {
     a {
-      border-color: #648f27;
+      border-color: $color-success;
     }
   }
 
   a {
     display: block;
     padding: 11px 11px;
-    color: #e5e5e5;
-    background-color: #3d3d3d;
+    color: $message-text-color;
+    background-color: $message-bg-color;
     box-shadow: 0 0 7px rgba(0,0,0,.5);
 
-    border: 2px solid #818181;
+    border: 2px solid $message-border-color;
     border-radius: 6px;
 
     cursor: default;

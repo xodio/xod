@@ -1,10 +1,10 @@
 .ModalBody {
-  color: #cccccc;
+  color: $modal-fg-color;
   padding: 0 14px 14px 14px;
 
   &--light {
-    color: black;
-    background-color: #cccccc;
+    color: $modal-fg-color-light;
+    background-color: $modal-bg-color-light;
   }
 }
 
@@ -31,8 +31,8 @@
   height: 300px;
 
   font-family: $font-family-mono;
-  color: black;
-  background-color: #cccccc;
+  color: $modal-fg-color-light;
+  background-color: $modal-bg-color-light;
 }
 
 .ProgressBar {
