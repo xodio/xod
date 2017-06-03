@@ -190,7 +190,7 @@ class ProjectBrowser extends React.Component {
 
   renderLibraryPatches() {
     const { libs, selectedPatchPath } = this.props;
-    const { setSelection } = this.props.actions;
+    const { setSelection, switchPatch } = this.props.actions;
 
     return R.toPairs(libs).map(([libName, libPatches]) => (
       <PatchGroup
@@ -205,6 +205,7 @@ class ProjectBrowser extends React.Component {
             label={getBaseName(path)}
             isSelected={path === selectedPatchPath}
             onClick={() => setSelection(path)}
+            onDoubleClick={() => switchPatch(path)}
             hoverButtons={this.libraryPatchesHoveredButtons(path)}
           />
         )}
