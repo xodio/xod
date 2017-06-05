@@ -219,7 +219,8 @@ export const loadProject = projectPath =>
   findClosestWorkspaceDir(projectPath)
     .then(workspace => [path.relative(workspace, projectPath), workspace])
     .then(R.apply(loadProjectWithLibs))
-    .then(({ project, libs }) => pack(project, libs));
+    .then(({ project, libs }) => pack(project, libs))
+    .then(XP.resolveNodeTypesInProject);
 
 export default {
   getProjects,
