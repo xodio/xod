@@ -3,7 +3,7 @@ import chai, { expect, assert } from 'chai';
 import dirtyChai from 'dirty-chai';
 import { Either } from 'ramda-fantasy';
 
-import { createPatch, listNodes, listLinks, getNodeId, getLinkId } from 'xod-project';
+import { createPatch, listNodes, listLinks, getNodeId, getLinkId, listPins } from 'xod-project';
 import { defaultizeProject } from 'xod-project/test/helpers';
 import { foldEither, explode } from 'xod-func-tools';
 import * as Transpiler from '../src/transpiler';
@@ -240,6 +240,9 @@ describe('Transpiler', () => {
           A: Number,
           B: Number,
         },
+        outValues: {
+          OUT: false,
+        },
         outLinks: {
           OUT: [{
             key: 'A',
@@ -257,13 +260,18 @@ describe('Transpiler', () => {
           A: Number,
           B: Number,
         },
+        outValues: {
+          OUT: false,
+        },
         outLinks: {},
       },
       {
         id: '0_A',
         implId: 'xod/core/constant-number',
-        value: 10,
         inputTypes: {},
+        outValues: {
+          VAL: 10,
+        },
         outLinks: {
           VAL: [{
             key: 'A',
@@ -274,8 +282,10 @@ describe('Transpiler', () => {
       {
         id: '0_B',
         implId: 'xod/core/constant-number',
-        value: 0,
         inputTypes: {},
+        outValues: {
+          VAL: 0,
+        },
         outLinks: {
           VAL: [{
             key: 'B',
@@ -287,19 +297,22 @@ describe('Transpiler', () => {
 
     describe('getInputTypes', () => {
       it('should return an empty object for empty patch', () => {
-        expect(Transpiler.getInputTypes(createPatch()))
+        const pins = listPins(createPatch());
+        expect(Transpiler.getInputTypes(pins))
           .to.be.an('object')
           .and.empty();
       });
       it('should return an empty object for patch without pins', () => {
         const patch = project.patches['@/main'];
-        expect(Transpiler.getInputTypes(patch))
+        const pins = listPins(patch);
+        expect(Transpiler.getInputTypes(pins))
           .to.be.an('object')
           .and.empty();
       });
       it('should return a correct input types', () => {
         const patch = project.patches['xod/nodes/test'];
-        expect(Transpiler.getInputTypes(patch))
+        const pins = listPins(patch);
+        expect(Transpiler.getInputTypes(pins))
           .to.be.deep.equal({
             A: Number,
             B: Number,

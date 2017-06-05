@@ -79,6 +79,16 @@ describe('Pin', () => {
       expect(Pin.isTerminalPin(pin)).to.be.true();
     });
   });
+  describe('isPulsePin', () => {
+    it('should return false for non-pulse pin', () => {
+      const pin = Helper.defaultizePin({ type: CONST.PIN_TYPE.STRING });
+      expect(Pin.isPulsePin(pin)).to.be.false();
+    });
+    it('should return true for pulse pin', () => {
+      const pin = Helper.defaultizePin({ type: CONST.PIN_TYPE.PULSE });
+      expect(Pin.isPulsePin(pin)).to.be.true();
+    });
+  });
   describe('normalizePinLabels', () => {
     it('should return list of pins with unique labels', () => {
       const pins = [

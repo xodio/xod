@@ -86,16 +86,24 @@ const convertToNativeTypes = R.cond([
   [R.T, (type) => { throw Error(`Unknown type "${type}"!`); }],
 ]);
 
-// :: Patch -> { pinKey: Function }
+// :: [Pin] -> { pinKey: Function }
 export const getInputTypes = R.compose(
   R.map(R.compose(
     convertToNativeTypes,
     Project.getPinType
   )),
   R.indexBy(Project.getPinLabel),
-  R.filter(Project.isInputPin),
-  Project.normalizePinLabels,
-  Project.listPins
+  R.filter(Project.isInputPin)
+);
+
+const getOutValues = def(
+  'getOutValues :: Node -> [Pin] -> Map PinKey DataValue',
+  (node, pins) => R.compose(
+    R.map(Project.getBoundValueOrDefault(R.__, node)),
+    R.indexBy(Project.getPinLabel),
+    R.reject(Project.isPulsePin),
+    R.filter(Project.isOutputPin)
+  )(pins)
 );
 
 const getNormalizedPinLabel = def(
@@ -164,14 +172,7 @@ export const getListOfPinData = def(
         type: R.always(pinType),
         isOutput: Project.isOutputPin,
         label: Project.getPinLabel,
-        value: R.compose(
-          Maybe.maybe(
-            Project.defaultValueOfType(pinType),
-            R.identity
-          ),
-          Project.getBoundValue(R.__, node),
-          Project.getPinKey
-        ),
+        value: Project.getBoundValueOrDefault(R.__, node),
       })(pin);
     }),
     getNodePins
@@ -354,24 +355,18 @@ export const transformNode = R.curry((patch, project, node) => {
   const nodeId = Project.getNodeId(node);
   const type = Project.getNodeType(node);
   const nodePatch = Project.getPatchByPathUnsafe(type, project);
+  const nodePins = R.compose(
+    Project.normalizePinLabels,
+    Project.listPins
+  )(nodePatch);
 
   const newNode = {
     id: nodeId,
     implId: type,
-    inputTypes: getInputTypes(nodePatch),
+    inputTypes: getInputTypes(nodePins),
+    outValues: getOutValues(node, nodePins),
     outLinks: getOutLinks(nodeId, project, patch),
   };
-
-  if (isConstantNode(node)) {
-    // TODO: Replace it with actual binding of boundValues into outLinks!
-    return R.compose(
-      R.assoc('value', R.__, newNode),
-      Project.getBoundValueOrDefault(R.__, node),
-      R.head,
-      Project.listOutputPins,
-      Project.getPatchByPathUnsafe(R.__, project)
-    )(type);
-  }
 
   return newNode;
 });

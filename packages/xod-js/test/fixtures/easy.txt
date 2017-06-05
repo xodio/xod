@@ -23,6 +23,9 @@ nodes['0'] = new Node({
     "IN_0": Number,
     "IN_1": Number
   },
+  "outValues": {
+    "OUT": 0
+  },
   "outLinks": {
     "OUT": [
       {
@@ -48,6 +51,9 @@ nodes['1'] = new Node({
     "IN_0": Number,
     "IN_1": Number
   },
+  "outValues": {
+    "OUT": 0
+  },
   "outLinks": {},
   "setup": impl['xod/nodes/test'].setup,
   "upkeep": impl['xod/nodes/test'].upkeep,
@@ -59,6 +65,9 @@ nodes['2'] = new Node({
   "id": "2",
   "implId": "xod/core/constant-number",
   "inputTypes": {},
+  "outValues": {
+    "VAL": 10
+  },
   "outLinks": {
     "VAL": [
       {
@@ -67,7 +76,6 @@ nodes['2'] = new Node({
       }
     ]
   },
-  "value": 10,
   "setup": impl['xod/core/constant-number'].setup,
   "upkeep": impl['xod/core/constant-number'].upkeep,
   "evaluate": impl['xod/core/constant-number'].evaluate,
@@ -78,6 +86,9 @@ nodes['3'] = new Node({
   "id": "3",
   "implId": "xod/core/constant-number",
   "inputTypes": {},
+  "outValues": {
+    "VAL": 0
+  },
   "outLinks": {
     "VAL": [
       {
@@ -86,7 +97,6 @@ nodes['3'] = new Node({
       }
     ]
   },
-  "value": 0,
   "setup": impl['xod/core/constant-number'].setup,
   "upkeep": impl['xod/core/constant-number'].upkeep,
   "evaluate": impl['xod/core/constant-number'].evaluate,

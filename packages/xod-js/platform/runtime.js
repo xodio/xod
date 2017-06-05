@@ -51,18 +51,6 @@ function identity(x) { return x; }
 var PULSE = {type: 'pulse'};
 
 // RUNTIME
-
-function identityNode() {
-  return {
-     evaluate: function(e) { return {PIN: e.inputs.PIN}; }
-  };
-}
-
-function startUpConstantNode() {
-  return {
-    setup: function(e) { e.fire({ value: e.value }); }
-  };
-}
 /* eslint-enable no-unused-vars */
 
 /**
@@ -95,7 +83,7 @@ function Node(args) {
 
   this._context = {};
   this._cachedInputs = {};
-  this._pendingOutputs = {};
+  this._pendingOutputs = clone(args.outValues);
   this._dirty = false;
 
   this._fireCallback = nullFunc;
@@ -109,9 +97,10 @@ function Node(args) {
   * initial values.
   */
 Node.prototype.fire = function(outputs) {
+  var _outputs = outputs || {};
   var self = this;
-  Object.keys(outputs).forEach(function(key) {
-    self._pendingOutputs[key] = outputs[key];
+  Object.keys(_outputs).forEach(function(key) {
+    self._pendingOutputs[key] = _outputs[key];
   });
 
   this._fireCallback();
@@ -150,7 +139,6 @@ Node.prototype.isDirty = function() {
 Node.prototype.setup = function() {
   this._setup({
     fire: this.fire.bind(this),
-    value: this._value,
     context: this._context
   });
 };
@@ -318,6 +306,4 @@ if (typeof module !== 'undefined') {
   module.exports.Project = Project;
   module.exports.PULSE = PULSE;
   module.exports.identity = identity;
-  module.exports.identityNode = identityNode;
-  module.exports.startUpConstantNode = startUpConstantNode;
 }
