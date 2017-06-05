@@ -283,7 +283,10 @@ describe('Project', () => {
     it('should be Either.Left for non-existent type', () => {
       const result = Project.validatePatchContents(patchWithNodeOnly, emptyProject);
       expect(result.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, result, CONST.ERROR.TYPE_NOT_FOUND);
+      Helper.expectErrorMessage(expect, result, formatString(
+        CONST.ERROR.TYPE_NOT_FOUND,
+        { type: '@/test' }
+      ));
     });
     it('should be Either.Left for non-existent pins', () => {
       const result = Project.validatePatchContents(fullPatch, smallProject);
@@ -346,26 +349,51 @@ describe('Project', () => {
     });
     it('should not remove other patches from project', () => {
       const oldPath = '@/old';
-      const oldPatch = Patch.createPatch();
+      const oldPatch = Helper.defaultizePatch({ path: '@/old' });
       const newPath = '@/new';
-      const newPatch = Patch.createPatch();
+      const newPatch = Helper.defaultizePatch({ path: '@/new' });
       const project = Helper.defaultizeProject({
         patches: {
           [oldPath]: oldPatch,
         },
       });
       const newProject = Project.assocPatch(newPath, newPatch, project);
-
       expect(newProject.isRight).to.be.true();
       Helper.expectEither(
         (proj) => {
-          expect(proj)
-            .to.have.property('patches')
-            .that.contains.all.keys([newPath, oldPath]);
-          expect(proj.patches[oldPatch.path]).to.be.equal(oldPatch);
-          expect(proj.patches[newPatch.path]).to.be.equal(newPatch);
-        }
+          expect(Project.getPatchByPathUnsafe(oldPath, proj)).to.be.deep.equal(oldPatch);
+          expect(Project.getPatchByPathUnsafe(newPath, proj)).to.be.deep.equal(newPatch);
+        },
+        newProject
       );
+    });
+  });
+  describe('assocPatchList', () => {
+    const patches = R.map(Helper.defaultizePatch, [
+      { path: '@/main' },
+      { path: '@/foo' },
+      { path: 'xod/test/a' },
+    ]);
+    it('should return Right Projct with associated patches', () => {
+      const res = Project.assocPatchList(patches, emptyProject);
+      Helper.expectEither(
+        proj => R.forEach(
+          (expectedPatch) => {
+            const patchPath = Patch.getPatchPath(expectedPatch);
+            expect(Project.getPatchByPathUnsafe(patchPath, proj)).to.be.deep.equal(expectedPatch);
+          },
+          patches
+        ),
+        res
+      );
+    });
+    it('should return Left Error, cause one of patches is invalid', () => {
+      const invalidPatches = R.append(
+        Helper.defaultizePatch({ path: '@/wrong', nodes: { a: { type: 'xod/test/not-existent-one' } } }),
+        patches
+      );
+      const res = Project.assocPatchList(invalidPatches, emptyProject);
+      Helper.expectErrorMessage(expect, res, formatString(CONST.ERROR.TYPE_NOT_FOUND, { type: 'xod/test/not-existent-one' }));
     });
   });
   describe('dissocPatch', () => {
@@ -597,6 +625,49 @@ describe('Project', () => {
       expect(
         Project.isTerminalNodeInUse('importantTerminal', '@/foo', project)
       ).to.be.true();
+    });
+  });
+
+  describe('resolveNodeTypesInProject', () => {
+    const project = Helper.defaultizeProject({
+      patches: {
+        '@/main': {
+          nodes: {
+            o: { type: 'xod/core/b' },
+          },
+        },
+        'xod/core/a': {
+          nodes: {
+            a: { type: 'xod/patch-nodes/input-number' },
+          },
+        },
+        'xod/core/b': {
+          nodes: {
+            b: { type: '@/a' },
+          },
+        },
+      },
+    });
+    const expectedMap = {
+      '@/main': { o: 'xod/core/b' },
+      'xod/core/a': { a: 'xod/patch-nodes/input-number' },
+      'xod/core/b': { b: 'xod/core/a' },
+    };
+    // :: Project -> Map PatchPath (Map NodeId PatchPath)
+    const getActualMap = R.compose(
+      R.map(R.compose(
+        R.map(Node.getNodeType),
+        R.indexBy(Node.getNodeId),
+        Patch.listNodes
+      )),
+      R.indexBy(Patch.getPatchPath),
+      Project.listPatchesWithoutBuiltIns
+    );
+
+    it('should return the same Project with updated NodeTypes of lib patches', () => {
+      const resolved = Project.resolveNodeTypesInProject(project);
+      const actMap = getActualMap(resolved);
+      expect(actMap).to.be.deep.equal(expectedMap);
     });
   });
 });

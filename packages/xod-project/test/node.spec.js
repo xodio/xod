@@ -58,6 +58,14 @@ describe('Node', () => {
         .to.be.equal('@/test');
     });
   });
+  describe('setNodeType', () => {
+    it('should return node with new type', () => {
+      const node = nodeOfType('@/test');
+      const newNode = Node.setNodeType('@/test-passed', node);
+
+      expect(Node.getNodeType(newNode)).to.be.equal('@/test-passed');
+    });
+  });
   describe('getNodePosition', () => {
     it('should return node position', () => {
       const node = Helper.defaultizeNode({ position: { x: 1, y: 1 } });

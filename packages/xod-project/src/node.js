@@ -86,6 +86,17 @@ export const getNodeType = def(
 );
 
 /**
+ * @function setNodeType
+ * @param {string} patchPath
+ * @param {Node} node
+ * @returns {Node}
+ */
+export const setNodeType = def(
+  'setNodeType :: PatchPath -> Node -> Node',
+  R.assoc('type')
+);
+
+/**
  * @function getNodeLabel
  * @param {Node} node
  * @returns {string}

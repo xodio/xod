@@ -5,7 +5,7 @@ import HMDef from 'hm-def';
 import XF from 'xod-func-tools';
 
 import * as C from './constants';
-import { isValidIdentifier, isValidPatchPath, isTerminalPatchPath } from './patchPathUtils';
+import { isValidIdentifier, isValidPatchPath, isTerminalPatchPath } from './internal/patchPathUtils';
 
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */

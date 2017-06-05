@@ -152,4 +152,19 @@ describe('PatchPathUtils', () => {
       expect(result).to.be.equal('@');
     });
   });
+
+  describe('resolvePatchPath', () => {
+    it('if both paths is local, it returns the same path', () => {
+      assert.equal(PatchPathUtils.resolvePatchPath('@/local1', '@/local2'), '@/local1');
+    });
+    it('if both paths is library, it returns the same path', () => {
+      assert.equal(PatchPathUtils.resolvePatchPath('xod/lib/local1', 'xod/another-lib/local2'), 'xod/lib/local1');
+    });
+    it('if first path is local, but second is libraty it should return new resolved path', () => {
+      assert.equal(PatchPathUtils.resolvePatchPath('@/local1', 'xod/lib/local2'), 'xod/lib/local1');
+    });
+    it('if first path is library, but second is local it returns the same library path', () => {
+      assert.equal(PatchPathUtils.resolvePatchPath('xod/lib/local1', '@/local2'), 'xod/lib/local1');
+    });
+  });
 });

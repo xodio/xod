@@ -1,15 +1,22 @@
 import R from 'ramda';
 
+import { def } from './types';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
+import {
+  isPathLocal,
+  isPathLibrary,
+  isValidPatchPath,
+  terminalPatchPathRegExp,
+} from './internal/patchPathUtils';
 
-// :: String -> Boolean
-export const isValidIdentifier = R.allPass([
-  R.test(/[a-z0-9-]+/), // only lowercase alphanumeric and hypen
-  R.complement(R.test(/^-/)), // can't start with hypen
-  R.complement(R.test(/-$/)), // can't end with hypen
-  R.complement(R.test(/--/)), // only one hypen in row
-]);
+export {
+  isValidIdentifier,
+  isPathLocal,
+  isPathLibrary,
+  isValidPatchPath,
+  isTerminalPatchPath,
+} from './internal/patchPathUtils';
 
 // :: String -> Identifier
 export const toIdentifier = R.compose(
@@ -24,45 +31,7 @@ export const toIdentifier = R.compose(
 // general-purpose utils
 //
 
-// :: ([String] -> Boolean) -> * -> Boolean
-const checkPathParts = partsChecker =>
-  R.both(
-    R.is(String),
-    R.compose(
-      partsChecker,
-      R.split('/')
-    )
-  );
-
-/**
- * @function isPathLocal
- * @param {string} path
- * @returns {boolean}
- */
-export const isPathLocal = checkPathParts(
-  R.allPass([
-    R.pipe(R.length, R.equals(2)),
-    R.pipe(R.head, R.equals('@')),
-    R.pipe(R.last, isValidIdentifier),
-  ])
-);
-
 export const getLocalPath = baseName => `@/${baseName}`;
-
-/**
- * @function isPathLibrary
- * @param {string} path
- * @returns {boolean}
- */
-export const isPathLibrary = checkPathParts(
-  R.allPass([
-    R.pipe(R.length, R.equals(3)),
-    R.all(isValidIdentifier),
-  ])
-);
-
-// :: * -> Boolean
-export const isValidPatchPath = R.either(isPathLocal, isPathLibrary);
 
 /**
  * Checks if a path is a valid for entities like
@@ -108,12 +77,7 @@ export const getLibraryName = R.ifElse(
 //
 
 const TERMINALS_LIB_NAME = 'xod/patch-nodes';
-
-const directions = R.values(CONST.PIN_DIRECTION);
 const dataTypes = R.values(CONST.PIN_TYPE);
-
-const terminalPatchPathRegExp =
-  new RegExp(`^${TERMINALS_LIB_NAME}/(${directions.join('|')})-(${dataTypes.join('|')})$`);
 
 // :: String -> Direction
 export const getTerminalDirection = R.compose(
@@ -138,9 +102,6 @@ export const isOutputTerminalPath = R.compose(
   R.equals(CONST.PIN_DIRECTION.OUTPUT),
   getTerminalDirection
 );
-
-// :: String -> Boolean
-export const isTerminalPatchPath = R.test(terminalPatchPathRegExp);
 
 // ::
 export const getTerminalPath = R.curry((direction, type) => `${TERMINALS_LIB_NAME}/${direction}-${type}`);
@@ -199,3 +160,13 @@ const internalTerminalRegExp =
 
 // :: PatchPath -> Boolean
 export const isInternalTerminalNodeType = R.test(internalTerminalRegExp);
+
+export const resolvePatchPath = def(
+  'resolvePatchPath :: PatchPath -> PatchPath -> PatchPath',
+  R.cond([
+    [(...args) => R.all(isPathLocal)(args), R.nthArg(0)],
+    [(...args) => R.all(isPathLibrary)(args), R.nthArg(0)],
+    [R.compose(isPathLibrary, R.nthArg(1)), (p1, p2) => `${getLibraryName(p2)}/${getBaseName(p1)}`],
+    [R.compose(isPathLocal, R.nthArg(1)), R.nthArg(0)],
+  ])
+);
