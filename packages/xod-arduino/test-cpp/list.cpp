@@ -120,6 +120,36 @@ TEST_CASE("List concat", "[list]") {
     REQUIRE(strcmp(plain, "XY") == 0);
   }
 
+  SECTION("something to something twice") {
+    auto x = List<char>::of('X');
+    auto y = List<char>::of('Y');
+    auto z = List<char>::of('Z');
+    auto xy = x->concat(y);
+    auto xz = x->concat(z);
+    REQUIRE(xy->length() == 2);
+    REQUIRE(xz->length() == 2);
+    REQUIRE(xy->chunkCount() == 1); // should reuse x’s chunk
+    REQUIRE(xz->chunkCount() == 2); // can’t reuse since occupied by y
+
+    xy->toPlainArrayUnsafe(plain);
+    REQUIRE(strcmp(plain, "XY") == 0);
+
+    xz->toPlainArrayUnsafe(plain);
+    REQUIRE(strcmp(plain, "XZ") == 0);
+
+    auto ity = xy->iterate();
+    REQUIRE(*ity == 'X');
+    REQUIRE((bool)ity == true);
+    REQUIRE(*++ity == 'Y');
+    REQUIRE((bool)++ity == false);
+
+    auto itz = xz->iterate();
+    REQUIRE(*itz == 'X');
+    REQUIRE((bool)itz == true);
+    REQUIRE(*++itz == 'Z');
+    REQUIRE((bool)++itz == false);
+  }
+
   SECTION("something to something with oversize") {
     auto lhs = List<char>::fromPlainArray("ABC", 3);
     auto rhs = List<char>::fromPlainArray("XYZ", 3);
