@@ -7,7 +7,7 @@
  */
 export const ERROR = {
   // project
-  TYPE_NOT_FOUND: 'Patch with specified type is not found in the project',
+  TYPE_NOT_FOUND: 'Patch with type "{type}" is not found in the project',
   PINS_NOT_FOUND: 'Specified node types haven\'t required pins for creating links',
   // patches
   PATCH_NOT_FOUND_BY_PATH: 'Can\'t find the patch in the project with specified path: "{patchPath}"',

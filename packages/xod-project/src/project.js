@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
-import { explodeMaybe, notEmpty } from 'xod-func-tools';
+import { explode, explodeMaybe, notEmpty } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
@@ -286,8 +286,15 @@ const checkPinKeys = def(
       );
       // :: node -> Either
       const checkTypeExists = R.compose(
-        Tools.errOnNothing(CONST.ERROR.TYPE_NOT_FOUND),
-        getPatchByPath(R.__, project),
+        type => R.compose(
+          Tools.errOnNothing(
+            Utils.formatString(
+              CONST.ERROR.TYPE_NOT_FOUND,
+              { type }
+            )
+          ),
+          getPatchByPath(R.__, project)
+        )(type),
         Node.getNodeType
       );
       // :: link -> Either
@@ -331,15 +338,19 @@ export const validatePatchContents = def(
   (patch, project) => {
     // :: patch -> Either
     const checkNodeTypes = R.compose(
-      R.ifElse(
-        R.equals(false),
-        Tools.err(CONST.ERROR.TYPE_NOT_FOUND),
-        R.always(Either.of(patch))
-      ),
-      R.all(Maybe.isJust),
+      R.map(R.always(patch)),
+      R.sequence(Either.of),
       R.chain(
         R.compose(
-          getPatchByPath(R.__, project),
+          type => R.compose(
+            Tools.errOnNothing(
+              Utils.formatString(
+                CONST.ERROR.TYPE_NOT_FOUND,
+                { type }
+              )
+            ),
+            getPatchByPath(R.__, project)
+          )(type),
           Node.getNodeType
         )
       ),
@@ -388,6 +399,26 @@ export const assocPatch = def(
         Patch.setPatchPath(path)
       )
     )
+);
+
+/**
+ * Insers or updates a list of Patches within the Project.
+ * It takes a PatchPath from the Patches in the list.
+ */
+export const assocPatchList = def(
+  'assocPatchList :: [Patch] -> Project -> Either Error Project',
+  (patches, project) => R.compose(
+    R.reduce(R.flip(R.chain), Either.of(project)),
+    R.map(
+      R.converge(
+        assocPatch,
+        [
+          Patch.getPatchPath,
+          R.identity,
+        ]
+      )
+    )
+  )(patches)
 );
 
 /**
@@ -625,5 +656,54 @@ export const isTerminalNodeInUse = def(
       )(patch)
     ),
     listLocalPatches // TODO: are only local patches enough?
+  )(project)
+);
+
+/**
+ * Checks that Node have a NodeType referenced to local PatchPath.
+ * E.G. `@/foo`.
+ */
+const isLocalNode = def(
+  'isLocalNodeType :: Node -> Boolean',
+  R.compose(
+    PatchPathUtils.isPathLocal,
+    Node.getNodeType
+  )
+);
+
+/**
+ * Resolves all NodeTypes of all Nodes in the Library Patches
+ * using PatchPathUtils.resolvePatchPatch.
+ * So all Nodes that refers to Patch in the same library
+ * will have a resolved type and it will be handy to use after it.
+ * E.G.
+ * Library `xod/core` have a patch-node `xod/core/to-percent`,
+ * which implementated on XOD, it reuses patches from the same
+ * library: `@/multiply` and `@/concat`.
+ * After calling this function User gets the same Project, but
+ * patch-nodes like `xod/core/to-percent` now have Nodes with
+ * updated Node Types: `@/multiply` will become `xod/core/multiply`
+ * and `@/concat` will become `xod/core/concat`.
+ */
+export const resolveNodeTypesInProject = def(
+  'resolveNodeTypesInProject :: Project -> Project',
+  project => R.compose(
+    explode,
+    assocPatchList(R.__, project),
+    R.map(patch => R.compose(
+      R.reduce(R.flip(Patch.assocNode), patch),
+      R.map(node => R.compose(
+        Node.setNodeType(R.__, node),
+        PatchPathUtils.resolvePatchPath(R.__, Patch.getPatchPath(patch)),
+        Node.getNodeType
+      )(node)),
+      R.filter(isLocalNode),
+      Patch.listNodes
+    )(patch)),
+    R.filter(R.compose(
+      R.any(isLocalNode),
+      Patch.listNodes
+    )),
+    listLibraryPatches
   )(project)
 );
