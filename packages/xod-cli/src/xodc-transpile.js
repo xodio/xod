@@ -5,7 +5,7 @@ import path from 'path';
 import { identity } from 'ramda';
 
 import { foldEither } from 'xod-func-tools';
-import { loadProjectWithLibs, pack, readJSON, writeFile } from 'xod-fs';
+import { loadProject, readJSON, writeFile } from 'xod-fs';
 import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 import { transpileForArduino } from 'xod-arduino';
 import * as msg from './messages';
@@ -52,8 +52,7 @@ export default (input, patchPath, program) => {
     }
 
     if (isDirectory) {
-      loadProjectWithLibs(dir, path.resolve(dir, '..'))
-        .then(({ project, libs }) => pack(project, libs))
+      loadProject(dir)
         .then(resolve)
         .catch(reject);
     }
