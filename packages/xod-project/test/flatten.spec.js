@@ -4,7 +4,7 @@ import dirtyChai from 'dirty-chai';
 
 import * as Helper from './helpers';
 import * as CONST from '../src/constants';
-import flatten, { extractPatches } from '../src/flatten';
+import flatten, { extractPatches, extractLeafPatches } from '../src/flatten';
 import { formatString } from '../src/utils';
 import { getCastPatchPath } from '../src/patchPathUtils';
 import blinking from './fixtures/blinking.json';
@@ -395,6 +395,31 @@ describe('Flatten', () => {
     });
   });
 
+  describe('extractLeafPatches', () => {
+    it('correct Error for case if any Node refers to non-existent Patch', () => {
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/main': {
+            nodes: {
+              a: { type: 'xod/test/non-existent-patch' },
+            },
+          },
+        },
+      });
+      const result = extractLeafPatches(['js'], project, '@/main', project.patches['@/main'])[0];
+      expect(result.isLeft).to.be.true();
+      Helper.expectErrorMessage(
+        msg => expect(msg).to.be.equal(
+          formatString(
+            CONST.ERROR.PATCH_NOT_FOUND_BY_PATH,
+            { patchPath: 'xod/test/non-existent-patch' }
+          )
+        ),
+        result
+      );
+    });
+  });
+
   describe('trivial', () => {
     const project = Helper.defaultizeProject({
       patches: {
@@ -453,22 +478,6 @@ describe('Flatten', () => {
         },
       },
     });
-
-    it('extractPatches: it should return correct flattening structure', () => {
-      const extracted = extractPatches(project, ['xod/core/or'], null, {}, project.patches['@/main']);
-      const result = R.map(R.map(R.unnest), extracted);
-
-      expect(result).to.be.deep.equal([
-        [
-          project.patches['@/main'].nodes.a,
-          project.patches['@/main'].nodes.b,
-        ],
-        [
-          project.patches['@/main'].links.l,
-        ],
-      ]);
-    });
-
     it('should return error if implementation not found', () => {
       const flatProject = flatten(project, '@/main', ['cpp']);
       expect(flatProject.isLeft).to.be.true();
@@ -478,7 +487,6 @@ describe('Flatten', () => {
         formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: 'cpp', patchPath: 'xod/core/or' })
       );
     });
-
     it('should ignore not referred patches', () => {
       const flatProject = flatten(project, 'xod/core/or', ['js']);
 
@@ -493,7 +501,6 @@ describe('Flatten', () => {
         flatProject
       );
     });
-
     it('should return patch and its dependencies', () => {
       const flatProject = flatten(project, '@/main', ['js']);
 
@@ -508,7 +515,6 @@ describe('Flatten', () => {
         flatProject
       );
     });
-
     it('should return patch with links', () => {
       const flatProject = flatten(project, '@/main', ['js']);
 
