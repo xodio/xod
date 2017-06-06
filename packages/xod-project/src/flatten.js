@@ -308,12 +308,12 @@ const rejectContainedNodeIds = R.curry((nodeIds, nodes) => R.reject(
   nodes
 ));
 
-// :: Link -> Pin -> Pin
+// :: Link -> Map PinKey DataValue -> (Node -> Node)
 const rekeyPinUsingLink = R.curry((link, pin) => {
-  if (R.isEmpty(pin)) { return {}; }
+  if (R.isEmpty(pin)) { return R.identity; }
 
   return R.useWith(
-    R.objOf,
+    Node.setBoundValue,
     [
       Link.getLinkInputPinKey,
       R.compose(R.head, R.values),
@@ -323,7 +323,7 @@ const rekeyPinUsingLink = R.curry((link, pin) => {
 
 // :: Pin -> Nodes -> Link -> Node
 const assocInjectedPinToNodeByLink = R.curry((pin, nodes, link) => R.compose(
-    R.assoc('boundValues', rekeyPinUsingLink(link, pin)),
+    rekeyPinUsingLink(link, pin),
     findNodeByNodeId(R.__, nodes),
     Link.getLinkInputNodeId
   )(link)
