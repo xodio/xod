@@ -1463,7 +1463,6 @@ describe('Flatten', () => {
         flatProject
       );
     });
-
     it('should return cast-nodes with bound values', () => {
       const project = Helper.defaultizeProject({
         patches: {
@@ -1672,6 +1671,79 @@ describe('Flatten', () => {
             .to.have.property('boundValues')
             .that.have.property('__in__')
             .that.equal(project.patches['@/main'].nodes.b.boundValues.a3);
+        },
+        flatProject
+      );
+    });
+    it('should return flat project with correct bound values', () => {
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/main': {
+            nodes: {
+              f: {
+                type: '@/foo',
+                boundValues: {
+                  out: 42,
+                },
+              },
+              m: {
+                type: 'xod/core/multiply',
+                boundValues: {
+                  in1: 26,
+                },
+              },
+            },
+            links: {
+              l: {
+                output: {
+                  nodeId: 'f',
+                  pinKey: 'out',
+                },
+                input: {
+                  nodeId: 'm',
+                  pinKey: 'in2',
+                },
+              },
+            },
+          },
+          '@/foo': {
+            nodes: {
+              out: {
+                label: 'FOO',
+                type: 'xod/patch-nodes/output-number',
+              },
+            },
+          },
+          'xod/core/multiply': {
+            nodes: {
+              in1: {
+                type: 'xod/patch-nodes/input-number',
+              },
+              in2: {
+                type: 'xod/patch-nodes/input-number',
+              },
+              noNativeImpl: {
+                type: 'xod/patch-nodes/not-implemented-in-xod',
+              },
+              out: {
+                type: 'xod/patch-nodes/output-number',
+              },
+            },
+            impls: {
+              js: '// ok',
+            },
+          },
+        },
+      });
+      const flatProject = flatten(project, '@/main', ['js']);
+      expect(flatProject.isRight).to.be.true();
+      Helper.expectEither(
+        (newProject) => {
+          const node = newProject.patches['@/main'].nodes.m;
+          expect(node.boundValues).to.deep.equal({
+            in1: 26,
+            in2: 42,
+          });
         },
         flatProject
       );
