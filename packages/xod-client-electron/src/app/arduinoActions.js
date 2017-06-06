@@ -22,6 +22,7 @@ import * as ERROR_CODES from '../shared/errorCodes';
 const getPaths = R.curry(
   (pathsForPlatforms, fromSettings, platform) => R.compose(
     R.map(resolvePath),
+    R.reject(R.isEmpty),
     R.concat(R.of(fromSettings)),
     R.propOr('', platform)
   )(pathsForPlatforms)
