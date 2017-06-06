@@ -130,7 +130,7 @@ const extractLeafPatchesFromNodes = R.curry((recursiveFn, impls, project, patch)
 );
 
 // :: String[] -> Project -> Path -> [Either Error [Path, Patch]]
-const extractLeafPatches = R.curry((impls, project, path, patch) =>
+export const extractLeafPatches = R.curry((impls, project, path, patch) =>
   R.cond([
     [
       isLeafPatchWithImplsOrTerminal(impls),
