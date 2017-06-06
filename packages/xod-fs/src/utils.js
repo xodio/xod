@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 import {
+  notEmpty,
   rejectWithCode,
 } from 'xod-func-tools';
 
@@ -169,7 +170,8 @@ export const resolveDefaultProjectPath = def(
 );
 
 // :: * -> Path
-export const ensureWorkspacePath = R.tryCatch(
+export const ensureWorkspacePath = R.ifElse(
+  R.both(R.is(String), notEmpty),
   resolvePath,
   () => resolvePath(DEFAULT_WORKSPACE_PATH)
 );
