@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "XOD project: Command Line Interface",
   "scripts": {
-    "build": "babel src/ -d bin/",
+    "build": "babel src/ -d bin/ --source-maps",
     "dev": "yarn run build -- --watch",
     "test": "mocha test/**/*.spec.js"
   },

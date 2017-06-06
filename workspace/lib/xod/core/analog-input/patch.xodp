@@ -47,6 +47,17 @@
         "y": 16
       },
       "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rymG3j6b-",
+      "label": "RDY",
+      "position": {
+        "x": 266,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

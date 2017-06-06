@@ -6,7 +6,8 @@
     "build": "babel src/ -d dist/ --source-maps",
     "dev": "yarn run build -- --watch",
     "doc": "documentation build --format html --output doc --sort-order alpha src/",
-    "test": "BABEL_DISABLE_CACHE=1 mocha test/**/*.spec.js"
+    "test": "BABEL_DISABLE_CACHE=1 mocha test/**/*.spec.js",
+    "test:cpp": "./tools/test-cpp.sh"
   },
   "repository": {},
   "keywords": [],

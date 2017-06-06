@@ -1,0 +1,52 @@
+{
+  "description": "",
+  "links": [],
+  "nodes": [
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "BJlHojaWZ",
+      "label": "NUM",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "__out__": 2
+      },
+      "description": "",
+      "id": "HJTIija-W",
+      "label": "DIG",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "S1wYijaWb",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "r1H_oipZb",
+      "label": "STR",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-string"
+    }
+  ]
+}

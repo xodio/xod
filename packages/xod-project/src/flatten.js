@@ -111,10 +111,11 @@ const extendTerminalPins = R.curry(([path, patch]) => {
   ];
 });
 
-// :: Function extractLeafPatches -> String[] -> Project -> Node -> [Path, Patch, ...]
+// :: Function extractLeafPatches -> String[] -> Project -> Node -> Either Error [Path, Patch, ...]
 const extractLeafPatchRecursive = R.curry((recursiveFn, impls, project, node) => R.compose(
   path => R.compose(
     R.chain(recursiveFn(impls, project, path)),
+    errOnNothing(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })),
     Project.getPatchByPath(R.__, project)
   )(path),
   Node.getNodeType

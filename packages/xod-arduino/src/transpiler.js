@@ -503,6 +503,7 @@ const formatValueLiteral = def(
   'formatValueLiteral :: DataValue -> String',
   R.cond([
     [R.equals(''), R.always('nullptr')],
+    [R.is(String), x => `::xod::List<char>::fromPlainArray("${x}", ${x.length})`],
     [R.T, R.toString],
   ])
 );

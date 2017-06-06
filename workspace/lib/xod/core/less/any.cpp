@@ -3,9 +3,7 @@ struct State {};
 {{ GENERATED_CODE }}
 
 void evaluate(NodeId nid, State* state) {
-  double lhs = getNumber(nid, Inputs::LHS);
-  double rhs = getNumber(nid, Inputs::RHS);
-  bool result = (lhs < rhs);
-
-  emitLogic(nid, Outputs::LT, result);
+    auto lhs = getValue<Inputs::LHS>(nid);
+    auto rhs = getValue<Inputs::RHS>(nid);
+    emitValue<Outputs::LT>(nid, lhs < rhs);
 }
