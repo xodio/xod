@@ -370,7 +370,7 @@ template <typename T> class ListIterator {
 
         ++_indexInChunk;
 
-        if (_indexInChunk > chunk()->bounds.last) {
+        if (_indexInChunk > top()->_rightBounds.last) {
             // we’ve runned over whole chunk, move to next one
             while (true) {
                 auto branch = pop();
@@ -402,7 +402,7 @@ template <typename T> class ListIterator {
         ListRawPtr left;
         while ((left = top()->_left.get()))
             push(left);
-        _indexInChunk = chunk()->bounds.first;
+        _indexInChunk = top()->_rightBounds.first;
     }
 
     Chunk *chunk() const { return top()->_chunk.get(); }
@@ -504,19 +504,21 @@ template <typename T> class List {
         }
 
         auto chunk = this->chunk();
-        bool amend = chunk->append(val);
 
-        if (amend) {
-            auto list = empty();
-            list->_chunk = chunk;
-            list->_rightBounds.last = _rightBounds.last + 1;
-            return list;
-        } else {
-            auto list = empty();
-            list->_left = const_cast<List *>(this);
-            list->_right = of(val);
-            return list;
+        if (chunk && isChunkTailFree()) {
+            bool amend = chunk->append(val);
+            if (amend) {
+                auto list = empty();
+                list->_chunk = chunk;
+                list->_rightBounds.last = _rightBounds.last + 1;
+                return list;
+            }
         }
+
+        auto list = empty();
+        list->_left = const_cast<List *>(this);
+        list->_right = of(val);
+        return list;
     }
 
     ListPtr concat(ListPtr other) const {
@@ -531,12 +533,12 @@ template <typename T> class List {
         auto thisChunk = this->chunk();
         auto otherChunk = other->chunk();
         auto otherLen = other->length();
-        if (thisChunk && otherChunk) {
+        if (thisChunk && isChunkTailFree() && otherChunk) {
             bool amend = thisChunk->concat(otherChunk->buffer, otherLen);
             if (amend) {
                 auto list = empty();
                 list->_chunk = thisChunk;
-                list->_leftBounds.first = _leftBounds.first;
+                list->_rightBounds.first = _rightBounds.first;
                 list->_rightBounds.last = thisChunk->bounds.last;
                 return list;
             }
@@ -569,6 +571,10 @@ template <typename T> class List {
         }
     }
 
+    bool isChunkTailFree() const {
+      return _chunk->bounds.last == _rightBounds.last;
+    }
+
   private:
     List() { memset(this, 0, sizeof(List)); }
 
@@ -599,6 +605,11 @@ template <typename T> class List {
         ChunkPtr _chunk;
     };
 
+    // Branch bounds inside chunks. In case if this is a leaf, only _rightBounds
+    // is used.
+    //
+    // Note that the bounds will not match bounds in chunks themselves. It’s
+    // because the chunks are reused across many List’s.
     detail::Bounds _leftBounds;
     detail::Bounds _rightBounds;
 
