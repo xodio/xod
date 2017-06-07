@@ -1,6 +1,7 @@
 import R from 'ramda';
 import fs from 'fs';
 import { resolve } from 'path';
+
 import { resolvePath, writeFile, doesDirectoryExist, doesFileExist } from 'xod-fs';
 import { foldEither, notEmpty, tapP, rejectWithCode } from 'xod-func-tools';
 import { transpileForArduino } from 'xod-arduino';
@@ -12,11 +13,102 @@ import * as MESSAGES from '../shared/messages';
 import formatError from '../shared/errorFormatter';
 import * as ERROR_CODES from '../shared/errorCodes';
 
+import arduinoOfflineIndex from './arduinoPackageIndex.json';
+
 // =============================================================================
 //
 // Utils
 //
 // =============================================================================
+
+// :: PAV -> Pair String String
+const getSplittedVersion = R.compose(
+  R.split('+'),
+  R.prop('version')
+);
+
+/**
+ * Comparator for versions, splitted with dots, like `1.0`, `1.6.14`
+ * and etc. It compares the same version parts (major with major, minor
+ * with minor and etc).
+ */
+// :: String -> String -> Number
+const compareVersion = (a, b) => {
+  const aV = R.compose(R.map(x => parseInt(x, 10)), R.split('.'))(a);
+  const bV = R.compose(R.map(x => parseInt(x, 10)), R.split('.'))(b);
+  const minLength = R.min(R.length(aV), R.length(bV));
+
+  for (let i = 0; i < minLength; i += 1) {
+    if (aV[i] > bV[i]) {
+      return 1;
+    } else if (aV[i] < bV[i]) {
+      return -1;
+    }
+  }
+
+  if (aV.length > bV.length) {
+    return 1;
+  } else if (aV.length < bV.length) {
+    return -1;
+  }
+
+  return 0;
+};
+
+// :: PAV[] -> PAV[]
+const sortByVersion = R.sort((a, b) => {
+  const aV = getSplittedVersion(a);
+  const bV = getSplittedVersion(b);
+
+  let result = compareVersion(aV[0], bV[0]);
+  if (result === 0 && aV.length === 2 && bV.length === 2) {
+    result = compareVersion(aV[1], bV[1]);
+  } else if (aV.length > bV.length) {
+    return 1;
+  } else if (bV.length > aV.length) {
+    return 0;
+  }
+  return result;
+});
+
+// BoardPure :: { name::String }
+// :: PAV -> ArduinoPackageIndex -> [BoardPure]
+const getBoardsByPAV = R.curry((pav, index) => R.compose(
+  R.prop('boards'),
+  R.find(
+    R.both(
+      R.propEq('architecture', pav.architecture),
+      R.propEq('version', pav.version)
+    )
+  ),
+  R.prop('platforms'),
+  R.find(R.propEq('name', pav.package)),
+  R.prop('packages')
+)(index));
+
+/**
+ * Returns a list of Boards, parsed from Arduino Package Index JSON.
+ */
+// Board :: { name::String, package::String, architecture::String, version::String }
+// :: ArduinoPackageIndex -> [Board]
+export const listBoardsFromIndex = index => R.compose(
+  R.chain(R.compose(
+    pav => R.compose(
+      R.map(R.merge(pav)),
+      getBoardsByPAV(R.__, index)
+    )(pav),
+    R.last,
+    sortByVersion
+  )),
+  R.values,
+  xab.listPAVs
+)(index);
+
+/**
+ * Returns a list of Boards, that was bundled into `xod-client-electron`.
+ */
+// :: () -> [Board]
+export const getListOfBoards = () => listBoardsFromIndex(arduinoOfflineIndex);
 
 // :: String[] -> String -> String -> String[]
 const getPaths = R.curry(
@@ -54,8 +146,6 @@ const filterByPab = pab => R.filter(R.both(
   R.propEq('package', pab.package),
   R.propEq('architecture', pab.architecture)
 ));
-// :: PAV[] -> PAV[]
-const sortByVersion = R.sort(R.descend(R.prop('version')));
 
 // :: Port[] -> Port
 const findPort = R.find(
@@ -135,17 +225,26 @@ export const getInstalledPAV = (pab, pavs) => R.compose(
   R.defaultTo(
     rejectWithCode(ERROR_CODES.NO_INSTALLED_PAVS, { pab })
   ),
-  R.head,
+  R.last,
   sortByVersion,
   filterByPab(pab)
 )(pavs);
+
+/**
+ * Gets list of all serial ports
+ * @returns {Promise<Object, Error>} Promise with Port object or Error
+ * @see {@link https://www.npmjs.com/package/serialport#listing-ports}
+ */
+export const listPorts = () => xab.listPorts()
+  .then(R.sort(R.descend(R.prop('comName'))))
+  .catch(rejectWithCode(ERROR_CODES.NO_PORTS_FOUND));
 
 /**
  * Get list of all serial ports and find one with connected Arduino device
  * @returns {Promise<Object, Error>} Promise with Port object or Error
  * @see {@link https://www.npmjs.com/package/serialport#listing-ports}
  */
-export const getPort = () => xab.listPorts()
+export const getPort = () => listPorts()
   .then(ports => R.compose(
     R.ifElse(
       R.isNil,
