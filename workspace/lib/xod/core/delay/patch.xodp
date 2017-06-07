@@ -7,23 +7,10 @@
         "__in__": false
       },
       "description": "",
-      "id": "B1GeLR_BPyZ",
-      "label": "ACT",
-      "position": {
-        "x": 10,
-        "y": 224
-      },
-      "type": "xod/patch-nodes/output-boolean"
-    },
-    {
-      "boundValues": {
-        "__in__": false
-      },
-      "description": "",
       "id": "Bk4gU0drwJ-",
       "label": "DONE",
       "position": {
-        "x": 138,
+        "x": 10,
         "y": 224
       },
       "type": "xod/patch-nodes/output-pulse"
@@ -33,6 +20,17 @@
       "description": "",
       "id": "H1mlUC_HDJZ",
       "label": "RST",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "SkSuD6LMb",
+      "label": "SET",
       "position": {
         "x": 138,
         "y": 16
@@ -56,8 +54,8 @@
       "id": "noNativeImpl",
       "label": "",
       "position": {
-        "x": 100,
-        "y": 100
+        "x": 138,
+        "y": 120
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }
