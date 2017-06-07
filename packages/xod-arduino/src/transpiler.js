@@ -368,6 +368,19 @@ const updatePatch = def(
   )(patch)
 );
 
+/**
+ * Converts JS-typed data value to a string that is valid and expected
+ * C++ literal representing that value
+ */
+const formatValueLiteral = def(
+  'formatValueLiteral :: DataValue -> String',
+  R.cond([
+    [R.equals(''), R.always('nullptr')],
+    [R.is(String), x => `::xod::List<char>::fromPlainArray("${x}", ${x.length})`],
+    [R.T, R.toString],
+  ])
+);
+
 //-----------------------------------------------------------------------------
 //
 // Transformers
@@ -446,7 +459,11 @@ const createTPatches = def(
         R.map(R.applySpec({
           type: R.compose(R.prop(R.__, TYPES_MAP), Project.getPinType),
           pinKey: Project.getPinLabel,
-          value: R.compose(Project.defaultValueOfType, Project.getPinType),
+          value: R.compose(
+            formatValueLiteral,
+            Project.defaultValueOfType,
+            Project.getPinType
+          ),
         })),
         Project.normalizePinLabels,
         Project.listOutputPins
@@ -493,19 +510,6 @@ const getNodePinLabels = def(
     )),
     Project.getNodePins
   )
-);
-
-/**
- * Converts JS-typed data value to a string that is valid and expected
- * C++ literal representing that value
- */
-const formatValueLiteral = def(
-  'formatValueLiteral :: DataValue -> String',
-  R.cond([
-    [R.equals(''), R.always('nullptr')],
-    [R.is(String), x => `::xod::List<char>::fromPlainArray("${x}", ${x.length})`],
-    [R.T, R.toString],
-  ])
 );
 
 // TODO: Remove it when `Project.getBoundValue` will return default values

@@ -14,11 +14,11 @@ namespace _program {
   {{#each outputs }}
     NodeId links_{{ ../id }}_{{ pinKey }}[] = { {{#each to }}{{ this }}, {{/each}}NO_NODE };
     {{/each}}
-    {{ patch/owner }}::{{ patch/libName }}::{{ patch/patchName }}::Storage storage_{{ id }} = {
+    {{ patch/owner }}__{{ patch/libName }}__{{ patch/patchName }}::Storage storage_{{ id }} = {
         { }, // state
       {{#each inputs }}
         {{#exists nodeId }}
-        { NodeId({{ nodeId }}), {{ patch/owner }}::{{ patch/libName }}::{{ patch/patchName }}::Outputs::{{ fromPinKey  }}::KEY }, // input_{{ pinKey }}
+        { NodeId({{ nodeId }}), {{ patch/owner }}__{{ patch/libName }}__{{ patch/patchName }}::Outputs::{{ fromPinKey  }}::KEY }, // input_{{ pinKey }}
         {{else }}
         { NO_NODE, 0 }, // input_{{ pinKey }}
         {{/exists }}
@@ -37,7 +37,7 @@ namespace _program {
 
     EvalFuncPtr evaluationFuncs[NODE_COUNT] = {
       {{#each nodes}}
-        (EvalFuncPtr)&{{ patch/owner }}::{{ patch/libName }}::{{ patch/patchName }}::evaluate{{#unless @last }},{{/unless }}
+        (EvalFuncPtr)&{{ patch/owner }}__{{ patch/libName }}__{{ patch/patchName }}::evaluate{{#unless @last }},{{/unless }}
       {{/each}}
     };
 
