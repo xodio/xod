@@ -19,7 +19,7 @@
           "checksum": "SHA-256:2909a4c6dd6d7497e7e1b5fcaa2f66a100271417510f3a68593b65af8ff78c1c",
           "size": "4877442",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
@@ -65,7 +65,7 @@
           "checksum": "SHA-256:c30033ba70cbb2d46ee0901a331b0f83be082f9110eda0464b624fdbb51b3c7b",
           "size": "4876816",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
@@ -111,7 +111,7 @@
           "checksum": "SHA-256:8a243410aeded6dbcbc4b134ba10be5c2562d137bfcf3ac97abdc5844933b363",
           "size": "4780884",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
@@ -157,7 +157,7 @@
           "checksum": "SHA-256:c72d890aa605add677634c6b25ebc3b2ed9e44c38805b95c47eab17a1ca72db6",
           "size": "4876957",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
@@ -203,7 +203,7 @@
           "checksum": "SHA-256:08ad5db4978ebea22344edc5d77dce0923d8a644da7a14dc8072e883c76058d8",
           "size": "4876916",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
@@ -249,7 +249,7 @@
           "checksum": "SHA-256:e112992c59c0d826db9a63967679854a96b3c7b970f788a03834e211f6390caa",
           "size": "4904283",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
@@ -296,7 +296,7 @@
           "checksum": "SHA-256:0e0775347baf0d93ef344bcd851e7d8d0af2bda7916c119fa3a4ff9b984c575b",
           "size": "4885536",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
@@ -343,7 +343,7 @@
           "checksum": "SHA-256:eb8bc661162bc689b3ed02c4d24f6ff964e91ace890b7d3db2e316c84ba235f0",
           "size": "4890702",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
@@ -390,7 +390,7 @@
           "checksum": "SHA-256:92cad999335198f875bdaec5de0169991bee19e0058c623d2cdd0835bb26eeaa",
           "size": "4991331",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
@@ -437,7 +437,7 @@
           "checksum": "SHA-256:5292d3559de74eb990ff570df43887b44d4e3c6b80ab4ab0f945e94dd68d8210",
           "size": "4991634",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
@@ -484,7 +484,7 @@
           "checksum": "SHA-256:4a296a3304a51d820e680e2022fb9b9f5706144abf1e5d60c7876a0f9fc7e6d9",
           "size": "4993586",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
@@ -531,7 +531,7 @@
           "checksum": "SHA-256:617f458dd3507072b9a6f9fdc78888c66aa420a2fb081c4c1556598a2d69d643",
           "size": "4993644",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
@@ -578,7 +578,7 @@
           "checksum": "SHA-256:a5f7d66c83e3d4722f4c8dab42bdbcf5af98c611ffca1802ef3d1957b894bd92",
           "size": "4993455",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
@@ -625,7 +625,7 @@
           "checksum": "SHA-256:c222efcabbdf6fa63ba3d64afb8d149f83fa73693c413aa05a2ccd9f986ed2fa",
           "size": "4993959",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
@@ -672,7 +672,7 @@
           "checksum": "SHA-256:2e2e7a7b8ec321b62c54237e8cb03384fc434f3692c47a524e23e61df868ed9a",
           "size": "5011829",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
             {"name": "Arduino Uno WiFi"},
             {"name": "Arduino Diecimila"},
@@ -695,7 +695,7 @@
             {"name": "Arduino Robot Motor"},
             {"name": "Arduino Gemma"},
             {"name": "Adafruit Circuit Playground"},
-            {"name": "Arduino YГєn Mini"},
+            {"name": "Arduino Yún Mini"},
             {"name": "Arduino Industrial 101"},
             {"name": "Linino One"}
           ],
@@ -730,7 +730,7 @@
           "checksum": "SHA-256:ecf63bb02d8f647f720be64b4bf235e0ca37b3180b90d816cbff1886f6744833",
           "size": "5011912",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
             {"name": "Arduino Uno WiFi"},
             {"name": "Arduino Diecimila"},
@@ -753,7 +753,7 @@
             {"name": "Arduino Robot Motor"},
             {"name": "Arduino Gemma"},
             {"name": "Adafruit Circuit Playground"},
-            {"name": "Arduino YГєn Mini"},
+            {"name": "Arduino Yún Mini"},
             {"name": "Arduino Industrial 101"},
             {"name": "Linino One"}
           ],
@@ -788,7 +788,7 @@
           "checksum": "SHA-256:7c56e381602b779e8e81ec46deb5c8b82e1c84c134c3c1b672d0b43f5e45ee13",
           "size": "4897659",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
             {"name": "Arduino Uno WiFi"},
             {"name": "Arduino Diecimila"},
@@ -811,7 +811,7 @@
             {"name": "Arduino Robot Motor"},
             {"name": "Arduino Gemma"},
             {"name": "Adafruit Circuit Playground"},
-            {"name": "Arduino YГєn Mini"},
+            {"name": "Arduino Yún Mini"},
             {"name": "Arduino Industrial 101"},
             {"name": "Linino One"}
           ],
@@ -846,7 +846,7 @@
           "checksum": "SHA-256:1c544db39f36a8468f585d6338343718c2892526227fa04805339084dd0ab4ff",
           "size": "4959420",
           "boards": [
-            {"name": "Arduino YГєn"},
+            {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
             {"name": "Arduino Uno WiFi"},
             {"name": "Arduino Diecimila"},
@@ -869,7 +869,7 @@
             {"name": "Arduino Robot Motor"},
             {"name": "Arduino Gemma"},
             {"name": "Adafruit Circuit Playground"},
-            {"name": "Arduino YГєn Mini"},
+            {"name": "Arduino Yún Mini"},
             {"name": "Arduino Industrial 101"},
             {"name": "Linino One"}
           ],
