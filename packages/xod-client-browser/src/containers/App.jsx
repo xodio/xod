@@ -153,12 +153,10 @@ class App extends client.App {
       submenu(
         items.deploy,
         [
-          onClick(items.showCodeForEspruino, this.onShowCodeEspruino),
-          onClick(items.uploadToEspruino, this.onUpload),
-          items.separator,
+          onClick(items.showCodeForArduino, this.onShowCodeArduino),
           onClick(items.showCodeForNodeJS, this.onShowCodeNodejs),
           items.separator,
-          onClick(items.showCodeForArduino, this.onShowCodeArduino),
+          onClick(items.uploadToArduino, this.onUpload),
         ]
       ),
     ];
