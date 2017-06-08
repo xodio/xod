@@ -20,7 +20,7 @@
     "docopt": "^0.6.2",
     "ramda": "^0.23.0",
     "source-map-support": "^0.4.15",
-    "swagger-client": "^2.1.32",
+    "swagger-client": "^3.0.13",
     "xod-arduino": "^0.0.1",
     "xod-arduino-builder": "^0.0.1",
     "xod-func-tools": "^0.0.1",

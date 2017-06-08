@@ -1,22 +1,12 @@
-import Swagger from 'swagger-client';
+import swaggerClient from 'swagger-client';
 
-export const URL = 'http://localhost:10010/swagger';
-
-export function stringifyValue(value) {
-  const text = JSON.stringify(value.obj, null, 2);
-  return `${value.status} ${text}`;
-}
+export const URL = 'http://pm.xod.show/swagger';
 
 export function stringifyError(error) {
-  if (typeof error === 'string') {
-    return error;
-  }
-  const text = JSON.stringify(JSON.parse(error.errObj.response.text), null, 2);
-  return `${error.errObj.status} ${text}`;
+  return `${error.status} ${JSON.stringify(error.response.body, null, 2)}`;
 }
 
-export function getClient(url) {
-  return new Swagger({ url, usePromise: true }).catch(() =>
-    Promise.reject(`could not find swagger file at "${url}".`)
-  );
+export function client(url) {
+  return swaggerClient(url)
+    .catch(() => Promise.reject(`could not find swagger file at "${url}".`));
 }

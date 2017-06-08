@@ -1,59 +1,71 @@
 import path from 'path';
-import R from 'ramda';
 import * as xodFs from 'xod-fs';
+import LibUri from './LibUri';
 import * as messages from './messages';
-import { getClient, stringifyError, stringifyValue, URL } from './swagger';
+import * as swagger from './swagger';
 
-function getPublication(author, owner, projectDir) {
+function getLibVersion(author, orgname, projectDir) {
   return Promise
     .all([
       xodFs.findClosestProjectDir(projectDir),
       xodFs.findClosestWorkspaceDir(projectDir),
     ])
-    .then(([closestProjectDir, closestWorkspaceDir]) =>
-      xodFs.loadProjectWithoutLibs(closestProjectDir, closestWorkspaceDir)
-    )
-    .then(xodFs.pack)
-    .then((content) => {
+    .then(([projectDir2, workspaceDir]) =>
+      xodFs.loadProjectWithoutLibs(projectDir2, workspaceDir))
+    .then(project => xodFs.pack(project, {}))
+    .then((xodBall) => {
       const xodFile = path.resolve(projectDir, 'project.xod');
-      if (!content.meta) {
-        return Promise.reject(
-          `could not find "meta" in "${xodFile}".`);
+      if (!xodBall.name) {
+        return Promise.reject(`could not find \`name\` in "${xodFile}".`);
       }
-      if (!content.meta.name) {
-        return Promise.reject(
-          `could not find "meta.name" in "${xodFile}".`);
-      }
-      if (!content.meta.version) {
-        return Promise.reject(
-          `could not find "meta.version" in "${xodFile}".`);
+      if (!xodBall.version) {
+        return Promise.reject(`could not find \`version\` in "${xodFile}".`);
       }
       return {
-        libVersion: { author, content },
-        owner,
-        semver: content.meta.version,
-        slug: content.meta.name,
+        libname: xodBall.name,
+        orgname,
+        version: {
+          author,
+          folder: {
+            'xodball.json': JSON.stringify(xodBall),
+          },
+          semver: `v${xodBall.version}`,
+        },
       };
     });
 }
 
-export default function publish(author, owner, projectDir) {
+export default function publish(author, orgname, projectDir) {
   return Promise
     .all([
-      getClient(URL),
-      getPublication(author, owner, projectDir),
+      getLibVersion(author, orgname, projectDir),
+      swagger.client(swagger.URL),
     ])
-    .then(([client, publication]) =>
-      client.Library.publishLibrary(publication)
-            .catch(error => Promise.reject(stringifyError(error)))
-    )
-    .then(R.compose(
-      stringifyValue,
-      R.assocPath(['obj', 'content'], '<CONTENT>')
-    ))
+    .then(([libVersion, swaggerClient]) => {
+      const { libname, version: { semver } } = libVersion;
+      const { Library, User, Version } = swaggerClient.apis;
+      const libUri = new LibUri(orgname, libname, semver);
+      return User.postUserOrg({ org: { orgname }, username: author })
+        .catch(() => null)
+        .then(() => Library.postOrgLib({ lib: { libname }, orgname }))
+        .catch(() => null)
+        .then(() => Version.postLibVersion(libVersion)
+          .catch((err) => {
+            const { response: { body }, status } = err;
+            if (status === 400 && body && body.code === 'VERSION_ALREADY_EXISTS') {
+              return Promise.reject(`version "${libUri}" already exists.`);
+            }
+            if (status === 404) {
+              return Promise.reject(
+                `could not find user or organization "${orgname}".`);
+            }
+            return Promise.reject(swagger.stringifyError(err));
+          }))
+        .then(() => `Published "${libUri}".`);
+    })
     .then(messages.success)
-    .catch((error) => {
-      messages.error(error);
+    .catch((err) => {
+      messages.error(err);
       process.exit(1);
     });
 }

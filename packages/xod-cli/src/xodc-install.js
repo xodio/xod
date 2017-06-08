@@ -1,62 +1,62 @@
 import fs from 'fs';
 import path from 'path';
-import R from 'ramda';
 import * as xodFs from 'xod-fs';
+import LibUri from './LibUri';
 import * as messages from './messages';
-import { getClient, stringifyError, URL } from './swagger';
-import LibrarySymbol from './types';
+import * as swagger from './swagger';
 
-function getLibrary(client, librarySymbol) {
-  const { owner, slug, semver } = librarySymbol;
-  return client
-    .Library.readLibraryBySymbol({ owner, slug })
-    .then(R.path(['obj', 'id']))
-    .then(semver
-      ? id => client.LibVersion.readLibVersion({ id, semver })
-      : id => client.LibVersion.readLibVersionHead({ id })
-    )
-    .then(R.path(['obj', 'content']))
-    .catch(error => Promise.reject(error.status === 404
-      ? `could not find library "${librarySymbol}".`
-      : stringifyError(error)
-    ));
-}
-
-function checkLibraryDirConflict(libraryDir, librarySymbol) {
+function checkLibDirConflict(libDir, libUri) {
   return new Promise((resolve, reject) => {
-    fs.lstat(libraryDir, (error, stat) => {
-      if (!error && stat.isDirectory()) {
-        return reject(
-          `could not install "${librarySymbol}". "${libraryDir}" is not empty, remove it manually.`
-        );
+    fs.lstat(libDir, (err, stat) => {
+      if (!err && stat.isDirectory()) {
+        return reject(`could not install "${libUri}".\n` +
+          `"${libDir}" is not empty, remove it manually.`);
       }
       return resolve();
     });
   });
 }
 
-export default function install(library, path$) {
+function getLib(swaggerClient, libUri) {
+  const { libname, orgname, tag } = libUri;
+  const { Library, Version } = swaggerClient.apis;
+  return (tag !== 'latest' ? Promise.resolve(tag) : Library
+    .getOrgLib({ libname, orgname }).then(({ obj: lib }) => {
+      const [semver] = lib.versions;
+      if (!semver) return Promise.reject({ status: 404 });
+      return semver;
+    }))
+    .then(semver =>
+      Version.getLibVersionXodball({ libname, orgname, semver })
+        .then(({ obj: xodball }) => xodball))
+    .catch((err) => {
+      if (err.status === 404) {
+        return Promise.reject(`could not find "${libUri}".`);
+      }
+      return Promise.reject(swagger.stringifyError(err));
+    });
+}
+
+export default function install(libUri, path2) {
   return Promise
     .all([
-      LibrarySymbol.parsePromise(library),
-      getClient(URL),
-      xodFs.findClosestWorkspaceDir(path$),
+      LibUri.parse(libUri),
+      swagger.client(swagger.URL),
+      xodFs.findClosestWorkspaceDir(path2),
     ])
-    .then(([librarySymbol, client, workspaceDir]) => {
-      const { owner, slug } = librarySymbol;
-      const ownerDir = path.resolve(
-        workspaceDir, 'lib', xodFs.fsSafeName(owner)
-      );
-      const libraryDir = path.resolve(ownerDir, xodFs.fsSafeName(slug));
-      return checkLibraryDirConflict(libraryDir, librarySymbol)
-        .then(() => getLibrary(client, librarySymbol))
-        .then(xodFs.arrangeByFiles)
-        .then(xodFs.save(ownerDir))
-        .then(() => `Installed "${librarySymbol}" at "${libraryDir}".`);
+    .then(([libUri2, swaggerClient, workspaceDir]) => {
+      const { libname, orgname } = libUri2;
+      const orgDir = path.resolve(workspaceDir, 'lib',
+        xodFs.fsSafeName(orgname));
+      const libDir = path.resolve(orgDir, xodFs.fsSafeName(libname));
+      return checkLibDirConflict(libDir, libUri2)
+        .then(() => getLib(swaggerClient, libUri2))
+        .then(xodFs.saveProject(orgDir))
+        .then(() => `Installed "${libUri2}" at "${libDir}".`);
     })
     .then(messages.success)
-    .catch((error) => {
-      messages.error(error);
+    .catch((err) => {
+      messages.error(err);
       process.exit(1);
     });
 }
