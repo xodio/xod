@@ -15,6 +15,7 @@ function BoolWidget(props) {
       dataType={props.dataType}
       isConnected={props.isConnected}
       isBindable={props.isBindable}
+      direction={props.direction}
     >
       <select
         className="inspectorSelectInput"
@@ -38,6 +39,7 @@ BoolWidget.propTypes = {
   dataType: React.PropTypes.string,
   isConnected: React.PropTypes.bool,
   isBindable: React.PropTypes.bool,
+  direction: React.PropTypes.string,
 
   value: React.PropTypes.bool,
   onChange: React.PropTypes.func.isRequired,

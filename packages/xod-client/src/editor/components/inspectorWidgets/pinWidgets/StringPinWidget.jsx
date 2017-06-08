@@ -15,6 +15,7 @@ const StringWidget = (props) => {
       dataType={props.dataType}
       isConnected={props.isConnected}
       isBindable={props.isBindable}
+      direction={props.direction}
     >
       <input
         className="inspectorTextInput"
@@ -36,6 +37,7 @@ StringWidget.propTypes = {
   dataType: React.PropTypes.string,
   isConnected: React.PropTypes.bool,
   isBindable: React.PropTypes.bool,
+  direction: React.PropTypes.string,
 
   value: React.PropTypes.string,
   onBlur: React.PropTypes.func.isRequired,

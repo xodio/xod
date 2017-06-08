@@ -10,6 +10,7 @@ const PulseWidget = props => (
     dataType={props.dataType}
     isConnected={props.isConnected}
     isBindable={props.isBindable}
+    direction={props.direction}
   >
     <input
       className="inspectorTextInput"
@@ -28,6 +29,7 @@ PulseWidget.propTypes = {
   dataType: React.PropTypes.string,
   isConnected: React.PropTypes.bool,
   isBindable: React.PropTypes.bool,
+  direction: React.PropTypes.string,
 };
 
 export default PulseWidget;

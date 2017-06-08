@@ -61,6 +61,7 @@ PinWidget.propTypes = {
   dataType: React.PropTypes.string,
   isConnected: React.PropTypes.bool,
   isBindable: React.PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+  direction: React.PropTypes.string, // eslint-disable-line react/no-unused-prop-types
   children: React.PropTypes.element.isRequired,
 };
 
