@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import sourceMapSupport from 'source-map-support';
+
 import { docopt } from 'docopt';
 import { runCommand } from './utils';
 
@@ -9,6 +11,13 @@ import pack from './xodc-pack';
 import publish from './xodc-publish';
 import transpile from './xodc-transpile';
 import unpack from './xodc-unpack';
+
+
+// In case of unhandled errors this would give more adequate debug traces:
+// 1. More than default 10 items
+Error.stackTraceLimit = 200;
+// 2. Source map to original sources
+sourceMapSupport.install();
 
 // Config
 const version = '0.0.1';

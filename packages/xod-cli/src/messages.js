@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 
+import R from 'ramda';
 import clc from 'cli-color';
 
 function write(msg) {
@@ -8,8 +9,17 @@ function write(msg) {
 }
 
 export function error(msg) {
-  const prefix = clc.bold('Error:');
-  write(clc.redBright(`✗ ${prefix} ${msg}`));
+  if (R.is(Error, msg)) {
+    // Unhandled error. Show stack trace.
+    // TODO: actually all errors (expected and not) are wrapped in Error
+    // objects for historical reasons. So this code will be called for
+    // any error. But this is wrong: expected errors should not be wrapped
+    write(clc.redBright(msg.message));
+    write(msg.stack);
+  } else {
+    const prefix = clc.bold('Error:');
+    write(clc.redBright(`✗ ${prefix} ${msg}`));
+  }
 }
 
 export function warn(msg) { write(clc.yellow(`! ${msg}`)); }
