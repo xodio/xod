@@ -41,7 +41,8 @@ export function findClosestWorkspaceDir(path$) {
     return closestWorkspaceDir
       ? resolve(closestWorkspaceDir)
       : reject(
-        `could not find workspace directory around "${path$}".`
+        `could not find workspace directory around "${path$}".\n` +
+        'Workspace directory must contain `.xodworkspace` file.'
       );
   });
 }
@@ -53,7 +54,8 @@ export function findClosestProjectDir(path$) {
     return closestProjectDir
       ? resolve(closestProjectDir)
       : reject(
-        `could not find project directory around "${path$}".`
+        `could not find project directory around "${path$}".\n` +
+        'Project directory must contain `project.xod` file.'
       );
   });
 }

@@ -1,26 +1,22 @@
-export default class LibrarySymbol {
-  static parse(string) {
-    const match = string.match(/^(.+?)\/(.+?)(?:\/(.+?))?$/);
-    if (!match) {
-      throw new Error(
-        `could not parse library symbol "${string}" ("<owner>/<slug>[/<semver>]").`
-      );
-    }
-    const [, owner, slug, semver] = match;
-    return new LibrarySymbol(owner, slug, semver);
-  }
+import HMDef from 'hm-def';
+import $ from 'sanctuary-def';
+import XF from 'xod-func-tools';
+import { env, Identifier } from 'xod-project';
 
-  static parsePromise(string) {
-    return new Promise(resolve => resolve(LibrarySymbol.parse(string)));
-  }
+/* Types are by convention starts with a capital letter, so: */
+/* eslint-disable new-cap */
 
-  constructor(owner, slug, semver) {
-    this.owner = owner;
-    this.slug = slug;
-    this.semver = semver;
-  }
+const docUrl = 'http://xod.io/docs/dev/xod-cli/#';
+const packageName = 'xod-cli';
+const Model = XF.Model(packageName, docUrl);
 
-  toString() {
-    return `${this.owner}/${this.slug}${this.semver ? `/${this.semver}` : ''}`;
-  }
-}
+export const LibUri = Model('LibUri', {
+  libname: Identifier,
+  orgname: Identifier,
+  tag: $.String,
+});
+
+export const def = HMDef.create({
+  checkTypes: process.env.NODE_ENV !== 'production',
+  env: env.concat(LibUri),
+});

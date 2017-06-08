@@ -1,11 +1,12 @@
+import HMDef from 'hm-def';
 import R from 'ramda';
 import $ from 'sanctuary-def';
-import HMDef from 'hm-def';
 
 import XF from 'xod-func-tools';
 
 import * as C from './constants';
-import { isValidIdentifier, isValidPatchPath, isTerminalPatchPath } from './internal/patchPathUtils';
+import { isTerminalPatchPath, isValidIdentifier, isValidPatchPath } from './internal/patchPathUtils';
+import { isValidVersion } from './internal/versionUtils';
 
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */
@@ -46,6 +47,7 @@ export const PatchPath = NullaryType('PatchPath', isValidPatchPath);
 export const PinDirection = EnumType('PinDirection', R.values(C.PIN_DIRECTION));
 export const DataType = EnumType('DataType', R.values(C.PIN_TYPE));
 export const DataValue = NullaryType('DataValue', XF.notNil);
+export const Version = NullaryType('Version', isValidVersion);
 
 export const Pin = Model('Pin', {
   key: PinKey,
@@ -142,6 +144,7 @@ export const env = XF.env.concat([
   ShortId,
   Label,
   Source,
+  Version,
 ]);
 
 export const def = HMDef.create({

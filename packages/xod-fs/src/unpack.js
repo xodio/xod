@@ -1,9 +1,8 @@
-import R from 'ramda';
 import path from 'path';
+import R from 'ramda';
 import * as XP from 'xod-project';
 
 import { def } from './types';
-import { IMPL_FILENAMES } from './loadLibs';
 
 export const fsSafeName = XP.toIdentifier;
 
@@ -53,7 +52,7 @@ const getImplFiles = def(
   (projectPath, patch) => R.compose(
     R.map(
       ([implName, content]) => ({
-        path: filePath(projectPath, getPatchFolderName(patch), IMPL_FILENAMES[implName]),
+        path: filePath(projectPath, getPatchFolderName(patch), implName),
         content,
       })
     ),
