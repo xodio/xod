@@ -1,6 +1,6 @@
 import R from 'ramda';
 
-import { explode } from 'xod-func-tools';
+import { explodeMaybe, explodeEither } from 'xod-func-tools';
 import * as Project from 'xod-project';
 import { def } from './types';
 
@@ -128,7 +128,7 @@ const getPatchByNodeId = def(
 const renumberProject = def(
   'renumberProject :: PatchPath -> Project -> Project',
   (path, project) => R.compose(
-    explode,
+    explodeEither,
     Project.assocPatch(path, R.__, project),
     Project.renumberNodes,
     Project.getPatchByPathUnsafe
@@ -242,7 +242,7 @@ const getPatchesFromProject = def(
 const assocPatchesToProject = def(
   'assocPatchesToProject :: [Pair PatchPath Patch] -> Project -> Project',
   (patchPairs, project) => R.reduce(
-    (proj, pair) => explode(Project.assocPatch(pair[0], pair[1], proj)),
+    (proj, pair) => explodeEither(Project.assocPatch(pair[0], pair[1], proj)),
     project,
     patchPairs
   )
@@ -322,7 +322,7 @@ const assocNodesToPatch = def(
 const assocLinksToPatch = def(
   'assocLinksToPatch :: Map NodeId (Map PinKey Link) -> Patch -> Patch',
   (linksMap, patch) => R.reduce(
-    (p, link) => explode(Project.assocLink(link, p)),
+    (p, link) => explodeEither(Project.assocLink(link, p)),
     patch,
     nestedValues(linksMap)
   )
@@ -420,7 +420,7 @@ const placeConstNodesAndLinks = def(
     const newPatch = updatePatch(newLinks, newConstNodes, nodePinValues, entryPointPatch);
 
     return R.compose(
-      explode,
+      explodeEither,
       Project.assocPatch(path, newPatch),
       copyConstPatches(pinPaths, origProject)
     )(flatProject);
@@ -452,7 +452,11 @@ const createTPatches = def(
     R.values,
     R.mapObjIndexed((patch, path) => {
       const names = createPatchNames(path);
-      const impl = explode(Project.getImplByArray(ARDUINO_IMPLS, patch));
+      const impl = explodeMaybe(
+        `Implementation for ${path} not found`,
+        Project.getImplByArray(ARDUINO_IMPLS, patch)
+      );
+
       const isDirty = R.either(isConstPath, R.equals('xod/core/boot'))(path);
 
       const outputs = R.compose(
@@ -502,14 +506,12 @@ const getPinLabelsMap = def(
 
 const getNodePinLabels = def(
   'getNodePinLabels :: Node -> Project -> Map PinKey PinLabel',
-  R.compose(
-    explode,
-    R.map(R.compose(
-      getPinLabelsMap,
-      Project.normalizePinLabels
-    )),
+  (node, project) => R.compose(
+    getPinLabelsMap,
+    Project.normalizePinLabels,
+    explodeMaybe(`Can’t get node pins of node ${node}. Referred type missing?`),
     Project.getNodePins
-  )
+  )(node, project)
 );
 
 // TODO: Remove it when `Project.getBoundValue` will return default values
@@ -520,7 +522,7 @@ const getNodePinLabels = def(
 const getDefaultPinValue = def(
   'getDefaultPinValue :: PinKey -> Node -> Project -> DataValue',
   (pinKey, node, project) => R.compose(
-    explode,
+    explodeMaybe(`Can’t find pin with key ${pinKey} for node ${node}"`),
     R.map(R.compose(
       Project.defaultValueOfType,
       Project.getPinType
@@ -559,7 +561,7 @@ const getOutputPinLabelByLink = def(
   (project, patch, link) => {
     const pinKey = Project.getLinkOutputPinKey(link);
     return R.compose(
-      explode,
+      explodeMaybe(`Can’t find pin with key ${pinKey} for link ${link} on patch ${patch}`),
       R.map(R.compose(
         Project.getPinLabel,
         R.head,
