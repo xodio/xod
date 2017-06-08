@@ -24,7 +24,7 @@ class PopupPrompt extends React.Component {
   }
 
   onCloseClicked() {
-    if (!this.props.isModal) {
+    if (this.props.isClosable) {
       this.props.onClose();
     }
   }
@@ -66,7 +66,7 @@ class PopupPrompt extends React.Component {
       className,
       onClose,
       inputType,
-      isModal,
+      isClosable,
       isVisible,
     } = this.props;
 
@@ -84,7 +84,7 @@ class PopupPrompt extends React.Component {
         <SkyLightStateless
           isVisible={isVisible}
           title={title}
-          isClosable={!isModal}
+          isClosable={isClosable}
           onCloseClicked={this.onCloseClicked}
           onOverlayClicked={this.onCloseClicked}
         >
@@ -136,7 +136,7 @@ PopupPrompt.propTypes = {
   inputMask: React.PropTypes.func,
   inputValidator: React.PropTypes.func,
   inputType: React.PropTypes.string,
-  isModal: React.PropTypes.bool,
+  isClosable: React.PropTypes.bool,
   isVisible: React.PropTypes.bool,
 };
 
@@ -151,7 +151,7 @@ PopupPrompt.defaultProps = {
   inputMask: R.identity,
   inputValidator: R.T,
   inputType: 'text',
-  isModal: false,
+  isClosable: true,
   isVisible: true,
 };
 

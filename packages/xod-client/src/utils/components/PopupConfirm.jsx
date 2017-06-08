@@ -14,11 +14,11 @@ const PopupConfirm = ({
   className,
   onConfirm,
   onClose,
-  isModal,
+  isClosable,
   isVisible,
 }) => {
   const wrapperClassNames = classNames('PopupConfirm', className);
-  const onCloseClicked = (!isModal) ? onClose : noop;
+  const onCloseClicked = isClosable ? onClose : noop;
 
   const onKeyDown = (event) => {
     const keycode = event.keycode || event.which;
@@ -33,7 +33,7 @@ const PopupConfirm = ({
       <SkyLightStateless
         isVisible={isVisible}
         title={title}
-        isClosable={!isModal}
+        isClosable={isClosable}
         onCloseClicked={onCloseClicked}
         onOverlayClicked={onCloseClicked}
       >
@@ -70,7 +70,7 @@ PopupConfirm.propTypes = {
   className: React.PropTypes.string,
   onClose: React.PropTypes.func,
   onConfirm: React.PropTypes.func,
-  isModal: React.PropTypes.bool,
+  isClosable: React.PropTypes.bool,
   isVisible: React.PropTypes.bool,
 };
 PopupConfirm.defaultProps = {
@@ -80,7 +80,7 @@ PopupConfirm.defaultProps = {
   className: '',
   onClose: noop,
   onConfirm: noop,
-  isModal: false,
+  isClosable: true,
   isVisible: true,
 };
 

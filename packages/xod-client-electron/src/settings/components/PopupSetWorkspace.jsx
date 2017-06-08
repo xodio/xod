@@ -28,7 +28,7 @@ class PopupSetWorkspace extends React.Component {
     }
   }
   onClose() {
-    if (!this.props.isDisposable) {
+    if (!this.props.isClosable) {
       this.props.onClose();
     }
   }
@@ -86,8 +86,7 @@ class PopupSetWorkspace extends React.Component {
     const { currentWorkspace, buttonLabel } = this.getWorkspaceView();
     return (
       <SkyLight
-        hideOnOverlayClicked={!this.props.isDisposable}
-        isClosable={this.props.isDisposable}
+        isClosable={this.props.isClosable}
         ref={this.assignPopupRef}
         title="Choose your workspace directory"
         afterClose={this.onClose}
@@ -109,7 +108,7 @@ class PopupSetWorkspace extends React.Component {
 
 PopupSetWorkspace.propTypes = {
   workspace: React.PropTypes.string,
-  isDisposable: React.PropTypes.bool,
+  isClosable: React.PropTypes.bool,
   isVisible: React.PropTypes.bool, // eslint-disable-line
   onChange: React.PropTypes.func,
   onClose: React.PropTypes.func,

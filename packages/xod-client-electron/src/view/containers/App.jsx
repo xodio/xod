@@ -482,7 +482,7 @@ class App extends client.App {
         />
         <PopupSetWorkspace
           workspace={this.state.workspace}
-          isDisposable={R.propOr(false, 'disposable', this.props.popupsData.switchWorkspace)}
+          isClosable={R.propOr(false, 'disposable', this.props.popupsData.switchWorkspace)}
           isVisible={this.props.popups.switchWorkspace}
           onChange={this.onWorkspaceChange}
           onClose={this.hideAllPopups}
