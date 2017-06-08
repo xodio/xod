@@ -9,6 +9,15 @@ struct State {
 
 {{ GENERATED_CODE }}
 
+void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
+    if (!str)
+        return;
+
+    lcd->setCursor(0, lineIndex);
+    for (auto it = str->iterate(); it; ++it)
+        lcd->write(*it);
+}
+
 void evaluate(NodeId nid, State* state) {
     if (!isInputDirty<Inputs::UPD>(nid))
         return;
@@ -26,21 +35,6 @@ void evaluate(NodeId nid, State* state) {
         lcd->begin(16, 2);
     }
 
-    XString line;
-
-    line = getValue<Inputs::L1>(nid);
-    if (line) {
-        lcd->setCursor(0, 0);
-        for (auto it = line->iterate(); it; ++it) {
-            lcd->write(*it);
-        }
-    }
-
-    line = getValue<Inputs::L2>(nid);
-    if (line) {
-        lcd->setCursor(0, 1);
-        for (auto it = line->iterate(); it; ++it) {
-            lcd->write(*it);
-        }
-    }
+    printLine(lcd, 0, getValue<Inputs::L1>(nid));
+    printLine(lcd, 1, getValue<Inputs::L2>(nid));
 }
