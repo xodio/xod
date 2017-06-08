@@ -158,18 +158,20 @@ export const installPAV = R.curry(R.pipeP(
  * @param {PAV} pav Selected {@link PAV}.
  * @param {String} packagesPath Path to Arduino packages folder
  * @return {Promise<Object, Error>} */
-export const loadPAVBoards = R.curry(R.pipeP(
-  (pav, packagesPath) => path.resolve(
-    packagesPath,
-    pav.package,
-    'hardware',
-    pav.architecture,
-    pav.version,
-    'boards.txt'
-  ),
-  readFile,
-  parseTxtConfig
-));
+export const loadPAVBoards = R.curry(
+  (pav, packagesPath) => R.pipeP(
+    () => Promise.resolve(path.resolve(
+      packagesPath,
+      pav.package,
+      'hardware',
+      pav.architecture,
+      pav.version,
+      'boards.txt'
+    )),
+    readFile,
+    parseTxtConfig
+  )()
+);
 
 /** Lists the available {@link Port}s.
  * @type {Function}
