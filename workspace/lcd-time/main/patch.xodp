@@ -55,7 +55,7 @@
       "id": "H1lzQqY-W",
       "label": "",
       "position": {
-        "x": 138,
+        "x": 266,
         "y": 224
       },
       "type": "xod/core/system-time"
@@ -63,14 +63,20 @@
     {
       "boundValues": {
         "B1TSE9tZ-": "",
+        "BJJqaX4Gb": 10,
         "BkoI45YWW": false,
-        "H1bLN9F-b": ""
+        "H1bLN9F-b": "",
+        "HJysTXVMb": 12,
+        "S1nqa7NMZ": 11,
+        "SkBK6Q4fb": 9,
+        "rJlYT7EfW": 8,
+        "rkbjp7Ezb": 13
       },
       "description": "",
       "id": "HkboVctZW",
       "label": "",
       "position": {
-        "x": 138,
+        "x": 10,
         "y": 328
       },
       "type": "xod/common-hardware/text-lcd-16x2"
@@ -84,7 +90,7 @@
       "id": "rJGQ7qYZ-",
       "label": "",
       "position": {
-        "x": 138,
+        "x": 266,
         "y": 120
       },
       "type": "xod/core/clock"
@@ -95,7 +101,7 @@
       "id": "ry2MXqKZ-",
       "label": "",
       "position": {
-        "x": 138,
+        "x": 266,
         "y": 16
       },
       "type": "xod/core/boot"

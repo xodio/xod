@@ -8,7 +8,7 @@
       "id": "B1TSE9tZ-",
       "label": "L1",
       "position": {
-        "x": 10,
+        "x": 906,
         "y": 16
       },
       "type": "xod/patch-nodes/input-string"
@@ -16,10 +16,21 @@
     {
       "boundValues": {},
       "description": "",
+      "id": "BJJqaX4Gb",
+      "label": "D4",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
       "id": "BkoI45YWW",
       "label": "UPD",
       "position": {
-        "x": 266,
+        "x": 1162,
         "y": 16
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -30,10 +41,43 @@
       "id": "H1bLN9F-b",
       "label": "L2",
       "position": {
-        "x": 138,
+        "x": 1034,
         "y": 16
       },
       "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "HJysTXVMb",
+      "label": "D6",
+      "position": {
+        "x": 522,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "S1nqa7NMZ",
+      "label": "D5",
+      "position": {
+        "x": 394,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "SkBK6Q4fb",
+      "label": "EN",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
     },
     {
       "boundValues": {},
@@ -45,6 +89,28 @@
         "y": 224
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rJlYT7EfW",
+      "label": "RS",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rkbjp7Ezb",
+      "label": "D7",
+      "position": {
+        "x": 650,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
     }
   ]
 }
