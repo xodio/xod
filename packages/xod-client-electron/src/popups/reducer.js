@@ -8,6 +8,8 @@ import {
 import {
   UPLOAD,
   UPLOAD_TO_ARDUINO,
+  OPEN_UPLOAD_CONFIG,
+  CLOSE_UPLOAD_CONFIG,
 } from '../upload/actionTypes';
 
 import {
@@ -31,6 +33,10 @@ export default (state, action) => {
 
       return state;
     }
+    case OPEN_UPLOAD_CONFIG:
+      return showOnlyPopup(POPUP_ID.UPLOADING_CONFIG, {}, state);
+    case CLOSE_UPLOAD_CONFIG:
+      return hideOnePopup(POPUP_ID.UPLOADING_CONFIG, state);
 
     case CREATE_WORKSPACE_REQUESTED:
       return showOnlyPopup(POPUP_ID.CREATING_WORKSPACE, action.payload, state);

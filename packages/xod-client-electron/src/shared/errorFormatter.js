@@ -7,7 +7,7 @@ const UNKNOWN_ERROR = err => `Unknown error occurred: ${err}`;
 const ERROR_FORMATTERS = {
   [EC.TRANSPILE_ERROR]: err => `Error occurred during transpilation: ${err}`,
 
-  [EC.PORT_NOT_FOUND]: err => `Could not find Arduino device on opened ports: ${R.map(R.prop('comName'), err.ports)}`,
+  [EC.PORT_NOT_FOUND]: err => `Could not find Arduino device on port: ${err.port.comName}. Available ports: ${R.map(R.prop('comName'), err.ports)}`,
   [EC.IDE_NOT_FOUND]: err => `Could not find Arduino IDE at ${err.path}`,
   [EC.PACKAGES_NOT_FOUND]: err => `Could not find Arduino packages at ${err.path}`,
   [EC.UPLOAD_ERROR]: err => `Error occured during uploading: ${err}`,

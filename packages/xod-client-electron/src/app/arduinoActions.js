@@ -12,6 +12,7 @@ import * as settings from './settings';
 import * as MESSAGES from '../shared/messages';
 import formatError from '../shared/errorFormatter';
 import * as ERROR_CODES from '../shared/errorCodes';
+import * as EVENTS from '../shared/events';
 
 import arduinoOfflineIndex from './arduinoPackageIndex.json';
 
@@ -93,8 +94,10 @@ const getBoardsByPAV = R.curry((pav, index) => R.compose(
 // :: ArduinoPackageIndex -> [Board]
 export const listBoardsFromIndex = index => R.compose(
   R.chain(R.compose(
+    R.sortBy(R.prop('board')),
     pav => R.compose(
       R.map(R.merge(pav)),
+      R.map(R.applySpec({ board: R.prop('name') })),
       getBoardsByPAV(R.__, index)
     )(pav),
     R.last,
@@ -104,11 +107,48 @@ export const listBoardsFromIndex = index => R.compose(
   xab.listPAVs
 )(index);
 
+// :: () -> { ide :: Path, packages: Path }
+const getArduinoPaths = R.compose(
+  R.applySpec({
+    ide: settings.getArduinoIDE,
+    packages: settings.getArduinoPackages,
+  }),
+  settings.load
+);
+
 /**
  * Returns a list of Boards, that was bundled into `xod-client-electron`.
  */
 // :: () -> [Board]
 export const getListOfBoards = () => listBoardsFromIndex(arduinoOfflineIndex);
+
+/**
+ * Returns a target Board.
+ * It tries to take a value from Settings, if it doesn't exist
+ * it will fallback to the first Board from listOfBoards.
+ */
+// :: () -> Board
+export const getTargetBoard = () => R.compose(
+  R.when(
+    R.either(R.isNil, R.isEmpty),
+    R.compose(
+      R.head,
+      getListOfBoards
+    )
+  ),
+  settings.getArduinoTarget,
+  settings.load
+)();
+
+/**
+ * Saves a specified Board into Settings and returns itself.
+ */
+export const setTargetBoard = board => R.compose(
+  R.always(board),
+  settings.save,
+  settings.setArduinoTarget(board),
+  settings.load
+)();
 
 // :: String[] -> String -> String -> String[]
 const getPaths = R.curry(
@@ -146,23 +186,6 @@ const filterByPab = pab => R.filter(R.both(
   R.propEq('package', pab.package),
   R.propEq('architecture', pab.architecture)
 ));
-
-// :: Port[] -> Port
-const findPort = R.find(
-  R.anyPass([
-    R.propEq('vendorId', '0x2341'),
-    R.compose(
-      R.complement(R.test(/bluetooth/i)),
-      R.prop('comName')
-    ),
-  ])
-);
-
-// :: () -> Promise String Error
-const getArduinoIDE = R.pipeP(
-  xab.loadConfig,
-  xab.getArduinoIdePathExecutable
-);
 
 // =============================================================================
 //
@@ -205,7 +228,7 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
  * @param {Object} pab See type PAB from `xod-arduino-builder`
  * @returns {Promise<Object, Error>} Promise with PAV object or Error
  */
-export const installPav = pab => Promise.all([getPAV(pab), getArduinoIDE()])
+export const installPav = pab => Promise.all([getPAV(pab), getArduinoPaths().ide])
   .then(tapP(
     ([pav, idePath]) => xab.installPAV(pav, idePath)
   ))
@@ -213,6 +236,14 @@ export const installPav = pab => Promise.all([getPAV(pab), getArduinoIDE()])
     if (err.errorCode === xab.REST_ERROR) return rejectWithCode(ERROR_CODES.INDEX_LIST_ERROR, err);
     return rejectWithCode(ERROR_CODES.INSTALL_PAV, err);
   });
+
+/**
+ * Load boards index by PAV.
+ */
+const loadPABs = (pav) => {
+  const packagesPath = getArduinoPaths().packages;
+  return xab.loadPAVBoards(pav, packagesPath);
+};
 
 /**
  * Search installed PAV for PAB from a list of PAVs
@@ -239,21 +270,23 @@ export const listPorts = () => xab.listPorts()
   .then(R.sort(R.descend(R.prop('comName'))))
   .catch(rejectWithCode(ERROR_CODES.NO_PORTS_FOUND));
 
+// :: Port -> [Port] -> Boolean
+const hasPort = R.curry((port, ports) => R.compose(
+  R.gt(R.__, -1),
+  R.findIndex(R.propEq('comName', port.comName))
+)(ports));
+
 /**
- * Get list of all serial ports and find one with connected Arduino device
- * @returns {Promise<Object, Error>} Promise with Port object or Error
- * @see {@link https://www.npmjs.com/package/serialport#listing-ports}
+ * Validates that port is exist and returns Promise with the same Port object
+ * or Rejected Promise with Error Code and object, that contain port
+ * and list of available ports.
  */
-export const getPort = () => listPorts()
-  .then(ports => R.compose(
-    R.ifElse(
-      R.isNil,
-      () => Promise.reject({ ports }),
-      port => Promise.resolve(port)
-    ),
-    R.propOr(null, 'comName'),
-    findPort
-  )(ports))
+export const checkPort = port => listPorts()
+  .then(R.ifElse(
+    hasPort(port),
+    R.always(port),
+    ports => Promise.reject({ port, ports })
+  ))
   .catch(rejectWithCode(ERROR_CODES.PORT_NOT_FOUND));
 
 /**
@@ -284,7 +317,7 @@ export const uploadToArduino = (pab, port, code) => {
   const tmpPath = resolve(__dirname, 'upload.tmp.cpp');
   const clearTmp = () => fs.unlinkSync(tmpPath);
 
-  return Promise.all([writeFile(tmpPath, code), getArduinoIDE()])
+  return Promise.all([writeFile(tmpPath, code), getArduinoPaths().ide])
     .then(
       ([{ path }, idePath]) => xab.upload(pab, port, path, idePath)
     )
@@ -330,14 +363,6 @@ export const uploadToArduinoHandler = (event, payload) => {
     settings.load
   )();
 
-  const getArduinoPaths = R.compose(
-    R.applySpec({
-      ide: settings.getArduinoIDE,
-      packages: settings.getArduinoPackages,
-    }),
-    settings.load
-  );
-
   const listInstalledPAVs = R.compose(
     settings.listPAVs,
     settings.load
@@ -358,10 +383,25 @@ export const uploadToArduinoHandler = (event, payload) => {
     settings.load
   )();
 
+  const pa = R.omit(['board', 'version'], payload.board);
+  const pav = R.omit(['board'], payload.board);
+
+  // TODO: Make picking more accurate
+  //       (E.G. we have two boards from other packages with the same name)
+  // :: String -> { code :: String, port :: Port }
+  //      -> { code :: String, port :: Port, board :: String }
+  const pickBoardIdentifierByBoardName = (boardName, data) => R.compose(
+    R.assoc('pab', R.__, data),
+    R.assoc('board', R.__, pa),
+    R.head,
+    R.keys,
+    R.pickBy(R.propEq('name', boardName))
+  );
+
   R.pipeP(
     doTranspileForArduino,
     sendProgress(MESSAGES.CODE_TRANSPILED, 10),
-    code => getPort().then(port => ({ code, port })),
+    code => checkPort(payload.port).then(port => ({ code, port: port.comName })),
     sendProgress(MESSAGES.PORT_FOUND, 15),
     tapP(
       () => checkArduinoIde(getArduinoPaths(), process.platform)
@@ -369,12 +409,14 @@ export const uploadToArduinoHandler = (event, payload) => {
     ),
     sendProgress(MESSAGES.IDE_FOUND, 20),
     tapP(
-      () => installPav(payload.pab)
-        .catch(() => getInstalledPAV(payload.pab, listInstalledPAVs()))
+      () => installPav(pav)
+        .catch(() => getInstalledPAV(pav, listInstalledPAVs()))
         .then(R.tap(savePAV))
     ),
     sendProgress(MESSAGES.TOOLCHAIN_INSTALLED, 30),
-    ({ code, port }) => uploadToArduino(payload.pab, port, code),
+    ({ code, port }) => loadPABs(pav)
+      .then(pickBoardIdentifierByBoardName(payload.board.board, { code, port })),
+    ({ code, port, pab }) => uploadToArduino(pab, port, code),
     stdout => sendSuccess(stdout, 100)()
   )(payload).catch(convertAndSendError);
 };
@@ -388,3 +430,43 @@ export const setArduinoIDEHandler = (event, payload) => R.compose(
   settings.setArduinoIDE(payload.path),
   settings.load
 )();
+
+export const listPortsHandler = event => listPorts()
+  .then(ports => event.sender.send(
+    EVENTS.LIST_PORTS,
+    {
+      err: false,
+      data: ports,
+    }
+  ))
+  .catch(err => event.sender.send(
+    EVENTS.LIST_PORTS,
+    {
+      err: true,
+      data: err,
+    }
+  ));
+
+export const listBoardsHandler = event => event.sender.send(
+  EVENTS.LIST_BOARDS,
+  {
+    err: false,
+    data: getListOfBoards(),
+  }
+);
+
+export const getTargetBoardHandler = event => event.sender.send(
+  EVENTS.GET_SELECTED_BOARD,
+  {
+    err: false,
+    data: getTargetBoard(),
+  }
+);
+
+export const setTargetBoardHandler = (event, payload) => event.sender.send(
+  EVENTS.SET_SELECTED_BOARD,
+  {
+    err: false,
+    data: setTargetBoard(payload),
+  }
+);
