@@ -11,6 +11,7 @@ export const POPUP_ID = { // eslint-disable-line import/prefer-default-export
   SWITCHING_WORKSPACE: 'switchingWorkspace',
 
   UPLOADING: 'uploading',
+  UPLOADING_CONFIG: 'uploadingConfig',
   SHOWING_CODE: 'showingCode',
 
   ARDUINO_IDE_NOT_FOUND: 'arduinoIDENotFound',
