@@ -3333,9 +3333,9 @@ react-simple-di@^1.2.0:
     babel-runtime "6.x.x"
     hoist-non-react-statics "1.x.x"
 
-"react-skylight@git+https://github.com/xodio/react-skylight.git#no-inline-styles":
+"react-skylight@git+https://github.com/xodio/react-skylight.git":
   version "0.4.2"
-  resolved "git+https://github.com/xodio/react-skylight.git#4b1c52e7976ea25f67177861abba157dc8aa1a6d"
+  resolved "git+https://github.com/xodio/react-skylight.git#f5f77b1ea245e69c0627c0ce1e7b027f7f3a616b"
   dependencies:
     prop-types "^15.5.10"
 

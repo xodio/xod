@@ -27,6 +27,15 @@
     z-index: 100;
     box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
 
+    &--fullscreen {
+      width: 94%;
+      height: 94%;
+      top: 3%;
+      left: 3%;
+      margin-top: 0;
+      margin-left: 0;
+    }
+
     .skylight-dialog-header {
       height: 22px;
 

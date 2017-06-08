@@ -37,7 +37,7 @@
     "react-fa": "git+https://github.com/brusherru/react-fa.git",
     "react-hotkeys": "git+https://github.com/brusherru/react-hotkeys.git#npm",
     "react-redux": "^4.0.6",
-    "react-skylight": "git+https://github.com/xodio/react-skylight.git#no-inline-styles",
+    "react-skylight": "git+https://github.com/xodio/react-skylight.git",
     "react-sortable-hoc": "0.0.7",
     "redux": "^3.0.5",
     "redux-thunk": "^2.1.0",
