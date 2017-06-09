@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import * as xodFs from 'xod-fs';
-import LibUri from './LibUri';
+import { parseLibUri, toString } from './lib-uri';
 import * as messages from './messages';
 import * as swagger from './swagger';
 
@@ -9,7 +9,7 @@ function checkLibDirConflict(libDir, libUri) {
   return new Promise((resolve, reject) => {
     fs.lstat(libDir, (err, stat) => {
       if (!err && stat.isDirectory()) {
-        return reject(`could not install "${libUri}".\n` +
+        return reject(`could not install "${toString(libUri)}".\n` +
           `"${libDir}" is not empty, remove it manually.`);
       }
       return resolve();
@@ -31,28 +31,33 @@ function getLib(swaggerClient, libUri) {
         .then(({ obj: xodball }) => xodball))
     .catch((err) => {
       if (err.status === 404) {
-        return Promise.reject(`could not find "${libUri}".`);
+        return Promise.reject(`could not find "${toString(libUri)}".`);
       }
       return Promise.reject(swagger.stringifyError(err));
     });
 }
 
+function getLibUri(libUri) {
+  return parseLibUri(libUri)
+    .map(Promise.resolve.bind(Promise))
+    .getOrElse(Promise.reject());
+}
+
 export default function install(libUri, path2) {
   return Promise
     .all([
-      LibUri.parse(libUri),
+      getLibUri(libUri),
       swagger.client(swagger.URL),
       xodFs.findClosestWorkspaceDir(path2),
     ])
     .then(([libUri2, swaggerClient, workspaceDir]) => {
-      const { libname, orgname } = libUri2;
       const orgDir = path.resolve(workspaceDir, 'lib',
-        xodFs.fsSafeName(orgname));
-      const libDir = path.resolve(orgDir, xodFs.fsSafeName(libname));
+        xodFs.fsSafeName(libUri2.orgname));
+      const libDir = path.resolve(orgDir, xodFs.fsSafeName(libUri2.libname));
       return checkLibDirConflict(libDir, libUri2)
         .then(() => getLib(swaggerClient, libUri2))
         .then(xodFs.saveProject(orgDir))
-        .then(() => `Installed "${libUri2}" at "${libDir}".`);
+        .then(() => `Installed "${toString(libUri2)}" at "${libDir}".`);
     })
     .then(messages.success)
     .catch((err) => {

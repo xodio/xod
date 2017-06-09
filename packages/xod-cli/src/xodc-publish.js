@@ -1,8 +1,8 @@
 import path from 'path';
 import * as xodFs from 'xod-fs';
-import LibUri from './LibUri';
 import * as messages from './messages';
 import * as swagger from './swagger';
+import LibUri from './types';
 
 function getLibVersion(author, orgname, projectDir) {
   return Promise
