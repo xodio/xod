@@ -19,7 +19,7 @@
       "id": "Bkh8A_Sv1-",
       "label": "SET",
       "position": {
-        "x": 138,
+        "x": 10,
         "y": 16
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -67,7 +67,7 @@
       "id": "ryTIROHwkW",
       "label": "TGL",
       "position": {
-        "x": 10,
+        "x": 138,
         "y": 16
       },
       "type": "xod/patch-nodes/input-pulse"

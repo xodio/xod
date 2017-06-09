@@ -8,7 +8,7 @@
       "id": "HkDgIRdrv1W",
       "label": "TRIG",
       "position": {
-        "x": 10,
+        "x": 138,
         "y": 16
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -19,7 +19,7 @@
       "id": "S1OlUAuBD1-",
       "label": "GATE",
       "position": {
-        "x": 138,
+        "x": 10,
         "y": 16
       },
       "type": "xod/patch-nodes/input-boolean"

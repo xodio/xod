@@ -1040,16 +1040,16 @@ struct State {
 
 struct Storage {
     State state;
-    PinRef input_TGL;
     PinRef input_SET;
+    PinRef input_TGL;
     PinRef input_RST;
     OutputPin<Logic> output_MEM;
     OutputPin<Logic> output_CHNG;
 };
 
 namespace Inputs {
-    using TGL = InputDescriptor<Logic, offsetof(Storage, input_TGL)>;
     using SET = InputDescriptor<Logic, offsetof(Storage, input_SET)>;
+    using TGL = InputDescriptor<Logic, offsetof(Storage, input_TGL)>;
     using RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
 }
 
@@ -1166,8 +1166,8 @@ namespace _program {
     NodeId links_3_CHNG[] = { 2, NO_NODE };
     xod__core__flip_flop::Storage storage_3 = {
         { }, // state
-        { NodeId(0), xod__core__clock::Outputs::TICK::KEY }, // input_TGL
         { NodeId(7), xod__core__constant_boolean::Outputs::VAL::KEY }, // input_SET
+        { NodeId(0), xod__core__clock::Outputs::TICK::KEY }, // input_TGL
         { NodeId(6), xod__core__constant_boolean::Outputs::VAL::KEY }, // input_RST
         { false, links_3_MEM }, // output_MEM
         { false, links_3_CHNG } // output_CHNG

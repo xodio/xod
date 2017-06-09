@@ -30,7 +30,7 @@
       "id": "rJsaFSvk-",
       "label": "PORT",
       "position": {
-        "x": 266,
+        "x": 138,
         "y": 16
       },
       "type": "xod/patch-nodes/input-number"
@@ -41,7 +41,7 @@
       "id": "rkAnKBvyZ",
       "label": "UPD",
       "position": {
-        "x": 138,
+        "x": 266,
         "y": 16
       },
       "type": "xod/patch-nodes/input-pulse"
