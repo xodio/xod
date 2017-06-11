@@ -104,7 +104,7 @@ class PopupPrompt extends React.Component {
               <div className="ModalFooter">
                 <button
                   type="submit"
-                  className="Button"
+                  className="Button Button--primary"
                   disabled={isSubmitDisabled}
                 >
                   {confirmText}

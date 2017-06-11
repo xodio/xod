@@ -43,7 +43,7 @@ const PopupConfirm = ({
           </div>
           <div className="ModalFooter">
             <button
-              className="Button"
+              className="Button Button--primary"
               onClick={onConfirm}
               autoFocus
             >

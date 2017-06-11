@@ -48,6 +48,12 @@ describe('IDE', () => {
   });
 
   after(() => {
+    if (!passed || DEBUG) {
+      app.client.getMainProcessLogs().then((logs) => {
+        logs.forEach(console.log); // eslint-disable-line no-console
+      });
+    }
+
     fse.removeSync(tmpHomeDir);
     const shouldClose = app && app.isRunning() && (passed || !DEBUG);
     return shouldClose ? app.stop() : Promise.resolve();

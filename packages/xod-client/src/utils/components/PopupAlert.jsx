@@ -33,7 +33,7 @@ const PopupAlert = ({ title, children, closeText, className, onClose, isClosable
           </div>
           <div className="ModalFooter">
             <button
-              className="Button"
+              className="Button Button--primary"
               onClick={onClose}
               autoFocus
             >
