@@ -28,8 +28,8 @@ Usage:
   xodc pack <projectDir> <output>
   xodc unpack <xodball> <workspace>
   xodc transpile [--output=<filename>] [--target=<target>] <input> <path>
-  xodc publish --author=<author> [--orgname=<orgname>] [<projectDir>]
-  xodc install <libUri> [<path>]
+  xodc publish --swagger=<swagger> --author=<author> [--orgname=<orgname>] [<projectDir>]
+  xodc install --swagger=<swagger> <libUri> [<path>]
   xodc ab set-executable <path>
   xodc ab set-packages <path>
   xodc ab list-index
@@ -70,9 +70,14 @@ const programs = {
     target: o['--target'],
   }),
   publish: o => publish(
-    o['--author'], o['--orgname'] || o['--author'], o['<projectDir>'] || '.'
-  ),
-  install: o => install(o['<libUri>'], o['<path>'] || '.'),
+    o['--swagger'],
+    o['--author'],
+    o['--orgname'] || o['--author'],
+    o['<projectDir>'] || '.'),
+  install: o => install(
+    o['--swagger'],
+    o['<libUri>'],
+    o['<path>'] || '.'),
   ab: o => runCommand(o, {
     'set-executable': () => ab.setExecutable(o['<path>']),
     'set-packages': () => ab.setPackages(o['<path>']),

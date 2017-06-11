@@ -8,14 +8,10 @@ export const createLibUri = def(
 
 export const parseLibUri = def(
   'parseLibUri :: String -> Maybe LibUri',
-  (string) => {
-    const match = string.match(/^([^@/]+?)\/([^@/]+?)(?:@([^@/]+?))?$/);
-    if (match) {
-      const [, orgname, libname, tag] = match;
-      return Maybe.Just(createLibUri(orgname, libname, tag));
-    }
-    return Maybe.Nothing();
-  }
+  string => Maybe
+    .toMaybe(string.match(/^([^@/]+?)\/([^@/]+?)(?:@([^@/]+?))?$/))
+    .map(([, orgname, libname, tag]) =>
+      createLibUri(orgname, libname, tag || 'latest'))
 );
 
 export const toStringWithoutTag = def(

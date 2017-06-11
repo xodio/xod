@@ -1,7 +1,7 @@
 import HMDef from 'hm-def';
 import $ from 'sanctuary-def';
 import XF from 'xod-func-tools';
-import { env as xpEnv, Identifier } from 'xod-project';
+import { env, Identifier } from 'xod-project';
 
 /* Types are by convention starts with a capital letter, so: */
 /* eslint-disable new-cap */
@@ -18,5 +18,5 @@ export const LibUri = Model('LibUri', {
 
 export const def = HMDef.create({
   checkTypes: process.env.NODE_ENV !== 'production',
-  env: xpEnv.concat([LibUri]),
+  env: env.concat(LibUri),
 });

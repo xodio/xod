@@ -1,18 +1,18 @@
-import fs from 'fs';
-import path from 'path';
+import { lstat } from 'fs';
+import { resolve } from 'path';
 import * as xodFs from 'xod-fs';
 import { parseLibUri, toString } from './lib-uri';
 import * as messages from './messages';
 import * as swagger from './swagger';
 
 function checkLibDirConflict(libDir, libUri) {
-  return new Promise((resolve, reject) => {
-    fs.lstat(libDir, (err, stat) => {
+  return new Promise((resolve2, reject) => {
+    lstat(libDir, (err, stat) => {
       if (!err && stat.isDirectory()) {
         return reject(`could not install "${toString(libUri)}".\n` +
           `"${libDir}" is not empty, remove it manually.`);
       }
-      return resolve();
+      return resolve2();
     });
   });
 }
@@ -20,40 +20,37 @@ function checkLibDirConflict(libDir, libUri) {
 function getLib(swaggerClient, libUri) {
   const { libname, orgname, tag } = libUri;
   const { Library, Version } = swaggerClient.apis;
-  return (tag !== 'latest' ? Promise.resolve(tag) : Library
-    .getOrgLib({ libname, orgname }).then(({ obj: lib }) => {
-      const [semver] = lib.versions;
-      if (!semver) return Promise.reject({ status: 404 });
-      return semver;
-    }))
+  return Promise.resolve(tag)
+    .then(tag2 =>
+      (tag2 !== 'latest' ? tag2 : Library.getOrgLib({ libname, orgname })
+        .then(({ obj: lib }) => lib.versions[0])))
     .then(semver =>
       Version.getLibVersionXodball({ libname, orgname, semver })
         .then(({ obj: xodball }) => xodball))
-    .catch((err) => {
-      if (err.status === 404) {
-        return Promise.reject(`could not find "${toString(libUri)}".`);
-      }
-      return Promise.reject(swagger.stringifyError(err));
-    });
+    .catch(err =>
+      Promise.reject(err.status === 404
+        ? `could not find "${toString(libUri)}".`
+        : swagger.stringifyError(err)));
 }
 
 function getLibUri(libUri) {
   return parseLibUri(libUri)
-    .map(Promise.resolve.bind(Promise))
-    .getOrElse(Promise.reject());
+    .map(libUri2 => Promise.resolve.bind(Promise, libUri2))
+    .getOrElse(Promise.reject.bind(Promise, `could not parse "${libUri}".`))
+    .apply();
 }
 
-export default function install(libUri, path2) {
+export default function install(swaggerUrl, libUri, path) {
   return Promise
     .all([
       getLibUri(libUri),
-      swagger.client(swagger.URL),
-      xodFs.findClosestWorkspaceDir(path2),
+      swagger.client(swaggerUrl),
+      xodFs.findClosestWorkspaceDir(path),
     ])
     .then(([libUri2, swaggerClient, workspaceDir]) => {
-      const orgDir = path.resolve(workspaceDir, 'lib',
+      const orgDir = resolve(workspaceDir, 'lib',
         xodFs.fsSafeName(libUri2.orgname));
-      const libDir = path.resolve(orgDir, xodFs.fsSafeName(libUri2.libname));
+      const libDir = resolve(orgDir, xodFs.fsSafeName(libUri2.libname));
       return checkLibDirConflict(libDir, libUri2)
         .then(() => getLib(swaggerClient, libUri2))
         .then(xodFs.saveProject(orgDir))

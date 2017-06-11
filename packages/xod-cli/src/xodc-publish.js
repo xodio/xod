@@ -1,59 +1,61 @@
-import path from 'path';
+import { resolve } from 'path';
 import * as xodFs from 'xod-fs';
+import { createLibUri, toString } from './lib-uri';
 import * as messages from './messages';
 import * as swagger from './swagger';
-import LibUri from './types';
 
 function getLibVersion(author, orgname, projectDir) {
   return Promise
     .all([
       xodFs.findClosestProjectDir(projectDir),
-      xodFs.findClosestWorkspaceDir(projectDir),
-    ])
-    .then(([projectDir2, workspaceDir]) =>
-      xodFs.loadProjectWithoutLibs(projectDir2, workspaceDir))
+      xodFs.findClosestWorkspaceDir(projectDir)])
+    .then(([closestProjectDir, closestWorkspaceDir]) =>
+      xodFs.loadProjectWithoutLibs(closestProjectDir, closestWorkspaceDir))
     .then(project => xodFs.pack(project, {}))
-    .then((xodBall) => {
-      const xodFile = path.resolve(projectDir, 'project.xod');
-      if (!xodBall.name) {
-        return Promise.reject(`could not find \`name\` in "${xodFile}".`);
+    .then((xodball) => {
+      const xod = resolve(projectDir, 'project.xod');
+      if (!xodball.name) {
+        return Promise.reject(`could not find \`name\` in "${xod}".`);
       }
-      if (!xodBall.version) {
-        return Promise.reject(`could not find \`version\` in "${xodFile}".`);
+      if (!xodball.version) {
+        return Promise.reject(`could not find \`version\` in "${xod}".`);
       }
       return {
-        libname: xodBall.name,
+        libname: xodball.name,
         orgname,
         version: {
           author,
           folder: {
-            'xodball.json': JSON.stringify(xodBall),
+            'xodball.json': JSON.stringify(xodball),
           },
-          semver: `v${xodBall.version}`,
+          semver: `v${xodball.version}`,
         },
       };
     });
 }
 
-export default function publish(author, orgname, projectDir) {
+export default function publish(swaggerUrl, author, orgname, projectDir) {
   return Promise
     .all([
       getLibVersion(author, orgname, projectDir),
-      swagger.client(swagger.URL),
+      swagger.client(swaggerUrl),
     ])
     .then(([libVersion, swaggerClient]) => {
       const { libname, version: { semver } } = libVersion;
+      const libUri = createLibUri(orgname, libname, semver);
       const { Library, User, Version } = swaggerClient.apis;
-      const libUri = new LibUri(orgname, libname, semver);
       return User.postUserOrg({ org: { orgname }, username: author })
         .catch(() => null)
-        .then(() => Library.postOrgLib({ lib: { libname }, orgname }))
-        .catch(() => null)
+        .then(() => Library.postOrgLib({ lib: { libname }, orgname })
+          .catch(() => null))
         .then(() => Version.postLibVersion(libVersion)
           .catch((err) => {
             const { response: { body }, status } = err;
-            if (status === 400 && body && body.code === 'VERSION_ALREADY_EXISTS') {
-              return Promise.reject(`version "${libUri}" already exists.`);
+            if (status === 400) {
+              if (body && body.code === 'VERSION_ALREADY_EXISTS') {
+                return Promise.reject(
+                  `version "${toString(libUri)}" already exists.`);
+              }
             }
             if (status === 404) {
               return Promise.reject(
@@ -61,7 +63,7 @@ export default function publish(author, orgname, projectDir) {
             }
             return Promise.reject(swagger.stringifyError(err));
           }))
-        .then(() => `Published "${libUri}".`);
+        .then(() => `Published "${toString(libUri)}".`);
     })
     .then(messages.success)
     .catch((err) => {
