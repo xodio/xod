@@ -99,33 +99,32 @@ class Node extends React.Component {
             width="100%"
             height={outputPinsSectionHeight}
           />
+          <NodeText>
+            {nodeLabel}
+          </NodeText>
+          {pinsArr.map(pin =>
+            <PinLabel
+              {...pin}
+              keyName={pin.key}
+              key={`pinlabel_${pin.key}`}
+            />
+          )}
           <rect
             className="outline"
             {...bodyRectProps}
           />
-          <NodeText>
-            {nodeLabel}
-          </NodeText>
         </g>
-
         <g className="pins">
           {pinsArr.map(pin =>
-            <g key={pin.key}>
-              <Pin
-                {...pin}
-                isSelected={isPinSelected(linkingPin, pin)}
-                isAcceptingLinks={this.props.pinLinkabilityValidator(pin)}
-                keyName={pin.key}
-                key={`pin_${pin.key}`}
-                onMouseUp={this.onPinMouseUp}
-                onMouseDown={this.onPinMouseDown}
-              />
-              <PinLabel
-                {...pin}
-                keyName={pin.key}
-                key={`pinlabel_${pin.key}`}
-              />
-            </g>
+            <Pin
+              {...pin}
+              isSelected={isPinSelected(linkingPin, pin)}
+              isAcceptingLinks={this.props.pinLinkabilityValidator(pin)}
+              keyName={pin.key}
+              key={`pin_${pin.key}`}
+              onMouseUp={this.onPinMouseUp}
+              onMouseDown={this.onPinMouseDown}
+            />
           )}
         </g>
       </svg>
