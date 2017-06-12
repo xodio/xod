@@ -9,8 +9,8 @@ import { errorToPlainObject } from './utils';
 import {
   listPortsHandler,
   listBoardsHandler,
-  getTargetBoardHandler,
-  setTargetBoardHandler,
+  loadTargetBoardHandler,
+  saveTargetBoardHandler,
   uploadToArduinoHandler,
   setArduinoIDEHandler,
 } from './arduinoActions';
@@ -74,8 +74,8 @@ const onReady = () => {
   ipcMain.on('SET_ARDUINO_IDE', setArduinoIDEHandler);
   ipcMain.on(EVENTS.LIST_PORTS, listPortsHandler);
   ipcMain.on(EVENTS.LIST_BOARDS, listBoardsHandler);
-  ipcMain.on(EVENTS.GET_SELECTED_BOARD, getTargetBoardHandler);
-  ipcMain.on(EVENTS.SET_SELECTED_BOARD, setTargetBoardHandler);
+  ipcMain.on(EVENTS.GET_SELECTED_BOARD, loadTargetBoardHandler);
+  ipcMain.on(EVENTS.SET_SELECTED_BOARD, saveTargetBoardHandler);
 
   createWindow();
   win.webContents.on('did-finish-load', () => {

@@ -21,6 +21,7 @@
   "dependencies": {
     "babel-polyfill": "^6.16.0",
     "classnames": "^2.2.5",
+    "compare-versions": "^3.0.1",
     "electron-settings": "^3.0.14",
     "ramda": "^0.23.0",
     "rc-progress": "^2.1.2",

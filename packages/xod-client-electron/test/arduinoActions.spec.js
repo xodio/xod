@@ -50,8 +50,8 @@ describe('Arduino actions', () => {
       ],
     });
     assert.deepEqual(boards, [
-      { board: 'Arduino Uno', package: 'arduino', architecture: 'avr', version: '1.6.19' },
       { board: 'Arduino Nano', package: 'arduino', architecture: 'avr', version: '1.6.19' },
+      { board: 'Arduino Uno', package: 'arduino', architecture: 'avr', version: '1.6.19' },
       { board: 'Arduino Due', package: 'arduino', architecture: 'sam', version: '1.6.11' },
       { board: 'Arduino 101', package: 'Intel', architecture: 'arc32', version: '1.6.4+1.14' },
     ]);

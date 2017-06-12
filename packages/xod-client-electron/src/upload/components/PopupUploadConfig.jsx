@@ -101,12 +101,7 @@ class PopupUploadConfig extends React.Component {
 
   changeBoard(boardIndex) {
     if (this.state.boards) {
-      let board;
-      if (this.state.boards[boardIndex]) {
-        board = this.state.boards[boardIndex];
-      } else {
-        board = this.state.boards[0];
-      }
+      const board = this.state.boards[boardIndex] || this.state.boards[0];
       this.props.onBoardChanged(board);
       this.setState({ selectedBoard: board });
     }

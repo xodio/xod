@@ -1,6 +1,7 @@
 import R from 'ramda';
 import fs from 'fs';
 import { resolve } from 'path';
+import compareVersion from 'compare-versions';
 
 import { resolvePath, writeFile, doesDirectoryExist, doesFileExist } from 'xod-fs';
 import { foldEither, notEmpty, tapP, rejectWithCode } from 'xod-func-tools';
@@ -27,34 +28,6 @@ const getSplittedVersion = R.compose(
   R.split('+'),
   R.prop('version')
 );
-
-/**
- * Comparator for versions, splitted with dots, like `1.0`, `1.6.14`
- * and etc. It compares the same version parts (major with major, minor
- * with minor and etc).
- */
-// :: String -> String -> Number
-const compareVersion = (a, b) => {
-  const aV = R.compose(R.map(x => parseInt(x, 10)), R.split('.'))(a);
-  const bV = R.compose(R.map(x => parseInt(x, 10)), R.split('.'))(b);
-  const minLength = R.min(R.length(aV), R.length(bV));
-
-  for (let i = 0; i < minLength; i += 1) {
-    if (aV[i] > bV[i]) {
-      return 1;
-    } else if (aV[i] < bV[i]) {
-      return -1;
-    }
-  }
-
-  if (aV.length > bV.length) {
-    return 1;
-  } else if (aV.length < bV.length) {
-    return -1;
-  }
-
-  return 0;
-};
 
 // :: PAV[] -> PAV[]
 const sortByVersion = R.sort((a, b) => {
@@ -108,7 +81,7 @@ export const listBoardsFromIndex = index => R.compose(
 )(index);
 
 // :: () -> { ide :: Path, packages: Path }
-const getArduinoPaths = R.compose(
+const loadArduinoPaths = R.compose(
   R.applySpec({
     ide: settings.getArduinoIDE,
     packages: settings.getArduinoPackages,
@@ -128,7 +101,7 @@ export const getListOfBoards = () => listBoardsFromIndex(arduinoOfflineIndex);
  * it will fallback to the first Board from listOfBoards.
  */
 // :: () -> Board
-export const getTargetBoard = () => R.compose(
+export const loadTargetBoard = () => R.compose(
   R.when(
     R.either(R.isNil, R.isEmpty),
     R.compose(
@@ -143,7 +116,7 @@ export const getTargetBoard = () => R.compose(
 /**
  * Saves a specified Board into Settings and returns itself.
  */
-export const setTargetBoard = board => R.compose(
+export const saveTargetBoard = board => R.compose(
   R.always(board),
   settings.save,
   settings.setArduinoTarget(board),
@@ -228,7 +201,7 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
  * @param {Object} pab See type PAB from `xod-arduino-builder`
  * @returns {Promise<Object, Error>} Promise with PAV object or Error
  */
-export const installPav = pab => Promise.all([getPAV(pab), getArduinoPaths().ide])
+export const installPav = pab => Promise.all([getPAV(pab), loadArduinoPaths().ide])
   .then(tapP(
     ([pav, idePath]) => xab.installPAV(pav, idePath)
   ))
@@ -241,7 +214,7 @@ export const installPav = pab => Promise.all([getPAV(pab), getArduinoPaths().ide
  * Load boards index by PAV.
  */
 const loadPABs = (pav) => {
-  const packagesPath = getArduinoPaths().packages;
+  const packagesPath = loadArduinoPaths().packages;
   return xab.loadPAVBoards(pav, packagesPath);
 };
 
@@ -317,7 +290,7 @@ export const uploadToArduino = (pab, port, code) => {
   const tmpPath = resolve(__dirname, 'upload.tmp.cpp');
   const clearTmp = () => fs.unlinkSync(tmpPath);
 
-  return Promise.all([writeFile(tmpPath, code), getArduinoPaths().ide])
+  return Promise.all([writeFile(tmpPath, code), loadArduinoPaths().ide])
     .then(
       ([{ path }, idePath]) => xab.upload(pab, port, path, idePath)
     )
@@ -404,7 +377,7 @@ export const uploadToArduinoHandler = (event, payload) => {
     code => checkPort(payload.port).then(port => ({ code, port: port.comName })),
     sendProgress(MESSAGES.PORT_FOUND, 15),
     tapP(
-      () => checkArduinoIde(getArduinoPaths(), process.platform)
+      () => checkArduinoIde(loadArduinoPaths(), process.platform)
         .then(updateArduinoPaths)
     ),
     sendProgress(MESSAGES.IDE_FOUND, 20),
@@ -455,18 +428,18 @@ export const listBoardsHandler = event => event.sender.send(
   }
 );
 
-export const getTargetBoardHandler = event => event.sender.send(
+export const loadTargetBoardHandler = event => event.sender.send(
   EVENTS.GET_SELECTED_BOARD,
   {
     err: false,
-    data: getTargetBoard(),
+    data: loadTargetBoard(),
   }
 );
 
-export const setTargetBoardHandler = (event, payload) => event.sender.send(
+export const saveTargetBoardHandler = (event, payload) => event.sender.send(
   EVENTS.SET_SELECTED_BOARD,
   {
     err: false,
-    data: setTargetBoard(payload),
+    data: saveTargetBoard(payload),
   }
 );
