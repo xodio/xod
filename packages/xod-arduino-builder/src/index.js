@@ -6,10 +6,13 @@ import rest from 'rest';
 import errorCode from 'rest/interceptor/errorCode';
 import mime from 'rest/interceptor/mime';
 import SerialPort from 'serialport';
-import { exec } from 'child-process-promise';
 import { writeJSON, readFile, readJSON } from 'xod-fs';
 import { rejectWithCode } from 'xod-func-tools';
 
+import {
+  unifyExec,
+  processExecResult,
+} from './utils';
 import {
   ARDUINO_PACKAGE_INDEX_URL,
   DEFAULT_CONFIG,
@@ -19,34 +22,7 @@ import { REST_ERROR } from './errors';
 import * as Lenses from './lenses';
 
 export * from './errors';
-
-// =============================================================================
-//
-// Utils
-//
-// =============================================================================
-
-/**
- * Function that executes shell command and unifies result.
- * @type {Function}
- * @param {String} cmd Command to execute in shell
- * @returns {Promise.Resolved<ExecResult>} Promise resolved with unified {@link ExecResult}
- */
-const unifyExec = cmd => exec(cmd)
-  .then(r => ({ code: r.childProcess.exitCode, stdout: r.stdout, stderr: r.stderr }))
-  .catch(r => ({ code: r.code, stdout: r.stdout, stderr: r.stderr }));
-
-/**
- * Function that resolvs/rejects Promise depending on code number
- * @type {Function}
- * @param {ExecResult} execResult {@link ExecResult}
- * @returns {Promise<String, String>} Promise resolved with `stdout` or rejected with `stderr`
- */
-const processExecResult = (execResult) => {
-  const { code, stdout, stderr } = execResult;
-  if (code === 0) { return Promise.resolve(stdout); }
-  return Promise.reject(new Error(stderr));
-};
+export * from './utils';
 
 // =============================================================================
 //
@@ -93,22 +69,6 @@ const parseTxtConfig = R.compose(
   R.reject(R.test(/^(#|$)/)),
   R.map(R.trim),
   R.split(/$/mg)
-);
-
-/** Lists the processed [official Arduino package index]{@link http://downloads.arduino.cc/packages/package_index.json}, optimized for {@link PAV} selection.
- * @type {Function}
- * @param {Object} packageIndex
- * @return {Map<string, PAV[]} */
-export const listPAVs = R.compose(
-  R.groupBy(pav => `${pav.package}:${pav.architecture}`),
-  R.chain(({ name, platforms }) =>
-    platforms.map(({ architecture, version }) => ({
-      package: name,
-      architecture,
-      version,
-    }))
-  ),
-  R.prop('packages')
 );
 
 // =============================================================================

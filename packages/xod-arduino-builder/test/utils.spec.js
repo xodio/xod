@@ -1,10 +1,10 @@
 import { assert } from 'chai';
 
-import { listBoardsFromIndex } from '../src/app/arduinoActions';
+import * as Utils from '../src/utils';
 
-describe('Arduino actions', () => {
+describe('Utils', () => {
   it('listBoardsFromIndex should return correct array of boards', () => {
-    const boards = listBoardsFromIndex({
+    const boards = Utils.listBoardsFromIndex({
       packages: [
         {
           name: 'arduino',

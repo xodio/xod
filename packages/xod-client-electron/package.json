@@ -9,7 +9,7 @@
   "scripts": {
     "copy-workspace": "cpx \"src/workspace/**/*\" \"src-babel/workspace\"",
     "build:gui": "webpack --colors",
-    "build:app": "babel src/app/ -d src-babel/app/ && babel src/shared/ -d src-babel/shared/ && cpx \"src/app/*.json\" src-babel/app",
+    "build:app": "babel src/app/ -d src-babel/app/ && babel src/shared/ -d src-babel/shared/",
     "build": "yarn build:gui && yarn build:app && yarn copy-workspace",
     "start": "electron ./src-babel/app/main.js",
     "electron-rebuild": "electron-rebuild",
@@ -21,7 +21,6 @@
   "dependencies": {
     "babel-polyfill": "^6.16.0",
     "classnames": "^2.2.5",
-    "compare-versions": "^3.0.1",
     "electron-settings": "^3.0.14",
     "ramda": "^0.23.0",
     "rc-progress": "^2.1.2",

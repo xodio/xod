@@ -1,7 +1,6 @@
 import R from 'ramda';
 import fs from 'fs';
 import { resolve } from 'path';
-import compareVersion from 'compare-versions';
 
 import { resolvePath, writeFile, doesDirectoryExist, doesFileExist } from 'xod-fs';
 import { foldEither, notEmpty, tapP, rejectWithCode } from 'xod-func-tools';
@@ -15,70 +14,11 @@ import formatError from '../shared/errorFormatter';
 import * as ERROR_CODES from '../shared/errorCodes';
 import * as EVENTS from '../shared/events';
 
-import arduinoOfflineIndex from './arduinoPackageIndex.json';
-
 // =============================================================================
 //
 // Utils
 //
 // =============================================================================
-
-// :: PAV -> Pair String String
-const getSplittedVersion = R.compose(
-  R.split('+'),
-  R.prop('version')
-);
-
-// :: PAV[] -> PAV[]
-const sortByVersion = R.sort((a, b) => {
-  const aV = getSplittedVersion(a);
-  const bV = getSplittedVersion(b);
-
-  let result = compareVersion(aV[0], bV[0]);
-  if (result === 0 && aV.length === 2 && bV.length === 2) {
-    result = compareVersion(aV[1], bV[1]);
-  } else if (aV.length > bV.length) {
-    return 1;
-  } else if (bV.length > aV.length) {
-    return 0;
-  }
-  return result;
-});
-
-// BoardPure :: { name::String }
-// :: PAV -> ArduinoPackageIndex -> [BoardPure]
-const getBoardsByPAV = R.curry((pav, index) => R.compose(
-  R.prop('boards'),
-  R.find(
-    R.both(
-      R.propEq('architecture', pav.architecture),
-      R.propEq('version', pav.version)
-    )
-  ),
-  R.prop('platforms'),
-  R.find(R.propEq('name', pav.package)),
-  R.prop('packages')
-)(index));
-
-/**
- * Returns a list of Boards, parsed from Arduino Package Index JSON.
- */
-// Board :: { name::String, package::String, architecture::String, version::String }
-// :: ArduinoPackageIndex -> [Board]
-export const listBoardsFromIndex = index => R.compose(
-  R.chain(R.compose(
-    R.sortBy(R.prop('board')),
-    pav => R.compose(
-      R.map(R.merge(pav)),
-      R.map(R.applySpec({ board: R.prop('name') })),
-      getBoardsByPAV(R.__, index)
-    )(pav),
-    R.last,
-    sortByVersion
-  )),
-  R.values,
-  xab.listPAVs
-)(index);
 
 // :: () -> { ide :: Path, packages: Path }
 const loadArduinoPaths = R.compose(
@@ -93,7 +33,10 @@ const loadArduinoPaths = R.compose(
  * Returns a list of Boards, that was bundled into `xod-client-electron`.
  */
 // :: () -> [Board]
-export const getListOfBoards = () => listBoardsFromIndex(arduinoOfflineIndex);
+export const getListOfBoards = R.compose(
+  xab.listBoardsFromIndex,
+  xab.getArduinoPackagesOfflineIndex
+);
 
 /**
  * Returns a target Board.
@@ -230,7 +173,7 @@ export const getInstalledPAV = (pab, pavs) => R.compose(
     rejectWithCode(ERROR_CODES.NO_INSTALLED_PAVS, { pab })
   ),
   R.last,
-  sortByVersion,
+  xab.sortByVersion,
   filterByPab(pab)
 )(pavs);
 
@@ -356,20 +299,9 @@ export const uploadToArduinoHandler = (event, payload) => {
     settings.load
   )();
 
+  const boardName = payload.board.board;
   const pa = R.omit(['board', 'version'], payload.board);
   const pav = R.omit(['board'], payload.board);
-
-  // TODO: Make picking more accurate
-  //       (E.G. we have two boards from other packages with the same name)
-  // :: String -> { code :: String, port :: Port }
-  //      -> { code :: String, port :: Port, board :: String }
-  const pickBoardIdentifierByBoardName = (boardName, data) => R.compose(
-    R.assoc('pab', R.__, data),
-    R.assoc('board', R.__, pa),
-    R.head,
-    R.keys,
-    R.pickBy(R.propEq('name', boardName))
-  );
 
   R.pipeP(
     doTranspileForArduino,
@@ -388,7 +320,11 @@ export const uploadToArduinoHandler = (event, payload) => {
     ),
     sendProgress(MESSAGES.TOOLCHAIN_INSTALLED, 30),
     ({ code, port }) => loadPABs(pav)
-      .then(pickBoardIdentifierByBoardName(payload.board.board, { code, port })),
+      .then(boards => ({
+        code,
+        port,
+        pab: R.assoc('board', xab.pickBoardIdentifierByBoardName(boardName, boards), pa),
+      })),
     ({ code, port, pab }) => uploadToArduino(pab, port, code),
     stdout => sendSuccess(stdout, 100)()
   )(payload).catch(convertAndSendError);
