@@ -1,5 +1,5 @@
-import { resolve } from 'path';
 import * as xodFs from 'xod-fs';
+import { getProjectName, getProjectVersion } from 'xod-project';
 import { createLibUri, toString } from './lib-uri';
 import * as messages from './messages';
 import * as swagger from './swagger';
@@ -12,26 +12,15 @@ function getLibVersion(author, orgname, projectDir) {
     .then(([closestProjectDir, closestWorkspaceDir]) =>
       xodFs.loadProjectWithoutLibs(closestProjectDir, closestWorkspaceDir))
     .then(project => xodFs.pack(project, {}))
-    .then((xodball) => {
-      const xod = resolve(projectDir, 'project.xod');
-      if (!xodball.name) {
-        return Promise.reject(`could not find \`name\` in "${xod}".`);
-      }
-      if (!xodball.version) {
-        return Promise.reject(`could not find \`version\` in "${xod}".`);
-      }
-      return {
-        libname: xodball.name,
-        orgname,
-        version: {
-          author,
-          folder: {
-            'xodball.json': JSON.stringify(xodball),
-          },
-          semver: `v${xodball.version}`,
-        },
-      };
-    });
+    .then(xodball => ({
+      libname: getProjectName(xodball),
+      orgname,
+      version: {
+        author,
+        folder: { 'xodball.json': JSON.stringify(xodball) },
+        semver: `v${getProjectVersion(xodball)}`,
+      },
+    }));
 }
 
 export default function publish(swaggerUrl, author, orgname, projectDir) {
