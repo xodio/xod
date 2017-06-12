@@ -11,6 +11,8 @@ const PopupAlert = ({ title, children, closeText, className, onClose, isClosable
   const onCloseClicked = isClosable ? onClose : noop;
 
   const onKeyDown = (event) => {
+    if (!isVisible) return;
+
     const keycode = event.keycode || event.which;
     if (keycode === KEYCODE.ESCAPE) {
       onCloseClicked();

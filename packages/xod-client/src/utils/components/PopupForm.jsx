@@ -11,6 +11,8 @@ const PopupForm = ({ title, children, className, onClose, isClosable, isVisible 
   const onCloseClicked = isClosable ? onClose : noop;
 
   const onKeyDown = (event) => {
+    if (!isVisible) return;
+
     const keycode = event.keycode || event.which;
     if (keycode === KEYCODE.ESCAPE) {
       onCloseClicked();
