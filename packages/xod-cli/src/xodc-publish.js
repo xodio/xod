@@ -4,6 +4,21 @@ import { createLibUri, toString } from './lib-uri';
 import * as messages from './messages';
 import * as swagger from './swagger';
 
+/**
+ * Prepares publishing artifact for the library version.
+ * @param {Identifier} author - Version author's username.
+ * @param {Identifier} orgname - Publishing organization's name.
+ * @param {Path} projectDir - Library directory.
+ * @return {Promise.<{
+ *  libname: Identifier,
+ *  orgname: Identifier,
+ *  version: {
+ *   author: Identifier,
+ *   folder: {[Path]: string},
+ *   semver: string
+ *  }
+ * }>}
+ */
 function getLibVersion(author, orgname, projectDir) {
   return Promise
     .all([
@@ -23,6 +38,14 @@ function getLibVersion(author, orgname, projectDir) {
     }));
 }
 
+/**
+ * Publishes the library version to package manager.
+ * @param swaggerUrl - Swagger.json URL for package manager.
+ * @param {Identifier} author - Version author's username.
+ * @param {Identifier} orgname - Publishing organization's name.
+ * @param {Path} projectDir - Library directory.
+ * @return {Promise.<void>}
+ */
 export default function publish(swaggerUrl, author, orgname, projectDir) {
   return Promise
     .all([

@@ -6,6 +6,12 @@ import { parseLibUri, toString } from './lib-uri';
 import * as messages from './messages';
 import * as swagger from './swagger';
 
+/**
+ * Checks whether library directory does not already exist.
+ * @param {Path} libDir - Library installation directory.
+ * @param {LibUri} libUri - Library URI in the package manager.
+ * @returns {Promise.<void>}
+ */
 function libDirDoesNotExist(libDir, libUri) {
   return new Promise((resolve, reject) => {
     if (!xodFs.doesDirectoryExist(libDir)) return resolve();
@@ -14,6 +20,12 @@ function libDirDoesNotExist(libDir, libUri) {
   });
 }
 
+/**
+ * Fetches the library version xodball from package manager.
+ * @param swaggerClient - `swagger-js` client.
+ * @param {LibUri} libUri - Library URI in the package manager.
+ * @returns {Promise.<Project>}
+ */
 function getLib(swaggerClient, libUri) {
   const { libname, orgname, tag } = libUri;
   const { Library, Version } = swaggerClient.apis;
@@ -30,6 +42,11 @@ function getLib(swaggerClient, libUri) {
         : swagger.stringifyError(err)));
 }
 
+/**
+ * Parses string to the library URI in the package manager.
+ * @param string
+ * @return {Promise.<LibUri>}
+ */
 function getLibUri(string) {
   return parseLibUri(string)
     .map(libUri => Promise.resolve.bind(Promise, libUri))
@@ -38,6 +55,13 @@ function getLibUri(string) {
     .apply();
 }
 
+/**
+ * Installs the library version from package manager.
+ * @param swaggerUrl - Swagger.json URL for package manager.
+ * @param {LibUri} libUri - Library URI in the package manager.
+ * @param {Path} path - Installation destination.
+ * @return {Promise.<void>}
+ */
 export default function install(swaggerUrl, libUri, path) {
   return Promise
     .all([
