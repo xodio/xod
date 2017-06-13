@@ -407,8 +407,8 @@ export const listOutputPins = def(
 export const isTerminalPatch = def(
   'isTerminalPatch :: Patch -> Boolean',
   R.compose(
-    R.any(Pin.isTerminalPin),
-    listPins
+    isTerminalPatchPath,
+    getPatchPath
   )
 );
 

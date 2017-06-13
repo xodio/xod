@@ -4,5 +4,5 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(NodeId nid, State* state) {
-    emitLogic(nid, Outputs::__OUT__, getNumber(nid, Inputs::__IN__));
+    emitValue<Outputs::OUT>(nid, getValue<Inputs::IN>(nid) != 0.0);
 }

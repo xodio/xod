@@ -14,11 +14,11 @@ namespace _program {
 //-----------------------------------------------------------------------------
 // {{ owner }}/{{ libName }}/{{ patchName }} implementation
 //-----------------------------------------------------------------------------
-namespace {{ owner }} { namespace {{ libName }} { namespace {{ patchName }} {
+namespace {{ owner }}__{{ libName }}__{{ patchName }} {
 
 {{ implementation }}
 
-}}} // namespace {{ owner }}::{{ libName }}::{{ patchName }}
+} // namespace {{ owner }}__{{ libName }}__{{ patchName }}
 
 {{/each}}
 } // namespace _program

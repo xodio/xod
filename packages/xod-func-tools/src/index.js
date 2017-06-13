@@ -7,6 +7,10 @@ export * from './types';
 const def = types.def;
 
 /**
+ * DEPRECATED: Use of this function lead to meaningless error messages that
+ * are nearly impossible to debug. Use `explodeMaybe` and `explodeEither`
+ * to convert monads to unhandled exceptions.
+ *
  * Function to rapidly extract a value from Maybe or Either monad.
  * But it should be used only when we're sure that we should have a value,
  * otherwise it will throw an exception.
@@ -64,6 +68,18 @@ export const foldEither = def(
   'foldEither :: (a -> c) -> (b -> c) -> Either a b -> c',
   (leftFn, rightFn, eitherObject) => (
     eitherObject.isLeft ? leftFn(eitherObject.value) : rightFn(eitherObject.value)
+  )
+);
+
+/**
+ * Unwraps Either monad and returns it’s value if it is Right and throws an Error
+ * if it is Left.
+ */
+export const explodeEither = def(
+  'explodeMaybe :: Either a b -> b',
+  foldEither(
+    (err) => { throw new Error(`Explosion failed: ${err}`); },
+    R.identity
   )
 );
 

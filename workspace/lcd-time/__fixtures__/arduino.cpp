@@ -915,7 +915,7 @@ namespace _program {
 //-----------------------------------------------------------------------------
 // xod/core/system_time implementation
 //-----------------------------------------------------------------------------
-namespace xod { namespace core { namespace system_time {
+namespace xod__core__system_time {
 
 struct State {
 };
@@ -941,19 +941,19 @@ void evaluate(NodeId nid, State* state) {
     emitValue<Outputs::RDY>(nid, 1);
 }
 
-}}} // namespace xod::core::system_time
+} // namespace xod__core__system_time
 
 //-----------------------------------------------------------------------------
 // xod/common_hardware/text_lcd_16x2 implementation
 //-----------------------------------------------------------------------------
-namespace xod { namespace common_hardware { namespace text_lcd_16x2 {
+namespace xod__common_hardware__text_lcd_16x2 {
 
 // --- Enter global namespace ---
-}}}}
+}}
 #include <LiquidCrystal.h>
 
 namespace _program {
-namespace xod { namespace common_hardware { namespace text_lcd_16x2 {
+namespace xod__common_hardware__text_lcd_16x2 {
 // --- Back to local namespace ---
 struct State {
     LiquidCrystal* lcd;
@@ -1017,12 +1017,12 @@ void evaluate(NodeId nid, State* state) {
     printLine(lcd, 1, getValue<Inputs::L2>(nid));
 }
 
-}}} // namespace xod::common_hardware::text_lcd_16x2
+} // namespace xod__common_hardware__text_lcd_16x2
 
 //-----------------------------------------------------------------------------
 // xod/core/clock implementation
 //-----------------------------------------------------------------------------
-namespace xod { namespace core { namespace clock {
+namespace xod__core__clock {
 
 struct State {
   TimeMs nextTrig;
@@ -1065,12 +1065,12 @@ void evaluate(NodeId nid, State* state) {
     }
 }
 
-}}} // namespace xod::core::clock
+} // namespace xod__core__clock
 
 //-----------------------------------------------------------------------------
 // xod/core/boot implementation
 //-----------------------------------------------------------------------------
-namespace xod { namespace core { namespace boot {
+namespace xod__core__boot {
 
 struct State {
 };
@@ -1091,12 +1091,12 @@ void evaluate(NodeId nid, State* state) {
     emitValue<Outputs::BOOT>(nid, 1);
 }
 
-}}} // namespace xod::core::boot
+} // namespace xod__core__boot
 
 //-----------------------------------------------------------------------------
 // xod/core/cast_number_to_string implementation
 //-----------------------------------------------------------------------------
-namespace xod { namespace core { namespace cast_number_to_string {
+namespace xod__core__cast_number_to_string {
 
 struct State {
 };
@@ -1123,12 +1123,12 @@ void evaluate(NodeId nid, State* state) {
     emitValue<Outputs::OUT>(nid, xstr);
 }
 
-}}} // namespace xod::core::cast_number_to_string
+} // namespace xod__core__cast_number_to_string
 
 //-----------------------------------------------------------------------------
 // xod/core/constant_number implementation
 //-----------------------------------------------------------------------------
-namespace xod { namespace core { namespace constant_number {
+namespace xod__core__constant_number {
 
 struct State {};
 
@@ -1148,12 +1148,12 @@ void evaluate(NodeId nid, State* state) {
   reemitValue<Outputs::VAL>(nid);
 }
 
-}}} // namespace xod::core::constant_number
+} // namespace xod__core__constant_number
 
 //-----------------------------------------------------------------------------
 // xod/core/constant_string implementation
 //-----------------------------------------------------------------------------
-namespace xod { namespace core { namespace constant_string {
+namespace xod__core__constant_string {
 
 struct State {};
 
@@ -1173,7 +1173,7 @@ void evaluate(NodeId nid, State* state) {
   reemitValue<Outputs::VAL>(nid);
 }
 
-}}} // namespace xod::core::constant_string
+} // namespace xod__core__constant_string
 
 } // namespace _program
 
@@ -1189,91 +1189,91 @@ namespace _program {
 
     NodeId links_0_TIME[] = { 4, NO_NODE };
     NodeId links_0_RDY[] = { 1, NO_NODE };
-    xod::core::system_time::Storage storage_0 = {
+    xod__core__system_time::Storage storage_0 = {
         { }, // state
-        { NodeId(2), xod::core::clock::Outputs::TICK::KEY }, // input_UPD
+        { NodeId(2), xod__core__clock::Outputs::TICK::KEY }, // input_UPD
         { 0, links_0_TIME }, // output_TIME
         { false, links_0_RDY } // output_RDY
     };
 
-    xod::common_hardware::text_lcd_16x2::Storage storage_1 = {
+    xod__common_hardware__text_lcd_16x2::Storage storage_1 = {
         { }, // state
-        { NodeId(10), xod::core::constant_number::Outputs::VAL::KEY }, // input_RS
-        { NodeId(9), xod::core::constant_number::Outputs::VAL::KEY }, // input_EN
-        { NodeId(5), xod::core::constant_number::Outputs::VAL::KEY }, // input_D4
-        { NodeId(8), xod::core::constant_number::Outputs::VAL::KEY }, // input_D5
-        { NodeId(7), xod::core::constant_number::Outputs::VAL::KEY }, // input_D6
-        { NodeId(11), xod::core::constant_number::Outputs::VAL::KEY }, // input_D7
-        { NodeId(4), xod::core::cast_number_to_string::Outputs::OUT::KEY }, // input_L1
-        { NodeId(6), xod::core::constant_string::Outputs::VAL::KEY }, // input_L2
-        { NodeId(0), xod::core::system_time::Outputs::RDY::KEY }, // input_UPD
+        { NodeId(10), xod__core__constant_number::Outputs::VAL::KEY }, // input_RS
+        { NodeId(9), xod__core__constant_number::Outputs::VAL::KEY }, // input_EN
+        { NodeId(5), xod__core__constant_number::Outputs::VAL::KEY }, // input_D4
+        { NodeId(8), xod__core__constant_number::Outputs::VAL::KEY }, // input_D5
+        { NodeId(7), xod__core__constant_number::Outputs::VAL::KEY }, // input_D6
+        { NodeId(11), xod__core__constant_number::Outputs::VAL::KEY }, // input_D7
+        { NodeId(4), xod__core__cast_number_to_string::Outputs::OUT::KEY }, // input_L1
+        { NodeId(6), xod__core__constant_string::Outputs::VAL::KEY }, // input_L2
+        { NodeId(0), xod__core__system_time::Outputs::RDY::KEY }, // input_UPD
     };
 
     NodeId links_2_TICK[] = { 0, NO_NODE };
-    xod::core::clock::Storage storage_2 = {
+    xod__core__clock::Storage storage_2 = {
         { }, // state
-        { NodeId(12), xod::core::constant_number::Outputs::VAL::KEY }, // input_IVAL
-        { NodeId(3), xod::core::boot::Outputs::BOOT::KEY }, // input_RST
+        { NodeId(12), xod__core__constant_number::Outputs::VAL::KEY }, // input_IVAL
+        { NodeId(3), xod__core__boot::Outputs::BOOT::KEY }, // input_RST
         { false, links_2_TICK } // output_TICK
     };
 
     NodeId links_3_BOOT[] = { 2, NO_NODE };
-    xod::core::boot::Storage storage_3 = {
+    xod__core__boot::Storage storage_3 = {
         { }, // state
         { false, links_3_BOOT } // output_BOOT
     };
 
     NodeId links_4_OUT[] = { 1, NO_NODE };
-    xod::core::cast_number_to_string::Storage storage_4 = {
+    xod__core__cast_number_to_string::Storage storage_4 = {
         { }, // state
-        { NodeId(0), xod::core::system_time::Outputs::TIME::KEY }, // input_IN
+        { NodeId(0), xod__core__system_time::Outputs::TIME::KEY }, // input_IN
         { nullptr, links_4_OUT } // output_OUT
     };
 
     NodeId links_5_VAL[] = { 1, NO_NODE };
-    xod::core::constant_number::Storage storage_5 = {
+    xod__core__constant_number::Storage storage_5 = {
         { }, // state
         { 10, links_5_VAL } // output_VAL
     };
 
     NodeId links_6_VAL[] = { 1, NO_NODE };
-    xod::core::constant_string::Storage storage_6 = {
+    xod__core__constant_string::Storage storage_6 = {
         { }, // state
         { nullptr, links_6_VAL } // output_VAL
     };
 
     NodeId links_7_VAL[] = { 1, NO_NODE };
-    xod::core::constant_number::Storage storage_7 = {
+    xod__core__constant_number::Storage storage_7 = {
         { }, // state
         { 12, links_7_VAL } // output_VAL
     };
 
     NodeId links_8_VAL[] = { 1, NO_NODE };
-    xod::core::constant_number::Storage storage_8 = {
+    xod__core__constant_number::Storage storage_8 = {
         { }, // state
         { 11, links_8_VAL } // output_VAL
     };
 
     NodeId links_9_VAL[] = { 1, NO_NODE };
-    xod::core::constant_number::Storage storage_9 = {
+    xod__core__constant_number::Storage storage_9 = {
         { }, // state
         { 9, links_9_VAL } // output_VAL
     };
 
     NodeId links_10_VAL[] = { 1, NO_NODE };
-    xod::core::constant_number::Storage storage_10 = {
+    xod__core__constant_number::Storage storage_10 = {
         { }, // state
         { 8, links_10_VAL } // output_VAL
     };
 
     NodeId links_11_VAL[] = { 1, NO_NODE };
-    xod::core::constant_number::Storage storage_11 = {
+    xod__core__constant_number::Storage storage_11 = {
         { }, // state
         { 13, links_11_VAL } // output_VAL
     };
 
     NodeId links_12_VAL[] = { 2, NO_NODE };
-    xod::core::constant_number::Storage storage_12 = {
+    xod__core__constant_number::Storage storage_12 = {
         { }, // state
         { 0.01, links_12_VAL } // output_VAL
     };
@@ -1295,19 +1295,19 @@ namespace _program {
     };
 
     EvalFuncPtr evaluationFuncs[NODE_COUNT] = {
-        (EvalFuncPtr)&xod::core::system_time::evaluate,
-        (EvalFuncPtr)&xod::common_hardware::text_lcd_16x2::evaluate,
-        (EvalFuncPtr)&xod::core::clock::evaluate,
-        (EvalFuncPtr)&xod::core::boot::evaluate,
-        (EvalFuncPtr)&xod::core::cast_number_to_string::evaluate,
-        (EvalFuncPtr)&xod::core::constant_number::evaluate,
-        (EvalFuncPtr)&xod::core::constant_string::evaluate,
-        (EvalFuncPtr)&xod::core::constant_number::evaluate,
-        (EvalFuncPtr)&xod::core::constant_number::evaluate,
-        (EvalFuncPtr)&xod::core::constant_number::evaluate,
-        (EvalFuncPtr)&xod::core::constant_number::evaluate,
-        (EvalFuncPtr)&xod::core::constant_number::evaluate,
-        (EvalFuncPtr)&xod::core::constant_number::evaluate
+        (EvalFuncPtr)&xod__core__system_time::evaluate,
+        (EvalFuncPtr)&xod__common_hardware__text_lcd_16x2::evaluate,
+        (EvalFuncPtr)&xod__core__clock::evaluate,
+        (EvalFuncPtr)&xod__core__boot::evaluate,
+        (EvalFuncPtr)&xod__core__cast_number_to_string::evaluate,
+        (EvalFuncPtr)&xod__core__constant_number::evaluate,
+        (EvalFuncPtr)&xod__core__constant_string::evaluate,
+        (EvalFuncPtr)&xod__core__constant_number::evaluate,
+        (EvalFuncPtr)&xod__core__constant_number::evaluate,
+        (EvalFuncPtr)&xod__core__constant_number::evaluate,
+        (EvalFuncPtr)&xod__core__constant_number::evaluate,
+        (EvalFuncPtr)&xod__core__constant_number::evaluate,
+        (EvalFuncPtr)&xod__core__constant_number::evaluate
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {

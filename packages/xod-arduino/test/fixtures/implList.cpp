@@ -11,7 +11,7 @@ namespace _program {
 //-----------------------------------------------------------------------------
 // xod/math/multiply implementation
 //-----------------------------------------------------------------------------
-namespace xod { namespace math { namespace multiply {
+namespace xod__math__multiply {
 
 struct State {
 };
@@ -36,6 +36,6 @@ void evaluate(NodeId nid, State* state) {
     /* Native implementation goes here */
 }
 
-}}} // namespace xod::math::multiply
+} // namespace xod__math__multiply
 
 } // namespace _program

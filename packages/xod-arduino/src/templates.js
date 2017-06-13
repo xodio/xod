@@ -58,14 +58,10 @@ Handlebars.registerHelper('exists', function existsHelper(variable, options) {
 Handlebars.registerHelper('global', function global(options) {
   return [
     '// --- Enter global namespace ---',
-    '}}}}',
+    '}}',
     options.fn(this),
     'namespace _program {',
-    [
-      `namespace ${this.owner} {`,
-      `namespace ${this.libName} {`,
-      `namespace ${this.patchName} {`,
-    ].join(' '),
+    `namespace ${this.owner}__${this.libName}__${this.patchName} {`,
     '// --- Back to local namespace ---',
   ].join('\n');
 });

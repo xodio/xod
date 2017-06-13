@@ -527,8 +527,8 @@ nodes['3'] = new Node({
   "id": "3",
   "implId": "xod/core/flip-flop",
   "inputTypes": {
-    "TGL": identity,
     "SET": identity,
+    "TGL": identity,
     "RST": identity
   },
   "outValues": {

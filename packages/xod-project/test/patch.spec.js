@@ -161,25 +161,15 @@ describe('Patch', () => {
       const patch = Helper.defaultizePatch({});
       expect(Patch.isTerminalPatch(patch)).to.be.false();
     });
-    it('should return true for patch with terminal input pin', () => {
+    it('should return true for input terminal', () => {
       const patch = Helper.defaultizePatch({
-        nodes: {
-          __in__: {
-            id: '__in__',
-            type: 'xod/patch-nodes/input-number',
-          },
-        },
+        path: 'xod/patch-nodes/input-number',
       });
       expect(Patch.isTerminalPatch(patch)).to.be.true();
     });
-    it('should return true for patch with terminal output pin', () => {
+    it('should return true for output terminal', () => {
       const patch = Helper.defaultizePatch({
-        nodes: {
-          __out__: {
-            id: '__out__',
-            type: 'xod/patch-nodes/output-number',
-          },
-        },
+        path: 'xod/patch-nodes/output-number',
       });
       expect(Patch.isTerminalPatch(patch)).to.be.true();
     });

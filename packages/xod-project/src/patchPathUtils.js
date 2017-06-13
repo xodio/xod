@@ -85,10 +85,12 @@ export const getTerminalDirection = R.compose(
   R.match(terminalPatchPathRegExp)
 );
 
-// :: String -> DataType
-export const getTerminalDataType = R.compose(
-  R.nth(2),
-  R.match(terminalPatchPathRegExp)
+export const getTerminalDataType = def(
+  'getTerminalDataType :: PatchPath -> DataType',
+  R.compose(
+    R.nth(2),
+    R.match(terminalPatchPathRegExp)
+  )
 );
 
 // :: String -> Boolean
@@ -146,8 +148,10 @@ export const getConstantPatchPath = type => `xod/core/constant-${type}`;
 // utils for 'internal' terminals (used only in flatten)
 //
 
-// :: String -> String
-export const getInternalTerminalPath = type => `xod/internal/terminal-${type}`;
+export const getInternalTerminalPath = def(
+  'getInternalTerminalPath :: DataType -> PatchPath',
+  type => `xod/internal/terminal-${type}`
+);
 
 // :: String -> String
 export const convertToInternalTerminalPath = R.compose(

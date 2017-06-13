@@ -9,7 +9,7 @@
 namespace _program {
 
     NodeId links_0_OUT[] = { 1, NO_NODE };
-    xod::math::multiply::Storage storage_0 = {
+    xod__math__multiply::Storage storage_0 = {
         { }, // state
         { NO_NODE, 0 }, // input_IN1
         { NO_NODE, 0 }, // input_IN2
@@ -17,9 +17,9 @@ namespace _program {
     };
 
     NodeId links_1_OUT[] = { NO_NODE };
-    xod::math::multiply::Storage storage_1 = {
+    xod__math__multiply::Storage storage_1 = {
         { }, // state
-        { NodeId(0), xod::math::multiply::Outputs::OUT::KEY }, // input_IN1
+        { NodeId(0), xod__math__multiply::Outputs::OUT::KEY }, // input_IN1
         { NO_NODE, 0 }, // input_IN2
         { 0, links_1_OUT } // output_OUT
     };
@@ -30,8 +30,8 @@ namespace _program {
     };
 
     EvalFuncPtr evaluationFuncs[NODE_COUNT] = {
-        (EvalFuncPtr)&xod::math::multiply::evaluate,
-        (EvalFuncPtr)&xod::math::multiply::evaluate
+        (EvalFuncPtr)&xod__math__multiply::evaluate,
+        (EvalFuncPtr)&xod__math__multiply::evaluate
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {

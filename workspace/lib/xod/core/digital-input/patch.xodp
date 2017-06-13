@@ -8,7 +8,7 @@
       "id": "B1ZUA_Hv1W",
       "label": "PORT",
       "position": {
-        "x": 138,
+        "x": 10,
         "y": 16
       },
       "type": "xod/patch-nodes/input-number"
@@ -21,7 +21,7 @@
       "id": "B1gI0urv1W",
       "label": "SIG",
       "position": {
-        "x": 138,
+        "x": 10,
         "y": 224
       },
       "type": "xod/patch-nodes/output-boolean"
@@ -32,7 +32,7 @@
       "id": "SyLCdSwJZ",
       "label": "UPD",
       "position": {
-        "x": 10,
+        "x": 138,
         "y": 16
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -56,7 +56,7 @@
       "id": "rkJuR6S-Z",
       "label": "RDY",
       "position": {
-        "x": 10,
+        "x": 138,
         "y": 224
       },
       "type": "xod/patch-nodes/output-pulse"
