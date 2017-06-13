@@ -1,6 +1,4 @@
-/* eslint-disable no-shadow */
-
-import { resolve } from 'path';
+import * as path from 'path';
 import * as xodFs from 'xod-fs';
 import { parseLibUri, toString } from './lib-uri';
 import * as messages from './messages';
@@ -30,8 +28,8 @@ function getLib(swaggerClient, libUri) {
   const { libname, orgname, tag } = libUri;
   const { Library, Version } = swaggerClient.apis;
   return Promise.resolve(tag)
-    .then(tag =>
-      (tag !== 'latest' ? tag : Library.getOrgLib({ libname, orgname })
+    .then(tag2 =>
+      (tag2 !== 'latest' ? tag2 : Library.getOrgLib({ libname, orgname })
         .then(({ obj: lib }) => lib.versions[0])))
     .then(semver =>
       Version.getLibVersionXodball({ libname, orgname, semver })
@@ -59,24 +57,24 @@ function getLibUri(string) {
  * Installs the library version from package manager.
  * @param swaggerUrl - Swagger.json URL for package manager.
  * @param {LibUri} libUri - Library URI in the package manager.
- * @param {Path} path - Installation destination.
+ * @param {Path} path2 - Installation destination.
  * @return {Promise.<void>}
  */
-export default function install(swaggerUrl, libUri, path) {
+export default function install(swaggerUrl, libUri, path2) {
   return Promise
     .all([
       getLibUri(libUri),
       swagger.client(swaggerUrl),
-      xodFs.findClosestWorkspaceDir(path),
+      xodFs.findClosestWorkspaceDir(path2),
     ])
-    .then(([libUri, swaggerClient, workspaceDir]) => {
-      const orgDir = resolve(workspaceDir, 'lib',
-        xodFs.fsSafeName(libUri.orgname));
-      const libDir = resolve(orgDir, xodFs.fsSafeName(libUri.libname));
-      return libDirDoesNotExist(libDir, libUri)
-        .then(() => getLib(swaggerClient, libUri))
+    .then(([libUri2, swaggerClient, workspaceDir]) => {
+      const orgDir = path.resolve(workspaceDir, 'lib',
+        xodFs.fsSafeName(libUri2.orgname));
+      const libDir = path.resolve(orgDir, xodFs.fsSafeName(libUri2.libname));
+      return libDirDoesNotExist(libDir, libUri2)
+        .then(() => getLib(swaggerClient, libUri2))
         .then(xodFs.saveProject(orgDir))
-        .then(() => `Installed "${toString(libUri)}" at "${libDir}".`);
+        .then(() => `Installed "${toString(libUri2)}" at "${libDir}".`);
     })
     .then(messages.success)
     .catch((err) => {
