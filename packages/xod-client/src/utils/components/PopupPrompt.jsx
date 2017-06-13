@@ -30,6 +30,8 @@ class PopupPrompt extends React.Component {
   }
 
   onDocumentKeyDown(event) {
+    if (!this.props.isVisible) return;
+
     const keycode = event.keycode || event.which;
     if (keycode === KEYCODE.ESCAPE) {
       this.onCloseClicked();
