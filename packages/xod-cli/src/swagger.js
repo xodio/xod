@@ -1,7 +1,16 @@
 import swaggerClient from 'swagger-client';
 
 export function stringifyError(error) {
-  return `${error.status} ${JSON.stringify(error.response.body, null, 2)}`;
+  const { response, status } = error;
+  let res;
+  if (response.body && response.body.originalResponse) {
+    res = JSON.parse(response.body.originalResponse);
+  } else if (response.body) {
+    res = response.body;
+  } else {
+    res = response;
+  }
+  return `${status} ${JSON.stringify(res, null, 2)}`;
 }
 
 export function client(swaggerUrl) {

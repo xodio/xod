@@ -29,13 +29,11 @@ function getLibVersion(author, orgname, projectDir) {
       xodFs.loadProjectWithoutLibs(closestProjectDir, closestWorkspaceDir))
     .then(project => xodFs.pack(project, {}))
     .then(xodball => ({
+      author,
+      folder: { 'xodball.json': JSON.stringify(xodball) },
       libname: getProjectName(xodball),
       orgname,
-      version: {
-        author,
-        folder: { 'xodball.json': JSON.stringify(xodball) },
-        semver: `v${getProjectVersion(xodball)}`,
-      },
+      semver: `v${getProjectVersion(xodball)}`,
     }));
 }
 
@@ -54,24 +52,23 @@ export default function publish(swaggerUrl, author, orgname, projectDir) {
       swagger.client(swaggerUrl),
     ])
     .then(([libVersion, swaggerClient]) => {
-      const { libname, version: { semver } } = libVersion;
+      const { libname, semver } = libVersion;
       const libUri = createLibUri(orgname, libname, semver);
-      const { Library, User, Version } = swaggerClient.apis;
-      return User.postUserOrg({ org: { orgname }, username: author })
-        .catch(() => null)
-        .then(() => Library.postOrgLib({ lib: { libname }, orgname }))
-        .catch(() => null)
-        .then(() => Version.postLibVersion(libVersion))
+      return swaggerClient.apis.RPC
+        .publishLibrary({ version: libVersion })
         .catch(R.compose(
           Promise.reject.bind(Promise),
           R.cond([
             [
-              R.both(R.propEq('code', 400),
-                R.pathEq(['body', 'code'], 'VERSION_ALREADY_EXISTS')),
-              R.always(`version "${toString(libUri)}" already exists.`)],
-            [
-              R.propEq('code', 404),
+              R.both(R.propEq('status', 400),
+                R.pathEq(['response', 'body', 'code'],
+                  'AUTHOR_DOES_NOT_EXIST')),
               R.always(`could not find user or organization "${orgname}".`)],
+            [
+              R.both(R.propEq('status', 400),
+                R.pathEq(['response', 'body', 'code'],
+                  'VERSION_ALREADY_EXISTS')),
+              R.always(`version "${toString(libUri)}" already exists.`)],
             [
               R.T,
               swagger.stringifyError],

@@ -1,16 +1,16 @@
 import R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
 import { explode, explodeMaybe, notEmpty } from 'xod-func-tools';
+import { BUILT_IN_PATCH_PATHS } from './builtInPatches';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
-import * as Utils from './utils';
-import * as Patch from './patch';
-import * as Node from './node';
 import * as Link from './link';
-import { def } from './types';
-import { BUILT_IN_PATCH_PATHS } from './builtInPatches';
+import * as Node from './node';
+import * as Patch from './patch';
 import * as PatchPathUtils from './patchPathUtils';
+import { def } from './types';
+import * as Utils from './utils';
 
 /**
  * Root of a project’s state tree
@@ -38,25 +38,24 @@ export const createProject = def(
   })
 );
 
-/**
- * @function getProjectName
- * @param {Project} project
- * @returns {string}
- */
 export const getProjectName = def(
-  'getProjectName :: Project -> String',
+  'getProjectName :: Project -> Identifier',
   R.prop('name')
 );
 
-/**
- * @function setProjectName
- * @param {string} new name
- * @param {Project} project
- * @returns {Project}
- */
 export const setProjectName = def(
-  'setProjectName :: String -> Project -> Project',
+  'setProjectName :: Identifier -> Project -> Project',
   R.assoc('name')
+);
+
+export const getProjectVersion = def(
+  'getProjectVersion :: Project -> Version',
+  R.prop('version')
+);
+
+export const setProjectVersion = def(
+  'setProjectVersion :: Version -> Project -> Project',
+  R.assoc('version')
 );
 
 /**
