@@ -16,6 +16,7 @@ void evaluate(NodeId nid, State* state) {
     if (line) {
         for (auto it = line->iterate(); it; ++it)
             Serial.write((char)*it);
+        Serial.write('\r');
         Serial.write('\n');
         Serial.flush();
     }
