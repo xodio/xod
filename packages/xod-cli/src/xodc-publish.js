@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import * as xodFs from 'xod-fs';
 import { getProjectName, getProjectVersion } from 'xod-project';
 import { createLibUri, toString } from './lib-uri';
@@ -58,23 +59,24 @@ export default function publish(swaggerUrl, author, orgname, projectDir) {
       const { Library, User, Version } = swaggerClient.apis;
       return User.postUserOrg({ org: { orgname }, username: author })
         .catch(() => null)
-        .then(() => Library.postOrgLib({ lib: { libname }, orgname })
-          .catch(() => null))
-        .then(() => Version.postLibVersion(libVersion)
-          .catch((err) => {
-            const { response: { body }, status } = err;
-            if (status === 400) {
-              if (body && body.code === 'VERSION_ALREADY_EXISTS') {
-                return Promise.reject(
-                  `version "${toString(libUri)}" already exists.`);
-              }
-            }
-            if (status === 404) {
-              return Promise.reject(
-                `could not find user or organization "${orgname}".`);
-            }
-            return Promise.reject(swagger.stringifyError(err));
-          }))
+        .then(() => Library.postOrgLib({ lib: { libname }, orgname }))
+        .catch(() => null)
+        .then(() => Version.postLibVersion(libVersion))
+        .catch(R.compose(
+          Promise.reject.bind(Promise),
+          R.cond([
+            [
+              R.both(R.propEq('code', 400),
+                R.pathEq(['body', 'code'], 'VERSION_ALREADY_EXISTS')),
+              R.always(`version "${toString(libUri)}" already exists.`)],
+            [
+              R.propEq('code', 404),
+              R.always(`could not find user or organization "${orgname}".`)],
+            [
+              R.T,
+              swagger.stringifyError],
+          ])
+        ))
         .then(() => `Published "${toString(libUri)}".`);
     })
     .then(messages.success)
