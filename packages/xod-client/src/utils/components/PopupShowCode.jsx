@@ -34,23 +34,25 @@ class PopupShowCode extends React.Component {
   render() {
     return (
       <SkyLight
+        className="skylight-dialog--fullscreen"
         hideOnOverlayClicked
-        dialogStyles={{
-          height: 'auto',
-        }}
         ref={this.assignPopupRef}
-        title="Transpiled code:"
+        title="Transpiled code"
         afterClose={this.props.onClose}
       >
-        <textarea
-          className="PopupShowCode-codebox"
-          value={this.props.code}
-          readOnly
-        />
-        <p>
-          This code could be uploaded onto your device.<br />
-          Just connect your device via USB and click on &quot;Upload&quot; button.
-        </p>
+        <div className="CodeboxModalContent">
+          <textarea
+            className="Codebox"
+            value={this.props.code}
+            readOnly
+          />
+          <div className="ModalBody ModalBody--light">
+            <div className="ModalFooter">
+              This code could be uploaded onto your device.<br />
+              Just connect your device via USB and click on &quot;Upload&quot; button.
+            </div>
+          </div>
+        </div>
       </SkyLight>
     );
   }

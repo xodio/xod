@@ -1,0 +1,40 @@
+.Button {
+  padding: 10px 30px;
+  color: $button-fg-color-dark;
+  background-color: $button-bg-color-dark;
+  border: 1px solid $button-border-color;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $button-bg-color-hover-dark;
+    border-color: $button-border-color;
+    box-shadow: 0 0 7px 0 rgba(0,0,0,0.5);
+  }
+
+  &:active {
+    background-color: $button-bg-color-dark;
+    border-color: $button-border-color-active-dark;
+    box-shadow: none;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  &--light {
+    color: $button-fg-color-light;
+    background-color: $button-bg-color-light;
+
+    &:hover {
+      background-color: $button-bg-color-light;
+    }
+
+    &:active {
+      background-color: $button-bg-color-light;
+      border-color: $button-border-color-active-light;
+    }
+  }
+}

@@ -32,16 +32,15 @@ class PopupInstallApp extends React.Component {
     return (
       <SkyLight
         hideOnOverlayClicked
-        dialogStyles={{
-          height: 'auto',
-        }}
         ref={this.assignPopupRef}
         title="Oops! You need a desktop IDE!"
         afterClose={this.props.onClose}
       >
-        <p>
-          To upload projects you need to install XOD IDE for desktop.
-        </p>
+        <div className="ModalBody">
+          <div className="ModalContent">
+            To upload projects you need to install XOD IDE for desktop.
+          </div>
+        </div>
       </SkyLight>
     );
   }

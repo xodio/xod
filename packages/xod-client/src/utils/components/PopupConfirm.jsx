@@ -14,14 +14,11 @@ const PopupConfirm = ({
   className,
   onConfirm,
   onClose,
-  isModal,
+  isClosable,
   isVisible,
 }) => {
   const wrapperClassNames = classNames('PopupConfirm', className);
-  const onCloseClicked = (!isModal) ? onClose : noop;
-  const closeButtonStyle = (isModal) ?
-    { display: 'none' } :
-    { display: 'inline' };
+  const onCloseClicked = isClosable ? onClose : noop;
 
   const onKeyDown = (event) => {
     const keycode = event.keycode || event.which;
@@ -34,30 +31,31 @@ const PopupConfirm = ({
     <div className={wrapperClassNames}>
       <EventListener target={document} onKeyDown={onKeyDown} />
       <SkyLightStateless
-        dialogStyles={{ height: 'auto' }}
         isVisible={isVisible}
         title={title}
-        closeButtonStyle={closeButtonStyle}
+        isClosable={isClosable}
         onCloseClicked={onCloseClicked}
         onOverlayClicked={onCloseClicked}
       >
-        <div className="PopupContent">
-          {children}
-        </div>
-        <div className="PopupButtons">
-          <button
-            className="PopupButton-Secondary"
-            onClick={onClose}
-          >
-            {cancelText}
-          </button>
-          <button
-            className="PopupButton-Primary"
-            onClick={onConfirm}
-            autoFocus
-          >
-            {confirmText}
-          </button>
+        <div className="ModalBody">
+          <div className="ModalContent">
+            {children}
+          </div>
+          <div className="ModalFooter">
+            <button
+              className="Button Button--primary"
+              onClick={onConfirm}
+              autoFocus
+            >
+              {confirmText}
+            </button>
+            <button
+              className="Button"
+              onClick={onClose}
+            >
+              {cancelText}
+            </button>
+          </div>
         </div>
       </SkyLightStateless>
     </div>
@@ -72,7 +70,7 @@ PopupConfirm.propTypes = {
   className: React.PropTypes.string,
   onClose: React.PropTypes.func,
   onConfirm: React.PropTypes.func,
-  isModal: React.PropTypes.bool,
+  isClosable: React.PropTypes.bool,
   isVisible: React.PropTypes.bool,
 };
 PopupConfirm.defaultProps = {
@@ -82,7 +80,7 @@ PopupConfirm.defaultProps = {
   className: '',
   onClose: noop,
   onConfirm: noop,
-  isModal: false,
+  isClosable: true,
   isVisible: true,
 };
 

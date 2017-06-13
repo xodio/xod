@@ -65,22 +65,29 @@ class PopupCreateWorkspace extends React.Component {
   render() {
     return (
       <SkyLight
-        dialogStyles={{
-          height: 'auto',
-        }}
-        closeButtonStyle={{
-          display: 'none',
-        }}
+        isClosable={false}
         ref={this.assignPopupRef}
         title="New workspace"
       >
-        {this.getContent()}
-        <button onClick={this.props.onClose}>
-          Change location
-        </button>
-        <button onClick={this.onCreateWorkspace}>
-          {this.getButtonCaption()}
-        </button>
+        <div className="ModalBody">
+          <div className="ModalContent">
+            {this.getContent()}
+          </div>
+          <div className="ModalFooter">
+            <button
+              className="Button"
+              onClick={this.onCreateWorkspace}
+            >
+              {this.getButtonCaption()}
+            </button>
+            <button
+              className="Button"
+              onClick={this.props.onClose}
+            >
+              Change location
+            </button>
+          </div>
+        </div>
       </SkyLight>
     );
   }

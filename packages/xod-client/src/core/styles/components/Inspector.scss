@@ -74,6 +74,16 @@
   }
 }
 
+.invalid {
+  color: #ed5b5b;
+  border: 1px solid #ed5b5b;
+}
+
+.inspectorInput--full-width {
+  display: block;
+  width: 100%;
+}
+
 .inspectorTextInput {
   @extend .inspectorInput;
 

@@ -1,0 +1,54 @@
+.ModalBody {
+  color: $modal-fg-color;
+  padding: 0 14px 14px 14px;
+
+  &--light {
+    color: $modal-fg-color-light;
+    background-color: $modal-bg-color-light;
+  }
+}
+
+.ModalContent {
+  padding-top: 14px;
+
+  .helpText {
+    margin: 7px 0 0 0;
+  }
+}
+
+.ModalFooter {
+  padding-top: 14px;
+
+  .Button {
+    margin-right: 14px;
+  }
+}
+
+.CodeboxModalContent {
+  display: flex;
+  height: 100%;
+  flex-flow: column;
+
+  .Codebox {
+    flex: 1;
+    box-sizing: border-box;
+    width: 100%;
+    height: 300px;
+
+    font-family: $font-family-mono;
+    color: $modal-fg-color-light;
+    background-color: $modal-bg-color-light;
+  }
+
+  .ModalFooter {
+    padding-bottom: 30px;
+  }
+}
+
+
+.ProgressBar {
+  height: 10px;
+  width: 100%;
+  border: 1px solid #373737;
+  border-radius: 10px;
+}

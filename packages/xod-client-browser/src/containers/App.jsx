@@ -6,10 +6,6 @@ import EventListener from 'react-event-listener';
 import { HotKeys } from 'react-hotkeys';
 
 import client from 'xod-client';
-import {
-  getProjectName,
-  getProjectAuthors,
-} from 'xod-project';
 
 import PopupInstallApp from '../components/PopupInstallApp';
 
@@ -203,8 +199,6 @@ class App extends client.App {
           onBeforeUnload={this.onCloseApp}
         />
         <client.Toolbar
-          projectName={getProjectName(this.props.project)}
-          projectAuthors={getProjectAuthors(this.props.project)}
           menuBarItems={this.getMenuBarItems()}
         />
         <client.Editor size={this.state.size} />

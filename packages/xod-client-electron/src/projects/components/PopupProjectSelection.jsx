@@ -47,12 +47,15 @@ const PopupProjectSelection = ({
     if (projects.status === REDUCER_STATUS.LOADED) {
       return (
         <div>
-          <ul className="ProjectList">
-            {projects.list.map(renderProjectElement)}
-          </ul>
-
-          <button onClick={onSwitchWorkspace}>Switch workspace</button>
-          <button onClick={onCreateNewProject}>Create new project</button>
+          <div className="ModalContent">
+            <ul className="ProjectList">
+              {projects.list.map(renderProjectElement)}
+            </ul>
+          </div>
+          <div className="ModalFooter">
+            <button onClick={onSwitchWorkspace} className="Button">Switch workspace</button>
+            <button onClick={onCreateNewProject} className="Button">Create new project</button>
+          </div>
         </div>
       );
     }

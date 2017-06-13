@@ -1,7 +1,7 @@
 .SnackBarMessage {
   position: relative;
   display: none;
-  margin-top: 1px;
+  margin-top: 7px;
   transition: all 0.3s ease-in;
   left: 0;
 
@@ -14,25 +14,37 @@
   }
 
   &.error {
-    a { background-color: #600; }
+    a {
+      color: $color-error;
+      border-color: $color-error;
+    }
   }
 
   &.confirmation {
-    a { background-color: #060; }
+    a {
+      border-color: $message-border-color;
+    }
   }
 
   &.notification {
-    a { background-color: #006; }
+    a {
+      border-color: $color-success;
+    }
   }
 
   a {
     display: block;
-    padding: 8px 16px;
-    color: #fff;
-    background-color: #666;
-    box-shadow: inset 0 -1px rgba(0,0,0,.25);
+    padding: 11px 11px;
+    color: $message-text-color;
+    background-color: $message-bg-color;
+    box-shadow: 0 0 7px rgba(0,0,0,.5);
+
+    border: 2px solid $message-border-color;
+    border-radius: 6px;
 
     cursor: default;
     outline: none;
+
+    p { margin: 0; }
   }
 }

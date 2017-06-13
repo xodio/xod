@@ -29,11 +29,20 @@ storiesOf('Menubar', module)
       { key: 1, label: 'Hello' },
       {
         key: 2,
-        label: 'Parent',
+        label: 'Parent 1',
         submenu: [
-          { key: 1, label: 'Child 1' },
-          { key: 2, label: 'Child 2' },
-          { key: 3, label: 'Child 3' },
+          { key: 1, label: 'Child 1.1' },
+          { key: 2, label: 'Child 1.2', hotkey: 'ctrl+alt+del' },
+          { key: 3, type: 'separator' },
+          { key: 4, label: 'Child 1.3' },
+        ],
+      },
+      {
+        key: 3,
+        label: 'Parent 2',
+        submenu: [
+          { key: 1, label: 'Child 2.1' },
+          { key: 2, label: 'Child 2.2' },
         ],
       },
     ];

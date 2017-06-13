@@ -60,7 +60,7 @@ function assertNoPopups(client) {
 }
 
 function confirmPopup(client) {
-  return findPopup(client).click('button.PopupButton-Primary');
+  return findPopup(client).click('button.Button--primary');
 }
 
 //-----------------------------------------------------------------------------
