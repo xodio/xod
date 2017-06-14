@@ -1,0 +1,83 @@
+{
+  "description": "",
+  "links": [],
+  "nodes": [
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "BJBmSxOQZ",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "H1MEuedXb",
+      "label": "",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "SJ9mBlumZ",
+      "label": "",
+      "position": {
+        "x": 522,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "SkfESlumW",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rJDNBgOXW",
+      "label": "",
+      "position": {
+        "x": 266,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "ryXQBgu7-",
+      "label": "",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "ryrN_lumZ",
+      "label": "",
+      "position": {
+        "x": 394,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

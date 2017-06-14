@@ -1,0 +1,123 @@
+{
+  "description": "",
+  "links": [
+    {
+      "id": "SJrUn1uQ-",
+      "input": {
+        "nodeId": "r1kI3k_mZ",
+        "pinKey": "rkAnKBvyZ"
+      },
+      "output": {
+        "nodeId": "HkVEhkO7b",
+        "pinKey": "rymG3j6b-"
+      }
+    },
+    {
+      "id": "SkDS2JdQW",
+      "input": {
+        "nodeId": "H1-HhyuQW",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "HkVEhkO7b",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "SkU43JdmW",
+      "input": {
+        "nodeId": "BJp73yOQ-",
+        "pinKey": "BJJICN2lW"
+      },
+      "output": {
+        "nodeId": "S1cQhJuXW",
+        "pinKey": "ryVmUAOrvkb"
+      }
+    },
+    {
+      "id": "Sk_N2kOmZ",
+      "input": {
+        "nodeId": "HkVEhkO7b",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "BJp73yOQ-",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "r1MLnyumb",
+      "input": {
+        "nodeId": "r1kI3k_mZ",
+        "pinKey": "ByXnYHPyb"
+      },
+      "output": {
+        "nodeId": "H1-HhyuQW",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "BJp73yOQ-",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "boundValues": {
+        "SJqZ8COrDkW": 0.5
+      },
+      "description": "",
+      "id": "H1-HhyuQW",
+      "label": "",
+      "position": {
+        "x": 10,
+        "y": 328
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "boundValues": {
+        "BJuORNheZ": 14
+      },
+      "description": "",
+      "id": "HkVEhkO7b",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/core/analog-input"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "S1cQhJuXW",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/core/boot"
+    },
+    {
+      "boundValues": {
+        "rJsaFSvk-": 3
+      },
+      "description": "",
+      "id": "r1kI3k_mZ",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 432
+      },
+      "type": "xod/core/pwm-output"
+    }
+  ]
+}

@@ -1,0 +1,248 @@
+{
+  "description": "",
+  "links": [
+    {
+      "id": "B1PIk6UXZ",
+      "input": {
+        "nodeId": "Skz7k6Im-",
+        "pinKey": "HJ6HsEngZ"
+      },
+      "output": {
+        "nodeId": "rJa71TLQZ",
+        "pinKey": "r1if8ROSDJ-"
+      }
+    },
+    {
+      "id": "BJ55la87-",
+      "input": {
+        "nodeId": "S1_tlaIXb",
+        "pinKey": "rJf8o4ngZ"
+      },
+      "output": {
+        "nodeId": "BkJKxaIXZ",
+        "pinKey": "HyjUA_HvkW"
+      }
+    },
+    {
+      "id": "By85lTLXW",
+      "input": {
+        "nodeId": "SktOxpUmZ",
+        "pinKey": "BJJICN2lW"
+      },
+      "output": {
+        "nodeId": "B1Bdl6U7Z",
+        "pinKey": "ryVmUAOrvkb"
+      }
+    },
+    {
+      "id": "H13Ly6IQZ",
+      "input": {
+        "nodeId": "Skz7k6Im-",
+        "pinKey": "rJf8o4ngZ"
+      },
+      "output": {
+        "nodeId": "rkczJ6U7-",
+        "pinKey": "HyjUA_HvkW"
+      }
+    },
+    {
+      "id": "H1rLJpLQZ",
+      "input": {
+        "nodeId": "rJa71TLQZ",
+        "pinKey": "ry3zLA_Bv1Z"
+      },
+      "output": {
+        "nodeId": "rkczJ6U7-",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "HJocxaI7-",
+      "input": {
+        "nodeId": "S1_tlaIXb",
+        "pinKey": "HJ6HsEngZ"
+      },
+      "output": {
+        "nodeId": "BkJKxaIXZ",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "HyKPJa8mb",
+      "input": {
+        "nodeId": "rkczJ6U7-",
+        "pinKey": "ryTIROHwkW"
+      },
+      "output": {
+        "nodeId": "Bkc-kpLXb",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "HyRUJTIXZ",
+      "input": {
+        "nodeId": "SyXV1687-",
+        "pinKey": "HJ6HsEngZ"
+      },
+      "output": {
+        "nodeId": "rkczJ6U7-",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "SkdvkaImW",
+      "input": {
+        "nodeId": "Bkc-kpLXb",
+        "pinKey": "BJJICN2lW"
+      },
+      "output": {
+        "nodeId": "Byw-ypUmW",
+        "pinKey": "ryVmUAOrvkb"
+      }
+    },
+    {
+      "id": "r1gDy6I7Z",
+      "input": {
+        "nodeId": "SyXV1687-",
+        "pinKey": "rJf8o4ngZ"
+      },
+      "output": {
+        "nodeId": "rkczJ6U7-",
+        "pinKey": "HyjUA_HvkW"
+      }
+    },
+    {
+      "id": "ryO5eaIX-",
+      "input": {
+        "nodeId": "BkJKxaIXZ",
+        "pinKey": "ryTIROHwkW"
+      },
+      "output": {
+        "nodeId": "SktOxpUmZ",
+        "pinKey": "HJU8CE2lW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "B1Bdl6U7Z",
+      "label": "",
+      "position": {
+        "x": 394,
+        "y": 16
+      },
+      "type": "xod/core/boot"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "BkJKxaIXZ",
+      "label": "",
+      "position": {
+        "x": 394,
+        "y": 224
+      },
+      "type": "xod/core/flip-flop"
+    },
+    {
+      "boundValues": {
+        "B13SCNhl-": 0.25
+      },
+      "description": "",
+      "id": "Bkc-kpLXb",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "Byw-ypUmW",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/core/boot"
+    },
+    {
+      "boundValues": {
+        "B134j4neZ": 11
+      },
+      "description": "",
+      "id": "S1_tlaIXb",
+      "label": "Red LED",
+      "position": {
+        "x": 394,
+        "y": 432
+      },
+      "type": "xod/core/digital-output"
+    },
+    {
+      "boundValues": {
+        "B13SCNhl-": 0.7
+      },
+      "description": "",
+      "id": "SktOxpUmZ",
+      "label": "",
+      "position": {
+        "x": 394,
+        "y": 120
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "boundValues": {
+        "B134j4neZ": 13
+      },
+      "description": "",
+      "id": "Skz7k6Im-",
+      "label": "Yellow LED",
+      "position": {
+        "x": 10,
+        "y": 432
+      },
+      "type": "xod/core/digital-output"
+    },
+    {
+      "boundValues": {
+        "B134j4neZ": 12
+      },
+      "description": "",
+      "id": "SyXV1687-",
+      "label": "Blue LED",
+      "position": {
+        "x": 138,
+        "y": 432
+      },
+      "type": "xod/core/digital-output"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rJa71TLQZ",
+      "label": "",
+      "position": {
+        "x": 10,
+        "y": 328
+      },
+      "type": "xod/core/not"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rkczJ6U7-",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/core/flip-flop"
+    }
+  ]
+}

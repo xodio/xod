@@ -1,0 +1,83 @@
+{
+  "description": "",
+  "links": [],
+  "nodes": [
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "BJBmSxOQZ",
+      "label": "SEN",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "S1te_ldQZ",
+      "label": "LVL",
+      "position": {
+        "x": 394,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "SJ9mBlumZ",
+      "label": "UPD",
+      "position": {
+        "x": 522,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "SkfESlumW",
+      "label": "STAT",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "r1keulu7W",
+      "label": "NAME",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rJDNBgOXW",
+      "label": "RDY",
+      "position": {
+        "x": 266,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "ryXQBgu7-",
+      "label": "PUMP",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

@@ -1,0 +1,271 @@
+{
+  "description": "",
+  "links": [
+    {
+      "id": "B15hIxuQb",
+      "input": {
+        "nodeId": "rkW2Lldmb",
+        "pinKey": "Hkqu9oaWb"
+      },
+      "output": {
+        "nodeId": "BJ2bIgOQb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJZ9Lxd7-",
+      "input": {
+        "nodeId": "HJrYIg_mb",
+        "pinKey": "HJ6HsEngZ"
+      },
+      "output": {
+        "nodeId": "BJ5SLlOmb",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "BJw38e_7W",
+      "input": {
+        "nodeId": "HknfLluXW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkW2Lldmb",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "Bk6wLeOQ-",
+      "input": {
+        "nodeId": "BJ5SLlOmb",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "rkmS8xu7W",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "BkH2Lx_m-",
+      "input": {
+        "nodeId": "rkW2Lldmb",
+        "pinKey": "BkeKcj6ZZ"
+      },
+      "output": {
+        "nodeId": "ryEi8gdmW",
+        "pinKey": "rk4-cs6-W"
+      }
+    },
+    {
+      "id": "ByK6IguQW",
+      "input": {
+        "nodeId": "r1tzUxOmZ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkmS8xu7W",
+        "pinKey": "rymG3j6b-"
+      }
+    },
+    {
+      "id": "HJluLg_X-",
+      "input": {
+        "nodeId": "BJ5SLlOmb",
+        "pinKey": "SJqZ8COrDkW"
+      },
+      "output": {
+        "nodeId": "H1ZG8e_XZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1OIIeOQ-",
+      "input": {
+        "nodeId": "rkmS8xu7W",
+        "pinKey": "BJuORNheZ"
+      },
+      "output": {
+        "nodeId": "HJwZLxdQb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkKtUg_m-",
+      "input": {
+        "nodeId": "HJrYIg_mb",
+        "pinKey": "B134j4neZ"
+      },
+      "output": {
+        "nodeId": "B1U-8x_Xb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Skr5Lx_mb",
+      "input": {
+        "nodeId": "HJrYIg_mb",
+        "pinKey": "rJf8o4ngZ"
+      },
+      "output": {
+        "nodeId": "rkmS8xu7W",
+        "pinKey": "rymG3j6b-"
+      }
+    },
+    {
+      "id": "rkNaLedXW",
+      "input": {
+        "nodeId": "rkmS8xu7W",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "rkBzUeOmZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rye68l_7-",
+      "input": {
+        "nodeId": "ryEi8gdmW",
+        "pinKey": "S19J9j6WZ"
+      },
+      "output": {
+        "nodeId": "BJ5SLlOmb",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "B1U-8x_Xb",
+      "label": "PUMP",
+      "position": {
+        "x": 10,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "BJ2bIgOQb",
+      "label": "NAME",
+      "position": {
+        "x": 266,
+        "y": 432
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "BJ5SLlOmb",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "H1ZG8e_XZ",
+      "label": "LVL",
+      "position": {
+        "x": 394,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "HJrYIg_mb",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 432
+      },
+      "type": "xod/core/digital-output"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "HJwZLxdQb",
+      "label": "SEN",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "HknfLluXW",
+      "label": "STAT",
+      "position": {
+        "x": 266,
+        "y": 640
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "r1tzUxOmZ",
+      "label": "RDY",
+      "position": {
+        "x": 522,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rkBzUeOmZ",
+      "label": "UPD",
+      "position": {
+        "x": 522,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rkW2Lldmb",
+      "label": "",
+      "position": {
+        "x": 266,
+        "y": 536
+      },
+      "type": "xod/core/concat"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rkmS8xu7W",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/core/analog-input"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "ryEi8gdmW",
+      "label": "",
+      "position": {
+        "x": 394,
+        "y": 432
+      },
+      "type": "xod/core/to-percent"
+    }
+  ]
+}

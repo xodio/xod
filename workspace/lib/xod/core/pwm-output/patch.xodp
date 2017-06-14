@@ -8,7 +8,7 @@
       "id": "ByXnYHPyb",
       "label": "DUTY",
       "position": {
-        "x": 10,
+        "x": 138,
         "y": 16
       },
       "type": "xod/patch-nodes/input-number"
@@ -30,7 +30,7 @@
       "id": "rJsaFSvk-",
       "label": "PORT",
       "position": {
-        "x": 138,
+        "x": 10,
         "y": 16
       },
       "type": "xod/patch-nodes/input-number"
