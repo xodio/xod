@@ -1,7 +1,6 @@
-import * as R from 'ramda';
 import * as xodFs from 'xod-fs';
 import { getProjectName, getProjectVersion } from 'xod-project';
-import { createLibUri, toString } from './lib-uri';
+import { createLibUri, toString, toStringWithoutTag } from './lib-uri';
 import * as messages from './messages';
 import * as swagger from './swagger';
 
@@ -29,11 +28,13 @@ function getLibVersion(author, orgname, projectDir) {
       xodFs.loadProjectWithoutLibs(closestProjectDir, closestWorkspaceDir))
     .then(project => xodFs.pack(project, {}))
     .then(xodball => ({
-      author,
-      folder: { 'xodball.json': JSON.stringify(xodball) },
       libname: getProjectName(xodball),
       orgname,
-      semver: `v${getProjectVersion(xodball)}`,
+      version: {
+        author,
+        folder: { 'xodball.json': JSON.stringify(xodball) },
+        semver: `v${getProjectVersion(xodball)}`,
+      },
     }));
 }
 
@@ -52,33 +53,51 @@ export default function publish(swaggerUrl, author, orgname, projectDir) {
       swagger.client(swaggerUrl),
     ])
     .then(([libVersion, swaggerClient]) => {
-      const { libname, semver } = libVersion;
+      const { libname, version: { semver } } = libVersion;
       const libUri = createLibUri(orgname, libname, semver);
-      return swaggerClient.apis.RPC
-        .publishLibrary({ version: libVersion })
-        .catch(R.compose(
-          Promise.reject.bind(Promise),
-          R.cond([
-            [
-              R.both(R.propEq('status', 400),
-                R.pathEq(['response', 'body', 'code'],
-                  'AUTHOR_DOES_NOT_EXIST')),
-              R.always(`could not find user or organization "${orgname}".`)],
-            [
-              R.both(R.propEq('status', 400),
-                R.pathEq(['response', 'body', 'code'],
-                  'VERSION_ALREADY_EXISTS')),
-              R.always(`version "${toString(libUri)}" already exists.`)],
-            [
-              R.T,
-              swagger.stringifyError],
-          ])
-        ))
+      const { Library, Organization, User, Version } = swaggerClient.apis;
+
+      function getOrgOrPutUserOrg() {
+        return Organization.getOrg({ orgname }).catch((err) => {
+          if (err.status !== 404) throw err;
+          return User.putUserOrg({ org: {}, orgname, username: author })
+            .catch((err2) => {
+              switch (err2.status) {
+                case 404:
+                  throw new Error(`could not find user "${author}".`);
+                case 409:
+                  throw new Error(`orgname "${orgname}" already taken.`);
+                default:
+                  throw swagger.error(err2);
+              }
+            });
+        });
+      }
+
+      function postLibVersion() {
+        return Version.postLibVersion(libVersion)
+          .catch((err) => {
+            switch (err.status) {
+              case 404:
+                throw new Error(`could not find user "${author}" or ` +
+                  `library ${toStringWithoutTag(libUri)}.`);
+              case 409:
+                throw new Error(
+                  `version "${toString(libUri)}" already exists.`);
+              default:
+                throw swagger.error(err);
+            }
+          });
+      }
+
+      return getOrgOrPutUserOrg()
+        .then(() => Library.putOrgLib({ lib: {}, libname, orgname }))
+        .then(postLibVersion)
         .then(() => `Published "${toString(libUri)}".`);
     })
     .then(messages.success)
     .catch((err) => {
-      messages.error(err);
+      messages.error(err.toString());
       process.exit(1);
     });
 }
