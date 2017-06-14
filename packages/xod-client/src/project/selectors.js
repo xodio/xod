@@ -26,7 +26,7 @@ export const projectLens = R.lensProp('project');
 //
 
 // :: State -> IndexedLinks
-const getCurrentPatchLinks = createSelector(
+export const getCurrentPatchLinks = createSelector(
   [getProject, getCurrentPatchPath],
   (project, currentPatchPath) => {
     if (!currentPatchPath) return {};
@@ -121,7 +121,7 @@ const mergePinDataFromPatch = R.curry((project, node) => {
 });
 
 // :: State -> StrMap Node
-const getCurrentPatchNodes = createSelector(
+export const getCurrentPatchNodes = createSelector(
   [getProject, getCurrentPatchPath],
   (project, currentPatchPath) => {
     if (!currentPatchPath) return {};

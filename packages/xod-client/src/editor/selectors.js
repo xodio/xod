@@ -17,6 +17,11 @@ export const getSelection = R.pipe(
   R.prop('selection')
 );
 
+export const selectionLens = R.lens(
+  getSelection,
+  R.assocPath(['editor', 'selection'])
+);
+
 export const getSelectedNodeType = R.pipe(
   getEditor,
   R.prop('selectedNodeType')

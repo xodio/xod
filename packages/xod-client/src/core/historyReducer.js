@@ -2,7 +2,7 @@ import R from 'ramda';
 import { lensPatch, assocPatch, getPatchPath } from 'xod-project';
 import { explode } from 'xod-func-tools';
 
-import { getProject, projectLens } from './selectors';
+import { getProject, projectLens } from '../project/selectors';
 
 import {
   PATCH_HISTORY_SAVE,
@@ -14,7 +14,7 @@ import {
   PROJECT_OPEN,
   PROJECT_IMPORT,
   PROJECT_OPEN_WORKSPACE,
-} from './actionTypes';
+} from '../project/actionTypes';
 
 const HISTORY_DIRECTION = {
   PAST: 'past',
