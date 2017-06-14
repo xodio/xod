@@ -1,6 +1,6 @@
 import R from 'ramda';
 import React from 'react';
-import { SkyLightStateless } from 'react-skylight';
+import { PopupForm } from 'xod-client';
 
 import { ENUMERATING_PORTS, ENUMERATING_BOARDS, NO_PORTS_FOUND } from '../../shared/messages';
 
@@ -117,11 +117,20 @@ class PopupUploadConfig extends React.Component {
 
   renderBoardSelect() {
     const select = (this.state.boards === null) ? (
-      <select id="targetBoard" disabled>
+      <select
+        id="targetBoard"
+        className="inspectorSelectInput inspectorInput--full-width"
+        disabled
+      >
         <option>{ENUMERATING_BOARDS}</option>
       </select>
     ) : (
-      <select id="targetBoard" onChange={this.onBoardChanged} value={this.getSelectedBoardIndex()}>
+      <select
+        id="targetBoard"
+        className="inspectorSelectInput inspectorInput--full-width"
+        onChange={this.onBoardChanged}
+        value={this.getSelectedBoardIndex()}
+      >
         {this.state.boards.map((board, ix) => (
           <option key={`${board.board}_${ix}`} value={ix}>
             {board.board}
@@ -132,7 +141,7 @@ class PopupUploadConfig extends React.Component {
 
     return (
       <div>
-        <label htmlFor="targetBoard">Select board model:</label>
+        <label htmlFor="targetBoard">Board model:</label>
         <div>
           {select}
         </div>
@@ -147,6 +156,7 @@ class PopupUploadConfig extends React.Component {
     const select = (hasPorts) ? (
       <select
         id="targetPort"
+        className="inspectorSelectInput inspectorInput--full-width"
         onChange={this.onPortChanged}
         value={this.getSelectedPortName()}
       >
@@ -157,7 +167,11 @@ class PopupUploadConfig extends React.Component {
         ))}
       </select>
     ) : (
-      <select id="targetPort" disabled>
+      <select
+        id="targetPort"
+        className="inspectorSelectInput"
+        disabled
+      >
         <option>
           {(this.state.ports === null) ? ENUMERATING_PORTS : NO_PORTS_FOUND}
         </option>
@@ -166,10 +180,23 @@ class PopupUploadConfig extends React.Component {
 
     return (
       <div>
-        <label htmlFor="targetPort">Select serial port:</label>
-        <div>
+        <label htmlFor="targetPort">Serial port:</label>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+          }}
+        >
           {select}
-          <button onClick={this.onRefreshPortsClicked} disabled={isSelecting}>Refresh</button>
+          <button
+            className="Button Button--small"
+            style={{ marginLeft: '1em' }}
+            onClick={this.onRefreshPortsClicked}
+            disabled={isSelecting}
+          >
+            Refresh
+          </button>
         </div>
       </div>
     );
@@ -180,20 +207,23 @@ class PopupUploadConfig extends React.Component {
     const ports = this.renderPortSelect();
 
     return (
-      <SkyLightStateless
-        dialogStyles={{ height: 'auto' }}
+      <PopupForm
         isVisible={this.props.isVisible}
         title="Upload project to Arduino"
-        onCloseClicked={this.onClose}
-        onOverlayClicked={this.onClose}
+        onClose={this.onClose}
       >
-        {boards}
-        {ports}
-
-        <button onClick={this.onUploadClicked} disabled={!this.canUnpload()}>
-          Upload
-        </button>
-      </SkyLightStateless>
+        <div className="ModalContent">
+          {boards}
+        </div>
+        <div className="ModalContent">
+          {ports}
+        </div>
+        <div className="ModalFooter">
+          <button onClick={this.onUploadClicked} className="Button" disabled={!this.canUnpload()}>
+            Upload
+          </button>
+        </div>
+      </PopupForm>
     );
   }
 }
