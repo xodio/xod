@@ -4,6 +4,7 @@
 
 export const TRANSPILE_ERROR = 'TRANSPILE_ERROR';
 
+export const NO_PORTS_FOUND = 'NO_PORTS_FOUND';
 export const PORT_NOT_FOUND = 'PORT_NOT_FOUND';
 export const IDE_NOT_FOUND = 'IDE_NOT_FOUND';
 export const PACKAGES_NOT_FOUND = 'PACKAGES_NOT_FOUND';

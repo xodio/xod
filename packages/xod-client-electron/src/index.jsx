@@ -5,9 +5,11 @@ import { Root, initialState } from 'xod-client';
 import App from './view/containers/App';
 
 import popupsReducer from './popups/reducer';
+import uploadReducer from './upload/reducer';
 
 const extraReducers = {
   popups: popupsReducer,
+  upload: uploadReducer,
 };
 
 ReactDOM.render(

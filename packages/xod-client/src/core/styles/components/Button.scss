@@ -37,4 +37,9 @@
       border-color: $button-border-color-active-light;
     }
   }
+
+  &--small {
+    box-sizing: border-box;
+    padding: 6px 10px;
+  }
 }

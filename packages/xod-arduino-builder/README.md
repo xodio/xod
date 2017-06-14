@@ -60,7 +60,7 @@ c(xab.installPAV(pav));
 View the boards supported by the selected `pav`:
 
 ```javascript
-c(xab.listPAVBoards(pav));
+c(xab.loadPAVBoards(pav));
 const pab = {
   package: pav.package,
   architecture: pav.architecture,

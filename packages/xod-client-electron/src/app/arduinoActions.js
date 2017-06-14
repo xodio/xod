@@ -1,6 +1,7 @@
 import R from 'ramda';
 import fs from 'fs';
 import { resolve } from 'path';
+
 import { resolvePath, writeFile, doesDirectoryExist, doesFileExist } from 'xod-fs';
 import { foldEither, notEmpty, tapP, rejectWithCode } from 'xod-func-tools';
 import { transpileForArduino } from 'xod-arduino';
@@ -11,12 +12,59 @@ import * as settings from './settings';
 import * as MESSAGES from '../shared/messages';
 import formatError from '../shared/errorFormatter';
 import * as ERROR_CODES from '../shared/errorCodes';
+import * as EVENTS from '../shared/events';
 
 // =============================================================================
 //
 // Utils
 //
 // =============================================================================
+
+// :: () -> { ide :: Path, packages: Path }
+const loadArduinoPaths = R.compose(
+  R.applySpec({
+    ide: settings.getArduinoIDE,
+    packages: settings.getArduinoPackages,
+  }),
+  settings.load
+);
+
+/**
+ * Returns a list of Boards, that was bundled into `xod-client-electron`.
+ */
+// :: () -> [Board]
+export const getListOfBoards = R.compose(
+  xab.listBoardsFromIndex,
+  xab.getArduinoPackagesOfflineIndex
+);
+
+/**
+ * Returns a target Board.
+ * It tries to take a value from Settings, if it doesn't exist
+ * it will fallback to the first Board from listOfBoards.
+ */
+// :: () -> Board
+export const loadTargetBoard = () => R.compose(
+  R.when(
+    R.either(R.isNil, R.isEmpty),
+    R.compose(
+      R.head,
+      getListOfBoards
+    )
+  ),
+  settings.getArduinoTarget,
+  settings.load
+)();
+
+/**
+ * Saves a specified Board into Settings and returns itself.
+ */
+export const saveTargetBoard = board => R.compose(
+  R.always(board),
+  settings.save,
+  settings.setArduinoTarget(board),
+  settings.load
+)();
 
 // :: String[] -> String -> String -> String[]
 const getPaths = R.curry(
@@ -54,25 +102,6 @@ const filterByPab = pab => R.filter(R.both(
   R.propEq('package', pab.package),
   R.propEq('architecture', pab.architecture)
 ));
-// :: PAV[] -> PAV[]
-const sortByVersion = R.sort(R.descend(R.prop('version')));
-
-// :: Port[] -> Port
-const findPort = R.find(
-  R.anyPass([
-    R.propEq('vendorId', '0x2341'),
-    R.compose(
-      R.complement(R.test(/bluetooth/i)),
-      R.prop('comName')
-    ),
-  ])
-);
-
-// :: () -> Promise String Error
-const getArduinoIDE = R.pipeP(
-  xab.loadConfig,
-  xab.getArduinoIdePathExecutable
-);
 
 // =============================================================================
 //
@@ -115,7 +144,7 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
  * @param {Object} pab See type PAB from `xod-arduino-builder`
  * @returns {Promise<Object, Error>} Promise with PAV object or Error
  */
-export const installPav = pab => Promise.all([getPAV(pab), getArduinoIDE()])
+export const installPav = pab => Promise.all([getPAV(pab), loadArduinoPaths().ide])
   .then(tapP(
     ([pav, idePath]) => xab.installPAV(pav, idePath)
   ))
@@ -123,6 +152,14 @@ export const installPav = pab => Promise.all([getPAV(pab), getArduinoIDE()])
     if (err.errorCode === xab.REST_ERROR) return rejectWithCode(ERROR_CODES.INDEX_LIST_ERROR, err);
     return rejectWithCode(ERROR_CODES.INSTALL_PAV, err);
   });
+
+/**
+ * Load boards index by PAV.
+ */
+const loadPABs = (pav) => {
+  const packagesPath = loadArduinoPaths().packages;
+  return xab.loadPAVBoards(pav, packagesPath);
+};
 
 /**
  * Search installed PAV for PAB from a list of PAVs
@@ -135,26 +172,37 @@ export const getInstalledPAV = (pab, pavs) => R.compose(
   R.defaultTo(
     rejectWithCode(ERROR_CODES.NO_INSTALLED_PAVS, { pab })
   ),
-  R.head,
-  sortByVersion,
+  R.last,
+  xab.sortByVersion,
   filterByPab(pab)
 )(pavs);
 
 /**
- * Get list of all serial ports and find one with connected Arduino device
+ * Gets list of all serial ports
  * @returns {Promise<Object, Error>} Promise with Port object or Error
  * @see {@link https://www.npmjs.com/package/serialport#listing-ports}
  */
-export const getPort = () => xab.listPorts()
-  .then(ports => R.compose(
-    R.ifElse(
-      R.isNil,
-      () => Promise.reject({ ports }),
-      port => Promise.resolve(port)
-    ),
-    R.propOr(null, 'comName'),
-    findPort
-  )(ports))
+export const listPorts = () => xab.listPorts()
+  .then(R.sort(R.descend(R.prop('comName'))))
+  .catch(rejectWithCode(ERROR_CODES.NO_PORTS_FOUND));
+
+// :: Port -> [Port] -> Boolean
+const hasPort = R.curry((port, ports) => R.compose(
+  R.gt(R.__, -1),
+  R.findIndex(R.propEq('comName', port.comName))
+)(ports));
+
+/**
+ * Validates that port is exist and returns Promise with the same Port object
+ * or Rejected Promise with Error Code and object, that contain port
+ * and list of available ports.
+ */
+export const checkPort = port => listPorts()
+  .then(R.ifElse(
+    hasPort(port),
+    R.always(port),
+    ports => Promise.reject({ port, ports })
+  ))
   .catch(rejectWithCode(ERROR_CODES.PORT_NOT_FOUND));
 
 /**
@@ -185,7 +233,7 @@ export const uploadToArduino = (pab, port, code) => {
   const tmpPath = resolve(__dirname, 'upload.tmp.cpp');
   const clearTmp = () => fs.unlinkSync(tmpPath);
 
-  return Promise.all([writeFile(tmpPath, code), getArduinoIDE()])
+  return Promise.all([writeFile(tmpPath, code), loadArduinoPaths().ide])
     .then(
       ([{ path }, idePath]) => xab.upload(pab, port, path, idePath)
     )
@@ -231,14 +279,6 @@ export const uploadToArduinoHandler = (event, payload) => {
     settings.load
   )();
 
-  const getArduinoPaths = R.compose(
-    R.applySpec({
-      ide: settings.getArduinoIDE,
-      packages: settings.getArduinoPackages,
-    }),
-    settings.load
-  );
-
   const listInstalledPAVs = R.compose(
     settings.listPAVs,
     settings.load
@@ -259,23 +299,33 @@ export const uploadToArduinoHandler = (event, payload) => {
     settings.load
   )();
 
+  const boardName = payload.board.board;
+  const pa = R.omit(['board', 'version'], payload.board);
+  const pav = R.omit(['board'], payload.board);
+
   R.pipeP(
     doTranspileForArduino,
     sendProgress(MESSAGES.CODE_TRANSPILED, 10),
-    code => getPort().then(port => ({ code, port })),
+    code => checkPort(payload.port).then(port => ({ code, port: port.comName })),
     sendProgress(MESSAGES.PORT_FOUND, 15),
     tapP(
-      () => checkArduinoIde(getArduinoPaths(), process.platform)
+      () => checkArduinoIde(loadArduinoPaths(), process.platform)
         .then(updateArduinoPaths)
     ),
     sendProgress(MESSAGES.IDE_FOUND, 20),
     tapP(
-      () => installPav(payload.pab)
-        .catch(() => getInstalledPAV(payload.pab, listInstalledPAVs()))
+      () => installPav(pav)
+        .catch(() => getInstalledPAV(pav, listInstalledPAVs()))
         .then(R.tap(savePAV))
     ),
     sendProgress(MESSAGES.TOOLCHAIN_INSTALLED, 30),
-    ({ code, port }) => uploadToArduino(payload.pab, port, code),
+    ({ code, port }) => loadPABs(pav)
+      .then(boards => ({
+        code,
+        port,
+        pab: R.assoc('board', xab.pickBoardIdentifierByBoardName(boardName, boards), pa),
+      })),
+    ({ code, port, pab }) => uploadToArduino(pab, port, code),
     stdout => sendSuccess(stdout, 100)()
   )(payload).catch(convertAndSendError);
 };
@@ -289,3 +339,43 @@ export const setArduinoIDEHandler = (event, payload) => R.compose(
   settings.setArduinoIDE(payload.path),
   settings.load
 )();
+
+export const listPortsHandler = event => listPorts()
+  .then(ports => event.sender.send(
+    EVENTS.LIST_PORTS,
+    {
+      err: false,
+      data: ports,
+    }
+  ))
+  .catch(err => event.sender.send(
+    EVENTS.LIST_PORTS,
+    {
+      err: true,
+      data: err,
+    }
+  ));
+
+export const listBoardsHandler = event => event.sender.send(
+  EVENTS.LIST_BOARDS,
+  {
+    err: false,
+    data: getListOfBoards(),
+  }
+);
+
+export const loadTargetBoardHandler = event => event.sender.send(
+  EVENTS.GET_SELECTED_BOARD,
+  {
+    err: false,
+    data: loadTargetBoard(),
+  }
+);
+
+export const saveTargetBoardHandler = (event, payload) => event.sender.send(
+  EVENTS.SET_SELECTED_BOARD,
+  {
+    err: false,
+    data: saveTargetBoard(payload),
+  }
+);

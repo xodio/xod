@@ -17,7 +17,7 @@ import {
 
 import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
-import { getUploadProcess } from '../../upload/selectors';
+import { getUploadProcess, getSelectedSerialPort } from '../../upload/selectors';
 import * as settingsActions from '../../settings/actions';
 import { SAVE_PROJECT } from '../actionTypes';
 import { UPLOAD, UPLOAD_TO_ARDUINO } from '../../upload/actionTypes';
@@ -26,6 +26,7 @@ import PopupSetArduinoIDEPath from '../../settings/components/PopupSetArduinoIDE
 import PopupCreateWorkspace from '../../settings/components/PopupCreateWorkspace';
 import PopupProjectSelection from '../../projects/components/PopupProjectSelection';
 import PopupUploadProject from '../../upload/components/PopupUploadProject';
+import PopupUploadConfig from '../../upload/components/PopupUploadConfig';
 import { REDUCER_STATUS } from '../../projects/constants';
 import { SaveProgressBar } from '../components/SaveProgressBar';
 
@@ -69,8 +70,14 @@ class App extends client.App {
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onResize = this.onResize.bind(this);
 
-    this.onUpload = this.onUpload.bind(this);
+    this.listBoards = this.listBoards.bind(this);
+    this.listPorts = this.listPorts.bind(this);
+    this.getSelectedBoard = this.getSelectedBoard.bind(this);
+
+    this.onUploadToArduinoClicked = this.onUploadToArduinoClicked.bind(this);
     this.onUploadToArduino = this.onUploadToArduino.bind(this);
+    this.onArduinoTargetBoardChange = this.onArduinoTargetBoardChange.bind(this);
+    this.onSerialPortChange = this.onSerialPortChange.bind(this);
     this.onShowCodeEspruino = this.onShowCodeEspruino.bind(this);
     this.onShowCodeNodejs = this.onShowCodeNodejs.bind(this);
     this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
@@ -82,6 +89,7 @@ class App extends client.App {
 
     this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
+    this.onUploadConfigClose = this.onUploadConfigClose.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
     this.onWorkspaceChange = this.onWorkspaceChange.bind(this);
     this.onWorkspaceCreate = this.onWorkspaceCreate.bind(this);
@@ -139,17 +147,18 @@ class App extends client.App {
     );
   }
 
-  onUpload() {
-    this.props.actions.upload();
+  onUploadToArduinoClicked() {
+    this.props.actions.uploadToArduinoConfig();
   }
 
-  onUploadToArduino(pab, processActions = null) {
+  onUploadToArduino(board, port, processActions = null) {
     const { project, currentPatchPath } = this.props;
     const proc = (processActions !== null) ? processActions : this.props.actions.uploadToArduino();
 
     ipcRenderer.send(UPLOAD_TO_ARDUINO, {
-      pab,
+      board,
       project,
+      port,
       patchPath: currentPatchPath,
     });
     ipcRenderer.on(UPLOAD_TO_ARDUINO, (event, payload) => {
@@ -165,7 +174,7 @@ class App extends client.App {
           this.showArduinoIdeNotFoundPopup();
           ipcRenderer.once('SET_ARDUINO_IDE',
             (evt, response) => {
-              if (response.code === 0) this.onUploadToArduino(pab, proc);
+              if (response.code === 0) this.onUploadToArduino(board, port, proc);
             }
           );
         }
@@ -241,6 +250,10 @@ class App extends client.App {
     this.props.actions.deleteProcess(id, UPLOAD);
   }
 
+  onUploadConfigClose() {
+    this.props.actions.hideUploadConfigPopup();
+  }
+
   onKeyDown(event) { // eslint-disable-line class-methods-use-this
     const keyCode = event.keyCode || event.which;
 
@@ -267,6 +280,14 @@ class App extends client.App {
         if (payload.code === 0) this.hideAllPopups();
       }
     );
+  }
+
+  onArduinoTargetBoardChange(board) { // eslint-disable-line
+    ipcRenderer.send(EVENTS.SET_SELECTED_BOARD, board);
+  }
+
+  onSerialPortChange(port) {
+    this.props.actions.selectSerialPort(port);
   }
 
   getSaveProgress() {
@@ -314,34 +335,10 @@ class App extends client.App {
       submenu(
         items.deploy,
         [
-          onClick(items.showCodeForEspruino, this.onShowCodeEspruino),
-          onClick(items.uploadToEspruino, this.onUpload),
-          items.separator,
+          onClick(items.showCodeForArduino, this.onShowCodeArduino),
           onClick(items.showCodeForNodeJS, this.onShowCodeNodejs),
           items.separator,
-          onClick(items.showCodeForArduino, this.onShowCodeArduino),
-          // TODO: Remove this hardcode and do a magic in the xod-arduino-builder
-          onClick(items.uploadToArduinoUno, () => this.onUploadToArduino(
-            {
-              package: 'arduino',
-              architecture: 'avr',
-              board: 'uno',
-            }
-          )),
-          onClick(items.uploadToArduinoLeonardo, () => this.onUploadToArduino(
-            {
-              package: 'arduino',
-              architecture: 'avr',
-              board: 'leonardo',
-            }
-          )),
-          onClick(items.uploadToArduinoM0, () => this.onUploadToArduino(
-            {
-              package: 'arduino',
-              architecture: 'samd',
-              board: 'mzero_bl',
-            }
-          )),
+          onClick(items.uploadToArduino, this.onUploadToArduinoClicked),
         ]
       ),
     ];
@@ -355,6 +352,16 @@ class App extends client.App {
     )(client.menu.items);
 
     return R.omit(commandsBoundToNativeMenu, client.HOTKEY);
+  }
+
+  getSelectedBoard() { // eslint-disable-line
+    return new Promise((resolve, reject) => {
+      ipcRenderer.send(EVENTS.GET_SELECTED_BOARD);
+      ipcRenderer.once(EVENTS.GET_SELECTED_BOARD, (event, response) => {
+        if (response.err) { reject(response.data); }
+        resolve(response.data);
+      });
+    });
   }
 
   initNativeMenu() {
@@ -440,6 +447,50 @@ class App extends client.App {
     this.props.actions.hideAllPopups();
   }
 
+  listBoards() { // eslint-disable-line
+    return new Promise((resolve, reject) => {
+      ipcRenderer.send(EVENTS.LIST_BOARDS);
+      ipcRenderer.once(EVENTS.LIST_BOARDS, (event, response) => {
+        if (response.err) { reject(response.data); }
+        resolve(response.data);
+      });
+    });
+  }
+  listPorts() { // eslint-disable-line
+    return new Promise((resolve, reject) => {
+      ipcRenderer.send(EVENTS.LIST_PORTS);
+      ipcRenderer.once(EVENTS.LIST_PORTS, (event, response) => {
+        if (response.err) { reject(response.data); }
+        resolve(response.data);
+      });
+    });
+  }
+
+  renderPopupUploadConfig() {
+    return (this.props.popups.uploadToArduinoConfig) ? (
+      <PopupUploadConfig
+        isVisible
+        getSelectedBoard={this.getSelectedBoard}
+        selectedPort={this.props.selectedPort}
+        listBoards={this.listBoards}
+        listPorts={this.listPorts}
+        onBoardChanged={this.onArduinoTargetBoardChange}
+        onPortChanged={this.onSerialPortChange}
+        onUpload={this.onUploadToArduino}
+        onClose={this.onUploadConfigClose}
+      />
+    ) : null;
+  }
+  renderPopupUploadProcess() {
+    return (this.props.popups.uploadProject) ? (
+      <PopupUploadProject
+        isVisible
+        upload={this.props.upload}
+        onClose={this.onUploadPopupClose}
+      />
+    ) : null;
+  }
+
   render() {
     return (
       <HotKeys keyMap={this.getKeyMap()} id="App" onContextMenu={onContextMenu}>
@@ -456,11 +507,8 @@ class App extends client.App {
           code={this.props.popupsData.showCode.code}
           onClose={this.hideAllPopups}
         />
-        <PopupUploadProject
-          isVisible={this.props.popups.uploadProject}
-          upload={this.props.upload}
-          onClose={this.onUploadPopupClose}
-        />
+        {this.renderPopupUploadConfig()}
+        {this.renderPopupUploadProcess()}
         <client.PopupPrompt
           title="Create new project"
           confirmText="Create project"
@@ -515,6 +563,7 @@ App.propTypes = R.merge(client.App.propTypes, {
   workspace: React.PropTypes.string,
   popups: React.PropTypes.objectOf(React.PropTypes.bool),
   popupsData: React.PropTypes.objectOf(React.PropTypes.object),
+  selectedPort: React.PropTypes.object,
 });
 
 const mapStateToProps = (state) => {
@@ -526,12 +575,14 @@ const mapStateToProps = (state) => {
     upload: getUploadProcess(state),
     saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),
     currentPatchPath: client.getCurrentPatchPath(state),
+    selectedPort: getSelectedSerialPort(state),
     popups: {
       createProject: client.getPopupVisibility(client.POPUP_ID.CREATING_PROJECT)(state),
       projectSelection: client.getPopupVisibility(client.POPUP_ID.OPENING_PROJECT)(state),
       switchWorkspace: client.getPopupVisibility(client.POPUP_ID.SWITCHING_WORKSPACE)(state),
       createWorkspace: client.getPopupVisibility(client.POPUP_ID.CREATING_WORKSPACE)(state),
       arduinoIDENotFound: client.getPopupVisibility(client.POPUP_ID.ARDUINO_IDE_NOT_FOUND)(state),
+      uploadToArduinoConfig: client.getPopupVisibility(client.POPUP_ID.UPLOADING_CONFIG)(state),
       uploadProject: client.getPopupVisibility(client.POPUP_ID.UPLOADING)(state),
       showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE)(state),
     },
@@ -559,8 +610,10 @@ const mapDispatchToProps = dispatch => ({
     openProject: client.openProject,
     saveProject: actions.saveProject,
     importProject: client.importProject, // used in base App class
-    upload: uploadActions.upload,
     uploadToArduino: uploadActions.uploadToArduino,
+    uploadToArduinoConfig: uploadActions.uploadToArduinoConfig,
+    hideUploadConfigPopup: uploadActions.hideUploadConfigPopup,
+    selectSerialPort: uploadActions.selectSerialPort,
     addError: client.addError,
     addConfirmation: client.addConfirmation,
     deleteProcess: client.deleteProcess,

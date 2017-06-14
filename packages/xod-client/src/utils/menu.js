@@ -95,23 +95,15 @@ const rawItems = {
   },
   showCodeForNodeJS: {
     key: 'showCodeForNodeJS',
-    label: 'Show Code for NodeJS',
+    label: 'Show Code for Raspberry Pi',
   },
   showCodeForArduino: {
     key: 'showCodeForArduino',
     label: 'Show Code For Arduino',
   },
-  uploadToArduinoUno: {
-    key: 'uploadToArduinoUno',
-    label: 'Upload to Arduino Uno',
-  },
-  uploadToArduinoLeonardo: {
-    key: 'uploadToArduinoLeonardo',
-    label: 'Upload to Arduino Leonardo',
-  },
-  uploadToArduinoM0: {
-    key: 'uploadToArduinoM0',
-    label: 'Upload to Arduino M0',
+  uploadToArduino: {
+    key: 'uploadToArduino',
+    label: 'Upload to Arduino',
   },
 };
 

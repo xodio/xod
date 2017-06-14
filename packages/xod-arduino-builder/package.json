@@ -4,8 +4,10 @@
   "description": "XOD project: Arduino Builder",
   "main": "dist/index.js",
   "scripts": {
-    "build": "babel src -d dist",
-    "dev": "yarn run build -- --watch"
+    "copy-index": " cpx \"src/*.json\" dist",
+    "build": "babel src -d dist && yarn copy-index",
+    "dev": "yarn run build -- --watch",
+    "test": "mocha test/**/*.spec.js"
   },
   "author": "Alexander Matsievsky <am@amperka.ru>",
   "repository": {
@@ -18,15 +20,22 @@
   },
   "dependencies": {
     "child-process-promise": "^2.2.1",
+    "compare-versions": "^3.0.1",
+    "hm-def": "^0.2.0",
     "ramda": "^0.23.0",
     "rest": "^2.0.0",
+    "sanctuary-def": "^0.9.0",
     "serialport": "^4.0.7",
-    "xod-func-tools": "^0.0.1",
-    "xod-fs": "^0.0.1"
+    "xod-fs": "^0.0.1",
+    "xod-func-tools": "^0.0.1"
   },
   "babel": {
     "presets": [
       "node6"
     ]
+  },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "cpx": "^1.5.0"
   }
 }

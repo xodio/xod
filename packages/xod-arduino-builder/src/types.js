@@ -1,3 +1,28 @@
+import $ from 'sanctuary-def';
+import HMDef from 'hm-def';
+import XF from 'xod-func-tools';
+
+/* Types are by convention starts with a capital leter, so: */
+/* eslint-disable new-cap */
+
+const packageName = 'xod-arduino-builder';
+const docUrl = 'http://xod.io/docs/dev/xod-arduino-builder/#';
+
+//-----------------------------------------------------------------------------
+//
+// Type utilities
+//
+//-----------------------------------------------------------------------------
+
+const Model = XF.Model(packageName, docUrl);
+const AliasType = XF.AliasType(packageName, docUrl);
+
+//-----------------------------------------------------------------------------
+//
+// Domain types
+//
+//-----------------------------------------------------------------------------
+
 /** Lens
  * @typedef {Function} Lens
  * @see {@link http://ramdajs.com/docs/#lensProp} */
@@ -23,22 +48,39 @@
  yun.pid.1=0x8041
  * */
 
-/** Package, architecture, version.
- * @typedef {Object} PAV
- * @property {string} architecture
- * @property {string} package
- * @property {string} version */
+export const ArduinoPackageIndex = AliasType('ArduinoPackageIndex', $.Object);
 
-/** Package, architecture, board.
- * @typedef {Object} PAB
- * @property {string} architecture
- * @property {string} board
- * @property {string} package */
+export const BoardIdentifier = AliasType('BoardIdentifier', $.String);
+export const BoardName = AliasType('BoardName', $.String);
+export const Board = Model('Board', {
+  architecture: $.String,
+  package: $.String,
+  version: $.String,
+  board: BoardName,
+});
 
+/** Package, architecture, version. */
+export const PAV = Model('PAV', {
+  architecture: $.String,
+  package: $.String,
+  version: $.String,
+});
+
+/** Package, architecture, board. */
+export const PAB = Model('PAB', {
+  architecture: $.String,
+  package: $.String,
+  board: BoardIdentifier,
+});
+
+export const PortName = AliasType('PortName', $.String);
 /** Serial port object.
- * @typedef {Object} Port
- * @property {string} comName - The {@link Path} or identifier used to open the serial port.
- * @see {@link https://www.npmjs.com/package/serialport#listing-ports} */
+* @typedef {Object} Port
+* @property {string} comName - The {@link Path} or identifier used to open the serial port.
+* @see {@link https://www.npmjs.com/package/serialport#listing-ports} */
+export const Port = Model('Port', {
+  comName: PortName,
+});
 
  /** Result object of any execution of shell command
   * @typedef {Object} ExecResult
@@ -59,3 +101,26 @@
  * @property {string} arduino_ide_executable
  * @property {string} arduino_ide_packages
  */
+
+//-----------------------------------------------------------------------------
+//
+// Environment
+//
+//-----------------------------------------------------------------------------
+const env = XF.env.concat([
+  Port,
+  PortName,
+  PAV,
+  PAB,
+  Board,
+  BoardName,
+  BoardIdentifier,
+  ArduinoPackageIndex,
+]);
+
+export const def = HMDef.create({
+  checkTypes: process.env.NODE_ENV !== 'production',
+  env,
+});
+
+export default def;
