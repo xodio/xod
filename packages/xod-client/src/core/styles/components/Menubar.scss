@@ -85,10 +85,13 @@ $menu-root-class: '.Menubar';
     margin: 0;
     position: relative;
     display: block;
-    padding: 7px;
     white-space: nowrap;
     user-select: none;
     cursor: pointer;
+  }
+
+  &-clickable-item {
+    padding: 9px;
   }
 
   &-item#{$menu-root-class}-item-disabled,
@@ -148,11 +151,6 @@ $menu-root-class: '.Menubar';
   &-vertical,
   &-inline {
     padding: 12px 0;
-
-    & > #{$menu-root-class}-item,
-    & > #{$menu-root-class}-submenu > #{$menu-root-class}-submenu-title {
-      padding: 9px;
-    }
   }
 
   &-vertical#{$menu-root-class}-sub {
