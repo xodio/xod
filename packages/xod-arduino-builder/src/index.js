@@ -5,7 +5,6 @@ import R from 'ramda';
 import rest from 'rest';
 import errorCode from 'rest/interceptor/errorCode';
 import mime from 'rest/interceptor/mime';
-import SerialPort from 'serialport';
 import { writeJSON, readFile, readJSON } from 'xod-fs';
 import { rejectWithCode } from 'xod-func-tools';
 
@@ -138,6 +137,20 @@ export const loadPAVBoards = R.curry(
  * @return {Promise<Port[], Error>} */
 export const listPorts = () =>
   new Promise((resolve, reject) => {
+    // serialport is a native module that can conflict in ABI versions
+    // with one built for Electron:
+    //
+    //   Error: The module '.../node_modules/serialport/build/Release/serialport.node'
+    //   was compiled against a different Node.js version using
+    //   NODE_MODULE_VERSION 53. This version of Node.js requires
+    //   NODE_MODULE_VERSION 51. Please try re-compiling or re-installing
+    //
+    // Localize it’s require so that the conflict never arise if we’re
+    // using CLI for things not related to serial port.
+    //
+    // eslint-disable-next-line global-require
+    const SerialPort = require('serialport');
+
     SerialPort.list((err, ports) => {
       if (err) reject(err);
       else resolve(ports);
