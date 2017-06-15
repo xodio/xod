@@ -97,7 +97,7 @@ export default function publish(swaggerUrl, author, orgname, projectDir) {
     })
     .then(messages.success)
     .catch((err) => {
-      messages.error(err.toString());
+      messages.error(err.message);
       process.exit(1);
     });
 }

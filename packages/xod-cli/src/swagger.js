@@ -14,6 +14,7 @@ export function error(err) {
 }
 
 export function client(swaggerUrl) {
-  return swaggerClient(swaggerUrl)
-    .catch(() => Promise.reject(`could not find swagger at "${swaggerUrl}".`));
+  return swaggerClient(swaggerUrl).catch(() => {
+    throw new Error(`could not find swagger at "${swaggerUrl}".`);
+  });
 }

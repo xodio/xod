@@ -68,8 +68,7 @@ function loadXodball(swaggerClient, libUri, semver) {
   }).then(({ obj: xodball }) => xodball)
     .catch((err) => {
       if (err.status !== 404) throw swagger.error(err);
-      throw new Error('could not find version ' +
-        `"${toString(libUri)}".`);
+      throw new Error(`could not find version "${toString(libUri)}".`);
     });
 }
 
@@ -82,8 +81,7 @@ function loadXodball(swaggerClient, libUri, semver) {
 function getProject(swaggerClient, libUri) {
   return getSemver(swaggerClient, libUri)
     .then(semver => loadXodball(swaggerClient, libUri, semver))
-    .catch((err) => {
-      if (err.status !== 404) throw swagger.error(err);
+    .catch(() => {
       throw new Error(`could not find "${toString(libUri)}".`);
     });
 }
@@ -113,7 +111,7 @@ export default function install(swaggerUrl, libUri, path2) {
     })
     .then(messages.success)
     .catch((err) => {
-      messages.error(err.toString());
+      messages.error(err.message);
       process.exit(1);
     });
 }
