@@ -1,5 +1,5 @@
 import * as xodFs from 'xod-fs';
-import { getProjectName, getProjectVersion } from 'xod-project';
+import * as xodProject from 'xod-project';
 import { createLibUri, toString, toStringWithoutTag } from './lib-uri';
 import * as messages from './messages';
 import * as swagger from './swagger';
@@ -28,12 +28,13 @@ function getLibVersion(author, orgname, projectDir) {
       xodFs.loadProjectWithoutLibs(closestProjectDir, closestWorkspaceDir))
     .then(project => xodFs.pack(project, {}))
     .then(xodball => ({
-      libname: getProjectName(xodball),
+      libname: xodProject.getProjectName(xodball),
       orgname,
       version: {
         author,
+        description: xodProject.getProjectDescription(xodball),
         folder: { 'xodball.json': JSON.stringify(xodball) },
-        semver: `v${getProjectVersion(xodball)}`,
+        semver: `v${xodProject.getProjectVersion(xodball)}`,
       },
     }));
 }
