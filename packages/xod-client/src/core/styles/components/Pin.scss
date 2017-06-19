@@ -30,26 +30,6 @@
     }
   }
 
-  &:hover {
-    .symbol {
-      &.string {
-        @include symbol-coloring(lighten($color-datatype-string, 25%));
-      }
-
-      &.number {
-        @include symbol-coloring(lighten($color-datatype-number, 25%));
-      }
-
-      &.boolean {
-        @include symbol-coloring(lighten($color-datatype-boolean, 25%));
-      }
-
-      &.pulse {
-        @include symbol-coloring(lighten($color-datatype-pulse, 25%));
-      }
-    }
-  }
-
   .linkingHighlight {
     display: none;
     fill: $color-highlight;
@@ -65,6 +45,32 @@
   &.is-selected {
     .linkingHighlight {
       fill: $color-canvas-selected;
+    }
+  }
+}
+
+.PinOverlay {
+  .symbol {
+    fill: white;
+    stroke: white;
+    stroke-width: 2px;
+    opacity: 0;
+  }
+
+  &:hover {
+    .symbol {
+      opacity: 0.5;
+    }
+  }
+
+  .linkingHighlight {
+    display: none;
+    opacity: 0; // just acts as a hotspot
+  }
+
+  &.is-highlighted {
+    .linkingHighlight {
+      display: block;
     }
   }
 }

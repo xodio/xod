@@ -16,9 +16,6 @@ class Node extends React.Component {
     super(props);
     this.id = this.props.id;
     this.onMouseDown = this.onMouseDown.bind(this);
-
-    this.onPinMouseUp = this.onPinMouseUp.bind(this);
-    this.onPinMouseDown = this.onPinMouseDown.bind(this);
   }
 
   shouldComponentUpdate(newProps) {
@@ -29,23 +26,15 @@ class Node extends React.Component {
     this.props.onMouseDown(event, this.id);
   }
 
-  onPinMouseUp(pinId) {
-    this.props.onPinMouseUp(this.id, pinId);
-  }
-
-  onPinMouseDown(pinId) {
-    this.props.onPinMouseDown(this.id, pinId);
-  }
-
   render() {
     const {
-      size,
-      position,
-      pins,
-      outputPinsSectionHeight,
       label,
-      type,
       linkingPin,
+      outputPinsSectionHeight,
+      pins,
+      position,
+      size,
+      type,
     } = this.props;
 
     const pinsArr = R.values(pins);
@@ -122,8 +111,6 @@ class Node extends React.Component {
               isAcceptingLinks={this.props.pinLinkabilityValidator(pin)}
               keyName={pin.key}
               key={`pin_${pin.key}`}
-              onMouseUp={this.onPinMouseUp}
-              onMouseDown={this.onPinMouseDown}
             />
           )}
         </g>
@@ -147,17 +134,14 @@ Node.propTypes = {
   linkingPin: React.PropTypes.object,
   pinLinkabilityValidator: React.PropTypes.func,
   onMouseDown: React.PropTypes.func,
-  onPinMouseUp: React.PropTypes.func,
-  onPinMouseDown: React.PropTypes.func,
 };
+
 Node.defaultProps = {
   isSelected: false,
   isGhost: false,
   isDragged: false,
-  pinLinkabilityValidator: R.F,
   onMouseDown: noop,
-  onPinMouseUp: noop,
-  onPinMouseDown: noop,
+  pinLinkabilityValidator: R.F,
 };
 
 export default Node;

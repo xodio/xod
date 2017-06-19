@@ -31,7 +31,7 @@
   }
 
   &:hover {
-    @include link-parts-coloring(white);
+    @include link-parts-coloring($color-highlight);
   }
 
   &.is-selected {

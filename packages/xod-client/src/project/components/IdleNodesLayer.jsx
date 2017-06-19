@@ -3,20 +3,10 @@ import React from 'react';
 import { LAYER } from '../../editor/constants';
 
 import { isNodeSelected } from '../../editor/utils';
-import { canPinsBeLinked } from '../utils';
+import { getPinLinkabilityValidator } from '../utils';
 
 import SVGLayer from './SVGLayer';
 import Node from './Node';
-
-const getPinLinkabilityValidator = (linkingPin, nodes) => {
-  if (!linkingPin) {
-    return R.F;
-  }
-
-  const selectedPin = R.path([linkingPin.nodeId, 'pins', linkingPin.pinKey], nodes);
-
-  return canPinsBeLinked(selectedPin);
-};
 
 const IdleNodesLayer = ({
   nodes,
