@@ -1227,7 +1227,7 @@ namespace _program {
     xod__core__cast_number_to_string::Storage storage_4 = {
         { }, // state
         { NodeId(0), xod__core__system_time::Outputs::TIME::KEY }, // input_IN
-        { nullptr, links_4_OUT } // output_OUT
+        { ::xod::List<char>::empty(), links_4_OUT } // output_OUT
     };
 
     NodeId links_5_VAL[] = { 1, NO_NODE };
@@ -1239,7 +1239,7 @@ namespace _program {
     NodeId links_6_VAL[] = { 1, NO_NODE };
     xod__core__constant_string::Storage storage_6 = {
         { }, // state
-        { nullptr, links_6_VAL } // output_VAL
+        { ::xod::List<char>::empty(), links_6_VAL } // output_VAL
     };
 
     NodeId links_7_VAL[] = { 1, NO_NODE };

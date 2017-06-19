@@ -1,0 +1,219 @@
+{
+  "description": "",
+  "links": [
+    {
+      "id": "B1PRkPaM-",
+      "input": {
+        "nodeId": "rJWC1DpG-",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "rkWFJPpGW",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "BJlWxDpzZ",
+      "input": {
+        "nodeId": "SyQeevTfb",
+        "pinKey": "rkAnKBvyZ"
+      },
+      "output": {
+        "nodeId": "BJApywTfW",
+        "pinKey": "rymG3j6b-"
+      }
+    },
+    {
+      "id": "BkNKyvTfb",
+      "input": {
+        "nodeId": "rkWFJPpGW",
+        "pinKey": "BJJICN2lW"
+      },
+      "output": {
+        "nodeId": "B1AOyvTM-",
+        "pinKey": "ryVmUAOrvkb"
+      }
+    },
+    {
+      "id": "BkRxgDazW",
+      "input": {
+        "nodeId": "r1IgevTG-",
+        "pinKey": "rkAnKBvyZ"
+      },
+      "output": {
+        "nodeId": "rJWC1DpG-",
+        "pinKey": "rymG3j6b-"
+      }
+    },
+    {
+      "id": "By5zlD6GZ",
+      "input": {
+        "nodeId": "SyQeevTfb",
+        "pinKey": "ByXnYHPyb"
+      },
+      "output": {
+        "nodeId": "BJApywTfW",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "HkagxPpfb",
+      "input": {
+        "nodeId": "BJbLexP6z-",
+        "pinKey": "rkAnKBvyZ"
+      },
+      "output": {
+        "nodeId": "BkQAkPpGb",
+        "pinKey": "rymG3j6b-"
+      }
+    },
+    {
+      "id": "S1tflv6fW",
+      "input": {
+        "nodeId": "BJbLexP6z-",
+        "pinKey": "ByXnYHPyb"
+      },
+      "output": {
+        "nodeId": "BkQAkPpGb",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "SkIAkP6zb",
+      "input": {
+        "nodeId": "BJApywTfW",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "rkWFJPpGW",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "r190Jw6fZ",
+      "input": {
+        "nodeId": "BkQAkPpGb",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "rkWFJPpGW",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "rJvMxDpMZ",
+      "input": {
+        "nodeId": "r1IgevTG-",
+        "pinKey": "ByXnYHPyb"
+      },
+      "output": {
+        "nodeId": "rJWC1DpG-",
+        "pinKey": "SyBtREhlW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "B1AOyvTM-",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/core/boot"
+    },
+    {
+      "boundValues": {
+        "BJuORNheZ": 14
+      },
+      "description": "",
+      "id": "BJApywTfW",
+      "label": "",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/core/analog-input"
+    },
+    {
+      "boundValues": {
+        "rJsaFSvk-": 11
+      },
+      "description": "",
+      "id": "BJbLexP6z-",
+      "label": "",
+      "position": {
+        "x": 266,
+        "y": 328
+      },
+      "type": "xod/core/pwm-output"
+    },
+    {
+      "boundValues": {
+        "BJuORNheZ": 16
+      },
+      "description": "",
+      "id": "BkQAkPpGb",
+      "label": "",
+      "position": {
+        "x": 266,
+        "y": 224
+      },
+      "type": "xod/core/analog-input"
+    },
+    {
+      "boundValues": {
+        "rJsaFSvk-": 9
+      },
+      "description": "",
+      "id": "SyQeevTfb",
+      "label": "",
+      "position": {
+        "x": 10,
+        "y": 328
+      },
+      "type": "xod/core/pwm-output"
+    },
+    {
+      "boundValues": {
+        "rJsaFSvk-": 10
+      },
+      "description": "",
+      "id": "r1IgevTG-",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 328
+      },
+      "type": "xod/core/pwm-output"
+    },
+    {
+      "boundValues": {
+        "BJuORNheZ": 15
+      },
+      "description": "",
+      "id": "rJWC1DpG-",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/core/analog-input"
+    },
+    {
+      "boundValues": {
+        "B13SCNhl-": 0.01
+      },
+      "description": "",
+      "id": "rkWFJPpGW",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/core/clock"
+    }
+  ]
+}

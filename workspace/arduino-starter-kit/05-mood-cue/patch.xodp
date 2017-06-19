@@ -1,0 +1,134 @@
+{
+  "description": "",
+  "links": [
+    {
+      "id": "B1A54O6Mb",
+      "input": {
+        "nodeId": "S1hcEOTz-",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "HkxcNOafZ",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "BJHcV_azZ",
+      "input": {
+        "nodeId": "HkxcNOafZ",
+        "pinKey": "BJJICN2lW"
+      },
+      "output": {
+        "nodeId": "HJhFVuaG-",
+        "pinKey": "ryVmUAOrvkb"
+      }
+    },
+    {
+      "id": "BklzvOTfZ",
+      "input": {
+        "nodeId": "HJc-POpzZ",
+        "pinKey": "HJdO9HwJ-"
+      },
+      "output": {
+        "nodeId": "S1hcEOTz-",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "HJ8pNu6MZ",
+      "input": {
+        "nodeId": "By76Nu6zW",
+        "pinKey": "r1sfQ_6fb"
+      },
+      "output": {
+        "nodeId": "S1hcEOTz-",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "HkMfv_pMW",
+      "input": {
+        "nodeId": "HJc-POpzZ",
+        "pinKey": "S1n95SDJb"
+      },
+      "output": {
+        "nodeId": "S1hcEOTz-",
+        "pinKey": "rymG3j6b-"
+      }
+    },
+    {
+      "id": "Hyw6VO6M-",
+      "input": {
+        "nodeId": "By76Nu6zW",
+        "pinKey": "HkaMmuTzZ"
+      },
+      "output": {
+        "nodeId": "S1hcEOTz-",
+        "pinKey": "rymG3j6b-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "S1vGmu6Gb": 9
+      },
+      "description": "",
+      "id": "By76Nu6zW",
+      "label": "",
+      "position": {
+        "x": 10,
+        "y": 432
+      },
+      "type": "xod/common-hardware/servo"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "HJc-POpzZ",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 432
+      },
+      "type": "xod/core/console-log"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "HJhFVuaG-",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/core/boot"
+    },
+    {
+      "boundValues": {
+        "B13SCNhl-": 0.02
+      },
+      "description": "",
+      "id": "HkxcNOafZ",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "boundValues": {
+        "BJuORNheZ": 14
+      },
+      "description": "",
+      "id": "S1hcEOTz-",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/core/analog-input"
+    }
+  ]
+}

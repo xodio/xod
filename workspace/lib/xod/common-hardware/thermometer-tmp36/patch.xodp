@@ -1,0 +1,133 @@
+{
+  "description": "",
+  "links": [
+    {
+      "id": "H1INzUaMW",
+      "input": {
+        "nodeId": "Hys7MUTfb",
+        "pinKey": "BJlzICOSv1-"
+      },
+      "output": {
+        "nodeId": "S13MzIpMZ",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "S1JVzLTfb",
+      "input": {
+        "nodeId": "rkFgMITM-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Hys7MUTfb",
+        "pinKey": "H12bIR_SPyZ"
+      }
+    },
+    {
+      "id": "SkWXz8aGW",
+      "input": {
+        "nodeId": "S13MzIpMZ",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "Hk_1fUaMW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1QQz86G-",
+      "input": {
+        "nodeId": "S1JWMUaMW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S13MzIpMZ",
+        "pinKey": "rymG3j6b-"
+      }
+    },
+    {
+      "id": "rJy7MLpfW",
+      "input": {
+        "nodeId": "S13MzIpMZ",
+        "pinKey": "BJuORNheZ"
+      },
+      "output": {
+        "nodeId": "H1s0WI6MZ",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "H1s0WI6MZ",
+      "label": "PORT",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "Hk_1fUaMW",
+      "label": "UPD",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundValues": {
+        "HJCWLAdSwyW": 0.35,
+        "rJbGU0_Hv1Z": 25,
+        "rkpbU0OrwyZ": 125,
+        "ry1z8CuBDy-": 0.15
+      },
+      "description": "",
+      "id": "Hys7MUTfb",
+      "label": "",
+      "position": {
+        "x": 10,
+        "y": 328
+      },
+      "type": "xod/core/map-range"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "S13MzIpMZ",
+      "label": "",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/core/analog-input"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "S1JWMUaMW",
+      "label": "RDY",
+      "position": {
+        "x": 394,
+        "y": 432
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundValues": {},
+      "description": "",
+      "id": "rkFgMITM-",
+      "label": "Tc",
+      "position": {
+        "x": 10,
+        "y": 432
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

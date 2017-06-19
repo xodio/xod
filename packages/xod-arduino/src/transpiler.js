@@ -375,7 +375,7 @@ const updatePatch = def(
 const formatValueLiteral = def(
   'formatValueLiteral :: DataValue -> String',
   R.cond([
-    [R.equals(''), R.always('nullptr')],
+    [R.equals(''), R.always('::xod::List<char>::empty()')],
     [R.is(String), x => `::xod::List<char>::fromPlainArray("${x}", ${x.length})`],
     [R.T, R.toString],
   ])
