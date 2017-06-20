@@ -62,7 +62,7 @@ describe('Editor reducer', () => {
         ],
         description: '',
         license: '',
-        version: '',
+        version: '0.0.0',
         name: 'Test project',
         patches: {
           '@/1': {

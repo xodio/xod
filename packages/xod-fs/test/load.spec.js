@@ -40,7 +40,7 @@ describe('Loader', () => {
               description: '',
               license: '',
               name: 'awesome-project',
-              version: '42',
+              version: '0.0.42',
             },
           },
         ]);

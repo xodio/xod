@@ -153,7 +153,7 @@ export const defaultizeProject = R.compose(
     authors: [],
     license: '',
     description: '',
-    version: '',
+    version: '0.0.0',
     patches: {},
     name: 'test-project-name',
   })

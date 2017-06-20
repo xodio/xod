@@ -20,7 +20,7 @@ const initialProject = defaultizeProject({
   ],
   description: '',
   license: '',
-  version: '',
+  version: '0.0.0',
   name: 'Awesome project',
   patches: {
     '@/main': {},

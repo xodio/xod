@@ -32,7 +32,7 @@ export const createProject = def(
     authors: [],
     description: '',
     license: '',
-    version: '',
+    version: '0.0.0',
     patches: {},
     name: 'untitled',
   })

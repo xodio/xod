@@ -6,7 +6,7 @@
   "name": "awesome-project",
   "description": "",
   "license": "",
-  "version": "",
+  "version": "0.0.0",
   "patches": {
     "xod/math/subtrac": {
       "description": "",
