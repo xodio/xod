@@ -1,6 +1,6 @@
 {
   "name": "xod-espruino-upload",
-  "version": "0.0.1",
+  "version": "0.1.4",
   "description": "XOD project: Espruino serial uploader",
   "scripts": {
     "build": "webpack --colors",
@@ -15,9 +15,6 @@
     "co": "^4.6.0",
     "espruino": "0.0.30",
     "jquery": "^3.1.0"
-  },
-  "engines": {
-    "node": "6.0.0"
   },
   "devDependencies": {}
 }

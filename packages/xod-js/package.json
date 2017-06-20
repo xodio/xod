@@ -1,6 +1,6 @@
 {
   "name": "xod-js",
-  "version": "0.0.1",
+  "version": "0.1.4",
   "description": "XOD project: Espruino runtime",
   "scripts": {
     "build": "webpack --colors",
@@ -16,11 +16,8 @@
     "hm-def": "^0.2.0",
     "ramda": "^0.23.0",
     "ramda-fantasy": "^0.7.0",
-    "xod-project": "^0.0.1",
-    "xod-func-tools": "^0.0.1"
-  },
-  "engines": {
-    "node": "6.0.0"
+    "xod-func-tools": "^0.1.4",
+    "xod-project": "^0.1.4"
   },
   "devDependencies": {
     "chai": "^3.5.0",
