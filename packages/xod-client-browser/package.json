@@ -6,9 +6,6 @@
     "build": "webpack --colors",
     "dev": "webpack-dev-server --watch --colors --inline --hot --config webpack.config.dev.js"
   },
-  "engines": {
-    "node": "6.0.0"
-  },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
     "ramda": "^0.23.0",

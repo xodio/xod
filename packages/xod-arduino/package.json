@@ -22,9 +22,6 @@
     "xod-project": "^0.0.1",
     "xod-func-tools": "^0.0.1"
   },
-  "engines": {
-    "node": "6.0.0"
-  },
   "devDependencies": {
     "babel-plugin-inline-import": "^2.0.4",
     "chai": "^3.5.0",

@@ -16,8 +16,5 @@
     "espruino": "0.0.30",
     "jquery": "^3.1.0"
   },
-  "engines": {
-    "node": "6.0.0"
-  },
   "devDependencies": {}
 }

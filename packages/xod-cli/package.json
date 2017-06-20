@@ -31,9 +31,6 @@
     "xod-fs": "^0.0.1",
     "xod-js": "^0.0.1"
   },
-  "engines": {
-    "node": "6.0.0"
-  },
   "babel": {
     "presets": [
       "es2015"

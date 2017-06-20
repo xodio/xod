@@ -25,8 +25,5 @@
     "chai": "^3.5.0",
     "dirty-chai": "^1.2.2",
     "documentation": "^4.0.0-beta12"
-  },
-  "engines": {
-    "node": "6.0.0"
   }
 }
