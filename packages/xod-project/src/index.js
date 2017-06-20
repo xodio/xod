@@ -3,6 +3,8 @@ export {
   createPatch,
   duplicatePatch,
   getPatchPath,
+  getPatchDescription,
+  setPatchDescription,
   listImpls,
   hasImpls,
   getImpl,
