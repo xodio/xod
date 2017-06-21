@@ -1,25 +1,14 @@
 import React from 'react';
-import SkyLight from 'react-skylight';
 import { remote } from 'electron';
+import { PopupForm } from 'xod-client';
 
 class PopupSetWorkspace extends React.Component {
   constructor(props) {
     super(props);
 
-    this.popup = null;
-
-    this.assignPopupRef = this.assignPopupRef.bind(this);
-
     this.onClose = this.onClose.bind(this);
     this.onChange = this.onChange.bind(this);
     this.changeWorkspace = this.changeWorkspace.bind(this);
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isVisible) {
-      this.show();
-    } else {
-      this.hide();
-    }
   }
 
   onChange(selection) {
@@ -66,42 +55,24 @@ class PopupSetWorkspace extends React.Component {
     }, this.onChange);
   }
 
-  show() {
-    if (this.popup) {
-      this.popup.show();
-    }
-  }
-
-  hide() {
-    if (this.popup) {
-      this.popup.hide();
-    }
-  }
-
-  assignPopupRef(ref) {
-    this.popup = ref;
-  }
-
   render() {
     const { currentWorkspace, buttonLabel } = this.getWorkspaceView();
     return (
-      <SkyLight
-        isClosable={this.props.isClosable}
-        ref={this.assignPopupRef}
+      <PopupForm
         title="Choose your workspace directory"
-        afterClose={this.onClose}
+        isVisible={this.props.isVisible}
+        isClosable={this.props.isClosable}
+        onCloseClicked={this.onClose}
       >
-        <div className="ModalBody">
-          <div className="ModalContent">
-            {currentWorkspace}
-          </div>
-          <div className="ModalFooter">
-            <button className="Button" onClick={this.changeWorkspace}>
-              {buttonLabel}
-            </button>
-          </div>
+        <div className="ModalContent">
+          {currentWorkspace}
         </div>
-      </SkyLight>
+        <div className="ModalFooter">
+          <button className="Button" onClick={this.changeWorkspace}>
+            {buttonLabel}
+          </button>
+        </div>
+      </PopupForm>
     );
   }
 }

@@ -1,6 +1,6 @@
 import { propOr } from 'ramda';
 import React from 'react';
-import SkyLight from 'react-skylight';
+import { PopupForm } from 'xod-client';
 
 const getForce = propOr(false, 'force');
 const getPath = propOr('', 'path');
@@ -8,16 +8,7 @@ const getPath = propOr('', 'path');
 class PopupCreateWorkspace extends React.Component {
   constructor(props) {
     super(props);
-    this.popup = null;
-    this.assignPopupRef = this.assignPopupRef.bind(this);
     this.onCreateWorkspace = this.onCreateWorkspace.bind(this);
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isVisible) {
-      this.show();
-    } else {
-      this.hide();
-    }
   }
 
   onCreateWorkspace() {
@@ -46,55 +37,37 @@ class PopupCreateWorkspace extends React.Component {
     return (getForce(this.props.data)) ? 'Create, force' : 'Create';
   }
 
-  show() {
-    if (this.popup) {
-      this.popup.show();
-    }
-  }
-
-  hide() {
-    if (this.popup) {
-      this.popup.hide();
-    }
-  }
-
-  assignPopupRef(ref) {
-    this.popup = ref;
-  }
-
   render() {
     return (
-      <SkyLight
+      <PopupForm
+        isVisible={this.props.isVisible}
         isClosable={false}
-        ref={this.assignPopupRef}
         title="New workspace"
       >
-        <div className="ModalBody">
-          <div className="ModalContent">
-            {this.getContent()}
-          </div>
-          <div className="ModalFooter">
-            <button
-              className="Button"
-              onClick={this.onCreateWorkspace}
-            >
-              {this.getButtonCaption()}
-            </button>
-            <button
-              className="Button"
-              onClick={this.props.onClose}
-            >
-              Change location
-            </button>
-          </div>
+        <div className="ModalContent">
+          {this.getContent()}
         </div>
-      </SkyLight>
+        <div className="ModalFooter">
+          <button
+            className="Button"
+            onClick={this.onCreateWorkspace}
+          >
+            {this.getButtonCaption()}
+          </button>
+          <button
+            className="Button"
+            onClick={this.props.onClose}
+          >
+            Change location
+          </button>
+        </div>
+      </PopupForm>
     );
   }
 }
 
 PopupCreateWorkspace.propTypes = {
-  isVisible: React.PropTypes.bool, // eslint-disable-line
+  isVisible: React.PropTypes.bool,
   data: React.PropTypes.object,
   onCreateWorkspace: React.PropTypes.func,
   onClose: React.PropTypes.func,

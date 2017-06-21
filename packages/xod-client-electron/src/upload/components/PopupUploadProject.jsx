@@ -1,6 +1,5 @@
 import React from 'react';
-import client from 'xod-client';
-import { SkyLightStateless } from 'react-skylight';
+import { STATUS, PopupForm } from 'xod-client';
 import { Line as ProgressBar } from 'rc-progress';
 
 class PopupUploadProject extends React.Component {
@@ -38,7 +37,7 @@ class PopupUploadProject extends React.Component {
     };
 
     switch (this.props.upload.status) {
-      case client.STATUS.SUCCEEDED:
+      case STATUS.SUCCEEDED:
         return (
           <div>
             <p>
@@ -47,7 +46,7 @@ class PopupUploadProject extends React.Component {
             {message}
           </div>
         );
-      case client.STATUS.FAILED:
+      case STATUS.FAILED:
         return (
           <div>
             <p>
@@ -84,11 +83,11 @@ class PopupUploadProject extends React.Component {
   }
 
   isSucceeded() {
-    return (this.props.upload.status === client.STATUS.SUCCEEDED);
+    return (this.props.upload.status === STATUS.SUCCEEDED);
   }
 
   isFailed() {
-    return (this.props.upload.status === client.STATUS.FAILED);
+    return (this.props.upload.status === STATUS.FAILED);
   }
 
   canClose() {
@@ -102,14 +101,13 @@ class PopupUploadProject extends React.Component {
     const color = this.isFailed() ? '#ed5b5b' : '#81c522';
 
     return (
-      <SkyLightStateless
+      <PopupForm
         isVisible={this.props.isVisible}
         title={title}
         isClosable={this.canClose()}
-        onCloseClicked={this.onClose}
-        onOverlayClicked={this.onClose}
+        onClose={this.onClose}
       >
-        <div className="ModalBody">
+        <div className="ModalContent">
           <ProgressBar
             percent={progress}
             strokeWidth="5"
@@ -119,11 +117,11 @@ class PopupUploadProject extends React.Component {
             trailColor="#373737"
             className="ProgressBar"
           />
-          <div className="ModalContent">
-            {message}
-          </div>
         </div>
-      </SkyLightStateless>
+        <div className="ModalContent">
+          {message}
+        </div>
+      </PopupForm>
     );
   }
 }
@@ -136,7 +134,7 @@ PopupUploadProject.propTypes = {
 
 PopupUploadProject.defaultProps = {
   upload: {
-    status: client.STATUS.STARTED,
+    status: STATUS.STARTED,
     message: '',
     percentage: 0,
   },

@@ -1,7 +1,7 @@
 import { propOr } from 'ramda';
 import React from 'react';
-import SkyLight from 'react-skylight';
 import { shell, remote } from 'electron';
+import { PopupForm } from 'xod-client';
 
 import { DEFAULT_APPLICATION_DIRECTORY } from '../constants';
 
@@ -10,17 +10,8 @@ const openDownloadPage = () => shell.openExternal('https://www.arduino.cc/en/Mai
 class PopupSetArduinoIDEPath extends React.Component {
   constructor(props) {
     super(props);
-    this.popup = null;
-    this.assignPopupRef = this.assignPopupRef.bind(this);
     this.onChange = this.onChange.bind(this);
     this.browseIDE = this.browseIDE.bind(this);
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isVisible) {
-      this.show();
-    } else {
-      this.hide();
-    }
   }
   onChange(selection) {
     if (selection && selection.length > 0) {
@@ -38,53 +29,34 @@ class PopupSetArduinoIDEPath extends React.Component {
       buttonLabel: 'Choose Arduino',
     }, this.onChange);
   }
-
-  show() {
-    if (this.popup) {
-      this.popup.show();
-    }
-  }
-
-  hide() {
-    if (this.popup) {
-      this.popup.hide();
-    }
-  }
-
-  assignPopupRef(ref) {
-    this.popup = ref;
-  }
-
   render() {
     return (
-      <SkyLight
-        hideOnOverlayClicked
-        ref={this.assignPopupRef}
+      <PopupForm
         title="Setup Arduino IDE"
-        afterClose={this.props.onClose}
+        isVisible={this.props.isVisible}
+        isClosable
+        onClose={this.props.onClose}
       >
-        <div className="ModalBody ModalBody--light">
-          <div className="ModalContent">
-            <p>
-              <strong>Could not find Arduino IDE executable.</strong>
-            </p>
-            <p>
-              <button className="Button Button--light" onClick={this.browseIDE}>
-                Point to installed Arduino IDE
-              </button>
-            </p>
-            <hr />
-            <p>
-              <strong>Don&apos;t have an installed Arduino IDE?</strong><br />
-              You need an installed Arduino IDE to compile
-              and upload XOD programs to Arduino boards.
-            </p>
-            <button className="Button Button--light" onClick={openDownloadPage}>
-              Download & install Arduino IDE
+        <div className="ModalContent">
+          <p>
+            <strong>Could not find Arduino IDE executable.</strong>
+          </p>
+          <p>
+            <button className="Button Button--light" onClick={this.browseIDE}>
+              Point to installed Arduino IDE
             </button>
-          </div>
+          </p>
+          <hr />
+          <p>
+            <strong>Don&apos;t have an installed Arduino IDE?</strong><br />
+            You need an installed Arduino IDE to compile
+            and upload XOD programs to Arduino boards.
+          </p>
+          <button className="Button Button--light" onClick={openDownloadPage}>
+            Download & install Arduino IDE
+          </button>
         </div>
-      </SkyLight>
+      </PopupForm>
     );
   }
 }
