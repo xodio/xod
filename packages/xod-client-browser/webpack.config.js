@@ -72,6 +72,10 @@ module.exports = {
         ],
       },
       {
+        test: /\.json$/,
+        loader: 'json-loader',
+      },
+      {
         test: /\.json5$/,
         loader: 'json5-loader',
       },

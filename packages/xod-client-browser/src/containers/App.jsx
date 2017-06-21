@@ -41,6 +41,8 @@ class App extends client.App {
     this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
     this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
     this.hidePopupCreateProject = this.hidePopupCreateProject.bind(this);
+
+    props.actions.openProject(props.initialProject);
   }
 
   onResize() {
@@ -231,6 +233,7 @@ App.propTypes = R.merge(client.App.propTypes, {
   hasChanges: React.PropTypes.bool,
   projectJSON: React.PropTypes.string,
   actions: React.PropTypes.object,
+  initialProject: React.PropTypes.object.isRequired,
   popups: React.PropTypes.objectOf(React.PropTypes.bool),
   popupsData: React.PropTypes.objectOf(React.PropTypes.object),
 });
@@ -252,6 +255,7 @@ const mapDispatchToProps = dispatch => ({
     createProject: client.createProject,
     requestRenameProject: client.requestRenameProject,
     importProject: client.importProject, // used in base App class
+    openProject: client.openProject,
     setMode: client.setMode,
     addError: client.addError,
     setSelectedNodeType: client.setSelectedNodeType,
