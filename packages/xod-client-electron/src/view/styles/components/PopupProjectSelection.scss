@@ -1,19 +1,41 @@
 .ProjectList {
   display: block;
   list-style: none;
-  border: 1px solid #777;
   margin: 0;
   padding: 0;
+
+  border: 1px solid #777;
+  background: #444;
+
+  &.scroll {
+    max-height: 280px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+  	background:
+  		/* Shadow covers */
+  		linear-gradient(#444 30%, rgba(68,68,68,0)),
+  		linear-gradient(rgba(68,68,68,0), #444 70%) 0 100%,
+
+  		/* Shadows */
+  		radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.35), rgba(0,0,0,0)),
+  		radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.35), rgba(0,0,0,0)) 0 100%;
+  	background-repeat: no-repeat;
+  	background-color: #444;
+  	background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+
+  	/* Opera doesn't support this in the shorthand */
+  	background-attachment: local, local, scroll, scroll;
+  }
 
   li {
     display: block;
 
     margin: 0;
     padding: 0;
-    background-color: #3d3d3d;
 
     &:nth-child(even) {
-      background-color: #444444;
+      background-color: rgba(255,255,255,.02);
     }
 
     &.error {
@@ -59,7 +81,7 @@
       border: 0;
 
       &:hover, &:focus {
-        background-color: #5f5f5f;
+        background-color: rgba(255,255,255,.1);
       }
     }
   }
