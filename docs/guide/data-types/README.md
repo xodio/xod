@@ -40,7 +40,7 @@ value connected to its QUX pin.
 One important division of types in XOD is between a *pulse type* and any other
 type that are together called *value types*. All them described below.
 
-Pulse Type
+Pulse type
 ----------
 
 Pulse type is a very special type because it actually don’t carry any data on
@@ -58,16 +58,17 @@ signal to trigger SMS send or to adjust motor speed.
 Very often pulse signals are accompanied with other value types on neighbour
 pins. The values describe “what” whereas the pulse describes “when”.
 
-TODO: SMS in, SMS out
-
 Pulses make your programs live. Without them your device would stay intact.
-Read [Execution Model](/docs/guide/execution-model/) to understand this logic in detail.
+Read [Execution Model](../execution-model/) to understand this logic in detail.
 
 Here are short list of nodes you’ll use a lot working with pulses:
 
-TODO: refs to pulse nodes
+* [`boot`](/libs/xod/core/boot/)
+* [`clock`](/libs/xod/core/clock/)
+* [`gate`](/libs/xod/core/gate/)
+* [`any`](/libs/xod/core/any/)
 
-Boolean Type
+Boolean type
 ------------
 
 Boolean value can be either *true* or *false*. You can also think of it as a
@@ -80,9 +81,12 @@ greater than 25°?).
 
 Here are short list of nodes you’ll use a lot working with logical values:
 
-TODO: refs to logical nodes
+* [`and`](/libs/xod/core/and/)
+* [`or`](/libs/xod/core/or/)
+* [`not`](/libs/xod/core/not/)
+* [`if-else`](/libs/xod/core/if-else/)
 
-Number Type
+Number type
 -----------
 
 Numbers are widespread. The numeric data type is used to transfer sensors’
@@ -104,26 +108,56 @@ single or double precision. It depends on a target platform.
 
 Here are some nodes you’ll use to work with numbers:
 
-TODO: refs to numerical nodes
+* [`add`](/libs/xod/core/add/)
+* [`subtract`](/libs/xod/core/subtract/)
+* [`multiply`](/libs/xod/core/multiply/)
+* [`divide`](/libs/xod/core/divide/)
+* [`equal`](/libs/xod/core/equal/)
+* [`less`](/libs/xod/core/less/)
+* [`greater`](/libs/xod/core/greater/)
+* [`constrain`](/libs/xod/core/constrain/)
+* [`map-range`](/libs/xod/core/map-range/)
 
 ### Unit ranges
 
 Many nodes use numbers in range from 0 to 1. It is handy if the value denote
-some kind of percentage. For example, a [potentiometer node](TODO://#)
+some kind of percentage. For example, a potentiometer node
 uses 0.0 to denote leftmost washer position, 0.5 to denote middle position,
 and 1.0 to express rightmost position.
 
-Another example is a [LED node](TODO://#). 0.0 is used to turn it off, 0.33
+Another example is an LED node. 0.0 is used to turn it off, 0.33
 to emit 33% brightness and 1.0 to turn on at maximum brightness.
 
-Some nodes use ranges from -1 to 1. E.g. [motor node](TODO://#) use -1 for
+Some nodes use ranges from -1 to 1. E.g. motor node use -1 for
 full backward, -0.2 for 20% backward, 0 to stop and 1 to run full forward.
 
 Unit ranges are easy to operate with although they’re purely conventional.
 It’s up to a node implementation to decide what to do if an input value falls
 out of the range. Usually they’ll clamp the input to a desired range.
 
-Integer Type
+String type
+-----------
+
+Strings represent pieces of text like “Hello World!”.
+
+Unlike some languages where strings are threated specially in XOD it’s just a
+list of bytes. Thus it’s up to you to control text encoding. You can choose
+ASCII, UTF-8 or old-school CP-1252 for storage. What would work best depends
+on capabilities of hardware modules and data transfer formats you work with.
+
+Computers don’t like text actually, but humans are. You’ll use text to parse a
+high-level input like SMS or tweet and to present values back to human on
+display or via some web-service.
+
+<div class="ui segment">
+<span class="ui red ribbon label">XOD T0D0</span>
+All types described below are not yet implemented in XOD. For now, it’s just
+a description of how things <em>could</em> look like in future. We’re welcome you
+to the <a href="//forum.xod.io">discussion on our forum</a>. Here you can
+affect the design decisions.
+</div>
+
+Integer type
 ------------
 
 Although in many cases number type is enough to process numerical values,
@@ -140,7 +174,7 @@ Integer values can represent integral values from rougly ±2 milliards range.
 The underlying type for integer values is a signed 32-bit integer.
 </div>
 
-Byte Type
+Byte type
 ---------
 
 Bytes are fundamental building blocks of low-level computing. Many hardware
@@ -150,8 +184,6 @@ In XOD byte is a distinct data type that is used to perform low-level
 operations. It can’t be interchanged with other types directly. You’ll
 use some conversion nodes to convert byte values to more useful types and
 back. They are:
-
-TODO: refs to casting nodes
 
 Tuples
 ------
@@ -174,8 +206,6 @@ members are accessed by their index rather than by their name.
 You can easily pack and unpack single values to or from tuples using following
 nodes:
 
-TODO: pack/unpack nodes
-
 Lists
 -----
 
@@ -192,30 +222,6 @@ For example:
 
 Common operations on lists include:
 
-TODO: common ops
-
-### Textual strings
-
-There is one list type that deserve special attention. It is `List Byte`. List
-of bytes is used to represent pieces of text like “Hello World!”. Each
-character has a byte code (72 for “H”, 101 for “e”, 108 for “l”, etc) and whole
-string is a sequence of that byte codes. The type is also known as “byte
-string”.
-
-Unlike some languages where strings are threated specially in XOD it’s just a
-matter of convention how text is represented. Thus it’s up to you to control
-text encoding. You can choose ASCII, UTF-8 or old-school CP-1252 for storage.
-What would work best depends on capabilities of hardware modules and data
-transfer formats you work with.
-
-Computers don’t like text actually, but humans are. You’ll use text to parse
-a high-level input like SMS or tweet and to present values back to human
-on display or via some web-service.
-
-Here are nodes to note:
-
-TODO: refs to textual nodes
-
 Errors
 ------
 
@@ -227,16 +233,12 @@ rather than integer value. The same way an attempt to get an element from
 an empty list would result in another error value.
 
 Error values are viral. Once a functional node gets an error value on one of
-its inputs all it outputs get error values too. You would not be allowed to
-link a potentially error’ish value to an input of an effect node. See
-[Execution Model](/docs/guide/execution-model/#error-handling) to learn more.
+its inputs all it outputs get error values too.
 
 There are few nodes that you would use to generate your own errors and
-to handle potentially error’ish values:
+to handle potentially error’ish values.
 
-TODO: refs to err nodes
-
-Casting Rules
+Casting rules
 -------------
 
 What should happen if a pin of one type is connected to a pin of another
@@ -250,7 +252,7 @@ another. I.e. to link a pin with one type to a pin of another type.
 For some type pairs this is possible without any intermediate conversion
 nodes:
 
-<table class="ui definition table">
+<table class="ui definition single line table">
   <thead>
     <tr>
       <th></th>
@@ -258,6 +260,7 @@ nodes:
       <th>→ Number</th>
       <th>→ Integer</th>
       <th>→ Byte</th>
+      <th>→ String</th>
     </tr>
   </thead>
   <tbody>
@@ -266,7 +269,8 @@ nodes:
       <td></td>
       <td>false → 0.0,<br/>true → 1.0</td>
       <td>false → 0,<br/>true → 1</td>
-      <td>false → 0000 0000,<br/>true → 0000 0001</td>
+      <td>false →<br/>0000 0000,<br/>true →<br/>0000 0001</td>
+      <td>false →<br/>"false",<br/>true →<br/>"true"</td>
     </tr>
     <tr>
       <td>Number →</td>
@@ -274,17 +278,28 @@ nodes:
       <td></td>
       <td class="disabled">use nodes</td>
       <td class="disabled">use nodes</td>
+      <td>3.14159 →<br/>"3.14"<br/>(two digits<br/>after dot)</td>
     </tr>
     <tr>
       <td>Integer →</td>
       <td>0 → false,<br/>any other → true</td>
-      <td>converted as is</td>
+      <td>as is</td>
       <td></td>
       <td class="disabled">use nodes</td>
+      <td>as is</td>
     </tr>
     <tr>
       <td>Byte →</td>
       <td>0000 0000 → false,<br/>any other → true</td>
+      <td class="disabled">use nodes</td>
+      <td class="disabled">use nodes</td>
+      <td></td>
+      <td>1010 1111 →<br/>"10101111"</td>
+    </tr>
+    <tr>
+      <td>String →</td>
+      <td class="disabled">use nodes</td>
+      <td class="disabled">use nodes</td>
       <td class="disabled">use nodes</td>
       <td class="disabled">use nodes</td>
       <td></td>
@@ -293,9 +308,10 @@ nodes:
 </table>
 
 Other convertions can’t always be done unambigously thus are not allowed.
-Use additional nodes to make casting explicit in such cases.
+Use additional nodes to make casting explicit in such cases:
 
-TODO: example of conversion nodes
+* [`format-number`](/libs/xod/core/format-number/)
+* [`to-percent`](/libs/xod/core/to-percent/)
 
 ### List lifting
 
@@ -310,14 +326,14 @@ first position. E.g. `42` becomes `[42]`.
 
 Vice versa, if a value of type `List T` is connected to an input of type `T` in
 of a functional node that node *maps* each element of the list and its result
-value gets list type. E.g. a node [absolute](xod://xod/core/absolute) that is
+value gets list type. E.g. a node [absolute](/libs/xod/core/absolute/) that is
 usually operate on single numbers given a list `[-1, 2, 3, -4, -5]` would have
 `[1, 2, 3, 4, 5]` as a result.
 
 If two lists given as values of two inputs of a functional node the computation
-is done element-wise. E.g. a node [add](xod://xod/core/add) given `[1, 2, 3]`
-for <xod:input type="number">X</xod:input> and `[40, 50, 60]`
-for <xod:input type="number">Y</xod:input> would output `[41, 52, 63]`.
+is done element-wise. E.g. a node [add](/libs/xod/core/add/) given `[1, 2, 3]`
+for `X` and `[40, 50, 60]`
+for `Y` would output `[41, 52, 63]`.
 
 When lists’ length differ lifting operation takes a shortest one and acts as
 all lists have the same shortest length. E.g. “add” node  given `[1, 2, 3, 4]`

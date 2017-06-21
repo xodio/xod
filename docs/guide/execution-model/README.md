@@ -11,7 +11,7 @@ pointer that determines what command will be executed next moment. Instead,
 updates are done in semi-instant *transactions* where all data is evaluated
 simultaneously.
 
-Functional and Effect Nodes
+Functional and effect nodes
 ---------------------------
 
 There is such thing as a *function* in mathematics. Sure, you know many of them:
@@ -19,9 +19,9 @@ There is such thing as a *function* in mathematics. Sure, you know many of them:
 - `f(x) = sin x` is a function of single argument that returns its sine;
 - `f(r) = π × r²` is a function of single argument that returns square of a
   circle with given radius;
-- `f(x, y) = √x²+y²` is a function of two arguments that returns a distance
+- `f(x, y) = √(x² + y²)` is a function of two arguments that returns a distance
   from origin to a point with given coordinates;
-- `f(v<sub>0</sub>, a, t) = v<sub>0</sub> × t + (a × t²) / 2` is a function of
+- `f(v₀, a, t) = v₀ × t + (a × t²) / 2` is a function of
   three arguments that returns velocity of an object at a particular moment in
   time.
 
@@ -60,8 +60,8 @@ and memory of past values.
 ### Functional nodes
 
 Functional nodes always have inputs and output pins. All pins have [value
-types](/docs/guide/data-types/#value). In other words functional nodes *never* have pins
-of [pulse type](/docs/guide/data-types/#pulse).
+types](../data-types/#value). In other words functional nodes *never* have pins
+of [pulse type](../data-types/#pulse).
 
 Output values depend only on values of input pins. They can’t depend on time
 (only if given as an explicit input value), on parameters of outside world, or
@@ -70,7 +70,11 @@ always result in the same set of output values.
 
 Some examples of functional nodes are:
 
-TODO: examples of functional nodes
+* [`add`](/libs/xod/core/add/)
+* [`if-else`](/libs/xod/core/if-else/)
+* [`less`](/libs/xod/core/less/)
+* [`or`](/libs/xod/core/or/)
+* [`format-number`](/libs/xod/core/format-number/)
 
 Functional nodes affect nothing but their output values. They can’t change
 brightness of a LED or speed of a motor on their own.
@@ -88,7 +92,7 @@ Effect nodes could have just inputs, just outputs or both at once. They
 effects and their output pulses is what tell us about effects that took place.
 
 A result of hitting an effect node can be arbitrary. It could turn on a lamp,
-it could send an SMS, it could memoize a value for future use.
+send an SMS, launch a nuke, or memoize a value for future use.
 
 When such node would emit an output pulse is up to node implementation as well.
 It could pulse on an update from sensor, on SMS received or on timeout event,
@@ -96,12 +100,16 @@ for example.
 
 Some examples of effect nodes are:
 
-TODO: examples of functional nodes
+* [`clock`](/libs/xod/core/clock/)
+* [`delay`](/libs/xod/core/delay/)
+* [`buffer`](/libs/xod/core/buffer/)
+* [`analog-input`](/libs/xod/core/analog-input/)
+* [`pwm-output`](/libs/xod/core/pwm-output/)
 
 Effect nodes is a thing that complements functional land so that your program
-could interact with a user, the world and the time.
+could interact with a user, the world, and the time.
 
-Program Life Cycle
+Program life cycle
 ------------------
 
 In any particular moment a XOD program is either in a transaction or in an idle
@@ -126,12 +134,10 @@ nodes, and so on. All these dependencies are resolved by the XOD runtime
 engine. Final and intermediate values required to evaluate a node are computed
 atomically in the transaction.
 
-TODO: Image cascade
-
 After all nodes affected by a pulse are evaluated the transaction completes and
 the system returns to the idle state.
 
-Transaction Rules
+Transaction rules
 -----------------
 
 ### No external pulses while a transaction is in progress
@@ -146,8 +152,6 @@ transaction is initiated. The transaction completes, the system goes idle,
 takes next pulse from the queue, launches new transaction, and so on until the
 queue is empty.
 
-TODO: Image mechanism
-
 ### Evaluation order
 
 During a transaction any particular node will be evaluated only after all nodes
@@ -155,14 +159,14 @@ it depends on via links would be evaluated in their turn.
 
 Consider following example.
 
-TODO: Image diagram
+![Diamond graph](./abc.patch.png)
 
 The result node will be only evaluated after both branches are evaluated despite
 they have node chains of different length. You can’t know the order the branches
-will be evaluated. It could be A-B-C, C-A-B, A-C-B, or even A-B and C in parallel.
-Furthermore, result node evaluation could be postponed until its values would
-be actually required (so called “lazy evaluation”). It’s up to target platform
-to decide.
+will be evaluated. It could be M1-M2-M3, M3-M1-M2, M1-M3-M2, or even M1-M2 and
+M3 in parallel. Furthermore, result node evaluation could be postponed until
+its values would be actually required (so called “lazy evaluation”). It’s up to
+target platform to decide.
 
 The only thing that does matter is a node will be never evaluated with incomplete
 data.
@@ -181,11 +185,9 @@ required to evaluate again due to other input value change.
 <div class="ui segment">
 <span class="ui ribbon label">Pro Tip</span>
 If you’re familiar with conventional programming think of pins and their
-buffered values as *variables*. They hold the program state and evolve over the
+buffered values as <em>variables</em>. They hold the program state and evolve over the
 time.
 </div>
-
-TODO: example
 
 Whether values on of functional nodes’ pins would be buffered is up to target
 platform to decide. Since outputs of a functional node depend only on its
@@ -200,12 +202,6 @@ would lead to dead locks and program hangs.
 However it is OK to have a cycle broken by an effect node. In that case
 new value will be delivered via feedback link but the node will “see” it
 only once it would receive new incoming pulse.
-
-TODO: example
-
-### Error handling
-
-TODO:
 
 Summary
 -------
