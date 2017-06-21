@@ -53,20 +53,20 @@ class PopupUploadConfig extends React.Component {
   }
 
   getBoards(selectedBoard = this.state.selectedBoard) {
-    const boardSelected = (selectedBoard !== null);
+    const isBoardSelected = (selectedBoard !== null);
 
     this.props.listBoards()
       .then(R.tap(boards => this.setState({ boards })))
       .then((boards) => {
         const doesSelectedBoardExist = (
-          boardSelected && R.contains(selectedBoard, boards)
+          isBoardSelected && R.contains(selectedBoard, boards)
         );
         const defaultBoardIndex = R.compose(
           R.defaultTo(0),
           R.findIndex(R.propEq('board', 'Arduino/Genuino Uno'))
         )(boards);
 
-        if (!boardSelected || !doesSelectedBoardExist) {
+        if (!isBoardSelected || !doesSelectedBoardExist) {
           this.changeBoard(defaultBoardIndex);
         }
       });
