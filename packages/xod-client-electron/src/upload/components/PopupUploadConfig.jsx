@@ -26,8 +26,8 @@ class PopupUploadConfig extends React.Component {
   }
 
   componentDidMount() {
-    this.getSelectedBoard();
-    this.getBoards();
+    this.getSelectedBoard()
+      .then(selectedBoard => this.getBoards(selectedBoard));
     this.getPorts();
   }
 
@@ -52,15 +52,22 @@ class PopupUploadConfig extends React.Component {
     this.props.onUpload(this.state.selectedBoard, this.props.selectedPort);
   }
 
-  getBoards() {
-    const boardSelected = (this.state.selectedBoard !== null);
+  getBoards(selectedBoard = this.state.selectedBoard) {
+    const boardSelected = (selectedBoard !== null);
 
     this.props.listBoards()
       .then(R.tap(boards => this.setState({ boards })))
       .then((boards) => {
-        const hasSelectedBoard = R.contains(this.state.selectedBoard, boards);
-        if (boardSelected && !hasSelectedBoard) {
-          this.changeBoard(0);
+        const doesSelectedBoardExist = (
+          boardSelected && R.contains(selectedBoard, boards)
+        );
+        const defaultBoardIndex = R.compose(
+          R.defaultTo(0),
+          R.findIndex(R.propEq('board', 'Arduino/Genuino Uno'))
+        )(boards);
+
+        if (!boardSelected || !doesSelectedBoardExist) {
+          this.changeBoard(defaultBoardIndex);
         }
       });
   }
@@ -95,8 +102,8 @@ class PopupUploadConfig extends React.Component {
   }
 
   getSelectedBoard() {
-    this.props.getSelectedBoard()
-      .then(board => this.setState({ selectedBoard: board }));
+    return this.props.getSelectedBoard()
+      .then(R.tap(board => this.setState({ selectedBoard: board })));
   }
 
   changeBoard(boardIndex) {
