@@ -7,7 +7,7 @@ export default {
   description: '',
   license: '',
   name: 'untitled',
-  version: '',
+  version: '0.0.0',
   patches: {
     '@/1': {
       impls: {},

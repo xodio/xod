@@ -4,7 +4,7 @@
   ],
   "description": "",
   "license": "",
-  "version": "42",
+  "version": "0.0.42",
   "name": "awesome-project",
   "patches": {
     "xod/core/and": {

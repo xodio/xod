@@ -98,7 +98,7 @@ export const Project = Model('Project', {
   name: Identifier,
   authors: $.Array($.String),
   license: $.String,
-  version: $.String,
+  version: Version,
   description: $.String,
 });
 
