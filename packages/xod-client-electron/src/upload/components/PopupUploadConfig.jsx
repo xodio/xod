@@ -77,9 +77,17 @@ class PopupUploadConfig extends React.Component {
       .then(R.tap(ports => this.setState({ ports })))
       .then((ports) => {
         const hasSelectedPort = R.contains(this.props.selectedPort, ports);
+        const defaultPort = (ports && ports.length > 0) ? ports[0] : null;
+        const defaultPreferredPort = R.compose(
+          R.defaultTo(defaultPort),
+          R.find(R.compose(
+            R.test(/^(\/dev\/ttyUSB|\/dev\/tty.usb|\/dev\/cu.usb|\/dev\/ttyACM)/i),
+            R.prop('comName')
+          ))
+        )(ports);
+
         if (!hasSelectedPort) {
-          const portToSelect = (ports && ports.length > 0) ? ports[0] : null;
-          this.changePort(portToSelect);
+          this.changePort(defaultPreferredPort);
         }
       });
   }
