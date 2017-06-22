@@ -80,7 +80,7 @@
         }
       },
       "impls": {
-        "arduino.cpp": "//custom implementation by user to work faster on Arduino"
+        "arduino": "//custom implementation by user to work faster on Arduino"
       },
       "path": "@/main",
       "description": "main patch description"

@@ -1,10 +1,12 @@
 import { assert, expect } from 'chai';
 
 import fs from 'fs';
-import { removeSync } from 'fs-extra';
+import { removeSync, readFile } from 'fs-extra';
 import path from 'path';
 import recReadDir from 'recursive-readdir';
+import { defaultizeProject } from 'xod-project/test/helpers';
 
+import { getImplFilenameByType } from '../src/utils';
 import { saveArrangedFiles, saveProject } from '../src/save';
 import { arrangeByFiles } from '../src/unpack';
 import * as ERROR_CODES from '../src/errorCodes';
@@ -86,4 +88,27 @@ describe('saveProject', () => {
       ERROR_CODES.CANT_SAVE_PROJECT
     )
   );
+  it('should save patch implementations correctly', () => {
+    const projectName = 'impls-test';
+    const implContent = '\n      // hey-ho\n      // it should be a normal file\n      // not a stringified JSON\n    ';
+    const implContentExpected = `
+      // hey-ho
+      // it should be a normal file
+      // not a stringified JSON
+    `;
+    const proj = defaultizeProject({
+      name: projectName,
+      patches: {
+        '@/test': {
+          impls: {
+            js: implContent,
+          },
+        },
+      },
+    });
+
+    return saveProject(tempDir, proj)
+      .then(() => readFile(path.resolve(tempDir, projectName, 'test', getImplFilenameByType('js')), 'utf8'))
+      .then(content => assert.strictEqual(content, implContentExpected));
+  });
 });
