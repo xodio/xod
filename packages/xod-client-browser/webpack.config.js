@@ -94,6 +94,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
       'process.env.XOD_HM_DEF': JSON.stringify(process.env.XOD_HM_DEF || false),
+      'process.env.XOD_DOCS_URL_BASE': JSON.stringify('/libs/'),
+      'process.env.XOD_DOCS_URL_UTMS': JSON.stringify('?utm_source=ide-browser&utm_campaign=docs&utm_medium=inspector'),
     }),
   ],
   postcss: function postCssPlugins() { return [autoprefixer]; },

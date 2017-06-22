@@ -56,3 +56,6 @@ export const LINK_ERRORS = {
 export const PROPERTY_ERRORS = {
   PIN_HAS_LINK: 'PIN_HAS_LINK',
 };
+
+export const XOD_DOCS_URL_BASE = process.env.XOD_DOCS_URL_BASE;
+export const XOD_DOCS_URL_UTMS = process.env.XOD_DOCS_URL_UTMS;
