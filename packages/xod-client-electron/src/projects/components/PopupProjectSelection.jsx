@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from 'react-fa';
 import { PopupForm } from 'xod-client';
+import clx from 'classnames';
 import { REDUCER_STATUS, PROJECT_STATUS } from '../constants';
 
 const PopupProjectSelection = ({
@@ -45,10 +46,12 @@ const PopupProjectSelection = ({
 
   const renderContent = () => {
     if (projects.status === REDUCER_STATUS.LOADED) {
+      const listClassName = clx('ProjectList', { scroll: projects.list.length > 5 });
+
       return (
         <div>
           <div className="ModalContent">
-            <ul className="ProjectList">
+            <ul className={listClassName}>
               {projects.list.map(renderProjectElement)}
             </ul>
           </div>
