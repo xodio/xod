@@ -1,13 +1,12 @@
 language: node_js
+node_js: '7'
 
 matrix:
   include:
   - os: linux
-    node_js: '6'
     sudo: false
     dist: trusty
   - os: osx
-    node_js: '6'
     osx_image: xcode8.3
 
 addons:
