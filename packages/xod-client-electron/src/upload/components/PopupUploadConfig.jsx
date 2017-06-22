@@ -2,6 +2,7 @@ import R from 'ramda';
 import React from 'react';
 import { PopupForm } from 'xod-client';
 
+import { NO_PORTS_FOUND as NO_PORTS_FOUND_ERRCODE } from '../../shared/errorCodes';
 import { ENUMERATING_PORTS, ENUMERATING_BOARDS, NO_PORTS_FOUND } from '../../shared/messages';
 
 class PopupUploadConfig extends React.Component {
@@ -74,6 +75,9 @@ class PopupUploadConfig extends React.Component {
 
   getPorts() {
     this.props.listPorts()
+      .catch(err => (
+        (err.errorCode === NO_PORTS_FOUND_ERRCODE) ? [] : Promise.reject(err)
+      ))
       .then(R.tap(ports => this.setState({ ports })))
       .then((ports) => {
         const hasSelectedPort = R.contains(this.props.selectedPort, ports);
