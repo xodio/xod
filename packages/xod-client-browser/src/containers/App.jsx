@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import EventListener from 'react-event-listener';
 import { HotKeys } from 'react-hotkeys';
 
+import * as XP from 'xod-project';
 import client from 'xod-client';
 
 import PopupInstallApp from '../components/PopupInstallApp';
@@ -151,6 +152,8 @@ class App extends client.App {
         [
           onClick(items.undo, this.props.actions.undoCurrentPatch),
           onClick(items.redo, this.props.actions.redoCurrentPatch),
+          items.separator,
+          onClick(items.projectPreferences, this.props.actions.showProjectPreferences),
         ]
       ),
       submenu(
@@ -214,6 +217,12 @@ class App extends client.App {
           code={this.props.popupsData.showCode.code}
           onClose={this.props.actions.hideAllPopups}
         />
+        <client.PopupProjectPreferences
+          isVisible={this.props.popups.projectPreferences}
+          project={this.props.project}
+          onChange={this.props.actions.updateProjectMeta}
+          onClose={this.props.actions.hideProjectPreferences}
+        />
         <client.PopupPrompt
           title="Create new project"
           confirmText="Create project"
@@ -232,7 +241,7 @@ class App extends client.App {
 
 App.propTypes = R.merge(client.App.propTypes, {
   hasChanges: PropTypes.bool,
-  projectJSON: PropTypes.string,
+  project: client.sanctuaryPropType(XP.Project),
   actions: PropTypes.object,
   initialProject: PropTypes.object.isRequired,
   popups: PropTypes.objectOf(PropTypes.bool),
@@ -245,6 +254,7 @@ const mapStateToProps = R.applySpec({
   currentPatchPath: client.getCurrentPatchPath,
   popups: {
     showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE),
+    projectPreferences: client.getPopupVisibility(client.POPUP_ID.EDITING_PROJECT_PREFERENCES),
   },
   popupsData: {
     showCode: client.getPopupData(client.POPUP_ID.SHOWING_CODE),
@@ -265,6 +275,9 @@ const mapDispatchToProps = dispatch => ({
     undoCurrentPatch: client.undoCurrentPatch,
     redoCurrentPatch: client.redoCurrentPatch,
     showCode: client.showCode,
+    showProjectPreferences: client.showProjectPreferences,
+    hideProjectPreferences: client.hideProjectPreferences,
+    updateProjectMeta: client.updateProjectMeta,
     hideAllPopups: client.hideAllPopups,
   }, dispatch),
 });

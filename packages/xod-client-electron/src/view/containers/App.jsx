@@ -12,6 +12,7 @@ import { ipcRenderer, remote as remoteElectron } from 'electron';
 
 import client from 'xod-client';
 import {
+  Project,
   isValidIdentifier,
   IDENTIFIER_RULES,
 } from 'xod-project';
@@ -334,6 +335,8 @@ class App extends client.App {
           items.cut,
           items.copy,
           items.paste,
+          items.separator,
+          onClick(items.projectPreferences, this.props.actions.showProjectPreferences),
         ]
       ),
       submenu(
@@ -527,6 +530,12 @@ class App extends client.App {
             Please, give a sonorous name to your project:
           </p>
         </client.PopupPrompt>
+        <client.PopupProjectPreferences
+          isVisible={this.props.popups.projectPreferences}
+          project={this.props.project}
+          onChange={this.props.actions.updateProjectMeta}
+          onClose={this.props.actions.hideProjectPreferences}
+        />
         <PopupSetArduinoIDEPath
           isVisible={this.props.popups.arduinoIDENotFound}
           onChange={this.onArduinoPathChange}
@@ -562,6 +571,7 @@ class App extends client.App {
 App.propTypes = R.merge(client.App.propTypes, {
   hasChanges: PropTypes.bool,
   projects: PropTypes.object,
+  project: client.sanctuaryPropType(Project),
   actions: PropTypes.objectOf(PropTypes.func),
   upload: PropTypes.object,
   workspace: PropTypes.string,
@@ -589,6 +599,9 @@ const mapStateToProps = (state) => {
       uploadToArduinoConfig: client.getPopupVisibility(client.POPUP_ID.UPLOADING_CONFIG)(state),
       uploadProject: client.getPopupVisibility(client.POPUP_ID.UPLOADING)(state),
       showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE)(state),
+      projectPreferences: client.getPopupVisibility(
+        client.POPUP_ID.EDITING_PROJECT_PREFERENCES
+      )(state),
     },
     popupsData: {
       projectSelection: client.getPopupData(client.POPUP_ID.OPENING_PROJECT)(state),
@@ -625,6 +638,9 @@ const mapDispatchToProps = dispatch => ({
     undoCurrentPatch: client.undoCurrentPatch,
     redoCurrentPatch: client.redoCurrentPatch,
     showCode: client.showCode,
+    showProjectPreferences: client.showProjectPreferences,
+    hideProjectPreferences: client.hideProjectPreferences,
+    updateProjectMeta: client.updateProjectMeta,
     hideAllPopups: client.hideAllPopups,
   }, dispatch),
 });

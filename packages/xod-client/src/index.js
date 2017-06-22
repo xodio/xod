@@ -35,6 +35,8 @@ import PopupPrompt from './utils/components/PopupPrompt';
 import PopupForm from './utils/components/PopupForm';
 import DevTools from './core/containers/DevTools';
 
+import PopupProjectPreferences from './project/components/PopupProjectPreferences';
+
 import initialState from './core/state';
 
 export * from './editor/actions';
@@ -62,6 +64,7 @@ export { default as PopupConfirm } from './utils/components/PopupConfirm';
 export { default as PopupPrompt } from './utils/components/PopupPrompt';
 export { default as PopupForm } from './utils/components/PopupForm';
 export { default as Toolbar } from './utils/components/Toolbar';
+export { default as PopupProjectPreferences } from './project/components/PopupProjectPreferences';
 
 export { default as App } from './core/containers/App';
 export { default as Root } from './core/containers/Root';
@@ -93,6 +96,7 @@ export default Object.assign({
   popupsReducer,
   showOnlyPopup,
   hideOnePopup,
+  PopupProjectPreferences,
 },
   UtilsSelectors,
   EditorSelectors,

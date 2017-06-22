@@ -7,6 +7,9 @@ import { defaultizeProject } from 'xod-project/test/helpers';
 
 import {
   getProjectName,
+  getProjectLicense,
+  getProjectVersion,
+  getProjectDescription,
   lensPatch,
   listLocalPatches,
   listLibraryPatches,
@@ -33,6 +36,7 @@ import {
   openProject,
   createProject,
   renameProject,
+  updateProjectMeta,
   addPatch,
   renamePatch,
   deletePatch,
@@ -102,6 +106,20 @@ describe('project reducer', () => {
         R.omit(['name'], renamedProject),
         'everything except the name stays the same'
       );
+    });
+
+    it('should update project meta (license, description, version)', () => {
+      store.dispatch(
+        updateProjectMeta({ license: 'TEST', version: '1.2.3', description: 'Test passed' })
+      );
+      const proj = getProject(store.getState());
+      const newLicense = getProjectLicense(proj);
+      const newVersion = getProjectVersion(proj);
+      const newDescription = getProjectDescription(proj);
+
+      assert.equal(newLicense, 'TEST');
+      assert.equal(newVersion, '1.2.3');
+      assert.equal(newDescription, 'Test passed');
     });
   });
 

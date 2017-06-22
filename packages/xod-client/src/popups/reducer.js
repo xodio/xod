@@ -10,6 +10,8 @@ import {
 } from '../projectBrowser/actionTypes';
 import {
   HIDE_ALL_POPUPS,
+  SHOW_PROJECT_PREFERENCES,
+  HIDE_PROJECT_PREFERENCES,
 } from './actionTypes';
 
 import {
@@ -18,6 +20,7 @@ import {
   PATCH_RENAME,
   PROJECT_CREATE_REQUESTED,
   PROJECT_OPEN_REQUESTED,
+  PROJECT_UPDATE_META,
   PROJECT_CREATE,
   PROJECT_OPEN,
   PROJECT_RENAME,
@@ -100,6 +103,12 @@ const popupsReducer = (state = initialState, action) => {
 
     case SHOW_CODE_REQUESTED:
       return showOnlyPopup(POPUP_ID.SHOWING_CODE, action.payload, state);
+
+    case SHOW_PROJECT_PREFERENCES:
+      return showOnlyPopup(POPUP_ID.EDITING_PROJECT_PREFERENCES, {}, state);
+    case HIDE_PROJECT_PREFERENCES:
+    case PROJECT_UPDATE_META:
+      return hideOnePopup(POPUP_ID.EDITING_PROJECT_PREFERENCES, state);
 
     case PATCH_ADD:
       return hideOnePopup(POPUP_ID.CREATING_PATCH, state);
