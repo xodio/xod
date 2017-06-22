@@ -12,20 +12,20 @@
     overflow-x: hidden;
     overflow-y: auto;
 
-  	background:
-  		/* Shadow covers */
-  		linear-gradient(#444 30%, rgba(68,68,68,0)),
-  		linear-gradient(rgba(68,68,68,0), #444 70%) 0 100%,
+    background:
+      /* Shadow covers */
+      linear-gradient(#444 30%, rgba(68,68,68,0)),
+      linear-gradient(rgba(68,68,68,0), #444 70%) 0 100%,
 
-  		/* Shadows */
-  		radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.35), rgba(0,0,0,0)),
-  		radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.35), rgba(0,0,0,0)) 0 100%;
-  	background-repeat: no-repeat;
-  	background-color: #444;
-  	background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+      /* Shadows */
+      radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.35), rgba(0,0,0,0)),
+      radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.35), rgba(0,0,0,0)) 0 100%;
+    background-repeat: no-repeat;
+    background-color: #444;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
 
-  	/* Opera doesn't support this in the shorthand */
-  	background-attachment: local, local, scroll, scroll;
+    /* Opera doesn't support this in the shorthand */
+    background-attachment: local, local, scroll, scroll;
   }
 
   li {
