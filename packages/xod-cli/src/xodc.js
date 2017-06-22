@@ -12,6 +12,8 @@ import publish from './xodc-publish';
 import transpile from './xodc-transpile';
 import unpack from './xodc-unpack';
 
+const PM_SWAGGER_URL = 'https://pm.xod.show/swagger';
+
 
 // In case of unhandled errors this would give more adequate debug traces:
 // 1. More than default 10 items
@@ -70,12 +72,12 @@ const programs = {
     target: o['--target'],
   }),
   publish: o => publish(
-    o['--swagger'],
+    o['--swagger'] || PM_SWAGGER_URL,
     o['--author'],
     o['--orgname'] || o['--author'],
     o['<projectDir>'] || '.'),
   install: o => install(
-    o['--swagger'],
+    o['--swagger'] || PM_SWAGGER_URL,
     o['<libUri>'],
     o['<path>'] || '.'),
   ab: o => runCommand(o, {

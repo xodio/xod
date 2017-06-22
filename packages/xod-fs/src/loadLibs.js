@@ -1,17 +1,14 @@
 import R from 'ramda';
 import path from 'path';
 import { readDir, readJSON, readFile } from './read';
-import { resolvePath, reassignIds, getPatchName, hasExt } from './utils';
-
-export const IMPL_FILENAMES = {
-  cpp: 'any.cpp',
-  js: 'any.js',
-  arduino: 'arduino.cpp',
-  espruino: 'espruino.js',
-  nodejs: 'nodejs.js',
-};
-
-const implTypes = Object.keys(IMPL_FILENAMES);
+import { IMPL_TYPES } from './constants';
+import {
+  resolvePath,
+  reassignIds,
+  getPatchName,
+  hasExt,
+  getImplFilenameByType,
+} from './utils';
 
 const scanLibsFolder = (libs, libsDir) => Promise.all(
   libs.map(
@@ -54,8 +51,8 @@ const loadImpl = libsDir => (patches) => {
   patches.forEach(patch => patchPromises.push(
     new Promise((resolve) => {
       const patchDir = path.resolve(libsDir, patch.path);
-      const implPromises = implTypes.map((type) => {
-        const implPath = path.resolve(patchDir, IMPL_FILENAMES[type]);
+      const implPromises = IMPL_TYPES.map((type) => {
+        const implPath = path.resolve(patchDir, getImplFilenameByType(type));
         return readFile(implPath)
           .then(data => ([type, data]))
           .catch((err) => {

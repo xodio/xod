@@ -1,4 +1,4 @@
-import chai, { expect } from 'chai';
+import chai, { assert, expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
 import fs from 'fs';
@@ -6,6 +6,7 @@ import path from 'path';
 import R from 'ramda';
 import shell from 'shelljs';
 import * as Loader from '../src/load';
+import { getImplTypeByFilename } from '../src/utils';
 import pack from '../src/pack';
 import libsFixture from './fixtures/libs.json';
 import unpacked from './fixtures/unpacked.json';
@@ -84,26 +85,26 @@ describe('Loader', () => {
       })
   );
 
-  it('loadProjectWithoutLibs: return project without libs', (done) => {
+  it('loadProjectWithoutLibs: return project without libs', () => {
     const xodCore = path.resolve(workspace, './lib/xod/core');
     const xodCoreOwner = path.resolve(xodCore, '..');
 
-    Loader.loadProjectWithoutLibs(xodCore)
+    return Loader.loadProjectWithoutLibs(xodCore)
       .then((project) => {
-        const implsLoaded = shell
-          .ls(`${xodCore}/*.{c,cpp,h,inl,js}`)
-          .every((implPath) => {
-            const { base, dir } = path.parse(implPath);
-            const impl = fs.readFileSync(implPath).toString();
-            const xodm = path.relative(xodCoreOwner, `${dir}/patch.xodm`);
-            const patch = project.find(_ => _.path === xodm);
-            if (!(patch && patch.impls)) return false;
-            return patch.impls[base] === impl;
-          });
+        const implList = shell.ls(`${xodCore}/**/*.{c,cpp,h,inl,js}`);
+        assert.isAbove(implList.length, 0);
 
-        done(
-          !implsLoaded && new Error('some implementations were not loaded')
-        );
-      });
+        return implList.every((implPath) => {
+          const { base, dir } = path.parse(implPath);
+          const implType = getImplTypeByFilename(base);
+          const impl = fs.readFileSync(implPath).toString();
+          const xodp = `./${path.relative(xodCoreOwner, `${dir}/patch.xodp`)}`;
+          const patch = project.find(_ => _.path === xodp);
+          if (!(patch && patch.content.impls)) return false;
+          return patch.content.impls[implType] === impl;
+        });
+      }).then(
+        implsLoaded => assert.equal(implsLoaded, true, 'some implementations were not loaded')
+      );
   });
 });
