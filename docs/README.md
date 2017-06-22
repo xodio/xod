@@ -8,11 +8,11 @@ XOD Documentation
 Quick start tutorial
 --------------------
 
-* [Installing and Running XOD](./tutorial/install/)
-* [Nodes and Links](./tutorial/nodes-and-links/)
-* [Data Types and Conversions](./tutorial/data-types-and-conversions/)
-* [Patch Nodes](./tutorial/patch-nodes/)
-* [Complex Projects?](./tutorial/complex-projects/)
+1. [Installing and Running XOD](./tutorial/install/)
+1. [Nodes and Links](./tutorial/nodes-and-links/)
+1. [Data Types and Conversions](./tutorial/data-types-and-conversions/)
+1. [Patch Nodes](./tutorial/patch-nodes/)
+1. [Complex Projects?](./tutorial/complex-projects/)
 
 User’s guide
 ------------
