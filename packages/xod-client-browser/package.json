@@ -3,8 +3,9 @@
   "version": "0.1.4",
   "description": "XOD project: Client browser application",
   "scripts": {
-    "build": "webpack --colors",
-    "dev": "webpack-dev-server --watch --colors --inline --hot --config webpack.config.dev.js"
+    "build:initial-project": "node ./tools/loadInitialProject.js",
+    "build": "yarn run build:initial-project && webpack --colors",
+    "dev": "yarn run build:initial-project && webpack-dev-server --watch --colors --inline --hot --config webpack.config.dev.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
@@ -23,7 +24,9 @@
     "xod-js": "^0.1.4",
     "xod-project": "^0.1.4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "xod-fs": "^0.1.4"
+  },
   "author": "Amperka.ru",
   "license": "MIT"
 }

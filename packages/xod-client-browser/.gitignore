@@ -4,3 +4,4 @@ node_modules/*
 xod.iml
 dist/
 .tmp/
+initialProject.json

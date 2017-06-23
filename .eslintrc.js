@@ -56,7 +56,8 @@ module.exports = {
         '**/xod-client-electron/**/*.js',
         '**/xod-client-electron/**/*.jsx',
         '**/xod-client/**/DevTools.jsx',
-        '**/xod-client/stories/*.jsx'
+        '**/xod-client/stories/*.jsx',
+        '**/xod-client-browser/tools/*.js'
       ]
     }],
     'mocha/no-skipped-tests': 'error',
