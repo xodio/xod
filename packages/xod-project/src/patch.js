@@ -73,6 +73,16 @@ export const setPatchPath = def(
   )
 );
 
+export const getPatchDescription = def(
+  'getPatchDescription :: Patch -> String',
+  R.prop('description')
+);
+
+export const setPatchDescription = def(
+  'setPatchDescription :: String -> Patch -> Patch',
+  R.assoc('description')
+);
+
  /**
   * Returns a list of implementations for which a `patch` has native implementation
   *
