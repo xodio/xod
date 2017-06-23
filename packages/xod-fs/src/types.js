@@ -95,7 +95,7 @@ const env = xpEnv.concat([
 ]);
 
 export const def = HMDef.create({
-  checkTypes: process.env.NODE_ENV !== 'production',
+  checkTypes: !!process.env.XOD_HM_DEF,
   env,
 });
 export default def;

@@ -93,6 +93,7 @@ module.exports = {
     ]),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      'process.env.XOD_HM_DEF': JSON.stringify(process.env.XOD_HM_DEF || false),
     }),
   ],
   postcss: function postCssPlugins() { return [autoprefixer]; },

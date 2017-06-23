@@ -16,7 +16,7 @@
     "start:spectron-repl": "./tools/spectron-repl",
     "start:xod-client-electron": "node ./tools/lerna-run-sorted start xod-client-electron",
     "storybook": "node ./tools/lerna-serve storybook xod-client",
-    "test": "node ./tools/lerna-run-sorted test",
+    "test": "XOD_HM_DEF=true node ./tools/lerna-run-sorted test",
     "test:watch": "node ./tools/lerna-serve test:watch",
     "test-func": "node ./tools/lerna-run-sorted test-func",
     "verify": "yarn run build && yarn run lint && yarn run test"
