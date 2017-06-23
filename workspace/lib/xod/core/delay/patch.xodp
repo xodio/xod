@@ -1,12 +1,12 @@
 {
-  "description": "",
+  "description": "Delays triggering of an incoming pulse by specified time",
   "links": [],
   "nodes": [
     {
       "boundValues": {
         "__in__": false
       },
-      "description": "",
+      "description": "Pulses once the delay is over",
       "id": "Bk4gU0drwJ-",
       "label": "DONE",
       "position": {
@@ -17,7 +17,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Resets current countdown, i.e. cancels the delay",
       "id": "H1mlUC_HDJZ",
       "label": "RST",
       "position": {
@@ -28,7 +28,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Resets current countdown, starts new countdown",
       "id": "SkSuD6LMb",
       "label": "SET",
       "position": {
@@ -39,7 +39,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Time to delay in seconds",
       "id": "Skre8ROSv1-",
       "label": "T",
       "position": {

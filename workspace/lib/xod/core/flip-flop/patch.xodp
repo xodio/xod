@@ -1,10 +1,10 @@
 {
-  "description": "",
+  "description": "Permanently holds either 0 or 1",
   "links": [],
   "nodes": [
     {
       "boundValues": {},
-      "description": "",
+      "description": "Sets stored value to 0",
       "id": "B1RU0OrDkb",
       "label": "RST",
       "position": {
@@ -15,7 +15,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Sets stored value to 1",
       "id": "Bkh8A_Sv1-",
       "label": "SET",
       "position": {
@@ -28,7 +28,7 @@
       "boundValues": {
         "__in__": false
       },
-      "description": "",
+      "description": "The stored value",
       "id": "HkyxURuSPyW",
       "label": "MEM",
       "position": {
@@ -41,7 +41,7 @@
       "boundValues": {
         "__in__": false
       },
-      "description": "",
+      "description": "Pulses when stored value is changed",
       "id": "HyjUA_HvkW",
       "label": "CHNG",
       "position": {
@@ -63,7 +63,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Toggles (inverts) stored value",
       "id": "ryTIROHwkW",
       "label": "TGL",
       "position": {

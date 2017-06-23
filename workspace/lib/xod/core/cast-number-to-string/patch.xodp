@@ -1,5 +1,5 @@
 {
-  "description": "",
+  "description": "Transforms a number to string with two digits after dot",
   "links": [],
   "nodes": [
     {

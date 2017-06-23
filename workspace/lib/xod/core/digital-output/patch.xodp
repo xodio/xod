@@ -1,10 +1,10 @@
 {
-  "description": "",
+  "description": "Outputs high or low signal on a board port",
   "links": [],
   "nodes": [
     {
       "boundValues": {},
-      "description": "",
+      "description": "Board GPIO port number to write to",
       "id": "B134j4neZ",
       "label": "PORT",
       "position": {
@@ -15,7 +15,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "State to write",
       "id": "HJ6HsEngZ",
       "label": "SIG",
       "position": {
@@ -26,7 +26,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Triggers actual port state update",
       "id": "rJf8o4ngZ",
       "label": "UPD",
       "position": {

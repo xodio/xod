@@ -1,10 +1,10 @@
 {
-  "description": "",
+  "description": "Drives a text LCD screen with HD44780 chip",
   "links": [],
   "nodes": [
     {
       "boundValues": {},
-      "description": "",
+      "description": "Text for the first line",
       "id": "B1TSE9tZ-",
       "label": "L1",
       "position": {
@@ -15,7 +15,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Board GPIO port with LCD D4 pin",
       "id": "BJJqaX4Gb",
       "label": "D4",
       "position": {
@@ -26,7 +26,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Actually updates the screen",
       "id": "BkoI45YWW",
       "label": "UPD",
       "position": {
@@ -37,7 +37,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Text for the second line",
       "id": "H1bLN9F-b",
       "label": "L2",
       "position": {
@@ -48,7 +48,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Board GPIO port with LCD D6 pin",
       "id": "HJysTXVMb",
       "label": "D6",
       "position": {
@@ -59,7 +59,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Board GPIO port with LCD D5 pin",
       "id": "S1nqa7NMZ",
       "label": "D5",
       "position": {
@@ -70,7 +70,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Board GPIO port with LCD EN pin",
       "id": "SkBK6Q4fb",
       "label": "EN",
       "position": {
@@ -92,7 +92,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Board GPIO port with LCD RS pin",
       "id": "rJlYT7EfW",
       "label": "RS",
       "position": {
@@ -103,7 +103,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Board GPIO port with LCD D7 pin",
       "id": "rkbjp7Ezb",
       "label": "D7",
       "position": {

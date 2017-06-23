@@ -1,5 +1,5 @@
 {
-  "description": "",
+  "description": "Rounds a number to a maximal integer that is less than the number",
   "links": [],
   "nodes": [
     {

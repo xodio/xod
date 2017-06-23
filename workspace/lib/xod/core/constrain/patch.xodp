@@ -1,10 +1,10 @@
 {
-  "description": "",
+  "description": "Clips input value to fall into specified range",
   "links": [],
   "nodes": [
     {
       "boundValues": {},
-      "description": "",
+      "description": "Lower bound of constraining range",
       "id": "BJgZ80uBw1-",
       "label": "MIN",
       "position": {
@@ -15,7 +15,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Value to constrain",
       "id": "BkmZL0uSv1W",
       "label": "X",
       "position": {
@@ -39,7 +39,7 @@
       "boundValues": {
         "__in__": 0
       },
-      "description": "",
+      "description": "The constrained value",
       "id": "rJWWUAdHDyW",
       "label": "XC",
       "position": {
@@ -50,7 +50,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Upper bound of constraining range",
       "id": "ryzZIC_BDJW",
       "label": "MAX",
       "position": {

@@ -1,10 +1,10 @@
 {
-  "description": "",
+  "description": "Drives a standard hobby servo",
   "links": [],
   "nodes": [
     {
       "boundValues": {},
-      "description": "",
+      "description": "Actually sends a signal to servo to set the desired angle",
       "id": "HkaMmuTzZ",
       "label": "UPD",
       "position": {
@@ -26,7 +26,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Board port with servo.",
       "id": "S1vGmu6Gb",
       "label": "PORT",
       "position": {
@@ -37,7 +37,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Desired servo angle in degrees (0 … 180)",
       "id": "r1sfQ_6fb",
       "label": "VAL",
       "position": {

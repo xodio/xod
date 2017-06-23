@@ -1,5 +1,5 @@
 {
-  "description": "",
+  "description": "Ouputs true if LHS < RHS, and false otherwise",
   "links": [],
   "nodes": [
     {

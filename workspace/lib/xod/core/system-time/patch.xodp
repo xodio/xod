@@ -1,10 +1,10 @@
 {
-  "description": "",
+  "description": "Ouputs time spent since the program start",
   "links": [],
   "nodes": [
     {
       "boundValues": {},
-      "description": "",
+      "description": "Triggers new time read",
       "id": "Bk74I0_SPyb",
       "label": "UPD",
       "position": {
@@ -17,7 +17,7 @@
       "boundValues": {
         "__in__": 0
       },
-      "description": "",
+      "description": "The last time read in seconds",
       "id": "BkEVI0uHwJb",
       "label": "TIME",
       "position": {
@@ -30,7 +30,7 @@
       "boundValues": {
         "__in__": ""
       },
-      "description": "",
+      "description": "Pulses when new time value is ready",
       "id": "Sk9HScK-Z",
       "label": "RDY",
       "position": {

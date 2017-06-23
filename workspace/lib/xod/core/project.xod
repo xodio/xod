@@ -2,7 +2,7 @@
   "authors": [
     "XOD team"
   ],
-  "description": "",
+  "description": "The very basic nodes of XOD",
   "license": "MIT",
   "name": "core",
   "version": "0.0.2"

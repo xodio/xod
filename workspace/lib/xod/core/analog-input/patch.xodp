@@ -1,10 +1,10 @@
 {
-  "description": "",
+  "description": "Reads analog signal value from board ADC port",
   "links": [],
   "nodes": [
     {
       "boundValues": {},
-      "description": "",
+      "description": "Number of a board ADC port to read from",
       "id": "BJuORNheZ",
       "label": "PORT",
       "position": {
@@ -28,7 +28,7 @@
       "boundValues": {
         "__in__": ""
       },
-      "description": "",
+      "description": "The latest read value in range 0.0 … 1.0",
       "id": "SyBtREhlW",
       "label": "VAL",
       "position": {
@@ -39,7 +39,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Triggers new read",
       "id": "SyKd0E2x-",
       "label": "UPD",
       "position": {
@@ -50,7 +50,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Pulses when the reading is ready",
       "id": "rymG3j6b-",
       "label": "RDY",
       "position": {

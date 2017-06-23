@@ -1,5 +1,5 @@
 {
-  "description": "",
+  "description": "Transforms 0.0 to false and any other value to true",
   "links": [],
   "nodes": [
     {

@@ -1,5 +1,5 @@
 {
-  "description": "",
+  "description": "Outputs a single pulse when the program starts",
   "links": [],
   "nodes": [
     {

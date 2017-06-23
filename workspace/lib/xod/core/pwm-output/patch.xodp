@@ -1,10 +1,10 @@
 {
-  "description": "",
+  "description": "Ouputs hardware-supported PWM signal on a board port",
   "links": [],
   "nodes": [
     {
       "boundValues": {},
-      "description": "",
+      "description": "Duty cycle value in range 0.0 … 1.0",
       "id": "ByXnYHPyb",
       "label": "DUTY",
       "position": {
@@ -26,7 +26,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Board PWM port to write to",
       "id": "rJsaFSvk-",
       "label": "PORT",
       "position": {
@@ -37,7 +37,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Actually updates duty cycle on the port",
       "id": "rkAnKBvyZ",
       "label": "UPD",
       "position": {

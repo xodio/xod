@@ -1,5 +1,5 @@
 {
-  "description": "",
+  "description": "Outputs true if and only if both inputs are false",
   "links": [],
   "nodes": [
     {
