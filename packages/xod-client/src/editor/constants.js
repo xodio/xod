@@ -31,6 +31,7 @@ export const LAYER = {
   BACKGROUND: 'background',
   LINKS: 'links',
   NODES: 'nodes',
+  NODE_PINS_OVERLAY: 'node_pins_overlay',
   GHOSTS: 'ghosts',
 };
 

@@ -21,6 +21,7 @@ import sanctuaryPropType from '../../utils/sanctuaryPropType';
 import PatchSVG from '../../project/components/PatchSVG';
 import BackgroundLayer from '../../project/components/BackgroundLayer';
 import IdleNodesLayer from '../../project/components/IdleNodesLayer';
+import PinsOverlayLayer from '../../project/components/PinsOverlayLayer';
 import LinksLayer from '../../project/components/LinksLayer';
 import GhostsLayer from '../../project/components/GhostsLayer';
 import SnappingPreviewLayer from '../../project/components/SnappingPreviewLayer';
@@ -217,6 +218,12 @@ class Patch extends React.Component {
             links={idleLinks}
             selection={this.props.selection}
             onClick={this.onLinkClick}
+          />
+          <PinsOverlayLayer
+            nodes={this.props.nodes}
+            linkingPin={this.props.linkingPin}
+            onPinMouseDown={this.onPinMouseDown}
+            onPinMouseUp={this.onPinMouseUp}
           />
           <DraggedNodeLayer
             node={draggedNode}

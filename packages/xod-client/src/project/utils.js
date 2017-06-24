@@ -73,6 +73,16 @@ export const getLinkingError = R.curry((pin1, pin2) => {
 // :: RenderablePin -> RenderablePin -> Boolean
 export const canPinsBeLinked = R.complement(getLinkingError);
 
+export const getPinLinkabilityValidator = (linkingPin, nodes) => {
+  if (!linkingPin) {
+    return R.F;
+  }
+
+  const selectedPin = R.path([linkingPin.nodeId, 'pins', linkingPin.pinKey], nodes);
+
+  return canPinsBeLinked(selectedPin);
+};
+
 export const getJSONForExport = (project) => {
   const libPaths = R.compose(
     R.map(getPatchPath),
