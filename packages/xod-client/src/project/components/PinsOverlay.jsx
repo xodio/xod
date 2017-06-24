@@ -41,6 +41,7 @@ class PinsOverlay extends React.Component {
         key={this.id}
         {...position}
         {...size}
+        className="NodePinsOverlay"
         viewBox={`0 0 ${size.width} ${size.height}`}
       >
         <g className="pins">
