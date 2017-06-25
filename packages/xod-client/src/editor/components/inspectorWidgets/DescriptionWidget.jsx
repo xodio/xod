@@ -13,6 +13,7 @@ const DescriptionWidget = (props) => {
       <textarea
         className="inspectorTextInput"
         id={props.elementId}
+        disabled={props.disabled}
         value={props.value}
         onChange={onChange}
         onBlur={props.onBlur}
@@ -25,6 +26,7 @@ const DescriptionWidget = (props) => {
 DescriptionWidget.propTypes = {
   elementId: PropTypes.string.isRequired,
   value: PropTypes.string,
+  disabled: PropTypes.bool,
   onBlur: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onKeyDown: PropTypes.func.isRequired,
@@ -32,6 +34,7 @@ DescriptionWidget.propTypes = {
 
 DescriptionWidget.defaultProps = {
   value: '',
+  disabled: false,
 };
 
 export default DescriptionWidget;

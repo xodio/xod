@@ -195,6 +195,14 @@ export const deletePatch = patchPath => ({
   },
 });
 
+export const updatePatchDescription = (patchDescription, patchPath) => ({
+  type: ActionType.PATCH_DESCRIPTION_UPDATE,
+  payload: {
+    path: patchPath,
+    description: patchDescription,
+  },
+});
+
 export const renameProject = name => ({
   type: ActionType.PROJECT_RENAME,
   payload: name,

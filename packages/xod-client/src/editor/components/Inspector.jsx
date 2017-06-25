@@ -2,10 +2,13 @@ import R from 'ramda';
 import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
 import React from 'react';
+import { Patch } from 'xod-project';
+import { $Maybe } from 'xod-func-tools';
 
 import { SELECTION_ENTITY_TYPE } from '../constants';
 
 import NodeInspector from './NodeInspector';
+import PatchInspector from './PatchInspector';
 import Widgets from './inspectorWidgets';
 import { noop, isMany, isOne } from '../../utils/ramda';
 
@@ -30,10 +33,16 @@ InspectorMessage.propTypes = {
 const isEntity = entity => R.compose(R.equals(entity), R.prop('entityType'), R.head);
 const isSingleNode = R.both(isOne, isEntity(SELECTION_ENTITY_TYPE.NODE));
 const isSingleLink = R.both(isOne, isEntity(SELECTION_ENTITY_TYPE.LINK));
+// :: [ RenderableSelection ] -> Patch -> Boolean
+const isPatchSelected = (selection, patch) => (
+  (R.isEmpty(selection) && patch.isJust)
+);
 
 const Inspector = ({
   selection,
+  currentPatch,
   onPropUpdate,
+  onPatchDescriptionUpdate,
 }) => {
   if (isMany(selection)) {
     return (
@@ -54,23 +63,33 @@ const Inspector = ({
         onPropUpdate={onPropUpdate}
       />
     );
+  } else if (isPatchSelected(selection, currentPatch)) {
+    return (
+      <PatchInspector
+        patch={currentPatch.getOrElse(null)}
+        onDescriptionUpdate={onPatchDescriptionUpdate}
+      />
+    );
   }
 
   return (
     <InspectorMessage
-      text="Select a node to edit its properties."
+      text="Open a patch to edit its properties"
     />
   );
 };
 
 Inspector.propTypes = {
   selection: sanctuaryPropType($.Array(RenderableSelection)),
+  currentPatch: sanctuaryPropType($Maybe(Patch)),
   onPropUpdate: PropTypes.func.isRequired,
+  onPatchDescriptionUpdate: PropTypes.func.isRequired,
 };
 
 Inspector.defaultProps = {
   selection: [],
   onPropUpdate: noop,
+  onPatchDescriptionUpdate: noop,
 };
 
 export default Inspector;

@@ -11,6 +11,7 @@ import {
   LINK_DELETE,
   PATCH_ADD,
   PATCH_RENAME,
+  PATCH_DESCRIPTION_UPDATE,
   PATCH_DELETE,
   PROJECT_CREATE,
   PROJECT_RENAME,
@@ -133,6 +134,16 @@ export default (state = {}, action) => {
         XP.assocNode(
           selectNodePropertyUpdater(action.payload)(node)
         ),
+        state
+      );
+    }
+
+    case PATCH_DESCRIPTION_UPDATE: {
+      const { path, description } = action.payload;
+      const patchLens = XP.lensPatch(path);
+      return R.over(
+        patchLens,
+        XP.setPatchDescription(description),
         state
       );
     }

@@ -20,7 +20,7 @@
   color: $input-color-border; // TODO: separate color?
   cursor: default;
 
-  .nodeName {
+  .nodeName, .patchName {
     color: $color-canvas-selected; // TODO: separate color?
   }
 }

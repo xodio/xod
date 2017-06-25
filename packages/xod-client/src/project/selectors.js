@@ -134,6 +134,12 @@ export const getCurrentPatchNodes = createSelector(
   }
 );
 
+// :: State -> Maybe Patch
+export const getCurrentPatch = createSelector(
+  [getCurrentPatchPath, getProject],
+  XP.getPatchByPath
+);
+
 // :: State -> StrMap RenderableNode
 export const getRenderableNodes = createMemoizedSelector(
   [getProject, getCurrentPatchNodes, getConnectedPins],
