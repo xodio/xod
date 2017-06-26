@@ -1,11 +1,9 @@
 import { propOr } from 'ramda';
 import React from 'react';
-import { shell, remote } from 'electron';
+import { remote } from 'electron';
 import { PopupForm } from 'xod-client';
 
 import { DEFAULT_APPLICATION_DIRECTORY } from '../constants';
-
-const openDownloadPage = () => shell.openExternal('https://www.arduino.cc/en/Main/Software#download');
 
 class PopupSetArduinoIDEPath extends React.Component {
   constructor(props) {
@@ -52,9 +50,14 @@ class PopupSetArduinoIDEPath extends React.Component {
             You need an installed Arduino IDE to compile
             and upload XOD programs to Arduino boards.
           </p>
-          <button className="Button Button--light" onClick={openDownloadPage}>
+          <a
+            href="https://www.arduino.cc/en/Main/Software#download"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="Button Button--light"
+          >
             Download & install Arduino IDE
-          </button>
+          </a>
         </div>
       </PopupForm>
     );
