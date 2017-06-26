@@ -56,3 +56,4 @@ export * from './func-tools';
 export * from './types';
 export { default as flatten } from './flatten';
 export * from './patchPathUtils';
+export * from './versionUtils';
