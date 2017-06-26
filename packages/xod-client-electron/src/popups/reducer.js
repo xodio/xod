@@ -10,6 +10,7 @@ import {
   UPLOAD_TO_ARDUINO,
   OPEN_UPLOAD_CONFIG,
   CLOSE_UPLOAD_CONFIG,
+  REQUEST_INSTALL_ARDUINO_IDE,
 } from '../upload/actionTypes';
 
 import {
@@ -24,13 +25,11 @@ export default (state, action) => {
   switch (action.type) {
     case UPLOAD:
     case UPLOAD_TO_ARDUINO: {
-      if (action.meta.status === 'started') {
-        return showOnlyPopup(POPUP_ID.UPLOADING, {}, state);
-      }
       if (action.meta.status === 'deleted') {
         return hideOnePopup(POPUP_ID.UPLOADING, state);
+      } else if (action.meta.status !== 'failed') {
+        return showOnlyPopup(POPUP_ID.UPLOADING, {}, state);
       }
-
       return state;
     }
     case OPEN_UPLOAD_CONFIG:
@@ -42,6 +41,8 @@ export default (state, action) => {
       return showOnlyPopup(POPUP_ID.CREATING_WORKSPACE, action.payload, state);
     case SWITCH_WORKSPACE_REQUESTED:
       return showOnlyPopup(POPUP_ID.SWITCHING_WORKSPACE, action.payload, state);
+    case REQUEST_INSTALL_ARDUINO_IDE:
+      return showOnlyPopup(POPUP_ID.ARDUINO_IDE_NOT_FOUND, {}, state);
 
     case CREATE_WORKSPACE:
       return hideOnePopup(POPUP_ID.CREATING_WORKSPACE, state);
