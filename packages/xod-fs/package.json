@@ -8,8 +8,8 @@
     "dev": "yarn run build -- --watch",
     "test": "mocha test/**/*.spec.js"
   },
-  "author": "Amperka team",
-  "license": "MIT",
+  "author": "XOD Team <dev@xod.io>",
+  "license": "AGPL-3.0",
   "dependencies": {
     "file-save": "^0.2.0",
     "fs-extra": "^3.0.1",

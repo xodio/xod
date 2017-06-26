@@ -3,8 +3,8 @@
   "version": "0.1.4",
   "description": "",
   "keywords": [],
-  "author": "",
-  "license": "MIT",
+  "author": "XOD Team <dev@xod.io>",
+  "license": "AGPL-3.0",
   "main": "dist/index.js",
   "scripts": {
     "doc": "documentation build --format html --output doc --sort-order alpha src/",

@@ -3,7 +3,8 @@
   "version": "0.1.4",
   "description": "API functions to work on XOD project state",
   "keywords": [],
-  "license": "MIT",
+  "license": "AGPL-3.0",
+  "author": "XOD Team <dev@xod.io>",
   "main": "dist/index.js",
   "repository": {},
   "scripts": {
