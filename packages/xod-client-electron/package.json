@@ -7,7 +7,7 @@
   "name": "xod-client-electron",
   "version": "0.1.4",
   "scripts": {
-    "copy-workspace": "cpx \"src/workspace/**/*\" \"src-babel/workspace\"",
+    "copy-workspace": "cpx \"../../workspace/**/*\" \"src-babel/workspace\"",
     "build:gui": "webpack --colors",
     "build:app": "babel src/app/ -d src-babel/app/ && babel src/shared/ -d src-babel/shared/",
     "build": "yarn build:gui && yarn build:app && yarn copy-workspace",
