@@ -12,8 +12,8 @@
   },
   "repository": {},
   "keywords": [],
-  "author": "",
-  "license": "MIT",
+  "author": "XOD Team <dev@xod.io>",
+  "license": "AGPL-3.0",
   "main": "dist/index.js",
   "dependencies": {
     "cli-color": "^1.1.0",

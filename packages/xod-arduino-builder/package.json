@@ -9,12 +9,12 @@
     "dev": "yarn run build -- --watch",
     "test": "mocha test/**/*.spec.js"
   },
-  "author": "Alexander Matsievsky <am@amperka.ru>",
+  "author": "XOD Team <dev@xod.io>",
   "repository": {
     "type": "git",
     "url": "https://github.com/xodio/xod.git"
   },
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "engines": {
     "node": ">=6.0.0"
   },

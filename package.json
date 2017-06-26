@@ -1,4 +1,8 @@
 {
+  "name": "xod",
+  "private": true,
+  "description": "XOD monorepo package",
+  "license": "AGPL-3.0",
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "node ./tools/lerna-run-sorted build",

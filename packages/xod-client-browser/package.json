@@ -27,6 +27,6 @@
   "devDependencies": {
     "xod-fs": "^0.1.4"
   },
-  "author": "Amperka.ru",
-  "license": "MIT"
+  "author": "XOD Team <dev@xod.io>",
+  "license": "AGPL-3.0"
 }

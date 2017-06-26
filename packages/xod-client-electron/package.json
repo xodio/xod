@@ -1,8 +1,8 @@
 {
-  "author": "XOD LLC <dev@xod.io>",
+  "author": "XOD Team <dev@xod.io>",
   "description": "XOD visual programming language IDE",
   "homepage": "https://xod.io/",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "main": "src-babel/app/main.js",
   "name": "xod-client-electron",
   "version": "0.1.4",
