@@ -1,5 +1,5 @@
 {
-  "description": "",
+  "description": "Pulses on output when any input recieves a pulse",
   "links": [],
   "nodes": [
     {

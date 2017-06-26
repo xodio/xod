@@ -1,12 +1,12 @@
 {
-  "description": "",
+  "description": "Outputs either input value depending on condition",
   "links": [],
   "nodes": [
     {
       "boundValues": {
         "__in__": 0
       },
-      "description": "",
+      "description": "Outputs value of `T` if `COND` is true, and `F` otherwise",
       "id": "S13xLCuHvkW",
       "label": "R",
       "position": {
@@ -17,7 +17,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Condition value",
       "id": "S1yZIA_rDJZ",
       "label": "COND",
       "position": {
@@ -39,7 +39,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Value to be output if condition is false",
       "id": "r1AgIROHDJW",
       "label": "F",
       "position": {
@@ -50,7 +50,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Value to be output if condition is true",
       "id": "ryTeUROHD1b",
       "label": "T",
       "position": {

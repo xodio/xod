@@ -1,10 +1,10 @@
 {
-  "description": "",
+  "description": "Transforms a number into a string with specified precision",
   "links": [],
   "nodes": [
     {
       "boundValues": {},
-      "description": "",
+      "description": "Number to format",
       "id": "BJlHojaWZ",
       "label": "NUM",
       "position": {
@@ -17,7 +17,7 @@
       "boundValues": {
         "__out__": 2
       },
-      "description": "",
+      "description": "Number of digits after dot",
       "id": "HJTIija-W",
       "label": "DIG",
       "position": {
@@ -39,7 +39,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Formatted value",
       "id": "r1H_oipZb",
       "label": "STR",
       "position": {

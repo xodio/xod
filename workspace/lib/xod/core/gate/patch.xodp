@@ -1,10 +1,10 @@
 {
-  "description": "",
+  "description": "Routes an incoming pulse to either of outputs depending on condition",
   "links": [],
   "nodes": [
     {
       "boundValues": {},
-      "description": "",
+      "description": "Input pulse",
       "id": "HkDgIRdrv1W",
       "label": "TRIG",
       "position": {
@@ -15,7 +15,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Value which defines the route for an input pulse",
       "id": "S1OlUAuBD1-",
       "label": "GATE",
       "position": {
@@ -28,7 +28,7 @@
       "boundValues": {
         "__in__": false
       },
-      "description": "",
+      "description": "Pulses with `TRIG` when `GATE` is true",
       "id": "SJUl8Aurv1W",
       "label": "T",
       "position": {
@@ -41,7 +41,7 @@
       "boundValues": {
         "__in__": ""
       },
-      "description": "",
+      "description": "Pulses with `TRIG` when `GATE` is false",
       "id": "SyM2ATB-b",
       "label": "F",
       "position": {

@@ -1,5 +1,5 @@
 {
-  "description": "",
+  "description": "Transforms a number to percent string. For example, 0.42 to “42%”",
   "links": [
     {
       "id": "BJKsijp-b",

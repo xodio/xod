@@ -2,7 +2,7 @@
   "authors": [
     "XOD"
   ],
-  "description": "",
+  "description": "Hardware drivers for popular and simple peripherals",
   "license": "",
   "name": "common-hardware",
   "version": "0.0.1"

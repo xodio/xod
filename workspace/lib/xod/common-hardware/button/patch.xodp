@@ -1,5 +1,5 @@
 {
-  "description": "",
+  "description": "Drives a simple button or another mechanical switch",
   "links": [
     {
       "id": "H1krhyOMW",
@@ -93,7 +93,7 @@
   "nodes": [
     {
       "boundValues": {},
-      "description": "",
+      "description": "Pulses when the button has been just pressed",
       "id": "B1k9sy_G-",
       "label": "DOWN",
       "position": {
@@ -104,7 +104,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Triggers new button read",
       "id": "HkiOiJOfW",
       "label": "UPD",
       "position": {
@@ -126,7 +126,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Board GPIO port with the button. It is expected to be pulled up.",
       "id": "Sk6UjJ_f-",
       "label": "PORT",
       "position": {
@@ -159,7 +159,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Pulses when the button has been just released",
       "id": "ry09sk_M-",
       "label": "UP",
       "position": {

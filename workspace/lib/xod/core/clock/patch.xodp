@@ -1,10 +1,10 @@
 {
-  "description": "",
+  "description": "Outputs pulses at regular intervals",
   "links": [],
   "nodes": [
     {
       "boundValues": {},
-      "description": "",
+      "description": "Tick interval in seconds",
       "id": "B13SCNhl-",
       "label": "IVAL",
       "position": {
@@ -15,7 +15,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Resets current count, restarts clock with new interval",
       "id": "BJJICN2lW",
       "label": "RST",
       "position": {
@@ -39,7 +39,7 @@
       "boundValues": {
         "__in__": ""
       },
-      "description": "",
+      "description": "Pulses on each time interval end",
       "id": "HJU8CE2lW",
       "label": "TICK",
       "position": {

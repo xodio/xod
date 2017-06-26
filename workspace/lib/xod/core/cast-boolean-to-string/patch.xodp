@@ -1,5 +1,5 @@
 {
-  "description": "",
+  "description": "Transforms boolean false to string “false” and true to “true”",
   "links": [],
   "nodes": [
     {

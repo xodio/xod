@@ -1,10 +1,10 @@
 {
-  "description": "",
+  "description": "Projects a number from one range to another preserving ratio",
   "links": [],
   "nodes": [
     {
       "boundValues": {},
-      "description": "",
+      "description": "Value to map",
       "id": "BJlzICOSv1-",
       "label": "X",
       "position": {
@@ -17,7 +17,7 @@
       "boundValues": {
         "__in__": 0
       },
-      "description": "",
+      "description": "Mapped value",
       "id": "H12bIR_SPyZ",
       "label": "Xm",
       "position": {
@@ -28,7 +28,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Source range upper bound",
       "id": "HJCWLAdSwyW",
       "label": "Smax",
       "position": {
@@ -50,7 +50,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Target range lower bound",
       "id": "rJbGU0_Hv1Z",
       "label": "Tmin",
       "position": {
@@ -61,7 +61,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Tartger range upper bound",
       "id": "rkpbU0OrwyZ",
       "label": "Tmax",
       "position": {
@@ -72,7 +72,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Source range lower bound",
       "id": "ry1z8CuBDy-",
       "label": "Smin",
       "position": {

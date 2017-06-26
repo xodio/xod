@@ -1,5 +1,5 @@
 {
-  "description": "",
+  "description": "Outputs a line of text to the board standard debug interface",
   "links": [],
   "nodes": [
     {

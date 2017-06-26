@@ -1,5 +1,5 @@
 {
-  "description": "",
+  "description": "Drives a digital thermometer based on TMP36 IC",
   "links": [
     {
       "id": "H1INzUaMW",
@@ -60,7 +60,7 @@
   "nodes": [
     {
       "boundValues": {},
-      "description": "",
+      "description": "Board ADC port with the sensor",
       "id": "H1s0WI6MZ",
       "label": "PORT",
       "position": {
@@ -71,7 +71,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Triggers new temperature read",
       "id": "Hk_1fUaMW",
       "label": "UPD",
       "position": {
@@ -109,7 +109,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Pulses when new temperature value is available",
       "id": "S1JWMUaMW",
       "label": "RDY",
       "position": {
@@ -120,7 +120,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "The last read temperature in °C",
       "id": "rkFgMITM-",
       "label": "Tc",
       "position": {

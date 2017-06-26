@@ -1,12 +1,12 @@
 {
-  "description": "",
+  "description": "Permanently holds a single value",
   "links": [],
   "nodes": [
     {
       "boundValues": {
         "__in__": false
       },
-      "description": "",
+      "description": "Pulses when the saved value changes, i.e. a new value is memoized",
       "id": "B1zQ8CdSvJ-",
       "label": "CHNG",
       "position": {
@@ -17,7 +17,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "A value to store",
       "id": "HkXm80uHPyb",
       "label": "NEW",
       "position": {
@@ -28,7 +28,7 @@
     },
     {
       "boundValues": {},
-      "description": "",
+      "description": "Saves `NEW` value in memory",
       "id": "Hy-QUR_BPkZ",
       "label": "UPD",
       "position": {
@@ -52,7 +52,7 @@
       "boundValues": {
         "__in__": 0
       },
-      "description": "",
+      "description": "The latest saved value ",
       "id": "r1lQLAOBwJb",
       "label": "MEM",
       "position": {
