@@ -2,7 +2,12 @@ import R from 'ramda';
 import React from 'react';
 import * as XP from 'xod-project';
 
-import { SELECTION_ENTITY_TYPE, WIDGET_TYPE } from '../constants';
+import {
+  SELECTION_ENTITY_TYPE,
+  WIDGET_TYPE,
+  XOD_LIB_DOCS_URL_BASE,
+  XOD_DOCS_URL_UTMS,
+} from '../constants';
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from '../../project/constants';
 
 import WidgetsGroup from './WidgetsGroup';
@@ -74,6 +79,19 @@ const NodeDescriptionWidget = Widgets.composeWidget(
 
 const NodeInspector = ({ node, onPropUpdate }) => {
   const type = XP.getNodeType(node);
+  const nodeHelpIcon = (XP.isPathBuiltIn(type) || XP.isPathLocal(type))
+    ? null
+    : (
+      <a
+        href={XOD_LIB_DOCS_URL_BASE + type + XOD_DOCS_URL_UTMS}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="nodeHelp"
+      >
+        <span className="nodeHelpIcon" />
+      </a>
+    );
+
   const baseName = XP.getBaseName(type);
 
   const nodeId = XP.getNodeId(node);
@@ -82,14 +100,7 @@ const NodeInspector = ({ node, onPropUpdate }) => {
     <div className="Inspector">
       <div className="inspectorTitle">Node: <span className="nodeName">{baseName}</span></div>
 
-      <a
-        href={`https://xod.io/TODOREPLACEME/${type}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="nodeHelp"
-      >
-        <span className="nodeHelpIcon" />
-      </a>
+      {nodeHelpIcon}
 
       <div className="nodeType">{type}</div>
 

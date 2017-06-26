@@ -2,6 +2,7 @@ import {
   app,
   ipcMain,
   BrowserWindow,
+  shell,
 } from 'electron';
 
 import * as WA from './workspaceActions';
@@ -39,6 +40,17 @@ function createWindow() {
 
   // Open the DevTools.
   // win.webContents.openDevTools();
+
+  const { webContents } = win;
+
+  const handleRedirect = (e, url) => {
+    if (url !== webContents.getURL()) {
+      e.preventDefault();
+      shell.openExternal(url);
+    }
+  };
+  webContents.on('will-navigate', handleRedirect);
+  webContents.on('new-window', handleRedirect);
 
   // Emitted when the window is closed.
   win.on('closed', () => {
