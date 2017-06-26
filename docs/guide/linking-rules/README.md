@@ -8,7 +8,7 @@ Linking Rules
 To make behavior of XOD programs predictable there are some rules on how pins
 can be linked.
 
-Outputs and Inputs
+Outputs and inputs
 ------------------
 
 You’re are not allowed to link two input pins, neither you’re allowed to link
@@ -18,32 +18,27 @@ A link should always connect an output and an input.
 
 If you want to mirror values, just create multiple links from an output pin.
 
-TODO: example
+![Link fan out](./fan-out.patch.png)
 
 An output can have an arbitrary number of links and an input can have
 no more than one incoming link.
 
-Type Matching
+Type matching
 -------------
 
-If an input and an output has same [data type](/docs/guide/data-types/) they may be linked
-as is.
+If an input and an output has same [data type](../data-types/) they
+may be linked as is.
 
 However if they have different types they are only allowed to be linked if
-[casting](/docs/guide/data-types/#casting-rules) between their type is possible.
+[casting](../data-types/#casting-rules) between their type is possible.
 
-Once you start linking pins having same type as the source are highlighted with
-a vivid color and pins having a type for which casting possible are highlighted
-with a dim color.
+Once you start linking pins that are suitable for other end of the link
+are highlighted.
 
-Following color code is used:
+Color code
+----------
 
-Type                                                         | Color
------------------------------------------------------------- | -----
-<span class="ui purple circular empty label"></span> Pulse   | Purple
-<span class="ui pink circular empty label"></span>   Boolean | Pink
-<span class="ui green circular empty label"></span>  Number  | Green
-<span class="ui circular empty label"></span>        Integer | TODO
-<span class="ui yellow circular empty label"></span> Byte    | Yellow
-<span class="ui circular empty label"></span>        List    | TODO
-<span class="ui circular empty label"></span>        Tuple   | TODO
+<span class="ui purple circular empty label"></span> Pulse<br/>
+<span class="ui pink circular empty label"></span>   Boolean<br/>
+<span class="ui green circular empty label"></span>  Number<br/>
+<span class="ui yellow circular empty label"></span> String<br/>
