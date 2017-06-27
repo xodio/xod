@@ -29,10 +29,6 @@ class SnackBarMessage extends React.Component {
     if (message.type === MESSAGE_TYPE.ERROR) {
       return (
         <p>
-          <small>
-            {message.timestamp}:
-          </small>
-          <br />
           {message.payload.message}
         </p>
       );
