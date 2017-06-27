@@ -158,9 +158,9 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
  * @returns {Promise<Object, Error>} Promise with PAV object or Error
  */
 export const installPav = pab => Promise.all([getPAV(pab), loadArduinoPaths().ide])
-  .then(tapP(
-    ([pav, idePath]) => xab.installPAV(pav, idePath)
-  ))
+  .then(
+    ([pav, idePath]) => xab.installPAV(pav, idePath).then(() => pav)
+  )
   .catch((err) => {
     if (err.errorCode === xab.REST_ERROR) return rejectWithCode(ERROR_CODES.INDEX_LIST_ERROR, err);
     return rejectWithCode(ERROR_CODES.INSTALL_PAV, err);
