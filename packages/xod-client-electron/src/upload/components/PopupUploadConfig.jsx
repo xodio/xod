@@ -74,6 +74,8 @@ class PopupUploadConfig extends React.Component {
   }
 
   getPorts() {
+    this.setState({ ports: null });
+
     this.props.listPorts()
       .catch(err => (
         (err.errorCode === NO_PORTS_FOUND_ERRCODE) ? [] : Promise.reject(err)

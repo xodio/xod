@@ -8,8 +8,8 @@ const ERROR_FORMATTERS = {
   [EC.TRANSPILE_ERROR]: err => `Error occurred during transpilation: ${err}`,
 
   [EC.PORT_NOT_FOUND]: err => `Could not find Arduino device on port: ${err.port.comName}. Available ports: ${R.map(R.prop('comName'), err.ports)}`,
-  [EC.IDE_NOT_FOUND]: err => `Could not find Arduino IDE at ${err.path}`,
-  [EC.PACKAGES_NOT_FOUND]: err => `Could not find Arduino packages at ${err.path}`,
+  [EC.IDE_NOT_FOUND]: err => `Could not find Arduino IDE at paths: ${err.paths}`,
+  [EC.PACKAGES_NOT_FOUND]: err => `Could not find Arduino packages at paths: ${err.paths}`,
   [EC.UPLOAD_ERROR]: err => `Error occured during uploading: ${err}`,
   [EC.INDEX_LIST_ERROR]: err => `Could not connect to Arduino Packages Index at ${err.request.path}: ${err.error.message}`,
   [EC.INSTALL_PAV_ERROR]: err => `Could not install Arduino PAV: ${err}`,

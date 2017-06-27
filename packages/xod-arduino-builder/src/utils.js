@@ -1,9 +1,25 @@
 import R from 'ramda';
+import path from 'path';
 import { exec } from 'child-process-promise';
 import compareVersion from 'compare-versions';
 import { def } from './types';
 
 import arduinoOfflineIndex from './arduinoPackageIndex.json';
+
+// =============================================================================
+//
+// OS utils
+//
+// =============================================================================
+const preferencesDir = (
+  process.env.APPDATA || (
+    process.platform === 'darwin' ?
+      `${process.env.HOME}/Library/Preferences` :
+      '/var/local'
+  )
+);
+
+export const getXodPreferencesDir = () => path.resolve(preferencesDir, 'xod');
 
 // =============================================================================
 //

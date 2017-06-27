@@ -104,7 +104,7 @@ export const loadPackageIndex = () =>
  * @param {String} idePath Path to Arduino IDE executables
  * @return {Promise<String, Error>} */
 export const installPAV = R.curry(R.pipeP(
-  (pav, idePath) => unifyExec(`${idePath} --install-boards ${pav.package}:${pav.architecture}:${pav.version}`),
+  (pav, idePath) => unifyExec(`"${idePath}" --install-boards ${pav.package}:${pav.architecture}:${pav.version}`),
   ({ code, stdout, stderr }) => R.cond([
     [R.equals(255), R.always(stdout)],
     [R.equals(0), R.always(stdout)],
@@ -165,7 +165,7 @@ export const listPorts = () =>
  * @return {Promise<String, Error>} */
 export const verify = R.curry(R.pipeP(
   (pab, file, idePath) => unifyExec(
-    `${idePath} --verify --board "${pab.package}:${pab.architecture}:${pab.board}" "${file}"`
+    `"${idePath}" --verify --board "${pab.package}:${pab.architecture}:${pab.board}" "${file}"`
   ),
   processExecResult
 ));
@@ -179,7 +179,7 @@ export const verify = R.curry(R.pipeP(
  * @return {Promise<String, Error>} */
 export const upload = R.curry(R.pipeP(
   (pab, port, file, idePath) => unifyExec(
-    `${idePath} --upload --board "${pab.package}:${pab.architecture}:${pab.board}" --port "${port}" "${file}"`
+    `"${idePath}" --upload --board "${pab.package}:${pab.architecture}:${pab.board}" --port "${port}" "${file}"`
   ),
   processExecResult
 ));
