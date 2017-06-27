@@ -124,10 +124,23 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
   const pkgExists = R.both(doesDirectoryExist, notEmpty)(pkgPath);
 
   if (!ideExists) {
-    return rejectWithCode(ERROR_CODES.IDE_NOT_FOUND, { path: ide });
+    return rejectWithCode(ERROR_CODES.IDE_NOT_FOUND, {
+      paths: getIDEPaths(ide, platform),
+    });
   }
   if (!pkgExists) {
-    return rejectWithCode(ERROR_CODES.PACKAGES_NOT_FOUND, { path: packages });
+    // Directory could not exist if Arduino IDE is just installed and hasChanges
+    // no installed packages. So there is no directory.
+    // So we need to create an empty directory, to solve this problem and
+    // continue installing toolchains and upload.
+    const parentExists = doesDirectoryExist(resolve(pkgPath, '..'));
+    if (!parentExists) {
+      // If parent is also not exist — reject with error
+      return rejectWithCode(ERROR_CODES.PACKAGES_NOT_FOUND, {
+        paths: getPackagesPaths(packages, platform),
+      });
+    }
+    fs.mkdirSync(pkgPath);
   }
 
   return R.pipeP(
@@ -145,9 +158,9 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
  * @returns {Promise<Object, Error>} Promise with PAV object or Error
  */
 export const installPav = pab => Promise.all([getPAV(pab), loadArduinoPaths().ide])
-  .then(tapP(
-    ([pav, idePath]) => xab.installPAV(pav, idePath)
-  ))
+  .then(
+    ([pav, idePath]) => xab.installPAV(pav, idePath).then(() => pav)
+  )
   .catch((err) => {
     if (err.errorCode === xab.REST_ERROR) return rejectWithCode(ERROR_CODES.INDEX_LIST_ERROR, err);
     return rejectWithCode(ERROR_CODES.INSTALL_PAV, err);
@@ -227,10 +240,7 @@ export const doTranspileForArduino = ({ project, patchPath }) =>
  * @returns {Promise<String, Error>} Promise with Stdout or Error
  */
 export const uploadToArduino = (pab, port, code) => {
-  // TODO: Replace tmpPath with normal path.
-  //       Somehow app.getPath('temp') is not working.
-  //       Arduino IDE returns "readdirent: result is too long".
-  const tmpPath = resolve(__dirname, 'upload.tmp.cpp');
+  const tmpPath = resolve(xab.getXodPreferencesDir(), 'upload.tmp.cpp');
   const clearTmp = () => fs.unlinkSync(tmpPath);
 
   return Promise.all([writeFile(tmpPath, code), loadArduinoPaths().ide])

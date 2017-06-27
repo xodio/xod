@@ -1,4 +1,5 @@
 import path from 'path';
+import { getXodPreferencesDir } from './utils';
 
 // =============================================================================
 //
@@ -20,7 +21,7 @@ export const DEFAULT_CONFIG = {
 /** A path to builder's configuration file.
  * @constant
  * @type Path */
-export const CONFIG_PATH = path.resolve(path.dirname(module.filename), 'config.json');
+export const CONFIG_PATH = path.resolve(getXodPreferencesDir(), 'config.json');
 
 // =============================================================================
 //
