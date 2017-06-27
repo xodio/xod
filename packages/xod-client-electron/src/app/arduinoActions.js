@@ -129,9 +129,18 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
     });
   }
   if (!pkgExists) {
-    return rejectWithCode(ERROR_CODES.PACKAGES_NOT_FOUND, {
-      paths: getPackagesPaths(packages, platform),
-    });
+    // Directory could not exist if Arduino IDE is just installed and hasChanges
+    // no installed packages. So there is no directory.
+    // So we need to create an empty directory, to solve this problem and
+    // continue installing toolchains and upload.
+    const parentExists = doesDirectoryExist(resolve(pkgPath, '..'));
+    if (!parentExists) {
+      // If parent is also not exist — reject with error
+      return rejectWithCode(ERROR_CODES.PACKAGES_NOT_FOUND, {
+        paths: getPackagesPaths(packages, platform),
+      });
+    }
+    fs.mkdirSync(pkgPath);
   }
 
   return R.pipeP(
