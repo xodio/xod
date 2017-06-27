@@ -124,10 +124,14 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
   const pkgExists = R.both(doesDirectoryExist, notEmpty)(pkgPath);
 
   if (!ideExists) {
-    return rejectWithCode(ERROR_CODES.IDE_NOT_FOUND, { path: ide });
+    return rejectWithCode(ERROR_CODES.IDE_NOT_FOUND, {
+      paths: getIDEPaths(ide, platform),
+    });
   }
   if (!pkgExists) {
-    return rejectWithCode(ERROR_CODES.PACKAGES_NOT_FOUND, { path: packages });
+    return rejectWithCode(ERROR_CODES.PACKAGES_NOT_FOUND, {
+      paths: getPackagesPaths(packages, platform),
+    });
   }
 
   return R.pipeP(
