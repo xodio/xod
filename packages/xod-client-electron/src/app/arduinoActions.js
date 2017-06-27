@@ -227,10 +227,7 @@ export const doTranspileForArduino = ({ project, patchPath }) =>
  * @returns {Promise<String, Error>} Promise with Stdout or Error
  */
 export const uploadToArduino = (pab, port, code) => {
-  // TODO: Replace tmpPath with normal path.
-  //       Somehow app.getPath('temp') is not working.
-  //       Arduino IDE returns "readdirent: result is too long".
-  const tmpPath = resolve(__dirname, 'upload.tmp.cpp');
+  const tmpPath = resolve(xab.getXodPreferencesDir(), 'upload.tmp.cpp');
   const clearTmp = () => fs.unlinkSync(tmpPath);
 
   return Promise.all([writeFile(tmpPath, code), loadArduinoPaths().ide])
