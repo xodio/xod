@@ -41,16 +41,13 @@ export const getListOfBoards = R.compose(
 /**
  * Returns a target Board.
  * It tries to take a value from Settings, if it doesn't exist
- * it will fallback to the first Board from listOfBoards.
+ * it will just return Null
  */
-// :: () -> Board
+// :: () -> Nullable Board
 export const loadTargetBoard = () => R.compose(
   R.when(
     R.either(R.isNil, R.isEmpty),
-    R.compose(
-      R.head,
-      getListOfBoards
-    )
+    R.always(null)
   ),
   settings.getArduinoTarget,
   settings.load
