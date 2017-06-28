@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
 import EventListener from 'react-event-listener';
-import { ipcRenderer, remote as remoteElectron } from 'electron';
+import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 
 import client from 'xod-client';
 import { Project } from 'xod-project';
@@ -342,6 +342,17 @@ class App extends client.App {
           onClick(items.showCodeForNodeJS, this.onShowCodeNodejs),
           items.separator,
           onClick(items.uploadToArduino, this.onUploadToArduinoClicked),
+        ]
+      ),
+      submenu(
+        items.help,
+        [
+          onClick(items.documentation, () => {
+            shell.openExternal(client.getUtmSiteUrl('/docs/', 'docs', 'menu'));
+          }),
+          onClick(items.forum, () => {
+            shell.openExternal(client.getUtmForumUrl('menu'));
+          }),
         ]
       ),
     ];

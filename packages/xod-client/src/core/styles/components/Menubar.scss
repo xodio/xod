@@ -25,6 +25,11 @@ $menu-root-class: '.Menubar';
     }
   }
 
+  .menu-link {
+    color: $color-toolbar-foreground;
+    text-decoration: none;
+  }
+
   .hotkey {
     float: right;
   }
@@ -54,7 +59,8 @@ $menu-root-class: '.Menubar';
   }
 
   &-submenu-open > &-submenu-title,
-  &-item-active {
+  &-item-active,
+  &-item-active .menu-link {
     color: $color-toolbar-background;
     background-color: $color-toolbar-foreground;
     cursor: pointer;
