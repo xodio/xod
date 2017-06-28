@@ -269,11 +269,11 @@ export const uploadToArduinoHandler = (event, payload) => {
   const send = status => R.compose(
     data => (arg) => { event.sender.send('UPLOAD_TO_ARDUINO', data); return arg; },
     R.assoc(status, true),
-    (message, percentage, errCode = null) => ({
+    (message, percentage, err = null) => ({
       success: false,
       progress: false,
       failure: false,
-      errorCode: errCode,
+      error: err,
       message,
       percentage,
     })
@@ -282,7 +282,7 @@ export const uploadToArduinoHandler = (event, payload) => {
   const sendProgress = send('progress');
   const sendFailure = send('failure');
   const convertAndSendError = err => R.compose(
-    msg => sendFailure(msg, 0, err.errorCode)(),
+    msg => sendFailure(msg, 0, err)(),
     formatError
   )(err);
 
