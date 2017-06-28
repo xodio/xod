@@ -1,6 +1,6 @@
 {
   "name": "xod-arduino",
-  "version": "0.1.4",
+  "version": "0.10.0",
   "description": "XOD project: Arduino transpiler",
   "scripts": {
     "build": "babel src/ -d dist/ --source-maps",
@@ -19,13 +19,13 @@
     "hm-def": "^0.2.0",
     "ramda": "^0.23.0",
     "sanctuary-def": "^0.9.0",
-    "xod-func-tools": "^0.1.4",
-    "xod-project": "^0.1.4"
+    "xod-func-tools": "^0.10.0",
+    "xod-project": "^0.10.0"
   },
   "devDependencies": {
     "babel-plugin-inline-import": "^2.0.4",
     "chai": "^3.5.0",
     "dirty-chai": "^1.2.2",
-    "xod-fs": "^0.1.4"
+    "xod-fs": "^0.10.0"
   }
 }
