@@ -59,7 +59,7 @@ export const getArduinoIdePathPackages = R.view(Lenses.packages);
  * @type {Function}
  * @param {ArduinoDefinitionFile} txt - Arduino definition file content.
  * @return {Object} */
-const parseTxtConfig = R.compose(
+export const parseTxtConfig = R.compose(
   R.reduce((txtConfig, [tokens, value]) => R.assocPath(tokens, value, txtConfig), {}),
   R.map(R.compose(
     R.zipWith(R.call, [R.split('.'), R.identity]),
