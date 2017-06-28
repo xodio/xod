@@ -5,6 +5,7 @@ import compareVersion from 'compare-versions';
 import { def } from './types';
 
 import arduinoOfflineIndex from './arduinoPackageIndex.json';
+import boardsTxt from './boardsTxt';
 
 // =============================================================================
 //
@@ -92,6 +93,11 @@ export const sortByVersion = def(
  * Returns a preloaded Arduino Package Index.
  */
 export const getArduinoPackagesOfflineIndex = () => arduinoOfflineIndex;
+
+/**
+ * Returns a preloaded Boards.txt
+ */
+export const getDefaultBoardsTxt = () => boardsTxt;
 
 /**
  * Get all Board names from official Arduino package index by PAV.

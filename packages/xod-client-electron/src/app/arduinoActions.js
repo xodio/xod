@@ -168,7 +168,14 @@ export const installPav = pab => Promise.all([getPAV(pab), loadArduinoPaths().id
  */
 const loadPABs = (pav) => {
   const packagesPath = loadArduinoPaths().packages;
-  return xab.loadPAVBoards(pav, packagesPath);
+
+  return xab.loadPAVBoards(pav, packagesPath)
+    .catch((err) => {
+      if (err.code === 'ENOENT') {
+        return xab.parseTxtConfig(xab.getDefaultBoardsTxt());
+      }
+      return Promise.reject(err);
+    });
 };
 
 /**
