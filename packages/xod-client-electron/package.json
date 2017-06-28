@@ -60,16 +60,19 @@
   },
   "build": {
     "appId": "io.xod.ide",
+    "productName": "XOD IDE",
     "linux": {
       "target": [
         "deb",
         "rpm"
-      ]
+      ],
+      "category": "Development"
     },
     "mac": {
       "target": [
         "dmg"
-      ]
+      ],
+      "category": "public.app-category.developer-tools"
     },
     "win": {
       "target": [
