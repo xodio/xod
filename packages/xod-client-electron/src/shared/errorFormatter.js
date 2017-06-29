@@ -2,7 +2,7 @@ import R from 'ramda';
 import { ERROR_CODES as XFS_EC } from 'xod-fs';
 import * as EC from './errorCodes';
 
-const UNKNOWN_ERROR = err => `Unknown error occurred: ${JSON.stringify(err)}`;
+const UNKNOWN_ERROR = err => `Unknown error occurred: ${err.message || JSON.stringify(err)}`;
 
 const ERROR_FORMATTERS = {
   [EC.TRANSPILE_ERROR]: err => `Error occurred during transpilation: ${err}`,
