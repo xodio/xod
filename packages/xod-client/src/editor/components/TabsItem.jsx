@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const TabsItem = ({ data, onClick, onClose }) => {
@@ -30,17 +31,17 @@ const TabsItem = ({ data, onClick, onClose }) => {
   );
 };
 
-const TabsDataPropType = React.PropTypes.shape({
-  id: React.PropTypes.string,
-  index: React.PropTypes.number,
-  label: React.PropTypes.string,
-  isActive: React.PropTypes.boolean,
+const TabsDataPropType = PropTypes.shape({
+  id: PropTypes.string,
+  index: PropTypes.number,
+  label: PropTypes.string,
+  isActive: PropTypes.boolean,
 });
 
 TabsItem.propTypes = {
   data: TabsDataPropType,
-  onClick: React.PropTypes.func,
-  onClose: React.PropTypes.func,
+  onClick: PropTypes.func,
+  onClose: PropTypes.func,
 };
 
 export default TabsItem;

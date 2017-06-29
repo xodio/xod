@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { noop } from '../../../../utils/ramda';
 import Pin from '../../../../project/components/Pin';
@@ -24,9 +25,9 @@ const PinIcon = ({ id, type, isConnected }) => (
 PinIcon.displayName = 'PinIcon';
 
 PinIcon.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  type: React.PropTypes.string.isRequired,
-  isConnected: React.PropTypes.bool.isRequired,
+  id: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  isConnected: PropTypes.bool.isRequired,
 };
 
 export default PinIcon;

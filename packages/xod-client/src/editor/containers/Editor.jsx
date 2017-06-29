@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -88,14 +89,14 @@ class Editor extends React.Component {
 }
 
 Editor.propTypes = {
-  size: React.PropTypes.object.isRequired,
+  size: PropTypes.object.isRequired,
   selection: sanctuaryPropType($.Array(RenderableSelection)),
-  currentPatchPath: React.PropTypes.string,
-  actions: React.PropTypes.shape({
-    updateNodeProperty: React.PropTypes.func.isRequired,
-    undo: React.PropTypes.func.isRequired,
-    redo: React.PropTypes.func.isRequired,
-    setMode: React.PropTypes.func.isRequired,
+  currentPatchPath: PropTypes.string,
+  actions: PropTypes.shape({
+    updateNodeProperty: PropTypes.func.isRequired,
+    undo: PropTypes.func.isRequired,
+    redo: PropTypes.func.isRequired,
+    setMode: PropTypes.func.isRequired,
   }),
 };
 

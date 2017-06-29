@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -246,17 +247,17 @@ class Patch extends React.Component {
 }
 
 Patch.propTypes = {
-  size: React.PropTypes.any.isRequired,
-  actions: React.PropTypes.objectOf(React.PropTypes.func),
+  size: PropTypes.any.isRequired,
+  actions: PropTypes.objectOf(PropTypes.func),
   nodes: sanctuaryPropType($.StrMap(RenderableNode)),
   links: sanctuaryPropType($.StrMap(RenderableLink)),
-  linkingPin: React.PropTypes.object,
-  selection: React.PropTypes.array,
-  selectedNodeType: React.PropTypes.string,
-  patchPath: React.PropTypes.string,
-  mode: React.PropTypes.object,
-  ghostLink: React.PropTypes.any,
-  setModeCreating: React.PropTypes.func,
+  linkingPin: PropTypes.object,
+  selection: PropTypes.array,
+  selectedNodeType: PropTypes.string,
+  patchPath: PropTypes.string,
+  mode: PropTypes.object,
+  ghostLink: PropTypes.any,
+  setModeCreating: PropTypes.func,
 };
 
 const mapStateToProps = R.applySpec({

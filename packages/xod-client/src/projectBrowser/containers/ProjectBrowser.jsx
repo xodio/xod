@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import CustomScroll from 'react-custom-scroll';
 import { connect } from 'react-redux';
@@ -265,26 +266,26 @@ class ProjectBrowser extends React.Component {
 ProjectBrowser.displayName = 'ProjectBrowser';
 
 ProjectBrowser.propTypes = {
-  projectName: React.PropTypes.string.isRequired,
-  currentPatchPath: React.PropTypes.string,
-  selectedPatchPath: React.PropTypes.string,
-  selectedPatchLabel: React.PropTypes.string.isRequired,
+  projectName: PropTypes.string.isRequired,
+  currentPatchPath: PropTypes.string,
+  selectedPatchPath: PropTypes.string,
+  selectedPatchLabel: PropTypes.string.isRequired,
   localPatches: sanctuaryPropType($.Array(Patch)),
-  popups: React.PropTypes.object.isRequired,
+  popups: PropTypes.object.isRequired,
   libs: sanctuaryPropType($.StrMap($.Array(Patch))),
-  actions: React.PropTypes.shape({
-    addNode: React.PropTypes.func.isRequired,
-    switchPatch: React.PropTypes.func.isRequired,
-    requestCreatePatch: React.PropTypes.func.isRequired,
-    requestRename: React.PropTypes.func.isRequired,
-    requestDelete: React.PropTypes.func.isRequired,
-    setSelection: React.PropTypes.func.isRequired,
-    removeSelection: React.PropTypes.func.isRequired,
-    addPatch: React.PropTypes.func.isRequired,
-    renamePatch: React.PropTypes.func.isRequired,
-    deletePatch: React.PropTypes.func.isRequired,
-    renameProject: React.PropTypes.func.isRequired,
-    closeAllPopups: React.PropTypes.func.isRequired,
+  actions: PropTypes.shape({
+    addNode: PropTypes.func.isRequired,
+    switchPatch: PropTypes.func.isRequired,
+    requestCreatePatch: PropTypes.func.isRequired,
+    requestRename: PropTypes.func.isRequired,
+    requestDelete: PropTypes.func.isRequired,
+    setSelection: PropTypes.func.isRequired,
+    removeSelection: PropTypes.func.isRequired,
+    addPatch: PropTypes.func.isRequired,
+    renamePatch: PropTypes.func.isRequired,
+    deletePatch: PropTypes.func.isRequired,
+    renameProject: PropTypes.func.isRequired,
+    closeAllPopups: PropTypes.func.isRequired,
   }),
 };
 

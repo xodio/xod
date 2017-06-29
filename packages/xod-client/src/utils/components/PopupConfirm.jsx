@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
 import EventListener from 'react-event-listener';
@@ -65,15 +66,15 @@ const PopupConfirm = ({
 };
 
 PopupConfirm.propTypes = {
-  title: React.PropTypes.string,
-  children: React.PropTypes.any,
-  confirmText: React.PropTypes.string,
-  cancelText: React.PropTypes.string,
-  className: React.PropTypes.string,
-  onClose: React.PropTypes.func,
-  onConfirm: React.PropTypes.func,
-  isClosable: React.PropTypes.bool,
-  isVisible: React.PropTypes.bool,
+  title: PropTypes.string,
+  children: PropTypes.any,
+  confirmText: PropTypes.string,
+  cancelText: PropTypes.string,
+  className: PropTypes.string,
+  onClose: PropTypes.func,
+  onConfirm: PropTypes.func,
+  isClosable: PropTypes.bool,
+  isVisible: PropTypes.bool,
 };
 PopupConfirm.defaultProps = {
   title: 'We have a question...',

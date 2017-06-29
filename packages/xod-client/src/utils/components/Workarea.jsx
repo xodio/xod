@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Workarea = ({ children }) => (
   <div className="Workarea">
@@ -7,7 +8,7 @@ const Workarea = ({ children }) => (
 );
 
 Workarea.propTypes = {
-  children: React.PropTypes.arrayOf(React.PropTypes.element),
+  children: PropTypes.arrayOf(PropTypes.element),
 };
 
 export default Workarea;

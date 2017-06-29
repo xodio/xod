@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { isValidIdentifier, IDENTIFIER_RULES } from 'xod-project';
 import { POPUP_ID } from '../../popups/constants';
@@ -119,17 +120,17 @@ class ProjectBrowserPopups extends React.Component {
 }
 
 ProjectBrowserPopups.propTypes = {
-  selectedPatchPath: React.PropTypes.string,
-  selectedPatchName: React.PropTypes.string,
-  popups: React.PropTypes.object,
-  projectName: React.PropTypes.string,
+  selectedPatchPath: PropTypes.string,
+  selectedPatchName: PropTypes.string,
+  popups: PropTypes.object,
+  projectName: PropTypes.string,
 
-  onPatchCreate: React.PropTypes.func.isRequired,
-  onProjectRename: React.PropTypes.func.isRequired,
-  onPatchRename: React.PropTypes.func.isRequired,
-  onPatchDelete: React.PropTypes.func.isRequired,
+  onPatchCreate: PropTypes.func.isRequired,
+  onProjectRename: PropTypes.func.isRequired,
+  onPatchRename: PropTypes.func.isRequired,
+  onPatchDelete: PropTypes.func.isRequired,
 
-  onCloseAllPopups: React.PropTypes.func.isRequired,
+  onCloseAllPopups: PropTypes.func.isRequired,
 };
 
 ProjectBrowserPopups.defaultProps = {

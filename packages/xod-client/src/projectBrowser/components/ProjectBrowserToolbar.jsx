@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Icon } from 'react-fa';
 
 const ProjectBrowserToolbar = ({ onClickAddPatch }) => (
@@ -17,7 +18,7 @@ const ProjectBrowserToolbar = ({ onClickAddPatch }) => (
 ProjectBrowserToolbar.displayName = 'ProjectBrowserToolbar';
 
 ProjectBrowserToolbar.propTypes = {
-  onClickAddPatch: React.PropTypes.func.isRequired,
+  onClickAddPatch: PropTypes.func.isRequired,
 };
 
 export default ProjectBrowserToolbar;

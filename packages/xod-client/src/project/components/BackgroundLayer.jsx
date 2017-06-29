@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { LAYER } from '../../editor/constants';
 
 import SVGLayer from './SVGLayer';
@@ -93,7 +94,7 @@ const BackgroundLayer = ({ onClick }) => (
 );
 
 BackgroundLayer.propTypes = {
-  onClick: React.PropTypes.func,
+  onClick: PropTypes.func,
 };
 
 export default BackgroundLayer;

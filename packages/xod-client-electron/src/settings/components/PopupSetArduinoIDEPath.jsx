@@ -1,5 +1,6 @@
 import { propOr } from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { remote } from 'electron';
 import { PopupForm } from 'xod-client';
 
@@ -65,9 +66,9 @@ class PopupSetArduinoIDEPath extends React.Component {
 }
 
 PopupSetArduinoIDEPath.propTypes = {
-  isVisible: React.PropTypes.bool, // eslint-disable-line
-  onChange: React.PropTypes.func,
-  onClose: React.PropTypes.func,
+  isVisible: PropTypes.bool, // eslint-disable-line
+  onChange: PropTypes.func,
+  onClose: PropTypes.func,
 };
 
 export default PopupSetArduinoIDEPath;

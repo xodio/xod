@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import PinOverlay from './PinOverlay';
 import { noop } from '../../utils/ramda';
@@ -65,14 +66,14 @@ class PinsOverlay extends React.Component {
 }
 
 PinsOverlay.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  pins: React.PropTypes.any.isRequired,
-  size: React.PropTypes.any.isRequired,
-  position: React.PropTypes.object.isRequired,
-  linkingPin: React.PropTypes.object,
-  pinLinkabilityValidator: React.PropTypes.func,
-  onPinMouseUp: React.PropTypes.func,
-  onPinMouseDown: React.PropTypes.func,
+  id: PropTypes.string.isRequired,
+  pins: PropTypes.any.isRequired,
+  size: PropTypes.any.isRequired,
+  position: PropTypes.object.isRequired,
+  linkingPin: PropTypes.object,
+  pinLinkabilityValidator: PropTypes.func,
+  onPinMouseUp: PropTypes.func,
+  onPinMouseDown: PropTypes.func,
 };
 PinsOverlay.defaultProps = {
   pinLinkabilityValidator: R.F,

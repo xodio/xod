@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const IOLabelWidget = (props) => {
@@ -31,13 +32,13 @@ const IOLabelWidget = (props) => {
 };
 
 IOLabelWidget.propTypes = {
-  elementId: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string,
-  value: React.PropTypes.string,
-  disabled: React.PropTypes.bool,
-  onBlur: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onKeyDown: React.PropTypes.func.isRequired,
+  elementId: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  value: PropTypes.string,
+  disabled: PropTypes.bool,
+  onBlur: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onKeyDown: PropTypes.func.isRequired,
 };
 
 IOLabelWidget.defaultProps = {

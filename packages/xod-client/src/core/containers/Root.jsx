@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
@@ -36,7 +37,7 @@ Root.defaultProps = {
 };
 
 Root.propTypes = {
-  children: React.PropTypes.element.isRequired,
-  extraReducers: React.PropTypes.object,
-  initialState: React.PropTypes.object,
+  children: PropTypes.element.isRequired,
+  extraReducers: PropTypes.object,
+  initialState: PropTypes.object,
 };

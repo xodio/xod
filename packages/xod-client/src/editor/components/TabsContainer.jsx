@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const TabsContainer = ({ children }) => (
   <ul className="TabsContainer">
@@ -7,9 +8,9 @@ const TabsContainer = ({ children }) => (
 );
 
 TabsContainer.propTypes = {
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.element,
-    React.PropTypes.arrayOf(React.PropTypes.element),
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
   ]),
 };
 

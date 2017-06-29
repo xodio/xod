@@ -1,4 +1,5 @@
 import R from 'ramda';
+import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
 import React from 'react';
 
@@ -21,7 +22,7 @@ const InspectorMessage = ({ text }) => (
 );
 
 InspectorMessage.propTypes = {
-  text: React.PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
 };
 
 
@@ -64,7 +65,7 @@ const Inspector = ({
 
 Inspector.propTypes = {
   selection: sanctuaryPropType($.Array(RenderableSelection)),
-  onPropUpdate: React.PropTypes.func.isRequired,
+  onPropUpdate: PropTypes.func.isRequired,
 };
 
 Inspector.defaultProps = {

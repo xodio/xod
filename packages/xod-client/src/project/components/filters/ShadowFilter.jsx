@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const ShadowFilter = ({ id, dx, dy, deviation, slope = 0.5 }) => (
   <filter id={id} width="150%" height="150%">
@@ -17,11 +18,11 @@ const ShadowFilter = ({ id, dx, dy, deviation, slope = 0.5 }) => (
 ShadowFilter.displayName = 'ShadowFilter';
 
 ShadowFilter.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  dx: React.PropTypes.number.isRequired,
-  dy: React.PropTypes.number.isRequired,
-  deviation: React.PropTypes.number.isRequired,
-  slope: React.PropTypes.number,
+  id: PropTypes.string.isRequired,
+  dx: PropTypes.number.isRequired,
+  dy: PropTypes.number.isRequired,
+  deviation: PropTypes.number.isRequired,
+  slope: PropTypes.number,
 };
 
 export default ShadowFilter;

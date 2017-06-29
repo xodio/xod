@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { LAYER } from '../../editor/constants';
 
 import SVGLayer from './SVGLayer';
@@ -41,10 +42,10 @@ const PinsOverlayLayer = ({
 };
 
 PinsOverlayLayer.propTypes = {
-  nodes: React.PropTypes.objectOf(React.PropTypes.object),
-  linkingPin: React.PropTypes.object,
-  onPinMouseUp: React.PropTypes.func,
-  onPinMouseDown: React.PropTypes.func,
+  nodes: PropTypes.objectOf(PropTypes.object),
+  linkingPin: PropTypes.object,
+  onPinMouseUp: PropTypes.func,
+  onPinMouseDown: PropTypes.func,
 };
 
 export default PinsOverlayLayer;

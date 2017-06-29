@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const NodeText = ({ children }) => (
   <text
@@ -12,7 +13,7 @@ const NodeText = ({ children }) => (
 );
 
 NodeText.propTypes = {
-  children: React.PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired,
 };
 
 export default NodeText;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import PinWidget from './PinWidget';
 
@@ -31,18 +32,18 @@ const StringWidget = (props) => {
 };
 
 StringWidget.propTypes = {
-  elementId: React.PropTypes.string.isRequired,
-  normalizedLabel: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string,
-  dataType: React.PropTypes.string,
-  isConnected: React.PropTypes.bool,
-  isBindable: React.PropTypes.bool,
-  direction: React.PropTypes.string,
+  elementId: PropTypes.string.isRequired,
+  normalizedLabel: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  dataType: PropTypes.string,
+  isConnected: PropTypes.bool,
+  isBindable: PropTypes.bool,
+  direction: PropTypes.string,
 
-  value: React.PropTypes.string,
-  onBlur: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onKeyDown: React.PropTypes.func.isRequired,
+  value: PropTypes.string,
+  onBlur: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onKeyDown: PropTypes.func.isRequired,
 };
 
 StringWidget.defaultProps = {

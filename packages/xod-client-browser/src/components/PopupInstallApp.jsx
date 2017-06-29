@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SkyLight from 'react-skylight';
 
 class PopupInstallApp extends React.Component {
@@ -47,8 +48,8 @@ class PopupInstallApp extends React.Component {
 }
 
 PopupInstallApp.propTypes = {
-  isVisible: React.PropTypes.bool,
-  onClose: React.PropTypes.func,
+  isVisible: PropTypes.bool,
+  onClose: PropTypes.func,
 };
 
 export default PopupInstallApp;

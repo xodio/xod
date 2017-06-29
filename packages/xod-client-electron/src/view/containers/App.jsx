@@ -3,6 +3,7 @@
 import fs from 'fs';
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
@@ -559,14 +560,14 @@ class App extends client.App {
 }
 
 App.propTypes = R.merge(client.App.propTypes, {
-  hasChanges: React.PropTypes.bool,
-  projects: React.PropTypes.object,
-  actions: React.PropTypes.objectOf(React.PropTypes.func),
-  upload: React.PropTypes.object,
-  workspace: React.PropTypes.string,
-  popups: React.PropTypes.objectOf(React.PropTypes.bool),
-  popupsData: React.PropTypes.objectOf(React.PropTypes.object),
-  selectedPort: React.PropTypes.object,
+  hasChanges: PropTypes.bool,
+  projects: PropTypes.object,
+  actions: PropTypes.objectOf(PropTypes.func),
+  upload: PropTypes.object,
+  workspace: PropTypes.string,
+  popups: PropTypes.objectOf(PropTypes.bool),
+  popupsData: PropTypes.objectOf(PropTypes.object),
+  selectedPort: PropTypes.object,
 });
 
 const mapStateToProps = (state) => {

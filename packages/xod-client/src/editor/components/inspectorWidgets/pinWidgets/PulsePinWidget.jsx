@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import PinWidget from './PinWidget';
 
@@ -23,13 +24,13 @@ const PulseWidget = props => (
 );
 
 PulseWidget.propTypes = {
-  elementId: React.PropTypes.string.isRequired,
-  normalizedLabel: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string,
-  dataType: React.PropTypes.string,
-  isConnected: React.PropTypes.bool,
-  isBindable: React.PropTypes.bool,
-  direction: React.PropTypes.string,
+  elementId: PropTypes.string.isRequired,
+  normalizedLabel: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  dataType: PropTypes.string,
+  isConnected: PropTypes.bool,
+  isBindable: PropTypes.bool,
+  direction: PropTypes.string,
 };
 
 export default PulseWidget;

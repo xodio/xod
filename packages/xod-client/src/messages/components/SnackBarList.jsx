@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const SnackBarList = ({ onMouseOver, onMouseOut, children }) => (
   <ul
@@ -11,9 +12,9 @@ const SnackBarList = ({ onMouseOver, onMouseOut, children }) => (
 );
 
 SnackBarList.propTypes = {
-  children: React.PropTypes.arrayOf(React.PropTypes.element),
-  onMouseOver: React.PropTypes.func,
-  onMouseOut: React.PropTypes.func,
+  children: PropTypes.arrayOf(PropTypes.element),
+  onMouseOver: PropTypes.func,
+  onMouseOut: PropTypes.func,
 };
 
 export default SnackBarList;

@@ -1,5 +1,7 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { LAYER } from '../../editor/constants';
 
 import { isNodeSelected } from '../../editor/utils';
@@ -54,13 +56,13 @@ const IdleNodesLayer = ({
 };
 
 IdleNodesLayer.propTypes = {
-  nodes: React.PropTypes.objectOf(React.PropTypes.object),
-  selection: React.PropTypes.arrayOf(React.PropTypes.object),
-  linkingPin: React.PropTypes.object,
-  draggedNodeId: React.PropTypes.string,
-  onMouseDown: React.PropTypes.func,
-  onPinMouseUp: React.PropTypes.func,
-  onPinMouseDown: React.PropTypes.func,
+  nodes: PropTypes.objectOf(PropTypes.object),
+  selection: PropTypes.arrayOf(PropTypes.object),
+  linkingPin: PropTypes.object,
+  draggedNodeId: PropTypes.string,
+  onMouseDown: PropTypes.func,
+  onPinMouseUp: PropTypes.func,
+  onPinMouseDown: PropTypes.func,
 };
 
 export default IdleNodesLayer;

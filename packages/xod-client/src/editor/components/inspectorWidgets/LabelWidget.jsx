@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 
 const LabelWidget = (props) => {
   const onChange = (event) => {
@@ -21,11 +21,11 @@ const LabelWidget = (props) => {
 };
 
 LabelWidget.propTypes = {
-  elementId: React.PropTypes.string.isRequired,
-  value: React.PropTypes.string,
-  onBlur: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onKeyDown: React.PropTypes.func.isRequired,
+  elementId: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  onBlur: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onKeyDown: PropTypes.func.isRequired,
 };
 
 LabelWidget.defaultProps = {

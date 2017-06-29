@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 import { noop } from '../../utils/ramda';
@@ -57,14 +58,14 @@ class PatchTypeSelector extends React.Component {
 PatchTypeSelector.displayName = 'PatchTypeSelector';
 
 PatchTypeSelector.propTypes = {
-  options: React.PropTypes.arrayOf(
-    React.PropTypes.shape({
-      key: React.PropTypes.string.isRequired, // eslint-disable-line react/no-unused-prop-types
-      name: React.PropTypes.string.isRequired, // eslint-disable-line react/no-unused-prop-types
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired, // eslint-disable-line react/no-unused-prop-types
+      name: PropTypes.string.isRequired, // eslint-disable-line react/no-unused-prop-types
     })
   ).isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  children: React.PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  children: PropTypes.func.isRequired,
 };
 
 PatchTypeSelector.defaultProps = {

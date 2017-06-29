@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { PIN_RADIUS, PIN_HIGHLIGHT_RADIUS } from '../nodeLayout';
 
@@ -38,12 +39,12 @@ const Pin = (props) => {
 };
 
 Pin.propTypes = {
-  keyName: React.PropTypes.string.isRequired,
-  type: React.PropTypes.string,
-  position: React.PropTypes.object.isRequired,
-  isSelected: React.PropTypes.bool,
-  isConnected: React.PropTypes.bool,
-  isAcceptingLinks: React.PropTypes.bool,
+  keyName: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  position: PropTypes.object.isRequired,
+  isSelected: PropTypes.bool,
+  isConnected: PropTypes.bool,
+  isAcceptingLinks: PropTypes.bool,
 };
 
 export default Pin;

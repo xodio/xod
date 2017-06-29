@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import PinShadowFilter from './filters/PinShadowFilter';
 import DraggedNodeShadowFilter from './filters/DraggedNodeShadowFilter';
@@ -21,12 +22,12 @@ const PatchSVG = ({ children, onMouseMove, onMouseUp }) => (
 );
 
 PatchSVG.propTypes = {
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.element,
-    React.PropTypes.arrayOf(React.PropTypes.element),
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
   ]),
-  onMouseMove: React.PropTypes.func,
-  onMouseUp: React.PropTypes.func,
+  onMouseMove: PropTypes.func,
+  onMouseUp: PropTypes.func,
 };
 
 export default PatchSVG;

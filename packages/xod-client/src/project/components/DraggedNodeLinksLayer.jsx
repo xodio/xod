@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import SVGLayer from './SVGLayer';
 import XODLink from './Link';
@@ -63,9 +64,9 @@ class DraggedNodeLinksLayer extends React.PureComponent {
 DraggedNodeLinksLayer.displayName = 'DraggedNodeLinksLayer';
 
 DraggedNodeLinksLayer.propTypes = {
-  node: React.PropTypes.object,
-  nodePosition: React.PropTypes.object,
-  links: React.PropTypes.array,
+  node: PropTypes.object,
+  nodePosition: PropTypes.object,
+  links: PropTypes.array,
 };
 
 export default DraggedNodeLinksLayer;
