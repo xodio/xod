@@ -1,6 +1,6 @@
 {
   "name": "xod-arduino-builder",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "XOD project: Arduino Builder",
   "main": "dist/index.js",
   "scripts": {
