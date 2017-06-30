@@ -229,7 +229,7 @@ export const checkPort = port => listPorts()
   .then(R.ifElse(
     hasPort(port),
     R.always(port),
-    (ports) => { throw Object.assign(new Error('Port not found'), { port, ports }); }
+    (ports) => { throw Object.assign(new Error(`Port ${port.comName} not found`), { port, ports }); }
   ))
   .catch(rejectWithCode(ERROR_CODES.PORT_NOT_FOUND));
 
