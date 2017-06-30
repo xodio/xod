@@ -16,9 +16,8 @@ run:
       XOD=$(realpath xod)
 
       cd "$XOD" || exit 1
-      export NODE_ENV=production
       yarn install --no-progress
-      yarn run build
+      NODE_ENV=production yarn run build
 
       cd "$XOD/packages/xod-client-browser" || exit 1
       echo 'double-tap' >DOUBLE_TAP
