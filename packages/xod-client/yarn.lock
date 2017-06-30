@@ -3230,9 +3230,9 @@ react-event-listener@^0.2.1:
   dependencies:
     fbjs "^0.8.0"
 
-"react-fa@git+https://github.com/brusherru/react-fa.git":
+"react-fa@git+https://github.com/xodio/react-fa.git":
   version "4.1.2"
-  resolved "git+https://github.com/brusherru/react-fa.git#af0afb61204783e9071fd3d919b4ad58cbe114a4"
+  resolved "git+https://github.com/xodio/react-fa.git#af0afb61204783e9071fd3d919b4ad58cbe114a4"
   dependencies:
     font-awesome "^4.3.0"
 
@@ -3251,12 +3251,14 @@ react-highlighter@^0.3.2:
     blacklist "^1.1.2"
     escape-string-regexp "^1.0.5"
 
-"react-hotkeys@git+https://github.com/brusherru/react-hotkeys.git#npm":
-  version "0.9.0"
-  resolved "git+https://github.com/brusherru/react-hotkeys.git#4a5be249a92a11ad7b226a65b37bf1440e0acfa2"
+"react-hotkeys@git+https://github.com/xodio/react-hotkeys.git#npm":
+  version "0.10.0"
+  resolved "git+https://github.com/xodio/react-hotkeys.git#b59ba4726ec7f3c6589f6820f6c9a453172417dc"
   dependencies:
+    create-react-class "^15.5.2"
     lodash "^4.13.1"
     mousetrap "^1.5.2"
+    prop-types "^15.5.8"
 
 react-inspector@^1.1.0:
   version "1.1.2"
