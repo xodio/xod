@@ -66,6 +66,7 @@ export default class App extends React.Component {
     const eitherCode = transpiler(project, currentPatchPath);
     foldEither(
       (error) => {
+        console.error(error); // eslint-disable-line no-console
         this.props.actions.addError(error.message);
       },
       (code) => {

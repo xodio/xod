@@ -13,6 +13,7 @@ import * as MESSAGES from '../shared/messages';
 import formatError from '../shared/errorFormatter';
 import * as ERROR_CODES from '../shared/errorCodes';
 import * as EVENTS from '../shared/events';
+import { errorToPlainObject } from './utils';
 
 // =============================================================================
 //
@@ -121,9 +122,14 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
   const pkgExists = R.both(doesDirectoryExist, notEmpty)(pkgPath);
 
   if (!ideExists) {
-    return rejectWithCode(ERROR_CODES.IDE_NOT_FOUND, {
-      paths: getIDEPaths(ide, platform),
-    });
+    return rejectWithCode(ERROR_CODES.IDE_NOT_FOUND,
+      Object.assign(
+        new Error('Arduino IDE not found'),
+        {
+          paths: getIDEPaths(ide, platform),
+        }
+      )
+    );
   }
   if (!pkgExists) {
     // Directory could not exist if Arduino IDE is just installed and hasChanges
@@ -133,9 +139,14 @@ export const checkArduinoIde = ({ ide, packages }, platform) => {
     const parentExists = doesDirectoryExist(resolve(pkgPath, '..'));
     if (!parentExists) {
       // If parent is also not exist — reject with error
-      return rejectWithCode(ERROR_CODES.PACKAGES_NOT_FOUND, {
-        paths: getPackagesPaths(packages, platform),
-      });
+      return rejectWithCode(ERROR_CODES.PACKAGES_NOT_FOUND,
+        Object.assign(
+          new Error('Arduino packages directory not found'),
+          {
+            paths: getPackagesPaths(packages, platform),
+          }
+        )
+      );
     }
     fs.mkdirSync(pkgPath);
   }
@@ -184,10 +195,10 @@ const loadPABs = (pav) => {
  * @param {Array<Object>} pavs List of PAV objects, stored in settings
  * @returns {Promise<Object, Error>} Promise with finded PAV or Error
  */
-export const getInstalledPAV = (pab, pavs) => R.compose(
+export const getInstalledPAV = (pab, pavs, err) => R.compose(
   pav => Promise.resolve(pav),
   R.defaultTo(
-    rejectWithCode(ERROR_CODES.NO_INSTALLED_PAVS, { pab })
+    rejectWithCode(ERROR_CODES.NO_INSTALLED_PAVS, Object.assign(err, { pab, pavs }))
   ),
   R.last,
   xab.sortByVersion,
@@ -218,7 +229,7 @@ export const checkPort = port => listPorts()
   .then(R.ifElse(
     hasPort(port),
     R.always(port),
-    ports => Promise.reject({ port, ports })
+    (ports) => { throw Object.assign(new Error(`Port ${port.comName} not found`), { port, ports }); }
   ))
   .catch(rejectWithCode(ERROR_CODES.PORT_NOT_FOUND));
 
@@ -269,11 +280,11 @@ export const uploadToArduinoHandler = (event, payload) => {
   const send = status => R.compose(
     data => (arg) => { event.sender.send('UPLOAD_TO_ARDUINO', data); return arg; },
     R.assoc(status, true),
-    (message, percentage, errCode = null) => ({
+    (message, percentage, err = null) => ({
       success: false,
       progress: false,
       failure: false,
-      errorCode: errCode,
+      error: err,
       message,
       percentage,
     })
@@ -282,7 +293,7 @@ export const uploadToArduinoHandler = (event, payload) => {
   const sendProgress = send('progress');
   const sendFailure = send('failure');
   const convertAndSendError = err => R.compose(
-    msg => sendFailure(msg, 0, err.errorCode)(),
+    msg => sendFailure(msg, 0, errorToPlainObject(err))(),
     formatError
   )(err);
 
@@ -329,7 +340,7 @@ export const uploadToArduinoHandler = (event, payload) => {
     sendProgress(MESSAGES.IDE_FOUND, 20),
     tapP(
       () => installPav(pav)
-        .catch(() => getInstalledPAV(pav, listInstalledPAVs()))
+        .catch(err => getInstalledPAV(pav, listInstalledPAVs(), err))
         .then(R.tap(savePAV))
     ),
     sendProgress(MESSAGES.TOOLCHAIN_INSTALLED, 30),

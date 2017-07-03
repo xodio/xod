@@ -132,6 +132,7 @@ class App extends client.App {
         // TODO: Catch CANT_OPEN_SELECTED_PROJECT and show something else
         //       (its strange to ask to switch workspace if project has broken).
         this.showPopupSetWorkspaceNotCancellable();
+        console.error(error); // eslint-disable-line no-console
         this.props.actions.addError(formatError(error));
       }
     );
@@ -170,13 +171,15 @@ class App extends client.App {
         proc.success(payload.message);
       }
       if (payload.failure) {
-        if (payload.errorCode === ERROR_CODES.IDE_NOT_FOUND) {
+        if (payload.error.errorCode === ERROR_CODES.IDE_NOT_FOUND) {
           this.showArduinoIdeNotFoundPopup();
           ipcRenderer.once('SET_ARDUINO_IDE',
             (evt, response) => {
               if (response.code === 0) this.onUploadToArduino(board, port, proc);
             }
           );
+        } else {
+          console.error(payload.error); // eslint-disable-line no-console
         }
         proc.fail(payload.message);
       }
