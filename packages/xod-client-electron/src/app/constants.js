@@ -1,5 +1,3 @@
-import { resolve } from 'path';
-
 // =============================================================================
 //
 // Paths and file names
@@ -24,6 +22,3 @@ export const DEFAULT_ARDUINO_PACKAGES_PATH = {
   win64: ['~/AppData/Local/Arduino15/packages/'],
   linux: ['~/.arduino15/packages/'],
 };
-
-
-export const PATH_TO_DEFAULT_WORKSPACE = resolve(__dirname, '../workspace');

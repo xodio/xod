@@ -1,5 +1,6 @@
 import R from 'ramda';
 import EventEmitter from 'events';
+import path from 'path';
 
 import * as XP from 'xod-project';
 import {
@@ -26,12 +27,11 @@ import {
 
 import * as settings from './settings';
 import * as ERROR_CODES from '../shared/errorCodes';
-import {
-  PATH_TO_DEFAULT_WORKSPACE,
-} from './constants';
 import { errorToPlainObject } from './utils';
 import * as EVENTS from '../shared/events';
 
+
+export const getPathToBundledWorkspace = () => path.resolve(__dirname, '../workspace');
 
 // =============================================================================
 //
@@ -87,9 +87,9 @@ export const updateWorkspace = R.curry(
 // =============================================================================
 
 // :: () -> Path
-const getStdLibPath = () => resolveLibPath(PATH_TO_DEFAULT_WORKSPACE);
+const getStdLibPath = () => resolveLibPath(getPathToBundledWorkspace());
 // :: () -> Path
-export const getDefaultProjectPath = () => resolveDefaultProjectPath(PATH_TO_DEFAULT_WORKSPACE);
+export const getDefaultProjectPath = () => resolveDefaultProjectPath(getPathToBundledWorkspace());
 
 // :: (Error -> a) -> Error -> Promise a Error
 const catchInvalidWorkspace = R.curry(
