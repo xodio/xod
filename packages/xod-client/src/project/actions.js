@@ -32,6 +32,15 @@ export const createProject = projectName => (dispatch) => {
   });
 };
 
+export const updateProjectMeta = ({ license, description, version }) => ({
+  type: ActionType.PROJECT_UPDATE_META,
+  payload: {
+    license,
+    description,
+    version,
+  },
+});
+
 export const addNode = (typeId, position, patchPath) => (dispatch) => {
   const newNodeId = XP.generateId();
 

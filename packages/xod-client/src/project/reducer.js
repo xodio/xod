@@ -18,6 +18,7 @@ import {
   PROJECT_OPEN,
   PROJECT_OPEN_WORKSPACE,
   PROJECT_IMPORT,
+  PROJECT_UPDATE_META,
 } from './actionTypes';
 
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from './constants';
@@ -74,6 +75,13 @@ export default (state = {}, action) => {
     case PROJECT_OPEN: {
       return action.payload;
     }
+
+    case PROJECT_UPDATE_META:
+      return R.compose(
+        XP.setProjectVersion(action.payload.version),
+        XP.setProjectLicense(action.payload.license),
+        XP.setProjectDescription(action.payload.description)
+      )(state);
 
     case PROJECT_OPEN_WORKSPACE: {
       const libs = action.payload;

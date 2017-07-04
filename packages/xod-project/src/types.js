@@ -6,7 +6,7 @@ import XF from 'xod-func-tools';
 
 import * as C from './constants';
 import { isTerminalPatchPath, isValidIdentifier, isValidPatchPath } from './internal/patchPathUtils';
-import { isValidVersion } from './internal/versionUtils';
+import { isValidVersion } from './versionUtils';
 
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */

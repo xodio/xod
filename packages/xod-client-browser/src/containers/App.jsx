@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import EventListener from 'react-event-listener';
 import { HotKeys } from 'react-hotkeys';
 
+import * as XP from 'xod-project';
 import client from 'xod-client';
 
 import PopupInstallApp from '../components/PopupInstallApp';
@@ -151,6 +152,8 @@ class App extends client.App {
         [
           onClick(items.undo, this.props.actions.undoCurrentPatch),
           onClick(items.redo, this.props.actions.redoCurrentPatch),
+          items.separator,
+          onClick(items.projectPreferences, this.props.actions.showProjectPreferences),
         ]
       ),
       submenu(
@@ -209,22 +212,9 @@ class App extends client.App {
           isVisible={this.state.popupInstallApp}
           onClose={this.hideInstallAppPopup}
         />
-        <client.PopupShowCode
-          isVisible={this.props.popups.showCode}
-          code={this.props.popupsData.showCode.code}
-          onClose={this.props.actions.hideAllPopups}
-        />
-        <client.PopupPrompt
-          title="Create new project"
-          confirmText="Create project"
-          isVisible={this.state.popupCreateProject}
-          onConfirm={this.onCreateProject}
-          onClose={this.hidePopupCreateProject}
-        >
-          <p>
-            Please, give a sonorous name to yor project:
-          </p>
-        </client.PopupPrompt>
+        {this.renderPopupShowCode()}
+        {this.renderPopupProjectPreferences()}
+        {this.renderPopupCreateNewProject()}
       </HotKeys>
     );
   }
@@ -232,7 +222,7 @@ class App extends client.App {
 
 App.propTypes = R.merge(client.App.propTypes, {
   hasChanges: PropTypes.bool,
-  projectJSON: PropTypes.string,
+  project: client.sanctuaryPropType(XP.Project),
   actions: PropTypes.object,
   initialProject: PropTypes.object.isRequired,
   popups: PropTypes.objectOf(PropTypes.bool),
@@ -245,6 +235,7 @@ const mapStateToProps = R.applySpec({
   currentPatchPath: client.getCurrentPatchPath,
   popups: {
     showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE),
+    projectPreferences: client.getPopupVisibility(client.POPUP_ID.EDITING_PROJECT_PREFERENCES),
   },
   popupsData: {
     showCode: client.getPopupData(client.POPUP_ID.SHOWING_CODE),
@@ -252,21 +243,11 @@ const mapStateToProps = R.applySpec({
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    createProject: client.createProject,
-    requestRenameProject: client.requestRenameProject,
-    importProject: client.importProject, // used in base App class
-    openProject: client.openProject,
-    setMode: client.setMode,
-    addError: client.addError,
-    setSelectedNodeType: client.setSelectedNodeType,
-    deleteProcess: client.deleteProcess,
-    createPatch: client.requestCreatePatch,
-    undoCurrentPatch: client.undoCurrentPatch,
-    redoCurrentPatch: client.redoCurrentPatch,
-    showCode: client.showCode,
-    hideAllPopups: client.hideAllPopups,
-  }, dispatch),
+  actions: bindActionCreators(
+    R.merge(client.App.actions, {
+      // Put custom actions for xod-client-browser here
+    }), dispatch
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

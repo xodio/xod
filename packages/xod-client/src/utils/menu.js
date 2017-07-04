@@ -80,6 +80,10 @@ const rawItems = {
     command: COMMAND.PASTE,
     role: 'paste',
   },
+  projectPreferences: {
+    key: 'projectPreferences',
+    label: 'Project preferences',
+  },
 
   deploy: {
     key: 'deploy',

@@ -7,6 +7,8 @@ export const POPUP_ID = { // eslint-disable-line import/prefer-default-export
   RENAMING_PROJECT: 'renamingProject',
   OPENING_PROJECT: 'openingProject',
 
+  EDITING_PROJECT_PREFERENCES: 'editingProjectPreferences',
+
   CREATING_WORKSPACE: 'creatingWorkspace',
   SWITCHING_WORKSPACE: 'switchingWorkspace',
 
