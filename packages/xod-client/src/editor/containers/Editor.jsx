@@ -5,6 +5,8 @@ import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
+import { Patch as PatchType } from 'xod-project';
+import { $Maybe } from 'xod-func-tools';
 
 import * as Actions from '../actions';
 import * as ProjectActions from '../../project/actions';
@@ -56,10 +58,11 @@ class Editor extends React.Component {
   render() {
     const {
       currentPatchPath,
+      currentPatch,
       selection,
     } = this.props;
 
-    const currentPatch = currentPatchPath
+    const openedPatch = currentPatchPath
       ? (
         <Patch
           patchPath={currentPatchPath}
@@ -76,12 +79,14 @@ class Editor extends React.Component {
           <ProjectBrowser />
           <Inspector
             selection={selection}
+            currentPatch={currentPatch}
             onPropUpdate={this.props.actions.updateNodeProperty}
+            onPatchDescriptionUpdate={this.props.actions.updatePatchDescription}
           />
         </Sidebar>
         <Workarea>
           <Tabs />
-          {currentPatch}
+          {openedPatch}
         </Workarea>
       </HotKeys>
     );
@@ -92,8 +97,10 @@ Editor.propTypes = {
   size: PropTypes.object.isRequired,
   selection: sanctuaryPropType($.Array(RenderableSelection)),
   currentPatchPath: PropTypes.string,
+  currentPatch: sanctuaryPropType($Maybe(PatchType)),
   actions: PropTypes.shape({
     updateNodeProperty: PropTypes.func.isRequired,
+    updatePatchDescription: PropTypes.func.isRequired,
     undo: PropTypes.func.isRequired,
     redo: PropTypes.func.isRequired,
     setMode: PropTypes.func.isRequired,
@@ -102,12 +109,14 @@ Editor.propTypes = {
 
 const mapStateToProps = R.applySpec({
   selection: ProjectSelectors.getRenderableSelection,
+  currentPatch: ProjectSelectors.getCurrentPatch,
   currentPatchPath: EditorSelectors.getCurrentPatchPath,
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     updateNodeProperty: ProjectActions.updateNodeProperty,
+    updatePatchDescription: ProjectActions.updatePatchDescription,
     undo: ProjectActions.undoPatch,
     redo: ProjectActions.redoPatch,
     setMode: Actions.setMode,

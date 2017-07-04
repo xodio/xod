@@ -11,7 +11,9 @@ import {
   listLocalPatches,
   listLibraryPatches,
   getPatchByPath,
+  getPatchByPathUnsafe,
   getPatchPath,
+  getPatchDescription,
   getBaseName,
   getNodeById,
   getNodePosition,
@@ -37,6 +39,7 @@ import {
   addNode,
   moveNode,
   updateNodeProperty,
+  updatePatchDescription,
   deleteNode,
   addLink,
   deleteLink,
@@ -135,6 +138,19 @@ describe('project reducer', () => {
         R.compose(getBaseName, getPatchPath)(renamedPatch),
         newPatchName
       );
+    });
+
+    it('should change patch description', () => {
+      const addPatchAction = store.dispatch(addPatch('test-patch'));
+      const newPatchPath = addPatchAction.payload.patchPath;
+
+      store.dispatch(updatePatchDescription('test-passed', newPatchPath));
+
+      const project = getProject(store.getState());
+      const patch = getPatchByPathUnsafe(newPatchPath, project);
+      const newDescription = getPatchDescription(patch);
+
+      assert.equal(newDescription, 'test-passed');
     });
 
     it('should delete a patch', () => {
@@ -351,4 +367,3 @@ describe('project actions', () => {
     });
   });
 });
-
