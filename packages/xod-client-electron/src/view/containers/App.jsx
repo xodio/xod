@@ -11,11 +11,7 @@ import EventListener from 'react-event-listener';
 import { ipcRenderer, remote as remoteElectron } from 'electron';
 
 import client from 'xod-client';
-import {
-  Project,
-  isValidIdentifier,
-  IDENTIFIER_RULES,
-} from 'xod-project';
+import { Project } from 'xod-project';
 
 import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
@@ -509,33 +505,11 @@ class App extends client.App {
         />
         <client.Editor size={this.state.size} />
         <client.SnackBar />
-        <client.PopupShowCode
-          isVisible={this.props.popups.showCode}
-          code={this.props.popupsData.showCode.code}
-          onClose={this.hideAllPopups}
-        />
+        {this.renderPopupShowCode()}
         {this.renderPopupUploadConfig()}
         {this.renderPopupUploadProcess()}
-        <client.PopupPrompt
-          title="Create new project"
-          confirmText="Create project"
-          isVisible={this.props.popups.createProject}
-          onConfirm={this.onCreateProject}
-          onClose={this.hideAllPopups}
-          inputMask={client.lowercaseKebabMask}
-          inputValidator={isValidIdentifier}
-          helpText={IDENTIFIER_RULES}
-        >
-          <p>
-            Please, give a sonorous name to your project:
-          </p>
-        </client.PopupPrompt>
-        <client.PopupProjectPreferences
-          isVisible={this.props.popups.projectPreferences}
-          project={this.props.project}
-          onChange={this.props.actions.updateProjectMeta}
-          onClose={this.props.actions.hideProjectPreferences}
-        />
+        {this.renderPopupProjectPreferences()}
+        {this.renderPopupCreateNewProject()}
         <PopupSetArduinoIDEPath
           isVisible={this.props.popups.arduinoIDENotFound}
           onChange={this.onArduinoPathChange}
@@ -575,74 +549,60 @@ App.propTypes = R.merge(client.App.propTypes, {
   actions: PropTypes.objectOf(PropTypes.func),
   upload: PropTypes.object,
   workspace: PropTypes.string,
-  popups: PropTypes.objectOf(PropTypes.bool),
-  popupsData: PropTypes.objectOf(PropTypes.object),
   selectedPort: PropTypes.object,
 });
 
-const mapStateToProps = (state) => {
-  const processes = client.getProccesses(state);
+const getSaveProcess = R.compose(
+  client.findProcessByType(SAVE_PROJECT),
+  client.getProccesses
+);
 
-  return ({
-    hasChanges: client.projectHasChanges(state),
-    project: client.getProject(state),
-    upload: getUploadProcess(state),
-    saveProcess: client.findProcessByType(SAVE_PROJECT)(processes),
-    currentPatchPath: client.getCurrentPatchPath(state),
-    selectedPort: getSelectedSerialPort(state),
-    popups: {
-      createProject: client.getPopupVisibility(client.POPUP_ID.CREATING_PROJECT)(state),
-      projectSelection: client.getPopupVisibility(client.POPUP_ID.OPENING_PROJECT)(state),
-      switchWorkspace: client.getPopupVisibility(client.POPUP_ID.SWITCHING_WORKSPACE)(state),
-      createWorkspace: client.getPopupVisibility(client.POPUP_ID.CREATING_WORKSPACE)(state),
-      arduinoIDENotFound: client.getPopupVisibility(client.POPUP_ID.ARDUINO_IDE_NOT_FOUND)(state),
-      uploadToArduinoConfig: client.getPopupVisibility(client.POPUP_ID.UPLOADING_CONFIG)(state),
-      uploadProject: client.getPopupVisibility(client.POPUP_ID.UPLOADING)(state),
-      showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE)(state),
-      projectPreferences: client.getPopupVisibility(
-        client.POPUP_ID.EDITING_PROJECT_PREFERENCES
-      )(state),
-    },
-    popupsData: {
-      projectSelection: client.getPopupData(client.POPUP_ID.OPENING_PROJECT)(state),
-      createWorkspace: client.getPopupData(client.POPUP_ID.CREATING_WORKSPACE)(state),
-      switchWorkspace: client.getPopupData(client.POPUP_ID.SWITCHING_WORKSPACE)(state),
-      showCode: client.getPopupData(client.POPUP_ID.SHOWING_CODE)(state),
-    },
-  });
-};
+const mapStateToProps = R.applySpec({
+  hasChanges: client.projectHasChanges,
+  project: client.getProject,
+  upload: getUploadProcess,
+  saveProcess: getSaveProcess,
+  currentPatchPath: client.getCurrentPatchPath,
+  selectedPort: getSelectedSerialPort,
+  popups: {
+    createProject: client.getPopupVisibility(client.POPUP_ID.CREATING_PROJECT),
+    projectSelection: client.getPopupVisibility(client.POPUP_ID.OPENING_PROJECT),
+    switchWorkspace: client.getPopupVisibility(client.POPUP_ID.SWITCHING_WORKSPACE),
+    createWorkspace: client.getPopupVisibility(client.POPUP_ID.CREATING_WORKSPACE),
+    arduinoIDENotFound: client.getPopupVisibility(client.POPUP_ID.ARDUINO_IDE_NOT_FOUND),
+    uploadToArduinoConfig: client.getPopupVisibility(client.POPUP_ID.UPLOADING_CONFIG),
+    uploadProject: client.getPopupVisibility(client.POPUP_ID.UPLOADING),
+    showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE),
+    projectPreferences: client.getPopupVisibility(
+      client.POPUP_ID.EDITING_PROJECT_PREFERENCES
+    ),
+  },
+  popupsData: {
+    projectSelection: client.getPopupData(client.POPUP_ID.OPENING_PROJECT),
+    createWorkspace: client.getPopupData(client.POPUP_ID.CREATING_WORKSPACE),
+    switchWorkspace: client.getPopupData(client.POPUP_ID.SWITCHING_WORKSPACE),
+    showCode: client.getPopupData(client.POPUP_ID.SHOWING_CODE),
+  },
+});
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    requestCreateProject: client.requestCreateProject,
-    requestOpenProject: client.requestOpenProject,
-    requestInstallArduinoIDE: uploadActions.requestInstallArduinoIDE,
-    requestSwitchWorkspace: settingsActions.requestSwitchWorkspace,
-    requestCreateWorkspace: settingsActions.requestCreateWorkspace,
-    createWorkspace: settingsActions.createWorkspace,
-    switchWorkspace: settingsActions.switchWorkspace,
-    createProject: client.createProject,
-    requestRenameProject: client.requestRenameProject,
-    setMode: client.setMode,
-    openProject: client.openProject,
-    saveProject: actions.saveProject,
-    importProject: client.importProject, // used in base App class
-    uploadToArduino: uploadActions.uploadToArduino,
-    uploadToArduinoConfig: uploadActions.uploadToArduinoConfig,
-    hideUploadConfigPopup: uploadActions.hideUploadConfigPopup,
-    selectSerialPort: uploadActions.selectSerialPort,
-    addError: client.addError,
-    addConfirmation: client.addConfirmation,
-    deleteProcess: client.deleteProcess,
-    createPatch: client.requestCreatePatch,
-    undoCurrentPatch: client.undoCurrentPatch,
-    redoCurrentPatch: client.redoCurrentPatch,
-    showCode: client.showCode,
-    showProjectPreferences: client.showProjectPreferences,
-    hideProjectPreferences: client.hideProjectPreferences,
-    updateProjectMeta: client.updateProjectMeta,
-    hideAllPopups: client.hideAllPopups,
-  }, dispatch),
+  actions: bindActionCreators(
+    R.merge(client.App.actions, {
+      requestCreateProject: client.requestCreateProject,
+      requestOpenProject: client.requestOpenProject,
+      requestInstallArduinoIDE: uploadActions.requestInstallArduinoIDE,
+      requestSwitchWorkspace: settingsActions.requestSwitchWorkspace,
+      requestCreateWorkspace: settingsActions.requestCreaоteWorkspace,
+      createWorkspace: settingsActions.createWorkspace,
+      switchWorkspace: settingsActions.switchWorkspace,
+      openProject: client.openProject,
+      saveProject: actions.saveProject,
+      uploadToArduino: uploadActions.uploadToArduino,
+      uploadToArduinoConfig: uploadActions.uploadToArduinoConfig,
+      hideUploadConfigPopup: uploadActions.hideUploadConfigPopup,
+      selectSerialPort: uploadActions.selectSerialPort,
+    }), dispatch
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

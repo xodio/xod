@@ -212,28 +212,9 @@ class App extends client.App {
           isVisible={this.state.popupInstallApp}
           onClose={this.hideInstallAppPopup}
         />
-        <client.PopupShowCode
-          isVisible={this.props.popups.showCode}
-          code={this.props.popupsData.showCode.code}
-          onClose={this.props.actions.hideAllPopups}
-        />
-        <client.PopupProjectPreferences
-          isVisible={this.props.popups.projectPreferences}
-          project={this.props.project}
-          onChange={this.props.actions.updateProjectMeta}
-          onClose={this.props.actions.hideProjectPreferences}
-        />
-        <client.PopupPrompt
-          title="Create new project"
-          confirmText="Create project"
-          isVisible={this.state.popupCreateProject}
-          onConfirm={this.onCreateProject}
-          onClose={this.hidePopupCreateProject}
-        >
-          <p>
-            Please, give a sonorous name to yor project:
-          </p>
-        </client.PopupPrompt>
+        {this.renderPopupShowCode()}
+        {this.renderPopupProjectPreferences()}
+        {this.renderPopupCreateNewProject()}
       </HotKeys>
     );
   }
@@ -262,24 +243,11 @@ const mapStateToProps = R.applySpec({
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    createProject: client.createProject,
-    requestRenameProject: client.requestRenameProject,
-    importProject: client.importProject, // used in base App class
-    openProject: client.openProject,
-    setMode: client.setMode,
-    addError: client.addError,
-    setSelectedNodeType: client.setSelectedNodeType,
-    deleteProcess: client.deleteProcess,
-    createPatch: client.requestCreatePatch,
-    undoCurrentPatch: client.undoCurrentPatch,
-    redoCurrentPatch: client.redoCurrentPatch,
-    showCode: client.showCode,
-    showProjectPreferences: client.showProjectPreferences,
-    hideProjectPreferences: client.hideProjectPreferences,
-    updateProjectMeta: client.updateProjectMeta,
-    hideAllPopups: client.hideAllPopups,
-  }, dispatch),
+  actions: bindActionCreators(
+    R.merge(client.App.actions, {
+      // Put custom actions for xod-client-browser here
+    }), dispatch
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
