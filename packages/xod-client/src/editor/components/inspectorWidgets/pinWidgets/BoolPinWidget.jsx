@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import PinWidget from './PinWidget';
 
 function BoolWidget(props) {
@@ -33,18 +35,18 @@ function BoolWidget(props) {
 }
 
 BoolWidget.propTypes = {
-  elementId: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string,
-  normalizedLabel: React.PropTypes.string.isRequired,
-  dataType: React.PropTypes.string,
-  isConnected: React.PropTypes.bool,
-  isBindable: React.PropTypes.bool,
-  direction: React.PropTypes.string,
+  elementId: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  normalizedLabel: PropTypes.string.isRequired,
+  dataType: PropTypes.string,
+  isConnected: PropTypes.bool,
+  isBindable: PropTypes.bool,
+  direction: PropTypes.string,
 
-  value: React.PropTypes.bool,
-  onChange: React.PropTypes.func.isRequired,
-  onFocus: React.PropTypes.func.isRequired,
-  onBlur: React.PropTypes.func.isRequired,
+  value: PropTypes.bool,
+  onChange: PropTypes.func.isRequired,
+  onFocus: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
 };
 
 BoolWidget.defaultProps = {

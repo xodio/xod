@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { LAYER } from '../../editor/constants';
 
 import { isLinkSelected } from '../../editor/utils';
@@ -26,9 +27,9 @@ const LinksLayer = ({ links, selection, onClick }) => (
 );
 
 LinksLayer.propTypes = {
-  links: React.PropTypes.arrayOf(React.PropTypes.object),
-  selection: React.PropTypes.arrayOf(React.PropTypes.object),
-  onClick: React.PropTypes.func,
+  links: PropTypes.arrayOf(PropTypes.object),
+  selection: PropTypes.arrayOf(PropTypes.object),
+  onClick: PropTypes.func,
 };
 
 export default LinksLayer;

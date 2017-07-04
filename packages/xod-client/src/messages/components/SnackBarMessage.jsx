@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { MESSAGE_TYPE } from '../constants';
 
@@ -87,7 +88,7 @@ class SnackBarMessage extends React.Component {
 }
 
 SnackBarMessage.propTypes = {
-  message: React.PropTypes.object,
+  message: PropTypes.object,
 };
 
 export default SnackBarMessage;

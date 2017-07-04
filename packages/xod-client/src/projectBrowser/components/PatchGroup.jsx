@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Collapsible from 'react-collapsible';
 import 'font-awesome/scss/font-awesome.scss';
 
@@ -20,10 +21,10 @@ const PatchGroup = ({ name, children, type, onClose }) => (
 PatchGroup.displayName = 'PatchGroup';
 
 PatchGroup.propTypes = {
-  name: React.PropTypes.string.isRequired,
-  children: React.PropTypes.node,
-  type: React.PropTypes.oneOf(['library', 'my']),
-  onClose: React.PropTypes.func,
+  name: PropTypes.string.isRequired,
+  children: PropTypes.node,
+  type: PropTypes.oneOf(['library', 'my']),
+  onClose: PropTypes.func,
 };
 
 PatchGroup.defaultProps = {

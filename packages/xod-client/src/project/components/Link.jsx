@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { noop } from '../../utils/ramda';
@@ -86,13 +87,13 @@ class Link extends React.Component {
 }
 
 Link.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  from: React.PropTypes.object.isRequired,
-  to: React.PropTypes.object.isRequired,
-  type: React.PropTypes.string.isRequired,
-  isSelected: React.PropTypes.bool,
-  isGhost: React.PropTypes.bool,
-  onClick: React.PropTypes.func,
+  id: PropTypes.string.isRequired,
+  from: PropTypes.object.isRequired,
+  to: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
+  isSelected: PropTypes.bool,
+  isGhost: PropTypes.bool,
+  onClick: PropTypes.func,
 };
 
 Link.defaultProps = {

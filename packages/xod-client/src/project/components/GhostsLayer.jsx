@@ -1,5 +1,7 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { LAYER } from '../../editor/constants';
 
 import SVGLayer from './SVGLayer';
@@ -76,9 +78,9 @@ class GhostLayer extends React.Component {
 GhostLayer.displayName = 'GhostLayer';
 
 GhostLayer.propTypes = {
-  mousePosition: React.PropTypes.objectOf(React.PropTypes.number),
-  mode: React.PropTypes.object, // eslint-disable-line
-  ghostLink: React.PropTypes.any,
+  mousePosition: PropTypes.objectOf(PropTypes.number),
+  mode: PropTypes.object, // eslint-disable-line
+  ghostLink: PropTypes.any,
 };
 
 export default GhostLayer;

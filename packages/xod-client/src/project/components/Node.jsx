@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { getBaseName } from 'xod-project';
 
@@ -120,20 +121,20 @@ class Node extends React.Component {
 }
 
 Node.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string.isRequired,
-  type: React.PropTypes.string.isRequired,
-  pins: React.PropTypes.any.isRequired,
-  size: React.PropTypes.any.isRequired,
-  outputPinsSectionHeight: React.PropTypes.number.isRequired,
-  position: React.PropTypes.object.isRequired,
-  isSelected: React.PropTypes.bool,
-  isGhost: React.PropTypes.bool,
-  isDragged: React.PropTypes.bool,
-  hidden: React.PropTypes.bool,
-  linkingPin: React.PropTypes.object,
-  pinLinkabilityValidator: React.PropTypes.func,
-  onMouseDown: React.PropTypes.func,
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  pins: PropTypes.any.isRequired,
+  size: PropTypes.any.isRequired,
+  outputPinsSectionHeight: PropTypes.number.isRequired,
+  position: PropTypes.object.isRequired,
+  isSelected: PropTypes.bool,
+  isGhost: PropTypes.bool,
+  isDragged: PropTypes.bool,
+  hidden: PropTypes.bool,
+  linkingPin: PropTypes.object,
+  pinLinkabilityValidator: PropTypes.func,
+  onMouseDown: PropTypes.func,
 };
 
 Node.defaultProps = {

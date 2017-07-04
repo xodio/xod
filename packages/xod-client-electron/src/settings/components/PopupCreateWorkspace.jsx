@@ -1,5 +1,6 @@
 import { propOr } from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { PopupForm } from 'xod-client';
 
 const getForce = propOr(false, 'force');
@@ -67,10 +68,10 @@ class PopupCreateWorkspace extends React.Component {
 }
 
 PopupCreateWorkspace.propTypes = {
-  isVisible: React.PropTypes.bool,
-  data: React.PropTypes.object,
-  onCreateWorkspace: React.PropTypes.func,
-  onClose: React.PropTypes.func,
+  isVisible: PropTypes.bool,
+  data: PropTypes.object,
+  onCreateWorkspace: PropTypes.func,
+  onClose: PropTypes.func,
 };
 
 export default PopupCreateWorkspace;

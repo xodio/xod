@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { PROPERTY_TYPE_PARSE, PROPERTY_TYPE_MASK } from '../../../utils/inputFormatting';
 
 import { KEYCODE } from '../../../utils/constants';
@@ -118,24 +119,24 @@ export default function composeWidget(Component, widgetProps) {
   }
 
   Widget.propTypes = {
-    entityId: React.PropTypes.string.isRequired,
-    keyName: React.PropTypes.string.isRequired, // one of NODE_PROPERTY_KEY or pin key
-    kind: React.PropTypes.string,
-    label: React.PropTypes.string,
-    normalizedLabel: React.PropTypes.string,
-    direction: React.PropTypes.string,
-    value: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
-      React.PropTypes.bool,
-      React.PropTypes.array,
+    entityId: PropTypes.string.isRequired,
+    keyName: PropTypes.string.isRequired, // one of NODE_PROPERTY_KEY or pin key
+    kind: PropTypes.string,
+    label: PropTypes.string,
+    normalizedLabel: PropTypes.string,
+    direction: PropTypes.string,
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.bool,
+      PropTypes.array,
     ]),
-    isConnected: React.PropTypes.bool,
-    isBindable: React.PropTypes.bool,
-    focused: React.PropTypes.bool,
+    isConnected: PropTypes.bool,
+    isBindable: PropTypes.bool,
+    focused: PropTypes.bool,
     // dispatchers
-    onPropUpdate: React.PropTypes.func.isRequired,
-    onFocusChanged: React.PropTypes.func,
+    onPropUpdate: PropTypes.func.isRequired,
+    onFocusChanged: PropTypes.func,
   };
 
   Widget.defaultProps = {

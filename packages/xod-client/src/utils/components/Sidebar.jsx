@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Sidebar = ({ children }) => (
   <div className="Sidebar">
@@ -7,7 +8,7 @@ const Sidebar = ({ children }) => (
 );
 
 Sidebar.propTypes = {
-  children: React.PropTypes.arrayOf(React.PropTypes.element),
+  children: PropTypes.arrayOf(PropTypes.element),
 };
 
 export default Sidebar;

@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import EventListener from 'react-event-listener';
@@ -230,12 +231,12 @@ class App extends client.App {
 }
 
 App.propTypes = R.merge(client.App.propTypes, {
-  hasChanges: React.PropTypes.bool,
-  projectJSON: React.PropTypes.string,
-  actions: React.PropTypes.object,
-  initialProject: React.PropTypes.object.isRequired,
-  popups: React.PropTypes.objectOf(React.PropTypes.bool),
-  popupsData: React.PropTypes.objectOf(React.PropTypes.object),
+  hasChanges: PropTypes.bool,
+  projectJSON: PropTypes.string,
+  actions: PropTypes.object,
+  initialProject: PropTypes.object.isRequired,
+  popups: PropTypes.objectOf(PropTypes.bool),
+  popupsData: PropTypes.objectOf(PropTypes.object),
 });
 
 const mapStateToProps = R.applySpec({

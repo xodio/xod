@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function HintWidget({ text }) {
   return (
@@ -9,7 +10,7 @@ function HintWidget({ text }) {
 }
 
 HintWidget.propTypes = {
-  text: React.PropTypes.string,
+  text: PropTypes.string,
 };
 
 export default HintWidget;

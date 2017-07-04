@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function SVGLayer({ name, className, children }) {
   return (
@@ -9,9 +10,9 @@ function SVGLayer({ name, className, children }) {
 }
 
 SVGLayer.propTypes = {
-  name: React.PropTypes.string.isRequired,
-  className: React.PropTypes.string,
-  children: React.PropTypes.any,
+  name: PropTypes.string.isRequired,
+  className: PropTypes.string,
+  children: PropTypes.any,
 };
 
 export default SVGLayer;

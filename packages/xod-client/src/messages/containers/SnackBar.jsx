@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -107,8 +108,8 @@ class SnackBar extends React.Component {
 
 
 SnackBar.propTypes = {
-  errors: React.PropTypes.object,
-  deleteMessage: React.PropTypes.func,
+  errors: PropTypes.object,
+  deleteMessage: PropTypes.func,
 };
 
 const mapStateToProps = state => ({

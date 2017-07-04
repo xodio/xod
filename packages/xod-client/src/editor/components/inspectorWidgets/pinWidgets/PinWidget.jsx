@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { PIN_DIRECTION } from 'xod-project';
 
@@ -55,14 +56,14 @@ function PinWidget(props) {
 }
 
 PinWidget.propTypes = {
-  elementId: React.PropTypes.string.isRequired,
-  normalizedLabel: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string,
-  dataType: React.PropTypes.string,
-  isConnected: React.PropTypes.bool,
-  isBindable: React.PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
-  direction: React.PropTypes.string, // eslint-disable-line react/no-unused-prop-types
-  children: React.PropTypes.element.isRequired,
+  elementId: PropTypes.string.isRequired,
+  normalizedLabel: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  dataType: PropTypes.string,
+  isConnected: PropTypes.bool,
+  isBindable: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+  direction: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
+  children: PropTypes.element.isRequired,
 };
 
 PinWidget.defaultProps = {

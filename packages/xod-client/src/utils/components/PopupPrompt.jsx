@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
 import EventListener from 'react-event-listener';
@@ -127,19 +128,19 @@ class PopupPrompt extends React.Component {
 }
 
 PopupPrompt.propTypes = {
-  title: React.PropTypes.string,
-  helpText: React.PropTypes.string,
-  children: React.PropTypes.any,
-  confirmText: React.PropTypes.string,
-  cancelText: React.PropTypes.string,
-  className: React.PropTypes.string,
-  onClose: React.PropTypes.func,
-  onConfirm: React.PropTypes.func,
-  inputMask: React.PropTypes.func,
-  inputValidator: React.PropTypes.func,
-  inputType: React.PropTypes.string,
-  isClosable: React.PropTypes.bool,
-  isVisible: React.PropTypes.bool,
+  title: PropTypes.string,
+  helpText: PropTypes.string,
+  children: PropTypes.any,
+  confirmText: PropTypes.string,
+  cancelText: PropTypes.string,
+  className: PropTypes.string,
+  onClose: PropTypes.func,
+  onConfirm: PropTypes.func,
+  inputMask: PropTypes.func,
+  inputValidator: PropTypes.func,
+  inputType: PropTypes.string,
+  isClosable: PropTypes.bool,
+  isVisible: PropTypes.bool,
 };
 
 PopupPrompt.defaultProps = {

@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class WidgetsGroup extends React.Component {
   constructor(props) {
@@ -36,10 +37,10 @@ class WidgetsGroup extends React.Component {
 }
 
 WidgetsGroup.propTypes = {
-  entity: React.PropTypes.any,
+  entity: PropTypes.any,
   // :: entity -> { components: {...}, props: {...} }
-  createWidgetsConfig: React.PropTypes.func.isRequired,
-  onPropUpdate: React.PropTypes.func.isRequired,
+  createWidgetsConfig: PropTypes.func.isRequired,
+  onPropUpdate: PropTypes.func.isRequired,
 };
 
 export default WidgetsGroup;

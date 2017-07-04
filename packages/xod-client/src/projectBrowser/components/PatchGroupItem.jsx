@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import 'font-awesome/scss/font-awesome.scss';
 
@@ -39,11 +40,11 @@ const PatchGroupItem = (props) => {
 PatchGroupItem.displayName = 'PatchGroupItem';
 
 PatchGroupItem.propTypes = {
-  label: React.PropTypes.string.isRequired,
-  isSelected: React.PropTypes.bool,
-  isOpen: React.PropTypes.bool,
-  className: React.PropTypes.string,
-  hoverButtons: React.PropTypes.array,
+  label: PropTypes.string.isRequired,
+  isSelected: PropTypes.bool,
+  isOpen: PropTypes.bool,
+  className: PropTypes.string,
+  hoverButtons: PropTypes.array,
 };
 
 export default PatchGroupItem;

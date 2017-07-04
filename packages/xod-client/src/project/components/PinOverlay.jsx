@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { PIN_RADIUS, PIN_HIGHLIGHT_RADIUS } from '../nodeLayout';
 
@@ -55,10 +56,10 @@ export default class PinOverlay extends React.Component {
 }
 
 PinOverlay.propTypes = {
-  keyName: React.PropTypes.string.isRequired,
-  position: React.PropTypes.object.isRequired,
-  onMouseUp: React.PropTypes.func.isRequired,
-  onMouseDown: React.PropTypes.func.isRequired,
-  isSelected: React.PropTypes.bool,
-  isAcceptingLinks: React.PropTypes.bool,
+  keyName: PropTypes.string.isRequired,
+  position: PropTypes.object.isRequired,
+  onMouseUp: PropTypes.func.isRequired,
+  onMouseDown: PropTypes.func.isRequired,
+  isSelected: PropTypes.bool,
+  isAcceptingLinks: PropTypes.bool,
 };

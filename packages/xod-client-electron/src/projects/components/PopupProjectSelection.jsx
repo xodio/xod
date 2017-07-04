@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Icon } from 'react-fa';
 import { PopupForm } from 'xod-client';
 import clx from 'classnames';
@@ -84,12 +85,12 @@ const PopupProjectSelection = ({
 };
 
 PopupProjectSelection.propTypes = {
-  projects: React.PropTypes.object,
-  isVisible: React.PropTypes.bool,
-  onSelect: React.PropTypes.func,
-  onClose: React.PropTypes.func,
-  onSwitchWorkspace: React.PropTypes.func,
-  onCreateNewProject: React.PropTypes.func,
+  projects: PropTypes.object,
+  isVisible: PropTypes.bool,
+  onSelect: PropTypes.func,
+  onClose: PropTypes.func,
+  onSwitchWorkspace: PropTypes.func,
+  onCreateNewProject: PropTypes.func,
 };
 
 PopupProjectSelection.defaultProps = {

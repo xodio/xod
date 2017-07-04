@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
 import EventListener from 'react-event-listener';
@@ -49,13 +50,13 @@ const PopupAlert = ({ title, children, closeText, className, onClose, isClosable
 };
 
 PopupAlert.propTypes = {
-  title: React.PropTypes.string,
-  children: React.PropTypes.any,
-  closeText: React.PropTypes.string,
-  className: React.PropTypes.string,
-  onClose: React.PropTypes.func,
-  isClosable: React.PropTypes.bool,
-  isVisible: React.PropTypes.bool,
+  title: PropTypes.string,
+  children: PropTypes.any,
+  closeText: PropTypes.string,
+  className: PropTypes.string,
+  onClose: PropTypes.func,
+  isClosable: PropTypes.bool,
+  isVisible: PropTypes.bool,
 };
 PopupAlert.defaultProps = {
   title: 'Alert!',

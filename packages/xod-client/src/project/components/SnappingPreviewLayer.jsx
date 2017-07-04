@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 import SVGLayer from './SVGLayer';
@@ -49,9 +50,9 @@ class SnappingPreviewLayer extends React.Component {
 SnappingPreviewLayer.displayName = 'SnappingPreviewLayer';
 
 SnappingPreviewLayer.propTypes = {
-  draggedNodeId: React.PropTypes.any,
-  nodes: React.PropTypes.object.isRequired,
-  draggedNodePosition: React.PropTypes.any,
+  draggedNodeId: PropTypes.any,
+  nodes: PropTypes.object.isRequired,
+  draggedNodePosition: PropTypes.any,
 };
 
 export default SnappingPreviewLayer;

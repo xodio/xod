@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SkyLightStateless } from 'react-skylight';
 import EventListener from 'react-event-listener';
@@ -38,12 +39,12 @@ const PopupForm = ({ title, children, className, onClose, isClosable, isVisible 
 };
 
 PopupForm.propTypes = {
-  title: React.PropTypes.string,
-  children: React.PropTypes.any,
-  className: React.PropTypes.string,
-  onClose: React.PropTypes.func,
-  isClosable: React.PropTypes.bool,
-  isVisible: React.PropTypes.bool,
+  title: PropTypes.string,
+  children: PropTypes.any,
+  className: PropTypes.string,
+  onClose: PropTypes.func,
+  isClosable: PropTypes.bool,
+  isVisible: PropTypes.bool,
 };
 PopupForm.defaultProps = {
   title: 'Fill the form',

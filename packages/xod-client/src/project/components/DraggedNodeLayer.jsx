@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import SVGLayer from './SVGLayer';
 import Node from './Node';
@@ -38,8 +39,8 @@ class DraggedNodeLayer extends React.PureComponent {
 DraggedNodeLayer.displayName = 'DraggedNodeLayer';
 
 DraggedNodeLayer.propTypes = {
-  position: React.PropTypes.any,
-  node: React.PropTypes.any,
+  position: PropTypes.any,
+  node: PropTypes.any,
 };
 
 export default DraggedNodeLayer;

@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
@@ -103,8 +104,8 @@ class Tabs extends React.Component {
 }
 
 Tabs.propTypes = {
-  tabs: React.PropTypes.object,
-  actions: React.PropTypes.objectOf(React.PropTypes.func),
+  tabs: PropTypes.object,
+  actions: PropTypes.objectOf(PropTypes.func),
 };
 
 const mapStateToProps = R.applySpec({

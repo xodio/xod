@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { remote } from 'electron';
 import { PopupForm } from 'xod-client';
 
@@ -78,11 +79,11 @@ class PopupSetWorkspace extends React.Component {
 }
 
 PopupSetWorkspace.propTypes = {
-  workspace: React.PropTypes.string,
-  isClosable: React.PropTypes.bool,
-  isVisible: React.PropTypes.bool, // eslint-disable-line
-  onChange: React.PropTypes.func,
-  onClose: React.PropTypes.func,
+  workspace: PropTypes.string,
+  isClosable: PropTypes.bool,
+  isVisible: PropTypes.bool, // eslint-disable-line
+  onChange: PropTypes.func,
+  onClose: PropTypes.func,
 };
 
 export default PopupSetWorkspace;

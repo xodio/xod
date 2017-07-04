@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SkyLight from 'react-skylight';
 
 class PopupShowCode extends React.Component {
@@ -64,9 +65,9 @@ PopupShowCode.defaultProps = {
 };
 
 PopupShowCode.propTypes = {
-  isVisible: React.PropTypes.bool,
-  code: React.PropTypes.string,
-  onClose: React.PropTypes.func,
+  isVisible: PropTypes.bool,
+  code: PropTypes.string,
+  onClose: PropTypes.func,
 };
 
 export default PopupShowCode;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import clx from 'classnames';
 
 export const SaveProgressBar = ({ progress }) => {
@@ -19,7 +20,7 @@ export const SaveProgressBar = ({ progress }) => {
 };
 
 SaveProgressBar.propTypes = {
-  progress: React.PropTypes.number,
+  progress: PropTypes.number,
 };
 
 SaveProgressBar.defaultProps = {

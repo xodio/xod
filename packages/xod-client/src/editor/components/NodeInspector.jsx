@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as XP from 'xod-project';
 
 import {
@@ -135,7 +136,7 @@ const NodeInspector = ({ node, onPropUpdate }) => {
 
 NodeInspector.propTypes = {
   node: sanctuaryPropType(RenderableNode),
-  onPropUpdate: React.PropTypes.func.isRequired,
+  onPropUpdate: PropTypes.func.isRequired,
 };
 
 export default NodeInspector;

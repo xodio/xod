@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { PopupForm } from 'xod-client';
 
 import { NO_PORTS_FOUND as NO_PORTS_FOUND_ERRCODE } from '../../shared/errorCodes';
@@ -250,15 +251,15 @@ class PopupUploadConfig extends React.Component {
 }
 
 PopupUploadConfig.propTypes = {
-  isVisible: React.PropTypes.bool,
-  selectedPort: React.PropTypes.object,
-  getSelectedBoard: React.PropTypes.func,
-  listBoards: React.PropTypes.func,
-  listPorts: React.PropTypes.func,
-  onBoardChanged: React.PropTypes.func,
-  onPortChanged: React.PropTypes.func,
-  onUpload: React.PropTypes.func,
-  onClose: React.PropTypes.func,
+  isVisible: PropTypes.bool,
+  selectedPort: PropTypes.object,
+  getSelectedBoard: PropTypes.func,
+  listBoards: PropTypes.func,
+  listPorts: PropTypes.func,
+  onBoardChanged: PropTypes.func,
+  onPortChanged: PropTypes.func,
+  onUpload: PropTypes.func,
+  onClose: PropTypes.func,
 };
 
 PopupUploadConfig.defaultProps = {

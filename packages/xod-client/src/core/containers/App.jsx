@@ -1,5 +1,6 @@
 import R from 'ramda';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Either } from 'ramda-fantasy';
 import { Project, getProjectName, isValidProject } from 'xod-project';
 import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
@@ -83,10 +84,10 @@ export default class App extends React.Component {
 
 App.propTypes = {
   project: sanctuaryPropType(Project),
-  currentPatchPath: React.PropTypes.string, // eslint-disable-line react/no-unused-prop-types
-  actions: React.PropTypes.shape({
-    addError: React.PropTypes.func.isRequired,
-    importProject: React.PropTypes.func.isRequired,
-    showCode: React.PropTypes.func.isRequired,
+  currentPatchPath: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
+  actions: PropTypes.shape({
+    addError: PropTypes.func.isRequired,
+    importProject: PropTypes.func.isRequired,
+    showCode: PropTypes.func.isRequired,
   }),
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { STATUS, PopupForm } from 'xod-client';
 import { Line as ProgressBar } from 'rc-progress';
 
@@ -127,9 +128,9 @@ class PopupUploadProject extends React.Component {
 }
 
 PopupUploadProject.propTypes = {
-  upload: React.PropTypes.object,
-  isVisible: React.PropTypes.bool,
-  onClose: React.PropTypes.func,
+  upload: PropTypes.object,
+  isVisible: PropTypes.bool,
+  onClose: PropTypes.func,
 };
 
 PopupUploadProject.defaultProps = {

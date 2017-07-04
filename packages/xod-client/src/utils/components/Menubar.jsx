@@ -1,5 +1,6 @@
 import R from 'ramda';
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Menu, { SubMenu, MenuItem, Divider } from 'rc-menu';
 import enhanceWithClickOutside from 'react-click-outside';
 
