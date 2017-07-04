@@ -1,12 +1,16 @@
 import { curry } from 'ramda';
 import path from 'path';
-import fs from 'fs-extra';
+import copy from 'recursive-copy';
 import { rejectWithCode } from 'xod-func-tools';
 
 import { writeFile } from './write';
 import { resolvePath, resolveLibPath, resolveDefaultProjectPath } from './utils';
 import { WORKSPACE_FILENAME } from './constants';
 import * as ERROR_CODES from './errorCodes';
+
+const copyOptions = {
+  overwrite: true,
+};
 
 // :: Path -> Promise Path Error
 export const spawnWorkspaceFile = workspacePath =>
@@ -18,14 +22,14 @@ export const spawnWorkspaceFile = workspacePath =>
 
 // :: Path -> Promise Path Error
 export const spawnStdLib = curry((stdLibPath, workspacePath) =>
-  fs.copy(stdLibPath, resolveLibPath(workspacePath))
+  copy(stdLibPath, resolveLibPath(workspacePath), copyOptions)
   .then(() => workspacePath)
   .catch(rejectWithCode(ERROR_CODES.CANT_COPY_STDLIB))
 );
 
 // :: Path -> Promise Path Error
 export const spawnDefaultProject = curry((defaultProjectPath, workspacePath) =>
-  fs.copy(defaultProjectPath, resolveDefaultProjectPath(workspacePath))
+  copy(defaultProjectPath, resolveDefaultProjectPath(workspacePath), copyOptions)
   .then(() => workspacePath)
   .catch(rejectWithCode(ERROR_CODES.CANT_COPY_DEFAULT_PROJECT))
 );
