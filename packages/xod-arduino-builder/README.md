@@ -1,4 +1,6 @@
-# XOD project: Arduino Builder
+# xod-arduino-builder
+
+This package is a part of the [XOD](https://github.com/xodio/xod) project.
 
 The builder wraps Arduino IDE into `nodejs` `Promise`-based cli interface.
 
