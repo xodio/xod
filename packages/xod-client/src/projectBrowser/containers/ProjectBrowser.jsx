@@ -165,6 +165,7 @@ class ProjectBrowser extends React.Component {
         target="_blank"
         rel="noopener noreferrer"
         className="hover-button"
+        key="patch-guide-button"
       >
         <IconGuide
           className="project-browser--guide-button"
