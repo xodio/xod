@@ -23,8 +23,6 @@ class App extends client.App {
     this.state = {
       size: client.getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
       popupInstallApp: false,
-      popupUploadProject: false,
-      popupCreateProject: false,
       workspace: '',
     };
 
@@ -43,8 +41,6 @@ class App extends client.App {
     this.onCreateProject = this.onCreateProject.bind(this);
 
     this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
-    this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
-    this.hidePopupCreateProject = this.hidePopupCreateProject.bind(this);
 
     props.actions.openProject(props.initialProject);
   }
@@ -61,7 +57,6 @@ class App extends client.App {
 
   onCreateProject(projectName) {
     this.props.actions.createProject(projectName);
-    this.hidePopupCreateProject();
   }
 
   onUpload() {
@@ -169,7 +164,7 @@ class App extends client.App {
       submenu(
         items.file,
         [
-          onClick(items.newProject, this.showPopupCreateProject),
+          onClick(items.newProject, this.props.actions.requestCreateProject),
           onClick(items.renameProject, this.props.actions.requestRenameProject),
           items.separator,
           importProject,
@@ -214,22 +209,6 @@ class App extends client.App {
     this.setState({ popupInstallApp: false });
   }
 
-  showUploadProgressPopup() {
-    this.setState({ popupUploadProject: true });
-  }
-
-  hideUploadProgressPopup() {
-    this.setState({ popupUploadProject: false });
-  }
-
-  showPopupCreateProject() {
-    this.setState({ popupCreateProject: true });
-  }
-
-  hidePopupCreateProject() {
-    this.setState({ popupCreateProject: false });
-  }
-
   render() {
     const devToolsInstrument = (client.isChromeApp) ? <client.DevTools /> : null;
     return (
@@ -272,6 +251,7 @@ const mapStateToProps = R.applySpec({
   project: client.getProject,
   currentPatchPath: client.getCurrentPatchPath,
   popups: {
+    createProject: client.getPopupVisibility(client.POPUP_ID.CREATING_PROJECT),
     showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE),
     projectPreferences: client.getPopupVisibility(client.POPUP_ID.EDITING_PROJECT_PREFERENCES),
   },
