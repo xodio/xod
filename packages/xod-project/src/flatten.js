@@ -107,7 +107,7 @@ const extendTerminalPins = R.curry(([path, patch]) => {
   const internalTerminalPath = PatchPathUtils.convertToInternalTerminalPath(path);
   return [
     internalTerminalPath,
-    Patch.setPatchPath(internalTerminalPath, Patch.createPatch()),
+    Patch.setPatchPath(internalTerminalPath, patch),
   ];
 });
 
@@ -341,6 +341,59 @@ const passPinsFromTerminalNodes = R.curry((nodes, terminalLinks, terminalNodes) 
   )
 );
 
+// :: StrMap NodeId Node -> NodeId -> Boolean
+const isNodeWithIdTerminal = R.uncurryN(2, nodesById => R.compose(
+  PatchPathUtils.isInternalTerminalNodeType,
+  Node.getNodeType,
+  R.flip(R.prop)(nodesById)
+));
+
+// :: StrMap NodeId Node -> Link -> Boolean
+const isLinkFromTerminalToRegularNode = R.uncurryN(2, nodesById => R.both(
+  R.compose(
+    isNodeWithIdTerminal(nodesById),
+    Link.getLinkOutputNodeId
+  ),
+  R.compose(
+    R.complement(isNodeWithIdTerminal(nodesById)),
+    Link.getLinkInputNodeId
+  )
+));
+
+//    Regular node
+//         | <---- ... will find this link
+//      Terminal
+//         |
+//      Terminal
+//         | <--- starting from here ...
+//    Regular node
+//
+// :: StrMap NodeId Node -> StrMap NodeId Link -> Link -> Link
+const findSourceLink = R.uncurryN(3, nodesById => linksByInputNodeId =>
+  function recur(link) {
+    const nextLinkInChain = linksByInputNodeId[Link.getLinkOutputNodeId(link)];
+
+    // Special case for when there is a 'dangling' terminal node.
+    // Those will be dealt with at a later stage
+    //
+    //      Terminal  <----
+    //         |
+    //      Terminal
+    //         |
+    //    Regular node
+    if (!nextLinkInChain) return link;
+
+    return R.when(
+      R.compose(
+        isNodeWithIdTerminal(nodesById),
+        Link.getLinkOutputNodeId
+      ),
+      recur,
+      nextLinkInChain
+    );
+  }
+);
+
 // TODO: Refactoring needed
 // :: [ Node[], Link[] ] -> [ Node[], Link[] ]
 const removeTerminalsAndPassPins = ([nodes, links]) => {
@@ -356,9 +409,6 @@ const removeTerminalsAndPassPins = ([nodes, links]) => {
     passPinsFromTerminalNodes(nodes, R.flatten(terminalLinks))
   )(terminalNodesWithPins);
   const nodesWithPinsIds = R.map(Node.getNodeId, nodesWithPins);
-
-  const terminalNodeIds = R.compose(R.pluck('id'), R.flatten)(terminalNodes);
-  const oneOfTerminalNodeIds = R.contains(R.__, terminalNodeIds);
 
   const newNodes = R.compose(
     R.concat(R.__, nodesWithPins),
@@ -380,71 +430,43 @@ const removeTerminalsAndPassPins = ([nodes, links]) => {
     links
   );
 
+  const nodesById = R.indexBy(Node.getNodeId, nodes);
+  const linksByInputNodeId = R.indexBy(Link.getLinkInputNodeId, links);
+
   const newLinks = R.compose(
     R.concat(linksWithoutTerminals),
-    R.flatten,
-    R.map((linkPair) => {
-      // to terminal
-      const sourceLink = R.find(
-        R.compose(
-          oneOfTerminalNodeIds,
-          Link.getLinkInputNodeId
-        ),
-        linkPair
-      );
-      // from terminal
-      const destinationLink = R.find(
-        R.compose(
-          oneOfTerminalNodeIds,
-          Link.getLinkOutputNodeId
-        ),
-        linkPair
-      );
-
-      const terminalNodeId = Link.getLinkOutputNodeId(destinationLink);
-
-      // get all links from terminal
-      const linksFromTerminal = R.filter(
-        R.compose(
-          R.equals(terminalNodeId),
-          Link.getLinkOutputNodeId
-        ),
-        R.flatten(terminalLinks)
-      );
-
-      // Create new links for every link from terminal
-      // but take output from sourceLink
-      // E.G.
+    R.reject( // delete remaining "dangling" terminals nodes
+      isLinkFromTerminalToRegularNode(nodesById)
+    ),
+    R.map((link) => {
       //     +------------+                          +------------+
-      //     |   latch    |                          | latch      |
+      //     |   latch    |                          |   latch    |
       //     +-----o------+       Links will         +-----o------+
       //           |              be converted             |
-      //     +-----O------+       into next        +-------+-----+------+
-      //     | outputBool |       three links:     |             |      |
-      //     +-----+------+                        |             |      |
+      //    +------O-------+      into next        +-------+-----+------+
+      //    | terminalBool |      three links:     |             |      |
+      //    +------o-------+                       |             |      |
       //           |                               |             |      |
       //   +-------+-----+------+                  |             |      |
       //   |             |      |                  |             |      |
       // +-O------O-+  +-O------O-+              +-O------O-+  +-O------O-+
       // |    or    |  |    or    |              |    or    |  |    or    |
       // +----o-----+  +----o-----+              +----o-----+  +----o-----+
-      return R.map(
-        (link) => {
-          const linkId = Link.getLinkId(link);
-          const newLink = Link.createLink(
-            Link.getLinkInputPinKey(link),
-            Link.getLinkInputNodeId(link),
-            Link.getLinkOutputPinKey(sourceLink),
-            Link.getLinkOutputNodeId(sourceLink)
-          );
+      const sourceLink = findSourceLink(nodesById, linksByInputNodeId, link);
 
-          return R.assoc('id', linkId, newLink);
-        },
-        linksFromTerminal
+      const linkId = Link.getLinkId(link);
+      const newLink = Link.createLink(
+        Link.getLinkInputPinKey(link),
+        Link.getLinkInputNodeId(link),
+        Link.getLinkOutputPinKey(sourceLink),
+        Link.getLinkOutputNodeId(sourceLink)
       );
+
+      return R.assoc('id', linkId, newLink);
     }),
-    R.filter(R.compose(R.gt(R.__, 1), R.length))
-  )(terminalLinks);
+    R.filter(isLinkFromTerminalToRegularNode(nodesById))
+  )(links);
+
   return [newNodes, newLinks];
 };
 
