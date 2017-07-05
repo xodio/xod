@@ -930,10 +930,21 @@ describe('Patch', () => {
           .to.be.deep.equal(expectedPatch);
       });
       it('getTopology: should return correct topology', () => {
-        expect(Patch.getTopology(patch))
-          .to.be.deep.equal(['a', 'b', 'c']);
-        expect(Patch.getTopology(expectedPatch))
-          .to.be.deep.equal(['0', '1', '2']);
+        Helper.expectEither(
+          (topology) => {
+            expect(topology)
+              .to.be.deep.equal(['a', 'b', 'c']);
+          },
+          Patch.getTopology(patch)
+        );
+
+        Helper.expectEither(
+          (topology) => {
+            expect(topology)
+              .to.be.deep.equal(['0', '1', '2']);
+          },
+          Patch.getTopology(expectedPatch)
+        );
       });
     });
 

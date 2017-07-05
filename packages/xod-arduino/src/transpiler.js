@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { Either } from 'ramda-fantasy';
 
 import { explodeMaybe, explodeEither } from 'xod-func-tools';
 import * as Project from 'xod-project';
@@ -438,9 +439,9 @@ const createTConfig = def(
 );
 
 const createTTopology = def(
-  'createTTopology :: PatchPath -> Project -> [Number]',
+  'createTTopology :: PatchPath -> Project -> Either Error [Number]',
   R.compose(
-    R.map(toInt),
+    R.map(R.map(toInt)),
     Project.getTopology,
     Project.getPatchByPathUnsafe
   )
@@ -621,16 +622,21 @@ const createTNodes = def(
 export const transformProject = def(
   'transformProject :: [Source] -> Project -> PatchPath -> Either Error TProject',
   (impls, project, path) => R.compose(
+    R.map(([proj, topology]) => {
+      const patches = createTPatches(path, proj);
+
+      return R.applySpec({
+        config: createTConfig(path),
+        patches: R.always(patches),
+        nodes: createTNodes(path, patches),
+        topology: R.always(topology),
+      })(proj);
+    }),
+    R.chain(proj => R.sequence(Either.of, [
+      Either.of(proj),
+      createTTopology(path, proj),
+    ])),
     R.map(R.compose(
-      (proj) => {
-        const patches = createTPatches(path, proj);
-        return R.applySpec({
-          config: createTConfig(path),
-          patches: R.always(patches),
-          nodes: createTNodes(path, patches),
-          topology: createTTopology(path),
-        })(proj);
-      },
       renumberProject(path),
       placeConstNodesAndLinks(R.__, path, project)
     )),

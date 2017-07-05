@@ -681,10 +681,10 @@ export const renumberNodes = def(
  *
  * @function getTopology
  * @param {Patch} patch
- * @returns {Array<string>}
+ * @returns {Either<Error|Array<string>>}
  */
 export const getTopology = def(
-  'getTopology :: Patch -> [NodeId]',
+  'getTopology :: Patch -> Either Error [NodeId]',
   R.converge(
     sortGraph,
     [
