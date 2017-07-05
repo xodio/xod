@@ -109,6 +109,19 @@ const rawItems = {
     key: 'uploadToArduino',
     label: 'Upload to Arduino',
   },
+
+  help: {
+    key: 'help',
+    label: 'Help',
+  },
+  documentation: {
+    key: 'documentation',
+    label: 'Documentation',
+  },
+  forum: {
+    key: 'forum',
+    label: 'Forum',
+  },
 };
 
 const assignHotkeys = menuItem => R.when(

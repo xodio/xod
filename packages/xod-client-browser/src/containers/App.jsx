@@ -18,6 +18,8 @@ class App extends client.App {
   constructor(props) {
     super(props);
 
+    this.menuRefs = {};
+
     this.state = {
       size: client.getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
       popupInstallApp: false,
@@ -115,6 +117,14 @@ class App extends client.App {
 
     const importProject = {
       key: 'Import_Project',
+      click: (event) => {
+        if (
+          event.target === this.menuRefs.Import_Project ||
+          event.target.parentNode === this.menuRefs.Import_Project.parentNode
+        ) return;
+        event.stopPropagation();
+        this.menuRefs.Import_Project.click();
+      },
       children: (
         <label
           key="import"
@@ -126,6 +136,7 @@ class App extends client.App {
             accept=".xodball"
             onChange={this.onImportChange}
             id="importButton"
+            ref={(input) => { this.menuRefs.Import_Project = input; }}
           />
           <span>
             Import project
@@ -133,6 +144,26 @@ class App extends client.App {
         </label>
       ),
     };
+
+    const link = (itemProps, componentProps) => ({
+      key: itemProps.key,
+      click: (event) => {
+        if (event.target === this.menuRefs[itemProps.key]) return;
+        event.stopPropagation();
+        this.menuRefs[itemProps.key].click();
+      },
+      children: (
+        <a
+          className="menu-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          ref={(el) => { this.menuRefs[itemProps.key] = el; }}
+          {...componentProps}
+        >
+          {itemProps.label}
+        </a>
+      ),
+    });
 
     return [
       submenu(
@@ -163,6 +194,13 @@ class App extends client.App {
           onClick(items.showCodeForNodeJS, this.onShowCodeNodejs),
           items.separator,
           onClick(items.uploadToArduino, this.onUpload),
+        ]
+      ),
+      submenu(
+        items.help,
+        [
+          link(items.documentation, { href: client.getUtmSiteUrl('/docs/', 'docs', 'menu') }),
+          link(items.forum, { href: client.getUtmForumUrl('menu') }),
         ]
       ),
     ];

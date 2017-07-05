@@ -44,6 +44,7 @@
     "redux-thunk": "^2.1.0",
     "reselect": "^2.5.4",
     "sanctuary-def": "^0.9.0",
+    "url-parse": "^1.1.9",
     "xod-arduino": "^0.10.0",
     "xod-func-tools": "^0.10.0",
     "xod-js": "^0.10.0",

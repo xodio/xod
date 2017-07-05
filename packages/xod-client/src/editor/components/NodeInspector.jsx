@@ -6,8 +6,6 @@ import * as XP from 'xod-project';
 import {
   SELECTION_ENTITY_TYPE,
   WIDGET_TYPE,
-  XOD_LIB_DOCS_URL_BASE,
-  XOD_DOCS_URL_UTMS,
 } from '../constants';
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from '../../project/constants';
 
@@ -16,6 +14,7 @@ import Widgets, { WIDGET_MAPPING } from './inspectorWidgets';
 
 import { RenderableNode } from '../../project/types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
+import { getUtmSiteUrl } from '../../utils/siteLinks';
 
 // :: RenderablePin -> String
 const getWidgetKey = R.converge(
@@ -84,7 +83,7 @@ const NodeInspector = ({ node, onPropUpdate }) => {
     ? null
     : (
       <a
-        href={XOD_LIB_DOCS_URL_BASE + type + XOD_DOCS_URL_UTMS}
+        href={getUtmSiteUrl(`/libs/${type}`, 'docs', 'inspector')}
         target="_blank"
         rel="noopener noreferrer"
         className="nodeHelp"

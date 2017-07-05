@@ -108,8 +108,10 @@ const options = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
       'process.env.XOD_HM_DEF': JSON.stringify(process.env.XOD_HM_DEF || false),
-      'process.env.XOD_LIB_DOCS_URL_BASE': JSON.stringify('https://xod.io/libs/'),
-      'process.env.XOD_DOCS_URL_UTMS': JSON.stringify('?utm_source=ide-desktop&utm_campaign=docs&utm_medium=inspector'),
+
+      'process.env.XOD_SITE_DOMAIN': JSON.stringify('https://xod.io/'),
+      'process.env.XOD_FORUM_DOMAIN': JSON.stringify('https://forum.xod.io/'),
+      'process.env.XOD_UTM_SOURCE': JSON.stringify('ide-desktop'),
     }),
   ],
   postcss: function postCssPlugins() { return [autoprefixer]; },

@@ -18,6 +18,7 @@ import * as PopupConstants from './popups/constants';
 
 import popupsReducer, { showOnlyPopup, hideOnePopup } from './popups/reducer';
 
+import * as siteLinkUtils from './utils/siteLinks';
 import * as BrowserUtils from './utils/browser';
 import * as MenuUtils from './utils/menu';
 import sanctuaryPropType from './utils/sanctuaryPropType';
@@ -54,6 +55,7 @@ export * from './popups/selectors';
 
 export * from './utils/browser';
 export * from './utils/constants';
+export * from './utils/siteLinks';
 export * from './popups/constants';
 export { lowercaseKebabMask } from './utils/inputFormatting';
 export { default as sanctuaryPropType } from './utils/sanctuaryPropType';
@@ -116,5 +118,7 @@ export default Object.assign({
   MessageConstants,
   UtilsConstants,
   BrowserUtils,
-  PopupConstants
+  PopupConstants,
+
+  siteLinkUtils
 );
