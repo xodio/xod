@@ -98,7 +98,6 @@ class App extends client.App {
     this.onArduinoPathChange = this.onArduinoPathChange.bind(this);
 
     this.hideAllPopups = this.hideAllPopups.bind(this);
-    this.showPopupCreateProject = this.showPopupCreateProject.bind(this);
     this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
     this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
     this.showPopupSetWorkspaceNotCancellable = this.showPopupSetWorkspaceNotCancellable.bind(this);
@@ -310,7 +309,7 @@ class App extends client.App {
       submenu(
         items.file,
         [
-          onClick(items.newProject, this.showPopupCreateProject),
+          onClick(items.newProject, this.props.actions.requestCreateProject),
           onClick(items.openProject, this.onOpenProjectClicked),
           onClick(items.saveProject, this.onSaveProject),
           onClick(items.renameProject, this.props.actions.requestRenameProject),
@@ -426,10 +425,6 @@ class App extends client.App {
     Menu.setApplicationMenu(menu);
   }
 
-  showPopupCreateProject() {
-    this.props.actions.requestCreateProject();
-  }
-
   showPopupProjectSelection(projects) {
     const data = projects ? {
       status: REDUCER_STATUS.LOADED,
@@ -539,7 +534,7 @@ class App extends client.App {
           onSelect={this.onSelectProject}
           onClose={this.hideAllPopups}
           onSwitchWorkspace={this.showPopupSetWorkspace}
-          onCreateNewProject={this.showPopupCreateProject}
+          onCreateNewProject={this.props.actions.requestCreateProject}
         />
         <PopupCreateWorkspace
           data={this.props.popupsData.createWorkspace}
@@ -599,7 +594,6 @@ const mapStateToProps = R.applySpec({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     R.merge(client.App.actions, {
-      requestCreateProject: client.requestCreateProject,
       requestOpenProject: client.requestOpenProject,
       requestInstallArduinoIDE: uploadActions.requestInstallArduinoIDE,
       requestSwitchWorkspace: settingsActions.requestSwitchWorkspace,

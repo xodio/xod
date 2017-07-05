@@ -112,7 +112,7 @@ export default class App extends React.Component {
         confirmText="Create project"
         isVisible={this.props.popups.createProject}
         onConfirm={this.onCreateProject}
-        onClose={this.hideAllPopups}
+        onClose={this.props.actions.hideAllPopups}
         inputMask={lowercaseKebabMask}
         inputValidator={isValidIdentifier}
         helpText={IDENTIFIER_RULES}
@@ -135,19 +135,33 @@ App.propTypes = {
   popups: PropTypes.objectOf(PropTypes.bool),
   popupsData: PropTypes.objectOf(PropTypes.object),
   actions: PropTypes.shape({
-    addError: PropTypes.func.isRequired,
-    importProject: PropTypes.func.isRequired,
-    showCode: PropTypes.func.isRequired,
-    hideAllPopups: PropTypes.func.isRequired,
+    createProject: PropTypes.func.isRequired,
     updateProjectMeta: PropTypes.func.isRequired,
-    // eslint-disable-next-line react/no-unused-prop-types
-    showProjectPreferences: PropTypes.func.isRequired,
+    hideAllPopups: PropTypes.func.isRequired,
     hideProjectPreferences: PropTypes.func.isRequired,
+    /* eslint-disable react/no-unused-prop-types */
+    requestCreateProject: PropTypes.func.isRequired,
+    requestRenameProject: PropTypes.func.isRequired,
+    importProject: PropTypes.func.isRequired,
+    openProject: PropTypes.func.isRequired,
+    createPatch: PropTypes.func.isRequired,
+    undoCurrentPatch: PropTypes.func.isRequired,
+    redoCurrentPatch: PropTypes.func.isRequired,
+    setMode: PropTypes.func.isRequired,
+    setSelectedNodeType: PropTypes.func.isRequired,
+    addError: PropTypes.func.isRequired,
+    addConfirmation: PropTypes.func.isRequired,
+    addNotification: PropTypes.func.isRequired,
+    deleteProcess: PropTypes.func.isRequired,
+    showCode: PropTypes.func.isRequired,
+    showProjectPreferences: PropTypes.func.isRequired,
+    /* eslint-enable react/no-unused-prop-types */
   }),
 };
 
 App.actions = {
   createProject: actions.createProject,
+  requestCreateProject: actions.requestCreateProject,
   requestRenameProject: actions.requestRenameProject,
   importProject: actions.importProject,
   openProject: actions.openProject,
