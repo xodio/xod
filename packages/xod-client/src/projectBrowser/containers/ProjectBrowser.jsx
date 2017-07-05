@@ -36,6 +36,9 @@ import PatchTypeSelector from '../components/PatchTypeSelector';
 import ProjectBrowserPopups from '../components/ProjectBrowserPopups';
 import ProjectBrowserToolbar from '../components/ProjectBrowserToolbar';
 
+import { getUtmSiteUrl } from '../../utils/siteLinks';
+import { IconGuide } from '../../utils/components/IconGuide';
+
 const PATCH_TYPE = {
   ALL: 'all',
   MY: 'my',
@@ -116,7 +119,10 @@ class ProjectBrowser extends React.Component {
   }
 
   libraryPatchesHoveredButtons(path) {
-    return [this.renderAddNodeButton(path)];
+    return [
+      this.renderDocsButton(path),
+      this.renderAddNodeButton(path),
+    ];
   }
 
   deselectIfInLocalPatches() {
@@ -149,6 +155,24 @@ class ProjectBrowser extends React.Component {
         className={classNames}
         onClick={action}
       />
+    );
+  }
+
+  renderDocsButton(patchPath) { // eslint-disable-line class-methods-use-this
+    return (
+      <a
+        href={getUtmSiteUrl(`/libs/${patchPath}`, 'docs', 'project-browser')}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover-button"
+      >
+        <IconGuide
+          className="project-browser--guide-button"
+          width="14px"
+          height="14px"
+          fill="#FFF"
+        />
+      </a>
     );
   }
 

@@ -59,10 +59,29 @@
 
   .hover-button {
     margin-right: 4px;
+    opacity: 0.9;
+
+    &:hover, &:focus {
+      opacity: 1;
+    }
   }
 
   .hover-button.disabled {
     cursor: not-allowed;
     opacity: 0.5;
+  }
+
+  a {
+    text-decoration: none;
+    color: $sidebar-color-text;
+    &:hover, &:focus {
+      color: $sidebar-color-text-hover;
+    }
+  }
+
+  .project-browser--guide-button {
+    display: inline-block;
+    vertical-align: text-top;
+    margin-top: 1px;
   }
 }
