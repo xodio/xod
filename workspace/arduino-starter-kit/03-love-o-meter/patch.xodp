@@ -178,14 +178,14 @@
       }
     },
     {
-      "id": "SyHdLNaG-",
+      "id": "Sy_R-RjNZ",
       "input": {
-        "nodeId": "rkZOU46MZ",
-        "pinKey": "BJJICN2lW"
+        "nodeId": "H1dMvV6MW",
+        "pinKey": "S1n95SDJb"
       },
       "output": {
-        "nodeId": "SJRvINTzZ",
-        "pinKey": "ryVmUAOrvkb"
+        "nodeId": "rkZOU46MZ",
+        "pinKey": "HJU8CE2lW"
       }
     },
     {
@@ -327,17 +327,6 @@
         "y": 848
       },
       "type": "xod/core/greater"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "SJRvINTzZ",
-      "label": "",
-      "position": {
-        "x": 138,
-        "y": 16
-      },
-      "type": "xod/core/boot"
     },
     {
       "boundValues": {},

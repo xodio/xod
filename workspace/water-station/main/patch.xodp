@@ -44,17 +44,6 @@
         "nodeId": "H1td7jabb",
         "pinKey": "HJU8CE2lW"
       }
-    },
-    {
-      "id": "SJ0u7o6ZW",
-      "input": {
-        "nodeId": "H1td7jabb",
-        "pinKey": "BJJICN2lW"
-      },
-      "output": {
-        "nodeId": "ryQ_XsT-b",
-        "pinKey": "ryVmUAOrvkb"
-      }
     }
   ],
   "nodes": [
@@ -84,7 +73,7 @@
       "id": "H1td7jabb",
       "label": "",
       "position": {
-        "x": 138,
+        "x": 266,
         "y": 120
       },
       "type": "xod/core/clock"
@@ -120,17 +109,6 @@
         "y": 328
       },
       "type": "@/plant"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "ryQ_XsT-b",
-      "label": "",
-      "position": {
-        "x": 138,
-        "y": 16
-      },
-      "type": "xod/core/boot"
     }
   ]
 }

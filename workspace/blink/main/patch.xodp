@@ -2,17 +2,6 @@
   "description": "",
   "links": [
     {
-      "id": "HJSPEtS-Z",
-      "input": {
-        "nodeId": "By6HVYHZb",
-        "pinKey": "BJJICN2lW"
-      },
-      "output": {
-        "nodeId": "HkPrNKBbZ",
-        "pinKey": "ryVmUAOrvkb"
-      }
-    },
-    {
       "id": "rJDD4FSZZ",
       "input": {
         "nodeId": "rkwIEFrWb",
@@ -49,17 +38,6 @@
         "y": 120
       },
       "type": "xod/core/clock"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "HkPrNKBbZ",
-      "label": "",
-      "position": {
-        "x": 10,
-        "y": 16
-      },
-      "type": "xod/core/boot"
     },
     {
       "boundValues": {

@@ -46,17 +46,6 @@
       }
     },
     {
-      "id": "Skb7bCBbW",
-      "input": {
-        "nodeId": "B1vglRB--",
-        "pinKey": "BJJICN2lW"
-      },
-      "output": {
-        "nodeId": "Hk6fbCr-W",
-        "pinKey": "ryVmUAOrvkb"
-      }
-    },
-    {
       "id": "SyhsxRS-W",
       "input": {
         "nodeId": "ryQslRHbb",
@@ -65,6 +54,17 @@
       "output": {
         "nodeId": "Hy-YeCB-b",
         "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "r1ABVRsNb",
+      "input": {
+        "nodeId": "HJqHeCBb-",
+        "pinKey": "HkDgIRdrv1W"
+      },
+      "output": {
+        "nodeId": "B1vglRB--",
+        "pinKey": "HJU8CE2lW"
       }
     },
     {
@@ -87,6 +87,17 @@
       "output": {
         "nodeId": "HkKQlCr-W",
         "pinKey": "B1gI0urv1W"
+      }
+    },
+    {
+      "id": "rJjHV0i4b",
+      "input": {
+        "nodeId": "SyVrxRS-W",
+        "pinKey": "HkDgIRdrv1W"
+      },
+      "output": {
+        "nodeId": "B1vglRB--",
+        "pinKey": "HJU8CE2lW"
       }
     }
   ],
@@ -118,17 +129,6 @@
         "y": 328
       },
       "type": "xod/core/gate"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "Hk6fbCr-W",
-      "label": "",
-      "position": {
-        "x": 138,
-        "y": 16
-      },
-      "type": "xod/core/boot"
     },
     {
       "boundValues": {

@@ -13,17 +13,6 @@
       }
     },
     {
-      "id": "BkNKyvTfb",
-      "input": {
-        "nodeId": "rkWFJPpGW",
-        "pinKey": "BJJICN2lW"
-      },
-      "output": {
-        "nodeId": "B1AOyvTM-",
-        "pinKey": "ryVmUAOrvkb"
-      }
-    },
-    {
       "id": "By5zlD6GZ",
       "input": {
         "nodeId": "SyQeevTfb",
@@ -80,17 +69,6 @@
     }
   ],
   "nodes": [
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "B1AOyvTM-",
-      "label": "",
-      "position": {
-        "x": 138,
-        "y": 16
-      },
-      "type": "xod/core/boot"
-    },
     {
       "boundValues": {
         "BJuORNheZ": 14

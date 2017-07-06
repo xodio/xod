@@ -112,17 +112,6 @@
       }
     },
     {
-      "id": "rJCT4EOMZ",
-      "input": {
-        "nodeId": "B1j6VV_Gb",
-        "pinKey": "BJJICN2lW"
-      },
-      "output": {
-        "nodeId": "Bk_6V4_z-",
-        "pinKey": "ryVmUAOrvkb"
-      }
-    },
-    {
       "id": "rkmjDEdfb",
       "input": {
         "nodeId": "r1aKwN_GZ",
@@ -167,17 +156,6 @@
       "position": {
         "x": 394,
         "y": 224
-      },
-      "type": "xod/core/boot"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "Bk_6V4_z-",
-      "label": "",
-      "position": {
-        "x": 138,
-        "y": 16
       },
       "type": "xod/core/boot"
     },

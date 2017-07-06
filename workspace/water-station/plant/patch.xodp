@@ -195,17 +195,6 @@
     {
       "boundValues": {},
       "description": "",
-      "id": "SJI8Ik7zW",
-      "label": "RDY",
-      "position": {
-        "x": 522,
-        "y": 328
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
-      "boundValues": {},
-      "description": "",
       "id": "SJTLQkXz-",
       "label": "NAME",
       "position": {

@@ -22,17 +22,6 @@
         "nodeId": "H1lzQqY-W",
         "pinKey": "BkEVI0uHwJb"
       }
-    },
-    {
-      "id": "S1PXm9FWb",
-      "input": {
-        "nodeId": "rJGQ7qYZ-",
-        "pinKey": "BJJICN2lW"
-      },
-      "output": {
-        "nodeId": "ry2MXqKZ-",
-        "pinKey": "ryVmUAOrvkb"
-      }
     }
   ],
   "nodes": [
@@ -82,17 +71,6 @@
         "y": 120
       },
       "type": "xod/core/clock"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "ry2MXqKZ-",
-      "label": "",
-      "position": {
-        "x": 266,
-        "y": 16
-      },
-      "type": "xod/core/boot"
     }
   ]
 }
