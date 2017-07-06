@@ -2,17 +2,6 @@
   "description": "",
   "links": [
     {
-      "id": "SJrUn1uQ-",
-      "input": {
-        "nodeId": "r1kI3k_mZ",
-        "pinKey": "rkAnKBvyZ"
-      },
-      "output": {
-        "nodeId": "HkVEhkO7b",
-        "pinKey": "rymG3j6b-"
-      }
-    },
-    {
       "id": "SkDS2JdQW",
       "input": {
         "nodeId": "H1-HhyuQW",

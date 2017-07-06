@@ -2,17 +2,6 @@
   "description": "",
   "links": [
     {
-      "id": "B11wUJQfW",
-      "input": {
-        "nodeId": "SJI8Ik7zW",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "S1afrk7GW",
-        "pinKey": "rymG3j6b-"
-      }
-    },
-    {
       "id": "B1omL1XGZ",
       "input": {
         "nodeId": "r19MUJ7MZ",
@@ -76,17 +65,6 @@
       "output": {
         "nodeId": "By1UmyQzb",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "S1Hb8yXGZ",
-      "input": {
-        "nodeId": "S1jFHymG-",
-        "pinKey": "rJf8o4ngZ"
-      },
-      "output": {
-        "nodeId": "S1afrk7GW",
-        "pinKey": "rymG3j6b-"
       }
     },
     {
