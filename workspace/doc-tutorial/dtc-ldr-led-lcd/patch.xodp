@@ -24,28 +24,6 @@
       }
     },
     {
-      "id": "SJMphk_mZ",
-      "input": {
-        "nodeId": "Syk6nJdQZ",
-        "pinKey": "BJJICN2lW"
-      },
-      "output": {
-        "nodeId": "Sy622kuXZ",
-        "pinKey": "ryVmUAOrvkb"
-      }
-    },
-    {
-      "id": "SyGAhJOXZ",
-      "input": {
-        "nodeId": "BJpa2yu7b",
-        "pinKey": "SyKd0E2x-"
-      },
-      "output": {
-        "nodeId": "Syk6nJdQZ",
-        "pinKey": "HJU8CE2lW"
-      }
-    },
-    {
       "id": "r17Gpk_7b",
       "input": {
         "nodeId": "HJblpkuQb",
@@ -78,7 +56,7 @@
       "label": "",
       "position": {
         "x": 138,
-        "y": 224
+        "y": 16
       },
       "type": "xod/core/analog-input"
     },
@@ -90,8 +68,8 @@
       "id": "H1rypyO7b",
       "label": "",
       "position": {
-        "x": 10,
-        "y": 536
+        "x": 394,
+        "y": 328
       },
       "type": "xod/core/pwm-output"
     },
@@ -108,32 +86,10 @@
       "id": "HJblpkuQb",
       "label": "",
       "position": {
-        "x": 138,
-        "y": 536
+        "x": 10,
+        "y": 328
       },
       "type": "xod/common-hardware/text-lcd-16x2"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "Sy622kuXZ",
-      "label": "",
-      "position": {
-        "x": 138,
-        "y": 16
-      },
-      "type": "xod/core/boot"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "Syk6nJdQZ",
-      "label": "",
-      "position": {
-        "x": 138,
-        "y": 120
-      },
-      "type": "xod/core/clock"
     },
     {
       "boundValues": {
@@ -143,8 +99,8 @@
       "id": "rk2RnkuX-",
       "label": "",
       "position": {
-        "x": 10,
-        "y": 328
+        "x": 266,
+        "y": 120
       },
       "type": "xod/core/less"
     }

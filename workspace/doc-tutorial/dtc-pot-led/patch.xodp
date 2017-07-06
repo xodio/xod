@@ -2,17 +2,6 @@
   "description": "",
   "links": [
     {
-      "id": "BkDC91_m-",
-      "input": {
-        "nodeId": "rkBp5y_QZ",
-        "pinKey": "SyKd0E2x-"
-      },
-      "output": {
-        "nodeId": "H1oTcJ_7b",
-        "pinKey": "HJU8CE2lW"
-      }
-    },
-    {
       "id": "H1m-j1dXW",
       "input": {
         "nodeId": "SyzRqkuXW",
@@ -22,44 +11,9 @@
         "nodeId": "rkBp5y_QZ",
         "pinKey": "SyBtREhlW"
       }
-    },
-    {
-      "id": "rJHA5JuQW",
-      "input": {
-        "nodeId": "H1oTcJ_7b",
-        "pinKey": "BJJICN2lW"
-      },
-      "output": {
-        "nodeId": "HkgTqk_Xb",
-        "pinKey": "ryVmUAOrvkb"
-      }
     }
   ],
   "nodes": [
-    {
-      "boundValues": {
-        "B13SCNhl-": 0.02
-      },
-      "description": "",
-      "id": "H1oTcJ_7b",
-      "label": "",
-      "position": {
-        "x": 10,
-        "y": 120
-      },
-      "type": "xod/core/clock"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "HkgTqk_Xb",
-      "label": "",
-      "position": {
-        "x": 10,
-        "y": 16
-      },
-      "type": "xod/core/boot"
-    },
     {
       "boundValues": {
         "rJsaFSvk-": 3
@@ -69,7 +23,7 @@
       "label": "",
       "position": {
         "x": 10,
-        "y": 328
+        "y": 120
       },
       "type": "xod/core/pwm-output"
     },
@@ -82,7 +36,7 @@
       "label": "",
       "position": {
         "x": 10,
-        "y": 224
+        "y": 16
       },
       "type": "xod/core/analog-input"
     }

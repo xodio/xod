@@ -13,8 +13,7 @@ Browser-based IDE
 
 You can start the [browser-based XOD IDE](/ide/) simply by visiting the link.
 However, because the browser has relatively few permissions to access the
-computer’s file system and
-USB-ports, its capabilities are quite limited.
+computer’s file system and USB-ports, its capabilities are quite limited.
 
 Notably, you can’t upload your program directly to the board from within your
 browser and you won't get the convenient save/load functionality.
@@ -47,16 +46,15 @@ code to the Arduino IDE and click Upload.
 
 <div class="ui segment">
 <span class="ui ribbon label">Note</span>
-If you’ve previously seen what code to blink an LED looks like for Arduino,
-you might be astonished looking at the amount of code produced by XOD. Don’t
-worry - most of it is code for the XOD runtime environment, which actually
-creates little overhead after compilation.
-You don't need to understand how it actually works. For now, think of it as a
-black box.
+If you’ve previously seen what code to blink an LED looks like for Arduino, you
+might be astonished looking at the amount of code produced by XOD. Don’t worry
+- most of it is code for the XOD runtime environment, which actually creates
+little overhead after compilation. You don't need to understand how it
+actually works. For now, think of it as a black box.
 </div>
 
 Upload directly from within the XOD IDE
------------------------------------
+---------------------------------------
 
 This feature is only available in the desktop version. Go to Deploy → Upload
 to Arduino. Select your board model and the serial port it is connected to:
@@ -77,9 +75,9 @@ If the upload succeeds, you’ll see 100% progress and a compiler message:
 
 <div class="ui segment">
 <span class="ui ribbon label">Feedback</span>
-If you have a problem with uploading, please report it on our
-[forum](//forum.xod.io). Describe what you're doing, what you expect to get,
-and what you actually get. We will help.
+If you have a problem with uploading, please report it on our <a
+href="//forum.xod.io">forum</a>. Describe what you're doing, what you expect to
+get, and what you actually get. We will help.
 </div>
 
 What’s next

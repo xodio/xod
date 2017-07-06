@@ -2,28 +2,6 @@
   "description": "",
   "links": [
     {
-      "id": "BJCqFl_XW",
-      "input": {
-        "nodeId": "SkqOYxOXb",
-        "pinKey": "rkBzUeOmZ"
-      },
-      "output": {
-        "nodeId": "Syk6nJdQZ",
-        "pinKey": "HJU8CE2lW"
-      }
-    },
-    {
-      "id": "H1loYl_7Z",
-      "input": {
-        "nodeId": "HJ49FxumZ",
-        "pinKey": "rkBzUeOmZ"
-      },
-      "output": {
-        "nodeId": "Syk6nJdQZ",
-        "pinKey": "HJU8CE2lW"
-      }
-    },
-    {
       "id": "HJQhtg_mb",
       "input": {
         "nodeId": "HJblpkuQb",
@@ -32,17 +10,6 @@
       "output": {
         "nodeId": "HJ49FxumZ",
         "pinKey": "HknfLluXW"
-      }
-    },
-    {
-      "id": "SJMphk_mZ",
-      "input": {
-        "nodeId": "Syk6nJdQZ",
-        "pinKey": "BJJICN2lW"
-      },
-      "output": {
-        "nodeId": "Sy622kuXZ",
-        "pinKey": "ryVmUAOrvkb"
       }
     },
     {
@@ -71,7 +38,7 @@
       "label": "Crassula",
       "position": {
         "x": 266,
-        "y": 328
+        "y": 16
       },
       "type": "@/pn-plant"
     },
@@ -89,7 +56,7 @@
       "label": "",
       "position": {
         "x": 10,
-        "y": 640
+        "y": 224
       },
       "type": "xod/common-hardware/text-lcd-16x2"
     },
@@ -106,31 +73,9 @@
       "label": "Cactus",
       "position": {
         "x": 10,
-        "y": 328
-      },
-      "type": "@/pn-plant"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "Sy622kuXZ",
-      "label": "",
-      "position": {
-        "x": 138,
         "y": 16
       },
-      "type": "xod/core/boot"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "Syk6nJdQZ",
-      "label": "",
-      "position": {
-        "x": 138,
-        "y": 120
-      },
-      "type": "xod/core/clock"
+      "type": "@/pn-plant"
     }
   ]
 }

@@ -27,17 +27,6 @@
     {
       "boundValues": {},
       "description": "",
-      "id": "SJ9mBlumZ",
-      "label": "",
-      "position": {
-        "x": 522,
-        "y": 16
-      },
-      "type": "xod/patch-nodes/input-pulse"
-    },
-    {
-      "boundValues": {},
-      "description": "",
       "id": "SkfESlumW",
       "label": "",
       "position": {
@@ -45,17 +34,6 @@
         "y": 224
       },
       "type": "xod/patch-nodes/output-string"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "rJDNBgOXW",
-      "label": "",
-      "position": {
-        "x": 266,
-        "y": 224
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundValues": {},

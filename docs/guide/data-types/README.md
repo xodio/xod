@@ -37,14 +37,11 @@ carries a number value in every FOO node. You can also say “Node FOO has
 input pin QUX of boolean type”. That means the FOO node always expects 0 or 1
 value connected to its QUX pin.
 
-Importantly, XOD types are divided between *pulse types* and all other types,
-which are collectively known as *value types*. Each type is described below.
-
 Pulse type
 ----------
 
-The pulse type is very special, because it doesn't actually carry any data on
-its own. It is only used to indicate that something has just happened or that
+The pulse type is special, because it doesn't actually carry any data on its
+own. It is only used to indicate that something has just happened or that
 something should happen right now.
 
 Pulses are similar to clock or interrupt signals in digital electronics.
@@ -52,19 +49,14 @@ All we’re interested in is the *moments* when the signal rises to Vcc or
 falls to ground. They don’t carry any additional useful information.
 
 A pulse signal can tell us that we’ve got a new TCP packet from the network,
-a button was pressed, or some time interval has passed. We would use a pulse
-signal to trigger an SMS send command or adjust motor speed.
+an NFC card has been detected, or some time interval has passed. We would use a
+pulse signal to trigger an SMS send command or reset a counter.
 
 Pulse signals are quite often accompanied by other value types on neighboring
-pins. The values describe the “what”, while the pulse describes the
-“when”.
-
-Pulses give life to your programs. Without them, your device won't do anything.
-Read [Execution Model](../execution-model/) to understand this logic in detail.
+pins. The values describe the “what”, while the pulse describes the “when”.
 
 Here is a short list of nodes you’ll use a lot in conjunction with pulses:
 
-* [`boot`](/libs/xod/core/boot/)
 * [`clock`](/libs/xod/core/clock/)
 * [`gate`](/libs/xod/core/gate/)
 * [`any`](/libs/xod/core/any/)
@@ -76,10 +68,10 @@ Boolean values can be either *true* or *false*. Alternatively, you can think of
 them as a choice between of one/zero, yes/no, on/off, high/low, or
 enabled/disabled.
 
-Logical values are ubiquitous. They are adequate to implement simple
-digital sensors (is a button pressed or not?), control simple actuators (should
-a relay close?), and carry the results of logical operations (is the
-temperature greater than 25°?).
+Logical values are ubiquitous. They are adequate to implement simple digital
+sensors (is a button pressed or not?), control simple actuators (should a relay
+close?), and carry the results of logical operations (is the temperature
+greater than 25°?).
 
 Here are short list of nodes you’ll use a lot working with logical values:
 
@@ -92,11 +84,11 @@ Number type
 -----------
 
 Numbers are everywhere. The number data type is used to transfer sensor
-readings, set motor speeds, perform arithmetic computations and
-comparisons, and so on.
+readings, set motor speeds, perform arithmetic computations and comparisons,
+and so on.
 
-Number values in XOD can be fractional numbers and positive and
-negative infinity.
+Number values in XOD can be fractional numbers and positive and negative
+infinity.
 
 Precision and the range of representable values depend on the capabilities of
 the target platform. In any event, the number type is enough to operate on
@@ -133,10 +125,9 @@ to emit 33% brightness and 1.0 to turn on it at maximum brightness.
 Some nodes use ranges from -1 to 1. For example, a motor node use -1 for
 full backward, -0.2 for 20% backward, 0 to stop, and 1 to run full forward.
 
-Unit ranges are convenient to use, but entirely unnecessary.
-It’s up to a node's implementation to decide what to do if an input value
-falls out of the range. A common behavior is to clamp the input to the desired
-range.
+Unit ranges are convenient to use, but entirely unnecessary.  It’s up to a
+node's implementation to decide what to do if an input value falls out of the
+range. A common behavior is to clamp the input to the desired range.
 
 String type
 -----------
@@ -260,6 +251,7 @@ nodes:
   <thead>
     <tr>
       <th></th>
+      <th>→ Pulse</th>
       <th>→ Boolean</th>
       <th>→ Number</th>
       <th>→ Integer</th>
@@ -269,47 +261,83 @@ nodes:
   </thead>
   <tbody>
     <tr>
-      <td>Boolean →</td>
+      <td>Pulse →</td>
       <td></td>
-      <td>false → 0.0,<br/>true → 1.0</td>
-      <td>false → 0,<br/>true → 1</td>
-      <td>false →<br/>0000 0000,<br/>true →<br/>0000 0001</td>
-      <td>false →<br/>"false",<br/>true →<br/>"true"</td>
+      <td class="disabled">no</td>
+      <td class="disabled">no</td>
+      <td class="disabled">no</td>
+      <td class="disabled">no</td>
+      <td class="disabled">no</td>
+    </tr>
+    <tr>
+      <td>Boolean →</td>
+      <td>yes</td>
+      <td></td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <td>Number →</td>
-      <td>0.0 → false,<br/>any other → true</td>
+      <td class="disabled">no</td>
+      <td>yes</td>
       <td></td>
-      <td class="disabled">use nodes</td>
-      <td class="disabled">use nodes</td>
-      <td>3.14159 →<br/>"3.14"<br/>(two digits<br/>after decimal)</td>
+      <td class="disabled">no</td>
+      <td class="disabled">no</td>
+      <td>yes</td>
     </tr>
     <tr>
       <td>Integer →</td>
-      <td>0 → false,<br/>any other → true</td>
-      <td>as is</td>
+      <td class="disabled">no</td>
+      <td>yes</td>
+      <td>yes</td>
       <td></td>
-      <td class="disabled">use nodes</td>
-      <td>as is</td>
+      <td class="disabled">no</td>
+      <td>yes</td>
     </tr>
     <tr>
       <td>Byte →</td>
-      <td>0000 0000 → false,<br/>any other → true</td>
-      <td class="disabled">use nodes</td>
-      <td class="disabled">use nodes</td>
+      <td class="disabled">no</td>
+      <td>yes</td>
+      <td class="disabled">no</td>
+      <td class="disabled">no</td>
       <td></td>
-      <td>1010 1111 →<br/>"10101111"</td>
+      <td>yes</td>
     </tr>
     <tr>
       <td>String →</td>
-      <td class="disabled">use nodes</td>
-      <td class="disabled">use nodes</td>
-      <td class="disabled">use nodes</td>
-      <td class="disabled">use nodes</td>
+      <td class="disabled">no</td>
+      <td class="disabled">no</td>
+      <td class="disabled">no</td>
+      <td class="disabled">no</td>
+      <td class="disabled">no</td>
       <td></td>
     </tr>
   </tbody>
 </table>
+
+Here are details:
+
+- **Boolean → Pulse**. Rising edge is considered to be a pulse. E.g. when the
+  value was `false` and just became `true` a single pulse is emitted.
+- **Boolean → Number**. `false` converts to `0.0` and `true` converts to `1.0`.
+- **Boolean → Integer**. `false` converts to `0` and `true` converts to `1`.
+- **Boolean → Byte**. `false` converts to `0000 0000` and `true` converts to
+  `0000 0001`.
+- **Boolean → String**. `false` converts to `"true"` and `false` converts to
+  `"false"`.
+- **Number → Boolean**. Zero converts to `false`, any other value converts to
+  `true`.
+- **Number → String**. Converts with two digits after decimal, e.g.
+  `3.14159` → `"3.14"` and `0` → `"0.00"`.
+- **Integer → Boolean**. Zero converts to `false`, any other value converts to
+  `true`.
+- **Integer → Number**. Converted as is. Precision loss is possible for large
+  values.
+- **Integer → String**. Converted as is.
+- **Byte → Boolean**. `0000 0000` converts to `false`, any other value converts
+  to `true`.
 
 Other convertions can’t always be done unambigously and thus are not allowed.
 Use additional nodes to make casting explicit in such cases:

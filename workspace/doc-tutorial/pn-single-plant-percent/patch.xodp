@@ -24,28 +24,6 @@
       }
     },
     {
-      "id": "SJMphk_mZ",
-      "input": {
-        "nodeId": "Syk6nJdQZ",
-        "pinKey": "BJJICN2lW"
-      },
-      "output": {
-        "nodeId": "Sy622kuXZ",
-        "pinKey": "ryVmUAOrvkb"
-      }
-    },
-    {
-      "id": "SyGAhJOXZ",
-      "input": {
-        "nodeId": "BJpa2yu7b",
-        "pinKey": "SyKd0E2x-"
-      },
-      "output": {
-        "nodeId": "Syk6nJdQZ",
-        "pinKey": "HJU8CE2lW"
-      }
-    },
-    {
       "id": "SyoZVg_mb",
       "input": {
         "nodeId": "ByulExOQb",
@@ -89,7 +67,7 @@
       "label": "",
       "position": {
         "x": 138,
-        "y": 224
+        "y": 16
       },
       "type": "xod/core/analog-input"
     },
@@ -100,7 +78,7 @@
       "label": "",
       "position": {
         "x": 266,
-        "y": 432
+        "y": 120
       },
       "type": "xod/core/to-percent"
     },
@@ -118,7 +96,7 @@
       "label": "",
       "position": {
         "x": 138,
-        "y": 640
+        "y": 328
       },
       "type": "xod/common-hardware/text-lcd-16x2"
     },
@@ -131,7 +109,7 @@
       "label": "",
       "position": {
         "x": 266,
-        "y": 536
+        "y": 224
       },
       "type": "xod/core/concat"
     },
@@ -144,31 +122,9 @@
       "label": "",
       "position": {
         "x": 10,
-        "y": 536
+        "y": 328
       },
       "type": "xod/core/digital-output"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "Sy622kuXZ",
-      "label": "",
-      "position": {
-        "x": 138,
-        "y": 16
-      },
-      "type": "xod/core/boot"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "Syk6nJdQZ",
-      "label": "",
-      "position": {
-        "x": 138,
-        "y": 120
-      },
-      "type": "xod/core/clock"
     },
     {
       "boundValues": {
@@ -179,7 +135,7 @@
       "label": "",
       "position": {
         "x": 10,
-        "y": 328
+        "y": 224
       },
       "type": "xod/core/less"
     }

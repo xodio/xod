@@ -13,28 +13,6 @@
       }
     },
     {
-      "id": "SkU43JdmW",
-      "input": {
-        "nodeId": "BJp73yOQ-",
-        "pinKey": "BJJICN2lW"
-      },
-      "output": {
-        "nodeId": "S1cQhJuXW",
-        "pinKey": "ryVmUAOrvkb"
-      }
-    },
-    {
-      "id": "Sk_N2kOmZ",
-      "input": {
-        "nodeId": "HkVEhkO7b",
-        "pinKey": "SyKd0E2x-"
-      },
-      "output": {
-        "nodeId": "BJp73yOQ-",
-        "pinKey": "HJU8CE2lW"
-      }
-    },
-    {
       "id": "r1MLnyumb",
       "input": {
         "nodeId": "r1kI3k_mZ",
@@ -48,17 +26,6 @@
   ],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
-      "id": "BJp73yOQ-",
-      "label": "",
-      "position": {
-        "x": 138,
-        "y": 120
-      },
-      "type": "xod/core/clock"
-    },
-    {
       "boundValues": {
         "SJqZ8COrDkW": 0.5
       },
@@ -67,7 +34,7 @@
       "label": "",
       "position": {
         "x": 10,
-        "y": 328
+        "y": 120
       },
       "type": "xod/core/less"
     },
@@ -79,21 +46,10 @@
       "id": "HkVEhkO7b",
       "label": "",
       "position": {
-        "x": 138,
-        "y": 224
-      },
-      "type": "xod/core/analog-input"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "S1cQhJuXW",
-      "label": "",
-      "position": {
-        "x": 138,
+        "x": 10,
         "y": 16
       },
-      "type": "xod/core/boot"
+      "type": "xod/core/analog-input"
     },
     {
       "boundValues": {
@@ -103,8 +59,8 @@
       "id": "r1kI3k_mZ",
       "label": "",
       "position": {
-        "x": 138,
-        "y": 432
+        "x": 10,
+        "y": 224
       },
       "type": "xod/core/pwm-output"
     }

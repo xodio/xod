@@ -2,39 +2,6 @@
   "description": "",
   "links": [
     {
-      "id": "B1PIk6UXZ",
-      "input": {
-        "nodeId": "Skz7k6Im-",
-        "pinKey": "HJ6HsEngZ"
-      },
-      "output": {
-        "nodeId": "rJa71TLQZ",
-        "pinKey": "r1if8ROSDJ-"
-      }
-    },
-    {
-      "id": "By85lTLXW",
-      "input": {
-        "nodeId": "SktOxpUmZ",
-        "pinKey": "BJJICN2lW"
-      },
-      "output": {
-        "nodeId": "B1Bdl6U7Z",
-        "pinKey": "ryVmUAOrvkb"
-      }
-    },
-    {
-      "id": "H1rLJpLQZ",
-      "input": {
-        "nodeId": "rJa71TLQZ",
-        "pinKey": "ry3zLA_Bv1Z"
-      },
-      "output": {
-        "nodeId": "rkczJ6U7-",
-        "pinKey": "HkyxURuSPyW"
-      }
-    },
-    {
       "id": "HJocxaI7-",
       "input": {
         "nodeId": "S1_tlaIXb",
@@ -57,10 +24,21 @@
       }
     },
     {
-      "id": "HyRUJTIXZ",
+      "id": "S1VGWbrrW",
       "input": {
         "nodeId": "SyXV1687-",
         "pinKey": "HJ6HsEngZ"
+      },
+      "output": {
+        "nodeId": "rJa71TLQZ",
+        "pinKey": "r1if8ROSDJ-"
+      }
+    },
+    {
+      "id": "SkiW--Br-",
+      "input": {
+        "nodeId": "rJa71TLQZ",
+        "pinKey": "ry3zLA_Bv1Z"
       },
       "output": {
         "nodeId": "rkczJ6U7-",
@@ -68,14 +46,14 @@
       }
     },
     {
-      "id": "SkdvkaImW",
+      "id": "ryG87r8HZ",
       "input": {
-        "nodeId": "Bkc-kpLXb",
-        "pinKey": "BJJICN2lW"
+        "nodeId": "Skz7k6Im-",
+        "pinKey": "HJ6HsEngZ"
       },
       "output": {
-        "nodeId": "Byw-ypUmW",
-        "pinKey": "ryVmUAOrvkb"
+        "nodeId": "rkczJ6U7-",
+        "pinKey": "HkyxURuSPyW"
       }
     },
     {
@@ -94,22 +72,11 @@
     {
       "boundValues": {},
       "description": "",
-      "id": "B1Bdl6U7Z",
-      "label": "",
-      "position": {
-        "x": 394,
-        "y": 16
-      },
-      "type": "xod/core/boot"
-    },
-    {
-      "boundValues": {},
-      "description": "",
       "id": "BkJKxaIXZ",
       "label": "",
       "position": {
         "x": 394,
-        "y": 224
+        "y": 120
       },
       "type": "xod/core/flip-flop"
     },
@@ -121,21 +88,10 @@
       "id": "Bkc-kpLXb",
       "label": "",
       "position": {
-        "x": 138,
-        "y": 120
-      },
-      "type": "xod/core/clock"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "Byw-ypUmW",
-      "label": "",
-      "position": {
-        "x": 138,
+        "x": 10,
         "y": 16
       },
-      "type": "xod/core/boot"
+      "type": "xod/core/clock"
     },
     {
       "boundValues": {
@@ -146,7 +102,7 @@
       "label": "Red LED",
       "position": {
         "x": 394,
-        "y": 432
+        "y": 328
       },
       "type": "xod/core/digital-output"
     },
@@ -159,7 +115,7 @@
       "label": "",
       "position": {
         "x": 394,
-        "y": 120
+        "y": 16
       },
       "type": "xod/core/clock"
     },
@@ -172,7 +128,7 @@
       "label": "Yellow LED",
       "position": {
         "x": 10,
-        "y": 432
+        "y": 328
       },
       "type": "xod/core/digital-output"
     },
@@ -185,7 +141,7 @@
       "label": "Blue LED",
       "position": {
         "x": 138,
-        "y": 432
+        "y": 328
       },
       "type": "xod/core/digital-output"
     },
@@ -195,8 +151,8 @@
       "id": "rJa71TLQZ",
       "label": "",
       "position": {
-        "x": 10,
-        "y": 328
+        "x": 138,
+        "y": 224
       },
       "type": "xod/core/not"
     },
@@ -206,8 +162,8 @@
       "id": "rkczJ6U7-",
       "label": "",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 10,
+        "y": 120
       },
       "type": "xod/core/flip-flop"
     }
