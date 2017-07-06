@@ -1,5 +1,7 @@
-
 import R from 'ramda';
+import { Either } from 'ramda-fantasy';
+
+import { ERROR } from './constants';
 
 export function findVertexesWithNoIncomingEdges(vertexes, edges) {
   return R.difference(
@@ -52,8 +54,8 @@ export function sortGraph(vertexes, edges) {
   }
 
   if (edgesLeft.length) {
-    throw new Error('Graph has at least one cycle');
+    return Either.Left(new Error(ERROR.LOOPS_DETECTED));
   }
 
-  return l;
+  return Either.of(l);
 }

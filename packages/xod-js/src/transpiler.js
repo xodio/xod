@@ -546,10 +546,17 @@ export default def(
       .chain((proj) => {
         const entryPatch = Project.getPatchByPathUnsafe(opts.path, proj);
         const impls = extractPatchImpls(opts.impls, proj);
-        const topology = Project.getTopology(entryPatch);
+        const eitherErrOrTopology = Project.getTopology(entryPatch);
         const nodes = transformNodes(entryPatch, proj);
 
-        const code = joinLineBlocks([
+        return R.sequence(Either.of, [
+          Either.of(impls),
+          Either.of(nodes),
+          eitherErrOrTopology,
+        ]);
+      })
+      .map(([impls, nodes, topology]) =>
+        joinLineBlocks([
           jsRuntime,
           '// =====================================================================',
           transpileImpl(impls),
@@ -558,9 +565,7 @@ export default def(
           transpileProject(topology),
           opts.launcher,
           '',
-        ]);
-
-        return Either.of(code);
-      });
+        ])
+      );
   }
 );
