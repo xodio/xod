@@ -4,17 +4,6 @@
   "nodes": [
     {
       "boundValues": {},
-      "description": "Actually sends a signal to servo to set the desired angle",
-      "id": "HkaMmuTzZ",
-      "label": "UPD",
-      "position": {
-        "x": 266,
-        "y": 16
-      },
-      "type": "xod/patch-nodes/input-pulse"
-    },
-    {
-      "boundValues": {},
       "description": "",
       "id": "HkmSQOafZ",
       "label": "",
