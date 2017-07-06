@@ -4,86 +4,95 @@ XOD
 [![Build Status](https://travis-ci.com/xodio/xod.svg?token=qpYnhqFDqibUozbjyas8&branch=master)](https://travis-ci.com/xodio/xod)
 [![Build status](https://ci.appveyor.com/api/projects/status/vk5ngjb4xw4m60ks?svg=true)](https://ci.appveyor.com/project/xod/xod)
 
-Deployment on localhost
------------------------
+XOD is a visual programming language for microcontrollers. For documentation
+and downloads visit https://xod.io.
 
-Install all dependencies and perform package cross-linking with:
+This repository contains sources for XOD language core, XOD IDE, XOD standard
+library, and XOD documentation.
 
-    $ yarn install
+Development copy setup
+----------------------
 
-Build the code:
+We use [Yarn](https://yarnpkg.com/lang/en/) to run routine tasks on source
+files.  Make sure it is available on your system.  Clone the repository and set
+working directory to its root. Then run
 
-    $ yarn run build
+    $ yarn
+
+to install all JS dependencies.
 
 ### Browser IDE
 
-    $ yarn run dev -- xod-client-browser
+    $ yarn dev -- xod-client-browser
 
 Open <http://localhost:8080> in your browser.
 
 ### Desktop IDE
 
-    $ yarn run electron-rebuild
-    $ yarn run start:xod-client-electron
+    $ yarn build -- xod-client-electron
+    $ yarn electron-rebuild
+    $ yarn start:xod-client-electron
 
-Maintenance Scripts
+Directory structure
 -------------------
 
-### Cleaning
+The project is managed as a [Lerna](https://github.com/lerna/lerna) monorepo and
+split up in few directories:
 
-* `yarn run clean:dist` removes all build artifacts
-* `yarn run clean:node_modules` removes all installed `node_modules` in all packages
-* `yarn run clean` resets the sandbox to just-cloned state
+- `packages/` — most of source code is here; navigate to a particular package
+  to see it’s own `README` and get an idea what it is for
+- `tools/` — utility scripts to assist build process and routine maintenance
+  tasks
+- `docs/` — documentation source for https://xod.io/docs/
+- `workspace/` — XOD standard library, default projects, and end-to-end
+  fixtures
 
-### Verification
+Repository commands
+-------------------
 
-* `yarn run lint` performs lint-checking in all packages
-* `yarn run test -- <name> --only` runs test on package with specified `<name>`.
-  E.g. `yarn run test -- xod-client --only`.
-* `yarn run test -- <name>` runs test on package with specified `<name>`,
-  and all packages it depends on directly or indirectly.
-  E.g. `yarn run test -- xod-client`.
-* `yarn test` tests all packages
-* `yarn test-func` runs automated end-to-end functional tests.
-  You can set `XOD_DEBUG_TESTS` environment variable to keep IDE open on failure:
-  `XOD_DEBUG_TESTS=1 yarn test-func`
-* `yarn run verify` builds lints and tests; run this prior to pull request
-* `yarn run ci` installs and verifies; used as a script for CI-server
+You can run several commands on source files. They are available as yarn
+subcommands:
 
-Run `yarn start:spectron-repl` to start IDE under control of
-[Spectron](https://github.com/electron/spectron). Then you can use objects
-provided by REPL to query elements, click buttons, etc. It would help in
-creating functional tests for IDE.
+- `yarn build` — build, transpile, pack
+- `yarn dev` — the same, but watches for changes with auto-reload
+- `yarn electron-rebuild` — rebuilds native modules to fix
+  incompatibilities between Electron’s NodeJS and system NodeJS
+- `yarn electron-dist` — build OS-specific distributive
+- `yarn test` — run unit tests
+- `yarn test:watch` — like test, but watches for changes with auto-retest
+- `yarn test-func` — run functional tests
+- `yarn lint` — run the linter to check code style
+- `yarn verify` — build, lint, test; run this prior to a pull request
+- `yarn ci` — install & verify; CI-server uses this command
+- `yarn start:xod-client-electron` — starts desktop IDE
+- `yarn start:spectron-repl` — starts functional tests environment
+- `yarn storybook` — starts React components viewer for visual inspection
+- `yarn run clean` — remove build artifacts and installed `node_modules`
 
-### Building
+Note that dependencies between tasks are not resolved. `test` and `start:*`
+expect that the project is already built.
 
-* `yarn run build` builds all packages
-* `yarn run build -- <name> --only` builds a package with specified `<name>`,
-  e.g. `yarn run build -- xod-cli --only`
-* `yarn run build -- <name>` builds a package with specified `<name>`
-  and all its dependencies, e.g. `yarn run build -- xod-client-electron`
-* `yarn run dev -- <name> --only` builds a package with specified `<name>` and
-  stays in watch mode with auto-rebuild when its files change,
-  e.g. `yarn run dev -- xod-cli --only`
-* `yarn run dev -- <name>` builds a package with specified `<name>` and all
-  its dependencies, then stay in watch mode looking for changes in that
-  package or any of its dependencies;
-  e.g. `yarn run dev -- xod-client-browser`
+### Scoping
 
-### Packaging
+Many commands (notably `build`, `dev`, `test`) support package scoping to
+save development time. To rebuild only `xod-cli` and its dependencies:
 
-* `yarn run bootsrap` creates all necessary links between local packages and
-  installs their dependencies
+    $ yarn build -- xod-cli
 
-### Distributing
+To rebuild only `xod-cli` without dependencies:
 
-* Creates a distribution artifact corresponding to host's platform:
-    
-    ```bash
-    yarn install
-    yarn run verify
-    yarn run electron-dist
-    ```
+    $ yarn build -- xod-cli --only
+
+
+### Debugging functional tests
+
+`yarn test-func` runs automated end-to-end functional tests.
+
+You can set `XOD_DEBUG_TESTS` environment variable to keep IDE open on failure:
+`XOD_DEBUG_TESTS=1 yarn test-func`
+
+Use `yarn start:spectron-repl` to run an interactive session and control the
+IDE window programmatically.
 
 License
 -------
@@ -116,7 +125,8 @@ the program, then also delete it in the license file.
 Contributing
 ------------
 
-Feel free to contribute to the project! Make sure to read [contribution guidelines](./CONTRIBUTING.md).
+Feel free to contribute to the project! Make sure to read [contribution
+guidelines](./CONTRIBUTING.md).
 
 Jetbrains users can benefit from [XOD Jetbrains Live
 Template](tools/xod-jetbrains-live-template/xod-jetbrains-live-template.md).
