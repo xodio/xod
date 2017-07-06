@@ -46,7 +46,8 @@
       "description": "",
       "impls": {
         "espruino": "\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
-      }
+      },
+      "attachments": []
     },
     "xod/math/multiply": {
       "path": "xod/math/multiply",
@@ -100,7 +101,8 @@
       "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a * e.inputs.b) };\n};\n"
-      }
+      },
+      "attachments": []
     },
     "xod/core/latch": {
       "path": "xod/core/latch",
@@ -165,7 +167,8 @@
       "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
-      }
+      },
+      "attachments": []
     },
     "xod/core/clock": {
       "path": "xod/core/clock",
@@ -208,7 +211,8 @@
       "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.context.intervalID) {\n    clearInterval(e.context.intervalID);\n  }\n\n  e.context.intervalID = setInterval(function() {\n    e.fire({ tick: PULSE });\n  }, e.inputs.interval * 1000);\n};\n"
-      }
+      },
+      "attachments": []
     },
     "xod/core/cast-boolean-to-number": {
       "path": "xod/core/cast-boolean-to-number",
@@ -251,7 +255,8 @@
       "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Number(e.inputs.__in__) };\n};\n"
-      }
+      },
+      "attachments": []
     },
     "@/main": {
       "path": "@/main",
@@ -407,7 +412,8 @@
         }
       },
       "description": "",
-      "impls": {}
+      "impls": {},
+      "attachments": []
     }
   }
 }

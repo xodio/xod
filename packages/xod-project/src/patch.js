@@ -35,6 +35,7 @@ export const createPatch = def(
     impls: {},
     path: getLocalPath('untitled-patch'),
     description: '',
+    attachments: [],
   })
 );
 
