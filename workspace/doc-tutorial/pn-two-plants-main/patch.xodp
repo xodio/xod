@@ -35,17 +35,6 @@
       }
     },
     {
-      "id": "Hyl3KlOm-",
-      "input": {
-        "nodeId": "ByhoYgOXW",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "SkqOYxOXb",
-        "pinKey": "r1tzUxOmZ"
-      }
-    },
-    {
       "id": "SJMphk_mZ",
       "input": {
         "nodeId": "Syk6nJdQZ",
@@ -66,42 +55,9 @@
         "nodeId": "SkqOYxOXb",
         "pinKey": "HknfLluXW"
       }
-    },
-    {
-      "id": "r1yhKldQ-",
-      "input": {
-        "nodeId": "ByhoYgOXW",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "HJ49FxumZ",
-        "pinKey": "r1tzUxOmZ"
-      }
-    },
-    {
-      "id": "rJZnYed7Z",
-      "input": {
-        "nodeId": "HJblpkuQb",
-        "pinKey": "BkoI45YWW"
-      },
-      "output": {
-        "nodeId": "ByhoYgOXW",
-        "pinKey": "ByHmL0uHPk-"
-      }
     }
   ],
   "nodes": [
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "ByhoYgOXW",
-      "label": "",
-      "position": {
-        "x": 394,
-        "y": 432
-      },
-      "type": "xod/core/any"
-    },
     {
       "boundValues": {
         "B1U-8x_Xb": 3,

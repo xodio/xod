@@ -68,17 +68,6 @@
       }
     },
     {
-      "id": "Sysg6J_Xb",
-      "input": {
-        "nodeId": "HJblpkuQb",
-        "pinKey": "BkoI45YWW"
-      },
-      "output": {
-        "nodeId": "BJpa2yu7b",
-        "pinKey": "rymG3j6b-"
-      }
-    },
-    {
       "id": "rJJWQxu7b",
       "input": {
         "nodeId": "Sk9gmgOQW",

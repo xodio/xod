@@ -26,17 +26,6 @@
     },
     {
       "boundValues": {},
-      "description": "Actually updates the screen",
-      "id": "BkoI45YWW",
-      "label": "UPD",
-      "position": {
-        "x": 1162,
-        "y": 16
-      },
-      "type": "xod/patch-nodes/input-pulse"
-    },
-    {
-      "boundValues": {},
       "description": "Text for the second line",
       "id": "H1bLN9F-b",
       "label": "L2",

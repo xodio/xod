@@ -55,39 +55,6 @@
         "nodeId": "ryQ_XsT-b",
         "pinKey": "ryVmUAOrvkb"
       }
-    },
-    {
-      "id": "SJdoDJmzW",
-      "input": {
-        "nodeId": "ByloP17z-",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "rk1KD1mMZ",
-        "pinKey": "SJI8Ik7zW"
-      }
-    },
-    {
-      "id": "SkSoDJmGZ",
-      "input": {
-        "nodeId": "BkugQ2aW-",
-        "pinKey": "BkoI45YWW"
-      },
-      "output": {
-        "nodeId": "ByloP17z-",
-        "pinKey": "ByHmL0uHPk-"
-      }
-    },
-    {
-      "id": "rkLiPyQMW",
-      "input": {
-        "nodeId": "ByloP17z-",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "SJHtPk7Gb",
-        "pinKey": "SJI8Ik7zW"
-      }
     }
   ],
   "nodes": [
@@ -108,17 +75,6 @@
         "y": 640
       },
       "type": "xod/common-hardware/text-lcd-16x2"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "ByloP17z-",
-      "label": "",
-      "position": {
-        "x": 394,
-        "y": 536
-      },
-      "type": "xod/core/any"
     },
     {
       "boundValues": {
