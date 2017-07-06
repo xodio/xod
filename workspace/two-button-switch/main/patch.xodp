@@ -88,17 +88,6 @@
         "nodeId": "HkKQlCr-W",
         "pinKey": "B1gI0urv1W"
       }
-    },
-    {
-      "id": "rJy2lABZb",
-      "input": {
-        "nodeId": "ryQslRHbb",
-        "pinKey": "rJf8o4ngZ"
-      },
-      "output": {
-        "nodeId": "Hy-YeCB-b",
-        "pinKey": "HyjUA_HvkW"
-      }
     }
   ],
   "nodes": [
@@ -201,8 +190,7 @@
     {
       "boundValues": {
         "B134j4neZ": 13,
-        "HJ6HsEngZ": false,
-        "rJf8o4ngZ": false
+        "HJ6HsEngZ": false
       },
       "description": "",
       "id": "ryQslRHbb",

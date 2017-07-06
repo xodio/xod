@@ -24,17 +24,6 @@
       }
     },
     {
-      "id": "rkcPVKB-W",
-      "input": {
-        "nodeId": "SyeDNFBWZ",
-        "pinKey": "rJf8o4ngZ"
-      },
-      "output": {
-        "nodeId": "rkwIEFrWb",
-        "pinKey": "HyjUA_HvkW"
-      }
-    },
-    {
       "id": "ry2wNFB-Z",
       "input": {
         "nodeId": "SyeDNFBWZ",
@@ -75,8 +64,7 @@
     {
       "boundValues": {
         "B134j4neZ": 13,
-        "HJ6HsEngZ": false,
-        "rJf8o4ngZ": false
+        "HJ6HsEngZ": false
       },
       "description": "",
       "id": "SyeDNFBWZ",
