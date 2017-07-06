@@ -98,17 +98,6 @@
     },
     {
       "boundValues": {},
-      "description": "Pulses when new temperature value is available",
-      "id": "S1JWMUaMW",
-      "label": "RDY",
-      "position": {
-        "x": 394,
-        "y": 432
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
-      "boundValues": {},
       "description": "The last read temperature in °C",
       "id": "rkFgMITM-",
       "label": "Tc",
