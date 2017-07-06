@@ -35,17 +35,6 @@
       }
     },
     {
-      "id": "H1-4UVuG-",
-      "input": {
-        "nodeId": "rJivV4OzZ",
-        "pinKey": "rJf8o4ngZ"
-      },
-      "output": {
-        "nodeId": "S1_iNVOGb",
-        "pinKey": "rkJuR6S-Z"
-      }
-    },
-    {
       "id": "H1SNUV_fW",
       "input": {
         "nodeId": "SyZdNN_GW",

@@ -17,5 +17,4 @@ void evaluate(NodeId nid, State* state) {
     }
 
     emitValue<Outputs::SIG>(nid, ::digitalRead(port));
-    emitValue<Outputs::RDY>(nid, 1);
 }

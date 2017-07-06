@@ -47,19 +47,6 @@
         "y": 100
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
-    },
-    {
-      "boundValues": {
-        "__in__": ""
-      },
-      "description": "Pulses when the reading is ready",
-      "id": "rkJuR6S-Z",
-      "label": "RDY",
-      "position": {
-        "x": 138,
-        "y": 224
-      },
-      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }
