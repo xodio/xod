@@ -1,6 +1,6 @@
-import fs from 'fs';
-import fse from 'fs-extra';
+import fs from 'fs-extra';
 import path from 'path';
+import copy from 'recursive-copy';
 
 const lastDir = dir => dir.split(path.sep).filter(name => name !== '').pop();
 
@@ -26,7 +26,7 @@ export class Backup {
       if (!this.isDataExist) { resolve('data is not exist'); return; }
       if (!this.isTempExist) { fs.mkdirSync(this.path.temp); }
 
-      fse.copy(this.path.data, this.path.dataTemp, (err) => {
+      copy(this.path.data, this.path.dataTemp, (err) => {
         if (err) { reject(err); return; }
         this.stored = true;
         resolve();
@@ -37,10 +37,10 @@ export class Backup {
   clear() {
     if (!this.stored) { return; }
 
-    fse.removeSync(this.path.dataTemp);
+    fs.removeSync(this.path.dataTemp);
     const tempContents = fs.readdirSync(this.path.temp);
     if (tempContents.length === 0) {
-      fse.removeSync(this.path.temp);
+      fs.removeSync(this.path.temp);
     }
     this.stored = false;
   }
@@ -49,8 +49,8 @@ export class Backup {
     if (!this.stored) { return Promise.resolve(); }
 
     return new Promise((resolve, reject) => {
-      fse.removeSync(this.path.data);
-      fse.copy(this.path.dataTemp, this.path.data, (err) => {
+      fs.removeSync(this.path.data);
+      copy(this.path.dataTemp, this.path.data, (err) => {
         if (err) { reject(err); return; }
         this.clear();
         resolve();
