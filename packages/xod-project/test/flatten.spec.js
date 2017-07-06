@@ -9,6 +9,8 @@ import { formatString } from '../src/utils';
 import { getCastPatchPath } from '../src/patchPathUtils';
 import blinking from './fixtures/blinking.json';
 import blinkingFlat from './fixtures/blinking.flat.json';
+import deeplyNested from './fixtures/deeply-nested.json';
+import deeplyNestedFlat from './fixtures/deeply-nested.flat.json';
 
 chai.use(dirtyChai);
 
@@ -751,6 +753,19 @@ describe('Flatten', () => {
     it('should correctly flatten blinking.json', () => {
       const flattened = R.unnest(flatten(blinking, '@/main', ['espruino', 'js']));
       expect(flattened).to.deep.equal(blinkingFlat);
+    });
+
+    it('should correctly flatten deeply-nested.json', () => {
+      const eitherErrorOrFlat = flatten(deeplyNested, '@/main', ['arduino', 'cpp']);
+
+      expect(eitherErrorOrFlat.isRight).to.be.true();
+
+      Helper.expectEither(
+        (flat) => {
+          expect(flat).to.be.deep.equal(deeplyNestedFlat);
+        },
+        eitherErrorOrFlat
+      );
     });
   });
 
