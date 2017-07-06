@@ -34,17 +34,6 @@
         "y": 16
       },
       "type": "xod/patch-nodes/input-number"
-    },
-    {
-      "boundValues": {},
-      "description": "Actually updates duty cycle on the port",
-      "id": "rkAnKBvyZ",
-      "label": "UPD",
-      "position": {
-        "x": 266,
-        "y": 16
-      },
-      "type": "xod/patch-nodes/input-pulse"
     }
   ]
 }
