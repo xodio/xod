@@ -1,9 +1,12 @@
 import R from 'ramda';
 import chai, { expect, assert } from 'chai';
 import dirtyChai from 'dirty-chai';
+import * as XF from 'xod-func-tools';
 
 import * as Pin from '../src/pin';
 import * as Patch from '../src/patch';
+import * as Node from '../src/node';
+import * as Link from '../src/link';
 import * as CONST from '../src/constants';
 import { formatString } from '../src/utils';
 import * as PPU from '../src/patchPathUtils';
@@ -834,6 +837,39 @@ describe('Patch', () => {
       expect(Patch.dissocLink({ id: '3' }, patch))
         .to.be.an('object')
         .and.deep.equals(patch);
+    });
+  });
+
+  describe('upsertNodes & upsertLinks', () => {
+    const patch = R.compose(
+      Patch.createPatch
+    )();
+
+    it('should return patch with upserted nodes and upserted links', () => {
+      const newNodes = [
+        Node.createNode({ x: 0, y: 0 }, '@/yay'),
+        Node.createNode({ x: 0, y: 0 }, '@/awesome'),
+      ];
+      const patchWithNodes = Patch.upsertNodes(newNodes, patch);
+
+      assert.sameDeepMembers(
+        Patch.listNodes(patchWithNodes),
+        newNodes
+      );
+
+      const nodeIds = R.map(Node.getNodeId, newNodes);
+      const newLinks = [
+        Link.createLink('IN_A', nodeIds[0], 'OUTA', nodeIds[1]),
+        Link.createLink('IN_B', nodeIds[0], 'OUTB', nodeIds[1]),
+      ];
+
+      const patchWithLinks = Patch.upsertLinks(newLinks, patchWithNodes);
+
+      assert.isTrue(patchWithLinks.isRight);
+      assert.sameDeepMembers(
+        Patch.listLinks(XF.explodeEither(patchWithLinks)),
+        newLinks
+      );
     });
   });
 
