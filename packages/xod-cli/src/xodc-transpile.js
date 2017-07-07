@@ -71,7 +71,7 @@ export default (input, patchPath, program) => {
     )
     .then((code) => {
       if (output) {
-        return writeFile(output, code)
+        return writeFile(output, code, 'utf8')
           .then(() => {
             msg.success(`Successfully transpiled to ${output}`);
           })

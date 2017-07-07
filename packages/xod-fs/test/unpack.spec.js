@@ -73,6 +73,16 @@ describe('arrangeByFiles', () => {
           content: '//custom implementation by user to work faster on Arduino',
           path: './awesome-project/main/arduino.cpp',
         },
+        {
+          content: '# Yay',
+          encoding: 'utf8',
+          path: './awesome-project/main/README.md',
+        },
+        {
+          content: '# Yep!',
+          encoding: 'utf8',
+          path: './awesome-project/main/docs/are/awesome.md',
+        },
       ]
     );
   });

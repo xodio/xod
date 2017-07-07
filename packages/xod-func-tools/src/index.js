@@ -133,6 +133,14 @@ export const rejectWithCode = R.curry(
   (code, err) => Promise.reject(Object.assign(err, { errorCode: code }))
 );
 
+// :: [Promise a] -> Promise a
+export const allPromises = promises => Promise.all(promises);
+
+/**
+ * Concatenates a list of lists into one list.
+ */
+// :: [[a]] -> [a]
+export const concatAll = R.reduce(R.concat, []);
 
 export default Object.assign(
   {
@@ -147,6 +155,8 @@ export default Object.assign(
     notNil,
     notEmpty,
     rejectWithCode,
+    allPromises,
+    concatAll,
   },
   types
 );

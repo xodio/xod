@@ -28,6 +28,7 @@ const OneOfType = XF.OneOfType(packageName, docUrl);
 //
 //-----------------------------------------------------------------------------
 
+export const BufferType = NullaryType('Buffer', R.is(Buffer));
 export const Path = NullaryType('Path', x => XF.hasType($.String, x) && XF.notEmpty(x));
 
 // :: x -> Boolean
@@ -71,6 +72,7 @@ export const ProjectFileContents = Model('ProjectFileContents', {
 });
 
 export const ProjectFile = AliasType('ProjectFile', XodFile(ProjectFileContents));
+export const AttachmentFile = AliasType('AttachmentFile', XodFile($.String));
 
 // TODO: Remove last `XodFile(Patch)` after refactoring of loadProject* and readXodFile functions
 export const AnyXodFile = OneOfType('AnyXodFile', [ProjectFile, PatchFile, PatchImplFile, XodFile(Patch)]);
@@ -83,11 +85,13 @@ export const XodFileContent = OneOfType('XodFileContent', [ProjectFileContents, 
 //
 //-----------------------------------------------------------------------------
 const env = xpEnv.concat([
+  BufferType,
   Path,
   XodFile,
   AnyXodFile,
   PatchFile,
   PatchImplFile,
+  AttachmentFile,
   ProjectFile,
   XodFileContent,
   PatchFileContents,

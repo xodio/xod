@@ -74,7 +74,8 @@
           },
           "type": "xod/core/and"
         }
-      }
+      },
+      "attachments": []
     },
     "path": "./awesome-project/main/patch.xodp"
   },
@@ -82,7 +83,9 @@
     "path": "./awesome-project/qux/patch.xodp",
     "content": {
       "path": "@/qux",
-      "impls": {},
+      "impls": {
+        "cpp": "// Impl loaded fine!\n"
+      },
       "nodes": {
         "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
           "label": "",
@@ -120,7 +123,19 @@
           }
         }
       },
-      "description": ""
+      "description": "",
+      "attachments": [
+        {
+          "filename": "img/20x20.png",
+          "encoding": "base64",
+          "content": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAG1BMVEXMzMyWlpaxsbGqqqq3t7fFxcWjo6OcnJy+vr5AT8FzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAMElEQVQImWNgoBFQVkmBka7i4QxQklmRkUGlAUQyqLCHM4SBSYYkoCqVhiSwDioCAPhiB33L/sGeAAAAAElFTkSuQmCC"
+        },
+        {
+          "filename": "README.md",
+          "encoding": "utf8",
+          "content": "# Hello world!\n\n- It's a test file\n- If you see a correct content — it passed!\n- Also it could contain any UTF-8 characters, like this one 😎 or even кириллица!\n\nHave a nice day!\n"
+        }
+      ]
     }
   }
 ]

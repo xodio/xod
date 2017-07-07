@@ -3,12 +3,12 @@ import fileSave from 'file-save';
 import { resolvePath } from './utils';
 
 // :: outputPath -> data -> Promise
-export const writeFile = curry((outputPath, data) => new Promise(
+export const writeFile = curry((outputPath, data, encoding) => new Promise(
   (resolve, reject) => {
     const resolvedPath = resolvePath(outputPath);
     const fstream = fileSave(resolvedPath);
 
-    fstream.write(data, 'utf8');
+    fstream.write(data, encoding);
     fstream.end();
     fstream.finish(() => resolve({ path: resolvedPath, data }));
     fstream.error((err) => {
@@ -19,7 +19,7 @@ export const writeFile = curry((outputPath, data) => new Promise(
 
 // :: outputPath -> data -> Promise
 export const writeJSON = curry((outputPath, data) =>
-  writeFile(outputPath, JSON.stringify(data, undefined, 2))
+  writeFile(outputPath, JSON.stringify(data, undefined, 2), 'utf8')
     .catch((err) => { throw Object.assign(err, { path: outputPath, data }); })
 );
 

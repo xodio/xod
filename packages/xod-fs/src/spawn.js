@@ -16,7 +16,7 @@ const copyOptions = {
 export const spawnWorkspaceFile = workspacePath =>
   Promise.resolve(resolvePath(workspacePath))
     .then(p => path.resolve(p, WORKSPACE_FILENAME))
-    .then(p => writeFile(p, ''))
+    .then(p => writeFile(p, '', 'utf8'))
     .then(() => workspacePath)
     .catch(rejectWithCode(ERROR_CODES.CANT_CREATE_WORKSPACE_FILE));
 

@@ -5,6 +5,7 @@ import path from 'path';
 import {
   notEmpty,
   rejectWithCode,
+  isAmong,
 } from 'xod-func-tools';
 
 import { def } from './types';
@@ -128,6 +129,62 @@ export const getPatchName = def(
 );
 
 export const hasExt = R.curry((ext, filename) => R.equals(path.extname(filename), ext));
+
+
+export const basenameEquals = def(
+  'basenameEquals :: String -> Path -> Boolean',
+  (basename, filePath) => R.compose(
+    R.equals(basename),
+    path.basename
+  )(filePath)
+);
+
+export const basenameAmong = def(
+  'basenameAmong :: [String] -> Path -> Boolean',
+  (basenames, filePath) => R.compose(
+    isAmong(basenames),
+    path.basename
+  )(filePath)
+);
+
+export const extAmong = def(
+  'extAmong :: [String] -> Path -> Boolean',
+  (extensions, filePath) => R.compose(
+    isAmong(extensions),
+    path.extname
+  )(filePath)
+);
+
+export const beginsWithDot = def(
+  'beginsWithDot :: String -> Boolean',
+  R.compose(
+    R.equals('.'),
+    R.head
+  )
+);
+
+export const resolveProjectFile = def(
+  'resolveProjectFile :: Path -> Path',
+  dir => path.resolve(dir, 'project.xod')
+);
+
+export const hasProjectFile = def(
+  'hasProjectFile :: Path -> Boolean',
+  R.compose(
+    doesFileExist,
+    resolveProjectFile
+  )
+);
+
+// :: Path -> Boolean
+export const isLocalProjectDirectory = def(
+  'isLocalProjectDirectory :: Path -> Boolean',
+  R.allPass([
+    doesDirectoryExist,
+    R.complement(beginsWithDot),
+    hasProjectFile,
+  ])
+);
 
 // =============================================================================
 //

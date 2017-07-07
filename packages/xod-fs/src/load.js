@@ -5,8 +5,6 @@ import R from 'ramda';
 import XF from 'xod-func-tools';
 import * as XP from 'xod-project';
 
-import { def } from './types';
-
 import pack from './pack';
 import { findClosestWorkspaceDir } from './find';
 import { loadAllLibs } from './loadLibs';
@@ -14,76 +12,15 @@ import { readDir, readJSON } from './read';
 import * as ERROR_CODES from './errorCodes';
 import {
   resolvePath,
-  doesFileExist,
-  doesDirectoryExist,
+  resolveProjectFile,
+  isLocalProjectDirectory,
+  basenameEquals,
+  basenameAmong,
   reassignIds,
   getPatchName,
-  getImplTypeByFilename,
 } from './utils';
-
-// =============================================================================
-//
-// Utils
-//
-// =============================================================================
-
-// :: [Promise a] -> Promise a
-const allPromises = promises => Promise.all(promises);
-
-const basenameEquals = def(
-  'basenameEquals :: String -> Path -> Boolean',
-  (basename, filePath) => R.compose(
-    R.equals(basename),
-    path.basename
-  )(filePath)
-);
-
-const basenameAmong = def(
-  'basenameAmong :: [String] -> Path -> Boolean',
-  (basenames, filePath) => R.compose(
-    XF.isAmong(basenames),
-    path.basename
-  )(filePath)
-);
-
-const extAmong = def(
-  'extAmong :: [String] -> Path -> Boolean',
-  (extensions, filePath) => R.compose(
-    XF.isAmong(extensions),
-    path.extname
-  )(filePath)
-);
-
-const beginsWithDot = def(
-  'beginsWithDot :: String -> Boolean',
-  R.compose(
-    R.equals('.'),
-    R.head
-  )
-);
-
-const resolveProjectFile = def(
-  'resolveProjectFile :: Path -> Path',
-  dir => path.resolve(dir, 'project.xod')
-);
-
-const hasProjectFile = def(
-  'hasProjectFile :: Path -> Boolean',
-  R.compose(
-    doesFileExist,
-    resolveProjectFile
-  )
-);
-
-// :: Path -> Boolean
-const isLocalProjectDirectory = def(
-  'isLocalProjectDirectory :: Path -> Boolean',
-  R.allPass([
-    doesDirectoryExist,
-    R.complement(beginsWithDot),
-    hasProjectFile,
-  ])
-);
+import { loadAttachmentFiles } from './attachments';
+import { loadPatchImpls } from './impls';
 
 // =============================================================================
 //
@@ -124,32 +61,12 @@ export const getLocalProjects = R.compose(
 // Returns a Promise of all project metas for given workspace path
 // :: Path -> Promise ProjectMeta[] Error
 export const getProjects = workspacePath => R.composeP(
-  allPromises,
+  XF.allPromises,
   R.map(readProjectMetaFile),
   R.filter(basenameEquals('project.xod')),
   readDir
 )(workspacePath)
   .catch(XF.rejectWithCode(ERROR_CODES.CANT_ENUMERATE_PROJECTS));
-
-// Returns a promise of filename / content pair for a given
-// `filename` path relative to `dir`
-// :: String -> String -> Promise (Pair String String)
-const readImplFile = dir => filename =>
-  fs.readFile(path.resolve(dir, filename), 'utf8').then(content => [
-    getImplTypeByFilename(filename),
-    content,
-  ]);
-
-// Returns a map with filenames in keys and contents in values of
-// all implementation source files in a directory given as argument
-// :: String -> Promise (StrMap String) Error
-const readImplFiles = dir => R.composeP(
-  R.fromPairs,
-  allPromises,
-  R.map(readImplFile(dir)),
-  R.filter(extAmong(['.c', '.cpp', '.h', '.inl', '.js'])),
-  fs.readdir
-)(dir);
 
 // :: String -> String -> Promise { path :: String, content :: Object, id :: String }
 const readXodFile = projectPath => xodfile =>
@@ -158,27 +75,30 @@ const readXodFile = projectPath => xodfile =>
       const { base, dir } = path.parse(xodfile);
 
       const projectFolder = path.resolve(projectPath, '..');
-      const patchPath = path.relative(projectFolder, xodfile);
+      const filePath = path.relative(projectFolder, xodfile);
 
-      return readImplFiles(dir).then((impls) => {
-        const getContent = base === 'project.xod'
-          ? R.identity
-          : R.compose(
-              R.merge(R.__, { impls }),
-              R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
-              reassignIds
-            );
-
-        return XF.omitNilValues({
-          path: `./${patchPath}`,
-          content: getContent(data),
-        });
-      });
+      return R.composeP(
+        XF.omitNilValues,
+        R.applySpec({
+          path: () => `./${filePath}`,
+          content: R.identity,
+        }),
+        R.when(
+          () => base === 'patch.xodp',
+          R.composeP(
+            reassignIds,
+            R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
+            loadAttachmentFiles(dir),
+            loadPatchImpls(dir)
+          )
+        ),
+        Promise.resolve.bind(Promise)
+      )(data);
     });
 
 // :: Path -> Promise [File] Error
 export const loadProjectWithoutLibs = projectPath => R.composeP(
-  allPromises,
+  XF.allPromises,
   R.map(readXodFile(projectPath)),
   R.filter(basenameAmong([
     'project.xod',
@@ -188,8 +108,9 @@ export const loadProjectWithoutLibs = projectPath => R.composeP(
 )(projectPath);
 
 // :: Path -> Path -> Path -> Promise [File] Error
-export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) =>
-  loadProjectWithoutLibs(resolvePath(path.resolve(workspace, projectPath)))
+export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) => {
+  const fullProjectPath = resolvePath(path.resolve(workspace, projectPath));
+  return loadProjectWithoutLibs(fullProjectPath)
     .then((projectFiles) => {
       const libPath = resolvePath(libDir);
       return loadAllLibs(workspace)
@@ -201,13 +122,14 @@ export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) 
           return Promise.reject(err);
         })
         .then(libs => ({ project: projectFiles, libs }))
-        .catch((err) => {
-          throw Object.assign(err, {
+        .catch(err => Promise.reject(
+          Object.assign(err, {
             path: libPath,
             files: projectFiles,
-          });
-        });
+          })
+        ));
     });
+};
 
 // :: Path -> Promise Project Error
 //

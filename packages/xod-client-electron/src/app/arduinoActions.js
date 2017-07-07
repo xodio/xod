@@ -258,7 +258,7 @@ export const uploadToArduino = (pab, port, code) => {
   const tmpPath = resolve(xab.getXodPreferencesDir(), 'upload.tmp.cpp');
   const clearTmp = () => fs.unlinkSync(tmpPath);
 
-  return Promise.all([writeFile(tmpPath, code), loadArduinoPaths().ide])
+  return Promise.all([writeFile(tmpPath, code, 'utf8'), loadArduinoPaths().ide])
     .then(
       ([{ path }, idePath]) => xab.upload(pab, port, path, idePath)
     )

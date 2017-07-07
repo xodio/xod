@@ -1,6 +1,7 @@
 import path from 'path';
 import R from 'ramda';
 import * as XP from 'xod-project';
+import * as XF from 'xod-func-tools';
 
 import { def } from './types';
 import { getImplFilenameByType } from './utils';
@@ -29,6 +30,7 @@ export const getPatchFolderName = def(
 export const getPatchFileContents = def(
   'getPatchFileContents :: Patch -> PatchFileContents',
   R.compose(
+    R.dissoc('attachments'),
     R.dissoc('impls'),
     R.dissoc('path'),
     R.evolve({
@@ -62,6 +64,20 @@ const getImplFiles = def(
   )(patch)
 );
 
+const getAttachmentFiles = def(
+  'getAttachmentFiles :: Path -> Patch -> [AttachmentFile]',
+  (projectPath, patch) => R.compose(
+    R.map(
+      ({ filename, encoding, content }) => ({
+        path: filePath(projectPath, getPatchFolderName(patch), filename),
+        encoding,
+        content,
+      })
+    ),
+    R.prop('attachments')
+  )(patch)
+);
+
 // :: Project -> [ { path :: String, content :: Object } ]
 export const arrangeByFiles = def(
   'arrangeByFiles :: Project -> [AnyXodFile]',
@@ -74,10 +90,11 @@ export const arrangeByFiles = def(
     const patchFiles = R.compose(
       R.chain(
         R.converge(
-          R.prepend,
+          R.unapply(XF.concatAll),
           [
-            getXodpFile(projectPath),
+            R.compose(R.of, getXodpFile(projectPath)),
             getImplFiles(projectPath),
+            getAttachmentFiles(projectPath),
           ]
         )
       ),

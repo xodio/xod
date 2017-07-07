@@ -14,7 +14,7 @@ const saveData = curry((pathToWorkspace, data) => new Promise((resolve, reject) 
   // Decide how to write file, as JSON, or as string:
   const writeFn = (typeof data.content === 'string') ? writeFile : writeJSON;
   // Write
-  return writeFn(filePath, data.content).then(resolve).catch(reject);
+  return writeFn(filePath, data.content, data.encoding || 'utf8').then(resolve).catch(reject);
 }));
 
 // :: pathToWorkspace -> data -> Promise

@@ -59,7 +59,8 @@
       "path": "xod/core/and",
       "impls": {
         "js": "// should be imported into impl.js\n"
-      }
+      },
+      "attachments": []
     },
     "xod/core/led": {
       "description": "",
@@ -91,7 +92,8 @@
       "path": "xod/core/led",
       "impls": {
         "espruino": "// should be imported into impl.espruino\n"
-      }
+      },
+      "attachments": []
     },
     "xod/core/pot": {
       "description": "",
@@ -134,28 +136,32 @@
       "path": "xod/core/pot",
       "impls": {
         "espruino": "// should be imported into impl.espruino\n"
-      }
+      },
+      "attachments": []
     },
     "xod/core/test": {
       "nodes": {},
       "links": {},
       "description": "",
       "path": "xod/core/test",
-      "impls": {}
+      "impls": {},
+      "attachments": []
     },
     "user/utils/test": {
       "description": "",
       "impls": {},
       "links": {},
       "nodes": {},
-      "path": "user/utils/test"
+      "path": "user/utils/test",
+      "attachments": []
     },
     "xod/math/test": {
       "description": "",
       "impls": {},
       "links": {},
       "nodes": {},
-      "path": "xod/math/test"
+      "path": "xod/math/test",
+      "attachments": []
     },
     "@/main": {
       "nodes": {
@@ -219,7 +225,8 @@
       },
       "description": "",
       "path": "@/main",
-      "impls": {}
+      "impls": {},
+      "attachments": []
     },
     "@/qux": {
       "nodes": {
@@ -261,7 +268,21 @@
       },
       "description": "",
       "path": "@/qux",
-      "impls": {}
+      "impls": {
+        "cpp": "// Impl loaded fine!\n"
+      },
+      "attachments": [
+        {
+          "filename": "img/20x20.png",
+          "encoding": "base64",
+          "content": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAG1BMVEXMzMyWlpaxsbGqqqq3t7fFxcWjo6OcnJy+vr5AT8FzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAMElEQVQImWNgoBFQVkmBka7i4QxQklmRkUGlAUQyqLCHM4SBSYYkoCqVhiSwDioCAPhiB33L/sGeAAAAAElFTkSuQmCC"
+        },
+        {
+          "filename": "README.md",
+          "encoding": "utf8",
+          "content": "# Hello world!\n\n- It's a test file\n- If you see a correct content — it passed!\n- Also it could contain any UTF-8 characters, like this one 😎 or even кириллица!\n\nHave a nice day!\n"
+        }
+      ]
     }
   }
 }
