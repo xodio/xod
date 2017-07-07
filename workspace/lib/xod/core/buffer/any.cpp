@@ -14,5 +14,4 @@ void evaluate(NodeId nid, State* state) {
 
     state->value = newValue;
     emitValue<Outputs::MEM>(nid, newValue);
-    emitValue<Outputs::CHNG>(nid, true);
 }

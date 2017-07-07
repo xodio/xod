@@ -3,19 +3,6 @@
   "links": [],
   "nodes": [
     {
-      "boundValues": {
-        "__in__": false
-      },
-      "description": "Pulses when the saved value changes, i.e. a new value is memoized",
-      "id": "B1zQ8CdSvJ-",
-      "label": "CHNG",
-      "position": {
-        "x": 138,
-        "y": 224
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
       "boundValues": {},
       "description": "A value to store",
       "id": "HkXm80uHPyb",

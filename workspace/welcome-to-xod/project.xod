@@ -1,5 +1,7 @@
 {
-  "authors": ["xod"],
+  "authors": [
+    "xod"
+  ],
   "description": "Welcome project is just an example of simplest project",
   "license": "MIT",
   "name": "welcome-to-xod",

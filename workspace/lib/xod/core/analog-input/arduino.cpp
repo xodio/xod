@@ -17,5 +17,4 @@ void evaluate(NodeId nid, State* state) {
     }
 
     emitValue<Outputs::VAL>(nid, ::analogRead(port) / 1023.);
-    emitValue<Outputs::RDY>(nid, 1);
 }

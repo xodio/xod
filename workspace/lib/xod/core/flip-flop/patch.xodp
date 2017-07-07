@@ -38,19 +38,6 @@
       "type": "xod/patch-nodes/output-boolean"
     },
     {
-      "boundValues": {
-        "__in__": false
-      },
-      "description": "Pulses when stored value is changed",
-      "id": "HyjUA_HvkW",
-      "label": "CHNG",
-      "position": {
-        "x": 138,
-        "y": 224
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
       "boundValues": {},
       "description": "",
       "id": "noNativeImpl",

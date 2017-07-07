@@ -2,17 +2,6 @@
   "description": "",
   "links": [
     {
-      "id": "B1QBAh8X-",
-      "input": {
-        "nodeId": "B1dVAhL7W",
-        "pinKey": "rJf8o4ngZ"
-      },
-      "output": {
-        "nodeId": "BJ9Z02U7b",
-        "pinKey": "HyjUA_HvkW"
-      }
-    },
-    {
       "id": "H1d7C3LQZ",
       "input": {
         "nodeId": "S1Ag03LX-",
@@ -32,17 +21,6 @@
       "output": {
         "nodeId": "BJ9Z02U7b",
         "pinKey": "HkyxURuSPyW"
-      }
-    },
-    {
-      "id": "SJ-BA2IQ-",
-      "input": {
-        "nodeId": "S1omR28X-",
-        "pinKey": "rJf8o4ngZ"
-      },
-      "output": {
-        "nodeId": "BJ9Z02U7b",
-        "pinKey": "HyjUA_HvkW"
       }
     },
     {

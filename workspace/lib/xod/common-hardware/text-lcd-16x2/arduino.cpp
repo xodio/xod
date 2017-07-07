@@ -19,9 +19,6 @@ void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
 }
 
 void evaluate(NodeId nid, State* state) {
-    if (!isInputDirty<Inputs::UPD>(nid))
-        return;
-
     auto lcd = state->lcd;
     if (!state->lcd) {
         state->lcd = lcd = new LiquidCrystal(

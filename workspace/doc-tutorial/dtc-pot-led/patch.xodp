@@ -2,17 +2,6 @@
   "description": "",
   "links": [
     {
-      "id": "B1dR91_XZ",
-      "input": {
-        "nodeId": "SyzRqkuXW",
-        "pinKey": "rkAnKBvyZ"
-      },
-      "output": {
-        "nodeId": "rkBp5y_QZ",
-        "pinKey": "rymG3j6b-"
-      }
-    },
-    {
       "id": "BkDC91_m-",
       "input": {
         "nodeId": "rkBp5y_QZ",

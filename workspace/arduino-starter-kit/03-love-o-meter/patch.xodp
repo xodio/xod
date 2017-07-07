@@ -2,17 +2,6 @@
   "description": "",
   "links": [
     {
-      "id": "Bk_AeSTGb",
-      "input": {
-        "nodeId": "SkoEgHpfZ",
-        "pinKey": "rJf8o4ngZ"
-      },
-      "output": {
-        "nodeId": "ryR_UV6Mb",
-        "pinKey": "rymG3j6b-"
-      }
-    },
-    {
       "id": "ByD4kHTzW",
       "input": {
         "nodeId": "H1dMvV6MW",
@@ -35,17 +24,6 @@
       }
     },
     {
-      "id": "BygJbB6f-",
-      "input": {
-        "nodeId": "rJISeBpf-",
-        "pinKey": "rJf8o4ngZ"
-      },
-      "output": {
-        "nodeId": "ryR_UV6Mb",
-        "pinKey": "rymG3j6b-"
-      }
-    },
-    {
       "id": "Bym4kSTfb",
       "input": {
         "nodeId": "rkQ7yrafZ",
@@ -54,17 +32,6 @@
       "output": {
         "nodeId": "r1vlP4aM-",
         "pinKey": "BkQzLCurwJZ"
-      }
-    },
-    {
-      "id": "BysS_4TGb",
-      "input": {
-        "nodeId": "H1dMvV6MW",
-        "pinKey": "S1n95SDJb"
-      },
-      "output": {
-        "nodeId": "ryR_UV6Mb",
-        "pinKey": "rymG3j6b-"
       }
     },
     {
@@ -211,14 +178,14 @@
       }
     },
     {
-      "id": "SyHdLNaG-",
+      "id": "Sy_R-RjNZ",
       "input": {
-        "nodeId": "rkZOU46MZ",
-        "pinKey": "BJJICN2lW"
+        "nodeId": "H1dMvV6MW",
+        "pinKey": "S1n95SDJb"
       },
       "output": {
-        "nodeId": "SJRvINTzZ",
-        "pinKey": "ryVmUAOrvkb"
+        "nodeId": "rkZOU46MZ",
+        "pinKey": "HJU8CE2lW"
       }
     },
     {
@@ -263,17 +230,6 @@
       "output": {
         "nodeId": "r1vlP4aM-",
         "pinKey": "BkQzLCurwJZ"
-      }
-    },
-    {
-      "id": "rkTAer6zZ",
-      "input": {
-        "nodeId": "rkSHxS6z-",
-        "pinKey": "rJf8o4ngZ"
-      },
-      "output": {
-        "nodeId": "ryR_UV6Mb",
-        "pinKey": "rymG3j6b-"
       }
     },
     {
@@ -371,17 +327,6 @@
         "y": 848
       },
       "type": "xod/core/greater"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "SJRvINTzZ",
-      "label": "",
-      "position": {
-        "x": 138,
-        "y": 16
-      },
-      "type": "xod/core/boot"
     },
     {
       "boundValues": {},

@@ -2,17 +2,6 @@
   "description": "",
   "links": [
     {
-      "id": "HJSPEtS-Z",
-      "input": {
-        "nodeId": "By6HVYHZb",
-        "pinKey": "BJJICN2lW"
-      },
-      "output": {
-        "nodeId": "HkPrNKBbZ",
-        "pinKey": "ryVmUAOrvkb"
-      }
-    },
-    {
       "id": "rJDD4FSZZ",
       "input": {
         "nodeId": "rkwIEFrWb",
@@ -21,17 +10,6 @@
       "output": {
         "nodeId": "By6HVYHZb",
         "pinKey": "HJU8CE2lW"
-      }
-    },
-    {
-      "id": "rkcPVKB-W",
-      "input": {
-        "nodeId": "SyeDNFBWZ",
-        "pinKey": "rJf8o4ngZ"
-      },
-      "output": {
-        "nodeId": "rkwIEFrWb",
-        "pinKey": "HyjUA_HvkW"
       }
     },
     {
@@ -57,26 +35,14 @@
       "label": "",
       "position": {
         "x": 10,
-        "y": 120
+        "y": 16
       },
       "type": "xod/core/clock"
     },
     {
-      "boundValues": {},
-      "description": "",
-      "id": "HkPrNKBbZ",
-      "label": "",
-      "position": {
-        "x": 10,
-        "y": 16
-      },
-      "type": "xod/core/boot"
-    },
-    {
       "boundValues": {
         "B134j4neZ": 13,
-        "HJ6HsEngZ": false,
-        "rJf8o4ngZ": false
+        "HJ6HsEngZ": false
       },
       "description": "",
       "id": "SyeDNFBWZ",
@@ -98,7 +64,7 @@
       "label": "",
       "position": {
         "x": 10,
-        "y": 224
+        "y": 120
       },
       "type": "xod/core/flip-flop"
     }

@@ -16,5 +16,5 @@ module.exports.evaluate = function(e) {
   if (newState === state) return;
 
   e.context.state = newState;
-  return { MEM: newState, CHNG: PULSE };
+  return { MEM: newState };
 };

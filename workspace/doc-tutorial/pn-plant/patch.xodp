@@ -57,17 +57,6 @@
       }
     },
     {
-      "id": "ByK6IguQW",
-      "input": {
-        "nodeId": "r1tzUxOmZ",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "rkmS8xu7W",
-        "pinKey": "rymG3j6b-"
-      }
-    },
-    {
       "id": "HJluLg_X-",
       "input": {
         "nodeId": "BJ5SLlOmb",
@@ -98,17 +87,6 @@
       "output": {
         "nodeId": "B1U-8x_Xb",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "Skr5Lx_mb",
-      "input": {
-        "nodeId": "HJrYIg_mb",
-        "pinKey": "rJf8o4ngZ"
-      },
-      "output": {
-        "nodeId": "rkmS8xu7W",
-        "pinKey": "rymG3j6b-"
       }
     },
     {
