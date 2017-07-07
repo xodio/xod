@@ -9,7 +9,7 @@ import {
   hasExt,
   getImplFilenameByType,
 } from './utils';
-import { loadAttachmentFiles } from './attachments';
+import { loadAttachments } from './attachments';
 import { loadPatchImpls } from './impls';
 
 const scanLibsFolder = (libs, libsDir) => Promise.all(
@@ -35,7 +35,7 @@ const readLibFiles = (libfiles) => {
     libPromises = libPromises.concat(
       files.map(patchPath =>
         R.composeP(
-          loadAttachmentFiles(path.resolve(patchPath, '..')),
+          loadAttachments(path.resolve(patchPath, '..')),
           loadPatchImpls(path.resolve(patchPath, '..')),
           reassignIds,
           R.assoc('path', `${name}/${getPatchName(patchPath)}`),

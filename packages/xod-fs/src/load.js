@@ -19,7 +19,7 @@ import {
   reassignIds,
   getPatchName,
 } from './utils';
-import { loadAttachmentFiles } from './attachments';
+import { loadAttachments } from './attachments';
 import { loadPatchImpls } from './impls';
 
 // =============================================================================
@@ -88,7 +88,7 @@ const readXodFile = projectPath => xodfile =>
           R.composeP(
             reassignIds,
             R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
-            loadAttachmentFiles(dir),
+            loadAttachments(dir),
             loadPatchImpls(dir)
           )
         ),

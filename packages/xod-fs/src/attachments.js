@@ -34,7 +34,7 @@ const encodeBuffer = def(
 
 // Returns Patch with glued attachments
 // :: Path -> Promise Patch Error
-export const loadAttachmentFiles = R.curry(
+export const loadAttachments = R.curry(
   (patchDirPath, data) => R.composeP(
     R.assoc('attachments', R.__, data), // TODO: replace with xod-project function
     XF.allPromises,
@@ -54,4 +54,4 @@ export const loadAttachmentFiles = R.curry(
   )(patchDirPath)
 );
 
-export default loadAttachmentFiles;
+export default loadAttachments;
