@@ -1,8 +1,8 @@
 import { assert, expect } from 'chai';
-import { identity, F } from 'ramda';
+import { curry, identity, F } from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 
-import { explode, foldEither, tapP } from '../src/index';
+import { explode, explodeEither, foldEither, tapP, reduceMaybe, reduceEither } from '../src/index';
 
 describe('explode', () => {
   it('should return Maybe.Just value', () => {
@@ -67,5 +67,35 @@ describe('tapP', () => {
     Promise.resolve(1)
       .then(tapP(promiseFn))
       .catch(out => assert.equal(out, 'reject'));
+  });
+});
+describe('reduceM', () => {
+  it('should return correct Maybe Result', () => {
+    const maybeFn = curry((acc, a) => ((a === 10) ? Maybe.Nothing() : Maybe.of(acc + a)));
+
+    const a = reduceMaybe(maybeFn, 0, [1, 2, 3, 4]);
+    assert.isTrue(a.isJust);
+    assert.equal(a.getOrElse(null), 10);
+
+    const b = reduceMaybe(maybeFn, 0, [5, 10, 15]);
+    assert.isTrue(b.isNothing);
+
+    const c = reduceMaybe(maybeFn, 0, []);
+    assert.isTrue(c.isJust);
+    assert.equal(c.getOrElse(null), 0);
+  });
+  it('should return correct Either Result', () => {
+    const eitherFn = (acc, a) => ((a === 10) ? Either.Left(100500) : Either.Right(acc + a));
+
+    const right = reduceEither(eitherFn, 0, [1, 2, 3, 4]);
+    assert.isTrue(right.isRight);
+    assert.equal(explodeEither(right), 10);
+
+    const left = reduceEither(eitherFn, 0, [5, 10, 15]);
+    assert.isTrue(left.isLeft);
+
+    const wrapped = reduceEither(eitherFn, 0, []);
+    assert.isTrue(wrapped.isRight);
+    assert.equal(explodeEither(wrapped), 0);
   });
 });

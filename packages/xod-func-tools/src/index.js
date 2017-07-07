@@ -84,6 +84,44 @@ export const explodeEither = def(
 );
 
 /**
+ * Returns a result of calling iterator function over argument list.
+ * Use this function if iterator function returns some Monad.
+ * Monad constructor should be passed as first argument, cause
+ * we haven't got type deduction in JS. :-(
+ * E.G.
+ * assocLink :: Link -> Patch -> Either Error Patch
+ * upsertLinks = reduceEither(assocLink, patch, [link0, link1, link2]);
+ */
+export const reduceM = def(
+  'reduceM :: (b -> m b) -> (b -> a -> m b) -> b -> [a] -> m b',
+  (m, fn, initial, list) => R.reduce(
+    (acc, a) => R.chain(val => fn(val, a), acc),
+    m(initial),
+    list
+  )
+);
+
+/**
+ * Returns a result of calling iterator function over argument list.
+ * Use this function if iterator function returns Either.
+ * @see reduceM for more details
+ */
+export const reduceEither = def(
+  'reduceEither :: (b -> a -> Either c b) -> b -> [a] -> Either c b',
+  reduceM(Either.of)
+);
+
+/**
+ * Returns a result of calling iterator function over argument list.
+ * Use this function if iterator function returns Either.
+ * @see reduceM for more details
+ */
+export const reduceMaybe = def(
+  'reduceEither :: (b -> a -> Maybe b) -> b -> [a] -> Maybe b',
+  reduceM(Maybe.of)
+);
+
+/**
  * Returns an object provided with all `null` and `undefined` values omitted
  */
 export const omitNilValues = def(
