@@ -458,8 +458,6 @@ const createTPatches = def(
         Project.getImplByArray(ARDUINO_IMPLS, patch)
       );
 
-      const isDirty = R.either(isConstPath, R.equals('xod/core/boot'))(path);
-
       const outputs = R.compose(
         R.map(R.applySpec({
           type: R.compose(R.prop(R.__, TYPES_MAP), Project.getPinType),
@@ -487,7 +485,6 @@ const createTPatches = def(
           outputs,
           inputs,
           impl,
-          isDirty,
         }
       );
     }),

@@ -42,7 +42,6 @@ describe('xod-arduino templates', () => {
           },
         ],
         impl: inputImpl,
-        isDirty: false,
       },
     ];
     nodes = [

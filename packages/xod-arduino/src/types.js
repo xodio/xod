@@ -53,7 +53,6 @@ export const TPatch = Model('TPatch', {
   outputs: $.Array(TPatchOutput),
   inputs: $.Array(TPatchInput),
   impl: $.String,
-  isDirty: $.Boolean,
 });
 
 const TNodeOutput = Model('TNodeOutput', {

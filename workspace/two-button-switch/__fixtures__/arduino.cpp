@@ -1316,13 +1316,13 @@ namespace _program {
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {
-        DirtyFlags(0),
-        DirtyFlags(0),
-        DirtyFlags(0),
-        DirtyFlags(0),
-        DirtyFlags(0),
-        DirtyFlags(0),
-        DirtyFlags(0),
+        DirtyFlags(-1),
+        DirtyFlags(-1),
+        DirtyFlags(-1),
+        DirtyFlags(-1),
+        DirtyFlags(-1),
+        DirtyFlags(-1),
+        DirtyFlags(-1),
         DirtyFlags(-1),
         DirtyFlags(-1),
         DirtyFlags(-1),
