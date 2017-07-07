@@ -330,13 +330,6 @@ module.exports.evaluate = function(e) {
 })({exports: impl['xod/core/clock']}, impl['xod/core/clock']);
 
 // ---------------------------------------------------------------------
-impl['xod/core/boot'] = {};
-(function(module, exports) {module.exports.evaluate = function(e) {
-  e.fire({ BOOT: PULSE });
-};
-})({exports: impl['xod/core/boot']}, impl['xod/core/boot']);
-
-// ---------------------------------------------------------------------
 impl['xod/core/digital-output'] = {};
 (function(module, exports) {var fs = require('fs');
 
@@ -444,7 +437,7 @@ module.exports.evaluate = function(e) {
   if (newState === state) return;
 
   e.context.state = newState;
-  return { MEM: newState, CHNG: PULSE };
+  return { MEM: newState };
 };
 })({exports: impl['xod/core/flip-flop']}, impl['xod/core/flip-flop']);
 
@@ -478,7 +471,7 @@ nodes['0'] = new Node({
     "TICK": [
       {
         "key": "TGL",
-        "nodeId": "3"
+        "nodeId": "2"
       }
     ]
   },
@@ -490,30 +483,10 @@ nodes['0'] = new Node({
 
 nodes['1'] = new Node({
   "id": "1",
-  "implId": "xod/core/boot",
-  "inputTypes": {},
-  "outValues": {},
-  "outLinks": {
-    "BOOT": [
-      {
-        "key": "RST",
-        "nodeId": "0"
-      }
-    ]
-  },
-  "setup": impl['xod/core/boot'].setup,
-  "upkeep": impl['xod/core/boot'].upkeep,
-  "evaluate": impl['xod/core/boot'].evaluate,
-  "nodes": nodes
-});
-
-nodes['2'] = new Node({
-  "id": "2",
   "implId": "xod/core/digital-output",
   "inputTypes": {
     "PORT": Number,
-    "SIG": Boolean,
-    "UPD": identity
+    "SIG": Boolean
   },
   "outValues": {},
   "outLinks": {},
@@ -523,8 +496,8 @@ nodes['2'] = new Node({
   "nodes": nodes
 });
 
-nodes['3'] = new Node({
-  "id": "3",
+nodes['2'] = new Node({
+  "id": "2",
   "implId": "xod/core/flip-flop",
   "inputTypes": {
     "SET": identity,
@@ -535,16 +508,10 @@ nodes['3'] = new Node({
     "MEM": false
   },
   "outLinks": {
-    "CHNG": [
-      {
-        "key": "UPD",
-        "nodeId": "2"
-      }
-    ],
     "MEM": [
       {
         "key": "SIG",
-        "nodeId": "2"
+        "nodeId": "1"
       }
     ]
   },
@@ -554,8 +521,8 @@ nodes['3'] = new Node({
   "nodes": nodes
 });
 
-nodes['4'] = new Node({
-  "id": "4",
+nodes['3'] = new Node({
+  "id": "3",
   "implId": "xod/core/constant-number",
   "inputTypes": {},
   "outValues": {
@@ -575,6 +542,27 @@ nodes['4'] = new Node({
   "nodes": nodes
 });
 
+nodes['4'] = new Node({
+  "id": "4",
+  "implId": "xod/core/constant-boolean",
+  "inputTypes": {},
+  "outValues": {
+    "VAL": false
+  },
+  "outLinks": {
+    "VAL": [
+      {
+        "key": "RST",
+        "nodeId": "0"
+      }
+    ]
+  },
+  "setup": impl['xod/core/constant-boolean'].setup,
+  "upkeep": impl['xod/core/constant-boolean'].upkeep,
+  "evaluate": impl['xod/core/constant-boolean'].evaluate,
+  "nodes": nodes
+});
+
 nodes['5'] = new Node({
   "id": "5",
   "implId": "xod/core/constant-number",
@@ -586,7 +574,7 @@ nodes['5'] = new Node({
     "VAL": [
       {
         "key": "PORT",
-        "nodeId": "2"
+        "nodeId": "1"
       }
     ]
   },
@@ -607,7 +595,7 @@ nodes['6'] = new Node({
     "VAL": [
       {
         "key": "SET",
-        "nodeId": "3"
+        "nodeId": "2"
       }
     ]
   },
@@ -628,7 +616,7 @@ nodes['7'] = new Node({
     "VAL": [
       {
         "key": "RST",
-        "nodeId": "3"
+        "nodeId": "2"
       }
     ]
   },
@@ -638,7 +626,7 @@ nodes['7'] = new Node({
   "nodes": nodes
 });
 
-var topology = ["1","4","5","6","7","0","3","2"];
+var topology = ["3","4","5","6","7","0","2","1"];
 var project = new Project({ nodes: nodes, topology: topology });
 
 
