@@ -16,12 +16,11 @@ import {
   isLocalProjectDirectory,
   basenameEquals,
   basenameAmong,
-  reassignIds,
   getPatchName,
 } from './utils';
 import { loadAttachments } from './attachments';
 import { loadPatchImpls } from './impls';
-
+import { convertPatchFileContentsToPatch } from './convertTypes';
 // =============================================================================
 //
 // Reading of files
@@ -85,12 +84,13 @@ const readXodFile = projectPath => xodfile =>
         }),
         R.when(
           () => base === 'patch.xodp',
-          R.composeP(
-            reassignIds,
-            R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
+          patch => R.composeP(
             loadAttachments(dir),
-            loadPatchImpls(dir)
-          )
+            loadPatchImpls(dir),
+            R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
+            convertPatchFileContentsToPatch,
+            Promise.resolve.bind(Promise)
+          )(patch)
         ),
         Promise.resolve.bind(Promise)
       )(data);

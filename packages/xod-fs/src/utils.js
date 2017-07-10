@@ -20,8 +20,6 @@ import {
 
 import * as ERROR_CODES from './errorCodes';
 
-const indexByIds = R.indexBy(R.prop('id'));
-
 export const expandHomeDir = (pathToResolve) => {
   const homedir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
 
@@ -31,12 +29,6 @@ export const expandHomeDir = (pathToResolve) => {
 
   return path.join(homedir, pathToResolve.slice(2));
 };
-
-
-export const reassignIds = R.evolve({
-  nodes: indexByIds,
-  links: indexByIds,
-});
 
 export const isProjectFile = def(
   'isProjectFile :: AnyXodFile -> Boolean',

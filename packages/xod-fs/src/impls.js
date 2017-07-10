@@ -28,7 +28,7 @@ const readImplFiles = dir => R.composeP(
   fs.readdir
 )(dir);
 
-// :: Path -> String -> Promise Patch Error
+// :: Path -> Patch -> Promise Patch Error
 export const loadPatchImpls = R.curry(
   (patchDir, data) => readImplFiles(patchDir)
     .then(impls => R.merge(data, { impls }))

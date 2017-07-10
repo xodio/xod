@@ -2,6 +2,7 @@ import R from 'ramda';
 import path from 'path';
 import fs from 'fs-extra';
 import * as XF from 'xod-func-tools';
+import * as XP from 'xod-project';
 
 import { def } from './types';
 import { readDir } from './read';
@@ -36,7 +37,7 @@ const encodeBuffer = def(
 // :: Path -> Promise Patch Error
 export const loadAttachments = R.curry(
   (patchDirPath, data) => R.composeP(
-    R.assoc('attachments', R.__, data), // TODO: replace with xod-project function
+    XP.setPatchAttachments(R.__, data),
     XF.allPromises,
     R.map(
       filePath => R.composeP(
