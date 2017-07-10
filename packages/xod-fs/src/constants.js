@@ -21,5 +21,12 @@ export const BASE64_EXTNAMES = [
 ];
 export const UTF8_EXTNAMES = [
   '.md',
+  '.svg',
+  // Implementation files
+  '.c',
+  '.cpp',
+  '.h',
+  '.inl',
+  '.js',
 ];
 export const ATTACHMENT_EXTNAMES = BASE64_EXTNAMES.concat(UTF8_EXTNAMES);

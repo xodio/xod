@@ -30,7 +30,13 @@
     "impls": {
       "espruino": "// should be imported into impl.espruino\n"
     },
-    "attachments": []
+    "attachments": [
+      {
+        "filename": "espruino.js",
+        "encoding": "utf8",
+        "content": "// should be imported into impl.espruino\n"
+      }
+    ]
   },
   "xod/core/and": {
     "path": "xod/core/and",
@@ -85,7 +91,13 @@
     "impls": {
       "js": "// should be imported into impl.js\n"
     },
-    "attachments": []
+    "attachments": [
+      {
+        "filename": "any.js",
+        "encoding": "utf8",
+        "content": "// should be imported into impl.js\n"
+      }
+    ]
   },
   "xod/core/pot": {
     "description": "",
@@ -129,7 +141,13 @@
     "impls": {
       "espruino": "// should be imported into impl.espruino\n"
     },
-    "attachments": []
+    "attachments": [
+      {
+        "filename": "espruino.js",
+        "encoding": "utf8",
+        "content": "// should be imported into impl.espruino\n"
+      }
+    ]
   },
   "xod/core/test": {
     "path": "xod/core/test",
