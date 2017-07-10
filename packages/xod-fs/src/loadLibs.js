@@ -35,8 +35,8 @@ const readLibFiles = (libfiles) => {
     libPromises = libPromises.concat(
       files.map(patchPath =>
         R.composeP(
-          loadAttachments(path.resolve(patchPath, '..')),
-          loadPatchImpls(path.resolve(patchPath, '..')),
+          loadAttachments(path.dirname(patchPath)),
+          loadPatchImpls(path.dirname(patchPath)),
           R.assoc('path', `${name}/${getPatchName(patchPath)}`),
           convertPatchFileContentsToPatch,
           readJSON
