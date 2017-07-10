@@ -35,10 +35,7 @@ const readProjectMetaFile = projectFile => readJSON(projectFile)
 // :: Path -> Promise ProjectMeta Error
 const readProjectDirectories = projectDirectory => R.compose(
   R.composeP(
-    R.applySpec({
-      path: R.always(projectDirectory),
-      content: R.identity,
-    }),
+    content => ({ path: projectDirectory, content }),
     fs.readJson
   ),
   resolveProjectFile
@@ -78,10 +75,7 @@ const readXodFile = projectPath => xodfile =>
 
       return R.composeP(
         XF.omitNilValues,
-        R.applySpec({
-          path: () => `./${filePath}`,
-          content: R.identity,
-        }),
+        content => ({ path: `./${filePath}`, content }),
         R.when(
           () => base === 'patch.xodp',
           patch => R.composeP(

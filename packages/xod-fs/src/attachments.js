@@ -29,18 +29,18 @@ const encodeBuffer = def(
   'encodeBuffer :: Path -> Buffer -> String',
   (filePath, buffer) => R.compose(
     encoding => buffer.toString(encoding),
-    () => getEncodingByExtname(filePath)
-  )()
+    getEncodingByExtname
+  )(filePath)
 );
 
 // Loads and returns a single Attachment
 // :: Path -> Path -> Promise Attachment Error
 const loadAttachment = R.curry(
   (patchDirPath, filePath) => R.composeP(
-    R.applySpec({
-      filename: () => path.relative(patchDirPath, filePath),
-      encoding: () => getEncodingByExtname(filePath),
-      content: R.identity,
+    content => ({
+      filename: path.relative(patchDirPath, filePath),
+      encoding: getEncodingByExtname(filePath),
+      content,
     }),
     encodeBuffer(filePath),
     fs.readFile
