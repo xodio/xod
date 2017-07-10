@@ -33,23 +33,27 @@ const encodeBuffer = def(
   )()
 );
 
+// Loads and returns a single Attachment
+// :: Path -> Path -> Promise Attachment Error
+const loadAttachment = R.curry(
+  (patchDirPath, filePath) => R.composeP(
+    R.applySpec({
+      filename: () => path.relative(patchDirPath, filePath),
+      encoding: () => getEncodingByExtname(filePath),
+      content: R.identity,
+    }),
+    encodeBuffer(filePath),
+    fs.readFile
+  )(filePath)
+);
+
 // Returns Patch with glued attachments
 // :: Path -> Promise Patch Error
 export const loadAttachments = R.curry(
   (patchDirPath, data) => R.composeP(
     XP.setPatchAttachments(R.__, data),
     XF.allPromises,
-    R.map(
-      filePath => R.composeP(
-        R.applySpec({
-          filename: () => path.relative(patchDirPath, filePath),
-          encoding: () => getEncodingByExtname(filePath),
-          content: R.identity,
-        }),
-        encodeBuffer(filePath),
-        fs.readFile
-      )(filePath)
-    ),
+    R.map(loadAttachment(patchDirPath)),
     R.filter(extAmong(ATTACHMENT_EXTNAMES)),
     readDir
   )(patchDirPath)
