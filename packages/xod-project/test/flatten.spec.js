@@ -363,8 +363,9 @@ describe('Flatten', () => {
       );
     });
     it('correct structure for blinking.json', () => {
+      const defaultizedBlinking = Helper.defaultizeProject(blinking);
       const extracted = extractPatches(
-        blinking,
+        defaultizedBlinking,
         [
           'xod/core/or',
           'xod/core/digital-output',
@@ -376,7 +377,7 @@ describe('Flatten', () => {
         ],
         null,
         {},
-        blinking.patches['@/main']
+        defaultizedBlinking.patches['@/main']
       );
       const unnested = R.map(R.map(R.unnest), extracted);
       const nodes = unnested[0];
@@ -751,7 +752,8 @@ describe('Flatten', () => {
     });
 
     it('should correctly flatten blinking.json', () => {
-      const flattened = R.unnest(flatten(blinking, '@/main', ['espruino', 'js']));
+      const defaultizedBlinking = Helper.defaultizeProject(blinking);
+      const flattened = R.unnest(flatten(defaultizedBlinking, '@/main', ['espruino', 'js']));
       expect(flattened).to.deep.equal(blinkingFlat);
     });
 

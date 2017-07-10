@@ -104,7 +104,8 @@
       },
       "impls": {},
       "path": "@/main",
-      "description": ""
+      "description": "",
+      "attachments": []
     },
     "@/wrapped-any": {
       "nodes": {
@@ -190,7 +191,8 @@
       },
       "impls": {},
       "path": "@/wrapped-any",
-      "description": ""
+      "description": "",
+      "attachments": []
     },
     "@/double-wrapped-any": {
       "nodes": {
@@ -276,7 +278,8 @@
       },
       "impls": {},
       "path": "@/double-wrapped-any",
-      "description": ""
+      "description": "",
+      "attachments": []
     },
     "@/identity-pulse": {
       "nodes": {
@@ -318,7 +321,8 @@
       },
       "impls": {},
       "path": "@/identity-pulse",
-      "description": ""
+      "description": "",
+      "attachments": []
     },
     "xod/core/any": {
       "description": "Pulses on output when any input recieves a pulse",
@@ -374,7 +378,8 @@
       "path": "xod/core/any",
       "impls": {
         "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    bool p1 = isInputDirty<Inputs::P1>(nid);\n    bool p2 = isInputDirty<Inputs::P2>(nid);\n    if (p1 || p2)\n        emitValue<Outputs::ANY>(nid, true);\n}\n"
-      }
+      },
+      "attachments": []
     },
     "xod/core/boot": {
       "description": "Outputs a single pulse when the program starts",
@@ -409,7 +414,8 @@
       "impls": {
         "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitValue<Outputs::BOOT>(nid, 1);\n}\n",
         "js": "module.exports.evaluate = function(e) {\n  e.fire({ BOOT: PULSE });\n};\n"
-      }
+      },
+      "attachments": []
     },
     "xod/core/console-log": {
       "description": "Outputs a line of text to the board standard debug interface",
@@ -452,7 +458,8 @@
       "path": "xod/core/console-log",
       "impls": {
         "arduino": "struct State {\n    bool begun;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    if (!isInputDirty<Inputs::DUMP>(nid))\n        return;\n\n    if (!state->begun) {\n        Serial.begin(9600);\n    }\n\n    auto line = getValue<Inputs::LINE>(nid);\n    if (line) {\n        for (auto it = line->iterate(); it; ++it)\n            Serial.write((char)*it);\n        Serial.write('\\r');\n        Serial.write('\\n');\n        Serial.flush();\n    }\n}\n"
-      }
+      },
+      "attachments": []
     }
   }
 }

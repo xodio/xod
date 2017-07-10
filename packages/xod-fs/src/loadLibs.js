@@ -1,14 +1,16 @@
 import R from 'ramda';
 import path from 'path';
-import { readDir, readJSON, readFile } from './read';
-import { IMPL_TYPES } from './constants';
+import * as XP from 'xod-project';
+
+import { readDir, readJSON } from './read';
 import {
   resolvePath,
-  reassignIds,
   getPatchName,
   hasExt,
-  getImplFilenameByType,
 } from './utils';
+import { loadAttachments } from './attachments';
+import { loadPatchImpls } from './impls';
+import { convertPatchFileContentsToPatch } from './convertTypes';
 
 const scanLibsFolder = (libs, libsDir) => Promise.all(
   libs.map(
@@ -32,12 +34,13 @@ const readLibFiles = (libfiles) => {
 
     libPromises = libPromises.concat(
       files.map(patchPath =>
-        readJSON(patchPath)
-          .then((loaded) => {
-            const data = R.assoc('path', `${name}/${getPatchName(patchPath)}`, loaded);
-
-            return reassignIds(data);
-          })
+        R.composeP(
+          loadAttachments(path.dirname(patchPath)),
+          loadPatchImpls(path.dirname(patchPath)),
+          R.assoc('path', `${name}/${getPatchName(patchPath)}`),
+          convertPatchFileContentsToPatch,
+          readJSON
+        )(patchPath)
       )
     );
   });
@@ -45,50 +48,11 @@ const readLibFiles = (libfiles) => {
   return Promise.all(libPromises);
 };
 
-const loadImpl = libsDir => (patches) => {
-  const patchPromises = [];
-
-  patches.forEach(patch => patchPromises.push(
-    new Promise((resolve) => {
-      const patchDir = path.resolve(libsDir, patch.path);
-      const implPromises = IMPL_TYPES.map((type) => {
-        const implPath = path.resolve(patchDir, getImplFilenameByType(type));
-        return readFile(implPath)
-          .then(data => ([type, data]))
-          .catch((err) => {
-            if (err && err.code === 'ENOENT') {
-              return [type, null];
-            }
-
-            throw Object.assign(err, { path: implPath, type });
-          });
-      });
-
-      Promise.all(implPromises)
-        .then((impls) => {
-          const notEmptyImpls = {};
-          // remove null implementations
-          impls.forEach((impl) => {
-            if (impl[1] !== null) {
-              notEmptyImpls[impl[0]] = impl[1];
-            }
-          });
-
-          return notEmptyImpls;
-        })
-        .then(impls => resolve(R.assoc('impls', impls, patch)));
-    })
-  ));
-
-  return Promise.all(patchPromises);
-};
-
 export const loadLibs = (libs, workspace) => {
   const libsDir = path.resolve(resolvePath(workspace), 'lib');
   return scanLibsFolder(libs, libsDir)
     .then(readLibFiles)
-    .then(loadImpl(libsDir))
-    .then(R.indexBy(R.prop('path')));
+    .then(R.indexBy(XP.getPatchPath));
 };
 
 // extract libNames from paths to xod-files

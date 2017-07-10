@@ -15,6 +15,7 @@ export default {
       nodes: {},
       path: '@/1',
       description: '',
+      attachments: [],
     },
     '@/2': {
       impls: {},
@@ -22,6 +23,7 @@ export default {
       nodes: {},
       path: '@/2',
       description: '',
+      attachments: [],
     },
   },
 };

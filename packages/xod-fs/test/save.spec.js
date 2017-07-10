@@ -56,8 +56,8 @@ describe('saveArrangedFiles', () => {
 
     const onFinish = () => {
       try {
-        recReadDir(workspacePath, ['.DS_Store'], (err, files) => {
-          if (files.length === 3) {
+        recReadDir(workspacePath, ['.DS_Store', 'Thumbs.db'], (err, files) => {
+          if (files.length === 6) {
             done();
           } else {
             throw new Error('Wrong amount of files (not equal 5). Check .xodball or change amount in the test!');
@@ -110,5 +110,33 @@ describe('saveProject', () => {
     return saveProject(tempDir, proj)
       .then(() => readFile(path.resolve(tempDir, projectName, 'test', getImplFilenameByType('js')), 'utf8'))
       .then(content => assert.strictEqual(content, implContentExpected));
+  });
+  it('should save patch attachments correctly', () => {
+    const projectName = 'attachment-test';
+    const project = defaultizeProject({
+      name: projectName,
+      patches: {
+        '@/test': {
+          attachments: [
+            {
+              filename: 'img/20x20.png',
+              encoding: 'base64',
+              content: 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAG1BMVEXMzMyWlpaxsbGqqqq3t7fFxcWjo6OcnJy+vr5AT8FzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAMElEQVQImWNgoBFQVkmBka7i4QxQklmRkUGlAUQyqLCHM4SBSYYkoCqVhiSwDioCAPhiB33L/sGeAAAAAElFTkSuQmCC',
+            },
+            {
+              filename: 'README.md',
+              encoding: 'utf8',
+              content: '# Yay',
+            },
+          ],
+        },
+      },
+    });
+
+    return saveProject(tempDir, project)
+      .then(() => readFile(path.resolve(tempDir, projectName, 'test', 'img/20x20.png'), 'base64'))
+      .then(content => assert.strictEqual(content, project.patches['@/test'].attachments[0].content))
+      .then(() => readFile(path.resolve(tempDir, projectName, 'test', 'README.md'), 'utf8'))
+      .then(content => assert.strictEqual(content, project.patches['@/test'].attachments[1].content));
   });
 });

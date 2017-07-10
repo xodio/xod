@@ -29,7 +29,14 @@
     "path": "xod/core/led",
     "impls": {
       "espruino": "// should be imported into impl.espruino\n"
-    }
+    },
+    "attachments": [
+      {
+        "filename": "espruino.js",
+        "encoding": "utf8",
+        "content": "// should be imported into impl.espruino\n"
+      }
+    ]
   },
   "xod/core/and": {
     "path": "xod/core/and",
@@ -83,7 +90,14 @@
     },
     "impls": {
       "js": "// should be imported into impl.js\n"
-    }
+    },
+    "attachments": [
+      {
+        "filename": "any.js",
+        "encoding": "utf8",
+        "content": "// should be imported into impl.js\n"
+      }
+    ]
   },
   "xod/core/pot": {
     "description": "",
@@ -126,27 +140,37 @@
     "path": "xod/core/pot",
     "impls": {
       "espruino": "// should be imported into impl.espruino\n"
-    }
+    },
+    "attachments": [
+      {
+        "filename": "espruino.js",
+        "encoding": "utf8",
+        "content": "// should be imported into impl.espruino\n"
+      }
+    ]
   },
   "xod/core/test": {
     "path": "xod/core/test",
     "nodes": {},
     "links": {},
     "description": "",
-    "impls": {}
+    "impls": {},
+    "attachments": []
   },
   "user/utils/test": {
     "description": "",
     "impls": {},
     "links": {},
     "nodes": {},
-    "path": "user/utils/test"
+    "path": "user/utils/test",
+    "attachments": []
   },
   "xod/math/test": {
     "description": "",
     "impls": {},
     "links": {},
     "nodes": {},
-    "path": "xod/math/test"
+    "path": "xod/math/test",
+    "attachments": []
   }
 }

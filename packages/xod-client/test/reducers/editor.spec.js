@@ -85,6 +85,7 @@ describe('Editor reducer', () => {
             impls: {},
             path: '@/1',
             description: 'Main patch',
+            attachments: [],
           },
           'xod/core/test': {
             nodes: {
@@ -115,6 +116,7 @@ describe('Editor reducer', () => {
             impls: {},
             path: 'xod/core/test',
             description: 'Test patch',
+            attachments: [],
           },
         },
       },

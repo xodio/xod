@@ -137,6 +137,7 @@ export const defaultizePatch = R.compose(
     impls: {},
     path: '@/default-patch-path',
     description: '',
+    attachments: [],
   })
 );
 

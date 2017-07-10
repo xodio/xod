@@ -7,10 +7,8 @@ import R from 'ramda';
 import shell from 'shelljs';
 import * as Loader from '../src/load';
 import { getImplTypeByFilename } from '../src/utils';
-import pack from '../src/pack';
 import libsFixture from './fixtures/libs.json';
 import unpacked from './fixtures/unpacked.json';
-import xodball from './fixtures/xodball.json';
 
 import {
   fixture,
@@ -22,6 +20,7 @@ chai.use(chaiAsPromised);
 
 const tempDir = './fixtures/workspace';
 const sortByPath = R.sortBy(R.prop('path'));
+const rmAttachments = R.map(R.dissocPath(['content', 'attachments']));
 
 describe('Loader', () => {
   const workspace = path.resolve(__dirname, tempDir);
@@ -77,11 +76,14 @@ describe('Loader', () => {
   it('loadProjectWithLibs: return project with libs', () =>
     Loader.loadProjectWithLibs(projectPath, workspace)
       .then(({ project, libs }) => {
-        expect(sortByPath(project)).to.deep.equal(sortByPath(unpacked));
-        expect(libs).to.deep.equal(libsFixture);
+        const quxPatch = R.find(R.pathEq(['content', 'path'], '@/qux'), project);
+        const quxPatchFixture = R.find(R.pathEq(['content', 'path'], '@/qux'), unpacked);
+        const projectWithoutAttachments = sortByPath(rmAttachments(project));
+        const fixtureWithoutAttachments = sortByPath(rmAttachments(unpacked));
 
-        const packed = pack(project, libs);
-        expect(packed).to.deep.equal(xodball);
+        expect(projectWithoutAttachments).to.deep.equal(fixtureWithoutAttachments);
+        assert.sameDeepMembers(quxPatch.content.attachments, quxPatchFixture.content.attachments);
+        expect(libs).to.deep.equal(libsFixture);
       })
   );
 

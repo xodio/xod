@@ -85,12 +85,19 @@ export const Link = Model('Link', {
   output: PinRef,
 });
 
+export const Attachment = Model('Attachment', {
+  filename: $.String,
+  encoding: $.String,
+  content: $.String,
+});
+
 export const Patch = Model('Patch', {
   nodes: $.StrMap(Node),
   links: $.StrMap(Link),
   impls: $.StrMap(Source),
   path: PatchPath,
   description: $.String,
+  attachments: $.Array(Attachment),
 });
 
 export const Project = Model('Project', {
@@ -145,6 +152,7 @@ export const env = XF.env.concat([
   Label,
   Source,
   Version,
+  Attachment,
 ]);
 
 export const def = HMDef.create({

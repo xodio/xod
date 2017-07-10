@@ -78,6 +78,7 @@ describe('project reducer', () => {
             nodes: {},
             path: '@/main',
             description: '',
+            attachments: [],
           },
         ],
         listLocalPatches(newProject),

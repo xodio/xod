@@ -11,3 +11,22 @@ export const IMPL_FILENAMES = {
   nodejs: 'nodejs.js',
 };
 export const IMPL_TYPES = Object.keys(IMPL_FILENAMES);
+
+export const BASE64_EXTNAMES = [
+  '.png',
+  '.jpg',
+  '.jpeg',
+  '.gif',
+  '.fzz',
+];
+export const UTF8_EXTNAMES = [
+  '.md',
+  '.svg',
+  // Implementation files
+  '.c',
+  '.cpp',
+  '.h',
+  '.inl',
+  '.js',
+];
+export const ATTACHMENT_EXTNAMES = BASE64_EXTNAMES.concat(UTF8_EXTNAMES);

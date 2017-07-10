@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
-import { explodeMaybe, notNil } from 'xod-func-tools';
+import { explodeMaybe, notNil, reduceEither } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
@@ -35,6 +35,7 @@ export const createPatch = def(
     impls: {},
     path: getLocalPath('untitled-patch'),
     description: '',
+    attachments: [],
   })
 );
 
@@ -149,6 +150,22 @@ export const getImplByArray = def(
     R.reject(Maybe.isNothing),
     R.map(getImpl(R.__, patch))
   )(impls)
+);
+
+/**
+ * Returns a Patch with associated attachments list.
+ */
+export const setPatchAttachments = def(
+  'setPatchAttachments :: [Attachment] -> Patch -> Patch',
+  R.assoc('attachments')
+);
+
+/**
+ * Returns a list of attachments
+ */
+export const getPatchAttachments = def(
+  'getPatchAttachments :: Patch -> Patch',
+  R.prop('attachments')
 );
 
 // =============================================================================
@@ -590,6 +607,13 @@ export const dissocLink = def(
   (linkOrId, patch) => R.dissocPath(['links', Link.getLinkId(linkOrId)], patch)
 );
 
+/**
+ * Returns a Patch with associated list of Links
+ */
+export const upsertLinks = def(
+  'upsertLinks :: [Link] -> Patch -> Either Error Patch',
+  (linkList, patch) => reduceEither(R.flip(assocLink), patch, linkList)
+);
 
 // =============================================================================
 //
@@ -643,6 +667,14 @@ export const dissocNode = def(
       removeLinks
     )(patch, links);
   }
+);
+
+/**
+ * Returns a Patch with associated list of Nodes.
+ */
+export const upsertNodes = def(
+  'upsertNodes :: [Node] -> Patch -> Patch',
+  (nodeList, patch) => R.reduce(R.flip(assocNode), patch, nodeList)
 );
 
 // =============================================================================
