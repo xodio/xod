@@ -1,61 +1,51 @@
-import fs from 'fs';
-import path from 'path';
+import { statSync } from 'fs';
+import { resolve } from 'path';
 
-function getParentDirectories(path$) {
+function getParentDirectories(path) {
   function loop(currentPath, parentDirectories) {
     let stats;
-    try { stats = fs.statSync(currentPath); } catch (error) { stats = null; }
-    if (stats && stats.isDirectory()) {
-      parentDirectories.push(currentPath);
-    }
-    const parentPath = path.resolve(currentPath, '..');
+    try { stats = statSync(currentPath); } catch (error) { stats = null; }
+    if (stats && stats.isDirectory()) parentDirectories.push(currentPath);
+    const parentPath = resolve(currentPath, '..');
     if (parentPath === currentPath) return parentDirectories;
     return loop(parentPath, parentDirectories);
   }
 
-  return loop(path.resolve(process.cwd(), path$), []);
+  return loop(resolve(process.cwd(), path), []);
 }
 
-function isWorkspaceDir(path$) {
-  const path$$ = path.resolve(process.cwd(), path$, '.xodworkspace');
+function isWorkspaceDir(path) {
   try {
-    return fs.statSync(path$$).isFile();
+    const xodworkspace = resolve(process.cwd(), path, '.xodworkspace');
+    return statSync(xodworkspace).isFile();
   } catch (error) {
     return false;
   }
 }
 
-function isProjectDir(path$) {
-  const path$$ = path.resolve(process.cwd(), path$, 'project.xod');
+function isProjectDir(path) {
   try {
-    return fs.statSync(path$$).isFile();
+    const projectXod = resolve(process.cwd(), path, 'project.xod');
+    return statSync(projectXod).isFile();
   } catch (error) {
     return false;
   }
 }
 
-export function findClosestWorkspaceDir(path$) {
-  return new Promise((resolve, reject) => {
-    const closestWorkspaceDir = getParentDirectories(path$)
-      .find(isWorkspaceDir);
-    return closestWorkspaceDir
-      ? resolve(closestWorkspaceDir)
-      : reject(
-        `could not find workspace directory around "${path$}".\n` +
-        'Workspace directory must contain `.xodworkspace` file.'
-      );
+export function findClosestWorkspaceDir(path) {
+  return new Promise((resolve$, reject) => {
+    const closestWorkspaceDir = getParentDirectories(path).find(isWorkspaceDir);
+    if (closestWorkspaceDir) return resolve$(closestWorkspaceDir);
+    return reject(new Error(`could not find workspace directory around "${path
+      }". Workspace directory must contain ".xodworkspace" file.`));
   });
 }
 
-export function findClosestProjectDir(path$) {
-  return new Promise((resolve, reject) => {
-    const closestProjectDir = getParentDirectories(path$)
-      .find(isProjectDir);
-    return closestProjectDir
-      ? resolve(closestProjectDir)
-      : reject(
-        `could not find project directory around "${path$}".\n` +
-        'Project directory must contain `project.xod` file.'
-      );
+export function findClosestProjectDir(path) {
+  return new Promise((resolve$, reject) => {
+    const closestProjectDir = getParentDirectories(path).find(isProjectDir);
+    if (closestProjectDir) return resolve$(closestProjectDir);
+    return reject(new Error(`could not find project directory around "${path
+      }". Project directory must contain "project.xod" file.`));
   });
 }

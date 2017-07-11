@@ -13,8 +13,10 @@ export function error(err) {
   return new Error(`${status} ${JSON.stringify(res, null, 2)}`);
 }
 
-export function client(swaggerUrl) {
-  return swaggerClient(swaggerUrl).catch(() => {
-    throw new Error(`could not find swagger at "${swaggerUrl}".`);
-  });
+export async function client(url, opts = {}) {
+  try {
+    return await swaggerClient(url, opts);
+  } catch (err) {
+    throw new Error(`could not find swagger at "${url}".`);
+  }
 }

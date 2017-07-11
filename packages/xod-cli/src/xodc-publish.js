@@ -1,104 +1,85 @@
+import inquirer from 'inquirer';
+import * as url from 'url';
 import * as xodFs from 'xod-fs';
 import * as xodProject from 'xod-project';
 import { createLibUri, toString, toStringWithoutTag } from './lib-uri';
 import * as messages from './messages';
 import * as swagger from './swagger';
 
-/**
- * Prepares publishing artifact for the library version.
- * @param {Identifier} author - Version author's username.
- * @param {Identifier} orgname - Publishing organization's name.
- * @param {Path} projectDir - Library directory.
- * @return {Promise.<{
- *  libname: Identifier,
- *  orgname: Identifier,
- *  version: {
- *   author: Identifier,
- *   folder: {[Path]: string},
- *   semver: string
- *  }
- * }>}
- */
-function getLibVersion(author, orgname, projectDir) {
-  return Promise
-    .all([
-      xodFs.findClosestProjectDir(projectDir),
-      xodFs.findClosestWorkspaceDir(projectDir)])
-    .then(([closestProjectDir, closestWorkspaceDir]) =>
-      xodFs.loadProjectWithoutLibs(closestProjectDir, closestWorkspaceDir))
-    .then(project => xodFs.pack(project, {}))
-    .then(xodball => ({
-      libname: xodProject.getProjectName(xodball),
-      orgname,
-      version: {
-        author,
-        description: xodProject.getProjectDescription(xodball),
-        folder: { 'xodball.json': JSON.stringify(xodball) },
-        semver: `v${xodProject.getProjectVersion(xodball)}`,
-      },
-    }));
+async function packLibVersion(projectDir) {
+  const projectWithoutLibs = await xodFs.loadProjectWithoutLibs(
+    await xodFs.findClosestProjectDir(projectDir),
+    await xodFs.findClosestWorkspaceDir(projectDir)
+  );
+  const xodball = await xodFs.pack(projectWithoutLibs, {});
+  return {
+    libname: xodProject.getProjectName(xodball),
+    version: {
+      description: xodProject.getProjectDescription(xodball),
+      folder: { 'xodball.json': JSON.stringify(xodball) },
+      semver: `v${xodProject.getProjectVersion(xodball)}`,
+    },
+  };
 }
 
-/**
- * Publishes the library version to package manager.
- * @param swaggerUrl - Swagger.json URL for package manager.
- * @param {Identifier} author - Version author's username.
- * @param {Identifier} orgname - Publishing organization's name.
- * @param {Path} projectDir - Library directory.
- * @return {Promise.<void>}
- */
-export default function publish(swaggerUrl, author, orgname, projectDir) {
-  return Promise
-    .all([
-      getLibVersion(author, orgname, projectDir),
-      swagger.client(swaggerUrl),
-    ])
-    .then(([libVersion, swaggerClient]) => {
-      const { libname, version: { semver } } = libVersion;
-      const libUri = createLibUri(orgname, libname, semver);
-      const { Library, Organization, User, Version } = swaggerClient.apis;
-
-      function getOrgOrPutUserOrg() {
-        return Organization.getOrg({ orgname }).catch((err) => {
-          if (err.status !== 404) throw err;
-          return User.putUserOrg({ org: {}, orgname, username: author })
-            .catch((err2) => {
-              switch (err2.status) {
-                case 404:
-                  throw new Error(`could not find user "${author}".`);
-                case 409:
-                  throw new Error(`orgname "${orgname}" already taken.`);
-                default:
-                  throw swagger.error(err2);
-              }
-            });
-        });
+export default async function publish(swaggerUrl, orgname$, projectDir) {
+  try {
+    const swaggerClient = await swagger.client(swaggerUrl);
+    const { Auth, Library, Organization, User, Version } = swaggerClient.apis;
+    const { hostname, protocol } = url.parse(swaggerUrl);
+    const { XOD_PASSWORD, XOD_USERNAME } = process.env;
+    const user = XOD_PASSWORD && XOD_USERNAME
+      ? { password: XOD_PASSWORD, username: XOD_USERNAME }
+      : await inquirer.prompt([{
+        message: `Username for '${protocol}//${hostname}':`,
+        name: 'username',
+        type: 'input',
+      }, {
+        message: `Password for '${protocol}//${hostname}':`,
+        name: 'password',
+        type: 'password',
+      }]);
+    const username = user.username;
+    const { obj: grant } = await Auth.getDirectGrant({ user }).catch((err) => {
+      if (err.status === 403) {
+        throw new Error(`user "${username}" is not authenticated.`);
       }
-
-      function postLibVersion() {
-        return Version.postLibVersion(libVersion)
-          .catch((err) => {
-            switch (err.status) {
-              case 404:
-                throw new Error(`could not find user "${author}" or ` +
-                  `library ${toStringWithoutTag(libUri)}.`);
-              case 409:
-                throw new Error(
-                  `version "${toString(libUri)}" already exists.`);
-              default:
-                throw swagger.error(err);
-            }
-          });
-      }
-
-      return getOrgOrPutUserOrg()
-        .then(() => Library.putOrgLib({ lib: {}, libname, orgname }))
-        .then(postLibVersion)
-        .then(() => `Published "${toString(libUri)}".`);
-    })
-    .then(messages.success)
-    .catch((err) => {
-      messages.error(err.message);
-      process.exit(1);
+      throw swagger.error(err);
     });
+    swaggerClient.authorizations = {
+      bearer_token: `Bearer ${grant.access_token}`,
+    };
+    const orgname = orgname$ || username;
+    const { libname, version } = await packLibVersion(projectDir);
+    const libUri = createLibUri(orgname, libname, version.semver);
+    await Organization.getOrg({ orgname }).catch((err) => {
+      if (err.status !== 404) throw swagger.error(err);
+      return User.putUserOrg({ org: {}, orgname, username }).catch((err2) => {
+        if (err2.status === 403) {
+          throw new Error(`user "${username}" is not registered.`);
+        }
+        if (err2.status === 409) {
+          throw new Error(`orgname "${orgname}" is already taken.`);
+        }
+        throw swagger.error(err2);
+      });
+    });
+    await Library.putOrgLib({ lib: {}, libname, orgname }).catch((err) => {
+      if (err.status === 403) {
+        throw new Error(`user "${username}" can't access ${
+          toStringWithoutTag(libUri)}.`);
+      }
+      throw swagger.error(err);
+    });
+    await Version.postLibVersion({ libname, orgname, version }).catch((err) => {
+      if (err.status === 409) {
+        throw new Error(`version "${toString(libUri)}" already exists.`);
+      }
+      throw swagger.error(err);
+    });
+    messages.success(`Published "${toString(libUri)}".`);
+  } catch (err) {
+    messages.error(err.message);
+    process.exit(1);
+  }
 }
