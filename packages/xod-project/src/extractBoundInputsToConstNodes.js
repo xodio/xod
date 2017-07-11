@@ -8,6 +8,7 @@ import * as Link from './link';
 import * as Patch from './patch';
 import * as Project from './project';
 import { PIN_TYPE, INPUT_PULSE_PIN_BINDING_OPTIONS } from './constants';
+import squashNodes from './optimizers/squashNodes';
 import { def } from './types';
 
 const CONST_NODETYPES = {
@@ -338,6 +339,10 @@ const extractBoundInputsToConstNodes = def(
     const newPatch = updatePatch(newLinks, newConstNodes, allInputPinValues, entryPointPatch);
 
     return R.compose(
+      R.compose(
+        squashNodes('xod/core/boot', path),
+        squashNodes('xod/core/continuously', path)
+      ),
       explodeEither,
       Project.assocPatch(path, newPatch),
       copyConstPatches(extractablePinPaths, origProject)
