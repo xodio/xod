@@ -1,19 +1,19 @@
 import R from 'ramda';
 
-import { isAmong, explodeEither } from 'xod-func-tools';
+import { isAmong, explodeEither, reduceEither } from 'xod-func-tools';
 
 import * as Node from '../node';
 import * as Link from '../link';
 import * as Patch from '../patch';
-import * as Project from '../project';
 import { def } from '../types';
 
 const replacePatchContents = def(
   'replacePatchContents :: [Node] -> [Link] -> Patch -> Patch',
   (newNodes, newLinks, patch) =>
     R.compose(
-      R.reduce(
-        R.compose(explodeEither, R.flip(Patch.assocLink)),
+      explodeEither,
+      reduceEither(
+        R.flip(Patch.assocLink),
         R.__,
         newLinks
       ),
@@ -27,10 +27,9 @@ const replacePatchContents = def(
     )()
 );
 
-const squashNodes = def(
-  'squashNodes :: PatchPath -> PatchPath -> Project -> Project',
-  (nodeTypeToSquash, entryPatchPath, flatProject) => {
-    const patch = Project.getPatchByPathUnsafe(entryPatchPath, flatProject);
+const squashSingleOutputNodes = def(
+  'squashSingleOutputNodes :: PatchPath -> Patch -> Patch',
+  (nodeTypeToSquash, patch) => {
     const allNodes = Patch.listNodes(patch);
     const allLinks = Patch.listLinks(patch);
 
@@ -38,7 +37,7 @@ const squashNodes = def(
     const nodesToSquash = R.filter(isSquashableNode, allNodes);
 
     if (nodesToSquash.length <= 1) {
-      return flatProject;
+      return patch;
     }
 
     const isLinkFromSquashableNode = R.compose(
@@ -48,11 +47,12 @@ const squashNodes = def(
     const linksFromSquashableNodes = R.filter(isLinkFromSquashableNode, allLinks);
 
     if (R.isEmpty(linksFromSquashableNodes)) {
-      // TODO: we can cut out 'squashable' nodes here
-      return flatProject;
+      // Our 'squashable' nodes are just hanging there, not connected to anything.
+      // That's a job for a different optimization.
+      return patch;
     }
 
-    // here we are assuming that our 'squashable' nodes have a single output pin.
+    // because we are assuming that our 'squashable' nodes have a single output pin:
     const squashableNodeOutputPinKey = R.compose(
       Link.getLinkOutputPinKey,
       R.head
@@ -81,14 +81,8 @@ const squashNodes = def(
       R.reject(isLinkFromSquashableNode)
     )(allLinks);
 
-    return R.compose(
-      explodeEither,
-      Project.assocPatch(
-        entryPatchPath,
-        replacePatchContents(newNodes, newLinks, patch)
-      )
-    )(flatProject);
+    return replacePatchContents(newNodes, newLinks, patch);
   }
 );
 
-export default squashNodes;
+export default squashSingleOutputNodes;

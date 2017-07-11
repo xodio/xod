@@ -8,7 +8,7 @@ import * as Link from './link';
 import * as Patch from './patch';
 import * as Project from './project';
 import { PIN_TYPE, INPUT_PULSE_PIN_BINDING_OPTIONS } from './constants';
-import squashNodes from './optimizers/squashNodes';
+import squashSingleOutputNodes from './optimizers/squashSingleOutputNodes';
 import { def } from './types';
 
 const CONST_NODETYPES = {
@@ -336,13 +336,15 @@ const extractBoundInputsToConstNodes = def(
       constPinKeys
     );
     const newLinks = createLinksFromCurriedPins(newConstNodes, constPinKeys);
-    const newPatch = updatePatch(newLinks, newConstNodes, allInputPinValues, entryPointPatch);
+    const newPatch = R.compose(
+      R.compose(
+        squashSingleOutputNodes('xod/core/boot'),
+        squashSingleOutputNodes('xod/core/continuously')
+      ),
+      updatePatch(newLinks, newConstNodes, allInputPinValues)
+    )(entryPointPatch);
 
     return R.compose(
-      R.compose(
-        squashNodes('xod/core/boot', path),
-        squashNodes('xod/core/continuously', path)
-      ),
       explodeEither,
       Project.assocPatch(path, newPatch),
       copyConstPatches(extractablePinPaths, origProject)
