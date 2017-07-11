@@ -305,10 +305,11 @@ const compareNodesPositionAxis = axis =>
 // :: Patch -> Node -> Number -> Pin
 const createPinFromTerminalNode = R.curry((patch, node, order) => {
   const direction = Node.getPinNodeDirection(node);
+  const type = Node.getPinNodeDataType(node);
+
   const isBindable = direction === CONST.PIN_DIRECTION.INPUT
     ? true // inputs are always bindable
-    : canBindToOutputs(patch);
-  const type = Node.getPinNodeDataType(node);
+    : (canBindToOutputs(patch) && type !== CONST.PIN_TYPE.PULSE);
   const defaultValue = Node.getBoundValue(
     getPinKeyForTerminalDirection(direction),
     node
