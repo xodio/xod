@@ -29,11 +29,6 @@
     "xod-fs": "^0.10.0",
     "xod-func-tools": "^0.10.0"
   },
-  "babel": {
-    "presets": [
-      "node6"
-    ]
-  },
   "devDependencies": {
     "chai": "^4.0.2",
     "cpx": "^1.5.0"
