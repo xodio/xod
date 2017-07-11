@@ -2,7 +2,7 @@ import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { PIN_DIRECTION } from 'xod-project';
+import { PIN_DIRECTION, PIN_TYPE } from 'xod-project';
 
 import PinIcon from './PinIcon';
 
@@ -23,9 +23,14 @@ const isBindingForbidden = R.either(
   isNonBindableOutput
 );
 
+const isPulsePin = R.pipe(R.prop('dataType'), R.equals(PIN_TYPE.PULSE));
+
 const getReason = R.cond([
-  [isNonBindableOutput, R.always('defined by inputs')],
   [isLinkedInput, R.always('linked')],
+  [R.both(isNonBindableOutput, isPulsePin), R.always('pulse')],
+  // the only option left is that it's not bindable
+  // because it belongs to a functional node
+  [R.T, R.always('defined by inputs')],
 ]);
 
 function PinWidget(props) {
