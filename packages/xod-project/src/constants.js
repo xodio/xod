@@ -100,6 +100,12 @@ export const TYPES_COMPATIBILITY = {
   },
 };
 
+export const INPUT_PULSE_PIN_BINDING_OPTIONS = {
+  NEVER: 'NEVER',
+  CONTINUOUSLY: 'CONTINUOUSLY',
+  ON_BOOT: 'ON_BOOT',
+};
+
  /**
   * Enumeration of possible pin directions
   *
