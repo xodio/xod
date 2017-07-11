@@ -131,6 +131,8 @@ export const getCastPatchPath = (typeIn, typeOut) => `xod/core/cast-${typeIn}-to
 // utils for constant patches
 //
 
+// TODO: these are no longer correct
+
 const constantTypeRegExp =
   new RegExp(`xod/core/constant-(${dataTypes.join('|')})$`);
 

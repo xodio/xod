@@ -631,7 +631,7 @@ template <typename T> class List {
  *
  =============================================================================*/
 
-#define NODE_COUNT          8
+#define NODE_COUNT          5
 #define MAX_OUTPUT_COUNT    1
 
 // Uncomment to trace the program in the Serial Monitor
@@ -1069,32 +1069,6 @@ void evaluate(NodeId nid, State* state) {
 
 } // namespace xod__core__constant_number
 
-//-----------------------------------------------------------------------------
-// xod/core/constant_boolean implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__constant_boolean {
-
-struct State {
-};
-
-struct Storage {
-    State state;
-    OutputPin<Logic> output_VAL;
-};
-
-namespace Inputs {
-}
-
-namespace Outputs {
-    using VAL = OutputDescriptor<Logic, offsetof(Storage, output_VAL), 0>;
-}
-
-void evaluate(NodeId nid, State* state) {
-    reemitValue<Outputs::VAL>(nid);
-}
-
-} // namespace xod__core__constant_boolean
-
 } // namespace _program
 
 /*=============================================================================
@@ -1111,22 +1085,22 @@ namespace _program {
     xod__core__clock::Storage storage_0 = {
         { }, // state
         { NodeId(3), xod__core__constant_number::Outputs::VAL::KEY }, // input_IVAL
-        { NodeId(4), xod__core__constant_boolean::Outputs::VAL::KEY }, // input_RST
+        { NO_NODE, 0 }, // input_RST
         { false, links_0_TICK } // output_TICK
     };
 
     xod__core__digital_output::Storage storage_1 = {
         { }, // state
-        { NodeId(5), xod__core__constant_number::Outputs::VAL::KEY }, // input_PORT
+        { NodeId(4), xod__core__constant_number::Outputs::VAL::KEY }, // input_PORT
         { NodeId(2), xod__core__flip_flop::Outputs::MEM::KEY }, // input_SIG
     };
 
     NodeId links_2_MEM[] = { 1, NO_NODE };
     xod__core__flip_flop::Storage storage_2 = {
         { }, // state
-        { NodeId(7), xod__core__constant_boolean::Outputs::VAL::KEY }, // input_SET
+        { NO_NODE, 0 }, // input_SET
         { NodeId(0), xod__core__clock::Outputs::TICK::KEY }, // input_TGL
-        { NodeId(6), xod__core__constant_boolean::Outputs::VAL::KEY }, // input_RST
+        { NO_NODE, 0 }, // input_RST
         { false, links_2_MEM } // output_MEM
     };
 
@@ -1136,28 +1110,10 @@ namespace _program {
         { 0.25, links_3_VAL } // output_VAL
     };
 
-    NodeId links_4_VAL[] = { 0, NO_NODE };
-    xod__core__constant_boolean::Storage storage_4 = {
+    NodeId links_4_VAL[] = { 1, NO_NODE };
+    xod__core__constant_number::Storage storage_4 = {
         { }, // state
-        { false, links_4_VAL } // output_VAL
-    };
-
-    NodeId links_5_VAL[] = { 1, NO_NODE };
-    xod__core__constant_number::Storage storage_5 = {
-        { }, // state
-        { 13, links_5_VAL } // output_VAL
-    };
-
-    NodeId links_6_VAL[] = { 2, NO_NODE };
-    xod__core__constant_boolean::Storage storage_6 = {
-        { }, // state
-        { false, links_6_VAL } // output_VAL
-    };
-
-    NodeId links_7_VAL[] = { 2, NO_NODE };
-    xod__core__constant_boolean::Storage storage_7 = {
-        { }, // state
-        { false, links_7_VAL } // output_VAL
+        { 13, links_4_VAL } // output_VAL
     };
 
     void* storages[NODE_COUNT] = {
@@ -1165,10 +1121,7 @@ namespace _program {
         &storage_1,
         &storage_2,
         &storage_3,
-        &storage_4,
-        &storage_5,
-        &storage_6,
-        &storage_7
+        &storage_4
     };
 
     EvalFuncPtr evaluationFuncs[NODE_COUNT] = {
@@ -1176,16 +1129,10 @@ namespace _program {
         (EvalFuncPtr)&xod__core__digital_output::evaluate,
         (EvalFuncPtr)&xod__core__flip_flop::evaluate,
         (EvalFuncPtr)&xod__core__constant_number::evaluate,
-        (EvalFuncPtr)&xod__core__constant_boolean::evaluate,
-        (EvalFuncPtr)&xod__core__constant_number::evaluate,
-        (EvalFuncPtr)&xod__core__constant_boolean::evaluate,
-        (EvalFuncPtr)&xod__core__constant_boolean::evaluate
+        (EvalFuncPtr)&xod__core__constant_number::evaluate
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {
-        DirtyFlags(-1),
-        DirtyFlags(-1),
-        DirtyFlags(-1),
         DirtyFlags(-1),
         DirtyFlags(-1),
         DirtyFlags(-1),
@@ -1194,7 +1141,7 @@ namespace _program {
     };
 
     NodeId topology[NODE_COUNT] = {
-        3, 4, 5, 6, 7, 0, 2, 1
+        3, 4, 0, 2, 1
     };
 
     TimeMs schedule[NODE_COUNT] = { 0 };

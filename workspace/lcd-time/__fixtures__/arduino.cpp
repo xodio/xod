@@ -631,7 +631,7 @@ template <typename T> class List {
  *
  =============================================================================*/
 
-#define NODE_COUNT          13
+#define NODE_COUNT          12
 #define MAX_OUTPUT_COUNT    1
 
 // Uncomment to trace the program in the Serial Monitor
@@ -1141,32 +1141,6 @@ void evaluate(NodeId nid, State* state) {
 
 } // namespace xod__core__constant_string
 
-//-----------------------------------------------------------------------------
-// xod/core/constant_boolean implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__constant_boolean {
-
-struct State {
-};
-
-struct Storage {
-    State state;
-    OutputPin<Logic> output_VAL;
-};
-
-namespace Inputs {
-}
-
-namespace Outputs {
-    using VAL = OutputDescriptor<Logic, offsetof(Storage, output_VAL), 0>;
-}
-
-void evaluate(NodeId nid, State* state) {
-    reemitValue<Outputs::VAL>(nid);
-}
-
-} // namespace xod__core__constant_boolean
-
 } // namespace _program
 
 /*=============================================================================
@@ -1202,7 +1176,7 @@ namespace _program {
     xod__core__clock::Storage storage_2 = {
         { }, // state
         { NodeId(11), xod__core__constant_number::Outputs::VAL::KEY }, // input_IVAL
-        { NodeId(12), xod__core__constant_boolean::Outputs::VAL::KEY }, // input_RST
+        { NO_NODE, 0 }, // input_RST
         { false, links_2_TICK } // output_TICK
     };
 
@@ -1261,12 +1235,6 @@ namespace _program {
         { 0.01, links_11_VAL } // output_VAL
     };
 
-    NodeId links_12_VAL[] = { 2, NO_NODE };
-    xod__core__constant_boolean::Storage storage_12 = {
-        { }, // state
-        { false, links_12_VAL } // output_VAL
-    };
-
     void* storages[NODE_COUNT] = {
         &storage_0,
         &storage_1,
@@ -1279,8 +1247,7 @@ namespace _program {
         &storage_8,
         &storage_9,
         &storage_10,
-        &storage_11,
-        &storage_12
+        &storage_11
     };
 
     EvalFuncPtr evaluationFuncs[NODE_COUNT] = {
@@ -1295,12 +1262,10 @@ namespace _program {
         (EvalFuncPtr)&xod__core__constant_number::evaluate,
         (EvalFuncPtr)&xod__core__constant_number::evaluate,
         (EvalFuncPtr)&xod__core__constant_number::evaluate,
-        (EvalFuncPtr)&xod__core__constant_number::evaluate,
-        (EvalFuncPtr)&xod__core__constant_boolean::evaluate
+        (EvalFuncPtr)&xod__core__constant_number::evaluate
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {
-        DirtyFlags(-1),
         DirtyFlags(-1),
         DirtyFlags(-1),
         DirtyFlags(-1),
@@ -1316,7 +1281,7 @@ namespace _program {
     };
 
     NodeId topology[NODE_COUNT] = {
-        4, 5, 6, 7, 8, 9, 10, 11, 12, 2, 0, 3, 1
+        4, 5, 6, 7, 8, 9, 10, 11, 2, 0, 3, 1
     };
 
     TimeMs schedule[NODE_COUNT] = { 0 };

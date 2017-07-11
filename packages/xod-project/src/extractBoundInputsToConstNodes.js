@@ -7,16 +7,25 @@ import * as Node from './node';
 import * as Link from './link';
 import * as Patch from './patch';
 import * as Project from './project';
+import { PIN_TYPE, INPUT_PULSE_PIN_BINDING_OPTIONS } from './constants';
 import { def } from './types';
 
 const CONST_NODETYPES = {
   number: 'xod/core/constant-number',
   boolean: 'xod/core/constant-boolean',
-  // TODO: it will be either 'xod/core/boot'
-  //       or 'xod/core/continuously'
-  pulse: 'xod/core/constant-boolean',
   string: 'xod/core/constant-string',
 };
+
+const PULSE_CONST_NODETYPES = {
+  [INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT]: 'xod/core/boot',
+  [INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY]: 'xod/core/continuously',
+};
+
+const CONST_PATCH_PATHS = R.compose(
+  R.uniq,
+  R.values,
+  R.merge
+)(CONST_NODETYPES, PULSE_CONST_NODETYPES);
 
 const isNodeWithCurriedPins = def(
   'isNodeWithCurriedPins :: Node -> Boolean',
@@ -92,54 +101,65 @@ const getMapOfNodePinTypes = def(
   )
 );
 
-// :: { NodeId: { PinKey: PinType } } -> { NodeId: { PinKey: PatchPath } }
-const convertMapOfPinTypesIntoMapOfPinPaths = def(
-  'convertMapOfPinTypesIntoMapOfPinPaths :: Map NodeId (Map PinKey DataType) -> Map NodeId (Map PinKey PatchPath)',
-  R.map(R.map(R.prop(R.__, CONST_NODETYPES)))
-);
-
-const getMapOfPinPaths = def(
-  'getMapOfPinPaths :: Map NodeId (Map PinKey DataValue) -> [Node] -> Project -> Map NodeId (Map PinKey PatchPath)',
+const getMapOfExtractablePinPaths = def(
+  'getMapOfExtractablePinPaths :: Map NodeId (Map PinKey DataValue) -> [Node] -> Project -> Map NodeId (Map PinKey PatchPath)',
   R.compose(
-    convertMapOfPinTypesIntoMapOfPinPaths,
-    getMapOfNodePinTypes
+    R.map(R.reject(R.isNil)),
+    R.map(R.map(
+      ([pinType, pinValue]) => (
+        pinType === PIN_TYPE.PULSE
+          ? PULSE_CONST_NODETYPES[pinValue]
+          : CONST_NODETYPES[pinType]
+      )
+    )),
+    R.converge(
+      R.mergeWith(R.mergeWith(Array.of)),
+      [
+        getMapOfNodePinTypes,
+        R.identity,
+      ]
+    )
   )
 );
 
 const getMapOfPathsToPinKeys = def(
-  'getMapOfPathsToPinKeys :: Map DataType PatchPath -> Project -> Map PatchPath PinKey',
+  'getMapOfPathsToPinKeys :: [PatchPath] -> Project -> Map PatchPath PinKey',
   (constantPaths, project) => R.compose(
     R.fromPairs,
-    R.map(constPath => R.compose(
-      constPinKey => [constPath, constPinKey],
-      Pin.getPinKey,
-      R.head,
-      Patch.listOutputPins,
-      Project.getPatchByPathUnsafe(R.__, project)
+    R.map(
+      constPath => R.compose(
+        constPinKey => [constPath, constPinKey],
+        Pin.getPinKey,
+        R.head,
+        Patch.listOutputPins,
+        Project.getPatchByPathUnsafe(R.__, project)
       )(constPath)
-    ),
-    R.uniq,
-    R.values
+    )
   )(constantPaths)
 );
 
 const createNodesWithBoundValues = def(
   'createNodesWithBoundValues :: Map NodeId (Map PinKey DataValue) -> Map NodeId (Map PinKey PatchPath) -> Map PatchPath PinKey -> Map NodeId (Map PinKey Node)',
-  (mapOfPinValues, mapOfPinPaths, mapOfPinKeys) => R.mapObjIndexed(
-    (pinsData, nodeId) => R.mapObjIndexed(
-      (pinValue, pinKey) => {
-        const type = R.path([nodeId, pinKey], mapOfPinPaths);
-        const constPinKey = R.prop(type, mapOfPinKeys);
+  (allInputPinValues, extractablePinPaths, mapOfPinKeys) =>
+    R.mapObjIndexed(
+      (pinsData, nodeId) => R.compose(
+        R.mapObjIndexed((pinValue, pinKey) => {
+          const type = R.path([nodeId, pinKey], extractablePinPaths);
+          const constPinKey = R.prop(type, mapOfPinKeys);
 
-        return R.compose(
-          Node.setBoundValue(constPinKey, pinValue),
-          Node.createNode({ x: 0, y: 0 })
-        )(type);
-      },
-      pinsData
-    ),
-    mapOfPinValues
-  )
+          return R.compose(
+            R.unless(
+              R.always(R.equals(PIN_TYPE.PULSE, type)),
+              // do not transfer bound values to 'pulse constants'
+              Node.setBoundValue(constPinKey, pinValue)
+            ),
+            Node.createNode({ x: 0, y: 0 })
+          )(type);
+        }),
+        R.pickBy((pinValue, pinKey) => R.path([nodeId, pinKey], extractablePinPaths))
+      )(pinsData),
+      allInputPinValues
+    )
 );
 
 const nestedValues = def(
@@ -292,7 +312,7 @@ const extractBoundInputsToConstNodes = def(
     const occupiedNodePins = getMapOfNodePinsWithLinks(entryPointNodes, entryPointLinks);
     const outputNodePins = getMapOfNodeOutputPins(entryPointNodes, origProject);
     const pinsToOmit = R.mergeWith(R.concat, occupiedNodePins, outputNodePins);
-    const nodePinValues = R.compose(
+    const allInputPinValues = R.compose(
       R.mapObjIndexed(
         (pins, nodeId) => R.omit(
           R.propOr([], nodeId, pinsToOmit),
@@ -302,17 +322,25 @@ const extractBoundInputsToConstNodes = def(
       getMapOfNodePinValues
     )(entryPointNodes);
 
-    const pinPaths = getMapOfPinPaths(nodePinValues, nodesWithCurriedPins, flatProject);
-    const constPinKeys = getMapOfPathsToPinKeys(CONST_NODETYPES, origProject);
+    const extractablePinPaths = getMapOfExtractablePinPaths(
+      allInputPinValues,
+      nodesWithCurriedPins,
+      flatProject
+    );
+    const constPinKeys = getMapOfPathsToPinKeys(CONST_PATCH_PATHS, origProject);
 
-    const newConstNodes = createNodesWithBoundValues(nodePinValues, pinPaths, constPinKeys);
+    const newConstNodes = createNodesWithBoundValues(
+      allInputPinValues,
+      extractablePinPaths,
+      constPinKeys
+    );
     const newLinks = createLinksFromCurriedPins(newConstNodes, constPinKeys);
-    const newPatch = updatePatch(newLinks, newConstNodes, nodePinValues, entryPointPatch);
+    const newPatch = updatePatch(newLinks, newConstNodes, allInputPinValues, entryPointPatch);
 
     return R.compose(
       explodeEither,
       Project.assocPatch(path, newPatch),
-      copyConstPatches(pinPaths, origProject)
+      copyConstPatches(extractablePinPaths, origProject)
     )(flatProject);
   }
 );

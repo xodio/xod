@@ -108,6 +108,75 @@ const constantPatches = {
       cpp: 'struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n  reemitValue<Outputs::VAL>(nid);\n}\n',
     },
   },
+  'xod/core/boot': {
+    description: 'Outputs a single pulse when the program starts',
+    links: {},
+    nodes: {
+      noNativeImpl: {
+        boundValues: {},
+        description: '',
+        id: 'noNativeImpl',
+        label: '',
+        position: {
+          x: 100,
+          y: 100,
+        },
+        type: 'xod/patch-nodes/not-implemented-in-xod',
+      },
+      ryVmUAOrvkb: {
+        boundValues: {
+          __in__: false,
+        },
+        description: '',
+        id: 'ryVmUAOrvkb',
+        label: 'BOOT',
+        position: {
+          x: 10,
+          y: 224,
+        },
+        type: 'xod/patch-nodes/output-pulse',
+      },
+    },
+    path: 'xod/core/boot',
+    impls: {
+      cpp: 'struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitValue<Outputs::BOOT>(nid, 1);\n}\n',
+      js: 'module.exports.evaluate = function(e) {\n  e.fire({ BOOT: PULSE });\n};\n',
+    },
+  },
+  'xod/core/continuously': {
+    description: 'Continuously outputs pulses',
+    links: {},
+    nodes: {
+      BLKANE3xW: {
+        boundValues: {},
+        description: '',
+        id: 'BLKANE3xW',
+        label: '',
+        position: {
+          x: 138,
+          y: 120,
+        },
+        type: 'xod/patch-nodes/not-implemented-in-xod',
+      },
+      C0nt1n10Wl: {
+        boundValues: {
+          __in__: 'false',
+        },
+        description: 'Continuous pulses',
+        id: 'C0nt1n10Wl',
+        label: 'TICK',
+        position: {
+          x: 138,
+          y: 224,
+        },
+        type: 'xod/patch-nodes/output-pulse',
+      },
+    },
+    path: 'xod/core/continuously',
+    impls: {
+      cpp: 'struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitValue<Outputs::TICK>(nid, 1);\n    setTimeout(nid, 0);\n}\n',
+    },
+  },
 };
 
 describe('extractBoundInputsToConstNodes', () => {
@@ -165,9 +234,10 @@ describe('extractBoundInputsToConstNodes', () => {
   const testBoundPin = (
     dataType,
     boundValue,
-    expectedConstNodeType
+    expectedConstNodeType,
+    checkConstNodeBoundValue = true // TODO: this flag is a bit hacky
   ) =>
-    it(`should 'extract' bound ${dataType} pin to ${expectedConstNodeType} node`, () => {
+    it(`should extract bound '${dataType}' pin value '${boundValue}' to '${expectedConstNodeType}' node`, () => {
       const boundPinKey = getInputPinKey(dataType);
       const testNodeId = 'test-node';
 
@@ -241,22 +311,73 @@ describe('extractBoundInputsToConstNodes', () => {
         `link must be to test node's ${boundPinKey} pin`
       );
 
-      const maybeBoundValue = XP.getBoundValue(constantNodeOutputPinKey, constantNode);
-      assert(maybeBoundValue.isJust);
-      assert.equal(
-        maybeBoundValue.getOrElse(undefined),
-        boundValue,
-        `value from test node's pin must be bound to ${expectedConstNodeType}'s output`
-      );
+      if (checkConstNodeBoundValue) {
+        const maybeBoundValue = XP.getBoundValue(constantNodeOutputPinKey, constantNode);
+        assert(maybeBoundValue.isJust);
+        assert.equal(
+          maybeBoundValue.getOrElse(undefined),
+          boundValue,
+          `value from test node's pin must be bound to ${expectedConstNodeType}'s output`
+        );
+      }
     });
 
   testBoundPin(XP.PIN_TYPE.BOOLEAN, true, XP.getConstantPatchPath(XP.PIN_TYPE.BOOLEAN));
   testBoundPin(XP.PIN_TYPE.NUMBER, 42, XP.getConstantPatchPath(XP.PIN_TYPE.NUMBER));
   testBoundPin(XP.PIN_TYPE.STRING, 'hello', XP.getConstantPatchPath(XP.PIN_TYPE.STRING));
 
-  testBoundPin( // current behaviour. it is wrong.
+  testBoundPin(
     XP.PIN_TYPE.PULSE,
     XP.INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT,
-    XP.getConstantPatchPath(XP.PIN_TYPE.BOOLEAN)
+    'xod/core/boot',
+    false
   );
+  testBoundPin(
+    XP.PIN_TYPE.PULSE,
+    XP.INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY,
+    'xod/core/continuously',
+    false
+  );
+
+  it('discards any other values bound to pulse pins', () => {
+    const dataType = XP.PIN_TYPE.PULSE;
+    const boundValue = XP.INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER;
+    const boundPinKey = getInputPinKey(dataType);
+    const testNodeId = 'test-node';
+
+    const project = Helper.defaultizeProject({
+      patches: R.merge(constantPatches, {
+        [mainPatchPath]: {
+          nodes: {
+            [testNodeId]: {
+              type: testPatchPath,
+              boundValues: {
+                [boundPinKey]: boundValue,
+              },
+            },
+          },
+        },
+        [testPatchPath]: testPatch,
+      }),
+    });
+
+    const transformedProject = XP.extractBoundInputsToConstNodes(project, mainPatchPath, project);
+
+    const patch = XP.getPatchByPathUnsafe(mainPatchPath, transformedProject);
+
+    const nodesByNodeType = R.compose(
+      R.indexBy(XP.getNodeType),
+      XP.listNodes
+    )(patch);
+    assert.lengthOf(R.values(nodesByNodeType), 1, 'no new nodes must be created');
+    const testNode = nodesByNodeType[testPatchPath];
+
+    assert.isTrue(
+      XP.getBoundValue(boundPinKey, testNode).isNothing,
+      `bound value for ${boundPinKey} must be deleted from test node`
+    );
+
+    const links = XP.listLinks(patch);
+    assert.lengthOf(links, 0, 'no links must be created');
+  });
 });
