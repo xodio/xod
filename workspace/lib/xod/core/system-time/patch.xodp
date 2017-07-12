@@ -3,7 +3,9 @@
   "links": [],
   "nodes": [
     {
-      "boundValues": {},
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
       "description": "Triggers new time read",
       "id": "Bk74I0_SPyb",
       "label": "UPD",
