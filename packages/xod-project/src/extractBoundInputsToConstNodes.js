@@ -188,24 +188,6 @@ const createLinksFromCurriedPins = def(
   )(mapOfPinNodes)
 );
 
-const assocNodesToPatch = def(
-  'assocNodesToPatch :: Map NodeId (Map PinKey Node) -> Patch -> Patch',
-  (nodesMap, patch) => R.reduce(
-    R.flip(Patch.assocNode),
-    patch,
-    nestedValues(nodesMap)
-  )
-);
-
-const assocLinksToPatch = def(
-  'assocLinksToPatch :: Map NodeId (Map PinKey Link) -> Patch -> Patch',
-  (linksMap, patch) => R.reduce(
-    (p, link) => explodeEither(Patch.assocLink(link, p)),
-    patch,
-    nestedValues(linksMap)
-  )
-);
-
 const removeBoundValues = def(
   'removeBoundValues :: Map NodeId (Map PinKey DataValue) -> Patch -> Map NodeId Node',
   (mapOfPinValues, patch) => R.mapObjIndexed(
@@ -224,19 +206,11 @@ const removeBoundValues = def(
   )
 );
 
-const assocUncurriedNodesToPatch = def(
-  'assocUncurriedNodesToPatch :: Map NodeId Node -> Patch -> Patch',
-  (nodesMap, patch) => R.reduce(
-    R.flip(Patch.assocNode),
-    patch,
-    R.values(nodesMap)
-  )
-);
-
 const uncurryAndAssocNodes = def(
   'uncurryAndAssocNodes :: Map NodeId (Map PinKey DataValue) -> Patch -> Patch',
   (mapOfNodePinValues, patch) => R.compose(
-    assocUncurriedNodesToPatch(R.__, patch),
+    Patch.upsertNodes(R.__, patch),
+    R.values,
     removeBoundValues(mapOfNodePinValues)
   )(patch)
 );
@@ -244,8 +218,9 @@ const uncurryAndAssocNodes = def(
 const updatePatch = def(
   'updatePatch :: Map NodeId (Map PinKey Link) -> Map NodeId (Map PinKey Node) -> Map NodeId (Map PinKey DataValue) -> Patch -> Patch',
   (mapOfLinks, mapOfNodes, mapOfPinValues, patch) => R.compose(
-    assocLinksToPatch(mapOfLinks),
-    assocNodesToPatch(mapOfNodes),
+    explodeEither,
+    Patch.upsertLinks(nestedValues(mapOfLinks)),
+    Patch.upsertNodes(nestedValues(mapOfNodes)),
     uncurryAndAssocNodes(mapOfPinValues)
   )(patch)
 );
