@@ -1059,7 +1059,7 @@ describe('Patch', () => {
       });
       it('should return true for constant patches', () => {
         const patch = Helper.defaultizePatch({
-          path: PPU.getConstantPatchPath(CONST.PIN_TYPE.NUMBER),
+          path: CONST.CONST_NODETYPES[CONST.PIN_TYPE.NUMBER],
           nodes: {
             out: {
               type: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.NUMBER),

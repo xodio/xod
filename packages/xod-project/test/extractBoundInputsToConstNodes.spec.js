@@ -151,20 +151,32 @@ describe('extractBoundInputsToConstNodes', () => {
       }
     });
 
-  testBoundPin(XP.PIN_TYPE.BOOLEAN, true, XP.getConstantPatchPath(XP.PIN_TYPE.BOOLEAN));
-  testBoundPin(XP.PIN_TYPE.NUMBER, 42, XP.getConstantPatchPath(XP.PIN_TYPE.NUMBER));
-  testBoundPin(XP.PIN_TYPE.STRING, 'hello', XP.getConstantPatchPath(XP.PIN_TYPE.STRING));
+  testBoundPin(
+    XP.PIN_TYPE.BOOLEAN,
+    true,
+    XP.CONST_NODETYPES[XP.PIN_TYPE.BOOLEAN]
+  );
+  testBoundPin(
+    XP.PIN_TYPE.NUMBER,
+    42,
+    XP.CONST_NODETYPES[XP.PIN_TYPE.NUMBER]
+  );
+  testBoundPin(
+    XP.PIN_TYPE.STRING,
+    'hello',
+    XP.CONST_NODETYPES[XP.PIN_TYPE.STRING]
+  );
 
   testBoundPin(
     XP.PIN_TYPE.PULSE,
     XP.INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT,
-    'xod/core/boot',
+    XP.PULSE_CONST_NODETYPES[XP.INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT],
     false
   );
   testBoundPin(
     XP.PIN_TYPE.PULSE,
     XP.INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY,
-    'xod/core/continuously',
+    XP.PULSE_CONST_NODETYPES[XP.INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY],
     false
   );
 

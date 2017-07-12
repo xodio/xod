@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
-import { explodeMaybe, notNil, reduceEither } from 'xod-func-tools';
+import { explodeMaybe, notNil, reduceEither, isAmong } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
@@ -11,7 +11,7 @@ import * as Utils from './utils';
 import { sortGraph } from './gmath';
 import { def } from './types';
 import { getHardcodedPinsForPatchPath, getPinKeyForTerminalDirection } from './builtInPatches';
-import { getLocalPath, isTerminalPatchPath, isConstantPatchPath } from './patchPathUtils';
+import { getLocalPath, isTerminalPatchPath } from './patchPathUtils';
 
 /**
  * An object representing single patch in a project
@@ -291,7 +291,7 @@ export const canBindToOutputs = def(
     R.compose( // it's one of 'allowed' types
       R.anyPass([
         isTerminalPatchPath,
-        isConstantPatchPath,
+        isAmong(R.values(CONST.CONST_NODETYPES)),
       ]),
       getPatchPath
     ),

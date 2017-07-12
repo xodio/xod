@@ -7,20 +7,9 @@ import * as Node from './node';
 import * as Link from './link';
 import * as Patch from './patch';
 import * as Project from './project';
-import { PIN_TYPE, INPUT_PULSE_PIN_BINDING_OPTIONS } from './constants';
+import { PIN_TYPE, CONST_NODETYPES, PULSE_CONST_NODETYPES } from './constants';
 import squashSingleOutputNodes from './optimizers/squashSingleOutputNodes';
 import { def } from './types';
-
-const CONST_NODETYPES = {
-  number: 'xod/core/constant-number',
-  boolean: 'xod/core/constant-boolean',
-  string: 'xod/core/constant-string',
-};
-
-const PULSE_CONST_NODETYPES = {
-  [INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT]: 'xod/core/boot',
-  [INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY]: 'xod/core/continuously',
-};
 
 const CONST_PATCH_PATHS = R.compose(
   R.uniq,
