@@ -31,5 +31,5 @@ export const PROPERTY_TYPE_PARSE = {
     return isNaN(float) ? 0 : float;
   },
   [PROPERTY_TYPE.STRING]: v => String(v),
-  [PROPERTY_TYPE.PULSE]: v => !!v,
+  [PROPERTY_TYPE.PULSE]: v => v,
 };

@@ -308,7 +308,7 @@ export const transformPatch = R.curry((path, origProject, project) =>
 const isConstantNode = def(
   'isConstantNode :: Node -> Boolean',
   R.compose(
-    Project.isConstantPatchPath,
+    XF.isAmong(R.values(Project.CONST_NODETYPES)),
     Project.getNodeType
   )
 );

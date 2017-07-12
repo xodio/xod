@@ -631,7 +631,7 @@ template <typename T> class List {
  *
  =============================================================================*/
 
-#define NODE_COUNT          13
+#define NODE_COUNT          11
 #define MAX_OUTPUT_COUNT    1
 
 // Uncomment to trace the program in the Serial Monitor
@@ -1012,54 +1012,6 @@ void evaluate(NodeId nid, State* state) {
 } // namespace xod__common_hardware__text_lcd_16x2
 
 //-----------------------------------------------------------------------------
-// xod/core/clock implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__clock {
-
-struct State {
-  TimeMs nextTrig;
-};
-
-struct Storage {
-    State state;
-    PinRef input_IVAL;
-    PinRef input_RST;
-    OutputPin<Logic> output_TICK;
-};
-
-namespace Inputs {
-    using IVAL = InputDescriptor<Number, offsetof(Storage, input_IVAL)>;
-    using RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
-}
-
-namespace Outputs {
-    using TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
-}
-
-void evaluate(NodeId nid, State* state) {
-    TimeMs tNow = transactionTime();
-    TimeMs dt = getValue<Inputs::IVAL>(nid) * 1000;
-    TimeMs tNext = tNow + dt;
-
-    if (isInputDirty<Inputs::RST>(nid)) {
-        if (dt == 0) {
-            state->nextTrig = 0;
-            clearTimeout(nid);
-        } else if (state->nextTrig < tNow || state->nextTrig > tNext) {
-            state->nextTrig = tNext;
-            setTimeout(nid, dt);
-        }
-    } else {
-        // It was a scheduled tick
-        emitValue<Outputs::TICK>(nid, 1);
-        state->nextTrig = tNext;
-        setTimeout(nid, dt);
-    }
-}
-
-} // namespace xod__core__clock
-
-//-----------------------------------------------------------------------------
 // xod/core/cast_number_to_string implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__cast_number_to_string {
@@ -1090,6 +1042,33 @@ void evaluate(NodeId nid, State* state) {
 }
 
 } // namespace xod__core__cast_number_to_string
+
+//-----------------------------------------------------------------------------
+// xod/core/continuously implementation
+//-----------------------------------------------------------------------------
+namespace xod__core__continuously {
+
+struct State {
+};
+
+struct Storage {
+    State state;
+    OutputPin<Logic> output_TICK;
+};
+
+namespace Inputs {
+}
+
+namespace Outputs {
+    using TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
+}
+
+void evaluate(NodeId nid, State* state) {
+    emitValue<Outputs::TICK>(nid, 1);
+    setTimeout(nid, 0);
+}
+
+} // namespace xod__core__continuously
 
 //-----------------------------------------------------------------------------
 // xod/core/constant_number implementation
@@ -1141,32 +1120,6 @@ void evaluate(NodeId nid, State* state) {
 
 } // namespace xod__core__constant_string
 
-//-----------------------------------------------------------------------------
-// xod/core/constant_boolean implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__constant_boolean {
-
-struct State {
-};
-
-struct Storage {
-    State state;
-    OutputPin<Logic> output_VAL;
-};
-
-namespace Inputs {
-}
-
-namespace Outputs {
-    using VAL = OutputDescriptor<Logic, offsetof(Storage, output_VAL), 0>;
-}
-
-void evaluate(NodeId nid, State* state) {
-    reemitValue<Outputs::VAL>(nid);
-}
-
-} // namespace xod__core__constant_boolean
-
 } // namespace _program
 
 /*=============================================================================
@@ -1179,10 +1132,10 @@ void evaluate(NodeId nid, State* state) {
 
 namespace _program {
 
-    NodeId links_0_TIME[] = { 3, NO_NODE };
+    NodeId links_0_TIME[] = { 2, NO_NODE };
     xod__core__system_time::Storage storage_0 = {
         { }, // state
-        { NodeId(2), xod__core__clock::Outputs::TICK::KEY }, // input_UPD
+        { NodeId(3), xod__core__continuously::Outputs::TICK::KEY }, // input_UPD
         { 0, links_0_TIME } // output_TIME
     };
 
@@ -1194,23 +1147,21 @@ namespace _program {
         { NodeId(7), xod__core__constant_number::Outputs::VAL::KEY }, // input_D5
         { NodeId(6), xod__core__constant_number::Outputs::VAL::KEY }, // input_D6
         { NodeId(10), xod__core__constant_number::Outputs::VAL::KEY }, // input_D7
-        { NodeId(3), xod__core__cast_number_to_string::Outputs::OUT::KEY }, // input_L1
+        { NodeId(2), xod__core__cast_number_to_string::Outputs::OUT::KEY }, // input_L1
         { NodeId(5), xod__core__constant_string::Outputs::VAL::KEY }, // input_L2
     };
 
-    NodeId links_2_TICK[] = { 0, NO_NODE };
-    xod__core__clock::Storage storage_2 = {
-        { }, // state
-        { NodeId(11), xod__core__constant_number::Outputs::VAL::KEY }, // input_IVAL
-        { NodeId(12), xod__core__constant_boolean::Outputs::VAL::KEY }, // input_RST
-        { false, links_2_TICK } // output_TICK
-    };
-
-    NodeId links_3_OUT[] = { 1, NO_NODE };
-    xod__core__cast_number_to_string::Storage storage_3 = {
+    NodeId links_2_OUT[] = { 1, NO_NODE };
+    xod__core__cast_number_to_string::Storage storage_2 = {
         { }, // state
         { NodeId(0), xod__core__system_time::Outputs::TIME::KEY }, // input_IN
-        { ::xod::List<char>::empty(), links_3_OUT } // output_OUT
+        { ::xod::List<char>::empty(), links_2_OUT } // output_OUT
+    };
+
+    NodeId links_3_TICK[] = { 0, NO_NODE };
+    xod__core__continuously::Storage storage_3 = {
+        { }, // state
+        { ::xod::List<char>::fromPlainArray("CONTINUOUSLY", 12), links_3_TICK } // output_TICK
     };
 
     NodeId links_4_VAL[] = { 1, NO_NODE };
@@ -1255,18 +1206,6 @@ namespace _program {
         { 13, links_10_VAL } // output_VAL
     };
 
-    NodeId links_11_VAL[] = { 2, NO_NODE };
-    xod__core__constant_number::Storage storage_11 = {
-        { }, // state
-        { 0.01, links_11_VAL } // output_VAL
-    };
-
-    NodeId links_12_VAL[] = { 2, NO_NODE };
-    xod__core__constant_boolean::Storage storage_12 = {
-        { }, // state
-        { false, links_12_VAL } // output_VAL
-    };
-
     void* storages[NODE_COUNT] = {
         &storage_0,
         &storage_1,
@@ -1278,32 +1217,26 @@ namespace _program {
         &storage_7,
         &storage_8,
         &storage_9,
-        &storage_10,
-        &storage_11,
-        &storage_12
+        &storage_10
     };
 
     EvalFuncPtr evaluationFuncs[NODE_COUNT] = {
         (EvalFuncPtr)&xod__core__system_time::evaluate,
         (EvalFuncPtr)&xod__common_hardware__text_lcd_16x2::evaluate,
-        (EvalFuncPtr)&xod__core__clock::evaluate,
         (EvalFuncPtr)&xod__core__cast_number_to_string::evaluate,
+        (EvalFuncPtr)&xod__core__continuously::evaluate,
         (EvalFuncPtr)&xod__core__constant_number::evaluate,
         (EvalFuncPtr)&xod__core__constant_string::evaluate,
         (EvalFuncPtr)&xod__core__constant_number::evaluate,
         (EvalFuncPtr)&xod__core__constant_number::evaluate,
         (EvalFuncPtr)&xod__core__constant_number::evaluate,
         (EvalFuncPtr)&xod__core__constant_number::evaluate,
-        (EvalFuncPtr)&xod__core__constant_number::evaluate,
-        (EvalFuncPtr)&xod__core__constant_number::evaluate,
-        (EvalFuncPtr)&xod__core__constant_boolean::evaluate
+        (EvalFuncPtr)&xod__core__constant_number::evaluate
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {
-        DirtyFlags(0),
-        DirtyFlags(0),
-        DirtyFlags(0),
-        DirtyFlags(0),
+        DirtyFlags(-1),
+        DirtyFlags(-1),
         DirtyFlags(-1),
         DirtyFlags(-1),
         DirtyFlags(-1),
@@ -1316,7 +1249,7 @@ namespace _program {
     };
 
     NodeId topology[NODE_COUNT] = {
-        4, 5, 6, 7, 8, 9, 10, 11, 12, 2, 0, 3, 1
+        3, 4, 5, 6, 7, 8, 9, 10, 0, 2, 1
     };
 
     TimeMs schedule[NODE_COUNT] = { 0 };

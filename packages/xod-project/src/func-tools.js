@@ -107,7 +107,7 @@ export const errOnNothing = R.curry(
 //
 
 /**
- * Checks that value is exist in the dictionary (object).
+ * Checks that value exists in the dictionary (object).
  * @private
  * @function hasPropEq
  * @param {*} value

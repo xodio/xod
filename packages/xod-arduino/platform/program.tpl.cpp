@@ -42,7 +42,7 @@ namespace _program {
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {
-        {{#each nodes}}DirtyFlags({{#if patch.isDirty }}-1{{ else }}0{{/if }}){{#unless @last}},
+        {{#each nodes}}DirtyFlags(-1){{#unless @last}},
         {{/unless}}{{/each}}
     };
 

@@ -59,7 +59,9 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
       "description": "Triggers new temperature read",
       "id": "Hk_1fUaMW",
       "label": "UPD",

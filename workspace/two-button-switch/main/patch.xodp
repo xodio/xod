@@ -24,17 +24,6 @@
       }
     },
     {
-      "id": "Hk84gASZ-",
-      "input": {
-        "nodeId": "rkrQlRrWb",
-        "pinKey": "SyLCdSwJZ"
-      },
-      "output": {
-        "nodeId": "B1vglRB--",
-        "pinKey": "HJU8CE2lW"
-      }
-    },
-    {
       "id": "Hkf8xCrZ-",
       "input": {
         "nodeId": "SyVrxRS-W",
@@ -57,28 +46,6 @@
       }
     },
     {
-      "id": "r1ABVRsNb",
-      "input": {
-        "nodeId": "HJqHeCBb-",
-        "pinKey": "HkDgIRdrv1W"
-      },
-      "output": {
-        "nodeId": "B1vglRB--",
-        "pinKey": "HJU8CE2lW"
-      }
-    },
-    {
-      "id": "rJFExCSWW",
-      "input": {
-        "nodeId": "HkKQlCr-W",
-        "pinKey": "SyLCdSwJZ"
-      },
-      "output": {
-        "nodeId": "B1vglRB--",
-        "pinKey": "HJU8CE2lW"
-      }
-    },
-    {
       "id": "rJNUgASZW",
       "input": {
         "nodeId": "HJqHeCBb-",
@@ -88,37 +55,12 @@
         "nodeId": "HkKQlCr-W",
         "pinKey": "B1gI0urv1W"
       }
-    },
-    {
-      "id": "rJjHV0i4b",
-      "input": {
-        "nodeId": "SyVrxRS-W",
-        "pinKey": "HkDgIRdrv1W"
-      },
-      "output": {
-        "nodeId": "B1vglRB--",
-        "pinKey": "HJU8CE2lW"
-      }
     }
   ],
   "nodes": [
     {
       "boundValues": {
-        "B13SCNhl-": 0.02,
-        "BJJICN2lW": false
-      },
-      "description": "",
-      "id": "B1vglRB--",
-      "label": "",
-      "position": {
-        "x": 138,
-        "y": 120
-      },
-      "type": "xod/core/clock"
-    },
-    {
-      "boundValues": {
-        "HkDgIRdrv1W": false,
+        "HkDgIRdrv1W": "CONTINUOUSLY",
         "S1OlUAuBD1-": false
       },
       "description": "",
@@ -133,7 +75,7 @@
     {
       "boundValues": {
         "B1ZUA_Hv1W": 12,
-        "SyLCdSwJZ": false
+        "SyLCdSwJZ": "CONTINUOUSLY"
       },
       "description": "",
       "id": "HkKQlCr-W",
@@ -161,7 +103,7 @@
     },
     {
       "boundValues": {
-        "HkDgIRdrv1W": false,
+        "HkDgIRdrv1W": "CONTINUOUSLY",
         "S1OlUAuBD1-": false
       },
       "description": "",
@@ -176,7 +118,7 @@
     {
       "boundValues": {
         "B1ZUA_Hv1W": 11,
-        "SyLCdSwJZ": false
+        "SyLCdSwJZ": "CONTINUOUSLY"
       },
       "description": "",
       "id": "rkrQlRrWb",

@@ -100,6 +100,26 @@ export const TYPES_COMPATIBILITY = {
   },
 };
 
+export const INPUT_PULSE_PIN_BINDING_OPTIONS = {
+  NEVER: 'NEVER',
+  CONTINUOUSLY: 'CONTINUOUSLY',
+  ON_BOOT: 'ON_BOOT',
+};
+
+// node types that provide a constant value
+export const CONST_NODETYPES = {
+  number: 'xod/core/constant-number',
+  boolean: 'xod/core/constant-boolean',
+  string: 'xod/core/constant-string',
+};
+
+// node types that provide a constant pulse,
+// once(on start) or continuously
+export const PULSE_CONST_NODETYPES = {
+  [INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT]: 'xod/core/boot',
+  [INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY]: 'xod/core/continuously',
+};
+
  /**
   * Enumeration of possible pin directions
   *

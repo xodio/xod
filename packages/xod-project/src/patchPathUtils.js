@@ -128,23 +128,6 @@ export const isCastPatchPath = R.test(castTypeRegExp);
 export const getCastPatchPath = (typeIn, typeOut) => `xod/core/cast-${typeIn}-to-${typeOut}`;
 
 //
-// utils for constant patches
-//
-
-const constantTypeRegExp =
-  new RegExp(`xod/core/constant-(${dataTypes.join('|')})$`);
-
-// :: String -> Boolean
-export const isConstantPatchPath = R.test(constantTypeRegExp);
-
-/**
- * Returns path for constant patch with a given type
- *
- * :: DataType -> PatchPath
- */
-export const getConstantPatchPath = type => `xod/core/constant-${type}`;
-
-//
 // utils for 'internal' terminals (used only in flatten)
 //
 

@@ -27,7 +27,9 @@
       "type": "xod/patch-nodes/output-boolean"
     },
     {
-      "boundValues": {},
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
       "description": "Triggers new read",
       "id": "SyLCdSwJZ",
       "label": "UPD",

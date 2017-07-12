@@ -38,7 +38,9 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {},
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
       "description": "Triggers new read",
       "id": "SyKd0E2x-",
       "label": "UPD",

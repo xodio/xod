@@ -74,6 +74,7 @@ export const WIDGET_MAPPING = {
       component: PulseWidget,
       props: {
         type: PIN_TYPE.PULSE,
+        commitOnChange: true,
       },
     },
     [WIDGET_TYPE.TEXTAREA]: {

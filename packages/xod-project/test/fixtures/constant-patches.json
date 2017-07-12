@@ -1,0 +1,223 @@
+{
+  "xod/core/constant-boolean": {
+    "nodes": {
+      "VAL": {
+        "boundValues": {},
+        "description": "Constant value",
+        "id": "VAL",
+        "label": "VAL",
+        "position": {
+          "x": 0,
+          "y": 300
+        },
+        "type": "xod/patch-nodes/output-boolean"
+      },
+      "noNativeImpl": {
+        "boundValues": {},
+        "description": "",
+        "id": "noNativeImpl",
+        "label": "",
+        "position": {
+          "x": 100,
+          "y": 100
+        },
+        "type": "xod/patch-nodes/not-implemented-in-xod"
+      }
+    },
+    "links": {},
+    "impls": {
+      "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    reemitValue<Outputs::VAL>(nid);\n}\n",
+      "js": "module.exports.setup = function(e) {\n  e.fire();\n};\n"
+    },
+    "path": "xod/core/constant-boolean",
+    "description": "Constant value",
+    "attachments": [
+      {
+        "filename": "any.cpp",
+        "encoding": "utf8",
+        "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    reemitValue<Outputs::VAL>(nid);\n}\n"
+      },
+      {
+        "filename": "any.js",
+        "encoding": "utf8",
+        "content": "module.exports.setup = function(e) {\n  e.fire();\n};\n"
+      }
+    ]
+  },
+  "xod/core/constant-number": {
+    "nodes": {
+      "B1x2RV3eZ": {
+        "boundValues": {
+          "__in__": ""
+        },
+        "description": "",
+        "id": "B1x2RV3eZ",
+        "label": "VAL",
+        "position": {
+          "x": 10,
+          "y": 120
+        },
+        "type": "xod/patch-nodes/output-number"
+      },
+      "H1PnRN2lW": {
+        "boundValues": {},
+        "description": "",
+        "id": "H1PnRN2lW",
+        "label": "",
+        "position": {
+          "x": 10,
+          "y": 16
+        },
+        "type": "xod/patch-nodes/not-implemented-in-xod"
+      }
+    },
+    "links": {},
+    "impls": {
+      "cpp": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n  reemitValue<Outputs::VAL>(nid);\n}\n",
+      "js": "module.exports.setup = function(e) {\n  e.fire();\n};\n"
+    },
+    "path": "xod/core/constant-number",
+    "description": "",
+    "attachments": [
+      {
+        "filename": "any.cpp",
+        "encoding": "utf8",
+        "content": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n  reemitValue<Outputs::VAL>(nid);\n}\n"
+      },
+      {
+        "filename": "any.js",
+        "encoding": "utf8",
+        "content": "module.exports.setup = function(e) {\n  e.fire();\n};\n"
+      }
+    ]
+  },
+  "xod/core/constant-string": {
+    "nodes": {
+      "B1x2RV3eZ": {
+        "boundValues": {
+          "__in__": ""
+        },
+        "description": "",
+        "id": "B1x2RV3eZ",
+        "label": "VAL",
+        "position": {
+          "x": 10,
+          "y": 120
+        },
+        "type": "xod/patch-nodes/output-string"
+      },
+      "H1PnRN2lW": {
+        "boundValues": {},
+        "description": "",
+        "id": "H1PnRN2lW",
+        "label": "",
+        "position": {
+          "x": 10,
+          "y": 16
+        },
+        "type": "xod/patch-nodes/not-implemented-in-xod"
+      }
+    },
+    "links": {},
+    "impls": {
+      "cpp": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n  reemitValue<Outputs::VAL>(nid);\n}\n"
+    },
+    "path": "xod/core/constant-string",
+    "description": "",
+    "attachments": [
+      {
+        "filename": "any.cpp",
+        "encoding": "utf8",
+        "content": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n  reemitValue<Outputs::VAL>(nid);\n}\n"
+      }
+    ]
+  },
+  "xod/core/continuously": {
+    "nodes": {
+      "BLKANE3xW": {
+        "boundValues": {},
+        "description": "",
+        "id": "BLKANE3xW",
+        "label": "",
+        "position": {
+          "x": 138,
+          "y": 120
+        },
+        "type": "xod/patch-nodes/not-implemented-in-xod"
+      },
+      "C0nt1n10Wl": {
+        "boundValues": {
+          "__in__": "false"
+        },
+        "description": "Continuous pulses",
+        "id": "C0nt1n10Wl",
+        "label": "TICK",
+        "position": {
+          "x": 138,
+          "y": 224
+        },
+        "type": "xod/patch-nodes/output-pulse"
+      }
+    },
+    "links": {},
+    "impls": {
+      "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitValue<Outputs::TICK>(nid, 1);\n    setTimeout(nid, 0);\n}\n"
+    },
+    "path": "xod/core/continuously",
+    "description": "Continuously outputs pulses",
+    "attachments": [
+      {
+        "filename": "any.cpp",
+        "encoding": "utf8",
+        "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitValue<Outputs::TICK>(nid, 1);\n    setTimeout(nid, 0);\n}\n"
+      }
+    ]
+  },
+  "xod/core/boot": {
+    "nodes": {
+      "noNativeImpl": {
+        "boundValues": {},
+        "description": "",
+        "id": "noNativeImpl",
+        "label": "",
+        "position": {
+          "x": 100,
+          "y": 100
+        },
+        "type": "xod/patch-nodes/not-implemented-in-xod"
+      },
+      "ryVmUAOrvkb": {
+        "boundValues": {
+          "__in__": false
+        },
+        "description": "",
+        "id": "ryVmUAOrvkb",
+        "label": "BOOT",
+        "position": {
+          "x": 10,
+          "y": 224
+        },
+        "type": "xod/patch-nodes/output-pulse"
+      }
+    },
+    "links": {},
+    "impls": {
+      "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitValue<Outputs::BOOT>(nid, 1);\n}\n",
+      "js": "module.exports.evaluate = function(e) {\n  e.fire({ BOOT: PULSE });\n};\n"
+    },
+    "path": "xod/core/boot",
+    "description": "Outputs a single pulse when the program starts",
+    "attachments": [
+      {
+        "filename": "any.cpp",
+        "encoding": "utf8",
+        "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitValue<Outputs::BOOT>(nid, 1);\n}\n"
+      },
+      {
+        "filename": "any.js",
+        "encoding": "utf8",
+        "content": "module.exports.evaluate = function(e) {\n  e.fire({ BOOT: PULSE });\n};\n"
+      }
+    ]
+  }
+}
