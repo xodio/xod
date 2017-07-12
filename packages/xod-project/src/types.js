@@ -60,7 +60,7 @@ export const Pin = Model('Pin', {
   isBindable: $.Boolean,
 });
 
-export const NodePosition = Model('NodePosition', {
+export const Position = Model('Position', {
   x: $.Number,
   y: $.Number,
 });
@@ -72,7 +72,7 @@ export const PinRef = Model('PinRef', {
 
 export const Node = Model('Node', {
   id: NodeId,
-  position: NodePosition,
+  position: Position,
   type: PatchPath,
   label: $.String,
   description: $.String,
@@ -135,7 +135,7 @@ export const env = XF.env.concat([
   Node,
   NodeId,
   NodeOrId,
-  NodePosition,
+  Position,
   TerminalNode,
   Patch,
   PatchPath,
