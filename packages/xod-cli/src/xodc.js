@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
-import sourceMapSupport from 'source-map-support';
-
 import { docopt } from 'docopt';
+import sourceMapSupport from 'source-map-support';
 import { runCommand } from './utils';
 
 import * as ab from './xodc-ab';
@@ -13,7 +12,6 @@ import transpile from './xodc-transpile';
 import unpack from './xodc-unpack';
 
 const PM_SWAGGER_URL = 'https://pm.xod.show/swagger';
-
 
 // In case of unhandled errors this would give more adequate debug traces:
 // 1. More than default 10 items
@@ -30,7 +28,7 @@ Usage:
   xodc pack <projectDir> <output>
   xodc unpack <xodball> <workspace>
   xodc transpile [--output=<filename>] [--target=<target>] <input> <path>
-  xodc publish --swagger=<swagger> --author=<author> [--orgname=<orgname>] [<projectDir>]
+  xodc publish [--swagger=<swagger>] [--orgname=<orgname>] [<projectDir>]
   xodc install --swagger=<swagger> <libUri> [<path>]
   xodc ab set-executable <path>
   xodc ab set-packages <path>
@@ -73,8 +71,7 @@ const programs = {
   }),
   publish: o => publish(
     o['--swagger'] || PM_SWAGGER_URL,
-    o['--author'],
-    o['--orgname'] || o['--author'],
+    o['--orgname'],
     o['<projectDir>'] || '.'),
   install: o => install(
     o['--swagger'] || PM_SWAGGER_URL,
