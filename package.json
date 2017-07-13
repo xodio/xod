@@ -53,7 +53,7 @@
     "json-loader": "^0.5.4",
     "json5": "^0.4.0",
     "json5-loader": "^0.6.0",
-    "lerna": "^2.0.0-rc.5",
+    "lerna": "=2.0.0-rc.4",
     "mocha": "^3.3.0",
     "mocha-webpack": "^0.6.0",
     "node-sass": "^3.10.1",
