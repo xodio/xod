@@ -18,7 +18,7 @@
     "lint": "eslint packages/*/src packages/*/test packages/*/test-func packages/xod-js/platform --ext js,jsx",
     "postinstall": "yarn run bootstrap",
     "start:spectron-repl": "./tools/spectron-repl",
-    "start:xod-client-electron": "node ./tools/lerna-run-sorted start xod-client-electron",
+    "start:xod-client-electron": "cd packages/xod-client-electron && yarn start",
     "storybook": "node ./tools/lerna-serve storybook xod-client",
     "test": "XOD_HM_DEF=true node ./tools/lerna-run-sorted test",
     "test:watch": "node ./tools/lerna-serve test:watch",
