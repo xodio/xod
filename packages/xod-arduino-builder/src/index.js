@@ -11,11 +11,11 @@ import { rejectWithCode } from 'xod-func-tools';
 import {
   unifyExec,
   processExecResult,
+  locateConfigPath,
 } from './utils';
 import {
   ARDUINO_PACKAGE_INDEX_URL,
   DEFAULT_CONFIG,
-  CONFIG_PATH,
 } from './constants';
 import { REST_ERROR } from './errors';
 import * as Lenses from './lenses';
@@ -72,23 +72,23 @@ export const parseTxtConfig = R.compose(
 
 // =============================================================================
 //
-// Unpure functions:
+// Impure functions:
 // - save / load config
 // - list of serial ports
 // - list of arduino packages
 //
 // =============================================================================
 
-/** Writes the provided configuration to {@link CONFIG_PATH} file.
+/** Writes the provided configuration to config file.
  * @type {Function}
  * @param {*} config
  * @return {Promise<WriteResult, Error>} */
-export const saveConfig = writeJSON(CONFIG_PATH);
+export const saveConfig = writeJSON(locateConfigPath());
 
-/** Reads the configuration value from file at {@link CONFIG_PATH}.
+/** Reads the configuration value from file at config.
  * @type {Function}
  * @return {Promise.Resolved<Config>} */
-export const loadConfig = () => readJSON(CONFIG_PATH).catch(() => DEFAULT_CONFIG);
+export const loadConfig = () => readJSON(locateConfigPath()).catch(() => DEFAULT_CONFIG);
 
 /** Lists the raw [official Arduino package index]{@link http://downloads.arduino.cc/packages/package_index.json}.
  * @type {Function}

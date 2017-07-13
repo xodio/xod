@@ -12,15 +12,28 @@ import boardsTxt from './boardsTxt';
 // OS utils
 //
 // =============================================================================
-const preferencesDir = (
-  process.env.APPDATA || (
-    process.platform === 'darwin' ?
-      `${process.env.HOME}/Library/Preferences` :
-      '/var/local'
-  )
+
+// Returns path to a directory path where application configs should be stored
+// by convention on the target OS. It does not includes XOD-specific
+// subdirectory.
+// :: () -> Path
+const locatePreferencesDir = () => R.cond([
+  [R.test(/^win/), () => process.env.APPDATA],
+  [R.equals('darwin'), () => `${process.env.HOME}/Library/Preferences`],
+  [R.T, () => process.env.XDG_CONFIG_HOME || `${process.env.HOME}/.config`],
+])(process.platform);
+
+// Returns path to a file where preferences for xod-arduino-builder could
+// be stored
+// TODO: `xod-arduino-builder` must not manage any configuration. It should
+// be done by hosting app like CLI or IDE
+// :: () -> Path
+export const locateConfigPath = () => path.resolve(
+  locatePreferencesDir(),
+  'xod',
+  'config.json'
 );
 
-export const getXodPreferencesDir = () => path.resolve(preferencesDir, 'xod');
 
 // =============================================================================
 //

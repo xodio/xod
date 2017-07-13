@@ -1,5 +1,3 @@
-import path from 'path';
-import { getXodPreferencesDir } from './utils';
 
 // =============================================================================
 //
@@ -17,11 +15,6 @@ export const DEFAULT_CONFIG = {
   [IDE_EXECUTABLE_PATH]: '',
   [PACKAGES_PATH]: '',
 };
-
-/** A path to builder's configuration file.
- * @constant
- * @type Path */
-export const CONFIG_PATH = path.resolve(getXodPreferencesDir(), 'config.json');
 
 // =============================================================================
 //
