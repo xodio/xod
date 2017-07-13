@@ -597,7 +597,7 @@ const mapDispatchToProps = dispatch => ({
       requestOpenProject: client.requestOpenProject,
       requestInstallArduinoIDE: uploadActions.requestInstallArduinoIDE,
       requestSwitchWorkspace: settingsActions.requestSwitchWorkspace,
-      requestCreateWorkspace: settingsActions.requestCreaоteWorkspace,
+      requestCreateWorkspace: settingsActions.requestCreateWorkspace,
       createWorkspace: settingsActions.createWorkspace,
       switchWorkspace: settingsActions.switchWorkspace,
       openProject: client.openProject,
