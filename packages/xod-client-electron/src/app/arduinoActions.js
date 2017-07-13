@@ -1,6 +1,7 @@
 import R from 'ramda';
+import os from 'os';
 import fs from 'fs';
-import { resolve } from 'path';
+import { resolve, join as pjoin } from 'path';
 
 import { resolvePath, writeFile, doesDirectoryExist, doesFileExist } from 'xod-fs';
 import { foldEither, notEmpty, tapP, rejectWithCode } from 'xod-func-tools';
@@ -255,7 +256,7 @@ export const doTranspileForArduino = ({ project, patchPath }) =>
  * @returns {Promise<String, Error>} Promise with Stdout or Error
  */
 export const uploadToArduino = (pab, port, code) => {
-  const tmpPath = resolve(xab.getXodPreferencesDir(), 'upload.tmp.cpp');
+  const tmpPath = pjoin(os.tmpdir(), 'xod-arduino-sketch.cpp');
   const clearTmp = () => fs.unlinkSync(tmpPath);
 
   return Promise.all([writeFile(tmpPath, code, 'utf8'), loadArduinoPaths().ide])
