@@ -27,17 +27,6 @@
     {
       "boundValues": {},
       "description": "",
-      "id": "SJ9mBlumZ",
-      "label": "UPD",
-      "position": {
-        "x": 522,
-        "y": 16
-      },
-      "type": "xod/patch-nodes/input-pulse"
-    },
-    {
-      "boundValues": {},
-      "description": "",
       "id": "SkfESlumW",
       "label": "STAT",
       "position": {
@@ -56,17 +45,6 @@
         "y": 16
       },
       "type": "xod/patch-nodes/input-string"
-    },
-    {
-      "boundValues": {},
-      "description": "",
-      "id": "rJDNBgOXW",
-      "label": "RDY",
-      "position": {
-        "x": 266,
-        "y": 224
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundValues": {},

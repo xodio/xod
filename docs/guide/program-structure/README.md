@@ -60,16 +60,16 @@ electric counterparts, they can carry not only raw voltage values, but also
 more sensible data like arbitrary numbers and text strings. Learn more about
 values in the [Data Types](../data-types/) article.
 
-In digital electronics, voltage values are switched discretely, usually
-accompanied by some kind of clock signal. The clock signal is seen as a
-sequence of “moments” defined by the falling or rising signal edges on the
-clock line. Interactions and changes actually happen at these moments, i.e. a
-digital circuit is static until a new clock signal appears.
+In analog electronic circuits voltage levels change continuously and
+simultaneously at all points. There is no such thing as “this chip would think
+first, than another chip would think”. In digital electronics however many
+updates are accompanied with discrete pulses which are sourced by a
+microcontroller and called clock signals.
 
-Values behave very similarly in XOD. They change and propogate
-instantly. These cascading value updates are called *transactions*. In XOD, the
-role of clock signals is played by *pulses*. The [Execution
-Model](../execution-model/) article describes how they work in detail.
+Values behave very similarly in XOD. They change and propogate instantly. These
+cascading value updates are called *transactions*. In XOD, the role of clock
+signals is played by *pulses*. The [Execution Model](../execution-model/)
+article describes how they work in detail.
 
 There are a few rules that define which pins are allowed to be linked and which
 are not. They are intuitive enough, but for a formal description see [Linking
@@ -97,7 +97,7 @@ is used as a node.
     <a href="https://www.flickr.com/photos/26735065@N00/">cutwithflourish</a>.
   </span>
   <p>
-    <span class="ui blue ribbon label">Note</span>
+  <span class="ui blue ribbon label">Note</span>
     Perhaps you’ve heard of modular synthesizers - they are very similar to XOD
     programs. Nodes are modules, links are CV cables with banana connectors,
     and patches are a rack chassis for modules.

@@ -19,10 +19,9 @@ different parameters, thus avoiding node duplication.
 
 When you use one patch as a node in other patches it is called a *patch node*.
 
-In this chapter, we’re going to build a simple watering station for two
-plants. The idea is to water a plant if its soil became too dry and constantly
-show the current
-soil measurements on an LCD screen.
+In this chapter, we’re going to build a simple watering station for two plants.
+The idea is to water a plant if its soil became too dry and constantly show the
+current soil measurements on an LCD screen.
 
 Single plant station on a single patch
 --------------------------------------
@@ -45,7 +44,7 @@ light project. We've only changed the sensor and the actuator. The moisture
 sensor replaced the light sensor, and the pump replaced the LED.
 
 Upload the program to your board and test the device. Put the sensor into a
-glass of water and take it out. See how the relay reacts. Observe the text
+glass of water and take it out. See how the pump reacts. Observe the text
 shown on the LCD.
 
 Let’s improve the program a bit by adding pretty formatting to the messages
@@ -56,13 +55,22 @@ concatenate the constant prefix `"Cactus: "` with the percent string:
 
 ![Single plant patch with percents](./single-plant-percent.patch.png)
 
+<div class="ui segment">
+<p>
+<span class="ui ribbon label">Hint</span>
+You can click the help button
+<img src="./guide.svg" style="vertical-align: middle" height="16"/>
+in Inspector or Project Browser next to a node name to open node’s reference
+and learn what the node does.
+</p>
+</div>
+
 Extracting plant logic to a separate patch
 ------------------------------------------
 
 So far, so good. Now consider that we want to extend the device to handle two
 plants at once. We have another sensor, yet another relay, and a pump. What we
-want to
-share is the LCD. Each plant’s message should be shown on its own line.
+want to share is the LCD. Each plant’s message should be shown on its own line.
 
 The very staightforward way to do it would be to duplicate most of nodes
 related to reading and comparing data, and formatting the result. But it would
@@ -76,7 +84,7 @@ relay are also different. So these things need to be provided as parameters to
 our patch.
 
 What might the patch output to the outside world? It could be a status message
-string and a pulse that denotes that an update is complete.
+string.
 
 Create a new patch with File → New Patch, and name it `plant`. Look at
 Project Browser. You’ll see that a `plant` patch has appeared next to our
@@ -85,9 +93,8 @@ Project Browser. You’ll see that a `plant` patch has appeared next to our
 First of all, we’re going to define its inputs and outputs. Expand
 `xod/patch-nodes` in Project Browser and notice nodes with names like
 `input-xxx` and `output-xxx`. They are called *terminals*, and define the
-patch's
-input and output pins. Place a few inputs and outputs according to what we’ve
-planned to parametrize:
+patch's input and output pins. Place a few inputs and outputs according to what
+we’ve planned to parametrize:
 
 ![Plant patch terminals](./plant-terminals.patch.png)
 
