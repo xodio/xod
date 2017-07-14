@@ -165,6 +165,34 @@
     "path": "user/utils/test",
     "attachments": []
   },
+  "user/with-omitted-optionals/empty-lib-patch": {
+    "attachments": [],
+    "description": "",
+    "impls": {},
+    "links": {},
+    "nodes": {},
+    "path": "user/with-omitted-optionals/empty-lib-patch"
+  },
+  "user/with-omitted-optionals/optional-node-fields-omitted": {
+    "attachments": [],
+    "description": "",
+    "impls": {},
+    "links": {},
+    "nodes": {
+      "5c03e488-fefd-4f12-gq6a-78d209d9148c": {
+        "boundValues": {},
+        "description": "",
+        "id": "5c03e488-fefd-4f12-gq6a-78d209d9148c",
+        "label": "",
+        "position": {
+          "x": 292,
+          "y": 182
+        },
+        "type": "xod/core/pot"
+      }
+    },
+    "path": "user/with-omitted-optionals/optional-node-fields-omitted"
+  },
   "xod/math/test": {
     "description": "",
     "impls": {},

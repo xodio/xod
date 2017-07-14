@@ -10,7 +10,10 @@ import {
 } from './utils';
 import { loadAttachments } from './attachments';
 import { loadPatchImpls } from './impls';
-import { convertPatchFileContentsToPatch } from './convertTypes';
+import {
+  convertPatchFileContentsToPatch,
+  addMissingOptionsToPatchFileContents,
+} from './convertTypes';
 
 const scanLibsFolder = (libs, libsDir) => Promise.all(
   libs.map(
@@ -39,6 +42,7 @@ const readLibFiles = (libfiles) => {
           loadPatchImpls(path.dirname(patchPath)),
           R.assoc('path', `${name}/${getPatchName(patchPath)}`),
           convertPatchFileContentsToPatch,
+          addMissingOptionsToPatchFileContents,
           readJSON
         )(patchPath)
       )

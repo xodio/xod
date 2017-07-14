@@ -20,7 +20,10 @@ import {
 } from './utils';
 import { loadAttachments } from './attachments';
 import { loadPatchImpls } from './impls';
-import { convertPatchFileContentsToPatch } from './convertTypes';
+import {
+  convertPatchFileContentsToPatch,
+  addMissingOptionsToPatchFileContents,
+} from './convertTypes';
 // =============================================================================
 //
 // Reading of files
@@ -83,6 +86,7 @@ const readXodFile = projectPath => xodfile =>
             loadPatchImpls(dir),
             R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
             convertPatchFileContentsToPatch,
+            addMissingOptionsToPatchFileContents,
             Promise.resolve.bind(Promise)
           )(patch)
         ),

@@ -50,7 +50,7 @@ describe('Loader', () => {
   it('getProjects: return an array of projects in workspace, including libs', () =>
     Loader.getProjects(workspace)
       .then((projects) => {
-        expect(projects).to.have.lengthOf(4);
+        expect(projects).to.have.lengthOf(5);
       })
   );
   it('getProjects: reject CANT_ENUMERATE_PROJECTS for non-existent workspace',

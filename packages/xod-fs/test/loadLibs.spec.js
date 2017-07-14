@@ -11,7 +11,15 @@ describe('Library loader', () => {
   const workspace = path.resolve(__dirname, workspaceDir);
 
   it('should load xod/core libs from ./fixtures/workspace/lib', (done) => {
-    const coreLibsOnly = R.omit(['user/utils/test', 'xod/math/test'], libsFixture);
+    const coreLibsOnly = R.omit(
+      [
+        'user/utils/test',
+        'user/with-omitted-optionals/empty-lib-patch',
+        'user/with-omitted-optionals/optional-node-fields-omitted',
+        'xod/math/test',
+      ],
+      libsFixture
+    );
     const nodeTypes = Object.assign({}, coreLibsOnly);
     delete nodeTypes['@/qux']; // lib loader don't know anything about patch nodes!
 
@@ -28,6 +36,8 @@ describe('Library loader', () => {
       .then((data) => {
         expect(data).to.have.keys([
           'user/utils/test',
+          'user/with-omitted-optionals/empty-lib-patch',
+          'user/with-omitted-optionals/optional-node-fields-omitted',
           'xod/core/and',
           'xod/core/led',
           'xod/core/pot',

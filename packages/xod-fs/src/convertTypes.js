@@ -45,3 +45,22 @@ export const convertPatchFileContentsToPatch = def(
     XP.createPatch
   )()
 );
+
+const optionalPatchFields = {
+  nodes: [],
+  links: [],
+  description: '',
+};
+
+const optionalNodeFields = {
+  boundValues: {},
+  label: '',
+  description: '',
+};
+
+export const addMissingOptionsToPatchFileContents = R.compose(
+  R.evolve({
+    nodes: R.map(R.merge(optionalNodeFields)),
+  }),
+  R.merge(optionalPatchFields)
+);

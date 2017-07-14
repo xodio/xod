@@ -21,7 +21,7 @@ describe('Backup', () => {
     backup.make()
       .then(() => readDir(tempPath))
       .then((files) => {
-        expect(files).to.have.lengthOf(6);
+        expect(files).to.have.lengthOf(7);
         done();
       })
       .catch(err => done(err));

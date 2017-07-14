@@ -53,14 +53,15 @@ describe('saveArrangedFiles', () => {
 
   it('should save an extracted project into temp directory', (done) => {
     const dataToSave = arrangeByFiles(xodball);
+    const expectedFilesNumber = 7;
 
     const onFinish = () => {
       try {
         recReadDir(workspacePath, ['.DS_Store', 'Thumbs.db'], (err, files) => {
-          if (files.length === 6) {
+          if (files.length === expectedFilesNumber) {
             done();
           } else {
-            throw new Error('Wrong amount of files (not equal 5). Check .xodball or change amount in the test!');
+            throw new Error(`Wrong amount of files (not equal ${expectedFilesNumber}). Check .xodball or change amount in the test!`);
           }
         });
       } catch (err) {
