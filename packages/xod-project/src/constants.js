@@ -75,7 +75,7 @@ export const TYPES_COMPATIBILITY = {
   [PIN_TYPE.BOOLEAN]: {
     [PIN_TYPE.BOOLEAN]: true,
     [PIN_TYPE.NUMBER]: true,
-    [PIN_TYPE.PULSE]: false,
+    [PIN_TYPE.PULSE]: true,
     [PIN_TYPE.STRING]: true,
   },
   [PIN_TYPE.NUMBER]: {
