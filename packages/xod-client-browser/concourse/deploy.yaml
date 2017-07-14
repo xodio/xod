@@ -16,17 +16,18 @@ run:
       XOD=$(realpath xod)
 
       cd "$XOD" || exit 1
+      DESCRIBE=$(git describe --tags)
+      OFFSET=$(node -p "'$DESCRIBE'.match(/-(\d+)-(?:\w{8})$/)[1]")
       yarn install --no-progress
       NODE_ENV=production yarn run build
 
       cd "$XOD/packages/xod-client-browser" || exit 1
-      echo 'double-tap' >DOUBLE_TAP
       echo 'xodio/ide' >IMAGE_NAME
-      node -p 'require("./package.json").version' >VERSION
+      node -p "require('./package.json').version + '-$OFFSET'" >VERSION
+
       cp -at "$IDE"  \
        "$XOD/packages/xod-client-browser/dist"  \
        "$XOD/packages/xod-client-browser/Dockerfile"  \
-       "$XOD/packages/xod-client-browser/DOUBLE_TAP"  \
        "$XOD/packages/xod-client-browser/IMAGE_NAME"  \
        "$XOD/packages/xod-client-browser/VERSION"
   path: sh
