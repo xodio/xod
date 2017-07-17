@@ -52,15 +52,16 @@ const optionalPatchFields = {
   description: '',
 };
 
-const optionalNodeFields = {
-  boundValues: {},
-  label: '',
-  description: '',
-};
-
 export const addMissingOptionsToPatchFileContents = R.compose(
   R.evolve({
-    nodes: R.map(R.merge(optionalNodeFields)),
+    nodes: R.map(XP.addMissingOptionalNodeFields),
   }),
   R.merge(optionalPatchFields)
+);
+
+export const omitDefaultOptionsFromPatchFileContents = R.compose(
+  R.evolve({
+    nodes: R.map(XP.omitEmptyOptionalNodeFields),
+  }),
+  XP.substractObject(optionalPatchFields)
 );

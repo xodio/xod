@@ -1,15 +1,16 @@
 import path from 'path';
-import { curry } from 'ramda';
+import R from 'ramda';
 import { rejectWithCode } from 'xod-func-tools';
 
-import { resolvePath, expandHomeDir } from './utils';
+import { resolvePath, expandHomeDir, isPatchFile } from './utils';
 import { writeFile, writeJSON } from './write';
 import { Backup } from './backup';
 import { arrangeByFiles } from './unpack';
+import { omitDefaultOptionsFromPatchFileContents } from './convertTypes';
 import * as ERROR_CODES from './errorCodes';
 
 // :: pathToWorkspace -> data -> Promise
-const saveData = curry((pathToWorkspace, data) => new Promise((resolve, reject) => {
+const saveData = R.curry((pathToWorkspace, data) => new Promise((resolve, reject) => {
   const filePath = path.resolve(resolvePath(pathToWorkspace), data.path);
   // Decide how to write file, as JSON, or as string:
   const writeFn = (typeof data.content === 'string') ? writeFile : writeJSON;
@@ -18,7 +19,7 @@ const saveData = curry((pathToWorkspace, data) => new Promise((resolve, reject) 
 }));
 
 // :: pathToWorkspace -> data -> Promise
-export const saveArrangedFiles = curry((pathToWorkspace, data) => {
+export const saveArrangedFiles = R.curry((pathToWorkspace, data) => {
   let savingFiles = [];
 
   if (typeof data !== 'object') {
@@ -53,9 +54,13 @@ export const saveArrangedFiles = curry((pathToWorkspace, data) => {
 });
 
 // :: Path -> Project -> Promise Project Error
-export const saveProject = curry(
+export const saveProject = R.curry(
   (workspacePath, project) => Promise.resolve(project)
     .then(arrangeByFiles)
+    .then(R.map(R.when(
+      isPatchFile,
+      R.over(R.lensProp('content'), omitDefaultOptionsFromPatchFileContents)
+    )))
     .then(saveArrangedFiles(workspacePath))
     .then(() => project)
     .catch(rejectWithCode(ERROR_CODES.CANT_SAVE_PROJECT))
