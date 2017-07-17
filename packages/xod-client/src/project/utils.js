@@ -1,16 +1,7 @@
 import R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 
-import {
-  getLinkNodeIds,
-  isInputPin,
-  isOutputPin,
-  getPatchPath,
-  listLibraryPatches,
-  omitPatches,
-  getPatchByPath,
-  canCastTypes,
-} from 'xod-project';
+import * as XP from 'xod-project';
 
 import { getProject } from './selectors';
 
@@ -24,7 +15,7 @@ export const isLinkConnectedToNode =
   R.uncurryN(2, nodeId =>
     R.compose(
       R.contains(nodeId),
-      getLinkNodeIds
+      XP.getLinkNodeIds
     )
   );
 
@@ -35,7 +26,7 @@ export const isLinkConnectedToNode =
 
 // :: RenderablePin -> String | Null
 export const getPinSelectionError = (pin) => {
-  if (isInputPin(pin) && pin.isConnected) {
+  if (XP.isInputPin(pin) && pin.isConnected) {
     return LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
   }
 
@@ -60,10 +51,10 @@ export const getLinkingError = R.curry((pin1, pin2) => {
     return LINK_ERRORS.SAME_NODE;
   }
 
-  const inputPin = isInputPin(pin1) ? pin1 : pin2;
-  const outputPin = isOutputPin(pin1) ? pin1 : pin2;
+  const inputPin = XP.isInputPin(pin1) ? pin1 : pin2;
+  const outputPin = XP.isOutputPin(pin1) ? pin1 : pin2;
 
-  if (!canCastTypes(outputPin.type, inputPin.type)) {
+  if (!XP.canCastTypes(outputPin.type, inputPin.type)) {
     return LINK_ERRORS.INCOMPATIBLE_TYPES;
   }
 
@@ -85,20 +76,21 @@ export const getPinLinkabilityValidator = (linkingPin, nodes) => {
 
 export const getJSONForExport = (project) => {
   const libPaths = R.compose(
-    R.map(getPatchPath),
-    listLibraryPatches
+    R.map(XP.getPatchPath),
+    XP.listLibraryPatches
   )(project);
 
   return R.compose(
     p => JSON.stringify(p, null, 2),
-    omitPatches(libPaths)
+    XP.omitEmptyOptionalProjectFields,
+    XP.omitPatches(libPaths)
   )(project);
 };
 
 // :: State -> PatchPath -> Boolean
 export const isPatchPathTaken = (state, newPatchPath) => {
   const maybeExistingPatch = R.compose(
-    getPatchByPath(newPatchPath),
+    XP.getPatchByPath(newPatchPath),
     getProject
   )(state);
 
