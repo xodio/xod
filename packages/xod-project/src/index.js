@@ -55,6 +55,7 @@ export {
 } from './pin';
 export * from './link';
 export * from './constants';
+export * from './optionalFieldsUtils';
 export * from './utils';
 export * from './func-tools';
 export * from './types';
