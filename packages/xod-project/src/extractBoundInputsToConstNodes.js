@@ -17,14 +17,6 @@ const CONST_PATCH_PATHS = R.compose(
   R.merge
 )(CONST_NODETYPES, PULSE_CONST_NODETYPES);
 
-const isNodeWithCurriedPins = def(
-  'isNodeWithCurriedPins :: Node -> Boolean',
-  R.compose(
-    R.complement(R.isEmpty),
-    Node.getAllBoundValues
-  )
-);
-
 const getMapOfNodePinsWithLinks = def(
   'getMapOfNodePinsWithLinks :: [Node] -> [Link] -> Map NodeId [PinKey]',
   (nodes, links) => R.compose(
@@ -51,13 +43,28 @@ const getMapOfNodeOutputPins = def(
   )(nodes)
 );
 
-const getMapOfNodePinValues = def(
-  'getMapOfNodePinValues :: [Node] -> Map NodeId (Map PinKey DataValue)',
-  R.compose(
-    R.reject(R.isEmpty),
-    R.map(Node.getAllBoundValues),
-    R.indexBy(Node.getNodeId)
+const getNodePinValues = def(
+  'getNodePinValues :: Project -> Map NodeId Node -> Map NodeId (Map PinKey DataValue)',
+  (project, nodes) => R.map(
+    node => R.compose(
+      R.merge(Node.getAllBoundValues(node)),
+      R.map(Node.getBoundValueOrDefault(R.__, node)),
+      R.indexBy(Pin.getPinKey),
+      Patch.listPins,
+      Project.getPatchByPathUnsafe(R.__, project),
+      Node.getNodeType
+    )(node),
+    nodes
   )
+);
+
+const getMapOfNodePinValues = def(
+  'getMapOfNodePinValues :: Project -> [Node] -> Map NodeId (Map PinKey DataValue)',
+  (project, nodes) => R.compose(
+    R.reject(R.isEmpty),
+    getNodePinValues(project),
+    R.indexBy(Node.getNodeId)
+  )(nodes)
 );
 
 const getMapOfNodeTypes = def(
@@ -85,8 +92,8 @@ const getMapOfNodePinTypes = def(
       R.indexBy(Pin.getPinKey),
       R.filter(isCurriedInNodePin(mapOfNodePinValues, nodeId)),
       Patch.listPins,
-      Project.getPatchByPathUnsafe(R.__, project)
-    )(patchPath),
+      Project.getPatchByPathUnsafe
+    )(patchPath, project),
     getMapOfNodeTypes(curriedNodes)
   )
 );
@@ -272,7 +279,6 @@ const extractBoundInputsToConstNodes = def(
     const entryPointPatch = Project.getPatchByPathUnsafe(path, flatProject);
     const entryPointNodes = Patch.listNodes(entryPointPatch);
     const entryPointLinks = Patch.listLinks(entryPointPatch);
-    const nodesWithCurriedPins = R.filter(isNodeWithCurriedPins, entryPointNodes);
 
     const occupiedNodePins = getMapOfNodePinsWithLinks(entryPointNodes, entryPointLinks);
     const outputNodePins = getMapOfNodeOutputPins(entryPointNodes, origProject);
@@ -284,12 +290,12 @@ const extractBoundInputsToConstNodes = def(
           pins
         )
       ),
-      getMapOfNodePinValues
+      getMapOfNodePinValues(flatProject)
     )(entryPointNodes);
 
     const extractablePinPaths = getMapOfExtractablePinPaths(
       allInputPinValues,
-      nodesWithCurriedPins,
+      entryPointNodes,
       flatProject
     );
     const constPinKeys = getMapOfPathsToPinKeys(CONST_PATCH_PATHS, origProject);
