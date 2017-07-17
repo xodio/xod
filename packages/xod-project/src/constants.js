@@ -34,6 +34,9 @@ export const ERROR = {
   DATATYPE_INVALID: 'Invalid data type',
   IMPLEMENTATION_NOT_FOUND: 'No implementation for {patchPath} found. Searched for: {impl}',
   CAST_PATCH_NOT_FOUND: 'Casting patch "{patchPath}" is not found in the project',
+  // .xodball format
+  NOT_A_JSON: 'File that you try to load is not in a JSON format',
+  INVALID_XODBALL_FORMAT: 'File that you try to load is corrupted and has a wrong structure',
 };
 
 export const IDENTIFIER_RULES =
