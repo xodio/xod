@@ -74,19 +74,6 @@ export const getPinLinkabilityValidator = (linkingPin, nodes) => {
   return canPinsBeLinked(selectedPin);
 };
 
-export const getJSONForExport = (project) => {
-  const libPaths = R.compose(
-    R.map(XP.getPatchPath),
-    XP.listLibraryPatches
-  )(project);
-
-  return R.compose(
-    p => JSON.stringify(p, null, 2),
-    XP.omitEmptyOptionalProjectFields,
-    XP.omitPatches(libPaths)
-  )(project);
-};
-
 // :: State -> PatchPath -> Boolean
 export const isPatchPathTaken = (state, newPatchPath) => {
   const maybeExistingPatch = R.compose(

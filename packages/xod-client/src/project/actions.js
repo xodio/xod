@@ -1,6 +1,4 @@
-import R from 'ramda';
 import * as XP from 'xod-project';
-import { foldEither } from 'xod-func-tools';
 
 import { addError } from '../messages/actions';
 import { NODETYPE_ERROR_TYPES } from '../editor/constants';
@@ -139,18 +137,10 @@ export const openProject = project => ({
   payload: project,
 });
 
-export const importProject = rawProjectData => dispatch =>
-  R.compose(
-    foldEither(
-      () => dispatch(addError('Invalid file format')), // TODO
-      project => dispatch({
-        type: ActionType.PROJECT_IMPORT,
-        payload: project,
-      })
-    ),
-    XP.Project.validate.bind(XP.Project),
-    XP.addMissingOptionalProjectFields
-  )(rawProjectData);
+export const importProject = project => ({
+  type: ActionType.PROJECT_IMPORT,
+  payload: project,
+});
 
 export const openWorkspace = libs => ({
   type: ActionType.PROJECT_OPEN_WORKSPACE,
