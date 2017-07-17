@@ -76,10 +76,19 @@ const extractLibNamesFromFilenames = libsDir => R.compose(
 
 export const loadAllLibs = (workspace) => {
   const libsDir = path.resolve(resolvePath(workspace), 'lib');
-  return scanLibsFolder(['.'], libsDir)
+  const folder = '.';
+
+  return scanLibsFolder([folder], libsDir)
     .then(R.compose(
       extractLibNamesFromFilenames(libsDir),
-      R.prop(['.'])
+      R.prop(folder)
     ))
-    .then(libs => loadLibs(libs, workspace));
+    .then(libs => loadLibs(libs, workspace))
+    .catch((err) => {
+      // Catch error ENOENT in case if libsDir is not found.
+      // E.G. User deleted it before select project.
+      // So in this case we'll return just empty array of libs.
+      if (err.code === 'ENOENT') return Promise.resolve([]);
+      return Promise.reject(err);
+    });
 };

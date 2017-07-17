@@ -106,27 +106,21 @@ export const loadProjectWithoutLibs = projectPath => R.composeP(
 )(projectPath);
 
 // :: Path -> Path -> Path -> Promise [File] Error
-export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) => {
+export const loadProjectWithLibs = (projectPath, workspace, libWorkspace = workspace) => {
   const fullProjectPath = resolvePath(path.resolve(workspace, projectPath));
-  return loadProjectWithoutLibs(fullProjectPath)
-    .then((projectFiles) => {
-      const libPath = resolvePath(libDir);
-      return loadAllLibs(workspace)
-        .catch((err) => {
-          // Catch error ENOENT in case if libsDir is not found.
-          // E.G. User deleted it before select project.
-          // So in this case we'll return just empty array of libs.
-          if (err.code === 'ENOENT') return Promise.resolve([]);
-          return Promise.reject(err);
-        })
-        .then(libs => ({ project: projectFiles, libs }))
-        .catch(err => Promise.reject(
-          Object.assign(err, {
-            path: libPath,
-            files: projectFiles,
-          })
-        ));
-    });
+  const libPath = resolvePath(libWorkspace);
+
+  return Promise.all([
+    loadProjectWithoutLibs(fullProjectPath),
+    loadAllLibs(libPath),
+  ]).then(([projectFiles, libs]) => ({ project: projectFiles, libs }))
+    .catch(err => Promise.reject(
+      Object.assign(err, {
+        libPath,
+        fullProjectPath,
+        workspace,
+      })
+    ));
 };
 
 // :: Path -> Promise Project Error
