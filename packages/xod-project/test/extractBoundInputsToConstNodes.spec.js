@@ -8,6 +8,12 @@ import * as Helper from './helpers';
 // TODO: automatically load from workspace?
 import constantPatches from './fixtures/constant-patches.json';
 
+// :: Patch -> Map NodeType Node
+const getNodesByNodeTypes = R.compose(
+  R.indexBy(XP.getNodeType),
+  XP.listNodes
+);
+
 describe('extractBoundInputsToConstNodes', () => {
   const mainPatchPath = XP.getLocalPath('main');
   const testPatchPath = XP.getLocalPath('test');
@@ -27,6 +33,21 @@ describe('extractBoundInputsToConstNodes', () => {
       },
       [getInputPinKey(XP.PIN_TYPE.NUMBER)]: {
         type: XP.getTerminalPath(XP.PIN_DIRECTION.INPUT, XP.PIN_TYPE.NUMBER),
+        boundValues: {
+          __out__: 37,
+        },
+      },
+      'on-boot': {
+        type: XP.getTerminalPath(XP.PIN_DIRECTION.INPUT, XP.PIN_TYPE.PULSE),
+        boundValues: {
+          __out__: XP.INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT,
+        },
+      },
+      continuously: {
+        type: XP.getTerminalPath(XP.PIN_DIRECTION.INPUT, XP.PIN_TYPE.PULSE),
+        boundValues: {
+          __out__: XP.INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY,
+        },
       },
       'some-output': {
         type: XP.getTerminalPath(XP.PIN_DIRECTION.OUTPUT, XP.PIN_TYPE.NUMBER),
@@ -36,27 +57,69 @@ describe('extractBoundInputsToConstNodes', () => {
       },
     },
   });
-
-  it('leaves nodes without bound input values unchanged', () => {
-    const project = Helper.defaultizeProject({
-      patches: R.merge(constantPatches, {
-        [mainPatchPath]: {
-          nodes: {
-            'test-node': {
-              type: testPatchPath,
-              boundValues: {
-                'some-output': 42,
-              },
+  const testProject = Helper.defaultizeProject({
+    patches: R.merge(constantPatches, {
+      [mainPatchPath]: {
+        nodes: {
+          'test-node': {
+            type: testPatchPath,
+            boundValues: {
+              'some-output': 42,
             },
           },
         },
-        [testPatchPath]: testPatch,
-      }),
-    });
+      },
+      [testPatchPath]: testPatch,
+    }),
+  });
+
+  const extractNodeFromProject = R.curry(
+    (nodeId, patchPath, projectObject) => XP.getNodeByIdUnsafe(
+      nodeId,
+      XP.getPatchByPathUnsafe(patchPath, projectObject)
+    )
+  );
+
+  it('leaves nodes without bound input values unchanged', () => {
+    const project = R.clone(testProject);
+
+    const newProject = XP.extractBoundInputsToConstNodes(project, mainPatchPath, project);
+    const getTestNode = extractNodeFromProject('test-node', mainPatchPath);
+
+    const originalNode = getTestNode(project);
+    const newNode = getTestNode(newProject);
 
     assert.deepEqual(
-      project,
-      XP.extractBoundInputsToConstNodes(project, mainPatchPath, project)
+      XP.getAllBoundValues(originalNode),
+      XP.getAllBoundValues(newNode)
+    );
+  });
+
+  it('extracts default bound values into constant nodes', () => {
+    const findNodeByType = R.curry((type, patch) =>
+      R.compose(
+        R.propOr(null, type),
+        R.indexBy(XP.getNodeType),
+        XP.listNodes
+      )(patch)
+    );
+
+    const project = R.clone(testProject);
+    const newProject = XP.extractBoundInputsToConstNodes(project, mainPatchPath, project);
+    const mainPatch = XP.getPatchByPathUnsafe('@/main', newProject);
+
+    const constNodes = R.ap([
+      findNodeByType(XP.CONST_NODETYPES[XP.PIN_TYPE.NUMBER]),
+      findNodeByType(XP.CONST_NODETYPES[XP.PIN_TYPE.BOOLEAN]),
+      findNodeByType(XP.CONST_NODETYPES[XP.PIN_TYPE.STRING]),
+      findNodeByType(XP.PULSE_CONST_NODETYPES[XP.INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT]),
+      findNodeByType(XP.PULSE_CONST_NODETYPES[XP.INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY]),
+    ], [mainPatch]);
+    const doesAllConstNodesExist = R.all(R.complement(R.isNil), constNodes);
+
+    assert.equal(
+      doesAllConstNodesExist,
+      true
     );
   });
 
@@ -90,10 +153,7 @@ describe('extractBoundInputsToConstNodes', () => {
 
       const patch = XP.getPatchByPathUnsafe(mainPatchPath, transformedProject);
 
-      const nodesByNodeType = R.compose(
-        R.indexBy(XP.getNodeType),
-        XP.listNodes
-      )(patch);
+      const nodesByNodeType = getNodesByNodeTypes(patch);
 
       const testNode = nodesByNodeType[testPatchPath];
       assert.isTrue(
@@ -114,8 +174,9 @@ describe('extractBoundInputsToConstNodes', () => {
         XP.getPatchByPathUnsafe(R.__, transformedProject)
       )(expectedConstNodeType);
 
-      const links = XP.listLinks(patch);
-      assert.lengthOf(links, 1, 'a single link must be created');
+      const links = XP.listLinksByNode(constantNode, patch);
+      const expectedLinksCount = (dataType === XP.PIN_TYPE.PULSE) ? 2 : 1;
+      assert.lengthOf(links, expectedLinksCount, 'a single link must be created');
 
       const link = R.head(links);
       assert.equal(
@@ -181,9 +242,8 @@ describe('extractBoundInputsToConstNodes', () => {
   );
 
   it('discards any other values bound to pulse pins', () => {
-    const dataType = XP.PIN_TYPE.PULSE;
     const boundValue = XP.INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER;
-    const boundPinKey = getInputPinKey(dataType);
+    const boundPinKey = getInputPinKey(XP.PIN_TYPE.PULSE);
     const testNodeId = 'test-node';
 
     const project = Helper.defaultizeProject({
@@ -206,11 +266,9 @@ describe('extractBoundInputsToConstNodes', () => {
 
     const patch = XP.getPatchByPathUnsafe(mainPatchPath, transformedProject);
 
-    const nodesByNodeType = R.compose(
-      R.indexBy(XP.getNodeType),
-      XP.listNodes
-    )(patch);
-    assert.lengthOf(R.values(nodesByNodeType), 1, 'no new nodes must be created');
+    const nodesByNodeType = getNodesByNodeTypes(patch);
+    assert.lengthOf(R.values(nodesByNodeType), 6, 'constant nodes with default pin values must be created');
+
     const testNode = nodesByNodeType[testPatchPath];
 
     assert.isTrue(
@@ -219,6 +277,6 @@ describe('extractBoundInputsToConstNodes', () => {
     );
 
     const links = XP.listLinks(patch);
-    assert.lengthOf(links, 0, 'no links must be created');
+    assert.lengthOf(links, 5, 'links from constant nodes with default pin values must be created');
   });
 });
