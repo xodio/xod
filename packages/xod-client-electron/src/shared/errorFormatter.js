@@ -19,6 +19,8 @@ const ERROR_FORMATTERS = {
   [XFS_EC.WORKSPACE_DIR_NOT_EMPTY]: err => `Workspace directory at ${err.path} is not empty`,
   [XFS_EC.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY]: err => `Workspace directory at ${err.path} not exist or empty`,
 
+  [XFS_EC.INVALID_FILE_CONTENTS]: err => `Could not open selected project: invalid contents in ${err.path}`,
+
   [XFS_EC.CANT_CREATE_WORKSPACE_FILE]: err => `Could not create workspace at ${err.path}: ${err.message}`,
   [XFS_EC.CANT_COPY_STDLIB]: err => `Could not copy stdlib at ${err.path}: ${err.message}`,
   [XFS_EC.CANT_COPY_DEFAULT_PROJECT]: err => `Could not copy default project at ${err.path}: ${err.message}`,
@@ -26,7 +28,7 @@ const ERROR_FORMATTERS = {
   [XFS_EC.CANT_SAVE_PROJECT]: err => `Could not save the project at ${err.path}: ${err.message}`,
 
   [EC.CANT_CREATE_NEW_PROJECT]: err => `Could not create a new project: ${err.message}`,
-  [EC.CANT_OPEN_SELECTED_PROJECT]: err => `Could not open a selected project: ${err.message}`,
+  [EC.CANT_OPEN_SELECTED_PROJECT]: err => `Could not open selected project: ${err.message}`,
 };
 
 // :: Error -> String
