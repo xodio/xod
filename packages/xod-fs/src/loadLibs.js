@@ -1,5 +1,6 @@
 import R from 'ramda';
 import path from 'path';
+
 import * as XP from 'xod-project';
 
 import { readDir, readJSON } from './read';
@@ -7,6 +8,7 @@ import {
   resolvePath,
   getPatchName,
   hasExt,
+  rejectOnInvalidPatchFileContents,
 } from './utils';
 import { loadAttachments } from './attachments';
 import { loadPatchImpls } from './impls';
@@ -42,6 +44,7 @@ const readLibFiles = (libfiles) => {
           loadPatchImpls(path.dirname(patchPath)),
           R.assoc('path', `${name}/${getPatchName(patchPath)}`),
           convertPatchFileContentsToPatch,
+          rejectOnInvalidPatchFileContents(patchPath),
           addMissingOptionsToPatchFileContents,
           readJSON
         )(patchPath)

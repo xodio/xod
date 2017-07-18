@@ -24,6 +24,7 @@ const rmAttachments = R.map(R.dissocPath(['content', 'attachments']));
 
 describe('Loader', () => {
   const workspace = path.resolve(__dirname, tempDir);
+  const brokenWorkspace = path.resolve(__dirname, './fixtures/broken-workspace');
   const projectPath = 'awesome-project';
 
   it('getLocalProjects: return an array of local projects in workspace', () =>
@@ -73,40 +74,67 @@ describe('Loader', () => {
     )
   );
 
-  it('loadProjectWithLibs: return project with libs', () =>
-    Loader.loadProjectWithLibs(projectPath, workspace)
-      .then(({ project, libs }) => {
-        const quxPatch = R.find(R.pathEq(['content', 'path'], '@/qux'), project);
-        const quxPatchFixture = R.find(R.pathEq(['content', 'path'], '@/qux'), unpacked);
-        const projectWithoutAttachments = sortByPath(rmAttachments(project));
-        const fixtureWithoutAttachments = sortByPath(rmAttachments(unpacked));
+  describe('loadProjectWithLibs', () => {
+    it('should return project with libs', () =>
+      Loader.loadProjectWithLibs(projectPath, workspace)
+        .then(({ project, libs }) => {
+          const quxPatch = R.find(R.pathEq(['content', 'path'], '@/qux'), project);
+          const quxPatchFixture = R.find(R.pathEq(['content', 'path'], '@/qux'), unpacked);
+          const projectWithoutAttachments = sortByPath(rmAttachments(project));
+          const fixtureWithoutAttachments = sortByPath(rmAttachments(unpacked));
 
-        expect(projectWithoutAttachments).to.deep.equal(fixtureWithoutAttachments);
-        assert.sameDeepMembers(quxPatch.content.attachments, quxPatchFixture.content.attachments);
-        expect(libs).to.deep.equal(libsFixture);
-      })
-  );
+          expect(projectWithoutAttachments).to.deep.equal(fixtureWithoutAttachments);
+          assert.sameDeepMembers(quxPatch.content.attachments, quxPatchFixture.content.attachments);
+          expect(libs).to.deep.equal(libsFixture);
+        })
+    );
 
-  it('loadProjectWithoutLibs: return project without libs', () => {
-    const xodCore = path.resolve(workspace, './lib/xod/core');
-    const xodCoreOwner = path.resolve(xodCore, '..');
+    it('should return rejected Promise when loading an ok project because of broken lib',
+      () => {
+        const okProject = path.resolve(brokenWorkspace, './ok-project');
 
-    return Loader.loadProjectWithoutLibs(xodCore)
-      .then((project) => {
-        const implList = shell.ls(`${xodCore}/**/*.{c,cpp,h,inl,js}`);
-        assert.isAbove(implList.length, 0);
+        return expectRejectedWithCode(
+          Loader.loadProjectWithLibs(okProject, brokenWorkspace),
+          ERROR_CODES.INVALID_FILE_CONTENTS
+        );
+      }
+    );
+  });
 
-        return implList.every((implPath) => {
-          const { base, dir } = path.parse(implPath);
-          const implType = getImplTypeByFilename(base);
-          const impl = fs.readFileSync(implPath).toString();
-          const xodp = `./${path.relative(xodCoreOwner, `${dir}/patch.xodp`)}`;
-          const patch = project.find(_ => _.path === xodp);
-          if (!(patch && patch.content.impls)) return false;
-          return patch.content.impls[implType] === impl;
-        });
-      }).then(
-        implsLoaded => assert.equal(implsLoaded, true, 'some implementations were not loaded')
-      );
+
+  describe('loadProjectWithoutLibs', () => {
+    it('should return project without libs', () => {
+      const xodCore = path.resolve(workspace, './lib/xod/core');
+      const xodCoreOwner = path.resolve(xodCore, '..');
+
+      return Loader.loadProjectWithoutLibs(xodCore)
+        .then((project) => {
+          const implList = shell.ls(`${xodCore}/**/*.{c,cpp,h,inl,js}`);
+          assert.isAbove(implList.length, 0);
+
+          return implList.every((implPath) => {
+            const { base, dir } = path.parse(implPath);
+            const implType = getImplTypeByFilename(base);
+            const impl = fs.readFileSync(implPath).toString();
+            const xodp = `./${path.relative(xodCoreOwner, `${dir}/patch.xodp`)}`;
+            const patch = project.find(_ => _.path === xodp);
+            if (!(patch && patch.content.impls)) return false;
+            return patch.content.impls[implType] === impl;
+          });
+        }).then(
+          implsLoaded => assert.equal(implsLoaded, true, 'some implementations were not loaded')
+        );
+    });
+
+    it('should return rejected Promise when loading a broken project',
+      () => {
+        const brokenProject = path.resolve(brokenWorkspace, './broken-project');
+
+        return expectRejectedWithCode(
+          Loader.loadProjectWithoutLibs(brokenProject),
+          ERROR_CODES.INVALID_FILE_CONTENTS
+        );
+      }
+    );
   });
 });

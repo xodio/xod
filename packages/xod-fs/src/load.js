@@ -17,6 +17,7 @@ import {
   basenameEquals,
   basenameAmong,
   getPatchName,
+  rejectOnInvalidPatchFileContents,
 } from './utils';
 import { loadAttachments } from './attachments';
 import { loadPatchImpls } from './impls';
@@ -86,6 +87,7 @@ const readXodFile = projectPath => xodfile =>
             loadPatchImpls(dir),
             R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
             convertPatchFileContentsToPatch,
+            rejectOnInvalidPatchFileContents(filePath),
             addMissingOptionsToPatchFileContents,
             Promise.resolve.bind(Promise)
           )(patch)

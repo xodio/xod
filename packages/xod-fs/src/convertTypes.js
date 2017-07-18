@@ -39,9 +39,9 @@ export const convertPatchFileContentsToPatch = def(
   'convertPatchFileContentsToPatch :: PatchFileContents -> Patch',
   fsPatch => R.compose(
     XF.explodeEither,
-    XP.upsertLinks(fsPatch.links || []),
-    XP.upsertNodes(fsPatch.nodes || []),
-    XP.setPatchDescription(fsPatch.description || ''),
+    XP.upsertLinks(fsPatch.links),
+    XP.upsertNodes(fsPatch.nodes),
+    XP.setPatchDescription(fsPatch.description),
     XP.createPatch
   )()
 );
