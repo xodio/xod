@@ -158,7 +158,11 @@ const eitherTypeId = 'ramda-fantasy/Either';
 export const $Either = $.BinaryType(
   eitherTypeId,
   'https://github.com/ramda/ramda-fantasy/blob/master/docs/Either.md',
-  checkTypeId(eitherTypeId),
+  R.either(
+    checkTypeId(eitherTypeId),
+    // sanctuary-def type's 'validate' method returns this kind of Eithers
+    checkTypeId('sanctuary-def/Either'),
+  ),
   either => (either.isLeft ? [either.value] : []),
   either => (either.isRight ? [either.value] : [])
 );
