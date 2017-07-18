@@ -63,5 +63,5 @@ export const omitDefaultOptionsFromPatchFileContents = R.compose(
   R.evolve({
     nodes: R.map(XP.omitEmptyOptionalNodeFields),
   }),
-  XP.substractObject(optionalPatchFields)
+  XF.subtractObject(optionalPatchFields)
 );
