@@ -30,7 +30,6 @@ Open <http://localhost:8080> in your browser.
 ### Desktop IDE
 
     $ yarn build -- xod-client-electron
-    $ yarn electron-rebuild
     $ yarn start:xod-client-electron
 
 Directory structure
@@ -55,8 +54,6 @@ subcommands:
 
 - `yarn build` — build, transpile, pack
 - `yarn dev` — the same, but watches for changes with auto-reload
-- `yarn electron-rebuild` — rebuilds native modules to fix
-  incompatibilities between Electron’s NodeJS and system NodeJS
 - `yarn electron-dist` — build OS-specific distributive
 - `yarn test` — run unit tests
 - `yarn test:watch` — like test, but watches for changes with auto-retest

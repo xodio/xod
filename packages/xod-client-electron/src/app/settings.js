@@ -1,3 +1,5 @@
+import path from 'path';
+import { resolvePath } from 'xod-fs';
 import R from 'ramda';
 import electronSettings from 'electron-settings';
 
@@ -31,6 +33,18 @@ export const setDefaults = R.compose(
   R.when(R.isEmpty, () => save(DEFAULT_SETTINGS)),
   load
 );
+
+/**
+ * To make settings path changeble in dependency of env varialbe (E.G. for functional tests)
+ * we have to call this function before electron app onReady called.
+ * It accepts:
+ * - a path to directory (could contain a homedir alias `~`)
+ * - filename for settings file (default is `Settings`).
+ */
+export const rewriteElectronSettingsFilePath = (dirPath, fileName = 'Settings') => {
+  const fullPath = path.join(resolvePath(dirPath), fileName);
+  electronSettings.setPath(fullPath);
+};
 
 // =============================================================================
 //

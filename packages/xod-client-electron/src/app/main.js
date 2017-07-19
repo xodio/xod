@@ -1,24 +1,47 @@
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from 'electron-log';
+import isDevelopment from 'electron-is-dev';
+import * as EVENTS from '../shared/events';
 import {
-  app,
-  ipcMain,
-  BrowserWindow,
-  shell,
-} from 'electron';
-
-import * as WA from './workspaceActions';
-import { errorToPlainObject } from './utils';
-import {
-  listPortsHandler,
   listBoardsHandler,
+  listPortsHandler,
   loadTargetBoardHandler,
   saveTargetBoardHandler,
-  uploadToArduinoHandler,
   setArduinoIDEHandler,
+  uploadToArduinoHandler,
 } from './arduinoActions';
 import * as settings from './settings';
-import * as EVENTS from '../shared/events';
+import { errorToPlainObject } from './utils';
+import * as WA from './workspaceActions';
+import { configureAutoUpdater, subscribeOnAutoUpdaterEvents } from './autoupdate';
+
+// =============================================================================
+//
+// Configure application
+//
+// =============================================================================
+const IS_DEV = (isDevelopment || process.env.NODE_ENV === 'development');
 
 app.setName('xod');
+
+configureAutoUpdater(autoUpdater, log);
+
+if (process.env.USERDATA_DIR) {
+  app.setPath('userData', process.env.USERDATA_DIR);
+  settings.rewriteElectronSettingsFilePath(app.getPath('userData'));
+}
+
+if (IS_DEV) {
+  // To prevent GL_ERROR in development version (black rectangles).
+  app.disableHardwareAcceleration();
+}
+
+// =============================================================================
+//
+// Application main process
+//
+// =============================================================================
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -66,16 +89,19 @@ function createWindow() {
 const subscribeToRemoteAction = (processName, remoteAction) => {
   ipcMain.on(processName, (event, data) => {
     event.sender.send(`${processName}:process`);
-    remoteAction(event, data)
-      .then((result) => { event.sender.send(`${processName}:complete`, result); })
-      .catch((err) => { event.sender.send(`${processName}:error`, errorToPlainObject(err)); });
+    remoteAction(event, data).then((result) => {
+      event.sender.send(`${processName}:complete`, result);
+    }).catch((err) => {
+      event.sender.send(`${processName}:error`, errorToPlainObject(err));
+    });
   });
 };
 
+configureAutoUpdater(autoUpdater, log);
+
 const onReady = () => {
-  if (process.env.NODE_ENV === 'development') {
-    // eslint-disable-next-line global-require
-    require('devtron').install();
+  if (IS_DEV) {
+    require('devtron').install(); // eslint-disable-line global-require
   }
   settings.setDefaults();
 
@@ -91,7 +117,17 @@ const onReady = () => {
 
   createWindow();
   win.webContents.on('did-finish-load', () => {
-    WA.prepareWorkspaceOnLaunch((eventName, data) => win.webContents.send(eventName, data));
+    WA.prepareWorkspaceOnLaunch((eventName, data) => {
+      win.webContents.send(eventName, data);
+    });
+
+    subscribeOnAutoUpdaterEvents(
+      (eventName, data) => win.webContents.send(eventName, data),
+      ipcMain,
+      autoUpdater
+    );
+
+    autoUpdater.checkForUpdates();
   });
 };
 

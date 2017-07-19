@@ -13,7 +13,6 @@
     "doc": "node ./tools/lerna-run-sorted doc",
     "doc:fz": "cd docs && make",
     "electron-dist": "node ./tools/lerna-abs-symlinks && cd packages/xod-client-electron && yarn run dist",
-    "electron-rebuild": "lerna run --scope xod-client-electron electron-rebuild",
     "lerna": "lerna",
     "lint": "eslint packages/*/src packages/*/test packages/*/test-func packages/xod-js/platform --ext js,jsx",
     "postinstall": "yarn run bootstrap",
@@ -23,7 +22,7 @@
     "test": "XOD_HM_DEF=true node ./tools/lerna-run-sorted test",
     "test:watch": "node ./tools/lerna-serve test:watch",
     "test-func": "node ./tools/lerna-run-sorted test-func",
-    "verify": "yarn run build && yarn run lint && yarn run test"
+    "verify": "yarn run build && yarn run lint && yarn run test && yarn run test-func"
   },
   "devDependencies": {
     "@google-cloud/storage": "^1.1.0",
