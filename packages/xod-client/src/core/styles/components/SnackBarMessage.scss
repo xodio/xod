@@ -45,6 +45,14 @@
     cursor: default;
     outline: none;
 
-    p { margin: 0; }
+    .message-content { margin: 0; }
+  }
+
+  .SnackBar-buttons-container {
+    margin-top: 7px;
+
+    .Button {
+      margin-right: 5px;
+    }
   }
 }

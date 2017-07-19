@@ -25,20 +25,33 @@ class SnackBarMessage extends React.Component {
   }
 
   getMessageContent() {
-    const message = this.props.message;
+    const { message, onClickMessageButton } = this.props;
 
-    if (message.type === MESSAGE_TYPE.ERROR) {
-      return (
-        <p>
-          {message.payload.message}
-        </p>
-      );
-    }
+    const buttons = R.unless(
+      R.isEmpty,
+      R.compose(
+        btns => React.createElement(
+          'div',
+          { className: 'SnackBar-buttons-container' },
+          btns
+        ),
+        R.map(({ id, text }) => (
+          <button
+            className="Button Button--small"
+            key={id}
+            onClick={() => onClickMessageButton(id, message)}
+          >
+            {text}
+          </button>
+        ))
+      )
+    )(message.payload.buttons);
 
     return (
-      <p>
+      <div className="message-content">
         {message.payload.message}
-      </p>
+        {buttons}
+      </div>
     );
   }
 
@@ -64,7 +77,7 @@ class SnackBarMessage extends React.Component {
   }
 
   render() {
-    const message = this.props.message;
+    const { message } = this.props;
     const cls = classNames('SnackBarMessage', {
       hidden: this.state.hidden,
       display: this.state.display,
@@ -77,7 +90,6 @@ class SnackBarMessage extends React.Component {
     return (
       <li
         className={cls}
-        dataId={message.id}
       >
         <a tabIndex={message.id} >
           {messageContent}
@@ -88,7 +100,25 @@ class SnackBarMessage extends React.Component {
 }
 
 SnackBarMessage.propTypes = {
-  message: PropTypes.object,
+  message: PropTypes.shape({
+    /* eslint-disable react/no-unused-prop-types */
+    id: PropTypes.number,
+    type: PropTypes.string,
+    persistent: PropTypes.bool,
+    payload: PropTypes.shape({
+      message: PropTypes.string.isRequired,
+      buttons: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string,
+        text: PropTypes.string,
+      })).isRequired,
+    }),
+    /* eslint-enable react/no-unused-prop-types */
+  }),
+  onClickMessageButton: PropTypes.func,
+};
+
+SnackBarMessage.defaultProps = {
+  onClickMessageButton: () => {},
 };
 
 export default SnackBarMessage;
