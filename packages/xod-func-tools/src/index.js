@@ -71,6 +71,12 @@ export const foldEither = def(
   )
 );
 
+// :: Either a b -> Promise a b
+export const eitherToPromise = foldEither(
+  Promise.reject.bind(Promise),
+  Promise.resolve.bind(Promise)
+);
+
 /**
  * Unwraps Either monad and returns it’s value if it is Right and throws an Error
  * if it is Left.
