@@ -2,11 +2,14 @@ import path from 'path';
 import R from 'ramda';
 import { rejectWithCode } from 'xod-func-tools';
 
-import { resolvePath, expandHomeDir, isPatchFile } from './utils';
+import { resolvePath, expandHomeDir, isPatchFile, isProjectFile } from './utils';
 import { writeFile, writeJSON } from './write';
 import { Backup } from './backup';
 import { arrangeByFiles } from './unpack';
-import { omitDefaultOptionsFromPatchFileContents } from './convertTypes';
+import {
+  omitDefaultOptionsFromPatchFileContents,
+  omitDefaultOptionsFromProjectFileContents,
+} from './convertTypes';
 import * as ERROR_CODES from './errorCodes';
 
 // :: pathToWorkspace -> data -> Promise
@@ -57,12 +60,19 @@ export const saveArrangedFiles = R.curry((pathToWorkspace, data) => {
 export const saveProject = R.curry(
   (workspacePath, project) => Promise.resolve(project)
     .then(arrangeByFiles)
-    .then(R.map(R.when(
-      isPatchFile,
-      R.over(R.lensProp('content'), omitDefaultOptionsFromPatchFileContents)
-    )))
+    .then(R.map(R.cond([
+      [
+        isPatchFile,
+        R.over(R.lensProp('content'), omitDefaultOptionsFromPatchFileContents),
+      ],
+      [
+        isProjectFile,
+        R.over(R.lensProp('content'), omitDefaultOptionsFromProjectFileContents),
+      ],
+      [R.T, R.identity],
+    ])))
     .then(saveArrangedFiles(workspacePath))
-    .then(() => project)
+    .then(R.always(project))
     .catch(rejectWithCode(ERROR_CODES.CANT_SAVE_PROJECT))
 );
 

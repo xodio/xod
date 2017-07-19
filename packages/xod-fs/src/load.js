@@ -19,11 +19,13 @@ import {
   getPatchName,
   rejectOnInvalidPatchFileContents,
 } from './utils';
+import { ProjectFileContents } from './types';
 import { loadAttachments } from './attachments';
 import { loadPatchImpls } from './impls';
 import {
   convertPatchFileContentsToPatch,
   addMissingOptionsToPatchFileContents,
+  addMissingOptionsToProjectFileContents,
 } from './convertTypes';
 // =============================================================================
 //
@@ -33,6 +35,11 @@ import {
 
 // :: Path -> Promise (XodFile ProjectFileContents) Object
 const readProjectMetaFile = projectFile => readJSON(projectFile)
+  .then(addMissingOptionsToProjectFileContents)
+  .then(R.compose(
+    XF.eitherToPromise,
+    ProjectFileContents.validate.bind(ProjectFileContents)
+  ))
   .then(R.assoc('path', path.dirname(projectFile)))
   .catch(err => ({ error: true, message: err.toString(), path: projectFile }));
 
@@ -40,6 +47,7 @@ const readProjectMetaFile = projectFile => readJSON(projectFile)
 const readProjectDirectories = projectDirectory => R.compose(
   R.composeP(
     content => ({ path: projectDirectory, content }),
+    addMissingOptionsToProjectFileContents,
     fs.readJson
   ),
   resolveProjectFile
@@ -80,18 +88,25 @@ const readXodFile = projectPath => xodfile =>
       return R.composeP(
         XF.omitNilValues,
         content => ({ path: `./${filePath}`, content }),
-        R.when(
-          () => base === 'patch.xodp',
-          patch => R.composeP(
-            loadAttachments(dir),
-            loadPatchImpls(dir),
-            R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
-            convertPatchFileContentsToPatch,
-            rejectOnInvalidPatchFileContents(filePath),
-            addMissingOptionsToPatchFileContents,
-            Promise.resolve.bind(Promise)
-          )(patch)
-        ),
+        R.cond([
+          [
+            () => base === 'patch.xodp',
+            patch => R.composeP(
+              loadAttachments(dir),
+              loadPatchImpls(dir),
+              R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
+              convertPatchFileContentsToPatch,
+              rejectOnInvalidPatchFileContents(filePath),
+              addMissingOptionsToPatchFileContents,
+              Promise.resolve.bind(Promise)
+            )(patch),
+          ],
+          [
+            () => base === 'project.xod',
+            addMissingOptionsToProjectFileContents,
+          ],
+          [R.T, R.identity],
+        ]),
         Promise.resolve.bind(Promise)
       )(data);
     });

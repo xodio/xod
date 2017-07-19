@@ -65,3 +65,16 @@ export const omitDefaultOptionsFromPatchFileContents = R.compose(
   }),
   XF.subtractObject(optionalPatchFields)
 );
+
+const OPTIONAL_PROJECT_FIELDS = {
+  description: '',
+  license: '',
+  version: '0.0.0',
+  authors: [],
+};
+
+export const addMissingOptionsToProjectFileContents =
+  R.merge(OPTIONAL_PROJECT_FIELDS);
+
+export const omitDefaultOptionsFromProjectFileContents =
+  XF.subtractObject(OPTIONAL_PROJECT_FIELDS);
