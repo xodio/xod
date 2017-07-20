@@ -5,6 +5,14 @@
   &--light {
     color: $modal-fg-color-light;
     background-color: $modal-bg-color-light;
+
+    a, a:hover, a:active, a:focus {
+      color: $modal-fg-color;
+    }
+  }
+
+  a, a:hover, a:active, a:focus {
+    color: $modal-fg-color;
   }
 }
 
