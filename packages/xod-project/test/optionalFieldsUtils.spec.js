@@ -1,6 +1,8 @@
 import R from 'ramda';
 import { assert } from 'chai';
 
+import { validateSanctuaryType } from 'xod-func-tools';
+
 import {
   Project,
   addMissingOptionalProjectFields,
@@ -13,7 +15,7 @@ import xodballWithEmptyOptionals from './fixtures/with-empty-optional-fields.jso
 describe('addMissingOptionalProjectFields', () => {
   it('takes a project with omitted optional fields and returns a valid Project', () => {
     const eitherValidProject = R.compose(
-      Project.validate.bind(Project),
+      validateSanctuaryType(Project),
       addMissingOptionalProjectFields
     )(xodballWithOmittedOptionals);
 

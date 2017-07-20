@@ -38,7 +38,7 @@ const readProjectMetaFile = projectFile => readJSON(projectFile)
   .then(addMissingOptionsToProjectFileContents)
   .then(R.compose(
     XF.eitherToPromise,
-    ProjectFileContents.validate.bind(ProjectFileContents)
+    XF.validateSanctuaryType(ProjectFileContents)
   ))
   .then(R.assoc('path', path.dirname(projectFile)))
   .catch(err => ({ error: true, message: err.toString(), path: projectFile }));

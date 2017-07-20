@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { Either } from 'ramda-fantasy';
-import { foldEither } from 'xod-func-tools';
+import { foldEither, validateSanctuaryType } from 'xod-func-tools';
 
 import { getPatchPath } from './patch';
 import { listLibraryPatches, omitPatches } from './project';
@@ -18,11 +18,13 @@ export const fromXodball = def(
       R.always(Either.Left(ERROR.NOT_A_JSON))
     )(jsonString)
       .map(addMissingOptionalProjectFields)
-      .chain(project => foldEither(
-        // Replace sanctuary-def validation error with our own
-        R.always(Either.Left(ERROR.INVALID_XODBALL_FORMAT)),
-        Either.of,
-        Project.validate(project)
+      .chain(R.compose(
+        foldEither(
+          // Replace sanctuary-def validation error with our own
+          R.always(Either.Left(ERROR.INVALID_XODBALL_FORMAT)),
+          Either.of
+        ),
+        validateSanctuaryType(Project)
       ))
 );
 

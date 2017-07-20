@@ -7,6 +7,7 @@ import {
   rejectWithCode,
   isAmong,
   foldEither,
+  validateSanctuaryType,
 } from 'xod-func-tools';
 
 import { PatchFileContents, def } from './types';
@@ -308,5 +309,5 @@ export const rejectOnInvalidPatchFileContents =
       ),
       Promise.resolve.bind(Promise)
     ),
-    PatchFileContents.validate.bind(PatchFileContents)
+    validateSanctuaryType(PatchFileContents)
   ));
