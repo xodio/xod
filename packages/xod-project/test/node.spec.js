@@ -222,10 +222,6 @@ describe('Node', () => {
   });
   // etc
   describe('getPinNodeDataType', () => {
-    it('should throw error for non-existent data-type', () => {
-      expect(() => Node.getPinNodeDataType(nodeOfType('xod/patch-nodes/input-a')))
-        .to.throw(TypeError);
-    });
     it('should return `number` for xod/patch-nodes/input-number', () => {
       const res = Node.getPinNodeDataType(nodeOfType('xod/patch-nodes/input-number'));
       expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
@@ -236,10 +232,6 @@ describe('Node', () => {
     });
   });
   describe('getPinNodeDirection', () => {
-    it('should throw for `xod/patch-nodes/invalid-pin-node`', () => {
-      expect(() => Node.getPinNodeDirection(nodeOfType('xod/patch-nodes/invalid-pin-node')))
-        .to.throw(TypeError);
-    });
     it('should return `input` for `xod/patch-nodes/input-number`', () => {
       const res = Node.getPinNodeDirection(nodeOfType('xod/patch-nodes/input-number'));
       expect(res).to.be.equal('input');
