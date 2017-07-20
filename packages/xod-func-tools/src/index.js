@@ -77,6 +77,19 @@ export const eitherToPromise = foldEither(
   Promise.resolve.bind(Promise)
 );
 
+export const sanctuaryDefEitherToRamdaFantasyEither = sdEither => (
+  sdEither.isLeft
+    ? Either.Left(sdEither.value)
+    : Either.Right(sdEither.value)
+);
+
+export const validateSanctuaryType = R.uncurryN(2, SanctuaryType =>
+  R.compose(
+    sanctuaryDefEitherToRamdaFantasyEither,
+    SanctuaryType.validate.bind(SanctuaryType)
+  )
+);
+
 /**
  * Unwraps Either monad and returns it’s value if it is Right and throws an Error
  * if it is Left.
@@ -216,6 +229,9 @@ export default Object.assign(
     explode,
     explodeMaybe,
     foldEither,
+    eitherToPromise,
+    sanctuaryDefEitherToRamdaFantasyEither,
+    validateSanctuaryType,
     hasNo,
     omitNilValues,
     omitEmptyValues,
