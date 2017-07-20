@@ -12,6 +12,7 @@ export default (messages = {}, action) => {
           id: newId,
           type: action.meta.type,
           timestamp: action.meta.timestamp,
+          persistent: action.meta.persistent,
           payload: action.payload,
         },
         messages

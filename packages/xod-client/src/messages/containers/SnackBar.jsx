@@ -15,11 +15,12 @@ class SnackBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.errors = {};
+    // :: Map Number { timeout :: Number, data :: MessageData, element :: ReactElement }
+    this.messages = {};
 
     this.addMessages(props.errors);
 
-    this.hideError = this.hideError.bind(this);
+    this.hideMessage = this.hideMessage.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
   }
@@ -31,84 +32,90 @@ class SnackBar extends React.Component {
   onMouseOver() {
     R.pipe(
       R.values,
-      R.forEach((error) => {
-        clearTimeout(error.timeout);
+      R.forEach((message) => {
+        clearTimeout(message.timeout);
       })
-    )(this.errors);
+    )(this.messages);
   }
 
   onMouseOut() {
     R.pipe(
       R.values,
-      R.forEach((error) => {
-        const { id } = error.data;
-        this.errors[id].timeout = this.setTimeout(id);
+      R.forEach((msg) => {
+        this.messages[msg.data.id].timeout = this.setHideTimeout(msg.data);
       })
-    )(this.errors);
+    )(this.messages);
   }
 
-  setTimeout(id) {
+  setHideTimeout(messageData) {
+    if (messageData.persistent) return null;
+
     return setTimeout(() => {
-      this.hideError(id);
+      this.hideMessage(messageData.id);
     }, ERROR_TIMEOUT);
   }
 
-  hideError(id) {
-    const element = this.errors[id].ref;
+  hideMessage(id) {
+    const element = this.messages[id].ref;
 
     if (!element) return;
 
     element
       .hide()
-      .then(() => delete this.errors[id])
+      .then(() => delete this.messages[id])
       .then(() => this.props.deleteMessage(id));
   }
 
-  addMessages(errors) {
+  addMessages(messages) {
     R.pipe(
       R.values,
-      R.forEach((error) => {
-        if (R.has(error.id, this.errors)) {
+      R.forEach((messageData) => {
+        if (R.has(messageData.id, this.messages)) {
           return;
         }
 
         const assignRef = (el) => {
-          if (R.has(error.id, this.errors)) {
-            this.errors[error.id].ref = el;
+          if (R.has(messageData.id, this.messages)) {
+            this.messages[messageData.id].ref = el;
           }
         };
 
-        this.errors[error.id] = {
-          timeout: this.setTimeout(error.id),
-          data: error,
+        this.messages[messageData.id] = {
+          timeout: this.setHideTimeout(messageData),
+          data: messageData,
           element: (
             <SnackBarMessage
               ref={assignRef}
-              key={error.id}
-              message={error}
+              key={messageData.id}
+              message={messageData}
+              onClickMessageButton={this.props.onClickMessageButton}
             />
           ),
         };
       })
-    )(errors);
+    )(messages);
   }
 
   render() {
-    const errors = R.values(this.errors);
+    const messages = R.compose(
+      R.map(R.prop('element')),
+      R.values
+    )(this.messages);
+
     return (
       <SnackBarList
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
       >
-        {errors.map(error => error.element)}
+        {messages}
       </SnackBarList>
     );
   }
 }
 
-
 SnackBar.propTypes = {
   errors: PropTypes.object,
+  onClickMessageButton: PropTypes.func,
   deleteMessage: PropTypes.func,
 };
 
