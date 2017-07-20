@@ -23,6 +23,7 @@ class SnackBar extends React.Component {
     this.hideMessage = this.hideMessage.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
+    this.onButtonClicked = this.onButtonClicked.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,6 +46,11 @@ class SnackBar extends React.Component {
         this.messages[msg.data.id].timeout = this.setHideTimeout(msg.data);
       })
     )(this.messages);
+  }
+
+  onButtonClicked(buttonId, messageData) {
+    this.props.onClickMessageButton(buttonId, messageData);
+    this.hideMessage(messageData.id);
   }
 
   setHideTimeout(messageData) {
@@ -88,7 +94,7 @@ class SnackBar extends React.Component {
               ref={assignRef}
               key={messageData.id}
               message={messageData}
-              onClickMessageButton={this.props.onClickMessageButton}
+              onClickMessageButton={this.onButtonClicked}
             />
           ),
         };
