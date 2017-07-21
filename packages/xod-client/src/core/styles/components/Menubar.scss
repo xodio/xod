@@ -59,7 +59,7 @@ $menu-root-class: '.Menubar';
   }
 
   &-submenu-open > &-submenu-title,
-  &-item-active,
+  &-item-active > &-clickable-item,
   &-item-active .menu-link {
     color: $color-toolbar-background;
     background-color: $color-toolbar-foreground;
@@ -100,11 +100,13 @@ $menu-root-class: '.Menubar';
     padding: 9px;
   }
 
+  &-item-disabled,
   &-item#{$menu-root-class}-item-disabled,
   &-submenu-title#{$menu-root-class}-item-disabled,
   &-item#{$menu-root-class}-submenu-disabled,
   &-submenu-title#{$menu-root-class}-submenu-disabled {
     color: #777 !important;
+    cursor: default;
   }
 
   & > &-item-divider {

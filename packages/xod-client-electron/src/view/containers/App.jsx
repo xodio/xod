@@ -13,6 +13,8 @@ import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 import client from 'xod-client';
 import { Project } from 'xod-project';
 
+import packageJson from '../../../package.json';
+
 import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
 import { getUploadProcess, getSelectedSerialPort } from '../../upload/selectors';
@@ -361,6 +363,12 @@ class App extends client.App {
       submenu(
         items.help,
         [
+          {
+            key: 'version',
+            enabled: false,
+            label: `Version: ${packageJson.version}`,
+          },
+          items.separator,
           onClick(items.documentation, () => {
             shell.openExternal(client.getUtmSiteUrl('/docs/', 'docs', 'menu'));
           }),
