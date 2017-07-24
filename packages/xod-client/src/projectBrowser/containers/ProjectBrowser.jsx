@@ -145,7 +145,7 @@ class ProjectBrowser extends React.Component {
     const isCurrentPatch = currentPatchPath === patchPath;
     const canAdd = !isCurrentPatch;
 
-    const classNames = cn('hover-button', { disabled: !canAdd });
+    const classNames = cn('hover-button add-node', { disabled: !canAdd });
     const action = canAdd ? () => this.onAddNode(patchPath) : noop;
 
     return (

@@ -70,7 +70,7 @@ class Node extends React.Component {
         {...size}
         viewBox={`0 0 ${size.width} ${size.height}`}
       >
-        <g className={cls} onMouseDown={this.onMouseDown}>
+        <g className={cls} onMouseDown={this.onMouseDown} title={nodeLabel}>
           <clipPath id={maskId}>
             <rect
               className="mask"
