@@ -1,6 +1,6 @@
 {
   "name": "xod-client-browser",
-  "version": "0.11.0-dev",
+  "version": "0.11.0",
   "description": "XOD project: Client browser application",
   "scripts": {
     "build:initial-project": "node ./tools/loadInitialProject.js",
@@ -20,13 +20,13 @@
     "react-skylight": "git+https://github.com/xodio/react-skylight.git",
     "redux": "^3.0.5",
     "redux-thunk": "^2.1.0",
-    "xod-arduino": "^0.11.0-dev",
-    "xod-client": "^0.11.0-dev",
-    "xod-js": "^0.11.0-dev",
-    "xod-project": "^0.11.0-dev"
+    "xod-arduino": "^0.11.0",
+    "xod-client": "^0.11.0",
+    "xod-js": "^0.11.0",
+    "xod-project": "^0.11.0"
   },
   "devDependencies": {
-    "xod-fs": "^0.11.0-dev"
+    "xod-fs": "^0.11.0"
   },
   "author": "XOD Team <dev@xod.io>",
   "license": "AGPL-3.0"

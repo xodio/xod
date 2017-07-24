@@ -5,5 +5,5 @@
   "description": "The very basic nodes of XOD",
   "license": "MIT",
   "name": "core",
-  "version": "0.0.5"
+  "version": "0.11.0"
 }
