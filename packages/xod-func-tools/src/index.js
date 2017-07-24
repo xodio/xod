@@ -71,6 +71,25 @@ export const foldEither = def(
   )
 );
 
+// :: Either a b -> Promise a b
+export const eitherToPromise = foldEither(
+  Promise.reject.bind(Promise),
+  Promise.resolve.bind(Promise)
+);
+
+export const sanctuaryDefEitherToRamdaFantasyEither = sdEither => (
+  sdEither.isLeft
+    ? Either.Left(sdEither.value)
+    : Either.Right(sdEither.value)
+);
+
+export const validateSanctuaryType = R.uncurryN(2, SanctuaryType =>
+  R.compose(
+    sanctuaryDefEitherToRamdaFantasyEither,
+    SanctuaryType.validate.bind(SanctuaryType)
+  )
+);
+
 /**
  * Unwraps Either monad and returns it’s value if it is Right and throws an Error
  * if it is Left.
@@ -159,6 +178,31 @@ export const notNil = R.complement(R.isNil);
 export const notEmpty = R.complement(R.isEmpty);
 export const hasNo = R.complement(R.has);
 
+// Returns a copy of second object with omitted
+// fields that are equal to fields from first object.
+// Kind of the reverse of R.merge.
+//
+//   subtractObject(
+//     { foo: 1, bar: 2 },
+//     { foo: 1, bar: 'not 2', baz: 3 }
+//   ) // => { bar: "not 2", baz: 3}
+export const subtractObject = def(
+  'subtractObject :: Object -> Object -> Object',
+  R.uncurryN(2, objToSubstract => R.converge(
+    R.omit,
+    [
+      R.compose(
+        R.keys,
+        R.pickBy(R.both(
+          (value, key) => R.has(key, objToSubstract),
+          (value, key) => R.propEq(key, value, objToSubstract)
+        ))
+      ),
+      R.identity,
+    ]
+  ))
+);
+
 /**
  * Like `R.tap` but works with Promises.
  * @param {Function} promiseFn Function that returns Promise
@@ -185,6 +229,9 @@ export default Object.assign(
     explode,
     explodeMaybe,
     foldEither,
+    eitherToPromise,
+    sanctuaryDefEitherToRamdaFantasyEither,
+    validateSanctuaryType,
     hasNo,
     omitNilValues,
     omitEmptyValues,

@@ -1,5 +1,16 @@
 [
   {
+    "path": "./awesome-project/empty-local-patch/patch.xodp",
+    "content": {
+      "description": "",
+      "impls": {},
+      "links": {},
+      "nodes": {},
+      "path": "@/empty-local-patch",
+      "attachments": []
+    }
+  },
+  {
     "path": "./awesome-project/project.xod",
     "content": {
       "authors": [

@@ -137,9 +137,9 @@ export const openProject = project => ({
   payload: project,
 });
 
-export const importProject = json => ({
+export const importProject = project => ({
   type: ActionType.PROJECT_IMPORT,
-  payload: json,
+  payload: project,
 });
 
 export const openWorkspace = libs => ({

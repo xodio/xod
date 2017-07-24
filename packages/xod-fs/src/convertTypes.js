@@ -39,9 +39,42 @@ export const convertPatchFileContentsToPatch = def(
   'convertPatchFileContentsToPatch :: PatchFileContents -> Patch',
   fsPatch => R.compose(
     XF.explodeEither,
-    XP.upsertLinks(fsPatch.links || []),
-    XP.upsertNodes(fsPatch.nodes || []),
-    XP.setPatchDescription(fsPatch.description || ''),
+    XP.upsertLinks(fsPatch.links),
+    XP.upsertNodes(fsPatch.nodes),
+    XP.setPatchDescription(fsPatch.description),
     XP.createPatch
   )()
 );
+
+const optionalPatchFields = {
+  nodes: [],
+  links: [],
+  description: '',
+};
+
+export const addMissingOptionsToPatchFileContents = R.compose(
+  R.evolve({
+    nodes: R.map(XP.addMissingOptionalNodeFields),
+  }),
+  R.merge(optionalPatchFields)
+);
+
+export const omitDefaultOptionsFromPatchFileContents = R.compose(
+  R.evolve({
+    nodes: R.map(XP.omitEmptyOptionalNodeFields),
+  }),
+  XF.subtractObject(optionalPatchFields)
+);
+
+const OPTIONAL_PROJECT_FIELDS = {
+  description: '',
+  license: '',
+  version: '0.0.0',
+  authors: [],
+};
+
+export const addMissingOptionsToProjectFileContents =
+  R.merge(OPTIONAL_PROJECT_FIELDS);
+
+export const omitDefaultOptionsFromProjectFileContents =
+  XF.subtractObject(OPTIONAL_PROJECT_FIELDS);

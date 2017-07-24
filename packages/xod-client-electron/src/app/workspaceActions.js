@@ -206,7 +206,11 @@ export const onSelectProject = R.curry(
   (send, pathGetter, projectMeta) => pathGetter()
     .then(() => loadProject(getFilePath(projectMeta)))
     .then(requestShowProject(send))
-    .catch(rejectWithCode(ERROR_CODES.CANT_OPEN_SELECTED_PROJECT))
+    .catch(R.ifElse(
+      R.prop('errorCode'),
+      Promise.reject.bind(Promise),
+      rejectWithCode(ERROR_CODES.CANT_OPEN_SELECTED_PROJECT)
+    ))
     .catch(handleError(send))
 );
 

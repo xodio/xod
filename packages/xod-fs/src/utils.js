@@ -6,9 +6,11 @@ import {
   notEmpty,
   rejectWithCode,
   isAmong,
+  foldEither,
+  validateSanctuaryType,
 } from 'xod-func-tools';
 
-import { def } from './types';
+import { PatchFileContents, def } from './types';
 
 import {
   DEFAULT_WORKSPACE_PATH,
@@ -296,3 +298,16 @@ export const validateWorkspace = R.pipeP(
   resolveWorkspacePath,
   isWorkspaceValid
 );
+
+// :: String -> a -> Promise Error PatchFileContents
+export const rejectOnInvalidPatchFileContents =
+  R.uncurryN(2, filePath => R.compose(
+    foldEither(
+      () => rejectWithCode(
+        ERROR_CODES.INVALID_FILE_CONTENTS,
+        { path: filePath }
+      ),
+      Promise.resolve.bind(Promise)
+    ),
+    validateSanctuaryType(PatchFileContents)
+  ));

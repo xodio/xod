@@ -1,0 +1,29 @@
+{
+  "patches": {
+    "@/1": {
+      "attachments": [],
+      "description": "",
+      "impls": {},
+      "links": {},
+      "nodes": {
+        "a": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "a",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "bob/awesome-library/test-patch"
+        }
+      },
+      "path": "@/1"
+    }
+  },
+  "authors": [],
+  "license": "",
+  "version": "0.0.0",
+  "description": "",
+  "name": "optional-fields-test"
+}

@@ -17,10 +17,16 @@ import {
   basenameEquals,
   basenameAmong,
   getPatchName,
+  rejectOnInvalidPatchFileContents,
 } from './utils';
+import { ProjectFileContents } from './types';
 import { loadAttachments } from './attachments';
 import { loadPatchImpls } from './impls';
-import { convertPatchFileContentsToPatch } from './convertTypes';
+import {
+  convertPatchFileContentsToPatch,
+  addMissingOptionsToPatchFileContents,
+  addMissingOptionsToProjectFileContents,
+} from './convertTypes';
 // =============================================================================
 //
 // Reading of files
@@ -29,6 +35,11 @@ import { convertPatchFileContentsToPatch } from './convertTypes';
 
 // :: Path -> Promise (XodFile ProjectFileContents) Object
 const readProjectMetaFile = projectFile => readJSON(projectFile)
+  .then(addMissingOptionsToProjectFileContents)
+  .then(R.compose(
+    XF.eitherToPromise,
+    XF.validateSanctuaryType(ProjectFileContents)
+  ))
   .then(R.assoc('path', path.dirname(projectFile)))
   .catch(err => ({ error: true, message: err.toString(), path: projectFile }));
 
@@ -36,6 +47,7 @@ const readProjectMetaFile = projectFile => readJSON(projectFile)
 const readProjectDirectories = projectDirectory => R.compose(
   R.composeP(
     content => ({ path: projectDirectory, content }),
+    addMissingOptionsToProjectFileContents,
     fs.readJson
   ),
   resolveProjectFile
@@ -76,16 +88,25 @@ const readXodFile = projectPath => xodfile =>
       return R.composeP(
         XF.omitNilValues,
         content => ({ path: `./${filePath}`, content }),
-        R.when(
-          () => base === 'patch.xodp',
-          patch => R.composeP(
-            loadAttachments(dir),
-            loadPatchImpls(dir),
-            R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
-            convertPatchFileContentsToPatch,
-            Promise.resolve.bind(Promise)
-          )(patch)
-        ),
+        R.cond([
+          [
+            () => base === 'patch.xodp',
+            patch => R.composeP(
+              loadAttachments(dir),
+              loadPatchImpls(dir),
+              R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
+              convertPatchFileContentsToPatch,
+              rejectOnInvalidPatchFileContents(filePath),
+              addMissingOptionsToPatchFileContents,
+              Promise.resolve.bind(Promise)
+            )(patch),
+          ],
+          [
+            () => base === 'project.xod',
+            addMissingOptionsToProjectFileContents,
+          ],
+          [R.T, R.identity],
+        ]),
         Promise.resolve.bind(Promise)
       )(data);
     });
@@ -102,27 +123,21 @@ export const loadProjectWithoutLibs = projectPath => R.composeP(
 )(projectPath);
 
 // :: Path -> Path -> Path -> Promise [File] Error
-export const loadProjectWithLibs = (projectPath, workspace, libDir = workspace) => {
+export const loadProjectWithLibs = (projectPath, workspace, libWorkspace = workspace) => {
   const fullProjectPath = resolvePath(path.resolve(workspace, projectPath));
-  return loadProjectWithoutLibs(fullProjectPath)
-    .then((projectFiles) => {
-      const libPath = resolvePath(libDir);
-      return loadAllLibs(workspace)
-        .catch((err) => {
-          // Catch error ENOENT in case if libsDir is not found.
-          // E.G. User deleted it before select project.
-          // So in this case we'll return just empty array of libs.
-          if (err.code === 'ENOENT') return Promise.resolve([]);
-          return Promise.reject(err);
-        })
-        .then(libs => ({ project: projectFiles, libs }))
-        .catch(err => Promise.reject(
-          Object.assign(err, {
-            path: libPath,
-            files: projectFiles,
-          })
-        ));
-    });
+  const libPath = resolvePath(libWorkspace);
+
+  return Promise.all([
+    loadProjectWithoutLibs(fullProjectPath),
+    loadAllLibs(libPath),
+  ]).then(([projectFiles, libs]) => ({ project: projectFiles, libs }))
+    .catch(err => Promise.reject(
+      Object.assign(err, {
+        libPath,
+        fullProjectPath,
+        workspace,
+      })
+    ));
 };
 
 // :: Path -> Promise Project Error
