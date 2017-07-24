@@ -29,7 +29,7 @@ const OneOfType = XF.OneOfType(packageName, docUrl);
 //-----------------------------------------------------------------------------
 
 export const $Buffer = NullaryType('Buffer', R.is(Buffer));
-export const Path = NullaryType('Path', x => XF.hasType($.String, x) && XF.notEmpty(x));
+export const Path = NullaryType('Path', R.both(XF.hasType($.String), XF.notEmpty));
 
 // :: x -> Boolean
 const isValidXodFile = R.converge(
