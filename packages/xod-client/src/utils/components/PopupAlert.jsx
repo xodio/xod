@@ -34,15 +34,17 @@ const PopupAlert = ({ title, children, closeText, className, onClose, isClosable
           <div className="ModalContent">
             {children}
           </div>
-          <div className="ModalFooter">
-            <button
-              className="Button Button--primary"
-              onClick={onClose}
-              autoFocus
-            >
-              {closeText}
-            </button>
-          </div>
+          {(isClosable) ? (
+            <div className="ModalFooter">
+              <button
+                className="Button Button--primary"
+                onClick={onClose}
+                autoFocus
+              >
+                {closeText}
+              </button>
+            </div>
+          ) : null}
         </div>
       </SkyLightStateless>
     </div>

@@ -9,6 +9,7 @@ import { HotKeys } from 'react-hotkeys';
 import * as XP from 'xod-project';
 import client from 'xod-client';
 
+import packageJson from '../../package.json';
 import PopupInstallApp from '../components/PopupInstallApp';
 
 const DEFAULT_CANVAS_WIDTH = 800;
@@ -194,6 +195,12 @@ class App extends client.App {
       submenu(
         items.help,
         [
+          {
+            key: 'version',
+            enabled: false,
+            label: `Version: ${packageJson.version}`,
+          },
+          items.separator,
           link(items.documentation, { href: client.getUtmSiteUrl('/docs/', 'docs', 'menu') }),
           link(items.forum, { href: client.getUtmForumUrl('menu') }),
         ]

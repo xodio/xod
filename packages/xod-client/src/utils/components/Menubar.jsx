@@ -31,6 +31,7 @@ const renderMenubarItem = (item, index) => {
     key = index, // we can allow fallback to indices since we don't rearrange menu items
     type,
     submenu,
+    enabled = true,
     click = noop,
     children,
     label,
@@ -45,14 +46,14 @@ const renderMenubarItem = (item, index) => {
 
   if (Array.isArray(submenu)) {
     return (
-      <SubMenu key={key} title={<span>{label}</span>}>
+      <SubMenu key={key} title={<span>{label}</span>} disabled={!enabled}>
         {submenu.map(renderMenubarItem)}
       </SubMenu>
     );
   }
 
   return (
-    <MenuItem key={key}>
+    <MenuItem key={key} disabled={!enabled}>
       {/* because rc-menu does not support attaching callbacks directly to menu items */}
       {/* eslint-disable jsx-a11y/no-static-element-interactions */}
       <div onClick={click} className="Menubar-clickable-item">

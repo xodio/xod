@@ -4,11 +4,11 @@ matrix:
   fast_finish: true
   include:
   - os: linux
-    node_js: '7'
+    node_js: '7.10.1'
     sudo: false
     dist: trusty
   - os: osx
-    node_js: '7'
+    node_js: '7.10.1'
     osx_image: xcode8.3
 
 addons:
@@ -20,10 +20,17 @@ addons:
 git:
   depth: 5
 
+env:
+  global:
+  - ELECTRON_CACHE=$HOME/.cache/electron
+  - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+
 cache:
   directories:
-  - $HOME/.electron
   - node_modules
+  - $HOME/.cache/electron
+  - $HOME/.cache/electron-builder
+  - $HOME/.npm/_prebuilds
   yarn: true
 
 before_install:
@@ -40,4 +47,6 @@ before_script: |
     sleep 3; # give xvfb some time to start
   fi
 
-script: ./tools/travis.sh
+script:
+- yarn verify
+- travis_wait 30 ./tools/travis.sh

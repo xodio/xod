@@ -13,6 +13,8 @@ import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 import client from 'xod-client';
 import { Project } from 'xod-project';
 
+import packageJson from '../../../package.json';
+
 import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
 import { getUploadProcess, getSelectedSerialPort } from '../../upload/selectors';
@@ -32,6 +34,8 @@ import * as ERROR_CODES from '../../shared/errorCodes';
 import formatError from '../../shared/errorFormatter';
 import * as EVENTS from '../../shared/events';
 import * as MESSAGES from '../../shared/messages';
+
+import { subscribeAutoUpdaterEvents, downloadUpdate } from '../autoupdate';
 
 const { app, dialog, Menu } = remoteElectron;
 const DEFAULT_CANVAS_WIDTH = 800;
@@ -57,6 +61,8 @@ const onContextMenu = (event) => {
 const defaultState = {
   size: client.getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
   workspace: '',
+  downloadProgressPopup: false,
+  downloadProgressPopupError: null,
 };
 
 class App extends client.App {
@@ -71,6 +77,8 @@ class App extends client.App {
     this.listBoards = this.listBoards.bind(this);
     this.listPorts = this.listPorts.bind(this);
     this.getSelectedBoard = this.getSelectedBoard.bind(this);
+
+    this.onClickMessageButton = this.onClickMessageButton.bind(this);
 
     this.onUploadToArduinoClicked = this.onUploadToArduinoClicked.bind(this);
     this.onUploadToArduino = this.onUploadToArduino.bind(this);
@@ -133,6 +141,15 @@ class App extends client.App {
         this.props.actions.addError(formatError(error));
       }
     );
+    // autoUpdater
+    subscribeAutoUpdaterEvents(ipcRenderer, this);
+  }
+
+  onClickMessageButton(buttonId, /* messageInfo */) {
+    if (buttonId === 'downloadAndInstall') {
+      downloadUpdate(ipcRenderer);
+      this.setState(R.assoc('downloadProgressPopup', true));
+    }
   }
 
   onResize() {
@@ -346,6 +363,12 @@ class App extends client.App {
       submenu(
         items.help,
         [
+          {
+            key: 'version',
+            enabled: false,
+            label: `Version: ${packageJson.version}`,
+          },
+          items.separator,
           onClick(items.documentation, () => {
             shell.openExternal(client.getUtmSiteUrl('/docs/', 'docs', 'menu'));
           }),
@@ -510,7 +533,9 @@ class App extends client.App {
           onBeforeUnload={this.onCloseApp}
         />
         <client.Editor size={this.state.size} />
-        <client.SnackBar />
+        <client.SnackBar
+          onClickMessageButton={this.onClickMessageButton}
+        />
         {this.renderPopupShowCode()}
         {this.renderPopupUploadConfig()}
         {this.renderPopupUploadProcess()}
@@ -542,6 +567,44 @@ class App extends client.App {
           onCreateWorkspace={this.onWorkspaceCreate}
           onClose={this.showPopupSetWorkspaceNotCancellable}
         />
+        {/* TODO: Refactor this mess: */}
+        {(this.state.downloadProgressPopup) ? (
+          <client.PopupAlert
+            title="Downloading update for XOD IDE"
+            closeText="Close"
+            onClose={() => {
+              this.setState(R.assoc('downloadProgressPopup', false));
+              this.setState(R.assoc('downloadProgressPopupError', null));
+            }}
+            isClosable={this.state.downloadProgressPopupError}
+          >
+            {(this.state.downloadProgressPopupError) ? (
+              <div>
+                <p>
+                  Error occured during downloading or installing the update.<br />
+                  Please report the bug on our <a href="https://forum.xod.io/" rel="noopener noreferrer">forum</a>.
+                </p>
+                <pre>
+                  {this.state.downloadProgressPopupError}
+                </pre>
+              </div>
+            ) : (
+              <div>
+                <p>
+                  Downloading of the update for XOD IDE is in progress.
+                </p>
+                <p>
+                  After download, we will automatically install it and
+                  relaunch the application.<br />
+                  It could take up for few minutes.
+                </p>
+                <p>
+                  Keep calm and brew a tea.
+                </p>
+              </div>
+            )}
+          </client.PopupAlert>
+        ) : null}
         <SaveProgressBar progress={this.getSaveProgress()} />
       </HotKeys>
     );

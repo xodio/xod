@@ -23,6 +23,8 @@ describe('IDE', () => {
   let passed = true;
 
   before(() => {
+    const tmpDir = path.join(os.tmpdir(), 'xod-test-workspace-');
+
     app = new Application({
       path: './node_modules/.bin/electron',
       args: ['.'],
@@ -31,8 +33,8 @@ describe('IDE', () => {
     // With a dirty hack we extract out objects that we’d interact later
     // in tests and tear-down. Impure, but can’t figure out a better solution
     // with Mocha
-    return fsp.mkdtempP(path.join(os.tmpdir(), 'xod-test-workspace-'))
-      .then((home) => { process.env.HOME = tmpHomeDir = home; })
+    return fsp.mkdtempP(tmpDir)
+      .then((home) => { process.env.USERDATA_DIR = process.env.HOME = tmpHomeDir = home; })
       .then(() => app.start())
       .then(() => { page = Page.createPageObject(app.client); });
   });
@@ -54,9 +56,10 @@ describe('IDE', () => {
       });
     }
 
-    fse.removeSync(tmpHomeDir);
     const shouldClose = app && app.isRunning() && (passed || !DEBUG);
-    return shouldClose ? app.stop() : Promise.resolve();
+    return shouldClose ?
+      app.stop().then(() => fse.removeSync(tmpHomeDir)) :
+      Promise.resolve();
   });
 
   it('opens a window', () =>
