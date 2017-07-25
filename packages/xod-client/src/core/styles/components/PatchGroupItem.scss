@@ -46,6 +46,14 @@
 
   &.isSelected {
     background-color: #616077;
+
+    .PatchGroupItem__hover-buttons {
+      display: block;
+      background: transparent;
+      &:before {
+        background: transparent;
+      }
+    }
   }
 
   &:hover {

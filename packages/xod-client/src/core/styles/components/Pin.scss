@@ -68,7 +68,7 @@
     opacity: 0; // just acts as a hotspot
   }
 
-  &.is-highlighted {
+  &.is-accepting-links, &.is-selected {
     .linkingHighlight {
       display: block;
     }

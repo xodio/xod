@@ -29,10 +29,11 @@ class PinsOverlay extends React.Component {
 
   render() {
     const {
-      size,
-      position,
-      pins,
       linkingPin,
+      nodeLabel,
+      pins,
+      position,
+      size,
     } = this.props;
 
     const pinsArr = R.values(pins);
@@ -44,6 +45,7 @@ class PinsOverlay extends React.Component {
         {...size}
         className="NodePinsOverlay"
         viewBox={`0 0 ${size.width} ${size.height}`}
+        title={nodeLabel}
       >
         <g className="pins">
           {pinsArr.map(pin =>
@@ -67,6 +69,7 @@ class PinsOverlay extends React.Component {
 
 PinsOverlay.propTypes = {
   id: PropTypes.string.isRequired,
+  nodeLabel: PropTypes.string.isRequired,
   pins: PropTypes.any.isRequired,
   size: PropTypes.any.isRequired,
   position: PropTypes.object.isRequired,

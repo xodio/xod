@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
 import EventListener from 'react-event-listener';
+import isDevelopment from 'electron-is-dev';
 import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 
 import client from 'xod-client';
@@ -36,6 +37,7 @@ import * as EVENTS from '../../shared/events';
 import * as MESSAGES from '../../shared/messages';
 
 import { subscribeAutoUpdaterEvents, downloadUpdate } from '../autoupdate';
+import { subscribeToTriggerMainMenuRequests } from '../../testUtils/triggerMainMenu';
 
 const { app, dialog, Menu } = remoteElectron;
 const DEFAULT_CANVAS_WIDTH = 800;
@@ -446,6 +448,11 @@ class App extends client.App {
 
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
+    // for testing purposes
+    // see https://github.com/electron/spectron/issues/21
+    if (isDevelopment) {
+      subscribeToTriggerMainMenuRequests(ipcRenderer, template);
+    }
   }
 
   showPopupProjectSelection(projects) {

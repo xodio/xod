@@ -18,13 +18,10 @@ export default class PinOverlay extends React.Component {
     this.props.onMouseDown(this.props.keyName);
   }
 
-  getPinCenter() {
-    return this.props.position;
-  }
-
   render() {
     const cls = classNames('PinOverlay', {
-      'is-highlighted': this.props.isSelected || this.props.isAcceptingLinks,
+      'is-selected': this.props.isSelected,
+      'is-accepting-links': this.props.isAcceptingLinks,
     });
 
     const pinCircleCenter = {
@@ -35,6 +32,7 @@ export default class PinOverlay extends React.Component {
     return (
       <g
         className={cls}
+        title={this.props.label}
         onMouseUp={this.onMouseUp}
         onMouseDown={this.onMouseDown}
         onMouseOver={this.handleOver}
@@ -57,6 +55,7 @@ export default class PinOverlay extends React.Component {
 
 PinOverlay.propTypes = {
   keyName: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   position: PropTypes.object.isRequired,
   onMouseUp: PropTypes.func.isRequired,
   onMouseDown: PropTypes.func.isRequired,

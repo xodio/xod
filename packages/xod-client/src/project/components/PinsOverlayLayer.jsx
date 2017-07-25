@@ -1,6 +1,8 @@
 import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getBaseName } from 'xod-project';
+
 import { LAYER } from '../../editor/constants';
 
 import SVGLayer from './SVGLayer';
@@ -27,6 +29,7 @@ const PinsOverlayLayer = ({
                 key={node.id}
                 id={node.id}
                 position={node.position}
+                nodeLabel={node.label || getBaseName(node.type)}
                 size={node.size}
                 pins={node.pins}
                 linkingPin={linkingPin}

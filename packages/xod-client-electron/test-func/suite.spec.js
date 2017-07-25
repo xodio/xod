@@ -1,18 +1,20 @@
+import os from 'os';
+import fsp from 'fsp';
+import fse from 'fs-extra';
+import path from 'path';
 
-const fsp = require('fsp');
-const fse = require('fs-extra');
-const os = require('os');
-const path = require('path');
-const Page = require('./pageObject');
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
+import chai, { assert } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 
 // Spectron is hoisted at the root of monorepo
 // eslint-disable-next-line import/no-extraneous-dependencies
-const Application = require('spectron').Application;
+import { Application } from 'spectron';
+
+import Page from './pageObject';
+
+import { TRIGGER_MAIN_MENU_ITEM } from '../src/testUtils/triggerMainMenu';
 
 chai.use(chaiAsPromised);
-const assert = chai.assert;
 
 const DEBUG = process.env.XOD_DEBUG_TESTS;
 
@@ -98,7 +100,77 @@ describe('IDE', () => {
     );
 
     it('provides clock node', () =>
-      page.assertNodeAvailableInBrowser('clock')
+      page.assertNodeAvailableInProjectBrowser('clock')
+    );
+  });
+
+  describe('adding nodes to patch', () => {
+    it('selects a node in project browser', () =>
+      page.scrollToPatchInProjectBrowser('clock')
+        .then(() => page.selectPatchInProjectBrowser('clock'))
+        .then(() => page.assertPatchSelected('clock'))
+    );
+
+    it('adds a node to patch', () =>
+      page.clickAddNodeButton('clock')
+        .then(() => page.findNode('clock').isVisible())
+    );
+
+    it('drags a node in place', () =>
+      assert.eventually.deepEqual(
+        page.dragNode('clock', 150, 10).getLocation(),
+        { x: 338, y: 46 }
+      )
+    );
+
+    it('adds the rest of the nodes for the blink patch', () =>
+      page.addNode('flip-flop', 150, 100)
+        .then(() => page.addNode('digital-output', 150, 200))
+    );
+  });
+
+  describe('creating links between nodes', () => {
+    it('activates linking mode when clicking on a pin', () =>
+      page.findPin('clock', 'TICK').click()
+        .then(() => page.assertPinIsSelected('clock', 'TICK'))
+    );
+
+    it('marks pins that can be linked with selected pin', () =>
+      Promise.all([
+        page.assertPinIsAcceptingLinks('flip-flop', 'SET'),
+        page.assertPinIsAcceptingLinks('flip-flop', 'TGL'),
+        page.assertPinIsAcceptingLinks('flip-flop', 'RST'),
+      ])
+    );
+
+    it('connects two compatible pins with a link', () =>
+      page.findPin('flip-flop', 'TGL').click()
+        .then(() => page.findLink('pulse'))
+    );
+
+    it('adds the rest of the links for the blink patch', () =>
+      page.findPin('flip-flop', 'MEM').click()
+        .then(() => page.findPin('digital-output', 'SIG').click())
+    );
+  });
+
+  describe('binding values to inputs', () => {
+    it('sets clock interval to 0.25', () =>
+      page.bindValue('clock', 'IVAL', '0.25')
+    );
+
+    it('sets digital-output port to 13', () =>
+      page.bindValue('digital-output', 'PORT', '13')
+    );
+  });
+
+  describe('showing code for arduino', () => {
+    const expectedCpp = fsp.readFileSync(path.resolve(__dirname, './fixtures/blink.cpp'), 'utf-8');
+
+    it('shows code', () =>
+      app.electron.ipcRenderer.emit(TRIGGER_MAIN_MENU_ITEM, ['Deploy', 'Show Code For Arduino'])
+        .then(() => page.getCodeboxValue())
+        .then(code => assert.equal(code, expectedCpp))
     );
   });
 });
