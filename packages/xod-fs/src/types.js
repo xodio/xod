@@ -1,7 +1,7 @@
 import R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
-import { Identifier, Patch, Node, Link, env as xpEnv } from 'xod-project';
+import { Identifier, Patch, Node, Link, Comment, env as xpEnv } from 'xod-project';
 import XF from 'xod-func-tools';
 
 /* Types are by convention starts with a capital leter, so: */
@@ -57,6 +57,7 @@ export const XodFile = UnaryType('XodFile',
 export const PatchFileContents = Model('PatchFileContents', {
   nodes: $.Array(Node),
   links: $.Array(Link),
+  comments: $.Array(Comment),
   description: $.String,
 });
 

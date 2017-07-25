@@ -11,7 +11,7 @@ import { saveArrangedFiles, saveProject } from '../src/save';
 import { arrangeByFiles } from '../src/unpack';
 import * as ERROR_CODES from '../src/errorCodes';
 
-import xodball from './fixtures/xodball.json';
+import project from './fixtures/project.json';
 import { expectRejectedWithCode } from './utils';
 
 const tempDirName = './fs-temp';
@@ -52,7 +52,7 @@ describe('saveArrangedFiles', () => {
   });
 
   it('should save an extracted project into temp directory', (done) => {
-    const dataToSave = arrangeByFiles(xodball);
+    const dataToSave = arrangeByFiles(project);
     const expectedFilesNumber = 7;
 
     const onFinish = () => {
@@ -61,7 +61,7 @@ describe('saveArrangedFiles', () => {
           if (files.length === expectedFilesNumber) {
             done();
           } else {
-            throw new Error(`Wrong amount of files (not equal ${expectedFilesNumber}). Check .xodball or change amount in the test!`);
+            throw new Error(`Wrong amount of files (not equal ${expectedFilesNumber}). Check .project or change amount in the test!`);
           }
         });
       } catch (err) {
@@ -79,8 +79,8 @@ describe('saveProject', () => {
   after(() => removeSync(tempDir));
 
   it('should save project and return resolve project', () =>
-    saveProject(tempDir, xodball).then(
-      project => assert.equal(project, xodball)
+    saveProject(tempDir, project).then(
+      p => assert.equal(project, p)
     )
   );
   it('should reject CANT_SAVE_PROJECT', () =>
@@ -114,7 +114,7 @@ describe('saveProject', () => {
   });
   it('should save patch attachments correctly', () => {
     const projectName = 'attachment-test';
-    const project = defaultizeProject({
+    const testProject = defaultizeProject({
       name: projectName,
       patches: {
         '@/test': {
@@ -134,10 +134,10 @@ describe('saveProject', () => {
       },
     });
 
-    return saveProject(tempDir, project)
+    return saveProject(tempDir, testProject)
       .then(() => readFile(path.resolve(tempDir, projectName, 'test', 'img/20x20.png'), 'base64'))
-      .then(content => assert.strictEqual(content, project.patches['@/test'].attachments[0].content))
+      .then(content => assert.strictEqual(content, testProject.patches['@/test'].attachments[0].content))
       .then(() => readFile(path.resolve(tempDir, projectName, 'test', 'README.md'), 'utf8'))
-      .then(content => assert.strictEqual(content, project.patches['@/test'].attachments[1].content));
+      .then(content => assert.strictEqual(content, testProject.patches['@/test'].attachments[1].content));
   });
 });

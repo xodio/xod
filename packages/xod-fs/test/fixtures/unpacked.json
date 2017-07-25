@@ -5,6 +5,7 @@
       "description": "",
       "impls": {},
       "links": {},
+      "comments": {},
       "nodes": {},
       "path": "@/empty-local-patch",
       "attachments": []
@@ -51,6 +52,7 @@
           }
         }
       },
+      "comments": {},
       "nodes": {
         "2c03e470-fefd-4f58-be6a-58d209d9158c": {
           "label": "",
@@ -97,6 +99,7 @@
       "impls": {
         "cpp": "// Impl loaded fine!\n"
       },
+      "comments": {},
       "nodes": {
         "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
           "label": "",
