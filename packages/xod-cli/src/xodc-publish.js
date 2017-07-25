@@ -64,12 +64,15 @@ export default async function publish(swaggerUrl, orgname$, projectDir) {
         throw swagger.error(err2);
       });
     });
-    await Library.putOrgLib({ lib: {}, libname, orgname }).catch((err) => {
-      if (err.status === 403) {
-        throw new Error(`user "${username}" can't access ${
-          toStringWithoutTag(libUri)}.`);
-      }
-      throw swagger.error(err);
+    await Library.getOrgLib({ libname, orgname }).catch((err) => {
+      if (err.status !== 404) throw swagger.error(err);
+      return Library.putOrgLib({ lib: {}, libname, orgname }).catch((err2) => {
+        if (err2.status === 403) {
+          throw new Error(`user "${username}" can't access ${
+            toStringWithoutTag(libUri)}.`);
+        }
+        throw swagger.error(err2);
+      });
     });
     await Version.postLibVersion({ libname, orgname, version }).catch((err) => {
       if (err.status === 409) {
