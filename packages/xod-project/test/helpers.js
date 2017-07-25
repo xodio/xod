@@ -91,6 +91,13 @@ export const expectOptionalNumberSetter = R.curry((expect, method, propName) => 
 // Defaultizers
 //-----------------------------------------------------------------------------
 
+export const defaultizeComment = R.merge({
+  id: '$$defaultLinkId',
+  position: { x: 0, y: 0 },
+  size: { width: 100, height: 100 },
+  content: '',
+});
+
 export const defaultizeLink = R.merge({
   id: '$$defaultLinkId',
   input: { nodeId: '$$defaultInputNodeId', pinKey: '$$defaultInputPin' },
@@ -129,12 +136,17 @@ export const defaultizePatch = R.compose(
       assignIds,
       R.map(defaultizeLink)
     ),
+    comments: R.compose(
+      assignIds,
+      R.map(defaultizeComment)
+    ),
     impls: R.identity,
   }),
   R.merge({
     nodes: {},
     links: {},
     impls: {},
+    comments: {},
     path: '@/default-patch-path',
     description: '',
     attachments: [],

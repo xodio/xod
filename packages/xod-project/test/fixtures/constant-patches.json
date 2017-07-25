@@ -1,5 +1,6 @@
 {
   "xod/core/constant-boolean": {
+    "comments": {},
     "nodes": {
       "VAL": {
         "boundValues": {},
@@ -45,6 +46,7 @@
     ]
   },
   "xod/core/constant-number": {
+    "comments": {},
     "nodes": {
       "B1x2RV3eZ": {
         "boundValues": {
@@ -92,6 +94,7 @@
     ]
   },
   "xod/core/constant-string": {
+    "comments": {},
     "nodes": {
       "B1x2RV3eZ": {
         "boundValues": {
@@ -133,6 +136,7 @@
     ]
   },
   "xod/core/continuously": {
+    "comments": {},
     "nodes": {
       "BLKANE3xW": {
         "boundValues": {},
@@ -174,6 +178,7 @@
     ]
   },
   "xod/core/boot": {
+    "comments": {},
     "nodes": {
       "noNativeImpl": {
         "boundValues": {},

@@ -4,6 +4,7 @@ import { explodeMaybe, notNil, reduceEither, isAmong } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
+import * as Comment from './comment';
 import * as Node from './node';
 import * as Link from './link';
 import * as Pin from './pin';
@@ -32,6 +33,7 @@ export const createPatch = def(
   () => ({
     nodes: {},
     links: {},
+    comments: {},
     impls: {},
     path: getLocalPath('untitled-patch'),
     description: '',
@@ -182,7 +184,7 @@ export const getPatchAttachments = def(
  * @param {NodeOrId} node
  * @returns {boolean}
  */
-export const nodeIdEquals = def(
+export const nodeIdEquals = def( // TODO: it's unused
   'nodeIdEquals :: NodeId -> NodeOrId -> Boolean',
   (id, node) => R.compose(
     R.equals(id),
@@ -676,6 +678,57 @@ export const dissocNode = def(
 export const upsertNodes = def(
   'upsertNodes :: [Node] -> Patch -> Patch',
   (nodeList, patch) => R.reduce(R.flip(assocNode), patch, nodeList)
+);
+
+// =============================================================================
+//
+// Comments
+//
+// =============================================================================
+
+export const listComments = def(
+  'listComments :: Patch -> [Comment]',
+  R.compose(
+    R.values,
+    R.prop('comments')
+  )
+);
+
+export const getCommentById = def(
+  'getCommentById :: CommentId -> Patch -> Maybe Comment',
+  (commentId, patch) => R.compose(
+    Maybe,
+    R.path(['comments', commentId])
+  )(patch)
+);
+
+export const getCommentByIdUnsafe = def(
+  'getCommentByIdUnsafe :: CommentId -> Patch -> Comment',
+  (commentId, patch) => explodeMaybe(
+    Utils.formatString(
+      CONST.ERROR.COMMENT_NOT_FOUND,
+      { commentId, patchPath: getPatchPath(patch) }
+    ),
+    getCommentById(commentId, patch)
+  )
+);
+
+// TODO: inconsistency with Project.assocPatch, see also `assocNode`
+export const assocComment = def(
+  'assocComment :: Comment -> Patch -> Patch',
+  (comment, patch) =>
+    R.assocPath(['comments', Comment.getCommentId(comment)], comment, patch)
+);
+
+export const dissocComment = def(
+  'dissocComment :: CommentId -> Patch -> Patch',
+  (commentId, patch) =>
+    R.dissocPath(['comments', commentId], patch)
+);
+
+export const upsertComments = def(
+  'upsertComments :: [Comment] -> Patch -> Patch',
+  (commentList, patch) => R.reduce(R.flip(assocComment), patch, commentList)
 );
 
 // =============================================================================

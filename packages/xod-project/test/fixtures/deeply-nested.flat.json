@@ -5,6 +5,7 @@
   "version": "0.0.0",
   "patches": {
     "xod/core/boot": {
+      "comments": {},
       "description": "Outputs a single pulse when the program starts",
       "links": {},
       "nodes": {
@@ -41,6 +42,7 @@
       "attachments": []
     },
     "xod/core/console-log": {
+      "comments": {},
       "description": "Outputs a line of text to the board standard debug interface",
       "links": {},
       "nodes": {
@@ -85,6 +87,7 @@
       "attachments": []
     },
     "xod/core/any": {
+      "comments": {},
       "description": "Pulses on output when any input recieves a pulse",
       "links": {},
       "nodes": {
@@ -142,6 +145,7 @@
       "attachments": []
     },
     "@/main": {
+      "comments": {},
       "nodes": {
         "HkwBT8KVb": {
           "id": "HkwBT8KVb",

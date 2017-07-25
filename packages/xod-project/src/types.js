@@ -40,6 +40,7 @@ export const Source = AliasType('Source', $.String);
 export const ShortId = AliasType('ShortId', $.String);
 export const LinkId = AliasType('LinkId', ShortId);
 export const NodeId = AliasType('NodeId', ShortId);
+export const CommentId = AliasType('CommentId', ShortId);
 export const PinKey = AliasType('PinKey', NodeId);
 export const PinLabel = AliasType('PinLabel', $.String);
 export const Identifier = NullaryType('Identifier', isValidIdentifier);
@@ -91,9 +92,22 @@ export const Attachment = Model('Attachment', {
   content: $.String,
 });
 
+export const Size = Model('Size', {
+  width: $.Number,
+  height: $.Number,
+});
+
+export const Comment = Model('Comment', {
+  id: CommentId,
+  position: Position,
+  size: Size,
+  content: $.String,
+});
+
 export const Patch = Model('Patch', {
   nodes: $.StrMap(Node),
   links: $.StrMap(Link),
+  comments: $.StrMap(Comment),
   impls: $.StrMap(Source),
   path: PatchPath,
   description: $.String,
@@ -128,31 +142,34 @@ export const PinOrKey = OneOfType('PinOrKey', [PinKey, ObjectWithKey]);
 //-----------------------------------------------------------------------------
 
 export const env = XF.env.concat([
+  Attachment,
+  Comment,
+  CommentId,
+  DataType,
+  DataValue,
   Identifier,
+  Label,
   Link,
   LinkId,
   LinkOrId,
   Node,
   NodeId,
   NodeOrId,
-  Position,
-  TerminalNode,
   Patch,
   PatchPath,
   Pin,
-  PinOrKey,
+  PinDirection,
   PinKey,
   PinLabel,
+  PinOrKey,
   PinRef,
-  PinDirection,
-  DataType,
-  DataValue,
+  Position,
   Project,
   ShortId,
-  Label,
+  Size,
   Source,
+  TerminalNode,
   Version,
-  Attachment,
 ]);
 
 export const def = HMDef.create({
