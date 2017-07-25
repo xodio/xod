@@ -2,24 +2,7 @@ import R from 'ramda';
 import * as XP from 'xod-project';
 import { explode } from 'xod-func-tools';
 
-import {
-  NODE_ADD,
-  NODE_MOVE,
-  NODE_UPDATE_PROPERTY,
-  NODE_DELETE,
-  LINK_ADD,
-  LINK_DELETE,
-  PATCH_ADD,
-  PATCH_RENAME,
-  PATCH_DESCRIPTION_UPDATE,
-  PATCH_DELETE,
-  PROJECT_CREATE,
-  PROJECT_RENAME,
-  PROJECT_OPEN,
-  PROJECT_OPEN_WORKSPACE,
-  PROJECT_IMPORT,
-  PROJECT_UPDATE_META,
-} from './actionTypes';
+import * as AT from './actionTypes';
 
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from './constants';
 
@@ -42,7 +25,10 @@ const selectNodePropertyUpdater = ({ kind, key, value }) => {
 
 export default (state = {}, action) => {
   switch (action.type) {
-    case PROJECT_CREATE: {
+    //
+    // Project
+    //
+    case AT.PROJECT_CREATE: {
       const { name, mainPatchPath } = action.payload;
 
       const oldLocalPatchesPaths = R.compose(
@@ -60,7 +46,7 @@ export default (state = {}, action) => {
       )(state);
     }
 
-    case PROJECT_IMPORT: {
+    case AT.PROJECT_IMPORT: {
       const importedProject = action.payload;
 
       return XP.mergePatchesList(
@@ -69,21 +55,21 @@ export default (state = {}, action) => {
       );
     }
 
-    case PROJECT_RENAME:
+    case AT.PROJECT_RENAME:
       return XP.setProjectName(action.payload, state);
 
-    case PROJECT_OPEN: {
+    case AT.PROJECT_OPEN: {
       return action.payload;
     }
 
-    case PROJECT_UPDATE_META:
+    case AT.PROJECT_UPDATE_META:
       return R.compose(
         XP.setProjectVersion(action.payload.version),
         XP.setProjectLicense(action.payload.license),
         XP.setProjectDescription(action.payload.description)
       )(state);
 
-    case PROJECT_OPEN_WORKSPACE: {
+    case AT.PROJECT_OPEN_WORKSPACE: {
       const libs = action.payload;
 
       return R.compose(
@@ -93,7 +79,45 @@ export default (state = {}, action) => {
       )();
     }
 
-    case NODE_ADD: {
+    //
+    // Patch
+    //
+    case AT.PATCH_ADD: {
+      const { patchPath } = action.payload;
+
+      const patch = XP.createPatch();
+
+      return R.compose(
+        explode,
+        XP.assocPatch(patchPath, patch)
+      )(state);
+    }
+
+    case AT.PATCH_RENAME: {
+      const { newPatchPath, oldPatchPath } = action.payload;
+      return explode(XP.rebasePatch(newPatchPath, oldPatchPath, state));
+    }
+
+    case AT.PATCH_DELETE: {
+      const { patchPath } = action.payload;
+
+      return XP.dissocPatch(patchPath, state);
+    }
+
+    case AT.PATCH_DESCRIPTION_UPDATE: {
+      const { path, description } = action.payload;
+      const patchLens = XP.lensPatch(path);
+      return R.over(
+        patchLens,
+        XP.setPatchDescription(description),
+        state
+      );
+    }
+
+    //
+    // Node
+    //
+    case AT.NODE_ADD: {
       const { typeId, position, newNodeId, patchPath } = action.payload;
 
       const newNode = R.compose(
@@ -108,7 +132,7 @@ export default (state = {}, action) => {
       );
     }
 
-    case NODE_MOVE: {
+    case AT.NODE_MOVE: {
       const { id, position, patchPath } = action.payload;
 
       const currentPatchLens = XP.lensPatch(patchPath);
@@ -127,7 +151,17 @@ export default (state = {}, action) => {
       );
     }
 
-    case NODE_UPDATE_PROPERTY: {
+    case AT.NODE_DELETE: {
+      const { id, patchPath } = action.payload;
+
+      return R.over(
+        XP.lensPatch(patchPath),
+        XP.dissocNode(id),
+        state
+      );
+    }
+
+    case AT.NODE_UPDATE_PROPERTY: {
       const { id, patchPath } = action.payload;
 
       const currentPatchLens = XP.lensPatch(patchPath);
@@ -146,27 +180,10 @@ export default (state = {}, action) => {
       );
     }
 
-    case PATCH_DESCRIPTION_UPDATE: {
-      const { path, description } = action.payload;
-      const patchLens = XP.lensPatch(path);
-      return R.over(
-        patchLens,
-        XP.setPatchDescription(description),
-        state
-      );
-    }
-
-    case NODE_DELETE: {
-      const { id, patchPath } = action.payload;
-
-      return R.over(
-        XP.lensPatch(patchPath),
-        XP.dissocNode(id),
-        state
-      );
-    }
-
-    case LINK_ADD: {
+    //
+    // Link
+    //
+    case AT.LINK_ADD: {
       const { pins, patchPath } = action.payload;
 
       const firstPinNodeType = R.compose(
@@ -197,7 +214,7 @@ export default (state = {}, action) => {
       );
     }
 
-    case LINK_DELETE: {
+    case AT.LINK_DELETE: {
       const { id, patchPath } = action.payload;
 
       return R.over(
@@ -207,27 +224,6 @@ export default (state = {}, action) => {
       );
     }
 
-    case PATCH_ADD: {
-      const { patchPath } = action.payload;
-
-      const patch = XP.createPatch();
-
-      return R.compose(
-        explode,
-        XP.assocPatch(patchPath, patch)
-      )(state);
-    }
-
-    case PATCH_RENAME: {
-      const { newPatchPath, oldPatchPath } = action.payload;
-      return explode(XP.rebasePatch(newPatchPath, oldPatchPath, state));
-    }
-
-    case PATCH_DELETE: {
-      const { patchPath } = action.payload;
-
-      return XP.dissocPatch(patchPath, state);
-    }
     default:
       return state;
   }

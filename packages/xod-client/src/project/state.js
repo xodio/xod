@@ -10,22 +10,22 @@ export default {
   version: '0.0.0',
   patches: {
     '@/1': {
+      attachments: [],
+      comments: {},
+      description: '',
       impls: {},
       links: {},
       nodes: {},
-      comments: {},
       path: '@/1',
-      description: '',
-      attachments: [],
     },
     '@/2': {
+      attachments: [],
+      comments: {},
+      description: '',
       impls: {},
       links: {},
       nodes: {},
-      comments: {},
       path: '@/2',
-      description: '',
-      attachments: [],
     },
   },
 };
