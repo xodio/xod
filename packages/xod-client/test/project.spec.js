@@ -7,13 +7,16 @@ import { defaultizeProject } from 'xod-project/test/helpers';
 
 import { explodeEither } from 'xod-func-tools';
 import * as XP from 'xod-project';
+
 import initialState from '../src/core/state';
 import generateReducers from '../src/core/reducer';
 import { getProject } from '../src/project/selectors';
-import { switchPatch } from '../src/editor/actions';
-import { addError } from '../src/messages/actions';
+
 import { NODETYPE_ERROR_TYPES } from '../src/editor/constants';
 import { NODETYPE_ERRORS } from '../src/messages/constants';
+
+import { addError } from '../src/messages/actions';
+import { switchPatch } from '../src/editor/actions';
 import {
   openProject,
   createProject,
@@ -22,13 +25,18 @@ import {
   addPatch,
   renamePatch,
   deletePatch,
+  updatePatchDescription,
   addNode,
   moveNode,
   updateNodeProperty,
-  updatePatchDescription,
   deleteNode,
   addLink,
   deleteLink,
+  addComment,
+  deleteComment,
+  moveComment,
+  resizeComment,
+  editComment,
 } from '../src/project/actions';
 
 describe('project reducer', () => {
@@ -181,7 +189,7 @@ describe('project reducer', () => {
 
       const maybeNode = R.compose(
         XP.getNodeById(nodeId),
-        R.view(XP.lensPatch(testPatchPath)),
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
@@ -194,7 +202,7 @@ describe('project reducer', () => {
 
       const maybeNode = R.compose(
         XP.getNodeById(nodeId),
-        R.view(XP.lensPatch(testPatchPath)),
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
@@ -212,7 +220,7 @@ describe('project reducer', () => {
 
       const maybeNode = R.compose(
         XP.getNodeById(nodeId),
-        R.view(XP.lensPatch(testPatchPath)),
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
@@ -231,7 +239,7 @@ describe('project reducer', () => {
 
       const maybeNode = R.compose(
         XP.getNodeById(nodeId),
-        R.view(XP.lensPatch(testPatchPath)),
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
@@ -250,7 +258,7 @@ describe('project reducer', () => {
 
       const maybeNode = R.compose(
         XP.getNodeById(nodeId),
-        R.view(XP.lensPatch(testPatchPath)),
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
@@ -282,7 +290,7 @@ describe('project reducer', () => {
 
       const links = R.compose(
         XP.listLinks,
-        R.view(XP.lensPatch(testPatchPath)),
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
@@ -299,7 +307,7 @@ describe('project reducer', () => {
         XP.getLinkId,
         R.head,
         XP.listLinks,
-        R.view(XP.lensPatch(testPatchPath)),
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
@@ -307,11 +315,100 @@ describe('project reducer', () => {
 
       const links = R.compose(
         XP.listLinks,
-        R.view(XP.lensPatch(testPatchPath)),
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
       assert.equal(0, links.length);
+    });
+  });
+
+  describe('Comment management', () => {
+    let store = null;
+    let testPatchPath = '';
+
+    const getCommentsList = R.uncurryN(2)(
+      patchPath => R.compose(
+        XP.listComments,
+        XP.getPatchByPathUnsafe(patchPath),
+        getProject
+      )
+    );
+
+    const getAddedComment = R.uncurryN(2)(
+      patchPath => R.compose(
+        R.head,
+        getCommentsList(patchPath)
+      )
+    );
+
+    const getAddedCommentId = R.uncurryN(2)(
+      patchPath => R.compose(
+        XP.getCommentId,
+        getAddedComment(patchPath)
+      )
+    );
+
+    beforeEach(() => {
+      store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
+      const addPatchAction = store.dispatch(addPatch('test-patch'));
+      testPatchPath = addPatchAction.payload.patchPath;
+    });
+
+    it('should add a comment', () => {
+      store.dispatch(addComment());
+
+      const comments = getCommentsList(testPatchPath, store.getState());
+      assert.equal(comments.length, 1);
+    });
+
+    it('should delete a comment', () => {
+      store.dispatch(addComment());
+      const testCommentId = getAddedCommentId(testPatchPath, store.getState());
+
+      store.dispatch(deleteComment(testCommentId));
+
+      const comments = getCommentsList(testPatchPath, store.getState());
+      assert.equal(comments.length, 0);
+    });
+    it('should move a comment', () => {
+      store.dispatch(addComment());
+      const testCommentId = getAddedCommentId(testPatchPath, store.getState());
+      const newPosition = { x: 123456789, y: 987654321 };
+
+      store.dispatch(moveComment(testCommentId, newPosition));
+
+      const commentAfter = getAddedComment(testPatchPath, store.getState());
+      assert.deepEqual(
+        XP.getCommentPosition(commentAfter),
+        newPosition
+      );
+    });
+    it('should resize a comment', () => {
+      store.dispatch(addComment());
+      const testCommentId = getAddedCommentId(testPatchPath, store.getState());
+      const newSize = { width: 100100100, height: 200200200 };
+
+      store.dispatch(resizeComment(testCommentId, newSize));
+
+      const commentAfter = getAddedComment(testPatchPath, store.getState());
+      assert.deepEqual(
+        XP.getCommentSize(commentAfter),
+        newSize
+      );
+    });
+    it('should edit comment\'s content', () => {
+      store.dispatch(addComment());
+      const testCommentId = getAddedCommentId(testPatchPath, store.getState());
+      const newContent = 'totally new content for test comment';
+
+      store.dispatch(editComment(testCommentId, newContent));
+
+      const commentAfter = getAddedComment(testPatchPath, store.getState());
+      assert.deepEqual(
+        XP.getCommentContent(commentAfter),
+        newContent
+      );
     });
   });
 });

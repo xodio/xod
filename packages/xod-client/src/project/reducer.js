@@ -4,6 +4,7 @@ import { explode } from 'xod-func-tools';
 
 import * as AT from './actionTypes';
 
+import { slotsToPixels } from './nodeLayout'
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from './constants';
 
 // TODO: rewrite this?
@@ -21,6 +22,20 @@ const selectNodePropertyUpdater = ({ kind, key, value }) => {
   }
 
   return R.identity;
+};
+
+const updateCommentWith = (updaterFn, id, patchPath, state) => {
+  const updatedComment = R.compose(
+    updaterFn,
+    XP.getCommentByIdUnsafe(id),
+    XP.getPatchByPathUnsafe(patchPath)
+  )(state);
+
+  return R.over(
+    XP.lensPatch(patchPath),
+    XP.assocComment(updatedComment),
+    state
+  );
 };
 
 export default (state = {}, action) => {
@@ -222,6 +237,53 @@ export default (state = {}, action) => {
         XP.dissocLink(id),
         state
       );
+    }
+
+    //
+    // Comment
+    //
+    case AT.COMMENT_ADD: {
+      const { patchPath } = action.payload;
+
+      const newComment = XP.createComment(
+        { x: 300, y: 300 },
+        slotsToPixels({ width: 2, height: 2 }),
+        ''
+      );
+
+      return R.over(
+        XP.lensPatch(patchPath),
+        XP.assocComment(newComment),
+        state
+      );
+    }
+
+    case AT.COMMENT_DELETE: {
+      const { id, patchPath } = action.payload;
+
+      return R.over(
+        XP.lensPatch(patchPath),
+        XP.dissocComment(id),
+        state
+      );
+    }
+
+    case AT.COMMENT_MOVE: {
+      const { id, patchPath, position } = action.payload;
+
+      return updateCommentWith(XP.setCommentPosition(position), id, patchPath, state);
+    }
+
+    case AT.COMMENT_RESIZE: {
+      const { id, patchPath, size } = action.payload;
+
+      return updateCommentWith(XP.setCommentSize(size), id, patchPath, state);
+    }
+
+    case AT.COMMENT_SET_CONTENT: {
+      const { id, patchPath, content } = action.payload;
+
+      return updateCommentWith(XP.setCommentContent(content), id, patchPath, state);
     }
 
     default:

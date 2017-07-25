@@ -228,3 +228,53 @@ export const deleteLink = (id, patchPath) => ({
     patchPath,
   },
 });
+
+//
+// Comment
+//
+export const addComment = () => (dispatch, getState) =>
+  dispatch({ // TODO: where to provide initial size, position and content?
+    type: ActionType.COMMENT_ADD,
+    payload: {
+      patchPath: getCurrentPatchPath(getState()),
+    },
+  });
+
+export const deleteComment = id => (dispatch, getState) =>
+  dispatch({
+    type: ActionType.COMMENT_DELETE,
+    payload: {
+      id,
+      patchPath: getCurrentPatchPath(getState()),
+    },
+  });
+
+export const moveComment = (id, position) => (dispatch, getState) =>
+  dispatch({
+    type: ActionType.COMMENT_MOVE,
+    payload: {
+      id,
+      position,
+      patchPath: getCurrentPatchPath(getState()),
+    },
+  });
+
+export const resizeComment = (id, size) => (dispatch, getState) =>
+  dispatch({
+    type: ActionType.COMMENT_RESIZE,
+    payload: {
+      id,
+      size,
+      patchPath: getCurrentPatchPath(getState()),
+    },
+  });
+
+export const editComment = (id, content) => (dispatch, getState) =>
+  dispatch({
+    type: ActionType.COMMENT_SET_CONTENT,
+    payload: {
+      id,
+      content,
+      patchPath: getCurrentPatchPath(getState()),
+    },
+  });
