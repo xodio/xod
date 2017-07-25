@@ -5,6 +5,7 @@ import { assert } from 'chai';
 import { Maybe } from 'ramda-fantasy';
 import { defaultizeProject } from 'xod-project/test/helpers';
 
+import { explodeEither } from 'xod-func-tools';
 import * as XP from 'xod-project';
 import initialState from '../src/core/state';
 import generateReducers from '../src/core/reducer';
@@ -51,17 +52,15 @@ describe('project reducer', () => {
         newProjectName,
         XP.getProjectName(newProject)
       );
+
+      const expectedPatches = R.compose(
+        XP.listLocalPatches,
+        explodeEither,
+        XP.assocPatch(XP.getLocalPath('main'), XP.createPatch()),
+        XP.createProject
+      )();
       assert.deepEqual(
-        [
-          {
-            impls: {},
-            links: {},
-            nodes: {},
-            path: '@/main',
-            description: '',
-            attachments: [],
-          },
-        ],
+        expectedPatches,
         XP.listLocalPatches(newProject),
         'new project has an empty patch with a name "main"'
       );
