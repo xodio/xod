@@ -38,7 +38,7 @@ const typeUrl = R.curry(
 
 // hasType :: Type -> (x -> Boolean)
 export const hasType = R.curry(
-  type => x => type.validate(x).isRight
+  (type, x) => type.validate(x).isRight
 );
 
 // hasOneOfType :: [Type] -> (x -> Boolean)

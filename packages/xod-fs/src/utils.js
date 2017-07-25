@@ -10,7 +10,7 @@ import {
   validateSanctuaryType,
 } from 'xod-func-tools';
 
-import { PatchFileContents, def } from './types';
+import { PatchFileContents, Path, def } from './types';
 
 import {
   DEFAULT_WORKSPACE_PATH,
@@ -215,15 +215,16 @@ export const filterDefaultProject = def(
  * @returns {Promise<Path,Error>} Resolved path or error with code INVALID_WORKSPACE_PATH.
  */
 // :: Path -> Promise Path Error
-export const resolveWorkspacePath = R.tryCatch(
-  R.compose(
-    Promise.resolve.bind(Promise),
-    resolvePath
+export const resolveWorkspacePath = R.compose(
+  foldEither(
+    workspacePath => rejectWithCode(
+      ERROR_CODES.INVALID_WORKSPACE_PATH,
+      { path: workspacePath }
+    ),
+    Promise.resolve.bind(Promise)
   ),
-  workspacePath => rejectWithCode(
-    ERROR_CODES.INVALID_WORKSPACE_PATH,
-    { path: workspacePath }
-  )
+  R.map(resolvePath),
+  validateSanctuaryType(Path)
 );
 
 export const resolveLibPath = def(
