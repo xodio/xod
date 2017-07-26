@@ -3,7 +3,7 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     char str[16];
     auto num = getValue<Inputs::NUM>(nid);
     auto dig = getValue<Inputs::DIG>(nid);

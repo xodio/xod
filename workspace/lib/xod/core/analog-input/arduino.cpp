@@ -4,10 +4,11 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     if (!isInputDirty<Inputs::UPD>(nid))
         return;
 
+    State* state = getState(nid);
     const int port = (int)getValue<Inputs::PORT>(nid);
     if (port != state->configuredPort) {
         ::pinMode(port, INPUT);

@@ -3,7 +3,7 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     auto x = getValue<Inputs::X>(nid);
     auto minX = getValue<Inputs::MIN>(nid);
     auto maxX = getValue<Inputs::MAX>(nid);

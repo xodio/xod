@@ -926,6 +926,10 @@ struct Storage {
     OutputPin<Number> output_TIME;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
     using UPD = InputDescriptor<Logic, offsetof(Storage, input_UPD)>;
 }
@@ -934,7 +938,7 @@ namespace Outputs {
     using TIME = OutputDescriptor<Number, offsetof(Storage, output_TIME), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     emitValue<Outputs::TIME>(nid, millis() / 1000.f);
 }
 
@@ -968,6 +972,10 @@ struct Storage {
     PinRef input_L2;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
     using RS = InputDescriptor<Number, offsetof(Storage, input_RS)>;
     using EN = InputDescriptor<Number, offsetof(Storage, input_EN)>;
@@ -991,7 +999,8 @@ void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
         lcd->write(*it);
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
+    State* state = getState(nid);
     auto lcd = state->lcd;
     if (!state->lcd) {
         state->lcd = lcd = new LiquidCrystal(
@@ -1025,6 +1034,10 @@ struct Storage {
     OutputPin<XString> output_OUT;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
     using IN = InputDescriptor<Number, offsetof(Storage, input_IN)>;
 }
@@ -1033,7 +1046,7 @@ namespace Outputs {
     using OUT = OutputDescriptor<XString, offsetof(Storage, output_OUT), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     char str[16];
     auto num = getValue<Inputs::IN>(nid);
     dtostrf(num, 0, 2, str);
@@ -1056,6 +1069,10 @@ struct Storage {
     OutputPin<Logic> output_TICK;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
 }
 
@@ -1063,7 +1080,7 @@ namespace Outputs {
     using TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     emitValue<Outputs::TICK>(nid, 1);
     setTimeout(nid, 0);
 }
@@ -1082,6 +1099,10 @@ struct Storage {
     OutputPin<Number> output_VAL;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
 }
 
@@ -1089,7 +1110,7 @@ namespace Outputs {
     using VAL = OutputDescriptor<Number, offsetof(Storage, output_VAL), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
   reemitValue<Outputs::VAL>(nid);
 }
 
@@ -1107,6 +1128,10 @@ struct Storage {
     OutputPin<XString> output_VAL;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
 }
 
@@ -1114,7 +1139,7 @@ namespace Outputs {
     using VAL = OutputDescriptor<XString, offsetof(Storage, output_VAL), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
   reemitValue<Outputs::VAL>(nid);
 }
 

@@ -937,7 +937,7 @@ namespace Outputs {
     using TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     TimeMs tNow = transactionTime();
     TimeMs dt = getValue<Inputs::IVAL>(nid) * 1000;
     TimeMs tNext = tNow + dt;
@@ -987,7 +987,7 @@ namespace Outputs {
     using MEM = OutputDescriptor<Logic, offsetof(Storage, output_MEM), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     bool newState = state->state;
     if (isInputDirty<Inputs::TGL>(nid)) {
         newState = !state->state;
@@ -1029,7 +1029,7 @@ namespace Inputs {
 namespace Outputs {
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     const int port = (int)getValue<Inputs::PORT>(nid);
     if (port != state->configuredPort) {
         ::pinMode(port, OUTPUT);
@@ -1063,7 +1063,7 @@ namespace Outputs {
     using VAL = OutputDescriptor<Number, offsetof(Storage, output_VAL), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
   reemitValue<Outputs::VAL>(nid);
 }
 

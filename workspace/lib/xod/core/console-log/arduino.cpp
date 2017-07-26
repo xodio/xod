@@ -4,10 +4,11 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     if (!isInputDirty<Inputs::DUMP>(nid))
         return;
 
+    State* state = getState(nid);
     if (!state->begun) {
         Serial.begin(9600);
     }

@@ -377,7 +377,7 @@
       },
       "path": "xod/core/any",
       "impls": {
-        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    bool p1 = isInputDirty<Inputs::P1>(nid);\n    bool p2 = isInputDirty<Inputs::P2>(nid);\n    if (p1 || p2)\n        emitValue<Outputs::ANY>(nid, true);\n}\n"
+        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    bool p1 = isInputDirty<Inputs::P1>(nid);\n    bool p2 = isInputDirty<Inputs::P2>(nid);\n    if (p1 || p2)\n        emitValue<Outputs::ANY>(nid, true);\n}\n"
       },
       "attachments": []
     },
@@ -412,7 +412,7 @@
       },
       "path": "xod/core/boot",
       "impls": {
-        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitValue<Outputs::BOOT>(nid, 1);\n}\n",
+        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    emitValue<Outputs::BOOT>(nid, 1);\n}\n",
         "js": "module.exports.evaluate = function(e) {\n  e.fire({ BOOT: PULSE });\n};\n"
       },
       "attachments": []
@@ -457,7 +457,7 @@
       },
       "path": "xod/core/console-log",
       "impls": {
-        "arduino": "struct State {\n    bool begun;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    if (!isInputDirty<Inputs::DUMP>(nid))\n        return;\n\n    if (!state->begun) {\n        Serial.begin(9600);\n    }\n\n    auto line = getValue<Inputs::LINE>(nid);\n    if (line) {\n        for (auto it = line->iterate(); it; ++it)\n            Serial.write((char)*it);\n        Serial.write('\\r');\n        Serial.write('\\n');\n        Serial.flush();\n    }\n}\n"
+        "arduino": "struct State {\n    bool begun;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    if (!isInputDirty<Inputs::DUMP>(nid))\n        return;\n\n    if (!state->begun) {\n        Serial.begin(9600);\n    }\n\n    auto line = getValue<Inputs::LINE>(nid);\n    if (line) {\n        for (auto it = line->iterate(); it; ++it)\n            Serial.write((char)*it);\n        Serial.write('\\r');\n        Serial.write('\\n');\n        Serial.flush();\n    }\n}\n"
       },
       "attachments": []
     }

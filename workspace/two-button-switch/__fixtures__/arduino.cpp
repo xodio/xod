@@ -928,6 +928,10 @@ struct Storage {
     OutputPin<Logic> output_F;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
     using GATE = InputDescriptor<Logic, offsetof(Storage, input_GATE)>;
     using TRIG = InputDescriptor<Logic, offsetof(Storage, input_TRIG)>;
@@ -938,7 +942,7 @@ namespace Outputs {
     using F = OutputDescriptor<Logic, offsetof(Storage, output_F), 1>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     if (!isInputDirty<Inputs::TRIG>(nid))
         return;
 
@@ -967,6 +971,10 @@ struct Storage {
     OutputPin<Logic> output_SIG;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
     using PORT = InputDescriptor<Number, offsetof(Storage, input_PORT)>;
     using UPD = InputDescriptor<Logic, offsetof(Storage, input_UPD)>;
@@ -976,10 +984,11 @@ namespace Outputs {
     using SIG = OutputDescriptor<Logic, offsetof(Storage, output_SIG), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     if (!isInputDirty<Inputs::UPD>(nid))
         return;
 
+    State* state = getState(nid);
     const int port = (int)getValue<Inputs::PORT>(nid);
     if (port != state->configuredPort) {
         ::pinMode(port, INPUT);
@@ -1010,6 +1019,10 @@ struct Storage {
     OutputPin<Logic> output_MEM;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
     using SET = InputDescriptor<Logic, offsetof(Storage, input_SET)>;
     using TGL = InputDescriptor<Logic, offsetof(Storage, input_TGL)>;
@@ -1020,7 +1033,8 @@ namespace Outputs {
     using MEM = OutputDescriptor<Logic, offsetof(Storage, output_MEM), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
+    State* state = getState(nid);
     bool newState = state->state;
     if (isInputDirty<Inputs::TGL>(nid)) {
         newState = !state->state;
@@ -1054,6 +1068,10 @@ struct Storage {
     PinRef input_SIG;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
     using PORT = InputDescriptor<Number, offsetof(Storage, input_PORT)>;
     using SIG = InputDescriptor<Logic, offsetof(Storage, input_SIG)>;
@@ -1062,7 +1080,8 @@ namespace Inputs {
 namespace Outputs {
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
+    State* state = getState(nid);
     const int port = (int)getValue<Inputs::PORT>(nid);
     if (port != state->configuredPort) {
         ::pinMode(port, OUTPUT);
@@ -1090,6 +1109,10 @@ struct Storage {
     OutputPin<Logic> output_TICK;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
 }
 
@@ -1097,7 +1120,7 @@ namespace Outputs {
     using TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     emitValue<Outputs::TICK>(nid, 1);
     setTimeout(nid, 0);
 }
@@ -1116,6 +1139,10 @@ struct Storage {
     OutputPin<Number> output_VAL;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
 }
 
@@ -1123,7 +1150,7 @@ namespace Outputs {
     using VAL = OutputDescriptor<Number, offsetof(Storage, output_VAL), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
   reemitValue<Outputs::VAL>(nid);
 }
 

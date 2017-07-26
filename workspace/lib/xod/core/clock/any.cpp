@@ -4,7 +4,8 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
+    State* state = getState(nid);
     TimeMs tNow = transactionTime();
     TimeMs dt = getValue<Inputs::IVAL>(nid) * 1000;
     TimeMs tNext = tNow + dt;

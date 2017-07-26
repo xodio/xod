@@ -11,6 +11,10 @@ struct Storage {
   {{/each}}
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
   {{#each inputs}}
     using {{ pinKey }} = InputDescriptor<{{ type }}, offsetof(Storage, input_{{ pinKey }})>;

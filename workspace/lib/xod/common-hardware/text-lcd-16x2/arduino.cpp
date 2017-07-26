@@ -18,7 +18,8 @@ void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
         lcd->write(*it);
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
+    State* state = getState(nid);
     auto lcd = state->lcd;
     if (!state->lcd) {
         state->lcd = lcd = new LiquidCrystal(

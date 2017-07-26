@@ -10,7 +10,8 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
+    State* state = getState(nid);
     auto port = (int)getValue<Inputs::PORT>(nid);
     if (port != state->configuredPort) {
         state->servo.attach(port);

@@ -2,6 +2,6 @@ struct State {};
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
   reemitValue<Outputs::VAL>(nid);
 }

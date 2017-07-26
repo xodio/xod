@@ -928,6 +928,10 @@ struct Storage {
     OutputPin<Logic> output_TICK;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
     using IVAL = InputDescriptor<Number, offsetof(Storage, input_IVAL)>;
     using RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
@@ -937,7 +941,8 @@ namespace Outputs {
     using TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
+    State* state = getState(nid);
     TimeMs tNow = transactionTime();
     TimeMs dt = getValue<Inputs::IVAL>(nid) * 1000;
     TimeMs tNext = tNow + dt;
@@ -975,6 +980,10 @@ struct Storage {
     PinRef input_SIG;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
     using PORT = InputDescriptor<Number, offsetof(Storage, input_PORT)>;
     using SIG = InputDescriptor<Logic, offsetof(Storage, input_SIG)>;
@@ -983,7 +992,8 @@ namespace Inputs {
 namespace Outputs {
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
+    State* state = getState(nid);
     const int port = (int)getValue<Inputs::PORT>(nid);
     if (port != state->configuredPort) {
         ::pinMode(port, OUTPUT);
@@ -1015,6 +1025,10 @@ struct Storage {
     OutputPin<Logic> output_MEM;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
     using SET = InputDescriptor<Logic, offsetof(Storage, input_SET)>;
     using TGL = InputDescriptor<Logic, offsetof(Storage, input_TGL)>;
@@ -1025,7 +1039,8 @@ namespace Outputs {
     using MEM = OutputDescriptor<Logic, offsetof(Storage, output_MEM), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
+    State* state = getState(nid);
     bool newState = state->state;
     if (isInputDirty<Inputs::TGL>(nid)) {
         newState = !state->state;
@@ -1056,6 +1071,10 @@ struct Storage {
     OutputPin<Number> output_VAL;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
 }
 
@@ -1063,7 +1082,7 @@ namespace Outputs {
     using VAL = OutputDescriptor<Number, offsetof(Storage, output_VAL), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
   reemitValue<Outputs::VAL>(nid);
 }
 

@@ -23,6 +23,10 @@ struct Storage {
     OutputPin<Number> output_OUT;
 };
 
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
+}
+
 namespace Inputs {
     using IN1 = InputDescriptor<Number, offsetof(Storage, input_IN1)>;
     using IN2 = InputDescriptor<Number, offsetof(Storage, input_IN2)>;
@@ -32,7 +36,7 @@ namespace Outputs {
     using OUT = OutputDescriptor<Number, offsetof(Storage, output_OUT), 0>;
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     /* Native implementation goes here */
 }
 

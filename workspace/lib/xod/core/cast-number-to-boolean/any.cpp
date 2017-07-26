@@ -3,6 +3,6 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     emitValue<Outputs::OUT>(nid, getValue<Inputs::IN>(nid) != 0.0);
 }

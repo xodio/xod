@@ -4,7 +4,8 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
+    State* state = getState(nid);
     bool newState = state->state;
     if (isInputDirty<Inputs::TGL>(nid)) {
         newState = !state->state;

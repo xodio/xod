@@ -3,7 +3,7 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(NodeId nid) {
     TimeMs dt = getValue<Inputs::T>(nid) * 1000;
 
     if (isInputDirty<Inputs::RST>(nid)) {
