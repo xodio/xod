@@ -213,7 +213,7 @@ class Patch extends React.Component {
             selection={this.props.selection}
             onClick={this.onLinkClick}
           />
-          <Layers.PinsOverlay
+          <Layers.NodePinsOverlay
             nodes={this.props.nodes}
             linkingPin={this.props.linkingPin}
             onPinMouseDown={this.onPinMouseDown}

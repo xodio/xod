@@ -6,7 +6,7 @@ import PinOverlay from './PinOverlay';
 import { noop } from '../../utils/ramda';
 import { isPinSelected } from '../../editor/utils';
 
-class PinsOverlay extends React.Component {
+class NodePinsOverlay extends React.Component {
   constructor(props) {
     super(props);
     this.id = this.props.id;
@@ -67,7 +67,7 @@ class PinsOverlay extends React.Component {
   }
 }
 
-PinsOverlay.propTypes = {
+NodePinsOverlay.propTypes = {
   id: PropTypes.string.isRequired,
   nodeLabel: PropTypes.string.isRequired,
   pins: PropTypes.any.isRequired,
@@ -78,10 +78,10 @@ PinsOverlay.propTypes = {
   onPinMouseUp: PropTypes.func,
   onPinMouseDown: PropTypes.func,
 };
-PinsOverlay.defaultProps = {
+NodePinsOverlay.defaultProps = {
   pinLinkabilityValidator: R.F,
   onPinMouseUp: noop,
   onPinMouseDown: noop,
 };
 
-export default PinsOverlay;
+export default NodePinsOverlay;
