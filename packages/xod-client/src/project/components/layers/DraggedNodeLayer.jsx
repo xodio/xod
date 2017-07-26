@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import SVGLayer from './SVGLayer';
-import Node from './Node';
+import Node from '../Node';
 
 class DraggedNodeLayer extends React.PureComponent {
   render() {

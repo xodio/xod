@@ -20,14 +20,7 @@ import { COMMAND } from '../../utils/constants';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
 import PatchSVG from '../../project/components/PatchSVG';
-import BackgroundLayer from '../../project/components/BackgroundLayer';
-import IdleNodesLayer from '../../project/components/IdleNodesLayer';
-import PinsOverlayLayer from '../../project/components/PinsOverlayLayer';
-import LinksLayer from '../../project/components/LinksLayer';
-import GhostsLayer from '../../project/components/GhostsLayer';
-import SnappingPreviewLayer from '../../project/components/SnappingPreviewLayer';
-import DraggedNodeLayer from '../../project/components/DraggedNodeLayer';
-import DraggedNodeLinksLayer from '../../project/components/DraggedNodeLinksLayer';
+import * as Layers from '../../project/components/layers';
 
 import {
   snapNodePositionToSlots,
@@ -196,12 +189,12 @@ class Patch extends React.Component {
           onMouseMove={this.onMouseMove}
           onMouseUp={this.onMouseUp}
         >
-          <BackgroundLayer
+          <Layers.Background
             width={this.props.size.width}
             height={this.props.size.height}
             onClick={this.props.actions.deselectAll}
           />
-          <IdleNodesLayer
+          <Layers.IdleNodes
             draggedNodeId={draggedNodeId}
             nodes={this.props.nodes}
             selection={this.props.selection}
@@ -210,32 +203,32 @@ class Patch extends React.Component {
             onPinMouseDown={this.onPinMouseDown}
             onPinMouseUp={this.onPinMouseUp}
           />
-          <SnappingPreviewLayer
+          <Layers.SnappingPreview
             draggedNodeId={draggedNodeId}
             draggedNodePosition={draggedNodePosition}
             nodes={this.props.nodes}
           />
-          <LinksLayer
+          <Layers.Links
             links={idleLinks}
             selection={this.props.selection}
             onClick={this.onLinkClick}
           />
-          <PinsOverlayLayer
+          <Layers.PinsOverlay
             nodes={this.props.nodes}
             linkingPin={this.props.linkingPin}
             onPinMouseDown={this.onPinMouseDown}
             onPinMouseUp={this.onPinMouseUp}
           />
-          <DraggedNodeLayer
+          <Layers.DraggedNode
             node={draggedNode}
             position={draggedNodePosition}
           />
-          <DraggedNodeLinksLayer
+          <Layers.DraggedNodeLinks
             node={draggedNode}
             nodePosition={draggedNodePosition}
             links={draggedNodeLinks}
           />
-          <GhostsLayer
+          <Layers.Ghosts
             mousePosition={this.state.mousePosition}
             mode={this.props.mode}
             ghostLink={this.props.ghostLink}

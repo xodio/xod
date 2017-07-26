@@ -3,8 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import SVGLayer from './SVGLayer';
-import XODLink from './Link';
-import { addPoints } from '../nodeLayout';
+import XODLink from '../Link';
+import { addPoints } from '../../nodeLayout';
 
 const updatePinPositions = R.curry((node, newNodePosition, link) => {
   const indexOfPinConnectedToTheDraggedNode =

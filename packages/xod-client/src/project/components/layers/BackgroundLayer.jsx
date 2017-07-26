@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { LAYER } from '../../editor/constants';
+import { LAYER } from '../../../editor/constants';
 
 import SVGLayer from './SVGLayer';
 
@@ -8,7 +8,7 @@ import {
   SLOT_MARGIN,
   SLOT_SIZE,
   NODE_CORNER_RADIUS,
-} from '../nodeLayout';
+} from '../../nodeLayout';
 
 const nodeSlotPattern = (
   <pattern

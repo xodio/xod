@@ -7,7 +7,7 @@ import {
   snapNodePositionToSlots,
   isValidPosition,
   NODE_CORNER_RADIUS,
-} from '../nodeLayout';
+} from '../../nodeLayout';
 
 class SnappingPreviewLayer extends React.Component {
   shouldComponentUpdate(nextProps) {

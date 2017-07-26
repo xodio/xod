@@ -3,11 +3,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { getBaseName } from 'xod-project';
 
-import { LAYER } from '../../editor/constants';
+import { LAYER } from '../../../editor/constants';
 
 import SVGLayer from './SVGLayer';
-import PinsOverlay from './PinsOverlay';
-import { getPinLinkabilityValidator } from '../utils';
+import PinsOverlay from '../PinsOverlay';
+import { getPinLinkabilityValidator } from '../../utils';
 
 const PinsOverlayLayer = ({
   nodes,

@@ -2,13 +2,13 @@ import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { LAYER } from '../../editor/constants';
+import { LAYER } from '../../../editor/constants';
 
-import { isNodeSelected } from '../../editor/utils';
-import { getPinLinkabilityValidator } from '../utils';
+import { isNodeSelected } from '../../../editor/utils';
+import { getPinLinkabilityValidator } from '../../utils';
 
 import SVGLayer from './SVGLayer';
-import Node from './Node';
+import Node from '../Node';
 
 const IdleNodesLayer = ({
   nodes,
