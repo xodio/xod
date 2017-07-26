@@ -4,5 +4,5 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(NodeId nid) {
-    emitValue<Outputs::BOOT>(nid, 1);
+    emitValue<output_BOOT>(nid, 1);
 }

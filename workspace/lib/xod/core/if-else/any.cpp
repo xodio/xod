@@ -4,8 +4,8 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(NodeId nid) {
-    auto cond = getValue<Inputs::COND>(nid);
-    auto trueVal = getValue<Inputs::T>(nid);
-    auto falseVal = getValue<Inputs::F>(nid);
-    emitValue<Outputs::R>(nid, cond ? trueVal : falseVal);
+    auto cond = getValue<input_COND>(nid);
+    auto trueVal = getValue<input_T>(nid);
+    auto falseVal = getValue<input_F>(nid);
+    emitValue<output_R>(nid, cond ? trueVal : falseVal);
 }

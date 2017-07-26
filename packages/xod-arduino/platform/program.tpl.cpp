@@ -18,7 +18,7 @@ namespace _program {
         { }, // state
       {{#each inputs }}
         {{#exists nodeId }}
-        { NodeId({{ nodeId }}), {{ patch/owner }}__{{ patch/libName }}__{{ patch/patchName }}::Outputs::{{ fromPinKey  }}::KEY }, // input_{{ pinKey }}
+        { NodeId({{ nodeId }}), {{ patch/owner }}__{{ patch/libName }}__{{ patch/patchName }}::output_{{ fromPinKey  }}::KEY }, // input_{{ pinKey }}
         {{else }}
         { NO_NODE, 0 }, // input_{{ pinKey }}
         {{/exists }}

@@ -15,14 +15,10 @@ State* getState(NodeId nid) {
     return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Inputs {
-  {{#each inputs}}
-    using {{ pinKey }} = InputDescriptor<{{ type }}, offsetof(Storage, input_{{ pinKey }})>;
-  {{/each}}
-}
+{{#each inputs}}
+using input_{{ pinKey }} = InputDescriptor<{{ type }}, offsetof(Storage, input_{{ pinKey }})>;
+{{/each}}
 
-namespace Outputs {
-  {{#each outputs}}
-    using {{ pinKey }} = OutputDescriptor<{{ type }}, offsetof(Storage, output_{{ pinKey }}), {{@index}}>;
-  {{/each}}
-}
+{{#each outputs}}
+using output_{{ pinKey }} = OutputDescriptor<{{ type }}, offsetof(Storage, output_{{ pinKey }}), {{@index}}>;
+{{/each}}

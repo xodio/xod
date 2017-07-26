@@ -5,7 +5,7 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(NodeId nid) {
-    if (!isInputDirty<Inputs::DUMP>(nid))
+    if (!isInputDirty<input_DUMP>(nid))
         return;
 
     State* state = getState(nid);
@@ -13,7 +13,7 @@ void evaluate(NodeId nid) {
         Serial.begin(9600);
     }
 
-    auto line = getValue<Inputs::LINE>(nid);
+    auto line = getValue<input_LINE>(nid);
     if (line) {
         for (auto it = line->iterate(); it; ++it)
             Serial.write((char)*it);

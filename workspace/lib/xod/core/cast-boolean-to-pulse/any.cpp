@@ -6,10 +6,10 @@ struct State {
 
 void evaluate(NodeId nid) {
     State* state = getState(nid);
-    auto newValue = getValue<Inputs::IN>(nid);
+    auto newValue = getValue<input_IN>(nid);
 
     if (newValue == true && state->state == false)
-        emitValue<Outputs::OUT>(nid, 1);
+        emitValue<output_OUT>(nid, 1);
 
     state->state = newValue;
 }

@@ -4,14 +4,14 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(NodeId nid) {
-    TimeMs dt = getValue<Inputs::T>(nid) * 1000;
+    TimeMs dt = getValue<input_T>(nid) * 1000;
 
-    if (isInputDirty<Inputs::RST>(nid)) {
+    if (isInputDirty<input_RST>(nid)) {
         clearTimeout(nid);
-    } else if (isInputDirty<Inputs::SET>(nid)) {
+    } else if (isInputDirty<input_SET>(nid)) {
         setTimeout(nid, dt);
     } else {
         // It was a scheduled evaluation
-        emitValue<Outputs::DONE>(nid, true);
+        emitValue<output_DONE>(nid, true);
     }
 }

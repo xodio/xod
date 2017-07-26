@@ -4,12 +4,12 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(NodeId nid) {
-    if (!isInputDirty<Inputs::TRIG>(nid))
+    if (!isInputDirty<input_TRIG>(nid))
         return;
 
-    if (getValue<Inputs::GATE>(nid)) {
-        emitValue<Outputs::T>(nid, 1);
+    if (getValue<input_GATE>(nid)) {
+        emitValue<output_T>(nid, 1);
     } else {
-        emitValue<Outputs::F>(nid, 1);
+        emitValue<output_F>(nid, 1);
     }
 }

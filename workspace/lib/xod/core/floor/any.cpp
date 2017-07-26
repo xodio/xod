@@ -4,6 +4,6 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(NodeId nid) {
-    auto x = getValue<Inputs::X>(nid);
-    emitValue<Outputs::FLR>(nid, floor(x));
+    auto x = getValue<input_X>(nid);
+    emitValue<output_FLR>(nid, floor(x));
 }

@@ -932,22 +932,18 @@ State* getState(NodeId nid) {
     return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Inputs {
-    using IVAL = InputDescriptor<Number, offsetof(Storage, input_IVAL)>;
-    using RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
-}
+using input_IVAL = InputDescriptor<Number, offsetof(Storage, input_IVAL)>;
+using input_RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
 
-namespace Outputs {
-    using TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
-}
+using output_TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
 
 void evaluate(NodeId nid) {
     State* state = getState(nid);
     TimeMs tNow = transactionTime();
-    TimeMs dt = getValue<Inputs::IVAL>(nid) * 1000;
+    TimeMs dt = getValue<input_IVAL>(nid) * 1000;
     TimeMs tNext = tNow + dt;
 
-    if (isInputDirty<Inputs::RST>(nid)) {
+    if (isInputDirty<input_RST>(nid)) {
         if (dt == 0) {
             state->nextTrig = 0;
             clearTimeout(nid);
@@ -957,7 +953,7 @@ void evaluate(NodeId nid) {
         }
     } else {
         // It was a scheduled tick
-        emitValue<Outputs::TICK>(nid, 1);
+        emitValue<output_TICK>(nid, 1);
         state->nextTrig = tNext;
         setTimeout(nid, dt);
     }
@@ -984,17 +980,12 @@ State* getState(NodeId nid) {
     return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Inputs {
-    using PORT = InputDescriptor<Number, offsetof(Storage, input_PORT)>;
-    using SIG = InputDescriptor<Logic, offsetof(Storage, input_SIG)>;
-}
-
-namespace Outputs {
-}
+using input_PORT = InputDescriptor<Number, offsetof(Storage, input_PORT)>;
+using input_SIG = InputDescriptor<Logic, offsetof(Storage, input_SIG)>;
 
 void evaluate(NodeId nid) {
     State* state = getState(nid);
-    const int port = (int)getValue<Inputs::PORT>(nid);
+    const int port = (int)getValue<input_PORT>(nid);
     if (port != state->configuredPort) {
         ::pinMode(port, OUTPUT);
         // Store configured port so to avoid repeating `pinMode` call if just
@@ -1002,7 +993,7 @@ void evaluate(NodeId nid) {
         state->configuredPort = port;
     }
 
-    const bool val = getValue<Inputs::SIG>(nid);
+    const bool val = getValue<input_SIG>(nid);
     ::digitalWrite(port, val);
 }
 
@@ -1029,22 +1020,18 @@ State* getState(NodeId nid) {
     return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Inputs {
-    using SET = InputDescriptor<Logic, offsetof(Storage, input_SET)>;
-    using TGL = InputDescriptor<Logic, offsetof(Storage, input_TGL)>;
-    using RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
-}
+using input_SET = InputDescriptor<Logic, offsetof(Storage, input_SET)>;
+using input_TGL = InputDescriptor<Logic, offsetof(Storage, input_TGL)>;
+using input_RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
 
-namespace Outputs {
-    using MEM = OutputDescriptor<Logic, offsetof(Storage, output_MEM), 0>;
-}
+using output_MEM = OutputDescriptor<Logic, offsetof(Storage, output_MEM), 0>;
 
 void evaluate(NodeId nid) {
     State* state = getState(nid);
     bool newState = state->state;
-    if (isInputDirty<Inputs::TGL>(nid)) {
+    if (isInputDirty<input_TGL>(nid)) {
         newState = !state->state;
-    } else if (isInputDirty<Inputs::SET>(nid)) {
+    } else if (isInputDirty<input_SET>(nid)) {
         newState = true;
     } else {
         newState = false;
@@ -1054,7 +1041,7 @@ void evaluate(NodeId nid) {
         return;
 
     state->state = newState;
-    emitValue<Outputs::MEM>(nid, newState);
+    emitValue<output_MEM>(nid, newState);
 }
 
 } // namespace xod__core__flip_flop
@@ -1075,15 +1062,10 @@ State* getState(NodeId nid) {
     return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Inputs {
-}
-
-namespace Outputs {
-    using VAL = OutputDescriptor<Number, offsetof(Storage, output_VAL), 0>;
-}
+using output_VAL = OutputDescriptor<Number, offsetof(Storage, output_VAL), 0>;
 
 void evaluate(NodeId nid) {
-  reemitValue<Outputs::VAL>(nid);
+  reemitValue<output_VAL>(nid);
 }
 
 } // namespace xod__core__constant_number
@@ -1103,22 +1085,22 @@ namespace _program {
     NodeId links_0_TICK[] = { 2, NO_NODE };
     xod__core__clock::Storage storage_0 = {
         { }, // state
-        { NodeId(3), xod__core__constant_number::Outputs::VAL::KEY }, // input_IVAL
+        { NodeId(3), xod__core__constant_number::output_VAL::KEY }, // input_IVAL
         { NO_NODE, 0 }, // input_RST
         { false, links_0_TICK } // output_TICK
     };
 
     xod__core__digital_output::Storage storage_1 = {
         { }, // state
-        { NodeId(4), xod__core__constant_number::Outputs::VAL::KEY }, // input_PORT
-        { NodeId(2), xod__core__flip_flop::Outputs::MEM::KEY }, // input_SIG
+        { NodeId(4), xod__core__constant_number::output_VAL::KEY }, // input_PORT
+        { NodeId(2), xod__core__flip_flop::output_MEM::KEY }, // input_SIG
     };
 
     NodeId links_2_MEM[] = { 1, NO_NODE };
     xod__core__flip_flop::Storage storage_2 = {
         { }, // state
         { NO_NODE, 0 }, // input_SET
-        { NodeId(0), xod__core__clock::Outputs::TICK::KEY }, // input_TGL
+        { NodeId(0), xod__core__clock::output_TICK::KEY }, // input_TGL
         { NO_NODE, 0 }, // input_RST
         { false, links_2_MEM } // output_MEM
     };

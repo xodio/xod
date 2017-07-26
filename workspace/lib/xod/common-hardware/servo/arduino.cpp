@@ -12,11 +12,11 @@ struct State {
 
 void evaluate(NodeId nid) {
     State* state = getState(nid);
-    auto port = (int)getValue<Inputs::PORT>(nid);
+    auto port = (int)getValue<input_PORT>(nid);
     if (port != state->configuredPort) {
         state->servo.attach(port);
         state->configuredPort = port;
     }
 
-    state->servo.write(getValue<Inputs::VAL>(nid) * 180);
+    state->servo.write(getValue<input_VAL>(nid) * 180);
 }

@@ -23,16 +23,16 @@ void evaluate(NodeId nid) {
     auto lcd = state->lcd;
     if (!state->lcd) {
         state->lcd = lcd = new LiquidCrystal(
-            (int)getValue<Inputs::RS>(nid),
-            (int)getValue<Inputs::EN>(nid),
-            (int)getValue<Inputs::D4>(nid),
-            (int)getValue<Inputs::D5>(nid),
-            (int)getValue<Inputs::D6>(nid),
-            (int)getValue<Inputs::D7>(nid));
+            (int)getValue<input_RS>(nid),
+            (int)getValue<input_EN>(nid),
+            (int)getValue<input_D4>(nid),
+            (int)getValue<input_D5>(nid),
+            (int)getValue<input_D6>(nid),
+            (int)getValue<input_D7>(nid));
 
         lcd->begin(16, 2);
     }
 
-    printLine(lcd, 0, getValue<Inputs::L1>(nid));
-    printLine(lcd, 1, getValue<Inputs::L2>(nid));
+    printLine(lcd, 0, getValue<input_L1>(nid));
+    printLine(lcd, 1, getValue<input_L2>(nid));
 }

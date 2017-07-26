@@ -4,7 +4,7 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(NodeId nid) {
-    auto x = getValue<Inputs::X>(nid);
-    auto y = getValue<Inputs::Y>(nid);
-    emitValue<Outputs::FRAC>(nid, x / y);
+    auto x = getValue<input_X>(nid);
+    auto y = getValue<input_Y>(nid);
+    emitValue<output_FRAC>(nid, x / y);
 }

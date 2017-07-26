@@ -7,9 +7,9 @@ struct State {
 void evaluate(NodeId nid) {
     State* state = getState(nid);
     bool newState = state->state;
-    if (isInputDirty<Inputs::TGL>(nid)) {
+    if (isInputDirty<input_TGL>(nid)) {
         newState = !state->state;
-    } else if (isInputDirty<Inputs::SET>(nid)) {
+    } else if (isInputDirty<input_SET>(nid)) {
         newState = true;
     } else {
         newState = false;
@@ -19,5 +19,5 @@ void evaluate(NodeId nid) {
         return;
 
     state->state = newState;
-    emitValue<Outputs::MEM>(nid, newState);
+    emitValue<output_MEM>(nid, newState);
 }
