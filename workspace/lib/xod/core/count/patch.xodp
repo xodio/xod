@@ -1,0 +1,55 @@
+{
+  "description": "Stores a number which gets incremented on each `INC` pulse.",
+  "nodes": [
+    {
+      "id": "H1MAWAu8-",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Triggers a single increment.",
+      "id": "HJAq-A_8-",
+      "label": "INC",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundValues": {
+        "__out__": 1
+      },
+      "description": "Value to add on each increment. Use a negative value (e.g. -1) to make decrements.",
+      "id": "HJvqZ0dLZ",
+      "label": "STEP",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Resets the accumulated value to zero.",
+      "id": "SkUjZA_L-",
+      "label": "RST",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "The accumulated value.",
+      "id": "r1yhZRd8W",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

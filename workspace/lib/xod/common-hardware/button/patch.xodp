@@ -1,0 +1,122 @@
+{
+  "description": "Reads a generic button or another mechanical switch. It is expected that the button is normally high, i.e. it is pulled up with a resistor. The node provides signal debounce with 20 ms settle delay.",
+  "links": [
+    {
+      "id": "B1fDfkF8W",
+      "input": {
+        "nodeId": "BkHBM1FLb",
+        "pinKey": "ry3zLA_Bv1Z"
+      },
+      "output": {
+        "nodeId": "rkl8GkKUb",
+        "pinKey": "Sk7EARu8-"
+      }
+    },
+    {
+      "id": "S1xwfyYUW",
+      "input": {
+        "nodeId": "rkl8GkKUb",
+        "pinKey": "S101C0OU-"
+      },
+      "output": {
+        "nodeId": "BypVzytU-",
+        "pinKey": "B1gI0urv1W"
+      }
+    },
+    {
+      "id": "r1bHGkF8W",
+      "input": {
+        "nodeId": "BypVzytU-",
+        "pinKey": "SyLCdSwJZ"
+      },
+      "output": {
+        "nodeId": "ByG3ZyKLW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJ2BG1tLW",
+      "input": {
+        "nodeId": "BJ--G1tI-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BkHBM1FLb",
+        "pinKey": "r1if8ROSDJ-"
+      }
+    },
+    {
+      "id": "ryxSz1YIW",
+      "input": {
+        "nodeId": "BypVzytU-",
+        "pinKey": "B1ZUA_Hv1W"
+      },
+      "output": {
+        "nodeId": "ByNiWkt8Z",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Last read value. Equals to `true` while the button is pressed (hold down) and `false` while it is released.",
+      "id": "BJ--G1tI-",
+      "label": "PRS",
+      "position": {
+        "x": 138,
+        "y": 432
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "id": "BkHBM1FLb",
+      "position": {
+        "x": 138,
+        "y": 328
+      },
+      "type": "xod/core/not"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers update, i.e. reading value again.",
+      "id": "ByG3ZyKLW",
+      "label": "UPD",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Board port number the button is connected to.",
+      "id": "ByNiWkt8Z",
+      "label": "PORT",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "BypVzytU-",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/core/digital-input"
+    },
+    {
+      "boundValues": {
+        "SkqxAC_LW": 0.02
+      },
+      "id": "rkl8GkKUb",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/core/debounce-boolean"
+    }
+  ]
+}

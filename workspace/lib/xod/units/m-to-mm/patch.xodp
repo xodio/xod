@@ -1,0 +1,56 @@
+{
+  "description": "Maps meters to millimeters",
+  "links": [
+    {
+      "id": "HkqvcYd8b",
+      "input": {
+        "nodeId": "Sy8IcKdIZ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ByA89t_LW",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "r1XPctOLZ",
+      "input": {
+        "nodeId": "ByA89t_LW",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "SkbLqKdUW",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "SJ4zUC_BD1-": 1000
+      },
+      "id": "ByA89t_LW",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "id": "SkbLqKdUW",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Sy8IcKdIZ",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

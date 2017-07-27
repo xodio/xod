@@ -1,0 +1,58 @@
+{
+  "description": "Lineary animates an internal value toward target value `TARG` with a rate `RATE`. Use the node to smoothen LED switching, motor starting, or servo angular position update.",
+  "nodes": [
+    {
+      "description": "The current animation value.",
+      "id": "BJ0M5JKUW",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "__out__": 1
+      },
+      "description": "Speed rate in units per second.",
+      "id": "BkweckF8-",
+      "label": "RATE",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers an update (i.e. recalculation) of `OUT` value. Keep the value set to `Continuously` to achieve the most smooth animation possible.",
+      "id": "HJblc1YUZ",
+      "label": "UPD",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "The target value to strive for.",
+      "id": "HyYJqJFLZ",
+      "label": "TARG",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Sk7m5kYIb",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

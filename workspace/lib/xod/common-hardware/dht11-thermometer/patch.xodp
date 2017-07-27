@@ -1,0 +1,56 @@
+{
+  "description": "Reads temperature and humidity from a DHT11 sensor.",
+  "nodes": [
+    {
+      "description": "Last read temperature in °C.",
+      "id": "BJ244qwLZ",
+      "label": "Tc",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "BJ3PEqDLb",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Relative humidity in ragne [0.0, 1.0]",
+      "id": "HkgBE9D8Z",
+      "label": "RH",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Board port number the thermometer is connected to.",
+      "id": "SkUQV5wIb",
+      "label": "PORT",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers an update, i.e. reading values again.",
+      "id": "ryeE45PLZ",
+      "label": "UPD",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "description": "Reads Sharp infrared range meter GP2Y0A21YK0F (the one with 10…80 cm range).",
+  "links": [
+    {
+      "id": "H1rhQ5_UZ",
+      "input": {
+        "nodeId": "rJf275_U-",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "B1rqmq_8Z",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJ_2X5_I-",
+      "input": {
+        "nodeId": "SycjXcO8Z",
+        "pinKey": "SyTBDSwIZ"
+      },
+      "output": {
+        "nodeId": "rJf275_U-",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "SJ82mquUZ",
+      "input": {
+        "nodeId": "rJf275_U-",
+        "pinKey": "BJuORNheZ"
+      },
+      "output": {
+        "nodeId": "ByaY75_Ib",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJc675uIZ",
+      "input": {
+        "nodeId": "H1JpXq_I-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SycjXcO8Z",
+        "pinKey": "Hyl3dSw8-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers an update, i.e. reading values again.",
+      "id": "B1rqmq_8Z",
+      "label": "UPD",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Board port number the sensor is connected to.",
+      "id": "ByaY75_Ib",
+      "label": "PORT",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Measured distance in meters. Trustworhy only for distances in [0.1, 0.8] meters range.",
+      "id": "H1JpXq_I-",
+      "label": "Dm",
+      "position": {
+        "x": 266,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "B1p1KBvIW": 0.1,
+        "BJrkFSDL-": 0.75,
+        "BkqJFHDLW": 0.025,
+        "HJd1YBDL-": 2.325
+      },
+      "id": "SycjXcO8Z",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "@/gp2y0a-linearize"
+    },
+    {
+      "id": "rJf275_U-",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/core/analog-input"
+    }
+  ]
+}

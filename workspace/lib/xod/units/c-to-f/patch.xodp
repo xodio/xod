@@ -1,0 +1,58 @@
+{
+  "description": "Maps temperature from °C to °F",
+  "links": [
+    {
+      "id": "SkvyETuIZ",
+      "input": {
+        "nodeId": "H1kiQaO8W",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1VkETdU-",
+        "pinKey": "H12bIR_SPyZ"
+      }
+    },
+    {
+      "id": "rkUJE6uIZ",
+      "input": {
+        "nodeId": "r1VkETdU-",
+        "pinKey": "BJlzICOSv1-"
+      },
+      "output": {
+        "nodeId": "Skd9Qa_8W",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "H1kiQaO8W",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "Skd9Qa_8W",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "HJCWLAdSwyW": 100,
+        "rJbGU0_Hv1Z": 32,
+        "rkpbU0OrwyZ": 212
+      },
+      "id": "r1VkETdU-",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/core/map-range"
+    }
+  ]
+}
