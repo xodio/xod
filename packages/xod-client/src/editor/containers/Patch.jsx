@@ -24,7 +24,7 @@ import * as Layers from '../../project/components/layers';
 
 import {
   snapNodePositionToSlots,
-  substractPoints,
+  subtractPoints,
 } from '../../project/nodeLayout';
 
 const initialState = {
@@ -72,7 +72,7 @@ class Patch extends React.Component {
 
     const clickedNode = this.props.nodes[nodeId];
     const mouseOffsetFromClickedNode =
-      substractPoints(this.state.mousePosition, clickedNode.position);
+      subtractPoints(this.state.mousePosition, clickedNode.position);
 
     this.setState({
       isNodeMouseDown: true,
@@ -154,7 +154,7 @@ class Patch extends React.Component {
   }
 
   getDraggedNodePosition() {
-    return substractPoints(
+    return subtractPoints(
       this.state.mousePosition,
       this.state.mouseOffsetFromClickedNode
     );

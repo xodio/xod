@@ -218,7 +218,7 @@ export const addPoints = R.curry((a, b) => ({
   y: a.y + b.y,
 }));
 
-export const substractPoints = R.curry((a, b) => ({
+export const subtractPoints = R.curry((a, b) => ({
   x: a.x - b.x,
   y: a.y - b.y,
 }));
