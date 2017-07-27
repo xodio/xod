@@ -33,6 +33,7 @@ InspectorMessage.propTypes = {
 const isEntity = entity => R.compose(R.equals(entity), R.prop('entityType'), R.head);
 const isSingleNode = R.both(isOne, isEntity(SELECTION_ENTITY_TYPE.NODE));
 const isSingleLink = R.both(isOne, isEntity(SELECTION_ENTITY_TYPE.LINK));
+const isSingleComment = R.both(isOne, isEntity(SELECTION_ENTITY_TYPE.COMMENT));
 // :: [ RenderableSelection ] -> Patch -> Boolean
 const isPatchSelected = (selection, patch) => (
   (R.isEmpty(selection) && patch.isJust)
@@ -53,7 +54,13 @@ const Inspector = ({
   } else if (isSingleLink(selection)) {
     return (
       <InspectorMessage
-        text="Links do not any properties."
+        text="Links do not have any properties."
+      />
+    );
+  } else if (isSingleComment(selection)) {
+    return (
+      <InspectorMessage
+        text="Comments do not have any properties."
       />
     );
   } else if (isSingleNode(selection)) {

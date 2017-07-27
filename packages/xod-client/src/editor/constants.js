@@ -31,12 +31,14 @@ export const LAYER = {
   BACKGROUND: 'background',
   LINKS: 'links',
   NODES: 'nodes',
+  COMMENTS: 'comments',
   NODE_PINS_OVERLAY: 'node_pins_overlay',
   GHOSTS: 'ghosts',
 };
 
 export const SELECTION_ENTITY_TYPE = {
   NODE: 'Node',
+  COMMENT: 'Comment',
   LINK: 'Link',
 };
 

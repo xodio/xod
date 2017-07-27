@@ -32,12 +32,6 @@ export const findParentByClassName = (element, className) => {
   return result;
 };
 
-export const findRootSVG = (el) => {
-  const owner = el.ownerSVGElement;
-  if (owner === null) { return el; }
-  return findRootSVG(owner);
-};
-
 export const checkForMouseBubbling = (event, parent) => {
   const elem = event.toElement || event.relatedTarget;
   return (elem.parentNode === parent || elem === parent);

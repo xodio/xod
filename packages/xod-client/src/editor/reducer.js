@@ -8,6 +8,7 @@ import {
   EDITOR_SELECT_NODE,
   EDITOR_SELECT_PIN,
   EDITOR_SELECT_LINK,
+  EDITOR_SELECT_COMMENT,
   EDITOR_SET_MODE,
   EDITOR_SET_SELECTED_NODETYPE,
   EDITOR_SWITCH_PATCH,
@@ -24,9 +25,13 @@ import {
   PATCH_RENAME,
   NODE_DELETE,
   LINK_DELETE,
+  COMMENT_DELETE,
 } from '../project/actionTypes';
 
 const addSelection = (entityName, action, state) => {
+  // TODO: add check for unique selection here
+  //       instead of keeping it in client code
+  //       Selecting something twice must be idempotent.
   const select = {
     entity: entityName,
     id: action.payload.id,
@@ -129,6 +134,7 @@ const editorReducer = (state = {}, action) => {
   switch (action.type) {
     case NODE_DELETE:
     case LINK_DELETE:
+    case COMMENT_DELETE:
     case EDITOR_DESELECT_ALL:
       return R.merge(state, {
         selection: [],
@@ -138,6 +144,8 @@ const editorReducer = (state = {}, action) => {
       return addSelection(SELECTION_ENTITY_TYPE.NODE, action, state);
     case EDITOR_SELECT_LINK:
       return addSelection(SELECTION_ENTITY_TYPE.LINK, action, state);
+    case EDITOR_SELECT_COMMENT:
+      return addSelection(SELECTION_ENTITY_TYPE.COMMENT, action, state);
     case EDITOR_SELECT_PIN:
       return R.assoc('linkingPin', action.payload, state);
     case EDITOR_SET_MODE:

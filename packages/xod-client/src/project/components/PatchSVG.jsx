@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import PinShadowFilter from './filters/PinShadowFilter';
 import DraggedNodeShadowFilter from './filters/DraggedNodeShadowFilter';
 
-const PatchSVG = ({ children, onMouseMove, onMouseUp }) => (
+const PatchSVG = ({ children, onMouseMove, onMouseUp, svgRef }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className="PatchSVG"
@@ -12,6 +12,7 @@ const PatchSVG = ({ children, onMouseMove, onMouseUp }) => (
     height="100%"
     onMouseMove={onMouseMove}
     onMouseUp={onMouseUp}
+    ref={svgRef}
   >
     <defs>
       <PinShadowFilter />
@@ -28,6 +29,7 @@ PatchSVG.propTypes = {
   ]),
   onMouseMove: PropTypes.func,
   onMouseUp: PropTypes.func,
+  svgRef: PropTypes.func,
 };
 
 export default PatchSVG;

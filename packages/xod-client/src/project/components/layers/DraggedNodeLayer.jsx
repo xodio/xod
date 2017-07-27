@@ -9,6 +9,7 @@ class DraggedNodeLayer extends React.PureComponent {
     const {
       node,
       position,
+      size,
     } = this.props;
 
     if (!node) return null;
@@ -24,10 +25,9 @@ class DraggedNodeLayer extends React.PureComponent {
           label={node.label}
           type={node.type}
           position={position}
-          size={node.size}
+          size={size}
           outputPinsSectionHeight={node.outputPinsSectionHeight}
           pins={node.pins}
-          isGhost={node.isGhost}
           isSelected
           isDragged
         />
@@ -39,8 +39,9 @@ class DraggedNodeLayer extends React.PureComponent {
 DraggedNodeLayer.displayName = 'DraggedNodeLayer';
 
 DraggedNodeLayer.propTypes = {
-  position: PropTypes.any,
   node: PropTypes.any,
+  position: PropTypes.any,
+  size: PropTypes.any,
 };
 
 export default DraggedNodeLayer;

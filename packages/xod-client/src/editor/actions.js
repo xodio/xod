@@ -1,11 +1,11 @@
 import R from 'ramda';
 
-import { EDITOR_MODE } from './constants';
+import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from './constants';
 import * as ActionType from './actionTypes';
 import * as Selectors from './selectors';
 import * as ProjectSelectors from '../project/selectors';
 
-import { isLinkSelected, isNodeSelected } from './utils';
+import { isLinkSelected, isNodeSelected, isCommentSelected } from './utils';
 import {
   getRenderablePin,
   getPinSelectionError,
@@ -17,6 +17,7 @@ import {
   addLink,
   deleteNode,
   deleteLink,
+  deleteComment,
 } from '../project/actions';
 import {
   addError,
@@ -33,6 +34,13 @@ export const setNodeSelection = id => ({
 
 export const setLinkSelection = id => ({
   type: ActionType.EDITOR_SELECT_LINK,
+  payload: {
+    id,
+  },
+});
+
+export const setCommentSelection = id => ({
+  type: ActionType.EDITOR_SELECT_COMMENT,
   payload: {
     id,
   },
@@ -94,17 +102,23 @@ export const selectNode = id => (dispatch, getState) => {
   const state = getState();
   const selection = Selectors.getSelection(state);
   const isSelected = isNodeSelected(selection, id);
-  const deselect = dispatch(deselectAll());
-  const result = [];
-  if (deselect) {
-    result.push(deselect);
-  }
 
   if (!isSelected) {
-    result.push(dispatch(setNodeSelection(id)));
+    dispatch(deselectAll());
+    dispatch(setNodeSelection(id));
   }
+};
 
-  return result;
+export const selectComment = id => (dispatch, getState) => {
+  // TODO: remove code duplication, move selection uniqueness check to reducer
+  const state = getState();
+  const selection = Selectors.getSelection(state);
+  const isSelected = isCommentSelected(selection, id);
+
+  if (!isSelected) {
+    dispatch(deselectAll());
+    dispatch(setCommentSelection(id));
+  }
 };
 
 export const addAndSelectNode = (typeId, position, currentPatchPath) => (dispatch) => {
@@ -176,14 +190,15 @@ export const setSelectedNodeType = id => ({
   },
 });
 
+const DELETE_ACTIONS = {
+  [SELECTION_ENTITY_TYPE.NODE]: deleteNode,
+  [SELECTION_ENTITY_TYPE.COMMENT]: deleteComment,
+  [SELECTION_ENTITY_TYPE.LINK]: deleteLink,
+};
+
 export const deleteSelection = () => (dispatch, getState) => {
   const currentPatchPath = Selectors.getCurrentPatchPath(getState());
   const selection = Selectors.getSelection(getState());
-
-  const DELETE_ACTIONS = {
-    Node: deleteNode,
-    Link: deleteLink,
-  };
 
   selection.forEach((select) => {
     dispatch(

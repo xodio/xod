@@ -286,6 +286,10 @@ export const slotPositionToPixels = ({ x, y }) => ({
   y: (y * (SLOT_SIZE.HEIGHT + SLOT_MARGIN.VERTICAL)) + (SLOT_MARGIN.VERTICAL / 2),
 });
 
+export const pointToSize = ({ x, y }) => ({ width: x, height: y });
+
+export const sizeToPoint = ({ width, height }) => ({ x: width, y: height });
+
 /**
  * @param node position
  * @return node position snapped to slots grid
@@ -294,6 +298,14 @@ export const snapNodePositionToSlots = R.compose(
   slotPositionToPixels,
   getSlotPosition,
   addPoints({ x: SLOT_SIZE.WIDTH / 2, y: SLOT_SIZE.HEIGHT / 2 })
+);
+
+export const snapNodeSizeToSlots = R.compose(
+  slotsToPixels,
+  pointToSize,
+  getSlotPosition,
+  addPoints({ x: SLOT_SIZE.WIDTH, y: SLOT_SIZE.HEIGHT }),
+  sizeToPoint
 );
 
 // TODO: works only for 1x1 nodes

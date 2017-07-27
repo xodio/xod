@@ -84,6 +84,10 @@ const rawItems = {
     key: 'projectPreferences',
     label: 'Project preferences',
   },
+  insertComment: {
+    key: 'insertComment',
+    label: 'Insert Comment',
+  },
 
   deploy: {
     key: 'deploy',

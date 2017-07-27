@@ -277,6 +277,10 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
+autolinker@^0.19.0:
+  version "0.19.1"
+  resolved "https://registry.yarnpkg.com/autolinker/-/autolinker-0.19.1.tgz#df5d66adbeaa829b54fc64fe073d6ae6fd14b241"
+
 autoprefixer@^6.3.1, autoprefixer@^6.3.7:
   version "6.7.7"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-6.7.7.tgz#1dbd1c835658e35ce3f9984099db00585c782014"
@@ -3203,6 +3207,12 @@ rc@^1.1.7:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-autolinker@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-autolinker/-/react-autolinker-1.0.4.tgz#91d02c527b75ba99f99169fb408be2dd8e4201e5"
+  dependencies:
+    autolinker "^0.19.0"
 
 react-base16-styling@^0.2.3:
   version "0.2.3"

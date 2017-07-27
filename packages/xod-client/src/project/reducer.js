@@ -4,7 +4,7 @@ import { explode } from 'xod-func-tools';
 
 import * as AT from './actionTypes';
 
-import { slotsToPixels } from './nodeLayout'
+import { slotsToPixels, slotPositionToPixels } from './nodeLayout';
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from './constants';
 
 // TODO: rewrite this?
@@ -246,9 +246,9 @@ export default (state = {}, action) => {
       const { patchPath } = action.payload;
 
       const newComment = XP.createComment(
-        { x: 300, y: 300 },
-        slotsToPixels({ width: 2, height: 2 }),
-        ''
+        slotPositionToPixels({ x: 1, y: 1 }),
+        slotsToPixels({ width: 2, height: 1 }),
+        'Double-click to edit comment'
       );
 
       return R.over(
