@@ -32,7 +32,7 @@ using input_IN2 = InputDescriptor<Number, offsetof(Storage, input_IN2)>;
 
 using output_OUT = OutputDescriptor<Number, offsetof(Storage, output_OUT), 0>;
 
-void evaluate(NodeId nid) {
+void evaluate(Context ctx) {
     /* Native implementation goes here */
 }
 

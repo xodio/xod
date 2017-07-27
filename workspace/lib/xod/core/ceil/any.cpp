@@ -3,7 +3,7 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid) {
-    auto x = getValue<input_X>(nid);
-    emitValue<output_CEIL>(nid, ceil(x));
+void evaluate(Context ctx) {
+    auto x = getValue<input_X>(ctx);
+    emitValue<output_CEIL>(ctx, ceil(x));
 }

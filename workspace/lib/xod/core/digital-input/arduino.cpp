@@ -4,12 +4,12 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid) {
-    if (!isInputDirty<input_UPD>(nid))
+void evaluate(Context ctx) {
+    if (!isInputDirty<input_UPD>(ctx))
         return;
 
-    State* state = getState(nid);
-    const int port = (int)getValue<input_PORT>(nid);
+    State* state = getState(ctx);
+    const int port = (int)getValue<input_PORT>(ctx);
     if (port != state->configuredPort) {
         ::pinMode(port, INPUT);
         // Store configured port so to avoid repeating `pinMode` on
@@ -17,5 +17,5 @@ void evaluate(NodeId nid) {
         state->configuredPort = port;
     }
 
-    emitValue<output_SIG>(nid, ::digitalRead(port));
+    emitValue<output_SIG>(ctx, ::digitalRead(port));
 }

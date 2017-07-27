@@ -10,13 +10,13 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid) {
-    State* state = getState(nid);
-    auto port = (int)getValue<input_PORT>(nid);
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
+    auto port = (int)getValue<input_PORT>(ctx);
     if (port != state->configuredPort) {
         state->servo.attach(port);
         state->configuredPort = port;
     }
 
-    state->servo.write(getValue<input_VAL>(nid) * 180);
+    state->servo.write(getValue<input_VAL>(ctx) * 180);
 }

@@ -4,16 +4,16 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid) {
-    if (!isInputDirty<input_DUMP>(nid))
+void evaluate(Context ctx) {
+    if (!isInputDirty<input_DUMP>(ctx))
         return;
 
-    State* state = getState(nid);
+    State* state = getState(ctx);
     if (!state->begun) {
         Serial.begin(9600);
     }
 
-    auto line = getValue<input_LINE>(nid);
+    auto line = getValue<input_LINE>(ctx);
     if (line) {
         for (auto it = line->iterate(); it; ++it)
             Serial.write((char)*it);

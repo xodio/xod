@@ -3,8 +3,8 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid) {
-    auto x = getValue<input_X>(nid);
-    auto y = getValue<input_Y>(nid);
-    emitValue<output_DIFF>(nid, x - y);
+void evaluate(Context ctx) {
+    auto x = getValue<input_X>(ctx);
+    auto y = getValue<input_Y>(ctx);
+    emitValue<output_DIFF>(ctx, x - y);
 }

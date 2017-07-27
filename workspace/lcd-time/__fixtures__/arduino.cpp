@@ -679,6 +679,8 @@ namespace _program {
     // and uint32_t if there are more than 65535
     typedef uint16_t NodeId;
 
+    typedef NodeId Context;
+
     /*
      * PinKey is an address value used to find input’s or output’s data within
      * node’s Storage.
@@ -934,8 +936,8 @@ using input_UPD = InputDescriptor<Logic, offsetof(Storage, input_UPD)>;
 
 using output_TIME = OutputDescriptor<Number, offsetof(Storage, output_TIME), 0>;
 
-void evaluate(NodeId nid) {
-    emitValue<output_TIME>(nid, millis() / 1000.f);
+void evaluate(Context ctx) {
+    emitValue<output_TIME>(ctx, millis() / 1000.f);
 }
 
 } // namespace xod__core__system_time
@@ -990,23 +992,23 @@ void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
         lcd->write(*it);
 }
 
-void evaluate(NodeId nid) {
-    State* state = getState(nid);
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
     auto lcd = state->lcd;
     if (!state->lcd) {
         state->lcd = lcd = new LiquidCrystal(
-            (int)getValue<input_RS>(nid),
-            (int)getValue<input_EN>(nid),
-            (int)getValue<input_D4>(nid),
-            (int)getValue<input_D5>(nid),
-            (int)getValue<input_D6>(nid),
-            (int)getValue<input_D7>(nid));
+            (int)getValue<input_RS>(ctx),
+            (int)getValue<input_EN>(ctx),
+            (int)getValue<input_D4>(ctx),
+            (int)getValue<input_D5>(ctx),
+            (int)getValue<input_D6>(ctx),
+            (int)getValue<input_D7>(ctx));
 
         lcd->begin(16, 2);
     }
 
-    printLine(lcd, 0, getValue<input_L1>(nid));
-    printLine(lcd, 1, getValue<input_L2>(nid));
+    printLine(lcd, 0, getValue<input_L1>(ctx));
+    printLine(lcd, 1, getValue<input_L2>(ctx));
 }
 
 } // namespace xod__common_hardware__text_lcd_16x2
@@ -1033,12 +1035,12 @@ using input_IN = InputDescriptor<Number, offsetof(Storage, input_IN)>;
 
 using output_OUT = OutputDescriptor<XString, offsetof(Storage, output_OUT), 0>;
 
-void evaluate(NodeId nid) {
+void evaluate(Context ctx) {
     char str[16];
-    auto num = getValue<input_IN>(nid);
+    auto num = getValue<input_IN>(ctx);
     dtostrf(num, 0, 2, str);
     auto xstr = ::xod::List<char>::fromPlainArray(str, strlen(str));
-    emitValue<output_OUT>(nid, xstr);
+    emitValue<output_OUT>(ctx, xstr);
 }
 
 } // namespace xod__core__cast_number_to_string
@@ -1062,9 +1064,9 @@ State* getState(NodeId nid) {
 
 using output_TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
 
-void evaluate(NodeId nid) {
-    emitValue<output_TICK>(nid, 1);
-    setTimeout(nid, 0);
+void evaluate(Context ctx) {
+    emitValue<output_TICK>(ctx, 1);
+    setTimeout(ctx, 0);
 }
 
 } // namespace xod__core__continuously
@@ -1087,8 +1089,8 @@ State* getState(NodeId nid) {
 
 using output_VAL = OutputDescriptor<Number, offsetof(Storage, output_VAL), 0>;
 
-void evaluate(NodeId nid) {
-  reemitValue<output_VAL>(nid);
+void evaluate(Context ctx) {
+  reemitValue<output_VAL>(ctx);
 }
 
 } // namespace xod__core__constant_number
@@ -1111,8 +1113,8 @@ State* getState(NodeId nid) {
 
 using output_VAL = OutputDescriptor<XString, offsetof(Storage, output_VAL), 0>;
 
-void evaluate(NodeId nid) {
-  reemitValue<output_VAL>(nid);
+void evaluate(Context ctx) {
+  reemitValue<output_VAL>(ctx);
 }
 
 } // namespace xod__core__constant_string

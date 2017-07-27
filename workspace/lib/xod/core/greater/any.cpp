@@ -3,8 +3,8 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid) {
-    auto lhs = getValue<input_LHS>(nid);
-    auto rhs = getValue<input_RHS>(nid);
-    emitValue<output_GT>(nid, lhs > rhs);
+void evaluate(Context ctx) {
+    auto lhs = getValue<input_LHS>(ctx);
+    auto rhs = getValue<input_RHS>(ctx);
+    emitValue<output_GT>(ctx, lhs > rhs);
 }

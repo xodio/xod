@@ -3,9 +3,9 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid) {
-    auto x = getValue<input_X>(nid);
-    auto minX = getValue<input_MIN>(nid);
-    auto maxX = getValue<input_MAX>(nid);
-    emitValue<output_XC>(nid, x < minX ? minX : (x > maxX ? maxX : x));
+void evaluate(Context ctx) {
+    auto x = getValue<input_X>(ctx);
+    auto minX = getValue<input_MIN>(ctx);
+    auto maxX = getValue<input_MAX>(ctx);
+    emitValue<output_XC>(ctx, x < minX ? minX : (x > maxX ? maxX : x));
 }

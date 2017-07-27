@@ -3,6 +3,6 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid) {
-    emitValue<output_BOOT>(nid, 1);
+void evaluate(Context ctx) {
+    emitValue<output_BOOT>(ctx, 1);
 }

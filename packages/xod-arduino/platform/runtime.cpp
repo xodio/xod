@@ -40,6 +40,8 @@ namespace _program {
     // and uint32_t if there are more than 65535
     typedef uint16_t NodeId;
 
+    typedef NodeId Context;
+
     /*
      * PinKey is an address value used to find input’s or output’s data within
      * node’s Storage.

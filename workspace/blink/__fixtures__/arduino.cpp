@@ -679,6 +679,8 @@ namespace _program {
     // and uint32_t if there are more than 65535
     typedef uint16_t NodeId;
 
+    typedef NodeId Context;
+
     /*
      * PinKey is an address value used to find input’s or output’s data within
      * node’s Storage.
@@ -937,25 +939,25 @@ using input_RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
 
 using output_TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
 
-void evaluate(NodeId nid) {
-    State* state = getState(nid);
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
     TimeMs tNow = transactionTime();
-    TimeMs dt = getValue<input_IVAL>(nid) * 1000;
+    TimeMs dt = getValue<input_IVAL>(ctx) * 1000;
     TimeMs tNext = tNow + dt;
 
-    if (isInputDirty<input_RST>(nid)) {
+    if (isInputDirty<input_RST>(ctx)) {
         if (dt == 0) {
             state->nextTrig = 0;
-            clearTimeout(nid);
+            clearTimeout(ctx);
         } else if (state->nextTrig < tNow || state->nextTrig > tNext) {
             state->nextTrig = tNext;
-            setTimeout(nid, dt);
+            setTimeout(ctx, dt);
         }
     } else {
         // It was a scheduled tick
-        emitValue<output_TICK>(nid, 1);
+        emitValue<output_TICK>(ctx, 1);
         state->nextTrig = tNext;
-        setTimeout(nid, dt);
+        setTimeout(ctx, dt);
     }
 }
 
@@ -983,9 +985,9 @@ State* getState(NodeId nid) {
 using input_PORT = InputDescriptor<Number, offsetof(Storage, input_PORT)>;
 using input_SIG = InputDescriptor<Logic, offsetof(Storage, input_SIG)>;
 
-void evaluate(NodeId nid) {
-    State* state = getState(nid);
-    const int port = (int)getValue<input_PORT>(nid);
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
+    const int port = (int)getValue<input_PORT>(ctx);
     if (port != state->configuredPort) {
         ::pinMode(port, OUTPUT);
         // Store configured port so to avoid repeating `pinMode` call if just
@@ -993,7 +995,7 @@ void evaluate(NodeId nid) {
         state->configuredPort = port;
     }
 
-    const bool val = getValue<input_SIG>(nid);
+    const bool val = getValue<input_SIG>(ctx);
     ::digitalWrite(port, val);
 }
 
@@ -1026,12 +1028,12 @@ using input_RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
 
 using output_MEM = OutputDescriptor<Logic, offsetof(Storage, output_MEM), 0>;
 
-void evaluate(NodeId nid) {
-    State* state = getState(nid);
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
     bool newState = state->state;
-    if (isInputDirty<input_TGL>(nid)) {
+    if (isInputDirty<input_TGL>(ctx)) {
         newState = !state->state;
-    } else if (isInputDirty<input_SET>(nid)) {
+    } else if (isInputDirty<input_SET>(ctx)) {
         newState = true;
     } else {
         newState = false;
@@ -1041,7 +1043,7 @@ void evaluate(NodeId nid) {
         return;
 
     state->state = newState;
-    emitValue<output_MEM>(nid, newState);
+    emitValue<output_MEM>(ctx, newState);
 }
 
 } // namespace xod__core__flip_flop
@@ -1064,8 +1066,8 @@ State* getState(NodeId nid) {
 
 using output_VAL = OutputDescriptor<Number, offsetof(Storage, output_VAL), 0>;
 
-void evaluate(NodeId nid) {
-  reemitValue<output_VAL>(nid);
+void evaluate(Context ctx) {
+  reemitValue<output_VAL>(ctx);
 }
 
 } // namespace xod__core__constant_number

@@ -3,15 +3,15 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid) {
-    TimeMs dt = getValue<input_T>(nid) * 1000;
+void evaluate(Context ctx) {
+    TimeMs dt = getValue<input_T>(ctx) * 1000;
 
-    if (isInputDirty<input_RST>(nid)) {
-        clearTimeout(nid);
-    } else if (isInputDirty<input_SET>(nid)) {
-        setTimeout(nid, dt);
+    if (isInputDirty<input_RST>(ctx)) {
+        clearTimeout(ctx);
+    } else if (isInputDirty<input_SET>(ctx)) {
+        setTimeout(ctx, dt);
     } else {
         // It was a scheduled evaluation
-        emitValue<output_DONE>(nid, true);
+        emitValue<output_DONE>(ctx, true);
     }
 }

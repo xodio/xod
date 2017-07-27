@@ -4,9 +4,9 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid) {
-    State* state = getState(nid);
-    const int port = (int)getValue<input_PORT>(nid);
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
+    const int port = (int)getValue<input_PORT>(ctx);
     if (port != state->configuredPort) {
         ::pinMode(port, OUTPUT);
         // Store configured port so to avoid repeating `pinMode` call if just
@@ -14,6 +14,6 @@ void evaluate(NodeId nid) {
         state->configuredPort = port;
     }
 
-    const bool val = getValue<input_SIG>(nid);
+    const bool val = getValue<input_SIG>(ctx);
     ::digitalWrite(port, val);
 }

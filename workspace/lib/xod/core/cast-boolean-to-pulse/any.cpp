@@ -4,12 +4,12 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid) {
-    State* state = getState(nid);
-    auto newValue = getValue<input_IN>(nid);
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
+    auto newValue = getValue<input_IN>(ctx);
 
     if (newValue == true && state->state == false)
-        emitValue<output_OUT>(nid, 1);
+        emitValue<output_OUT>(ctx, 1);
 
     state->state = newValue;
 }
