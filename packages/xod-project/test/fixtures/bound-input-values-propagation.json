@@ -1,0 +1,184 @@
+{
+  "description": "",
+  "license": "MIT",
+  "version": "0.0.1",
+  "authors": [
+    "xod"
+  ],
+  "name": "bound-values-propagation-test",
+  "patches": {
+    "@/main": {
+      "nodes": {
+        "HJbQvOPL-": {
+          "id": "HJbQvOPL-",
+          "type": "@/wrapped-add",
+          "position": {
+            "x": 138,
+            "y": 120
+          },
+          "description": "",
+          "label": "",
+          "boundValues": {
+            "wrapped-add-in-1": 111,
+            "wrapped-add-in-2": 222
+          }
+        }
+      },
+      "links": {},
+      "impls": {},
+      "description": "",
+      "attachments": [],
+      "path": "@/main"
+    },
+    "@/wrapped-add": {
+      "nodes": {
+        "wrapped-add-in-1": {
+          "id": "wrapped-add-in-1",
+          "type": "xod/patch-nodes/input-number",
+          "boundValues": {},
+          "description": "",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "label": "IN_1"
+        },
+        "wrapped-add-in-2": {
+          "id": "wrapped-add-in-2",
+          "type": "xod/patch-nodes/input-number",
+          "boundValues": {},
+          "description": "",
+          "position": {
+            "x": 266,
+            "y": 16
+          },
+          "label": "IN_2"
+        },
+        "H1jEI_PUW": {
+          "id": "H1jEI_PUW",
+          "type": "xod/patch-nodes/output-number",
+          "boundValues": {},
+          "description": "",
+          "position": {
+            "x": 138,
+            "y": 328
+          },
+          "label": "OUT_1"
+        },
+        "r1yIU_vU-": {
+          "id": "r1yIU_vU-",
+          "type": "xod/core/add",
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "position": {
+            "x": 138,
+            "y": 120
+          }
+        }
+      },
+      "links": {
+        "rJG8IODUb": {
+          "id": "rJG8IODUb",
+          "output": {
+            "nodeId": "r1yIU_vU-",
+            "pinKey": "SyomIRurDJ-"
+          },
+          "input": {
+            "nodeId": "H1jEI_PUW",
+            "pinKey": "__in__"
+          }
+        },
+        "H14LUuwLW": {
+          "id": "H14LUuwLW",
+          "output": {
+            "nodeId": "wrapped-add-in-2",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "r1yIU_vU-",
+            "pinKey": "HkqmLAOrD1W"
+          }
+        },
+        "ryILL_wIW": {
+          "id": "ryILL_wIW",
+          "output": {
+            "nodeId": "wrapped-add-in-1",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "r1yIU_vU-",
+            "pinKey": "BJnQUR_BwyZ"
+          }
+        }
+      },
+      "impls": {},
+      "description": "",
+      "attachments": [],
+      "path": "@/wrapped-add"
+    },
+    "xod/core/add": {
+      "nodes": {
+        "BJnQUR_BwyZ": {
+          "boundValues": {},
+          "description": "",
+          "label": "X",
+          "id": "BJnQUR_BwyZ",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "HkqmLAOrD1W": {
+          "boundValues": {},
+          "description": "",
+          "label": "Y",
+          "id": "HkqmLAOrD1W",
+          "position": {
+            "x": 138,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "SyomIRurDJ-": {
+          "boundValues": {
+            "__in__": 0
+          },
+          "description": "",
+          "label": "SUM",
+          "id": "SyomIRurDJ-",
+          "position": {
+            "x": 10,
+            "y": 224
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "noNativeImpl": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "links": {},
+      "impls": {
+        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    auto x = getValue<Inputs::X>(nid);\n    auto y = getValue<Inputs::Y>(nid);\n    emitValue<Outputs::SUM>(nid, x + y);\n}\n"
+      },
+      "path": "xod/core/add",
+      "description": "Adds two numbers",
+      "attachments": [
+        {
+          "filename": "any.cpp",
+          "encoding": "utf8",
+          "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    auto x = getValue<Inputs::X>(nid);\n    auto y = getValue<Inputs::Y>(nid);\n    emitValue<Outputs::SUM>(nid, x + y);\n}\n"
+        }
+      ]
+    }
+  }
+}
