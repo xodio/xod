@@ -671,7 +671,7 @@ template <typename T> class List {
 #define PIN_KEY_OFFSET_BITS     (16 - MAX_OUTPUT_COUNT)
 #define NO_NODE                 ((NodeId)-1)
 
-namespace _program {
+namespace xod {
     typedef double Number;
     typedef bool Logic;
 
@@ -711,7 +711,7 @@ namespace _program {
 //----------------------------------------------------------------------------
 // Engine
 //----------------------------------------------------------------------------
-namespace _program {
+namespace xod {
     extern void* storages[NODE_COUNT];
     extern EvalFuncPtr evaluationFuncs[NODE_COUNT];
     extern DirtyFlags dirtyFlags[NODE_COUNT];
@@ -900,8 +900,8 @@ void setup() {
 }
 
 void loop() {
-    _program::idle();
-    _program::runTransaction();
+    xod::idle();
+    xod::runTransaction();
 }
 
 /*=============================================================================
@@ -912,7 +912,7 @@ void loop() {
  *
  =============================================================================*/
 
-namespace _program {
+namespace xod {
 
 //-----------------------------------------------------------------------------
 // xod/core/clock implementation
@@ -1072,7 +1072,7 @@ void evaluate(Context ctx) {
 
 } // namespace xod__core__constant_number
 
-} // namespace _program
+} // namespace xod
 
 /*=============================================================================
  *
@@ -1082,7 +1082,7 @@ void evaluate(Context ctx) {
  *
  =============================================================================*/
 
-namespace _program {
+namespace xod {
 
     NodeId links_0_TICK[] = { 1, NO_NODE };
     xod__core__clock::Storage storage_0 = {

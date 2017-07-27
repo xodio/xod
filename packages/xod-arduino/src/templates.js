@@ -60,7 +60,7 @@ Handlebars.registerHelper('global', function global(options) {
     '// --- Enter global namespace ---',
     '}}',
     options.fn(this),
-    'namespace _program {',
+    'namespace xod {',
     `namespace ${this.owner}__${this.libName}__${this.patchName} {`,
     '// --- Back to local namespace ---',
   ].join('\n');

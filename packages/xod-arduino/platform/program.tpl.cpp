@@ -8,7 +8,7 @@
  *
  =============================================================================*/
 
-namespace _program {
+namespace xod {
   {{#each nodes}}
   {{mergePins }}
   {{#each outputs }}

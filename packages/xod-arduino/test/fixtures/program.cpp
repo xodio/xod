@@ -6,7 +6,7 @@
  *
  =============================================================================*/
 
-namespace _program {
+namespace xod {
 
     NodeId links_0_OUT[] = { 1, NO_NODE };
     xod__math__multiply::Storage storage_0 = {

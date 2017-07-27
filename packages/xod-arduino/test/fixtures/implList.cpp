@@ -6,7 +6,7 @@
  *
  =============================================================================*/
 
-namespace _program {
+namespace xod {
 
 //-----------------------------------------------------------------------------
 // xod/math/multiply implementation
@@ -38,4 +38,4 @@ void evaluate(Context ctx) {
 
 } // namespace xod__math__multiply
 
-} // namespace _program
+} // namespace xod
