@@ -1,9 +1,7 @@
 {
   "description": "Constant value",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
       "description": "Constant value",
       "id": "VAL",
       "label": "VAL",
@@ -14,10 +12,7 @@
       "type": "xod/patch-nodes/output-boolean"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100

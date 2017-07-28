@@ -1,10 +1,7 @@
 {
   "description": "Outputs a line of text to the board standard debug interface",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "HJdO9HwJ-",
       "label": "LINE",
       "position": {
@@ -14,8 +11,6 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "S1n95SDJb",
       "label": "DUMP",
       "position": {
@@ -25,10 +20,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100

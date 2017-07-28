@@ -1,9 +1,7 @@
 {
   "description": "Outputs high or low signal on a board port",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
       "description": "Board GPIO port number to write to",
       "id": "B134j4neZ",
       "label": "PORT",
@@ -14,7 +12,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
       "description": "State to write",
       "id": "HJ6HsEngZ",
       "label": "SIG",
@@ -25,10 +22,7 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "rkwUj42xb",
-      "label": "",
       "position": {
         "x": 138,
         "y": 120

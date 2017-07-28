@@ -1,9 +1,7 @@
 {
   "description": "Outputs pulses at regular intervals",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
       "description": "Tick interval in seconds",
       "id": "B13SCNhl-",
       "label": "IVAL",
@@ -14,7 +12,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
       "description": "Resets current count, restarts clock with new interval",
       "id": "BJJICN2lW",
       "label": "RST",
@@ -25,10 +22,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "BJKLAE3xW",
-      "label": "",
       "position": {
         "x": 138,
         "y": 120

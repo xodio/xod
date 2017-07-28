@@ -48,7 +48,6 @@
   ],
   "nodes": [
     {
-      "boundValues": {},
       "description": "Board ADC port with the sensor",
       "id": "H1s0WI6MZ",
       "label": "PORT",
@@ -78,9 +77,7 @@
         "rkpbU0OrwyZ": 125,
         "ry1z8CuBDy-": 0.15
       },
-      "description": "",
       "id": "Hys7MUTfb",
-      "label": "",
       "position": {
         "x": 10,
         "y": 328
@@ -88,10 +85,7 @@
       "type": "xod/core/map-range"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "S13MzIpMZ",
-      "label": "",
       "position": {
         "x": 138,
         "y": 120
@@ -99,7 +93,6 @@
       "type": "xod/core/analog-input"
     },
     {
-      "boundValues": {},
       "description": "The last read temperature in °C",
       "id": "rkFgMITM-",
       "label": "Tc",

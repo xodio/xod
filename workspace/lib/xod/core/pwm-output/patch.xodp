@@ -1,9 +1,7 @@
 {
   "description": "Ouputs hardware-supported PWM signal on a board port",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
       "description": "Duty cycle value in range 0.0 … 1.0",
       "id": "ByXnYHPyb",
       "label": "DUTY",
@@ -14,10 +12,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100
@@ -25,7 +20,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {},
       "description": "Board PWM port to write to",
       "id": "rJsaFSvk-",
       "label": "PORT",

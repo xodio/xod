@@ -1,9 +1,7 @@
 {
   "description": "Permanently holds a single value",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
       "description": "A value to store",
       "id": "HkXm80uHPyb",
       "label": "NEW",
@@ -14,7 +12,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
       "description": "Saves `NEW` value in memory",
       "id": "Hy-QUR_BPkZ",
       "label": "UPD",
@@ -25,10 +22,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100

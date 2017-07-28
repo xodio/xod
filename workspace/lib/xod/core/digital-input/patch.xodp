@@ -1,9 +1,7 @@
 {
   "description": "Reads digital signal value from board GPIO port",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
       "description": "Board GPIO port number to read from",
       "id": "B1ZUA_Hv1W",
       "label": "PORT",
@@ -40,10 +38,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100

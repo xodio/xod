@@ -51,9 +51,7 @@
       "boundValues": {
         "HJTIija-W": 0
       },
-      "description": "",
       "id": "HJXqjj6ZZ",
-      "label": "",
       "position": {
         "x": 10,
         "y": 224
@@ -61,8 +59,6 @@
       "type": "@/format-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "S19J9j6WZ",
       "label": "NUM",
       "position": {
@@ -75,9 +71,7 @@
       "boundValues": {
         "SJ4zUC_BD1-": 100
       },
-      "description": "",
       "id": "SkUG5s6bb",
-      "label": "",
       "position": {
         "x": 10,
         "y": 120
@@ -85,8 +79,6 @@
       "type": "@/multiply"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "rk4-cs6-W",
       "label": "PERC",
       "position": {
@@ -99,9 +91,7 @@
       "boundValues": {
         "BkeKcj6ZZ": "%"
       },
-      "description": "",
       "id": "ryegsjpW-",
-      "label": "",
       "position": {
         "x": 10,
         "y": 328

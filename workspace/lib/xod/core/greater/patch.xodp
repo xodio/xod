@@ -1,12 +1,10 @@
 {
   "description": "Ouputs true if LHS > RHS, and false otherwise",
-  "links": [],
   "nodes": [
     {
       "boundValues": {
         "__in__": ""
       },
-      "description": "",
       "id": "B19RYS3lW",
       "label": "GT",
       "position": {
@@ -16,8 +14,6 @@
       "type": "xod/patch-nodes/output-boolean"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "HJbACN3gb",
       "label": "RHS",
       "position": {
@@ -27,10 +23,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "HyC0AE3eZ",
-      "label": "",
       "position": {
         "x": 138,
         "y": 120
@@ -38,8 +31,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "rJg00Nhe-",
       "label": "LHS",
       "position": {

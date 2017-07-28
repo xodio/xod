@@ -1,12 +1,8 @@
 {
   "description": "Emits a pulse on a rising edge, i.e. when false changes to true",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "__in__",
-      "label": "",
       "position": {
         "x": 0,
         "y": 0
@@ -14,10 +10,7 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "__out__",
-      "label": "",
       "position": {
         "x": 0,
         "y": 300
@@ -25,10 +18,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100

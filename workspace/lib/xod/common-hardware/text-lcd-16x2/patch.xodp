@@ -1,9 +1,7 @@
 {
   "description": "Drives a text LCD screen with HD44780 chip",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
       "description": "Text for the first line",
       "id": "B1TSE9tZ-",
       "label": "L1",
@@ -14,7 +12,6 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "boundValues": {},
       "description": "Board GPIO port with LCD D4 pin",
       "id": "BJJqaX4Gb",
       "label": "D4",
@@ -25,7 +22,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
       "description": "Text for the second line",
       "id": "H1bLN9F-b",
       "label": "L2",
@@ -36,7 +32,6 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "boundValues": {},
       "description": "Board GPIO port with LCD D6 pin",
       "id": "HJysTXVMb",
       "label": "D6",
@@ -47,7 +42,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
       "description": "Board GPIO port with LCD D5 pin",
       "id": "S1nqa7NMZ",
       "label": "D5",
@@ -58,7 +52,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
       "description": "Board GPIO port with LCD EN pin",
       "id": "SkBK6Q4fb",
       "label": "EN",
@@ -69,10 +62,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "SkRdV5YWW",
-      "label": "",
       "position": {
         "x": 138,
         "y": 224
@@ -80,7 +70,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {},
       "description": "Board GPIO port with LCD RS pin",
       "id": "rJlYT7EfW",
       "label": "RS",
@@ -91,7 +80,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
       "description": "Board GPIO port with LCD D7 pin",
       "id": "rkbjp7Ezb",
       "label": "D7",

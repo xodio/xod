@@ -1,12 +1,10 @@
 {
   "description": "Divides two numbers",
-  "links": [],
   "nodes": [
     {
       "boundValues": {
         "__in__": 0
       },
-      "description": "",
       "id": "BkqLCOSw1W",
       "label": "FRAC",
       "position": {
@@ -16,8 +14,6 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "BytUCdHD1-",
       "label": "Y",
       "position": {
@@ -27,8 +23,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "SkdIRuBD1b",
       "label": "X",
       "position": {
@@ -38,10 +32,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100

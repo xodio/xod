@@ -1,12 +1,10 @@
 {
   "description": "Rounds a number to a minimal integer that is greater than the number",
-  "links": [],
   "nodes": [
     {
       "boundValues": {
         "__in__": 0
       },
-      "description": "",
       "id": "BkdbLAuSPyZ",
       "label": "CEIL",
       "position": {
@@ -16,8 +14,6 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "H1v-80uHDyZ",
       "label": "X",
       "position": {
@@ -27,10 +23,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100

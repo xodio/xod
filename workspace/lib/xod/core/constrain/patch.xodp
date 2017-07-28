@@ -1,9 +1,7 @@
 {
   "description": "Clips input value to fall into specified range",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
       "description": "Lower bound of constraining range",
       "id": "BJgZ80uBw1-",
       "label": "MIN",
@@ -14,7 +12,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
       "description": "Value to constrain",
       "id": "BkmZL0uSv1W",
       "label": "X",
@@ -25,10 +22,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100
@@ -49,7 +43,6 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {},
       "description": "Upper bound of constraining range",
       "id": "ryzZIC_BDJW",
       "label": "MAX",

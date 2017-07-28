@@ -1,9 +1,7 @@
 {
   "description": "Permanently holds either 0 or 1",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
       "description": "Sets stored value to 0",
       "id": "B1RU0OrDkb",
       "label": "RST",
@@ -14,7 +12,6 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {},
       "description": "Sets stored value to 1",
       "id": "Bkh8A_Sv1-",
       "label": "SET",
@@ -38,10 +35,7 @@
       "type": "xod/patch-nodes/output-boolean"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100
@@ -49,7 +43,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {},
       "description": "Toggles (inverts) stored value",
       "id": "ryTIROHwkW",
       "label": "TGL",

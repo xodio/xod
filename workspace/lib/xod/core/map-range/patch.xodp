@@ -1,9 +1,7 @@
 {
   "description": "Projects a number from one range to another preserving ratio",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
       "description": "Value to map",
       "id": "BJlzICOSv1-",
       "label": "X",
@@ -27,7 +25,6 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {},
       "description": "Source range upper bound",
       "id": "HJCWLAdSwyW",
       "label": "Smax",
@@ -38,10 +35,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100
@@ -49,7 +43,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {},
       "description": "Target range lower bound",
       "id": "rJbGU0_Hv1Z",
       "label": "Tmin",
@@ -60,7 +53,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
       "description": "Tartger range upper bound",
       "id": "rkpbU0OrwyZ",
       "label": "Tmax",
@@ -71,7 +63,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
       "description": "Source range lower bound",
       "id": "ry1z8CuBDy-",
       "label": "Smin",

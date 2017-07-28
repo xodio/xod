@@ -1,10 +1,7 @@
 {
   "description": "Subtracts two numbers",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "BypX80uSD1Z",
       "label": "X",
       "position": {
@@ -17,7 +14,6 @@
       "boundValues": {
         "__in__": 0
       },
-      "description": "",
       "id": "HyRmUCdBDkZ",
       "label": "DIFF",
       "position": {
@@ -27,10 +23,7 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100
@@ -38,8 +31,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "rkJ4URuHDJ-",
       "label": "Y",
       "position": {

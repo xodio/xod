@@ -1,10 +1,7 @@
 {
   "description": "Ouputs true if LHS < RHS, and false otherwise",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "HJjZLRdBw1-",
       "label": "LHS",
       "position": {
@@ -14,8 +11,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "HktZUCdrPkZ",
       "label": "LT",
       "position": {
@@ -25,8 +20,6 @@
       "type": "xod/patch-nodes/output-boolean"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "SJqZ8COrDkW",
       "label": "RHS",
       "position": {
@@ -36,10 +29,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100

@@ -1,12 +1,8 @@
 {
   "description": "Outputs a single pulse when the program starts",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100
@@ -17,7 +13,6 @@
       "boundValues": {
         "__in__": false
       },
-      "description": "",
       "id": "ryVmUAOrvkb",
       "label": "BOOT",
       "position": {
