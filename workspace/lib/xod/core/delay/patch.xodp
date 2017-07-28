@@ -1,6 +1,5 @@
 {
   "description": "Delays triggering of an incoming pulse by specified time",
-  "links": [],
   "nodes": [
     {
       "boundValues": {
@@ -16,7 +15,6 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "boundValues": {},
       "description": "Resets current countdown, i.e. cancels the delay",
       "id": "H1mlUC_HDJZ",
       "label": "RST",
@@ -27,7 +25,6 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {},
       "description": "Resets current countdown, starts new countdown",
       "id": "SkSuD6LMb",
       "label": "SET",
@@ -38,7 +35,6 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {},
       "description": "Time to delay in seconds",
       "id": "Skre8ROSv1-",
       "label": "T",
@@ -49,10 +45,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 138,
         "y": 120

@@ -1,10 +1,7 @@
 {
   "description": "Multiplies two numbers",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "B1GfLR_SPk-",
       "label": "X",
       "position": {
@@ -17,7 +14,6 @@
       "boundValues": {
         "__in__": 0
       },
-      "description": "",
       "id": "BkQzLCurwJZ",
       "label": "PROD",
       "position": {
@@ -27,8 +23,6 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "SJ4zUC_BD1-",
       "label": "Y",
       "position": {
@@ -38,10 +32,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100

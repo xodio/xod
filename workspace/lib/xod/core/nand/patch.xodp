@@ -1,10 +1,7 @@
 {
   "description": "Ouputs false if and only if both inputs are true",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "BkwGIROSw1Z",
       "label": "A",
       "position": {
@@ -14,8 +11,6 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "HkHG8COBPJ-",
       "label": "B",
       "position": {
@@ -25,10 +20,7 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100
@@ -39,7 +31,6 @@
       "boundValues": {
         "__in__": false
       },
-      "description": "",
       "id": "r18G80_Hvyb",
       "label": "NAND",
       "position": {

@@ -1,9 +1,7 @@
 {
   "description": "Routes an incoming pulse to either of outputs depending on condition",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
       "description": "Input pulse",
       "id": "HkDgIRdrv1W",
       "label": "TRIG",
@@ -14,7 +12,6 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {},
       "description": "Value which defines the route for an input pulse",
       "id": "S1OlUAuBD1-",
       "label": "GATE",
@@ -51,10 +48,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100

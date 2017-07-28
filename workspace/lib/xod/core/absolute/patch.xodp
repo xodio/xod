@@ -1,12 +1,10 @@
 {
   "description": "Outputs absolute value of an input number",
-  "links": [],
   "nodes": [
     {
       "boundValues": {
         "__in__": 0
       },
-      "description": "",
       "id": "B1LNICdSDJW",
       "label": "ABSX",
       "position": {
@@ -16,8 +14,6 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "H1SVIAuBDJZ",
       "label": "X",
       "position": {
@@ -27,10 +23,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100

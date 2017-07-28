@@ -1,9 +1,7 @@
 {
   "description": "Reads analog signal value from board ADC port",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
       "description": "Number of a board ADC port to read from",
       "id": "BJuORNheZ",
       "label": "PORT",
@@ -14,10 +12,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "H1vY0E2xb",
-      "label": "",
       "position": {
         "x": 138,
         "y": 120

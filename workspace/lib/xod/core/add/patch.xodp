@@ -1,10 +1,7 @@
 {
   "description": "Adds two numbers",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "BJnQUR_BwyZ",
       "label": "X",
       "position": {
@@ -14,8 +11,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "HkqmLAOrD1W",
       "label": "Y",
       "position": {
@@ -28,7 +23,6 @@
       "boundValues": {
         "__in__": 0
       },
-      "description": "",
       "id": "SyomIRurDJ-",
       "label": "SUM",
       "position": {
@@ -38,10 +32,7 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100

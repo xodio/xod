@@ -3,7 +3,6 @@
     "XOD"
   ],
   "description": "Hardware drivers for popular and simple peripherals",
-  "license": "",
   "name": "common-hardware",
   "version": "0.11.0"
 }

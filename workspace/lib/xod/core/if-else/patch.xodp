@@ -1,6 +1,5 @@
 {
   "description": "Outputs either input value depending on condition",
-  "links": [],
   "nodes": [
     {
       "boundValues": {
@@ -16,7 +15,6 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {},
       "description": "Condition value",
       "id": "S1yZIA_rDJZ",
       "label": "COND",
@@ -27,10 +25,7 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100
@@ -38,7 +33,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {},
       "description": "Value to be output if condition is false",
       "id": "r1AgIROHDJW",
       "label": "F",
@@ -49,7 +43,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
       "description": "Value to be output if condition is true",
       "id": "ryTeUROHD1b",
       "label": "T",

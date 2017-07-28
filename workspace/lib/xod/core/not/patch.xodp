@@ -1,12 +1,8 @@
 {
   "description": "Inverses a boolean value",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100
@@ -17,7 +13,6 @@
       "boundValues": {
         "__in__": false
       },
-      "description": "",
       "id": "r1if8ROSDJ-",
       "label": "NOTX",
       "position": {
@@ -27,8 +22,6 @@
       "type": "xod/patch-nodes/output-boolean"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "ry3zLA_Bv1Z",
       "label": "X",
       "position": {

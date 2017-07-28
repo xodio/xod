@@ -1,12 +1,8 @@
 {
   "description": "Concatenates (adds together) two strings",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "Bk_h9jpZW",
-      "label": "",
       "position": {
         "x": 138,
         "y": 120
@@ -14,8 +10,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "BkeKcj6ZZ",
       "label": "TAIL",
       "position": {
@@ -25,8 +19,6 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "Hkqu9oaWb",
       "label": "HEAD",
       "position": {
@@ -36,8 +28,6 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "rksccsp-W",
       "label": "STR",
       "position": {

@@ -1,12 +1,9 @@
 {
-  "description": "",
-  "links": [],
   "nodes": [
     {
       "boundValues": {
         "__in__": ""
       },
-      "description": "",
       "id": "B1x2RV3eZ",
       "label": "VAL",
       "position": {
@@ -16,10 +13,7 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "H1PnRN2lW",
-      "label": "",
       "position": {
         "x": 10,
         "y": 16

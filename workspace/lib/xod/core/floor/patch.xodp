@@ -1,10 +1,7 @@
 {
   "description": "Rounds a number to a maximal integer that is less than the number",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "SklxICdHP1b",
       "label": "X",
       "position": {
@@ -14,10 +11,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100
@@ -28,7 +22,6 @@
       "boundValues": {
         "__in__": 0
       },
-      "description": "",
       "id": "rkWeUCdBDkZ",
       "label": "FLR",
       "position": {

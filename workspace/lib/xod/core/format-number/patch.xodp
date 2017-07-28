@@ -1,9 +1,7 @@
 {
   "description": "Transforms a number into a string with specified precision",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
       "description": "Number to format",
       "id": "BJlHojaWZ",
       "label": "NUM",
@@ -27,10 +25,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "S1wYijaWb",
-      "label": "",
       "position": {
         "x": 138,
         "y": 120
@@ -38,7 +33,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {},
       "description": "Formatted value",
       "id": "r1H_oipZb",
       "label": "STR",

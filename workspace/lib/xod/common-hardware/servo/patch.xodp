@@ -1,12 +1,8 @@
 {
   "description": "Drives a standard hobby servo",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "HkmSQOafZ",
-      "label": "",
       "position": {
         "x": 138,
         "y": 120
@@ -14,7 +10,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {},
       "description": "Board port with servo.",
       "id": "S1vGmu6Gb",
       "label": "PORT",
@@ -25,7 +20,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
       "description": "Desired servo angle in degrees (0 … 180)",
       "id": "r1sfQ_6fb",
       "label": "VAL",

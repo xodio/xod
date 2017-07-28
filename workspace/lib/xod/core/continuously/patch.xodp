@@ -1,12 +1,8 @@
 {
   "description": "Continuously outputs pulses",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "BLKANE3xW",
-      "label": "",
       "position": {
         "x": 138,
         "y": 120

@@ -1,12 +1,10 @@
 {
   "description": "Pulses on output when any input recieves a pulse",
-  "links": [],
   "nodes": [
     {
       "boundValues": {
         "__in__": false
       },
-      "description": "",
       "id": "ByHmL0uHPk-",
       "label": "ANY",
       "position": {
@@ -16,8 +14,6 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "ByU7LRuSPkW",
       "label": "P2",
       "position": {
@@ -27,10 +23,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "noNativeImpl",
-      "label": "",
       "position": {
         "x": 100,
         "y": 100
@@ -38,8 +31,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "ryv7IRdSP1b",
       "label": "P1",
       "position": {
