@@ -1,7 +1,7 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 
-import { explode } from 'xod-func-tools';
+import { explode, explodeEither } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Project from './project';
@@ -290,15 +290,6 @@ const filterOutputLinksByNodeId = R.curry((nodeId, links) => R.filter(
   links
 ));
 
-// :: String -> Node[] -> Node
-const findNodeByNodeId = R.curry((nodeId, nodes) => R.find(
-  R.compose(
-    R.equals(nodeId),
-    Node.getNodeId
-  ),
-  nodes
-));
-
 // :: String[] -> Node[] -> Node[]
 const rejectContainedNodeIds = R.curry((nodeIds, nodes) => R.reject(
   R.compose(
@@ -308,37 +299,46 @@ const rejectContainedNodeIds = R.curry((nodeIds, nodes) => R.reject(
   nodes
 ));
 
-// :: Link -> Map PinKey DataValue -> (Node -> Node)
-const rekeyPinUsingLink = R.curry((link, pin) => {
-  if (R.isEmpty(pin)) { return R.identity; }
-
-  return R.useWith(
-    Node.setBoundValue,
-    [
-      Link.getLinkInputPinKey,
-      R.compose(R.head, R.values),
-    ]
-  )(link, pin);
-});
-
-// :: Pin -> Nodes -> Link -> Node
-const assocInjectedPinToNodeByLink = R.curry((pin, nodes, link) => R.compose(
-    rekeyPinUsingLink(link, pin),
-    findNodeByNodeId(R.__, nodes),
-    Link.getLinkInputNodeId
-  )(link)
-);
-
 // :: Node[] -> Link[] -> Node[] -> Node[]
-const passPinsFromTerminalNodes = R.curry((nodes, terminalLinks, terminalNodes) =>
-  R.map(terminalNode =>
-    R.compose(
-      R.map(assocInjectedPinToNodeByLink(terminalNode.boundValues, nodes)),
-      filterOutputLinksByNodeId(R.__, terminalLinks),
-      Node.getNodeId
-    )(terminalNode),
-    terminalNodes
-  )
+const passPinsFromTerminalNodes = R.curry(
+  (nodes, linksConnectedToTerminalNodes, terminalNodesWithBoundValues) => {
+    // :: [{ nodeId, pinKey, value }]
+    const valuesToBind = R.chain(
+      terminalNode => R.compose(
+        R.map(
+          R.converge(
+            (nodeId, pinKey) => ({
+              nodeId,
+              pinKey,
+              // because all terminals here have exactly one bound value
+              value: R.compose(R.head, R.values)(terminalNode.boundValues),
+            }),
+            [
+              Link.getLinkInputNodeId,
+              Link.getLinkInputPinKey,
+            ]
+          )
+        ),
+        filterOutputLinksByNodeId(R.__, linksConnectedToTerminalNodes),
+        Node.getNodeId
+      )(terminalNode),
+      terminalNodesWithBoundValues
+    );
+
+    return R.compose(
+      R.values,
+      R.reduce(
+        (indexedNodes, { nodeId, pinKey, value }) => R.over(
+          R.lensProp(nodeId),
+          Node.setBoundValue(pinKey, value),
+          indexedNodes
+        ),
+        R.__,
+        valuesToBind
+      ),
+      R.indexBy(Node.getNodeId)
+    )(nodes);
+  }
 );
 
 // :: StrMap NodeId Node -> NodeId -> Boolean
@@ -398,30 +398,34 @@ const findSourceLink = R.uncurryN(3, nodesById => linksByInputNodeId =>
 // :: [ Node[], Link[] ] -> [ Node[], Link[] ]
 const removeTerminalsAndPassPins = ([nodes, links]) => {
   const terminalNodes = filterInternalTerminalNodes(nodes);
-  const terminalLinks = filterTerminalLinks(terminalNodes, links);
+  const linksConnectedToTerminalNodes = filterTerminalLinks(terminalNodes, links);
 
-  const terminalNodesWithPins = R.reject(
-    R.pipe(R.prop('boundValues'), R.isEmpty),
+  const terminalNodesWithBoundValues = R.reject(
+    R.pipe(Node.getAllBoundValues, R.isEmpty),
     terminalNodes
   );
+
   const nodesWithPins = R.compose(
     R.flatten,
-    passPinsFromTerminalNodes(nodes, R.flatten(terminalLinks))
-  )(terminalNodesWithPins);
+    passPinsFromTerminalNodes(nodes, R.flatten(linksConnectedToTerminalNodes))
+  )(terminalNodesWithBoundValues);
   const nodesWithPinsIds = R.map(Node.getNodeId, nodesWithPins);
 
-  const newNodes = R.compose(
-    R.concat(R.__, nodesWithPins),
-    rejectContainedNodeIds(nodesWithPinsIds),
-    rejectContainedNodeIds(R.__, nodes),
-    R.pluck('id'),
+  const terminalNodeIds = R.compose(
+    R.map(Node.getNodeId),
     R.flatten
   )(terminalNodes);
 
+  const newNodes = R.compose(
+    rejectContainedNodeIds(terminalNodeIds),
+    R.concat(nodesWithPins),
+    rejectContainedNodeIds(nodesWithPinsIds)
+  )(nodes);
+
   const linkIdsToRemove = R.compose(
-    R.pluck('id'),
+    R.map(Link.getLinkId),
     R.flatten
-  )(terminalLinks);
+  )(linksConnectedToTerminalNodes);
   const linksWithoutTerminals = R.reject(
     R.compose(
       R.contains(R.__, linkIdsToRemove),
@@ -705,14 +709,11 @@ const convertPatch = R.curry((project, impls, leafPatches, patch) => R.ifElse(
     const links = R.map(R.unnest, flattenEntities[1]);
     const [newNodes, newLinks] = createCastNodes(leafPatches, nodes, links);
 
-    // (Patch -> Patch)[]
-    const assocNodes = R.map(Patch.assocNode, newNodes);
-    // (Patch -> Patch)[]
-    const assocLinks = R.map(R.curryN(2, R.compose(explode, Patch.assocLink)), newLinks);
-
-    const patchUpdaters = R.concat(assocNodes, assocLinks);
-    // (Patch -> Patch)[] -> Patch
-    return R.reduce((p, fn) => fn(p), Patch.createPatch(), patchUpdaters);
+    return R.compose(
+      explodeEither,
+      Patch.upsertLinks(newLinks),
+      Patch.upsertNodes(newNodes)
+    )(Patch.createPatch());
   }
 )(patch));
 

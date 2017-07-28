@@ -7,10 +7,16 @@ import * as CONST from '../src/constants';
 import flatten, { extractPatches, extractLeafPatches } from '../src/flatten';
 import { formatString } from '../src/utils';
 import { getCastPatchPath } from '../src/patchPathUtils';
+
+
 import blinking from './fixtures/blinking.json';
 import blinkingFlat from './fixtures/blinking.flat.json';
+
 import deeplyNested from './fixtures/deeply-nested.json';
 import deeplyNestedFlat from './fixtures/deeply-nested.flat.json';
+
+import boundInputValuesPropagation from './fixtures/bound-input-values-propagation.json';
+import boundInputValuesPropagationFlat from './fixtures/bound-input-values-propagation.flat.json';
 
 chai.use(dirtyChai);
 
@@ -1761,6 +1767,18 @@ describe('Flatten', () => {
             in1: 26,
             in2: 42,
           });
+        },
+        flatProject
+      );
+    });
+
+    it('should propagate bound values to nested patches', () => {
+      const flatProject = flatten(boundInputValuesPropagation, '@/main', ['cpp']);
+
+      expect(flatProject.isRight).to.be.true();
+      Helper.expectEither(
+        (project) => {
+          expect(project).to.deep.equal(boundInputValuesPropagationFlat);
         },
         flatProject
       );

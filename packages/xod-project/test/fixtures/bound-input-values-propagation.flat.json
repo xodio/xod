@@ -1,0 +1,95 @@
+{
+  "authors": [],
+  "description": "",
+  "license": "",
+  "version": "0.0.0",
+  "patches": {
+    "xod/core/add": {
+      "nodes": {
+        "BJnQUR_BwyZ": {
+          "boundValues": {},
+          "description": "",
+          "label": "X",
+          "id": "BJnQUR_BwyZ",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "HkqmLAOrD1W": {
+          "boundValues": {},
+          "description": "",
+          "label": "Y",
+          "id": "HkqmLAOrD1W",
+          "position": {
+            "x": 138,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "SyomIRurDJ-": {
+          "boundValues": {
+            "__in__": 0
+          },
+          "description": "",
+          "label": "SUM",
+          "id": "SyomIRurDJ-",
+          "position": {
+            "x": 10,
+            "y": 224
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "noNativeImpl": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "links": {},
+      "impls": {
+        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    auto x = getValue<Inputs::X>(nid);\n    auto y = getValue<Inputs::Y>(nid);\n    emitValue<Outputs::SUM>(nid, x + y);\n}\n"
+      },
+      "path": "xod/core/add",
+      "description": "Adds two numbers",
+      "attachments": [
+        {
+          "filename": "any.cpp",
+          "encoding": "utf8",
+          "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    auto x = getValue<Inputs::X>(nid);\n    auto y = getValue<Inputs::Y>(nid);\n    emitValue<Outputs::SUM>(nid, x + y);\n}\n"
+        }
+      ]
+    },
+    "@/main": {
+      "nodes": {
+        "HJbQvOPL-~r1yIU_vU-": {
+          "id": "HJbQvOPL-~r1yIU_vU-",
+          "type": "xod/core/add",
+          "boundValues": {
+            "BJnQUR_BwyZ": 111,
+            "HkqmLAOrD1W": 222
+          },
+          "description": "",
+          "label": "",
+          "position": {
+            "x": 138,
+            "y": 120
+          }
+        }
+      },
+      "links": {},
+      "impls": {},
+      "path": "@/main",
+      "description": "",
+      "attachments": []
+    }
+  },
+  "name": "untitled"
+}
