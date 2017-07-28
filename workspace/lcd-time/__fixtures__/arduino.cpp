@@ -671,13 +671,15 @@ template <typename T> class List {
 #define PIN_KEY_OFFSET_BITS     (16 - MAX_OUTPUT_COUNT)
 #define NO_NODE                 ((NodeId)-1)
 
-namespace _program {
+namespace xod {
     typedef double Number;
     typedef bool Logic;
 
     // TODO: optimize, we should choose uint8_t if there are less than 255 nodes in total
     // and uint32_t if there are more than 65535
     typedef uint16_t NodeId;
+
+    typedef NodeId Context;
 
     /*
      * PinKey is an address value used to find input’s or output’s data within
@@ -709,7 +711,7 @@ namespace _program {
 //----------------------------------------------------------------------------
 // Engine
 //----------------------------------------------------------------------------
-namespace _program {
+namespace xod {
     extern void* storages[NODE_COUNT];
     extern EvalFuncPtr evaluationFuncs[NODE_COUNT];
     extern DirtyFlags dirtyFlags[NODE_COUNT];
@@ -898,8 +900,8 @@ void setup() {
 }
 
 void loop() {
-    _program::idle();
-    _program::runTransaction();
+    xod::idle();
+    xod::runTransaction();
 }
 
 /*=============================================================================
@@ -910,7 +912,7 @@ void loop() {
  *
  =============================================================================*/
 
-namespace _program {
+namespace xod {
 
 //-----------------------------------------------------------------------------
 // xod/core/system_time implementation
@@ -926,16 +928,16 @@ struct Storage {
     OutputPin<Number> output_TIME;
 };
 
-namespace Inputs {
-    using UPD = InputDescriptor<Logic, offsetof(Storage, input_UPD)>;
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Outputs {
-    using TIME = OutputDescriptor<Number, offsetof(Storage, output_TIME), 0>;
-}
+using input_UPD = InputDescriptor<Logic, offsetof(Storage, input_UPD)>;
 
-void evaluate(NodeId nid, State* state) {
-    emitValue<Outputs::TIME>(nid, millis() / 1000.f);
+using output_TIME = OutputDescriptor<Number, offsetof(Storage, output_TIME), 0>;
+
+void evaluate(Context ctx) {
+    emitValue<output_TIME>(ctx, millis() / 1000.f);
 }
 
 } // namespace xod__core__system_time
@@ -949,7 +951,7 @@ namespace xod__common_hardware__text_lcd_16x2 {
 }}
 #include <LiquidCrystal.h>
 
-namespace _program {
+namespace xod {
 namespace xod__common_hardware__text_lcd_16x2 {
 // --- Back to local namespace ---
 struct State {
@@ -968,19 +970,18 @@ struct Storage {
     PinRef input_L2;
 };
 
-namespace Inputs {
-    using RS = InputDescriptor<Number, offsetof(Storage, input_RS)>;
-    using EN = InputDescriptor<Number, offsetof(Storage, input_EN)>;
-    using D4 = InputDescriptor<Number, offsetof(Storage, input_D4)>;
-    using D5 = InputDescriptor<Number, offsetof(Storage, input_D5)>;
-    using D6 = InputDescriptor<Number, offsetof(Storage, input_D6)>;
-    using D7 = InputDescriptor<Number, offsetof(Storage, input_D7)>;
-    using L1 = InputDescriptor<XString, offsetof(Storage, input_L1)>;
-    using L2 = InputDescriptor<XString, offsetof(Storage, input_L2)>;
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Outputs {
-}
+using input_RS = InputDescriptor<Number, offsetof(Storage, input_RS)>;
+using input_EN = InputDescriptor<Number, offsetof(Storage, input_EN)>;
+using input_D4 = InputDescriptor<Number, offsetof(Storage, input_D4)>;
+using input_D5 = InputDescriptor<Number, offsetof(Storage, input_D5)>;
+using input_D6 = InputDescriptor<Number, offsetof(Storage, input_D6)>;
+using input_D7 = InputDescriptor<Number, offsetof(Storage, input_D7)>;
+using input_L1 = InputDescriptor<XString, offsetof(Storage, input_L1)>;
+using input_L2 = InputDescriptor<XString, offsetof(Storage, input_L2)>;
 
 void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
     if (!str)
@@ -991,22 +992,23 @@ void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
         lcd->write(*it);
 }
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
     auto lcd = state->lcd;
     if (!state->lcd) {
         state->lcd = lcd = new LiquidCrystal(
-            (int)getValue<Inputs::RS>(nid),
-            (int)getValue<Inputs::EN>(nid),
-            (int)getValue<Inputs::D4>(nid),
-            (int)getValue<Inputs::D5>(nid),
-            (int)getValue<Inputs::D6>(nid),
-            (int)getValue<Inputs::D7>(nid));
+            (int)getValue<input_RS>(ctx),
+            (int)getValue<input_EN>(ctx),
+            (int)getValue<input_D4>(ctx),
+            (int)getValue<input_D5>(ctx),
+            (int)getValue<input_D6>(ctx),
+            (int)getValue<input_D7>(ctx));
 
         lcd->begin(16, 2);
     }
 
-    printLine(lcd, 0, getValue<Inputs::L1>(nid));
-    printLine(lcd, 1, getValue<Inputs::L2>(nid));
+    printLine(lcd, 0, getValue<input_L1>(ctx));
+    printLine(lcd, 1, getValue<input_L2>(ctx));
 }
 
 } // namespace xod__common_hardware__text_lcd_16x2
@@ -1025,20 +1027,20 @@ struct Storage {
     OutputPin<XString> output_OUT;
 };
 
-namespace Inputs {
-    using IN = InputDescriptor<Number, offsetof(Storage, input_IN)>;
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Outputs {
-    using OUT = OutputDescriptor<XString, offsetof(Storage, output_OUT), 0>;
-}
+using input_IN = InputDescriptor<Number, offsetof(Storage, input_IN)>;
 
-void evaluate(NodeId nid, State* state) {
+using output_OUT = OutputDescriptor<XString, offsetof(Storage, output_OUT), 0>;
+
+void evaluate(Context ctx) {
     char str[16];
-    auto num = getValue<Inputs::IN>(nid);
+    auto num = getValue<input_IN>(ctx);
     dtostrf(num, 0, 2, str);
     auto xstr = ::xod::List<char>::fromPlainArray(str, strlen(str));
-    emitValue<Outputs::OUT>(nid, xstr);
+    emitValue<output_OUT>(ctx, xstr);
 }
 
 } // namespace xod__core__cast_number_to_string
@@ -1056,16 +1058,15 @@ struct Storage {
     OutputPin<Logic> output_TICK;
 };
 
-namespace Inputs {
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Outputs {
-    using TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
-}
+using output_TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
 
-void evaluate(NodeId nid, State* state) {
-    emitValue<Outputs::TICK>(nid, 1);
-    setTimeout(nid, 0);
+void evaluate(Context ctx) {
+    emitValue<output_TICK>(ctx, 1);
+    setTimeout(ctx, 0);
 }
 
 } // namespace xod__core__continuously
@@ -1082,15 +1083,14 @@ struct Storage {
     OutputPin<Number> output_VAL;
 };
 
-namespace Inputs {
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Outputs {
-    using VAL = OutputDescriptor<Number, offsetof(Storage, output_VAL), 0>;
-}
+using output_VAL = OutputDescriptor<Number, offsetof(Storage, output_VAL), 0>;
 
-void evaluate(NodeId nid, State* state) {
-  reemitValue<Outputs::VAL>(nid);
+void evaluate(Context ctx) {
+  reemitValue<output_VAL>(ctx);
 }
 
 } // namespace xod__core__constant_number
@@ -1107,20 +1107,19 @@ struct Storage {
     OutputPin<XString> output_VAL;
 };
 
-namespace Inputs {
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Outputs {
-    using VAL = OutputDescriptor<XString, offsetof(Storage, output_VAL), 0>;
-}
+using output_VAL = OutputDescriptor<XString, offsetof(Storage, output_VAL), 0>;
 
-void evaluate(NodeId nid, State* state) {
-  reemitValue<Outputs::VAL>(nid);
+void evaluate(Context ctx) {
+  reemitValue<output_VAL>(ctx);
 }
 
 } // namespace xod__core__constant_string
 
-} // namespace _program
+} // namespace xod
 
 /*=============================================================================
  *
@@ -1130,31 +1129,31 @@ void evaluate(NodeId nid, State* state) {
  *
  =============================================================================*/
 
-namespace _program {
+namespace xod {
 
     NodeId links_0_TIME[] = { 2, NO_NODE };
     xod__core__system_time::Storage storage_0 = {
         { }, // state
-        { NodeId(3), xod__core__continuously::Outputs::TICK::KEY }, // input_UPD
+        { NodeId(3), xod__core__continuously::output_TICK::KEY }, // input_UPD
         { 0, links_0_TIME } // output_TIME
     };
 
     xod__common_hardware__text_lcd_16x2::Storage storage_1 = {
         { }, // state
-        { NodeId(9), xod__core__constant_number::Outputs::VAL::KEY }, // input_RS
-        { NodeId(8), xod__core__constant_number::Outputs::VAL::KEY }, // input_EN
-        { NodeId(4), xod__core__constant_number::Outputs::VAL::KEY }, // input_D4
-        { NodeId(7), xod__core__constant_number::Outputs::VAL::KEY }, // input_D5
-        { NodeId(6), xod__core__constant_number::Outputs::VAL::KEY }, // input_D6
-        { NodeId(10), xod__core__constant_number::Outputs::VAL::KEY }, // input_D7
-        { NodeId(2), xod__core__cast_number_to_string::Outputs::OUT::KEY }, // input_L1
-        { NodeId(5), xod__core__constant_string::Outputs::VAL::KEY }, // input_L2
+        { NodeId(9), xod__core__constant_number::output_VAL::KEY }, // input_RS
+        { NodeId(8), xod__core__constant_number::output_VAL::KEY }, // input_EN
+        { NodeId(4), xod__core__constant_number::output_VAL::KEY }, // input_D4
+        { NodeId(7), xod__core__constant_number::output_VAL::KEY }, // input_D5
+        { NodeId(6), xod__core__constant_number::output_VAL::KEY }, // input_D6
+        { NodeId(10), xod__core__constant_number::output_VAL::KEY }, // input_D7
+        { NodeId(2), xod__core__cast_number_to_string::output_OUT::KEY }, // input_L1
+        { NodeId(5), xod__core__constant_string::output_VAL::KEY }, // input_L2
     };
 
     NodeId links_2_OUT[] = { 1, NO_NODE };
     xod__core__cast_number_to_string::Storage storage_2 = {
         { }, // state
-        { NodeId(0), xod__core__system_time::Outputs::TIME::KEY }, // input_IN
+        { NodeId(0), xod__core__system_time::output_TIME::KEY }, // input_IN
         { ::xod::List<char>::empty(), links_2_OUT } // output_OUT
     };
 

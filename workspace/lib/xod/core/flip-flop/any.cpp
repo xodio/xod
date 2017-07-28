@@ -4,11 +4,12 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
     bool newState = state->state;
-    if (isInputDirty<Inputs::TGL>(nid)) {
+    if (isInputDirty<input_TGL>(ctx)) {
         newState = !state->state;
-    } else if (isInputDirty<Inputs::SET>(nid)) {
+    } else if (isInputDirty<input_SET>(ctx)) {
         newState = true;
     } else {
         newState = false;
@@ -18,5 +19,5 @@ void evaluate(NodeId nid, State* state) {
         return;
 
     state->state = newState;
-    emitValue<Outputs::MEM>(nid, newState);
+    emitValue<output_MEM>(ctx, newState);
 }

@@ -6,7 +6,7 @@
  *
  =============================================================================*/
 
-namespace _program {
+namespace xod {
 
     NodeId links_0_OUT[] = { 1, NO_NODE };
     xod__math__multiply::Storage storage_0 = {
@@ -19,7 +19,7 @@ namespace _program {
     NodeId links_1_OUT[] = { NO_NODE };
     xod__math__multiply::Storage storage_1 = {
         { }, // state
-        { NodeId(0), xod__math__multiply::Outputs::OUT::KEY }, // input_IN1
+        { NodeId(0), xod__math__multiply::output_OUT::KEY }, // input_IN1
         { NO_NODE, 0 }, // input_IN2
         { 0, links_1_OUT } // output_OUT
     };

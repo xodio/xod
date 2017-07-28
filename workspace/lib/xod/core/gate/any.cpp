@@ -3,13 +3,13 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
-    if (!isInputDirty<Inputs::TRIG>(nid))
+void evaluate(Context ctx) {
+    if (!isInputDirty<input_TRIG>(ctx))
         return;
 
-    if (getValue<Inputs::GATE>(nid)) {
-        emitValue<Outputs::T>(nid, 1);
+    if (getValue<input_GATE>(ctx)) {
+        emitValue<output_T>(ctx, 1);
     } else {
-        emitValue<Outputs::F>(nid, 1);
+        emitValue<output_F>(ctx, 1);
     }
 }

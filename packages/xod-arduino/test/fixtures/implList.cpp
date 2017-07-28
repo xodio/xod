@@ -6,7 +6,7 @@
  *
  =============================================================================*/
 
-namespace _program {
+namespace xod {
 
 //-----------------------------------------------------------------------------
 // xod/math/multiply implementation
@@ -23,19 +23,19 @@ struct Storage {
     OutputPin<Number> output_OUT;
 };
 
-namespace Inputs {
-    using IN1 = InputDescriptor<Number, offsetof(Storage, input_IN1)>;
-    using IN2 = InputDescriptor<Number, offsetof(Storage, input_IN2)>;
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Outputs {
-    using OUT = OutputDescriptor<Number, offsetof(Storage, output_OUT), 0>;
-}
+using input_IN1 = InputDescriptor<Number, offsetof(Storage, input_IN1)>;
+using input_IN2 = InputDescriptor<Number, offsetof(Storage, input_IN2)>;
 
-void evaluate(NodeId nid, State* state) {
+using output_OUT = OutputDescriptor<Number, offsetof(Storage, output_OUT), 0>;
+
+void evaluate(Context ctx) {
     /* Native implementation goes here */
 }
 
 } // namespace xod__math__multiply
 
-} // namespace _program
+} // namespace xod

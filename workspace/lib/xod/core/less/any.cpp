@@ -2,8 +2,8 @@ struct State {};
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
-    auto lhs = getValue<Inputs::LHS>(nid);
-    auto rhs = getValue<Inputs::RHS>(nid);
-    emitValue<Outputs::LT>(nid, lhs < rhs);
+void evaluate(Context ctx) {
+    auto lhs = getValue<input_LHS>(ctx);
+    auto rhs = getValue<input_RHS>(ctx);
+    emitValue<output_LT>(ctx, lhs < rhs);
 }

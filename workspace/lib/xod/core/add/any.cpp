@@ -3,8 +3,8 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
-    auto x = getValue<Inputs::X>(nid);
-    auto y = getValue<Inputs::Y>(nid);
-    emitValue<Outputs::SUM>(nid, x + y);
+void evaluate(Context ctx) {
+    auto x = getValue<input_X>(ctx);
+    auto y = getValue<input_Y>(ctx);
+    emitValue<output_SUM>(ctx, x + y);
 }

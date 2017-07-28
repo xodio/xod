@@ -8,7 +8,7 @@
  *
  =============================================================================*/
 
-namespace _program {
+namespace xod {
 
 {{#each this}}
 //-----------------------------------------------------------------------------
@@ -21,4 +21,4 @@ namespace {{ owner }}__{{ libName }}__{{ patchName }} {
 } // namespace {{ owner }}__{{ libName }}__{{ patchName }}
 
 {{/each}}
-} // namespace _program
+} // namespace xod

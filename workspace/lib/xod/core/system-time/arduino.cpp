@@ -3,6 +3,6 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
-    emitValue<Outputs::TIME>(nid, millis() / 1000.f);
+void evaluate(Context ctx) {
+    emitValue<output_TIME>(ctx, millis() / 1000.f);
 }

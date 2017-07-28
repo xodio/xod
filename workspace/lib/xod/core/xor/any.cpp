@@ -3,8 +3,8 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
-    auto a = getValue<Inputs::A>(nid);
-    auto b = getValue<Inputs::B>(nid);
-    emitValue<Outputs::XOR>(nid, a != b);
+void evaluate(Context ctx) {
+    auto a = getValue<input_A>(ctx);
+    auto b = getValue<input_B>(ctx);
+    emitValue<output_XOR>(ctx, a != b);
 }

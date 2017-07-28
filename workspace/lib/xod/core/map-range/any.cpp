@@ -3,13 +3,13 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
-    auto x = getValue<Inputs::X>(nid);
-    auto sMin = getValue<Inputs::Smin>(nid);
-    auto sMax = getValue<Inputs::Smax>(nid);
-    auto tMin = getValue<Inputs::Tmin>(nid);
-    auto tMax = getValue<Inputs::Tmax>(nid);
+void evaluate(Context ctx) {
+    auto x = getValue<input_X>(ctx);
+    auto sMin = getValue<input_Smin>(ctx);
+    auto sMax = getValue<input_Smax>(ctx);
+    auto tMin = getValue<input_Tmin>(ctx);
+    auto tMax = getValue<input_Tmax>(ctx);
     auto k = (x - sMin) / (sMax - sMin);
     auto xm = tMin + k * (tMax - tMin);
-    emitValue<Outputs::Xm>(nid, xm);
+    emitValue<output_Xm>(ctx, xm);
 }

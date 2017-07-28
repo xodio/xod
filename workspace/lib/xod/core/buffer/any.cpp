@@ -4,14 +4,15 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
-    if (!isInputDirty<Inputs::UPD>(nid))
+void evaluate(Context ctx) {
+    if (!isInputDirty<input_UPD>(ctx))
         return;
 
-    auto newValue = getValue<Inputs::NEW>(nid);
+    State* state = getState(ctx);
+    auto newValue = getValue<input_NEW>(ctx);
     if (newValue == state->value)
         return;
 
     state->value = newValue;
-    emitValue<Outputs::MEM>(nid, newValue);
+    emitValue<output_MEM>(ctx, newValue);
 }

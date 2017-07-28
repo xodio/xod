@@ -3,10 +3,10 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
-    auto x = getValue<Inputs::IN>(nid);
+void evaluate(Context ctx) {
+    auto x = getValue<input_IN>(ctx);
     auto xstr = x
       ? ::xod::List<char>::fromPlainArray("true", 4)
       : ::xod::List<char>::fromPlainArray("false", 5);
-    emitValue<Outputs::OUT>(nid, xstr);
+    emitValue<output_OUT>(ctx, xstr);
 }

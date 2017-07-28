@@ -26,7 +26,7 @@
     },
     "links": {},
     "impls": {
-      "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    reemitValue<Outputs::VAL>(nid);\n}\n",
+      "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    reemitValue<Outputs::VAL>(nid);\n}\n",
       "js": "module.exports.setup = function(e) {\n  e.fire();\n};\n"
     },
     "path": "xod/core/constant-boolean",
@@ -35,7 +35,7 @@
       {
         "filename": "any.cpp",
         "encoding": "utf8",
-        "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    reemitValue<Outputs::VAL>(nid);\n}\n"
+        "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    reemitValue<Outputs::VAL>(nid);\n}\n"
       },
       {
         "filename": "any.js",
@@ -73,7 +73,7 @@
     },
     "links": {},
     "impls": {
-      "cpp": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n  reemitValue<Outputs::VAL>(nid);\n}\n",
+      "cpp": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n  reemitValue<Outputs::VAL>(nid);\n}\n",
       "js": "module.exports.setup = function(e) {\n  e.fire();\n};\n"
     },
     "path": "xod/core/constant-number",
@@ -82,7 +82,7 @@
       {
         "filename": "any.cpp",
         "encoding": "utf8",
-        "content": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n  reemitValue<Outputs::VAL>(nid);\n}\n"
+        "content": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n  reemitValue<Outputs::VAL>(nid);\n}\n"
       },
       {
         "filename": "any.js",
@@ -120,7 +120,7 @@
     },
     "links": {},
     "impls": {
-      "cpp": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n  reemitValue<Outputs::VAL>(nid);\n}\n"
+      "cpp": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n  reemitValue<Outputs::VAL>(nid);\n}\n"
     },
     "path": "xod/core/constant-string",
     "description": "",
@@ -128,7 +128,7 @@
       {
         "filename": "any.cpp",
         "encoding": "utf8",
-        "content": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n  reemitValue<Outputs::VAL>(nid);\n}\n"
+        "content": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n  reemitValue<Outputs::VAL>(nid);\n}\n"
       }
     ]
   },
@@ -161,7 +161,7 @@
     },
     "links": {},
     "impls": {
-      "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitValue<Outputs::TICK>(nid, 1);\n    setTimeout(nid, 0);\n}\n"
+      "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    emitValue<Outputs::TICK>(nid, 1);\n    setTimeout(nid, 0);\n}\n"
     },
     "path": "xod/core/continuously",
     "description": "Continuously outputs pulses",
@@ -169,7 +169,7 @@
       {
         "filename": "any.cpp",
         "encoding": "utf8",
-        "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitValue<Outputs::TICK>(nid, 1);\n    setTimeout(nid, 0);\n}\n"
+        "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    emitValue<Outputs::TICK>(nid, 1);\n    setTimeout(nid, 0);\n}\n"
       }
     ]
   },
@@ -202,7 +202,7 @@
     },
     "links": {},
     "impls": {
-      "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitValue<Outputs::BOOT>(nid, 1);\n}\n",
+      "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    emitValue<Outputs::BOOT>(nid, 1);\n}\n",
       "js": "module.exports.evaluate = function(e) {\n  e.fire({ BOOT: PULSE });\n};\n"
     },
     "path": "xod/core/boot",
@@ -211,7 +211,7 @@
       {
         "filename": "any.cpp",
         "encoding": "utf8",
-        "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    emitValue<Outputs::BOOT>(nid, 1);\n}\n"
+        "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    emitValue<Outputs::BOOT>(nid, 1);\n}\n"
       },
       {
         "filename": "any.js",

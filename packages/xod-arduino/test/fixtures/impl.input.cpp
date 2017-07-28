@@ -3,6 +3,6 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(Context ctx) {
     /* Native implementation goes here */
 }

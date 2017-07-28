@@ -4,23 +4,24 @@ struct State {
 
 {{ GENERATED_CODE }}
 
-void evaluate(NodeId nid, State* state) {
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
     TimeMs tNow = transactionTime();
-    TimeMs dt = getValue<Inputs::IVAL>(nid) * 1000;
+    TimeMs dt = getValue<input_IVAL>(ctx) * 1000;
     TimeMs tNext = tNow + dt;
 
-    if (isInputDirty<Inputs::RST>(nid)) {
+    if (isInputDirty<input_RST>(ctx)) {
         if (dt == 0) {
             state->nextTrig = 0;
-            clearTimeout(nid);
+            clearTimeout(ctx);
         } else if (state->nextTrig < tNow || state->nextTrig > tNext) {
             state->nextTrig = tNext;
-            setTimeout(nid, dt);
+            setTimeout(ctx, dt);
         }
     } else {
         // It was a scheduled tick
-        emitValue<Outputs::TICK>(nid, 1);
+        emitValue<output_TICK>(ctx, 1);
         state->nextTrig = tNext;
-        setTimeout(nid, dt);
+        setTimeout(ctx, dt);
     }
 }

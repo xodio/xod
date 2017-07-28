@@ -671,13 +671,15 @@ template <typename T> class List {
 #define PIN_KEY_OFFSET_BITS     (16 - MAX_OUTPUT_COUNT)
 #define NO_NODE                 ((NodeId)-1)
 
-namespace _program {
+namespace xod {
     typedef double Number;
     typedef bool Logic;
 
     // TODO: optimize, we should choose uint8_t if there are less than 255 nodes in total
     // and uint32_t if there are more than 65535
     typedef uint16_t NodeId;
+
+    typedef NodeId Context;
 
     /*
      * PinKey is an address value used to find input’s or output’s data within
@@ -709,7 +711,7 @@ namespace _program {
 //----------------------------------------------------------------------------
 // Engine
 //----------------------------------------------------------------------------
-namespace _program {
+namespace xod {
     extern void* storages[NODE_COUNT];
     extern EvalFuncPtr evaluationFuncs[NODE_COUNT];
     extern DirtyFlags dirtyFlags[NODE_COUNT];
@@ -898,8 +900,8 @@ void setup() {
 }
 
 void loop() {
-    _program::idle();
-    _program::runTransaction();
+    xod::idle();
+    xod::runTransaction();
 }
 
 /*=============================================================================
@@ -910,7 +912,7 @@ void loop() {
  *
  =============================================================================*/
 
-namespace _program {
+namespace xod {
 
 //-----------------------------------------------------------------------------
 // xod/core/clock implementation
@@ -928,33 +930,34 @@ struct Storage {
     OutputPin<Logic> output_TICK;
 };
 
-namespace Inputs {
-    using IVAL = InputDescriptor<Number, offsetof(Storage, input_IVAL)>;
-    using RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Outputs {
-    using TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
-}
+using input_IVAL = InputDescriptor<Number, offsetof(Storage, input_IVAL)>;
+using input_RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
 
-void evaluate(NodeId nid, State* state) {
+using output_TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
+
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
     TimeMs tNow = transactionTime();
-    TimeMs dt = getValue<Inputs::IVAL>(nid) * 1000;
+    TimeMs dt = getValue<input_IVAL>(ctx) * 1000;
     TimeMs tNext = tNow + dt;
 
-    if (isInputDirty<Inputs::RST>(nid)) {
+    if (isInputDirty<input_RST>(ctx)) {
         if (dt == 0) {
             state->nextTrig = 0;
-            clearTimeout(nid);
+            clearTimeout(ctx);
         } else if (state->nextTrig < tNow || state->nextTrig > tNext) {
             state->nextTrig = tNext;
-            setTimeout(nid, dt);
+            setTimeout(ctx, dt);
         }
     } else {
         // It was a scheduled tick
-        emitValue<Outputs::TICK>(nid, 1);
+        emitValue<output_TICK>(ctx, 1);
         state->nextTrig = tNext;
-        setTimeout(nid, dt);
+        setTimeout(ctx, dt);
     }
 }
 
@@ -977,21 +980,22 @@ struct Storage {
     OutputPin<Logic> output_MEM;
 };
 
-namespace Inputs {
-    using SET = InputDescriptor<Logic, offsetof(Storage, input_SET)>;
-    using TGL = InputDescriptor<Logic, offsetof(Storage, input_TGL)>;
-    using RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Outputs {
-    using MEM = OutputDescriptor<Logic, offsetof(Storage, output_MEM), 0>;
-}
+using input_SET = InputDescriptor<Logic, offsetof(Storage, input_SET)>;
+using input_TGL = InputDescriptor<Logic, offsetof(Storage, input_TGL)>;
+using input_RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
 
-void evaluate(NodeId nid, State* state) {
+using output_MEM = OutputDescriptor<Logic, offsetof(Storage, output_MEM), 0>;
+
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
     bool newState = state->state;
-    if (isInputDirty<Inputs::TGL>(nid)) {
+    if (isInputDirty<input_TGL>(ctx)) {
         newState = !state->state;
-    } else if (isInputDirty<Inputs::SET>(nid)) {
+    } else if (isInputDirty<input_SET>(ctx)) {
         newState = true;
     } else {
         newState = false;
@@ -1001,7 +1005,7 @@ void evaluate(NodeId nid, State* state) {
         return;
 
     state->state = newState;
-    emitValue<Outputs::MEM>(nid, newState);
+    emitValue<output_MEM>(ctx, newState);
 }
 
 } // namespace xod__core__flip_flop
@@ -1021,16 +1025,16 @@ struct Storage {
     PinRef input_SIG;
 };
 
-namespace Inputs {
-    using PORT = InputDescriptor<Number, offsetof(Storage, input_PORT)>;
-    using SIG = InputDescriptor<Logic, offsetof(Storage, input_SIG)>;
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Outputs {
-}
+using input_PORT = InputDescriptor<Number, offsetof(Storage, input_PORT)>;
+using input_SIG = InputDescriptor<Logic, offsetof(Storage, input_SIG)>;
 
-void evaluate(NodeId nid, State* state) {
-    const int port = (int)getValue<Inputs::PORT>(nid);
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
+    const int port = (int)getValue<input_PORT>(ctx);
     if (port != state->configuredPort) {
         ::pinMode(port, OUTPUT);
         // Store configured port so to avoid repeating `pinMode` call if just
@@ -1038,7 +1042,7 @@ void evaluate(NodeId nid, State* state) {
         state->configuredPort = port;
     }
 
-    const bool val = getValue<Inputs::SIG>(nid);
+    const bool val = getValue<input_SIG>(ctx);
     ::digitalWrite(port, val);
 }
 
@@ -1056,20 +1060,19 @@ struct Storage {
     OutputPin<Number> output_VAL;
 };
 
-namespace Inputs {
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(storages[nid]);
 }
 
-namespace Outputs {
-    using VAL = OutputDescriptor<Number, offsetof(Storage, output_VAL), 0>;
-}
+using output_VAL = OutputDescriptor<Number, offsetof(Storage, output_VAL), 0>;
 
-void evaluate(NodeId nid, State* state) {
-  reemitValue<Outputs::VAL>(nid);
+void evaluate(Context ctx) {
+  reemitValue<output_VAL>(ctx);
 }
 
 } // namespace xod__core__constant_number
 
-} // namespace _program
+} // namespace xod
 
 /*=============================================================================
  *
@@ -1079,12 +1082,12 @@ void evaluate(NodeId nid, State* state) {
  *
  =============================================================================*/
 
-namespace _program {
+namespace xod {
 
     NodeId links_0_TICK[] = { 1, NO_NODE };
     xod__core__clock::Storage storage_0 = {
         { }, // state
-        { NodeId(3), xod__core__constant_number::Outputs::VAL::KEY }, // input_IVAL
+        { NodeId(3), xod__core__constant_number::output_VAL::KEY }, // input_IVAL
         { NO_NODE, 0 }, // input_RST
         { false, links_0_TICK } // output_TICK
     };
@@ -1093,15 +1096,15 @@ namespace _program {
     xod__core__flip_flop::Storage storage_1 = {
         { }, // state
         { NO_NODE, 0 }, // input_SET
-        { NodeId(0), xod__core__clock::Outputs::TICK::KEY }, // input_TGL
+        { NodeId(0), xod__core__clock::output_TICK::KEY }, // input_TGL
         { NO_NODE, 0 }, // input_RST
         { false, links_1_MEM } // output_MEM
     };
 
     xod__core__digital_output::Storage storage_2 = {
         { }, // state
-        { NodeId(4), xod__core__constant_number::Outputs::VAL::KEY }, // input_PORT
-        { NodeId(1), xod__core__flip_flop::Outputs::MEM::KEY }, // input_SIG
+        { NodeId(4), xod__core__constant_number::output_VAL::KEY }, // input_PORT
+        { NodeId(1), xod__core__flip_flop::output_MEM::KEY }, // input_SIG
     };
 
     NodeId links_3_VAL[] = { 0, NO_NODE };

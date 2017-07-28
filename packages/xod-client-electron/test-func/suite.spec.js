@@ -170,7 +170,7 @@ describe('IDE', () => {
     it('shows code', () =>
       app.electron.ipcRenderer.emit(TRIGGER_MAIN_MENU_ITEM, ['Deploy', 'Show Code For Arduino'])
         .then(() => page.getCodeboxValue())
-        .then(code => assert.equal(code, expectedCpp))
+        .then(code => assert.equal(code, expectedCpp, 'Actual and expected C++ don’t match'))
     );
   });
 });
