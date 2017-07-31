@@ -1,0 +1,259 @@
+{
+  "arduino": [
+    {
+      "name": "Arduino AVR Boards",
+      "architecture": "avr",
+      "version": "1.6.19",
+      "url": "http://downloads.arduino.cc/cores/avr-1.6.19.tar.bz2",
+      "toolsUrls": {
+        "win32": "https://storage.googleapis.com/releases.xod.io/packages/win32-avr-tools.tar.gz",
+        "darwin": "https://storage.googleapis.com/releases.xod.io/packages/darwin-avr-tools.tar.gz",
+        "linux": "https://storage.googleapis.com/releases.xod.io/packages/linux-avr-tools.tar.gz"
+      },
+      "boards": [
+        {
+          "name": "Arduino Yún"
+        },
+        {
+          "name": "Arduino/Genuino Uno"
+        },
+        {
+          "name": "Arduino Uno WiFi"
+        },
+        {
+          "name": "Arduino Diecimila"
+        },
+        {
+          "name": "Arduino Nano"
+        },
+        {
+          "name": "Arduino/Genuino Mega"
+        },
+        {
+          "name": "Arduino MegaADK"
+        },
+        {
+          "name": "Arduino Leonardo"
+        },
+        {
+          "name": "Arduino Leonardo Ethernet"
+        },
+        {
+          "name": "Arduino/Genuino Micro"
+        },
+        {
+          "name": "Arduino Esplora"
+        },
+        {
+          "name": "Arduino Mini"
+        },
+        {
+          "name": "Arduino Ethernet"
+        },
+        {
+          "name": "Arduino Fio"
+        },
+        {
+          "name": "Arduino BT"
+        },
+        {
+          "name": "Arduino LilyPadUSB"
+        },
+        {
+          "name": "Arduino Lilypad"
+        },
+        {
+          "name": "Arduino Pro"
+        },
+        {
+          "name": "Arduino ATMegaNG"
+        },
+        {
+          "name": "Arduino Robot Control"
+        },
+        {
+          "name": "Arduino Robot Motor"
+        },
+        {
+          "name": "Arduino Gemma"
+        },
+        {
+          "name": "Adafruit Circuit Playground"
+        },
+        {
+          "name": "Arduino Yún Mini"
+        },
+        {
+          "name": "Arduino Industrial 101"
+        },
+        {
+          "name": "Linino One"
+        }
+      ],
+      "tools": [
+        {
+          "name": "avr-gcc",
+          "version": "4.9.2-atmel3.5.4-arduino2",
+          "systems": {
+            "darwin": "http://downloads.arduino.cc/tools/avr-gcc-4.9.2-atmel3.5.4-arduino2-i386-apple-darwin11.tar.bz2",
+            "win32": "http://downloads.arduino.cc/tools/avr-gcc-4.9.2-atmel3.5.4-arduino2-i686-mingw32.zip",
+            "linux": "http://downloads.arduino.cc/tools/avr-gcc-4.9.2-atmel3.5.4-arduino2-x86_64-pc-linux-gnu.tar.bz2"
+          }
+        },
+        {
+          "name": "avrdude",
+          "version": "6.3.0-arduino9",
+          "systems": {
+            "darwin": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino9-i386-apple-darwin11.tar.bz2",
+            "linux": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino9-x86_64-pc-linux-gnu.tar.bz2",
+            "win32": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino9-i686-w64-mingw32.zip"
+          }
+        },
+        {
+          "name": "arduinoOTA",
+          "version": "1.1.1",
+          "systems": {
+            "linux": "http://downloads.arduino.cc/tools/arduinoOTA-1.1.1-linux_amd64.tar.bz2",
+            "darwin": "http://downloads.arduino.cc/tools/arduinoOTA-1.1.1-darwin_amd64.tar.bz2",
+            "win32": "http://downloads.arduino.cc/tools/arduinoOTA-1.1.1-windows_386.zip"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Arduino SAM Boards (32-bits ARM Cortex-M3)",
+      "architecture": "sam",
+      "version": "1.6.11",
+      "url": "http://downloads.arduino.cc/cores/sam-1.6.11.tar.bz2",
+      "toolsUrls": {
+        "win32": "https://storage.googleapis.com/releases.xod.io/packages/win32-sam-tools.tar.gz",
+        "darwin": "https://storage.googleapis.com/releases.xod.io/packages/darwin-sam-tools.tar.gz",
+        "linux": "https://storage.googleapis.com/releases.xod.io/packages/linux-sam-tools.tar.gz"
+      },
+      "boards": [
+        {
+          "name": "Arduino Due (Programming Port)"
+        },
+        {
+          "name": "Arduino Due (Native USB Port)"
+        }
+      ],
+      "tools": [
+        {
+          "name": "arm-none-eabi-gcc",
+          "version": "4.8.3-2014q1",
+          "systems": {
+            "win32": "http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-windows.tar.gz",
+            "darwin": "http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-mac.tar.gz",
+            "linux": "http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-linux64.tar.gz"
+          }
+        },
+        {
+          "name": "bossac",
+          "version": "1.6.1-arduino",
+          "systems": {
+            "win32": "http://downloads.arduino.cc/bossac-1.6.1-arduino-mingw32.tar.gz",
+            "darwin": "http://downloads.arduino.cc/bossac-1.6.1-arduino-i386-apple-darwin14.5.0.tar.gz",
+            "linux": "http://downloads.arduino.cc/bossac-1.6.1-arduino-x86_64-linux-gnu.tar.gz"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Arduino SAMD Boards (32-bits ARM Cortex-M0+)",
+      "architecture": "samd",
+      "version": "1.6.15",
+      "url": "http://downloads.arduino.cc/cores/samd-1.6.15.tar.bz2",
+      "toolsUrls": {
+        "win32": "https://storage.googleapis.com/releases.xod.io/packages/win32-samd-tools.tar.gz",
+        "darwin": "https://storage.googleapis.com/releases.xod.io/packages/darwin-samd-tools.tar.gz",
+        "linux": "https://storage.googleapis.com/releases.xod.io/packages/linux-samd-tools.tar.gz"
+      },
+      "boards": [
+        {
+          "name": "Arduino/Genuino Zero (Programming Port)"
+        },
+        {
+          "name": "Arduino/Genuino Zero (Native USB Port)"
+        },
+        {
+          "name": "Arduino/Genuino MKR1000"
+        },
+        {
+          "name": "Arduino MKRZero"
+        },
+        {
+          "name": "Arduino MKRFox1200"
+        },
+        {
+          "name": "Arduino M0 Pro (Programming Port)"
+        },
+        {
+          "name": "Arduino M0 Pro (Native USB Port)"
+        },
+        {
+          "name": "Arduino M0"
+        },
+        {
+          "name": "Adafruit Circuit Playground Express"
+        }
+      ],
+      "tools": [
+        {
+          "name": "arm-none-eabi-gcc",
+          "version": "4.8.3-2014q1",
+          "systems": {
+            "win32": "http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-windows.tar.gz",
+            "darwin": "http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-mac.tar.gz",
+            "linux": "http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-linux64.tar.gz"
+          }
+        },
+        {
+          "name": "arduinoOTA",
+          "version": "1.2.0",
+          "systems": {
+            "linux": "http://downloads.arduino.cc/tools/arduinoOTA-1.2.0-linux_amd64.tar.bz2",
+            "darwin": "http://downloads.arduino.cc/tools/arduinoOTA-1.2.0-darwin_amd64.tar.bz2",
+            "win32": "http://downloads.arduino.cc/tools/arduinoOTA-1.2.0-windows_386.zip"
+          }
+        },
+        {
+          "name": "bossac",
+          "version": "1.7.0",
+          "systems": {
+            "win32": "http://downloads.arduino.cc/tools/bossac-1.7.0-mingw32.tar.gz",
+            "darwin": "http://downloads.arduino.cc/tools/bossac-1.7.0-i386-apple-darwin15.6.0.tar.gz",
+            "linux": "http://downloads.arduino.cc/tools/bossac-1.7.0-x86_64-linux-gnu.tar.gz"
+          }
+        },
+        {
+          "name": "openocd",
+          "version": "0.9.0-arduino6-static",
+          "systems": {
+            "win32": "http://downloads.arduino.cc/tools/openocd-0.9.0-arduino6-static-i686-w64-mingw32.zip",
+            "darwin": "http://downloads.arduino.cc/tools/openocd-0.9.0-arduino6-static-x86_64-apple-darwin15.6.0.tar.bz2",
+            "linux": "http://downloads.arduino.cc/tools/openocd-0.9.0-arduino6-static-x86_64-linux-gnu.tar.bz2"
+          }
+        },
+        {
+          "name": "CMSIS",
+          "version": "4.5.0",
+          "systems": {
+            "win32": "http://downloads.arduino.cc/CMSIS-4.5.0.tar.bz2",
+            "darwin": "http://downloads.arduino.cc/CMSIS-4.5.0.tar.bz2",
+            "linux": "http://downloads.arduino.cc/CMSIS-4.5.0.tar.bz2"
+          }
+        },
+        {
+          "name": "CMSIS-Atmel",
+          "version": "1.1.0",
+          "systems": {
+            "win32": "http://downloads.arduino.cc/CMSIS-Atmel-1.1.0.tar.bz2",
+            "darwin": "http://downloads.arduino.cc/CMSIS-Atmel-1.1.0.tar.bz2",
+            "linux": "http://downloads.arduino.cc/CMSIS-Atmel-1.1.0.tar.bz2"
+          }
+        }
+      ]
+    }
+  ]
+}
