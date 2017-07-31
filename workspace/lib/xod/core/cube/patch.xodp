@@ -1,0 +1,29 @@
+{
+  "description": "Computes the cube (i.e. x³) of an input value.",
+  "nodes": [
+    {
+      "id": "B1QQ_nhUb",
+      "position": {
+        "x": 10,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "BkRma33U-",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "ByZ7_hnUb",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

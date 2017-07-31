@@ -1,0 +1,125 @@
+{
+  "description": "Measures distance with HC-SR04 ultrasonic range meter. Keeps output intact if a ping fails (no echo or wrong connection).",
+  "links": [
+    {
+      "id": "BJPoR-ALb",
+      "input": {
+        "nodeId": "BkS50ZRUb",
+        "pinKey": "rJ0fMWALb"
+      },
+      "output": {
+        "nodeId": "r1xoR-C8-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "By8aRWCIb",
+      "input": {
+        "nodeId": "H17aAZ08Z",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "BkS50ZRUb",
+        "pinKey": "Syn7fWCLZ"
+      }
+    },
+    {
+      "id": "BydjRb0L-",
+      "input": {
+        "nodeId": "BkS50ZRUb",
+        "pinKey": "Bk2zMWALZ"
+      },
+      "output": {
+        "nodeId": "rJa50WCL-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyQe1GCUW",
+      "input": {
+        "nodeId": "BJllkG0Ub",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H17aAZ08Z",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "rkUj0-A8-",
+      "input": {
+        "nodeId": "BkS50ZRUb",
+        "pinKey": "rJPQfbCIW"
+      },
+      "output": {
+        "nodeId": "SJmoRbAUW",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Last measured distance in meters.",
+      "id": "BJllkG0Ub",
+      "label": "Dm",
+      "position": {
+        "x": 138,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "BkS50ZRUb",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "@/hc-sr04-ultrasonic-time"
+    },
+    {
+      "boundValues": {
+        "SJ4zUC_BD1-": 170
+      },
+      "description": "Multiply by 340 m/s (speed of sound) and divide by 2 (roundtrip)",
+      "id": "H17aAZ08Z",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers new ultrasonic ping which would result in the output update once sound echo will be captured. Pulses coming within 60 ms window after last one are ignored to fight sensor’s PCB resonance.",
+      "id": "SJmoRbAUW",
+      "label": "PING",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Board port to which sensor’s `echo` pin is connected.",
+      "id": "r1xoR-C8-",
+      "label": "ECHO",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Board port to which sensor’s `trig` pin is connected.",
+      "id": "rJa50WCL-",
+      "label": "TRIG",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

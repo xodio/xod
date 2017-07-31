@@ -1,0 +1,56 @@
+{
+  "description": "Measures sound roundtrip time with HC-SR04 ultrasonic range meter. Keeps output intact if a ping fails (no echo or wrong connection).",
+  "nodes": [
+    {
+      "description": "Board port to which sensor’s `trig` pin is connected.",
+      "id": "Bk2zMWALZ",
+      "label": "TRIG",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Last measured sound roundtrip time in seconds.",
+      "id": "Syn7fWCLZ",
+      "label": "Ts",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Board port to which sensor’s `echo` pin is connected.",
+      "id": "rJ0fMWALb",
+      "label": "ECHO",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers new ultrasonic ping which would result in the output update once sound echo will be captured. Pulses coming within 60 ms window after last one are ignored to fight sensor’s PCB resonance.",
+      "id": "rJPQfbCIW",
+      "label": "PING",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "rkJUMWRIW",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

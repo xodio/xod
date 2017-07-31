@@ -1,0 +1,135 @@
+{
+  "description": "Drives a DC motor through H-Bridge IC such as L293 or L298.",
+  "links": [
+    {
+      "id": "B1XnCMRU-",
+      "input": {
+        "nodeId": "H1To0fRL-",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "SJpVAGRUW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkB3Az0Ub",
+      "input": {
+        "nodeId": "HkbcAGCIb",
+        "pinKey": "HJ6HsEngZ"
+      },
+      "output": {
+        "nodeId": "H1To0fRL-",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "BkroRMAU-",
+      "input": {
+        "nodeId": "HJyFCMA8W",
+        "pinKey": "rJsaFSvk-"
+      },
+      "output": {
+        "nodeId": "HknX0fRU-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1xoCzRI-",
+      "input": {
+        "nodeId": "HkbcAGCIb",
+        "pinKey": "B134j4neZ"
+      },
+      "output": {
+        "nodeId": "S18NCzAIb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJ7ykmC8Z",
+      "input": {
+        "nodeId": "HJyFCMA8W",
+        "pinKey": "ByXnYHPyb"
+      },
+      "output": {
+        "nodeId": "Hy6CCMRLb",
+        "pinKey": "B1LNICdSDJW"
+      }
+    },
+    {
+      "id": "rkS1kX0LW",
+      "input": {
+        "nodeId": "Hy6CCMRLb",
+        "pinKey": "H1SVIAuBDJZ"
+      },
+      "output": {
+        "nodeId": "SJpVAGRUW",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "H1To0fRL-",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "id": "HJyFCMA8W",
+      "position": {
+        "x": 394,
+        "y": 328
+      },
+      "type": "xod/core/pwm-output"
+    },
+    {
+      "id": "HkbcAGCIb",
+      "position": {
+        "x": 10,
+        "y": 328
+      },
+      "type": "xod/core/digital-output"
+    },
+    {
+      "description": "Board port to which the PWM (aka Enable) pin of the H-Bridge is connected. The port should be capable of producting PWM signal.",
+      "id": "HknX0fRU-",
+      "label": "PWM",
+      "position": {
+        "x": 266,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Hy6CCMRLb",
+      "position": {
+        "x": 394,
+        "y": 120
+      },
+      "type": "xod/core/absolute"
+    },
+    {
+      "description": "Board port to which the direction pin of the H-Bridge is connected.",
+      "id": "S18NCzAIb",
+      "label": "DIR",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Desired speed of the motor in [-1.0, 1.0] range. Negative values denote clockwise rotation, zero denotes full stop, positive values denote counterclockwise direction.",
+      "id": "SJpVAGRUW",
+      "label": "SPD",
+      "position": {
+        "x": 394,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
