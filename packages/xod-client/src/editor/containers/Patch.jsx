@@ -8,7 +8,6 @@ import { HotKeys } from 'react-hotkeys';
 
 import * as EditorActions from '../actions';
 import * as EditorSelectors from '../selectors';
-import * as EditorUtils from '../utils';
 import { SELECTION_ENTITY_TYPE } from '../constants';
 
 import * as ProjectActions from '../../project/actions';
@@ -53,7 +52,6 @@ class Patch extends React.Component {
     this.onMouseUp = this.onMouseUp.bind(this);
 
     this.onNodeMouseDown = this.onNodeMouseDown.bind(this);
-    this.onNodeSelect = this.onNodeSelect.bind(this);
 
     this.onPinMouseDown = this.onPinMouseDown.bind(this);
     this.onPinMouseUp = this.onPinMouseUp.bind(this);
@@ -66,22 +64,8 @@ class Patch extends React.Component {
     this.onDeleteSelection = this.onDeleteSelection.bind(this);
   }
 
-  /**
-   * If a node with a given id can be selected, dispatches `selectNode` action
-   * @param id
-   */
-  onNodeSelect(id) {
-    const isSelected = EditorUtils.isNodeSelected(this.props.selection, id);
-    const isSelectable = (this.props.mode.isEditing);
-    const canSelectNode = (isSelectable && !isSelected);
-
-    if (canSelectNode) {
-      this.props.actions.selectNode(id);
-    }
-  }
-
   onNodeMouseDown(event, nodeId) {
-    this.onNodeSelect(nodeId);
+    this.props.actions.selectNode(nodeId);
 
     const clickedNode = this.props.nodes[nodeId];
     const mouseOffsetFromClickedEntity =

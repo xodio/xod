@@ -5,7 +5,6 @@ import * as ActionType from './actionTypes';
 import * as Selectors from './selectors';
 import * as ProjectSelectors from '../project/selectors';
 
-import { isLinkSelected, isNodeSelected, isCommentSelected } from './utils';
 import {
   getRenderablePin,
   getPinSelectionError,
@@ -24,27 +23,6 @@ import {
 } from '../messages/actions';
 
 import { LINK_ERRORS } from '../messages/constants';
-
-export const setNodeSelection = id => ({
-  type: ActionType.EDITOR_SELECT_NODE,
-  payload: {
-    id,
-  },
-});
-
-export const setLinkSelection = id => ({
-  type: ActionType.EDITOR_SELECT_LINK,
-  payload: {
-    id,
-  },
-});
-
-export const setCommentSelection = id => ({
-  type: ActionType.EDITOR_SELECT_COMMENT,
-  payload: {
-    id,
-  },
-});
 
 export const setMode = mode => (dispatch, getState) => {
   if (Selectors.getMode(getState()) === mode) {
@@ -98,28 +76,21 @@ export const deselectAll = () => (dispatch, getState) => {
   }
 };
 
-export const selectNode = id => (dispatch, getState) => {
-  const state = getState();
-  const selection = Selectors.getSelection(state);
-  const isSelected = isNodeSelected(selection, id);
+export const selectEntity = R.curry(
+  (entityType, id, dispatch, getState) => {
+    const state = getState();
+    if (!Selectors.getModeChecks(state).isEditing) return;
 
-  if (!isSelected) {
-    dispatch(deselectAll());
-    dispatch(setNodeSelection(id));
+    dispatch({
+      type: ActionType.EDITOR_SELECT_ENTITY,
+      payload: { id, entityType },
+    });
   }
-};
+);
 
-export const selectComment = id => (dispatch, getState) => {
-  // TODO: remove code duplication, move selection uniqueness check to reducer
-  const state = getState();
-  const selection = Selectors.getSelection(state);
-  const isSelected = isCommentSelected(selection, id);
-
-  if (!isSelected) {
-    dispatch(deselectAll());
-    dispatch(setCommentSelection(id));
-  }
-};
+export const selectNode = selectEntity(SELECTION_ENTITY_TYPE.NODE);
+export const selectComment = selectEntity(SELECTION_ENTITY_TYPE.COMMENT);
+export const selectLink = selectEntity(SELECTION_ENTITY_TYPE.LINK);
 
 export const addAndSelectNode = (typeId, position, currentPatchPath) => (dispatch) => {
   const newId = dispatch(addNode(typeId, position, currentPatchPath));
@@ -164,23 +135,6 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
     addLink(linkingFrom, linkingTo);
   dispatch(setMode(EDITOR_MODE.DEFAULT));
   dispatch(action);
-};
-
-export const selectLink = id => (dispatch, getState) => {
-  const state = getState();
-  const selection = Selectors.getSelection(state);
-  const isSelected = isLinkSelected(selection, id);
-  const deselect = dispatch(deselectAll());
-  const result = [];
-  if (deselect) {
-    result.push(deselect);
-  }
-
-  if (!isSelected) {
-    result.push(dispatch(setLinkSelection(id)));
-  }
-
-  return result;
 };
 
 export const setSelectedNodeType = id => ({
