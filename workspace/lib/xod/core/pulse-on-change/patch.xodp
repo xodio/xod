@@ -1,0 +1,29 @@
+{
+  "description": "Emits a pulse every time input value changes.",
+  "nodes": [
+    {
+      "id": "Bk-DbROUZ",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "BkjI-COLb",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ByAIWR_UZ",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

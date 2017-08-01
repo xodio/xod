@@ -1,0 +1,249 @@
+{
+  "description": "Transforms raw analog values of a Sharp infrared range meter to distance units.",
+  "links": [
+    {
+      "id": "BJKeYrD8W",
+      "input": {
+        "nodeId": "HJA0wrDU-",
+        "pinKey": "ry1z8CuBDy-"
+      },
+      "output": {
+        "nodeId": "BJrkFSDL-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkReuHPUb",
+      "input": {
+        "nodeId": "HJ8g_rP8W",
+        "pinKey": "BytUCdHD1-"
+      },
+      "output": {
+        "nodeId": "HJA0wrDU-",
+        "pinKey": "H12bIR_SPyZ"
+      }
+    },
+    {
+      "id": "BkmwOHDU-",
+      "input": {
+        "nodeId": "Hk1vOrPIZ",
+        "pinKey": "BypX80uSD1Z"
+      },
+      "output": {
+        "nodeId": "HJ8g_rP8W",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "By9gFrv8-",
+      "input": {
+        "nodeId": "HJA0wrDU-",
+        "pinKey": "HJCWLAdSwyW"
+      },
+      "output": {
+        "nodeId": "HJd1YBDL-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByjrKrD8W",
+      "input": {
+        "nodeId": "Hk1vOrPIZ",
+        "pinKey": "rkJ4URuHDJ-"
+      },
+      "output": {
+        "nodeId": "HJSHFHwI-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJL1uSD8Z",
+      "input": {
+        "nodeId": "HJA0wrDU-",
+        "pinKey": "BJlzICOSv1-"
+      },
+      "output": {
+        "nodeId": "BymKDSw8W",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "Sk2ltBP8Z",
+      "input": {
+        "nodeId": "HJA0wrDU-",
+        "pinKey": "rJbGU0_Hv1Z"
+      },
+      "output": {
+        "nodeId": "BkqJFHDLW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyRgKHDIW",
+      "input": {
+        "nodeId": "HJA0wrDU-",
+        "pinKey": "rkpbU0OrwyZ"
+      },
+      "output": {
+        "nodeId": "B1p1KBvIW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sy_YvSPLZ",
+      "input": {
+        "nodeId": "BymKDSw8W",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "SyTBDSwIZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Synd0wwI-",
+      "input": {
+        "nodeId": "Hyl3dSw8-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJE5_BwLb",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "Syo5dBwLW",
+      "input": {
+        "nodeId": "rJE5_BwLb",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "Hk1vOrPIZ",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1p1KBvIW",
+      "label": "Xmax",
+      "position": {
+        "x": 522,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "BJrkFSDL-",
+      "label": "Ymin",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "BkqJFHDLW",
+      "label": "Xmin",
+      "position": {
+        "x": 394,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "SJ4zUC_BD1-": 5
+      },
+      "description": "Converts to voltage: 0V..5V",
+      "id": "BymKDSw8W",
+      "label": "×5",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "boundValues": {
+        "SkdIRuBD1b": 1
+      },
+      "description": "Convert 1/(L+SHFT) → L+SHFT",
+      "id": "HJ8g_rP8W",
+      "label": "1/Y",
+      "position": {
+        "x": 266,
+        "y": 328
+      },
+      "type": "xod/core/divide"
+    },
+    {
+      "id": "HJA0wrDU-",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/core/map-range"
+    },
+    {
+      "id": "HJSHFHwI-",
+      "label": "SHFT",
+      "position": {
+        "x": 522,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HJd1YBDL-",
+      "label": "Ymax",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "rkJ4URuHDJ-": 0
+      },
+      "id": "Hk1vOrPIZ",
+      "position": {
+        "x": 394,
+        "y": 432
+      },
+      "type": "xod/core/subtract"
+    },
+    {
+      "id": "Hyl3dSw8-",
+      "label": "Dm",
+      "position": {
+        "x": 394,
+        "y": 640
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "SyTBDSwIZ",
+      "label": "A",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "BytUCdHD1-": 100
+      },
+      "description": "Convert centimeters to meters",
+      "id": "rJE5_BwLb",
+      "label": "/100",
+      "position": {
+        "x": 394,
+        "y": 536
+      },
+      "type": "xod/core/divide"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "description": "Emits a pulse on a rising edge, i.e. when `true` changes to `false`",
+  "links": [
+    {
+      "id": "HJXReAuIZ",
+      "input": {
+        "nodeId": "r1R2gRu8Z",
+        "pinKey": "ry3zLA_Bv1Z"
+      },
+      "output": {
+        "nodeId": "H1v3lCu8-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyV0eAuLZ",
+      "input": {
+        "nodeId": "BJxRgAO8-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1R2gRu8Z",
+        "pinKey": "r1if8ROSDJ-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJxRgAO8-",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "H1v3lCu8-",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "r1R2gRu8Z",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/core/not"
+    }
+  ]
+}

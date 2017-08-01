@@ -738,7 +738,7 @@ namespace xod {
      *
      * A specialized descriptor is required by `getValue` function. Every
      * input of every type node gets its own descriptor in generated code that
-     * can be accessed as Inputs::FOO. Where FOO is a pin identifier.
+     * can be accessed as input_FOO. Where FOO is a pin identifier.
      */
     template<typename ValueT_, size_t offsetInStorage>
     struct InputDescriptor {

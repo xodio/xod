@@ -55,7 +55,7 @@
       },
       "links": {},
       "impls": {
-        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    auto x = getValue<Inputs::X>(nid);\n    auto y = getValue<Inputs::Y>(nid);\n    emitValue<Outputs::SUM>(nid, x + y);\n}\n"
+        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    auto x = getValue<input_X>(nid);\n    auto y = getValue<input_Y>(nid);\n    emitValue<output_SUM>(nid, x + y);\n}\n"
       },
       "path": "xod/core/add",
       "description": "Adds two numbers",
@@ -63,7 +63,7 @@
         {
           "filename": "any.cpp",
           "encoding": "utf8",
-          "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    auto x = getValue<Inputs::X>(nid);\n    auto y = getValue<Inputs::Y>(nid);\n    emitValue<Outputs::SUM>(nid, x + y);\n}\n"
+          "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    auto x = getValue<input_X>(nid);\n    auto y = getValue<input_Y>(nid);\n    emitValue<output_SUM>(nid, x + y);\n}\n"
         }
       ]
     },

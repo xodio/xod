@@ -10,7 +10,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "description": "Board port with servo.",
+      "description": "Board port number the servo is connected to.",
       "id": "S1vGmu6Gb",
       "label": "PORT",
       "position": {
@@ -20,7 +20,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "description": "Desired servo angle in degrees (0 … 180)",
+      "description": "Desired servo angle or value in unit range [0.0, 1.0]. For standard servo 0.0 would be mapped to 0° and 1.0 would be 180°.",
       "id": "r1sfQ_6fb",
       "label": "VAL",
       "position": {

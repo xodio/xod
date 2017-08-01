@@ -1,0 +1,107 @@
+{
+  "description": "Reads Sharp infrared range meter GP2Y0A41SK0F (the one with 4…30 cm range).",
+  "links": [
+    {
+      "id": "B1cJqHvL-",
+      "input": {
+        "nodeId": "ryby9rDLZ",
+        "pinKey": "BJuORNheZ"
+      },
+      "output": {
+        "nodeId": "SkDkcrvI-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Bkb-5rvIW",
+      "input": {
+        "nodeId": "S10ecHDUW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Bk5lqHvIZ",
+        "pinKey": "Hyl3dSw8-"
+      }
+    },
+    {
+      "id": "By1e9rPI-",
+      "input": {
+        "nodeId": "ryby9rDLZ",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "H1ny9SPLW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByFW5Bv8-",
+      "input": {
+        "nodeId": "Bk5lqHvIZ",
+        "pinKey": "SyTBDSwIZ"
+      },
+      "output": {
+        "nodeId": "ryby9rDLZ",
+        "pinKey": "SyBtREhlW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "B1p1KBvIW": 0.107,
+        "BJrkFSDL-": 0.3,
+        "BkqJFHDLW": 0.025,
+        "HJSHFHwI-": 0.42,
+        "HJd1YBDL-": 1.4
+      },
+      "id": "Bk5lqHvIZ",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "@/gp2y0a-linearize"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers an update, i.e. reading values again.",
+      "id": "H1ny9SPLW",
+      "label": "UPD",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Measured distance in meters. Trustworhy only for distances in [0.04, 0.30] meters range.",
+      "id": "S10ecHDUW",
+      "label": "Dm",
+      "position": {
+        "x": 266,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Board port number the sensor is connected to.",
+      "id": "SkDkcrvI-",
+      "label": "PORT",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ryby9rDLZ",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/core/analog-input"
+    }
+  ]
+}
