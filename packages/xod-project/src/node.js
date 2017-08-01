@@ -41,7 +41,7 @@ import { isInputTerminalPath, isOutputTerminalPath, getTerminalDataType } from '
  * @returns {Node} new node
  */
 export const createNode = def(
-  'createNode :: NodePosition -> PatchPath -> Node',
+  'createNode :: Position -> PatchPath -> Node',
   (position, type) => ({
     id: Utils.generateId(),
     type,
@@ -145,7 +145,7 @@ export const setNodeDescription = def(
  * @returns {Node} copy of node in new coordinates
  */
 export const setNodePosition = def(
-  'setNodePosition :: NodePosition -> Node -> Node',
+  'setNodePosition :: Position -> Node -> Node',
   R.assoc('position')
 );
 
@@ -155,7 +155,7 @@ export const setNodePosition = def(
  * @returns {Position}
  */
 export const getNodePosition = def(
-  'getNodePosition :: Node -> NodePosition',
+  'getNodePosition :: Node -> Position',
   R.prop('position')
 );
 

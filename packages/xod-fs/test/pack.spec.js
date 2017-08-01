@@ -2,11 +2,11 @@ import { expect } from 'chai';
 import { Project } from 'xod-project';
 
 import pack from '../src/pack';
-import xodball from './fixtures/xodball.json';
+import project from './fixtures/project.json';
 import unpacked from './fixtures/unpacked.json';
 import nodeTypesFixture from './fixtures/libs.json';
 
-describe('Pack into xodball', () => {
+describe('Pack into project', () => {
   let packed;
 
   before(() => {
@@ -18,7 +18,7 @@ describe('Pack into xodball', () => {
     expect(eitherValidationResult.isRight).to.be.equal(true);
   });
 
-  it('should be equal to initial xodball', () => {
-    expect(packed).to.deep.equal(xodball);
+  it('should be equal to initial project', () => {
+    expect(packed).to.deep.equal(project);
   });
 });

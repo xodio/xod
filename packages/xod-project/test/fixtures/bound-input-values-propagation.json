@@ -27,6 +27,7 @@
       "links": {},
       "impls": {},
       "description": "",
+      "comments": {},
       "attachments": [],
       "path": "@/main"
     },
@@ -114,6 +115,7 @@
       },
       "impls": {},
       "description": "",
+      "comments": {},
       "attachments": [],
       "path": "@/wrapped-add"
     },
@@ -172,6 +174,7 @@
       },
       "path": "xod/core/add",
       "description": "Adds two numbers",
+      "comments": {},
       "attachments": [
         {
           "filename": "any.cpp",

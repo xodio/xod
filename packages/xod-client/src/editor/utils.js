@@ -2,20 +2,20 @@ import R from 'ramda';
 
 import { SELECTION_ENTITY_TYPE } from './constants';
 
-export const isEntitySelected = (selection, entityName, id) => R.pipe(
-  R.filter(R.propEq('entity', entityName)),
-  R.find(R.propEq('id', id)),
-  R.isNil,
-  R.not
-)(selection);
-
-export const isNodeSelected = R.curry(
-  (selection, id) => isEntitySelected(selection, SELECTION_ENTITY_TYPE.NODE, id)
+export const isEntitySelected = R.curry(
+  (entityName, selection, id) => R.pipe(
+    R.filter(R.propEq('entity', entityName)),
+    R.find(R.propEq('id', id)),
+    R.isNil,
+    R.not
+  )(selection)
 );
 
-export const isLinkSelected = R.curry(
-  (selection, id) => isEntitySelected(selection, SELECTION_ENTITY_TYPE.LINK, id)
-);
+export const isNodeSelected = isEntitySelected(SELECTION_ENTITY_TYPE.NODE);
+
+export const isLinkSelected = isEntitySelected(SELECTION_ENTITY_TYPE.LINK);
+
+export const isCommentSelected = isEntitySelected(SELECTION_ENTITY_TYPE.COMMENT);
 
 export const isPinSelected = (linkingPin, renderablePin) => (
   linkingPin &&

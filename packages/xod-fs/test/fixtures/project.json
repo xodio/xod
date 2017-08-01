@@ -10,6 +10,7 @@
     "xod/core/and": {
       "description": "",
       "links": {},
+      "comments": {},
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -71,6 +72,7 @@
     "xod/core/led": {
       "description": "",
       "links": {},
+      "comments": {},
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -110,6 +112,7 @@
     "xod/core/pot": {
       "description": "",
       "links": {},
+      "comments": {},
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -158,6 +161,7 @@
       ]
     },
     "xod/core/test": {
+      "comments": {},
       "nodes": {},
       "links": {},
       "description": "",
@@ -169,6 +173,7 @@
       "description": "",
       "impls": {},
       "links": {},
+      "comments": {},
       "nodes": {},
       "path": "user/utils/test",
       "attachments": []
@@ -178,6 +183,7 @@
       "description": "",
       "impls": {},
       "links": {},
+      "comments": {},
       "nodes": {},
       "path": "user/with-omitted-optionals/empty-lib-patch"
     },
@@ -186,6 +192,7 @@
       "description": "",
       "impls": {},
       "links": {},
+      "comments": {},
       "nodes": {
         "5c03e488-fefd-4f12-gq6a-78d209d9148c": {
           "boundValues": {},
@@ -205,6 +212,7 @@
       "description": "",
       "impls": {},
       "links": {},
+      "comments": {},
       "nodes": {},
       "path": "xod/math/test",
       "attachments": []
@@ -214,10 +222,12 @@
       "description": "",
       "impls": {},
       "links": {},
+      "comments": {},
       "nodes": {},
       "path": "@/empty-local-patch"
     },
     "@/main": {
+      "comments": {},
       "nodes": {
         "2c03e470-fefd-4f58-be6a-58d209d9158c": {
           "label": "",
@@ -283,6 +293,7 @@
       "attachments": []
     },
     "@/qux": {
+      "comments": {},
       "nodes": {
         "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
           "label": "",

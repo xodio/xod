@@ -8,6 +8,7 @@
   "version": "0.0.1",
   "patches": {
     "xod/core/led": {
+      "comments": {},
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -41,6 +42,20 @@
       "attachments": []
     },
     "@/main": {
+      "comments": {
+        "test-comment-42": {
+          "id": "test-comment-42",
+          "position": {
+            "x": 12,
+            "y": 34
+          },
+          "size": {
+            "width": 640,
+            "height": 480
+          },
+          "content": "test comment in a simple project"
+        }
+      },
       "nodes": {
         "SJmGlirFpx": {
           "label": "my led",

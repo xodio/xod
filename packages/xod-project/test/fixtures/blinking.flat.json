@@ -6,6 +6,7 @@
   "version": "0.0.0",
   "patches": {
     "xod/core/digital-output": {
+      "comments": {},
       "path": "xod/core/digital-output",
       "nodes": {
         "noNativeImpl": {
@@ -50,6 +51,7 @@
       "attachments": []
     },
     "xod/math/multiply": {
+      "comments": {},
       "path": "xod/math/multiply",
       "nodes": {
         "noNativeImpl": {
@@ -105,6 +107,7 @@
       "attachments": []
     },
     "xod/core/latch": {
+      "comments": {},
       "path": "xod/core/latch",
       "nodes": {
         "noNativeImpl": {
@@ -171,6 +174,7 @@
       "attachments": []
     },
     "xod/core/clock": {
+      "comments": {},
       "path": "xod/core/clock",
       "nodes": {
         "noNativeImpl": {
@@ -215,6 +219,7 @@
       "attachments": []
     },
     "xod/core/cast-boolean-to-number": {
+      "comments": {},
       "path": "xod/core/cast-boolean-to-number",
       "nodes": {
         "noNativeImpl": {
@@ -259,6 +264,7 @@
       "attachments": []
     },
     "@/main": {
+      "comments": {},
       "path": "@/main",
       "nodes": {
         "SJ7g05EdFe~rJWgAqVOtx": {

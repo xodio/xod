@@ -7,6 +7,7 @@ import * as Pin from '../src/pin';
 import * as Patch from '../src/patch';
 import * as Node from '../src/node';
 import * as Link from '../src/link';
+import * as Comment from '../src/comment';
 import * as CONST from '../src/constants';
 import { formatString } from '../src/utils';
 import * as PPU from '../src/patchPathUtils';
@@ -61,6 +62,7 @@ describe('Patch', () => {
     });
   });
 
+  // entity getters
   describe('listImpls', () => {
     it('should return empty array for empty patch', () => {
       expect(Patch.listImpls(emptyPatch))
@@ -178,7 +180,6 @@ describe('Patch', () => {
     });
   });
 
-  // entity getters
   describe('listNodes', () => {
     const patch = Helper.defaultizePatch({
       nodes: {
@@ -256,6 +257,7 @@ describe('Patch', () => {
       assert.equal(node, patch.nodes.rndId);
     });
   });
+
   describe('listLinks', () => {
     const patch = Helper.defaultizePatch({
       links: {
@@ -303,7 +305,6 @@ describe('Patch', () => {
       expect(Patch.getLinkById('1', patch).getOrElse(null)).to.be.equal(patch.links[1]);
     });
   });
-
   describe('listLinksByNode', () => {
     const patch = Helper.defaultizePatch({
       links: {
@@ -630,6 +631,130 @@ describe('Patch', () => {
     });
   });
 
+  describe('comments', () => {
+    const testComment1 = Comment.createComment(
+      { x: 101, y: 201 },
+      { width: 1101, height: 2001 },
+      'test comment 1'
+    );
+    const testComment2 = Comment.createComment(
+      { x: 102, y: 202 },
+      { width: 1102, height: 2002 },
+      'test comment 2'
+    );
+
+    const patchWithComments = R.compose(
+      Patch.assocComment(testComment2),
+      Patch.assocComment(testComment1)
+    )(emptyPatch);
+
+    describe('assocComment', () => {
+      it('should return a new Patch with a specified Comment added', () => {
+        const newPatch = Patch.assocComment(testComment1, emptyPatch);
+
+        assert.deepEqual(
+          Patch.getCommentByIdUnsafe(
+            Comment.getCommentId(testComment1),
+            newPatch
+          ),
+          testComment1
+        );
+      });
+    });
+    describe('dissocComment', () => {
+      it('should return a new Patch without added Comment', () => {
+        const commentId = Comment.getCommentId(testComment1);
+        const newPatch = Patch.dissocComment(commentId, patchWithComments);
+
+        const maybeComment = Patch.getCommentById(commentId, newPatch);
+
+        assert.equal(maybeComment.isNothing, true);
+      });
+    });
+    describe('listComments', () => {
+      it('should return an empty array for an empty patch', () => {
+        assert.deepEqual(
+          Patch.listComments(emptyPatch),
+          [],
+          'empty patch should not have any comments'
+        );
+      });
+
+      it('should return an array of comments added to patch', () => {
+        assert.sameMembers(
+          Patch.listComments(patchWithComments),
+          [testComment1, testComment2]
+        );
+      });
+    });
+    describe('getCommentById', () => {
+      it('should return Just Commment for an existing Comment', () => {
+        const maybeComment = Patch.getCommentById(
+          Comment.getCommentId(testComment1),
+          patchWithComments
+        );
+
+        assert.equal(
+          maybeComment.isJust,
+          true
+        );
+      });
+      it('should return Nothing for a non-existing Comment', () => {
+        const maybeComment = Patch.getCommentById(
+          'non-existing',
+          patchWithComments
+        );
+
+        assert.equal(
+          maybeComment.isNothing,
+          true
+        );
+      });
+    });
+    describe('getCommentByIdUnsafe', () => {
+      it('should return a Commment if a Comment with a given CommentId exists', () => {
+        const comment = Patch.getCommentByIdUnsafe(
+          Comment.getCommentId(testComment1),
+          patchWithComments
+        );
+
+        assert.equal(
+          comment,
+          testComment1
+        );
+      });
+      it('should throw Error if a Comment with a given CommentId does not exist', () => {
+        const nonExistingCommentId = 'non-existing';
+        assert.throws(
+          () => {
+            Patch.getCommentByIdUnsafe(
+              nonExistingCommentId,
+              patchWithComments
+            );
+          },
+          formatString(
+            CONST.ERROR.COMMENT_NOT_FOUND,
+            {
+              commentId: nonExistingCommentId,
+              patchPath: patchWithComments.path,
+            }
+          )
+        );
+      });
+    });
+    describe('upsertComments', () => {
+      it('should return a new patch with upserted links', () => {
+        const commentsList = [testComment1, testComment2];
+        const newPatch = Patch.upsertComments(commentsList, emptyPatch);
+
+        assert.sameMembers(
+          Patch.listComments(newPatch),
+          commentsList
+        );
+      });
+    });
+  });
+
   // entity setters
   describe('assocNode', () => {
     it('should return Patch with new Node', () => {
@@ -705,7 +830,6 @@ describe('Patch', () => {
       );
     });
   });
-
   describe('dissocNode', () => {
     const patch = Helper.defaultizePatch({
       nodes: {
@@ -781,6 +905,7 @@ describe('Patch', () => {
       );
     });
   });
+
   describe('assocLink', () => {
     // TODO: Add patch for assocLink
     // const patch = {
@@ -841,9 +966,7 @@ describe('Patch', () => {
   });
 
   describe('upsertNodes & upsertLinks', () => {
-    const patch = R.compose(
-      Patch.createPatch
-    )();
+    const patch = Patch.createPatch();
 
     it('should return patch with upserted nodes and upserted links', () => {
       const newNodes = [

@@ -13,6 +13,12 @@ export const NODE_ADD = 'NODE_ADD';
 export const NODE_DELETE = 'NODE_DELETE';
 export const NODE_UPDATE_PROPERTY = 'NODE_UPDATE_PROPERTY';
 
+export const COMMENT_ADD = 'COMMENT_ADD';
+export const COMMENT_DELETE = 'COMMENT_DELETE';
+export const COMMENT_MOVE = 'COMMENT_MOVE';
+export const COMMENT_RESIZE = 'COMMENT_RESIZE';
+export const COMMENT_SET_CONTENT = 'COMMENT_SET_CONTENT';
+
 export const LINK_ADD = 'LINK_ADD';
 export const LINK_DELETE = 'LINK_DELETE';
 

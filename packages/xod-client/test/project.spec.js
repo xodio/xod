@@ -5,33 +5,18 @@ import { assert } from 'chai';
 import { Maybe } from 'ramda-fantasy';
 import { defaultizeProject } from 'xod-project/test/helpers';
 
-import {
-  getProjectName,
-  getProjectLicense,
-  getProjectVersion,
-  getProjectDescription,
-  lensPatch,
-  listLocalPatches,
-  listLibraryPatches,
-  getPatchByPath,
-  getPatchByPathUnsafe,
-  getPatchPath,
-  getPatchDescription,
-  getBaseName,
-  getNodeById,
-  getNodePosition,
-  getNodeLabel,
-  getBoundValue,
-  listLinks,
-  getLinkId,
-} from 'xod-project';
+import { explodeEither } from 'xod-func-tools';
+import * as XP from 'xod-project';
+
 import initialState from '../src/core/state';
 import generateReducers from '../src/core/reducer';
 import { getProject } from '../src/project/selectors';
-import { switchPatch } from '../src/editor/actions';
-import { addError } from '../src/messages/actions';
+
 import { NODETYPE_ERROR_TYPES } from '../src/editor/constants';
 import { NODETYPE_ERRORS } from '../src/messages/constants';
+
+import { addError } from '../src/messages/actions';
+import { switchPatch } from '../src/editor/actions';
 import {
   openProject,
   createProject,
@@ -40,13 +25,18 @@ import {
   addPatch,
   renamePatch,
   deletePatch,
+  updatePatchDescription,
   addNode,
   moveNode,
   updateNodeProperty,
-  updatePatchDescription,
   deleteNode,
   addLink,
   deleteLink,
+  addComment,
+  deleteComment,
+  moveComment,
+  resizeComment,
+  editComment,
 } from '../src/project/actions';
 
 describe('project reducer', () => {
@@ -68,25 +58,23 @@ describe('project reducer', () => {
       assert.notEqual(initialProject, newProject);
       assert.equal(
         newProjectName,
-        getProjectName(newProject)
+        XP.getProjectName(newProject)
       );
+
+      const expectedPatches = R.compose(
+        XP.listLocalPatches,
+        explodeEither,
+        XP.assocPatch(XP.getLocalPath('main'), XP.createPatch()),
+        XP.createProject
+      )();
       assert.deepEqual(
-        [
-          {
-            impls: {},
-            links: {},
-            nodes: {},
-            path: '@/main',
-            description: '',
-            attachments: [],
-          },
-        ],
-        listLocalPatches(newProject),
+        expectedPatches,
+        XP.listLocalPatches(newProject),
         'new project has an empty patch with a name "main"'
       );
       assert.deepEqual(
-        listLibraryPatches(initialProject),
-        listLibraryPatches(newProject),
+        XP.listLibraryPatches(initialProject),
+        XP.listLibraryPatches(newProject),
         'new project has the same library patches'
       );
     });
@@ -100,7 +88,7 @@ describe('project reducer', () => {
 
       assert.equal(
         newName,
-        getProjectName(renamedProject)
+        XP.getProjectName(renamedProject)
       );
       assert.deepEqual( // isTrue(R.eqBy(...)) will not provide a nice diff
         R.omit(['name'], initialProject),
@@ -114,9 +102,9 @@ describe('project reducer', () => {
         updateProjectMeta({ license: 'TEST', version: '1.2.3', description: 'Test passed' })
       );
       const proj = getProject(store.getState());
-      const newLicense = getProjectLicense(proj);
-      const newVersion = getProjectVersion(proj);
-      const newDescription = getProjectDescription(proj);
+      const newLicense = XP.getProjectLicense(proj);
+      const newVersion = XP.getProjectVersion(proj);
+      const newDescription = XP.getProjectDescription(proj);
 
       assert.equal(newLicense, 'TEST');
       assert.equal(newVersion, '1.2.3');
@@ -138,7 +126,7 @@ describe('project reducer', () => {
       const newPatchPath = addPatchAction.payload.patchPath;
 
       const project = getProject(store.getState());
-      const maybeNewPatch = getPatchByPath(newPatchPath, project);
+      const maybeNewPatch = XP.getPatchByPath(newPatchPath, project);
       assert.isTrue(Maybe.isJust(maybeNewPatch));
     });
 
@@ -150,11 +138,11 @@ describe('project reducer', () => {
       const { newPatchPath } = renameAction.payload;
 
       const project = getProject(store.getState());
-      const renamedPatch = getPatchByPath(newPatchPath, project).getOrElse(null);
+      const renamedPatch = XP.getPatchByPath(newPatchPath, project).getOrElse(null);
 
       assert.isOk(renamedPatch);
       assert.equal(
-        R.compose(getBaseName, getPatchPath)(renamedPatch),
+        R.compose(XP.getBaseName, XP.getPatchPath)(renamedPatch),
         newPatchName
       );
     });
@@ -166,8 +154,8 @@ describe('project reducer', () => {
       store.dispatch(updatePatchDescription('test-passed', newPatchPath));
 
       const project = getProject(store.getState());
-      const patch = getPatchByPathUnsafe(newPatchPath, project);
-      const newDescription = getPatchDescription(patch);
+      const patch = XP.getPatchByPathUnsafe(newPatchPath, project);
+      const newDescription = XP.getPatchDescription(patch);
 
       assert.equal(newDescription, 'test-passed');
     });
@@ -178,7 +166,7 @@ describe('project reducer', () => {
       store.dispatch(deletePatch(patchPath));
 
       const project = getProject(store.getState());
-      const maybeDeletedPatch = getPatchByPath(patchPath, project);
+      const maybeDeletedPatch = XP.getPatchByPath(patchPath, project);
 
       assert.isTrue(Maybe.isNothing(maybeDeletedPatch));
     });
@@ -200,8 +188,8 @@ describe('project reducer', () => {
       const nodeId = store.dispatch(addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, testPatchPath));
 
       const maybeNode = R.compose(
-        getNodeById(nodeId),
-        R.view(lensPatch(testPatchPath)),
+        XP.getNodeById(nodeId),
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
@@ -213,12 +201,12 @@ describe('project reducer', () => {
       store.dispatch(moveNode(nodeId, desiredPosition));
 
       const maybeNode = R.compose(
-        getNodeById(nodeId),
-        R.view(lensPatch(testPatchPath)),
+        XP.getNodeById(nodeId),
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
-      const actualPosition = Maybe.maybe({}, getNodePosition, maybeNode);
+      const actualPosition = Maybe.maybe({}, XP.getNodePosition, maybeNode);
 
       assert.deepEqual(
         desiredPosition,
@@ -231,12 +219,12 @@ describe('project reducer', () => {
       store.dispatch(updateNodeProperty(nodeId, 'property', 'label', desiredLabel));
 
       const maybeNode = R.compose(
-        getNodeById(nodeId),
-        R.view(lensPatch(testPatchPath)),
+        XP.getNodeById(nodeId),
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
-      const actualLabel = Maybe.maybe({}, getNodeLabel, maybeNode);
+      const actualLabel = Maybe.maybe({}, XP.getNodeLabel, maybeNode);
 
       assert.deepEqual(
         desiredLabel,
@@ -250,12 +238,12 @@ describe('project reducer', () => {
       store.dispatch(updateNodeProperty(nodeId, 'pin', pinKey, desiredPinValue));
 
       const maybeNode = R.compose(
-        getNodeById(nodeId),
-        R.view(lensPatch(testPatchPath)),
+        XP.getNodeById(nodeId),
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
-      const maybePinValue = maybeNode.chain(getBoundValue(pinKey));
+      const maybePinValue = maybeNode.chain(XP.getBoundValue(pinKey));
 
       const actualPinValue = Maybe.maybe({}, R.identity, maybePinValue);
 
@@ -269,8 +257,8 @@ describe('project reducer', () => {
       store.dispatch(deleteNode(nodeId));
 
       const maybeNode = R.compose(
-        getNodeById(nodeId),
-        R.view(lensPatch(testPatchPath)),
+        XP.getNodeById(nodeId),
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
@@ -301,8 +289,8 @@ describe('project reducer', () => {
       ));
 
       const links = R.compose(
-        listLinks,
-        R.view(lensPatch(testPatchPath)),
+        XP.listLinks,
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
@@ -316,22 +304,111 @@ describe('project reducer', () => {
       ));
 
       const linkId = R.compose(
-        getLinkId,
+        XP.getLinkId,
         R.head,
-        listLinks,
-        R.view(lensPatch(testPatchPath)),
+        XP.listLinks,
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
       store.dispatch(deleteLink(linkId, testPatchPath));
 
       const links = R.compose(
-        listLinks,
-        R.view(lensPatch(testPatchPath)),
+        XP.listLinks,
+        XP.getPatchByPathUnsafe(testPatchPath),
         getProject
       )(store.getState());
 
       assert.equal(0, links.length);
+    });
+  });
+
+  describe('Comment management', () => {
+    let store = null;
+    let testPatchPath = '';
+
+    const getCommentsList = R.uncurryN(2)(
+      patchPath => R.compose(
+        XP.listComments,
+        XP.getPatchByPathUnsafe(patchPath),
+        getProject
+      )
+    );
+
+    const getAddedComment = R.uncurryN(2)(
+      patchPath => R.compose(
+        R.head,
+        getCommentsList(patchPath)
+      )
+    );
+
+    const getAddedCommentId = R.uncurryN(2)(
+      patchPath => R.compose(
+        XP.getCommentId,
+        getAddedComment(patchPath)
+      )
+    );
+
+    beforeEach(() => {
+      store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
+      const addPatchAction = store.dispatch(addPatch('test-patch'));
+      testPatchPath = addPatchAction.payload.patchPath;
+    });
+
+    it('should add a comment', () => {
+      store.dispatch(addComment());
+
+      const comments = getCommentsList(testPatchPath, store.getState());
+      assert.equal(comments.length, 1);
+    });
+
+    it('should delete a comment', () => {
+      store.dispatch(addComment());
+      const testCommentId = getAddedCommentId(testPatchPath, store.getState());
+
+      store.dispatch(deleteComment(testCommentId));
+
+      const comments = getCommentsList(testPatchPath, store.getState());
+      assert.equal(comments.length, 0);
+    });
+    it('should move a comment', () => {
+      store.dispatch(addComment());
+      const testCommentId = getAddedCommentId(testPatchPath, store.getState());
+      const newPosition = { x: 123456789, y: 987654321 };
+
+      store.dispatch(moveComment(testCommentId, newPosition));
+
+      const commentAfter = getAddedComment(testPatchPath, store.getState());
+      assert.deepEqual(
+        XP.getCommentPosition(commentAfter),
+        newPosition
+      );
+    });
+    it('should resize a comment', () => {
+      store.dispatch(addComment());
+      const testCommentId = getAddedCommentId(testPatchPath, store.getState());
+      const newSize = { width: 100100100, height: 200200200 };
+
+      store.dispatch(resizeComment(testCommentId, newSize));
+
+      const commentAfter = getAddedComment(testPatchPath, store.getState());
+      assert.deepEqual(
+        XP.getCommentSize(commentAfter),
+        newSize
+      );
+    });
+    it('should edit comment\'s content', () => {
+      store.dispatch(addComment());
+      const testCommentId = getAddedCommentId(testPatchPath, store.getState());
+      const newContent = 'totally new content for test comment';
+
+      store.dispatch(editComment(testCommentId, newContent));
+
+      const commentAfter = getAddedComment(testPatchPath, store.getState());
+      assert.deepEqual(
+        XP.getCommentContent(commentAfter),
+        newContent
+      );
     });
   });
 });

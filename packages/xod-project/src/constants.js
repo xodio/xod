@@ -25,6 +25,8 @@ export const ERROR = {
   LINK_OUTPUT_INVALID: 'Link should have output object with keys: `pinKey` and `nodeId`',
   LINK_INPUT_NODE_NOT_FOUND: 'Input node of the link does not exist in this patch',
   LINK_OUTPUT_NODE_NOT_FOUND: 'Output node of the link does not exist in this patch',
+  // comments
+  COMMENT_NOT_FOUND: 'Can\'t find the Comment "{commentId}" in the patch with path "{patchPath}"',
   // pins
   PIN_TYPE_INVALID: 'Pin type should be one of possible values: `string`, `number`, `boolean`, `pulse`',
   PIN_NOT_FOUND: 'Can\'t find the Pin "{pinKey}" in the patch with path "{patchPath}"',

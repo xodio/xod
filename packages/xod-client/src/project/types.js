@@ -12,6 +12,7 @@ import { SELECTION_ENTITY_TYPE } from '../editor/constants';
 const packageName = 'xod-client';
 const docUrl = 'http://xod.io/docs/dev/xod-client/#';
 
+const AliasType = XF.AliasType(packageName, docUrl);
 const Model = XF.Model(packageName, docUrl);
 const OneOfType = XF.OneOfType(packageName, docUrl);
 const EnumType = XF.EnumType(packageName, docUrl);
@@ -57,9 +58,11 @@ export const RenderableLink = ExtendedModel('RenderableLink', XP.Link, {
   to: Point,
 });
 
-const RenderableNodeOrLink = OneOfType(
-  'RenderableNodeOrLink',
-  [RenderableNode, RenderableLink]
+export const RenderableComment = AliasType('RenderableComment', XP.Comment);
+
+const RenderableEntity = OneOfType(
+  'RenderableEntity',
+  [RenderableNode, RenderableLink, RenderableComment]
 );
 
 export const SelectionEntityType = EnumType(
@@ -69,5 +72,5 @@ export const SelectionEntityType = EnumType(
 
 export const RenderableSelection = Model('RenderableSelection', {
   entityType: SelectionEntityType,
-  data: RenderableNodeOrLink,
+  data: RenderableEntity,
 });

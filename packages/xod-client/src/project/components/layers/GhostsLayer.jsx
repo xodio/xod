@@ -2,10 +2,10 @@ import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { LAYER } from '../../editor/constants';
+import { LAYER } from '../../../editor/constants';
 
 import SVGLayer from './SVGLayer';
-import XODLink from './Link';
+import XODLink from '../Link';
 
 class GhostLayer extends React.Component {
   constructor(props) {

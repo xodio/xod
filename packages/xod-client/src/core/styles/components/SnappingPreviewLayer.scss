@@ -2,10 +2,6 @@
 
 }
 .SnappingPreview {
-  fill: red;
+  fill: $color-canvas-selected;
   fill-opacity: 0.5;
-
-  &.isValid {
-    fill: $color-canvas-selected;
-  }
 }

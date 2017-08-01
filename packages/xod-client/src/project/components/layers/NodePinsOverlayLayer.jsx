@@ -3,13 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { getBaseName } from 'xod-project';
 
-import { LAYER } from '../../editor/constants';
+import { LAYER } from '../../../editor/constants';
 
 import SVGLayer from './SVGLayer';
-import PinsOverlay from './PinsOverlay';
-import { getPinLinkabilityValidator } from '../utils';
+import NodePinsOverlay from '../NodePinsOverlay';
+import { getPinLinkabilityValidator } from '../../utils';
 
-const PinsOverlayLayer = ({
+const NodePinsOverlayLayer = ({
   nodes,
   linkingPin,
   onPinMouseUp,
@@ -25,7 +25,7 @@ const PinsOverlayLayer = ({
       {R.compose(
           R.map(
             node =>
-              <PinsOverlay
+              <NodePinsOverlay
                 key={node.id}
                 id={node.id}
                 position={node.position}
@@ -44,11 +44,11 @@ const PinsOverlayLayer = ({
   );
 };
 
-PinsOverlayLayer.propTypes = {
+NodePinsOverlayLayer.propTypes = {
   nodes: PropTypes.objectOf(PropTypes.object),
   linkingPin: PropTypes.object,
   onPinMouseUp: PropTypes.func,
   onPinMouseDown: PropTypes.func,
 };
 
-export default PinsOverlayLayer;
+export default NodePinsOverlayLayer;

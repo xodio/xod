@@ -1,0 +1,89 @@
+.Comment {
+  .body {
+    fill: $color-canvas-background;
+  }
+
+  .outline {
+    fill: transparent;
+    stroke-width: 2px;
+  }
+
+  .container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .resizeHandleOverlay {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    right: 0;
+    bottom: 0;
+    cursor: nwse-resize;
+  }
+
+  .content {
+    font-size: $font-size-m;
+    font-family: $font-family-condensed;
+    position: relative;
+    box-sizing: border-box;
+    padding: 5px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .editor {
+    font-size: $font-size-m;
+    font-family: $font-family-condensed;
+    overflow: scroll;
+    resize: none;
+    border: none;
+    outline: none;
+
+    color: black;
+    background: transparent;
+  }
+
+  .viewer {
+    white-space: pre-wrap;
+    color: $input-color-text;
+    overflow: hidden;
+
+    a {
+      color: $color-canvas-selected;
+    }
+  }
+
+  &:hover {
+    .outline {
+      stroke: $color-highlight;
+    }
+  }
+
+  &.is-dragged {
+    filter: url(#draggedNodeShadow);
+  }
+
+  &.is-selected {
+    .outline {
+      stroke: $color-canvas-selected;
+    }
+  }
+
+  &.is-editing {
+    .body { fill: white; }
+    .CommentResizeHandle { opacity: 0; }
+    .resizeHandleOverlay { display: none; }
+  }
+
+  &.is-hidden {
+    opacity: 0;
+    .container { display: none; }
+  }
+}
+
+.CommentResizeHandle {
+  fill: $color-highlight;
+}

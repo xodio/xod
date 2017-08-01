@@ -25,7 +25,21 @@ export const projectLens = R.lensProp('project');
 // Patch
 //
 
-// :: State -> IndexedLinks
+// :: State -> StrMap Comment
+export const getCurrentPatchComments = createSelector(
+  [getProject, getCurrentPatchPath],
+  (project, currentPatchPath) => {
+    if (!currentPatchPath) return {};
+
+    return R.compose(
+      R.indexBy(R.prop('id')),
+      XP.listComments,
+      XP.getPatchByPathUnsafe(currentPatchPath)
+    )(project);
+  }
+);
+
+// :: State -> StrMap Link
 export const getCurrentPatchLinks = createSelector(
   [getProject, getCurrentPatchPath],
   (project, currentPatchPath) => {
@@ -34,7 +48,7 @@ export const getCurrentPatchLinks = createSelector(
     return R.compose(
       R.indexBy(R.prop('id')),
       XP.listLinks,
-      R.view(XP.lensPatch(currentPatchPath))
+      XP.getPatchByPathUnsafe(currentPatchPath)
     )(project);
   }
 );
@@ -129,7 +143,7 @@ export const getCurrentPatchNodes = createSelector(
     return R.compose(
       R.indexBy(R.prop('id')),
       XP.listNodes,
-      R.view(XP.lensPatch(currentPatchPath))
+      XP.getPatchByPathUnsafe(currentPatchPath)
     )(project);
   }
 );
@@ -177,6 +191,9 @@ export const getRenderableLinks = createMemoizedSelector(
     )(links)
 );
 
+// :: State -> StrMap RenderableComment
+export const getRenderableComments = getCurrentPatchComments;
+
 // :: State -> LinkGhost
 export const getLinkGhost = createSelector(
   [getRenderableNodes, getLinkingPin],
@@ -211,7 +228,7 @@ export const getPreparedTabs = createSelector(
         const label = R.compose(
           XP.getBaseName,
           XP.getPatchPath,
-          R.view(XP.lensPatch(patchPath))
+          XP.getPatchByPathUnsafe(patchPath)
         )(project);
 
         return R.merge(
@@ -233,12 +250,13 @@ export const getPreparedTabs = createSelector(
 
 // :: State -> [ RenderableSelection ]
 export const getRenderableSelection = createMemoizedSelector(
-  [getRenderableNodes, getRenderableLinks, getSelection],
-  [R.equals, R.equals, R.equals],
-  (renderableNodes, renderableLinks, selection) => {
+  [getRenderableNodes, getRenderableLinks, getRenderableComments, getSelection],
+  [R.equals, R.equals, R.equals, R.equals],
+  (renderableNodes, renderableLinks, renderableComments, selection) => {
     const renderables = {
       [SELECTION_ENTITY_TYPE.NODE]: renderableNodes,
       [SELECTION_ENTITY_TYPE.LINK]: renderableLinks,
+      [SELECTION_ENTITY_TYPE.COMMENT]: renderableComments,
     };
 
     return R.map(

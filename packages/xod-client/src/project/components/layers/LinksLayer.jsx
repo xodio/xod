@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { LAYER } from '../../editor/constants';
+import { LAYER } from '../../../editor/constants';
 
-import { isLinkSelected } from '../../editor/utils';
+import { isLinkSelected } from '../../../editor/utils';
 
 import SVGLayer from './SVGLayer';
-import XODLink from './Link';
+import XODLink from '../Link';
 
 const LinksLayer = ({ links, selection, onClick }) => (
   <SVGLayer

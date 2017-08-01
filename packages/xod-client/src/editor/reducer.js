@@ -1,13 +1,10 @@
 import R from 'ramda';
 import * as XP from 'xod-project';
 
-import { SELECTION_ENTITY_TYPE } from './constants';
-
 import {
   EDITOR_DESELECT_ALL,
-  EDITOR_SELECT_NODE,
+  EDITOR_SELECT_ENTITY,
   EDITOR_SELECT_PIN,
-  EDITOR_SELECT_LINK,
   EDITOR_SET_MODE,
   EDITOR_SET_SELECTED_NODETYPE,
   EDITOR_SWITCH_PATCH,
@@ -24,16 +21,8 @@ import {
   PATCH_RENAME,
   NODE_DELETE,
   LINK_DELETE,
+  COMMENT_DELETE,
 } from '../project/actionTypes';
-
-const addSelection = (entityName, action, state) => {
-  const select = {
-    entity: entityName,
-    id: action.payload.id,
-  };
-  const newSelection = R.append(select, state.selection);
-  return R.set(R.lensProp('selection'), newSelection, state);
-};
 
 const addTab = R.curry((patchPath, state) => {
   if (!patchPath) return state;
@@ -129,15 +118,23 @@ const editorReducer = (state = {}, action) => {
   switch (action.type) {
     case NODE_DELETE:
     case LINK_DELETE:
+    case COMMENT_DELETE:
     case EDITOR_DESELECT_ALL:
       return R.merge(state, {
         selection: [],
         linkingPin: null,
       });
-    case EDITOR_SELECT_NODE:
-      return addSelection(SELECTION_ENTITY_TYPE.NODE, action, state);
-    case EDITOR_SELECT_LINK:
-      return addSelection(SELECTION_ENTITY_TYPE.LINK, action, state);
+    case EDITOR_SELECT_ENTITY:
+      return R.assoc(
+        'selection',
+        [
+          {
+            entity: action.payload.entityType,
+            id: action.payload.id,
+          },
+        ],
+        state
+      );
     case EDITOR_SELECT_PIN:
       return R.assoc('linkingPin', action.payload, state);
     case EDITOR_SET_MODE:

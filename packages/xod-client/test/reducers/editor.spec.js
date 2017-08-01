@@ -8,7 +8,7 @@ import * as Actions from '../../src/editor/actions';
 import editorReducer from '../../src/editor/reducer';
 import { EDITOR_SET_MODE } from '../../src/editor/actionTypes';
 
-import { EDITOR_MODE } from '../../src/editor/constants';
+import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from '../../src/editor/constants';
 
 const mockStore = configureStore([thunk]);
 const testStore = state => createStore(
@@ -86,6 +86,7 @@ describe('Editor reducer', () => {
             path: '@/1',
             description: 'Main patch',
             attachments: [],
+            comments: {},
           },
           'xod/core/test': {
             nodes: {
@@ -117,6 +118,7 @@ describe('Editor reducer', () => {
             path: 'xod/core/test',
             description: 'Test patch',
             attachments: [],
+            comments: {},
           },
         },
       },
@@ -136,40 +138,26 @@ describe('Editor reducer', () => {
     );
 
     it('should select node', () => {
-      const id = '1';
-      const expectedActions = [
-        Actions.setNodeSelection(id),
-      ];
-
-      store.dispatch(Actions.selectNode(id));
-
-      chai.expect(store.getActions()).to.deep.equal(expectedActions);
-    });
-    it('should deselect node on second click', () => {
       store = testStore(mockState);
       const id = '1';
-
-      store.dispatch(Actions.selectNode(id));
       store.dispatch(Actions.selectNode(id));
 
-      chai.expect(store.getState().editor.selection.length).to.be.equal(0);
+      chai.expect(store.getState().editor.selection)
+        .to.deep.equal([{
+          entity: SELECTION_ENTITY_TYPE.NODE,
+          id,
+        }]);
     });
     it('should select link', () => {
-      const id = '1';
-      const expectedActions = [
-        Actions.setLinkSelection(id),
-      ];
-
-      store.dispatch(Actions.selectLink(id));
-      chai.expect(store.getActions()).to.deep.equal(expectedActions);
-    });
-    it('should deselect link on second click', () => {
       store = testStore(mockState);
       const id = '1';
+      store.dispatch(Actions.selectLink(id));
 
-      store.dispatch(Actions.selectLink(id));
-      store.dispatch(Actions.selectLink(id));
-      chai.expect(store.getState().editor.selection.length).to.be.equal(0);
+      chai.expect(store.getState().editor.selection)
+        .to.deep.equal([{
+          entity: SELECTION_ENTITY_TYPE.LINK,
+          id,
+        }]);
     });
     it('should deselect all', () => {
       store = testStore(mockState);

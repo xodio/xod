@@ -8,6 +8,9 @@ import { isPatchPathTaken } from './utils';
 import { getCurrentPatchPath } from '../editor/selectors';
 import { getProject } from './selectors';
 
+//
+// Project
+//
 export const requestCreateProject = () => ({
   type: ActionType.PROJECT_CREATE_REQUESTED,
   payload: {},
@@ -41,97 +44,6 @@ export const updateProjectMeta = ({ license, description, version }) => ({
   },
 });
 
-export const addNode = (typeId, position, patchPath) => (dispatch) => {
-  const newNodeId = XP.generateId();
-
-  dispatch({
-    type: ActionType.NODE_ADD,
-    payload: {
-      typeId,
-      position,
-      newNodeId,
-      patchPath,
-    },
-  });
-
-  return newNodeId;
-};
-
-export const deleteNode = id => (dispatch, getState) => {
-  const state = getState();
-  const project = getProject(state);
-  const patchPath = getCurrentPatchPath(state);
-  const patch = XP.getPatchByPathUnsafe(patchPath, project);
-  const node = XP.getNodeByIdUnsafe(id, patch);
-
-  // TODO: most of this probably should be moved to xod-project
-  if (
-    XP.isPinNode(node) &&
-    XP.isTerminalNodeInUse(id, patchPath, project)
-  ) {
-    return dispatch(
-      addError(NODETYPE_ERRORS[NODETYPE_ERROR_TYPES.CANT_DELETE_USED_PIN_OF_PATCHNODE])
-    );
-  }
-
-  return dispatch({
-    type: ActionType.NODE_DELETE,
-    payload: {
-      id,
-      patchPath,
-    },
-  });
-};
-
-export const moveNode = (id, position) => (dispatch, getState) => {
-  const patchPath = getCurrentPatchPath(getState());
-
-  dispatch({
-    type: ActionType.NODE_MOVE,
-    payload: {
-      id,
-      position,
-      patchPath,
-    },
-  });
-};
-
-export const addLink = (pin1, pin2) => (dispatch, getState) => {
-  const patchPath = getCurrentPatchPath(getState());
-
-  dispatch({
-    type: ActionType.LINK_ADD,
-    payload: {
-      patchPath,
-      pins: [pin1, pin2],
-    },
-  });
-};
-
-export const deleteLink = (id, patchPath) => ({
-  type: ActionType.LINK_DELETE,
-  payload: {
-    id,
-    patchPath,
-  },
-});
-
-export const updateNodeProperty =
-  (nodeId, propKind, propKey, propValue) => (dispatch, getState) => {
-    const patchPath = getCurrentPatchPath(getState());
-
-    dispatch({
-      type: ActionType.NODE_UPDATE_PROPERTY,
-      payload: {
-        id: nodeId,
-        kind: propKind,
-        key: propKey,
-        value: propValue,
-        patchPath,
-      },
-    });
-  };
-
 export const openProject = project => ({
   type: ActionType.PROJECT_OPEN,
   payload: project,
@@ -142,11 +54,19 @@ export const importProject = project => ({
   payload: project,
 });
 
+export const renameProject = name => ({
+  type: ActionType.PROJECT_RENAME,
+  payload: name,
+});
+
 export const openWorkspace = libs => ({
   type: ActionType.PROJECT_OPEN_WORKSPACE,
   payload: libs,
 });
 
+//
+// Patch
+//
 export const undoPatch = patchPath => ({
   type: ActionType.PATCH_HISTORY_UNDO,
   payload: { patchPath },
@@ -212,7 +132,149 @@ export const updatePatchDescription = (patchDescription, patchPath) => ({
   },
 });
 
-export const renameProject = name => ({
-  type: ActionType.PROJECT_RENAME,
-  payload: name,
+//
+// Node
+//
+export const addNode = (typeId, position, patchPath) => (dispatch) => {
+  const newNodeId = XP.generateId();
+
+  dispatch({
+    type: ActionType.NODE_ADD,
+    payload: {
+      typeId,
+      position,
+      newNodeId,
+      patchPath,
+    },
+  });
+
+  return newNodeId;
+};
+
+export const deleteNode = id => (dispatch, getState) => {
+  const state = getState();
+  const project = getProject(state);
+  const patchPath = getCurrentPatchPath(state);
+  const patch = XP.getPatchByPathUnsafe(patchPath, project);
+  const node = XP.getNodeByIdUnsafe(id, patch);
+
+  // TODO: most of this probably should be moved to xod-project
+  if (
+    XP.isPinNode(node) &&
+    XP.isTerminalNodeInUse(id, patchPath, project)
+  ) {
+    return dispatch(
+      addError(NODETYPE_ERRORS[NODETYPE_ERROR_TYPES.CANT_DELETE_USED_PIN_OF_PATCHNODE])
+    );
+  }
+
+  return dispatch({
+    type: ActionType.NODE_DELETE,
+    payload: {
+      id,
+      patchPath,
+    },
+  });
+};
+
+export const moveNode = (id, position) => (dispatch, getState) => {
+  const patchPath = getCurrentPatchPath(getState());
+
+  dispatch({
+    type: ActionType.NODE_MOVE,
+    payload: {
+      id,
+      position,
+      patchPath,
+    },
+  });
+};
+
+export const updateNodeProperty =
+  (nodeId, propKind, propKey, propValue) => (dispatch, getState) => {
+    const patchPath = getCurrentPatchPath(getState());
+
+    dispatch({
+      type: ActionType.NODE_UPDATE_PROPERTY,
+      payload: {
+        id: nodeId,
+        kind: propKind,
+        key: propKey,
+        value: propValue,
+        patchPath,
+      },
+    });
+  };
+
+//
+// Link
+//
+export const addLink = (pin1, pin2) => (dispatch, getState) => {
+  const patchPath = getCurrentPatchPath(getState());
+
+  dispatch({
+    type: ActionType.LINK_ADD,
+    payload: {
+      patchPath,
+      pins: [pin1, pin2],
+    },
+  });
+};
+
+export const deleteLink = (id, patchPath) => ({
+  type: ActionType.LINK_DELETE,
+  payload: {
+    id,
+    patchPath,
+  },
 });
+
+//
+// Comment
+//
+export const addComment = () => (dispatch, getState) =>
+  dispatch({ // TODO: where to provide initial size, position and content?
+    type: ActionType.COMMENT_ADD,
+    payload: {
+      patchPath: getCurrentPatchPath(getState()),
+    },
+  });
+
+export const deleteComment = id => (dispatch, getState) =>
+  dispatch({
+    type: ActionType.COMMENT_DELETE,
+    payload: {
+      id,
+      patchPath: getCurrentPatchPath(getState()),
+    },
+  });
+
+export const moveComment = (id, position) => (dispatch, getState) =>
+  dispatch({
+    type: ActionType.COMMENT_MOVE,
+    payload: {
+      id,
+      position,
+      patchPath: getCurrentPatchPath(getState()),
+    },
+  });
+
+export const resizeComment = (id, size) => (dispatch, getState) =>
+  dispatch({
+    type: ActionType.COMMENT_RESIZE,
+    payload: {
+      id,
+      size,
+      patchPath: getCurrentPatchPath(getState()),
+    },
+  });
+
+export const editComment = (id, content) => (dispatch, getState) =>
+  dispatch({
+    type: ActionType.COMMENT_SET_CONTENT,
+    payload: {
+      id,
+      content,
+      patchPath: getCurrentPatchPath(getState()),
+    },
+  });

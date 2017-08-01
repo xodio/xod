@@ -15,6 +15,7 @@ export const OPTIONAL_PATCH_FIELDS = {
   impls: {},
   links: {},
   nodes: {},
+  comments: {},
 };
 
 export const OPTIONAL_PROJECT_FIELDS = {

@@ -31,6 +31,7 @@ export const convertPatchToPatchFileContents = def(
     R.evolve({
       nodes: R.values,
       links: R.values,
+      comments: R.values,
     })
   )
 );
@@ -41,6 +42,7 @@ export const convertPatchFileContentsToPatch = def(
     XF.explodeEither,
     XP.upsertLinks(fsPatch.links),
     XP.upsertNodes(fsPatch.nodes),
+    XP.upsertComments(fsPatch.comments),
     XP.setPatchDescription(fsPatch.description),
     XP.createPatch
   )()
@@ -49,6 +51,7 @@ export const convertPatchFileContentsToPatch = def(
 const optionalPatchFields = {
   nodes: [],
   links: [],
+  comments: [],
   description: '',
 };
 

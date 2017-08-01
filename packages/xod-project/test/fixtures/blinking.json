@@ -6,9 +6,9 @@
   "name": "awesome-project",
   "description": "",
   "license": "",
-  "version": "0.0.0",
   "patches": {
     "xod/math/subtrac": {
+      "comments": {},
       "description": "",
       "path": "xod/math/subtrac",
       "nodes": {
@@ -58,12 +58,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a - e.inputs.b) };\n};\n"
       }
     },
     "xod/math/multiply": {
+      "comments": {},
       "description": "",
       "path": "xod/math/multiply",
       "nodes": {
@@ -113,12 +113,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a * e.inputs.b) };\n};\n"
       }
     },
     "xod/math/divide": {
+      "comments": {},
       "description": "",
       "path": "xod/math/divide",
       "nodes": {
@@ -168,12 +168,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a / e.inputs.b) };\n};\n"
       }
     },
     "xod/math/add": {
+      "comments": {},
       "description": "",
       "path": "xod/math/add",
       "nodes": {
@@ -223,12 +223,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a + e.inputs.b) };\n};\n"
       }
     },
     "xod/core/valve-number": {
+      "comments": {},
       "description": "",
       "path": "xod/core/valve-number",
       "nodes": {
@@ -278,13 +278,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.cond) {\n    e.fire({ out: e.inputs.in });\n  }\n};\n"
       },
       "label": "valve-number"
     },
     "xod/core/triggerable-number": {
+      "comments": {},
       "description": "",
       "path": "xod/core/triggerable-number",
       "nodes": {
@@ -334,13 +334,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.props.value };\n};\n"
       },
       "label": "triggerable-number"
     },
     "xod/core/ultrasonic-hc-sr04": {
+      "comments": {},
       "description": "",
       "path": "xod/core/ultrasonic-hc-sr04",
       "nodes": {
@@ -401,13 +401,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "espruino": "\nvar sonic = require('@amperka/ultrasonic');\n\nmodule.exports.setup = function(e) {\n  var pinTrig = new Pin(e.props.pinTrig);\n  var pinEcho = new Pin(e.props.pinEcho);\n  e.context.device = sonic.connect({\n    trigPin: pinTrig,\n    echoPin: pinEcho\n  });\n  e.context.units = e.props.units;\n  e.context.isBusy = false;\n};\n\nmodule.exports.evaluate = function(e) {\n  if (e.context.isBusy) {\n    e.fire({ error: \"busy\" });\n  } else {\n    e.context.isBusy = true;\n    e.context.device.ping(function(err, value) {\n      e.context.isBusy = false;\n      if (err) {\n        e.fire({ error: err.msg });\n      } else {\n        e.fire({ value: value });\n      }\n    }, e.context.units);\n  }\n};\n"
       },
       "label": "HC-SR04"
     },
     "xod/core/time": {
+      "comments": {},
       "description": "",
       "path": "xod/core/time",
       "nodes": {
@@ -446,13 +446,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "module.exports.evaluate = function(e) {\n  return { value: new Date().getTime() };\n};\n"
       },
       "label": "Time"
     },
     "xod/core/stdout": {
+      "comments": {},
       "description": "",
       "path": "xod/core/stdout",
       "nodes": {
@@ -480,13 +480,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "nodejs": "module.exports.evaluate = function(e) {\n  var val = String(e.inputs.value);\n  process.stdout.write(val);\n};\n"
       },
       "label": "stdout"
     },
     "xod/core/split-bool": {
+      "comments": {},
       "description": "",
       "path": "xod/core/split-bool",
       "nodes": {
@@ -536,13 +536,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.inp) {\n    return { outTrue: PULSE };\n  } else {\n    return { outFalse: PULSE };\n  }\n};\n"
       },
       "label": "Split"
     },
     "xod/core/servo": {
+      "comments": {},
       "description": "",
       "path": "xod/core/servo",
       "nodes": {
@@ -592,12 +592,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var minPulse = +e.props.minPulse;\n  var maxPulse = +e.props.maxPulse;\n  var us = minPulse + (maxPulse - minPulse) * e.inputs.value;\n  analogWrite(e.context.pin, us / 20000, { freq: 50 });\n};\n"
       }
     },
     "xod/core/pot": {
+      "comments": {},
       "description": "",
       "path": "xod/core/pot",
       "nodes": {
@@ -636,12 +636,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  return { value: analogRead(e.context.pin) };\n};\n"
       }
     },
     "xod/core/or": {
+      "comments": {},
       "description": "",
       "path": "xod/core/or",
       "nodes": {
@@ -691,13 +691,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a || e.inputs.b };\n};\n"
       },
       "label": "or"
     },
     "xod/core/not": {
+      "comments": {},
       "description": "",
       "path": "xod/core/not",
       "nodes": {
@@ -736,13 +736,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: !e.inputs.in };\n};\n"
       },
       "label": "not"
     },
     "xod/core/less": {
+      "comments": {},
       "description": "",
       "path": "xod/core/less",
       "nodes": {
@@ -792,12 +792,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n\n  if (a === undefined || b === undefined) {\n    return;\n  }\n\n  return { out: a < b };\n};\n"
       }
     },
     "xod/core/map": {
+      "comments": {},
       "description": "",
       "path": "xod/core/map",
       "nodes": {
@@ -891,12 +891,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var k = (inputs.inp - inputs.inA) / (inputs.inB - inputs.inA);\n  var out = inputs.outA + k * (inputs.outB - inputs.outA);\n\n  if (inputs.clip) {\n    if (inputs.outB > inputs.outA) {\n      out = Math.max(inputs.outA, out);\n      out = Math.min(inputs.outB, out);\n    } else {\n      out = Math.max(inputs.outB, out);\n      out = Math.min(inputs.outA, out);\n    }\n  }\n\n  return { out: out };\n};\n"
       }
     },
     "xod/core/latch": {
+      "comments": {},
       "description": "",
       "path": "xod/core/latch",
       "nodes": {
@@ -957,12 +957,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
       }
     },
     "xod/core/led": {
+      "comments": {},
       "description": "",
       "path": "xod/core/led",
       "nodes": {
@@ -990,13 +990,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var b = e.inputs.brightness;\n\n  // Adjust duty cycle as a power function to align brightness\n  // perception by human eye\n  var duty = b * b * b;\n\n  analogWrite(e.context.pin, duty);\n};\n"
       },
       "label": "LED"
     },
     "xod/core/file-write": {
+      "comments": {},
       "description": "",
       "path": "xod/core/file-write",
       "nodes": {
@@ -1057,13 +1057,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "nodejs": "var path = require('path');\nvar fs = require('fs');\n\nmodule.exports.evaluate = function(e) {\n  var filename = e.inputs.fileName;\n  var data = e.inputs.data;\n\n  fs.writeFile(filename, data, function (err) {\n    if (err) {\n      e.fire({ onFailure: err.toString() });\n      return;\n    }\n\n    e.fire({ onSuccess: PULSE });\n  });\n};\n"
       },
       "label": "File write"
     },
     "xod/core/greater": {
+      "comments": {},
       "description": "",
       "path": "xod/core/greater",
       "nodes": {
@@ -1113,12 +1113,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n\n  if (a === undefined || b === undefined) {\n    return;\n  }\n\n  return { out: a > b };\n};\n"
       }
     },
     "xod/core/file-read": {
+      "comments": {},
       "description": "",
       "path": "xod/core/file-read",
       "nodes": {
@@ -1179,13 +1179,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "nodejs": "var path = require('path');\nvar fs = require('fs');\n\nmodule.exports.evaluate = function(e) {\n  var filename = e.inputs.fileName;\n\n  fs.readFile(filename, function (err, data) {\n    if (err) {\n      e.fire({ error: err.toString() });\n      return;\n    }\n\n    e.fire({ data: data });\n  });\n};\n"
       },
       "label": "File read"
     },
     "xod/core/digital-output": {
+      "comments": {},
       "description": "",
       "path": "xod/core/digital-output",
       "nodes": {
@@ -1224,12 +1224,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "espruino": "\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
       }
     },
     "xod/core/equal": {
+      "comments": {},
       "description": "",
       "path": "xod/core/equal",
       "nodes": {
@@ -1279,12 +1279,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n\n  if (a === undefined || b === undefined) {\n    return;\n  }\n\n  return { out: a === b };\n};\n"
       }
     },
     "xod/core/digital-input": {
+      "comments": {},
       "description": "",
       "path": "xod/core/digital-input",
       "nodes": {
@@ -1323,12 +1323,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "espruino": "\nmodule.exports.setup = function(e) {\n  e.inputs.pin = new Pin(e.inputs.pin);\n\n  setWatch(function(evt) {\n    e.fire({ state: !evt.state });\n  }, e.inputs.pin, {\n    edge: 'both',\n    repeat: true,\n    debounce: 30\n  });\n};\n"
       }
     },
     "xod/core/either": {
+      "comments": {},
       "description": "",
       "path": "xod/core/either",
       "nodes": {
@@ -1389,12 +1389,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  var out = e.inputs.inp ? e.inputs.trueValue : e.inputs.falseValue;\n  return { out: out };\n};\n"
       }
     },
     "xod/core/const-string": {
+      "comments": {},
       "description": "",
       "path": "xod/core/const-string",
       "nodes": {
@@ -1444,13 +1444,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n"
       },
       "label": "<String>"
     },
     "xod/core/const-number": {
+      "comments": {},
       "description": "",
       "path": "xod/core/const-number",
       "nodes": {
@@ -1500,13 +1500,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n"
       },
       "label": "<Number>"
     },
     "xod/core/concat": {
+      "comments": {},
       "description": "",
       "path": "xod/core/concat",
       "nodes": {
@@ -1556,13 +1556,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "module.exports.evaluate = function(e) {\n  return { result: (String(e.inputs.a) + String(e.inputs.b)) };\n};\n"
       },
       "label": "concat"
     },
     "xod/core/clock": {
+      "comments": {},
       "description": "",
       "path": "xod/core/clock",
       "nodes": {
@@ -1601,12 +1601,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.context.intervalID) {\n    clearInterval(e.context.intervalID);\n  }\n\n  e.context.intervalID = setInterval(function() {\n    e.fire({ tick: PULSE });\n  }, e.inputs.interval * 1000);\n};\n"
       }
     },
     "xod/core/const-bool": {
+      "comments": {},
       "description": "",
       "path": "xod/core/const-bool",
       "nodes": {
@@ -1656,13 +1656,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n"
       },
       "label": "<Bool>"
     },
     "xod/core/compare": {
+      "comments": {},
       "description": "",
       "path": "xod/core/compare",
       "nodes": {
@@ -1734,12 +1734,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n  if (a < b) {\n    return { less: PULSE };\n  } else if (a > b) {\n    return { greater: PULSE };\n  } else {\n    return { equal: PULSE };\n  }\n};\n"
       }
     },
     "xod/core/choose": {
+      "comments": {},
       "description": "",
       "path": "xod/core/choose",
       "nodes": {
@@ -1789,12 +1789,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.x) {\n    return { truePulse: PULSE };\n  } else {\n    return { falsePulse: PULSE };\n  }\n};\n"
       }
     },
     "xod/core/cast-string-to-pulse": {
+      "comments": {},
       "description": "",
       "path": "xod/core/cast-string-to-pulse",
       "nodes": {
@@ -1833,12 +1833,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  if (Boolean(e.inputs.__in__) === false) return;\n\n  return { __out__: PULSE };\n};\n"
       }
     },
     "xod/core/cast-string-to-boolean": {
+      "comments": {},
       "description": "",
       "path": "xod/core/cast-string-to-boolean",
       "nodes": {
@@ -1877,12 +1877,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Boolean(e.inputs.__in__) };\n};\n"
       }
     },
     "xod/core/cast-number-to-pulse": {
+      "comments": {},
       "description": "",
       "path": "xod/core/cast-number-to-pulse",
       "nodes": {
@@ -1921,12 +1921,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  if (Boolean(e.inputs.__in__) === false) return;\n\n  return { __out__: PULSE };\n};\n"
       }
     },
     "xod/core/cast-number-to-string": {
+      "comments": {},
       "description": "",
       "path": "xod/core/cast-number-to-string",
       "nodes": {
@@ -1965,12 +1965,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n"
       }
     },
     "xod/core/cast-pulse-to-number": {
+      "comments": {},
       "description": "",
       "path": "xod/core/cast-pulse-to-number",
       "nodes": {
@@ -2009,12 +2009,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: 1 };\n};\n"
       }
     },
     "xod/core/cast-pulse-to-boolean": {
+      "comments": {},
       "description": "",
       "path": "xod/core/cast-pulse-to-boolean",
       "nodes": {
@@ -2053,12 +2053,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: true };\n};\n"
       }
     },
     "xod/core/cast-number-to-boolean": {
+      "comments": {},
       "description": "",
       "path": "xod/core/cast-number-to-boolean",
       "nodes": {
@@ -2097,12 +2097,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Boolean(e.inputs.__in__) };\n};\n"
       }
     },
     "xod/core/cast-boolean-to-string": {
+      "comments": {},
       "description": "",
       "path": "xod/core/cast-boolean-to-string",
       "nodes": {
@@ -2141,12 +2141,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n"
       }
     },
     "xod/core/cast-boolean-to-number": {
+      "comments": {},
       "description": "",
       "path": "xod/core/cast-boolean-to-number",
       "nodes": {
@@ -2185,12 +2185,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Number(e.inputs.__in__) };\n};\n"
       }
     },
     "xod/core/button": {
+      "comments": {},
       "description": "",
       "path": "xod/core/button",
       "nodes": {
@@ -2218,12 +2218,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "espruino": "\nmodule.exports.setup = function(e) {\n  var pin = new Pin(e.props.pin);\n\n  setWatch(function(evt) {\n    e.fire({ state: !evt.state });\n  }, pin, {\n    edge: 'both',\n    repeat: true,\n    debounce: 30\n  });\n};\n"
       }
     },
     "xod/core/cast-boolean-to-pulse": {
+      "comments": {},
       "description": "",
       "path": "xod/core/cast-boolean-to-pulse",
       "nodes": {
@@ -2262,12 +2262,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.__in__ === false) return;\n  return { __out__: PULSE };\n};\n"
       }
     },
     "xod/core/buzzer": {
+      "comments": {},
       "description": "",
       "path": "xod/core/buzzer",
       "nodes": {
@@ -2295,13 +2295,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var f = e.inputs.freq;\n\n  if (f === 0) {\n    digitalWrite(e.context.pin, false);\n  } else {\n    analogWrite(e.context.pin, 0.5, { freq: f });\n  }\n};\n"
       },
       "label": "Buzzer"
     },
     "xod/core/both": {
+      "comments": {},
       "description": "",
       "path": "xod/core/both",
       "nodes": {
@@ -2351,12 +2351,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.a && e.inputs.b) {\n    return { out: PULSE };\n  }\n};\n"
       }
     },
     "xod/core/analog_output": {
+      "comments": {},
       "description": "",
       "path": "xod/core/analog_output",
       "nodes": {
@@ -2395,12 +2395,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "espruino": "\nmodule.exports.evaluate = function(e) {\n  analogWrite(e.inputs.pin, e.inputs.value);\n};\n"
       }
     },
     "xod/core/any": {
+      "comments": {},
       "description": "",
       "path": "xod/core/any",
       "nodes": {
@@ -2450,12 +2450,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.a || e.inputs.b) {\n    return { out: PULSE };\n  }\n};\n"
       }
     },
     "xod/core/analog_input": {
+      "comments": {},
       "description": "",
       "path": "xod/core/analog_input",
       "nodes": {
@@ -2505,12 +2505,12 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "espruino": "\nmodule.exports.evaluate = function(e) {\n  if (!e.inputs.pulse) { return; }\n\n  return { value: analogRead(e.inputs.pin) };\n};\n"
       }
     },
     "xod/core/and": {
+      "comments": {},
       "description": "",
       "path": "xod/core/and",
       "nodes": {
@@ -2560,13 +2560,13 @@
         }
       },
       "links": {},
-      "description": "",
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a && e.inputs.b };\n};\n"
       },
       "label": "and"
     },
     "@/led": {
+      "comments": {},
       "description": "",
       "path": "@/led",
       "nodes": {
@@ -2694,11 +2694,11 @@
           }
         }
       },
-      "description": "",
       "impls": {},
       "label": "Led"
     },
     "@/main": {
+      "comments": {},
       "description": "",
       "path": "@/main",
       "nodes": {
@@ -2742,11 +2742,11 @@
           }
         }
       },
-      "description": "",
       "impls": {},
       "label": "Main"
     },
     "@/blink": {
+      "comments": {},
       "description": "",
       "path": "@/blink",
       "nodes": {
@@ -2830,7 +2830,6 @@
           }
         }
       },
-      "description": "",
       "impls": {},
       "label": "Blink"
     }

@@ -36,8 +36,15 @@ export {
   canBindToOutputs,
   renumberNodes,
   getTopology,
+  listComments,
+  getCommentById,
+  getCommentByIdUnsafe,
+  assocComment,
+  dissocComment,
+  upsertComments,
 } from './patch';
 export * from './node';
+export * from './comment';
 export {
   getPinType,
   getPinDirection,

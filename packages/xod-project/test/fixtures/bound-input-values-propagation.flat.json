@@ -59,6 +59,7 @@
       },
       "path": "xod/core/add",
       "description": "Adds two numbers",
+      "comments": {},
       "attachments": [
         {
           "filename": "any.cpp",
@@ -88,6 +89,7 @@
       "impls": {},
       "path": "@/main",
       "description": "",
+      "comments": {},
       "attachments": []
     }
   },
