@@ -1,0 +1,362 @@
+{
+  "authors": [],
+  "description": "",
+  "license": "",
+  "version": "0.0.0",
+  "patches": {
+    "xod/core/concat": {
+      "attachments": [
+        {
+          "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto head = getValue<input_HEAD>(ctx);\n    auto tail = getValue<input_TAIL>(ctx);\n    emitValue<output_STR>(ctx, head->concat(tail));\n}\n",
+          "encoding": "utf8",
+          "filename": "any.cpp"
+        }
+      ],
+      "description": "Concatenates (adds together) two strings",
+      "impls": {
+        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto head = getValue<input_HEAD>(ctx);\n    auto tail = getValue<input_TAIL>(ctx);\n    emitValue<output_STR>(ctx, head->concat(tail));\n}\n"
+      },
+      "links": {},
+      "comments": {},
+      "nodes": {
+        "Bk_h9jpZW": {
+          "boundValues": {},
+          "description": "",
+          "id": "Bk_h9jpZW",
+          "label": "",
+          "position": {
+            "x": 138,
+            "y": 120
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "BkeKcj6ZZ": {
+          "boundValues": {},
+          "description": "",
+          "id": "BkeKcj6ZZ",
+          "label": "TAIL",
+          "position": {
+            "x": 138,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "Hkqu9oaWb": {
+          "boundValues": {},
+          "description": "",
+          "id": "Hkqu9oaWb",
+          "label": "HEAD",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "rksccsp-W": {
+          "boundValues": {},
+          "description": "",
+          "id": "rksccsp-W",
+          "label": "STR",
+          "position": {
+            "x": 10,
+            "y": 224
+          },
+          "type": "xod/patch-nodes/output-string"
+        }
+      },
+      "path": "xod/core/concat"
+    },
+    "@/two-nums-output": {
+      "attachments": [
+        {
+          "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n}\n",
+          "encoding": "utf8",
+          "filename": "any.cpp"
+        }
+      ],
+      "description": "",
+      "impls": {
+        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n}\n"
+      },
+      "links": {},
+      "comments": {},
+      "nodes": {
+        "Hk5ccgtI-": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "Hk5ccgtI-",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "HkjwYxKUb": {
+          "boundValues": {},
+          "description": "",
+          "label": "OUT_A",
+          "id": "HkjwYxKUb",
+          "position": {
+            "x": 138,
+            "y": 224
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "rJqjcxYUZ": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "rJqjcxYUZ",
+          "position": {
+            "x": 266,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        },
+        "rkavKlFUb": {
+          "boundValues": {},
+          "description": "",
+          "label": "OUT_B",
+          "id": "rkavKlFUb",
+          "position": {
+            "x": 394,
+            "y": 224
+          },
+          "type": "xod/patch-nodes/output-number"
+        }
+      },
+      "path": "@/two-nums-output"
+    },
+    "xod/core/console-log": {
+      "attachments": [
+        {
+          "content": "struct State {\n    bool begun;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    if (!isInputDirty<input_DUMP>(ctx))\n        return;\n\n    State* state = getState(ctx);\n    if (!state->begun) {\n        Serial.begin(9600);\n    }\n\n    auto line = getValue<input_LINE>(ctx);\n    if (line) {\n        for (auto it = line->iterate(); it; ++it)\n            Serial.write((char)*it);\n        Serial.write('\\r');\n        Serial.write('\\n');\n        Serial.flush();\n    }\n}\n",
+          "encoding": "utf8",
+          "filename": "arduino.cpp"
+        }
+      ],
+      "description": "Outputs a line of text to the board standard debug interface",
+      "impls": {
+        "arduino": "struct State {\n    bool begun;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    if (!isInputDirty<input_DUMP>(ctx))\n        return;\n\n    State* state = getState(ctx);\n    if (!state->begun) {\n        Serial.begin(9600);\n    }\n\n    auto line = getValue<input_LINE>(ctx);\n    if (line) {\n        for (auto it = line->iterate(); it; ++it)\n            Serial.write((char)*it);\n        Serial.write('\\r');\n        Serial.write('\\n');\n        Serial.flush();\n    }\n}\n"
+      },
+      "links": {},
+      "comments": {},
+      "nodes": {
+        "HJdO9HwJ-": {
+          "boundValues": {},
+          "description": "",
+          "id": "HJdO9HwJ-",
+          "label": "LINE",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "S1n95SDJb": {
+          "boundValues": {},
+          "description": "",
+          "id": "S1n95SDJb",
+          "label": "DUMP",
+          "position": {
+            "x": 138,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        },
+        "noNativeImpl": {
+          "boundValues": {},
+          "description": "",
+          "id": "noNativeImpl",
+          "label": "",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "xod/core/console-log"
+    },
+    "xod/core/cast-number-to-string": {
+      "attachments": [
+        {
+          "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    char str[16];\n    auto num = getValue<input_IN>(ctx);\n    dtostrf(num, 0, 2, str);\n    auto xstr = ::xod::List<char>::fromPlainArray(str, strlen(str));\n    emitValue<output_OUT>(ctx, xstr);\n}\n",
+          "encoding": "utf8",
+          "filename": "any.cpp"
+        },
+        {
+          "content": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n",
+          "encoding": "utf8",
+          "filename": "any.js"
+        }
+      ],
+      "description": "Transforms a number to string with two digits after dot",
+      "impls": {
+        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    char str[16];\n    auto num = getValue<input_IN>(ctx);\n    dtostrf(num, 0, 2, str);\n    auto xstr = ::xod::List<char>::fromPlainArray(str, strlen(str));\n    emitValue<output_OUT>(ctx, xstr);\n}\n",
+        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n"
+      },
+      "links": {},
+      "comments": {},
+      "nodes": {
+        "__in__": {
+          "boundValues": {},
+          "description": "",
+          "id": "__in__",
+          "label": "",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "__out__": {
+          "boundValues": {},
+          "description": "",
+          "id": "__out__",
+          "label": "",
+          "position": {
+            "x": 0,
+            "y": 300
+          },
+          "type": "xod/patch-nodes/output-string"
+        },
+        "noNativeImpl": {
+          "boundValues": {},
+          "description": "",
+          "id": "noNativeImpl",
+          "label": "",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "xod/core/cast-number-to-string"
+    },
+    "@/main": {
+      "comments": {},
+      "nodes": {
+        "B1VMtgtUb": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "B1VMtgtUb",
+          "position": {
+            "x": 266,
+            "y": 224
+          },
+          "type": "xod/core/concat"
+        },
+        "HyXhclKUZ": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "HyXhclKUZ",
+          "position": {
+            "x": 266,
+            "y": 16
+          },
+          "type": "@/two-nums-output"
+        },
+        "rk5MteYLZ": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "rk5MteYLZ",
+          "position": {
+            "x": 266,
+            "y": 328
+          },
+          "type": "xod/core/console-log"
+        },
+        "HyXhclKUZ-to-B1VMtgtUb-pin-BkeKcj6ZZ": {
+          "id": "HyXhclKUZ-to-B1VMtgtUb-pin-BkeKcj6ZZ",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/core/cast-number-to-string",
+          "label": "",
+          "description": "",
+          "boundValues": {}
+        },
+        "HyXhclKUZ-to-B1VMtgtUb-pin-Hkqu9oaWb": {
+          "id": "HyXhclKUZ-to-B1VMtgtUb-pin-Hkqu9oaWb",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/core/cast-number-to-string",
+          "label": "",
+          "description": "",
+          "boundValues": {}
+        }
+      },
+      "links": {
+        "ByP29gFIW-to-cast": {
+          "id": "ByP29gFIW-to-cast",
+          "output": {
+            "nodeId": "HyXhclKUZ",
+            "pinKey": "rkavKlFUb"
+          },
+          "input": {
+            "nodeId": "HyXhclKUZ-to-B1VMtgtUb-pin-BkeKcj6ZZ",
+            "pinKey": "__in__"
+          }
+        },
+        "ByP29gFIW-from-cast": {
+          "id": "ByP29gFIW-from-cast",
+          "output": {
+            "nodeId": "HyXhclKUZ-to-B1VMtgtUb-pin-BkeKcj6ZZ",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "B1VMtgtUb",
+            "pinKey": "BkeKcj6ZZ"
+          }
+        },
+        "HyL2qgtU--to-cast": {
+          "id": "HyL2qgtU--to-cast",
+          "output": {
+            "nodeId": "HyXhclKUZ",
+            "pinKey": "HkjwYxKUb"
+          },
+          "input": {
+            "nodeId": "HyXhclKUZ-to-B1VMtgtUb-pin-Hkqu9oaWb",
+            "pinKey": "__in__"
+          }
+        },
+        "HyL2qgtU--from-cast": {
+          "id": "HyL2qgtU--from-cast",
+          "output": {
+            "nodeId": "HyXhclKUZ-to-B1VMtgtUb-pin-Hkqu9oaWb",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "B1VMtgtUb",
+            "pinKey": "Hkqu9oaWb"
+          }
+        },
+        "SynzKlt8b": {
+          "id": "SynzKlt8b",
+          "output": {
+            "nodeId": "B1VMtgtUb",
+            "pinKey": "rksccsp-W"
+          },
+          "input": {
+            "nodeId": "rk5MteYLZ",
+            "pinKey": "HJdO9HwJ-"
+          }
+        }
+      },
+      "impls": {},
+      "path": "@/main",
+      "description": "",
+      "attachments": []
+    }
+  },
+  "name": "untitled"
+}
