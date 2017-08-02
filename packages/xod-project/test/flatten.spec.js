@@ -7,7 +7,7 @@ import * as CONST from '../src/constants';
 import flatten, { extractPatches, extractLeafPatches } from '../src/flatten';
 import { formatString } from '../src/utils';
 import { getCastPatchPath } from '../src/patchPathUtils';
-
+import { addMissingOptionalProjectFields } from '../src/optionalFieldsUtils';
 
 import blinking from './fixtures/blinking.json';
 import blinkingFlat from './fixtures/blinking.flat.json';
@@ -17,6 +17,9 @@ import deeplyNestedFlat from './fixtures/deeply-nested.flat.json';
 
 import boundInputValuesPropagation from './fixtures/bound-input-values-propagation.json';
 import boundInputValuesPropagationFlat from './fixtures/bound-input-values-propagation.flat.json';
+
+import castMultipleOutputsXodball from './fixtures/cast-multiple-outputs.xodball.json';
+import castMultipleOutputsFlat from './fixtures/cast-multiple-outputs.flat.json';
 
 chai.use(dirtyChai);
 
@@ -1193,7 +1196,7 @@ describe('Flatten', () => {
     });
 
     // TODO: Write test:
-    //       it should remove terminal, link and there is should be no casting nodes
+    //       it should remove terminal, link and there should be no casting nodes
     //       E.G. [Number]---[output-bool] --> [Number]
     describe('one link to terminal', () => {});
 
@@ -1401,6 +1404,30 @@ describe('Flatten', () => {
           expect,
           flatProject,
           formatString(CONST.ERROR.CAST_PATCH_NOT_FOUND, { patchPath: 'xod/core/cast-boolean-to-number' })
+        );
+      });
+    });
+
+    describe('multiple outputs from patch', () => {
+      //  +----------------+
+      //  |                |
+      //  +---NUM----NUM---+
+      //       |      |
+      //       |      |
+      //  +---STR----STR---+
+      //  |                |
+      //  +----------------+
+      //
+      it('should create a separate cast node for each casted output', () => {
+        const castMultipleOutputs = addMissingOptionalProjectFields(castMultipleOutputsXodball);
+        const flatProject = flatten(castMultipleOutputs, '@/main', ['arduino', 'cpp']);
+
+        expect(flatProject.isRight).to.be.true();
+        Helper.expectEither(
+          (project) => {
+            expect(project).to.deep.equal(castMultipleOutputsFlat);
+          },
+          flatProject
         );
       });
     });
@@ -1686,11 +1713,11 @@ describe('Flatten', () => {
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
         (newProject) => {
-          expect(newProject.patches['@/main'].nodes['b~a2-to-b~b'])
+          expect(newProject.patches['@/main'].nodes['b~a2-to-b~b-pin-in2'])
             .to.have.property('boundValues')
             .that.have.property('__in__')
             .that.equal(project.patches['@/main'].nodes.b.boundValues.a2);
-          expect(newProject.patches['@/main'].nodes['b~a3-to-b~b2'])
+          expect(newProject.patches['@/main'].nodes['b~a3-to-b~b2-pin-in2'])
             .to.have.property('boundValues')
             .that.have.property('__in__')
             .that.equal(project.patches['@/main'].nodes.b.boundValues.a3);
