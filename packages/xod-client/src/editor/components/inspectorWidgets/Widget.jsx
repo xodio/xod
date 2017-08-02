@@ -1,7 +1,7 @@
 import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PROPERTY_TYPE_PARSE, PROPERTY_TYPE_MASK } from '../../../utils/inputFormatting';
+import { PROPERTY_TYPE_PARSE } from '../../../utils/inputFormatting';
 
 import { KEYCODE } from '../../../utils/constants';
 import { noop } from '../../../utils/ramda';
@@ -65,12 +65,9 @@ export default function composeWidget(Component, widgetProps) {
     }
 
     updateValue(value) {
-      const newValue = this.maskValue(value);
       const commitCallback = (this.commitOnChange) ? this.commit.bind(this) : noop;
 
-      this.setState({
-        value: newValue,
-      }, commitCallback);
+      this.setState({ value }, commitCallback);
     }
 
     commit() {
@@ -83,10 +80,6 @@ export default function composeWidget(Component, widgetProps) {
           parsedValue
         );
       }
-    }
-
-    maskValue(val) {
-      return PROPERTY_TYPE_MASK[this.type](val);
     }
 
     parseValue(val) {
