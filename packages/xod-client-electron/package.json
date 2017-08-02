@@ -64,6 +64,7 @@
   "build": {
     "appId": "io.xod.ide",
     "productName": "XOD IDE",
+    "buildDependenciesFromSource": true,
     "linux": {
       "target": [
         "deb",
