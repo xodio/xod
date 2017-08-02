@@ -193,14 +193,21 @@ const getPinLabelsMap = def(
   )
 );
 
-const getNodePinLabels = def(
-  'getNodePinLabels :: Node -> Project -> Map PinKey PinLabel',
+const getNodePinsUnsafe = def(
+  'getNodePinLabels :: Node -> Project -> [Pin]',
   (node, project) => R.compose(
-    getPinLabelsMap,
-    Project.normalizePinLabels,
     explodeMaybe(`Can’t get node pins of node ${node}. Referred type missing?`),
     Project.getNodePins
   )(node, project)
+);
+
+const getNodePinLabels = def(
+  'getNodePinLabels :: Node -> Project -> Map PinKey PinLabel',
+  R.compose(
+    getPinLabelsMap,
+    Project.normalizePinLabels,
+    getNodePinsUnsafe
+  )
 );
 
 // TODO: Remove it when `Project.getBoundValue` will return default values
@@ -288,6 +295,37 @@ const getTNodeInputs = def(
   }
 );
 
+// returns an 8-bit number where the first bit is always set to 1,
+// and the rest are set to 0 if the corresponding pin has a pulse type:
+//
+// +---+---+---+---+---+---+---+---+
+// | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+// +---+---+---+---+---+---+---+---+
+//             <-*---*---*---*
+//                etc  Pin1 Pin0
+export const getInitialDirtyFlags = def(
+  'getInitialDirtyFlags :: [Pin] -> Number',
+  R.reduce(
+    (flags, pin) => {
+      if (Project.getPinType(pin) !== Project.PIN_TYPE.PULSE) {
+        return flags;
+      }
+      const mask = 0b10 << pin.order; // eslint-disable-line no-bitwise
+      return flags ^ mask; // eslint-disable-line no-bitwise
+    },
+    0b11111111
+  )
+);
+
+const getNodeDirtyFlags = def(
+  'getNodeDirtyFlags :: Project -> Node -> Number',
+  R.compose(
+    getInitialDirtyFlags,
+    R.filter(Project.isOutputPin),
+    R.flip(getNodePinsUnsafe)
+  )
+);
+
 const createTNodes = def(
   'createTNodes :: PatchPath -> [TPatch] -> Project -> [TNode]',
   (entryPath, patches, project) => R.compose(
@@ -296,6 +334,7 @@ const createTNodes = def(
       patch: R.compose(findPatchByPath(R.__, patches), Project.getNodeType),
       outputs: getTNodeOutputs(project, entryPath),
       inputs: getTNodeInputs(project, entryPath, patches),
+      dirtyFlags: getNodeDirtyFlags(project),
     })),
     Project.listNodes,
     Project.getPatchByPathUnsafe

@@ -1245,16 +1245,16 @@ namespace xod {
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {
-        DirtyFlags(-1),
-        DirtyFlags(-1),
-        DirtyFlags(-1),
-        DirtyFlags(-1),
-        DirtyFlags(-1),
-        DirtyFlags(-1),
-        DirtyFlags(-1),
-        DirtyFlags(-1),
-        DirtyFlags(-1),
-        DirtyFlags(-1)
+        DirtyFlags(249),
+        DirtyFlags(255),
+        DirtyFlags(255),
+        DirtyFlags(249),
+        DirtyFlags(255),
+        DirtyFlags(255),
+        DirtyFlags(255),
+        DirtyFlags(255),
+        DirtyFlags(255),
+        DirtyFlags(253)
     };
 
     NodeId topology[NODE_COUNT] = {

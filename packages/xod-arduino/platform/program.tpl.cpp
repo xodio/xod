@@ -42,7 +42,7 @@ namespace xod {
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {
-        {{#each nodes}}DirtyFlags(-1){{#unless @last}},
+        {{#each nodes}}DirtyFlags({{ dirtyFlags }}){{#unless @last}},
         {{/unless}}{{/each}}
     };
 

@@ -35,8 +35,8 @@ namespace xod {
     };
 
     DirtyFlags dirtyFlags[NODE_COUNT] = {
-        DirtyFlags(-1),
-        DirtyFlags(-1)
+        DirtyFlags(255),
+        DirtyFlags(255)
     };
 
     NodeId topology[NODE_COUNT] = {

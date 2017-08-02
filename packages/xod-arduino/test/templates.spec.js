@@ -56,6 +56,7 @@ describe('xod-arduino templates', () => {
           },
         ],
         inputs: [],
+        dirtyFlags: 255,
       },
       {
         id: 1,
@@ -69,6 +70,7 @@ describe('xod-arduino templates', () => {
             fromPinKey: 'OUT',
           },
         ],
+        dirtyFlags: 255,
       },
     ];
     project = {
