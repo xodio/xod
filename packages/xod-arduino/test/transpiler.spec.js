@@ -3,7 +3,7 @@ import path from 'path';
 import R from 'ramda';
 import { assert } from 'chai';
 
-import { explode } from 'xod-func-tools';
+import { explode, foldEither } from 'xod-func-tools';
 import { loadProject } from 'xod-fs';
 import { PIN_TYPE } from 'xod-project';
 import { defaultizePin } from 'xod-project/test/helpers';
@@ -34,6 +34,19 @@ describe('xod-arduino transpiler', () => {
       loadProject(wsPath('blink'))
         .then(transpile(R.__, '@/non-existing-patch'))
         .then(result => assert.ok(result.isLeft))
+  );
+
+  it('returns error if some native node has more than 7 outputs',
+    () =>
+      loadProject(wsPath('faulty'))
+        .then(transpile(R.__, '@/too-many-outputs-main'))
+        .then(foldEither(
+          (err) => {
+            assert.include(err.message, '@/too_many_outputs');
+            assert.include(err.message, 'has more than 7 outputs');
+          },
+          () => assert.fail('expecting Either.Left')
+        ))
   );
 });
 

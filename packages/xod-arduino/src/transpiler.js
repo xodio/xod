@@ -46,6 +46,7 @@ const kebabToSnake = R.replace(/-/g, '_');
 const createPatchNames = def(
   'createPatchNames :: PatchPath -> { owner :: String, libName :: String, patchName :: String }',
   (path) => {
+    // TODO: this handles @/local-patches incorrectly
     const [owner, libName, ...patchNameParts] = R.split('/', path);
     const patchName = patchNameParts.join('/');
 
@@ -194,7 +195,7 @@ const getPinLabelsMap = def(
 );
 
 const getNodePinsUnsafe = def(
-  'getNodePinLabels :: Node -> Project -> [Pin]',
+  'getNodePinsUnsafe :: Node -> Project -> [Pin]',
   (node, project) => R.compose(
     explodeMaybe(`Can’t get node pins of node ${node}. Referred type missing?`),
     Project.getNodePins
@@ -349,6 +350,19 @@ const createTNodes = def(
 export const transformProject = def(
   'transformProject :: [Source] -> Project -> PatchPath -> Either Error TProject',
   (impls, project, path) => R.compose(
+    R.chain((tProject) => {
+      const nodeWithTooManyOutputs = R.find(
+        R.pipe(R.prop('outputs'), R.length, R.lte(7)),
+        tProject.patches
+      );
+
+      if (nodeWithTooManyOutputs) {
+        const { owner, libName, patchName } = nodeWithTooManyOutputs;
+        return Either.Left(new Error(`Native node ${owner}/${libName}/${patchName} has more than 7 outputs`));
+      }
+
+      return Either.of(tProject);
+    }),
     R.map(([proj, topology]) => {
       const patches = createTPatches(path, proj);
 
