@@ -277,10 +277,6 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-autolinker@^0.19.0:
-  version "0.19.1"
-  resolved "https://registry.yarnpkg.com/autolinker/-/autolinker-0.19.1.tgz#df5d66adbeaa829b54fc64fe073d6ae6fd14b241"
-
 autoprefixer@^6.3.1, autoprefixer@^6.3.7:
   version "6.7.7"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-6.7.7.tgz#1dbd1c835658e35ce3f9984099db00585c782014"
@@ -3078,7 +3074,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@15.x, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8:
+prop-types@15.x, "prop-types@^0.14.9 || ^15.3.0", prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8:
   version "15.5.10"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
   dependencies:
@@ -3208,11 +3204,11 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-autolinker@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/react-autolinker/-/react-autolinker-1.0.4.tgz#91d02c527b75ba99f99169fb408be2dd8e4201e5"
+"react-autolink-text2@git+https://github.com/xodio/react-autolink-text.git#npm":
+  version "3.0.0"
+  resolved "git+https://github.com/xodio/react-autolink-text.git#33add8d3e13d88561c8be57efcce83555a48e509"
   dependencies:
-    autolinker "^0.19.0"
+    prop-types "^0.14.9 || ^15.3.0"
 
 react-base16-styling@^0.2.3:
   version "0.2.3"
