@@ -1,0 +1,32 @@
+{
+  "description": "Calculates arc cosine.",
+  "nodes": [
+    {
+      "description": "Input value in range [-1.0, 1.0]",
+      "id": "B1sgpxRLW",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HyalpxAIW",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Result angle in radians.",
+      "id": "S1W-plRIZ",
+      "label": "RAD",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

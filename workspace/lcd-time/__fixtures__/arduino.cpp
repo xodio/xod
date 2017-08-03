@@ -984,12 +984,14 @@ using input_L1 = InputDescriptor<XString, offsetof(Storage, input_L1)>;
 using input_L2 = InputDescriptor<XString, offsetof(Storage, input_L2)>;
 
 void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
-    if (!str)
-        return;
-
     lcd->setCursor(0, lineIndex);
-    for (auto it = str->iterate(); it; ++it)
+    uint8_t whitespace = 16;
+    for (auto it = str->iterate(); it; ++it, --whitespace)
         lcd->write(*it);
+
+    // Clear the rest of the line
+    while (whitespace--)
+        lcd->write(' ');
 }
 
 void evaluate(Context ctx) {

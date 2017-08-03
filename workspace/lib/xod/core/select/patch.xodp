@@ -1,0 +1,133 @@
+{
+  "description": "Outputs either `X1` or `X2` value based on which pulse came last — `S1` or `S2`. By default outputs `X1`.",
+  "links": [
+    {
+      "id": "BkDeLCaL-",
+      "input": {
+        "nodeId": "S1yaHC6UW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1oJLRpLW",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "ByhRBATUW",
+      "input": {
+        "nodeId": "ryj6SCpL-",
+        "pinKey": "B1RU0OrDkb"
+      },
+      "output": {
+        "nodeId": "rJUjrCTUb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sk-xI0pL-",
+      "input": {
+        "nodeId": "S1oJLRpLW",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "rygjH06LW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkSgU0TLb",
+      "input": {
+        "nodeId": "S1oJLRpLW",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "ryj6SCpL-",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "rJkeURaIb",
+      "input": {
+        "nodeId": "S1oJLRpLW",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "S10qrR6UZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rysRHCaIb",
+      "input": {
+        "nodeId": "ryj6SCpL-",
+        "pinKey": "Bkh8A_Sv1-"
+      },
+      "output": {
+        "nodeId": "rkmiHCaIZ",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "S10qrR6UZ",
+      "label": "X1",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "S1oJLRpLW",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "@/if-else"
+    },
+    {
+      "id": "S1yaHC6UW",
+      "position": {
+        "x": 138,
+        "y": 328
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "rJUjrCTUb",
+      "label": "S2",
+      "position": {
+        "x": 394,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "rkmiHCaIZ",
+      "label": "S1",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "rygjH06LW",
+      "label": "X2",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ryj6SCpL-",
+      "position": {
+        "x": 266,
+        "y": 224
+      },
+      "type": "@/flip-flop"
+    }
+  ]
+}

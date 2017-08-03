@@ -1,0 +1,29 @@
+{
+  "description": "Computes the square root of an input value.",
+  "nodes": [
+    {
+      "id": "B1QQ_nhUb",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "B1YQ_nhLZ",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "ByZ7_hnUb",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

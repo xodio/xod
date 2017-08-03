@@ -1,0 +1,39 @@
+{
+  "description": "Computes the power of `BASE` raised to the power exponent `EXP`",
+  "nodes": [
+    {
+      "id": "BkC5cn2LW",
+      "label": "EXP",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Hya9cnh8W",
+      "label": "BASE",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Syoiqh2LZ",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "r1Wnq3hUb",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

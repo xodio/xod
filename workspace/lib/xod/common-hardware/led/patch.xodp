@@ -1,0 +1,76 @@
+{
+  "description": "Drives a generic single color dimmable LED. The conversion between luminance and LED power is biased so that change in brightness on range 0…1 is percepted more or less uniformly by a human.",
+  "links": [
+    {
+      "id": "Hk64xTn8-",
+      "input": {
+        "nodeId": "SyqVe6hLb",
+        "pinKey": "ByZ7_hnUb"
+      },
+      "output": {
+        "nodeId": "HyYh1a3LZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sk0NgTnUW",
+      "input": {
+        "nodeId": "H114eThI-",
+        "pinKey": "ByXnYHPyb"
+      },
+      "output": {
+        "nodeId": "SyqVe6hLb",
+        "pinKey": "B1QQ_nhUb"
+      }
+    },
+    {
+      "id": "rk4NeanI-",
+      "input": {
+        "nodeId": "H114eThI-",
+        "pinKey": "rJsaFSvk-"
+      },
+      "output": {
+        "nodeId": "B1oqkTnIb",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Board port number the LED is connected to. The port should be capable of generating PWM signal.",
+      "id": "B1oqkTnIb",
+      "label": "PORT",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "H114eThI-",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/core/pwm-output"
+    },
+    {
+      "description": "Luminance (brightness) value in relative units [0.0, 1.0].",
+      "id": "HyYh1a3LZ",
+      "label": "LUM",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SyqVe6hLb",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/core/cube"
+    }
+  ]
+}

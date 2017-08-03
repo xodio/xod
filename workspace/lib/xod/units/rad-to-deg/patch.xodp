@@ -1,0 +1,56 @@
+{
+  "description": "Converts radians to ° (degrees)",
+  "links": [
+    {
+      "id": "HkEA0jn8W",
+      "input": {
+        "nodeId": "HkGRCinUW",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "Sk_6CinI-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1I0Ao38Z",
+      "input": {
+        "nodeId": "By56Ash8b",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HkGRCinUW",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "By56Ash8b",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "SJ4zUC_BD1-": 57.295779513
+      },
+      "id": "HkGRCinUW",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "id": "Sk_6CinI-",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
