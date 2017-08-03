@@ -73,6 +73,7 @@ export const TNode = Model('TNode', {
   patch: TPatch,
   outputs: $.Array(TNodeOutput),
   inputs: $.Array(TNodeInput),
+  dirtyFlags: $.Number,
 });
 
 export const TProject = Model('TProject', {

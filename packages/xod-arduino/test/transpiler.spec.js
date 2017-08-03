@@ -3,9 +3,11 @@ import path from 'path';
 import R from 'ramda';
 import { assert } from 'chai';
 
-import { explode } from 'xod-func-tools';
+import { explode, foldEither } from 'xod-func-tools';
 import { loadProject } from 'xod-fs';
-import transpile from '../src/transpiler';
+import { PIN_TYPE } from 'xod-project';
+import { defaultizePin } from 'xod-project/test/helpers';
+import transpile, { getInitialDirtyFlags } from '../src/transpiler';
 
 // Returns patch relative to repo’s `workspace` subdir
 const wsPath = (...subpath) => path.resolve(__dirname, '../../../workspace', ...subpath);
@@ -33,4 +35,78 @@ describe('xod-arduino transpiler', () => {
         .then(transpile(R.__, '@/non-existing-patch'))
         .then(result => assert.ok(result.isLeft))
   );
+
+  it('returns error if some native node has more than 7 outputs',
+    () =>
+      loadProject(wsPath('faulty'))
+        .then(transpile(R.__, '@/too-many-outputs-main'))
+        .then(foldEither(
+          (err) => {
+            assert.include(err.message, '@/too_many_outputs');
+            assert.include(err.message, 'has more than 7 outputs');
+          },
+          () => assert.fail('expecting Either.Left')
+        ))
+  );
+});
+
+describe('getInitialDirtyFlags', () => {
+  it('should return 0b11111111 if there are no pulse outputs', () => {
+    assert.equal(
+      getInitialDirtyFlags([]),
+      0b11111111
+    );
+
+    assert.equal(
+      getInitialDirtyFlags([
+        defaultizePin({ order: 1, type: PIN_TYPE.BOOLEAN }),
+        defaultizePin({ order: 0, type: PIN_TYPE.STRING }),
+        defaultizePin({ order: 2, type: PIN_TYPE.NUMBER }),
+      ]),
+      0b11111111
+    );
+  });
+  it('should set bits corresponding to pulse outputs to 0', () => {
+    assert.equal(
+      getInitialDirtyFlags([
+        defaultizePin({ order: 0, type: PIN_TYPE.PULSE }),
+        defaultizePin({ order: 1, type: PIN_TYPE.BOOLEAN }),
+        defaultizePin({ order: 2, type: PIN_TYPE.NUMBER }),
+      ]),
+      0b11111101
+    );
+
+    assert.equal(
+      getInitialDirtyFlags([
+        defaultizePin({ order: 0, type: PIN_TYPE.PULSE }),
+        defaultizePin({ order: 1, type: PIN_TYPE.BOOLEAN }),
+        defaultizePin({ order: 2, type: PIN_TYPE.NUMBER }),
+        defaultizePin({ order: 3, type: PIN_TYPE.PULSE }),
+      ]),
+      0b11101101
+    );
+
+    assert.equal(
+      getInitialDirtyFlags([
+        defaultizePin({ order: 0, type: PIN_TYPE.PULSE }),
+        defaultizePin({ order: 1, type: PIN_TYPE.PULSE }),
+        defaultizePin({ order: 2, type: PIN_TYPE.PULSE }),
+        defaultizePin({ order: 3, type: PIN_TYPE.PULSE }),
+        defaultizePin({ order: 4, type: PIN_TYPE.PULSE }),
+        defaultizePin({ order: 5, type: PIN_TYPE.PULSE }),
+        defaultizePin({ order: 6, type: PIN_TYPE.PULSE }),
+      ]),
+      0b00000001
+    );
+  });
+  it('should determine pin number by Pin`s `order` property', () => {
+    assert.equal(
+      getInitialDirtyFlags([
+        defaultizePin({ order: 2, type: PIN_TYPE.NUMBER }),
+        defaultizePin({ order: 1, type: PIN_TYPE.BOOLEAN }),
+        defaultizePin({ order: 0, type: PIN_TYPE.PULSE }),
+      ]),
+      0b11111101
+    );
+  });
 });

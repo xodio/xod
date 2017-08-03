@@ -1,0 +1,12 @@
+{
+  "nodes": [
+    {
+      "id": "Bk-49Oyw-",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "@/too-many-outputs"
+    }
+  ]
+}
