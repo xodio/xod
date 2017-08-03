@@ -26,7 +26,6 @@
     "source-map-support": "^0.4.15",
     "swagger-client": "^3.0.13",
     "xod-arduino": "^0.12.0-dev",
-    "xod-arduino-builder": "^0.12.0-dev",
     "xod-fs": "^0.12.0-dev",
     "xod-func-tools": "^0.12.0-dev",
     "xod-js": "^0.12.0-dev",
