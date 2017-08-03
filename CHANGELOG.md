@@ -4,6 +4,80 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* Implement in-patch comments. Now you can “Edit → Insert Comment” to place
+  text note right onto the patch board. You will see an example of using
+  comments in the `welcome-to-xod` project if you would create a new workspace
+  (File → Select Workspace) or launch [browser-based IDE](https://xod.io/ide/).
+* New build system no longer depends on Arduino IDE being installed. No more
+  splash screen while uploading a XOD program to Arduino.
+* Project `*.xodp` and `*.xod` files now don’t store fields with default values
+  like `"description": ""` or `"comments": []`. This makes the files more
+  compact and immune to insignificant diffs when they’re stored under VCS such
+  as Git.
+
+### New nodes
+
+* [xod/common-hardware/dht11-thermometer](https://xod.io/libs/xod/common-hardware/dht11-thermometer/)
+* [xod/common-hardware/h-bridge-dc-motor](https://xod.io/libs/xod/common-hardware/h-bridge-dc-motor/)
+* [xod/common-hardware/button](https://xod.io/libs/xod/common-hardware/button/)
+* [xod/common-hardware/led](https://xod.io/libs/xod/common-hardware/led/)
+* [xod/common-hardware/hc-sr04-ultrasonic-range](https://xod.io/libs/xod/common-hardware/hc-sr04-ultrasonic-range/)
+* [xod/common-hardware/hc-sr04-ultrasonic-time](https://xod.io/libs/xod/common-hardware/hc-sr04-ultrasonic-time/)
+* [xod/common-hardware/gp2y0a02-range-meter](https://xod.io/libs/xod/common-hardware/gp2y0a02-range-meter/)
+* [xod/common-hardware/gp2y0a21-range-meter](https://xod.io/libs/xod/common-hardware/gp2y0a21-range-meter/)
+* [xod/common-hardware/gp2y0a41-range-meter](https://xod.io/libs/xod/common-hardware/gp2y0a41-range-meter/)
+* [xod/common-hardware/gp2y0a-linearize](https://xod.io/libs/xod/common-hardware/gp2y0a-linearize/)
+* [xod/units/c-to-f](https://xod.io/libs/xod/units/c-to-f/)
+* [xod/units/deg-to-rad](https://xod.io/libs/xod/units/deg-to-rad/)
+* [xod/units/rad-to-deg](https://xod.io/libs/xod/units/rad-to-deg/)
+* [xod/units/m-to-cm](https://xod.io/libs/xod/units/m-to-cm/)
+* [xod/units/m-to-ft](https://xod.io/libs/xod/units/m-to-ft/)
+* [xod/units/m-to-in](https://xod.io/libs/xod/units/m-to-in/)
+* [xod/units/m-to-mm](https://xod.io/libs/xod/units/m-to-mm/)
+* [xod/core/debounce-boolean](https://xod.io/libs/xod/core/debounce-boolean/)
+* [xod/core/select](https://xod.io/libs/xod/core/select/)
+* [xod/core/count](https://xod.io/libs/xod/core/count/)
+* [xod/core/fade](https://xod.io/libs/xod/core/fade/)
+* [xod/core/pi](https://xod.io/libs/xod/core/pi/)
+* [xod/core/pulse-on-change](https://xod.io/libs/xod/core/pulse-on-change/)
+* [xod/core/pulse-on-false](https://xod.io/libs/xod/core/pulse-on-false/)
+* [xod/core/pulse-on-true](https://xod.io/libs/xod/core/pulse-on-true/)
+* [xod/core/square](https://xod.io/libs/xod/core/square/)
+* [xod/core/cube](https://xod.io/libs/xod/core/cube/)
+* [xod/core/pow](https://xod.io/libs/xod/core/pow/)
+* [xod/core/sqrt](https://xod.io/libs/xod/core/sqrt/)
+* [xod/core/cos](https://xod.io/libs/xod/core/cos/)
+* [xod/core/sin](https://xod.io/libs/xod/core/sin/)
+* [xod/core/tan](https://xod.io/libs/xod/core/tan/)
+* [xod/core/acos](https://xod.io/libs/xod/core/acos/)
+* [xod/core/asin](https://xod.io/libs/xod/core/asin/)
+* [xod/core/atan](https://xod.io/libs/xod/core/atan/)
+
+### Bug fixes
+
+* **BREAKING**: Change pin naming scheme for native C++ nodes to avoid
+  collisions with global macros. `Inputs::PORT` became `input_PORT`. As a
+  consequence compilation for Arduino Zero, M0, MKR1000 is possible now.
+  Workspaces with an older version of the standard library will no longer
+  compile.
+* Fix serial port enumeration when doing Deploy → Upload to Arduino (regression
+  of v0.11.0).
+* Fix overprotection of Inspector’s number input box from wrong values. It
+  didn’t allow to enter negative numbers. Now they are valid as should be and
+  scientific notation also works, i.e. one can enter 1e-6 for 0.000001.
+* Program start no longer initiate a single pulse on every pulse link what
+  could lead to an incorrect initial state of a device.
+* Fix `text-lcd-16x2` didn’t clear the tail of a line which results in trash
+  symbols when a new text was shorter than the previous.
+* Fix few transpilation bugs in edge cases: values bound via Inspector did not
+  propagate to nested patch nodes, multiple links from the same node to another
+  node were mistakenly squashed.
+
+
 <a name="0.11.0"></a>
 ## 0.11.0 (2017-07-24)
 
