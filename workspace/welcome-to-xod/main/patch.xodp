@@ -1,5 +1,66 @@
 {
-  "description": "",
+  "comments": [
+    {
+      "content": "Finally, we send the value of flip-flop to a digital output to which the LED is connected to. This makes it blink.\n\nUse Inspector sidebar to change port number of the LED if you want.",
+      "id": "ByAT8uePb",
+      "position": {
+        "x": 266,
+        "y": 328
+      },
+      "size": {
+        "height": 72,
+        "width": 364
+      }
+    },
+    {
+      "content": "← This is a clock node. It emits ticks a regular time intervals. The interval is defined by the value of IVAL pin. To change it click on the node to select it and than set a new desired interval value in Inspector sidebar.",
+      "id": "ByojN_lv-",
+      "position": {
+        "x": 266,
+        "y": 120
+      },
+      "size": {
+        "height": 72,
+        "width": 364
+      }
+    },
+    {
+      "content": "The ticks from clock are feed into the flip-flop node. A flip-flop is a simple memory cell that could hold either 0 or 1. We can SET it to 1, reset (RST) to 0, or toggle (TGL) to inverse value.\n\nIn our case, we toggle the value on every clock tick.",
+      "id": "H19xL_gPb",
+      "position": {
+        "x": 266,
+        "y": 224
+      },
+      "size": {
+        "height": 72,
+        "width": 364
+      }
+    },
+    {
+      "content": "To learn more visit our tutorials at https://xod.io/docs/",
+      "id": "SJFLPOlwb",
+      "position": {
+        "x": 10,
+        "y": 432
+      },
+      "size": {
+        "height": 72,
+        "width": 236
+      }
+    },
+    {
+      "content": "Welcome to XOD, dear maker!\n\nBelow is an example project that simply blinks a LED connected to pin 13 on your board. To try it use “Deploy” item in the main menu.",
+      "id": "r1PBBdgP-",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "size": {
+        "height": 72,
+        "width": 236
+      }
+    }
+  ],
   "links": [
     {
       "id": "rJDD4FSZZ",
@@ -30,12 +91,10 @@
         "B13SCNhl-": 0.25,
         "BJJICN2lW": false
       },
-      "description": "",
       "id": "By6HVYHZb",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 138,
+        "y": 120
       },
       "type": "xod/core/clock"
     },
@@ -44,11 +103,9 @@
         "B134j4neZ": 13,
         "HJ6HsEngZ": false
       },
-      "description": "",
       "id": "SyeDNFBWZ",
-      "label": "",
       "position": {
-        "x": 10,
+        "x": 138,
         "y": 328
       },
       "type": "xod/core/digital-output"
@@ -59,12 +116,10 @@
         "Bkh8A_Sv1-": false,
         "ryTIROHwkW": false
       },
-      "description": "",
       "id": "rkwIEFrWb",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 120
+        "x": 138,
+        "y": 224
       },
       "type": "xod/core/flip-flop"
     }
