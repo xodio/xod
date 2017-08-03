@@ -1,3 +1,4 @@
+import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { STATUS, PopupForm } from 'xod-client';
@@ -28,47 +29,44 @@ class PopupUploadProject extends React.Component {
   }
 
   getMessage() {
-    const message = (this.props.upload.message) ?
-      (<p>{this.props.upload.message}</p>) : null;
-
     const preStyle = {
       overflow: 'auto',
       maxWidth: 'auto',
       maxHeight: '300px',
     };
 
-    switch (this.props.upload.status) {
-      case STATUS.SUCCEEDED:
-        return (
-          <div>
-            <p>
-              The program uploaded successfully.
-            </p>
-            {message}
-          </div>
-        );
-      case STATUS.FAILED:
-        return (
-          <div>
-            <p>
-              Oops! Error occured.
-            </p>
-            <pre style={preStyle}>
-              {message}
-            </pre>
-          </div>
-        );
-      default:
-        return (
-          <div>
-            <p>
-              Your program is uploading onto device.<br />
-              Do not unplug the device.
-            </p>
-            {message}
-          </div>
-        );
-    }
+    const message = (this.props.upload.message) ?
+      (<pre style={preStyle}>{this.props.upload.message.replace(/\r[^\n]/g, '\n')}</pre>) :
+      null;
+
+
+    const titleMessage = R.cond([
+      [R.equals(STATUS.SUCCEEDED), R.always(
+        <p>
+          The program uploaded successfully.
+        </p>
+      )],
+      [R.equals(STATUS.FAILED), R.always(
+        <p>
+          Oops! Error occured.
+        </p>
+      )],
+      [R.T, R.always(
+        <p>
+          Your program is uploading onto device.<br />
+          Do not unplug the device.
+        </p>
+      )],
+    ])(this.props.upload.status);
+
+    return (
+      <div>
+        <p>
+          {titleMessage}
+        </p>
+        {message}
+      </div>
+    );
   }
 
   getProgress() {

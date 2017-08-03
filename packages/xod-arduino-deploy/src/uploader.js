@@ -108,7 +108,6 @@ const getUploadBoolProp = R.curry(
 // :: PortName -> BoardPrefs -> Promise PortName Error
 const prepareBoardUpload = async (portName, boardPrefs) => {
   if (!getUploadBoolProp('disable_flushing', boardPrefs)) {
-    console.log('flush!');
     await flushSerialBuffer(portName);
   }
 
@@ -116,16 +115,11 @@ const prepareBoardUpload = async (portName, boardPrefs) => {
 
   if (getUploadBoolProp('use_1200bps_touch', boardPrefs)) {
     await touchPort1200(portName);
-    console.log('touch!');
   }
 
   const protocol = R.path(['upload', 'protocol'], boardPrefs);
-  console.log('protocol: ', protocol);
-  console.log('wait?', getUploadBoolProp('wait_for_upload_port', boardPrefs));
   const uploadPortName = (getUploadBoolProp('wait_for_upload_port', boardPrefs)) ?
     await waitNewPort(ports) : portName;
-
-  console.log('uploadPortName: ', uploadPortName);
 
   return (protocol === 'sam-ba') ? path.basename(uploadPortName) : uploadPortName;
 };

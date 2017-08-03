@@ -1,4 +1,3 @@
-import os from 'os';
 import R from 'ramda';
 import { tapP } from 'xod-func-tools';
 

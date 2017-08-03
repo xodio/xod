@@ -9,9 +9,8 @@ import electronSettings from 'electron-settings';
 //
 // =============================================================================
 export const DEFAULT_SETTINGS = {
-  arduino: {
-    paths: { ide: '', packages: '' },
-    pavs: [],
+  upload: {
+    target: null,
   },
   workspace: '',
 };
@@ -24,7 +23,7 @@ export const DEFAULT_SETTINGS = {
 
 // TODO: Add catching broken settings (if user opens settings file and break it)
 //       On catch — show error to user and fallback to default settings.
-export const load = () => electronSettings.getAll();
+export const load = () => R.merge(DEFAULT_SETTINGS, electronSettings.getAll());
 
 // TODO: Add schema and validating on save to prevent errors
 export const save = settings => electronSettings.setAll(settings);
@@ -61,23 +60,11 @@ export const getWorkspacePath = R.view(workspacePath);
 // Arduino setters & getters
 //
 // =============================================================================
-const arduino = R.lensProp('arduino');
-const arduinoIde = R.compose(arduino, R.lensPath(['paths', 'ide']));
-const arduinoPackages = R.compose(arduino, R.lensPath(['paths', 'packages']));
-const arduinoPAVs = R.compose(arduino, R.lensProp('pavs'));
-const arduinoTarget = R.compose(arduino, R.lensProp('target'));
+const upload = R.lensProp('upload');
+const uploadTarget = R.compose(upload, R.lensProp('target'));
 
-export const setArduinoIDE = R.set(arduinoIde);
-export const getArduinoIDE = R.view(arduinoIde);
-
-export const setArduinoPackages = R.set(arduinoPackages);
-export const getArduinoPackages = R.view(arduinoPackages);
-
-export const setArduinoTarget = R.set(arduinoTarget);
-export const getArduinoTarget = R.view(arduinoTarget);
-
-export const listPAVs = R.view(arduinoPAVs);
-export const assocPAVs = R.set(arduinoPAVs);
+export const setUploadTarget = R.set(uploadTarget);
+export const getUploadTarget = R.view(uploadTarget);
 
 
 // =============================================================================
@@ -90,12 +77,6 @@ export default {
   save,
   setDefaults,
   // setters & getters
-  setArduinoIDE,
-  getArduinoIDE,
-  setArduinoPackages,
-  getArduinoPackages,
-  setArduinoTarget,
-  getArduinoTarget,
-  listPAVs,
-  assocPAVs,
+  setUploadTarget,
+  getUploadTarget,
 };
