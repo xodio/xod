@@ -154,8 +154,8 @@ class PopupUploadConfig extends React.Component {
         value={this.getSelectedBoardIndex()}
       >
         {this.state.boards.map((board, ix) => (
-          <option key={`${board.board}_${ix}`} value={ix}>
-            {board.board}
+          <option key={`${board.name}_${ix}`} value={ix}>
+            {board.name}
           </option>
         ))}
       </select>

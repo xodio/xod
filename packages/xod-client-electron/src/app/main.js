@@ -1,18 +1,16 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import isDevelopment from 'electron-is-dev';
 import * as EVENTS from '../shared/events';
 import {
   listBoardsHandler,
   listPortsHandler,
   loadTargetBoardHandler,
   saveTargetBoardHandler,
-  setArduinoIDEHandler,
   uploadToArduinoHandler,
 } from './arduinoActions';
 import * as settings from './settings';
-import { errorToPlainObject } from './utils';
+import { errorToPlainObject, IS_DEV } from './utils';
 import * as WA from './workspaceActions';
 import { configureAutoUpdater, subscribeOnAutoUpdaterEvents } from './autoupdate';
 
@@ -21,7 +19,6 @@ import { configureAutoUpdater, subscribeOnAutoUpdaterEvents } from './autoupdate
 // Configure application
 //
 // =============================================================================
-const IS_DEV = (isDevelopment || process.env.NODE_ENV === 'development');
 
 app.setName('xod');
 
@@ -109,7 +106,6 @@ const onReady = () => {
 
   WA.subscribeToWorkspaceEvents(ipcMain);
   ipcMain.on('UPLOAD_TO_ARDUINO', uploadToArduinoHandler);
-  ipcMain.on('SET_ARDUINO_IDE', setArduinoIDEHandler);
   ipcMain.on(EVENTS.LIST_PORTS, listPortsHandler);
   ipcMain.on(EVENTS.LIST_BOARDS, listBoardsHandler);
   ipcMain.on(EVENTS.GET_SELECTED_BOARD, loadTargetBoardHandler);

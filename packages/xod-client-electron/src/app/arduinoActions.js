@@ -1,20 +1,35 @@
 import R from 'ramda';
 import os from 'os';
-import fs from 'fs';
+import fse from 'fs-extra';
 import { resolve, join as pjoin } from 'path';
 
-import { resolvePath, writeFile, doesDirectoryExist, doesFileExist } from 'xod-fs';
-import { foldEither, notEmpty, tapP, rejectWithCode } from 'xod-func-tools';
+import { app } from 'electron';
+import { writeFile } from 'xod-fs';
+import { foldEither, tapP, rejectWithCode } from 'xod-func-tools';
 import { transpileForArduino } from 'xod-arduino';
-import * as xab from 'xod-arduino-builder';
+import * as xad from 'xod-arduino-deploy';
 
-import { DEFAULT_ARDUINO_IDE_PATH, DEFAULT_ARDUINO_PACKAGES_PATH } from './constants';
 import * as settings from './settings';
 import * as MESSAGES from '../shared/messages';
 import formatError from '../shared/errorFormatter';
 import * as ERROR_CODES from '../shared/errorCodes';
 import * as EVENTS from '../shared/events';
-import { errorToPlainObject } from './utils';
+import { errorToPlainObject, IS_DEV } from './utils';
+
+// =============================================================================
+//
+// Calculated constants
+//
+// =============================================================================
+const arduinoPackagesPath = resolve(app.getPath('userData'), 'packages');
+const arduinoBuilderPlatformMap = {
+  win32: 'win',
+  linux: 'linux',
+  darwin: 'mac',
+};
+const arduinoBuilderPath = (IS_DEV) ?
+  resolve(app.getAppPath(), 'arduino-builders', arduinoBuilderPlatformMap[os.platform()]) :
+  resolve(process.resourcesPath, 'arduino-builder');
 
 // =============================================================================
 //
@@ -22,23 +37,11 @@ import { errorToPlainObject } from './utils';
 //
 // =============================================================================
 
-// :: () -> { ide :: Path, packages: Path }
-const loadArduinoPaths = R.compose(
-  R.applySpec({
-    ide: settings.getArduinoIDE,
-    packages: settings.getArduinoPackages,
-  }),
-  settings.load
-);
-
 /**
  * Returns a list of Boards, that was bundled into `xod-client-electron`.
  */
 // :: () -> [Board]
-export const getListOfBoards = R.compose(
-  xab.listBoardsFromIndex,
-  xab.getArduinoPackagesOfflineIndex
-);
+export const getListOfBoards = () => xad.listBoardsFromIndex(xad.packageIndex);
 
 /**
  * Returns a target Board.
@@ -51,7 +54,7 @@ export const loadTargetBoard = () => R.compose(
     R.either(R.isNil, R.isEmpty),
     R.always(null)
   ),
-  settings.getArduinoTarget,
+  settings.getUploadTarget,
   settings.load
 )();
 
@@ -61,157 +64,28 @@ export const loadTargetBoard = () => R.compose(
 export const saveTargetBoard = board => R.compose(
   R.always(board),
   settings.save,
-  settings.setArduinoTarget(board),
+  settings.setUploadTarget(board),
   settings.load
 )();
-
-// :: String[] -> String -> String -> String[]
-const getPaths = R.curry(
-  (pathsForPlatforms, fromSettings, platform) => R.compose(
-    R.map(resolvePath),
-    R.reject(R.isEmpty),
-    R.concat(R.of(fromSettings)),
-    R.propOr('', platform)
-  )(pathsForPlatforms)
-);
-// :: String -> String -> String[]
-const getIDEPaths = getPaths(DEFAULT_ARDUINO_IDE_PATH);
-// :: String -> String -> String[]
-const getPackagesPaths = getPaths(DEFAULT_ARDUINO_PACKAGES_PATH);
-// :: (a -> Boolean) -> (String[] -> String)
-const checkArrayOfStrings = pred => R.reduceWhile(
-  acc => R.either(R.isNil, R.complement(pred))(acc),
-  (acc, str) => str,
-  null
-);
-// :: String[] -> String
-const anyFileThatExist = checkArrayOfStrings(doesFileExist);
-// :: String[] -> String
-const anyDirectoryThatExist = checkArrayOfStrings(doesDirectoryExist);
-
-// :: PAB -> PAV
-const getPAV = pab => R.pipeP(
-  xab.loadPackageIndex,
-  xab.listPAVs,
-  R.prop(`${pab.package}:${pab.architecture}`),
-  R.last
-)();
-// :: PAB -> (PAV[] -> PAV[])
-const filterByPab = pab => R.filter(R.both(
-  R.propEq('package', pab.package),
-  R.propEq('architecture', pab.architecture)
-));
 
 // =============================================================================
 //
 // Upload actions
 //
 // =============================================================================
-
 /**
- * Check paths to Arduino executables and packages
- * @param {String} ide Path to executable, stored in settings
- * @param {String} packages Path to packages folder, stored in settings
- * @param {String} platform OS platform to get default paths
- * @returns {Promise<Object, Error>} Promise with verified paths
+ * Install hardware data and tools by fqbn
  */
-export const checkArduinoIde = ({ ide, packages }, platform) => {
-  const idePath = anyFileThatExist(getIDEPaths(ide, platform));
-  const pkgPath = anyDirectoryThatExist(getPackagesPaths(packages, platform));
-
-  const ideExists = R.both(doesFileExist, notEmpty)(idePath);
-  const pkgExists = R.both(doesDirectoryExist, notEmpty)(pkgPath);
-
-  if (!ideExists) {
-    return rejectWithCode(ERROR_CODES.IDE_NOT_FOUND,
-      Object.assign(
-        new Error('Arduino IDE not found'),
-        {
-          paths: getIDEPaths(ide, platform),
-        }
-      )
-    );
-  }
-  if (!pkgExists) {
-    // Directory could not exist if Arduino IDE is just installed and hasChanges
-    // no installed packages. So there is no directory.
-    // So we need to create an empty directory, to solve this problem and
-    // continue installing toolchains and upload.
-    const parentExists = doesDirectoryExist(resolve(pkgPath, '..'));
-    if (!parentExists) {
-      // If parent is also not exist — reject with error
-      return rejectWithCode(ERROR_CODES.PACKAGES_NOT_FOUND,
-        Object.assign(
-          new Error('Arduino packages directory not found'),
-          {
-            paths: getPackagesPaths(packages, platform),
-          }
-        )
-      );
-    }
-    fs.mkdirSync(pkgPath);
-  }
-
-  return R.pipeP(
-    xab.loadConfig,
-    xab.setArduinoIdePathPackages(pkgPath),
-    xab.setArduinoIdePathExecutable(idePath),
-    xab.saveConfig,
-    () => ({ ide: idePath, packages: pkgPath })
-  )();
-};
-
-/**
- * Install PAV for selected PAB
- * @param {Object} pab See type PAB from `xod-arduino-builder`
- * @returns {Promise<Object, Error>} Promise with PAV object or Error
- */
-export const installPav = pab => Promise.all([getPAV(pab), loadArduinoPaths().ide])
-  .then(
-    ([pav, idePath]) => xab.installPAV(pav, idePath).then(() => pav)
-  )
-  .catch((err) => {
-    if (err.errorCode === xab.REST_ERROR) return rejectWithCode(ERROR_CODES.INDEX_LIST_ERROR, err);
-    return rejectWithCode(ERROR_CODES.INSTALL_PAV, err);
-  });
-
-/**
- * Load boards index by PAV.
- */
-const loadPABs = (pav) => {
-  const packagesPath = loadArduinoPaths().packages;
-
-  return xab.loadPAVBoards(pav, packagesPath)
-    .catch((err) => {
-      if (err.code === 'ENOENT') {
-        return xab.parseTxtConfig(xab.getDefaultBoardsTxt());
-      }
-      return Promise.reject(err);
-    });
-};
-
-/**
- * Search installed PAV for PAB from a list of PAVs
- * @param {Object} pab PAB object of target device
- * @param {Array<Object>} pavs List of PAV objects, stored in settings
- * @returns {Promise<Object, Error>} Promise with finded PAV or Error
- */
-export const getInstalledPAV = (pab, pavs, err) => R.compose(
-  pav => Promise.resolve(pav),
-  R.defaultTo(
-    rejectWithCode(ERROR_CODES.NO_INSTALLED_PAVS, Object.assign(err, { pab, pavs }))
-  ),
-  R.last,
-  xab.sortByVersion,
-  filterByPab(pab)
-)(pavs);
+export const installPackage = fqbn => xad.installArchitecture(
+  fqbn, arduinoPackagesPath, xad.packageIndex
+).catch(rejectWithCode(ERROR_CODES.CANT_INSTALL_ARCHITECTURE));
 
 /**
  * Gets list of all serial ports
  * @returns {Promise<Object, Error>} Promise with Port object or Error
  * @see {@link https://www.npmjs.com/package/serialport#listing-ports}
  */
-export const listPorts = () => xab.listPorts()
+export const listPorts = () => xad.listPorts()
   .then(R.sort(R.descend(R.prop('comName'))))
   .catch(rejectWithCode(ERROR_CODES.NO_PORTS_FOUND));
 
@@ -256,18 +130,20 @@ export const doTranspileForArduino = ({ project, patchPath }) =>
  * @returns {Promise<String, Error>} Promise with Stdout or Error
  */
 export const uploadToArduino = (pab, port, code) => {
-  const tmpPath = pjoin(os.tmpdir(), 'xod-arduino-sketch.cpp');
-  const clearTmp = () => fs.unlinkSync(tmpPath);
+  // Create tmpDir in userData instead of os.tmpdir() to avoid error "readdirent: result too large
+  const tmpDir = resolve(app.getPath('userData'), 'upload-temp');
+  const sketchFile = pjoin(tmpDir, 'xod-arduino-sketch.cpp');
+  const buildDir = pjoin(tmpDir, 'build');
+  const clearTmp = () => fse.remove(tmpDir);
 
-  return Promise.all([writeFile(tmpPath, code, 'utf8'), loadArduinoPaths().ide])
-    .then(
-      ([{ path }, idePath]) => xab.upload(pab, port, path, idePath)
-    )
-    .then(R.tap(clearTmp))
-    .catch((err) => {
-      clearTmp();
-      return rejectWithCode(ERROR_CODES.UPLOAD_ERROR, err);
-    });
+  return writeFile(sketchFile, code, 'utf8')
+    .then(({ path }) => xad.buildAndUpload(
+      path, pab, arduinoPackagesPath, buildDir, port, arduinoBuilderPath
+    ))
+    .then(tapP(clearTmp))
+    .catch(
+      err => clearTmp().then(() => rejectWithCode(ERROR_CODES.UPLOAD_ERROR, err))
+    );
 };
 
 // =============================================================================
@@ -298,73 +174,32 @@ export const uploadToArduinoHandler = (event, payload) => {
     formatError
   )(err);
 
-  const updateArduinoPaths = ({ ide, packages }) => R.compose(
-    settings.save,
-    settings.setArduinoPackages(packages),
-    settings.setArduinoIDE(ide),
-    settings.load
-  )();
-
-  const listInstalledPAVs = R.compose(
-    settings.listPAVs,
-    settings.load
-  );
-  const appendPAV = R.curry(
-    (pav, allSettings) => R.compose(
-      settings.assocPAVs(R.__, allSettings),
-      R.unless(
-        R.find(R.equals(pav)),
-        R.append(pav)
-      ),
-      settings.listPAVs
-    )(allSettings)
-  );
-  const savePAV = pav => R.compose(
-    settings.save,
-    appendPAV(pav),
-    settings.load
-  )();
-
-  const boardName = payload.board.board;
-  const pa = R.omit(['board', 'version'], payload.board);
-  const pav = R.omit(['board'], payload.board);
+  const boardName = payload.board.name;
+  const { package: pkg, architecture } = payload.board;
+  const fqbn = `${pkg}:${architecture}:unknown`;
 
   R.pipeP(
     doTranspileForArduino,
     sendProgress(MESSAGES.CODE_TRANSPILED, 10),
     code => checkPort(payload.port).then(port => ({ code, port: port.comName })),
     sendProgress(MESSAGES.PORT_FOUND, 15),
-    tapP(
-      () => checkArduinoIde(loadArduinoPaths(), process.platform)
-        .then(updateArduinoPaths)
-    ),
-    sendProgress(MESSAGES.IDE_FOUND, 20),
-    tapP(
-      () => installPav(pav)
-        .catch(err => getInstalledPAV(pav, listInstalledPAVs(), err))
-        .then(R.tap(savePAV))
-    ),
+    tapP(() => installPackage(fqbn)),
     sendProgress(MESSAGES.TOOLCHAIN_INSTALLED, 30),
-    ({ code, port }) => loadPABs(pav)
+    ({ code, port }) => xad.loadPABs(fqbn, arduinoPackagesPath)
       .then(boards => ({
         code,
         port,
-        pab: R.assoc('board', xab.pickBoardIdentifierByBoardName(boardName, boards), pa),
+        pab: R.find(R.propEq('name', boardName), boards),
       })),
-    ({ code, port, pab }) => uploadToArduino(pab, port, code),
-    stdout => sendSuccess(stdout, 100)()
+    ({ code, port, pab }) => uploadToArduino(xad.strigifyFQBN(pab), port, code),
+    (result) => {
+      if (result.exitCode !== 0) {
+        return Promise.reject(Object.assign(new Error(`Upload tool exited with error code: ${result.exitCode}`), result));
+      }
+      return sendSuccess([result.stderr, result.stdout].join('\n\n'), 100)();
+    }
   )(payload).catch(convertAndSendError);
 };
-
-export const setArduinoIDEHandler = (event, payload) => R.compose(
-  () => event.sender.send('SET_ARDUINO_IDE', {
-    code: 0,
-    message: MESSAGES.ARDUINO_PATH_CHANGED,
-  }),
-  settings.save,
-  settings.setArduinoIDE(payload.path),
-  settings.load
-)();
 
 export const listPortsHandler = event => listPorts()
   .then(ports => event.sender.send(

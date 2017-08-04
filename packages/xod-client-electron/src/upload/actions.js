@@ -5,7 +5,6 @@ import uploadToEspruino from 'xod-espruino-upload';
 
 import {
   UPLOAD,
-  REQUEST_INSTALL_ARDUINO_IDE,
   OPEN_UPLOAD_CONFIG,
   CLOSE_UPLOAD_CONFIG,
   SELECT_SERIAL_PORT,
@@ -63,11 +62,6 @@ export const uploadToArduinoConfig = () => ({
 
 export const hideUploadConfigPopup = () => ({
   type: CLOSE_UPLOAD_CONFIG,
-  payload: {},
-});
-
-export const requestInstallArduinoIDE = () => ({
-  type: REQUEST_INSTALL_ARDUINO_IDE,
   payload: {},
 });
 

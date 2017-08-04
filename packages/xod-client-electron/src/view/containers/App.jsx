@@ -23,7 +23,6 @@ import * as settingsActions from '../../settings/actions';
 import { SAVE_PROJECT } from '../actionTypes';
 import { UPLOAD, UPLOAD_TO_ARDUINO } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
-import PopupSetArduinoIDEPath from '../../settings/components/PopupSetArduinoIDEPath';
 import PopupCreateWorkspace from '../../settings/components/PopupCreateWorkspace';
 import PopupProjectSelection from '../../projects/components/PopupProjectSelection';
 import PopupUploadProject from '../../upload/components/PopupUploadProject';
@@ -31,7 +30,6 @@ import PopupUploadConfig from '../../upload/components/PopupUploadConfig';
 import { REDUCER_STATUS } from '../../projects/constants';
 import { SaveProgressBar } from '../components/SaveProgressBar';
 
-import * as ERROR_CODES from '../../shared/errorCodes';
 import formatError from '../../shared/errorFormatter';
 import * as EVENTS from '../../shared/events';
 import * as MESSAGES from '../../shared/messages';
@@ -111,7 +109,6 @@ class App extends client.App {
     this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
     this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
     this.showPopupSetWorkspaceNotCancellable = this.showPopupSetWorkspaceNotCancellable.bind(this);
-    this.showArduinoIdeNotFoundPopup = this.showArduinoIdeNotFoundPopup.bind(this);
     this.showCreateWorkspacePopup = this.showCreateWorkspacePopup.bind(this);
 
     this.initNativeMenu();
@@ -187,17 +184,12 @@ class App extends client.App {
         proc.success(payload.message);
       }
       if (payload.failure) {
-        if (payload.error.errorCode === ERROR_CODES.IDE_NOT_FOUND) {
-          this.showArduinoIdeNotFoundPopup();
-          ipcRenderer.once('SET_ARDUINO_IDE',
-            (evt, response) => {
-              if (response.code === 0) this.onUploadToArduino(board, port, proc);
-            }
-          );
-        } else {
-          console.error(payload.error); // eslint-disable-line no-console
-        }
-        proc.fail(payload.message);
+        console.error(payload.error); // eslint-disable-line no-console
+        const failureMessage = R.compose(
+          R.join('\n\n'),
+          R.reject(R.isNil)
+        )([payload.message, payload.error.stdout, payload.stderr]);
+        proc.fail(failureMessage);
       }
       // Remove listener if process is finished.
       ipcRenderer.removeAllListeners(UPLOAD_TO_ARDUINO);
@@ -468,10 +460,6 @@ class App extends client.App {
     this.props.actions.requestOpenProject(data);
   }
 
-  showArduinoIdeNotFoundPopup() {
-    this.props.actions.requestInstallArduinoIDE();
-  }
-
   showPopupSetWorkspace() {
     this.props.actions.requestSwitchWorkspace({ disposable: false });
   }
@@ -550,11 +538,6 @@ class App extends client.App {
         {this.renderPopupUploadProcess()}
         {this.renderPopupProjectPreferences()}
         {this.renderPopupCreateNewProject()}
-        <PopupSetArduinoIDEPath
-          isVisible={this.props.popups.arduinoIDENotFound}
-          onChange={this.onArduinoPathChange}
-          onClose={this.hideAllPopups}
-        />
         <PopupSetWorkspace
           workspace={this.state.workspace}
           isClosable={R.propOr(false, 'disposable', this.props.popupsData.switchWorkspace)}
@@ -647,7 +630,6 @@ const mapStateToProps = R.applySpec({
     projectSelection: client.getPopupVisibility(client.POPUP_ID.OPENING_PROJECT),
     switchWorkspace: client.getPopupVisibility(client.POPUP_ID.SWITCHING_WORKSPACE),
     createWorkspace: client.getPopupVisibility(client.POPUP_ID.CREATING_WORKSPACE),
-    arduinoIDENotFound: client.getPopupVisibility(client.POPUP_ID.ARDUINO_IDE_NOT_FOUND),
     uploadToArduinoConfig: client.getPopupVisibility(client.POPUP_ID.UPLOADING_CONFIG),
     uploadProject: client.getPopupVisibility(client.POPUP_ID.UPLOADING),
     showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE),
@@ -667,7 +649,6 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     R.merge(client.App.actions, {
       requestOpenProject: client.requestOpenProject,
-      requestInstallArduinoIDE: uploadActions.requestInstallArduinoIDE,
       requestSwitchWorkspace: settingsActions.requestSwitchWorkspace,
       requestCreateWorkspace: settingsActions.requestCreateWorkspace,
       createWorkspace: settingsActions.createWorkspace,

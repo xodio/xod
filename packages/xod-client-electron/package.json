@@ -5,7 +5,7 @@
   "license": "AGPL-3.0",
   "main": "src-babel/app/main.js",
   "name": "xod-client-electron",
-  "version": "0.12.0-dev",
+  "version": "0.12.0-dev.1",
   "scripts": {
     "copy-workspace": "cpx \"../../workspace/**/*\" \"src-babel/workspace\"",
     "build:gui": "webpack --colors",
@@ -25,6 +25,7 @@
     "electron-log": "^2.2.7",
     "electron-settings": "^3.0.14",
     "electron-updater": "^2.7.1",
+    "fs-extra": "^3.0.1",
     "prop-types": "^15.5.10",
     "ramda": "^0.23.0",
     "rc-progress": "^2.1.2",
@@ -38,14 +39,14 @@
     "redux": "^3.0.5",
     "redux-thunk": "^2.1.0",
     "serialport": "^4.0.7",
-    "xod-arduino": "^0.12.0-dev",
-    "xod-arduino-builder": "^0.12.0-dev",
-    "xod-client": "^0.12.0-dev",
+    "xod-arduino": "^0.12.0-dev.1",
+    "xod-arduino-deploy": "^0.12.0-dev.1",
+    "xod-client": "^0.12.0-dev.1",
     "xod-espruino-upload": "^0.11.0",
-    "xod-fs": "^0.12.0-dev",
-    "xod-func-tools": "^0.12.0-dev",
-    "xod-js": "^0.12.0-dev",
-    "xod-project": "^0.12.0-dev"
+    "xod-fs": "^0.12.0-dev.1",
+    "xod-func-tools": "^0.12.0-dev.1",
+    "xod-js": "^0.12.0-dev.1",
+    "xod-project": "^0.12.0-dev.1"
   },
   "devDependencies": {
     "babel-cli": "^6.16.0",
@@ -56,7 +57,6 @@
     "electron": "1.6.11",
     "electron-builder": "=19.12.0",
     "electron-mocha": "^3.4.0",
-    "fs-extra": "^3.0.1",
     "fsp": "^0.1.2",
     "webpack": "^1.13.2",
     "webpack-target-electron-renderer": "^0.4.0"
@@ -65,6 +65,12 @@
     "appId": "io.xod.ide",
     "productName": "XOD IDE",
     "buildDependenciesFromSource": true,
+    "extraResources": [
+      {
+        "from": "arduino-builders/${os}",
+        "to": "arduino-builder"
+      }
+    ],
     "linux": {
       "target": [
         "deb",

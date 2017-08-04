@@ -8,12 +8,9 @@ const ERROR_FORMATTERS = {
   [EC.TRANSPILE_ERROR]: err => `Error occurred during transpilation: ${err}`,
 
   [EC.PORT_NOT_FOUND]: err => `Could not find Arduino device on port: ${err.port.comName}. Available ports: ${R.map(R.prop('comName'), err.ports)}`,
-  [EC.IDE_NOT_FOUND]: err => `Could not find Arduino IDE at paths: ${err.paths}`,
-  [EC.PACKAGES_NOT_FOUND]: err => `Could not find Arduino packages at paths: ${err.paths}`,
   [EC.UPLOAD_ERROR]: err => `Error occured during uploading: ${err}`,
   [EC.INDEX_LIST_ERROR]: err => `Could not connect to Arduino Packages Index at ${err.request.path}: ${err.error.message}`,
-  [EC.INSTALL_PAV_ERROR]: err => `Could not install Arduino PAV: ${err}`,
-  [EC.NO_INSTALLED_PAVS]: err => `Could not find or install Arduino PAV for PAB: ${R.values(err.pab)}`,
+  [EC.CANT_INSTALL_ARCHITECTURE]: err => `Could not install tools: ${err}`,
 
   [XFS_EC.INVALID_WORKSPACE_PATH]: err => `Invalid workspace path: "${err.path}" of type "${typeof err.path}"`,
   [XFS_EC.WORKSPACE_DIR_NOT_EMPTY]: err => `Workspace directory at ${err.path} is not empty`,

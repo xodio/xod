@@ -1,0 +1,38 @@
+{
+  "name": "xod-arduino-deploy",
+  "version": "0.12.0-dev.1",
+  "description": "Utility to build and upload binaries on Arduino microcontrollers.",
+  "main": "dist/index.js",
+  "scripts": {
+    "copy-index": " cpx \"src/*.json\" dist",
+    "build": "babel src -d dist && yarn copy-index",
+    "test": "mocha test/**/*.spec.js",
+    "test-func": "mocha --opts test-func/mocha.opts test-func/**/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xodio/xod.git"
+  },
+  "author": "XOD Team <dev@xod.io>",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/xodio/xod/issues"
+  },
+  "homepage": "https://github.com/xodio/xod#readme",
+  "dependencies": {
+    "child-process-promise": "^2.2.1",
+    "fs-extra": "^4.0.0",
+    "node-fetch": "^1.7.1",
+    "ramda": "^0.24.1",
+    "serialport": "^4.0.7",
+    "tar": "^3.1.8",
+    "unbzip2-stream": "^1.2.5",
+    "xod-fs": "^0.12.0-dev.1",
+    "xod-func-tools": "^0.12.0-dev.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "commander": "^2.11.0",
+    "cpx": "^1.5.0"
+  }
+}
