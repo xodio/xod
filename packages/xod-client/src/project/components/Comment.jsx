@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactAutolinker from 'react-autolinker';
+import AutoLinkText from 'react-autolink-text2';
 import classNames from 'classnames';
 
 import { noop } from '../../utils/ramda';
@@ -8,6 +8,7 @@ import { noop } from '../../utils/ramda';
 import { NODE_CORNER_RADIUS } from '../nodeLayout';
 
 const HANDLE_SIZE = 12;
+const linkProps = { target: '_blank', rel: 'nofollow noopener' };
 
 class Comment extends React.Component {
   constructor(props) {
@@ -155,7 +156,12 @@ class Comment extends React.Component {
                 autoFocus
               />
             ) : (
-              <ReactAutolinker text={content} className="content viewer" />
+              <div className="content viewer">
+                <AutoLinkText
+                  text={content}
+                  linkProps={linkProps}
+                />
+              </div>
             )}
             <div
               className="resizeHandleOverlay"
