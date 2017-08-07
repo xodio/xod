@@ -1,9 +1,9 @@
 {
   "authors": [
-    "XOD team"
+    "XOD"
   ],
   "description": "The very basic nodes of XOD",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "name": "core",
-  "version": "0.11.0"
+  "version": "0.12.0"
 }
