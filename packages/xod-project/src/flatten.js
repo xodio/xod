@@ -1,7 +1,7 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 
-import { explode, explodeEither } from 'xod-func-tools';
+import { explode, explodeEither, catMaybes } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Project from './project';
@@ -54,23 +54,11 @@ LinkWrapper.prototype.get = baseGet;
 //
 // =============================================================================
 
-// :: Node[] -> Node[]
-const filterInternalTerminalNodes = R.filter(R.compose(
+// :: Node -> Boolean
+const isInternalTerminalNode = R.compose(
   PatchPathUtils.isInternalTerminalNodeType,
   Node.getNodeType
-));
-// :: Node[] -> Link[] -> Link[]
-const filterTerminalLinks = R.curry((nodes, links) => R.map(
-  (node) => {
-    const nodeId = Node.getNodeId(node);
-    const eqNodeId = R.equals(nodeId);
-    return R.filter(R.either(
-      R.compose(eqNodeId, Link.getLinkInputNodeId),
-      R.compose(eqNodeId, Link.getLinkOutputNodeId)
-    ), links);
-  },
-  nodes
-));
+);
 
 // :: Applicative f => f a -> [(a -> Applicative a)] -> f a
 const reduceChainOver = R.reduce(R.flip(R.chain));
@@ -281,74 +269,26 @@ const splitLinkWithCastNode = R.curry((patchTuples, nodes, link) =>
   )
 );
 
-// :: String -> Link[] -> Link[]
-const filterOutputLinksByNodeId = R.curry((nodeId, links) => R.filter(
-  R.compose(
-    R.equals(nodeId),
-    Link.getLinkOutputNodeId
-  ),
-  links
-));
-
-// :: String[] -> Node[] -> Node[]
-const rejectContainedNodeIds = R.curry((nodeIds, nodes) => R.reject(
-  R.compose(
-    R.contains(R.__, nodeIds),
-    Node.getNodeId
-  ),
-  nodes
-));
-
-// :: Node[] -> Link[] -> Node[] -> Node[]
-const passPinsFromTerminalNodes = R.curry(
-  (nodes, linksConnectedToTerminalNodes, terminalNodesWithBoundValues) => {
-    // :: [{ nodeId, pinKey, value }]
-    const valuesToBind = R.chain(
-      terminalNode => R.compose(
-        R.map(
-          R.converge(
-            (nodeId, pinKey) => ({
-              nodeId,
-              pinKey,
-              // because all terminals here have exactly one bound value
-              value: R.compose(R.head, R.values)(terminalNode.boundValues),
-            }),
-            [
-              Link.getLinkInputNodeId,
-              Link.getLinkInputPinKey,
-            ]
-          )
-        ),
-        filterOutputLinksByNodeId(R.__, linksConnectedToTerminalNodes),
-        Node.getNodeId
-      )(terminalNode),
-      terminalNodesWithBoundValues
-    );
-
-    return R.compose(
-      R.values,
-      R.reduce(
-        (indexedNodes, { nodeId, pinKey, value }) => R.over(
-          R.lensProp(nodeId),
-          Node.setBoundValue(pinKey, value),
-          indexedNodes
-        ),
-        R.__,
-        valuesToBind
-      ),
-      R.indexBy(Node.getNodeId)
-    )(nodes);
-  }
+// :: [{ nodeId, pinKey, value }] -> StrMap Node -> StrMap Node
+const bindValuesToIndexedNodes = R.curry(
+  (valuesToBind, nodesById) => R.reduce(
+    (indexedNodes, { nodeId, pinKey, value }) => R.over(
+      R.lensProp(nodeId),
+      Node.setBoundValue(pinKey, value),
+      indexedNodes
+    ),
+    nodesById,
+    valuesToBind
+  )
 );
 
-// :: StrMap NodeId Node -> NodeId -> Boolean
+// :: StrMap Node -> NodeId -> Boolean
 const isNodeWithIdTerminal = R.uncurryN(2, nodesById => R.compose(
-  PatchPathUtils.isInternalTerminalNodeType,
-  Node.getNodeType,
+  isInternalTerminalNode,
   R.flip(R.prop)(nodesById)
 ));
 
-// :: StrMap NodeId Node -> Link -> Boolean
+// :: StrMap Node -> Link -> Boolean
 const isLinkFromTerminalToRegularNode = R.uncurryN(2, nodesById => R.both(
   R.compose(
     isNodeWithIdTerminal(nodesById),
@@ -360,116 +300,185 @@ const isLinkFromTerminalToRegularNode = R.uncurryN(2, nodesById => R.both(
   )
 ));
 
+// Collects all the links
+//
 //    Regular node
-//         | <---- ... will find this link
+//         | <---- ... to here
 //      Terminal
 //         |
 //      Terminal
 //         | <--- starting from here ...
 //    Regular node
 //
-// :: StrMap NodeId Node -> StrMap NodeId Link -> Link -> Link
-const findSourceLink = R.uncurryN(3, nodesById => linksByInputNodeId =>
-  function recur(link) {
-    const nextLinkInChain = linksByInputNodeId[Link.getLinkOutputNodeId(link)];
+// So returned array will always start with link from "regular" node input to terminal output,
+// then it may contain some links from terminal to terminal
+// and finally in may end with a link from terminl input to "regular" node output
+//
+// :: StrMap NodeId Node -> StrMap NodeId Link -> Link -> [Link]
+const getTerminalLinksChain = R.curry(
+  (nodesById, linksByInputNodeId, startingLink) =>
+    (function recur(linksChain) {
+      const nextLinkInChain = linksByInputNodeId[Link.getLinkOutputNodeId(R.last(linksChain))];
 
-    // Special case for when there is a 'dangling' terminal node.
-    // Those will be dealt with at a later stage
-    //
-    //      Terminal  <----
-    //         |
-    //      Terminal
-    //         |
-    //    Regular node
-    if (!nextLinkInChain) return link;
+      // Special case for when there is a 'dangling' terminal node.
+      //
+      //      Terminal  <----
+      //         |
+      //      Terminal
+      //         |
+      //    Regular node
+      if (!nextLinkInChain) return linksChain;
 
-    return R.when(
-      R.compose(
-        isNodeWithIdTerminal(nodesById),
+      const reachedTheEnd = R.compose(
+        R.complement(isNodeWithIdTerminal(nodesById)),
         Link.getLinkOutputNodeId
-      ),
-      recur,
-      nextLinkInChain
-    );
-  }
+      )(nextLinkInChain);
+
+      const newLinksChain = R.append(nextLinkInChain, linksChain);
+
+      if (reachedTheEnd) {
+        return newLinksChain;
+      }
+
+      return recur(newLinksChain);
+    }([startingLink]))
 );
 
-// TODO: Refactoring needed
+// :: [NodeId] -> Link -> Boolean
+const isLinkConnectedToNodeIds = R.curry(
+  (nodeIds, link) => R.or(
+    R.contains(Link.getLinkInputNodeId(link), nodeIds),
+    R.contains(Link.getLinkOutputNodeId(link), nodeIds)
+  )
+);
+
+// :: ((a → Boolean) → [a] → a | undefined) -> [Node] -> Maybe DataValue
+const findBoundValue = R.uncurryN(2)(
+  findFn => R.compose(
+    Maybe,
+    R.unless(
+      R.isNil,
+      R.compose(R.head, R.values) // because terminal nodes always have only one bound value
+    ),
+    findFn(R.complement(R.isEmpty)),
+    R.map(Node.getAllBoundValues),
+  )
+);
+
+// :: StrMap Node -> [Link] -> Maybe { nodeId, pinKey, value }
+const getValueToBind = R.curry((nodesById, linksChain) => {
+  const outputNodesFromLinkChain = R.map(R.compose(
+    R.flip(R.prop)(nodesById),
+    Link.getLinkOutputNodeId
+  ))(linksChain);
+
+  const isTopNodeTerminal = R.compose(
+    isInternalTerminalNode,
+    R.last
+  )(outputNodesFromLinkChain);
+
+  return isTopNodeTerminal
+    ? findBoundValue(R.findLast, outputNodesFromLinkChain).map((topBoundValue) => {
+      const bottomLink = R.head(linksChain);
+      return {
+        nodeId: Link.getLinkInputNodeId(bottomLink),
+        pinKey: Link.getLinkInputPinKey(bottomLink),
+        value: topBoundValue,
+      };
+    })
+    : findBoundValue(R.find, outputNodesFromLinkChain).map((bottomBoundValue) => {
+      const topLink = R.last(linksChain);
+      return {
+        nodeId: Link.getLinkOutputNodeId(topLink),
+        pinKey: Link.getLinkOutputPinKey(topLink),
+        value: bottomBoundValue,
+      };
+    });
+});
+
+// :: [Link] -> Link
+const collapseLinksChain = (linksChain) => {
+  const firstLink = R.head(linksChain);
+  const lastLink = R.last(linksChain);
+
+  const linkId = Link.getLinkId(firstLink);
+  const newLink = Link.createLink(
+    Link.getLinkInputPinKey(firstLink),
+    Link.getLinkInputNodeId(firstLink),
+    Link.getLinkOutputPinKey(lastLink),
+    Link.getLinkOutputNodeId(lastLink)
+  );
+
+  return R.assoc('id', linkId, newLink);
+};
+
+// :: StrMap Node -> StrMap Link -> [Link] -> Pair [Link] [{ nodeId, pinKey, value }]
+const getCollapsedLinksAndValuesToBind = R.uncurryN(3)(
+  (nodesById, linksByInputNodeId) => R.compose(
+    R.adjust(catMaybes, 1),
+    R.when(
+      R.isEmpty,
+      R.always([[], []])
+    ),
+    R.transpose, // [Pair Link ValueToBind] -> Pair [Link] [ValueToBind]
+    R.map(R.compose( // :: [Link] -> [Pair Link ValueToBind]
+      R.converge(
+        R.pair,
+        [
+          collapseLinksChain,
+          getValueToBind(nodesById),
+        ]
+      ),
+      getTerminalLinksChain(nodesById, linksByInputNodeId)
+    )),
+    R.filter(isLinkFromTerminalToRegularNode(nodesById))
+  )
+);
+
+// 'collapses' links containing terminals,
+//
+//     +------------+                          +------------+
+//     |   latch    |                          |   latch    |
+//     +-----o------+                          +-----o------+
+//           |                                       |
+//    +------O-------+                       +-------+-----+------+
+//    | terminalBool |          -->          |             |      |
+//    +------o-------+                       |             |      |
+//           |                               |             |      |
+//   +-------+-----+------+                  |             |      |
+//   |             |      |                  |             |      |
+// +-O------O-+  +-O------O-+              +-O------O-+  +-O------O-+
+// |    or    |  |    or    |              |    or    |  |    or    |
+// +----o-----+  +----o-----+              +----o-----+  +----o-----+
+//
+// removes terminal nodes,
+// and rebinds values bound to terminals  to 'real' nodes
+//
 // :: [ Node[], Link[] ] -> [ Node[], Link[] ]
 const removeTerminalsAndPassPins = ([nodes, links]) => {
-  const terminalNodes = filterInternalTerminalNodes(nodes);
-  const linksConnectedToTerminalNodes = filterTerminalLinks(terminalNodes, links);
-
-  const terminalNodesWithBoundValues = R.reject(
-    R.pipe(Node.getAllBoundValues, R.isEmpty),
-    terminalNodes
-  );
-
-  const nodesWithPins = R.compose(
-    R.flatten,
-    passPinsFromTerminalNodes(nodes, R.flatten(linksConnectedToTerminalNodes))
-  )(terminalNodesWithBoundValues);
-  const nodesWithPinsIds = R.map(Node.getNodeId, nodesWithPins);
-
-  const terminalNodeIds = R.compose(
-    R.map(Node.getNodeId),
-    R.flatten
-  )(terminalNodes);
-
-  const newNodes = R.compose(
-    rejectContainedNodeIds(terminalNodeIds),
-    R.concat(nodesWithPins),
-    rejectContainedNodeIds(nodesWithPinsIds)
-  )(nodes);
-
-  const linkIdsToRemove = R.compose(
-    R.map(Link.getLinkId),
-    R.flatten
-  )(linksConnectedToTerminalNodes);
-  const linksWithoutTerminals = R.reject(
-    R.compose(
-      R.contains(R.__, linkIdsToRemove),
-      Link.getLinkId
-    ),
-    links
-  );
-
   const nodesById = R.indexBy(Node.getNodeId, nodes);
   const linksByInputNodeId = R.indexBy(Link.getLinkInputNodeId, links);
 
+  const [
+    collapsedTerminalLinks,
+    valuesToBind,
+  ] = getCollapsedLinksAndValuesToBind(nodesById, linksByInputNodeId, links);
+
+  const terminalNodeIds = R.compose(
+    R.map(Node.getNodeId),
+    R.filter(isInternalTerminalNode)
+  )(nodes);
+
   const newLinks = R.compose(
-    R.concat(linksWithoutTerminals),
-    R.reject( // delete remaining "dangling" terminals nodes
-      isLinkFromTerminalToRegularNode(nodesById)
-    ),
-    R.map((link) => {
-      //     +------------+                          +------------+
-      //     |   latch    |                          |   latch    |
-      //     +-----o------+       Links will         +-----o------+
-      //           |              be converted             |
-      //    +------O-------+      into next        +-------+-----+------+
-      //    | terminalBool |      three links:     |             |      |
-      //    +------o-------+                       |             |      |
-      //           |                               |             |      |
-      //   +-------+-----+------+                  |             |      |
-      //   |             |      |                  |             |      |
-      // +-O------O-+  +-O------O-+              +-O------O-+  +-O------O-+
-      // |    or    |  |    or    |              |    or    |  |    or    |
-      // +----o-----+  +----o-----+              +----o-----+  +----o-----+
-      const sourceLink = findSourceLink(nodesById, linksByInputNodeId, link);
-
-      const linkId = Link.getLinkId(link);
-      const newLink = Link.createLink(
-        Link.getLinkInputPinKey(link),
-        Link.getLinkInputNodeId(link),
-        Link.getLinkOutputPinKey(sourceLink),
-        Link.getLinkOutputNodeId(sourceLink)
-      );
-
-      return R.assoc('id', linkId, newLink);
-    }),
-    R.filter(isLinkFromTerminalToRegularNode(nodesById))
+    R.reject(isLinkConnectedToNodeIds(terminalNodeIds)),
+    R.concat(collapsedTerminalLinks)
   )(links);
+
+  const newNodes = R.compose(
+    R.reject(isInternalTerminalNode),
+    R.values,
+    bindValuesToIndexedNodes(valuesToBind),
+  )(nodesById);
 
   return [newNodes, newLinks];
 };
@@ -545,7 +554,6 @@ const updateLinkNodeIds = R.curry((leafPaths, prefix, patch, link) => {
     isLeafNode(leafPaths),
     getNodeById(patch)
   )(inputNodeId);
-  // TODO: and here is why switching to labels as pin keys will be a bit of a pain
   const newInputNodeId = (isInputLeafNode) ?
     getPrefixedId(prefix, inputNodeId) :
     getPrefixedId(prefix, getPrefixedId(inputNodeId, inputPinKey));

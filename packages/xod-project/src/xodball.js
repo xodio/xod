@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { Either } from 'ramda-fantasy';
-import { foldEither, validateSanctuaryType } from 'xod-func-tools';
+import { foldEither, explodeEither, validateSanctuaryType } from 'xod-func-tools';
 
 import { getPatchPath } from './patch';
 import { listLibraryPatches, omitPatches } from './project';
@@ -11,21 +11,33 @@ import {
 import { ERROR } from './constants';
 import { Project, def } from './types';
 
+export const fromXodballData = def(
+  'fromXodballData :: Object -> Either String Project',
+  R.compose(
+    foldEither(
+      // Replace sanctuary-def validation error with our own
+      R.always(Either.Left(ERROR.INVALID_XODBALL_FORMAT)),
+      Either.of
+    ),
+    validateSanctuaryType(Project),
+    addMissingOptionalProjectFields
+  )
+);
+
+export const fromXodballDataUnsafe = def(
+  'fromXodballDataUnsafe :: Object -> Project',
+  R.compose(
+    explodeEither,
+    fromXodballData
+  )
+);
+
 export const fromXodball = def(
   'fromXodball :: String -> Either String Project',
   jsonString => R.tryCatch(
       R.pipe(JSON.parse, Either.of),
       R.always(Either.Left(ERROR.NOT_A_JSON))
-    )(jsonString)
-      .map(addMissingOptionalProjectFields)
-      .chain(R.compose(
-        foldEither(
-          // Replace sanctuary-def validation error with our own
-          R.always(Either.Left(ERROR.INVALID_XODBALL_FORMAT)),
-          Either.of
-        ),
-        validateSanctuaryType(Project)
-      ))
+    )(jsonString).chain(fromXodballData)
 );
 
 export const toXodball = def(

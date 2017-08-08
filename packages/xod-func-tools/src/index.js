@@ -48,6 +48,14 @@ export const explodeMaybe = def(
   }
 );
 
+export const catMaybes = def(
+  'catMaybes :: [Maybe a] -> [a]',
+  R.compose(
+    R.map(explodeMaybe('Expected Just, but got Nothing.')),
+    R.filter(Maybe.isJust)
+  )
+);
+
 /**
  * Function to extract value from `Either` by providing a function
  * to handle the types of values contained in both `Left` and `Right`.
@@ -95,7 +103,7 @@ export const validateSanctuaryType = R.uncurryN(2, SanctuaryType =>
  * if it is Left.
  */
 export const explodeEither = def(
-  'explodeMaybe :: Either a b -> b',
+  'explodeEither :: Either a b -> b',
   foldEither(
     (err) => { throw new Error(`Explosion failed: ${err}`); },
     R.identity
@@ -244,6 +252,7 @@ export default Object.assign(
   {
     explode,
     explodeMaybe,
+    catMaybes,
     foldEither,
     eitherToPromise,
     sanctuaryDefEitherToRamdaFantasyEither,
