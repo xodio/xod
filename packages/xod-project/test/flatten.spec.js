@@ -7,7 +7,7 @@ import * as CONST from '../src/constants';
 import flatten, { extractPatches, extractLeafPatches } from '../src/flatten';
 import { formatString } from '../src/utils';
 import { getCastPatchPath } from '../src/patchPathUtils';
-import { addMissingOptionalProjectFields } from '../src/optionalFieldsUtils';
+import { fromXodballDataUnsafe } from '../src/xodball';
 
 import blinking from './fixtures/blinking.json';
 import blinkingFlat from './fixtures/blinking.flat.json';
@@ -20,6 +20,9 @@ import boundInputValuesPropagationFlat from './fixtures/bound-input-values-propa
 
 import castMultipleOutputsXodball from './fixtures/cast-multiple-outputs.xodball.json';
 import castMultipleOutputsFlat from './fixtures/cast-multiple-outputs.flat.json';
+
+import deepBoundValuesPropagationXodball from './fixtures/deep-bound-values-propagation.xodball.json';
+import deepBoundValuesPropagationFlat from './fixtures/deep-bound-values-propagation.flat.json';
 
 chai.use(dirtyChai);
 
@@ -1419,7 +1422,7 @@ describe('Flatten', () => {
       //  +----------------+
       //
       it('should create a separate cast node for each casted output', () => {
-        const castMultipleOutputs = addMissingOptionalProjectFields(castMultipleOutputsXodball);
+        const castMultipleOutputs = fromXodballDataUnsafe(castMultipleOutputsXodball);
         const flatProject = flatten(castMultipleOutputs, '@/main', ['arduino', 'cpp']);
 
         expect(flatProject.isRight).to.be.true();
@@ -1806,6 +1809,20 @@ describe('Flatten', () => {
       Helper.expectEither(
         (project) => {
           expect(project).to.deep.equal(boundInputValuesPropagationFlat);
+        },
+        flatProject
+      );
+    });
+
+    it('should propagate bound values to DEEPLY nested patches', () => {
+      const deepBoundValuesPropagationProject =
+        fromXodballDataUnsafe(deepBoundValuesPropagationXodball);
+      const flatProject = flatten(deepBoundValuesPropagationProject, '@/main', ['arduino', 'cpp']);
+
+      expect(flatProject.isRight).to.be.true();
+      Helper.expectEither(
+        (project) => {
+          expect(project).to.deep.equal(deepBoundValuesPropagationFlat);
         },
         flatProject
       );
