@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Bug fixes
+
+* Fix upload failure if a `xod/common-hardware/text-lcd-16x2` or `xod/common-hardware/servo`
+  node is used. XOD IDE now carries vital Arduino libraries in the distro.
+
 <a name="0.12.0"></a>
 ## 0.12.0 (2017-08-07)
 
