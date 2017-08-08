@@ -18,7 +18,7 @@ import { errorToPlainObject, IS_DEV } from './utils';
 
 // =============================================================================
 //
-// Calculated constants
+// Computed paths
 //
 // =============================================================================
 const arduinoPackagesPath = resolve(app.getPath('userData'), 'packages');
@@ -27,9 +27,15 @@ const arduinoBuilderPlatformMap = {
   linux: 'linux',
   darwin: 'mac',
 };
+
 const arduinoBuilderPath = (IS_DEV) ?
   resolve(app.getAppPath(), 'arduino-builders', arduinoBuilderPlatformMap[os.platform()]) :
   resolve(process.resourcesPath, 'arduino-builder');
+
+const arduinoLibrariesPath = resolve(
+  IS_DEV ? app.getAppPath() : process.resourcesPath,
+  'arduino-libraries'
+);
 
 // =============================================================================
 //
@@ -138,7 +144,7 @@ export const uploadToArduino = (pab, port, code) => {
 
   return writeFile(sketchFile, code, 'utf8')
     .then(({ path }) => xad.buildAndUpload(
-      path, pab, arduinoPackagesPath, buildDir, port, arduinoBuilderPath
+      path, pab, arduinoPackagesPath, arduinoLibrariesPath, buildDir, port, arduinoBuilderPath
     ))
     .then(tapP(clearTmp))
     .catch(
