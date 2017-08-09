@@ -103,7 +103,7 @@ const options = {
   plugins: [
     new webpack.NoErrorsPlugin(),
     new CopyWebpackPlugin([
-      { from: pkgpath('src/index.html') },
+      { from: pkgpath('node_modules/xod-client/src/core/assets/index.html') },
     ]),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
