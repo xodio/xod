@@ -11,20 +11,45 @@ import * as Utils from './utils';
 //
 // =============================================================================
 
-export const composeCommand = (sketchFilePath, fqbn, packagesDir, buildDir, builderToolDir) => {
+export const composeCommand = (
+  sketchFilePath,
+  fqbn,
+  packagesDir,
+  librariesDir,
+  buildDir,
+  builderToolDir
+) => {
   const builderExecFileName = (Utils.isWindows) ? 'arduino-builder.exe' : 'arduino-builder';
   const builderExec = path.join(builderToolDir, builderExecFileName);
 
   const builderHardware = path.join(builderToolDir, 'hardware');
   const builderTools = path.join(builderToolDir, 'tools');
 
-  return `"${builderExec}" -hardware="${builderHardware}" -hardware="${packagesDir}" -tools="${builderTools}" -tools="${packagesDir}" -fqbn="${fqbn}" -build-path="${buildDir}" "${sketchFilePath}"`;
+  return [
+    `"${builderExec}"`,
+    `-hardware="${builderHardware}"`,
+    `-hardware="${packagesDir}"`,
+    `-libraries="${librariesDir}"`,
+    `-tools="${builderTools}"`,
+    `-tools="${packagesDir}"`,
+    `-fqbn="${fqbn}"`,
+    `-build-path="${buildDir}"`,
+    `"${sketchFilePath}"`,
+  ].join(' ');
 };
 
-// :: Path -> FQBN -> Path -> Path -> PortName -> Promise { exitCode, stdout, stderr } Error
+// :: Path -> FQBN -> Path -> Path -> Path -> PortName -> Promise { exitCode, stdout, stderr } Error
 export const build = R.curry(
-  (sketchFilePath, fqbn, packagesDir, buildDir, builderToolDir) => {
-    const cmd = composeCommand(sketchFilePath, fqbn, packagesDir, buildDir, builderToolDir);
+  (sketchFilePath, fqbn, packagesDir, librariesDir, buildDir, builderToolDir) => {
+    const cmd = composeCommand(
+      sketchFilePath,
+      fqbn,
+      packagesDir,
+      librariesDir,
+      buildDir,
+      builderToolDir
+    );
+
     return fse.ensureDir(buildDir)
       .then(() => cpp.exec(cmd))
       .then(Utils.normalizeChildProcessResult);

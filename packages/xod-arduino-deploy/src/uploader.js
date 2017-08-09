@@ -137,10 +137,10 @@ export const upload = R.curry(
   }
 );
 
-// :: Path -> FQBN -> Path -> Path -> PortName -> Promise { exitCode, stdout, stderr } Error
+// :: Path -> FQBN -> Path -> Path -> Path -> PortName -> Promise { exitCode, stdout, stderr } Error
 export const buildAndUpload = R.curry(
-  (sketchFilePath, fqbn, packagesDir, buildDir, portName, builderToolDir) =>
-    build(sketchFilePath, fqbn, packagesDir, buildDir, builderToolDir)
+  (sketchFilePath, fqbn, packagesDir, librariesDir, buildDir, portName, builderToolDir) =>
+    build(sketchFilePath, fqbn, packagesDir, librariesDir, buildDir, builderToolDir)
       .then((res) => {
         if (res.exitCode !== 0) {
           return Promise.reject(Object.assign(new Error(res.stderr), res));
