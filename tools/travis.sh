@@ -11,9 +11,16 @@ upload_dist_to_gcs() {
             --config="$config" --file={} --tag="$tag" \;
 }
 
+build_dist() {
+    # Build again with production settings for the UI part of the IDE
+    export NODE_ENV=production
+    yarn run build
+    yarn run electron-dist
+}
+
 tags=$(git tag --points-at "$TRAVIS_COMMIT")
 if [ -n "$tags" ]; then
-    yarn run electron-dist
+    build_dist
     while read -r tag; do
         node tools/extract-release-notes.js "${tag#v}"  \
             <CHANGELOG.md >packages/xod-client-electron/dist/RELEASE_NOTES.md
@@ -29,6 +36,6 @@ if [[ $TRAVIS_BRANCH == prerelease-* ]]; then
     lerna publish --skip-git --skip-npm --cd-version=minor --yes
     lerna publish --skip-git --skip-npm --canary --yes
     tag=$(node -e "console.log('v' + require('./packages/xod-client-electron/package.json').version)")
-    yarn run electron-dist
+    build_dist
     upload_dist_to_gcs $tag
 fi
