@@ -8,8 +8,14 @@ for commit guidelines.
 
 ### Bug fixes
 
-* Fix upload failure if a `xod/common-hardware/text-lcd-16x2` or `xod/common-hardware/servo`
-  node is used. XOD IDE now carries vital Arduino libraries in the distro.
+* Fix upload failure if a `xod/common-hardware/text-lcd-16x2` or
+  `xod/common-hardware/servo` node is used. XOD IDE now carries vital Arduino
+  libraries in the distro.
+* Improve UI responsiveness, fix IDE performance degradation over time. The
+  problem was in a developer/debugging tool integrated to XOD IDE which is not
+  very interesting for end-users. The tool is no longer enabled in public
+  releases.
+* Fix bound values propagation in complex scenarios with deeply nested patches.
 
 <a name="0.12.0"></a>
 ## 0.12.0 (2017-08-07)
