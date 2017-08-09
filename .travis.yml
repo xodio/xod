@@ -49,4 +49,4 @@ before_script: |
 
 script:
 - yarn verify
-- travis_wait 30 ./tools/travis.sh
+- travis_wait 50 ./tools/travis.sh
