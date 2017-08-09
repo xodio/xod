@@ -8,20 +8,27 @@ function Upload-Dist-To-GCS($tag) {
   }
 }
 
+function Build-Dist() {
+  # Build again with production settings for the UI part of the IDE
+  $env:NODE_ENV="production"
+  yarn run build
+  yarn run electron-dist
+}
+
 $tags=(git tag --points-at $env:APPVEYOR_REPO_COMMIT)
 
 if ($tags) {
-  yarn run electron-dist
+  Build-Dist
   foreach ($tag in $tags) {
     Upload-Dist-To-GCS $tag
   }
 }
 
-if ($env:APPVEYOR_REPO_BRANCH.StartsWith("prerelease")) {
+if ($env:APPVEYOR_REPO_BRANCH.StartsWith("prerelease-")) {
   Write-Host 'Building prerelease distributive...' -ForegroundColor Yellow
   yarn lerna -- publish --skip-git --skip-npm --cd-version=minor --yes
   yarn lerna -- publish --skip-git --skip-npm --canary --yes
   $tag=(node -e "console.log('v' + require('./packages/xod-client-electron/package.json').version)")
-  yarn run electron-dist
+  Build-Dist
   Upload-Dist-To-GCS $tag
 }
