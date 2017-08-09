@@ -19,12 +19,12 @@ class NodePinsOverlay extends React.Component {
     return R.not(R.equals(newProps, this.props));
   }
 
-  onPinMouseUp(pinId) {
-    this.props.onPinMouseUp(this.id, pinId);
+  onPinMouseUp(event, pinId) {
+    this.props.onPinMouseUp(event, this.id, pinId);
   }
 
-  onPinMouseDown(pinId) {
-    this.props.onPinMouseDown(this.id, pinId);
+  onPinMouseDown(event, pinId) {
+    this.props.onPinMouseDown(event, this.id, pinId);
   }
 
   render() {

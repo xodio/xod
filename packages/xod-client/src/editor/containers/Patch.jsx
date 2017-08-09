@@ -105,10 +105,12 @@ class Patch extends React.Component {
     });
   }
 
-  onPinMouseDown(nodeId, pinKey) {
+  onPinMouseDown(event, nodeId, pinKey) {
+    this.updateMousePosition(event);
     this.props.actions.linkPin(nodeId, pinKey);
   }
-  onPinMouseUp(nodeId, pinKey) {
+  onPinMouseUp(event, nodeId, pinKey) {
+    this.updateMousePosition(event);
     const lp = this.props.linkingPin;
     const firstPinClick = !lp || (
       nodeId === lp.nodeId &&
@@ -313,8 +315,6 @@ class Patch extends React.Component {
             selection={this.props.selection}
             linkingPin={this.props.linkingPin}
             onMouseDown={this.onNodeMouseDown}
-            onPinMouseDown={this.onPinMouseDown}
-            onPinMouseUp={this.onPinMouseUp}
           />
           <Layers.Links
             links={idleLinks}
