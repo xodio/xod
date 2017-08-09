@@ -16,8 +16,6 @@ const IdleNodesLayer = ({
   selection,
   linkingPin,
   onMouseDown,
-  onPinMouseUp,
-  onPinMouseDown,
 }) => {
   const pinLinkabilityValidator = getPinLinkabilityValidator(linkingPin, nodes);
 
@@ -45,8 +43,6 @@ const IdleNodesLayer = ({
               linkingPin={linkingPin}
               pinLinkabilityValidator={pinLinkabilityValidator}
               onMouseDown={onMouseDown}
-              onPinMouseUp={onPinMouseUp}
-              onPinMouseDown={onPinMouseDown}
             />
         ),
         R.values
@@ -61,8 +57,6 @@ IdleNodesLayer.propTypes = {
   linkingPin: PropTypes.object,
   draggedNodeId: PropTypes.string,
   onMouseDown: PropTypes.func,
-  onPinMouseUp: PropTypes.func,
-  onPinMouseDown: PropTypes.func,
 };
 
 export default IdleNodesLayer;

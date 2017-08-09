@@ -10,12 +10,12 @@ export default class PinOverlay extends React.Component {
     this.onMouseDown = this.onMouseDown.bind(this);
   }
 
-  onMouseUp() {
-    this.props.onMouseUp(this.props.keyName);
+  onMouseUp(event) {
+    this.props.onMouseUp(event, this.props.keyName);
   }
 
-  onMouseDown() {
-    this.props.onMouseDown(this.props.keyName);
+  onMouseDown(event) {
+    this.props.onMouseDown(event, this.props.keyName);
   }
 
   render() {
