@@ -66,32 +66,38 @@ class Patch extends React.Component {
 
   onNodeMouseDown(event, nodeId) {
     this.props.actions.selectNode(nodeId);
-
     const clickedNode = this.props.nodes[nodeId];
-    const mouseOffsetFromClickedEntity =
-      subtractPoints(this.state.mousePosition, clickedNode.position);
 
-    this.setState({
-      isMouseDown: true,
-      mouseOffsetFromClickedEntity,
+    this.updateMousePosition(event, () => {
+      const mouseOffsetFromClickedEntity =
+        subtractPoints(this.state.mousePosition, clickedNode.position);
+
+      this.setState({
+        isMouseDown: true,
+        mouseOffsetFromClickedEntity,
+      });
     });
   }
 
   onCommentMouseDown(event, commentId) {
     this.props.actions.selectComment(commentId);
-
     const clickedComment = this.props.comments[commentId];
-    const mouseOffsetFromClickedEntity =
-      subtractPoints(this.state.mousePosition, clickedComment.position);
 
-    this.setState({
-      isMouseDown: true,
-      mouseOffsetFromClickedEntity,
+    this.updateMousePosition(event, () => {
+      const mouseOffsetFromClickedEntity =
+        subtractPoints(this.state.mousePosition, clickedComment.position);
+
+      this.setState({
+        isMouseDown: true,
+        mouseOffsetFromClickedEntity,
+      });
     });
   }
 
   onCommentResizeHandleMouseDown(event, commentId) {
     this.props.actions.selectComment(commentId);
+
+    this.updateMousePosition(event);
 
     this.setState({
       isMouseDown: true,
@@ -123,6 +129,8 @@ class Patch extends React.Component {
   }
 
   onMouseMove(event) {
+    if (!(this.state.isMouseDown || this.props.mode.isLinking)) return;
+
     // jump to move mode only if user actually drags something
     if (
       this.state.isMouseDown &&
@@ -133,17 +141,7 @@ class Patch extends React.Component {
       });
     }
 
-    if (!this.patchSvgRef) return;
-    const bbox = this.patchSvgRef.getBoundingClientRect();
-
-    // TODO: probably, could be optimized, but for now we are
-    // always keeping an up-to-date mouse position in state
-    this.setState({
-      mousePosition: {
-        x: event.clientX - bbox.left,
-        y: event.clientY - bbox.top,
-      },
-    });
+    this.updateMousePosition(event);
   }
 
   onMouseUp() {
@@ -266,6 +264,18 @@ class Patch extends React.Component {
     };
   }
 
+  updateMousePosition(event, setStateCallback) {
+    if (!this.patchSvgRef) return;
+    const bbox = this.patchSvgRef.getBoundingClientRect();
+
+    this.setState({
+      mousePosition: {
+        x: event.clientX - bbox.left,
+        y: event.clientY - bbox.top,
+      },
+    }, setStateCallback);
+  }
+
   render() {
     const links = R.values(this.props.links);
 
@@ -325,12 +335,12 @@ class Patch extends React.Component {
             onResizeHandleMouseDown={this.onCommentResizeHandleMouseDown}
             onFinishEditing={this.props.actions.editComment}
           />
-          {(this.state.manipulationMode !== MANIPULATION_MODE.SELECT) && (
+          {(this.state.manipulationMode !== MANIPULATION_MODE.SELECT) ? (
             <Layers.SnappingPreview
               draggedEntityPosition={manipulatedEntityPosition}
               draggedEntitySize={manipulatedEntitySize}
             />
-          )}
+          ) : null}
           <Layers.ManipulatedComment
             comment={manipulatedComment}
             position={manipulatedEntityPosition}
