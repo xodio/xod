@@ -7,7 +7,7 @@
     "bootstrap": "lerna bootstrap",
     "build": "node ./tools/lerna-run-sorted build",
     "clean": "yarn run clean:dist && yarn run clean:node_modules",
-    "clean:dist": "rimraf packages/*/dist",
+    "clean:dist": "rimraf packages/*/dist packages/xod-cli/bin packages/xod-client-electron/src-babel",
     "clean:node_modules": "rimraf node_modules packages/*/node_modules",
     "dev": "node ./tools/lerna-serve dev",
     "doc": "node ./tools/lerna-run-sorted doc",
