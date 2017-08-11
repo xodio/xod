@@ -48,7 +48,6 @@
     "url-parse": "^1.1.9",
     "xod-arduino": "^0.12.1",
     "xod-func-tools": "^0.12.1",
-    "xod-js": "^0.12.1",
     "xod-project": "^0.12.1"
   },
   "devDependencies": {

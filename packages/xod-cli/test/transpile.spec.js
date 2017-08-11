@@ -13,7 +13,7 @@ describe('xodc transpile', () => {
   afterEach(() => rmrf(tmpPath('./')));
 
   it('should transpile Blink project for Arduino', () =>
-    exec(`node ${xodc} transpile --target=arduino --output=${tmpPath('blink.cpp')} ${wsPath('blink')} @/main`)
+    exec(`node ${xodc} transpile --output=${tmpPath('blink.cpp')} ${wsPath('blink')} @/main`)
       .then(() => Promise.all([
         fs.readFile(tmpPath('blink.cpp'), 'utf-8'),
         fs.readFile(wsPath('blink/__fixtures__/arduino.cpp'), 'utf-8'),
@@ -22,18 +22,6 @@ describe('xodc transpile', () => {
         actual,
         expected,
         'expected and actual C++ don’t match'
-      ))
-  );
-  it('should transpile Blink project for Raspberry (nodejs)', () =>
-    exec(`node ${xodc} transpile --target=nodejs --output=${tmpPath('blink.js')} ${wsPath('blink')} @/main`)
-      .then(() => Promise.all([
-        fs.readFile(tmpPath('blink.js'), 'utf-8'),
-        fs.readFile(wsPath('blink/__fixtures__/nodejs.js'), 'utf-8'),
-      ]))
-      .then(([actual, expected]) => assert.strictEqual(
-        actual,
-        expected,
-        'expected and actual JS code don’t match'
       ))
   );
 });

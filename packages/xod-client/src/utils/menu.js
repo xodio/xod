@@ -93,18 +93,6 @@ const rawItems = {
     key: 'deploy',
     label: 'Deploy',
   },
-  showCodeForEspruino: {
-    key: 'showCodeForEspruino',
-    label: 'Show Code for Espruino',
-  },
-  uploadToEspruino: {
-    key: 'uploadToEspruino',
-    label: 'Upload to Espruino',
-  },
-  showCodeForNodeJS: {
-    key: 'showCodeForNodeJS',
-    label: 'Show Code for Raspberry Pi',
-  },
   showCodeForArduino: {
     key: 'showCodeForArduino',
     label: 'Show Code For Arduino',

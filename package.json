@@ -14,7 +14,7 @@
     "doc:fz": "cd docs && make",
     "electron-dist": "node ./tools/lerna-abs-symlinks && cd packages/xod-client-electron && yarn run dist",
     "lerna": "lerna",
-    "lint": "eslint packages/*/src packages/*/test packages/*/test-func packages/xod-js/platform --ext js,jsx",
+    "lint": "eslint packages/*/src packages/*/test packages/*/test-func --ext js,jsx",
     "postinstall": "yarn run bootstrap",
     "start:spectron-repl": "./tools/spectron-repl",
     "start:xod-client-electron": "cd packages/xod-client-electron && yarn start",
