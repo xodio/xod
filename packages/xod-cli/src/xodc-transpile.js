@@ -1,4 +1,4 @@
-// xodc transpile [--output=<filename>] [--target=<target>] <input> <path>
+// xodc transpile [--output=<filename>] <input> <path>
 
 import fs from 'fs';
 import path from 'path';
@@ -15,21 +15,11 @@ const showErrorAndExit = (err) => {
 };
 
 export default (input, patchPath, program) => {
-  const target = program.target;
   const output = program.output;
   const extension = path.extname(input);
   const filename = path.basename(input);
 
-  const transpilers = {
-    arduino: transpileForArduino,
-  };
-
-  const transpile = transpilers[target];
-  if (!transpile) {
-    throw new Error(`Unknown target "${target}". Supported targets are: ${Object.keys(transpilers)}`);
-  }
-
-  msg.notice(`Transpiling ${filename} for ${target} ...`);
+  msg.notice(`Transpiling ${filename} ...`);
 
   new Promise((resolve, reject) => {
     const stat = fs.statSync(input);
@@ -58,7 +48,7 @@ export default (input, patchPath, program) => {
       reject(new Error(`Unexpected input "${input}"`));
     }
   })
-    .then(project => transpile(project, patchPath))
+    .then(project => transpileForArduino(project, patchPath))
     .then(eitherCode =>
       foldEither(
         showErrorAndExit,

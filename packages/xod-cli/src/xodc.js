@@ -26,7 +26,7 @@ XOD project: Command Line Interface
 Usage:
   xodc pack <projectDir> <output>
   xodc unpack <xodball> <workspace>
-  xodc transpile [--output=<filename>] [--target=<target>] <input> <path>
+  xodc transpile [--output=<filename>] <input> <path>
   xodc publish [--swagger=<swagger>] [--orgname=<orgname>] [<projectDir>]
   xodc install --swagger=<swagger> <libUri> [<path>]
 
@@ -38,7 +38,6 @@ Commands:
   install               Install the library into workspace.
 
 Options:
-  --target=<target>     Target device for transpilation [default: espruino].
   --output=<filename>   Write result of transpilation into file.
   --clear               Clear output dir before generate documentation.
 `;
@@ -48,7 +47,6 @@ const programs = {
   unpack: o => unpack(o['<xodball>'], o['<workspace>']),
   transpile: o => transpile(o['<input>'], o['<path>'], {
     output: o['--output'],
-    target: o['--target'],
   }),
   publish: o => publish(
     o['--swagger'] || PM_SWAGGER_URL,

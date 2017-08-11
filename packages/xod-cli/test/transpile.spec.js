@@ -13,7 +13,7 @@ describe('xodc transpile', () => {
   afterEach(() => rmrf(tmpPath('./')));
 
   it('should transpile Blink project for Arduino', () =>
-    exec(`node ${xodc} transpile --target=arduino --output=${tmpPath('blink.cpp')} ${wsPath('blink')} @/main`)
+    exec(`node ${xodc} transpile --output=${tmpPath('blink.cpp')} ${wsPath('blink')} @/main`)
       .then(() => Promise.all([
         fs.readFile(tmpPath('blink.cpp'), 'utf-8'),
         fs.readFile(wsPath('blink/__fixtures__/arduino.cpp'), 'utf-8'),
