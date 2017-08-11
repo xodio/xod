@@ -42,10 +42,8 @@
     "xod-arduino": "^0.12.1",
     "xod-arduino-deploy": "^0.12.1",
     "xod-client": "^0.12.1",
-    "xod-espruino-upload": "^0.11.0",
     "xod-fs": "^0.12.1",
     "xod-func-tools": "^0.12.1",
-    "xod-js": "^0.12.1",
     "xod-project": "^0.12.1"
   },
   "devDependencies": {

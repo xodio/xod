@@ -84,8 +84,6 @@ class App extends client.App {
     this.onUploadToArduino = this.onUploadToArduino.bind(this);
     this.onArduinoTargetBoardChange = this.onArduinoTargetBoardChange.bind(this);
     this.onSerialPortChange = this.onSerialPortChange.bind(this);
-    this.onShowCodeEspruino = this.onShowCodeEspruino.bind(this);
-    this.onShowCodeNodejs = this.onShowCodeNodejs.bind(this);
     this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
     this.onImportClicked = this.onImportClicked.bind(this);
     this.onImport = this.onImport.bind(this);
@@ -351,8 +349,6 @@ class App extends client.App {
         items.deploy,
         [
           onClick(items.showCodeForArduino, this.onShowCodeArduino),
-          onClick(items.showCodeForNodeJS, this.onShowCodeNodejs),
-          items.separator,
           onClick(items.uploadToArduino, this.onUploadToArduinoClicked),
         ]
       ),

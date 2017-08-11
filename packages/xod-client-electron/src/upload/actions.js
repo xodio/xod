@@ -1,7 +1,4 @@
 import client from 'xod-client';
-import { transpileForEspruino } from 'xod-js';
-import { foldEither } from 'xod-func-tools';
-import uploadToEspruino from 'xod-espruino-upload';
 
 import {
   UPLOAD,
@@ -23,28 +20,6 @@ const succeedUpload = (dispatch, id) => (message = '') => dispatch(
 const failUpload = (dispatch, id) => message => dispatch(
   client.failProcess(id, UPLOAD, { message })
 );
-
-const getTranspiledCode = (transpiler, state) => {
-  const project = client.getProject(state);
-  const curPatchPath = client.getCurrentPatchPath(state);
-  return transpiler(project, curPatchPath);
-};
-
-export const upload = () => (dispatch, getState) => {
-  const eitherCode = getTranspiledCode(transpileForEspruino, getState());
-  const processId = dispatch(client.addProcess(UPLOAD));
-  const fail = failUpload(dispatch, processId);
-
-  foldEither(
-    err => fail(err.message),
-    (code) => {
-      uploadToEspruino(code, progressUpload(dispatch, processId))
-        .then(succeedUpload(dispatch, processId))
-        .catch(fail);
-    },
-    eitherCode
-  );
-};
 
 export const uploadToArduino = () => (dispatch) => {
   const processId = dispatch(client.addProcess(UPLOAD));
@@ -73,6 +48,5 @@ export const selectSerialPort = port => ({
 });
 
 export default {
-  upload,
   uploadToArduino,
 };

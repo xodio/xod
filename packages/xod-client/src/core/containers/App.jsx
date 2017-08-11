@@ -9,7 +9,6 @@ import {
   isValidIdentifier,
   IDENTIFIER_RULES,
 } from 'xod-project';
-import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 import { transpileForArduino } from 'xod-arduino';
 
 import { lowercaseKebabMask } from '../../utils/inputFormatting';
@@ -22,12 +21,6 @@ import PopupProjectPreferences from '../../project/components/PopupProjectPrefer
 import * as actions from '../actions';
 
 export default class App extends React.Component {
-  onShowCodeEspruino() {
-    this.transpile(transpileForEspruino);
-  }
-  onShowCodeNodejs() {
-    this.transpile(transpileForNodeJS);
-  }
   onShowCodeArduino() {
     this.transpile(transpileForArduino);
   }

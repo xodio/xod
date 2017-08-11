@@ -6,7 +6,6 @@ import { identity } from 'ramda';
 
 import { foldEither } from 'xod-func-tools';
 import { loadProject, readJSON, writeFile } from 'xod-fs';
-import { transpileForEspruino, transpileForNodeJS } from 'xod-js';
 import { transpileForArduino } from 'xod-arduino';
 import * as msg from './messages';
 
@@ -22,8 +21,6 @@ export default (input, patchPath, program) => {
   const filename = path.basename(input);
 
   const transpilers = {
-    nodejs: transpileForNodeJS,
-    espruino: transpileForEspruino,
     arduino: transpileForArduino,
   };
 
