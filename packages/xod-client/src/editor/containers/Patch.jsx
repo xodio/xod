@@ -260,7 +260,6 @@ class Patch extends React.Component {
 
   getHotkeyHandlers() {
     return {
-      [COMMAND.SET_MODE_CREATING]: this.props.setModeCreating,
       [COMMAND.DELETE_SELECTION]: this.onDeleteSelection,
       [COMMAND.DESELECT]: this.props.actions.deselectAll,
     };
@@ -379,7 +378,6 @@ Patch.propTypes = {
   patchPath: PropTypes.string,
   mode: PropTypes.object,
   ghostLink: PropTypes.any,
-  setModeCreating: PropTypes.func,
 };
 
 const mapStateToProps = R.applySpec({

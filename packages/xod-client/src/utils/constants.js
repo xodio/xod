@@ -1,5 +1,4 @@
 export const COMMAND = {
-  SET_MODE_CREATING: 'setModeCreating',
   DELETE_SELECTION: 'deleteSelection',
 
   DESELECT: 'deselect',
@@ -23,7 +22,6 @@ export const COMMAND = {
 };
 
 export const HOTKEY = {
-  [COMMAND.SET_MODE_CREATING]: 'n',
   [COMMAND.DELETE_SELECTION]: ['del', 'backspace'],
 
   [COMMAND.DESELECT]: 'escape',
@@ -41,7 +39,6 @@ export const HOTKEY = {
 };
 
 export const ELECTRON_ACCELERATOR = {
-  [COMMAND.SET_MODE_CREATING]: 'N',
   [COMMAND.DELETE_SELECTION]: 'Backspace',
 
   [COMMAND.DESELECT]: 'Escape',

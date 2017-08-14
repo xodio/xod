@@ -8,7 +8,6 @@ export const PROPERTY_TYPE = {
 };
 
 export const EDITOR_MODE = {
-  CREATING_NODE: 'creatingNode',
   EDITING: 'editing',
   LINKING: 'linking',
   PANNING: 'panning',

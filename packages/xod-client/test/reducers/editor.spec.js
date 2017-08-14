@@ -48,7 +48,6 @@ describe('Editor reducer', () => {
       chai.expect(store.getActions()).to.deep.equal(expectedActions);
     };
 
-    it('should set mode to creating', () => testMode(EDITOR_MODE.CREATING_NODE));
     it('should set mode to editing', () => testMode(EDITOR_MODE.EDITING));
     it('should set mode to linking', () => testMode(EDITOR_MODE.LINKING));
     it('should set mode to default', () => testMode(EDITOR_MODE.DEFAULT));

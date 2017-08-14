@@ -73,7 +73,6 @@ export const getModeChecks = (state) => {
   return {
     mode,
     isDefault: (mode === EDITOR_MODE.DEFAULT),
-    isCreatingNode: (mode === EDITOR_MODE.CREATING_NODE),
     isEditing: (mode === EDITOR_MODE.EDITING),
     isLinking: (mode === EDITOR_MODE.LINKING),
     isPanning: (mode === EDITOR_MODE.PANNING),
