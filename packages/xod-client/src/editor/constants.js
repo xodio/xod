@@ -1,11 +1,6 @@
-// TODO: split into multiple files?
+import { PIN_TYPE } from 'xod-project';
 
-export const PROPERTY_TYPE = {
-  BOOL: 'boolean',
-  NUMBER: 'number',
-  STRING: 'string',
-  PULSE: 'pulse',
-};
+// TODO: split into multiple files?
 
 export const EDITOR_MODE = {
   EDITING: 'editing',
@@ -18,10 +13,10 @@ export const EDITOR_MODE = {
 };
 
 export const WIDGET_TYPE = {
-  BOOL: PROPERTY_TYPE.BOOL,
-  NUMBER: PROPERTY_TYPE.NUMBER,
-  STRING: PROPERTY_TYPE.STRING,
-  PULSE: PROPERTY_TYPE.PULSE,
+  BOOLEAN: PIN_TYPE.BOOLEAN,
+  NUMBER: PIN_TYPE.NUMBER,
+  STRING: PIN_TYPE.STRING,
+  PULSE: PIN_TYPE.PULSE,
   IO_LABEL: 'IOLabel',
   TEXTAREA: 'textarea',
 };
