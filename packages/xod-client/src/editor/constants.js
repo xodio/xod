@@ -4,6 +4,8 @@ import { PIN_TYPE } from 'xod-project';
 
 export const EDITOR_MODE = {
   SELECTING: 'selecting',
+  MOVING_SELECTION: 'moving_selection',
+  RESIZING_SELECTION: 'resizing_selection',
   LINKING: 'linking',
   PANNING: 'panning',
 

@@ -29,15 +29,8 @@ import {
   SLOT_SIZE,
 } from '../../project/nodeLayout';
 
-const MANIPULATION_MODE = {
-  SELECT: 'SELECT',
-  MOVE: 'MOVE',
-  RESIZE: 'RESIZE',
-};
-
 const initialState = {
   mouseOffsetFromClickedEntity: { x: 0, y: 0 },
-  manipulationMode: MANIPULATION_MODE.SELECT,
   mousePosition: { x: 0, y: 0 },
   isMouseDown: false,
 };
@@ -99,10 +92,8 @@ class Patch extends React.Component {
 
     this.updateMousePosition(event);
 
-    this.setState({
-      isMouseDown: true,
-      manipulationMode: MANIPULATION_MODE.RESIZE,
-    });
+    this.setState({ isMouseDown: true });
+    this.props.actions.setMode(EDITOR_MODE.RESIZING_SELECTION);
   }
 
   onPinMouseDown(event, nodeId, pinKey) {
@@ -131,16 +122,15 @@ class Patch extends React.Component {
   }
 
   onMouseMove(event) {
-    if (!(this.state.isMouseDown || this.props.mode === EDITOR_MODE.LINKING)) return;
+    const needsPositionUpdate = this.state.isMouseDown || this.props.mode === EDITOR_MODE.LINKING;
+    if (!needsPositionUpdate) return;
 
     // jump to move mode only if user actually drags something
     if (
       this.state.isMouseDown &&
-      this.state.manipulationMode === MANIPULATION_MODE.SELECT
+      this.props.mode === EDITOR_MODE.SELECTING
     ) {
-      this.setState({
-        manipulationMode: MANIPULATION_MODE.MOVE,
-      });
+      this.props.actions.setMode(EDITOR_MODE.MOVING_SELECTION);
     }
 
     this.updateMousePosition(event);
@@ -161,7 +151,7 @@ class Patch extends React.Component {
         draggedCommentId,
         snapNodePositionToSlots(this.getManipulatedEntityPosition())
       );
-      if (this.state.manipulationMode === MANIPULATION_MODE.RESIZE) {
+      if (this.props.mode === EDITOR_MODE.RESIZING_SELECTION) {
         this.props.actions.resizeComment(
           draggedCommentId,
           snapNodeSizeToSlots(this.getManipulatedEntitySize())
@@ -171,9 +161,12 @@ class Patch extends React.Component {
 
     this.setState({
       isMouseDown: false,
-      manipulationMode: MANIPULATION_MODE.SELECT,
       mouseOffsetFromClickedEntity: initialState.mouseOffsetFromClickedEntity,
     });
+
+    if (this.isInManipulationMode()) {
+      this.props.actions.setMode(EDITOR_MODE.DEFAULT);
+    }
   }
 
   onCreateNode() {
@@ -190,11 +183,7 @@ class Patch extends React.Component {
   }
 
   getManipulatedEntityId(entityType) {
-    if (
-      this.props.mode !== EDITOR_MODE.SELECTING ||
-      this.state.manipulationMode === MANIPULATION_MODE.SELECT ||
-      R.isEmpty(this.props.selection)
-    ) {
+    if (!this.isInManipulationMode()) {
       return null;
     }
 
@@ -222,14 +211,14 @@ class Patch extends React.Component {
     const entity = this.getSelectedEntity();
     if (!entity) return {};
 
-    if (this.state.manipulationMode === MANIPULATION_MODE.MOVE) {
+    if (this.props.mode === EDITOR_MODE.MOVING_SELECTION) {
       return subtractPoints(
         this.state.mousePosition,
         this.state.mouseOffsetFromClickedEntity
       );
     }
 
-    if (this.state.manipulationMode === MANIPULATION_MODE.RESIZE) {
+    if (this.props.mode === EDITOR_MODE.RESIZING_SELECTION) {
       return entity.position;
     }
 
@@ -240,11 +229,11 @@ class Patch extends React.Component {
     const entity = this.getSelectedEntity();
     if (!entity) return {};
 
-    if (this.state.manipulationMode === MANIPULATION_MODE.MOVE) {
+    if (this.props.mode === EDITOR_MODE.MOVING_SELECTION) {
       return entity.size;
     }
 
-    if (this.state.manipulationMode === MANIPULATION_MODE.RESIZE) {
+    if (this.props.mode === EDITOR_MODE.RESIZING_SELECTION) {
       return R.compose(
         pointToSize,
         R.evolve({
@@ -263,6 +252,16 @@ class Patch extends React.Component {
       [COMMAND.DELETE_SELECTION]: this.onDeleteSelection,
       [COMMAND.DESELECT]: this.props.actions.deselectAll,
     };
+  }
+
+  isInManipulationMode() {
+    return (
+      !R.isEmpty(this.props.selection)
+      && (
+        this.props.mode === EDITOR_MODE.MOVING_SELECTION ||
+        this.props.mode === EDITOR_MODE.RESIZING_SELECTION
+      )
+    );
   }
 
   updateMousePosition(event, setStateCallback) {
@@ -334,7 +333,7 @@ class Patch extends React.Component {
             onPinMouseDown={this.onPinMouseDown}
             onPinMouseUp={this.onPinMouseUp}
           />
-          {(this.state.manipulationMode !== MANIPULATION_MODE.SELECT) ? (
+          {this.isInManipulationMode() ? (
             <Layers.SnappingPreview
               draggedEntityPosition={manipulatedEntityPosition}
               draggedEntitySize={manipulatedEntitySize}
@@ -405,6 +404,7 @@ const mapDispatchToProps = dispatch => ({
     selectNode: EditorActions.selectNode,
     selectComment: EditorActions.selectComment,
     linkPin: EditorActions.linkPin,
+    setMode: EditorActions.setMode,
   }, dispatch),
 });
 
