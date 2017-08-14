@@ -8,7 +8,7 @@ import { HotKeys } from 'react-hotkeys';
 
 import * as EditorActions from '../actions';
 import * as EditorSelectors from '../selectors';
-import { SELECTION_ENTITY_TYPE } from '../constants';
+import { SELECTION_ENTITY_TYPE, EDITOR_MODE } from '../constants';
 
 import * as ProjectActions from '../../project/actions';
 import * as ProjectSelectors from '../../project/selectors';
@@ -131,7 +131,7 @@ class Patch extends React.Component {
   }
 
   onMouseMove(event) {
-    if (!(this.state.isMouseDown || this.props.mode.isLinking)) return;
+    if (!(this.state.isMouseDown || this.props.mode === EDITOR_MODE.LINKING)) return;
 
     // jump to move mode only if user actually drags something
     if (
@@ -191,7 +191,7 @@ class Patch extends React.Component {
 
   getManipulatedEntityId(entityType) {
     if (
-      !this.props.mode.isEditing ||
+      this.props.mode !== EDITOR_MODE.EDITING ||
       this.state.manipulationMode === MANIPULATION_MODE.SELECT ||
       R.isEmpty(this.props.selection)
     ) {
@@ -388,7 +388,7 @@ const mapStateToProps = R.applySpec({
   selectedNodeType: EditorSelectors.getSelectedNodeType,
   linkingPin: EditorSelectors.getLinkingPin,
   patchPath: EditorSelectors.getCurrentPatchPath,
-  mode: EditorSelectors.getModeChecks,
+  mode: EditorSelectors.getMode,
   ghostLink: ProjectSelectors.getLinkGhost,
 });
 

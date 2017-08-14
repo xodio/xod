@@ -1,8 +1,6 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
 
-import { EDITOR_MODE } from './constants';
-
 export const getEditor = R.prop('editor');
 
 export const getCurrentPatchPath = R.pipe(
@@ -67,18 +65,6 @@ export const getMode = R.pipe(
   getEditor,
   R.prop('mode')
 );
-
-export const getModeChecks = (state) => {
-  const mode = getMode(state);
-  return {
-    mode,
-    isDefault: (mode === EDITOR_MODE.DEFAULT),
-    isEditing: (mode === EDITOR_MODE.EDITING),
-    isLinking: (mode === EDITOR_MODE.LINKING),
-    isPanning: (mode === EDITOR_MODE.PANNING),
-  };
-};
-
 
 // tabs
 

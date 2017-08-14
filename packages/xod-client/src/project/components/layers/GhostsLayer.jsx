@@ -2,7 +2,7 @@ import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { LAYER } from '../../../editor/constants';
+import { LAYER, EDITOR_MODE } from '../../../editor/constants';
 
 import SVGLayer from './SVGLayer';
 import XODLink from '../Link';
@@ -47,18 +47,13 @@ class GhostLayer extends React.Component {
     );
   }
 
-  isCreatingNode(source) {
-    const props = source || this.props;
-    return (props.mode.isCreatingNode && props.ghostNode);
-  }
-
   isLinking(source) {
     const props = source || this.props;
-    return (props.mode.isLinking && props.ghostLink);
+    return (props.mode === EDITOR_MODE.LINKING && props.ghostLink);
   }
 
   isDraggingGhost(source) {
-    return (this.isLinking(source) || this.isCreatingNode(source));
+    return this.isLinking(source);
   }
 
   render() {
