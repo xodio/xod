@@ -200,7 +200,9 @@ const getPinType = R.curry((patchTuples, nodes, idGetter, keyGetter, link) =>
  */
 // :: [[Path, Patch]] -> [Node] -> Link -> Maybe Node
 const createCastNode = R.curry((patchTuples, nodes, link) => R.compose(
+  // TODO: Use createNode
   R.map(type => ({
+    '@@type': 'xod-project/Node',
     id: `${Link.getLinkOutputNodeId(link)}-to-${Link.getLinkInputNodeId(link)}-pin-${Link.getLinkInputPinKey(link)}`,
     position: { x: 0, y: 0 },
     type,

@@ -2,6 +2,7 @@
   {
     "path": "./awesome-project/empty-local-patch/patch.xodp",
     "content": {
+      "@@type": "xod-project/Patch",
       "description": "",
       "impls": {},
       "links": {},
@@ -25,11 +26,13 @@
   },
   {
     "content": {
+      "@@type": "xod-project/Patch",
       "path": "@/main",
       "description": "",
       "impls": {},
       "links": {
         "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f": {
+          "@@type": "xod-project/Link",
           "id": "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f",
           "input": {
             "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
@@ -41,6 +44,7 @@
           }
         },
         "3ed564cd-71e5-4ad3-9361-e7b9719bc82a": {
+          "@@type": "xod-project/Link",
           "id": "3ed564cd-71e5-4ad3-9361-e7b9719bc82a",
           "input": {
             "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
@@ -55,6 +59,7 @@
       "comments": {},
       "nodes": {
         "2c03e470-fefd-4f58-be6a-58d209d9158c": {
+          "@@type": "xod-project/Node",
           "label": "",
           "description": "",
           "id": "2c03e470-fefd-4f58-be6a-58d209d9158c",
@@ -66,6 +71,7 @@
           "type": "xod/core/pot"
         },
         "4d716df5-81e7-4845-9b82-31a54c1634d7": {
+          "@@type": "xod-project/Node",
           "label": "",
           "description": "",
           "id": "4d716df5-81e7-4845-9b82-31a54c1634d7",
@@ -77,6 +83,7 @@
           "type": "@/qux"
         },
         "89c69d91-b484-478d-8990-027e5f0a2e3e": {
+          "@@type": "xod-project/Node",
           "label": "",
           "description": "",
           "id": "89c69d91-b484-478d-8990-027e5f0a2e3e",
@@ -95,6 +102,7 @@
   {
     "path": "./awesome-project/qux/patch.xodp",
     "content": {
+      "@@type": "xod-project/Patch",
       "path": "@/qux",
       "impls": {
         "cpp": "// Impl loaded fine!\n"
@@ -102,6 +110,7 @@
       "comments": {},
       "nodes": {
         "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
+          "@@type": "xod-project/Node",
           "label": "",
           "description": "",
           "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
@@ -113,6 +122,7 @@
           }
         },
         "4da4c29d-f482-47c2-825e-a969084b1116": {
+          "@@type": "xod-project/Node",
           "label": "",
           "description": "",
           "id": "4da4c29d-f482-47c2-825e-a969084b1116",
@@ -126,6 +136,7 @@
       },
       "links": {
         "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1": {
+          "@@type": "xod-project/Link",
           "id": "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1",
           "input": {
             "nodeId": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",

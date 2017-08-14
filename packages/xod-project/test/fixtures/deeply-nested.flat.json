@@ -18,7 +18,8 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/patch-nodes/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
         },
         "ryVmUAOrvkb": {
           "boundValues": {
@@ -31,7 +32,8 @@
             "x": 10,
             "y": 224
           },
-          "type": "xod/patch-nodes/output-pulse"
+          "type": "xod/patch-nodes/output-pulse",
+          "@@type": "xod-project/Node"
         }
       },
       "path": "xod/core/boot",
@@ -39,7 +41,8 @@
         "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    emitValue<output_BOOT>(nid, 1);\n}\n",
         "js": "module.exports.evaluate = function(e) {\n  e.fire({ BOOT: PULSE });\n};\n"
       },
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     },
     "xod/core/console-log": {
       "comments": {},
@@ -55,7 +58,8 @@
             "x": 10,
             "y": 16
           },
-          "type": "xod/patch-nodes/input-string"
+          "type": "xod/patch-nodes/input-string",
+          "@@type": "xod-project/Node"
         },
         "S1n95SDJb": {
           "boundValues": {},
@@ -66,7 +70,8 @@
             "x": 138,
             "y": 16
           },
-          "type": "xod/patch-nodes/input-pulse"
+          "type": "xod/patch-nodes/input-pulse",
+          "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
           "boundValues": {},
@@ -77,14 +82,16 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/patch-nodes/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
         }
       },
       "path": "xod/core/console-log",
       "impls": {
         "arduino": "struct State {\n    bool begun;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    if (!isInputDirty<input_DUMP>(nid))\n        return;\n\n    if (!state->begun) {\n        Serial.begin(9600);\n    }\n\n    auto line = getValue<input_LINE>(nid);\n    if (line) {\n        for (auto it = line->iterate(); it; ++it)\n            Serial.write((char)*it);\n        Serial.write('\\r');\n        Serial.write('\\n');\n        Serial.flush();\n    }\n}\n"
       },
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     },
     "xod/core/any": {
       "comments": {},
@@ -102,7 +109,8 @@
             "x": 10,
             "y": 224
           },
-          "type": "xod/patch-nodes/output-pulse"
+          "type": "xod/patch-nodes/output-pulse",
+          "@@type": "xod-project/Node"
         },
         "ByU7LRuSPkW": {
           "boundValues": {},
@@ -113,7 +121,8 @@
             "x": 138,
             "y": 16
           },
-          "type": "xod/patch-nodes/input-pulse"
+          "type": "xod/patch-nodes/input-pulse",
+          "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
           "boundValues": {},
@@ -124,7 +133,8 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/patch-nodes/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
         },
         "ryv7IRdSP1b": {
           "boundValues": {},
@@ -135,14 +145,16 @@
             "x": 10,
             "y": 16
           },
-          "type": "xod/patch-nodes/input-pulse"
+          "type": "xod/patch-nodes/input-pulse",
+          "@@type": "xod-project/Node"
         }
       },
       "path": "xod/core/any",
       "impls": {
         "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    bool p1 = isInputDirty<input_P1>(nid);\n    bool p2 = isInputDirty<input_P2>(nid);\n    if (p1 || p2)\n        emitValue<output_ANY>(nid, true);\n}\n"
       },
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     },
     "@/main": {
       "comments": {},
@@ -156,7 +168,8 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {}
+          "boundValues": {},
+          "@@type": "xod-project/Node"
         },
         "HkaBTLFNb": {
           "id": "HkaBTLFNb",
@@ -169,7 +182,8 @@
           "description": "",
           "boundValues": {
             "HJdO9HwJ-": "It works!"
-          }
+          },
+          "@@type": "xod-project/Node"
         },
         "H1qL68Y4W~rku9aItN-~BJpKaIYNW": {
           "id": "H1qL68Y4W~rku9aItN-~BJpKaIYNW",
@@ -180,7 +194,8 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {}
+          "boundValues": {},
+          "@@type": "xod-project/Node"
         }
       },
       "links": {
@@ -193,7 +208,8 @@
           "input": {
             "nodeId": "H1qL68Y4W~rku9aItN-~BJpKaIYNW",
             "pinKey": "ryv7IRdSP1b"
-          }
+          },
+          "@@type": "xod-project/Link"
         },
         "H1qL68Y4W~rku9aItN-~SJ-9T8FN-": {
           "id": "H1qL68Y4W~rku9aItN-~SJ-9T8FN-",
@@ -204,7 +220,8 @@
           "input": {
             "nodeId": "H1qL68Y4W~rku9aItN-~BJpKaIYNW",
             "pinKey": "ByU7LRuSPkW"
-          }
+          },
+          "@@type": "xod-project/Link"
         },
         "ryIhT8KVW": {
           "id": "ryIhT8KVW",
@@ -215,14 +232,17 @@
           "input": {
             "nodeId": "HkaBTLFNb",
             "pinKey": "S1n95SDJb"
-          }
+          },
+          "@@type": "xod-project/Link"
         }
       },
       "impls": {},
       "path": "@/main",
       "description": "",
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     }
   },
-  "name": "untitled"
+  "name": "untitled",
+  "@@type": "xod-project/Project"
 }

@@ -32,6 +32,7 @@ const getTerminalPins = R.curry((direction, type) => {
 
   return {
     [pinKey]: {
+      '@@type': 'xod-project/Patch',
       key: pinKey,
       type,
       direction: OPPOSITE_DIRECTION[direction],

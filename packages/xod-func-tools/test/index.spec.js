@@ -2,7 +2,15 @@ import { assert, expect } from 'chai';
 import { curry, identity, F } from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 
-import { explode, explodeEither, foldEither, tapP, reduceMaybe, reduceEither } from '../src/index';
+import {
+  explode,
+  explodeEither,
+  foldEither,
+  tapP,
+  reduceMaybe,
+  reduceEither,
+  omitRecursively,
+} from '../src/index';
 
 describe('explode', () => {
   it('should return Maybe.Just value', () => {
@@ -97,5 +105,40 @@ describe('reduceM', () => {
     const wrapped = reduceEither(eitherFn, 0, []);
     assert.isTrue(wrapped.isRight);
     assert.equal(explodeEither(wrapped), 0);
+  });
+});
+
+describe('omitRecursively', () => {
+  it('omits values in deeply nested objects', () => {
+    const obj = {
+      omitMe: 'hello',
+      foo: 2,
+      bar: {
+        qux: 4,
+        moo: ['a', 'b', 'c'],
+        baz: {
+          omitMe: 'ola',
+          quux: 6,
+        },
+      },
+    };
+
+    const cleanObj = omitRecursively(['omitMe'], obj);
+    assert.deepEqual(cleanObj, {
+      foo: 2,
+      bar: {
+        qux: 4,
+        moo: ['a', 'b', 'c'],
+        baz: {
+          quux: 6,
+        },
+      },
+    });
+  });
+
+  it('omits values in objects nested in arrays', () => {
+    const obj = [[{ omitMe: 'hello', foo: 2 }]];
+    const cleanObj = omitRecursively(['omitMe'], obj);
+    assert.deepEqual(cleanObj, [[{ foo: 2 }]]);
   });
 });

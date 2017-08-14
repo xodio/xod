@@ -31,6 +31,7 @@ import { getLocalPath, isTerminalPatchPath } from './patchPathUtils';
 export const createPatch = def(
   'createPatch :: () -> Patch',
   () => ({
+    '@@type': 'xod-project/Patch',
     nodes: {},
     links: {},
     comments: {},

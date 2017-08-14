@@ -152,6 +152,7 @@ export const loadProject = projectPath =>
     .then(workspace => [path.relative(workspace, projectPath), workspace])
     .then(R.apply(loadProjectWithLibs))
     .then(({ project, libs }) => pack(project, libs))
+    .then(XP.injectProjectTypeHints)
     .then(XP.resolveNodeTypesInProject);
 
 export default {

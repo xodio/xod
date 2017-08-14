@@ -391,6 +391,7 @@ describe('Patch', () => {
 
     const expectedPins = {
       in: {
+        '@@type': 'xod-project/Pin',
         key: 'in',
         direction: CONST.PIN_DIRECTION.INPUT,
         type: 'boolean',
@@ -401,6 +402,7 @@ describe('Patch', () => {
         isBindable: true,
       },
       out: {
+        '@@type': 'xod-project/Pin',
         key: 'out',
         direction: CONST.PIN_DIRECTION.OUTPUT,
         type: 'boolean',

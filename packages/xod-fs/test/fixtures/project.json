@@ -21,7 +21,8 @@
             "y": 100
           },
           "type": "xod/patch-nodes/not-implemented-in-xod",
-          "id": "noNativeImpl"
+          "id": "noNativeImpl",
+          "@@type": "xod-project/Node"
         },
         "a": {
           "label": "First input",
@@ -32,7 +33,8 @@
             "y": 0
           },
           "type": "xod/patch-nodes/input-boolean",
-          "id": "a"
+          "id": "a",
+          "@@type": "xod-project/Node"
         },
         "b": {
           "label": "Second input",
@@ -43,7 +45,8 @@
             "y": 0
           },
           "type": "xod/patch-nodes/input-boolean",
-          "id": "b"
+          "id": "b",
+          "@@type": "xod-project/Node"
         },
         "out": {
           "label": "output",
@@ -54,7 +57,8 @@
             "y": 300
           },
           "type": "xod/patch-nodes/output-boolean",
-          "id": "out"
+          "id": "out",
+          "@@type": "xod-project/Node"
         }
       },
       "path": "xod/core/and",
@@ -67,7 +71,8 @@
           "encoding": "utf8",
           "content": "// should be imported into impl.js\n"
         }
-      ]
+      ],
+      "@@type": "xod-project/Patch"
     },
     "xod/core/led": {
       "description": "",
@@ -83,7 +88,8 @@
             "y": 100
           },
           "type": "xod/patch-nodes/not-implemented-in-xod",
-          "id": "noNativeImpl"
+          "id": "noNativeImpl",
+          "@@type": "xod-project/Node"
         },
         "brightness": {
           "label": "",
@@ -94,7 +100,8 @@
             "y": 0
           },
           "type": "xod/patch-nodes/input-number",
-          "id": "brightness"
+          "id": "brightness",
+          "@@type": "xod-project/Node"
         }
       },
       "path": "xod/core/led",
@@ -107,7 +114,8 @@
           "encoding": "utf8",
           "content": "// should be imported into impl.espruino\n"
         }
-      ]
+      ],
+      "@@type": "xod-project/Patch"
     },
     "xod/core/pot": {
       "description": "",
@@ -123,7 +131,8 @@
             "y": 100
           },
           "type": "xod/patch-nodes/not-implemented-in-xod",
-          "id": "noNativeImpl"
+          "id": "noNativeImpl",
+          "@@type": "xod-project/Node"
         },
         "sample": {
           "label": "",
@@ -134,7 +143,8 @@
             "y": 0
           },
           "type": "xod/patch-nodes/input-pulse",
-          "id": "sample"
+          "id": "sample",
+          "@@type": "xod-project/Node"
         },
         "value": {
           "label": "",
@@ -145,7 +155,8 @@
             "y": 300
           },
           "type": "xod/patch-nodes/output-number",
-          "id": "value"
+          "id": "value",
+          "@@type": "xod-project/Node"
         }
       },
       "path": "xod/core/pot",
@@ -158,7 +169,8 @@
           "encoding": "utf8",
           "content": "// should be imported into impl.espruino\n"
         }
-      ]
+      ],
+      "@@type": "xod-project/Patch"
     },
     "xod/core/test": {
       "comments": {},
@@ -167,7 +179,8 @@
       "description": "",
       "path": "xod/core/test",
       "impls": {},
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     },
     "user/utils/test": {
       "description": "",
@@ -176,7 +189,8 @@
       "comments": {},
       "nodes": {},
       "path": "user/utils/test",
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     },
     "user/with-omitted-optionals/empty-lib-patch": {
       "attachments": [],
@@ -185,7 +199,8 @@
       "links": {},
       "comments": {},
       "nodes": {},
-      "path": "user/with-omitted-optionals/empty-lib-patch"
+      "path": "user/with-omitted-optionals/empty-lib-patch",
+      "@@type": "xod-project/Patch"
     },
     "user/with-omitted-optionals/optional-node-fields-omitted": {
       "attachments": [],
@@ -203,10 +218,12 @@
             "x": 292,
             "y": 182
           },
-          "type": "xod/core/pot"
+          "type": "xod/core/pot",
+          "@@type": "xod-project/Node"
         }
       },
-      "path": "user/with-omitted-optionals/optional-node-fields-omitted"
+      "path": "user/with-omitted-optionals/optional-node-fields-omitted",
+      "@@type": "xod-project/Patch"
     },
     "xod/math/test": {
       "description": "",
@@ -215,7 +232,8 @@
       "comments": {},
       "nodes": {},
       "path": "xod/math/test",
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     },
     "@/empty-local-patch": {
       "attachments": [],
@@ -224,7 +242,8 @@
       "links": {},
       "comments": {},
       "nodes": {},
-      "path": "@/empty-local-patch"
+      "path": "@/empty-local-patch",
+      "@@type": "xod-project/Patch"
     },
     "@/main": {
       "comments": {},
@@ -238,7 +257,8 @@
             "x": 292,
             "y": 182
           },
-          "id": "2c03e470-fefd-4f58-be6a-58d209d9158c"
+          "id": "2c03e470-fefd-4f58-be6a-58d209d9158c",
+          "@@type": "xod-project/Node"
         },
         "89c69d91-b484-478d-8990-027e5f0a2e3e": {
           "label": "",
@@ -249,7 +269,8 @@
             "x": 163,
             "y": 314
           },
-          "id": "89c69d91-b484-478d-8990-027e5f0a2e3e"
+          "id": "89c69d91-b484-478d-8990-027e5f0a2e3e",
+          "@@type": "xod-project/Node"
         },
         "4d716df5-81e7-4845-9b82-31a54c1634d7": {
           "label": "",
@@ -260,7 +281,8 @@
             "x": 363,
             "y": 322
           },
-          "id": "4d716df5-81e7-4845-9b82-31a54c1634d7"
+          "id": "4d716df5-81e7-4845-9b82-31a54c1634d7",
+          "@@type": "xod-project/Node"
         }
       },
       "links": {
@@ -273,7 +295,8 @@
             "nodeId": "89c69d91-b484-478d-8990-027e5f0a2e3e",
             "pinKey": "b"
           },
-          "id": "3ed564cd-71e5-4ad3-9361-e7b9719bc82a"
+          "id": "3ed564cd-71e5-4ad3-9361-e7b9719bc82a",
+          "@@type": "xod-project/Link"
         },
         "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f": {
           "input": {
@@ -284,13 +307,15 @@
             "nodeId": "4d716df5-81e7-4845-9b82-31a54c1634d7",
             "pinKey": "38395ee5-8634-40f9-b7fa-dfe9eee208e8"
           },
-          "id": "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f"
+          "id": "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f",
+          "@@type": "xod-project/Link"
         }
       },
       "description": "",
       "path": "@/main",
       "impls": {},
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     },
     "@/qux": {
       "comments": {},
@@ -304,7 +329,8 @@
             "x": 276,
             "y": 155
           },
-          "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8"
+          "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
+          "@@type": "xod-project/Node"
         },
         "4da4c29d-f482-47c2-825e-a969084b1116": {
           "label": "",
@@ -315,7 +341,8 @@
             "x": 310,
             "y": 307
           },
-          "id": "4da4c29d-f482-47c2-825e-a969084b1116"
+          "id": "4da4c29d-f482-47c2-825e-a969084b1116",
+          "@@type": "xod-project/Node"
         }
       },
       "links": {
@@ -328,7 +355,8 @@
             "nodeId": "4da4c29d-f482-47c2-825e-a969084b1116",
             "pinKey": "brightness"
           },
-          "id": "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1"
+          "id": "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1",
+          "@@type": "xod-project/Link"
         }
       },
       "description": "",
@@ -352,7 +380,8 @@
           "encoding": "utf8",
           "content": "// Impl loaded fine!\n"
         }
-      ]
+      ],
+      "@@type": "xod-project/Patch"
     }
   }
 }

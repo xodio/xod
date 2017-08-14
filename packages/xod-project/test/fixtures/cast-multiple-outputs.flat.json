@@ -28,7 +28,8 @@
             "x": 138,
             "y": 120
           },
-          "type": "xod/patch-nodes/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
         },
         "BkeKcj6ZZ": {
           "boundValues": {},
@@ -39,7 +40,8 @@
             "x": 138,
             "y": 16
           },
-          "type": "xod/patch-nodes/input-string"
+          "type": "xod/patch-nodes/input-string",
+          "@@type": "xod-project/Node"
         },
         "Hkqu9oaWb": {
           "boundValues": {},
@@ -50,7 +52,8 @@
             "x": 10,
             "y": 16
           },
-          "type": "xod/patch-nodes/input-string"
+          "type": "xod/patch-nodes/input-string",
+          "@@type": "xod-project/Node"
         },
         "rksccsp-W": {
           "boundValues": {},
@@ -61,10 +64,12 @@
             "x": 10,
             "y": 224
           },
-          "type": "xod/patch-nodes/output-string"
+          "type": "xod/patch-nodes/output-string",
+          "@@type": "xod-project/Node"
         }
       },
-      "path": "xod/core/concat"
+      "path": "xod/core/concat",
+      "@@type": "xod-project/Patch"
     },
     "@/two-nums-output": {
       "attachments": [
@@ -90,7 +95,8 @@
             "x": 10,
             "y": 16
           },
-          "type": "xod/patch-nodes/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
         },
         "HkjwYxKUb": {
           "boundValues": {},
@@ -101,7 +107,8 @@
             "x": 138,
             "y": 224
           },
-          "type": "xod/patch-nodes/output-number"
+          "type": "xod/patch-nodes/output-number",
+          "@@type": "xod-project/Node"
         },
         "rJqjcxYUZ": {
           "boundValues": {},
@@ -112,7 +119,8 @@
             "x": 266,
             "y": 16
           },
-          "type": "xod/patch-nodes/input-pulse"
+          "type": "xod/patch-nodes/input-pulse",
+          "@@type": "xod-project/Node"
         },
         "rkavKlFUb": {
           "boundValues": {},
@@ -123,10 +131,12 @@
             "x": 394,
             "y": 224
           },
-          "type": "xod/patch-nodes/output-number"
+          "type": "xod/patch-nodes/output-number",
+          "@@type": "xod-project/Node"
         }
       },
-      "path": "@/two-nums-output"
+      "path": "@/two-nums-output",
+      "@@type": "xod-project/Patch"
     },
     "xod/core/console-log": {
       "attachments": [
@@ -152,7 +162,8 @@
             "x": 10,
             "y": 16
           },
-          "type": "xod/patch-nodes/input-string"
+          "type": "xod/patch-nodes/input-string",
+          "@@type": "xod-project/Node"
         },
         "S1n95SDJb": {
           "boundValues": {},
@@ -163,7 +174,8 @@
             "x": 138,
             "y": 16
           },
-          "type": "xod/patch-nodes/input-pulse"
+          "type": "xod/patch-nodes/input-pulse",
+          "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
           "boundValues": {},
@@ -174,10 +186,12 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/patch-nodes/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
         }
       },
-      "path": "xod/core/console-log"
+      "path": "xod/core/console-log",
+      "@@type": "xod-project/Patch"
     },
     "xod/core/cast-number-to-string": {
       "attachments": [
@@ -209,7 +223,8 @@
             "x": 0,
             "y": 0
           },
-          "type": "xod/patch-nodes/input-number"
+          "type": "xod/patch-nodes/input-number",
+          "@@type": "xod-project/Node"
         },
         "__out__": {
           "boundValues": {},
@@ -220,7 +235,8 @@
             "x": 0,
             "y": 300
           },
-          "type": "xod/patch-nodes/output-string"
+          "type": "xod/patch-nodes/output-string",
+          "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
           "boundValues": {},
@@ -231,10 +247,12 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/patch-nodes/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
         }
       },
-      "path": "xod/core/cast-number-to-string"
+      "path": "xod/core/cast-number-to-string",
+      "@@type": "xod-project/Patch"
     },
     "@/main": {
       "comments": {},
@@ -248,7 +266,8 @@
             "x": 266,
             "y": 224
           },
-          "type": "xod/core/concat"
+          "type": "xod/core/concat",
+          "@@type": "xod-project/Node"
         },
         "HyXhclKUZ": {
           "boundValues": {},
@@ -259,7 +278,8 @@
             "x": 266,
             "y": 16
           },
-          "type": "@/two-nums-output"
+          "type": "@/two-nums-output",
+          "@@type": "xod-project/Node"
         },
         "rk5MteYLZ": {
           "boundValues": {},
@@ -270,7 +290,8 @@
             "x": 266,
             "y": 328
           },
-          "type": "xod/core/console-log"
+          "type": "xod/core/console-log",
+          "@@type": "xod-project/Node"
         },
         "HyXhclKUZ-to-B1VMtgtUb-pin-BkeKcj6ZZ": {
           "id": "HyXhclKUZ-to-B1VMtgtUb-pin-BkeKcj6ZZ",
@@ -281,7 +302,8 @@
           "type": "xod/core/cast-number-to-string",
           "label": "",
           "description": "",
-          "boundValues": {}
+          "boundValues": {},
+          "@@type": "xod-project/Node"
         },
         "HyXhclKUZ-to-B1VMtgtUb-pin-Hkqu9oaWb": {
           "id": "HyXhclKUZ-to-B1VMtgtUb-pin-Hkqu9oaWb",
@@ -292,7 +314,8 @@
           "type": "xod/core/cast-number-to-string",
           "label": "",
           "description": "",
-          "boundValues": {}
+          "boundValues": {},
+          "@@type": "xod-project/Node"
         }
       },
       "links": {
@@ -305,7 +328,8 @@
           "input": {
             "nodeId": "HyXhclKUZ-to-B1VMtgtUb-pin-BkeKcj6ZZ",
             "pinKey": "__in__"
-          }
+          },
+          "@@type": "xod-project/Link"
         },
         "ByP29gFIW-from-cast": {
           "id": "ByP29gFIW-from-cast",
@@ -316,7 +340,8 @@
           "input": {
             "nodeId": "B1VMtgtUb",
             "pinKey": "BkeKcj6ZZ"
-          }
+          },
+          "@@type": "xod-project/Link"
         },
         "HyL2qgtU--to-cast": {
           "id": "HyL2qgtU--to-cast",
@@ -327,7 +352,8 @@
           "input": {
             "nodeId": "HyXhclKUZ-to-B1VMtgtUb-pin-Hkqu9oaWb",
             "pinKey": "__in__"
-          }
+          },
+          "@@type": "xod-project/Link"
         },
         "HyL2qgtU--from-cast": {
           "id": "HyL2qgtU--from-cast",
@@ -338,7 +364,8 @@
           "input": {
             "nodeId": "B1VMtgtUb",
             "pinKey": "Hkqu9oaWb"
-          }
+          },
+          "@@type": "xod-project/Link"
         },
         "SynzKlt8b": {
           "id": "SynzKlt8b",
@@ -349,14 +376,17 @@
           "input": {
             "nodeId": "rk5MteYLZ",
             "pinKey": "HJdO9HwJ-"
-          }
+          },
+          "@@type": "xod-project/Link"
         }
       },
       "impls": {},
       "path": "@/main",
       "description": "",
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     }
   },
-  "name": "untitled"
+  "name": "untitled",
+  "@@type": "xod-project/Project"
 }

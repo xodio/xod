@@ -99,12 +99,14 @@ export const defaultizeComment = R.merge({
 });
 
 export const defaultizeLink = R.merge({
+  '@@type': 'xod-project/Link',
   id: '$$defaultLinkId',
   input: { nodeId: '$$defaultInputNodeId', pinKey: '$$defaultInputPin' },
   output: { nodeId: '$$defaultOutputNodeId', pinKey: '$$defaultOutputPin' },
 });
 
 export const defaultizeNode = R.merge({
+  '@@type': 'xod-project/Node',
   id: '$$defaultNodeId',
   position: { x: 0, y: 0 },
   type: '@/default-type',
@@ -114,6 +116,7 @@ export const defaultizeNode = R.merge({
 });
 
 export const defaultizePin = R.merge({
+  '@@type': 'xod-project/Pin',
   key: '$$defaultPinKey',
   direction: PIN_DIRECTION.INPUT,
   label: '$$defaultLabel',
@@ -143,6 +146,7 @@ export const defaultizePatch = R.compose(
     impls: R.identity,
   }),
   R.merge({
+    '@@type': 'xod-project/Patch',
     nodes: {},
     links: {},
     impls: {},
@@ -163,6 +167,7 @@ export const defaultizeProject = R.compose(
     patches: R.map(defaultizePatch),
   }),
   R.merge({
+    '@@type': 'xod-project/Project',
     authors: [],
     license: '',
     description: '',

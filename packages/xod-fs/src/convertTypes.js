@@ -7,6 +7,7 @@ import { def } from './types';
 export const convertProjectToProjectFileContents = def(
   'convertProjectToProjectFileContents :: Project -> ProjectFileContents',
   R.compose(
+    R.dissoc('@@type'),
     R.dissoc('patches'),
     R.dissoc('impls'),
     R.dissoc('attachments')
@@ -16,6 +17,7 @@ export const convertProjectToProjectFileContents = def(
 export const convertProjectFileContentsToProject = def(
   'convertProjectFileContentsToProject :: ProjectFileContents -> Project',
   R.compose(
+    R.assoc('@@type', 'xod-project/Project'),
     R.assoc('patches', {}),
     R.assoc('attachments', []),
     R.assoc('impls', {})
@@ -25,6 +27,7 @@ export const convertProjectFileContentsToProject = def(
 export const convertPatchToPatchFileContents = def(
   'convertPatchToPatchFileContents :: Patch -> PatchFileContents',
   R.compose(
+    XF.omitTypeHints,
     R.dissoc('attachments'),
     R.dissoc('impls'),
     R.dissoc('path'),
@@ -40,8 +43,8 @@ export const convertPatchFileContentsToPatch = def(
   'convertPatchFileContentsToPatch :: PatchFileContents -> Patch',
   fsPatch => R.compose(
     XF.explodeEither,
-    XP.upsertLinks(fsPatch.links),
-    XP.upsertNodes(fsPatch.nodes),
+    XP.upsertLinks(R.map(R.assoc('@@type', 'xod-project/Link'), fsPatch.links)),
+    XP.upsertNodes(R.map(R.assoc('@@type', 'xod-project/Node'), fsPatch.nodes)),
     XP.upsertComments(fsPatch.comments),
     XP.setPatchDescription(fsPatch.description),
     XP.createPatch

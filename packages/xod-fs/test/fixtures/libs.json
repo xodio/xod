@@ -1,10 +1,12 @@
 {
   "xod/core/led": {
+    "@@type": "xod-project/Patch",
     "description": "",
     "comments": {},
     "links": {},
     "nodes": {
       "noNativeImpl": {
+        "@@type": "xod-project/Node",
         "id": "noNativeImpl",
         "label": "",
         "description": "",
@@ -16,6 +18,7 @@
         "type": "xod/patch-nodes/not-implemented-in-xod"
       },
       "brightness": {
+        "@@type": "xod-project/Node",
         "id": "brightness",
         "label": "",
         "description": "Shine brightness",
@@ -40,12 +43,14 @@
     ]
   },
   "xod/core/and": {
+    "@@type": "xod-project/Patch",
     "path": "xod/core/and",
     "description": "",
     "comments": {},
     "links": {},
     "nodes": {
       "noNativeImpl": {
+        "@@type": "xod-project/Node",
         "id": "noNativeImpl",
         "label": "",
         "description": "",
@@ -57,6 +62,7 @@
         "type": "xod/patch-nodes/not-implemented-in-xod"
       },
       "a": {
+        "@@type": "xod-project/Node",
         "id": "a",
         "label": "First input",
         "description": "",
@@ -68,6 +74,7 @@
         "type": "xod/patch-nodes/input-boolean"
       },
       "b": {
+        "@@type": "xod-project/Node",
         "id": "b",
         "label": "Second input",
         "description": "",
@@ -79,6 +86,7 @@
         "type": "xod/patch-nodes/input-boolean"
       },
       "out": {
+        "@@type": "xod-project/Node",
         "id": "out",
         "label": "output",
         "description": "\"true\" if both inputs are \"true\"",
@@ -102,11 +110,13 @@
     ]
   },
   "xod/core/pot": {
+    "@@type": "xod-project/Patch",
     "description": "",
     "comments": {},
     "links": {},
     "nodes": {
       "noNativeImpl": {
+        "@@type": "xod-project/Node",
         "id": "noNativeImpl",
         "label": "",
         "description": "",
@@ -118,6 +128,7 @@
         "type": "xod/patch-nodes/not-implemented-in-xod"
       },
       "sample": {
+        "@@type": "xod-project/Node",
         "id": "sample",
         "label": "",
         "description": "Sample current value",
@@ -129,6 +140,7 @@
         "type": "xod/patch-nodes/input-pulse"
       },
       "value": {
+        "@@type": "xod-project/Node",
         "id": "value",
         "label": "",
         "description": "Sampled potentiometer value",
@@ -153,6 +165,7 @@
     ]
   },
   "xod/core/test": {
+    "@@type": "xod-project/Patch",
     "path": "xod/core/test",
     "nodes": {},
     "comments": {},
@@ -162,6 +175,7 @@
     "attachments": []
   },
   "user/utils/test": {
+    "@@type": "xod-project/Patch",
     "description": "",
     "impls": {},
     "comments": {},
@@ -171,6 +185,7 @@
     "attachments": []
   },
   "user/with-omitted-optionals/empty-lib-patch": {
+    "@@type": "xod-project/Patch",
     "attachments": [],
     "description": "",
     "impls": {},
@@ -180,6 +195,7 @@
     "path": "user/with-omitted-optionals/empty-lib-patch"
   },
   "user/with-omitted-optionals/optional-node-fields-omitted": {
+    "@@type": "xod-project/Patch",
     "attachments": [],
     "description": "",
     "impls": {},
@@ -187,6 +203,7 @@
     "links": {},
     "nodes": {
       "5c03e488-fefd-4f12-gq6a-78d209d9148c": {
+        "@@type": "xod-project/Node",
         "boundValues": {},
         "description": "",
         "id": "5c03e488-fefd-4f12-gq6a-78d209d9148c",
@@ -201,6 +218,7 @@
     "path": "user/with-omitted-optionals/optional-node-fields-omitted"
   },
   "xod/math/test": {
+    "@@type": "xod-project/Patch",
     "description": "",
     "impls": {},
     "comments": {},
