@@ -1,0 +1,132 @@
+{
+  "links": [
+    {
+      "id": "ByQ3C_NO-",
+      "input": {
+        "nodeId": "SJkn0d4d-",
+        "pinKey": "HkLOB_EuZ"
+      },
+      "output": {
+        "nodeId": "Hy_Q04sPZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1Y2C_E_Z",
+      "input": {
+        "nodeId": "SJkn0d4d-",
+        "pinKey": "BJfKruVdb"
+      },
+      "output": {
+        "nodeId": "B19V0Eiw-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hk7R0dEub",
+      "input": {
+        "nodeId": "SkxR0OV_b",
+        "pinKey": "Sk2oU_Vdb"
+      },
+      "output": {
+        "nodeId": "rkJaRuEuW",
+        "pinKey": "SJB3vO4uZ"
+      }
+    },
+    {
+      "id": "S1VTAuEOW",
+      "input": {
+        "nodeId": "rkJaRuEuW",
+        "pinKey": "H1jODuEOW"
+      },
+      "output": {
+        "nodeId": "ry7NREoP-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkI0CdE_W",
+      "input": {
+        "nodeId": "r1Vr04iPW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SkxR0OV_b",
+        "pinKey": "ryviw_EOb"
+      }
+    },
+    {
+      "id": "rJLaCdNd-",
+      "input": {
+        "nodeId": "rkJaRuEuW",
+        "pinKey": "S1dKPuVdW"
+      },
+      "output": {
+        "nodeId": "SJkn0d4d-",
+        "pinKey": "HJbjB_Nd-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B19V0Eiw-",
+      "label": "SEND",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "Hy_Q04sPZ",
+      "label": "ADDR",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SJkn0d4d-",
+      "position": {
+        "x": 266,
+        "y": 224
+      },
+      "type": "@/i2c-begin-transmission"
+    },
+    {
+      "id": "SkxR0OV_b",
+      "position": {
+        "x": 266,
+        "y": 432
+      },
+      "type": "@/i2c-end-transmission"
+    },
+    {
+      "id": "r1Vr04iPW",
+      "label": "DONE",
+      "position": {
+        "x": 266,
+        "y": 536
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "rkJaRuEuW",
+      "position": {
+        "x": 266,
+        "y": 328
+      },
+      "type": "@/i2c-write"
+    },
+    {
+      "id": "ry7NREoP-",
+      "label": "B",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

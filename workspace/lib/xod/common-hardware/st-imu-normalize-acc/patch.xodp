@@ -1,0 +1,70 @@
+{
+  "comments": [
+    {
+      "content": "Given 16-bit number, only 12 MSB contain data. So we divide by 16 to shift right by 4 bits.\n\nWe ge a value in milli-g. Divide by 1000 to convert to g.\n\nFinally, the divisor is 16000",
+      "id": "ByVVj-7Kb",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "size": {
+        "height": 153,
+        "width": 340
+      }
+    }
+  ],
+  "description": "Converts raw axis register value of an ST IMU to a value in g units",
+  "links": [
+    {
+      "id": "B17AsZ7YW",
+      "input": {
+        "nodeId": "HyEMj-mFb",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJ1TjWXKZ",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "H1Z0obXKZ",
+      "input": {
+        "nodeId": "SJ1TjWXKZ",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "SkhbobXKW",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "HyEMj-mFb",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "BytUCdHD1-": 16000
+      },
+      "id": "SJ1TjWXKZ",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/core/divide"
+    },
+    {
+      "id": "SkhbobXKW",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

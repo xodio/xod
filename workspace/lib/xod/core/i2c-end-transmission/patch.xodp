@@ -1,0 +1,30 @@
+{
+  "nodes": [
+    {
+      "id": "SJJbvdEOb",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "Sk2oU_Vdb",
+      "label": "SEND",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "ryviw_EOb",
+      "label": "DONE",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

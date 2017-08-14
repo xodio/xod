@@ -1,0 +1,188 @@
+{
+  "description": "Selects one of `Xi` value based on `IDX` index value.",
+  "links": [
+    {
+      "id": "B1Bd8TWKb",
+      "input": {
+        "nodeId": "SygOI6Wt-",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "B1JELTZKb",
+        "pinKey": "BJVz8TbYZ"
+      }
+    },
+    {
+      "id": "By9DUpZtb",
+      "input": {
+        "nodeId": "SJ7v8pbYb",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "r1m4LpWKb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJou8TWY-",
+      "input": {
+        "nodeId": "H1HILaWFb",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SygOI6Wt-",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "HyjUUa-FZ",
+      "input": {
+        "nodeId": "B1JELTZKb",
+        "pinKey": "SJ5tSTZY-"
+      },
+      "output": {
+        "nodeId": "BkDVUp-t-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1AIIaZtZ",
+      "input": {
+        "nodeId": "B1JELTZKb",
+        "pinKey": "B1kcrabFZ"
+      },
+      "output": {
+        "nodeId": "Bk1HU6btW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyROLpbF-",
+      "input": {
+        "nodeId": "SygOI6Wt-",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "B1-BIa-t-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SynIUTZtW",
+      "input": {
+        "nodeId": "B1JELTZKb",
+        "pinKey": "SJhFra-t-"
+      },
+      "output": {
+        "nodeId": "BJTNLT-Kb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1uuIabFb",
+      "input": {
+        "nodeId": "SygOI6Wt-",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "SJ7v8pbYb",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "rkcIL6ZFW",
+      "input": {
+        "nodeId": "B1JELTZKb",
+        "pinKey": "SkPtBp-FW"
+      },
+      "output": {
+        "nodeId": "r1m4LpWKb",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1-BIa-t-",
+      "label": "X3",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "B1JELTZKb",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "@/nth-number-3"
+    },
+    {
+      "id": "BJTNLT-Kb",
+      "label": "X1",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Bk1HU6btW",
+      "label": "X2",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "BkDVUp-t-",
+      "label": "X0",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "The selected value. Equals to one of `Xi` input.",
+      "id": "H1HILaWFb",
+      "position": {
+        "x": 136,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "SJqZ8COrDkW": 3
+      },
+      "id": "SJ7v8pbYb",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "@/less"
+    },
+    {
+      "id": "SygOI6Wt-",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "@/if-else"
+    },
+    {
+      "description": "Index to select. Fraction part is truncated. E.g. index 1.9 is considered to be 1. Index below 0 is rounded up to 0. Any index greater than 3 is round down to 3.",
+      "id": "r1m4LpWKb",
+      "label": "IDX",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

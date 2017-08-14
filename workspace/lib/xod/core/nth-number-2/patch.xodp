@@ -1,0 +1,118 @@
+{
+  "description": "Selects either `X0` or `X1` based on `IDX` index value.",
+  "links": [
+    {
+      "id": "BkCNBaWFW",
+      "input": {
+        "nodeId": "SJrESpZKW",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "BkGyBpZKZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hk64BaWKZ",
+      "input": {
+        "nodeId": "SJrESpZKW",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "S13CNpbK-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJX4STWYb",
+      "input": {
+        "nodeId": "rJcQrTWtZ",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "rJXCVpWtZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJGSBpbFZ",
+      "input": {
+        "nodeId": "SJrESpZKW",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "rJcQrTWtZ",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "rJYVHTbYb",
+      "input": {
+        "nodeId": "rJCJSpbt-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJrESpZKW",
+        "pinKey": "S13xLCuHvkW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BkGyBpZKZ",
+      "label": "X1",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "S13CNpbK-",
+      "label": "X0",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SJrESpZKW",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "@/if-else"
+    },
+    {
+      "description": "The selected value. Equals to one of `Xi` input.",
+      "id": "rJCJSpbt-",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Index to select. All values below 1 are considered to be 0. Values of 1 and above are considered to be 1.",
+      "id": "rJXCVpWtZ",
+      "label": "IDX",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "SJqZ8COrDkW": 1
+      },
+      "id": "rJcQrTWtZ",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "@/less"
+    }
+  ]
+}
