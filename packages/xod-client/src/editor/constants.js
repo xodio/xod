@@ -3,12 +3,12 @@ import { PIN_TYPE } from 'xod-project';
 // TODO: split into multiple files?
 
 export const EDITOR_MODE = {
-  EDITING: 'editing',
+  SELECTING: 'selecting',
   LINKING: 'linking',
   PANNING: 'panning',
 
   get DEFAULT() {
-    return this.EDITING;
+    return this.SELECTING;
   },
 };
 

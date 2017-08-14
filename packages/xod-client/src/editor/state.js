@@ -2,8 +2,7 @@ import { EDITOR_MODE } from './constants';
 
 export default {
   currentPatchPath: '@/1',
-  mode: EDITOR_MODE.EDITING,
-  dragging: null,
+  mode: EDITOR_MODE.DEFAULT,
   selection: [],
   linkingPin: null,
   selectedNodeType: null,

@@ -78,7 +78,7 @@ export const deselectAll = () => (dispatch, getState) => {
 export const selectEntity = R.curry(
   (entityType, id, dispatch, getState) => {
     const state = getState();
-    if (Selectors.getMode(state) !== EDITOR_MODE.EDITING) return;
+    if (Selectors.getMode(state) !== EDITOR_MODE.SELECTING) return;
 
     dispatch({
       type: ActionType.EDITOR_SELECT_ENTITY,

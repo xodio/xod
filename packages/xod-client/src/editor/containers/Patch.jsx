@@ -191,7 +191,7 @@ class Patch extends React.Component {
 
   getManipulatedEntityId(entityType) {
     if (
-      this.props.mode !== EDITOR_MODE.EDITING ||
+      this.props.mode !== EDITOR_MODE.SELECTING ||
       this.state.manipulationMode === MANIPULATION_MODE.SELECT ||
       R.isEmpty(this.props.selection)
     ) {
