@@ -10,6 +10,7 @@ export default {
     '@/1': {
       id: '@/1',
       index: 0,
+      offset: { x: 0, y: 0 },
     },
   },
 };

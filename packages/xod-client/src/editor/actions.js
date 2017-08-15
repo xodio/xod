@@ -9,6 +9,7 @@ import {
   getRenderablePin,
   getPinSelectionError,
   getLinkingError,
+  getInitialPatchOffset,
 } from '../project/utils';
 
 import {
@@ -160,16 +161,34 @@ export const deleteSelection = () => (dispatch, getState) => {
   });
 };
 
+export const setCurrentPatchOffset = newOffset => ({
+  type: ActionType.SET_CURRENT_PATCH_OFFSET,
+  payload: newOffset,
+});
+
 export const switchPatch = patchPath => (dispatch, getState) => {
-  if (Selectors.getCurrentPatchPath(getState()) === patchPath) { return; }
+  const state = getState();
+  const currentPatchPath = Selectors.getCurrentPatchPath(state);
+
+  if (currentPatchPath === patchPath) { return; }
 
   dispatch(deselectAll());
+
+  const tabs = Selectors.getTabs(state);
+  const isOpeningNewTab = !R.has(patchPath, tabs);
   dispatch({
     type: ActionType.EDITOR_SWITCH_PATCH,
     payload: {
       patchPath,
     },
   });
+
+  if (isOpeningNewTab) {
+    const project = ProjectSelectors.getProject(state);
+    const offset = getInitialPatchOffset(patchPath, project);
+
+    dispatch(setCurrentPatchOffset(offset));
+  }
 };
 
 export const closeTab = id => ({

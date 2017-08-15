@@ -10,6 +10,7 @@ import {
   EDITOR_SWITCH_PATCH,
   TAB_CLOSE,
   TAB_SORT,
+  SET_CURRENT_PATCH_OFFSET,
 } from './actionTypes';
 import {
   PROJECT_CREATE,
@@ -41,6 +42,7 @@ const addTab = R.curry((patchPath, state) => {
   return R.assocPath(['tabs', patchPath], {
     id: patchPath,
     index: newIndex,
+    offset: { x: 0, y: 0 },
   }, state);
 });
 
@@ -199,6 +201,12 @@ const editorReducer = (state = {}, action) => {
           {},
           R.values(state.tabs)
         ),
+        state
+      );
+    case SET_CURRENT_PATCH_OFFSET:
+      return R.assocPath(
+        ['tabs', state.currentPatchPath, 'offset'],
+        action.payload,
         state
       );
     default:

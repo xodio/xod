@@ -1,15 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 
 import PinShadowFilter from './filters/PinShadowFilter';
 import DraggedNodeShadowFilter from './filters/DraggedNodeShadowFilter';
 
-const PatchSVG = ({ children, onMouseMove, onMouseUp, svgRef }) => (
+const PatchSVG = ({
+  children,
+  isInPanningMode,
+  isPanning,
+  onMouseDown,
+  onMouseMove,
+  onMouseUp,
+  svgRef,
+}) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="PatchSVG"
+    className={cn('PatchSVG', { isPanning, isInPanningMode })}
     width="100%"
     height="100%"
+    onMouseDown={onMouseDown}
     onMouseMove={onMouseMove}
     onMouseUp={onMouseUp}
     ref={svgRef}
@@ -27,6 +37,9 @@ PatchSVG.propTypes = {
     PropTypes.element,
     PropTypes.arrayOf(PropTypes.element),
   ]),
+  isPanning: PropTypes.bool,
+  isInPanningMode: PropTypes.bool,
+  onMouseDown: PropTypes.func,
   onMouseMove: PropTypes.func,
   onMouseUp: PropTypes.func,
   svgRef: PropTypes.func,

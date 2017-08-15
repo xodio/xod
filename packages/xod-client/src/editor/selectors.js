@@ -72,3 +72,8 @@ export const getTabs = R.pipe(
   getEditor,
   R.prop('tabs')
 );
+
+export const getCurrentPatchOffset = createSelector(
+  [getCurrentPatchPath, getTabs],
+  (currentPatchPath, tabs) => R.path([currentPatchPath, 'offset'], tabs)
+);

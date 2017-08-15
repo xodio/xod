@@ -1,7 +1,5 @@
 import { PIN_TYPE } from 'xod-project';
 
-// TODO: split into multiple files?
-
 export const EDITOR_MODE = {
   SELECTING: 'selecting',
   MOVING_SELECTION: 'moving_selection',
