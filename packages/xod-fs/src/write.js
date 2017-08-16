@@ -1,5 +1,7 @@
+
 import { curry } from 'ramda';
 import fileSave from 'file-save';
+import stringify from 'json-stable-stringify';
 import { resolvePath } from './utils';
 
 // :: outputPath -> data -> Promise
@@ -19,7 +21,7 @@ export const writeFile = curry((outputPath, data, encoding) => new Promise(
 
 // :: outputPath -> data -> Promise
 export const writeJSON = curry((outputPath, data) =>
-  writeFile(outputPath, JSON.stringify(data, undefined, 2), 'utf8')
+  writeFile(outputPath, stringify(data, { space: 2 }), 'utf8')
     .catch((err) => { throw Object.assign(err, { path: outputPath, data }); })
 );
 

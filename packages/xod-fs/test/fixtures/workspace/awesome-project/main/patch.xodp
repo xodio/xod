@@ -1,51 +1,5 @@
 {
-  "nodes": [
-    {
-      "id": "2c03e470-fefd-4f58-be6a-58d209d9158c",
-      "label": "",
-      "description": "",
-      "type": "xod/core/pot",
-      "boundValues": {},
-      "position": {
-        "x": 292,
-        "y": 182
-      }
-    },
-    {
-      "id": "89c69d91-b484-478d-8990-027e5f0a2e3e",
-      "label": "",
-      "description": "",
-      "type": "xod/core/and",
-      "boundValues": {},
-      "position": {
-        "x": 163,
-        "y": 314
-      }
-    },
-    {
-      "id": "4d716df5-81e7-4845-9b82-31a54c1634d7",
-      "label": "",
-      "description": "",
-      "type": "@/qux",
-      "boundValues": {},
-      "position": {
-        "x": 363,
-        "y": 322
-      }
-    }
-  ],
   "links": [
-    {
-      "id": "3ed564cd-71e5-4ad3-9361-e7b9719bc82a",
-      "input": {
-        "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
-        "pinKey": "value"
-      },
-      "output": {
-        "nodeId": "89c69d91-b484-478d-8990-027e5f0a2e3e",
-        "pinKey": "b"
-      }
-    },
     {
       "id": "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f",
       "input": {
@@ -56,7 +10,43 @@
         "nodeId": "4d716df5-81e7-4845-9b82-31a54c1634d7",
         "pinKey": "38395ee5-8634-40f9-b7fa-dfe9eee208e8"
       }
+    },
+    {
+      "id": "3ed564cd-71e5-4ad3-9361-e7b9719bc82a",
+      "input": {
+        "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
+        "pinKey": "value"
+      },
+      "output": {
+        "nodeId": "89c69d91-b484-478d-8990-027e5f0a2e3e",
+        "pinKey": "b"
+      }
     }
   ],
-  "description": ""
+  "nodes": [
+    {
+      "id": "2c03e470-fefd-4f58-be6a-58d209d9158c",
+      "position": {
+        "x": 292,
+        "y": 182
+      },
+      "type": "xod/core/pot"
+    },
+    {
+      "id": "4d716df5-81e7-4845-9b82-31a54c1634d7",
+      "position": {
+        "x": 363,
+        "y": 322
+      },
+      "type": "@/qux"
+    },
+    {
+      "id": "89c69d91-b484-478d-8990-027e5f0a2e3e",
+      "position": {
+        "x": 163,
+        "y": 314
+      },
+      "type": "xod/core/and"
+    }
+  ]
 }
