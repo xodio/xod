@@ -163,12 +163,16 @@ class Comment extends React.Component {
                 />
               </div>
             )}
-            <div
-              className="resizeHandleOverlay"
-              onMouseDown={this.onResizeHandleMouseDown}
-            />
           </div>
         </foreignObject>
+        <rect
+          className="resizeHandleOverlay"
+          onMouseDown={this.onResizeHandleMouseDown}
+          x={(position.x + size.width) - HANDLE_SIZE}
+          y={(position.y + size.height) - HANDLE_SIZE}
+          width={HANDLE_SIZE}
+          height={HANDLE_SIZE}
+        />
       </g>
     );
   }

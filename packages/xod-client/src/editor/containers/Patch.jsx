@@ -309,6 +309,14 @@ class Patch extends React.Component {
             height={this.props.size.height}
             onClick={this.props.actions.deselectAll}
           />
+          <Layers.IdleComments
+            draggedCommentId={manipulatedCommentId}
+            comments={this.props.comments}
+            selection={this.props.selection}
+            onMouseDown={this.onCommentMouseDown}
+            onResizeHandleMouseDown={this.onCommentResizeHandleMouseDown}
+            onFinishEditing={this.props.actions.editComment}
+          />
           <Layers.IdleNodes
             draggedNodeId={draggedNodeId}
             nodes={this.props.nodes}
@@ -326,14 +334,6 @@ class Patch extends React.Component {
             linkingPin={this.props.linkingPin}
             onPinMouseDown={this.onPinMouseDown}
             onPinMouseUp={this.onPinMouseUp}
-          />
-          <Layers.IdleComments
-            draggedCommentId={manipulatedCommentId}
-            comments={this.props.comments}
-            selection={this.props.selection}
-            onMouseDown={this.onCommentMouseDown}
-            onResizeHandleMouseDown={this.onCommentResizeHandleMouseDown}
-            onFinishEditing={this.props.actions.editComment}
           />
           {(this.state.manipulationMode !== MANIPULATION_MODE.SELECT) ? (
             <Layers.SnappingPreview
