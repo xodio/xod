@@ -23,7 +23,7 @@ describe('Link', () => {
     it('should return created link with `id` and `pins` keys', () => {
       expect(newLink)
         .to.be.an('object')
-        .to.have.keys(['id', 'input', 'output']);
+        .to.have.keys(['@@type', 'id', 'input', 'output']);
     });
     it('should have `input` and `output` objects with keys `pinKey` and `nodeId`', () => {
       expect(newLink)

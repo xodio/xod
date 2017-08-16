@@ -15,7 +15,8 @@
             "x": 10,
             "y": 16
           },
-          "type": "xod/patch-nodes/input-number"
+          "type": "xod/patch-nodes/input-number",
+          "@@type": "xod-project/Node"
         },
         "HkqmLAOrD1W": {
           "boundValues": {},
@@ -26,7 +27,8 @@
             "x": 138,
             "y": 16
           },
-          "type": "xod/patch-nodes/input-number"
+          "type": "xod/patch-nodes/input-number",
+          "@@type": "xod-project/Node"
         },
         "SyomIRurDJ-": {
           "boundValues": {
@@ -39,7 +41,8 @@
             "x": 10,
             "y": 224
           },
-          "type": "xod/patch-nodes/output-number"
+          "type": "xod/patch-nodes/output-number",
+          "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
           "boundValues": {},
@@ -50,7 +53,8 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/patch-nodes/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
         }
       },
       "links": {},
@@ -66,7 +70,8 @@
           "encoding": "utf8",
           "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    auto x = getValue<input_X>(nid);\n    auto y = getValue<input_Y>(nid);\n    emitValue<output_SUM>(nid, x + y);\n}\n"
         }
-      ]
+      ],
+      "@@type": "xod-project/Patch"
     },
     "@/main": {
       "nodes": {
@@ -82,7 +87,8 @@
           "position": {
             "x": 138,
             "y": 120
-          }
+          },
+          "@@type": "xod-project/Node"
         }
       },
       "links": {},
@@ -90,8 +96,10 @@
       "path": "@/main",
       "description": "",
       "comments": {},
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     }
   },
-  "name": "untitled"
+  "name": "untitled",
+  "@@type": "xod-project/Project"
 }

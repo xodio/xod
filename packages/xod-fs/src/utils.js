@@ -8,6 +8,7 @@ import {
   isAmong,
   foldEither,
   validateSanctuaryType,
+  omitTypeHints,
 } from 'xod-func-tools';
 
 import { PatchFileContents, Path, def } from './types';
@@ -300,15 +301,20 @@ export const validateWorkspace = R.pipeP(
   isWorkspaceValid
 );
 
-// :: String -> a -> Promise Error PatchFileContents
-export const rejectOnInvalidPatchFileContents =
-  R.uncurryN(2, filePath => R.compose(
+// :: String -> PatchFileContents -> Promise Error PatchFileContents
+export const rejectOnInvalidPatchFileContents = R.curry(
+  (filePath, fileContents) => R.compose(
     foldEither(
       () => rejectWithCode(
         ERROR_CODES.INVALID_FILE_CONTENTS,
         { path: filePath }
       ),
-      Promise.resolve.bind(Promise)
+      () => Promise.resolve(fileContents)
     ),
-    validateSanctuaryType(PatchFileContents)
-  ));
+    validateSanctuaryType(PatchFileContents),
+    // Omit type hints to guarantee full type check of the data loaded from FS.
+    // The @@type fields should not be there, and this is en extra layer of
+    // protection from improper save.
+    omitTypeHints
+  )(fileContents)
+);

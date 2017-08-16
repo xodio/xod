@@ -23,6 +23,7 @@ import { def } from './types';
 export const createPin = def(
   'createPin :: PinKey -> DataType -> PinDirection -> Number -> PinLabel -> String -> Boolean -> DataValue -> Pin',
   (key, type, direction, order, label, description, isBindable, defaultValue) => ({
+    '@@type': 'xod-project/Pin',
     key,
     type,
     direction,

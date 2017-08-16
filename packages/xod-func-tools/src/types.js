@@ -88,13 +88,22 @@ export const EnumType = R.curry(
   )
 );
 
+// For those who loves pain we have strict type checking mode that ignores
+// @@type hints and thus dead slow
+// :: Any -> Boolean
+const hasTypeHint = process.env.XOD_HM_DEF === 'strict' ? R.F : R.has('@@type');
+
 // Model :: String -> String -> String -> StrMap Type -> Type
 export const Model = R.curry(
   (packageName, docUrl, typeName, schema) => NullaryType(
     packageName,
     docUrl,
     typeName,
-    hasType($.RecordType(schema))
+    R.ifElse(
+      hasTypeHint,
+      R.propEq('@@type', qualifiedTypeName(packageName, typeName)),
+      hasType($.RecordType(schema))
+    )
   )
 );
 

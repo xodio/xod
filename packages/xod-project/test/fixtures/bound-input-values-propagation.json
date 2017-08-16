@@ -21,7 +21,8 @@
           "boundValues": {
             "wrapped-add-in-1": 111,
             "wrapped-add-in-2": 222
-          }
+          },
+          "@@type": "xod-project/Node"
         }
       },
       "links": {},
@@ -29,7 +30,8 @@
       "description": "",
       "comments": {},
       "attachments": [],
-      "path": "@/main"
+      "path": "@/main",
+      "@@type": "xod-project/Patch"
     },
     "@/wrapped-add": {
       "nodes": {
@@ -42,7 +44,8 @@
             "x": 10,
             "y": 16
           },
-          "label": "IN_1"
+          "label": "IN_1",
+          "@@type": "xod-project/Node"
         },
         "wrapped-add-in-2": {
           "id": "wrapped-add-in-2",
@@ -53,7 +56,8 @@
             "x": 266,
             "y": 16
           },
-          "label": "IN_2"
+          "label": "IN_2",
+          "@@type": "xod-project/Node"
         },
         "H1jEI_PUW": {
           "id": "H1jEI_PUW",
@@ -64,7 +68,8 @@
             "x": 138,
             "y": 328
           },
-          "label": "OUT_1"
+          "label": "OUT_1",
+          "@@type": "xod-project/Node"
         },
         "r1yIU_vU-": {
           "id": "r1yIU_vU-",
@@ -75,7 +80,8 @@
           "position": {
             "x": 138,
             "y": 120
-          }
+          },
+          "@@type": "xod-project/Node"
         }
       },
       "links": {
@@ -88,7 +94,8 @@
           "input": {
             "nodeId": "H1jEI_PUW",
             "pinKey": "__in__"
-          }
+          },
+          "@@type": "xod-project/Link"
         },
         "H14LUuwLW": {
           "id": "H14LUuwLW",
@@ -99,7 +106,8 @@
           "input": {
             "nodeId": "r1yIU_vU-",
             "pinKey": "HkqmLAOrD1W"
-          }
+          },
+          "@@type": "xod-project/Link"
         },
         "ryILL_wIW": {
           "id": "ryILL_wIW",
@@ -110,14 +118,16 @@
           "input": {
             "nodeId": "r1yIU_vU-",
             "pinKey": "BJnQUR_BwyZ"
-          }
+          },
+          "@@type": "xod-project/Link"
         }
       },
       "impls": {},
       "description": "",
       "comments": {},
       "attachments": [],
-      "path": "@/wrapped-add"
+      "path": "@/wrapped-add",
+      "@@type": "xod-project/Patch"
     },
     "xod/core/add": {
       "nodes": {
@@ -130,7 +140,8 @@
             "x": 10,
             "y": 16
           },
-          "type": "xod/patch-nodes/input-number"
+          "type": "xod/patch-nodes/input-number",
+          "@@type": "xod-project/Node"
         },
         "HkqmLAOrD1W": {
           "boundValues": {},
@@ -141,7 +152,8 @@
             "x": 138,
             "y": 16
           },
-          "type": "xod/patch-nodes/input-number"
+          "type": "xod/patch-nodes/input-number",
+          "@@type": "xod-project/Node"
         },
         "SyomIRurDJ-": {
           "boundValues": {
@@ -154,7 +166,8 @@
             "x": 10,
             "y": 224
           },
-          "type": "xod/patch-nodes/output-number"
+          "type": "xod/patch-nodes/output-number",
+          "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
           "boundValues": {},
@@ -165,7 +178,8 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/patch-nodes/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
         }
       },
       "links": {},
@@ -181,7 +195,9 @@
           "encoding": "utf8",
           "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    auto x = getValue<input_X>(nid);\n    auto y = getValue<input_Y>(nid);\n    emitValue<output_SUM>(nid, x + y);\n}\n"
         }
-      ]
+      ],
+      "@@type": "xod-project/Patch"
     }
-  }
+  },
+  "@@type": "xod-project/Project"
 }

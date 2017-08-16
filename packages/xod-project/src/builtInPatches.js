@@ -1,5 +1,7 @@
 import R from 'ramda';
 
+import { createPin } from './pin';
+
 import {
   PIN_TYPE,
   PIN_DIRECTION as DIRECTION,
@@ -29,19 +31,19 @@ export const getPinKeyForTerminalDirection = direction =>
 
 const getTerminalPins = R.curry((direction, type) => {
   const pinKey = TERMINAL_PIN_KEYS[OPPOSITE_DIRECTION[direction]];
+  const label = direction === DIRECTION.INPUT ? 'OUT' : 'IN';
+  const pin = createPin(
+    pinKey,
+    type,
+    OPPOSITE_DIRECTION[direction],
+    0, // order
+    label,
+    '', // description
+    true, // bindable? terminal's pins are always bindable
+    DEFAULT_VALUE_OF_TYPE[type]
+  );
 
-  return {
-    [pinKey]: {
-      key: pinKey,
-      type,
-      direction: OPPOSITE_DIRECTION[direction],
-      label: direction === DIRECTION.INPUT ? 'OUT' : 'IN',
-      description: '',
-      order: 0,
-      defaultValue: DEFAULT_VALUE_OF_TYPE[type],
-      isBindable: true, // terminal's pins are always bindable
-    },
-  };
+  return R.objOf(pinKey, pin);
 });
 
 export const PINS_OF_PATCH_NODES = R.compose(

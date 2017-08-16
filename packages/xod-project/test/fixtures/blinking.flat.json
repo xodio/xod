@@ -18,7 +18,8 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/patch-nodes/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
         },
         "pin": {
           "label": "",
@@ -29,7 +30,8 @@
           "position": {
             "x": 0,
             "y": 0
-          }
+          },
+          "@@type": "xod-project/Node"
         },
         "value": {
           "label": "",
@@ -40,7 +42,8 @@
           "position": {
             "x": 0,
             "y": 0
-          }
+          },
+          "@@type": "xod-project/Node"
         }
       },
       "links": {},
@@ -48,7 +51,8 @@
       "impls": {
         "espruino": "\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
       },
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     },
     "xod/math/multiply": {
       "comments": {},
@@ -63,7 +67,8 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/patch-nodes/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
         },
         "a": {
           "label": "",
@@ -74,7 +79,8 @@
           "position": {
             "x": 0,
             "y": 0
-          }
+          },
+          "@@type": "xod-project/Node"
         },
         "b": {
           "label": "",
@@ -85,7 +91,8 @@
           "position": {
             "x": 100,
             "y": 0
-          }
+          },
+          "@@type": "xod-project/Node"
         },
         "out": {
           "label": "",
@@ -96,7 +103,8 @@
           "position": {
             "x": 0,
             "y": 300
-          }
+          },
+          "@@type": "xod-project/Node"
         }
       },
       "links": {},
@@ -104,7 +112,8 @@
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a * e.inputs.b) };\n};\n"
       },
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     },
     "xod/core/latch": {
       "comments": {},
@@ -119,7 +128,8 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/patch-nodes/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
         },
         "toggle": {
           "label": "",
@@ -130,7 +140,8 @@
           "position": {
             "x": 0,
             "y": 0
-          }
+          },
+          "@@type": "xod-project/Node"
         },
         "set": {
           "label": "",
@@ -141,7 +152,8 @@
           "position": {
             "x": 0,
             "y": 0
-          }
+          },
+          "@@type": "xod-project/Node"
         },
         "reset": {
           "label": "",
@@ -152,7 +164,8 @@
           "position": {
             "x": 0,
             "y": 0
-          }
+          },
+          "@@type": "xod-project/Node"
         },
         "state": {
           "label": "",
@@ -163,7 +176,8 @@
           "position": {
             "x": 0,
             "y": 300
-          }
+          },
+          "@@type": "xod-project/Node"
         }
       },
       "links": {},
@@ -171,7 +185,8 @@
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
       },
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     },
     "xod/core/clock": {
       "comments": {},
@@ -186,7 +201,8 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/patch-nodes/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
         },
         "interval": {
           "label": "",
@@ -197,7 +213,8 @@
           "position": {
             "x": 0,
             "y": 0
-          }
+          },
+          "@@type": "xod-project/Node"
         },
         "tick": {
           "label": "",
@@ -208,7 +225,8 @@
           "position": {
             "x": 0,
             "y": 300
-          }
+          },
+          "@@type": "xod-project/Node"
         }
       },
       "links": {},
@@ -216,7 +234,8 @@
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.context.intervalID) {\n    clearInterval(e.context.intervalID);\n  }\n\n  e.context.intervalID = setInterval(function() {\n    e.fire({ tick: PULSE });\n  }, e.inputs.interval * 1000);\n};\n"
       },
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     },
     "xod/core/cast-boolean-to-number": {
       "comments": {},
@@ -231,7 +250,8 @@
             "x": 100,
             "y": 100
           },
-          "type": "xod/patch-nodes/not-implemented-in-xod"
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
         },
         "__in__": {
           "label": "",
@@ -242,7 +262,8 @@
           "position": {
             "x": 0,
             "y": 0
-          }
+          },
+          "@@type": "xod-project/Node"
         },
         "__out__": {
           "label": "",
@@ -253,7 +274,8 @@
           "position": {
             "x": 0,
             "y": 300
-          }
+          },
+          "@@type": "xod-project/Node"
         }
       },
       "links": {},
@@ -261,7 +283,8 @@
       "impls": {
         "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Number(e.inputs.__in__) };\n};\n"
       },
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     },
     "@/main": {
       "comments": {},
@@ -276,7 +299,8 @@
           "position": {
             "x": 271,
             "y": 355
-          }
+          },
+          "@@type": "xod-project/Node"
         },
         "BJ4l0cVdKe~ryFxRcNdKg": {
           "label": "",
@@ -289,7 +313,8 @@
           "position": {
             "x": 305,
             "y": 430
-          }
+          },
+          "@@type": "xod-project/Node"
         },
         "BJ4l0cVdKe~HkSgA94OYx": {
           "label": "",
@@ -300,7 +325,8 @@
           "position": {
             "x": 354,
             "y": 218
-          }
+          },
+          "@@type": "xod-project/Node"
         },
         "BJ4l0cVdKe~rJUgCqNuKl": {
           "label": "",
@@ -311,7 +337,8 @@
           "position": {
             "x": 453,
             "y": 298
-          }
+          },
+          "@@type": "xod-project/Node"
         },
         "SJ7g05EdFe~BJGgAcVOtx-to-BJ4l0cVdKe~B1wg0qVOtg-pin-__in__": {
           "label": "",
@@ -322,7 +349,8 @@
             "x": 0,
             "y": 0
           },
-          "type": "xod/core/cast-boolean-to-number"
+          "type": "xod/core/cast-boolean-to-number",
+          "@@type": "xod-project/Node"
         },
         "SJ7g05EdFe~rJxgAqV_tl": {
           "label": "",
@@ -335,7 +363,8 @@
           "position": {
             "x": 267,
             "y": 215
-          }
+          },
+          "@@type": "xod-project/Node"
         }
       },
       "links": {
@@ -348,7 +377,8 @@
           "input": {
             "nodeId": "BJ4l0cVdKe~rJUgCqNuKl",
             "pinKey": "a"
-          }
+          },
+          "@@type": "xod-project/Link"
         },
         "BJ4l0cVdKe~By-xeR5V_tx": {
           "id": "BJ4l0cVdKe~By-xeR5V_tx",
@@ -359,7 +389,8 @@
           "input": {
             "nodeId": "BJ4l0cVdKe~ryFxRcNdKg",
             "pinKey": "value"
-          }
+          },
+          "@@type": "xod-project/Link"
         },
         "SJ7g05EdFe~H13l0qVOtg": {
           "id": "SJ7g05EdFe~H13l0qVOtg",
@@ -370,7 +401,8 @@
           "input": {
             "nodeId": "SJ7g05EdFe~rJWgAqVOtx",
             "pinKey": "toggle"
-          }
+          },
+          "@@type": "xod-project/Link"
         },
         "BJ4l0cVdKe~Sy0eCq4dtl": {
           "id": "BJ4l0cVdKe~Sy0eCq4dtl",
@@ -381,7 +413,8 @@
           "input": {
             "nodeId": "BJ4l0cVdKe~HkSgA94OYx",
             "pinKey": "a"
-          }
+          },
+          "@@type": "xod-project/Link"
         },
         "BJ4l0cVdKe~Hykgx054dFx": {
           "id": "BJ4l0cVdKe~Hykgx054dFx",
@@ -392,7 +425,8 @@
           "input": {
             "nodeId": "BJ4l0cVdKe~rJUgCqNuKl",
             "pinKey": "b"
-          }
+          },
+          "@@type": "xod-project/Link"
         },
         "BJ4l0cVdKe~rymee0cE_Yx": {
           "id": "BJ4l0cVdKe~rymee0cE_Yx",
@@ -403,7 +437,8 @@
           "input": {
             "nodeId": "BJ4l0cVdKe~HkSgA94OYx",
             "pinKey": "b"
-          }
+          },
+          "@@type": "xod-project/Link"
         },
         "rk6l094Otl-to-cast": {
           "id": "rk6l094Otl-to-cast",
@@ -414,12 +449,15 @@
           "input": {
             "nodeId": "SJ7g05EdFe~BJGgAcVOtx-to-BJ4l0cVdKe~B1wg0qVOtg-pin-__in__",
             "pinKey": "__in__"
-          }
+          },
+          "@@type": "xod-project/Link"
         }
       },
       "description": "",
       "impls": {},
-      "attachments": []
+      "attachments": [],
+      "@@type": "xod-project/Patch"
     }
-  }
+  },
+  "@@type": "xod-project/Project"
 }

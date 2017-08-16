@@ -43,6 +43,7 @@ import { isInputTerminalPath, isOutputTerminalPath, getTerminalDataType } from '
 export const createNode = def(
   'createNode :: Position -> PatchPath -> Node',
   (position, type) => ({
+    '@@type': 'xod-project/Node',
     id: Utils.generateId(),
     type,
     position,

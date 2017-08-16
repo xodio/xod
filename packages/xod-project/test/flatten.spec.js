@@ -255,7 +255,14 @@ describe('Flatten', () => {
         R.unnest
       ))(extracted[0]);
       // unnest links
-      const links = R.map(R.unnest)(extracted[1]);
+      const links = R.map(R.compose(
+        R.applySpec({
+          id: R.prop('id'),
+          input: R.prop('input'),
+          output: R.prop('output'),
+        }),
+        R.unnest
+      ))(extracted[1]);
 
       expect([nodes, links]).to.be.deep.equal([
         [
@@ -1324,6 +1331,7 @@ describe('Flatten', () => {
               .to.have.lengthOf(1)
               .and.have.property(0)
               .that.deep.equal({
+                '@@type': 'xod-project/Link',
                 id: 'l',
                 input: {
                   nodeId: 'b',

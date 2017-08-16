@@ -165,6 +165,34 @@ export const omitEmptyValues = def(
   R.reject(R.isEmpty)
 );
 
+/*
+ * Like Ramda’s `omit` but works recursively, and never changes the type of
+ * an input.
+ */
+export const omitRecursively = def(
+  'omitRecursively :: [String] -> a -> a',
+  (keys, obj) => {
+    const isPlainObject = R.both(
+      R.is(Object),
+      R.complement(R.is(Array))
+    );
+
+    return R.compose(
+      R.map(R.when(
+        R.is(Object),
+        omitRecursively(keys)
+      )),
+      R.when(
+        isPlainObject,
+        R.omit(keys)
+      )
+    )(obj);
+  }
+);
+
+// :: Object -> Object
+export const omitTypeHints = omitRecursively(['@@type']);
+
 /**
  * Checks if an element is among elements of a list
  */
@@ -260,6 +288,8 @@ export default Object.assign(
     hasNo,
     omitNilValues,
     omitEmptyValues,
+    omitRecursively,
+    omitTypeHints,
     isAmong,
     optionalObjOf,
     notNil,
