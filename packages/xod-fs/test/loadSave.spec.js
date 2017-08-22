@@ -36,6 +36,7 @@ describe('Load/Save roundtrip', () => {
       path.join(tmpWorkspace, 'awesome-project'),
       {
         compareContent: true,
+        excludeFilter: '.DS_Store,.directory,.Trash-*,Thumbs.db,desktop.ini',
       }
     );
 
