@@ -152,6 +152,11 @@ export const uploadToArduino = (pab, port, code) => {
     );
 };
 
+// :: String -> [Board] -> Board
+const findBoardByName = R.curry(
+  (boardName, boards) => R.find(R.propEq('name', boardName), boards)
+);
+
 // =============================================================================
 //
 // IPC handlers (for main process)
@@ -181,6 +186,7 @@ export const uploadToArduinoHandler = (event, payload) => {
   )(err);
 
   const boardName = payload.board.name;
+  const boardCpuId = payload.board.cpuId;
   const { package: pkg, architecture } = payload.board;
   const fqbn = `${pkg}:${architecture}:unknown`;
 
@@ -195,7 +201,10 @@ export const uploadToArduinoHandler = (event, payload) => {
       .then(boards => ({
         code,
         port,
-        pab: R.find(R.propEq('name', boardName), boards),
+        pab: R.compose(
+          R.assoc('cpu', boardCpuId),
+          findBoardByName(boardName)
+        )(boards),
       })),
     ({ code, port, pab }) => uploadToArduino(xad.strigifyFQBN(pab), port, code),
     (result) => {
