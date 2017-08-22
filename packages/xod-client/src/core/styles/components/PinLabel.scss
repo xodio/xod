@@ -1,15 +1,8 @@
 .PinLabel {
   font-family: $font-family-condensed;
-  font-weight: 500;
-  font-size: 12px;
+  font-weight: 700;
+  font-size: 10px;
   dominant-baseline: central;
-}
-
-.PinLabel.input {
-  fill: $color-pinlabel-input;
-}
-
-.PinLabel.output {
-  fill: $color-pinlabel-output;
-  font-weight: 700; // black font looks thinner
+  fill: $color-pinlabel;
+  filter: url(#pinLabelShadow);  
 }

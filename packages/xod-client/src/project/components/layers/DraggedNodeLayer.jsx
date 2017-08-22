@@ -26,7 +26,6 @@ class DraggedNodeLayer extends React.PureComponent {
           type={node.type}
           position={position}
           size={size}
-          outputPinsSectionHeight={node.outputPinsSectionHeight}
           pins={node.pins}
           isSelected
           isDragged

@@ -35,7 +35,6 @@ const IdleNodesLayer = ({
               type={node.type}
               position={node.position}
               size={node.size}
-              outputPinsSectionHeight={node.outputPinsSectionHeight}
               pins={node.pins}
               width={node.width}
               isSelected={isNodeSelected(selection, node.id)}

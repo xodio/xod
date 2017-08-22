@@ -49,7 +49,6 @@ export const RenderableNode = ExtendedModel('RenderableNode', XP.Node, {
   pins: $.StrMap(RenderablePin),
   label: $.String,
   size: Size,
-  outputPinsSectionHeight: $.Number,
 });
 
 export const RenderableLink = ExtendedModel('RenderableLink', XP.Link, {

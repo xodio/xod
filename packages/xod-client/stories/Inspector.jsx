@@ -170,7 +170,6 @@ const nodeSelection = {
       },
     },
     size: { width: 108, height: 72 },
-    outputPinsSectionHeight: 25,
   },
 };
 

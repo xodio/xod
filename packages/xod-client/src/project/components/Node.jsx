@@ -6,7 +6,6 @@ import { getBaseName } from 'xod-project';
 
 import Pin from './Pin';
 import PinLabel from './PinLabel';
-import NodeText from './NodeText';
 import { noop } from '../../utils/ramda';
 import { isPinSelected } from '../../editor/utils';
 
@@ -31,7 +30,6 @@ class Node extends React.Component {
     const {
       label,
       linkingPin,
-      outputPinsSectionHeight,
       pins,
       position,
       size,
@@ -46,7 +44,6 @@ class Node extends React.Component {
       'is-ghost': this.props.isGhost,
     });
 
-    const maskId = `${this.id}mask`;
     const bodyRectProps = {
       rx: NODE_CORNER_RADIUS,
       ry: NODE_CORNER_RADIUS,
@@ -70,49 +67,42 @@ class Node extends React.Component {
         {...size}
         viewBox={`0 0 ${size.width} ${size.height}`}
       >
-        <g className={cls} onMouseDown={this.onMouseDown} title={nodeLabel}>
-          <clipPath id={maskId}>
-            <rect
-              className="mask"
-              {...bodyRectProps}
-            />
-          </clipPath>
+        <g
+          className={cls}
+          onMouseDown={this.onMouseDown}
+          title={nodeLabel} // this is for func-tests
+        >
           <rect
             className="body"
-            clipPath={`url(#${maskId})`}
+            {...bodyRectProps}
           />
-          <rect
-            className="outputPinsSection"
-            clipPath={`url(#${maskId})`}
-            x="0"
-            y={size.height - outputPinsSectionHeight}
-            width="100%"
-            height={outputPinsSectionHeight}
-          />
-          <NodeText>
-            {nodeLabel}
-          </NodeText>
-          {pinsArr.map(pin =>
-            <PinLabel
-              {...pin}
-              keyName={pin.key}
-              key={`pinlabel_${pin.key}`}
-            />
-          )}
+          <foreignObject {...size}>
+            <div className="nodeLabelContainer" xmlns="http://www.w3.org/1999/xhtml">
+              <span className="nodeLabel">{nodeLabel}</span>
+            </div>
+          </foreignObject>
           <rect
             className="outline"
             {...bodyRectProps}
           />
+          {!this.props.isDragged ? <title>{nodeLabel}</title> : null}
         </g>
         <g className="pins">
           {pinsArr.map(pin =>
-            <Pin
-              {...pin}
-              isSelected={isPinSelected(linkingPin, pin)}
-              isAcceptingLinks={this.props.pinLinkabilityValidator(pin)}
-              keyName={pin.key}
-              key={`pin_${pin.key}`}
-            />
+            <g key={pin.key}>
+              <PinLabel
+                {...pin}
+                keyName={pin.key}
+                key={`pinlabel_${pin.key}`}
+              />
+              <Pin
+                {...pin}
+                isSelected={isPinSelected(linkingPin, pin)}
+                isAcceptingLinks={this.props.pinLinkabilityValidator(pin)}
+                keyName={pin.key}
+                key={`pin_${pin.key}`}
+              />
+            </g>
           )}
         </g>
       </svg>
@@ -126,7 +116,6 @@ Node.propTypes = {
   type: PropTypes.string.isRequired,
   pins: PropTypes.any.isRequired,
   size: PropTypes.any.isRequired,
-  outputPinsSectionHeight: PropTypes.number.isRequired,
   position: PropTypes.object.isRequired,
   isSelected: PropTypes.bool,
   isGhost: PropTypes.bool,

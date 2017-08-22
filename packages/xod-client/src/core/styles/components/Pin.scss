@@ -11,7 +11,6 @@
     fill: $color-pin-fill;
     stroke: $color-pin-fill; // pins borders are colored by type and don't have a 'default' color.
     stroke-width: 2px;
-    filter: url(#pinShadow);
 
     &.string {
       @include symbol-coloring($color-datatype-string);
@@ -28,6 +27,12 @@
     &.pulse {
       @include symbol-coloring($color-datatype-pulse);
     }
+  }
+
+  .outerStroke {
+    stroke-width: 2px;
+    stroke: $color-pin-fill;
+    fill: $color-pin-fill;
   }
 
   .linkingHighlight {

@@ -28,6 +28,7 @@ import {
   subtractPoints,
   pointToSize,
   SLOT_SIZE,
+  NODE_HEIGHT,
 } from '../../project/nodeLayout';
 
 const initialState = {
@@ -308,7 +309,7 @@ class Patch extends React.Component {
         pointToSize,
         R.evolve({
           x: R.max(SLOT_SIZE.WIDTH),
-          y: R.max(SLOT_SIZE.HEIGHT),
+          y: R.max(NODE_HEIGHT),
         }),
         subtractPoints
       )(this.state.mousePosition, entity.position);
@@ -404,17 +405,17 @@ class Patch extends React.Component {
               onResizeHandleMouseDown={this.onCommentResizeHandleMouseDown}
               onFinishEditing={this.props.actions.editComment}
             />
+            <Layers.Links
+              links={idleLinks}
+              selection={this.props.selection}
+              onClick={this.onLinkClick}
+            />
             <Layers.IdleNodes
               draggedNodeId={draggedNodeId}
               nodes={this.props.nodes}
               selection={this.props.selection}
               linkingPin={this.props.linkingPin}
               onMouseDown={this.onNodeMouseDown}
-            />
-            <Layers.Links
-              links={idleLinks}
-              selection={this.props.selection}
-              onClick={this.onLinkClick}
             />
             <Layers.NodePinsOverlay
               nodes={this.props.nodes}
@@ -433,15 +434,15 @@ class Patch extends React.Component {
               position={manipulatedEntityPosition}
               size={manipulatedEntitySize}
             />
-            <Layers.DraggedNode
-              node={draggedNode}
-              position={manipulatedEntityPosition}
-              size={manipulatedEntitySize}
-            />
             <Layers.DraggedNodeLinks
               node={draggedNode}
               nodePosition={manipulatedEntityPosition}
               links={draggedNodeLinks}
+            />
+            <Layers.DraggedNode
+              node={draggedNode}
+              position={manipulatedEntityPosition}
+              size={manipulatedEntitySize}
             />
             <Layers.Ghosts
               mousePosition={this.state.mousePosition}

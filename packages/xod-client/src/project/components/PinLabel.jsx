@@ -14,7 +14,7 @@ export default class Pin extends React.Component {
     const pos = this.getPinCenter();
     return {
       x: pos.x,
-      y: pos.y + (textVerticalOffset * (this.isInput() ? 1 : -1)),
+      y: pos.y + (textVerticalOffset * (this.isInput() ? -1 : 1)),
       textAnchor: 'middle',
     };
   }
@@ -30,7 +30,7 @@ export default class Pin extends React.Component {
   render() {
     return this.props.label ? (
       <text
-        className={`PinLabel ${this.isInput() ? 'input' : 'output'}`}
+        className="PinLabel"
         key={`pinText_${this.props.keyName}`}
         {...this.getTextProps()}
       >
