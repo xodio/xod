@@ -4,6 +4,8 @@ import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
 
+import { defaultizeProject } from 'xod-project/test/helpers';
+
 import * as Actions from '../../src/editor/actions';
 import editorReducer from '../../src/editor/reducer';
 import { EDITOR_SET_MODE } from '../../src/editor/actionTypes';
@@ -48,8 +50,7 @@ describe('Editor reducer', () => {
       chai.expect(store.getActions()).to.deep.equal(expectedActions);
     };
 
-    it('should set mode to creating', () => testMode(EDITOR_MODE.CREATING_NODE));
-    it('should set mode to editing', () => testMode(EDITOR_MODE.EDITING));
+    it('should set mode to selecting', () => testMode(EDITOR_MODE.SELECTING));
     it('should set mode to linking', () => testMode(EDITOR_MODE.LINKING));
     it('should set mode to default', () => testMode(EDITOR_MODE.DEFAULT));
   });
@@ -198,18 +199,25 @@ describe('Editor reducer', () => {
   describe('working with tabs', () => {
     const mockState = {
       editor: {
-        currentPatchPath: '1',
+        currentPatchPath: '@/p1',
         tabs: {
-          1: {
-            id: '1',
+          '@/p1': {
+            id: '@/p1',
             index: 0,
           },
-          2: {
-            id: '2',
+          '@/p2': {
+            id: '@/p2',
             index: 1,
           },
         },
       },
+      project: defaultizeProject({
+        patches: {
+          '@/p1': {},
+          '@/p2': {},
+          '@/p3': {},
+        },
+      }),
     };
     const createTabsStore = state => createStore(
       combineReducers({
@@ -228,20 +236,20 @@ describe('Editor reducer', () => {
     );
 
     it('should add new tab', () => {
-      store.dispatch(Actions.switchPatch('3'));
+      store.dispatch(Actions.switchPatch('@/p3'));
 
       chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(3);
-      chai.expect(store.getState().editor.currentPatchPath).to.be.equal('3');
+      chai.expect(store.getState().editor.currentPatchPath).to.be.equal('@/p3');
     });
     it('should close a tab and switch to another one there are any left open', () => {
-      store.dispatch(Actions.closeTab(1));
+      store.dispatch(Actions.closeTab('@/p1'));
 
       chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(1);
-      chai.expect(store.getState().editor.currentPatchPath).to.be.equal('2');
+      chai.expect(store.getState().editor.currentPatchPath).to.be.equal('@/p2');
     });
     it('should close the tab and set currentPatchPath to null if that was the last tab', () => {
-      store.dispatch(Actions.closeTab(1));
-      store.dispatch(Actions.closeTab(2));
+      store.dispatch(Actions.closeTab('@/p1'));
+      store.dispatch(Actions.closeTab('@/p2'));
 
       chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(0);
       chai.expect(store.getState().editor.currentPatchPath).to.be.equal(null);

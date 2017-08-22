@@ -49,7 +49,7 @@ const submitOnEnter = {
 
 export const WIDGET_MAPPING = {
   [SELECTION_ENTITY_TYPE.NODE]: {
-    [WIDGET_TYPE.BOOL]: {
+    [WIDGET_TYPE.BOOLEAN]: {
       component: BoolWidget,
       props: {
         type: PIN_TYPE.BOOLEAN,

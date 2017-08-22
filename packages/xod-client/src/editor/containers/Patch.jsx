@@ -8,7 +8,7 @@ import { HotKeys } from 'react-hotkeys';
 
 import * as EditorActions from '../actions';
 import * as EditorSelectors from '../selectors';
-import { SELECTION_ENTITY_TYPE } from '../constants';
+import { SELECTION_ENTITY_TYPE, EDITOR_MODE } from '../constants';
 
 import * as ProjectActions from '../../project/actions';
 import * as ProjectSelectors from '../../project/selectors';
@@ -24,23 +24,22 @@ import * as Layers from '../../project/components/layers';
 import {
   snapNodePositionToSlots,
   snapNodeSizeToSlots,
+  addPoints,
   subtractPoints,
   pointToSize,
   SLOT_SIZE,
 } from '../../project/nodeLayout';
 
-const MANIPULATION_MODE = {
-  SELECT: 'SELECT',
-  MOVE: 'MOVE',
-  RESIZE: 'RESIZE',
-};
-
 const initialState = {
   mouseOffsetFromClickedEntity: { x: 0, y: 0 },
-  manipulationMode: MANIPULATION_MODE.SELECT,
   mousePosition: { x: 0, y: 0 },
+  dragStartPosition: { x: 0, y: 0 },
   isMouseDown: false,
 };
+
+const getOffsetMatrix = ({ x, y }) => `matrix(1, 0, 0, 1, ${x}, ${y})`;
+
+const isMiddleButtonPressed = R.pathEq(['nativeEvent', 'which'], 2);
 
 class Patch extends React.Component {
   constructor(props) {
@@ -48,8 +47,11 @@ class Patch extends React.Component {
 
     this.state = initialState;
 
+    this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
+    this.onKeyUp = this.onKeyUp.bind(this);
 
     this.onNodeMouseDown = this.onNodeMouseDown.bind(this);
 
@@ -64,7 +66,26 @@ class Patch extends React.Component {
     this.onDeleteSelection = this.onDeleteSelection.bind(this);
   }
 
+  onMouseDown(event) {
+    const middleButtonPressed = isMiddleButtonPressed(event);
+
+    if (!(this.props.mode === EDITOR_MODE.PANNING || middleButtonPressed)) return;
+
+    if (middleButtonPressed) {
+      this.props.actions.setMode(EDITOR_MODE.PANNING);
+    }
+
+    this.updateMousePosition(event, () => {
+      this.setState({
+        isMouseDown: true,
+        dragStartPosition: R.clone(this.state.mousePosition),
+      });
+    });
+  }
+
   onNodeMouseDown(event, nodeId) {
+    if (isMiddleButtonPressed(event) || this.props.mode === EDITOR_MODE.PANNING) return;
+
     this.props.actions.selectNode(nodeId);
     const clickedNode = this.props.nodes[nodeId];
 
@@ -80,6 +101,8 @@ class Patch extends React.Component {
   }
 
   onCommentMouseDown(event, commentId) {
+    if (isMiddleButtonPressed(event) || this.props.mode === EDITOR_MODE.PANNING) return;
+
     this.props.actions.selectComment(commentId);
     const clickedComment = this.props.comments[commentId];
 
@@ -95,21 +118,25 @@ class Patch extends React.Component {
   }
 
   onCommentResizeHandleMouseDown(event, commentId) {
+    if (isMiddleButtonPressed(event) || this.props.mode === EDITOR_MODE.PANNING) return;
+
     this.props.actions.selectComment(commentId);
 
     this.updateMousePosition(event);
 
-    this.setState({
-      isMouseDown: true,
-      manipulationMode: MANIPULATION_MODE.RESIZE,
-    });
+    this.setState({ isMouseDown: true });
+    this.props.actions.setMode(EDITOR_MODE.RESIZING_SELECTION);
   }
 
   onPinMouseDown(event, nodeId, pinKey) {
+    if (isMiddleButtonPressed(event) || this.props.mode === EDITOR_MODE.PANNING) return;
+
     this.updateMousePosition(event);
     this.props.actions.linkPin(nodeId, pinKey);
   }
   onPinMouseUp(event, nodeId, pinKey) {
+    if (isMiddleButtonPressed(event) || this.props.mode === EDITOR_MODE.PANNING) return;
+
     this.updateMousePosition(event);
     const lp = this.props.linkingPin;
     const firstPinClick = !lp || (
@@ -131,22 +158,21 @@ class Patch extends React.Component {
   }
 
   onMouseMove(event) {
-    if (!(this.state.isMouseDown || this.props.mode.isLinking)) return;
+    const needsPositionUpdate = this.state.isMouseDown || this.props.mode === EDITOR_MODE.LINKING;
+    if (!needsPositionUpdate) return;
 
     // jump to move mode only if user actually drags something
     if (
       this.state.isMouseDown &&
-      this.state.manipulationMode === MANIPULATION_MODE.SELECT
+      this.props.mode === EDITOR_MODE.SELECTING
     ) {
-      this.setState({
-        manipulationMode: MANIPULATION_MODE.MOVE,
-      });
+      this.props.actions.setMode(EDITOR_MODE.MOVING_SELECTION);
     }
 
     this.updateMousePosition(event);
   }
 
-  onMouseUp() {
+  onMouseUp(event) {
     const draggedNodeId = this.getManipulatedEntityId(SELECTION_ENTITY_TYPE.NODE);
     if (draggedNodeId) {
       this.props.actions.moveNode(
@@ -161,7 +187,7 @@ class Patch extends React.Component {
         draggedCommentId,
         snapNodePositionToSlots(this.getManipulatedEntityPosition())
       );
-      if (this.state.manipulationMode === MANIPULATION_MODE.RESIZE) {
+      if (this.props.mode === EDITOR_MODE.RESIZING_SELECTION) {
         this.props.actions.resizeComment(
           draggedCommentId,
           snapNodeSizeToSlots(this.getManipulatedEntitySize())
@@ -169,11 +195,48 @@ class Patch extends React.Component {
       }
     }
 
+    if (this.props.mode === EDITOR_MODE.PANNING) {
+      this.props.actions.setOffset(this.getOffset());
+
+      if (isMiddleButtonPressed(event)) {
+        this.props.actions.setMode(EDITOR_MODE.DEFAULT);
+      }
+    }
+
     this.setState({
       isMouseDown: false,
-      manipulationMode: MANIPULATION_MODE.SELECT,
       mouseOffsetFromClickedEntity: initialState.mouseOffsetFromClickedEntity,
     });
+
+    if (this.isInManipulationMode()) {
+      this.props.actions.setMode(EDITOR_MODE.DEFAULT);
+    }
+  }
+
+  onKeyDown(event) {
+    if (R.contains(event.target.type, ['textarea', 'input'])) return;
+
+    if (
+      event.key === ' ' &&
+      !this.state.isMouseDown &&
+      this.props.mode === EDITOR_MODE.SELECTING
+    ) {
+      this.props.actions.setMode(EDITOR_MODE.PANNING);
+    }
+  }
+
+  onKeyUp(event) {
+    if (
+      event.key === ' ' &&
+      this.props.mode === EDITOR_MODE.PANNING
+    ) {
+      if (this.state.isMouseDown) {
+        this.props.actions.setOffset(this.getOffset());
+        this.setState({ isMouseDown: false });
+      }
+
+      this.props.actions.setMode(EDITOR_MODE.DEFAULT);
+    }
   }
 
   onCreateNode() {
@@ -190,11 +253,7 @@ class Patch extends React.Component {
   }
 
   getManipulatedEntityId(entityType) {
-    if (
-      !this.props.mode.isEditing ||
-      this.state.manipulationMode === MANIPULATION_MODE.SELECT ||
-      R.isEmpty(this.props.selection)
-    ) {
+    if (!this.isInManipulationMode()) {
       return null;
     }
 
@@ -222,14 +281,14 @@ class Patch extends React.Component {
     const entity = this.getSelectedEntity();
     if (!entity) return {};
 
-    if (this.state.manipulationMode === MANIPULATION_MODE.MOVE) {
+    if (this.props.mode === EDITOR_MODE.MOVING_SELECTION) {
       return subtractPoints(
         this.state.mousePosition,
         this.state.mouseOffsetFromClickedEntity
       );
     }
 
-    if (this.state.manipulationMode === MANIPULATION_MODE.RESIZE) {
+    if (this.props.mode === EDITOR_MODE.RESIZING_SELECTION) {
       return entity.position;
     }
 
@@ -240,11 +299,11 @@ class Patch extends React.Component {
     const entity = this.getSelectedEntity();
     if (!entity) return {};
 
-    if (this.state.manipulationMode === MANIPULATION_MODE.MOVE) {
+    if (this.props.mode === EDITOR_MODE.MOVING_SELECTION) {
       return entity.size;
     }
 
-    if (this.state.manipulationMode === MANIPULATION_MODE.RESIZE) {
+    if (this.props.mode === EDITOR_MODE.RESIZING_SELECTION) {
       return R.compose(
         pointToSize,
         R.evolve({
@@ -258,12 +317,30 @@ class Patch extends React.Component {
     return {};
   }
 
+  getOffset() {
+    return (this.props.mode === EDITOR_MODE.PANNING && this.state.isMouseDown)
+      ? addPoints(this.props.offset, subtractPoints(
+          this.state.mousePosition,
+          this.state.dragStartPosition
+        ))
+      : this.props.offset;
+  }
+
   getHotkeyHandlers() {
     return {
-      [COMMAND.SET_MODE_CREATING]: this.props.setModeCreating,
       [COMMAND.DELETE_SELECTION]: this.onDeleteSelection,
       [COMMAND.DESELECT]: this.props.actions.deselectAll,
     };
+  }
+
+  isInManipulationMode() {
+    return (
+      !R.isEmpty(this.props.selection)
+      && (
+        this.props.mode === EDITOR_MODE.MOVING_SELECTION ||
+        this.props.mode === EDITOR_MODE.RESIZING_SELECTION
+      )
+    );
   }
 
   updateMousePosition(event, setStateCallback) {
@@ -272,8 +349,8 @@ class Patch extends React.Component {
 
     this.setState({
       mousePosition: {
-        x: event.clientX - bbox.left,
-        y: event.clientY - bbox.top,
+        x: event.clientX - bbox.left - this.props.offset.x,
+        y: event.clientY - bbox.top - this.props.offset.y,
       },
     }, setStateCallback);
   }
@@ -294,73 +371,84 @@ class Patch extends React.Component {
     const manipulatedEntityPosition = this.getManipulatedEntityPosition();
     const manipulatedEntitySize = this.getManipulatedEntitySize();
 
+    const isInPanningMode = this.props.mode === EDITOR_MODE.PANNING;
+    const isPanning = isInPanningMode && this.state.isMouseDown;
+
     return (
       <HotKeys
         handlers={this.getHotkeyHandlers()}
         className="PatchWrapper"
+        onKeyDown={this.onKeyDown}
+        onKeyUp={this.onKeyUp}
       >
         <PatchSVG
+          onMouseDown={this.onMouseDown}
           onMouseMove={this.onMouseMove}
           onMouseUp={this.onMouseUp}
+          isInPanningMode={isInPanningMode}
+          isPanning={isPanning}
           svgRef={(svg) => { this.patchSvgRef = svg; }}
         >
           <Layers.Background
             width={this.props.size.width}
             height={this.props.size.height}
             onClick={this.props.actions.deselectAll}
+            offset={this.getOffset()}
           />
-          <Layers.IdleComments
-            draggedCommentId={manipulatedCommentId}
-            comments={this.props.comments}
-            selection={this.props.selection}
-            onMouseDown={this.onCommentMouseDown}
-            onResizeHandleMouseDown={this.onCommentResizeHandleMouseDown}
-            onFinishEditing={this.props.actions.editComment}
-          />
-          <Layers.IdleNodes
-            draggedNodeId={draggedNodeId}
-            nodes={this.props.nodes}
-            selection={this.props.selection}
-            linkingPin={this.props.linkingPin}
-            onMouseDown={this.onNodeMouseDown}
-          />
-          <Layers.Links
-            links={idleLinks}
-            selection={this.props.selection}
-            onClick={this.onLinkClick}
-          />
-          <Layers.NodePinsOverlay
-            nodes={this.props.nodes}
-            linkingPin={this.props.linkingPin}
-            onPinMouseDown={this.onPinMouseDown}
-            onPinMouseUp={this.onPinMouseUp}
-          />
-          {(this.state.manipulationMode !== MANIPULATION_MODE.SELECT) ? (
-            <Layers.SnappingPreview
-              draggedEntityPosition={manipulatedEntityPosition}
-              draggedEntitySize={manipulatedEntitySize}
+          <g transform={getOffsetMatrix(this.getOffset())}>
+            <Layers.IdleComments
+              draggedCommentId={manipulatedCommentId}
+              comments={this.props.comments}
+              selection={this.props.selection}
+              onMouseDown={this.onCommentMouseDown}
+              onResizeHandleMouseDown={this.onCommentResizeHandleMouseDown}
+              onFinishEditing={this.props.actions.editComment}
             />
-          ) : null}
-          <Layers.ManipulatedComment
-            comment={manipulatedComment}
-            position={manipulatedEntityPosition}
-            size={manipulatedEntitySize}
-          />
-          <Layers.DraggedNode
-            node={draggedNode}
-            position={manipulatedEntityPosition}
-            size={manipulatedEntitySize}
-          />
-          <Layers.DraggedNodeLinks
-            node={draggedNode}
-            nodePosition={manipulatedEntityPosition}
-            links={draggedNodeLinks}
-          />
-          <Layers.Ghosts
-            mousePosition={this.state.mousePosition}
-            mode={this.props.mode}
-            ghostLink={this.props.ghostLink}
-          />
+            <Layers.IdleNodes
+              draggedNodeId={draggedNodeId}
+              nodes={this.props.nodes}
+              selection={this.props.selection}
+              linkingPin={this.props.linkingPin}
+              onMouseDown={this.onNodeMouseDown}
+            />
+            <Layers.Links
+              links={idleLinks}
+              selection={this.props.selection}
+              onClick={this.onLinkClick}
+            />
+            <Layers.NodePinsOverlay
+              nodes={this.props.nodes}
+              linkingPin={this.props.linkingPin}
+              onPinMouseDown={this.onPinMouseDown}
+              onPinMouseUp={this.onPinMouseUp}
+            />
+            {this.isInManipulationMode() ? (
+              <Layers.SnappingPreview
+                draggedEntityPosition={manipulatedEntityPosition}
+                draggedEntitySize={manipulatedEntitySize}
+              />
+            ) : null}
+            <Layers.ManipulatedComment
+              comment={manipulatedComment}
+              position={manipulatedEntityPosition}
+              size={manipulatedEntitySize}
+            />
+            <Layers.DraggedNode
+              node={draggedNode}
+              position={manipulatedEntityPosition}
+              size={manipulatedEntitySize}
+            />
+            <Layers.DraggedNodeLinks
+              node={draggedNode}
+              nodePosition={manipulatedEntityPosition}
+              links={draggedNodeLinks}
+            />
+            <Layers.Ghosts
+              mousePosition={this.state.mousePosition}
+              mode={this.props.mode}
+              ghostLink={this.props.ghostLink}
+            />
+          </g>
         </PatchSVG>
       </HotKeys>
     );
@@ -377,9 +465,9 @@ Patch.propTypes = {
   selection: PropTypes.array,
   selectedNodeType: PropTypes.string,
   patchPath: PropTypes.string,
-  mode: PropTypes.object,
+  mode: PropTypes.oneOf(R.values(EDITOR_MODE)),
   ghostLink: PropTypes.any,
-  setModeCreating: PropTypes.func,
+  offset: PropTypes.object,
 };
 
 const mapStateToProps = R.applySpec({
@@ -390,8 +478,9 @@ const mapStateToProps = R.applySpec({
   selectedNodeType: EditorSelectors.getSelectedNodeType,
   linkingPin: EditorSelectors.getLinkingPin,
   patchPath: EditorSelectors.getCurrentPatchPath,
-  mode: EditorSelectors.getModeChecks,
+  mode: EditorSelectors.getMode,
   ghostLink: ProjectSelectors.getLinkGhost,
+  offset: EditorSelectors.getCurrentPatchOffset,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -407,6 +496,8 @@ const mapDispatchToProps = dispatch => ({
     selectNode: EditorActions.selectNode,
     selectComment: EditorActions.selectComment,
     linkPin: EditorActions.linkPin,
+    setMode: EditorActions.setMode,
+    setOffset: EditorActions.setCurrentPatchOffset,
   }, dispatch),
 });
 

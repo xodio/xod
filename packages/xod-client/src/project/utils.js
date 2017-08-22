@@ -3,6 +3,7 @@ import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';
 
+import { getOptimalPanningOffset } from './nodeLayout';
 import { getProject } from './selectors';
 
 import { LINK_ERRORS } from '../editor/constants';
@@ -83,3 +84,16 @@ export const isPatchPathTaken = (state, newPatchPath) => {
 
   return Maybe.isJust(maybeExistingPatch);
 };
+
+// :: PatchPath -> Project -> Position
+export const getInitialPatchOffset = R.compose(
+  getOptimalPanningOffset,
+  R.converge(
+    R.concat,
+    [
+      R.compose(R.map(XP.getNodePosition), XP.listNodes),
+      R.compose(R.map(XP.getCommentPosition), XP.listComments),
+    ]
+  ),
+  XP.getPatchByPathUnsafe
+);

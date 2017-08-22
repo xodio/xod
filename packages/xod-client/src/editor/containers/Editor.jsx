@@ -32,15 +32,10 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.setModeCreating = this.setModeCreating.bind(this);
     this.setModeDefault = this.setModeDefault.bind(this);
     this.getHotkeyHandlers = this.getHotkeyHandlers.bind(this);
 
     this.patchSize = this.props.size;
-  }
-
-  setModeCreating() {
-    this.props.actions.setMode(EDITOR_MODE.CREATING_NODE);
   }
 
   setModeDefault() {
@@ -67,7 +62,6 @@ class Editor extends React.Component {
         <Patch
           patchPath={currentPatchPath}
           size={this.patchSize}
-          setModeCreating={this.setModeCreating}
         />
       ) : (
         <NoPatch />

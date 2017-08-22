@@ -35,7 +35,6 @@ class App extends client.App {
     this.onImport = this.onImport.bind(this);
     this.onExport = this.onExport.bind(this);
     this.onSelectNodeType = this.onSelectNodeType.bind(this);
-    this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
     this.onCreateProject = this.onCreateProject.bind(this);
 
@@ -75,10 +74,6 @@ class App extends client.App {
 
   onSelectNodeType(typeKey) {
     this.props.actions.setSelectedNodeType(typeKey);
-  }
-
-  onAddNodeClick() {
-    this.props.actions.setMode(client.EDITOR_MODE.CREATING_NODE);
   }
 
   onKeyDown(event) {  // eslint-disable-line class-methods-use-this

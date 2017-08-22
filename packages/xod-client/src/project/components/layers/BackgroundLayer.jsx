@@ -10,9 +10,11 @@ import {
   NODE_CORNER_RADIUS,
 } from '../../nodeLayout';
 
-const nodeSlotPattern = (
+const NodeSlotPattern = ({ offset }) => (
   <pattern
     id="patch_bg_pattern"
+    x={offset.x}
+    y={offset.y}
     width={SLOT_SIZE.WIDTH + SLOT_MARGIN.HORIZONTAL}
     height={SLOT_SIZE.HEIGHT + SLOT_MARGIN.VERTICAL}
     patternUnits="userSpaceOnUse"
@@ -77,12 +79,16 @@ const nodeSlotPattern = (
   </pattern>
 );
 
-const BackgroundLayer = ({ onClick }) => (
+NodeSlotPattern.propTypes = {
+  offset: PropTypes.object.isRequired,
+};
+
+const BackgroundLayer = ({ onClick, offset }) => (
   <SVGLayer
     name={LAYER.BACKGROUND}
     className="BackgroundLayer"
   >
-    {nodeSlotPattern}
+    <NodeSlotPattern offset={offset} />
     <rect
       className="BackgroundRect"
       key="bg" x="0" y="0"
@@ -95,6 +101,7 @@ const BackgroundLayer = ({ onClick }) => (
 
 BackgroundLayer.propTypes = {
   onClick: PropTypes.func,
+  offset: PropTypes.object.isRequired,
 };
 
 export default BackgroundLayer;

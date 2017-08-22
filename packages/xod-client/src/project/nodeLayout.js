@@ -320,3 +320,24 @@ export const isValidPosition = (allNodes, draggedNodeId, snappedPosition) =>
     R.values,
     R.omit(draggedNodeId)
   )(allNodes);
+
+// Given a list of positions of all entities, returns optimal patch panning offset
+// :: [Position] -> Position
+export const getOptimalPanningOffset = R.ifElse(
+  R.isEmpty,
+  R.always({ x: 0, y: 0 }),
+  R.compose(
+    addPoints({
+      x: SLOT_MARGIN.HORIZONTAL / 2,
+      y: SLOT_MARGIN.VERTICAL / 2,
+    }),
+    R.map(R.negate),
+    R.converge(
+      (x, y) => ({ x, y }),
+      [
+        R.compose(R.head, R.sort(R.subtract), R.map(R.prop('x'))),
+        R.compose(R.head, R.sort(R.subtract), R.map(R.prop('y'))),
+      ]
+    )
+  )
+);

@@ -1,12 +1,11 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 
+import { PIN_TYPE } from 'xod-project';
+
 import '../src/core/styles/main.scss';
 import Inspector from '../src/editor/components/Inspector';
 import PinShadowFilter from '../src/project/components/filters/PinShadowFilter';
-
-import { PROPERTY_TYPE } from '../src/editor/constants';
-
 
 const somePoint = { x: 0, y: 0 };
 
@@ -44,7 +43,7 @@ const nodeSelection = {
         key: 'samplePulse',
         label: 'SPLS',
         order: 0,
-        type: PROPERTY_TYPE.PULSE,
+        type: PIN_TYPE.PULSE,
         value: false,
         nodeId: 'ByWmOEefAg',
         isConnected: false,
@@ -57,7 +56,7 @@ const nodeSelection = {
         key: 'sampleStr',
         label: 'SSTR',
         order: 1,
-        type: PROPERTY_TYPE.STRING,
+        type: PIN_TYPE.STRING,
         value: 'foo',
         nodeId: 'ByWmOEefAg',
         isConnected: false,
@@ -70,7 +69,7 @@ const nodeSelection = {
         key: 'sampleNum',
         label: 'SNM',
         order: 2,
-        type: PROPERTY_TYPE.NUMBER,
+        type: PIN_TYPE.NUMBER,
         value: 24,
         nodeId: 'ByWmOEefAg',
         isConnected: false,
@@ -83,7 +82,7 @@ const nodeSelection = {
         key: 'sampleBool',
         label: 'SBOO',
         order: 3,
-        type: PROPERTY_TYPE.BOOL,
+        type: PIN_TYPE.BOOLEAN,
         value: true,
         nodeId: 'ByWmOEefAg',
         isConnected: false,
@@ -96,7 +95,7 @@ const nodeSelection = {
         key: 'samplePulseOutput',
         label: 'SPLO',
         order: 4,
-        type: PROPERTY_TYPE.PULSE,
+        type: PIN_TYPE.PULSE,
         value: false,
         nodeId: 'ByWmOEefAg',
         isConnected: false,
@@ -109,7 +108,7 @@ const nodeSelection = {
         key: 'sampleStrConnected',
         label: 'SSTC',
         order: 5,
-        type: PROPERTY_TYPE.STRING,
+        type: PIN_TYPE.STRING,
         value: 'foo',
         nodeId: 'ByWmOEefAg',
         isConnected: true,
@@ -122,7 +121,7 @@ const nodeSelection = {
         key: 'sampleNumConnected',
         label: 'SNMC',
         order: 6,
-        type: PROPERTY_TYPE.NUMBER,
+        type: PIN_TYPE.NUMBER,
         value: 24,
         nodeId: 'ByWmOEefAg',
         isConnected: true,
@@ -135,7 +134,7 @@ const nodeSelection = {
         key: 'sampleBoolConnected',
         label: 'SBLC',
         order: 7,
-        type: PROPERTY_TYPE.BOOL,
+        type: PIN_TYPE.BOOLEAN,
         value: true,
         nodeId: 'ByWmOEefAg',
         isConnected: true,
@@ -148,7 +147,7 @@ const nodeSelection = {
         key: 'samplePulseConnected',
         label: 'SPLC',
         order: 8,
-        type: PROPERTY_TYPE.PULSE,
+        type: PIN_TYPE.PULSE,
         value: false,
         nodeId: 'ByWmOEefAg',
         isConnected: true,

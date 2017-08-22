@@ -1,4 +1,13 @@
 .PatchSVG {
   cursor: default;
   user-select: none;
+
+  &.isInPanningMode {
+    cursor: move;
+    cursor: grab;
+ 
+    &.isPanning {
+      cursor: grabbing;
+    }
+  }
 }

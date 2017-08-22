@@ -9,6 +9,7 @@ import {
   getRenderablePin,
   getPinSelectionError,
   getLinkingError,
+  getInitialPatchOffset,
 } from '../project/utils';
 
 import {
@@ -71,15 +72,14 @@ export const deselectAll = () => (dispatch, getState) => {
     type: ActionType.EDITOR_DESELECT_ALL,
     payload: {},
   });
-  if (!Selectors.getModeChecks(state).isDefault) {
-    dispatch(setMode(EDITOR_MODE.DEFAULT));
-  }
+
+  dispatch(setMode(EDITOR_MODE.DEFAULT));
 };
 
 export const selectEntity = R.curry(
   (entityType, id, dispatch, getState) => {
     const state = getState();
-    if (!Selectors.getModeChecks(state).isEditing) return;
+    if (Selectors.getMode(state) !== EDITOR_MODE.SELECTING) return;
 
     dispatch({
       type: ActionType.EDITOR_SELECT_ENTITY,
@@ -161,16 +161,34 @@ export const deleteSelection = () => (dispatch, getState) => {
   });
 };
 
+export const setCurrentPatchOffset = newOffset => ({
+  type: ActionType.SET_CURRENT_PATCH_OFFSET,
+  payload: newOffset,
+});
+
 export const switchPatch = patchPath => (dispatch, getState) => {
-  if (Selectors.getCurrentPatchPath(getState()) === patchPath) { return; }
+  const state = getState();
+  const currentPatchPath = Selectors.getCurrentPatchPath(state);
+
+  if (currentPatchPath === patchPath) { return; }
 
   dispatch(deselectAll());
+
+  const tabs = Selectors.getTabs(state);
+  const isOpeningNewTab = !R.has(patchPath, tabs);
   dispatch({
     type: ActionType.EDITOR_SWITCH_PATCH,
     payload: {
       patchPath,
     },
   });
+
+  if (isOpeningNewTab) {
+    const project = ProjectSelectors.getProject(state);
+    const offset = getInitialPatchOffset(patchPath, project);
+
+    dispatch(setCurrentPatchOffset(offset));
+  }
 };
 
 export const closeTab = id => ({

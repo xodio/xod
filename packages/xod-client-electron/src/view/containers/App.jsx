@@ -91,7 +91,6 @@ class App extends client.App {
     this.onSaveProject = this.onSaveProject.bind(this);
     this.onOpenProjectClicked = this.onOpenProjectClicked.bind(this);
 
-    this.onAddNodeClick = this.onAddNodeClick.bind(this);
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
     this.onUploadConfigClose = this.onUploadConfigClose.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
@@ -249,10 +248,6 @@ class App extends client.App {
 
   onSaveProject() {
     this.props.actions.saveProject(this.props.project);
-  }
-
-  onAddNodeClick() {
-    this.props.actions.setMode(client.EDITOR_MODE.CREATING_NODE);
   }
 
   onUploadPopupClose(id) {
