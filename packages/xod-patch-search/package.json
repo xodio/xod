@@ -1,0 +1,30 @@
+{
+  "name": "xod-patch-search",
+  "version": "0.12.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "babel src -d dist",
+    "test": "mocha test/**/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xodio/xod.git"
+  },
+  "author": "XOD Team <dev@xod.io>",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/xodio/xod/issues"
+  },
+  "homepage": "https://github.com/xodio/xod#readme",
+  "dependencies": {
+    "fuse.js": "^3.0.5",
+    "ramda": "^0.24.1",
+    "xod-func-tools": "^0.12.1",
+    "xod-project": "^0.12.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "xod-fs": "^0.12.1"
+  }
+}

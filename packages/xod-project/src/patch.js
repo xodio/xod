@@ -167,7 +167,7 @@ export const setPatchAttachments = def(
  * Returns a list of attachments
  */
 export const getPatchAttachments = def(
-  'getPatchAttachments :: Patch -> Patch',
+  'getPatchAttachments :: Patch -> [Attachment]',
   R.prop('attachments')
 );
 

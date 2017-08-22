@@ -89,3 +89,18 @@ export const isHelpbarVisible = R.pipe(
   getEditor,
   R.prop('isHelpbarVisible')
 );
+
+const getSuggester = R.pipe(
+  getEditor,
+  R.prop('suggester')
+);
+
+export const isSuggesterVisible = R.pipe(
+  getSuggester,
+  R.prop('visible')
+);
+
+export const getSuggesterPlacePosition = R.pipe(
+  getSuggester,
+  R.prop('placePosition')
+);

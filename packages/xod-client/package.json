@@ -31,12 +31,14 @@
     "rc-switch": "^1.4.2",
     "react": "^15.4.2",
     "react-autolink-text2": "git+https://github.com/xodio/react-autolink-text.git#npm",
+    "react-autosuggest": "git+https://github.com/xodio/react-autosuggest.git",
     "react-click-outside": "^2.2.0",
     "react-collapsible": "git+https://github.com/xodio/react-collapsible.git#npm",
     "react-custom-scroll": "^2.0.0",
     "react-dom": "^15.4.2",
     "react-event-listener": "^0.4.5",
     "react-fa": "git+https://github.com/xodio/react-fa.git",
+    "react-highlight-words": "^0.8.1",
     "react-hotkeys": "git+https://github.com/xodio/react-hotkeys.git#npm",
     "react-redux": "^4.0.6",
     "react-skylight": "git+https://github.com/xodio/react-skylight.git",
@@ -48,6 +50,7 @@
     "url-parse": "^1.1.9",
     "xod-arduino": "^0.12.1",
     "xod-func-tools": "^0.12.1",
+    "xod-patch-search": "^0.12.1",
     "xod-project": "^0.12.1"
   },
   "devDependencies": {

@@ -168,4 +168,5 @@ App.actions = {
   updateProjectMeta: actions.updateProjectMeta,
   hideAllPopups: actions.hideAllPopups,
   toggleHelpbar: actions.toggleHelpbar,
+  showSuggester: actions.showSuggester,
 };

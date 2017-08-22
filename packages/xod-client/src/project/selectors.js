@@ -2,6 +2,7 @@ import R from 'ramda';
 import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
+import { createIndexFromPatches } from 'xod-patch-search';
 
 import {
   addNodePositioning,
@@ -267,4 +268,12 @@ export const getRenderableSelection = createMemoizedSelector(
       selection
     );
   }
+);
+
+//
+// Suggester
+//
+export const getPatchSearchIndex = createSelector(
+  R.compose(XP.listPatches, getProject),
+  createIndexFromPatches
 );

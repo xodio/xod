@@ -45,7 +45,7 @@
   }
 
   &.isSelected {
-    background-color: #616077;
+    background-color: $sidebar-color-bg-selected;
 
     .PatchGroupItem__hover-buttons {
       display: block;

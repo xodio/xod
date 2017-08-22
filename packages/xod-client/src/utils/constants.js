@@ -21,6 +21,8 @@ export const COMMAND = {
   PASTE: 'paste',
 
   SAVE_PROJECT: 'saveProject',
+
+  INSERT_NODE: 'insertNode',
 };
 
 export const HOTKEY = {
@@ -40,6 +42,7 @@ export const HOTKEY = {
   [COMMAND.SAVE_PROJECT]: ['ctrl+s'],
 
   [COMMAND.TOGGLE_HELPBAR]: ['h'],
+  [COMMAND.INSERT_NODE]: ['i'],
 };
 
 export const ELECTRON_ACCELERATOR = {
@@ -65,6 +68,8 @@ export const ELECTRON_ACCELERATOR = {
   [COMMAND.SAVE_PROJECT]: 'CmdOrCtrl+S',
 
   [COMMAND.TOGGLE_HELPBAR]: 'H',
+
+  [COMMAND.INSERT_NODE]: 'I',
 };
 
 export const KEYCODE = {

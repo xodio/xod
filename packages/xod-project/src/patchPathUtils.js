@@ -47,7 +47,6 @@ export const validatePath = Tools.errOnFalse(
 );
 
 /**
- * @private
  * @function getBaseName
  * @param {string} path
  * @returns {string}

@@ -37,6 +37,7 @@ cache:
   - packages/xod-fs/node_modules
   - packages/xod-func-tools/node_modules
   - packages/xod-project/node_modules
+  - packages/xod-patch-search/node_modules
   - $HOME/.cache/electron
   - $HOME/.cache/electron-builder
   - $HOME/.npm/_prebuilds
