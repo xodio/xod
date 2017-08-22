@@ -24,10 +24,24 @@
           "name": "Arduino Diecimila"
         },
         {
-          "name": "Arduino Nano"
+          "name": "Arduino Nano",
+          "cpuName": "ATmega328",
+          "cpuId": "atmega328"
         },
         {
-          "name": "Arduino/Genuino Mega"
+          "name": "Arduino Nano",
+          "cpuName": "ATmega168",
+          "cpuId": "atmega168"
+        },
+        {
+          "name": "Arduino/Genuino Mega",
+          "cpuName": "ATmega2560",
+          "cpuId": "atmega2560"
+        },
+        {
+          "name": "Arduino/Genuino Mega",
+          "cpuName": "ATmega1280",
+          "cpuId": "atmega1280"
         },
         {
           "name": "Arduino MegaADK"
@@ -45,7 +59,14 @@
           "name": "Arduino Esplora"
         },
         {
-          "name": "Arduino Mini"
+          "name": "Arduino Mini",
+          "cpuName": "ATmega328",
+          "cpuId": "atmega328"
+        },
+        {
+          "name": "Arduino Mini",
+          "cpuName": "ATmega168",
+          "cpuId": "atmega168"
         },
         {
           "name": "Arduino Ethernet"
@@ -54,19 +75,57 @@
           "name": "Arduino Fio"
         },
         {
-          "name": "Arduino BT"
+          "name": "Arduino BT",
+          "cpuName": "ATmega328",
+          "cpuId": "atmega328"
+        },
+        {
+          "name": "Arduino BT",
+          "cpuName": "ATmega168",
+          "cpuId": "atmega168"
         },
         {
           "name": "Arduino LilyPadUSB"
         },
         {
-          "name": "Arduino Lilypad"
+          "name": "Arduino Lilypad",
+          "cpuName": "ATmega328",
+          "cpuId": "atmega328"
         },
         {
-          "name": "Arduino Pro"
+          "name": "Arduino Lilypad",
+          "cpuName": "ATmega168",
+          "cpuId": "atmega168"
         },
         {
-          "name": "Arduino ATMegaNG"
+          "name": "Arduino Pro",
+          "cpuName": "ATmega328 (5V, 16MHz)",
+          "cpuId": "16MHzatmega328"
+        },
+        {
+          "name": "Arduino Pro",
+          "cpuName": "ATmega328 (3.3V, 8MHz)",
+          "cpuId": "8MHzatmega328"
+        },
+        {
+          "name": "Arduino Pro",
+          "cpuName": "ATmega168 (5V, 16MHz)",
+          "cpuId": "16MHzatmega168"
+        },
+        {
+          "name": "Arduino Pro",
+          "cpuName": "ATmega168 (3.3V, 8MHz)",
+          "cpuId": "8MHzatmega168"
+        },
+        {
+          "name": "Arduino ATMegaNG",
+          "cpuName": "ATmega168",
+          "cpuId": "atmega168"
+        },
+        {
+          "name": "Arduino ATMegaNG",
+          "cpuName": "ATmega8",
+          "cpuId": "atmega8"
         },
         {
           "name": "Arduino Robot Control"

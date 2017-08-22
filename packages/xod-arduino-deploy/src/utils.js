@@ -4,19 +4,28 @@ import path from 'path';
 
 export const isWindows = (os.platform() === 'win32');
 
-// :: FQBN -> { package: String, architecture: String, boardIdentifier: String }
+// :: FQBN -> String
+const parseCpuParam = R.compose(
+  R.defaultTo(''),
+  R.nth(1),
+  R.match(/:{0,1}cpu=(\w+)/),
+  R.defaultTo('')
+);
+
+// :: FQBN -> { package: String, architecture: String, boardIdentifier: String, cpu: String }
 export const parseFQBN = R.compose(
   R.applySpec({
-    package: R.head,
+    package: R.nth(0),
     architecture: R.nth(1),
-    boardIdentifier: R.last,
+    boardIdentifier: R.nth(2),
+    cpu: R.compose(parseCpuParam, R.nth(3)),
   }),
   R.split(':')
 );
 
-// :: { package: String, architecture: String, boardIdentifier: String } -> FQBN
-export const strigifyFQBN = ({ package: pkg, architecture, boardIdentifier }) => (
-  `${pkg}:${architecture}:${boardIdentifier}`
+// :: { package: String, architecture: String, boardIdentifier: String, cpu: String } -> FQBN
+export const strigifyFQBN = ({ package: pkg, architecture, boardIdentifier, cpu = '' }) => (
+  `${pkg}:${architecture}:${boardIdentifier}${(cpu && cpu.length > 0) ? `:cpu=${cpu}` : ''}`
 );
 
 // :: FQBN -> String -> PackageIndex -> String
@@ -106,7 +115,7 @@ export const getBoardUploadTool = R.compose(
   R.path(['upload', 'tool'])
 );
 
-// :: PackageIndex -> [{ name: String, package: String, architecture: String, version: String }]
+// :: PackageIndex -> [Board]
 export const listBoardsFromIndex = R.compose(
   R.flatten,
   R.values,
@@ -118,6 +127,8 @@ export const listBoardsFromIndex = R.compose(
           package: pkgName,
           architecture: arch.architecture,
           version: arch.version,
+          cpuName: R.defaultTo('', board.cpuName),
+          cpuId: R.defaultTo('', board.cpuId),
         })),
         R.prop('boards')
       )(arch),
