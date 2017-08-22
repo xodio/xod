@@ -6,6 +6,12 @@ import { PopupForm } from 'xod-client';
 import { NO_PORTS_FOUND as NO_PORTS_FOUND_ERRCODE } from '../../shared/errorCodes';
 import { ENUMERATING_PORTS, ENUMERATING_BOARDS, NO_PORTS_FOUND } from '../../shared/messages';
 
+// :: Board -> Boolean
+const hasBoardCpu = board => (
+  board.cpuName && board.cpuName.length > 0 &&
+  board.cpuId && board.cpuId.length > 0
+);
+
 class PopupUploadConfig extends React.Component {
   constructor(props) {
     super(props);
@@ -155,7 +161,7 @@ class PopupUploadConfig extends React.Component {
       >
         {this.state.boards.map((board, ix) => (
           <option key={`${board.name}_${ix}`} value={ix}>
-            {board.name}
+            {board.name}{hasBoardCpu(board) ? ` (${board.cpuName})` : ''}
           </option>
         ))}
       </select>

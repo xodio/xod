@@ -5,13 +5,23 @@ import * as Utils from '../src/utils';
 import packageIndex from '../src/packageIndex.json';
 
 describe('Utils', () => {
-  it('parseFQBN() returns { package, architecture, boardIdentifier }', () => {
+  it('parseFQBN() returns { package, architecture, boardIdentifier, cpu }', () => {
     assert.deepEqual(
       Utils.parseFQBN('arduino:avr:uno'),
       {
         package: 'arduino',
         architecture: 'avr',
         boardIdentifier: 'uno',
+        cpu: '',
+      }
+    );
+    assert.deepEqual(
+      Utils.parseFQBN('arduino:avr:nano:cpu=atmega328'),
+      {
+        package: 'arduino',
+        architecture: 'avr',
+        boardIdentifier: 'nano',
+        cpu: 'atmega328',
       }
     );
   });
@@ -40,6 +50,6 @@ describe('Utils', () => {
     const boards = Utils.listBoardsFromIndex(packageIndex);
     assert.isArray(boards);
     assert.isNotEmpty(boards);
-    assert.hasAllKeys(boards[0], ['name', 'package', 'architecture', 'version']);
+    assert.hasAllKeys(boards[0], ['name', 'package', 'architecture', 'version', 'cpuName', 'cpuId']);
   });
 });
