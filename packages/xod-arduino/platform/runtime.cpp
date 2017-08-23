@@ -51,21 +51,32 @@ namespace xod {
 typedef double Number;
 typedef bool Logic;
 
-// TODO: optimize, we should choose uint8_t if there are less than 255 nodes in total
-// and uint32_t if there are more than 65535
+#if NODE_COUNT < 256
+typedef uint8_t NodeId;
+#elif NODE_COUNT < 65536
 typedef uint16_t NodeId;
+#else
+typedef uint32_t NodeId;
+#endif
 
+/*
+ * Context is a handle passed to each node `evaluate` function. Currently, it’s
+ * alias for NodeId but likely will be changed in future to support list
+ * lifting and other features
+ */
 typedef NodeId Context;
 
-// TODO: optimize, we should choose a proper type with a minimal enough capacity
 /*
  * LSB of a dirty flag shows whether a particular node is dirty or not
  * Other bits shows dirtieness of its particular outputs:
  * - 1-st bit for 0-th output
  * - 2-nd bit for 1-st output
  * - etc
+ *
+ * An outcome limitation is that a native node must not have more than 7 output
+ * pins.
  */
-typedef uint16_t DirtyFlags;
+typedef uint8_t DirtyFlags;
 
 typedef unsigned long TimeMs;
 typedef void (*EvalFuncPtr)(Context ctx);
@@ -130,7 +141,7 @@ extern void* const g_storages[NODE_COUNT];
 extern const void* const g_wiring[NODE_COUNT];
 extern DirtyFlags g_dirtyFlags[NODE_COUNT];
 
-// TOOD: get rid of an extra indirection layer completely
+// TODO: get rid of an extra indirection layer completely
 // would save 2 bytes per node
 extern NodeId g_topology[NODE_COUNT];
 
