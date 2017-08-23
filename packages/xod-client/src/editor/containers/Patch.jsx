@@ -408,7 +408,6 @@ class Patch extends React.Component {
             <Layers.Links
               links={idleLinks}
               selection={this.props.selection}
-              onClick={this.onLinkClick}
             />
             <Layers.IdleNodes
               draggedNodeId={draggedNodeId}
@@ -416,6 +415,11 @@ class Patch extends React.Component {
               selection={this.props.selection}
               linkingPin={this.props.linkingPin}
               onMouseDown={this.onNodeMouseDown}
+            />
+            <Layers.LinksOverlay
+              links={idleLinks}
+              selection={this.props.selection}
+              onClick={this.onLinkClick}
             />
             <Layers.NodePinsOverlay
               nodes={this.props.nodes}

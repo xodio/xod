@@ -30,11 +30,28 @@
     @include link-parts-coloring($color-datatype-pulse);
   }
 
-  &:hover {
-    @include link-parts-coloring($color-highlight);
+  &.is-selected {
+    @include link-parts-coloring($color-canvas-selected);
+  }
+}
+
+.LinkOverlay {
+  opacity: 0;
+
+  .line {
+    stroke: white;
+    stroke-width: 2px;
+  }
+
+  .end {
+    fill: white;
   }
 
   &.is-selected {
     @include link-parts-coloring($color-canvas-selected);
+  }
+
+  &:hover {
+    opacity: 0.5;
   }
 }
