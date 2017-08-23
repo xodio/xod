@@ -2,6 +2,10 @@
   cursor: default;
   user-select: none;
 
+  &.isInResizingMode {
+    cursor: nwse-resize;
+  }
+
   &.isInPanningMode {
     cursor: move;
     cursor: grab;

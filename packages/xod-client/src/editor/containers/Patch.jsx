@@ -388,6 +388,7 @@ class Patch extends React.Component {
           onMouseUp={this.onMouseUp}
           isInPanningMode={isInPanningMode}
           isPanning={isPanning}
+          isInResizingMode={this.props.mode === EDITOR_MODE.RESIZING_SELECTION}
           svgRef={(svg) => { this.patchSvgRef = svg; }}
         >
           <Layers.Background

@@ -9,6 +9,7 @@ import PinLabelShadowFilter from './filters/PinLabelShadowFilter';
 const PatchSVG = ({
   children,
   isInPanningMode,
+  isInResizingMode,
   isPanning,
   onMouseDown,
   onMouseMove,
@@ -17,7 +18,7 @@ const PatchSVG = ({
 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className={cn('PatchSVG', { isPanning, isInPanningMode })}
+    className={cn('PatchSVG', { isPanning, isInPanningMode, isInResizingMode })}
     width="100%"
     height="100%"
     onMouseDown={onMouseDown}
@@ -41,6 +42,7 @@ PatchSVG.propTypes = {
   ]),
   isPanning: PropTypes.bool,
   isInPanningMode: PropTypes.bool,
+  isInResizingMode: PropTypes.bool,
   onMouseDown: PropTypes.func,
   onMouseMove: PropTypes.func,
   onMouseUp: PropTypes.func,
