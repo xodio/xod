@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "HyDiN9YbW",
@@ -18,12 +17,10 @@
       "boundValues": {
         "Bk74I0_SPyb": "CONTINUOUSLY"
       },
-      "description": "",
       "id": "H1lzQqY-W",
-      "label": "",
       "position": {
-        "x": 266,
-        "y": 224
+        "x": 204,
+        "y": 204
       },
       "type": "xod/core/system-time"
     },
@@ -38,12 +35,10 @@
         "rJlYT7EfW": 8,
         "rkbjp7Ezb": 13
       },
-      "description": "",
       "id": "HkboVctZW",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 328
+        "x": 0,
+        "y": 306
       },
       "type": "xod/common-hardware/text-lcd-16x2"
     }

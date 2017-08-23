@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "B15FgRSbb",
@@ -63,12 +62,10 @@
         "HkDgIRdrv1W": "CONTINUOUSLY",
         "S1OlUAuBD1-": false
       },
-      "description": "",
       "id": "HJqHeCBb-",
-      "label": "",
       "position": {
-        "x": 266,
-        "y": 328
+        "x": 272,
+        "y": 102
       },
       "type": "xod/core/gate"
     },
@@ -77,12 +74,10 @@
         "B1ZUA_Hv1W": 12,
         "SyLCdSwJZ": "CONTINUOUSLY"
       },
-      "description": "",
       "id": "HkKQlCr-W",
-      "label": "",
       "position": {
-        "x": 266,
-        "y": 224
+        "x": 272,
+        "y": 0
       },
       "type": "xod/core/digital-input"
     },
@@ -92,12 +87,10 @@
         "Bkh8A_Sv1-": false,
         "ryTIROHwkW": false
       },
-      "description": "",
       "id": "Hy-YeCB-b",
-      "label": "",
       "position": {
-        "x": 138,
-        "y": 432
+        "x": 136,
+        "y": 204
       },
       "type": "xod/core/flip-flop"
     },
@@ -106,12 +99,10 @@
         "HkDgIRdrv1W": "CONTINUOUSLY",
         "S1OlUAuBD1-": false
       },
-      "description": "",
       "id": "SyVrxRS-W",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 328
+        "x": 34,
+        "y": 102
       },
       "type": "xod/core/gate"
     },
@@ -120,12 +111,10 @@
         "B1ZUA_Hv1W": 11,
         "SyLCdSwJZ": "CONTINUOUSLY"
       },
-      "description": "",
       "id": "rkrQlRrWb",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 34,
+        "y": 0
       },
       "type": "xod/core/digital-input"
     },
@@ -134,12 +123,10 @@
         "B134j4neZ": 13,
         "HJ6HsEngZ": false
       },
-      "description": "",
       "id": "ryQslRHbb",
-      "label": "",
       "position": {
-        "x": 138,
-        "y": 536
+        "x": 102,
+        "y": 306
       },
       "type": "xod/core/digital-output"
     }

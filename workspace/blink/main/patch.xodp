@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "rJDD4FSZZ",
@@ -30,12 +29,10 @@
         "B13SCNhl-": 0.25,
         "BJJICN2lW": false
       },
-      "description": "",
       "id": "By6HVYHZb",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 120
+        "x": 68,
+        "y": 0
       },
       "type": "xod/core/clock"
     },
@@ -44,12 +41,10 @@
         "B134j4neZ": 13,
         "HJ6HsEngZ": false
       },
-      "description": "",
       "id": "SyeDNFBWZ",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 328
+        "x": 0,
+        "y": 204
       },
       "type": "xod/core/digital-output"
     },
@@ -59,12 +54,10 @@
         "Bkh8A_Sv1-": false,
         "ryTIROHwkW": false
       },
-      "description": "",
       "id": "rkwIEFrWb",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 34,
+        "y": 102
       },
       "type": "xod/core/flip-flop"
     }

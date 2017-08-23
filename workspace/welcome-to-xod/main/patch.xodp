@@ -1,63 +1,63 @@
 {
   "comments": [
     {
-      "content": "Finally, we send the value of flip-flop to a digital output to which the LED is connected to. This makes it blink.\n\nUse Inspector sidebar to change port number of the LED if you want.",
+      "content": "Finally, we send the value of flip-flop to a digital output to which the LED is connected to. This makes it blink.\nUse Inspector sidebar to change port number of the LED if you want.",
       "id": "ByAT8uePb",
       "position": {
-        "x": 266,
-        "y": 328
+        "x": 204,
+        "y": 306
       },
       "size": {
-        "height": 72,
-        "width": 364
+        "height": 51,
+        "width": 714
       }
     },
     {
       "content": "← This is a clock node. It emits ticks a regular time intervals. The interval is defined by the value of IVAL pin. To change it click on the node to select it and than set a new desired interval value in Inspector sidebar.",
       "id": "ByojN_lv-",
       "position": {
-        "x": 266,
-        "y": 120
+        "x": 204,
+        "y": 102
       },
       "size": {
-        "height": 72,
-        "width": 364
+        "height": 51,
+        "width": 578
       }
     },
     {
-      "content": "The ticks from clock are feed into the flip-flop node. A flip-flop is a simple memory cell that could hold either 0 or 1. We can SET it to 1, reset (RST) to 0, or toggle (TGL) to inverse value.\n\nIn our case, we toggle the value on every clock tick.",
+      "content": "The ticks from clock are feed into the flip-flop node. A flip-flop is a simple memory cell that could hold either 0 or 1. We can SET it to 1, reset (RST) to 0, or toggle (TGL) to inverse value.\nIn our case, we toggle the value on every clock tick.",
       "id": "H19xL_gPb",
       "position": {
-        "x": 266,
-        "y": 224
+        "x": 204,
+        "y": 204
       },
       "size": {
-        "height": 72,
-        "width": 364
+        "height": 51,
+        "width": 748
       }
     },
     {
       "content": "To learn more visit our tutorials at https://xod.io/docs/",
       "id": "SJFLPOlwb",
       "position": {
-        "x": 10,
-        "y": 432
+        "x": 0,
+        "y": 408
       },
       "size": {
-        "height": 72,
-        "width": 236
+        "height": 51,
+        "width": 374
       }
     },
     {
-      "content": "Welcome to XOD, dear maker!\n\nBelow is an example project that simply blinks a LED connected to pin 13 on your board. To try it use “Deploy” item in the main menu.",
+      "content": "Welcome to XOD, dear maker!\nBelow is an example project that simply blinks a LED connected to pin 13 on your board. To try it use “Deploy” item in the main menu.",
       "id": "r1PBBdgP-",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 0,
+        "y": 0
       },
       "size": {
-        "height": 72,
-        "width": 236
+        "height": 51,
+        "width": 612
       }
     }
   ],
@@ -93,8 +93,8 @@
       },
       "id": "By6HVYHZb",
       "position": {
-        "x": 138,
-        "y": 120
+        "x": 68,
+        "y": 102
       },
       "type": "xod/core/clock"
     },
@@ -105,8 +105,8 @@
       },
       "id": "SyeDNFBWZ",
       "position": {
-        "x": 138,
-        "y": 328
+        "x": 0,
+        "y": 306
       },
       "type": "xod/core/digital-output"
     },
@@ -118,8 +118,8 @@
       },
       "id": "rkwIEFrWb",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 34,
+        "y": 204
       },
       "type": "xod/core/flip-flop"
     }
