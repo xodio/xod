@@ -53,6 +53,8 @@ function createWindow() {
     minHeight: 600,
     title: 'XOD IDE',
     show: false,
+    // this is required for subpixel antialiasing to work
+    backgroundColor: '#FFF',
   });
   win.maximize();
   // and load the index.html of the app.
