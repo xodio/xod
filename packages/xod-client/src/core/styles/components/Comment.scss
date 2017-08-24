@@ -43,7 +43,7 @@
 
   .viewer {
     white-space: pre-wrap;
-    color: $input-color-text;
+    color: $color-comment-text;
     overflow: hidden;
 
     a {
@@ -80,5 +80,5 @@
 }
 
 .CommentResizeHandle {
-  fill: $color-highlight;
+  fill: $color-comment-handle;
 }
