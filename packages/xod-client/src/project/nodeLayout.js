@@ -30,7 +30,7 @@ export const TEXT_OFFSET_FROM_PIN_BORDER = 10;
 
 // :: { input: Number, output: Number } -> Size
 const nodeSizeInSlots = pinCountByDirection => ({
-  width: Math.max(pinCountByDirection.input, pinCountByDirection.output),
+  width: Math.max(pinCountByDirection.input, pinCountByDirection.output, 1),
   height: 1,
 });
 
