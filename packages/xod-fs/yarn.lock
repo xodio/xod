@@ -346,10 +346,6 @@ ramda@>=0.15.0, ramda@^0.23.0:
   version "0.23.0"
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.23.0.tgz#ccd13fff73497a93974e3e86327bfd87bd6e8e2b"
 
-ramda@^0.22.1:
-  version "0.22.1"
-  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.22.1.tgz#031da0c3df417c5b33c96234757eb37033f36a0e"
-
 randexp@^0.4.2:
   version "0.4.5"
   resolved "https://registry.yarnpkg.com/randexp/-/randexp-0.4.5.tgz#ffe3a80c3f666cd71e6b008e477e584c1a32ff3e"
@@ -413,7 +409,7 @@ sanctuary-type-classes@2.0.x:
   dependencies:
     sanctuary-type-identifiers "1.0.x"
 
-sanctuary-type-identifiers@1.0.x, sanctuary-type-identifiers@^1.0.0:
+sanctuary-type-identifiers@1.0.x:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/sanctuary-type-identifiers/-/sanctuary-type-identifiers-1.0.0.tgz#e8f359f006cb5e624cfb8464603fc114608bde9f"
 
@@ -424,10 +420,6 @@ shelljs@^0.7.7:
     glob "^7.0.0"
     interpret "^1.0.0"
     rechoir "^0.6.2"
-
-shortid@^2.2.6:
-  version "2.2.8"
-  resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.8.tgz#033b117d6a2e975804f6f0969dbe7d3d0b355131"
 
 slash@^1.0.0:
   version "1.0.0"
@@ -452,24 +444,3 @@ universalify@^0.1.0:
 wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
-
-xod-func-tools@^0.11.0-dev, xod-func-tools@^0.12.1:
-  version "0.11.0-dev"
-  resolved "https://registry.yarnpkg.com/xod-func-tools/-/xod-func-tools-0.11.0-dev.tgz#816d47bae459a7a81d122b437cc4ca9e8b48b414"
-  dependencies:
-    hm-def "^0.2.0"
-    ramda "^0.22.1"
-    ramda-fantasy "^0.7.0"
-    sanctuary-def "^0.9.0"
-    sanctuary-type-identifiers "^1.0.0"
-
-xod-project@^0.12.1:
-  version "0.11.0-dev"
-  resolved "https://registry.yarnpkg.com/xod-project/-/xod-project-0.11.0-dev.tgz#098ad2e808c376ca505034e7b8be72b3013ccae2"
-  dependencies:
-    hm-def "^0.2.0"
-    ramda "^0.23.0"
-    ramda-fantasy "^0.7.0"
-    sanctuary-def "^0.9.0"
-    shortid "^2.2.6"
-    xod-func-tools "^0.11.0-dev"
