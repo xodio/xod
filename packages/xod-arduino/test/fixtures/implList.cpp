@@ -18,19 +18,24 @@ struct State {
 
 struct Storage {
     State state;
-    PinRef input_IN1;
-    PinRef input_IN2;
-    OutputPin<Number> output_OUT;
+    Number output_OUT;
+};
+
+struct Wiring {
+    EvalFuncPtr eval;
+    UpstreamPinRef input_IN1;
+    UpstreamPinRef input_IN2;
+    const NodeId* output_OUT;
 };
 
 State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(storages[nid]);
+    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
 }
 
-using input_IN1 = InputDescriptor<Number, offsetof(Storage, input_IN1)>;
-using input_IN2 = InputDescriptor<Number, offsetof(Storage, input_IN2)>;
+using input_IN1 = InputDescriptor<Number, offsetof(Wiring, input_IN1)>;
+using input_IN2 = InputDescriptor<Number, offsetof(Wiring, input_IN2)>;
 
-using output_OUT = OutputDescriptor<Number, offsetof(Storage, output_OUT), 0>;
+using output_OUT = OutputDescriptor<Number, offsetof(Wiring, output_OUT), offsetof(Storage, output_OUT), 0>;
 
 void evaluate(Context ctx) {
     /* Native implementation goes here */
