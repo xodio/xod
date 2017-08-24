@@ -22,7 +22,8 @@
     "test": "XOD_HM_DEF=true node ./tools/lerna-run-sorted test",
     "test:watch": "node ./tools/lerna-serve test:watch",
     "test-func": "node ./tools/lerna-run-sorted test-func",
-    "verify": "yarn run build && yarn run lint && yarn run test && yarn run test-func"
+    "test-cpp": "node ./tools/lerna-run-sorted test-cpp",
+    "verify": "yarn build && yarn lint && yarn test && yarn test-cpp && yarn test-func"
   },
   "devDependencies": {
     "@google-cloud/storage": "^1.1.0",
