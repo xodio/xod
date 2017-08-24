@@ -28,79 +28,61 @@ export const PIN_OFFSET_FROM_NODE_EDGE = 3;
 
 export const TEXT_OFFSET_FROM_PIN_BORDER = 10;
 
-/**
- * @param {number} inputPinCount
- * @param {number} outputPinCount
- * @returns {{width: number, height: number}} - horizontal and vertical slots needed for node
- */
-export const nodeSizeInSlots = (inputPinCount, outputPinCount) => ({
-  width: Math.max(inputPinCount, outputPinCount),
+// :: { input: Number, output: Number } -> Size
+const nodeSizeInSlots = pinCountByDirection => ({
+  width: Math.max(pinCountByDirection.input, pinCountByDirection.output),
   height: 1,
 });
-
-export const slotsWidthInPixels = slots => slots * SLOT_SIZE.WIDTH;
-
-export const slotsHeightInPixels = slots => (R.dec(slots) * SLOT_SIZE.HEIGHT) + NODE_HEIGHT;
 
 /**
  * converts size in slots to size in pixels
  */
-export const slotsToPixels = R.evolve({
-  width: slotsWidthInPixels,
-  height: slotsHeightInPixels,
+// :: Size -> Size
+export const nodeSizeInSlotsToPixels = R.evolve({
+  width: slots => slots * SLOT_SIZE.WIDTH,
+  height: slots => (R.dec(slots) * SLOT_SIZE.HEIGHT) + NODE_HEIGHT,
 });
 
-export const relativePinPosition = R.curry((rows, pinIndex) => {
-  const pinsInFullRow = R.head(rows);
-  const rowIndex = Math.floor(pinIndex / pinsInFullRow);
-  const indexInRow = pinIndex - (rowIndex * pinsInFullRow);
-  const totalPinsInRow = rows[rowIndex];
+// :: [Pin] -> Size
+export const calcutaleNodeSizeFromPins = R.compose(
+  nodeSizeInSlotsToPixels,
+  nodeSizeInSlots,
+  R.map(R.length),
+  R.merge({ input: [], output: [] }),
+  R.groupBy(R.prop('direction')),
+);
 
-  return {
-    rowIndex,
-    indexInRow,
-    totalPinsInRow,
-  };
-});
-
-/**
- * pin center position in pixels relative to pins group(input or output)
- */
-export const relativePinPositionToPixels = R.curry(
+// :: Number -> Number -> Position
+const pinOrderToPosition = R.curry(
   (nodeWidth, pinOrder) => ({
     x: (pinOrder * SLOT_SIZE.WIDTH) + (SLOT_SIZE.WIDTH / 2),
     y: PIN_OFFSET_FROM_NODE_EDGE,
   }));
+
+// :: Size -> Pin -> Position
+export const calculatePinPosition = R.curry((nodeSize, pin) => {
+  const position = pinOrderToPosition(nodeSize.width, pin.order);
+
+  // output pin positions start from the bottom
+  return R.when(
+    R.always(R.equals(pin.direction, 'output')),
+    R.assoc('y', nodeSize.height - position.y)
+  )(position);
+});
 
 /**
  * adds `size` to node and `position` to node's pins
  * @param node - dereferenced node
  */
 export const addNodePositioning = (node) => {
-  const pinCountByDirection = R.compose(
-    R.map(R.length),
-    R.merge({ input: [], output: [] }),
-    R.groupBy(R.prop('direction')),
+  const size = R.compose(
+    calcutaleNodeSizeFromPins,
     R.values
   )(node.pins);
 
-  const sizeInSlots = nodeSizeInSlots(
-    pinCountByDirection.input,
-    pinCountByDirection.output
-  );
-
-  const size = slotsToPixels(sizeInSlots);
-
   const pins = R.map(
     (pin) => {
-      const relPxPosition = relativePinPositionToPixels(size.width, pin.order);
-
-      // output pin positions start from the bottom
-      const position = R.when(
-        R.always(R.equals(pin.direction, 'output')),
-        R.assoc('y', size.height - relPxPosition.y)
-      )(relPxPosition);
-
+      const position = calculatePinPosition(size, pin);
       return R.merge(pin, { position });
     },
     node.pins
@@ -147,16 +129,12 @@ export const addLinksPositioning = nodes =>
   });
 
 // ============= snapping to slots grid ===================
-
-export const getSlotRow = y => Math.floor(y / SLOT_SIZE.HEIGHT);
-export const getSlotColumn = x => Math.floor(x / SLOT_SIZE.WIDTH);
-
 /**
  * get position in slots
  */
-export const getSlotPosition = R.evolve({
-  x: getSlotColumn,
-  y: getSlotRow,
+export const nodePositionInPixelsToSlots = R.evolve({
+  x: x => Math.floor(x / SLOT_SIZE.WIDTH),
+  y: y => Math.floor(y / SLOT_SIZE.HEIGHT),
 });
 
 /**
@@ -177,30 +155,17 @@ export const sizeToPoint = ({ width, height }) => ({ x: width, y: height });
  */
 export const snapNodePositionToSlots = R.compose(
   slotPositionToPixels,
-  getSlotPosition,
+  nodePositionInPixelsToSlots,
   addPoints({ x: SLOT_SIZE.WIDTH / 2, y: SLOT_SIZE.HEIGHT / 2 })
 );
 
 export const snapNodeSizeToSlots = R.compose(
-  slotsToPixels,
+  nodeSizeInSlotsToPixels,
   pointToSize,
-  getSlotPosition,
+  nodePositionInPixelsToSlots,
   addPoints({ x: SLOT_SIZE.WIDTH * 0.75, y: SLOT_SIZE.HEIGHT * 1.1 }),
   sizeToPoint
 );
-
-// TODO: works only for 1x1 nodes
-export const isValidPosition = (allNodes, draggedNodeId, snappedPosition) =>
-  R.compose(
-    R.none(
-      R.compose(
-        R.equals(snappedPosition),
-        R.prop('position')
-      )
-    ),
-    R.values,
-    R.omit(draggedNodeId)
-  )(allNodes);
 
 // Given a list of positions of all entities, returns optimal patch panning offset
 // :: [Position] -> Position
