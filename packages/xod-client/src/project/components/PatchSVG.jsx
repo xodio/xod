@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 
-import PinShadowFilter from './filters/PinShadowFilter';
 import DraggedNodeShadowFilter from './filters/DraggedNodeShadowFilter';
-import PinLabelShadowFilter from './filters/PinLabelShadowFilter';
 
 const PatchSVG = ({
   children,
@@ -27,9 +25,7 @@ const PatchSVG = ({
     ref={svgRef}
   >
     <defs>
-      <PinShadowFilter />
       <DraggedNodeShadowFilter />
-      <PinLabelShadowFilter />
     </defs>
     {children}
   </svg>
