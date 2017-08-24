@@ -2,32 +2,35 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { LAYER } from '../../../editor/constants';
 
-import { isLinkSelected } from '../../../editor/utils';
-
 import SVGLayer from './SVGLayer';
 import XODLink from '../Link';
 
-const LinksLayer = ({ links, selection }) => (
+import { isLinkSelected } from '../../../editor/utils';
+
+const LinksOverlayLayer = ({ links, selection, onClick }) => (
   <SVGLayer
     name={LAYER.LINKS}
-    className="LinksLayer"
+    className="LinksOverlayLayer"
   >
     {links.map(link =>
       <XODLink
+        isOverlay
         key={link.id}
         id={link.id}
         from={link.from}
         to={link.to}
         type={link.type}
+        onClick={onClick}
         isSelected={isLinkSelected(selection, link.id)}
       />
     )}
   </SVGLayer>
 );
 
-LinksLayer.propTypes = {
+LinksOverlayLayer.propTypes = {
   links: PropTypes.arrayOf(PropTypes.object),
   selection: PropTypes.arrayOf(PropTypes.object),
+  onClick: PropTypes.func,
 };
 
-export default LinksLayer;
+export default LinksOverlayLayer;

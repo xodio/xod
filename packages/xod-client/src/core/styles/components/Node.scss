@@ -3,16 +3,33 @@
   .body {
     width: 100%;
     height: 100%;
-    fill: $color-canvas-face;
-  }
-
-  .outputPinsSection {
-    fill: $color-canvas-face-light;
+    fill: $color-node-fill;
+    opacity: 0.8;
   }
 
   .outline {
     fill: transparent;
+    stroke: $color-node-outline;
     stroke-width: 2px;
+  }
+
+  .nodeLabelContainer {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .nodeLabel {
+    padding: 0 2px;
+    font-size: 12px;
+    font-family: $font-family-condensed;
+    color: $color-canvas-face-text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: default;
+    user-select: none;
   }
 
   &:hover {
@@ -20,9 +37,8 @@
       stroke: $color-highlight;
     }
 
-    // TODO: do not separate NodeText styles?
-    .NodeText {
-      fill: $color-highlight;
+    .nodeLabel {
+      color: $color-highlight;
     }
   }
 
@@ -35,8 +51,8 @@
       stroke: $color-canvas-selected;
     }
 
-    .NodeText {
-      fill: $color-canvas-selected;
+    .nodeLabel {
+      color: $color-canvas-selected;
     }
   }
 

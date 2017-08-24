@@ -41,7 +41,9 @@ class Link extends React.Component {
 
   render() {
     const coords = this.getCoords();
-    const cls = classNames('Link', this.props.type, {
+    const cls = classNames(this.props.type, {
+      Link: !this.props.isOverlay,
+      LinkOverlay: this.props.isOverlay,
       'is-selected': this.props.isSelected,
       'is-ghost': this.props.isGhost,
     });
@@ -93,12 +95,14 @@ Link.propTypes = {
   type: PropTypes.string.isRequired,
   isSelected: PropTypes.bool,
   isGhost: PropTypes.bool,
+  isOverlay: PropTypes.bool,
   onClick: PropTypes.func,
 };
 
 Link.defaultProps = {
   isSelected: false,
   isGhost: false,
+  isOverlay: false,
   hoverable: true,
   onClick: noop,
 };

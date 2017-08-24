@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "B1D9P1Qzb",
@@ -56,12 +55,10 @@
         "rJlYT7EfW": 8,
         "rkbjp7Ezb": 13
       },
-      "description": "",
       "id": "BkugQ2aW-",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 640
+        "x": 0,
+        "y": 204
       },
       "type": "xod/common-hardware/text-lcd-16x2"
     },
@@ -69,12 +66,10 @@
       "boundValues": {
         "B13SCNhl-": 0.03
       },
-      "description": "",
       "id": "H1td7jabb",
-      "label": "",
       "position": {
-        "x": 266,
-        "y": 120
+        "x": 272,
+        "y": 0
       },
       "type": "xod/core/clock"
     },
@@ -85,12 +80,10 @@
         "HJmDrymzW": 2,
         "SJTLQkXz-": "Crassula: "
       },
-      "description": "",
       "id": "SJHtPk7Gb",
-      "label": "",
       "position": {
-        "x": 266,
-        "y": 328
+        "x": 238,
+        "y": 102
       },
       "type": "@/plant"
     },
@@ -101,12 +94,10 @@
         "HJmDrymzW": 3,
         "SJTLQkXz-": "Cactus: "
       },
-      "description": "",
       "id": "rk1KD1mMZ",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 328
+        "x": 102,
+        "y": 102
       },
       "type": "@/plant"
     }

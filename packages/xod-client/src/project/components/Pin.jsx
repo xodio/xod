@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { PIN_RADIUS, PIN_HIGHLIGHT_RADIUS } from '../nodeLayout';
+import { PIN_RADIUS, PIN_RADIUS_WITH_OUTER_STROKE, PIN_HIGHLIGHT_RADIUS } from '../nodeLayout';
 
 const Pin = (props) => {
   const cls = classNames('Pin', {
@@ -28,6 +28,11 @@ const Pin = (props) => {
         className="linkingHighlight"
         {...pinCircleCenter}
         r={PIN_HIGHLIGHT_RADIUS}
+      />
+      <circle
+        className="outerStroke"
+        {...pinCircleCenter}
+        r={PIN_RADIUS_WITH_OUTER_STROKE}
       />
       <circle
         className={symbolClassNames}

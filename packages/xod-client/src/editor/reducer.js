@@ -24,6 +24,7 @@ import {
   LINK_DELETE,
   COMMENT_DELETE,
 } from '../project/actionTypes';
+import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
 
 const addTab = R.curry((patchPath, state) => {
   if (!patchPath) return state;
@@ -42,7 +43,7 @@ const addTab = R.curry((patchPath, state) => {
   return R.assocPath(['tabs', patchPath], {
     id: patchPath,
     index: newIndex,
-    offset: { x: 0, y: 0 },
+    offset: DEFAULT_PANNING_OFFSET,
   }, state);
 });
 

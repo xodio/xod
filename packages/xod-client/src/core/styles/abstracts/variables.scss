@@ -10,22 +10,27 @@ $font-size-m: 11px;
 $font-size-l: 18px;
 $font-size-xl: 28px;
 
-$color-canvas-background: #393939;
+$color-canvas-background: #313131;
+$color-canvas-background-gridlines: #2a2a2a;
 $color-canvas-face: #646464;
 $color-canvas-face-light: #A7A7A7;
 $color-canvas-face-text: #a7a7a7;
 $color-canvas-selected: #4ed5ed;
-$color-highlight: #ccc;
+$color-highlight: #eeeeee;
 
 $color-datatype-string: #B99039;
 $color-datatype-number: #2e8f6c;
 $color-datatype-boolean: #9F5497;
 $color-datatype-pulse: #6965BD;
 
-$color-pin-fill: #3d3d3d;
+$color-node-fill: #222222;
+$color-node-outline: #bbbbbb;
+$color-pin-fill: #262626;
 
-$color-pinlabel-input: white;
-$color-pinlabel-output: black;
+$color-comment-text: #d0ccc0;
+$color-comment-handle: #605f5b;
+
+$color-pinlabel: $color-canvas-face-text; //#8b8b8b;
 
 $color-toolbar-background: #b3b3b3;
 $color-toolbar-foreground: #000;

@@ -1,6 +1,13 @@
 .BackgroundLayer {
 
 }
+
+#patch_bg_pattern {
+  line {
+    stroke: $color-canvas-background-gridlines;
+  }
+}
+
 .BackgroundRect {
   fill: url(#patch_bg_pattern);
 }

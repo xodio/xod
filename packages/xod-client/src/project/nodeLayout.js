@@ -1,105 +1,46 @@
 import R from 'ramda';
 
-export const MAX_PINS_IN_ROW = 17;
+const BASE_SIZE_UNIT = 17;
 
 export const SLOT_SIZE = {
-  WIDTH: 108,
-  HEIGHT: 72,
+  WIDTH: BASE_SIZE_UNIT * 2,
+  HEIGHT: BASE_SIZE_UNIT * 6,
 };
-export const SLOT_MARGIN = {
-  HORIZONTAL: 20,
-  VERTICAL: 32,
+
+export const NODE_HEIGHT = BASE_SIZE_UNIT * 3;
+
+export const DEFAULT_PANNING_OFFSET = {
+  x: NODE_HEIGHT,
+  y: NODE_HEIGHT,
 };
 
 export const LINK_HOTSPOT_SIZE = {
   WIDTH: 8,
 };
 
-export const PIN_SIZE = { // including label, etc
-  WIDTH: 22,
-  HEIGHT: 20,
-};
-export const PIN_MARGIN = {
-  VERTICAL: 5,
-};
-
 export const NODE_CORNER_RADIUS = 5;
+
 export const PIN_RADIUS = 6;
-export const PIN_RADIUS_WITH_SHADOW = PIN_RADIUS + 4;
+export const PIN_RADIUS_WITH_OUTER_STROKE = PIN_RADIUS + 2;
+export const PIN_RADIUS_WITH_SHADOW = PIN_RADIUS + 4; // TODO: rename
 export const PIN_HIGHLIGHT_RADIUS = 15;
+export const PIN_OFFSET_FROM_NODE_EDGE = 3;
+
 export const TEXT_OFFSET_FROM_PIN_BORDER = 10;
-
-/**
- * @param {number} pinCount
- * @returns {number} - how many rows is needed for a given number of pins
- */
-export const rowCountForPins = pinCount =>
-  Math.ceil(pinCount / MAX_PINS_IN_ROW);
-
-/**
- * @param {number} pinCount
- * @returns {number[]} - number of pins in each row
- */
-export const pinCountPerRow = (pinCount) => {
-  const rowCount = rowCountForPins(pinCount);
-
-  if (rowCount <= 1) return [pinCount];
-
-  const pinsInFullRows = Math.ceil(pinCount / rowCount);
-  const numberOfFullRows = rowCount - 1;
-  const pinsInLastRow = pinCount - (numberOfFullRows * pinsInFullRows);
-
-  return R.append(
-    pinsInLastRow,
-    R.repeat(pinsInFullRows, numberOfFullRows)
-  );
-};
-
-/**
- * @param {number} pinCount. Should be less than MAX_PINS_IN_ROW
- * @returns {number} - how many horizontal slots is required to fit a given number of pins
- */
-export const horizontalSlotsForPinsRow = (pinCount) => {
-  if (pinCount > MAX_PINS_IN_ROW) {
-    throw new Error('Exceeded maximum allowed amount of pins per row');
-  }
-
-  if (pinCount <= 3) return 1;
-  if (pinCount <= 5) return 2;
-  if (pinCount <= 8) return 3;
-  if (pinCount <= 12) return 4;
-  if (pinCount <= 15) return 5;
-  return 6;
-};
-
-/**
- * @param {number} rowCount - both input and output pin rows
- * @returns {number} - vertical slots needed for a given amount of pin rows
- */
-export const verticalSlotsForPinRows = rowCount =>
-  // TODO: we need design for extreme cases with a lot of pin rows. See #236
-  (rowCount > 2 ? 2 : 1);
 
 /**
  * @param {number} inputPinCount
  * @param {number} outputPinCount
  * @returns {{width: number, height: number}} - horizontal and vertical slots needed for node
  */
-export const nodeSizeInSlots = (inputPinCount, outputPinCount) =>
-  R.compose(
-    R.applySpec({
-      width: R.compose(horizontalSlotsForPinsRow, R.apply(Math.max)),
-      height: R.compose(verticalSlotsForPinRows, R.length),
-    }),
-    R.chain(pinCountPerRow) // all pin rows together
-  )([inputPinCount, outputPinCount]);
+export const nodeSizeInSlots = (inputPinCount, outputPinCount) => ({
+  width: Math.max(inputPinCount, outputPinCount),
+  height: 1,
+});
 
+export const slotsWidthInPixels = slots => slots * SLOT_SIZE.WIDTH;
 
-export const slotsWidthInPixels =
-  slots => (slots * SLOT_SIZE.WIDTH) + (R.dec(slots) * SLOT_MARGIN.HORIZONTAL);
-
-export const slotsHeightInPixels =
-  slots => (slots * SLOT_SIZE.HEIGHT) + (R.dec(slots) * SLOT_MARGIN.VERTICAL);
+export const slotsHeightInPixels = slots => (R.dec(slots) * SLOT_SIZE.HEIGHT) + NODE_HEIGHT;
 
 /**
  * converts size in slots to size in pixels
@@ -126,45 +67,13 @@ export const relativePinPosition = R.curry((rows, pinIndex) => {
  * pin center position in pixels relative to pins group(input or output)
  */
 export const relativePinPositionToPixels = R.curry(
-  (nodeWidth, relativePosition) => {
-    const {
-      rowIndex,
-      indexInRow,
-      totalPinsInRow,
-    } = relativePosition;
-    /*
-                                [2]
-                 |               |               |
-     |       +---+---+       +---+---+       +---+---+       |
-     |  [0]  |   o   |       |   o   |       |   o   |       |
-     +<----->+       +<----->+       +<----->+       +<----->+
-     |       | pin 0 |       | pin 1 |       | pin 2 |       |
-     |       +-------+       +-------+       +-------+       |
-                [1]
-
-      0 - margins between pins
-      1 - pin width
-      2 - pin center (x)
-     */
-    const margin = (nodeWidth - (PIN_SIZE.WIDTH * totalPinsInRow)) / R.inc(totalPinsInRow);
-    const x = (margin * R.inc(indexInRow)) + (PIN_SIZE.WIDTH * indexInRow) + (PIN_SIZE.WIDTH / 2);
-    const y = rowIndex * (PIN_SIZE.HEIGHT + PIN_MARGIN.VERTICAL);
-
-    return { x, y };
-  });
+  (nodeWidth, pinOrder) => ({
+    x: (pinOrder * SLOT_SIZE.WIDTH) + (SLOT_SIZE.WIDTH / 2),
+    y: PIN_OFFSET_FROM_NODE_EDGE,
+  }));
 
 /**
- * @param outputRows
- * @returns {number}
- */
-const getOutputPinsSectionHeight = R.ifElse(
-  R.compose(R.equals(0), R.head), // we have no output rows
-  R.always(0),
-  R.compose(R.multiply(PIN_SIZE.HEIGHT + PIN_MARGIN.VERTICAL), R.length)
-);
-
-/**
- * adds `size` and `outputPinsSectionHeight` to node and `position` to node's pins
+ * adds `size` to node and `position` to node's pins
  * @param node - dereferenced node
  */
 export const addNodePositioning = (node) => {
@@ -182,19 +91,9 @@ export const addNodePositioning = (node) => {
 
   const size = slotsToPixels(sizeInSlots);
 
-  const pinRows = R.map(
-    pinCountPerRow,
-    pinCountByDirection
-  );
-
-  const outputPinsSectionHeight = getOutputPinsSectionHeight(pinRows.output);
-
   const pins = R.map(
     (pin) => {
-      const relPxPosition = relativePinPositionToPixels(
-        size.width,
-        relativePinPosition(pinRows[pin.direction], pin.order)
-      );
+      const relPxPosition = relativePinPositionToPixels(size.width, pin.order);
 
       // output pin positions start from the bottom
       const position = R.when(
@@ -207,7 +106,7 @@ export const addNodePositioning = (node) => {
     node.pins
   );
 
-  return R.merge(node, { size, pins, outputPinsSectionHeight });
+  return R.merge(node, { size, pins });
 };
 
 
@@ -249,8 +148,8 @@ export const addLinksPositioning = nodes =>
 
 // ============= snapping to slots grid ===================
 
-export const getSlotRow = y => Math.floor(y / (SLOT_SIZE.HEIGHT + SLOT_MARGIN.VERTICAL));
-export const getSlotColumn = x => Math.floor(x / (SLOT_SIZE.WIDTH + SLOT_MARGIN.HORIZONTAL));
+export const getSlotRow = y => Math.floor(y / SLOT_SIZE.HEIGHT);
+export const getSlotColumn = x => Math.floor(x / SLOT_SIZE.WIDTH);
 
 /**
  * get position in slots
@@ -264,26 +163,8 @@ export const getSlotPosition = R.evolve({
  * convert position in slots to pixels
  */
 export const slotPositionToPixels = ({ x, y }) => ({
-  /*
-   SLOT_MARGIN.HORIZONTAL / 2
-   <---->
-   +----------------------------+ ^ ^
-   |                            | | |SLOT_MARGIN.VERTICAL / 2
-   |    /------------------\    | | v
-   |    |                  |    | |
-   |    |                  |    | |
-   |    |                  |    | |
-   |    |                  |    | |SLOT_SIZE.HEIGHT + SLOT_MARGIN.VERTICAL
-   |    |                  |    | |
-   |    |                  |    | |
-   |    \------------------/    | |
-   |                            | |
-   +----------------------------+ v
-   <---------------------------->
-   SLOT_SIZE.WIDTH + SLOT_MARGIN.HORIZONTAL
-   */
-  x: (x * (SLOT_SIZE.WIDTH + SLOT_MARGIN.HORIZONTAL)) + (SLOT_MARGIN.HORIZONTAL / 2),
-  y: (y * (SLOT_SIZE.HEIGHT + SLOT_MARGIN.VERTICAL)) + (SLOT_MARGIN.VERTICAL / 2),
+  x: x * SLOT_SIZE.WIDTH,
+  y: y * SLOT_SIZE.HEIGHT,
 });
 
 export const pointToSize = ({ x, y }) => ({ width: x, height: y });
@@ -304,7 +185,7 @@ export const snapNodeSizeToSlots = R.compose(
   slotsToPixels,
   pointToSize,
   getSlotPosition,
-  addPoints({ x: SLOT_SIZE.WIDTH, y: SLOT_SIZE.HEIGHT }),
+  addPoints({ x: SLOT_SIZE.WIDTH * 0.75, y: SLOT_SIZE.HEIGHT * 1.1 }),
   sizeToPoint
 );
 
@@ -325,12 +206,9 @@ export const isValidPosition = (allNodes, draggedNodeId, snappedPosition) =>
 // :: [Position] -> Position
 export const getOptimalPanningOffset = R.ifElse(
   R.isEmpty,
-  R.always({ x: 0, y: 0 }),
+  R.always(DEFAULT_PANNING_OFFSET),
   R.compose(
-    addPoints({
-      x: SLOT_MARGIN.HORIZONTAL / 2,
-      y: SLOT_MARGIN.VERTICAL / 2,
-    }),
+    addPoints(DEFAULT_PANNING_OFFSET),
     R.map(R.negate),
     R.converge(
       (x, y) => ({ x, y }),

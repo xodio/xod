@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "B1omL1XGZ",
@@ -106,111 +105,89 @@
       "boundValues": {
         "SJqZ8COrDkW": 0.2
       },
-      "description": "",
       "id": "BksoSk7Gb",
-      "label": "",
       "position": {
-        "x": 138,
-        "y": 328
+        "x": 272,
+        "y": 204
       },
       "type": "xod/core/less"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "By1UmyQzb",
       "label": "UPD",
       "position": {
-        "x": 394,
-        "y": 16
+        "x": 306,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "ByYVLkXGW",
       "label": "ST",
       "position": {
-        "x": 394,
-        "y": 744
+        "x": 340,
+        "y": 408
       },
       "type": "xod/patch-nodes/output-string"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "H1BmSyQfW",
       "label": "SEN",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 272,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "H1Y-UJXG-",
-      "label": "",
       "position": {
-        "x": 394,
-        "y": 432
+        "x": 374,
+        "y": 204
       },
       "type": "xod/core/to-percent"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "HJmDrymzW",
       "label": "PUMP",
       "position": {
-        "x": 10,
-        "y": 432
+        "x": 238,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "S1afrk7GW",
       "label": "Moisture sensor",
       "position": {
-        "x": 266,
-        "y": 120
+        "x": 272,
+        "y": 102
       },
       "type": "xod/core/analog-input"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "S1jFHymG-",
       "label": "Pump",
       "position": {
-        "x": 138,
-        "y": 536
+        "x": 238,
+        "y": 306
       },
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "SJTLQkXz-",
       "label": "NAME",
       "position": {
-        "x": 266,
-        "y": 432
+        "x": 340,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "r19MUJ7MZ",
-      "label": "",
       "position": {
-        "x": 394,
-        "y": 536
+        "x": 340,
+        "y": 306
       },
       "type": "xod/core/concat"
     }

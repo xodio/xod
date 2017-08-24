@@ -4,41 +4,33 @@ import { PIN_DIRECTION } from 'xod-project';
 
 import { PIN_RADIUS, TEXT_OFFSET_FROM_PIN_BORDER } from '../nodeLayout';
 
-export default class Pin extends React.Component {
-  getPinCenter() {
-    return this.props.position;
-  }
+const Pin = ({ keyName, label, direction, position }) => {
+  const textVerticalOffset = PIN_RADIUS + TEXT_OFFSET_FROM_PIN_BORDER;
+  const isInput = direction === PIN_DIRECTION.INPUT;
 
-  getTextProps() {
-    const textVerticalOffset = PIN_RADIUS + TEXT_OFFSET_FROM_PIN_BORDER;
-    const pos = this.getPinCenter();
-    return {
-      x: pos.x,
-      y: pos.y + (textVerticalOffset * (this.isInput() ? 1 : -1)),
-      textAnchor: 'middle',
-    };
-  }
+  const textProps = {
+    x: position.x,
+    y: position.y + (textVerticalOffset * (isInput ? -1 : 1)),
+    textAnchor: 'middle',
+  };
 
-  getDirection() {
-    return this.props.direction;
-  }
-
-  isInput() {
-    return (this.getDirection() === PIN_DIRECTION.INPUT);
-  }
-
-  render() {
-    return this.props.label ? (
+  return label ? (
+    <g key={`pinText_${keyName}`}>
       <text
-        className={`PinLabel ${this.isInput() ? 'input' : 'output'}`}
-        key={`pinText_${this.props.keyName}`}
-        {...this.getTextProps()}
+        className="PinLabel outline"
+        {...textProps}
       >
-        {this.props.label}
+        {label}
       </text>
-    ) : null;
-  }
-}
+      <text
+        className="PinLabel"
+        {...textProps}
+      >
+        {label}
+      </text>
+    </g>
+  ) : null;
+};
 
 Pin.propTypes = {
   keyName: PropTypes.string.isRequired,
@@ -46,3 +38,5 @@ Pin.propTypes = {
   direction: PropTypes.string.isRequired,
   position: PropTypes.object.isRequired,
 };
+
+export default Pin;

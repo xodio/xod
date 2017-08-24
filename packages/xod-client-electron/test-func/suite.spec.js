@@ -119,13 +119,13 @@ describe('IDE', () => {
     it('drags a node in place', () =>
       assert.eventually.deepEqual(
         page.dragNode('clock', 150, 10).getLocation(),
-        { x: 338, y: 46 }
+        { x: 455, y: 183 }
       )
     );
 
     it('adds the rest of the nodes for the blink patch', () =>
-      page.addNode('flip-flop', 150, 100)
-        .then(() => page.addNode('digital-output', 150, 200))
+      page.addNode('flip-flop', 150, 200)
+        .then(() => page.addNode('digital-output', 150, 300))
     );
   });
 
