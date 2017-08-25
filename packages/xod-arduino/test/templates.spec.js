@@ -11,7 +11,6 @@ describe('xod-arduino templates', () => {
   let config;
   let patches;
   let nodes;
-  let project;
 
   beforeEach(() => {
     config = {
@@ -73,12 +72,6 @@ describe('xod-arduino templates', () => {
         dirtyFlags: 255,
       },
     ];
-    project = {
-      config,
-      patches,
-      nodes,
-      topology: [0, 1],
-    };
   });
 
   it('configuration should render properly', () => {
@@ -92,7 +85,7 @@ describe('xod-arduino templates', () => {
   });
 
   it('program should render properly', () => {
-    const result = T.renderProgram(project.topology, nodes);
+    const result = T.renderProgram(nodes);
     assert.strictEqual(result, programFixture);
   });
 });

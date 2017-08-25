@@ -276,6 +276,30 @@ export const renameKeys = R.curry((keysMap, obj) =>
   R.reduce((acc, key) => R.assoc(keysMap[key] || key, obj[key], acc), {}, R.keys(obj))
 );
 
+/**
+ * Maps an array using a mapping function that on each iteration step receives
+ * an array element, its index, and the whole array itself
+ */
+// :: ((a, Number, [a]) -> b) -> [a] -> [b]
+export const mapIndexed = R.addIndex(R.map);
+
+/**
+ * Swaps two elements of `array` having `oldIndex` and `newIndex` indexes.
+ */
+// :: Number -> Number -> [a] -> [a]
+export const swap = R.curry(
+  (oldIndex, newIndex, array) => {
+    const oldItem = R.nth(oldIndex, array);
+    const newItem = R.nth(newIndex, array);
+
+    return R.pipe(
+      R.update(oldIndex, newItem),
+      R.update(newIndex, oldItem)
+    )(array);
+  }
+);
+
+
 export default Object.assign(
   {
     explode,
@@ -298,6 +322,8 @@ export default Object.assign(
     allPromises,
     concatAll,
     renameKeys,
+    mapIndexed,
+    swap,
   },
   types
 );

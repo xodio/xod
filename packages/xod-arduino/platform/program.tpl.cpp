@@ -72,8 +72,4 @@ namespace xod {
         &storage_{{ id }}{{#unless @last }},{{/unless }}
       {{/each}}
     };
-
-    NodeId g_topology[NODE_COUNT] = {
-        {{#each topology}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
-    };
 }

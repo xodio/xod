@@ -141,10 +141,6 @@ extern void* const g_storages[NODE_COUNT];
 extern const void* const g_wiring[NODE_COUNT];
 extern DirtyFlags g_dirtyFlags[NODE_COUNT];
 
-// TODO: get rid of an extra indirection layer completely
-// would save 2 bytes per node
-extern NodeId g_topology[NODE_COUNT];
-
 // TODO: replace with a compact list
 extern TimeMs g_schedule[NODE_COUNT];
 
@@ -251,10 +247,9 @@ void evaluateNode(NodeId nid) {
 void runTransaction() {
     XOD_TRACE_F("Transaction started, t=");
     XOD_TRACE_LN(millis());
-    for (NodeId nid : g_topology) {
+    for (NodeId nid = 0; nid < NODE_COUNT; ++nid)
         if (isNodeDirty(nid))
             evaluateNode(nid);
-    }
 
     memset(g_dirtyFlags, 0, sizeof(g_dirtyFlags));
     XOD_TRACE_F("Transaction completed, t=");
