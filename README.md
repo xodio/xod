@@ -57,6 +57,7 @@ subcommands:
 - `yarn electron-dist` — build OS-specific distributive
 - `yarn test` — run unit tests
 - `yarn test:watch` — like test, but watches for changes with auto-retest
+- `yarn test-cpp` — run C++ code tests
 - `yarn test-func` — run functional tests
 - `yarn lint` — run the linter to check code style
 - `yarn verify` — build, lint, test; run this prior to a pull request
@@ -90,6 +91,12 @@ You can set `XOD_DEBUG_TESTS` environment variable to keep IDE open on failure:
 
 Use `yarn start:spectron-repl` to run an interactive session and control the
 IDE window programmatically.
+
+### Running C++ tests
+
+You need `avr-gcc` and [PlatformIO Core](http://platformio.org/get-started/cli)
+to be installed system-wide to run C++ code tests. They are available as OS
+packages for most platforms.
 
 License
 -------

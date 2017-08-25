@@ -3,22 +3,29 @@
 
 struct Storage {
     State state;
+  {{#each outputs}}
+    {{ type }} output_{{ pinKey }};
+  {{/each}}
+};
+
+struct Wiring {
+    EvalFuncPtr eval;
   {{#each inputs}}
-    PinRef input_{{ pinKey }};
+    UpstreamPinRef input_{{ pinKey }};
   {{/each}}
   {{#each outputs}}
-    OutputPin<{{ type }}> output_{{ pinKey }};
+    const NodeId* output_{{ pinKey }};
   {{/each}}
 };
 
 State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(storages[nid]);
+    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
 }
 
 {{#each inputs}}
-using input_{{ pinKey }} = InputDescriptor<{{ type }}, offsetof(Storage, input_{{ pinKey }})>;
+using input_{{ pinKey }} = InputDescriptor<{{ type }}, offsetof(Wiring, input_{{ pinKey }})>;
 {{/each}}
 
 {{#each outputs}}
-using output_{{ pinKey }} = OutputDescriptor<{{ type }}, offsetof(Storage, output_{{ pinKey }}), {{@index}}>;
+using output_{{ pinKey }} = OutputDescriptor<{{ type }}, offsetof(Wiring, output_{{ pinKey }}), offsetof(Storage, output_{{ pinKey }}), {{@index}}>;
 {{/each}}

@@ -1,14 +1,14 @@
 language: node_js
+node_js: '7.10.1'
+sudo: false
+dist: trusty
 
 matrix:
   fast_finish: true
   include:
   - os: linux
-    node_js: '7.10.1'
-    sudo: false
-    dist: trusty
+    python: '2.7' # for PlatformIO
   - os: osx
-    node_js: '7.10.1'
     osx_image: xcode8.3
 
 addons:
@@ -28,10 +28,21 @@ env:
 cache:
   directories:
   - node_modules
+  - packages/xod-arduino-deploy/node_modules
+  - packages/xod-arduino/node_modules
+  - packages/xod-cli/node_modules
+  - packages/xod-client-browser/node_modules
+  - packages/xod-client-electron/node_modules
+  - packages/xod-client/node_modules
+  - packages/xod-fs/node_modules
+  - packages/xod-func-tools/node_modules
+  - packages/xod-project/node_modules
   - $HOME/.cache/electron
   - $HOME/.cache/electron-builder
   - $HOME/.npm/_prebuilds
+  - $HOME/.platformio
   yarn: true
+  pip: true
 
 before_install:
 - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.27.3
@@ -39,6 +50,10 @@ before_install:
 
 install:
 - yarn
+- if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+    pip install -U platformio;
+  fi
+
 
 before_script: |
   if [ "$TRAVIS_OS_NAME" == "linux" ]; then
@@ -48,5 +63,9 @@ before_script: |
   fi
 
 script:
-- yarn verify
+- yarn build
+- yarn lint
+- yarn test
+- if [ "$TRAVIS_OS_NAME" == "linux" ]; then yarn test-cpp; fi
+- yarn test-func
 - travis_wait 50 ./tools/travis.sh

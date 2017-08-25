@@ -16,7 +16,7 @@
 
 #include <Arduino.h>
 #include <inttypes.h>
-
+#include <avr/pgmspace.h>
 
 // ============================================================================
 //
@@ -666,226 +666,284 @@ template <typename T> class List {
 #endif
 
 //----------------------------------------------------------------------------
+// PGM space utilities
+//----------------------------------------------------------------------------
+#define pgm_read_nodeid(address) (pgm_read_word(address))
+
+/*
+ * Workaround for bugs:
+ * https://github.com/arduino/ArduinoCore-sam/pull/43
+ * https://github.com/arduino/ArduinoCore-samd/pull/253
+ * Remove after the PRs merge
+ */
+#if !defined(ARDUINO_ARCH_AVR) && defined(pgm_read_ptr)
+#  undef pgm_read_ptr
+#  define pgm_read_ptr(addr) (*(const void **)(addr))
+#endif
+
+namespace xod {
+//----------------------------------------------------------------------------
 // Type definitions
 //----------------------------------------------------------------------------
-#define PIN_KEY_OFFSET_BITS     (16 - MAX_OUTPUT_COUNT)
 #define NO_NODE                 ((NodeId)-1)
 
-namespace xod {
-    typedef double Number;
-    typedef bool Logic;
+typedef double Number;
+typedef bool Logic;
 
-    // TODO: optimize, we should choose uint8_t if there are less than 255 nodes in total
-    // and uint32_t if there are more than 65535
-    typedef uint16_t NodeId;
+#if NODE_COUNT < 256
+typedef uint8_t NodeId;
+#elif NODE_COUNT < 65536
+typedef uint16_t NodeId;
+#else
+typedef uint32_t NodeId;
+#endif
 
-    typedef NodeId Context;
+/*
+ * Context is a handle passed to each node `evaluate` function. Currently, it’s
+ * alias for NodeId but likely will be changed in future to support list
+ * lifting and other features
+ */
+typedef NodeId Context;
 
-    /*
-     * PinKey is an address value used to find input’s or output’s data within
-     * node’s Storage.
-     *
-     * For inputs its value is simply an offset in bytes from the beginning of
-     * Storage structure instance. There will be a PinRef pointing to an upstream
-     * output at this address.
-     *
-     * For outputs the pin key consists of two parts ORed bitwise. Least
-     * significant bits (count defined by `PIN_KEY_OFFSET_BITS`) define an offset
-     * from the beginning of node’s Storage where output data could be found. It
-     * would be an OutputPin structure. Most significant bits define an index
-     * number of that output among all outputs of the node. The index is used to
-     * work with dirty flags bit-value.
-     */
-    // TODO: optimize, we should choose a proper type with a minimal enough capacity
-    typedef uint16_t PinKey;
+/*
+ * LSB of a dirty flag shows whether a particular node is dirty or not
+ * Other bits shows dirtieness of its particular outputs:
+ * - 1-st bit for 0-th output
+ * - 2-nd bit for 1-st output
+ * - etc
+ *
+ * An outcome limitation is that a native node must not have more than 7 output
+ * pins.
+ */
+typedef uint8_t DirtyFlags;
 
-    // TODO: optimize, we should choose a proper type with a minimal enough capacity
-    typedef uint16_t DirtyFlags;
+typedef unsigned long TimeMs;
+typedef void (*EvalFuncPtr)(Context ctx);
 
-    typedef unsigned long TimeMs;
-    typedef void (*EvalFuncPtr)(NodeId nid, void* state);
+typedef xod::List<char>::ListPtr XString;
 
-    typedef xod::List<char>::ListPtr XString;
+/*
+ * Each input stores a reference to its upstream node so that we can get values
+ * on input pins. Having a direct pointer to the value is not enough because we
+ * want to know dirty’ness as well. So we have to use this structure instead of
+ * a pointer.
+ */
+struct UpstreamPinRef {
+    // Upstream node ID
+    NodeId nodeId;
+    // Index of the upstream node’s output.
+    // Use 3 bits as it just enough to store values 0..7
+    uint16_t pinIndex : 3;
+    // Byte offset in a storage of the upstream node where the actual pin value
+    // is stored
+    uint16_t storageOffset : 13;
+};
+
+/*
+ * Input descriptor is a metaprogramming structure used to enforce an
+ * input’s type and store its wiring data location as a zero-RAM constant.
+ *
+ * A specialized descriptor is required by `getValue` function. Every
+ * input of every type node gets its own descriptor in generated code that
+ * can be accessed as input_FOO. Where FOO is a pin identifier.
+ */
+template<typename ValueT_, size_t wiringOffset>
+struct InputDescriptor {
+    typedef ValueT_ ValueT;
+    enum {
+        WIRING_OFFSET = wiringOffset
+    };
+};
+
+/*
+ * Output descriptor serve the same purpose as InputDescriptor but for
+ * ouputs.
+ *
+ * In addition to wiring data location it keeps storage data location (where
+ * actual value is stored) and own zero-based index among outputs of a particular
+ * node
+ */
+template<typename ValueT_, size_t wiringOffset, size_t storageOffset, uint8_t index>
+struct OutputDescriptor {
+    typedef ValueT_ ValueT;
+    enum {
+        WIRING_OFFSET = wiringOffset,
+        STORAGE_OFFSET = storageOffset,
+        INDEX = index
+    };
+};
+
+//----------------------------------------------------------------------------
+// Forward declarations
+//----------------------------------------------------------------------------
+extern void* const g_storages[NODE_COUNT];
+extern const void* const g_wiring[NODE_COUNT];
+extern DirtyFlags g_dirtyFlags[NODE_COUNT];
+
+// TODO: get rid of an extra indirection layer completely
+// would save 2 bytes per node
+extern NodeId g_topology[NODE_COUNT];
+
+// TODO: replace with a compact list
+extern TimeMs g_schedule[NODE_COUNT];
+
+void clearTimeout(NodeId nid);
+
+//----------------------------------------------------------------------------
+// Engine (private API)
+//----------------------------------------------------------------------------
+
+void* getStoragePtr(NodeId nid, size_t offset) {
+    return (uint8_t*)pgm_read_ptr(&g_storages[nid]) + offset;
+}
+
+template<typename T>
+T getStorageValue(NodeId nid, size_t offset) {
+    return *reinterpret_cast<T*>(getStoragePtr(nid, offset));
+}
+
+void* getWiringPgmPtr(NodeId nid, size_t offset) {
+    return (uint8_t*)pgm_read_ptr(&g_wiring[nid]) + offset;
+}
+
+template<typename T>
+T getWiringValue(NodeId nid, size_t offset) {
+    T result;
+    memcpy_P(&result, getWiringPgmPtr(nid, offset), sizeof(T));
+    return result;
+}
+
+bool isOutputDirty(NodeId nid, uint8_t index) {
+    return g_dirtyFlags[nid] & (1 << (index + 1));
+}
+
+bool isInputDirtyImpl(NodeId nid, size_t wiringOffset) {
+    UpstreamPinRef ref = getWiringValue<UpstreamPinRef>(nid, wiringOffset);
+    if (ref.nodeId == NO_NODE)
+        return false;
+
+    return isOutputDirty(ref.nodeId, ref.pinIndex);
+}
+
+template<typename InputT>
+bool isInputDirty(NodeId nid) {
+    return isInputDirtyImpl(nid, InputT::WIRING_OFFSET);
+}
+
+void markPinDirty(NodeId nid, uint8_t index) {
+    g_dirtyFlags[nid] |= 1 << (index + 1);
+}
+
+void markNodeDirty(NodeId nid) {
+    g_dirtyFlags[nid] |= 0x1;
+}
+
+bool isNodeDirty(NodeId nid) {
+    return g_dirtyFlags[nid] & 0x1;
+}
+
+template<typename T>
+T getOutputValueImpl(NodeId nid, size_t storageOffset) {
+    return getStorageValue<T>(nid, storageOffset);
+}
+
+template<typename T>
+T getInputValueImpl(NodeId nid, size_t wiringOffset) {
+    UpstreamPinRef ref = getWiringValue<UpstreamPinRef>(nid, wiringOffset);
+    if (ref.nodeId == NO_NODE)
+        return (T)0;
+
+    return getOutputValueImpl<T>(ref.nodeId, ref.storageOffset);
+}
+
+template<typename T>
+void emitValueImpl(
+        NodeId nid,
+        size_t storageOffset,
+        size_t wiringOffset,
+        uint8_t index,
+        T value) {
+
+    // Store new value and make the node itself dirty
+    T* storedValue = reinterpret_cast<T*>(getStoragePtr(nid, storageOffset));
+    *storedValue = value;
+    markPinDirty(nid, index);
+
+    // Notify downstream nodes about changes
+    // NB: linked nodes array is in PGM space
+    const NodeId* pDownstreamNid = getWiringValue<const NodeId*>(nid, wiringOffset);
+    NodeId downstreamNid = pgm_read_nodeid(pDownstreamNid);
+
+    while (downstreamNid != NO_NODE) {
+        markNodeDirty(downstreamNid);
+        downstreamNid = pgm_read_nodeid(pDownstreamNid++);
+    }
+}
+
+void evaluateNode(NodeId nid) {
+    XOD_TRACE_F("eval #");
+    XOD_TRACE_LN(nid);
+    EvalFuncPtr eval = getWiringValue<EvalFuncPtr>(nid, 0);
+    eval(nid);
+}
+
+void runTransaction() {
+    XOD_TRACE_F("Transaction started, t=");
+    XOD_TRACE_LN(millis());
+    for (NodeId nid : g_topology) {
+        if (isNodeDirty(nid))
+            evaluateNode(nid);
+    }
+
+    memset(g_dirtyFlags, 0, sizeof(g_dirtyFlags));
+    XOD_TRACE_F("Transaction completed, t=");
+    XOD_TRACE_LN(millis());
+}
+
+void idle() {
+    TimeMs now = millis();
+    for (NodeId nid = 0; nid < NODE_COUNT; ++nid) {
+        TimeMs t = g_schedule[nid];
+        if (t && t <= now) {
+            markNodeDirty(nid);
+            clearTimeout(nid);
+            return;
+        }
+    }
 }
 
 //----------------------------------------------------------------------------
-// Engine
+// Public API (can be used by native nodes’ `evaluate` functions)
 //----------------------------------------------------------------------------
-namespace xod {
-    extern void* storages[NODE_COUNT];
-    extern EvalFuncPtr evaluationFuncs[NODE_COUNT];
-    extern DirtyFlags dirtyFlags[NODE_COUNT];
-    extern NodeId topology[NODE_COUNT];
 
-    // TODO: replace with a compact list
-    extern TimeMs schedule[NODE_COUNT];
-
-    template<typename T>
-    struct OutputPin {
-        T value;
-        // Keep outgoing link list with terminating `NO_NODE`
-        NodeId* links;
-    };
-
-    struct PinRef {
-        NodeId nodeId;
-        PinKey pinKey;
-    };
-
-    /*
-     * Input descriptor is a metaprogramming structure used to enforce an
-     * input’s type and store its PinKey as a zero-memory constant.
-     *
-     * A specialized descriptor is required by `getValue` function. Every
-     * input of every type node gets its own descriptor in generated code that
-     * can be accessed as input_FOO. Where FOO is a pin identifier.
-     */
-    template<typename ValueT_, size_t offsetInStorage>
-    struct InputDescriptor {
-        typedef ValueT_ ValueT;
-        enum Offset : PinKey {
-            KEY = offsetInStorage
-        };
-    };
-
-    /*
-     * Output descriptor serve the same purpose as InputDescriptor but for
-     * ouputs.
-     */
-    template<typename ValueT_, size_t offsetInStorage, int index>
-    struct OutputDescriptor {
-        typedef ValueT_ ValueT;
-        enum Offset : PinKey {
-            KEY = offsetInStorage | (index << PIN_KEY_OFFSET_BITS)
-        };
-    };
-
-    void* pinPtr(void* storage, PinKey key) {
-        const size_t offset = key & ~(PinKey(-1) << PIN_KEY_OFFSET_BITS);
-        return (uint8_t*)storage + offset;
-    }
-
-    DirtyFlags dirtyPinBit(PinKey key) {
-        const PinKey nbit = (key >> PIN_KEY_OFFSET_BITS) + 1;
-        return 1 << nbit;
-    }
-
-    bool isOutputDirty(NodeId nid, PinKey key) {
-        return dirtyFlags[nid] & dirtyPinBit(key);
-    }
-
-    bool isInputDirtyImpl(NodeId nid, PinKey key) {
-        PinRef* ref = (PinRef*)pinPtr(storages[nid], key);
-        if (ref->nodeId == NO_NODE)
-            return false;
-
-        return isOutputDirty(ref->nodeId, ref->pinKey);
-    }
-
-    template<typename InputT>
-    bool isInputDirty(NodeId nid) {
-        return isInputDirtyImpl(nid, InputT::KEY);
-    }
-
-    void markPinDirty(NodeId nid, PinKey key) {
-        dirtyFlags[nid] |= dirtyPinBit(key);
-    }
-
-    void markNodeDirty(NodeId nid) {
-        dirtyFlags[nid] |= 0x1;
-    }
-
-    bool isNodeDirty(NodeId nid) {
-        return dirtyFlags[nid] & 0x1;
-    }
-
-    TimeMs transactionTime() {
-        return millis();
-    }
-
-    void setTimeout(NodeId nid, TimeMs timeout) {
-        schedule[nid] = transactionTime() + timeout;
-    }
-
-    void clearTimeout(NodeId nid) {
-        schedule[nid] = 0;
-    }
-
-    template<typename T>
-    T getValueImpl(NodeId nid, PinKey key) {
-        PinRef* ref = (PinRef*)pinPtr(storages[nid], key);
-        if (ref->nodeId == NO_NODE)
-            return (T)0;
-
-        return *(T*)pinPtr(storages[ref->nodeId], ref->pinKey);
-    }
-
-    template<typename InputT>
-    typename InputT::ValueT getValue(NodeId nid) {
-        return getValueImpl<typename InputT::ValueT>(nid, InputT::KEY);
-    }
-
-    template<typename T>
-    void emitValueImpl(NodeId nid, PinKey key, T value) {
-        OutputPin<T>* outputPin = (OutputPin<T>*)pinPtr(storages[nid], key);
-
-        outputPin->value = value;
-        markPinDirty(nid, key);
-
-        NodeId* linkedNode = outputPin->links;
-        while (*linkedNode != NO_NODE) {
-            markNodeDirty(*linkedNode++);
-        }
-    }
-
-    template<typename OutputT>
-    void emitValue(NodeId nid, typename OutputT::ValueT value) {
-        emitValueImpl(nid, OutputT::KEY, value);
-    }
-
-    template<typename T>
-    void reemitValueImpl(NodeId nid, PinKey key) {
-        OutputPin<T>* outputPin = (OutputPin<T>*)pinPtr(storages[nid], key);
-        emitValueImpl<T>(nid, key, outputPin->value);
-    }
-
-    template<typename OutputT>
-    void reemitValue(NodeId nid) {
-        reemitValueImpl<typename OutputT::ValueT>(nid, OutputT::KEY);
-    }
-
-    void evaluateNode(NodeId nid) {
-        XOD_TRACE_F("eval #");
-        XOD_TRACE_LN(nid);
-        EvalFuncPtr eval = evaluationFuncs[nid];
-        eval(nid, storages[nid]);
-    }
-
-    void runTransaction() {
-        XOD_TRACE_F("Transaction started, t=");
-        XOD_TRACE_LN(millis());
-        for (NodeId nid : topology) {
-            if (isNodeDirty(nid))
-                evaluateNode(nid);
-        }
-
-        memset(dirtyFlags, 0, sizeof(dirtyFlags));
-        XOD_TRACE_F("Transaction completed, t=");
-        XOD_TRACE_LN(millis());
-    }
-
-    void idle() {
-        TimeMs now = millis();
-        for (NodeId nid = 0; nid < NODE_COUNT; ++nid) {
-            TimeMs t = schedule[nid];
-            if (t && t <= now) {
-                markNodeDirty(nid);
-                clearTimeout(nid);
-                return;
-            }
-        }
-    }
+template<typename InputT>
+typename InputT::ValueT getValue(NodeId nid) {
+    return getInputValueImpl<typename InputT::ValueT>(nid, InputT::WIRING_OFFSET);
 }
+
+template<typename OutputT>
+void emitValue(NodeId nid, typename OutputT::ValueT value) {
+    emitValueImpl(
+            nid,
+            OutputT::STORAGE_OFFSET,
+            OutputT::WIRING_OFFSET,
+            OutputT::INDEX,
+            value);
+}
+
+TimeMs transactionTime() {
+    return millis();
+}
+
+void setTimeout(NodeId nid, TimeMs timeout) {
+    g_schedule[nid] = transactionTime() + timeout;
+}
+
+void clearTimeout(NodeId nid) {
+    g_schedule[nid] = 0;
+}
+
+} // namespace xod
 
 //----------------------------------------------------------------------------
 // Entry point
@@ -896,7 +954,7 @@ void setup() {
 #ifdef XOD_DEBUG
     DEBUG_SERIAL.begin(9600);
 #endif
-    XOD_TRACE_FLN("Program started");
+    XOD_TRACE_FLN("\n\nProgram started");
 }
 
 void loop() {
@@ -925,19 +983,24 @@ struct State {
 
 struct Storage {
     State state;
-    PinRef input_IVAL;
-    PinRef input_RST;
-    OutputPin<Logic> output_TICK;
+    Logic output_TICK;
+};
+
+struct Wiring {
+    EvalFuncPtr eval;
+    UpstreamPinRef input_IVAL;
+    UpstreamPinRef input_RST;
+    const NodeId* output_TICK;
 };
 
 State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(storages[nid]);
+    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
 }
 
-using input_IVAL = InputDescriptor<Number, offsetof(Storage, input_IVAL)>;
-using input_RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
+using input_IVAL = InputDescriptor<Number, offsetof(Wiring, input_IVAL)>;
+using input_RST = InputDescriptor<Logic, offsetof(Wiring, input_RST)>;
 
-using output_TICK = OutputDescriptor<Logic, offsetof(Storage, output_TICK), 0>;
+using output_TICK = OutputDescriptor<Logic, offsetof(Wiring, output_TICK), offsetof(Storage, output_TICK), 0>;
 
 void evaluate(Context ctx) {
     State* state = getState(ctx);
@@ -974,21 +1037,26 @@ struct State {
 
 struct Storage {
     State state;
-    PinRef input_SET;
-    PinRef input_TGL;
-    PinRef input_RST;
-    OutputPin<Logic> output_MEM;
+    Logic output_MEM;
+};
+
+struct Wiring {
+    EvalFuncPtr eval;
+    UpstreamPinRef input_SET;
+    UpstreamPinRef input_TGL;
+    UpstreamPinRef input_RST;
+    const NodeId* output_MEM;
 };
 
 State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(storages[nid]);
+    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
 }
 
-using input_SET = InputDescriptor<Logic, offsetof(Storage, input_SET)>;
-using input_TGL = InputDescriptor<Logic, offsetof(Storage, input_TGL)>;
-using input_RST = InputDescriptor<Logic, offsetof(Storage, input_RST)>;
+using input_SET = InputDescriptor<Logic, offsetof(Wiring, input_SET)>;
+using input_TGL = InputDescriptor<Logic, offsetof(Wiring, input_TGL)>;
+using input_RST = InputDescriptor<Logic, offsetof(Wiring, input_RST)>;
 
-using output_MEM = OutputDescriptor<Logic, offsetof(Storage, output_MEM), 0>;
+using output_MEM = OutputDescriptor<Logic, offsetof(Wiring, output_MEM), offsetof(Storage, output_MEM), 0>;
 
 void evaluate(Context ctx) {
     State* state = getState(ctx);
@@ -1021,16 +1089,20 @@ struct State {
 
 struct Storage {
     State state;
-    PinRef input_PORT;
-    PinRef input_SIG;
+};
+
+struct Wiring {
+    EvalFuncPtr eval;
+    UpstreamPinRef input_PORT;
+    UpstreamPinRef input_SIG;
 };
 
 State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(storages[nid]);
+    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
 }
 
-using input_PORT = InputDescriptor<Number, offsetof(Storage, input_PORT)>;
-using input_SIG = InputDescriptor<Logic, offsetof(Storage, input_SIG)>;
+using input_PORT = InputDescriptor<Number, offsetof(Wiring, input_PORT)>;
+using input_SIG = InputDescriptor<Logic, offsetof(Wiring, input_SIG)>;
 
 void evaluate(Context ctx) {
     State* state = getState(ctx);
@@ -1057,17 +1129,21 @@ struct State {};
 
 struct Storage {
     State state;
-    OutputPin<Number> output_VAL;
+    Number output_VAL;
+};
+
+struct Wiring {
+    EvalFuncPtr eval;
+    const NodeId* output_VAL;
 };
 
 State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(storages[nid]);
+    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
 }
 
-using output_VAL = OutputDescriptor<Number, offsetof(Storage, output_VAL), 0>;
+using output_VAL = OutputDescriptor<Number, offsetof(Wiring, output_VAL), offsetof(Storage, output_VAL), 0>;
 
 void evaluate(Context ctx) {
-  reemitValue<output_VAL>(ctx);
 }
 
 } // namespace xod__core__constant_number
@@ -1084,58 +1160,40 @@ void evaluate(Context ctx) {
 
 namespace xod {
 
-    NodeId links_0_TICK[] = { 1, NO_NODE };
+    //-------------------------------------------------------------------------
+    // Dynamic data
+    //-------------------------------------------------------------------------
+
+    // Storage of #0 xod/core/clock
     xod__core__clock::Storage storage_0 = {
         { }, // state
-        { NodeId(3), xod__core__constant_number::output_VAL::KEY }, // input_IVAL
-        { NO_NODE, 0 }, // input_RST
-        { false, links_0_TICK } // output_TICK
+        false // output_TICK
     };
 
-    NodeId links_1_MEM[] = { 2, NO_NODE };
+    // Storage of #1 xod/core/flip_flop
     xod__core__flip_flop::Storage storage_1 = {
         { }, // state
-        { NO_NODE, 0 }, // input_SET
-        { NodeId(0), xod__core__clock::output_TICK::KEY }, // input_TGL
-        { NO_NODE, 0 }, // input_RST
-        { false, links_1_MEM } // output_MEM
+        false // output_MEM
     };
 
+    // Storage of #2 xod/core/digital_output
     xod__core__digital_output::Storage storage_2 = {
         { }, // state
-        { NodeId(4), xod__core__constant_number::output_VAL::KEY }, // input_PORT
-        { NodeId(1), xod__core__flip_flop::output_MEM::KEY }, // input_SIG
     };
 
-    NodeId links_3_VAL[] = { 0, NO_NODE };
+    // Storage of #3 xod/core/constant_number
     xod__core__constant_number::Storage storage_3 = {
         { }, // state
-        { 0.25, links_3_VAL } // output_VAL
+        0.25 // output_VAL
     };
 
-    NodeId links_4_VAL[] = { 2, NO_NODE };
+    // Storage of #4 xod/core/constant_number
     xod__core__constant_number::Storage storage_4 = {
         { }, // state
-        { 13, links_4_VAL } // output_VAL
+        13 // output_VAL
     };
 
-    void* storages[NODE_COUNT] = {
-        &storage_0,
-        &storage_1,
-        &storage_2,
-        &storage_3,
-        &storage_4
-    };
-
-    EvalFuncPtr evaluationFuncs[NODE_COUNT] = {
-        (EvalFuncPtr)&xod__core__clock::evaluate,
-        (EvalFuncPtr)&xod__core__flip_flop::evaluate,
-        (EvalFuncPtr)&xod__core__digital_output::evaluate,
-        (EvalFuncPtr)&xod__core__constant_number::evaluate,
-        (EvalFuncPtr)&xod__core__constant_number::evaluate
-    };
-
-    DirtyFlags dirtyFlags[NODE_COUNT] = {
+    DirtyFlags g_dirtyFlags[NODE_COUNT] = {
         DirtyFlags(253),
         DirtyFlags(255),
         DirtyFlags(255),
@@ -1143,9 +1201,89 @@ namespace xod {
         DirtyFlags(255)
     };
 
-    NodeId topology[NODE_COUNT] = {
-        3, 4, 0, 1, 2
+    TimeMs g_schedule[NODE_COUNT] = { 0 };
+
+    //-------------------------------------------------------------------------
+    // Static (immutable) data
+    //-------------------------------------------------------------------------
+
+    // Wiring of #0 xod/core/clock
+    const NodeId outLinks_0_TICK[] PROGMEM = { 1, NO_NODE };
+    const xod__core__clock::Wiring wiring_0 PROGMEM = {
+        &xod__core__clock::evaluate,
+        // inputs (UpstreamPinRef’s initializers)
+        { NodeId(3),
+            xod__core__constant_number::output_VAL::INDEX,
+            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_IVAL
+        { NO_NODE, 0, 0 }, // input_RST
+        // outputs (NodeId list binding)
+        outLinks_0_TICK // output_TICK
     };
 
-    TimeMs schedule[NODE_COUNT] = { 0 };
+    // Wiring of #1 xod/core/flip_flop
+    const NodeId outLinks_1_MEM[] PROGMEM = { 2, NO_NODE };
+    const xod__core__flip_flop::Wiring wiring_1 PROGMEM = {
+        &xod__core__flip_flop::evaluate,
+        // inputs (UpstreamPinRef’s initializers)
+        { NO_NODE, 0, 0 }, // input_SET
+        { NodeId(0),
+            xod__core__clock::output_TICK::INDEX,
+            xod__core__clock::output_TICK::STORAGE_OFFSET }, // input_TGL
+        { NO_NODE, 0, 0 }, // input_RST
+        // outputs (NodeId list binding)
+        outLinks_1_MEM // output_MEM
+    };
+
+    // Wiring of #2 xod/core/digital_output
+    const xod__core__digital_output::Wiring wiring_2 PROGMEM = {
+        &xod__core__digital_output::evaluate,
+        // inputs (UpstreamPinRef’s initializers)
+        { NodeId(4),
+            xod__core__constant_number::output_VAL::INDEX,
+            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_PORT
+        { NodeId(1),
+            xod__core__flip_flop::output_MEM::INDEX,
+            xod__core__flip_flop::output_MEM::STORAGE_OFFSET }, // input_SIG
+        // outputs (NodeId list binding)
+    };
+
+    // Wiring of #3 xod/core/constant_number
+    const NodeId outLinks_3_VAL[] PROGMEM = { 0, NO_NODE };
+    const xod__core__constant_number::Wiring wiring_3 PROGMEM = {
+        &xod__core__constant_number::evaluate,
+        // inputs (UpstreamPinRef’s initializers)
+        // outputs (NodeId list binding)
+        outLinks_3_VAL // output_VAL
+    };
+
+    // Wiring of #4 xod/core/constant_number
+    const NodeId outLinks_4_VAL[] PROGMEM = { 2, NO_NODE };
+    const xod__core__constant_number::Wiring wiring_4 PROGMEM = {
+        &xod__core__constant_number::evaluate,
+        // inputs (UpstreamPinRef’s initializers)
+        // outputs (NodeId list binding)
+        outLinks_4_VAL // output_VAL
+    };
+
+    // PGM array with pointers to PGM wiring information structs
+    const void* const g_wiring[NODE_COUNT] PROGMEM = {
+        &wiring_0,
+        &wiring_1,
+        &wiring_2,
+        &wiring_3,
+        &wiring_4
+    };
+
+    // PGM array with pointers to RAM-located storages
+    void* const g_storages[NODE_COUNT] PROGMEM = {
+        &storage_0,
+        &storage_1,
+        &storage_2,
+        &storage_3,
+        &storage_4
+    };
+
+    NodeId g_topology[NODE_COUNT] = {
+        3, 4, 0, 1, 2
+    };
 }

@@ -48,6 +48,11 @@ Handlebars.registerHelper('mergePins', function mergePins() {
   this.inputs = mergeAndListPins('inputs', this);
   this.outputs = mergeAndListPins('outputs', this);
 });
+// Generate patch-level namespace name
+Handlebars.registerHelper('ns', R.compose(
+  R.join('__'),
+  R.props(['owner', 'libName', 'patchName'])
+));
 // Check that variable is not undefined
 Handlebars.registerHelper('exists', function existsHelper(variable, options) {
   return (typeof variable !== 'undefined') ?
