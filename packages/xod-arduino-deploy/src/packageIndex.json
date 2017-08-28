@@ -12,141 +12,183 @@
       },
       "boards": [
         {
-          "name": "Arduino Yún"
+          "name": "Arduino Yún",
+          "platformioBoardId": "yun"
         },
         {
-          "name": "Arduino/Genuino Uno"
+          "name": "Arduino/Genuino Uno",
+          "platformioBoardId": "uno"
         },
         {
-          "name": "Arduino Uno WiFi"
+          "name": "Arduino Uno WiFi",
+          "platformioBoardId": "the_things_uno"
         },
         {
-          "name": "Arduino Diecimila"
+          "name": "Arduino Diecimila",
+          "cpuName": "ATmega328",
+          "cpuId": "atmega328",
+          "platformioBoardId": "diecimilaatmega328"
+        },
+        {
+          "name": "Arduino Diecimila",
+          "cpuName": "ATmega168",
+          "cpuId": "atmega168",
+          "platformioBoardId": "diecimilaatmega168"
         },
         {
           "name": "Arduino Nano",
           "cpuName": "ATmega328",
-          "cpuId": "atmega328"
+          "cpuId": "atmega328",
+          "platformioBoardId": "nanoatmega328"
         },
         {
           "name": "Arduino Nano",
           "cpuName": "ATmega168",
-          "cpuId": "atmega168"
+          "cpuId": "atmega168",
+          "platformioBoardId": "nanoatmega168"
         },
         {
           "name": "Arduino/Genuino Mega",
           "cpuName": "ATmega2560",
-          "cpuId": "atmega2560"
+          "cpuId": "atmega2560",
+          "platformioBoardId": "megaatmega2560"
         },
         {
           "name": "Arduino/Genuino Mega",
           "cpuName": "ATmega1280",
-          "cpuId": "atmega1280"
+          "cpuId": "atmega1280",
+          "platformioBoardId": "megaatmega1280"
         },
         {
-          "name": "Arduino MegaADK"
+          "name": "Arduino MegaADK",
+          "platformioBoardId": "megaADK"
         },
         {
-          "name": "Arduino Leonardo"
+          "name": "Arduino Leonardo",
+          "platformioBoardId": "leonardo"
         },
         {
-          "name": "Arduino Leonardo Ethernet"
+          "name": "Arduino Leonardo Ethernet",
+          "platformioBoardId": "leonardoeth"
         },
         {
-          "name": "Arduino/Genuino Micro"
+          "name": "Arduino/Genuino Micro",
+          "platformioBoardId": "micro"
         },
         {
-          "name": "Arduino Esplora"
+          "name": "Arduino Esplora",
+          "platformioBoardId": "esplora"
         },
         {
           "name": "Arduino Mini",
           "cpuName": "ATmega328",
-          "cpuId": "atmega328"
+          "cpuId": "atmega328",
+          "platformioBoardId": "miniatmega328"
         },
         {
           "name": "Arduino Mini",
           "cpuName": "ATmega168",
-          "cpuId": "atmega168"
+          "cpuId": "atmega168",
+          "platformioBoardId": "miniatmega168"
         },
         {
-          "name": "Arduino Ethernet"
+          "name": "Arduino Ethernet",
+          "platformioBoardId": "ethernet"
         },
         {
-          "name": "Arduino Fio"
+          "name": "Arduino Fio",
+          "platformioBoardId": "fio"
         },
         {
           "name": "Arduino BT",
           "cpuName": "ATmega328",
-          "cpuId": "atmega328"
+          "cpuId": "atmega328",
+          "platformioBoardId": "btatmega328"
         },
         {
           "name": "Arduino BT",
           "cpuName": "ATmega168",
-          "cpuId": "atmega168"
+          "cpuId": "atmega168",
+          "platformioBoardId": "btatmega168"
         },
         {
-          "name": "Arduino LilyPadUSB"
+          "name": "Arduino LilyPadUSB",
+          "platformioBoardId": "LilyPadUSB"
         },
         {
           "name": "Arduino Lilypad",
           "cpuName": "ATmega328",
-          "cpuId": "atmega328"
+          "cpuId": "atmega328",
+          "platformioBoardId": "lilypadatmega328"
         },
         {
           "name": "Arduino Lilypad",
           "cpuName": "ATmega168",
-          "cpuId": "atmega168"
+          "cpuId": "atmega168",
+          "platformioBoardId": "lilypadatmega168"
         },
         {
           "name": "Arduino Pro",
           "cpuName": "ATmega328 (5V, 16MHz)",
-          "cpuId": "16MHzatmega328"
+          "cpuId": "16MHzatmega328",
+          "platformioBoardId": "pro16MHzatmega328"
         },
         {
           "name": "Arduino Pro",
           "cpuName": "ATmega328 (3.3V, 8MHz)",
-          "cpuId": "8MHzatmega328"
+          "cpuId": "8MHzatmega328",
+          "platformioBoardId": "pro8MHzatmega328"
         },
         {
           "name": "Arduino Pro",
           "cpuName": "ATmega168 (5V, 16MHz)",
-          "cpuId": "16MHzatmega168"
+          "cpuId": "16MHzatmega168",
+          "platformioBoardId": "pro16MHzatmega168"
         },
         {
           "name": "Arduino Pro",
           "cpuName": "ATmega168 (3.3V, 8MHz)",
-          "cpuId": "8MHzatmega168"
+          "cpuId": "8MHzatmega168",
+          "platformioBoardId": "pro8MHzatmega168"
         },
         {
           "name": "Arduino ATMegaNG",
           "cpuName": "ATmega168",
-          "cpuId": "atmega168"
+          "cpuId": "atmega168",
+          "platformioBoardId": "atmegangatmega168"
         },
         {
           "name": "Arduino ATMegaNG",
           "cpuName": "ATmega8",
-          "cpuId": "atmega8"
+          "cpuId": "atmega8",
+          "platformioBoardId": "atmegangatmega8"
         },
         {
-          "name": "Arduino Robot Control"
+          "name": "Arduino Robot Control",
+          "platformioBoardId": "robotControl"
         },
         {
-          "name": "Arduino Robot Motor"
+          "name": "Arduino Robot Motor",
+          "platformioBoardId": "robotMotor"
         },
         {
-          "name": "Arduino Gemma"
+          "name": "Arduino Gemma",
+          "platformioBoardId": "gemma"
         },
         {
           "name": "Adafruit Circuit Playground"
         },
         {
-          "name": "Arduino Yún Mini"
+          "name": "Arduino Yún Mini",
+          "platformioBoardId": "yunmini"
         },
         {
-          "name": "Arduino Industrial 101"
+          "name": "Arduino Industrial 101",
+          "platformioBoardId": "chiwawa"
         },
         {
-          "name": "Linino One"
+          "name": "Linino One",
+          "platformioBoardId": "one"
         }
       ],
       "tools": [
@@ -191,10 +233,12 @@
       },
       "boards": [
         {
-          "name": "Arduino Due (Programming Port)"
+          "name": "Arduino Due (Programming Port)",
+          "platformioBoardId": "due"
         },
         {
-          "name": "Arduino Due (Native USB Port)"
+          "name": "Arduino Due (Native USB Port)",
+          "platformioBoardId": "dueUSB"
         }
       ],
       "tools": [
@@ -230,31 +274,40 @@
       },
       "boards": [
         {
-          "name": "Arduino/Genuino Zero (Programming Port)"
+          "name": "Arduino/Genuino Zero (Programming Port)",
+          "platformioBoardId": "zero"
         },
         {
-          "name": "Arduino/Genuino Zero (Native USB Port)"
+          "name": "Arduino/Genuino Zero (Native USB Port)",
+          "platformioBoardId": "zeroUSB"
         },
         {
-          "name": "Arduino/Genuino MKR1000"
+          "name": "Arduino/Genuino MKR1000",
+          "platformioBoardId": "mkr1000USB"
         },
         {
-          "name": "Arduino MKRZero"
+          "name": "Arduino MKRZero",
+          "platformioBoardId": "mkrzero"
         },
         {
-          "name": "Arduino MKRFox1200"
+          "name": "Arduino MKRFox1200",
+          "platformioBoardId": "mkrfox1200"
         },
         {
-          "name": "Arduino M0 Pro (Programming Port)"
+          "name": "Arduino M0 Pro (Programming Port)",
+          "platformioBoardId": "mzeropro"
         },
         {
-          "name": "Arduino M0 Pro (Native USB Port)"
+          "name": "Arduino M0 Pro (Native USB Port)",
+          "platformioBoardId": "mzeroproUSB"
         },
         {
-          "name": "Arduino M0"
+          "name": "Arduino M0",
+          "platformioBoardId": "mzeroUSB"
         },
         {
-          "name": "Adafruit Circuit Playground Express"
+          "name": "Adafruit Circuit Playground Express",
+          "platformioBoardId": "adafruit_circuitplayground_m0"
         }
       ],
       "tools": [
