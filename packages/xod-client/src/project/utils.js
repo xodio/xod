@@ -3,7 +3,11 @@ import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';
 
-import { getOptimalPanningOffset } from './nodeLayout';
+import {
+  getOptimalPanningOffset,
+  calcutaleNodeSizeFromPins,
+  calculatePinPosition,
+} from './nodeLayout';
 import { getProject } from './selectors';
 
 import { LINK_ERRORS } from '../editor/constants';
@@ -97,3 +101,30 @@ export const getInitialPatchOffset = R.compose(
   ),
   XP.getPatchByPathUnsafe
 );
+
+// extract information from Patch that is required to render it with Node component
+export const patchToNodeProps = (patch) => {
+  const pins = XP.listPins(patch);
+  const size = calcutaleNodeSizeFromPins(pins);
+  const type = XP.getPatchPath(patch);
+
+  return {
+    id: type,
+    type,
+    label: '',
+    position: { x: 0, y: 0 },
+    size,
+    pins: R.compose(
+      R.indexBy(R.prop('keyName')),
+      R.map(R.applySpec({
+        key: XP.getPinKey,
+        keyName: XP.getPinKey,
+        type: XP.getPinType,
+        direction: XP.getPinDirection,
+        label: XP.getPinLabel,
+        position: calculatePinPosition(size),
+      })),
+    )(pins),
+  };
+};
+

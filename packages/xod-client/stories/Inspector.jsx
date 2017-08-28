@@ -5,7 +5,6 @@ import { PIN_TYPE } from 'xod-project';
 
 import '../src/core/styles/main.scss';
 import Inspector from '../src/editor/components/Inspector';
-import PinShadowFilter from '../src/project/components/filters/PinShadowFilter';
 
 const somePoint = { x: 0, y: 0 };
 
@@ -184,12 +183,6 @@ const containerStyle = {
 storiesOf('Inspector', module)
   .addDecorator(story => (
     <div style={containerStyle}>
-      <svg width="0" height="0">
-        <defs>
-          {/* For rendering pin correctly. Usually rendered by PatchSVG component */}
-          <PinShadowFilter />
-        </defs>
-      </svg>
       {story()}
     </div>
   ))

@@ -12,49 +12,49 @@
     margin: 0;
     list-style: none;
   }
-}
 
-.inspectorTitle {
-  font-size: $font-size-m;
-  padding: 14px 17px;
-  color: $input-color-border; // TODO: separate color?
-  cursor: default;
-
-  .nodeName, .patchName {
-    color: $color-canvas-selected; // TODO: separate color?
+  .inspectorTitle {
+    font-size: $font-size-m;
+    padding: 14px 17px;
+    color: $input-color-border; // TODO: separate color?
+    cursor: default;
+  
+    .nodeName, .patchName {
+      color: $color-canvas-selected; // TODO: separate color?
+    }
   }
-}
-
-.nodeType {
-  padding-left: 16px;
-  color: $sidebar-color-text;
-  font-size: $font-size-s;
-  cursor: default;
-}
-
-.nodeHelp {
-  display: block;
-  position: absolute;
-  top: 7px;
-  right: 7px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-color: $input-color-bg;
-
-  &:hover {
-    background-color: #555555;
-    box-shadow: 0 0 3px 0 rgba(0,0,0,0.5);
+  
+  .nodeType {
+    padding-left: 16px;
+    color: $sidebar-color-text;
+    font-size: $font-size-s;
+    cursor: default;
   }
-}
-
-.nodeHelpIcon {
-  display: block;
-  width: 24px;
-  height: 24px;
-  background: url(../assets/icons/guide.svg) no-repeat 4px 4px;
-  background-size: 16px 16px;
-  cursor: pointer;
+  
+  .nodeHelp {
+    display: block;
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: $input-color-bg;
+  
+    &:hover {
+      background-color: #555555;
+      box-shadow: 0 0 3px 0 rgba(0,0,0,0.5);
+    }
+  }
+  
+  .nodeHelpIcon {
+    display: block;
+    width: 24px;
+    height: 24px;
+    background: url(../assets/icons/guide.svg) no-repeat 4px 4px;
+    background-size: 16px 16px;
+    cursor: pointer;
+  }
 }
 
 .inspectorInput {
