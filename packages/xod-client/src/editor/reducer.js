@@ -11,6 +11,7 @@ import {
   TAB_CLOSE,
   TAB_SORT,
   SET_CURRENT_PATCH_OFFSET,
+  TOGGLE_HELPBAR,
 } from './actionTypes';
 import {
   PROJECT_CREATE,
@@ -210,6 +211,8 @@ const editorReducer = (state = {}, action) => {
         action.payload,
         state
       );
+    case TOGGLE_HELPBAR:
+      return R.over(R.lensProp('isHelpbarVisible'), R.not, state);
     default:
       return state;
   }

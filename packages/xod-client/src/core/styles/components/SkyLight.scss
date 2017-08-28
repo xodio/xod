@@ -40,23 +40,7 @@
       height: 22px;
 
       .skylight-close-button {
-        position: absolute;
-        width: 18px;
-        height: 18px;
-        right: 7px;
-        top: 7px;
-        border-radius: 100%;
-        font-size: 12px;
-        line-height: 18px;
-        text-align: center;
-        cursor: pointer;
-        color: #8c8c8c;
-        background-color: #303030;
-        user-select: none;
-
-        &:hover {
-          background-color: #444444;
-        }
+        @include close-button();
       }
 
       .skylight-title {

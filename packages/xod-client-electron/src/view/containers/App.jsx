@@ -394,6 +394,8 @@ class App extends client.App {
     template.push({
       label: 'View',
       submenu: [
+        client.menu.onClick(client.menu.items.toggleHelpbar, this.props.actions.toggleHelpbar),
+        { type: 'separator' },
         { role: 'reload' },
         { role: 'toggledevtools' },
         { type: 'separator' },

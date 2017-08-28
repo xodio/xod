@@ -25,7 +25,10 @@ import Workarea from '../../utils/components/Workarea';
 import { RenderableSelection } from '../../project/types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
+import { isInput } from '../../utils/browser';
+
 import Tabs from '../containers/Tabs';
+import Helpbar from '../containers/Helpbar';
 import Inspector from '../components/Inspector';
 
 class Editor extends React.Component {
@@ -34,6 +37,7 @@ class Editor extends React.Component {
 
     this.setModeDefault = this.setModeDefault.bind(this);
     this.getHotkeyHandlers = this.getHotkeyHandlers.bind(this);
+    this.toggleHelpbar = this.toggleHelpbar.bind(this);
 
     this.patchSize = this.props.size;
   }
@@ -47,7 +51,14 @@ class Editor extends React.Component {
       [COMMAND.SET_MODE_DEFAULT]: this.setModeDefault,
       [COMMAND.UNDO]: () => this.props.actions.undo(this.props.currentPatchPath),
       [COMMAND.REDO]: () => this.props.actions.redo(this.props.currentPatchPath),
+      [COMMAND.TOGGLE_HELPBAR]: this.toggleHelpbar,
     };
+  }
+
+  toggleHelpbar(e) {
+    if (isInput(e)) return;
+
+    this.props.actions.toggleHelpbar();
   }
 
   render() {
@@ -82,6 +93,7 @@ class Editor extends React.Component {
           <Tabs />
           {openedPatch}
         </Workarea>
+        <Helpbar />
       </HotKeys>
     );
   }
@@ -98,6 +110,7 @@ Editor.propTypes = {
     undo: PropTypes.func.isRequired,
     redo: PropTypes.func.isRequired,
     setMode: PropTypes.func.isRequired,
+    toggleHelpbar: PropTypes.func.isRequired,
   }),
 };
 
@@ -114,6 +127,7 @@ const mapDispatchToProps = dispatch => ({
     undo: ProjectActions.undoPatch,
     redo: ProjectActions.redoPatch,
     setMode: Actions.setMode,
+    toggleHelpbar: Actions.toggleHelpbar,
   }, dispatch),
 });
 

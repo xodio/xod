@@ -9,3 +9,5 @@ export const SET_CURRENT_PATCH_OFFSET = 'SET_CURRENT_PATCH_OFFSET';
 
 export const TAB_CLOSE = 'TAB_CLOSE';
 export const TAB_SORT = 'TAB_SORT';
+
+export const TOGGLE_HELPBAR = 'TOGGLE_HELPBAR';

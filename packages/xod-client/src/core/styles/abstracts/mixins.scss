@@ -1,30 +1,3 @@
-@mixin inspector-widget() {
-  padding: 4px;
-  margin-bottom: 2px;
-  overflow: hidden;
-
-  font-size: $font-size-m;
-  font-family: $font-family-condensed;
-  line-height: $font-size-l;
-  vertical-align: baseline;
-
-  label {
-    display: block;
-  }
-  input {
-    float: right;
-  }
-
-  &.is-disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-
-    * {
-      cursor: not-allowed;
-    }
-  }
-}
-
 @mixin noselect() {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none;   /* Chrome/Safari/Opera */
@@ -32,4 +5,25 @@
   -moz-user-select: none;      /* Firefox */
   -ms-user-select: none;       /* Internet Explorer/Edge */
   user-select: none;           /* Non-prefixed version, currently */
+}
+
+@mixin close-button() {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  right: 7px;
+  top: 7px;
+  border-radius: 100%;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  cursor: pointer;
+  color: #8c8c8c;
+  background-color: #303030;
+  user-select: none;
+  outline: none;
+
+  &:hover {
+    background-color: #444444;
+  }
 }

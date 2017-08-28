@@ -124,6 +124,7 @@ export const patchToNodeProps = (patch) => {
         label: XP.getPinLabel,
         position: calculatePinPosition(size),
       })),
+      XP.normalizePinLabels,
     )(pins),
   };
 };

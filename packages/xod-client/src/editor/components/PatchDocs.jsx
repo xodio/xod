@@ -99,8 +99,11 @@ OutputPins.defaultProps = {
 
 
 const PatchDocs = ({ patch }) => {
-  const inputPins = XP.listInputPins(patch);
-  const outputPins = XP.listOutputPins(patch);
+  const [inputPins, outputPins] = R.compose(
+    R.partition(XP.isInputPin),
+    XP.normalizePinLabels,
+    XP.listPins
+  )(patch);
   const nodeType = XP.getPatchPath(patch);
   const baseName = XP.getBaseName(nodeType);
   const description = XP.getPatchDescription(patch);
@@ -125,6 +128,9 @@ const PatchDocs = ({ patch }) => {
 
   return (
     <div className="PatchDocs">
+      <div className="baseName">{baseName}</div>
+      <div className="nodeType">{nodeType}</div>
+      <div className="description">{description}</div>
       <div className="input-pins-container" style={{ paddingLeft: distanceToFirstPin }}>
         <InputPins
           distanceBetweenPins={distanceBetweenPins}
@@ -146,9 +152,6 @@ const PatchDocs = ({ patch }) => {
           pins={outputPins}
         />
       </div>
-      <div className="baseName">{baseName}</div>
-      <div className="nodeType">{nodeType}</div>
-      <div className="description">{description}</div>
     </div>
   );
 };

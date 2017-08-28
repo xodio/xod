@@ -7,6 +7,7 @@ export default {
   selection: [],
   linkingPin: null,
   selectedNodeType: null,
+  isHelpbarVisible: false,
   tabs: {
     '@/1': {
       id: '@/1',
