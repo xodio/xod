@@ -186,6 +186,12 @@ class App extends client.App {
         ]
       ),
       submenu(
+        items.view,
+        [
+          onClick(items.toggleHelpbar, this.props.actions.toggleHelpbar),
+        ]
+      ),
+      submenu(
         items.help,
         [
           {

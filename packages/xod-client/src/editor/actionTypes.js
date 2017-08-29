@@ -7,5 +7,9 @@ export const EDITOR_SWITCH_PATCH = 'EDITOR_SWITCH_PATCH';
 
 export const SET_CURRENT_PATCH_OFFSET = 'SET_CURRENT_PATCH_OFFSET';
 
+export const SET_FOCUSED_AREA = 'SET_FOCUSED_AREA';
+
 export const TAB_CLOSE = 'TAB_CLOSE';
 export const TAB_SORT = 'TAB_SORT';
+
+export const TOGGLE_HELPBAR = 'TOGGLE_HELPBAR';

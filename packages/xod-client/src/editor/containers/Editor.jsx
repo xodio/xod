@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { HotKeys } from 'react-hotkeys';
+import { HotKeys, FocusTrap } from 'react-hotkeys';
 import { Patch as PatchType } from 'xod-project';
 import { $Maybe } from 'xod-func-tools';
 
@@ -14,7 +14,7 @@ import * as ProjectSelectors from '../../project/selectors';
 import * as EditorSelectors from '../selectors';
 
 import { COMMAND } from '../../utils/constants';
-import { EDITOR_MODE } from '../../editor/constants';
+import { EDITOR_MODE, FOCUS_AREAS } from '../constants';
 
 import Patch from './Patch';
 import NoPatch from '../components/NoPatch';
@@ -25,7 +25,10 @@ import Workarea from '../../utils/components/Workarea';
 import { RenderableSelection } from '../../project/types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
+import { isInput } from '../../utils/browser';
+
 import Tabs from '../containers/Tabs';
+import Helpbar from '../containers/Helpbar';
 import Inspector from '../components/Inspector';
 
 class Editor extends React.Component {
@@ -34,6 +37,7 @@ class Editor extends React.Component {
 
     this.setModeDefault = this.setModeDefault.bind(this);
     this.getHotkeyHandlers = this.getHotkeyHandlers.bind(this);
+    this.toggleHelpbar = this.toggleHelpbar.bind(this);
 
     this.patchSize = this.props.size;
   }
@@ -47,7 +51,14 @@ class Editor extends React.Component {
       [COMMAND.SET_MODE_DEFAULT]: this.setModeDefault,
       [COMMAND.UNDO]: () => this.props.actions.undo(this.props.currentPatchPath),
       [COMMAND.REDO]: () => this.props.actions.redo(this.props.currentPatchPath),
+      [COMMAND.TOGGLE_HELPBAR]: this.toggleHelpbar,
     };
+  }
+
+  toggleHelpbar(e) {
+    if (isInput(e)) return;
+
+    this.props.actions.toggleHelpbar();
   }
 
   render() {
@@ -70,18 +81,25 @@ class Editor extends React.Component {
     return (
       <HotKeys handlers={this.getHotkeyHandlers()} className="Editor">
         <Sidebar>
-          <ProjectBrowser />
-          <Inspector
-            selection={selection}
-            currentPatch={currentPatch}
-            onPropUpdate={this.props.actions.updateNodeProperty}
-            onPatchDescriptionUpdate={this.props.actions.updatePatchDescription}
-          />
+          <FocusTrap onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.PROJECT_BROWSER)}>
+            <ProjectBrowser />
+          </FocusTrap>
+          <FocusTrap onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.INSPECTOR)}>
+            <Inspector
+              selection={selection}
+              currentPatch={currentPatch}
+              onPropUpdate={this.props.actions.updateNodeProperty}
+              onPatchDescriptionUpdate={this.props.actions.updatePatchDescription}
+            />
+          </FocusTrap>
         </Sidebar>
-        <Workarea>
-          <Tabs />
-          {openedPatch}
-        </Workarea>
+        <FocusTrap onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.WORKAREA)}>
+          <Workarea>
+            <Tabs />
+            {openedPatch}
+          </Workarea>
+        </FocusTrap>
+        <Helpbar />
       </HotKeys>
     );
   }
@@ -98,6 +116,8 @@ Editor.propTypes = {
     undo: PropTypes.func.isRequired,
     redo: PropTypes.func.isRequired,
     setMode: PropTypes.func.isRequired,
+    toggleHelpbar: PropTypes.func.isRequired,
+    setFocusedArea: PropTypes.func.isRequired,
   }),
 };
 
@@ -114,6 +134,8 @@ const mapDispatchToProps = dispatch => ({
     undo: ProjectActions.undoPatch,
     redo: ProjectActions.redoPatch,
     setMode: Actions.setMode,
+    toggleHelpbar: Actions.toggleHelpbar,
+    setFocusedArea: Actions.setFocusedArea,
   }, dispatch),
 });
 

@@ -1,4 +1,4 @@
-import { EDITOR_MODE } from './constants';
+import { EDITOR_MODE, FOCUS_AREAS } from './constants';
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
 
 export default {
@@ -7,6 +7,8 @@ export default {
   selection: [],
   linkingPin: null,
   selectedNodeType: null,
+  isHelpbarVisible: false,
+  focusedArea: FOCUS_AREAS.WORKAREA,
   tabs: {
     '@/1': {
       id: '@/1',

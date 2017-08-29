@@ -1,0 +1,127 @@
+$node-height: 91px;
+$label-width: 28px;
+$PinInfo-padding-bottom: 10px;
+
+.PatchDocs {
+  width: 540px;
+  box-sizing: border-box;
+  background: $sidebar-color-bg;
+  cursor: default;
+
+  .pin-info-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .pin-info {
+    background: $sidebar-color-bg;
+    width: 225px;
+    position: relative;
+    top: -7px;
+    padding-left: 5px;
+    padding-bottom: $PinInfo-padding-bottom;
+
+    .label {
+      display: inline-block;
+      width: $label-width;
+      color: $color-pinlabel;
+      font-family: $font-family-condensed;
+    }
+
+    .type {
+      display: inline-block;
+      font-family: $font-family-normal;
+      font-size: 12px;
+      font-weight: 700;
+  
+      &.boolean { color: $color-datatype-boolean }
+      &.pulse { color: $color-datatype-pulse }
+      &.number { color: $color-datatype-number }
+      &.string { color: $color-datatype-string }
+    }
+
+    .description {
+      margin-left: $label-width;
+      padding-top: 3px;
+      font-family: $font-family-normal;
+      font-size: 12px;
+      font-weight: 300;
+      color: $sidebar-color-text;
+    }
+  }
+
+
+  .node-preview {
+    position: absolute;
+    width: 270px;
+    height: $node-height;
+    bottom: 0px;
+    left: 0;
+    z-index: 2;
+    pointer-events: none;
+  
+    .bg {
+      fill: $sidebar-color-bg;
+    }
+  }
+
+
+  .input-pins-container {
+    /* distance to first pin should be set in inline styles as paddingLeft */  
+    padding-top: 15px;
+    position: relative;
+    background: $sidebar-color-bg;
+    min-height: $node-height;
+  }
+  .input-pin {
+    border: 1px solid $color-pinlabel;
+    border-right: none;
+    border-bottom: none;
+    /* distance between pins should be set in inline styles as paddingLeft */
+
+    &.last-pin .pin-info  {
+      min-height: $node-height - $PinInfo-padding-bottom + 15px;
+    }
+  }
+
+
+  .output-pins-container {
+    /* distance to first pin should be set in inline styles as paddingLeft */  
+    background: $sidebar-color-bg;
+  }
+  .output-pin {
+    /* distance between pins should be set in inline styles as paddingLeft */
+    border: 1px solid $color-pinlabel;
+    border-right: none;
+    border-top: none;
+
+    &.first-pin {
+      border: none;
+    }
+
+    &.last-pin {
+      min-height: 15px;
+    }
+  }
+
+  .baseName {
+    font-family: $font-family-condensed;
+    font-size: $font-size-l;
+    color: $color-canvas-selected;
+  }
+
+  .nodeType {
+    font-family: $font-family-condensed;
+    font-size: $font-size-m;
+    color: $sidebar-color-text;
+  }
+
+  & > .description {
+    padding-top: 7px;
+    font-family: $font-family-normal;
+    font-size: 12px;
+    font-weight: 300;
+    color: $sidebar-color-text;
+    padding-bottom: 1em;
+  }
+
+}

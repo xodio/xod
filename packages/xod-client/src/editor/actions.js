@@ -202,3 +202,12 @@ export const sortTabs = newOrderObject => ({
   type: ActionType.TAB_SORT,
   payload: newOrderObject,
 });
+
+export const toggleHelpbar = () => ({
+  type: ActionType.TOGGLE_HELPBAR,
+});
+
+export const setFocusedArea = area => ({
+  type: ActionType.SET_FOCUSED_AREA,
+  payload: area,
+});

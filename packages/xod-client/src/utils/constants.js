@@ -7,6 +7,8 @@ export const COMMAND = {
   OPEN_PROJECT: 'openProject',
   RENAME_PROJECT: 'renameProject',
 
+  TOGGLE_HELPBAR: 'toggleHelpbar',
+
   ADD_PATCH: 'addPatch',
   RENAME: 'rename',
   DELETE: 'delete',
@@ -36,6 +38,8 @@ export const HOTKEY = {
   [COMMAND.DELETE]: ['ctrl+del', 'ctrl+backspace'],
 
   [COMMAND.SAVE_PROJECT]: ['ctrl+s'],
+
+  [COMMAND.TOGGLE_HELPBAR]: ['h'],
 };
 
 export const ELECTRON_ACCELERATOR = {
@@ -59,6 +63,8 @@ export const ELECTRON_ACCELERATOR = {
   [COMMAND.PASTE]: 'CmdOrCtrl+V',
 
   [COMMAND.SAVE_PROJECT]: 'CmdOrCtrl+S',
+
+  [COMMAND.TOGGLE_HELPBAR]: 'H',
 };
 
 export const KEYCODE = {

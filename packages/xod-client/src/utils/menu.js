@@ -102,6 +102,16 @@ const rawItems = {
     label: 'Upload to Arduino',
   },
 
+  view: {
+    key: 'view',
+    label: 'View',
+  },
+  toggleHelpbar: {
+    key: 'toggleHelpbar',
+    label: 'Toggle Helpbar',
+    command: COMMAND.TOGGLE_HELPBAR,
+  },
+
   help: {
     key: 'help',
     label: 'Help',

@@ -141,6 +141,7 @@ App.propTypes = {
     deleteProcess: PropTypes.func.isRequired,
     showCode: PropTypes.func.isRequired,
     showProjectPreferences: PropTypes.func.isRequired,
+    toggleHelpbar: PropTypes.func.isRequired,
     /* eslint-enable react/no-unused-prop-types */
   }),
 };
@@ -166,4 +167,5 @@ App.actions = {
   hideProjectPreferences: actions.hideProjectPreferences,
   updateProjectMeta: actions.updateProjectMeta,
   hideAllPopups: actions.hideAllPopups,
+  toggleHelpbar: actions.toggleHelpbar,
 };

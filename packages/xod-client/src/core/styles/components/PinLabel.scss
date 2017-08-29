@@ -4,6 +4,7 @@
   font-size: 10px;
   dominant-baseline: central;
   fill: $color-pinlabel;
+  user-select: none;
 
   &.outline {
     stroke: #262626;
