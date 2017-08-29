@@ -93,6 +93,7 @@ export default function composeWidget(Component, widgetProps) {
           <Component
             elementId={elementId}
             label={this.props.label}
+            title={this.props.title}
             normalizedLabel={this.props.normalizedLabel}
             isConnected={this.props.isConnected}
             isBindable={this.props.isBindable}
@@ -116,6 +117,7 @@ export default function composeWidget(Component, widgetProps) {
     keyName: PropTypes.string.isRequired, // one of NODE_PROPERTY_KEY or pin key
     kind: PropTypes.string,
     label: PropTypes.string,
+    title: PropTypes.string,
     normalizedLabel: PropTypes.string,
     direction: PropTypes.string,
     value: PropTypes.oneOfType([
@@ -137,6 +139,7 @@ export default function composeWidget(Component, widgetProps) {
     label: 'Unknown property',
     normalizedLabel: '',
     value: '',
+    title: '',
     focused: false,
     isConnected: false,
     isBindable: true,
