@@ -87,6 +87,7 @@ const NodeInspector = ({ node, onPropUpdate }) => {
         target="_blank"
         rel="noopener noreferrer"
         className="nodeHelp"
+        title="Open documentation in web browser"
       >
         <span className="nodeHelpIcon" />
       </a>
@@ -110,6 +111,7 @@ const NodeInspector = ({ node, onPropUpdate }) => {
         kind={NODE_PROPERTY_KIND.PROP}
         keyName={NODE_PROPERTY_KEY.LABEL}
         label="Label"
+        title="Node’s label"
         value={XP.getNodeLabel(node)}
         onPropUpdate={onPropUpdate}
       />

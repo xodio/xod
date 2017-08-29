@@ -15,6 +15,7 @@ const LabelWidget = (props) => {
         onChange={onChange}
         onBlur={props.onBlur}
         onKeyDown={props.onKeyDown}
+        title={props.title}
       />
     </div>
   );
@@ -23,6 +24,7 @@ const LabelWidget = (props) => {
 LabelWidget.propTypes = {
   elementId: PropTypes.string.isRequired,
   value: PropTypes.string,
+  title: PropTypes.string,
   onBlur: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onKeyDown: PropTypes.func.isRequired,
@@ -30,6 +32,7 @@ LabelWidget.propTypes = {
 
 LabelWidget.defaultProps = {
   value: '',
+  title: '',
 };
 
 export default LabelWidget;
