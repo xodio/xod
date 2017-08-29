@@ -780,10 +780,6 @@ extern void* const g_storages[NODE_COUNT];
 extern const void* const g_wiring[NODE_COUNT];
 extern DirtyFlags g_dirtyFlags[NODE_COUNT];
 
-// TODO: get rid of an extra indirection layer completely
-// would save 2 bytes per node
-extern NodeId g_topology[NODE_COUNT];
-
 // TODO: replace with a compact list
 extern TimeMs g_schedule[NODE_COUNT];
 
@@ -890,10 +886,9 @@ void evaluateNode(NodeId nid) {
 void runTransaction() {
     XOD_TRACE_F("Transaction started, t=");
     XOD_TRACE_LN(millis());
-    for (NodeId nid : g_topology) {
+    for (NodeId nid = 0; nid < NODE_COUNT; ++nid)
         if (isNodeDirty(nid))
             evaluateNode(nid);
-    }
 
     memset(g_dirtyFlags, 0, sizeof(g_dirtyFlags));
     XOD_TRACE_F("Transaction completed, t=");
@@ -1164,39 +1159,39 @@ namespace xod {
     // Dynamic data
     //-------------------------------------------------------------------------
 
-    // Storage of #0 xod/core/clock
-    xod__core__clock::Storage storage_0 = {
-        { }, // state
-        false // output_TICK
-    };
-
-    // Storage of #1 xod/core/flip_flop
-    xod__core__flip_flop::Storage storage_1 = {
-        { }, // state
-        false // output_MEM
-    };
-
-    // Storage of #2 xod/core/digital_output
-    xod__core__digital_output::Storage storage_2 = {
-        { }, // state
-    };
-
-    // Storage of #3 xod/core/constant_number
-    xod__core__constant_number::Storage storage_3 = {
+    // Storage of #0 xod/core/constant_number
+    xod__core__constant_number::Storage storage_0 = {
         { }, // state
         0.25 // output_VAL
     };
 
-    // Storage of #4 xod/core/constant_number
-    xod__core__constant_number::Storage storage_4 = {
+    // Storage of #1 xod/core/constant_number
+    xod__core__constant_number::Storage storage_1 = {
         { }, // state
         13 // output_VAL
     };
 
+    // Storage of #2 xod/core/clock
+    xod__core__clock::Storage storage_2 = {
+        { }, // state
+        false // output_TICK
+    };
+
+    // Storage of #3 xod/core/flip_flop
+    xod__core__flip_flop::Storage storage_3 = {
+        { }, // state
+        false // output_MEM
+    };
+
+    // Storage of #4 xod/core/digital_output
+    xod__core__digital_output::Storage storage_4 = {
+        { }, // state
+    };
+
     DirtyFlags g_dirtyFlags[NODE_COUNT] = {
+        DirtyFlags(255),
+        DirtyFlags(255),
         DirtyFlags(253),
-        DirtyFlags(255),
-        DirtyFlags(255),
         DirtyFlags(255),
         DirtyFlags(255)
     };
@@ -1207,62 +1202,62 @@ namespace xod {
     // Static (immutable) data
     //-------------------------------------------------------------------------
 
-    // Wiring of #0 xod/core/clock
-    const NodeId outLinks_0_TICK[] PROGMEM = { 1, NO_NODE };
-    const xod__core__clock::Wiring wiring_0 PROGMEM = {
+    // Wiring of #0 xod/core/constant_number
+    const NodeId outLinks_0_VAL[] PROGMEM = { 2, NO_NODE };
+    const xod__core__constant_number::Wiring wiring_0 PROGMEM = {
+        &xod__core__constant_number::evaluate,
+        // inputs (UpstreamPinRef’s initializers)
+        // outputs (NodeId list binding)
+        outLinks_0_VAL // output_VAL
+    };
+
+    // Wiring of #1 xod/core/constant_number
+    const NodeId outLinks_1_VAL[] PROGMEM = { 4, NO_NODE };
+    const xod__core__constant_number::Wiring wiring_1 PROGMEM = {
+        &xod__core__constant_number::evaluate,
+        // inputs (UpstreamPinRef’s initializers)
+        // outputs (NodeId list binding)
+        outLinks_1_VAL // output_VAL
+    };
+
+    // Wiring of #2 xod/core/clock
+    const NodeId outLinks_2_TICK[] PROGMEM = { 3, NO_NODE };
+    const xod__core__clock::Wiring wiring_2 PROGMEM = {
         &xod__core__clock::evaluate,
         // inputs (UpstreamPinRef’s initializers)
-        { NodeId(3),
+        { NodeId(0),
             xod__core__constant_number::output_VAL::INDEX,
             xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_IVAL
         { NO_NODE, 0, 0 }, // input_RST
         // outputs (NodeId list binding)
-        outLinks_0_TICK // output_TICK
+        outLinks_2_TICK // output_TICK
     };
 
-    // Wiring of #1 xod/core/flip_flop
-    const NodeId outLinks_1_MEM[] PROGMEM = { 2, NO_NODE };
-    const xod__core__flip_flop::Wiring wiring_1 PROGMEM = {
+    // Wiring of #3 xod/core/flip_flop
+    const NodeId outLinks_3_MEM[] PROGMEM = { 4, NO_NODE };
+    const xod__core__flip_flop::Wiring wiring_3 PROGMEM = {
         &xod__core__flip_flop::evaluate,
         // inputs (UpstreamPinRef’s initializers)
         { NO_NODE, 0, 0 }, // input_SET
-        { NodeId(0),
+        { NodeId(2),
             xod__core__clock::output_TICK::INDEX,
             xod__core__clock::output_TICK::STORAGE_OFFSET }, // input_TGL
         { NO_NODE, 0, 0 }, // input_RST
         // outputs (NodeId list binding)
-        outLinks_1_MEM // output_MEM
+        outLinks_3_MEM // output_MEM
     };
 
-    // Wiring of #2 xod/core/digital_output
-    const xod__core__digital_output::Wiring wiring_2 PROGMEM = {
+    // Wiring of #4 xod/core/digital_output
+    const xod__core__digital_output::Wiring wiring_4 PROGMEM = {
         &xod__core__digital_output::evaluate,
         // inputs (UpstreamPinRef’s initializers)
-        { NodeId(4),
+        { NodeId(1),
             xod__core__constant_number::output_VAL::INDEX,
             xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_PORT
-        { NodeId(1),
+        { NodeId(3),
             xod__core__flip_flop::output_MEM::INDEX,
             xod__core__flip_flop::output_MEM::STORAGE_OFFSET }, // input_SIG
         // outputs (NodeId list binding)
-    };
-
-    // Wiring of #3 xod/core/constant_number
-    const NodeId outLinks_3_VAL[] PROGMEM = { 0, NO_NODE };
-    const xod__core__constant_number::Wiring wiring_3 PROGMEM = {
-        &xod__core__constant_number::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        // outputs (NodeId list binding)
-        outLinks_3_VAL // output_VAL
-    };
-
-    // Wiring of #4 xod/core/constant_number
-    const NodeId outLinks_4_VAL[] PROGMEM = { 2, NO_NODE };
-    const xod__core__constant_number::Wiring wiring_4 PROGMEM = {
-        &xod__core__constant_number::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        // outputs (NodeId list binding)
-        outLinks_4_VAL // output_VAL
     };
 
     // PGM array with pointers to PGM wiring information structs
@@ -1281,9 +1276,5 @@ namespace xod {
         &storage_2,
         &storage_3,
         &storage_4
-    };
-
-    NodeId g_topology[NODE_COUNT] = {
-        3, 4, 0, 1, 2
     };
 }

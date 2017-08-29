@@ -1086,9 +1086,9 @@ describe('Patch', () => {
         },
       });
 
-      it('renumberNodes: should return same patch with nodes and links with new ids', () => {
-        expect(Patch.renumberNodes(patch))
-          .to.be.deep.equal(expectedPatch);
+      it('toposortNodes: should return same patch with nodes and links with new ids', () => {
+        const sortedPatch = XF.explodeEither(Patch.toposortNodes(patch));
+        assert.deepEqual(sortedPatch, expectedPatch);
       });
       it('getTopology: should return correct topology', () => {
         Helper.expectEither(

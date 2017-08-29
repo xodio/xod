@@ -133,9 +133,9 @@ export const renderImplList = def(
 );
 
 export const renderProgram = def(
-  'renderProgram :: [TNodeId] -> [TNode] -> String',
-  (topology, nodes) => trimTrailingWhitespace(
-    templates.program({ topology, nodes })
+  'renderProgram :: [TNode] -> String',
+  nodes => trimTrailingWhitespace(
+    templates.program({ nodes })
   )
 );
 export const renderProject = def(
@@ -143,7 +143,7 @@ export const renderProject = def(
   (project) => {
     const config = renderConfig(project.config);
     const impls = renderImplList(project.patches);
-    const program = renderProgram(project.topology, project.nodes);
+    const program = renderProgram(project.nodes);
 
     return R.join('\n')([
       preambleH,

@@ -1,7 +1,7 @@
 import R from 'ramda';
 import { Either } from 'ramda-fantasy';
 
-import { explodeMaybe, explodeEither } from 'xod-func-tools';
+import { explodeMaybe } from 'xod-func-tools';
 import * as Project from 'xod-project';
 import { def } from './types';
 
@@ -90,12 +90,11 @@ const getPatchByNodeId = def(
   )(entryPath, project)
 );
 
-const renumberProject = def(
-  'renumberProject :: PatchPath -> Project -> Project',
+const toposortProject = def(
+  'toposortProject :: PatchPath -> Project -> Either Error Project',
   (path, project) => R.compose(
-    explodeEither,
-    Project.assocPatch(path, R.__, project),
-    Project.renumberNodes,
+    R.chain(Project.assocPatch(path, R.__, project)),
+    Project.toposortNodes,
     Project.getPatchByPathUnsafe
   )(path, project)
 );
@@ -128,15 +127,6 @@ const createTConfig = def(
     MAX_OUTPUT_COUNT: getOutputCount,
     XOD_DEBUG: R.F,
   })(project)
-);
-
-const createTTopology = def(
-  'createTTopology :: PatchPath -> Project -> Either Error [Number]',
-  R.compose(
-    R.map(R.map(toInt)),
-    Project.getTopology,
-    Project.getPatchByPathUnsafe
-  )
 );
 
 const createTPatches = def(
@@ -330,6 +320,9 @@ const getNodeDirtyFlags = def(
 const createTNodes = def(
   'createTNodes :: PatchPath -> [TPatch] -> Project -> [TNode]',
   (entryPath, patches, project) => R.compose(
+    R.sortBy(
+      R.compose(toInt, R.prop('id'))
+    ),
     R.map(R.applySpec({
       id: R.compose(toInt, Project.getNodeId),
       patch: R.compose(findPatchByPath(R.__, patches), Project.getNodeType),
@@ -363,22 +356,17 @@ export const transformProject = def(
 
       return Either.of(tProject);
     }),
-    R.map(([proj, topology]) => {
+    R.map((proj) => {
       const patches = createTPatches(path, proj);
 
       return R.applySpec({
         config: createTConfig(path),
         patches: R.always(patches),
         nodes: createTNodes(path, patches),
-        topology: R.always(topology),
       })(proj);
     }),
-    R.chain(proj => R.sequence(Either.of, [
-      Either.of(proj),
-      createTTopology(path, proj),
-    ])),
-    R.map(R.compose(
-      renumberProject(path),
+    R.chain(R.compose(
+      toposortProject(path),
       Project.extractBoundInputsToConstNodes(R.__, path, project)
     )),
     Project.flatten

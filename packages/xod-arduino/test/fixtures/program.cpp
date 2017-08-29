@@ -70,8 +70,4 @@ namespace xod {
         &storage_0,
         &storage_1
     };
-
-    NodeId g_topology[NODE_COUNT] = {
-        0, 1
-    };
 }

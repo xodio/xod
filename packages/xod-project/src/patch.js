@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
-import { explodeMaybe, notNil, reduceEither, isAmong } from 'xod-func-tools';
+import { explodeMaybe, notNil, reduceEither, isAmong, mapIndexed } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
@@ -739,31 +739,6 @@ export const upsertComments = def(
 // =============================================================================
 
 /**
- * Returns a copy of the patch with changed nodeIds and resolved links.
- *
- * @function renumberNodes
- * @param {Patch} patch
- * @returns {Patch}
- */
-export const renumberNodes = def(
-  'renumberNodes :: Patch -> Patch',
-  (patch) => {
-    const nodes = listNodes(patch);
-    const links = listLinks(patch);
-
-    const nodeIdsMap = Utils.guidToIdx(nodes);
-    const newNodes = R.indexBy(Node.getNodeId, Utils.resolveNodeIds(nodeIdsMap, nodes));
-    const newLinks = R.indexBy(Link.getLinkId, Utils.resolveLinkNodeIds(nodeIdsMap, links));
-
-    return R.compose(
-      R.assoc('links', newLinks),
-      R.assoc('nodes', newNodes),
-      duplicatePatch
-    )(patch);
-  }
-);
-
-/**
  * Returns a topology of nodes in the patch.
  *
  * @function getTopology
@@ -785,4 +760,33 @@ export const getTopology = def(
       ),
     ]
   )
+);
+
+/**
+ * Change IDs of nodes in a patch provided to '0', '1', '2',... etc
+ * so that they are sorted topologically.
+ *
+ * Links’ pin references are ajusted as well
+ */
+export const toposortNodes = def(
+  'toposortNodes :: Patch -> Either Error Patch',
+  patch => R.compose(
+    R.map((topology) => {
+      // Convert ['abc', 'def', 'ghj'] to { 'abc': '0', 'def': '1', 'ghj': '2' }
+      const nodeIdsMap = R.fromPairs(mapIndexed((x, idx) => [x, idx.toString()])(topology));
+
+      const nodes = listNodes(patch);
+      const newNodes = R.indexBy(Node.getNodeId, Utils.resolveNodeIds(nodeIdsMap, nodes));
+
+      const links = listLinks(patch);
+      const newLinks = R.indexBy(Link.getLinkId, Utils.resolveLinkNodeIds(nodeIdsMap, links));
+
+      return R.compose(
+        R.assoc('links', newLinks),
+        R.assoc('nodes', newNodes),
+        duplicatePatch
+      )(patch);
+    }),
+    getTopology
+  )(patch)
 );

@@ -80,7 +80,6 @@ export const TProject = Model('TProject', {
   config: TConfig,
   patches: $.Array(TPatch),
   nodes: $.Array(TNode),
-  topology: $.Array(TNodeId),
 });
 
 //-----------------------------------------------------------------------------

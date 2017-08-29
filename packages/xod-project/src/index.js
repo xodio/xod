@@ -34,7 +34,7 @@ export {
   dissocNode,
   upsertNodes,
   canBindToOutputs,
-  renumberNodes,
+  toposortNodes,
   getTopology,
   listComments,
   getCommentById,
