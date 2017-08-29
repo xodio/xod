@@ -78,6 +78,11 @@ export const getCurrentPatchOffset = createSelector(
   (currentPatchPath, tabs) => R.path([currentPatchPath, 'offset'], tabs)
 );
 
+export const getFocusedArea = R.pipe(
+  getEditor,
+  R.prop('focusedArea')
+);
+
 // docs sidebar
 
 export const isHelpbarVisible = R.pipe(

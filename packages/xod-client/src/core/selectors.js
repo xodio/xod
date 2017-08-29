@@ -11,30 +11,46 @@ import * as Errors from '../messages/selectors';
 import * as Processes from '../processes/selectors';
 import * as Utils from '../utils/selectors';
 
-import { SELECTION_ENTITY_TYPE } from '../editor/constants';
+import { SELECTION_ENTITY_TYPE, FOCUS_AREAS } from '../editor/constants';
 
 //
 // Docs sidebar
 //
 
+const fallbackMaybe = (a, b) => R.when(
+  Maybe.isNothing,
+  R.always(b)
+)(a);
+
 export const getPatchForHelpbar = createSelector(
   [
     Project.getProject,
+    Editor.getFocusedArea,
     Editor.getSelection,
     ProjectBrowser.getSelectedPatchPath,
     Project.getCurrentPatchNodes,
   ],
-  (project, editorSelection, selectedPatchPath, currentPatchNodes) => R.compose(
-    R.map(patchPath => XP.getPatchByPathUnsafe(patchPath, project)),
-    R.when(
-      Maybe.isNothing,
-      R.always(Maybe(selectedPatchPath))
-    ),
-    R.map(XP.getNodeType),
-    R.map(({ id }) => currentPatchNodes[id]),
-    Maybe,
-    R.find(R.propEq('entity', SELECTION_ENTITY_TYPE.NODE)),
-  )(editorSelection)
+  (project, focusedArea, editorSelection, selectedPatchPath, currentPatchNodes) => {
+    const maybeSelectedNodeTypeInWorkarea = R.compose(
+      R.map(XP.getNodeType),
+      R.map(({ id }) => currentPatchNodes[id]),
+      Maybe,
+      R.find(R.propEq('entity', SELECTION_ENTITY_TYPE.NODE)),
+    )(editorSelection);
+    const maybeSelectedPathInProjectBrowser = Maybe(selectedPatchPath);
+
+    return R.compose(
+      R.map(patchPath => XP.getPatchByPathUnsafe(patchPath, project)),
+      R.apply(fallbackMaybe), // TODO: works with only two sources
+      R.when(
+        () => focusedArea === FOCUS_AREAS.PROJECT_BROWSER,
+        R.reverse
+      )
+    )([
+      maybeSelectedNodeTypeInWorkarea,
+      maybeSelectedPathInProjectBrowser,
+    ]);
+  }
 );
 
 

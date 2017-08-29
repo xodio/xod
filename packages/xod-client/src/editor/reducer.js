@@ -12,6 +12,7 @@ import {
   TAB_SORT,
   SET_CURRENT_PATCH_OFFSET,
   TOGGLE_HELPBAR,
+  SET_FOCUSED_AREA,
 } from './actionTypes';
 import {
   PROJECT_CREATE,
@@ -213,6 +214,8 @@ const editorReducer = (state = {}, action) => {
       );
     case TOGGLE_HELPBAR:
       return R.over(R.lensProp('isHelpbarVisible'), R.not, state);
+    case SET_FOCUSED_AREA:
+      return R.assoc('focusedArea', action.payload, state);
     default:
       return state;
   }

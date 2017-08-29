@@ -52,3 +52,9 @@ export const LINK_ERRORS = {
 export const PROPERTY_ERRORS = {
   PIN_HAS_LINK: 'PIN_HAS_LINK',
 };
+
+export const FOCUS_AREAS = {
+  PROJECT_BROWSER: 'PROJECT_BROWSER',
+  INSPECTOR: 'INSPECTOR',
+  WORKAREA: 'WORKAREA',
+};

@@ -29,7 +29,7 @@ core-js@^2.4.0:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.4.1.tgz#4de911e667b0eae9124e34254b53aea6fc618d3e"
 
-create-react-class@^15.5.1, create-react-class@^15.6.0:
+create-react-class@^15.5.1, create-react-class@^15.5.2, create-react-class@^15.6.0:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.0.tgz#ab448497c26566e1e29413e883207d57cfe7bed4"
   dependencies:
@@ -159,12 +159,14 @@ react-fa@^4.1.2:
     font-awesome "^4.3.0"
     prop-types "^15.5.8"
 
-react-hotkeys@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/react-hotkeys/-/react-hotkeys-0.9.0.tgz#7a47ba4337be8925a96a024e6d58d433096a3233"
+"react-hotkeys@git+https://github.com/xodio/react-hotkeys.git#npm":
+  version "0.10.0"
+  resolved "git+https://github.com/xodio/react-hotkeys.git#b59ba4726ec7f3c6589f6820f6c9a453172417dc"
   dependencies:
+    create-react-class "^15.5.2"
     lodash "^4.13.1"
     mousetrap "^1.5.2"
+    prop-types "^15.5.8"
 
 react-redux@^4.4.5:
   version "4.4.8"
