@@ -1,0 +1,750 @@
+{
+  "comments": [
+    {
+      "content": "↑ This reads X Y Z register data and multiplies it by a sensitivity multiplier (sm)",
+      "id": "BkgWdYE_-",
+      "position": {
+        "x": 748,
+        "y": 918
+      },
+      "size": {
+        "height": 51,
+        "width": 272
+      }
+    },
+    {
+      "content": "↑ This sends commands to adjust sensitivity (CTRL_REG4)",
+      "id": "HJI6DtEu-",
+      "position": {
+        "x": 238,
+        "y": 918
+      },
+      "size": {
+        "height": 51,
+        "width": 238
+      }
+    },
+    {
+      "content": "↑ This is one-time initialization to go out of sleep mode and start measuring data along all axes (CTRL_REG1)",
+      "id": "HJQVOKE_W",
+      "position": {
+        "x": -68,
+        "y": 510
+      },
+      "size": {
+        "height": 153,
+        "width": 204
+      }
+    }
+  ],
+  "description": "Utility node. Reads raw X/Y/Z data from a STMicroelectronics IMU sensor.",
+  "links": [
+    {
+      "id": "B1PzNbmYW",
+      "input": {
+        "nodeId": "HyMKQWmYW",
+        "pinKey": "BJTNLT-Kb"
+      },
+      "output": {
+        "nodeId": "HyDRXZXKb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "B1UGEWXKZ",
+      "input": {
+        "nodeId": "HyMKQWmYW",
+        "pinKey": "BkDVUp-t-"
+      },
+      "output": {
+        "nodeId": "SymAXb7KW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkzWQqVdW",
+      "input": {
+        "nodeId": "Sk-e2ViDb",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HyB8M9V_-",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "Byd21HsP-",
+      "input": {
+        "nodeId": "B1ooyBiPW",
+        "pinKey": "ryy0h4owW"
+      },
+      "output": {
+        "nodeId": "HyPRoViP-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BymnJBiDZ",
+      "input": {
+        "nodeId": "HyHP1HiDb",
+        "pinKey": "Hy_Q04sPZ"
+      },
+      "output": {
+        "nodeId": "HyPRoViP-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Byn6ySsDb",
+      "input": {
+        "nodeId": "Sy461HiPb",
+        "pinKey": "ryv504owW"
+      },
+      "output": {
+        "nodeId": "B1ooyBiPW",
+        "pinKey": "rJIHaEoPZ"
+      }
+    },
+    {
+      "id": "H1FzEWmYW",
+      "input": {
+        "nodeId": "HyMKQWmYW",
+        "pinKey": "Bk1HU6btW"
+      },
+      "output": {
+        "nodeId": "SJ5A7bXFb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1Sgfriw-",
+      "input": {
+        "nodeId": "BJHibHoPW",
+        "pinKey": "H17P5VsPZ"
+      },
+      "output": {
+        "nodeId": "Bk-xzSsPW",
+        "pinKey": "B1x2RV3eZ"
+      }
+    },
+    {
+      "id": "HJoAkrjPb",
+      "input": {
+        "nodeId": "SJO01roDW",
+        "pinKey": "ryv504owW"
+      },
+      "output": {
+        "nodeId": "B1ooyBiPW",
+        "pinKey": "Hkg8T4sPZ"
+      }
+    },
+    {
+      "id": "Hk0TySjvb",
+      "input": {
+        "nodeId": "Sy461HiPb",
+        "pinKey": "rJhKCEovZ"
+      },
+      "output": {
+        "nodeId": "B1ooyBiPW",
+        "pinKey": "SydBa4ov-"
+      }
+    },
+    {
+      "id": "HkYdeHsP-",
+      "input": {
+        "nodeId": "rJ-Pgrsv-",
+        "pinKey": "r1ypaEoDW"
+      },
+      "output": {
+        "nodeId": "ByTveBjDb",
+        "pinKey": "ByAIWR_UZ"
+      }
+    },
+    {
+      "id": "HknqE-QYW",
+      "input": {
+        "nodeId": "HyB8M9V_-",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "Sy461HiPb",
+        "pinKey": "rySsCNowW"
+      }
+    },
+    {
+      "id": "Hy09NWXFb",
+      "input": {
+        "nodeId": "rkTIfcEuW",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "S1kR1SjvW",
+        "pinKey": "rySsCNowW"
+      }
+    },
+    {
+      "id": "HyEbm5Eu-",
+      "input": {
+        "nodeId": "S1_e24ov-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkTIfcEuW",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "HyKFXZXFZ",
+      "input": {
+        "nodeId": "HyMKQWmYW",
+        "pinKey": "r1m4LpWKb"
+      },
+      "output": {
+        "nodeId": "rJCtZ5NdW",
+        "pinKey": "H1C7ycV_b"
+      }
+    },
+    {
+      "id": "HyUCkrowb",
+      "input": {
+        "nodeId": "S1kR1SjvW",
+        "pinKey": "rJhKCEovZ"
+      },
+      "output": {
+        "nodeId": "B1ooyBiPW",
+        "pinKey": "Sy6ST4jPZ"
+      }
+    },
+    {
+      "id": "HyizNWmYZ",
+      "input": {
+        "nodeId": "HyMKQWmYW",
+        "pinKey": "B1-BIa-t-"
+      },
+      "output": {
+        "nodeId": "r10RQb7FZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1GiVbmtW",
+      "input": {
+        "nodeId": "SJgPf9V_Z",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "HyMKQWmYW",
+        "pinKey": "H1HILaWFb"
+      }
+    },
+    {
+      "id": "SJ4o4-mK-",
+      "input": {
+        "nodeId": "rkTIfcEuW",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "HyMKQWmYW",
+        "pinKey": "H1HILaWFb"
+      }
+    },
+    {
+      "id": "SJAUTTZFW",
+      "input": {
+        "nodeId": "rJCtZ5NdW",
+        "pinKey": "ryP8LnZtZ"
+      },
+      "output": {
+        "nodeId": "HkI8TabKZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJAV6sZKW",
+      "input": {
+        "nodeId": "rJCtZ5NdW",
+        "pinKey": "rynt0KE_W"
+      },
+      "output": {
+        "nodeId": "rkKV6s-Yb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJej4WXY-",
+      "input": {
+        "nodeId": "SJgPf9V_Z",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "SJO01roDW",
+        "pinKey": "rySsCNowW"
+      }
+    },
+    {
+      "id": "SJsVRJ7KZ",
+      "input": {
+        "nodeId": "BJHibHoPW",
+        "pinKey": "HkKvqEswZ"
+      },
+      "output": {
+        "nodeId": "BkVN0JQYW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJuD1HjDb",
+      "input": {
+        "nodeId": "HyHP1HiDb",
+        "pinKey": "B19V0Eiw-"
+      },
+      "output": {
+        "nodeId": "rkIkhEsvW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJvteHsvb",
+      "input": {
+        "nodeId": "rJ-Pgrsv-",
+        "pinKey": "HJEUcEswW"
+      },
+      "output": {
+        "nodeId": "HyPRoViP-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Skr1fc4ub",
+      "input": {
+        "nodeId": "ByTveBjDb",
+        "pinKey": "BkjI-COLb"
+      },
+      "output": {
+        "nodeId": "rJCtZ5NdW",
+        "pinKey": "r1lUy5N_b"
+      }
+    },
+    {
+      "id": "Skr86iWK-",
+      "input": {
+        "nodeId": "rJCtZ5NdW",
+        "pinKey": "rk850K4u-"
+      },
+      "output": {
+        "nodeId": "ryrBTjZtZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SynA1SoP-",
+      "input": {
+        "nodeId": "SJO01roDW",
+        "pinKey": "rJhKCEovZ"
+      },
+      "output": {
+        "nodeId": "B1ooyBiPW",
+        "pinKey": "HJM8TViP-"
+      }
+    },
+    {
+      "id": "SyssbBoPb",
+      "input": {
+        "nodeId": "BJHibHoPW",
+        "pinKey": "HJEUcEswW"
+      },
+      "output": {
+        "nodeId": "HyPRoViP-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyykM9V_Z",
+      "input": {
+        "nodeId": "rJ-Pgrsv-",
+        "pinKey": "HkKvqEswZ"
+      },
+      "output": {
+        "nodeId": "rJCtZ5NdW",
+        "pinKey": "r1lUy5N_b"
+      }
+    },
+    {
+      "id": "r1IaeSiPb",
+      "input": {
+        "nodeId": "rJ-Pgrsv-",
+        "pinKey": "H17P5VsPZ"
+      },
+      "output": {
+        "nodeId": "SkineHjPZ",
+        "pinKey": "B1x2RV3eZ"
+      }
+    },
+    {
+      "id": "r1V8Tj-tW",
+      "input": {
+        "nodeId": "rJCtZ5NdW",
+        "pinKey": "r1NqAYVdb"
+      },
+      "output": {
+        "nodeId": "ByfrajWF-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1g2kSjP-",
+      "input": {
+        "nodeId": "B1ooyBiPW",
+        "pinKey": "SyaaaEsw-"
+      },
+      "output": {
+        "nodeId": "HyHP1HiDb",
+        "pinKey": "r1Vr04iPW"
+      }
+    },
+    {
+      "id": "rkDsEbmFW",
+      "input": {
+        "nodeId": "HyB8M9V_-",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "HyMKQWmYW",
+        "pinKey": "H1HILaWFb"
+      }
+    },
+    {
+      "id": "rkG1M5V_W",
+      "input": {
+        "nodeId": "rJCtZ5NdW",
+        "pinKey": "B1pDRtEdb"
+      },
+      "output": {
+        "nodeId": "HJaCs4jDW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryN01SsDb",
+      "input": {
+        "nodeId": "S1kR1SjvW",
+        "pinKey": "ryv504owW"
+      },
+      "output": {
+        "nodeId": "B1ooyBiPW",
+        "pinKey": "SJiBp4ivb"
+      }
+    },
+    {
+      "id": "ryrb79N_b",
+      "input": {
+        "nodeId": "HyTe3Ejv-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJgPf9V_Z",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1ooyBiPW",
+      "position": {
+        "x": 748,
+        "y": 306
+      },
+      "type": "xod/core/i2c-request-bytes-6"
+    },
+    {
+      "boundValues": {
+        "r1ypaEoDW": "ON_BOOT"
+      },
+      "id": "BJHibHoPW",
+      "position": {
+        "x": -68,
+        "y": 408
+      },
+      "type": "xod/core/i2c-send-bytes-2"
+    },
+    {
+      "boundValues": {
+        "B1x2RV3eZ": 32
+      },
+      "id": "Bk-xzSsPW",
+      "label": "#REG1",
+      "position": {
+        "x": -34,
+        "y": 306
+      },
+      "type": "xod/core/constant-number"
+    },
+    {
+      "description": "Value for CTRL_REG1 register. Set once on boot.",
+      "id": "BkVN0JQYW",
+      "label": "REG1",
+      "position": {
+        "x": 0,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ByTveBjDb",
+      "position": {
+        "x": 340,
+        "y": 714
+      },
+      "type": "xod/core/pulse-on-change"
+    },
+    {
+      "description": "Available 1-level sensitivity.",
+      "id": "ByfrajWF-",
+      "label": "S1",
+      "position": {
+        "x": 374,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Desired sensitivity value. Inaccurate values are rounded up to one of [S0, S1, S2, S3].",
+      "id": "HJaCs4jDW",
+      "label": "SENS",
+      "position": {
+        "x": 306,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Available 3-level sensitivity.",
+      "id": "HkI8TabKZ",
+      "label": "S3",
+      "position": {
+        "x": 442,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HyB8M9V_-",
+      "position": {
+        "x": 748,
+        "y": 612
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "description": "Value multiplier for `S1` sensitivity.",
+      "id": "HyDRXZXKb",
+      "label": "SM1",
+      "position": {
+        "x": 578,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "ry7NREoP-": 168
+      },
+      "id": "HyHP1HiDb",
+      "position": {
+        "x": 816,
+        "y": 204
+      },
+      "type": "xod/core/i2c-send-byte"
+    },
+    {
+      "id": "HyMKQWmYW",
+      "position": {
+        "x": 510,
+        "y": 510
+      },
+      "type": "xod/core/nth-number-4"
+    },
+    {
+      "boundValues": {
+        "__out__": 24
+      },
+      "description": "I²C address of the sensor",
+      "id": "HyPRoViP-",
+      "label": "ADDR",
+      "position": {
+        "x": -68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Z register value adjusted with sensitivity multiplier",
+      "id": "HyTe3Ejv-",
+      "label": "Z",
+      "position": {
+        "x": 884,
+        "y": 816
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Y register value adjusted with sensitivity multiplier",
+      "id": "S1_e24ov-",
+      "label": "Y",
+      "position": {
+        "x": 816,
+        "y": 816
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "S1kR1SjvW",
+      "position": {
+        "x": 816,
+        "y": 408
+      },
+      "type": "xod/core/word-to-number"
+    },
+    {
+      "description": "Value multiplier for `S2` sensitivity.",
+      "id": "SJ5A7bXFb",
+      "label": "SM2",
+      "position": {
+        "x": 612,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SJO01roDW",
+      "position": {
+        "x": 884,
+        "y": 408
+      },
+      "type": "xod/core/word-to-number"
+    },
+    {
+      "id": "SJgPf9V_Z",
+      "position": {
+        "x": 884,
+        "y": 612
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "description": "X register value adjusted with sensitivity multiplier",
+      "id": "Sk-e2ViDb",
+      "label": "X",
+      "position": {
+        "x": 748,
+        "y": 816
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "B1x2RV3eZ": 35
+      },
+      "id": "SkineHjPZ",
+      "label": "#REG4",
+      "position": {
+        "x": 272,
+        "y": 714
+      },
+      "type": "xod/core/constant-number"
+    },
+    {
+      "id": "Sy461HiPb",
+      "position": {
+        "x": 748,
+        "y": 408
+      },
+      "type": "xod/core/word-to-number"
+    },
+    {
+      "description": "Value multiplier for `S0` sensitivity.",
+      "id": "SymAXb7KW",
+      "label": "SM0",
+      "position": {
+        "x": 544,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Value multiplier for `S3` sensitivity.",
+      "id": "r10RQb7FZ",
+      "label": "SM3",
+      "position": {
+        "x": 646,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "H17P5VsPZ": 35
+      },
+      "id": "rJ-Pgrsv-",
+      "position": {
+        "x": 238,
+        "y": 816
+      },
+      "type": "xod/core/i2c-send-bytes-2"
+    },
+    {
+      "boundValues": {
+        "r1NqAYVdb": 4,
+        "rk850K4u-": 8,
+        "rynt0KE_W": 2
+      },
+      "id": "rJCtZ5NdW",
+      "position": {
+        "x": 306,
+        "y": 408
+      },
+      "type": "@/st-imu-round-sensitivity"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers a new reading.",
+      "id": "rkIkhEsvW",
+      "label": "UPD",
+      "position": {
+        "x": 884,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Available 0-level sensitivity.",
+      "id": "rkKV6s-Yb",
+      "label": "S0",
+      "position": {
+        "x": 340,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rkTIfcEuW",
+      "position": {
+        "x": 816,
+        "y": 612
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "description": "Available 2-level sensitivity.",
+      "id": "ryrBTjZtZ",
+      "label": "S2",
+      "position": {
+        "x": 408,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "description": "Reads angular velocity from a gyroscope based on L3G4200 IC by STMicroelectronics. It is expected the gyro is connected to the first hardware I²C bus.",
+  "links": [
+    {
+      "id": "BkbiR-XKb",
+      "input": {
+        "nodeId": "ByK90ZXY-",
+        "pinKey": "By2rpbQFb"
+      },
+      "output": {
+        "nodeId": "HJ0lHkQYW",
+        "pinKey": "Sk-e2ViDb"
+      }
+    },
+    {
+      "id": "HJKwIkXKZ",
+      "input": {
+        "nodeId": "HJ0lHkQYW",
+        "pinKey": "HJaCs4jDW"
+      },
+      "output": {
+        "nodeId": "rk5-Hy7tW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJUjAWQYb",
+      "input": {
+        "nodeId": "HkQfr17Kb",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ByK90ZXY-",
+        "pinKey": "Hye8p-7FW"
+      }
+    },
+    {
+      "id": "S1tj0bQYW",
+      "input": {
+        "nodeId": "S1uzHkQKW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Hk05CbQtb",
+        "pinKey": "Hye8p-7FW"
+      }
+    },
+    {
+      "id": "SyPiRWXFZ",
+      "input": {
+        "nodeId": "SkBfBymFW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Hy35RZ7F-",
+        "pinKey": "Hye8p-7FW"
+      }
+    },
+    {
+      "id": "rJPP817FW",
+      "input": {
+        "nodeId": "HJ0lHkQYW",
+        "pinKey": "HyPRoViP-"
+      },
+      "output": {
+        "nodeId": "SJOWBJQKW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJfoR-7t-",
+      "input": {
+        "nodeId": "Hy35RZ7F-",
+        "pinKey": "By2rpbQFb"
+      },
+      "output": {
+        "nodeId": "HJ0lHkQYW",
+        "pinKey": "S1_e24ov-"
+      }
+    },
+    {
+      "id": "rJmjCW7FZ",
+      "input": {
+        "nodeId": "Hk05CbQtb",
+        "pinKey": "By2rpbQFb"
+      },
+      "output": {
+        "nodeId": "HJ0lHkQYW",
+        "pinKey": "HyTe3Ejv-"
+      }
+    },
+    {
+      "id": "ryk9SymtW",
+      "input": {
+        "nodeId": "HJ0lHkQYW",
+        "pinKey": "rkIkhEsvW"
+      },
+      "output": {
+        "nodeId": "ryCZH1QKb",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "ByK90ZXY-",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "@/st-imu-normalize-va"
+    },
+    {
+      "boundValues": {
+        "BkVN0JQYW": 15,
+        "ByfrajWF-": 500,
+        "HkI8TabKZ": 2000,
+        "HyDRXZXKb": 17.5,
+        "SJ5A7bXFb": 70,
+        "SymAXb7KW": 8.75,
+        "r10RQb7FZ": 70,
+        "rkKV6s-Yb": 250,
+        "ryrBTjZtZ": 2000
+      },
+      "id": "HJ0lHkQYW",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "@/st-imu-generic-sensor"
+    },
+    {
+      "id": "Hk05CbQtb",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "@/st-imu-normalize-va"
+    },
+    {
+      "description": "Pitch angular velocity. I.e. spin around X axis. Expressed in radians per second.",
+      "id": "HkQfr17Kb",
+      "label": "PTCH",
+      "position": {
+        "x": 34,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "Hy35RZ7F-",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "@/st-imu-normalize-va"
+    },
+    {
+      "description": "Yaw angular velocity. I.e. spin around Z axis. Expressed in radians per second.",
+      "id": "S1uzHkQKW",
+      "label": "YAW",
+      "position": {
+        "x": 102,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "__out__": 104
+      },
+      "description": "I²C address. 104 by default. Some board configurations use 105 instead.",
+      "id": "SJOWBJQKW",
+      "label": "ADDR",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Roll angular velocity. I.e. spin around Y axis. Expressed in radians per second.",
+      "id": "SkBfBymFW",
+      "label": "ROLL",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "__out__": 250
+      },
+      "description": "Sensitivity. Can be 250 (default), 500, or 2000. Defines bounds of measurements expressed in degrees per second. E.g. max ±500 degrees per second. The lower the sensitivity the better output precission. Inaccurate values are rounded up to a nearest correct sensitivity level.",
+      "id": "rk5-Hy7tW",
+      "label": "SEN",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Update. Triggers new sensor reading.",
+      "id": "ryCZH1QKb",
+      "label": "UPD",
+      "position": {
+        "x": 408,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

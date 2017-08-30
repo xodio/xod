@@ -1,0 +1,51 @@
+{
+  "nodes": [
+    {
+      "description": "Timeout value. Exit after this delay if no data is available.",
+      "id": "HyEhduNuZ",
+      "label": "TOUT",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Last byte read.",
+      "id": "SkplYdVO-",
+      "label": "BYTE",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "SkylK_Ed-",
+      "label": "READ",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "SyvJYdVdW",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Pulses when read completes",
+      "id": "rypZF_Nub",
+      "label": "DONE",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

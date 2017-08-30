@@ -345,7 +345,7 @@ export const transformProject = def(
   (impls, project, path) => R.compose(
     R.chain((tProject) => {
       const nodeWithTooManyOutputs = R.find(
-        R.pipe(R.prop('outputs'), R.length, R.lte(7)),
+        R.pipe(R.prop('outputs'), R.length, R.lt(7)),
         tProject.patches
       );
 

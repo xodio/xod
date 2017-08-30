@@ -1,0 +1,230 @@
+{
+  "description": "Rounds input `X` up to a nearest threshold — [T0, T1, T2]. If `X` is even greater than `T2`, the value is still round to `T2`.",
+  "links": [
+    {
+      "id": "B1l0jT-FW",
+      "input": {
+        "nodeId": "BJgKoTbKZ",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "ryDEo6bF-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJawopZFb",
+      "input": {
+        "nodeId": "SkPwiaWY-",
+        "pinKey": "ryLFq6btW"
+      },
+      "output": {
+        "nodeId": "H1T7s6ZKW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Bk8YjaZYZ",
+      "input": {
+        "nodeId": "BJgKoTbKZ",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "rk-OiaZY-",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "ByowjTbY-",
+      "input": {
+        "nodeId": "SkPwiaWY-",
+        "pinKey": "r1SqqabFZ"
+      },
+      "output": {
+        "nodeId": "ryNEs6-tZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hy-TiTZKW",
+      "input": {
+        "nodeId": "HJtroa-tW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJgKoTbKZ",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "HyAYoTWtZ",
+      "input": {
+        "nodeId": "HJnuj6bKZ",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "SkPwiaWY-",
+        "pinKey": "rkVicaZFZ"
+      }
+    },
+    {
+      "id": "Sk9woTZFZ",
+      "input": {
+        "nodeId": "SkPwiaWY-",
+        "pinKey": "rJl5qpZYZ"
+      },
+      "output": {
+        "nodeId": "ByZ4oTWYb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyOOs6-K-",
+      "input": {
+        "nodeId": "rk-OiaZY-",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "H1T7s6ZKW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1KcspWKb",
+      "input": {
+        "nodeId": "rysIoTZFZ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJnuj6bKZ",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "rJBtjTZYW",
+      "input": {
+        "nodeId": "HJnuj6bKZ",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "rk-OiaZY-",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "ryI_iT-F-",
+      "input": {
+        "nodeId": "rk-OiaZY-",
+        "pinKey": "SJqZ8COrDkW"
+      },
+      "output": {
+        "nodeId": "ryDEo6bF-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryJTo6ZFb",
+      "input": {
+        "nodeId": "BJgKoTbKZ",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "SkPwiaWY-",
+        "pinKey": "rkpc9pZYb"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJgKoTbKZ",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "@/if-else"
+    },
+    {
+      "id": "ByZ4oTWYb",
+      "label": "T0",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "H1T7s6ZKW",
+      "label": "X",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "r1AgIROHDJW": 2
+      },
+      "id": "HJnuj6bKZ",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "@/if-else"
+    },
+    {
+      "description": "The rounding result. Equals to one of Tx.",
+      "id": "HJtroa-tW",
+      "label": "T",
+      "position": {
+        "x": 136,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "SkPwiaWY-",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "@/discretize-2"
+    },
+    {
+      "id": "rk-OiaZY-",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "@/less"
+    },
+    {
+      "id": "ryDEo6bF-",
+      "label": "T2",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ryNEs6-tZ",
+      "label": "T1",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Index of the threshold selected. Zero based.",
+      "id": "rysIoTZFZ",
+      "label": "IDX",
+      "position": {
+        "x": 34,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

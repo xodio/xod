@@ -1,0 +1,186 @@
+{
+  "description": "Rounds up a desired sensitivity of an ST IMU sensor `SEN` to one of [S0, S1, S2, S3]",
+  "links": [
+    {
+      "id": "B1C2nTZYW",
+      "input": {
+        "nodeId": "HJinnpbFb",
+        "pinKey": "Byme2abtW"
+      },
+      "output": {
+        "nodeId": "rynt0KE_W",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "B1fa2abKZ",
+      "input": {
+        "nodeId": "HJinnpbFb",
+        "pinKey": "S1w-2pbtZ"
+      },
+      "output": {
+        "nodeId": "ryP8LnZtZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "B1xana-tW",
+      "input": {
+        "nodeId": "HJinnpbFb",
+        "pinKey": "BJVbhaZtb"
+      },
+      "output": {
+        "nodeId": "rk850K4u-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkJT3aZK-",
+      "input": {
+        "nodeId": "HJinnpbFb",
+        "pinKey": "S1y-habt-"
+      },
+      "output": {
+        "nodeId": "r1NqAYVdb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H151aa-KZ",
+      "input": {
+        "nodeId": "r1lUy5N_b",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1QJ6a-K-",
+        "pinKey": "H1HILaWFb"
+      }
+    },
+    {
+      "id": "HyVahpWFZ",
+      "input": {
+        "nodeId": "HJinnpbFb",
+        "pinKey": "SJWxhTWtZ"
+      },
+      "output": {
+        "nodeId": "B1pDRtEdb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyrwmW7tW",
+      "input": {
+        "nodeId": "H1C7ycV_b",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJinnpbFb",
+        "pinKey": "B16H3TWtZ"
+      }
+    },
+    {
+      "id": "SkwJ6TZtb",
+      "input": {
+        "nodeId": "r1QJ6a-K-",
+        "pinKey": "r1m4LpWKb"
+      },
+      "output": {
+        "nodeId": "HJinnpbFb",
+        "pinKey": "B16H3TWtZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Sensitivity value as requested by user.",
+      "id": "B1pDRtEdb",
+      "label": "SEN",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Sensitivity level index, e.g. 0-th, 1-th, 2-th, or 3-th",
+      "id": "H1C7ycV_b",
+      "label": "IDX",
+      "position": {
+        "x": 442,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "HJinnpbFb",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/core/discretize-4"
+    },
+    {
+      "description": "Level 2 sensitivity provided by the sensor, e.g. ±4g",
+      "id": "r1NqAYVdb",
+      "label": "S1",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "B1-BIa-t-": 48,
+        "BJTNLT-Kb": 16,
+        "Bk1HU6btW": 32
+      },
+      "id": "r1QJ6a-K-",
+      "position": {
+        "x": 136,
+        "y": 306
+      },
+      "type": "xod/core/nth-number-4"
+    },
+    {
+      "description": "Value for CTRL_REG4 to set the sensitivity selected",
+      "id": "r1lUy5N_b",
+      "label": "REG",
+      "position": {
+        "x": 136,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Level 3 sensitivity provided by the sensor, e.g. ±8g",
+      "id": "rk850K4u-",
+      "label": "S2",
+      "position": {
+        "x": 306,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Level 4 sensitivity provided by the sensor, e.g. ±16g",
+      "id": "ryP8LnZtZ",
+      "label": "S3",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Level 1 sensitivity provided by the sensor, e.g. ±2g",
+      "id": "rynt0KE_W",
+      "label": "S0",
+      "position": {
+        "x": 238,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "links": [
+    {
+      "id": "BJUaxYVdb",
+      "input": {
+        "nodeId": "rk3jltV_b",
+        "pinKey": "S1dKPuVdW"
+      },
+      "output": {
+        "nodeId": "rkFogtVOZ",
+        "pinKey": "SJB3vO4uZ"
+      }
+    },
+    {
+      "id": "ByPpxtNO-",
+      "input": {
+        "nodeId": "HkNjgtNOZ",
+        "pinKey": "Sk2oU_Vdb"
+      },
+      "output": {
+        "nodeId": "rk3jltV_b",
+        "pinKey": "SJB3vO4uZ"
+      }
+    },
+    {
+      "id": "HJNTltV_b",
+      "input": {
+        "nodeId": "rkFogtVOZ",
+        "pinKey": "S1dKPuVdW"
+      },
+      "output": {
+        "nodeId": "SybilYN_Z",
+        "pinKey": "HJbjB_Nd-"
+      }
+    },
+    {
+      "id": "HkxCgtVd-",
+      "input": {
+        "nodeId": "SkDMTNjwW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HkNjgtNOZ",
+        "pinKey": "ryviw_EOb"
+      }
+    },
+    {
+      "id": "HybTxt4dZ",
+      "input": {
+        "nodeId": "SybilYN_Z",
+        "pinKey": "HkLOB_EuZ"
+      },
+      "output": {
+        "nodeId": "HJEUcEswW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJ6pgY4O-",
+      "input": {
+        "nodeId": "rk3jltV_b",
+        "pinKey": "H1jODuEOW"
+      },
+      "output": {
+        "nodeId": "HkKvqEswZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyqTxtNu-",
+      "input": {
+        "nodeId": "rkFogtVOZ",
+        "pinKey": "H1jODuEOW"
+      },
+      "output": {
+        "nodeId": "H17P5VsPZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryXpeFNOW",
+      "input": {
+        "nodeId": "SybilYN_Z",
+        "pinKey": "BJfKruVdb"
+      },
+      "output": {
+        "nodeId": "r1ypaEoDW",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "H17P5VsPZ",
+      "label": "B0",
+      "position": {
+        "x": 138,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HJEUcEswW",
+      "label": "ADDR",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HkKvqEswZ",
+      "label": "B1",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HkNjgtNOZ",
+      "position": {
+        "x": 266,
+        "y": 432
+      },
+      "type": "@/i2c-end-transmission"
+    },
+    {
+      "id": "SkDMTNjwW",
+      "label": "DONE",
+      "position": {
+        "x": 266,
+        "y": 536
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "SybilYN_Z",
+      "position": {
+        "x": 266,
+        "y": 120
+      },
+      "type": "@/i2c-begin-transmission"
+    },
+    {
+      "id": "r1ypaEoDW",
+      "label": "SEND",
+      "position": {
+        "x": 394,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "rk3jltV_b",
+      "position": {
+        "x": 266,
+        "y": 328
+      },
+      "type": "@/i2c-write"
+    },
+    {
+      "id": "rkFogtVOZ",
+      "position": {
+        "x": 266,
+        "y": 224
+      },
+      "type": "@/i2c-write"
+    }
+  ]
+}

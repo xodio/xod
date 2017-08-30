@@ -1,0 +1,217 @@
+{
+  "description": "Reads acceleration from an accelerometer based on LIS331DLH IC by STMicroelectronics. It is expected the accelerometer is connected to the first hardware I²C bus.",
+  "links": [
+    {
+      "id": "BkFgn-XFW",
+      "input": {
+        "nodeId": "Hk013Z7t-",
+        "pinKey": "SkhbobXKW"
+      },
+      "output": {
+        "nodeId": "r1ZJ0iWFW",
+        "pinKey": "S1_e24ov-"
+      }
+    },
+    {
+      "id": "Bkilh-Xt-",
+      "input": {
+        "nodeId": "S1-e3WXFZ",
+        "pinKey": "SkhbobXKW"
+      },
+      "output": {
+        "nodeId": "r1ZJ0iWFW",
+        "pinKey": "HyTe3Ejv-"
+      }
+    },
+    {
+      "id": "Hk2xCjZYb",
+      "input": {
+        "nodeId": "r1ZJ0iWFW",
+        "pinKey": "HyPRoViP-"
+      },
+      "output": {
+        "nodeId": "SJFeRsZYW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hkax3ZmYW",
+      "input": {
+        "nodeId": "rkPG0s-YZ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1-e3WXFZ",
+        "pinKey": "HyEMj-mFb"
+      }
+    },
+    {
+      "id": "SyvlnbmYZ",
+      "input": {
+        "nodeId": "HJzzRiWt-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H13Jn-mK-",
+        "pinKey": "HyEMj-mFb"
+      }
+    },
+    {
+      "id": "r19gnZ7Fb",
+      "input": {
+        "nodeId": "BySz0iWtW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Hk013Z7t-",
+        "pinKey": "HyEMj-mFb"
+      }
+    },
+    {
+      "id": "rJ3ZCoWYb",
+      "input": {
+        "nodeId": "r1ZJ0iWFW",
+        "pinKey": "rkIkhEsvW"
+      },
+      "output": {
+        "nodeId": "Syc-0sWtZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJIg2bXYZ",
+      "input": {
+        "nodeId": "H13Jn-mK-",
+        "pinKey": "SkhbobXKW"
+      },
+      "output": {
+        "nodeId": "r1ZJ0iWFW",
+        "pinKey": "Sk-e2ViDb"
+      }
+    },
+    {
+      "id": "rkfWCoWtW",
+      "input": {
+        "nodeId": "r1ZJ0iWFW",
+        "pinKey": "HJaCs4jDW"
+      },
+      "output": {
+        "nodeId": "S1x-AsWKb",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Acceleration along Y axis. Expressed in ɡ units.",
+      "id": "BySz0iWtW",
+      "label": "Yg",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "H13Jn-mK-",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "@/st-imu-normalize-acc"
+    },
+    {
+      "description": "Acceleration along X axis. Expressed in ɡ units.",
+      "id": "HJzzRiWt-",
+      "label": "Xg",
+      "position": {
+        "x": 34,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "Hk013Z7t-",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "@/st-imu-normalize-acc"
+    },
+    {
+      "id": "S1-e3WXFZ",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "@/st-imu-normalize-acc"
+    },
+    {
+      "boundValues": {
+        "__out__": 2
+      },
+      "description": "Sensitivity. Can be 2 (default), 4, or 8. Defines bounds of measurements expressed in ɡ (standard gravity) units. E.g. max ±4g. The lower the sensitivity the better output precission. Inaccurate values are rounded up to a nearest correct sensitivity level.",
+      "id": "S1x-AsWKb",
+      "label": "SENS",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "__out__": 24
+      },
+      "description": "I²C address. 24 by default. Some board configurations use 25 instead.",
+      "id": "SJFeRsZYW",
+      "label": "ADDR",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Update. Triggers new sensor reading.",
+      "id": "Syc-0sWtZ",
+      "label": "UPD",
+      "position": {
+        "x": 408,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundValues": {
+        "BkVN0JQYW": 39,
+        "ByfrajWF-": 4,
+        "HkI8TabKZ": 8,
+        "HyDRXZXKb": 2,
+        "SymAXb7KW": 1,
+        "r10RQb7FZ": 3.9,
+        "rkKV6s-Yb": 2,
+        "ryrBTjZtZ": 1000
+      },
+      "id": "r1ZJ0iWFW",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "@/st-imu-generic-sensor"
+    },
+    {
+      "description": "Acceleration along Z axis. Expressed in ɡ units.",
+      "id": "rkPG0s-YZ",
+      "label": "Zg",
+      "position": {
+        "x": 102,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

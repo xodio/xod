@@ -1,0 +1,168 @@
+{
+  "description": "Selects one of `Xi` value based on `IDX` index value.",
+  "links": [
+    {
+      "id": "B13iB6WY-",
+      "input": {
+        "nodeId": "r1UjH6ZF-",
+        "pinKey": "BkGyBpZKZ"
+      },
+      "output": {
+        "nodeId": "SJhFra-t-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJVgUTbt-",
+      "input": {
+        "nodeId": "HJi1ITZYb",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "B1kcrabFZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJpiSaZKb",
+      "input": {
+        "nodeId": "r1UjH6ZF-",
+        "pinKey": "rJXCVpWtZ"
+      },
+      "output": {
+        "nodeId": "SkPtBp-FW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1WgUTZF-",
+      "input": {
+        "nodeId": "HJi1ITZYb",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "r1UjH6ZF-",
+        "pinKey": "rJCJSpbt-"
+      }
+    },
+    {
+      "id": "HyWJUpWYW",
+      "input": {
+        "nodeId": "SyPRHTWFZ",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "SkPtBp-FW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkIMIpWFb",
+      "input": {
+        "nodeId": "BJVz8TbYZ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJi1ITZYb",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "rkqoB6btW",
+      "input": {
+        "nodeId": "r1UjH6ZF-",
+        "pinKey": "S13CNpbK-"
+      },
+      "output": {
+        "nodeId": "SJ5tSTZY-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryke8pWKZ",
+      "input": {
+        "nodeId": "HJi1ITZYb",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "SyPRHTWFZ",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1kcrabFZ",
+      "label": "X2",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "The selected value. Equals to one of `Xi` input.",
+      "id": "BJVz8TbYZ",
+      "position": {
+        "x": 136,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "HJi1ITZYb",
+      "position": {
+        "x": 136,
+        "y": 306
+      },
+      "type": "@/if-else"
+    },
+    {
+      "id": "SJ5tSTZY-",
+      "label": "X0",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SJhFra-t-",
+      "label": "X1",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Index to select. Fraction part is truncated. E.g. index 1.9 is considered to be 1. Index below 0 is rounded up to 0. Any index greater than 2 is round down to 2.",
+      "id": "SkPtBp-FW",
+      "label": "IDX",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "SJqZ8COrDkW": 2
+      },
+      "id": "SyPRHTWFZ",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/less"
+    },
+    {
+      "id": "r1UjH6ZF-",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "@/nth-number-2"
+    }
+  ]
+}

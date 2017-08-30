@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "content": "Convert milli-degree-per-second to degree-per-second",
+      "id": "HJeJRWXKZ",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "size": {
+        "height": 51,
+        "width": 238
+      }
+    }
+  ],
+  "description": "Converts raw axis register value of an ST IMU to an angular velocity expressed in radians per second",
+  "links": [
+    {
+      "id": "Byu_AbmYb",
+      "input": {
+        "nodeId": "rJOApZXF-",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "By2rpbQFb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJKuRZQYW",
+      "input": {
+        "nodeId": "Sym_RZQtb",
+        "pinKey": "BycBRi3I-"
+      },
+      "output": {
+        "nodeId": "rJOApZXF-",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "Sk9_CbXK-",
+      "input": {
+        "nodeId": "Hye8p-7FW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Sym_RZQtb",
+        "pinKey": "S1AHAj2UW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "By2rpbQFb",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Hye8p-7FW",
+      "position": {
+        "x": 0,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "Sym_RZQtb",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/units/deg-to-rad"
+    },
+    {
+      "boundValues": {
+        "BytUCdHD1-": 1000
+      },
+      "id": "rJOApZXF-",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/core/divide"
+    }
+  ]
+}

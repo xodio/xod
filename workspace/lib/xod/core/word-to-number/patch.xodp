@@ -1,0 +1,42 @@
+{
+  "description": "Packs two bytes into an integer number",
+  "nodes": [
+    {
+      "id": "SJ_i04svZ",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "High byte value",
+      "id": "rJhKCEovZ",
+      "label": "HI",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "The result number. Equals to `HI` shifted left on 8 bits bitwise or’ed with `LO`.",
+      "id": "rySsCNowW",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Low byte value",
+      "id": "ryv504owW",
+      "label": "LO",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
