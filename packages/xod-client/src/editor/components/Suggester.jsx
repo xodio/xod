@@ -5,6 +5,8 @@ import classNames from 'classnames';
 import Autosuggest from 'react-autosuggest';
 import Highlighter from 'react-highlight-words';
 
+import { isAmong } from 'xod-func-tools';
+
 import { KEYCODE } from '../../utils/constants';
 import SuggesterContainer from './SuggesterContainer';
 
@@ -26,6 +28,7 @@ class Suggester extends React.Component {
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
+    this.onSuggestionHighlighted = this.onSuggestionHighlighted.bind(this);
     this.storeInputReference = this.storeInputReference.bind(this);
   }
 
@@ -37,13 +40,7 @@ class Suggester extends React.Component {
   }
 
   onChange(e, { newValue, method }) {
-    if (
-      method === 'up' ||
-      method === 'down' ||
-      method === 'click'
-    ) {
-      return;
-    }
+    if (isAmong(['up', 'down', 'click'], method)) return;
 
     this.setState({ value: newValue });
   }
@@ -68,6 +65,12 @@ class Suggester extends React.Component {
 
   onSuggestionSelected(event, { suggestionValue }) {
     this.onSelect(suggestionValue);
+  }
+
+  onSuggestionHighlighted({ suggestion }) {
+    if (suggestion) {
+      this.props.onHighlight(getSuggestionValue(suggestion));
+    }
   }
 
   getSuggestions(value) {
@@ -123,8 +126,9 @@ class Suggester extends React.Component {
       type: 'search',
     };
 
+    const cls = `Suggester ${this.props.addClassName}`;
     return (
-      <div className="Suggester">
+      <div className={cls}>
         <Autosuggest
           suggestions={suggestions}
           value={value}
@@ -135,6 +139,7 @@ class Suggester extends React.Component {
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           onSuggestionSelected={this.onSuggestionSelected}
+          onSuggestionHighlighted={this.onSuggestionHighlighted}
           renderSuggestion={this.renderItem}
           renderSuggestionsContainer={({ containerProps, children }) => (
             <SuggesterContainer containerProps={containerProps}>
@@ -149,12 +154,16 @@ class Suggester extends React.Component {
 }
 
 Suggester.defaultProps = {
+  addClassName: '',
   onBlur: () => {},
+  onHighlight: () => {},
 };
 
 Suggester.propTypes = {
+  addClassName: PropTypes.string,
   index: PropTypes.object,
   onAddNode: PropTypes.func.isRequired,
+  onHighlight: PropTypes.func,
   onBlur: PropTypes.func,
 };
 

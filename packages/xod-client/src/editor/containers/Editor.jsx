@@ -47,7 +47,7 @@ class Editor extends React.Component {
 
   onAddNode(patchPath) {
     // TODO: rewrite this when implementing "zombie" nodes
-    const position = this.props.suggesterPlacePosition || { x: 50, y: 50 };
+    const position = this.props.suggesterPlacePosition || this.props.defaultNodePosition;
 
     this.hideSuggester();
     this.props.actions.addNode(
@@ -69,7 +69,7 @@ class Editor extends React.Component {
       [COMMAND.TOGGLE_HELPBAR]: this.toggleHelpbar,
       [COMMAND.INSERT_NODE]: (event) => {
         if (isInput(event)) return;
-        this.showSuggester();
+        this.showSuggester(null);
       },
     };
   }
@@ -80,8 +80,8 @@ class Editor extends React.Component {
     this.props.actions.toggleHelpbar();
   }
 
-  showSuggester(pos) {
-    this.props.actions.showSuggester(pos);
+  showSuggester(placePosition) {
+    this.props.actions.showSuggester(placePosition);
   }
 
   hideSuggester() {
@@ -110,9 +110,11 @@ class Editor extends React.Component {
 
     const suggester = (this.props.suggesterIsVisible) ? (
       <Suggester
+        addClassName={(this.props.isHelpbarVisible) ? 'with-helpbar' : ''}
         index={patchesIndex}
         onAddNode={this.onAddNode}
         onBlur={this.hideSuggester}
+        onHighlight={this.props.actions.highlightSugessterItem}
       />
     ) : null;
 
@@ -135,7 +137,7 @@ class Editor extends React.Component {
           <Workarea>
             <Tabs />
             {openedPatch}
-          {suggester}
+            {suggester}
           </Workarea>
         </FocusTrap>
         <Helpbar />
@@ -150,8 +152,10 @@ Editor.propTypes = {
   currentPatchPath: PropTypes.string,
   currentPatch: sanctuaryPropType($Maybe(PatchType)),
   patchesIndex: PropTypes.object,
+  isHelpbarVisible: PropTypes.bool,
   suggesterIsVisible: PropTypes.bool,
   suggesterPlacePosition: PropTypes.object,
+  defaultNodePosition: PropTypes.object.isRequired,
   actions: PropTypes.shape({
     updateNodeProperty: PropTypes.func.isRequired,
     updatePatchDescription: PropTypes.func.isRequired,
@@ -163,6 +167,7 @@ Editor.propTypes = {
     addNode: PropTypes.func.isRequired,
     showSuggester: PropTypes.func.isRequired,
     hideSuggester: PropTypes.func.isRequired,
+    highlightSugessterItem: PropTypes.func.isRequired,
   }),
 };
 
@@ -173,6 +178,8 @@ const mapStateToProps = R.applySpec({
   patchesIndex: ProjectSelectors.getPatchSearchIndex,
   suggesterIsVisible: EditorSelectors.isSuggesterVisible,
   suggesterPlacePosition: EditorSelectors.getSuggesterPlacePosition,
+  isHelpbarVisible: EditorSelectors.isHelpbarVisible,
+  defaultNodePosition: EditorSelectors.getDefaultNodePlacePosition,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -187,6 +194,7 @@ const mapDispatchToProps = dispatch => ({
     addNode: ProjectActions.addNode,
     showSuggester: Actions.showSuggester,
     hideSuggester: Actions.hideSuggester,
+    highlightSugessterItem: Actions.highlightSugessterItem,
   }, dispatch),
 });
 

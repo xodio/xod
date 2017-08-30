@@ -212,12 +212,18 @@ export const setFocusedArea = area => ({
   payload: area,
 });
 
-export const showSuggester = (pos = null) => ({
+export const showSuggester = placePosition => ({
   type: ActionType.SHOW_SUGGESTER,
-  payload: pos,
+  payload: placePosition,
 });
 
 export const hideSuggester = () => ({
   type: ActionType.HIDE_SUGGESTER,
 });
 
+export const highlightSugessterItem = patchPath => ({
+  type: ActionType.HIGHLIGHT_SUGGESTER_ITEM,
+  payload: {
+    patchPath,
+  },
+});

@@ -12,6 +12,7 @@ export default {
   suggester: {
     visible: false,
     placePosition: null,
+    highlightedPatchPath: null,
   },
   tabs: {
     '@/1': {

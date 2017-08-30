@@ -29,8 +29,18 @@ export const getPatchForHelpbar = createSelector(
     Editor.getSelection,
     ProjectBrowser.getSelectedPatchPath,
     Project.getCurrentPatchNodes,
+    Editor.isSuggesterVisible,
+    Editor.getSuggesterHighlightedPatchPath,
   ],
-  (project, focusedArea, editorSelection, selectedPatchPath, currentPatchNodes) => {
+  (
+    project,
+    focusedArea,
+    editorSelection,
+    selectedPatchPath,
+    currentPatchNodes,
+    suggesterVisible,
+    suggesterPatchPath
+  ) => {
     const maybeSelectedNodeTypeInWorkarea = R.compose(
       R.map(XP.getNodeType),
       R.map(({ id }) => currentPatchNodes[id]),
@@ -38,6 +48,10 @@ export const getPatchForHelpbar = createSelector(
       R.find(R.propEq('entity', SELECTION_ENTITY_TYPE.NODE)),
     )(editorSelection);
     const maybeSelectedPathInProjectBrowser = Maybe(selectedPatchPath);
+
+    if (suggesterVisible && suggesterPatchPath) {
+      return XP.getPatchByPath(suggesterPatchPath, project);
+    }
 
     return R.compose(
       R.chain(patchPath => XP.getPatchByPath(patchPath, project)),

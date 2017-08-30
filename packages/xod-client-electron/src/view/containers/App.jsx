@@ -335,7 +335,7 @@ class App extends client.App {
           items.copy,
           items.paste,
           items.separator,
-          onClick(items.insertNode, () => this.props.actions.showSuggester()),
+          onClick(items.insertNode, () => this.props.actions.showSuggester(null)),
           onClick(items.insertComment, this.props.actions.addComment),
           items.separator,
           onClick(items.projectPreferences, this.props.actions.showProjectPreferences),

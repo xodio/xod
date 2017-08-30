@@ -66,10 +66,6 @@ export const ELECTRON_ACCELERATOR = {
   [COMMAND.PASTE]: 'CmdOrCtrl+V',
 
   [COMMAND.SAVE_PROJECT]: 'CmdOrCtrl+S',
-
-  [COMMAND.TOGGLE_HELPBAR]: 'H',
-
-  [COMMAND.INSERT_NODE]: 'I',
 };
 
 export const KEYCODE = {
