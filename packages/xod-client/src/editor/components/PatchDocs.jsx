@@ -126,6 +126,13 @@ const PatchDocs = ({ patch }) => {
 
   const distanceBetweenPins = (scaleFactor * SLOT_SIZE.WIDTH) - 1;
 
+  // because we never draw labels for terminal nodes
+  const position = R.when(
+    () => XP.isTerminalPatchPath(nodeType),
+    R.assoc('y', XP.isInputTerminalPath(nodeType) ? 32 : 8),
+    NODE_POSITION_IN_PREVIEW
+  );
+
   return (
     <div className="PatchDocs">
       <div className="baseName">{baseName}</div>
@@ -141,7 +148,7 @@ const PatchDocs = ({ patch }) => {
           <g transform={`scale(${scaleFactor}) translate(${nodeMargin})`}>
             <Node
               {...nodeProps}
-              position={NODE_POSITION_IN_PREVIEW}
+              position={position}
             />
           </g>
         </svg>

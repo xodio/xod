@@ -2,7 +2,7 @@ import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { getBaseName } from 'xod-project';
+import * as XP from 'xod-project';
 
 import Pin from './Pin';
 import PinLabel from './PinLabel';
@@ -10,6 +10,73 @@ import { noop } from '../../utils/ramda';
 import { isPinSelected } from '../../editor/utils';
 
 import { NODE_CORNER_RADIUS } from '../nodeLayout';
+
+const NodeLabel = ({ text, ...props }) => (
+  <foreignObject {...props}>
+    <div className="nodeLabelContainer" xmlns="http://www.w3.org/1999/xhtml">
+      <span className="nodeLabel">{text}</span>
+    </div>
+  </foreignObject>
+);
+
+NodeLabel.propTypes = {
+  text: PropTypes.string.isRequired,
+};
+
+const NODE_BODY_RECT_PROPS = {
+  rx: NODE_CORNER_RADIUS,
+  ry: NODE_CORNER_RADIUS,
+  // size is set in root svg, let's occupy it all
+  width: '100%',
+  height: '100%',
+};
+
+const renderRegularNodeBody = (node, nodeLabel) => (
+  <g>
+    <rect
+      className="body"
+      {...NODE_BODY_RECT_PROPS}
+    />
+    <NodeLabel
+      text={nodeLabel}
+      {...node.size}
+    />
+    <rect
+      className="outline"
+      {...NODE_BODY_RECT_PROPS}
+    />
+  </g>
+);
+
+const renderTerminalNodeBody = (node) => {
+  const isInput = XP.isInputTerminalPath(node.type);
+  const radius = node.size.width / 2;
+  const yOffset = isInput ? (node.size.height - node.size.width) : 0;
+  const circleProps = {
+    cx: radius,
+    cy: radius + yOffset,
+    r: radius,
+  };
+
+  return (
+    <g>
+      <circle
+        className="body"
+        {...circleProps}
+      />
+      <NodeLabel
+        text={node.label}
+        width={node.size.width}
+        height={node.size.width}
+        y={yOffset + (isInput ? -1 : 1)}
+      />
+      <circle
+        className={classNames('outline', XP.getTerminalDataType(node.type))}
+        {...circleProps}
+      />
+    </g>
+  );
+};
 
 class Node extends React.Component {
   constructor(props) {
@@ -19,7 +86,7 @@ class Node extends React.Component {
   }
 
   shouldComponentUpdate(newProps) {
-    return R.not(R.equals(newProps, this.props));
+    return !R.equals(newProps, this.props);
   }
 
   onMouseDown(event) {
@@ -44,20 +111,15 @@ class Node extends React.Component {
       'is-ghost': this.props.isGhost,
     });
 
-    const bodyRectProps = {
-      rx: NODE_CORNER_RADIUS,
-      ry: NODE_CORNER_RADIUS,
-      // size is set in root svg, let's occupy it all
-      width: '100%',
-      height: '100%',
-    };
 
     const svgStyle = {
       overflow: 'visible',
       opacity: this.props.hidden ? 0 : 1, // setting visibility is breaking masks
     };
 
-    const nodeLabel = label || getBaseName(type);
+    const nodeLabel = label || XP.getBaseName(type);
+
+    const isTerminalNode = XP.isTerminalPatchPath(type);
 
     return (
       <svg
@@ -72,29 +134,23 @@ class Node extends React.Component {
           onMouseDown={this.onMouseDown}
           title={nodeLabel} // this is for func-tests
         >
-          <rect
-            className="body"
-            {...bodyRectProps}
-          />
-          <foreignObject {...size}>
-            <div className="nodeLabelContainer" xmlns="http://www.w3.org/1999/xhtml">
-              <span className="nodeLabel">{nodeLabel}</span>
-            </div>
-          </foreignObject>
-          <rect
-            className="outline"
-            {...bodyRectProps}
-          />
+          {
+            isTerminalNode
+              ? renderTerminalNodeBody(this.props)
+              : renderRegularNodeBody(this.props, nodeLabel)
+          }
           {!this.props.isDragged ? <title>{nodeLabel}</title> : null}
         </g>
         <g className="pins">
           {pinsArr.map(pin =>
             <g key={pin.key}>
-              <PinLabel
-                {...pin}
-                keyName={pin.key}
-                key={`pinlabel_${pin.key}`}
-              />
+              {isTerminalNode ? null : (
+                <PinLabel
+                  {...pin}
+                  keyName={pin.key}
+                  key={`pinlabel_${pin.key}`}
+                />
+              )}
               <Pin
                 {...pin}
                 isSelected={isPinSelected(linkingPin, pin)}

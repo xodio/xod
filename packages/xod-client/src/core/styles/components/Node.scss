@@ -1,4 +1,3 @@
-
 .Node {
   .body {
     width: 100%;
@@ -11,6 +10,11 @@
     fill: transparent;
     stroke: $color-node-outline;
     stroke-width: 2px;
+
+    &.string { stroke: $color-datatype-string; }
+    &.number { stroke: $color-datatype-number; }
+    &.boolean { stroke: $color-datatype-boolean; }
+    &.pulse { stroke: $color-datatype-pulse; }
   }
 
   .nodeLabelContainer {
