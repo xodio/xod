@@ -40,7 +40,7 @@ export const getPatchForHelpbar = createSelector(
     const maybeSelectedPathInProjectBrowser = Maybe(selectedPatchPath);
 
     return R.compose(
-      R.map(patchPath => XP.getPatchByPathUnsafe(patchPath, project)),
+      R.chain(patchPath => XP.getPatchByPath(patchPath, project)),
       R.apply(fallbackMaybe), // TODO: works with only two sources
       R.when(
         () => focusedArea === FOCUS_AREAS.PROJECT_BROWSER,
