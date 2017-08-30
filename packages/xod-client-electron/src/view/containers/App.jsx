@@ -388,10 +388,7 @@ class App extends client.App {
   }
 
   initNativeMenu() {
-    const template = this.getMenuBarItems();
-
-    // Browser controls
-    template.push({
+    const viewMenu = {
       label: 'View',
       submenu: [
         client.menu.onClick(client.menu.items.toggleHelpbar, this.props.actions.toggleHelpbar),
@@ -405,41 +402,51 @@ class App extends client.App {
         { type: 'separator' },
         { role: 'togglefullscreen' },
       ],
-    });
+    };
 
-    if (process.platform === 'darwin') {
-      // on a mac the first menu always has to be like this
-      template.unshift({
-        label: app.getName(),
-        submenu: [
-          { role: 'about' },
-          { type: 'separator' },
-          { role: 'services', submenu: [] },
-          { type: 'separator' },
-          { role: 'hide' },
-          { role: 'hideothers' },
-          { role: 'unhide' },
-          { type: 'separator' },
-          { role: 'quit' },
-        ],
-      });
+    const template = this.getMenuBarItems();
+    const helpItem = R.last(template);
 
-      template.push({
-        role: 'window',
-        submenu: [
-          { role: 'minimize' },
-          { role: 'close' },
-        ],
-      });
-    }
-
-    const menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);
-    // for testing purposes
-    // see https://github.com/electron/spectron/issues/21
-    if (isDevelopment) {
-      subscribeToTriggerMainMenuRequests(ipcRenderer, template);
-    }
+    R.compose(
+      (finalTemplate) => {
+        const menu = Menu.buildFromTemplate(finalTemplate);
+        Menu.setApplicationMenu(menu);
+        // for testing purposes
+        // see https://github.com/electron/spectron/issues/21
+        if (isDevelopment) {
+          subscribeToTriggerMainMenuRequests(ipcRenderer, finalTemplate);
+        }
+      },
+      R.append(helpItem),
+      R.when(
+        () => process.platform === 'darwin',
+        R.compose(
+          R.prepend({
+            label: app.getName(),
+            submenu: [
+              { role: 'about' },
+              { type: 'separator' },
+              { role: 'services', submenu: [] },
+              { type: 'separator' },
+              { role: 'hide' },
+              { role: 'hideothers' },
+              { role: 'unhide' },
+              { type: 'separator' },
+              { role: 'quit' },
+            ],
+          }),
+          R.append({
+            role: 'window',
+            submenu: [
+              { role: 'minimize' },
+              { role: 'close' },
+            ],
+          })
+        )
+      ),
+      R.append(viewMenu),
+      R.init // get rid of help menu, we'll reappend it later
+    )(template);
   }
 
   showPopupProjectSelection(projects) {
