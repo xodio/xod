@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "id": "HJ1RO5rFZ",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "SJPZu5rYb",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "rJifd9BKZ",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

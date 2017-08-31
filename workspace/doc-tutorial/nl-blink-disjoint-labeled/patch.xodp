@@ -1,35 +1,13 @@
 {
   "links": [
     {
-      "id": "BkCpgZSr-",
+      "id": "HJocxaI7-",
       "input": {
-        "nodeId": "Skz7k6Im-",
+        "nodeId": "S1_tlaIXb",
         "pinKey": "HJ6HsEngZ"
       },
       "output": {
-        "nodeId": "rkczJ6U7-",
-        "pinKey": "HkyxURuSPyW"
-      }
-    },
-    {
-      "id": "Bkk0lWrBZ",
-      "input": {
-        "nodeId": "SyXV1687-",
-        "pinKey": "HJ6HsEngZ"
-      },
-      "output": {
-        "nodeId": "rJa71TLQZ",
-        "pinKey": "r1if8ROSDJ-"
-      }
-    },
-    {
-      "id": "H1rLJpLQZ",
-      "input": {
-        "nodeId": "rJa71TLQZ",
-        "pinKey": "ry3zLA_Bv1Z"
-      },
-      "output": {
-        "nodeId": "rkczJ6U7-",
+        "nodeId": "BkJKxaIXZ",
         "pinKey": "HkyxURuSPyW"
       }
     },
@@ -43,16 +21,91 @@
         "nodeId": "Bkc-kpLXb",
         "pinKey": "HJU8CE2lW"
       }
+    },
+    {
+      "id": "S1VGWbrrW",
+      "input": {
+        "nodeId": "SyXV1687-",
+        "pinKey": "HJ6HsEngZ"
+      },
+      "output": {
+        "nodeId": "rJa71TLQZ",
+        "pinKey": "r1if8ROSDJ-"
+      }
+    },
+    {
+      "id": "SkiW--Br-",
+      "input": {
+        "nodeId": "rJa71TLQZ",
+        "pinKey": "ry3zLA_Bv1Z"
+      },
+      "output": {
+        "nodeId": "rkczJ6U7-",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "ryG87r8HZ",
+      "input": {
+        "nodeId": "Skz7k6Im-",
+        "pinKey": "HJ6HsEngZ"
+      },
+      "output": {
+        "nodeId": "rkczJ6U7-",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "ryO5eaIX-",
+      "input": {
+        "nodeId": "BkJKxaIXZ",
+        "pinKey": "ryTIROHwkW"
+      },
+      "output": {
+        "nodeId": "SktOxpUmZ",
+        "pinKey": "HJU8CE2lW"
+      }
     }
   ],
   "nodes": [
+    {
+      "id": "BkJKxaIXZ",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/core/flip-flop"
+    },
     {
       "boundValues": {
         "B13SCNhl-": 0.25
       },
       "id": "Bkc-kpLXb",
       "position": {
-        "x": 68,
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "boundValues": {
+        "B134j4neZ": 11
+      },
+      "id": "S1_tlaIXb",
+      "label": "Red LED",
+      "position": {
+        "x": 170,
+        "y": 306
+      },
+      "type": "xod/core/digital-output"
+    },
+    {
+      "boundValues": {
+        "B13SCNhl-": 0.7
+      },
+      "id": "SktOxpUmZ",
+      "position": {
+        "x": 238,
         "y": 0
       },
       "type": "xod/core/clock"
@@ -62,8 +115,9 @@
         "B134j4neZ": 13
       },
       "id": "Skz7k6Im-",
+      "label": "Yellow LED",
       "position": {
-        "x": 0,
+        "x": -34,
         "y": 306
       },
       "type": "xod/core/digital-output"
@@ -73,8 +127,9 @@
         "B134j4neZ": 12
       },
       "id": "SyXV1687-",
+      "label": "Blue LED",
       "position": {
-        "x": 102,
+        "x": 68,
         "y": 306
       },
       "type": "xod/core/digital-output"
@@ -82,7 +137,7 @@
     {
       "id": "rJa71TLQZ",
       "position": {
-        "x": 136,
+        "x": 102,
         "y": 204
       },
       "type": "xod/core/not"
@@ -90,7 +145,7 @@
     {
       "id": "rkczJ6U7-",
       "position": {
-        "x": 34,
+        "x": 0,
         "y": 102
       },
       "type": "xod/core/flip-flop"

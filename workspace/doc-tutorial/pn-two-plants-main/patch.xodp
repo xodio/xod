@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "HJQhtg_mb",
@@ -33,12 +32,11 @@
         "HJwZLxdQb": 15,
         "HknfLluXW": "..."
       },
-      "description": "",
       "id": "HJ49FxumZ",
       "label": "Crassula",
       "position": {
-        "x": 266,
-        "y": 16
+        "x": 272,
+        "y": 102
       },
       "type": "@/pn-plant"
     },
@@ -51,12 +49,10 @@
         "rJlYT7EfW": 8,
         "rkbjp7Ezb": 13
       },
-      "description": "",
       "id": "HJblpkuQb",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 34,
+        "y": 204
       },
       "type": "xod/common-hardware/text-lcd-16x2"
     },
@@ -68,12 +64,11 @@
         "HJwZLxdQb": 14,
         "HknfLluXW": "..."
       },
-      "description": "",
       "id": "SkqOYxOXb",
       "label": "Cactus",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 238,
+        "y": 0
       },
       "type": "@/pn-plant"
     }

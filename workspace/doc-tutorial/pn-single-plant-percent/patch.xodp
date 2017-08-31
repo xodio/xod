@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "H1hZNg_Xb",
@@ -62,23 +61,18 @@
       "boundValues": {
         "BJuORNheZ": 14
       },
-      "description": "",
       "id": "BJpa2yu7b",
-      "label": "",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 170,
+        "y": 0
       },
       "type": "xod/core/analog-input"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "ByulExOQb",
-      "label": "",
       "position": {
-        "x": 266,
-        "y": 120
+        "x": 340,
+        "y": 102
       },
       "type": "xod/core/to-percent"
     },
@@ -91,12 +85,10 @@
         "rJlYT7EfW": 8,
         "rkbjp7Ezb": 13
       },
-      "description": "",
       "id": "HJblpkuQb",
-      "label": "",
       "position": {
-        "x": 138,
-        "y": 328
+        "x": 102,
+        "y": 306
       },
       "type": "xod/common-hardware/text-lcd-16x2"
     },
@@ -104,12 +96,10 @@
       "boundValues": {
         "Hkqu9oaWb": "Cactus: "
       },
-      "description": "",
       "id": "S1fZVed7b",
-      "label": "",
       "position": {
-        "x": 266,
-        "y": 224
+        "x": 306,
+        "y": 204
       },
       "type": "xod/core/concat"
     },
@@ -117,12 +107,10 @@
       "boundValues": {
         "B134j4neZ": 3
       },
-      "description": "",
       "id": "Sk9gmgOQW",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 328
+        "x": 0,
+        "y": 306
       },
       "type": "xod/core/digital-output"
     },
@@ -130,12 +118,10 @@
       "boundValues": {
         "SJqZ8COrDkW": 0.5
       },
-      "description": "",
       "id": "rk2RnkuX-",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 34,
+        "y": 102
       },
       "type": "xod/core/less"
     }

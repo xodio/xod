@@ -1,0 +1,356 @@
+{
+  "nodes": [
+    {
+      "id": "B1-xPFHF-",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/core/floor"
+    },
+    {
+      "id": "B130LFHK-",
+      "position": {
+        "x": 918,
+        "y": 102
+      },
+      "type": "xod/core/fade"
+    },
+    {
+      "id": "B1Kj8KBF-",
+      "position": {
+        "x": 374,
+        "y": 102
+      },
+      "type": "xod/core/delay"
+    },
+    {
+      "id": "BJWbNtSFb",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/core/analog-input"
+    },
+    {
+      "id": "BJXtIYrYW",
+      "position": {
+        "x": 884,
+        "y": 0
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "id": "BJc3PYBFb",
+      "position": {
+        "x": 850,
+        "y": 306
+      },
+      "type": "xod/core/sqrt"
+    },
+    {
+      "id": "BJv-YYSYZ",
+      "position": {
+        "x": 0,
+        "y": 408
+      },
+      "type": "xod/common-hardware/led"
+    },
+    {
+      "id": "BJyiIFHFZ",
+      "position": {
+        "x": 238,
+        "y": 102
+      },
+      "type": "xod/core/count"
+    },
+    {
+      "id": "By0DPYrYZ",
+      "position": {
+        "x": 272,
+        "y": 306
+      },
+      "type": "xod/core/pi"
+    },
+    {
+      "id": "By3gEFrF-",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/core/add"
+    },
+    {
+      "id": "ByGMDKBt-",
+      "position": {
+        "x": 306,
+        "y": 204
+      },
+      "type": "xod/core/greater"
+    },
+    {
+      "id": "H10sIYStW",
+      "position": {
+        "x": 510,
+        "y": 102
+      },
+      "type": "xod/core/digital-input"
+    },
+    {
+      "id": "H1NuDYrt-",
+      "position": {
+        "x": 340,
+        "y": 306
+      },
+      "type": "xod/core/pow"
+    },
+    {
+      "id": "H1vtwFrKZ",
+      "position": {
+        "x": 442,
+        "y": 306
+      },
+      "type": "xod/core/pwm-output"
+    },
+    {
+      "id": "HJTtItHYZ",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/core/console-log"
+    },
+    {
+      "id": "HJk2PKBF-",
+      "position": {
+        "x": 782,
+        "y": 306
+      },
+      "type": "xod/core/sin"
+    },
+    {
+      "id": "HJktUYStb",
+      "position": {
+        "x": 816,
+        "y": 0
+      },
+      "type": "xod/core/ceil"
+    },
+    {
+      "id": "HkQrvFSFb",
+      "position": {
+        "x": 850,
+        "y": 204
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "id": "HkoEvFrK-",
+      "position": {
+        "x": 646,
+        "y": 204
+      },
+      "type": "xod/core/map-range"
+    },
+    {
+      "id": "HkznIYBKW",
+      "position": {
+        "x": 612,
+        "y": 102
+      },
+      "type": "xod/core/digital-output"
+    },
+    {
+      "id": "HyUgYKrKZ",
+      "position": {
+        "x": 918,
+        "y": 306
+      },
+      "type": "xod/core/xor"
+    },
+    {
+      "id": "HyiWVYHKZ",
+      "position": {
+        "x": 374,
+        "y": 0
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "id": "S16BvKSFb",
+      "position": {
+        "x": 952,
+        "y": 204
+      },
+      "type": "xod/core/nand"
+    },
+    {
+      "id": "S16eDKHY-",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/core/gate"
+    },
+    {
+      "id": "S1I8DKSYb",
+      "position": {
+        "x": 0,
+        "y": 306
+      },
+      "type": "xod/core/nor"
+    },
+    {
+      "id": "S1IZ4KrK-",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/core/and"
+    },
+    {
+      "id": "S1_mtFSF-",
+      "position": {
+        "x": 204,
+        "y": 408
+      },
+      "type": "xod/common-hardware/text-lcd-16x2"
+    },
+    {
+      "id": "SJgzVFSFb",
+      "position": {
+        "x": 476,
+        "y": 0
+      },
+      "type": "xod/core/asin"
+    },
+    {
+      "id": "SkAfYYrF-",
+      "position": {
+        "x": 102,
+        "y": 408
+      },
+      "type": "xod/common-hardware/servo"
+    },
+    {
+      "id": "SkR8PKrF-",
+      "position": {
+        "x": 102,
+        "y": 306
+      },
+      "type": "xod/core/not"
+    },
+    {
+      "id": "SkrqUtrt-",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/core/constrain"
+    },
+    {
+      "id": "Sy4fVtSYW",
+      "position": {
+        "x": 544,
+        "y": 0
+      },
+      "type": "xod/core/atan"
+    },
+    {
+      "id": "Sy9ywKStW",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/core/flip-flop"
+    },
+    {
+      "id": "SyGmwKBt-",
+      "position": {
+        "x": 408,
+        "y": 204
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "id": "SyUovtrKW",
+      "position": {
+        "x": 612,
+        "y": 306
+      },
+      "type": "xod/core/select"
+    },
+    {
+      "id": "Syj5vtBtZ",
+      "position": {
+        "x": 544,
+        "y": 306
+      },
+      "type": "xod/core/round"
+    },
+    {
+      "id": "Syzl4FBYb",
+      "position": {
+        "x": 714,
+        "y": 0
+      },
+      "type": "xod/common-hardware/button"
+    },
+    {
+      "id": "r1PYIFSF-",
+      "position": {
+        "x": 986,
+        "y": 0
+      },
+      "type": "xod/core/concat"
+    },
+    {
+      "id": "rJKeNYSYW",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/core/acos"
+    },
+    {
+      "id": "rJPDDYBtZ",
+      "position": {
+        "x": 170,
+        "y": 306
+      },
+      "type": "xod/core/or"
+    },
+    {
+      "id": "rJgEvFStb",
+      "position": {
+        "x": 544,
+        "y": 204
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "id": "rkb0UYrYW",
+      "position": {
+        "x": 816,
+        "y": 102
+      },
+      "type": "xod/core/equal"
+    },
+    {
+      "id": "ryFGNFStZ",
+      "position": {
+        "x": 612,
+        "y": 0
+      },
+      "type": "xod/core/buffer"
+    },
+    {
+      "id": "rys6IYHYW",
+      "position": {
+        "x": 714,
+        "y": 102
+      },
+      "type": "xod/core/divide"
+    }
+  ]
+}
