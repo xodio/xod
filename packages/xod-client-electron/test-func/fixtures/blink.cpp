@@ -844,10 +844,13 @@ extern DirtyFlags g_dirtyFlags[NODE_COUNT];
 extern TimeMs g_schedule[NODE_COUNT];
 
 void clearTimeout(NodeId nid);
+bool isTimedOut(NodeId nid);
 
 //----------------------------------------------------------------------------
 // Engine (private API)
 //----------------------------------------------------------------------------
+
+TimeMs g_transactionTime;
 
 void* getStoragePtr(NodeId nid, size_t offset) {
     return (uint8_t*)pgm_read_ptr(&g_storages[nid]) + offset;
@@ -913,6 +916,39 @@ T getInputValueImpl(NodeId nid, size_t wiringOffset) {
 }
 
 template<typename T>
+struct always_false {
+    enum { value = 0 };
+};
+
+// GetValue -- classical trick for partial function (API `xod::getValue`)
+// template specialization
+template<typename InputOutputT>
+struct GetValue {
+    static typename InputOutputT::ValueT getValue(Context ctx) {
+        static_assert(
+                always_false<InputOutputT>::value,
+                "You should provide an input_XXX or output_YYY argument " \
+                "in angle brackets of getValue"
+                );
+
+    }
+};
+
+template<typename ValueT, size_t wiringOffset>
+struct GetValue<InputDescriptor<ValueT, wiringOffset>> {
+    static ValueT getValue(Context ctx) {
+        return getInputValueImpl<ValueT>(ctx, wiringOffset);
+    }
+};
+
+template<typename ValueT, size_t wiringOffset, size_t storageOffset, uint8_t index>
+struct GetValue<OutputDescriptor<ValueT, wiringOffset, storageOffset, index>> {
+    static ValueT getValue(Context ctx) {
+        return getOutputValueImpl<ValueT>(ctx, storageOffset);
+    }
+};
+
+template<typename T>
 void emitValueImpl(
         NodeId nid,
         size_t storageOffset,
@@ -944,26 +980,37 @@ void evaluateNode(NodeId nid) {
 }
 
 void runTransaction() {
+    g_transactionTime = millis();
+
     XOD_TRACE_F("Transaction started, t=");
-    XOD_TRACE_LN(millis());
-    for (NodeId nid = 0; nid < NODE_COUNT; ++nid)
-        if (isNodeDirty(nid))
+    XOD_TRACE_LN(g_transactionTime);
+
+    for (NodeId nid = 0; nid < NODE_COUNT; ++nid) {
+        if (isNodeDirty(nid)) {
             evaluateNode(nid);
 
+            // If the schedule is stale, clear timeout so that
+            // the node would not be marked dirty again in idle
+            if (isTimedOut(nid))
+                clearTimeout(nid);
+        }
+    }
+
+    // Clear dirtieness for all nodes and pins
     memset(g_dirtyFlags, 0, sizeof(g_dirtyFlags));
+
     XOD_TRACE_F("Transaction completed, t=");
     XOD_TRACE_LN(millis());
 }
 
 void idle() {
+    // Mark timed out nodes dirty. Do not reset schedule here to give
+    // a chance for a node to get a reasonable result from `isTimedOut`
     TimeMs now = millis();
     for (NodeId nid = 0; nid < NODE_COUNT; ++nid) {
         TimeMs t = g_schedule[nid];
-        if (t && t <= now) {
+        if (t && t < now)
             markNodeDirty(nid);
-            clearTimeout(nid);
-            return;
-        }
     }
 }
 
@@ -971,9 +1018,9 @@ void idle() {
 // Public API (can be used by native nodes’ `evaluate` functions)
 //----------------------------------------------------------------------------
 
-template<typename InputT>
-typename InputT::ValueT getValue(NodeId nid) {
-    return getInputValueImpl<typename InputT::ValueT>(nid, InputT::WIRING_OFFSET);
+template<typename InputOutputT>
+typename InputOutputT::ValueT getValue(Context ctx) {
+    return GetValue<InputOutputT>::getValue(ctx);
 }
 
 template<typename OutputT>
@@ -987,7 +1034,7 @@ void emitValue(NodeId nid, typename OutputT::ValueT value) {
 }
 
 TimeMs transactionTime() {
-    return millis();
+    return g_transactionTime;
 }
 
 void setTimeout(NodeId nid, TimeMs timeout) {
@@ -996,6 +1043,10 @@ void setTimeout(NodeId nid, TimeMs timeout) {
 
 void clearTimeout(NodeId nid) {
     g_schedule[nid] = 0;
+}
+
+bool isTimedOut(NodeId nid) {
+    return g_schedule[nid] < transactionTime();
 }
 
 } // namespace xod
@@ -1087,7 +1138,6 @@ void evaluate(Context ctx) {
 namespace xod__core__flip_flop {
 
 struct State {
-    bool state = false;
 };
 
 struct Storage {
@@ -1114,20 +1164,20 @@ using input_RST = InputDescriptor<Logic, offsetof(Wiring, input_RST)>;
 using output_MEM = OutputDescriptor<Logic, offsetof(Wiring, output_MEM), offsetof(Storage, output_MEM), 0>;
 
 void evaluate(Context ctx) {
-    State* state = getState(ctx);
-    bool newState = state->state;
+    bool oldState = getValue<output_MEM>(ctx);
+    bool newState = oldState;
+
     if (isInputDirty<input_TGL>(ctx)) {
-        newState = !state->state;
+        newState = !oldState;
     } else if (isInputDirty<input_SET>(ctx)) {
         newState = true;
     } else {
         newState = false;
     }
 
-    if (newState == state->state)
+    if (newState == oldState)
         return;
 
-    state->state = newState;
     emitValue<output_MEM>(ctx, newState);
 }
 
