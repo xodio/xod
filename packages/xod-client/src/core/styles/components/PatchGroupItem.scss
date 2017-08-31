@@ -1,16 +1,17 @@
 .PatchGroupItem {
   color: $sidebar-color-text;
   background-color: $sidebar-color-bg;
-  padding: 8px;
-  padding-left: 30px;
   user-select: none;
   position: relative;
   cursor: pointer;
 
   &__label {
+    padding: 8px;
+    padding-left: 30px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    outline: none;
   }
 
   &.isOpen &__label {
