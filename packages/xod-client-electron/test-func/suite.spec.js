@@ -119,7 +119,7 @@ describe('IDE', () => {
     it('drags a node in place', () =>
       assert.eventually.deepEqual(
         page.dragNode('clock', 150, 10).getLocation(),
-        { x: 455, y: 183 }
+        { x: 387, y: 81 }
       )
     );
 

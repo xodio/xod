@@ -64,10 +64,9 @@ class ProjectBrowser extends React.Component {
   }
 
   onAddNode(patchPath) {
-    // TODO: rewrite this when implementing "zombie" nodes
     this.props.actions.addNode(
       patchPath,
-      { x: 50, y: 50 },
+      this.props.defaultNodePosition,
       this.props.currentPatchPath
     );
   }
@@ -302,6 +301,7 @@ ProjectBrowser.propTypes = {
   localPatches: sanctuaryPropType($.Array(Patch)),
   popups: PropTypes.object.isRequired,
   libs: sanctuaryPropType($.StrMap($.Array(Patch))),
+  defaultNodePosition: PropTypes.object.isRequired,
   actions: PropTypes.shape({
     addNode: PropTypes.func.isRequired,
     switchPatch: PropTypes.func.isRequired,
@@ -326,6 +326,7 @@ const mapStateToProps = R.applySpec({
   localPatches: ProjectBrowserSelectors.getLocalPatches,
   popups: PopupSelectors.getProjectBrowserPopups,
   libs: ProjectBrowserSelectors.getLibs,
+  defaultNodePosition: EditorSelectors.getDefaultNodePlacePosition,
 });
 
 const mapDispatchToProps = dispatch => ({

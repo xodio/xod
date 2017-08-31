@@ -15,6 +15,7 @@ import * as ProjectSelectors from '../../project/selectors';
 import * as ProjectUtils from '../../project/utils';
 import { RenderableLink, RenderableNode, RenderableComment } from '../../project/types';
 
+import { isInput } from '../../utils/browser';
 import { COMMAND } from '../../utils/constants';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
@@ -48,6 +49,7 @@ class Patch extends React.Component {
 
     this.state = initialState;
 
+    this.onDoubleClick = this.onDoubleClick.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
@@ -127,6 +129,14 @@ class Patch extends React.Component {
 
     this.setState({ isMouseDown: true });
     this.props.actions.setMode(EDITOR_MODE.RESIZING_SELECTION);
+  }
+
+  onDoubleClick(event) {
+    this.updateMousePosition(event,
+      () => this.props.onDoubleClick(
+        snapNodePositionToSlots(this.state.mousePosition)
+      )
+    );
   }
 
   onPinMouseDown(event, nodeId, pinKey) {
@@ -215,7 +225,7 @@ class Patch extends React.Component {
   }
 
   onKeyDown(event) {
-    if (R.contains(event.target.type, ['textarea', 'input'])) return;
+    if (isInput(event)) return;
 
     if (
       event.key === ' ' &&
@@ -248,7 +258,7 @@ class Patch extends React.Component {
   }
 
   onDeleteSelection(event) {
-    if (R.contains(event.target.type, ['textarea', 'input'])) return;
+    if (isInput(event)) return;
 
     this.props.actions.deleteSelection();
   }
@@ -395,6 +405,7 @@ class Patch extends React.Component {
             width={this.props.size.width}
             height={this.props.size.height}
             onClick={this.props.actions.deselectAll}
+            onDoubleClick={this.onDoubleClick}
             offset={this.getOffset()}
           />
           <g transform={getOffsetMatrix(this.getOffset())}>
@@ -474,6 +485,7 @@ Patch.propTypes = {
   mode: PropTypes.oneOf(R.values(EDITOR_MODE)),
   ghostLink: PropTypes.any,
   offset: PropTypes.object,
+  onDoubleClick: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = R.applySpec({

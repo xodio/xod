@@ -39,7 +39,7 @@ NodeSlotPattern.propTypes = {
   offset: PropTypes.object.isRequired,
 };
 
-const BackgroundLayer = ({ onClick, offset }) => (
+const BackgroundLayer = ({ onClick, onDoubleClick, offset }) => (
   <SVGLayer
     name={LAYER.BACKGROUND}
     className="BackgroundLayer"
@@ -51,12 +51,14 @@ const BackgroundLayer = ({ onClick, offset }) => (
       width="100%"
       height="100%"
       onClick={onClick}
+      onDoubleClick={onDoubleClick}
     />
   </SVGLayer>
 );
 
 BackgroundLayer.propTypes = {
   onClick: PropTypes.func,
+  onDoubleClick: PropTypes.func,
   offset: PropTypes.object.isRequired,
 };
 

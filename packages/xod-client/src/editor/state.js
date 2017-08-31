@@ -9,6 +9,11 @@ export default {
   selectedNodeType: null,
   isHelpbarVisible: false,
   focusedArea: FOCUS_AREAS.WORKAREA,
+  suggester: {
+    visible: false,
+    placePosition: null,
+    highlightedPatchPath: null,
+  },
   tabs: {
     '@/1': {
       id: '@/1',

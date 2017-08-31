@@ -335,6 +335,7 @@ class App extends client.App {
           items.copy,
           items.paste,
           items.separator,
+          onClick(items.insertNode, () => this.props.actions.showSuggester(null)),
           onClick(items.insertComment, this.props.actions.addComment),
           items.separator,
           onClick(items.projectPreferences, this.props.actions.showProjectPreferences),
@@ -369,7 +370,10 @@ class App extends client.App {
 
   getKeyMap() { // eslint-disable-line class-methods-use-this
     const commandsBoundToNativeMenu = R.compose(
-      R.reject(R.isNil),
+      R.reject(R.either(
+        R.isNil,
+        R.pipe(R.prop(R.__, client.ELECTRON_ACCELERATOR), R.isNil)
+      )),
       R.map(R.prop('command')),
       R.values
     )(client.menu.items);

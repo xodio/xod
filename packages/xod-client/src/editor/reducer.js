@@ -13,6 +13,9 @@ import {
   SET_CURRENT_PATCH_OFFSET,
   TOGGLE_HELPBAR,
   SET_FOCUSED_AREA,
+  SHOW_SUGGESTER,
+  HIDE_SUGGESTER,
+  HIGHLIGHT_SUGGESTER_ITEM,
 } from './actionTypes';
 import {
   PROJECT_CREATE,
@@ -216,6 +219,22 @@ const editorReducer = (state = {}, action) => {
       return R.over(R.lensProp('isHelpbarVisible'), R.not, state);
     case SET_FOCUSED_AREA:
       return R.assoc('focusedArea', action.payload, state);
+    case SHOW_SUGGESTER: {
+      if (R.path(['suggester', 'visible'], state) === true) return state;
+
+      return R.compose(
+        R.assocPath(['suggester', 'visible'], true),
+        R.assocPath(['suggester', 'placePosition'], action.payload)
+      )(state);
+    }
+    case HIDE_SUGGESTER:
+      return R.compose(
+        R.assocPath(['suggester', 'visible'], false),
+        R.assocPath(['suggester', 'highlightedPatchPath'], null),
+        R.assocPath(['suggester', 'placePosition'], null)
+      )(state);
+    case HIGHLIGHT_SUGGESTER_ITEM:
+      return R.assocPath(['suggester', 'highlightedPatchPath'], action.payload.patchPath, state);
     default:
       return state;
   }
