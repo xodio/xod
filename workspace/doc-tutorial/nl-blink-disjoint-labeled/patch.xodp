@@ -92,6 +92,7 @@
         "B134j4neZ": 11
       },
       "id": "S1_tlaIXb",
+      "label": "Red LED",
       "position": {
         "x": 170,
         "y": 306
@@ -114,6 +115,7 @@
         "B134j4neZ": 13
       },
       "id": "Skz7k6Im-",
+      "label": "Yellow LED",
       "position": {
         "x": -34,
         "y": 306
@@ -125,6 +127,7 @@
         "B134j4neZ": 12
       },
       "id": "SyXV1687-",
+      "label": "Blue LED",
       "position": {
         "x": 68,
         "y": 306
