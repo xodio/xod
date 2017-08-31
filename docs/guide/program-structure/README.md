@@ -44,8 +44,8 @@ Some nodes send an output on their own as a reaction to some external event.
 For example, the [clock](/libs/xod/core/clock/) node sends outputs at regular
 time intervals.
 
-Pins are depicted as holes with short labels. Inputs are placed on a darker
-background, and outputs are placed on a lighter background.
+Pins are depicted as holes with short labels. Inputs are placed at the top
+of the node, and outputs are at the bottom.
 
 ![Nodes inputs and outputs](./nodes-inputs-outputs.png)
 
