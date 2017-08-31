@@ -49,9 +49,9 @@
 
     .PatchGroupItem__hover-buttons {
       display: block;
-      background: transparent;
+      background: $sidebar-color-bg-selected;
       &:before {
-        background: transparent;
+        background: linear-gradient(to left, $sidebar-color-bg-selected, rgba(0, 0, 0, 0));
       }
     }
   }
@@ -62,6 +62,10 @@
 
     .PatchGroupItem__hover-buttons {
       display: block;
+      background-color: $sidebar-color-bg-hover;
+      &:before {
+        background: linear-gradient(to left, $sidebar-color-bg-hover, rgba(0, 0, 0, 0));
+      }
     }
   }
 
