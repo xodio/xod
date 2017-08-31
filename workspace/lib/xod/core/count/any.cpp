@@ -1,19 +1,16 @@
 
 struct State {
-    Number count = 0;
 };
 
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    State* state = getState(ctx);
+    Number count = getValue<output_OUT>(ctx);
 
-    if (isInputDirty<input_RST>(ctx)) {
-        state->count = 0;
-    } else if (isInputDirty<input_INC>(ctx)) {
-        auto step = getValue<input_STEP>(ctx);
-        state->count += step;
-    }
+    if (isInputDirty<input_RST>(ctx))
+        count = 0;
+    else if (isInputDirty<input_INC>(ctx))
+        count += getValue<input_STEP>(ctx);
 
-    emitValue<output_OUT>(ctx, state->count);
+    emitValue<output_OUT>(ctx, count);
 }
