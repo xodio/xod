@@ -1,59 +1,42 @@
 {
-  "description": "",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "BJBmSxOQZ",
-      "label": "",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 102,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "H1MEuedXb",
-      "label": "",
       "position": {
-        "x": 266,
-        "y": 16
+        "x": 238,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "SkfESlumW",
-      "label": "",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 34,
+        "y": 102
       },
       "type": "xod/patch-nodes/output-string"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "ryXQBgu7-",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 34,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "ryrN_lumZ",
-      "label": "",
       "position": {
-        "x": 394,
-        "y": 16
+        "x": 170,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     }

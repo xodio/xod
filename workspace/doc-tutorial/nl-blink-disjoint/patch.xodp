@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "HJocxaI7-",
@@ -70,13 +69,10 @@
   ],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "BkJKxaIXZ",
-      "label": "",
       "position": {
-        "x": 394,
-        "y": 120
+        "x": 204,
+        "y": 102
       },
       "type": "xod/core/flip-flop"
     },
@@ -84,12 +80,10 @@
       "boundValues": {
         "B13SCNhl-": 0.25
       },
-      "description": "",
       "id": "Bkc-kpLXb",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 34,
+        "y": 0
       },
       "type": "xod/core/clock"
     },
@@ -97,12 +91,11 @@
       "boundValues": {
         "B134j4neZ": 11
       },
-      "description": "",
       "id": "S1_tlaIXb",
       "label": "Red LED",
       "position": {
-        "x": 394,
-        "y": 328
+        "x": 170,
+        "y": 306
       },
       "type": "xod/core/digital-output"
     },
@@ -110,12 +103,10 @@
       "boundValues": {
         "B13SCNhl-": 0.7
       },
-      "description": "",
       "id": "SktOxpUmZ",
-      "label": "",
       "position": {
-        "x": 394,
-        "y": 16
+        "x": 238,
+        "y": 0
       },
       "type": "xod/core/clock"
     },
@@ -123,12 +114,11 @@
       "boundValues": {
         "B134j4neZ": 13
       },
-      "description": "",
       "id": "Skz7k6Im-",
       "label": "Yellow LED",
       "position": {
-        "x": 10,
-        "y": 328
+        "x": -34,
+        "y": 306
       },
       "type": "xod/core/digital-output"
     },
@@ -136,34 +126,27 @@
       "boundValues": {
         "B134j4neZ": 12
       },
-      "description": "",
       "id": "SyXV1687-",
       "label": "Blue LED",
       "position": {
-        "x": 138,
-        "y": 328
+        "x": 68,
+        "y": 306
       },
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "rJa71TLQZ",
-      "label": "",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 102,
+        "y": 204
       },
       "type": "xod/core/not"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "rkczJ6U7-",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 120
+        "x": 0,
+        "y": 102
       },
       "type": "xod/core/flip-flop"
     }

@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "SkDS2JdQW",
@@ -29,12 +28,10 @@
       "boundValues": {
         "SJqZ8COrDkW": 0.5
       },
-      "description": "",
       "id": "H1-HhyuQW",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 120
+        "x": 0,
+        "y": 102
       },
       "type": "xod/core/less"
     },
@@ -42,12 +39,10 @@
       "boundValues": {
         "BJuORNheZ": 14
       },
-      "description": "",
       "id": "HkVEhkO7b",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 0,
+        "y": 0
       },
       "type": "xod/core/analog-input"
     },
@@ -55,12 +50,10 @@
       "boundValues": {
         "rJsaFSvk-": 3
       },
-      "description": "",
       "id": "r1kI3k_mZ",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 0,
+        "y": 204
       },
       "type": "xod/core/pwm-output"
     }

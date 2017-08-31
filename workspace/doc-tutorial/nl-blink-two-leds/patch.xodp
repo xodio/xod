@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "H1lBAnIQ-",
@@ -40,23 +39,18 @@
       "boundValues": {
         "B134j4neZ": 12
       },
-      "description": "",
       "id": "B1dVAhL7W",
-      "label": "",
       "position": {
-        "x": 138,
-        "y": 328
+        "x": 102,
+        "y": 306
       },
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "BJ9Z02U7b",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 120
+        "x": 34,
+        "y": 102
       },
       "type": "xod/core/flip-flop"
     },
@@ -64,12 +58,10 @@
       "boundValues": {
         "B13SCNhl-": 0.25
       },
-      "description": "",
       "id": "S1Ag03LX-",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 68,
+        "y": 0
       },
       "type": "xod/core/clock"
     },
@@ -77,12 +69,10 @@
       "boundValues": {
         "B134j4neZ": 13
       },
-      "description": "",
       "id": "S1omR28X-",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 328
+        "x": 0,
+        "y": 306
       },
       "type": "xod/core/digital-output"
     }

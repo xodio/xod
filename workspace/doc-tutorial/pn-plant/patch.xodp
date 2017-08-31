@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "B15hIxuQb",
@@ -103,112 +102,87 @@
   ],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "B1U-8x_Xb",
       "label": "PUMP",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 102,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "BJ2bIgOQb",
       "label": "NAME",
       "position": {
-        "x": 138,
-        "y": 328
+        "x": 272,
+        "y": 204
       },
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "BJ5SLlOmb",
-      "label": "",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 136,
+        "y": 306
       },
       "type": "xod/core/less"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "H1ZG8e_XZ",
       "label": "LVL",
       "position": {
-        "x": 266,
-        "y": 16
+        "x": 170,
+        "y": 204
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "HJrYIg_mb",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 328
+        "x": 102,
+        "y": 408
       },
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "HJwZLxdQb",
       "label": "SEN",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 136,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "HknfLluXW",
       "label": "STAT",
       "position": {
-        "x": 266,
-        "y": 536
+        "x": 272,
+        "y": 408
       },
       "type": "xod/patch-nodes/output-string"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "rkW2Lldmb",
-      "label": "",
       "position": {
-        "x": 266,
-        "y": 432
+        "x": 272,
+        "y": 306
       },
       "type": "xod/core/concat"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "rkmS8xu7W",
-      "label": "",
       "position": {
-        "x": 138,
-        "y": 120
+        "x": 136,
+        "y": 102
       },
       "type": "xod/core/analog-input"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "ryEi8gdmW",
-      "label": "",
       "position": {
-        "x": 266,
-        "y": 224
+        "x": 306,
+        "y": 204
       },
       "type": "xod/core/to-percent"
     }

@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "BkCpgZSr-",
@@ -51,12 +50,10 @@
       "boundValues": {
         "B13SCNhl-": 0.25
       },
-      "description": "",
       "id": "Bkc-kpLXb",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 68,
+        "y": 0
       },
       "type": "xod/core/clock"
     },
@@ -64,12 +61,10 @@
       "boundValues": {
         "B134j4neZ": 13
       },
-      "description": "",
       "id": "Skz7k6Im-",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 328
+        "x": 0,
+        "y": 306
       },
       "type": "xod/core/digital-output"
     },
@@ -77,34 +72,26 @@
       "boundValues": {
         "B134j4neZ": 12
       },
-      "description": "",
       "id": "SyXV1687-",
-      "label": "",
       "position": {
-        "x": 138,
-        "y": 328
+        "x": 102,
+        "y": 306
       },
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "rJa71TLQZ",
-      "label": "",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 136,
+        "y": 204
       },
       "type": "xod/core/not"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "rkczJ6U7-",
-      "label": "",
       "position": {
-        "x": 10,
-        "y": 120
+        "x": 34,
+        "y": 102
       },
       "type": "xod/core/flip-flop"
     }

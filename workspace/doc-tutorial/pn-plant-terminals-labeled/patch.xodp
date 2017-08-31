@@ -1,59 +1,47 @@
 {
-  "description": "",
-  "links": [],
   "nodes": [
     {
-      "boundValues": {},
-      "description": "",
       "id": "BJBmSxOQZ",
       "label": "SEN",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 102,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "S1te_ldQZ",
       "label": "LVL",
       "position": {
-        "x": 394,
-        "y": 16
+        "x": 170,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "SkfESlumW",
       "label": "STAT",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 34,
+        "y": 102
       },
       "type": "xod/patch-nodes/output-string"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "r1keulu7W",
       "label": "NAME",
       "position": {
-        "x": 266,
-        "y": 16
+        "x": 238,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "ryXQBgu7-",
       "label": "PUMP",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 34,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     }
