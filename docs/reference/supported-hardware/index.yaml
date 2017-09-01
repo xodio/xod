@@ -1,0 +1,394 @@
+- section: "Generic parts"
+  parts:
+    - part: Button
+      nodes:
+        - xod/common-hardware/button
+      shopping:
+        - shop: Adafruit
+          sku: "#367"
+          flavor: Raw
+          url: https://www.adafruit.com/product/367
+        - shop: Adafruit
+          sku: "#1185"
+          flavor: Mod
+          url: https://www.adafruit.com/product/1185
+        - shop: SparkFun
+          sku: COM-10302
+          flavor: Raw
+          url: https://www.sparkfun.com/products/10302
+        - shop: SparkFun
+          sku: DEV-08776
+          flavor: Wear
+          url: https://www.sparkfun.com/products/8776
+        - shop: Seeed
+          sku: 110990055
+          flavor: Raw
+          url: https://www.seeedstudio.com/12mm-Domed-Push-Button-Pack-p-1304.html
+        - shop: Seeed
+          sku: 101020003
+          flavor: Mod
+          url: https://www.seeedstudio.com/Mod-Button-p-766.html
+    - part: Bumper switch
+      nodes:
+        - xod/common-hardware/button
+      shopping:
+        - shop: Adafruit
+          sku: "#820"
+          flavor: Raw
+          url: https://www.adafruit.com/product/820
+        - shop: Adafruit
+          sku: "#818"
+          flavor: Raw
+          url: https://www.adafruit.com/product/818
+        - shop: SparkFun
+          sku: COM-00098
+          flavor: Raw
+          url: https://www.sparkfun.com/products/98
+        - shop: SparkFun
+          sku: SEN-11999
+          flavor: Mod
+          url: https://www.sparkfun.com/products/11999
+    - part: Slide switch
+      nodes:
+        - xod/common-hardware/button
+      shopping:
+        - shop: Adafruit
+          sku: "#805"
+          flavor: Raw
+          url: https://www.adafruit.com/product/805
+        - shop: SparkFun
+          sku: DEV-09350
+          flavor: Wear
+          url: https://www.sparkfun.com/products/9350
+        - shop: Seeed
+          sku: 101020004
+          flavor: Mod
+          url: https://www.seeedstudio.com/Mod-Switch%28P%29-p-1252.html
+    - part: Toggle/Rocker switch
+      nodes:
+        - xod/common-hardware/button
+      shopping:
+        - shop: Adafruit
+          sku: "#3221"
+          flavor: Raw
+          url: https://www.adafruit.com/product/3221
+        - shop: Adafruit
+          sku: "#3218"
+          flavor: Raw
+          url: https://www.adafruit.com/product/3218
+        - shop: SparkFun
+          sku: COM-11138
+          flavor: Raw
+          url: https://www.sparkfun.com/products/11138
+        - shop: SparkFun
+          sku: COM-11310
+          flavor: Raw
+          url: https://www.sparkfun.com/products/11310
+    - part: Rotary potentiometer
+      nodes:
+        - xod/common-hardware/pot
+      shopping:
+        - shop: Adafruit
+          sku: "#356"
+          flavor: Raw
+          url: https://www.adafruit.com/product/356
+        - shop: Adafruit
+          sku: "#562"
+          flavor: Raw
+          url: https://www.adafruit.com/product/562
+        - shop: SparkFun
+          sku: COM-09806
+          flavor: Raw
+          url: https://www.sparkfun.com/products/9806
+        - shop: SparkFun
+          sku: COM-09939
+          flavor: Raw
+          url: https://www.sparkfun.com/products/9939
+        - shop: Seeed
+          sku: 101020017
+          flavor: Mod
+          url: https://www.seeedstudio.com/Mod-Rotary-Angle-Sensor-p-770.html
+    - part: Slider potentiometer
+      nodes:
+        - xod/common-hardware/pot
+      shopping:
+        - shop: SparkFun
+          sku: COM-11621
+          flavor: Raw
+          url: https://www.sparkfun.com/products/11621
+        - shop: Seeed
+          sku: 101020036
+          flavor: Mod
+          url: https://www.seeedstudio.com/Mod-Slide-Potentiometer-p-1196.html
+    - part: Single-color LED
+      nodes:
+        - xod/common-hardware/led
+      shopping:
+        - shop: Adafruit
+          sku: "#299"
+          flavor: Raw
+          url: https://www.adafruit.com/product/299
+        - shop: Adafruit
+          sku: "#3377"
+          flavor: Wear
+          url: https://www.adafruit.com/product/3377
+        - shop: SparkFun
+          sku: COM-10632
+          flavor: Raw
+          url: https://www.sparkfun.com/products/10632
+        - shop: SparkFun
+          sku: DEV-13903
+          flavor: Wear
+          url: https://www.sparkfun.com/products/13903
+        - shop: Seeed
+          sku: 104030005
+          flavor: Mod
+          url: https://www.seeedstudio.com/Mod-Red-LED-p-1142.html
+    - part: Relay
+      nodes:
+        - xod/core/digital-output
+      shopping:
+        - shop: Adafruit
+          sku: "#2935"
+          flavor: Mod
+          url: https://www.adafruit.com/product/2935
+        - shop: SparkFun
+          sku: COM-00100
+          flavor: Raw
+          url: https://www.sparkfun.com/products/100
+        - shop: SparkFun
+          sku: COM-14236
+          flavor: Mod
+          url: https://www.sparkfun.com/products/14236
+        - shop: Seeed
+          sku: 103020005
+          flavor: Mod
+          url: https://www.seeedstudio.com/Grove-Relay-p-769.html
+        - shop: Seeed
+          sku: 103020012
+          flavor: Mod
+          url: https://www.seeedstudio.com/Grove-SPDT-Relay%2830A%29-p-1473.html
+
+- section: "Environment sensors"
+  parts:
+    - part: DHT11
+      kind: Thermometer, Hydrometer
+      vendor: Aosong
+      nodes:
+        - xod/common-hardware/dht11-thermometer
+      shopping:
+        - shop: Adafruit
+          sku: "#386"
+          flavor: Raw
+          url: https://www.adafruit.com/product/386
+        - shop: Seeed
+          sku: 101020011
+          flavor: Mod
+          url: https://www.seeedstudio.com/Mod-Temperature-%26-Humidity-Sensor-p-745.html
+
+    - part: TMP36
+      kind: Thermometer
+      vendor: Analog Devices
+      nodes:
+        - xod/common-hardware/thermometer-tmp36
+      shopping:
+        - shop: Adafruit
+          sku: "#165"
+          flavor: Raw
+          url: https://www.adafruit.com/product/165
+        - shop: SparkFun
+          sku: SEN-10988
+          flavor: Raw
+          url: https://www.sparkfun.com/products/10988
+
+- section: "Range meters and proximity sensors"
+  parts:
+    - part: GP2Y0A02
+      kind: Infrared range meter
+      vendor: Sharp
+      nodes:
+        - xod/common-hardware/gp2ya02-range-meter
+      shopping:
+        - shop: Adafruit
+          sku: "#1031"
+          flavor: Mod
+          url: https://www.adafruit.com/product/1031
+        - shop: SparkFun
+          sku: SEN-08958
+          flavor: Mod
+          url: https://www.sparkfun.com/products/8958
+
+    - part: GP2Y0A21
+      kind: Infrared range meter
+      vendor: Sharp
+      nodes:
+        - xod/common-hardware/gp2ya21-range-meter
+      shopping:
+        - shop: Adafruit
+          sku: "#164"
+          flavor: Mod
+          url: https://www.adafruit.com/product/164
+        - shop: SparkFun
+          sku: SEN-00242
+          flavor: Mod
+          url: https://www.sparkfun.com/products/242
+
+    - part: GP2Y0A41
+      kind: Infrared range meter
+      vendor: Sharp
+      nodes:
+        - xod/common-hardware/gp2ya41-range-meter
+      shopping:
+        - shop: SparkFun
+          sku: SEN-12728
+          flavor: Mod
+          url: https://www.sparkfun.com/products/12728
+
+    - part: HC-SR04
+      kind: Ultrasonic range meter
+      nodes:
+        - xod/common-hardware/hc-sr04-ultrasonic-range
+        - xod/common-hardware/hc-sr04-ultrasonic-time
+      shopping:
+        - shop: SparkFun
+          sku: SEN-13959
+          flavor: Mod
+          url: https://www.sparkfun.com/products/13959
+
+- section: "Inertial measurement units (IMU)"
+  parts:
+    - part: ADXL335
+      kind: Accelerometer, IMU
+      vendor: Analog Devices
+      nodes:
+        - xod/common-hardware/adxl335-accelerometer
+      shopping:
+        - shop: Adafruit
+          sku: "#163"
+          flavor: Brk
+          url: https://www.adafruit.com/product/163
+        - shop: Seeed
+          sku: 101020051
+          flavor: Brk
+          url: https://www.seeedstudio.com/Mod-3-Axis-Analog-Accelerometer-p-1086.html
+        - shop: SparkFun
+          sku: SEN-09269
+          flavor: Brk
+          url: https://www.sparkfun.com/products/9269
+        - shop: SparkFun
+          sku: SEN-09267
+          flavor: Wear
+          url: https://www.sparkfun.com/products/9267
+
+    - part: L3G4200
+      kind: Gyroscope, IMU
+      vendor: ST
+      nodes:
+        - xod/common-hardware/l3g4200-gyro
+
+    - part: L3GD20H
+      kind: Gyroscope, IMU
+      vendor: ST
+      nodes:
+        - xod/common-hardware/l3gd20h-gyro
+      shopping:
+        - shop: Adafruit
+          sku: "#1032"
+          flavor: Brk
+          url: https://www.adafruit.com/product/1032
+
+    - part: LIS331DLH
+      kind: Accelerometer, IMU
+      vendor: ST
+      nodes:
+        - xod/common-hardware/lis331dlh-accelerometer
+
+    - part: LIS331HH
+      kind: Accelerometer, IMU
+      vendor: ST
+      nodes:
+        - xod/common-hardware/lis331hh-accelerometer
+      shopping:
+        - shop: SparkFun
+          sku: SEN-10345
+          flavor: Brk
+          url: https://www.sparkfun.com/products/10345
+        - shop: SparkFun
+          sku: COM-09755
+          flavor: Raw
+          url: https://www.sparkfun.com/products/9755
+
+    - part: LIS3DH
+      kind: Accelerometer, IMU
+      vendor: ST
+      nodes:
+        - xod/common-hardware/lis3dh-accelerometer
+      shopping:
+        - shop: Adafruit
+          sku: "#2809"
+          flavor: Brk
+          url: https://www.adafruit.com/product/2809
+        - shop: SparkFun
+          sku: SEN-13963
+          flavor: Brk
+          url: https://www.sparkfun.com/products/13963
+
+
+- section: "Motors and motor drivers"
+  parts:
+    - part: RC standard servo
+      vendor: Hitec, Futaba, Tower Pro, FeeTech, Hextronic, and other
+      nodes:
+        - xod/common-hardware/servo
+      shopping:
+        - shop: Adafruit
+          sku: "#169"
+          flavor: Mod
+          url: https://www.adafruit.com/product/169
+        - shop: Adafruit
+          sku: "#155"
+          flavor: Mod
+          url: https://www.adafruit.com/product/155
+        - shop: SparkFun
+          sku: ROB-11887
+          flavor: Mod
+          url: https://www.sparkfun.com/products/11887
+        - shop: SparkFun
+          sku: ROB-11884
+          flavor: Mod
+          url: https://www.sparkfun.com/products/11884
+    - part: L293, L298
+      kind: Dual H-Bridge
+      vendor: ST
+      nodes:
+        - xod/common-hardware/h-bridge-dc-motor
+      shopping:
+        - shop: SparkFun
+          sku: DEV-14129
+          flavor: Brk/Sh
+          url: https://www.sparkfun.com/products/14129
+
+- section: "Displays"
+  parts:
+    - part: HD44780
+      kind: Parallel interface text LCD
+      vendor: Hitachi
+      nodes:
+        - xod/common-hardware/text-lcd-16x2
+      shopping:
+        - shop: Adafruit
+          sku: "#181"
+          flavor: Brk
+          url: https://www.adafruit.com/product/181
+        - shop: Adafruit
+          sku: "#1447"
+          flavor: Mod
+          url: https://www.adafruit.com/product/1447
+        - shop: SparkFun
+          sku: LCD-00709
+          flavor: Brk
+          url: https://www.sparkfun.com/products/709
+        - shop: Seeed
+          sku: 104990004
+          flavor: Brk
+          url: https://www.seeedstudio.com/LCD-16x2-Characters-White-Text-Blue-Background-p-1612.html
