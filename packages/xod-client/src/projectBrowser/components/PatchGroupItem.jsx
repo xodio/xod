@@ -1,4 +1,3 @@
-import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
@@ -11,8 +10,10 @@ const PatchGroupItem = (props) => {
     isOpen,
     className,
     hoverButtons,
+    onClick,
+    onDoubleClick,
+    ...restProps
   } = props;
-  const restProps = R.omit(['label', 'isSelected', 'isOpen', 'hoverButtons', 'contextActions'], props);
 
   const classNames = cn(
     'PatchGroupItem',
@@ -25,7 +26,12 @@ const PatchGroupItem = (props) => {
 
   return (
     <div {...restProps} className={classNames} title={label}>
-      <div className="PatchGroupItem__label">
+      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+        className="PatchGroupItem__label"
+        onClick={onClick}
+        onDoubleClick={onDoubleClick}
+        role="button"
+      >
         {label}
       </div>
       <div className="PatchGroupItem__hover-buttons">
@@ -45,6 +51,8 @@ PatchGroupItem.propTypes = {
   isOpen: PropTypes.bool,
   className: PropTypes.string,
   hoverButtons: PropTypes.array,
+  onClick: PropTypes.func,
+  onDoubleClick: PropTypes.func,
 };
 
 export default PatchGroupItem;
