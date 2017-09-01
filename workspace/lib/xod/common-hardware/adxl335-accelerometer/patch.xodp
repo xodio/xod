@@ -1,0 +1,260 @@
+{
+  "description": "Reads acceleration from an ADXL335 based sensor. Note that concrete ADXL335 instances differ from each other and their output should be adjusted for precise mesearument.\n\nBy default the values are coarse although reasonable enough to determine shaking and approximate orientation.\n\nFor an ideally factored accelerometer the outputs are in range ±3ɡ.",
+  "links": [
+    {
+      "id": "B1U7Bc8F-",
+      "input": {
+        "nodeId": "HkrZrcIt-",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "rkEkrcLKb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJzQHc8FZ",
+      "input": {
+        "nodeId": "rJAbScLFZ",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "rkEkrcLKb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "By27I9UYZ",
+      "input": {
+        "nodeId": "H1EVB58Y-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1OMIqIYb",
+        "pinKey": "ryCtrcUtb"
+      }
+    },
+    {
+      "id": "BypfrcIKZ",
+      "input": {
+        "nodeId": "BJibrqIt-",
+        "pinKey": "BJuORNheZ"
+      },
+      "output": {
+        "nodeId": "rk9RE5ItW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJ9mLqLFZ",
+      "input": {
+        "nodeId": "B1OMIqIYb",
+        "pinKey": "ryvYBcLt-"
+      },
+      "output": {
+        "nodeId": "HkrZrcIt-",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "HJVzBqUtW",
+      "input": {
+        "nodeId": "HkrZrcIt-",
+        "pinKey": "BJuORNheZ"
+      },
+      "output": {
+        "nodeId": "BkdA4cUFW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hk6XL5IYb",
+      "input": {
+        "nodeId": "rk17898F-",
+        "pinKey": "ryvYBcLt-"
+      },
+      "output": {
+        "nodeId": "BJibrqIt-",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "SJCQ89UFb",
+      "input": {
+        "nodeId": "S1DHH5LFb",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rk17898F-",
+        "pinKey": "ryCtrcUtb"
+      }
+    },
+    {
+      "id": "SJlNU9LFW",
+      "input": {
+        "nodeId": "B18QI9LKZ",
+        "pinKey": "ryvYBcLt-"
+      },
+      "output": {
+        "nodeId": "rJAbScLFZ",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "SyAMHq8tW",
+      "input": {
+        "nodeId": "rJAbScLFZ",
+        "pinKey": "BJuORNheZ"
+      },
+      "output": {
+        "nodeId": "BynRV5UKb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkEXBcItZ",
+      "input": {
+        "nodeId": "BJibrqIt-",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "rkEkrcLKb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkbEL9LY-",
+      "input": {
+        "nodeId": "B1sBHcItb",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B18QI9LKZ",
+        "pinKey": "ryCtrcUtb"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B18QI9LKZ",
+      "position": {
+        "x": 170,
+        "y": 204
+      },
+      "type": "@/adxl335-convert"
+    },
+    {
+      "id": "B1OMIqIYb",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "@/adxl335-convert"
+    },
+    {
+      "description": "Non-adjusted acceleration along Z axis in range [-3, 3]",
+      "id": "B1sBHcItb",
+      "label": "Z",
+      "position": {
+        "x": 170,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "BJibrqIt-",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/core/analog-input"
+    },
+    {
+      "description": "Board port to which the X axis output is connected. Should be capable of analog reading analog values.",
+      "id": "BkdA4cUFW",
+      "label": "Px",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Board port to which the Z axis output is connected. Should be capable of analog reading analog values.",
+      "id": "BynRV5UKb",
+      "label": "Pz",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Non-adjusted acceleration along X axis in range [-3, 3]",
+      "id": "H1EVB58Y-",
+      "label": "X",
+      "position": {
+        "x": 34,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "HkrZrcIt-",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/core/analog-input"
+    },
+    {
+      "description": "Non-adjusted acceleration along Y axis in range [-3, 3]",
+      "id": "S1DHH5LFb",
+      "label": "Y",
+      "position": {
+        "x": 102,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "rJAbScLFZ",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/core/analog-input"
+    },
+    {
+      "id": "rk17898F-",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "@/adxl335-convert"
+    },
+    {
+      "description": "Board port to which the Y axis output is connected. Should be capable of analog reading analog values.",
+      "id": "rk9RE5ItW",
+      "label": "Py",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers new sensor reading",
+      "id": "rkEkrcLKb",
+      "label": "UPD",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

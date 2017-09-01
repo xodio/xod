@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "content": "Volts to G",
+      "id": "HJ6y89UYZ",
+      "position": {
+        "x": 272,
+        "y": 204
+      },
+      "size": {
+        "height": 51,
+        "width": 204
+      }
+    },
+    {
+      "content": "Unit range to volts",
+      "id": "rJ4or5It-",
+      "position": {
+        "x": 272,
+        "y": 102
+      },
+      "size": {
+        "height": 51,
+        "width": 204
+      }
+    }
+  ],
+  "description": "Utility node. Converts raw ADC value of an ADXL335 accelerometer to approximate acceleration in ɡ (standard gravity) units.",
+  "links": [
+    {
+      "id": "r1boScUYb",
+      "input": {
+        "nodeId": "S1pcrcIKW",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "ryvYBcLt-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJHTS9LY-",
+      "input": {
+        "nodeId": "SJMTS58KW",
+        "pinKey": "BJlzICOSv1-"
+      },
+      "output": {
+        "nodeId": "S1pcrcIKW",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "rkv6S9UKW",
+      "input": {
+        "nodeId": "ryCtrcUtb",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJMTS58KW",
+        "pinKey": "H12bIR_SPyZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "SJ4zUC_BD1-": 5
+      },
+      "id": "S1pcrcIKW",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "boundValues": {
+        "HJCWLAdSwyW": 3.3,
+        "rJbGU0_Hv1Z": -3,
+        "rkpbU0OrwyZ": 3
+      },
+      "id": "SJMTS58KW",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/core/map-range"
+    },
+    {
+      "id": "ryCtrcUtb",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "ryvYBcLt-",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
