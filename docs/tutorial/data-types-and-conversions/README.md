@@ -112,6 +112,14 @@ constant value using Inspector. The exact value depends on characteristics of
 the resistors and desired darkness threshold. You could experiment a bit with
 it. 0.5 should work fine as a starting value.
 
+<div class="ui segment">
+<p>
+<span class="ui ribbon label">Hint</span>
+If you want to know what a particular node does you can access its description
+with the Helpbar. Press `H` key or hit View → Toggle Helpbar to view it.
+</p>
+</div>
+
 Upload the program. Make sure the LED is off when the device starts. If not,
 adjust the threshold value. Then cover the LDR with your hand to simulate
 darkness. The LED should turn on.

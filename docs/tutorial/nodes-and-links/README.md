@@ -105,6 +105,11 @@ cursor over the item and click the (+).
 
 ![Project Browser](./project-browser.png)
 
+Alternatively, you can double click the workarea, press `I`, or hit Edit →
+Insert Node. It would open a quick search dialog. Start typing `digital-input`
+as the search query and you will quickly find the node you’re looking for.
+Press Enter or double click on an item found to place it.
+
 You’ll see a new node appear in the main workspace. Drag it to the slot you
 want. The one next to the existing `digital-output` would be fine. In
 Inspector, set the `PORT` for the new node to 12, since it will control our new
