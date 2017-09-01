@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
-import { addPoints, subtractPoints } from '../project/nodeLayout';
+import { addPoints, subtractPoints, DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
 
 export const getEditor = R.prop('editor');
 
@@ -76,7 +76,7 @@ export const getTabs = R.pipe(
 
 export const getCurrentPatchOffset = createSelector(
   [getCurrentPatchPath, getTabs],
-  (currentPatchPath, tabs) => R.path([currentPatchPath, 'offset'], tabs)
+  (currentPatchPath, tabs) => R.pathOr(DEFAULT_PANNING_OFFSET, [currentPatchPath, 'offset'], tabs)
 );
 
 export const getDefaultNodePlacePosition = createSelector(
