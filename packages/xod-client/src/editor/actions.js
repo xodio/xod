@@ -172,8 +172,6 @@ export const switchPatch = patchPath => (dispatch, getState) => {
 
   if (currentPatchPath === patchPath) { return; }
 
-  dispatch(deselectAll());
-
   const tabs = Selectors.getTabs(state);
   const isOpeningNewTab = !R.has(patchPath, tabs);
   dispatch({

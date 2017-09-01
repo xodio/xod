@@ -82,9 +82,18 @@ const resetCurrentPatchPath = (reducer, state, payload) => {
   });
 };
 
+const clearSelection = R.flip(R.merge)({
+  selection: [],
+  linkingPin: null,
+});
+
 const openPatchByPath = (patchPath, state) => R.compose(
   R.assoc('currentPatchPath', patchPath),
-  R.unless(isPatchOpened(patchPath), addTab(patchPath))
+  clearSelection,
+  R.unless(
+    isPatchOpened(patchPath),
+    addTab(patchPath)
+  )
 )(state);
 
 const closeTabById = (tabId, state) =>
@@ -128,10 +137,7 @@ const editorReducer = (state = {}, action) => {
     case LINK_DELETE:
     case COMMENT_DELETE:
     case EDITOR_DESELECT_ALL:
-      return R.merge(state, {
-        selection: [],
-        linkingPin: null,
-      });
+      return clearSelection(state);
     case EDITOR_SELECT_ENTITY:
       return R.assoc(
         'selection',
