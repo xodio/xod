@@ -4,6 +4,88 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* Switch patch board layout from slots to a slot/grid hybrid.
+* Add nodes quick search. Hit Edit → Insert Node, or Double click the patch
+  board, or press `I` key to invoke it.
+* Add the Helpbar. The new pane that shows contextual help for a node. Hit View →
+  Toggle Helpbar or press `H` key to show it.
+* Implemented panning of the patch board. Now you can navigate large patches by
+  pressing spacebar or middle mouse button and drag.
+* The terminal nodes now have their own outstanding look (circles) so that you
+  can quickly scan a patch to find its inputs and outputs.
+* Now you can set starting values for `flip-flop`, `count`, and many other
+  simply binding a desired initial value to their outputs.
+* Add few missing tooltips for UI controls in the Inspector and Project
+  Browser.
+* Browser-based IDE now shows the direct download link for the desktop IDE when
+  trying to upload.
+* The Help main menu item now goes last in the desktop IDE as it should be.
+
+### New nodes
+
+* [xod/core/discretize-2](https://xod.io/libs/xod/core/discretize-2)
+* [xod/core/discretize-3](https://xod.io/libs/xod/core/discretize-3)
+* [xod/core/discretize-4](https://xod.io/libs/xod/core/discretize-4)
+* [xod/core/nth-number-2](https://xod.io/libs/xod/core/nth-number-2)
+* [xod/core/nth-number-3](https://xod.io/libs/xod/core/nth-number-3)
+* [xod/core/nth-number-4](https://xod.io/libs/xod/core/nth-number-4)
+* [xod/core/word-to-number](https://xod.io/libs/xod/core/word-to-number)
+* [xod/core/i2c-begin-transmission](https://xod.io/libs/xod/core/i2c-begin-transmission)
+* [xod/core/i2c-begin-transmission](https://xod.io/libs/xod/core/i2c-begin-transmission)
+* [xod/core/i2c-end-transmission](https://xod.io/libs/xod/core/i2c-end-transmission)
+* [xod/core/i2c-end-transmission](https://xod.io/libs/xod/core/i2c-end-transmission)
+* [xod/core/i2c-read](https://xod.io/libs/xod/core/i2c-read)
+* [xod/core/i2c-request-bytes-6](https://xod.io/libs/xod/core/i2c-request-bytes-6)
+* [xod/core/i2c-request](https://xod.io/libs/xod/core/i2c-request)
+* [xod/core/i2c-send-byte](https://xod.io/libs/xod/core/i2c-send-byte)
+* [xod/core/i2c-send-bytes-2](https://xod.io/libs/xod/core/i2c-send-bytes-2)
+* [xod/core/i2c-write](https://xod.io/libs/xod/core/i2c-write)
+* [xod/common-hardware/adxl335-accelerometer](https://xod.io/libs/xod/common-hardware/adxl335-accelerometer)
+* [xod/common-hardware/adxl335-convert](https://xod.io/libs/xod/common-hardware/adxl335-convert)
+* [xod/common-hardware/l3g4200-gyro](https://xod.io/libs/xod/common-hardware/l3g4200-gyro)
+* [xod/common-hardware/l3gd20h-gyro](https://xod.io/libs/xod/common-hardware/l3gd20h-gyro)
+* [xod/common-hardware/lis331dlh-accelerometer](https://xod.io/libs/xod/common-hardware/lis331dlh-accelerometer)
+* [xod/common-hardware/lis331hh-accelerometer](https://xod.io/libs/xod/common-hardware/lis331hh-accelerometer)
+* [xod/common-hardware/lis3dh-accelerometer](https://xod.io/libs/xod/common-hardware/lis3dh-accelerometer)
+* [xod/common-hardware/st-imu-generic-sensor](https://xod.io/libs/xod/common-hardware/st-imu-generic-sensor)
+* [xod/common-hardware/st-imu-normalize-acc](https://xod.io/libs/xod/common-hardware/st-imu-normalize-acc)
+* [xod/common-hardware/st-imu-normalize-va](https://xod.io/libs/xod/common-hardware/st-imu-normalize-va)
+* [xod/common-hardware/st-imu-round-sensitivity](https://xod.io/libs/xod/common-hardware/st-imu-round-sensitivity)
+
+### Bug fixes
+
+* Fix upload on boards with multiple controller variants. Notably, Arduino Nano
+  which has ATmega328 and ATmega168 versions.
+* `xod/core/count` node now works fine with a fractional `STEP`’s.
+* Fix compilation error saying “`dtostrf` is not defined” which occurred on
+  non-AVR platforms when trying to cast a number to a string.
+* Avoid false `xod/common-hardware/button` triggering on boot.
+* Tweak buttons overlapping long node label for a selected item in the Project
+  Browser.
+* Double click on the add (+) button in the Project Browser no longer drops you
+  to the clicked node implementation. You can still drill down if you’d click
+  the label outside of a button.
+
+### Optimizations
+
+* Move most of the static data in generated C++ to flash memory section. It
+  lowers RAM consumption at the order of 2× to 3×.
+* Get rid of a separate `topology` mapping in C++. Now all node IDs are already
+  sorted topologically. It saves one or two bytes of RAM and Flash per native
+  node.
+* Provide API for native nodes to access values stored in their outputs
+  directly. It saves RAM for the nodes which keep their internal state, e.g.
+  `flip-flop`, `count`, `fade`, etc.
+
+### Deprecations and removals
+
+* Rudimental support for JS-based platforms is dropped so that we can focus on
+  C++ microcontroller platforms and support them well.
+
 <a name="0.12.1"></a>
 ## 0.12.1 (2017-08-09)
 
