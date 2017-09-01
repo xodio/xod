@@ -2,25 +2,25 @@
   "description": "Reads a generic button or another mechanical switch. It is expected that the button is normally high, i.e. it is pulled up with a resistor. The node provides signal debounce with 20 ms settle delay.",
   "links": [
     {
-      "id": "B1fDfkF8W",
+      "id": "ByvswoBtW",
       "input": {
         "nodeId": "BkHBM1FLb",
         "pinKey": "ry3zLA_Bv1Z"
       },
       "output": {
-        "nodeId": "rkl8GkKUb",
-        "pinKey": "Sk7EARu8-"
+        "nodeId": "BypVzytU-",
+        "pinKey": "B1gI0urv1W"
       }
     },
     {
-      "id": "S1xwfyYUW",
+      "id": "HJ9jvsrFW",
       "input": {
-        "nodeId": "rkl8GkKUb",
-        "pinKey": "S101C0OU-"
+        "nodeId": "BJ--G1tI-",
+        "pinKey": "__in__"
       },
       "output": {
-        "nodeId": "BypVzytU-",
-        "pinKey": "B1gI0urv1W"
+        "nodeId": "rkl8GkKUb",
+        "pinKey": "Sk7EARu8-"
       }
     },
     {
@@ -35,10 +35,10 @@
       }
     },
     {
-      "id": "rJ2BG1tLW",
+      "id": "rk_jDiBtW",
       "input": {
-        "nodeId": "BJ--G1tI-",
-        "pinKey": "__in__"
+        "nodeId": "rkl8GkKUb",
+        "pinKey": "S101C0OU-"
       },
       "output": {
         "nodeId": "BkHBM1FLb",
@@ -63,16 +63,16 @@
       "id": "BJ--G1tI-",
       "label": "PRS",
       "position": {
-        "x": 138,
-        "y": 432
+        "x": 136,
+        "y": 408
       },
       "type": "xod/patch-nodes/output-boolean"
     },
     {
       "id": "BkHBM1FLb",
       "position": {
-        "x": 138,
-        "y": 328
+        "x": 136,
+        "y": 204
       },
       "type": "xod/core/not"
     },
@@ -84,8 +84,8 @@
       "id": "ByG3ZyKLW",
       "label": "UPD",
       "position": {
-        "x": 266,
-        "y": 16
+        "x": 170,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -94,16 +94,16 @@
       "id": "ByNiWkt8Z",
       "label": "PORT",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 136,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "BypVzytU-",
       "position": {
-        "x": 138,
-        "y": 120
+        "x": 136,
+        "y": 102
       },
       "type": "xod/core/digital-input"
     },
@@ -113,8 +113,8 @@
       },
       "id": "rkl8GkKUb",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 136,
+        "y": 306
       },
       "type": "xod/core/debounce-boolean"
     }

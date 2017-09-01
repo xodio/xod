@@ -1,5 +1,4 @@
 struct State {
-    Number position;
     TimeMs lastUpdateTime;
 };
 
@@ -13,7 +12,7 @@ void evaluate(Context ctx) {
 
     TimeMs now = transactionTime();
     Number target = getValue<input_TARG>(ctx);
-    Number position = state->position;
+    Number position = getValue<output_OUT>(ctx);
 
     if (target == position) {
         // Already done. Store timestamp anyway so that an animation to a new
@@ -33,6 +32,5 @@ void evaluate(Context ctx) {
     }
 
     emitValue<output_OUT>(ctx, position);
-    state->position = position;
     state->lastUpdateTime = now;
 }
