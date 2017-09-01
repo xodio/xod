@@ -66,11 +66,13 @@ class Tabs extends React.Component {
   }
 
   onSwitchPatch(patchPath) {
-    return this.props.actions.switchPatch(patchPath);
+    // a little hack to correctly handle onBlur etc events
+    setTimeout(() => this.props.actions.switchPatch(patchPath), 0);
   }
 
   onCloseTab(patchPath) {
-    return this.props.actions.closeTab(patchPath);
+    // a little hack to correctly handle onBlur etc events, same as in onSwitchPatch
+    setTimeout(() => this.props.actions.closeTab(patchPath), 0);
   }
 
   onSortEnd(changes) {

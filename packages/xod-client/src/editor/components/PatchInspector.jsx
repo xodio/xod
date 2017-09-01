@@ -2,31 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as XP from 'xod-project';
 
-import { noop } from '../../utils/ramda';
-import DescriptionWidget from './inspectorWidgets/DescriptionWidget';
+import {
+  SELECTION_ENTITY_TYPE,
+  WIDGET_TYPE,
+} from '../constants';
+import Widgets, { WIDGET_MAPPING } from './inspectorWidgets';
+
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
+
+const PatchDescriptionWidget = Widgets.composeWidget(
+  Widgets.DescriptionWidget,
+  WIDGET_MAPPING[SELECTION_ENTITY_TYPE.NODE][WIDGET_TYPE.TEXTAREA].props
+);
 
 class PatchInspector extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: XP.getPatchDescription(props.patch),
-    };
 
-    this.updateValue = this.updateValue.bind(this);
-    this.commitUpdate = this.commitUpdate.bind(this);
+    this.onDescriptionUpdate = this.onDescriptionUpdate.bind(this);
   }
 
-  updateValue(value) {
-    this.setState({ value });
-  }
-  commitUpdate() {
-    if (this.state.value === XP.getPatchDescription(this.props.patch)) {
-      return;
-    }
-
-    const patchPath = XP.getPatchPath(this.props.patch);
-    this.props.onDescriptionUpdate(this.state.value, patchPath);
+  onDescriptionUpdate(patchPath, kind, keyName, value) {
+    this.props.onDescriptionUpdate(value, patchPath);
   }
 
   render() {
@@ -38,13 +35,14 @@ class PatchInspector extends React.Component {
       <div className="Inspector">
         <div className="inspectorTitle">Patch: <span className="patchName">{baseName}</span></div>
 
-        <DescriptionWidget
-          elementId="patchDescription_textarea"
-          value={this.state.value}
+        <PatchDescriptionWidget
+          key={patchPath}
+          entityId={patchPath}
+          keyName=""
+          label="Description"
           disabled={disabled}
-          onBlur={this.commitUpdate}
-          onChange={this.updateValue}
-          onKeyDown={noop}
+          value={XP.getPatchDescription(this.props.patch)}
+          onPropUpdate={this.onDescriptionUpdate}
         />
       </div>
     );
