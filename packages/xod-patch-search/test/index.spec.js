@@ -12,11 +12,14 @@ describe('xod-patch-search/index', () => {
   const workspace = path.resolve(__dirname, '../../../workspace');
   const getProjectPath = projectName => path.resolve(workspace, projectName);
 
-  before(async () => {
-    const project = await loadProject(getProjectPath('welcome-to-xod'));
-    indexData = createIndexData(listPatches(project));
-    idx = createIndex(indexData);
-  });
+  before(() => loadProject(getProjectPath('welcome-to-xod'))
+    .then(listPatches)
+    .then(createIndexData)
+    .then((iData) => {
+      indexData = iData;
+      idx = createIndex(indexData);
+    })
+  );
 
   it('searches by path correctly', () => {
     const result = idx.search('path:number');
