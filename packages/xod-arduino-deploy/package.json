@@ -1,6 +1,6 @@
 {
   "name": "xod-arduino-deploy",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "description": "Utility to build and upload binaries on Arduino microcontrollers.",
   "main": "dist/index.js",
   "scripts": {
@@ -27,8 +27,8 @@
     "serialport": "^4.0.7",
     "tar": "^3.1.8",
     "unbzip2-stream": "^1.2.5",
-    "xod-fs": "^0.12.1",
-    "xod-func-tools": "^0.12.1"
+    "xod-fs": "^0.13.0",
+    "xod-func-tools": "^0.13.0"
   },
   "devDependencies": {
     "chai": "^4.1.0",
