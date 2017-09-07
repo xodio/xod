@@ -21,6 +21,7 @@ class PopupUploadConfig extends React.Component {
       selectedBoard: null,
       boards: null,
       ports: null,
+      doCompileInCloud: false,
     };
 
     this.onClose = this.onClose.bind(this);
@@ -28,6 +29,7 @@ class PopupUploadConfig extends React.Component {
     this.onPortChanged = this.onPortChanged.bind(this);
     this.onRefreshPortsClicked = this.onRefreshPortsClicked.bind(this);
     this.onUploadClicked = this.onUploadClicked.bind(this);
+    this.onCloudCompilationChanged = this.onCloudCompilationChanged.bind(this);
 
     this.changeBoard = this.changeBoard.bind(this);
     this.changePort = this.changePort.bind(this);
@@ -57,7 +59,16 @@ class PopupUploadConfig extends React.Component {
   }
 
   onUploadClicked() {
-    this.props.onUpload(this.state.selectedBoard, this.props.selectedPort);
+    this.props.onUpload(
+      this.state.selectedBoard,
+      this.props.selectedPort,
+      this.state.doCompileInCloud
+    );
+  }
+
+  onCloudCompilationChanged(event) {
+    const val = event.target.checked;
+    this.setState({ doCompileInCloud: val });
   }
 
   getBoards(selectedBoard = this.state.selectedBoard) {
@@ -245,6 +256,17 @@ class PopupUploadConfig extends React.Component {
         </div>
         <div className="ModalContent">
           {ports}
+        </div>
+        <div className="ModalContent">
+          <input
+            id="compileInCloud"
+            type="checkbox"
+            checked={this.state.doCompileInCloud}
+            onChange={this.onCloudCompilationChanged}
+          />
+          <label htmlFor="compileInCloud">
+            Compile in the cloud (experimental)
+          </label>
         </div>
         <div className="ModalFooter">
           <button onClick={this.onUploadClicked} className="Button" disabled={!this.canUnpload()}>

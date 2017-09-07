@@ -17,8 +17,8 @@ const progressUpload = (dispatch, id) => (message, percentage) => dispatch(
 const succeedUpload = (dispatch, id) => (message = '') => dispatch(
   client.successProcess(id, UPLOAD, { message })
 );
-const failUpload = (dispatch, id) => message => dispatch(
-  client.failProcess(id, UPLOAD, { message })
+const failUpload = (dispatch, id) => (message, percentage) => dispatch(
+  client.failProcess(id, UPLOAD, { message, percentage })
 );
 
 export const uploadToArduino = () => (dispatch) => {

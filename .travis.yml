@@ -52,7 +52,7 @@ before_install:
 install:
 - yarn
 - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-    pip install -U platformio;
+    pip install --user -U platformio;
   fi
 
 

@@ -172,10 +172,6 @@
           "platformioBoardId": "robotMotor"
         },
         {
-          "name": "Arduino Gemma",
-          "platformioBoardId": "gemma"
-        },
-        {
           "name": "Adafruit Circuit Playground"
         },
         {
