@@ -36,6 +36,8 @@
     "react-collapsible": "git+https://github.com/xodio/react-collapsible.git#npm",
     "react-custom-scroll": "^2.0.0",
     "react-dom": "^15.4.2",
+    "react-dnd": "^2.5.1",
+    "react-dnd-html5-backend": "^2.5.1",
     "react-event-listener": "^0.4.5",
     "react-fa": "git+https://github.com/xodio/react-fa.git",
     "react-highlight-words": "^0.8.1",

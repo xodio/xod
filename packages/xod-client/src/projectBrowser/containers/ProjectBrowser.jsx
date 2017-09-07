@@ -196,6 +196,7 @@ class ProjectBrowser extends React.Component {
     const renderItem = ({ path }) => (
       <PatchGroupItem
         key={path}
+        patchPath={path}
         label={getBaseName(path)}
         isOpen={path === currentPatchPath}
         onDoubleClick={() => switchPatch(path)}
@@ -231,6 +232,7 @@ class ProjectBrowser extends React.Component {
         {libPatches.map(({ path }) =>
           <PatchGroupItem
             key={path}
+            patchPath={path}
             label={getBaseName(path)}
             isSelected={path === selectedPatchPath}
             onClick={() => setSelection(path)}

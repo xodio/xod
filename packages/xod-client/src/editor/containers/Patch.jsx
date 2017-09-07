@@ -3,12 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
+import { DropTarget } from 'react-dnd';
 import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
 
 import * as EditorActions from '../actions';
 import * as EditorSelectors from '../selectors';
-import { SELECTION_ENTITY_TYPE, EDITOR_MODE } from '../constants';
+import { SELECTION_ENTITY_TYPE, EDITOR_MODE, DRAGGED_ENTITY_TYPE } from '../constants';
 
 import * as ProjectActions from '../../project/actions';
 import * as ProjectSelectors from '../../project/selectors';
@@ -42,6 +43,34 @@ const initialState = {
 const getOffsetMatrix = ({ x, y }) => `matrix(1, 0, 0, 1, ${x}, ${y})`;
 
 const isMiddleButtonPressed = R.pathEq(['nativeEvent', 'which'], 2);
+
+const dropTarget = {
+  drop(props, monitor, component) {
+    if (!component.patchSvgRef) return;
+
+    const globalDropPosition = monitor.getClientOffset();
+    const bbox = component.patchSvgRef.getBoundingClientRect();
+
+    const newNodePosition = snapNodePositionToSlots({
+      x: globalDropPosition.x - bbox.left - props.offset.x,
+      y: globalDropPosition.y - bbox.top - props.offset.y,
+    });
+
+    const { patchPath } = monitor.getItem();
+
+    props.actions.addAndSelectNode(
+      patchPath,
+      newNodePosition,
+      props.patchPath
+    );
+
+    component.patchSvgRef.focus();
+  },
+  canDrop(props, monitor) {
+    const { patchPath } = monitor.getItem();
+    return patchPath !== props.patchPath;
+  },
+};
 
 class Patch extends React.Component {
   constructor(props) {
@@ -250,13 +279,6 @@ class Patch extends React.Component {
     }
   }
 
-  onCreateNode() {
-    const position = snapNodePositionToSlots(this.state.mousePosition);
-    const nodeTypeId = this.props.selectedNodeType;
-    const currentPatchPath = this.props.patchPath;
-    this.props.actions.addAndSelectNode(nodeTypeId, position, currentPatchPath);
-  }
-
   onDeleteSelection(event) {
     if (isInput(event)) return;
 
@@ -385,89 +407,92 @@ class Patch extends React.Component {
     const isInPanningMode = this.props.mode === EDITOR_MODE.PANNING;
     const isPanning = isInPanningMode && this.state.isMouseDown;
 
-    return (
-      <HotKeys
-        handlers={this.getHotkeyHandlers()}
-        className="PatchWrapper"
-        onKeyDown={this.onKeyDown}
-        onKeyUp={this.onKeyUp}
-      >
-        <PatchSVG
-          onMouseDown={this.onMouseDown}
-          onMouseMove={this.onMouseMove}
-          onMouseUp={this.onMouseUp}
-          isInPanningMode={isInPanningMode}
-          isPanning={isPanning}
-          isInResizingMode={this.props.mode === EDITOR_MODE.RESIZING_SELECTION}
-          svgRef={(svg) => { this.patchSvgRef = svg; }}
+    // wrapping in a native element is required by connectDropTarget
+    return this.props.connectDropTarget(
+      <div>
+        <HotKeys
+          handlers={this.getHotkeyHandlers()}
+          className="PatchWrapper"
+          onKeyDown={this.onKeyDown}
+          onKeyUp={this.onKeyUp}
         >
-          <Layers.Background
-            width={this.props.size.width}
-            height={this.props.size.height}
-            onClick={this.props.actions.deselectAll}
-            onDoubleClick={this.onDoubleClick}
-            offset={this.getOffset()}
-          />
-          <g transform={getOffsetMatrix(this.getOffset())}>
-            <Layers.IdleComments
-              draggedCommentId={manipulatedCommentId}
-              comments={this.props.comments}
-              selection={this.props.selection}
-              onMouseDown={this.onCommentMouseDown}
-              onResizeHandleMouseDown={this.onCommentResizeHandleMouseDown}
-              onFinishEditing={this.props.actions.editComment}
+          <PatchSVG
+            onMouseDown={this.onMouseDown}
+            onMouseMove={this.onMouseMove}
+            onMouseUp={this.onMouseUp}
+            isInPanningMode={isInPanningMode}
+            isPanning={isPanning}
+            isInResizingMode={this.props.mode === EDITOR_MODE.RESIZING_SELECTION}
+            svgRef={(svg) => { this.patchSvgRef = svg; }}
+          >
+            <Layers.Background
+              width={this.props.size.width}
+              height={this.props.size.height}
+              onClick={this.props.actions.deselectAll}
+              onDoubleClick={this.onDoubleClick}
+              offset={this.getOffset()}
             />
-            <Layers.Links
-              links={idleLinks}
-              selection={this.props.selection}
-            />
-            <Layers.IdleNodes
-              draggedNodeId={draggedNodeId}
-              nodes={this.props.nodes}
-              selection={this.props.selection}
-              linkingPin={this.props.linkingPin}
-              onMouseDown={this.onNodeMouseDown}
-            />
-            <Layers.LinksOverlay
-              links={idleLinks}
-              selection={this.props.selection}
-              onClick={this.onLinkClick}
-            />
-            <Layers.NodePinsOverlay
-              nodes={this.props.nodes}
-              linkingPin={this.props.linkingPin}
-              onPinMouseDown={this.onPinMouseDown}
-              onPinMouseUp={this.onPinMouseUp}
-            />
-            {this.isInManipulationMode() ? (
-              <Layers.SnappingPreview
-                draggedEntityPosition={manipulatedEntityPosition}
-                draggedEntitySize={manipulatedEntitySize}
+            <g transform={getOffsetMatrix(this.getOffset())}>
+              <Layers.IdleComments
+                draggedCommentId={manipulatedCommentId}
+                comments={this.props.comments}
+                selection={this.props.selection}
+                onMouseDown={this.onCommentMouseDown}
+                onResizeHandleMouseDown={this.onCommentResizeHandleMouseDown}
+                onFinishEditing={this.props.actions.editComment}
               />
-            ) : null}
-            <Layers.ManipulatedComment
-              comment={manipulatedComment}
-              position={manipulatedEntityPosition}
-              size={manipulatedEntitySize}
-            />
-            <Layers.DraggedNodeLinks
-              node={draggedNode}
-              nodePosition={manipulatedEntityPosition}
-              links={draggedNodeLinks}
-            />
-            <Layers.DraggedNode
-              node={draggedNode}
-              position={manipulatedEntityPosition}
-              size={manipulatedEntitySize}
-            />
-            <Layers.Ghosts
-              mousePosition={this.state.mousePosition}
-              mode={this.props.mode}
-              ghostLink={this.props.ghostLink}
-            />
-          </g>
-        </PatchSVG>
-      </HotKeys>
+              <Layers.Links
+                links={idleLinks}
+                selection={this.props.selection}
+              />
+              <Layers.IdleNodes
+                draggedNodeId={draggedNodeId}
+                nodes={this.props.nodes}
+                selection={this.props.selection}
+                linkingPin={this.props.linkingPin}
+                onMouseDown={this.onNodeMouseDown}
+              />
+              <Layers.LinksOverlay
+                links={idleLinks}
+                selection={this.props.selection}
+                onClick={this.onLinkClick}
+              />
+              <Layers.NodePinsOverlay
+                nodes={this.props.nodes}
+                linkingPin={this.props.linkingPin}
+                onPinMouseDown={this.onPinMouseDown}
+                onPinMouseUp={this.onPinMouseUp}
+              />
+              {this.isInManipulationMode() ? (
+                <Layers.SnappingPreview
+                  draggedEntityPosition={manipulatedEntityPosition}
+                  draggedEntitySize={manipulatedEntitySize}
+                />
+              ) : null}
+              <Layers.ManipulatedComment
+                comment={manipulatedComment}
+                position={manipulatedEntityPosition}
+                size={manipulatedEntitySize}
+              />
+              <Layers.DraggedNodeLinks
+                node={draggedNode}
+                nodePosition={manipulatedEntityPosition}
+                links={draggedNodeLinks}
+              />
+              <Layers.DraggedNode
+                node={draggedNode}
+                position={manipulatedEntityPosition}
+                size={manipulatedEntitySize}
+              />
+              <Layers.Ghosts
+                mousePosition={this.state.mousePosition}
+                mode={this.props.mode}
+                ghostLink={this.props.ghostLink}
+              />
+            </g>
+          </PatchSVG>
+        </HotKeys>
+      </div>
     );
   }
 }
@@ -480,12 +505,12 @@ Patch.propTypes = {
   comments: sanctuaryPropType($.StrMap(RenderableComment)),
   linkingPin: PropTypes.object,
   selection: PropTypes.array,
-  selectedNodeType: PropTypes.string,
-  patchPath: PropTypes.string,
+  patchPath: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
   mode: PropTypes.oneOf(R.values(EDITOR_MODE)),
   ghostLink: PropTypes.any,
   offset: PropTypes.object,
   onDoubleClick: PropTypes.func.isRequired,
+  connectDropTarget: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = R.applySpec({
@@ -493,7 +518,6 @@ const mapStateToProps = R.applySpec({
   links: ProjectSelectors.getRenderableLinks,
   comments: ProjectSelectors.getRenderableComments,
   selection: EditorSelectors.getSelection,
-  selectedNodeType: EditorSelectors.getSelectedNodeType,
   linkingPin: EditorSelectors.getLinkingPin,
   patchPath: EditorSelectors.getCurrentPatchPath,
   mode: EditorSelectors.getMode,
@@ -519,4 +543,14 @@ const mapDispatchToProps = dispatch => ({
   }, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Patch);
+export default R.compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  DropTarget( // eslint-disable-line new-cap
+    DRAGGED_ENTITY_TYPE.PATCH,
+    dropTarget,
+    (conn, monitor) => ({
+      connectDropTarget: conn.dropTarget(),
+      сlientOffset: monitor.getClientOffset(),
+    })
+  )
+)(Patch);
