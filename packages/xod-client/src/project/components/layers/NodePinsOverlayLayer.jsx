@@ -1,8 +1,10 @@
 import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { getBaseName } from 'xod-project';
 
+import pureDeepEqual from '../../../utils/pureDeepEqual';
 import { LAYER } from '../../../editor/constants';
 
 import SVGLayer from './SVGLayer';
@@ -51,4 +53,4 @@ NodePinsOverlayLayer.propTypes = {
   onPinMouseDown: PropTypes.func,
 };
 
-export default NodePinsOverlayLayer;
+export default pureDeepEqual(NodePinsOverlayLayer);

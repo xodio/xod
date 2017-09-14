@@ -22,6 +22,8 @@ export const COMMENT_SET_CONTENT = 'COMMENT_SET_CONTENT';
 export const LINK_ADD = 'LINK_ADD';
 export const LINK_DELETE = 'LINK_DELETE';
 
+export const BULK_MOVE_NODES_AND_COMMENTS = 'BULK_MOVE_NODES_AND_COMMENTS';
+
 export const PATCH_ADD = 'PATCH_ADD';
 export const PATCH_RENAME = 'PATCH_RENAME';
 export const PATCH_DELETE = 'PATCH_DELETE';

@@ -15,15 +15,15 @@ import { LINK_ERRORS } from '../editor/constants';
 // :: NodeId -> PinKey -> RenderableNodes -> RenderablePin
 export const getRenderablePin = R.uncurryN(3, (nodeId, pinKey) => R.path([nodeId, 'pins', pinKey]));
 
-// :: NodeId -> Link -> Boolean
-export const isLinkConnectedToNode =
-  R.uncurryN(2, nodeId =>
+// :: [NodeId] -> Link -> Boolean
+export const isLinkConnectedToNodeIds =
+  R.uncurryN(2, nodeIds =>
     R.compose(
-      R.contains(nodeId),
+      R.complement(R.isEmpty),
+      R.intersection(nodeIds),
       XP.getLinkNodeIds
     )
   );
-
 
 //
 // pins linking validation utils

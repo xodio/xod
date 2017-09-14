@@ -12,12 +12,15 @@ import {
   getInitialPatchOffset,
 } from '../project/utils';
 
+import { getSelectedEntityIdsOfType } from './utils';
+
 import {
   addNode,
   addLink,
   deleteNode,
   deleteLink,
   deleteComment,
+  bulkMoveNodesAndComments,
 } from '../project/actions';
 import {
   addError,
@@ -46,7 +49,7 @@ export const setPinSelection = (nodeId, pinKey) => ({
   },
 });
 
-const doPinSelection = (nodeId, pinKey) => (dispatch, getState) => {
+export const doPinSelection = (nodeId, pinKey) => (dispatch, getState) => {
   const selectedPin = getRenderablePin(
     nodeId,
     pinKey,
@@ -57,11 +60,11 @@ const doPinSelection = (nodeId, pinKey) => (dispatch, getState) => {
 
   if (err) {
     dispatch(addError(LINK_ERRORS[err]));
-    return;
+    return false;
   }
 
-  dispatch(setMode(EDITOR_MODE.LINKING));
   dispatch(setPinSelection(nodeId, pinKey));
+  return true;
 };
 
 export const deselectAll = () => (dispatch, getState) => {
@@ -72,21 +75,17 @@ export const deselectAll = () => (dispatch, getState) => {
     type: ActionType.EDITOR_DESELECT_ALL,
     payload: {},
   });
-
-  dispatch(setMode(EDITOR_MODE.DEFAULT));
 };
 
-export const selectEntity = R.curry(
-  (entityType, id, dispatch, getState) => {
-    const state = getState();
-    if (Selectors.getMode(state) !== EDITOR_MODE.SELECTING) return;
+export const selectEntity = R.curry((entityType, id) => ({
+  type: ActionType.EDITOR_SELECT_ENTITY,
+  payload: { id, entityType },
+}));
 
-    dispatch({
-      type: ActionType.EDITOR_SELECT_ENTITY,
-      payload: { id, entityType },
-    });
-  }
-);
+export const addEntityToSelection = R.curry((entityType, id) => ({
+  type: ActionType.EDITOR_ADD_ENTITY_TO_SELECTION,
+  payload: { id, entityType },
+}));
 
 export const selectNode = selectEntity(SELECTION_ENTITY_TYPE.NODE);
 export const selectComment = selectEntity(SELECTION_ENTITY_TYPE.COMMENT);
@@ -102,12 +101,7 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
   const state = getState();
   const linkingFrom = state.editor.linkingPin;
 
-  dispatch(deselectAll());
-
-  if (!linkingFrom) {
-    dispatch(doPinSelection(nodeId, pinKey));
-    return;
-  }
+  if (!linkingFrom) return;
 
   const linkingTo = { nodeId, pinKey };
 
@@ -133,7 +127,7 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
   const action = error ?
     addError(LINK_ERRORS[error]) :
     addLink(linkingFrom, linkingTo);
-  dispatch(setMode(EDITOR_MODE.DEFAULT));
+
   dispatch(action);
 };
 
@@ -151,6 +145,7 @@ const DELETE_ACTIONS = {
 };
 
 export const deleteSelection = () => (dispatch, getState) => {
+  // TODO: sending a bunch of actions is suboptimal and pollutes undo history
   const currentPatchPath = Selectors.getCurrentPatchPath(getState());
   const selection = Selectors.getSelection(getState());
 
@@ -159,6 +154,19 @@ export const deleteSelection = () => (dispatch, getState) => {
       DELETE_ACTIONS[select.entity](select.id, currentPatchPath)
     );
   });
+};
+
+export const moveSelection = deltaPosition => (dispatch, getState) => {
+  const state = getState();
+  const currentPatchPath = Selectors.getCurrentPatchPath(state);
+  const selection = Selectors.getSelection(state);
+
+  dispatch(bulkMoveNodesAndComments(
+    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection),
+    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT, selection),
+    deltaPosition,
+    currentPatchPath
+  ));
 };
 
 export const setCurrentPatchOffset = newOffset => ({

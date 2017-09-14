@@ -4,6 +4,7 @@ import * as XP from 'xod-project';
 import {
   EDITOR_DESELECT_ALL,
   EDITOR_SELECT_ENTITY,
+  EDITOR_ADD_ENTITY_TO_SELECTION,
   EDITOR_SELECT_PIN,
   EDITOR_SET_MODE,
   EDITOR_SET_SELECTED_NODETYPE,
@@ -28,6 +29,7 @@ import {
   NODE_DELETE,
   LINK_DELETE,
   COMMENT_DELETE,
+  LINK_ADD,
 } from '../project/actionTypes';
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
 
@@ -149,8 +151,22 @@ const editorReducer = (state = {}, action) => {
         ],
         state
       );
+    case EDITOR_ADD_ENTITY_TO_SELECTION:
+      return R.over(
+        R.lensProp('selection'),
+        R.compose(
+          R.uniq,
+          R.append({
+            entity: action.payload.entityType,
+            id: action.payload.id,
+          })
+        ),
+        state
+      );
     case EDITOR_SELECT_PIN:
       return R.assoc('linkingPin', action.payload, state);
+    case LINK_ADD:
+      return R.assoc('linkingPin', null, state);
     case EDITOR_SET_MODE:
       return R.assoc('mode', action.payload.mode, state);
     case EDITOR_SET_SELECTED_NODETYPE:

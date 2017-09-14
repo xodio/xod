@@ -249,6 +249,16 @@ export const deleteComment = id => (dispatch, getState) =>
     },
   });
 
+export const bulkMoveNodesAndComments = (nodeIds, commentIds, deltaPosition, patchPath) => ({
+  type: ActionType.BULK_MOVE_NODES_AND_COMMENTS,
+  payload: {
+    nodeIds,
+    commentIds,
+    deltaPosition,
+    patchPath,
+  },
+});
+
 export const moveComment = (id, position) => (dispatch, getState) =>
   dispatch({
     type: ActionType.COMMENT_MOVE,

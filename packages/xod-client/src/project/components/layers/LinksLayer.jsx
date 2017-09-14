@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import pureDeepEqual from '../../../utils/pureDeepEqual';
 import { LAYER } from '../../../editor/constants';
 
 import { isLinkSelected } from '../../../editor/utils';
@@ -30,4 +32,4 @@ LinksLayer.propTypes = {
   selection: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default LinksLayer;
+export default pureDeepEqual(LinksLayer);

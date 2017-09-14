@@ -22,3 +22,8 @@ export const isPinSelected = (linkingPin, renderablePin) => (
   linkingPin.nodeId === renderablePin.nodeId &&
   linkingPin.pinKey === renderablePin.key
 );
+
+export const getSelectedEntityIdsOfType = R.curry((entityType, selection) => R.compose(
+  R.map(R.prop('id')),
+  R.filter(R.propEq('entity', entityType))
+)(selection));

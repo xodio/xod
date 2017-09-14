@@ -1,5 +1,8 @@
+import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import pureDeepEqual from '../../../utils/pureDeepEqual';
 import { LAYER } from '../../../editor/constants';
 
 import SVGLayer from './SVGLayer';
@@ -33,4 +36,4 @@ LinksOverlayLayer.propTypes = {
   onClick: PropTypes.func,
 };
 
-export default LinksOverlayLayer;
+export default pureDeepEqual(LinksOverlayLayer);
