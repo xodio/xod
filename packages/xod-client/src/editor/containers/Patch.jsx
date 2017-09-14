@@ -25,18 +25,23 @@ import linkingMode from './patchModes/linking';
 import panningMode from './patchModes/panning';
 import movingMode from './patchModes/moving';
 import resizingCommentMode from './patchModes/resizingComment';
+import acceptingDraggedPatchMode from './patchModes/acceptindDraggedPatch';
+
+const getDraggedPatchPosition = (props, monitor, component) => {
+  const globalDropPosition = monitor.getClientOffset();
+  const bbox = component.rootRef.getBoundingClientRect();
+
+  return snapNodePositionToSlots({
+    x: globalDropPosition.x - bbox.left - props.offset.x,
+    y: globalDropPosition.y - bbox.top - props.offset.y,
+  });
+};
 
 const dropTarget = {
   drop(props, monitor, component) {
     if (!component.rootRef) return;
 
-    const globalDropPosition = monitor.getClientOffset();
-    const bbox = component.rootRef.getBoundingClientRect();
-
-    const newNodePosition = snapNodePositionToSlots({
-      x: globalDropPosition.x - bbox.left - props.offset.x,
-      y: globalDropPosition.y - bbox.top - props.offset.y,
-    });
+    const newNodePosition = getDraggedPatchPosition(props, monitor, component);
 
     const { patchPath } = monitor.getItem();
 
@@ -44,6 +49,15 @@ const dropTarget = {
       patchPath,
       newNodePosition,
       props.patchPath
+    );
+    props.actions.setMode(EDITOR_MODE.DEFAULT);
+  },
+  hover(props, monitor, component) { // TODO: performance
+    if (!component.rootRef) return;
+
+    component.setModeState(
+      EDITOR_MODE.ACCEPTING_DRAGGED_PATCH,
+      { previewPosition: getDraggedPatchPosition(props, monitor, component) }
     );
   },
   canDrop(props, monitor) {
@@ -58,6 +72,7 @@ const MODE_HANDLERS = {
   [EDITOR_MODE.PANNING]: panningMode,
   [EDITOR_MODE.MOVING_SELECTION]: movingMode,
   [EDITOR_MODE.RESIZING_SELECTION]: resizingCommentMode,
+  [EDITOR_MODE.ACCEPTING_DRAGGED_PATCH]: acceptingDraggedPatchMode,
 };
 
 class Patch extends React.Component {
@@ -148,6 +163,7 @@ const mapStateToProps = R.applySpec({
   mode: EditorSelectors.getMode,
   ghostLink: ProjectSelectors.getLinkGhost,
   offset: EditorSelectors.getCurrentPatchOffset,
+  draggedPreviewSize: EditorSelectors.getDraggedPreviewSize,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -177,7 +193,7 @@ export default R.compose(
     dropTarget,
     (conn, monitor) => ({
       connectDropTarget: conn.dropTarget(),
-      сlientOffset: monitor.getClientOffset(),
+      isPatchDraggedOver: monitor.isOver(),
     })
   )
 )(Patch);

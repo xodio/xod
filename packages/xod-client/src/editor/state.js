@@ -9,6 +9,7 @@ export default {
   selectedNodeType: null,
   isHelpbarVisible: false,
   focusedArea: FOCUS_AREAS.WORKAREA,
+  draggedPreviewSize: { width: 0, height: 0 },
   suggester: {
     visible: false,
     placePosition: null,

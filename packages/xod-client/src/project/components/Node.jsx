@@ -115,6 +115,7 @@ class Node extends React.Component {
     const svgStyle = {
       overflow: 'visible',
       opacity: this.props.hidden ? 0 : 1, // setting visibility is breaking masks
+      pointerEvents: this.props.noEvents ? 'none' : 'auto',
     };
 
     const nodeLabel = label || XP.getBaseName(type);
@@ -177,6 +178,7 @@ Node.propTypes = {
   isGhost: PropTypes.bool,
   isDragged: PropTypes.bool,
   hidden: PropTypes.bool,
+  noEvents: PropTypes.bool,
   linkingPin: PropTypes.object,
   pinLinkabilityValidator: PropTypes.func,
   onMouseDown: PropTypes.func,
@@ -186,6 +188,7 @@ Node.defaultProps = {
   isSelected: false,
   isGhost: false,
   isDragged: false,
+  noEvents: false,
   onMouseDown: noop,
   pinLinkabilityValidator: R.F,
 };

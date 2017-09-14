@@ -17,6 +17,7 @@ import {
   SHOW_SUGGESTER,
   HIDE_SUGGESTER,
   HIGHLIGHT_SUGGESTER_ITEM,
+  START_DRAGGING_PATCH,
 } from './actionTypes';
 import {
   PROJECT_CREATE,
@@ -26,12 +27,15 @@ import {
   PATCH_ADD,
   PATCH_DELETE,
   PATCH_RENAME,
+  NODE_ADD,
   NODE_DELETE,
+  LINK_ADD,
   LINK_DELETE,
   COMMENT_DELETE,
-  LINK_ADD,
 } from '../project/actionTypes';
+
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
+import { EDITOR_MODE } from './constants';
 
 const addTab = R.curry((patchPath, state) => {
   if (!patchPath) return state;
@@ -169,6 +173,16 @@ const editorReducer = (state = {}, action) => {
       return R.assoc('linkingPin', null, state);
     case EDITOR_SET_MODE:
       return R.assoc('mode', action.payload.mode, state);
+    case START_DRAGGING_PATCH:
+      return R.merge(
+        state,
+        {
+          mode: EDITOR_MODE.ACCEPTING_DRAGGED_PATCH,
+          draggedPreviewSize: action.payload,
+        }
+      );
+    case NODE_ADD:
+      return R.assoc('draggedPreviewSize', { width: 0, height: 0 }, state);
     case EDITOR_SET_SELECTED_NODETYPE:
       return R.assoc('selectedNodeType', action.payload.id, state);
     case PROJECT_CREATE: {

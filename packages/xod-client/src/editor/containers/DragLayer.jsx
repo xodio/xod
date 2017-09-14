@@ -39,7 +39,7 @@ function getItemStyles({ initialClientOffset, initialSourceClientOffset, current
 const renderPatchAsNode = (patchPath, project) => R.compose(
   R.map(R.compose(
     props => (
-      <Node {...props} isDragged />
+      <Node {...props} isDragged noEvents />
     ),
     patchToNodeProps
   )),

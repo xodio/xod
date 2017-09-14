@@ -1,5 +1,7 @@
 import R from 'ramda';
 
+import * as XP from 'xod-project';
+
 import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from './constants';
 import * as ActionType from './actionTypes';
 import * as Selectors from './selectors';
@@ -10,6 +12,7 @@ import {
   getPinSelectionError,
   getLinkingError,
   getInitialPatchOffset,
+  patchToNodeProps,
 } from '../project/utils';
 
 import { getSelectedEntityIdsOfType } from './utils';
@@ -195,6 +198,22 @@ export const switchPatch = patchPath => (dispatch, getState) => {
 
     dispatch(setCurrentPatchOffset(offset));
   }
+};
+
+export const startDraggingPatch = patchPath => (dispatch, getState) => {
+  const state = getState();
+
+  const previewSize = R.compose(
+    R.prop('size'),
+    patchToNodeProps,
+    XP.getPatchByPathUnsafe(patchPath),
+    ProjectSelectors.getProject
+  )(state);
+
+  dispatch({
+    type: ActionType.START_DRAGGING_PATCH,
+    payload: previewSize,
+  });
 };
 
 export const closeTab = id => ({

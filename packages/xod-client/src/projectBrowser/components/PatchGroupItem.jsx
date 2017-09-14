@@ -9,6 +9,7 @@ import { DRAGGED_ENTITY_TYPE } from '../../editor/constants';
 
 const dragSource = {
   beginDrag(props) {
+    props.onBeginDrag(props.patchPath);
     return { patchPath: props.patchPath };
   },
 };
@@ -78,6 +79,7 @@ PatchGroupItem.propTypes = {
   onDoubleClick: PropTypes.func,
   connectDragSource: PropTypes.func.isRequired,
   connectDragPreview: PropTypes.func.isRequired,
+  onBeginDrag: PropTypes.func.isRequired,
 };
 
 export default DragSource( // eslint-disable-line new-cap

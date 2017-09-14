@@ -6,6 +6,7 @@ export const EDITOR_MODE = {
   RESIZING_SELECTION: 'resizing_selection',
   LINKING: 'linking',
   PANNING: 'panning',
+  ACCEPTING_DRAGGED_PATCH: 'accepting_dragged_patch',
 
   get DEFAULT() {
     return this.SELECTING;
