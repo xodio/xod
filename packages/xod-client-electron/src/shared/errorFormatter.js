@@ -1,5 +1,10 @@
 import R from 'ramda';
 import { ERROR_CODES as XFS_EC } from 'xod-fs';
+
+// import COMPILATION_ERRORS using path to file to prevent importing the whole package,
+// that contains async/await functions and non-isomorphic dependencies
+import { COMPILATION_ERRORS as XD_EC } from 'xod-deploy/dist/constants';
+
 import * as EC from './errorCodes';
 
 const UNKNOWN_ERROR = err => `Unknown error occurred: ${err.message || JSON.stringify(err)}`;
@@ -26,6 +31,15 @@ const ERROR_FORMATTERS = {
 
   [EC.CANT_CREATE_NEW_PROJECT]: err => `Could not create a new project: ${err.message}`,
   [EC.CANT_OPEN_SELECTED_PROJECT]: err => `Could not open selected project: ${err.message}`,
+
+  [EC.BOARD_NOT_SUPPORTED]: err => `Board ${err.boardId} is not supported yet`,
+  [EC.CANT_GET_UPLOAD_CONFIG]: err => `Could not get upload config for board ${err.boardId}. Returned status ${err.status} ${err.statusText}`,
+  [EC.CLOUD_NETWORK_ERROR]: err => `Could not connect to cloud service. Probably you donʼt have an internet connection. Error: ${err.message}`,
+
+  [XD_EC.COMPILE_FAILED]: err => `Compilation failed with error: ${err.message}`,
+  [XD_EC.COMPILE_TIMEDOUT]: err => `Compilation timed out (${err.message}ms expired)`,
+  [XD_EC.CLOSED]: err => `Connection was closed with reason (${err.closeCode}) ${err.reason}`,
+  [XD_EC.FAILED]: err => `Canʼt establish connection with compile server: (${err.code}) ${err.message}`,
 };
 
 // :: Error -> String

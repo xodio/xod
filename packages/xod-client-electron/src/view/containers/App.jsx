@@ -162,11 +162,12 @@ class App extends client.App {
     this.props.actions.uploadToArduinoConfig();
   }
 
-  onUploadToArduino(board, port, processActions = null) {
+  onUploadToArduino(board, port, cloud, processActions = null) {
     const { project, currentPatchPath } = this.props;
     const proc = (processActions !== null) ? processActions : this.props.actions.uploadToArduino();
 
     ipcRenderer.send(UPLOAD_TO_ARDUINO, {
+      cloud,
       board,
       project,
       port,
@@ -186,7 +187,7 @@ class App extends client.App {
           R.join('\n\n'),
           R.reject(R.isNil)
         )([payload.message, payload.error.stdout, payload.stderr]);
-        proc.fail(failureMessage);
+        proc.fail(failureMessage, payload.percentage);
       }
       // Remove listener if process is finished.
       ipcRenderer.removeAllListeners(UPLOAD_TO_ARDUINO);

@@ -254,6 +254,9 @@ export const rejectWithCode = R.curry(
 // :: [Promise a] -> Promise a
 export const allPromises = promises => Promise.all(promises);
 
+// :: Number -> Promise.Resolved ()
+export const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 /**
  * Concatenates a list of lists into one list.
  */

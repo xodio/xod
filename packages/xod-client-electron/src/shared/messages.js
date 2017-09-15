@@ -3,6 +3,8 @@ import * as EVENTS from './events';
 export const CODE_TRANSPILED = 'Project was successfully transpiled. Searching for device...';
 export const PORT_FOUND = 'Port with connected Arduino was found. Installing toolchains...';
 export const TOOLCHAIN_INSTALLED = 'Toolchain is installed. Uploading...';
+export const CLOUD_TOOLCHAIN_INSTALLED = 'Toolchain is installed. Compiling code in the cloud...';
+export const CODE_COMPILED = 'Code compiled succesfully. Uploading...';
 
 export const ENUMERATING_PORTS = 'Enumerating...';
 export const ENUMERATING_BOARDS = 'Loading list of supported boards...';

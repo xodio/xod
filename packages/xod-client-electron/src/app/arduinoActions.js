@@ -8,6 +8,7 @@ import { writeFile } from 'xod-fs';
 import { foldEither, tapP, rejectWithCode } from 'xod-func-tools';
 import { transpileForArduino } from 'xod-arduino';
 import * as xad from 'xod-arduino-deploy';
+import * as xd from 'xod-deploy';
 
 import * as settings from './settings';
 import * as MESSAGES from '../shared/messages';
@@ -35,6 +36,14 @@ const arduinoBuilderPath = (IS_DEV) ?
 const arduinoLibrariesPath = resolve(
   IS_DEV ? app.getAppPath() : process.resourcesPath,
   'arduino-libraries'
+);
+
+const artifactTmpDir = resolve(app.getPath('userData'), 'upload-temp');
+
+// Another place to store uploader tools
+// Will be used by xod-deploy (cloud compiler)
+const uploadToolsPath = resolve(
+  app.getPath('userData'), 'tools'
 );
 
 // =============================================================================
@@ -137,10 +146,9 @@ export const doTranspileForArduino = ({ project, patchPath }) =>
  */
 export const uploadToArduino = (pab, port, code) => {
   // Create tmpDir in userData instead of os.tmpdir() to avoid error "readdirent: result too large
-  const tmpDir = resolve(app.getPath('userData'), 'upload-temp');
-  const sketchFile = pjoin(tmpDir, 'xod-arduino-sketch.cpp');
-  const buildDir = pjoin(tmpDir, 'build');
-  const clearTmp = () => fse.remove(tmpDir);
+  const sketchFile = pjoin(artifactTmpDir, 'xod-arduino-sketch.cpp');
+  const buildDir = pjoin(artifactTmpDir, 'build');
+  const clearTmp = () => fse.remove(artifactTmpDir);
 
   return writeFile(sketchFile, code, 'utf8')
     .then(({ path }) => xad.buildAndUpload(
@@ -159,38 +167,21 @@ const findBoardByName = R.curry(
 
 // =============================================================================
 //
-// IPC handlers (for main process)
+// Local compiling and uploading case
 //
 // =============================================================================
 
-export const uploadToArduinoHandler = (event, payload) => {
-  // Messages
-  const send = status => R.compose(
-    data => (arg) => { event.sender.send('UPLOAD_TO_ARDUINO', data); return arg; },
-    R.assoc(status, true),
-    (message, percentage, err = null) => ({
-      success: false,
-      progress: false,
-      failure: false,
-      error: err,
-      message,
-      percentage,
-    })
-  );
-  const sendSuccess = send('success');
-  const sendProgress = send('progress');
-  const sendFailure = send('failure');
-  const convertAndSendError = err => R.compose(
-    msg => sendFailure(msg, 0, errorToPlainObject(err))(),
-    formatError
-  )(err);
-
+const deployToArduino = ({
+  payload,
+  sendProgress,
+  sendSuccess,
+}) => {
   const boardName = payload.board.name;
   const boardCpuId = payload.board.cpuId;
   const { package: pkg, architecture } = payload.board;
   const fqbn = `${pkg}:${architecture}:unknown`;
 
-  R.pipeP(
+  return R.pipeP(
     doTranspileForArduino,
     sendProgress(MESSAGES.CODE_TRANSPILED, 10),
     code => checkPort(payload.port).then(port => ({ code, port: port.comName })),
@@ -213,7 +204,103 @@ export const uploadToArduinoHandler = (event, payload) => {
       }
       return sendSuccess([result.stderr, result.stdout].join('\n\n'), 100)();
     }
-  )(payload).catch(convertAndSendError);
+  )(payload);
+};
+
+// =============================================================================
+//
+// Cloud compiling and uploading case
+//
+// =============================================================================
+
+// :: UploadConfig -> Promise Path Error
+const installTool = R.converge(
+  xd.installTool(uploadToolsPath),
+  [
+    xd.getToolVersionPath,
+    xd.getToolUrl,
+  ]
+);
+
+const deployToArduinoThroughCloud = ({
+  payload,
+  sendProgress,
+  sendSuccess,
+}) => R.pipeP(
+  doTranspileForArduino,
+  sendProgress(MESSAGES.CODE_TRANSPILED, 10),
+  code => checkPort(payload.port).then(port => ({ code, port: port.comName })),
+  sendProgress(MESSAGES.PORT_FOUND, 15),
+  ({ code, port }) => ({ code, port, pio: payload.board.pio }),
+  data => xd.getUploadConfig(data.pio)
+    .then(cfg => R.assoc('uploadConfig', cfg, data))
+    .catch((err) => {
+      const errCode = R.cond([
+        [R.propEq('status', 404), R.always(ERROR_CODES.BOARD_NOT_SUPPORTED)],
+        [R.has('status'), R.always(ERROR_CODES.CANT_GET_UPLOAD_CONFIG)],
+        [R.T, R.always(ERROR_CODES.CLOUD_NETWORK_ERROR)],
+      ])(err);
+
+      return rejectWithCode(errCode, err);
+    }),
+  data => installTool(data.uploadConfig)
+    .then(res => R.assoc('toolPath', res.path, data)),
+  sendProgress(MESSAGES.CLOUD_TOOLCHAIN_INSTALLED, 30),
+  data => xd.compile(data.pio, data.code)
+    .then(xd.saveCompiledBinary(artifactTmpDir))
+    .then(artifactPath => R.assoc('artifactPath', artifactPath, data)),
+  sendProgress(MESSAGES.CODE_COMPILED, 75),
+  ({ uploadConfig, toolPath, artifactPath, port }) =>
+    xd.upload(uploadConfig, { toolPath, artifactPath, port }),
+  (result) => {
+    if (result.exitCode !== 0) {
+      return Promise.reject(Object.assign(new Error(`Upload tool exited with error code: ${result.exitCode}`), result));
+    }
+    return sendSuccess([result.stderr, result.stdout].join('\n\n'), 100)();
+  }
+)(payload);
+
+// =============================================================================
+//
+// IPC handlers (for main process)
+//
+// =============================================================================
+
+export const uploadToArduinoHandler = (event, payload) => {
+  let lastPercentage = 0;
+  // Messages
+  const send = status => R.compose(
+    data => (arg) => { event.sender.send('UPLOAD_TO_ARDUINO', data); return arg; },
+    R.assoc(status, true),
+    (message, percentage, err = null) => {
+      lastPercentage = percentage;
+      return {
+        success: false,
+        progress: false,
+        failure: false,
+        error: err,
+        message,
+        percentage,
+      };
+    }
+  );
+  const sendSuccess = send('success');
+  const sendProgress = send('progress');
+  const sendFailure = send('failure');
+  const convertAndSendError = err => R.compose(
+    msg => sendFailure(msg, lastPercentage, errorToPlainObject(err))(),
+    formatError
+  )(err);
+
+  const opts = {
+    payload,
+    sendProgress,
+    sendSuccess,
+  };
+
+  const deployFn = (payload.cloud) ? deployToArduinoThroughCloud : deployToArduino;
+
+  return deployFn(opts).catch(convertAndSendError);
 };
 
 export const listPortsHandler = event => listPorts()
