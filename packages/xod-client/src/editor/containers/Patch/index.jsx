@@ -3,75 +3,34 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
-import { DropTarget } from 'react-dnd';
 import { bindActionCreators } from 'redux';
 
-import * as EditorActions from '../actions';
-import * as EditorSelectors from '../selectors';
-import { EDITOR_MODE, DRAGGED_ENTITY_TYPE } from '../constants';
+import * as EditorActions from '../../actions';
+import * as ProjectActions from '../../../project/actions';
 
-import * as ProjectActions from '../../project/actions';
-import * as ProjectSelectors from '../../project/selectors';
-import { RenderableLink, RenderableNode, RenderableComment } from '../../project/types';
+import * as EditorSelectors from '../../selectors';
+import * as ProjectSelectors from '../../../project/selectors';
 
-import sanctuaryPropType from '../../utils/sanctuaryPropType';
+import { RenderableLink, RenderableNode, RenderableComment } from '../../../project/types';
+import sanctuaryPropType from '../../../utils/sanctuaryPropType';
 
-import {
-  snapNodePositionToSlots,
-} from '../../project/nodeLayout';
+import dropTarget from './dropTarget';
 
-import selectingMode from './patchModes/selecting';
-import linkingMode from './patchModes/linking';
-import panningMode from './patchModes/panning';
-import movingMode from './patchModes/moving';
-import resizingCommentMode from './patchModes/resizingComment';
-import acceptingDraggedPatchMode from './patchModes/acceptindDraggedPatch';
+import { EDITOR_MODE } from '../../constants';
 
-const getDraggedPatchPosition = (props, monitor, component) => {
-  const globalDropPosition = monitor.getClientOffset();
-  const bbox = component.rootRef.getBoundingClientRect();
-
-  return snapNodePositionToSlots({
-    x: globalDropPosition.x - bbox.left - props.offset.x,
-    y: globalDropPosition.y - bbox.top - props.offset.y,
-  });
-};
-
-const dropTarget = {
-  drop(props, monitor, component) {
-    if (!component.rootRef) return;
-
-    const newNodePosition = getDraggedPatchPosition(props, monitor, component);
-
-    const { patchPath } = monitor.getItem();
-
-    props.actions.addNode(
-      patchPath,
-      newNodePosition,
-      props.patchPath
-    );
-    props.actions.setMode(EDITOR_MODE.DEFAULT);
-  },
-  hover(props, monitor, component) { // TODO: performance
-    if (!component.rootRef) return;
-
-    component.setModeState(
-      EDITOR_MODE.ACCEPTING_DRAGGED_PATCH,
-      { previewPosition: getDraggedPatchPosition(props, monitor, component) }
-    );
-  },
-  canDrop(props, monitor) {
-    const { patchPath } = monitor.getItem();
-    return patchPath !== props.patchPath;
-  },
-};
+import selectingMode from './modes/selecting';
+import linkingMode from './modes/linking';
+import panningMode from './modes/panning';
+import movingMode from './modes/moving';
+import resizingCommentMode from './modes/resizingComment';
+import acceptingDraggedPatchMode from './modes/acceptingDraggedPatch';
 
 const MODE_HANDLERS = {
   [EDITOR_MODE.DEFAULT]: selectingMode,
   [EDITOR_MODE.LINKING]: linkingMode,
   [EDITOR_MODE.PANNING]: panningMode,
   [EDITOR_MODE.MOVING_SELECTION]: movingMode,
-  [EDITOR_MODE.RESIZING_SELECTION]: resizingCommentMode,
+  [EDITOR_MODE.RESIZING_COMMENT]: resizingCommentMode,
   [EDITOR_MODE.ACCEPTING_DRAGGED_PATCH]: acceptingDraggedPatchMode,
 };
 
@@ -81,7 +40,7 @@ class Patch extends React.Component {
 
     this.state = {
       modeSpecificState: {
-        [props.mode]: MODE_HANDLERS[props.mode].onEnterMode(props),
+        [props.mode]: MODE_HANDLERS[props.mode].getInitialState(props),
       },
     };
 
@@ -119,7 +78,7 @@ class Patch extends React.Component {
   }
 
   goToMode(newMode, payload) {
-    const newModeState = MODE_HANDLERS[newMode].onEnterMode(this.props, payload);
+    const newModeState = MODE_HANDLERS[newMode].getInitialState(this.props, payload);
     this.setModeState(newMode, newModeState);
     this.props.actions.setMode(newMode);
   }
@@ -128,7 +87,7 @@ class Patch extends React.Component {
     const { mode } = this.props;
 
     return this.props.connectDropTarget(
-      <div ref={(r) => { this.rootRef = r; }}>
+      <div ref={(r) => { this.dropTargetRootRef = r; }}>
         {MODE_HANDLERS[mode].render(this.getApi(mode))}
       </div>
     );
@@ -178,6 +137,7 @@ const mapDispatchToProps = dispatch => ({
     selectNode: EditorActions.selectNode,
     selectComment: EditorActions.selectComment,
     selectEntity: EditorActions.selectEntity,
+    deselectEntity: EditorActions.deselectEntity,
     addEntityToSelection: EditorActions.addEntityToSelection,
     doPinSelection: EditorActions.doPinSelection,
     linkPin: EditorActions.linkPin,
@@ -188,12 +148,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default R.compose(
   connect(mapStateToProps, mapDispatchToProps),
-  DropTarget( // eslint-disable-line new-cap
-    DRAGGED_ENTITY_TYPE.PATCH,
-    dropTarget,
-    (conn, monitor) => ({
-      connectDropTarget: conn.dropTarget(),
-      isPatchDraggedOver: monitor.isOver(),
-    })
-  )
+  dropTarget
 )(Patch);

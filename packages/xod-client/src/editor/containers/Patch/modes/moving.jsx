@@ -4,25 +4,25 @@ import { HotKeys } from 'react-hotkeys';
 
 import * as XP from 'xod-project';
 
-import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from '../../constants';
+import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from '../../../constants';
 
-import PatchSVG from '../../../project/components/PatchSVG';
-import * as Layers from '../../../project/components/layers';
+import PatchSVG from '../../../../project/components/PatchSVG';
+import * as Layers from '../../../../project/components/layers';
 
 import {
   addPoints,
   subtractPoints,
   snapNodePositionToSlots,
-} from '../../../project/nodeLayout';
+} from '../../../../project/nodeLayout';
 
-import { isLinkConnectedToNodeIds } from '../../../project/utils';
-import { getSelectedEntityIdsOfType } from '../../utils';
+import { isLinkConnectedToNodeIds } from '../../../../project/utils';
+import { getSelectedEntityIdsOfType } from '../../../utils';
 
 import {
   getOffsetMatrix,
   bindApi,
   getMousePosition,
-} from './selecting';
+} from '../modeUtils';
 
 let patchSvgRef = null;
 
@@ -60,10 +60,10 @@ const updateLinksPositions = R.uncurryN(3)(
 );
 
 const movingMode = {
-  onEnterMode(props, { dragStartPosition }) {
+  getInitialState(props, { mousePosition, dragStartPosition }) {
     return {
       dragStartPosition,
-      mousePosition: dragStartPosition,
+      mousePosition,
     };
   },
 
@@ -104,8 +104,7 @@ const movingMode = {
 
     const [draggedLinks, idleLinks] = R.compose(
       R.over(R.lensIndex(0), updateLinksPositions(draggedNodeIds, deltaPosition)),
-      R.partition(isLinkConnectedToNodeIds(draggedNodeIds)),
-      R.values // why Layers.Links accepts array?
+      R.partition(isLinkConnectedToNodeIds(draggedNodeIds))
     )(api.props.links);
 
     const snappedPreviews = R.compose(
@@ -132,7 +131,7 @@ const movingMode = {
             offset={api.props.offset}
           />
           <g transform={getOffsetMatrix(api.props.offset)}>
-            <Layers.IdleComments
+            <Layers.Comments
               comments={idleComments}
               selection={api.props.selection}
               onFinishEditing={api.props.actions.editComment}
@@ -141,7 +140,7 @@ const movingMode = {
               links={idleLinks}
               selection={api.props.selection}
             />
-            <Layers.IdleNodes
+            <Layers.Nodes
               nodes={idleNodes}
               selection={api.props.selection}
               linkingPin={api.props.linkingPin}
@@ -149,7 +148,7 @@ const movingMode = {
             <Layers.SnappingPreview
               previews={snappedPreviews}
             />
-            <Layers.IdleComments
+            <Layers.Comments
               key="dragged comments"
               areDragged
               comments={draggedComments}
@@ -161,7 +160,7 @@ const movingMode = {
               links={draggedLinks}
               selection={api.props.selection}
             />
-            <Layers.IdleNodes
+            <Layers.Nodes
               key="dragged nodes"
               areDragged
               nodes={draggedNodes}

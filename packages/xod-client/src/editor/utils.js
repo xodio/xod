@@ -3,8 +3,8 @@ import R from 'ramda';
 import { SELECTION_ENTITY_TYPE } from './constants';
 
 export const isEntitySelected = R.curry(
-  (entityName, selection, id) => R.pipe(
-    R.filter(R.propEq('entity', entityName)),
+  (entityType, selection, id) => R.pipe(
+    R.filter(R.propEq('entity', entityType)),
     R.find(R.propEq('id', id)),
     R.isNil,
     R.not

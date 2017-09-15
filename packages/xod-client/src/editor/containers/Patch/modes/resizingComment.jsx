@@ -4,10 +4,10 @@ import { HotKeys } from 'react-hotkeys';
 
 import * as XP from 'xod-project';
 
-import { EDITOR_MODE } from '../../constants';
+import { EDITOR_MODE } from '../../../constants';
 
-import PatchSVG from '../../../project/components/PatchSVG';
-import * as Layers from '../../../project/components/layers';
+import PatchSVG from '../../../../project/components/PatchSVG';
+import * as Layers from '../../../../project/components/layers';
 
 import {
   addPoints,
@@ -15,13 +15,13 @@ import {
   pointToSize,
   sizeToPoint,
   snapNodeSizeToSlots,
-} from '../../../project/nodeLayout';
+} from '../../../../project/nodeLayout';
 
 import {
   getOffsetMatrix,
   bindApi,
   getMousePosition,
-} from './selecting';
+} from '../modeUtils';
 
 let patchSvgRef = null;
 
@@ -46,7 +46,7 @@ const addDeltaToCommentSizes = R.uncurryN(2)(
 );
 
 const resizingCommentMode = {
-  onEnterMode(props, { dragStartPosition, resizedCommentId }) {
+  getInitialState(props, { dragStartPosition, resizedCommentId }) {
     return {
       resizedCommentId,
       dragStartPosition,
@@ -106,16 +106,16 @@ const resizingCommentMode = {
             offset={api.props.offset}
           />
           <g transform={getOffsetMatrix(api.props.offset)}>
-            <Layers.IdleComments
+            <Layers.Comments
               comments={idleComments}
               selection={api.props.selection}
               onFinishEditing={api.props.actions.editComment}
             />
             <Layers.Links
-              links={R.values(api.props.links)}
+              links={api.props.links}
               selection={api.props.selection}
             />
-            <Layers.IdleNodes
+            <Layers.Nodes
               nodes={api.props.nodes}
               selection={api.props.selection}
               linkingPin={api.props.linkingPin}
@@ -124,7 +124,7 @@ const resizingCommentMode = {
             <Layers.SnappingPreview
               previews={snappedPreviews}
             />
-            <Layers.IdleComments
+            <Layers.Comments
               key="resized comment"
               areDragged
               comments={resizedComments}

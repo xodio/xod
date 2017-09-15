@@ -4,8 +4,10 @@ import * as XP from 'xod-project';
 import {
   EDITOR_DESELECT_ALL,
   EDITOR_SELECT_ENTITY,
+  EDITOR_DESELECT_ENTITY,
   EDITOR_ADD_ENTITY_TO_SELECTION,
   EDITOR_SELECT_PIN,
+  EDITOR_DESELECT_PIN,
   EDITOR_SET_MODE,
   EDITOR_SET_SELECTED_NODETYPE,
   EDITOR_SWITCH_PATCH,
@@ -155,6 +157,15 @@ const editorReducer = (state = {}, action) => {
         ],
         state
       );
+    case EDITOR_DESELECT_ENTITY:
+      return R.over(
+        R.lensProp('selection'),
+        R.reject(R.equals({
+          entity: action.payload.entityType,
+          id: action.payload.id,
+        })),
+        state
+      );
     case EDITOR_ADD_ENTITY_TO_SELECTION:
       return R.over(
         R.lensProp('selection'),
@@ -169,6 +180,7 @@ const editorReducer = (state = {}, action) => {
       );
     case EDITOR_SELECT_PIN:
       return R.assoc('linkingPin', action.payload, state);
+    case EDITOR_DESELECT_PIN:
     case LINK_ADD:
       return R.assoc('linkingPin', null, state);
     case EDITOR_SET_MODE:

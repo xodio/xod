@@ -5,9 +5,7 @@ import PropTypes from 'prop-types';
 import { getBaseName } from 'xod-project';
 
 import pureDeepEqual from '../../../utils/pureDeepEqual';
-import { LAYER } from '../../../editor/constants';
 
-import SVGLayer from './SVGLayer';
 import NodePinsOverlay from '../NodePinsOverlay';
 import { getPinLinkabilityValidator } from '../../utils';
 
@@ -20,10 +18,7 @@ const NodePinsOverlayLayer = ({
   const pinLinkabilityValidator = getPinLinkabilityValidator(linkingPin, nodes);
 
   return (
-    <SVGLayer
-      name={LAYER.NODE_PINS_OVERLAY}
-      className="PinsOverlayLayer"
-    >
+    <g className="PinsOverlayLayer">
       {R.compose(
           R.map(
             node =>
@@ -42,7 +37,7 @@ const NodePinsOverlayLayer = ({
           ),
           R.values
         )(nodes)}
-    </SVGLayer>
+    </g>
   );
 };
 

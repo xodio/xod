@@ -1,3 +1,4 @@
+import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
@@ -49,7 +50,11 @@ class PatchGroupItem extends React.PureComponent {
     );
 
     return connectDragSource(
-      <div {...restProps} className={classNames} title={label}>
+      <div
+        title={label}
+        className={classNames}
+        {...R.omit(['patchPath', 'onBeginDrag', 'connectDragPreview'], restProps)}
+      >
         <div // eslint-disable-line jsx-a11y/no-static-element-interactions
           className="PatchGroupItem__label"
           onClick={onClick}

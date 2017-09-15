@@ -20,6 +20,7 @@ class Comment extends React.Component {
     };
 
     this.onMouseDown = this.onMouseDown.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
     this.onResizeHandleMouseDown = this.onResizeHandleMouseDown.bind(this);
     this.onEditorChange = this.onEditorChange.bind(this);
     this.onEditorKeyDown = this.onEditorKeyDown.bind(this);
@@ -32,6 +33,12 @@ class Comment extends React.Component {
   onMouseDown(event) {
     if (!this.state.isEditing) {
       this.props.onMouseDown(event, this.props.id);
+    }
+  }
+
+  onMouseUp(event) {
+    if (!this.state.isEditing) {
+      this.props.onMouseUp(event, this.props.id);
     }
   }
 
@@ -112,6 +119,7 @@ class Comment extends React.Component {
       <g
         className={cls}
         onMouseDown={this.onMouseDown}
+        onMouseUp={this.onMouseUp}
         onDoubleClick={this.beginEditing}
       >
         <clipPath id={maskId}>
@@ -187,6 +195,7 @@ Comment.propTypes = {
   isDragged: PropTypes.bool,
   hidden: PropTypes.bool,
   onMouseDown: PropTypes.func,
+  onMouseUp: PropTypes.func,
   onResizeHandleMouseDown: PropTypes.func,
   onFinishEditing: PropTypes.func,
 };
@@ -196,6 +205,7 @@ Comment.defaultProps = {
   isGhost: false,
   isDragged: false,
   onMouseDown: noop,
+  onMouseUp: noop,
   onResizeHandleMouseDown: noop,
   onFinishEditing: noop,
 };

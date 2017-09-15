@@ -3,7 +3,7 @@ import { PIN_TYPE } from 'xod-project';
 export const EDITOR_MODE = {
   SELECTING: 'selecting',
   MOVING_SELECTION: 'moving_selection',
-  RESIZING_SELECTION: 'resizing_selection',
+  RESIZING_COMMENT: 'resizing_comment',
   LINKING: 'linking',
   PANNING: 'panning',
   ACCEPTING_DRAGGED_PATCH: 'accepting_dragged_patch',
@@ -20,15 +20,6 @@ export const WIDGET_TYPE = {
   PULSE: PIN_TYPE.PULSE,
   IO_LABEL: 'IOLabel',
   TEXTAREA: 'textarea',
-};
-
-export const LAYER = {
-  BACKGROUND: 'background',
-  LINKS: 'links',
-  NODES: 'nodes',
-  COMMENTS: 'comments',
-  NODE_PINS_OVERLAY: 'node_pins_overlay',
-  GHOSTS: 'ghosts',
 };
 
 export const SELECTION_ENTITY_TYPE = {

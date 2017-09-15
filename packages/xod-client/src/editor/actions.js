@@ -52,6 +52,10 @@ export const setPinSelection = (nodeId, pinKey) => ({
   },
 });
 
+export const clearPinSelection = () => ({
+  type: ActionType.EDITOR_DESELECT_PIN,
+});
+
 export const doPinSelection = (nodeId, pinKey) => (dispatch, getState) => {
   const selectedPin = getRenderablePin(
     nodeId,
@@ -85,6 +89,11 @@ export const selectEntity = R.curry((entityType, id) => ({
   payload: { id, entityType },
 }));
 
+export const deselectEntity = R.curry((entityType, id) => ({
+  type: ActionType.EDITOR_DESELECT_ENTITY,
+  payload: { id, entityType },
+}));
+
 export const addEntityToSelection = R.curry((entityType, id) => ({
   type: ActionType.EDITOR_ADD_ENTITY_TO_SELECTION,
   payload: { id, entityType },
@@ -110,6 +119,7 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
 
   if (R.equals(linkingFrom, linkingTo)) {
     // linking a pin to itself
+    dispatch(clearPinSelection());
     return;
   }
 
@@ -127,11 +137,12 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
 
   const error = getLinkingError(renderablePinFrom, renderablePinTo);
 
-  const action = error ?
-    addError(LINK_ERRORS[error]) :
-    addLink(linkingFrom, linkingTo);
-
-  dispatch(action);
+  if (error) {
+    dispatch(addError(LINK_ERRORS[error]));
+    dispatch(clearPinSelection());
+  } else {
+    dispatch(addLink(linkingFrom, linkingTo));
+  }
 };
 
 export const setSelectedNodeType = id => ({

@@ -45,7 +45,7 @@ PulseWidget.propTypes = {
   isBindable: PropTypes.bool,
   direction: PropTypes.string,
 
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,

@@ -1,30 +1,29 @@
-import R from 'ramda';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 
-import { EDITOR_MODE } from '../../constants';
+import { EDITOR_MODE } from '../../../constants';
 
-import PatchSVG from '../../../project/components/PatchSVG';
-import * as Layers from '../../../project/components/layers';
+import PatchSVG from '../../../../project/components/PatchSVG';
+import * as Layers from '../../../../project/components/layers';
 
 import {
   addPoints,
   subtractPoints,
-} from '../../../project/nodeLayout';
+} from '../../../../project/nodeLayout';
 
 import {
   getOffsetMatrix,
   bindApi,
   getMousePosition,
   isMiddleButtonPressed,
-} from './selecting';
+} from '../modeUtils';
 
 let patchSvgRef = null;
 
 const getCurrentOffset = (api) => {
   if (
-    api.state.mousePosition && 
-    api.state.panningStartPosition && 
+    api.state.mousePosition &&
+    api.state.panningStartPosition &&
     api.state.isPanning
   ) {
     return addPoints(api.props.offset, subtractPoints(
@@ -37,7 +36,7 @@ const getCurrentOffset = (api) => {
 };
 
 const panningMode = {
-  onEnterMode(props, { panningStartPosition, isPanning }) {
+  getInitialState(props, { panningStartPosition, isPanning }) {
     return {
       isPanning,
       mousePosition: null,
@@ -101,16 +100,16 @@ const panningMode = {
             offset={offset}
           />
           <g transform={getOffsetMatrix(offset)}>
-            <Layers.IdleComments
+            <Layers.Comments
               comments={api.props.comments}
               selection={api.props.selection}
               onFinishEditing={api.props.actions.editComment}
             />
             <Layers.Links
-              links={R.values(api.props.links)}
+              links={api.props.links}
               selection={api.props.selection}
             />
-            <Layers.IdleNodes
+            <Layers.Nodes
               nodes={api.props.nodes}
               selection={api.props.selection}
               linkingPin={api.props.linkingPin}

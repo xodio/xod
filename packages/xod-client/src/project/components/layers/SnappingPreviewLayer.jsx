@@ -4,16 +4,12 @@ import PT from 'prop-types';
 import { Position, Size } from 'xod-project';
 import sanctuaryPropType from '../../../utils/sanctuaryPropType';
 
-import SVGLayer from './SVGLayer';
 import { NODE_CORNER_RADIUS } from '../../nodeLayout';
 
 const SnappingPreviewLayer = ({
   previews,
 }) => (
-  <SVGLayer
-    name="SnappingPreviewLayer"
-    className="SnappingPreviewLayer"
-  >
+  <g className="SnappingPreviewLayer">
     {previews.map(({ position, size }, key) => (
       <rect
         key={key} // in this particular case it's okay to use index as key
@@ -24,7 +20,7 @@ const SnappingPreviewLayer = ({
         ry={NODE_CORNER_RADIUS}
       />
     ))}
-  </SVGLayer>
+  </g>
 );
 
 SnappingPreviewLayer.displayName = 'SnappingPreviewLayer';

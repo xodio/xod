@@ -201,25 +201,6 @@ export default (state = {}, action) => {
       );
     }
 
-    case AT.NODE_MOVE: { // TODO: not needed anymore?
-      const { id, position, patchPath } = action.payload;
-
-      const currentPatchLens = XP.lensPatch(patchPath);
-
-      const node = R.compose(
-        XP.getNodeByIdUnsafe(id),
-        R.view(currentPatchLens)
-      )(state);
-
-      return R.over(
-        currentPatchLens,
-        XP.assocNode(
-          XP.setNodePosition(position, node)
-        ),
-        state
-      );
-    }
-
     case AT.NODE_DELETE: {
       const { id, patchPath } = action.payload;
 
@@ -320,12 +301,6 @@ export default (state = {}, action) => {
         XP.dissocComment(id),
         state
       );
-    }
-
-    case AT.COMMENT_MOVE: {
-      const { id, patchPath, position } = action.payload;
-
-      return updateCommentWith(XP.setCommentPosition(position), id, patchPath, state);
     }
 
     case AT.COMMENT_RESIZE: {

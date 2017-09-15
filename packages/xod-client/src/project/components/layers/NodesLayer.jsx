@@ -3,28 +3,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import pureDeepEqual from '../../../utils/pureDeepEqual';
-import { LAYER } from '../../../editor/constants';
 
 import { isNodeSelected } from '../../../editor/utils';
 import { getPinLinkabilityValidator } from '../../utils';
 
-import SVGLayer from './SVGLayer';
 import Node from '../Node';
 
-const IdleNodesLayer = ({
+const NodesLayer = ({
   nodes,
   selection,
   linkingPin,
   areDragged,
   onMouseDown,
+  onMouseUp,
 }) => {
   const pinLinkabilityValidator = getPinLinkabilityValidator(linkingPin, nodes);
 
   return (
-    <SVGLayer
-      name={LAYER.NODES} // TODO: we can have multiple instances of this layer
-      className="NodesLayer"
-    >
+    <g className="NodesLayer" >
       {R.compose(
         R.map(
           node =>
@@ -43,24 +39,26 @@ const IdleNodesLayer = ({
               linkingPin={linkingPin}
               pinLinkabilityValidator={pinLinkabilityValidator}
               onMouseDown={onMouseDown}
+              onMouseUp={onMouseUp}
             />
         ),
         R.values
       )(nodes)}
-    </SVGLayer>
+    </g>
   );
 };
 
-IdleNodesLayer.defaultProps = {
+NodesLayer.defaultProps = {
   areDragged: false,
 };
 
-IdleNodesLayer.propTypes = {
+NodesLayer.propTypes = {
   nodes: PropTypes.objectOf(PropTypes.object),
   selection: PropTypes.arrayOf(PropTypes.object),
   linkingPin: PropTypes.object,
   areDragged: PropTypes.bool,
   onMouseDown: PropTypes.func,
+  onMouseUp: PropTypes.func,
 };
 
-export default pureDeepEqual(IdleNodesLayer);
+export default pureDeepEqual(NodesLayer);

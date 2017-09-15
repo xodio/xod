@@ -27,14 +27,12 @@ import {
   deletePatch,
   updatePatchDescription,
   addNode,
-  moveNode,
   updateNodeProperty,
   deleteNode,
   addLink,
   deleteLink,
   addComment,
   deleteComment,
-  moveComment,
   resizeComment,
   editComment,
 } from '../src/project/actions';
@@ -195,24 +193,6 @@ describe('project reducer', () => {
 
       assert.isTrue(Maybe.isJust(maybeNode));
     });
-    it('should move a node', () => {
-      const nodeId = store.dispatch(addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, testPatchPath));
-      const desiredPosition = { x: 111, y: 222 };
-      store.dispatch(moveNode(nodeId, desiredPosition));
-
-      const maybeNode = R.compose(
-        XP.getNodeById(nodeId),
-        XP.getPatchByPathUnsafe(testPatchPath),
-        getProject
-      )(store.getState());
-
-      const actualPosition = Maybe.maybe({}, XP.getNodePosition, maybeNode);
-
-      assert.deepEqual(
-        desiredPosition,
-        actualPosition
-      );
-    });
     it('should update node label', () => {
       const nodeId = store.dispatch(addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, testPatchPath));
       const desiredLabel = 'desired label';
@@ -361,7 +341,6 @@ describe('project reducer', () => {
       const comments = getCommentsList(testPatchPath, store.getState());
       assert.equal(comments.length, 1);
     });
-
     it('should delete a comment', () => {
       store.dispatch(addComment());
       const testCommentId = getAddedCommentId(testPatchPath, store.getState());
@@ -370,19 +349,6 @@ describe('project reducer', () => {
 
       const comments = getCommentsList(testPatchPath, store.getState());
       assert.equal(comments.length, 0);
-    });
-    it('should move a comment', () => {
-      store.dispatch(addComment());
-      const testCommentId = getAddedCommentId(testPatchPath, store.getState());
-      const newPosition = { x: 123456789, y: 987654321 };
-
-      store.dispatch(moveComment(testCommentId, newPosition));
-
-      const commentAfter = getAddedComment(testPatchPath, store.getState());
-      assert.deepEqual(
-        XP.getCommentPosition(commentAfter),
-        newPosition
-      );
     });
     it('should resize a comment', () => {
       store.dispatch(addComment());

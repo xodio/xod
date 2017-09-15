@@ -1,16 +1,15 @@
-import R from 'ramda';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 
-import PatchSVG from '../../../project/components/PatchSVG';
-import * as Layers from '../../../project/components/layers';
+import PatchSVG from '../../../../project/components/PatchSVG';
+import * as Layers from '../../../../project/components/layers';
 
 import {
   getOffsetMatrix,
-} from './selecting';
+} from '../modeUtils';
 
 const acceptingDraggedPatchMode = {
-  onEnterMode() {
+  getInitialState() {
     return {
       previewPosition: {},
     };
@@ -31,16 +30,16 @@ const acceptingDraggedPatchMode = {
             offset={api.props.offset}
           />
           <g transform={getOffsetMatrix(api.props.offset)}>
-            <Layers.IdleComments
+            <Layers.Comments
               comments={api.props.comments}
               selection={api.props.selection}
               onFinishEditing={api.props.actions.editComment}
             />
             <Layers.Links
-              links={R.values(api.props.links)}
+              links={api.props.links}
               selection={api.props.selection}
             />
-            <Layers.IdleNodes
+            <Layers.Nodes
               nodes={api.props.nodes}
               selection={api.props.selection}
               linkingPin={api.props.linkingPin}

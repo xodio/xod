@@ -177,19 +177,6 @@ export const deleteNode = id => (dispatch, getState) => {
   });
 };
 
-export const moveNode = (id, position) => (dispatch, getState) => {
-  const patchPath = getCurrentPatchPath(getState());
-
-  dispatch({
-    type: ActionType.NODE_MOVE,
-    payload: {
-      id,
-      position,
-      patchPath,
-    },
-  });
-};
-
 export const updateNodeProperty =
   (nodeId, propKind, propKey, propValue) => (dispatch, getState) => {
     const patchPath = getCurrentPatchPath(getState());
@@ -258,16 +245,6 @@ export const bulkMoveNodesAndComments = (nodeIds, commentIds, deltaPosition, pat
     patchPath,
   },
 });
-
-export const moveComment = (id, position) => (dispatch, getState) =>
-  dispatch({
-    type: ActionType.COMMENT_MOVE,
-    payload: {
-      id,
-      position,
-      patchPath: getCurrentPatchPath(getState()),
-    },
-  });
 
 export const resizeComment = (id, size) => (dispatch, getState) =>
   dispatch({

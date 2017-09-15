@@ -2,68 +2,86 @@ import R from 'ramda';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 
-import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from '../../constants';
-import { isInput } from '../../../utils/browser';
-import { COMMAND } from '../../../utils/constants';
+import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from '../../../constants';
+import { isEntitySelected } from '../../../utils';
+import { isInput } from '../../../../utils/browser';
+import { COMMAND } from '../../../../utils/constants';
 
-import PatchSVG from '../../../project/components/PatchSVG';
-import * as Layers from '../../../project/components/layers';
+import PatchSVG from '../../../../project/components/PatchSVG';
+import * as Layers from '../../../../project/components/layers';
 
-import { snapNodePositionToSlots } from '../../../project/nodeLayout';
+import { snapNodePositionToSlots } from '../../../../project/nodeLayout';
 
-export const getOffsetMatrix = ({ x, y }) => `matrix(1, 0, 0, 1, ${x}, ${y})`;
+import {
+  bindApi,
+  getMousePosition,
+  getOffsetMatrix,
+  isMiddleButtonPressed,
+} from '../modeUtils';
 
-export const isMiddleButtonPressed = R.pathEq(['nativeEvent', 'which'], 2);
-
-export const bindApi = (api, fn) => (...args) => fn(api, ...args);
-
-export const getMousePosition = (rootRef, offset, event) => {
-  // TODO: warn that we returned default value?
-  if (!rootRef) return { x: 0, y: 0 };
-
-  const bbox = rootRef.getBoundingClientRect();
-
-  return {
-    x: event.clientX - bbox.left - offset.x,
-    y: event.clientY - bbox.top - offset.y,
-  };
-};
+const isSelectionModifierPressed = event => event.metaKey || event.ctrlKey;
 
 let patchSvgRef = null;
 
 const selectingMode = {
-  onEnterMode() {
+  getInitialState() {
     return {
       isMouseDownOnMovableObject: false,
+      dragStartPosition: { x: 0, y: 0 },
     };
   },
-  onNodeMouseDown({ props, setState, goToMode }, event, nodeId) {
+
+  onEntityMouseDown({ props, setState }, entityType, event, entityId) {
     if (isMiddleButtonPressed(event)) return;
 
-    if (event.metaKey) {
-      props.actions.addEntityToSelection(SELECTION_ENTITY_TYPE.NODE, nodeId);
-    } else {
-      props.actions.selectNode(nodeId);
-    }
+    const mousePosition = getMousePosition(patchSvgRef, props.offset, event);
 
-    setState({ isMouseDownOnMovableObject: true });
+    if (isEntitySelected(entityType, props.selection, entityId)) {
+      if (isSelectionModifierPressed(event)) {
+        props.actions.deselectEntity(entityType, entityId);
+        setState({ isMouseDownOnMovableObject: false });
+      } else {
+        // Don't set selection to this single entity
+        // to allow user to move already selected group of entities.
+        // We'll handle it in `onEntityMouseUp`
+        setState({
+          isMouseDownOnMovableObject: true,
+          dragStartPosition: mousePosition,
+        });
+      }
+    } else if (isSelectionModifierPressed(event)) {
+      props.actions.addEntityToSelection(entityType, entityId);
+      setState({
+        isMouseDownOnMovableObject: true,
+        dragStartPosition: mousePosition,
+      });
+    } else {
+      props.actions.selectEntity(entityType, entityId);
+      setState({
+        isMouseDownOnMovableObject: true,
+        dragStartPosition: mousePosition,
+      });
+    }
   },
-  onCommentMouseDown({ props, setState }, event, commentId) {
+  onEntityMouseUp({ props, setState }, entityType, event, entityId) {
     if (isMiddleButtonPressed(event)) return;
 
-    if (event.metaKey) {
-      props.actions.addEntityToSelection(SELECTION_ENTITY_TYPE.COMMENT, commentId);
-    } else {
-      props.actions.selectComment(commentId);
+    if (
+      !isSelectionModifierPressed(event) &&
+      isEntitySelected(entityType, props.selection, entityId) &&
+      props.selection.length > 1
+    ) {
+      props.actions.selectEntity(entityType, entityId);
     }
 
-    setState({ isMouseDownOnMovableObject: true });
+    setState({ isMouseDownOnMovableObject: false });
   },
+
   onCommentResizeHandleMouseDown(api, event, commentId) {
     if (isMiddleButtonPressed(event)) return;
 
     api.goToMode(
-      EDITOR_MODE.RESIZING_SELECTION,
+      EDITOR_MODE.RESIZING_COMMENT,
       {
         resizedCommentId: commentId,
         dragStartPosition: getMousePosition(patchSvgRef, api.props.offset, event),
@@ -98,7 +116,8 @@ const selectingMode = {
     api.goToMode(
       EDITOR_MODE.MOVING_SELECTION,
       {
-        dragStartPosition: getMousePosition(patchSvgRef, api.props.offset, event),
+        dragStartPosition: api.state.dragStartPosition,
+        mousePosition: getMousePosition(patchSvgRef, api.props.offset, event),
       }
     );
   },
@@ -117,7 +136,13 @@ const selectingMode = {
 
     api.props.actions.deleteSelection();
   },
-  onDoubleClick(api, event) {
+  onBackgroundClick(api, event) {
+    // to prevent misclicks when selecting multiple entities
+    if (isSelectionModifierPressed(event)) return;
+
+    api.props.actions.deselectAll();
+  },
+  onBackgroundDoubleClick(api, event) {
     R.compose(
       api.props.onDoubleClick,
       snapNodePositionToSlots,
@@ -146,30 +171,32 @@ const selectingMode = {
           <Layers.Background
             width={api.props.size.width}
             height={api.props.size.height}
-            onClick={api.props.actions.deselectAll}
-            onDoubleClick={bindApi(api, this.onDoubleClick)}
+            onClick={bindApi(api, this.onBackgroundClick)}
+            onDoubleClick={bindApi(api, this.onBackgroundDoubleClick)}
             offset={api.props.offset}
           />
           <g transform={getOffsetMatrix(api.props.offset)}>
-            <Layers.IdleComments
+            <Layers.Comments
               comments={api.props.comments}
               selection={api.props.selection}
-              onMouseDown={bindApi(api, this.onCommentMouseDown)}
+              onMouseDown={R.partial(this.onEntityMouseDown, [api, SELECTION_ENTITY_TYPE.COMMENT])}
+              onMouseUp={R.partial(this.onEntityMouseUp, [api, SELECTION_ENTITY_TYPE.COMMENT])}
               onResizeHandleMouseDown={bindApi(api, this.onCommentResizeHandleMouseDown)}
               onFinishEditing={api.props.actions.editComment}
             />
             <Layers.Links
-              links={R.values(api.props.links)}
+              links={api.props.links}
               selection={api.props.selection}
             />
-            <Layers.IdleNodes
+            <Layers.Nodes
               nodes={api.props.nodes}
               selection={api.props.selection}
               linkingPin={api.props.linkingPin}
-              onMouseDown={bindApi(api, this.onNodeMouseDown)}
+              onMouseDown={R.partial(this.onEntityMouseDown, [api, SELECTION_ENTITY_TYPE.NODE])}
+              onMouseUp={R.partial(this.onEntityMouseUp, [api, SELECTION_ENTITY_TYPE.NODE])}
             />
             <Layers.LinksOverlay
-              links={R.values(api.props.links)}
+              links={api.props.links}
               selection={api.props.selection}
               onClick={bindApi(api, this.onLinkClick)}
             />

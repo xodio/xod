@@ -83,6 +83,7 @@ class Node extends React.Component {
     super(props);
     this.id = this.props.id;
     this.onMouseDown = this.onMouseDown.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
   }
 
   shouldComponentUpdate(newProps) {
@@ -91,6 +92,10 @@ class Node extends React.Component {
 
   onMouseDown(event) {
     this.props.onMouseDown(event, this.id);
+  }
+
+  onMouseUp(event) {
+    this.props.onMouseUp(event, this.id);
   }
 
   render() {
@@ -133,6 +138,7 @@ class Node extends React.Component {
         <g
           className={cls}
           onMouseDown={this.onMouseDown}
+          onMouseUp={this.onMouseUp}
           title={nodeLabel} // this is for func-tests
         >
           {
@@ -182,6 +188,7 @@ Node.propTypes = {
   linkingPin: PropTypes.object,
   pinLinkabilityValidator: PropTypes.func,
   onMouseDown: PropTypes.func,
+  onMouseUp: PropTypes.func,
 };
 
 Node.defaultProps = {
@@ -190,6 +197,7 @@ Node.defaultProps = {
   isDragged: false,
   noEvents: false,
   onMouseDown: noop,
+  onMouseUp: noop,
   pinLinkabilityValidator: R.F,
 };
 

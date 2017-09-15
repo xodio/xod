@@ -1,22 +1,21 @@
-import R from 'ramda';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 
-import { EDITOR_MODE } from '../../constants';
+import { EDITOR_MODE } from '../../../constants';
 
-import PatchSVG from '../../../project/components/PatchSVG';
-import * as Layers from '../../../project/components/layers';
+import PatchSVG from '../../../../project/components/PatchSVG';
+import * as Layers from '../../../../project/components/layers';
 
 import {
   getOffsetMatrix,
   bindApi,
   getMousePosition,
-} from './selecting';
+} from '../modeUtils';
 
 let patchSvgRef = null;
 
 const linkingMode = {
-  onEnterMode(props, { mousePosition }) {
+  getInitialState(props, { mousePosition }) {
     return {
       mousePosition,
     };
@@ -64,22 +63,22 @@ const linkingMode = {
             offset={api.props.offset}
           />
           <g transform={getOffsetMatrix(api.props.offset)}>
-            <Layers.IdleComments
+            <Layers.Comments
               comments={api.props.comments}
               selection={api.props.selection}
               onFinishEditing={api.props.actions.editComment}
             />
             <Layers.Links
-              links={R.values(api.props.links)}
+              links={api.props.links}
               selection={api.props.selection}
             />
-            <Layers.IdleNodes
+            <Layers.Nodes
               nodes={api.props.nodes}
               selection={api.props.selection}
               linkingPin={api.props.linkingPin}
             />
             <Layers.LinksOverlay
-              links={R.values(api.props.links)}
+              links={api.props.links}
               selection={api.props.selection}
             />
             <Layers.NodePinsOverlay
