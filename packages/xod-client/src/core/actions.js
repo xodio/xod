@@ -28,3 +28,4 @@ export * from '../projectBrowser/actions';
 export * from '../messages/actions';
 export * from '../processes/actions';
 export * from '../popups/actions';
+export * from '../debugger/actions';

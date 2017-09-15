@@ -9,10 +9,12 @@ import { bindActionCreators } from 'redux';
 import { HotKeys, FocusTrap } from 'react-hotkeys';
 import { Patch as PatchType } from 'xod-project';
 import { $Maybe } from 'xod-func-tools';
+import { Icon } from 'react-fa';
 
 import * as Actions from '../actions';
 import * as ProjectActions from '../../project/actions';
 import * as ProjectSelectors from '../../project/selectors';
+import * as DebuggerSelectors from '../../debugger/selectors';
 import * as EditorSelectors from '../selectors';
 
 import { isInput } from '../../utils/browser';
@@ -23,6 +25,7 @@ import Patch from './Patch';
 import NoPatch from '../components/NoPatch';
 import Suggester from '../components/Suggester';
 import Inspector from '../components/Inspector';
+import Debugger from '../../debugger/containers/Debugger';
 import Sidebar from '../../utils/components/Sidebar';
 import Workarea from '../../utils/components/Workarea';
 
@@ -120,6 +123,20 @@ class Editor extends React.Component {
       />
     ) : null;
 
+    const DebuggerContainer = (this.props.isDebuggerVisible) ? <Debugger /> : null;
+
+    const DebugSessionStopButton = (
+      this.props.isDebugSessionRunning &&
+      this.props.stopDebuggerSession
+    ) ? (
+      <button
+        className="debug-session-stop-button Button Button--light"
+        onClick={this.props.stopDebuggerSession}
+      >
+        <Icon name="stop" /> Stop debug session
+      </button>
+    ) : null;
+
     return (
       <HotKeys handlers={this.getHotkeyHandlers()} className="Editor">
         <Sidebar>
@@ -138,8 +155,10 @@ class Editor extends React.Component {
         <FocusTrap onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.WORKAREA)}>
           <Workarea>
             <Tabs />
+            {DebugSessionStopButton}
             {openedPatch}
             {suggester}
+            {DebuggerContainer}
           </Workarea>
         </FocusTrap>
         <Helpbar />
@@ -156,9 +175,12 @@ Editor.propTypes = {
   currentPatch: sanctuaryPropType($Maybe(PatchType)),
   patchesIndex: PropTypes.object,
   isHelpbarVisible: PropTypes.bool,
+  isDebuggerVisible: PropTypes.bool,
+  isDebugSessionRunning: PropTypes.bool,
   suggesterIsVisible: PropTypes.bool,
   suggesterPlacePosition: PropTypes.object,
   defaultNodePosition: PropTypes.object.isRequired,
+  stopDebuggerSession: PropTypes.func,
   actions: PropTypes.shape({
     updateNodeProperty: PropTypes.func.isRequired,
     updatePatchDescription: PropTypes.func.isRequired,
@@ -182,6 +204,8 @@ const mapStateToProps = R.applySpec({
   suggesterIsVisible: EditorSelectors.isSuggesterVisible,
   suggesterPlacePosition: EditorSelectors.getSuggesterPlacePosition,
   isHelpbarVisible: EditorSelectors.isHelpbarVisible,
+  isDebuggerVisible: DebuggerSelectors.isDebuggerVisible,
+  isDebugSessionRunning: DebuggerSelectors.isDebugSession,
   defaultNodePosition: EditorSelectors.getDefaultNodePlacePosition,
 });
 

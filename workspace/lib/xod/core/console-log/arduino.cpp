@@ -10,7 +10,7 @@ void evaluate(Context ctx) {
 
     State* state = getState(ctx);
     if (!state->begun) {
-        Serial.begin(9600);
+        Serial.begin(115200);
     }
 
     auto line = getValue<input_LINE>(ctx);

@@ -1,5 +1,6 @@
 import editorState from '../editor/state';
 import projectState from '../project/state';
+import debuggerState from '../debugger/state';
 import projectBrowserState from '../projectBrowser/state';
 
 export default {
@@ -7,6 +8,7 @@ export default {
   projectHistory: {},
   projectBrowser: projectBrowserState,
   editor: editorState,
+  debugger: debuggerState,
   errors: {},
   processes: {},
 };

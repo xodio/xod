@@ -9,6 +9,7 @@ import * as Project from '../project/selectors';
 import * as ProjectBrowser from '../projectBrowser/selectors';
 import * as Errors from '../messages/selectors';
 import * as Processes from '../processes/selectors';
+import * as Debugger from '../debugger/selectors';
 import * as Utils from '../utils/selectors';
 
 import { SELECTION_ENTITY_TYPE, FOCUS_AREAS } from '../editor/constants';
@@ -73,4 +74,5 @@ export default {
   Errors,
   Processes,
   Utils,
+  Debugger,
 };

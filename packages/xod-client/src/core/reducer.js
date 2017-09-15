@@ -8,6 +8,7 @@ import editorReducer from '../editor/reducer';
 import errorsReducer from '../messages/reducer';
 import processesReducer from '../processes/reducer';
 import popupsReducer from '../popups/reducer';
+import debuggerReducer from '../debugger/reducer';
 
 import keepIntegrityAfterNavigatingHistory from './keepIntegrityAfterNavigatingHistory';
 
@@ -21,6 +22,7 @@ const combineRootReducers = (extraReducers) => {
       editor: editorReducer,
       errors: errorsReducer,
       processes: processesReducer,
+      debugger: debuggerReducer,
     },
     extraReducers
   );

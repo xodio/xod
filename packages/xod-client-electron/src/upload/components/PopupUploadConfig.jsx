@@ -22,6 +22,7 @@ class PopupUploadConfig extends React.Component {
       boards: null,
       ports: null,
       doCompileInCloud: false,
+      debugAfterUpload: false,
     };
 
     this.onClose = this.onClose.bind(this);
@@ -30,6 +31,7 @@ class PopupUploadConfig extends React.Component {
     this.onRefreshPortsClicked = this.onRefreshPortsClicked.bind(this);
     this.onUploadClicked = this.onUploadClicked.bind(this);
     this.onCloudCompilationChanged = this.onCloudCompilationChanged.bind(this);
+    this.onDebugCheckboxChanged = this.onDebugCheckboxChanged.bind(this);
 
     this.changeBoard = this.changeBoard.bind(this);
     this.changePort = this.changePort.bind(this);
@@ -62,13 +64,19 @@ class PopupUploadConfig extends React.Component {
     this.props.onUpload(
       this.state.selectedBoard,
       this.props.selectedPort,
-      this.state.doCompileInCloud
+      this.state.doCompileInCloud,
+      this.state.debugAfterUpload,
     );
   }
 
   onCloudCompilationChanged(event) {
     const val = event.target.checked;
     this.setState({ doCompileInCloud: val });
+  }
+
+  onDebugCheckboxChanged(event) {
+    const val = event.target.checked;
+    this.setState({ debugAfterUpload: val });
   }
 
   getBoards(selectedBoard = this.state.selectedBoard) {
@@ -266,6 +274,17 @@ class PopupUploadConfig extends React.Component {
           />
           <label htmlFor="compileInCloud">
             Compile in the cloud (experimental)
+          </label>
+        </div>
+        <div className="ModalContent">
+          <input
+            id="debug"
+            type="checkbox"
+            checked={this.state.debugAfterUpload}
+            onChange={this.onDebugCheckboxChanged}
+          />
+          <label htmlFor="debug">
+            Debug after upload
           </label>
         </div>
         <div className="ModalFooter">

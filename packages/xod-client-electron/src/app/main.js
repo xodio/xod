@@ -1,3 +1,4 @@
+import R from 'ramda';
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -8,6 +9,8 @@ import {
   loadTargetBoardHandler,
   saveTargetBoardHandler,
   uploadToArduinoHandler,
+  startDebugSessionHandler,
+  stopDebugSessionHandler,
 } from './arduinoActions';
 import * as settings from './settings';
 import { errorToPlainObject, IS_DEV } from './utils';
@@ -106,8 +109,19 @@ const onReady = () => {
 
   subscribeToRemoteAction(EVENTS.SAVE_PROJECT, WA.subscribeToSaveProject);
 
+  let debugPort = null;
+  const stopDebugSession = event => stopDebugSessionHandler(event, debugPort)
+    .then(R.tap(() => { debugPort = null; }));
+
   WA.subscribeToWorkspaceEvents(ipcMain);
-  ipcMain.on('UPLOAD_TO_ARDUINO', uploadToArduinoHandler);
+  ipcMain.on('UPLOAD_TO_ARDUINO', (event, payload) => Promise.resolve()
+    .then(() => ((debugPort) ? stopDebugSession(event) : event))
+    .then(() => uploadToArduinoHandler(event, payload))
+  );
+  ipcMain.on(EVENTS.START_DEBUG_SESSION, startDebugSessionHandler(
+    (port) => { debugPort = port; })
+  );
+  ipcMain.on(EVENTS.STOP_DEBUG_SESSION, stopDebugSession);
   ipcMain.on(EVENTS.LIST_PORTS, listPortsHandler);
   ipcMain.on(EVENTS.LIST_BOARDS, listBoardsHandler);
   ipcMain.on(EVENTS.GET_SELECTED_BOARD, loadTargetBoardHandler);

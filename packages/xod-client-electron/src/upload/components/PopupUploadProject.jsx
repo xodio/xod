@@ -61,9 +61,7 @@ class PopupUploadProject extends React.Component {
 
     return (
       <div>
-        <p>
-          {titleMessage}
-        </p>
+        {titleMessage}
         {message}
       </div>
     );

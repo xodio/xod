@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import DevTools from '../../utils/devtools';
 import generateReducers from '../reducer';
 import { default as defaultInitialState } from '../state';
-import EditorMiddleware from '../middlewares';
+import composeMiddlewares from '../middlewares';
 
 export default class Root extends React.Component {
 
@@ -16,7 +16,7 @@ export default class Root extends React.Component {
     this.store = createStore(
       generateReducers(this.props.extraReducers),
       this.props.initialState,
-      EditorMiddleware
+      composeMiddlewares(this.props.extraMiddlewares)
     );
   }
 
@@ -34,10 +34,12 @@ export default class Root extends React.Component {
 
 Root.defaultProps = {
   initialState: defaultInitialState,
+  extraMiddlewares: [],
 };
 
 Root.propTypes = {
   children: PropTypes.element.isRequired,
   extraReducers: PropTypes.object,
+  extraMiddlewares: PropTypes.arrayOf(PropTypes.func),
   initialState: PropTypes.object,
 };

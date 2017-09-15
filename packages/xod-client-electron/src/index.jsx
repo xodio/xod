@@ -7,6 +7,8 @@ import App from './view/containers/App';
 import popupsReducer from './popups/reducer';
 import uploadReducer from './upload/reducer';
 
+import debuggerMiddleware from './debugger/middleware';
+
 const extraReducers = {
   popups: popupsReducer,
   upload: uploadReducer,
@@ -15,6 +17,7 @@ const extraReducers = {
 ReactDOM.render(
   <Root
     extraReducers={extraReducers}
+    extraMiddlewares={[debuggerMiddleware]}
     initialState={initialState} // TODO: Remove project and opened patch when possible
   >
     <App />

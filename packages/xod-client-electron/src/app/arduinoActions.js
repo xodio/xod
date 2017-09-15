@@ -5,7 +5,7 @@ import { resolve, join as pjoin } from 'path';
 
 import { app } from 'electron';
 import { writeFile } from 'xod-fs';
-import { foldEither, tapP, rejectWithCode } from 'xod-func-tools';
+import { foldEither, tapP, rejectWithCode, delay } from 'xod-func-tools';
 import { transpileForArduino } from 'xod-arduino';
 import * as xad from 'xod-arduino-deploy';
 import * as xd from 'xod-deploy';
@@ -15,6 +15,11 @@ import * as MESSAGES from '../shared/messages';
 import formatError from '../shared/errorFormatter';
 import * as ERROR_CODES from '../shared/errorCodes';
 import * as EVENTS from '../shared/events';
+import {
+  createSystemMessage,
+  parseDebuggerMessage,
+  createErrorMessage,
+} from '../shared/debuggerMessages';
 import { errorToPlainObject, IS_DEV } from './utils';
 
 // =============================================================================
@@ -202,7 +207,9 @@ const deployToArduino = ({
       if (result.exitCode !== 0) {
         return Promise.reject(Object.assign(new Error(`Upload tool exited with error code: ${result.exitCode}`), result));
       }
-      return sendSuccess([result.stderr, result.stdout].join('\n\n'), 100)();
+      sendSuccess([result.stderr, result.stdout].join('\n\n'), 100)();
+
+      return Promise.resolve(R.assoc('uploadResult', result, payload));
     }
   )(payload);
 };
@@ -256,15 +263,60 @@ const deployToArduinoThroughCloud = ({
     if (result.exitCode !== 0) {
       return Promise.reject(Object.assign(new Error(`Upload tool exited with error code: ${result.exitCode}`), result));
     }
-    return sendSuccess([result.stderr, result.stdout].join('\n\n'), 100)();
+    sendSuccess([result.stderr, result.stdout].join('\n\n'), 100)();
+
+    return Promise.resolve(R.assoc('uploadResult', result, payload));
   }
 )(payload);
+
+// =============================================================================
+//
+// Debug
+//
+// =============================================================================
+
+const debug = async (port, onData) => {
+  const ports = await xad.listPorts();
+  const newPort = R.find(R.allPass([
+    R.propEq('manufacturer', port.manufacturer),
+    R.propEq('vendorId', port.vendorId),
+    R.propEq('serialNumber', port.serialNumber),
+    R.propEq('productId', port.productId),
+  ]), ports);
+
+  if (!newPort) { return Promise.reject(new Error('Device for debug is not found')); }
+
+  const portName = R.prop('comName', port);
+
+  return delay(400)
+    .then(() => xad.openAndReadPort(portName, onData));
+};
 
 // =============================================================================
 //
 // IPC handlers (for main process)
 //
 // =============================================================================
+
+export const startDebugSessionHandler = storePortFn => (event, { port }) =>
+  debug(port, (data) => {
+    event.sender.send(EVENTS.DEBUG_SESSION, parseDebuggerMessage(data));
+  })
+    .then(R.tap(() => {
+      event.sender.send(EVENTS.START_DEBUG_SESSION, createSystemMessage('Debug session started'));
+    }))
+    .then(R.tap(storePortFn))
+    .catch((err) => {
+      event.sender.send(
+        EVENTS.DEBUG_SESSION,
+        createErrorMessage(err)
+      );
+    });
+
+export const stopDebugSessionHandler = (event, port) => xad.closePort(port)
+  .then(R.tap(() => {
+    event.sender.send(EVENTS.STOP_DEBUG_SESSION, createSystemMessage('Debug session stopped'));
+  }));
 
 export const uploadToArduinoHandler = (event, payload) => {
   let lastPercentage = 0;

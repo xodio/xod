@@ -8,6 +8,7 @@ export const COMMAND = {
   RENAME_PROJECT: 'renameProject',
 
   TOGGLE_HELPBAR: 'toggleHelpbar',
+  TOGGLE_DEBUGGER: 'toggleDebugger',
 
   ADD_PATCH: 'addPatch',
   RENAME: 'rename',
@@ -42,6 +43,7 @@ export const HOTKEY = {
   [COMMAND.SAVE_PROJECT]: ['ctrl+s'],
 
   [COMMAND.TOGGLE_HELPBAR]: ['h'],
+  [COMMAND.TOGGLE_DEBUGGER]: ['ctrl+shift+u'],
   [COMMAND.INSERT_NODE]: ['i'],
 };
 
@@ -66,6 +68,8 @@ export const ELECTRON_ACCELERATOR = {
   [COMMAND.PASTE]: 'CmdOrCtrl+V',
 
   [COMMAND.SAVE_PROJECT]: 'CmdOrCtrl+S',
+
+  [COMMAND.TOGGLE_DEBUGGER]: 'CmdOrCtrl+Shift+U',
 };
 
 export const KEYCODE = {

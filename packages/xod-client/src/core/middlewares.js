@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 
 import { devToolMiddleware } from '../utils/devtools';
 
-export default compose(
-  applyMiddleware(thunk),
+export default (extraMiddlewares = []) => compose(
+  applyMiddleware(thunk, ...extraMiddlewares),
   devToolMiddleware
 );

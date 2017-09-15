@@ -116,6 +116,11 @@ const rawItems = {
     label: 'Toggle Helpbar',
     command: COMMAND.TOGGLE_HELPBAR,
   },
+  toggleDebugger: {
+    key: 'toggleDebugger',
+    label: 'Toggle Debugger',
+    command: COMMAND.TOGGLE_DEBUGGER,
+  },
 
   help: {
     key: 'help',

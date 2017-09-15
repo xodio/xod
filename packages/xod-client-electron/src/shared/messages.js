@@ -17,3 +17,5 @@ export const SUCCESS = {
 export const PROJECT_SAVE_PROCESSED = '';
 export const PROJECT_SAVE_FAILED = 'Failed to save project.';
 export const PROJECT_SAVE_SUCCEED = 'Project has been saved successfully!';
+
+export const DEBUG_SESSION_STOPPED_ON_CHANGE = 'Debug session was automatically stopped, cause your Project has been changed.';

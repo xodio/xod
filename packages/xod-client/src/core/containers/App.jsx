@@ -142,6 +142,11 @@ App.propTypes = {
     showCode: PropTypes.func.isRequired,
     showProjectPreferences: PropTypes.func.isRequired,
     toggleHelpbar: PropTypes.func.isRequired,
+    startDebuggerSession: PropTypes.func.isRequired,
+    stopDebuggerSession: PropTypes.func.isRequired,
+    toggleDebugger: PropTypes.func.isRequired,
+    logDebugger: PropTypes.func.isRequired,
+    clearDebugger: PropTypes.func.isRequired,
     /* eslint-enable react/no-unused-prop-types */
   }),
 };
@@ -168,5 +173,10 @@ App.actions = {
   updateProjectMeta: actions.updateProjectMeta,
   hideAllPopups: actions.hideAllPopups,
   toggleHelpbar: actions.toggleHelpbar,
+  startDebuggerSession: actions.startDebuggerSession,
+  stopDebuggerSession: actions.stopDebuggerSession,
+  toggleDebugger: actions.toggleDebugger,
   showSuggester: actions.showSuggester,
+  logDebugger: actions.addMessageToDebuggerLog,
+  clearDebugger: actions.clearDebuggerLog,
 };

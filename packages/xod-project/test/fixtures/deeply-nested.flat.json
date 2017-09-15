@@ -88,7 +88,7 @@
       },
       "path": "xod/core/console-log",
       "impls": {
-        "arduino": "struct State {\n    bool begun;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    if (!isInputDirty<input_DUMP>(nid))\n        return;\n\n    if (!state->begun) {\n        Serial.begin(9600);\n    }\n\n    auto line = getValue<input_LINE>(nid);\n    if (line) {\n        for (auto it = line->iterate(); it; ++it)\n            Serial.write((char)*it);\n        Serial.write('\\r');\n        Serial.write('\\n');\n        Serial.flush();\n    }\n}\n"
+        "arduino": "struct State {\n    bool begun;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    if (!isInputDirty<input_DUMP>(nid))\n        return;\n\n    if (!state->begun) {\n        Serial.begin(115200);\n    }\n\n    auto line = getValue<input_LINE>(nid);\n    if (line) {\n        for (auto it = line->iterate(); it; ++it)\n            Serial.write((char)*it);\n        Serial.write('\\r');\n        Serial.write('\\n');\n        Serial.flush();\n    }\n}\n"
       },
       "attachments": [],
       "@@type": "xod-project/Patch"
