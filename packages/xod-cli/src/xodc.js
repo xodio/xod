@@ -10,7 +10,7 @@ import publish from './xodc-publish';
 import transpile from './xodc-transpile';
 import unpack from './xodc-unpack';
 
-const PM_SWAGGER_URL = 'https://pm.xod.show/swagger';
+const PM_SWAGGER_URL = 'https://pm.xod.io/swagger';
 
 // In case of unhandled errors this would give more adequate debug traces:
 // 1. More than default 10 items
