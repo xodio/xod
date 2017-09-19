@@ -2,9 +2,8 @@ import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { LAYER, EDITOR_MODE } from '../../../editor/constants';
+import { EDITOR_MODE } from '../../../editor/constants';
 
-import SVGLayer from './SVGLayer';
 import XODLink from '../Link';
 
 class GhostLayer extends React.Component {
@@ -60,12 +59,9 @@ class GhostLayer extends React.Component {
     const ghostLink = this.getLink();
 
     return (
-      <SVGLayer
-        name={LAYER.GHOSTS}
-        className="GhostsLayer"
-      >
+      <g className="GhostsLayer">
         {ghostLink}
-      </SVGLayer>
+      </g>
     );
   }
 }

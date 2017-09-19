@@ -4,7 +4,12 @@ import { explode } from 'xod-func-tools';
 
 import * as AT from './actionTypes';
 
-import { nodeSizeInSlotsToPixels, slotPositionToPixels } from './nodeLayout';
+import {
+  addPoints,
+  nodeSizeInSlotsToPixels,
+  slotPositionToPixels,
+  snapNodePositionToSlots,
+} from './nodeLayout';
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from './constants';
 
 // TODO: rewrite this?
@@ -37,6 +42,19 @@ const updateCommentWith = (updaterFn, id, patchPath, state) => {
     state
   );
 };
+
+const nodePositionLens = R.lens(XP.getNodePosition, XP.setNodePosition);
+const commentPositionLens = R.lens(XP.getCommentPosition, XP.setCommentPosition);
+
+const moveEntities = (positionLens, deltaPosition) => R.map(
+  R.over(
+    positionLens,
+    R.compose(
+      snapNodePositionToSlots,
+      addPoints(deltaPosition)
+    )
+  )
+);
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -129,6 +147,42 @@ export default (state = {}, action) => {
       );
     }
 
+
+    //
+    // Bulk actions on multiple entities
+    //
+    case AT.BULK_MOVE_NODES_AND_COMMENTS: {
+      const {
+        nodeIds,
+        commentIds,
+        deltaPosition,
+        patchPath,
+      } = action.payload;
+
+      const currentPatchLens = XP.lensPatch(patchPath);
+      const patch = R.view(currentPatchLens, state);
+
+      const movedNodes = R.compose(
+        moveEntities(nodePositionLens, deltaPosition),
+        R.map(R.flip(XP.getNodeByIdUnsafe)(patch))
+      )(nodeIds);
+
+      const movedComments = R.compose(
+        moveEntities(commentPositionLens, deltaPosition),
+        R.map(R.flip(XP.getCommentByIdUnsafe)(patch))
+      )(commentIds);
+
+      return R.over(
+        currentPatchLens,
+        R.compose(
+          XP.upsertComments(movedComments),
+          XP.upsertNodes(movedNodes),
+        ),
+        state
+      );
+    }
+
+
     //
     // Node
     //
@@ -143,25 +197,6 @@ export default (state = {}, action) => {
       return R.over(
         XP.lensPatch(patchPath), // TODO: can we have a situation where patch does not exist?
         XP.assocNode(newNode),
-        state
-      );
-    }
-
-    case AT.NODE_MOVE: {
-      const { id, position, patchPath } = action.payload;
-
-      const currentPatchLens = XP.lensPatch(patchPath);
-
-      const node = R.compose(
-        XP.getNodeByIdUnsafe(id),
-        R.view(currentPatchLens)
-      )(state);
-
-      return R.over(
-        currentPatchLens,
-        XP.assocNode(
-          XP.setNodePosition(position, node)
-        ),
         state
       );
     }
@@ -266,12 +301,6 @@ export default (state = {}, action) => {
         XP.dissocComment(id),
         state
       );
-    }
-
-    case AT.COMMENT_MOVE: {
-      const { id, patchPath, position } = action.payload;
-
-      return updateCommentWith(XP.setCommentPosition(position), id, patchPath, state);
     }
 
     case AT.COMMENT_RESIZE: {

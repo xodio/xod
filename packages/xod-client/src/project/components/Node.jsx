@@ -83,6 +83,7 @@ class Node extends React.Component {
     super(props);
     this.id = this.props.id;
     this.onMouseDown = this.onMouseDown.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
   }
 
   shouldComponentUpdate(newProps) {
@@ -91,6 +92,10 @@ class Node extends React.Component {
 
   onMouseDown(event) {
     this.props.onMouseDown(event, this.id);
+  }
+
+  onMouseUp(event) {
+    this.props.onMouseUp(event, this.id);
   }
 
   render() {
@@ -115,6 +120,7 @@ class Node extends React.Component {
     const svgStyle = {
       overflow: 'visible',
       opacity: this.props.hidden ? 0 : 1, // setting visibility is breaking masks
+      pointerEvents: this.props.noEvents ? 'none' : 'auto',
     };
 
     const nodeLabel = label || XP.getBaseName(type);
@@ -132,6 +138,7 @@ class Node extends React.Component {
         <g
           className={cls}
           onMouseDown={this.onMouseDown}
+          onMouseUp={this.onMouseUp}
           title={nodeLabel} // this is for func-tests
         >
           {
@@ -177,16 +184,20 @@ Node.propTypes = {
   isGhost: PropTypes.bool,
   isDragged: PropTypes.bool,
   hidden: PropTypes.bool,
+  noEvents: PropTypes.bool,
   linkingPin: PropTypes.object,
   pinLinkabilityValidator: PropTypes.func,
   onMouseDown: PropTypes.func,
+  onMouseUp: PropTypes.func,
 };
 
 Node.defaultProps = {
   isSelected: false,
   isGhost: false,
   isDragged: false,
+  noEvents: false,
   onMouseDown: noop,
+  onMouseUp: noop,
   pinLinkabilityValidator: R.F,
 };
 

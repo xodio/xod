@@ -1,6 +1,8 @@
 import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -20,16 +22,17 @@ import { EDITOR_MODE, FOCUS_AREAS } from '../constants';
 import Patch from './Patch';
 import NoPatch from '../components/NoPatch';
 import Suggester from '../components/Suggester';
-import ProjectBrowser from '../../projectBrowser/containers/ProjectBrowser';
+import Inspector from '../components/Inspector';
 import Sidebar from '../../utils/components/Sidebar';
 import Workarea from '../../utils/components/Workarea';
 
 import { RenderableSelection } from '../../project/types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
-import Tabs from '../containers/Tabs';
-import Helpbar from '../containers/Helpbar';
-import Inspector from '../components/Inspector';
+import ProjectBrowser from '../../projectBrowser/containers/ProjectBrowser';
+import Tabs from './Tabs';
+import Helpbar from './Helpbar';
+import DragLayer from './DragLayer';
 
 class Editor extends React.Component {
   constructor(props) {
@@ -88,7 +91,6 @@ class Editor extends React.Component {
     this.props.actions.hideSuggester();
   }
 
-
   render() {
     const {
       currentPatchPath,
@@ -141,6 +143,7 @@ class Editor extends React.Component {
           </Workarea>
         </FocusTrap>
         <Helpbar />
+        <DragLayer />
       </HotKeys>
     );
   }
@@ -198,4 +201,7 @@ const mapDispatchToProps = dispatch => ({
   }, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Editor);
+export default R.compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  DragDropContext(HTML5Backend) // eslint-disable-line new-cap
+)(Editor);

@@ -26,6 +26,11 @@ export const getSelectedNodeType = R.pipe(
   R.prop('selectedNodeType')
 );
 
+export const getDraggedPreviewSize = R.pipe(
+  getEditor,
+  R.prop('draggedPreviewSize')
+);
+
 export const getSelectionByTypes = createSelector(
   getSelection,
   (selection) => {

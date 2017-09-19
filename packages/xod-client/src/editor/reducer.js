@@ -4,7 +4,10 @@ import * as XP from 'xod-project';
 import {
   EDITOR_DESELECT_ALL,
   EDITOR_SELECT_ENTITY,
+  EDITOR_DESELECT_ENTITY,
+  EDITOR_ADD_ENTITY_TO_SELECTION,
   EDITOR_SELECT_PIN,
+  EDITOR_DESELECT_PIN,
   EDITOR_SET_MODE,
   EDITOR_SET_SELECTED_NODETYPE,
   EDITOR_SWITCH_PATCH,
@@ -16,6 +19,7 @@ import {
   SHOW_SUGGESTER,
   HIDE_SUGGESTER,
   HIGHLIGHT_SUGGESTER_ITEM,
+  START_DRAGGING_PATCH,
 } from './actionTypes';
 import {
   PROJECT_CREATE,
@@ -25,11 +29,15 @@ import {
   PATCH_ADD,
   PATCH_DELETE,
   PATCH_RENAME,
+  NODE_ADD,
   NODE_DELETE,
+  LINK_ADD,
   LINK_DELETE,
   COMMENT_DELETE,
 } from '../project/actionTypes';
+
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
+import { EDITOR_MODE } from './constants';
 
 const addTab = R.curry((patchPath, state) => {
   if (!patchPath) return state;
@@ -149,10 +157,44 @@ const editorReducer = (state = {}, action) => {
         ],
         state
       );
+    case EDITOR_DESELECT_ENTITY:
+      return R.over(
+        R.lensProp('selection'),
+        R.reject(R.equals({
+          entity: action.payload.entityType,
+          id: action.payload.id,
+        })),
+        state
+      );
+    case EDITOR_ADD_ENTITY_TO_SELECTION:
+      return R.over(
+        R.lensProp('selection'),
+        R.compose(
+          R.uniq,
+          R.append({
+            entity: action.payload.entityType,
+            id: action.payload.id,
+          })
+        ),
+        state
+      );
     case EDITOR_SELECT_PIN:
       return R.assoc('linkingPin', action.payload, state);
+    case EDITOR_DESELECT_PIN:
+    case LINK_ADD:
+      return R.assoc('linkingPin', null, state);
     case EDITOR_SET_MODE:
       return R.assoc('mode', action.payload.mode, state);
+    case START_DRAGGING_PATCH:
+      return R.merge(
+        state,
+        {
+          mode: EDITOR_MODE.ACCEPTING_DRAGGED_PATCH,
+          draggedPreviewSize: action.payload,
+        }
+      );
+    case NODE_ADD:
+      return R.assoc('draggedPreviewSize', { width: 0, height: 0 }, state);
     case EDITOR_SET_SELECTED_NODETYPE:
       return R.assoc('selectedNodeType', action.payload.id, state);
     case PROJECT_CREATE: {

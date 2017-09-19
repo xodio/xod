@@ -3,8 +3,8 @@ import R from 'ramda';
 import { SELECTION_ENTITY_TYPE } from './constants';
 
 export const isEntitySelected = R.curry(
-  (entityName, selection, id) => R.pipe(
-    R.filter(R.propEq('entity', entityName)),
+  (entityType, selection, id) => R.pipe(
+    R.filter(R.propEq('entity', entityType)),
     R.find(R.propEq('id', id)),
     R.isNil,
     R.not
@@ -22,3 +22,8 @@ export const isPinSelected = (linkingPin, renderablePin) => (
   linkingPin.nodeId === renderablePin.nodeId &&
   linkingPin.pinKey === renderablePin.key
 );
+
+export const getSelectedEntityIdsOfType = R.curry((entityType, selection) => R.compose(
+  R.map(R.prop('id')),
+  R.filter(R.propEq('entity', entityType))
+)(selection));

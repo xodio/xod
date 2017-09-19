@@ -1,58 +1,94 @@
+import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
+import { DragSource } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 import 'font-awesome/scss/font-awesome.scss';
 
-const PatchGroupItem = (props) => {
-  const {
-    label,
-    isSelected,
-    isOpen,
-    className,
-    hoverButtons,
-    onClick,
-    onDoubleClick,
-    ...restProps
-  } = props;
+import { DRAGGED_ENTITY_TYPE } from '../../editor/constants';
 
-  const classNames = cn(
-    'PatchGroupItem',
-    className,
-    {
-      isSelected,
-      isOpen,
-    }
-  );
-
-  return (
-    <div {...restProps} className={classNames} title={label}>
-      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-        className="PatchGroupItem__label"
-        onClick={onClick}
-        onDoubleClick={onDoubleClick}
-        role="button"
-      >
-        {label}
-      </div>
-      <div className="PatchGroupItem__hover-buttons">
-        {hoverButtons}
-        {/* placeholder for context menu opener */}
-        {/* <i className="fa fa-bars" /> */}
-      </div>
-    </div>
-  );
+const dragSource = {
+  beginDrag(props) {
+    props.onBeginDrag(props.patchPath);
+    return { patchPath: props.patchPath };
+  },
 };
 
-PatchGroupItem.displayName = 'PatchGroupItem';
+const collect = connect => ({
+  connectDragSource: connect.dragSource(),
+  connectDragPreview: connect.dragPreview(),
+});
+
+class PatchGroupItem extends React.PureComponent {
+  componentDidMount() {
+    // Use empty image as a drag preview so browsers don't draw it
+    // and we can draw whatever we want on the custom drag layer instead.
+    this.props.connectDragPreview(getEmptyImage());
+  }
+
+  render() {
+    const {
+      label,
+      isSelected,
+      isOpen,
+      className,
+      hoverButtons,
+      onClick,
+      onDoubleClick,
+      connectDragSource,
+      ...restProps
+    } = this.props;
+
+    const classNames = cn(
+      'PatchGroupItem',
+      className,
+      {
+        isSelected,
+        isOpen,
+      }
+    );
+
+    return connectDragSource(
+      <div
+        title={label}
+        className={classNames}
+        {...R.omit(['patchPath', 'onBeginDrag', 'connectDragPreview'], restProps)}
+      >
+        <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+          className="PatchGroupItem__label"
+          onClick={onClick}
+          onDoubleClick={onDoubleClick}
+          role="button"
+        >
+          {label}
+        </div>
+        <div className="PatchGroupItem__hover-buttons">
+          {hoverButtons}
+          {/* placeholder for context menu opener */}
+          {/* <i className="fa fa-bars" /> */}
+        </div>
+      </div>
+    );
+  }
+}
 
 PatchGroupItem.propTypes = {
   label: PropTypes.string.isRequired,
+  patchPath: PropTypes.string.isRequired,
   isSelected: PropTypes.bool,
   isOpen: PropTypes.bool,
   className: PropTypes.string,
   hoverButtons: PropTypes.array,
   onClick: PropTypes.func,
   onDoubleClick: PropTypes.func,
+  connectDragSource: PropTypes.func.isRequired,
+  connectDragPreview: PropTypes.func.isRequired,
+  onBeginDrag: PropTypes.func.isRequired,
 };
 
-export default PatchGroupItem;
+export default DragSource( // eslint-disable-line new-cap
+  DRAGGED_ENTITY_TYPE.PATCH,
+  dragSource,
+  collect
+)(PatchGroupItem);

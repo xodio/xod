@@ -1,33 +1,34 @@
+import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { LAYER } from '../../../editor/constants';
+
+import pureDeepEqual from '../../../utils/pureDeepEqual';
 
 import { isLinkSelected } from '../../../editor/utils';
 
-import SVGLayer from './SVGLayer';
 import XODLink from '../Link';
 
 const LinksLayer = ({ links, selection }) => (
-  <SVGLayer
-    name={LAYER.LINKS}
-    className="LinksLayer"
-  >
-    {links.map(link =>
-      <XODLink
-        key={link.id}
-        id={link.id}
-        from={link.from}
-        to={link.to}
-        type={link.type}
-        isSelected={isLinkSelected(selection, link.id)}
-      />
-    )}
-  </SVGLayer>
+  <g className="LinksLayer">
+    {R.compose(
+      R.map(link =>
+        <XODLink
+          key={link.id}
+          id={link.id}
+          from={link.from}
+          to={link.to}
+          type={link.type}
+          isSelected={isLinkSelected(selection, link.id)}
+        />
+      ),
+      R.values
+    )(links)}
+  </g>
 );
 
 LinksLayer.propTypes = {
-  links: PropTypes.arrayOf(PropTypes.object),
+  links: PropTypes.object,
   selection: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default LinksLayer;
+export default pureDeepEqual(LinksLayer);

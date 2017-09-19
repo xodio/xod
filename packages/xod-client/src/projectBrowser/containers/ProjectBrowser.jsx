@@ -191,14 +191,17 @@ class ProjectBrowser extends React.Component {
     const {
       switchPatch,
       setSelection,
+      startDraggingPatch,
     } = this.props.actions;
 
     const renderItem = ({ path }) => (
       <PatchGroupItem
         key={path}
+        patchPath={path}
         label={getBaseName(path)}
         isOpen={path === currentPatchPath}
         onDoubleClick={() => switchPatch(path)}
+        onBeginDrag={startDraggingPatch}
         isSelected={path === selectedPatchPath}
         onClick={() => setSelection(path)}
         hoverButtons={this.localPatchesHoveredButtons(path)}
@@ -219,7 +222,7 @@ class ProjectBrowser extends React.Component {
 
   renderLibraryPatches() {
     const { libs, selectedPatchPath } = this.props;
-    const { setSelection, switchPatch } = this.props.actions;
+    const { setSelection, switchPatch, startDraggingPatch } = this.props.actions;
 
     return R.toPairs(libs).map(([libName, libPatches]) => (
       <PatchGroup
@@ -231,10 +234,12 @@ class ProjectBrowser extends React.Component {
         {libPatches.map(({ path }) =>
           <PatchGroupItem
             key={path}
+            patchPath={path}
             label={getBaseName(path)}
             isSelected={path === selectedPatchPath}
             onClick={() => setSelection(path)}
             onDoubleClick={() => switchPatch(path)}
+            onBeginDrag={startDraggingPatch}
             hoverButtons={this.libraryPatchesHoveredButtons(path)}
           />
         )}
@@ -313,6 +318,7 @@ ProjectBrowser.propTypes = {
     addPatch: PropTypes.func.isRequired,
     renamePatch: PropTypes.func.isRequired,
     deletePatch: PropTypes.func.isRequired,
+    startDraggingPatch: PropTypes.func.isRequired,
     renameProject: PropTypes.func.isRequired,
     closeAllPopups: PropTypes.func.isRequired,
   }),
@@ -334,6 +340,7 @@ const mapDispatchToProps = dispatch => ({
     setSelectedNodeType: EditorActions.setSelectedNodeType,
     setEditorMode: EditorActions.setMode,
     switchPatch: EditorActions.switchPatch,
+    startDraggingPatch: EditorActions.startDraggingPatch,
 
     requestCreatePatch: ProjectBrowserActions.requestCreatePatch,
     requestRename: ProjectBrowserActions.requestRenamePatch,

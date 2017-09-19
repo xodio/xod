@@ -2,53 +2,57 @@ import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { LAYER } from '../../../editor/constants';
+import pureDeepEqual from '../../../utils/pureDeepEqual';
 
 import { isCommentSelected } from '../../../editor/utils';
 
-import SVGLayer from './SVGLayer';
 import Comment from '../Comment';
 
-const IdleCommentsLayer = ({
+const CommentsLayer = ({
   comments,
-  draggedCommentId,
   selection,
+  areDragged,
   onMouseDown,
+  onMouseUp,
   onResizeHandleMouseDown,
   onFinishEditing,
 }) => (
-  <SVGLayer
-    name={LAYER.COMMENTS}
-    className="IdleCommentsLayer"
-  >
+  <g className="CommentsLayer">
     {R.compose(
       R.map(
         comment =>
           <Comment
-            hidden={comment.id === draggedCommentId}
             key={comment.id}
             id={comment.id}
             content={comment.content}
             position={comment.position}
             size={comment.size}
             isSelected={isCommentSelected(selection, comment.id)}
+            isDragged={areDragged}
             onMouseDown={onMouseDown}
+            onMouseUp={onMouseUp}
             onResizeHandleMouseDown={onResizeHandleMouseDown}
             onFinishEditing={onFinishEditing}
           />
       ),
       R.values
     )(comments)}
-  </SVGLayer>
+  </g>
 );
 
-IdleCommentsLayer.propTypes = {
+
+CommentsLayer.defaultProps = {
+  areDragged: false,
+};
+
+CommentsLayer.propTypes = {
   comments: PropTypes.objectOf(PropTypes.object),
   selection: PropTypes.arrayOf(PropTypes.object),
-  draggedCommentId: PropTypes.string,
+  areDragged: PropTypes.bool,
   onMouseDown: PropTypes.func,
+  onMouseUp: PropTypes.func,
   onResizeHandleMouseDown: PropTypes.func,
   onFinishEditing: PropTypes.func,
 };
 
-export default IdleCommentsLayer;
+export default pureDeepEqual(CommentsLayer);

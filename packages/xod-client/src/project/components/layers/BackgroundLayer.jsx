@@ -1,8 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { LAYER } from '../../../editor/constants';
-
-import SVGLayer from './SVGLayer';
 
 import {
   SLOT_SIZE,
@@ -40,10 +37,7 @@ NodeSlotPattern.propTypes = {
 };
 
 const BackgroundLayer = ({ onClick, onDoubleClick, offset }) => (
-  <SVGLayer
-    name={LAYER.BACKGROUND}
-    className="BackgroundLayer"
-  >
+  <g className="BackgroundLayer">
     <NodeSlotPattern offset={offset} />
     <rect
       className="BackgroundRect"
@@ -53,7 +47,7 @@ const BackgroundLayer = ({ onClick, onDoubleClick, offset }) => (
       onClick={onClick}
       onDoubleClick={onDoubleClick}
     />
-  </SVGLayer>
+  </g>
 );
 
 BackgroundLayer.propTypes = {
