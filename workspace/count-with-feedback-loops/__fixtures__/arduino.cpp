@@ -631,8 +631,8 @@ template <typename T> class List {
  *
  =============================================================================*/
 
-#define NODE_COUNT          11
-#define DEFER_NODE_COUNT    0
+#define NODE_COUNT          17
+#define DEFER_NODE_COUNT    1
 #define MAX_OUTPUT_COUNT    1
 
 // Uncomment to turn on debug of the program
@@ -1096,39 +1096,6 @@ void loop() {
 namespace xod {
 
 //-----------------------------------------------------------------------------
-// xod/core/system_time implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__system_time {
-
-struct State {
-};
-
-struct Storage {
-    State state;
-    Number output_TIME;
-};
-
-struct Wiring {
-    EvalFuncPtr eval;
-    UpstreamPinRef input_UPD;
-    const NodeId* output_TIME;
-};
-
-State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
-}
-
-using input_UPD = InputDescriptor<Logic, offsetof(Wiring, input_UPD)>;
-
-using output_TIME = OutputDescriptor<Number, offsetof(Wiring, output_TIME), offsetof(Storage, output_TIME), 0>;
-
-void evaluate(Context ctx) {
-    emitValue<output_TIME>(ctx, millis() / 1000.f);
-}
-
-} // namespace xod__core__system_time
-
-//-----------------------------------------------------------------------------
 // xod/common_hardware/text_lcd_16x2 implementation
 //-----------------------------------------------------------------------------
 namespace xod__common_hardware__text_lcd_16x2 {
@@ -1206,6 +1173,185 @@ void evaluate(Context ctx) {
 } // namespace xod__common_hardware__text_lcd_16x2
 
 //-----------------------------------------------------------------------------
+// xod/core/defer_boolean implementation
+//-----------------------------------------------------------------------------
+namespace xod__core__defer_boolean {
+
+struct State {
+};
+
+struct Storage {
+    State state;
+    Logic output_OUT;
+};
+
+struct Wiring {
+    EvalFuncPtr eval;
+    UpstreamPinRef input_IN;
+    const NodeId* output_OUT;
+};
+
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
+}
+
+using input_IN = InputDescriptor<Logic, offsetof(Wiring, input_IN)>;
+
+using output_OUT = OutputDescriptor<Logic, offsetof(Wiring, output_OUT), offsetof(Storage, output_OUT), 0>;
+
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
+
+    if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
+        setTimeout(ctx, 0);
+        // This will not have any immediate effect, because
+        // deferred nodes are at the very bottom of sorted graph.
+        // We do this to just save the value for reemission
+        // on deferred-only evaluation.
+        emitValue<output_OUT>(ctx, getValue<input_IN>(ctx));
+    } else { // deferred-only evaluation pass
+        emitValue<output_OUT>(ctx, getValue<output_OUT>(ctx));
+    }
+}
+
+} // namespace xod__core__defer_boolean
+
+//-----------------------------------------------------------------------------
+// xod/core/clock implementation
+//-----------------------------------------------------------------------------
+namespace xod__core__clock {
+
+struct State {
+  TimeMs nextTrig;
+};
+
+struct Storage {
+    State state;
+    Logic output_TICK;
+};
+
+struct Wiring {
+    EvalFuncPtr eval;
+    UpstreamPinRef input_IVAL;
+    UpstreamPinRef input_RST;
+    const NodeId* output_TICK;
+};
+
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
+}
+
+using input_IVAL = InputDescriptor<Number, offsetof(Wiring, input_IVAL)>;
+using input_RST = InputDescriptor<Logic, offsetof(Wiring, input_RST)>;
+
+using output_TICK = OutputDescriptor<Logic, offsetof(Wiring, output_TICK), offsetof(Storage, output_TICK), 0>;
+
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
+    TimeMs tNow = transactionTime();
+    TimeMs dt = getValue<input_IVAL>(ctx) * 1000;
+    TimeMs tNext = tNow + dt;
+
+    if (isInputDirty<input_RST>(ctx)) {
+        if (dt == 0) {
+            state->nextTrig = 0;
+            clearTimeout(ctx);
+        } else if (state->nextTrig < tNow || state->nextTrig > tNext) {
+            state->nextTrig = tNext;
+            setTimeout(ctx, dt);
+        }
+    } else {
+        // It was a scheduled tick
+        emitValue<output_TICK>(ctx, 1);
+        state->nextTrig = tNext;
+        setTimeout(ctx, dt);
+    }
+}
+
+} // namespace xod__core__clock
+
+//-----------------------------------------------------------------------------
+// xod/core/count implementation
+//-----------------------------------------------------------------------------
+namespace xod__core__count {
+
+struct State {
+};
+
+struct Storage {
+    State state;
+    Number output_OUT;
+};
+
+struct Wiring {
+    EvalFuncPtr eval;
+    UpstreamPinRef input_STEP;
+    UpstreamPinRef input_INC;
+    UpstreamPinRef input_RST;
+    const NodeId* output_OUT;
+};
+
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
+}
+
+using input_STEP = InputDescriptor<Number, offsetof(Wiring, input_STEP)>;
+using input_INC = InputDescriptor<Logic, offsetof(Wiring, input_INC)>;
+using input_RST = InputDescriptor<Logic, offsetof(Wiring, input_RST)>;
+
+using output_OUT = OutputDescriptor<Number, offsetof(Wiring, output_OUT), offsetof(Storage, output_OUT), 0>;
+
+void evaluate(Context ctx) {
+    Number count = getValue<output_OUT>(ctx);
+
+    if (isInputDirty<input_RST>(ctx))
+        count = 0;
+    else if (isInputDirty<input_INC>(ctx))
+        count += getValue<input_STEP>(ctx);
+
+    emitValue<output_OUT>(ctx, count);
+}
+
+} // namespace xod__core__count
+
+//-----------------------------------------------------------------------------
+// xod/core/greater implementation
+//-----------------------------------------------------------------------------
+namespace xod__core__greater {
+
+struct State {
+};
+
+struct Storage {
+    State state;
+    Logic output_GT;
+};
+
+struct Wiring {
+    EvalFuncPtr eval;
+    UpstreamPinRef input_LHS;
+    UpstreamPinRef input_RHS;
+    const NodeId* output_GT;
+};
+
+State* getState(NodeId nid) {
+    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
+}
+
+using input_LHS = InputDescriptor<Number, offsetof(Wiring, input_LHS)>;
+using input_RHS = InputDescriptor<Number, offsetof(Wiring, input_RHS)>;
+
+using output_GT = OutputDescriptor<Logic, offsetof(Wiring, output_GT), offsetof(Storage, output_GT), 0>;
+
+void evaluate(Context ctx) {
+    auto lhs = getValue<input_LHS>(ctx);
+    auto rhs = getValue<input_RHS>(ctx);
+    emitValue<output_GT>(ctx, lhs > rhs);
+}
+
+} // namespace xod__core__greater
+
+//-----------------------------------------------------------------------------
 // xod/core/cast_number_to_string implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__cast_number_to_string {
@@ -1243,35 +1389,44 @@ void evaluate(Context ctx) {
 } // namespace xod__core__cast_number_to_string
 
 //-----------------------------------------------------------------------------
-// xod/core/continuously implementation
+// xod/core/cast_boolean_to_pulse implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__continuously {
+namespace xod__core__cast_boolean_to_pulse {
 
 struct State {
+  bool state = false;
 };
 
 struct Storage {
     State state;
-    Logic output_TICK;
+    Logic output_OUT;
 };
 
 struct Wiring {
     EvalFuncPtr eval;
-    const NodeId* output_TICK;
+    UpstreamPinRef input_IN;
+    const NodeId* output_OUT;
 };
 
 State* getState(NodeId nid) {
     return reinterpret_cast<State*>(getStoragePtr(nid, 0));
 }
 
-using output_TICK = OutputDescriptor<Logic, offsetof(Wiring, output_TICK), offsetof(Storage, output_TICK), 0>;
+using input_IN = InputDescriptor<Logic, offsetof(Wiring, input_IN)>;
+
+using output_OUT = OutputDescriptor<Logic, offsetof(Wiring, output_OUT), offsetof(Storage, output_OUT), 0>;
 
 void evaluate(Context ctx) {
-    emitValue<output_TICK>(ctx, 1);
-    setTimeout(ctx, 0);
+    State* state = getState(ctx);
+    auto newValue = getValue<input_IN>(ctx);
+
+    if (newValue == true && state->state == false)
+        emitValue<output_OUT>(ctx, 1);
+
+    state->state = newValue;
 }
 
-} // namespace xod__core__continuously
+} // namespace xod__core__cast_boolean_to_pulse
 
 //-----------------------------------------------------------------------------
 // xod/core/constant_number implementation
@@ -1345,10 +1500,10 @@ namespace xod {
     // Dynamic data
     //-------------------------------------------------------------------------
 
-    // Storage of #0 xod/core/continuously
-    xod__core__continuously::Storage storage_0 = {
+    // Storage of #0 xod/core/cast_boolean_to_pulse
+    xod__core__cast_boolean_to_pulse::Storage storage_0 = {
         { }, // state
-        ::xod::List<char>::fromPlainArray("CONTINUOUSLY", 12) // output_TICK
+        false // output_OUT
     };
 
     // Storage of #1 xod/core/constant_number
@@ -1357,57 +1512,93 @@ namespace xod {
         10 // output_VAL
     };
 
-    // Storage of #2 xod/core/constant_string
-    xod__core__constant_string::Storage storage_2 = {
+    // Storage of #2 xod/core/constant_number
+    xod__core__constant_number::Storage storage_2 = {
         { }, // state
-        ::xod::List<char>::empty() // output_VAL
+        12 // output_VAL
     };
 
     // Storage of #3 xod/core/constant_number
     xod__core__constant_number::Storage storage_3 = {
         { }, // state
-        12 // output_VAL
+        11 // output_VAL
     };
 
     // Storage of #4 xod/core/constant_number
     xod__core__constant_number::Storage storage_4 = {
         { }, // state
-        11 // output_VAL
+        9 // output_VAL
     };
 
     // Storage of #5 xod/core/constant_number
     xod__core__constant_number::Storage storage_5 = {
         { }, // state
-        9 // output_VAL
+        8 // output_VAL
     };
 
     // Storage of #6 xod/core/constant_number
     xod__core__constant_number::Storage storage_6 = {
         { }, // state
-        8 // output_VAL
-    };
-
-    // Storage of #7 xod/core/constant_number
-    xod__core__constant_number::Storage storage_7 = {
-        { }, // state
         13 // output_VAL
     };
 
-    // Storage of #8 xod/core/system_time
-    xod__core__system_time::Storage storage_8 = {
+    // Storage of #7 xod/core/constant_string
+    xod__core__constant_string::Storage storage_7 = {
         { }, // state
-        0 // output_TIME
+        ::xod::List<char>::empty() // output_VAL
     };
 
-    // Storage of #9 xod/core/cast_number_to_string
-    xod__core__cast_number_to_string::Storage storage_9 = {
+    // Storage of #8 xod/core/constant_number
+    xod__core__constant_number::Storage storage_8 = {
+        { }, // state
+        1 // output_VAL
+    };
+
+    // Storage of #9 xod/core/constant_number
+    xod__core__constant_number::Storage storage_9 = {
+        { }, // state
+        1 // output_VAL
+    };
+
+    // Storage of #10 xod/core/constant_number
+    xod__core__constant_number::Storage storage_10 = {
+        { }, // state
+        10 // output_VAL
+    };
+
+    // Storage of #11 xod/core/clock
+    xod__core__clock::Storage storage_11 = {
+        { }, // state
+        false // output_TICK
+    };
+
+    // Storage of #12 xod/core/count
+    xod__core__count::Storage storage_12 = {
+        { }, // state
+        0 // output_OUT
+    };
+
+    // Storage of #13 xod/core/greater
+    xod__core__greater::Storage storage_13 = {
+        { }, // state
+        false // output_GT
+    };
+
+    // Storage of #14 xod/core/cast_number_to_string
+    xod__core__cast_number_to_string::Storage storage_14 = {
         { }, // state
         ::xod::List<char>::empty() // output_OUT
     };
 
-    // Storage of #10 xod/common_hardware/text_lcd_16x2
-    xod__common_hardware__text_lcd_16x2::Storage storage_10 = {
+    // Storage of #15 xod/common_hardware/text_lcd_16x2
+    xod__common_hardware__text_lcd_16x2::Storage storage_15 = {
         { }, // state
+    };
+
+    // Storage of #16 xod/core/defer_boolean
+    xod__core__defer_boolean::Storage storage_16 = {
+        { }, // state
+        false // output_OUT
     };
 
     DirtyFlags g_dirtyFlags[NODE_COUNT] = {
@@ -1421,6 +1612,12 @@ namespace xod {
         DirtyFlags(255),
         DirtyFlags(255),
         DirtyFlags(255),
+        DirtyFlags(255),
+        DirtyFlags(253),
+        DirtyFlags(255),
+        DirtyFlags(255),
+        DirtyFlags(255),
+        DirtyFlags(255),
         DirtyFlags(255)
     };
 
@@ -1430,17 +1627,20 @@ namespace xod {
     // Static (immutable) data
     //-------------------------------------------------------------------------
 
-    // Wiring of #0 xod/core/continuously
-    const NodeId outLinks_0_TICK[] PROGMEM = { 8, NO_NODE };
-    const xod__core__continuously::Wiring wiring_0 PROGMEM = {
-        &xod__core__continuously::evaluate,
+    // Wiring of #0 xod/core/cast_boolean_to_pulse
+    const NodeId outLinks_0_OUT[] PROGMEM = { 12, NO_NODE };
+    const xod__core__cast_boolean_to_pulse::Wiring wiring_0 PROGMEM = {
+        &xod__core__cast_boolean_to_pulse::evaluate,
         // inputs (UpstreamPinRef’s initializers)
+        { NodeId(16),
+            xod__core__defer_boolean::output_OUT::INDEX,
+            xod__core__defer_boolean::output_OUT::STORAGE_OFFSET }, // input_IN
         // outputs (NodeId list binding)
-        outLinks_0_TICK // output_TICK
+        outLinks_0_OUT // output_OUT
     };
 
     // Wiring of #1 xod/core/constant_number
-    const NodeId outLinks_1_VAL[] PROGMEM = { 10, NO_NODE };
+    const NodeId outLinks_1_VAL[] PROGMEM = { 15, NO_NODE };
     const xod__core__constant_number::Wiring wiring_1 PROGMEM = {
         &xod__core__constant_number::evaluate,
         // inputs (UpstreamPinRef’s initializers)
@@ -1448,17 +1648,17 @@ namespace xod {
         outLinks_1_VAL // output_VAL
     };
 
-    // Wiring of #2 xod/core/constant_string
-    const NodeId outLinks_2_VAL[] PROGMEM = { 10, NO_NODE };
-    const xod__core__constant_string::Wiring wiring_2 PROGMEM = {
-        &xod__core__constant_string::evaluate,
+    // Wiring of #2 xod/core/constant_number
+    const NodeId outLinks_2_VAL[] PROGMEM = { 15, NO_NODE };
+    const xod__core__constant_number::Wiring wiring_2 PROGMEM = {
+        &xod__core__constant_number::evaluate,
         // inputs (UpstreamPinRef’s initializers)
         // outputs (NodeId list binding)
         outLinks_2_VAL // output_VAL
     };
 
     // Wiring of #3 xod/core/constant_number
-    const NodeId outLinks_3_VAL[] PROGMEM = { 10, NO_NODE };
+    const NodeId outLinks_3_VAL[] PROGMEM = { 15, NO_NODE };
     const xod__core__constant_number::Wiring wiring_3 PROGMEM = {
         &xod__core__constant_number::evaluate,
         // inputs (UpstreamPinRef’s initializers)
@@ -1467,7 +1667,7 @@ namespace xod {
     };
 
     // Wiring of #4 xod/core/constant_number
-    const NodeId outLinks_4_VAL[] PROGMEM = { 10, NO_NODE };
+    const NodeId outLinks_4_VAL[] PROGMEM = { 15, NO_NODE };
     const xod__core__constant_number::Wiring wiring_4 PROGMEM = {
         &xod__core__constant_number::evaluate,
         // inputs (UpstreamPinRef’s initializers)
@@ -1476,7 +1676,7 @@ namespace xod {
     };
 
     // Wiring of #5 xod/core/constant_number
-    const NodeId outLinks_5_VAL[] PROGMEM = { 10, NO_NODE };
+    const NodeId outLinks_5_VAL[] PROGMEM = { 15, NO_NODE };
     const xod__core__constant_number::Wiring wiring_5 PROGMEM = {
         &xod__core__constant_number::evaluate,
         // inputs (UpstreamPinRef’s initializers)
@@ -1485,7 +1685,7 @@ namespace xod {
     };
 
     // Wiring of #6 xod/core/constant_number
-    const NodeId outLinks_6_VAL[] PROGMEM = { 10, NO_NODE };
+    const NodeId outLinks_6_VAL[] PROGMEM = { 15, NO_NODE };
     const xod__core__constant_number::Wiring wiring_6 PROGMEM = {
         &xod__core__constant_number::evaluate,
         // inputs (UpstreamPinRef’s initializers)
@@ -1493,68 +1693,141 @@ namespace xod {
         outLinks_6_VAL // output_VAL
     };
 
-    // Wiring of #7 xod/core/constant_number
-    const NodeId outLinks_7_VAL[] PROGMEM = { 10, NO_NODE };
-    const xod__core__constant_number::Wiring wiring_7 PROGMEM = {
-        &xod__core__constant_number::evaluate,
+    // Wiring of #7 xod/core/constant_string
+    const NodeId outLinks_7_VAL[] PROGMEM = { 15, NO_NODE };
+    const xod__core__constant_string::Wiring wiring_7 PROGMEM = {
+        &xod__core__constant_string::evaluate,
         // inputs (UpstreamPinRef’s initializers)
         // outputs (NodeId list binding)
         outLinks_7_VAL // output_VAL
     };
 
-    // Wiring of #8 xod/core/system_time
-    const NodeId outLinks_8_TIME[] PROGMEM = { 9, NO_NODE };
-    const xod__core__system_time::Wiring wiring_8 PROGMEM = {
-        &xod__core__system_time::evaluate,
+    // Wiring of #8 xod/core/constant_number
+    const NodeId outLinks_8_VAL[] PROGMEM = { 11, NO_NODE };
+    const xod__core__constant_number::Wiring wiring_8 PROGMEM = {
+        &xod__core__constant_number::evaluate,
         // inputs (UpstreamPinRef’s initializers)
-        { NodeId(0),
-            xod__core__continuously::output_TICK::INDEX,
-            xod__core__continuously::output_TICK::STORAGE_OFFSET }, // input_UPD
         // outputs (NodeId list binding)
-        outLinks_8_TIME // output_TIME
+        outLinks_8_VAL // output_VAL
     };
 
-    // Wiring of #9 xod/core/cast_number_to_string
-    const NodeId outLinks_9_OUT[] PROGMEM = { 10, NO_NODE };
-    const xod__core__cast_number_to_string::Wiring wiring_9 PROGMEM = {
-        &xod__core__cast_number_to_string::evaluate,
+    // Wiring of #9 xod/core/constant_number
+    const NodeId outLinks_9_VAL[] PROGMEM = { 12, NO_NODE };
+    const xod__core__constant_number::Wiring wiring_9 PROGMEM = {
+        &xod__core__constant_number::evaluate,
+        // inputs (UpstreamPinRef’s initializers)
+        // outputs (NodeId list binding)
+        outLinks_9_VAL // output_VAL
+    };
+
+    // Wiring of #10 xod/core/constant_number
+    const NodeId outLinks_10_VAL[] PROGMEM = { 13, NO_NODE };
+    const xod__core__constant_number::Wiring wiring_10 PROGMEM = {
+        &xod__core__constant_number::evaluate,
+        // inputs (UpstreamPinRef’s initializers)
+        // outputs (NodeId list binding)
+        outLinks_10_VAL // output_VAL
+    };
+
+    // Wiring of #11 xod/core/clock
+    const NodeId outLinks_11_TICK[] PROGMEM = { 12, NO_NODE };
+    const xod__core__clock::Wiring wiring_11 PROGMEM = {
+        &xod__core__clock::evaluate,
         // inputs (UpstreamPinRef’s initializers)
         { NodeId(8),
-            xod__core__system_time::output_TIME::INDEX,
-            xod__core__system_time::output_TIME::STORAGE_OFFSET }, // input_IN
+            xod__core__constant_number::output_VAL::INDEX,
+            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_IVAL
+        { NO_NODE, 0, 0 }, // input_RST
         // outputs (NodeId list binding)
-        outLinks_9_OUT // output_OUT
+        outLinks_11_TICK // output_TICK
     };
 
-    // Wiring of #10 xod/common_hardware/text_lcd_16x2
-    const xod__common_hardware__text_lcd_16x2::Wiring wiring_10 PROGMEM = {
+    // Wiring of #12 xod/core/count
+    const NodeId outLinks_12_OUT[] PROGMEM = { 13, 14, NO_NODE };
+    const xod__core__count::Wiring wiring_12 PROGMEM = {
+        &xod__core__count::evaluate,
+        // inputs (UpstreamPinRef’s initializers)
+        { NodeId(9),
+            xod__core__constant_number::output_VAL::INDEX,
+            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_STEP
+        { NodeId(11),
+            xod__core__clock::output_TICK::INDEX,
+            xod__core__clock::output_TICK::STORAGE_OFFSET }, // input_INC
+        { NodeId(0),
+            xod__core__cast_boolean_to_pulse::output_OUT::INDEX,
+            xod__core__cast_boolean_to_pulse::output_OUT::STORAGE_OFFSET }, // input_RST
+        // outputs (NodeId list binding)
+        outLinks_12_OUT // output_OUT
+    };
+
+    // Wiring of #13 xod/core/greater
+    const NodeId outLinks_13_GT[] PROGMEM = { 16, NO_NODE };
+    const xod__core__greater::Wiring wiring_13 PROGMEM = {
+        &xod__core__greater::evaluate,
+        // inputs (UpstreamPinRef’s initializers)
+        { NodeId(12),
+            xod__core__count::output_OUT::INDEX,
+            xod__core__count::output_OUT::STORAGE_OFFSET }, // input_LHS
+        { NodeId(10),
+            xod__core__constant_number::output_VAL::INDEX,
+            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_RHS
+        // outputs (NodeId list binding)
+        outLinks_13_GT // output_GT
+    };
+
+    // Wiring of #14 xod/core/cast_number_to_string
+    const NodeId outLinks_14_OUT[] PROGMEM = { 15, NO_NODE };
+    const xod__core__cast_number_to_string::Wiring wiring_14 PROGMEM = {
+        &xod__core__cast_number_to_string::evaluate,
+        // inputs (UpstreamPinRef’s initializers)
+        { NodeId(12),
+            xod__core__count::output_OUT::INDEX,
+            xod__core__count::output_OUT::STORAGE_OFFSET }, // input_IN
+        // outputs (NodeId list binding)
+        outLinks_14_OUT // output_OUT
+    };
+
+    // Wiring of #15 xod/common_hardware/text_lcd_16x2
+    const xod__common_hardware__text_lcd_16x2::Wiring wiring_15 PROGMEM = {
         &xod__common_hardware__text_lcd_16x2::evaluate,
         // inputs (UpstreamPinRef’s initializers)
-        { NodeId(6),
+        { NodeId(5),
             xod__core__constant_number::output_VAL::INDEX,
             xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_RS
-        { NodeId(5),
+        { NodeId(4),
             xod__core__constant_number::output_VAL::INDEX,
             xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_EN
         { NodeId(1),
             xod__core__constant_number::output_VAL::INDEX,
             xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_D4
-        { NodeId(4),
-            xod__core__constant_number::output_VAL::INDEX,
-            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_D5
         { NodeId(3),
             xod__core__constant_number::output_VAL::INDEX,
+            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_D5
+        { NodeId(2),
+            xod__core__constant_number::output_VAL::INDEX,
             xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_D6
-        { NodeId(7),
+        { NodeId(6),
             xod__core__constant_number::output_VAL::INDEX,
             xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_D7
-        { NodeId(9),
+        { NodeId(14),
             xod__core__cast_number_to_string::output_OUT::INDEX,
             xod__core__cast_number_to_string::output_OUT::STORAGE_OFFSET }, // input_L1
-        { NodeId(2),
+        { NodeId(7),
             xod__core__constant_string::output_VAL::INDEX,
             xod__core__constant_string::output_VAL::STORAGE_OFFSET }, // input_L2
         // outputs (NodeId list binding)
+    };
+
+    // Wiring of #16 xod/core/defer_boolean
+    const NodeId outLinks_16_OUT[] PROGMEM = { 0, NO_NODE };
+    const xod__core__defer_boolean::Wiring wiring_16 PROGMEM = {
+        &xod__core__defer_boolean::evaluate,
+        // inputs (UpstreamPinRef’s initializers)
+        { NodeId(13),
+            xod__core__greater::output_GT::INDEX,
+            xod__core__greater::output_GT::STORAGE_OFFSET }, // input_IN
+        // outputs (NodeId list binding)
+        outLinks_16_OUT // output_OUT
     };
 
     // PGM array with pointers to PGM wiring information structs
@@ -1569,7 +1842,13 @@ namespace xod {
         &wiring_7,
         &wiring_8,
         &wiring_9,
-        &wiring_10
+        &wiring_10,
+        &wiring_11,
+        &wiring_12,
+        &wiring_13,
+        &wiring_14,
+        &wiring_15,
+        &wiring_16
     };
 
     // PGM array with pointers to RAM-located storages
@@ -1584,6 +1863,12 @@ namespace xod {
         &storage_7,
         &storage_8,
         &storage_9,
-        &storage_10
+        &storage_10,
+        &storage_11,
+        &storage_12,
+        &storage_13,
+        &storage_14,
+        &storage_15,
+        &storage_16
     };
 }

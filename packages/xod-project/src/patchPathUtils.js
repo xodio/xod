@@ -128,6 +128,17 @@ export const isCastPatchPath = R.test(castTypeRegExp);
 export const getCastPatchPath = (typeIn, typeOut) => `xod/core/cast-${typeIn}-to-${typeOut}`;
 
 //
+// defer-* nodes
+//
+
+const deferNodeRegExp =
+  new RegExp(`xod/core/defer-(${dataTypes.join('|')})$`);
+
+// :: PatchPath -> Boolean
+export const isDeferNodeType = R.test(deferNodeRegExp);
+
+
+//
 // utils for 'internal' terminals (used only in flatten)
 //
 

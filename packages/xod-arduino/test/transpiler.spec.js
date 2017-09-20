@@ -32,6 +32,7 @@ describe('xod-arduino transpiler', () => {
     specify('blink', () => testFixture('blink'));
     specify('two-button-switch', () => testFixture('two-button-switch'));
     specify('lcd-time', () => testFixture('lcd-time'));
+    specify('count-with-feedback-loops', () => testFixture('count-with-feedback-loops'));
   });
 
   it('returns error for non-existing-patch entry point',

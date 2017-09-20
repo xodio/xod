@@ -12,7 +12,7 @@ import * as Utils from './utils';
 import { sortGraph } from './gmath';
 import { def } from './types';
 import { getHardcodedPinsForPatchPath, getPinKeyForTerminalDirection } from './builtInPatches';
-import { getLocalPath, isTerminalPatchPath } from './patchPathUtils';
+import { getLocalPath, isTerminalPatchPath, isDeferNodeType } from './patchPathUtils';
 
 /**
  * An object representing single patch in a project
@@ -746,15 +746,26 @@ export const upsertComments = def(
 //
 // =============================================================================
 
-/**
- * Returns a topology of nodes in the patch.
- *
- * @function getTopology
- * @param {Patch} patch
- * @returns {Either<Error|Array<string>>}
- */
-export const getTopology = def(
-  'getTopology :: Patch -> Either Error [NodeId]',
+const listLinksNotFromDeferNodes = def(
+  'listLinksNotFromDeferNodes :: Patch -> [Link]',
+  R.converge(
+    (deferNodeIds, links) => R.reject(
+      R.pipe(Link.getLinkOutputNodeId, isAmong(deferNodeIds)),
+      links
+    ),
+    [
+      R.compose(
+        R.map(Node.getNodeId),
+        R.filter(R.pipe(Node.getNodeType, isDeferNodeType)),
+        listNodes
+      ),
+      listLinks,
+    ]
+  )
+);
+
+const toposortGraph = def(
+  'toposortGraph :: Patch -> Either Error [NodeId]',
   R.converge(
     sortGraph,
     [
@@ -764,10 +775,47 @@ export const getTopology = def(
       ),
       R.compose(
         R.map(Link.getLinkNodeIds),
-        listLinks
+        listLinksNotFromDeferNodes
       ),
     ]
   )
+);
+
+/**
+ * Ensures that defer-* nodes are at the very bottom.
+ *
+ * For example,
+ * [regular1, defer1, defer2, regular2] -> [regular1, regular2, defer1, defer2]
+ *
+ * This will not affect correctness of the resulting program,
+ * and gives some optimisation possibilities.
+ */
+const sendDeferNodesToBottom = def(
+  'sendDeferNodesToBottom :: Patch -> [NodeId] -> [NodeId]',
+  (patch, toposortedNodeIds) => R.compose(
+    R.unnest,
+    R.partition(R.compose(
+      R.complement(isDeferNodeType),
+      Node.getNodeType,
+      R.flip(getNodeByIdUnsafe)(patch)
+    ))
+  )(toposortedNodeIds)
+);
+
+/**
+ * Returns a topology of nodes in the patch.
+ * defer-* nodes are always placed at the very end.
+ *
+ * @function getTopology
+ * @param {Patch} patch
+ * @returns {Either<Error|Array<string>>}
+ */
+export const getTopology = def(
+  'getTopology :: Patch -> Either Error [NodeId]',
+  patch => R.compose(
+    R.map(sendDeferNodesToBottom(patch)),
+    toposortGraph
+  )(patch)
 );
 
 /**

@@ -632,6 +632,7 @@ template <typename T> class List {
  =============================================================================*/
 
 #define NODE_COUNT          5
+#define DEFER_NODE_COUNT    0
 #define MAX_OUTPUT_COUNT    1
 
 // Uncomment to trace the program in the Serial Monitor
@@ -838,6 +839,7 @@ struct OutputDescriptor {
 //----------------------------------------------------------------------------
 extern void* const g_storages[NODE_COUNT];
 extern const void* const g_wiring[NODE_COUNT];
+extern const NodeId g_defer_node_ids[DEFER_NODE_COUNT];
 extern DirtyFlags g_dirtyFlags[NODE_COUNT];
 
 // TODO: replace with a compact list
@@ -984,6 +986,19 @@ void runTransaction() {
 
     XOD_TRACE_F("Transaction started, t=");
     XOD_TRACE_LN(g_transactionTime);
+
+    // defer-* nodes are always at the very bottom of the graph,
+    // so no one will recieve values emitted by them.
+    // We must evaluate them before everybody else
+    // to give them a chance to emit values.
+    for (NodeId nid : g_defer_node_ids) {
+        if (isNodeDirty(nid)) {
+            evaluateNode(nid);
+            // clear node dirty flag, so it will evaluate
+            // on "regular" pass only if it has a dirty input
+            g_dirtyFlags[nid] &= 0x11111110;
+        }
+    }
 
     for (NodeId nid = 0; nid < NODE_COUNT; ++nid) {
         if (isNodeDirty(nid)) {
@@ -1386,5 +1401,9 @@ namespace xod {
         &storage_2,
         &storage_3,
         &storage_4
+    };
+
+    const NodeId g_defer_node_ids[DEFER_NODE_COUNT] PROGMEM = {
+
     };
 }

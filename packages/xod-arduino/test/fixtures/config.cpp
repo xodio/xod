@@ -8,6 +8,7 @@
  =============================================================================*/
 
 #define NODE_COUNT          8
+#define DEFER_NODE_COUNT    0
 #define MAX_OUTPUT_COUNT    3
 
 // Uncomment to turn on debug of the program

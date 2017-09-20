@@ -33,7 +33,7 @@ export const ERROR = {
   PIN_NOT_FOUND: 'Can\'t find the Pin "{pinKey}" in the patch with path "{patchPath}"',
   PIN_KEY_INVALID: 'Pin key should be generated with shortid',
   // other
-  LOOPS_DETECTED: 'The program has a cycle path. Delete links that cause a cycle to continue',
+  LOOPS_DETECTED: 'The program has a cycle path. Use xod/core/defer-* nodes to break the cycle',
   DATATYPE_INVALID: 'Invalid data type',
   IMPLEMENTATION_NOT_FOUND: 'No implementation for {patchPath} found. Searched for: {impl}',
   CAST_PATCH_NOT_FOUND: 'Casting patch "{patchPath}" is not found in the project',

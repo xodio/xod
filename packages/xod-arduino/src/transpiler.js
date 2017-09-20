@@ -128,11 +128,12 @@ const formatValueLiteral = def(
 
 // Creates a TConfig object from entry-point path and project
 const createTConfig = def(
-  'createTConfig :: TranspilationOptions -> PatchPath -> Project -> TConfig',
-  (opts, path, project) => R.applySpec({
+  'createTConfig :: TranspilationOptions -> PatchPath -> Number -> Project -> TConfig',
+  (opts, path, deferNodeCount, project) => R.applySpec({
     NODE_COUNT: R.compose(getNodeCount, Project.getPatchByPathUnsafe(path)),
     MAX_OUTPUT_COUNT: getOutputCount,
     XOD_DEBUG: () => (opts.debug),
+    DEFER_NODE_COUNT: R.always(deferNodeCount),
   })(project)
 );
 
@@ -343,6 +344,16 @@ const createTNodes = def(
   )(entryPath, project)
 );
 
+const getDeferNodeCount = def(
+  'getDeferNodeCount :: PatchPath -> Project -> Number',
+  (entryPath, project) => R.compose(
+    R.length,
+    R.filter(R.compose(Project.isDeferNodeType, Project.getNodeType)),
+    Project.listNodes,
+    Project.getPatchByPathUnsafe
+  )(entryPath, project)
+);
+
 /**
  * Transforms Project into TProject.
  * TProject is an object, that ready to be passed into renderer (handlebars)
@@ -366,9 +377,10 @@ const transformProjectWithImpls = def(
     }),
     R.map(({ project: proj, nodeIdsMap }) => {
       const patches = createTPatches(path, proj);
+      const deferNodeCount = getDeferNodeCount(path, proj);
 
       return R.applySpec({
-        config: createTConfig(opts, path),
+        config: createTConfig(opts, path, deferNodeCount),
         patches: R.always(patches),
         nodes: createTNodes(path, patches, nodeIdsMap),
       })(proj);

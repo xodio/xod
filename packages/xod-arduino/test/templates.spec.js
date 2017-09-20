@@ -17,6 +17,7 @@ describe('xod-arduino templates', () => {
       NODE_COUNT: 8,
       MAX_OUTPUT_COUNT: 3,
       XOD_DEBUG: false,
+      DEFER_NODE_COUNT: 0,
     };
     patches = [
       {
