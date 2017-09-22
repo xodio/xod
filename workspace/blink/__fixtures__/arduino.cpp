@@ -1058,7 +1058,7 @@ void setup() {
     // FIXME: looks like there is a rounding bug. Waiting for 1 second fights it
     delay(1000);
 #ifdef XOD_DEBUG
-    DEBUG_SERIAL.begin(9600);
+    DEBUG_SERIAL.begin(115200);
 #endif
     XOD_TRACE_FLN("\n\nProgram started");
 }

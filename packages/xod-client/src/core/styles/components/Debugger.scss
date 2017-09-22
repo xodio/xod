@@ -1,0 +1,149 @@
+.debug-session-stop-button {
+  z-index: 10;
+  position: absolute;
+  top: 50px;
+  right: 20px;
+
+  padding: 8px 15px 10px 15px;
+
+  .fa {
+    margin-right: 0.25em;
+  }
+}
+
+.Debugger {
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  height: 200px;
+  width: 100%;
+
+  color: $sidebar-color-text;
+
+  .caption {
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    height: 20px;
+    width: 120px;
+    margin-left: 2em;
+    margin-top: -20px;
+
+    padding: 4px 8px;
+    cursor: default;
+
+    background: $sidebar-color-bg;
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
+
+    .close-button {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      padding: 0;
+
+      position: absolute;
+      top: 2px;
+      right: 2px;
+
+      background: none;
+      border: none;
+      font-size: 1.4em;
+      line-height: 0;
+      color: $sidebar-color-text;
+
+      &:hover {
+        color: $sidebar-color-text-hover;
+      }
+    }
+    .title {
+      vertical-align: middle;
+    }
+    .status {
+      font-size: $font-size-s;
+      margin-right: 0.5em;
+    }
+  }
+
+  .clear-log-button {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    z-index: 3;
+
+    border: 0;
+    background: $sidebar-color-bg;
+    color: $sidebar-color-text;
+
+    padding: 2px 4px;
+
+    &:hover {
+      color: $sidebar-color-text-hover;
+      background: $sidebar-color-bg-hover;
+    }
+  }
+
+  .container {
+    display: block;
+    height: 180px;
+    padding: 8px;
+
+    background: $sidebar-color-bg;
+    border-left: 1px solid $color-canvas-background;
+  }
+
+  .log {
+    max-height: 180px;
+
+    pre {
+      margin: 0;
+    }
+
+    .line {
+      display: block;
+      margin: 0;
+      padding: 2px;
+
+      font-size: $font-size-m;
+
+      &:hover {
+        background-color: $sidebar-color-bg-even;
+      }
+
+      .prefix {
+        margin-right: 4px;
+        opacity: 0.5;
+        cursor: default;
+      }
+      .timestamp {
+        margin-right: 4px;
+        color: $color-datatype-number;
+        cursor: default;
+      }
+      .nodeId {
+        text-decoration: underline;
+        margin-right: 4px;
+        color: $color-datatype-boolean;
+        cursor: default;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+      .content {
+        display: inline-block;
+        color: $color-comment-text;
+        font-family: $font-family-mono;
+
+        white-space: nowrap;
+      }
+    }
+
+    .line.error {
+      background: rgba(255,0,0,.25);
+      &:hover {
+        background: rgba(255,0,0,.4);
+      }
+    }
+  }
+}

@@ -132,6 +132,20 @@ export const closePort = port => new Promise(
   }
 );
 
+// :: PortName -> (String -> *) -> Promise Port Error
+export const openAndReadPort = (portName, onData) => {
+  // eslint-disable-next-line global-require
+  const SerialPort = require('serialport');
+
+  const readline = SerialPort.parsers.readline;
+  return openPort(portName, {
+    baudRate: 115200,
+    parser: readline('\n'),
+  }).then(R.tap(
+    port => port.on('data', onData)
+  ));
+};
+
 // :: PortName -> Promise Port Error
 export const flushSerialBuffer = portName => openPort(portName)
   .then(flushPort)

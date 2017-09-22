@@ -18,6 +18,7 @@ import packageJson from '../../../package.json';
 
 import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
+import * as debuggerIPC from '../../debugger/ipcActions';
 import { getUploadProcess, getSelectedSerialPort } from '../../upload/selectors';
 import * as settingsActions from '../../settings/actions';
 import { SAVE_PROJECT } from '../actionTypes';
@@ -137,6 +138,10 @@ class App extends client.App {
         this.props.actions.addError(formatError(error));
       }
     );
+
+    // Debugger
+    debuggerIPC.subscribeOnDebuggerEvents(ipcRenderer, this);
+
     // autoUpdater
     subscribeAutoUpdaterEvents(ipcRenderer, this);
   }
@@ -162,7 +167,7 @@ class App extends client.App {
     this.props.actions.uploadToArduinoConfig();
   }
 
-  onUploadToArduino(board, port, cloud, processActions = null) {
+  onUploadToArduino(board, port, cloud, debug, processActions = null) {
     const { project, currentPatchPath } = this.props;
     const proc = (processActions !== null) ? processActions : this.props.actions.uploadToArduino();
 
@@ -180,6 +185,9 @@ class App extends client.App {
       }
       if (payload.success) {
         proc.success(payload.message);
+        if (debug) {
+          debuggerIPC.sendStartDebuggerSession(ipcRenderer, port);
+        }
       }
       if (payload.failure) {
         console.error(payload.error); // eslint-disable-line no-console
@@ -397,6 +405,7 @@ class App extends client.App {
       label: 'View',
       submenu: [
         client.menu.onClick(client.menu.items.toggleHelpbar, this.props.actions.toggleHelpbar),
+        client.menu.onClick(client.menu.items.toggleDebugger, this.props.actions.toggleDebugger),
         { type: 'separator' },
         { role: 'reload' },
         { role: 'toggledevtools' },
@@ -534,7 +543,10 @@ class App extends client.App {
           onKeyDown={this.onKeyDown}
           onBeforeUnload={this.onCloseApp}
         />
-        <client.Editor size={this.state.size} />
+        <client.Editor
+          size={this.state.size}
+          stopDebuggerSession={() => debuggerIPC.sendStopDebuggerSession(ipcRenderer)}
+        />
         <client.SnackBar
           onClickMessageButton={this.onClickMessageButton}
         />

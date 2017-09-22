@@ -190,6 +190,7 @@ class App extends client.App {
         items.view,
         [
           onClick(items.toggleHelpbar, this.props.actions.toggleHelpbar),
+          onClick(items.toggleDebugger, this.props.actions.toggleDebugger),
         ]
       ),
       submenu(
