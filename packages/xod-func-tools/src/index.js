@@ -302,6 +302,36 @@ export const swap = R.curry(
   }
 );
 
+/**
+ * Finds a key that contains specified value.
+ * If object contains few properties with this value
+ * it will return only one, first matched.
+ */
+export const reverseLookup = def(
+  'reverseLookup :: a -> Map b a -> b',
+  (val, obj) => R.compose(
+    R.nth(0),
+    R.find(R.compose(
+      R.equals(val),
+      R.nth(1)
+    )),
+    R.toPairs
+  )(obj)
+);
+
+/**
+ * Switch keys with values.
+ * E.G. { a: 'abc' } will become { abc: 'a' }
+ */
+export const invertMap = def(
+  'invertMap :: Map a b -> Map b a',
+  R.compose(
+    R.fromPairs,
+    R.map(R.reverse),
+    R.toPairs
+  )
+);
+
 
 export default Object.assign(
   {
@@ -327,6 +357,7 @@ export default Object.assign(
     renameKeys,
     mapIndexed,
     swap,
+    reverseLookup,
   },
   types
 );

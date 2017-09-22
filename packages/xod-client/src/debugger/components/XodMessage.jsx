@@ -4,8 +4,11 @@ import PropTypes from 'prop-types';
 const XodMessage = props => (
   <div className={`line ${props.data.type}`}>
     <span className="prefix">{props.data.prefix}</span>
+    :
     <span className="timestamp">{props.data.timecode}</span>
+    :
     <a className="nodeId">{props.data.nodeId}</a>
+    :
     <span className="content">{props.data.content}</span>
   </div>
 );

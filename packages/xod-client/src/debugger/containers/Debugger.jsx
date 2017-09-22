@@ -5,39 +5,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Icon } from 'react-fa';
 import classNames from 'classnames';
-import CustomScroll from 'react-custom-scroll';
 
-import { isDebugSession, getLog } from '../selectors';
+import { isDebugSession } from '../selectors';
 import * as DA from '../actions';
+import Log from './Log';
 
-import SystemMessage from '../components/SystemMessage';
-import ErrorMessage from '../components/ErrorMessage';
-import LogMessage from '../components/LogMessage';
-import XodMessage from '../components/XodMessage';
-
-const renderLogMessage = (messageData, idx) => {
-  let Renderer = LogMessage;
-
-  switch (messageData.type) {
-    case 'system':
-      Renderer = SystemMessage;
-      break;
-    case 'error':
-      Renderer = ErrorMessage;
-      break;
-    case 'xod':
-      Renderer = XodMessage;
-      break;
-    default:
-    case 'log':
-      Renderer = LogMessage;
-      break;
-  }
-
-  return <Renderer key={idx} data={messageData} />;
-};
-
-const Debugger = ({ log, active, actions }) => {
+const Debugger = ({ active, actions }) => {
   const cls = classNames('Debugger', {
     'is-active': active,
   });
@@ -70,25 +43,19 @@ const Debugger = ({ log, active, actions }) => {
         Clear log
       </button>
       <div className="container">
-        <CustomScroll keepAtBottom>
-          <div className="log">
-            {log.map(renderLogMessage)}
-          </div>
-        </CustomScroll>
+        <Log />
       </div>
     </div>
   );
 };
 
 Debugger.propTypes = {
-  log: PropTypes.arrayOf(PropTypes.object),
   active: PropTypes.bool,
   actions: PropTypes.objectOf(PropTypes.func),
 };
 
 const mapStateToProps = R.applySpec({
   active: isDebugSession,
-  log: getLog,
 });
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({

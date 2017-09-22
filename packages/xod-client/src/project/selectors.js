@@ -9,10 +9,11 @@ import {
   addLinksPositioning,
   addPoints,
 } from './nodeLayout';
-import { SELECTION_ENTITY_TYPE } from '../editor/constants';
+import { SELECTION_ENTITY_TYPE, TAB_TYPES } from '../editor/constants';
 import {
   getSelection,
   getCurrentPatchPath,
+  getCurrentTabId,
   getLinkingPin,
   getTabs,
 } from '../editor/selectors';
@@ -220,23 +221,21 @@ export const getLinkGhost = createSelector(
 
 // :: State -> EditorTabs
 export const getPreparedTabs = createSelector(
-  [getCurrentPatchPath, getProject, getTabs],
-  (currentPatchPath, project, tabs) =>
+  [getCurrentTabId, getProject, getTabs],
+  (currentTabId, project, tabs) =>
     R.map(
       (tab) => {
-        const patchPath = tab.id;
+        const patchPath = tab.patchPath;
 
-        const label = R.compose(
-          XP.getBaseName,
-          XP.getPatchPath,
-          XP.getPatchByPathUnsafe(patchPath)
-        )(project);
+        const label = (tab.type === TAB_TYPES.DEBUGGER) ?
+          'Debugger' :
+          XP.getBaseName(patchPath);
 
         return R.merge(
           tab,
           {
             label,
-            isActive: (currentPatchPath === tab.id),
+            isActive: (currentTabId === tab.id),
           }
         );
       },

@@ -581,6 +581,22 @@ export const rebasePatch = def(
       )
 );
 
+/**
+ * Updates patch inside Project and returns Either Error Project.
+ * It's a safe version of `R.over(lensPatch('some-patch'), someFn, project);`
+ */
+export const updatePatch = def(
+  'updatePatch :: PatchPath -> (Patch -> Patch) -> Project -> Either Error Project',
+  (patchPath, updateFunction, project) => R.compose(
+    R.chain(assocPatch(patchPath, R.__, project)),
+    R.map(updateFunction),
+    Tools.errOnNothing(
+      Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath })
+    ),
+    getPatchByPath
+  )(patchPath, project)
+);
+
 // =============================================================================
 //
 // Getters with traversing through project

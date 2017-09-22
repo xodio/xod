@@ -17,6 +17,30 @@
     &.pulse { stroke: $color-datatype-pulse; }
   }
 
+  .watch-node {
+    .body {
+      fill: $color-watch-node-fill;
+    }
+    .outline {
+      stroke: $color-watch-node-outline;
+    }
+    .nodeLabel {
+      text-overflow: clip;
+    }
+
+    &.active {
+      .body {
+        fill: $color-watch-node-active-fill;
+      }
+      .outline {
+        stroke: $color-watch-node-active-outline;
+      }
+      .nodeLabel {
+        color: $color-watch-node-active-text;
+      }
+    }
+  }
+
   .nodeLabelContainer {
     display:flex;
     align-items: center;
@@ -40,6 +64,9 @@
     .outline {
       stroke: $color-highlight;
     }
+    .watch-node .outline {
+      stroke: $color-watch-node-highlight-outline;
+    }
 
     .nodeLabel {
       color: $color-highlight;
@@ -52,11 +79,11 @@
 
   &.is-selected {
     .outline {
-      stroke: $color-canvas-selected;
+      stroke: $color-canvas-selected !important;
     }
 
     .nodeLabel {
-      color: $color-canvas-selected;
+      color: $color-canvas-selected !important;
     }
   }
 

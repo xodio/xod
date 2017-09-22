@@ -1,11 +1,12 @@
 import R from 'ramda';
 import { Either } from 'ramda-fantasy';
 
-import { explodeMaybe } from 'xod-func-tools';
+import { explodeMaybe, reverseLookup } from 'xod-func-tools';
 import * as Project from 'xod-project';
 import { def } from './types';
 
 import { renderProject } from './templates';
+import { DEFAULT_TRANSPILATION_OPTIONS } from './constants';
 
 const ARDUINO_IMPLS = ['cpp', 'arduino'];
 const TYPES_MAP = {
@@ -91,10 +92,16 @@ const getPatchByNodeId = def(
 );
 
 const toposortProject = def(
-  'toposortProject :: PatchPath -> Project -> Either Error Project',
+  'toposortProject :: PatchPath -> Project -> Either Error Object',
   (path, project) => R.compose(
-    R.chain(Project.assocPatch(path, R.__, project)),
-    Project.toposortNodes,
+    R.chain(nodeIdsMap => R.compose(
+      R.map(R.applySpec({
+        project: R.identity,
+        nodeIdsMap: R.always(nodeIdsMap),
+      })),
+      () => Project.updatePatch(path, Project.applyNodeIdMap(R.__, nodeIdsMap), project)
+    )(nodeIdsMap)),
+    Project.getTopologyMap,
     Project.getPatchByPathUnsafe
   )(path, project)
 );
@@ -121,11 +128,11 @@ const formatValueLiteral = def(
 
 // Creates a TConfig object from entry-point path and project
 const createTConfig = def(
-  'createTConfig :: PatchPath -> Project -> TConfig',
-  (path, project) => R.applySpec({
+  'createTConfig :: TranspilationOptions -> PatchPath -> Project -> TConfig',
+  (opts, path, project) => R.applySpec({
     NODE_COUNT: R.compose(getNodeCount, Project.getPatchByPathUnsafe(path)),
     MAX_OUTPUT_COUNT: getOutputCount,
-    XOD_DEBUG: R.F,
+    XOD_DEBUG: () => (opts.debug),
   })(project)
 );
 
@@ -318,13 +325,14 @@ const getNodeDirtyFlags = def(
 );
 
 const createTNodes = def(
-  'createTNodes :: PatchPath -> [TPatch] -> Project -> [TNode]',
-  (entryPath, patches, project) => R.compose(
+  'createTNodes :: PatchPath -> [TPatch] -> Map NodeId String -> Project -> [TNode]',
+  (entryPath, patches, nodeIdsMap, project) => R.compose(
     R.sortBy(
       R.compose(toInt, R.prop('id'))
     ),
     R.map(R.applySpec({
       id: R.compose(toInt, Project.getNodeId),
+      originalId: R.compose(reverseLookup(R.__, nodeIdsMap), Project.getNodeId),
       patch: R.compose(findPatchByPath(R.__, patches), Project.getNodeType),
       outputs: getTNodeOutputs(project, entryPath),
       inputs: getTNodeInputs(project, entryPath, patches),
@@ -340,9 +348,9 @@ const createTNodes = def(
  * TProject is an object, that ready to be passed into renderer (handlebars)
  * and it has a ready-to-use values, nothing needed to compute anymore.
  */
-export const transformProject = def(
-  'transformProject :: [Source] -> Project -> PatchPath -> Either Error TProject',
-  (impls, project, path) => R.compose(
+const transformProjectWithImpls = def(
+  'transformProjectWithImpls :: [Source] -> Project -> PatchPath -> TranspilationOptions -> Either Error TProject',
+  (impls, project, path, opts) => R.compose(
     R.chain((tProject) => {
       const nodeWithTooManyOutputs = R.find(
         R.pipe(R.prop('outputs'), R.length, R.lt(7)),
@@ -356,27 +364,51 @@ export const transformProject = def(
 
       return Either.of(tProject);
     }),
-    R.map((proj) => {
+    R.map(({ project: proj, nodeIdsMap }) => {
       const patches = createTPatches(path, proj);
 
       return R.applySpec({
-        config: createTConfig(path),
+        config: createTConfig(opts, path),
         patches: R.always(patches),
-        nodes: createTNodes(path, patches),
+        nodes: createTNodes(path, patches, nodeIdsMap),
       })(proj);
     }),
     R.chain(R.compose(
       toposortProject(path),
-      Project.extractBoundInputsToConstNodes(R.__, path, project)
+      Project.extractBoundInputsToConstNodes(R.__, path, project),
     )),
-    Project.flatten
-  )(project, path, impls)
+    R.chain(Project.flatten(R.__, path, impls)),
+    R.ifElse(
+      () => (opts.debug === true),
+      Either.of,
+      Project.updatePatch(path, Project.removeDebugNodes)
+    )
+  )(project)
 );
 
-export default def(
-  'transpile :: Project -> PatchPath -> Either Error String',
+export const getNodeIdsMap = def(
+  'getNodeIdsMap :: TProject -> Map NodeId String',
   R.compose(
-    R.map(renderProject),
-    transformProject(ARDUINO_IMPLS)
+    R.fromPairs,
+    R.map(node => [node.originalId, String(node.id)]),
+    R.prop('nodes')
   )
 );
+
+export const transformProject = def(
+  'transformProject :: Project -> PatchPath -> Either Error TProject',
+  (project, patchPath) =>
+    transformProjectWithImpls(ARDUINO_IMPLS, project, patchPath, DEFAULT_TRANSPILATION_OPTIONS)
+);
+
+export const transformProjectWithDebug = def(
+  'transformProjectWithDebug :: Project -> PatchPath -> Either Error TProject',
+  (project, patchPath) => {
+    const options = R.merge(DEFAULT_TRANSPILATION_OPTIONS, {
+      debug: true,
+    });
+    return transformProjectWithImpls(ARDUINO_IMPLS, project, patchPath, options);
+  }
+);
+
+export const transpile = renderProject;

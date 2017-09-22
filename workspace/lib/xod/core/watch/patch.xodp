@@ -1,0 +1,21 @@
+{
+  "description": "Shows incoming values in the realtime, when a debug session is active",
+  "nodes": [
+    {
+      "id": "B1iYZOzoZ",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "HkXK-dGob",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    }
+  ]
+}

@@ -19,3 +19,5 @@ export const PROJECT_SAVE_FAILED = 'Failed to save project.';
 export const PROJECT_SAVE_SUCCEED = 'Project has been saved successfully!';
 
 export const DEBUG_SESSION_STOPPED_ON_CHANGE = 'Debug session was automatically stopped, cause your Project has been changed.';
+export const DEBUG_SESSION_STOPPED_ON_TAB_CLOSE = 'Debug session was automatically stopped, cause you closed Debugger tab.';
+export const DEBUG_LOST_CONNECTION = 'Lost connection with the device.';

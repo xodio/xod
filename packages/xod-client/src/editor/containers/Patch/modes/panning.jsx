@@ -1,7 +1,7 @@
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 
-import { EDITOR_MODE } from '../../../constants';
+import { TAB_TYPES } from '../../../constants';
 
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
@@ -37,11 +37,15 @@ const getCurrentOffset = (api) => {
 
 const panningMode = {
   getInitialState(props, { panningStartPosition, isPanning }) {
+    const isDebugSession = (props.tabType === TAB_TYPES.DEBUGGER && props.isDebugSession);
+
     return {
       isPanning,
       mousePosition: null,
       panningStartPosition, // also could be null.
       // both cases are handled at the beginning of `getCurrentOffset`
+
+      isDebugSession,
     };
   },
 
@@ -63,7 +67,7 @@ const panningMode = {
     }
 
     if (isMiddleButtonPressed(event)) {
-      api.goToMode(EDITOR_MODE.DEFAULT);
+      api.goToDefaultMode();
     }
   },
   onKeyUp(api, event) {
@@ -75,11 +79,12 @@ const panningMode = {
       api.props.actions.setOffset(offset);
     }
 
-    api.goToMode(EDITOR_MODE.DEFAULT);
+    api.goToDefaultMode();
   },
 
   render(api) {
     const offset = getCurrentOffset(api);
+    const nodeValues = api.state.isDebugSession ? api.props.nodeValues : {};
 
     return (
       <HotKeys
@@ -110,6 +115,8 @@ const panningMode = {
               selection={api.props.selection}
             />
             <Layers.Nodes
+              isDebugSession={api.state.isDebugSession}
+              nodeValues={nodeValues}
               nodes={api.props.nodes}
               selection={api.props.selection}
               linkingPin={api.props.linkingPin}

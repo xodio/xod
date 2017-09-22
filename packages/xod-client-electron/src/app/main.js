@@ -1,4 +1,3 @@
-import R from 'ramda';
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -110,8 +109,14 @@ const onReady = () => {
   subscribeToRemoteAction(EVENTS.SAVE_PROJECT, WA.subscribeToSaveProject);
 
   let debugPort = null;
-  const stopDebugSession = event => stopDebugSessionHandler(event, debugPort)
-    .then(R.tap(() => { debugPort = null; }));
+  let userAttemptedCloseSerialPort = false;
+
+  const stopDebugSession = (event) => {
+    if (debugPort) {
+      userAttemptedCloseSerialPort = true;
+      stopDebugSessionHandler(event, debugPort);
+    }
+  };
 
   WA.subscribeToWorkspaceEvents(ipcMain);
   ipcMain.on('UPLOAD_TO_ARDUINO', (event, payload) => Promise.resolve()
@@ -119,8 +124,15 @@ const onReady = () => {
     .then(() => uploadToArduinoHandler(event, payload))
   );
   ipcMain.on(EVENTS.START_DEBUG_SESSION, startDebugSessionHandler(
-    (port) => { debugPort = port; })
-  );
+    (port) => {
+      userAttemptedCloseSerialPort = false;
+      debugPort = port;
+    },
+    (sendErr) => {
+      if (!userAttemptedCloseSerialPort) { sendErr(); }
+      debugPort = null;
+    }
+  ));
   ipcMain.on(EVENTS.STOP_DEBUG_SESSION, stopDebugSession);
   ipcMain.on(EVENTS.LIST_PORTS, listPortsHandler);
   ipcMain.on(EVENTS.LIST_BOARDS, listBoardsHandler);

@@ -19,7 +19,7 @@ import * as EditorSelectors from '../selectors';
 
 import { isInput } from '../../utils/browser';
 import { COMMAND } from '../../utils/constants';
-import { EDITOR_MODE, FOCUS_AREAS } from '../constants';
+import { FOCUS_AREAS } from '../constants';
 
 import Patch from './Patch';
 import NoPatch from '../components/NoPatch';
@@ -41,7 +41,6 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.setModeDefault = this.setModeDefault.bind(this);
     this.getHotkeyHandlers = this.getHotkeyHandlers.bind(this);
     this.toggleHelpbar = this.toggleHelpbar.bind(this);
     this.onAddNode = this.onAddNode.bind(this);
@@ -63,13 +62,8 @@ class Editor extends React.Component {
     );
   }
 
-  setModeDefault() {
-    this.props.actions.setMode(EDITOR_MODE.DEFAULT);
-  }
-
   getHotkeyHandlers() {
     return {
-      [COMMAND.SET_MODE_DEFAULT]: this.setModeDefault,
       [COMMAND.UNDO]: () => this.props.actions.undo(this.props.currentPatchPath),
       [COMMAND.REDO]: () => this.props.actions.redo(this.props.currentPatchPath),
       [COMMAND.TOGGLE_HELPBAR]: this.toggleHelpbar,
@@ -105,6 +99,7 @@ class Editor extends React.Component {
     const openedPatch = currentPatchPath
       ? (
         <Patch
+          ref={(el) => { this.patchRef = el; }}
           patchPath={currentPatchPath}
           size={this.patchSize}
           onDoubleClick={this.showSuggester}
@@ -133,7 +128,7 @@ class Editor extends React.Component {
         className="debug-session-stop-button Button Button--light"
         onClick={this.props.stopDebuggerSession}
       >
-        <Icon name="stop" /> Stop debug session
+        <Icon name="stop" /> Stop debug
       </button>
     ) : null;
 
@@ -186,7 +181,6 @@ Editor.propTypes = {
     updatePatchDescription: PropTypes.func.isRequired,
     undo: PropTypes.func.isRequired,
     redo: PropTypes.func.isRequired,
-    setMode: PropTypes.func.isRequired,
     toggleHelpbar: PropTypes.func.isRequired,
     setFocusedArea: PropTypes.func.isRequired,
     addNode: PropTypes.func.isRequired,
@@ -215,7 +209,6 @@ const mapDispatchToProps = dispatch => ({
     updatePatchDescription: ProjectActions.updatePatchDescription,
     undo: ProjectActions.undoPatch,
     redo: ProjectActions.redoPatch,
-    setMode: Actions.setMode,
     toggleHelpbar: Actions.toggleHelpbar,
     setFocusedArea: Actions.setFocusedArea,
     addNode: ProjectActions.addNode,

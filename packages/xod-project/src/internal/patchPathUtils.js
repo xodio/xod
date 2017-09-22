@@ -56,3 +56,6 @@ export const terminalPatchPathRegExp =
 
 // :: String -> Boolean
 export const isTerminalPatchPath = R.test(terminalPatchPathRegExp);
+
+// :: String -> Boolean
+export const isWatchPatchPath = R.test(/^xod\/core\/watch$/);

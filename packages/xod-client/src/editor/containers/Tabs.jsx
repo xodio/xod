@@ -60,19 +60,19 @@ class Tabs extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onSwitchPatch = this.onSwitchPatch.bind(this);
+    this.onSwitchTab = this.onSwitchTab.bind(this);
     this.onCloseTab = this.onCloseTab.bind(this);
     this.onSortEnd = this.onSortEnd.bind(this);
   }
 
-  onSwitchPatch(patchPath) {
+  onSwitchTab(tabId) {
     // a little hack to correctly handle onBlur etc events
-    setTimeout(() => this.props.actions.switchPatch(patchPath), 0);
+    setTimeout(() => this.props.actions.switchTab(tabId), 0);
   }
 
-  onCloseTab(patchPath) {
-    // a little hack to correctly handle onBlur etc events, same as in onSwitchPatch
-    setTimeout(() => this.props.actions.closeTab(patchPath), 0);
+  onCloseTab(tabId) {
+    // a little hack to correctly handle onBlur etc events, same as in onSwitchTab
+    setTimeout(() => this.props.actions.closeTab(tabId), 0);
   }
 
   onSortEnd(changes) {
@@ -100,7 +100,7 @@ class Tabs extends React.Component {
         lockToContainerEdges
         lockOffset="-5%"
 
-        onClick={this.onSwitchPatch}
+        onClick={this.onSwitchTab}
         onClose={this.onCloseTab}
       />
     );
@@ -118,7 +118,7 @@ const mapStateToProps = R.applySpec({
 
 const mapDispatchToprops = dispatch => ({
   actions: bindActionCreators({
-    switchPatch: Actions.switchPatch,
+    switchTab: Actions.switchTab,
     closeTab: Actions.closeTab,
     sortTabs: Actions.sortTabs,
   }, dispatch),

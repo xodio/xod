@@ -12,5 +12,8 @@
 #define NODE_COUNT          {{ NODE_COUNT }}
 #define MAX_OUTPUT_COUNT    {{ MAX_OUTPUT_COUNT }}
 
-// Uncomment to trace the program in the Serial Monitor
+// Uncomment to turn on debug of the program
 {{#unless XOD_DEBUG}}//{{/unless}}#define XOD_DEBUG
+
+// Uncomment to trace the program runtime in the Serial Monitor
+//#define XOD_DEBUG_ENABLE_TRACE

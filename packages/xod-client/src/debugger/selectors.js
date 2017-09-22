@@ -1,19 +1,28 @@
 import R from 'ramda';
-import { createSelector } from 'reselect';
 
 export const getDebuggerState = R.prop('debugger');
 
-export const isDebugSession = createSelector(
-  getDebuggerState,
-  R.prop('isRunning')
+export const isDebugSession = R.compose(
+  R.prop('isRunning'),
+  getDebuggerState
 );
 
-export const isDebuggerVisible = createSelector(
-  getDebuggerState,
-  R.prop('isVisible')
+export const isDebuggerVisible = R.compose(
+  R.prop('isVisible'),
+  getDebuggerState
 );
 
-export const getLog = createSelector(
-  getDebuggerState,
-  R.prop('log')
+export const getLog = R.compose(
+  R.prop('log'),
+  getDebuggerState
+);
+
+export const getDebuggerNodeIdsMap = R.compose(
+  R.prop('nodeIdsMap'),
+  getDebuggerState
+);
+
+export const getWatchNodeValues = R.compose(
+  R.prop('watchNodeValues'),
+  getDebuggerState
 );

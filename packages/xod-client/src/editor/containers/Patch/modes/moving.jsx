@@ -4,7 +4,7 @@ import { HotKeys } from 'react-hotkeys';
 
 import * as XP from 'xod-project';
 
-import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from '../../../constants';
+import { SELECTION_ENTITY_TYPE } from '../../../constants';
 
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
@@ -75,7 +75,7 @@ const movingMode = {
     const deltaPosition = getDeltaPosition(api);
     api.props.actions.moveSelection(deltaPosition);
 
-    api.goToMode(EDITOR_MODE.DEFAULT);
+    api.goToDefaultMode();
   },
 
   render(api) {

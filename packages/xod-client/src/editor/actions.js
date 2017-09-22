@@ -3,7 +3,6 @@ import R from 'ramda';
 import * as XP from 'xod-project';
 
 import {
-  EDITOR_MODE,
   SELECTION_ENTITY_TYPE,
   CLIPBOARD_DATA_TYPE,
   CLIPBOARD_ERRORS as CLIPBOARD_ERROR_CODES,
@@ -38,19 +37,6 @@ import { isInput, isEdge } from '../utils/browser';
 import { addPoints } from '../project/nodeLayout';
 
 import { ClipboardEntities } from '../types';
-
-export const setMode = mode => (dispatch, getState) => {
-  if (Selectors.getMode(getState()) === mode) {
-    return;
-  }
-
-  dispatch({
-    type: ActionType.EDITOR_SET_MODE,
-    payload: {
-      mode,
-    },
-  });
-};
 
 export const setPinSelection = (nodeId, pinKey) => ({
   type: ActionType.EDITOR_SELECT_PIN,
@@ -113,7 +99,6 @@ export const selectLink = selectEntity(SELECTION_ENTITY_TYPE.LINK);
 
 export const addAndSelectNode = (typeId, position, currentPatchPath) => (dispatch) => {
   const newId = dispatch(addNode(typeId, position, currentPatchPath));
-  dispatch(setMode(EDITOR_MODE.DEFAULT));
   dispatch(selectNode(newId));
 };
 
@@ -189,6 +174,13 @@ export const setCurrentPatchOffset = newOffset => ({
   payload: newOffset,
 });
 
+export const switchPatchUnsafe = patchPath => ({
+  type: ActionType.EDITOR_SWITCH_PATCH,
+  payload: {
+    patchPath,
+  },
+});
+
 export const switchPatch = patchPath => (dispatch, getState) => {
   const state = getState();
   const currentPatchPath = Selectors.getCurrentPatchPath(state);
@@ -196,13 +188,10 @@ export const switchPatch = patchPath => (dispatch, getState) => {
   if (currentPatchPath === patchPath) { return; }
 
   const tabs = Selectors.getTabs(state);
-  const isOpeningNewTab = !R.has(patchPath, tabs);
-  dispatch({
-    type: ActionType.EDITOR_SWITCH_PATCH,
-    payload: {
-      patchPath,
-    },
-  });
+  const tab = Selectors.getTabByPatchPath(patchPath, tabs);
+  const isOpeningNewTab = !tab;
+
+  dispatch(switchPatchUnsafe(patchPath));
 
   if (isOpeningNewTab) {
     const project = ProjectSelectors.getProject(state);
@@ -211,6 +200,13 @@ export const switchPatch = patchPath => (dispatch, getState) => {
     dispatch(setCurrentPatchOffset(offset));
   }
 };
+
+export const switchTab = tabId => ({
+  type: ActionType.EDITOR_SWITCH_TAB,
+  payload: {
+    tabId,
+  },
+});
 
 export const startDraggingPatch = patchPath => (dispatch, getState) => {
   const state = getState();

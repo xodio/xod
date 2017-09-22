@@ -7,7 +7,7 @@ import { explode, foldEither, explodeEither } from 'xod-func-tools';
 import { loadProject } from 'xod-fs';
 import { PIN_TYPE } from 'xod-project';
 import { defaultizePin } from 'xod-project/test/helpers';
-import transpile, { getInitialDirtyFlags, transformProject } from '../src/transpiler';
+import { transpile, getInitialDirtyFlags, transformProject, getNodeIdsMap } from '../src/transpiler';
 
 // Returns patch relative to repo’s `workspace` subdir
 const wsPath = (...subpath) => path.resolve(__dirname, '../../../workspace', ...subpath);
@@ -21,10 +21,11 @@ describe('xod-arduino transpiler', () => {
       );
 
       return loadProject(wsPath(projName))
-        .then(transpile(R.__, '@/main'))
+        .then(transformProject(R.__, '@/main'))
+        .then(R.map(transpile))
         .then(explode)
-        .then(cpp =>
-          assert.strictEqual(cpp, expectedCpp, 'expected and actual C++ don’t match')
+        .then(result =>
+          assert.strictEqual(result, expectedCpp, 'expected and actual C++ don’t match')
         );
     };
 
@@ -36,14 +37,16 @@ describe('xod-arduino transpiler', () => {
   it('returns error for non-existing-patch entry point',
     () =>
       loadProject(wsPath('blink'))
-        .then(transpile(R.__, '@/non-existing-patch'))
+        .then(transformProject(R.__, '@/non-existing-patch'))
+        .then(R.map(transpile))
         .then(result => assert.ok(result.isLeft))
   );
 
   it('returns error if some native node has more than 7 outputs',
     () =>
       loadProject(wsPath('faulty'))
-        .then(transpile(R.__, '@/too-many-outputs-main'))
+        .then(transformProject(R.__, '@/too-many-outputs-main'))
+        .then(R.map(transpile))
         .then(foldEither(
           (err) => {
             assert.include(err.message, '@/too_many_outputs');
@@ -56,7 +59,7 @@ describe('xod-arduino transpiler', () => {
   it('sorts nodes topologically', () =>
     loadProject(wsPath('blink'))
       .then(R.pipe(
-        transformProject(['cpp', 'arduino'], R.__, '@/main'),
+        transformProject(R.__, '@/main'),
         explodeEither,
         R.prop('nodes')
       ))
@@ -79,6 +82,25 @@ describe('xod-arduino transpiler', () => {
           'Node IDs were not arranged in topological order');
       })
   );
+});
+
+describe('getNodeIdsMap', () => {
+  it('should return correct NodeIdsMap', () => {
+    const expected = {
+      By6HVYHZb: '2',
+      SyeDNFBWZ: '4',
+      rkwIEFrWb: '3',
+    };
+
+    return loadProject(wsPath('blink'))
+      .then(transformProject(R.__, '@/main'))
+      .then(R.map(getNodeIdsMap))
+      .then(explode)
+      .then(result => R.mapObjIndexed(
+        (nodeId, origNodeId) => assert.propertyVal(result, origNodeId, nodeId),
+        expected
+      ));
+  });
 });
 
 describe('getInitialDirtyFlags', () => {

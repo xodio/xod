@@ -1,9 +1,8 @@
-import { EDITOR_MODE, FOCUS_AREAS } from './constants';
+import { FOCUS_AREAS, TAB_TYPES } from './constants';
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
 
 export default {
-  currentPatchPath: '@/1',
-  mode: EDITOR_MODE.DEFAULT,
+  currentTabId: '@/1',
   selection: [],
   linkingPin: null,
   selectedNodeType: null,
@@ -18,6 +17,8 @@ export default {
   tabs: {
     '@/1': {
       id: '@/1',
+      patchPath: '@/1',
+      type: TAB_TYPES.PATCH,
       index: 0,
       offset: DEFAULT_PANNING_OFFSET,
     },

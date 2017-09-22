@@ -126,6 +126,15 @@ export const PULSE_CONST_NODETYPES = {
   [INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY]: 'xod/core/continuously',
 };
 
+// node types that prints values into Serial
+// to debug xod programm, it should be omitted
+// from Project before transpilation without
+// turned on debug mode
+export const DEBUG_NODETYPES = [
+  'xod/core/watch',
+  'xod/core/console-log',
+];
+
  /**
   * Enumeration of possible pin directions
   *

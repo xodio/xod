@@ -27,6 +27,14 @@ $color-node-fill: #222222;
 $color-node-outline: #bbbbbb;
 $color-pin-fill: #262626;
 
+$color-watch-node-text: $color-canvas-face-text;
+$color-watch-node-fill: $color-node-fill;
+$color-watch-node-outline: #506a35;
+$color-watch-node-active-text: #FFF;
+$color-watch-node-active-fill: #3d4931;
+$color-watch-node-active-outline: #86cc23;
+$color-watch-node-highlight-outline: #bce88e;
+
 $color-comment-text: #d0ccc0;
 $color-comment-handle: #605f5b;
 
@@ -36,12 +44,15 @@ $color-toolbar-background: #b3b3b3;
 $color-toolbar-foreground: #000;
 
 $color-tabs-background: #2D3030;
-$color-tabs-unactive-background: #4D5353;
-$color-tabs-hover-background: #4C5353;
+$color-tabs-unactive-background: #2b2b2b;
+$color-tabs-hover-background: #444444;
 $color-tabs-active-background: $color-canvas-background;
-$color-tabs-unactive-text: #BBB;
-$color-tabs-active-text: #EEE;
+$color-tabs-unactive-text: #cccccc;
+$color-tabs-active-text: #4ed5ed;
 $color-tabs-hover-text: #FFF;
+
+$color-tabs-debugger-background: #3d4931;
+$color-tabs-debugger-text: #82b948;
 
 $snackbar-width: 220px;
 $sidebar-width: 200px;
@@ -80,8 +91,8 @@ $modal-fg-color: #cccccc;
 $modal-fg-color-light: black;
 $modal-bg-color-light: #cccccc;
 
-$color-error: #b74f4f;
-$color-success: #648f27;
+$color-error: #c33d3d;
+$color-success: #579205;
 
 $message-border-color: #818181;
 $message-text-color: #e5e5e5;

@@ -46,6 +46,7 @@ describe('xod-arduino templates', () => {
     nodes = [
       {
         id: 0,
+        originalId: '17asd13z',
         patch: patches[0],
         outputs: [
           {
@@ -59,6 +60,7 @@ describe('xod-arduino templates', () => {
       },
       {
         id: 1,
+        originalId: '91ns7an_a',
         patch: patches[0],
         outputs: [],
         inputs: [

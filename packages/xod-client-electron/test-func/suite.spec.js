@@ -18,6 +18,8 @@ chai.use(chaiAsPromised);
 
 const DEBUG = process.env.XOD_DEBUG_TESTS;
 
+const workspacePath = subPath => path.resolve(__dirname, '../../../workspace/', subPath);
+
 describe('IDE', () => {
   let page;
   let app;
@@ -124,8 +126,8 @@ describe('IDE', () => {
     );
 
     it('adds the rest of the nodes for the blink patch', () =>
-      page.addNode('flip-flop', 150, 200)
-        .then(() => page.addNode('digital-output', 150, 300))
+      page.addNode('digital-output', 150, 300)
+        .then(() => page.addNode('flip-flop', 150, 200))
     );
   });
 
@@ -165,12 +167,15 @@ describe('IDE', () => {
   });
 
   describe('showing code for arduino', () => {
-    const expectedCpp = fsp.readFileSync(path.resolve(__dirname, './fixtures/blink.cpp'), 'utf-8');
+    const expectedCpp = fsp.readFileSync(
+      workspacePath('blink/__fixtures__/arduino.cpp'),
+      'utf-8'
+    );
 
     it('shows code', () =>
       app.electron.ipcRenderer.emit(TRIGGER_MAIN_MENU_ITEM, ['Deploy', 'Show Code For Arduino'])
         .then(() => page.getCodeboxValue())
-        .then(code => assert.equal(code, expectedCpp, 'Actual and expected C++ don’t match'))
+        .then(code => assert.strictEqual(code, expectedCpp, 'Actual and expected C++ don’t match'))
     );
   });
 });

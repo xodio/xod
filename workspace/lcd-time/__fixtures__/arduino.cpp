@@ -634,8 +634,11 @@ template <typename T> class List {
 #define NODE_COUNT          11
 #define MAX_OUTPUT_COUNT    1
 
-// Uncomment to trace the program in the Serial Monitor
+// Uncomment to turn on debug of the program
 //#define XOD_DEBUG
+
+// Uncomment to trace the program runtime in the Serial Monitor
+//#define XOD_DEBUG_ENABLE_TRACE
 
 
 /*=============================================================================
@@ -653,7 +656,7 @@ template <typename T> class List {
 #  define DEBUG_SERIAL Serial
 #endif
 
-#ifdef XOD_DEBUG
+#if defined(XOD_DEBUG) && defined(XOD_DEBUG_ENABLE_TRACE)
 #  define XOD_TRACE(x)      { DEBUG_SERIAL.print(x); DEBUG_SERIAL.flush(); }
 #  define XOD_TRACE_LN(x)   { DEBUG_SERIAL.println(x); DEBUG_SERIAL.flush(); }
 #  define XOD_TRACE_F(x)    XOD_TRACE(F(x))

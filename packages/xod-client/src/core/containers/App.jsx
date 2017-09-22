@@ -9,7 +9,11 @@ import {
   isValidIdentifier,
   IDENTIFIER_RULES,
 } from 'xod-project';
-import { transpileForArduino } from 'xod-arduino';
+import {
+  transformProject,
+  transformProjectWithDebug,
+  transpile,
+} from 'xod-arduino';
 
 import { lowercaseKebabMask } from '../../utils/inputFormatting';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
@@ -28,7 +32,14 @@ export default class App extends React.Component {
   }
 
   onShowCodeArduino() {
-    this.transpile(transpileForArduino);
+    const eitherTProject = this.transformProjectForTranspiler();
+    const eitherCode = eitherTProject.map(transpile);
+
+    return foldEither(
+      error => this.props.actions.addError(error.message),
+      code => this.props.actions.showCode(code),
+      eitherCode
+    );
   }
 
   onImport(jsonString) {
@@ -60,19 +71,10 @@ export default class App extends React.Component {
     }
   }
 
-  transpile(transpiler) {
+  transformProjectForTranspiler(debug = false) {
     const { project, currentPatchPath } = this.props;
-    const eitherCode = transpiler(project, currentPatchPath);
-    foldEither(
-      (error) => {
-        console.error(error); // eslint-disable-line no-console
-        this.props.actions.addError(error.message);
-      },
-      (code) => {
-        this.props.actions.showCode(code);
-      },
-      eitherCode
-    );
+    const transformFn = (debug) ? transformProjectWithDebug : transformProject;
+    return transformFn(project, currentPatchPath);
   }
 
   renderPopupShowCode() {
@@ -186,7 +188,7 @@ App.actions = {
   stopDebuggerSession: actions.stopDebuggerSession,
   toggleDebugger: actions.toggleDebugger,
   showSuggester: actions.showSuggester,
-  logDebugger: actions.addMessageToDebuggerLog,
+  logDebugger: actions.addMessagesToDebuggerLog,
   clearDebugger: actions.clearDebuggerLog,
   cutEntities: actions.cutEntities,
   copyEntities: actions.copyEntities,

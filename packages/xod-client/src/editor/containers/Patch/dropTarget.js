@@ -30,7 +30,7 @@ const dropTarget = {
       newNodePosition,
       props.patchPath
     );
-    props.actions.setMode(EDITOR_MODE.DEFAULT);
+    component.goToDefaultMode();
   },
   hover(props, monitor, component) { // TODO: performance?
     if (!component.dropTargetRootRef) return;
@@ -54,4 +54,3 @@ export default DropTarget( // eslint-disable-line new-cap
     isPatchDraggedOver: monitor.isOver(),
   })
 );
-

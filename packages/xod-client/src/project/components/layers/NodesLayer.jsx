@@ -16,6 +16,8 @@ const NodesLayer = ({
   areDragged,
   onMouseDown,
   onMouseUp,
+  isDebugSession,
+  nodeValues,
 }) => {
   const pinLinkabilityValidator = getPinLinkabilityValidator(linkingPin, nodes);
 
@@ -40,6 +42,8 @@ const NodesLayer = ({
               pinLinkabilityValidator={pinLinkabilityValidator}
               onMouseDown={onMouseDown}
               onMouseUp={onMouseUp}
+              isDebugSession={isDebugSession}
+              nodeValue={R.prop(node.id, nodeValues)}
             />
         ),
         R.values
@@ -50,6 +54,7 @@ const NodesLayer = ({
 
 NodesLayer.defaultProps = {
   areDragged: false,
+  nodeValues: {},
 };
 
 NodesLayer.propTypes = {
@@ -59,6 +64,8 @@ NodesLayer.propTypes = {
   areDragged: PropTypes.bool,
   onMouseDown: PropTypes.func,
   onMouseUp: PropTypes.func,
+  isDebugSession: PropTypes.bool,
+  nodeValues: PropTypes.objectOf(PropTypes.string),
 };
 
 export default pureDeepEqual(NodesLayer);

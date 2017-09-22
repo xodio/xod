@@ -8,6 +8,7 @@
 
   .fa {
     margin-right: 0.25em;
+    color: $color-error;
   }
 }
 
@@ -68,7 +69,7 @@
   .clear-log-button {
     position: absolute;
     top: 2px;
-    right: 2px;
+    right: 22px;
     z-index: 3;
 
     border: 0;
@@ -101,28 +102,35 @@
 
     .line {
       display: block;
+      height: 15px;
       margin: 0;
       padding: 2px;
+      overflow: hidden;
 
+      font-family: $font-family-mono;
       font-size: $font-size-m;
 
       &:hover {
         background-color: $sidebar-color-bg-even;
       }
 
+      & > * {
+        margin-right: 2px;
+        margin-left: 2px;
+      }
+      & > *:nth(0) {
+        margin-left: 0;
+      }
       .prefix {
-        margin-right: 4px;
         opacity: 0.5;
         cursor: default;
       }
       .timestamp {
-        margin-right: 4px;
         color: $color-datatype-number;
         cursor: default;
       }
       .nodeId {
         text-decoration: underline;
-        margin-right: 4px;
         color: $color-datatype-boolean;
         cursor: default;
 

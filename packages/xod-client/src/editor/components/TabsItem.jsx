@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 const TabsItem = ({ data, onClick, onClose }) => {
   const classes = classNames('TabsItem', {
+    [`TabsItem--${data.type}`]: true,
     'is-active': data.isActive,
   });
 
@@ -33,6 +34,8 @@ const TabsItem = ({ data, onClick, onClose }) => {
 
 const TabsDataPropType = PropTypes.shape({
   id: PropTypes.string,
+  patchPath: PropTypes.string,
+  type: PropTypes.string,
   index: PropTypes.number,
   label: PropTypes.string,
   isActive: PropTypes.boolean,
