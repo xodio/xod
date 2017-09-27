@@ -1,5 +1,5 @@
 {
-  "description": "Ouputs false if and only if both inputs are true",
+  "description": "Outputs false if and only if both inputs are true",
   "nodes": [
     {
       "id": "BkwGIROSw1Z",

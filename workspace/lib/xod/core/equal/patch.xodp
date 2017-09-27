@@ -1,5 +1,5 @@
 {
-  "description": "Ouputs true if LHS = RHS, and false otherwise",
+  "description": "Outputs true if LHS = RHS, and false otherwise",
   "nodes": [
     {
       "boundValues": {
