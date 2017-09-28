@@ -1,0 +1,30 @@
+{
+  "comments": [
+    {
+      "content": "Welcome to XOD, Maker! \n\nIn XOD, we do not use text to code; we use visual objects instead.\n\nThis large gray area with boxes is your program. It's called a *patch*. In this patch, there is only one object of interest: the `led` node, a grey rectangle with two little green circles. You will be able to make complicated programs using this rectangles. \n\nFirst, try to move the rectangle. Its position on the workspace does not affect your program but can make it more readable. \n\nBTW, I am a comment. Even though I am here, I do not affect the patch because I am invisible to it. I am visible only to you. You can move me, too.\n\n## Instructions\n\n1. On the left-hand side, you will find a list of patches grouped by a project or\nlibrary name. The list is called a *Project Browser*. The first item in it is `welcome-to-xod`. This is a special tutorial project you’re working with right now. Expand the project by clicking on it.\n\n2. As you can see, the tutorial consists of many patches. Right now, we are in patch `01-hello`. The next part of the tutorial is in patch `02-deploy`. Double-click it, and let's meet there!\n\nIf anything goes wrong or you have no idea what to do, there are hints for every patch: https://goo.gl/bS7pmA",
+      "id": "SyzEUkjK-",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 663,
+        "width": 306
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "B1oqkTnIb": 11,
+        "HyYh1a3LZ": 0
+      },
+      "id": "SkjpJD4F-",
+      "position": {
+        "x": 340,
+        "y": 204
+      },
+      "type": "xod/common-hardware/led"
+    }
+  ]
+}

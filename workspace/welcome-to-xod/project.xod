@@ -2,8 +2,8 @@
   "authors": [
     "xod"
   ],
-  "description": "Welcome project is just an example of simplest project",
+  "description": "A crash course tutorial baked as a project",
   "license": "MIT",
   "name": "welcome-to-xod",
-  "version": "0.0.1"
+  "version": "0.14.0"
 }

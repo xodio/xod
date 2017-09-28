@@ -1,0 +1,97 @@
+{
+  "comments": [
+    {
+      "content": "It’s a `multiply` node.\n`X` and `Y` - numbers to multiply\n`PROD` - product of the `X` and `Y`",
+      "id": "BJj5fP6YZ",
+      "position": {
+        "x": 510,
+        "y": 102
+      },
+      "size": {
+        "height": 51,
+        "width": 340
+      }
+    },
+    {
+      "content": "You probably noticed that there is a `UPD` input pin on the pot node and that it’s blue.\n\nThe pin’s color indicates the *type* of data that this pin is compatible with.\nGreen pins can take and return numerical values. Blue pins work with pulses, a special data type that we will return to later.\n\nLet’s try to do some math.\n\n## Instructions\n\n1. Delete the link between the `pot` node and LED2.\n\n2. Link the pot `VAL` pin to the `X` pin of the `multiply` node. Then, connect the `PROD` pin to the `LUM` pin on LED2.\n\n3. Upload the patch to the Arduino.\n\nTurn the potentiometer knob. The LED on port 11 will reach the maximum brightness with a half-turn of the knob. This happens because the `multiply` node multiplied the values of `X` and `Y`, and transferred the multiplication result to the `PROD` pin. As `Y` was set to 2 in the Inspector, the value of the `pot` node doubles before reaching the `LUM` pin of LED2.\n\nIn `xod/core`, you will find nodes for different mathematical and trigonometric calculations. Try other operators like `add`, `subtract`, `divide`.",
+      "id": "Hkp_Mw6Kb",
+      "position": {
+        "x": -34,
+        "y": 0
+      },
+      "size": {
+        "height": 663,
+        "width": 306
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "S1_ZaA13Z",
+      "input": {
+        "nodeId": "SJihHwNKb",
+        "pinKey": "HyYh1a3LZ"
+      },
+      "output": {
+        "nodeId": "SyclTC1hb",
+        "pinKey": "H1sM2A12-"
+      }
+    },
+    {
+      "id": "rkrZaAkn-",
+      "input": {
+        "nodeId": "r1V3SDEtW",
+        "pinKey": "HyYh1a3LZ"
+      },
+      "output": {
+        "nodeId": "SyclTC1hb",
+        "pinKey": "H1sM2A12-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "B1oqkTnIb": 11
+      },
+      "id": "SJihHwNKb",
+      "label": "LED2",
+      "position": {
+        "x": 408,
+        "y": 204
+      },
+      "type": "xod/common-hardware/led"
+    },
+    {
+      "id": "SyclTC1hb",
+      "position": {
+        "x": 306,
+        "y": 0
+      },
+      "type": "xod/common-hardware/pot"
+    },
+    {
+      "boundValues": {
+        "SJ4zUC_BD1-": 2
+      },
+      "id": "Synz8v4Yb",
+      "position": {
+        "x": 408,
+        "y": 102
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "boundValues": {
+        "B1oqkTnIb": 10
+      },
+      "id": "r1V3SDEtW",
+      "label": "LED1",
+      "position": {
+        "x": 306,
+        "y": 204
+      },
+      "type": "xod/common-hardware/led"
+    }
+  ]
+}

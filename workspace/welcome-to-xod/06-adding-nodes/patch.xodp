@@ -1,0 +1,42 @@
+{
+  "comments": [
+    {
+      "content": "Yet another way is the Quick Search feature:\n\n1. Press “I” key or double click anywhere on the patch.\n2. Type what you are looking for.\n\nIt searches not only in nodes titles, but even in the nodes description, like a small and dumb built-in Google. ",
+      "id": "Hy229X-hZ",
+      "position": {
+        "x": 374,
+        "y": 408
+      },
+      "size": {
+        "height": 153,
+        "width": 374
+      }
+    },
+    {
+      "content": "Now, let’s turn on two LEDs together! You will need another `led` node.\n\n## Instructions\n\n1. Assemble a circuit according to the picture at https://goo.gl/Ch43rm.\n\n2. In the node list (below the `welcome-to-xod`), you will find `xod/common-hardware` section. This is a *library* where you can find nodes to work with specific hardware.\n\n3. Find the `led` node. Note that nodes are arranged in alphabetical order.\n\n4. Hover the cursor over that node and click the plus (+) symbol to add it to the patch.\n\n5. Drag this node to any slot. \n\n6. Now, assign the new values for the `PORT` and `LUM` pins to turn on the second LED.\n\n7. Upload the patch to the Arduino.\n\nBoth LEDs should turn on now.\n\nAlternatively, you may drag a node from the Project Browser instead of clicking\nthe (+) button. Try to add yet more `led` nodes to your project.",
+      "id": "SJwr3fhFb",
+      "position": {
+        "x": -34,
+        "y": 0
+      },
+      "size": {
+        "height": 561,
+        "width": 306
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "B1oqkTnIb": 10,
+        "HyYh1a3LZ": 1
+      },
+      "id": "Hkg_WP4Kb",
+      "position": {
+        "x": 306,
+        "y": 204
+      },
+      "type": "xod/common-hardware/led"
+    }
+  ]
+}

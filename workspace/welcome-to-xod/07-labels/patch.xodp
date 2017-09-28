@@ -1,0 +1,42 @@
+{
+  "comments": [
+    {
+      "content": "Now we have two led nodes. They have identical names but control different LEDs. To add some clarity, let’s rename them.\n\n## Instructions\n\n1. Click on any node. There is a field with a green flag in the Inspector; you can find it above the pins. Type any name for the node into this field.\n\n2. Do the same for the second node.\n\nNow the names of the nodes are different, and you can easily distinguish one from the other. However, the function and type of each node remains the same. This feature just makes your patch more readable.\n\nYou can always check out the node type in the Inspector.",
+      "id": "ry4xdQ2KZ",
+      "position": {
+        "x": -68,
+        "y": 0
+      },
+      "size": {
+        "height": 357,
+        "width": 306
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "B1oqkTnIb": 11,
+        "HyYh1a3LZ": 1
+      },
+      "id": "H1l2-vNKW",
+      "position": {
+        "x": 272,
+        "y": 204
+      },
+      "type": "xod/common-hardware/led"
+    },
+    {
+      "boundValues": {
+        "B1oqkTnIb": 10,
+        "HyYh1a3LZ": 1
+      },
+      "id": "S1X2Wv4FW",
+      "position": {
+        "x": 374,
+        "y": 204
+      },
+      "type": "xod/common-hardware/led"
+    }
+  ]
+}

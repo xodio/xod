@@ -29,59 +29,12 @@ XOD IDE for desktop requires installing, but provides all features. It works on
 Windows, macOS, and Linux. Find a distribution package for your system on
 [downloads page](/downloads/).
 
-Upload your first program
--------------------------
-
-Once you start XOD IDE, you’ll see the `welcome-to-xod` project open. It’s
-a primitive demo project that—yes, you guessed it—blinks a LED on the board.
-
-![XOD main window](./main-window.png)
-
-Let's try to upload the program to your Arduino IDE.
-
-In the main menu, go to Deploy → Show Code for Arduino. You’ll see much of
-C++ source code that once compiled and uploaded to the board will blink the
-built-in LED. If you have the Arduino IDE installed, try it. Copy and paste the
-code to the Arduino IDE and click Upload.
-
-<div class="ui segment">
-<span class="ui ribbon label">Note</span>
-If you’ve previously seen what code to blink an LED looks like for Arduino, you
-might be astonished looking at the amount of code produced by XOD. Don’t worry
-- most of it is code for the XOD runtime environment, which actually creates
-little overhead after compilation. You don't need to understand how it
-actually works. For now, think of it as a black box.
-</div>
-
-Upload directly from within the XOD IDE
----------------------------------------
-
-This feature is only available in the desktop version. Go to Deploy → Upload
-to Arduino. Select your board model and the serial port it is connected to:
-
-![XOD model/port dialog](./board-selection.png)
-
-Click Upload and wait.
-
-Behind the scenes, XOD uses the Arduino IDE to compile and upload programs. So
-if you have no Arduino IDE installed yet, you’ll be asked to download and
-install it. The Arduino IDE itself has a package system to support various
-boards. If a package supporting your board is not installed yet, it will also
-be automatically installed.
-
-If the upload succeeds, you’ll see 100% progress and a compiler message:
-
-![XOD upload window](./upload.png)
-
-<div class="ui segment">
-<span class="ui ribbon label">Feedback</span>
-If you have a problem with uploading, please report it on our <a
-href="//forum.xod.io">forum</a>. Describe what you're doing, what you expect to
-get, and what you actually get. We will help.
-</div>
-
 What’s next
 -----------
 
-Now that you can run the IDE and upload programs, let's try to understand how
-and why they work. Go to the [Nodes and Links](../nodes-and-links/) chapter.
+Once you start XOD IDE, you’ll see the `welcome-to-xod` project open. It’s
+a tutorial project split on many small lessons. Follow instuctions in its
+comments to learn XOD.
+
+There is a [web version of the tutorial](../01-hello/) if you just want to get
+shallow understanding.
