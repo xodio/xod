@@ -14,7 +14,7 @@
 # tools like Make, Fritzing, and Inkscape installed
 #
 
-DPI=96
+DPI=192
 
 ALL_FZZ = $(shell find . -name "*.fzz")
 ALL_FZ_PNG = $(ALL_FZZ:%.fzz=%.fz.png)
