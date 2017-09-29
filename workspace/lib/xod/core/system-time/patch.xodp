@@ -1,5 +1,5 @@
 {
-  "description": "Ouputs time spent since the program start",
+  "description": "Outputs time spent since the program start",
   "nodes": [
     {
       "boundValues": {

@@ -178,7 +178,7 @@ struct InputDescriptor {
 
 /*
  * Output descriptor serve the same purpose as InputDescriptor but for
- * ouputs.
+ * outputs.
  *
  * In addition to wiring data location it keeps storage data location (where
  * actual value is stored) and own zero-based index among outputs of a particular
