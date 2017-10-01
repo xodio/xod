@@ -1,8 +1,9 @@
 import R from 'ramda';
 import * as XP from 'xod-project';
-import { explode } from 'xod-func-tools';
+import { explodeEither } from 'xod-func-tools';
 
 import * as AT from './actionTypes';
+import { PASTE_ENTITIES } from '../editor/actionTypes';
 
 import {
   addPoints,
@@ -72,7 +73,7 @@ export default (state = {}, action) => {
       const mainPatch = XP.createPatch();
 
       return R.compose(
-        explode,
+        explodeEither,
         XP.assocPatch(mainPatchPath, mainPatch),
         XP.setProjectName(name),
         XP.omitPatches(oldLocalPatchesPaths)
@@ -121,14 +122,14 @@ export default (state = {}, action) => {
       const patch = XP.createPatch();
 
       return R.compose(
-        explode,
+        explodeEither,
         XP.assocPatch(patchPath, patch)
       )(state);
     }
 
     case AT.PATCH_RENAME: {
       const { newPatchPath, oldPatchPath } = action.payload;
-      return explode(XP.rebasePatch(newPatchPath, oldPatchPath, state));
+      return explodeEither(XP.rebasePatch(newPatchPath, oldPatchPath, state));
     }
 
     case AT.PATCH_DELETE: {
@@ -182,6 +183,41 @@ export default (state = {}, action) => {
       );
     }
 
+    case AT.BULK_DELETE_ENTITIES: {
+      const {
+        linkIds,
+        nodeIds,
+        commentIds,
+        patchPath,
+      } = action.payload;
+
+      const dissocFns = R.unnest([
+        R.map(XP.dissocLink, linkIds),
+        R.map(XP.dissocNode, nodeIds),
+        R.map(XP.dissocComment, commentIds),
+      ]);
+
+      return R.over(
+        XP.lensPatch(patchPath),
+        patch => R.reduce((p, fn) => fn(p), patch, dissocFns),
+        state
+      );
+    }
+
+    case PASTE_ENTITIES: {
+      const { entities, patchPath } = action.payload;
+
+      return R.over(
+        XP.lensPatch(patchPath),
+        R.compose(
+          explodeEither,
+          XP.upsertLinks(entities.links),
+          XP.upsertComments(entities.comments),
+          XP.upsertNodes(entities.nodes),
+        ),
+        state
+      );
+    }
 
     //
     // Node
@@ -197,16 +233,6 @@ export default (state = {}, action) => {
       return R.over(
         XP.lensPatch(patchPath), // TODO: can we have a situation where patch does not exist?
         XP.assocNode(newNode),
-        state
-      );
-    }
-
-    case AT.NODE_DELETE: {
-      const { id, patchPath } = action.payload;
-
-      return R.over(
-        XP.lensPatch(patchPath),
-        XP.dissocNode(id),
         state
       );
     }
@@ -259,17 +285,7 @@ export default (state = {}, action) => {
 
       return R.over(
         XP.lensPatch(patchPath),
-        R.pipe(XP.assocLink(newLink), explode),
-        state
-      );
-    }
-
-    case AT.LINK_DELETE: {
-      const { id, patchPath } = action.payload;
-
-      return R.over(
-        XP.lensPatch(patchPath),
-        XP.dissocLink(id),
+        R.pipe(XP.assocLink(newLink), explodeEither),
         state
       );
     }
@@ -289,16 +305,6 @@ export default (state = {}, action) => {
       return R.over(
         XP.lensPatch(patchPath),
         XP.assocComment(newComment),
-        state
-      );
-    }
-
-    case AT.COMMENT_DELETE: {
-      const { id, patchPath } = action.payload;
-
-      return R.over(
-        XP.lensPatch(patchPath),
-        XP.dissocComment(id),
         state
       );
     }

@@ -12,7 +12,7 @@ import PatchInspector from './PatchInspector';
 import Widgets from './inspectorWidgets';
 import { noop, isMany, isOne } from '../../utils/ramda';
 
-import { RenderableSelection } from '../../project/types';
+import { RenderableSelection } from '../../types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
 

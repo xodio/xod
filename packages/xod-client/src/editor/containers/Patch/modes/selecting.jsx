@@ -97,11 +97,17 @@ const selectingMode = {
       api.goToMode(EDITOR_MODE.LINKING, { mousePosition });
     }
   },
-  onLinkClick(api, id) {
-    if (id.length > 0) {
-      api.props.actions.selectLink(id);
+  onLinkClick({ props }, event, linkId) {
+    const { LINK } = SELECTION_ENTITY_TYPE;
+
+    if (isSelectionModifierPressed(event)) {
+      if (isEntitySelected(LINK, props.selection, linkId)) {
+        props.actions.deselectEntity(LINK, linkId);
+      } else {
+        props.actions.addEntityToSelection(LINK, linkId);
+      }
     } else {
-      api.props.actions.deselectAll();
+      props.actions.selectEntity(LINK, linkId);
     }
   },
   onMouseDown(api, event) {

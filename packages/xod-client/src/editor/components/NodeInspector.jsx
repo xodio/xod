@@ -12,7 +12,7 @@ import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from '../../project/constants';
 import WidgetsGroup from './WidgetsGroup';
 import Widgets, { WIDGET_MAPPING } from './inspectorWidgets';
 
-import { RenderableNode } from '../../project/types';
+import { RenderableNode } from '../../types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 import { getUtmSiteUrl } from '../../utils/siteLinks';
 

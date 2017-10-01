@@ -4,7 +4,7 @@ import $ from 'sanctuary-def';
 import XF from 'xod-func-tools';
 import * as XP from 'xod-project';
 
-import { SELECTION_ENTITY_TYPE } from '../editor/constants';
+import { SELECTION_ENTITY_TYPE } from './editor/constants';
 
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */
@@ -72,4 +72,10 @@ export const SelectionEntityType = EnumType(
 export const RenderableSelection = Model('RenderableSelection', {
   entityType: SelectionEntityType,
   data: RenderableEntity,
+});
+
+export const ClipboardEntities = Model('ClipboardEntities', {
+  nodes: $.Array(XP.Node),
+  links: $.Array(XP.Link),
+  comments: $.Array(XP.Comment),
 });

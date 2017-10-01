@@ -20,6 +20,7 @@ import {
   HIDE_SUGGESTER,
   HIGHLIGHT_SUGGESTER_ITEM,
   START_DRAGGING_PATCH,
+  PASTE_ENTITIES,
 } from './actionTypes';
 import {
   PROJECT_CREATE,
@@ -30,14 +31,12 @@ import {
   PATCH_DELETE,
   PATCH_RENAME,
   NODE_ADD,
-  NODE_DELETE,
   LINK_ADD,
-  LINK_DELETE,
-  COMMENT_DELETE,
+  BULK_DELETE_ENTITIES,
 } from '../project/actionTypes';
 
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
-import { EDITOR_MODE } from './constants';
+import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from './constants';
 
 const addTab = R.curry((patchPath, state) => {
   if (!patchPath) return state;
@@ -139,31 +138,31 @@ const renamePatchInTabs = (newPatchPath, oldPatchPath) => (tabs) => {
   )(tabs);
 };
 
+const createSelectionEntity = R.curry((entityType, id) => ({ entity: entityType, id }));
+
 const editorReducer = (state = {}, action) => {
   switch (action.type) {
-    case NODE_DELETE:
-    case LINK_DELETE:
-    case COMMENT_DELETE:
+    case BULK_DELETE_ENTITIES:
     case EDITOR_DESELECT_ALL:
       return clearSelection(state);
     case EDITOR_SELECT_ENTITY:
       return R.assoc(
         'selection',
         [
-          {
-            entity: action.payload.entityType,
-            id: action.payload.id,
-          },
+          createSelectionEntity(
+            action.payload.entityType,
+            action.payload.id
+          ),
         ],
         state
       );
     case EDITOR_DESELECT_ENTITY:
       return R.over(
         R.lensProp('selection'),
-        R.reject(R.equals({
-          entity: action.payload.entityType,
-          id: action.payload.id,
-        })),
+        R.reject(R.equals(createSelectionEntity(
+          action.payload.entityType,
+          action.payload.id
+        ))),
         state
       );
     case EDITOR_ADD_ENTITY_TO_SELECTION:
@@ -171,13 +170,41 @@ const editorReducer = (state = {}, action) => {
         R.lensProp('selection'),
         R.compose(
           R.uniq,
-          R.append({
-            entity: action.payload.entityType,
-            id: action.payload.id,
-          })
+          R.append(createSelectionEntity(
+            action.payload.entityType,
+            action.payload.id
+          ))
         ),
         state
       );
+    case PASTE_ENTITIES: {
+      const { entities } = action.payload;
+
+      const newSelection = R.compose(
+        R.unnest,
+        R.values,
+        R.evolve({
+          nodes: R.map(R.compose(
+            createSelectionEntity(SELECTION_ENTITY_TYPE.NODE),
+            XP.getNodeId
+          )),
+          comments: R.map(R.compose(
+            createSelectionEntity(SELECTION_ENTITY_TYPE.COMMENT),
+            XP.getCommentId
+          )),
+          links: R.map(R.compose(
+            createSelectionEntity(SELECTION_ENTITY_TYPE.LINK),
+            XP.getLinkId
+          )),
+        })
+      )(entities);
+
+      return R.assoc(
+        'selection',
+        newSelection,
+        state
+      );
+    }
     case EDITOR_SELECT_PIN:
       return R.assoc('linkingPin', action.payload, state);
     case EDITOR_DESELECT_PIN:

@@ -11,7 +11,7 @@ import * as ProjectActions from '../../../project/actions';
 import * as EditorSelectors from '../../selectors';
 import * as ProjectSelectors from '../../../project/selectors';
 
-import { RenderableLink, RenderableNode, RenderableComment } from '../../../project/types';
+import { RenderableLink, RenderableNode, RenderableComment } from '../../../types';
 import sanctuaryPropType from '../../../utils/sanctuaryPropType';
 
 import dropTarget from './dropTarget';

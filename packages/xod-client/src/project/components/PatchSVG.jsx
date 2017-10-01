@@ -9,20 +9,16 @@ const PatchSVG = ({
   isInPanningMode,
   isInResizingMode,
   isPanning,
-  onMouseDown,
-  onMouseMove,
-  onMouseUp,
   svgRef,
+  ...restProps
 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={cn('PatchSVG', { isPanning, isInPanningMode, isInResizingMode })}
     width="100%"
     height="100%"
-    onMouseDown={onMouseDown}
-    onMouseMove={onMouseMove}
-    onMouseUp={onMouseUp}
     ref={svgRef}
+    {...restProps}
   >
     <defs>
       <DraggedNodeShadowFilter />

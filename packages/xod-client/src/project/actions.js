@@ -1,3 +1,4 @@
+import R from 'ramda';
 import * as XP from 'xod-project';
 
 import { addError } from '../messages/actions';
@@ -151,32 +152,6 @@ export const addNode = (typeId, position, patchPath) => (dispatch) => {
   return newNodeId;
 };
 
-export const deleteNode = id => (dispatch, getState) => {
-  const state = getState();
-  const project = getProject(state);
-  const patchPath = getCurrentPatchPath(state);
-  const patch = XP.getPatchByPathUnsafe(patchPath, project);
-  const node = XP.getNodeByIdUnsafe(id, patch);
-
-  // TODO: most of this probably should be moved to xod-project
-  if (
-    XP.isPinNode(node) &&
-    XP.isTerminalNodeInUse(id, patchPath, project)
-  ) {
-    return dispatch(
-      addError(NODETYPE_ERRORS[NODETYPE_ERROR_TYPES.CANT_DELETE_USED_PIN_OF_PATCHNODE])
-    );
-  }
-
-  return dispatch({
-    type: ActionType.NODE_DELETE,
-    payload: {
-      id,
-      patchPath,
-    },
-  });
-};
-
 export const updateNodeProperty =
   (nodeId, propKind, propKey, propValue) => (dispatch, getState) => {
     const patchPath = getCurrentPatchPath(getState());
@@ -208,14 +183,6 @@ export const addLink = (pin1, pin2) => (dispatch, getState) => {
   });
 };
 
-export const deleteLink = (id, patchPath) => ({
-  type: ActionType.LINK_DELETE,
-  payload: {
-    id,
-    patchPath,
-  },
-});
-
 //
 // Comment
 //
@@ -226,25 +193,6 @@ export const addComment = () => (dispatch, getState) =>
       patchPath: getCurrentPatchPath(getState()),
     },
   });
-
-export const deleteComment = id => (dispatch, getState) =>
-  dispatch({
-    type: ActionType.COMMENT_DELETE,
-    payload: {
-      id,
-      patchPath: getCurrentPatchPath(getState()),
-    },
-  });
-
-export const bulkMoveNodesAndComments = (nodeIds, commentIds, deltaPosition, patchPath) => ({
-  type: ActionType.BULK_MOVE_NODES_AND_COMMENTS,
-  payload: {
-    nodeIds,
-    commentIds,
-    deltaPosition,
-    patchPath,
-  },
-});
 
 export const resizeComment = (id, size) => (dispatch, getState) =>
   dispatch({
@@ -265,3 +213,43 @@ export const editComment = (id, content) => (dispatch, getState) =>
       patchPath: getCurrentPatchPath(getState()),
     },
   });
+
+export const bulkMoveNodesAndComments = (nodeIds, commentIds, deltaPosition, patchPath) => ({
+  type: ActionType.BULK_MOVE_NODES_AND_COMMENTS,
+  payload: {
+    nodeIds,
+    commentIds,
+    deltaPosition,
+    patchPath,
+  },
+});
+
+// TODO: move to xod-project?
+const isNodeWithIdInUse = R.curry((project, patchPath, nodeId) => {
+  const patch = XP.getPatchByPathUnsafe(patchPath, project);
+  const node = XP.getNodeByIdUnsafe(nodeId, patch);
+
+  return XP.isPinNode(node) && XP.isTerminalNodeInUse(nodeId, patchPath, project);
+});
+
+export const bulkDeleteNodesAndComments =
+  (nodeIds, linkIds, commentIds, patchPath) => (dispatch, getState) => {
+    const state = getState();
+    const project = getProject(state);
+
+    if (R.any(isNodeWithIdInUse(project, patchPath), nodeIds)) {
+      return dispatch(
+        addError(NODETYPE_ERRORS[NODETYPE_ERROR_TYPES.CANT_DELETE_USED_PIN_OF_PATCHNODE])
+      );
+    }
+
+    return dispatch({
+      type: ActionType.BULK_DELETE_ENTITIES,
+      payload: {
+        nodeIds,
+        linkIds,
+        commentIds,
+        patchPath,
+      },
+    });
+  };
