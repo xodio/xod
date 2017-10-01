@@ -492,6 +492,14 @@ export const getLinkById = def(
   )(patch)
 );
 
+export const getLinkByIdUnsafe = def(
+  'getLinkByIdUnsafe :: LinkId -> Patch -> Link',
+  (linkId, patch) => explodeMaybe(
+    Utils.formatString(CONST.ERROR.LINK_NOT_FOUND, { linkId, patchPath: getPatchPath(patch) }),
+    getLinkById(linkId, patch)
+  )
+);
+
 /**
  * Returns list of all links are connected to specified node.
  *
