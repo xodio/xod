@@ -1,0 +1,56 @@
+{
+  "description": "Clips an input value so that the value is always inside a [MIN, MAX] range.",
+  "nodes": [
+    {
+      "description": "The result. Equals to `X` if it is already in the range, otherwise, its `Xc` rounded to a nearest bound: `MIN` or `MAX`.",
+      "id": "BJRURA1nW",
+      "label": "Xc",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "A lower bound of the range.",
+      "id": "H1WURCknW",
+      "label": "MIN",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "The input value",
+      "id": "Hk2H0A13-",
+      "label": "X",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "__out__": 1
+      },
+      "description": "An upper bound of the range.",
+      "id": "Hy_U0013b",
+      "label": "MAX",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rkEdA0k2b",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}
