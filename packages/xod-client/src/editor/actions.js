@@ -2,8 +2,26 @@ import R from 'ramda';
 
 import * as XP from 'xod-project';
 
-import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from './constants';
+import {
+  EDITOR_MODE,
+  SELECTION_ENTITY_TYPE,
+  CLIPBOARD_DATA_TYPE,
+  CLIPBOARD_ERRORS as CLIPBOARD_ERROR_CODES,
+} from './constants';
+import { LINK_ERRORS, CLIPBOARD_ERRORS } from '../messages/constants';
+
 import * as ActionType from './actionTypes';
+
+import {
+  addNode,
+  addLink,
+  bulkMoveNodesAndComments,
+  bulkDeleteNodesAndComments,
+} from '../project/actions';
+import {
+  addError,
+} from '../messages/actions';
+
 import * as Selectors from './selectors';
 import * as ProjectSelectors from '../project/selectors';
 
@@ -15,21 +33,11 @@ import {
   patchToNodeProps,
 } from '../project/utils';
 
-import { getSelectedEntityIdsOfType } from './utils';
+import { getSelectedEntityIdsOfType, getEntitiesToCopy, regenerateIds } from './utils';
+import { isInput, isEdge } from '../utils/browser';
+import { addPoints } from '../project/nodeLayout';
 
-import {
-  addNode,
-  addLink,
-  deleteNode,
-  deleteLink,
-  deleteComment,
-  bulkMoveNodesAndComments,
-} from '../project/actions';
-import {
-  addError,
-} from '../messages/actions';
-
-import { LINK_ERRORS } from '../messages/constants';
+import { ClipboardEntities } from '../types';
 
 export const setMode = mode => (dispatch, getState) => {
   if (Selectors.getMode(getState()) === mode) {
@@ -147,27 +155,20 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
 
 export const setSelectedNodeType = id => ({
   type: ActionType.EDITOR_SET_SELECTED_NODETYPE,
-  payload: {
-    id,
-  },
+  payload: { id },
 });
 
-const DELETE_ACTIONS = {
-  [SELECTION_ENTITY_TYPE.NODE]: deleteNode,
-  [SELECTION_ENTITY_TYPE.COMMENT]: deleteComment,
-  [SELECTION_ENTITY_TYPE.LINK]: deleteLink,
-};
-
 export const deleteSelection = () => (dispatch, getState) => {
-  // TODO: sending a bunch of actions is suboptimal and pollutes undo history
-  const currentPatchPath = Selectors.getCurrentPatchPath(getState());
-  const selection = Selectors.getSelection(getState());
+  const state = getState();
+  const currentPatchPath = Selectors.getCurrentPatchPath(state);
+  const selection = Selectors.getSelection(state);
 
-  selection.forEach((select) => {
-    dispatch(
-      DELETE_ACTIONS[select.entity](select.id, currentPatchPath)
-    );
-  });
+  dispatch(bulkDeleteNodesAndComments(
+    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection),
+    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.LINK, selection),
+    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT, selection),
+    currentPatchPath
+  ));
 };
 
 export const moveSelection = deltaPosition => (dispatch, getState) => {
@@ -263,3 +264,99 @@ export const highlightSugessterItem = patchPath => ({
     patchPath,
   },
 });
+
+// Microsoft Edge only supports Text and URL data types
+const getClipboardDataType = () => (isEdge() ? 'Text' : CLIPBOARD_DATA_TYPE);
+
+export const copyEntities = event => (dispatch, getState) => {
+  if (isInput(event)) return;
+
+  const state = getState();
+
+  const selection = Selectors.getSelection(state);
+  if (R.isEmpty(selection)) return;
+
+  const currentPatchPath = Selectors.getCurrentPatchPath(state);
+  const currentPatch = R.compose(
+    XP.getPatchByPathUnsafe(currentPatchPath),
+    ProjectSelectors.getProject
+  )(state);
+
+  const entities = getEntitiesToCopy(currentPatch, selection);
+  event.clipboardData.setData(getClipboardDataType(), JSON.stringify(entities, null, 2));
+  event.preventDefault();
+};
+
+export const pasteEntities = event => (dispatch, getState) => {
+  if (isInput(event)) return;
+
+  const state = getState();
+  const currentPatchPath = Selectors.getCurrentPatchPath(state);
+  const pastedString = event.clipboardData.getData(getClipboardDataType());
+
+  let copiedEntities;
+  try {
+    copiedEntities = JSON.parse(pastedString);
+  } catch (e) {
+    // not a valid JSON, silently fail
+    return;
+  }
+
+  if (ClipboardEntities.validate(copiedEntities).isLeft) {
+    // wrong data format, silently fail
+    return;
+  }
+
+  const pastedNodeTypes = R.map(XP.getNodeType, copiedEntities.nodes);
+  if (R.contains(currentPatchPath, pastedNodeTypes)) {
+    dispatch(addError(CLIPBOARD_ERRORS[CLIPBOARD_ERROR_CODES.RECURSION_DETECTED]));
+    return;
+  }
+
+  const availablePatches = R.compose(
+    R.map(XP.getPatchPath),
+    XP.listPatches,
+    ProjectSelectors.getProject
+  )(state);
+  const missingPatches = R.without(availablePatches, pastedNodeTypes);
+
+  if (!R.isEmpty(missingPatches)) {
+    dispatch(addError(XP.formatString(
+      CLIPBOARD_ERRORS[CLIPBOARD_ERROR_CODES.NO_REQUIRED_PATCHES],
+      { missingPatches: missingPatches.join(', ') }
+    )));
+    return;
+  }
+
+  const newPosition = Selectors.getDefaultNodePlacePosition(state);
+
+  const entitiesToPaste = R.compose(
+    R.evolve({
+      nodes: R.map(R.over(
+        R.lens(XP.getNodePosition, XP.setNodePosition),
+        addPoints(newPosition)
+      )),
+      comments: R.map(R.over(
+        R.lens(XP.getCommentPosition, XP.setCommentPosition),
+        addPoints(newPosition)
+      )),
+    }),
+    regenerateIds
+  )(copiedEntities);
+
+  dispatch({
+    type: ActionType.PASTE_ENTITIES,
+    payload: {
+      entities: entitiesToPaste,
+      position: newPosition,
+      patchPath: currentPatchPath,
+    },
+  });
+};
+
+export const cutEntities = event => (dispatch) => {
+  if (isInput(event)) return;
+
+  dispatch(copyEntities(event));
+  dispatch(deleteSelection());
+};

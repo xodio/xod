@@ -29,7 +29,7 @@ import Debugger from '../../debugger/containers/Debugger';
 import Sidebar from '../../utils/components/Sidebar';
 import Workarea from '../../utils/components/Workarea';
 
-import { RenderableSelection } from '../../project/types';
+import { RenderableSelection } from '../../types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
 import ProjectBrowser from '../../projectBrowser/containers/ProjectBrowser';

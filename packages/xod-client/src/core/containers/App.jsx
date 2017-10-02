@@ -21,6 +21,12 @@ import PopupProjectPreferences from '../../project/components/PopupProjectPrefer
 import * as actions from '../actions';
 
 export default class App extends React.Component {
+  componentDidMount() {
+    document.addEventListener('cut', this.props.actions.cutEntities);
+    document.addEventListener('copy', this.props.actions.copyEntities);
+    document.addEventListener('paste', this.props.actions.pasteEntities);
+  }
+
   onShowCodeArduino() {
     this.transpile(transpileForArduino);
   }
@@ -124,6 +130,9 @@ App.propTypes = {
     updateProjectMeta: PropTypes.func.isRequired,
     hideAllPopups: PropTypes.func.isRequired,
     hideProjectPreferences: PropTypes.func.isRequired,
+    cutEntities: PropTypes.func.isRequired,
+    copyEntities: PropTypes.func.isRequired,
+    pasteEntities: PropTypes.func.isRequired,
     /* eslint-disable react/no-unused-prop-types */
     requestCreateProject: PropTypes.func.isRequired,
     requestRenameProject: PropTypes.func.isRequired,
@@ -179,4 +188,7 @@ App.actions = {
   showSuggester: actions.showSuggester,
   logDebugger: actions.addMessageToDebuggerLog,
   clearDebugger: actions.clearDebuggerLog,
+  cutEntities: actions.cutEntities,
+  copyEntities: actions.copyEntities,
+  pasteEntities: actions.pasteEntities,
 };

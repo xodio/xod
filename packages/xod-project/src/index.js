@@ -24,6 +24,7 @@ export {
   listLinks,
   linkIdEquals,
   getLinkById,
+  getLinkByIdUnsafe,
   listLinksByNode,
   listLinksByPin,
   validateLink,

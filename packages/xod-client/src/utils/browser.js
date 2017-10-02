@@ -1,3 +1,5 @@
+import R from 'ramda';
+
 export function getViewableSize(defaultWidth = 0, defaultHeight = 0) {
   const sizes = {
     width: defaultWidth,
@@ -44,3 +46,8 @@ export const isInputTarget = (event) => {
 
   return (inputs.indexOf(type) !== -1);
 };
+
+export const isEdge = () => R.compose(
+  R.test(/Edge/),
+  R.pathOr('', ['navigator', 'userAgent'])
+)(window);

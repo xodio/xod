@@ -15,6 +15,8 @@ import {
   pointToSize,
   sizeToPoint,
   snapNodeSizeToSlots,
+  NODE_HEIGHT,
+  SLOT_SIZE,
 } from '../../../../project/nodeLayout';
 
 import {
@@ -41,7 +43,13 @@ const addDeltaToSize = R.uncurryN(2)(
 const addDeltaToCommentSizes = R.uncurryN(2)(
   deltaPosition => R.map(R.over(
     R.lensProp('size'),
-    addDeltaToSize(deltaPosition)
+    R.compose(
+      R.evolve({
+        width: R.max(SLOT_SIZE.WIDTH),
+        height: R.max(NODE_HEIGHT),
+      }),
+      addDeltaToSize(deltaPosition)
+    )
   ))
 );
 

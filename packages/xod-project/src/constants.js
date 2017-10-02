@@ -20,6 +20,7 @@ export const ERROR = {
   NODE_NOT_FOUND: 'Can\'t find the Node "{nodeId}" in the patch with path "{patchPath}"',
   POSITION_INVALID: 'Invalid position property',
   // links
+  LINK_NOT_FOUND: 'Can\'t find the Link "{linkId}" in the patch with path "{patchPath}"',
   LINK_ID_INVALID: 'Link should have a generated id',
   LINK_INPUT_INVALID: 'Link should have input object with keys: `pinKey` and `nodeId`',
   LINK_OUTPUT_INVALID: 'Link should have output object with keys: `pinKey` and `nodeId`',

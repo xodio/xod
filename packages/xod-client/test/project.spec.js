@@ -28,13 +28,11 @@ import {
   updatePatchDescription,
   addNode,
   updateNodeProperty,
-  deleteNode,
   addLink,
-  deleteLink,
   addComment,
-  deleteComment,
   resizeComment,
   editComment,
+  bulkDeleteNodesAndComments,
 } from '../src/project/actions';
 
 describe('project reducer', () => {
@@ -234,7 +232,7 @@ describe('project reducer', () => {
     });
     it('should delete a node', () => {
       const nodeId = store.dispatch(addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, testPatchPath));
-      store.dispatch(deleteNode(nodeId));
+      store.dispatch(bulkDeleteNodesAndComments([nodeId], [], [], testPatchPath));
 
       const maybeNode = R.compose(
         XP.getNodeById(nodeId),
@@ -276,7 +274,6 @@ describe('project reducer', () => {
 
       assert.equal(1, links.length);
     });
-
     it('should delete a link', () => {
       store.dispatch(addLink(
         { nodeId: inNodeId, pinKey: '__out__' },
@@ -291,7 +288,7 @@ describe('project reducer', () => {
         getProject
       )(store.getState());
 
-      store.dispatch(deleteLink(linkId, testPatchPath));
+      store.dispatch(bulkDeleteNodesAndComments([], [linkId], [], testPatchPath));
 
       const links = R.compose(
         XP.listLinks,
@@ -345,7 +342,7 @@ describe('project reducer', () => {
       store.dispatch(addComment());
       const testCommentId = getAddedCommentId(testPatchPath, store.getState());
 
-      store.dispatch(deleteComment(testCommentId));
+      store.dispatch(bulkDeleteNodesAndComments([], [], [testCommentId], testPatchPath));
 
       const comments = getCommentsList(testPatchPath, store.getState());
       assert.equal(comments.length, 0);
@@ -380,7 +377,7 @@ describe('project reducer', () => {
 });
 
 describe('project actions', () => {
-  describe('deleteNode', () => {
+  describe('bulkDeleteNodesAndComments', () => {
     let store = null;
     const project = defaultizeProject({
       patches: {
@@ -405,16 +402,15 @@ describe('project actions', () => {
       },
     });
 
-    beforeEach(
-      () => {
-        store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
-        store.dispatch(openProject(project));
-      }
-    );
+    beforeEach(() => {
+      store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
+      store.dispatch(openProject(project));
+    });
 
     it('should display an error message if we try to delete a used terminal node', () => {
-      store.dispatch(switchPatch('@/foo'));
-      const action = store.dispatch(deleteNode('importantTerminal'));
+      const patchPath = '@/foo';
+      store.dispatch(switchPatch(patchPath));
+      const action = store.dispatch(bulkDeleteNodesAndComments(['importantTerminal'], [], [], patchPath));
       const expectedAction =
         addError(NODETYPE_ERRORS[NODETYPE_ERROR_TYPES.CANT_DELETE_USED_PIN_OF_PATCHNODE]);
 

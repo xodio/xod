@@ -13,8 +13,8 @@ class Link extends React.Component {
     this.onClick = this.onClick.bind(this);
   }
 
-  onClick() {
-    this.props.onClick(this.props.id);
+  onClick(event) {
+    this.props.onClick(event, this.props.id);
   }
 
   getPosition() {
