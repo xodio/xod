@@ -1,8 +1,6 @@
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 
-import { EDITOR_MODE } from '../../../constants';
-
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
 
@@ -28,7 +26,7 @@ const linkingMode = {
   },
   onPinMouseDown(api, event, nodeId, pinKey) {
     api.props.actions.linkPin(nodeId, pinKey);
-    api.goToMode(EDITOR_MODE.DEFAULT);
+    api.goToDefaultMode();
   },
   onPinMouseUp(api, event, nodeId, pinKey) {
     const lp = api.props.linkingPin;
@@ -40,11 +38,11 @@ const linkingMode = {
     if (firstPinClick) { return; }
 
     api.props.actions.linkPin(nodeId, pinKey);
-    api.goToMode(EDITOR_MODE.DEFAULT);
+    api.goToDefaultMode();
   },
   onBackgroundClick(api) {
     api.props.actions.deselectAll();
-    api.goToMode(EDITOR_MODE.DEFAULT);
+    api.goToDefaultMode();
   },
 
   render(api) {
@@ -90,7 +88,7 @@ const linkingMode = {
 
             <Layers.Ghosts
               mousePosition={api.state.mousePosition}
-              mode={api.props.mode}
+              mode={api.getCurrentMode()}
               ghostLink={api.props.ghostLink}
             />
           </g>

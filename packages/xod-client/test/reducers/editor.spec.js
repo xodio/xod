@@ -4,11 +4,11 @@ import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
 
+import { isAmong } from 'xod-func-tools';
 import { defaultizeProject } from 'xod-project/test/helpers';
 
 import * as Actions from '../../src/editor/actions';
 import editorReducer from '../../src/editor/reducer';
-import { EDITOR_SET_MODE } from '../../src/editor/actionTypes';
 
 import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from '../../src/editor/constants';
 
@@ -23,38 +23,6 @@ const testStore = state => createStore(
 );
 
 describe('Editor reducer', () => {
-  describe('set mode', () => {
-    const mockState = {
-      editor: {
-        mode: null,
-      },
-    };
-    let store = null;
-
-    beforeEach(
-      () => {
-        store = mockStore(mockState);
-      }
-    );
-
-    const testMode = (mode) => {
-      const expectedActions = [
-        {
-          type: EDITOR_SET_MODE,
-          payload: {
-            mode,
-          },
-        },
-      ];
-      store.dispatch(Actions.setMode(mode));
-      chai.expect(store.getActions()).to.deep.equal(expectedActions);
-    };
-
-    it('should set mode to selecting', () => testMode(EDITOR_MODE.SELECTING));
-    it('should set mode to linking', () => testMode(EDITOR_MODE.LINKING));
-    it('should set mode to default', () => testMode(EDITOR_MODE.DEFAULT));
-  });
-
   describe('selecting entities', () => {
     const mockState = {
       project: {
@@ -124,10 +92,16 @@ describe('Editor reducer', () => {
         },
       },
       editor: {
-        currentPatchPath: '@/1',
+        currentTabId: '@/1',
         mode: EDITOR_MODE.DEFAULT,
         selection: [],
         linkingPin: null,
+        tabs: {
+          '@/1': {
+            id: '@/1',
+            patchPath: '@/1',
+          },
+        },
       },
     };
     let store = null;
@@ -193,14 +167,16 @@ describe('Editor reducer', () => {
   describe('working with tabs', () => {
     const mockState = {
       editor: {
-        currentPatchPath: '@/p1',
+        currentTabId: 'a',
         tabs: {
-          '@/p1': {
-            id: '@/p1',
+          a: {
+            id: 'a',
+            patchPath: '@/p1',
             index: 0,
           },
-          '@/p2': {
-            id: '@/p2',
+          b: {
+            id: 'b',
+            patchPath: '@/p2',
             index: 1,
           },
         },
@@ -232,21 +208,24 @@ describe('Editor reducer', () => {
     it('should add new tab', () => {
       store.dispatch(Actions.switchPatch('@/p3'));
 
-      chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(3);
-      chai.expect(store.getState().editor.currentPatchPath).to.be.equal('@/p3');
+      const tabIds = R.keys(store.getState().editor.tabs);
+      const newTabId = R.reject(isAmong(['a', 'b']), tabIds)[0];
+
+      chai.expect(tabIds).to.have.lengthOf(3);
+      chai.expect(store.getState().editor.currentTabId).to.be.equal(newTabId);
     });
     it('should close a tab and switch to another one there are any left open', () => {
-      store.dispatch(Actions.closeTab('@/p1'));
+      store.dispatch(Actions.closeTab('a'));
 
       chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(1);
-      chai.expect(store.getState().editor.currentPatchPath).to.be.equal('@/p2');
+      chai.expect(store.getState().editor.currentTabId).to.be.equal('b');
     });
     it('should close the tab and set currentPatchPath to null if that was the last tab', () => {
-      store.dispatch(Actions.closeTab('@/p1'));
-      store.dispatch(Actions.closeTab('@/p2'));
+      store.dispatch(Actions.closeTab('a'));
+      store.dispatch(Actions.closeTab('b'));
 
       chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(0);
-      chai.expect(store.getState().editor.currentPatchPath).to.be.equal(null);
+      chai.expect(store.getState().editor.currentTabId).to.be.equal(null);
     });
     it('should sort tabs', () => true);
   });

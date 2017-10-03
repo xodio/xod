@@ -1,12 +1,11 @@
 // xodc transpile [--output=<filename>] <input> <path>
-
 import fs from 'fs';
 import path from 'path';
-import { identity } from 'ramda';
+import { map, identity } from 'ramda';
 
 import { foldEither } from 'xod-func-tools';
 import { loadProject, readJSON, writeFile } from 'xod-fs';
-import { transpileForArduino } from 'xod-arduino';
+import { transformProject, transpile } from 'xod-arduino';
 import * as msg from './messages';
 
 const showErrorAndExit = (err) => {
@@ -48,7 +47,8 @@ export default (input, patchPath, program) => {
       reject(new Error(`Unexpected input "${input}"`));
     }
   })
-    .then(project => transpileForArduino(project, patchPath))
+    .then(project => transformProject(project, patchPath))
+    .then(map(transpile))
     .then(eitherCode =>
       foldEither(
         showErrorAndExit,

@@ -13,6 +13,8 @@ import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 
 import client from 'xod-client';
 import { Project } from 'xod-project';
+import { foldEither } from 'xod-func-tools';
+import { transpile, getNodeIdsMap } from 'xod-arduino';
 
 import packageJson from '../../../package.json';
 
@@ -34,6 +36,7 @@ import { SaveProgressBar } from '../components/SaveProgressBar';
 import formatError from '../../shared/errorFormatter';
 import * as EVENTS from '../../shared/events';
 import * as MESSAGES from '../../shared/messages';
+import { createSystemMessage } from '../../shared/debuggerMessages';
 
 import { subscribeAutoUpdaterEvents, downloadUpdate } from '../autoupdate';
 import { subscribeToTriggerMainMenuRequests } from '../../testUtils/triggerMainMenu';
@@ -168,16 +171,29 @@ class App extends client.App {
   }
 
   onUploadToArduino(board, port, cloud, debug, processActions = null) {
-    const { project, currentPatchPath } = this.props;
     const proc = (processActions !== null) ? processActions : this.props.actions.uploadToArduino();
+    const eitherTProject = this.transformProjectForTranspiler(debug);
+    const eitherCode = eitherTProject.map(transpile);
 
-    ipcRenderer.send(UPLOAD_TO_ARDUINO, {
-      cloud,
-      board,
-      project,
-      port,
-      patchPath: currentPatchPath,
-    });
+    const errored = foldEither(
+      (error) => {
+        proc.fail(error.message, 0);
+        return 1;
+      },
+      (code) => {
+        ipcRenderer.send(UPLOAD_TO_ARDUINO, {
+          code,
+          cloud,
+          board,
+          port,
+        });
+        return 0;
+      },
+      eitherCode
+    );
+
+    if (errored) return;
+
     ipcRenderer.on(UPLOAD_TO_ARDUINO, (event, payload) => {
       if (payload.progress) {
         proc.progress(payload.message, payload.percentage);
@@ -186,7 +202,14 @@ class App extends client.App {
       if (payload.success) {
         proc.success(payload.message);
         if (debug) {
-          debuggerIPC.sendStartDebuggerSession(ipcRenderer, port);
+          foldEither(
+            error => this.props.actions.addError(error.message),
+            (nodeIdsMap) => {
+              this.props.actions.startDebuggerSession(createSystemMessage('Debug session started'), nodeIdsMap);
+              debuggerIPC.sendStartDebuggerSession(ipcRenderer, port);
+            },
+            R.map(getNodeIdsMap, eitherTProject)
+          );
         }
       }
       if (payload.failure) {

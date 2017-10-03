@@ -1,7 +1,7 @@
 import R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
-import { env as xEnv, PinKey, PinLabel } from 'xod-project';
+import { env as xEnv, PinKey, PinLabel, NodeId } from 'xod-project';
 import XF from 'xod-func-tools';
 
 /* Types are by convention starts with a capital leter, so: */
@@ -29,6 +29,10 @@ const OneOfType = XF.OneOfType(packageName, docUrl);
 const TNodeId = AliasType('TNodeId', $.Number);
 const TPinKey = OneOfType('TPinKey', [PinKey, PinLabel]);
 const DataValue = NullaryType('DataValue', R.complement(R.isNil));
+
+export const TranspilationOptions = Model('TranspilationOptions', {
+  debug: $.Boolean,
+});
 
 export const TConfig = Model('TConfig', {
   NODE_COUNT: $.Number,
@@ -70,6 +74,7 @@ const TNodeInput = Model('TNodeInput', {
 
 export const TNode = Model('TNode', {
   id: TNodeId,
+  originalId: NodeId,
   patch: TPatch,
   outputs: $.Array(TNodeOutput),
   inputs: $.Array(TNodeInput),
@@ -88,6 +93,7 @@ export const TProject = Model('TProject', {
 //
 //-----------------------------------------------------------------------------
 const env = xEnv.concat([
+  TranspilationOptions,
   TNodeId,
   TPinKey,
   TConfig,

@@ -43,6 +43,9 @@ export {
   assocComment,
   dissocComment,
   upsertComments,
+  removeDebugNodes,
+  getTopologyMap,
+  applyNodeIdMap,
 } from './patch';
 export * from './node';
 export * from './comment';

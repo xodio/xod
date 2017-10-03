@@ -2,12 +2,6 @@ import * as EVENTS from '../shared/events';
 
 export const subscribeOnDebuggerEvents = (ipcRenderer, app) => {
   ipcRenderer.on(
-    EVENTS.START_DEBUG_SESSION,
-    (event, data) => {
-      app.props.actions.startDebuggerSession(data);
-    }
-  );
-  ipcRenderer.on(
     EVENTS.DEBUG_SESSION,
     (event, data) => app.props.actions.logDebugger(data)
   );

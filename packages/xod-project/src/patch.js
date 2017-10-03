@@ -771,6 +771,40 @@ export const getTopology = def(
 );
 
 /**
+ * Returns a topology of nodes as map of NodeIds to Index.
+ */
+export const getTopologyMap = def(
+  'getTopologyMap :: Patch -> Either Error (Map NodeId String)',
+  R.compose(
+    R.map(R.compose(
+      R.fromPairs,
+      mapIndexed((x, idx) => [x, idx.toString()])
+    )),
+    getTopology
+  )
+);
+
+/**
+ * Applies a map of current node ids to new node ids,
+ * including update of links in the patch.
+ */
+export const applyNodeIdMap = def(
+  'applyNodeIdMap :: Patch -> Map NodeId String -> Patch',
+  (patch, nodeIdsMap) => {
+    const nodes = listNodes(patch);
+    const newNodes = R.indexBy(Node.getNodeId, Utils.resolveNodeIds(nodeIdsMap, nodes));
+    const links = listLinks(patch);
+    const newLinks = R.indexBy(Link.getLinkId, Utils.resolveLinkNodeIds(nodeIdsMap, links));
+
+    return R.compose(
+      R.assoc('nodes', newNodes),
+      R.assoc('links', newLinks),
+      duplicatePatch
+    )(patch);
+  }
+);
+
+/**
  * Change IDs of nodes in a patch provided to '0', '1', '2',... etc
  * so that they are sorted topologically.
  *
@@ -779,22 +813,29 @@ export const getTopology = def(
 export const toposortNodes = def(
   'toposortNodes :: Patch -> Either Error Patch',
   patch => R.compose(
-    R.map((topology) => {
-      // Convert ['abc', 'def', 'ghj'] to { 'abc': '0', 'def': '1', 'ghj': '2' }
-      const nodeIdsMap = R.fromPairs(mapIndexed((x, idx) => [x, idx.toString()])(topology));
+    R.map(applyNodeIdMap(patch)),
+    getTopologyMap
+  )(patch)
+);
 
-      const nodes = listNodes(patch);
-      const newNodes = R.indexBy(Node.getNodeId, Utils.resolveNodeIds(nodeIdsMap, nodes));
-
-      const links = listLinks(patch);
-      const newLinks = R.indexBy(Link.getLinkId, Utils.resolveLinkNodeIds(nodeIdsMap, links));
-
-      return R.compose(
-        R.assoc('links', newLinks),
-        R.assoc('nodes', newNodes),
-        duplicatePatch
-      )(patch);
-    }),
-    getTopology
+/**
+ * Function removes debug nodes and links to these nodes
+ * from the patch. It could be used in transpilation without
+ * debug mode to omit unuseful debug nodes from compiled program.
+ */
+export const removeDebugNodes = def(
+  'removeDebugNodes :: Patch -> Patch',
+  patch => R.compose(
+    R.reduce(
+      (acc, node) => dissocNode(node, acc),
+      patch
+    ),
+    R.filter(
+      R.compose(
+        isAmong(CONST.DEBUG_NODETYPES),
+        Node.getNodeType
+      )
+    ),
+    listNodes,
   )(patch)
 );

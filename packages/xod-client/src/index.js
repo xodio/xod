@@ -14,6 +14,8 @@ import * as ProjectBrowserActions from './projectBrowser/actions';
 import * as PopupActions from './popups/actions';
 import * as DebuggerActions from './debugger/actions';
 
+import { TAB_CLOSE } from './editor/actionTypes';
+
 import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
 import * as PopupConstants from './popups/constants';
@@ -49,6 +51,8 @@ export * from './processes/actions';
 export * from './projectBrowser/actions';
 export * from './popups/actions';
 export * from './debugger/actions';
+
+export { TAB_CLOSE } from './editor/actionTypes';
 
 export * from './editor/selectors';
 export * from './utils/selectors';
@@ -103,6 +107,7 @@ export default Object.assign({
   showOnlyPopup,
   hideOnePopup,
   PopupProjectPreferences,
+  TAB_CLOSE,
 },
   UtilsSelectors,
   EditorSelectors,

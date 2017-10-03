@@ -10,13 +10,14 @@ import * as ProjectActions from '../../../project/actions';
 
 import * as EditorSelectors from '../../selectors';
 import * as ProjectSelectors from '../../../project/selectors';
+import * as DebugSelectors from '../../../debugger/selectors';
 
 import { RenderableLink, RenderableNode, RenderableComment } from '../../../types';
 import sanctuaryPropType from '../../../utils/sanctuaryPropType';
 
 import dropTarget from './dropTarget';
 
-import { EDITOR_MODE } from '../../constants';
+import { EDITOR_MODE, TAB_TYPES } from '../../constants';
 
 import selectingMode from './modes/selecting';
 import linkingMode from './modes/linking';
@@ -24,6 +25,7 @@ import panningMode from './modes/panning';
 import movingMode from './modes/moving';
 import resizingCommentMode from './modes/resizingComment';
 import acceptingDraggedPatchMode from './modes/acceptingDraggedPatch';
+import debuggingMode from './modes/debugging';
 
 const MODE_HANDLERS = {
   [EDITOR_MODE.DEFAULT]: selectingMode,
@@ -32,29 +34,47 @@ const MODE_HANDLERS = {
   [EDITOR_MODE.MOVING_SELECTION]: movingMode,
   [EDITOR_MODE.RESIZING_COMMENT]: resizingCommentMode,
   [EDITOR_MODE.ACCEPTING_DRAGGED_PATCH]: acceptingDraggedPatchMode,
+  [EDITOR_MODE.DEBUGGING]: debuggingMode,
+};
+
+const DEFAULT_MODES = {
+  [TAB_TYPES.PATCH]: EDITOR_MODE.DEFAULT,
+  [TAB_TYPES.DEBUGGER]: EDITOR_MODE.DEBUGGING,
 };
 
 class Patch extends React.Component {
   constructor(props) {
     super(props);
 
+    const mode = DEFAULT_MODES[props.tabType];
+
     this.state = {
+      currentMode: mode,
       modeSpecificState: {
-        [props.mode]: MODE_HANDLERS[props.mode].getInitialState(props),
+        [mode]: MODE_HANDLERS[mode].getInitialState(props),
       },
     };
 
     this.goToMode = this.goToMode.bind(this);
+    this.goToDefaultMode = this.goToDefaultMode.bind(this);
     this.getModeState = this.getModeState.bind(this);
     this.setModeState = this.setModeState.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.tabType !== nextProps.tabType) {
+      this.goToMode(DEFAULT_MODES[nextProps.tabType]);
+    }
   }
 
   getApi(mode) {
     return {
       props: this.props,
+      getCurrentMode: () => this.state.currentMode,
       state: this.getModeState(mode),
       setState: R.partial(this.setModeState, [mode]),
       goToMode: this.goToMode,
+      goToDefaultMode: this.goToDefaultMode,
     };
   }
 
@@ -66,12 +86,15 @@ class Patch extends React.Component {
     // TODO: suport passing state updater fn instead of object?
 
     this.setState(
-      R.over(
-        R.lensPath(['modeSpecificState', mode]),
-        R.compose(
-          R.mergeDeepLeft(newModeSpecificState),
-          R.defaultTo({})
-        )
+      R.compose(
+        R.over(
+          R.lensPath(['modeSpecificState', mode]),
+          R.compose(
+            R.mergeDeepLeft(newModeSpecificState),
+            R.defaultTo({})
+          )
+        ),
+        R.assoc('currentMode', mode)
       ),
       callback
     );
@@ -80,15 +103,19 @@ class Patch extends React.Component {
   goToMode(newMode, payload) {
     const newModeState = MODE_HANDLERS[newMode].getInitialState(this.props, payload);
     this.setModeState(newMode, newModeState);
-    this.props.actions.setMode(newMode);
+  }
+
+  goToDefaultMode(payload) {
+    const { tabType } = this.props;
+    this.goToMode(DEFAULT_MODES[tabType], payload);
   }
 
   render() {
-    const { mode } = this.props;
+    const { currentMode } = this.state;
 
     return this.props.connectDropTarget(
       <div ref={(r) => { this.dropTargetRootRef = r; }}>
-        {MODE_HANDLERS[mode].render(this.getApi(mode))}
+        {MODE_HANDLERS[currentMode].render(this.getApi(currentMode))}
       </div>
     );
   }
@@ -104,11 +131,13 @@ Patch.propTypes = {
   linkingPin: PropTypes.object,
   selection: PropTypes.array,
   patchPath: PropTypes.string,
-  mode: PropTypes.oneOf(R.values(EDITOR_MODE)),
+  tabType: PropTypes.string,
   ghostLink: PropTypes.any,
   offset: PropTypes.object,
   onDoubleClick: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
+  isDebugSession: PropTypes.bool,
+  nodeValues: PropTypes.objectOf(PropTypes.string),
   /* eslint-enable react/no-unused-prop-types */
 };
 
@@ -119,10 +148,12 @@ const mapStateToProps = R.applySpec({
   selection: EditorSelectors.getSelection,
   linkingPin: EditorSelectors.getLinkingPin,
   patchPath: EditorSelectors.getCurrentPatchPath,
-  mode: EditorSelectors.getMode,
+  tabType: EditorSelectors.getCurrentTabType,
   ghostLink: ProjectSelectors.getLinkGhost,
   offset: EditorSelectors.getCurrentPatchOffset,
   draggedPreviewSize: EditorSelectors.getDraggedPreviewSize,
+  isDebugSession: DebugSelectors.isDebugSession,
+  nodeValues: DebugSelectors.getWatchNodeValues,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -141,12 +172,11 @@ const mapDispatchToProps = dispatch => ({
     addEntityToSelection: EditorActions.addEntityToSelection,
     doPinSelection: EditorActions.doPinSelection,
     linkPin: EditorActions.linkPin,
-    setMode: EditorActions.setMode,
     setOffset: EditorActions.setCurrentPatchOffset,
   }, dispatch),
 });
 
 export default R.compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps, undefined, { withRef: true }),
   dropTarget
 )(Patch);

@@ -12,8 +12,8 @@ export const toggleDebugger = () => ({
   type: AT.TOGGLE_DEBUGGER_PANEL,
 });
 
-export const addMessageToDebuggerLog = message => ({
-  type: AT.DEBUGGER_LOG_ADD_MESSAGE,
+export const addMessagesToDebuggerLog = message => ({
+  type: AT.DEBUGGER_LOG_ADD_MESSAGES,
   payload: message,
 });
 
@@ -21,12 +21,17 @@ export const clearDebuggerLog = () => ({
   type: AT.DEBUGGER_LOG_CLEAR,
 });
 
-export const startDebuggerSession = message => ({
+export const startDebuggerSession = (message, nodeIdsMap) => ({
   type: AT.DEBUG_SESSION_STARTED,
-  payload: message,
+  payload: {
+    message,
+    nodeIdsMap,
+  },
 });
 
 export const stopDebuggerSession = message => ({
   type: AT.DEBUG_SESSION_STOPPED,
-  payload: message,
+  payload: {
+    message,
+  },
 });

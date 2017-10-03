@@ -14,7 +14,7 @@
 #  define DEBUG_SERIAL Serial
 #endif
 
-#ifdef XOD_DEBUG
+#if defined(XOD_DEBUG) && defined(XOD_DEBUG_ENABLE_TRACE)
 #  define XOD_TRACE(x)      { DEBUG_SERIAL.print(x); DEBUG_SERIAL.flush(); }
 #  define XOD_TRACE_LN(x)   { DEBUG_SERIAL.println(x); DEBUG_SERIAL.flush(); }
 #  define XOD_TRACE_F(x)    XOD_TRACE(F(x))

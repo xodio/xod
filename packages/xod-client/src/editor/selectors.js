@@ -4,9 +4,44 @@ import { addPoints, subtractPoints, DEFAULT_PANNING_OFFSET } from '../project/no
 
 export const getEditor = R.prop('editor');
 
-export const getCurrentPatchPath = R.pipe(
+
+// tabs
+
+export const getTabs = R.pipe(
   getEditor,
-  R.prop('currentPatchPath')
+  R.prop('tabs')
+);
+
+export const getCurrentTabId = R.pipe(
+  getEditor,
+  R.prop('currentTabId')
+);
+
+export const getCurrentTab = createSelector(
+  [getCurrentTabId, getTabs],
+  (currentTabId, tabs) => R.propOr(null, currentTabId, tabs)
+);
+
+export const getCurrentTabType = createSelector(
+  getCurrentTab,
+  R.propOr(null, 'type')
+);
+
+export const getCurrentPatchPath = createSelector(
+  getCurrentTab,
+  R.propOr(null, 'patchPath')
+);
+
+export const getTabByPatchPath = R.curry(
+  (patchPath, tabs) => R.compose(
+    R.find(R.propEq('patchPath', patchPath)),
+    R.values,
+  )(tabs)
+);
+
+export const getCurrentPatchOffset = createSelector(
+  getCurrentTab,
+  R.propOr(DEFAULT_PANNING_OFFSET, 'offset')
 );
 
 // selection in editor
@@ -66,23 +101,6 @@ export const getLinkingPin = R.pipe(
 
 
 // editor mode
-
-export const getMode = R.pipe(
-  getEditor,
-  R.prop('mode')
-);
-
-// tabs
-
-export const getTabs = R.pipe(
-  getEditor,
-  R.prop('tabs')
-);
-
-export const getCurrentPatchOffset = createSelector(
-  [getCurrentPatchPath, getTabs],
-  (currentPatchPath, tabs) => R.pathOr(DEFAULT_PANNING_OFFSET, [currentPatchPath, 'offset'], tabs)
-);
 
 export const getDefaultNodePlacePosition = createSelector(
   [getCurrentPatchOffset],

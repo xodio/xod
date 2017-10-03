@@ -1,4 +1,5 @@
 import R from 'ramda';
+import shortid from 'shortid';
 import * as XP from 'xod-project';
 
 import {
@@ -8,9 +9,9 @@ import {
   EDITOR_ADD_ENTITY_TO_SELECTION,
   EDITOR_SELECT_PIN,
   EDITOR_DESELECT_PIN,
-  EDITOR_SET_MODE,
   EDITOR_SET_SELECTED_NODETYPE,
   EDITOR_SWITCH_PATCH,
+  EDITOR_SWITCH_TAB,
   TAB_CLOSE,
   TAB_SORT,
   SET_CURRENT_PATCH_OFFSET,
@@ -34,29 +35,114 @@ import {
   LINK_ADD,
   BULK_DELETE_ENTITIES,
 } from '../project/actionTypes';
+import {
+  DEBUG_SESSION_STARTED,
+  DEBUG_SESSION_STOPPED,
+} from '../debugger/actionTypes';
 
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
-import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from './constants';
+import { TAB_TYPES, EDITOR_MODE, SELECTION_ENTITY_TYPE } from './constants';
+import { getTabByPatchPath } from './selectors';
+import { switchPatchUnsafe } from './actions';
 
-const addTab = R.curry((patchPath, state) => {
+// =============================================================================
+//
+// Utils
+//
+// =============================================================================
+
+const getTabs = R.prop('tabs');
+
+const getTabById = R.curry(
+  (tabId, state) => R.compose(
+    R.propOr(null, tabId),
+    getTabs
+  )(state)
+);
+
+const isTabOpened = R.curry(
+  (tabId, state) => R.compose(
+    R.complement(R.isNil),
+    getTabById(tabId)
+  )(state)
+);
+
+const isPatchOpened = R.curry(
+  (patchPath, state) => R.compose(
+    R.complement(R.isNil),
+    getTabByPatchPath(patchPath),
+    getTabs
+  )(state)
+);
+
+const setTabOffset = R.curry(
+  (offset, tabId, state) => R.assocPath(
+    ['tabs', tabId, 'offset'],
+    offset,
+    state
+  )
+);
+
+const getTabIdbyPatchPath = R.curry(
+  (patchPath, state) => R.compose(
+    R.propOr(null, 'id'),
+    R.find(R.propEq('patchPath', patchPath)),
+    R.values,
+    getTabs
+  )(state)
+);
+
+const listTabsByPatchPath = R.curry(
+  (patchPath, state) => R.compose(
+    R.filter(R.propEq('patchPath', patchPath)),
+    R.values,
+    getTabs
+  )(state)
+);
+
+const syncTabOffset = R.curry(
+  (offset, state) => {
+    const currentTab = getTabById(state.currentTabId, state);
+    const currentPatchPath = currentTab.patchPath;
+    if (!currentTab) return state;
+
+    const tabIdsToSync = R.compose(
+      R.map(R.prop('id')),
+      R.reject(R.propEq('id', state.currentTabId)),
+      listTabsByPatchPath(currentPatchPath)
+    )(state);
+    const syncOffsets = R.map(setTabOffset(offset), tabIdsToSync);
+
+    return R.reduce((acc, fn) => fn(acc), state, syncOffsets);
+  }
+);
+
+const addTabWithProps = R.curry(
+  (id, type, patchPath, state) => {
+    const tabs = R.prop('tabs')(state);
+    const lastIndex = R.reduce(
+      (acc, tab) => R.pipe(
+        R.prop('index'),
+        R.max(acc)
+      )(tab),
+      -1,
+      R.values(tabs)
+    );
+    const newIndex = R.inc(lastIndex);
+
+    return R.assocPath(['tabs', id], {
+      id,
+      patchPath,
+      index: newIndex,
+      type,
+      offset: DEFAULT_PANNING_OFFSET,
+    }, state);
+  }
+);
+
+const addPatchTab = R.curry((newId, patchPath, state) => {
   if (!patchPath) return state;
-
-  const tabs = R.prop('tabs')(state);
-  const lastIndex = R.reduce(
-    (acc, tab) => R.pipe(
-      R.prop('index'),
-      R.max(acc)
-    )(tab),
-    -1,
-    R.values(tabs)
-  );
-  const newIndex = R.inc(lastIndex);
-
-  return R.assocPath(['tabs', patchPath], {
-    id: patchPath,
-    index: newIndex,
-    offset: DEFAULT_PANNING_OFFSET,
-  }, state);
+  return addTabWithProps(newId, TAB_TYPES.PATCH, patchPath, state);
 });
 
 const applyTabSort = (tab, payload) => {
@@ -64,10 +150,6 @@ const applyTabSort = (tab, payload) => {
 
   return R.assoc('index', payload[tab.id].index, tab);
 };
-
-const isPatchOpened = R.curry((patchPath, state) =>
-  R.any(R.propEq('id', patchPath))(R.values(state.tabs))
-);
 
 const resetCurrentPatchPath = (reducer, state, payload) => {
   const newState = R.assoc('tabs', {}, state);
@@ -81,12 +163,7 @@ const resetCurrentPatchPath = (reducer, state, payload) => {
     )
   )(payload);
 
-  return reducer(newState, {
-    type: EDITOR_SWITCH_PATCH,
-    payload: {
-      patchPath: firstPatchPath,
-    },
-  });
+  return reducer(newState, switchPatchUnsafe(firstPatchPath));
 };
 
 const clearSelection = R.flip(R.merge)({
@@ -94,31 +171,74 @@ const clearSelection = R.flip(R.merge)({
   linkingPin: null,
 });
 
-const openPatchByPath = (patchPath, state) => R.compose(
-  R.assoc('currentPatchPath', patchPath),
-  clearSelection,
-  R.unless(
-    isPatchOpened(patchPath),
-    addTab(patchPath)
-  )
-)(state);
+const openPatchByPath = R.curry(
+  (patchPath, state) => {
+    const alreadyOpened = isPatchOpened(patchPath, state);
+    const tabId = (alreadyOpened) ?
+        getTabIdbyPatchPath(patchPath, state) :
+        shortid.generate();
 
-const closeTabById = (tabId, state) =>
-  R.compose(
-    R.converge(
-      R.assoc('currentPatchPath'),
-      [
-        R.compose( // get patch id from last of remaining tabs
-          R.propOr(null, 'id'),
-          R.last,
-          R.values,
-          R.prop('tabs')
-        ),
-        R.identity,
-      ]
+    return R.compose(
+      R.assoc('currentTabId', tabId),
+      clearSelection,
+      R.unless(
+        () => alreadyOpened,
+        addPatchTab(tabId, patchPath)
+      )
+    )(state);
+  }
+);
+
+const openLatestOpenedTab = R.converge(
+  R.assoc('currentTabId'),
+  [
+    R.compose( // get patch id from last of remaining tabs
+      R.propOr(null, 'id'),
+      R.last,
+      R.values,
+      R.prop('tabs')
     ),
-    R.dissocPath(['tabs', tabId])
-  )(state);
+    R.identity,
+  ]
+);
+
+const closeTabById = R.curry(
+  (tabId, state) => {
+    const tabToClose = getTabById(tabId, state);
+
+    const isDebuggerTabClosing = () => (tabToClose.type === TAB_TYPES.DEBUGGER);
+    const isCurrentTabClosing = R.propEq('currentTabId', tabId);
+    const isCurrentDebuggerTabClosing = R.both(
+      isDebuggerTabClosing,
+      isCurrentTabClosing
+    );
+
+    const openOriginalPatch = patchPath => R.compose(
+      R.converge(
+        setTabOffset(tabToClose.offset),
+        [
+          getTabIdbyPatchPath(patchPath),
+          R.identity,
+        ]
+      ),
+      openPatchByPath(patchPath)
+    );
+
+    return R.compose(
+      R.cond([
+        [isCurrentDebuggerTabClosing, openOriginalPatch(tabToClose.patchPath)],
+        [isCurrentTabClosing, openLatestOpenedTab],
+        [R.T, R.identity],
+      ]),
+      R.dissocPath(['tabs', tabId])
+    )(state);
+  }
+);
+
+const closeTabByPatchPath = (patchPath, state) => {
+  const tabIdToClose = getTabIdbyPatchPath(patchPath, state);
+  return closeTabById(tabIdToClose, state);
+};
 
 const renamePatchInTabs = (newPatchPath, oldPatchPath) => (tabs) => {
   const oldPatchTab = R.prop(oldPatchPath, tabs);
@@ -130,7 +250,7 @@ const renamePatchInTabs = (newPatchPath, oldPatchPath) => (tabs) => {
     R.assoc(
       newPatchPath,
       R.assoc(
-        'id',
+        'patchPath',
         newPatchPath,
         oldPatchTab
       )
@@ -139,6 +259,12 @@ const renamePatchInTabs = (newPatchPath, oldPatchPath) => (tabs) => {
 };
 
 const createSelectionEntity = R.curry((entityType, id) => ({ entity: entityType, id }));
+
+// =============================================================================
+//
+// Reducer
+//
+// =============================================================================
 
 const editorReducer = (state = {}, action) => {
   switch (action.type) {
@@ -210,8 +336,6 @@ const editorReducer = (state = {}, action) => {
     case EDITOR_DESELECT_PIN:
     case LINK_ADD:
       return R.assoc('linkingPin', null, state);
-    case EDITOR_SET_MODE:
-      return R.assoc('mode', action.payload.mode, state);
     case START_DRAGGING_PATCH:
       return R.merge(
         state,
@@ -226,17 +350,12 @@ const editorReducer = (state = {}, action) => {
       return R.assoc('selectedNodeType', action.payload.id, state);
     case PROJECT_CREATE: {
       const newState = R.assoc('tabs', {}, state);
-      return editorReducer(newState, {
-        type: EDITOR_SWITCH_PATCH,
-        payload: {
-          patchPath: action.payload.mainPatchPath,
-        },
-      });
+      return editorReducer(newState, switchPatchUnsafe(action.payload.mainPatchPath));
     }
     case PROJECT_OPEN:
     case PROJECT_IMPORT: {
       const newState = R.merge(state, {
-        currentPatchPath: null,
+        currentTabId: null,
         selection: [],
         tabs: {},
         linkingPin: null,
@@ -245,7 +364,7 @@ const editorReducer = (state = {}, action) => {
     }
     case PROJECT_OPEN_WORKSPACE:
       return R.merge(state, {
-        currentPatchPath: null,
+        currentTabId: null,
         selection: [],
         tabs: {},
         linkingPin: null,
@@ -253,25 +372,23 @@ const editorReducer = (state = {}, action) => {
     case PATCH_ADD:
     case EDITOR_SWITCH_PATCH:
       return openPatchByPath(action.payload.patchPath, state);
+    case EDITOR_SWITCH_TAB:
+      return R.assoc(
+        'currentTabId',
+        action.payload.tabId,
+        state
+      );
     case PATCH_RENAME: {
       const { newPatchPath, oldPatchPath } = action.payload;
 
-      return R.compose(
-        R.over(
-          R.lensProp('tabs'),
-          renamePatchInTabs(newPatchPath, oldPatchPath)
-        ),
-        R.over(
-          R.lensProp('currentPatchPath'),
-          R.when(
-            R.equals(oldPatchPath),
-            R.always(newPatchPath)
-          )
-        )
-      )(state);
+      return R.over(
+        R.lensProp('tabs'),
+        renamePatchInTabs(newPatchPath, oldPatchPath),
+        state
+      );
     }
     case PATCH_DELETE:
-      return closeTabById(action.payload.patchPath, state);
+      return closeTabByPatchPath(action.payload.patchPath, state);
     case TAB_CLOSE:
       return closeTabById(action.payload.id, state);
     case TAB_SORT:
@@ -284,12 +401,12 @@ const editorReducer = (state = {}, action) => {
         ),
         state
       );
-    case SET_CURRENT_PATCH_OFFSET:
-      return R.assocPath(
-        ['tabs', state.currentPatchPath, 'offset'],
-        action.payload,
-        state
-      );
+    case SET_CURRENT_PATCH_OFFSET: {
+      return R.compose(
+        syncTabOffset(action.payload),
+        setTabOffset(action.payload, state.currentTabId)
+      )(state);
+    }
     case TOGGLE_HELPBAR:
       return R.over(R.lensProp('isHelpbarVisible'), R.not, state);
     case SET_FOCUSED_AREA:
@@ -310,6 +427,22 @@ const editorReducer = (state = {}, action) => {
       )(state);
     case HIGHLIGHT_SUGGESTER_ITEM:
       return R.assocPath(['suggester', 'highlightedPatchPath'], action.payload.patchPath, state);
+    case DEBUG_SESSION_STARTED: {
+      const currentTab = getTabById(state.currentTabId, state);
+      const currentPatchPath = currentTab.patchPath;
+      const currentOffset = currentTab.offset;
+      return R.compose(
+        R.assoc('currentTabId', 'debugger'),
+        R.assoc('mode', EDITOR_MODE.DEBUGGING),
+        setTabOffset(currentOffset, 'debugger'),
+        addTabWithProps('debugger', TAB_TYPES.DEBUGGER, currentPatchPath)
+      )(state);
+    }
+    case DEBUG_SESSION_STOPPED:
+      return R.when(
+        isTabOpened('debugger'),
+        closeTabById('debugger')
+      )(state);
     default:
       return state;
   }

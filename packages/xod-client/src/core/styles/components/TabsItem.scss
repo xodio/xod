@@ -19,14 +19,24 @@
 
   transition: 0.1s ease-out all;
 
-
   &:hover, &:focus {
     background: $color-tabs-hover-background;
   }
-
   &.is-active {
     background: $color-tabs-active-background;
     color: $color-tabs-active-text;
+  }
+
+  &.TabsItem--PATCH {}
+  &.TabsItem--DEBUGGER {
+    color: $color-tabs-debugger-text;
+    background: $color-tabs-unactive-background;
+    font-weight: 700;
+
+    &.is-active {
+      color: $color-tabs-debugger-text;
+      background: $color-tabs-debugger-background;
+    }
   }
 
   .tab-name {

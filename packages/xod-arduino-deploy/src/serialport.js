@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { tapP } from 'xod-func-tools';
+import { tapP, delay as delayP } from 'xod-func-tools';
 
 // =============================================================================
 //
@@ -39,6 +39,8 @@ import { tapP } from 'xod-func-tools';
 //
 // =============================================================================
 
+const delay = ms => () => delayP(ms);
+
 // :: PortOptions -> Port -> Promise Port Error
 const setPortOptions = R.curry(
   (options, port) => new Promise(
@@ -49,17 +51,6 @@ const setPortOptions = R.curry(
       });
     }
   )
-);
-
-// :: Number -> a -> Promise a Error
-const delay = ms => arg => new Promise(
-  (resolve, reject) => {
-    try {
-      setTimeout(() => resolve(arg), ms);
-    } catch (err) {
-      reject(err);
-    }
-  }
 );
 
 // :: Port -> Promise Port Error
@@ -133,7 +124,7 @@ export const closePort = port => new Promise(
 );
 
 // :: PortName -> (String -> *) -> Promise Port Error
-export const openAndReadPort = (portName, onData) => {
+export const openAndReadPort = (portName, onData, onClose) => {
   // eslint-disable-next-line global-require
   const SerialPort = require('serialport');
 
@@ -142,7 +133,10 @@ export const openAndReadPort = (portName, onData) => {
     baudRate: 115200,
     parser: readline('\n'),
   }).then(R.tap(
-    port => port.on('data', onData)
+    (port) => {
+      port.on('data', onData);
+      port.on('close', onClose);
+    }
   ));
 };
 
@@ -150,7 +144,7 @@ export const openAndReadPort = (portName, onData) => {
 export const flushSerialBuffer = portName => openPort(portName)
   .then(flushPort)
   .then(setPortOptions({ dtr: false, rts: false }))
-  .then(delay(100))
+  .then(tapP(delay(100)))
   .then(setPortOptions({ dtr: true, rts: true }))
   .then(closePort);
 

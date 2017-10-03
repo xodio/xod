@@ -7,6 +7,7 @@ export const EDITOR_MODE = {
   LINKING: 'linking',
   PANNING: 'panning',
   ACCEPTING_DRAGGED_PATCH: 'accepting_dragged_patch',
+  DEBUGGING: 'debugging',
 
   get DEFAULT() {
     return this.SELECTING;
@@ -61,3 +62,8 @@ export const FOCUS_AREAS = {
 };
 
 export const CLIPBOARD_DATA_TYPE = 'text/xod-entities';
+
+export const TAB_TYPES = {
+  PATCH: 'PATCH',
+  DEBUGGER: 'DEBUGGER',
+};

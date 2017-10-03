@@ -16,6 +16,7 @@ export {
   isPathLibrary,
   isValidPatchPath,
   isTerminalPatchPath,
+  isWatchPatchPath,
 } from './internal/patchPathUtils';
 
 // :: String -> Identifier
