@@ -80,6 +80,12 @@ const rawItems = {
     command: COMMAND.PASTE,
     role: 'paste',
   },
+  selectall: {
+    key: 'selectall',
+    label: 'Select All',
+    command: COMMAND.SELECT_ALL,
+    role: 'selectall',
+  },
   projectPreferences: {
     key: 'projectPreferences',
     label: 'Project preferences',
