@@ -10,6 +10,7 @@ import {
 
 import {
   PATCH_DELETE,
+  PATCH_RENAME,
 } from '../project/actionTypes';
 
 const selectionReducer = (state, action) => {
@@ -18,6 +19,13 @@ const selectionReducer = (state, action) => {
     case PATCH_RENAME_REQUESTED:
     case PATCH_DELETE_REQUESTED:
       return action.payload.patchPath;
+
+    case PATCH_RENAME:
+      return R.when(
+        R.equals(action.payload.oldPatchPath),
+        R.always(action.payload.newPatchPath),
+        state
+      );
 
     case REMOVE_SELECTION: // TODO: deselect only if there are no open popups?
     case PATCH_DELETE:
