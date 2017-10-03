@@ -105,9 +105,8 @@ export const openPort = (portName, opts = {}) =>
 
     try {
       const port = new SerialPort(portName, opts);
-      port.on('open', () => {
-        resolve(port);
-      });
+      port.on('error', reject);
+      port.on('open', () => resolve(port));
     } catch (err) {
       reject(err);
     }
