@@ -1,0 +1,29 @@
+{
+  "comments": [
+    {
+      "content": "Let’s introduce a new sensor to measure an ambient light level.  A\nphotoresistor (aka light dependent resistor or LDR) would do a great job of\nmeasuring the parameter. However, there is a small problem: we do not have a\nphotoresistor node in XOD.\n\nYet, we have basic nodes for working with the digital and analog ports of the Arduino. A photoresistor is a pretty primitive device, and all we need to do is read its value from the analog port on the Arduino. To do so, we will use an `analog-input` node.\n\n## Instructions\n\n1. Assemble a circuit as shown at https://goo.gl/2QczLg.\n\n2. Find the `analog-input` node in `xod/core` and add it to the patch.\n\n3. Read the description of the node on the help page. Pay attention to the range of values the node returns.\n\n4. Link the `VAL` output pin of the `analog-input` node to the `LUM` pin of the led node.\n\n5. Upload the patch to the Arduino.\n\nCover the photoresistor with your hand, and watch how the brightness of the LED changes.",
+      "id": "H1AsRpAtZ",
+      "position": {
+        "x": -68,
+        "y": 0
+      },
+      "size": {
+        "height": 561,
+        "width": 306
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "B1oqkTnIb": 11
+      },
+      "id": "Hk0_5wNY-",
+      "position": {
+        "x": 272,
+        "y": 204
+      },
+      "type": "xod/common-hardware/led"
+    }
+  ]
+}

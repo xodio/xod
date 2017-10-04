@@ -1,0 +1,65 @@
+{
+  "comments": [
+    {
+      "content": "This is a `constant-number` node. \nIt sets `VAL` output to a number specified in the Inspector.\n",
+      "id": "Byk34BnKZ",
+      "position": {
+        "x": 442,
+        "y": 0
+      },
+      "size": {
+        "height": 51,
+        "width": 306
+      }
+    },
+    {
+      "content": "Previously, we set the node values manually with the Inspector. However, the data can be transferred from the output pin of one node to the input pin of another node. This is the core idea of XOD programming.\n\n## Instructions\n\n1. Click on the `constant-number` node, and set the value of 1 for the `VAL` output in the Inspector.\n\n2. Connect the `VAL` pin with the `LUM` pin on the LED1 node. To do this, simply click on the `VAL` pin and then on the `LUM` pin. You will see a green line connecting the two pins. This line is called a *link*.\n\n3. Make another link between the `VAL` pin and `LUM` pin on the LED2 node.\n\n4. Upload the patch to the Arduino.\n\nThe both LEDs should be on. Now the values of the `LUM` pins of both `led` nodes are taken form the `VAL` pin of the `constant-number` node.\n",
+      "id": "HJfi4H2K-",
+      "position": {
+        "x": -34,
+        "y": 0
+      },
+      "size": {
+        "height": 459,
+        "width": 306
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "B1oqkTnIb": 10
+      },
+      "id": "HknqGwVtb",
+      "label": "LED1",
+      "position": {
+        "x": 306,
+        "y": 204
+      },
+      "type": "xod/common-hardware/led"
+    },
+    {
+      "boundValues": {
+        "B1oqkTnIb": 11
+      },
+      "id": "Syi5GPNFZ",
+      "label": "LED2",
+      "position": {
+        "x": 408,
+        "y": 204
+      },
+      "type": "xod/common-hardware/led"
+    },
+    {
+      "boundValues": {
+        "B1x2RV3eZ": 0
+      },
+      "id": "r1iTfwEFW",
+      "position": {
+        "x": 374,
+        "y": 0
+      },
+      "type": "xod/core/constant-number"
+    }
+  ]
+}

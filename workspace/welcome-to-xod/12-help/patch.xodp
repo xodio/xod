@@ -1,0 +1,52 @@
+{
+  "comments": [
+    {
+      "content": "Actually, we were lucky in the previous patch because the range of values from `pot` (0–1) matched the range accepted by the `servo` node. However, that doesn’t always happen. Often, value ranges on different nodes are incompatible, and we need to match them.\n\n## Instructions\n\n1. Find out the range of the `Tc` output pin on the thermometer node. To do so, click the node, and then click the book icon in the Inspector. You will see a help page. The other way to do it is to click on the node and then press the H key.\n\n2. Read the description. Every node’s description contains full information about the node including the input and output ranges and the types of data.\n\nNow you can figure out the node range by yourself; you just need to read the help page. Proceed to the next patch.",
+      "id": "B1bloO6YZ",
+      "position": {
+        "x": -68,
+        "y": 0
+      },
+      "size": {
+        "height": 459,
+        "width": 306
+      }
+    },
+    {
+      "content": "This node allows one to read data from TMP36 thermometers.\n`PORT` — an analog Arduino port the thermometer is connected to.\n`Tc` — the temperature value.",
+      "id": "H13O5OpYb",
+      "position": {
+        "x": 374,
+        "y": 0
+      },
+      "size": {
+        "height": 51,
+        "width": 544
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "S1vGmu6Gb": 9
+      },
+      "id": "Hy3tvDEKZ",
+      "position": {
+        "x": 272,
+        "y": 204
+      },
+      "type": "xod/common-hardware/servo"
+    },
+    {
+      "boundValues": {
+        "H1s0WI6MZ": 1
+      },
+      "id": "rkEKww4tW",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/common-hardware/thermometer-tmp36"
+    }
+  ]
+}

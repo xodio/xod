@@ -1,0 +1,182 @@
+{
+  "description": "Projects a number from one range to another preserving ratio. Then clips a result to the target range.",
+  "links": [
+    {
+      "id": "B1-dxJl2Z",
+      "input": {
+        "nodeId": "ryZQg1x2Z",
+        "pinKey": "H1WURCknW"
+      },
+      "output": {
+        "nodeId": "BJTBgke3b",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByPvgJe2-",
+      "input": {
+        "nodeId": "S1TMl1ehW",
+        "pinKey": "ry1z8CuBDy-"
+      },
+      "output": {
+        "nodeId": "SJbSlJxh-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJiDeJl2W",
+      "input": {
+        "nodeId": "S1TMl1ehW",
+        "pinKey": "rkpbU0OrwyZ"
+      },
+      "output": {
+        "nodeId": "HkFBgJehW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkDOlygnb",
+      "input": {
+        "nodeId": "rJFmgJehW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ryZQg1x2Z",
+        "pinKey": "BJRURA1nW"
+      }
+    },
+    {
+      "id": "HkKvgJlnZ",
+      "input": {
+        "nodeId": "S1TMl1ehW",
+        "pinKey": "HJCWLAdSwyW"
+      },
+      "output": {
+        "nodeId": "B1rSeJlnZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sy5DeJehb",
+      "input": {
+        "nodeId": "S1TMl1ehW",
+        "pinKey": "rJbGU0_Hv1Z"
+      },
+      "output": {
+        "nodeId": "BJTBgke3b",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r11uxJenb",
+      "input": {
+        "nodeId": "ryZQg1x2Z",
+        "pinKey": "Hy_U0013b"
+      },
+      "output": {
+        "nodeId": "HkFBgJehW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1Emeyg3-",
+      "input": {
+        "nodeId": "ryZQg1x2Z",
+        "pinKey": "Hk2H0A13-"
+      },
+      "output": {
+        "nodeId": "S1TMl1ehW",
+        "pinKey": "H12bIR_SPyZ"
+      }
+    },
+    {
+      "id": "r1LDgJx2-",
+      "input": {
+        "nodeId": "S1TMl1ehW",
+        "pinKey": "BJlzICOSv1-"
+      },
+      "output": {
+        "nodeId": "HJjEe1lnb",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Source range upper bound",
+      "id": "B1rSeJlnZ",
+      "label": "Smax",
+      "position": {
+        "x": 238,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Target range lower bound",
+      "id": "BJTBgke3b",
+      "label": "Tmin",
+      "position": {
+        "x": 272,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "The value to map and clip.",
+      "id": "HJjEe1lnb",
+      "label": "X",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Source range upper bound",
+      "id": "HkFBgJehW",
+      "label": "Tmax",
+      "position": {
+        "x": 306,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "S1TMl1ehW",
+      "position": {
+        "x": 170,
+        "y": 204
+      },
+      "type": "@/map-range"
+    },
+    {
+      "description": "Source range lower bound",
+      "id": "SJbSlJxh-",
+      "label": "Smin",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "The resulting mapped and clipped value of `X`.",
+      "id": "rJFmgJehW",
+      "label": "Xmc",
+      "position": {
+        "x": 170,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "ryZQg1x2Z",
+      "position": {
+        "x": 170,
+        "y": 306
+      },
+      "type": "@/clip"
+    }
+  ]
+}

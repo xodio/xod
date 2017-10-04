@@ -1,0 +1,30 @@
+{
+  "comments": [
+    {
+      "content": "The `LUM` pin on the `led` node accepts values between 0 and 1. The 0 value represents no glow at all, while a value of 1 denotes full brightness.\n\nHowever, you can adjust brightness level by setting values *between* 0 and 1 to the `LUM` pin.\n\n## Instructions\n\n1. Set the `LUM` pin to 0.4. To do this, click on the led node and type in the value in the Inspector.\n\n2. Upload the patch program to the Arduino.\n\nNow your LED is not glowing as bright as before. Feel free to try other values between 0 and 1 before moving on to the next step.\n",
+      "id": "BkVzdWnKW",
+      "position": {
+        "x": -68,
+        "y": 0
+      },
+      "size": {
+        "height": 357,
+        "width": 306
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "B1oqkTnIb": 11,
+        "HyYh1a3LZ": 0
+      },
+      "id": "BJ2tewEKb",
+      "position": {
+        "x": 272,
+        "y": 204
+      },
+      "type": "xod/common-hardware/led"
+    }
+  ]
+}

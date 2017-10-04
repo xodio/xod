@@ -1,0 +1,81 @@
+{
+  "description": "Reads values from a generic potentiometer. Basically a thin wrapper around `analog-input` for a simpler learning experience.",
+  "links": [
+    {
+      "id": "HyAznCJ3Z",
+      "input": {
+        "nodeId": "H1sM2A12-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyxfnA1nb",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "S1If2Ak3W",
+      "input": {
+        "nodeId": "SyxfnA1nb",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "S1TehAk2b",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rk7GnAk2Z",
+      "input": {
+        "nodeId": "SyxfnA1nb",
+        "pinKey": "BJuORNheZ"
+      },
+      "output": {
+        "nodeId": "Hkry2AJhW",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "The last read potentiometer position in range [0.0, 1.0].",
+      "id": "H1sM2A12-",
+      "label": "VAL",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "A board ADC port the potentiometer is connected to.",
+      "id": "Hkry2AJhW",
+      "label": "PORT",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers a new read.",
+      "id": "S1TehAk2b",
+      "label": "UPD",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "SyxfnA1nb",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/core/analog-input"
+    }
+  ]
+}
