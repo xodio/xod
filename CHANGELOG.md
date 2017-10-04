@@ -4,6 +4,43 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* Brand new tutorial. It has two versions: the first one is embedded right into
+  the `welcome-to-xod` project you see after the desktop IDE installation or
+  browser-based IDE launch; the second one is published statically in the
+  [documentation](https://xod.io/docs/) section of the site.
+* The debugger and watches! Now, you can watch for value changes in real-time
+  right inside the desktop XOD IDE. Place a `xod/core/watch` node, link it,
+  and upload the program with “Debug after upload” checkbox set. The debugger
+  also lets you view incoming serial data log like the Serial Monitor in
+  Arduino IDE does.
+* Bulk selection and mass actions. Hold the Ctrl key (Command on macOS) while
+  clicking on nodes, links, or comments to select multiple entities. After
+  that, you could move or delete them all at once.
+* Cut/copy/paste. Finally, clipboard functionality you expect from any
+  application is here. Ctrl+C/Ctrl+V your nodes on a patch, across patches, or
+  even across XOD IDE windows.
+* Cloud compilation. Now, rather than pull the whole compiler toolchain to your
+  system, you can choose to compile in our cloud. Check “Compile in the cloud”
+  box in the Upload Dialog to use it. This is the first step toward making the
+  browser-based XOD IDE fully functional.
+
+### New nodes
+
+* [xod/core/clip](https://xod.io/libs/xod/core/clip)
+* [xod/core/map-clip-range](https://xod.io/libs/xod/core/map-clip-range)
+* [xod/common-hardware/pot](https://xod.io/libs/xod/common-hardware/port)
+
+### Bug fixes
+
+* Fixed upload dialog hang if the serial port was busy (thanks @awgrover)
+* Fixed multiple recurring typos of “Ouput” with missing “t” (thanks @awgrover)
+* Always keep patches sorted alphabetically in the Project Browser. Previously,
+  new patches and patch renames broke the order.
+
 <a name="0.13.0"></a>
 ## 0.13.0 (2017-09-04)
 
