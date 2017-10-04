@@ -240,22 +240,12 @@ const closeTabByPatchPath = (patchPath, state) => {
   return closeTabById(tabIdToClose, state);
 };
 
-const renamePatchInTabs = (newPatchPath, oldPatchPath) => (tabs) => {
-  const oldPatchTab = R.prop(oldPatchPath, tabs);
+const renamePatchInTabs = (newPatchPath, oldPatchPath, state) => {
+  const tabIdToRename = getTabIdbyPatchPath(oldPatchPath, state);
 
-  if (!oldPatchTab) return tabs;
-
-  return R.compose(
-    R.dissoc(oldPatchPath),
-    R.assoc(
-      newPatchPath,
-      R.assoc(
-        'patchPath',
-        newPatchPath,
-        oldPatchTab
-      )
-    )
-  )(tabs);
+  return (tabIdToRename === null)
+    ? state
+    : R.assocPath(['tabs', tabIdToRename, 'patchPath'], newPatchPath, state);
 };
 
 const createSelectionEntity = R.curry((entityType, id) => ({ entity: entityType, id }));
@@ -378,15 +368,12 @@ const editorReducer = (state = {}, action) => {
         action.payload.tabId,
         state
       );
-    case PATCH_RENAME: {
-      const { newPatchPath, oldPatchPath } = action.payload;
-
-      return R.over(
-        R.lensProp('tabs'),
-        renamePatchInTabs(newPatchPath, oldPatchPath),
+    case PATCH_RENAME:
+      return renamePatchInTabs(
+        action.payload.newPatchPath,
+        action.payload.oldPatchPath,
         state
       );
-    }
     case PATCH_DELETE:
       return closeTabByPatchPath(action.payload.patchPath, state);
     case TAB_CLOSE:
