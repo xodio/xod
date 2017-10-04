@@ -20,7 +20,10 @@ export const getProjectName = createSelector(
 
 export const getLocalPatches = createSelector(
   ProjectSelectors.getProject,
-  XP.listLocalPatches
+  R.compose(
+    R.sortBy(XP.getPatchPath),
+    XP.listLocalPatches
+  )
 );
 
 // TODO: this is not actually label anymore
