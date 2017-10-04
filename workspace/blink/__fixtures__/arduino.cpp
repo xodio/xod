@@ -1058,8 +1058,8 @@ bool isTimedOut(NodeId nid) {
 // Entry point
 //----------------------------------------------------------------------------
 void setup() {
-    // FIXME: looks like there is a rounding bug. Waiting for 1 second fights it
-    delay(1000);
+    // FIXME: looks like there is a rounding bug. Waiting for 100ms fights it
+    delay(100);
 #ifdef XOD_DEBUG
     DEBUG_SERIAL.begin(115200);
 #endif
