@@ -16,6 +16,7 @@ const NodesLayer = ({
   areDragged,
   onMouseDown,
   onMouseUp,
+  onDoubleClick,
   isDebugSession,
   nodeValues,
 }) => {
@@ -42,6 +43,7 @@ const NodesLayer = ({
               pinLinkabilityValidator={pinLinkabilityValidator}
               onMouseDown={onMouseDown}
               onMouseUp={onMouseUp}
+              onDoubleClick={onDoubleClick}
               isDebugSession={isDebugSession}
               nodeValue={R.prop(node.id, nodeValues)}
             />
@@ -64,6 +66,7 @@ NodesLayer.propTypes = {
   areDragged: PropTypes.bool,
   onMouseDown: PropTypes.func,
   onMouseUp: PropTypes.func,
+  onDoubleClick: PropTypes.func,
   isDebugSession: PropTypes.bool,
   nodeValues: PropTypes.objectOf(PropTypes.string),
 };

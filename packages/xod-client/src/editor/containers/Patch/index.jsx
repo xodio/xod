@@ -173,6 +173,7 @@ const mapDispatchToProps = dispatch => ({
     doPinSelection: EditorActions.doPinSelection,
     linkPin: EditorActions.linkPin,
     setOffset: EditorActions.setCurrentPatchOffset,
+    switchPatch: EditorActions.switchPatch,
   }, dispatch),
 });
 
