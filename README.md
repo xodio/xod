@@ -23,13 +23,13 @@ to install all JS dependencies.
 
 ### Browser IDE
 
-    $ yarn dev -- xod-client-browser
+    $ yarn dev-browser
 
 Open <http://localhost:8080> in your browser.
 
 ### Desktop IDE
 
-    $ yarn build -- xod-client-electron
+    $ yarn build --scope xod-client-electron --include-filtered-dependencies
     $ yarn start:xod-client-electron
 
 Directory structure
@@ -53,7 +53,7 @@ You can run several commands on source files. They are available as yarn
 subcommands:
 
 - `yarn build` — build, transpile, pack
-- `yarn dev` — the same, but watches for changes with auto-reload
+- `yarn dev-browser` — run dev-version of browser IDE on localhost
 - `yarn electron-dist` — build OS-specific distributive
 - `yarn test` — run unit tests
 - `yarn test:watch` — like test, but watches for changes with auto-retest
@@ -73,14 +73,15 @@ expect that the project is already built.
 ### Scoping
 
 Many commands (notably `build`, `dev`, `test`) support package scoping to
-save development time. To rebuild only `xod-cli` and its dependencies:
+save development time. To rebuild only `xod-cli`:
 
-    $ yarn build -- xod-cli
+    $ yarn build --scope xod-cli
 
-To rebuild only `xod-cli` without dependencies:
+To rebuild `xod-cli` and its dependencies:
 
-    $ yarn build -- xod-cli --only
+    $ yarn build --scope xod-cli --include-filtered-dependencies
 
+Those are standard [Lerna flags](https://github.com/lerna/lerna#flags).
 
 ### Debugging functional tests
 

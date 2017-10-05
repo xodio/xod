@@ -1,19 +1,20 @@
 const fs = require('fs');
 const path = require('path');
+const findup = require('findup-sync');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
 
 const pkgpath = subpath => path.resolve(__dirname, subpath);
-const assetsPath = fs.realpathSync(pkgpath('node_modules/xod-client/src/core/assets'));
-const fontAwesomePath = fs.realpathSync(pkgpath('node_modules/xod-client/node_modules/font-awesome'));
+const assetsPath = fs.realpathSync(findup('node_modules/xod-client/src/core/assets'));
+const fontAwesomePath = fs.realpathSync(findup('node_modules/font-awesome'));
 
 const options = {
   devtool: 'source-map',
   entry: [
     'babel-polyfill',
-    pkgpath('node_modules/xod-client/src/core/styles/main.scss'),
+    findup('node_modules/xod-client/src/core/styles/main.scss'),
     pkgpath('src/view/styles/main.scss'),
     pkgpath('src/shim.js'),
     pkgpath('src/index.jsx'),
@@ -34,7 +35,7 @@ const options = {
     alias: {
       handlebars: 'handlebars/dist/handlebars.js',
       /** @see {@link http://stackoverflow.com/a/32444088} */
-      react: pkgpath('node_modules/xod-client/node_modules/react'),
+      react: findup('node_modules/react'),
     },
   },
   externals: {
@@ -79,7 +80,7 @@ const options = {
         ],
       },
       {
-        include: [fontAwesomePath, pkgpath('node_modules/font-awesome')],
+        include: [fontAwesomePath, findup('node_modules/font-awesome')],
         test: /\.(jpe?g|png|gif|svg|ttf|eot|woff|woff2)(\?\S*)?$/,
         loaders: [
           'file?name=assets/font-awesome/[name].[ext]?[hash:6]',
@@ -103,7 +104,7 @@ const options = {
   plugins: [
     new webpack.NoErrorsPlugin(),
     new CopyWebpackPlugin([
-      { from: pkgpath('node_modules/xod-client/src/core/assets/index.html') },
+      { from: findup('node_modules/xod-client/src/core/assets/index.html') },
     ]),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),

@@ -4,7 +4,7 @@ const repl = require('repl');
 const Application = require('spectron').Application;
 
 const app = new Application({
-  path: './packages/xod-client-electron/node_modules/.bin/electron',
+  path: './node_modules/.bin/electron',
   args: [
     './packages/xod-client-electron',
   ],

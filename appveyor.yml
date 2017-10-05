@@ -14,7 +14,8 @@ init:
 - git config --system core.longpaths true
 
 install:
-- ps: Install-Product node 7.10.1 x64
+- ps: Install-Product node 8.6.0 x64
+- npm install yarn@1.1.0 -g
 - yarn install
 
 build_script:

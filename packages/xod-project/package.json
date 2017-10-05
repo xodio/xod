@@ -10,9 +10,9 @@
   "scripts": {
     "doc": "documentation build --format html --output doc --sort-order alpha src/",
     "build": "babel src/ -d dist/ --source-maps",
-    "dev": "yarn run build -- --watch",
+    "dev": "yarn run build --watch",
     "test": "mocha test/**/*.spec.js",
-    "test:watch": "yarn run test -- --watch"
+    "test:watch": "yarn run test --watch"
   },
   "dependencies": {
     "hm-def": "^0.2.0",

@@ -4,7 +4,7 @@ const autoprefixer = require('autoprefixer');
 
 const pkgpath = subpath => path.resolve(__dirname, '..', subpath);
 const assetsPath = pkgpath('src/core/assets');
-const fontAwesomePath = pkgpath('node_modules/font-awesome');
+const fontAwesomePath = pkgpath('../../node_modules/font-awesome');
 
 module.exports = {
   module: {
