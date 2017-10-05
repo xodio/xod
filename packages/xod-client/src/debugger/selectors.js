@@ -1,4 +1,10 @@
 import R from 'ramda';
+import { createSelector } from 'reselect';
+import {
+  getCurrentTabId,
+  getBreadcrumbChunks,
+  getBreadcrumbActiveIndex,
+} from '../editor/selectors';
 
 export const getDebuggerState = R.prop('debugger');
 
@@ -25,4 +31,41 @@ export const getDebuggerNodeIdsMap = R.compose(
 export const getWatchNodeValues = R.compose(
   R.prop('watchNodeValues'),
   getDebuggerState
+);
+
+export const getWatchNodeValuesForCurrentPatch = createSelector(
+  [getCurrentTabId, getWatchNodeValues, getBreadcrumbChunks, getBreadcrumbActiveIndex],
+  (tabId, nodeValues, chunks, activeIndex) => {
+    if (tabId !== 'debugger') return {};
+
+    const nodeIdPath = R.compose(
+      R.join('~'),
+      R.append(''),
+      R.map(R.prop('nodeId')),
+      R.remove(0, 1), // remove first cause it's entry patch without any nodeId
+      R.take(activeIndex + 1)
+    )(chunks);
+
+    return R.compose(
+      R.fromPairs,
+      R.when(
+        () => (activeIndex !== 0),
+        R.map(
+          R.over(
+            R.lensIndex(0),
+            R.replace(nodeIdPath, '')
+          )
+        )
+      ),
+      R.filter(R.compose(
+        R.ifElse(
+          () => (activeIndex === 0),
+          R.complement(R.contains)('~'),
+          R.startsWith(nodeIdPath),
+        ),
+        R.nth(0)
+      )),
+      R.toPairs
+    )(nodeValues);
+  }
 );

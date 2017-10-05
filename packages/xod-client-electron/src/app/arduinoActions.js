@@ -323,8 +323,10 @@ export const startDebugSessionHandler = (storeFn, onCloseCb) => (event, { port }
 
   const intervalId = setInterval(
     () => {
-      event.sender.send(EVENTS.DEBUG_SESSION, messageCollector);
-      messageCollector = [];
+      if (messageCollector.length > 0) {
+        event.sender.send(EVENTS.DEBUG_SESSION, messageCollector);
+        messageCollector = [];
+      }
     },
     throttleDelay
   );

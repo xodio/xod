@@ -38,6 +38,7 @@ import {
 import {
   DEBUG_SESSION_STARTED,
   DEBUG_SESSION_STOPPED,
+  DEBUG_DRILL_DOWN,
 } from '../debugger/actionTypes';
 
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
@@ -52,12 +53,34 @@ import { switchPatchUnsafe } from './actions';
 // =============================================================================
 
 const getTabs = R.prop('tabs');
+const getCurrentTabId = R.prop('currentTabId');
 
 const getTabById = R.curry(
   (tabId, state) => R.compose(
     R.propOr(null, tabId),
     getTabs
   )(state)
+);
+
+const getCurrentTab = R.converge(
+  getTabById,
+  [
+    getCurrentTabId,
+    R.identity,
+  ]
+);
+
+const getBreadcrumbs = R.compose(
+  R.prop('breadcrumbs'),
+  getCurrentTab
+);
+const getBreadcrumbActiveIndex = R.compose(
+  R.propOr(-1, 'activeIndex'),
+  getBreadcrumbs
+);
+const getBreadcrumbChunks = R.compose(
+  R.propOr([], 'chunks'),
+  getBreadcrumbs
 );
 
 const isTabOpened = R.curry(
@@ -76,11 +99,20 @@ const isPatchOpened = R.curry(
 );
 
 const setTabOffset = R.curry(
-  (offset, tabId, state) => R.assocPath(
-    ['tabs', tabId, 'offset'],
-    offset,
-    state
-  )
+  (offset, tabId, state) => R.compose(
+    R.when(
+      () => (tabId === 'debugger'),
+      newState => R.assocPath(
+        ['tabs', tabId, 'breadcrumbs', 'chunks', getBreadcrumbActiveIndex(newState), 'offset'],
+        offset,
+        newState
+      )
+    ),
+    R.assocPath(
+      ['tabs', tabId, 'offset'],
+      offset
+    )
+  )(state)
 );
 
 const getTabIdbyPatchPath = R.curry(
@@ -117,6 +149,14 @@ const syncTabOffset = R.curry(
   }
 );
 
+const setPropsToTab = R.curry(
+  (id, props, state) => R.compose(
+    R.assocPath(['tabs', id], R.__, state),
+    R.merge(R.__, props),
+    getTabById(id)
+  )(state)
+);
+
 const addTabWithProps = R.curry(
   (id, type, patchPath, state) => {
     const tabs = R.prop('tabs')(state);
@@ -130,7 +170,7 @@ const addTabWithProps = R.curry(
     );
     const newIndex = R.inc(lastIndex);
 
-    return R.assocPath(['tabs', id], {
+    return setPropsToTab(id, {
       id,
       patchPath,
       index: newIndex,
@@ -225,6 +265,10 @@ const closeTabById = R.curry(
     );
 
     return R.compose(
+      R.when(
+        isCurrentDebuggerTabClosing,
+        clearSelection
+      ),
       R.cond([
         [isCurrentDebuggerTabClosing, openOriginalPatch(tabToClose.patchPath)],
         [isCurrentTabClosing, openLatestOpenedTab],
@@ -249,6 +293,77 @@ const renamePatchInTabs = (newPatchPath, oldPatchPath, state) => {
 };
 
 const createSelectionEntity = R.curry((entityType, id) => ({ entity: entityType, id }));
+
+const findChunkIndex = R.curry(
+  (patchPath, nodeId, chunks) =>
+    R.findIndex(R.both(
+      R.propEq('patchPath', patchPath),
+      R.propEq('nodeId', nodeId),
+    ),
+    chunks
+  )
+);
+
+const createChunk = (patchPath, nodeId) => ({
+  patchPath,
+  nodeId,
+  offset: DEFAULT_PANNING_OFFSET,
+});
+
+const setActiveIndex = R.curry(
+  (index, state) => {
+    const curTabId = getCurrentTabId(state);
+    return R.assocPath(['tabs', curTabId, 'breadcrumbs', 'activeIndex'], index, state);
+  }
+);
+
+const drillDown = R.curry(
+  (patchPath, nodeId, state) => {
+    const currentTabId = getCurrentTabId(state);
+    if (currentTabId !== 'debugger') return state;
+
+    const activeIndex = getBreadcrumbActiveIndex(state);
+    const chunks = getBreadcrumbChunks(state);
+    const index = findChunkIndex(patchPath, nodeId, chunks);
+
+    if (index > -1) {
+      const chunkOffset = getBreadcrumbChunks(state)[index].offset;
+      return R.compose(
+        setTabOffset(chunkOffset, currentTabId),
+        setActiveIndex(index)
+      )(state);
+    }
+
+    const shouldResetTail = (activeIndex < (chunks.length - 1));
+    const newChunk = createChunk(patchPath, nodeId);
+    const newChunkOffset = newChunk.offset;
+
+    return R.compose(
+      setTabOffset(newChunkOffset, currentTabId),
+      R.converge(
+        setActiveIndex,
+        [
+          R.compose(
+            R.subtract(R.__, 1),
+            R.length,
+            getBreadcrumbChunks
+          ),
+          R.identity,
+        ]
+      ),
+      R.over(
+        R.lensPath(['tabs', currentTabId, 'breadcrumbs', 'chunks']),
+        R.compose(
+          R.append(newChunk),
+          R.when(
+            () => shouldResetTail,
+            R.take((activeIndex + 1))
+          )
+        )
+      ),
+    )(state);
+  }
+);
 
 // =============================================================================
 //
@@ -363,11 +478,13 @@ const editorReducer = (state = {}, action) => {
     case EDITOR_SWITCH_PATCH:
       return openPatchByPath(action.payload.patchPath, state);
     case EDITOR_SWITCH_TAB:
-      return R.assoc(
-        'currentTabId',
-        action.payload.tabId,
-        state
-      );
+      return R.compose(
+        R.assoc(
+          'currentTabId',
+          action.payload.tabId
+        ),
+        clearSelection
+      )(state);
     case PATCH_RENAME:
       return renamePatchInTabs(
         action.payload.newPatchPath,
@@ -419,9 +536,11 @@ const editorReducer = (state = {}, action) => {
       const currentPatchPath = currentTab.patchPath;
       const currentOffset = currentTab.offset;
       return R.compose(
+        drillDown(action.payload.patchPath, null),
         R.assoc('currentTabId', 'debugger'),
         R.assoc('mode', EDITOR_MODE.DEBUGGING),
         setTabOffset(currentOffset, 'debugger'),
+        clearSelection,
         addTabWithProps('debugger', TAB_TYPES.DEBUGGER, currentPatchPath)
       )(state);
     }
@@ -429,6 +548,12 @@ const editorReducer = (state = {}, action) => {
       return R.when(
         isTabOpened('debugger'),
         closeTabById('debugger')
+      )(state);
+    case DEBUG_DRILL_DOWN:
+      return R.compose(
+        drillDown(action.payload.patchPath, action.payload.nodeId),
+        setPropsToTab('debugger', { patchPath: action.payload.patchPath }),
+        clearSelection
       )(state);
     default:
       return state;
