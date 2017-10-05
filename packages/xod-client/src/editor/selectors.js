@@ -1,6 +1,11 @@
 import R from 'ramda';
+import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
+import { mapIndexed } from 'xod-func-tools';
+import * as XP from 'xod-project';
 import { addPoints, subtractPoints, DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
+
+const getProject = R.prop('project'); // Problem of cycle imports...
 
 export const getEditor = R.prop('editor');
 
@@ -140,4 +145,57 @@ export const getSuggesterPlacePosition = R.pipe(
 export const getSuggesterHighlightedPatchPath = R.pipe(
   getSuggester,
   R.prop('highlightedPatchPath')
+);
+
+
+export const getBreadcrumbs = R.compose(
+  R.prop('breadcrumbs'),
+  getCurrentTab
+);
+
+export const getBreadcrumbChunks = R.compose(
+  R.propOr([], 'chunks'),
+  getBreadcrumbs
+);
+
+export const getBreadcrumbActiveIndex = R.compose(
+  R.propOr(-1, 'activeIndex'),
+  getBreadcrumbs
+);
+
+export const getActiveBreadcrumb = createSelector(
+  [getBreadcrumbActiveIndex, getBreadcrumbChunks],
+  R.ifElse(
+    R.equals(-1),
+    R.always(null),
+    R.nth
+  )
+);
+
+export const getRenerableBreadcrumbChunks = createSelector(
+  [getProject, getBreadcrumbChunks],
+  (project, chunks) => mapIndexed(
+    (chunk, i) => {
+      const patchName = XP.getBaseName(chunk.patchPath);
+      if (chunk.nodeId === null) {
+        return R.assoc('label', patchName, chunk);
+      }
+
+      const parentPatchPath = chunks[i - 1].patchPath;
+      return R.compose(
+        R.assoc('label', R.__, chunk),
+        R.when(
+          R.isEmpty,
+          R.always(patchName)
+        ),
+        Maybe.maybe(
+          patchName,
+          XP.getNodeLabel
+        ),
+        XP.getNodeById(chunk.nodeId),
+        XP.getPatchByPathUnsafe(parentPatchPath)
+      )(project);
+    },
+    chunks
+  )
 );

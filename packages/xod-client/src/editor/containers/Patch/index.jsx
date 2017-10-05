@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 
 import * as EditorActions from '../../actions';
 import * as ProjectActions from '../../../project/actions';
+import * as DebuggerActions from '../../../debugger/actions';
 
 import * as EditorSelectors from '../../selectors';
 import * as ProjectSelectors from '../../../project/selectors';
@@ -153,7 +154,7 @@ const mapStateToProps = R.applySpec({
   offset: EditorSelectors.getCurrentPatchOffset,
   draggedPreviewSize: EditorSelectors.getDraggedPreviewSize,
   isDebugSession: DebugSelectors.isDebugSession,
-  nodeValues: DebugSelectors.getWatchNodeValues,
+  nodeValues: DebugSelectors.getWatchNodeValuesForCurrentPatch,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -174,6 +175,7 @@ const mapDispatchToProps = dispatch => ({
     linkPin: EditorActions.linkPin,
     setOffset: EditorActions.setCurrentPatchOffset,
     switchPatch: EditorActions.switchPatch,
+    drillDown: DebuggerActions.drillDown,
   }, dispatch),
 });
 
