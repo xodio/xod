@@ -155,6 +155,9 @@ const selectingMode = {
       getMousePosition
     )(patchSvgRef, api.props.offset, event);
   },
+  onNodeDoubleClick(api, nodeId, patchPath) {
+    api.props.actions.switchPatch(patchPath);
+  },
   getHotkeyHandlers(api) {
     return {
       [COMMAND.DELETE_SELECTION]: bindApi(api, this.onDeleteSelection),
@@ -200,6 +203,7 @@ const selectingMode = {
               linkingPin={api.props.linkingPin}
               onMouseDown={R.partial(this.onEntityMouseDown, [api, SELECTION_ENTITY_TYPE.NODE])}
               onMouseUp={R.partial(this.onEntityMouseUp, [api, SELECTION_ENTITY_TYPE.NODE])}
+              onDoubleClick={bindApi(api, this.onNodeDoubleClick)}
             />
             <Layers.LinksOverlay
               links={api.props.links}
