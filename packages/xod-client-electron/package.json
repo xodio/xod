@@ -14,8 +14,7 @@
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps",
     "test": "electron-mocha ./test",
-    "test-func": "mocha --opts test-func/mocha.opts test-func/**/*.spec.js",
-    "pack": "electron-builder --dir"
+    "test-func": "mocha --opts test-func/mocha.opts test-func/**/*.spec.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
