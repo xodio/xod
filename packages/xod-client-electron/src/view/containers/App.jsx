@@ -205,7 +205,11 @@ class App extends client.App {
           foldEither(
             error => this.props.actions.addError(error.message),
             (nodeIdsMap) => {
-              this.props.actions.startDebuggerSession(createSystemMessage('Debug session started'), nodeIdsMap);
+              this.props.actions.startDebuggerSession(
+                createSystemMessage('Debug session started'),
+                nodeIdsMap,
+                this.props.currentPatchPath
+              );
               debuggerIPC.sendStartDebuggerSession(ipcRenderer, port);
             },
             R.map(getNodeIdsMap, eitherTProject)
