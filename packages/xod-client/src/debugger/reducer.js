@@ -17,6 +17,12 @@ import initialState from './state';
 
 const MAX_LOG_MESSAGES = 1000;
 
+// =============================================================================
+//
+// Utils
+//
+// =============================================================================
+
 const addToLog = R.over(R.lensProp('log'));
 
 const addMessageToLog = R.curry(
@@ -61,6 +67,12 @@ const updateWatchNodeValues = R.curry(
 
 const showDebuggerPane = R.assoc('isVisible', true);
 const hideDebuggerPane = R.assoc('isVisible', false);
+
+// =============================================================================
+//
+// Reducer
+//
+// =============================================================================
 
 export default (state = initialState, action) => {
   switch (action.type) {
