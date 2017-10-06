@@ -19,13 +19,14 @@ import * as EditorSelectors from '../selectors';
 
 import { isInput } from '../../utils/browser';
 import { COMMAND } from '../../utils/constants';
-import { FOCUS_AREAS } from '../constants';
+import { FOCUS_AREAS, DEBUGGER_TAB_ID } from '../constants';
 
 import Patch from './Patch';
 import NoPatch from '../components/NoPatch';
 import Suggester from '../components/Suggester';
 import Inspector from '../components/Inspector';
 import Debugger from '../../debugger/containers/Debugger';
+import Breadcrumbs from '../../debugger/containers/Breadcrumbs';
 import Sidebar from '../../utils/components/Sidebar';
 import Workarea from '../../utils/components/Workarea';
 
@@ -119,6 +120,10 @@ class Editor extends React.Component {
     ) : null;
 
     const DebuggerContainer = (this.props.isDebuggerVisible) ? <Debugger /> : null;
+    const BreadcrumbsContainer = (
+      this.props.isDebuggerVisible &&
+      this.props.currentTabId === DEBUGGER_TAB_ID
+    ) ? <Breadcrumbs /> : null;
 
     const DebugSessionStopButton = (
       this.props.isDebugSessionRunning &&
@@ -154,6 +159,7 @@ class Editor extends React.Component {
             {openedPatch}
             {suggester}
             {DebuggerContainer}
+            {BreadcrumbsContainer}
           </Workarea>
         </FocusTrap>
         <Helpbar />
@@ -168,6 +174,7 @@ Editor.propTypes = {
   selection: sanctuaryPropType($.Array(RenderableSelection)),
   currentPatchPath: PropTypes.string,
   currentPatch: sanctuaryPropType($Maybe(PatchType)),
+  currentTabId: PropTypes.string,
   patchesIndex: PropTypes.object,
   isHelpbarVisible: PropTypes.bool,
   isDebuggerVisible: PropTypes.bool,
@@ -194,6 +201,7 @@ const mapStateToProps = R.applySpec({
   selection: ProjectSelectors.getRenderableSelection,
   currentPatch: ProjectSelectors.getCurrentPatch,
   currentPatchPath: EditorSelectors.getCurrentPatchPath,
+  currentTabId: EditorSelectors.getCurrentTabId,
   patchesIndex: ProjectSelectors.getPatchSearchIndex,
   suggesterIsVisible: EditorSelectors.isSuggesterVisible,
   suggesterPlacePosition: EditorSelectors.getSuggesterPlacePosition,

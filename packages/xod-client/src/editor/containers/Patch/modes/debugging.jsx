@@ -71,6 +71,9 @@ const debuggingMode = {
 
     api.props.actions.deselectAll();
   },
+  onNodeDoubleClick(api, nodeId, patchPath) {
+    api.props.actions.drillDown(patchPath, nodeId);
+  },
   getHotkeyHandlers(api) {
     return {
       [COMMAND.DESELECT]: api.props.actions.deselectAll,
@@ -112,6 +115,7 @@ const debuggingMode = {
               linkingPin={api.props.linkingPin}
               onMouseDown={R.partial(this.onEntityMouseDown, [api, SELECTION_ENTITY_TYPE.NODE])}
               onMouseUp={R.partial(this.onEntityMouseUp, [api, SELECTION_ENTITY_TYPE.NODE])}
+              onDoubleClick={bindApi(api, this.onNodeDoubleClick)}
             />
             <Layers.LinksOverlay
               links={api.props.links}

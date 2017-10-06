@@ -67,3 +67,5 @@ export const TAB_TYPES = {
   PATCH: 'PATCH',
   DEBUGGER: 'DEBUGGER',
 };
+
+export const DEBUGGER_TAB_ID = 'debugger';
