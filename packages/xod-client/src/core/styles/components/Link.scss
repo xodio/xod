@@ -30,8 +30,13 @@
     @include link-parts-coloring($color-datatype-pulse);
   }
 
-  &.is-selected {
+  &.is-selected, &.is-dead.is-selected {
     @include link-parts-coloring($color-canvas-selected);
+  }
+
+  &.is-dead {
+    @include link-parts-coloring($color-error);
+    stroke-dasharray: 2,2;
   }
 }
 

@@ -97,6 +97,10 @@ const NodeInspector = ({ node, onPropUpdate }) => {
 
   const nodeId = XP.getNodeId(node);
 
+  const DeadNodeMessage = (node.dead) ? (
+    <Widgets.HintWidget text="Patch for this Node is missing." />
+  ) : null;
+
   return (
     <div className="Inspector">
       <div className="inspectorTitle">Node: <span className="nodeName">{baseName}</span></div>
@@ -115,6 +119,8 @@ const NodeInspector = ({ node, onPropUpdate }) => {
         value={XP.getNodeLabel(node)}
         onPropUpdate={onPropUpdate}
       />
+
+      {DeadNodeMessage}
 
       <WidgetsGroup
         entity={node}

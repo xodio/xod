@@ -177,7 +177,10 @@ class App extends client.App {
 
     const errored = foldEither(
       (error) => {
-        proc.fail(error.message, 0);
+        proc.fail(
+          this.getErrorMessageForCurrentPatch(error.message),
+          0
+        );
         return 1;
       },
       (code) => {

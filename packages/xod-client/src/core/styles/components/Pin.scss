@@ -27,6 +27,10 @@
     &.pulse {
       @include symbol-coloring($color-datatype-pulse);
     }
+
+    &.dead {
+      @include symbol-coloring($color-datatype-dead);
+    }
   }
 
   .outerStroke {

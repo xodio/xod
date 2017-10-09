@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import cn from 'classnames';
 import { DragSource } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
+import { Icon } from 'react-fa';
 import 'font-awesome/scss/font-awesome.scss';
 
 import { DRAGGED_ENTITY_TYPE } from '../../editor/constants';
@@ -32,6 +33,7 @@ class PatchGroupItem extends React.PureComponent {
       label,
       isSelected,
       isOpen,
+      dead,
       className,
       hoverButtons,
       onClick,
@@ -49,11 +51,19 @@ class PatchGroupItem extends React.PureComponent {
       }
     );
 
+    const deadIcon = (dead) ? (
+      <Icon
+        className="dead-patch-icon"
+        name="warning"
+        title="Patch contains dead references"
+      />
+    ) : null;
+
     return connectDragSource(
       <div
         title={label}
         className={classNames}
-        {...R.omit(['patchPath', 'onBeginDrag', 'connectDragPreview'], restProps)}
+        {...R.omit(['patchPath', 'onBeginDrag', 'connectDragPreview', 'dead'], restProps)}
       >
         <div // eslint-disable-line jsx-a11y/no-static-element-interactions
           className="PatchGroupItem__label"
@@ -61,6 +71,7 @@ class PatchGroupItem extends React.PureComponent {
           onDoubleClick={onDoubleClick}
           role="button"
         >
+          {deadIcon}
           {label}
         </div>
         <div className="PatchGroupItem__hover-buttons">
@@ -76,6 +87,7 @@ class PatchGroupItem extends React.PureComponent {
 PatchGroupItem.propTypes = {
   label: PropTypes.string.isRequired,
   patchPath: PropTypes.string.isRequired,
+  dead: PropTypes.bool,
   isSelected: PropTypes.bool,
   isOpen: PropTypes.bool,
   className: PropTypes.string,

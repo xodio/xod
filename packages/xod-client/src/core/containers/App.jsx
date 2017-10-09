@@ -36,7 +36,9 @@ export default class App extends React.Component {
     const eitherCode = eitherTProject.map(transpile);
 
     return foldEither(
-      error => this.props.actions.addError(error.message),
+      error => this.props.actions.addError(
+        this.getErrorMessageForCurrentPatch(error.message)
+      ),
       code => this.props.actions.showCode(code),
       eitherCode
     );
@@ -69,6 +71,15 @@ export default class App extends React.Component {
       window.open(url, '_blank');
       window.focus();
     }
+  }
+
+  getErrorMessageForCurrentPatch(message) {
+    const { currentPatchPath } = this.props;
+    return ([
+      `Patch "${currentPatchPath}" contains dead references:`,
+      message,
+      'Fix or delete them to continue.',
+    ]).join('\n');
   }
 
   transformProjectForTranspiler(debug = false) {

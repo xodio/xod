@@ -58,6 +58,7 @@ export const PIN_TYPE = {
   NUMBER: 'number',
   BOOLEAN: 'boolean',
   PULSE: 'pulse',
+  DEAD: 'dead',
 };
 
 export const DEFAULT_VALUE_OF_TYPE = {
@@ -65,6 +66,7 @@ export const DEFAULT_VALUE_OF_TYPE = {
   [PIN_TYPE.NUMBER]: 0,
   [PIN_TYPE.BOOLEAN]: false,
   [PIN_TYPE.PULSE]: false,
+  [PIN_TYPE.DEAD]: 0,
 };
 
 /**
@@ -83,12 +85,14 @@ export const TYPES_COMPATIBILITY = {
     [PIN_TYPE.NUMBER]: true,
     [PIN_TYPE.PULSE]: true,
     [PIN_TYPE.STRING]: true,
+    [PIN_TYPE.DEAD]: false,
   },
   [PIN_TYPE.NUMBER]: {
     [PIN_TYPE.BOOLEAN]: true,
     [PIN_TYPE.NUMBER]: true,
     [PIN_TYPE.PULSE]: false,
     [PIN_TYPE.STRING]: true,
+    [PIN_TYPE.DEAD]: false,
   },
   // nothing can be cast to or from pulse
   [PIN_TYPE.PULSE]: {
@@ -96,6 +100,7 @@ export const TYPES_COMPATIBILITY = {
     [PIN_TYPE.NUMBER]: false,
     [PIN_TYPE.PULSE]: true,
     [PIN_TYPE.STRING]: false,
+    [PIN_TYPE.DEAD]: false,
   },
   // everything(except pulse) can be cast to string, but nothing can be cast from string
   [PIN_TYPE.STRING]: {
@@ -103,6 +108,15 @@ export const TYPES_COMPATIBILITY = {
     [PIN_TYPE.NUMBER]: false,
     [PIN_TYPE.PULSE]: false,
     [PIN_TYPE.STRING]: true,
+    [PIN_TYPE.DEAD]: false,
+  },
+  // everything(except pulse) can be cast to string, but nothing can be cast from string
+  [PIN_TYPE.DEAD]: {
+    [PIN_TYPE.BOOLEAN]: false,
+    [PIN_TYPE.NUMBER]: false,
+    [PIN_TYPE.PULSE]: false,
+    [PIN_TYPE.STRING]: false,
+    [PIN_TYPE.DEAD]: false,
   },
 };
 

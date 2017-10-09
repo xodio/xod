@@ -50,6 +50,7 @@ export {
 export * from './node';
 export * from './comment';
 export {
+  createPin,
   getPinType,
   getPinDirection,
   getPinKey,

@@ -35,6 +35,23 @@ export const createPin = def(
   })
 );
 
+/**
+ * @private
+ */
+export const createUnknownPin = def(
+  'createUnknownPin :: PinKey -> PinDirection -> Number -> Pin',
+  (pinKey, direction, order) => createPin(
+    pinKey,
+    CONST.PIN_TYPE.DEAD,
+    direction,
+    order,
+    '',
+    '',
+    false,
+    CONST.DEFAULT_VALUE_OF_TYPE[CONST.PIN_TYPE.DEAD]
+  )
+);
+
  // =============================================================================
  //
  // Getters
