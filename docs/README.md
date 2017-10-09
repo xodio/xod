@@ -52,6 +52,7 @@ User’s guide
 * [Data Types](./guide/data-types/)
 * [Linking Rules](./guide/linking-rules/)
 * [Execution Model](./guide/execution-model/)
+* [Mouse and Keyboard Shortcuts](./guide/shortcuts/)
 
 Standard library node reference
 -------------------------------
