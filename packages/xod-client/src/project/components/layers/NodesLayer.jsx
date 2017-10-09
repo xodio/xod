@@ -33,6 +33,7 @@ const NodesLayer = ({
               label={node.label}
               type={node.type}
               position={node.position}
+              dead={node.dead}
               size={node.size}
               pins={node.pins}
               width={node.width}

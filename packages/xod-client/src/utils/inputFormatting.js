@@ -12,4 +12,5 @@ export const PROPERTY_TYPE_PARSE = {
   },
   [PIN_TYPE.STRING]: v => String(v),
   [PIN_TYPE.PULSE]: v => v,
+  [PIN_TYPE.DEAD]: v => v,
 };

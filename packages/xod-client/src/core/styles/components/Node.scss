@@ -15,6 +15,16 @@
     &.number { stroke: $color-datatype-number; }
     &.boolean { stroke: $color-datatype-boolean; }
     &.pulse { stroke: $color-datatype-pulse; }
+    &.dead { stroke: $color-datatype-dead; }
+  }
+
+  &.is-dead {
+    .nodeLabel {
+      color: $color-error;
+    }
+    .outline {
+      stroke: $color-error;
+    }
   }
 
   .watch-node {

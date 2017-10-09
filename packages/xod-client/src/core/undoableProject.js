@@ -1,11 +1,11 @@
 import R from 'ramda';
 import {
   listPatches,
-  assocPatch,
+  assocPatchUnsafe,
   getPatchPath,
   getPatchByPathUnsafe,
 } from 'xod-project';
-import { explode, isAmong } from 'xod-func-tools';
+import { isAmong } from 'xod-func-tools';
 
 import { getProject, projectLens } from '../project/selectors';
 
@@ -48,7 +48,7 @@ const moveThroughHistory = R.curry((patchPath, takeReplacementFrom, putCurrentTo
   return R.compose(
     R.over(
       projectLens,
-      R.pipe(assocPatch(patchPath, replacementPatchState), explode)
+      assocPatchUnsafe(patchPath, replacementPatchState)
     ),
     R.assocPath(
       ['projectHistory', patchPath],

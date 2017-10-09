@@ -37,7 +37,7 @@ export default class App extends React.Component {
 
     return foldEither(
       error => this.props.actions.addError(error.message),
-      code => this.props.actions.showCode(code),
+      this.props.actions.showCode,
       eitherCode
     );
   }

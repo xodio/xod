@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
@@ -102,39 +103,13 @@ const assocNodeIdToPins = node =>
     node
   );
 
-// :: Project -> IntermediateNode -> IntermediateNode
-const mergePinDataFromPatch = R.curry((project, node) => {
-  const type = XP.getNodeType(node);
-
-  const pins = R.compose(
-    R.map(pin => R.assoc(
-      'value',
-      XP.getBoundValueOrDefault(pin, node),
-      pin
-    )),
-    patchPins => R.compose(
-      R.mergeWith(R.merge, R.__, patchPins),
-      R.map(R.compose(
-        R.objOf('normalizedLabel'),
-        XP.getPinLabel
-      )),
-      R.indexBy(XP.getPinKey),
-      XP.normalizePinLabels,
-      R.values
-    )(patchPins),
-    // TODO: add something like getPinsIndexedByKey to xod-project?
-    // + see other 'indexBy's below
-    R.indexBy(XP.getPinKey),
-    XP.listPins,
-    XP.getPatchByPathUnsafe(type)
-  )(project);
-
-  return R.assoc(
-    'pins',
-    pins,
-    node
-  );
-});
+// :: Project -> Patch -> IntermediateNode -> IntermediateNode
+const mergePinDataFromPatch = R.curry(
+  (project, curPatch, node) => R.compose(
+    R.assoc('pins', R.__, node),
+    XP.getPinsForNode
+  )(node, curPatch, project)
+);
 
 // :: State -> StrMap Node
 export const getCurrentPatchNodes = createSelector(
@@ -156,17 +131,34 @@ export const getCurrentPatch = createSelector(
   XP.getPatchByPath
 );
 
+// :: State -> Patch
+export const getCurrentPatchUnsafe = createSelector(
+  [getCurrentPatchPath, getProject],
+  XP.getPatchByPathUnsafe
+);
+
+// :: Project -> RenderableNode -> RenderableNode
+const addDeadFlag = R.curry(
+  (project, renderableNode) => R.compose(
+    R.assoc('dead', R.__, renderableNode),
+    Maybe.isNothing,
+    XP.getPatchByPath(R.__, project),
+    R.prop('type')
+  )(renderableNode)
+);
+
 // :: State -> StrMap RenderableNode
 export const getRenderableNodes = createMemoizedSelector(
-  [getProject, getCurrentPatchNodes, getConnectedPins],
-  [R.T, R.equals, R.equals],
-  (project, currentPatchNodes, connectedPins) =>
+  [getProject, getCurrentPatchUnsafe, getCurrentPatchNodes, getConnectedPins],
+  [R.T, R.equals, R.equals, R.equals],
+  (project, currentPatch, currentPatchNodes, connectedPins) =>
     R.map(
       R.compose(
+        addDeadFlag(project),
         addNodePositioning,
         assocPinIsConnected(connectedPins),
         assocNodeIdToPins,
-        mergePinDataFromPatch(project)
+        mergePinDataFromPatch(project, currentPatch)
       ),
       currentPatchNodes
     )
@@ -180,13 +172,32 @@ export const getRenderableLinks = createMemoizedSelector(
     R.compose(
       addLinksPositioning(nodes),
       R.map((link) => {
+        const inputNodeId = XP.getLinkInputNodeId(link);
         const outputNodeId = XP.getLinkOutputNodeId(link);
+        const inputPinKey = XP.getLinkInputPinKey(link);
         const outputPinKey = XP.getLinkOutputPinKey(link);
+
+        const inputNodeIsDead = nodes[inputNodeId].dead;
+        const outputNodeIsDead = nodes[outputNodeId].dead;
+        const inputPinKeyHasDeadType = R.pathEq(
+          [inputNodeId, 'pins', inputPinKey, 'type'],
+          XP.PIN_TYPE.DEAD,
+          nodes
+        );
+        const outputPinKeyHasDeadType = R.pathEq(
+          [outputNodeId, 'pins', outputPinKey, 'type'],
+          XP.PIN_TYPE.DEAD,
+          nodes
+        );
 
         return R.merge(
           link,
           {
             type: nodes[outputNodeId].pins[outputPinKey].type,
+            dead: (
+              inputNodeIsDead || outputNodeIsDead ||
+              inputPinKeyHasDeadType || outputPinKeyHasDeadType
+            ),
           }
         );
       })

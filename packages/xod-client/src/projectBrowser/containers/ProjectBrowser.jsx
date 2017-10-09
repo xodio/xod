@@ -194,10 +194,11 @@ class ProjectBrowser extends React.Component {
       startDraggingPatch,
     } = this.props.actions;
 
-    const renderItem = ({ path }) => (
+    const renderItem = ({ path, dead }) => (
       <PatchGroupItem
         key={path}
         patchPath={path}
+        dead={dead}
         label={getBaseName(path)}
         isOpen={path === currentPatchPath}
         onDoubleClick={() => switchPatch(path)}
@@ -231,10 +232,11 @@ class ProjectBrowser extends React.Component {
         name={libName}
         onClose={this.deselectIfInLibrary(libName)}
       >
-        {libPatches.map(({ path }) =>
+        {libPatches.map(({ path, dead }) =>
           <PatchGroupItem
             key={path}
             patchPath={path}
+            dead={dead}
             label={getBaseName(path)}
             isSelected={path === selectedPatchPath}
             onClick={() => setSelection(path)}

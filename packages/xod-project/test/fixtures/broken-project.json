@@ -1,0 +1,143 @@
+{
+  "name": "broken-project",
+  "patches": {
+    "@/existing-patch": {
+      "nodes": {
+        "H1JrEjohb": {
+          "id": "H1JrEjohb",
+          "label": "in3",
+          "position": {
+            "x": 272,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "HyKNEis3W": {
+          "id": "HyKNEis3W",
+          "label": "in2",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "SyeEVsinW": {
+          "id": "SyeEVsinW",
+          "label": "in1",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "rydSEssnZ": {
+          "id": "rydSEssnZ",
+          "label": "out1",
+          "position": {
+            "x": 136,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-number"
+        }
+      },
+      "path": "@/existing-patch"
+    },
+    "@/main": {
+      "links": {
+        "Bk-LHjj2W": {
+          "id": "Bk-LHjj2W",
+          "input": {
+            "nodeId": "brokenNodeInLinks",
+            "pinKey": "Hkp4rion-"
+          },
+          "output": {
+            "nodeId": "validNodeId",
+            "pinKey": "rydSEssnZ"
+          }
+        },
+        "H1IPBoj2-": {
+          "id": "H1IPBoj2-",
+          "input": {
+            "nodeId": "validNodeId",
+            "pinKey": "SyeEVsinW"
+          },
+          "output": {
+            "nodeId": "brokenNodeOutLinks",
+            "pinKey": "B1BSSsi3-"
+          }
+        },
+        "HyPwSsi2W": {
+          "id": "HyPwSsi2W",
+          "input": {
+            "nodeId": "validNodeId",
+            "pinKey": "HyKNEis3W"
+          },
+          "output": {
+            "nodeId": "brokenNodeOutLinks",
+            "pinKey": "B1BSSsi3-"
+          }
+        },
+        "r1Yvrsj2-": {
+          "id": "r1Yvrsj2-",
+          "input": {
+            "nodeId": "validNodeId",
+            "pinKey": "H1JrEjohb"
+          },
+          "output": {
+            "nodeId": "brokenNodeOutLinks",
+            "pinKey": "B1BSSsi3-"
+          }
+        },
+        "rkn8Sis2b": {
+          "id": "rkn8Sis2b",
+          "input": {
+            "nodeId": "brokenNodeInLinks",
+            "pinKey": "BJbHBjs2b"
+          },
+          "output": {
+            "nodeId": "validNodeId",
+            "pinKey": "rydSEssnZ"
+          }
+        },
+        "brokenLink": {
+          "id": "brokenLink",
+          "input": {
+            "nodeId": "validNodeId",
+            "pinKey": "brokenPinKey"
+          },
+          "output": {
+            "nodeId": "brokenNodeOutLinks",
+            "pinKey": "B1BSSsi3-"
+          }
+        }
+      },
+      "nodes": {
+        "validNodeId": {
+          "id": "validNodeId",
+          "position": {
+            "x": 204,
+            "y": 204
+          },
+          "type": "@/existing-patch"
+        },
+        "brokenNodeOutLinks": {
+          "id": "brokenNodeOutLinks",
+          "position": {
+            "x": 204,
+            "y": 102
+          },
+          "type": "@/not-existing-patch"
+        },
+        "brokenNodeInLinks": {
+          "id": "brokenNodeInLinks",
+          "position": {
+            "x": 204,
+            "y": 306
+          },
+          "type": "@/not-existing-patch"
+        }
+      },
+      "path": "@/main"
+    }
+  }
+}

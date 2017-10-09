@@ -64,6 +64,7 @@ class Node extends React.Component {
       'is-selected': this.props.isSelected,
       'is-dragged': this.props.isDragged,
       'is-ghost': this.props.isGhost,
+      'is-dead': this.props.dead,
     });
 
 
@@ -127,6 +128,7 @@ Node.propTypes = {
   pins: PropTypes.any.isRequired,
   size: PropTypes.any.isRequired,
   position: PropTypes.object.isRequired,
+  dead: PropTypes.bool,
   isSelected: PropTypes.bool,
   isGhost: PropTypes.bool,
   isDragged: PropTypes.bool,
@@ -140,6 +142,7 @@ Node.propTypes = {
 };
 
 Node.defaultProps = {
+  dead: false,
   isSelected: false,
   isGhost: false,
   isDragged: false,

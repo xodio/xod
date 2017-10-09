@@ -9,7 +9,7 @@ import * as Patch from './patch';
 import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
-import { formatString } from './utils';
+import { formatString, wrapDeadRefErrorMessage } from './utils';
 import { err, errOnNothing } from './func-tools';
 import * as PatchPathUtils from './patchPathUtils';
 
@@ -100,14 +100,21 @@ const extendTerminalPins = R.curry(([path, patch]) => {
 });
 
 // :: Function extractLeafPatches -> String[] -> Project -> Node -> Either Error [Path, Patch, ...]
-const extractLeafPatchRecursive = R.curry((recursiveFn, impls, project, node) => R.compose(
-  path => R.compose(
-    R.chain(recursiveFn(impls, project, path)),
-    errOnNothing(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })),
-    Project.getPatchByPath(R.__, project)
-  )(path),
-  Node.getNodeType
-)(node));
+const extractLeafPatchRecursive = R.curry(
+  (recursiveFn, impls, project, node) => R.compose(
+    path => R.compose(
+      R.chain(recursiveFn(impls, project, path)),
+      errOnNothing(
+        formatString(
+          CONST.ERROR.PATCH_NOT_FOUND_BY_PATH,
+          { patchPath: path }
+        )
+      ),
+      Project.getPatchByPath(R.__, project)
+    )(path),
+    Node.getNodeType
+  )(node)
+);
 
 // :: Function extractLeafPatches -> String[] -> Project -> Patch -> [Path, Patch, ...]
 const extractLeafPatchesFromNodes = R.curry((recursiveFn, impls, project, patch) =>
@@ -882,12 +889,16 @@ const checkEntryPatchImplementations = R.curry((impls, patch) =>
  * @returns {Either<Error|Project>}
  */
 export default R.curry((inputProject, path, impls) =>
-  Project.validateProject(inputProject).chain(project =>
-    R.compose(
-      R.chain(flattenProject(project, path, impls)),
-      R.chain(checkEntryPatchImplementations(impls)),
-      errOnNothing(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })),
-      Project.getPatchByPath(path)
-    )(project)
-  )
+  R.compose(
+    R.chain(project =>
+      R.compose(
+        R.chain(flattenProject(project, path, impls)),
+        R.chain(checkEntryPatchImplementations(impls)),
+        errOnNothing(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })),
+        Project.getPatchByPath(path)
+      )(project)
+    ),
+    wrapDeadRefErrorMessage(path),
+    Project.validateProject
+  )(inputProject)
 );

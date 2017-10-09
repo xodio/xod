@@ -887,3 +887,123 @@ export const removeDebugNodes = def(
     listNodes,
   )(patch)
 );
+
+/**
+ * Returns a map of pins for Node, that points to a patch that exists.
+ * So Pins are fully valid, contains proper types and etc.
+ */
+export const getNondeadNodePins = def(
+  'getNondeadNodePins :: Node -> Patch -> Map PinKey Pin',
+  (node, patch) => R.compose(
+    R.map(pin => R.assoc(
+      'value',
+      Node.getBoundValueOrDefault(pin, node),
+      pin
+    )),
+    patchPins => R.compose(
+      R.mergeWith(R.merge, R.__, patchPins),
+      R.map(R.compose(
+        R.objOf('normalizedLabel'),
+        Pin.getPinLabel
+      )),
+      R.indexBy(Pin.getPinKey),
+      Pin.normalizePinLabels,
+      R.values
+    )(patchPins),
+    R.indexBy(Pin.getPinKey),
+    listPins
+  )(patch)
+);
+
+/**
+ * Returns a map of pins for Node, that points to non-existing Patch.
+ * These pins are created from links, connected with some Pins in this Node.
+ */
+export const getDeadNodePins = def(
+  'getDeadNodePins :: Node -> Patch -> Map PinKey Pin',
+  (node, currentPatch) => {
+    const nodeId = Node.getNodeId(node);
+    return R.compose(
+      R.indexBy(Pin.getPinKey),
+      R.flatten,
+      R.values,
+      R.mapObjIndexed(
+        (links, direction) => R.compose(
+          mapIndexed(
+            (pinKey, idx) => Pin.createDeadPin(pinKey, direction, idx)
+          ),
+          R.keys,
+          R.groupBy(R.ifElse(
+            () => (direction === CONST.PIN_DIRECTION.INPUT),
+            Link.getLinkInputPinKey,
+            Link.getLinkOutputPinKey
+          ))
+        )(links)
+      ),
+      R.groupBy(R.ifElse(
+        Link.isLinkInputNodeIdEquals(nodeId),
+        R.always(CONST.PIN_DIRECTION.INPUT),
+        R.always(CONST.PIN_DIRECTION.OUTPUT),
+      )),
+      listLinksByNode(node)
+    )(currentPatch);
+  }
+);
+
+/**
+ * Some Patch could have a dead link, and for this case we should
+ * add dead pin to the Patch, to connect this link somewhere.
+ * E.G.
+ * There was a link to the `xod/core/flip-flop` pin `TGL`. But then
+ * Pin `TGL` was destroyed somehow and left only `SET` and `RST`. So
+ * we have to add `TGL` pin to current `xod/core/flip-flop` with
+ * dead type, to render link somehow and mark it as dead.
+ */
+export const upsertDeadPins = def(
+  'upsertDeadPins :: Node -> Patch -> Map PinKey Pin -> Map PinKey Pin',
+  (node, currentPatch, pins) => {
+    const nodeId = Node.getNodeId(node);
+    const pinKeys = R.keys(pins);
+    const pinsByDir = R.applySpec({
+      [CONST.PIN_DIRECTION.INPUT]: R.filter(Pin.isInputPin),
+      [CONST.PIN_DIRECTION.OUTPUT]: R.filter(Pin.isOutputPin),
+    })(R.values(pins));
+
+    const rejectNondeadLinks = R.reject(
+      R.either(
+        R.compose(isAmong(pinKeys), Link.getLinkInputPinKey),
+        R.compose(isAmong(pinKeys), Link.getLinkOutputPinKey),
+      )
+    );
+
+    return R.compose(
+      R.merge(pins),
+      R.indexBy(Pin.getPinKey),
+      R.when(
+        R.complement(R.isEmpty),
+        R.compose(
+          R.map(R.apply(Pin.createDeadPin)),
+          R.unnest,
+          R.values,
+          R.mapObjIndexed(
+            (group, direction) => mapIndexed(
+              // Adds a correct order as a third element of each Array
+              (data, idx) => R.append((idx + pinsByDir[direction].length), data),
+              group
+            )
+          ),
+          R.groupBy(R.nth(1)),
+          R.map(
+            R.ifElse(
+              Link.isLinkInputNodeIdEquals(nodeId),
+              link => ([Link.getLinkInputPinKey(link), CONST.PIN_DIRECTION.INPUT]),
+              link => ([Link.getLinkOutputPinKey(link), CONST.PIN_DIRECTION.OUTPUT]),
+            )
+          )
+        )
+      ),
+      rejectNondeadLinks,
+      listLinksByNode
+    )(nodeId, currentPatch);
+  }
+);

@@ -18,6 +18,7 @@ const LinksLayer = ({ links, selection }) => (
           from={link.from}
           to={link.to}
           type={link.type}
+          dead={link.dead}
           isSelected={isLinkSelected(selection, link.id)}
         />
       ),

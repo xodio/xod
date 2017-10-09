@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { Either } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
@@ -18,12 +19,22 @@ export const getProjectName = createSelector(
   XP.getProjectName
 );
 
+// :: Project -> Patch -> Patch
+const markDeadPatches = R.curry(
+  (project, patch) => R.compose(
+    R.assoc('dead', R.__, patch),
+    Either.isLeft,
+    XP.validatePatchContents
+  )(patch, project)
+);
+
 export const getLocalPatches = createSelector(
   ProjectSelectors.getProject,
-  R.compose(
+  project => R.compose(
     R.sortBy(XP.getPatchPath),
+    R.map(markDeadPatches(project)),
     XP.listLocalPatches
-  )
+  )(project)
 );
 
 // TODO: this is not actually label anymore
@@ -44,14 +55,15 @@ const getLibraryPatchesList = createSelector(
 );
 
 export const getLibs = createMemoizedSelector(
-  [getLibraryPatchesList],
+  [getLibraryPatchesList, ProjectSelectors.getProject],
   [R.equals],
-  R.compose(
+  (patches, project) => R.compose(
     R.map(
       R.sort(R.ascend(XP.getPatchPath))
     ),
     R.groupBy(
       R.pipe(XP.getPatchPath, XP.getLibraryName)
-    )
-  )
+    ),
+    R.map(markDeadPatches(project))
+  )(patches)
 );

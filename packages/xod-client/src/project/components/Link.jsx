@@ -46,6 +46,7 @@ class Link extends React.Component {
       LinkOverlay: this.props.isOverlay,
       'is-selected': this.props.isSelected,
       'is-ghost': this.props.isGhost,
+      'is-dead': this.props.dead,
     });
 
     const clickable = this.isClickable();
@@ -93,6 +94,7 @@ Link.propTypes = {
   from: PropTypes.object.isRequired,
   to: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
+  dead: PropTypes.bool,
   isSelected: PropTypes.bool,
   isGhost: PropTypes.bool,
   isOverlay: PropTypes.bool,
@@ -100,6 +102,7 @@ Link.propTypes = {
 };
 
 Link.defaultProps = {
+  dead: false,
   isSelected: false,
   isGhost: false,
   isOverlay: false,
