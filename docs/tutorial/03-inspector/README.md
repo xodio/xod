@@ -7,9 +7,9 @@ title: Pins, data, and the Inspector
 <div class="ui segment note">
 <span class="ui ribbon label">Note</span>
 This is a web-version of a tutorial chapter embedded right into the XOD IDE.
-To get a better learning experience we recommend to
-<a href="../install/">install the IDE</a>, launch it, and you’ll see the
-same tutorial there.
+To get a better learning experience we recommend to install the
+<a href="/downloads/">desktop IDE</a> or start the
+<a href="/ide/">browser-based IDE</a>, and you’ll see the same tutorial there.
 </div>
 
 A node is a visual representation of some physical device (such as the ports on
