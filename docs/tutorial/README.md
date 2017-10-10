@@ -5,7 +5,8 @@ title: Tutorials
 Tutorials
 =========
 
-* [Installing and Running XOD](./install/)
+* [Installing and running XOD](./install/)
+* [Required hardware](./required-hardware/)
 
 1. [Hello](./01-hello)
 2. [Upload to Arduino](./02-deploy)
@@ -28,7 +29,7 @@ Tutorials
 19. [If-else branching](./19-if-else)
 20. [Smoother changes](./20-fade)
 
-* [Complex Projects?](./complex-projects/)
+* [Complex projects?](./complex-projects/)
 
 ### Contributed tutorials
 

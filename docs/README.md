@@ -8,7 +8,8 @@ XOD Documentation
 Tutorials
 ---------
 
-* [Installing and Running XOD](./tutorial/install/)
+* [Installing and running XOD](./tutorial/install/)
+* [Required hardware](./tutorial/required-hardware/)
 
 1. [Hello](./tutorial/01-hello)
 2. [Upload to Arduino](./tutorial/02-deploy)
@@ -31,7 +32,7 @@ Tutorials
 19. [If-else branching](./tutorial/19-if-else)
 20. [Smoother changes](./tutorial/20-fade)
 
-* [Complex Projects?](./tutorial/complex-projects/)
+* [Complex projects?](./tutorial/complex-projects/)
 
 ### Contributed tutorials
 
