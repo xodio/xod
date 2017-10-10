@@ -130,6 +130,10 @@ const rawItems = {
     key: 'documentation',
     label: 'Documentation',
   },
+  shortcuts: {
+    key: 'shortcuts',
+    label: 'Shortcuts',
+  },
   forum: {
     key: 'forum',
     label: 'Forum',

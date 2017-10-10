@@ -396,6 +396,9 @@ class App extends client.App {
           onClick(items.documentation, () => {
             shell.openExternal(client.getUtmSiteUrl('/docs/', 'docs', 'menu'));
           }),
+          onClick(items.shortcuts, () => {
+            shell.openExternal(client.getUtmSiteUrl('/docs/guide/shortcuts/', 'docs', 'menu'));
+          }),
           onClick(items.forum, () => {
             shell.openExternal(client.getUtmForumUrl('menu'));
           }),
