@@ -10,6 +10,7 @@
  =============================================================================*/
 
 #define NODE_COUNT          {{ NODE_COUNT }}
+#define DEFER_NODE_COUNT    {{ DEFER_NODE_COUNT }}
 #define MAX_OUTPUT_COUNT    {{ MAX_OUTPUT_COUNT }}
 
 // Uncomment to turn on debug of the program

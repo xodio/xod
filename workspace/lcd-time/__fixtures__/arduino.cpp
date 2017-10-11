@@ -632,6 +632,7 @@ template <typename T> class List {
  =============================================================================*/
 
 #define NODE_COUNT          11
+#define DEFER_NODE_COUNT    0
 #define MAX_OUTPUT_COUNT    1
 
 // Uncomment to turn on debug of the program
@@ -987,6 +988,19 @@ void runTransaction() {
 
     XOD_TRACE_F("Transaction started, t=");
     XOD_TRACE_LN(g_transactionTime);
+
+    // defer-* nodes are always at the very bottom of the graph,
+    // so no one will recieve values emitted by them.
+    // We must evaluate them before everybody else
+    // to give them a chance to emit values.
+    for (NodeId nid = NODE_COUNT - DEFER_NODE_COUNT; nid < NODE_COUNT; ++nid) {
+        if (isNodeDirty(nid)) {
+            evaluateNode(nid);
+            // clear node dirty flags, so it will evaluate
+            // on "regular" pass only if it has a dirty input
+            g_dirtyFlags[nid] = 0;
+        }
+    }
 
     for (NodeId nid = 0; nid < NODE_COUNT; ++nid) {
         if (isNodeDirty(nid)) {
