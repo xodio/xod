@@ -54,6 +54,7 @@ const onContextMenu = (event) => {
     items.cut,
     items.copy,
     items.paste,
+    items.selectall,
   ]);
 
   const node = event.target;
@@ -370,6 +371,7 @@ class App extends client.App {
           items.cut,
           items.copy,
           items.paste,
+          items.selectall,
           items.separator,
           onClick(items.insertNode, () => this.props.actions.showSuggester(null)),
           onClick(items.insertComment, this.props.actions.addComment),

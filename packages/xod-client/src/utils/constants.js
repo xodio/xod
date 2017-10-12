@@ -20,6 +20,7 @@ export const COMMAND = {
   CUT: 'cut',
   COPY: 'copy',
   PASTE: 'paste',
+  SELECT_ALL: 'selectall',
 
   SAVE_PROJECT: 'saveProject',
 
@@ -66,6 +67,7 @@ export const ELECTRON_ACCELERATOR = {
   [COMMAND.CUT]: 'CmdOrCtrl+X',
   [COMMAND.COPY]: 'CmdOrCtrl+C',
   [COMMAND.PASTE]: 'CmdOrCtrl+V',
+  [COMMAND.SELECT_ALL]: 'CmdOrCtrl+A',
 
   [COMMAND.SAVE_PROJECT]: 'CmdOrCtrl+S',
 
