@@ -1,6 +1,8 @@
 .ModalBody {
   color: $modal-fg-color;
   padding: 0 14px 14px 14px;
+  user-select: none;
+  cursor: default;
 
   &--light {
     color: $modal-fg-color-light;

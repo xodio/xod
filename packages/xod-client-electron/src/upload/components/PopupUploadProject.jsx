@@ -33,6 +33,9 @@ class PopupUploadProject extends React.Component {
       overflow: 'auto',
       maxWidth: 'auto',
       maxHeight: '300px',
+      // allow user to select the log for bug reporting etc
+      userSelect: 'initial',
+      cursor: 'auto',
     };
 
     const message = (this.props.upload.message) ?
