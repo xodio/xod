@@ -9,12 +9,6 @@ import { renderProject } from './templates';
 import { DEFAULT_TRANSPILATION_OPTIONS } from './constants';
 
 const ARDUINO_IMPLS = ['cpp', 'arduino'];
-const TYPES_MAP = {
-  number: 'Number',
-  pulse: 'Logic',
-  boolean: 'Logic',
-  string: 'XString',
-};
 
 //-----------------------------------------------------------------------------
 //
@@ -106,19 +100,6 @@ const toposortProject = def(
   )(path, project)
 );
 
-/**
- * Converts JS-typed data value to a string that is valid and expected
- * C++ literal representing that value
- */
-const formatValueLiteral = def(
-  'formatValueLiteral :: DataValue -> String',
-  R.cond([
-    [R.equals(''), R.always('::xod::List<char>::empty()')],
-    [R.is(String), x => `::xod::List<char>::fromPlainArray("${x}", ${x.length})`],
-    [R.T, R.toString],
-  ])
-);
-
 //-----------------------------------------------------------------------------
 //
 // Transformers
@@ -150,10 +131,9 @@ const createTPatches = def(
 
       const outputs = R.compose(
         R.map(R.applySpec({
-          type: R.compose(R.prop(R.__, TYPES_MAP), Project.getPinType),
+          type: Project.getPinType,
           pinKey: Project.getPinLabel,
           value: R.compose(
-            formatValueLiteral,
             Project.defaultValueOfType,
             Project.getPinType
           ),
@@ -163,7 +143,7 @@ const createTPatches = def(
       )(patch);
       const inputs = R.compose(
         R.map(R.applySpec({
-          type: R.compose(R.prop(R.__, TYPES_MAP), Project.getPinType),
+          type: Project.getPinType,
           pinKey: Project.getPinLabel,
         })),
         Project.normalizePinLabels,
@@ -238,10 +218,8 @@ const getTNodeOutputs = def(
       R.mapObjIndexed((links, pinKey) => ({
         to: getLinksInputNodeIds(links),
         pinKey: nodePins[pinKey],
-        value: formatValueLiteral(
-          Project.getBoundValue(pinKey, node)
-            .getOrElse(getDefaultPinValue(pinKey, node, project))
-        ),
+        value: Project.getBoundValue(pinKey, node)
+          .getOrElse(getDefaultPinValue(pinKey, node, project)),
       })),
       R.groupBy(Project.getLinkOutputPinKey),
       R.filter(Project.isLinkOutputNodeIdEquals(nodeId)),

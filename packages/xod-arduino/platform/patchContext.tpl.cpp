@@ -4,7 +4,7 @@
 struct Storage {
     State state;
   {{#each outputs}}
-    {{ type }} output_{{ pinKey }};
+    {{ cppType type }} output_{{ pinKey }};
   {{/each}}
 };
 
@@ -23,9 +23,9 @@ State* getState(NodeId nid) {
 }
 
 {{#each inputs}}
-using input_{{ pinKey }} = InputDescriptor<{{ type }}, offsetof(Wiring, input_{{ pinKey }})>;
+using input_{{ pinKey }} = InputDescriptor<{{ cppType type }}, offsetof(Wiring, input_{{ pinKey }})>;
 {{/each}}
 
 {{#each outputs}}
-using output_{{ pinKey }} = OutputDescriptor<{{ type }}, offsetof(Wiring, output_{{ pinKey }}), offsetof(Storage, output_{{ pinKey }}), {{@index}}>;
+using output_{{ pinKey }} = OutputDescriptor<{{ cppType type }}, offsetof(Wiring, output_{{ pinKey }}), offsetof(Storage, output_{{ pinKey }}), {{@index}}>;
 {{/each}}

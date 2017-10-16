@@ -26,18 +26,18 @@ describe('xod-arduino templates', () => {
         patchName: 'multiply',
         outputs: [
           {
-            type: 'Number',
+            type: 'number',
             pinKey: 'OUT',
             value: 0,
           },
         ],
         inputs: [
           {
-            type: 'Number',
+            type: 'number',
             pinKey: 'IN1',
           },
           {
-            type: 'Number',
+            type: 'number',
             pinKey: 'IN2',
           },
         ],

@@ -16,10 +16,14 @@ namespace xod {
   {{#each nodes}}
   {{mergePins }}
     // Storage of #{{ id }} {{ patch.owner }}/{{ patch.libName }}/{{ patch.patchName }}
+    {{#each outputs }}
+    {{ decltype type value }} node_{{ ../id }}_output_{{ pinKey }} = {{ cppValue type value }};
+    {{~/each}}
+
     {{ns patch }}::Storage storage_{{ id }} = {
         { }, // state
       {{#each outputs }}
-        {{ value }}{{#unless @last }},{{/unless }} // output_{{ pinKey }}
+        node_{{ ../id }}_output_{{ pinKey }} {{#unless @last }},{{/unless }}
       {{/each}}
     };
   {{/each}}

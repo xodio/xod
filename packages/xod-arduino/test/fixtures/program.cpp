@@ -13,15 +13,19 @@ namespace xod {
     //-------------------------------------------------------------------------
 
     // Storage of #0 xod/math/multiply
+    constexpr Number node_0_output_OUT = 42;
     xod__math__multiply::Storage storage_0 = {
         { }, // state
-        42 // output_OUT
+        node_0_output_OUT
+
     };
 
     // Storage of #1 xod/math/multiply
+    constexpr Number node_1_output_OUT = 0;
     xod__math__multiply::Storage storage_1 = {
         { }, // state
-        0 // output_OUT
+        node_1_output_OUT
+
     };
 
     DirtyFlags g_dirtyFlags[NODE_COUNT] = {
