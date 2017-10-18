@@ -63,7 +63,7 @@ class Patch extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.tabType !== nextProps.tabType) {
+    if (nextProps.tabType != null && this.props.tabType !== nextProps.tabType) {
       this.goToMode(DEFAULT_MODES[nextProps.tabType]);
     }
   }

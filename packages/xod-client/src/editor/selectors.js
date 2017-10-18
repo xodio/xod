@@ -147,9 +147,8 @@ export const getSuggesterHighlightedPatchPath = R.pipe(
   R.prop('highlightedPatchPath')
 );
 
-
 export const getBreadcrumbs = R.compose(
-  R.prop('breadcrumbs'),
+  R.propOr([], 'breadcrumbs'),
   getCurrentTab
 );
 
