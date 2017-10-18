@@ -176,5 +176,18 @@ describe('IDE', () => {
         .then(() => page.getCodeboxValue())
         .then(code => assert.strictEqual(code, expectedCpp, 'Actual and expected C++ don’t match'))
     );
+    it('closes show code popup', () =>
+      page.closePopup()
+    );
+  });
+
+  describe('deleting a patch', () => {
+    it('opens patch from xod/core', () =>
+      page.openPatchFromProjectBrowser('clock')
+        .then(() => page.findPatchGroup('welcome-to-xod').click())
+        .then(() => page.assertPatchGroupExpanded('welcome-to-xod'))
+        .then(() => page.deletePatch('my-blink'))
+        .then(() => page.assertNodeUnavailableInProjectBrowser('my-blink'))
+    );
   });
 });

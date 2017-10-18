@@ -17,6 +17,37 @@ function scrollTo(client, containerSelector, childSelector) {
   }, containerSelector, childSelector);
 }
 
+
+// -----------------------------------------------------------------------------
+// Popup dialogs
+//-----------------------------------------------------------------------------
+function findPopup(client) {
+  return client.element('.PopupPrompt');
+}
+
+function assertPopupShown(client, title) {
+  return Promise.all([
+    assert.eventually.isTrue(findPopup(client).isVisible()),
+    assert.eventually.strictEqual(findPopup(client).getText('h2'), title),
+  ]);
+}
+
+function assertNoPopups(client) {
+  return assert.eventually.isFalse(findPopup(client).isVisible());
+}
+
+function confirmPopup(client) {
+  return findPopup(client).click('button.Button--primary');
+}
+
+function getCodeboxValue(client) {
+  return client.getValue('.Codebox');
+}
+
+function closePopup(client) {
+  return client.element('.skylight-close-button').click();
+}
+
 //-----------------------------------------------------------------------------
 // Project browser
 //-----------------------------------------------------------------------------
@@ -37,20 +68,30 @@ function findPatchGroup(client, groupTitle) {
 function assertPatchGroupCollapsed(client, groupTitle) {
   return assert.eventually.include(
     findPatchGroup(client, groupTitle).getAttribute('class'),
-    'is-closed'
+    'is-closed',
+    `Expected patch group "${groupTitle}" to be collapsed, but it's expanded`
   );
 }
 
 function assertPatchGroupExpanded(client, groupTitle) {
   return assert.eventually.include(
     findPatchGroup(client, groupTitle).getAttribute('class'),
-    'is-open'
+    'is-open',
+    `Expected patch group "${groupTitle}" to be expanded, but it's collapsed`
   );
 }
 
 function assertNodeAvailableInProjectBrowser(client, nodeName) {
   return assert.eventually.isTrue(
-    findProjectBrowser(client).isVisible(getSelectorForPatchInProjectBrowser(nodeName))
+    findProjectBrowser(client).isVisible(getSelectorForPatchInProjectBrowser(nodeName)),
+    `Expected node "${nodeName}" to be available in the project browser`
+  );
+}
+
+function assertNodeUnavailableInProjectBrowser(client, nodeName) {
+  return assert.eventually.isFalse(
+    findProjectBrowser(client).isVisible(getSelectorForPatchInProjectBrowser(nodeName)),
+    `Expected node "${nodeName}" to be unavailable in the project browser`
   );
 }
 
@@ -64,6 +105,14 @@ function scrollToPatchInProjectBrowser(client, name) {
 
 function selectPatchInProjectBrowser(client, name) {
   return client.click(getSelectorForPatchInProjectBrowser(name));
+}
+
+function openPatchFromProjectBrowser(client, name) {
+  return client.doubleClick(getSelectorForPatchInProjectBrowser(name));
+}
+
+function clickDeletePatchButton(client, name) {
+  return client.click(`${getSelectorForPatchInProjectBrowser(name)} span[title="Delete patch"]`);
 }
 
 function assertPatchSelected(client, name) {
@@ -107,6 +156,14 @@ function addNode(client, type, dragX, dragY) {
     .then(() => dragNode(client, type, dragX, dragY));
 }
 
+function deletePatch(client, type) {
+  return client.waitForVisible(getSelectorForPatchInProjectBrowser(type))
+    .then(() => scrollToPatchInProjectBrowser(client, type))
+    .then(() => selectPatchInProjectBrowser(client, type))
+    .then(() => clickDeletePatchButton(client, type))
+    .then(() => findProjectBrowser(client).click('.PopupConfirm button.Button--primary'));
+}
+
 function assertPinIsSelected(client, nodeType, pinLabel) {
   return assert.eventually.include(
     findPin(client, nodeType, pinLabel).getAttribute('class'),
@@ -138,32 +195,6 @@ function bindValue(client, nodeType, pinLabel, value) {
     );
 }
 
-// -----------------------------------------------------------------------------
-// Popup dialogs
-//-----------------------------------------------------------------------------
-function findPopup(client) {
-  return client.element('.PopupPrompt');
-}
-
-function assertPopupShown(client, title) {
-  return Promise.all([
-    assert.eventually.isTrue(findPopup(client).isVisible()),
-    assert.eventually.strictEqual(findPopup(client).getText('h2'), title),
-  ]);
-}
-
-function assertNoPopups(client) {
-  return assert.eventually.isFalse(findPopup(client).isVisible());
-}
-
-function confirmPopup(client) {
-  return findPopup(client).click('button.Button--primary');
-}
-
-function getCodeboxValue(client) {
-  return client.getValue('.Codebox');
-}
-
 //-----------------------------------------------------------------------------
 // Tabs
 //-----------------------------------------------------------------------------
@@ -184,6 +215,7 @@ const API = {
   assertActiveTabHasTitle,
   assertNoPopups,
   assertNodeAvailableInProjectBrowser,
+  assertNodeUnavailableInProjectBrowser,
   assertPatchGroupCollapsed,
   assertPatchGroupExpanded,
   assertPatchSelected,
@@ -194,6 +226,7 @@ const API = {
   clickAddNodeButton,
   clickAddPatch,
   confirmPopup,
+  closePopup,
   dragNode,
   findInspectorWidget,
   findLink,
@@ -205,6 +238,8 @@ const API = {
   scrollTo,
   scrollToPatchInProjectBrowser,
   selectPatchInProjectBrowser,
+  openPatchFromProjectBrowser,
+  deletePatch,
 };
 
 /**
