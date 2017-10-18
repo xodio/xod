@@ -1,20 +1,19 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const docopt = require('docopt');
-const fs = require('fs');
-const gcs = require('@google-cloud/storage');
 const path = require('path');
+const storage = require('@google-cloud/storage');
 
 const options = docopt.docopt(`
 Uploads a release file to 'releases.xod.io' GCS bucket under tag directory.
 Usage: electron-upload --config=<path-to-config> --file=<path-to-file> --tag=<tag>
 `);
 const resolve = path.resolve.bind(path, process.cwd());
-const config = JSON.parse(fs.readFileSync(resolve(options['--config'])));
+const keyFilename = resolve(options['--config']);
 const file = resolve(options['--file']);
 const tag = options['--tag'];
 const basename = path.basename(file);
 
-gcs(config).bucket('releases.xod.io')
+storage({ keyFilename }).bucket('releases.xod.io')
   .upload(file, {
     destination: `${tag}/${basename}`,
     metadata: {
