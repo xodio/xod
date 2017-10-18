@@ -34,17 +34,8 @@ distro packaging. It uses `src-babel/` as a target for transpilation.
 It have to be fixed since now `electron-builder` supports `directories/output`
 option.
 
-### Freeze electron-builder at 19.12.0
+### `electron-builder` support for lerna + yarn-workspaces monorepos
 
-More recent versions introduce a bug which truncate long file paths in asar
-archive and instead of:
+For now the [official support](https://github.com/electron-userland/electron-builder/issues/2205) is a bit broken, so in the meantime we use [our own fork](https://github.com/xodio/electron-builder/tree/look-for-node_modules-until-root)
 
-```
-/node_modules/some/very/long/path/to/a/modules/in/another/node_modules/dep/foo.js
-```
 
-we get:
-
-```
-ules/some/very/long/path/to/a/modules/in/another/node_modules/dep/foo.js
-```
