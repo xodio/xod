@@ -90,6 +90,7 @@ const panningMode = {
       <HotKeys
         className="PatchWrapper"
         onKeyUp={bindApi(api, this.onKeyUp)}
+        handlers={{}}
       >
         <PatchSVG
           onMouseDown={bindApi(api, this.onMouseDown)}

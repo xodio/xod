@@ -22,7 +22,10 @@ const acceptingDraggedPatchMode = {
     }] : [];
 
     return (
-      <HotKeys className="PatchWrapper">
+      <HotKeys
+        className="PatchWrapper"
+        handlers={{}}
+      >
         <PatchSVG>
           <Layers.Background
             width={api.props.size.width}
