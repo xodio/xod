@@ -70,11 +70,6 @@ const getCurrentTab = R.converge(
   ]
 );
 
-const getCurrentPatchPath = R.compose(
-  R.prop('patchPath'),
-  getCurrentTab
-);
-
 const getBreadcrumbs = R.compose(
   R.prop('breadcrumbs'),
   getCurrentTab
@@ -234,17 +229,20 @@ const openPatchByPath = R.curry(
   }
 );
 
-const openLatestOpenedTab = R.converge(
-  R.assoc('currentTabId'),
-  [
-    R.compose( // get patch id from last of remaining tabs
-      R.propOr(null, 'id'),
-      R.last,
-      R.values,
-      R.prop('tabs')
-    ),
-    R.identity,
-  ]
+const openLatestOpenedTab = R.compose(
+  clearSelection,
+  R.converge(
+    R.assoc('currentTabId'),
+    [
+      R.compose( // get patch id from last of remaining tabs
+        R.propOr(null, 'id'),
+        R.last,
+        R.values,
+        R.prop('tabs')
+      ),
+      R.identity,
+    ]
+  )
 );
 
 const closeTabById = R.curry(
