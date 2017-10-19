@@ -40,11 +40,10 @@ describe('IDE', () => {
     return fsp.mkdtempP(tmpDir)
       .then((home) => { process.env.USERDATA_DIR = process.env.HOME = tmpHomeDir = home; })
       .then(() => app.start())
-      .then(() => { page = Page.createPageObject(app.client); });
-  });
-
-  before(() => {
-    chaiAsPromised.transferPromiseness = app.transferPromiseness;
+      .then(() => {
+        page = Page.createPageObject(app.client);
+        chaiAsPromised.transferPromiseness = app.transferPromiseness;
+      });
   });
 
   afterEach(function checkForFailure() {

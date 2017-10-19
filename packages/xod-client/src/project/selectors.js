@@ -131,12 +131,6 @@ export const getCurrentPatch = createSelector(
   XP.getPatchByPath
 );
 
-// :: State -> Patch
-export const getCurrentPatchUnsafe = createSelector(
-  [getCurrentPatchPath, getProject],
-  XP.getPatchByPathUnsafe
-);
-
 // :: Project -> RenderableNode -> RenderableNode
 const addDeadFlag = R.curry(
   (project, renderableNode) => R.compose(
@@ -149,18 +143,22 @@ const addDeadFlag = R.curry(
 
 // :: State -> StrMap RenderableNode
 export const getRenderableNodes = createMemoizedSelector(
-  [getProject, getCurrentPatchUnsafe, getCurrentPatchNodes, getConnectedPins],
+  [getProject, getCurrentPatch, getCurrentPatchNodes, getConnectedPins],
   [R.T, R.equals, R.equals, R.equals],
-  (project, currentPatch, currentPatchNodes, connectedPins) =>
-    R.map(
-      R.compose(
-        addDeadFlag(project),
-        addNodePositioning,
-        assocPinIsConnected(connectedPins),
-        assocNodeIdToPins,
-        mergePinDataFromPatch(project, currentPatch)
+  (project, maybeCurrentPatch, currentPatchNodes, connectedPins) =>
+    Maybe.maybe(
+      {},
+      currentPatch => R.map(
+        R.compose(
+          addDeadFlag(project),
+          addNodePositioning,
+          assocPinIsConnected(connectedPins),
+          assocNodeIdToPins,
+          mergePinDataFromPatch(project, currentPatch)
+        ),
+        currentPatchNodes
       ),
-      currentPatchNodes
+      maybeCurrentPatch
     )
 );
 
