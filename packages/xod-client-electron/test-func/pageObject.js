@@ -205,6 +205,12 @@ function assertActiveTabHasTitle(client, expectedTitle) {
   );
 }
 
+function assertTabWithTitleDoesNotExist(client, expectedTitle) {
+  return assert.eventually.isFalse(
+    client.isExisting(`.tab-name=${expectedTitle}`)
+  );
+}
+
 //-----------------------------------------------------------------------------
 // API
 //-----------------------------------------------------------------------------
@@ -213,6 +219,7 @@ function assertActiveTabHasTitle(client, expectedTitle) {
 const API = {
   addNode,
   assertActiveTabHasTitle,
+  assertTabWithTitleDoesNotExist,
   assertNoPopups,
   assertNodeAvailableInProjectBrowser,
   assertNodeUnavailableInProjectBrowser,

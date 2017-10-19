@@ -182,12 +182,12 @@ describe('IDE', () => {
   });
 
   describe('deleting a patch', () => {
-    it('opens patch from xod/core', () =>
-      page.openPatchFromProjectBrowser('clock')
-        .then(() => page.findPatchGroup('welcome-to-xod').click())
+    it('deletes "my-blink" patch', () =>
+      page.findPatchGroup('welcome-to-xod').click()
         .then(() => page.assertPatchGroupExpanded('welcome-to-xod'))
         .then(() => page.deletePatch('my-blink'))
         .then(() => page.assertNodeUnavailableInProjectBrowser('my-blink'))
+        .then(() => page.assertTabWithTitleDoesNotExist('my-blink'))
     );
   });
 });
