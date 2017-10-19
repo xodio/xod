@@ -1,6 +1,8 @@
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 
+import { COMMAND } from '../../../../utils/constants';
+
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
 
@@ -9,6 +11,11 @@ import {
   bindApi,
   getMousePosition,
 } from '../modeUtils';
+
+const abort = (api) => {
+  api.props.actions.deselectAll();
+  api.goToDefaultMode();
+};
 
 let patchSvgRef = null;
 
@@ -40,14 +47,16 @@ const linkingMode = {
     api.props.actions.linkPin(nodeId, pinKey);
     api.goToDefaultMode();
   },
-  onBackgroundClick(api) {
-    api.props.actions.deselectAll();
-    api.goToDefaultMode();
+  onBackgroundClick: abort,
+  getHotkeyHandlers(api) {
+    return {
+      [COMMAND.DESELECT]: () => abort(api),
+    };
   },
-
   render(api) {
     return (
       <HotKeys
+        handlers={this.getHotkeyHandlers(api)}
         className="PatchWrapper"
       >
         <PatchSVG
