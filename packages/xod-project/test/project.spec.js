@@ -1,7 +1,9 @@
 import R from 'ramda';
+import { Maybe, Either } from 'ramda-fantasy';
 import chai, { expect, assert } from 'chai';
 import dirtyChai from 'dirty-chai';
 
+import { addMissingOptionalProjectFields } from '../src/optionalFieldsUtils';
 import * as CONST from '../src/constants';
 import * as Node from '../src/node';
 import * as Pin from '../src/pin';
@@ -9,6 +11,8 @@ import * as Patch from '../src/patch';
 import * as Project from '../src/project';
 import { formatString } from '../src/utils';
 import { BUILT_IN_PATCH_PATHS } from '../src/builtInPatches';
+
+import brokenProject from './fixtures/broken-project.json';
 
 import * as Helper from './helpers';
 
@@ -668,6 +672,68 @@ describe('Project', () => {
       const resolved = Project.resolveNodeTypesInProject(project);
       const actMap = getActualMap(resolved);
       expect(actMap).to.be.deep.equal(expectedMap);
+    });
+  });
+
+  describe('validateProject', () => {
+    const project = addMissingOptionalProjectFields(brokenProject);
+    const unfoldLeft = e => Either.either(R.identity, R.always(null), e);
+    const unfoldRight = e => Either.either(R.always(null), R.identity, e);
+
+    it('returns Either Error about non-existing patch in the project', () => {
+      const res = Project.validateProject(project);
+      const err = new Error(
+        formatString(CONST.ERROR.TYPE_NOT_FOUND, { patchPath: '@/not-existing-patch' })
+      );
+
+      assert.equal(res.isLeft, true);
+      assert.deepEqual(unfoldLeft(res), err);
+    });
+    it('returns Either Error about missing pins', () => {
+      const newPatch = Helper.defaultizePatch({});
+      const projectWithNotExistingPatch = Project.assocPatchUnsafe(
+        '@/not-existing-patch',
+        newPatch,
+        project
+      );
+      const res = Project.validateProject(projectWithNotExistingPatch);
+      const err = new Error(CONST.ERROR.PINS_NOT_FOUND);
+
+      assert.equal(res.isLeft, true);
+      assert.deepEqual(unfoldLeft(res), err);
+    });
+    it('returns Either Project for valid project', () => {
+      const validProject = Helper.defaultizeProject({});
+      const res = Project.validateProject(validProject);
+
+      assert.equal(res.isRight, true);
+      assert.deepEqual(unfoldRight(res), validProject);
+    });
+  });
+
+  describe('project surviving', () => {
+    const project = addMissingOptionalProjectFields(brokenProject);
+    const curPatch = Project.getPatchByPathUnsafe('@/main', project);
+
+    // :: NodeId -> Patch -> [PinKey]
+    const getPinKeysByNodeId = R.compose(
+      Maybe.maybe([], R.identity),
+      R.map(R.compose(
+        R.keys,
+        Project.getPinsForNode(R.__, curPatch, project)
+      )),
+      Patch.getNodeById
+    );
+
+    it('should add broken pins to nodes, that points to non-existing patch', () => {
+      const pinKeysOut = getPinKeysByNodeId('brokenNodeOutLinks', curPatch);
+      assert.lengthOf(pinKeysOut, 1);
+      const pinKeysIn = getPinKeysByNodeId('brokenNodeInLinks', curPatch);
+      assert.lengthOf(pinKeysIn, 2);
+    });
+    it('should add broken pins to valid nodes, that has connected links to non-existing pins', () => {
+      const pinKeys = getPinKeysByNodeId('validNodeId', curPatch);
+      assert.lengthOf(pinKeys, 5);
     });
   });
 });

@@ -24,8 +24,10 @@ const isBindingForbidden = R.either(
 );
 
 const isPulsePin = R.pipe(R.prop('dataType'), R.equals(PIN_TYPE.PULSE));
+const isDeadPinType = R.pipe(R.prop('dataType'), R.equals(PIN_TYPE.DEAD));
 
 const getReason = R.cond([
+  [isDeadPinType, R.always('dead pin')],
   [isLinkedInput, R.always('linked')],
   [R.both(isNonBindableOutput, isPulsePin), R.always('pulse')],
   // the only option left is that it's not bindable
@@ -68,11 +70,12 @@ PinWidget.propTypes = {
   isConnected: PropTypes.bool,
   isBindable: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
   direction: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
-  children: PropTypes.element.isRequired,
+  children: PropTypes.element,
 };
 
 PinWidget.defaultProps = {
   label: 'Unnamed property',
+  children: null,
 };
 
 export default PinWidget;

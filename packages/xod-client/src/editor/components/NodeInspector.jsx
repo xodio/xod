@@ -16,6 +16,8 @@ import { RenderableNode } from '../../types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 import { getUtmSiteUrl } from '../../utils/siteLinks';
 
+import * as MESSAGES from '../messages';
+
 // :: RenderablePin -> String
 const getWidgetKey = R.converge(
   (id, key) => `${id}_${key}`,
@@ -97,6 +99,10 @@ const NodeInspector = ({ node, onPropUpdate }) => {
 
   const nodeId = XP.getNodeId(node);
 
+  const DeadNodeMessage = (node.dead) ? (
+    <Widgets.HintWidget text={MESSAGES.PATCH_FOR_NODE_IS_MISSING} />
+  ) : null;
+
   return (
     <div className="Inspector">
       <div className="inspectorTitle">Node: <span className="nodeName">{baseName}</span></div>
@@ -115,6 +121,8 @@ const NodeInspector = ({ node, onPropUpdate }) => {
         value={XP.getNodeLabel(node)}
         onPropUpdate={onPropUpdate}
       />
+
+      {DeadNodeMessage}
 
       <WidgetsGroup
         entity={node}

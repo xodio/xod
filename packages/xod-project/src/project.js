@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
-import { explode, explodeMaybe, notEmpty } from 'xod-func-tools';
+import { explodeMaybe, notEmpty } from 'xod-func-tools';
 import { BUILT_IN_PATCH_PATHS } from './builtInPatches';
 
 import * as CONST from './constants';
@@ -120,15 +120,6 @@ export const getProjectLicense = def(
 export const setProjectLicense = def(
   'setProjectLicense :: String -> Project -> Project',
   R.assoc('license')
-);
-
-// TODO: remove
-export const validateProject = Either.of;
-
-// TODO: we need an actual validation fucntion
-export const isValidProject = R.compose(
-  Either.isRight,
-  validateProject
 );
 
 /**
@@ -396,7 +387,28 @@ export const validatePatchContents = def(
 );
 
 /**
- * Inserts or updates the `patch` within the `project`.
+ * Inserts or updates the `patch` within the `project`
+ * without any validation.
+ *
+ * Matching is done by patch’es path.
+ *
+ * @function assocPatchUnsafe
+ * @param {string} path
+ * @param {Patch} patch - patch to insert or update
+ * @param {Project} project - project to operate on
+ * @returns {Project} copy of the project with the updated patch
+ */
+export const assocPatchUnsafe = def(
+  'assocPatchUnsafe :: PatchPath -> Patch -> Project -> Project',
+  (path, patch, project) => R.compose(
+    R.assocPath(['patches', path], R.__, project),
+    Patch.setPatchPath(path)
+  )(patch)
+);
+
+/**
+ * Inserts or updates the `patch` within the `project`
+ * with validation of patch contents.
  *
  * Matching is done by patch’es path.
  *
@@ -406,21 +418,39 @@ export const validatePatchContents = def(
  * @param {Project} project - project to operate on
  * @returns {Either<Error|Project>} copy of the project with the updated patch
  */
-// TODO: Refactoring needed
 export const assocPatch = def(
   'assocPatch :: PatchPath -> Patch -> Project -> Either Error Project',
   (path, patch, project) =>
-    validatePatchContents(patch, project).map(
-      R.compose(
-        R.assocPath(['patches', path], R.__, project),
-        Patch.setPatchPath(path)
-      )
-    )
+  validatePatchContents(patch, project).map(
+    assocPatchUnsafe(path, R.__, project)
+  )
 );
 
 /**
- * Insers or updates a list of Patches within the Project.
+ * Inserts or updates a list of Patches within the Project.
  * It takes a PatchPath from the Patches in the list.
+ * Without validation of each patch.
+ */
+export const assocPatchListUnsafe = def(
+  'assocPatchListUnsafe :: [Patch] -> Project -> Project',
+  (patches, project) => R.compose(
+    R.reduce((proj, fn) => fn(proj), project),
+    R.map(
+      R.converge(
+        assocPatchUnsafe,
+        [
+          Patch.getPatchPath,
+          R.identity,
+        ]
+      )
+    )
+  )(patches)
+);
+
+/**
+ * Inserts or updates a list of Patches within the Project.
+ * It takes a PatchPath from the Patches in the list.
+ * With validation of each patch.
  */
 export const assocPatchList = def(
   'assocPatchList :: [Patch] -> Project -> Either Error Project',
@@ -721,8 +751,7 @@ const isLocalNode = def(
 export const resolveNodeTypesInProject = def(
   'resolveNodeTypesInProject :: Project -> Project',
   project => R.compose(
-    explode,
-    assocPatchList(R.__, project),
+    assocPatchListUnsafe(R.__, project),
     R.map(patch => R.compose(
       R.reduce(R.flip(Patch.assocNode), patch),
       R.map(node => R.compose(
@@ -739,4 +768,64 @@ export const resolveNodeTypesInProject = def(
     )),
     listLibraryPatches
   )(project)
+);
+
+/**
+ * Returns a map of Pins for the passed Node.
+ *
+ * If Node points to unexistent Patch, so Pins will be calculated
+ * from Links, connected with it, with "UNKNOWN" type.
+ * Such Nodes will be marked as dead.
+ *
+ * If Patch exists — it gets Pins from Patch and ensures, that all Links
+ * conntected with specified Node really has a Pin. If not — it will
+ * add pins with Unknown type (to render it properly).
+ * Such Links will be marked as dead, but Nodes — not.
+ */
+export const getPinsForNode = def(
+  'getPinsForNode :: Node -> Patch -> Project -> Map PinKey Pin',
+  (node, currentPatch, project) => {
+    const type = Node.getNodeType(node);
+    return R.compose(
+      R.ifElse(
+        Maybe.isJust,
+        R.compose(
+          explodeMaybe(`Expected valid pins for existent patch ${type}`),
+          R.map(R.compose(
+            Patch.upsertDeadPins(node, currentPatch),
+            Patch.getNondeadNodePins(node)
+          ))
+        ),
+        () => Patch.getDeadNodePins(node, currentPatch)
+      ),
+      getPatchByPath
+    )(type, project);
+  }
+);
+
+
+/**
+ * Validates all patches in the project for validness.
+ * @param {Project} project
+ * @returns {Either<Error|Project>}
+ */
+export const validateProject = project => R.compose(
+  R.ifElse(
+    Either.isLeft,
+    R.identity,
+    R.always(Either.of(project))
+  ),
+  R.sequence(Either.of),
+  R.map(validatePatchContents(R.__, project)),
+  listPatches
+)(project);
+
+/**
+ * Validates project and returns boolean value.
+ * @param {Project} project
+ * @returns {Boolean}
+ */
+export const isValidProject = R.compose(
+  Either.isRight,
+  validateProject
 );

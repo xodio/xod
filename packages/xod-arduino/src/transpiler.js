@@ -362,6 +362,7 @@ const getDeferNodeCount = def(
 const transformProjectWithImpls = def(
   'transformProjectWithImpls :: [Source] -> Project -> PatchPath -> TranspilationOptions -> Either Error TProject',
   (impls, project, path, opts) => R.compose(
+    Project.wrapDeadRefErrorMessage(path),
     R.chain((tProject) => {
       const nodeWithTooManyOutputs = R.find(
         R.pipe(R.prop('outputs'), R.length, R.lt(7)),
@@ -390,11 +391,11 @@ const transformProjectWithImpls = def(
       Project.extractBoundInputsToConstNodes(R.__, path, project),
     )),
     R.chain(Project.flatten(R.__, path, impls)),
-    R.ifElse(
-      () => (opts.debug === true),
-      Either.of,
-      Project.updatePatch(path, Project.removeDebugNodes)
-    )
+    R.unless(
+      () => opts.debug,
+      R.chain(Project.updatePatch(path, Project.removeDebugNodes))
+    ),
+    Project.validateProject
   )(project)
 );
 
