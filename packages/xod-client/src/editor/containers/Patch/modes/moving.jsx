@@ -119,7 +119,10 @@ const movingMode = {
     );
 
     return (
-      <HotKeys className="PatchWrapper">
+      <HotKeys
+        className="PatchWrapper"
+        handlers={{}}
+      >
         <PatchSVG
           onMouseMove={bindApi(api, this.onMouseMove)}
           onMouseUp={bindApi(api, this.onMouseUp)}
