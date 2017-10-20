@@ -11,12 +11,8 @@ import {
 
 import { getSelectedPatchPath } from './selectors';
 import { isPatchEmpty } from './utils';
-import { getCurrentPatchPath } from '../editor/selectors';
 
-import { addError } from '../messages/actions';
 import { deletePatch } from '../project/actions';
-
-import { PROJECT_BROWSER_ERRORS } from '../messages/constants';
 
 export const requestCreatePatch = () => ({
   type: PATCH_CREATE_REQUESTED,
@@ -37,12 +33,6 @@ export const requestDeletePatch = patchPath => (dispatch, getState) => {
 
   if (isPatchEmpty(state, selectedPatchPath)) {
     dispatch(deletePatch(selectedPatchPath));
-    return;
-  }
-
-  const currentPatchPath = getCurrentPatchPath(state);
-  if (selectedPatchPath === currentPatchPath) {
-    dispatch(addError(PROJECT_BROWSER_ERRORS.CANT_DELETE_CURRENT_PATCH));
     return;
   }
 

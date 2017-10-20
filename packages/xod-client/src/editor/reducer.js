@@ -229,21 +229,26 @@ const openPatchByPath = R.curry(
   }
 );
 
-const openLatestOpenedTab = R.converge(
-  R.assoc('currentTabId'),
-  [
-    R.compose( // get patch id from last of remaining tabs
-      R.propOr(null, 'id'),
-      R.last,
-      R.values,
-      R.prop('tabs')
-    ),
-    R.identity,
-  ]
+const openLatestOpenedTab = R.compose(
+  clearSelection,
+  R.converge(
+    R.assoc('currentTabId'),
+    [
+      R.compose( // get patch id from last of remaining tabs
+        R.propOr(null, 'id'),
+        R.last,
+        R.values,
+        R.prop('tabs')
+      ),
+      R.identity,
+    ]
+  )
 );
 
 const closeTabById = R.curry(
   (tabId, state) => {
+    if (!isTabOpened(tabId, state)) return state;
+
     const tabToClose = getTabById(tabId, state);
 
     const isDebuggerTabClosing = () => (tabToClose.type === TAB_TYPES.DEBUGGER);
@@ -254,6 +259,7 @@ const closeTabById = R.curry(
     );
 
     const openOriginalPatch = patchPath => R.compose(
+      clearSelection,
       R.converge(
         setTabOffset(tabToClose.offset),
         [
@@ -265,10 +271,6 @@ const closeTabById = R.curry(
     );
 
     return R.compose(
-      R.when(
-        isCurrentDebuggerTabClosing,
-        clearSelection
-      ),
       R.cond([
         [isCurrentDebuggerTabClosing, openOriginalPatch(tabToClose.patchPath)],
         [isCurrentTabClosing, openLatestOpenedTab],
@@ -279,10 +281,12 @@ const closeTabById = R.curry(
   }
 );
 
-const closeTabByPatchPath = (patchPath, state) => {
-  const tabIdToClose = getTabIdbyPatchPath(patchPath, state);
-  return closeTabById(tabIdToClose, state);
-};
+const closeTabByPatchPath = R.curry(
+  (patchPath, state) => {
+    const tabIdToClose = getTabIdbyPatchPath(patchPath, state);
+    return closeTabById(tabIdToClose, state);
+  }
+);
 
 const renamePatchInTabs = (newPatchPath, oldPatchPath, state) => {
   const tabIdToRename = getTabIdbyPatchPath(oldPatchPath, state);
