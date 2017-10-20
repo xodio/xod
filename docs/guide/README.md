@@ -9,4 +9,3 @@ User’s Guide
 * [Data Types](./data-types/)
 * [Linking Rules](./linking-rules/)
 * [Execution Model](./execution-model/)
-* [Mouse and Keyboard Shortcuts](./shortcuts/)
