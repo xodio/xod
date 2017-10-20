@@ -420,7 +420,7 @@ void clearTimeout(NodeId nid) {
 }
 
 bool isTimedOut(NodeId nid) {
-    return g_schedule[nid] < transactionTime();
+    return g_schedule[nid] && g_schedule[nid] < transactionTime();
 }
 
 } // namespace xod
