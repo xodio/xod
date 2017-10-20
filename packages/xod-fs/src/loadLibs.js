@@ -2,10 +2,10 @@ import R from 'ramda';
 import path from 'path';
 
 import * as XP from 'xod-project';
+import { uniqLists } from 'xod-func-tools';
 
 import { readDir, readJSON } from './read';
 import {
-  resolvePath,
   getPatchName,
   hasExt,
   rejectOnInvalidPatchFileContents,
@@ -17,18 +17,19 @@ import {
   addMissingOptionsToPatchFileContents,
 } from './convertTypes';
 
-const scanLibsFolder = (libs, libsDir) => Promise.all(
-  libs.map(
-    lib => readDir(path.resolve(libsDir, lib))
-      .then(R.filter(hasExt('.xodp')))
-      .catch((err) => {
-        throw Object.assign(err, {
-          path: path.resolve(libsDir, lib),
-          libName: lib,
-        });
-      })
-  ))
-  .then(R.zipObj(libs));
+const scanLibsFolder = (libs, libsDir) =>
+  Promise.all(
+    libs.map(
+      lib => readDir(path.resolve(libsDir, lib))
+        .then(R.filter(hasExt('.xodp')))
+        .catch((err) => {
+          throw Object.assign(err, {
+            path: path.resolve(libsDir, lib),
+            libName: lib,
+          });
+        })
+    ))
+    .then(R.zipObj(libs));
 
 const readLibFiles = (libfiles) => {
   const libNames = Object.keys(libfiles);
@@ -55,12 +56,10 @@ const readLibFiles = (libfiles) => {
   return Promise.all(libPromises);
 };
 
-export const loadLibs = (libs, workspace) => {
-  const libsDir = path.resolve(resolvePath(workspace), 'lib');
-  return scanLibsFolder(libs, libsDir)
+export const loadLibrary = (libs, libsDir) =>
+  scanLibsFolder(libs, libsDir)
     .then(readLibFiles)
     .then(R.indexBy(XP.getPatchPath));
-};
 
 // extract libNames from paths to xod-files
 // for example: '/Users/vasya/xod/lib/xod/core/and/patch.xodm' -> 'xod/core'
@@ -77,16 +76,15 @@ const extractLibNamesFromFilenames = libsDir => R.compose(
   )
 );
 
-export const loadAllLibs = (workspace) => {
-  const libsDir = path.resolve(resolvePath(workspace), 'lib');
+// :: Path -> Promise [LibName]
+const scanForLibNames = (libDir) => {
   const folder = '.';
 
-  return scanLibsFolder([folder], libsDir)
-    .then(R.compose(
-      extractLibNamesFromFilenames(libsDir),
-      R.prop(folder)
-    ))
-    .then(libs => loadLibs(libs, workspace))
+  return R.composeP(
+    extractLibNamesFromFilenames(libDir),
+    R.prop(folder),
+    scanLibsFolder
+  )([folder], libDir)
     .catch((err) => {
       // Catch error ENOENT in case if libsDir is not found.
       // E.G. User deleted it before select project.
@@ -95,3 +93,20 @@ export const loadAllLibs = (workspace) => {
       return Promise.reject(err);
     });
 };
+
+// :: [Path] -> Map PatchPath Patch
+export const loadLibs = libDirs => R.composeP(
+  R.mergeAll,
+  R.unnest,
+  libPairs => Promise.all(
+    R.map(
+      ([libDir, libs]) => loadLibrary(libs, libDir),
+      libPairs
+    )
+  ),
+  R.toPairs,
+  R.reject(R.isEmpty),
+  R.zipObj(libDirs),
+  uniqLists,
+  libDir => Promise.all(R.map(scanForLibNames, libDir))
+)(libDirs);

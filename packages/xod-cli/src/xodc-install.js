@@ -101,8 +101,10 @@ export default function install(swaggerUrl, libUri, path2) {
       xodFs.findClosestWorkspaceDir(path2),
     ])
     .then(([libUri2, swaggerClient, workspaceDir]) => {
-      const orgDir = path.resolve(workspaceDir, 'lib',
-        xodFs.fsSafeName(libUri2.orgname));
+      const orgDir = path.resolve(
+        xodFs.resolveLibPath(workspaceDir),
+        xodFs.fsSafeName(libUri2.orgname)
+      );
       const libDir = path.resolve(orgDir, xodFs.fsSafeName(libUri2.libname));
       return libDirDoesNotExist(libDir, libUri2)
         .then(() => getProject(swaggerClient, libUri2))

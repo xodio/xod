@@ -16,7 +16,7 @@ import { PatchFileContents, Path, def } from './types';
 import {
   DEFAULT_WORKSPACE_PATH,
   DEFAULT_PROJECT_NAME,
-  LIBS_FOLDERNAME,
+  LIBS_DIRNAME,
   WORKSPACE_FILENAME,
   IMPL_FILENAMES,
 } from './constants';
@@ -231,7 +231,7 @@ export const resolveWorkspacePath = R.compose(
 export const resolveLibPath = def(
   'resolveLibPath :: Path -> Path',
   workspacePath => path.resolve(
-    workspacePath, LIBS_FOLDERNAME
+    workspacePath, LIBS_DIRNAME
   )
 );
 export const resolveDefaultProjectPath = def(
@@ -265,18 +265,11 @@ const isWorkspaceDirEmptyOrNotExist = def(
     R.T
   )
 );
-const doesWorkspaceHaveStdLib = def(
-  'doesWorkspaceHaveStdLib :: Path -> Boolean',
-  R.compose(
-    doesDirectoryExist,
-    resolveLibPath
-  )
-);
 
 // :: Path -> Promise Path Error
 export const isWorkspaceValid = R.cond([
   [
-    R.both(doesWorkspaceFileExist, doesWorkspaceHaveStdLib),
+    doesWorkspaceFileExist,
     Promise.resolve.bind(Promise),
   ],
   [

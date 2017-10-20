@@ -332,6 +332,26 @@ export const invertMap = def(
   )
 );
 
+/**
+ * Returns the list of list of strings.
+ * Removes all duplicates from the subsequent list
+ * on the basis of already filtered values lists.
+ *
+ * E.G.
+ * [['a', 'b', 'c'], ['b','c','d'], ['a','d','e']]
+ * will become
+ * [['a', 'b', 'c'], ['d'], ['e']]
+ */
+export const uniqLists = def(
+  'uniqLists :: [[String]] -> [[String]]',
+  R.reduce(
+    (acc, nextList) => R.append(
+      R.without(R.unnest(acc), nextList),
+      acc
+    ),
+    []
+  )
+);
 
 export default Object.assign(
   {
@@ -358,6 +378,7 @@ export default Object.assign(
     mapIndexed,
     swap,
     reverseLookup,
+    uniqLists,
   },
   types
 );

@@ -10,6 +10,7 @@ import {
   reduceMaybe,
   reduceEither,
   omitRecursively,
+  uniqLists,
 } from '../src/index';
 
 describe('explode', () => {
@@ -140,5 +141,26 @@ describe('omitRecursively', () => {
     const obj = [[{ omitMe: 'hello', foo: 2 }]];
     const cleanObj = omitRecursively(['omitMe'], obj);
     assert.deepEqual(cleanObj, [[{ foo: 2 }]]);
+  });
+});
+
+describe('uniqLists', () => {
+  it('returns filtered list', () => {
+    assert.deepEqual(
+      uniqLists([['a', 'b', 'c'], ['b', 'c', 'd'], ['a', 'd', 'e', 'f']]),
+      [['a', 'b', 'c'], ['d'], ['e', 'f']]
+    );
+  });
+  it('returns filtered list with untouched empty lists', () => {
+    assert.deepEqual(
+      uniqLists([['a', 'b', 'c'], ['b', 'c', 'd'], [], []]),
+      [['a', 'b', 'c'], ['d'], [], []]
+    );
+  });
+  it('returns empty list for empty list', () => {
+    assert.deepEqual(
+      uniqLists([]),
+      []
+    );
   });
 });
