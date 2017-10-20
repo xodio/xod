@@ -53,10 +53,14 @@ User’s guide
 * [Data Types](./guide/data-types/)
 * [Linking Rules](./guide/linking-rules/)
 * [Execution Model](./guide/execution-model/)
-* [Mouse and Keyboard Shortcuts](./guide/shortcuts/)
 
-Standard library node reference
--------------------------------
+Reference
+---------
+
+* [List of supported hardware](./reference/supported-hardware/)
+* [Mouse and keyboard shortcuts](./reference/shortcuts/)
+
+### Standard library nodes
 
 * [`xod/core`](/libs/xod/core/)
 * [`xod/common-hardware`](/libs/xod/common-hardware/)
