@@ -1,7 +1,7 @@
 image_resource:
   source:
     repository: node
-    tag: 7.10.1
+    tag: 8.6.0
   type: docker-image
 inputs:
   - name: xod

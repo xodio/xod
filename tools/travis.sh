@@ -30,10 +30,6 @@ fi
 
 if [[ $TRAVIS_BRANCH == prerelease-* ]]; then
     echo 'Building prerelease distributive...'
-    # Lerna bug https://github.com/lerna/lerna/issues/915
-    # we have to run publish twice to change a version from
-    # 0.42.0 to 0.42.0-alpha.abcdef
-    lerna publish --skip-git --skip-npm --cd-version=minor --yes
     lerna publish --skip-git --skip-npm --canary --yes
     tag=$(node -e "console.log('v' + require('./packages/xod-client-electron/package.json').version)")
     build_dist

@@ -14,9 +14,7 @@
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps",
     "test": "electron-mocha ./test",
-    "test-func": "mocha --opts test-func/mocha.opts test-func/**/*.spec.js",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder --publish always"
+    "test-func": "mocha --opts test-func/mocha.opts test-func/**/*.spec.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
@@ -54,7 +52,7 @@
     "cpx": "^1.5.0",
     "devtron": "^1.3.0",
     "electron": "1.6.11",
-    "electron-builder": "=19.12.0",
+    "electron-builder": "git+https://github.com/xodio/electron-builder#monorepo-fix-npm",
     "electron-mocha": "^3.4.0",
     "fsp": "^0.1.2",
     "webpack": "^1.13.2",

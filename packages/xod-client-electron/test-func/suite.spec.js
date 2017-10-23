@@ -30,7 +30,7 @@ describe('IDE', () => {
     const tmpDir = path.join(os.tmpdir(), 'xod-test-workspace-');
 
     app = new Application({
-      path: './node_modules/.bin/electron',
+      path: '../../node_modules/.bin/electron',
       args: ['.'],
     });
 
