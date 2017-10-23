@@ -4,8 +4,8 @@ import path from 'path';
 
 import * as XP from 'xod-project';
 import {
+  resolveLibPath,
   spawnWorkspaceFile,
-  spawnStdLib,
   spawnDefaultProject,
   saveProject,
   getLocalProjects,
@@ -14,7 +14,6 @@ import {
   getFilePath,
   filterDefaultProject,
   findProjectMetaByName,
-  resolveLibPath,
   resolveDefaultProjectPath,
   ensureWorkspacePath,
   ERROR_CODES as FS_ERROR_CODES,
@@ -32,6 +31,7 @@ import * as EVENTS from '../shared/events';
 
 
 export const getPathToBundledWorkspace = () => path.resolve(__dirname, '../workspace');
+export const getPathToBundledLibs = () => resolveLibPath(getPathToBundledWorkspace());
 
 // =============================================================================
 //
@@ -86,8 +86,6 @@ export const updateWorkspace = R.curry(
 //
 // =============================================================================
 
-// :: () -> Path
-const getStdLibPath = () => resolveLibPath(getPathToBundledWorkspace());
 // :: () -> Path
 export const getDefaultProjectPath = () => resolveDefaultProjectPath(getPathToBundledWorkspace());
 
@@ -150,10 +148,6 @@ export const saveWorkspacePath = workspacePath => R.compose(
     settings.load
   )();
 
-// :: Path -> Promise Path Error
-const spawnWorkspace = workspacePath => spawnWorkspaceFile(workspacePath)
-  .then(spawnStdLib(getStdLibPath()));
-
 // :: (String -> a -> ()) ->Path -> Promise ProjectMeta[] Error
 const spawnAndLoadDefaultProject = (send, workspacePath) =>
   spawnDefaultProject(getDefaultProjectPath(), workspacePath)
@@ -204,7 +198,7 @@ export const onOpenProject = R.curry(
 // :: (String -> a -> ()) -> (() -> Path) -> Path -> Promise Project Error
 export const onSelectProject = R.curry(
   (send, pathGetter, projectMeta) => pathGetter()
-    .then(() => loadProject(getFilePath(projectMeta)))
+    .then(() => loadProject(getFilePath(projectMeta), [getPathToBundledLibs()]))
     .then(requestShowProject(send))
     .catch(R.ifElse(
       R.prop('errorCode'),
@@ -217,7 +211,7 @@ export const onSelectProject = R.curry(
 // :: (String -> a -> ()) -> (Path -> Promise Path Error) -> Path -> Promise ProjectMeta[] Error
 export const onCreateWorkspace = R.curry(
   (send, pathSaver, workspacePath) => R.pipeP(
-    spawnWorkspace,
+    spawnWorkspaceFile,
     pathSaver,
     updateWorkspace(send, ''),
     loadProjectsOrSpawnDefault(send)

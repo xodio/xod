@@ -13,7 +13,7 @@ export {
   loadProjectWithLibs,
   loadProjectWithoutLibs,
 } from './load';
-export { loadAllLibs } from './loadLibs';
+export { loadLibsFromWorkspaceList } from './loadLibs';
 export * from './utils';
 export {
   findClosestProjectDir,

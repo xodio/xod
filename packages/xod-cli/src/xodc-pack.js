@@ -12,7 +12,7 @@ export default (projectDir, output) => {
 
   msg.notice(`Packing ${dirName} into ${output} ...`);
 
-  loadProjectWithLibs(projectPath, workspace)
+  loadProjectWithLibs([], projectPath, workspace)
     .then(({ project, libs }) => pack(project, libs))
     .then(packed => writeJSON(output, packed))
     .then(() => {

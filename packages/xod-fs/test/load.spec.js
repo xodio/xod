@@ -70,7 +70,7 @@ describe('Loader', () => {
 
   describe('loadProjectWithLibs', () => {
     it('should return project with libs', () =>
-      Loader.loadProjectWithLibs(projectPath, workspace)
+      Loader.loadProjectWithLibs([], projectPath, workspace)
         .then(({ project, libs }) => {
           const quxPatch = R.find(R.pathEq(['content', 'path'], '@/qux'), project);
           assert.isDefined(quxPatch);
@@ -90,7 +90,7 @@ describe('Loader', () => {
         const okProject = path.resolve(brokenWorkspace, './ok-project');
 
         return expectRejectedWithCode(
-          Loader.loadProjectWithLibs(okProject, brokenWorkspace),
+          Loader.loadProjectWithLibs([], okProject, brokenWorkspace),
           ERROR_CODES.INVALID_FILE_CONTENTS
         );
       }
@@ -100,7 +100,7 @@ describe('Loader', () => {
 
   describe('loadProjectWithoutLibs', () => {
     it('should return project without libs', () => {
-      const xodCore = path.resolve(workspace, './lib/xod/core');
+      const xodCore = path.resolve(workspace, './__lib__/xod/core');
       const xodCoreOwner = path.resolve(xodCore, '..');
 
       return Loader.loadProjectWithoutLibs(xodCore)

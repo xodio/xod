@@ -4,7 +4,7 @@ import copy from 'recursive-copy';
 import { rejectWithCode } from 'xod-func-tools';
 
 import { writeFile } from './write';
-import { resolvePath, resolveLibPath, resolveDefaultProjectPath } from './utils';
+import { resolvePath, resolveDefaultProjectPath } from './utils';
 import { WORKSPACE_FILENAME } from './constants';
 import * as ERROR_CODES from './errorCodes';
 
@@ -19,13 +19,6 @@ export const spawnWorkspaceFile = workspacePath =>
     .then(p => writeFile(p, '', 'utf8'))
     .then(() => workspacePath)
     .catch(rejectWithCode(ERROR_CODES.CANT_CREATE_WORKSPACE_FILE));
-
-// :: Path -> Promise Path Error
-export const spawnStdLib = curry((stdLibPath, workspacePath) =>
-  copy(stdLibPath, resolveLibPath(workspacePath), copyOptions)
-  .then(() => workspacePath)
-  .catch(rejectWithCode(ERROR_CODES.CANT_COPY_STDLIB))
-);
 
 // :: Path -> Promise Path Error
 export const spawnDefaultProject = curry((defaultProjectPath, workspacePath) =>

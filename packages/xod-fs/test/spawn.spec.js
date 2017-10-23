@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import fs from 'fs-extra';
 
-import { spawnWorkspaceFile, spawnStdLib, spawnDefaultProject } from '../src/spawn';
+import { spawnWorkspaceFile, spawnDefaultProject } from '../src/spawn';
 import { doesFileExist, doesDirectoryExist } from '../src/utils';
 import * as ERROR_CODES from '../src/errorCodes';
 
@@ -16,23 +16,6 @@ describe('Spawn', () => {
         assert.ok(doesFileExist(fixture('./new-workspace/.xodworkspace')));
       });
   });
-
-  it('spawnStdLib resolves to workspace path on success', () => {
-    after(() => fs.remove(fixture('./new-workspace')));
-    return spawnStdLib(fixture('./workspace/lib'), fixture('./new-workspace'))
-      .then(() => {
-        assert.ok(doesDirectoryExist(fixture('./new-workspace/lib')));
-        fs.readdir(fixture('./new-workspace/lib'), (err, files) => {
-          assert.includeMembers(files, ['xod', 'user']);
-        });
-      });
-  });
-  it('spawnStdLib rejects CANT_COPY_STDLIB on failure', () =>
-    expectRejectedWithCode(
-      spawnStdLib(fixture('./no-dir/no-lib'), fixture('./new-workspace')),
-      ERROR_CODES.CANT_COPY_STDLIB
-    )
-  );
 
   it('spawnDefaultProject resolves to workspace path on success', () => {
     after(() => fs.remove(fixture('./new-workspace')));

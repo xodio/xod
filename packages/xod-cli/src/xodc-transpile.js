@@ -8,6 +8,8 @@ import { loadProject, readJSON, writeFile } from 'xod-fs';
 import { transformProject, transpile } from 'xod-arduino';
 import * as msg from './messages';
 
+const bundledLibs = path.resolve(__dirname, '../__lib__');
+
 const showErrorAndExit = (err) => {
   msg.error(err);
   process.exit(1);
@@ -38,7 +40,7 @@ export default (input, patchPath, program) => {
     }
 
     if (isDirectory) {
-      loadProject(dir)
+      loadProject(dir, [bundledLibs])
         .then(resolve)
         .catch(reject);
     }

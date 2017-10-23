@@ -7,11 +7,12 @@ import * as XP from 'xod-project';
 
 import pack from './pack';
 import { findClosestWorkspaceDir } from './find';
-import { loadAllLibs } from './loadLibs';
+import { loadLibs } from './loadLibs';
 import { readDir, readJSON } from './read';
 import * as ERROR_CODES from './errorCodes';
 import {
   resolvePath,
+  resolveLibPath,
   resolveProjectFile,
   isLocalProjectDirectory,
   basenameEquals,
@@ -122,35 +123,61 @@ export const loadProjectWithoutLibs = projectPath => R.composeP(
   readDir
 )(projectPath);
 
-// :: Path -> Path -> Path -> Promise [File] Error
-export const loadProjectWithLibs = (projectPath, workspace, libWorkspace = workspace) => {
-  const fullProjectPath = resolvePath(path.resolve(workspace, projectPath));
-  const libPath = resolvePath(libWorkspace);
+// :: [Path] -> Path -> Path -> Promise [File] Error
+export const loadProjectWithLibs = R.curry(
+  (extraLibDirs, projectPath, workspace) => {
+    const fullProjectPath = resolvePath(path.resolve(workspace, projectPath));
+    const userLibsPath = resolveLibPath(workspace);
 
-  return Promise.all([
-    loadProjectWithoutLibs(fullProjectPath),
-    loadAllLibs(libPath),
-  ]).then(([projectFiles, libs]) => ({ project: projectFiles, libs }))
-    .catch(err => Promise.reject(
-      Object.assign(err, {
-        libPath,
-        fullProjectPath,
-        workspace,
-      })
-    ));
-};
+    const libDirPaths = R.compose(
+      R.concat([userLibsPath]),
+      R.map(resolvePath)
+    )(extraLibDirs);
+
+    return Promise.all([
+      loadProjectWithoutLibs(fullProjectPath),
+      loadLibs(libDirPaths),
+    ]).then(([projectFiles, libs]) => ({ project: projectFiles, libs }))
+      .catch(err => Promise.reject(
+        Object.assign(err, {
+          libPath: userLibsPath,
+          fullProjectPath,
+          workspace,
+        })
+      ));
+  }
+);
 
 // :: Path -> Promise Project Error
-//
-// Loads a regular XOD project placed in a workspace. The workspace and project
-// name are determined by path provided. It is expected to be a path to the
-// project directory, e.g. `/path/to/workspace/my-proj`.
-//
-// Returns a Promise of complete `Project` (see `xod-project`).
-export const loadProject = projectPath =>
+/**
+ * Loads a regular XOD project placed in a workspace. Workspace and project
+ * names are determined by path provided. It is expected to be a path to the
+ * project directory, e.g. `/path/to/workspace/my-proj`.
+ *
+ * Also it loads libraries from libs directory inside of the user workspace
+ * and from `extraLibDirs` list, if it is not empty.
+ * The lib directory in the user workspace has a highest priority,
+ * all extra lib dirs has a smaller priority in accordance to its index
+ * (more index is less priority).
+ *
+ * If lib directories contains libraries with the same names — only one will
+ * be loaded, from lib directory with the highest priority.
+ *
+ * E.G.
+ * - user workspace contains `xod/units`
+ * - extraLibDir[0] contains `xod/core`, `xod/common-hardware`, `xod/units`
+ * - extraLibDir[1] contains `xod/core`, `xod/awesome`
+ * As a result:
+ * - `xod/units` will be loaded from user workspace
+ * - `xod/core` and `xod/common-hardware` will be loaded from extraLibDir[0]
+ * - `xod/awesome` will be loaded from extraLibDir[1]
+ *
+ * Returns a Promise of complete `Project` (see `xod-project`).
+ */
+export const loadProject = (projectPath, extraLibDirs = []) =>
   findClosestWorkspaceDir(projectPath)
     .then(workspace => [path.relative(workspace, projectPath), workspace])
-    .then(R.apply(loadProjectWithLibs))
+    .then(R.apply(loadProjectWithLibs(extraLibDirs)))
     .then(({ project, libs }) => pack(project, libs))
     .then(XP.injectProjectTypeHints)
     .then(XP.resolveNodeTypesInProject);

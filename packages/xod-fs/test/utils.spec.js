@@ -53,7 +53,7 @@ describe('Utils', () => {
   );
   it('isWorkspaceValid: if specified directory is not empty, rejects with error code WORKSPACE_DIR_NOT_EMPTY',
     () => expectRejectedWithCode(
-      U.isWorkspaceValid(fixture('./emptyWorkspace')),
+      U.isWorkspaceValid(fixture('./notEmpty')),
       ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY
     )
   );
