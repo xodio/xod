@@ -11,6 +11,7 @@ void evaluate(Context ctx) {
     State* state = getState(ctx);
     if (!state->begun) {
         Serial.begin(115200);
+        state->begun = true;
     }
 
     auto line = getValue<input_LINE>(ctx);
