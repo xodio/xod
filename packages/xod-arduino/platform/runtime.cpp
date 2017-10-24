@@ -351,11 +351,14 @@ void runTransaction() {
     // We must evaluate them before everybody else
     // to give them a chance to emit values.
     for (NodeId nid = NODE_COUNT - DEFER_NODE_COUNT; nid < NODE_COUNT; ++nid) {
-        if (isNodeDirty(nid)) {
+        if (isTimedOut(nid)) {
             evaluateNode(nid);
-            // clear node dirty flags, so it will evaluate
-            // on "regular" pass only if it has a dirty input
-            g_dirtyFlags[nid] = 0;
+            // Clear node dirty flag, so it will evaluate
+            // on "regular" pass only if it has a dirty input.
+            // We must save dirty output flags,
+            // or 'isInputDirty' will not work correctly in "downstream" nodes.
+            g_dirtyFlags[nid] &= ~0x1;
+            clearTimeout(nid);
         }
     }
 
