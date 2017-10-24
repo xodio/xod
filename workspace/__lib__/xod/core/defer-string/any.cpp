@@ -4,10 +4,6 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    State* state = getState(ctx);
-
-    // TODO: memory management issues?
-
     if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
         setTimeout(ctx, 0);
         // This will not have any immediate effect, because
