@@ -8,8 +8,6 @@ import {
   SortableElement as sortableElement,
 } from 'react-sortable-hoc';
 
-import { swap } from 'xod-func-tools';
-
 import * as Actions from '../actions';
 import * as ProjectSelectors from '../../project/selectors';
 import { assocIndexes, indexById } from '../../utils/array';
@@ -75,12 +73,15 @@ class Tabs extends React.Component {
     setTimeout(() => this.props.actions.closeTab(tabId), 0);
   }
 
-  onSortEnd(changes) {
-    const sortedTabs = swap(changes.oldIndex, changes.newIndex, this.getTabs());
-    const newTabs = assocIndexes(sortedTabs);
-    const indexedTabs = indexById(newTabs);
-
-    this.props.actions.sortTabs(indexedTabs);
+  onSortEnd({ oldIndex, newIndex }) {
+    const tabs = this.getTabs();
+    return R.compose(
+      this.props.actions.sortTabs,
+      indexById,
+      assocIndexes,
+      R.insert(newIndex, tabs[oldIndex]),
+      R.remove(oldIndex, 1)
+    )(tabs);
   }
 
   getTabs() {
@@ -99,6 +100,7 @@ class Tabs extends React.Component {
         lockAxis="x"
         lockToContainerEdges
         lockOffset="-5%"
+        helperClass="is-sorting"
 
         onClick={this.onSwitchTab}
         onClose={this.onCloseTab}
