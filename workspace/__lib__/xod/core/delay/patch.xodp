@@ -9,8 +9,8 @@
       "id": "Bk4gU0drwJ-",
       "label": "DONE",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 0,
+        "y": 204
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -19,18 +19,28 @@
       "id": "H1mlUC_HDJZ",
       "label": "RST",
       "position": {
-        "x": 266,
-        "y": 16
+        "x": 136,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Outputs true when delay is in progress",
+      "id": "HkU3vNoTW",
+      "label": "ACT",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-boolean"
     },
     {
       "description": "Resets current countdown, starts new countdown",
       "id": "SkSuD6LMb",
       "label": "SET",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 68,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -39,16 +49,16 @@
       "id": "Skre8ROSv1-",
       "label": "T",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 0,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "noNativeImpl",
       "position": {
-        "x": 138,
-        "y": 120
+        "x": 0,
+        "y": 102
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }
