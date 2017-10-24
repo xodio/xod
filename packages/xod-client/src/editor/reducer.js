@@ -288,12 +288,37 @@ const closeTabByPatchPath = R.curry(
   }
 );
 
-const renamePatchInTabs = (newPatchPath, oldPatchPath, state) => {
-  const tabIdToRename = getTabIdbyPatchPath(oldPatchPath, state);
+// :: PatchPath -> PatchPath -> Tab -> Tab
+const renamePatchPathInBreadcrumbs = R.curry(
+  (newPatchPath, oldPatchPath, tab) => R.when(
+    R.has('breadcrumbs'),
+    R.over(
+      R.lensPath(['breadcrumbs', 'chunks']),
+      R.map(R.when(
+        R.propEq('patchPath', oldPatchPath),
+        R.assoc('patchPath', newPatchPath)
+      ))
+    )
+  )(tab)
+);
 
-  return (tabIdToRename === null)
-    ? state
-    : R.assocPath(['tabs', tabIdToRename, 'patchPath'], newPatchPath, state);
+const renamePatchInTabs = (newPatchPath, oldPatchPath, state) => {
+  const tabIdsToRename = R.compose(
+    R.map(R.prop('id')),
+    listTabsByPatchPath
+  )(oldPatchPath, state);
+
+  return (tabIdsToRename.length === 0) ? state : R.over(
+    R.lensProp('tabs'),
+    R.map(R.compose(
+      renamePatchPathInBreadcrumbs(newPatchPath, oldPatchPath),
+      R.when(
+        R.propEq('patchPath', oldPatchPath),
+        R.assoc('patchPath', newPatchPath)
+      )
+    )),
+    state
+  );
 };
 
 const createSelectionEntity = R.curry((entityType, id) => ({ entity: entityType, id }));
