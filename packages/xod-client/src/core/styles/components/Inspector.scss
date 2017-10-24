@@ -1,3 +1,7 @@
+.Inspector-container {
+   min-height: 0;
+   min-width: 0
+}
 
 .Inspector {
   display: block;
@@ -18,19 +22,19 @@
     padding: 14px 17px;
     color: $input-color-border; // TODO: separate color?
     cursor: default;
-  
+
     .nodeName, .patchName {
       color: $color-canvas-selected; // TODO: separate color?
     }
   }
-  
+
   .nodeType {
     padding-left: 16px;
     color: $sidebar-color-text;
     font-size: $font-size-s;
     cursor: default;
   }
-  
+
   .nodeHelp {
     display: block;
     position: absolute;
@@ -40,13 +44,13 @@
     height: 24px;
     border-radius: 50%;
     background-color: $input-color-bg;
-  
+
     &:hover {
       background-color: #555555;
       box-shadow: 0 0 3px 0 rgba(0,0,0,0.5);
     }
   }
-  
+
   .nodeHelpIcon {
     display: block;
     width: 24px;
@@ -177,6 +181,8 @@
 
   .inspectorTextInput {
     font-family: $font-family-condensed;
+    min-width: 100%;
+    max-width: 100%;
     width: 100%;
     height: 8em;
   }

@@ -140,10 +140,16 @@ class Editor extends React.Component {
     return (
       <HotKeys handlers={this.getHotkeyHandlers()} className="Editor">
         <Sidebar>
-          <FocusTrap onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.PROJECT_BROWSER)}>
+          <FocusTrap
+            className="ProjectBrowser-container"
+            onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.PROJECT_BROWSER)}
+          >
             <ProjectBrowser />
           </FocusTrap>
-          <FocusTrap onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.INSPECTOR)}>
+          <FocusTrap
+            className="Inspector-container"
+            onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.INSPECTOR)}
+          >
             <Inspector
               selection={selection}
               currentPatch={currentPatch}
@@ -152,7 +158,10 @@ class Editor extends React.Component {
             />
           </FocusTrap>
         </Sidebar>
-        <FocusTrap onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.WORKAREA)}>
+        <FocusTrap
+          className="Workarea-container"
+          onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.WORKAREA)}
+        >
           <Workarea>
             <Tabs />
             {DebugSessionStopButton}

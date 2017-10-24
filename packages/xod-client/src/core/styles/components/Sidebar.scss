@@ -1,11 +1,13 @@
 .Sidebar {
-  position: absolute;
   width: $sidebar-width;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
 
   background: $sidebar-color-bg;
 
   & > * {
+    flex: 1;
     border-bottom: 1px solid $sidebar-color-border;
   }
 

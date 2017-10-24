@@ -115,7 +115,10 @@ class Patch extends React.Component {
     const { currentMode } = this.state;
 
     return this.props.connectDropTarget(
-      <div ref={(r) => { this.dropTargetRootRef = r; }}>
+      <div
+        className="PatchWrapper-container"
+        ref={(r) => { this.dropTargetRootRef = r; }}
+      >
         {MODE_HANDLERS[currentMode].render(this.getApi(currentMode))}
       </div>
     );
