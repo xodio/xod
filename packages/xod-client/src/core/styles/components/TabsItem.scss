@@ -17,14 +17,16 @@
   cursor: default;
   white-space: nowrap;
 
-  transition: 0.1s ease-out all;
-
   &:hover, &:focus {
     background: $color-tabs-hover-background;
   }
   &.is-active {
     background: $color-tabs-active-background;
     color: $color-tabs-active-text;
+  }
+
+  &.is-sorting {
+    z-index: 10000;
   }
 
   &.TabsItem--PATCH {}
