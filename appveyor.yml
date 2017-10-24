@@ -15,7 +15,7 @@ init:
 
 install:
 - ps: Install-Product node 8.6.0 x64
-- npm install yarn@1.1.0 -g
+- npm install yarn@1.2.1 -g
 - yarn install
 
 build_script:
