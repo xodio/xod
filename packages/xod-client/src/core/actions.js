@@ -22,6 +22,7 @@ export const showCode = code => ({
   payload: { code },
 });
 
+export * from '../user/actions';
 export * from '../editor/actions';
 export * from '../project/actions';
 export * from '../projectBrowser/actions';

@@ -36,7 +36,7 @@ import PatchTypeSelector from '../components/PatchTypeSelector';
 import ProjectBrowserPopups from '../components/ProjectBrowserPopups';
 import ProjectBrowserToolbar from '../components/ProjectBrowserToolbar';
 
-import { getUtmSiteUrl } from '../../utils/siteLinks';
+import { getUtmSiteUrl } from '../../utils/urls';
 import { IconGuide } from '../../utils/components/IconGuide';
 
 const PATCH_TYPE = {

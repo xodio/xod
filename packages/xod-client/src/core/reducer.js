@@ -1,6 +1,7 @@
 import { merge } from 'ramda';
 import { combineReducers } from 'redux';
 
+import userReducer from '../user/reducer';
 import projectReducer from '../project/reducer';
 import undoableProject from './undoableProject';
 import projectBrowserReducer from '../projectBrowser/reducer';
@@ -15,6 +16,7 @@ import keepIntegrityAfterNavigatingHistory from './keepIntegrityAfterNavigatingH
 const combineRootReducers = (extraReducers) => {
   const reducers = merge(
     {
+      user: userReducer,
       project: projectReducer,
       projectHistory: (s = {}) => s,
       projectBrowser: projectBrowserReducer,

@@ -35,3 +35,9 @@ is used. Reducers simply delegate state update to `xod-project`’s functions,
 selectors, and components use functions from `xod-project` to access project
 data. This distincion is done because project state is complex and keeping all
 machinery inside standard pod layout would make it messy.
+
+## Environment variables
+
+- **`XOD_HOSTNAME`**
+    
+    XOD hostname. Default: `xod.io`
