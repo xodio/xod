@@ -370,7 +370,7 @@ const findBoundValue = R.uncurryN(2)(
       R.compose(R.head, R.values) // because terminal nodes always have only one bound value
     ),
     findFn(R.complement(R.isEmpty)),
-    R.map(Node.getAllBoundValues),
+    R.map(Node.getAllBoundValues)
   )
 );
 
@@ -387,6 +387,23 @@ const getValueToBind = R.curry((nodesById, linksChain) => {
   )(outputNodesFromLinkChain);
 
   return isTopNodeTerminal
+    // We must take bound value from the 'highest' terminal node
+    // and bind it to 'base' node input
+    //
+    // Example:
+    //   `led` passes value bound to it's PORT pin
+    //   to pwm-output's PORT pin inside it's implementation
+    //
+    //               ...
+    //        PORT    |
+    //    +----O------O----+
+    //    |    |           |
+    //    |    |     ...   |
+    //    |    |           |
+    //    | +--O------O--+ |
+    //    | | pwm-output | |
+    //    | +------------+ |
+    //    +----------------+
     ? findBoundValue(R.findLast, outputNodesFromLinkChain).map((topBoundValue) => {
       const bottomLink = R.head(linksChain);
       return {
@@ -395,7 +412,26 @@ const getValueToBind = R.curry((nodesById, linksChain) => {
         value: topBoundValue,
       };
     })
-    : findBoundValue(R.find, outputNodesFromLinkChain).map((bottomBoundValue) => {
+    // We must take bound value from the 'lowest' terminal node
+    // and bind it to 'top' node output
+    //
+    // Example:
+    //   We have some node that wraps `count` node.
+    //   We should be able to pass initial value to
+    //   up to count's output
+    //
+    //    | +-------+     |
+    //    | | count | ... |
+    //    | +-O-----+     |
+    //    |   |           |
+    //    +---O-----------+
+    //        |\
+    //        | \--- here some initial value is bound
+    //        |
+    //    +---O-----------+
+    //    |  ...          |
+    //    +---------------+
+    : findBoundValue(R.find, R.init(outputNodesFromLinkChain)).map((bottomBoundValue) => {
       const topLink = R.last(linksChain);
       return {
         nodeId: Link.getLinkOutputNodeId(topLink),
