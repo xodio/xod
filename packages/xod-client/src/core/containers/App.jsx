@@ -29,6 +29,7 @@ export default class App extends React.Component {
     document.addEventListener('cut', this.props.actions.cutEntities);
     document.addEventListener('copy', this.props.actions.copyEntities);
     document.addEventListener('paste', this.props.actions.pasteEntities);
+    this.props.actions.updateCompileLimit();
   }
 
   onShowCodeArduino() {
@@ -128,6 +129,7 @@ App.propTypes = {
   popups: PropTypes.objectOf(PropTypes.bool),
   popupsData: PropTypes.objectOf(PropTypes.object),
   actions: PropTypes.shape({
+    updateCompileLimit: PropTypes.func.isRequired,
     createProject: PropTypes.func.isRequired,
     updateProjectMeta: PropTypes.func.isRequired,
     hideAllPopups: PropTypes.func.isRequired,
@@ -163,6 +165,7 @@ App.propTypes = {
 };
 
 App.actions = {
+  updateCompileLimit: actions.updateCompileLimit,
   createProject: actions.createProject,
   requestCreateProject: actions.requestCreateProject,
   requestRenameProject: actions.requestRenameProject,

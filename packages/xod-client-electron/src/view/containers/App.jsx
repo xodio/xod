@@ -227,6 +227,7 @@ class App extends client.App {
       }
       // Remove listener if process is finished.
       ipcRenderer.removeAllListeners(UPLOAD_TO_ARDUINO);
+      this.props.actions.updateCompileLimit();
     });
   }
 
@@ -549,6 +550,8 @@ class App extends client.App {
         selectedPort={this.props.selectedPort}
         listBoards={this.listBoards}
         listPorts={this.listPorts}
+        compileLimitLeft={this.props.compileLimitLeft}
+        updateCompileLimit={this.props.actions.updateCompileLimit}
         onBoardChanged={this.onArduinoTargetBoardChange}
         onPortChanged={this.onSerialPortChange}
         onUpload={this.onUploadToArduino}
@@ -658,6 +661,7 @@ App.propTypes = R.merge(client.App.propTypes, {
   project: client.sanctuaryPropType(Project),
   actions: PropTypes.objectOf(PropTypes.func),
   upload: PropTypes.object,
+  compileLimitLeft: PropTypes.number,
   workspace: PropTypes.string,
   selectedPort: PropTypes.object,
 });
@@ -674,6 +678,7 @@ const mapStateToProps = R.applySpec({
   saveProcess: getSaveProcess,
   currentPatchPath: client.getCurrentPatchPath,
   selectedPort: getSelectedSerialPort,
+  compileLimitLeft: client.getCompileLimitLeft,
   popups: {
     createProject: client.getPopupVisibility(client.POPUP_ID.CREATING_PROJECT),
     projectSelection: client.getPopupVisibility(client.POPUP_ID.OPENING_PROJECT),

@@ -14,7 +14,7 @@ import Widgets, { WIDGET_MAPPING } from './inspectorWidgets';
 
 import { RenderableNode } from '../../types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
-import { getUtmSiteUrl } from '../../utils/siteLinks';
+import { getUtmSiteUrl } from '../../utils/urls';
 
 import * as MESSAGES from '../messages';
 

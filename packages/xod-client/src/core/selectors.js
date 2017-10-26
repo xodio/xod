@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
 
+import * as User from '../user/selectors';
 import * as Editor from '../editor/selectors';
 import * as Project from '../project/selectors';
 import * as ProjectBrowser from '../projectBrowser/selectors';
@@ -70,6 +71,7 @@ export const getPatchForHelpbar = createSelector(
 
 
 export default {
+  User,
   Editor,
   Errors,
   Processes,
