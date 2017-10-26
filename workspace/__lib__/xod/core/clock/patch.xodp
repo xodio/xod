@@ -2,12 +2,15 @@
   "description": "Outputs pulses at regular intervals",
   "nodes": [
     {
+      "boundValues": {
+        "__out__": 1
+      },
       "description": "Tick interval in seconds",
       "id": "B13SCNhl-",
       "label": "IVAL",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 102,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -16,16 +19,16 @@
       "id": "BJJICN2lW",
       "label": "RST",
       "position": {
-        "x": 266,
-        "y": 16
+        "x": 136,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
       "id": "BJKLAE3xW",
       "position": {
-        "x": 138,
-        "y": 120
+        "x": 102,
+        "y": 102
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -37,10 +40,23 @@
       "id": "HJU8CE2lW",
       "label": "TICK",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 102,
+        "y": 204
       },
       "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundValues": {
+        "__out__": true
+      },
+      "description": "Is the clock enabled, i.e. produces ticks? At the moment when set to true, starts counting from scratch.",
+      "id": "r1jzp_DTZ",
+      "label": "EN",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
     }
   ]
 }

@@ -1,0 +1,39 @@
+{
+  "description": "Continuously outputs pulses, can be paused",
+  "nodes": [
+    {
+      "id": "BJGvpuPab",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {
+        "__in__": "false"
+      },
+      "description": "Continuous pulses",
+      "id": "BklspuwpW",
+      "label": "TICK",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundValues": {
+        "__out__": true
+      },
+      "description": "Determines if pulses should be continuously emitted",
+      "id": "SkJ46dw6-",
+      "label": "EN",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    }
+  ]
+}

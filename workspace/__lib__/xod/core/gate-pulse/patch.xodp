@@ -1,0 +1,42 @@
+{
+    "description": "Allows values to pass through only if EN pin is set to true",
+  "nodes": [
+    {
+      "boundValues": {
+        "__out__": true
+      },
+      "description": "Whether values should pass through",
+      "id": "BJf6HXtDaW",
+      "label": "EN",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "HJ1uXKDpb",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "Hk6SXYPTb",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "S1VDQYD6W",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}
