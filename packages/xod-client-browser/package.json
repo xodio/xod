@@ -22,6 +22,7 @@
     "redux-thunk": "^2.1.0",
     "xod-arduino": "^0.14.0",
     "xod-client": "^0.14.0",
+    "xod-func-tools": "^0.14.0",
     "xod-project": "^0.14.0"
   },
   "devDependencies": {

@@ -4,7 +4,6 @@ import { foldEither } from 'xod-func-tools';
 import {
   Project,
   getProjectName,
-  fromXodball,
   toXodball,
   isValidIdentifier,
   IDENTIFIER_RULES,
@@ -40,14 +39,6 @@ export default class App extends React.Component {
       error => this.props.actions.addError(error.message),
       this.props.actions.showCode,
       eitherCode
-    );
-  }
-
-  onImport(jsonString) {
-    foldEither(
-      this.props.actions.addError,
-      this.props.actions.importProject,
-      fromXodball(jsonString)
     );
   }
 

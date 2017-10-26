@@ -1,10 +1,10 @@
 import * as UserSelectors from './user/selectors';
 import * as EditorSelectors from './editor/selectors';
-import * as UtilsSelectors from './utils/selectors';
 import * as ProcessSelectors from './processes/selectors';
 import * as ProjectSelectors from './project/selectors';
 import * as PopupSelectors from './popups/selectors';
 import * as DebuggerSelectors from './debugger/selectors';
+import { hasUnsavedChanges } from './core/selectors';
 
 import * as CoreActions from './core/actions';
 import * as EditorActions from './editor/actions';
@@ -16,6 +16,7 @@ import * as PopupActions from './popups/actions';
 import * as DebuggerActions from './debugger/actions';
 
 import { TAB_CLOSE } from './editor/actionTypes';
+import { SAVE_PROJECT } from './project/actionTypes';
 
 import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
@@ -54,13 +55,14 @@ export * from './popups/actions';
 export * from './debugger/actions';
 
 export { TAB_CLOSE } from './editor/actionTypes';
+export { SAVE_PROJECT } from './project/actionTypes';
 
 export * from './editor/selectors';
-export * from './utils/selectors';
 export { getUpload } from './processes/selectors';
 export * from './project/selectors';
 export * from './popups/selectors';
 export * from './debugger/selectors';
+export { hasUnsavedChanges } from './core/selectors';
 
 export * from './utils/browser';
 export * from './utils/constants';
@@ -108,10 +110,11 @@ export default Object.assign({
   showOnlyPopup,
   hideOnePopup,
   PopupProjectPreferences,
+  hasUnsavedChanges,
   TAB_CLOSE,
+  SAVE_PROJECT,
 },
   UserSelectors,
-  UtilsSelectors,
   EditorSelectors,
   ProcessSelectors,
   ProjectSelectors,

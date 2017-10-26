@@ -60,9 +60,11 @@ describe('IDE', () => {
     }
 
     const shouldClose = app && app.isRunning() && (passed || !DEBUG);
-    return shouldClose ?
-      app.stop().then(() => fse.removeSync(tmpHomeDir)) :
-      Promise.resolve();
+    return shouldClose
+      // TODO: simulating click on 'confirm' is probably cleaner
+      ? app.electron.ipcRenderer.send('CONFIRM_CLOSE_WINDOW')
+        .then(() => fse.removeSync(tmpHomeDir))
+      : Promise.resolve();
   });
 
   it('opens a window', () =>
