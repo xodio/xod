@@ -27,6 +27,7 @@ import movingMode from './modes/moving';
 import resizingCommentMode from './modes/resizingComment';
 import acceptingDraggedPatchMode from './modes/acceptingDraggedPatch';
 import debuggingMode from './modes/debugging';
+import marqueeSelectingMode from './modes/marqueeSelecting';
 
 const MODE_HANDLERS = {
   [EDITOR_MODE.DEFAULT]: selectingMode,
@@ -36,6 +37,7 @@ const MODE_HANDLERS = {
   [EDITOR_MODE.RESIZING_COMMENT]: resizingCommentMode,
   [EDITOR_MODE.ACCEPTING_DRAGGED_PATCH]: acceptingDraggedPatchMode,
   [EDITOR_MODE.DEBUGGING]: debuggingMode,
+  [EDITOR_MODE.MARQUEE_SELECTING]: marqueeSelectingMode,
 };
 
 const DEFAULT_MODES = {
@@ -174,6 +176,7 @@ const mapDispatchToProps = dispatch => ({
     selectEntity: EditorActions.selectEntity,
     deselectEntity: EditorActions.deselectEntity,
     setSelection: EditorActions.setEditorSelection,
+    combineSelection: EditorActions.combineEditorSelection,
     addEntityToSelection: EditorActions.addEntityToSelection,
     doPinSelection: EditorActions.doPinSelection,
     linkPin: EditorActions.linkPin,

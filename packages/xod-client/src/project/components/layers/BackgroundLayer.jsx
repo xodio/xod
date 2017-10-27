@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { noop } from 'xod-func-tools';
 
 import {
   SLOT_SIZE,
@@ -36,7 +37,7 @@ NodeSlotPattern.propTypes = {
   offset: PropTypes.object.isRequired,
 };
 
-const BackgroundLayer = ({ onClick, onDoubleClick, offset }) => (
+const BackgroundLayer = ({ onClick, onDoubleClick, onMouseDown, offset }) => (
   <g className="BackgroundLayer">
     <NodeSlotPattern offset={offset} />
     <rect
@@ -46,13 +47,22 @@ const BackgroundLayer = ({ onClick, onDoubleClick, offset }) => (
       height="100%"
       onClick={onClick}
       onDoubleClick={onDoubleClick}
+      onMouseDown={onMouseDown}
     />
   </g>
 );
 
+
+BackgroundLayer.defaultProps = {
+  onClick: noop,
+  onDoubleClick: noop,
+  onMouseDown: noop,
+};
+
 BackgroundLayer.propTypes = {
   onClick: PropTypes.func,
   onDoubleClick: PropTypes.func,
+  onMouseDown: PropTypes.func,
   offset: PropTypes.object.isRequired,
 };
 

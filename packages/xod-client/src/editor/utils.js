@@ -35,6 +35,29 @@ export const getSelectedEntityIdsOfType = R.curry((entityType, selection) => R.c
   R.filter(R.propEq('entity', entityType))
 )(selection));
 
+// :: SELECTION_ENTITY_TYPE -> String -> SelectionEntity
+export const createSelectionEntity = R.curry((entityType, id) => ({ entity: entityType, id }));
+
+// :: { nodes :: [Node], links :: [Link], comments :: [Comment] } -> [SelectionEntity]
+export const getNewSelection = R.compose(
+  R.unnest,
+  R.values,
+  R.evolve({
+    nodes: R.map(R.compose(
+      id => ({ entity: SELECTION_ENTITY_TYPE.NODE, id }),
+      XP.getNodeId
+    )),
+    comments: R.map(R.compose(
+      id => ({ entity: SELECTION_ENTITY_TYPE.COMMENT, id }),
+      XP.getCommentId
+    )),
+    links: R.map(R.compose(
+      id => ({ entity: SELECTION_ENTITY_TYPE.LINK, id }),
+      XP.getLinkId
+    )),
+  })
+);
+
 /*
   Make this point (0,0)
   |
@@ -145,4 +168,3 @@ export const regenerateIds = (entities) => {
     )),
   })(entities);
 };
-

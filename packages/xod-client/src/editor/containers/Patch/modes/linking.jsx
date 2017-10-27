@@ -28,7 +28,6 @@ const linkingMode = {
 
   onMouseMove(api, event) {
     const mousePosition = getMousePosition(patchSvgRef, api.props.offset, event);
-
     api.setState({ mousePosition });
   },
   onPinMouseDown(api, event, nodeId, pinKey) {
