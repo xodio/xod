@@ -1,0 +1,53 @@
+{
+  "description": "Outputs either input string depending on condition",
+  "nodes": [
+    {
+      "description": "Condition value",
+      "id": "H1SnkoxC-",
+      "label": "COND",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "H1ebxolAW",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "String to be output if condition is true",
+      "id": "H1k6ksgA-",
+      "label": "T",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "String to be output if condition is false",
+      "id": "S151eoeAW",
+      "label": "F",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Outputs string from `T` if `COND` is true, and `F` otherwise",
+      "id": "rkPlxjg0W",
+      "label": "R",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-string"
+    }
+  ]
+}
