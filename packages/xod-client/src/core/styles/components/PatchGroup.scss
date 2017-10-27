@@ -55,3 +55,7 @@
     border-bottom: 1px solid $sidebar-color-border;
   }
 }
+
+.PatchGroup:first-child .PatchGroup__trigger {
+  border-top: 0;
+}

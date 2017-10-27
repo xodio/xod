@@ -1,4 +1,6 @@
 .PatchTypeSelector {
+  height: calc(100% - 30px); // 30px is a height of .ProjectBrowserToolbar
+
   .options {
     display: flex;
     list-style: none;
@@ -19,7 +21,7 @@
     user-select: none;
     border: 1px solid $sidebar-color-border;
     border-left: 0;
-    border-bottom: 0;
+    white-space: nowrap;
 
     &:first-child {
       border-left: 1px solid $sidebar-color-border;

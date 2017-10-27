@@ -255,7 +255,8 @@ class ProjectBrowser extends React.Component {
       : R.of(patchType);
 
     return (
-      <CustomScroll>
+      // "calc(100% - 30px)" cause patch filtering buttons are 30px height
+      <CustomScroll heightRelativeToParent="calc(100% - 30px)">
         <div className="patches-list">
           {rendererKeys.map(k => this.patchRenderers[k]())}
         </div>

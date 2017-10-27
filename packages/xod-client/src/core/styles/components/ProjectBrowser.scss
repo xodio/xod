@@ -1,4 +1,9 @@
+.ProjectBrowser-container {
+  border-bottom: 1px solid #595959;
+}
+
 .ProjectBrowser {
+  height: 100%;
 
   &:focus {
     box-shadow: none;
@@ -6,7 +11,6 @@
   }
 
   .patches-list {
-    height: 326px;
     background-color: $sidebar-color-bg;
   }
 }
