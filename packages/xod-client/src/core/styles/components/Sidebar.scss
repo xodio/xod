@@ -7,8 +7,7 @@
   background: $sidebar-color-bg;
 
   & > * {
-    flex: 1;
-    border-bottom: 1px solid $sidebar-color-border;
+    height: 50%;
   }
 
   .title {
