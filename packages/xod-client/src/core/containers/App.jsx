@@ -29,7 +29,7 @@ export default class App extends React.Component {
     document.addEventListener('cut', this.props.actions.cutEntities);
     document.addEventListener('copy', this.props.actions.copyEntities);
     document.addEventListener('paste', this.props.actions.pasteEntities);
-    this.props.actions.updateCompileLimit();
+    this.props.actions.updateCompileLimit(/* startup */true);
   }
 
   onShowCodeArduino() {
