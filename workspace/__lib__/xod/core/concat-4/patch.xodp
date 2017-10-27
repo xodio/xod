@@ -1,0 +1,148 @@
+{
+  "description": "Concatenates (adds together) four strings",
+  "links": [
+    {
+      "id": "BJEc0ilCW",
+      "input": {
+        "nodeId": "H1g9RolAb",
+        "pinKey": "BkeKcj6ZZ"
+      },
+      "output": {
+        "nodeId": "HJo_RjlC-",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "BkDY0slC-",
+      "input": {
+        "nodeId": "HkDdRoxCb",
+        "pinKey": "BkeKcj6ZZ"
+      },
+      "output": {
+        "nodeId": "SylJ_0ilRW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkhFAilCW",
+      "input": {
+        "nodeId": "HJo_RjlC-",
+        "pinKey": "BkeKcj6ZZ"
+      },
+      "output": {
+        "nodeId": "rkeguColC-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkvcCox0-",
+      "input": {
+        "nodeId": "H1g9RolAb",
+        "pinKey": "Hkqu9oaWb"
+      },
+      "output": {
+        "nodeId": "HkDdRoxCb",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "ByKYAjeRW",
+      "input": {
+        "nodeId": "HJo_RjlC-",
+        "pinKey": "Hkqu9oaWb"
+      },
+      "output": {
+        "nodeId": "BJxOCieAW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyLYRsxCZ",
+      "input": {
+        "nodeId": "HkDdRoxCb",
+        "pinKey": "Hkqu9oaWb"
+      },
+      "output": {
+        "nodeId": "BykdRsgR-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1_s0igAb",
+      "input": {
+        "nodeId": "BkEj0se0Z",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1g9RolAb",
+        "pinKey": "rksccsp-W"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJxOCieAW",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "BkEj0se0Z",
+      "position": {
+        "x": 0,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "BykdRsgR-",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "H1g9RolAb",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/concat"
+    },
+    {
+      "id": "HJo_RjlC-",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "@/concat"
+    },
+    {
+      "id": "HkDdRoxCb",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "@/concat"
+    },
+    {
+      "id": "SylJ_0ilRW",
+      "position": {
+        "x": 33,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "rkeguColC-",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "description": "Concatenates (adds together) three strings",
+  "links": [
+    {
+      "id": "B1lECjxAW",
+      "input": {
+        "nodeId": "HJT7Rsg0-",
+        "pinKey": "Hkqu9oaWb"
+      },
+      "output": {
+        "nodeId": "BJSG0oeCb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkNSRjl0W",
+      "input": {
+        "nodeId": "r1c4Ajg0Z",
+        "pinKey": "Hkqu9oaWb"
+      },
+      "output": {
+        "nodeId": "HJT7Rsg0-",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "SJhr0sgAb",
+      "input": {
+        "nodeId": "r1c4Ajg0Z",
+        "pinKey": "BkeKcj6ZZ"
+      },
+      "output": {
+        "nodeId": "SJWQ0sxAW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1QECoeCW",
+      "input": {
+        "nodeId": "HJT7Rsg0-",
+        "pinKey": "BkeKcj6ZZ"
+      },
+      "output": {
+        "nodeId": "Bk3zAogCb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkdL0jlRW",
+      "input": {
+        "nodeId": "rkv7CixAZ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1c4Ajg0Z",
+        "pinKey": "rksccsp-W"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJSG0oeCb",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "Bk3zAogCb",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "HJT7Rsg0-",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "@/concat"
+    },
+    {
+      "id": "SJWQ0sxAW",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "r1c4Ajg0Z",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/concat"
+    },
+    {
+      "id": "rkv7CixAZ",
+      "position": {
+        "x": 0,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-string"
+    }
+  ]
+}
