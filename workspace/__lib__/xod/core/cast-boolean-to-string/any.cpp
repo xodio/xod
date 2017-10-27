@@ -1,12 +1,12 @@
 struct State {
+    CStringView view;
 };
 
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
+    auto state = getState(ctx);
     auto x = getValue<input_IN>(ctx);
-    auto xstr = x
-      ? ::xod::List<char>::fromPlainArray("true", 4)
-      : ::xod::List<char>::fromPlainArray("false", 5);
-    emitValue<output_OUT>(ctx, xstr);
+    state->view = CStringView(x ? "true" : "false");
+    emitValue<output_OUT>(ctx, XString(&state->view));
 }

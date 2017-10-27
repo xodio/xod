@@ -1,6 +1,8 @@
 import R from 'ramda';
 import Handlebars from 'handlebars';
 
+import { PIN_TYPE } from 'xod-project';
+
 import { def } from './types';
 
 import configTpl from '../platform/configuration.tpl.cpp';
@@ -9,8 +11,9 @@ import implListTpl from '../platform/implList.tpl.cpp';
 import programTpl from '../platform/program.tpl.cpp';
 
 import preambleH from '../platform/preamble.h';
-import intrusivePtrH from '../platform/intrusive_ptr.h';
-import listH from '../platform/list.h';
+import listViewsH from '../platform/listViews.h';
+import listFuncsH from '../platform/listFuncs.h';
+import stlH from '../platform/stl.h';
 import runtimeCpp from '../platform/runtime.cpp';
 
 // =============================================================================
@@ -19,20 +22,27 @@ import runtimeCpp from '../platform/runtime.cpp';
 //
 // =============================================================================
 const trimTrailingWhitespace = R.replace(/\s+$/gm, '\n');
+
+const omitLocalIncludes = R.replace(/#include ".*$/gm, '');
+
 const indexByPinKey = R.indexBy(R.prop('pinKey'));
+
 const getPatchPins = direction => R.compose(
   indexByPinKey,
   R.path(['patch', direction])
 );
+
 const omitNullValues = R.map(R.when(
   R.propSatisfies(R.isNil, 'value'),
   R.omit(['value'])
 ));
+
 const getNodePins = direction => R.compose(
   indexByPinKey,
   omitNullValues,
   R.prop(direction)
 );
+
 const mergeAndListPins = (direction, node) => R.compose(
   R.values,
   R.converge(
@@ -43,22 +53,60 @@ const mergeAndListPins = (direction, node) => R.compose(
     ]
   )
 )(node);
+
+// Converts DataType value to a corresponding C++ storage type
+const cppType = def(
+  'cppType :: DataType -> String',
+  R.propOr('unknown_type<void>', R.__, {
+    [PIN_TYPE.PULSE]: 'Logic',
+    [PIN_TYPE.BOOLEAN]: 'Logic',
+    [PIN_TYPE.NUMBER]: 'Number',
+    [PIN_TYPE.STRING]: 'XString',
+  })
+);
+
+// Formats a plain JS string into C++ string object
+const cppStringLiteral = def(
+  'cppStringLiteral :: String -> String',
+  R.ifElse(
+    R.isEmpty,
+    R.always('XString()'),
+    str => `XStringCString("${str}")`
+  )
+);
+
+// =============================================================================
+//
+// Handlebars helpers
+//
+// =============================================================================
+
 // Merge patch pins data with node pins data
 Handlebars.registerHelper('mergePins', function mergePins() {
   this.inputs = mergeAndListPins('inputs', this);
   this.outputs = mergeAndListPins('outputs', this);
 });
+
 // Generate patch-level namespace name
 Handlebars.registerHelper('ns', R.compose(
   R.join('__'),
   R.props(['owner', 'libName', 'patchName'])
 ));
+
+// Returns declaration type specifier for an initial value of an output
+Handlebars.registerHelper('decltype', (type, value) => (
+  (type === PIN_TYPE.STRING && value !== '')
+    ? 'static XStringCString'
+    : `constexpr ${cppType(type)}`
+));
+
 // Check that variable is not undefined
 Handlebars.registerHelper('exists', function existsHelper(variable, options) {
   return (typeof variable !== 'undefined') ?
     options.fn(this) :
     options.inverse(this);
 });
+
 // Temporary switch to global C++ namespace
 Handlebars.registerHelper('global', function global(options) {
   return [
@@ -70,6 +118,19 @@ Handlebars.registerHelper('global', function global(options) {
     '// --- Back to local namespace ---',
   ].join('\n');
 });
+
+Handlebars.registerHelper('cppType', type => cppType(type));
+
+// Converts JS-typed data value to a string that is valid and expected
+// C++ literal representing that value
+Handlebars.registerHelper('cppValue', (type, value) =>
+  R.propOr(R.always('unknown_type<void>'), type, {
+    [PIN_TYPE.PULSE]: R.always('false'),
+    [PIN_TYPE.BOOLEAN]: R.toString,
+    [PIN_TYPE.NUMBER]: R.toString,
+    [PIN_TYPE.STRING]: cppStringLiteral,
+  })(value)
+);
 
 // =============================================================================
 //
@@ -147,9 +208,10 @@ export const renderProject = def(
 
     return R.join('\n')([
       preambleH,
-      intrusivePtrH,
-      listH,
       config,
+      stlH,
+      listViewsH,
+      omitLocalIncludes(listFuncsH),
       runtimeCpp,
       impls,
       program,

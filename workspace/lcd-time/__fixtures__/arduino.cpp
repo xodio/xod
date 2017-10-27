@@ -5,8 +5,9 @@
 //
 // Rough code overview:
 //
-// - Intrusive pointer (a smart pointer with ref counter)
-// - Immutable dynamic list data structure
+// - Configuration section
+// - STL shim
+// - Immutable list classes and functions
 // - XOD runtime environment
 // - Native node implementation
 // - Program graph definition
@@ -17,610 +18,6 @@
 #include <Arduino.h>
 #include <inttypes.h>
 #include <avr/pgmspace.h>
-
-// ============================================================================
-//
-// Intrusive pointer
-//
-// ============================================================================
-
-// This is a stripped down version of Boost v1.63 intrusive pointer.
-//
-//  Copyright (c) 2001, 2002 Peter Dimov
-//
-// Distributed under the Boost Software License, Version 1.0. (See
-// accompanying file LICENSE_1_0.txt or copy at
-// http://www.boost.org/LICENSE_1_0.txt)
-//
-//  See http://www.boost.org/libs/smart_ptr/intrusive_ptr.html for
-//  documentation.
-
-#ifndef XOD_INTRUSIVE_PTR_H
-#define XOD_INTRUSIVE_PTR_H
-
-namespace boost {
-//
-//  intrusive_ptr
-//
-//  A smart pointer that uses intrusive reference counting.
-//
-//  Relies on unqualified calls to
-//
-//      void intrusive_ptr_add_ref(T * p);
-//      void intrusive_ptr_release(T * p);
-//
-//          (p != 0)
-//
-//  The object is responsible for destroying itself.
-//
-
-template <class T> class intrusive_ptr {
-  private:
-    typedef intrusive_ptr this_type;
-
-  public:
-    typedef T element_type;
-
-    constexpr intrusive_ptr() : px(0) {}
-
-    intrusive_ptr(T *p, bool add_ref = true) : px(p) {
-        if (px != 0 && add_ref)
-            intrusive_ptr_add_ref(px);
-    }
-
-    template <class U>
-    intrusive_ptr(intrusive_ptr<U> const &rhs) : px(rhs.get()) {
-        if (px != 0)
-            intrusive_ptr_add_ref(px);
-    }
-
-    intrusive_ptr(intrusive_ptr const &rhs) : px(rhs.px) {
-        if (px != 0)
-            intrusive_ptr_add_ref(px);
-    }
-
-    ~intrusive_ptr() {
-        if (px != 0)
-            intrusive_ptr_release(px);
-    }
-
-    template <class U> intrusive_ptr &operator=(intrusive_ptr<U> const &rhs) {
-        this_type(rhs).swap(*this);
-        return *this;
-    }
-
-    intrusive_ptr(intrusive_ptr &&rhs) : px(rhs.px) { rhs.px = 0; }
-
-    intrusive_ptr &operator=(intrusive_ptr &&rhs) {
-        this_type(static_cast<intrusive_ptr &&>(rhs)).swap(*this);
-        return *this;
-    }
-
-    template <class U> friend class intrusive_ptr;
-
-    template <class U> intrusive_ptr(intrusive_ptr<U> &&rhs) : px(rhs.px) {
-        rhs.px = 0;
-    }
-
-    template <class U> intrusive_ptr &operator=(intrusive_ptr<U> &&rhs) {
-        this_type(static_cast<intrusive_ptr<U> &&>(rhs)).swap(*this);
-        return *this;
-    }
-
-    intrusive_ptr &operator=(intrusive_ptr const &rhs) {
-        this_type(rhs).swap(*this);
-        return *this;
-    }
-
-    intrusive_ptr &operator=(T *rhs) {
-        this_type(rhs).swap(*this);
-        return *this;
-    }
-
-    void reset() { this_type().swap(*this); }
-
-    void reset(T *rhs) { this_type(rhs).swap(*this); }
-
-    void reset(T *rhs, bool add_ref) { this_type(rhs, add_ref).swap(*this); }
-
-    T *get() const { return px; }
-
-    T *detach() {
-        T *ret = px;
-        px = 0;
-        return ret;
-    }
-
-    T &operator*() const { return *px; }
-
-    T *operator->() const { return px; }
-
-    operator bool() const { return px != 0; }
-
-    void swap(intrusive_ptr &rhs) {
-        T *tmp = px;
-        px = rhs.px;
-        rhs.px = tmp;
-    }
-
-  private:
-    T *px;
-};
-
-template <class T, class U>
-inline bool operator==(intrusive_ptr<T> const &a, intrusive_ptr<U> const &b) {
-    return a.get() == b.get();
-}
-
-template <class T, class U>
-inline bool operator!=(intrusive_ptr<T> const &a, intrusive_ptr<U> const &b) {
-    return a.get() != b.get();
-}
-
-template <class T, class U>
-inline bool operator==(intrusive_ptr<T> const &a, U *b) {
-    return a.get() == b;
-}
-
-template <class T, class U>
-inline bool operator!=(intrusive_ptr<T> const &a, U *b) {
-    return a.get() != b;
-}
-
-template <class T, class U>
-inline bool operator==(T *a, intrusive_ptr<U> const &b) {
-    return a == b.get();
-}
-
-template <class T, class U>
-inline bool operator!=(T *a, intrusive_ptr<U> const &b) {
-    return a != b.get();
-}
-
-#if __GNUC__ == 2 && __GNUC_MINOR__ <= 96
-
-// Resolve the ambiguity between our op!= and the one in rel_ops
-
-template <class T>
-inline bool operator!=(intrusive_ptr<T> const &a, intrusive_ptr<T> const &b) {
-    return a.get() != b.get();
-}
-
-#endif
-
-template <class T>
-inline bool operator==(intrusive_ptr<T> const &p, nullptr_t) {
-    return p.get() == 0;
-}
-
-template <class T>
-inline bool operator==(nullptr_t, intrusive_ptr<T> const &p) {
-    return p.get() == 0;
-}
-
-template <class T>
-inline bool operator!=(intrusive_ptr<T> const &p, nullptr_t) {
-    return p.get() != 0;
-}
-
-template <class T>
-inline bool operator!=(nullptr_t, intrusive_ptr<T> const &p) {
-    return p.get() != 0;
-}
-
-template <class T>
-inline bool operator<(intrusive_ptr<T> const &a, intrusive_ptr<T> const &b) {
-    return a.get() < b.get();
-}
-
-template <class T> void swap(intrusive_ptr<T> &lhs, intrusive_ptr<T> &rhs) {
-    lhs.swap(rhs);
-}
-
-} // namespace boost
-
-#endif // #ifndef XOD_INTRUSIVE_PTR_H
-
-// ============================================================================
-//
-// Immutable dynamic list
-//
-// ============================================================================
-
-#ifndef XOD_LIST_H
-#define XOD_LIST_H
-
-#ifndef XOD_LIST_CHUNK_SIZE
-#define XOD_LIST_CHUNK_SIZE 15
-#endif
-
-namespace xod {
-// forward declaration
-template <typename T> class List;
-}
-
-namespace xod {
-namespace detail {
-
-#if XOD_LIST_CHUNK_SIZE < 256
-typedef uint8_t index_t;
-#else
-typedef size_t index_t;
-#endif
-
-typedef uint8_t refcount_t;
-typedef uint8_t depth_t;
-
-/*
- * Bounds define a used range of data within Chunk’s ring buffer.  `first` is
- * an index (not byte offset) of the first element in range.  `last` is an
- * index (not byte offset) of the last filled element.  I.e. `last` points to
- * an existing element, *not* a slot past end.
- *
- * Value of `first` can be greater than `last`. It means that the range is
- * wrapped arround buffer’s origin.
- *
- * Examples:
- *
- * - `first == 0 && last == 0`: chunk have 1 element and it is at buffer[0]
- * - `first == 0 && last == 15`: chunk have 16 elements spanning from buffer[0]
- *   to buffer[15] inclusive
- * - `first == 14 && last == 2`: given the chunk size == 16 it has 5 elements:
- *   buffer[14], buffer[15], buffer[0], buffer[1], buffer[2].
- */
-struct Bounds {
-#if XOD_LIST_CHUNK_SIZE < 16
-    index_t first : 4;
-    index_t last : 4;
-#else
-    index_t first;
-    index_t last;
-#endif
-};
-
-template <typename T> struct Traits {
-    enum { N = XOD_LIST_CHUNK_SIZE / sizeof(T) };
-};
-
-/*
- * Ring buffer
- */
-struct Chunk {
-    char buffer[XOD_LIST_CHUNK_SIZE];
-    Bounds bounds;
-    refcount_t _refcount;
-
-    Chunk() { memset(this, 0, sizeof(Chunk)); }
-
-    /*
-     * Returns number of elements occupied
-     */
-    template <typename T> index_t usage() {
-        return (bounds.last - bounds.first + Traits<T>::N) % Traits<T>::N + 1;
-    }
-
-    template <typename T> bool isFull() { return usage<T>() == Traits<T>::N; }
-
-    template <typename T> bool append(T val) {
-        if (isFull<T>())
-            return false;
-
-        appendUnsafe(val);
-        return true;
-    }
-
-    template <typename T> void appendUnsafe(T val) {
-        auto idx = ++bounds.last;
-        *((T *)buffer + idx) = val;
-    }
-
-    template <typename T> bool concat(T *val, index_t len) {
-        if (usage<T>() > Traits<T>::N - len)
-            return false;
-
-        while (len--)
-            appendUnsafe(*val++);
-
-        return true;
-    }
-};
-
-void intrusive_ptr_add_ref(Chunk *chunk) {
-    // TODO: deal with possible overflow
-    ++chunk->_refcount;
-}
-
-void intrusive_ptr_release(Chunk *chunk) {
-    if (--chunk->_refcount == 0) {
-        delete chunk;
-    }
-}
-
-template <typename T> class ListIterator {
-    typedef List<T> ListT;
-    typedef const ListT *ListRawPtr;
-
-  public:
-    ListIterator(ListRawPtr root) {
-        _stackSize = 0;
-        if (root->isEmpty()) {
-            _stack = 0;
-        } else {
-            _stack = new ListRawPtr[root->maxDepth()];
-            push(root);
-            drillDownToLeftmost();
-        }
-    }
-
-    ~ListIterator() {
-        if (_stack)
-            delete[] _stack;
-    }
-
-    /*
-     * Returns false if iteration is done
-     */
-    operator bool() const { return _stackSize > 0; }
-
-    const T &operator*() const { return chunk()->buffer[_indexInChunk]; }
-
-    ListIterator &operator++() {
-        if (!_stackSize)
-            return *this;
-
-        ++_indexInChunk;
-
-        if (_indexInChunk > top()->_rightBounds.last) {
-            // we’ve runned over whole chunk, move to next one
-            while (true) {
-                auto branch = pop();
-
-                if (!_stackSize)
-                    break;
-
-                auto parent = top();
-                if (parent->_left == branch) {
-                    // switch to right branch if we just completed with left one
-                    push(parent->_right.get());
-                    drillDownToLeftmost();
-                    break;
-                }
-            }
-        }
-
-        return *this;
-    }
-
-  private:
-    ListRawPtr top() const { return _stack[_stackSize - 1]; }
-
-    void push(ListRawPtr list) { _stack[_stackSize++] = list; }
-
-    ListRawPtr pop() { return _stack[_stackSize-- - 1]; }
-
-    void drillDownToLeftmost() {
-        ListRawPtr left;
-        while ((left = top()->_left.get()))
-            push(left);
-        _indexInChunk = top()->_rightBounds.first;
-    }
-
-    Chunk *chunk() const { return top()->_chunk.get(); }
-
-  private:
-    ListRawPtr *_stack;
-    depth_t _stackSize;
-    index_t _indexInChunk;
-};
-}
-} // namespace xod::detail
-
-namespace xod {
-
-template <typename T> void intrusive_ptr_add_ref(List<T> *list) {
-    // TODO: deal with possible overflow
-    ++list->_refcount;
-}
-
-template <typename T> void intrusive_ptr_release(List<T> *list) {
-    if (--list->_refcount == 0) {
-        delete list;
-    }
-}
-
-template <typename T> class List {
-    typedef boost::intrusive_ptr<detail::Chunk> ChunkPtr;
-
-  public:
-    typedef boost::intrusive_ptr<List> ListPtr;
-    typedef detail::ListIterator<T> Iterator;
-
-    static ListPtr empty() { return ListPtr(new List()); }
-
-    static ListPtr of(T val) {
-        auto list = empty();
-        auto chunk = new detail::Chunk();
-        chunk->buffer[0] = val;
-        list->_chunk = chunk;
-        return list;
-    }
-
-    static ListPtr fromPlainArray(const T *buf, size_t len) {
-        auto list = empty();
-        if (!len)
-            return list;
-
-        if (len <= detail::Traits<T>::N) {
-            // whole buf can be contained within a single chunk
-            auto chunk = new detail::Chunk();
-            memcpy(chunk->buffer, buf, len);
-            list->_chunk = chunk;
-            list->_rightBounds.last = chunk->bounds.last = len - 1;
-        } else {
-            // split the buffer into two portions
-            auto leftLen = len / 2;
-            list->_left = fromPlainArray(buf, leftLen);
-            list->_right = fromPlainArray(buf + leftLen, len - leftLen);
-        }
-
-        return list;
-    }
-
-    bool isEmpty() const { return length() == 0; }
-
-    size_t length() const {
-        if (_left == nullptr && _right == nullptr) {
-            return 0;
-        } else if (chunk()) {
-            return _rightBounds.last - _rightBounds.first + 1;
-        } else {
-            return _left->length() + _right->length();
-        }
-    }
-
-    size_t chunkCount() const {
-        if (_left) {
-            return _left->chunkCount() + _right->chunkCount();
-        } else if (_chunk) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    detail::depth_t maxDepth() const {
-        if (_left) {
-            auto leftDepth = _left->maxDepth();
-            auto rightDepth = _right->maxDepth();
-            return 1 + (leftDepth > rightDepth ? leftDepth : rightDepth);
-        } else {
-            return 1;
-        }
-    }
-
-    ListPtr append(T val) const {
-        if (length() == 0) {
-            return of(val);
-        }
-
-        auto chunk = this->chunk();
-
-        if (chunk && isChunkTailFree()) {
-            bool amend = chunk->append(val);
-            if (amend) {
-                auto list = empty();
-                list->_chunk = chunk;
-                list->_rightBounds.last = _rightBounds.last + 1;
-                return list;
-            }
-        }
-
-        auto list = empty();
-        list->_left = const_cast<List *>(this);
-        list->_right = of(val);
-        return list;
-    }
-
-    ListPtr concat(ListPtr other) const {
-        if (isEmpty()) {
-            return other;
-        }
-
-        if (other->isEmpty()) {
-            return ListPtr(const_cast<List *>(this));
-        }
-
-        auto thisChunk = this->chunk();
-        auto otherChunk = other->chunk();
-        auto otherLen = other->length();
-        if (thisChunk && isChunkTailFree() && otherChunk) {
-            bool amend = thisChunk->concat(otherChunk->buffer, otherLen);
-            if (amend) {
-                auto list = empty();
-                list->_chunk = thisChunk;
-                list->_rightBounds.first = _rightBounds.first;
-                list->_rightBounds.last = thisChunk->bounds.last;
-                return list;
-            }
-        }
-
-        auto list = empty();
-        list->_left = const_cast<List *>(this);
-        list->_right = other;
-        return list;
-    }
-
-    void toPlainArrayUnsafe(T *buf) const {
-        auto chunk = this->chunk();
-        if (chunk) {
-            memcpy(buf, chunk->buffer, length() * sizeof(T));
-        } else if (_left) {
-            _left->toPlainArrayUnsafe(buf);
-            _right->toPlainArrayUnsafe(buf + _left->length());
-        }
-    }
-
-    Iterator iterate() const { return Iterator(this); }
-
-  protected:
-    ChunkPtr chunk() const {
-        if (_left == nullptr) {
-            return _chunk;
-        } else {
-            return nullptr;
-        }
-    }
-
-    bool isChunkTailFree() const {
-      return _chunk->bounds.last == _rightBounds.last;
-    }
-
-  private:
-    List() { memset(this, 0, sizeof(List)); }
-
-    ~List() {
-        // _right branch is in union with _chunk. Call a proper destructor
-        // explicitly
-        if (_left) {
-            _right.~ListPtr();
-        } else {
-            _chunk.~ChunkPtr();
-        }
-    }
-
-    friend Iterator;
-
-    // There are two possible conditions of a list. It either:
-    //
-    // - concatenation of two children, in that case `_left` and `_right` point
-    //   to branches
-    // - a leaf with data, in that case `_left == nullptr` and `_chunk` contains
-    //   pointer to the data
-    //
-    // Use union to save one pointer size, consider `_left` nullness to
-    // understand the condition.
-    ListPtr _left;
-    union {
-        ListPtr _right;
-        ChunkPtr _chunk;
-    };
-
-    // Branch bounds inside chunks. In case if this is a leaf, only _rightBounds
-    // is used.
-    //
-    // Note that the bounds will not match bounds in chunks themselves. It’s
-    // because the chunks are reused across many List’s.
-    detail::Bounds _leftBounds;
-    detail::Bounds _rightBounds;
-
-    friend void intrusive_ptr_add_ref<T>(List *list);
-    friend void intrusive_ptr_release<T>(List *list);
-    detail::refcount_t _refcount;
-}; // class List<T>
-
-} // namespace xod
-
-#endif // #ifndef XOD_LIST_H
 
 
 /*=============================================================================
@@ -640,6 +37,409 @@ template <typename T> class List {
 
 // Uncomment to trace the program runtime in the Serial Monitor
 //#define XOD_DEBUG_ENABLE_TRACE
+
+/*=============================================================================
+ *
+ *
+ * STL shim. Provides implementation for vital std::* constructs
+ *
+ *
+ =============================================================================*/
+
+namespace std {
+
+template< class T > struct remove_reference      {typedef T type;};
+template< class T > struct remove_reference<T&>  {typedef T type;};
+template< class T > struct remove_reference<T&&> {typedef T type;};
+
+template <class T>
+typename remove_reference<T>::type&& move(T&& a) {
+    return static_cast<typename remove_reference<T>::type&&>(a);
+}
+
+} // namespace std
+
+/*=============================================================================
+ *
+ *
+ * XOD-specific list/array implementations
+ *
+ *
+ =============================================================================*/
+
+#ifndef XOD_LIST_H
+#define XOD_LIST_H
+
+namespace xod {
+namespace detail {
+
+/*
+ * Cursors are used internaly by iterators and list views. They are not exposed
+ * directly to a list consumer.
+ *
+ * The base `Cursor` is an interface which provides the bare minimum of methods
+ * to facilitate a single iteration pass.
+ */
+template<typename T> class Cursor {
+  public:
+    virtual ~Cursor() { }
+    virtual bool isValid() const = 0;
+    virtual bool value(T* out) const = 0;
+    virtual void next() = 0;
+};
+
+template<typename T> class NilCursor : public Cursor<T> {
+  public:
+    virtual bool isValid() const { return false; }
+    virtual bool value(T* out) const { return false; }
+    virtual void next() { }
+};
+
+} // namespace detail
+
+/*
+ * Iterator is an object used to iterate a list once.
+ *
+ * Users create new iterators by calling `someList.iterate()`.
+ * Iterators are created on stack and are supposed to have a
+ * short live, e.g. for a duration of `for` loop or node’s
+ * `evaluate` function. Iterators can’t be copied.
+ *
+ * Implemented as a pimpl pattern wrapper over the cursor.
+ * Once created for a cursor, an iterator owns that cursor
+ * and will delete the cursor object once destroyed itself.
+ */
+template<typename T>
+class Iterator {
+  public:
+    static Iterator<T> nil() {
+        return Iterator<T>(new detail::NilCursor<T>());
+    }
+
+    Iterator(detail::Cursor<T>* cursor)
+        : _cursor(cursor)
+    { }
+
+    ~Iterator() {
+        if (_cursor)
+            delete _cursor;
+    }
+
+    Iterator(const Iterator& that) = delete;
+    Iterator& operator=(const Iterator& that) = delete;
+
+    Iterator(Iterator&& it)
+        : _cursor(it._cursor)
+    {
+        it._cursor = nullptr;
+    }
+
+    Iterator& operator=(Iterator&& it) {
+        auto tmp = it._cursor;
+        it._cursor = _cursor;
+        _cursor = tmp;
+        return *this;
+    }
+
+    operator bool() const { return _cursor->isValid(); }
+
+    bool value(T* out) const {
+        return _cursor->value(out);
+    }
+
+    T operator*() const {
+        T out;
+        _cursor->value(&out);
+        return out;
+    }
+
+    Iterator& operator++() {
+        _cursor->next();
+        return *this;
+    }
+
+  private:
+    detail::Cursor<T>* _cursor;
+};
+
+/*
+ * An interface for a list view. A particular list view provides a new
+ * kind of iteration over existing data. This way we can use list slices,
+ * list concatenations, list rotations, etc without introducing new data
+ * buffers. We just change the way already existing data is iterated.
+ *
+ * ListView is not exposed to a list user directly, it is used internally
+ * by the List class. However, deriving a new ListView is necessary if you
+ * make a new list/string processing node.
+ */
+template<typename T> class ListView {
+  public:
+    virtual Iterator<T> iterate() const = 0;
+};
+
+/*
+ * The list as it seen by data consumers. Have a single method `iterate`
+ * to create a new iterator.
+ *
+ * Implemented as pimpl pattern wrapper over a list view. Takes pointer
+ * to a list view in constructor and expects the view will be alive for
+ * the whole life time of the list.
+ */
+template<typename T> class List {
+  public:
+    constexpr List()
+        : _view(nullptr)
+    { }
+
+    List(const ListView<T>* view)
+        : _view(view)
+    { }
+
+    Iterator<T> iterate() const {
+        return _view ? _view->iterate() : Iterator<T>::nil();
+    }
+
+    // pre 0.15.0 backward compatibility
+    List* operator->() __attribute__ ((deprecated)) { return this; }
+    const List* operator->() const __attribute__ ((deprecated)) { return this; }
+
+  private:
+    const ListView<T>* _view;
+};
+
+/*
+ * A list view over an old good plain C array.
+ *
+ * Expects the array will be alive for the whole life time of the
+ * view.
+ */
+template<typename T> class PlainListView : public ListView<T> {
+  public:
+    class Cursor : public detail::Cursor<T> {
+      public:
+        Cursor(const PlainListView* owner)
+            : _owner(owner)
+            , _idx(0)
+        { }
+
+        bool isValid() const override {
+            return _idx < _owner->_len;
+        }
+
+        bool value(T* out) const override {
+            if (!isValid())
+                return false;
+            *out = _owner->_data[_idx];
+            return true;
+        }
+
+        void next() override { ++_idx; }
+
+      private:
+        const PlainListView* _owner;
+        size_t _idx;
+    };
+
+  public:
+    PlainListView(const T* data, size_t len)
+        : _data(data)
+        , _len(len)
+    { }
+
+    virtual Iterator<T> iterate() const override {
+        return Iterator<T>(new Cursor(this));
+    }
+
+  private:
+    friend class Cursor;
+    const T* _data;
+    size_t _len;
+};
+
+/*
+ * A list view over a null-terminated C-String.
+ *
+ * Expects the char buffer will be alive for the whole life time of the view.
+ * You can use string literals as a buffer, since they are persistent for
+ * the program execution time.
+ */
+class CStringView : public ListView<char> {
+  public:
+    class Cursor : public detail::Cursor<char> {
+      public:
+        Cursor(const char* str)
+            : _ptr(str)
+        { }
+
+        bool isValid() const override {
+            return (bool)*_ptr;
+        }
+
+        bool value(char* out) const override {
+            *out = *_ptr;
+            return (bool)*_ptr;
+        }
+
+        void next() override { ++_ptr; }
+
+      private:
+        const char* _ptr;
+    };
+
+  public:
+    CStringView(const char* str = nullptr)
+        : _str(str)
+    { }
+
+    CStringView& operator=(const CStringView& rhs) {
+        _str = rhs._str;
+        return *this;
+    }
+
+    virtual Iterator<char> iterate() const override {
+        return _str ? Iterator<char>(new Cursor(_str)) : Iterator<char>::nil();
+    }
+
+  private:
+    friend class Cursor;
+    const char* _str;
+};
+
+/*
+ * A list view over two other lists (Left and Right) which first iterates the
+ * left one, and when exhausted, iterates the right one.
+ *
+ * Expects both Left and Right to be alive for the whole view life time.
+ */
+template<typename T> class ConcatListView : public ListView<T> {
+  public:
+    class Cursor : public detail::Cursor<T> {
+      public:
+        Cursor(Iterator<T>&& left, Iterator<T>&& right)
+            : _left(std::move(left))
+            , _right(std::move(right))
+        { }
+
+        bool isValid() const override {
+            return _left || _right;
+        }
+
+        bool value(T* out) const override {
+            return _left.value(out) || _right.value(out);
+        }
+
+        void next() override {
+            _left ? ++_left : ++_right;
+        }
+
+      private:
+        Iterator<T> _left;
+        Iterator<T> _right;
+    };
+
+  public:
+    ConcatListView() { }
+
+    ConcatListView(List<T> left, List<T> right)
+        : _left(left)
+        , _right(right)
+    { }
+
+    ConcatListView& operator=(const ConcatListView& rhs) {
+        _left = rhs._left;
+        _right = rhs._right;
+        return *this;
+    }
+
+    virtual Iterator<T> iterate() const override {
+        return Iterator<T>(new Cursor(_left.iterate(), _right.iterate()));
+    }
+
+  private:
+    friend class Cursor;
+    const List<T> _left;
+    const List<T> _right;
+};
+
+//----------------------------------------------------------------------------
+// Text string helpers
+//----------------------------------------------------------------------------
+
+using XString = List<char>;
+
+/*
+ * List and list view in a single pack. An utility used to define constant
+ * string literals in XOD.
+ */
+class XStringCString : public XString {
+  public:
+    XStringCString(const char* str)
+        : XString(&_view)
+        , _view(str)
+    { }
+
+  private:
+    CStringView _view;
+};
+
+} // namespace xod
+
+#endif
+
+/*=============================================================================
+ *
+ *
+ * Basic algorithms for XOD lists
+ *
+ *
+ =============================================================================*/
+
+#ifndef XOD_LIST_FUNCS_H
+#define XOD_LIST_FUNCS_H
+
+
+
+namespace xod {
+
+/*
+ * Folds a list from left. Also known as "reduce".
+ */
+template<typename T, typename TR>
+TR foldl(List<T> xs, TR (*func)(TR, T), TR acc) {
+    for (auto it = xs.iterate(); it; ++it)
+        acc = func(acc, *it);
+    return acc;
+}
+
+template<typename T> size_t lengthReducer(size_t len, T) {
+    return len + 1;
+}
+
+/*
+ * Computes length of a list.
+ */
+template<typename T> size_t length(List<T> xs) {
+    return foldl(xs, lengthReducer<T>, (size_t)0);
+}
+
+template<typename T> T* dumpReducer(T* buff, T x) {
+    *buff = x;
+    return buff + 1;
+}
+
+/*
+ * Copies a list content into a memory buffer.
+ *
+ * It is expected that `outBuff` has enough size to fit all the data.
+ */
+template<typename T> size_t dump(List<T> xs, T* outBuff) {
+    T* buffEnd = foldl(xs, dumpReducer, outBuff);
+    return buffEnd - outBuff;
+}
+
+} // namespace xod
+
+#endif
 
 
 /*=============================================================================
@@ -783,8 +583,6 @@ typedef uint8_t DirtyFlags;
 
 typedef unsigned long TimeMs;
 typedef void (*EvalFuncPtr)(Context ctx);
-
-typedef xod::List<char>::ListPtr XString;
 
 /*
  * Each input stores a reference to its upstream node so that we can get values
@@ -1214,6 +1012,9 @@ void evaluate(Context ctx) {
 namespace xod__core__cast_number_to_string {
 
 struct State {
+    char str[16];
+    CStringView view;
+    State() : view(str) { }
 };
 
 struct Storage {
@@ -1236,11 +1037,10 @@ using input_IN = InputDescriptor<Number, offsetof(Wiring, input_IN)>;
 using output_OUT = OutputDescriptor<XString, offsetof(Wiring, output_OUT), offsetof(Storage, output_OUT), 0>;
 
 void evaluate(Context ctx) {
-    char str[16];
+    auto state = getState(ctx);
     auto num = getValue<input_IN>(ctx);
-    dtostrf(num, 0, 2, str);
-    auto xstr = ::xod::List<char>::fromPlainArray(str, strlen(str));
-    emitValue<output_OUT>(ctx, xstr);
+    dtostrf(num, 0, 2, state->str);
+    emitValue<output_OUT>(ctx, XString(&state->view));
 }
 
 } // namespace xod__core__cast_number_to_string
@@ -1349,66 +1149,87 @@ namespace xod {
     //-------------------------------------------------------------------------
 
     // Storage of #0 xod/core/continuously
+    constexpr Logic node_0_output_TICK = false;
     xod__core__continuously::Storage storage_0 = {
         { }, // state
-        ::xod::List<char>::fromPlainArray("CONTINUOUSLY", 12) // output_TICK
+        node_0_output_TICK
+
     };
 
     // Storage of #1 xod/core/constant_number
+    constexpr Number node_1_output_VAL = 10;
     xod__core__constant_number::Storage storage_1 = {
         { }, // state
-        10 // output_VAL
+        node_1_output_VAL
+
     };
 
     // Storage of #2 xod/core/constant_string
+    constexpr XString node_2_output_VAL = XString();
     xod__core__constant_string::Storage storage_2 = {
         { }, // state
-        ::xod::List<char>::empty() // output_VAL
+        node_2_output_VAL
+
     };
 
     // Storage of #3 xod/core/constant_number
+    constexpr Number node_3_output_VAL = 12;
     xod__core__constant_number::Storage storage_3 = {
         { }, // state
-        12 // output_VAL
+        node_3_output_VAL
+
     };
 
     // Storage of #4 xod/core/constant_number
+    constexpr Number node_4_output_VAL = 11;
     xod__core__constant_number::Storage storage_4 = {
         { }, // state
-        11 // output_VAL
+        node_4_output_VAL
+
     };
 
     // Storage of #5 xod/core/constant_number
+    constexpr Number node_5_output_VAL = 9;
     xod__core__constant_number::Storage storage_5 = {
         { }, // state
-        9 // output_VAL
+        node_5_output_VAL
+
     };
 
     // Storage of #6 xod/core/constant_number
+    constexpr Number node_6_output_VAL = 8;
     xod__core__constant_number::Storage storage_6 = {
         { }, // state
-        8 // output_VAL
+        node_6_output_VAL
+
     };
 
     // Storage of #7 xod/core/constant_number
+    constexpr Number node_7_output_VAL = 13;
     xod__core__constant_number::Storage storage_7 = {
         { }, // state
-        13 // output_VAL
+        node_7_output_VAL
+
     };
 
     // Storage of #8 xod/core/system_time
+    constexpr Number node_8_output_TIME = 0;
     xod__core__system_time::Storage storage_8 = {
         { }, // state
-        0 // output_TIME
+        node_8_output_TIME
+
     };
 
     // Storage of #9 xod/core/cast_number_to_string
+    constexpr XString node_9_output_OUT = XString();
     xod__core__cast_number_to_string::Storage storage_9 = {
         { }, // state
-        ::xod::List<char>::empty() // output_OUT
+        node_9_output_OUT
+
     };
 
     // Storage of #10 xod/common_hardware/text_lcd_16x2
+
     xod__common_hardware__text_lcd_16x2::Storage storage_10 = {
         { }, // state
     };

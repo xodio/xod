@@ -5,8 +5,9 @@
 //
 // Rough code overview:
 //
-// - Intrusive pointer (a smart pointer with ref counter)
-// - Immutable dynamic list data structure
+// - Configuration section
+// - STL shim
+// - Immutable list classes and functions
 // - XOD runtime environment
 // - Native node implementation
 // - Program graph definition

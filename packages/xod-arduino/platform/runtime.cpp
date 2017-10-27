@@ -141,8 +141,6 @@ typedef uint8_t DirtyFlags;
 typedef unsigned long TimeMs;
 typedef void (*EvalFuncPtr)(Context ctx);
 
-typedef xod::List<char>::ListPtr XString;
-
 /*
  * Each input stores a reference to its upstream node so that we can get values
  * on input pins. Having a direct pointer to the value is not enough because we
