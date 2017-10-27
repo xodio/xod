@@ -1,5 +1,5 @@
 {
-    "description": "Allows values to pass through only if EN pin is set to true",
+  "description": "Allows values to pass through only if EN pin is set to true",
   "nodes": [
     {
       "boundValues": {
