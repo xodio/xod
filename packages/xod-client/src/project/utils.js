@@ -8,7 +8,6 @@ import {
   calcutaleNodeSizeFromPins,
   calculatePinPosition,
 } from './nodeLayout';
-import { getProject } from './selectors';
 
 import { LINK_ERRORS } from '../editor/constants';
 
@@ -83,7 +82,7 @@ export const getPinLinkabilityValidator = (linkingPin, nodes) => {
 export const isPatchPathTaken = (state, newPatchPath) => {
   const maybeExistingPatch = R.compose(
     XP.getPatchByPath(newPatchPath),
-    getProject
+    R.prop('project')
   )(state);
 
   return Maybe.isJust(maybeExistingPatch);
@@ -129,3 +128,8 @@ export const patchToNodeProps = (patch) => {
   };
 };
 
+export const isPatchDeadTerminal = R.compose(
+  R.equals(XP.PIN_TYPE.DEAD),
+  XP.getTerminalDataType,
+  XP.getPatchPath
+);

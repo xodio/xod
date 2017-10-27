@@ -6,6 +6,7 @@ import * as XP from 'xod-project';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
 import * as ProjectSelectors from '../project/selectors';
+import { isPatchDeadTerminal } from '../project/utils';
 
 export const getProjectBrowser = R.prop('projectBrowser');
 
@@ -64,6 +65,7 @@ export const getLibs = createMemoizedSelector(
     R.groupBy(
       R.pipe(XP.getPatchPath, XP.getLibraryName)
     ),
+    R.reject(isPatchDeadTerminal),
     R.map(markDeadPatches(project))
   )(patches)
 );

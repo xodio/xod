@@ -18,6 +18,7 @@ import {
   getLinkingPin,
   getTabs,
 } from '../editor/selectors';
+import { isPatchDeadTerminal } from '../project/utils';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
 
@@ -283,5 +284,8 @@ export const getRenderableSelection = createMemoizedSelector(
 //
 export const getPatchSearchIndex = createSelector(
   R.compose(XP.listPatches, getProject),
-  createIndexFromPatches
+  R.compose(
+    createIndexFromPatches,
+    R.reject(isPatchDeadTerminal)
+  )
 );
