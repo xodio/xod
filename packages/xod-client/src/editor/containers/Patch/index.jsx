@@ -173,6 +173,7 @@ const mapDispatchToProps = dispatch => ({
     selectComment: EditorActions.selectComment,
     selectEntity: EditorActions.selectEntity,
     deselectEntity: EditorActions.deselectEntity,
+    setSelection: EditorActions.setEditorSelection,
     addEntityToSelection: EditorActions.addEntityToSelection,
     doPinSelection: EditorActions.doPinSelection,
     linkPin: EditorActions.linkPin,

@@ -142,6 +142,18 @@ const selectingMode = {
 
     api.props.actions.deleteSelection();
   },
+  onSelectAll({ props }, event) {
+    console.log('onSelectAll');
+
+    if (isInput(event)) return;
+
+    event.preventDefault();
+
+    props.actions.setSelection(R.compose(
+      R.map(R.values),
+      R.pick(['nodes', 'links', 'comments'])
+    )(props));
+  },
   onBackgroundClick(api, event) {
     // to prevent misclicks when selecting multiple entities
     if (isSelectionModifierPressed(event)) return;
@@ -160,6 +172,7 @@ const selectingMode = {
   },
   getHotkeyHandlers(api) {
     return {
+      [COMMAND.SELECT_ALL]: bindApi(api, this.onSelectAll),
       [COMMAND.DELETE_SELECTION]: bindApi(api, this.onDeleteSelection),
       [COMMAND.DESELECT]: api.props.actions.deselectAll,
     };
