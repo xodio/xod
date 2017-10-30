@@ -12,6 +12,12 @@ import popupsReducer from '../popups/reducer';
 import debuggerReducer from '../debugger/reducer';
 
 import keepIntegrityAfterNavigatingHistory from './keepIntegrityAfterNavigatingHistory';
+import trackLastSavedChanges from './trackLastSavedChanges';
+import initialProjectState from '../project/state';
+
+// :: [(s -> a -> s)] -> s -> a -> s
+const pipeReducers = (...reducers) =>
+  (state, action) => reducers.reduce((s, r) => r(s, action), state);
 
 const combineRootReducers = (extraReducers) => {
   const reducers = merge(
@@ -19,6 +25,7 @@ const combineRootReducers = (extraReducers) => {
       user: userReducer,
       project: projectReducer,
       projectHistory: (s = {}) => s,
+      lastSavedProject: (s = initialProjectState) => s,
       projectBrowser: projectBrowserReducer,
       popups: popupsReducer,
       editor: editorReducer,
@@ -30,7 +37,10 @@ const combineRootReducers = (extraReducers) => {
   );
 
   return undoableProject(
-    combineReducers(reducers),
+    pipeReducers(
+      combineReducers(reducers),
+      trackLastSavedChanges,
+    ),
     keepIntegrityAfterNavigatingHistory
   );
 };

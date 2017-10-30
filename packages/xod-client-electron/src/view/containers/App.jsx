@@ -12,7 +12,7 @@ import isDevelopment from 'electron-is-dev';
 import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 
 import client from 'xod-client';
-import { Project } from 'xod-project';
+import { Project, fromXodball } from 'xod-project';
 import { foldEither } from 'xod-func-tools';
 import { transpile, getNodeIdsMap } from 'xod-arduino';
 
@@ -23,7 +23,6 @@ import * as uploadActions from '../../upload/actions';
 import * as debuggerIPC from '../../debugger/ipcActions';
 import { getUploadProcess, getSelectedSerialPort } from '../../upload/selectors';
 import * as settingsActions from '../../settings/actions';
-import { SAVE_PROJECT } from '../actionTypes';
 import { UPLOAD, UPLOAD_TO_ARDUINO } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
 import PopupCreateWorkspace from '../../settings/components/PopupCreateWorkspace';
@@ -98,10 +97,10 @@ class App extends client.App {
 
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
     this.onUploadConfigClose = this.onUploadConfigClose.bind(this);
-    this.onCloseApp = this.onCloseApp.bind(this);
     this.onWorkspaceChange = this.onWorkspaceChange.bind(this);
     this.onWorkspaceCreate = this.onWorkspaceCreate.bind(this);
     this.onCreateProject = this.onCreateProject.bind(this);
+    this.onRequestCreateProject = this.onRequestCreateProject.bind(this);
 
     this.onLoadProject = this.onLoadProject.bind(this);
     this.onSelectProject = this.onSelectProject.bind(this);
@@ -140,6 +139,23 @@ class App extends client.App {
         this.showPopupSetWorkspaceNotCancellable();
         console.error(error); // eslint-disable-line no-console
         this.props.actions.addError(formatError(error));
+      }
+    );
+    ipcRenderer.on(
+      EVENTS.REQUEST_CLOSE_WINDOW,
+      () => {
+        if (this.confirmUnsavedChanges()) {
+          setTimeout(() => {
+            if (this.props.saveProcess) {
+              // TODO: don't allow any more interaction?
+              ipcRenderer.once(EVENTS.SAVE_PROJECT, () => {
+                ipcRenderer.send(EVENTS.CONFIRM_CLOSE_WINDOW);
+              });
+            } else {
+              ipcRenderer.send(EVENTS.CONFIRM_CLOSE_WINDOW);
+            }
+          }, 0);
+        }
       }
     );
 
@@ -232,6 +248,8 @@ class App extends client.App {
   }
 
   onCreateProject(projectName) {
+    if (!this.confirmUnsavedChanges()) return;
+
     this.props.actions.createProject(projectName);
     ipcRenderer.send(EVENTS.CREATE_PROJECT, projectName);
     ipcRenderer.once(EVENTS.SAVE_PROJECT, () => {
@@ -249,6 +267,8 @@ class App extends client.App {
   }
 
   onLoadProject(project) {
+    if (!this.confirmUnsavedChanges()) return;
+
     this.props.actions.openProject(project);
   }
 
@@ -275,6 +295,8 @@ class App extends client.App {
   }
 
   onWorkspaceChange(val) {
+    if (!this.confirmUnsavedChanges()) return;
+
     this.props.actions.switchWorkspace(val);
     ipcRenderer.send(EVENTS.SWITCH_WORKSPACE, val);
   }
@@ -286,6 +308,39 @@ class App extends client.App {
 
   onSaveProject() {
     this.props.actions.saveProject(this.props.project);
+  }
+
+  onRequestCreateProject() {
+    this.props.actions.requestCreateProject();
+  }
+
+  onImport(jsonString) {
+    foldEither(
+      this.props.actions.addError,
+      (project) => {
+        if (!this.confirmUnsavedChanges()) return;
+        this.props.actions.importProject(project);
+      },
+      fromXodball(jsonString)
+    );
+  }
+
+  confirmUnsavedChanges() {
+    if (!this.props.hasUnsavedChanges) return true;
+
+    const clickedButtonId = dialog.showMessageBox({
+      message: 'Save changes to the current project before closing?',
+      detail: 'If you don’t save the project, changes will be lost',
+      type: 'warning',
+      buttons: ['Save', 'Discard', 'Cancel'],
+      cancelId: 2,
+    });
+
+    if (clickedButtonId === 0) {
+      this.onSaveProject();
+    }
+
+    return clickedButtonId !== 2;
   }
 
   onUploadPopupClose(id) {
@@ -304,15 +359,6 @@ class App extends client.App {
     }
 
     return false;
-  }
-
-  onCloseApp() { // eslint-disable-line class-methods-use-this
-    if (this.props.hasChanges) {
-      // TODO: Add confirmation popup to prevent closing with unsaved changes
-      //       'You have not saved changes in your project. Are you sure want to close app?'
-    }
-
-    return true;
   }
 
   onArduinoPathChange(newPath) {
@@ -351,7 +397,7 @@ class App extends client.App {
       submenu(
         items.file,
         [
-          onClick(items.newProject, this.props.actions.requestCreateProject),
+          onClick(items.newProject, this.onRequestCreateProject),
           onClick(items.openProject, this.onOpenProjectClicked),
           onClick(items.saveProject, this.onSaveProject),
           onClick(items.renameProject, this.props.actions.requestRenameProject),
@@ -576,7 +622,6 @@ class App extends client.App {
           target={window}
           onResize={this.onResize}
           onKeyDown={this.onKeyDown}
-          onBeforeUnload={this.onCloseApp}
         />
         <client.Editor
           size={this.state.size}
@@ -656,7 +701,7 @@ class App extends client.App {
 }
 
 App.propTypes = R.merge(client.App.propTypes, {
-  hasChanges: PropTypes.bool,
+  hasUnsavedChanges: PropTypes.bool,
   projects: PropTypes.object,
   project: client.sanctuaryPropType(Project),
   actions: PropTypes.objectOf(PropTypes.func),
@@ -667,12 +712,12 @@ App.propTypes = R.merge(client.App.propTypes, {
 });
 
 const getSaveProcess = R.compose(
-  client.findProcessByType(SAVE_PROJECT),
+  client.findProcessByType(client.SAVE_PROJECT),
   client.getProccesses
 );
 
 const mapStateToProps = R.applySpec({
-  hasChanges: client.projectHasChanges,
+  hasUnsavedChanges: client.hasUnsavedChanges,
   project: client.getProject,
   upload: getUploadProcess,
   saveProcess: getSaveProcess,

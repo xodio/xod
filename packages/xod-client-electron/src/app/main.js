@@ -45,6 +45,7 @@ if (IS_DEV) {
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
+let confirmedWindowClose = false;
 
 function createWindow() {
   // Create the browser window.
@@ -75,6 +76,15 @@ function createWindow() {
   };
   webContents.on('will-navigate', handleRedirect);
   webContents.on('new-window', handleRedirect);
+
+  win.on('close', (e) => {
+    // a bit of magic, because of weird `onbeforeunload` behaviour.
+    // see https://github.com/electron/electron/issues/7977
+    if (!confirmedWindowClose) {
+      e.preventDefault();
+      win.webContents.send(EVENTS.REQUEST_CLOSE_WINDOW);
+    }
+  });
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -138,6 +148,10 @@ const onReady = () => {
   ipcMain.on(EVENTS.LIST_BOARDS, listBoardsHandler);
   ipcMain.on(EVENTS.GET_SELECTED_BOARD, loadTargetBoardHandler);
   ipcMain.on(EVENTS.SET_SELECTED_BOARD, saveTargetBoardHandler);
+  ipcMain.on(EVENTS.CONFIRM_CLOSE_WINDOW, () => {
+    confirmedWindowClose = true;
+    win.close();
+  });
 
   createWindow();
   win.webContents.on('did-finish-load', () => {

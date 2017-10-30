@@ -26,6 +26,7 @@ module.exports = {
   globals: {
     fetch: true,
     window: true,
+    confirm: true,
     document: true,
     describe: true,
     it: true,

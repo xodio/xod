@@ -1,5 +1,6 @@
 import R from 'ramda';
 import { ipcRenderer } from 'electron';
+
 import {
   addProcess,
   progressProcess,
@@ -8,11 +9,10 @@ import {
   failProcess,
   addConfirmation,
   addError,
+  SAVE_PROJECT,
 } from 'xod-client';
 import * as EVENTS from '../shared/events';
 import * as MESSAGES from '../shared/messages';
-
-import * as ActionType from './actionTypes';
 
 // =============================================================================
 //
@@ -137,7 +137,7 @@ export const createAsyncAction = ({
 
 export const saveProject = createAsyncAction({
   eventName: EVENTS.SAVE_PROJECT,
-  actionType: ActionType.SAVE_PROJECT,
+  actionType: SAVE_PROJECT,
   messages: {
     process: MESSAGES.PROJECT_SAVE_PROCESSED,
     complete: MESSAGES.PROJECT_SAVE_SUCCEED,

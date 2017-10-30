@@ -8,6 +8,7 @@ import { HotKeys } from 'react-hotkeys';
 
 import * as XP from 'xod-project';
 import client from 'xod-client';
+import { foldEither } from 'xod-func-tools';
 
 import packageJson from '../../package.json';
 import PopupInstallApp from '../components/PopupInstallApp';
@@ -37,6 +38,7 @@ class App extends client.App {
     this.onSelectNodeType = this.onSelectNodeType.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
     this.onCreateProject = this.onCreateProject.bind(this);
+    this.onRequestCreateProject = this.onRequestCreateProject.bind(this);
 
     this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
 
@@ -86,10 +88,26 @@ class App extends client.App {
     return false;
   }
 
+  onRequestCreateProject() {
+    if (!this.confirmUnsavedChanges()) return;
+
+    this.props.actions.requestCreateProject();
+  }
+
+  onImport(jsonString) {
+    if (!this.confirmUnsavedChanges()) return;
+
+    foldEither(
+      this.props.actions.addError,
+      this.props.actions.importProject,
+      XP.fromXodball(jsonString)
+    );
+  }
+
   onCloseApp(event) { // eslint-disable-line class-methods-use-this
     let message = true;
 
-    if (this.props.hasChanges) {
+    if (this.props.hasUnsavedChanges) {
       message = 'You have not saved changes in your project. Are you sure want to close app?';
       if (event) { event.returnValue = message; } // eslint-disable-line
     }
@@ -158,7 +176,7 @@ class App extends client.App {
       submenu(
         items.file,
         [
-          onClick(items.newProject, this.props.actions.requestCreateProject),
+          onClick(items.newProject, this.onRequestCreateProject),
           onClick(items.renameProject, this.props.actions.requestRenameProject),
           items.separator,
           importProject,
@@ -218,6 +236,13 @@ class App extends client.App {
     this.setState({ popupInstallApp: false });
   }
 
+  confirmUnsavedChanges() {
+    if (!this.props.hasUnsavedChanges) return true;
+
+    // eslint-disable-next-line no-alert
+    return confirm('Discard unsaved changes?');
+  }
+
   render() {
     const devToolsInstrument = (client.isChromeApp) ? <client.DevTools /> : null;
     return (
@@ -247,7 +272,6 @@ class App extends client.App {
 }
 
 App.propTypes = R.merge(client.App.propTypes, {
-  hasChanges: PropTypes.bool,
   project: client.sanctuaryPropType(XP.Project),
   actions: PropTypes.object,
   initialProject: PropTypes.object.isRequired,
@@ -256,7 +280,7 @@ App.propTypes = R.merge(client.App.propTypes, {
 });
 
 const mapStateToProps = R.applySpec({
-  hasChanges: client.projectHasChanges,
+  hasUnsavedChanges: client.hasUnsavedChanges,
   project: client.getProject,
   currentPatchPath: client.getCurrentPatchPath,
   popups: {
