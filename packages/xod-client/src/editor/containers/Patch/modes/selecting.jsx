@@ -143,8 +143,6 @@ const selectingMode = {
     api.props.actions.deleteSelection();
   },
   onSelectAll({ props }, event) {
-    console.log('onSelectAll');
-
     if (isInput(event)) return;
 
     event.preventDefault();
