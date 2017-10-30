@@ -97,6 +97,12 @@ export const selectNode = selectEntity(SELECTION_ENTITY_TYPE.NODE);
 export const selectComment = selectEntity(SELECTION_ENTITY_TYPE.COMMENT);
 export const selectLink = selectEntity(SELECTION_ENTITY_TYPE.LINK);
 
+ // :: { nodes :: [Node], links :: [Link], comments :: [Comment] } -> Action
+export const setEditorSelection = entities => ({
+  type: ActionType.EDITOR_SET_SELECION,
+  payload: { entities },
+});
+
 export const addAndSelectNode = (typeId, position, currentPatchPath) => (dispatch) => {
   const newId = dispatch(addNode(typeId, position, currentPatchPath));
   dispatch(selectNode(newId));

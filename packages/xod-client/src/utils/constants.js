@@ -31,6 +31,7 @@ export const HOTKEY = {
   [COMMAND.DELETE_SELECTION]: ['del', 'backspace'],
 
   [COMMAND.DESELECT]: 'escape',
+  [COMMAND.SELECT_ALL]: ['ctrl+a', 'command+a'],
 
   [COMMAND.UNDO]: 'ctrl+z',
   [COMMAND.REDO]: ['ctrl+y', 'ctrl+shift+z'],

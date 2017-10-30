@@ -13,7 +13,7 @@ import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 
 import client from 'xod-client';
 import { Project, fromXodball } from 'xod-project';
-import { foldEither } from 'xod-func-tools';
+import { foldEither, isAmong } from 'xod-func-tools';
 import { transpile, getNodeIdsMap } from 'xod-arduino';
 
 import packageJson from '../../../package.json';
@@ -458,10 +458,13 @@ class App extends client.App {
 
   getKeyMap() { // eslint-disable-line class-methods-use-this
     const commandsBoundToNativeMenu = R.compose(
-      R.reject(R.either(
+      R.reject(R.anyPass([
+        isAmong([ // still listen to these
+          client.COMMAND.SELECT_ALL,
+        ]),
         R.isNil,
-        R.pipe(R.prop(R.__, client.ELECTRON_ACCELERATOR), R.isNil)
-      )),
+        R.pipe(R.prop(R.__, client.ELECTRON_ACCELERATOR), R.isNil),
+      ])),
       R.map(R.prop('command')),
       R.values
     )(client.menu.items);

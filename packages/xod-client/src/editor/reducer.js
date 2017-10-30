@@ -9,6 +9,7 @@ import {
   EDITOR_ADD_ENTITY_TO_SELECTION,
   EDITOR_SELECT_PIN,
   EDITOR_DESELECT_PIN,
+  EDITOR_SET_SELECION,
   EDITOR_SET_SELECTED_NODETYPE,
   EDITOR_SWITCH_PATCH,
   EDITOR_SWITCH_TAB,
@@ -437,6 +438,7 @@ const editorReducer = (state = {}, action) => {
         ),
         state
       );
+    case EDITOR_SET_SELECION:
     case PASTE_ENTITIES: {
       const { entities } = action.payload;
 

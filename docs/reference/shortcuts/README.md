@@ -101,6 +101,15 @@ The shortcuts in the table below are active when the patch board is in focus.
     </tr>
     <tr>
       <td>
+        <span class="ui blue label">Ctrl+A</span> |
+        <span class="ui grey label">⌘ A</span>
+      </td>
+      <td>
+        Select all entities on the patch
+      </td>
+    </tr>
+    <tr>
+      <td>
         <span class="ui blue label">Ctrl+Z</span> |
         <span class="ui grey label">⌘ Z</span>
       </td>
