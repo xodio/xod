@@ -4,6 +4,90 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [core] Feedback loops! Previously, you could not upload a program containing
+  graph cycles, in other words, your program’s “now” had no easy way to depend
+  on the past. Now, you can place a special `defer` node in the way of a
+  feedback link, and such program will be accepted. The `defer` nodes act as
+  loop breakers to define execution priorities and escape points for potential
+  dead-locks.
+* [core] The standard node library (`xod/*`) is now tied to the distributive,
+  not to a workspace. You’re no longer required to clear the workspace to get
+  new version goodness.
+* [core] Local libraries are now searched in `$workspace/__lib__` instead of
+  `$workspace/lib`. It allows to have a project with name `lib` and makes the
+  previous enhancement work for existing users.
+* [ide] We’ve upgraded XOD build toolchain. Distributives lost in size from 25
+  to 60% (depends on OS), the IDE now takes less time to start and eats less
+  RAM.
+* [ide] The IDE now warns about unsaved changes when a project is about to
+  close. No more work loss.
+* [ide] Double-click a node to drill down. That is a quicker way of browsing a
+  program. The feature also works in the debug mode and lets you see watches
+  of nested patches.
+* [ide] Ctrl+A (⌘ A on macOS) selects all entities when the focus is on the
+  patch board.
+* [ide] Cloud compilation limit is shown explicitly now in the Upload dialog.
+* [nodes] The [`delay` node](https://xod.io/libs/xod/core/delay) got an extra
+  `ACT` output. It addresses many cases when you have had to use an extra
+  `flip-flop` along with the `delay`.
+* [nodes] The [`clock` node](https://xod.io/libs/xod/core/clock) got the `EN`
+  input.  Now you can temporary disable a clock when necessary.
+* [c++] BREAKING :exclamation: The way strings are represented in C++ changed
+  significantly. Now they are more memory-efficient. Iteration interface is
+  backward-compatible, but creation interface is not. An action can be required
+  only if you make native (C++) nodes which operate on strings.
+* [docs] Add [mouse and keyboard shortuts](https://xod.io/docs/reference/shortcuts/).
+  Also available via “Help” menu in the IDE.
+* [docs] Add [supported hardware reference](https://xod.io/docs/reference/supported-hardware/).
+
+### New nodes
+
+* [xod/core/defer-pulse](https://xod.io/libs/xod/core/defer-pulse)
+* [xod/core/defer-boolean](https://xod.io/libs/xod/core/defer-boolean)
+* [xod/core/defer-number](https://xod.io/libs/xod/core/defer-number)
+* [xod/core/defer-string](https://xod.io/libs/xod/core/defer-string)
+* [xod/core/gate-pulse](https://xod.io/libs/xod/core/gate-pulse)
+* [xod/core/gate-boolean](https://xod.io/libs/xod/core/gate-boolean)
+* [xod/core/gate-number](https://xod.io/libs/xod/core/gate-number)
+* [xod/core/gate-string](https://xod.io/libs/xod/core/gate-string)
+* [xod/core/if-else-string](https://xod.io/libs/xod/core/if-else-string)
+* [xod/core/concat-3](https://xod.io/libs/xod/core/concat-3)
+* [xod/core/concat-4](https://xod.io/libs/xod/core/concat-4)
+* [xod/core/concat-5](https://xod.io/libs/xod/core/concat-5)
+* [xod/core/concat-6](https://xod.io/libs/xod/core/concat-6)
+* [xod/core/continuously-pausable](https://xod.io/libs/xod/core/continuously-pausable)
+
+### Bug fixes
+
+* [ide] You can scroll the Inspector if its contents are too tall. Now 13"
+  laptop users should not be disappointed while editing a `text-lcd-16x2` node.
+* [ide] If a project has integrity violations it no longer crashes an IDE. That
+  could happen if a library your project depends on made some breaking changes,
+  or if you made a mistake while editing `*.xodp` files manually. Now missing
+  pins and patches are drawn in red giving you an opportunity to fix the
+  project and go on.
+* [ide] Fix a bug when an extra click was required to close the last tab.
+* [ide] Fix a regression bug when deleting a patch lead to errors.
+* [ide] Restore ESC behavior to cancel linking.
+* [ide] Fix tab reordering behavior. Now it works the same way as you expect.
+  Previously a dragged tab was swapped with the target tab instead of being
+  inserted there.
+* [ide] Fix crash on patch rename if the debugger is active.
+* [ide] Ctrl+A (⌘ A on macOS) now work as expected on all text inputs where
+  it did not before.
+* [ide] The contents of dialogs is no longer selectable like it is a regular
+  web-page.
+* [core] Fix scenarios when values bound to inputs “leaked” to initial output
+  values in C++. The simplest case to reproduce was to make a patch with
+  `button` and `led` node. On boot, the LED should be turned off, but it was
+  on.
+* [c++] `isTimedOut(ctx)` now returns `false` if a node was not even scheduled
+  with `setTimeout`.
+
 <a name="0.14.0"></a>
 ## 0.14.0 (2017-10-04)
 
