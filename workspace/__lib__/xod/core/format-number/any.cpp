@@ -1,13 +1,15 @@
 struct State {
+    char str[16];
+    CStringView view;
+    State() : view(str) { }
 };
 
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    char str[16];
+    auto state = getState(ctx);
     auto num = getValue<input_NUM>(ctx);
     auto dig = getValue<input_DIG>(ctx);
-    dtostrf(num, 0, dig, str);
-    auto xstr = ::xod::List<char>::fromPlainArray(str, strlen(str));
-    emitValue<output_STR>(ctx, xstr);
+    dtostrf(num, 0, dig, state->str);
+    emitValue<output_STR>(ctx, XString(&state->view));
 }
