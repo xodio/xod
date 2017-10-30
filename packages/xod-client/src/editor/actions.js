@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';
 
@@ -32,9 +33,15 @@ import {
   patchToNodeProps,
 } from '../project/utils';
 
-import { getSelectedEntityIdsOfType, getEntitiesToCopy, regenerateIds } from './utils';
+import {
+  getBBoxTopLeftPosition,
+  getEntitiesToCopy,
+  getSelectedEntityIdsOfType,
+  regenerateIds,
+  resetClipboardEntitiesPosition,
+} from './utils';
 import { isInput, isEdge } from '../utils/browser';
-import { addPoints } from '../project/nodeLayout';
+import { addPoints, NODE_HEIGHT, SLOT_SIZE } from '../project/nodeLayout';
 
 import { ClipboardEntities } from '../types';
 
@@ -270,23 +277,30 @@ export const highlightSugessterItem = patchPath => ({
 // Microsoft Edge only supports Text and URL data types
 const getClipboardDataType = () => (isEdge() ? 'Text' : CLIPBOARD_DATA_TYPE);
 
+// :: State -> Maybe ClipboardEntities
+const getClipboardEntities = (state) => {
+  const selection = Selectors.getSelection(state);
+  if (R.isEmpty(selection)) return Maybe.Nothing();
+
+  const currentPatchPath = Selectors.getCurrentPatchPath(state);
+  return R.compose(
+    R.map(currentPatch => getEntitiesToCopy(currentPatch, selection)),
+    XP.getPatchByPath(currentPatchPath),
+    ProjectSelectors.getProject
+  )(state);
+};
+
 export const copyEntities = event => (dispatch, getState) => {
-  if (isInput(document.activeElement)) return;
+  if (isInput(event)) return;
 
   const state = getState();
 
-  const selection = Selectors.getSelection(state);
-  if (R.isEmpty(selection)) return;
-
-  const currentPatchPath = Selectors.getCurrentPatchPath(state);
-  const currentPatch = R.compose(
-    XP.getPatchByPathUnsafe(currentPatchPath),
-    ProjectSelectors.getProject
-  )(state);
-
-  const entities = getEntitiesToCopy(currentPatch, selection);
-  event.clipboardData.setData(getClipboardDataType(), JSON.stringify(entities, null, 2));
-  event.preventDefault();
+  // linter confuses array and a Maybe
+  // eslint-disable-next-line array-callback-return
+  getClipboardEntities(state).map((entities) => {
+    event.clipboardData.setData(getClipboardDataType(), JSON.stringify(entities, null, 2));
+    event.preventDefault();
+  });
 };
 
 export const pasteEntities = event => (dispatch, getState) => {
@@ -330,7 +344,29 @@ export const pasteEntities = event => (dispatch, getState) => {
     return;
   }
 
-  const newPosition = Selectors.getDefaultNodePlacePosition(state);
+  // If pasted entities are equal to currently selected entities
+  // paste them in roughly the same location as original with a light offset.
+  // Otherwise, just stick them to the top left of the viewport
+  const defaultNewPosition = Selectors.getDefaultNodePlacePosition(state);
+  const newPosition = Maybe.maybe(
+    defaultNewPosition,
+    R.ifElse(
+      R.eqBy(
+        R.compose( // check if selection is structurally the same as copied entities
+          R.map(R.map(R.omit('id'))),
+          R.dissoc('links'),
+          resetClipboardEntitiesPosition
+        ),
+        copiedEntities
+      ),
+      R.compose(
+        addPoints({ x: SLOT_SIZE.WIDTH, y: NODE_HEIGHT / 2 }),
+        getBBoxTopLeftPosition
+      ),
+      R.always(defaultNewPosition)
+    ),
+    getClipboardEntities(state)
+  );
 
   const entitiesToPaste = R.compose(
     R.evolve({
@@ -343,6 +379,7 @@ export const pasteEntities = event => (dispatch, getState) => {
         addPoints(newPosition)
       )),
     }),
+    resetClipboardEntitiesPosition,
     regenerateIds
   )(copiedEntities);
 
