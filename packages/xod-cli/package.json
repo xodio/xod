@@ -1,6 +1,6 @@
 {
   "name": "xod-cli",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "description": "XOD project: Command Line Interface",
   "scripts": {
     "build:workspace": "cpx \"../../workspace/__lib__/**\" \"./__lib__\"",
