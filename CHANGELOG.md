@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
-## Not yet released
+<a name="0.15.0"></a>
+## 0.15.0 (2017-10-31)
 
 ### Features and enhancements
 
