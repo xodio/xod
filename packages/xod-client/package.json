@@ -1,6 +1,6 @@
 {
   "name": "xod-client",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "description": "XOD project: Client application",
   "scripts": {
     "build": "babel src/ -d dist/ --source-maps",
@@ -54,10 +54,10 @@
     "sanctuary-def": "^0.9.0",
     "shortid": "^2.2.8",
     "url-parse": "^1.1.9",
-    "xod-arduino": "^0.14.0",
-    "xod-func-tools": "^0.14.0",
-    "xod-patch-search": "^0.14.0",
-    "xod-project": "^0.14.0"
+    "xod-arduino": "^0.15.0",
+    "xod-func-tools": "^0.15.0",
+    "xod-patch-search": "^0.15.0",
+    "xod-project": "^0.15.0"
   },
   "devDependencies": {
     "@kadira/storybook": "^2.35.3",
