@@ -17,7 +17,7 @@ import * as ProjectSelectors from '../../project/selectors';
 import * as DebuggerSelectors from '../../debugger/selectors';
 import * as EditorSelectors from '../selectors';
 
-import { isInput } from '../../utils/browser';
+import { isInputTarget } from '../../utils/browser';
 import { COMMAND } from '../../utils/constants';
 import { FOCUS_AREAS, DEBUGGER_TAB_ID } from '../constants';
 
@@ -69,14 +69,14 @@ class Editor extends React.Component {
       [COMMAND.REDO]: () => this.props.actions.redo(this.props.currentPatchPath),
       [COMMAND.TOGGLE_HELPBAR]: this.toggleHelpbar,
       [COMMAND.INSERT_NODE]: (event) => {
-        if (isInput(event)) return;
+        if (isInputTarget(event)) return;
         this.showSuggester(null);
       },
     };
   }
 
   toggleHelpbar(e) {
-    if (isInput(e)) return;
+    if (isInputTarget(e)) return;
 
     this.props.actions.toggleHelpbar();
   }
