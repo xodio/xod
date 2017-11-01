@@ -45,7 +45,9 @@ import {
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
 import { TAB_TYPES, EDITOR_MODE, SELECTION_ENTITY_TYPE, DEBUGGER_TAB_ID } from './constants';
 import { getTabByPatchPath } from './selectors';
-import { switchPatchUnsafe } from './actions';
+import { setCurrentPatchOffset, switchPatchUnsafe } from './actions';
+
+import { getInitialPatchOffset } from '../project/utils';
 
 // =============================================================================
 //
@@ -192,19 +194,27 @@ const applyTabSort = (tab, payload) => {
   return R.assoc('index', payload[tab.id].index, tab);
 };
 
-const resetCurrentPatchPath = (reducer, state, payload) => {
-  const newState = R.assoc('tabs', {}, state);
-  const firstPatchPath = R.pipe(
-    XP.listLocalPatches,
-    R.head,
+const resetCurrentPatchPath = (reducer, state, project) => {
+  const stateWithClearedTabs = R.assoc('tabs', {}, state);
+
+  return R.compose(
     R.ifElse(
       R.isNil,
-      R.always(null),
-      XP.getPatchPath
-    )
-  )(payload);
+      R.always(stateWithClearedTabs),
+      (firstLocalPatch) => {
+        const firstPatchPath = XP.getPatchPath(firstLocalPatch);
+        const offset = getInitialPatchOffset(firstPatchPath, project);
 
-  return reducer(newState, switchPatchUnsafe(firstPatchPath));
+        return [
+          switchPatchUnsafe(firstPatchPath),
+          setCurrentPatchOffset(offset),
+        ].reduce(reducer, stateWithClearedTabs);
+      }
+    ),
+    R.head,
+    R.sortBy(XP.getPatchPath),
+    XP.listLocalPatches,
+  )(project);
 };
 
 const clearSelection = R.flip(R.merge)({
