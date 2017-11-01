@@ -1,5 +1,4 @@
-
-import { curry } from 'ramda';
+import { curry, unless, test, concat, __ } from 'ramda';
 import fileSave from 'file-save';
 import stringify from 'json-stable-stringify';
 import { resolvePath } from './utils';
@@ -10,7 +9,12 @@ export const writeFile = curry((outputPath, data, encoding) => new Promise(
     const resolvedPath = resolvePath(outputPath);
     const fstream = fileSave(resolvedPath);
 
-    fstream.write(data, encoding);
+    const dataWithEol = unless(
+      test(/\n$/g),
+      concat(__, '\n')
+    )(data);
+
+    fstream.write(dataWithEol, encoding);
     fstream.end();
     fstream.finish(() => resolve({ path: resolvedPath, data }));
     fstream.error((err) => {

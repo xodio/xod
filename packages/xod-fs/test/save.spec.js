@@ -24,12 +24,13 @@ describe('saveProject', () => {
   );
   it('should save patch implementations correctly', () => {
     const projectName = 'impls-test';
-    const implContent = '\n      // hey-ho\n      // it should be a normal file\n      // not a stringified JSON\n    ';
-    const implContentExpected = `
-      // hey-ho
-      // it should be a normal file
-      // not a stringified JSON
-    `;
+    const implContent = '// hey-ho\n// it should be a normal file\n// not a stringified JSON\n';
+    const implContentExpected = [
+      '// hey-ho',
+      '// it should be a normal file',
+      '// not a stringified JSON',
+      '',
+    ].join('\n');
     const proj = defaultizeProject({
       name: projectName,
       patches: {
@@ -60,7 +61,7 @@ describe('saveProject', () => {
             {
               filename: 'README.md',
               encoding: 'utf8',
-              content: '# Yay',
+              content: '# Yay\n',
             },
           ],
         },
