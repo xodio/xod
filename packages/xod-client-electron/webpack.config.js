@@ -90,15 +90,6 @@ const options = {
         test: /\.json$/,
         loader: 'json-loader',
       },
-      {
-        test: /\.json5$/,
-        loader: 'json5-loader',
-      },
-      {
-        include: pkgpath('json5/lib/require'),
-        test: /.?/,
-        loader: 'null',
-      },
     ],
   },
   plugins: [
