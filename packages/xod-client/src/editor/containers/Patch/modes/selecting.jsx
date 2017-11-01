@@ -10,7 +10,7 @@ import { COMMAND } from '../../../../utils/constants';
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
 
-import { snapNodePositionToSlots } from '../../../../project/nodeLayout';
+import { snapPositionToSlots } from '../../../../project/nodeLayout';
 
 import {
   bindApi,
@@ -161,7 +161,7 @@ const selectingMode = {
   onBackgroundDoubleClick(api, event) {
     R.compose(
       api.props.onDoubleClick,
-      snapNodePositionToSlots,
+      snapPositionToSlots,
       getMousePosition
     )(patchSvgRef, api.props.offset, event);
   },

@@ -149,13 +149,19 @@ export const pointToSize = ({ x, y }) => ({ width: x, height: y });
 
 export const sizeToPoint = ({ width, height }) => ({ x: width, y: height });
 
+// Position :: { x: Number, y: Number }
+// :: Position -> Position
+export const snapPositionToSlots = R.compose(
+  slotPositionToPixels,
+  nodePositionInPixelsToSlots,
+);
+
 /**
  * @param node position
  * @return node position snapped to slots grid
  */
 export const snapNodePositionToSlots = R.compose(
-  slotPositionToPixels,
-  nodePositionInPixelsToSlots,
+  snapPositionToSlots,
   addPoints({ x: SLOT_SIZE.WIDTH / 2, y: SLOT_SIZE.HEIGHT / 2 })
 );
 
