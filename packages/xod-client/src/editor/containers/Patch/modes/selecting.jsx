@@ -4,7 +4,7 @@ import { HotKeys } from 'react-hotkeys';
 
 import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from '../../../constants';
 import { isEntitySelected } from '../../../utils';
-import { isInput } from '../../../../utils/browser';
+import { isInputTarget } from '../../../../utils/browser';
 import { COMMAND } from '../../../../utils/constants';
 
 import PatchSVG from '../../../../project/components/PatchSVG';
@@ -131,19 +131,19 @@ const selectingMode = {
     api.setState({ isMouseDownOnMovableObject: false });
   },
   onKeyDown(api, event) {
-    if (isInput(event)) return;
+    if (isInputTarget(event)) return;
 
     if (event.key === ' ' && !api.state.isMouseDownOnMovableObject) {
       api.goToMode(EDITOR_MODE.PANNING, { isPanning: false });
     }
   },
   onDeleteSelection(api, event) {
-    if (isInput(event)) return;
+    if (isInputTarget(event)) return;
 
     api.props.actions.deleteSelection();
   },
   onSelectAll({ props }, event) {
-    if (isInput(event)) return;
+    if (isInputTarget(event)) return;
 
     event.preventDefault();
 

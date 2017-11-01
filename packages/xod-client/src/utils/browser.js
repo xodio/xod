@@ -18,12 +18,6 @@ export function getViewableSize(defaultWidth = 0, defaultHeight = 0) {
   return sizes;
 }
 
-export const isInput = event => (
-  event.target.nodeName === 'INPUT' ||
-  event.target.nodeName === 'TEXTAREA' ||
-  event.target.nodeName === 'SELECT'
-);
-
 export const findParentByClassName = (element, className) => {
   let result = null;
   if (element && element.classList && element.classList.contains(className)) {
@@ -39,13 +33,12 @@ export const checkForMouseBubbling = (event, parent) => {
   return (elem.parentNode === parent || elem === parent);
 };
 
-export const isInputTarget = (event) => {
-  const target = event.target || event.srcElement;
-  const type = target.nodeName;
-  const inputs = ['INPUT', 'TEXTAREA', 'SELECT'];
+export const isInput = R.compose(
+  R.flip(R.contains)(['INPUT', 'TEXTAREA', 'SELECT']),
+  R.prop('nodeName')
+);
 
-  return (inputs.indexOf(type) !== -1);
-};
+export const isInputTarget = event => isInput(event.target || event.srcElement);
 
 export const isEdge = () => R.compose(
   R.test(/Edge/),

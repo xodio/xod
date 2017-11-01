@@ -4,7 +4,7 @@ import { HotKeys } from 'react-hotkeys';
 
 import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from '../../../constants';
 import { isEntitySelected } from '../../../utils';
-import { isInput } from '../../../../utils/browser';
+import { isInputTarget } from '../../../../utils/browser';
 import { COMMAND } from '../../../../utils/constants';
 
 import PatchSVG from '../../../../project/components/PatchSVG';
@@ -59,7 +59,7 @@ const debuggingMode = {
     api.goToMode(EDITOR_MODE.PANNING, { isPanning: true, panningStartPosition: mousePosition });
   },
   onKeyDown(api, event) {
-    if (isInput(event)) return;
+    if (isInputTarget(event)) return;
 
     if (event.key === ' ' && !api.state.isMouseDownOnMovableObject) {
       api.goToMode(EDITOR_MODE.PANNING, { isPanning: false });

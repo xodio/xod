@@ -271,7 +271,7 @@ export const highlightSugessterItem = patchPath => ({
 const getClipboardDataType = () => (isEdge() ? 'Text' : CLIPBOARD_DATA_TYPE);
 
 export const copyEntities = event => (dispatch, getState) => {
-  if (isInput(event)) return;
+  if (isInput(document.activeElement)) return;
 
   const state = getState();
 
@@ -290,7 +290,7 @@ export const copyEntities = event => (dispatch, getState) => {
 };
 
 export const pasteEntities = event => (dispatch, getState) => {
-  if (isInput(event)) return;
+  if (isInput(document.activeElement)) return;
 
   const state = getState();
   const currentPatchPath = Selectors.getCurrentPatchPath(state);
@@ -357,7 +357,7 @@ export const pasteEntities = event => (dispatch, getState) => {
 };
 
 export const cutEntities = event => (dispatch) => {
-  if (isInput(event)) return;
+  if (isInput(document.activeElement)) return;
 
   dispatch(copyEntities(event));
   dispatch(deleteSelection());
