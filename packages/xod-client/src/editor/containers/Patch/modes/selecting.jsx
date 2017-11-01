@@ -26,8 +26,10 @@ let patchSvgRef = null;
 const selectingMode = {
   getInitialState() {
     return {
+      isMouseDownOnBackground: false,
       isMouseDownOnMovableObject: false,
       dragStartPosition: { x: 0, y: 0 },
+      mouseDownPosition: { x: 0, y: 0 },
     };
   },
 
@@ -111,12 +113,22 @@ const selectingMode = {
     }
   },
   onMouseDown(api, event) {
+    const mousePosition = getMousePosition(patchSvgRef, api.props.offset, event);
     if (!isMiddleButtonPressed(event)) return;
 
-    const mousePosition = getMousePosition(patchSvgRef, api.props.offset, event);
     api.goToMode(EDITOR_MODE.PANNING, { isPanning: true, panningStartPosition: mousePosition });
   },
   onMouseMove(api, event) {
+    if (api.state.isMouseDownOnBackground) {
+      api.goToMode(
+        EDITOR_MODE.MARQUEE_SELECTING,
+        {
+          mouseStartPosition: api.state.mouseDownPosition,
+          mousePosition: getMousePosition(patchSvgRef, api.props.offset, event),
+        }
+      );
+    }
+
     if (!api.state.isMouseDownOnMovableObject) return;
 
     api.goToMode(
@@ -128,7 +140,11 @@ const selectingMode = {
     );
   },
   onMouseUp(api) {
-    api.setState({ isMouseDownOnMovableObject: false });
+    api.setState({
+      isMouseDownOnBackground: false,
+      isMouseDownOnMovableObject: false,
+      mouseDownPosition: { x: 0, y: 0 },
+    });
   },
   onKeyDown(api, event) {
     if (isInputTarget(event)) return;
@@ -165,6 +181,12 @@ const selectingMode = {
       getMousePosition
     )(patchSvgRef, api.props.offset, event);
   },
+  onBackgroundMouseDown(api, event) {
+    api.setState({
+      mouseDownPosition: getMousePosition(patchSvgRef, api.props.offset, event),
+      isMouseDownOnBackground: true,
+    });
+  },
   onNodeDoubleClick(api, nodeId, patchPath) {
     api.props.actions.switchPatch(patchPath);
   },
@@ -193,6 +215,7 @@ const selectingMode = {
             height={api.props.size.height}
             onClick={bindApi(api, this.onBackgroundClick)}
             onDoubleClick={bindApi(api, this.onBackgroundDoubleClick)}
+            onMouseDown={bindApi(api, this.onBackgroundMouseDown)}
             offset={api.props.offset}
           />
           <g transform={getOffsetMatrix(api.props.offset)}>

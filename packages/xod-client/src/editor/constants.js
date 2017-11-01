@@ -8,6 +8,7 @@ export const EDITOR_MODE = {
   PANNING: 'panning',
   ACCEPTING_DRAGGED_PATCH: 'accepting_dragged_patch',
   DEBUGGING: 'debugging',
+  MARQUEE_SELECTING: 'marquee_selecting',
 
   get DEFAULT() {
     return this.SELECTING;

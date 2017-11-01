@@ -43,7 +43,8 @@ import {
 } from '../debugger/actionTypes';
 
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
-import { TAB_TYPES, EDITOR_MODE, SELECTION_ENTITY_TYPE, DEBUGGER_TAB_ID } from './constants';
+import { TAB_TYPES, EDITOR_MODE, DEBUGGER_TAB_ID } from './constants';
+import { createSelectionEntity, getNewSelection } from './utils';
 import { getTabByPatchPath } from './selectors';
 import { setCurrentPatchOffset, switchPatchUnsafe } from './actions';
 
@@ -332,8 +333,6 @@ const renamePatchInTabs = (newPatchPath, oldPatchPath, state) => {
   );
 };
 
-const createSelectionEntity = R.curry((entityType, id) => ({ entity: entityType, id }));
-
 const findChunkIndex = R.curry(
   (patchPath, nodeId, chunks) =>
     R.findIndex(R.both(
@@ -449,34 +448,12 @@ const editorReducer = (state = {}, action) => {
         state
       );
     case EDITOR_SET_SELECION:
-    case PASTE_ENTITIES: {
-      const { entities } = action.payload;
-
-      const newSelection = R.compose(
-        R.unnest,
-        R.values,
-        R.evolve({
-          nodes: R.map(R.compose(
-            createSelectionEntity(SELECTION_ENTITY_TYPE.NODE),
-            XP.getNodeId
-          )),
-          comments: R.map(R.compose(
-            createSelectionEntity(SELECTION_ENTITY_TYPE.COMMENT),
-            XP.getCommentId
-          )),
-          links: R.map(R.compose(
-            createSelectionEntity(SELECTION_ENTITY_TYPE.LINK),
-            XP.getLinkId
-          )),
-        })
-      )(entities);
-
+    case PASTE_ENTITIES:
       return R.assoc(
         'selection',
-        newSelection,
+        getNewSelection(action.payload.entities),
         state
       );
-    }
     case EDITOR_SELECT_PIN:
       return R.assoc('linkingPin', action.payload, state);
     case EDITOR_DESELECT_PIN:

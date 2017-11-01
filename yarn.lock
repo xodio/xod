@@ -6112,6 +6112,10 @@ lie@^3.1.0:
   dependencies:
     immediate "~3.0.5"
 
+line-intersection@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/line-intersection/-/line-intersection-1.0.8.tgz#8d9529e40525bddcfb4a9bc8be59ccdbf8fc5c7c"
+
 livereload-js@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/livereload-js/-/livereload-js-2.2.2.tgz#6c87257e648ab475bc24ea257457edcc1f8d0bc2"

@@ -7,6 +7,12 @@ export * from './types';
 const def = types.def;
 
 /**
+ * Function without any operation.
+ * Frequently used as a default value for handlers and etc.
+ */
+export const noop = () => {};
+
+/**
  * DEPRECATED: Use of this function lead to meaningless error messages that
  * are nearly impossible to debug. Use `explodeMaybe` and `explodeEither`
  * to convert monads to unhandled exceptions.
