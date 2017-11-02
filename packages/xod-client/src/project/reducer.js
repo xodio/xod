@@ -298,7 +298,7 @@ export default (state = {}, action) => {
 
       const newComment = XP.createComment(
         slotPositionToPixels({ x: 1, y: 1 }),
-        nodeSizeInSlotsToPixels({ width: 2, height: 1 }),
+        nodeSizeInSlotsToPixels({ width: 4, height: 1 }),
         'Double-click to edit comment'
       );
 
