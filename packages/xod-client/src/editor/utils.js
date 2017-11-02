@@ -3,8 +3,12 @@ import R from 'ramda';
 import * as XP from 'xod-project';
 
 import {
+  addPoints,
+  calcutaleNodeSizeFromPins,
+  getBottomRightPosition,
+  getTopLeftPosition,
+  sizeToPoint,
   subtractPoints,
-  getBoundingBoxPosition,
 } from '../project/nodeLayout';
 
 import { SELECTION_ENTITY_TYPE } from './constants';
@@ -60,7 +64,7 @@ export const getNewSelection = R.compose(
 
 // :: ClipboardEntities -> Position
 export const getBBoxTopLeftPosition = R.compose(
-  getBoundingBoxPosition,
+  getTopLeftPosition,
   R.converge(
     R.concat,
     [
@@ -68,6 +72,62 @@ export const getBBoxTopLeftPosition = R.compose(
       R.compose(R.map(XP.getCommentPosition), R.prop('comments')),
     ]
   )
+);
+
+// :: Patch -> Project -> Node -> Size
+const getNodeSize = R.curry((currentPatch, project, node) => R.compose(
+  calcutaleNodeSizeFromPins,
+  R.values,
+  XP.getPinsForNode
+)(node, currentPatch, project));
+
+const getNodeBottomRightPosition = R.curry((currentPatch, project, node) =>
+  R.converge(
+    addPoints,
+    [
+      XP.getNodePosition,
+      R.pipe(getNodeSize(currentPatch, project), sizeToPoint),
+    ]
+  )(node)
+);
+
+const getCommentBottomRightPosition = R.converge(
+  addPoints,
+  [
+    XP.getCommentPosition,
+    R.pipe(XP.getCommentSize, sizeToPoint),
+  ]
+);
+
+// :: Patch -> Projct -> ClipboardEntities -> Position
+export const getBBoxBottomRightPosition = R.curry((currentPatch, project, entities) =>
+  R.compose(
+    getBottomRightPosition,
+    R.converge(
+      R.concat,
+      [
+        R.compose(
+          R.map(getNodeBottomRightPosition(currentPatch, project)),
+          R.prop('nodes')
+        ),
+        R.compose(
+          R.map(getCommentBottomRightPosition),
+          R.prop('comments')
+        ),
+      ]
+    )
+  )(entities)
+);
+
+// :: ClipboardEntities -> Position
+export const getBoundingBoxSize = R.curry((currentPatch, project, entities) =>
+  R.converge(
+    subtractPoints,
+    [
+      getBBoxBottomRightPosition(currentPatch, project),
+      getBBoxTopLeftPosition,
+    ]
+  )(entities)
 );
 
 /*

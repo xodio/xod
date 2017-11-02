@@ -35,13 +35,14 @@ import {
 
 import {
   getBBoxTopLeftPosition,
+  getBoundingBoxSize,
   getEntitiesToCopy,
   getSelectedEntityIdsOfType,
   regenerateIds,
   resetClipboardEntitiesPosition,
 } from './utils';
 import { isInput, isEdge } from '../utils/browser';
-import { addPoints, NODE_HEIGHT, SLOT_SIZE } from '../project/nodeLayout';
+import { addPoints } from '../project/nodeLayout';
 
 import { ClipboardEntities } from '../types';
 
@@ -329,11 +330,12 @@ export const pasteEntities = event => (dispatch, getState) => {
     return;
   }
 
+  const project = ProjectSelectors.getProject(state);
+
   const availablePatches = R.compose(
     R.map(XP.getPatchPath),
     XP.listPatches,
-    ProjectSelectors.getProject
-  )(state);
+  )(project);
   const missingPatches = R.without(availablePatches, pastedNodeTypes);
 
   if (!R.isEmpty(missingPatches)) {
@@ -347,6 +349,7 @@ export const pasteEntities = event => (dispatch, getState) => {
   // If pasted entities are equal to currently selected entities
   // paste them in roughly the same location as original with a light offset.
   // Otherwise, just stick them to the top left of the viewport
+  const currentPatch = XP.getPatchByPathUnsafe(currentPatchPath);
   const defaultNewPosition = Selectors.getDefaultNodePlacePosition(state);
   const newPosition = Maybe.maybe(
     defaultNewPosition,
@@ -359,9 +362,12 @@ export const pasteEntities = event => (dispatch, getState) => {
         ),
         copiedEntities
       ),
-      R.compose(
-        addPoints({ x: SLOT_SIZE.WIDTH, y: NODE_HEIGHT / 2 }),
-        getBBoxTopLeftPosition
+      R.converge(
+        addPoints,
+        [
+          R.pipe(getBoundingBoxSize(currentPatch, project), R.assoc('y', 0)),
+          getBBoxTopLeftPosition,
+        ]
       ),
       R.always(defaultNewPosition)
     ),

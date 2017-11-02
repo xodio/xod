@@ -173,14 +173,22 @@ export const snapNodeSizeToSlots = R.compose(
   sizeToPoint
 );
 
-// :: [Position] -> Position
-export const getBoundingBoxPosition = R.converge(
-  (x, y) => ({ x, y }),
-  [
-    R.compose(R.head, R.sort(R.subtract), R.map(R.prop('x'))),
-    R.compose(R.head, R.sort(R.subtract), R.map(R.prop('y'))),
-  ]
+// :: ([Number] -> Number) -> ([Number] -> Number) -> [Position] -> Position
+export const findPosition = R.uncurryN(3)((xFn, yFn) =>
+  R.converge(
+    (x, y) => ({ x, y }),
+    [
+      R.compose(xFn, R.map(R.prop('x'))),
+      R.compose(yFn, R.map(R.prop('y'))),
+    ]
+  )
 );
+
+// :: [Position] -> Position
+export const getTopLeftPosition = findPosition(R.apply(Math.min), R.apply(Math.min));
+
+// :: [Position] -> Position
+export const getBottomRightPosition = findPosition(R.apply(Math.max), R.apply(Math.max));
 
 // Given a list of positions of all entities, returns optimal patch panning offset
 // :: [Position] -> Position
@@ -190,6 +198,6 @@ export const getOptimalPanningOffset = R.ifElse(
   R.compose(
     addPoints(DEFAULT_PANNING_OFFSET),
     R.map(R.negate),
-    getBoundingBoxPosition
+    getTopLeftPosition
   )
 );
