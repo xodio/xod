@@ -256,7 +256,11 @@ class App extends client.App {
         <client.Toolbar
           menuBarItems={this.getMenuBarItems()}
         />
-        <client.Editor size={this.state.size} />
+        <client.Editor
+          size={this.state.size}
+          getSidebarPaneHeight={() => window.localStorage.getItem('Sidebar.height')}
+          setSidebarPaneHeight={size => window.localStorage.setItem('Sidebar.height', size)}
+        />
         <client.SnackBar />
         {devToolsInstrument}
         <PopupInstallApp

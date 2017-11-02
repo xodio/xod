@@ -67,6 +67,7 @@ const defaultState = {
   workspace: '',
   downloadProgressPopup: false,
   downloadProgressPopupError: null,
+  sidebarPaneHeight: null,
 };
 
 class App extends client.App {
@@ -81,6 +82,8 @@ class App extends client.App {
     this.listBoards = this.listBoards.bind(this);
     this.listPorts = this.listPorts.bind(this);
     this.getSelectedBoard = this.getSelectedBoard.bind(this);
+    this.getSidebarPaneHeight = this.getSidebarPaneHeight.bind(this);
+    this.setSidebarPaneHeight = this.setSidebarPaneHeight.bind(this);
 
     this.onClickMessageButton = this.onClickMessageButton.bind(this);
 
@@ -158,12 +161,19 @@ class App extends client.App {
         }
       }
     );
+    ipcRenderer.on(
+      EVENTS.GET_SIDEBAR_PANE_HEIGHT,
+      (event, sidebarPaneHeight) => this.setState({ sidebarPaneHeight })
+    );
 
     // Debugger
     debuggerIPC.subscribeOnDebuggerEvents(ipcRenderer, this);
 
     // autoUpdater
     subscribeAutoUpdaterEvents(ipcRenderer, this);
+
+    // request for data from main process
+    ipcRenderer.send(EVENTS.GET_SIDEBAR_PANE_HEIGHT);
   }
 
   onClickMessageButton(buttonId, /* messageInfo */) {
@@ -482,6 +492,20 @@ class App extends client.App {
     });
   }
 
+  getSidebarPaneHeight() {
+    return this.state.sidebarPaneHeight;
+  }
+
+  setSidebarPaneHeight(size) {
+    ipcRenderer.send(
+      EVENTS.CHANGE_SIDEBAR_PANE_HEIGHT,
+      size
+    );
+    this.setState({
+      sidebarPaneHeight: size,
+    });
+  }
+
   initNativeMenu() {
     const viewMenu = {
       label: 'View',
@@ -628,6 +652,8 @@ class App extends client.App {
         />
         <client.Editor
           size={this.state.size}
+          getSidebarPaneHeight={this.getSidebarPaneHeight}
+          setSidebarPaneHeight={this.setSidebarPaneHeight}
           stopDebuggerSession={() => debuggerIPC.sendStopDebuggerSession(ipcRenderer)}
         />
         <client.SnackBar

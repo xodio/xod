@@ -14,6 +14,7 @@ import {
 import * as settings from './settings';
 import { errorToPlainObject, IS_DEV } from './utils';
 import * as WA from './workspaceActions';
+import { loadSidebarPaneHeight, saveSidebarPaneHeight } from './editorActions';
 import { configureAutoUpdater, subscribeOnAutoUpdaterEvents } from './autoupdate';
 
 // =============================================================================
@@ -152,6 +153,8 @@ const onReady = () => {
     confirmedWindowClose = true;
     win.close();
   });
+  ipcMain.on(EVENTS.GET_SIDEBAR_PANE_HEIGHT, loadSidebarPaneHeight);
+  ipcMain.on(EVENTS.CHANGE_SIDEBAR_PANE_HEIGHT, saveSidebarPaneHeight);
 
   createWindow();
   win.webContents.on('did-finish-load', () => {

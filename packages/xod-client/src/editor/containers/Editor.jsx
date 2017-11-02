@@ -27,7 +27,7 @@ import Suggester from '../components/Suggester';
 import Inspector from '../components/Inspector';
 import Debugger from '../../debugger/containers/Debugger';
 import Breadcrumbs from '../../debugger/containers/Breadcrumbs';
-import Sidebar from '../../utils/components/Sidebar';
+import Sidebar from '../components/Sidebar';
 import Workarea from '../../utils/components/Workarea';
 
 import { RenderableSelection } from '../../types';
@@ -139,7 +139,10 @@ class Editor extends React.Component {
 
     return (
       <HotKeys handlers={this.getHotkeyHandlers()} className="Editor">
-        <Sidebar>
+        <Sidebar
+          getSize={this.props.getSidebarPaneHeight}
+          onChange={this.props.setSidebarPaneHeight}
+        >
           <FocusTrap
             className="ProjectBrowser-container"
             onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.PROJECT_BROWSER)}
@@ -180,6 +183,8 @@ class Editor extends React.Component {
 
 Editor.propTypes = {
   size: PropTypes.object.isRequired,
+  getSidebarPaneHeight: PropTypes.func,
+  setSidebarPaneHeight: PropTypes.func,
   selection: sanctuaryPropType($.Array(RenderableSelection)),
   currentPatchPath: PropTypes.string,
   currentPatch: sanctuaryPropType($Maybe(PatchType)),

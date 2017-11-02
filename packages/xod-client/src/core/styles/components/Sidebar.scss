@@ -1,14 +1,12 @@
 .Sidebar {
+  position: relative;
+
   width: $sidebar-width;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
 
   background: $sidebar-color-bg;
-
-  & > * {
-    height: 50%;
-  }
 
   .title {
     display: block;
