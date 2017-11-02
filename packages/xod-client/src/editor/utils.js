@@ -3,8 +3,12 @@ import R from 'ramda';
 import * as XP from 'xod-project';
 
 import {
+  addPoints,
+  calcutaleNodeSizeFromPins,
+  getBottomRightPosition,
+  getTopLeftPosition,
+  sizeToPoint,
   subtractPoints,
-  getBoundingBoxPosition,
 } from '../project/nodeLayout';
 
 import { SELECTION_ENTITY_TYPE } from './constants';
@@ -58,6 +62,74 @@ export const getNewSelection = R.compose(
   })
 );
 
+// :: ClipboardEntities -> Position
+export const getBBoxTopLeftPosition = R.compose(
+  getTopLeftPosition,
+  R.converge(
+    R.concat,
+    [
+      R.compose(R.map(XP.getNodePosition), R.prop('nodes')),
+      R.compose(R.map(XP.getCommentPosition), R.prop('comments')),
+    ]
+  )
+);
+
+// :: Patch -> Project -> Node -> Size
+const getNodeSize = R.curry((currentPatch, project, node) => R.compose(
+  calcutaleNodeSizeFromPins,
+  R.values,
+  XP.getPinsForNode
+)(node, currentPatch, project));
+
+const getNodeBottomRightPosition = R.curry((currentPatch, project, node) =>
+  R.converge(
+    addPoints,
+    [
+      XP.getNodePosition,
+      R.pipe(getNodeSize(currentPatch, project), sizeToPoint),
+    ]
+  )(node)
+);
+
+const getCommentBottomRightPosition = R.converge(
+  addPoints,
+  [
+    XP.getCommentPosition,
+    R.pipe(XP.getCommentSize, sizeToPoint),
+  ]
+);
+
+// :: Patch -> Projct -> ClipboardEntities -> Position
+export const getBBoxBottomRightPosition = R.curry((currentPatch, project, entities) =>
+  R.compose(
+    getBottomRightPosition,
+    R.converge(
+      R.concat,
+      [
+        R.compose(
+          R.map(getNodeBottomRightPosition(currentPatch, project)),
+          R.prop('nodes')
+        ),
+        R.compose(
+          R.map(getCommentBottomRightPosition),
+          R.prop('comments')
+        ),
+      ]
+    )
+  )(entities)
+);
+
+// :: ClipboardEntities -> Position
+export const getBoundingBoxSize = R.curry((currentPatch, project, entities) =>
+  R.converge(
+    subtractPoints,
+    [
+      getBBoxBottomRightPosition(currentPatch, project),
+      getBBoxTopLeftPosition,
+    ]
+  )(entities)
+);
+
 /*
   Make this point (0,0)
   |
@@ -74,18 +146,9 @@ export const getNewSelection = R.compose(
   | // some comment |
   +-----------------+
 */
-// ClipboardEntities -> ClipboardEntities
-const resetClipboardEntitiesPosition = (entities) => {
-  const bBoxTopLeftPosition = R.compose(
-    getBoundingBoxPosition,
-    R.converge(
-      R.concat,
-      [
-        R.compose(R.map(XP.getNodePosition), R.prop('nodes')),
-        R.compose(R.map(XP.getCommentPosition), R.prop('comments')),
-      ]
-    )
-  )(entities);
+// :: ClipboardEntities -> ClipboardEntities
+export const resetClipboardEntitiesPosition = (entities) => {
+  const bBoxTopLeftPosition = getBBoxTopLeftPosition(entities);
 
   // TODO: better name
   const resetPosition = R.flip(subtractPoints)(bBoxTopLeftPosition);
@@ -103,35 +166,32 @@ const resetClipboardEntitiesPosition = (entities) => {
 };
 
 // :: Patch -> Selection -> ClipboardEntities
-export const getEntitiesToCopy = R.uncurryN(2, patch => R.compose(
-  resetClipboardEntitiesPosition,
-  (selection) => {
-    const nodeIds = getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection);
-    const nodes = R.map(R.flip(XP.getNodeByIdUnsafe)(patch), nodeIds);
+export const getEntitiesToCopy = R.curry((patch, selection) => {
+  const nodeIds = getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection);
+  const nodes = R.map(R.flip(XP.getNodeByIdUnsafe)(patch), nodeIds);
 
-    const selectedNodeIdPairs = R.xprod(nodeIds, nodeIds);
-    // we completely ignore what links are selected and just
-    // copy all the links between selected nodes
-    const links = R.compose(
-      R.filter((link) => {
-        const linkNodeIds = XP.getLinkNodeIds(link);
-        return R.contains(linkNodeIds, selectedNodeIdPairs);
-      }),
-      XP.listLinks
-    )(patch);
+  const selectedNodeIdPairs = R.xprod(nodeIds, nodeIds);
+  // we completely ignore what links are selected and just
+  // copy all the links between selected nodes
+  const links = R.compose(
+    R.filter((link) => {
+      const linkNodeIds = XP.getLinkNodeIds(link);
+      return R.contains(linkNodeIds, selectedNodeIdPairs);
+    }),
+    XP.listLinks
+  )(patch);
 
-    const comments = R.compose(
-      R.map(R.flip(XP.getCommentByIdUnsafe)(patch)),
-      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT)
-    )(selection);
+  const comments = R.compose(
+    R.map(R.flip(XP.getCommentByIdUnsafe)(patch)),
+    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT)
+  )(selection);
 
-    return {
-      nodes,
-      links,
-      comments,
-    };
-  }
-));
+  return {
+    nodes,
+    links,
+    comments,
+  };
+});
 
 // before insertion
 export const regenerateIds = (entities) => {
