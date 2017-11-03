@@ -20,6 +20,6 @@
     "sanctuary-type-identifiers": "^1.0.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0"
+    "chai": "^4.1.0"
   }
 }

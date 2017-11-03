@@ -1,6 +1,6 @@
 import HMDef from 'hm-def';
 import $ from 'sanctuary-def';
-import XF from 'xod-func-tools';
+import * as XF from 'xod-func-tools';
 import { env, Identifier } from 'xod-project';
 
 /* Types are by convention starts with a capital letter, so: */
