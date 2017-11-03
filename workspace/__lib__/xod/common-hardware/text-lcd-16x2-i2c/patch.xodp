@@ -1,0 +1,59 @@
+{
+  "description": "Drives a text LCD screen with a PCF8574 or PCA8574 I²C expander module. Usually have a value in range 0x20-0x27 or 0x38-0x3F. Consult LCD/expander documentation to know the exact value.",
+  "nodes": [
+    {
+      "description": "Text for the first line",
+      "id": "B1TSE9tZ-",
+      "label": "L1",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Text for the second line",
+      "id": "H1bLN9F-b",
+      "label": "L2",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "SkRdV5YWW",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {
+        "__out__": true
+      },
+      "description": "Backlight enable/disable",
+      "id": "SkkWMb9A-",
+      "label": "BL",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "boundValues": {
+        "__out__": 39
+      },
+      "description": "I²C address of the expander chip.",
+      "id": "rJlYT7EfW",
+      "label": "ADDR",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
