@@ -5,7 +5,6 @@ export default {
   currentTabId: '@/1',
   selection: [],
   linkingPin: null,
-  selectedNodeType: null,
   isHelpbarVisible: false,
   focusedArea: FOCUS_AREAS.WORKAREA,
   draggedPreviewSize: { width: 0, height: 0 },

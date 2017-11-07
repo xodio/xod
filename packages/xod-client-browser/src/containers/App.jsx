@@ -35,7 +35,6 @@ class App extends client.App {
     this.onImportChange = this.onImportChange.bind(this);
     this.onImport = this.onImport.bind(this);
     this.onExport = this.onExport.bind(this);
-    this.onSelectNodeType = this.onSelectNodeType.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
     this.onCreateProject = this.onCreateProject.bind(this);
     this.onRequestCreateProject = this.onRequestCreateProject.bind(this);
@@ -72,10 +71,6 @@ class App extends client.App {
     };
 
     reader.readAsText(file);
-  }
-
-  onSelectNodeType(typeKey) {
-    this.props.actions.setSelectedNodeType(typeKey);
   }
 
   onKeyDown(event) {  // eslint-disable-line class-methods-use-this

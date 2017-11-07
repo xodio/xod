@@ -433,8 +433,6 @@ const editorReducer = (state = {}, action) => {
       );
     case PAT.NODE_ADD:
       return R.assoc('draggedPreviewSize', { width: 0, height: 0 }, state);
-    case EAT.EDITOR_SET_SELECTED_NODETYPE:
-      return R.assoc('selectedNodeType', action.payload.id, state);
     case PAT.PROJECT_CREATE: {
       const newState = R.assoc('tabs', {}, state);
       return editorReducer(newState, switchPatchUnsafe(action.payload.mainPatchPath));

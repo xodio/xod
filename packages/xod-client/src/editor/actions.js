@@ -152,11 +152,6 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
   }
 };
 
-export const setSelectedNodeType = id => ({
-  type: ActionType.EDITOR_SET_SELECTED_NODETYPE,
-  payload: { id },
-});
-
 export const deleteSelection = () => (dispatch, getState) => {
   const state = getState();
   const currentPatchPath = Selectors.getCurrentPatchPath(state);

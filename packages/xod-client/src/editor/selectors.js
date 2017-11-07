@@ -61,11 +61,6 @@ export const selectionLens = R.lens(
   R.assocPath(['editor', 'selection'])
 );
 
-export const getSelectedNodeType = R.pipe(
-  getEditor,
-  R.prop('selectedNodeType')
-);
-
 export const getDraggedPreviewSize = R.pipe(
   getEditor,
   R.prop('draggedPreviewSize')
