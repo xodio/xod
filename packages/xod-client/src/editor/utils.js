@@ -13,6 +13,13 @@ import {
 
 import { SELECTION_ENTITY_TYPE } from './constants';
 
+export const getTabByPatchPath = R.curry(
+  (patchPath, tabs) => R.compose(
+    R.find(R.propEq('patchPath', patchPath)),
+    R.values,
+  )(tabs)
+);
+
 export const isEntitySelected = R.curry(
   (entityType, selection, id) => R.pipe(
     R.filter(R.propEq('entity', entityType)),

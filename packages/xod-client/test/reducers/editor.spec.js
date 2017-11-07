@@ -8,6 +8,7 @@ import { isAmong } from 'xod-func-tools';
 import { defaultizeProject } from 'xod-project/test/helpers';
 
 import * as Actions from '../../src/editor/actions';
+import * as Selectors from '../../src/editor/selectors';
 import editorReducer from '../../src/editor/reducer';
 
 import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from '../../src/editor/constants';
@@ -94,12 +95,12 @@ describe('Editor reducer', () => {
       editor: {
         currentTabId: '@/1',
         mode: EDITOR_MODE.DEFAULT,
-        selection: [],
-        linkingPin: null,
         tabs: {
           '@/1': {
             id: '@/1',
             patchPath: '@/1',
+            selection: [],
+            linkingPin: null,
           },
         },
       },
@@ -117,7 +118,7 @@ describe('Editor reducer', () => {
       const id = '1';
       store.dispatch(Actions.selectNode(id));
 
-      chai.expect(store.getState().editor.selection)
+      chai.expect(Selectors.getSelection(store.getState()))
         .to.deep.equal([{
           entity: SELECTION_ENTITY_TYPE.NODE,
           id,
@@ -128,7 +129,7 @@ describe('Editor reducer', () => {
       const id = '1';
       store.dispatch(Actions.selectLink(id));
 
-      chai.expect(store.getState().editor.selection)
+      chai.expect(Selectors.getSelection(store.getState()))
         .to.deep.equal([{
           entity: SELECTION_ENTITY_TYPE.LINK,
           id,
@@ -160,7 +161,7 @@ describe('Editor reducer', () => {
       store.dispatch(Actions.linkPin(nodeId, pinKey));
       store.dispatch(Actions.linkPin(nodeId, pinKey));
 
-      chai.expect(store.getState().editor.linkingPin).to.be.a('null');
+      chai.expect(Selectors.getLinkingPin(store.getState())).to.be.a('null');
     });
   });
 

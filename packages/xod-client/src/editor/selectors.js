@@ -8,10 +8,11 @@ import { addPoints, subtractPoints, DEFAULT_PANNING_OFFSET } from '../project/no
 const getProject = R.prop('project'); // Problem of cycle imports...
 
 export const getEditor = R.prop('editor');
+export const editorLens = R.lensProp('editor');
 
-
+//
 // tabs
-
+//
 export const getTabs = R.pipe(
   getEditor,
   R.prop('tabs')
@@ -34,14 +35,8 @@ export const getCurrentTabType = createSelector(
 
 export const getCurrentPatchPath = createSelector(
   getCurrentTab,
+  // TODO: check if tab exists, and has the 'right' type?
   R.propOr(null, 'patchPath')
-);
-
-export const getTabByPatchPath = R.curry(
-  (patchPath, tabs) => R.compose(
-    R.find(R.propEq('patchPath', patchPath)),
-    R.values,
-  )(tabs)
 );
 
 export const getCurrentPatchOffset = createSelector(
@@ -49,21 +44,11 @@ export const getCurrentPatchOffset = createSelector(
   R.propOr(DEFAULT_PANNING_OFFSET, 'offset')
 );
 
-// selection in editor
+// selection
 
 export const getSelection = R.pipe(
-  getEditor,
-  R.prop('selection')
-);
-
-export const selectionLens = R.lens(
-  getSelection,
-  R.assocPath(['editor', 'selection'])
-);
-
-export const getDraggedPreviewSize = R.pipe(
-  getEditor,
-  R.prop('draggedPreviewSize')
+  getCurrentTab,
+  R.propOr([], 'selection')
 );
 
 export const getSelectionByTypes = createSelector(
@@ -82,26 +67,27 @@ export const getSelectionByTypes = createSelector(
   }
 );
 
-export const hasSelection = state => (
-  (
-    state.editor.selection &&
-    state.editor.selection.length > 0
-  ) || (
-    state.editor.linkingPin &&
-    state.editor.linkingPin !== null
-  )
-);
-
-// linking pin
-
 export const getLinkingPin = R.pipe(
-  getEditor,
-  R.prop('linkingPin')
+  getCurrentTab,
+  R.propOr(null, 'linkingPin')
 );
 
+export const hasSelection = createSelector(
+  [getSelection, getLinkingPin],
+  (selection, linkingPin) => selection.length > 0 || linkingPin !== null
+);
 
-// editor mode
+//
+// size of the patch preview dragged from sidebar
+//
+export const getDraggedPreviewSize = R.pipe(
+  getEditor,
+  R.prop('draggedPreviewSize')
+);
 
+//
+// dragging a patch from project browser
+//
 export const getDefaultNodePlacePosition = createSelector(
   [getCurrentPatchOffset],
   R.compose(
@@ -110,18 +96,25 @@ export const getDefaultNodePlacePosition = createSelector(
   )
 );
 
+//
+// focused area
+//
 export const getFocusedArea = R.pipe(
   getEditor,
   R.prop('focusedArea')
 );
 
+//
 // docs sidebar
-
+//
 export const isHelpbarVisible = R.pipe(
   getEditor,
   R.prop('isHelpbarVisible')
 );
 
+//
+// suggester
+//
 const getSuggester = R.pipe(
   getEditor,
   R.prop('suggester')
@@ -142,6 +135,9 @@ export const getSuggesterHighlightedPatchPath = R.pipe(
   R.prop('highlightedPatchPath')
 );
 
+//
+// debugger breadcrumbs
+//
 export const getBreadcrumbs = R.compose(
   R.propOr([], 'breadcrumbs'),
   getCurrentTab

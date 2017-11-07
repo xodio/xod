@@ -37,6 +37,7 @@ import {
   getBBoxTopLeftPosition,
   getBoundingBoxSize,
   getEntitiesToCopy,
+  getTabByPatchPath,
   getSelectedEntityIdsOfType,
   regenerateIds,
   resetClipboardEntitiesPosition,
@@ -118,7 +119,7 @@ export const addAndSelectNode = (typeId, position, currentPatchPath) => (dispatc
 
 export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
   const state = getState();
-  const linkingFrom = state.editor.linkingPin;
+  const linkingFrom = Selectors.getLinkingPin(state);
 
   if (!linkingFrom) return;
 
@@ -197,7 +198,7 @@ export const switchPatch = patchPath => (dispatch, getState) => {
   if (currentPatchPath === patchPath) { return; }
 
   const tabs = Selectors.getTabs(state);
-  const tab = Selectors.getTabByPatchPath(patchPath, tabs);
+  const tab = getTabByPatchPath(patchPath, tabs);
   const isOpeningNewTab = !tab;
 
   dispatch(switchPatchUnsafe(patchPath));
