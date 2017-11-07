@@ -43,11 +43,7 @@ export default class PinOverlay extends React.Component {
           {...pinCircleCenter}
           r={PIN_HIGHLIGHT_RADIUS}
         />
-        <circle
-          className="symbol"
-          {...pinCircleCenter}
-          r={PIN_RADIUS}
-        />
+        <circle className="symbol" {...pinCircleCenter} r={PIN_RADIUS} />
       </g>
     );
   }

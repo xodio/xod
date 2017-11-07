@@ -25,7 +25,10 @@ const squashSingleOutputNodes = def(
     const allNodes = Patch.listNodes(patch);
     const allLinks = Patch.listLinks(patch);
 
-    const isSquashableNode = R.compose(R.equals(nodeTypeToSquash), Node.getNodeType);
+    const isSquashableNode = R.compose(
+      R.equals(nodeTypeToSquash),
+      Node.getNodeType
+    );
     const nodesToSquash = R.filter(isSquashableNode, allNodes);
 
     if (nodesToSquash.length <= 1) {
@@ -36,7 +39,10 @@ const squashSingleOutputNodes = def(
       isAmong(R.map(Node.getNodeId, nodesToSquash)),
       Link.getLinkOutputNodeId
     );
-    const linksFromSquashableNodes = R.filter(isLinkFromSquashableNode, allLinks);
+    const linksFromSquashableNodes = R.filter(
+      isLinkFromSquashableNode,
+      allLinks
+    );
 
     if (R.isEmpty(linksFromSquashableNodes)) {
       // Our 'squashable' nodes are just hanging there, not connected to anything.
@@ -54,12 +60,13 @@ const squashSingleOutputNodes = def(
     const squashedNodeId = Node.getNodeId(squashedNode);
 
     const linksFromSquashedNode = R.map(
-      oldLink => Link.createLink(
-        Link.getLinkInputPinKey(oldLink),
-        Link.getLinkInputNodeId(oldLink),
-        squashableNodeOutputPinKey,
-        squashedNodeId
-      ),
+      oldLink =>
+        Link.createLink(
+          Link.getLinkInputPinKey(oldLink),
+          Link.getLinkInputNodeId(oldLink),
+          squashableNodeOutputPinKey,
+          squashedNodeId
+        ),
       linksFromSquashableNodes
     );
 

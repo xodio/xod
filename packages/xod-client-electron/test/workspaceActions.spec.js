@@ -1,7 +1,13 @@
 import chai, { assert, expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { resolve } from 'path';
-import { rmrf, spawnDefaultProject, getLocalProjects, getProjectMetaName, resolvePath } from 'xod-fs';
+import {
+  rmrf,
+  spawnDefaultProject,
+  getLocalProjects,
+  getProjectMetaName,
+  resolvePath,
+} from 'xod-fs';
 import { getProjectName } from 'xod-project';
 
 import * as WA from '../src/app/workspaceActions';
@@ -12,21 +18,24 @@ chai.use(chaiAsPromised);
 
 const fixture = path => resolve(__dirname, './fixtures', path);
 
-const expectRejectedWithCode = (promise, errorCode) => expect(promise)
-  .to.eventually.be.rejected
-  .and.have.property('errorCode', errorCode);
+const expectRejectedWithCode = (promise, errorCode) =>
+  expect(promise).to.eventually.be.rejected.and.have.property(
+    'errorCode',
+    errorCode
+  );
 
 describe('IDE', () => {
-  const deleteTestFiles = () => Promise.all([
-    rmrf(fixture('./notExistWorkspace')),
-    rmrf(fixture('./emptyWorkspace/welcome-to-xod')),
-    rmrf(fixture('./emptyWorkspace/lib')),
-    rmrf(fixture('./xod')),
-  ]);
+  const deleteTestFiles = () =>
+    Promise.all([
+      rmrf(fixture('./notExistWorkspace')),
+      rmrf(fixture('./emptyWorkspace/welcome-to-xod')),
+      rmrf(fixture('./emptyWorkspace/lib')),
+      rmrf(fixture('./xod')),
+    ]);
   afterEach(deleteTestFiles);
 
   const loadMock = path => () => Promise.resolve(path);
-  const saveMock = expectedPath => (actualPath) => {
+  const saveMock = expectedPath => actualPath => {
     assert.equal(expectedPath, actualPath);
     return actualPath;
   };
@@ -39,9 +48,8 @@ describe('IDE', () => {
       assert.equal(getProjectMetaName(data[0]), 'welcome-to-xod');
     }
   };
-  const subscribeOnSelectProject = (done, path, projectName) => WA.WorkspaceEvents.once(
-    EVENTS.SELECT_PROJECT,
-    ({ projectMeta }) => {
+  const subscribeOnSelectProject = (done, path, projectName) =>
+    WA.WorkspaceEvents.once(EVENTS.SELECT_PROJECT, ({ projectMeta }) => {
       WA.onSelectProject(
         (eventName, project) => {
           assert.equal(eventName, EVENTS.REQUEST_SHOW_PROJECT);
@@ -50,31 +58,28 @@ describe('IDE', () => {
         loadMock(path),
         projectMeta
       ).then(() => done());
-    }
-  );
+    });
 
   describe('could spawn whole workspace', () => {
-    it('resolves a list of local projects',
-      () => Promise.resolve(fixture('./notExistWorkspace'))
+    it('resolves a list of local projects', () =>
+      Promise.resolve(fixture('./notExistWorkspace'))
         .then(WA.spawnWorkspace)
         .then(spawnDefaultProject(WA.getDefaultProjectPath()))
         .then(getLocalProjects)
-        .then((projects) => {
+        .then(projects => {
           assert.lengthOf(projects, 1);
-        })
-    );
+        }));
   });
 
   describe('when launched', () => {
-    it('if workspace valid and has projects, requests User to select project',
-      () => WA.onIDELaunch(
+    it('if workspace valid and has projects, requests User to select project', () =>
+      WA.onIDELaunch(
         sendMockDefault,
         loadMock(fixture('./validWorkspace')),
         saveMock(fixture('./validWorkspace'))
-      )
-    );
-    it('if workspace does not exist, request to create workspace in specified path',
-      () => WA.onIDELaunch(
+      ));
+    it('if workspace does not exist, request to create workspace in specified path', () =>
+      WA.onIDELaunch(
         (eventName, data) => {
           assert.equal(eventName, EVENTS.REQUEST_CREATE_WORKSPACE);
           assert.equal(data.path, fixture('./notExistWorkspace'));
@@ -82,41 +87,43 @@ describe('IDE', () => {
         },
         loadMock(fixture('./notExistWorkspace')),
         saveMock(fixture('./notExistWorkspace'))
-      )
-    );
+      ));
 
-    it('if workspace does not exist, spawns workspace and default project in homedir, and requests to open it',
-      () => {
-        // Change homedirectory to check spawning in homedir without questions
-        const homeVar = (process.platform === 'win32') ? 'USERPROFILE' : 'HOME';
-        const homedir = process.env[homeVar];
-        process.env[homeVar] = fixture('');
-        const homedirWorkspace = resolvePath('~/xod');
+    it('if workspace does not exist, spawns workspace and default project in homedir, and requests to open it', () => {
+      // Change homedirectory to check spawning in homedir without questions
+      const homeVar = process.platform === 'win32' ? 'USERPROFILE' : 'HOME';
+      const homedir = process.env[homeVar];
+      process.env[homeVar] = fixture('');
+      const homedirWorkspace = resolvePath('~/xod');
 
-        return WA.onIDELaunch(
-          sendMockDefault,
-          loadMock(''),
-          saveMock(homedirWorkspace)
-        ).then(() => { process.env[homeVar] = homedir; });
-      }
-    );
+      return WA.onIDELaunch(
+        sendMockDefault,
+        loadMock(''),
+        saveMock(homedirWorkspace)
+      ).then(() => {
+        process.env[homeVar] = homedir;
+      });
+    });
   });
 
   describe('when User requested to switch workspace', () => {
-    it('if workspace valid and has projects, stores path to workspace in settings, requests to select project to open',
-      () => WA.onSwitchWorkspace(
+    it('if workspace valid and has projects, stores path to workspace in settings, requests to select project to open', () =>
+      WA.onSwitchWorkspace(
         sendMockDefault,
         saveMock(fixture('./validWorkspace')),
         fixture('./validWorkspace')
-      )
-    );
+      ));
     it('if workspace does not exist, requests User to confirm creation of new workspace', () => {
       const sendMock = (eventName, { path, force }) => {
         assert.equal(eventName, EVENTS.REQUEST_CREATE_WORKSPACE);
         assert.equal(path, fixture('./notExistWorkspace'));
         assert.isFalse(force);
       };
-      return WA.onSwitchWorkspace(sendMock, saveMock(fixture('./notExistWorkspace')), fixture('./notExistWorkspace'));
+      return WA.onSwitchWorkspace(
+        sendMock,
+        saveMock(fixture('./notExistWorkspace')),
+        fixture('./notExistWorkspace')
+      );
     });
     it('if choosed folder is not empty, requests User to confirm forced creation of new workspace in this directory', () => {
       const sendMock = (eventName, { path, force }) => {
@@ -124,27 +131,39 @@ describe('IDE', () => {
         assert.equal(path, fixture('.'));
         assert.isTrue(force);
       };
-      return WA.onSwitchWorkspace(sendMock, saveMock(fixture('.')), fixture('.'));
+      return WA.onSwitchWorkspace(
+        sendMock,
+        saveMock(fixture('.')),
+        fixture('.')
+      );
     });
   });
 
   describe('when User confirms creating of new workspace', () => {
-    it('if directory is empty or does not exist, spawns .xodworkspace, stdlib, default project, save path in settings, and requests to open default project', (done) => {
-      subscribeOnSelectProject(done, fixture('./notExistWorkspace'), 'welcome-to-xod');
+    it('if directory is empty or does not exist, spawns .xodworkspace, stdlib, default project, save path in settings, and requests to open default project', done => {
+      subscribeOnSelectProject(
+        done,
+        fixture('./notExistWorkspace'),
+        'welcome-to-xod'
+      );
 
       WA.onCreateWorkspace(
-        (eventName) => {
+        eventName => {
           assert.equal(eventName, EVENTS.UPDATE_WORKSPACE);
         },
         saveMock(fixture('./notExistWorkspace')),
         fixture('./notExistWorkspace')
       );
     });
-    it('if directory is workspace without projects, spawns only default project, save path in settings, and requests to open it', (done) => {
-      subscribeOnSelectProject(done, fixture('./emptyWorkspace'), 'welcome-to-xod');
+    it('if directory is workspace without projects, spawns only default project, save path in settings, and requests to open it', done => {
+      subscribeOnSelectProject(
+        done,
+        fixture('./emptyWorkspace'),
+        'welcome-to-xod'
+      );
 
       WA.onCreateWorkspace(
-        (eventName) => {
+        eventName => {
           assert.equal(eventName, EVENTS.UPDATE_WORKSPACE);
         },
         saveMock(fixture('./emptyWorkspace')),
@@ -154,9 +173,8 @@ describe('IDE', () => {
   });
 
   describe('when User clicked "Open project"', () => {
-    it('if workspace valid and has projects, resolves ProjectMeta[] and requests to select project to open',
-      () => WA.onOpenProject(sendMockDefault, loadMock(fixture('./validWorkspace')))
-    );
+    it('if workspace valid and has projects, resolves ProjectMeta[] and requests to select project to open', () =>
+      WA.onOpenProject(sendMockDefault, loadMock(fixture('./validWorkspace'))));
     it('if workspace does not exist, shows error and requests to switch workspace', () => {
       const sendMock = (eventName, err) => {
         assert.equal(eventName, EVENTS.WORKSPACE_ERROR);
@@ -166,9 +184,8 @@ describe('IDE', () => {
         WA.onOpenProject(sendMock, loadMock(fixture('./notExistWorkspace')))
       ).to.eventually.be.rejected;
     });
-    it('if workspace is empty, spawns default project and requests to open it',
-      () => WA.onOpenProject(sendMockDefault, loadMock(fixture('./emptyWorkspace')))
-    );
+    it('if workspace is empty, spawns default project and requests to open it', () =>
+      WA.onOpenProject(sendMockDefault, loadMock(fixture('./emptyWorkspace'))));
   });
 
   describe('when User selected project to open', () => {
@@ -192,11 +209,10 @@ describe('IDE', () => {
       };
 
       return expectRejectedWithCode(
-        WA.onSelectProject(
-          sendMock,
-          loadMock(fixture('./emptyWorkspace')),
-          { path: fixture('./emptyWorkspace/welcome-to-xod'), content: '' }
-        ),
+        WA.onSelectProject(sendMock, loadMock(fixture('./emptyWorkspace')), {
+          path: fixture('./emptyWorkspace/welcome-to-xod'),
+          content: '',
+        }),
         ERROR_CODES.CANT_OPEN_SELECTED_PROJECT
       );
     });
@@ -206,10 +222,10 @@ describe('IDE', () => {
     const deleteTestProject = () => rmrf(fixture('./emptyWorkspace/test'));
     afterEach(deleteTestProject);
 
-    it('creates and saves new project, and request to open new project', (done) => {
+    it('creates and saves new project, and request to open new project', done => {
       subscribeOnSelectProject(done, fixture('./emptyWorkspace'), 'test');
       WA.onCreateProject(
-        (eventName) => {
+        eventName => {
           assert.equal(eventName, EVENTS.SAVE_PROJECT);
         },
         loadMock(fixture('./emptyWorkspace')),

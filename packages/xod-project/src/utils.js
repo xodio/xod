@@ -20,13 +20,10 @@ import { def } from './types';
  */
 export const formatString = R.curry((template, replacements) =>
   R.compose(
-    R.reduce(
-      (str, fn) => fn(str),
-      template
-    ),
+    R.reduce((str, fn) => fn(str), template),
     R.values,
-    R.mapObjIndexed(
-      (replacement, key) => R.replace(new RegExp(`\\{${key}\\}`, 'gi'), replacement)
+    R.mapObjIndexed((replacement, key) =>
+      R.replace(new RegExp(`\\{${key}\\}`, 'gi'), replacement)
     )
   )(replacements)
 );
@@ -39,16 +36,13 @@ export const formatString = R.curry((template, replacements) =>
  * @param {Either} either Either Error a
  * @returns {Either} Either Error a
  */
-export const wrapDeadRefErrorMessage = R.curry(
-  (patchPath, either) => either.bimap(
-    (error) => {
-      // Error message updated by mutation to prevent creating new stack trace.
-      // eslint-disable-next-line no-param-reassign
-      error.message = formatDeadReferencesFound(patchPath, error.message);
-      return error;
-    },
-    R.identity
-  )
+export const wrapDeadRefErrorMessage = R.curry((patchPath, either) =>
+  either.bimap(error => {
+    // Error message updated by mutation to prevent creating new stack trace.
+    // eslint-disable-next-line no-param-reassign
+    error.message = formatDeadReferencesFound(patchPath, error.message);
+    return error;
+  }, R.identity)
 );
 
 /**
@@ -67,11 +61,11 @@ export const wrapDeadRefErrorMessage = R.curry(
  * @external Maybe
  */
 
- /**
-  * A special object for triggering nodes without passing data.
-  *
-  * @typedef {Object} Pulse
-  */
+/**
+ * A special object for triggering nodes without passing data.
+ *
+ * @typedef {Object} Pulse
+ */
 
 /**
  * @typedef {Object} Position
@@ -87,10 +81,7 @@ export const wrapDeadRefErrorMessage = R.curry(
  * @returns {string}
  */
 export const ensureEndsWithSlash = R.ifElse(
-  R.compose(
-    R.equals('/'),
-    R.last
-  ),
+  R.compose(R.equals('/'), R.last),
   R.identity,
   R.concat(R.__, '/')
 );
@@ -145,9 +136,7 @@ export const canCastTypes = def(
  */
 export const guidToIdx = R.compose(
   R.fromPairs,
-  R.addIndex(R.map)(
-    (node, idx) => [Node.getNodeId(node), idx.toString()]
-  )
+  R.addIndex(R.map)((node, idx) => [Node.getNodeId(node), idx.toString()])
 );
 
 /**
@@ -162,10 +151,7 @@ export const guidToIdx = R.compose(
  */
 // :: nodeIdMap -> Node[] -> Node[]
 export const resolveNodeIds = R.curry((nodeIdMap, nodes) =>
-  R.map(
-    R.over(R.lensProp('id'), R.prop(R.__, nodeIdMap)),
-    nodes
-  )
+  R.map(R.over(R.lensProp('id'), R.prop(R.__, nodeIdMap)), nodes)
 );
 
 // :: nodeIdMap -> PinRef -> PinRef

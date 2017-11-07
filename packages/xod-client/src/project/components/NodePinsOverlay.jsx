@@ -28,13 +28,7 @@ class NodePinsOverlay extends React.Component {
   }
 
   render() {
-    const {
-      linkingPin,
-      nodeLabel,
-      pins,
-      position,
-      size,
-    } = this.props;
+    const { linkingPin, nodeLabel, pins, position, size } = this.props;
 
     const pinsArr = R.values(pins);
 
@@ -48,7 +42,7 @@ class NodePinsOverlay extends React.Component {
         title={nodeLabel}
       >
         <g className="pins">
-          {pinsArr.map(pin =>
+          {pinsArr.map(pin => (
             <g key={pin.key}>
               <PinOverlay
                 {...pin}
@@ -60,7 +54,7 @@ class NodePinsOverlay extends React.Component {
                 onMouseDown={this.onPinMouseDown}
               />
             </g>
-          )}
+          ))}
         </g>
       </svg>
     );

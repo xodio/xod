@@ -11,7 +11,7 @@ import { isLinkSelected } from '../../../editor/utils';
 const LinksOverlayLayer = ({ links, selection, onClick }) => (
   <g className="LinksOverlayLayer">
     {R.compose(
-      R.map(link =>
+      R.map(link => (
         <XODLink
           isOverlay
           key={link.id}
@@ -22,7 +22,7 @@ const LinksOverlayLayer = ({ links, selection, onClick }) => (
           onClick={onClick}
           isSelected={isLinkSelected(selection, link.id)}
         />
-      ),
+      )),
       R.values
     )(links)}
   </g>

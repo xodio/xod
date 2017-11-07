@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import PinWidget from './PinWidget';
 
 function BoolWidget(props) {
-  const onChange = (event) => {
+  const onChange = event => {
     const boolValue = JSON.parse(event.target.value);
     props.onChange(boolValue);
   };

@@ -72,7 +72,9 @@ export * from './utils';
 export * from './func-tools';
 export * from './types';
 export { default as flatten } from './flatten';
-export { default as extractBoundInputsToConstNodes } from './extractBoundInputsToConstNodes';
+export {
+  default as extractBoundInputsToConstNodes,
+} from './extractBoundInputsToConstNodes';
 export * from './patchPathUtils';
 export * from './versionUtils';
 export * from './xodball';

@@ -63,16 +63,17 @@ const getConnectedPins = createMemoizedSelector(
   [R.equals],
   R.compose(
     R.reduce(
-      (acc, link) => R.compose(
-        R.assocPath([
-          XP.getLinkInputNodeId(link),
-          XP.getLinkInputPinKey(link),
-        ], true),
-        R.assocPath([
-          XP.getLinkOutputNodeId(link),
-          XP.getLinkOutputPinKey(link),
-        ], true)
-      )(acc),
+      (acc, link) =>
+        R.compose(
+          R.assocPath(
+            [XP.getLinkInputNodeId(link), XP.getLinkInputPinKey(link)],
+            true
+          ),
+          R.assocPath(
+            [XP.getLinkOutputNodeId(link), XP.getLinkOutputPinKey(link)],
+            true
+          )
+        )(acc),
       {}
     ),
     R.values
@@ -84,11 +85,7 @@ const assocPinIsConnected = R.curry((connectedPins, node) =>
   R.over(
     R.lensProp('pins'),
     R.map(pin =>
-      R.assoc(
-        'isConnected',
-        !!R.path([node.id, pin.key], connectedPins),
-        pin
-      )
+      R.assoc('isConnected', !!R.path([node.id, pin.key], connectedPins), pin)
     ),
     node
   )
@@ -96,20 +93,15 @@ const assocPinIsConnected = R.curry((connectedPins, node) =>
 
 // :: IntermediateNode -> IntermediateNode
 const assocNodeIdToPins = node =>
-  R.over(
-    R.lensProp('pins'),
-    R.map(
-      R.assoc('nodeId', node.id)
-    ),
-    node
-  );
+  R.over(R.lensProp('pins'), R.map(R.assoc('nodeId', node.id)), node);
 
 // :: Project -> Patch -> IntermediateNode -> IntermediateNode
-const mergePinDataFromPatch = R.curry(
-  (project, curPatch, node) => R.compose(
-    R.assoc('pins', R.__, node),
-    XP.getPinsForNode
-  )(node, curPatch, project)
+const mergePinDataFromPatch = R.curry((project, curPatch, node) =>
+  R.compose(R.assoc('pins', R.__, node), XP.getPinsForNode)(
+    node,
+    curPatch,
+    project
+  )
 );
 
 // :: State -> StrMap Node
@@ -133,8 +125,8 @@ export const getCurrentPatch = createSelector(
 );
 
 // :: Project -> RenderableNode -> RenderableNode
-const addDeadFlag = R.curry(
-  (project, renderableNode) => R.compose(
+const addDeadFlag = R.curry((project, renderableNode) =>
+  R.compose(
     R.assoc('dead', R.__, renderableNode),
     Maybe.isNothing,
     XP.getPatchByPath(R.__, project),
@@ -149,16 +141,17 @@ export const getRenderableNodes = createMemoizedSelector(
   (project, maybeCurrentPatch, currentPatchNodes, connectedPins) =>
     Maybe.maybe(
       {},
-      currentPatch => R.map(
-        R.compose(
-          addDeadFlag(project),
-          addNodePositioning,
-          assocPinIsConnected(connectedPins),
-          assocNodeIdToPins,
-          mergePinDataFromPatch(project, currentPatch)
+      currentPatch =>
+        R.map(
+          R.compose(
+            addDeadFlag(project),
+            addNodePositioning,
+            assocPinIsConnected(connectedPins),
+            assocNodeIdToPins,
+            mergePinDataFromPatch(project, currentPatch)
+          ),
+          currentPatchNodes
         ),
-        currentPatchNodes
-      ),
       maybeCurrentPatch
     )
 );
@@ -170,7 +163,7 @@ export const getRenderableLinks = createMemoizedSelector(
   (nodes, links) =>
     R.compose(
       addLinksPositioning(nodes),
-      R.map((link) => {
+      R.map(link => {
         const inputNodeId = XP.getLinkInputNodeId(link);
         const outputNodeId = XP.getLinkOutputNodeId(link);
         const inputPinKey = XP.getLinkInputPinKey(link);
@@ -189,16 +182,14 @@ export const getRenderableLinks = createMemoizedSelector(
           nodes
         );
 
-        return R.merge(
-          link,
-          {
-            type: nodes[outputNodeId].pins[outputPinKey].type,
-            dead: (
-              inputNodeIsDead || outputNodeIsDead ||
-              inputPinKeyHasDeadType || outputPinKeyHasDeadType
-            ),
-          }
-        );
+        return R.merge(link, {
+          type: nodes[outputNodeId].pins[outputPinKey].type,
+          dead:
+            inputNodeIsDead ||
+            outputNodeIsDead ||
+            inputPinKeyHasDeadType ||
+            outputPinKeyHasDeadType,
+        });
       })
     )(links)
 );
@@ -210,7 +201,9 @@ export const getRenderableComments = getCurrentPatchComments;
 export const getLinkGhost = createSelector(
   [getRenderableNodes, getLinkingPin],
   (nodes, fromPin) => {
-    if (!fromPin) { return null; }
+    if (!fromPin) {
+      return null;
+    }
 
     const node = nodes[fromPin.nodeId];
     const pin = node.pins[fromPin.pinKey];
@@ -224,7 +217,6 @@ export const getLinkGhost = createSelector(
   }
 );
 
-
 //
 // Tabs
 //
@@ -233,26 +225,20 @@ export const getLinkGhost = createSelector(
 export const getPreparedTabs = createSelector(
   [getCurrentTabId, getProject, getTabs],
   (currentTabId, project, tabs) =>
-    R.map(
-      (tab) => {
-        const patchPath = tab.patchPath;
+    R.map(tab => {
+      const patchPath = tab.patchPath;
 
-        const label = (tab.type === TAB_TYPES.DEBUGGER) ?
-          'Debugger' :
-          XP.getBaseName(patchPath);
+      const label =
+        tab.type === TAB_TYPES.DEBUGGER
+          ? 'Debugger'
+          : XP.getBaseName(patchPath);
 
-        return R.merge(
-          tab,
-          {
-            label,
-            isActive: (currentTabId === tab.id),
-          }
-        );
-      },
-      tabs
-    )
+      return R.merge(tab, {
+        label,
+        isActive: currentTabId === tab.id,
+      });
+    }, tabs)
 );
-
 
 //
 // Inspector
@@ -284,8 +270,5 @@ export const getRenderableSelection = createMemoizedSelector(
 //
 export const getPatchSearchIndex = createSelector(
   R.compose(XP.listPatches, getProject),
-  R.compose(
-    createIndexFromPatches,
-    R.reject(isPatchDeadTerminal)
-  )
+  R.compose(createIndexFromPatches, R.reject(isPatchDeadTerminal))
 );

@@ -6,15 +6,12 @@ export const SaveProgressBar = ({ progress }) => {
   const style = { width: `${Math.round(+progress * 100)}%` };
 
   const classNames = clx('SaveProgressBar', {
-    'is-hidden': (progress === 0),
+    'is-hidden': progress === 0,
   });
 
   return (
     <div className={classNames}>
-      <div
-        className="bar"
-        style={style}
-      />
+      <div className="bar" style={style} />
     </div>
   );
 };

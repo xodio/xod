@@ -29,10 +29,31 @@ export const noop = () => {};
  */
 export const explode = R.cond([
   [Maybe.isJust, R.unnest],
-  [Maybe.isNothing, () => { throw new Error('Maybe is expected to be Just, but its Nothing.'); }],
+  [
+    Maybe.isNothing,
+    () => {
+      throw new Error('Maybe is expected to be Just, but its Nothing.');
+    },
+  ],
   [Either.isRight, R.unnest],
-  [Either.isLeft, (val) => { throw new Error(`Either expected to be Right, but its Left with value: ${val}`); }],
-  [R.T, (input) => { throw new Error(`Maybe or Either should be passed into explode function. Passed: ${input}`); }],
+  [
+    Either.isLeft,
+    val => {
+      throw new Error(
+        `Either expected to be Right, but its Left with value: ${val}`
+      );
+    },
+  ],
+  [
+    R.T,
+    input => {
+      throw new Error(
+        `Maybe or Either should be passed into explode function. Passed: ${
+          input
+        }`
+      );
+    },
+  ],
 ]);
 
 /**
@@ -80,9 +101,10 @@ export const catMaybes = def(
  */
 export const foldEither = def(
   'foldEither :: (a -> c) -> (b -> c) -> Either a b -> c',
-  (leftFn, rightFn, eitherObject) => (
-    eitherObject.isLeft ? leftFn(eitherObject.value) : rightFn(eitherObject.value)
-  )
+  (leftFn, rightFn, eitherObject) =>
+    eitherObject.isLeft
+      ? leftFn(eitherObject.value)
+      : rightFn(eitherObject.value)
 );
 
 // :: Either a b -> Promise a b
@@ -91,11 +113,8 @@ export const eitherToPromise = foldEither(
   Promise.resolve.bind(Promise)
 );
 
-export const sanctuaryDefEitherToRamdaFantasyEither = sdEither => (
-  sdEither.isLeft
-    ? Either.Left(sdEither.value)
-    : Either.Right(sdEither.value)
-);
+export const sanctuaryDefEitherToRamdaFantasyEither = sdEither =>
+  sdEither.isLeft ? Either.Left(sdEither.value) : Either.Right(sdEither.value);
 
 export const validateSanctuaryType = R.uncurryN(2, SanctuaryType =>
   R.compose(
@@ -110,10 +129,9 @@ export const validateSanctuaryType = R.uncurryN(2, SanctuaryType =>
  */
 export const explodeEither = def(
   'explodeEither :: Either a b -> b',
-  foldEither(
-    (err) => { throw new Error(`Explosion failed: ${err}`); },
-    R.identity
-  )
+  foldEither(err => {
+    throw new Error(`Explosion failed: ${err}`);
+  }, R.identity)
 );
 
 /**
@@ -127,11 +145,8 @@ export const explodeEither = def(
  */
 export const reduceM = def(
   'reduceM :: (b -> m b) -> (b -> a -> m b) -> b -> [a] -> m b',
-  (m, fn, initial, list) => R.reduce(
-    (acc, a) => R.chain(val => fn(val, a), acc),
-    m(initial),
-    list
-  )
+  (m, fn, initial, list) =>
+    R.reduce((acc, a) => R.chain(val => fn(val, a), acc), m(initial), list)
 );
 
 /**
@@ -178,20 +193,11 @@ export const omitEmptyValues = def(
 export const omitRecursively = def(
   'omitRecursively :: [String] -> a -> a',
   (keys, obj) => {
-    const isPlainObject = R.both(
-      R.is(Object),
-      R.complement(R.is(Array))
-    );
+    const isPlainObject = R.both(R.is(Object), R.complement(R.is(Array)));
 
     return R.compose(
-      R.map(R.when(
-        R.is(Object),
-        omitRecursively(keys)
-      )),
-      R.when(
-        isPlainObject,
-        R.omit(keys)
-      )
+      R.map(R.when(R.is(Object), omitRecursively(keys))),
+      R.when(isPlainObject, R.omit(keys))
     )(obj);
   }
 );
@@ -230,19 +236,20 @@ export const hasNo = R.complement(R.has);
 //   ) // => { bar: "not 2", baz: 3}
 export const subtractObject = def(
   'subtractObject :: Object -> Object -> Object',
-  R.uncurryN(2, objToSubstract => R.converge(
-    R.omit,
-    [
+  R.uncurryN(2, objToSubstract =>
+    R.converge(R.omit, [
       R.compose(
         R.keys,
-        R.pickBy(R.both(
-          (value, key) => R.has(key, objToSubstract),
-          (value, key) => R.propEq(key, value, objToSubstract)
-        ))
+        R.pickBy(
+          R.both(
+            (value, key) => R.has(key, objToSubstract),
+            (value, key) => R.propEq(key, value, objToSubstract)
+          )
+        )
       ),
       R.identity,
-    ]
-  ))
+    ])
+  )
 );
 
 /**
@@ -253,8 +260,8 @@ export const subtractObject = def(
 export const tapP = promiseFn => arg => promiseFn(arg).then(R.always(arg));
 
 // :: ERROR_CODE -> Error -> Promise.Reject Error
-export const rejectWithCode = R.curry(
-  (code, err) => Promise.reject(Object.assign(err, { errorCode: code }))
+export const rejectWithCode = R.curry((code, err) =>
+  Promise.reject(Object.assign(err, { errorCode: code }))
 );
 
 // :: [Promise a] -> Promise a
@@ -282,7 +289,11 @@ export const concatAll = R.reduce(R.concat, []);
  * Taken from Ramda Cookbook
  */
 export const renameKeys = R.curry((keysMap, obj) =>
-  R.reduce((acc, key) => R.assoc(keysMap[key] || key, obj[key], acc), {}, R.keys(obj))
+  R.reduce(
+    (acc, key) => R.assoc(keysMap[key] || key, obj[key], acc),
+    {},
+    R.keys(obj)
+  )
 );
 
 /**
@@ -296,17 +307,14 @@ export const mapIndexed = R.addIndex(R.map);
  * Swaps two elements of `array` having `oldIndex` and `newIndex` indexes.
  */
 // :: Number -> Number -> [a] -> [a]
-export const swap = R.curry(
-  (oldIndex, newIndex, array) => {
-    const oldItem = R.nth(oldIndex, array);
-    const newItem = R.nth(newIndex, array);
+export const swap = R.curry((oldIndex, newIndex, array) => {
+  const oldItem = R.nth(oldIndex, array);
+  const newItem = R.nth(newIndex, array);
 
-    return R.pipe(
-      R.update(oldIndex, newItem),
-      R.update(newIndex, oldItem)
-    )(array);
-  }
-);
+  return R.pipe(R.update(oldIndex, newItem), R.update(newIndex, oldItem))(
+    array
+  );
+});
 
 /**
  * Finds a key that contains specified value.
@@ -315,14 +323,10 @@ export const swap = R.curry(
  */
 export const reverseLookup = def(
   'reverseLookup :: a -> Map b a -> b',
-  (val, obj) => R.compose(
-    R.nth(0),
-    R.find(R.compose(
-      R.equals(val),
-      R.nth(1)
-    )),
-    R.toPairs
-  )(obj)
+  (val, obj) =>
+    R.compose(R.nth(0), R.find(R.compose(R.equals(val), R.nth(1))), R.toPairs)(
+      obj
+    )
 );
 
 /**
@@ -331,11 +335,7 @@ export const reverseLookup = def(
  */
 export const invertMap = def(
   'invertMap :: Map a b -> Map b a',
-  R.compose(
-    R.fromPairs,
-    R.map(R.reverse),
-    R.toPairs
-  )
+  R.compose(R.fromPairs, R.map(R.reverse), R.toPairs)
 );
 
 /**
@@ -351,10 +351,7 @@ export const invertMap = def(
 export const uniqLists = def(
   'uniqLists :: [[String]] -> [[String]]',
   R.reduce(
-    (acc, nextList) => R.append(
-      R.without(R.unnest(acc), nextList),
-      acc
-    ),
+    (acc, nextList) => R.append(R.without(R.unnest(acc), nextList), acc),
     []
   )
 );

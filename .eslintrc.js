@@ -12,6 +12,7 @@ module.exports = {
     'import',
     'mocha',
     'xod-fp',
+    'prettier',
   ],
 
   extends: [
@@ -21,6 +22,7 @@ module.exports = {
     'plugin:import/react',
     'plugin:react/recommended',
     'airbnb',
+    'prettier',
   ],
 
   globals: {
@@ -65,6 +67,8 @@ module.exports = {
     'mocha/no-skipped-tests': 'error',
     'mocha/no-exclusive-tests': 'error',
 
-    'react/forbid-prop-types' : 'off' // TODO: enable and make custom propTypes
+    'react/forbid-prop-types': 'off', // TODO: enable and make custom propTypes
+
+    'prettier/prettier': "error",
   },
 };

@@ -1,4 +1,3 @@
-
 const R = require('ramda');
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
@@ -10,13 +9,16 @@ const assert = chai.assert;
 // General Utils
 //-----------------------------------------------------------------------------
 function scrollTo(client, containerSelector, childSelector) {
-  return client.execute((contSel, chldSel) => {
-    const container = document.querySelector(contSel);
-    const child = document.querySelector(chldSel);
-    container.scrollTop = child.offsetTop;
-  }, containerSelector, childSelector);
+  return client.execute(
+    (contSel, chldSel) => {
+      const container = document.querySelector(contSel);
+      const child = document.querySelector(chldSel);
+      container.scrollTop = child.offsetTop;
+    },
+    containerSelector,
+    childSelector
+  );
 }
-
 
 // -----------------------------------------------------------------------------
 // Popup dialogs
@@ -51,7 +53,8 @@ function closePopup(client) {
 //-----------------------------------------------------------------------------
 // Project browser
 //-----------------------------------------------------------------------------
-const getSelectorForPatchInProjectBrowser = nodeName => `.PatchGroupItem[title=${nodeName}]`;
+const getSelectorForPatchInProjectBrowser = nodeName =>
+  `.PatchGroupItem[title=${nodeName}]`;
 
 function findProjectBrowser(client) {
   return client.element('.ProjectBrowser');
@@ -83,14 +86,18 @@ function assertPatchGroupExpanded(client, groupTitle) {
 
 function assertNodeAvailableInProjectBrowser(client, nodeName) {
   return assert.eventually.isTrue(
-    findProjectBrowser(client).isVisible(getSelectorForPatchInProjectBrowser(nodeName)),
+    findProjectBrowser(client).isVisible(
+      getSelectorForPatchInProjectBrowser(nodeName)
+    ),
     `Expected node "${nodeName}" to be available in the project browser`
   );
 }
 
 function assertNodeUnavailableInProjectBrowser(client, nodeName) {
   return assert.eventually.isFalse(
-    findProjectBrowser(client).isVisible(getSelectorForPatchInProjectBrowser(nodeName)),
+    findProjectBrowser(client).isVisible(
+      getSelectorForPatchInProjectBrowser(nodeName)
+    ),
     `Expected node "${nodeName}" to be unavailable in the project browser`
   );
 }
@@ -112,18 +119,24 @@ function openPatchFromProjectBrowser(client, name) {
 }
 
 function clickDeletePatchButton(client, name) {
-  return client.click(`${getSelectorForPatchInProjectBrowser(name)} span[title="Delete patch"]`);
+  return client.click(
+    `${getSelectorForPatchInProjectBrowser(name)} span[title="Delete patch"]`
+  );
 }
 
 function assertPatchSelected(client, name) {
   return assert.eventually.include(
-    client.element(getSelectorForPatchInProjectBrowser(name)).getAttribute('class'),
+    client
+      .element(getSelectorForPatchInProjectBrowser(name))
+      .getAttribute('class'),
     'isSelected'
   );
 }
 
 function clickAddNodeButton(client, name) {
-  return client.element(`${getSelectorForPatchInProjectBrowser(name)} .add-node`).click();
+  return client
+    .element(`${getSelectorForPatchInProjectBrowser(name)} .add-node`)
+    .click();
 }
 
 //-----------------------------------------------------------------------------
@@ -134,7 +147,8 @@ function findNode(client, nodeType) {
 }
 
 function dragNode(client, nodeType, dx, dy) {
-  return client.moveToObject(`.Node[title=${nodeType}]`)
+  return client
+    .moveToObject(`.Node[title=${nodeType}]`)
     .buttonDown()
     .moveTo(null, dx, dy)
     .buttonUp()
@@ -142,7 +156,9 @@ function dragNode(client, nodeType, dx, dy) {
 }
 
 function findPin(client, nodeType, pinLabel) {
-  return client.element(`.NodePinsOverlay[title=${nodeType}] .PinOverlay[title=${pinLabel}]`);
+  return client.element(
+    `.NodePinsOverlay[title=${nodeType}] .PinOverlay[title=${pinLabel}]`
+  );
 }
 
 function findLink(client, type) {
@@ -157,11 +173,14 @@ function addNode(client, type, dragX, dragY) {
 }
 
 function deletePatch(client, type) {
-  return client.waitForVisible(getSelectorForPatchInProjectBrowser(type))
+  return client
+    .waitForVisible(getSelectorForPatchInProjectBrowser(type))
     .then(() => scrollToPatchInProjectBrowser(client, type))
     .then(() => selectPatchInProjectBrowser(client, type))
     .then(() => clickDeletePatchButton(client, type))
-    .then(() => findProjectBrowser(client).click('.PopupConfirm button.Button--primary'));
+    .then(() =>
+      findProjectBrowser(client).click('.PopupConfirm button.Button--primary')
+    );
 }
 
 function assertPinIsSelected(client, nodeType, pinLabel) {
@@ -187,7 +206,8 @@ function findInspectorWidget(client, name) {
 }
 
 function bindValue(client, nodeType, pinLabel, value) {
-  return findNode(client, nodeType).click()
+  return findNode(client, nodeType)
+    .click()
     .then(() =>
       findInspectorWidget(client, pinLabel)
         .setValue(value)

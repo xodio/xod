@@ -20,17 +20,18 @@ export const LINK_ERRORS = {
 };
 
 export const PROJECT_BROWSER_ERRORS = {
-  CANT_OPEN_LIBPATCH_WITHOUT_XOD_IMPL: 'This patch has only native implementation and can`t be opened',
-  CANT_DELETE_CURRENT_PATCH: 'Current patch cannot been deleted. Switch to another patch before!',
+  CANT_OPEN_LIBPATCH_WITHOUT_XOD_IMPL:
+    'This patch has only native implementation and can`t be opened',
+  CANT_DELETE_CURRENT_PATCH:
+    'Current patch cannot been deleted. Switch to another patch before!',
   PATCH_NAME_TAKEN: 'This patch name is already taken!',
   INVALID_PATCH_NAME: 'Invalid patch name',
   INVALID_PROJECT_NAME: 'Invalid project name',
 };
 
 export const NODETYPE_ERRORS = {
-  [NTE.CANT_DELETE_USED_PATCHNODE]: (
-    'Current Patch Node is used somewhere. You should remove it first!'
-  ),
+  [NTE.CANT_DELETE_USED_PATCHNODE]:
+    'Current Patch Node is used somewhere. You should remove it first!',
   [NTE.CANT_DELETE_USED_PIN_OF_PATCHNODE]: [
     'Current IO Node is represents a Pin of Patch Node.',
     'And it is used somewhere.',

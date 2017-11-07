@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LabelWidget = (props) => {
-  const onChange = (event) => {
+const LabelWidget = props => {
+  const onChange = event => {
     props.onChange(event.target.value);
   };
   return (

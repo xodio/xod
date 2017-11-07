@@ -32,25 +32,17 @@ const qualifiedTypeName = R.curry(
   (packageName, typeName) => `${removeLastSlash(packageName)}/${typeName}`
 );
 // typeUrl :: String -> String -> String
-const typeUrl = R.curry(
-  (docUrl, typeName) => `${docUrl}${typeName}`
-);
+const typeUrl = R.curry((docUrl, typeName) => `${docUrl}${typeName}`);
 
 // hasType :: Type -> (x -> Boolean)
-export const hasType = R.curry(
-  (type, x) => type.validate(x).isRight
-);
+export const hasType = R.curry((type, x) => type.validate(x).isRight);
 
 // hasOneOfType :: [Type] -> (x -> Boolean)
-export const hasOneOfType = R.curry(
-  types => R.anyPass(
-    R.map(hasType, types)
-  )
-);
+export const hasOneOfType = R.curry(types => R.anyPass(R.map(hasType, types)));
 
 // NullaryType :: String -> String -> String -> (Any -> Boolean) -> Type
-export const NullaryType = R.curry(
-  (packageName, docUrl, typeName, predicate) => $.NullaryType(
+export const NullaryType = R.curry((packageName, docUrl, typeName, predicate) =>
+  $.NullaryType(
     qualifiedTypeName(packageName, typeName),
     typeUrl(docUrl, typeName),
     predicate
@@ -59,29 +51,31 @@ export const NullaryType = R.curry(
 
 // UnaryType :: String -> String -> String -> (Any -> Boolean) -> (t a -> Array a) -> (Type -> Type)
 export const UnaryType = R.curry(
-  (packageName, docUrl, typeName, predicate, extractor) => $.UnaryType(
-    qualifiedTypeName(packageName, typeName),
-    typeUrl(docUrl, typeName),
-    predicate,
-    extractor
-  )
+  (packageName, docUrl, typeName, predicate, extractor) =>
+    $.UnaryType(
+      qualifiedTypeName(packageName, typeName),
+      typeUrl(docUrl, typeName),
+      predicate,
+      extractor
+    )
 );
 
 // BinaryType :: String -> String -> String -> (Any -> Boolean) -> (t a b -> Array a) ->
 // -> (t a b -> Array b) -> (Type -> Type -> Type)
 export const BinaryType = R.curry(
-  (packageName, docUrl, typeName, predicate, extractorA, extractorB) => $.BinaryType(
-    qualifiedTypeName(packageName, typeName),
-    typeUrl(docUrl, typeName),
-    predicate,
-    extractorA,
-    extractorB
-  )
+  (packageName, docUrl, typeName, predicate, extractorA, extractorB) =>
+    $.BinaryType(
+      qualifiedTypeName(packageName, typeName),
+      typeUrl(docUrl, typeName),
+      predicate,
+      extractorA,
+      extractorB
+    )
 );
 
 // EnumType :: String -> String -> String -> [a] -> Type
-export const EnumType = R.curry(
-  (packageName, docUrl, typeName, values) => $.EnumType(
+export const EnumType = R.curry((packageName, docUrl, typeName, values) =>
+  $.EnumType(
     qualifiedTypeName(packageName, typeName),
     typeUrl(docUrl, typeName),
     values
@@ -94,8 +88,8 @@ export const EnumType = R.curry(
 const hasTypeHint = process.env.XOD_HM_DEF === 'strict' ? R.F : R.has('@@type');
 
 // Model :: String -> String -> String -> StrMap Type -> Type
-export const Model = R.curry(
-  (packageName, docUrl, typeName, schema) => NullaryType(
+export const Model = R.curry((packageName, docUrl, typeName, schema) =>
+  NullaryType(
     packageName,
     docUrl,
     typeName,
@@ -108,23 +102,13 @@ export const Model = R.curry(
 );
 
 // OneOfType :: String -> String -> String -> [Type] -> Type
-export const OneOfType = R.curry(
-  (packageName, docUrl, typeName, types) => NullaryType(
-    packageName,
-    docUrl,
-    typeName,
-    hasOneOfType(types)
-  )
+export const OneOfType = R.curry((packageName, docUrl, typeName, types) =>
+  NullaryType(packageName, docUrl, typeName, hasOneOfType(types))
 );
 
 // AliasType :: String -> String -> String -> Type -> Type
-export const AliasType = R.curry(
-  (packageName, docUrl, typeName, type) => NullaryType(
-    packageName,
-    docUrl,
-    typeName,
-    hasType(type)
-  )
+export const AliasType = R.curry((packageName, docUrl, typeName, type) =>
+  NullaryType(packageName, docUrl, typeName, hasType(type))
 );
 
 //-----------------------------------------------------------------------------
@@ -134,7 +118,8 @@ export const AliasType = R.curry(
 //-----------------------------------------------------------------------------
 
 export const Map = BinaryType(
-  pkgName, dUrl,
+  pkgName,
+  dUrl,
   'Map',
   x => typeof x === 'object',
   R.keys,
@@ -142,7 +127,8 @@ export const Map = BinaryType(
 );
 
 export const Pair = BinaryType(
-  pkgName, dUrl,
+  pkgName,
+  dUrl,
   'Pair',
   x => x instanceof Array && x.length === 2,
   R.compose(R.of, R.head),
@@ -178,12 +164,7 @@ export const $Either = $.BinaryType(
 //
 //-----------------------------------------------------------------------------
 
-export const env = $.env.concat([
-  Map,
-  Pair,
-  $Either,
-  $Maybe,
-]);
+export const env = $.env.concat([Map, Pair, $Either, $Maybe]);
 
 export const def = HMDef.create({
   checkTypes: !!process.env.XOD_HM_DEF,

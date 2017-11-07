@@ -19,7 +19,9 @@ export const composeCommand = (
   buildDir,
   builderToolDir
 ) => {
-  const builderExecFileName = (Utils.isWindows) ? 'arduino-builder.exe' : 'arduino-builder';
+  const builderExecFileName = Utils.isWindows
+    ? 'arduino-builder.exe'
+    : 'arduino-builder';
   const builderExec = path.join(builderToolDir, builderExecFileName);
 
   const builderHardware = path.join(builderToolDir, 'hardware');
@@ -40,7 +42,14 @@ export const composeCommand = (
 
 // :: Path -> FQBN -> Path -> Path -> Path -> PortName -> Promise { exitCode, stdout, stderr } Error
 export const build = R.curry(
-  (sketchFilePath, fqbn, packagesDir, librariesDir, buildDir, builderToolDir) => {
+  (
+    sketchFilePath,
+    fqbn,
+    packagesDir,
+    librariesDir,
+    buildDir,
+    builderToolDir
+  ) => {
     const cmd = composeCommand(
       sketchFilePath,
       fqbn,
@@ -50,7 +59,8 @@ export const build = R.curry(
       builderToolDir
     );
 
-    return fse.ensureDir(buildDir)
+    return fse
+      .ensureDir(buildDir)
       .then(() => cpp.exec(cmd))
       .then(Utils.normalizeChildProcessResult);
   }

@@ -17,7 +17,7 @@ describe('Functional tools', () => {
     });
     it('should contain Error', () => {
       /* istanbul ignore next */
-      testObj.chain((val) => {
+      testObj.chain(val => {
         expect(val)
           .to.be.an.instanceof(Error)
           .and.equal('testVal')
@@ -37,10 +37,7 @@ describe('Functional tools', () => {
       const obj = {};
       const res = Tools.errOnFalse('test', () => true)(obj);
       expect(res.isRight).to.be.true();
-      Helper.expectEither(
-        val => expect(val).to.be.equal(obj),
-        res
-      );
+      Helper.expectEither(val => expect(val).to.be.equal(obj), res);
     });
   });
   describe('errOnNothing', () => {
@@ -56,10 +53,7 @@ describe('Functional tools', () => {
       const just = Maybe.of(content);
       const either = Tools.errOnNothing({}, just);
       expect(either.isRight).to.be.true();
-      Helper.expectEither(
-        val => expect(val).to.be.equal(content),
-        either
-      );
+      Helper.expectEither(val => expect(val).to.be.equal(content), either);
     });
   });
 });

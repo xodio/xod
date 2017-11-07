@@ -11,21 +11,22 @@ const numToPx = size => `${size}px`;
 const Sidebar = ({ getSize, onChange, children }) => {
   const size = getSize();
   const minSize = 200;
-  const isResizable = (
-    containerRef && containerRef.clientHeight > minSize * 2
-  );
-  const isSizeFits = (
-    containerRef &&
-    containerRef.clientHeight - minSize >= size
-  );
+  const isResizable = containerRef && containerRef.clientHeight > minSize * 2;
+  const isSizeFits =
+    containerRef && containerRef.clientHeight - minSize >= size;
   const getSplitPaneSize = () => {
     if (size && isSizeFits) return numToPx(size);
-    if (size && isResizable) return (containerRef.clientHeight - minSize);
+    if (size && isResizable) return containerRef.clientHeight - minSize;
     return '50%';
   };
 
   return (
-    <div className="Sidebar" ref={(el) => { containerRef = el; }}>
+    <div
+      className="Sidebar"
+      ref={el => {
+        containerRef = el;
+      }}
+    >
       <SplitPane
         primary="second"
         split="horizontal"

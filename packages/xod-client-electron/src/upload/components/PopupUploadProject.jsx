@@ -38,28 +38,27 @@ class PopupUploadProject extends React.Component {
       cursor: 'auto',
     };
 
-    const message = (this.props.upload.message) ?
-      (<pre style={preStyle}>{this.props.upload.message.replace(/\r[^\n]/g, '\n')}</pre>) :
-      null;
-
+    const message = this.props.upload.message ? (
+      <pre style={preStyle}>
+        {this.props.upload.message.replace(/\r[^\n]/g, '\n')}
+      </pre>
+    ) : null;
 
     const titleMessage = R.cond([
-      [R.equals(STATUS.SUCCEEDED), R.always(
-        <p>
-          The program uploaded successfully.
-        </p>
-      )],
-      [R.equals(STATUS.FAILED), R.always(
-        <p>
-          Oops! Error occured.
-        </p>
-      )],
-      [R.T, R.always(
-        <p>
-          Your program is uploading onto device.<br />
-          Do not unplug the device.
-        </p>
-      )],
+      [
+        R.equals(STATUS.SUCCEEDED),
+        R.always(<p>The program uploaded successfully.</p>),
+      ],
+      [R.equals(STATUS.FAILED), R.always(<p>Oops! Error occured.</p>)],
+      [
+        R.T,
+        R.always(
+          <p>
+            Your program is uploading onto device.<br />
+            Do not unplug the device.
+          </p>
+        ),
+      ],
     ])(this.props.upload.status);
 
     return (
@@ -83,15 +82,15 @@ class PopupUploadProject extends React.Component {
   }
 
   isSucceeded() {
-    return (this.props.upload.status === STATUS.SUCCEEDED);
+    return this.props.upload.status === STATUS.SUCCEEDED;
   }
 
   isFailed() {
-    return (this.props.upload.status === STATUS.FAILED);
+    return this.props.upload.status === STATUS.FAILED;
   }
 
   canClose() {
-    return (this.isSucceeded() || this.isFailed());
+    return this.isSucceeded() || this.isFailed();
   }
 
   render() {
@@ -118,9 +117,7 @@ class PopupUploadProject extends React.Component {
             className="ProgressBar"
           />
         </div>
-        <div className="ModalContent">
-          {message}
-        </div>
+        <div className="ModalContent">{message}</div>
       </PopupForm>
     );
   }

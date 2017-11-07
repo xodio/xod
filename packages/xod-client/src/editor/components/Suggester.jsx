@@ -25,8 +25,12 @@ class Suggester extends React.Component {
 
     this.renderItem = this.renderItem.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
-    this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
+    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(
+      this
+    );
+    this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(
+      this
+    );
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
     this.onSuggestionHighlighted = this.onSuggestionHighlighted.bind(this);
     this.storeInputReference = this.storeInputReference.bind(this);
@@ -77,7 +81,9 @@ class Suggester extends React.Component {
     const { index } = this.props;
     const inputValue = value.trim().toLowerCase();
 
-    if (inputValue.length === 0) { return []; }
+    if (inputValue.length === 0) {
+      return [];
+    }
 
     return index.search(inputValue);
   }
@@ -116,7 +122,7 @@ class Suggester extends React.Component {
       placeholder: 'Search nodes',
       value,
       onChange: this.onChange,
-      onKeyDown: (event) => {
+      onKeyDown: event => {
         const code = event.keyCode || event.which;
         if (code === KEYCODE.ESCAPE && event.target.value === '') {
           this.props.onBlur();

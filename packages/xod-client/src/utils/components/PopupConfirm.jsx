@@ -21,7 +21,7 @@ const PopupConfirm = ({
   const wrapperClassNames = classNames('PopupConfirm', className);
   const onCloseClicked = isClosable ? onClose : noop;
 
-  const onKeyDown = (event) => {
+  const onKeyDown = event => {
     if (!isVisible) return;
 
     const keycode = event.keycode || event.which;
@@ -41,9 +41,7 @@ const PopupConfirm = ({
         onOverlayClicked={onCloseClicked}
       >
         <div className="ModalBody">
-          <div className="ModalContent">
-            {children}
-          </div>
+          <div className="ModalContent">{children}</div>
           <div className="ModalFooter">
             <button
               className="Button Button--primary"
@@ -52,10 +50,7 @@ const PopupConfirm = ({
             >
               {confirmText}
             </button>
-            <button
-              className="Button"
-              onClick={onClose}
-            >
+            <button className="Button" onClick={onClose}>
               {cancelText}
             </button>
           </div>

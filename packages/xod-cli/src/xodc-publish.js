@@ -28,19 +28,23 @@ export default async function publish(swaggerUrl, orgname$, projectDir) {
     const { Auth, Library, Organization, User, Version } = swaggerClient.apis;
     const { hostname, protocol } = url.parse(swaggerUrl);
     const { XOD_PASSWORD, XOD_USERNAME } = process.env;
-    const user = XOD_PASSWORD && XOD_USERNAME
-      ? { password: XOD_PASSWORD, username: XOD_USERNAME }
-      : await inquirer.prompt([{
-        message: `Username for '${protocol}//${hostname}':`,
-        name: 'username',
-        type: 'input',
-      }, {
-        message: `Password for '${protocol}//${hostname}':`,
-        name: 'password',
-        type: 'password',
-      }]);
+    const user =
+      XOD_PASSWORD && XOD_USERNAME
+        ? { password: XOD_PASSWORD, username: XOD_USERNAME }
+        : await inquirer.prompt([
+            {
+              message: `Username for '${protocol}//${hostname}':`,
+              name: 'username',
+              type: 'input',
+            },
+            {
+              message: `Password for '${protocol}//${hostname}':`,
+              name: 'password',
+              type: 'password',
+            },
+          ]);
     const username = user.username;
-    const { obj: grant } = await Auth.getDirectGrant({ user }).catch((err) => {
+    const { obj: grant } = await Auth.getDirectGrant({ user }).catch(err => {
       if (err.status === 403) {
         throw new Error(`user "${username}" is not authenticated.`);
       }
@@ -52,9 +56,9 @@ export default async function publish(swaggerUrl, orgname$, projectDir) {
     const orgname = orgname$ || username;
     const { libname, version } = await packLibVersion(projectDir);
     const libUri = createLibUri(orgname, libname, version.semver);
-    await Organization.getOrg({ orgname }).catch((err) => {
+    await Organization.getOrg({ orgname }).catch(err => {
       if (err.status !== 404) throw swagger.error(err);
-      return User.putUserOrg({ org: {}, orgname, username }).catch((err2) => {
+      return User.putUserOrg({ org: {}, orgname, username }).catch(err2 => {
         if (err2.status === 403) {
           throw new Error(`user "${username}" is not registered.`);
         }
@@ -64,17 +68,18 @@ export default async function publish(swaggerUrl, orgname$, projectDir) {
         throw swagger.error(err2);
       });
     });
-    await Library.getOrgLib({ libname, orgname }).catch((err) => {
+    await Library.getOrgLib({ libname, orgname }).catch(err => {
       if (err.status !== 404) throw swagger.error(err);
-      return Library.putOrgLib({ lib: {}, libname, orgname }).catch((err2) => {
+      return Library.putOrgLib({ lib: {}, libname, orgname }).catch(err2 => {
         if (err2.status === 403) {
-          throw new Error(`user "${username}" can't access ${
-            toStringWithoutTag(libUri)}.`);
+          throw new Error(
+            `user "${username}" can't access ${toStringWithoutTag(libUri)}.`
+          );
         }
         throw swagger.error(err2);
       });
     });
-    await Version.postLibVersion({ libname, orgname, version }).catch((err) => {
+    await Version.postLibVersion({ libname, orgname, version }).catch(err => {
       if (err.status === 409) {
         throw new Error(`version "${toString(libUri)}" already exists.`);
       }

@@ -1,9 +1,7 @@
 // TODO: Replace this hard-coded state with nodeType providers and empty defaults
 
 export default {
-  authors: [
-    'Amperka team',
-  ],
+  authors: ['Amperka team'],
   description: '',
   license: '',
   name: 'untitled',

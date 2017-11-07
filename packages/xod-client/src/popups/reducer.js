@@ -25,9 +25,7 @@ import {
   PROJECT_OPEN,
   PROJECT_RENAME,
 } from '../project/actionTypes';
-import {
-  SHOW_CODE_REQUESTED,
-} from '../core/actionTypes';
+import { SHOW_CODE_REQUESTED } from '../core/actionTypes';
 
 // =============================================================================
 //
@@ -38,46 +36,29 @@ const visibleLens = R.lensProp('visible');
 const dataLens = R.lensProp('data');
 
 // :: PopupState -> PopupState
-const hidePopup = R.compose(
-  R.set(visibleLens, false),
-  R.set(dataLens, {})
-);
+const hidePopup = R.compose(R.set(visibleLens, false), R.set(dataLens, {}));
 
 // :: PopupState -> PopupState
-const showPopup = R.curry(
-  (data, state) => R.compose(
-    R.set(visibleLens, true),
-    R.set(dataLens, data)
-  )(state)
+const showPopup = R.curry((data, state) =>
+  R.compose(R.set(visibleLens, true), R.set(dataLens, data))(state)
 );
 
 // :: State -> State
 const hideAll = R.map(hidePopup);
 
 // :: State -> State
-export const hideOnePopup = R.curry(
-  (id, state) => R.over(
-    R.lensProp(id),
-    hidePopup,
-    state
-  )
+export const hideOnePopup = R.curry((id, state) =>
+  R.over(R.lensProp(id), hidePopup, state)
 );
 
 // :: State -> State
-const showOnePopup = R.curry(
-  (id, data, state) => R.over(
-    R.lensProp(id),
-    showPopup(data),
-    state
-  )
+const showOnePopup = R.curry((id, data, state) =>
+  R.over(R.lensProp(id), showPopup(data), state)
 );
 
 // :: State -> State
-export const showOnlyPopup = R.curry(
-  (id, data, state) => R.compose(
-    showOnePopup(id, data),
-    hideAll
-  )(state)
+export const showOnlyPopup = R.curry((id, data, state) =>
+  R.compose(showOnePopup(id, data), hideAll)(state)
 );
 
 // =============================================================================

@@ -5,7 +5,11 @@ import $ from 'sanctuary-def';
 import XF from 'xod-func-tools';
 
 import * as C from './constants';
-import { isTerminalPatchPath, isValidIdentifier, isValidPatchPath } from './internal/patchPathUtils';
+import {
+  isTerminalPatchPath,
+  isValidIdentifier,
+  isValidPatchPath,
+} from './internal/patchPathUtils';
 import { isValidVersion } from './versionUtils';
 
 /* Types are by convention starts with a capital leter, so: */
@@ -32,8 +36,14 @@ const OneOfType = XF.OneOfType(packageName, docUrl);
 //
 //-----------------------------------------------------------------------------
 
-const ObjectWithId = NullaryType('ObjectWithId', R.both(XF.notNil, R.has('id')));
-const ObjectWithKey = NullaryType('ObjectWithKey', R.both(XF.notNil, R.has('key')));
+const ObjectWithId = NullaryType(
+  'ObjectWithId',
+  R.both(XF.notNil, R.has('id'))
+);
+const ObjectWithKey = NullaryType(
+  'ObjectWithKey',
+  R.both(XF.notNil, R.has('key'))
+);
 
 export const Label = AliasType('Label', $.String);
 export const Source = AliasType('Source', $.String);
@@ -125,10 +135,7 @@ export const Project = Model('Project', {
 
 export const TerminalNode = NullaryType(
   'TerminalNode',
-  R.both(
-    XF.hasType(Node),
-    R.propSatisfies(isTerminalPatchPath, 'type')
-  )
+  R.both(XF.hasType(Node), R.propSatisfies(isTerminalPatchPath, 'type'))
 );
 
 export const NodeOrId = OneOfType('NodeOrId', [NodeId, ObjectWithId]);

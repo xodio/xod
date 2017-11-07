@@ -28,10 +28,13 @@ export const getUtmSiteUrl = getUtmUrl(process.env.XOD_SITE_DOMAIN);
  * Accepts only one argument: medium.
  */
 // :: String -> String
-export const getUtmForumUrl = getUtmUrl(process.env.XOD_FORUM_DOMAIN, '', 'forum');
+export const getUtmForumUrl = getUtmUrl(
+  process.env.XOD_FORUM_DOMAIN,
+  '',
+  'forum'
+);
 
 const HOSTNAME = process.env.XOD_HOSTNAME || 'xod.io';
 
 // :: String -> String
-export const getCompileLimitUrl = () =>
-  `https://compile.${HOSTNAME}/limits`;
+export const getCompileLimitUrl = () => `https://compile.${HOSTNAME}/limits`;

@@ -3,34 +3,33 @@ import { isSegmentIntersected, isPointBetween } from 'line-intersection';
 
 // Links
 const isLineBetween = R.curry(
-  (box, { from, to }) => (
-    isPointBetween(from, box.from, box.to) && isPointBetween(to, box.from, box.to)
-  )
+  (box, { from, to }) =>
+    isPointBetween(from, box.from, box.to) &&
+    isPointBetween(to, box.from, box.to)
 );
-const isLineIntersectsTop = (box, { from, to }) => isSegmentIntersected([
-  box.from,
-  { x: box.to.x, y: box.from.y },
-  from,
-  to,
-]);
-const isLineIntersectsRight = (box, { from, to }) => isSegmentIntersected([
-  { x: box.to.x, y: box.from.y },
-  { x: box.to.x, y: box.to.y },
-  from,
-  to,
-]);
-const isLineIntersectsBottom = (box, { from, to }) => isSegmentIntersected([
-  { x: box.from.x, y: box.to.y },
-  { x: box.to.x, y: box.to.y },
-  from,
-  to,
-]);
-const isLineIntersectsLeft = (box, { from, to }) => isSegmentIntersected([
-  { x: box.from.x, y: box.from.y },
-  { x: box.from.x, y: box.to.y },
-  from,
-  to,
-]);
+const isLineIntersectsTop = (box, { from, to }) =>
+  isSegmentIntersected([box.from, { x: box.to.x, y: box.from.y }, from, to]);
+const isLineIntersectsRight = (box, { from, to }) =>
+  isSegmentIntersected([
+    { x: box.to.x, y: box.from.y },
+    { x: box.to.x, y: box.to.y },
+    from,
+    to,
+  ]);
+const isLineIntersectsBottom = (box, { from, to }) =>
+  isSegmentIntersected([
+    { x: box.from.x, y: box.to.y },
+    { x: box.to.x, y: box.to.y },
+    from,
+    to,
+  ]);
+const isLineIntersectsLeft = (box, { from, to }) =>
+  isSegmentIntersected([
+    { x: box.from.x, y: box.from.y },
+    { x: box.from.x, y: box.to.y },
+    from,
+    to,
+  ]);
 
 // Nodes
 const getNodeBoundBox = ({ position, size }) => ({
@@ -59,7 +58,7 @@ const isNodeIntersectedByBox = R.curry((box, node) => {
 });
 
 // Position utils
-export const isInclusiveSelection = (startPos, endPos) => (endPos.x < startPos.x);
+export const isInclusiveSelection = (startPos, endPos) => endPos.x < startPos.x;
 export const getSelectionBox = (startPos, endPos) => ({
   from: {
     x: Math.min(startPos.x, endPos.x),
@@ -74,12 +73,12 @@ export const getSelectionBox = (startPos, endPos) => ({
 });
 
 // Filters
-export const filterLinksByBox = R.uncurryN(2,
-  box => R.filter(isLineBetween(box))
+export const filterLinksByBox = R.uncurryN(2, box =>
+  R.filter(isLineBetween(box))
 );
-export const filterLinksByInclusiveBox = R.uncurryN(2,
-  box => R.filter(
-    link => R.anyPass([
+export const filterLinksByInclusiveBox = R.uncurryN(2, box =>
+  R.filter(link =>
+    R.anyPass([
       isLineBetween,
       isLineIntersectsTop,
       isLineIntersectsRight,
@@ -89,9 +88,9 @@ export const filterLinksByInclusiveBox = R.uncurryN(2,
   )
 );
 
-export const filterNodesByInclusiveBox = R.uncurryN(2,
-  box => R.filter(isNodeIntersectedByBox(box))
+export const filterNodesByInclusiveBox = R.uncurryN(2, box =>
+  R.filter(isNodeIntersectedByBox(box))
 );
-export const filterNodesByBox = R.uncurryN(2,
-  box => R.filter(isNodeBetween(box))
+export const filterNodesByBox = R.uncurryN(2, box =>
+  R.filter(isNodeBetween(box))
 );

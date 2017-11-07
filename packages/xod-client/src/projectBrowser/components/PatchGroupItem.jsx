@@ -42,16 +42,12 @@ class PatchGroupItem extends React.PureComponent {
       ...restProps
     } = this.props;
 
-    const classNames = cn(
-      'PatchGroupItem',
-      className,
-      {
-        isSelected,
-        isOpen,
-      }
-    );
+    const classNames = cn('PatchGroupItem', className, {
+      isSelected,
+      isOpen,
+    });
 
-    const deadIcon = (dead) ? (
+    const deadIcon = dead ? (
       <Icon
         className="dead-patch-icon"
         name="warning"
@@ -63,7 +59,10 @@ class PatchGroupItem extends React.PureComponent {
       <div
         title={label}
         className={classNames}
-        {...R.omit(['patchPath', 'onBeginDrag', 'connectDragPreview', 'dead'], restProps)}
+        {...R.omit(
+          ['patchPath', 'onBeginDrag', 'connectDragPreview', 'dead'],
+          restProps
+        )}
       >
         <div // eslint-disable-line jsx-a11y/no-static-element-interactions
           className="PatchGroupItem__label"
@@ -99,7 +98,8 @@ PatchGroupItem.propTypes = {
   onBeginDrag: PropTypes.func.isRequired,
 };
 
-export default DragSource( // eslint-disable-line new-cap
+export default DragSource(
+  // eslint-disable-line new-cap
   DRAGGED_ENTITY_TYPE.PATCH,
   dragSource,
   collect

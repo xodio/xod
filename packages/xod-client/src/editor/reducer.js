@@ -59,68 +59,51 @@ import { getInitialPatchOffset } from '../project/utils';
 const getTabs = R.prop('tabs');
 const getCurrentTabId = R.prop('currentTabId');
 
-const getTabById = R.curry(
-  (tabId, state) => R.compose(
-    R.propOr(null, tabId),
-    getTabs
-  )(state)
+const getTabById = R.curry((tabId, state) =>
+  R.compose(R.propOr(null, tabId), getTabs)(state)
 );
 
-const getCurrentTab = R.converge(
-  getTabById,
-  [
-    getCurrentTabId,
-    R.identity,
-  ]
-);
+const getCurrentTab = R.converge(getTabById, [getCurrentTabId, R.identity]);
 
-const getBreadcrumbs = R.compose(
-  R.prop('breadcrumbs'),
-  getCurrentTab
-);
+const getBreadcrumbs = R.compose(R.prop('breadcrumbs'), getCurrentTab);
 const getBreadcrumbActiveIndex = R.compose(
   R.propOr(-1, 'activeIndex'),
   getBreadcrumbs
 );
-const getBreadcrumbChunks = R.compose(
-  R.propOr([], 'chunks'),
-  getBreadcrumbs
+const getBreadcrumbChunks = R.compose(R.propOr([], 'chunks'), getBreadcrumbs);
+
+const isTabOpened = R.curry((tabId, state) =>
+  R.compose(R.complement(R.isNil), getTabById(tabId))(state)
 );
 
-const isTabOpened = R.curry(
-  (tabId, state) => R.compose(
-    R.complement(R.isNil),
-    getTabById(tabId)
-  )(state)
+const isPatchOpened = R.curry((patchPath, state) =>
+  R.compose(R.complement(R.isNil), getTabByPatchPath(patchPath), getTabs)(state)
 );
 
-const isPatchOpened = R.curry(
-  (patchPath, state) => R.compose(
-    R.complement(R.isNil),
-    getTabByPatchPath(patchPath),
-    getTabs
-  )(state)
-);
-
-const setTabOffset = R.curry(
-  (offset, tabId, state) => R.compose(
+const setTabOffset = R.curry((offset, tabId, state) =>
+  R.compose(
     R.when(
-      () => (tabId === DEBUGGER_TAB_ID),
-      newState => R.assocPath(
-        ['tabs', tabId, 'breadcrumbs', 'chunks', getBreadcrumbActiveIndex(newState), 'offset'],
-        offset,
-        newState
-      )
+      () => tabId === DEBUGGER_TAB_ID,
+      newState =>
+        R.assocPath(
+          [
+            'tabs',
+            tabId,
+            'breadcrumbs',
+            'chunks',
+            getBreadcrumbActiveIndex(newState),
+            'offset',
+          ],
+          offset,
+          newState
+        )
     ),
-    R.assocPath(
-      ['tabs', tabId, 'offset'],
-      offset
-    )
+    R.assocPath(['tabs', tabId, 'offset'], offset)
   )(state)
 );
 
-const getTabIdbyPatchPath = R.curry(
-  (patchPath, state) => R.compose(
+const getTabIdbyPatchPath = R.curry((patchPath, state) =>
+  R.compose(
     R.propOr(null, 'id'),
     R.find(R.propEq('patchPath', patchPath)),
     R.values,
@@ -128,61 +111,56 @@ const getTabIdbyPatchPath = R.curry(
   )(state)
 );
 
-const listTabsByPatchPath = R.curry(
-  (patchPath, state) => R.compose(
-    R.filter(R.propEq('patchPath', patchPath)),
-    R.values,
-    getTabs
-  )(state)
+const listTabsByPatchPath = R.curry((patchPath, state) =>
+  R.compose(R.filter(R.propEq('patchPath', patchPath)), R.values, getTabs)(
+    state
+  )
 );
 
-const syncTabOffset = R.curry(
-  (offset, state) => {
-    const currentTab = getTabById(state.currentTabId, state);
-    const currentPatchPath = currentTab.patchPath;
-    if (!currentTab) return state;
+const syncTabOffset = R.curry((offset, state) => {
+  const currentTab = getTabById(state.currentTabId, state);
+  const currentPatchPath = currentTab.patchPath;
+  if (!currentTab) return state;
 
-    const tabIdsToSync = R.compose(
-      R.map(R.prop('id')),
-      R.reject(R.propEq('id', state.currentTabId)),
-      listTabsByPatchPath(currentPatchPath)
-    )(state);
-    const syncOffsets = R.map(setTabOffset(offset), tabIdsToSync);
+  const tabIdsToSync = R.compose(
+    R.map(R.prop('id')),
+    R.reject(R.propEq('id', state.currentTabId)),
+    listTabsByPatchPath(currentPatchPath)
+  )(state);
+  const syncOffsets = R.map(setTabOffset(offset), tabIdsToSync);
 
-    return R.reduce((acc, fn) => fn(acc), state, syncOffsets);
-  }
-);
+  return R.reduce((acc, fn) => fn(acc), state, syncOffsets);
+});
 
-const setPropsToTab = R.curry(
-  (id, props, state) => R.compose(
+const setPropsToTab = R.curry((id, props, state) =>
+  R.compose(
     R.assocPath(['tabs', id], R.__, state),
     R.merge(R.__, props),
     getTabById(id)
   )(state)
 );
 
-const addTabWithProps = R.curry(
-  (id, type, patchPath, state) => {
-    const tabs = R.prop('tabs')(state);
-    const lastIndex = R.reduce(
-      (acc, tab) => R.pipe(
-        R.prop('index'),
-        R.max(acc)
-      )(tab),
-      -1,
-      R.values(tabs)
-    );
-    const newIndex = R.inc(lastIndex);
+const addTabWithProps = R.curry((id, type, patchPath, state) => {
+  const tabs = R.prop('tabs')(state);
+  const lastIndex = R.reduce(
+    (acc, tab) => R.pipe(R.prop('index'), R.max(acc))(tab),
+    -1,
+    R.values(tabs)
+  );
+  const newIndex = R.inc(lastIndex);
 
-    return setPropsToTab(id, {
+  return setPropsToTab(
+    id,
+    {
       id,
       patchPath,
       index: newIndex,
       type,
       offset: DEFAULT_PANNING_OFFSET,
-    }, state);
-  }
-);
+    },
+    state
+  );
+});
 
 const addPatchTab = R.curry((newId, patchPath, state) => {
   if (!patchPath) return state;
@@ -190,7 +168,9 @@ const addPatchTab = R.curry((newId, patchPath, state) => {
 });
 
 const applyTabSort = (tab, payload) => {
-  if (R.not(R.has(tab.id, payload))) { return tab; }
+  if (R.not(R.has(tab.id, payload))) {
+    return tab;
+  }
 
   return R.assoc('index', payload[tab.id].index, tab);
 };
@@ -199,22 +179,18 @@ const resetCurrentPatchPath = (reducer, state, project) => {
   const stateWithClearedTabs = R.assoc('tabs', {}, state);
 
   return R.compose(
-    R.ifElse(
-      R.isNil,
-      R.always(stateWithClearedTabs),
-      (firstLocalPatch) => {
-        const firstPatchPath = XP.getPatchPath(firstLocalPatch);
-        const offset = getInitialPatchOffset(firstPatchPath, project);
+    R.ifElse(R.isNil, R.always(stateWithClearedTabs), firstLocalPatch => {
+      const firstPatchPath = XP.getPatchPath(firstLocalPatch);
+      const offset = getInitialPatchOffset(firstPatchPath, project);
 
-        return [
-          switchPatchUnsafe(firstPatchPath),
-          setCurrentPatchOffset(offset),
-        ].reduce(reducer, stateWithClearedTabs);
-      }
-    ),
+      return [
+        switchPatchUnsafe(firstPatchPath),
+        setCurrentPatchOffset(offset),
+      ].reduce(reducer, stateWithClearedTabs);
+    }),
     R.head,
     R.sortBy(XP.getPatchPath),
-    XP.listLocalPatches,
+    XP.listLocalPatches
   )(project);
 };
 
@@ -223,122 +199,113 @@ const clearSelection = R.flip(R.merge)({
   linkingPin: null,
 });
 
-const openPatchByPath = R.curry(
-  (patchPath, state) => {
-    const alreadyOpened = isPatchOpened(patchPath, state);
-    const tabId = (alreadyOpened) ?
-        getTabIdbyPatchPath(patchPath, state) :
-        shortid.generate();
+const openPatchByPath = R.curry((patchPath, state) => {
+  const alreadyOpened = isPatchOpened(patchPath, state);
+  const tabId = alreadyOpened
+    ? getTabIdbyPatchPath(patchPath, state)
+    : shortid.generate();
 
-    return R.compose(
-      R.assoc('currentTabId', tabId),
-      clearSelection,
-      R.unless(
-        () => alreadyOpened,
-        addPatchTab(tabId, patchPath)
-      )
-    )(state);
-  }
-);
+  return R.compose(
+    R.assoc('currentTabId', tabId),
+    clearSelection,
+    R.unless(() => alreadyOpened, addPatchTab(tabId, patchPath))
+  )(state);
+});
 
 const openLatestOpenedTab = R.compose(
   clearSelection,
-  R.converge(
-    R.assoc('currentTabId'),
-    [
-      R.compose( // get patch id from last of remaining tabs
-        R.propOr(null, 'id'),
-        R.last,
-        R.values,
-        R.prop('tabs')
-      ),
-      R.identity,
-    ]
-  )
+  R.converge(R.assoc('currentTabId'), [
+    R.compose(
+      // get patch id from last of remaining tabs
+      R.propOr(null, 'id'),
+      R.last,
+      R.values,
+      R.prop('tabs')
+    ),
+    R.identity,
+  ])
 );
 
-const closeTabById = R.curry(
-  (tabId, state) => {
-    if (!isTabOpened(tabId, state)) return state;
+const closeTabById = R.curry((tabId, state) => {
+  if (!isTabOpened(tabId, state)) return state;
 
-    const tabToClose = getTabById(tabId, state);
+  const tabToClose = getTabById(tabId, state);
 
-    const isDebuggerTabClosing = () => (tabToClose.type === TAB_TYPES.DEBUGGER);
-    const isCurrentTabClosing = R.propEq('currentTabId', tabId);
-    const isCurrentDebuggerTabClosing = R.both(
-      isDebuggerTabClosing,
-      isCurrentTabClosing
-    );
+  const isDebuggerTabClosing = () => tabToClose.type === TAB_TYPES.DEBUGGER;
+  const isCurrentTabClosing = R.propEq('currentTabId', tabId);
+  const isCurrentDebuggerTabClosing = R.both(
+    isDebuggerTabClosing,
+    isCurrentTabClosing
+  );
 
-    const openOriginalPatch = patchPath => R.compose(
+  const openOriginalPatch = patchPath =>
+    R.compose(
       clearSelection,
-      R.converge(
-        setTabOffset(tabToClose.offset),
-        [
-          getTabIdbyPatchPath(patchPath),
-          R.identity,
-        ]
-      ),
+      R.converge(setTabOffset(tabToClose.offset), [
+        getTabIdbyPatchPath(patchPath),
+        R.identity,
+      ]),
       openPatchByPath(patchPath)
     );
 
-    return R.compose(
-      R.cond([
-        [isCurrentDebuggerTabClosing, openOriginalPatch(tabToClose.patchPath)],
-        [isCurrentTabClosing, openLatestOpenedTab],
-        [R.T, R.identity],
-      ]),
-      R.dissocPath(['tabs', tabId])
-    )(state);
-  }
-);
+  return R.compose(
+    R.cond([
+      [isCurrentDebuggerTabClosing, openOriginalPatch(tabToClose.patchPath)],
+      [isCurrentTabClosing, openLatestOpenedTab],
+      [R.T, R.identity],
+    ]),
+    R.dissocPath(['tabs', tabId])
+  )(state);
+});
 
-const closeTabByPatchPath = R.curry(
-  (patchPath, state) => {
-    const tabIdToClose = getTabIdbyPatchPath(patchPath, state);
-    return closeTabById(tabIdToClose, state);
-  }
-);
+const closeTabByPatchPath = R.curry((patchPath, state) => {
+  const tabIdToClose = getTabIdbyPatchPath(patchPath, state);
+  return closeTabById(tabIdToClose, state);
+});
 
 // :: PatchPath -> PatchPath -> Tab -> Tab
 const renamePatchPathInBreadcrumbs = R.curry(
-  (newPatchPath, oldPatchPath, tab) => R.when(
-    R.has('breadcrumbs'),
-    R.over(
-      R.lensPath(['breadcrumbs', 'chunks']),
-      R.map(R.when(
-        R.propEq('patchPath', oldPatchPath),
-        R.assoc('patchPath', newPatchPath)
-      ))
-    )
-  )(tab)
+  (newPatchPath, oldPatchPath, tab) =>
+    R.when(
+      R.has('breadcrumbs'),
+      R.over(
+        R.lensPath(['breadcrumbs', 'chunks']),
+        R.map(
+          R.when(
+            R.propEq('patchPath', oldPatchPath),
+            R.assoc('patchPath', newPatchPath)
+          )
+        )
+      )
+    )(tab)
 );
 
 const renamePatchInTabs = (newPatchPath, oldPatchPath, state) => {
-  const tabIdsToRename = R.compose(
-    R.map(R.prop('id')),
-    listTabsByPatchPath
-  )(oldPatchPath, state);
-
-  return (tabIdsToRename.length === 0) ? state : R.over(
-    R.lensProp('tabs'),
-    R.map(R.compose(
-      renamePatchPathInBreadcrumbs(newPatchPath, oldPatchPath),
-      R.when(
-        R.propEq('patchPath', oldPatchPath),
-        R.assoc('patchPath', newPatchPath)
-      )
-    )),
+  const tabIdsToRename = R.compose(R.map(R.prop('id')), listTabsByPatchPath)(
+    oldPatchPath,
     state
   );
+
+  return tabIdsToRename.length === 0
+    ? state
+    : R.over(
+        R.lensProp('tabs'),
+        R.map(
+          R.compose(
+            renamePatchPathInBreadcrumbs(newPatchPath, oldPatchPath),
+            R.when(
+              R.propEq('patchPath', oldPatchPath),
+              R.assoc('patchPath', newPatchPath)
+            )
+          )
+        ),
+        state
+      );
 };
 
-const findChunkIndex = R.curry(
-  (patchPath, nodeId, chunks) =>
-    R.findIndex(R.both(
-      R.propEq('patchPath', patchPath),
-      R.propEq('nodeId', nodeId),
-    ),
+const findChunkIndex = R.curry((patchPath, nodeId, chunks) =>
+  R.findIndex(
+    R.both(R.propEq('patchPath', patchPath), R.propEq('nodeId', nodeId)),
     chunks
   )
 );
@@ -349,60 +316,50 @@ const createChunk = (patchPath, nodeId) => ({
   offset: DEFAULT_PANNING_OFFSET,
 });
 
-const setActiveIndex = R.curry(
-  (index, state) => {
-    const curTabId = getCurrentTabId(state);
-    return R.assocPath(['tabs', curTabId, 'breadcrumbs', 'activeIndex'], index, state);
-  }
-);
+const setActiveIndex = R.curry((index, state) => {
+  const curTabId = getCurrentTabId(state);
+  return R.assocPath(
+    ['tabs', curTabId, 'breadcrumbs', 'activeIndex'],
+    index,
+    state
+  );
+});
 
-const drillDown = R.curry(
-  (patchPath, nodeId, state) => {
-    const currentTabId = getCurrentTabId(state);
-    if (currentTabId !== DEBUGGER_TAB_ID) return state;
+const drillDown = R.curry((patchPath, nodeId, state) => {
+  const currentTabId = getCurrentTabId(state);
+  if (currentTabId !== DEBUGGER_TAB_ID) return state;
 
-    const activeIndex = getBreadcrumbActiveIndex(state);
-    const chunks = getBreadcrumbChunks(state);
-    const index = findChunkIndex(patchPath, nodeId, chunks);
+  const activeIndex = getBreadcrumbActiveIndex(state);
+  const chunks = getBreadcrumbChunks(state);
+  const index = findChunkIndex(patchPath, nodeId, chunks);
 
-    if (index > -1) {
-      const chunkOffset = getBreadcrumbChunks(state)[index].offset;
-      return R.compose(
-        setTabOffset(chunkOffset, currentTabId),
-        setActiveIndex(index)
-      )(state);
-    }
-
-    const shouldResetTail = (activeIndex < (chunks.length - 1));
-    const newChunk = createChunk(patchPath, nodeId);
-    const newChunkOffset = newChunk.offset;
-
+  if (index > -1) {
+    const chunkOffset = getBreadcrumbChunks(state)[index].offset;
     return R.compose(
-      setTabOffset(newChunkOffset, currentTabId),
-      R.converge(
-        setActiveIndex,
-        [
-          R.compose(
-            R.dec,
-            R.length,
-            getBreadcrumbChunks
-          ),
-          R.identity,
-        ]
-      ),
-      R.over(
-        R.lensPath(['tabs', currentTabId, 'breadcrumbs', 'chunks']),
-        R.compose(
-          R.append(newChunk),
-          R.when(
-            () => shouldResetTail,
-            R.take((activeIndex + 1))
-          )
-        )
-      ),
+      setTabOffset(chunkOffset, currentTabId),
+      setActiveIndex(index)
     )(state);
   }
-);
+
+  const shouldResetTail = activeIndex < chunks.length - 1;
+  const newChunk = createChunk(patchPath, nodeId);
+  const newChunkOffset = newChunk.offset;
+
+  return R.compose(
+    setTabOffset(newChunkOffset, currentTabId),
+    R.converge(setActiveIndex, [
+      R.compose(R.dec, R.length, getBreadcrumbChunks),
+      R.identity,
+    ]),
+    R.over(
+      R.lensPath(['tabs', currentTabId, 'breadcrumbs', 'chunks']),
+      R.compose(
+        R.append(newChunk),
+        R.when(() => shouldResetTail, R.take(activeIndex + 1))
+      )
+    )
+  )(state);
+});
 
 // =============================================================================
 //
@@ -418,21 +375,17 @@ const editorReducer = (state = {}, action) => {
     case EDITOR_SELECT_ENTITY:
       return R.assoc(
         'selection',
-        [
-          createSelectionEntity(
-            action.payload.entityType,
-            action.payload.id
-          ),
-        ],
+        [createSelectionEntity(action.payload.entityType, action.payload.id)],
         state
       );
     case EDITOR_DESELECT_ENTITY:
       return R.over(
         R.lensProp('selection'),
-        R.reject(R.equals(createSelectionEntity(
-          action.payload.entityType,
-          action.payload.id
-        ))),
+        R.reject(
+          R.equals(
+            createSelectionEntity(action.payload.entityType, action.payload.id)
+          )
+        ),
         state
       );
     case EDITOR_ADD_ENTITY_TO_SELECTION:
@@ -440,10 +393,9 @@ const editorReducer = (state = {}, action) => {
         R.lensProp('selection'),
         R.compose(
           R.uniq,
-          R.append(createSelectionEntity(
-            action.payload.entityType,
-            action.payload.id
-          ))
+          R.append(
+            createSelectionEntity(action.payload.entityType, action.payload.id)
+          )
         ),
         state
       );
@@ -460,20 +412,20 @@ const editorReducer = (state = {}, action) => {
     case LINK_ADD:
       return R.assoc('linkingPin', null, state);
     case START_DRAGGING_PATCH:
-      return R.merge(
-        state,
-        {
-          mode: EDITOR_MODE.ACCEPTING_DRAGGED_PATCH,
-          draggedPreviewSize: action.payload,
-        }
-      );
+      return R.merge(state, {
+        mode: EDITOR_MODE.ACCEPTING_DRAGGED_PATCH,
+        draggedPreviewSize: action.payload,
+      });
     case NODE_ADD:
       return R.assoc('draggedPreviewSize', { width: 0, height: 0 }, state);
     case EDITOR_SET_SELECTED_NODETYPE:
       return R.assoc('selectedNodeType', action.payload.id, state);
     case PROJECT_CREATE: {
       const newState = R.assoc('tabs', {}, state);
-      return editorReducer(newState, switchPatchUnsafe(action.payload.mainPatchPath));
+      return editorReducer(
+        newState,
+        switchPatchUnsafe(action.payload.mainPatchPath)
+      );
     }
     case PROJECT_OPEN:
     case PROJECT_IMPORT: {
@@ -497,10 +449,7 @@ const editorReducer = (state = {}, action) => {
       return openPatchByPath(action.payload.patchPath, state);
     case EDITOR_SWITCH_TAB:
       return R.compose(
-        R.assoc(
-          'currentTabId',
-          action.payload.tabId
-        ),
+        R.assoc('currentTabId', action.payload.tabId),
         clearSelection
       )(state);
     case PATCH_RENAME:
@@ -548,7 +497,11 @@ const editorReducer = (state = {}, action) => {
         R.assocPath(['suggester', 'placePosition'], null)
       )(state);
     case HIGHLIGHT_SUGGESTER_ITEM:
-      return R.assocPath(['suggester', 'highlightedPatchPath'], action.payload.patchPath, state);
+      return R.assocPath(
+        ['suggester', 'highlightedPatchPath'],
+        action.payload.patchPath,
+        state
+      );
     case DEBUG_SESSION_STARTED: {
       const currentTab = getTabById(state.currentTabId, state);
       const currentPatchPath = currentTab.patchPath;

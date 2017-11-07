@@ -9,11 +9,7 @@ import { getNewSelection } from '../../../utils';
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
 
-import {
-  bindApi,
-  getMousePosition,
-  getOffsetMatrix,
-} from '../modeUtils';
+import { bindApi, getMousePosition, getOffsetMatrix } from '../modeUtils';
 
 import {
   isInclusiveSelection,
@@ -37,16 +33,12 @@ const findSelectedItems = (api, startPos, endPos) => {
   const inclusive = isInclusiveSelection(startPos, endPos);
   const selectionBox = getSelectionBox(startPos, endPos);
 
-  const filterLinksFn = (
-    inclusive ?
-    filterLinksByInclusiveBox :
-    filterLinksByBox
-  )(selectionBox);
-  const filterNodesFn = (
-    inclusive ?
-    filterNodesByInclusiveBox :
-    filterNodesByBox
-  )(selectionBox);
+  const filterLinksFn = (inclusive
+    ? filterLinksByInclusiveBox
+    : filterLinksByBox)(selectionBox);
+  const filterNodesFn = (inclusive
+    ? filterNodesByInclusiveBox
+    : filterNodesByBox)(selectionBox);
 
   return R.compose(
     R.evolve({
@@ -61,13 +53,13 @@ const findSelectedItems = (api, startPos, endPos) => {
 
 const getComputedSelection = (api, startPos, endPos, event) => {
   const oldSelection = api.props.selection;
-  const newSelection = getNewSelection(findSelectedItems(api, startPos, endPos));
-
-  return (
-    !isSelectionModifierPressed(event) ?
-    newSelection :
-    R.symmetricDifference(oldSelection, newSelection)
+  const newSelection = getNewSelection(
+    findSelectedItems(api, startPos, endPos)
   );
+
+  return !isSelectionModifierPressed(event)
+    ? newSelection
+    : R.symmetricDifference(oldSelection, newSelection);
 };
 
 // =============================================================================
@@ -89,10 +81,19 @@ const marqueeSelectingMode = {
   },
   onMouseMove(api, event) {
     const { mouseStartPosition } = api.state;
-    const mousePosition = getMousePosition(patchSvgRef, api.props.offset, event);
+    const mousePosition = getMousePosition(
+      patchSvgRef,
+      api.props.offset,
+      event
+    );
     api.setState({
       mousePosition,
-      selection: getComputedSelection(api, mouseStartPosition, mousePosition, event),
+      selection: getComputedSelection(
+        api,
+        mouseStartPosition,
+        mousePosition,
+        event
+      ),
     });
   },
   onMouseUp(api, event) {
@@ -103,8 +104,17 @@ const marqueeSelectingMode = {
     api.goToDefaultMode();
   },
   onKeyDownOrKeyUp(api, event) {
-    const { mouseStartPosition, mousePosition, selection: oldSelection } = api.state;
-    const newSelection = getComputedSelection(api, mouseStartPosition, mousePosition, event);
+    const {
+      mouseStartPosition,
+      mousePosition,
+      selection: oldSelection,
+    } = api.state;
+    const newSelection = getComputedSelection(
+      api,
+      mouseStartPosition,
+      mousePosition,
+      event
+    );
 
     if (R.equals(oldSelection, newSelection)) return;
 
@@ -119,8 +129,14 @@ const marqueeSelectingMode = {
   },
   renderMaquee(api) {
     const { mouseStartPosition, mousePosition } = api.state;
-    const { from, width, height } = getSelectionBox(mouseStartPosition, mousePosition);
-    const inclusiveSelection = isInclusiveSelection(mouseStartPosition, mousePosition);
+    const { from, width, height } = getSelectionBox(
+      mouseStartPosition,
+      mousePosition
+    );
+    const inclusiveSelection = isInclusiveSelection(
+      mouseStartPosition,
+      mousePosition
+    );
     const cls = className('MarqueeSelection', {
       'is-inclusive': inclusiveSelection,
     });
@@ -159,7 +175,9 @@ const marqueeSelectingMode = {
         <PatchSVG
           onMouseMove={bindApi(api, this.onMouseMove)}
           onMouseUp={bindApi(api, this.onMouseUp)}
-          svgRef={(svg) => { patchSvgRef = svg; }}
+          svgRef={svg => {
+            patchSvgRef = svg;
+          }}
         >
           <Layers.Background
             width={api.props.size.width}

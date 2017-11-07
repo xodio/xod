@@ -7,11 +7,19 @@ import EventListener from 'react-event-listener';
 import { noop } from '../../utils/ramda';
 import { KEYCODE } from '../../utils/constants';
 
-const PopupAlert = ({ title, children, closeText, className, onClose, isClosable, isVisible }) => {
+const PopupAlert = ({
+  title,
+  children,
+  closeText,
+  className,
+  onClose,
+  isClosable,
+  isVisible,
+}) => {
   const wrapperClassNames = classNames('PopupAlert', className);
   const onCloseClicked = isClosable ? onClose : noop;
 
-  const onKeyDown = (event) => {
+  const onKeyDown = event => {
     if (!isVisible) return;
 
     const keycode = event.keycode || event.which;
@@ -31,10 +39,8 @@ const PopupAlert = ({ title, children, closeText, className, onClose, isClosable
         onOverlayClicked={onCloseClicked}
       >
         <div className="ModalBody">
-          <div className="ModalContent">
-            {children}
-          </div>
-          {(isClosable) ? (
+          <div className="ModalContent">{children}</div>
+          {isClosable ? (
             <div className="ModalFooter">
               <button
                 className="Button Button--primary"

@@ -24,20 +24,18 @@ import { def } from './types';
  */
 export const createLink = def(
   'createLink :: PinKey -> NodeOrId -> PinKey -> NodeOrId -> Link',
-  (inputPinKey, inputNode, outputPinKey, outputNode) => (
-    {
-      '@@type': 'xod-project/Link',
-      id: Utils.generateId(),
-      output: {
-        nodeId: Node.getNodeId(outputNode),
-        pinKey: outputPinKey,
-      },
-      input: {
-        nodeId: Node.getNodeId(inputNode),
-        pinKey: inputPinKey,
-      },
-    }
-  )
+  (inputPinKey, inputNode, outputPinKey, outputNode) => ({
+    '@@type': 'xod-project/Link',
+    id: Utils.generateId(),
+    output: {
+      nodeId: Node.getNodeId(outputNode),
+      pinKey: outputPinKey,
+    },
+    input: {
+      nodeId: Node.getNodeId(inputNode),
+      pinKey: inputPinKey,
+    },
+  })
 );
 
 /**
@@ -95,20 +93,14 @@ export const getLinkOutputPinKey = def(
  * @param {Link}
  * @returns {Array<string>}
  */
-export const getLinkNodeIds = R.juxt([
-  getLinkOutputNodeId,
-  getLinkInputNodeId,
-]);
+export const getLinkNodeIds = R.juxt([getLinkOutputNodeId, getLinkInputNodeId]);
 
 /**
  * @function getLinkPinKeys
  * @param {Link}
  * @returns {Array<string>}
  */
-export const getLinkPinKeys = R.juxt([
-  getLinkInputPinKey,
-  getLinkOutputPinKey,
-]);
+export const getLinkPinKeys = R.juxt([getLinkInputPinKey, getLinkOutputPinKey]);
 
 // =============================================================================
 //
@@ -127,10 +119,7 @@ export const getLinkPinKeys = R.juxt([
  */
 const isGetterEqualTo = def(
   'isGetterEqualTo :: (b -> a) -> (a -> Boolean)',
-  getter => R.useWith(R.equals, [
-    R.identity,
-    getter,
-  ])
+  getter => R.useWith(R.equals, [R.identity, getter])
 );
 
 /**

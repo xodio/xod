@@ -55,8 +55,15 @@ const debuggingMode = {
   onMouseDown(api, event) {
     if (!isMiddleButtonPressed(event)) return;
 
-    const mousePosition = getMousePosition(patchSvgRef, api.props.offset, event);
-    api.goToMode(EDITOR_MODE.PANNING, { isPanning: true, panningStartPosition: mousePosition });
+    const mousePosition = getMousePosition(
+      patchSvgRef,
+      api.props.offset,
+      event
+    );
+    api.goToMode(EDITOR_MODE.PANNING, {
+      isPanning: true,
+      panningStartPosition: mousePosition,
+    });
   },
   onKeyDown(api, event) {
     if (isInputTarget(event)) return;
@@ -88,7 +95,9 @@ const debuggingMode = {
       >
         <PatchSVG
           onMouseDown={bindApi(api, this.onMouseDown)}
-          svgRef={(svg) => { patchSvgRef = svg; }}
+          svgRef={svg => {
+            patchSvgRef = svg;
+          }}
         >
           <Layers.Background
             width={api.props.size.width}
@@ -100,8 +109,14 @@ const debuggingMode = {
             <Layers.Comments
               comments={api.props.comments}
               selection={api.props.selection}
-              onMouseDown={R.partial(this.onEntityMouseDown, [api, SELECTION_ENTITY_TYPE.COMMENT])}
-              onMouseUp={R.partial(this.onEntityMouseUp, [api, SELECTION_ENTITY_TYPE.COMMENT])}
+              onMouseDown={R.partial(this.onEntityMouseDown, [
+                api,
+                SELECTION_ENTITY_TYPE.COMMENT,
+              ])}
+              onMouseUp={R.partial(this.onEntityMouseUp, [
+                api,
+                SELECTION_ENTITY_TYPE.COMMENT,
+              ])}
             />
             <Layers.Links
               links={api.props.links}
@@ -113,8 +128,14 @@ const debuggingMode = {
               nodes={api.props.nodes}
               selection={api.props.selection}
               linkingPin={api.props.linkingPin}
-              onMouseDown={R.partial(this.onEntityMouseDown, [api, SELECTION_ENTITY_TYPE.NODE])}
-              onMouseUp={R.partial(this.onEntityMouseUp, [api, SELECTION_ENTITY_TYPE.NODE])}
+              onMouseDown={R.partial(this.onEntityMouseDown, [
+                api,
+                SELECTION_ENTITY_TYPE.NODE,
+              ])}
+              onMouseUp={R.partial(this.onEntityMouseUp, [
+                api,
+                SELECTION_ENTITY_TYPE.NODE,
+              ])}
               onDoubleClick={bindApi(api, this.onNodeDoubleClick)}
             />
             <Layers.LinksOverlay

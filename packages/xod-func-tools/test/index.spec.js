@@ -15,16 +15,14 @@ import {
 
 describe('explode', () => {
   it('should return Maybe.Just value', () => {
-    expect(explode(Maybe.Just(25)))
-      .to.be.equal(25);
+    expect(explode(Maybe.Just(25))).to.be.equal(25);
   });
   it('should throw error for Maybe.Nothing', () => {
     const fn = () => explode(Maybe.Nothing());
     expect(fn).to.throw(Error);
   });
   it('should return Either.Right value', () => {
-    expect(explode(Either.Right(25)))
-      .to.be.equal(25);
+    expect(explode(Either.Right(25))).to.be.equal(25);
   });
   it('should throw error for Either.Left', () => {
     const errMsg = 'err';
@@ -38,37 +36,32 @@ describe('explode', () => {
 });
 describe('foldEither', () => {
   it('should return Left value for Left', () => {
-    assert.equal(
-      foldEither(identity, F, Either.Left('left')),
-      'left'
-    );
+    assert.equal(foldEither(identity, F, Either.Left('left')), 'left');
   });
   it('should return Right value for Right', () => {
-    assert.equal(
-      foldEither(F, identity, Either.Right('right')),
-      'right'
-    );
+    assert.equal(foldEither(F, identity, Either.Right('right')), 'right');
   });
 });
 describe('tapP', () => {
   it('should return the same value', () => {
-    const promiseFn = () => new Promise((resolve) => {
-      setTimeout(() => resolve(true), 5);
-    });
+    const promiseFn = () =>
+      new Promise(resolve => {
+        setTimeout(() => resolve(true), 5);
+      });
 
     Promise.resolve(1)
       .then(tapP(promiseFn))
       .then(value => assert.equal(value, 1));
   });
   it('should pass argument into promiseFn', () => {
-    const promiseFn = arg => new Promise((resolve) => {
-      const newValue = arg + 5;
-      assert.equal(newValue, 6);
-      setTimeout(() => resolve(newValue), 5);
-    });
+    const promiseFn = arg =>
+      new Promise(resolve => {
+        const newValue = arg + 5;
+        assert.equal(newValue, 6);
+        setTimeout(() => resolve(newValue), 5);
+      });
 
-    Promise.resolve(1)
-      .then(tapP(promiseFn));
+    Promise.resolve(1).then(tapP(promiseFn));
   });
   it('should return Promise.reject if inner function return Promise.reject', () => {
     const promiseFn = () => Promise.reject('reject');
@@ -80,7 +73,9 @@ describe('tapP', () => {
 });
 describe('reduceM', () => {
   it('should return correct Maybe Result', () => {
-    const maybeFn = curry((acc, a) => ((a === 10) ? Maybe.Nothing() : Maybe.of(acc + a)));
+    const maybeFn = curry(
+      (acc, a) => (a === 10 ? Maybe.Nothing() : Maybe.of(acc + a))
+    );
 
     const a = reduceMaybe(maybeFn, 0, [1, 2, 3, 4]);
     assert.isTrue(a.isJust);
@@ -94,7 +89,8 @@ describe('reduceM', () => {
     assert.equal(c.getOrElse(null), 0);
   });
   it('should return correct Either Result', () => {
-    const eitherFn = (acc, a) => ((a === 10) ? Either.Left(100500) : Either.Right(acc + a));
+    const eitherFn = (acc, a) =>
+      a === 10 ? Either.Left(100500) : Either.Right(acc + a);
 
     const right = reduceEither(eitherFn, 0, [1, 2, 3, 4]);
     assert.isTrue(right.isRight);
@@ -152,15 +148,14 @@ describe('uniqLists', () => {
     );
   });
   it('returns filtered list with untouched empty lists', () => {
-    assert.deepEqual(
-      uniqLists([['a', 'b', 'c'], ['b', 'c', 'd'], [], []]),
-      [['a', 'b', 'c'], ['d'], [], []]
-    );
+    assert.deepEqual(uniqLists([['a', 'b', 'c'], ['b', 'c', 'd'], [], []]), [
+      ['a', 'b', 'c'],
+      ['d'],
+      [],
+      [],
+    ]);
   });
   it('returns empty list for empty list', () => {
-    assert.deepEqual(
-      uniqLists([]),
-      []
-    );
+    assert.deepEqual(uniqLists([]), []);
   });
 });

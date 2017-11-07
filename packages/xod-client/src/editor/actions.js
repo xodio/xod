@@ -18,9 +18,7 @@ import {
   bulkMoveNodesAndComments,
   bulkDeleteNodesAndComments,
 } from '../project/actions';
-import {
-  addError,
-} from '../messages/actions';
+import { addError } from '../messages/actions';
 
 import * as Selectors from './selectors';
 import * as ProjectSelectors from '../project/selectors';
@@ -78,7 +76,9 @@ export const doPinSelection = (nodeId, pinKey) => (dispatch, getState) => {
 
 export const deselectAll = () => (dispatch, getState) => {
   const state = getState();
-  if (!Selectors.hasSelection(state)) { return; }
+  if (!Selectors.hasSelection(state)) {
+    return;
+  }
 
   dispatch({
     type: ActionType.EDITOR_DESELECT_ALL,
@@ -105,13 +105,17 @@ export const selectNode = selectEntity(SELECTION_ENTITY_TYPE.NODE);
 export const selectComment = selectEntity(SELECTION_ENTITY_TYPE.COMMENT);
 export const selectLink = selectEntity(SELECTION_ENTITY_TYPE.LINK);
 
- // :: { nodes :: [Node], links :: [Link], comments :: [Comment] } -> Action
+// :: { nodes :: [Node], links :: [Link], comments :: [Comment] } -> Action
 export const setEditorSelection = entities => ({
   type: ActionType.EDITOR_SET_SELECION,
   payload: { entities },
 });
 
-export const addAndSelectNode = (typeId, position, currentPatchPath) => (dispatch) => {
+export const addAndSelectNode = (
+  typeId,
+  position,
+  currentPatchPath
+) => dispatch => {
   const newId = dispatch(addNode(typeId, position, currentPatchPath));
   dispatch(selectNode(newId));
 };
@@ -162,12 +166,14 @@ export const deleteSelection = () => (dispatch, getState) => {
   const currentPatchPath = Selectors.getCurrentPatchPath(state);
   const selection = Selectors.getSelection(state);
 
-  dispatch(bulkDeleteNodesAndComments(
-    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection),
-    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.LINK, selection),
-    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT, selection),
-    currentPatchPath
-  ));
+  dispatch(
+    bulkDeleteNodesAndComments(
+      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection),
+      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.LINK, selection),
+      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT, selection),
+      currentPatchPath
+    )
+  );
 };
 
 export const moveSelection = deltaPosition => (dispatch, getState) => {
@@ -175,12 +181,14 @@ export const moveSelection = deltaPosition => (dispatch, getState) => {
   const currentPatchPath = Selectors.getCurrentPatchPath(state);
   const selection = Selectors.getSelection(state);
 
-  dispatch(bulkMoveNodesAndComments(
-    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection),
-    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT, selection),
-    deltaPosition,
-    currentPatchPath
-  ));
+  dispatch(
+    bulkMoveNodesAndComments(
+      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection),
+      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT, selection),
+      deltaPosition,
+      currentPatchPath
+    )
+  );
 };
 
 export const setCurrentPatchOffset = newOffset => ({
@@ -199,7 +207,9 @@ export const switchPatch = patchPath => (dispatch, getState) => {
   const state = getState();
   const currentPatchPath = Selectors.getCurrentPatchPath(state);
 
-  if (currentPatchPath === patchPath) { return; }
+  if (currentPatchPath === patchPath) {
+    return;
+  }
 
   const tabs = Selectors.getTabs(state);
   const tab = Selectors.getTabByPatchPath(patchPath, tabs);
@@ -279,7 +289,7 @@ export const highlightSugessterItem = patchPath => ({
 const getClipboardDataType = () => (isEdge() ? 'Text' : CLIPBOARD_DATA_TYPE);
 
 // :: State -> Maybe ClipboardEntities
-const getClipboardEntities = (state) => {
+const getClipboardEntities = state => {
   const selection = Selectors.getSelection(state);
   if (R.isEmpty(selection)) return Maybe.Nothing();
 
@@ -298,8 +308,11 @@ export const copyEntities = event => (dispatch, getState) => {
 
   // linter confuses array and a Maybe
   // eslint-disable-next-line array-callback-return
-  getClipboardEntities(state).map((entities) => {
-    event.clipboardData.setData(getClipboardDataType(), JSON.stringify(entities, null, 2));
+  getClipboardEntities(state).map(entities => {
+    event.clipboardData.setData(
+      getClipboardDataType(),
+      JSON.stringify(entities, null, 2)
+    );
     event.preventDefault();
   });
 };
@@ -326,23 +339,28 @@ export const pasteEntities = event => (dispatch, getState) => {
 
   const pastedNodeTypes = R.map(XP.getNodeType, copiedEntities.nodes);
   if (R.contains(currentPatchPath, pastedNodeTypes)) {
-    dispatch(addError(CLIPBOARD_ERRORS[CLIPBOARD_ERROR_CODES.RECURSION_DETECTED]));
+    dispatch(
+      addError(CLIPBOARD_ERRORS[CLIPBOARD_ERROR_CODES.RECURSION_DETECTED])
+    );
     return;
   }
 
   const project = ProjectSelectors.getProject(state);
 
-  const availablePatches = R.compose(
-    R.map(XP.getPatchPath),
-    XP.listPatches,
-  )(project);
+  const availablePatches = R.compose(R.map(XP.getPatchPath), XP.listPatches)(
+    project
+  );
   const missingPatches = R.without(availablePatches, pastedNodeTypes);
 
   if (!R.isEmpty(missingPatches)) {
-    dispatch(addError(XP.formatString(
-      CLIPBOARD_ERRORS[CLIPBOARD_ERROR_CODES.NO_REQUIRED_PATCHES],
-      { missingPatches: missingPatches.join(', ') }
-    )));
+    dispatch(
+      addError(
+        XP.formatString(
+          CLIPBOARD_ERRORS[CLIPBOARD_ERROR_CODES.NO_REQUIRED_PATCHES],
+          { missingPatches: missingPatches.join(', ') }
+        )
+      )
+    );
     return;
   }
 
@@ -355,20 +373,18 @@ export const pasteEntities = event => (dispatch, getState) => {
     defaultNewPosition,
     R.ifElse(
       R.eqBy(
-        R.compose( // check if selection is structurally the same as copied entities
+        R.compose(
+          // check if selection is structurally the same as copied entities
           R.map(R.map(R.omit('id'))),
           R.dissoc('links'),
           resetClipboardEntitiesPosition
         ),
         copiedEntities
       ),
-      R.converge(
-        addPoints,
-        [
-          R.pipe(getBoundingBoxSize(currentPatch, project), R.assoc('y', 0)),
-          getBBoxTopLeftPosition,
-        ]
-      ),
+      R.converge(addPoints, [
+        R.pipe(getBoundingBoxSize(currentPatch, project), R.assoc('y', 0)),
+        getBBoxTopLeftPosition,
+      ]),
       R.always(defaultNewPosition)
     ),
     getClipboardEntities(state)
@@ -376,14 +392,18 @@ export const pasteEntities = event => (dispatch, getState) => {
 
   const entitiesToPaste = R.compose(
     R.evolve({
-      nodes: R.map(R.over(
-        R.lens(XP.getNodePosition, XP.setNodePosition),
-        addPoints(newPosition)
-      )),
-      comments: R.map(R.over(
-        R.lens(XP.getCommentPosition, XP.setCommentPosition),
-        addPoints(newPosition)
-      )),
+      nodes: R.map(
+        R.over(
+          R.lens(XP.getNodePosition, XP.setNodePosition),
+          addPoints(newPosition)
+        )
+      ),
+      comments: R.map(
+        R.over(
+          R.lens(XP.getCommentPosition, XP.setCommentPosition),
+          addPoints(newPosition)
+        )
+      ),
     }),
     resetClipboardEntitiesPosition,
     regenerateIds
@@ -399,7 +419,7 @@ export const pasteEntities = event => (dispatch, getState) => {
   });
 };
 
-export const cutEntities = event => (dispatch) => {
+export const cutEntities = event => dispatch => {
   if (isInput(document.activeElement)) return;
 
   dispatch(copyEntities(event));

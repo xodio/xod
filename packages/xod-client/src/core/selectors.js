@@ -18,19 +18,14 @@ import { SELECTION_ENTITY_TYPE, FOCUS_AREAS } from '../editor/constants';
 // Unsaved changes
 //
 
-export const hasUnsavedChanges = state => !R.equals(
-  Project.getProject(state),
-  state.lastSavedProject
-);
+export const hasUnsavedChanges = state =>
+  !R.equals(Project.getProject(state), state.lastSavedProject);
 
 //
 // Docs sidebar
 //
 
-const fallbackMaybe = (a, b) => R.when(
-  Maybe.isNothing,
-  R.always(b)
-)(a);
+const fallbackMaybe = (a, b) => R.when(Maybe.isNothing, R.always(b))(a);
 
 export const getPatchForHelpbar = createSelector(
   [
@@ -55,7 +50,7 @@ export const getPatchForHelpbar = createSelector(
       R.map(XP.getNodeType),
       R.map(({ id }) => currentPatchNodes[id]),
       Maybe,
-      R.find(R.propEq('entity', SELECTION_ENTITY_TYPE.NODE)),
+      R.find(R.propEq('entity', SELECTION_ENTITY_TYPE.NODE))
     )(editorSelection);
     const maybeSelectedPathInProjectBrowser = Maybe(selectedPatchPath);
 
@@ -66,17 +61,10 @@ export const getPatchForHelpbar = createSelector(
     return R.compose(
       R.chain(patchPath => XP.getPatchByPath(patchPath, project)),
       R.apply(fallbackMaybe), // TODO: works with only two sources
-      R.when(
-        () => focusedArea === FOCUS_AREAS.PROJECT_BROWSER,
-        R.reverse
-      )
-    )([
-      maybeSelectedNodeTypeInWorkarea,
-      maybeSelectedPathInProjectBrowser,
-    ]);
+      R.when(() => focusedArea === FOCUS_AREAS.PROJECT_BROWSER, R.reverse)
+    )([maybeSelectedNodeTypeInWorkarea, maybeSelectedPathInProjectBrowser]);
   }
 );
-
 
 export default {
   User,

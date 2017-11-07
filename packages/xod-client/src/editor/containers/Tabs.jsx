@@ -14,45 +14,35 @@ import { assocIndexes, indexById } from '../../utils/array';
 import TabsContainer from '../components/TabsContainer';
 import TabsItem from '../components/TabsItem';
 
-const SortableItem = sortableElement(
-  ({ value }) => (
-    <TabsItem
-      key={value.id}
-      data={value}
-      onClick={value.onClick}
-      onClose={value.onClose}
-    />
-  )
-);
+const SortableItem = sortableElement(({ value }) => (
+  <TabsItem
+    key={value.id}
+    data={value}
+    onClick={value.onClick}
+    onClose={value.onClose}
+  />
+));
 
-const SortableList = sortableContainer(
-  ({ items, onClick, onClose }) => (
-    <TabsContainer>
-      {items.map((value, index) => {
-        const item = R.merge(
-          value,
-          {
-            onClick,
-            onClose,
-          }
-        );
+const SortableList = sortableContainer(({ items, onClick, onClose }) => (
+  <TabsContainer>
+    {items.map((value, index) => {
+      const item = R.merge(value, {
+        onClick,
+        onClose,
+      });
 
-        return (
-          <SortableItem
-            key={`item-${value.id}`}
-            index={index}
-            value={item}
-
-            onClick={onClick}
-            onClose={onClose}
-          />
-        );
-      }
-      )}
-    </TabsContainer>
-  )
-);
-
+      return (
+        <SortableItem
+          key={`item-${value.id}`}
+          index={index}
+          value={item}
+          onClick={onClick}
+          onClose={onClose}
+        />
+      );
+    })}
+  </TabsContainer>
+));
 
 class Tabs extends React.Component {
   constructor(props) {
@@ -85,9 +75,7 @@ class Tabs extends React.Component {
   }
 
   getTabs() {
-    return R.sortBy(
-      R.prop('index')
-    )(R.values(this.props.tabs));
+    return R.sortBy(R.prop('index'))(R.values(this.props.tabs));
   }
 
   render() {
@@ -101,7 +89,6 @@ class Tabs extends React.Component {
         lockToContainerEdges
         lockOffset="-5%"
         helperClass="is-sorting"
-
         onClick={this.onSwitchTab}
         onClose={this.onCloseTab}
       />
@@ -119,11 +106,14 @@ const mapStateToProps = R.applySpec({
 });
 
 const mapDispatchToprops = dispatch => ({
-  actions: bindActionCreators({
-    switchTab: Actions.switchTab,
-    closeTab: Actions.closeTab,
-    sortTabs: Actions.sortTabs,
-  }, dispatch),
+  actions: bindActionCreators(
+    {
+      switchTab: Actions.switchTab,
+      closeTab: Actions.closeTab,
+      sortTabs: Actions.sortTabs,
+    },
+    dispatch
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToprops)(Tabs);

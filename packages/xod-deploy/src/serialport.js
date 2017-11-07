@@ -43,27 +43,25 @@ const delay = ms => () => delayP(ms);
 
 // :: PortOptions -> Port -> Promise Port Error
 const setPortOptions = R.curry(
-  (options, port) => new Promise(
-    (resolve, reject) => {
-      port.set(options, (err) => {
-        if (err) { reject(err); }
+  (options, port) =>
+    new Promise((resolve, reject) => {
+      port.set(options, err => {
+        if (err) {
+          reject(err);
+        }
         resolve(port);
       });
-    }
-  )
+    })
 );
 
 // :: Port -> Promise Port Error
-const flushPort = port => new Promise(
-  (resolve, reject) => {
-    port.flush(
-      (err) => {
-        if (err) reject(err);
-        resolve(port);
-      }
-    );
-  }
-);
+const flushPort = port =>
+  new Promise((resolve, reject) => {
+    port.flush(err => {
+      if (err) reject(err);
+      resolve(port);
+    });
+  });
 
 // =============================================================================
 //
@@ -74,7 +72,7 @@ const flushPort = port => new Promise(
 /** Lists the available {@link Port}s.
  * @type {Function}
  * @return {Promise<Port[], Error>} */
- // :: () -> [PortInfo]
+// :: () -> [PortInfo]
 export const listPorts = () =>
   new Promise((resolve, reject) => {
     // serialport is a native module that can conflict in ABI versions
@@ -113,14 +111,13 @@ export const openPort = (portName, opts = {}) =>
   });
 
 // :: Port -> Promise Port Error
-export const closePort = port => new Promise(
-  (resolve, reject) => {
-    port.close((err) => {
+export const closePort = port =>
+  new Promise((resolve, reject) => {
+    port.close(err => {
       if (err) reject(err);
       resolve(port);
     });
-  }
-);
+  });
 
 // :: PortName -> (String -> *) -> Promise Port Error
 export const openAndReadPort = (portName, onData, onClose) => {
@@ -131,30 +128,32 @@ export const openAndReadPort = (portName, onData, onClose) => {
   return openPort(portName, {
     baudRate: 115200,
     parser: readline('\n'),
-  }).then(R.tap(
-    (port) => {
+  }).then(
+    R.tap(port => {
       port.on('data', onData);
       port.on('close', onClose);
-    }
-  ));
+    })
+  );
 };
 
 // :: PortName -> Promise Port Error
-export const flushSerialBuffer = portName => openPort(portName)
-  .then(flushPort)
-  .then(setPortOptions({ dtr: false, rts: false }))
-  .then(tapP(delay(100)))
-  .then(setPortOptions({ dtr: true, rts: true }))
-  .then(closePort);
+export const flushSerialBuffer = portName =>
+  openPort(portName)
+    .then(flushPort)
+    .then(setPortOptions({ dtr: false, rts: false }))
+    .then(tapP(delay(100)))
+    .then(setPortOptions({ dtr: true, rts: true }))
+    .then(closePort);
 
 // :: PortName -> Promise Port Error
-export const touchPort1200 = portName => openPort(portName, { baudRate: 1200 })
-  .then(setPortOptions({ dtr: false }))
-  .then(closePort)
-  .then(tapP(delay(400)));
+export const touchPort1200 = portName =>
+  openPort(portName, { baudRate: 1200 })
+    .then(setPortOptions({ dtr: false }))
+    .then(closePort)
+    .then(tapP(delay(400)));
 
 // :: PortName -> Promise PortName Error
-export const waitNewPort = async (initialPorts) => {
+export const waitNewPort = async initialPorts => {
   let beforePorts = initialPorts;
   let elapsed = 0;
   const enumDelay = 50;
@@ -162,7 +161,7 @@ export const waitNewPort = async (initialPorts) => {
   while (elapsed < 10000) {
     const afterPorts = await listPorts();
     const diff = R.differenceWith(
-      (a, b) => (a.comName === b.comName),
+      (a, b) => a.comName === b.comName,
       afterPorts,
       beforePorts
     );

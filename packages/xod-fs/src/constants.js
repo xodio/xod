@@ -12,13 +12,7 @@ export const IMPL_FILENAMES = {
 };
 export const IMPL_TYPES = Object.keys(IMPL_FILENAMES);
 
-export const BASE64_EXTNAMES = [
-  '.png',
-  '.jpg',
-  '.jpeg',
-  '.gif',
-  '.fzz',
-];
+export const BASE64_EXTNAMES = ['.png', '.jpg', '.jpeg', '.gif', '.fzz'];
 export const UTF8_EXTNAMES = [
   '.md',
   '.svg',

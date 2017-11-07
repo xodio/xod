@@ -15,10 +15,7 @@ export {
 } from './load';
 export { loadLibsFromWorkspaceList } from './loadLibs';
 export * from './utils';
-export {
-  findClosestProjectDir,
-  findClosestWorkspaceDir,
-} from './find';
+export { findClosestProjectDir, findClosestWorkspaceDir } from './find';
 
 export * from './constants';
 

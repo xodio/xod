@@ -53,7 +53,8 @@ class Editor extends React.Component {
 
   onAddNode(patchPath) {
     // TODO: rewrite this when implementing "zombie" nodes
-    const position = this.props.suggesterPlacePosition || this.props.defaultNodePosition;
+    const position =
+      this.props.suggesterPlacePosition || this.props.defaultNodePosition;
 
     this.hideSuggester();
     this.props.actions.addNode(
@@ -65,10 +66,12 @@ class Editor extends React.Component {
 
   getHotkeyHandlers() {
     return {
-      [COMMAND.UNDO]: () => this.props.actions.undo(this.props.currentPatchPath),
-      [COMMAND.REDO]: () => this.props.actions.redo(this.props.currentPatchPath),
+      [COMMAND.UNDO]: () =>
+        this.props.actions.undo(this.props.currentPatchPath),
+      [COMMAND.REDO]: () =>
+        this.props.actions.redo(this.props.currentPatchPath),
       [COMMAND.TOGGLE_HELPBAR]: this.toggleHelpbar,
-      [COMMAND.INSERT_NODE]: (event) => {
+      [COMMAND.INSERT_NODE]: event => {
         if (isInputTarget(event)) return;
         this.showSuggester(null);
       },
@@ -97,21 +100,22 @@ class Editor extends React.Component {
       patchesIndex,
     } = this.props;
 
-    const openedPatch = currentPatchPath
-      ? (
-        <Patch
-          ref={(el) => { this.patchRef = el; }}
-          patchPath={currentPatchPath}
-          size={this.patchSize}
-          onDoubleClick={this.showSuggester}
-        />
-      ) : (
-        <NoPatch />
-      );
+    const openedPatch = currentPatchPath ? (
+      <Patch
+        ref={el => {
+          this.patchRef = el;
+        }}
+        patchPath={currentPatchPath}
+        size={this.patchSize}
+        onDoubleClick={this.showSuggester}
+      />
+    ) : (
+      <NoPatch />
+    );
 
-    const suggester = (this.props.suggesterIsVisible) ? (
+    const suggester = this.props.suggesterIsVisible ? (
       <Suggester
-        addClassName={(this.props.isHelpbarVisible) ? 'with-helpbar' : ''}
+        addClassName={this.props.isHelpbarVisible ? 'with-helpbar' : ''}
         index={patchesIndex}
         onAddNode={this.onAddNode}
         onBlur={this.hideSuggester}
@@ -119,23 +123,24 @@ class Editor extends React.Component {
       />
     ) : null;
 
-    const DebuggerContainer = (this.props.isDebuggerVisible) ? <Debugger /> : null;
-    const BreadcrumbsContainer = (
-      this.props.isDebuggerVisible &&
-      this.props.currentTabId === DEBUGGER_TAB_ID
-    ) ? <Breadcrumbs /> : null;
-
-    const DebugSessionStopButton = (
-      this.props.isDebugSessionRunning &&
-      this.props.stopDebuggerSession
-    ) ? (
-      <button
-        className="debug-session-stop-button Button Button--light"
-        onClick={this.props.stopDebuggerSession}
-      >
-        <Icon name="stop" /> Stop debug
-      </button>
+    const DebuggerContainer = this.props.isDebuggerVisible ? (
+      <Debugger />
     ) : null;
+    const BreadcrumbsContainer =
+      this.props.isDebuggerVisible &&
+      this.props.currentTabId === DEBUGGER_TAB_ID ? (
+        <Breadcrumbs />
+      ) : null;
+
+    const DebugSessionStopButton =
+      this.props.isDebugSessionRunning && this.props.stopDebuggerSession ? (
+        <button
+          className="debug-session-stop-button Button Button--light"
+          onClick={this.props.stopDebuggerSession}
+        >
+          <Icon name="stop" /> Stop debug
+        </button>
+      ) : null;
 
     return (
       <HotKeys handlers={this.getHotkeyHandlers()} className="Editor">
@@ -145,25 +150,33 @@ class Editor extends React.Component {
         >
           <FocusTrap
             className="ProjectBrowser-container"
-            onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.PROJECT_BROWSER)}
+            onFocus={() =>
+              this.props.actions.setFocusedArea(FOCUS_AREAS.PROJECT_BROWSER)
+            }
           >
             <ProjectBrowser />
           </FocusTrap>
           <FocusTrap
             className="Inspector-container"
-            onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.INSPECTOR)}
+            onFocus={() =>
+              this.props.actions.setFocusedArea(FOCUS_AREAS.INSPECTOR)
+            }
           >
             <Inspector
               selection={selection}
               currentPatch={currentPatch}
               onPropUpdate={this.props.actions.updateNodeProperty}
-              onPatchDescriptionUpdate={this.props.actions.updatePatchDescription}
+              onPatchDescriptionUpdate={
+                this.props.actions.updatePatchDescription
+              }
             />
           </FocusTrap>
         </Sidebar>
         <FocusTrap
           className="Workarea-container"
-          onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.WORKAREA)}
+          onFocus={() =>
+            this.props.actions.setFocusedArea(FOCUS_AREAS.WORKAREA)
+          }
         >
           <Workarea>
             <Tabs />
@@ -226,18 +239,21 @@ const mapStateToProps = R.applySpec({
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    updateNodeProperty: ProjectActions.updateNodeProperty,
-    updatePatchDescription: ProjectActions.updatePatchDescription,
-    undo: ProjectActions.undoPatch,
-    redo: ProjectActions.redoPatch,
-    toggleHelpbar: Actions.toggleHelpbar,
-    setFocusedArea: Actions.setFocusedArea,
-    addNode: ProjectActions.addNode,
-    showSuggester: Actions.showSuggester,
-    hideSuggester: Actions.hideSuggester,
-    highlightSugessterItem: Actions.highlightSugessterItem,
-  }, dispatch),
+  actions: bindActionCreators(
+    {
+      updateNodeProperty: ProjectActions.updateNodeProperty,
+      updatePatchDescription: ProjectActions.updatePatchDescription,
+      undo: ProjectActions.undoPatch,
+      redo: ProjectActions.redoPatch,
+      toggleHelpbar: Actions.toggleHelpbar,
+      setFocusedArea: Actions.setFocusedArea,
+      addNode: ProjectActions.addNode,
+      showSuggester: Actions.showSuggester,
+      hideSuggester: Actions.hideSuggester,
+      highlightSugessterItem: Actions.highlightSugessterItem,
+    },
+    dispatch
+  ),
 });
 
 export default R.compose(

@@ -16,29 +16,30 @@ describe('Package Manager', () => {
   // Installing
   it('installHardware() downloads and installs not existent hardware', () =>
     PM.installHardware('arduino:avr:uno', packagesDir, packageIndex)
-      .then((res) => {
+      .then(res => {
         assert.isTrue(res.installed);
         assert.isTrue(res.downloaded);
       })
       // Call it again to be sure that we won't download and install it again
-      .then(() => PM.installHardware('arduino:avr:uno', packagesDir, packageIndex))
-      .then((res) => {
+      .then(() =>
+        PM.installHardware('arduino:avr:uno', packagesDir, packageIndex)
+      )
+      .then(res => {
         assert.isTrue(res.installed);
         assert.isFalse(res.downloaded);
-      })
-  );
+      }));
   it('installTools() downloads and installs all tools', () =>
-    PM.installTools('arduino:avr:uno', packagesDir, packageIndex)
-      .then((res) => {
-        assert.isTrue(res.installed);
-        assert.isTrue(res.downloaded);
-      })
-  );
+    PM.installTools('arduino:avr:uno', packagesDir, packageIndex).then(res => {
+      assert.isTrue(res.installed);
+      assert.isTrue(res.downloaded);
+    }));
   it('installArchitecture() downloads and installs hardware and all tools', () =>
-    PM.installArchitecture('arduino:sam:arduino_due_x', packagesDir, packageIndex)
-      .then((res) => {
-        assert.isTrue(res.hardware.installed);
-        assert.isTrue(res.tools.installed);
-      })
-  );
+    PM.installArchitecture(
+      'arduino:sam:arduino_due_x',
+      packagesDir,
+      packageIndex
+    ).then(res => {
+      assert.isTrue(res.hardware.installed);
+      assert.isTrue(res.tools.installed);
+    }));
 });

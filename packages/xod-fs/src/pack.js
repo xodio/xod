@@ -7,10 +7,9 @@ import { isProjectFile, isPatchFile, getFileContent } from './utils';
 export default def(
   'packProject :: [AnyXodFile] -> Map PatchPath Patch -> Project',
   (unpackedData, libraryPatches = {}) => {
-    const project = R.compose(
-      getFileContent,
-      R.find(isProjectFile)
-    )(unpackedData);
+    const project = R.compose(getFileContent, R.find(isProjectFile))(
+      unpackedData
+    );
 
     const projectPatches = R.compose(
       R.indexBy(getPatchPath),

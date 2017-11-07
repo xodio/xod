@@ -79,7 +79,10 @@ describe('Project', () => {
       const project = Helper.defaultizeProject({
         authors: ['Vasya', 'Petya'],
       });
-      expect(Project.getProjectAuthors(project)).to.have.members(['Vasya', 'Petya']);
+      expect(Project.getProjectAuthors(project)).to.have.members([
+        'Vasya',
+        'Petya',
+      ]);
     });
   });
 
@@ -110,8 +113,14 @@ describe('Project', () => {
   });
   describe('getPatchByPathUnsafe', () => {
     it('should throw error if project is empty object', () => {
-      const fn = () => Project.getPatchByPathUnsafe('does/not/exist', emptyProject);
-      expect(fn).to.throw(Error, formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: 'does/not/exist' }));
+      const fn = () =>
+        Project.getPatchByPathUnsafe('does/not/exist', emptyProject);
+      expect(fn).to.throw(
+        Error,
+        formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
+          patchPath: 'does/not/exist',
+        })
+      );
     });
     it('should throw error if there is no patch with such path', () => {
       const project = Helper.defaultizeProject({
@@ -120,7 +129,12 @@ describe('Project', () => {
         },
       });
       const fn = () => Project.getPatchByPathUnsafe('@/two', project);
-      expect(fn).to.throw(Error, formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: '@/two' }));
+      expect(fn).to.throw(
+        Error,
+        formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
+          patchPath: '@/two',
+        })
+      );
     });
     it('should return Patch if project have a patch', () => {
       const project = Helper.defaultizeProject({
@@ -144,13 +158,21 @@ describe('Project', () => {
     });
 
     it('should return Nothing for unexisting patch', () => {
-      const maybe = Project.getPatchByNode(Helper.defaultizeNode({ type: 'test/unexisting/patch' }), project);
+      const maybe = Project.getPatchByNode(
+        Helper.defaultizeNode({ type: 'test/unexisting/patch' }),
+        project
+      );
       expect(maybe.isNothing).to.be.true();
     });
     it('should return Just<Patch> for existing patch in the project', () => {
-      const maybe = Project.getPatchByNode(Helper.defaultizeNode({ type: 'xod/core/test' }), project);
+      const maybe = Project.getPatchByNode(
+        Helper.defaultizeNode({ type: 'xod/core/test' }),
+        project
+      );
       expect(maybe.isJust).to.be.true();
-      expect(R.unnest(maybe)).to.be.deep.equal(project.patches['xod/core/test']);
+      expect(R.unnest(maybe)).to.be.deep.equal(
+        project.patches['xod/core/test']
+      );
     });
   });
   describe('getNodePins', () => {
@@ -164,14 +186,22 @@ describe('Project', () => {
       },
     });
 
-    const expectedPins = [Pin.createPin('a', 'number', 'input', 0, 'A', '', true, 0)];
+    const expectedPins = [
+      Pin.createPin('a', 'number', 'input', 0, 'A', '', true, 0),
+    ];
 
     it('should return Nothing for unexisting patch', () => {
-      const maybe = Project.getNodePins(Helper.defaultizeNode({ type: 'test/unexisting/patch' }), emptyProject);
+      const maybe = Project.getNodePins(
+        Helper.defaultizeNode({ type: 'test/unexisting/patch' }),
+        emptyProject
+      );
       expect(maybe.isNothing).to.be.true();
     });
     it('should return Just<Pin[]> for existing pin', () => {
-      const maybe = Project.getNodePins(Helper.defaultizeNode({ type: 'xod/core/test' }), project);
+      const maybe = Project.getNodePins(
+        Helper.defaultizeNode({ type: 'xod/core/test' }),
+        project
+      );
       expect(maybe.isJust).to.be.true();
       expect(R.unnest(maybe)).to.be.deep.equal(expectedPins);
     });
@@ -187,18 +217,39 @@ describe('Project', () => {
       },
     });
 
-    const expectedPin = Pin.createPin('a', 'number', 'input', 0, 'A', '', true, 0);
+    const expectedPin = Pin.createPin(
+      'a',
+      'number',
+      'input',
+      0,
+      'A',
+      '',
+      true,
+      0
+    );
 
     it('should return Nothing for unexisting patch', () => {
-      const maybe = Project.getNodePin('test', Helper.defaultizeNode({ type: 'test/unexisting/patch' }), emptyProject);
+      const maybe = Project.getNodePin(
+        'test',
+        Helper.defaultizeNode({ type: 'test/unexisting/patch' }),
+        emptyProject
+      );
       expect(maybe.isNothing).to.be.true();
     });
     it('should return Nothing for unexisting pin', () => {
-      const maybe = Project.getNodePin('b', Helper.defaultizeNode({ type: 'xod/core/test' }), project);
+      const maybe = Project.getNodePin(
+        'b',
+        Helper.defaultizeNode({ type: 'xod/core/test' }),
+        project
+      );
       expect(maybe.isNothing).to.be.true();
     });
     it('should return Just<Pin> for existing pin', () => {
-      const maybe = Project.getNodePin('a', Helper.defaultizeNode({ type: 'xod/core/test' }), project);
+      const maybe = Project.getNodePin(
+        'a',
+        Helper.defaultizeNode({ type: 'xod/core/test' }),
+        project
+      );
       expect(maybe.isJust).to.be.true();
       expect(R.unnest(maybe)).to.be.deep.equal(expectedPin);
     });
@@ -217,36 +268,57 @@ describe('Project', () => {
       );
 
       expect(newProject.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, newProject, CONST.ERROR.PATCH_REBASING_BUILT_IN);
+      Helper.expectErrorMessage(
+        expect,
+        newProject,
+        CONST.ERROR.PATCH_REBASING_BUILT_IN
+      );
     });
     it('should return Either.Left if patch is not in the project', () => {
-      const newProject = Project.validatePatchRebase('@/test', '@/patch', emptyProject);
+      const newProject = Project.validatePatchRebase(
+        '@/test',
+        '@/patch',
+        emptyProject
+      );
 
       expect(newProject.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, newProject, formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: '@/patch' }));
+      Helper.expectErrorMessage(
+        expect,
+        newProject,
+        formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
+          patchPath: '@/patch',
+        })
+      );
     });
     it('should return Either.Left if another patch with same path already exist', () => {
       const project = Helper.defaultizeProject({
         patches: { '@/test': {}, '@/patch': {} },
       });
-      const newProject = Project.validatePatchRebase('@/test', '@/patch', project);
+      const newProject = Project.validatePatchRebase(
+        '@/test',
+        '@/patch',
+        project
+      );
 
       expect(newProject.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, newProject, CONST.ERROR.PATCH_PATH_OCCUPIED);
+      Helper.expectErrorMessage(
+        expect,
+        newProject,
+        CONST.ERROR.PATCH_PATH_OCCUPIED
+      );
     });
     it('should return Either.Right with Project', () => {
       const patch = {};
       const oldPath = '@/test';
       const newPath = '@/anotherPath';
-      const project = Helper.defaultizeProject({ patches: { [oldPath]: patch } });
+      const project = Helper.defaultizeProject({
+        patches: { [oldPath]: patch },
+      });
 
       const newProject = Project.validatePatchRebase(newPath, oldPath, project);
-      Helper.expectEither(
-        (proj) => {
-          expect(proj).to.be.equal(project);
-        },
-        newProject
-      );
+      Helper.expectEither(proj => {
+        expect(proj).to.be.equal(project);
+      }, newProject);
     });
   });
   describe('validatePatchContents', () => {
@@ -285,12 +357,16 @@ describe('Project', () => {
     });
 
     it('should be Either.Left for non-existent type', () => {
-      const result = Project.validatePatchContents(patchWithNodeOnly, emptyProject);
+      const result = Project.validatePatchContents(
+        patchWithNodeOnly,
+        emptyProject
+      );
       expect(result.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, result, formatString(
-        CONST.ERROR.TYPE_NOT_FOUND,
-        { type: '@/test' }
-      ));
+      Helper.expectErrorMessage(
+        expect,
+        result,
+        formatString(CONST.ERROR.TYPE_NOT_FOUND, { type: '@/test' })
+      );
     });
     it('should be Either.Left for non-existent pins', () => {
       const result = Project.validatePatchContents(fullPatch, smallProject);
@@ -307,7 +383,10 @@ describe('Project', () => {
       );
     });
     it('should be Either.Right for patch with valid node without links', () => {
-      const result = Project.validatePatchContents(patchWithNodeOnly, smallProject);
+      const result = Project.validatePatchContents(
+        patchWithNodeOnly,
+        smallProject
+      );
       expect(result.isRight).to.be.true();
       Helper.expectEither(
         validPatch => expect(validPatch).to.be.equal(patchWithNodeOnly),
@@ -329,11 +408,13 @@ describe('Project', () => {
     it('should return Either.Left if patch is not valid', () => {
       const invalidPatch = R.pipe(
         Patch.createPatch,
-        Patch.assocNode(
-          Node.createNode({ x: 0, y: 0 }, 'not/existing/type')
-        )
+        Patch.assocNode(Node.createNode({ x: 0, y: 0 }, 'not/existing/type'))
       )();
-      const newProject = Project.assocPatch('@/test', invalidPatch, emptyProject);
+      const newProject = Project.assocPatch(
+        '@/test',
+        invalidPatch,
+        emptyProject
+      );
       expect(newProject.isLeft).to.be.true();
     });
     it('should return Either.Right with associated patch', () => {
@@ -341,15 +422,12 @@ describe('Project', () => {
       const patch = Patch.createPatch();
       const newProject = Project.assocPatch(path, patch, emptyProject);
       expect(newProject.isRight).to.be.true();
-      Helper.expectEither(
-        (proj) => {
-          expect(proj)
-            .to.have.property('patches')
-            .that.have.property(path)
-            .that.deep.equals(R.assoc('path', path, patch));
-        },
-        newProject
-      );
+      Helper.expectEither(proj => {
+        expect(proj)
+          .to.have.property('patches')
+          .that.have.property(path)
+          .that.deep.equals(R.assoc('path', path, patch));
+      }, newProject);
     });
     it('should not remove other patches from project', () => {
       const oldPath = '@/old';
@@ -363,13 +441,14 @@ describe('Project', () => {
       });
       const newProject = Project.assocPatch(newPath, newPatch, project);
       expect(newProject.isRight).to.be.true();
-      Helper.expectEither(
-        (proj) => {
-          expect(Project.getPatchByPathUnsafe(oldPath, proj)).to.be.deep.equal(oldPatch);
-          expect(Project.getPatchByPathUnsafe(newPath, proj)).to.be.deep.equal(newPatch);
-        },
-        newProject
-      );
+      Helper.expectEither(proj => {
+        expect(Project.getPatchByPathUnsafe(oldPath, proj)).to.be.deep.equal(
+          oldPatch
+        );
+        expect(Project.getPatchByPathUnsafe(newPath, proj)).to.be.deep.equal(
+          newPatch
+        );
+      }, newProject);
     });
   });
   describe('assocPatchList', () => {
@@ -381,23 +460,32 @@ describe('Project', () => {
     it('should return Right Projct with associated patches', () => {
       const res = Project.assocPatchList(patches, emptyProject);
       Helper.expectEither(
-        proj => R.forEach(
-          (expectedPatch) => {
+        proj =>
+          R.forEach(expectedPatch => {
             const patchPath = Patch.getPatchPath(expectedPatch);
-            expect(Project.getPatchByPathUnsafe(patchPath, proj)).to.be.deep.equal(expectedPatch);
-          },
-          patches
-        ),
+            expect(
+              Project.getPatchByPathUnsafe(patchPath, proj)
+            ).to.be.deep.equal(expectedPatch);
+          }, patches),
         res
       );
     });
     it('should return Left Error, cause one of patches is invalid', () => {
       const invalidPatches = R.append(
-        Helper.defaultizePatch({ path: '@/wrong', nodes: { a: { type: 'xod/test/not-existent-one' } } }),
+        Helper.defaultizePatch({
+          path: '@/wrong',
+          nodes: { a: { type: 'xod/test/not-existent-one' } },
+        }),
         patches
       );
       const res = Project.assocPatchList(invalidPatches, emptyProject);
-      Helper.expectErrorMessage(expect, res, formatString(CONST.ERROR.TYPE_NOT_FOUND, { type: 'xod/test/not-existent-one' }));
+      Helper.expectErrorMessage(
+        expect,
+        res,
+        formatString(CONST.ERROR.TYPE_NOT_FOUND, {
+          type: 'xod/test/not-existent-one',
+        })
+      );
     });
   });
   describe('dissocPatch', () => {
@@ -431,8 +519,9 @@ describe('Project', () => {
   });
   describe('rebasePatch', () => {
     it('should return Either.Left if something is not valid', () => {
-      expect(Project.rebasePatch('@/new', '@/old', emptyProject).isLeft)
-        .to.be.true();
+      expect(
+        Project.rebasePatch('@/new', '@/old', emptyProject).isLeft
+      ).to.be.true();
     });
     it('should return Either.Right for correct values', () => {
       const oldPath = '@/test';
@@ -442,15 +531,12 @@ describe('Project', () => {
       const newProject = Project.rebasePatch(newPath, oldPath, project);
       expect(newProject.isRight).to.be.true();
 
-      Helper.expectEither(
-        (proj) => {
-          expect(proj)
-            .to.have.property('patches')
-            .that.have.property(newPath);
-          expect(proj.patches).to.have.all.keys(newPath);
-        },
-        newProject
-      );
+      Helper.expectEither(proj => {
+        expect(proj)
+          .to.have.property('patches')
+          .that.have.property(newPath);
+        expect(proj.patches).to.have.all.keys(newPath);
+      }, newProject);
     });
     it('should update path property of a moved patch', () => {
       const oldPath = '@/test';
@@ -463,16 +549,13 @@ describe('Project', () => {
 
       const newProject = Project.rebasePatch(newPath, oldPath, project);
 
-      Helper.expectEither(
-        (proj) => {
-          expect(proj)
-            .to.have.property('patches')
-            .that.have.property(newPath)
-            .that.have.property('path')
-            .that.equals(newPath);
-        },
-        newProject
-      );
+      Helper.expectEither(proj => {
+        expect(proj)
+          .to.have.property('patches')
+          .that.have.property(newPath)
+          .that.have.property('path')
+          .that.equals(newPath);
+      }, newProject);
     });
     it('should update all reference on changed path', () => {
       const oldPath = '@/test';
@@ -490,20 +573,17 @@ describe('Project', () => {
       const newProject = Project.rebasePatch(newPath, oldPath, project);
       expect(newProject.isRight).to.be.true();
 
-      Helper.expectEither(
-        (proj) => {
-          expect(proj)
-            .to.have.property('patches')
-            .that.have.property(withNodesPath)
-            .that.have.property('nodes')
-            .that.have.property('1')
-            .that.have.property('type')
-            .that.equal(newPath);
+      Helper.expectEither(proj => {
+        expect(proj)
+          .to.have.property('patches')
+          .that.have.property(withNodesPath)
+          .that.have.property('nodes')
+          .that.have.property('1')
+          .that.have.property('type')
+          .that.equal(newPath);
 
-          expect(proj.patches).to.have.all.keys([newPath, withNodesPath]);
-        },
-        newProject
-      );
+        expect(proj.patches).to.have.all.keys([newPath, withNodesPath]);
+      }, newProject);
     });
   });
 
@@ -531,10 +611,7 @@ describe('Project', () => {
     });
     describe('listPatchesWithoutBuiltIns', () => {
       it('should return empty array for empty project', () => {
-        assert.deepEqual(
-          [],
-          Project.listPatchesWithoutBuiltIns(emptyProject)
-        );
+        assert.deepEqual([], Project.listPatchesWithoutBuiltIns(emptyProject));
       });
       it('should return array with patches for non-empty project', () => {
         expect(Project.listPatchesWithoutBuiltIns(project))
@@ -555,10 +632,7 @@ describe('Project', () => {
           BUILT_IN_PATCH_PATHS
         );
 
-        assert.sameMembers(
-          expected,
-          Project.listPatchPaths(project)
-        );
+        assert.sameMembers(expected, Project.listPatchPaths(project));
       });
     });
     describe('listLocalPatches', () => {
@@ -586,10 +660,7 @@ describe('Project', () => {
           R.values(Project.BUILT_IN_PATCHES)
         );
 
-        assert.sameMembers(
-          expected,
-          Project.listLibraryPatches(project)
-        );
+        assert.sameMembers(expected, Project.listLibraryPatches(project));
       });
     });
   });
@@ -605,7 +676,10 @@ describe('Project', () => {
           },
           links: {
             someLink: {
-              input: { nodeId: 'instanceOfPatchInQuestion', pinKey: 'importantTerminal' },
+              input: {
+                nodeId: 'instanceOfPatchInQuestion',
+                pinKey: 'importantTerminal',
+              },
               output: { nodeId: 'someOtherNode', pinKey: '__out__' },
             },
           },
@@ -659,11 +733,13 @@ describe('Project', () => {
     };
     // :: Project -> Map PatchPath (Map NodeId PatchPath)
     const getActualMap = R.compose(
-      R.map(R.compose(
-        R.map(Node.getNodeType),
-        R.indexBy(Node.getNodeId),
-        Patch.listNodes
-      )),
+      R.map(
+        R.compose(
+          R.map(Node.getNodeType),
+          R.indexBy(Node.getNodeId),
+          Patch.listNodes
+        )
+      ),
       R.indexBy(Patch.getPatchPath),
       Project.listPatchesWithoutBuiltIns
     );
@@ -683,7 +759,9 @@ describe('Project', () => {
     it('returns Either Error about non-existing patch in the project', () => {
       const res = Project.validateProject(project);
       const err = new Error(
-        formatString(CONST.ERROR.TYPE_NOT_FOUND, { patchPath: '@/not-existing-patch' })
+        formatString(CONST.ERROR.TYPE_NOT_FOUND, {
+          patchPath: '@/not-existing-patch',
+        })
       );
 
       assert.equal(res.isLeft, true);
@@ -718,10 +796,7 @@ describe('Project', () => {
     // :: NodeId -> Patch -> [PinKey]
     const getPinKeysByNodeId = R.compose(
       Maybe.maybe([], R.identity),
-      R.map(R.compose(
-        R.keys,
-        Project.getPinsForNode(R.__, curPatch, project)
-      )),
+      R.map(R.compose(R.keys, Project.getPinsForNode(R.__, curPatch, project))),
       Patch.getNodeById
     );
 

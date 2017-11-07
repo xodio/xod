@@ -10,13 +10,13 @@ import { POPUP_ID } from './constants';
 // =============================================================================
 
 // :: POPUP_ID -> PopupsState -> Boolean
-export const isPopupVisible = R.curry(
-  (popupId, popups) => R.pathEq([popupId, 'visible'], true, popups)
+export const isPopupVisible = R.curry((popupId, popups) =>
+  R.pathEq([popupId, 'visible'], true, popups)
 );
 
 // :: POPUP_ID -> PopupsState -> Object
-export const extractPopupData = R.curry(
-  (popupId, popups) => R.path([popupId, 'data'], popups)
+export const extractPopupData = R.curry((popupId, popups) =>
+  R.path([popupId, 'data'], popups)
 );
 
 // =============================================================================
@@ -38,12 +38,8 @@ export const getProjectBrowserPopups = createSelector(
   ])
 );
 
-export const getPopupVisibility = popupId => createSelector(
-  getPopups,
-  isPopupVisible(popupId)
-);
+export const getPopupVisibility = popupId =>
+  createSelector(getPopups, isPopupVisible(popupId));
 
-export const getPopupData = popupId => createSelector(
-  getPopups,
-  extractPopupData(popupId)
-);
+export const getPopupData = popupId =>
+  createSelector(getPopups, extractPopupData(popupId));

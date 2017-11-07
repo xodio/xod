@@ -45,17 +45,22 @@ Options:
 const programs = {
   pack: o => pack(o['<projectDir>'], o['<output>']),
   unpack: o => unpack(o['<xodball>'], o['<workspace>']),
-  transpile: o => transpile(o['<input>'], o['<path>'], {
-    output: o['--output'],
-  }),
-  publish: o => publish(
-    o['--swagger'] || PM_SWAGGER_URL,
-    o['--orgname'],
-    o['<projectDir>'] || '.'),
-  install: o => install(
-    o['--swagger'] || PM_SWAGGER_URL,
-    o['<libUri>'],
-    o['<path>'] || '.'),
+  transpile: o =>
+    transpile(o['<input>'], o['<path>'], {
+      output: o['--output'],
+    }),
+  publish: o =>
+    publish(
+      o['--swagger'] || PM_SWAGGER_URL,
+      o['--orgname'],
+      o['<projectDir>'] || '.'
+    ),
+  install: o =>
+    install(
+      o['--swagger'] || PM_SWAGGER_URL,
+      o['<libUri>'],
+      o['<path>'] || '.'
+    ),
 };
 
 // Running command

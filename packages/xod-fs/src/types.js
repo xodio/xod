@@ -1,7 +1,14 @@
 import R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
-import { Identifier, Patch, Node, Link, Comment, env as xpEnv } from 'xod-project';
+import {
+  Identifier,
+  Patch,
+  Node,
+  Link,
+  Comment,
+  env as xpEnv,
+} from 'xod-project';
 import XF from 'xod-func-tools';
 
 /* Types are by convention starts with a capital leter, so: */
@@ -29,29 +36,21 @@ const OneOfType = XF.OneOfType(packageName, docUrl);
 //-----------------------------------------------------------------------------
 
 export const $Buffer = NullaryType('Buffer', R.is(Buffer));
-export const Path = NullaryType('Path', R.both(XF.hasType($.String), XF.notEmpty));
-
-// :: x -> Boolean
-const isValidXodFile = R.converge(
-  R.and,
-  [
-    R.allPass([
-      R.has('path'),
-      R.has('content'),
-    ]),
-    R.compose(
-      XF.hasType(Path),
-      R.prop('path')
-    ),
-  ]
+export const Path = NullaryType(
+  'Path',
+  R.both(XF.hasType($.String), XF.notEmpty)
 );
 
-export const XodFile = UnaryType('XodFile',
+// :: x -> Boolean
+const isValidXodFile = R.converge(R.and, [
+  R.allPass([R.has('path'), R.has('content')]),
+  R.compose(XF.hasType(Path), R.prop('path')),
+]);
+
+export const XodFile = UnaryType(
+  'XodFile',
   isValidXodFile,
-  R.compose(
-    R.of,
-    R.prop('content')
-  )
+  R.compose(R.of, R.prop('content'))
 );
 
 export const PatchFileContents = Model('PatchFileContents', {
@@ -72,13 +71,26 @@ export const ProjectFileContents = Model('ProjectFileContents', {
   version: $.String,
 });
 
-export const ProjectFile = AliasType('ProjectFile', XodFile(ProjectFileContents));
+export const ProjectFile = AliasType(
+  'ProjectFile',
+  XodFile(ProjectFileContents)
+);
 export const AttachmentFile = AliasType('AttachmentFile', XodFile($.String));
 
 // TODO: Remove last `XodFile(Patch)` after refactoring of loadProject* and readXodFile functions
-export const AnyXodFile = OneOfType('AnyXodFile', [ProjectFile, PatchFile, PatchImplFile, XodFile(Patch)]);
+export const AnyXodFile = OneOfType('AnyXodFile', [
+  ProjectFile,
+  PatchFile,
+  PatchImplFile,
+  XodFile(Patch),
+]);
 
-export const XodFileContent = OneOfType('XodFileContent', [ProjectFileContents, PatchFileContents, Patch, $.String]);
+export const XodFileContent = OneOfType('XodFileContent', [
+  ProjectFileContents,
+  PatchFileContents,
+  Patch,
+  $.String,
+]);
 
 //-----------------------------------------------------------------------------
 //

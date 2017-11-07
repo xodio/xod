@@ -12,7 +12,6 @@ import { getPatchForHelpbar } from '../../core/selectors';
 import PatchDocs from '../components/PatchDocs';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
-
 const Helpbar = ({ maybeSelectedPatch, isVisible, actions }) => {
   if (!isVisible) return null;
 
@@ -53,9 +52,12 @@ const mapStateToProps = R.applySpec({
   maybeSelectedPatch: getPatchForHelpbar,
 });
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    toggleHelpbar: Actions.toggleHelpbar,
-  }, dispatch),
+  actions: bindActionCreators(
+    {
+      toggleHelpbar: Actions.toggleHelpbar,
+    },
+    dispatch
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Helpbar);

@@ -16,19 +16,13 @@ const NODE_BODY_RECT_PROPS = {
 
 const WatchNodeBody = props => (
   <g className={classNames('watch-node', { active: props.isDebugSession })}>
-    <rect
-      className="body"
-      {...NODE_BODY_RECT_PROPS}
-    />
+    <rect className="body" {...NODE_BODY_RECT_PROPS} />
     <NodeLabel
       text={props.nodeValue || props.label || XP.getBaseName(props.type)}
       width={props.size.width}
       height={props.size.height}
     />
-    <rect
-      className="outline"
-      {...NODE_BODY_RECT_PROPS}
-    />
+    <rect className="outline" {...NODE_BODY_RECT_PROPS} />
   </g>
 );
 

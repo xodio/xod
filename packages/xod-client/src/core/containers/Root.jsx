@@ -9,7 +9,6 @@ import { default as defaultInitialState } from '../state';
 import composeMiddlewares from '../middlewares';
 
 export default class Root extends React.Component {
-
   constructor(props) {
     super(props);
 

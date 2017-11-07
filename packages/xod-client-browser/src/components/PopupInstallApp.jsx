@@ -44,8 +44,8 @@ class PopupInstallApp extends React.Component {
         <div className="ModalBody">
           <div className="ModalContent">
             Uploading a program requires access to USB ports. <br />
-            Browsers do not provide it for security reasons,&nbsp;
-            so you have to install more permissive IDE for the desktop.
+            Browsers do not provide it for security reasons,&nbsp; so you have
+            to install more permissive IDE for the desktop.
           </div>
           <div className="ModalFooter">
             <a
@@ -56,10 +56,7 @@ class PopupInstallApp extends React.Component {
             >
               Download
             </a>
-            <button
-              onClick={this.hide}
-              className="Button"
-            >
+            <button onClick={this.hide} className="Button">
               Cancel
             </button>
           </div>

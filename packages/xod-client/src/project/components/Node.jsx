@@ -49,14 +49,7 @@ class Node extends React.Component {
   }
 
   render() {
-    const {
-      label,
-      linkingPin,
-      pins,
-      position,
-      size,
-      type,
-    } = this.props;
+    const { label, linkingPin, pins, position, size, type } = this.props;
 
     const pinsArr = R.values(pins);
 
@@ -66,7 +59,6 @@ class Node extends React.Component {
       'is-ghost': this.props.isGhost,
       'is-dead': this.props.dead,
     });
-
 
     const svgStyle = {
       overflow: 'visible',
@@ -97,7 +89,7 @@ class Node extends React.Component {
           {!this.props.isDragged ? <title>{nodeLabel}</title> : null}
         </g>
         <g className="pins">
-          {pinsArr.map(pin =>
+          {pinsArr.map(pin => (
             <g key={pin.key}>
               {isTerminalNode ? null : (
                 <PinLabel
@@ -114,7 +106,7 @@ class Node extends React.Component {
                 key={`pin_${pin.key}`}
               />
             </g>
-          )}
+          ))}
         </g>
       </svg>
     );

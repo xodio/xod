@@ -15,7 +15,7 @@ const PopupProjectSelection = ({
 }) => {
   const onProjectSelect = meta => () => onSelect(meta);
 
-  const renderProjectElement = (el) => {
+  const renderProjectElement = el => {
     if (el.status === PROJECT_STATUS.ERROR) {
       return (
         <li className="error" key={el.path}>
@@ -24,9 +24,7 @@ const PopupProjectSelection = ({
               <span>Path:</span>
               {el.path}
             </p>
-            <p className="message">
-              {el.message}
-            </p>
+            <p className="message">{el.message}</p>
           </div>
         </li>
       );
@@ -35,7 +33,9 @@ const PopupProjectSelection = ({
     return (
       <li className="project" key={el.path}>
         <button onClick={onProjectSelect(el)}>
-          <p className="name">{el.content.name} <span>by {el.content.authors}</span></p>
+          <p className="name">
+            {el.content.name} <span>by {el.content.authors}</span>
+          </p>
           <p className="path">
             <span>Path:</span>
             {el.path}
@@ -47,7 +47,9 @@ const PopupProjectSelection = ({
 
   const renderContent = () => {
     if (projects.status === REDUCER_STATUS.LOADED) {
-      const listClassName = clx('ProjectList', { scroll: projects.list.length > 5 });
+      const listClassName = clx('ProjectList', {
+        scroll: projects.list.length > 5,
+      });
 
       return (
         <div>
@@ -57,8 +59,12 @@ const PopupProjectSelection = ({
             </ul>
           </div>
           <div className="ModalFooter">
-            <button onClick={onSwitchWorkspace} className="Button">Switch workspace</button>
-            <button onClick={onCreateNewProject} className="Button">Create new project</button>
+            <button onClick={onSwitchWorkspace} className="Button">
+              Switch workspace
+            </button>
+            <button onClick={onCreateNewProject} className="Button">
+              Create new project
+            </button>
           </div>
         </div>
       );

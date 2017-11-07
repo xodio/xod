@@ -9,12 +9,7 @@ import { Icon } from 'react-fa';
 import { HotKeys } from 'react-hotkeys';
 
 import $ from 'sanctuary-def';
-import {
-  Patch,
-  getLibraryName,
-  isPathLocal,
-  getBaseName,
-} from 'xod-project';
+import { Patch, getLibraryName, isPathLocal, getBaseName } from 'xod-project';
 
 import * as ProjectActions from '../../project/actions';
 import * as ProjectBrowserActions from '../actions';
@@ -95,10 +90,7 @@ class ProjectBrowser extends React.Component {
   }
 
   localPatchesHoveredButtons(patchPath) {
-    const {
-      requestRename,
-      requestDelete,
-    } = this.props.actions;
+    const { requestRename, requestDelete } = this.props.actions;
 
     return [
       <Icon
@@ -120,10 +112,7 @@ class ProjectBrowser extends React.Component {
   }
 
   libraryPatchesHoveredButtons(path) {
-    return [
-      this.renderDocsButton(path),
-      this.renderAddNodeButton(path),
-    ];
+    return [this.renderDocsButton(path), this.renderAddNodeButton(path)];
   }
 
   deselectIfInLocalPatches() {
@@ -160,7 +149,8 @@ class ProjectBrowser extends React.Component {
     );
   }
 
-  renderDocsButton(patchPath) { // eslint-disable-line class-methods-use-this
+  renderDocsButton(patchPath) {
+    // eslint-disable-line class-methods-use-this
     return (
       <a
         href={getUtmSiteUrl(`/libs/${patchPath}`, 'docs', 'project-browser')}
@@ -223,7 +213,11 @@ class ProjectBrowser extends React.Component {
 
   renderLibraryPatches() {
     const { libs, selectedPatchPath } = this.props;
-    const { setSelection, switchPatch, startDraggingPatch } = this.props.actions;
+    const {
+      setSelection,
+      switchPatch,
+      startDraggingPatch,
+    } = this.props.actions;
 
     return R.toPairs(libs).map(([libName, libPatches]) => (
       <PatchGroup
@@ -232,7 +226,7 @@ class ProjectBrowser extends React.Component {
         name={libName}
         onClose={this.deselectIfInLibrary(libName)}
       >
-        {libPatches.map(({ path, dead }) =>
+        {libPatches.map(({ path, dead }) => (
           <PatchGroupItem
             key={path}
             patchPath={path}
@@ -244,15 +238,16 @@ class ProjectBrowser extends React.Component {
             onBeginDrag={startDraggingPatch}
             hoverButtons={this.libraryPatchesHoveredButtons(path)}
           />
-        )}
+        ))}
       </PatchGroup>
     ));
   }
 
   renderPatches(patchType) {
-    const rendererKeys = patchType === PATCH_TYPE.ALL
-      ? [PATCH_TYPE.MY, PATCH_TYPE.LIBRARY]
-      : R.of(patchType);
+    const rendererKeys =
+      patchType === PATCH_TYPE.ALL
+        ? [PATCH_TYPE.MY, PATCH_TYPE.LIBRARY]
+        : R.of(patchType);
 
     return (
       // "calc(100% - 30px)" cause patch filtering buttons are 30px height
@@ -266,10 +261,7 @@ class ProjectBrowser extends React.Component {
 
   render() {
     return (
-      <HotKeys
-        handlers={this.getHotkeyHandlers()}
-        className="ProjectBrowser"
-      >
+      <HotKeys handlers={this.getHotkeyHandlers()} className="ProjectBrowser">
         <ProjectBrowserPopups
           selectedPatchPath={this.props.selectedPatchPath}
           selectedPatchName={this.props.selectedPatchLabel}
@@ -339,29 +331,31 @@ const mapStateToProps = R.applySpec({
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    setSelectedNodeType: EditorActions.setSelectedNodeType,
-    setEditorMode: EditorActions.setMode,
-    switchPatch: EditorActions.switchPatch,
-    startDraggingPatch: EditorActions.startDraggingPatch,
+  actions: bindActionCreators(
+    {
+      setSelectedNodeType: EditorActions.setSelectedNodeType,
+      setEditorMode: EditorActions.setMode,
+      switchPatch: EditorActions.switchPatch,
+      startDraggingPatch: EditorActions.startDraggingPatch,
 
-    requestCreatePatch: ProjectBrowserActions.requestCreatePatch,
-    requestRename: ProjectBrowserActions.requestRenamePatch,
-    requestDelete: ProjectBrowserActions.requestDeletePatch,
-    setSelection: ProjectBrowserActions.setSelection,
-    removeSelection: ProjectBrowserActions.removeSelection,
+      requestCreatePatch: ProjectBrowserActions.requestCreatePatch,
+      requestRename: ProjectBrowserActions.requestRenamePatch,
+      requestDelete: ProjectBrowserActions.requestDeletePatch,
+      setSelection: ProjectBrowserActions.setSelection,
+      removeSelection: ProjectBrowserActions.removeSelection,
 
-    addNode: ProjectActions.addNode,
-    addPatch: ProjectActions.addPatch,
-    renamePatch: ProjectActions.renamePatch,
-    deletePatch: ProjectActions.deletePatch,
-    renameProject: ProjectActions.renameProject,
+      addNode: ProjectActions.addNode,
+      addPatch: ProjectActions.addPatch,
+      renamePatch: ProjectActions.renamePatch,
+      deletePatch: ProjectActions.deletePatch,
+      renameProject: ProjectActions.renameProject,
 
-    closeAllPopups: PopupActions.hideAllPopups,
+      closeAllPopups: PopupActions.hideAllPopups,
 
-    addNotification: MessagesActions.addNotification,
-  }, dispatch),
+      addNotification: MessagesActions.addNotification,
+    },
+    dispatch
+  ),
 });
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectBrowser);
