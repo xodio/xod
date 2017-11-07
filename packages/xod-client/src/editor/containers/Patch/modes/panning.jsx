@@ -6,10 +6,7 @@ import { TAB_TYPES } from '../../../constants';
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
 
-import {
-  addPoints,
-  subtractPoints,
-} from '../../../../project/nodeLayout';
+import { addPoints, subtractPoints } from '../../../../project/nodeLayout';
 
 import {
   getOffsetMatrix,
@@ -20,16 +17,16 @@ import {
 
 let patchSvgRef = null;
 
-const getCurrentOffset = (api) => {
+const getCurrentOffset = api => {
   if (
     api.state.mousePosition &&
     api.state.panningStartPosition &&
     api.state.isPanning
   ) {
-    return addPoints(api.props.offset, subtractPoints(
-      api.state.mousePosition,
-      api.state.panningStartPosition
-    ));
+    return addPoints(
+      api.props.offset,
+      subtractPoints(api.state.mousePosition, api.state.panningStartPosition)
+    );
   }
 
   return api.props.offset;
@@ -37,7 +34,8 @@ const getCurrentOffset = (api) => {
 
 const panningMode = {
   getInitialState(props, { panningStartPosition, isPanning }) {
-    const isDebugSession = (props.tabType === TAB_TYPES.DEBUGGER && props.isDebugSession);
+    const isDebugSession =
+      props.tabType === TAB_TYPES.DEBUGGER && props.isDebugSession;
 
     return {
       isPanning,
@@ -50,12 +48,24 @@ const panningMode = {
   },
 
   onMouseDown(api, event) {
-    const mousePosition = getMousePosition(patchSvgRef, api.props.offset, event);
+    const mousePosition = getMousePosition(
+      patchSvgRef,
+      api.props.offset,
+      event
+    );
 
-    api.setState({ isPanning: true, mousePosition, panningStartPosition: mousePosition });
+    api.setState({
+      isPanning: true,
+      mousePosition,
+      panningStartPosition: mousePosition,
+    });
   },
   onMouseMove(api, event) {
-    const mousePosition = getMousePosition(patchSvgRef, api.props.offset, event);
+    const mousePosition = getMousePosition(
+      patchSvgRef,
+      api.props.offset,
+      event
+    );
 
     api.setState({ mousePosition });
   },
@@ -98,7 +108,9 @@ const panningMode = {
           onMouseUp={bindApi(api, this.onMouseUp)}
           isInPanningMode
           isPanning={api.state.isPanning}
-          svgRef={(svg) => { patchSvgRef = svg; }}
+          svgRef={svg => {
+            patchSvgRef = svg;
+          }}
         >
           <Layers.Background
             width={api.props.size.width}

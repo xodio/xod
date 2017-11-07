@@ -9,10 +9,7 @@ import * as Helper from './helpers';
 import constantPatches from './fixtures/constant-patches.json';
 
 // :: Patch -> Map NodeType Node
-const getNodesByNodeTypes = R.compose(
-  R.indexBy(XP.getNodeType),
-  XP.listNodes
-);
+const getNodesByNodeTypes = R.compose(R.indexBy(XP.getNodeType), XP.listNodes);
 
 describe('extractBoundInputsToConstNodes', () => {
   const mainPatchPath = XP.getLocalPath('main');
@@ -73,8 +70,8 @@ describe('extractBoundInputsToConstNodes', () => {
     }),
   });
 
-  const extractNodeFromProject = R.curry(
-    (nodeId, patchPath, projectObject) => XP.getNodeByIdUnsafe(
+  const extractNodeFromProject = R.curry((nodeId, patchPath, projectObject) =>
+    XP.getNodeByIdUnsafe(
       nodeId,
       XP.getPatchByPathUnsafe(patchPath, projectObject)
     )
@@ -83,7 +80,11 @@ describe('extractBoundInputsToConstNodes', () => {
   it('leaves nodes without bound input values unchanged', () => {
     const project = R.clone(testProject);
 
-    const newProject = XP.extractBoundInputsToConstNodes(project, mainPatchPath, project);
+    const newProject = XP.extractBoundInputsToConstNodes(
+      project,
+      mainPatchPath,
+      project
+    );
     const getTestNode = extractNodeFromProject('test-node', mainPatchPath);
 
     const originalNode = getTestNode(project);
@@ -97,30 +98,38 @@ describe('extractBoundInputsToConstNodes', () => {
 
   it('extracts default bound values into constant nodes', () => {
     const findNodeByType = R.curry((type, patch) =>
-      R.compose(
-        R.propOr(null, type),
-        R.indexBy(XP.getNodeType),
-        XP.listNodes
-      )(patch)
+      R.compose(R.propOr(null, type), R.indexBy(XP.getNodeType), XP.listNodes)(
+        patch
+      )
     );
 
     const project = R.clone(testProject);
-    const newProject = XP.extractBoundInputsToConstNodes(project, mainPatchPath, project);
+    const newProject = XP.extractBoundInputsToConstNodes(
+      project,
+      mainPatchPath,
+      project
+    );
     const mainPatch = XP.getPatchByPathUnsafe('@/main', newProject);
 
-    const constNodes = R.ap([
-      findNodeByType(XP.CONST_NODETYPES[XP.PIN_TYPE.NUMBER]),
-      findNodeByType(XP.CONST_NODETYPES[XP.PIN_TYPE.BOOLEAN]),
-      findNodeByType(XP.CONST_NODETYPES[XP.PIN_TYPE.STRING]),
-      findNodeByType(XP.PULSE_CONST_NODETYPES[XP.INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT]),
-      findNodeByType(XP.PULSE_CONST_NODETYPES[XP.INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY]),
-    ], [mainPatch]);
+    const constNodes = R.ap(
+      [
+        findNodeByType(XP.CONST_NODETYPES[XP.PIN_TYPE.NUMBER]),
+        findNodeByType(XP.CONST_NODETYPES[XP.PIN_TYPE.BOOLEAN]),
+        findNodeByType(XP.CONST_NODETYPES[XP.PIN_TYPE.STRING]),
+        findNodeByType(
+          XP.PULSE_CONST_NODETYPES[XP.INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT]
+        ),
+        findNodeByType(
+          XP.PULSE_CONST_NODETYPES[
+            XP.INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY
+          ]
+        ),
+      ],
+      [mainPatch]
+    );
     const doesAllConstNodesExist = R.all(R.complement(R.isNil), constNodes);
 
-    assert.equal(
-      doesAllConstNodesExist,
-      true
-    );
+    assert.equal(doesAllConstNodesExist, true);
   });
 
   const testBoundPin = (
@@ -129,7 +138,9 @@ describe('extractBoundInputsToConstNodes', () => {
     expectedConstNodeType,
     checkConstNodeBoundValue = true // TODO: this flag is a bit hacky
   ) =>
-    it(`should extract bound '${dataType}' pin value '${boundValue}' to '${expectedConstNodeType}' node`, () => {
+    it(`should extract bound '${dataType}' pin value '${boundValue}' to '${
+      expectedConstNodeType
+    }' node`, () => {
       const boundPinKey = getInputPinKey(dataType);
       const testNodeId = 'test-node';
 
@@ -149,7 +160,11 @@ describe('extractBoundInputsToConstNodes', () => {
         }),
       });
 
-      const transformedProject = XP.extractBoundInputsToConstNodes(project, mainPatchPath, project);
+      const transformedProject = XP.extractBoundInputsToConstNodes(
+        project,
+        mainPatchPath,
+        project
+      );
 
       const patch = XP.getPatchByPathUnsafe(mainPatchPath, transformedProject);
 
@@ -175,8 +190,12 @@ describe('extractBoundInputsToConstNodes', () => {
       )(expectedConstNodeType);
 
       const links = XP.listLinksByNode(constantNode, patch);
-      const expectedLinksCount = (dataType === XP.PIN_TYPE.PULSE) ? 2 : 1;
-      assert.lengthOf(links, expectedLinksCount, 'a single link must be created');
+      const expectedLinksCount = dataType === XP.PIN_TYPE.PULSE ? 2 : 1;
+      assert.lengthOf(
+        links,
+        expectedLinksCount,
+        'a single link must be created'
+      );
 
       const link = R.head(links);
       assert.equal(
@@ -202,12 +221,17 @@ describe('extractBoundInputsToConstNodes', () => {
       );
 
       if (checkConstNodeBoundValue) {
-        const maybeBoundValue = XP.getBoundValue(constantNodeOutputPinKey, constantNode);
+        const maybeBoundValue = XP.getBoundValue(
+          constantNodeOutputPinKey,
+          constantNode
+        );
         assert(maybeBoundValue.isJust);
         assert.equal(
           maybeBoundValue.getOrElse(undefined),
           boundValue,
-          `value from test node's pin must be bound to ${expectedConstNodeType}'s output`
+          `value from test node's pin must be bound to ${
+            expectedConstNodeType
+          }'s output`
         );
       }
     });
@@ -217,11 +241,7 @@ describe('extractBoundInputsToConstNodes', () => {
     true,
     XP.CONST_NODETYPES[XP.PIN_TYPE.BOOLEAN]
   );
-  testBoundPin(
-    XP.PIN_TYPE.NUMBER,
-    42,
-    XP.CONST_NODETYPES[XP.PIN_TYPE.NUMBER]
-  );
+  testBoundPin(XP.PIN_TYPE.NUMBER, 42, XP.CONST_NODETYPES[XP.PIN_TYPE.NUMBER]);
   testBoundPin(
     XP.PIN_TYPE.STRING,
     'hello',
@@ -262,12 +282,20 @@ describe('extractBoundInputsToConstNodes', () => {
       }),
     });
 
-    const transformedProject = XP.extractBoundInputsToConstNodes(project, mainPatchPath, project);
+    const transformedProject = XP.extractBoundInputsToConstNodes(
+      project,
+      mainPatchPath,
+      project
+    );
 
     const patch = XP.getPatchByPathUnsafe(mainPatchPath, transformedProject);
 
     const nodesByNodeType = getNodesByNodeTypes(patch);
-    assert.lengthOf(R.values(nodesByNodeType), 6, 'constant nodes with default pin values must be created');
+    assert.lengthOf(
+      R.values(nodesByNodeType),
+      6,
+      'constant nodes with default pin values must be created'
+    );
 
     const testNode = nodesByNodeType[testPatchPath];
 
@@ -277,6 +305,10 @@ describe('extractBoundInputsToConstNodes', () => {
     );
 
     const links = XP.listLinks(patch);
-    assert.lengthOf(links, 5, 'links from constant nodes with default pin values must be created');
+    assert.lengthOf(
+      links,
+      5,
+      'links from constant nodes with default pin values must be created'
+    );
   });
 });

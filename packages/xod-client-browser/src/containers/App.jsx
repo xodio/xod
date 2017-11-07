@@ -67,7 +67,7 @@ class App extends client.App {
     const file = event.target.files[0];
     const reader = new window.FileReader();
 
-    reader.onload = (e) => {
+    reader.onload = e => {
       this.onImport(e.target.result);
     };
 
@@ -78,7 +78,8 @@ class App extends client.App {
     this.props.actions.setSelectedNodeType(typeKey);
   }
 
-  onKeyDown(event) {  // eslint-disable-line class-methods-use-this
+  onKeyDown(event) {
+    // eslint-disable-line class-methods-use-this
     const keyCode = event.keyCode || event.which;
 
     if (!client.isInputTarget(event) && keyCode === client.KEYCODE.BACKSPACE) {
@@ -104,57 +105,54 @@ class App extends client.App {
     );
   }
 
-  onCloseApp(event) { // eslint-disable-line class-methods-use-this
+  onCloseApp(event) {
+    // eslint-disable-line class-methods-use-this
     let message = true;
 
     if (this.props.hasUnsavedChanges) {
-      message = 'You have not saved changes in your project. Are you sure want to close app?';
-      if (event) { event.returnValue = message; } // eslint-disable-line
+      message =
+        'You have not saved changes in your project. Are you sure want to close app?';
+      if (event) {
+        event.returnValue = message;
+      } // eslint-disable-line
     }
 
     return message;
   }
 
   getMenuBarItems() {
-    const {
-      items,
-      onClick,
-      submenu,
-    } = client.menu;
+    const { items, onClick, submenu } = client.menu;
 
     const importProject = {
       key: 'Import_Project',
-      click: (event) => {
+      click: event => {
         if (
           event.target === this.menuRefs.Import_Project ||
           event.target.parentNode === this.menuRefs.Import_Project.parentNode
-        ) return;
+        )
+          return;
         event.stopPropagation();
         this.menuRefs.Import_Project.click();
       },
       children: (
-        <label
-          key="import"
-          className="load-button"
-          htmlFor="importButton"
-        >
+        <label key="import" className="load-button" htmlFor="importButton">
           <input
             type="file"
             accept=".xodball"
             onChange={this.onImportChange}
             id="importButton"
-            ref={(input) => { this.menuRefs.Import_Project = input; }}
+            ref={input => {
+              this.menuRefs.Import_Project = input;
+            }}
           />
-          <span>
-            Import project
-          </span>
+          <span>Import project</span>
         </label>
       ),
     };
 
     const link = (itemProps, componentProps) => ({
       key: itemProps.key,
-      click: (event) => {
+      click: event => {
         if (event.target === this.menuRefs[itemProps.key]) return;
         event.stopPropagation();
         this.menuRefs[itemProps.key].click();
@@ -164,7 +162,9 @@ class App extends client.App {
           className="menu-link"
           target="_blank"
           rel="noopener noreferrer"
-          ref={(el) => { this.menuRefs[itemProps.key] = el; }}
+          ref={el => {
+            this.menuRefs[itemProps.key] = el;
+          }}
           {...componentProps}
         >
           {itemProps.label}
@@ -173,58 +173,50 @@ class App extends client.App {
     });
 
     return [
-      submenu(
-        items.file,
-        [
-          onClick(items.newProject, this.onRequestCreateProject),
-          onClick(items.renameProject, this.props.actions.requestRenameProject),
-          items.separator,
-          importProject,
-          onClick(items.exportProject, this.onExport),
-          items.separator,
-          onClick(items.newPatch, this.props.actions.createPatch),
-        ]
-      ),
-      submenu(
-        items.edit,
-        [
-          onClick(items.undo, this.props.actions.undoCurrentPatch),
-          onClick(items.redo, this.props.actions.redoCurrentPatch),
-          items.separator,
-          onClick(items.insertNode, () => this.props.actions.showSuggester(null)),
-          onClick(items.insertComment, this.props.actions.addComment),
-          items.separator,
-          onClick(items.projectPreferences, this.props.actions.showProjectPreferences),
-        ]
-      ),
-      submenu(
-        items.deploy,
-        [
-          onClick(items.showCodeForArduino, this.onShowCodeArduino),
-          onClick(items.uploadToArduino, this.onUpload),
-        ]
-      ),
-      submenu(
-        items.view,
-        [
-          onClick(items.toggleHelpbar, this.props.actions.toggleHelpbar),
-          onClick(items.toggleDebugger, this.props.actions.toggleDebugger),
-        ]
-      ),
-      submenu(
-        items.help,
-        [
-          {
-            key: 'version',
-            enabled: false,
-            label: `Version: ${packageJson.version}`,
-          },
-          items.separator,
-          link(items.documentation, { href: client.getUtmSiteUrl('/docs/', 'docs', 'menu') }),
-          link(items.shortcuts, { href: client.getUtmSiteUrl('/docs/guide/shortcuts/', 'docs', 'menu') }),
-          link(items.forum, { href: client.getUtmForumUrl('menu') }),
-        ]
-      ),
+      submenu(items.file, [
+        onClick(items.newProject, this.onRequestCreateProject),
+        onClick(items.renameProject, this.props.actions.requestRenameProject),
+        items.separator,
+        importProject,
+        onClick(items.exportProject, this.onExport),
+        items.separator,
+        onClick(items.newPatch, this.props.actions.createPatch),
+      ]),
+      submenu(items.edit, [
+        onClick(items.undo, this.props.actions.undoCurrentPatch),
+        onClick(items.redo, this.props.actions.redoCurrentPatch),
+        items.separator,
+        onClick(items.insertNode, () => this.props.actions.showSuggester(null)),
+        onClick(items.insertComment, this.props.actions.addComment),
+        items.separator,
+        onClick(
+          items.projectPreferences,
+          this.props.actions.showProjectPreferences
+        ),
+      ]),
+      submenu(items.deploy, [
+        onClick(items.showCodeForArduino, this.onShowCodeArduino),
+        onClick(items.uploadToArduino, this.onUpload),
+      ]),
+      submenu(items.view, [
+        onClick(items.toggleHelpbar, this.props.actions.toggleHelpbar),
+        onClick(items.toggleDebugger, this.props.actions.toggleDebugger),
+      ]),
+      submenu(items.help, [
+        {
+          key: 'version',
+          enabled: false,
+          label: `Version: ${packageJson.version}`,
+        },
+        items.separator,
+        link(items.documentation, {
+          href: client.getUtmSiteUrl('/docs/', 'docs', 'menu'),
+        }),
+        link(items.shortcuts, {
+          href: client.getUtmSiteUrl('/docs/guide/shortcuts/', 'docs', 'menu'),
+        }),
+        link(items.forum, { href: client.getUtmForumUrl('menu') }),
+      ]),
     ];
   }
 
@@ -244,7 +236,7 @@ class App extends client.App {
   }
 
   render() {
-    const devToolsInstrument = (client.isChromeApp) ? <client.DevTools /> : null;
+    const devToolsInstrument = client.isChromeApp ? <client.DevTools /> : null;
     return (
       <HotKeys keyMap={client.HOTKEY} id="App">
         <EventListener
@@ -253,13 +245,15 @@ class App extends client.App {
           onKeyDown={this.onKeyDown}
           onBeforeUnload={this.onCloseApp}
         />
-        <client.Toolbar
-          menuBarItems={this.getMenuBarItems()}
-        />
+        <client.Toolbar menuBarItems={this.getMenuBarItems()} />
         <client.Editor
           size={this.state.size}
-          getSidebarPaneHeight={() => window.localStorage.getItem('Sidebar.height')}
-          setSidebarPaneHeight={size => window.localStorage.setItem('Sidebar.height', size)}
+          getSidebarPaneHeight={() =>
+            window.localStorage.getItem('Sidebar.height')
+          }
+          setSidebarPaneHeight={size =>
+            window.localStorage.setItem('Sidebar.height', size)
+          }
         />
         <client.SnackBar />
         {devToolsInstrument}
@@ -290,7 +284,9 @@ const mapStateToProps = R.applySpec({
   popups: {
     createProject: client.getPopupVisibility(client.POPUP_ID.CREATING_PROJECT),
     showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE),
-    projectPreferences: client.getPopupVisibility(client.POPUP_ID.EDITING_PROJECT_PREFERENCES),
+    projectPreferences: client.getPopupVisibility(
+      client.POPUP_ID.EDITING_PROJECT_PREFERENCES
+    ),
   },
   popupsData: {
     showCode: client.getPopupData(client.POPUP_ID.SHOWING_CODE),
@@ -301,7 +297,8 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     R.merge(client.App.actions, {
       // Put custom actions for xod-client-browser here
-    }), dispatch
+    }),
+    dispatch
   ),
 });
 

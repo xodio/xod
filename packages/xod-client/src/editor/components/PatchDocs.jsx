@@ -14,7 +14,7 @@ const NODE_POSITION_IN_PREVIEW = {
   y: 20, // compensate for labels outside the node
 };
 
-const MAX_NODE_WIDTH = 245 - (NODE_POSITION_IN_PREVIEW.x * 2);
+const MAX_NODE_WIDTH = 245 - NODE_POSITION_IN_PREVIEW.x * 2;
 const NODE_PREVIEW_HEIGHT = 101;
 
 const PinInfo = ({ type, label, description }) => (
@@ -47,7 +47,9 @@ const InputPins = ({ pins, distanceBetweenPins }) => {
       <div className="pin-info-container">
         <PinInfo {...pin} />
       </div>
-      {isLastPin ? null : <InputPins pins={restPins} distanceBetweenPins={distanceBetweenPins} />}
+      {isLastPin ? null : (
+        <InputPins pins={restPins} distanceBetweenPins={distanceBetweenPins} />
+      )}
     </div>
   );
 };
@@ -97,7 +99,6 @@ OutputPins.defaultProps = {
   isFirst: true,
 };
 
-
 const PatchDocs = ({ patch }) => {
   const [inputPins, outputPins] = R.compose(
     R.partition(XP.isInputPin),
@@ -110,21 +111,23 @@ const PatchDocs = ({ patch }) => {
 
   const nodeProps = patchToNodeProps(patch);
 
-  const scaleFactor = nodeProps.size.width < MAX_NODE_WIDTH
-    ? 1
-    : MAX_NODE_WIDTH / nodeProps.size.width;
+  const scaleFactor =
+    nodeProps.size.width < MAX_NODE_WIDTH
+      ? 1
+      : MAX_NODE_WIDTH / nodeProps.size.width;
 
   const scaledNodeWidth = nodeProps.size.width * scaleFactor;
   const fromNodeEdgeToPin = scaleFactor * (SLOT_SIZE.WIDTH / 2);
-  const nodeMargin = (MAX_NODE_WIDTH - scaledNodeWidth - NODE_POSITION_IN_PREVIEW.x) / 2;
-  const distanceToFirstPin = (
+  const nodeMargin =
+    (MAX_NODE_WIDTH - scaledNodeWidth - NODE_POSITION_IN_PREVIEW.x) / 2;
+  const distanceToFirstPin =
     nodeMargin +
     fromNodeEdgeToPin +
-    (NODE_POSITION_IN_PREVIEW.x * scaleFactor)
-  ) - 1;
+    NODE_POSITION_IN_PREVIEW.x * scaleFactor -
+    1;
   const scaledNodePreviewHeight = NODE_PREVIEW_HEIGHT * scaleFactor;
 
-  const distanceBetweenPins = (scaleFactor * SLOT_SIZE.WIDTH) - 1;
+  const distanceBetweenPins = scaleFactor * SLOT_SIZE.WIDTH - 1;
 
   // because we never draw labels for terminal nodes
   const position = R.when(
@@ -138,22 +141,22 @@ const PatchDocs = ({ patch }) => {
       <div className="baseName">{baseName}</div>
       <div className="nodeType">{nodeType}</div>
       <div className="description">{description}</div>
-      <div className="input-pins-container" style={{ paddingLeft: distanceToFirstPin }}>
-        <InputPins
-          distanceBetweenPins={distanceBetweenPins}
-          pins={inputPins}
-        />
+      <div
+        className="input-pins-container"
+        style={{ paddingLeft: distanceToFirstPin }}
+      >
+        <InputPins distanceBetweenPins={distanceBetweenPins} pins={inputPins} />
         <svg className="node-preview" height={scaledNodePreviewHeight}>
           <rect className="bg" width="100%" height="100%" />
           <g transform={`scale(${scaleFactor}) translate(${nodeMargin})`}>
-            <Node
-              {...nodeProps}
-              position={position}
-            />
+            <Node {...nodeProps} position={position} />
           </g>
         </svg>
       </div>
-      <div className="output-pins-container" style={{ paddingLeft: distanceToFirstPin }}>
+      <div
+        className="output-pins-container"
+        style={{ paddingLeft: distanceToFirstPin }}
+      >
         <OutputPins
           distanceBetweenPins={distanceBetweenPins}
           pins={outputPins}

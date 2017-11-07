@@ -6,13 +6,9 @@ import { COMMAND } from '../../../../utils/constants';
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
 
-import {
-  getOffsetMatrix,
-  bindApi,
-  getMousePosition,
-} from '../modeUtils';
+import { getOffsetMatrix, bindApi, getMousePosition } from '../modeUtils';
 
-const abort = (api) => {
+const abort = api => {
   api.props.actions.deselectAll();
   api.goToDefaultMode();
 };
@@ -27,7 +23,11 @@ const linkingMode = {
   },
 
   onMouseMove(api, event) {
-    const mousePosition = getMousePosition(patchSvgRef, api.props.offset, event);
+    const mousePosition = getMousePosition(
+      patchSvgRef,
+      api.props.offset,
+      event
+    );
     api.setState({ mousePosition });
   },
   onPinMouseDown(api, event, nodeId, pinKey) {
@@ -36,12 +36,11 @@ const linkingMode = {
   },
   onPinMouseUp(api, event, nodeId, pinKey) {
     const lp = api.props.linkingPin;
-    const firstPinClick = !lp || (
-      nodeId === lp.nodeId &&
-      pinKey === lp.pinKey
-    );
+    const firstPinClick = !lp || (nodeId === lp.nodeId && pinKey === lp.pinKey);
 
-    if (firstPinClick) { return; }
+    if (firstPinClick) {
+      return;
+    }
 
     api.props.actions.linkPin(nodeId, pinKey);
     api.goToDefaultMode();
@@ -54,13 +53,12 @@ const linkingMode = {
   },
   render(api) {
     return (
-      <HotKeys
-        handlers={this.getHotkeyHandlers(api)}
-        className="PatchWrapper"
-      >
+      <HotKeys handlers={this.getHotkeyHandlers(api)} className="PatchWrapper">
         <PatchSVG
           onMouseMove={bindApi(api, this.onMouseMove)}
-          svgRef={(svg) => { patchSvgRef = svg; }}
+          svgRef={svg => {
+            patchSvgRef = svg;
+          }}
         >
           <Layers.Background
             width={api.props.size.width}

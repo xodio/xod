@@ -7,10 +7,10 @@ import { def } from './types';
  * @typedef {Object} Pin
  */
 
- /**
-  * A {@link Pin} object or just its key as {@link string}
-  * @typedef {(Pin|string)} PinOrKey
-  */
+/**
+ * A {@link Pin} object or just its key as {@link string}
+ * @typedef {(Pin|string)} PinOrKey
+ */
 
 /**
  * @private
@@ -22,7 +22,16 @@ import { def } from './types';
  */
 export const createPin = def(
   'createPin :: PinKey -> DataType -> PinDirection -> Number -> PinLabel -> String -> Boolean -> DataValue -> Pin',
-  (key, type, direction, order, label, description, isBindable, defaultValue) => ({
+  (
+    key,
+    type,
+    direction,
+    order,
+    label,
+    description,
+    isBindable,
+    defaultValue
+  ) => ({
     '@@type': 'xod-project/Pin',
     key,
     type,
@@ -40,33 +49,31 @@ export const createPin = def(
  */
 export const createDeadPin = def(
   'createDeadPin :: PinKey -> PinDirection -> Number -> Pin',
-  (pinKey, direction, order) => createPin(
-    pinKey,
-    CONST.PIN_TYPE.DEAD,
-    direction,
-    order,
-    '',
-    '',
-    false,
-    CONST.DEFAULT_VALUE_OF_TYPE[CONST.PIN_TYPE.DEAD]
-  )
+  (pinKey, direction, order) =>
+    createPin(
+      pinKey,
+      CONST.PIN_TYPE.DEAD,
+      direction,
+      order,
+      '',
+      '',
+      false,
+      CONST.DEFAULT_VALUE_OF_TYPE[CONST.PIN_TYPE.DEAD]
+    )
 );
 
- // =============================================================================
- //
- // Getters
- //
- // =============================================================================
+// =============================================================================
+//
+// Getters
+//
+// =============================================================================
 
 /**
  * @function getPinType
  * @param {Pin} pin
  * @returns {PIN_TYPE}
  */
-export const getPinType = def(
-  'getPinType :: Pin -> DataType',
-  R.prop('type')
-);
+export const getPinType = def('getPinType :: Pin -> DataType', R.prop('type'));
 
 /**
  * @function getPinDirection
@@ -123,10 +130,7 @@ export const getPinDescription = def(
  * @param {Pin} pin
  * @returns {number}
  */
-export const getPinOrder = def(
-  'getPinOrder :: Pin -> Number',
-  R.prop('order')
-);
+export const getPinOrder = def('getPinOrder :: Pin -> Number', R.prop('order'));
 
 /**
  * Is it possible to bind a value to this pin?
@@ -168,10 +172,7 @@ export const isOutputPin = def(
  */
 export const isTerminalPin = def(
   'isTerminalPin :: Pin -> Boolean',
-  R.compose(
-    R.flip(R.contains)(R.values(CONST.TERMINAL_PIN_KEYS)),
-    getPinKey
-  )
+  R.compose(R.flip(R.contains)(R.values(CONST.TERMINAL_PIN_KEYS)), getPinKey)
 );
 
 /**
@@ -180,10 +181,7 @@ export const isTerminalPin = def(
  */
 export const isPulsePin = def(
   'isPulsePin :: Pin -> Boolean',
-  R.compose(
-    R.equals(CONST.PIN_TYPE.PULSE),
-    getPinType
-  )
+  R.compose(R.equals(CONST.PIN_TYPE.PULSE), getPinType)
 );
 
 // =============================================================================
@@ -207,10 +205,7 @@ const setPinLabel = def(
 
 const isPinLabelEmpty = def(
   'isPinLabelEmpty :: Pin -> Boolean',
-  R.compose(
-    R.isEmpty,
-    getPinLabel
-  )
+  R.compose(R.isEmpty, getPinLabel)
 );
 
 /**
@@ -221,10 +216,7 @@ const isPinLabelEmpty = def(
  */
 const getPinLabelByDirection = def(
   'getPinLabelByDirection :: Pin -> PinLabel',
-  R.compose(
-    R.prop(R.__, CONST.PIN_LABEL_BY_DIRECTION),
-    getPinDirection
-  )
+  R.compose(R.prop(R.__, CONST.PIN_LABEL_BY_DIRECTION), getPinDirection)
 );
 
 /**
@@ -255,20 +247,16 @@ export const normalizePinLabels = def(
     R.values,
     R.map(
       R.when(
-        R.compose(
-          R.gt(R.__, 1),
-          R.length
-        ),
-        R.addIndex(R.map)(
-          (pin, idx) => setPinLabel(`${getPinLabel(pin)}_${idx}`, pin)
+        R.compose(R.gt(R.__, 1), R.length),
+        R.addIndex(R.map)((pin, idx) =>
+          setPinLabel(`${getPinLabel(pin)}_${idx}`, pin)
         )
       )
     ),
     R.groupBy(getPinLabel),
     R.map(
-      R.when(
-        isPinLabelEmpty,
-        pin => setPinLabel(getPinLabelByDirection(pin), pin)
+      R.when(isPinLabelEmpty, pin =>
+        setPinLabel(getPinLabelByDirection(pin), pin)
       )
     )
   )

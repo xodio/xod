@@ -77,7 +77,9 @@ export { default as PopupConfirm } from './utils/components/PopupConfirm';
 export { default as PopupPrompt } from './utils/components/PopupPrompt';
 export { default as PopupForm } from './utils/components/PopupForm';
 export { default as Toolbar } from './utils/components/Toolbar';
-export { default as PopupProjectPreferences } from './project/components/PopupProjectPreferences';
+export {
+  default as PopupProjectPreferences,
+} from './project/components/PopupProjectPreferences';
 
 export { default as App } from './core/containers/App';
 export { default as Root } from './core/containers/Root';
@@ -88,32 +90,37 @@ export { default as DevTools } from './core/containers/DevTools';
 
 export { default as initialState } from './core/state';
 
-export { default as popupsReducer, showOnlyPopup, hideOnePopup } from './popups/reducer';
-
-export default Object.assign({
-  App,
-  Root,
-  Editor,
-  CreateNodeWidget,
-  PopupShowCode,
-  PopupAlert,
-  PopupConfirm,
-  PopupPrompt,
-  PopupForm,
-  SnackBar,
-  DevTools,
-  Toolbar,
-  menu: MenuUtils,
-  sanctuaryPropType,
-  initialState,
-  popupsReducer,
+export {
+  default as popupsReducer,
   showOnlyPopup,
   hideOnePopup,
-  PopupProjectPreferences,
-  hasUnsavedChanges,
-  TAB_CLOSE,
-  SAVE_PROJECT,
-},
+} from './popups/reducer';
+
+export default Object.assign(
+  {
+    App,
+    Root,
+    Editor,
+    CreateNodeWidget,
+    PopupShowCode,
+    PopupAlert,
+    PopupConfirm,
+    PopupPrompt,
+    PopupForm,
+    SnackBar,
+    DevTools,
+    Toolbar,
+    menu: MenuUtils,
+    sanctuaryPropType,
+    initialState,
+    popupsReducer,
+    showOnlyPopup,
+    hideOnePopup,
+    PopupProjectPreferences,
+    hasUnsavedChanges,
+    TAB_CLOSE,
+    SAVE_PROJECT,
+  },
   UserSelectors,
   EditorSelectors,
   ProcessSelectors,

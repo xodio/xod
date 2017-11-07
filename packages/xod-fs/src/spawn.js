@@ -22,9 +22,13 @@ export const spawnWorkspaceFile = workspacePath =>
 
 // :: Path -> Promise Path Error
 export const spawnDefaultProject = curry((defaultProjectPath, workspacePath) =>
-  copy(defaultProjectPath, resolveDefaultProjectPath(workspacePath), copyOptions)
-  .then(() => workspacePath)
-  .catch(rejectWithCode(ERROR_CODES.CANT_COPY_DEFAULT_PROJECT))
+  copy(
+    defaultProjectPath,
+    resolveDefaultProjectPath(workspacePath),
+    copyOptions
+  )
+    .then(() => workspacePath)
+    .catch(rejectWithCode(ERROR_CODES.CANT_COPY_DEFAULT_PROJECT))
 );
 
 export default {};

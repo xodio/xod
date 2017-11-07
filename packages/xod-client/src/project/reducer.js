@@ -45,17 +45,18 @@ const updateCommentWith = (updaterFn, id, patchPath, state) => {
 };
 
 const nodePositionLens = R.lens(XP.getNodePosition, XP.setNodePosition);
-const commentPositionLens = R.lens(XP.getCommentPosition, XP.setCommentPosition);
-
-const moveEntities = (positionLens, deltaPosition) => R.map(
-  R.over(
-    positionLens,
-    R.compose(
-      snapNodePositionToSlots,
-      addPoints(deltaPosition)
-    )
-  )
+const commentPositionLens = R.lens(
+  XP.getCommentPosition,
+  XP.setCommentPosition
 );
+
+const moveEntities = (positionLens, deltaPosition) =>
+  R.map(
+    R.over(
+      positionLens,
+      R.compose(snapNodePositionToSlots, addPoints(deltaPosition))
+    )
+  );
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -83,10 +84,7 @@ export default (state = {}, action) => {
     case AT.PROJECT_IMPORT: {
       const importedProject = action.payload;
 
-      return XP.mergePatchesList(
-        XP.listLibraryPatches(state),
-        importedProject
-      );
+      return XP.mergePatchesList(XP.listLibraryPatches(state), importedProject);
     }
 
     case AT.PROJECT_RENAME:
@@ -121,10 +119,7 @@ export default (state = {}, action) => {
 
       const patch = XP.createPatch();
 
-      return R.compose(
-        explodeEither,
-        XP.assocPatch(patchPath, patch)
-      )(state);
+      return R.compose(explodeEither, XP.assocPatch(patchPath, patch))(state);
     }
 
     case AT.PATCH_RENAME: {
@@ -141,24 +136,14 @@ export default (state = {}, action) => {
     case AT.PATCH_DESCRIPTION_UPDATE: {
       const { path, description } = action.payload;
       const patchLens = XP.lensPatch(path);
-      return R.over(
-        patchLens,
-        XP.setPatchDescription(description),
-        state
-      );
+      return R.over(patchLens, XP.setPatchDescription(description), state);
     }
-
 
     //
     // Bulk actions on multiple entities
     //
     case AT.BULK_MOVE_NODES_AND_COMMENTS: {
-      const {
-        nodeIds,
-        commentIds,
-        deltaPosition,
-        patchPath,
-      } = action.payload;
+      const { nodeIds, commentIds, deltaPosition, patchPath } = action.payload;
 
       const currentPatchLens = XP.lensPatch(patchPath);
       const patch = R.view(currentPatchLens, state);
@@ -175,21 +160,13 @@ export default (state = {}, action) => {
 
       return R.over(
         currentPatchLens,
-        R.compose(
-          XP.upsertComments(movedComments),
-          XP.upsertNodes(movedNodes),
-        ),
+        R.compose(XP.upsertComments(movedComments), XP.upsertNodes(movedNodes)),
         state
       );
     }
 
     case AT.BULK_DELETE_ENTITIES: {
-      const {
-        linkIds,
-        nodeIds,
-        commentIds,
-        patchPath,
-      } = action.payload;
+      const { linkIds, nodeIds, commentIds, patchPath } = action.payload;
 
       const dissocFns = R.unnest([
         R.map(XP.dissocLink, linkIds),
@@ -213,7 +190,7 @@ export default (state = {}, action) => {
           explodeEither,
           XP.upsertLinks(entities.links),
           XP.upsertComments(entities.comments),
-          XP.upsertNodes(entities.nodes),
+          XP.upsertNodes(entities.nodes)
         ),
         state
       );
@@ -249,9 +226,7 @@ export default (state = {}, action) => {
 
       return R.over(
         currentPatchLens,
-        XP.assocNode(
-          selectNodePropertyUpdater(action.payload)(node)
-        ),
+        XP.assocNode(selectNodePropertyUpdater(action.payload)(node)),
         state
       );
     }
@@ -269,11 +244,7 @@ export default (state = {}, action) => {
       )(state);
 
       const inputPinIndex = R.compose(
-        R.ifElse(
-          XP.isInputPin,
-          R.always(0),
-          R.always(1)
-        ),
+        R.ifElse(XP.isInputPin, R.always(0), R.always(1)),
         XP.getPinByKeyUnsafe(pins[0].pinKey),
         R.view(XP.lensPatch(firstPinNodeType))
       )(state);
@@ -281,7 +252,12 @@ export default (state = {}, action) => {
       const input = pins[inputPinIndex];
       const output = pins[1 - inputPinIndex];
 
-      const newLink = XP.createLink(input.pinKey, input.nodeId, output.pinKey, output.nodeId);
+      const newLink = XP.createLink(
+        input.pinKey,
+        input.nodeId,
+        output.pinKey,
+        output.nodeId
+      );
 
       return R.over(
         XP.lensPatch(patchPath),
@@ -318,7 +294,12 @@ export default (state = {}, action) => {
     case AT.COMMENT_SET_CONTENT: {
       const { id, patchPath, content } = action.payload;
 
-      return updateCommentWith(XP.setCommentContent(content), id, patchPath, state);
+      return updateCommentWith(
+        XP.setCommentContent(content),
+        id,
+        patchPath,
+        state
+      );
     }
 
     default:

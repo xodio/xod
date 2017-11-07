@@ -6,7 +6,7 @@ import {
   DEBUG_SESSION_STOPPED_ON_TAB_CLOSE,
 } from '../shared/messages';
 
-export default store => next => (action) => {
+export default store => next => action => {
   const state = store.getState();
   const isDebugSession = client.isDebugSession(state);
   const prevProject = client.getProject(state);

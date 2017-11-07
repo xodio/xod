@@ -2,9 +2,12 @@ import R from 'ramda';
 
 import { selectionLens } from '../editor/selectors';
 import { SELECTION_ENTITY_TYPE } from '../editor/constants';
-import { getCurrentPatchLinks, getCurrentPatchNodes } from '../project/selectors';
+import {
+  getCurrentPatchLinks,
+  getCurrentPatchNodes,
+} from '../project/selectors';
 
-const removeInvalidSelections = (state) => {
+const removeInvalidSelections = state => {
   const nodes = getCurrentPatchNodes(state);
   const links = getCurrentPatchLinks(state);
 

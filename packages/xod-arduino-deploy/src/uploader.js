@@ -6,7 +6,12 @@ import packageIndex from './packageIndex.json';
 import * as Utils from './utils';
 import { loadBoardPrefs } from './boardsParser';
 import { build } from './builder';
-import { flushSerialBuffer, touchPort1200, waitNewPort, listPorts } from './serialport';
+import {
+  flushSerialBuffer,
+  touchPort1200,
+  waitNewPort,
+  listPorts,
+} from './serialport';
 
 // =============================================================================
 //
@@ -14,38 +19,65 @@ import { flushSerialBuffer, touchPort1200, waitNewPort, listPorts } from './seri
 //
 // =============================================================================
 
-const bossacCommand = (opts) => {
-  const { toolDirPath, sketchFileName, buildDir, boardPrefs, portName, debug = false } = opts;
+const bossacCommand = opts => {
+  const {
+    toolDirPath,
+    sketchFileName,
+    buildDir,
+    boardPrefs,
+    portName,
+    debug = false,
+  } = opts;
 
-  const toolExecFile = (Utils.isWindows) ? 'bossac.exe' : 'bossac';
+  const toolExecFile = Utils.isWindows ? 'bossac.exe' : 'bossac';
   const toolExecPath = path.join(toolDirPath, toolExecFile);
   const artifactPath = path.join(buildDir, `${sketchFileName}.bin`);
 
-  const verbose = (debug) ? ' -i -d' : '';
+  const verbose = debug ? ' -i -d' : '';
 
-  return `"${toolExecPath}"${verbose} --port=${portName} -U ${boardPrefs.upload.native_usb} -e -w -b "${artifactPath}" -R`;
+  return `"${toolExecPath}"${verbose} --port=${portName} -U ${
+    boardPrefs.upload.native_usb
+  } -e -w -b "${artifactPath}" -R`;
 };
 
-const avrdudeCommand = (opts) => {
-  const { toolDirPath, sketchFileName, buildDir, boardPrefs, portName, debug = false } = opts;
+const avrdudeCommand = opts => {
+  const {
+    toolDirPath,
+    sketchFileName,
+    buildDir,
+    boardPrefs,
+    portName,
+    debug = false,
+  } = opts;
 
-  const toolExecFile = (Utils.isWindows) ? 'bin/avrdude.exe' : 'bin/avrdude';
+  const toolExecFile = Utils.isWindows ? 'bin/avrdude.exe' : 'bin/avrdude';
   const toolExecPath = path.join(toolDirPath, toolExecFile);
   const configFile = path.join(toolDirPath, 'etc/avrdude.conf');
   const artifactPath = path.join(buildDir, `${sketchFileName}.hex`);
 
-  const verbose = (debug) ? ' -v -v' : '';
+  const verbose = debug ? ' -v -v' : '';
 
-  const mcu = (boardPrefs.build.emu) ? boardPrefs.build.emu.mcu : boardPrefs.build.mcu;
+  const mcu = boardPrefs.build.emu
+    ? boardPrefs.build.emu.mcu
+    : boardPrefs.build.mcu;
 
   // Do we really need to pass "-D" flag for AVR architecture?
-  return `"${toolExecPath}" -C "${configFile}"${verbose} -p ${mcu} -c ${boardPrefs.upload.protocol} -P ${portName} -b ${boardPrefs.upload.speed} "-Uflash:w:${artifactPath}:i"`;
+  return `"${toolExecPath}" -C "${configFile}"${verbose} -p ${mcu} -c ${
+    boardPrefs.upload.protocol
+  } -P ${portName} -b ${boardPrefs.upload.speed} "-Uflash:w:${artifactPath}:i"`;
 };
 
-const openocdCommand = (opts) => {
-  const { toolDirPath, sketchFileName, buildDir, boardPrefs, platformDir, debug = false } = opts;
+const openocdCommand = opts => {
+  const {
+    toolDirPath,
+    sketchFileName,
+    buildDir,
+    boardPrefs,
+    platformDir,
+    debug = false,
+  } = opts;
 
-  const toolExecFile = (Utils.isWindows) ? 'bin/openocd.exe' : 'bin/openocd';
+  const toolExecFile = Utils.isWindows ? 'bin/openocd.exe' : 'bin/openocd';
   const toolExecPath = path.join(toolDirPath, toolExecFile);
   const scriptsDir = path.join(toolDirPath, 'share/openocd/scripts');
   const buildVariant = path.join(
@@ -58,9 +90,13 @@ const openocdCommand = (opts) => {
 
   const bootloaderSize = boardPrefs.bootloader.size || '0x2000';
 
-  const verbose = (debug) ? ' -d2' : '';
+  const verbose = debug ? ' -d2' : '';
 
-  return `"${toolExecPath}"${verbose} -s "${scriptsDir}" -f "${buildVariant}" -c "telnet_port disabled; program ${artifactPath} verify reset ${bootloaderSize}; shutdown"`;
+  return `"${toolExecPath}"${verbose} -s "${scriptsDir}" -f "${
+    buildVariant
+  }" -c "telnet_port disabled; program ${artifactPath} verify reset ${
+    bootloaderSize
+  }; shutdown"`;
 };
 
 // =============================================================================
@@ -78,31 +114,56 @@ export const composeCommand = R.curry(
     const toolName = Utils.getBoardUploadTool(boardPrefs);
     const toolVersion = Utils.getToolVersion(fqbn, toolName, packageIndex);
     const toolsDir = Utils.getToolsDirectory(fqbn, packagesDir);
-    const toolDirPath = Utils.getToolVersionDirectory(toolName, toolVersion, toolsDir);
+    const toolDirPath = Utils.getToolVersionDirectory(
+      toolName,
+      toolVersion,
+      toolsDir
+    );
 
     const sketchFileName = path.basename(sketchFilePath);
 
     switch (toolName) {
       case 'bossac':
-        return bossacCommand({ toolDirPath, sketchFileName, buildDir, boardPrefs, portName });
+        return bossacCommand({
+          toolDirPath,
+          sketchFileName,
+          buildDir,
+          boardPrefs,
+          portName,
+        });
       case 'avrdude':
-        return avrdudeCommand({ toolDirPath, sketchFileName, buildDir, boardPrefs, portName });
+        return avrdudeCommand({
+          toolDirPath,
+          sketchFileName,
+          buildDir,
+          boardPrefs,
+          portName,
+        });
       case 'openocd':
       case 'openocd-withbootsize':
-        return openocdCommand({ toolDirPath, sketchFileName, buildDir, boardPrefs, platformDir });
+        return openocdCommand({
+          toolDirPath,
+          sketchFileName,
+          buildDir,
+          boardPrefs,
+          platformDir,
+        });
       default: {
-        throw new Error(`Architecture "${pab.architecture}" (${fqbn}) is not supported now. You can make a request to add it at https://forum.xod.io/`);
+        throw new Error(
+          `Architecture "${pab.architecture}" (${
+            fqbn
+          }) is not supported now. You can make a request to add it at https://forum.xod.io/`
+        );
       }
     }
   }
 );
 
 // :: BoardPrefs -> Boolean
-const getUploadBoolProp = R.curry(
-  (propName, boardPrefs) => R.compose(
-    R.equals('true'),
-    R.pathOr('false', ['upload', propName])
-  )(boardPrefs)
+const getUploadBoolProp = R.curry((propName, boardPrefs) =>
+  R.compose(R.equals('true'), R.pathOr('false', ['upload', propName]))(
+    boardPrefs
+  )
 );
 
 // :: PortName -> BoardPrefs -> Promise PortName Error
@@ -118,10 +179,11 @@ const prepareBoardUpload = async (portName, boardPrefs) => {
   }
 
   const protocol = R.path(['upload', 'protocol'], boardPrefs);
-  const uploadPortName = (getUploadBoolProp('wait_for_upload_port', boardPrefs)) ?
-    await waitNewPort(ports) : portName;
+  const uploadPortName = getUploadBoolProp('wait_for_upload_port', boardPrefs)
+    ? await waitNewPort(ports)
+    : portName;
 
-  return (protocol === 'sam-ba') ? path.basename(uploadPortName) : uploadPortName;
+  return protocol === 'sam-ba' ? path.basename(uploadPortName) : uploadPortName;
 };
 
 // :: Path -> FQBN -> Path -> Path -> PortName -> Promise { exitCode, stdout, stderr } Error
@@ -130,7 +192,12 @@ export const upload = R.curry(
     const boardPrefs = await loadBoardPrefs(fqbn, packagesDir);
     const newPortName = await prepareBoardUpload(portName, boardPrefs);
     const cmd = composeCommand(
-      sketchFilePath, fqbn, packagesDir, buildDir, boardPrefs, newPortName
+      sketchFilePath,
+      fqbn,
+      packagesDir,
+      buildDir,
+      boardPrefs,
+      newPortName
     );
     const exec = await cpp.exec(cmd);
     return Utils.normalizeChildProcessResult(exec);
@@ -139,13 +206,27 @@ export const upload = R.curry(
 
 // :: Path -> FQBN -> Path -> Path -> Path -> PortName -> Promise { exitCode, stdout, stderr } Error
 export const buildAndUpload = R.curry(
-  (sketchFilePath, fqbn, packagesDir, librariesDir, buildDir, portName, builderToolDir) =>
-    build(sketchFilePath, fqbn, packagesDir, librariesDir, buildDir, builderToolDir)
-      .then((res) => {
-        if (res.exitCode !== 0) {
-          return Promise.reject(Object.assign(new Error(res.stderr), res));
-        }
+  (
+    sketchFilePath,
+    fqbn,
+    packagesDir,
+    librariesDir,
+    buildDir,
+    portName,
+    builderToolDir
+  ) =>
+    build(
+      sketchFilePath,
+      fqbn,
+      packagesDir,
+      librariesDir,
+      buildDir,
+      builderToolDir
+    ).then(res => {
+      if (res.exitCode !== 0) {
+        return Promise.reject(Object.assign(new Error(res.stderr), res));
+      }
 
-        return upload(sketchFilePath, fqbn, packagesDir, buildDir, portName);
-      })
+      return upload(sketchFilePath, fqbn, packagesDir, buildDir, portName);
+    })
 );

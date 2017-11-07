@@ -13,8 +13,12 @@ import * as swagger from './swagger';
 function libDirDoesNotExist(libDir, libUri) {
   return new Promise((resolve, reject) => {
     if (!xodFs.doesDirectoryExist(libDir)) return resolve();
-    return reject(new Error(`could not install "${toString(libUri)}".\n` +
-      `"${libDir}" is not empty, remove it manually.`));
+    return reject(
+      new Error(
+        `could not install "${toString(libUri)}".\n` +
+          `"${libDir}" is not empty, remove it manually.`
+      )
+    );
   });
 }
 
@@ -26,8 +30,12 @@ function libDirDoesNotExist(libDir, libUri) {
 function getLibUri(string) {
   return parseLibUri(string)
     .map(libUri => Promise.resolve.bind(Promise, libUri))
-    .getOrElse(Promise.reject.bind(Promise,
-      new Error(`could not parse "${string}" as <orgname>/<libname>[@<tag>].`)))
+    .getOrElse(
+      Promise.reject.bind(
+        Promise,
+        new Error(`could not parse "${string}" as <orgname>/<libname>[@<tag>].`)
+      )
+    )
     .apply();
 }
 
@@ -41,16 +49,18 @@ function getSemver(swaggerClient, libUri) {
   const { libname, orgname, tag } = libUri;
   if (tag !== 'latest') return Promise.resolve(tag);
   return swaggerClient.apis.Library.getOrgLib({ libname, orgname })
-    .catch((err) => {
+    .catch(err => {
       if (err.status !== 404) throw swagger.error(err);
-      throw new Error('could not find library ' +
-        `"${toStringWithoutTag(libUri)}".`);
+      throw new Error(
+        'could not find library ' + `"${toStringWithoutTag(libUri)}".`
+      );
     })
     .then(({ obj: lib }) => {
       const [version] = lib.versions;
       if (version) return version;
-      throw new Error('could not find latest version of ' +
-        `"${toStringWithoutTag(libUri)}".`);
+      throw new Error(
+        'could not find latest version of ' + `"${toStringWithoutTag(libUri)}".`
+      );
     });
 }
 
@@ -64,9 +74,12 @@ function getSemver(swaggerClient, libUri) {
 function loadXodball(swaggerClient, libUri, semver) {
   const { libname, orgname } = libUri;
   return swaggerClient.apis.Version.getLibVersionXodball({
-    libname, orgname, semver,
-  }).then(({ obj: xodball }) => xodball)
-    .catch((err) => {
+    libname,
+    orgname,
+    semver,
+  })
+    .then(({ obj: xodball }) => xodball)
+    .catch(err => {
       if (err.status !== 404) throw swagger.error(err);
       throw new Error(`could not find version "${toString(libUri)}".`);
     });
@@ -94,12 +107,11 @@ function getProject(swaggerClient, libUri) {
  * @return {Promise.<void>}
  */
 export default function install(swaggerUrl, libUri, path2) {
-  return Promise
-    .all([
-      getLibUri(libUri),
-      swagger.client(swaggerUrl),
-      xodFs.findClosestWorkspaceDir(path2),
-    ])
+  return Promise.all([
+    getLibUri(libUri),
+    swagger.client(swaggerUrl),
+    xodFs.findClosestWorkspaceDir(path2),
+  ])
     .then(([libUri2, swaggerClient, workspaceDir]) => {
       const orgDir = path.resolve(
         xodFs.resolveLibPath(workspaceDir),
@@ -112,7 +124,7 @@ export default function install(swaggerUrl, libUri, path2) {
         .then(() => `Installed "${toString(libUri2)}" at "${libDir}".`);
     })
     .then(messages.success)
-    .catch((err) => {
+    .catch(err => {
       messages.error(err.message);
       process.exit(1);
     });

@@ -34,18 +34,21 @@ class SuggesterContainer extends React.Component {
     if (this.scrollRef) {
       const contentWrapper = this.scrollRef.refs.contentWrapper;
 
-      const highlighted = contentWrapper.getElementsByClassName('is-highlighted');
+      const highlighted = contentWrapper.getElementsByClassName(
+        'is-highlighted'
+      );
       if (highlighted.length > 0) {
         const top = highlighted[0].offsetTop;
         const height = highlighted[0].clientHeight;
         const containerHeight = contentWrapper.clientHeight;
         const scrollPos = this.scrollRef.state.scrollPos;
 
-        const isOutsideUp = (top - height <= scrollPos);
-        const isOutsideDown = (top + height >= (scrollPos + containerHeight) - height);
+        const isOutsideUp = top - height <= scrollPos;
+        const isOutsideDown =
+          top + height >= scrollPos + containerHeight - height;
 
         if (isOutsideDown) {
-          return (top + height + height) - containerHeight;
+          return top + height + height - containerHeight;
         } else if (isOutsideUp) {
           return top - height;
         }
@@ -69,14 +72,8 @@ class SuggesterContainer extends React.Component {
 
   render() {
     return (
-      <CustomScroll
-        ref={this.setScrollRef}
-        scrollTo={this.state.scrollPos}
-      >
-        <div
-          {...this.props.containerProps}
-          className="Suggester-container"
-        >
+      <CustomScroll ref={this.setScrollRef} scrollTo={this.state.scrollPos}>
+        <div {...this.props.containerProps} className="Suggester-container">
           {this.props.children}
         </div>
       </CustomScroll>

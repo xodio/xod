@@ -20,11 +20,19 @@ import * as PatchPathUtils from './patchPathUtils';
 // =============================================================================
 
 /* eslint-disable new-cap */
-function baseChain(f) { return f(this.value); }
-function baseGet() { return this.value; }
+function baseChain(f) {
+  return f(this.value);
+}
+function baseGet() {
+  return this.value;
+}
 
-function NodeWrapper(x) { this.value = x; }
-function LinkWrapper(x) { this.value = x; }
+function NodeWrapper(x) {
+  this.value = x;
+}
+function LinkWrapper(x) {
+  this.value = x;
+}
 
 const Wr = {
   Node: x => new NodeWrapper(x),
@@ -36,13 +44,17 @@ const Wr = {
 
 NodeWrapper.prototype.isNode = true;
 NodeWrapper.prototype.isLink = false;
-NodeWrapper.prototype.map = function mapNode(f) { return Wr.Node(f(this.value)); };
+NodeWrapper.prototype.map = function mapNode(f) {
+  return Wr.Node(f(this.value));
+};
 NodeWrapper.prototype.chain = baseChain;
 NodeWrapper.prototype.get = baseGet;
 
 LinkWrapper.prototype.isNode = false;
 LinkWrapper.prototype.isLink = true;
-LinkWrapper.prototype.map = function mapLink(f) { return Wr.Link(f(this.value)); };
+LinkWrapper.prototype.map = function mapLink(f) {
+  return Wr.Link(f(this.value));
+};
 LinkWrapper.prototype.chain = baseChain;
 LinkWrapper.prototype.get = baseGet;
 
@@ -64,27 +76,28 @@ const isInternalTerminalNode = R.compose(
 const reduceChainOver = R.reduce(R.flip(R.chain));
 
 // :: Project -> String -> Patch
-const getPatchByPath = R.curry((project, nodeType) => R.compose(
-  explode,
-  Project.getPatchByPath(R.__, project)
-)(nodeType));
-
-// :: String[] -> Patch -> Boolean
-const isLeafPatchWithImplsOrTerminal = impls => R.anyPass([
-  Patch.hasImpls(impls),
-  Patch.isTerminalPatch,
-  R.pipe(Patch.getPatchPath, R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH)),
-]);
-
-// :: String[] -> Patch -> Boolean
-const isLeafPatchWithoutImpls = impls => R.both(
-  R.complement(Patch.hasImpls(impls)),
-  R.compose(
-    R.contains(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
-    R.map(Node.getNodeType),
-    Patch.listNodes
-  )
+const getPatchByPath = R.curry((project, nodeType) =>
+  R.compose(explode, Project.getPatchByPath(R.__, project))(nodeType)
 );
+
+// :: String[] -> Patch -> Boolean
+const isLeafPatchWithImplsOrTerminal = impls =>
+  R.anyPass([
+    Patch.hasImpls(impls),
+    Patch.isTerminalPatch,
+    R.pipe(Patch.getPatchPath, R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH)),
+  ]);
+
+// :: String[] -> Patch -> Boolean
+const isLeafPatchWithoutImpls = impls =>
+  R.both(
+    R.complement(Patch.hasImpls(impls)),
+    R.compose(
+      R.contains(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
+      R.map(Node.getNodeType),
+      Patch.listNodes
+    )
+  );
 
 // :: [Path, Patch] -> [Path, Patch]
 const extendTerminalPins = R.curry(([path, patch]) => {
@@ -92,7 +105,9 @@ const extendTerminalPins = R.curry(([path, patch]) => {
     return [path, patch];
   }
 
-  const internalTerminalPath = PatchPathUtils.convertToInternalTerminalPath(path);
+  const internalTerminalPath = PatchPathUtils.convertToInternalTerminalPath(
+    path
+  );
   return [
     internalTerminalPath,
     Patch.setPatchPath(internalTerminalPath, patch),
@@ -100,28 +115,27 @@ const extendTerminalPins = R.curry(([path, patch]) => {
 });
 
 // :: Function extractLeafPatches -> String[] -> Project -> Node -> Either Error [Path, Patch, ...]
-const extractLeafPatchRecursive = R.curry(
-  (recursiveFn, impls, project, node) => R.compose(
-    path => R.compose(
-      R.chain(recursiveFn(impls, project, path)),
-      errOnNothing(
-        formatString(
-          CONST.ERROR.PATCH_NOT_FOUND_BY_PATH,
-          { patchPath: path }
-        )
-      ),
-      Project.getPatchByPath(R.__, project)
-    )(path),
+const extractLeafPatchRecursive = R.curry((recursiveFn, impls, project, node) =>
+  R.compose(
+    path =>
+      R.compose(
+        R.chain(recursiveFn(impls, project, path)),
+        errOnNothing(
+          formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })
+        ),
+        Project.getPatchByPath(R.__, project)
+      )(path),
     Node.getNodeType
   )(node)
 );
 
 // :: Function extractLeafPatches -> String[] -> Project -> Patch -> [Path, Patch, ...]
-const extractLeafPatchesFromNodes = R.curry((recursiveFn, impls, project, patch) =>
-  R.compose(
-    R.chain(extractLeafPatchRecursive(recursiveFn, impls, project)),
-    Patch.listNodes
-  )(patch)
+const extractLeafPatchesFromNodes = R.curry(
+  (recursiveFn, impls, project, patch) =>
+    R.compose(
+      R.chain(extractLeafPatchRecursive(recursiveFn, impls, project)),
+      Patch.listNodes
+    )(patch)
 );
 
 // :: String[] -> Project -> Path -> [Either Error [Path, Patch]]
@@ -129,44 +143,41 @@ export const extractLeafPatches = R.curry((impls, project, path, patch) =>
   R.cond([
     [
       isLeafPatchWithImplsOrTerminal(impls),
-      R.compose(R.of, Either.of, leafPatch => ([path, leafPatch])),
+      R.compose(R.of, Either.of, leafPatch => [path, leafPatch]),
     ],
     [
       isLeafPatchWithoutImpls(impls),
       err(
-        formatString(
-          CONST.ERROR.IMPLEMENTATION_NOT_FOUND,
-          {
-            impl: impls,
-            patchPath: Patch.getPatchPath(patch),
-          }
-        )
+        formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, {
+          impl: impls,
+          patchPath: Patch.getPatchPath(patch),
+        })
       ),
     ],
-    [
-      R.T,
-      extractLeafPatchesFromNodes(extractLeafPatches, impls, project),
-    ],
+    [R.T, extractLeafPatchesFromNodes(extractLeafPatches, impls, project)],
   ])(patch)
 );
 
 // :: String -> Node
-const getNodeById = R.curry((patch, node) => R.compose(
-  explode,
-  Patch.getNodeById(R.__, patch)
-)(node));
+const getNodeById = R.curry((patch, node) =>
+  R.compose(explode, Patch.getNodeById(R.__, patch))(node)
+);
 
 // :: String[] -> Node -> Boolean
-const isLeafNode = R.curry((leafPatchPaths, node) => R.compose(
-  R.either(
-    R.contains(R.__, leafPatchPaths),
-    PatchPathUtils.isTerminalPatchPath
-  ),
-  Node.getNodeType
-)(node));
+const isLeafNode = R.curry((leafPatchPaths, node) =>
+  R.compose(
+    R.either(
+      R.contains(R.__, leafPatchPaths),
+      PatchPathUtils.isTerminalPatchPath
+    ),
+    Node.getNodeType
+  )(node)
+);
 
 // :: String -> String -> String
-const getPrefixedId = R.curry((prefix, id) => ((prefix) ? `${prefix}~${id}` : id));
+const getPrefixedId = R.curry(
+  (prefix, id) => (prefix ? `${prefix}~${id}` : id)
+);
 
 const getPinType = R.curry((patchTuples, nodes, idGetter, keyGetter, link) =>
   R.compose(
@@ -206,30 +217,45 @@ const getPinType = R.curry((patchTuples, nodes, idGetter, keyGetter, link) =>
  * @returns {Maybe<Node>}
  */
 // :: [[Path, Patch]] -> [Node] -> Link -> Maybe Node
-const createCastNode = R.curry((patchTuples, nodes, link) => R.compose(
-  R.map(
-    R.assoc('id', [
-      Link.getLinkOutputNodeId(link),
-      '-to-',
-      Link.getLinkInputNodeId(link),
-      '-pin-',
-      Link.getLinkInputPinKey(link),
-    ].join(''))
-  ),
-  R.map(Node.createNode({ x: 0, y: 0 })),
-  // Link -> Maybe String
-  R.converge(
-    R.ifElse(
-      R.equals,
-      Maybe.Nothing,
-      R.compose(Maybe.of, PatchPathUtils.getCastPatchPath)
+const createCastNode = R.curry((patchTuples, nodes, link) =>
+  R.compose(
+    R.map(
+      R.assoc(
+        'id',
+        [
+          Link.getLinkOutputNodeId(link),
+          '-to-',
+          Link.getLinkInputNodeId(link),
+          '-pin-',
+          Link.getLinkInputPinKey(link),
+        ].join('')
+      )
     ),
-    [
-      getPinType(patchTuples, nodes, Link.getLinkOutputNodeId, Link.getLinkOutputPinKey),
-      getPinType(patchTuples, nodes, Link.getLinkInputNodeId, Link.getLinkInputPinKey),
-    ]
-  )
-)(link));
+    R.map(Node.createNode({ x: 0, y: 0 })),
+    // Link -> Maybe String
+    R.converge(
+      R.ifElse(
+        R.equals,
+        Maybe.Nothing,
+        R.compose(Maybe.of, PatchPathUtils.getCastPatchPath)
+      ),
+      [
+        getPinType(
+          patchTuples,
+          nodes,
+          Link.getLinkOutputNodeId,
+          Link.getLinkOutputPinKey
+        ),
+        getPinType(
+          patchTuples,
+          nodes,
+          Link.getLinkInputNodeId,
+          Link.getLinkInputPinKey
+        ),
+      ]
+    )
+  )(link)
+);
 
 /**
  * It replaces link with casting nodes and
@@ -248,14 +274,16 @@ const createCastNode = R.curry((patchTuples, nodes, link) => R.compose(
 const splitLinkWithCastNode = R.curry((patchTuples, nodes, link) =>
   Maybe.maybe(
     [null, [link]],
-    (castNode) => {
+    castNode => {
       const origLinkId = Link.getLinkId(link);
       const fromNodeId = Link.getLinkOutputNodeId(link);
       const fromPinKey = Link.getLinkOutputPinKey(link);
       const toNodeId = Link.getLinkInputNodeId(link);
       const toPinKey = Link.getLinkInputPinKey(link);
 
-      const toCastNode = R.assoc('id', `${origLinkId}-to-cast`,
+      const toCastNode = R.assoc(
+        'id',
+        `${origLinkId}-to-cast`,
         Link.createLink(
           CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.INPUT],
           castNode.id,
@@ -263,7 +291,9 @@ const splitLinkWithCastNode = R.curry((patchTuples, nodes, link) =>
           fromNodeId
         )
       );
-      const fromCastNode = R.assoc('id', `${origLinkId}-from-cast`,
+      const fromCastNode = R.assoc(
+        'id',
+        `${origLinkId}-from-cast`,
         Link.createLink(
           toPinKey,
           toNodeId,
@@ -279,35 +309,34 @@ const splitLinkWithCastNode = R.curry((patchTuples, nodes, link) =>
 );
 
 // :: [{ nodeId, pinKey, value }] -> StrMap Node -> StrMap Node
-const bindValuesToIndexedNodes = R.curry(
-  (valuesToBind, nodesById) => R.reduce(
-    (indexedNodes, { nodeId, pinKey, value }) => R.over(
-      R.lensProp(nodeId),
-      Node.setBoundValue(pinKey, value),
-      indexedNodes
-    ),
+const bindValuesToIndexedNodes = R.curry((valuesToBind, nodesById) =>
+  R.reduce(
+    (indexedNodes, { nodeId, pinKey, value }) =>
+      R.over(
+        R.lensProp(nodeId),
+        Node.setBoundValue(pinKey, value),
+        indexedNodes
+      ),
     nodesById,
     valuesToBind
   )
 );
 
 // :: StrMap Node -> NodeId -> Boolean
-const isNodeWithIdTerminal = R.uncurryN(2, nodesById => R.compose(
-  isInternalTerminalNode,
-  R.flip(R.prop)(nodesById)
-));
+const isNodeWithIdTerminal = R.uncurryN(2, nodesById =>
+  R.compose(isInternalTerminalNode, R.flip(R.prop)(nodesById))
+);
 
 // :: StrMap Node -> Link -> Boolean
-const isLinkFromTerminalToRegularNode = R.uncurryN(2, nodesById => R.both(
-  R.compose(
-    isNodeWithIdTerminal(nodesById),
-    Link.getLinkOutputNodeId
-  ),
-  R.compose(
-    R.complement(isNodeWithIdTerminal(nodesById)),
-    Link.getLinkInputNodeId
+const isLinkFromTerminalToRegularNode = R.uncurryN(2, nodesById =>
+  R.both(
+    R.compose(isNodeWithIdTerminal(nodesById), Link.getLinkOutputNodeId),
+    R.compose(
+      R.complement(isNodeWithIdTerminal(nodesById)),
+      Link.getLinkInputNodeId
+    )
   )
-));
+);
 
 // Collects all the links
 //
@@ -327,7 +356,8 @@ const isLinkFromTerminalToRegularNode = R.uncurryN(2, nodesById => R.both(
 const getTerminalLinksChain = R.curry(
   (nodesById, linksByInputNodeId, startingLink) =>
     (function recur(linksChain) {
-      const nextLinkInChain = linksByInputNodeId[Link.getLinkOutputNodeId(R.last(linksChain))];
+      const nextLinkInChain =
+        linksByInputNodeId[Link.getLinkOutputNodeId(R.last(linksChain))];
 
       // Special case for when there is a 'dangling' terminal node.
       //
@@ -350,20 +380,20 @@ const getTerminalLinksChain = R.curry(
       }
 
       return recur(newLinksChain);
-    }([startingLink]))
+    })([startingLink])
 );
 
 // :: [NodeId] -> Link -> Boolean
-const isLinkConnectedToNodeIds = R.curry(
-  (nodeIds, link) => R.or(
+const isLinkConnectedToNodeIds = R.curry((nodeIds, link) =>
+  R.or(
     R.contains(Link.getLinkInputNodeId(link), nodeIds),
     R.contains(Link.getLinkOutputNodeId(link), nodeIds)
   )
 );
 
 // :: ((a → Boolean) → [a] → a | undefined) -> [Node] -> Maybe DataValue
-const findBoundValue = R.uncurryN(2)(
-  findFn => R.compose(
+const findBoundValue = R.uncurryN(2)(findFn =>
+  R.compose(
     Maybe,
     R.unless(
       R.isNil,
@@ -376,73 +406,75 @@ const findBoundValue = R.uncurryN(2)(
 
 // :: StrMap Node -> [Link] -> Maybe { nodeId, pinKey, value }
 const getValueToBind = R.curry((nodesById, linksChain) => {
-  const outputNodesFromLinkChain = R.map(R.compose(
-    R.flip(R.prop)(nodesById),
-    Link.getLinkOutputNodeId
-  ))(linksChain);
+  const outputNodesFromLinkChain = R.map(
+    R.compose(R.flip(R.prop)(nodesById), Link.getLinkOutputNodeId)
+  )(linksChain);
 
-  const isTopNodeTerminal = R.compose(
-    isInternalTerminalNode,
-    R.last
-  )(outputNodesFromLinkChain);
+  const isTopNodeTerminal = R.compose(isInternalTerminalNode, R.last)(
+    outputNodesFromLinkChain
+  );
 
   return isTopNodeTerminal
-    // We must take bound value from the 'highest' terminal node
-    // and bind it to 'base' node input
-    //
-    // Example:
-    //   `led` passes value bound to it's PORT pin
-    //   to pwm-output's PORT pin inside it's implementation
-    //
-    //               ...
-    //        PORT    |
-    //    +----O------O----+
-    //    |    |           |
-    //    |    |     ...   |
-    //    |    |           |
-    //    | +--O------O--+ |
-    //    | | pwm-output | |
-    //    | +------------+ |
-    //    +----------------+
-    ? findBoundValue(R.findLast, outputNodesFromLinkChain).map((topBoundValue) => {
-      const bottomLink = R.head(linksChain);
-      return {
-        nodeId: Link.getLinkInputNodeId(bottomLink),
-        pinKey: Link.getLinkInputPinKey(bottomLink),
-        value: topBoundValue,
-      };
-    })
-    // We must take bound value from the 'lowest' terminal node
-    // and bind it to 'top' node output
-    //
-    // Example:
-    //   We have some node that wraps `count` node.
-    //   We should be able to pass initial value to
-    //   up to count's output
-    //
-    //    | +-------+     |
-    //    | | count | ... |
-    //    | +-O-----+     |
-    //    |   |           |
-    //    +---O-----------+
-    //        |\
-    //        | \--- here some initial value is bound
-    //        |
-    //    +---O-----------+
-    //    |  ...          |
-    //    +---------------+
-    : findBoundValue(R.find, R.init(outputNodesFromLinkChain)).map((bottomBoundValue) => {
-      const topLink = R.last(linksChain);
-      return {
-        nodeId: Link.getLinkOutputNodeId(topLink),
-        pinKey: Link.getLinkOutputPinKey(topLink),
-        value: bottomBoundValue,
-      };
-    });
+    ? // We must take bound value from the 'highest' terminal node
+      // and bind it to 'base' node input
+      //
+      // Example:
+      //   `led` passes value bound to it's PORT pin
+      //   to pwm-output's PORT pin inside it's implementation
+      //
+      //               ...
+      //        PORT    |
+      //    +----O------O----+
+      //    |    |           |
+      //    |    |     ...   |
+      //    |    |           |
+      //    | +--O------O--+ |
+      //    | | pwm-output | |
+      //    | +------------+ |
+      //    +----------------+
+      findBoundValue(R.findLast, outputNodesFromLinkChain).map(
+        topBoundValue => {
+          const bottomLink = R.head(linksChain);
+          return {
+            nodeId: Link.getLinkInputNodeId(bottomLink),
+            pinKey: Link.getLinkInputPinKey(bottomLink),
+            value: topBoundValue,
+          };
+        }
+      )
+    : // We must take bound value from the 'lowest' terminal node
+      // and bind it to 'top' node output
+      //
+      // Example:
+      //   We have some node that wraps `count` node.
+      //   We should be able to pass initial value to
+      //   up to count's output
+      //
+      //    | +-------+     |
+      //    | | count | ... |
+      //    | +-O-----+     |
+      //    |   |           |
+      //    +---O-----------+
+      //        |\
+      //        | \--- here some initial value is bound
+      //        |
+      //    +---O-----------+
+      //    |  ...          |
+      //    +---------------+
+      findBoundValue(R.find, R.init(outputNodesFromLinkChain)).map(
+        bottomBoundValue => {
+          const topLink = R.last(linksChain);
+          return {
+            nodeId: Link.getLinkOutputNodeId(topLink),
+            pinKey: Link.getLinkOutputPinKey(topLink),
+            value: bottomBoundValue,
+          };
+        }
+      );
 });
 
 // :: [Link] -> Link
-const collapseLinksChain = (linksChain) => {
+const collapseLinksChain = linksChain => {
   const firstLink = R.head(linksChain);
   const lastLink = R.last(linksChain);
 
@@ -459,25 +491,20 @@ const collapseLinksChain = (linksChain) => {
 
 // :: StrMap Node -> StrMap Link -> [Link] -> Pair [Link] [{ nodeId, pinKey, value }]
 const getCollapsedLinksAndValuesToBind = R.uncurryN(3)(
-  (nodesById, linksByInputNodeId) => R.compose(
-    R.adjust(catMaybes, 1),
-    R.when(
-      R.isEmpty,
-      R.always([[], []])
-    ),
-    R.transpose, // [Pair Link ValueToBind] -> Pair [Link] [ValueToBind]
-    R.map(R.compose( // :: [Link] -> [Pair Link ValueToBind]
-      R.converge(
-        R.pair,
-        [
-          collapseLinksChain,
-          getValueToBind(nodesById),
-        ]
+  (nodesById, linksByInputNodeId) =>
+    R.compose(
+      R.adjust(catMaybes, 1),
+      R.when(R.isEmpty, R.always([[], []])),
+      R.transpose, // [Pair Link ValueToBind] -> Pair [Link] [ValueToBind]
+      R.map(
+        R.compose(
+          // :: [Link] -> [Pair Link ValueToBind]
+          R.converge(R.pair, [collapseLinksChain, getValueToBind(nodesById)]),
+          getTerminalLinksChain(nodesById, linksByInputNodeId)
+        )
       ),
-      getTerminalLinksChain(nodesById, linksByInputNodeId)
-    )),
-    R.filter(isLinkFromTerminalToRegularNode(nodesById))
-  )
+      R.filter(isLinkFromTerminalToRegularNode(nodesById))
+    )
 );
 
 // 'collapses' links containing terminals,
@@ -522,7 +549,7 @@ const removeTerminalsAndPassPins = ([nodes, links]) => {
   const newNodes = R.compose(
     R.reject(isInternalTerminalNode),
     R.values,
-    bindValuesToIndexedNodes(valuesToBind),
+    bindValuesToIndexedNodes(valuesToBind)
   )(nodesById);
 
   return [newNodes, newLinks];
@@ -541,17 +568,16 @@ const removeTerminalsAndPassPins = ([nodes, links]) => {
  * @returns {Array<Array<Node>, Array<Link>>}
  */
 // :: [[Path, Patch]] -> Node[] -> Link[] -> [ Node[], Link[] ]
-const createCastNodes = R.curry((patchTuples, nodes, links) => R.compose(
-  removeTerminalsAndPassPins,
-  R.converge(
-    (newNodes, newLinks) => ([newNodes, newLinks]),
-    [
+const createCastNodes = R.curry((patchTuples, nodes, links) =>
+  R.compose(
+    removeTerminalsAndPassPins,
+    R.converge((newNodes, newLinks) => [newNodes, newLinks], [
       R.compose(R.concat(nodes), R.reject(R.isNil), R.pluck(0)),
       R.compose(R.flatten, R.pluck(1)),
-    ]
-  ),
-  R.map(splitLinkWithCastNode(patchTuples, nodes))
-)(links));
+    ]),
+    R.map(splitLinkWithCastNode(patchTuples, nodes))
+  )(links)
+);
 
 // :: Patch -> String[]
 const getCastNodeTypesFromPatch = R.compose(
@@ -561,32 +587,34 @@ const getCastNodeTypesFromPatch = R.compose(
 );
 
 // :: Project -> String -> Either Error Patch
-const getEitherPatchByPath = R.curry((project, path) => R.compose(
-  errOnNothing(formatString(CONST.ERROR.CAST_PATCH_NOT_FOUND, { patchPath: path })),
-  Project.getPatchByPath(R.__, project)
-)(path));
+const getEitherPatchByPath = R.curry((project, path) =>
+  R.compose(
+    errOnNothing(
+      formatString(CONST.ERROR.CAST_PATCH_NOT_FOUND, { patchPath: path })
+    ),
+    Project.getPatchByPath(R.__, project)
+  )(path)
+);
 
 // :: Project -> String[] -> [[Path, Patch]] -> [[Path, Either Error Patch]]
-const addCastPatches = R.curry((project, castTypes, leafPatches) => R.compose(
-  R.concat(R.map(Either.of, leafPatches)),
-  R.map(
-    path => getEitherPatchByPath(project, path).map(
-      patch => [path, patch]
-    )
-  ),
-  R.uniq
-)(castTypes));
+const addCastPatches = R.curry((project, castTypes, leafPatches) =>
+  R.compose(
+    R.concat(R.map(Either.of, leafPatches)),
+    R.map(path =>
+      getEitherPatchByPath(project, path).map(patch => [path, patch])
+    ),
+    R.uniq
+  )(castTypes)
+);
 
 // :: [[Path, Patch]] -> [[Path, Patch]]
-const removeTerminalPatches = R.reject(R.compose(
-  PatchPathUtils.isInternalTerminalNodeType,
-  R.prop(0)
-));
+const removeTerminalPatches = R.reject(
+  R.compose(PatchPathUtils.isInternalTerminalNodeType, R.prop(0))
+);
 
-const removeNotImplementedInXodNodes = R.reject(R.compose(
-  R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
-  R.prop(0)
-));
+const removeNotImplementedInXodNodes = R.reject(
+  R.compose(R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH), R.prop(0))
+);
 
 // :: [[Path, Patch]] -> [[Path, Patch]]
 const filterTuplesByUniqPaths = R.uniqWith(R.eqBy(R.prop(0)));
@@ -595,15 +623,15 @@ const filterTuplesByUniqPaths = R.uniqWith(R.eqBy(R.prop(0)));
 const updateLinkNodeIds = R.curry((leafPaths, prefix, patch, link) => {
   const inputNodeId = Link.getLinkInputNodeId(link);
   const inputPinKey = Link.getLinkInputPinKey(link);
-  const isInputLeafNode = R.compose(
-    isLeafNode(leafPaths),
-    getNodeById(patch)
-  )(inputNodeId);
-  const newInputNodeId = (isInputLeafNode) ?
-    getPrefixedId(prefix, inputNodeId) :
-    getPrefixedId(prefix, getPrefixedId(inputNodeId, inputPinKey));
-  const newInputPinKey = (isInputLeafNode) ?
-    inputPinKey : CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.INPUT];
+  const isInputLeafNode = R.compose(isLeafNode(leafPaths), getNodeById(patch))(
+    inputNodeId
+  );
+  const newInputNodeId = isInputLeafNode
+    ? getPrefixedId(prefix, inputNodeId)
+    : getPrefixedId(prefix, getPrefixedId(inputNodeId, inputPinKey));
+  const newInputPinKey = isInputLeafNode
+    ? inputPinKey
+    : CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.INPUT];
 
   const outputNodeId = Link.getLinkOutputNodeId(link);
   const outputPinKey = Link.getLinkOutputPinKey(link);
@@ -612,18 +640,18 @@ const updateLinkNodeIds = R.curry((leafPaths, prefix, patch, link) => {
     explode,
     Patch.getNodeById(R.__, patch)
   )(outputNodeId);
-  const newOutputNodeId = (isOutputLeafNode) ?
-    getPrefixedId(prefix, outputNodeId) :
-    getPrefixedId(prefix, getPrefixedId(outputNodeId, outputPinKey));
-  const newOutputPinKey = (isOutputLeafNode) ?
-    outputPinKey : CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.OUTPUT];
+  const newOutputNodeId = isOutputLeafNode
+    ? getPrefixedId(prefix, outputNodeId)
+    : getPrefixedId(prefix, getPrefixedId(outputNodeId, outputPinKey));
+  const newOutputPinKey = isOutputLeafNode
+    ? outputPinKey
+    : CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.OUTPUT];
 
   return R.compose(
     R.assoc('id', getPrefixedId(prefix, Link.getLinkId(link))),
     Link.createLink
   )(newInputPinKey, newInputNodeId, newOutputPinKey, newOutputNodeId);
 });
-
 
 // =============================================================================
 //
@@ -637,9 +665,9 @@ const updateLinkNodeIds = R.curry((leafPaths, prefix, patch, link) => {
 //  -> convertPatch -> extractPatches
 //
 
-
 // :: NodePins -> Node -> NodePins
-const rekeyBoundValues = R.curry((boundValues, node) => { // TODO: better name?
+const rekeyBoundValues = R.curry((boundValues, node) => {
+  // TODO: better name?
   const nodeId = Node.getNodeId(node);
   const isTerminalNode = R.compose(
     PatchPathUtils.isTerminalPatchPath,
@@ -677,66 +705,58 @@ const rekeyBoundValues = R.curry((boundValues, node) => { // TODO: better name?
  * @returns {Array<Array<NodeWrapper>, Array<LinkWrapper>>}
  */
 // :: Project -> leafPatchesPaths -> String -> NodePins -> Patch -> [NodeWrapper[], LinkWrapper[]]
-export const extractPatches = R.curry((project, leafPaths, prefix, boundValues, patch) => {
-  // 1. extractPatches recursively from nodes and wrap with NodeWrapper leafNodes
-  const nodes = R.compose(
-    R.map(
-      R.ifElse(
-        isLeafNode(leafPaths),
-        R.compose(
-          Wr.Node,
-          // 1.3. update id
-          node => R.assoc('id', getPrefixedId(prefix, Node.getNodeId(node)), node),
-          // 1.2. convert node type from 'input|output' to 'terminal', if needed
-          R.over(
-            R.lensProp('type'),
-            R.when(
-              PatchPathUtils.isTerminalPatchPath,
-              PatchPathUtils.convertToInternalTerminalPath
-            )
+export const extractPatches = R.curry(
+  (project, leafPaths, prefix, boundValues, patch) => {
+    // 1. extractPatches recursively from nodes and wrap with NodeWrapper leafNodes
+    const nodes = R.compose(
+      R.map(
+        R.ifElse(
+          isLeafNode(leafPaths),
+          R.compose(
+            Wr.Node,
+            // 1.3. update id
+            node =>
+              R.assoc('id', getPrefixedId(prefix, Node.getNodeId(node)), node),
+            // 1.2. convert node type from 'input|output' to 'terminal', if needed
+            R.over(
+              R.lensProp('type'),
+              R.when(
+                PatchPathUtils.isTerminalPatchPath,
+                PatchPathUtils.convertToInternalTerminalPath
+              )
+            ),
+            // 1.1. Copy and rekey pins from parent node
+            node =>
+              R.assoc('boundValues', rekeyBoundValues(boundValues, node), node)
           ),
-          // 1.1. Copy and rekey pins from parent node
-          node => R.assoc('boundValues', rekeyBoundValues(boundValues, node), node)
-        ),
-        R.converge(
-          extractPatches(project, leafPaths),
-          [
+          R.converge(extractPatches(project, leafPaths), [
             R.compose(getPrefixedId(prefix), Node.getNodeId),
             R.prop('boundValues'),
             R.compose(getPatchByPath(project), Node.getNodeType),
-          ]
+          ])
         )
-      )
-    ),
-    R.reject(
-      R.compose(
-        R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
-        Node.getNodeType
-      )
-    ),
-    Patch.listNodes
-  )(patch);
-  // 2. extract links inside this patch, update nodeIds using prefix and wrap with LinkWrapper
-  const links = R.compose(
-    R.map(R.compose(
-      Wr.Link,
-      updateLinkNodeIds(leafPaths, prefix, patch)
-    )),
-    Patch.listLinks
-  )(patch);
+      ),
+      R.reject(
+        R.compose(R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH), Node.getNodeType)
+      ),
+      Patch.listNodes
+    )(patch);
+    // 2. extract links inside this patch, update nodeIds using prefix and wrap with LinkWrapper
+    const links = R.compose(
+      R.map(R.compose(Wr.Link, updateLinkNodeIds(leafPaths, prefix, patch))),
+      Patch.listLinks
+    )(patch);
 
-  // 3. group by type
-  return R.compose(
-    R.converge(
-      R.append,
-      [
+    // 3. group by type
+    return R.compose(
+      R.converge(R.append, [
         R.compose(R.concat(R.__, links), R.filter(Wr.isLink)),
         R.compose(R.of, R.filter(Wr.isNode)),
-      ]
-    ),
-    R.flatten
-  )(nodes);
-});
+      ]),
+      R.flatten
+    )(nodes);
+  }
+);
 
 /**
  * Converting old patch into new patch.
@@ -751,13 +771,17 @@ export const extractPatches = R.curry((project, leafPaths, prefix, boundValues, 
  * @param {Patch} patch
  * @returns {Patch}
  */
- // :: Project  -> String[] -> [[Path, Patch]] -> Patch -> Patch
-const convertPatch = R.curry((project, impls, leafPatches, patch) => R.ifElse(
-  Patch.hasImpls(impls),
-  R.identity,
-  (originalPatch) => {
+// :: Project  -> String[] -> [[Path, Patch]] -> Patch -> Patch
+const convertPatch = R.curry((project, impls, leafPatches, patch) =>
+  R.ifElse(Patch.hasImpls(impls), R.identity, originalPatch => {
     const leafPatchPaths = R.pluck(0, leafPatches);
-    const flattenEntities = extractPatches(project, leafPatchPaths, null, {}, originalPatch);
+    const flattenEntities = extractPatches(
+      project,
+      leafPatchPaths,
+      null,
+      {},
+      originalPatch
+    );
     const nodes = R.map(R.unnest, flattenEntities[0]);
     const links = R.map(R.unnest, flattenEntities[1]);
     const [newNodes, newLinks] = createCastNodes(leafPatches, nodes, links);
@@ -767,8 +791,8 @@ const convertPatch = R.curry((project, impls, leafPatches, patch) => R.ifElse(
       Patch.upsertLinks(newLinks),
       Patch.upsertNodes(newNodes)
     )(Patch.createPatch());
-  }
-)(patch));
+  })(patch)
+);
 
 /**
  * Creating new flattened project by:
@@ -799,12 +823,14 @@ const convertProject = R.curry((project, path, impls, patch, leafPatches) => {
 
   return R.compose(
     R.chain(reduceChainOver(newProject)),
-    R.map(R.compose(
-      R.map(R.apply(Project.assocPatch)),
-      R.append([path, convertedPatch]),
-      removeNotImplementedInXodNodes,
-      removeTerminalPatches
-    )),
+    R.map(
+      R.compose(
+        R.map(R.apply(Project.assocPatch)),
+        R.append([path, convertedPatch]),
+        removeNotImplementedInXodNodes,
+        removeTerminalPatches
+      )
+    ),
     R.sequence(Either.of),
     addCastPatches(project, usedCastNodeTypes)
   )(leafPatches);
@@ -855,13 +881,10 @@ const checkEntryPatchImplementations = R.curry((impls, patch) =>
   R.ifElse(
     isLeafPatchWithoutImpls(impls),
     err(
-      formatString(
-        CONST.ERROR.IMPLEMENTATION_NOT_FOUND,
-        {
-          impl: impls,
-          patchPath: Patch.getPatchPath(patch),
-        }
-      )
+      formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, {
+        impl: impls,
+        patchPath: Patch.getPatchPath(patch),
+      })
     ),
     Either.of
   )(patch)
@@ -930,7 +953,9 @@ export default R.curry((inputProject, path, impls) =>
       R.compose(
         R.chain(flattenProject(project, path, impls)),
         R.chain(checkEntryPatchImplementations(impls)),
-        errOnNothing(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })),
+        errOnNothing(
+          formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })
+        ),
         Project.getPatchByPath(path)
       )(project)
     ),

@@ -21,7 +21,10 @@ import packageJson from '../../../package.json';
 import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
 import * as debuggerIPC from '../../debugger/ipcActions';
-import { getUploadProcess, getSelectedSerialPort } from '../../upload/selectors';
+import {
+  getUploadProcess,
+  getSelectedSerialPort,
+} from '../../upload/selectors';
 import * as settingsActions from '../../settings/actions';
 import { UPLOAD, UPLOAD_TO_ARDUINO } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
@@ -44,7 +47,7 @@ const { app, dialog, Menu } = remoteElectron;
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
 
-const onContextMenu = (event) => {
+const onContextMenu = event => {
   event.preventDefault();
   event.stopPropagation();
 
@@ -57,9 +60,12 @@ const onContextMenu = (event) => {
   ]);
 
   const node = event.target;
-  const isEditable = (node.nodeName.match(/^(input|textarea)$/i) || node.isContentEditable);
+  const isEditable =
+    node.nodeName.match(/^(input|textarea)$/i) || node.isContentEditable;
   const isEnabled = !node.disabled;
-  if (isEditable && isEnabled) { InputMenu.popup(remoteElectron.getCurrentWindow()); }
+  if (isEditable && isEnabled) {
+    InputMenu.popup(remoteElectron.getCurrentWindow());
+  }
 };
 
 const defaultState = {
@@ -89,7 +95,9 @@ class App extends client.App {
 
     this.onUploadToArduinoClicked = this.onUploadToArduinoClicked.bind(this);
     this.onUploadToArduino = this.onUploadToArduino.bind(this);
-    this.onArduinoTargetBoardChange = this.onArduinoTargetBoardChange.bind(this);
+    this.onArduinoTargetBoardChange = this.onArduinoTargetBoardChange.bind(
+      this
+    );
     this.onSerialPortChange = this.onSerialPortChange.bind(this);
     this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
     this.onImportClicked = this.onImportClicked.bind(this);
@@ -112,58 +120,49 @@ class App extends client.App {
     this.hideAllPopups = this.hideAllPopups.bind(this);
     this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
     this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
-    this.showPopupSetWorkspaceNotCancellable = this.showPopupSetWorkspaceNotCancellable.bind(this);
+    this.showPopupSetWorkspaceNotCancellable = this.showPopupSetWorkspaceNotCancellable.bind(
+      this
+    );
     this.showCreateWorkspacePopup = this.showCreateWorkspacePopup.bind(this);
 
     this.initNativeMenu();
 
     // Reactions on messages from Main Process
-    ipcRenderer.on(
-      EVENTS.UPDATE_WORKSPACE,
-      (event, workspacePath) => this.setState({ workspace: workspacePath })
+    ipcRenderer.on(EVENTS.UPDATE_WORKSPACE, (event, workspacePath) =>
+      this.setState({ workspace: workspacePath })
     );
-    ipcRenderer.on(
-      EVENTS.REQUEST_SELECT_PROJECT,
-      (event, data) => this.showPopupProjectSelection(data)
+    ipcRenderer.on(EVENTS.REQUEST_SELECT_PROJECT, (event, data) =>
+      this.showPopupProjectSelection(data)
     );
-    ipcRenderer.on(
-      EVENTS.REQUEST_SHOW_PROJECT,
-      (event, project) => this.onLoadProject(project)
+    ipcRenderer.on(EVENTS.REQUEST_SHOW_PROJECT, (event, project) =>
+      this.onLoadProject(project)
     );
-    ipcRenderer.on(
-      EVENTS.REQUEST_CREATE_WORKSPACE,
-      (event, { path, force }) => this.showCreateWorkspacePopup(path, force)
+    ipcRenderer.on(EVENTS.REQUEST_CREATE_WORKSPACE, (event, { path, force }) =>
+      this.showCreateWorkspacePopup(path, force)
     );
-    ipcRenderer.on(
-      EVENTS.WORKSPACE_ERROR,
-      (event, error) => {
-        // TODO: Catch CANT_OPEN_SELECTED_PROJECT and show something else
-        //       (its strange to ask to switch workspace if project has broken).
-        this.showPopupSetWorkspaceNotCancellable();
-        console.error(error); // eslint-disable-line no-console
-        this.props.actions.addError(formatError(error));
-      }
-    );
-    ipcRenderer.on(
-      EVENTS.REQUEST_CLOSE_WINDOW,
-      () => {
-        if (this.confirmUnsavedChanges()) {
-          setTimeout(() => {
-            if (this.props.saveProcess) {
-              // TODO: don't allow any more interaction?
-              ipcRenderer.once(EVENTS.SAVE_PROJECT, () => {
-                ipcRenderer.send(EVENTS.CONFIRM_CLOSE_WINDOW);
-              });
-            } else {
+    ipcRenderer.on(EVENTS.WORKSPACE_ERROR, (event, error) => {
+      // TODO: Catch CANT_OPEN_SELECTED_PROJECT and show something else
+      //       (its strange to ask to switch workspace if project has broken).
+      this.showPopupSetWorkspaceNotCancellable();
+      console.error(error); // eslint-disable-line no-console
+      this.props.actions.addError(formatError(error));
+    });
+    ipcRenderer.on(EVENTS.REQUEST_CLOSE_WINDOW, () => {
+      if (this.confirmUnsavedChanges()) {
+        setTimeout(() => {
+          if (this.props.saveProcess) {
+            // TODO: don't allow any more interaction?
+            ipcRenderer.once(EVENTS.SAVE_PROJECT, () => {
               ipcRenderer.send(EVENTS.CONFIRM_CLOSE_WINDOW);
-            }
-          }, 0);
-        }
+            });
+          } else {
+            ipcRenderer.send(EVENTS.CONFIRM_CLOSE_WINDOW);
+          }
+        }, 0);
       }
-    );
-    ipcRenderer.on(
-      EVENTS.GET_SIDEBAR_PANE_HEIGHT,
-      (event, sidebarPaneHeight) => this.setState({ sidebarPaneHeight })
+    });
+    ipcRenderer.on(EVENTS.GET_SIDEBAR_PANE_HEIGHT, (event, sidebarPaneHeight) =>
+      this.setState({ sidebarPaneHeight })
     );
 
     // Debugger
@@ -176,7 +175,7 @@ class App extends client.App {
     ipcRenderer.send(EVENTS.GET_SIDEBAR_PANE_HEIGHT);
   }
 
-  onClickMessageButton(buttonId, /* messageInfo */) {
+  onClickMessageButton(buttonId /* messageInfo */) {
     if (buttonId === 'downloadAndInstall') {
       downloadUpdate(ipcRenderer);
       this.setState(R.assoc('downloadProgressPopup', true));
@@ -198,16 +197,19 @@ class App extends client.App {
   }
 
   onUploadToArduino(board, port, cloud, debug, processActions = null) {
-    const proc = (processActions !== null) ? processActions : this.props.actions.uploadToArduino();
+    const proc =
+      processActions !== null
+        ? processActions
+        : this.props.actions.uploadToArduino();
     const eitherTProject = this.transformProjectForTranspiler(debug);
     const eitherCode = eitherTProject.map(transpile);
 
     const errored = foldEither(
-      (error) => {
+      error => {
         proc.fail(error.message, 0);
         return 1;
       },
-      (code) => {
+      code => {
         ipcRenderer.send(UPLOAD_TO_ARDUINO, {
           code,
           cloud,
@@ -231,7 +233,7 @@ class App extends client.App {
         if (debug) {
           foldEither(
             error => this.props.actions.addError(error.message),
-            (nodeIdsMap) => {
+            nodeIdsMap => {
               this.props.actions.startDebuggerSession(
                 createSystemMessage('Debug session started'),
                 nodeIdsMap,
@@ -245,10 +247,11 @@ class App extends client.App {
       }
       if (payload.failure) {
         console.error(payload.error); // eslint-disable-line no-console
-        const failureMessage = R.compose(
-          R.join('\n\n'),
-          R.reject(R.isNil)
-        )([payload.message, payload.error.stdout, payload.stderr]);
+        const failureMessage = R.compose(R.join('\n\n'), R.reject(R.isNil))([
+          payload.message,
+          payload.error.stdout,
+          payload.stderr,
+        ]);
         proc.fail(failureMessage, payload.percentage);
       }
       // Remove listener if process is finished.
@@ -272,7 +275,8 @@ class App extends client.App {
     this.showPopupProjectSelection();
   }
 
-  onSelectProject(projectMeta) { // eslint-disable-line
+  onSelectProject(projectMeta) {
+    // eslint-disable-line
     ipcRenderer.send(EVENTS.SELECT_PROJECT, projectMeta);
   }
 
@@ -286,11 +290,9 @@ class App extends client.App {
     dialog.showOpenDialog(
       {
         properties: ['openFile'],
-        filters: [
-          { name: 'xodball', extensions: ['xodball'] },
-        ],
+        filters: [{ name: 'xodball', extensions: ['xodball'] }],
       },
-      (filePaths) => {
+      filePaths => {
         if (!filePaths) return;
 
         fs.readFile(filePaths[0], 'utf8', (err, data) => {
@@ -327,7 +329,7 @@ class App extends client.App {
   onImport(jsonString) {
     foldEither(
       this.props.actions.addError,
-      (project) => {
+      project => {
         if (!this.confirmUnsavedChanges()) return;
         this.props.actions.importProject(project);
       },
@@ -361,7 +363,8 @@ class App extends client.App {
     this.props.actions.hideUploadConfigPopup();
   }
 
-  onKeyDown(event) { // eslint-disable-line class-methods-use-this
+  onKeyDown(event) {
+    // eslint-disable-line class-methods-use-this
     const keyCode = event.keyCode || event.which;
 
     if (!client.isInputTarget(event) && keyCode === client.KEYCODE.BACKSPACE) {
@@ -373,14 +376,13 @@ class App extends client.App {
 
   onArduinoPathChange(newPath) {
     ipcRenderer.send('SET_ARDUINO_IDE', { path: newPath });
-    ipcRenderer.once('SET_ARDUINO_IDE',
-      (event, payload) => {
-        if (payload.code === 0) this.hideAllPopups();
-      }
-    );
+    ipcRenderer.once('SET_ARDUINO_IDE', (event, payload) => {
+      if (payload.code === 0) this.hideAllPopups();
+    });
   }
 
-  onArduinoTargetBoardChange(board) { // eslint-disable-line
+  onArduinoTargetBoardChange(board) {
+    // eslint-disable-line
     ipcRenderer.send(EVENTS.SET_SELECTED_BOARD, board);
   }
 
@@ -397,84 +399,77 @@ class App extends client.App {
   }
 
   getMenuBarItems() {
-    const {
-      items,
-      onClick,
-      submenu,
-    } = client.menu;
+    const { items, onClick, submenu } = client.menu;
 
     return [
-      submenu(
-        items.file,
-        [
-          onClick(items.newProject, this.onRequestCreateProject),
-          onClick(items.openProject, this.onOpenProjectClicked),
-          onClick(items.saveProject, this.onSaveProject),
-          onClick(items.renameProject, this.props.actions.requestRenameProject),
-          onClick(items.selectWorkspace, this.showPopupSetWorkspace),
-          items.separator,
-          onClick(items.importProject, this.onImportClicked),
-          onClick(items.exportProject, this.onExport),
-          items.separator,
-          onClick(items.newPatch, this.props.actions.createPatch),
-        ]
-      ),
-      submenu(
-        items.edit,
-        [
-          onClick(items.undo, this.props.actions.undoCurrentPatch),
-          onClick(items.redo, this.props.actions.redoCurrentPatch),
-          items.separator,
-          items.cut,
-          items.copy,
-          items.paste,
-          items.selectall,
-          items.separator,
-          onClick(items.insertNode, () => this.props.actions.showSuggester(null)),
-          onClick(items.insertComment, this.props.actions.addComment),
-          items.separator,
-          onClick(items.projectPreferences, this.props.actions.showProjectPreferences),
-        ]
-      ),
-      submenu(
-        items.deploy,
-        [
-          onClick(items.showCodeForArduino, this.onShowCodeArduino),
-          onClick(items.uploadToArduino, this.onUploadToArduinoClicked),
-        ]
-      ),
-      submenu(
-        items.help,
-        [
-          {
-            key: 'version',
-            enabled: false,
-            label: `Version: ${packageJson.version}`,
-          },
-          items.separator,
-          onClick(items.documentation, () => {
-            shell.openExternal(client.getUtmSiteUrl('/docs/', 'docs', 'menu'));
-          }),
-          onClick(items.shortcuts, () => {
-            shell.openExternal(client.getUtmSiteUrl('/docs/guide/shortcuts/', 'docs', 'menu'));
-          }),
-          onClick(items.forum, () => {
-            shell.openExternal(client.getUtmForumUrl('menu'));
-          }),
-        ]
-      ),
+      submenu(items.file, [
+        onClick(items.newProject, this.onRequestCreateProject),
+        onClick(items.openProject, this.onOpenProjectClicked),
+        onClick(items.saveProject, this.onSaveProject),
+        onClick(items.renameProject, this.props.actions.requestRenameProject),
+        onClick(items.selectWorkspace, this.showPopupSetWorkspace),
+        items.separator,
+        onClick(items.importProject, this.onImportClicked),
+        onClick(items.exportProject, this.onExport),
+        items.separator,
+        onClick(items.newPatch, this.props.actions.createPatch),
+      ]),
+      submenu(items.edit, [
+        onClick(items.undo, this.props.actions.undoCurrentPatch),
+        onClick(items.redo, this.props.actions.redoCurrentPatch),
+        items.separator,
+        items.cut,
+        items.copy,
+        items.paste,
+        items.selectall,
+        items.separator,
+        onClick(items.insertNode, () => this.props.actions.showSuggester(null)),
+        onClick(items.insertComment, this.props.actions.addComment),
+        items.separator,
+        onClick(
+          items.projectPreferences,
+          this.props.actions.showProjectPreferences
+        ),
+      ]),
+      submenu(items.deploy, [
+        onClick(items.showCodeForArduino, this.onShowCodeArduino),
+        onClick(items.uploadToArduino, this.onUploadToArduinoClicked),
+      ]),
+      submenu(items.help, [
+        {
+          key: 'version',
+          enabled: false,
+          label: `Version: ${packageJson.version}`,
+        },
+        items.separator,
+        onClick(items.documentation, () => {
+          shell.openExternal(client.getUtmSiteUrl('/docs/', 'docs', 'menu'));
+        }),
+        onClick(items.shortcuts, () => {
+          shell.openExternal(
+            client.getUtmSiteUrl('/docs/guide/shortcuts/', 'docs', 'menu')
+          );
+        }),
+        onClick(items.forum, () => {
+          shell.openExternal(client.getUtmForumUrl('menu'));
+        }),
+      ]),
     ];
   }
 
-  getKeyMap() { // eslint-disable-line class-methods-use-this
+  getKeyMap() {
+    // eslint-disable-line class-methods-use-this
     const commandsBoundToNativeMenu = R.compose(
-      R.reject(R.anyPass([
-        isAmong([ // still listen to these
-          client.COMMAND.SELECT_ALL,
-        ]),
-        R.isNil,
-        R.pipe(R.prop(R.__, client.ELECTRON_ACCELERATOR), R.isNil),
-      ])),
+      R.reject(
+        R.anyPass([
+          isAmong([
+            // still listen to these
+            client.COMMAND.SELECT_ALL,
+          ]),
+          R.isNil,
+          R.pipe(R.prop(R.__, client.ELECTRON_ACCELERATOR), R.isNil),
+        ])
+      ),
       R.map(R.prop('command')),
       R.values
     )(client.menu.items);
@@ -482,11 +477,14 @@ class App extends client.App {
     return R.omit(commandsBoundToNativeMenu, client.HOTKEY);
   }
 
-  getSelectedBoard() { // eslint-disable-line
+  getSelectedBoard() {
+    // eslint-disable-line
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.GET_SELECTED_BOARD);
       ipcRenderer.once(EVENTS.GET_SELECTED_BOARD, (event, response) => {
-        if (response.err) { reject(response.data); }
+        if (response.err) {
+          reject(response.data);
+        }
         resolve(response.data);
       });
     });
@@ -497,10 +495,7 @@ class App extends client.App {
   }
 
   setSidebarPaneHeight(size) {
-    ipcRenderer.send(
-      EVENTS.CHANGE_SIDEBAR_PANE_HEIGHT,
-      size
-    );
+    ipcRenderer.send(EVENTS.CHANGE_SIDEBAR_PANE_HEIGHT, size);
     this.setState({
       sidebarPaneHeight: size,
     });
@@ -510,8 +505,14 @@ class App extends client.App {
     const viewMenu = {
       label: 'View',
       submenu: [
-        client.menu.onClick(client.menu.items.toggleHelpbar, this.props.actions.toggleHelpbar),
-        client.menu.onClick(client.menu.items.toggleDebugger, this.props.actions.toggleDebugger),
+        client.menu.onClick(
+          client.menu.items.toggleHelpbar,
+          this.props.actions.toggleHelpbar
+        ),
+        client.menu.onClick(
+          client.menu.items.toggleDebugger,
+          this.props.actions.toggleDebugger
+        ),
         { type: 'separator' },
         { role: 'reload' },
         { role: 'toggledevtools' },
@@ -528,7 +529,7 @@ class App extends client.App {
     const helpItem = R.last(template);
 
     R.compose(
-      (finalTemplate) => {
+      finalTemplate => {
         const menu = Menu.buildFromTemplate(finalTemplate);
         Menu.setApplicationMenu(menu);
         // for testing purposes
@@ -557,10 +558,7 @@ class App extends client.App {
           }),
           R.append({
             role: 'window',
-            submenu: [
-              { role: 'minimize' },
-              { role: 'close' },
-            ],
+            submenu: [{ role: 'minimize' }, { role: 'close' }],
           })
         )
       ),
@@ -570,12 +568,14 @@ class App extends client.App {
   }
 
   showPopupProjectSelection(projects) {
-    const data = projects ? {
-      status: REDUCER_STATUS.LOADED,
-      list: projects,
-    } : {
-      status: REDUCER_STATUS.PENDING,
-    };
+    const data = projects
+      ? {
+          status: REDUCER_STATUS.LOADED,
+          list: projects,
+        }
+      : {
+          status: REDUCER_STATUS.PENDING,
+        };
 
     this.props.actions.requestOpenProject(data);
   }
@@ -596,27 +596,33 @@ class App extends client.App {
     this.props.actions.hideAllPopups();
   }
 
-  listBoards() { // eslint-disable-line
+  listBoards() {
+    // eslint-disable-line
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.LIST_BOARDS);
       ipcRenderer.once(EVENTS.LIST_BOARDS, (event, response) => {
-        if (response.err) { reject(response.data); }
+        if (response.err) {
+          reject(response.data);
+        }
         resolve(response.data);
       });
     });
   }
-  listPorts() { // eslint-disable-line
+  listPorts() {
+    // eslint-disable-line
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.LIST_PORTS);
       ipcRenderer.once(EVENTS.LIST_PORTS, (event, response) => {
-        if (response.err) { reject(response.data); }
+        if (response.err) {
+          reject(response.data);
+        }
         resolve(response.data);
       });
     });
   }
 
   renderPopupUploadConfig() {
-    return (this.props.popups.uploadToArduinoConfig) ? (
+    return this.props.popups.uploadToArduinoConfig ? (
       <PopupUploadConfig
         isVisible
         getSelectedBoard={this.getSelectedBoard}
@@ -633,7 +639,7 @@ class App extends client.App {
     ) : null;
   }
   renderPopupUploadProcess() {
-    return (this.props.popups.uploadProject) ? (
+    return this.props.popups.uploadProject ? (
       <PopupUploadProject
         isVisible
         upload={this.props.upload}
@@ -654,11 +660,11 @@ class App extends client.App {
           size={this.state.size}
           getSidebarPaneHeight={this.getSidebarPaneHeight}
           setSidebarPaneHeight={this.setSidebarPaneHeight}
-          stopDebuggerSession={() => debuggerIPC.sendStopDebuggerSession(ipcRenderer)}
+          stopDebuggerSession={() =>
+            debuggerIPC.sendStopDebuggerSession(ipcRenderer)
+          }
         />
-        <client.SnackBar
-          onClickMessageButton={this.onClickMessageButton}
-        />
+        <client.SnackBar onClickMessageButton={this.onClickMessageButton} />
         {this.renderPopupShowCode()}
         {this.renderPopupUploadConfig()}
         {this.renderPopupUploadProcess()}
@@ -666,7 +672,11 @@ class App extends client.App {
         {this.renderPopupCreateNewProject()}
         <PopupSetWorkspace
           workspace={this.state.workspace}
-          isClosable={R.propOr(false, 'disposable', this.props.popupsData.switchWorkspace)}
+          isClosable={R.propOr(
+            false,
+            'disposable',
+            this.props.popupsData.switchWorkspace
+          )}
           isVisible={this.props.popups.switchWorkspace}
           onChange={this.onWorkspaceChange}
           onClose={this.hideAllPopups}
@@ -686,7 +696,7 @@ class App extends client.App {
           onClose={this.showPopupSetWorkspaceNotCancellable}
         />
         {/* TODO: Refactor this mess: */}
-        {(this.state.downloadProgressPopup) ? (
+        {this.state.downloadProgressPopup ? (
           <client.PopupAlert
             title="Downloading update for XOD IDE"
             closeText="Close"
@@ -696,29 +706,27 @@ class App extends client.App {
             }}
             isClosable={this.state.downloadProgressPopupError}
           >
-            {(this.state.downloadProgressPopupError) ? (
+            {this.state.downloadProgressPopupError ? (
               <div>
                 <p>
-                  Error occured during downloading or installing the update.<br />
-                  Please report the bug on our <a href="https://forum.xod.io/" rel="noopener noreferrer">forum</a>.
+                  Error occured during downloading or installing the update.<br
+                  />
+                  Please report the bug on our{' '}
+                  <a href="https://forum.xod.io/" rel="noopener noreferrer">
+                    forum
+                  </a>.
                 </p>
-                <pre>
-                  {this.state.downloadProgressPopupError}
-                </pre>
+                <pre>{this.state.downloadProgressPopupError}</pre>
               </div>
             ) : (
               <div>
+                <p>Downloading of the update for XOD IDE is in progress.</p>
                 <p>
-                  Downloading of the update for XOD IDE is in progress.
-                </p>
-                <p>
-                  After download, we will automatically install it and
-                  relaunch the application.<br />
+                  After download, we will automatically install it and relaunch
+                  the application.<br />
                   It could take up for few minutes.
                 </p>
-                <p>
-                  Keep calm and brew a tea.
-                </p>
+                <p>Keep calm and brew a tea.</p>
               </div>
             )}
           </client.PopupAlert>
@@ -755,10 +763,18 @@ const mapStateToProps = R.applySpec({
   compileLimitLeft: client.getCompileLimitLeft,
   popups: {
     createProject: client.getPopupVisibility(client.POPUP_ID.CREATING_PROJECT),
-    projectSelection: client.getPopupVisibility(client.POPUP_ID.OPENING_PROJECT),
-    switchWorkspace: client.getPopupVisibility(client.POPUP_ID.SWITCHING_WORKSPACE),
-    createWorkspace: client.getPopupVisibility(client.POPUP_ID.CREATING_WORKSPACE),
-    uploadToArduinoConfig: client.getPopupVisibility(client.POPUP_ID.UPLOADING_CONFIG),
+    projectSelection: client.getPopupVisibility(
+      client.POPUP_ID.OPENING_PROJECT
+    ),
+    switchWorkspace: client.getPopupVisibility(
+      client.POPUP_ID.SWITCHING_WORKSPACE
+    ),
+    createWorkspace: client.getPopupVisibility(
+      client.POPUP_ID.CREATING_WORKSPACE
+    ),
+    uploadToArduinoConfig: client.getPopupVisibility(
+      client.POPUP_ID.UPLOADING_CONFIG
+    ),
     uploadProject: client.getPopupVisibility(client.POPUP_ID.UPLOADING),
     showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE),
     projectPreferences: client.getPopupVisibility(
@@ -787,7 +803,8 @@ const mapDispatchToProps = dispatch => ({
       uploadToArduinoConfig: uploadActions.uploadToArduinoConfig,
       hideUploadConfigPopup: uploadActions.hideUploadConfigPopup,
       selectSerialPort: uploadActions.selectSerialPort,
-    }), dispatch
+    }),
+    dispatch
   ),
 });
 

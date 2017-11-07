@@ -11,20 +11,11 @@ describe('Comment', () => {
 
       const comment = XP.createComment(position, size, content);
 
-      assert.deepEqual(
-        XP.getCommentPosition(comment),
-        position
-      );
+      assert.deepEqual(XP.getCommentPosition(comment), position);
 
-      assert.deepEqual(
-        XP.getCommentSize(comment),
-        size
-      );
+      assert.deepEqual(XP.getCommentSize(comment), size);
 
-      assert.equal(
-        XP.getCommentContent(comment),
-        content
-      );
+      assert.equal(XP.getCommentContent(comment), content);
     });
   });
 
@@ -40,10 +31,7 @@ describe('Comment', () => {
         const newId = 'new_id';
         const newComment = XP.setCommentId(newId, defaultComment);
 
-        assert.deepEqual(
-          XP.getCommentId(newComment),
-          newId
-        );
+        assert.deepEqual(XP.getCommentId(newComment), newId);
       });
     });
 
@@ -52,10 +40,7 @@ describe('Comment', () => {
         const newPosition = { x: 321, y: 765 };
         const newComment = XP.setCommentPosition(newPosition, defaultComment);
 
-        assert.deepEqual(
-          XP.getCommentPosition(newComment),
-          newPosition
-        );
+        assert.deepEqual(XP.getCommentPosition(newComment), newPosition);
       });
     });
 
@@ -64,10 +49,7 @@ describe('Comment', () => {
         const newSize = { width: 888, height: 777 };
         const newComment = XP.setCommentSize(newSize, defaultComment);
 
-        assert.deepEqual(
-          XP.getCommentSize(newComment),
-          newSize
-        );
+        assert.deepEqual(XP.getCommentSize(newComment), newSize);
       });
     });
 
@@ -76,10 +58,7 @@ describe('Comment', () => {
         const newContent = 'newContent';
         const newComment = XP.setCommentContent(newContent, defaultComment);
 
-        assert.deepEqual(
-          XP.getCommentContent(newComment),
-          newContent
-        );
+        assert.deepEqual(XP.getCommentContent(newComment), newContent);
       });
     });
   });

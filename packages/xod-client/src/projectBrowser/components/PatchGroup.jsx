@@ -14,7 +14,7 @@ const PatchGroup = ({ name, children, type, onClose }) => (
     transitionTime={100}
     onClose={onClose}
   >
-    { children }
+    {children}
   </Collapsible>
 );
 

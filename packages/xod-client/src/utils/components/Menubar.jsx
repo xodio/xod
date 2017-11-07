@@ -13,17 +13,10 @@ const capitalize = R.compose(
 
 function formatHotkey(hotkeys) {
   if (Array.isArray(hotkeys)) {
-    return R.compose(
-      R.join(', '),
-      R.map(formatHotkey)
-    )(hotkeys);
+    return R.compose(R.join(', '), R.map(formatHotkey))(hotkeys);
   }
 
-  return R.compose(
-    R.join('+'),
-    R.map(capitalize),
-    R.split('+')
-  )(hotkeys);
+  return R.compose(R.join('+'), R.map(capitalize), R.split('+'))(hotkeys);
 }
 
 const renderMenubarItem = (item, index) => {
@@ -39,9 +32,7 @@ const renderMenubarItem = (item, index) => {
   } = item;
 
   if (type === 'separator') {
-    return (
-      <Divider key={key} />
-    );
+    return <Divider key={key} />;
   }
 
   if (Array.isArray(submenu)) {
@@ -57,8 +48,8 @@ const renderMenubarItem = (item, index) => {
       {/* because rc-menu does not support attaching callbacks directly to menu items */}
       {/* eslint-disable jsx-a11y/no-static-element-interactions */}
       <div onClick={click} className="Menubar-clickable-item">
-        { children || label }
-        { hotkey && <div className="hotkey">{formatHotkey(hotkey)}</div> }
+        {children || label}
+        {hotkey && <div className="hotkey">{formatHotkey(hotkey)}</div>}
       </div>
       {/* eslint-enable jsx-a11y/no-static-element-interactions */}
     </MenuItem>
@@ -113,7 +104,6 @@ class Menubar extends React.Component {
   }
 }
 
-
 // a trick to make recursive propType.
 // see https://github.com/facebook/react/issues/5676
 let menuBarItemType;
@@ -141,6 +131,5 @@ Menubar.propTypes = {
 Menubar.defaultProps = {
   items: [],
 };
-
 
 export default enhanceWithClickOutside(Menubar);

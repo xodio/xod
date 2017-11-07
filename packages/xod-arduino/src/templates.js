@@ -27,32 +27,24 @@ const omitLocalIncludes = R.replace(/#include ".*$/gm, '');
 
 const indexByPinKey = R.indexBy(R.prop('pinKey'));
 
-const getPatchPins = direction => R.compose(
-  indexByPinKey,
-  R.path(['patch', direction])
+const getPatchPins = direction =>
+  R.compose(indexByPinKey, R.path(['patch', direction]));
+
+const omitNullValues = R.map(
+  R.when(R.propSatisfies(R.isNil, 'value'), R.omit(['value']))
 );
 
-const omitNullValues = R.map(R.when(
-  R.propSatisfies(R.isNil, 'value'),
-  R.omit(['value'])
-));
+const getNodePins = direction =>
+  R.compose(indexByPinKey, omitNullValues, R.prop(direction));
 
-const getNodePins = direction => R.compose(
-  indexByPinKey,
-  omitNullValues,
-  R.prop(direction)
-);
-
-const mergeAndListPins = (direction, node) => R.compose(
-  R.values,
-  R.converge(
-    R.mergeWith(R.merge),
-    [
+const mergeAndListPins = (direction, node) =>
+  R.compose(
+    R.values,
+    R.converge(R.mergeWith(R.merge), [
       getPatchPins(direction),
       getNodePins(direction),
-    ]
-  )
-)(node);
+    ])
+  )(node);
 
 // Converts DataType value to a corresponding C++ storage type
 const cppType = def(
@@ -68,11 +60,7 @@ const cppType = def(
 // Formats a plain JS string into C++ string object
 const cppStringLiteral = def(
   'cppStringLiteral :: String -> String',
-  R.ifElse(
-    R.isEmpty,
-    R.always('XString()'),
-    str => `XStringCString("${str}")`
-  )
+  R.ifElse(R.isEmpty, R.always('XString()'), str => `XStringCString("${str}")`)
 );
 
 // =============================================================================
@@ -88,23 +76,25 @@ Handlebars.registerHelper('mergePins', function mergePins() {
 });
 
 // Generate patch-level namespace name
-Handlebars.registerHelper('ns', R.compose(
-  R.join('__'),
-  R.props(['owner', 'libName', 'patchName'])
-));
+Handlebars.registerHelper(
+  'ns',
+  R.compose(R.join('__'), R.props(['owner', 'libName', 'patchName']))
+);
 
 // Returns declaration type specifier for an initial value of an output
-Handlebars.registerHelper('decltype', (type, value) => (
-  (type === PIN_TYPE.STRING && value !== '')
-    ? 'static XStringCString'
-    : `constexpr ${cppType(type)}`
-));
+Handlebars.registerHelper(
+  'decltype',
+  (type, value) =>
+    type === PIN_TYPE.STRING && value !== ''
+      ? 'static XStringCString'
+      : `constexpr ${cppType(type)}`
+);
 
 // Check that variable is not undefined
 Handlebars.registerHelper('exists', function existsHelper(variable, options) {
-  return (typeof variable !== 'undefined') ?
-    options.fn(this) :
-    options.inverse(this);
+  return typeof variable !== 'undefined'
+    ? options.fn(this)
+    : options.inverse(this);
 });
 
 // Temporary switch to global C++ namespace
@@ -163,20 +153,17 @@ export const renderPatchContext = def(
   'renderPatchContext :: TPatch -> String',
   templates.patchContext
 );
-export const renderImpl = def(
-  'renderImpl :: TPatch -> String',
-  (data) => {
-    const ctx = R.applySpec({
-      owner: R.prop('owner'),
-      libName: R.prop('libName'),
-      patchName: R.prop('patchName'),
-      GENERATED_CODE: renderPatchContext,
-    })(data);
+export const renderImpl = def('renderImpl :: TPatch -> String', data => {
+  const ctx = R.applySpec({
+    owner: R.prop('owner'),
+    libName: R.prop('libName'),
+    patchName: R.prop('patchName'),
+    GENERATED_CODE: renderPatchContext,
+  })(data);
 
-    const patchImpl = R.prop('impl', data);
-    return Handlebars.compile(patchImpl, renderingOptions)(ctx);
-  }
-);
+  const patchImpl = R.prop('impl', data);
+  return Handlebars.compile(patchImpl, renderingOptions)(ctx);
+});
 export const renderImplList = def(
   'renderImplList :: [TPatch] -> String',
   R.compose(
@@ -193,15 +180,12 @@ export const renderImplList = def(
   )
 );
 
-export const renderProgram = def(
-  'renderProgram :: [TNode] -> String',
-  nodes => trimTrailingWhitespace(
-    templates.program({ nodes })
-  )
+export const renderProgram = def('renderProgram :: [TNode] -> String', nodes =>
+  trimTrailingWhitespace(templates.program({ nodes }))
 );
 export const renderProject = def(
   'renderProject :: TProject -> String',
-  (project) => {
+  project => {
     const config = renderConfig(project.config);
     const impls = renderImplList(project.patches);
     const program = renderProgram(project.nodes);

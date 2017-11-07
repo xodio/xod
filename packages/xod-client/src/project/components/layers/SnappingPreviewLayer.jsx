@@ -6,9 +6,7 @@ import sanctuaryPropType from '../../../utils/sanctuaryPropType';
 
 import { NODE_CORNER_RADIUS } from '../../nodeLayout';
 
-const SnappingPreviewLayer = ({
-  previews,
-}) => (
+const SnappingPreviewLayer = ({ previews }) => (
   <g className="SnappingPreviewLayer">
     {previews.map(({ position, size }, key) => (
       <rect
@@ -26,10 +24,12 @@ const SnappingPreviewLayer = ({
 SnappingPreviewLayer.displayName = 'SnappingPreviewLayer';
 
 SnappingPreviewLayer.propTypes = {
-  previews: PT.arrayOf(PT.shape({
-    position: sanctuaryPropType(Position),
-    size: sanctuaryPropType(Size),
-  })),
+  previews: PT.arrayOf(
+    PT.shape({
+      position: sanctuaryPropType(Position),
+      size: sanctuaryPropType(Size),
+    })
+  ),
 };
 
 export default SnappingPreviewLayer;

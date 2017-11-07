@@ -21,14 +21,21 @@ const layerStyles = {
   height: '100%',
 };
 
-function getItemStyles({ initialClientOffset, initialSourceClientOffset, currentOffset }) {
+function getItemStyles({
+  initialClientOffset,
+  initialSourceClientOffset,
+  currentOffset,
+}) {
   if (!initialClientOffset || !initialSourceClientOffset || !currentOffset) {
     return {
       display: 'none',
     };
   }
 
-  const offsetFromSourceRoot = subtractPoints(initialClientOffset, initialSourceClientOffset);
+  const offsetFromSourceRoot = subtractPoints(
+    initialClientOffset,
+    initialSourceClientOffset
+  );
   const { x, y } = addPoints(offsetFromSourceRoot, currentOffset);
 
   return {
@@ -36,15 +43,16 @@ function getItemStyles({ initialClientOffset, initialSourceClientOffset, current
   };
 }
 
-const renderPatchAsNode = (patchPath, project) => R.compose(
-  R.map(R.compose(
-    props => (
-      <Node {...props} isDragged noEvents />
+const renderPatchAsNode = (patchPath, project) =>
+  R.compose(
+    R.map(
+      R.compose(
+        props => <Node {...props} isDragged noEvents />,
+        patchToNodeProps
+      )
     ),
-    patchToNodeProps
-  )),
-  XP.getPatchByPath(patchPath)
-)(project);
+    XP.getPatchByPath(patchPath)
+  )(project);
 
 const CustomDragLayer = ({
   item,
@@ -60,7 +68,13 @@ const CustomDragLayer = ({
 
   return (
     <div style={layerStyles}>
-      <div style={getItemStyles({ initialClientOffset, initialSourceClientOffset, currentOffset })}>
+      <div
+        style={getItemStyles({
+          initialClientOffset,
+          initialSourceClientOffset,
+          currentOffset,
+        })}
+      >
         {renderPatchAsNode(item.patchPath, project).getOrElse(null)}
       </div>
     </div>
@@ -87,7 +101,8 @@ const mapStateToProps = R.applySpec({
 
 export default R.compose(
   connect(mapStateToProps),
-  DragLayer(monitor => ({ // eslint-disable-line new-cap
+  DragLayer(monitor => ({
+    // eslint-disable-line new-cap
     item: monitor.getItem(),
     // TODO: add monitor.getItemType() when there are more types
     initialClientOffset: monitor.getInitialClientOffset(),

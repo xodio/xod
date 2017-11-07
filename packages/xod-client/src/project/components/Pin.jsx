@@ -1,18 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { PIN_RADIUS, PIN_RADIUS_WITH_OUTER_STROKE, PIN_HIGHLIGHT_RADIUS } from '../nodeLayout';
+import {
+  PIN_RADIUS,
+  PIN_RADIUS_WITH_OUTER_STROKE,
+  PIN_HIGHLIGHT_RADIUS,
+} from '../nodeLayout';
 
-const Pin = (props) => {
+const Pin = props => {
   const cls = classNames('Pin', {
     'is-selected': props.isSelected,
     'is-accepting-links': props.isAcceptingLinks,
   });
 
-  const symbolClassNames = classNames(
-    'symbol', props.type,
-    { 'is-connected': props.isConnected }
-  );
+  const symbolClassNames = classNames('symbol', props.type, {
+    'is-connected': props.isConnected,
+  });
 
   const pinCircleCenter = {
     cx: props.position.x,
@@ -20,10 +23,7 @@ const Pin = (props) => {
   };
 
   return (
-    <g
-      className={cls}
-      id={props.keyName}
-    >
+    <g className={cls} id={props.keyName}>
       <circle
         className="linkingHighlight"
         {...pinCircleCenter}

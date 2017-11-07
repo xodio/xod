@@ -16,7 +16,6 @@ import { noop, isMany, isOne } from '../../utils/ramda';
 import { RenderableSelection } from '../../types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
-
 // =============================================================================
 //
 // Sub-components
@@ -25,9 +24,7 @@ import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
 const InspectorMessage = ({ text }) => (
   <div className="Inspector">
-    <Widgets.HintWidget
-      text={text}
-    />
+    <Widgets.HintWidget text={text} />
   </div>
 );
 
@@ -41,30 +38,19 @@ InspectorMessage.propTypes = {
 //
 // =============================================================================
 const renderSelectedManyElements = selection => (
-  <InspectorMessage
-    text={`You have selected: ${selection.length} elements.`}
-  />
+  <InspectorMessage text={`You have selected: ${selection.length} elements.`} />
 );
 
 const renderSelectedLink = () => (
-  <InspectorMessage
-    text="Links do not have any properties."
-  />
+  <InspectorMessage text="Links do not have any properties." />
 );
 
 const renderSelectedComment = () => (
-  <InspectorMessage
-    text="Comments do not have any properties."
-  />
+  <InspectorMessage text="Comments do not have any properties." />
 );
-const renderSelectedNode = R.curry(
-  (onPropUpdate, selection) => (
-    <NodeInspector
-      node={selection[0].data}
-      onPropUpdate={onPropUpdate}
-    />
-  )
-);
+const renderSelectedNode = R.curry((onPropUpdate, selection) => (
+  <NodeInspector node={selection[0].data} onPropUpdate={onPropUpdate} />
+));
 const renderSelectedPatch = R.curry(
   (currentPatch, onPatchDescriptionUpdate) => (
     <PatchInspector
@@ -74,9 +60,7 @@ const renderSelectedPatch = R.curry(
   )
 );
 const renderDefault = () => (
-  <InspectorMessage
-    text="Open a patch to edit its properties"
-  />
+  <InspectorMessage text="Open a patch to edit its properties" />
 );
 
 // =============================================================================
@@ -86,14 +70,15 @@ const renderDefault = () => (
 // =============================================================================
 
 // :: [ RenderableSelection ] -> Boolean
-const isEntity = entity => R.compose(R.equals(entity), R.prop('entityType'), R.head);
+const isEntity = entity =>
+  R.compose(R.equals(entity), R.prop('entityType'), R.head);
 const isSingleNode = R.both(isOne, isEntity(SELECTION_ENTITY_TYPE.NODE));
 const isSingleLink = R.both(isOne, isEntity(SELECTION_ENTITY_TYPE.LINK));
 const isSingleComment = R.both(isOne, isEntity(SELECTION_ENTITY_TYPE.COMMENT));
 // :: [ RenderableSelection ] -> Patch -> Boolean
-const isPatchSelected = R.curry((patch, selection) => (
-  (R.isEmpty(selection) && patch.isJust)
-));
+const isPatchSelected = R.curry(
+  (patch, selection) => R.isEmpty(selection) && patch.isJust
+);
 
 // =============================================================================
 //

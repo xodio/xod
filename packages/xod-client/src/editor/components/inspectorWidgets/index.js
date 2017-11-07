@@ -18,20 +18,14 @@ import { KEYCODE } from '../../../utils/constants';
 const widgetKeyDownHandlers = {
   up: function up(event) {
     event.preventDefault();
-    this.updateValue(
-      this.parseValue(event.target.value) + 1
-    );
+    this.updateValue(this.parseValue(event.target.value) + 1);
   },
   down: function down(event) {
     event.preventDefault();
-    this.updateValue(
-      this.parseValue(event.target.value) - 1
-    );
+    this.updateValue(this.parseValue(event.target.value) - 1);
   },
   dot: function dot(event) {
-    this.updateValue(
-      this.parseValue(`${event.target.value}.`)
-    );
+    this.updateValue(this.parseValue(`${event.target.value}.`));
   },
 };
 

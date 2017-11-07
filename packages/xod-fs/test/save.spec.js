@@ -20,11 +20,11 @@ describe('saveProject', () => {
     expectRejectedWithCode(
       saveProject(tempDir, {}),
       ERROR_CODES.CANT_SAVE_PROJECT
-    )
-  );
+    ));
   it('should save patch implementations correctly', () => {
     const projectName = 'impls-test';
-    const implContent = '// hey-ho\n// it should be a normal file\n// not a stringified JSON\n';
+    const implContent =
+      '// hey-ho\n// it should be a normal file\n// not a stringified JSON\n';
     const implContentExpected = [
       '// hey-ho',
       '// it should be a normal file',
@@ -43,7 +43,17 @@ describe('saveProject', () => {
     });
 
     return saveProject(tempDir, proj)
-      .then(() => readFile(path.resolve(tempDir, projectName, 'test', getImplFilenameByType('js')), 'utf8'))
+      .then(() =>
+        readFile(
+          path.resolve(
+            tempDir,
+            projectName,
+            'test',
+            getImplFilenameByType('js')
+          ),
+          'utf8'
+        )
+      )
       .then(content => assert.strictEqual(content, implContentExpected));
   });
   it('should save patch attachments correctly', () => {
@@ -56,7 +66,8 @@ describe('saveProject', () => {
             {
               filename: 'img/20x20.png',
               encoding: 'base64',
-              content: 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAG1BMVEXMzMyWlpaxsbGqqqq3t7fFxcWjo6OcnJy+vr5AT8FzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAMElEQVQImWNgoBFQVkmBka7i4QxQklmRkUGlAUQyqLCHM4SBSYYkoCqVhiSwDioCAPhiB33L/sGeAAAAAElFTkSuQmCC',
+              content:
+                'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAG1BMVEXMzMyWlpaxsbGqqqq3t7fFxcWjo6OcnJy+vr5AT8FzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAMElEQVQImWNgoBFQVkmBka7i4QxQklmRkUGlAUQyqLCHM4SBSYYkoCqVhiSwDioCAPhiB33L/sGeAAAAAElFTkSuQmCC',
             },
             {
               filename: 'README.md',
@@ -69,9 +80,29 @@ describe('saveProject', () => {
     });
 
     return saveProject(tempDir, testProject)
-      .then(() => readFile(path.resolve(tempDir, projectName, 'test', 'img/20x20.png'), 'base64'))
-      .then(content => assert.strictEqual(content, testProject.patches['@/test'].attachments[0].content))
-      .then(() => readFile(path.resolve(tempDir, projectName, 'test', 'README.md'), 'utf8'))
-      .then(content => assert.strictEqual(content, testProject.patches['@/test'].attachments[1].content));
+      .then(() =>
+        readFile(
+          path.resolve(tempDir, projectName, 'test', 'img/20x20.png'),
+          'base64'
+        )
+      )
+      .then(content =>
+        assert.strictEqual(
+          content,
+          testProject.patches['@/test'].attachments[0].content
+        )
+      )
+      .then(() =>
+        readFile(
+          path.resolve(tempDir, projectName, 'test', 'README.md'),
+          'utf8'
+        )
+      )
+      .then(content =>
+        assert.strictEqual(
+          content,
+          testProject.patches['@/test'].attachments[1].content
+        )
+      );
   });
 });

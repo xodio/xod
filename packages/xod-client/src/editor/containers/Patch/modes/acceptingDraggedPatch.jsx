@@ -4,9 +4,7 @@ import { HotKeys } from 'react-hotkeys';
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
 
-import {
-  getOffsetMatrix,
-} from '../modeUtils';
+import { getOffsetMatrix } from '../modeUtils';
 
 const acceptingDraggedPatchMode = {
   getInitialState() {
@@ -16,16 +14,17 @@ const acceptingDraggedPatchMode = {
   },
 
   render(api) {
-    const snappedPreviews = api.props.isPatchDraggedOver ? [{
-      position: api.state.previewPosition,
-      size: api.props.draggedPreviewSize,
-    }] : [];
+    const snappedPreviews = api.props.isPatchDraggedOver
+      ? [
+          {
+            position: api.state.previewPosition,
+            size: api.props.draggedPreviewSize,
+          },
+        ]
+      : [];
 
     return (
-      <HotKeys
-        className="PatchWrapper"
-        handlers={{}}
-      >
+      <HotKeys className="PatchWrapper" handlers={{}}>
         <PatchSVG>
           <Layers.Background
             width={api.props.size.width}
@@ -48,9 +47,7 @@ const acceptingDraggedPatchMode = {
               linkingPin={api.props.linkingPin}
             />
 
-            <Layers.SnappingPreview
-              previews={snappedPreviews}
-            />
+            <Layers.SnappingPreview previews={snappedPreviews} />
           </g>
         </PatchSVG>
       </HotKeys>

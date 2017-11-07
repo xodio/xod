@@ -18,29 +18,20 @@ import {
 import { isLinkConnectedToNodeIds } from '../../../../project/utils';
 import { getSelectedEntityIdsOfType } from '../../../utils';
 
-import {
-  getOffsetMatrix,
-  bindApi,
-  getMousePosition,
-} from '../modeUtils';
+import { getOffsetMatrix, bindApi, getMousePosition } from '../modeUtils';
 
 let patchSvgRef = null;
 
-const getDeltaPosition = api => subtractPoints(
-  api.state.mousePosition,
-  api.state.dragStartPosition
+const getDeltaPosition = api =>
+  subtractPoints(api.state.mousePosition, api.state.dragStartPosition);
+
+const translatePositions = R.uncurryN(2)(deltaPosition =>
+  R.map(R.over(R.lensProp('position'), addPoints(deltaPosition)))
 );
 
-const translatePositions = R.uncurryN(2)(
-  deltaPosition => R.map(R.over(
-    R.lensProp('position'),
-    addPoints(deltaPosition)
-  ))
-);
-
-const updateLinksPositions = R.uncurryN(3)(
-  (draggedNodeIds, deltaPosition) => R.map(
-    link => R.compose(
+const updateLinksPositions = R.uncurryN(3)((draggedNodeIds, deltaPosition) =>
+  R.map(link =>
+    R.compose(
       R.over(
         R.lensProp('to'),
         R.when(
@@ -68,7 +59,11 @@ const movingMode = {
   },
 
   onMouseMove(api, event) {
-    const mousePosition = getMousePosition(patchSvgRef, api.props.offset, event);
+    const mousePosition = getMousePosition(
+      patchSvgRef,
+      api.props.offset,
+      event
+    );
     api.setState({ mousePosition });
   },
   onMouseUp(api) {
@@ -103,30 +98,31 @@ const movingMode = {
     )(api.props.comments);
 
     const [draggedLinks, idleLinks] = R.compose(
-      R.over(R.lensIndex(0), updateLinksPositions(draggedNodeIds, deltaPosition)),
+      R.over(
+        R.lensIndex(0),
+        updateLinksPositions(draggedNodeIds, deltaPosition)
+      ),
       R.partition(isLinkConnectedToNodeIds(draggedNodeIds))
     )(api.props.links);
 
     const snappedPreviews = R.compose(
-      R.map(R.compose(
-        R.over(R.lensProp('position'), snapNodePositionToSlots),
-        R.pick(['size', 'position'])
-      )),
-      R.concat,
-    )(
-      R.values(draggedNodes),
-      R.values(draggedComments)
-    );
+      R.map(
+        R.compose(
+          R.over(R.lensProp('position'), snapNodePositionToSlots),
+          R.pick(['size', 'position'])
+        )
+      ),
+      R.concat
+    )(R.values(draggedNodes), R.values(draggedComments));
 
     return (
-      <HotKeys
-        className="PatchWrapper"
-        handlers={{}}
-      >
+      <HotKeys className="PatchWrapper" handlers={{}}>
         <PatchSVG
           onMouseMove={bindApi(api, this.onMouseMove)}
           onMouseUp={bindApi(api, this.onMouseUp)}
-          svgRef={(svg) => { patchSvgRef = svg; }}
+          svgRef={svg => {
+            patchSvgRef = svg;
+          }}
         >
           <Layers.Background
             width={api.props.size.width}
@@ -139,18 +135,13 @@ const movingMode = {
               selection={api.props.selection}
               onFinishEditing={api.props.actions.editComment}
             />
-            <Layers.Links
-              links={idleLinks}
-              selection={api.props.selection}
-            />
+            <Layers.Links links={idleLinks} selection={api.props.selection} />
             <Layers.Nodes
               nodes={idleNodes}
               selection={api.props.selection}
               linkingPin={api.props.linkingPin}
             />
-            <Layers.SnappingPreview
-              previews={snappedPreviews}
-            />
+            <Layers.SnappingPreview previews={snappedPreviews} />
             <Layers.Comments
               key="dragged comments"
               areDragged

@@ -4,7 +4,11 @@ import { resolve } from 'path';
 function getParentDirectories(path) {
   function loop(currentPath, parentDirectories) {
     let stats;
-    try { stats = statSync(currentPath); } catch (error) { stats = null; }
+    try {
+      stats = statSync(currentPath);
+    } catch (error) {
+      stats = null;
+    }
     if (stats && stats.isDirectory()) parentDirectories.push(currentPath);
     const parentPath = resolve(currentPath, '..');
     if (parentPath === currentPath) return parentDirectories;
@@ -36,8 +40,13 @@ export function findClosestWorkspaceDir(path) {
   return new Promise((resolve$, reject) => {
     const closestWorkspaceDir = getParentDirectories(path).find(isWorkspaceDir);
     if (closestWorkspaceDir) return resolve$(closestWorkspaceDir);
-    return reject(new Error(`could not find workspace directory around "${path
-      }". Workspace directory must contain ".xodworkspace" file.`));
+    return reject(
+      new Error(
+        `could not find workspace directory around "${
+          path
+        }". Workspace directory must contain ".xodworkspace" file.`
+      )
+    );
   });
 }
 
@@ -45,7 +54,12 @@ export function findClosestProjectDir(path) {
   return new Promise((resolve$, reject) => {
     const closestProjectDir = getParentDirectories(path).find(isProjectDir);
     if (closestProjectDir) return resolve$(closestProjectDir);
-    return reject(new Error(`could not find project directory around "${path
-      }". Project directory must contain "project.xod" file.`));
+    return reject(
+      new Error(
+        `could not find project directory around "${
+          path
+        }". Project directory must contain "project.xod" file.`
+      )
+    );
   });
 }

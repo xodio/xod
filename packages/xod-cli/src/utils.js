@@ -8,8 +8,8 @@ import R from 'ramda';
  * @param {Object.<String, Function>} programs
  */
 export const runCommand = R.uncurryN(2, options =>
-  R.mapObjIndexed(
-    (fn, command) => R.when(
+  R.mapObjIndexed((fn, command) =>
+    R.when(
       R.compose(R.equals(true), R.prop(R.__, options)),
       R.tap(() => fn(options))
     )(command)

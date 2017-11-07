@@ -1,4 +1,3 @@
-
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
@@ -12,13 +11,12 @@ import { saveProject } from '../src/save';
 
 const fixture = subpath => path.resolve(__dirname, 'fixtures', subpath);
 
-const formatDiffs = comparison => JSON.stringify(
-  R.reject(
-    R.propEq('state', 'equal'),
-    comparison.diffSet
-  ),
-  null, 2
-);
+const formatDiffs = comparison =>
+  JSON.stringify(
+    R.reject(R.propEq('state', 'equal'), comparison.diffSet),
+    null,
+    2
+  );
 
 describe('Load/Save roundtrip', () => {
   it('preserves project files byte-by-byte', async () => {
@@ -40,9 +38,12 @@ describe('Load/Save roundtrip', () => {
       }
     );
 
-    assert.equal(comparison.differences, 0, [
-      'Fixture project and its resave differ:',
-      formatDiffs(comparison),
-    ].join('\n'));
+    assert.equal(
+      comparison.differences,
+      0,
+      ['Fixture project and its resave differ:', formatDiffs(comparison)].join(
+        '\n'
+      )
+    );
   });
 });

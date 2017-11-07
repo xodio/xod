@@ -1,10 +1,5 @@
-import {
-  undoPatch,
-  redoPatch,
-} from '../project/actions';
-import {
-  SHOW_CODE_REQUESTED,
-} from './actionTypes';
+import { undoPatch, redoPatch } from '../project/actions';
+import { SHOW_CODE_REQUESTED } from './actionTypes';
 import { getCurrentPatchPath } from '../editor/selectors';
 
 export const undoCurrentPatch = () => (dispatch, getState) => {

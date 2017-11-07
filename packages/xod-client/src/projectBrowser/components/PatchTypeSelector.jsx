@@ -39,7 +39,7 @@ class PatchTypeSelector extends React.Component {
     return (
       <div className="PatchTypeSelector">
         <ul className="options">
-          {options.map(({ key, name }) =>
+          {options.map(({ key, name }) => (
             <li
               key={key}
               className={cn('option', { selected: key === selectedOptionKey })}
@@ -47,7 +47,7 @@ class PatchTypeSelector extends React.Component {
             >
               {name}
             </li>
-          )}
+          ))}
         </ul>
         {children(selectedOptionKey)}
       </div>

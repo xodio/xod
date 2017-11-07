@@ -30,11 +30,12 @@ class SnackBarMessage extends React.Component {
     const buttons = R.unless(
       R.isEmpty,
       R.compose(
-        btns => React.createElement(
-          'div',
-          { className: 'SnackBar-buttons-container' },
-          btns
-        ),
+        btns =>
+          React.createElement(
+            'div',
+            { className: 'SnackBar-buttons-container' },
+            btns
+          ),
         R.map(({ id, text }) => (
           <button
             className="Button Button--small"
@@ -56,19 +57,15 @@ class SnackBarMessage extends React.Component {
   }
 
   setHidden(val) {
-    this.setState(
-      R.assoc('hidden', val, this.state)
-    );
+    this.setState(R.assoc('hidden', val, this.state));
   }
 
   setDisplay(val) {
-    this.setState(
-      R.assoc('display', val, this.state)
-    );
+    this.setState(R.assoc('display', val, this.state));
   }
 
   hide() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       this.setHidden(true);
       setTimeout(resolve, ANIMATION_TIMEOUT);
     }).then(() => {
@@ -88,12 +85,8 @@ class SnackBarMessage extends React.Component {
     const messageContent = this.getMessageContent();
 
     return (
-      <li
-        className={cls}
-      >
-        <a tabIndex={message.id} >
-          {messageContent}
-        </a>
+      <li className={cls}>
+        <a tabIndex={message.id}>{messageContent}</a>
       </li>
     );
   }
@@ -107,10 +100,12 @@ SnackBarMessage.propTypes = {
     persistent: PropTypes.bool,
     payload: PropTypes.shape({
       message: PropTypes.string.isRequired,
-      buttons: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string,
-        text: PropTypes.string,
-      })).isRequired,
+      buttons: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string,
+          text: PropTypes.string,
+        })
+      ).isRequired,
     }),
     /* eslint-enable react/no-unused-prop-types */
   }),

@@ -21,8 +21,8 @@ export const getProjectName = createSelector(
 );
 
 // :: Project -> Patch -> Patch
-const markDeadPatches = R.curry(
-  (project, patch) => R.compose(
+const markDeadPatches = R.curry((project, patch) =>
+  R.compose(
     R.assoc('dead', R.__, patch),
     Either.isLeft,
     XP.validatePatchContents
@@ -31,23 +31,23 @@ const markDeadPatches = R.curry(
 
 export const getLocalPatches = createSelector(
   ProjectSelectors.getProject,
-  project => R.compose(
-    R.sortBy(XP.getPatchPath),
-    R.map(markDeadPatches(project)),
-    XP.listLocalPatches
-  )(project)
+  project =>
+    R.compose(
+      R.sortBy(XP.getPatchPath),
+      R.map(markDeadPatches(project)),
+      XP.listLocalPatches
+    )(project)
 );
 
 // TODO: this is not actually label anymore
 export const getSelectedPatchLabel = createSelector(
   [ProjectSelectors.getProject, getSelectedPatchPath],
-  (project, selectedPatchPath) => (
+  (project, selectedPatchPath) =>
     selectedPatchPath
       ? XP.getPatchByPath(selectedPatchPath, project)
-        .map(R.pipe(XP.getPatchPath, XP.getBaseName))
-        .getOrElse('')
+          .map(R.pipe(XP.getPatchPath, XP.getBaseName))
+          .getOrElse('')
       : ''
-  )
 );
 
 const getLibraryPatchesList = createSelector(
@@ -58,14 +58,11 @@ const getLibraryPatchesList = createSelector(
 export const getLibs = createMemoizedSelector(
   [getLibraryPatchesList, ProjectSelectors.getProject],
   [R.equals],
-  (patches, project) => R.compose(
-    R.map(
-      R.sort(R.ascend(XP.getPatchPath))
-    ),
-    R.groupBy(
-      R.pipe(XP.getPatchPath, XP.getLibraryName)
-    ),
-    R.reject(isPatchDeadTerminal),
-    R.map(markDeadPatches(project))
-  )(patches)
+  (patches, project) =>
+    R.compose(
+      R.map(R.sort(R.ascend(XP.getPatchPath))),
+      R.groupBy(R.pipe(XP.getPatchPath, XP.getLibraryName)),
+      R.reject(isPatchDeadTerminal),
+      R.map(markDeadPatches(project))
+    )(patches)
 );

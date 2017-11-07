@@ -1,13 +1,18 @@
 import React from 'react';
 
 const NoPatch = () => (
-  <div className="NoPatch" >
+  <div className="NoPatch">
     <svg viewBox="55 112 894.66211 571.49609" className="logo">
       <defs>
         <filter id="inset-shadow">
           <feOffset dx="3" dy="3" />
           <feGaussianBlur stdDeviation="3" result="offset-blur" />
-          <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse" />
+          <feComposite
+            operator="out"
+            in="SourceGraphic"
+            in2="offset-blur"
+            result="inverse"
+          />
           <feFlood floodColor="black" floodOpacity="1" result="color" />
           <feComposite operator="in" in="color" in2="inverse" result="shadow" />
           <feComponentTransfer in="shadow" result="shadow">

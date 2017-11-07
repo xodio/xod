@@ -36,15 +36,13 @@ export const fromXodballData = def(
 
 export const fromXodballDataUnsafe = def(
   'fromXodballDataUnsafe :: Object -> Project',
-  R.compose(
-    explodeEither,
-    fromXodballData
-  )
+  R.compose(explodeEither, fromXodballData)
 );
 
 export const fromXodball = def(
   'fromXodball :: String -> Either String Project',
-  jsonString => R.tryCatch(
+  jsonString =>
+    R.tryCatch(
       R.pipe(JSON.parse, Either.of),
       R.always(Either.Left(ERROR.NOT_A_JSON))
     )(jsonString).chain(fromXodballData)
@@ -56,15 +54,9 @@ export const toXodball = def(
     p => JSON.stringify(p, null, 2),
     omitTypeHints,
     omitEmptyOptionalProjectFields,
-    R.converge(
-      omitPatches,
-      [
-        R.compose(
-          R.map(getPatchPath),
-          listLibraryPatches
-        ),
-        R.identity,
-      ]
-    )
+    R.converge(omitPatches, [
+      R.compose(R.map(getPatchPath), listLibraryPatches),
+      R.identity,
+    ])
   )
 );

@@ -4,7 +4,11 @@ import * as Utils from './utils';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
 import { def } from './types';
-import { isInputTerminalPath, isOutputTerminalPath, getTerminalDataType } from './patchPathUtils';
+import {
+  isInputTerminalPath,
+  isOutputTerminalPath,
+  getTerminalDataType,
+} from './patchPathUtils';
 
 /**
  * @typedef {Object} Node
@@ -60,10 +64,7 @@ export const createNode = def(
  */
 export const duplicateNode = def(
   'duplicateNode :: Node -> Node',
-  R.compose(
-    newNode => R.assoc('id', Utils.generateId(), newNode),
-    R.clone
-  )
+  R.compose(newNode => R.assoc('id', Utils.generateId(), newNode), R.clone)
 );
 
 /**
@@ -167,10 +168,7 @@ export const getNodePosition = def(
  */
 export const isInputPinNode = def(
   'isInputPinNode :: Node -> Boolean',
-  R.compose(
-    isInputTerminalPath,
-    getNodeType
-  )
+  R.compose(isInputTerminalPath, getNodeType)
 );
 
 /**
@@ -180,10 +178,7 @@ export const isInputPinNode = def(
  */
 export const isOutputPinNode = def(
   'isOutputPinNode :: Node -> Boolean',
-  R.compose(
-    isOutputTerminalPath,
-    getNodeType
-  )
+  R.compose(isOutputTerminalPath, getNodeType)
 );
 
 /**
@@ -193,17 +188,14 @@ export const isOutputPinNode = def(
  */
 export const isPinNode = def(
   'isPinNode :: Node -> Boolean',
-  R.either(
-    isInputPinNode,
-    isOutputPinNode
-  )
+  R.either(isInputPinNode, isOutputPinNode)
 );
 
- // =============================================================================
- //
- // Pins
- //
- // =============================================================================
+// =============================================================================
+//
+// Pins
+//
+// =============================================================================
 
 /**
  * Gets all bound values of node's pins
@@ -233,21 +225,15 @@ const pathToBoundValue = pinKey => ['boundValues', pinKey];
  */
 export const getBoundValue = def(
   'getBoundValue :: PinKey -> Node -> Maybe DataValue',
-  R.useWith(
-    Tools.path,
-    [
-      pathToBoundValue,
-      R.identity,
-    ]
-  )
+  R.useWith(Tools.path, [pathToBoundValue, R.identity])
 );
 
 export const getBoundValueOrDefault = def(
   'getBoundValueOrDefault :: Pin -> Node -> DataValue',
-  (pin, node) => getBoundValue(
-    Pin.getPinKey(pin),
-    node
-  ).getOrElse(Pin.getPinDefaultValue(pin))
+  (pin, node) =>
+    getBoundValue(Pin.getPinKey(pin), node).getOrElse(
+      Pin.getPinDefaultValue(pin)
+    )
 );
 
 /**
@@ -261,14 +247,7 @@ export const getBoundValueOrDefault = def(
  */
 export const setBoundValue = def(
   'setBoundValue :: PinKey -> DataValue -> Node -> Node',
-  R.useWith(
-    R.assocPath,
-    [
-      pathToBoundValue,
-      R.identity,
-      R.identity,
-    ]
-  )
+  R.useWith(R.assocPath, [pathToBoundValue, R.identity, R.identity])
 );
 
 export const removeBoundValue = def(
@@ -284,10 +263,7 @@ export const removeBoundValue = def(
  */
 export const getPinNodeDataType = def(
   'getPinNodeDataType :: TerminalNode -> DataType',
-  R.compose(
-    getTerminalDataType,
-    getNodeType
-  )
+  R.compose(getTerminalDataType, getNodeType)
 );
 
 /**

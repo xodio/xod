@@ -2,10 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { noop } from 'xod-func-tools';
 
-import {
-  SLOT_SIZE,
-  NODE_HEIGHT,
-} from '../../nodeLayout';
+import { SLOT_SIZE, NODE_HEIGHT } from '../../nodeLayout';
 
 const NodeSlotPattern = ({ offset }) => (
   <pattern
@@ -17,18 +14,9 @@ const NodeSlotPattern = ({ offset }) => (
     patternUnits="userSpaceOnUse"
   >
     <g stroke="none" fill="none">
-      <line
-        x1={1} y1={1}
-        x2={1} y2={NODE_HEIGHT}
-      />
-      <line
-        x1={0} y1={1}
-        x2={SLOT_SIZE.WIDTH} y2={1}
-      />
-      <line
-        x1={0} y1={NODE_HEIGHT}
-        x2={SLOT_SIZE.WIDTH} y2={NODE_HEIGHT}
-      />
+      <line x1={1} y1={1} x2={1} y2={NODE_HEIGHT} />
+      <line x1={0} y1={1} x2={SLOT_SIZE.WIDTH} y2={1} />
+      <line x1={0} y1={NODE_HEIGHT} x2={SLOT_SIZE.WIDTH} y2={NODE_HEIGHT} />
     </g>
   </pattern>
 );
@@ -42,7 +30,9 @@ const BackgroundLayer = ({ onClick, onDoubleClick, onMouseDown, offset }) => (
     <NodeSlotPattern offset={offset} />
     <rect
       className="BackgroundRect"
-      key="bg" x="0" y="0"
+      key="bg"
+      x="0"
+      y="0"
       width="100%"
       height="100%"
       onClick={onClick}
@@ -51,7 +41,6 @@ const BackgroundLayer = ({ onClick, onDoubleClick, onMouseDown, offset }) => (
     />
   </g>
 );
-
 
 BackgroundLayer.defaultProps = {
   onClick: noop,

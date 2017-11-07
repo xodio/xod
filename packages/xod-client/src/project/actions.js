@@ -22,7 +22,7 @@ export const requestOpenProject = data => ({
   payload: data,
 });
 
-export const createProject = projectName => (dispatch) => {
+export const createProject = projectName => dispatch => {
   if (!XP.isValidIdentifier(projectName)) {
     return dispatch(addError(PROJECT_BROWSER_ERRORS.INVALID_PROJECT_NAME));
   }
@@ -98,14 +98,14 @@ export const addPatch = baseName => (dispatch, getState) => {
   });
 };
 
-export const renamePatch = (oldPatchPath, newBaseName) => (dispatch, getState) => {
+export const renamePatch = (oldPatchPath, newBaseName) => (
+  dispatch,
+  getState
+) => {
   const newPatchPath = XP.getLocalPath(newBaseName);
   const state = getState();
 
-  if (
-    newPatchPath !== oldPatchPath &&
-    isPatchPathTaken(state, newPatchPath)
-  ) {
+  if (newPatchPath !== oldPatchPath && isPatchPathTaken(state, newPatchPath)) {
     return dispatch(addError(PROJECT_BROWSER_ERRORS.PATCH_NAME_TAKEN));
   }
 
@@ -136,7 +136,7 @@ export const updatePatchDescription = (patchDescription, patchPath) => ({
 //
 // Node
 //
-export const addNode = (typeId, position, patchPath) => (dispatch) => {
+export const addNode = (typeId, position, patchPath) => dispatch => {
   const newNodeId = XP.generateId();
 
   dispatch({
@@ -152,21 +152,23 @@ export const addNode = (typeId, position, patchPath) => (dispatch) => {
   return newNodeId;
 };
 
-export const updateNodeProperty =
-  (nodeId, propKind, propKey, propValue) => (dispatch, getState) => {
-    const patchPath = getCurrentPatchPath(getState());
+export const updateNodeProperty = (nodeId, propKind, propKey, propValue) => (
+  dispatch,
+  getState
+) => {
+  const patchPath = getCurrentPatchPath(getState());
 
-    dispatch({
-      type: ActionType.NODE_UPDATE_PROPERTY,
-      payload: {
-        id: nodeId,
-        kind: propKind,
-        key: propKey,
-        value: propValue,
-        patchPath,
-      },
-    });
-  };
+  dispatch({
+    type: ActionType.NODE_UPDATE_PROPERTY,
+    payload: {
+      id: nodeId,
+      kind: propKind,
+      key: propKey,
+      value: propValue,
+      patchPath,
+    },
+  });
+};
 
 //
 // Link
@@ -187,7 +189,8 @@ export const addLink = (pin1, pin2) => (dispatch, getState) => {
 // Comment
 //
 export const addComment = () => (dispatch, getState) =>
-  dispatch({ // TODO: where to provide initial size, position and content?
+  dispatch({
+    // TODO: where to provide initial size, position and content?
     type: ActionType.COMMENT_ADD,
     payload: {
       patchPath: getCurrentPatchPath(getState()),
@@ -214,7 +217,12 @@ export const editComment = (id, content) => (dispatch, getState) =>
     },
   });
 
-export const bulkMoveNodesAndComments = (nodeIds, commentIds, deltaPosition, patchPath) => ({
+export const bulkMoveNodesAndComments = (
+  nodeIds,
+  commentIds,
+  deltaPosition,
+  patchPath
+) => ({
   type: ActionType.BULK_MOVE_NODES_AND_COMMENTS,
   payload: {
     nodeIds,
@@ -229,27 +237,35 @@ const isNodeWithIdInUse = R.curry((project, patchPath, nodeId) => {
   const patch = XP.getPatchByPathUnsafe(patchPath, project);
   const node = XP.getNodeByIdUnsafe(nodeId, patch);
 
-  return XP.isPinNode(node) && XP.isTerminalNodeInUse(nodeId, patchPath, project);
+  return (
+    XP.isPinNode(node) && XP.isTerminalNodeInUse(nodeId, patchPath, project)
+  );
 });
 
-export const bulkDeleteNodesAndComments =
-  (nodeIds, linkIds, commentIds, patchPath) => (dispatch, getState) => {
-    const state = getState();
-    const project = getProject(state);
+export const bulkDeleteNodesAndComments = (
+  nodeIds,
+  linkIds,
+  commentIds,
+  patchPath
+) => (dispatch, getState) => {
+  const state = getState();
+  const project = getProject(state);
 
-    if (R.any(isNodeWithIdInUse(project, patchPath), nodeIds)) {
-      return dispatch(
-        addError(NODETYPE_ERRORS[NODETYPE_ERROR_TYPES.CANT_DELETE_USED_PIN_OF_PATCHNODE])
-      );
-    }
+  if (R.any(isNodeWithIdInUse(project, patchPath), nodeIds)) {
+    return dispatch(
+      addError(
+        NODETYPE_ERRORS[NODETYPE_ERROR_TYPES.CANT_DELETE_USED_PIN_OF_PATCHNODE]
+      )
+    );
+  }
 
-    return dispatch({
-      type: ActionType.BULK_DELETE_ENTITIES,
-      payload: {
-        nodeIds,
-        linkIds,
-        commentIds,
-        patchPath,
-      },
-    });
-  };
+  return dispatch({
+    type: ActionType.BULK_DELETE_ENTITIES,
+    payload: {
+      nodeIds,
+      linkIds,
+      commentIds,
+      patchPath,
+    },
+  });
+};

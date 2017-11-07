@@ -76,9 +76,13 @@ class PopupPrompt extends React.Component {
     const wrapperClassNames = classNames('PopupPrompt', className);
 
     const isValid = this.isInputValid();
-    const inputClassNames = classNames('inspectorTextInput', 'inspectorInput--full-width', {
-      invalid: !isValid && this.state.inputValue !== '',
-    });
+    const inputClassNames = classNames(
+      'inspectorTextInput',
+      'inspectorInput--full-width',
+      {
+        invalid: !isValid && this.state.inputValue !== '',
+      }
+    );
     const isSubmitDisabled = !isValid || this.state.inputValue === '';
 
     return (
@@ -112,10 +116,7 @@ class PopupPrompt extends React.Component {
                 >
                   {confirmText}
                 </button>
-                <button
-                  className="Button"
-                  onClick={onClose}
-                >
+                <button className="Button" onClick={onClose}>
                   {cancelText}
                 </button>
               </div>

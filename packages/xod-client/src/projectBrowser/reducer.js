@@ -8,10 +8,7 @@ import {
   REMOVE_SELECTION,
 } from './actionTypes';
 
-import {
-  PATCH_DELETE,
-  PATCH_RENAME,
-} from '../project/actionTypes';
+import { PATCH_DELETE, PATCH_RENAME } from '../project/actionTypes';
 
 const selectionReducer = (state, action) => {
   switch (action.type) {
@@ -37,9 +34,6 @@ const selectionReducer = (state, action) => {
 };
 
 export default (state = initialState, action) =>
-  R.merge(
-    state,
-    {
-      selectedPatchPath: selectionReducer(state.selectedPatchPath, action),
-    }
-  );
+  R.merge(state, {
+    selectedPatchPath: selectionReducer(state.selectedPatchPath, action),
+  });

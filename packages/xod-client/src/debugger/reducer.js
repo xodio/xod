@@ -5,10 +5,8 @@ import {
   SHOW_DEBUGGER_PANEL,
   HIDE_DEBUGGER_PANEL,
   TOGGLE_DEBUGGER_PANEL,
-
   DEBUGGER_LOG_ADD_MESSAGES,
   DEBUGGER_LOG_CLEAR,
-
   DEBUG_SESSION_STARTED,
   DEBUG_SESSION_STOPPED,
 } from './actionTypes';
@@ -25,45 +23,28 @@ const MAX_LOG_MESSAGES = 1000;
 
 const addToLog = R.over(R.lensProp('log'));
 
-const addMessageToLog = R.curry(
-  (message, state) => addToLog(
-    R.compose(
-      R.takeLast(MAX_LOG_MESSAGES),
-      R.append(message)
-    ),
+const addMessageToLog = R.curry((message, state) =>
+  addToLog(R.compose(R.takeLast(MAX_LOG_MESSAGES), R.append(message)), state)
+);
+
+const addMessageListToLog = R.curry((messages, state) =>
+  addToLog(
+    R.compose(R.takeLast(MAX_LOG_MESSAGES), R.concat(R.__, messages)),
     state
   )
 );
 
-const addMessageListToLog = R.curry(
-  (messages, state) => addToLog(
-    R.compose(
-      R.takeLast(MAX_LOG_MESSAGES),
-      R.concat(R.__, messages)
-    ),
-    state
-  )
-);
-
-const updateWatchNodeValues = R.curry(
-  (messageList, state) => {
-    const MapToRekey = R.prop('nodeIdsMap', state);
-    return R.compose(
-      newValues => R.over(
-        R.lensProp('watchNodeValues'),
-        R.merge(R.__, newValues),
-        state
-      ),
-      renameKeys(MapToRekey),
-      R.map(R.compose(
-        R.prop('content'),
-        R.last
-      )),
-      R.groupBy(R.prop('nodeId')),
-      R.filter(R.propEq('type', 'xod'))
-    )(messageList);
-  }
-);
+const updateWatchNodeValues = R.curry((messageList, state) => {
+  const MapToRekey = R.prop('nodeIdsMap', state);
+  return R.compose(
+    newValues =>
+      R.over(R.lensProp('watchNodeValues'), R.merge(R.__, newValues), state),
+    renameKeys(MapToRekey),
+    R.map(R.compose(R.prop('content'), R.last)),
+    R.groupBy(R.prop('nodeId')),
+    R.filter(R.propEq('type', 'xod'))
+  )(messageList);
+});
 
 const showDebuggerPane = R.assoc('isVisible', true);
 const hideDebuggerPane = R.assoc('isVisible', false);

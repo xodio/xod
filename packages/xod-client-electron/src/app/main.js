@@ -15,7 +15,10 @@ import * as settings from './settings';
 import { errorToPlainObject, IS_DEV } from './utils';
 import * as WA from './workspaceActions';
 import { loadSidebarPaneHeight, saveSidebarPaneHeight } from './editorActions';
-import { configureAutoUpdater, subscribeOnAutoUpdaterEvents } from './autoupdate';
+import {
+  configureAutoUpdater,
+  subscribeOnAutoUpdaterEvents,
+} from './autoupdate';
 
 // =============================================================================
 //
@@ -78,7 +81,7 @@ function createWindow() {
   webContents.on('will-navigate', handleRedirect);
   webContents.on('new-window', handleRedirect);
 
-  win.on('close', (e) => {
+  win.on('close', e => {
     // a bit of magic, because of weird `onbeforeunload` behaviour.
     // see https://github.com/electron/electron/issues/7977
     if (!confirmedWindowClose) {
@@ -101,11 +104,13 @@ function createWindow() {
 const subscribeToRemoteAction = (processName, remoteAction) => {
   ipcMain.on(processName, (event, data) => {
     event.sender.send(`${processName}:process`);
-    remoteAction(event, data).then((result) => {
-      event.sender.send(`${processName}:complete`, result);
-    }).catch((err) => {
-      event.sender.send(`${processName}:error`, errorToPlainObject(err));
-    });
+    remoteAction(event, data)
+      .then(result => {
+        event.sender.send(`${processName}:complete`, result);
+      })
+      .catch(err => {
+        event.sender.send(`${processName}:error`, errorToPlainObject(err));
+      });
   });
 };
 
@@ -122,7 +127,7 @@ const onReady = () => {
   let debugPort = null;
   let userAttemptedCloseSerialPort = false;
 
-  const stopDebugSession = (event) => {
+  const stopDebugSession = event => {
     if (debugPort) {
       userAttemptedCloseSerialPort = true;
       stopDebugSessionHandler(event, debugPort);
@@ -130,20 +135,26 @@ const onReady = () => {
   };
 
   WA.subscribeToWorkspaceEvents(ipcMain);
-  ipcMain.on('UPLOAD_TO_ARDUINO', (event, payload) => Promise.resolve()
-    .then(() => ((debugPort) ? stopDebugSession(event) : event))
-    .then(() => uploadToArduinoHandler(event, payload))
+  ipcMain.on('UPLOAD_TO_ARDUINO', (event, payload) =>
+    Promise.resolve()
+      .then(() => (debugPort ? stopDebugSession(event) : event))
+      .then(() => uploadToArduinoHandler(event, payload))
   );
-  ipcMain.on(EVENTS.START_DEBUG_SESSION, startDebugSessionHandler(
-    (port) => {
-      userAttemptedCloseSerialPort = false;
-      debugPort = port;
-    },
-    (sendErr) => {
-      if (!userAttemptedCloseSerialPort) { sendErr(); }
-      debugPort = null;
-    }
-  ));
+  ipcMain.on(
+    EVENTS.START_DEBUG_SESSION,
+    startDebugSessionHandler(
+      port => {
+        userAttemptedCloseSerialPort = false;
+        debugPort = port;
+      },
+      sendErr => {
+        if (!userAttemptedCloseSerialPort) {
+          sendErr();
+        }
+        debugPort = null;
+      }
+    )
+  );
   ipcMain.on(EVENTS.STOP_DEBUG_SESSION, stopDebugSession);
   ipcMain.on(EVENTS.LIST_PORTS, listPortsHandler);
   ipcMain.on(EVENTS.LIST_BOARDS, listBoardsHandler);

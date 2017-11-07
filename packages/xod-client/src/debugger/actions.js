@@ -21,7 +21,11 @@ export const clearDebuggerLog = () => ({
   type: AT.DEBUGGER_LOG_CLEAR,
 });
 
-export const startDebuggerSession = (message, nodeIdsMap, currentPatchPath) => ({
+export const startDebuggerSession = (
+  message,
+  nodeIdsMap,
+  currentPatchPath
+) => ({
   type: AT.DEBUG_SESSION_STARTED,
   payload: {
     message,

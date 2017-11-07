@@ -5,10 +5,7 @@ import { Icon } from 'react-fa';
 const ProjectBrowserToolbar = ({ onClickAddPatch }) => (
   <div className="ProjectBrowserToolbar">
     <div className="ProjectBrowserToolbar-left">
-      <button
-        title="Add patch"
-        onClick={onClickAddPatch}
-      >
+      <button title="Add patch" onClick={onClickAddPatch}>
         <Icon name="file" />
       </button>
     </div>

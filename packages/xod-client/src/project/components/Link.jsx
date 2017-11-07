@@ -36,7 +36,7 @@ class Link extends React.Component {
   }
 
   isClickable() {
-    return (!this.props.isGhost);
+    return !this.props.isGhost;
   }
 
   render() {
@@ -50,7 +50,7 @@ class Link extends React.Component {
     });
 
     const clickable = this.isClickable();
-    const pointerEvents = (clickable) ? 'all' : 'none';
+    const pointerEvents = clickable ? 'all' : 'none';
 
     const linkEndRadius = PIN_RADIUS - 3;
 
@@ -66,10 +66,7 @@ class Link extends React.Component {
           strokeWidth={LINK_HOTSPOT_SIZE.WIDTH}
           {...coords}
         />
-        <line
-          className="line"
-          {...coords}
-        />
+        <line className="line" {...coords} />
         <circle
           className="end"
           cx={coords.x1}

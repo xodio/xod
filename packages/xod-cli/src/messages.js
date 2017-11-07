@@ -22,6 +22,12 @@ export function error(msg) {
   }
 }
 
-export function warn(msg) { write(clc.yellow(`! ${msg}`)); }
-export function notice(msg) { write(clc.cyan(msg)); }
-export function success(msg) { write(clc.green(`✓ ${msg}`)); }
+export function warn(msg) {
+  write(clc.yellow(`! ${msg}`));
+}
+export function notice(msg) {
+  write(clc.cyan(msg));
+}
+export function success(msg) {
+  write(clc.green(`✓ ${msg}`));
+}

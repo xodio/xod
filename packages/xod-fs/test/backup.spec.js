@@ -8,7 +8,10 @@ import { readDir } from '../src/read';
 import { writeJSON } from '../src/write';
 
 describe('Backup', () => {
-  const projectPath = path.resolve(__dirname, './fixtures/workspace/awesome-project/');
+  const projectPath = path.resolve(
+    __dirname,
+    './fixtures/workspace/awesome-project/'
+  );
   const tempPath = path.resolve(__dirname, './.tmp/');
   const backup = new Backup(projectPath, tempPath);
 
@@ -17,23 +20,24 @@ describe('Backup', () => {
   before(() => removeSync(restoreTmpDir));
   after(() => removeSync(restoreTmpDir));
 
-  it('make() should create .tmp directory and copy files into it', (done) => {
-    backup.make()
+  it('make() should create .tmp directory and copy files into it', done => {
+    backup
+      .make()
       .then(() => readDir(tempPath))
-      .then((files) => {
+      .then(files => {
         expect(files).to.have.lengthOf(7);
         done();
       })
       .catch(err => done(err));
   });
 
-  it('clear() should remove .tmp directory', (done) => {
+  it('clear() should remove .tmp directory', done => {
     backup.clear();
     assert(fs.existsSync(tempPath) === false);
     done();
   });
 
-  it('restore() should restore data from .tmp', (done) => {
+  it('restore() should restore data from .tmp', done => {
     const data = {
       dirname: './test/',
       filename: 'test.json',
@@ -45,20 +49,19 @@ describe('Backup', () => {
     const temppath = path.resolve(restoreTmpDir, './.tmp/');
     let rBackup;
 
-    writeJSON(
-      filepath,
-      data
-    )
-      .then(() => { rBackup = new Backup(dirpath, temppath); })
+    writeJSON(filepath, data)
+      .then(() => {
+        rBackup = new Backup(dirpath, temppath);
+      })
       .then(() => rBackup.make())
       .then(() => readDir(temppath))
-      .then((files) => {
+      .then(files => {
         expect(files).to.have.lengthOf(1);
       })
       .then(() => fs.renameSync(filepath, `${filepath}_broken`))
       .then(() => rBackup.restore())
       .then(() => readDir(dirpath))
-      .then((files) => {
+      .then(files => {
         expect(files).to.have.lengthOf(1);
         expect(files[0]).to.be.equal(filepath);
         done();

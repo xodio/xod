@@ -2,7 +2,12 @@ import path from 'path';
 import R from 'ramda';
 import { rejectWithCode } from 'xod-func-tools';
 
-import { resolvePath, expandHomeDir, isPatchFile, isProjectFile } from './utils';
+import {
+  resolvePath,
+  expandHomeDir,
+  isPatchFile,
+  isProjectFile,
+} from './utils';
 import { writeFile, writeJSON } from './write';
 import { Backup } from './backup';
 import { arrangeByFiles } from './unpack';
@@ -13,13 +18,18 @@ import {
 import * as ERROR_CODES from './errorCodes';
 
 // :: pathToWorkspace -> data -> Promise
-const saveData = R.curry((pathToWorkspace, data) => new Promise((resolve, reject) => {
-  const filePath = path.resolve(resolvePath(pathToWorkspace), data.path);
-  // Decide how to write file, as JSON, or as string:
-  const writeFn = (typeof data.content === 'string') ? writeFile : writeJSON;
-  // Write
-  return writeFn(filePath, data.content, data.encoding || 'utf8').then(resolve).catch(reject);
-}));
+const saveData = R.curry(
+  (pathToWorkspace, data) =>
+    new Promise((resolve, reject) => {
+      const filePath = path.resolve(resolvePath(pathToWorkspace), data.path);
+      // Decide how to write file, as JSON, or as string:
+      const writeFn = typeof data.content === 'string' ? writeFile : writeJSON;
+      // Write
+      return writeFn(filePath, data.content, data.encoding || 'utf8')
+        .then(resolve)
+        .catch(reject);
+    })
+);
 
 // :: pathToWorkspace -> data -> Promise
 export const saveArrangedFiles = R.curry((pathToWorkspace, data) => {
@@ -27,7 +37,9 @@ export const saveArrangedFiles = R.curry((pathToWorkspace, data) => {
 
   if (typeof data !== 'object') {
     throw Object.assign(
-      new Error("Can't save project: wrong data format was passed into save function."),
+      new Error(
+        "Can't save project: wrong data format was passed into save function."
+      ),
       {
         path: resolvePath(pathToWorkspace),
         data,
@@ -35,7 +47,7 @@ export const saveArrangedFiles = R.curry((pathToWorkspace, data) => {
     );
   }
   const workspace = resolvePath(pathToWorkspace);
-  const isArray = (data instanceof Array);
+  const isArray = data instanceof Array;
   const dataToSave = isArray ? data : [data];
   const projectDir = dataToSave[0].path.split(path.sep)[1];
 
@@ -43,34 +55,44 @@ export const saveArrangedFiles = R.curry((pathToWorkspace, data) => {
   const pathToTemp = expandHomeDir(path.resolve(workspace, './.tmp/'));
   const backup = new Backup(pathToProject, pathToTemp);
 
-  return backup.make()
-    .then(() => {
-      savingFiles = dataToSave.map(saveData(workspace));
+  return backup.make().then(() => {
+    savingFiles = dataToSave.map(saveData(workspace));
 
-      return Promise.all(savingFiles)
-        .then(backup.clear)
-        .catch((err) => {
-          backup.restore()
-            .then(() => { throw err; });
+    return Promise.all(savingFiles)
+      .then(backup.clear)
+      .catch(err => {
+        backup.restore().then(() => {
+          throw err;
         });
-    });
+      });
+  });
 });
 
 // :: Path -> Project -> Promise Project Error
-export const saveProject = R.curry(
-  (workspacePath, project) => Promise.resolve(project)
+export const saveProject = R.curry((workspacePath, project) =>
+  Promise.resolve(project)
     .then(arrangeByFiles)
-    .then(R.map(R.cond([
-      [
-        isPatchFile,
-        R.over(R.lensProp('content'), omitDefaultOptionsFromPatchFileContents),
-      ],
-      [
-        isProjectFile,
-        R.over(R.lensProp('content'), omitDefaultOptionsFromProjectFileContents),
-      ],
-      [R.T, R.identity],
-    ])))
+    .then(
+      R.map(
+        R.cond([
+          [
+            isPatchFile,
+            R.over(
+              R.lensProp('content'),
+              omitDefaultOptionsFromPatchFileContents
+            ),
+          ],
+          [
+            isProjectFile,
+            R.over(
+              R.lensProp('content'),
+              omitDefaultOptionsFromProjectFileContents
+            ),
+          ],
+          [R.T, R.identity],
+        ])
+      )
+    )
     .then(saveArrangedFiles(workspacePath))
     .then(R.always(project))
     .catch(rejectWithCode(ERROR_CODES.CANT_SAVE_PROJECT))

@@ -10,7 +10,7 @@ import * as msg from './messages';
 
 const bundledLibs = path.resolve(__dirname, '../__lib__');
 
-const showErrorAndExit = (err) => {
+const showErrorAndExit = err => {
   msg.error(err);
   process.exit(1);
 };
@@ -51,20 +51,14 @@ export default (input, patchPath, program) => {
   })
     .then(project => transformProject(project, patchPath))
     .then(map(transpile))
-    .then(eitherCode =>
-      foldEither(
-        showErrorAndExit,
-        identity,
-        eitherCode
-      )
-    )
-    .then((code) => {
+    .then(eitherCode => foldEither(showErrorAndExit, identity, eitherCode))
+    .then(code => {
       if (output) {
         return writeFile(output, code, 'utf8')
           .then(() => {
             msg.success(`Successfully transpiled to ${output}`);
           })
-          .catch((err) => {
+          .catch(err => {
             msg.error(err);
           });
       }

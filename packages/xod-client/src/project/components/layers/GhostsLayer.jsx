@@ -16,9 +16,7 @@ class GhostLayer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const val = this.isDraggingGhost(nextProps);
-    this.setState(
-      R.assoc('active', val, this.state)
-    );
+    this.setState(R.assoc('active', val, this.state));
   }
 
   shouldComponentUpdate(nextProps) {
@@ -32,7 +30,9 @@ class GhostLayer extends React.Component {
   getLink() {
     const { ghostLink } = this.props;
 
-    if (!this.isLinking() || !ghostLink) { return null; }
+    if (!this.isLinking() || !ghostLink) {
+      return null;
+    }
 
     return (
       <XODLink
@@ -48,7 +48,7 @@ class GhostLayer extends React.Component {
 
   isLinking(source) {
     const props = source || this.props;
-    return (props.mode === EDITOR_MODE.LINKING && props.ghostLink);
+    return props.mode === EDITOR_MODE.LINKING && props.ghostLink;
   }
 
   isDraggingGhost(source) {
@@ -58,11 +58,7 @@ class GhostLayer extends React.Component {
   render() {
     const ghostLink = this.getLink();
 
-    return (
-      <g className="GhostsLayer">
-        {ghostLink}
-      </g>
-    );
+    return <g className="GhostsLayer">{ghostLink}</g>;
   }
 }
 

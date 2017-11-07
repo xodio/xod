@@ -28,7 +28,7 @@ export default class App extends React.Component {
     document.addEventListener('cut', this.props.actions.cutEntities);
     document.addEventListener('copy', this.props.actions.copyEntities);
     document.addEventListener('paste', this.props.actions.pasteEntities);
-    this.props.actions.updateCompileLimit(/* startup */true);
+    this.props.actions.updateCompileLimit(/* startup */ true);
   }
 
   onShowCodeArduino() {
@@ -47,8 +47,10 @@ export default class App extends React.Component {
 
     const xodballJSON = toXodball(project);
     const xodballName = getProjectName(project);
-    const link = (document) ? document.createElement('a') : null;
-    const url = `data:application/xod;charset=utf8,${encodeURIComponent(xodballJSON)}`;
+    const link = document ? document.createElement('a') : null;
+    const url = `data:application/xod;charset=utf8,${encodeURIComponent(
+      xodballJSON
+    )}`;
 
     if (link && link.download !== undefined) {
       link.href = url;
@@ -65,7 +67,7 @@ export default class App extends React.Component {
 
   transformProjectForTranspiler(debug = false) {
     const { project, currentPatchPath } = this.props;
-    const transformFn = (debug) ? transformProjectWithDebug : transformProject;
+    const transformFn = debug ? transformProjectWithDebug : transformProject;
     return transformFn(project, currentPatchPath);
   }
 
@@ -102,9 +104,7 @@ export default class App extends React.Component {
         inputValidator={isValidIdentifier}
         helpText={IDENTIFIER_RULES}
       >
-        <p>
-          Please, give a sonorous name to your project:
-        </p>
+        <p>Please, give a sonorous name to your project:</p>
       </PopupPrompt>
     );
   }

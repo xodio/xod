@@ -17,22 +17,25 @@ const depsChanged = (lastDeps, deps, comparators) => {
 //    [(a -> a -> Boolean), (b -> b -> Boolean), ...] ->
 //    (a -> b -> ... -> r) ->
 //    s -> r
-export const createMemoizedSelector =
-  (dependencySelectors, dependencyComparators, selector) => {
-    let lastDeps = null;
-    let lastResult = null;
+export const createMemoizedSelector = (
+  dependencySelectors,
+  dependencyComparators,
+  selector
+) => {
+  let lastDeps = null;
+  let lastResult = null;
 
-    return (state) => {
-      const deps = R.map(f => f(state), dependencySelectors);
-      if (depsChanged(lastDeps, deps, dependencyComparators)) {
-        lastResult = selector(...deps);
-      }
+  return state => {
+    const deps = R.map(f => f(state), dependencySelectors);
+    if (depsChanged(lastDeps, deps, dependencyComparators)) {
+      lastResult = selector(...deps);
+    }
 
-      lastDeps = deps;
+    lastDeps = deps;
 
-      return lastResult;
-    };
+    return lastResult;
   };
+};
 
 export default {
   createMemoizedSelector,

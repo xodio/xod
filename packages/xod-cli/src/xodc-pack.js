@@ -8,7 +8,10 @@ import * as msg from './messages';
 export default (projectDir, output) => {
   const projectPath = path.resolve(projectDir);
   const workspace = path.resolve(projectDir, '..');
-  const dirName = projectDir.split('/').filter(f => f !== '').pop();
+  const dirName = projectDir
+    .split('/')
+    .filter(f => f !== '')
+    .pop();
 
   msg.notice(`Packing ${dirName} into ${output} ...`);
 
@@ -18,7 +21,7 @@ export default (projectDir, output) => {
     .then(() => {
       msg.success(`Packed project successfully written into ${output}`);
     })
-    .catch((err) => {
+    .catch(err => {
       msg.error(err);
       process.exit(1);
     });

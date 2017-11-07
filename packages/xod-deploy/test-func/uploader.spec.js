@@ -14,9 +14,7 @@ describe('Uploader', () => {
     ]);
   });
   it('should get 404 error for non existent boardId', () =>
-    getUploadConfig('super_mega_non_existent_boardId')
-      .catch((err) => {
-        assert.equal(err.status, 404);
-      })
-  );
+    getUploadConfig('super_mega_non_existent_boardId').catch(err => {
+      assert.equal(err.status, 404);
+    }));
 });

@@ -22,12 +22,9 @@ describe('Helpers', () => {
       expect(eitherLeft).to.throw(leftObj);
     });
     it('should return Right value', () => {
-      Helper.expectEither(
-        (val) => {
-          expect(val).to.be.equal(rightObj);
-        },
-        right
-      );
+      Helper.expectEither(val => {
+        expect(val).to.be.equal(rightObj);
+      }, right);
     });
   });
 });

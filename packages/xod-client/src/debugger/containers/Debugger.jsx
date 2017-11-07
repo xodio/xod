@@ -15,7 +15,7 @@ const Debugger = ({ active, actions }) => {
     'is-active': active,
   });
 
-  const statusIcon = (active) ? 'play' : 'stop';
+  const statusIcon = active ? 'play' : 'stop';
 
   return (
     <div className={cls}>
@@ -26,20 +26,12 @@ const Debugger = ({ active, actions }) => {
           title="Debugs session is running"
           className="status"
         />
-        <span className="title">
-          Debugger
-        </span>
-        <button
-          className="close-button"
-          onClick={actions.hideDebugger}
-        >
+        <span className="title">Debugger</span>
+        <button className="close-button" onClick={actions.hideDebugger}>
           &times;
         </button>
       </div>
-      <button
-        className="clear-log-button"
-        onClick={actions.clearLog}
-      >
+      <button className="clear-log-button" onClick={actions.clearLog}>
         Clear log
       </button>
       <div className="container">
@@ -58,10 +50,13 @@ const mapStateToProps = R.applySpec({
   active: isDebugSession,
 });
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    hideDebugger: DA.hideDebugger,
-    clearLog: DA.clearDebuggerLog,
-  }, dispatch),
+  actions: bindActionCreators(
+    {
+      hideDebugger: DA.hideDebugger,
+      clearLog: DA.clearDebuggerLog,
+    },
+    dispatch
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Debugger);
