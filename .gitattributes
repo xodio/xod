@@ -1,0 +1,3 @@
+catch.hpp linguist-vendored
+packages/xod-client-electron/arduino-libraries/** linguist-vendored
+workspace/**/__fixtures__/*.cpp linguist-generated

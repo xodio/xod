@@ -370,9 +370,9 @@
 
 - section: "Displays"
   parts:
-    - part: HD44780
+    - part: HD44780, KS0066
       kind: Parallel interface text LCD
-      vendor: Hitachi
+      vendor: Hitachi, Samsung
       nodes:
         - xod/common-hardware/text-lcd-16x2
       shopping:
@@ -392,3 +392,17 @@
           sku: 104990004
           flavor: Brk
           url: https://www.seeedstudio.com/LCD-16x2-Characters-White-Text-Blue-Background-p-1612.html
+    - part: PCA8574, PCF8574
+      kind: I²C expander driven text LCD
+      vendor: NXP
+      nodes:
+        - xod/common-hardware/text-lcd-16x2-i2c
+      shopping:
+        - shop: DFRobot
+          sku: DFR0063
+          flavor: Mod
+          url: https://www.dfrobot.com/product-135.html
+        - shop: DFRobot
+          sku: DFR0175
+          flavor: Brk
+          url: https://www.dfrobot.com/product-593.html
