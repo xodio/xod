@@ -1,12 +1,9 @@
 import chai, { assert, expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
-import fs from 'fs';
 import path from 'path';
 import R from 'ramda';
-import shell from 'shelljs';
 import * as Loader from '../src/load';
-import { getImplTypeByFilename } from '../src/utils';
 
 import {
   fixture,
@@ -91,43 +88,6 @@ describe('Loader', () => {
 
         return expectRejectedWithCode(
           Loader.loadProjectWithLibs([], okProject, brokenWorkspace),
-          ERROR_CODES.INVALID_FILE_CONTENTS
-        );
-      }
-    );
-  });
-
-
-  describe('loadProjectWithoutLibs', () => {
-    it('should return project without libs', () => {
-      const xodCore = path.resolve(workspace, './__lib__/xod/core');
-      const xodCoreOwner = path.resolve(xodCore, '..');
-
-      return Loader.loadProjectWithoutLibs(xodCore)
-        .then((project) => {
-          const implList = shell.ls(`${xodCore}/**/*.{c,cpp,h,inl,js}`);
-          assert.isAbove(implList.length, 0);
-
-          return implList.every((implPath) => {
-            const { base, dir } = path.parse(implPath);
-            const implType = getImplTypeByFilename(base);
-            const impl = fs.readFileSync(implPath).toString();
-            const xodp = `./${path.relative(xodCoreOwner, `${dir}/patch.xodp`)}`;
-            const patch = project.find(_ => _.path === xodp);
-            if (!(patch && patch.content.impls)) return false;
-            return patch.content.impls[implType] === impl;
-          });
-        }).then(
-          implsLoaded => assert.equal(implsLoaded, true, 'some implementations were not loaded')
-        );
-    });
-
-    it('should return rejected Promise when loading a broken project',
-      () => {
-        const brokenProject = path.resolve(brokenWorkspace, './broken-project');
-
-        return expectRejectedWithCode(
-          Loader.loadProjectWithoutLibs(brokenProject),
           ERROR_CODES.INVALID_FILE_CONTENTS
         );
       }

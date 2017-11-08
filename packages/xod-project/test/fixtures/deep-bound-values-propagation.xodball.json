@@ -302,14 +302,11 @@
       },
       "links": {},
       "comments": {},
-      "impls": {
-        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto x = getValue<input_X>(ctx);\n    emitValue<output_RND>(ctx, round(x));\n}\n"
-      },
       "path": "xod/core/round",
       "description": "Rounds a number to nearest integer",
       "attachments": [
         {
-          "filename": "any.cpp",
+          "filename": "patch.cpp",
           "encoding": "utf8",
           "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto x = getValue<input_X>(ctx);\n    emitValue<output_RND>(ctx, round(x));\n}\n"
         }
@@ -353,14 +350,11 @@
       },
       "links": {},
       "comments": {},
-      "impls": {
-        "arduino": "struct State {\n    bool begun;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    if (!isInputDirty<input_DUMP>(ctx))\n        return;\n\n    State* state = getState(ctx);\n    if (!state->begun) {\n        Serial.begin(115200);\n    }\n\n    auto line = getValue<input_LINE>(ctx);\n    if (line) {\n        for (auto it = line->iterate(); it; ++it)\n            Serial.write((char)*it);\n        Serial.write('\\r');\n        Serial.write('\\n');\n        Serial.flush();\n    }\n}\n"
-      },
       "path": "xod/core/console-log",
       "description": "Outputs a line of text to the board standard debug interface",
       "attachments": [
         {
-          "filename": "arduino.cpp",
+          "filename": "patch.cpp",
           "encoding": "utf8",
           "content": "struct State {\n    bool begun;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    if (!isInputDirty<input_DUMP>(ctx))\n        return;\n\n    State* state = getState(ctx);\n    if (!state->begun) {\n        Serial.begin(115200);\n    }\n\n    auto line = getValue<input_LINE>(ctx);\n    if (line) {\n        for (auto it = line->iterate(); it; ++it)\n            Serial.write((char)*it);\n        Serial.write('\\r');\n        Serial.write('\\n');\n        Serial.flush();\n    }\n}\n"
         }
@@ -417,14 +411,11 @@
       },
       "links": {},
       "comments": {},
-      "impls": {
-        "cpp": "struct State {\n    Number value;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    if (!isInputDirty<input_UPD>(ctx))\n        return;\n\n    State* state = getState(ctx);\n    auto newValue = getValue<input_NEW>(ctx);\n    if (newValue == state->value)\n        return;\n\n    state->value = newValue;\n    emitValue<output_MEM>(ctx, newValue);\n}\n"
-      },
       "path": "xod/core/buffer",
       "description": "Permanently holds a single value",
       "attachments": [
         {
-          "filename": "any.cpp",
+          "filename": "patch.cpp",
           "encoding": "utf8",
           "content": "struct State {\n    Number value;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    if (!isInputDirty<input_UPD>(ctx))\n        return;\n\n    State* state = getState(ctx);\n    auto newValue = getValue<input_NEW>(ctx);\n    if (newValue == state->value)\n        return;\n\n    state->value = newValue;\n    emitValue<output_MEM>(ctx, newValue);\n}\n"
         }
@@ -468,22 +459,13 @@
       },
       "links": {},
       "comments": {},
-      "impls": {
-        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    char str[16];\n    auto num = getValue<input_IN>(ctx);\n    dtostrf(num, 0, 2, str);\n    auto xstr = ::xod::List<char>::fromPlainArray(str, strlen(str));\n    emitValue<output_OUT>(ctx, xstr);\n}\n",
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n"
-      },
       "path": "xod/core/cast-number-to-string",
       "description": "Transforms a number to string with two digits after dot",
       "attachments": [
         {
-          "filename": "any.cpp",
+          "filename": "patch.cpp",
           "encoding": "utf8",
           "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    char str[16];\n    auto num = getValue<input_IN>(ctx);\n    dtostrf(num, 0, 2, str);\n    auto xstr = ::xod::List<char>::fromPlainArray(str, strlen(str));\n    emitValue<output_OUT>(ctx, xstr);\n}\n"
-        },
-        {
-          "filename": "any.js",
-          "encoding": "utf8",
-          "content": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n"
         }
       ]
     }

@@ -11,7 +11,6 @@ import {
   rejectOnInvalidPatchFileContents,
 } from './utils';
 import { loadAttachments } from './attachments';
-import { loadPatchImpls } from './impls';
 import {
   convertPatchFileContentsToPatch,
   addMissingOptionsToPatchFileContents,
@@ -42,7 +41,6 @@ const readLibFiles = (libfiles) => {
       files.map(patchPath =>
         R.composeP(
           loadAttachments(path.dirname(patchPath)),
-          loadPatchImpls(path.dirname(patchPath)),
           R.assoc('path', `${name}/${getPatchName(patchPath)}`),
           convertPatchFileContentsToPatch,
           rejectOnInvalidPatchFileContents(patchPath),

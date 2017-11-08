@@ -18,7 +18,6 @@ import {
   DEFAULT_PROJECT_NAME,
   LIBS_DIRNAME,
   WORKSPACE_FILENAME,
-  IMPL_FILENAMES,
 } from './constants';
 
 import * as ERROR_CODES from './errorCodes';
@@ -63,24 +62,6 @@ export const getFileContent = def(
 export const getProjectMetaName = def(
   'getProjectMetaName :: ProjectFile -> Identifier',
   R.path(['content', 'name'])
-);
-
-export const getImplFilenameByType = def(
-  'getImplFilenameByType :: String -> String',
-  type => R.compose(
-    R.head,
-    R.values,
-    R.pickBy((v, k) => R.equals(k, type))
-  )(IMPL_FILENAMES)
-);
-
-export const getImplTypeByFilename = def(
-  'getImplTypeByFilename :: String -> String',
-  filename => R.compose(
-    R.head,
-    R.keys,
-    R.pickBy(R.equals(filename))
-  )(IMPL_FILENAMES)
 );
 
 export const resolvePath = def(

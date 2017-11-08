@@ -12,7 +12,6 @@ export const OPTIONAL_NODE_FIELDS = {
 export const OPTIONAL_PATCH_FIELDS = {
   attachments: [],
   description: '',
-  impls: {},
   links: {},
   nodes: {},
   comments: {},

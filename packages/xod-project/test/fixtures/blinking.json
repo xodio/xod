@@ -58,9 +58,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a - e.inputs.b) };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/math/multiply": {
       "comments": {},
@@ -113,9 +117,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a * e.inputs.b) };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/math/divide": {
       "comments": {},
@@ -168,9 +176,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a / e.inputs.b) };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/math/add": {
       "comments": {},
@@ -223,9 +235,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a + e.inputs.b) };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/valve-number": {
       "comments": {},
@@ -278,9 +294,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.cond) {\n    e.fire({ out: e.inputs.in });\n  }\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "valve-number"
     },
     "xod/core/triggerable-number": {
@@ -334,9 +354,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.props.value };\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "triggerable-number"
     },
     "xod/core/ultrasonic-hc-sr04": {
@@ -401,9 +425,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "espruino": "\nvar sonic = require('@amperka/ultrasonic');\n\nmodule.exports.setup = function(e) {\n  var pinTrig = new Pin(e.props.pinTrig);\n  var pinEcho = new Pin(e.props.pinEcho);\n  e.context.device = sonic.connect({\n    trigPin: pinTrig,\n    echoPin: pinEcho\n  });\n  e.context.units = e.props.units;\n  e.context.isBusy = false;\n};\n\nmodule.exports.evaluate = function(e) {\n  if (e.context.isBusy) {\n    e.fire({ error: \"busy\" });\n  } else {\n    e.context.isBusy = true;\n    e.context.device.ping(function(err, value) {\n      e.context.isBusy = false;\n      if (err) {\n        e.fire({ error: err.msg });\n      } else {\n        e.fire({ value: value });\n      }\n    }, e.context.units);\n  }\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "HC-SR04"
     },
     "xod/core/time": {
@@ -446,9 +474,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "module.exports.evaluate = function(e) {\n  return { value: new Date().getTime() };\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "Time"
     },
     "xod/core/stdout": {
@@ -480,9 +512,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "nodejs": "module.exports.evaluate = function(e) {\n  var val = String(e.inputs.value);\n  process.stdout.write(val);\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "stdout"
     },
     "xod/core/split-bool": {
@@ -536,9 +572,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.inp) {\n    return { outTrue: PULSE };\n  } else {\n    return { outFalse: PULSE };\n  }\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "Split"
     },
     "xod/core/servo": {
@@ -592,9 +632,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var minPulse = +e.props.minPulse;\n  var maxPulse = +e.props.maxPulse;\n  var us = minPulse + (maxPulse - minPulse) * e.inputs.value;\n  analogWrite(e.context.pin, us / 20000, { freq: 50 });\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/pot": {
       "comments": {},
@@ -636,9 +680,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  return { value: analogRead(e.context.pin) };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/or": {
       "comments": {},
@@ -691,9 +739,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a || e.inputs.b };\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "or"
     },
     "xod/core/not": {
@@ -736,9 +788,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: !e.inputs.in };\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "not"
     },
     "xod/core/less": {
@@ -792,9 +848,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n\n  if (a === undefined || b === undefined) {\n    return;\n  }\n\n  return { out: a < b };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/map": {
       "comments": {},
@@ -891,9 +951,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var k = (inputs.inp - inputs.inA) / (inputs.inB - inputs.inA);\n  var out = inputs.outA + k * (inputs.outB - inputs.outA);\n\n  if (inputs.clip) {\n    if (inputs.outB > inputs.outA) {\n      out = Math.max(inputs.outA, out);\n      out = Math.min(inputs.outB, out);\n    } else {\n      out = Math.max(inputs.outB, out);\n      out = Math.min(inputs.outA, out);\n    }\n  }\n\n  return { out: out };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/latch": {
       "comments": {},
@@ -957,9 +1021,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/led": {
       "comments": {},
@@ -990,9 +1058,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var b = e.inputs.brightness;\n\n  // Adjust duty cycle as a power function to align brightness\n  // perception by human eye\n  var duty = b * b * b;\n\n  analogWrite(e.context.pin, duty);\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "LED"
     },
     "xod/core/file-write": {
@@ -1057,9 +1129,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "nodejs": "var path = require('path');\nvar fs = require('fs');\n\nmodule.exports.evaluate = function(e) {\n  var filename = e.inputs.fileName;\n  var data = e.inputs.data;\n\n  fs.writeFile(filename, data, function (err) {\n    if (err) {\n      e.fire({ onFailure: err.toString() });\n      return;\n    }\n\n    e.fire({ onSuccess: PULSE });\n  });\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "File write"
     },
     "xod/core/greater": {
@@ -1113,9 +1189,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n\n  if (a === undefined || b === undefined) {\n    return;\n  }\n\n  return { out: a > b };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/file-read": {
       "comments": {},
@@ -1179,9 +1259,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "nodejs": "var path = require('path');\nvar fs = require('fs');\n\nmodule.exports.evaluate = function(e) {\n  var filename = e.inputs.fileName;\n\n  fs.readFile(filename, function (err, data) {\n    if (err) {\n      e.fire({ error: err.toString() });\n      return;\n    }\n\n    e.fire({ data: data });\n  });\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "File read"
     },
     "xod/core/digital-output": {
@@ -1224,9 +1308,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "espruino": "\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/equal": {
       "comments": {},
@@ -1279,9 +1367,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n\n  if (a === undefined || b === undefined) {\n    return;\n  }\n\n  return { out: a === b };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/digital-input": {
       "comments": {},
@@ -1323,9 +1415,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "espruino": "\nmodule.exports.setup = function(e) {\n  e.inputs.pin = new Pin(e.inputs.pin);\n\n  setWatch(function(evt) {\n    e.fire({ state: !evt.state });\n  }, e.inputs.pin, {\n    edge: 'both',\n    repeat: true,\n    debounce: 30\n  });\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/either": {
       "comments": {},
@@ -1389,9 +1485,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  var out = e.inputs.inp ? e.inputs.trueValue : e.inputs.falseValue;\n  return { out: out };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/const-string": {
       "comments": {},
@@ -1444,9 +1544,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "<String>"
     },
     "xod/core/const-number": {
@@ -1500,9 +1604,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "<Number>"
     },
     "xod/core/concat": {
@@ -1556,9 +1664,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "module.exports.evaluate = function(e) {\n  return { result: (String(e.inputs.a) + String(e.inputs.b)) };\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "concat"
     },
     "xod/core/clock": {
@@ -1601,9 +1713,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.context.intervalID) {\n    clearInterval(e.context.intervalID);\n  }\n\n  e.context.intervalID = setInterval(function() {\n    e.fire({ tick: PULSE });\n  }, e.inputs.interval * 1000);\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/const-bool": {
       "comments": {},
@@ -1656,9 +1772,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { value: e.inputs.inValue };\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "<Bool>"
     },
     "xod/core/compare": {
@@ -1734,9 +1854,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  var a = e.inputs.a;\n  var b = e.inputs.b;\n  if (a < b) {\n    return { less: PULSE };\n  } else if (a > b) {\n    return { greater: PULSE };\n  } else {\n    return { equal: PULSE };\n  }\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/choose": {
       "comments": {},
@@ -1789,9 +1913,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.x) {\n    return { truePulse: PULSE };\n  } else {\n    return { falsePulse: PULSE };\n  }\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/cast-string-to-pulse": {
       "comments": {},
@@ -1833,9 +1961,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  if (Boolean(e.inputs.__in__) === false) return;\n\n  return { __out__: PULSE };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/cast-string-to-boolean": {
       "comments": {},
@@ -1877,9 +2009,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Boolean(e.inputs.__in__) };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/cast-number-to-pulse": {
       "comments": {},
@@ -1921,9 +2057,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  if (Boolean(e.inputs.__in__) === false) return;\n\n  return { __out__: PULSE };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/cast-number-to-string": {
       "comments": {},
@@ -1965,9 +2105,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/cast-pulse-to-number": {
       "comments": {},
@@ -2009,9 +2153,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: 1 };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/cast-pulse-to-boolean": {
       "comments": {},
@@ -2053,9 +2201,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: true };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/cast-number-to-boolean": {
       "comments": {},
@@ -2097,9 +2249,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Boolean(e.inputs.__in__) };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/cast-boolean-to-string": {
       "comments": {},
@@ -2141,9 +2297,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/cast-boolean-to-number": {
       "comments": {},
@@ -2185,9 +2345,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Number(e.inputs.__in__) };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/button": {
       "comments": {},
@@ -2218,9 +2382,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "espruino": "\nmodule.exports.setup = function(e) {\n  var pin = new Pin(e.props.pin);\n\n  setWatch(function(evt) {\n    e.fire({ state: !evt.state });\n  }, pin, {\n    edge: 'both',\n    repeat: true,\n    debounce: 30\n  });\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/cast-boolean-to-pulse": {
       "comments": {},
@@ -2262,9 +2430,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.__in__ === false) return;\n  return { __out__: PULSE };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/buzzer": {
       "comments": {},
@@ -2295,9 +2467,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "espruino": "\nmodule.exports.setup = function(e) {\n  e.context.pin = new Pin(e.props.pin);\n};\n\nmodule.exports.evaluate = function(e) {\n  var f = e.inputs.freq;\n\n  if (f === 0) {\n    digitalWrite(e.context.pin, false);\n  } else {\n    analogWrite(e.context.pin, 0.5, { freq: f });\n  }\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "Buzzer"
     },
     "xod/core/both": {
@@ -2351,9 +2527,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.a && e.inputs.b) {\n    return { out: PULSE };\n  }\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/analog_output": {
       "comments": {},
@@ -2395,9 +2575,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "espruino": "\nmodule.exports.evaluate = function(e) {\n  analogWrite(e.inputs.pin, e.inputs.value);\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/any": {
       "comments": {},
@@ -2450,9 +2634,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.inputs.a || e.inputs.b) {\n    return { out: PULSE };\n  }\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/analog_input": {
       "comments": {},
@@ -2505,9 +2693,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "espruino": "\nmodule.exports.evaluate = function(e) {\n  if (!e.inputs.pulse) { return; }\n\n  return { value: analogRead(e.inputs.pin) };\n};\n"
-      }
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ]
     },
     "xod/core/and": {
       "comments": {},
@@ -2560,9 +2752,13 @@
         }
       },
       "links": {},
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: e.inputs.a && e.inputs.b };\n};\n"
-      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "label": "and"
     },
     "@/led": {
@@ -2694,7 +2890,6 @@
           }
         }
       },
-      "impls": {},
       "label": "Led"
     },
     "@/main": {
@@ -2742,7 +2937,6 @@
           }
         }
       },
-      "impls": {},
       "label": "Main"
     },
     "@/blink": {
@@ -2830,7 +3024,6 @@
           }
         }
       },
-      "impls": {},
       "label": "Blink"
     }
   }

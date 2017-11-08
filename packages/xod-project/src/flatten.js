@@ -9,6 +9,7 @@ import * as Patch from './patch';
 import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
+import { def } from './types';
 import { formatString, wrapDeadRefErrorMessage } from './utils';
 import { err, errOnNothing } from './func-tools';
 import * as PatchPathUtils from './patchPathUtils';
@@ -69,20 +70,24 @@ const getPatchByPath = R.curry((project, nodeType) => R.compose(
   Project.getPatchByPath(R.__, project)
 )(nodeType));
 
-// :: String[] -> Patch -> Boolean
-const isLeafPatchWithImplsOrTerminal = impls => R.anyPass([
-  Patch.hasImpls(impls),
-  Patch.isTerminalPatch,
-  R.pipe(Patch.getPatchPath, R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH)),
-]);
+const isLeafPatchWithImplsOrTerminal = def(
+  'isLeafPatchWithImplsOrTerminal :: Patch -> Boolean',
+  R.anyPass([
+    Patch.hasImpl,
+    Patch.isTerminalPatch,
+    R.pipe(Patch.getPatchPath, R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH)),
+  ])
+);
 
-// :: String[] -> Patch -> Boolean
-const isLeafPatchWithoutImpls = impls => R.both(
-  R.complement(Patch.hasImpls(impls)),
-  R.compose(
-    R.contains(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
-    R.map(Node.getNodeType),
-    Patch.listNodes
+const isLeafPatchWithoutImpls = def(
+  'isLeafPatchWithoutImpls :: Patch -> Boolean',
+  R.both(
+    R.complement(Patch.hasImpl),
+    R.compose(
+      R.contains(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
+      R.map(Node.getNodeType),
+      Patch.listNodes
+    )
   )
 );
 
@@ -101,9 +106,9 @@ const extendTerminalPins = R.curry(([path, patch]) => {
 
 // :: Function extractLeafPatches -> String[] -> Project -> Node -> Either Error [Path, Patch, ...]
 const extractLeafPatchRecursive = R.curry(
-  (recursiveFn, impls, project, node) => R.compose(
+  (recursiveFn, project, node) => R.compose(
     path => R.compose(
-      R.chain(recursiveFn(impls, project, path)),
+      R.chain(recursiveFn(project, path)),
       errOnNothing(
         formatString(
           CONST.ERROR.PATCH_NOT_FOUND_BY_PATH,
@@ -116,38 +121,39 @@ const extractLeafPatchRecursive = R.curry(
   )(node)
 );
 
-// :: Function extractLeafPatches -> String[] -> Project -> Patch -> [Path, Patch, ...]
-const extractLeafPatchesFromNodes = R.curry((recursiveFn, impls, project, patch) =>
+// :: Function extractLeafPatches -> Project -> Patch -> [Path, Patch, ...]
+const extractLeafPatchesFromNodes = R.curry((recursiveFn, project, patch) =>
   R.compose(
-    R.chain(extractLeafPatchRecursive(recursiveFn, impls, project)),
+    R.chain(extractLeafPatchRecursive(recursiveFn, project)),
     Patch.listNodes
   )(patch)
 );
 
-// :: String[] -> Project -> Path -> [Either Error [Path, Patch]]
-export const extractLeafPatches = R.curry((impls, project, path, patch) =>
-  R.cond([
-    [
-      isLeafPatchWithImplsOrTerminal(impls),
-      R.compose(R.of, Either.of, leafPatch => ([path, leafPatch])),
-    ],
-    [
-      isLeafPatchWithoutImpls(impls),
-      err(
-        formatString(
-          CONST.ERROR.IMPLEMENTATION_NOT_FOUND,
-          {
-            impl: impls,
-            patchPath: Patch.getPatchPath(patch),
-          }
-        )
-      ),
-    ],
-    [
-      R.T,
-      extractLeafPatchesFromNodes(extractLeafPatches, impls, project),
-    ],
-  ])(patch)
+export const extractLeafPatches = def(
+  'extractLeafPatches :: Project -> PatchPath -> Patch -> [Either Error (Pair PatchPath Patch)]',
+  (project, path, patch) =>
+    R.cond([
+      [
+        isLeafPatchWithImplsOrTerminal,
+        R.compose(R.of, Either.of, leafPatch => ([path, leafPatch])),
+      ],
+      [
+        isLeafPatchWithoutImpls,
+        R.compose(
+          R.of,
+          err(
+            formatString(
+              CONST.ERROR.IMPLEMENTATION_NOT_FOUND,
+              { patchPath: Patch.getPatchPath(patch) }
+            )
+          ),
+        ),
+      ],
+      [
+        R.T,
+        extractLeafPatchesFromNodes(extractLeafPatches, project),
+      ],
+    ])(patch)
 );
 
 // :: String -> Node
@@ -746,29 +752,30 @@ export const extractPatches = R.curry((project, leafPaths, prefix, boundValues, 
  * @private
  * @function convertPatch
  * @param {Project} project
- * @param {Array<String>} impls
  * @param {Array<Array<Path, Patch>>} leafPatches
  * @param {Patch} patch
  * @returns {Patch}
  */
- // :: Project  -> String[] -> [[Path, Patch]] -> Patch -> Patch
-const convertPatch = R.curry((project, impls, leafPatches, patch) => R.ifElse(
-  Patch.hasImpls(impls),
-  R.identity,
-  (originalPatch) => {
-    const leafPatchPaths = R.pluck(0, leafPatches);
-    const flattenEntities = extractPatches(project, leafPatchPaths, null, {}, originalPatch);
-    const nodes = R.map(R.unnest, flattenEntities[0]);
-    const links = R.map(R.unnest, flattenEntities[1]);
-    const [newNodes, newLinks] = createCastNodes(leafPatches, nodes, links);
+const convertPatch = def(
+  'convertPatch :: Project -> [Pair PatchPath Patch] -> Patch -> Patch',
+  (project, leafPatches, patch) =>
+    R.unless(
+      Patch.hasImpl,
+      (originalPatch) => {
+        const leafPatchPaths = R.pluck(0, leafPatches);
+        const flattenEntities = extractPatches(project, leafPatchPaths, null, {}, originalPatch);
+        const nodes = R.map(R.unnest, flattenEntities[0]);
+        const links = R.map(R.unnest, flattenEntities[1]);
+        const [newNodes, newLinks] = createCastNodes(leafPatches, nodes, links);
 
-    return R.compose(
-      explodeEither,
-      Patch.upsertLinks(newLinks),
-      Patch.upsertNodes(newNodes)
-    )(Patch.createPatch());
-  }
-)(patch));
+        return R.compose(
+          explodeEither,
+          Patch.upsertLinks(newLinks),
+          Patch.upsertNodes(newNodes)
+        )(Patch.createPatch());
+      }
+    )(patch)
+);
 
 /**
  * Creating new flattened project by:
@@ -783,32 +790,33 @@ const convertPatch = R.curry((project, impls, leafPatches, patch) => R.ifElse(
  * @function convertProject
  * @param {Project} project
  * @param {String} path
- * @param {Array<String>} impls
  * @param {Patch} patch
  * @param {Array<Array<Path, Patch>>} leafPatches
  * @returns {Either<Error|Project>}
  */
-// :: Project -> Path -> String[] -> Patch -> [[Path, Patch]] -> Either Error Project
-const convertProject = R.curry((project, path, impls, patch, leafPatches) => {
-  // Patch
-  const convertedPatch = convertPatch(project, impls, leafPatches, patch);
-  // String[]
-  const usedCastNodeTypes = getCastNodeTypesFromPatch(convertedPatch);
-  // Right Project
-  const newProject = Either.of(Project.createProject());
+const convertProject = def(
+  'convertProject :: Project -> PatchPath -> Patch -> [Pair PatchPath Patch] -> Either Error Project',
+  (project, path, patch, leafPatches) => {
+    // Patch
+    const convertedPatch = convertPatch(project, leafPatches, patch);
+    // String[]
+    const usedCastNodeTypes = getCastNodeTypesFromPatch(convertedPatch);
+    // Right Project
+    const newProject = Either.of(Project.createProject());
 
-  return R.compose(
-    R.chain(reduceChainOver(newProject)),
-    R.map(R.compose(
-      R.map(R.apply(Project.assocPatch)),
-      R.append([path, convertedPatch]),
-      removeNotImplementedInXodNodes,
-      removeTerminalPatches
-    )),
-    R.sequence(Either.of),
-    addCastPatches(project, usedCastNodeTypes)
-  )(leafPatches);
-});
+    return R.compose(
+      R.chain(reduceChainOver(newProject)),
+      R.map(R.compose(
+        R.map(R.apply(Project.assocPatch)),
+        R.append([path, convertedPatch]),
+        removeNotImplementedInXodNodes,
+        removeTerminalPatches
+      )),
+      R.sequence(Either.of),
+      addCastPatches(project, usedCastNodeTypes)
+    )(leafPatches);
+  }
+);
 
 //
 // It represents a first step of flattening.
@@ -828,22 +836,22 @@ const convertProject = R.curry((project, path, impls, patch, leafPatches) => {
  * @function flattenProject
  * @param {Project} project
  * @param {String} path - Path to entry-point patch
- * @param {Array<String>} impls - A list of target implementations
  * @param {Patch} patch - Entry-point patch
  * @returns {Either<Error|Project>}
  */
-// :: Project -> Path -> String[] -> Patch -> Either Error Project
-const flattenProject = R.curry((project, path, impls, patch) =>
-  R.compose(
-    R.chain(convertProject(project, path, impls, patch)),
-    // TODO: extract preparing leaf patches into a separate function?
-    // end preparing leaf patches list
-    R.map(R.map(extendTerminalPins)),
-    R.map(filterTuplesByUniqPaths),
-    R.sequence(Either.of),
-    extractLeafPatches(impls, project, path)
-    // start preparing leaf patches list
-  )(patch)
+const flattenProject = def(
+  'flattenProject :: Project -> PatchPath -> Patch -> Either Error Project',
+  (project, path, patch) =>
+    R.compose(
+      R.chain(convertProject(project, path, patch)),
+      // TODO: extract preparing leaf patches into a separate function?
+      // end preparing leaf patches list
+      R.map(R.map(extendTerminalPins)),
+      R.map(filterTuplesByUniqPaths),
+      R.sequence(Either.of),
+      extractLeafPatches(project, path)
+      // start preparing leaf patches list
+    )(patch)
 );
 
 /**
@@ -851,20 +859,21 @@ const flattenProject = R.curry((project, path, impls, patch) =>
  * as an entry point(in most cases such patches will be leaf patches),
  * check that it at least has required implementations.
  */
-const checkEntryPatchImplementations = R.curry((impls, patch) =>
-  R.ifElse(
-    isLeafPatchWithoutImpls(impls),
-    err(
-      formatString(
-        CONST.ERROR.IMPLEMENTATION_NOT_FOUND,
-        {
-          impl: impls,
-          patchPath: Patch.getPatchPath(patch),
-        }
-      )
-    ),
-    Either.of
-  )(patch)
+const checkEntryPatchImplementations = def(
+  'checkEntryPatchImplementations :: Patch -> Either Error Patch',
+  patch =>
+    R.ifElse(
+      isLeafPatchWithoutImpls,
+      err(
+        formatString(
+          CONST.ERROR.IMPLEMENTATION_NOT_FOUND,
+          {
+            patchPath: Patch.getPatchPath(patch),
+          }
+        )
+      ),
+      Either.of
+    )(patch)
 );
 
 /**
@@ -921,20 +930,21 @@ const checkEntryPatchImplementations = R.curry((impls, patch) =>
  * @function flatten
  * @param {Project} inputProject
  * @param {string} path - Path of entry-point patch
- * @param {string[]} impls - A list of target implementations
  * @returns {Either<Error|Project>}
  */
-export default R.curry((inputProject, path, impls) =>
-  R.compose(
-    R.chain(project =>
-      R.compose(
-        R.chain(flattenProject(project, path, impls)),
-        R.chain(checkEntryPatchImplementations(impls)),
-        errOnNothing(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })),
-        Project.getPatchByPath(path)
-      )(project)
-    ),
-    wrapDeadRefErrorMessage(path),
-    Project.validateProject
-  )(inputProject)
+export default def(
+  'flatten :: Project -> PatchPath -> Either Error Project',
+  (inputProject, path) =>
+    R.compose(
+      R.chain(project =>
+        R.compose(
+          R.chain(flattenProject(project, path)),
+          R.chain(checkEntryPatchImplementations),
+          errOnNothing(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })),
+          Project.getPatchByPath(path)
+        )(project)
+      ),
+      wrapDeadRefErrorMessage(path),
+      Project.validateProject
+    )(inputProject)
 );

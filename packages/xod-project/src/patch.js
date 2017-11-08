@@ -9,6 +9,7 @@ import * as Node from './node';
 import * as Link from './link';
 import * as Pin from './pin';
 import * as Utils from './utils';
+import * as Attachment from './attachment';
 import { sortGraph } from './gmath';
 import { def } from './types';
 import { getHardcodedPinsForPatchPath, getPinKeyForTerminalDirection } from './builtInPatches';
@@ -35,7 +36,6 @@ export const createPatch = def(
     nodes: {},
     links: {},
     comments: {},
-    impls: {},
     path: getLocalPath('untitled-patch'),
     description: '',
     attachments: [],
@@ -87,74 +87,6 @@ export const setPatchDescription = def(
   R.assoc('description')
 );
 
- /**
-  * Returns a list of implementations for which a `patch` has native implementation
-  *
-  * For example, `['js', 'arduino', 'espruino', 'nodejs']`.
-  *
-  * @function listImpls
-  * @param {Patch} patch
-  * @returns {string[]}
-  */
-export const listImpls = def(
-  'listImpls :: Patch -> [String]',
-  R.compose(R.keys, R.prop('impls'))
-);
-
-/**
- * Returns true if patch has any of specified implementations.
- *
- * @function hasImpls
- * @param {string[]} impls
- * @param {Patch} patch
- * @type {Boolean}
- */
-export const hasImpls = def(
-  'hasImpls :: [String] -> Patch -> Boolean',
-  (impls, patch) => R.compose(
-    R.complement(R.isEmpty),
-    R.intersection(impls),
-    listImpls
-  )(patch)
-);
-
-/**
- * Returns an implementation, if it exists. Otherwise Nothing.
- *
- * @function getImpl
- * @param {string} impl
- * @param {Patch} patch
- * @type {Maybe<string>}
- */
-export const getImpl = def(
-  'getImpl :: String -> Patch -> Maybe Source',
-  (impl, patch) => R.compose(
-    Maybe,
-    R.path(['impls', impl])
-  )(patch)
-);
-
-/**
- * Returns the first found in the patch implementation from the list,
- * in order of priority from first to last.
- * If no implementations found — returns Nothing.
- *
- * @function getImplByArray
- * @param {string[]} impls
- * @param {Patch} patch
- * @type {Maybe<string>}
- */
-export const getImplByArray = def(
-  'getImplByArray :: [String] -> Patch -> Maybe Source',
-  (impls, patch) => R.compose(
-    R.unnest,
-    Maybe,
-    R.head,
-    R.reject(Maybe.isNothing),
-    R.map(getImpl(R.__, patch))
-  )(impls)
-);
-
 /**
  * Returns a Patch with associated attachments list.
  */
@@ -170,6 +102,51 @@ export const getPatchAttachments = def(
   'getPatchAttachments :: Patch -> [Attachment]',
   R.prop('attachments')
 );
+
+/**
+ * Returns an implementation, if it exists. Otherwise Nothing.
+ *
+ * @function getImpl
+ * @param {Patch} patch
+ * @type {Maybe<string>}
+ */
+export const getImpl = def(
+  'getImpl :: Patch -> Maybe Source',
+  R.compose(
+    R.map(Attachment.getContent),
+    Maybe,
+    R.find(Attachment.isImplAttachment),
+    getPatchAttachments
+  )
+);
+
+/**
+ * Returns true if patch has a native implementation attached.
+ *
+ * @function hasImpl
+ * @param {Patch} patch
+ * @type {Boolean}
+ */
+export const hasImpl = def(
+  'hasImpl :: Patch -> Boolean',
+  R.compose(
+    Maybe.isJust,
+    getImpl
+  )
+);
+
+export const setImpl = def(
+  'setImpl :: Source -> Patch -> Patch',
+  (source, patch) => R.over(
+    R.lensProp('attachments'),
+    R.compose(
+      R.append(Attachment.createImplAttachment(source)),
+      R.reject(Attachment.isImplAttachment),
+    ),
+    patch
+  )
+);
+
 
 // =============================================================================
 //

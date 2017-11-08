@@ -111,7 +111,6 @@
           "@@type": "xod-project/Link"
         }
       },
-      "impls": {},
       "path": "@/main",
       "description": "",
       "attachments": [],
@@ -207,7 +206,6 @@
           "@@type": "xod-project/Link"
         }
       },
-      "impls": {},
       "path": "@/wrapped-any",
       "description": "",
       "attachments": [],
@@ -303,7 +301,6 @@
           "@@type": "xod-project/Link"
         }
       },
-      "impls": {},
       "path": "@/double-wrapped-any",
       "description": "",
       "attachments": [],
@@ -351,7 +348,6 @@
           "@@type": "xod-project/Link"
         }
       },
-      "impls": {},
       "path": "@/identity-pulse",
       "description": "",
       "attachments": [],
@@ -414,10 +410,13 @@
         }
       },
       "path": "xod/core/any",
-      "impls": {
-        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    bool p1 = isInputDirty<input_P1>(nid);\n    bool p2 = isInputDirty<input_P2>(nid);\n    if (p1 || p2)\n        emitValue<output_ANY>(nid, true);\n}\n"
-      },
-      "attachments": [],
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf8",
+          "content": "// ..."
+        }
+      ],
       "@@type": "xod-project/Patch"
     },
     "xod/core/boot": {
@@ -453,11 +452,13 @@
         }
       },
       "path": "xod/core/boot",
-      "impls": {
-        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    emitValue<output_BOOT>(nid, 1);\n}\n",
-        "js": "module.exports.evaluate = function(e) {\n  e.fire({ BOOT: PULSE });\n};\n"
-      },
-      "attachments": [],
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf8",
+          "content": "// ..."
+        }
+      ],
       "@@type": "xod-project/Patch"
     },
     "xod/core/console-log": {
@@ -503,10 +504,13 @@
         }
       },
       "path": "xod/core/console-log",
-      "impls": {
-        "arduino": "struct State {\n    bool begun;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    if (!isInputDirty<input_DUMP>(nid))\n        return;\n\n    if (!state->begun) {\n        Serial.begin(115200);\n    }\n\n    auto line = getValue<input_LINE>(nid);\n    if (line) {\n        for (auto it = line->iterate(); it; ++it)\n            Serial.write((char)*it);\n        Serial.write('\\r');\n        Serial.write('\\n');\n        Serial.flush();\n    }\n}\n"
-      },
-      "attachments": [],
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf8",
+          "content": "// ..."
+        }
+      ],
       "@@type": "xod-project/Patch"
     }
   },

@@ -108,7 +108,6 @@ export const Patch = Model('Patch', {
   nodes: $.StrMap(Node),
   links: $.StrMap(Link),
   comments: $.StrMap(Comment),
-  impls: $.StrMap(Source),
   path: PatchPath,
   description: $.String,
   attachments: $.Array(Attachment),

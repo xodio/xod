@@ -8,6 +8,7 @@ import * as Patch from '../src/patch';
 import * as Node from '../src/node';
 import * as Link from '../src/link';
 import * as Comment from '../src/comment';
+import * as Attachment from '../src/attachment';
 import * as CONST from '../src/constants';
 import { formatString } from '../src/utils';
 import * as PPU from '../src/patchPathUtils';
@@ -62,102 +63,122 @@ describe('Patch', () => {
     });
   });
 
-  // entity getters
-  describe('listImpls', () => {
-    it('should return empty array for empty patch', () => {
-      expect(Patch.listImpls(emptyPatch))
-        .to.be.instanceof(Array)
-        .to.be.empty();
-    });
-    it('should return array with keys: `js`, `espruino`', () => {
-      const patch = Helper.defaultizePatch({
-        impls: {
-          js: '',
-          espruino: '',
-        },
+  describe('implementation', () => {
+    describe('getImpl', () => {
+      it('should return Nothing for empty patch', () => {
+        const maybeImpl = Patch.getImpl(emptyPatch);
+        assert.isTrue(maybeImpl.isNothing);
       });
-      expect(Patch.listImpls(patch))
-        .to.be.an('array')
-        .to.have.members(['js', 'espruino']);
+      it('should return Nothing for patch without impl attachment', () => {
+        const patch = Helper.defaultizePatch({
+          attachments: [
+            Attachment.createAttachment(
+              'some-random-file.cpp',
+              'utf-8',
+              '// whatever'
+            ),
+          ],
+        });
+        const maybeImpl = Patch.getImpl(patch);
+        assert.isTrue(maybeImpl.isNothing);
+      });
+      it('should return Just Source with implementation for patch with impl attachment', () => {
+        const expectedSource = '// ok!';
+        const patch = Helper.defaultizePatch({
+          attachments: [
+            Attachment.createImplAttachment(expectedSource),
+          ],
+        });
+        const maybeImpl = Patch.getImpl(patch);
+        assert.isTrue(maybeImpl.isJust);
+        assert.equal(
+          maybeImpl.getOrElse(null),
+          expectedSource
+        );
+      });
+    });
+    describe('hasImpl', () => {
+      it('should return false for empty patch', () => {
+        assert.isFalse(Patch.hasImpl(emptyPatch));
+      });
+      it('should return false for patch without impl attachment', () => {
+        const patch = Helper.defaultizePatch({
+          attachments: [
+            Attachment.createAttachment(
+              'some-random-file.cpp',
+              'utf-8',
+              '// whatever'
+            ),
+          ],
+        });
+        assert.isFalse(Patch.hasImpl(patch));
+      });
+      it('should return true for patch with impl attachment', () => {
+        const expectedSource = '// ok!';
+        const patch = Helper.defaultizePatch({
+          attachments: [
+            Attachment.createImplAttachment(expectedSource),
+          ],
+        });
+        assert.isTrue(Patch.hasImpl(patch));
+      });
+    });
+    describe('setImpl', () => {
+      it('should add impl attachment if none existed', () => {
+        const patch = Helper.defaultizePatch({
+          attachments: [
+            Attachment.createAttachment(
+              'not-an-implementation.cpp',
+              'utf-8',
+              '// whatever',
+            ),
+          ],
+        });
+        const expectedSource = '// ok!';
+
+        const updatedPatch = Patch.setImpl(expectedSource, patch);
+
+        assert.equal(
+          Patch.getImpl(updatedPatch).getOrElse(null),
+          expectedSource
+        );
+        assert.lengthOf(Patch.getPatchAttachments(updatedPatch), 2);
+      });
+      it('should update existing impl attachment', () => {
+        const patch = Helper.defaultizePatch({
+          attachments: [
+            Attachment.createAttachment(
+              'some-random-file.cpp',
+              'utf-8',
+              '// whatever'
+            ),
+            Attachment.createImplAttachment('// initial implementation'),
+          ],
+        });
+        const expectedSource = '// updated!';
+
+        const updatedPatch = Patch.setImpl(expectedSource, patch);
+
+        assert.equal(
+          Patch.getImpl(updatedPatch).getOrElse(null),
+          expectedSource,
+          'implementation source is updated'
+        );
+
+        const getAttachmentFilenames = R.compose(
+          R.map(Attachment.getFilename),
+          Patch.getPatchAttachments
+        );
+
+        assert.sameMembers(
+          getAttachmentFilenames(patch),
+          getAttachmentFilenames(updatedPatch),
+          'no new attachments is added'
+        );
+      });
     });
   });
-  describe('hasImpls', () => {
-    it('should return false for empty', () => {
-      expect(Patch.hasImpls(['js'], emptyPatch)).to.be.false();
-    });
-    it('should return false if impl not found', () => {
-      const patch = Helper.defaultizePatch({
-        impls: {
-          js: '//ok',
-        },
-      });
-      expect(Patch.hasImpls(['cpp'], patch)).to.be.false();
-    });
-    it('should return true for the only correct impl', () => {
-      const patch = Helper.defaultizePatch({
-        impls: {
-          js: '//ok',
-        },
-      });
-      expect(Patch.hasImpls(['js'], patch)).to.be.true();
-    });
-    it('should return true for a few existent impls', () => {
-      const patch = Helper.defaultizePatch({
-        impls: {
-          js: '//ok',
-          nodejs: '//ok',
-        },
-      });
-      expect(Patch.hasImpls(['js', 'nodejs'], patch)).to.be.true();
-    });
-  });
-  describe('getImpl', () => {
-    it('should return Nothing for empty patch', () => {
-      const impl = Patch.getImpl('js', emptyPatch);
-      expect(impl.isNothing).to.be.true();
-    });
-    it('should return Nothing for patch without defined impl', () => {
-      const patch = Helper.defaultizePatch({ impls: { cpp: '//ok' } });
-      const impl = Patch.getImpl('js', patch);
-      expect(impl.isNothing).to.be.true();
-    });
-    it('should return Maybe with implementation for patch with defined impl', () => {
-      const patch = Helper.defaultizePatch({ impls: { cpp: '//ok' } });
-      const impl = Patch.getImpl('cpp', patch);
-      expect(impl.isJust).to.be.true();
-      expect(impl.getOrElse(null)).to.be.equal('//ok');
-    });
-  });
-  describe('getImplByArray', () => {
-    it('should return Nothing for empty patch', () => {
-      const impl = Patch.getImplByArray(['js', 'nodejs'], emptyPatch);
-      expect(impl.isNothing).to.be.true();
-    });
-    it('should return Nothing for patch without defined impl', () => {
-      const patch = Helper.defaultizePatch({ impls: { cpp: '//ok' } });
-      const impl = Patch.getImplByArray(['js', 'nodejs'], patch);
-      expect(impl.isNothing).to.be.true();
-    });
-    it('should return Maybe with implementation (correct priority)', () => {
-      const getJsOrNode = Patch.getImplByArray(['js', 'nodejs']);
 
-      const jsAndNodePatch = Helper.defaultizePatch({
-        impls: { js: '//js', nodejs: '//node' },
-      });
-
-      const nodeOnlyPatch = Helper.defaultizePatch({
-        impls: { nodejs: '//node' },
-      });
-
-      const js = getJsOrNode(jsAndNodePatch);
-      expect(js.isJust).to.be.true();
-      expect(js.getOrElse(null)).to.be.equal('//js');
-
-      const node = getJsOrNode(nodeOnlyPatch);
-      expect(node.isJust).to.be.true();
-      expect(node.getOrElse(null)).to.be.equal('//node');
-    });
-  });
   describe('isTerminalPatch', () => {
     it('should return false for empty', () => {
       expect(Patch.isTerminalPatch(emptyPatch)).to.be.false();
@@ -180,6 +201,7 @@ describe('Patch', () => {
     });
   });
 
+  // entity getters
   describe('listNodes', () => {
     const patch = Helper.defaultizePatch({
       nodes: {
@@ -1059,9 +1081,13 @@ describe('Patch', () => {
             output: { nodeId: 'b', pinKey: 'x' },
           },
         },
-        impls: {
-          js: '// ok',
-        },
+        attachments: [
+          Attachment.createAttachment(
+            'patch.cpp',
+            'utf-8',
+            '// implementation',
+          ),
+        ],
       });
       const expectedPatch = Helper.defaultizePatch({
         nodes: {
@@ -1081,9 +1107,13 @@ describe('Patch', () => {
             output: { nodeId: '1', pinKey: 'x' },
           },
         },
-        impls: {
-          js: '// ok',
-        },
+        attachments: [
+          Attachment.createAttachment(
+            'patch.cpp',
+            'utf-8',
+            '// implementation',
+          ),
+        ],
       });
 
       it('toposortNodes: should return same patch with nodes and links with new ids', () => {

@@ -3,15 +3,6 @@ export const DEFAULT_WORKSPACE_PATH = '~/xod/';
 export const DEFAULT_PROJECT_NAME = 'welcome-to-xod';
 export const LIBS_DIRNAME = '__lib__';
 
-export const IMPL_FILENAMES = {
-  cpp: 'any.cpp',
-  js: 'any.js',
-  arduino: 'arduino.cpp',
-  espruino: 'espruino.js',
-  nodejs: 'nodejs.js',
-};
-export const IMPL_TYPES = Object.keys(IMPL_FILENAMES);
-
 export const BASE64_EXTNAMES = [
   '.png',
   '.jpg',
