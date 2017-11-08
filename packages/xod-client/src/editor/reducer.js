@@ -2,50 +2,13 @@ import R from 'ramda';
 import shortid from 'shortid';
 import * as XP from 'xod-project';
 
-import {
-  EDITOR_DESELECT_ALL,
-  EDITOR_SELECT_ENTITY,
-  EDITOR_DESELECT_ENTITY,
-  EDITOR_ADD_ENTITY_TO_SELECTION,
-  EDITOR_SELECT_PIN,
-  EDITOR_DESELECT_PIN,
-  EDITOR_SET_SELECION,
-  EDITOR_SET_SELECTED_NODETYPE,
-  EDITOR_SWITCH_PATCH,
-  EDITOR_SWITCH_TAB,
-  TAB_CLOSE,
-  TAB_SORT,
-  SET_CURRENT_PATCH_OFFSET,
-  TOGGLE_HELPBAR,
-  SET_FOCUSED_AREA,
-  SHOW_SUGGESTER,
-  HIDE_SUGGESTER,
-  HIGHLIGHT_SUGGESTER_ITEM,
-  START_DRAGGING_PATCH,
-  PASTE_ENTITIES,
-} from './actionTypes';
-import {
-  PROJECT_CREATE,
-  PROJECT_OPEN,
-  PROJECT_IMPORT,
-  PROJECT_OPEN_WORKSPACE,
-  PATCH_ADD,
-  PATCH_DELETE,
-  PATCH_RENAME,
-  NODE_ADD,
-  LINK_ADD,
-  BULK_DELETE_ENTITIES,
-} from '../project/actionTypes';
-import {
-  DEBUG_SESSION_STARTED,
-  DEBUG_SESSION_STOPPED,
-  DEBUG_DRILL_DOWN,
-} from '../debugger/actionTypes';
+import * as EAT from './actionTypes';
+import * as PAT from '../project/actionTypes';
+import * as DAT from '../debugger/actionTypes';
 
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
-import { TAB_TYPES, EDITOR_MODE, DEBUGGER_TAB_ID } from './constants';
-import { createSelectionEntity, getNewSelection } from './utils';
-import { getTabByPatchPath } from './selectors';
+import { TAB_TYPES, DEBUGGER_TAB_ID } from './constants';
+import { createSelectionEntity, getNewSelection, getTabByPatchPath } from './utils';
 import { setCurrentPatchOffset, switchPatchUnsafe } from './actions';
 
 import { getInitialPatchOffset } from '../project/utils';
@@ -74,6 +37,24 @@ const getCurrentTab = R.converge(
   ]
 );
 
+const isTabOpened = R.curry((tabId, state) =>
+  R.compose(
+    R.complement(R.isNil),
+    getTabById(tabId)
+  )(state)
+);
+
+// focuses on a current tab
+export const currentTabLens = R.lens(
+  getCurrentTab,
+  R.curry((newCurrentTab, state) =>
+    R.unless(
+      R.pipe(getCurrentTabId, R.isNil),
+      R.assocPath(['tabs', getCurrentTabId(state)], newCurrentTab)
+    )(state)
+  )
+);
+
 const getBreadcrumbs = R.compose(
   R.prop('breadcrumbs'),
   getCurrentTab
@@ -85,13 +66,6 @@ const getBreadcrumbActiveIndex = R.compose(
 const getBreadcrumbChunks = R.compose(
   R.propOr([], 'chunks'),
   getBreadcrumbs
-);
-
-const isTabOpened = R.curry(
-  (tabId, state) => R.compose(
-    R.complement(R.isNil),
-    getTabById(tabId)
-  )(state)
 );
 
 const isPatchOpened = R.curry(
@@ -223,6 +197,12 @@ const clearSelection = R.flip(R.merge)({
   linkingPin: null,
 });
 
+// focuses on a selection of a given tab
+export const selectionLens = R.lensProp('selection');
+
+// focuses on a linking pin of a given tab
+export const linkingPinLens = R.lensProp('linkingPin');
+
 const openPatchByPath = R.curry(
   (patchPath, state) => {
     const alreadyOpened = isPatchOpened(patchPath, state);
@@ -232,7 +212,6 @@ const openPatchByPath = R.curry(
 
     return R.compose(
       R.assoc('currentTabId', tabId),
-      clearSelection,
       R.unless(
         () => alreadyOpened,
         addPatchTab(tabId, patchPath)
@@ -241,20 +220,17 @@ const openPatchByPath = R.curry(
   }
 );
 
-const openLatestOpenedTab = R.compose(
-  clearSelection,
-  R.converge(
-    R.assoc('currentTabId'),
-    [
-      R.compose( // get patch id from last of remaining tabs
-        R.propOr(null, 'id'),
-        R.last,
-        R.values,
-        R.prop('tabs')
-      ),
-      R.identity,
-    ]
-  )
+const openLatestOpenedTab = R.converge(
+  R.assoc('currentTabId'),
+  [
+    R.compose( // get patch id from last of remaining tabs
+      R.propOr(null, 'id'),
+      R.last,
+      R.values,
+      R.prop('tabs')
+    ),
+    R.identity,
+  ]
 );
 
 const closeTabById = R.curry(
@@ -271,7 +247,6 @@ const closeTabById = R.curry(
     );
 
     const openOriginalPatch = patchPath => R.compose(
-      clearSelection,
       R.converge(
         setTabOffset(tabToClose.offset),
         [
@@ -375,6 +350,7 @@ const drillDown = R.curry(
 
     const shouldResetTail = (activeIndex < (chunks.length - 1));
     const newChunk = createChunk(patchPath, nodeId);
+    // TODO: always default offset, not calculated optimal
     const newChunkOffset = newChunk.offset;
 
     return R.compose(
@@ -391,7 +367,7 @@ const drillDown = R.curry(
         ]
       ),
       R.over(
-        R.lensPath(['tabs', currentTabId, 'breadcrumbs', 'chunks']),
+        R.compose(currentTabLens, R.lensPath(['breadcrumbs', 'chunks'])),
         R.compose(
           R.append(newChunk),
           R.when(
@@ -412,12 +388,15 @@ const drillDown = R.curry(
 
 const editorReducer = (state = {}, action) => {
   switch (action.type) {
-    case BULK_DELETE_ENTITIES:
-    case EDITOR_DESELECT_ALL:
-      return clearSelection(state);
-    case EDITOR_SELECT_ENTITY:
-      return R.assoc(
-        'selection',
+    //
+    // selection management
+    //
+    case PAT.BULK_DELETE_ENTITIES:
+    case EAT.EDITOR_DESELECT_ALL:
+      return R.over(currentTabLens, clearSelection, state);
+    case EAT.EDITOR_SELECT_ENTITY:
+      return R.set(
+        R.compose(currentTabLens, selectionLens),
         [
           createSelectionEntity(
             action.payload.entityType,
@@ -426,18 +405,18 @@ const editorReducer = (state = {}, action) => {
         ],
         state
       );
-    case EDITOR_DESELECT_ENTITY:
+    case EAT.EDITOR_DESELECT_ENTITY:
       return R.over(
-        R.lensProp('selection'),
+        R.compose(currentTabLens, selectionLens),
         R.reject(R.equals(createSelectionEntity(
           action.payload.entityType,
           action.payload.id
         ))),
         state
       );
-    case EDITOR_ADD_ENTITY_TO_SELECTION:
+    case EAT.EDITOR_ADD_ENTITY_TO_SELECTION:
       return R.over(
-        R.lensProp('selection'),
+        R.compose(currentTabLens, selectionLens),
         R.compose(
           R.uniq,
           R.append(createSelectionEntity(
@@ -447,73 +426,59 @@ const editorReducer = (state = {}, action) => {
         ),
         state
       );
-    case EDITOR_SET_SELECION:
-    case PASTE_ENTITIES:
-      return R.assoc(
-        'selection',
+    case EAT.EDITOR_SET_SELECION:
+    case EAT.PASTE_ENTITIES:
+      return R.set(
+        R.compose(currentTabLens, selectionLens),
         getNewSelection(action.payload.entities),
         state
       );
-    case EDITOR_SELECT_PIN:
-      return R.assoc('linkingPin', action.payload, state);
-    case EDITOR_DESELECT_PIN:
-    case LINK_ADD:
-      return R.assoc('linkingPin', null, state);
-    case START_DRAGGING_PATCH:
-      return R.merge(
-        state,
-        {
-          mode: EDITOR_MODE.ACCEPTING_DRAGGED_PATCH,
-          draggedPreviewSize: action.payload,
-        }
-      );
-    case NODE_ADD:
-      return R.assoc('draggedPreviewSize', { width: 0, height: 0 }, state);
-    case EDITOR_SET_SELECTED_NODETYPE:
-      return R.assoc('selectedNodeType', action.payload.id, state);
-    case PROJECT_CREATE: {
+    case EAT.EDITOR_SELECT_PIN:
+      return R.set(R.compose(currentTabLens, linkingPinLens), action.payload, state);
+    case EAT.EDITOR_DESELECT_PIN:
+    case PAT.LINK_ADD:
+      return R.set(R.compose(currentTabLens, linkingPinLens), null, state);
+
+    //
+    // tabs management
+    //
+    case PAT.PROJECT_CREATE: {
       const newState = R.assoc('tabs', {}, state);
       return editorReducer(newState, switchPatchUnsafe(action.payload.mainPatchPath));
     }
-    case PROJECT_OPEN:
-    case PROJECT_IMPORT: {
+    case PAT.PROJECT_OPEN:
+    case PAT.PROJECT_IMPORT: {
       const newState = R.merge(state, {
         currentTabId: null,
-        selection: [],
         tabs: {},
-        linkingPin: null,
       });
       return resetCurrentPatchPath(editorReducer, newState, action.payload);
     }
-    case PROJECT_OPEN_WORKSPACE:
+    case PAT.PROJECT_OPEN_WORKSPACE:
       return R.merge(state, {
         currentTabId: null,
-        selection: [],
         tabs: {},
-        linkingPin: null,
       });
-    case PATCH_ADD:
-    case EDITOR_SWITCH_PATCH:
+    case PAT.PATCH_ADD:
+    case EAT.EDITOR_SWITCH_PATCH:
       return openPatchByPath(action.payload.patchPath, state);
-    case EDITOR_SWITCH_TAB:
-      return R.compose(
-        R.assoc(
-          'currentTabId',
-          action.payload.tabId
-        ),
-        clearSelection
-      )(state);
-    case PATCH_RENAME:
+    case EAT.EDITOR_SWITCH_TAB:
+      return R.assoc(
+        'currentTabId',
+        action.payload.tabId,
+        state
+      );
+    case PAT.PATCH_RENAME:
       return renamePatchInTabs(
         action.payload.newPatchPath,
         action.payload.oldPatchPath,
         state
       );
-    case PATCH_DELETE:
+    case PAT.PATCH_DELETE:
       return closeTabByPatchPath(action.payload.patchPath, state);
-    case TAB_CLOSE:
+    case EAT.TAB_CLOSE:
       return closeTabById(action.payload.id, state);
-    case TAB_SORT:
+    case EAT.TAB_SORT:
       return R.assoc(
         'tabs',
         R.reduce(
@@ -523,17 +488,37 @@ const editorReducer = (state = {}, action) => {
         ),
         state
       );
-    case SET_CURRENT_PATCH_OFFSET: {
+    case EAT.SET_CURRENT_PATCH_OFFSET: {
       return R.compose(
         syncTabOffset(action.payload),
         setTabOffset(action.payload, state.currentTabId)
       )(state);
     }
-    case TOGGLE_HELPBAR:
-      return R.over(R.lensProp('isHelpbarVisible'), R.not, state);
-    case SET_FOCUSED_AREA:
+
+    //
+    // dragging patch from project browser
+    //
+    case EAT.START_DRAGGING_PATCH:
+      return R.assoc('draggedPreviewSize', action.payload, state);
+    case PAT.NODE_ADD:
+      return R.assoc('draggedPreviewSize', { width: 0, height: 0 }, state);
+
+    //
+    // focused area
+    //
+    case EAT.SET_FOCUSED_AREA:
       return R.assoc('focusedArea', action.payload, state);
-    case SHOW_SUGGESTER: {
+
+    //
+    // helpbar
+    //
+    case EAT.TOGGLE_HELPBAR:
+      return R.over(R.lensProp('isHelpbarVisible'), R.not, state);
+
+    //
+    // suggester
+    //
+    case EAT.SHOW_SUGGESTER: {
       if (R.path(['suggester', 'visible'], state) === true) return state;
 
       return R.compose(
@@ -541,37 +526,39 @@ const editorReducer = (state = {}, action) => {
         R.assocPath(['suggester', 'placePosition'], action.payload)
       )(state);
     }
-    case HIDE_SUGGESTER:
+    case EAT.HIDE_SUGGESTER:
       return R.compose(
         R.assocPath(['suggester', 'visible'], false),
         R.assocPath(['suggester', 'highlightedPatchPath'], null),
         R.assocPath(['suggester', 'placePosition'], null)
       )(state);
-    case HIGHLIGHT_SUGGESTER_ITEM:
+    case EAT.HIGHLIGHT_SUGGESTER_ITEM:
       return R.assocPath(['suggester', 'highlightedPatchPath'], action.payload.patchPath, state);
-    case DEBUG_SESSION_STARTED: {
+
+    //
+    // debugger
+    //
+    case DAT.DEBUG_SESSION_STARTED: {
       const currentTab = getTabById(state.currentTabId, state);
       const currentPatchPath = currentTab.patchPath;
       const currentOffset = currentTab.offset;
       return R.compose(
         drillDown(action.payload.patchPath, null),
         R.assoc('currentTabId', DEBUGGER_TAB_ID),
-        R.assoc('mode', EDITOR_MODE.DEBUGGING),
         setTabOffset(currentOffset, DEBUGGER_TAB_ID),
-        clearSelection,
         addTabWithProps(DEBUGGER_TAB_ID, TAB_TYPES.DEBUGGER, currentPatchPath)
       )(state);
     }
-    case DEBUG_SESSION_STOPPED:
+    case DAT.DEBUG_SESSION_STOPPED:
       return R.when(
         isTabOpened(DEBUGGER_TAB_ID),
         closeTabById(DEBUGGER_TAB_ID)
       )(state);
-    case DEBUG_DRILL_DOWN:
+    case DAT.DEBUG_DRILL_DOWN:
       return R.compose(
         drillDown(action.payload.patchPath, action.payload.nodeId),
         setPropsToTab(DEBUGGER_TAB_ID, { patchPath: action.payload.patchPath }),
-        clearSelection
+        R.over(currentTabLens, clearSelection),
       )(state);
     default:
       return state;

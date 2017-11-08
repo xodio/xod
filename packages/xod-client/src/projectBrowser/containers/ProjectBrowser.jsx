@@ -340,7 +340,6 @@ const mapStateToProps = R.applySpec({
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
-    setSelectedNodeType: EditorActions.setSelectedNodeType,
     setEditorMode: EditorActions.setMode,
     switchPatch: EditorActions.switchPatch,
     startDraggingPatch: EditorActions.startDraggingPatch,
