@@ -8,16 +8,22 @@ import popupsReducer from './popups/reducer';
 import uploadReducer from './upload/reducer';
 
 import debuggerMiddleware from './debugger/middleware';
+import installLibMiddleware from './view/installLibMiddleware';
 
 const extraReducers = {
   popups: popupsReducer,
   upload: uploadReducer,
 };
 
+const extraMiddlewares = [
+  debuggerMiddleware,
+  installLibMiddleware,
+];
+
 ReactDOM.render(
   <Root
     extraReducers={extraReducers}
-    extraMiddlewares={[debuggerMiddleware]}
+    extraMiddlewares={extraMiddlewares}
     initialState={initialState} // TODO: Remove project and opened patch when possible
   >
     <App />

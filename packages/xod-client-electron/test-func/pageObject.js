@@ -127,6 +127,50 @@ function clickAddNodeButton(client, name) {
 }
 
 //-----------------------------------------------------------------------------
+// LibSuggester
+//-----------------------------------------------------------------------------
+function findLibSuggester(client) {
+  return client.element('.Suggester-libs');
+}
+
+function assertLibSuggesterShown(client) {
+  return assert.eventually.isTrue(findLibSuggester(client).isVisible());
+}
+
+function assertLibsNotFound(client) {
+  return assert.eventually.isTrue(
+    findLibSuggester(client).waitForExist('.error', 5000)
+  );
+}
+
+function assertLibraryFound(client) {
+  return assert.eventually.isTrue(
+    findLibSuggester(client).waitForExist('.Suggester-item--library', 5000)
+  );
+}
+
+function installLibrary(client) {
+  return findLibSuggester(client).doubleClick('.Suggester-item--library');
+}
+
+function assertLibSuggesterHidden(client) {
+  return assert.eventually.isFalse(
+    client.isExisting('.Suggester-libs')
+  );
+}
+
+function assertProjectBrowserHasInstallingLib(client, libName) {
+  return assert.eventually.equal(
+    client.element('.PatchGroup--installing').getText('.name'),
+    libName
+  );
+}
+
+function waitUntilLibraryInstalled(client) {
+  return findProjectBrowser(client).waitForExist('.PatchGroup--installing', 5000, true);
+}
+
+//-----------------------------------------------------------------------------
 // Patch
 //-----------------------------------------------------------------------------
 function findNode(client, nodeType) {
@@ -247,6 +291,15 @@ const API = {
   selectPatchInProjectBrowser,
   openPatchFromProjectBrowser,
   deletePatch,
+  // LibSuggester
+  findLibSuggester,
+  assertLibSuggesterShown,
+  assertLibsNotFound,
+  assertLibraryFound,
+  installLibrary,
+  assertLibSuggesterHidden,
+  assertProjectBrowserHasInstallingLib,
+  waitUntilLibraryInstalled,
 };
 
 /**

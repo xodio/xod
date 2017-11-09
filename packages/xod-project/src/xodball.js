@@ -7,11 +7,15 @@ import {
   omitTypeHints,
 } from 'xod-func-tools';
 
-import { getPatchPath } from './patch';
+import {
+  getPatchPath,
+  resolveNodeTypesInPatch,
+} from './patch';
 import {
   listLibraryPatches,
   omitPatches,
   injectProjectTypeHints,
+  listPatchesWithoutBuiltIns,
 } from './project';
 import {
   addMissingOptionalProjectFields,
@@ -67,4 +71,20 @@ export const toXodball = def(
       ]
     )
   )
+);
+
+
+export const prepareLibPatchesToInsertIntoProject = def(
+  'prepareLibPatchesToInsertIntoProject :: String -> Project -> [Patch]',
+  (libName, xodball) => R.compose(
+    explodeEither,
+    R.map(R.compose(
+      R.map(R.compose(
+        resolveNodeTypesInPatch,
+        R.over(R.lensProp('path'), R.replace('@', libName)),
+      )),
+      listPatchesWithoutBuiltIns,
+    )),
+    fromXodballData
+  )(xodball)
 );

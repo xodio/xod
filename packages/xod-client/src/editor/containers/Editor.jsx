@@ -24,6 +24,7 @@ import { FOCUS_AREAS, DEBUGGER_TAB_ID } from '../constants';
 import Patch from './Patch';
 import NoPatch from '../components/NoPatch';
 import Suggester from '../components/Suggester';
+import LibSuggester from '../components/LibSuggester';
 import Inspector from '../components/Inspector';
 import Debugger from '../../debugger/containers/Debugger';
 import Breadcrumbs from '../../debugger/containers/Breadcrumbs';
@@ -119,6 +120,14 @@ class Editor extends React.Component {
       />
     ) : null;
 
+    const libSuggester = (this.props.isLibSuggesterVisible) ? (
+      <LibSuggester
+        addClassName={(this.props.isHelpbarVisible) ? 'with-helpbar' : ''}
+        onInstallLibrary={this.props.actions.installLibrary}
+        onBlur={this.props.actions.hideLibSuggester}
+      />
+    ) : null;
+
     const DebuggerContainer = (this.props.isDebuggerVisible) ? <Debugger /> : null;
     const BreadcrumbsContainer = (
       this.props.isDebuggerVisible &&
@@ -170,6 +179,7 @@ class Editor extends React.Component {
             {DebugSessionStopButton}
             {openedPatch}
             {suggester}
+            {libSuggester}
             {DebuggerContainer}
             {BreadcrumbsContainer}
           </Workarea>
@@ -195,6 +205,7 @@ Editor.propTypes = {
   isDebugSessionRunning: PropTypes.bool,
   suggesterIsVisible: PropTypes.bool,
   suggesterPlacePosition: PropTypes.object,
+  isLibSuggesterVisible: PropTypes.bool,
   defaultNodePosition: PropTypes.object.isRequired,
   stopDebuggerSession: PropTypes.func,
   actions: PropTypes.shape({
@@ -208,6 +219,8 @@ Editor.propTypes = {
     showSuggester: PropTypes.func.isRequired,
     hideSuggester: PropTypes.func.isRequired,
     highlightSugessterItem: PropTypes.func.isRequired,
+    hideLibSuggester: PropTypes.func.isRequired,
+    installLibrary: PropTypes.func.isRequired,
   }),
 };
 
@@ -219,6 +232,7 @@ const mapStateToProps = R.applySpec({
   patchesIndex: ProjectSelectors.getPatchSearchIndex,
   suggesterIsVisible: EditorSelectors.isSuggesterVisible,
   suggesterPlacePosition: EditorSelectors.getSuggesterPlacePosition,
+  isLibSuggesterVisible: EditorSelectors.isLibSuggesterVisible,
   isHelpbarVisible: EditorSelectors.isHelpbarVisible,
   isDebuggerVisible: DebuggerSelectors.isDebuggerVisible,
   isDebugSessionRunning: DebuggerSelectors.isDebugSession,
@@ -237,6 +251,8 @@ const mapDispatchToProps = dispatch => ({
     showSuggester: Actions.showSuggester,
     hideSuggester: Actions.hideSuggester,
     highlightSugessterItem: Actions.highlightSugessterItem,
+    hideLibSuggester: Actions.hideLibSuggester,
+    installLibrary: Actions.installLibrary,
   }, dispatch),
 });
 

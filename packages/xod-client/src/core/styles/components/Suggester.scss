@@ -23,6 +23,22 @@
     margin-left: -490px;
   }
 
+  .loading-icon {
+    position: absolute;
+    right: 8px;
+    top: 6px;
+    width: 18px;
+    height: 30px;
+    background: $input-color-bg;
+    font-size: $font-size-l;
+    overflow: hidden;
+    text-align: right;
+
+    .fa {
+      line-height: 32px;
+    }
+  }
+
   input {
     width: 100%;
     font-size: $font-size-l;
@@ -58,6 +74,12 @@
       bottom: 0;
       cursor: default;
     }
+
+    .error, .hint {
+      display: block;
+      margin: 1em 0 .5em 0;
+      font-size: $font-size-m;
+    }
   }
 
   ul {
@@ -73,6 +95,21 @@
 
     border-radius: 2px;
 
+    &--library {
+      height: 52px;
+
+      .add {
+        display: block;
+        font-size: $font-size-s;
+        padding-top: 2px;
+
+        .author, .license {
+          display: inline-block;
+          padding-right: 2em;
+        }
+      }
+    }
+
     &.is-highlighted {
       background: $sidebar-color-bg-selected;
     }
@@ -87,6 +124,11 @@
       margin-bottom: 2px;
       margin-top: -2px;
       line-height: 1.2;
+
+      .version {
+        font-size: $font-size-m;
+        margin-left: 0.2em;
+      }
     }
     .description {
       display: block;

@@ -30,7 +30,8 @@
     "xod-arduino": "^0.15.0",
     "xod-fs": "^0.15.0",
     "xod-func-tools": "^0.15.0",
-    "xod-project": "^0.15.0"
+    "xod-project": "^0.15.0",
+    "xod-pm": "^0.15.0"
   },
   "devDependencies": {
     "chai": "^4.0.0",

@@ -47,6 +47,10 @@ const rawItems = {
     label: 'New Patch',
     command: COMMAND.ADD_PATCH,
   },
+  addLibrary: {
+    key: 'addLibrary',
+    label: 'Add Library',
+  },
 
   edit: {
     key: 'edit',

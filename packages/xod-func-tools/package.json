@@ -15,7 +15,7 @@
   "dependencies": {
     "hm-def": "^0.2.0",
     "ramda": "^0.22.1",
-    "ramda-fantasy": "^0.7.0",
+    "ramda-fantasy": "^0.8.0",
     "sanctuary-def": "^0.9.0",
     "sanctuary-type-identifiers": "^1.0.0"
   },

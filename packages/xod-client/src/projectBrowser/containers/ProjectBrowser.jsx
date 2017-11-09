@@ -15,6 +15,7 @@ import {
   isPathLocal,
   getBaseName,
 } from 'xod-project';
+import { isAmong } from 'xod-func-tools';
 
 import * as ProjectActions from '../../project/actions';
 import * as ProjectBrowserActions from '../actions';
@@ -222,31 +223,59 @@ class ProjectBrowser extends React.Component {
   }
 
   renderLibraryPatches() {
-    const { libs, selectedPatchPath } = this.props;
+    const { libs, installingLibs, selectedPatchPath } = this.props;
     const { setSelection, switchPatch, startDraggingPatch } = this.props.actions;
+    const installingLibsComponents = R.map(
+      ({ owner, name, version }) => ({
+        name: `${owner}/${name}`,
+        component: (<div
+          className="PatchGroup PatchGroup--installing library"
+        >
+          <span className="name">{owner}/{name}</span>
+          <span className="version">{version}</span>
+          <Icon name="circle-o-notch" spin />
+        </div>),
+      }),
+      installingLibs
+    );
+    const installingLibNames = R.pluck('name', installingLibsComponents);
 
-    return R.toPairs(libs).map(([libName, libPatches]) => (
-      <PatchGroup
-        key={libName}
-        type="library"
-        name={libName}
-        onClose={this.deselectIfInLibrary(libName)}
-      >
-        {libPatches.map(({ path, dead }) =>
-          <PatchGroupItem
-            key={path}
-            patchPath={path}
-            dead={dead}
-            label={getBaseName(path)}
-            isSelected={path === selectedPatchPath}
-            onClick={() => setSelection(path)}
-            onDoubleClick={() => switchPatch(path)}
-            onBeginDrag={startDraggingPatch}
-            hoverButtons={this.libraryPatchesHoveredButtons(path)}
-          />
-        )}
-      </PatchGroup>
-    ));
+    const libComponents = R.compose(
+      R.reject(R.compose(
+        isAmong(installingLibNames),
+        R.prop('name')
+      )),
+      R.map(([libName, libPatches]) => ({
+        name: libName,
+        component: (<PatchGroup
+          key={libName}
+          type="library"
+          name={libName}
+          onClose={this.deselectIfInLibrary(libName)}
+        >
+          {libPatches.map(({ path, dead }) =>
+            <PatchGroupItem
+              key={path}
+              patchPath={path}
+              dead={dead}
+              label={getBaseName(path)}
+              isSelected={path === selectedPatchPath}
+              onClick={() => setSelection(path)}
+              onDoubleClick={() => switchPatch(path)}
+              onBeginDrag={startDraggingPatch}
+              hoverButtons={this.libraryPatchesHoveredButtons(path)}
+            />
+          )}
+        </PatchGroup>),
+      })),
+      R.toPairs
+    )(libs);
+
+    return R.compose(
+      R.map(R.prop('component')),
+      R.sortBy(R.prop('name')),
+      R.concat
+    )(libComponents, installingLibsComponents);
   }
 
   renderPatches(patchType) {
@@ -309,6 +338,7 @@ ProjectBrowser.propTypes = {
   localPatches: sanctuaryPropType($.Array(Patch)),
   popups: PropTypes.object.isRequired,
   libs: sanctuaryPropType($.StrMap($.Array(Patch))),
+  installingLibs: PropTypes.array,
   defaultNodePosition: PropTypes.object.isRequired,
   actions: PropTypes.shape({
     addNode: PropTypes.func.isRequired,
@@ -335,6 +365,7 @@ const mapStateToProps = R.applySpec({
   localPatches: ProjectBrowserSelectors.getLocalPatches,
   popups: PopupSelectors.getProjectBrowserPopups,
   libs: ProjectBrowserSelectors.getLibs,
+  installingLibs: ProjectBrowserSelectors.getInstallingLibraries,
   defaultNodePosition: EditorSelectors.getDefaultNodePlacePosition,
 });
 

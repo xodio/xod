@@ -2,10 +2,10 @@ import path from 'path';
 import R from 'ramda';
 import { rejectWithCode } from 'xod-func-tools';
 
-import { resolvePath, expandHomeDir, isPatchFile, isProjectFile } from './utils';
+import { resolvePath, expandHomeDir, isPatchFile, isProjectFile, resolveLibPath } from './utils';
 import { writeFile, writeJSON } from './write';
 import { Backup } from './backup';
-import { arrangeByFiles } from './unpack';
+import { arrangeByFiles, fsSafeName } from './unpack';
 import {
   omitDefaultOptionsFromPatchFileContents,
   omitDefaultOptionsFromProjectFileContents,
@@ -49,10 +49,9 @@ export const saveArrangedFiles = R.curry((pathToWorkspace, data) => {
 
       return Promise.all(savingFiles)
         .then(backup.clear)
-        .catch((err) => {
-          backup.restore()
-            .then(() => { throw err; });
-        });
+        .catch(err => backup.restore()
+          .then(() => Promise.reject(err))
+        );
     });
 });
 
@@ -74,6 +73,19 @@ export const saveProject = R.curry(
     .then(saveArrangedFiles(workspacePath))
     .then(R.always(project))
     .catch(rejectWithCode(ERROR_CODES.CANT_SAVE_PROJECT))
+);
+
+// :: String -> Project -> Path -> Promise Project Error
+export const saveProjectAsLibrary = R.curry(
+  (owner, project, workspacePath) => {
+    const distPath = R.compose(
+      libPath => path.resolve(libPath, fsSafeName(owner)),
+      resolveLibPath
+    )(workspacePath);
+
+    return saveProject(distPath, project)
+      .catch(rejectWithCode(ERROR_CODES.CANT_SAVE_LIBRARY));
+  }
 );
 
 export default saveProject;

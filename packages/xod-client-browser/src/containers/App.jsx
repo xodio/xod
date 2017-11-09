@@ -178,6 +178,8 @@ class App extends client.App {
           onClick(items.exportProject, this.onExport),
           items.separator,
           onClick(items.newPatch, this.props.actions.createPatch),
+          items.separator,
+          onClick(items.addLibrary, this.props.actions.showLibSuggester),
         ]
       ),
       submenu(

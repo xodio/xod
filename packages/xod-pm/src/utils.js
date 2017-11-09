@@ -66,7 +66,9 @@ export const unfoldMaybeLibQuery = R.curry(
     () => rejectWithCode(
       ERR_CODES.CANT_PARSE_LIBRARY_REQUEST,
       new Error(MSG.CANT_PARSE_LIBRARY_REQUEST)
-    ),
+    )(),
+    // ^ this function call prevents from constructing Error without the need,
+    // so it prevents falsy promise rejection
     justFn,
     maybe
   )

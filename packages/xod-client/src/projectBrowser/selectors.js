@@ -69,3 +69,8 @@ export const getLibs = createMemoizedSelector(
     R.map(markDeadPatches(project))
   )(patches)
 );
+
+export const getInstallingLibraries = R.compose(
+  R.prop('installingLibraries'),
+  getProjectBrowser
+);

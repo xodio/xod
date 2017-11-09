@@ -16,6 +16,7 @@ import {
   findProjectMetaByName,
   resolveDefaultProjectPath,
   ensureWorkspacePath,
+  saveProjectAsLibrary,
   ERROR_CODES as FS_ERROR_CODES,
 } from 'xod-fs';
 import {
@@ -169,6 +170,28 @@ export const loadProjectsOrSpawnDefault = R.curry(
       R.tap(requestSelectProject(send))
     )
   )(workspacePath)
+);
+
+// :: SaveLibPayload :: { request: LibParams, xodball: Xodball }
+// :: IpcEvent -> SaveLibPayload -> Promise SaveLibPayload Error
+export const saveLibrary = R.curry(
+  (event, payload) => R.composeP(
+    () => {
+      event.sender.send(
+        EVENTS.INSTALL_LIBRARY_COMPLETE,
+        payload.request
+      );
+      return payload;
+    },
+    saveProjectAsLibrary(payload.request.owner, payload.xodball),
+    loadWorkspacePath
+  )()
+    .catch((err) => {
+      event.sender.send(
+        EVENTS.INSTALL_LIBRARY_FAILED,
+        errorToPlainObject(err)
+      );
+    })
 );
 
 // =============================================================================

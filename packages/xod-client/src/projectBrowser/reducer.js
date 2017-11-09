@@ -13,6 +13,12 @@ import {
   PATCH_RENAME,
 } from '../project/actionTypes';
 
+import {
+  INSTALL_LIBRARY_BEGIN,
+  INSTALL_LIBRARY_COMPLETE,
+  INSTALL_LIBRARY_FAILED,
+} from '../editor/actionTypes';
+
 const selectionReducer = (state, action) => {
   switch (action.type) {
     case SET_SELECTION:
@@ -36,10 +42,23 @@ const selectionReducer = (state, action) => {
   }
 };
 
+const installingLibrariesReducer = (state, action) => {
+  switch (action.type) {
+    case INSTALL_LIBRARY_BEGIN:
+      return R.append(action.payload, state);
+    case INSTALL_LIBRARY_FAILED:
+    case INSTALL_LIBRARY_COMPLETE:
+      return R.reject(R.equals(action.payload.request), state);
+    default:
+      return state;
+  }
+};
+
 export default (state = initialState, action) =>
   R.merge(
     state,
     {
       selectedPatchPath: selectionReducer(state.selectedPatchPath, action),
+      installingLibraries: installingLibrariesReducer(state.installingLibraries, action),
     }
   );

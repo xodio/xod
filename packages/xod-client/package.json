@@ -20,6 +20,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "commander": "^2.9.0",
+    "debounce": "^1.1.0",
     "font-awesome": "^4.6.3",
     "formsy-react": "^0.18.1",
     "formsy-react-components": "^0.8.1",
@@ -27,7 +28,7 @@
     "line-intersection": "^1.0.8",
     "prop-types": "^15.5.10",
     "ramda": "^0.24.1",
-    "ramda-fantasy": "^0.7.0",
+    "ramda-fantasy": "^0.8.0",
     "rc-menu": "^5.0.10",
     "rc-progress": "^2.1.2",
     "rc-switch": "^1.4.2",
@@ -59,6 +60,7 @@
     "xod-arduino": "^0.15.0",
     "xod-func-tools": "^0.15.0",
     "xod-patch-search": "^0.15.0",
+    "xod-pm": "^0.15.0",
     "xod-project": "^0.15.0"
   },
   "devDependencies": {
