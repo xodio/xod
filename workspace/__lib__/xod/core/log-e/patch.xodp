@@ -1,0 +1,29 @@
+{
+  "description": "Computes natural logarithm of a number.",
+  "nodes": [
+    {
+      "id": "HJmMmX7yz",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rJ_-QmmJz",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rk6bX7Q1M",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}
