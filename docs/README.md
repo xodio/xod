@@ -49,10 +49,16 @@ The articles which are going to be superseeded by the crash course above.
 User’s guide
 ------------
 
-* [Program Structure](./guide/program-structure/)
-* [Data Types](./guide/data-types/)
-* [Linking Rules](./guide/linking-rules/)
-* [Execution Model](./guide/execution-model/)
+### Doing things sequentially
+
+* [Simple traffic light example](./guide/simple-traffic-light/)
+
+### Concepts
+
+* [Program structure](./guide/program-structure/)
+* [Data types](./guide/data-types/)
+* [Linking rules](./guide/linking-rules/)
+* [Execution model](./guide/execution-model/)
 
 Reference
 ---------

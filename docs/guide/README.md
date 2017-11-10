@@ -5,7 +5,13 @@ title: User’s Guide
 User’s Guide
 ============
 
-* [Program Structure](./program-structure/)
-* [Data Types](./data-types/)
-* [Linking Rules](./linking-rules/)
-* [Execution Model](./execution-model/)
+## Doing things sequentially
+
+* [Simple traffic light example](./simple-traffic-light/)
+
+## Concepts
+
+* [Program structure](./program-structure/)
+* [Data types](./data-types/)
+* [Linking rules](./linking-rules/)
+* [Execution model](./execution-model/)
