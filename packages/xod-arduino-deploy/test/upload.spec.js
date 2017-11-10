@@ -63,6 +63,6 @@ describe('Uploader', () => {
     const config = path.normalize(`${packagesDir}/arduino/tools/avrdude/6.3.0-arduino9/etc/avrdude.conf`);
     const binaryFile = path.join(artifactsDir, 'test.cpp.hex');
 
-    assert.strictEqual(cmd, `"${execCmd}" -C "${config}" -p atmega2560 -c wiring -P /dev/cu.usbmodem1411 -b 57600 "-Uflash:w:${binaryFile}:i"`);
+    assert.strictEqual(cmd, `"${execCmd}" -C "${config}" -p atmega2560 -c wiring -P /dev/cu.usbmodem1411 -b 57600 -D "-Uflash:w:${binaryFile}:i"`);
   });
 });
