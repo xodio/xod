@@ -1,7 +1,6 @@
 import path from 'path';
 import R from 'ramda';
 import * as XP from 'xod-project';
-import * as XF from 'xod-func-tools';
 
 import { def } from './types';
 import { getImplFilenameByType } from './utils';
@@ -76,7 +75,7 @@ export const arrangeByFiles = def(
     const patchFiles = R.compose(
       R.chain(
         R.converge(
-          R.unapply(XF.concatAll),
+          R.unapply(R.unnest),
           [
             R.compose(R.of, getXodpFile(projectPath)),
             getImplFiles(projectPath),

@@ -10,12 +10,6 @@ export const isAmong = def(
 );
 
 /**
- * Concatenates a list of lists into one list.
- */
-// :: [[a]] -> [a]
-export const concatAll = R.reduce(R.concat, []);
-
-/**
  * Maps an array using a mapping function that on each iteration step receives
  * an array element, its index, and the whole array itself
  */
