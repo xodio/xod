@@ -32,19 +32,15 @@ export const $Buffer = NullaryType('Buffer', R.is(Buffer));
 export const Path = NullaryType('Path', R.both(XF.hasType($.String), XF.notEmpty));
 
 // :: x -> Boolean
-const isValidXodFile = R.converge(
-  R.and,
-  [
-    R.allPass([
-      R.has('path'),
-      R.has('content'),
-    ]),
-    R.compose(
-      XF.hasType(Path),
-      R.prop('path')
-    ),
-  ]
-);
+const isValidXodFile = R.allPass([
+  R.complement(R.isNil),
+  R.has('path'),
+  R.has('content'),
+  R.compose(
+    XF.hasType(Path),
+    R.prop('path')
+  ),
+]);
 
 export const XodFile = UnaryType('XodFile',
   isValidXodFile,
