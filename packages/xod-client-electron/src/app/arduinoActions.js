@@ -151,8 +151,8 @@ export const uploadToArduino = (pab, port, code) => {
 };
 
 // :: String -> [Board] -> Board
-const findBoardByName = R.curry(
-  (boardName, boards) => R.find(R.propEq('name', boardName), boards)
+const findBoardById = R.curry(
+  (id, boards) => R.find(R.propEq('boardIdentifier', id), boards)
 );
 
 // =============================================================================
@@ -166,7 +166,7 @@ const deployToArduino = ({
   sendProgress,
   sendSuccess,
 }) => {
-  const boardName = payload.board.name;
+  const boardId = payload.board.boardsTxtId;
   const boardCpuId = payload.board.cpuId;
   const { package: pkg, architecture } = payload.board;
   const fqbn = `${pkg}:${architecture}:unknown`;
@@ -183,7 +183,7 @@ const deployToArduino = ({
         port,
         pab: R.compose(
           R.assoc('cpu', boardCpuId),
-          findBoardByName(boardName)
+          findBoardById(boardId)
         )(boards),
       })),
     ({ port, pab }) => uploadToArduino(xad.strigifyFQBN(pab), port, payload.code),

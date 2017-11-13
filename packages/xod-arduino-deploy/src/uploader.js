@@ -38,8 +38,7 @@ const avrdudeCommand = (opts) => {
 
   const mcu = (boardPrefs.build.emu) ? boardPrefs.build.emu.mcu : boardPrefs.build.mcu;
 
-  // Do we really need to pass "-D" flag for AVR architecture?
-  return `"${toolExecPath}" -C "${configFile}"${verbose} -p ${mcu} -c ${boardPrefs.upload.protocol} -P ${portName} -b ${boardPrefs.upload.speed} "-Uflash:w:${artifactPath}:i"`;
+  return `"${toolExecPath}" -C "${configFile}"${verbose} -p ${mcu} -c ${boardPrefs.upload.protocol} -P ${portName} -b ${boardPrefs.upload.speed} -D "-Uflash:w:${artifactPath}:i"`;
 };
 
 const openocdCommand = (opts) => {
