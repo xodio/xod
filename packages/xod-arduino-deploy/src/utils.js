@@ -124,6 +124,7 @@ export const listBoardsFromIndex = R.compose(
       arch => R.compose(
         R.map(board => ({
           name: board.name,
+          boardsTxtId: board.boardsTxtBoardId,
           pio: board.platformioBoardId,
           package: pkgName,
           architecture: arch.architecture,

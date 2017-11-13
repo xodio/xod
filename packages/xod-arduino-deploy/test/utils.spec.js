@@ -50,6 +50,15 @@ describe('Utils', () => {
     const boards = Utils.listBoardsFromIndex(packageIndex);
     assert.isArray(boards);
     assert.isNotEmpty(boards);
-    assert.hasAllKeys(boards[0], ['name', 'package', 'architecture', 'version', 'cpuName', 'cpuId', 'pio']);
+    assert.hasAllKeys(boards[0], [
+      'name',
+      'package',
+      'architecture',
+      'version',
+      'cpuName',
+      'cpuId',
+      'pio',
+      'boardsTxtId',
+    ]);
   });
 });

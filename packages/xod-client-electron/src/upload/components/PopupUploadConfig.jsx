@@ -91,7 +91,7 @@ class PopupUploadConfig extends React.Component {
         );
         const defaultBoardIndex = R.compose(
           R.defaultTo(0),
-          R.findIndex(R.propEq('board', 'Arduino/Genuino Uno'))
+          R.findIndex(R.propEq('boardsTxtId', 'uno'))
         )(boards);
 
         if (!isBoardSelected || !doesSelectedBoardExist) {
