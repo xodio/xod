@@ -303,7 +303,7 @@ const getClipboardEntities = (state) => {
 };
 
 export const copyEntities = event => (dispatch, getState) => {
-  if (isInput(event)) return;
+  if (isInput(document.activeElement)) return;
 
   const state = getState();
 
