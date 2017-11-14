@@ -101,12 +101,12 @@ describe('Pin', () => {
         { label: '', direction: CONST.PIN_DIRECTION.OUTPUT },
       ].map(Helper.defaultizePin);
       const pinsExpected = [
-        { label: 'A_0' },
-        { label: 'A_1' },
+        { label: 'A1' },
+        { label: 'A2' },
         { label: 'B' },
-        { label: 'IN_0', direction: CONST.PIN_DIRECTION.INPUT },
-        { label: 'IN_1', direction: CONST.PIN_DIRECTION.INPUT },
-        { label: 'IN_2', direction: CONST.PIN_DIRECTION.INPUT },
+        { label: 'IN1', direction: CONST.PIN_DIRECTION.INPUT },
+        { label: 'IN2', direction: CONST.PIN_DIRECTION.INPUT },
+        { label: 'IN3', direction: CONST.PIN_DIRECTION.INPUT },
         { label: 'OUT', direction: CONST.PIN_DIRECTION.OUTPUT },
       ].map(Helper.defaultizePin);
 

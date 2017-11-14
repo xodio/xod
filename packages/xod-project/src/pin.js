@@ -229,19 +229,19 @@ const getPinLabelByDirection = def(
 
 /**
  * Returns a list of Pins with unique Pin Labels.
- * It adds a suffix "_N" (where N is a counter of equal labels)
- * to the label of each Pin.
- * Also, if Pin has an empty label it became "IN" or "OUT"
- * in dependency of its direction.
+ * For each non-unique pin label it adds an incrementing one-based integer
+ * suffix.
+ * Also, if Pin has an empty label it became "IN" or "OUT" depending on its
+ * direction.
  * E.G., Pin labels will be converted into:
- * - "A" -> "A_0"
- * - "A" -> "A_1"
- * - "B" -> "B_0"
- * - "B" -> "B_1"
+ * - "A" -> "A1"
+ * - "A" -> "A2"
+ * - "B" -> "B1"
+ * - "B" -> "B2"
  * - "C" -> "C"
- * - "" (input) -> "IN_0"
- * - "" (input) -> "IN_1"
- * - "" (output) -> "OUT_0"
+ * - "" (input) -> "IN1"
+ * - "" (input) -> "IN2"
+ * - "" (output) -> "OUT"
  *
  * This function is useful for transpilers, that want to use
  * normalized pin labels instead of shortIds (real pinKeys,
@@ -260,7 +260,7 @@ export const normalizePinLabels = def(
           R.length
         ),
         R.addIndex(R.map)(
-          (pin, idx) => setPinLabel(`${getPinLabel(pin)}_${idx}`, pin)
+          (pin, idx) => setPinLabel(`${getPinLabel(pin)}${idx + 1}`, pin)
         )
       )
     ),
