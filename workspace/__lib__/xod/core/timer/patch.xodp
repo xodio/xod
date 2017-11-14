@@ -1,0 +1,58 @@
+{
+  "description": "A simple timer/stopwatch",
+  "nodes": [
+    {
+      "description": "The current time value in seconds.",
+      "id": "BJMlTDdJM",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Resets the current time value to zero.",
+      "id": "HJF16v_kz",
+      "label": "RST",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "HJbf6PdJG",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers the time value update.",
+      "id": "S1akTPOJf",
+      "label": "UPD",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundValues": {
+        "__out__": true
+      },
+      "description": "Enabled or not. If set to `false` pulses on `UPD` do not change the output value. Effictively that means the timer is paused. Set to `true` again to continue time counting.",
+      "id": "r1W1Tw_yz",
+      "label": "EN",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    }
+  ]
+}

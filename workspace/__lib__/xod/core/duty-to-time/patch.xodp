@@ -1,0 +1,126 @@
+{
+  "description": "Converts total time and duty cycle values into absolute on/off time values",
+  "links": [
+    {
+      "id": "H1Hvo0tyG",
+      "input": {
+        "nodeId": "r1aUiCtJG",
+        "pinKey": "BypX80uSD1Z"
+      },
+      "output": {
+        "nodeId": "SkWQoRFyf",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1wDoCtJz",
+      "input": {
+        "nodeId": "r1aUiCtJG",
+        "pinKey": "rkJ4URuHDJ-"
+      },
+      "output": {
+        "nodeId": "S1NLjRt1f",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "S1wIoAtyf",
+      "input": {
+        "nodeId": "S1NLjRt1f",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "BJuXiAK1z",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkqUsRYJM",
+      "input": {
+        "nodeId": "B1NHjCtJz",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1NLjRt1f",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "rJL8jCKJf",
+      "input": {
+        "nodeId": "S1NLjRt1f",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "SkWQoRFyf",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJaws0KJz",
+      "input": {
+        "nodeId": "S1jHo0FJf",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1aUiCtJG",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1NHjCtJz",
+      "label": "Ton",
+      "position": {
+        "x": 102,
+        "y": 510
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Duty cycle of ON time in range [0, 1]",
+      "id": "BJuXiAK1z",
+      "label": "DUTY",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "S1NLjRt1f",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "id": "S1jHo0FJf",
+      "label": "Toff",
+      "position": {
+        "x": 136,
+        "y": 510
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "SkWQoRFyf",
+      "label": "T",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "r1aUiCtJG",
+      "position": {
+        "x": 0,
+        "y": 306
+      },
+      "type": "xod/core/subtract"
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "description": "Computes sine wave function value. It’s a periodical function with range [0, 1] which starts from 0.",
+  "links": [
+    {
+      "id": "B1V543FJG",
+      "input": {
+        "nodeId": "HJxq4nKkz",
+        "pinKey": "HJiwJ33LW"
+      },
+      "output": {
+        "nodeId": "S1mWMV3tyf",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "BkLh_htJz",
+      "input": {
+        "nodeId": "S1G5O3Kkf",
+        "pinKey": "SklxICdHP1b"
+      },
+      "output": {
+        "nodeId": "B1nCwnt1z",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "BkMhOnFyM",
+      "input": {
+        "nodeId": "H1z-fVnFyz",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1G5O3Kkf",
+        "pinKey": "rkWeUCdBDkZ"
+      }
+    },
+    {
+      "id": "Byq1OhY1G",
+      "input": {
+        "nodeId": "S1mWMV3tyf",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "B1nCwnt1z",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "HymkdnY1M",
+      "input": {
+        "nodeId": "B1nCwnt1z",
+        "pinKey": "BytUCdHD1-"
+      },
+      "output": {
+        "nodeId": "BJUWz4nt1G",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJpldhF1M",
+      "input": {
+        "nodeId": "Hksx_nF1G",
+        "pinKey": "BJlzICOSv1-"
+      },
+      "output": {
+        "nodeId": "HJxq4nKkz",
+        "pinKey": "Bkpwy22I-"
+      }
+    },
+    {
+      "id": "SyXZOhK1G",
+      "input": {
+        "nodeId": "r1e-zV2Fyz",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Hksx_nF1G",
+        "pinKey": "H12bIR_SPyZ"
+      }
+    },
+    {
+      "id": "r11kd3FkG",
+      "input": {
+        "nodeId": "B1nCwnt1z",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "BJNZzE3YJG",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1nCwnt1z",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "@/divide"
+    },
+    {
+      "boundValues": {
+        "__out__": 0
+      },
+      "description": "An input time value, i.e. the abscissa",
+      "id": "BJNZzE3YJG",
+      "label": "IN",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "__out__": 1
+      },
+      "description": "An iterval between wave peaks, i.e. the period of the function",
+      "id": "BJUWz4nt1G",
+      "label": "T",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "The number of a funcion cycle. Starts from 0.",
+      "id": "H1z-fVnFyz",
+      "label": "N",
+      "position": {
+        "x": 272,
+        "y": 612
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "HJxq4nKkz",
+      "position": {
+        "x": 68,
+        "y": 408
+      },
+      "type": "@/cos"
+    },
+    {
+      "boundValues": {
+        "HJCWLAdSwyW": -1,
+        "rkpbU0OrwyZ": 1,
+        "ry1z8CuBDy-": 1
+      },
+      "id": "Hksx_nF1G",
+      "position": {
+        "x": 68,
+        "y": 510
+      },
+      "type": "@/map-range"
+    },
+    {
+      "id": "S1G5O3Kkf",
+      "position": {
+        "x": 272,
+        "y": 306
+      },
+      "type": "@/floor"
+    },
+    {
+      "boundValues": {
+        "B1GfLR_SPk-": 6.283185307179,
+        "SJ4zUC_BD1-": 2
+      },
+      "id": "S1mWMV3tyf",
+      "label": "× 2𝜋",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "@/multiply"
+    },
+    {
+      "description": "The function value in [0, 1] range. Starts from 0.",
+      "id": "r1e-zV2Fyz",
+      "label": "OUT",
+      "position": {
+        "x": 68,
+        "y": 612
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

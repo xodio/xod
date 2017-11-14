@@ -1,0 +1,81 @@
+{
+  "nodes": [
+    {
+      "boundValues": {
+        "__out__": 1
+      },
+      "description": "Time interval between switches to `true`, i.e. the period of the square wave.",
+      "id": "BJ5HJ6t1f",
+      "label": "T",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "__out__": true
+      },
+      "description": "Enabled or not. When set to `false` pauses generation preserving the current phase. When set to `true` again continues counting from the saved phase.\n",
+      "id": "ByEPkpYkM",
+      "label": "EN",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "HkPqyTtyM",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "The signal value: `true` or `false`. When the phase is at switch boundary, the value is the same as `EN`, i.e. `false` if paused and `true` if active.",
+      "id": "S1aYu6KJf",
+      "label": "OUT",
+      "position": {
+        "x": 34,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "description": "The number of current cycle.  Starts from 0. The cycle is considered to start with the `true` value.",
+      "id": "S1dK16FJf",
+      "label": "N",
+      "position": {
+        "x": 102,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "__out__": 0.5
+      },
+      "description": "Duty cycle. Ratio of `true` signal duration to the whole `IVAL`.",
+      "id": "rJS8ypK1z",
+      "label": "DUTY",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Resets the wave phase and `N` to zero.",
+      "id": "ryQdyTYkz",
+      "label": "RST",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

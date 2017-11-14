@@ -1,0 +1,40 @@
+{
+  "description": "Computes the remainder of `IN1` divided by `IN2`.",
+  "nodes": [
+    {
+      "description": "Denumerator",
+      "id": "BJvrLOuyz",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "The remainder rounded towards zero",
+      "id": "Hku_LuOyz",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "SkCOUu_1f",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Numerator",
+      "id": "ryKV8d_1f",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
