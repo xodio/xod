@@ -48,6 +48,17 @@ const getAttachmentFiles = def(
   )(patch)
 );
 
+export const arrangePatchByFiles = def(
+  'arrangePatchByFiles :: Path -> Patch -> [AnyXodFile]',
+  (projectDir, patch) => R.converge(
+    R.unapply(R.unnest),
+    [
+      R.compose(R.of, getXodpFile(projectDir)),
+      getAttachmentFiles(projectDir),
+    ]
+  )(patch)
+);
+
 // :: Project -> [ { path :: String, content :: Object } ]
 export const arrangeByFiles = def(
   'arrangeByFiles :: Project -> [AnyXodFile]',
@@ -58,15 +69,7 @@ export const arrangeByFiles = def(
       content: convertProjectToProjectFileContents(project),
     }];
     const patchFiles = R.compose(
-      R.chain(
-        R.converge(
-          R.unapply(R.unnest),
-          [
-            R.compose(R.of, getXodpFile(projectPath)),
-            getAttachmentFiles(projectPath),
-          ]
-        )
-      ),
+      R.chain(arrangePatchByFiles(projectPath)),
       XP.listLocalPatches
     )(project);
 

@@ -21,3 +21,9 @@ export const UTF8_EXTNAMES = [
   '.js',
 ];
 export const ATTACHMENT_EXTNAMES = BASE64_EXTNAMES.concat(UTF8_EXTNAMES);
+
+export const CHANGE_TYPES = {
+  MODIFIED: 'MODIFIED',
+  ADDED: 'ADDED',
+  DELETED: 'DELETED',
+};

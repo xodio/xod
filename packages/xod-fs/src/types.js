@@ -1,8 +1,18 @@
 import R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
-import { Identifier, Patch, Node, Link, Comment, env as xpEnv } from 'xod-project';
+import {
+  Identifier,
+  PatchPath,
+  Patch,
+  Node,
+  Link,
+  Comment,
+  env as xpEnv,
+} from 'xod-project';
 import * as XF from 'xod-func-tools';
+
+import { CHANGE_TYPES } from './constants';
 
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */
@@ -75,6 +85,27 @@ export const AnyXodFile = OneOfType('AnyXodFile', [ProjectFile, PatchFile, Attac
 
 export const XodFileContent = OneOfType('XodFileContent', [ProjectFileContents, PatchFileContents, Patch, $.String]);
 
+export const AddedChangeType = NullaryType('AddedChangeType', R.equals(CHANGE_TYPES.ADDED));
+export const ModifiedChangeType = NullaryType('ModifiedChangeType', R.equals(CHANGE_TYPES.MODIFIED));
+export const DeletedChangeType = NullaryType('DeletedChangeType', R.equals(CHANGE_TYPES.DELETED));
+export const AnyChangeType = OneOfType('AnyChangeType', [AddedChangeType, ModifiedChangeType, DeletedChangeType]);
+//
+export const AddedPatchChange = Model('AddedPatchChange', {
+  path: PatchPath,
+  changeType: AddedChangeType,
+  data: Patch,
+});
+export const ModifiedPatchChange = Model('ModifiedPatchChange', {
+  path: PatchPath,
+  changeType: ModifiedChangeType,
+  data: Patch,
+});
+export const DeletedPatchChange = Model('DeletedPatchChange', {
+  path: PatchPath,
+  changeType: DeletedChangeType,
+});
+export const AnyPatchChange = OneOfType('AnyPatchChange', [AddedPatchChange, ModifiedPatchChange, DeletedPatchChange]);
+
 //-----------------------------------------------------------------------------
 //
 // Environment
@@ -91,6 +122,14 @@ const env = xpEnv.concat([
   XodFileContent,
   PatchFileContents,
   ProjectFileContents,
+  AddedChangeType,
+  ModifiedChangeType,
+  DeletedChangeType,
+  AnyChangeType,
+  AddedPatchChange,
+  ModifiedPatchChange,
+  DeletedPatchChange,
+  AnyPatchChange,
 ]);
 
 export const def = HMDef.create({

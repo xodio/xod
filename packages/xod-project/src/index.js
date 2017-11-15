@@ -3,6 +3,7 @@ export {
   createPatch,
   duplicatePatch,
   getPatchPath,
+  setPatchPath,
   getPatchDescription,
   setPatchDescription,
   getPatchAttachments,

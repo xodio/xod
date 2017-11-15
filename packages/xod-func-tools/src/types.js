@@ -149,6 +149,12 @@ export const Pair = BinaryType(
   R.compose(R.of, R.last)
 );
 
+export const $Promise = NullaryType(
+  pkgName, dUrl,
+  'Promise',
+  x => x instanceof Promise,
+);
+
 //-----------------------------------------------------------------------------
 //
 // Fantasy land types
@@ -181,6 +187,7 @@ export const $Either = $.BinaryType(
 export const env = $.env.concat([
   Map,
   Pair,
+  $Promise,
   $Either,
   $Maybe,
 ]);
