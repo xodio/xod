@@ -1,6 +1,6 @@
 import R from 'ramda';
 import {
-  listPatches,
+  listLocalPatches,
   assocPatchUnsafe,
   getPatchPath,
   getPatchByPathUnsafe,
@@ -123,11 +123,11 @@ export default (reducer, afterHistoryNavigation = R.identity) => (state, action)
     default: {
       const nextState = reducer(state, action);
 
-      const previousPatchesList = R.compose(listPatches, getProject)(state);
+      const previousPatchesList = R.compose(listLocalPatches, getProject)(state);
 
       const currentPatches = R.compose(
         R.indexBy(getPatchPath),
-        listPatches,
+        listLocalPatches,
         getProject
       )(nextState);
 

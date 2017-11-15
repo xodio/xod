@@ -46,6 +46,7 @@ export {
   removeDebugNodes,
   getTopologyMap,
   applyNodeIdMap,
+  resolveNodeTypesInPatch,
 } from './patch';
 export * from './node';
 export * from './comment';

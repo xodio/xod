@@ -145,7 +145,7 @@ const addDeadFlag = R.curry(
 // :: State -> StrMap RenderableNode
 export const getRenderableNodes = createMemoizedSelector(
   [getProject, getCurrentPatch, getCurrentPatchNodes, getConnectedPins],
-  [R.T, R.equals, R.equals, R.equals],
+  [R.equals, R.equals, R.equals, R.equals],
   (project, maybeCurrentPatch, currentPatchNodes, connectedPins) =>
     Maybe.maybe(
       {},

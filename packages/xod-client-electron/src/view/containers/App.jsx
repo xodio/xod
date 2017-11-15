@@ -165,6 +165,13 @@ class App extends client.App {
       EVENTS.GET_SIDEBAR_PANE_HEIGHT,
       (event, sidebarPaneHeight) => this.setState({ sidebarPaneHeight })
     );
+    ipcRenderer.on(
+      EVENTS.INSTALL_LIBRARY_FAILED,
+      (event, error) => {
+        console.error(error); // eslint-disable-line no-console
+        this.props.actions.addError(formatError(error));
+      }
+    );
 
     // Debugger
     debuggerIPC.subscribeOnDebuggerEvents(ipcRenderer, this);
@@ -417,6 +424,8 @@ class App extends client.App {
           onClick(items.exportProject, this.onExport),
           items.separator,
           onClick(items.newPatch, this.props.actions.createPatch),
+          items.separator,
+          onClick(items.addLibrary, this.props.actions.showLibSuggester),
         ]
       ),
       submenu(

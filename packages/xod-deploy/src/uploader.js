@@ -3,22 +3,13 @@ import path from 'path';
 import os from 'os';
 import cpp from 'child-process-promise';
 import fetch from 'node-fetch';
+import { rejectFetchResult, retryOrFail } from 'xod-func-tools';
 
 import { DEFAULT_UPLOAD_CONFIG_URL, RETRY_DELAYS } from './constants';
-import { retryOrFail } from './utils';
 import { flushSerialBuffer, touchPort1200, waitNewPort, listPorts } from './serialport';
 
 // UploadConfig :: { exe: StrMap String, tool: String, toolUrl: StrMap Url, cmdTemplate: String }
 // LocalConfig :: { toolPath: Path, artifactPath: Path, port: String }
-
-const rejectFetchResult = (res, payload) => Object.assign(
-  new Error(res.statusText),
-  {
-    status: res.status,
-    statusText: res.statusText,
-  },
-  payload
-);
 
 // :: () -> URL
 const getUploadConfigUrl = () => (
@@ -37,9 +28,7 @@ export const getUploadConfig = boardId => fetchUploadConfig(boardId)
   .catch(retryOrFail(
     RETRY_DELAYS,
     res => (res.status && res.status !== 200 && res.status !== 503),
-    res => (
-      (res.status) ? rejectFetchResult(res, { boardId }) : res
-    ),
+    rejectFetchResult({ boardId }),
     () => fetchUploadConfig(boardId)
   ));
 

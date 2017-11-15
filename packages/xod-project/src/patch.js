@@ -12,7 +12,7 @@ import * as Utils from './utils';
 import { sortGraph } from './gmath';
 import { def } from './types';
 import { getHardcodedPinsForPatchPath, getPinKeyForTerminalDirection } from './builtInPatches';
-import { getLocalPath, isTerminalPatchPath, isDeferNodeType } from './patchPathUtils';
+import { getLocalPath, isTerminalPatchPath, isDeferNodeType, resolvePatchPath } from './patchPathUtils';
 
 /**
  * An object representing single patch in a project
@@ -1007,3 +1007,15 @@ export const upsertDeadPins = def(
     )(nodeId, currentPatch);
   }
 );
+
+
+export const resolveNodeTypesInPatch = patch => R.compose(
+  R.reduce(R.flip(assocNode), patch),
+  R.map(node => R.compose(
+    Node.setNodeType(R.__, node),
+    resolvePatchPath(R.__, getPatchPath(patch)),
+    Node.getNodeType
+  )(node)),
+  R.filter(Node.isLocalNode),
+  listNodes
+)(patch);

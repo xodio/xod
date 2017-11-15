@@ -723,18 +723,6 @@ export const isTerminalNodeInUse = def(
 );
 
 /**
- * Checks that Node have a NodeType referenced to local PatchPath.
- * E.G. `@/foo`.
- */
-const isLocalNode = def(
-  'isLocalNodeType :: Node -> Boolean',
-  R.compose(
-    PatchPathUtils.isPathLocal,
-    Node.getNodeType
-  )
-);
-
-/**
  * Resolves all NodeTypes of all Nodes in the Library Patches
  * using PatchPathUtils.resolvePatchPatch.
  * So all Nodes that refers to Patch in the same library
@@ -752,18 +740,9 @@ export const resolveNodeTypesInProject = def(
   'resolveNodeTypesInProject :: Project -> Project',
   project => R.compose(
     assocPatchListUnsafe(R.__, project),
-    R.map(patch => R.compose(
-      R.reduce(R.flip(Patch.assocNode), patch),
-      R.map(node => R.compose(
-        Node.setNodeType(R.__, node),
-        PatchPathUtils.resolvePatchPath(R.__, Patch.getPatchPath(patch)),
-        Node.getNodeType
-      )(node)),
-      R.filter(isLocalNode),
-      Patch.listNodes
-    )(patch)),
+    R.map(Patch.resolveNodeTypesInPatch),
     R.filter(R.compose(
-      R.any(isLocalNode),
+      R.any(Node.isLocalNode),
       Patch.listNodes
     )),
     listLibraryPatches

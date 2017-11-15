@@ -28,6 +28,7 @@ const ERROR_FORMATTERS = {
   [XFS_EC.CANT_COPY_DEFAULT_PROJECT]: err => `Could not copy default project at ${err.path}: ${err.message}`,
   [XFS_EC.CANT_ENUMERATE_PROJECTS]: err => `Could not enumerate projects at ${err.path}: ${err.message}`,
   [XFS_EC.CANT_SAVE_PROJECT]: err => `Could not save the project at ${err.path}: ${err.message}`,
+  [XFS_EC.CANT_SAVE_LIBRARY]: err => `Could not save the library at ${err.path}: ${err.message}`,
 
   [EC.CANT_CREATE_NEW_PROJECT]: err => `Could not create a new project: ${err.message}`,
   [EC.CANT_OPEN_SELECTED_PROJECT]: err => `Could not open selected project: ${err.message}`,

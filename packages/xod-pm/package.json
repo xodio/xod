@@ -1,0 +1,31 @@
+{
+  "name": "xod-pm",
+  "version": "0.15.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "babel src -d dist",
+    "test": "mocha test/**/*.spec.js",
+    "test-func": "mocha --opts test-func/mocha.opts test-func/**/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xodio/xod.git"
+  },
+  "author": "XOD Team <dev@xod.io>",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/xodio/xod/issues"
+  },
+  "homepage": "https://xod.io/",
+  "dependencies": {
+    "ramda": "^0.24.1",
+    "ramda-fantasy": "^0.8.0",
+    "swagger-client": "^3.0.13",
+    "xod-func-tools": "^0.15.0",
+    "xod-project": "^0.15.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.0"
+  }
+}

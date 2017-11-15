@@ -18,7 +18,7 @@
     "handlebars": "^4.0.6",
     "hm-def": "^0.2.0",
     "ramda": "^0.24.1",
-    "ramda-fantasy": "^0.7.0",
+    "ramda-fantasy": "^0.8.0",
     "sanctuary-def": "^0.9.0",
     "xod-func-tools": "^0.15.0",
     "xod-project": "^0.15.0"

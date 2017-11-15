@@ -3038,6 +3038,10 @@ dateformat@^1.0.11, dateformat@^1.0.12:
     get-stdin "^4.0.1"
     meow "^3.3.0"
 
+debounce@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.1.0.tgz#6a1a4ee2a9dc4b7c24bb012558dbcdb05b37f408"
+
 debug@2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.2.0.tgz#f87057e995b1a1f6ae6a4960664137bc56f039da"
@@ -4210,12 +4214,6 @@ file-loader@^0.9.0:
   resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-0.9.0.tgz#1d2daddd424ce6d1b07cfe3f79731bed3617ab42"
   dependencies:
     loader-utils "~0.2.5"
-
-file-save@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/file-save/-/file-save-0.2.0.tgz#39b20d0214e656b1417faa3c32d317b678545db7"
-  dependencies:
-    mkdirp "~0.5.0"
 
 filename-regex@^2.0.0:
   version "2.0.1"

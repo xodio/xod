@@ -1,7 +1,7 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 
-import { explode, explodeEither, catMaybes } from 'xod-func-tools';
+import { explode, explodeEither, catMaybies } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Project from './project';
@@ -460,7 +460,7 @@ const collapseLinksChain = (linksChain) => {
 // :: StrMap Node -> StrMap Link -> [Link] -> Pair [Link] [{ nodeId, pinKey, value }]
 const getCollapsedLinksAndValuesToBind = R.uncurryN(3)(
   (nodesById, linksByInputNodeId) => R.compose(
-    R.adjust(catMaybes, 1),
+    R.adjust(catMaybies, 1),
     R.when(
       R.isEmpty,
       R.always([[], []])

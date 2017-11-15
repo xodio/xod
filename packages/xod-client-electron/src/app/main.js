@@ -155,6 +155,7 @@ const onReady = () => {
   });
   ipcMain.on(EVENTS.GET_SIDEBAR_PANE_HEIGHT, loadSidebarPaneHeight);
   ipcMain.on(EVENTS.CHANGE_SIDEBAR_PANE_HEIGHT, saveSidebarPaneHeight);
+  ipcMain.on(EVENTS.INSTALL_LIBRARY, WA.saveLibrary);
 
   createWindow();
   win.webContents.on('did-finish-load', () => {

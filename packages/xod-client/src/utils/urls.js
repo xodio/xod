@@ -35,3 +35,6 @@ const HOSTNAME = process.env.XOD_HOSTNAME || 'xod.io';
 // :: String -> String
 export const getCompileLimitUrl = () =>
   `https://compile.${HOSTNAME}/limits`;
+
+export const getPmSwaggerUrl = () =>
+  `https://pm.${HOSTNAME}/swagger`;

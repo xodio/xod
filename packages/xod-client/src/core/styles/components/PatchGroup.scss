@@ -1,11 +1,7 @@
 .PatchGroup {
   background-color: $sidebar-color-bg;
 
-  &__contentInner {
-    border-top: 1px solid $sidebar-color-border;
-  }
-
-  &__trigger {
+  @mixin collapsibleBlock() {
     display: block;
     font-family: $font-family-normal;
     text-decoration: none;
@@ -15,17 +11,6 @@
     padding: 10px 10px 10px 30px;
     color: $sidebar-color-text;
     user-select: none;
-    cursor: pointer;
-
-    &:after {
-      font-family: 'FontAwesome';
-      content: '\f0da';
-      position: absolute;
-      right: 13px;
-      top: 12px;
-      display: block;
-      transition: transform 100ms;
-    }
 
     &.my:before,
     &.library:before {
@@ -40,6 +25,43 @@
 
     &.library:before {
       content: '\f02d'; // TODO: bg image
+    }
+  }
+
+  &__contentInner {
+    border-top: 1px solid $sidebar-color-border;
+  }
+
+  &--installing {
+    @include collapsibleBlock();
+    cursor: wait;
+    color: darken($sidebar-color-text, 20%);
+    background: darken($sidebar-color-bg, 3%);
+
+    .fa-spin {
+      position: absolute;
+      right: 13px;
+      top: 12px;
+      display: block;
+    }
+    .version {
+      margin-left: 0.25em;
+      color: darken($sidebar-color-text, 40%);
+    }
+  }
+
+  &__trigger {
+    @include collapsibleBlock();
+    cursor: pointer;
+
+    &:after {
+      font-family: 'FontAwesome';
+      content: '\f0da';
+      position: absolute;
+      right: 13px;
+      top: 12px;
+      display: block;
+      transition: transform 100ms;
     }
 
     &.is-open:after {

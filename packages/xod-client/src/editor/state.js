@@ -22,4 +22,5 @@ export default {
       offset: DEFAULT_PANNING_OFFSET,
     },
   },
+  libSuggesterVisible: false,
 };

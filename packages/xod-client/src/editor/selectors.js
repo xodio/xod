@@ -135,6 +135,11 @@ export const getSuggesterHighlightedPatchPath = R.pipe(
   R.prop('highlightedPatchPath')
 );
 
+export const isLibSuggesterVisible = R.pipe(
+  getEditor,
+  R.prop('libSuggesterVisible')
+);
+
 //
 // debugger breadcrumbs
 //

@@ -3,7 +3,7 @@ import * as XP from 'xod-project';
 import { explodeEither } from 'xod-func-tools';
 
 import * as AT from './actionTypes';
-import { PASTE_ENTITIES } from '../editor/actionTypes';
+import { PASTE_ENTITIES, INSTALL_LIBRARY_COMPLETE } from '../editor/actionTypes';
 
 import {
   addPoints,
@@ -55,6 +55,19 @@ const moveEntities = (positionLens, deltaPosition) => R.map(
       addPoints(deltaPosition)
     )
   )
+);
+
+// :: LibName -> Project -> Project
+const omitLibPatches = R.curry(
+  (libName, project) => R.compose(
+    XP.omitPatches(R.__, project),
+    R.filter(R.compose(
+      R.equals(libName),
+      XP.getLibraryName
+    )),
+    R.map(XP.getPatchPath),
+    XP.listLibraryPatches
+  )(project)
 );
 
 export default (state = {}, action) => {
@@ -147,6 +160,12 @@ export default (state = {}, action) => {
         state
       );
     }
+
+    case INSTALL_LIBRARY_COMPLETE:
+      return R.compose(
+        XP.assocPatchListUnsafe(action.payload.patches),
+        omitLibPatches(action.payload.libName)
+      )(state);
 
 
     //

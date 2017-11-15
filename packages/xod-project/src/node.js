@@ -4,7 +4,7 @@ import * as Utils from './utils';
 import * as Tools from './func-tools';
 import * as CONST from './constants';
 import { def } from './types';
-import { isInputTerminalPath, isOutputTerminalPath, getTerminalDataType } from './patchPathUtils';
+import { isInputTerminalPath, isOutputTerminalPath, getTerminalDataType, isPathLocal } from './patchPathUtils';
 
 /**
  * @typedef {Object} Node
@@ -196,6 +196,18 @@ export const isPinNode = def(
   R.either(
     isInputPinNode,
     isOutputPinNode
+  )
+);
+
+/**
+ * Checks that Node have a NodeType referenced to local PatchPath.
+ * E.G. `@/foo`.
+ */
+export const isLocalNode = def(
+  'isLocalNodeType :: Node -> Boolean',
+  R.compose(
+    isPathLocal,
+    getNodeType
   )
 );
 

@@ -3,6 +3,7 @@ import path from 'path';
 import { outputFile } from 'fs-extra';
 import WebSocket from 'ws';
 import atob from 'atob';
+import { retryOrFail } from 'xod-func-tools';
 
 import {
   COMPILATION_RESPONSE_TYPES,
@@ -11,7 +12,6 @@ import {
   DEFAULT_CLOUD_COMPILE_URL,
   RETRY_DELAYS,
 } from './constants';
-import { retryOrFail } from './utils';
 
 // CompileError :: { errorCode: String, message: String }
 

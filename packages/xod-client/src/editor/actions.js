@@ -2,6 +2,7 @@ import R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';
+import { fetchLibXodball, stringifyLibQuery } from 'xod-pm';
 
 import {
   SELECTION_ENTITY_TYPE,
@@ -9,6 +10,8 @@ import {
   CLIPBOARD_ERRORS as CLIPBOARD_ERROR_CODES,
 } from './constants';
 import { LINK_ERRORS, CLIPBOARD_ERRORS } from '../messages/constants';
+
+import { libInstalled } from './messages';
 
 import * as ActionType from './actionTypes';
 
@@ -20,6 +23,7 @@ import {
 } from '../project/actions';
 import {
   addError,
+  addConfirmation,
 } from '../messages/actions';
 
 import * as Selectors from './selectors';
@@ -43,6 +47,7 @@ import {
   resetClipboardEntitiesPosition,
 } from './utils';
 import { isInput, isEdge } from '../utils/browser';
+import { getPmSwaggerUrl } from '../utils/urls';
 import { addPoints } from '../project/nodeLayout';
 
 import { ClipboardEntities } from '../types';
@@ -271,6 +276,16 @@ export const highlightSugessterItem = patchPath => ({
   },
 });
 
+// Suggester for libraries.
+// Maybe it will be merged with common suggester one day.
+export const showLibSuggester = () => ({
+  type: ActionType.SHOW_LIB_SUGGESTER,
+  payload: {},
+});
+export const hideLibSuggester = () => ({
+  type: ActionType.HIDE_LIB_SUGGESTER,
+});
+
 // Microsoft Edge only supports Text and URL data types
 const getClipboardDataType = () => (isEdge() ? 'Text' : CLIPBOARD_DATA_TYPE);
 
@@ -400,4 +415,44 @@ export const cutEntities = event => (dispatch) => {
 
   dispatch(copyEntities(event));
   dispatch(deleteSelection());
+};
+
+export const installLibrary = reqParams => (dispatch) => {
+  dispatch({
+    type: ActionType.INSTALL_LIBRARY_BEGIN,
+    payload: reqParams,
+  });
+
+  const libName = `${reqParams.owner}/${reqParams.name}`;
+
+  fetchLibXodball(getPmSwaggerUrl(), stringifyLibQuery(reqParams))
+    .then(xodball => R.compose(
+      (patches) => {
+        dispatch({
+          type: ActionType.INSTALL_LIBRARY_COMPLETE,
+          payload: {
+            libName,
+            request: reqParams,
+            patches,
+            xodball,
+          },
+        });
+        dispatch(
+          addConfirmation(libInstalled(libName, xodball.version))
+        );
+      },
+      XP.prepareLibPatchesToInsertIntoProject,
+    )(libName, xodball))
+    .catch((err) => {
+      dispatch({
+        type: ActionType.INSTALL_LIBRARY_FAILED,
+        payload: {
+          libName,
+          request: reqParams,
+          error: err.message,
+          errorCode: err.errorCode,
+        },
+      });
+      dispatch(addError(err.message));
+    });
 };

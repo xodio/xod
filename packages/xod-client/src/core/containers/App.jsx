@@ -150,6 +150,7 @@ App.propTypes = {
     toggleDebugger: PropTypes.func.isRequired,
     logDebugger: PropTypes.func.isRequired,
     clearDebugger: PropTypes.func.isRequired,
+    showLibSuggester: PropTypes.func.isRequired,
     /* eslint-enable react/no-unused-prop-types */
   }),
 };
@@ -185,4 +186,5 @@ App.actions = {
   cutEntities: actions.cutEntities,
   copyEntities: actions.copyEntities,
   pasteEntities: actions.pasteEntities,
+  showLibSuggester: actions.showLibSuggester,
 };

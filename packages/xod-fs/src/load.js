@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import R from 'ramda';
 
-import XF from 'xod-func-tools';
+import * as XF from 'xod-func-tools';
 import * as XP from 'xod-project';
 
 import pack from './pack';
