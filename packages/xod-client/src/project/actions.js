@@ -133,6 +133,14 @@ export const updatePatchDescription = (patchDescription, patchPath) => ({
   },
 });
 
+export const updatePatchImplementation = (patchPath, newSource) => ({
+  type: ActionType.PATCH_NATIVE_IMPLEMENTATION_UPDATE,
+  payload: {
+    patchPath,
+    newSource,
+  },
+});
+
 //
 // Node
 //

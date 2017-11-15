@@ -161,6 +161,16 @@ export default (state = {}, action) => {
       );
     }
 
+    case AT.PATCH_NATIVE_IMPLEMENTATION_UPDATE: {
+      const { patchPath, newSource } = action.payload;
+      const patchLens = XP.lensPatch(patchPath);
+      return R.over(
+        patchLens,
+        XP.setImpl(newSource),
+        state
+      );
+    }
+
     case INSTALL_LIBRARY_COMPLETE:
       return R.compose(
         XP.assocPatchListUnsafe(action.payload.patches),

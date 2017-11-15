@@ -1,15 +1,17 @@
 import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { HotKeys, FocusTrap } from 'react-hotkeys';
-import { Patch as PatchType } from 'xod-project';
+import * as XP from 'xod-project';
 import { $Maybe } from 'xod-func-tools';
 import { Icon } from 'react-fa';
+import debounce from 'debounce';
 
 import * as Actions from '../actions';
 import * as ProjectActions from '../../project/actions';
@@ -19,9 +21,10 @@ import * as EditorSelectors from '../selectors';
 
 import { isInputTarget } from '../../utils/browser';
 import { COMMAND } from '../../utils/constants';
-import { FOCUS_AREAS, DEBUGGER_TAB_ID } from '../constants';
+import { FOCUS_AREAS, DEBUGGER_TAB_ID, TAB_TYPES, IMPL_TEMPLATE } from '../constants';
 
 import Patch from './Patch';
+import CppImplementationEditor from '../components/CppImplementationEditor';
 import NoPatch from '../components/NoPatch';
 import Suggester from '../components/Suggester';
 import LibSuggester from '../components/LibSuggester';
@@ -50,6 +53,9 @@ class Editor extends React.Component {
     this.hideSuggester = this.hideSuggester.bind(this);
 
     this.patchSize = this.props.size;
+
+    this.updatePatchImplementationDebounced =
+      debounce(this.props.actions.updatePatchImplementation, 300);
   }
 
   onAddNode(patchPath) {
@@ -90,25 +96,63 @@ class Editor extends React.Component {
     this.props.actions.hideSuggester();
   }
 
-  render() {
-    const {
-      currentPatchPath,
-      currentPatch,
-      selection,
-      patchesIndex,
-    } = this.props;
+  renderOpenedPatchTab() {
+    const { currentTab, currentPatchPath } = this.props;
 
-    const openedPatch = currentPatchPath
-      ? (
+    if (currentTab === null) return <NoPatch />;
+
+    if (!currentTab.isEditingCppImplementation) {
+      return (
         <Patch
           ref={(el) => { this.patchRef = el; }}
           patchPath={currentPatchPath}
           size={this.patchSize}
           onDoubleClick={this.showSuggester}
         />
-      ) : (
-        <NoPatch />
       );
+    }
+
+    return null;
+  }
+
+  renderOpenedImplementationEditorTabs() {
+    const { currentTab } = this.props;
+
+    const tabs = this.props.implEditorTabs.map(({ id, type, patchPath }) => {
+      const patch = XP.getPatchByPathUnsafe(patchPath, this.props.project);
+      const source = XP.getImpl(patch).getOrElse(IMPL_TEMPLATE);
+
+      const onChange = src => this.updatePatchImplementationDebounced(patchPath, src);
+
+      return (
+        <CppImplementationEditor
+          key={id}
+          isActive={id === currentTab.id}
+          source={source}
+          onChange={onChange}
+          isInDebuggerTab={type === TAB_TYPES.DEBUGGER}
+          onClose={this.props.actions.closeImplementationEditor}
+        />
+      );
+    });
+
+    return (
+      <div
+        className={cn('CppImplementationEditors', {
+          hidden: currentTab && !currentTab.isEditingCppImplementation,
+        })}
+      >
+        {tabs}
+      </div>
+    );
+  }
+
+  render() {
+    const {
+      currentPatch,
+      selection,
+      patchesIndex,
+    } = this.props;
 
     const suggester = (this.props.suggesterIsVisible) ? (
       <Suggester
@@ -130,8 +174,7 @@ class Editor extends React.Component {
 
     const DebuggerContainer = (this.props.isDebuggerVisible) ? <Debugger /> : null;
     const BreadcrumbsContainer = (
-      this.props.isDebuggerVisible &&
-      this.props.currentTabId === DEBUGGER_TAB_ID
+      this.props.currentTab.id === DEBUGGER_TAB_ID
     ) ? <Breadcrumbs /> : null;
 
     const DebugSessionStopButton = (
@@ -177,11 +220,12 @@ class Editor extends React.Component {
           <Workarea>
             <Tabs />
             {DebugSessionStopButton}
-            {openedPatch}
+            {this.renderOpenedPatchTab()}
             {suggester}
             {libSuggester}
-            {DebuggerContainer}
             {BreadcrumbsContainer}
+            {this.renderOpenedImplementationEditorTabs()}
+            {DebuggerContainer}
           </Workarea>
         </FocusTrap>
         <Helpbar />
@@ -197,8 +241,10 @@ Editor.propTypes = {
   setSidebarPaneHeight: PropTypes.func,
   selection: sanctuaryPropType($.Array(RenderableSelection)),
   currentPatchPath: PropTypes.string,
-  currentPatch: sanctuaryPropType($Maybe(PatchType)),
-  currentTabId: PropTypes.string,
+  currentPatch: sanctuaryPropType($Maybe(XP.Patch)),
+  project: PropTypes.object,
+  currentTab: PropTypes.object,
+  implEditorTabs: PropTypes.array,
   patchesIndex: PropTypes.object,
   isHelpbarVisible: PropTypes.bool,
   isDebuggerVisible: PropTypes.bool,
@@ -211,6 +257,8 @@ Editor.propTypes = {
   actions: PropTypes.shape({
     updateNodeProperty: PropTypes.func.isRequired,
     updatePatchDescription: PropTypes.func.isRequired,
+    updatePatchImplementation: PropTypes.func.isRequired,
+    closeImplementationEditor: PropTypes.func.isRequired,
     undo: PropTypes.func.isRequired,
     redo: PropTypes.func.isRequired,
     toggleHelpbar: PropTypes.func.isRequired,
@@ -227,8 +275,10 @@ Editor.propTypes = {
 const mapStateToProps = R.applySpec({
   selection: ProjectSelectors.getRenderableSelection,
   currentPatch: ProjectSelectors.getCurrentPatch,
+  project: ProjectSelectors.getProject, // TODO: probably should not bring the whole project
   currentPatchPath: EditorSelectors.getCurrentPatchPath,
-  currentTabId: EditorSelectors.getCurrentTabId,
+  currentTab: EditorSelectors.getCurrentTab,
+  implEditorTabs: EditorSelectors.getImplEditorTabs,
   patchesIndex: ProjectSelectors.getPatchSearchIndex,
   suggesterIsVisible: EditorSelectors.isSuggesterVisible,
   suggesterPlacePosition: EditorSelectors.getSuggesterPlacePosition,
@@ -243,6 +293,8 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     updateNodeProperty: ProjectActions.updateNodeProperty,
     updatePatchDescription: ProjectActions.updatePatchDescription,
+    updatePatchImplementation: ProjectActions.updatePatchImplementation,
+    closeImplementationEditor: Actions.closeImplementationEditor,
     undo: ProjectActions.undoPatch,
     redo: ProjectActions.redoPatch,
     toggleHelpbar: Actions.toggleHelpbar,

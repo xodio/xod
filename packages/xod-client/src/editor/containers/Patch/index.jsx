@@ -183,6 +183,7 @@ const mapDispatchToProps = dispatch => ({
     setOffset: EditorActions.setCurrentPatchOffset,
     switchPatch: EditorActions.switchPatch,
     drillDown: DebuggerActions.drillDown,
+    openImplementationEditor: EditorActions.openImplementationEditor,
   }, dispatch),
 });
 

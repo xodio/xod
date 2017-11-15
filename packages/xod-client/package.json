@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "codemirror": "^5.31.0",
     "commander": "^2.9.0",
     "debounce": "^1.1.0",
     "font-awesome": "^4.6.3",
@@ -36,6 +37,7 @@
     "react-autolink-text2": "git+https://github.com/xodio/react-autolink-text.git#npm",
     "react-autosuggest": "git+https://github.com/xodio/react-autosuggest.git#bc6ab71a2ec47ad5fbce5d13ff6a572942ea765e",
     "react-click-outside": "^2.2.0",
+    "react-codemirror": "^1.0.0",
     "react-collapsible": "git+https://github.com/xodio/react-collapsible.git#npm",
     "react-custom-scroll": "^2.0.0",
     "react-dnd": "^2.5.1",

@@ -15,18 +15,19 @@
 @import
   'components/App',
   'components/BackgroundLayer',
-  'components/Button',
   'components/Breadcrumbs',
+  'components/Button',
   'components/Comment',
+  'components/CppImplementationEditor',
   'components/Debugger',
   'components/Editor',
-  'components/Inspector',
   'components/Helpbar',
+  'components/Inspector',
   'components/Link',
   'components/MarqueeSelection',
   'components/Modals',
-  'components/NoPatch',
   'components/Node',
+  'components/NoPatch',
   'components/PatchDocs',
   'components/PatchGroup',
   'components/PatchGroupItem',
@@ -42,14 +43,15 @@
   'components/SnackBarMessage',
   'components/SnappingPreviewLayer',
   'components/SplitPane',
+  'components/Suggester',
   'components/TabsContainer',
   'components/TabsItem',
   'components/Toolbar',
-  'components/Suggester',
   'components/Workarea';
 
 // overridden styles for 3rd party components
 @import
+  'components/CodeMirror',
   'components/CustomScroll',
   'components/Menubar',
   'components/SkyLight';

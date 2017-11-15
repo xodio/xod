@@ -216,6 +216,14 @@ export const switchPatch = patchPath => (dispatch, getState) => {
   }
 };
 
+export const openImplementationEditor = () => ({
+  type: ActionType.EDITOR_OPEN_IMPLEMENTATION_CODE,
+});
+
+export const closeImplementationEditor = () => ({
+  type: ActionType.EDITOR_CLOSE_IMPLEMENTATION_CODE,
+});
+
 export const switchTab = tabId => ({
   type: ActionType.EDITOR_SWITCH_TAB,
   payload: {

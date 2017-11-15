@@ -1,0 +1,50 @@
+.CppImplementationEditors {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-grow: 1;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.CppImplementationEditor {
+  width: 100%;
+  height: 100%;
+  display: none;
+
+  &.isActive {
+    display: block;
+  }
+
+  .toolbar {
+    $bg-color: #546E7A;
+    $fg-color: lighten($color: $bg-color, $amount: 50%);
+
+    border-top: 1px solid #3e3e3e;
+    border-bottom: 1px solid #3e3e3e;
+    background-color: $bg-color;
+    color: $fg-color;
+    padding: 10px;
+
+    .back-button {
+      background: transparent;
+      border: 1px solid $fg-color;
+      outline: none;
+      color: $fg-color;
+      padding: 10px;
+    }
+
+    .title {
+      padding-left: 8px;
+    }
+  }
+
+  &.isInDebuggerTab {
+    .toolbar {
+      // leave space for breadcrumbs
+      margin-top: 27px;
+    }
+  }
+}
