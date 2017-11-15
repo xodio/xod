@@ -42,7 +42,7 @@
     "react-dnd-html5-backend": "^2.5.1",
     "react-dom": "^15.4.2",
     "react-event-listener": "^0.4.5",
-    "react-fa": "git+https://github.com/xodio/react-fa.git",
+    "react-fa": "^5.0.0",
     "react-highlight-words": "^0.8.1",
     "react-hotkeys": "git+https://github.com/xodio/react-hotkeys.git#npm",
     "react-infinite": "^0.12.1",

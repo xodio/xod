@@ -8333,18 +8333,12 @@ react-event-listener@^0.4.5:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-fa@^4.1.2:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/react-fa/-/react-fa-4.2.0.tgz#691e056c68ff4be8763917a21f7e3eaef3be8e0f"
+react-fa@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-fa/-/react-fa-5.0.0.tgz#d571732856c6cb2c155c46daef018ba67a75b973"
   dependencies:
     font-awesome "^4.3.0"
     prop-types "^15.5.8"
-
-"react-fa@git+https://github.com/xodio/react-fa.git":
-  version "4.1.2"
-  resolved "git+https://github.com/xodio/react-fa.git#af0afb61204783e9071fd3d919b4ad58cbe114a4"
-  dependencies:
-    font-awesome "^4.3.0"
 
 react-fuzzy@^0.3.3:
   version "0.3.3"
