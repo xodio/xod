@@ -1,0 +1,336 @@
+{
+  "comments": [
+    {
+      "content": "The MSB in D2 stores temperature sign",
+      "id": "Hk8tJZokG",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "size": {
+        "height": 51,
+        "width": 170
+      }
+    }
+  ],
+  "description": "Utility. Packs raw data from a DHT21 or higher thermometer into meaningful humidity and temperature.",
+  "links": [
+    {
+      "id": "HJOmJZiyf",
+      "input": {
+        "nodeId": "HJeXkWjJM",
+        "pinKey": "rkJ4URuHDJ-"
+      },
+      "output": {
+        "nodeId": "SynxkbsJz",
+        "pinKey": "rySsCNowW"
+      }
+    },
+    {
+      "id": "HkTcAlj1f",
+      "input": {
+        "nodeId": "Byqq0ljkz",
+        "pinKey": "BypX80uSD1Z"
+      },
+      "output": {
+        "nodeId": "SyZlAxsJf",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkfOmbjJG",
+      "input": {
+        "nodeId": "S1qS1ZjkG",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Sy8v7bikf",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "Hy-OXZskz",
+      "input": {
+        "nodeId": "Sy8v7bikf",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "rJO11bj1z",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "S1oLRxjyz",
+      "input": {
+        "nodeId": "HJEIAxs1z",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1EHReikf",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "SJUG1Wjkz",
+      "input": {
+        "nodeId": "SynxkbsJz",
+        "pinKey": "rJhKCEovZ"
+      },
+      "output": {
+        "nodeId": "Byqq0ljkz",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    },
+    {
+      "id": "SJbtRxjkf",
+      "input": {
+        "nodeId": "B1JY0go1G",
+        "pinKey": "rJg00Nhe-"
+      },
+      "output": {
+        "nodeId": "SyZlAxsJf",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkCJ1-s1G",
+      "input": {
+        "nodeId": "rJO11bj1z",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "B1JY0go1G",
+        "pinKey": "B19RYS3lW"
+      }
+    },
+    {
+      "id": "SkGG1Wsyz",
+      "input": {
+        "nodeId": "SynxkbsJz",
+        "pinKey": "ryv504owW"
+      },
+      "output": {
+        "nodeId": "Bkl-lClskG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkmyyWs1f",
+      "input": {
+        "nodeId": "BJky1bsJz",
+        "pinKey": "rJhKCEovZ"
+      },
+      "output": {
+        "nodeId": "SyZlAxsJf",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyhBRgo1z",
+      "input": {
+        "nodeId": "r1EHReikf",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "SkY7RxsJM",
+        "pinKey": "rySsCNowW"
+      }
+    },
+    {
+      "id": "r1rJyWoyM",
+      "input": {
+        "nodeId": "BJky1bsJz",
+        "pinKey": "ryv504owW"
+      },
+      "output": {
+        "nodeId": "Bkl-lClskG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJKmJZjJG",
+      "input": {
+        "nodeId": "rJO11bj1z",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "HJeXkWjJM",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    },
+    {
+      "id": "rJcJyWoJM",
+      "input": {
+        "nodeId": "rJO11bj1z",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "BJky1bsJz",
+        "pinKey": "rySsCNowW"
+      }
+    },
+    {
+      "id": "ryhVAxjJf",
+      "input": {
+        "nodeId": "SkY7RxsJM",
+        "pinKey": "ryv504owW"
+      },
+      "output": {
+        "nodeId": "r1xx0xjkM",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryt40ljkM",
+      "input": {
+        "nodeId": "SkY7RxsJM",
+        "pinKey": "rJhKCEovZ"
+      },
+      "output": {
+        "nodeId": "Sku1Rls1G",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "HJbACN3gb": 127
+      },
+      "id": "B1JY0go1G",
+      "position": {
+        "x": 238,
+        "y": 612
+      },
+      "type": "xod/core/greater"
+    },
+    {
+      "id": "BJky1bsJz",
+      "position": {
+        "x": 476,
+        "y": 408
+      },
+      "type": "xod/core/word-to-number"
+    },
+    {
+      "id": "Bkl-lClskG",
+      "label": "D3",
+      "position": {
+        "x": 510,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "rkJ4URuHDJ-": 127
+      },
+      "id": "Byqq0ljkz",
+      "position": {
+        "x": 340,
+        "y": 408
+      },
+      "type": "xod/core/subtract"
+    },
+    {
+      "id": "HJEIAxs1z",
+      "label": "RH",
+      "position": {
+        "x": 68,
+        "y": 816
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "HJeXkWjJM",
+      "position": {
+        "x": 306,
+        "y": 612
+      },
+      "type": "xod/core/subtract"
+    },
+    {
+      "id": "S1qS1ZjkG",
+      "label": "Tc",
+      "position": {
+        "x": 272,
+        "y": 918
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "SkY7RxsJM",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/core/word-to-number"
+    },
+    {
+      "id": "Sku1Rls1G",
+      "label": "D0",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "BytUCdHD1-": 10
+      },
+      "id": "Sy8v7bikf",
+      "position": {
+        "x": 272,
+        "y": 816
+      },
+      "type": "xod/core/divide"
+    },
+    {
+      "id": "SyZlAxsJf",
+      "label": "D2",
+      "position": {
+        "x": 238,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SynxkbsJz",
+      "position": {
+        "x": 340,
+        "y": 510
+      },
+      "type": "xod/core/word-to-number"
+    },
+    {
+      "boundValues": {
+        "BytUCdHD1-": 1000
+      },
+      "description": "Divide by 10 to calculate percents. Divide by 100 to convert to [0, 1] range",
+      "id": "r1EHReikf",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "xod/core/divide"
+    },
+    {
+      "id": "r1xx0xjkM",
+      "label": "D1",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rJO11bj1z",
+      "position": {
+        "x": 272,
+        "y": 714
+      },
+      "type": "xod/core/if-else"
+    }
+  ]
+}

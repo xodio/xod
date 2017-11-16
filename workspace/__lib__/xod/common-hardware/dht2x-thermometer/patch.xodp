@@ -1,0 +1,154 @@
+{
+  "description": "Reads temperature and humidity from a DHT21 or compatible sensor: DHT21, DHT22, DHT33, DHT44, AM2301, HM2301, AM2302, AM2303, RHT02, RHT03, RHT04, RHT05.",
+  "links": [
+    {
+      "id": "B1OVeWsyM",
+      "input": {
+        "nodeId": "HkpQeWs1M",
+        "pinKey": "HJMBihlj1G"
+      },
+      "output": {
+        "nodeId": "rJ84xbjyG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Bk1seZoyM",
+      "input": {
+        "nodeId": "Hyt9xbo1M",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ry6debo1z",
+        "pinKey": "S1qS1ZjkG"
+      }
+    },
+    {
+      "id": "BkWYeZi1G",
+      "input": {
+        "nodeId": "ry6debo1z",
+        "pinKey": "r1xx0xjkM"
+      },
+      "output": {
+        "nodeId": "HkpQeWs1M",
+        "pinKey": "BkwC2ljkz"
+      }
+    },
+    {
+      "id": "ByZsx-s1z",
+      "input": {
+        "nodeId": "BJx9xZi1f",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ry6debo1z",
+        "pinKey": "HJEIAxs1z"
+      }
+    },
+    {
+      "id": "HyXtl-skz",
+      "input": {
+        "nodeId": "ry6debo1z",
+        "pinKey": "Bkl-lClskG"
+      },
+      "output": {
+        "nodeId": "HkpQeWs1M",
+        "pinKey": "H1uC2ejkz"
+      }
+    },
+    {
+      "id": "S1JHxWoJG",
+      "input": {
+        "nodeId": "HkpQeWs1M",
+        "pinKey": "SyQSohgjJz"
+      },
+      "output": {
+        "nodeId": "SJpVg-jJM",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1fteZsyz",
+      "input": {
+        "nodeId": "ry6debo1z",
+        "pinKey": "SyZlAxsJf"
+      },
+      "output": {
+        "nodeId": "HkpQeWs1M",
+        "pinKey": "BkevC3xokz"
+      }
+    },
+    {
+      "id": "rygYlWiJM",
+      "input": {
+        "nodeId": "ry6debo1z",
+        "pinKey": "Sku1Rls1G"
+      },
+      "output": {
+        "nodeId": "HkpQeWs1M",
+        "pinKey": "H1Sh3gsyG"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Relative humidity in ragne [0.0, 1.0]",
+      "id": "BJx9xZi1f",
+      "label": "RH",
+      "position": {
+        "x": 136,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "HkpQeWs1M",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "@/dhtxx-read-raw"
+    },
+    {
+      "description": "Last read temperature in °C.",
+      "id": "Hyt9xbo1M",
+      "label": "Tc",
+      "position": {
+        "x": 102,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers an update, i.e. reading values again.",
+      "id": "SJpVg-jJM",
+      "label": "UPD",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Board port number the thermometer is connected to.",
+      "id": "rJ84xbjyG",
+      "label": "PORT",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ry6debo1z",
+      "position": {
+        "x": 102,
+        "y": 306
+      },
+      "type": "@/dht2x-pack"
+    }
+  ]
+}

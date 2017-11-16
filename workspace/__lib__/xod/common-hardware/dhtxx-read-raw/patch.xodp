@@ -1,0 +1,76 @@
+{
+  "description": "Utility. Reads raw data bytes from a DHTxx thermometer with one-wire interface.",
+  "nodes": [
+    {
+      "description": "2-nd byte (temperature high) of the reading",
+      "id": "BkevC3xokz",
+      "label": "D2",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "BklSohxsyz",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "1-st byte (humidity low) of the reading",
+      "id": "BkwC2ljkz",
+      "label": "D1",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "0-th byte (humidity high) of the reading",
+      "id": "H1Sh3gsyG",
+      "label": "D0",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "3-rd byte (temperature low) of the reading",
+      "id": "H1uC2ejkz",
+      "label": "D3",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Board port number the thermometer is connected to.",
+      "id": "HJMBihlj1G",
+      "label": "PORT",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers an update, i.e. reading values again.",
+      "id": "SyQSohgjJz",
+      "label": "UPD",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}
