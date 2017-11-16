@@ -1,41 +1,109 @@
 {
-  "description": "Reads temperature and humidity from a DHT11 sensor.",
+  "description": "Reads temperature and humidity from a DHT11 sensor. Also named RHT01.",
+  "links": [
+    {
+      "id": "B1m4_Zs1M",
+      "input": {
+        "nodeId": "SJg4_Wo1M",
+        "pinKey": "HJMBihlj1G"
+      },
+      "output": {
+        "nodeId": "SkUQV5wIb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkTvdbokf",
+      "input": {
+        "nodeId": "HkgBE9D8Z",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJHDuWi1M",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "ByUI_bsJf",
+      "input": {
+        "nodeId": "BJ244qwLZ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJg4_Wo1M",
+        "pinKey": "BkevC3xokz"
+      }
+    },
+    {
+      "id": "BynDu-ikf",
+      "input": {
+        "nodeId": "BJHDuWi1M",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "SJg4_Wo1M",
+        "pinKey": "H1Sh3gsyG"
+      }
+    },
+    {
+      "id": "S1INdWo1M",
+      "input": {
+        "nodeId": "SJg4_Wo1M",
+        "pinKey": "SyQSohgjJz"
+      },
+      "output": {
+        "nodeId": "ryeE45PLZ",
+        "pinKey": "__out__"
+      }
+    }
+  ],
   "nodes": [
     {
       "description": "Last read temperature in °C.",
       "id": "BJ244qwLZ",
       "label": "Tc",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 0,
+        "y": 408
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "id": "BJ3PEqDLb",
-      "position": {
-        "x": 10,
-        "y": 120
+      "boundValues": {
+        "BytUCdHD1-": 100
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod"
+      "id": "BJHDuWi1M",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "xod/core/divide"
     },
     {
       "description": "Relative humidity in ragne [0.0, 1.0]",
       "id": "HkgBE9D8Z",
       "label": "RH",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 68,
+        "y": 408
       },
       "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "SJg4_Wo1M",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "@/dhtxx-read-raw"
     },
     {
       "description": "Board port number the thermometer is connected to.",
       "id": "SkUQV5wIb",
       "label": "PORT",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 0,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -47,8 +115,8 @@
       "id": "ryeE45PLZ",
       "label": "UPD",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 34,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
     }

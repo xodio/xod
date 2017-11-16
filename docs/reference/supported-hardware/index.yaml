@@ -171,7 +171,7 @@
 
 - section: "Environment sensors"
   parts:
-    - part: DHT11
+    - part: DHT11, RHT01
       kind: Thermometer, Hydrometer
       vendor: Aosong
       nodes:
@@ -181,10 +181,59 @@
           sku: "#386"
           flavor: Raw
           url: https://www.adafruit.com/product/386
+        - shop: DFRobot
+          sku: DFR0067
+          flavor: Mod
+          url: https://www.dfrobot.com/product-174.html
         - shop: Seeed
           sku: 101020011
           flavor: Mod
           url: https://www.seeedstudio.com/Mod-Temperature-%26-Humidity-Sensor-p-745.html
+
+    - part: DHT21, RHT02, AM2301, HM2301
+      kind: Thermometer, Hydrometer
+      vendor: Aosong
+      nodes:
+        - xod/common-hardware/dht2x-thermometer
+
+    - part: DHT22, RHT03, AM2302
+      kind: Thermometer, Hydrometer
+      vendor: Aosong
+      nodes:
+        - xod/common-hardware/dht2x-thermometer
+      shopping:
+        - shop: Adafruit
+          sku: "#385"
+          flavor: Raw
+          url: https://www.adafruit.com/product/385
+        - shop: Adafruit
+          sku: "#393"
+          flavor: Mod
+          url: https://www.adafruit.com/product/393
+        - shop: DFRobot
+          sku: SEN0137
+          flavor: Mod
+          url: https://www.dfrobot.com/product-1102.html
+        - shop: Seeed
+          sku: 101020019
+          flavor: Mod
+          url: https://www.seeedstudio.com/Grove-Temperature%26Humidity-Sensor-Pro%EF%BC%88AM2302%EF%BC%89-p-838.html
+        - shop: SparkFun
+          sku: SEN-10167
+          flavor: Raw
+          url: https://www.sparkfun.com/products/10167
+
+    - part: DHT33, RHT04, AM2303
+      kind: Thermometer, Hydrometer
+      vendor: Aosong
+      nodes:
+        - xod/common-hardware/dht2x-thermometer
+
+    - part: DHT44, RHT05
+      kind: Thermometer, Hydrometer
+      vendor: Aosong
+      nodes:
+        - xod/common-hardware/dht2x-thermometer
 
     - part: TMP36
       kind: Thermometer

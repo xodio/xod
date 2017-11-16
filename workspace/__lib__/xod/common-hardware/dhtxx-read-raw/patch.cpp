@@ -51,17 +51,16 @@ bool readByte(uint8_t port, uint8_t* out) {
     return true;
 }
 
-DhtStatus readValues(uint8_t port, Number* outTemp, Number* outRH) {
+DhtStatus readValues(uint8_t port, uint8_t* outData) {
     bool res;
-    uint8_t data[5];
 
     // Stop reading request
     digitalWrite(port, HIGH);
-    
+
     // DHT datasheet says host should keep line high 20-40us, then watch for
     // sensor taking line low.  That low should last 80us. Acknowledges "start
     // read and report" command.
-    delayMicroseconds(40); 
+    delayMicroseconds(40);
 
     // Change Arduino pin to an input, to watch for the 80us low explained a
     // moment ago.
@@ -88,7 +87,7 @@ DhtStatus readValues(uint8_t port, Number* outTemp, Number* outRH) {
     // now ready for data reception... pick up the 5 bytes coming from
     // the sensor
     for (uint8_t i = 0; i < 5; i++)
-        if (!readByte(port, data + i))
+        if (!readByte(port, outData + i))
             return DHT_READ_TIMEOUT;
 
     // Restore pin to output duties
@@ -96,14 +95,9 @@ DhtStatus readValues(uint8_t port, Number* outTemp, Number* outRH) {
     digitalWrite(port, HIGH);
 
     // See if data received consistent with checksum received
-    uint8_t checkSum = data[0] + data[1] + data[2] + data[3];
-    if (data[4] != checkSum)
+    uint8_t checkSum = outData[0] + outData[1] + outData[2] + outData[3];
+    if (outData[4] != checkSum)
         return DHT_CHECKSUM_FAILURE;
-
-    // Decode the data (compose integer byte with fraction byte)
-    // For Relative Humidity also scale range from 0..100 to 0..1
-    *outTemp = Number(data[2]) + Number(data[3]) / 100.0;
-    *outRH = (Number(data[0]) + Number(data[1]) / 100.0) / 100.0;
 
     return DHT_OK;
 }
@@ -119,12 +113,13 @@ void evaluate(Context ctx) {
     uint8_t port = (uint8_t)getValue<input_PORT>(ctx);
 
     if (state->reading) {
-        Number temp;
-        Number rh;
-        auto status = readValues(port, &temp, &rh);
+        uint8_t data[5];
+        auto status = readValues(port, data);
         if (status == DHT_OK) {
-            emitValue<output_Tc>(ctx, temp);
-            emitValue<output_RH>(ctx, rh);
+            emitValue<output_D0>(ctx, data[0]);
+            emitValue<output_D1>(ctx, data[1]);
+            emitValue<output_D2>(ctx, data[2]);
+            emitValue<output_D3>(ctx, data[3]);
         }
 
         enterIdleState(port);
@@ -134,7 +129,7 @@ void evaluate(Context ctx) {
         pinMode(port, OUTPUT);
         digitalWrite(port, LOW);
         // for request we should keep the line low for 18+ ms
-        setTimeout(ctx, 18); 
+        setTimeout(ctx, 18);
         state->reading = true;
     } else {
         enterIdleState(port);
