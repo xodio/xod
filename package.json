@@ -22,6 +22,7 @@
     "start:xod-client-electron": "lerna run start --scope xod-client-electron",
     "storybook": "lerna run storybook --stream --scope xod-client",
     "test": "XOD_HM_DEF=true lerna run test",
+    "test-strict": "XOD_HM_DEF=strict lerna run test",
     "test:watch": "lerna run --stream test:watch",
     "test-func": "lerna run test-func",
     "test-cpp": "lerna run test-cpp",

@@ -143,13 +143,11 @@ export const defaultizePatch = R.compose(
       assignIds,
       R.map(defaultizeComment)
     ),
-    impls: R.identity,
   }),
   R.merge({
     '@@type': 'xod-project/Patch',
     nodes: {},
     links: {},
-    impls: {},
     comments: {},
     path: '@/default-patch-path',
     description: '',

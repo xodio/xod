@@ -1,4 +1,4 @@
-import { curry } from 'ramda';
+import R from 'ramda';
 import { assert } from 'chai';
 
 import {
@@ -37,72 +37,106 @@ describe('promises', () => {
   });
 
   describe('retryOrFail()', () => {
-    const checkFn = curry((errTime, newTime) => (newTime > errTime));
-    const errFn = curry((errTime, newTime) => {
-      throw new Error(`It failed somehow: ${newTime} is over ${errTime}`);
-    });
+    it('should keep retrying until there are no tries left', () => {
+      const retriesSchedule = [1, 1, 1, 1];
+      let retriesCount = 0;
 
-    it('should retry two times and return resolved promise', () => {
-      const now = Date.now();
-      const until = now + 50;
-      const errTime = now + 200;
-
-      let count = 0;
-
-      return retryOrFail(
-        [25, 25, 150],
-        checkFn(errTime),
-        errFn(errTime),
+      const result = retryOrFail(
+        retriesSchedule,
+        R.F, // never fail by predicate
+        R.identity, // do not transform rejected value
         () => {
-          count += 1;
-          const newTime = Date.now();
-          return (newTime >= until) ? Promise.resolve(newTime) : Promise.reject(newTime);
+          retriesCount += 1;
+          return Promise.reject(retriesCount);
         },
-      )().then((resTime) => {
-        assert.equal(count, 2);
-        assert.isTrue(resTime >= until && resTime < errTime);
+      )();
+
+      return result.then(() => {
+        assert.fail('got resolved promise', 'expected rejected promise');
+      }).catch(() => {
+        assert.equal(
+          retriesCount,
+          retriesSchedule.length
+        );
       });
     });
-    it('should retry three times and return rejected promise, cause tries is left', () => {
-      const now = Date.now();
-      const until = now + 50;
-      const errTime = now + 100;
+    it('should stop retrying if `stopFn` predicate returns true', () => {
+      const retriesSchedule = [1, 1, 1, 1];
+      let retriesCount = 0;
 
-      let count = 0;
+      const retryToStopOn = 2;
 
-      return retryOrFail(
-        [5, 5, 5],
-        checkFn(errTime),
-        errFn(errTime),
+      const result = retryOrFail(
+        retriesSchedule,
+        () => retriesCount >= retryToStopOn,
+        R.identity,
         () => {
-          count += 1;
-          const newTime = Date.now();
-          return (newTime >= until) ? Promise.resolve(newTime) : Promise.reject(newTime);
+          retriesCount += 1;
+          return Promise.reject(retriesCount);
         },
-      )().catch((err) => {
-        assert.equal(count, 3);
-        assert.instanceOf(err, Error);
+      )();
+
+      return result.then(() => {
+        assert.fail('got resolved promise', 'expected rejected promise');
+      }).catch(() => {
+        assert.equal(retriesCount, retryToStopOn);
       });
     });
-    it('should retry and fails by predicate', () => {
-      const now = Date.now();
-      const until = now + 120;
-      const errTime = now + 20;
+    it('should stop retrying after a successful try', () => {
+      const retriesSchedule = [1, 1, 1, 1];
+      let retriesCount = 0;
 
-      let count = 0;
+      const retryToSucceedOn = 2;
 
-      return retryOrFail(
-        [10, 10, 100],
-        checkFn(errTime),
-        errFn(errTime),
+      const result = retryOrFail(
+        retriesSchedule,
+        R.F,
+        R.identity,
         () => {
-          count += 1;
-          const newTime = Date.now();
-          return (newTime >= until) ? Promise.resolve(newTime) : Promise.reject(newTime);
+          retriesCount += 1;
+          return retriesCount === retryToSucceedOn
+            ? Promise.resolve(retriesCount)
+            : Promise.reject(retriesCount);
         },
-      )().catch((err) => {
-        assert.equal(count, 2);
-        assert.instanceOf(err, Error);
+      )();
+
+      return result.then(() => {
+        assert.equal(retriesCount, retryToSucceedOn);
+      });
+    });
+    it('should wait specified amount of time before attempting a next try', () => {
+      const retriesSchedule = [15, 20, 30, 35];
+      let retriesCount = 0;
+
+      const beginTime = Date.now();
+      let lastTryTime = beginTime;
+
+      const result = retryOrFail(
+        retriesSchedule,
+        R.F,
+        R.identity,
+        () => {
+          const now = Date.now();
+
+          assert.isAtLeast(
+            now - lastTryTime,
+            retriesSchedule[retriesCount]
+          );
+
+          retriesCount += 1;
+          lastTryTime = now;
+          return Promise.reject(retriesCount);
+        },
+      )();
+
+      return result.then(() => {
+        assert.fail('got resolved promise', 'expected rejected promise');
+      }).catch(() => {
+        assert.equal(retriesCount, retriesSchedule.length);
+        assert.isAtLeast(
+          lastTryTime - beginTime,
+          R.sum(retriesSchedule)
+        );
       });
     });
   });

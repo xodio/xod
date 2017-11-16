@@ -48,10 +48,13 @@
       },
       "links": {},
       "description": "",
-      "impls": {
-        "espruino": "\nmodule.exports.evaluate = function(e) {\n  digitalWrite(e.inputs.pin, e.inputs.value);\n};\n"
-      },
-      "attachments": [],
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "@@type": "xod-project/Patch"
     },
     "xod/math/multiply": {
@@ -109,10 +112,13 @@
       },
       "links": {},
       "description": "",
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { out: (e.inputs.a * e.inputs.b) };\n};\n"
-      },
-      "attachments": [],
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "@@type": "xod-project/Patch"
     },
     "xod/core/latch": {
@@ -182,10 +188,13 @@
       },
       "links": {},
       "description": "",
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  var inputs = e.inputs;\n  var newState;\n\n  if (inputs.toggle) {\n    newState = !e.context.state;\n  } else if (inputs.set) {\n    newState = true;\n  } else /* if (inputs.reset) */ {\n    newState = false;\n  }\n\n  e.context.state = newState;\n  return { state: newState };\n};\n"
-      },
-      "attachments": [],
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "@@type": "xod-project/Patch"
     },
     "xod/core/clock": {
@@ -231,10 +240,13 @@
       },
       "links": {},
       "description": "",
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  if (e.context.intervalID) {\n    clearInterval(e.context.intervalID);\n  }\n\n  e.context.intervalID = setInterval(function() {\n    e.fire({ tick: PULSE });\n  }, e.inputs.interval * 1000);\n};\n"
-      },
-      "attachments": [],
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "@@type": "xod-project/Patch"
     },
     "xod/core/cast-boolean-to-number": {
@@ -280,10 +292,13 @@
       },
       "links": {},
       "description": "",
-      "impls": {
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: Number(e.inputs.__in__) };\n};\n"
-      },
-      "attachments": [],
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
       "@@type": "xod-project/Patch"
     },
     "@/main": {
@@ -454,7 +469,6 @@
         }
       },
       "description": "",
-      "impls": {},
       "attachments": [],
       "@@type": "xod-project/Patch"
     }

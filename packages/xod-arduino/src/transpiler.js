@@ -8,8 +8,6 @@ import { def } from './types';
 import { renderProject } from './templates';
 import { DEFAULT_TRANSPILATION_OPTIONS } from './constants';
 
-const ARDUINO_IMPLS = ['cpp', 'arduino'];
-
 //-----------------------------------------------------------------------------
 //
 // Utils
@@ -126,7 +124,7 @@ const createTPatches = def(
       const names = createPatchNames(path);
       const impl = explodeMaybe(
         `Implementation for ${path} not found`,
-        Project.getImplByArray(ARDUINO_IMPLS, patch)
+        Project.getImpl(patch)
       );
 
       const outputs = R.compose(
@@ -338,8 +336,8 @@ const getDeferNodeCount = def(
  * and it has a ready-to-use values, nothing needed to compute anymore.
  */
 const transformProjectWithImpls = def(
-  'transformProjectWithImpls :: [Source] -> Project -> PatchPath -> TranspilationOptions -> Either Error TProject',
-  (impls, project, path, opts) => R.compose(
+  'transformProjectWithImpls :: Project -> PatchPath -> TranspilationOptions -> Either Error TProject',
+  (project, path, opts) => R.compose(
     Project.wrapDeadRefErrorMessage(path),
     R.chain((tProject) => {
       const nodeWithTooManyOutputs = R.find(
@@ -368,7 +366,7 @@ const transformProjectWithImpls = def(
       toposortProject(path),
       Project.extractBoundInputsToConstNodes(R.__, path, project),
     )),
-    R.chain(Project.flatten(R.__, path, impls)),
+    R.chain(Project.flatten(R.__, path)),
     R.unless(
       () => opts.debug,
       R.chain(Project.updatePatch(path, Project.removeDebugNodes))
@@ -389,7 +387,7 @@ export const getNodeIdsMap = def(
 export const transformProject = def(
   'transformProject :: Project -> PatchPath -> Either Error TProject',
   (project, patchPath) =>
-    transformProjectWithImpls(ARDUINO_IMPLS, project, patchPath, DEFAULT_TRANSPILATION_OPTIONS)
+    transformProjectWithImpls(project, patchPath, DEFAULT_TRANSPILATION_OPTIONS)
 );
 
 export const transformProjectWithDebug = def(
@@ -398,7 +396,7 @@ export const transformProjectWithDebug = def(
     const options = R.merge(DEFAULT_TRANSPILATION_OPTIONS, {
       debug: true,
     });
-    return transformProjectWithImpls(ARDUINO_IMPLS, project, patchPath, options);
+    return transformProjectWithImpls(project, patchPath, options);
   }
 );
 

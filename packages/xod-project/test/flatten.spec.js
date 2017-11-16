@@ -1,8 +1,12 @@
 import R from 'ramda';
 import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
+import { explodeEither } from 'xod-func-tools';
 
 import * as Helper from './helpers';
+import * as Project from '../src/project';
+import * as Patch from '../src/patch';
+import * as Attachment from '../src/attachment';
 import * as CONST from '../src/constants';
 import flatten, { extractPatches, extractLeafPatches } from '../src/flatten';
 import { formatString } from '../src/utils';
@@ -82,9 +86,9 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            impls: {
-              js: '//ok',
-            },
+            attachments: [
+              Attachment.createImplAttachment('// ok'),
+            ],
           },
         },
       });
@@ -231,9 +235,9 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            impls: {
-              js: '//ok',
-            },
+            attachments: [
+              Attachment.createImplAttachment('// ok'),
+            ],
           },
         },
       });
@@ -428,7 +432,7 @@ describe('Flatten', () => {
           },
         },
       });
-      const result = extractLeafPatches(['js'], project, '@/main', project.patches['@/main'])[0];
+      const result = extractLeafPatches(project, '@/main', project.patches['@/main'])[0];
       expect(result.isLeft).to.be.true();
       Helper.expectErrorMessage(
         msg => expect(msg).to.be.equal(
@@ -494,23 +498,31 @@ describe('Flatten', () => {
             },
           },
           links: {},
-          impls: {
-            js: '//ok',
-          },
+          attachments: [
+            Attachment.createImplAttachment('// ok'),
+          ],
         },
       },
     });
     it('should return error if implementation not found', () => {
-      const flatProject = flatten(project, '@/main', ['cpp']);
+      const projectWithMissingAttachments = R.compose(
+        explodeEither,
+        Project.updatePatch(
+          'xod/core/or',
+          Patch.setPatchAttachments([])
+        )
+      )(project);
+
+      const flatProject = flatten(projectWithMissingAttachments, '@/main');
       expect(flatProject.isLeft).to.be.true();
       Helper.expectErrorMessage(
         expect,
         flatProject,
-        formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: 'cpp', patchPath: 'xod/core/or' })
+        formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { patchPath: 'xod/core/or' })
       );
     });
     it('should ignore not referred patches', () => {
-      const flatProject = flatten(project, 'xod/core/or', ['js']);
+      const flatProject = flatten(project, 'xod/core/or');
 
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
@@ -524,7 +536,7 @@ describe('Flatten', () => {
       );
     });
     it('should return patch and its dependencies', () => {
-      const flatProject = flatten(project, '@/main', ['js']);
+      const flatProject = flatten(project, '@/main');
 
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
@@ -538,7 +550,7 @@ describe('Flatten', () => {
       );
     });
     it('should return patch with links', () => {
-      const flatProject = flatten(project, '@/main', ['js']);
+      const flatProject = flatten(project, '@/main');
 
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
@@ -682,15 +694,15 @@ describe('Flatten', () => {
             },
           },
           links: {},
-          impls: {
-            js: '//ok',
-          },
+          attachments: [
+            Attachment.createImplAttachment('// ok'),
+          ],
         },
       },
     });
 
     it('should ignore not referred patches', () => {
-      const flatProject = flatten(project, '@/foo', ['js']);
+      const flatProject = flatten(project, '@/foo');
 
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
@@ -707,7 +719,7 @@ describe('Flatten', () => {
     });
 
     it('should return patch and its dependencies', () => {
-      const flatProject = flatten(project, '@/main', ['js']);
+      const flatProject = flatten(project, '@/main');
 
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
@@ -725,7 +737,7 @@ describe('Flatten', () => {
     });
 
     it('should return nodes with prefixed ids', () => {
-      const flatProject = flatten(project, '@/main', ['js']);
+      const flatProject = flatten(project, '@/main');
 
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
@@ -743,7 +755,7 @@ describe('Flatten', () => {
     });
 
     it('should remove unused terminals', () => {
-      const flatProject = flatten(project, '@/main', ['js']);
+      const flatProject = flatten(project, '@/main');
 
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
@@ -756,7 +768,7 @@ describe('Flatten', () => {
     });
 
     it('should return flattened links', () => {
-      const flatProject = flatten(project, '@/main', ['js']);
+      const flatProject = flatten(project, '@/main');
 
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
@@ -772,12 +784,12 @@ describe('Flatten', () => {
 
     it('should correctly flatten blinking.json', () => {
       const defaultizedBlinking = Helper.defaultizeProject(blinking);
-      const flattened = R.unnest(flatten(defaultizedBlinking, '@/main', ['espruino', 'js']));
+      const flattened = R.unnest(flatten(defaultizedBlinking, '@/main'));
       expect(flattened).to.deep.equal(blinkingFlat);
     });
 
     it('should correctly flatten deeply-nested.json', () => {
-      const eitherErrorOrFlat = flatten(deeplyNested, '@/main', ['arduino', 'cpp']);
+      const eitherErrorOrFlat = flatten(deeplyNested, '@/main');
 
       expect(eitherErrorOrFlat.isRight).to.be.true();
 
@@ -838,9 +850,9 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            impls: {
-              js: '//OK',
-            },
+            attachments: [
+              Attachment.createImplAttachment('// ok'),
+            ],
           },
           'xod/core/cast-boolean-to-number': {
             nodes: {
@@ -860,13 +872,12 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            impls: {},
           },
         },
       });
 
       it('should return patches without cast patch', () => {
-        const flatProject = flatten(project, '@/main', ['js']);
+        const flatProject = flatten(project, '@/main');
         expect(flatProject.isRight).to.be.true();
         Helper.expectEither(
           (newProject) => {
@@ -878,7 +889,7 @@ describe('Flatten', () => {
       });
 
       it('should return @/main without cast node and link to it', () => {
-        const flatProject = flatten(project, '@/main', ['js']);
+        const flatProject = flatten(project, '@/main');
 
         expect(flatProject.isRight).to.be.true();
         Helper.expectEither(
@@ -962,9 +973,9 @@ describe('Flatten', () => {
                   },
                 },
                 links: {},
-                impls: {
-                  js: '//OK',
-                },
+                attachments: [
+                  Attachment.createImplAttachment('// ok'),
+                ],
               },
               [`xod/core/${typeOut}`]: {
                 nodes: {
@@ -980,9 +991,9 @@ describe('Flatten', () => {
                   },
                 },
                 links: {},
-                impls: {
-                  js: '//OK',
-                },
+                attachments: [
+                  Attachment.createImplAttachment('// ok'),
+                ],
               },
               [`xod/core/cast-${typeIn}-to-${typeOut}`]: {
                 nodes: {
@@ -1003,7 +1014,6 @@ describe('Flatten', () => {
                   },
                 },
                 links: {},
-                impls: {},
               },
             },
           });
@@ -1028,7 +1038,7 @@ describe('Flatten', () => {
             };
           }
 
-          const flatProject = flatten(project, '@/main', ['js']);
+          const flatProject = flatten(project, '@/main');
           const expectedPath = `xod/core/cast-${typeIn}-to-${typeOut}`; // getCastPatchPath(typeIn, typeOut);
           const expectedPaths = (typeIn === typeOut) ?
             [`xod/core/${typeIn}`, expectedPath, '@/main'] :
@@ -1118,9 +1128,9 @@ describe('Flatten', () => {
                   },
                 },
                 links: {},
-                impls: {
-                  js: '//OK',
-                },
+                attachments: [
+                  Attachment.createImplAttachment('// ok'),
+                ],
               },
               [`xod/core/${typeIn}`]: {
                 nodes: {
@@ -1136,9 +1146,9 @@ describe('Flatten', () => {
                   },
                 },
                 links: {},
-                impls: {
-                  js: '//OK',
-                },
+                attachments: [
+                  Attachment.createImplAttachment('// ok'),
+                ],
               },
               [`xod/core/cast-${typeIn}-to-${typeOut}`]: {
                 nodes: {
@@ -1159,7 +1169,6 @@ describe('Flatten', () => {
                   },
                 },
                 links: {},
-                impls: {},
               },
             },
           });
@@ -1184,7 +1193,7 @@ describe('Flatten', () => {
             };
           }
 
-          const flatProject = flatten(project, '@/main', ['js']);
+          const flatProject = flatten(project, '@/main');
           const expectedPath = `xod/core/cast-${typeIn}-to-${typeOut}`; // getCastPatchPath(typeIn, typeOut);
           const expectedPaths = (typeIn === typeOut) ?
             [`xod/core/${typeIn}`, expectedPath, '@/main'] :
@@ -1288,15 +1297,15 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            impls: {
-              js: '//OK',
-            },
+            attachments: [
+              Attachment.createImplAttachment('// ok'),
+            ],
           },
         },
       });
 
       it('should return patches without cast patch', () => {
-        const flatProject = flatten(project, '@/main', ['js']);
+        const flatProject = flatten(project, '@/main');
 
         expect(flatProject.isRight).to.be.true();
         Helper.expectEither(
@@ -1309,7 +1318,7 @@ describe('Flatten', () => {
       });
 
       it('should return two flattened nodes', () => {
-        const flatProject = flatten(project, '@/main', ['js']);
+        const flatProject = flatten(project, '@/main');
 
         expect(flatProject.isRight).to.be.true();
         Helper.expectEither(
@@ -1322,7 +1331,7 @@ describe('Flatten', () => {
       });
 
       it('should return one flattened links', () => {
-        const flatProject = flatten(project, '@/main', ['js']);
+        const flatProject = flatten(project, '@/main');
 
         expect(flatProject.isRight).to.be.true();
         Helper.expectEither(
@@ -1400,15 +1409,15 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            impls: {
-              js: '//ok',
-            },
+            attachments: [
+              Attachment.createImplAttachment('// ok'),
+            ],
           },
         },
       });
 
       it(`should return Either.Left with error "${CONST.ERROR.CAST_PATCH_NOT_FOUND}"`, () => {
-        const flatProject = flatten(project, '@/main', ['js']);
+        const flatProject = flatten(project, '@/main');
 
         expect(flatProject.isLeft).to.be.true();
         Helper.expectErrorMessage(
@@ -1431,7 +1440,7 @@ describe('Flatten', () => {
       //
       it('should create a separate cast node for each casted output', () => {
         const castMultipleOutputs = fromXodballDataUnsafe(castMultipleOutputsXodball);
-        const flatProject = flatten(castMultipleOutputs, '@/main', ['arduino', 'cpp']);
+        const flatProject = flatten(castMultipleOutputs, '@/main');
 
         expect(flatProject.isRight).to.be.true();
         Helper.expectEither(
@@ -1504,14 +1513,14 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            impls: {
-              js: '// ok',
-            },
+            attachments: [
+              Attachment.createImplAttachment('// ok'),
+            ],
           },
         },
       });
 
-      const flatProject = flatten(project, '@/main', ['js']);
+      const flatProject = flatten(project, '@/main');
 
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
@@ -1669,9 +1678,9 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            impls: {
-              js: '//ok',
-            },
+            attachments: [
+              Attachment.createImplAttachment('// ok'),
+            ],
           },
           'xod/core/cast-boolean-to-number': {
             nodes: {
@@ -1691,9 +1700,9 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            impls: {
-              js: '// BOOL2NUM',
-            },
+            attachments: [
+              Attachment.createImplAttachment('// ok'),
+            ],
           },
           'xod/core/cast-number-to-boolean': {
             nodes: {
@@ -1713,13 +1722,13 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            impls: {
-              js: '// NUM2BOOL',
-            },
+            attachments: [
+              Attachment.createImplAttachment('// ok'),
+            ],
           },
         },
       });
-      const flatProject = flatten(project, '@/main', ['js']);
+      const flatProject = flatten(project, '@/main');
 
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
@@ -1790,13 +1799,13 @@ describe('Flatten', () => {
                 type: 'xod/patch-nodes/output-number',
               },
             },
-            impls: {
-              js: '// ok',
-            },
+            attachments: [
+              Attachment.createImplAttachment('// ok'),
+            ],
           },
         },
       });
-      const flatProject = flatten(project, '@/main', ['js']);
+      const flatProject = flatten(project, '@/main');
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
         (newProject) => {
@@ -1811,7 +1820,7 @@ describe('Flatten', () => {
     });
 
     it('should propagate bound values to nested patches', () => {
-      const flatProject = flatten(boundInputValuesPropagation, '@/main', ['cpp']);
+      const flatProject = flatten(boundInputValuesPropagation, '@/main');
 
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
@@ -1825,7 +1834,7 @@ describe('Flatten', () => {
     it('should propagate bound values to DEEPLY nested patches', () => {
       const deepBoundValuesPropagationProject =
         fromXodballDataUnsafe(deepBoundValuesPropagationXodball);
-      const flatProject = flatten(deepBoundValuesPropagationProject, '@/main', ['arduino', 'cpp']);
+      const flatProject = flatten(deepBoundValuesPropagationProject, '@/main');
 
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
@@ -1852,6 +1861,27 @@ describe('Flatten', () => {
             },
           },
         },
+        '@/references-patch-without-impl': {
+          nodes: {
+            a: {
+              id: 'a',
+              type: '@/no-impl',
+            },
+            b: {
+              id: 'b',
+              type: 'xod/core/and',
+            },
+          },
+        },
+        '@/no-impl': {
+          nodes: {
+            noNativeImpl: {
+              id: 'noNativeImpl',
+              position: { x: 100, y: 100 },
+              type: 'xod/patch-nodes/not-implemented-in-xod',
+            },
+          },
+        },
         'xod/core/or': {
           nodes: {
             noNativeImpl: {
@@ -1860,10 +1890,9 @@ describe('Flatten', () => {
               type: 'xod/patch-nodes/not-implemented-in-xod',
             },
           },
-          impls: {
-            js: '// ok',
-            arduino: '// ok',
-          },
+          attachments: [
+            Attachment.createImplAttachment('// ok'),
+          ],
         },
         'xod/core/and': {
           nodes: {
@@ -1873,17 +1902,16 @@ describe('Flatten', () => {
               type: 'xod/patch-nodes/not-implemented-in-xod',
             },
           },
-          impls: {
-            js: '// ok',
-            cpp: '// ok',
-          },
+          attachments: [
+            Attachment.createImplAttachment('// ok'),
+          ],
         },
       },
     });
 
     describe('single', () => {
       it('defined implementation exists', () => {
-        const flatProject = flatten(project, '@/main', ['js']);
+        const flatProject = flatten(project, '@/main');
 
         expect(flatProject.isRight).to.be.true();
         Helper.expectEither(
@@ -1895,54 +1923,30 @@ describe('Flatten', () => {
         );
       });
       it('no defined implementation in the project', () => {
-        const flatProject = flatten(project, '@/main', ['java']);
+        const flatProject = flatten(project, '@/references-patch-without-impl');
         expect(flatProject.isLeft).to.be.true();
         Helper.expectErrorMessage(
           expect,
           flatProject,
-          formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: 'java', patchPath: 'xod/core/or' })
-        );
-      });
-    });
-    describe('multiple', () => {
-      it('defined implementations exists', () => {
-        const flatProject = flatten(project, '@/main', ['arduino', 'cpp']);
-
-        expect(flatProject.isRight).to.be.true();
-        Helper.expectEither(
-          (newProject) => {
-            expect(newProject.patches['@/main'])
-              .to.be.deep.equal(project.patches['@/main']);
-          },
-          flatProject
-        );
-      });
-      it('no defined implementations in the project', () => {
-        const impls = ['java', 'scala'];
-        const flatProject = flatten(project, '@/main', impls);
-        expect(flatProject.isLeft).to.be.true();
-        Helper.expectErrorMessage(
-          expect,
-          flatProject,
-          formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { impl: impls, patchPath: 'xod/core/or' })
+          formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { patchPath: '@/no-impl' })
         );
       });
     });
     describe('patch not implemented in xod as an entry point', () => {
       it('should not be a valid entry point if it has no defined implementation', () => {
-        const flatProject = flatten(project, 'xod/core/or', ['java']);
+        const flatProject = flatten(project, '@/no-impl');
         expect(flatProject.isLeft).to.be.true();
         Helper.expectErrorMessage(
           expect,
           flatProject,
           formatString(
             CONST.ERROR.IMPLEMENTATION_NOT_FOUND,
-            { impl: 'java', patchPath: 'xod/core/or' }
+            { patchPath: '@/no-impl' }
           )
         );
       });
       it('shoud be a valid entry point if it has required implementation', () => {
-        const flatProject = flatten(project, 'xod/core/or', ['js']);
+        const flatProject = flatten(project, 'xod/core/or');
 
         expect(flatProject.isRight).to.be.true();
         Helper.expectEither(
@@ -1954,8 +1958,5 @@ describe('Flatten', () => {
         );
       });
     });
-    // TODO: Write test:
-    //       Check taking of patch with implementation even it has nodes
-    //       and recursively extracting nodes if not
   });
 });

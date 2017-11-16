@@ -9,7 +9,6 @@ export const convertProjectToProjectFileContents = def(
   R.compose(
     R.dissoc('@@type'),
     R.dissoc('patches'),
-    R.dissoc('impls'),
     R.dissoc('attachments')
   )
 );
@@ -20,7 +19,6 @@ export const convertProjectFileContentsToProject = def(
     R.assoc('@@type', 'xod-project/Project'),
     R.assoc('patches', {}),
     R.assoc('attachments', []),
-    R.assoc('impls', {})
   )
 );
 
@@ -29,7 +27,6 @@ export const convertPatchToPatchFileContents = def(
   R.compose(
     XF.omitTypeHints,
     R.dissoc('attachments'),
-    R.dissoc('impls'),
     R.dissoc('path'),
     R.evolve({
       nodes: R.values,

@@ -26,22 +26,13 @@
       }
     },
     "links": {},
-    "impls": {
-      "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    reemitValue<output_VAL>(nid);\n}\n",
-      "js": "module.exports.setup = function(e) {\n  e.fire();\n};\n"
-    },
     "path": "xod/core/constant-boolean",
     "description": "Constant value",
     "attachments": [
       {
-        "filename": "any.cpp",
+        "filename": "patch.cpp",
         "encoding": "utf8",
         "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    reemitValue<output_VAL>(nid);\n}\n"
-      },
-      {
-        "filename": "any.js",
-        "encoding": "utf8",
-        "content": "module.exports.setup = function(e) {\n  e.fire();\n};\n"
       }
     ]
   },
@@ -74,22 +65,13 @@
       }
     },
     "links": {},
-    "impls": {
-      "cpp": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n  reemitValue<output_VAL>(nid);\n}\n",
-      "js": "module.exports.setup = function(e) {\n  e.fire();\n};\n"
-    },
     "path": "xod/core/constant-number",
     "description": "",
     "attachments": [
       {
-        "filename": "any.cpp",
+        "filename": "patch.cpp",
         "encoding": "utf8",
         "content": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n  reemitValue<output_VAL>(nid);\n}\n"
-      },
-      {
-        "filename": "any.js",
-        "encoding": "utf8",
-        "content": "module.exports.setup = function(e) {\n  e.fire();\n};\n"
       }
     ]
   },
@@ -122,14 +104,11 @@
       }
     },
     "links": {},
-    "impls": {
-      "cpp": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n  reemitValue<output_VAL>(nid);\n}\n"
-    },
     "path": "xod/core/constant-string",
     "description": "",
     "attachments": [
       {
-        "filename": "any.cpp",
+        "filename": "patch.cpp",
         "encoding": "utf8",
         "content": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n  reemitValue<output_VAL>(nid);\n}\n"
       }
@@ -164,14 +143,11 @@
       }
     },
     "links": {},
-    "impls": {
-      "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    emitValue<output_TICK>(nid, 1);\n    setTimeout(nid, 0);\n}\n"
-    },
     "path": "xod/core/continuously",
     "description": "Continuously outputs pulses",
     "attachments": [
       {
-        "filename": "any.cpp",
+        "filename": "patch.cpp",
         "encoding": "utf8",
         "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    emitValue<output_TICK>(nid, 1);\n    setTimeout(nid, 0);\n}\n"
       }
@@ -206,22 +182,13 @@
       }
     },
     "links": {},
-    "impls": {
-      "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    emitValue<output_BOOT>(nid, 1);\n}\n",
-      "js": "module.exports.evaluate = function(e) {\n  e.fire({ BOOT: PULSE });\n};\n"
-    },
     "path": "xod/core/boot",
     "description": "Outputs a single pulse when the program starts",
     "attachments": [
       {
-        "filename": "any.cpp",
+        "filename": "patch.cpp",
         "encoding": "utf8",
         "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n    emitValue<output_BOOT>(nid, 1);\n}\n"
-      },
-      {
-        "filename": "any.js",
-        "encoding": "utf8",
-        "content": "module.exports.evaluate = function(e) {\n  e.fire({ BOOT: PULSE });\n};\n"
       }
     ]
   }

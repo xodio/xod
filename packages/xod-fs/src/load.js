@@ -22,7 +22,6 @@ import {
 } from './utils';
 import { ProjectFileContents } from './types';
 import { loadAttachments } from './attachments';
-import { loadPatchImpls } from './impls';
 import {
   convertPatchFileContentsToPatch,
   addMissingOptionsToPatchFileContents,
@@ -94,7 +93,6 @@ const readXodFile = projectPath => xodfile =>
             () => base === 'patch.xodp',
             patch => R.composeP(
               loadAttachments(dir),
-              loadPatchImpls(dir),
               R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
               convertPatchFileContentsToPatch,
               rejectOnInvalidPatchFileContents(filePath),

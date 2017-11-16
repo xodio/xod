@@ -9,13 +9,10 @@
         {
           "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto head = getValue<input_HEAD>(ctx);\n    auto tail = getValue<input_TAIL>(ctx);\n    emitValue<output_STR>(ctx, head->concat(tail));\n}\n",
           "encoding": "utf8",
-          "filename": "any.cpp"
+          "filename": "patch.cpp"
         }
       ],
       "description": "Concatenates (adds together) two strings",
-      "impls": {
-        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto head = getValue<input_HEAD>(ctx);\n    auto tail = getValue<input_TAIL>(ctx);\n    emitValue<output_STR>(ctx, head->concat(tail));\n}\n"
-      },
       "links": {},
       "comments": {},
       "nodes": {
@@ -76,13 +73,10 @@
         {
           "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n}\n",
           "encoding": "utf8",
-          "filename": "any.cpp"
+          "filename": "patch.cpp"
         }
       ],
       "description": "",
-      "impls": {
-        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n}\n"
-      },
       "links": {},
       "comments": {},
       "nodes": {
@@ -143,13 +137,10 @@
         {
           "content": "struct State {\n    bool begun;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    if (!isInputDirty<input_DUMP>(ctx))\n        return;\n\n    State* state = getState(ctx);\n    if (!state->begun) {\n        Serial.begin(115200);\n    }\n\n    auto line = getValue<input_LINE>(ctx);\n    if (line) {\n        for (auto it = line->iterate(); it; ++it)\n            Serial.write((char)*it);\n        Serial.write('\\r');\n        Serial.write('\\n');\n        Serial.flush();\n    }\n}\n",
           "encoding": "utf8",
-          "filename": "arduino.cpp"
+          "filename": "patch.cpp"
         }
       ],
       "description": "Outputs a line of text to the board standard debug interface",
-      "impls": {
-        "arduino": "struct State {\n    bool begun;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    if (!isInputDirty<input_DUMP>(ctx))\n        return;\n\n    State* state = getState(ctx);\n    if (!state->begun) {\n        Serial.begin(115200);\n    }\n\n    auto line = getValue<input_LINE>(ctx);\n    if (line) {\n        for (auto it = line->iterate(); it; ++it)\n            Serial.write((char)*it);\n        Serial.write('\\r');\n        Serial.write('\\n');\n        Serial.flush();\n    }\n}\n"
-      },
       "links": {},
       "comments": {},
       "nodes": {
@@ -198,19 +189,10 @@
         {
           "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    char str[16];\n    auto num = getValue<input_IN>(ctx);\n    dtostrf(num, 0, 2, str);\n    auto xstr = ::xod::List<char>::fromPlainArray(str, strlen(str));\n    emitValue<output_OUT>(ctx, xstr);\n}\n",
           "encoding": "utf8",
-          "filename": "any.cpp"
-        },
-        {
-          "content": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n",
-          "encoding": "utf8",
-          "filename": "any.js"
+          "filename": "patch.cpp"
         }
       ],
       "description": "Transforms a number to string with two digits after dot",
-      "impls": {
-        "cpp": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    char str[16];\n    auto num = getValue<input_IN>(ctx);\n    dtostrf(num, 0, 2, str);\n    auto xstr = ::xod::List<char>::fromPlainArray(str, strlen(str));\n    emitValue<output_OUT>(ctx, xstr);\n}\n",
-        "js": "\nmodule.exports.evaluate = function(e) {\n  return { __out__: String(e.inputs.__in__) };\n};\n"
-      },
       "links": {},
       "comments": {},
       "nodes": {
@@ -380,7 +362,6 @@
           "@@type": "xod-project/Link"
         }
       },
-      "impls": {},
       "path": "@/main",
       "description": "",
       "attachments": [],
