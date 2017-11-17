@@ -1,7 +1,7 @@
 import R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 
-import { explode, explodeEither, catMaybies } from 'xod-func-tools';
+import { explode, explodeMaybe, explodeEither, catMaybies } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Project from './project';
@@ -13,6 +13,7 @@ import { def } from './types';
 import { formatString, wrapDeadRefErrorMessage } from './utils';
 import { err, errOnNothing } from './func-tools';
 import * as PatchPathUtils from './patchPathUtils';
+import { getPinKeyForTerminalDirection } from './builtInPatches';
 
 // =============================================================================
 //
@@ -60,6 +61,8 @@ const isInternalTerminalNode = R.compose(
   PatchPathUtils.isInternalTerminalNodeType,
   Node.getNodeType
 );
+
+const terminalOriginalDirectionLens = R.lensProp('originalDirection');
 
 // :: Applicative f => f a -> [(a -> Applicative a)] -> f a
 const reduceChainOver = R.reduce(R.flip(R.chain));
@@ -367,16 +370,13 @@ const isLinkConnectedToNodeIds = R.curry(
   )
 );
 
-// :: ((a → Boolean) → [a] → a | undefined) -> [Node] -> Maybe DataValue
-const findBoundValue = R.uncurryN(2)(
-  findFn => R.compose(
+// :: ([a] → a | undefined) -> PinKey -> [Node] -> Maybe DataValue
+const findBoundValue = R.uncurryN(3)(
+  (findFn, pinKey) => R.compose(
     Maybe,
-    R.unless(
-      R.isNil,
-      R.compose(R.head, R.values) // because terminal nodes always have only one bound value
-    ),
-    findFn(R.complement(R.isEmpty)),
-    R.map(Node.getAllBoundValues)
+    findFn,
+    catMaybies,
+    R.map(Node.getBoundValue(pinKey))
   )
 );
 
@@ -387,57 +387,40 @@ const getValueToBind = R.curry((nodesById, linksChain) => {
     Link.getLinkOutputNodeId
   ))(linksChain);
 
-  const isTopNodeTerminal = R.compose(
-    isInternalTerminalNode,
-    R.last
-  )(outputNodesFromLinkChain);
+  const topNode = R.last(outputNodesFromLinkChain);
+  const isTopNodeTerminal = isInternalTerminalNode(topNode);
 
-  return isTopNodeTerminal
-    // We must take bound value from the 'highest' terminal node
-    // and bind it to 'base' node input
-    //
-    // Example:
-    //   `led` passes value bound to it's PORT pin
-    //   to pwm-output's PORT pin inside it's implementation
-    //
-    //               ...
-    //        PORT    |
-    //    +----O------O----+
-    //    |    |           |
-    //    |    |     ...   |
-    //    |    |           |
-    //    | +--O------O--+ |
-    //    | | pwm-output | |
-    //    | +------------+ |
-    //    +----------------+
-    ? findBoundValue(R.findLast, outputNodesFromLinkChain).map((topBoundValue) => {
-      const bottomLink = R.head(linksChain);
-      return {
-        nodeId: Link.getLinkInputNodeId(bottomLink),
-        pinKey: Link.getLinkInputPinKey(bottomLink),
-        value: topBoundValue,
-      };
-    })
-    // We must take bound value from the 'lowest' terminal node
-    // and bind it to 'top' node output
-    //
-    // Example:
-    //   We have some node that wraps `count` node.
-    //   We should be able to pass initial value to
-    //   up to count's output
-    //
-    //    | +-------+     |
-    //    | | count | ... |
-    //    | +-O-----+     |
-    //    |   |           |
-    //    +---O-----------+
-    //        |\
-    //        | \--- here some initial value is bound
-    //        |
-    //    +---O-----------+
-    //    |  ...          |
-    //    +---------------+
-    : findBoundValue(R.find, R.init(outputNodesFromLinkChain)).map((bottomBoundValue) => {
+  // Example:
+  //   We have some node that wraps `count` node.
+  //   We should be able to pass initial value to
+  //   up to count's output
+  //
+  //    | +-------+     |
+  //    | | count | ... |
+  //    | +-O-----+     |
+  //    |   |           |
+  //    +---O-----------+
+  //        |\
+  //        | \--- here some initial value is bound
+  //        |
+  //    +---O-----------+
+  //    |   |           |
+  //    | +-O-----+     |
+  //    | |  ...  | ... |
+  if (!isTopNodeTerminal) {
+    const topOutputTermianls = R.compose(
+      R.takeLastWhile(R.compose(
+        R.equals(CONST.PIN_DIRECTION.OUTPUT),
+        R.view(terminalOriginalDirectionLens)
+      )),
+      R.init, // Because top node is not a terminal
+    )(outputNodesFromLinkChain);
+
+    return findBoundValue(
+      R.head,
+      getPinKeyForTerminalDirection(CONST.PIN_DIRECTION.OUTPUT),
+      topOutputTermianls
+    ).map((bottomBoundValue) => {
       const topLink = R.last(linksChain);
       return {
         nodeId: Link.getLinkOutputNodeId(topLink),
@@ -445,6 +428,64 @@ const getValueToBind = R.curry((nodesById, linksChain) => {
         value: bottomBoundValue,
       };
     });
+  }
+
+  // special case — "custom" constant nodes
+  const topTerminalWasOutput = R.equals(
+    CONST.PIN_DIRECTION.OUTPUT,
+    R.view(terminalOriginalDirectionLens, topNode)
+  );
+  const maybeTopTerminalBoundValue = Node.getBoundValue(
+    getPinKeyForTerminalDirection(CONST.PIN_DIRECTION.OUTPUT),
+    topNode
+  );
+  if (
+    isTopNodeTerminal &&
+    topTerminalWasOutput &&
+    Maybe.isJust(maybeTopTerminalBoundValue)
+  ) {
+    const value = explodeMaybe(
+      'maybeTopTerminalBoundValue is guaranteed to be Just at this point',
+      maybeTopTerminalBoundValue
+    );
+    const bottomLink = R.head(linksChain);
+
+    return Maybe.Just({
+      nodeId: Link.getLinkInputNodeId(bottomLink),
+      pinKey: Link.getLinkInputPinKey(bottomLink),
+      value,
+    });
+  }
+
+  // We must take bound value from the 'highest' terminal node
+  // and bind it to 'base' node input
+  //
+  // Example:
+  //   `led` passes value bound to it's PORT pin
+  //   to pwm-output's PORT pin inside it's implementation
+  //
+  //               ...
+  //        PORT    |
+  //    +----O------O----+
+  //    |    |           |
+  //    |    |     ...   |
+  //    |    |           |
+  //    | +--O------O--+ |
+  //    | | pwm-output | |
+  //    | +------------+ |
+  //    +----------------+
+  return findBoundValue(
+    R.last,
+    getPinKeyForTerminalDirection(CONST.PIN_DIRECTION.INPUT),
+    outputNodesFromLinkChain
+  ).map((topBoundValue) => {
+    const bottomLink = R.head(linksChain);
+    return {
+      nodeId: Link.getLinkInputNodeId(bottomLink),
+      pinKey: Link.getLinkInputPinKey(bottomLink),
+      value: topBoundValue,
+    };
+  });
 });
 
 // :: [Link] -> Link
@@ -643,24 +684,42 @@ const updateLinkNodeIds = R.curry((leafPaths, prefix, patch, link) => {
 //  -> convertPatch -> extractPatches
 //
 
+// :: Node -> Boolean
+const isTerminalNode = R.compose(
+  PatchPathUtils.isTerminalPatchPath,
+  Node.getNodeType
+);
 
 // :: NodePins -> Node -> NodePins
 const rekeyBoundValues = R.curry((boundValues, node) => { // TODO: better name?
   const nodeId = Node.getNodeId(node);
-  const isTerminalNode = R.compose(
-    PatchPathUtils.isTerminalPatchPath,
-    Node.getNodeType
-  )(node);
 
-  if (isTerminalNode && R.has(nodeId, boundValues)) {
+  if (isTerminalNode(node) && R.has(nodeId, boundValues)) {
+    const terminalPinKey = R.compose(
+      getPinKeyForTerminalDirection,
+      PatchPathUtils.getTerminalDirection,
+      Node.getNodeType
+    )(node);
+
     return R.applySpec({
-      [CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.INPUT]]: R.prop(nodeId),
-      // TODO: no `__out__` because we can't "bind" output values?
+      [terminalPinKey]: R.prop(nodeId),
     })(boundValues);
   }
 
   return R.prop('boundValues', node);
 });
+
+const convertTerminalToInternalTerminal =
+  R.when(
+    isTerminalNode,
+    (node) => {
+      const nodeType = Node.getNodeType(node);
+      return R.compose(
+        Node.setNodeType(PatchPathUtils.convertToInternalTerminalPath(nodeType)),
+        R.set(terminalOriginalDirectionLens, PatchPathUtils.getTerminalDirection(nodeType))
+      )(node);
+    }
+  );
 
 /**
  * Extract all patches nodes and links recursvely.
@@ -694,13 +753,7 @@ export const extractPatches = R.curry((project, leafPaths, prefix, boundValues, 
           // 1.3. update id
           node => R.assoc('id', getPrefixedId(prefix, Node.getNodeId(node)), node),
           // 1.2. convert node type from 'input|output' to 'terminal', if needed
-          R.over(
-            R.lensProp('type'),
-            R.when(
-              PatchPathUtils.isTerminalPatchPath,
-              PatchPathUtils.convertToInternalTerminalPath
-            )
-          ),
+          convertTerminalToInternalTerminal,
           // 1.1. Copy and rekey pins from parent node
           node => R.assoc('boundValues', rekeyBoundValues(boundValues, node), node)
         ),
