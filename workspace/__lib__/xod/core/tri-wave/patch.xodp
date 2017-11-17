@@ -1,0 +1,169 @@
+{
+  "description": "Generates triangle wave signal",
+  "links": [
+    {
+      "id": "Bk-w9qKyf",
+      "input": {
+        "nodeId": "SyFLcqtJG",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJ04rcKyM",
+        "pinKey": "BkK3N5Y1M"
+      }
+    },
+    {
+      "id": "BkQLq9Kkz",
+      "input": {
+        "nodeId": "HywSB5FyG",
+        "pinKey": "HJF16v_kz"
+      },
+      "output": {
+        "nodeId": "S1iB5qFkz",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJU85cF1M",
+      "input": {
+        "nodeId": "HywSB5FyG",
+        "pinKey": "r1W1Tw_yz"
+      },
+      "output": {
+        "nodeId": "HJ4Sc5FJG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HktrS9K1f",
+      "input": {
+        "nodeId": "HJ04rcKyM",
+        "pinKey": "S1i0E5KkM"
+      },
+      "output": {
+        "nodeId": "HywSB5FyG",
+        "pinKey": "BJMlTDdJM"
+      }
+    },
+    {
+      "id": "SJVIq9Yyf",
+      "input": {
+        "nodeId": "HywSB5FyG",
+        "pinKey": "S1akTPOJf"
+      },
+      "output": {
+        "nodeId": "Bke855F1z",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJfw9cFkf",
+      "input": {
+        "nodeId": "rykP99t1z",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJ04rcKyM",
+        "pinKey": "HyiTVcFJG"
+      }
+    },
+    {
+      "id": "rytIrcY1M",
+      "input": {
+        "nodeId": "HJ04rcKyM",
+        "pinKey": "Sy7eS5tyz"
+      },
+      "output": {
+        "nodeId": "HJU8B5tkM",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers the generator update. It will update the output values.",
+      "id": "Bke855F1z",
+      "label": "UPD",
+      "position": {
+        "x": 306,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "HJ04rcKyM",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "@/tri-wave-map"
+    },
+    {
+      "boundValues": {
+        "__out__": true
+      },
+      "description": "Enabled or not. If set to `false` pulses on `UPD` do not change the output value. Effictively that means the generator is paused. Set to `true` again to continue generation.\n",
+      "id": "HJ4Sc5FJG",
+      "label": "EN",
+      "position": {
+        "x": 238,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "boundValues": {
+        "__out__": 1
+      },
+      "description": "An interval between wave peaks, i.e. the period of the signal",
+      "id": "HJU8B5tkM",
+      "label": "T",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HywSB5FyG",
+      "position": {
+        "x": 238,
+        "y": 102
+      },
+      "type": "@/timer"
+    },
+    {
+      "description": "Resets the current `Fx` and `N` to zero.",
+      "id": "S1iB5qFkz",
+      "label": "RST",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "The signal value in [0, 1] range. Starts from 0.",
+      "id": "SyFLcqtJG",
+      "label": "OUT",
+      "position": {
+        "x": 136,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "The number of current cycle.  Starts from 0.",
+      "id": "rykP99t1z",
+      "label": "N",
+      "position": {
+        "x": 170,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

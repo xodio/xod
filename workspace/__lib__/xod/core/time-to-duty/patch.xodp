@@ -1,0 +1,126 @@
+{
+  "description": "Converts two absolute time values representing on and off time to a total duration and duty cycle values",
+  "links": [
+    {
+      "id": "Bk-dqAYJz",
+      "input": {
+        "nodeId": "BJK85RY1G",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Bknv50Kkf",
+        "pinKey": "SyomIRurDJ-"
+      }
+    },
+    {
+      "id": "Bk1_90tkM",
+      "input": {
+        "nodeId": "Bknv50Kkf",
+        "pinKey": "BJnQUR_BwyZ"
+      },
+      "output": {
+        "nodeId": "HJ1SqAFkG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BygO5RKyM",
+      "input": {
+        "nodeId": "Bknv50Kkf",
+        "pinKey": "HkqmLAOrD1W"
+      },
+      "output": {
+        "nodeId": "BJZr50KyG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H10KcAYkG",
+      "input": {
+        "nodeId": "S11t5CtJG",
+        "pinKey": "BytUCdHD1-"
+      },
+      "output": {
+        "nodeId": "Bknv50Kkf",
+        "pinKey": "SyomIRurDJ-"
+      }
+    },
+    {
+      "id": "HJ5scRY1f",
+      "input": {
+        "nodeId": "S11t5CtJG",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "HJ1SqAFkG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hkzn9AKkf",
+      "input": {
+        "nodeId": "Hy-vqRtJG",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S11t5CtJG",
+        "pinKey": "BkqLCOSw1W"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJK85RY1G",
+      "label": "T",
+      "position": {
+        "x": 34,
+        "y": 510
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "BJZr50KyG",
+      "label": "Toff",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Bknv50Kkf",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/core/add"
+    },
+    {
+      "id": "HJ1SqAFkG",
+      "label": "Ton",
+      "position": {
+        "x": -68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Duty cycle of ON time in range [0, 1]",
+      "id": "Hy-vqRtJG",
+      "label": "DUTY",
+      "position": {
+        "x": 68,
+        "y": 510
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "S11t5CtJG",
+      "position": {
+        "x": -68,
+        "y": 306
+      },
+      "type": "xod/core/divide"
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "description": "Generates sawtooth wave signal",
+  "links": [
+    {
+      "id": "BkJ0P_uyz",
+      "input": {
+        "nodeId": "H1CIw_Okz",
+        "pinKey": "r1W1Tw_yz"
+      },
+      "output": {
+        "nodeId": "SyapDuu1G",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkR2P_d1z",
+      "input": {
+        "nodeId": "B1XLvdOJz",
+        "pinKey": "Bk2ZBdOyf"
+      },
+      "output": {
+        "nodeId": "SkvhPuO1M",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkzDvu_Jz",
+      "input": {
+        "nodeId": "B1XLvdOJz",
+        "pinKey": "SJqlS__yz"
+      },
+      "output": {
+        "nodeId": "H1CIw_Okz",
+        "pinKey": "BJMlTDdJM"
+      }
+    },
+    {
+      "id": "By0kdOuJz",
+      "input": {
+        "nodeId": "H1CIw_Okz",
+        "pinKey": "HJF16v_kz"
+      },
+      "output": {
+        "nodeId": "HJo1OOdyG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJl1Ytu1z",
+      "input": {
+        "nodeId": "S1SWOd_1z",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1XLvdOJz",
+        "pinKey": "HybQBdOyf"
+      }
+    },
+    {
+      "id": "Hk1MudOyz",
+      "input": {
+        "nodeId": "rypbuud1M",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1XLvdOJz",
+        "pinKey": "B1a7B_O1z"
+      }
+    },
+    {
+      "id": "SkEe_d_1z",
+      "input": {
+        "nodeId": "H1CIw_Okz",
+        "pinKey": "S1akTPOJf"
+      },
+      "output": {
+        "nodeId": "HyzedOdkG",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1XLvdOJz",
+      "position": {
+        "x": 170,
+        "y": 306
+      },
+      "type": "@/saw-wave-map"
+    },
+    {
+      "id": "H1CIw_Okz",
+      "position": {
+        "x": 272,
+        "y": 102
+      },
+      "type": "@/timer"
+    },
+    {
+      "description": "Resets the current `Fx` and `N` to zero.",
+      "id": "HJo1OOdyG",
+      "label": "RST",
+      "position": {
+        "x": 306,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers the generator update. It will update the output values.",
+      "id": "HyzedOdkG",
+      "label": "UPD",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "The signal value in [0, 1] range. Starts from 0.",
+      "id": "S1SWOd_1z",
+      "label": "OUT",
+      "position": {
+        "x": 170,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "__out__": 1
+      },
+      "description": "An interval between sawtooth peaks, i.e. the period of the signal",
+      "id": "SkvhPuO1M",
+      "label": "T",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "__out__": true
+      },
+      "description": "Enabled or not. If set to `false` pulses on `UPD` do not change the output value. Effictively that means the generator is paused. Set to `true` again to continue generation.\n",
+      "id": "SyapDuu1G",
+      "label": "EN",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "description": "The number of current cycle.  Starts from 0.",
+      "id": "rypbuud1M",
+      "label": "N",
+      "position": {
+        "x": 204,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

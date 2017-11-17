@@ -1,0 +1,190 @@
+{
+  "description": "Computes triangle function value",
+  "links": [
+    {
+      "id": "B1EsVcYJG",
+      "input": {
+        "nodeId": "BJWiEcFyz",
+        "pinKey": "H1SVIAuBDJZ"
+      },
+      "output": {
+        "nodeId": "rJUcEqKJM",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    },
+    {
+      "id": "Bkg6VcKJz",
+      "input": {
+        "nodeId": "BkK3N5Y1M",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BkwiVqKkM",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    },
+    {
+      "id": "ByR0E9YJG",
+      "input": {
+        "nodeId": "SJ9v4qKJf",
+        "pinKey": "SJqlS__yz"
+      },
+      "output": {
+        "nodeId": "S1i0E5KkM",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1-CE5Yyz",
+      "input": {
+        "nodeId": "HyiTVcFJG",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJ9v4qKJf",
+        "pinKey": "B1a7B_O1z"
+      }
+    },
+    {
+      "id": "S18xH9tyf",
+      "input": {
+        "nodeId": "SJ9v4qKJf",
+        "pinKey": "Bk2ZBdOyf"
+      },
+      "output": {
+        "nodeId": "Sy7eS5tyz",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJcFVcKyf",
+      "input": {
+        "nodeId": "S1VYE5t1z",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "SJ9v4qKJf",
+        "pinKey": "HybQBdOyf"
+      }
+    },
+    {
+      "id": "Sy5jEcFkf",
+      "input": {
+        "nodeId": "BkwiVqKkM",
+        "pinKey": "rkJ4URuHDJ-"
+      },
+      "output": {
+        "nodeId": "BJWiEcFyz",
+        "pinKey": "B1LNICdSDJW"
+      }
+    },
+    {
+      "id": "ryO545FJf",
+      "input": {
+        "nodeId": "rJUcEqKJM",
+        "pinKey": "BypX80uSD1Z"
+      },
+      "output": {
+        "nodeId": "S1VYE5t1z",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJWiEcFyz",
+      "position": {
+        "x": 136,
+        "y": 510
+      },
+      "type": "@/absolute"
+    },
+    {
+      "description": "The function value in [0, 1] range. Starts from 0.",
+      "id": "BkK3N5Y1M",
+      "label": "OUT",
+      "position": {
+        "x": 102,
+        "y": 714
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "BypX80uSD1Z": 1
+      },
+      "id": "BkwiVqKkM",
+      "position": {
+        "x": 102,
+        "y": 612
+      },
+      "type": "@/subtract"
+    },
+    {
+      "description": "The number of a funcion cycle. Starts from 0.",
+      "id": "HyiTVcFJG",
+      "label": "N",
+      "position": {
+        "x": 204,
+        "y": 714
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "SJ4zUC_BD1-": 2
+      },
+      "id": "S1VYE5t1z",
+      "position": {
+        "x": 136,
+        "y": 306
+      },
+      "type": "@/multiply"
+    },
+    {
+      "boundValues": {
+        "__out__": 0
+      },
+      "description": "An input time value, i.e. the abscissa",
+      "id": "S1i0E5KkM",
+      "label": "IN",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SJ9v4qKJf",
+      "position": {
+        "x": 170,
+        "y": 204
+      },
+      "type": "@/saw-wave-map"
+    },
+    {
+      "boundValues": {
+        "__out__": 1
+      },
+      "description": "An iterval between wave peaks, i.e. the period of the function",
+      "id": "Sy7eS5tyz",
+      "label": "T",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "rkJ4URuHDJ-": 1
+      },
+      "id": "rJUcEqKJM",
+      "position": {
+        "x": 136,
+        "y": 408
+      },
+      "type": "@/subtract"
+    }
+  ]
+}
