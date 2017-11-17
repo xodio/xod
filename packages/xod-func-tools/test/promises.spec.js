@@ -104,40 +104,5 @@ describe('promises', () => {
         assert.equal(retriesCount, retryToSucceedOn);
       });
     });
-    it('should wait specified amount of time before attempting a next try', () => {
-      const retriesSchedule = [15, 20, 30, 35];
-      let retriesCount = 0;
-
-      const beginTime = Date.now();
-      let lastTryTime = beginTime;
-
-      const result = retryOrFail(
-        retriesSchedule,
-        R.F,
-        R.identity,
-        () => {
-          const now = Date.now();
-
-          assert.isAtLeast(
-            now - lastTryTime,
-            retriesSchedule[retriesCount]
-          );
-
-          retriesCount += 1;
-          lastTryTime = now;
-          return Promise.reject(retriesCount);
-        },
-      )();
-
-      return result.then(() => {
-        assert.fail('got resolved promise', 'expected rejected promise');
-      }).catch(() => {
-        assert.equal(retriesCount, retriesSchedule.length);
-        assert.isAtLeast(
-          lastTryTime - beginTime,
-          R.sum(retriesSchedule)
-        );
-      });
-    });
   });
 });
