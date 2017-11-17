@@ -3,6 +3,7 @@ import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
 import { mapIndexed } from 'xod-func-tools';
 import * as XP from 'xod-project';
+
 import { addPoints, subtractPoints, DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
 
 const getProject = R.prop('project'); // Problem of cycle imports...
@@ -16,6 +17,12 @@ export const editorLens = R.lensProp('editor');
 export const getTabs = R.pipe(
   getEditor,
   R.prop('tabs')
+);
+
+export const getImplEditorTabs = R.pipe(
+  getTabs,
+  R.values,
+  R.filter(R.prop('isEditingCppImplementation'))
 );
 
 export const getCurrentTabId = R.pipe(

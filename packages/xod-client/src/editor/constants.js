@@ -71,3 +71,15 @@ export const TAB_TYPES = {
 };
 
 export const DEBUGGER_TAB_ID = 'debugger';
+
+export const IMPL_TEMPLATE = `
+struct State {
+};
+
+{{ GENERATED_CODE }}
+
+void evaluate(Context ctx) {
+    //auto inValue = getValue<input_IN>(ctx);
+    //emitValue<output_OUT>(ctx, inValue);
+}
+`;

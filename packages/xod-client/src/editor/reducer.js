@@ -154,6 +154,7 @@ const addTabWithProps = R.curry(
       index: newIndex,
       type,
       offset: DEFAULT_PANNING_OFFSET,
+      isEditingCppImplementation: false,
     }, state);
   }
 );
@@ -466,6 +467,18 @@ const editorReducer = (state = {}, action) => {
       return R.assoc(
         'currentTabId',
         action.payload.tabId,
+        state
+      );
+    case EAT.EDITOR_OPEN_IMPLEMENTATION_CODE:
+      return R.over(
+        currentTabLens,
+        R.assoc('isEditingCppImplementation', true),
+        state
+      );
+    case EAT.EDITOR_CLOSE_IMPLEMENTATION_CODE:
+      return R.over(
+        currentTabLens,
+        R.assoc('isEditingCppImplementation', false),
         state
       );
     case PAT.PATCH_RENAME:

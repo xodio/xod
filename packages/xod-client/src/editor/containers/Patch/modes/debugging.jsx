@@ -2,6 +2,8 @@ import R from 'ramda';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 
+import * as XP from 'xod-project';
+
 import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from '../../../constants';
 import { isEntitySelected } from '../../../utils';
 import { isInputTarget } from '../../../../utils/browser';
@@ -72,7 +74,11 @@ const debuggingMode = {
     api.props.actions.deselectAll();
   },
   onNodeDoubleClick(api, nodeId, patchPath) {
-    api.props.actions.drillDown(patchPath, nodeId);
+    if (patchPath === XP.NOT_IMPLEMENTED_IN_XOD_PATH) {
+      api.props.actions.openImplementationEditor();
+    } else {
+      api.props.actions.drillDown(patchPath, nodeId);
+    }
   },
   getHotkeyHandlers(api) {
     return {
