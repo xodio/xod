@@ -168,6 +168,26 @@
           sku: 103020012
           flavor: Mod
           url: https://www.seeedstudio.com/Grove-SPDT-Relay%2830A%29-p-1473.html
+    - part: SD card reader
+      nodes:
+        - xod/common-hardware/sd-log
+      shopping:
+        - shop: Adafruit
+          sku: "#254"
+          flavor: Brk
+          url: https://www.adafruit.com/product/254
+        - shop: DFRobot
+          sku: DFR0229
+          flavor: Mod
+          url: https://www.dfrobot.com/product-875.html
+        - shop: Seeed
+          sku: 103030005
+          flavor: Sh
+          url: https://www.seeedstudio.com/SD-Card-Shield-V4-p-1381.html
+        - shop: SparkFun
+          sku: DEV-13743
+          flavor: Brk
+          url: https://www.sparkfun.com/products/13743
 
 - section: "Environment sensors"
   parts:
