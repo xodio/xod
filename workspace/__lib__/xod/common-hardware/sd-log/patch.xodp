@@ -1,0 +1,63 @@
+{
+  "description": "Appends lines of text to a file on SD card",
+  "nodes": [
+    {
+      "description": "CS (chip select) pin the SD card reader is connected to. Also known as SS (slave select).",
+      "id": "BJGhy4lgG",
+      "label": "CS",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Perform file open, write, flush, close cycle",
+      "id": "BJK0yEglf",
+      "label": "W",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Outputs `false` if the last write succeed. Set to `true` if an error occured: wrong connection, missing or bad SD card, write protection.",
+      "id": "HJcUcHexf",
+      "label": "ERR",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "description": "Line to append",
+      "id": "SJ1CkNggf",
+      "label": "LINE",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "SkfZlVggM",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "File name to append to",
+      "id": "rJbTJVxxM",
+      "label": "FILE",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    }
+  ]
+}
