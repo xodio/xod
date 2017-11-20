@@ -7,7 +7,7 @@ import {
   resolveLibPath,
   spawnWorkspaceFile,
   spawnDefaultProject,
-  saveProject,
+  saveAll,
   getLocalProjects,
   validateWorkspace,
   loadProject,
@@ -16,7 +16,7 @@ import {
   findProjectMetaByName,
   resolveDefaultProjectPath,
   ensureWorkspacePath,
-  saveProjectAsLibrary,
+  saveLibraryEntirely,
   ERROR_CODES as FS_ERROR_CODES,
 } from 'xod-fs';
 import {
@@ -127,7 +127,7 @@ const createAndSaveNewProject = R.curry(
     explode,
     project => R.pipeP(
       pathGetter,
-      saveProject(R.__, project)
+      saveAll(R.__, XP.createProject(), project)
     )(),
     R.always(projectName)
   )(projectName)
@@ -183,7 +183,7 @@ export const saveLibrary = R.curry(
       );
       return payload;
     },
-    saveProjectAsLibrary(payload.request.owner, payload.xodball),
+    saveLibraryEntirely(payload.request.owner, payload.xodball),
     loadWorkspacePath
   )()
     .catch((err) => {
@@ -200,11 +200,12 @@ export const saveLibrary = R.curry(
 //
 // =============================================================================
 
-// :: (String -> a -> ()) -> (() -> Promise Path Error) -> Project -> Promise Project Error
+// :: (String -> a -> ()) -> (() -> Promise Path Error) -> Project -> Project ->
+//    -> Promise Project Error
 export const onSaveProject = R.curry(
-  (send, pathGetter, project) => R.pipeP(
+  (send, pathGetter, oldProject, newProject) => R.pipeP(
     pathGetter,
-    saveProject(R.__, project),
+    saveAll(R.__, oldProject, newProject),
     R.tap(notifySaveProjectComplete(send))
   )().catch(handleError(send))
 );
@@ -309,7 +310,8 @@ const ipcSender = event => (eventName, arg) => event.sender.send(eventName, arg)
 
 // This event is subscribed by subscribeRemoteAction function
 export const subscribeToSaveProject = R.curry(
-  (event, project) => onSaveProject(ipcSender(event), loadWorkspacePath, project)
+  (event, { oldProject, newProject }) =>
+    onSaveProject(ipcSender(event), loadWorkspacePath, oldProject, newProject)
 );
 
 // onSelectProject

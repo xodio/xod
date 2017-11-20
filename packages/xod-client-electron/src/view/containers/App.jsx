@@ -324,7 +324,10 @@ class App extends client.App {
   }
 
   onSaveProject() {
-    this.props.actions.saveProject(this.props.project);
+    this.props.actions.saveProject({
+      oldProject: this.props.lastSavedProject,
+      newProject: this.props.project,
+    });
   }
 
   onRequestCreateProject() {
@@ -741,6 +744,7 @@ class App extends client.App {
 App.propTypes = R.merge(client.App.propTypes, {
   hasUnsavedChanges: PropTypes.bool,
   projects: PropTypes.object,
+  lastSavedProject: client.sanctuaryPropType(Project),
   project: client.sanctuaryPropType(Project),
   actions: PropTypes.objectOf(PropTypes.func),
   upload: PropTypes.object,
@@ -756,6 +760,7 @@ const getSaveProcess = R.compose(
 
 const mapStateToProps = R.applySpec({
   hasUnsavedChanges: client.hasUnsavedChanges,
+  lastSavedProject: client.getLastSavedProject,
   project: client.getProject,
   upload: getUploadProcess,
   saveProcess: getSaveProcess,

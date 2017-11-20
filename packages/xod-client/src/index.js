@@ -4,7 +4,7 @@ import * as ProcessSelectors from './processes/selectors';
 import * as ProjectSelectors from './project/selectors';
 import * as PopupSelectors from './popups/selectors';
 import * as DebuggerSelectors from './debugger/selectors';
-import { hasUnsavedChanges } from './core/selectors';
+import { hasUnsavedChanges, getLastSavedProject } from './core/selectors';
 
 import * as CoreActions from './core/actions';
 import * as EditorActions from './editor/actions';
@@ -62,7 +62,7 @@ export { getUpload } from './processes/selectors';
 export * from './project/selectors';
 export * from './popups/selectors';
 export * from './debugger/selectors';
-export { hasUnsavedChanges } from './core/selectors';
+export { hasUnsavedChanges, getLastSavedProject } from './core/selectors';
 
 export * from './utils/browser';
 export * from './utils/constants';
@@ -111,6 +111,7 @@ export default Object.assign({
   hideOnePopup,
   PopupProjectPreferences,
   hasUnsavedChanges,
+  getLastSavedProject,
   TAB_CLOSE,
   SAVE_PROJECT,
   INSTALL_LIBRARY_COMPLETE,

@@ -18,9 +18,11 @@ import { SELECTION_ENTITY_TYPE, FOCUS_AREAS } from '../editor/constants';
 // Unsaved changes
 //
 
-export const hasUnsavedChanges = state => !R.equals(
-  Project.getProject(state),
-  state.lastSavedProject
+export const getLastSavedProject = R.prop('lastSavedProject');
+
+export const hasUnsavedChanges = createSelector(
+  [Project.getProject, getLastSavedProject],
+  R.complement(R.equals)
 );
 
 //
