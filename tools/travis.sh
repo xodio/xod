@@ -14,8 +14,8 @@ upload_dist_to_gcs() {
 build_dist() {
     # Build again with production settings for the UI part of the IDE
     export NODE_ENV=production
-    yarn run build
-    yarn run electron-dist
+    yarn run build:electron
+    yarn run dist:electron
 }
 
 tags=$(git tag --points-at "$TRAVIS_COMMIT")

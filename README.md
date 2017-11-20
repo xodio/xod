@@ -23,14 +23,14 @@ to install all JS dependencies.
 
 ### Browser IDE
 
-    $ yarn dev-browser
+    $ yarn dev:browser
 
 Open <http://localhost:8080> in your browser.
 
 ### Desktop IDE
 
-    $ yarn build --scope xod-client-electron --include-filtered-dependencies
-    $ yarn start:xod-client-electron
+    $ yarn build:electron
+    $ yarn start:electron
 
 Directory structure
 -------------------
@@ -52,20 +52,21 @@ Repository commands
 You can run several commands on source files. They are available as yarn
 subcommands:
 
-- `yarn build` — build, transpile, pack
-- `yarn dev-browser` — run dev-version of browser IDE on localhost
-- `yarn electron-dist` — build OS-specific distributive
+- `yarn build` — build, transpile, pack all
+- `yarn build:electron` — build desktop IDE only
+- `yarn build:cli` — build CLI tools only
+- `yarn dev:browser` — run dev-version of browser IDE on localhost
+- `yarn dist:electron` — build OS-specific distributive of desktop IDE
 - `yarn test` — run unit tests
-- `yarn test:watch` — like test, but watches for changes with auto-retest
 - `yarn test-cpp` — run C++ code tests
 - `yarn test-func` — run functional tests
 - `yarn lint` — run the linter to check code style
 - `yarn verify` — build, lint, test; run this prior to a pull request
 - `yarn ci` — install & verify; CI-server uses this command
-- `yarn start:xod-client-electron` — starts desktop IDE
+- `yarn start:electron` — starts desktop IDE
 - `yarn start:spectron-repl` — starts functional tests environment
 - `yarn storybook` — starts React components viewer for visual inspection
-- `yarn run clean` — remove build artifacts and installed `node_modules`
+- `yarn clean` — remove build artifacts and installed `node_modules`
 
 Note that dependencies between tasks are not resolved. `test` and `start:*`
 expect that the project is already built.
@@ -73,13 +74,13 @@ expect that the project is already built.
 ### Scoping
 
 Many commands (notably `build`, `dev`, `test`) support package scoping to
-save development time. To rebuild only `xod-cli`:
+save development time. To rebuild only `xod-project`:
 
-    $ yarn build --scope xod-cli
+    $ yarn build --scope xod-project
 
-To rebuild `xod-cli` and its dependencies:
+To rebuild `xod-project` and its dependencies:
 
-    $ yarn build --scope xod-cli --include-filtered-dependencies
+    $ yarn build --scope xod-project --include-filtered-dependencies
 
 Those are standard [Lerna flags](https://github.com/lerna/lerna#flags).
 
