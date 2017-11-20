@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
-import { explodeMaybe, notEmpty } from 'xod-func-tools';
+import { explodeMaybe, notEmpty, isAmong } from 'xod-func-tools';
 import { BUILT_IN_PATCH_PATHS } from './builtInPatches';
 
 import * as CONST from './constants';
@@ -197,7 +197,14 @@ export const listPatches = def(
  */
 export const listPatchesWithoutBuiltIns = def(
   'listPatches :: Project -> [Patch]',
-  R.compose(R.values, R.prop('patches'))
+  R.compose(
+    R.reject(R.compose(
+      isAmong(BUILT_IN_PATCH_PATHS),
+      Patch.getPatchPath
+    )),
+    R.values,
+    R.prop('patches')
+  )
 );
 
 /**

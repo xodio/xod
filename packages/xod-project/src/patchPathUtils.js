@@ -72,6 +72,15 @@ export const getLibraryName = R.ifElse(
   R.always('@')
 );
 
+/**
+ * Converts `xod/core/something` into `@/something`,
+ * `@/another-one` will be unchanged.
+ */
+export const convertToLocalPath = R.compose(
+  getLocalPath,
+  getBaseName
+);
+
 //
 // Utils for terminal patches
 //
