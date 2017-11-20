@@ -11,8 +11,8 @@ function Upload-Dist-To-GCS($tag) {
 function Build-Dist() {
   # Build again with production settings for the UI part of the IDE
   $env:NODE_ENV="production"
-  yarn run build
-  yarn run electron-dist
+  yarn run build:electron
+  yarn run dist:electron
 }
 
 $tags=(git tag --points-at $env:APPVEYOR_REPO_COMMIT)
