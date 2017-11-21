@@ -1,9 +1,9 @@
 import os from 'os';
-import fsp from 'fsp';
 import fse from 'fs-extra';
 import path from 'path';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import { resolveLibPath } from 'xod-fs';
 
 // Spectron is hoisted at the root of monorepo
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -12,7 +12,6 @@ import { Application } from 'spectron';
 import Page from './pageObject';
 
 const DEBUG = process.env.XOD_DEBUG_TESTS;
-
 // =============================================================================
 //
 // Prepare new suite
@@ -22,23 +21,33 @@ const DEBUG = process.env.XOD_DEBUG_TESTS;
 export default function prepareSuite() {
   chai.use(chaiAsPromised);
 
+  const appPath = '../../node_modules/.bin/electron';
   const state = {
     passed: true,
+    tmpHomeDir: '',
+    wsPath: function getWsPath(...extraPath) {
+      return path.resolve(this.tmpHomeDir, 'xod', ...extraPath);
+    },
+    libPath: function getLibPath(...extraPath) {
+      return path.resolve(
+        resolveLibPath(this.wsPath()),
+        ...extraPath
+      );
+    },
   };
 
   before(() => {
     const tmpDir = path.join(os.tmpdir(), 'xod-test-workspace-');
 
-    state.app = new Application({
-      path: '../../node_modules/.bin/electron',
-      args: ['.'],
-    });
-
     // With a dirty hack we extract out objects that we’d interact later
     // in tests and tear-down. Impure, but can’t figure out a better solution
     // with Mocha
-    return fsp.mkdtempP(tmpDir)
+    return fse.mkdtemp(tmpDir)
       .then((home) => {
+        state.app = new Application({
+          path: appPath,
+          args: ['.'],
+        });
         process.env.USERDATA_DIR = process.env.HOME = state.tmpHomeDir = home;
       })
       .then(() => state.app.start())

@@ -7,6 +7,17 @@ chai.use(chaiAsPromised);
 const assert = chai.assert;
 
 //-----------------------------------------------------------------------------
+// Func utils
+//-----------------------------------------------------------------------------
+const hasClass = R.curry(
+  (className, element) => R.composeP(
+    R.contains(className),
+    R.split(' '),
+    el => el.getAttribute('class')
+  )(element)
+);
+
+//-----------------------------------------------------------------------------
 // General Utils
 //-----------------------------------------------------------------------------
 function scrollTo(client, containerSelector, childSelector) {
@@ -16,7 +27,6 @@ function scrollTo(client, containerSelector, childSelector) {
     container.scrollTop = child.offsetTop;
   }, containerSelector, childSelector);
 }
-
 
 // -----------------------------------------------------------------------------
 // Popup dialogs
@@ -51,7 +61,7 @@ function closePopup(client) {
 //-----------------------------------------------------------------------------
 // Project browser
 //-----------------------------------------------------------------------------
-const getSelectorForPatchInProjectBrowser = nodeName => `.PatchGroupItem[title=${nodeName}]`;
+const getSelectorForPatchInProjectBrowser = nodeName => `.PatchGroupItem[title="${nodeName}"]`;
 
 function findProjectBrowser(client) {
   return client.element('.ProjectBrowser');
@@ -104,7 +114,12 @@ function scrollToPatchInProjectBrowser(client, name) {
 }
 
 function selectPatchInProjectBrowser(client, name) {
-  return client.click(getSelectorForPatchInProjectBrowser(name));
+  const patch = client.element(getSelectorForPatchInProjectBrowser(name));
+  return hasClass('isSelected', patch).then(
+    selected => (
+      selected ? Promise.resolve() : client.click(getSelectorForPatchInProjectBrowser(name))
+    )
+  );
 }
 
 function openPatchFromProjectBrowser(client, name) {
@@ -124,6 +139,14 @@ function assertPatchSelected(client, name) {
 
 function clickAddNodeButton(client, name) {
   return client.element(`${getSelectorForPatchInProjectBrowser(name)} .add-node`).click();
+}
+
+function expandPatchGroup(client, groupTitle) {
+  return hasClass('is-open', findPatchGroup(client, groupTitle)).then(
+    opened => (
+      opened ? Promise.resolve() : findPatchGroup(client, groupTitle).click()
+    )
+  );
 }
 
 //-----------------------------------------------------------------------------
@@ -256,6 +279,13 @@ function assertTabWithTitleDoesNotExist(client, expectedTitle) {
 }
 
 //-----------------------------------------------------------------------------
+// Messages
+//-----------------------------------------------------------------------------
+function waitUntilProjectSaved(client) {
+  return client.waitForExist('.SnackBarMessage.confirmation', 5000);
+}
+
+//-----------------------------------------------------------------------------
 // API
 //-----------------------------------------------------------------------------
 
@@ -291,6 +321,7 @@ const API = {
   selectPatchInProjectBrowser,
   openPatchFromProjectBrowser,
   deletePatch,
+  expandPatchGroup,
   // LibSuggester
   findLibSuggester,
   assertLibSuggesterShown,
@@ -300,6 +331,8 @@ const API = {
   assertLibSuggesterHidden,
   assertProjectBrowserHasInstallingLib,
   waitUntilLibraryInstalled,
+  // Messages
+  waitUntilProjectSaved,
 };
 
 /**
