@@ -4,9 +4,9 @@
 
 ### Steps to reproduce
 
-- Open this
-- Press that
-- Click here and there
+1. Open this
+2. Press that
+3. Click here and there
 
 ### Expected behavior
 
@@ -74,4 +74,4 @@ description.
 
 ### How to test
 
-How we can test what’s implemented?
+How can we test what’s implemented?
