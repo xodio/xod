@@ -16,7 +16,7 @@ import * as PopupActions from './popups/actions';
 import * as DebuggerActions from './debugger/actions';
 
 import { TAB_CLOSE, INSTALL_LIBRARY_COMPLETE } from './editor/actionTypes';
-import { SAVE_PROJECT } from './project/actionTypes';
+import { SAVE_ALL } from './project/actionTypes';
 
 import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
@@ -55,7 +55,7 @@ export * from './popups/actions';
 export * from './debugger/actions';
 
 export { TAB_CLOSE, INSTALL_LIBRARY_COMPLETE } from './editor/actionTypes';
-export { SAVE_PROJECT } from './project/actionTypes';
+export { SAVE_ALL } from './project/actionTypes';
 
 export * from './editor/selectors';
 export { getUpload } from './processes/selectors';
@@ -113,7 +113,7 @@ export default Object.assign({
   hasUnsavedChanges,
   getLastSavedProject,
   TAB_CLOSE,
-  SAVE_PROJECT,
+  SAVE_ALL,
   INSTALL_LIBRARY_COMPLETE,
 },
   UserSelectors,

@@ -117,7 +117,7 @@ const onReady = () => {
   }
   settings.setDefaults();
 
-  subscribeToRemoteAction(EVENTS.SAVE_PROJECT, WA.subscribeToSaveProject);
+  subscribeToRemoteAction(EVENTS.SAVE_ALL, WA.subscribeToSaveAll);
 
   let debugPort = null;
   let userAttemptedCloseSerialPort = false;

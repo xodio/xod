@@ -20,10 +20,10 @@ const rawItems = {
     label: 'Open Project',
     command: COMMAND.OPEN_PROJECT,
   },
-  saveProject: {
-    key: 'saveProject',
-    label: 'Save Project',
-    command: COMMAND.SAVE_PROJECT,
+  saveAll: {
+    key: 'saveAll',
+    label: 'Save All',
+    command: COMMAND.SAVE_ALL,
   },
   renameProject: {
     key: 'renameProject',

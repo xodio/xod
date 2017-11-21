@@ -11,12 +11,12 @@ export const ENUMERATING_BOARDS = 'Loading list of supported boards...';
 export const NO_PORTS_FOUND = 'No connected boards found';
 
 export const SUCCESS = {
-  [EVENTS.SAVE_PROJECT]: 'Project was successfully saved',
+  [EVENTS.SAVE_ALL]: 'Saved successfully',
 };
 
-export const PROJECT_SAVE_PROCESSED = '';
-export const PROJECT_SAVE_FAILED = 'Failed to save project.';
-export const PROJECT_SAVE_SUCCEED = 'Project has been saved successfully!';
+export const SAVE_ALL_PROCESSED = '';
+export const SAVE_ALL_FAILED = 'Failed to save project.';
+export const SAVE_ALL_SUCCEED = 'Saved successfully!';
 
 export const DEBUG_SESSION_STOPPED_ON_CHANGE = 'Debug session was automatically stopped, cause your Project has been changed.';
 export const DEBUG_SESSION_STOPPED_ON_TAB_CLOSE = 'Debug session was automatically stopped, cause you closed Debugger tab.';

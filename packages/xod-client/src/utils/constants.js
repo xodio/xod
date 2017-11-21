@@ -22,7 +22,7 @@ export const COMMAND = {
   PASTE: 'paste',
   SELECT_ALL: 'selectall',
 
-  SAVE_PROJECT: 'saveProject',
+  SAVE_ALL: 'saveAll',
 
   INSERT_NODE: 'insertNode',
 };
@@ -42,7 +42,7 @@ export const HOTKEY = {
   [COMMAND.RENAME]: 'ctrl+r',
   [COMMAND.DELETE]: ['ctrl+del', 'ctrl+backspace'],
 
-  [COMMAND.SAVE_PROJECT]: ['ctrl+s'],
+  [COMMAND.SAVE_ALL]: ['ctrl+s'],
 
   [COMMAND.TOGGLE_HELPBAR]: ['h'],
   [COMMAND.TOGGLE_DEBUGGER]: ['ctrl+shift+u'],
@@ -70,7 +70,7 @@ export const ELECTRON_ACCELERATOR = {
   [COMMAND.PASTE]: 'CmdOrCtrl+V',
   [COMMAND.SELECT_ALL]: 'CmdOrCtrl+A',
 
-  [COMMAND.SAVE_PROJECT]: 'CmdOrCtrl+S',
+  [COMMAND.SAVE_ALL]: 'CmdOrCtrl+S',
 
   [COMMAND.TOGGLE_DEBUGGER]: 'CmdOrCtrl+Shift+U',
 };
