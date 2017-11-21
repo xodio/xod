@@ -1,30 +1,49 @@
-Contributing to XOD
-===================
+There are several ways you can contribute to XOD:
 
-Creating Issues
----------------
+- Report a bug. File an issue on GitHub or open a thread on the
+  [forum](https://forum.xod.io). Please follow the structure defined in the
+  [ISSUE_TEMPLATE](.github/ISSUE_TEMPLATE.md).
+- Request a feature of tweak. Open a thread on the
+  [forum](https://forum.xod.io). We do not use GitHub issues for discussions.
+  They are only for prioritization, scheduling, and tracking. Features require
+  a preliminary discussion, so we ask to describe them on the forum where they
+  get better visibility.
+- Fix a bug or make a feature which closes an existing issue. Open a pull
+  request, follow the
+  [PULL_REQUEST_TEMPLATE](.github/PULL_REQUEST_TEMPLATE.md).
+- Fix grammar or improve wording in the documentation or UI. Open a pull
+  request with changes. A GitHub issue is not required.
+- Translate documentation article. Put the translation to the file named like
+  `de.md` (where `de` is a [language
+  code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)) next to the
+  corresponding `README.md` and open a pull request.
+
+## Creating issues
 
 Before creating an issue check if a similar issue already exists.
 
 We use [ZenHub](https://www.zenhub.com/) to prioritize and estimate issues. To
-understand the whole picture take a look on Boards tab provided by the
+understand the whole picture take a look at Boards tab provided by the
 extension.
 
-There are few categories of [issues](https://github.com/xodio/xod/issues) in XOD
-GitHub repository:
+There are few categories of [issues](https://github.com/xodio/xod/issues) in
+XOD GitHub repository:
 
-- User stories (aka feature requests): new functionality for end-users;
 - Bug reports: things that are definitely broken;
+- User stories (aka feature requests): new functionality for end-users;
 - Tweak requests: an inconvenient annoying behavior that more looks like a bug
   than a missing feature;
 - Refactoring requests: notes on code improvements without changes in
   functionality;
-- Documentation requests: notes on missing developer’s documentation.
+- Documentation requests: notes on missing documentation;
+- Chore requests: repository building, testing, maintenance, and DX
+  improvements.
 
-You should classify issue you want to create in advance. If the issue does not
-fall into any category, perhaps it should not be a GitHub issue.
+Classify issue you want to create in advance. If it’s not a bug report, use XOD
+[forum](https://forum.xod.io) to discuss it. Issues other than bug reports are
+created by XOD team members.
 
-New issues title and body should follow a common structure that is defined in
+New issues title and body should follow a common structure defined in
 [ISSUE_TEMPLATE](.github/ISSUE_TEMPLATE.md).
 
 To create a new issue:
@@ -34,8 +53,7 @@ To create a new issue:
 3. Give the issue a label corresponding to its category
 4. Give the issue a scope label
 
-Making Changes in the Code
---------------------------
+## Making changes in the code
 
 Generally, any change in code should be related to a concrete issue. The common
 pipeline to get your changes into the master branch is:
@@ -69,18 +87,14 @@ symbols.
 
 ### Writing code
 
-The code should follow some stylistic rules. These rules are based on
-[Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript) with slight
+The code should follow some stylistic rules. These rules are based on [Airbnb
+JavaScript Style Guide](https://github.com/airbnb/javascript) with slight
 modifications and enforcements. See [ESLint configuration](./.eslintrc.js) for
 details. To verify your code follows the rules run:
 
     $ yarn run lint
 
-In addition to the style ensure that:
-
-- Any function or another symbol that is exported out of a package is documented
-  with a [JSDoc comments](http://usejsdoc.org/index.html).
-- New functionality is covered with unit tests.
+In addition to the style ensure that new functionality is covered by unit tests.
 
 ### Performing commits
 
@@ -89,8 +103,8 @@ improvement. A commit, in general, should not break any tests or linting rules.
 
 We use simplified
 [Angular](https://gist.github.com/stephenparish/9941e89d80e2bc58a153)-alike
-convention for commit messages. Subject line should have a form
-`<type><scope>: <subject>`, e.g.
+convention for commit messages. Subject line should have a form `<type><scope>:
+<subject>`, e.g.
 
     fix(xod-fs): allow empty node lists to be loaded correctly
 
@@ -110,8 +124,8 @@ Try to keep the whole subject line under 72 symbols.
 
 ### Rebasing on master
 
-To keep history clean we rebase topic branches rather than merge. Once you
-want to synchronize with the `master` going ahead do:
+To keep history clean we rebase topic branches rather than merge. Once you want
+to synchronize with the `master` going ahead do:
 
     $ git checkout master
     $ git pull
@@ -122,9 +136,9 @@ Follow Git hints to resolve any conflicts.
 
 ### Testing and linting changes
 
-There is a series of checks that should be passed for the code to have a
-chance to be merged into `master`. They are unit tests, linting and possibly
-other things.
+There is a series of checks that should be passed for the code to have a chance
+to be merged into `master`. They are unit tests, linting and possibly other
+things.
 
 Run `yarn run verify` to make sure your code doesn’t break anything.
 
@@ -140,20 +154,20 @@ Fill in the proposed [PULL_REQUEST_TEMPLATE](.github/PULL_REQUEST_TEMPLATE.md).
 
 ### Reviewing and fixing
 
-We strive to review any PR in one day. To be approved a PR should sustain
-a review by at least two team members.
+We strive to review any PR in one day. To be approved a PR should sustain a
+review by at least two team members.
 
 There could be code issues that should be fixed before a merge. Fix the issues
 and add these commits to the same PR.
 
 It could also happen that the PR is no longer can be merged into the `master`
 automatically because the HEAD went ahead. In this case, rebase on master again
-and push with `--force`. Yes, you’ll rewrite a history, but as an author of
-the topic branch, you’re the king of your changes.
+and push with `--force`. Yes, you’ll rewrite a history, but as an author of the
+topic branch, you’re the king of your changes.
 
 ### Merging
 
-Once the PR is good it would be merged to the master branch.
+Once the PR is good it would be merged into the master branch.
 
 It’s better to delete the merged branch to keep the repository clean. Any new
 contributions related to the same topic may be performed by passing the whole
