@@ -511,8 +511,19 @@ describe('Project', () => {
   describe('lists', () => {
     const project = Helper.defaultizeProject({
       patches: {
-        '@/test': { path: '@/test' },
+        '@/test': {
+          path: '@/test',
+          nodes: { a: { type: 'another/one/external' } },
+        },
         'some/external/patch': { path: 'some/external/patch' },
+        'some/external/patch-2': { path: 'some/external/patch-2' },
+        'another/one/external': {
+          path: 'another/one/external',
+          nodes: {
+            a: { type: 'some/external/patch-2' },
+            b: { type: 'xod/core/add' },
+          },
+        },
       },
     });
 
@@ -526,7 +537,7 @@ describe('Project', () => {
       it('should return array with patches', () => {
         expect(Project.listPatches(project))
           .to.be.instanceof(Array)
-          .and.have.lengthOf(2 + R.length(BUILT_IN_PATCH_PATHS));
+          .and.have.lengthOf(4 + R.length(BUILT_IN_PATCH_PATHS));
       });
     });
     describe('listPatchesWithoutBuiltIns', () => {
@@ -539,7 +550,7 @@ describe('Project', () => {
       it('should return array with patches for non-empty project', () => {
         expect(Project.listPatchesWithoutBuiltIns(project))
           .to.be.instanceof(Array)
-          .and.have.lengthOf(2);
+          .and.have.lengthOf(4);
       });
     });
     describe('listPatchPaths', () => {
@@ -549,9 +560,14 @@ describe('Project', () => {
           Project.listPatchPaths(emptyProject)
         );
       });
-      it('should return array with two keys', () => {
+      it('should return array with four keys and some built in patch paths', () => {
         const expected = R.concat(
-          ['@/test', 'some/external/patch'],
+          [
+            '@/test',
+            'some/external/patch',
+            'some/external/patch-2',
+            'another/one/external',
+          ],
           BUILT_IN_PATCH_PATHS
         );
 
@@ -580,17 +596,121 @@ describe('Project', () => {
           Project.listLibraryPatches(emptyProject)
         );
       });
-      it('should return array with one patch', () => {
+      it('should return array with one library patch and some built in patches', () => {
         const expected = R.concat(
-          [project.patches['some/external/patch']],
+          [
+            project.patches['some/external/patch'],
+            project.patches['some/external/patch-2'],
+            project.patches['another/one/external'],
+          ],
           R.values(Project.BUILT_IN_PATCHES)
         );
-
         assert.sameMembers(
           expected,
           Project.listLibraryPatches(project)
         );
       });
+    });
+    describe('listInstalledLibraryNames', () => {
+      it('returns empty array for empty project', () =>
+        assert.isEmpty(
+          Project.listInstalledLibraryNames(Helper.defaultizeProject({}))
+        )
+      );
+      it('returns empty array for project without any library', () =>
+        assert.isEmpty(
+          Project.listInstalledLibraryNames(Helper.defaultizeProject({
+            patches: {
+              '@/main': { path: '@/main' },
+              '@/hello': { path: '@/hello' },
+            },
+          }))
+        )
+      );
+      it('returns array with two libnames', () =>
+        assert.sameMembers(
+          Project.listInstalledLibraryNames(project),
+          [
+            'some/external',
+            'another/one',
+          ]
+        )
+      );
+    });
+    describe('listLibraryNamesUsedInProject', () => {
+      it('returns empty array for empty project', () =>
+        assert.isEmpty(
+          Project.listLibraryNamesUsedInProject(Helper.defaultizeProject({}))
+        )
+      );
+      it('returns empty array for project without any library', () =>
+        assert.isEmpty(
+          Project.listLibraryNamesUsedInProject(Helper.defaultizeProject({
+            patches: {
+              '@/main': { path: '@/main' },
+              '@/hello': { path: '@/hello' },
+            },
+          }))
+        )
+      );
+      it('returns array with three libnames', () =>
+        assert.sameMembers(
+          Project.listLibraryNamesUsedInProject(project),
+          [
+            'some/external',
+            'another/one',
+            'xod/core',
+          ]
+        )
+      );
+    });
+    describe('listMissingLibraryNames()', () => {
+      it('returns an empty list if there is no missing libraries', () =>
+        assert.isEmpty(
+          Project.listMissingLibraryNames(Helper.defaultizeProject({
+            patches: {
+              '@/a': { path: '@/a', nodes: { a: { type: '@/b' } } },
+              '@/b': { path: '@/b' },
+            },
+          }))
+        )
+      );
+      it('returns a list of library names', () =>
+        assert.sameMembers(
+          Project.listMissingLibraryNames(Helper.defaultizeProject({
+            patches: {
+              '@/a': {
+                path: '@/a',
+                nodes: {
+                  a: { type: '@/b' },
+                  b: { type: 'xod/test/use-units' },
+                  c: { type: 'another/one/library' },
+                },
+              },
+              '@/b': {
+                path: '@/b',
+                nodes: {
+                  a: { type: 'xod/patch-nodes/input-number' },
+                  b: { type: 'xod/common-hardware/led' },
+                },
+              },
+              'xod/test/use-units': {
+                path: 'xod/test/use-units',
+                nodes: {
+                  a: { type: 'xod/units/c-to-f' },
+                },
+              },
+              'xod/common-hardware/led': {
+                path: 'xod/common-hardware/led',
+                nodes: {
+                  a: { type: 'xod/patch-nodes/input-number' },
+                },
+              },
+            },
+          })),
+          ['xod/units', 'another/one']
+        )
+      );
     });
   });
 

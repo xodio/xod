@@ -13,7 +13,15 @@ import * as Attachment from './attachment';
 import { sortGraph } from './gmath';
 import { def } from './types';
 import { getHardcodedPinsForPatchPath, getPinKeyForTerminalDirection } from './builtInPatches';
-import { getLocalPath, isTerminalPatchPath, isDeferNodeType, resolvePatchPath } from './patchPathUtils';
+import {
+  getLocalPath,
+  getLibraryName,
+  isTerminalPatchPath,
+  isDeferNodeType,
+  resolvePatchPath,
+  isBuiltInLibName,
+  isLocalMarker,
+} from './patchPathUtils';
 
 /**
  * An object representing single patch in a project
@@ -179,6 +187,28 @@ export const listNodes = def(
   R.compose(
     R.values,
     R.prop('nodes')
+  )
+);
+
+/**
+ * Returns a list of Library names, that used by Nodes.
+ * E.G. Patch has Nodes: `xod/core/clock`, `xod/core/flip-flop`
+ * and `xod/common-hardware/led`. This functions will return
+ * a list: ['xod/core', 'xod/common-hardware']
+ */
+export const listLibraryNamesUsedInPatch = def(
+  'listLibraryNamesUsedInPatch :: Patch -> [LibName]',
+  R.compose(
+    R.uniq,
+    R.reject(R.either(
+      isBuiltInLibName,
+      isLocalMarker
+    )),
+    R.map(R.compose(
+      getLibraryName,
+      Node.getNodeType
+    )),
+    listNodes
   )
 );
 

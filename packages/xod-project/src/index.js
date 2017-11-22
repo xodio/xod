@@ -47,6 +47,7 @@ export {
   getTopologyMap,
   applyNodeIdMap,
   resolveNodeTypesInPatch,
+  listLibraryNamesUsedInPatch,
 } from './patch';
 export * from './node';
 export * from './comment';

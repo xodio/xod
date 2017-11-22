@@ -19,6 +19,9 @@ const checkPathParts = partsChecker =>
     )
   );
 
+// :: String -> Boolean
+export const isLocalMarker = R.equals('@');
+
 /**
  * @function isPathLocal
  * @param {string} path
@@ -27,7 +30,7 @@ const checkPathParts = partsChecker =>
 export const isPathLocal = checkPathParts(
   R.allPass([
     R.pipe(R.length, R.equals(2)),
-    R.pipe(R.head, R.equals('@')),
+    R.pipe(R.head, isLocalMarker),
     R.pipe(R.last, isValidIdentifier),
   ])
 );
@@ -44,10 +47,23 @@ export const isPathLibrary = checkPathParts(
   ])
 );
 
+/**
+ * @function isLibName
+ * @param {string} path
+ * @returns {boolean}
+ */
+export const isLibName = checkPathParts(
+  R.allPass([
+    R.pipe(R.length, R.equals(2)),
+    R.pipe(R.head, R.complement(R.equals('@'))),
+    R.all(isValidIdentifier),
+  ])
+);
+
 // :: * -> Boolean
 export const isValidPatchPath = R.either(isPathLocal, isPathLibrary);
 
-const TERMINALS_LIB_NAME = 'xod/patch-nodes';
+export const TERMINALS_LIB_NAME = 'xod/patch-nodes';
 const directions = R.values(CONST.PIN_DIRECTION);
 const dataTypes = R.values(CONST.PIN_TYPE);
 
@@ -59,3 +75,6 @@ export const isTerminalPatchPath = R.test(terminalPatchPathRegExp);
 
 // :: String -> Boolean
 export const isWatchPatchPath = R.test(/^xod\/core\/watch$/);
+
+// :: LibName -> Boolean
+export const isBuiltInLibName = R.equals(TERMINALS_LIB_NAME);
