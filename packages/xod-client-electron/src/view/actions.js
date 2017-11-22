@@ -9,7 +9,7 @@ import {
   failProcess,
   addConfirmation,
   addError,
-  SAVE_PROJECT,
+  SAVE_ALL,
 } from 'xod-client';
 import * as EVENTS from '../shared/events';
 import * as MESSAGES from '../shared/messages';
@@ -135,16 +135,16 @@ export const createAsyncAction = ({
 //
 // =============================================================================
 
-export const saveProject = createAsyncAction({
-  eventName: EVENTS.SAVE_PROJECT,
-  actionType: SAVE_PROJECT,
+export const saveAll = createAsyncAction({
+  eventName: EVENTS.SAVE_ALL,
+  actionType: SAVE_ALL,
   messages: {
-    process: MESSAGES.PROJECT_SAVE_PROCESSED,
-    complete: MESSAGES.PROJECT_SAVE_SUCCEED,
-    error: MESSAGES.PROJECT_SAVE_FAILED,
+    process: MESSAGES.SAVE_ALL_PROCESSED,
+    complete: MESSAGES.SAVE_ALL_SUCCEED,
+    error: MESSAGES.SAVE_ALL_FAILED,
   },
 });
 
 export default {
-  saveProject,
+  saveAll,
 };

@@ -21,7 +21,7 @@
   "homepage": "https://github.com/xodio/xod#readme",
   "dependencies": {
     "child-process-promise": "^2.2.1",
-    "fs-extra": "^4.0.0",
+    "fs-extra": "^4.0.2",
     "node-fetch": "^1.7.1",
     "ramda": "^0.24.1",
     "serialport": "^4.0.7",

@@ -95,7 +95,7 @@ class App extends client.App {
     this.onImportClicked = this.onImportClicked.bind(this);
     this.onImport = this.onImport.bind(this);
     this.onExport = this.onExport.bind(this);
-    this.onSaveProject = this.onSaveProject.bind(this);
+    this.onSaveAll = this.onSaveAll.bind(this);
     this.onOpenProjectClicked = this.onOpenProjectClicked.bind(this);
 
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
@@ -151,7 +151,7 @@ class App extends client.App {
           setTimeout(() => {
             if (this.props.saveProcess) {
               // TODO: don't allow any more interaction?
-              ipcRenderer.once(EVENTS.SAVE_PROJECT, () => {
+              ipcRenderer.once(EVENTS.SAVE_ALL, () => {
                 ipcRenderer.send(EVENTS.CONFIRM_CLOSE_WINDOW);
               });
             } else {
@@ -269,7 +269,7 @@ class App extends client.App {
 
     this.props.actions.createProject(projectName);
     ipcRenderer.send(EVENTS.CREATE_PROJECT, projectName);
-    ipcRenderer.once(EVENTS.SAVE_PROJECT, () => {
+    ipcRenderer.once(EVENTS.SAVE_ALL, () => {
       this.props.actions.addConfirmation(MESSAGES.PROJECT_SAVE_SUCCEED);
     });
   }
@@ -323,8 +323,11 @@ class App extends client.App {
     ipcRenderer.send(EVENTS.CREATE_WORKSPACE, path);
   }
 
-  onSaveProject() {
-    this.props.actions.saveProject(this.props.project);
+  onSaveAll() {
+    this.props.actions.saveAll({
+      oldProject: this.props.lastSavedProject,
+      newProject: this.props.project,
+    });
   }
 
   onRequestCreateProject() {
@@ -354,7 +357,7 @@ class App extends client.App {
     });
 
     if (clickedButtonId === 0) {
-      this.onSaveProject();
+      this.onSaveAll();
     }
 
     return clickedButtonId !== 2;
@@ -416,7 +419,7 @@ class App extends client.App {
         [
           onClick(items.newProject, this.onRequestCreateProject),
           onClick(items.openProject, this.onOpenProjectClicked),
-          onClick(items.saveProject, this.onSaveProject),
+          onClick(items.saveAll, this.onSaveAll),
           onClick(items.renameProject, this.props.actions.requestRenameProject),
           onClick(items.selectWorkspace, this.showPopupSetWorkspace),
           items.separator,
@@ -741,6 +744,7 @@ class App extends client.App {
 App.propTypes = R.merge(client.App.propTypes, {
   hasUnsavedChanges: PropTypes.bool,
   projects: PropTypes.object,
+  lastSavedProject: client.sanctuaryPropType(Project),
   project: client.sanctuaryPropType(Project),
   actions: PropTypes.objectOf(PropTypes.func),
   upload: PropTypes.object,
@@ -750,12 +754,13 @@ App.propTypes = R.merge(client.App.propTypes, {
 });
 
 const getSaveProcess = R.compose(
-  client.findProcessByType(client.SAVE_PROJECT),
+  client.findProcessByType(client.SAVE_ALL),
   client.getProccesses
 );
 
 const mapStateToProps = R.applySpec({
   hasUnsavedChanges: client.hasUnsavedChanges,
+  lastSavedProject: client.getLastSavedProject,
   project: client.getProject,
   upload: getUploadProcess,
   saveProcess: getSaveProcess,
@@ -791,7 +796,7 @@ const mapDispatchToProps = dispatch => ({
       createWorkspace: settingsActions.createWorkspace,
       switchWorkspace: settingsActions.switchWorkspace,
       openProject: client.openProject,
-      saveProject: actions.saveProject,
+      saveAll: actions.saveAll,
       uploadToArduino: uploadActions.uploadToArduino,
       uploadToArduinoConfig: uploadActions.uploadToArduinoConfig,
       hideUploadConfigPopup: uploadActions.hideUploadConfigPopup,

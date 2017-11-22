@@ -1,4 +1,3 @@
-
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
@@ -7,8 +6,10 @@ import R from 'ramda';
 import dircompare from 'dir-compare';
 import { assert } from 'chai';
 
+import { defaultizeProject } from 'xod-project/test/helpers';
+
 import { loadProject } from '../src/load';
-import { saveProject } from '../src/save';
+import { saveAll } from '../src/save';
 
 const fixture = subpath => path.resolve(__dirname, 'fixtures', subpath);
 
@@ -23,12 +24,13 @@ const formatDiffs = comparison => JSON.stringify(
 describe('Load/Save roundtrip', () => {
   it('preserves project files byte-by-byte', async () => {
     // load fixture project
+    const emptyProject = defaultizeProject({});
     const project = await loadProject(fixture('workspace/awesome-project'));
 
     // save it to a brand-new workspace
     const tmpDirPrefix = path.join(os.tmpdir(), 'xod-fs-test-');
     const tmpWorkspace = fs.mkdtempSync(tmpDirPrefix);
-    await saveProject(tmpWorkspace, project);
+    await saveAll(tmpWorkspace, emptyProject, project);
 
     // compare source and destination directory contents
     const comparison = dircompare.compareSync(

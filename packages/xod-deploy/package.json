@@ -21,7 +21,7 @@
   "dependencies": {
     "atob": "^2.0.3",
     "child-process-promise": "^2.2.1",
-    "fs-extra": "^4.0.1",
+    "fs-extra": "^4.0.2",
     "node-fetch": "^1.7.2",
     "ramda": "^0.24.1",
     "serialport": "^5.0.0",

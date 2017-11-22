@@ -210,7 +210,7 @@ describe('IDE', () => {
       subscribeOnSelectProject(done, fixture('./emptyWorkspace'), 'test');
       WA.onCreateProject(
         (eventName) => {
-          assert.equal(eventName, EVENTS.SAVE_PROJECT);
+          assert.equal(eventName, EVENTS.SAVE_ALL);
         },
         loadMock(fixture('./emptyWorkspace')),
         'test'

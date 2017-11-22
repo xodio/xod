@@ -7,7 +7,7 @@ import {
   resolveLibPath,
   spawnWorkspaceFile,
   spawnDefaultProject,
-  saveProject,
+  saveAll,
   getLocalProjects,
   validateWorkspace,
   loadProject,
@@ -16,7 +16,7 @@ import {
   findProjectMetaByName,
   resolveDefaultProjectPath,
   ensureWorkspacePath,
-  saveProjectAsLibrary,
+  saveLibraryEntirely,
   ERROR_CODES as FS_ERROR_CODES,
 } from 'xod-fs';
 import {
@@ -69,7 +69,7 @@ const requestShowProject = R.curry(
   (send, project) => send(EVENTS.REQUEST_SHOW_PROJECT, project)
 );
 // :: (String -> a -> ()) -> ()
-const notifySaveProjectComplete = send => () => send(EVENTS.SAVE_PROJECT, true);
+const notifySaveAllComplete = send => () => send(EVENTS.SAVE_ALL, true);
 
 // :: (String -> a -> ()) -> Path -> Path -> Promise Path Error
 export const updateWorkspace = R.curry(
@@ -127,7 +127,7 @@ const createAndSaveNewProject = R.curry(
     explode,
     project => R.pipeP(
       pathGetter,
-      saveProject(R.__, project)
+      saveAll(R.__, XP.createProject(), project)
     )(),
     R.always(projectName)
   )(projectName)
@@ -183,7 +183,7 @@ export const saveLibrary = R.curry(
       );
       return payload;
     },
-    saveProjectAsLibrary(payload.request.owner, payload.xodball),
+    saveLibraryEntirely(payload.request.owner, payload.xodball),
     loadWorkspacePath
   )()
     .catch((err) => {
@@ -200,12 +200,13 @@ export const saveLibrary = R.curry(
 //
 // =============================================================================
 
-// :: (String -> a -> ()) -> (() -> Promise Path Error) -> Project -> Promise Project Error
-export const onSaveProject = R.curry(
-  (send, pathGetter, project) => R.pipeP(
+// :: (String -> a -> ()) -> (() -> Promise Path Error) -> Project -> Project ->
+//    -> Promise Project Error
+export const onSaveAll = R.curry(
+  (send, pathGetter, oldProject, newProject) => R.pipeP(
     pathGetter,
-    saveProject(R.__, project),
-    R.tap(notifySaveProjectComplete(send))
+    saveAll(R.__, oldProject, newProject),
+    R.tap(notifySaveAllComplete(send))
   )().catch(handleError(send))
 );
 
@@ -289,7 +290,7 @@ export const onSwitchWorkspace = R.curry(
 export const onCreateProject = R.curry(
   (send, pathGetter, projectName) => R.pipeP(
     createAndSaveNewProject,
-    R.tap(notifySaveProjectComplete(send)),
+    R.tap(notifySaveAllComplete(send)),
     pathGetter,
     getLocalProjects,
     findProjectMetaByName(projectName),
@@ -308,8 +309,9 @@ export const onCreateProject = R.curry(
 const ipcSender = event => (eventName, arg) => event.sender.send(eventName, arg);
 
 // This event is subscribed by subscribeRemoteAction function
-export const subscribeToSaveProject = R.curry(
-  (event, project) => onSaveProject(ipcSender(event), loadWorkspacePath, project)
+export const subscribeToSaveAll = R.curry(
+  (event, { oldProject, newProject }) =>
+    onSaveAll(ipcSender(event), loadWorkspacePath, oldProject, newProject)
 );
 
 // onSelectProject

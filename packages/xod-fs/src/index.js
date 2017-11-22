@@ -2,7 +2,12 @@ import * as ERROR_CODES from './errorCodes';
 
 export { default as pack } from './pack';
 export { arrangeByFiles, fsSafeName } from './unpack';
-export { saveArrangedFiles, saveProject, saveProjectAsLibrary } from './save';
+export {
+  saveAll,
+  saveArrangedFiles,
+  saveProjectEntirely,
+  saveLibraryEntirely,
+} from './save';
 export { writeJSON, writeFile } from './write';
 export { spawnWorkspaceFile, spawnStdLib, spawnDefaultProject } from './spawn';
 export { readDir, readFile, readJSON } from './read';

@@ -19,7 +19,7 @@ export default function install(swaggerUrl, libQuery, distPath) {
       const version = getLibVersion(libData);
 
       return fetchLibXodball(swaggerUrl, `${libName}@${version}`)
-        .then(xodball => xodFs.saveProjectAsLibrary(params.owner, xodball, wsPath))
+        .then(xodball => xodFs.saveLibraryEntirely(params.owner, xodball, wsPath))
         .then(() => `Installed new library "${libQuery}" into workspace "${wsPath}".`);
     })
     .then(messages.success)

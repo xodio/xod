@@ -13,4 +13,5 @@ export default {
   debugger: debuggerState,
   errors: {},
   processes: {},
+  lastSavedProject: projectState,
 };
