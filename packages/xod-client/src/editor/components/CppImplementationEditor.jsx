@@ -10,6 +10,7 @@ const CppImplementationEditor = ({ isActive, source, isInDebuggerTab, onChange, 
     readOnly: isInDebuggerTab,
     mode: 'text/x-c++src',
     theme: 'material',
+    indentUnit: 4,
   };
 
   return (
