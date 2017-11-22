@@ -683,11 +683,11 @@ describe('Project', () => {
     it('returns Either Error about non-existing patch in the project', () => {
       const res = Project.validateProject(project);
       const err = new Error(
-        formatString(CONST.ERROR.TYPE_NOT_FOUND, { patchPath: '@/not-existing-patch' })
+        formatString(CONST.ERROR.TYPE_NOT_FOUND, { type: '@/not-existing-patch' })
       );
 
       assert.equal(res.isLeft, true);
-      assert.deepEqual(unfoldLeft(res), err);
+      assert.strictEqual(unfoldLeft(res).message, err.message);
     });
     it('returns Either Error about missing pins', () => {
       const newPatch = Helper.defaultizePatch({});
@@ -700,7 +700,7 @@ describe('Project', () => {
       const err = new Error(CONST.ERROR.PINS_NOT_FOUND);
 
       assert.equal(res.isLeft, true);
-      assert.deepEqual(unfoldLeft(res), err);
+      assert.strictEqual(unfoldLeft(res).message, err.message);
     });
     it('returns Either Project for valid project', () => {
       const validProject = Helper.defaultizeProject({});

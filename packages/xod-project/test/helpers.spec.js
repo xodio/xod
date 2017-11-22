@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { Either } from 'ramda-fantasy';
-import chai, { expect } from 'chai';
+import chai, { assert } from 'chai';
 import dirtyChai from 'dirty-chai';
 
 import * as Helper from './helpers';
@@ -9,7 +9,7 @@ chai.use(dirtyChai);
 
 describe('Helpers', () => {
   describe('expectEither', () => {
-    const leftObj = { name: 'left' };
+    const leftObj = new Error('LEFT');
     const rightObj = { name: 'right' };
 
     // eslint-disable-next-line new-cap
@@ -19,13 +19,11 @@ describe('Helpers', () => {
 
     it('should throw Left value', () => {
       const eitherLeft = () => Helper.expectEither(R.identity, left);
-      expect(eitherLeft).to.throw(leftObj);
+      assert.throws(eitherLeft, Error, 'LEFT');
     });
     it('should return Right value', () => {
       Helper.expectEither(
-        (val) => {
-          expect(val).to.be.equal(rightObj);
-        },
+        val => assert.deepEqual(val, rightObj),
         right
       );
     });
