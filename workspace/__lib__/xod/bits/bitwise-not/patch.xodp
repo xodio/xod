@@ -1,0 +1,29 @@
+{
+  "description": "Computes bitwise NOT of a byte. Also known as complement. A resulting bit at a particular position is 1 when input bit at the same position is 0, and vice versa.",
+  "nodes": [
+    {
+      "id": "Hk--zap-lf",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "SJzZfTTWgG",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rkgbMp6-lf",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "description": "Converts a byte value in range [0, 99] into a packed binary coded decimal byte",
+  "links": [
+    {
+      "id": "BJ5Cw2Wgf",
+      "input": {
+        "nodeId": "rJvRD3WeG",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "H12cvhZeG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByIfd3Zez",
+      "input": {
+        "nodeId": "HkXfO3bef",
+        "pinKey": "HkjNO_xxz"
+      },
+      "output": {
+        "nodeId": "B1Axu3Wxf",
+        "pinKey": "rkWeUCdBDkZ"
+      }
+    },
+    {
+      "id": "H1dyQ0WxG",
+      "input": {
+        "nodeId": "B1gyXAWlz",
+        "pinKey": "r1zA16pbxM"
+      },
+      "output": {
+        "nodeId": "HkXfO3bef",
+        "pinKey": "SkEHO_lef"
+      }
+    },
+    {
+      "id": "HJeW_3bgf",
+      "input": {
+        "nodeId": "B1Axu3Wxf",
+        "pinKey": "SklxICdHP1b"
+      },
+      "output": {
+        "nodeId": "rJvRD3WeG",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "SkX6vhWlf",
+      "input": {
+        "nodeId": "Hy9hPhWxG",
+        "pinKey": "ryKV8d_1f"
+      },
+      "output": {
+        "nodeId": "H12cvhZeG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sksk70WgM",
+      "input": {
+        "nodeId": "B1gyXAWlz",
+        "pinKey": "SkC1aTZeM"
+      },
+      "output": {
+        "nodeId": "Hy9hPhWxG",
+        "pinKey": "Hku_LuOyz"
+      }
+    },
+    {
+      "id": "rkt1mRbxf",
+      "input": {
+        "nodeId": "S1TsDnbgM",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1gyXAWlz",
+        "pinKey": "rkgRyT6beM"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1Axu3Wxf",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/core/floor"
+    },
+    {
+      "id": "B1gyXAWlz",
+      "position": {
+        "x": 68,
+        "y": 408
+      },
+      "type": "@/bitwise-or"
+    },
+    {
+      "id": "H12cvhZeG",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "HylHuulxf": 4
+      },
+      "id": "HkXfO3bef",
+      "position": {
+        "x": 34,
+        "y": 306
+      },
+      "type": "@/shift-left"
+    },
+    {
+      "boundValues": {
+        "BJvrLOuyz": 10
+      },
+      "id": "Hy9hPhWxG",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/core/modulo"
+    },
+    {
+      "id": "S1TsDnbgM",
+      "position": {
+        "x": 68,
+        "y": 510
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "BytUCdHD1-": 10
+      },
+      "id": "rJvRD3WeG",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/core/divide"
+    }
+  ]
+}

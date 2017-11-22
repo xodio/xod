@@ -1,0 +1,37 @@
+{
+  "description": "Computes bitwise OR of two bytes. A resulting bit at a particular position is 0 only if corresponding bits of inputs  are both 0.",
+  "nodes": [
+    {
+      "id": "SkC1aTZeM",
+      "position": {
+        "x": 33,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "r1-RyaTblz",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "r1zA16pbxM",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rkgRyT6beM",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}
