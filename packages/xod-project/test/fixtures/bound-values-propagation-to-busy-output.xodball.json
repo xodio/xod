@@ -1,0 +1,341 @@
+{
+  "description": "",
+  "license": "MIT",
+  "version": "0.14.0",
+  "authors": [
+    "xod"
+  ],
+  "name": "constant-regression",
+  "patches": {
+    "xod/common-hardware/led": {
+      "@@type": "xod-project/Patch",
+      "nodes": {
+        "B1oqkTnIb": {
+          "boundValues": {},
+          "description": "Board port number the LED is connected to. The port should be capable of generating PWM signal.",
+          "label": "PORT",
+          "id": "B1oqkTnIb",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-number",
+          "@@type": "xod-project/Node"
+        },
+        "H114eThI-": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "H114eThI-",
+          "position": {
+            "x": 10,
+            "y": 224
+          },
+          "type": "xod/core/pwm-output",
+          "@@type": "xod-project/Node"
+        },
+        "HyYh1a3LZ": {
+          "boundValues": {},
+          "description": "Luminance (brightness) value in relative units [0.0, 1.0].",
+          "label": "LUM",
+          "id": "HyYh1a3LZ",
+          "position": {
+            "x": 138,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-number",
+          "@@type": "xod-project/Node"
+        },
+        "SyqVe6hLb": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "SyqVe6hLb",
+          "position": {
+            "x": 138,
+            "y": 120
+          },
+          "type": "xod/core/cube",
+          "@@type": "xod-project/Node"
+        }
+      },
+      "links": {
+        "Hk64xTn8-": {
+          "id": "Hk64xTn8-",
+          "input": {
+            "nodeId": "SyqVe6hLb",
+            "pinKey": "ByZ7_hnUb"
+          },
+          "output": {
+            "nodeId": "HyYh1a3LZ",
+            "pinKey": "__out__"
+          },
+          "@@type": "xod-project/Link"
+        },
+        "Sk0NgTnUW": {
+          "id": "Sk0NgTnUW",
+          "input": {
+            "nodeId": "H114eThI-",
+            "pinKey": "ByXnYHPyb"
+          },
+          "output": {
+            "nodeId": "SyqVe6hLb",
+            "pinKey": "B1QQ_nhUb"
+          },
+          "@@type": "xod-project/Link"
+        },
+        "rk4NeanI-": {
+          "id": "rk4NeanI-",
+          "input": {
+            "nodeId": "H114eThI-",
+            "pinKey": "rJsaFSvk-"
+          },
+          "output": {
+            "nodeId": "B1oqkTnIb",
+            "pinKey": "__out__"
+          },
+          "@@type": "xod-project/Link"
+        }
+      },
+      "comments": {},
+      "path": "xod/common-hardware/led",
+      "description": "Drives a generic single color dimmable LED. The conversion between luminance and LED power is biased so that change in brightness on range 0…1 is percepted more or less uniformly by a human.",
+      "attachments": []
+    },
+    "xod/core/pwm-output": {
+      "@@type": "xod-project/Patch",
+      "nodes": {
+        "ByXnYHPyb": {
+          "boundValues": {},
+          "description": "Duty cycle value in range 0.0 … 1.0",
+          "label": "DUTY",
+          "id": "ByXnYHPyb",
+          "position": {
+            "x": 138,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-number",
+          "@@type": "xod-project/Node"
+        },
+        "noNativeImpl": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
+        },
+        "rJsaFSvk-": {
+          "boundValues": {},
+          "description": "Board PWM port to write to",
+          "label": "PORT",
+          "id": "rJsaFSvk-",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-number",
+          "@@type": "xod-project/Node"
+        }
+      },
+      "links": {},
+      "comments": {},
+      "path": "xod/core/pwm-output",
+      "description": "Outputs hardware-supported PWM signal on a board port",
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf8",
+          "content": "struct State {\n    int configuredPort = -1;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    State* state = getState(ctx);\n    const int port = (int)getValue<input_PORT>(ctx);\n    if (port != state->configuredPort) {\n        ::pinMode(port, OUTPUT);\n        // Store configured port so to avoid repeating `pinMode` call if just\n        // SIG is updated\n        state->configuredPort = port;\n    }\n\n    auto duty = getValue<input_DUTY>(ctx);\n    duty = duty > 1 ? 1 : (duty < 0 ? 0 : duty);\n\n    uint8_t val = (uint8_t)(duty * 255.0);\n    ::analogWrite(port, val);\n}\n"
+        }
+      ]
+    },
+    "xod/core/cube": {
+      "@@type": "xod-project/Patch",
+      "nodes": {
+        "B1QQ_nhUb": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "B1QQ_nhUb",
+          "position": {
+            "x": 10,
+            "y": 328
+          },
+          "type": "xod/patch-nodes/output-number",
+          "@@type": "xod-project/Node"
+        },
+        "BkRma33U-": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "BkRma33U-",
+          "position": {
+            "x": 10,
+            "y": 120
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
+        },
+        "ByZ7_hnUb": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "ByZ7_hnUb",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-number",
+          "@@type": "xod-project/Node"
+        }
+      },
+      "links": {},
+      "comments": {},
+      "path": "xod/core/cube",
+      "description": "Computes the cube (i.e. x³) of an input value.",
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf8",
+          "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    Number x = getValue<input_IN>(ctx);\n    emitValue<output_OUT>(ctx, x * x * x);\n}\n"
+        }
+      ]
+    },
+    "xod/core/constant-number": {
+      "@@type": "xod-project/Patch",
+      "nodes": {
+        "B1x2RV3eZ": {
+          "boundValues": {
+            "__in__": ""
+          },
+          "description": "",
+          "label": "VAL",
+          "id": "B1x2RV3eZ",
+          "position": {
+            "x": 10,
+            "y": 120
+          },
+          "type": "xod/patch-nodes/output-number",
+          "@@type": "xod-project/Node"
+        },
+        "H1PnRN2lW": {
+          "boundValues": {},
+          "description": "",
+          "label": "",
+          "id": "H1PnRN2lW",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "@@type": "xod-project/Node"
+        }
+      },
+      "links": {},
+      "comments": {},
+      "path": "xod/core/constant-number",
+      "description": "",
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf8",
+          "content": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n}\n"
+        }
+      ]
+    },
+    "@/main": {
+      "nodes": {
+        "BkDHHm3JG": {
+          "id": "BkDHHm3JG",
+          "type": "@/wrapped-led",
+          "position": {
+            "x": 102,
+            "y": 204
+          }
+        },
+        "H1iBrm2Jf": {
+          "id": "H1iBrm2Jf",
+          "type": "xod/core/constant-number",
+          "position": {
+            "x": 102,
+            "y": 102
+          },
+          "boundValues": {
+            "B1x2RV3eZ": 11
+          }
+        }
+      },
+      "links": {
+        "r1RSHQhJG": {
+          "id": "r1RSHQhJG",
+          "output": {
+            "nodeId": "H1iBrm2Jf",
+            "pinKey": "B1x2RV3eZ"
+          },
+          "input": {
+            "nodeId": "BkDHHm3JG",
+            "pinKey": "ry6-B73yf"
+          }
+        }
+      },
+      "path": "@/main"
+    },
+    "@/wrapped-led": {
+      "nodes": {
+        "ry6-B73yf": {
+          "id": "ry6-B73yf",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "label": "PORT",
+          "boundValues": {
+            "__out__": 13
+          }
+        },
+        "S1XVBXhyf": {
+          "id": "S1XVBXhyf",
+          "type": "xod/common-hardware/led",
+          "position": {
+            "x": 102,
+            "y": 102
+          }
+        }
+      },
+      "links": {
+        "r1I4HXhJz": {
+          "id": "r1I4HXhJz",
+          "output": {
+            "nodeId": "ry6-B73yf",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "S1XVBXhyf",
+            "pinKey": "B1oqkTnIb"
+          }
+        }
+      },
+      "comments": {
+        "BkU2BQn1M": {
+          "id": "BkU2BQn1M",
+          "position": {
+            "x": 170,
+            "y": 0
+          },
+          "size": {
+            "width": 238,
+            "height": 51
+          },
+          "content": "<- default value is bound here"
+        }
+      },
+      "path": "@/wrapped-led"
+    }
+  }
+}

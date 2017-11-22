@@ -28,6 +28,9 @@ import castMultipleOutputsFlat from './fixtures/cast-multiple-outputs.flat.json'
 import deepBoundValuesPropagationXodball from './fixtures/deep-bound-values-propagation.xodball.json';
 import deepBoundValuesPropagationFlat from './fixtures/deep-bound-values-propagation.flat.json';
 
+import boundValuesPropagationToBusyOutputXodball from './fixtures/bound-values-propagation-to-busy-output.xodball.json';
+import boundValuesPropagationToBusyOutputFlat from './fixtures/bound-values-propagation-to-busy-output.flat.json';
+
 chai.use(dirtyChai);
 
 describe('Flatten', () => {
@@ -369,7 +372,7 @@ describe('Flatten', () => {
 
       const terminalA = R.find(R.propEq('id', 'a~a'), nodes);
       expect(terminalA).to.have.property('boundValues').that.deep.equals({
-        __in__: true,
+        __out__: true,
       });
 
       const terminalB = R.find(R.propEq('id', 'b~a'), nodes);
@@ -409,14 +412,14 @@ describe('Flatten', () => {
       expect(terminalString)
       .to.have.property('boundValues')
       .that.deep.equals({
-        __in__: 'LED1',
+        __out__: 'LED1',
       });
 
       const terminalNumber = R.find(R.propEq('id', 'SJ7g05EdFe~B1eR5EOYg'), nodes);
       expect(terminalNumber)
       .to.have.property('boundValues')
       .that.deep.equals({
-        __in__: 1,
+        __out__: 1,
       });
     });
   });
@@ -1840,6 +1843,19 @@ describe('Flatten', () => {
       Helper.expectEither(
         (project) => {
           expect(project).to.deep.equal(deepBoundValuesPropagationFlat);
+        },
+        flatProject
+      );
+    });
+    it('should not override already bound outputs when propagating values upwards', () => {
+      const boundValuesPropagationToBusyOutputProject =
+        fromXodballDataUnsafe(boundValuesPropagationToBusyOutputXodball);
+      const flatProject = flatten(boundValuesPropagationToBusyOutputProject, '@/main');
+
+      expect(flatProject.isRight).to.be.true();
+      Helper.expectEither(
+        (project) => {
+          expect(project).to.deep.equal(boundValuesPropagationToBusyOutputFlat);
         },
         flatProject
       );
