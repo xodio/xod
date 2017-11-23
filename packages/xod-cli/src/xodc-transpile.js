@@ -6,7 +6,7 @@ import { map, identity } from 'ramda';
 import { foldEither } from 'xod-func-tools';
 import { loadProject, readJSON, writeFile } from 'xod-fs';
 import { transformProject, transpile } from 'xod-arduino';
-import * as msg from './messages';
+import * as msg from './messageUtils';
 
 const bundledLibs = path.resolve(__dirname, '../__lib__');
 

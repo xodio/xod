@@ -3,7 +3,7 @@ import * as url from 'url';
 import * as xodFs from 'xod-fs';
 import * as xodProject from 'xod-project';
 import { createLibUri, toString, toStringWithoutTag } from './lib-uri';
-import * as messages from './messages';
+import * as messages from './messageUtils';
 import * as swagger from './swagger';
 
 async function packLibVersion(projectDir) {

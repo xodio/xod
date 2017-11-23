@@ -2,7 +2,7 @@ import R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';
-import { fetchLibXodball, stringifyLibQuery } from 'xod-pm';
+import { fetchLibrary, stringifyLibQuery } from 'xod-pm';
 
 import {
   SELECTION_ENTITY_TYPE,
@@ -433,7 +433,7 @@ export const installLibrary = reqParams => (dispatch) => {
 
   const libName = `${reqParams.owner}/${reqParams.name}`;
 
-  fetchLibXodball(getPmSwaggerUrl(), stringifyLibQuery(reqParams))
+  fetchLibrary(getPmSwaggerUrl(), stringifyLibQuery(reqParams))
     .then(xodball => R.compose(
       (patches) => {
         dispatch({

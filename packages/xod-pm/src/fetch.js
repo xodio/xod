@@ -1,6 +1,13 @@
 import R from 'ramda';
 import swaggerClient from 'swagger-client';
-import { retryOrFail, rejectFetchResult } from 'xod-func-tools';
+import {
+  retryOrFail,
+  rejectFetchResult,
+  rejectWithCode,
+  eitherToPromise,
+  isAmong,
+} from 'xod-func-tools';
+import { fromXodballData, listMissingLibraryNames } from 'xod-project';
 
 import * as ERR_CODES from './errorCodes';
 import { parseLibQuery, unfoldMaybeLibQuery, rejectUnexistingVersion } from './utils';
@@ -11,6 +18,7 @@ import { parseLibQuery, unfoldMaybeLibQuery, rejectUnexistingVersion } from './u
 //
 // =============================================================================
 
+// :: (b -> c) -> (() => Promise a b) -> Promise a c
 const retryExcept404 = retryOrFail(
   [500, 1000, 2000, 3000],
   res => (res.status && res.status === 404),
@@ -40,7 +48,7 @@ const getSwaggerClient = (() => {
 
 // LibData :: { owner: String, name: String, version: String }
 
-// :: URL -> LibName -> Promise LibData
+// :: URL -> LibName -> Promise LibData Error
 export const fetchLibData = R.curry((swaggerUrl, libQuery) =>
   getSwaggerClient(swaggerUrl)
     .then(swagger =>
@@ -69,8 +77,8 @@ export const fetchLibData = R.curry((swaggerUrl, libQuery) =>
     )
 );
 
-// :: URL -> LibName -> Promise Xodball
-export const fetchLibXodball = R.curry((swaggerUrl, libQuery) =>
+// :: URL -> LibName -> Promise Project Error
+export const fetchLibrary = R.curry((swaggerUrl, libQuery) =>
   getSwaggerClient(swaggerUrl)
     .then(swagger =>
       R.compose(
@@ -87,12 +95,40 @@ export const fetchLibXodball = R.curry((swaggerUrl, libQuery) =>
                   request: libQuery,
                   params,
                 }),
-                () => fetchLibXodball(swaggerUrl, libQuery)
+                () => fetchLibrary(swaggerUrl, libQuery)
               )
             )
             .then(R.prop('obj'))
+            .then(xodball =>
+              R.compose(eitherToPromise, fromXodballData)(xodball)
+                .catch(rejectWithCode(ERR_CODES.INVALID_XODBALL))
+            )
         ),
         parseLibQuery
       )(libQuery)
     )
 );
+
+// :: URL -> LibName -> Promise [Project] Error
+export const fetchLibraryWithDependencies = R.curry((swaggerUrl, libQuery) => {
+  // :: Map LibName Project -> [LibName] -> Promise Map LibName Project Error
+  const fetchReqursively = R.curry((fetchedLibs, libNamesToFetch) => {
+    if (libNamesToFetch.length === 0) return Promise.resolve(fetchedLibs);
+
+    const nextLibName = R.head(libNamesToFetch);
+    return fetchLibrary(swaggerUrl, nextLibName)
+      .then((lib) => {
+        const nextFetchedLibs = R.assoc(nextLibName, lib, fetchedLibs);
+        const fetchedLibNames = R.keys(nextFetchedLibs);
+        const nextLibNamesToFetch = R.compose(
+          R.concat(R.__, R.tail(libNamesToFetch)),
+          R.reject(isAmong(fetchedLibNames)),
+          listMissingLibraryNames
+        )(lib);
+
+        return fetchReqursively(nextFetchedLibs, nextLibNamesToFetch);
+      });
+  });
+
+  return fetchReqursively({}, [libQuery]);
+});

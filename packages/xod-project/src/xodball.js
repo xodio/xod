@@ -76,15 +76,11 @@ export const toXodball = def(
 
 export const prepareLibPatchesToInsertIntoProject = def(
   'prepareLibPatchesToInsertIntoProject :: String -> Project -> [Patch]',
-  (libName, xodball) => R.compose(
-    explodeEither,
+  (libName, project) => R.compose(
     R.map(R.compose(
-      R.map(R.compose(
-        resolveNodeTypesInPatch,
-        R.over(R.lensProp('path'), R.replace('@', libName)),
-      )),
-      listPatchesWithoutBuiltIns,
+      resolveNodeTypesInPatch,
+      R.over(R.lensProp('path'), R.replace('@', libName)),
     )),
-    fromXodballData
-  )(xodball)
+    listPatchesWithoutBuiltIns,
+  )(project)
 );

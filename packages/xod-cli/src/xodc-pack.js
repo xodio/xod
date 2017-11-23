@@ -3,7 +3,7 @@
 
 import path from 'path';
 import { loadProjectWithLibs, pack, writeJSON } from 'xod-fs';
-import * as msg from './messages';
+import * as msg from './messageUtils';
 
 export default (projectDir, output) => {
   const projectPath = path.resolve(projectDir);

@@ -101,6 +101,18 @@ export const saveLibraryEntirely = R.curry(
   }
 );
 
+// :: Path -> Map LibName Project -> Promise [Project] Error
+export const saveAllLibrariesEntirely = R.uncurryN(2,
+  workspacePath => R.compose(
+    allPromises,
+    R.values,
+    R.mapObjIndexed((proj, name) => {
+      const owner = XP.getOwnerName(name);
+      return saveLibraryEntirely(owner, proj, workspacePath);
+    })
+  )
+);
+
 const savePatchChanges = def(
   'savePatchChanges :: Path -> [AnyPatchChange] -> Promise', // Promise Path Error
   (projectDir, patchChanges) => {

@@ -2,7 +2,7 @@
 
 import path from 'path';
 import { arrangeByFiles, save, readJSON } from 'xod-fs';
-import * as msg from './messages';
+import * as msg from './messageUtils';
 
 export default (xodball, workspace) => {
   const xodballPath = path.resolve(xodball);
