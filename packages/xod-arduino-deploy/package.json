@@ -6,6 +6,7 @@
   "scripts": {
     "copy-index": " cpx \"src/*.json\" dist",
     "build": "babel src -d dist && yarn copy-index",
+    "dev": "yarn run build --watch",
     "test": "mocha test/**/*.spec.js",
     "test-func": "mocha --opts test-func/mocha.opts test-func/**/*.spec.js"
   },

@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "babel src -d dist",
+    "dev": "yarn run build --watch",
     "test": "mocha test/**/*.spec.js",
     "test-func": "mocha --opts test-func/mocha.opts test-func/**/*.spec.js"
   },
