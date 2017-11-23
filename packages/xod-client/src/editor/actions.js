@@ -2,7 +2,7 @@ import R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';
-import { fetchLibrary, stringifyLibQuery } from 'xod-pm';
+import { fetchLibraryWithDependencies, stringifyLibQuery, getPureLibName } from 'xod-pm';
 
 import {
   SELECTION_ENTITY_TYPE,
@@ -432,25 +432,41 @@ export const installLibrary = reqParams => (dispatch) => {
   });
 
   const libName = `${reqParams.owner}/${reqParams.name}`;
+  const libQuery = stringifyLibQuery(reqParams);
 
-  fetchLibrary(getPmSwaggerUrl(), stringifyLibQuery(reqParams))
-    .then(xodball => R.compose(
-      (patches) => {
+  fetchLibraryWithDependencies(getPmSwaggerUrl(), libQuery)
+    .then(projects => R.compose(
+      (projectDatas) => {
+        const patches = R.compose(
+          R.unnest,
+          R.pluck('patches')
+        )(projectDatas);
+
         dispatch({
           type: ActionType.INSTALL_LIBRARY_COMPLETE,
           payload: {
             libName,
             request: reqParams,
             patches,
-            xodball,
+            projects,
           },
         });
-        dispatch(
-          addConfirmation(libInstalled(libName, xodball.version))
+        R.forEach(
+          proj => dispatch(addConfirmation(libInstalled(proj.name, proj.version))),
+          projectDatas
         );
       },
-      XP.prepareLibPatchesToInsertIntoProject,
-    )(libName, xodball))
+      R.values,
+      R.mapObjIndexed((proj, name) => {
+        const pureName = getPureLibName(name);
+
+        return {
+          name: pureName,
+          version: XP.getProjectVersion(proj),
+          patches: XP.prepareLibPatchesToInsertIntoProject(pureName, proj),
+        };
+      })
+    )(projects))
     .catch((err) => {
       dispatch({
         type: ActionType.INSTALL_LIBRARY_FAILED,

@@ -1,6 +1,12 @@
 import R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
-import { notEmpty, notNil, rejectWithCode, maybeToPromise } from 'xod-func-tools';
+import {
+  notEmpty,
+  notNil,
+  rejectWithCode,
+  maybeToPromise,
+  explodeMaybe,
+} from 'xod-func-tools';
 
 import * as ERR_CODES from './errorCodes';
 import * as MSG from './messages';
@@ -50,6 +56,15 @@ export const parseLibQuery = R.compose(
   R.tail,
   R.match(/^([^@/]+?)\/([^@/]+?)(?:@([^@/]+?))?$/)
 );
+
+// :: String -> LibName
+// It parses libQuery ("xod/core" or "xod/core@0.11.0")
+// and returns lib name without version ("xod/core").
+export const getPureLibName = libQuery => R.compose(
+  qp => `${qp.owner}/${qp.name}`,
+  explodeMaybe(`Expected correct library name format, like "xod/core@0.11.0", but get "${libQuery}"`),
+  parseLibQuery
+)(libQuery);
 
 // :: String -> Boolean
 export const isLibQueryValid = R.compose(
