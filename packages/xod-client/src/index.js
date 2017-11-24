@@ -15,7 +15,7 @@ import * as ProjectBrowserActions from './projectBrowser/actions';
 import * as PopupActions from './popups/actions';
 import * as DebuggerActions from './debugger/actions';
 
-import { TAB_CLOSE, INSTALL_LIBRARY_COMPLETE } from './editor/actionTypes';
+import { TAB_CLOSE, INSTALL_LIBRARIES_COMPLETE } from './editor/actionTypes';
 import { SAVE_ALL } from './project/actionTypes';
 
 import * as EditorConstants from './editor/constants';
@@ -54,7 +54,7 @@ export * from './projectBrowser/actions';
 export * from './popups/actions';
 export * from './debugger/actions';
 
-export { TAB_CLOSE, INSTALL_LIBRARY_COMPLETE } from './editor/actionTypes';
+export { TAB_CLOSE, INSTALL_LIBRARIES_COMPLETE } from './editor/actionTypes';
 export { SAVE_ALL } from './project/actionTypes';
 
 export * from './editor/selectors';
@@ -114,7 +114,7 @@ export default Object.assign({
   getLastSavedProject,
   TAB_CLOSE,
   SAVE_ALL,
-  INSTALL_LIBRARY_COMPLETE,
+  INSTALL_LIBRARIES_COMPLETE,
 },
   UserSelectors,
   EditorSelectors,

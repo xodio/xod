@@ -427,7 +427,7 @@ export const cutEntities = event => (dispatch) => {
 
 export const installLibrary = reqParams => (dispatch) => {
   dispatch({
-    type: ActionType.INSTALL_LIBRARY_BEGIN,
+    type: ActionType.INSTALL_LIBRARIES_BEGIN,
     payload: reqParams,
   });
 
@@ -443,7 +443,7 @@ export const installLibrary = reqParams => (dispatch) => {
         )(projectDatas);
 
         dispatch({
-          type: ActionType.INSTALL_LIBRARY_COMPLETE,
+          type: ActionType.INSTALL_LIBRARIES_COMPLETE,
           payload: {
             libName,
             request: reqParams,
@@ -469,7 +469,7 @@ export const installLibrary = reqParams => (dispatch) => {
     )(projects))
     .catch((err) => {
       dispatch({
-        type: ActionType.INSTALL_LIBRARY_FAILED,
+        type: ActionType.INSTALL_LIBRARIES_FAILED,
         payload: {
           libName,
           request: reqParams,

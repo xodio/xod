@@ -23,6 +23,7 @@ import {
   explode,
   isAmong,
   rejectWithCode,
+  allPromises,
 } from 'xod-func-tools';
 
 import * as settings from './settings';
@@ -172,23 +173,30 @@ export const loadProjectsOrSpawnDefault = R.curry(
   )(workspacePath)
 );
 
-// :: SaveLibPayload :: { request: LibParams, xodball: Xodball }
+// :: SaveLibPayload :: { request: LibParams, projects: Map LibName Project }
 // :: IpcEvent -> SaveLibPayload -> Promise SaveLibPayload Error
-export const saveLibrary = R.curry(
+export const saveLibraries = R.curry(
   (event, payload) => R.composeP(
     () => {
       event.sender.send(
-        EVENTS.INSTALL_LIBRARY_COMPLETE,
+        EVENTS.INSTALL_LIBRARIES_COMPLETE,
         payload.request
       );
       return payload;
     },
-    saveLibraryEntirely(payload.request.owner, payload.xodball),
+    wsPath => R.compose(
+      allPromises,
+      R.values,
+      R.mapObjIndexed((proj, libName) => {
+        const owner = XP.getOwnerName(libName);
+        return saveLibraryEntirely(owner, proj, wsPath);
+      })
+    )(payload.projects),
     loadWorkspacePath
   )()
     .catch((err) => {
       event.sender.send(
-        EVENTS.INSTALL_LIBRARY_FAILED,
+        EVENTS.INSTALL_LIBRARIES_FAILED,
         errorToPlainObject(err)
       );
     })

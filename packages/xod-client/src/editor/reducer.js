@@ -549,7 +549,7 @@ const editorReducer = (state = {}, action) => {
       return R.assocPath(['suggester', 'highlightedPatchPath'], action.payload.patchPath, state);
     case EAT.SHOW_LIB_SUGGESTER:
       return R.assoc('libSuggesterVisible', true, state);
-    case EAT.INSTALL_LIBRARY_BEGIN:
+    case EAT.INSTALL_LIBRARIES_BEGIN:
     case EAT.HIDE_LIB_SUGGESTER:
       return R.assoc('libSuggesterVisible', false, state);
 
