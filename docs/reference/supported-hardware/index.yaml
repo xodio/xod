@@ -475,3 +475,29 @@
           sku: DFR0175
           flavor: Brk
           url: https://www.dfrobot.com/product-593.html
+
+- section: "Clock (RTC)"
+  parts:
+    - part: DS1307, DS1337, DS1338, DS3231
+      kind: Real Time Clock
+      vendor: Maxim
+      nodes:
+        - xod/common-hardware/ds1307-rtc-read
+        - xod/common-hardware/ds1307-rtc-write
+      shopping:
+        - shop: Adafruit
+          sku: "#3013"
+          flavor: Brk
+          url: https://www.adafruit.com/product/3013
+        - shop: Adafruit
+          sku: "#3296"
+          flavor: Brk
+          url: https://www.adafruit.com/product/3296
+        - shop: Seeed
+          sku: 101020013
+          flavor: Mod
+          url: https://www.seeedstudio.com/Grove-RTC-p-758.html
+        - shop: SparkFun
+          sku: BOB-12708
+          flavor: Brk
+          url: https://www.sparkfun.com/products/12708

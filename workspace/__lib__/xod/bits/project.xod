@@ -1,0 +1,9 @@
+{
+  "authors": [
+    "XOD"
+  ],
+  "description": "Low-level bits and bytes operations",
+  "license": "AGPL-3.0",
+  "name": "bits",
+  "version": "0.15.1"
+}

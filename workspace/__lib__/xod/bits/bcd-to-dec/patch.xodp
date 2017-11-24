@@ -1,0 +1,130 @@
+{
+  "description": "Converts a packed binary coded decimal byte into a byte value in range [0, 99]",
+  "links": [
+    {
+      "id": "B1F1jOxgz",
+      "input": {
+        "nodeId": "S12C5_elM",
+        "pinKey": "SkUn_Olef"
+      },
+      "output": {
+        "nodeId": "B1OZ_uxlf",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByATcdexz",
+      "input": {
+        "nodeId": "SJJzOullz",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1d65uelM",
+        "pinKey": "SyomIRurDJ-"
+      }
+    },
+    {
+      "id": "HyjTcdggG",
+      "input": {
+        "nodeId": "B1d65uelM",
+        "pinKey": "BJnQUR_BwyZ"
+      },
+      "output": {
+        "nodeId": "BJ1p9dggf",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "SyBTcdglG",
+      "input": {
+        "nodeId": "BJ1p9dggf",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "rkojcOgxz",
+        "pinKey": "rJ2LddxlG"
+      }
+    },
+    {
+      "id": "rJbnqOlgz",
+      "input": {
+        "nodeId": "rkojcOgxz",
+        "pinKey": "rkXLOulgz"
+      },
+      "output": {
+        "nodeId": "B1OZ_uxlf",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkjJi_elz",
+      "input": {
+        "nodeId": "B1d65uelM",
+        "pinKey": "HkqmLAOrD1W"
+      },
+      "output": {
+        "nodeId": "S12C5_elM",
+        "pinKey": "S1YR_dgeG"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1OZ_uxlf",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "B1d65uelM",
+      "position": {
+        "x": 102,
+        "y": 306
+      },
+      "type": "xod/core/add"
+    },
+    {
+      "boundValues": {
+        "SJ4zUC_BD1-": 10
+      },
+      "id": "BJ1p9dggf",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "boundValues": {
+        "ByjTuuxef": 15
+      },
+      "id": "S12C5_elM",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "@/bitwise-and"
+    },
+    {
+      "id": "SJJzOullz",
+      "position": {
+        "x": 102,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "BkvUuuleG": 4
+      },
+      "id": "rkojcOgxz",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "@/shift-right"
+    }
+  ]
+}
