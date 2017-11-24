@@ -11,6 +11,9 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
+    if (!isInputDirty<input_W>(ctx))
+        return;
+
     auto state = getState(ctx);
 
     if (!state->begun) {
