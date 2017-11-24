@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
-import { notEmpty, notNil, rejectWithCode, foldMaybe } from 'xod-func-tools';
+import { notEmpty, notNil, rejectWithCode, maybeToPromise } from 'xod-func-tools';
 
 import * as ERR_CODES from './errorCodes';
 import * as MSG from './messages';
@@ -60,15 +60,13 @@ export const isLibQueryValid = R.compose(
 // :: LibQueryParams -> LibName
 export const stringifyLibQuery = ({ owner, name, version }) => `${owner}/${name}@${version}`;
 
-// :: (LibQueryParams -> Promise a) -> Maybe LibQueryParams -> Promise a Error
+// :: (LibQueryParams -> a) -> Maybe LibQueryParams -> Promise a Error
 export const unfoldMaybeLibQuery = R.curry(
-  (justFn, maybe) => foldMaybe(
+  (justFn, maybe) => maybeToPromise(
     () => rejectWithCode(
       ERR_CODES.CANT_PARSE_LIBRARY_REQUEST,
       new Error(MSG.CANT_PARSE_LIBRARY_REQUEST)
-    )(),
-    // ^ this function call prevents from constructing Error without the need,
-    // so it prevents falsy promise rejection
+    ),
     justFn,
     maybe
   )

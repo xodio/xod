@@ -5,7 +5,7 @@ import $ from 'sanctuary-def';
 import * as XF from 'xod-func-tools';
 
 import * as C from './constants';
-import { isTerminalPatchPath, isValidIdentifier, isValidPatchPath } from './internal/patchPathUtils';
+import { isTerminalPatchPath, isValidIdentifier, isValidPatchPath, isLibName } from './internal/patchPathUtils';
 import { isValidVersion } from './versionUtils';
 
 /* Types are by convention starts with a capital leter, so: */
@@ -45,6 +45,7 @@ export const PinKey = AliasType('PinKey', NodeId);
 export const PinLabel = AliasType('PinLabel', $.String);
 export const Identifier = NullaryType('Identifier', isValidIdentifier);
 export const PatchPath = NullaryType('PatchPath', isValidPatchPath);
+export const LibName = NullaryType('LibName', isLibName);
 export const PinDirection = EnumType('PinDirection', R.values(C.PIN_DIRECTION));
 export const DataType = EnumType('DataType', R.values(C.PIN_TYPE));
 export const DataValue = NullaryType('DataValue', XF.notNil);
@@ -169,6 +170,7 @@ export const env = XF.env.concat([
   Source,
   TerminalNode,
   Version,
+  LibName,
 ]);
 
 export const def = HMDef.create({

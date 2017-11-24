@@ -7,6 +7,7 @@ export {
   saveArrangedFiles,
   saveProjectEntirely,
   saveLibraryEntirely,
+  saveAllLibrariesEntirely,
 } from './save';
 export { writeJSON, writeFile } from './write';
 export { spawnWorkspaceFile, spawnStdLib, spawnDefaultProject } from './spawn';

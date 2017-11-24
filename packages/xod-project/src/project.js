@@ -250,6 +250,52 @@ export const listLibraryPatches = def(
 );
 
 /**
+ * Returns a list of names of installed libraries in the project.
+ * It means that Project has a Patches from these libraries.
+ */
+export const listInstalledLibraryNames = def(
+  'listInstalledLibraryNames :: Project -> [LibName]',
+  R.compose(
+    R.uniq,
+    R.reject(R.either(
+      PatchPathUtils.isBuiltInLibName,
+      PatchPathUtils.isLocalMarker
+    )),
+    R.map(PatchPathUtils.getLibraryName),
+    listPatchPaths
+  )
+);
+
+/**
+ * Returns a list of Library name that used in any Patch
+ * inside specified Project. It will check all Patches in the Project.
+ */
+export const listLibraryNamesUsedInProject = def(
+  'listLibraryNamesUsedInProject :: Project -> [LibName]',
+  R.compose(
+    R.uniq,
+    R.unnest,
+    R.map(Patch.listLibraryNamesUsedInPatch),
+    listPatchesWithoutBuiltIns
+  )
+);
+
+/**
+ * Returns a list of Library Names that used somewhere in the project
+ * patches (local or library) as Nodes.
+ */
+export const listMissingLibraryNames = def(
+  'listMissingLibraryNames :: Project -> [LibName]',
+  R.converge(
+    R.difference,
+    [
+      listLibraryNamesUsedInProject,
+      listInstalledLibraryNames,
+    ]
+  )
+);
+
+/**
  * @function getPatchByPath
  * @param {string} path - full path of the patch to find, e.g. `"@/bar"`
  * @param {Project} project - project bundle

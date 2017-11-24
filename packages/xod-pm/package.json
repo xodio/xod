@@ -26,6 +26,6 @@
     "xod-project": "^0.15.0"
   },
   "devDependencies": {
-    "chai": "^4.1.0"
+    "chai": "^4.1.2"
   }
 }

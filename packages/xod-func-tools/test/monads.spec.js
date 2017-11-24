@@ -10,6 +10,7 @@ import {
   foldMaybe,
   catMaybies,
   eitherToPromise,
+  maybeToPromise,
   reduceEither,
   reduceMaybe,
 } from '../src/monads';
@@ -122,6 +123,36 @@ describe('moands', () => {
     it('returns rejected promise contained Left value', () =>
       eitherToPromise(Either.Left('err'))
         .catch(val => assert.equal(val, 'err'))
+    );
+  });
+
+  describe('maybeToPromise()', () => {
+    it('returns resolved promise contained Just value', () =>
+      maybeToPromise(
+        () => assert.fail('', '', 'This function should not been called!'),
+        a => a + 5,
+        Maybe.Just(52)
+      ).then(val => assert.equal(val, 57))
+    );
+    it('returns rejected promise', () =>
+      maybeToPromise(
+        () => new Error('It is Nothing!'),
+        a => assert.fail(a, undefined, 'This function should not been called!'),
+        Maybe.Nothing()
+      ).catch((err) => {
+        assert.instanceOf(err, Error);
+        assert.equal(err.message, 'It is Nothing!');
+      })
+    );
+    it('returns rejected promise without nesting', () =>
+      maybeToPromise(
+        () => Promise.reject(new Error('It is Nothing!')),
+        a => assert.fail(a, undefined, 'This function should not been called!'),
+        Maybe.Nothing()
+      ).catch((err) => {
+        assert.instanceOf(err, Error);
+        assert.equal(err.message, 'It is Nothing!');
+      })
     );
   });
 

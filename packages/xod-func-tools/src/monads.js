@@ -116,6 +116,15 @@ export const eitherToPromise = foldEither(
   Promise.resolve.bind(Promise)
 );
 
+// :: (() -> b) -> (a -> a) -> Maybe a -> Promise a b
+export const maybeToPromise = R.curry(
+  (nothingFn, justFn, maybe) => new Promise(
+    (resolve, reject) => (
+      maybe.isJust ? resolve(maybe.value) : reject()
+    )
+  ).then(justFn, nothingFn)
+);
+
 /**
  * Returns a result of calling iterator function over argument list.
  * Use this function if iterator function returns some Monad.

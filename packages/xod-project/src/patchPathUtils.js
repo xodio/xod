@@ -11,12 +11,15 @@ import {
 } from './internal/patchPathUtils';
 
 export {
+  isLocalMarker,
   isValidIdentifier,
   isPathLocal,
   isPathLibrary,
+  isLibName,
   isValidPatchPath,
   isTerminalPatchPath,
   isWatchPatchPath,
+  isBuiltInLibName,
 } from './internal/patchPathUtils';
 
 // :: String -> Identifier
@@ -70,6 +73,12 @@ export const getLibraryName = R.ifElse(
     R.split('/')
   ),
   R.always('@')
+);
+
+// :: PatchPath -> String
+export const getOwnerName = R.compose(
+  R.head,
+  R.split('/')
 );
 
 /**

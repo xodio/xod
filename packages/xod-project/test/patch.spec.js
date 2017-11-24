@@ -13,6 +13,8 @@ import * as CONST from '../src/constants';
 import { formatString } from '../src/utils';
 import * as PPU from '../src/patchPathUtils';
 
+import { TERMINALS_LIB_NAME } from '../src/internal/patchPathUtils';
+
 import * as Helper from './helpers';
 
 chai.use(dirtyChai);
@@ -393,6 +395,38 @@ describe('Patch', () => {
         .to.be.instanceof(Array)
         .and.to.have.members([patch.links[1]]);
     });
+  });
+  describe('listLibraryNamesUsedInPatch', () => {
+    it('returns an empty list for empty patch', () =>
+      assert.isEmpty(
+        Patch.listLibraryNamesUsedInPatch(Helper.defaultizePatch({}))
+      )
+    );
+    it('returns an empty list if Patch used only Nodes from local project or builtIns', () =>
+      assert.isEmpty(
+        Patch.listLibraryNamesUsedInPatch(Helper.defaultizePatch({
+          nodes: {
+            a: { type: '@/my-patch' },
+            b: { type: `${TERMINALS_LIB_NAME}/input-number` },
+          },
+        }))
+      )
+    );
+    it('returns a list of two libNames', () =>
+      assert.sameMembers(
+        Patch.listLibraryNamesUsedInPatch(Helper.defaultizePatch({
+          nodes: {
+            a: { type: 'xod/core/flip-flop' },
+            b: { type: 'xod/core/clock' },
+            c: { type: 'xod/common-hardware/led' },
+          },
+        })),
+        [
+          'xod/core',
+          'xod/common-hardware',
+        ]
+      )
+    );
   });
 
   describe('pins', () => {
