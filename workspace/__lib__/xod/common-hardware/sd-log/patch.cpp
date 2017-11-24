@@ -30,7 +30,7 @@ void evaluate(Context ctx) {
 
     char filename[16] = { 0 };
     dump(getValue<input_FILE>(ctx), filename);
-    File file = SD.open(filename, FILE_WRITE);
+    File file = SD.open(filename, O_WRITE | O_CREAT | O_APPEND);
     if (!file) {
         // Failed to open the file. Maybe, SD card gone,
         // try to reinit next time
