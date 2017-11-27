@@ -20,6 +20,26 @@ describe('IDE: Blink project', () => {
     assert.eventually.strictEqual(ide.app.client.getTitle(), 'XOD')
   );
 
+  describe('deleting opened patch', () => {
+    const patchGroup = 'welcome-to-xod';
+    const patchName = '01-hello';
+
+    it('expands a patch group with the opened patch in located', () =>
+      ide.page.findPatchGroup(patchGroup).click()
+        .then(() => ide.page.assertPatchGroupExpanded(patchGroup))
+    );
+
+    it('deletes the patch', () =>
+      ide.page.deletePatch(patchName)
+        .then(() => ide.page.assertNodeUnavailableInProjectBrowser(patchName))
+        .then(() => ide.page.assertTabWithTitleDoesNotExist(patchName))
+        .then(() => ide.page.assertNoPatchesAreOpen())
+        // close patch group to restore initial state
+        .then(() => ide.page.findPatchGroup(patchGroup).click())
+        .then(() => ide.page.assertPatchGroupCollapsed(patchGroup))
+    );
+  });
+
   describe('creating a new patch', () => {
     it('prompts for a name', () =>
       ide.page.clickAddPatch()

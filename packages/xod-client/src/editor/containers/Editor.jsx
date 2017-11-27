@@ -123,6 +123,8 @@ class Editor extends React.Component {
   renderOpenedImplementationEditorTabs() {
     const { currentTab } = this.props;
 
+    if (!currentTab) return null;
+
     const tabs = this.props.implEditorTabs.map(({ id, type, patchPath }) => {
       const patch = XP.getPatchByPathUnsafe(patchPath, this.props.project);
       const source = XP.getImpl(patch).getOrElse(IMPL_TEMPLATE);
@@ -178,9 +180,9 @@ class Editor extends React.Component {
     ) : null;
 
     const DebuggerContainer = (this.props.isDebuggerVisible) ? <Debugger /> : null;
-    const BreadcrumbsContainer = (
-      this.props.currentTab.id === DEBUGGER_TAB_ID
-    ) ? <Breadcrumbs /> : null;
+    const BreadcrumbsContainer = R.pathEq(['currentTab', 'id'], DEBUGGER_TAB_ID, this.props)
+      ? <Breadcrumbs />
+      : null;
 
     const DebugSessionStopButton = (
       this.props.isDebugSessionRunning &&

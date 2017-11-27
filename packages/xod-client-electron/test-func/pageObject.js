@@ -278,6 +278,12 @@ function assertTabWithTitleDoesNotExist(client, expectedTitle) {
   );
 }
 
+function assertNoPatchesAreOpen(client) {
+  return assert.eventually.isTrue(
+    client.isVisible('.NoPatch')
+  );
+}
+
 //-----------------------------------------------------------------------------
 // Messages
 //-----------------------------------------------------------------------------
@@ -294,6 +300,7 @@ const API = {
   addNode,
   assertActiveTabHasTitle,
   assertTabWithTitleDoesNotExist,
+  assertNoPatchesAreOpen,
   assertNoPopups,
   assertNodeAvailableInProjectBrowser,
   assertNodeUnavailableInProjectBrowser,
