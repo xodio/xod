@@ -42,6 +42,7 @@ class App extends client.App {
     this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
 
     props.actions.openProject(props.initialProject);
+    props.actions.fetchGrant();
   }
 
   onResize() {
@@ -206,6 +207,7 @@ class App extends client.App {
         [
           onClick(items.toggleHelpbar, this.props.actions.toggleHelpbar),
           onClick(items.toggleDebugger, this.props.actions.toggleDebugger),
+          onClick(items.toggleAccountPane, this.props.actions.toggleAccountPane),
         ]
       ),
       submenu(

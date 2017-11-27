@@ -59,6 +59,9 @@ function createWindow() {
     show: false,
     // this is required for subpixel antialiasing to work
     backgroundColor: '#FFF',
+    webPreferences: {
+      partition: 'persist:main',
+    },
   });
   win.maximize();
   // and load the index.html of the app.

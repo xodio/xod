@@ -181,6 +181,7 @@ class App extends client.App {
 
     // request for data from main process
     ipcRenderer.send(EVENTS.GET_SIDEBAR_PANE_HEIGHT);
+    props.actions.fetchGrant();
   }
 
   onClickMessageButton(buttonId, /* messageInfo */) {
@@ -522,8 +523,18 @@ class App extends client.App {
     const viewMenu = {
       label: 'View',
       submenu: [
-        client.menu.onClick(client.menu.items.toggleHelpbar, this.props.actions.toggleHelpbar),
-        client.menu.onClick(client.menu.items.toggleDebugger, this.props.actions.toggleDebugger),
+        client.menu.onClick(
+          client.menu.items.toggleHelpbar,
+          this.props.actions.toggleHelpbar
+        ),
+        client.menu.onClick(
+          client.menu.items.toggleDebugger,
+          this.props.actions.toggleDebugger
+        ),
+        client.menu.onClick(
+          client.menu.items.toggleAccountPane,
+          this.props.actions.toggleAccountPane
+        ),
         { type: 'separator' },
         { role: 'reload' },
         { role: 'toggledevtools' },
