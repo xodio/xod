@@ -3,5 +3,4 @@ export default {
   isAccountPaneVisible: false,
   grant: null,
   isAuthorising: false,
-  authError: null,
 };

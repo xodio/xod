@@ -6,9 +6,9 @@ import {
   getLoginUrl,
   getLogoutUrl,
 } from '../utils/urls';
+import { addError } from '../messages/actions';
 import * as ActionTypes from './actionTypes';
 import * as Messages from './messages';
-
 
 export const updateCompileLimit = (startup = false) => dispatch =>
   fetch(getCompileLimitUrl(), {
@@ -63,12 +63,10 @@ export const login = (username, password) => (dispatch) => {
     .catch((err) => {
       const errMessage = err.status === 403
         ? Messages.INCORRECT_CREDENTIALS
-        : Messages.UNAVAILABLE;
+        : Messages.SERVICE_UNAVAILABLE;
+      dispatch(addError(errMessage));
 
-      return dispatch({
-        type: ActionTypes.LOGIN_FAILED,
-        payload: errMessage,
-      });
+      dispatch({ type: ActionTypes.LOGIN_FAILED });
     });
 };
 

@@ -24,11 +24,6 @@ export const isAuthorising = createSelector(
   R.prop('isAuthorising')
 );
 
-export const getAuthError = createSelector(
-  getUserState,
-  R.prop('authError')
-);
-
 export const getUser = createSelector(
   getUserState,
   R.pipe(R.path(['grant', 'user']), Maybe)

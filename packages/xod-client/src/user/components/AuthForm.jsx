@@ -35,7 +35,7 @@ class AuthForm extends React.Component {
   }
 
   render() {
-    const { isAuthorising, authError } = this.props;
+    const { isAuthorising } = this.props;
     const { username, password } = this.state;
 
     return (
@@ -59,8 +59,6 @@ class AuthForm extends React.Component {
           value={password}
           onChange={this.onPasswordChange}
         />
-
-        {authError ? <div className="authError">{authError}</div> : null}
 
         <a
           className="forgotPassword"
@@ -94,7 +92,6 @@ class AuthForm extends React.Component {
 AuthForm.propTypes = {
   onLogin: PropTypes.func.isRequired,
   isAuthorising: PropTypes.bool.isRequired,
-  authError: PropTypes.string,
 };
 
 export default AuthForm;

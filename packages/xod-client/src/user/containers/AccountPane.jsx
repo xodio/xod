@@ -19,7 +19,6 @@ const AccountPane = ({
   compilationsLeft,
   actions,
   isAuthorising,
-  authError,
 }) => {
   if (!isVisible) return null;
 
@@ -53,7 +52,7 @@ const AccountPane = ({
       </div>
 
       {foldMaybe(
-        <AuthForm onLogin={actions.login} {...{ isAuthorising, authError }} />,
+        <AuthForm onLogin={actions.login} isAuthorising={isAuthorising} />,
         () => (<Button onClick={actions.logout}>Logout</Button>),
         user
       )}
@@ -66,7 +65,6 @@ AccountPane.propTypes = {
   isVisible: PropTypes.bool.isRequired,
   user: PropTypes.object,
   isAuthorising: PropTypes.bool.isRequired,
-  authError: PropTypes.string,
   actions: PropTypes.shape({
     toggleAccountPane: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
     login: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
@@ -78,7 +76,6 @@ const mapStateToProps = R.applySpec({
   user: Selectors.getUser,
   compilationsLeft: Selectors.getCompileLimitLeft,
   isAuthorising: Selectors.isAuthorising,
-  authError: Selectors.getAuthError,
 });
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
