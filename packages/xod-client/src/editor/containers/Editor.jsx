@@ -49,6 +49,7 @@ class Editor extends React.Component {
     this.getHotkeyHandlers = this.getHotkeyHandlers.bind(this);
     this.toggleHelpbar = this.toggleHelpbar.bind(this);
     this.onAddNode = this.onAddNode.bind(this);
+    this.onInstallLibrary = this.onInstallLibrary.bind(this);
     this.showSuggester = this.showSuggester.bind(this);
     this.hideSuggester = this.hideSuggester.bind(this);
 
@@ -68,6 +69,10 @@ class Editor extends React.Component {
       position,
       this.props.currentPatchPath
     );
+  }
+
+  onInstallLibrary(libParams) {
+    return this.props.actions.installLibraries([libParams]);
   }
 
   getHotkeyHandlers() {
@@ -167,7 +172,7 @@ class Editor extends React.Component {
     const libSuggester = (this.props.isLibSuggesterVisible) ? (
       <LibSuggester
         addClassName={(this.props.isHelpbarVisible) ? 'with-helpbar' : ''}
-        onInstallLibrary={this.props.actions.installLibrary}
+        onInstallLibrary={this.onInstallLibrary}
         onBlur={this.props.actions.hideLibSuggester}
       />
     ) : null;
@@ -268,7 +273,7 @@ Editor.propTypes = {
     hideSuggester: PropTypes.func.isRequired,
     highlightSugessterItem: PropTypes.func.isRequired,
     hideLibSuggester: PropTypes.func.isRequired,
-    installLibrary: PropTypes.func.isRequired,
+    installLibraries: PropTypes.func.isRequired,
   }),
 };
 
@@ -304,7 +309,7 @@ const mapDispatchToProps = dispatch => ({
     hideSuggester: Actions.hideSuggester,
     highlightSugessterItem: Actions.highlightSugessterItem,
     hideLibSuggester: Actions.hideLibSuggester,
-    installLibrary: Actions.installLibrary,
+    installLibraries: Actions.installLibraries,
   }, dispatch),
 });
 

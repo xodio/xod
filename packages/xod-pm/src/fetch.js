@@ -10,7 +10,8 @@ import {
 import { fromXodballData, listMissingLibraryNames } from 'xod-project';
 
 import * as ERR_CODES from './errorCodes';
-import { parseLibQuery, unfoldMaybeLibQuery, rejectUnexistingVersion } from './utils';
+import * as MSG from './messages';
+import { parseLibQuery, unfoldMaybeLibQuery, rejectUnexistingVersion, getPureLibName } from './utils';
 
 // =============================================================================
 //
@@ -61,6 +62,7 @@ export const fetchLibData = R.curry((swaggerUrl, libQuery) =>
           .catch(
             retryExcept404(
                 rejectFetchResult({
+                  message: MSG.cantFindLibrary(params),
                   errorCode: ERR_CODES.CANT_FIND_LIB_BY_NAME,
                   request: libQuery,
                   params,
@@ -91,6 +93,7 @@ export const fetchLibrary = R.curry((swaggerUrl, libQuery) =>
             .catch(
               retryExcept404(
                 rejectFetchResult({
+                  message: MSG.cantFindLibVersion(params),
                   errorCode: ERR_CODES.CANT_GET_LIB_XODBALL,
                   request: libQuery,
                   params,
@@ -109,26 +112,39 @@ export const fetchLibrary = R.curry((swaggerUrl, libQuery) =>
     )
 );
 
-// :: URL -> LibName -> Promise [Project] Error
-export const fetchLibraryWithDependencies = R.curry((swaggerUrl, libQuery) => {
-  // :: Map LibName Project -> [LibName] -> Promise Map LibName Project Error
-  const fetchReqursively = R.curry((fetchedLibs, libNamesToFetch) => {
+// :: URL -> [LibName] -> [LibName] -> Map LibName Project -> Promise Map LibName Project Error
+export const fetchLibsReqursively = R.curry(
+  (swaggerUrl, existingLibNames, fetchedLibs, libNamesToFetch) => {
     if (libNamesToFetch.length === 0) return Promise.resolve(fetchedLibs);
 
     const nextLibName = R.head(libNamesToFetch);
     return fetchLibrary(swaggerUrl, nextLibName)
       .then((lib) => {
         const nextFetchedLibs = R.assoc(nextLibName, lib, fetchedLibs);
-        const fetchedLibNames = R.keys(nextFetchedLibs);
+        const fetchedLibNames = R.compose(
+          R.map(getPureLibName),
+          R.keys
+        )(nextFetchedLibs);
         const nextLibNamesToFetch = R.compose(
           R.concat(R.__, R.tail(libNamesToFetch)),
-          R.reject(isAmong(fetchedLibNames)),
+          R.reject(R.either(
+            isAmong(fetchedLibNames),
+            isAmong(existingLibNames)
+          )),
           listMissingLibraryNames
         )(lib);
 
-        return fetchReqursively(nextFetchedLibs, nextLibNamesToFetch);
+        return fetchLibsReqursively(
+          swaggerUrl,
+          existingLibNames,
+          nextFetchedLibs,
+          nextLibNamesToFetch
+        );
       });
-  });
+  }
+);
 
-  return fetchReqursively({}, [libQuery]);
-});
+// :: URL -> [LibName] -> [LibName] -> Promise [Project] Error
+export const fetchLibsWithDependencies = R.curry((swaggerUrl, existingLibNames, libNamesToFetch) =>
+  fetchLibsReqursively(swaggerUrl, existingLibNames, {}, libNamesToFetch)
+);

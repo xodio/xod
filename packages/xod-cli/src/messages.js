@@ -1,5 +1,5 @@
 export const libraryFoundAndInstalling = libQuery =>
-  `Library "${libQuery}" was found. Resolving dependencies...`;
+  `Library "${libQuery}" was found. Resolving missing dependencies...`;
 
 export const dependencyResolved = libName => `> "${libName}"`;
 

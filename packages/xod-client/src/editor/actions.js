@@ -2,7 +2,7 @@ import R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';
-import { fetchLibraryWithDependencies, stringifyLibQuery, getPureLibName } from 'xod-pm';
+import { fetchLibsWithDependencies, stringifyLibQuery, getPureLibName } from 'xod-pm';
 
 import {
   SELECTION_ENTITY_TYPE,
@@ -425,54 +425,49 @@ export const cutEntities = event => (dispatch) => {
   dispatch(deleteSelection());
 };
 
-export const installLibrary = reqParams => (dispatch) => {
-  dispatch({
-    type: ActionType.INSTALL_LIBRARIES_BEGIN,
-    payload: reqParams,
-  });
+export const installLibraryComplete = R.curry(
+  (libParams, projects) => (dispatch) => {
+    dispatch({
+      type: ActionType.INSTALL_LIBRARIES_COMPLETE,
+      payload: {
+        libParams,
+        projects,
+      },
+    });
 
-  const libName = `${reqParams.owner}/${reqParams.name}`;
-  const libQuery = stringifyLibQuery(reqParams);
-
-  fetchLibraryWithDependencies(getPmSwaggerUrl(), libQuery)
-    .then(projects => R.compose(
-      (projectDatas) => {
-        const patches = R.compose(
-          R.unnest,
-          R.pluck('patches')
-        )(projectDatas);
-
-        dispatch({
-          type: ActionType.INSTALL_LIBRARIES_COMPLETE,
-          payload: {
-            libName,
-            request: reqParams,
-            patches,
-            projects,
-          },
-        });
-        R.forEach(
-          proj => dispatch(addConfirmation(libInstalled(proj.name, proj.version))),
-          projectDatas
+    R.forEachObjIndexed(
+      (proj, libName) => {
+        const pureName = getPureLibName(libName);
+        const version = XP.getProjectVersion(proj);
+        dispatch(
+          addConfirmation(libInstalled(pureName, version))
         );
       },
-      R.values,
-      R.mapObjIndexed((proj, name) => {
-        const pureName = getPureLibName(name);
+      projects
+    );
+  }
+);
 
-        return {
-          name: pureName,
-          version: XP.getProjectVersion(proj),
-          patches: XP.prepareLibPatchesToInsertIntoProject(pureName, proj),
-        };
-      })
-    )(projects))
+export const installLibraries = libParams => (dispatch, getState) => {
+  dispatch({
+    type: ActionType.INSTALL_LIBRARIES_BEGIN,
+    payload: libParams,
+  });
+
+  const libQueries = R.map(stringifyLibQuery, libParams);
+
+  const existingLibNames = R.compose(
+    XP.listInstalledLibraryNames,
+    ProjectSelectors.getProject
+  )(getState());
+
+  fetchLibsWithDependencies(getPmSwaggerUrl(), existingLibNames, libQueries)
+    .then(projects => dispatch(installLibraryComplete(libParams, projects)))
     .catch((err) => {
       dispatch({
         type: ActionType.INSTALL_LIBRARIES_FAILED,
         payload: {
-          libName,
-          request: reqParams,
+          libParams,
           error: err.message,
           errorCode: err.errorCode,
         },
