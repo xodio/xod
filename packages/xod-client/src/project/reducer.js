@@ -1,7 +1,7 @@
 import R from 'ramda';
 import * as XP from 'xod-project';
 import { explodeEither } from 'xod-func-tools';
-import { getPureLibName } from 'xod-pm';
+import { getLibName } from 'xod-pm';
 
 import * as AT from './actionTypes';
 import { PASTE_ENTITIES, INSTALL_LIBRARIES_COMPLETE } from '../editor/actionTypes';
@@ -179,13 +179,13 @@ export default (state = {}, action) => {
         R.mapObjIndexed(
           (proj, name) => R.compose(
             XP.prepareLibPatchesToInsertIntoProject(R.__, proj),
-            getPureLibName
+            getLibName
           )(name)
         )
       )(action.payload.projects);
 
       const libNames = R.compose(
-        R.map(getPureLibName),
+        R.map(getLibName),
         R.keys
       )(action.payload.projects);
 

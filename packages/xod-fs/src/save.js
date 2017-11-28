@@ -212,7 +212,7 @@ export const saveLibraries = def(
     allPromises,
     R.map((libName) => {
       const libDir = path.resolve(resolveLibPath(workspacePath), libName);
-      const pureName = XP.getBaseName(libName);
+      const name = XP.getBaseName(libName);
 
       if (!doesDirectoryExist(libDir)) {
         // save entire library
@@ -224,7 +224,7 @@ export const saveLibraries = def(
               R.map(convertLibPatchToLocalPatch, patches)
             ),
             XP.setProjectDescription(`My fork of "${libName}"`),
-            XP.setProjectName(pureName),
+            XP.setProjectName(name),
             XP.createProject
           )(),
           R.filter(R.compose(

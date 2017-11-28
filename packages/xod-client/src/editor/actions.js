@@ -2,7 +2,7 @@ import R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';
-import { fetchLibsWithDependencies, stringifyLibQuery, getPureLibName } from 'xod-pm';
+import { fetchLibsWithDependencies, stringifyLibQuery, getLibName } from 'xod-pm';
 
 import {
   SELECTION_ENTITY_TYPE,
@@ -437,10 +437,10 @@ export const installLibraryComplete = R.curry(
 
     R.forEachObjIndexed(
       (proj, libName) => {
-        const pureName = getPureLibName(libName);
+        const name = getLibName(libName);
         const version = XP.getProjectVersion(proj);
         dispatch(
-          addConfirmation(libInstalled(pureName, version))
+          addConfirmation(libInstalled(name, version))
         );
       },
       projects

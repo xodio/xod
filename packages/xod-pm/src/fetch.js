@@ -11,7 +11,7 @@ import { fromXodballData, listMissingLibraryNames } from 'xod-project';
 
 import * as ERR_CODES from './errorCodes';
 import * as MSG from './messages';
-import { parseLibQuery, unfoldMaybeLibQuery, rejectUnexistingVersion, getPureLibName } from './utils';
+import { parseLibQuery, unfoldMaybeLibQuery, rejectUnexistingVersion, getLibName } from './utils';
 
 // =============================================================================
 //
@@ -122,7 +122,7 @@ export const fetchLibsReqursively = R.curry(
       .then((lib) => {
         const nextFetchedLibs = R.assoc(nextLibName, lib, fetchedLibs);
         const fetchedLibNames = R.compose(
-          R.map(getPureLibName),
+          R.map(getLibName),
           R.keys
         )(nextFetchedLibs);
         const nextLibNamesToFetch = R.compose(

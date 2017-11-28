@@ -60,9 +60,9 @@ export const parseLibQuery = R.compose(
 // :: String -> LibName
 // It parses libQuery ("xod/core" or "xod/core@0.11.0")
 // and returns lib name without version ("xod/core").
-export const getPureLibName = libQuery => R.compose(
+export const getLibName = libQuery => R.compose(
   qp => `${qp.owner}/${qp.name}`,
-  explodeMaybe(`Expected correct library name format, like "xod/core@0.11.0", but get "${libQuery}"`),
+  explodeMaybe(`Expected correct library name format, like "xod/core@0.11.0", but got "${libQuery}"`),
   parseLibQuery
 )(libQuery);
 
