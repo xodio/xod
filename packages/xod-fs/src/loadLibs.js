@@ -9,6 +9,7 @@ import {
   getPatchName,
   hasExt,
   rejectOnInvalidPatchFileContents,
+  resolveLibPath,
 } from './utils';
 import { loadAttachments } from './attachments';
 import {
@@ -91,6 +92,9 @@ const scanForLibNames = (libDir) => {
       return Promise.reject(err);
     });
 };
+
+// :: Path -> Promise [LibName]
+export const scanWorkspaceForLibNames = wsPath => scanForLibNames(resolveLibPath(wsPath));
 
 // :: [Path] -> Map PatchPath Patch
 export const loadLibs = libDirs => R.composeP(
