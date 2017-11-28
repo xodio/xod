@@ -1,0 +1,180 @@
+{
+  "name": "sharp-irm",
+  "patches": {
+    "@/main": {
+      "comments": {
+        "BJt6agslz": {
+          "id": "BJt6agslz",
+          "position": {
+            "x": 204,
+            "y": 102
+          },
+          "size": {
+            "width": 136,
+            "height": 51
+          },
+          "content": "Multiply by 5 to get the voltage level"
+        },
+        "BJ8kCxoez": {
+          "id": "BJ8kCxoez",
+          "position": {
+            "x": 306,
+            "y": 204
+          },
+          "size": {
+            "width": 136,
+            "height": 51
+          },
+          "content": "Map the voltage to inverse distance (1/cm)"
+        },
+        "BkgWAgjeM": {
+          "id": "BkgWAgjeM",
+          "position": {
+            "x": 170,
+            "y": 306
+          },
+          "size": {
+            "width": 136,
+            "height": 51
+          },
+          "content": "Invert the distance"
+        },
+        "HksWAeoeG": {
+          "id": "HksWAeoeG",
+          "position": {
+            "x": 170,
+            "y": 408
+          },
+          "size": {
+            "width": 170,
+            "height": 51
+          },
+          "content": "Divide by 100 to convert centimeters to meters"
+        }
+      },
+      "links": {
+        "SJHwjejlM": {
+          "id": "SJHwjejlM",
+          "output": {
+            "nodeId": "BkdmixilM",
+            "pinKey": "BkQzLCurwJZ"
+          },
+          "input": {
+            "nodeId": "HkbVixief",
+            "pinKey": "BJlzICOSv1-"
+          }
+        },
+        "Bywwsligz": {
+          "id": "Bywwsligz",
+          "output": {
+            "nodeId": "BJbZigolM",
+            "pinKey": "SyBtREhlW"
+          },
+          "input": {
+            "nodeId": "BkdmixilM",
+            "pinKey": "B1GfLR_SPk-"
+          }
+        },
+        "HkWdsljlG": {
+          "id": "HkWdsljlG",
+          "output": {
+            "nodeId": "HkbVixief",
+            "pinKey": "H12bIR_SPyZ"
+          },
+          "input": {
+            "nodeId": "BkADjeolG",
+            "pinKey": "BytUCdHD1-"
+          }
+        },
+        "Hypdsxsez": {
+          "id": "Hypdsxsez",
+          "output": {
+            "nodeId": "BkADjeolG",
+            "pinKey": "BkqLCOSw1W"
+          },
+          "input": {
+            "nodeId": "Byjusxilz",
+            "pinKey": "SkdIRuBD1b"
+          }
+        },
+        "ry_FilolM": {
+          "id": "ry_FilolM",
+          "output": {
+            "nodeId": "Byjusxilz",
+            "pinKey": "BkqLCOSw1W"
+          },
+          "input": {
+            "nodeId": "HyIFsxjgG",
+            "pinKey": "HkXK-dGob"
+          }
+        }
+      },
+      "nodes": {
+        "BJbZigolM": {
+          "id": "BJbZigolM",
+          "type": "xod/core/analog-input",
+          "position": {
+            "x": 102,
+            "y": 0
+          }
+        },
+        "BkdmixilM": {
+          "id": "BkdmixilM",
+          "type": "xod/core/multiply",
+          "position": {
+            "x": 102,
+            "y": 102
+          },
+          "boundValues": {
+            "SJ4zUC_BD1-": 5
+          }
+        },
+        "HkbVixief": {
+          "id": "HkbVixief",
+          "type": "xod/core/map-range",
+          "position": {
+            "x": 102,
+            "y": 204
+          },
+          "boundValues": {
+            "ry1z8CuBDy-": 1.25,
+            "HJCWLAdSwyW": 2,
+            "rJbGU0_Hv1Z": 0.02,
+            "rkpbU0OrwyZ": 0.033
+          }
+        },
+        "BkADjeolG": {
+          "id": "BkADjeolG",
+          "type": "xod/core/divide",
+          "position": {
+            "x": 68,
+            "y": 306
+          },
+          "boundValues": {
+            "SkdIRuBD1b": 1
+          }
+        },
+        "Byjusxilz": {
+          "id": "Byjusxilz",
+          "type": "xod/core/divide",
+          "position": {
+            "x": 68,
+            "y": 408
+          },
+          "boundValues": {
+            "BytUCdHD1-": 100
+          }
+        },
+        "HyIFsxjgG": {
+          "id": "HyIFsxjgG",
+          "type": "xod/core/watch",
+          "position": {
+            "x": 68,
+            "y": 510
+          }
+        }
+      },
+      "path": "@/main"
+    }
+  }
+}
