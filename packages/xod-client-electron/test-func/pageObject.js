@@ -28,6 +28,10 @@ function scrollTo(client, containerSelector, childSelector) {
   }, containerSelector, childSelector);
 }
 
+function rendered(client) {
+  return assert.eventually.isTrue(client.waitForExist('.Editor', 5000));
+}
+
 // -----------------------------------------------------------------------------
 // Popup dialogs
 //-----------------------------------------------------------------------------
@@ -72,7 +76,9 @@ function clickAddPatch(client) {
 }
 
 function findPatchGroup(client, groupTitle) {
-  return findProjectBrowser(client).element(`.PatchGroup=${groupTitle}`);
+  const selector = `.PatchGroup=${groupTitle}`;
+  return findProjectBrowser(client).waitForExist(selector, 5000)
+    .then(() => client.element(selector));
 }
 
 function assertPatchGroupCollapsed(client, groupTitle) {
@@ -278,6 +284,12 @@ function assertTabWithTitleDoesNotExist(client, expectedTitle) {
   );
 }
 
+function assertNoPatchesAreOpen(client) {
+  return assert.eventually.isTrue(
+    client.isVisible('.NoPatch')
+  );
+}
+
 //-----------------------------------------------------------------------------
 // Messages
 //-----------------------------------------------------------------------------
@@ -291,9 +303,11 @@ function waitUntilProjectSaved(client) {
 
 // Public API (in alphabetical order)
 const API = {
+  rendered,
   addNode,
   assertActiveTabHasTitle,
   assertTabWithTitleDoesNotExist,
+  assertNoPatchesAreOpen,
   assertNoPopups,
   assertNodeAvailableInProjectBrowser,
   assertNodeUnavailableInProjectBrowser,
