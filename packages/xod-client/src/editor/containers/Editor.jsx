@@ -37,6 +37,7 @@ import Workarea from '../../utils/components/Workarea';
 import { RenderableSelection } from '../../types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
+import AccountPane from '../../user/containers/AccountPane';
 import ProjectBrowser from '../../projectBrowser/containers/ProjectBrowser';
 import Tabs from './Tabs';
 import Helpbar from './Helpbar';
@@ -236,6 +237,7 @@ class Editor extends React.Component {
           </Workarea>
         </FocusTrap>
         <Helpbar />
+        <AccountPane />
         <DragLayer />
       </HotKeys>
     );

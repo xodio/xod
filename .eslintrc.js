@@ -35,6 +35,7 @@ module.exports = {
     beforeEach: true,
     after: true,
     afterEach: true,
+    URLSearchParams: true,
   },
 
   rules: {
