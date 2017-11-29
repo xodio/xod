@@ -20,6 +20,11 @@ import {
   PATCH_RENAME,
   PROJECT_CREATE_REQUESTED,
   PROJECT_OPEN_REQUESTED,
+  PROJECT_PUBLISH_REQUESTED,
+  PROJECT_PUBLISH_CANCELLED,
+  PROJECT_PUBLISH_START,
+  PROJECT_PUBLISH_SUCCESS,
+  PROJECT_PUBLISH_FAIL,
   PROJECT_UPDATE_META,
   PROJECT_CREATE,
   PROJECT_OPEN,
@@ -72,6 +77,14 @@ const showOnePopup = R.curry(
   )
 );
 
+const overPopupData = R.curry(
+  (id, updaterFn, state) => R.over(
+    R.compose(R.lensProp(id), dataLens),
+    updaterFn,
+    state
+  )
+);
+
 // :: State -> State
 export const showOnlyPopup = R.curry(
   (id, data, state) => R.compose(
@@ -100,6 +113,28 @@ const popupsReducer = (state = initialState, action) => {
       return showOnlyPopup(POPUP_ID.OPENING_PROJECT, action.payload, state);
     case PROJECT_RENAME_REQUESTED:
       return showOnlyPopup(POPUP_ID.RENAMING_PROJECT, {}, state);
+
+    case PROJECT_PUBLISH_REQUESTED:
+      return showOnlyPopup(
+        POPUP_ID.PUBLISHING_PROJECT,
+        { isPublishing: false },
+        state
+      );
+    case PROJECT_PUBLISH_CANCELLED:
+    case PROJECT_PUBLISH_SUCCESS:
+      return hideOnePopup(POPUP_ID.PUBLISHING_PROJECT, state);
+    case PROJECT_PUBLISH_START:
+      return overPopupData(
+        POPUP_ID.PUBLISHING_PROJECT,
+        R.assoc('isPublishing', true),
+        state
+      );
+    case PROJECT_PUBLISH_FAIL:
+      return overPopupData(
+        POPUP_ID.PUBLISHING_PROJECT,
+        R.assoc('isPublishing', false),
+        state
+      );
 
     case SHOW_CODE_REQUESTED:
       return showOnlyPopup(POPUP_ID.SHOWING_CODE, action.payload, state);

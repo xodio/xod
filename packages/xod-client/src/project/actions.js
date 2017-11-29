@@ -1,13 +1,21 @@
 import R from 'ramda';
 import * as XP from 'xod-project';
+import { publish } from 'xod-pm';
 
-import { addError } from '../messages/actions';
+import { foldMaybe } from 'xod-func-tools';
+
+import { addConfirmation, addError } from '../messages/actions';
 import { NODETYPE_ERROR_TYPES } from '../editor/constants';
 import { PROJECT_BROWSER_ERRORS, NODETYPE_ERRORS } from '../messages/constants';
 import * as ActionType from './actionTypes';
 import { isPatchPathTaken } from './utils';
 import { getCurrentPatchPath } from '../editor/selectors';
+import { getGrant } from '../user/selectors';
+import { fetchGrant } from '../user/actions';
+import { LOG_IN_TO_CONTINUE } from '../user/messages';
+import { SUCCESSFULLY_PUBLISHED } from './messages';
 import { getProject } from './selectors';
+import { getPmSwaggerUrl } from '../utils/urls';
 
 //
 // Project
@@ -64,6 +72,50 @@ export const openWorkspace = libs => ({
   type: ActionType.PROJECT_OPEN_WORKSPACE,
   payload: libs,
 });
+
+export const requestPublishProject = () => (dispatch, getState) => {
+  const isAuthorised = foldMaybe(false, R.T, getGrant(getState()));
+
+  if (!isAuthorised) {
+    dispatch(addError(LOG_IN_TO_CONTINUE));
+    // TODO: open account pane?
+    return;
+  }
+
+  dispatch({ type: ActionType.PROJECT_PUBLISH_REQUESTED });
+};
+
+export const cancelPublishingProject = () => ({
+  type: ActionType.PROJECT_PUBLISH_CANCELLED,
+});
+
+export const publishProject = () => (dispatch, getState) => {
+  const state = getState();
+  const project = getProject(state);
+
+  dispatch({ type: ActionType.PROJECT_PUBLISH_START });
+
+  dispatch(fetchGrant()) // to obtain freshest auth token
+    .then((freshGrant) => {
+      if (freshGrant == null) {
+        // could happen if user logs out in another tab
+        dispatch(addError(LOG_IN_TO_CONTINUE));
+        dispatch({ type: ActionType.PROJECT_PUBLISH_FAIL });
+        return;
+      }
+
+      publish(getPmSwaggerUrl(), freshGrant, project).then(
+        () => {
+          dispatch(addConfirmation(SUCCESSFULLY_PUBLISHED));
+          dispatch({ type: ActionType.PROJECT_PUBLISH_SUCCESS });
+        },
+        (err) => {
+          dispatch({ type: ActionType.PROJECT_PUBLISH_FAIL });
+          dispatch(addError(err.message));
+        }
+      );
+    });
+};
 
 //
 // Patch

@@ -1,4 +1,5 @@
 import R from 'ramda';
+import swaggerClient from 'swagger-client';
 import { Maybe } from 'ramda-fantasy';
 import {
   notEmpty,
@@ -120,3 +121,38 @@ export const getLibVersion = R.curry(
         )(versions);
   }
 );
+
+// Create memoized function to prevent fetching swagger URL
+// on each fetch request
+export const getSwaggerClient = (() => {
+  const memo = {};
+
+  return (url) => {
+    const index = JSON.stringify(url);
+
+    if (index in memo) {
+      return memo[index];
+    }
+
+    return (memo[index] = swaggerClient(url));
+  };
+})();
+
+// TODO: duplicate in xod-cli
+export const swaggerError = (err) => {
+  const { response, status } = err;
+  let res;
+  if (response.body && response.body.originalResponse) {
+    res = JSON.parse(response.body.originalResponse);
+  } else if (response.body) {
+    res = response.body;
+  } else {
+    res = response;
+  }
+
+  if (status === 400) {
+    return new Error(R.pathOr('Bad request', ['errors', 0, 'errors', 0, 'message'], res));
+  }
+
+  return new Error(`${status} ${JSON.stringify(res, null, 2)}`);
+};
