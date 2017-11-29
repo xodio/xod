@@ -189,8 +189,10 @@ function assertLibSuggesterHidden(client) {
 }
 
 function assertProjectBrowserHasInstallingLib(client, libName) {
+  const selector = '.PatchGroup--installing';
   return assert.eventually.equal(
-    client.element('.PatchGroup--installing').getText('.name'),
+    client.waitForExist(selector)
+      .then(() => client.element('.PatchGroup--installing').getText('.name')),
     libName
   );
 }
