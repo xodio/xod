@@ -20,6 +20,8 @@ describe('IDE: Blink project', () => {
     assert.eventually.strictEqual(ide.app.client.getTitle(), 'XOD')
   );
 
+  it('IDE loaded and rendered', () => ide.page.rendered());
+
   describe('deleting opened patch', () => {
     const patchGroup = 'welcome-to-xod';
     const patchName = '01-hello';

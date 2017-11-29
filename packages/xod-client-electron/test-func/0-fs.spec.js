@@ -15,6 +15,8 @@ const extractListOfUsedNodeTypes = R.compose(
 describe('Test FS things', () => {
   const ide = prepareSuite();
 
+  it('IDE loaded and rendered', () => ide.page.rendered());
+
   describe('Add library in the IDE', () => {
     it('opens an "Add Library" suggester', () =>
       ide.app.electron.ipcRenderer.emit(TRIGGER_MAIN_MENU_ITEM, ['File', 'Add Library'])
