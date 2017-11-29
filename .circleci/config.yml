@@ -1,0 +1,197 @@
+# CircleCI 2.0
+version: 2
+
+# Reusable definitions shared between Linux and macOS
+defs:
+  release-filters: &release-filters
+    branches:
+      only:
+        - /^prerelease-.*/
+    tags:
+      only:
+        - /^v\d/
+
+  cache:
+    cache-node_modules: &cache-node_modules
+      key: node_modules-{{ arch }}-{{ checksum "yarn.lock" }}
+      paths:
+        - node_modules
+
+    restore-node_modules: &restore-node_modules
+      keys:
+        - node_modules-{{ arch }}-{{ checksum "yarn.lock" }}
+        # if cache for exact version of `yarn.lock` is not present then
+        # load any most recent one
+        - node_modules-{{ arch }}
+
+  steps:
+    step-install: &step-install
+      name: Install Node modules
+      command: yarn
+      environment:
+        # In any case switch to development for `yarn install` because
+        # react-autosuggest requires babel O_o (dev dependency) to be installed
+        # successfully
+        NODE_ENV: development
+
+    step-bump-version: &step-bump-version
+      name: Bump version
+      command: |
+        if [[ $CIRCLE_BRANCH == prerelease-* ]]; then
+          yarn lerna publish --skip-git --skip-npm --canary --yes
+        fi
+
+    step-build: &step-build
+      name: Build
+      command: yarn build
+
+    step-build-electron: &step-build-electron
+      name: Build electron IDE app
+      command: yarn build:electron
+
+    step-lint: &step-lint
+      name: Lint
+      command: yarn lint
+
+    step-test: &step-test
+      name: Unit tests
+      command: yarn test
+
+    step-test-func: &step-test-func
+      name: Functional tests
+      command: yarn test-func
+
+    step-dist-electron: &step-dist-electron
+      name: Build electron IDE distro
+      command: yarn dist:electron
+      no_output_timeout: 30m
+
+jobs:
+  #--------------------------------------------------------------------
+  # Verify jobs
+  #--------------------------------------------------------------------
+  verify-linux:
+    docker:
+      - image: xodio/cci-node:9.2-v1
+    environment:
+      DISPLAY: ":99.0"
+    steps:
+      - run:
+          name: Running X virtual framebuffer
+          command: Xvfb :99 -screen 0 1280x1024x24
+          background: true
+      - checkout
+      - restore_cache: *restore-node_modules
+      - run: *step-install
+      - save_cache: *cache-node_modules
+      - run: *step-build
+      - run: *step-lint
+      - run: *step-test
+      - run: *step-test-func
+
+  verify-macos:
+    macos:
+      xcode: "9.0"
+    environment:
+      YARN_CACHE_FOLDER: /tmp/yarn-cache
+    steps:
+      - checkout
+      - restore_cache: *restore-node_modules
+      - run: *step-install
+      - save_cache: *cache-node_modules
+      - run: *step-build
+      - run: *step-lint
+      - run: *step-test
+      - run: *step-test-func
+
+  #--------------------------------------------------------------------
+  # Distro jobs
+  #--------------------------------------------------------------------
+  dist-linux:
+    docker:
+      - image: xodio/cci-node:9.2-v1
+    environment:
+      NODE_ENV: production
+    steps:
+      - checkout
+      - restore_cache: *restore-node_modules
+      - run: *step-install
+      - run: *step-bump-version
+      - run: *step-build-electron
+      - run: *step-dist-electron
+      - run:
+          name: Store version tag
+          command: |
+            PKG=./packages/xod-client-electron
+            QUERY="console.log('v' + require('$PKG/package.json').version)"
+            node -e "$QUERY" > $PKG/dist/TAG
+            echo "Tag set to: $PKG/dist/TAG"
+      - persist_to_workspace:
+          root: packages/xod-client-electron/dist
+          paths:
+            - TAG
+            - latest-linux.yml
+            - "*.deb"
+            - "*.rpm"
+
+  dist-macos:
+    macos:
+      xcode: "9.0"
+    environment:
+      NODE_ENV: production
+    steps:
+      - checkout
+      - restore_cache: *restore-node_modules
+      - run: *step-install
+      - run: *step-bump-version
+      - run: *step-build-electron
+      - run: *step-dist-electron
+      - persist_to_workspace:
+          root: packages/xod-client-electron/dist
+          paths:
+            - latest-mac.yml
+            - "*.dmg"
+
+  #--------------------------------------------------------------------
+  # Publish job
+  #--------------------------------------------------------------------
+  publish:
+    docker:
+      - image: google/cloud-sdk:alpine
+    steps:
+      - attach_workspace:
+          at: dist
+      - run:
+          name: Authenticate GCloud
+          command: |
+            echo "$GOOGLE_CLOUD_STORAGE_CONFIG" | base64 -d > /tmp/gsc.json
+            gcloud auth activate-service-account --key-file /tmp/gsc.json
+      - run:
+          name: Upload to Google Cloud Storage
+          command: |
+            TAG=$(cat dist/TAG)
+            echo "Uploading with tag: $TAG"
+            gsutil cp -a public-read dist/* gs://releases.xod.io/$TAG
+
+#==============================================================================
+#
+# Workflows
+#
+#==============================================================================
+workflows:
+  version: 2
+  branch:
+    jobs:
+      - verify-linux
+      - verify-macos
+      - dist-linux:
+          filters: *release-filters
+      - dist-macos:
+          filters: *release-filters
+      - publish:
+          filters: *release-filters
+          requires:
+            - verify-linux
+            - verify-macos
+            - dist-linux
+            - dist-macos
