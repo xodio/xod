@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { isAmong } from 'xod-func-tools';
 import initialState from './state';
 
 import {
@@ -14,9 +15,9 @@ import {
 } from '../project/actionTypes';
 
 import {
-  INSTALL_LIBRARY_BEGIN,
-  INSTALL_LIBRARY_COMPLETE,
-  INSTALL_LIBRARY_FAILED,
+  INSTALL_LIBRARIES_BEGIN,
+  INSTALL_LIBRARIES_COMPLETE,
+  INSTALL_LIBRARIES_FAILED,
 } from '../editor/actionTypes';
 
 const selectionReducer = (state, action) => {
@@ -44,11 +45,11 @@ const selectionReducer = (state, action) => {
 
 const installingLibrariesReducer = (state, action) => {
   switch (action.type) {
-    case INSTALL_LIBRARY_BEGIN:
-      return R.append(action.payload, state);
-    case INSTALL_LIBRARY_FAILED:
-    case INSTALL_LIBRARY_COMPLETE:
-      return R.reject(R.equals(action.payload.request), state);
+    case INSTALL_LIBRARIES_BEGIN:
+      return R.concat(action.payload, state);
+    case INSTALL_LIBRARIES_FAILED:
+    case INSTALL_LIBRARIES_COMPLETE:
+      return R.reject(isAmong(action.payload.libParams), state);
     default:
       return state;
   }

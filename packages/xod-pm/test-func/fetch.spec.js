@@ -67,9 +67,9 @@ describe('fetching data', () => {
     );
   });
 
-  describe('fetchLibraryWithDependencies()', () => {
+  describe('fetchLibsWithDependencies()', () => {
     it('returns Promise with list with two xodballs: xod/common-hardware and xod/core', () =>
-      F.fetchLibraryWithDependencies(PM_SWAGGER_URL, 'xod/common-hardware')
+      F.fetchLibsWithDependencies(PM_SWAGGER_URL, [], ['xod/common-hardware'])
         .then((projectsMap) => {
           assert.lengthOf(R.keys(projectsMap), 3);
           assert.sameMembers(
@@ -82,11 +82,11 @@ describe('fetching data', () => {
         })
     );
     it('returns rejected Promise with error code "CANT_PARSE_LIBRARY_REQUEST" for bad request', () =>
-      F.fetchLibraryWithDependencies(PM_SWAGGER_URL, 'xod/')
+      F.fetchLibsWithDependencies(PM_SWAGGER_URL, [], ['xod/'])
         .catch(err => assert.propertyVal(err, 'errorCode', ERR_CODES.CANT_PARSE_LIBRARY_REQUEST))
     );
     it('returns rejected Promise with error code "CANT_GET_LIB_XODBALL" for unknown library', () =>
-      F.fetchLibraryWithDependencies(PM_SWAGGER_URL, 'xod/nonexisting')
+      F.fetchLibsWithDependencies(PM_SWAGGER_URL, [], ['xod/nonexisting'])
         .catch(err => assert.propertyVal(err, 'errorCode', ERR_CODES.CANT_GET_LIB_XODBALL))
     );
   });

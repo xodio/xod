@@ -1,6 +1,6 @@
 import R from 'ramda';
 import * as xodFs from 'xod-fs';
-import { fetchLibData, fetchLibraryWithDependencies } from 'xod-pm';
+import { fetchLibData, fetchLibsWithDependencies } from 'xod-pm';
 import * as messages from './messageUtils';
 import * as MSG from './messages';
 
@@ -15,13 +15,17 @@ export default function install(swaggerUrl, libQuery, distPath) {
     fetchLibData(swaggerUrl, libQuery),
     xodFs.findClosestWorkspaceDir(distPath),
   ])
-    .then(([libData, wsPath]) => {
+    .then(
+      ([libData, wsPath]) => xodFs.scanWorkspaceForLibNames(wsPath)
+        .then(libNames => [libData, wsPath, libNames])
+    )
+    .then(([libData, wsPath, libNames]) => {
       messages.notice(MSG.libraryFoundAndInstalling(libQuery));
 
       const params = libData.requestParams;
       const libName = `${params.owner}/${params.name}`;
 
-      return fetchLibraryWithDependencies(swaggerUrl, libName)
+      return fetchLibsWithDependencies(swaggerUrl, libNames, [libName])
         .then(R.tap(R.forEachObjIndexed(
           (proj, name) => messages.notice(MSG.dependencyResolved(name))
         )))

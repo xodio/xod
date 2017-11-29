@@ -2,7 +2,7 @@ import R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';
-import { fetchLibrary, stringifyLibQuery } from 'xod-pm';
+import { fetchLibsWithDependencies, stringifyLibQuery, getLibName } from 'xod-pm';
 
 import {
   SELECTION_ENTITY_TYPE,
@@ -425,38 +425,49 @@ export const cutEntities = event => (dispatch) => {
   dispatch(deleteSelection());
 };
 
-export const installLibrary = reqParams => (dispatch) => {
-  dispatch({
-    type: ActionType.INSTALL_LIBRARY_BEGIN,
-    payload: reqParams,
-  });
+export const installLibraryComplete = R.curry(
+  (libParams, projects) => (dispatch) => {
+    dispatch({
+      type: ActionType.INSTALL_LIBRARIES_COMPLETE,
+      payload: {
+        libParams,
+        projects,
+      },
+    });
 
-  const libName = `${reqParams.owner}/${reqParams.name}`;
-
-  fetchLibrary(getPmSwaggerUrl(), stringifyLibQuery(reqParams))
-    .then(xodball => R.compose(
-      (patches) => {
-        dispatch({
-          type: ActionType.INSTALL_LIBRARY_COMPLETE,
-          payload: {
-            libName,
-            request: reqParams,
-            patches,
-            xodball,
-          },
-        });
+    R.forEachObjIndexed(
+      (proj, libName) => {
+        const name = getLibName(libName);
+        const version = XP.getProjectVersion(proj);
         dispatch(
-          addConfirmation(libInstalled(libName, xodball.version))
+          addConfirmation(libInstalled(name, version))
         );
       },
-      XP.prepareLibPatchesToInsertIntoProject,
-    )(libName, xodball))
+      projects
+    );
+  }
+);
+
+export const installLibraries = libParams => (dispatch, getState) => {
+  dispatch({
+    type: ActionType.INSTALL_LIBRARIES_BEGIN,
+    payload: libParams,
+  });
+
+  const libQueries = R.map(stringifyLibQuery, libParams);
+
+  const existingLibNames = R.compose(
+    XP.listInstalledLibraryNames,
+    ProjectSelectors.getProject
+  )(getState());
+
+  fetchLibsWithDependencies(getPmSwaggerUrl(), existingLibNames, libQueries)
+    .then(projects => dispatch(installLibraryComplete(libParams, projects)))
     .catch((err) => {
       dispatch({
-        type: ActionType.INSTALL_LIBRARY_FAILED,
+        type: ActionType.INSTALL_LIBRARIES_FAILED,
         payload: {
-          libName,
-          request: reqParams,
+          libParams,
           error: err.message,
           errorCode: err.errorCode,
         },

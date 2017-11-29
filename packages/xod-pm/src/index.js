@@ -5,4 +5,5 @@ export {
   stringifyLibQuery,
   getLibVersion,
   isLibQueryValid,
+  getLibName,
 } from './utils';

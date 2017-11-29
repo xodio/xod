@@ -166,7 +166,7 @@ class App extends client.App {
       (event, sidebarPaneHeight) => this.setState({ sidebarPaneHeight })
     );
     ipcRenderer.on(
-      EVENTS.INSTALL_LIBRARY_FAILED,
+      EVENTS.INSTALL_LIBRARIES_FAILED,
       (event, error) => {
         console.error(error); // eslint-disable-line no-console
         this.props.actions.addError(formatError(error));

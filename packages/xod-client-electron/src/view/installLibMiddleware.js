@@ -1,15 +1,15 @@
 import client from 'xod-client';
 import { ipcRenderer } from 'electron';
 
-import { INSTALL_LIBRARY } from '../shared/events';
+import { INSTALL_LIBRARIES } from '../shared/events';
 
 export default () => next => (action) => {
-  if (action.type === client.INSTALL_LIBRARY_COMPLETE) {
+  if (action.type === client.INSTALL_LIBRARIES_COMPLETE) {
     ipcRenderer.send(
-      INSTALL_LIBRARY,
+      INSTALL_LIBRARIES,
       {
         request: action.payload.request,
-        xodball: action.payload.xodball,
+        projects: action.payload.projects,
       }
     );
   }
