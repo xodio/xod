@@ -30,7 +30,7 @@ export const getUtmSiteUrl = getUtmUrl(process.env.XOD_SITE_DOMAIN);
 // :: String -> String
 export const getUtmForumUrl = getUtmUrl(process.env.XOD_FORUM_DOMAIN, '', 'forum');
 
-const HOSTNAME = process.env.XOD_HOSTNAME || 'xod.io';
+export const HOSTNAME = process.env.XOD_HOSTNAME || 'xod.io';
 
 // :: () -> String
 export const getCompileLimitUrl = () =>

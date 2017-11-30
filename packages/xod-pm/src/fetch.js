@@ -1,5 +1,4 @@
 import R from 'ramda';
-import swaggerClient from 'swagger-client';
 import {
   retryOrFail,
   rejectFetchResult,
@@ -11,7 +10,7 @@ import { fromXodballData, listMissingLibraryNames } from 'xod-project';
 
 import * as ERR_CODES from './errorCodes';
 import * as MSG from './messages';
-import { parseLibQuery, unfoldMaybeLibQuery, rejectUnexistingVersion, getLibName } from './utils';
+import { parseLibQuery, unfoldMaybeLibQuery, rejectUnexistingVersion, getLibName, getSwaggerClient } from './utils';
 
 // =============================================================================
 //
@@ -24,22 +23,6 @@ const retryExcept404 = retryOrFail(
   [500, 1000, 2000, 3000],
   res => (res.status && res.status === 404),
 );
-
-// Create memoized function to prevent fetching swagger URL
-// on each fetch request
-const getSwaggerClient = (() => {
-  const memo = {};
-
-  return (url) => {
-    const index = JSON.stringify(url);
-
-    if (index in memo) {
-      return memo[index];
-    }
-
-    return (memo[index] = swaggerClient(url));
-  };
-})();
 
 // =============================================================================
 //

@@ -17,4 +17,6 @@ export const POPUP_ID = { // eslint-disable-line import/prefer-default-export
   SHOWING_CODE: 'showingCode',
 
   ARDUINO_IDE_NOT_FOUND: 'arduinoIDENotFound',
+
+  PUBLISHING_PROJECT: 'publishingProject',
 };

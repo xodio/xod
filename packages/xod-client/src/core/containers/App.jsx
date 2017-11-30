@@ -20,6 +20,7 @@ import sanctuaryPropType from '../../utils/sanctuaryPropType';
 import PopupPrompt from '../../utils/components/PopupPrompt';
 import PopupShowCode from '../../utils/components/PopupShowCode';
 import PopupProjectPreferences from '../../project/components/PopupProjectPreferences';
+import PopupPublishProject from '../../project/components/PopupPublishProject';
 
 import * as actions from '../actions';
 
@@ -90,6 +91,20 @@ export default class App extends React.Component {
     );
   }
 
+  renderPopupPublishProject() {
+    return (
+      <PopupPublishProject
+        isVisible={this.props.popups.publishingProject}
+        project={this.props.project}
+        user={this.props.user}
+        isPublishing={this.props.popupsData.publishingProject.isPublishing}
+        onPublish={this.props.actions.publishProject}
+        onRequestToEditPreferences={this.props.actions.showProjectPreferences}
+        onClose={this.props.actions.cancelPublishingProject}
+      />
+    );
+  }
+
   renderPopupCreateNewProject() {
     return (
       <PopupPrompt
@@ -116,6 +131,7 @@ export default class App extends React.Component {
 
 App.propTypes = {
   project: sanctuaryPropType(Project),
+  user: PropTypes.object,
   currentPatchPath: PropTypes.string,
   popups: PropTypes.objectOf(PropTypes.bool),
   popupsData: PropTypes.objectOf(PropTypes.object),
@@ -131,9 +147,12 @@ App.propTypes = {
     /* eslint-disable react/no-unused-prop-types */
     requestCreateProject: PropTypes.func.isRequired,
     requestRenameProject: PropTypes.func.isRequired,
+    requestPublishProject: PropTypes.func.isRequired,
+    cancelPublishingProject: PropTypes.func.isRequired,
     importProject: PropTypes.func.isRequired,
     openProject: PropTypes.func.isRequired,
     createPatch: PropTypes.func.isRequired,
+    publishProject: PropTypes.func.isRequired,
     addComment: PropTypes.func.isRequired,
     undoCurrentPatch: PropTypes.func.isRequired,
     redoCurrentPatch: PropTypes.func.isRequired,
@@ -162,8 +181,11 @@ App.actions = {
   createProject: actions.createProject,
   requestCreateProject: actions.requestCreateProject,
   requestRenameProject: actions.requestRenameProject,
+  requestPublishProject: actions.requestPublishProject,
+  cancelPublishingProject: actions.cancelPublishingProject,
   importProject: actions.importProject,
   openProject: actions.openProject,
+  publishProject: actions.publishProject,
   createPatch: actions.requestCreatePatch,
   addComment: actions.addComment,
   undoCurrentPatch: actions.undoCurrentPatch,

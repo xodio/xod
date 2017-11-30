@@ -51,6 +51,10 @@ const rawItems = {
     key: 'addLibrary',
     label: 'Add Library',
   },
+  publish: {
+    key: 'publish',
+    label: 'Publish Library',
+  },
 
   edit: {
     key: 'edit',

@@ -41,6 +41,8 @@ export const fetchGrant = () => dispatch =>
     .then((grant) => {
       dispatch(setGrant(grant));
       dispatch(updateCompileLimit(false));
+
+      return grant;
     });
 
 export const login = (username, password) => (dispatch) => {

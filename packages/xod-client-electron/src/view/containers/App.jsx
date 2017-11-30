@@ -430,6 +430,7 @@ class App extends client.App {
           onClick(items.newPatch, this.props.actions.createPatch),
           items.separator,
           onClick(items.addLibrary, this.props.actions.showLibSuggester),
+          onClick(items.publish, this.props.actions.requestPublishProject),
         ]
       ),
       submenu(
@@ -686,6 +687,7 @@ class App extends client.App {
         {this.renderPopupUploadConfig()}
         {this.renderPopupUploadProcess()}
         {this.renderPopupProjectPreferences()}
+        {this.renderPopupPublishProject()}
         {this.renderPopupCreateNewProject()}
         <PopupSetWorkspace
           workspace={this.state.workspace}
@@ -773,12 +775,16 @@ const mapStateToProps = R.applySpec({
   hasUnsavedChanges: client.hasUnsavedChanges,
   lastSavedProject: client.getLastSavedProject,
   project: client.getProject,
+  user: client.getUser,
   upload: getUploadProcess,
   saveProcess: getSaveProcess,
   currentPatchPath: client.getCurrentPatchPath,
   selectedPort: getSelectedSerialPort,
   compileLimitLeft: client.getCompileLimitLeft,
   popups: {
+    // TODO: make keys match with POPUP_IDs
+    // (for example, `creatingProject` insteand of `createProject`)
+    // this way we could make an util that takes an array of POPUP_IDs and generates a spec
     createProject: client.getPopupVisibility(client.POPUP_ID.CREATING_PROJECT),
     projectSelection: client.getPopupVisibility(client.POPUP_ID.OPENING_PROJECT),
     switchWorkspace: client.getPopupVisibility(client.POPUP_ID.SWITCHING_WORKSPACE),
@@ -789,12 +795,14 @@ const mapStateToProps = R.applySpec({
     projectPreferences: client.getPopupVisibility(
       client.POPUP_ID.EDITING_PROJECT_PREFERENCES
     ),
+    publishingProject: client.getPopupVisibility(client.POPUP_ID.PUBLISHING_PROJECT),
   },
   popupsData: {
     projectSelection: client.getPopupData(client.POPUP_ID.OPENING_PROJECT),
     createWorkspace: client.getPopupData(client.POPUP_ID.CREATING_WORKSPACE),
     switchWorkspace: client.getPopupData(client.POPUP_ID.SWITCHING_WORKSPACE),
     showCode: client.getPopupData(client.POPUP_ID.SHOWING_CODE),
+    publishingProject: client.getPopupData(client.POPUP_ID.PUBLISHING_PROJECT),
   },
 });
 
