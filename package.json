@@ -70,7 +70,7 @@
     "rimraf": "^2.5.4",
     "sass-loader": "^4.0.2",
     "source-map-loader": "^0.2.1",
-    "spectron": "^3.6.2",
+    "spectron": "^3.7.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.2",
