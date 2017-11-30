@@ -6,20 +6,18 @@ import PopupForm from '../../utils/components/PopupForm';
 class PopupProjectPreferences extends React.Component {
   constructor(props) {
     super(props);
-    const version = XP.getProjectVersion(props.project);
+    this.updateState(props);
 
-    this.state = {
-      license: XP.getProjectLicense(props.project),
-      version,
-      dirtyVersion: version,
-      description: XP.getProjectDescription(props.project),
-    };
-
+    this.updateState = this.updateState.bind(this);
     this.onUpdateClicked = this.onUpdateClicked.bind(this);
     this.onLicenseChange = this.onLicenseChange.bind(this);
     this.onVersionChange = this.onVersionChange.bind(this);
     this.onDescriptionChange = this.onDescriptionChange.bind(this);
     this.commitVersionChange = this.commitVersionChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.updateState(nextProps);
   }
 
   onUpdateClicked() {
@@ -34,6 +32,17 @@ class PopupProjectPreferences extends React.Component {
   }
   onDescriptionChange(event) {
     this.setState({ description: event.target.value });
+  }
+
+  updateState(props) {
+    const version = XP.getProjectVersion(props.project);
+
+    this.state = {
+      license: XP.getProjectLicense(props.project),
+      version,
+      dirtyVersion: version,
+      description: XP.getProjectDescription(props.project),
+    };
   }
 
   commitVersionChange() {
@@ -93,7 +102,7 @@ class PopupProjectPreferences extends React.Component {
 
 PopupProjectPreferences.propTypes = {
   isVisible: React.PropTypes.bool,
-  project: sanctuaryPropType(XP.Project),
+  project: sanctuaryPropType(XP.Project), // eslint-disable-line react/no-unused-prop-types
   onChange: React.PropTypes.func,
   onClose: React.PropTypes.func,
 };
