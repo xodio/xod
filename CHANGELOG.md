@@ -4,6 +4,88 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [ide] Add a feature to install libraries right from IDE. Hit “File → Add
+  Library”, enter a name as seen at https://xod.io/libs/, and you’re ready to
+  use new nodes.
+* [ide] Add a feature to publish your project as a library. Hit “File →
+  Publish Library” and you’re done. See your library at https://xod.io/libs/.
+  Others can immediately install it for themselves.
+* [ide] Add account pane to login/logout from within IDE. Hit “View →
+  Toggle Account Pane” to access it. Login is required to publish a library.
+* [ide] Embed C++ editor for low-level nodes. Double-click a
+  `not-implemented-in-xod` node to open and edit the code.
+* [ide] Click and drag for bulk selection with a marquee. Move, copy, paste,
+  delete faster. Drag from left to right to select only items completely
+  covered by the rectangle, drag from right to left to also include intersected
+  entities. Hold Ctrl (⌘ on macOS) key to add/remove items from the selection.
+* [ide] Tweak paste behavior so that the entities are inserted to the left of
+  the current selection, not at the origin. That means you can Ctrl+C and then
+  Ctrl+V multiple times to build a row of similar nodes very quickly.
+* [ide] Track changes in patches and save project incrementally. That means
+  faster saves, removing deleted patches’ files, and keeping files not related
+  to XOD intact.
+* [ide] “Save Project” is generalized to “Save All.” Libraries, if they have
+  changed are saved too, and effectively create a fork automatically.
+* [ide] Allow resizing of the project browser and inspector panes. Drag a
+  handle between them to adjust the height proportion.
+* [ide] Automatically adjust panning position when opening a patch so that the
+  patch aligns with the top left corner.
+* [ide] Inserted comments are a bit wider by default.
+* [core] BREAKING :exclamation: node C++ implementations are now read from
+  files named `patch.cpp`. Former `any.cpp` and `arduino.cpp` are ignored. A
+  patch *must* include `not-implemented-in-xod` node to take it’s C++
+  implementation into account.
+* [core] BREAKING :exclamation: untitled pins changed numbering scheme.
+  Instead of `IN_0, IN_1, IN_2, ...` and `OUT_0, OUT_1, OUT_2, ...`, now they
+  are `IN1, IN2, IN3, ...` and `OUT1, OUT2, OUT3, ...`.
+* [core] `*.xod*` files are now terminated with newline symbol on save. It
+  makes them a bit friendlier for manual editing.
+* [cli] `xodc install` now installs all transient library dependencies
+  automatically.
+
+### New nodes
+
+* [`xod/bits/bcd-to-dec`](https://xod.io/libs/xod/bits/bcd-to-dec/)
+* [`xod/bits/bitwise-and`](https://xod.io/libs/xod/bits/bitwise-and/)
+* [`xod/bits/bitwise-not`](https://xod.io/libs/xod/bits/bitwise-not/)
+* [`xod/bits/bitwise-or`](https://xod.io/libs/xod/bits/bitwise-or/)
+* [`xod/bits/bitwise-xor`](https://xod.io/libs/xod/bits/bitwise-xor/)
+* [`xod/bits/dec-to-bcd`](https://xod.io/libs/xod/bits/dec-to-bcd/)
+* [`xod/bits/shift-left`](https://xod.io/libs/xod/bits/shift-left/)
+* [`xod/bits/shift-right`](https://xod.io/libs/xod/bits/shift-right/)
+* [`xod/common-hardware/dht2x-pack`](https://xod.io/libs/xod/common-hardware/dht2x-pack/)
+* [`xod/common-hardware/dht2x-thermometer`](https://xod.io/libs/xod/common-hardware/dht2x-thermometer/)
+* [`xod/common-hardware/dhtxx-read-raw`](https://xod.io/libs/xod/common-hardware/dhtxx-read-raw/)
+* [`xod/common-hardware/ds1307-rtc-read`](https://xod.io/libs/xod/common-hardware/ds1307-rtc-read/)
+* [`xod/common-hardware/ds1307-rtc-write`](https://xod.io/libs/xod/common-hardware/ds1307-rtc-write/)
+* [`xod/common-hardware/sd-log`](https://xod.io/libs/xod/common-hardware/sd-log/)
+* [`xod/common-hardware/text-lcd-16x2-i2c`](https://xod.io/libs/xod/common-hardware/text-lcd-16x2-i2c/)
+* [`xod/core/duty-to-time`](https://xod.io/libs/xod/core/duty-to-time/)
+* [`xod/core/flip-n-times`](https://xod.io/libs/xod/core/flip-n-times/)
+* [`xod/core/log-10`](https://xod.io/libs/xod/core/log-10/)
+* [`xod/core/log-bx`](https://xod.io/libs/xod/core/log-bx/)
+* [`xod/core/log-e`](https://xod.io/libs/xod/core/log-e/)
+* [`xod/core/modulo`](https://xod.io/libs/xod/core/modulo/)
+* [`xod/core/saw-wave`](https://xod.io/libs/xod/core/saw-wave/)
+* [`xod/core/saw-wave-map`](https://xod.io/libs/xod/core/saw-wave-map/)
+* [`xod/core/sine-wave`](https://xod.io/libs/xod/core/sine-wave/)
+* [`xod/core/sine-wave-map`](https://xod.io/libs/xod/core/sine-wave-map/)
+* [`xod/core/square-wave`](https://xod.io/libs/xod/core/square-wave/)
+* [`xod/core/time-to-duty`](https://xod.io/libs/xod/core/time-to-duty/)
+* [`xod/core/timer`](https://xod.io/libs/xod/core/timer/)
+* [`xod/core/tri-wave`](https://xod.io/libs/xod/core/tri-wave/)
+* [`xod/core/tri-wave-map`](https://xod.io/libs/xod/core/tri-wave-map/)
+
+### Bug fixes
+
+* [core] Fix upload to Arduino Mega 2560 boards when compiling locally.
+* [core] Fix yet more bugs related to invalid initial values after transpile.
+* [ide] Fix possible single slot offset when placing nodes with a double-click.
+
 <a name="0.15.1"></a>
 ## 0.15.1 (2017-10-31)
 
