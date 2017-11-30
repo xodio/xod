@@ -1,0 +1,235 @@
+{
+  "name": "sharp-irm",
+  "patches": {
+    "@/main": {
+      "links": {
+        "BJlK0ljez": {
+          "id": "BJlK0ljez",
+          "output": {
+            "nodeId": "BytOAxolG",
+            "pinKey": "SkTw0gjgf"
+          },
+          "input": {
+            "nodeId": "HyIFsxjgG",
+            "pinKey": "HkXK-dGob"
+          }
+        }
+      },
+      "nodes": {
+        "HyIFsxjgG": {
+          "id": "HyIFsxjgG",
+          "type": "xod/core/watch",
+          "position": {
+            "x": 68,
+            "y": 204
+          }
+        },
+        "BytOAxolG": {
+          "id": "BytOAxolG",
+          "type": "@/gp2y0a02-range-meter",
+          "position": {
+            "x": 68,
+            "y": 102
+          }
+        }
+      },
+      "path": "@/main"
+    },
+    "@/gp2y0a02-range-meter": {
+      "nodes": {
+        "HkRSAlixf": {
+          "id": "HkRSAlixf",
+          "type": "xod/core/analog-input",
+          "position": {
+            "x": 68,
+            "y": 102
+          }
+        },
+        "Skg0rRxjeM": {
+          "id": "Skg0rRxjeM",
+          "type": "xod/core/multiply",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "boundValues": {
+            "SJ4zUC_BD1-": 5
+          }
+        },
+        "HkWRBRxigf": {
+          "id": "HkWRBRxigf",
+          "type": "xod/core/map-range",
+          "position": {
+            "x": 68,
+            "y": 306
+          },
+          "boundValues": {
+            "ry1z8CuBDy-": 1.25,
+            "HJCWLAdSwyW": 2,
+            "rJbGU0_Hv1Z": 0.02,
+            "rkpbU0OrwyZ": 0.033
+          }
+        },
+        "SyfABRgjgG": {
+          "id": "SyfABRgjgG",
+          "type": "xod/core/divide",
+          "position": {
+            "x": 34,
+            "y": 408
+          },
+          "boundValues": {
+            "SkdIRuBD1b": 1
+          }
+        },
+        "rJQABAgilM": {
+          "id": "rJQABAgilM",
+          "type": "xod/core/divide",
+          "position": {
+            "x": 34,
+            "y": 510
+          },
+          "boundValues": {
+            "BytUCdHD1-": 100
+          }
+        },
+        "HJ7vCgjef": {
+          "id": "HJ7vCgjef",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "label": "PORT"
+        },
+        "SkTw0gjgf": {
+          "id": "SkTw0gjgf",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 34,
+            "y": 612
+          },
+          "label": "Dm"
+        }
+      },
+      "links": {
+        "Hy4CHCeigf": {
+          "id": "Hy4CHCeigf",
+          "output": {
+            "nodeId": "Skg0rRxjeM",
+            "pinKey": "BkQzLCurwJZ"
+          },
+          "input": {
+            "nodeId": "HkWRBRxigf",
+            "pinKey": "BJlzICOSv1-"
+          }
+        },
+        "rkHCSAxslf": {
+          "id": "rkHCSAxslf",
+          "output": {
+            "nodeId": "HkRSAlixf",
+            "pinKey": "SyBtREhlW"
+          },
+          "input": {
+            "nodeId": "Skg0rRxjeM",
+            "pinKey": "B1GfLR_SPk-"
+          }
+        },
+        "BJ80H0xixG": {
+          "id": "BJ80H0xixG",
+          "output": {
+            "nodeId": "HkWRBRxigf",
+            "pinKey": "H12bIR_SPyZ"
+          },
+          "input": {
+            "nodeId": "SyfABRgjgG",
+            "pinKey": "BytUCdHD1-"
+          }
+        },
+        "BJw0SRgoeG": {
+          "id": "BJw0SRgoeG",
+          "output": {
+            "nodeId": "SyfABRgjgG",
+            "pinKey": "BkqLCOSw1W"
+          },
+          "input": {
+            "nodeId": "rJQABAgilM",
+            "pinKey": "SkdIRuBD1b"
+          }
+        },
+        "ByHvAgilf": {
+          "id": "ByHvAgilf",
+          "output": {
+            "nodeId": "HJ7vCgjef",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "HkRSAlixf",
+            "pinKey": "BJuORNheZ"
+          }
+        },
+        "rkxd0lixz": {
+          "id": "rkxd0lixz",
+          "output": {
+            "nodeId": "rJQABAgilM",
+            "pinKey": "BkqLCOSw1W"
+          },
+          "input": {
+            "nodeId": "SkTw0gjgf",
+            "pinKey": "__in__"
+          }
+        }
+      },
+      "comments": {
+        "SJu0H0xsxz": {
+          "id": "SJu0H0xsxz",
+          "position": {
+            "x": 170,
+            "y": 204
+          },
+          "size": {
+            "width": 136,
+            "height": 51
+          },
+          "content": "Multiply by 5 to get the voltage level"
+        },
+        "H1FCSCxsxf": {
+          "id": "H1FCSCxsxf",
+          "position": {
+            "x": 272,
+            "y": 306
+          },
+          "size": {
+            "width": 136,
+            "height": 51
+          },
+          "content": "Map the voltage to inverse distance (1/cm)"
+        },
+        "rJqArResef": {
+          "id": "rJqArResef",
+          "position": {
+            "x": 136,
+            "y": 408
+          },
+          "size": {
+            "width": 136,
+            "height": 51
+          },
+          "content": "Invert the distance"
+        },
+        "Bko0B0xsgz": {
+          "id": "Bko0B0xsgz",
+          "position": {
+            "x": 136,
+            "y": 510
+          },
+          "size": {
+            "width": 170,
+            "height": 51
+          },
+          "content": "Divide by 100 to convert centimeters to meters"
+        }
+      },
+      "path": "@/gp2y0a02-range-meter"
+    }
+  }
+}

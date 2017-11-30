@@ -49,6 +49,11 @@ The articles which are going to be superseeded by the crash course above.
 User’s guide
 ------------
 
+### Making your own nodes
+
+* [Creating nodes for XOD in XOD](./guide/nodes-for-xod-in-xod/)
+* [Creating analog sensor driver nodes](./guide/analog-sensor-node/)
+
 ### Doing things sequentially
 
 * [Simple traffic light example](./guide/simple-traffic-light/)
