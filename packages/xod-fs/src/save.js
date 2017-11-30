@@ -16,6 +16,7 @@ import { writeFile, writeJSON } from './write';
 import { Backup } from './backup';
 import { arrangeByFiles, arrangePatchByFiles, fsSafeName, getProjectPath } from './unpack';
 import {
+  convertProjectToProjectFileContents,
   omitDefaultOptionsFromPatchFileContents,
   omitDefaultOptionsFromProjectFileContents,
 } from './convertTypes';
@@ -160,6 +161,21 @@ const savePatchChanges = def(
   }
 );
 
+const saveProjectMeta = def(
+  'saveProjectMeta :: Path -> Project -> Promise', // Promise Path Error
+  (projectDir, project) => {
+    const workspacePath = path.resolve(projectDir, '..');
+
+    return saveArrangedFiles(workspacePath, [{
+      path: path.join(projectDir, 'project.xod'),
+      content: R.compose(
+        omitDefaultOptionsFromProjectFileContents,
+        convertProjectToProjectFileContents
+      )(project),
+    }]).then(R.always(projectDir));
+  }
+);
+
 export const saveProject = def(
   'saveProject :: Path -> [AnyPatchChange] -> Project -> Promise', // Promise Path Error
   (workspacePath, changes, project) => {
@@ -171,7 +187,8 @@ export const saveProject = def(
 
     // save only changes in the local patches
     return R.compose(
-      localChanges => savePatchChanges(projectDir, localChanges),
+      localChanges => savePatchChanges(projectDir, localChanges)
+        .then(() => saveProjectMeta(projectDir, project)),
       R.filter(R.compose(
         XP.isPathLocal,
         R.prop('path')
