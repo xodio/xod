@@ -71,13 +71,13 @@ describe('fetching data', () => {
     it('returns Promise with list with two xodballs: xod/common-hardware and xod/core', () =>
       F.fetchLibsWithDependencies(PM_SWAGGER_URL, [], ['xod/common-hardware'])
         .then((projectsMap) => {
-          assert.lengthOf(R.keys(projectsMap), 3);
+          assert.lengthOf(R.keys(projectsMap), 4);
           assert.sameMembers(
             R.compose(
               R.map(getProjectName),
               R.values
             )(projectsMap),
-            ['common-hardware', 'core', 'units']
+            ['common-hardware', 'core', 'bits', 'units']
           );
         })
     );
