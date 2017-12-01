@@ -9,7 +9,7 @@ defs:
         - /^prerelease-.*/
     tags:
       only:
-        - /^v\d/
+        - /^v\d+\.\d+\.\d+/
 
   cache:
     cache-node_modules: &cache-node_modules

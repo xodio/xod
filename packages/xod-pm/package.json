@@ -1,6 +1,6 @@
 {
   "name": "xod-pm",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -23,8 +23,8 @@
     "ramda": "^0.24.1",
     "ramda-fantasy": "^0.8.0",
     "swagger-client": "^3.0.13",
-    "xod-func-tools": "^0.15.0",
-    "xod-project": "^0.15.0"
+    "xod-func-tools": "^0.16.0",
+    "xod-project": "^0.16.0"
   },
   "devDependencies": {
     "chai": "^4.1.2"
