@@ -170,8 +170,13 @@ jobs:
           name: Upload to Google Cloud Storage
           command: |
             TAG=$(cat dist/TAG)
+            GS_PATH=gs://releases.xod.io/$TAG
             echo "Uploading with tag: $TAG"
-            gsutil cp -a public-read dist/* gs://releases.xod.io/$TAG
+            gsutil -m cp -a public-read dist/* $GS_PATH
+            # Adjust metadata to give proper filenames for download
+            # (otherwise they are dirname%3Ffilename where %3F is a slash)
+            ls dist -1 | xargs -n 1 -I {} \
+              gsutil setmeta -h "Content-Disposition: attachment; filename="{}"" $GS_PATH/{}
 
 #==============================================================================
 #
