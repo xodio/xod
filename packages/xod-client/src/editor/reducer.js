@@ -7,7 +7,12 @@ import * as PAT from '../project/actionTypes';
 import * as DAT from '../debugger/actionTypes';
 
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
-import { TAB_TYPES, DEBUGGER_TAB_ID } from './constants';
+import {
+  DEBUGGER_TAB_ID,
+  FOCUS_AREAS,
+  SELECTION_ENTITY_TYPE,
+  TAB_TYPES,
+} from './constants';
 import { createSelectionEntity, getNewSelection, getTabByPatchPath } from './utils';
 import { setCurrentPatchOffset, switchPatchUnsafe } from './actions';
 
@@ -428,7 +433,6 @@ const editorReducer = (state = {}, action) => {
         state
       );
     case EAT.EDITOR_SET_SELECION:
-    case EAT.PASTE_ENTITIES:
       return R.set(
         R.compose(currentTabLens, selectionLens),
         getNewSelection(action.payload.entities),
@@ -439,6 +443,32 @@ const editorReducer = (state = {}, action) => {
     case EAT.EDITOR_DESELECT_PIN:
     case PAT.LINK_ADD:
       return R.set(R.compose(currentTabLens, linkingPinLens), null, state);
+
+    //
+    // Adding entities
+    //
+    case EAT.PASTE_ENTITIES:
+      return R.compose(
+        R.set(
+          R.compose(currentTabLens, selectionLens),
+          getNewSelection(action.payload.entities),
+        ),
+        R.assoc('focusedArea', FOCUS_AREAS.WORKAREA)
+      )(state);
+    case PAT.NODE_ADD:
+      return R.compose(
+        R.set(
+          R.compose(currentTabLens, selectionLens),
+          [
+            createSelectionEntity(
+              SELECTION_ENTITY_TYPE.NODE,
+              action.payload.newNodeId
+            ),
+          ]
+        ),
+        R.assoc('focusedArea', FOCUS_AREAS.WORKAREA),
+        R.assoc('draggedPreviewSize', { width: 0, height: 0 })
+      )(state);
 
     //
     // tabs management
@@ -513,8 +543,6 @@ const editorReducer = (state = {}, action) => {
     //
     case EAT.START_DRAGGING_PATCH:
       return R.assoc('draggedPreviewSize', action.payload, state);
-    case PAT.NODE_ADD:
-      return R.assoc('draggedPreviewSize', { width: 0, height: 0 }, state);
 
     //
     // focused area

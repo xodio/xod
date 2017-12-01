@@ -168,6 +168,7 @@ class Editor extends React.Component {
         index={patchesIndex}
         onAddNode={this.onAddNode}
         onBlur={this.hideSuggester}
+        onInitialFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.NODE_SUGGESTER)}
         onHighlight={this.props.actions.highlightSugessterItem}
       />
     ) : null;

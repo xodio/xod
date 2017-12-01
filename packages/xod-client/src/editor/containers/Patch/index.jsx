@@ -18,7 +18,7 @@ import sanctuaryPropType from '../../../utils/sanctuaryPropType';
 
 import dropTarget from './dropTarget';
 
-import { EDITOR_MODE, TAB_TYPES } from '../../constants';
+import { EDITOR_MODE, TAB_TYPES, FOCUS_AREAS } from '../../constants';
 
 import selectingMode from './modes/selecting';
 import linkingMode from './modes/linking';
@@ -67,6 +67,15 @@ class Patch extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.tabType != null && this.props.tabType !== nextProps.tabType) {
       this.goToMode(DEFAULT_MODES[nextProps.tabType]);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.focusedArea !== prevProps.focusedArea &&
+      this.props.focusedArea === FOCUS_AREAS.WORKAREA
+    ) {
+      this.dropTargetRootRef.firstChild.focus();
     }
   }
 
@@ -140,6 +149,7 @@ Patch.propTypes = {
   tabType: PropTypes.string,
   ghostLink: PropTypes.any,
   offset: PropTypes.object,
+  focusedArea: PropTypes.string.isRequired,
   onDoubleClick: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   isDebugSession: PropTypes.bool,
@@ -157,6 +167,7 @@ const mapStateToProps = R.applySpec({
   tabType: EditorSelectors.getCurrentTabType,
   ghostLink: ProjectSelectors.getLinkGhost,
   offset: EditorSelectors.getCurrentPatchOffset,
+  focusedArea: EditorSelectors.getFocusedArea,
   draggedPreviewSize: EditorSelectors.getDraggedPreviewSize,
   isDebugSession: DebugSelectors.isDebugSession,
   nodeValues: DebugSelectors.getWatchNodeValuesForCurrentPatch,
