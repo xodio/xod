@@ -15,7 +15,8 @@
   display: none;
 
   &.isActive {
-    display: block;
+    display: flex;
+    flex-flow: column;
   }
 
   .toolbar {
@@ -38,6 +39,16 @@
 
     .title {
       padding-left: 8px;
+    }
+  }
+
+  .editor {
+    display: flex;
+    flex-grow: 1;
+
+    .ReactCodeMirror {
+      width: 100%;
+      height: auto;
     }
   }
 
