@@ -26,11 +26,13 @@ const CppImplementationEditor = ({ isActive, source, isInDebuggerTab, onChange, 
         </button>
         <span className="title">{isInDebuggerTab ? 'Viewing' : 'Editing'} node C++ implementation</span>
       </div>
-      <CodeMirror
-        value={source}
-        onChange={onChange}
-        options={options}
-      />
+      <div className="editor">
+        <CodeMirror
+          value={source}
+          onChange={onChange}
+          options={options}
+        />
+      </div>
     </div>
   );
 };
