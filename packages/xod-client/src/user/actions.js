@@ -77,7 +77,8 @@ export const logout = () => (dispatch) => {
     .then(() => {
       dispatch(setGrant(null));
       dispatch(updateCompileLimit(false));
-    });
+    })
+    .catch(() => dispatch(addError(Messages.SERVICE_UNAVAILABLE)));
 };
 
 export default {};
