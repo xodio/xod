@@ -134,7 +134,16 @@ export const getSwaggerClient = (() => {
       return memo[index];
     }
 
-    return (memo[index] = swaggerClient(url));
+    const client = swaggerClient(url)
+      .catch(() => {
+        delete memo[index];
+        return rejectWithCode(
+          ERR_CODES.CANT_GET_SWAGGER,
+          new Error(MSG.SERVICE_UNAVAILABLE)
+        );
+      });
+
+    return (memo[index] = client);
   };
 })();
 
