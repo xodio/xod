@@ -27,7 +27,8 @@ class AuthForm extends React.Component {
     this.setState({ password: e.target.value });
   }
 
-  onLogin() {
+  onLogin(event) {
+    event.preventDefault();
     this.props.onLogin(
       this.state.username,
       this.state.password
@@ -39,7 +40,7 @@ class AuthForm extends React.Component {
     const { username, password } = this.state;
 
     return (
-      <div>
+      <form onSubmit={this.onLogin}>
         <div className="whyLogin">
           Log in to increase quotas and access more features
         </div>
@@ -70,7 +71,6 @@ class AuthForm extends React.Component {
         <div className="ButtonsRow">
           <Button
             light
-            onClick={this.onLogin}
             disabled={isAuthorising}
           >
             Log In
@@ -84,7 +84,7 @@ class AuthForm extends React.Component {
             Sign Up
           </Button>
         </div>
-      </div>
+      </form>
     );
   }
 }
