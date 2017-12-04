@@ -140,6 +140,13 @@ export const getSwaggerClient = (() => {
 
 // TODO: duplicate in xod-cli
 export const swaggerError = (err) => {
+  if (err instanceof Error) {
+    return Object.assign(
+      new Error(MSG.SERVICE_UNAVAILABLE),
+      { errorCode: ERR_CODES.SERVICE_UNAVAILABLE }
+    );
+  }
+
   const { response, status } = err;
   let res;
   if (response.body && response.body.originalResponse) {
