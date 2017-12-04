@@ -35,7 +35,10 @@ class Suggester extends React.Component {
   componentDidMount() {
     if (this.input) {
       // A hack to avoid typing "i" into input when pressing Hotkey
-      setTimeout(() => this.input.focus(), 1);
+      setTimeout(() => {
+        this.input.focus();
+        this.props.onInitialFocus();
+      }, 1);
     }
   }
 
@@ -157,6 +160,7 @@ Suggester.defaultProps = {
   addClassName: '',
   onBlur: () => {},
   onHighlight: () => {},
+  onInitialFocus: () => {},
 };
 
 Suggester.propTypes = {
@@ -165,6 +169,7 @@ Suggester.propTypes = {
   onAddNode: PropTypes.func.isRequired,
   onHighlight: PropTypes.func,
   onBlur: PropTypes.func,
+  onInitialFocus: PropTypes.func,
 };
 
 export default Suggester;
