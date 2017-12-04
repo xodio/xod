@@ -22,6 +22,7 @@
     "codemirror": "^5.31.0",
     "commander": "^2.9.0",
     "debounce": "^1.1.0",
+    "escape-string-regexp": "^1.0.5",
     "font-awesome": "^4.6.3",
     "formsy-react": "^0.18.1",
     "formsy-react-components": "^0.8.1",

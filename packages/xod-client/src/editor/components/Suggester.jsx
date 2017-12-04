@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Autosuggest from 'react-autosuggest';
 import Highlighter from 'react-highlight-words';
+import regExpEscape from 'escape-string-regexp';
 
 import { isAmong } from 'xod-func-tools';
 
@@ -81,8 +82,7 @@ class Suggester extends React.Component {
     const inputValue = value.trim().toLowerCase();
 
     if (inputValue.length === 0) { return []; }
-
-    return index.search(inputValue);
+    return index.search(regExpEscape(inputValue));
   }
 
   storeInputReference(autosuggest) {
@@ -95,17 +95,18 @@ class Suggester extends React.Component {
     const cls = classNames('Suggester-item', {
       'is-highlighted': isHighlighted,
     });
+    const value = regExpEscape(this.state.value);
 
     return (
       <div className={cls}>
         <Highlighter
           className="path"
-          searchWords={[this.state.value]}
+          searchWords={[value]}
           textToHighlight={item.path}
         />
         <Highlighter
           className="description"
-          searchWords={[this.state.value]}
+          searchWords={[value]}
           textToHighlight={item.description}
         />
       </div>
