@@ -2,7 +2,7 @@ import R from 'ramda';
 import * as XP from 'xod-project';
 import { publish } from 'xod-pm';
 
-import { foldMaybe } from 'xod-func-tools';
+import { foldMaybe, rejectWithCode } from 'xod-func-tools';
 
 import { addConfirmation, addError } from '../messages/actions';
 import { NODETYPE_ERROR_TYPES } from '../editor/constants';
@@ -13,6 +13,7 @@ import { getCurrentPatchPath } from '../editor/selectors';
 import { getGrant } from '../user/selectors';
 import { fetchGrant } from '../user/actions';
 import { LOG_IN_TO_CONTINUE } from '../user/messages';
+import { AUTHORIZATION_NEEDED } from '../user/errorCodes';
 import { SUCCESSFULLY_PUBLISHED } from './messages';
 import { getProject } from './selectors';
 import { getPmSwaggerUrl } from '../utils/urls';
@@ -97,23 +98,23 @@ export const publishProject = () => (dispatch, getState) => {
 
   dispatch(fetchGrant()) // to obtain freshest auth token
     .then((freshGrant) => {
-      if (freshGrant == null) {
+      if (freshGrant === null) {
         // could happen if user logs out in another tab
-        dispatch(addError(LOG_IN_TO_CONTINUE));
-        dispatch({ type: ActionType.PROJECT_PUBLISH_FAIL });
-        return;
+        return rejectWithCode(
+          AUTHORIZATION_NEEDED,
+          new Error(LOG_IN_TO_CONTINUE)
+        );
       }
 
-      publish(getPmSwaggerUrl(), freshGrant, project).then(
-        () => {
-          dispatch(addConfirmation(SUCCESSFULLY_PUBLISHED));
-          dispatch({ type: ActionType.PROJECT_PUBLISH_SUCCESS });
-        },
-        (err) => {
-          dispatch({ type: ActionType.PROJECT_PUBLISH_FAIL });
-          dispatch(addError(err.message));
-        }
-      );
+      return publish(getPmSwaggerUrl(), freshGrant, project);
+    })
+    .then(() => {
+      dispatch(addConfirmation(SUCCESSFULLY_PUBLISHED));
+      dispatch({ type: ActionType.PROJECT_PUBLISH_SUCCESS });
+    })
+    .catch((err) => {
+      dispatch({ type: ActionType.PROJECT_PUBLISH_FAIL });
+      dispatch(addError(err.message));
     });
 };
 
