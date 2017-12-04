@@ -1,4 +1,5 @@
 import 'url-search-params-polyfill';
+import { rejectWithCode } from 'xod-func-tools';
 
 import {
   getCompileLimitUrl,
@@ -9,6 +10,7 @@ import {
 import { addError } from '../messages/actions';
 import * as ActionTypes from './actionTypes';
 import * as Messages from './messages';
+import * as ERR_CODES from './errorCodes';
 
 export const updateCompileLimit = (startup = false) => dispatch =>
   fetch(getCompileLimitUrl(), {
@@ -37,13 +39,16 @@ const setGrant = grant => ({
 export const fetchGrant = () => dispatch =>
   fetch(getWhoamiUrl(), { credentials: 'include' })
     .then(res => (res.ok ? res.json() : null))
-    .catch(() => null)
     .then((grant) => {
       dispatch(setGrant(grant));
       dispatch(updateCompileLimit(false));
 
       return grant;
-    });
+    })
+    .catch(() => rejectWithCode(
+      ERR_CODES.CANT_FETCH_GRANT,
+      new Error(Messages.SERVICE_UNAVAILABLE)
+    ));
 
 export const login = (username, password) => (dispatch) => {
   const form = new URLSearchParams();
