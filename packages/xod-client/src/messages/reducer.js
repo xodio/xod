@@ -5,7 +5,7 @@ import { getNewId } from './selectors';
 export default (messages = {}, action) => {
   switch (action.type) {
     case MESSAGE_ADD: {
-      const newId = getNewId(messages);
+      const newId = (action.meta.id) ? action.meta.id : getNewId(messages);
       return R.assoc(
         newId,
         {

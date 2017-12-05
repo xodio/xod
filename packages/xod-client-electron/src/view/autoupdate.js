@@ -1,5 +1,8 @@
 import R from 'ramda';
 import * as EVENTS from '../shared/events';
+import { updateAvailableMessage } from '../shared/messages';
+
+export const UPDATE_IDE_MESSAGE_ID = 'updateIde';
 
 // :: ipcRenderer -> AppContainer -> ()
 export const subscribeAutoUpdaterEvents = (ipcRenderer, App) => {
@@ -15,15 +18,9 @@ export const subscribeAutoUpdaterEvents = (ipcRenderer, App) => {
     (event, info) => {
       console.log('Update available: ', info); // eslint-disable-line no-console
       App.props.actions.addNotification(
-        `New version (${info.version}) of XOD\u00A0IDE is available`,
-        [{
-          id: 'downloadAndInstall',
-          text: 'Download & Install',
-        }, {
-          id: 'dismiss',
-          text: 'Skip',
-        }],
-        true
+        updateAvailableMessage(info.version),
+        true,
+        UPDATE_IDE_MESSAGE_ID
       );
     }
   );
@@ -42,6 +39,7 @@ export const subscribeAutoUpdaterEvents = (ipcRenderer, App) => {
   ipcRenderer.on(
     EVENTS.APP_UPDATE_DOWNLOAD_STARTED,
     () => {
+      App.setState(R.assoc('downloadProgressPopup', true));
       console.log('Download has been started!'); // eslint-disable-line no-console
     }
   );

@@ -33,6 +33,7 @@ import Debugger from '../../debugger/containers/Debugger';
 import Breadcrumbs from '../../debugger/containers/Breadcrumbs';
 import Sidebar from '../components/Sidebar';
 import Workarea from '../../utils/components/Workarea';
+import SnackBar from '../../messages/containers/SnackBar';
 
 import { RenderableSelection } from '../../types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
@@ -235,6 +236,7 @@ class Editor extends React.Component {
             {BreadcrumbsContainer}
             {this.renderOpenedImplementationEditorTabs()}
             {DebuggerContainer}
+            <SnackBar />
           </Workarea>
         </FocusTrap>
         <Helpbar />

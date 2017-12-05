@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import SnackBarList from '../components/SnackBarList';
 import SnackBarMessage from '../components/SnackBarMessage';
 import * as ErrorSelectors from '../selectors';
-import { deleteMessage } from '../actions';
+import { deleteMessage, messageButtonClick } from '../actions';
 
 const ERROR_TIMEOUT = 3000;
 
@@ -24,6 +24,7 @@ class SnackBar extends React.Component {
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
     this.onButtonClicked = this.onButtonClicked.bind(this);
+    this.onCloseMessage = this.onCloseMessage.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -48,9 +49,13 @@ class SnackBar extends React.Component {
     )(this.messages);
   }
 
-  onButtonClicked(buttonId, messageData) {
-    this.props.onClickMessageButton(buttonId, messageData);
-    this.hideMessage(messageData.id);
+  onButtonClicked(messageId) {
+    this.props.onMessageButtonClick(messageId);
+    this.hideMessage(messageId);
+  }
+
+  onCloseMessage(messageId) {
+    this.hideMessage(messageId);
   }
 
   setHideTimeout(messageData) {
@@ -69,7 +74,7 @@ class SnackBar extends React.Component {
     element
       .hide()
       .then(() => delete this.messages[id])
-      .then(() => this.props.deleteMessage(id));
+      .then(() => this.props.onDeleteMessage(id));
   }
 
   addMessages(messages) {
@@ -95,6 +100,7 @@ class SnackBar extends React.Component {
               key={messageData.id}
               message={messageData}
               onClickMessageButton={this.onButtonClicked}
+              onCloseMessage={this.onCloseMessage}
             />
           ),
         };
@@ -121,8 +127,8 @@ class SnackBar extends React.Component {
 
 SnackBar.propTypes = {
   errors: PropTypes.object,
-  onClickMessageButton: PropTypes.func,
-  deleteMessage: PropTypes.func,
+  onDeleteMessage: PropTypes.func,
+  onMessageButtonClick: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -130,7 +136,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => (bindActionCreators({
-  deleteMessage,
+  onDeleteMessage: deleteMessage,
+  onMessageButtonClick: messageButtonClick,
 }, dispatch));
 
 export default connect(mapStateToProps, mapDispatchToProps)(SnackBar);

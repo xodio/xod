@@ -6,7 +6,7 @@ import { foldMaybe, rejectWithCode } from 'xod-func-tools';
 
 import { addConfirmation, addError } from '../messages/actions';
 import { NODETYPE_ERROR_TYPES } from '../editor/constants';
-import { PROJECT_BROWSER_ERRORS, NODETYPE_ERRORS } from '../messages/constants';
+import { PROJECT_BROWSER_ERRORS } from '../projectBrowser/messages';
 import * as ActionType from './actionTypes';
 import { isPatchPathTaken } from './utils';
 import { getCurrentPatchPath } from '../editor/selectors';
@@ -14,9 +14,10 @@ import { getGrant } from '../user/selectors';
 import { fetchGrant } from '../user/actions';
 import { LOG_IN_TO_CONTINUE } from '../user/messages';
 import { AUTHORIZATION_NEEDED } from '../user/errorCodes';
-import { SUCCESSFULLY_PUBLISHED } from './messages';
+import { SUCCESSFULLY_PUBLISHED, NODETYPE_ERRORS } from './messages';
 import { getProject } from './selectors';
 import { getPmSwaggerUrl } from '../utils/urls';
+import composeMessage from '../messages/composeMessage';
 
 //
 // Project
@@ -114,7 +115,7 @@ export const publishProject = () => (dispatch, getState) => {
     })
     .catch((err) => {
       dispatch({ type: ActionType.PROJECT_PUBLISH_FAIL });
-      dispatch(addError(err.message));
+      dispatch(addError(composeMessage(err.message)));
     });
 };
 

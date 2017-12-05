@@ -23,6 +23,7 @@ import PopupProjectPreferences from '../../project/components/PopupProjectPrefer
 import PopupPublishProject from '../../project/components/PopupPublishProject';
 
 import * as actions from '../actions';
+import composeMessage from '../../messages/composeMessage';
 
 export default class App extends React.Component {
   componentDidMount() {
@@ -37,7 +38,7 @@ export default class App extends React.Component {
     const eitherCode = eitherTProject.map(transpile);
 
     return foldEither(
-      error => this.props.actions.addError(error.message),
+      error => this.props.actions.addError(composeMessage(error.message)),
       this.props.actions.showCode,
       eitherCode
     );
