@@ -1,0 +1,114 @@
+{
+  "name": "cos-example",
+  "patches": {
+    "@/cos": {
+      "attachments": [
+        {
+          "content": "\n// Ignore this for now. The definition is required by XOD but we\n// not use it for cos\nstruct State { };\n\n// This is an obligatory marker. XOD will put pin definitions there\n{{ GENERATED_CODE }}\n\n// The `evaluate` function is the node’s entry point. It is the only\n// function XOD requires to implement. The context parameter is a\n// black-box object you’ll pass to various API functions.\nvoid evaluate(Context ctx) {\n    // `getValue` function reads a pin. In angle brackets, it takes a\n    // name of the pin in form input_PINLABEL (input_RAD in our case)\n    Number x = getValue<input_RAD>(ctx);\n\n    // Next, we use regular C++ to perform some actions. Our case is trivial.\n    // All we have to do is to call the standard C++ cos function.\n    // Note the data type `Number`. It’s the type XOD uses to represent numbers\n    // on the current platform.\n    Number result = cos(x);\n\n    // `emitValue` is like `getValue`, but it writes values rather than read.\n    // Note we use `OUT` label to access our unlabeled output terminal.\n    // `OUT` is the default name when you omit the label.\n    emitValue<output_OUT>(ctx, result);\n}\n",
+          "encoding": "utf8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "comments": {
+        "SJcQpGBWG": {
+          "content": "That’s a C++ marker node. Double click it to edit the code.",
+          "id": "SJcQpGBWG",
+          "position": {
+            "x": 136,
+            "y": 102
+          },
+          "size": {
+            "height": 51,
+            "width": 204
+          }
+        }
+      },
+      "description": "Computes a cosine of the angle.",
+      "nodes": {
+        "BJWf2zrbz": {
+          "description": "Angle in radians",
+          "id": "BJWf2zrbz",
+          "label": "RAD",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "HkBQ6fBZG": {
+          "id": "HkBQ6fBZG",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "S1vGhGBbz": {
+          "id": "S1vGhGBbz",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-number"
+        }
+      },
+      "path": "@/cos"
+    },
+    "@/main": {
+      "path": "@/main"
+    },
+    "@/test-cos": {
+      "links": {
+        "rJZRTzHZz": {
+          "id": "rJZRTzHZz",
+          "input": {
+            "nodeId": "B1aTafSZf",
+            "pinKey": "HkXK-dGob"
+          },
+          "output": {
+            "nodeId": "SyY66fH-z",
+            "pinKey": "S1vGhGBbz"
+          }
+        },
+        "rJy0pMBWf": {
+          "id": "rJy0pMBWf",
+          "input": {
+            "nodeId": "SyY66fH-z",
+            "pinKey": "BJWf2zrbz"
+          },
+          "output": {
+            "nodeId": "rJMTTfr-M",
+            "pinKey": "BkEVI0uHwJb"
+          }
+        }
+      },
+      "nodes": {
+        "B1aTafSZf": {
+          "id": "B1aTafSZf",
+          "position": {
+            "x": 136,
+            "y": 204
+          },
+          "type": "xod/core/watch"
+        },
+        "SyY66fH-z": {
+          "id": "SyY66fH-z",
+          "position": {
+            "x": 136,
+            "y": 102
+          },
+          "type": "@/cos"
+        },
+        "rJMTTfr-M": {
+          "id": "rJMTTfr-M",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/core/system-time"
+        }
+      },
+      "path": "@/test-cos"
+    }
+  }
+}
