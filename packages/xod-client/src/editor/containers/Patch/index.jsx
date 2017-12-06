@@ -1,6 +1,7 @@
 import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -127,7 +128,7 @@ class Patch extends React.Component {
 
     return this.props.connectDropTarget(
       <div
-        className="PatchWrapper-container"
+        className={cn('PatchWrapper-container', currentMode)}
         ref={(r) => { this.dropTargetRootRef = r; }}
       >
         {MODE_HANDLERS[currentMode].render(this.getApi(currentMode))}
