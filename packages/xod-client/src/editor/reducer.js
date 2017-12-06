@@ -553,6 +553,10 @@ const editorReducer = (state = {}, action) => {
     //
     // helpbar
     //
+    case EAT.HIDE_HELPBAR:
+      return R.over(R.lensProp('isHelpbarVisible'), R.F, state);
+    case EAT.SHOW_HELPBAR:
+      return R.over(R.lensProp('isHelpbarVisible'), R.T, state);
     case EAT.TOGGLE_HELPBAR:
       return R.over(R.lensProp('isHelpbarVisible'), R.not, state);
 

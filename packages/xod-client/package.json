@@ -39,6 +39,7 @@
     "react-click-outside": "^2.2.0",
     "react-codemirror": "^1.0.0",
     "react-collapsible": "^2.0.3",
+    "react-contextmenu": "^2.9.1",
     "react-custom-scroll": "^2.0.0",
     "react-dnd": "^2.5.1",
     "react-dnd-html5-backend": "^2.5.1",

@@ -1,6 +1,7 @@
 @import
   'abstracts/colors',
   'abstracts/variables',
+  'abstracts/icons',
   'abstracts/functions',
   'abstracts/mixins';
 
@@ -21,6 +22,7 @@
   'components/Button',
   'components/CloseButton',
   'components/Comment',
+  'components/ContextMenu',
   'components/CppImplementationEditor',
   'components/Debugger',
   'components/Editor',
@@ -36,7 +38,6 @@
   'components/PatchGroup',
   'components/PatchGroupItem',
   'components/PatchSVG',
-  'components/PatchTypeSelector',
   'components/PatchWrapper',
   'components/Pin',
   'components/PinLabel',

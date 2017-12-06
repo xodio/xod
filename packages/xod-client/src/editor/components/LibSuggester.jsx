@@ -58,7 +58,10 @@ class LibSuggester extends React.Component {
   componentDidMount() {
     if (this.input) {
       // A hack to avoid typing any character into input when pressing Hotkey
-      setTimeout(() => this.input.focus(), 1);
+      setTimeout(() => {
+        this.input.focus();
+        this.props.onInitialFocus();
+      }, 1);
     }
   }
 
@@ -234,12 +237,14 @@ class LibSuggester extends React.Component {
 LibSuggester.defaultProps = {
   addClassName: '',
   onBlur: () => {},
+  onInitialFocus: () => {},
 };
 
 LibSuggester.propTypes = {
   addClassName: PropTypes.string,
   onInstallLibrary: PropTypes.func.isRequired,
   onBlur: PropTypes.func,
+  onInitialFocus: PropTypes.func,
 };
 
 export default LibSuggester;

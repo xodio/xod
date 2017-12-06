@@ -88,7 +88,7 @@ describe('IDE: Blink project', () => {
     it('drags a node in place', () =>
       assert.eventually.deepEqual(
         ide.page.dragNode('clock', 150, 10).getLocation(),
-        { x: 387, y: 81 }
+        { x: 389, y: 81 }
       )
     );
 

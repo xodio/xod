@@ -1,12 +1,12 @@
 import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
-import cn from 'classnames';
 import CustomScroll from 'react-custom-scroll';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Icon } from 'react-fa';
 import { HotKeys } from 'react-hotkeys';
+import { ContextMenuTrigger } from 'react-contextmenu';
 
 import $ from 'sanctuary-def';
 import {
@@ -28,23 +28,15 @@ import * as PopupSelectors from '../../popups/selectors';
 import * as EditorSelectors from '../../editor/selectors';
 
 import { COMMAND } from '../../utils/constants';
-import { noop } from '../../utils/ramda';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
 import PatchGroup from '../components/PatchGroup';
 import PatchGroupItem from '../components/PatchGroupItem';
-import PatchTypeSelector from '../components/PatchTypeSelector';
 import ProjectBrowserPopups from '../components/ProjectBrowserPopups';
 import ProjectBrowserToolbar from '../components/ProjectBrowserToolbar';
+import PatchGroupItemContextMenu from '../components/PatchGroupItemContextMenu';
 
-import { getUtmSiteUrl } from '../../utils/urls';
-import { IconGuide } from '../../utils/components/IconGuide';
-
-const PATCH_TYPE = {
-  ALL: 'all',
-  MY: 'my',
-  LIBRARY: 'library',
-};
+import { PATCH_GROUP_CONTEXT_MENU_ID } from '../constants';
 
 const pickPatchPartsForComparsion = R.map(R.pick(['dead', 'path']));
 
@@ -69,17 +61,21 @@ const pickPropsForComparsion = R.compose(
 class ProjectBrowser extends React.Component {
   constructor(props) {
     super(props);
-    this.patchRenderers = {
-      [PATCH_TYPE.MY]: this.renderLocalPatches.bind(this),
-      [PATCH_TYPE.LIBRARY]: this.renderLibraryPatches.bind(this),
-    };
+    this.state = {};
 
     this.renderPatches = this.renderPatches.bind(this);
     this.deselectIfInLibrary = this.deselectIfInLibrary.bind(this);
     this.deselectIfInLocalPatches = this.deselectIfInLocalPatches.bind(this);
 
+    this.onAddNode = this.onAddNode.bind(this);
     this.onRenameHotkey = this.onRenameHotkey.bind(this);
     this.onDeleteHotkey = this.onDeleteHotkey.bind(this);
+    this.onClickAddLibrary = this.onClickAddLibrary.bind(this);
+    this.onPatchHelpClicked = this.onPatchHelpClicked.bind(this);
+
+    this.renderItem = this.renderItem.bind(this);
+    this.renderLocalPatches = this.renderLocalPatches.bind(this);
+    this.renderLibraryPatches = this.renderLibraryPatches.bind(this);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -112,6 +108,15 @@ class ProjectBrowser extends React.Component {
     this.props.actions.requestDelete(selectedPatchPath);
   }
 
+  onClickAddLibrary(event) {
+    event.stopPropagation();
+    this.props.actions.showLibSuggester();
+  }
+
+  onPatchHelpClicked() {
+    this.props.actions.showHelpbar();
+  }
+
   getHotkeyHandlers() {
     return {
       [COMMAND.ADD_PATCH]: this.props.actions.requestCreatePatch,
@@ -121,36 +126,14 @@ class ProjectBrowser extends React.Component {
     };
   }
 
-  localPatchesHoveredButtons(patchPath) {
-    const {
-      requestRename,
-      requestDelete,
-    } = this.props.actions;
-
-    return [
-      <Icon
-        key="delete"
-        name="trash"
-        title="Delete patch"
-        className="hover-button"
-        onClick={() => requestDelete(patchPath)}
-      />,
-      <Icon
-        key="rename"
-        name="pencil"
-        title="Rename patch"
-        className="hover-button"
-        onClick={() => requestRename(patchPath)}
-      />,
-      this.renderAddNodeButton(patchPath),
-    ];
-  }
-
-  libraryPatchesHoveredButtons(path) {
-    return [
-      this.renderDocsButton(path),
-      this.renderAddNodeButton(path),
-    ];
+  getCollectPropsFn(patchPath) {
+    const { currentPatchPath } = this.props;
+    const canAdd = currentPatchPath !== patchPath;
+    return () => ({
+      patchPath,
+      canAdd,
+      isLocalPatch: isPathLocal(patchPath),
+    });
   }
 
   deselectIfInLocalPatches() {
@@ -167,50 +150,27 @@ class ProjectBrowser extends React.Component {
     };
   }
 
-  renderAddNodeButton(patchPath) {
-    const { currentPatchPath } = this.props;
-
-    const isCurrentPatch = currentPatchPath === patchPath;
-    const canAdd = !isCurrentPatch;
-
-    const classNames = cn('hover-button add-node', { disabled: !canAdd });
-    const action = canAdd ? () => this.onAddNode(patchPath) : noop;
-
-    return (
-      <Icon
-        key="add"
-        name="plus-circle"
-        title="Add node"
-        className={classNames}
-        onClick={action}
-      />
-    );
-  }
-
-  renderDocsButton(patchPath) { // eslint-disable-line class-methods-use-this
-    return (
-      <a
-        href={getUtmSiteUrl(`/libs/${patchPath}`, 'docs', 'project-browser')}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover-button"
-        key="patch-guide-button"
-        title="Open documentation in web browser"
+  // eslint-disable-next-line class-methods-use-this
+  renderHoveredButtons(collectPropsFn) {
+    return [
+      <ContextMenuTrigger
+        key="contextMenuTrigger"
+        id={PATCH_GROUP_CONTEXT_MENU_ID}
+        renderTag="div"
+        attributes={{
+          className: 'contextmenu',
+        }}
+        collect={collectPropsFn}
+        holdToDisplay={0}
       >
-        <IconGuide
-          className="project-browser--guide-button"
-          width="14px"
-          height="14px"
-          fill="#FFF"
-        />
-      </a>
-    );
+        {/* Component needs at least one child :-( */}
+        <span />
+      </ContextMenuTrigger>,
+    ];
   }
 
-  renderLocalPatches() {
+  renderItem({ path, dead }) {
     const {
-      projectName,
-      localPatches,
       currentPatchPath,
       selectedPatchPath,
     } = this.props;
@@ -221,7 +181,9 @@ class ProjectBrowser extends React.Component {
       startDraggingPatch,
     } = this.props.actions;
 
-    const renderItem = ({ path, dead }) => (
+    const collectPropsFn = this.getCollectPropsFn(path);
+
+    return (
       <PatchGroupItem
         key={path}
         patchPath={path}
@@ -232,9 +194,17 @@ class ProjectBrowser extends React.Component {
         onBeginDrag={startDraggingPatch}
         isSelected={path === selectedPatchPath}
         onClick={() => setSelection(path)}
-        hoverButtons={this.localPatchesHoveredButtons(path)}
+        collectPropsFn={collectPropsFn}
+        hoverButtons={this.renderHoveredButtons(collectPropsFn)}
       />
     );
+  }
+
+  renderLocalPatches() {
+    const {
+      projectName,
+      localPatches,
+    } = this.props;
 
     return (
       <PatchGroup
@@ -243,18 +213,18 @@ class ProjectBrowser extends React.Component {
         name={projectName}
         onClose={this.deselectIfInLocalPatches}
       >
-        {R.map(renderItem, localPatches)}
+        {localPatches.map(this.renderItem)}
       </PatchGroup>
     );
   }
 
   renderLibraryPatches() {
-    const { libs, installingLibs, selectedPatchPath } = this.props;
-    const { setSelection, switchPatch, startDraggingPatch } = this.props.actions;
+    const { libs, installingLibs } = this.props;
     const installingLibsComponents = R.map(
       ({ owner, name, version }) => ({
         name: `${owner}/${name}`,
         component: (<div
+          key={`${owner}/${name}/${version}`}
           className="PatchGroup PatchGroup--installing library"
         >
           <span className="name">{owner}/{name}</span>
@@ -279,19 +249,7 @@ class ProjectBrowser extends React.Component {
           name={libName}
           onClose={this.deselectIfInLibrary(libName)}
         >
-          {libPatches.map(({ path, dead }) =>
-            <PatchGroupItem
-              key={path}
-              patchPath={path}
-              dead={dead}
-              label={getBaseName(path)}
-              isSelected={path === selectedPatchPath}
-              onClick={() => setSelection(path)}
-              onDoubleClick={() => switchPatch(path)}
-              onBeginDrag={startDraggingPatch}
-              hoverButtons={this.libraryPatchesHoveredButtons(path)}
-            />
-          )}
+          {libPatches.map(this.renderItem)}
         </PatchGroup>),
       })),
       R.toPairs
@@ -304,16 +262,13 @@ class ProjectBrowser extends React.Component {
     )(libComponents, installingLibsComponents);
   }
 
-  renderPatches(patchType) {
-    const rendererKeys = patchType === PATCH_TYPE.ALL
-      ? [PATCH_TYPE.MY, PATCH_TYPE.LIBRARY]
-      : R.of(patchType);
-
+  renderPatches() {
     return (
       // "calc(100% - 30px)" cause patch filtering buttons are 30px height
       <CustomScroll heightRelativeToParent="calc(100% - 30px)">
         <div className="patches-list">
-          {rendererKeys.map(k => this.patchRenderers[k]())}
+          {this.renderLocalPatches()}
+          {this.renderLibraryPatches()}
         </div>
       </CustomScroll>
     );
@@ -338,17 +293,17 @@ class ProjectBrowser extends React.Component {
         />
         <ProjectBrowserToolbar
           onClickAddPatch={this.props.actions.requestCreatePatch}
+          onClickAddLibrary={this.onClickAddLibrary}
         />
-        <PatchTypeSelector
-          options={[
-            { key: PATCH_TYPE.ALL, name: 'All' },
-            { key: PATCH_TYPE.LIBRARY, name: 'Libraries' },
-            { key: PATCH_TYPE.MY, name: 'My Patches' },
-          ]}
-          onChange={this.props.actions.removeSelection}
-        >
-          {this.renderPatches}
-        </PatchTypeSelector>
+        {this.renderPatches()}
+        <PatchGroupItemContextMenu
+          ref={(c) => { this.patchContextMenuRef = c; }}
+          onPatchAdd={this.onAddNode}
+          onPatchOpen={this.props.actions.switchPatch}
+          onPatchDelete={this.props.actions.requestDelete}
+          onPatchRename={this.props.actions.requestRename}
+          onPatchHelp={this.onPatchHelpClicked}
+        />
       </HotKeys>
     );
   }
@@ -380,6 +335,8 @@ ProjectBrowser.propTypes = {
     startDraggingPatch: PropTypes.func.isRequired,
     renameProject: PropTypes.func.isRequired,
     closeAllPopups: PropTypes.func.isRequired,
+    showLibSuggester: PropTypes.func.isRequired,
+    showHelpbar: PropTypes.func.isRequired,
   }),
 };
 
@@ -416,6 +373,8 @@ const mapDispatchToProps = dispatch => ({
     closeAllPopups: PopupActions.hideAllPopups,
 
     addNotification: MessagesActions.addNotification,
+    showLibSuggester: EditorActions.showLibSuggester,
+    showHelpbar: EditorActions.showHelpbar,
   }, dispatch),
 });
 

@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Collapsible from 'react-collapsible';
-import 'font-awesome/scss/font-awesome.scss';
 
 import { noop } from '../../utils/ramda';
 
 const PatchGroup = ({ name, children, type, onClose }) => (
   <Collapsible
     classParentString="PatchGroup"
-    trigger={<span className="patch-group-trigger" title={name}>{name}</span>}
+    trigger={
+      <span className="patch-group-trigger" data-id={name}>{name}</span>
+    }
     triggerClassName={type}
     triggerOpenedClassName={type}
     transitionTime={100}

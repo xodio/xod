@@ -8842,6 +8842,13 @@ react-collapsible@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/react-collapsible/-/react-collapsible-2.0.3.tgz#b7228b002428a6e0a9f41646ea61ba28aacfcb00"
 
+react-contextmenu@^2.9.1:
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/react-contextmenu/-/react-contextmenu-2.9.1.tgz#391c7001f73e49772e37e98d154736d50dac11de"
+  dependencies:
+    classnames "^2.2.5"
+    object-assign "^4.1.0"
+
 react-custom-scroll@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/react-custom-scroll/-/react-custom-scroll-2.0.1.tgz#4775761a48d66c4b1e576c0705fc6a59fc0d89b6"

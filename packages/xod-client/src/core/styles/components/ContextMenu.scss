@@ -1,0 +1,84 @@
+.ContextMenu {
+  &--hide {
+    display: none;
+  }
+}
+
+.react-contextmenu {
+  min-width: 140px;
+  padding: 0;
+  margin: 2px 0 0;
+
+  font-family: $font-family-normal;
+  font-size: $font-size-m;
+  color: $chalk;
+  text-align: left;
+
+  background-color: $chrome-bg;
+  background-clip: border-box;
+  border: 1px solid $chrome-outlines;
+  box-shadow: 5px 5px 10px -5px rgba(0,0,0,.5);
+  outline: none;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 100ms ease !important;
+
+  user-select: none;
+
+  z-index: 1000;
+
+  &--visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &-item {
+    padding: 6px 12px;
+    line-height: 1;
+    color: $chalk;
+    text-align: inherit;
+    white-space: nowrap;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    outline: 0;
+
+    .accelerator {
+      float: right;
+      color: $light-grey;
+    }
+
+    &--active, &--selected, &:active {
+      color: $chalk;
+      background-color: $blackberry;
+      text-decoration: none;
+    }
+
+    &--disabled, &--disabled:hover {
+      color: $light-grey;
+      background: transparent;
+      cursor: default;
+    }
+
+    &--divider, &--divider:hover {
+      background: transparent;
+      padding: 0;
+      margin: 3px 0;
+      height: 1px;
+      background-color: $coal-bright;
+      cursor: default;
+    }
+  }
+
+  &-sumbenu {
+    padding: 0;
+  }
+  &-submenu > &-item:after {
+    content: "▶";
+    font-size: $font-size-s;
+    display: inline-block;
+    position: absolute;
+    right: 6px;
+  }
+}

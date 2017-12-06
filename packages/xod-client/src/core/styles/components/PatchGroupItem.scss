@@ -26,7 +26,7 @@
     right: 0;
     top: 0;
     box-sizing: border-box;
-    padding: 7px 6px 8px 1px;
+    padding: 0 8px 0 8px;
     font-size: 14px; // for FA icons
 
     &:before {
@@ -38,6 +38,16 @@
       top:        0;
       left:       -8px;
       background: linear-gradient(to left, $sidebar-color-bg-hover, rgba(0, 0, 0, 0));
+    }
+
+    & > * {
+      margin-left: 2px;
+    }
+
+    .contextmenu {
+      width:  30px;
+      height: 30px;
+      @extend .icon-contextmenu;
     }
   }
 
@@ -53,6 +63,17 @@
       background: $sidebar-color-bg-selected;
       &:before {
         background: linear-gradient(to left, $sidebar-color-bg-selected, rgba(0, 0, 0, 0));
+      }
+    }
+
+    &:hover {
+      background-color: $sidebar-color-bg-selected-hover;
+
+      .PatchGroupItem__hover-buttons {
+        background-color: $sidebar-color-bg-selected-hover;
+        &:before {
+          background: linear-gradient(to left, $sidebar-color-bg-selected-hover, rgba(0, 0, 0, 0));
+        }
       }
     }
   }

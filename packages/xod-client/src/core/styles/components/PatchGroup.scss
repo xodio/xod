@@ -6,25 +6,29 @@
     font-family: $font-family-normal;
     text-decoration: none;
     position: relative;
-    border: 1px solid $sidebar-color-border;
-    border-bottom: none;
-    padding: 10px 10px 10px 30px;
+    border-top: 1px solid $sidebar-color-border;
+    padding: 10px 10px 9px 30px;
     color: $sidebar-color-text;
     user-select: none;
+    line-height: 1em;
 
     &.my:before,
     &.library:before {
-      font-family: 'FontAwesome';
-      font-size: 13px;
+      content: '';
       position: absolute;
-      left: 10px;
-      top: 10px;
+      left: 6px;
+      top: 8px;
       display: block;
-      content: '\f007'; // TODO: bg image
+
+      width: 14px;
+      height: 14px;
+      background: url(../assets/icons/project.svg) no-repeat;
     }
 
     &.library:before {
-      content: '\f02d'; // TODO: bg image
+      width: 14px;
+      height: 14px;
+      background: url(../assets/icons/libs.svg) no-repeat;
     }
   }
 
