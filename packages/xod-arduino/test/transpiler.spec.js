@@ -7,7 +7,9 @@ import { explode, foldEither, explodeEither } from 'xod-func-tools';
 import { loadProject } from 'xod-fs';
 import { PIN_TYPE } from 'xod-project';
 import { defaultizePin } from 'xod-project/test/helpers';
-import { transpile, getInitialDirtyFlags, transformProject, getNodeIdsMap } from '../src/transpiler';
+import { transpile, getInitialDirtyFlags, transformProject, getNodeIdsMap, forUnitTests } from '../src/transpiler';
+
+const { createPatchNames } = forUnitTests;
 
 // Returns patch relative to repo’s `workspace` subdir
 const wsPath = (...subpath) => path.resolve(__dirname, '../../../workspace', ...subpath);
@@ -50,7 +52,7 @@ describe('xod-arduino transpiler', () => {
         .then(R.map(transpile))
         .then(foldEither(
           (err) => {
-            assert.include(err.message, '@/too_many_outputs');
+            assert.include(err.message, 'too_many_outputs');
             assert.include(err.message, 'has more than 7 outputs');
           },
           () => assert(false, 'expecting Either.Left')
@@ -163,5 +165,23 @@ describe('getInitialDirtyFlags', () => {
       ]),
       0b11111101
     );
+  });
+});
+
+describe('createPatchNames()', () => {
+  it('correctly splits library patch paths', () => {
+    assert.deepEqual(createPatchNames('bob-alice/bar-baz/qux-digun'), {
+      owner: 'bob_alice',
+      libName: 'bar_baz',
+      patchName: 'qux_digun',
+    });
+  });
+
+  it('correctly splits local patch paths', () => {
+    assert.deepEqual(createPatchNames('@/qux-bar'), {
+      owner: '',
+      libName: '',
+      patchName: 'qux_bar',
+    });
   });
 });
