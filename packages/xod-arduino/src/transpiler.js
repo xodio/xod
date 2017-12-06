@@ -38,17 +38,23 @@ const kebabToSnake = R.replace(/-/g, '_');
 
 const createPatchNames = def(
   'createPatchNames :: PatchPath -> { owner :: String, libName :: String, patchName :: String }',
-  (path) => {
-    // TODO: this handles @/local-patches incorrectly
-    const [owner, libName, ...patchNameParts] = R.split('/', path);
-    const patchName = patchNameParts.join('/');
-
-    return R.map(kebabToSnake, {
-      owner,
-      libName,
-      patchName,
-    });
-  }
+  R.compose(
+    R.map(kebabToSnake),
+    R.ifElse(
+      R.startsWith(['@']),
+      parts => ({
+        owner: '',
+        libName: '',
+        patchName: parts.slice(1).join('/'),
+      }),
+      parts => ({
+        owner: parts[0],
+        libName: parts[1],
+        patchName: parts.slice(2).join('/'),
+      })
+    ),
+    R.split('/')
+  )
 );
 
 const findPatchByPath = def(
@@ -401,3 +407,7 @@ export const transformProjectWithDebug = def(
 );
 
 export const transpile = renderProject;
+
+export const forUnitTests = {
+  createPatchNames,
+};
