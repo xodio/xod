@@ -129,4 +129,4 @@ Composing new nodes in XOD is not a big deal. Use it to make programs more
 clear, share functionality, and reuse your own past work.
 
 The provided example is pretty basic. If you want to learn more, follow a
-[guide to make an analog sensor driver node](../analog-sensor-patch-node/).
+[guide to make an analog sensor driver node](../analog-sensor-node/).

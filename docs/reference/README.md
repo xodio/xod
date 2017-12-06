@@ -12,3 +12,4 @@ title: Reference
 * [`xod/core`](/libs/xod/core/)
 * [`xod/common-hardware`](/libs/xod/common-hardware/)
 * [`xod/units`](/libs/xod/units/)
+* [`xod/bits`](/libs/xod/bits/)
