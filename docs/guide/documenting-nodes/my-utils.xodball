@@ -1,0 +1,243 @@
+{
+  "description": "Kinda useful functional nodes",
+  "license": "AGPL-3",
+  "name": "my-utils",
+  "patches": {
+    "@/between": {
+      "comments": {
+        "BkBSgXJogM": {
+          "content": "NOR combines the results and outputs `true` only if overflow/underflow did not happen",
+          "id": "BkBSgXJogM",
+          "position": {
+            "x": 238,
+            "y": 306
+          },
+          "size": {
+            "height": 51,
+            "width": 272
+          }
+        },
+        "ryNSgXkogf": {
+          "content": "These nodes check if the value overflows or underflows the desired range",
+          "id": "ryNSgXkogf",
+          "position": {
+            "x": 238,
+            "y": 204
+          },
+          "size": {
+            "height": 51,
+            "width": 272
+          }
+        }
+      },
+      "description": "Checks whether a number falls in range specified.",
+      "links": {
+        "B1QBxX1ieG": {
+          "id": "B1QBxX1ieG",
+          "input": {
+            "nodeId": "BJ-SeQJseM",
+            "pinKey": "S1dG8AOBPJW"
+          },
+          "output": {
+            "nodeId": "SyeHeXkoxz",
+            "pinKey": "B19RYS3lW"
+          }
+        },
+        "B1RdP1oez": {
+          "id": "B1RdP1oez",
+          "input": {
+            "nodeId": "SyeHeXkoxz",
+            "pinKey": "HJbACN3gb"
+          },
+          "output": {
+            "nodeId": "HJiOwkjxG",
+            "pinKey": "__out__"
+          }
+        },
+        "B1t_D1oeM": {
+          "id": "B1t_D1oeM",
+          "input": {
+            "nodeId": "r1BlQ1olf",
+            "pinKey": "SJqZ8COrDkW"
+          },
+          "output": {
+            "nodeId": "Syv_vJilM",
+            "pinKey": "__out__"
+          }
+        },
+        "BJMj41seG": {
+          "id": "BJMj41seG",
+          "input": {
+            "nodeId": "BJ1i4Jigf",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "BJ-SeQJseM",
+            "pinKey": "rJqfIRdHwkW"
+          }
+        },
+        "SJNcN1ogG": {
+          "id": "SJNcN1ogG",
+          "input": {
+            "nodeId": "r1BlQ1olf",
+            "pinKey": "HJjZLRdBw1-"
+          },
+          "output": {
+            "nodeId": "Syb9Nksef",
+            "pinKey": "__out__"
+          }
+        },
+        "Sk85Nysgz": {
+          "id": "Sk85Nysgz",
+          "input": {
+            "nodeId": "SyeHeXkoxz",
+            "pinKey": "rJg00Nhe-"
+          },
+          "output": {
+            "nodeId": "Syb9Nksef",
+            "pinKey": "__out__"
+          }
+        },
+        "ryfrlXJsgG": {
+          "id": "ryfrlXJsgG",
+          "input": {
+            "nodeId": "BJ-SeQJseM",
+            "pinKey": "r1tz8CdBDkb"
+          },
+          "output": {
+            "nodeId": "r1BlQ1olf",
+            "pinKey": "HktZUCdrPkZ"
+          }
+        }
+      },
+      "nodes": {
+        "BJ-SeQJseM": {
+          "id": "BJ-SeQJseM",
+          "position": {
+            "x": 68,
+            "y": 306
+          },
+          "type": "xod/core/nor"
+        },
+        "BJ1i4Jigf": {
+          "id": "BJ1i4Jigf",
+          "position": {
+            "x": 68,
+            "y": 510
+          },
+          "type": "xod/patch-nodes/output-boolean"
+        },
+        "HJiOwkjxG": {
+          "description": "Max bound of the range (inclusive)",
+          "id": "HJiOwkjxG",
+          "label": "MAX",
+          "position": {
+            "x": 170,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "Syb9Nksef": {
+          "description": "Number to check",
+          "id": "Syb9Nksef",
+          "label": "X",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "SyeHeXkoxz": {
+          "boundValues": {
+            "HJbACN3gb": 0.7
+          },
+          "id": "SyeHeXkoxz",
+          "position": {
+            "x": 136,
+            "y": 204
+          },
+          "type": "xod/core/greater"
+        },
+        "Syv_vJilM": {
+          "description": "Min bound of the range (inclusive)",
+          "id": "Syv_vJilM",
+          "label": "MIN",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "r1BlQ1olf": {
+          "boundValues": {
+            "SJqZ8COrDkW": 0.4
+          },
+          "id": "r1BlQ1olf",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "xod/core/less"
+        }
+      },
+      "path": "@/between"
+    },
+    "@/main": {
+      "links": {
+        "BJi5SJsef": {
+          "id": "BJi5SJsef",
+          "input": {
+            "nodeId": "HJmcB1ilG",
+            "pinKey": "Syb9Nksef"
+          },
+          "output": {
+            "nodeId": "HJQ2y1sgG",
+            "pinKey": "H1sM2A12-"
+          }
+        },
+        "H1n5SkigM": {
+          "id": "H1n5SkigM",
+          "input": {
+            "nodeId": "BygXhJ1jxM",
+            "pinKey": "HyYh1a3LZ"
+          },
+          "output": {
+            "nodeId": "HJmcB1ilG",
+            "pinKey": "BJ1i4Jigf"
+          }
+        }
+      },
+      "nodes": {
+        "BygXhJ1jxM": {
+          "boundValues": {
+            "B1oqkTnIb": 13
+          },
+          "id": "BygXhJ1jxM",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "xod/common-hardware/led"
+        },
+        "HJQ2y1sgG": {
+          "id": "HJQ2y1sgG",
+          "position": {
+            "x": 33,
+            "y": -1
+          },
+          "type": "xod/common-hardware/pot"
+        },
+        "HJmcB1ilG": {
+          "id": "HJmcB1ilG",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "@/between"
+        }
+      },
+      "path": "@/main"
+    }
+  },
+  "version": "1.0.1"
+}
