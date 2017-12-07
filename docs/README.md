@@ -53,6 +53,10 @@ User’s guide
 
 * [Creating nodes for XOD in XOD](./guide/nodes-for-xod-in-xod/)
 * [Creating analog sensor driver nodes](./guide/analog-sensor-node/)
+* [Documenting nodes](./guide/documenting-nodes/)
+* [Creating nodes for XOD in C++](./guide/nodes-for-xod-in-cpp/)
+* [Dealing with state in C++](./guide/cpp-state/)
+* [Dealing with time in C++](./guide/cpp-time/)
 
 ### Doing things sequentially
 
@@ -70,6 +74,7 @@ Reference
 
 * [List of supported hardware](./reference/supported-hardware/)
 * [Mouse and keyboard shortcuts](./reference/shortcuts/)
+* [C++ node API reference](./reference/node-cpp-api/)
 
 ### Standard library nodes
 
