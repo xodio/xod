@@ -1,6 +1,7 @@
 import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+import throttle from 'throttle-debounce/throttle';
 import cn from 'classnames';
 import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
@@ -65,6 +66,7 @@ class Patch extends React.Component {
     this.goToDefaultMode = this.goToDefaultMode.bind(this);
     this.getModeState = this.getModeState.bind(this);
     this.setModeState = this.setModeState.bind(this);
+    this.setModeStateThrottled = throttle(100, true, this.setModeState);
   }
 
   componentWillReceiveProps(nextProps) {
