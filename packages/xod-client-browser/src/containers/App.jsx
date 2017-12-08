@@ -245,7 +245,6 @@ class App extends client.App {
   }
 
   render() {
-    const devToolsInstrument = (client.isChromeApp) ? <client.DevTools /> : null;
     return (
       <HotKeys keyMap={client.HOTKEY} id="App">
         <EventListener
@@ -263,7 +262,6 @@ class App extends client.App {
           setSidebarPaneHeight={size => window.localStorage.setItem('Sidebar.height', size)}
         />
         <client.SnackBar />
-        {devToolsInstrument}
         <PopupInstallApp
           isVisible={this.state.popupInstallApp}
           onClose={this.hideInstallAppPopup}

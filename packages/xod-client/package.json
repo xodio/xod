@@ -71,10 +71,6 @@
     "@kadira/storybook": "^2.35.3",
     "chai": "^3.5.0",
     "dirty-chai": "^1.2.2",
-    "redux-devtools": "^3.4.0",
-    "redux-devtools-dispatch": "^2.2.1",
-    "redux-devtools-dock-monitor": "^1.1.2",
-    "redux-devtools-filterable-log-monitor": "^0.6.8",
     "redux-mock-store": "^1.2.3"
   }
 }

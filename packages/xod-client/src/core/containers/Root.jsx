@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
-import DevTools from '../../utils/devtools';
 import generateReducers from '../reducer';
 import { default as defaultInitialState } from '../state';
 import composeMiddlewares from '../middlewares';
@@ -23,10 +22,7 @@ export default class Root extends React.Component {
   render() {
     return (
       <Provider store={this.store}>
-        <div>
-          {this.props.children}
-          {DevTools}
-        </div>
+        {this.props.children}
       </Provider>
     );
   }

@@ -40,7 +40,6 @@ import PopupAlert from './utils/components/PopupAlert';
 import PopupConfirm from './utils/components/PopupConfirm';
 import PopupPrompt from './utils/components/PopupPrompt';
 import PopupForm from './utils/components/PopupForm';
-import DevTools from './core/containers/DevTools';
 
 import PopupProjectPreferences from './project/components/PopupProjectPreferences';
 
@@ -84,7 +83,6 @@ export { default as Root } from './core/containers/Root';
 export { container as Editor, CreateNodeWidget } from './editor';
 export { default as SnackBar } from './messages';
 export * from './messages/constants';
-export { default as DevTools } from './core/containers/DevTools';
 
 export { default as initialState } from './core/state';
 
@@ -101,7 +99,6 @@ export default Object.assign({
   PopupPrompt,
   PopupForm,
   SnackBar,
-  DevTools,
   Toolbar,
   menu: MenuUtils,
   sanctuaryPropType,
