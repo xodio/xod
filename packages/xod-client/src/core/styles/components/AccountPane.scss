@@ -1,33 +1,25 @@
 .AccountPane {
-  position: absolute;
-  right: 0;
-  width: 240px;
-  height: 100%;
-  box-sizing: border-box;
-  padding: 20px;
-  background: $sidebar-color-bg;
-  border-left: 1px solid $sidebar-color-border;
-  color: $sidebar-color-text;
-
-  .close-button {
-    @include close-button();
+  &-content {
+    padding: 6px;
   }
 
   .username {
     font-size: $font-size-l;
-    padding-bottom: 14px;
     cursor: default;
     color: $color-canvas-selected;
   }
 
+  .login-info {
+    margin-bottom: 1em;
+  }
+
   .dailyQuotas {
     font-size: $font-size-m;
-    padding-bottom: 14px;
+    margin-bottom: 2em;
     cursor: default;
 
     .title {
       color: $color-canvas-selected;
-      padding-bottom: 4px;
     }
   }
 
@@ -44,10 +36,25 @@
   }
 
   .ButtonsRow {
-    margin-top: 9px;
+    margin-top: 1em;
     display: flex;
 
     flex-direction: row;
     justify-content: space-between;
+
+    .Button {
+      padding: 10px;
+      flex-grow: 1;
+      flex-basis: 50%;
+      text-align: center;
+      box-sizing: border-box;
+
+      &:first-child {
+        margin-right: 6px;
+      }
+      &:last-child {
+        margin-left: 6px;
+      }
+    }
   }
 }

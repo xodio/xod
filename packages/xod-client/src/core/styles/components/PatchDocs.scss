@@ -32,7 +32,7 @@ $PinInfo-padding-bottom: 10px;
       font-family: $font-family-normal;
       font-size: 12px;
       font-weight: 700;
-  
+
       &.boolean { color: $color-datatype-boolean }
       &.pulse { color: $color-datatype-pulse }
       &.number { color: $color-datatype-number }
@@ -58,7 +58,7 @@ $PinInfo-padding-bottom: 10px;
     left: 0;
     z-index: 2;
     pointer-events: none;
-  
+
     .bg {
       fill: $sidebar-color-bg;
     }
@@ -66,7 +66,7 @@ $PinInfo-padding-bottom: 10px;
 
 
   .input-pins-container {
-    /* distance to first pin should be set in inline styles as paddingLeft */  
+    /* distance to first pin should be set in inline styles as paddingLeft */
     padding-top: 15px;
     position: relative;
     background: $sidebar-color-bg;
@@ -85,7 +85,7 @@ $PinInfo-padding-bottom: 10px;
 
 
   .output-pins-container {
-    /* distance to first pin should be set in inline styles as paddingLeft */  
+    /* distance to first pin should be set in inline styles as paddingLeft */
     background: $sidebar-color-bg;
   }
   .output-pin {
@@ -124,4 +124,38 @@ $PinInfo-padding-bottom: 10px;
     padding-bottom: 1em;
   }
 
+  &--minimal {
+    width: 100%;
+    .input-pins-container {
+      padding-top: 0;
+    }
+    .input-pin {
+      border: none;
+
+      &.last-pin .pin-info  {
+        min-height: 0;
+      }
+    }
+    .output-pin {
+      border: none;
+    }
+    .pin-info {
+      top: 0;
+      padding-left: 0;
+      width: 100%;
+
+      .description {
+        font-size: $font-size-m;
+      }
+    }
+    .pin-title {
+      display: block;
+      color: $light-grey;
+      margin-bottom: 0.25em;
+    }
+    & > .description {
+      font-size: $font-size-m;
+      line-height: 1.2em;
+    }
+  }
 }

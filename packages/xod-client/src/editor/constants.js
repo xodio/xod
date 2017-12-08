@@ -81,3 +81,17 @@ void evaluate(Context ctx) {
     //emitValue<output_OUT>(ctx, inValue);
 }
 `;
+
+export const PANEL_IDS = {
+  PROJECT_BROWSER: 'PROJECT_BROWSER',
+  INSPECTOR: 'INSPECTOR',
+  HELPBAR: 'HELPBAR',
+  ACCOUNT: 'ACCOUNT',
+};
+
+export const SIDEBAR_IDS = {
+  LEFT: 'LEFT',
+  RIGHT: 'RIGHT',
+};
+
+export const PANEL_CONTEXT_MENU_ID = 'PANEL_CONTEXT_MENU_ID';

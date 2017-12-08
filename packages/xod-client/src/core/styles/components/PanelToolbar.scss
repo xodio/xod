@@ -1,11 +1,8 @@
-.ProjectBrowserToolbar {
+.PanelToolbar {
   display: block;
   height: 24px;
   overflow: hidden;
-
-  font-size: $font-size-l;
-  padding: 3px;
-
+  box-sizing: border-box;
   background-color: $chrome-title-bg;
 
   button {
@@ -46,8 +43,8 @@
     font-size: $font-size-m;
     color: $light-grey-bright;
     float: left;
-    line-height: 26px;
-    padding-left: 3px;
+    line-height: 18px;
+    padding: 3px;
   }
   &-buttons {
     float: right;

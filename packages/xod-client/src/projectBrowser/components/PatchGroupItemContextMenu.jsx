@@ -14,7 +14,7 @@ const PatchGroupItemContextMenu = (props) => {
     ? (
       <MenuItem
         onClick={callCallbackWithPatchPath(props.onPatchRename)}
-        // data-id — special attribute that used by func tests
+        // data-id has special attribute that used by func tests
         attributes={{ 'data-id': 'rename' }}
       >
         Rename

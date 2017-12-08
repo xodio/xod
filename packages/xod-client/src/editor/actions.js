@@ -7,6 +7,8 @@ import { fetchLibsWithDependencies, stringifyLibQuery, getLibName } from 'xod-pm
 import {
   SELECTION_ENTITY_TYPE,
   CLIPBOARD_DATA_TYPE,
+  FOCUS_AREAS,
+  PANEL_IDS,
 } from './constants';
 import { LINK_ERRORS } from '../project/messages';
 import {
@@ -262,16 +264,6 @@ export const sortTabs = newOrderObject => ({
   payload: newOrderObject,
 });
 
-export const hideHelpbar = () => ({
-  type: ActionType.HIDE_HELPBAR,
-});
-export const showHelpbar = () => ({
-  type: ActionType.SHOW_HELPBAR,
-});
-export const toggleHelpbar = () => ({
-  type: ActionType.TOGGLE_HELPBAR,
-});
-
 export const setFocusedArea = area => ({
   type: ActionType.SET_FOCUSED_AREA,
   payload: area,
@@ -482,4 +474,67 @@ export const installLibraries = libParams => (dispatch, getState) => {
       });
       dispatch(addError(composeMessage(err.message)));
     });
+};
+
+export const setSidebarLayout = settings => ({
+  type: ActionType.SET_SIDEBAR_LAYOUT,
+  payload: settings,
+});
+export const resizePanels = sizes => ({
+  type: ActionType.RESIZE_PANELS,
+  payload: sizes,
+});
+export const minimizePanel = panelId => ({
+  type: ActionType.MINIMIZE_PANEL,
+  payload: {
+    panelId,
+  },
+});
+export const maximizePanel = panelId => ({
+  type: ActionType.MAXIMIZE_PANEL,
+  payload: {
+    panelId,
+  },
+});
+export const togglePanel = panelId => (dispatch, getState) =>
+  R.compose(
+    R.ifElse(
+      R.equals(true),
+      () => dispatch(minimizePanel(panelId)),
+      () => dispatch(maximizePanel(panelId))
+    ),
+    Selectors.isPanelMaximized(panelId)
+  )(getState());
+
+export const movePanel = (sidebarId, panelId) => ({
+  type: ActionType.MOVE_PANEL,
+  payload: {
+    panelId,
+    sidebarId,
+  },
+});
+export const togglePanelAutohide = panelId => ({
+  type: ActionType.TOGGLE_PANEL_AUTOHIDE,
+  payload: {
+    panelId,
+  },
+});
+
+export const hideHelpbar = () => ({
+  type: ActionType.HIDE_HELPBAR,
+});
+export const showHelpbar = () => ({
+  type: ActionType.SHOW_HELPBAR,
+});
+export const toggleHelpbar = () => (dispatch, getState) => {
+  const state = getState();
+  const focusedArea = Selectors.getFocusedArea(state);
+
+  if (focusedArea === FOCUS_AREAS.PROJECT_BROWSER) {
+    return dispatch({
+      type: ActionType.TOGGLE_HELPBAR,
+    });
+  }
+
+  return dispatch(togglePanel(PANEL_IDS.HELPBAR));
 };

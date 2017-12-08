@@ -1,9 +1,18 @@
-.SplitPane {
+.reflex-container {
+  display: flex;
+  flex-grow: 1;
+  flex-basis: 200px;
+  align-items: stretch;
+  align-content: stretch;
 
-  .Resizer {
+  .reflex-splitter {
     z-index: 10;
+  }
 
-    &.horizontal {
+  &.horizontal {
+    flex-direction: column;
+
+    .reflex-splitter {
       &:before {
         content: '';
         display: block;
@@ -25,18 +34,13 @@
         }
       }
     }
-    &.disabled {
-      cursor: default;
-      &:hover {
-        background: none;
-        &:before {
-          background: $sidebar-color-border;
-        }
-      }
-    }
   }
 
-  .Pane {
-    display: flex;
+  .reflex-element {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    user-select: none;
   }
 }

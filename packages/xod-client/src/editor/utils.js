@@ -11,7 +11,7 @@ import {
   subtractPoints,
 } from '../project/nodeLayout';
 
-import { SELECTION_ENTITY_TYPE } from './constants';
+import { SELECTION_ENTITY_TYPE, PANEL_IDS } from './constants';
 
 export const getTabByPatchPath = R.curry(
   (patchPath, tabs) => R.compose(
@@ -235,3 +235,49 @@ export const regenerateIds = (entities) => {
     )),
   })(entities);
 };
+
+// =============================================================================
+//
+// Sidebar utils
+//
+// =============================================================================
+
+// loading panel settings from localStorage
+export const loadPanelSettings = () => R.compose(
+  R.reject(R.isNil),
+  R.map(panelId => R.compose(
+    R.tryCatch(
+      JSON.parse.bind(JSON),
+      () => {
+        // remove broken item from localStorage
+        window.localStorage.removeItem(`Sidebar.${panelId}`);
+        // and return null to be filtered
+        return null;
+      }
+    ),
+    () => window.localStorage.getItem(`Sidebar.${panelId}`)
+  )()),
+)(PANEL_IDS);
+
+// for components
+export const sidebarPanelRenderer = (panelId, renderFn) => [
+  R.propEq(0, panelId),
+  R.compose(renderFn, R.nth(1)),
+];
+
+// :: [PANEL_IDS, PanelSettings] -> [PANEL_IDS, PanelSettings]
+export const filterMaximized = R.filter(R.compose(
+  R.prop('maximized'),
+  R.nth(1)
+));
+
+export const getPanelsBySidebarId = (id, panels) => R.compose(
+  R.sortBy(R.path([1, 'index'])),
+  R.toPairs,
+  R.filter(R.propEq('sidebar', id))
+)(panels);
+
+export const getMaximizedPanelsBySidebarId = R.compose(
+  filterMaximized,
+  getPanelsBySidebarId
+);

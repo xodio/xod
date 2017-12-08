@@ -104,7 +104,7 @@ const NodeInspector = ({ node, onPropUpdate }) => {
   ) : null;
 
   return (
-    <div className="Inspector">
+    <div className="Inspector-content">
       <div className="inspectorTitle">Node: <span className="nodeName">{baseName}</span></div>
 
       {nodeHelpIcon}

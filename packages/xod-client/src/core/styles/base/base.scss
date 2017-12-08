@@ -10,6 +10,16 @@ body, html {
   height: 100%;
 }
 
+* {
+  @include noselect();
+  cursor: default;
+}
+
+input, select, textarea {
+  user-select: auto;
+  cursor: text;
+}
+
 *:focus {
   outline: none;
 }

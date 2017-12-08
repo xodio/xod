@@ -98,7 +98,7 @@ OutputPins.defaultProps = {
 };
 
 
-const PatchDocs = ({ patch }) => {
+const PatchDocs = ({ patch, minimal }) => {
   const [inputPins, outputPins] = R.compose(
     R.partition(XP.isInputPin),
     XP.normalizePinLabels,
@@ -117,14 +117,14 @@ const PatchDocs = ({ patch }) => {
   const scaledNodeWidth = nodeProps.size.width * scaleFactor;
   const fromNodeEdgeToPin = scaleFactor * (SLOT_SIZE.WIDTH / 2);
   const nodeMargin = (MAX_NODE_WIDTH - scaledNodeWidth - NODE_POSITION_IN_PREVIEW.x) / 2;
-  const distanceToFirstPin = (
+  const distanceToFirstPin = minimal ? 0 : (
     nodeMargin +
     fromNodeEdgeToPin +
     (NODE_POSITION_IN_PREVIEW.x * scaleFactor)
   ) - 1;
   const scaledNodePreviewHeight = NODE_PREVIEW_HEIGHT * scaleFactor;
 
-  const distanceBetweenPins = (scaleFactor * SLOT_SIZE.WIDTH) - 1;
+  const distanceBetweenPins = minimal ? 0 : (scaleFactor * SLOT_SIZE.WIDTH) - 1;
 
   // because we never draw labels for terminal nodes
   const position = R.when(
@@ -133,38 +133,59 @@ const PatchDocs = ({ patch }) => {
     NODE_POSITION_IN_PREVIEW
   );
 
+  const cls = cn('PatchDocs', {
+    'PatchDocs--minimal': minimal,
+  });
+
   return (
-    <div className="PatchDocs">
+    <div className={cls}>
       <div className="baseName">{baseName}</div>
       <div className="nodeType">{nodeType}</div>
       <div className="description">{description}</div>
-      <div className="input-pins-container" style={{ paddingLeft: distanceToFirstPin }}>
-        <InputPins
-          distanceBetweenPins={distanceBetweenPins}
-          pins={inputPins}
-        />
-        <svg className="node-preview" height={scaledNodePreviewHeight}>
-          <rect className="bg" width="100%" height="100%" />
-          <g transform={`scale(${scaleFactor}) translate(${nodeMargin})`}>
-            <Node
-              {...nodeProps}
-              position={position}
-            />
-          </g>
-        </svg>
-      </div>
-      <div className="output-pins-container" style={{ paddingLeft: distanceToFirstPin }}>
-        <OutputPins
-          distanceBetweenPins={distanceBetweenPins}
-          pins={outputPins}
-        />
-      </div>
+      {inputPins.length > 0 && (
+        <div className="input-pins-container" style={{ paddingLeft: distanceToFirstPin }}>
+          {minimal && (
+            <span className="pin-title">Inputs:</span>
+          )}
+          <InputPins
+            distanceBetweenPins={distanceBetweenPins}
+            pins={inputPins}
+          />
+          {!minimal && (
+            <svg className="node-preview" height={scaledNodePreviewHeight}>
+              <rect className="bg" width="100%" height="100%" />
+              <g transform={`scale(${scaleFactor}) translate(${nodeMargin})`}>
+                <Node
+                  {...nodeProps}
+                  position={position}
+                />
+              </g>
+            </svg>
+          )}
+        </div>
+      )}
+      {outputPins.length > 0 && (
+        <div className="output-pins-container" style={{ paddingLeft: distanceToFirstPin }}>
+          {minimal && (
+            <span className="pin-title">Outputs:</span>
+          )}
+          <OutputPins
+            distanceBetweenPins={distanceBetweenPins}
+            pins={outputPins}
+          />
+        </div>
+      )}
     </div>
   );
 };
 
+PatchDocs.defaultProps = {
+  minimal: false,
+};
+
 PatchDocs.propTypes = {
   patch: PT.object.isRequired,
+  minimal: PT.bool,
 };
 
 export default PatchDocs;

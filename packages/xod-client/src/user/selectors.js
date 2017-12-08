@@ -33,3 +33,8 @@ export const getUser = createSelector(
   getGrant,
   R.map(R.prop('user'))
 );
+
+export const isAuthorized = createSelector(
+  getUser,
+  Maybe.isJust
+);

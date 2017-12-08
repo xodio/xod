@@ -5,6 +5,7 @@ import { mapIndexed } from 'xod-func-tools';
 import * as XP from 'xod-project';
 
 import { addPoints, subtractPoints, DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
+import { SIDEBAR_IDS } from './constants';
 
 const getProject = R.prop('project'); // Problem of cycle imports...
 
@@ -201,3 +202,30 @@ export const getRenerableBreadcrumbChunks = createSelector(
     chunks
   )
 );
+
+// Panel settings
+export const getAllPanelsSettings = R.compose(
+  R.map(R.merge({
+    maximized: false,
+    sidebar: SIDEBAR_IDS.LEFT,
+    autohide: false,
+  })),
+  R.prop('panels'),
+  getEditor
+);
+export const getPanelSettings = R.uncurryN(2, panelId => R.compose(
+  R.prop(panelId),
+  getAllPanelsSettings
+));
+export const isPanelMaximized = R.uncurryN(2, panelId => R.compose(
+  R.prop('maximized'),
+  getPanelSettings(panelId)
+));
+export const isPanelAutohiding = R.uncurryN(2, panelId => R.compose(
+  R.prop('autohide'),
+  getPanelSettings(panelId)
+));
+export const getPanelSidebar = R.uncurryN(2, panelId => R.compose(
+  R.prop('sidebar'),
+  getPanelSettings(panelId)
+));

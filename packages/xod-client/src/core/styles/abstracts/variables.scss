@@ -12,8 +12,8 @@ $font-size-xl: 28px;
 $color-error: #c33d3d;
 $color-success: #579205;
 
-$color-canvas-background: #313131;
-$color-canvas-background-gridlines: #2a2a2a;
+$color-canvas-background: $dark-deep;
+$color-canvas-background-gridlines: $dark-light;
 $color-canvas-face: #646464;
 $color-canvas-face-light: #A7A7A7;
 $color-canvas-face-text: #a7a7a7;
@@ -46,13 +46,13 @@ $color-pinlabel: $color-canvas-face-text; //#8b8b8b;
 $color-toolbar-background: #b3b3b3;
 $color-toolbar-foreground: #000;
 
-$color-tabs-background: #2D3030;
-$color-tabs-unactive-background: #2b2b2b;
-$color-tabs-hover-background: #444444;
+$color-tabs-background: $chrome-outlines;
+$color-tabs-unactive-background: $coal-bright;
+$color-tabs-hover-background: $grey;
 $color-tabs-active-background: $color-canvas-background;
-$color-tabs-unactive-text: #cccccc;
+$color-tabs-unactive-text: $chalk;
 $color-tabs-active-text: $color-canvas-selected;
-$color-tabs-hover-text: #FFF;
+$color-tabs-hover-text: $white;
 
 $color-tabs-debugger-background: #3d4931;
 $color-tabs-debugger-text: #82b948;

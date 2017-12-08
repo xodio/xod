@@ -72,6 +72,7 @@
   .inner-handle {
     height: calc(100% - #{2 * $scroll-margin-top});
     margin-top: $scroll-margin-top;
-    background-color: rgba(white, 0.7);
+    background-color: rgba(white, 0.35);
+    border-radius: 3px;
   }
 }

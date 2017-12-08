@@ -19,3 +19,16 @@
 .icon-contextmenu {
   @include icon('../assets/icons/contextmenu.svg');
 }
+
+.icon-projectBrowser {
+  @include icon('../assets/icons/projectBrowser.svg');
+}
+.icon-inspector {
+  @include icon('../assets/icons/inspector.svg');
+}
+.icon-helppanel {
+  @include icon('../assets/icons/help.svg');
+}
+.icon-account {
+  @include icon('../assets/icons/account.svg');
+}

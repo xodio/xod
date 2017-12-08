@@ -1,0 +1,18 @@
+.HelpPanel {
+  background: $sidebar-color-bg;
+  width: 100%;
+  font-size: $font-size-m;
+
+  &-content {
+    padding: 6px;
+    & * {
+      user-select: text;
+      cursor: text;
+    }
+  }
+
+  .no-selection {
+    text-align: center;
+    padding: 10px;
+  }
+}

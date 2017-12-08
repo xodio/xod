@@ -76,9 +76,9 @@ export const openWorkspace = libs => ({
 });
 
 export const requestPublishProject = () => (dispatch, getState) => {
-  const isAuthorised = foldMaybe(false, R.T, getGrant(getState()));
+  const isAuthorized = foldMaybe(false, R.T, getGrant(getState()));
 
-  if (!isAuthorised) {
+  if (!isAuthorized) {
     dispatch(addError(LOG_IN_TO_CONTINUE));
     // TODO: open account pane?
     return;

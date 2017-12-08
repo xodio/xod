@@ -32,7 +32,7 @@ class PatchInspector extends React.PureComponent {
     const baseName = XP.getBaseName(patchPath);
 
     return (
-      <div className="Inspector">
+      <div className="Inspector-content">
         <div className="inspectorTitle">Patch: <span className="patchName">{baseName}</span></div>
 
         <PatchDescriptionWidget
