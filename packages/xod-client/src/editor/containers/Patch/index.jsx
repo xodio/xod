@@ -46,6 +46,8 @@ const DEFAULT_MODES = {
   [TAB_TYPES.DEBUGGER]: EDITOR_MODE.DEBUGGING,
 };
 
+const mergeLeft = R.flip(R.merge);
+
 class Patch extends React.Component {
   constructor(props) {
     super(props);
@@ -98,14 +100,13 @@ class Patch extends React.Component {
   setModeState(mode, newModeSpecificState, callback) {
     // TODO: suport passing state updater fn instead of object?
 
+    const statePath = ['modeSpecificState', mode];
+
     this.setState(
       R.compose(
         R.over(
-          R.lensPath(['modeSpecificState', mode]),
-          R.compose(
-            R.mergeDeepLeft(newModeSpecificState),
-            R.defaultTo({})
-          )
+          R.lens(R.pathOr({}, statePath), R.assocPath(statePath)),
+          mergeLeft(newModeSpecificState)
         ),
         R.assoc('currentMode', mode)
       ),

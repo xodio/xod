@@ -31,12 +31,23 @@ const getDeltaPosition = api => subtractPoints(
   api.state.dragStartPosition
 );
 
-const translatePositions = R.uncurryN(2)(
-  deltaPosition => R.map(R.over(
-    R.lensProp('position'),
-    addPoints(deltaPosition)
-  ))
-);
+const getSnappedPreviews = (draggedNodes, draggedComments, deltaPosition) =>
+  R.compose(
+    R.map(R.compose(
+      R.over(
+        R.lensProp('position'),
+        R.compose(
+          snapNodePositionToSlots,
+          addPoints(deltaPosition)
+        )
+      ),
+      R.pick(['size', 'position'])
+    )),
+    R.concat,
+  )(
+    R.values(draggedNodes),
+    R.values(draggedComments)
+  );
 
 const updateLinksPositions = R.uncurryN(3)(
   (draggedNodeIds, deltaPosition) => R.map(
@@ -61,7 +72,39 @@ const updateLinksPositions = R.uncurryN(3)(
 
 const movingMode = {
   getInitialState(props, { mousePosition, dragStartPosition }) {
+    const draggedNodeIds = getSelectedEntityIdsOfType(
+      SELECTION_ENTITY_TYPE.NODE,
+      props.selection
+    );
+    const draggedCommentIds = getSelectedEntityIdsOfType(
+      SELECTION_ENTITY_TYPE.COMMENT,
+      props.selection
+    );
+
+    // performance optimization:
+    // hide instead of unmounting and then remounting again
+    const idleNodes = R.reduce(
+      (nodes, nodeId) =>
+        R.assocPath([nodeId, 'hidden'], true, nodes),
+      props.nodes,
+      draggedNodeIds
+    );
+    const idleComments = R.reduce(
+      (comments, commentId) =>
+        R.assocPath([commentId, 'hidden'], true, comments),
+      props.comments,
+      draggedCommentIds
+    );
+
+    const draggedNodes = R.pick(draggedNodeIds, props.nodes);
+    const draggedComments = R.pick(draggedCommentIds, props.comments);
+
     return {
+      draggedNodeIds,
+      idleNodes,
+      idleComments,
+      draggedNodes,
+      draggedComments,
       dragStartPosition,
       mousePosition,
     };
@@ -79,44 +122,18 @@ const movingMode = {
   },
 
   render(api) {
+    const { draggedNodeIds, draggedNodes, draggedComments, idleNodes, idleComments } = api.state;
+
     const deltaPosition = getDeltaPosition(api);
-
-    const draggedNodeIds = getSelectedEntityIdsOfType(
-      SELECTION_ENTITY_TYPE.NODE,
-      api.props.selection
-    );
-    const draggedCommentIds = getSelectedEntityIdsOfType(
-      SELECTION_ENTITY_TYPE.COMMENT,
-      api.props.selection
-    );
-
-    const idleNodes = R.omit(draggedNodeIds, api.props.nodes);
-    const idleComments = R.omit(draggedCommentIds, api.props.comments);
-
-    const draggedNodes = R.compose(
-      translatePositions(deltaPosition),
-      R.pick(draggedNodeIds)
-    )(api.props.nodes);
-    const draggedComments = R.compose(
-      translatePositions(deltaPosition),
-      R.pick(draggedCommentIds)
-    )(api.props.comments);
 
     const [draggedLinks, idleLinks] = R.compose(
       R.over(R.lensIndex(0), updateLinksPositions(draggedNodeIds, deltaPosition)),
       R.partition(isLinkConnectedToNodeIds(draggedNodeIds))
     )(api.props.links);
 
-    const snappedPreviews = R.compose(
-      R.map(R.compose(
-        R.over(R.lensProp('position'), snapNodePositionToSlots),
-        R.pick(['size', 'position'])
-      )),
-      R.concat,
-    )(
-      R.values(draggedNodes),
-      R.values(draggedComments)
-    );
+    const snappedPreviews = getSnappedPreviews(draggedNodes, draggedComments, deltaPosition);
+
+    const draggedEntitiesStyle = { transform: `translate(${deltaPosition.x}px, ${deltaPosition.y}px)` };
 
     return (
       <HotKeys
@@ -162,25 +179,29 @@ const movingMode = {
             <Layers.SnappingPreview
               previews={snappedPreviews}
             />
-            <Layers.Comments
-              key="dragged comments"
-              areDragged
-              comments={draggedComments}
-              selection={api.props.selection}
-              onFinishEditing={api.props.actions.editComment}
-            />
+            <g style={draggedEntitiesStyle}>
+              <Layers.Comments
+                key="dragged comments"
+                areDragged
+                comments={draggedComments}
+                selection={api.props.selection}
+                onFinishEditing={api.props.actions.editComment}
+              />
+            </g>
             <Layers.Links
               key="dragged links"
               links={draggedLinks}
               selection={api.props.selection}
             />
-            <Layers.Nodes
-              key="dragged nodes"
-              areDragged
-              nodes={draggedNodes}
-              selection={api.props.selection}
-              linkingPin={api.props.linkingPin}
-            />
+            <g style={draggedEntitiesStyle}>
+              <Layers.Nodes
+                key="dragged nodes"
+                areDragged
+                nodes={draggedNodes}
+                selection={api.props.selection}
+                linkingPin={api.props.linkingPin}
+              />
+            </g>
           </g>
         </PatchSVG>
       </HotKeys>
