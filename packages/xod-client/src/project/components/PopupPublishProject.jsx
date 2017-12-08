@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Icon from 'react-fa';
 import * as XP from 'xod-project';
 
@@ -64,13 +65,13 @@ const PopupPublishProject = ({
 };
 
 PopupPublishProject.propTypes = {
-  isVisible: React.PropTypes.bool,
-  isPublishing: React.PropTypes.bool,
-  user: React.PropTypes.object,
+  isVisible: PropTypes.bool,
+  isPublishing: PropTypes.bool,
+  user: PropTypes.object,
   project: sanctuaryPropType(XP.Project),
-  onPublish: React.PropTypes.func,
-  onRequestToEditPreferences: React.PropTypes.func,
-  onClose: React.PropTypes.func,
+  onPublish: PropTypes.func,
+  onRequestToEditPreferences: PropTypes.func,
+  onClose: PropTypes.func,
 };
 
 PopupPublishProject.defaultProps = {
