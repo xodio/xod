@@ -148,6 +148,17 @@ const movingMode = {
               selection={api.props.selection}
               linkingPin={api.props.linkingPin}
             />
+            <Layers.LinksOverlay
+              hidden // to avoid heavy remounting
+              links={api.props.links}
+              selection={api.props.selection}
+            />
+            <Layers.NodePinsOverlay
+              hidden // to avoid heavy remounting
+              nodes={api.props.nodes}
+              linkingPin={api.props.linkingPin}
+            />
+
             <Layers.SnappingPreview
               previews={snappedPreviews}
             />
