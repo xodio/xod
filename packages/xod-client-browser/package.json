@@ -26,6 +26,7 @@
     "xod-project": "^0.16.0"
   },
   "devDependencies": {
+    "why-did-you-update": "^0.1.0",
     "xod-fs": "^0.16.0"
   },
   "author": "XOD Team <dev@xod.io>",
