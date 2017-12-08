@@ -21,11 +21,35 @@ const collect = connect => ({
   connectDragPreview: connect.dragPreview(),
 });
 
-class PatchGroupItem extends React.PureComponent {
+const deadIcon = (
+  <Icon
+    key="dead-patch-icon"
+    className="dead-patch-icon"
+    name="warning"
+    title="Patch contains dead references"
+  />
+);
+
+class PatchGroupItem extends React.Component {
   componentDidMount() {
     // Use empty image as a drag preview so browsers don't draw it
     // and we can draw whatever we want on the custom drag layer instead.
     this.props.connectDragPreview(getEmptyImage());
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return !R.eqBy(
+      R.pick([
+        'label',
+        'patchPath',
+        'dead',
+        'isSelected',
+        'isOpen',
+        'className',
+      ]),
+      nextProps,
+      this.props
+    );
   }
 
   render() {
@@ -51,14 +75,6 @@ class PatchGroupItem extends React.PureComponent {
       }
     );
 
-    const deadIcon = (dead) ? (
-      <Icon
-        className="dead-patch-icon"
-        name="warning"
-        title="Patch contains dead references"
-      />
-    ) : null;
-
     return connectDragSource(
       <div
         title={label}
@@ -71,7 +87,7 @@ class PatchGroupItem extends React.PureComponent {
           onDoubleClick={onDoubleClick}
           role="button"
         >
-          {deadIcon}
+          {(dead) ? deadIcon : null}
           {label}
         </div>
         <div className="PatchGroupItem__hover-buttons">

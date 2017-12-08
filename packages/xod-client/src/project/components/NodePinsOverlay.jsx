@@ -15,7 +15,11 @@ class NodePinsOverlay extends React.Component {
   }
 
   shouldComponentUpdate(newProps) {
-    return R.not(R.equals(newProps, this.props));
+    return !R.eqBy(
+      R.omit(['onPinMouseUp', 'onPinMouseDown', 'pinLinkabilityValidator']),
+      newProps,
+      this.props
+    );
   }
 
   onPinMouseUp(event, pinId) {

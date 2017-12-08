@@ -3,11 +3,15 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { PIN_RADIUS, PIN_HIGHLIGHT_RADIUS } from '../nodeLayout';
 
+import deepSCU from '../../utils/deepSCU';
+
 export default class PinOverlay extends React.Component {
   constructor(props) {
     super(props);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
+
+    this.shouldComponentUpdate = deepSCU.bind(this);
   }
 
   onMouseUp(event) {

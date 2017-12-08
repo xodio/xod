@@ -11,6 +11,7 @@ import {
 import * as Actions from '../actions';
 import * as ProjectSelectors from '../../project/selectors';
 import { assocIndexes, indexById } from '../../utils/array';
+import deepSCU from '../../utils/deepSCU';
 import TabsContainer from '../components/TabsContainer';
 import TabsItem from '../components/TabsItem';
 
@@ -61,6 +62,8 @@ class Tabs extends React.Component {
     this.onSwitchTab = this.onSwitchTab.bind(this);
     this.onCloseTab = this.onCloseTab.bind(this);
     this.onSortEnd = this.onSortEnd.bind(this);
+
+    this.shouldComponentUpdate = deepSCU.bind(this);
   }
 
   onSwitchTab(tabId) {

@@ -22,7 +22,26 @@ class Node extends React.Component {
   }
 
   shouldComponentUpdate(newProps) {
-    return !R.equals(newProps, this.props);
+    return !R.eqBy(
+      R.pick([
+        'id',
+        'label',
+        'type',
+        'pins',
+        'size',
+        'position',
+        'dead',
+        'isSelected',
+        'isGhost',
+        'isDragged',
+        'hidden',
+        'noEvents',
+        'linkingPin',
+        'pinLinkabilityValidator',
+      ]),
+      newProps,
+      this.props
+    );
   }
 
   onMouseDown(event) {

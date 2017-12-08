@@ -1,3 +1,4 @@
+import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import AutoLinkText from 'react-autolink-text2';
@@ -28,6 +29,19 @@ class Comment extends React.Component {
     this.beginEditing = this.beginEditing.bind(this);
     this.finishEditing = this.finishEditing.bind(this);
     this.cancelEditing = this.cancelEditing.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !R.eqBy(
+      R.omit([
+        'onMouseDown',
+        'onMouseUp',
+        'onResizeHandleMouseDown',
+        'onFinishEditing',
+      ]),
+      nextProps,
+      this.props
+    ) || !R.equals(nextState, this.state);
   }
 
   onMouseDown(event) {

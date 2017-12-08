@@ -1,3 +1,4 @@
+import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -11,6 +12,14 @@ class Link extends React.Component {
     this.elementId = `link_${this.props.id}`;
 
     this.onClick = this.onClick.bind(this);
+  }
+
+  shouldComponentUpdate(newProps) {
+    return !R.eqBy(
+      R.omit(['onClick']),
+      newProps,
+      this.props
+    );
   }
 
   onClick(event) {
@@ -106,7 +115,6 @@ Link.defaultProps = {
   isSelected: false,
   isGhost: false,
   isOverlay: false,
-  hoverable: true,
   onClick: noop,
 };
 

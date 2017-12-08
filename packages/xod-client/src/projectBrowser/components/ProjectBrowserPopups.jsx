@@ -9,7 +9,7 @@ import PopupPrompt from '../../utils/components/PopupPrompt';
 import PopupConfirm from '../../utils/components/PopupConfirm';
 import { lowercaseKebabMask } from '../../utils/inputFormatting';
 
-class ProjectBrowserPopups extends React.Component {
+class ProjectBrowserPopups extends React.PureComponent {
   constructor(props) {
     super(props);
 

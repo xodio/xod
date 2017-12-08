@@ -15,7 +15,7 @@ const PatchDescriptionWidget = Widgets.composeWidget(
   WIDGET_MAPPING[SELECTION_ENTITY_TYPE.NODE][WIDGET_TYPE.TEXTAREA].props
 );
 
-class PatchInspector extends React.Component {
+class PatchInspector extends React.PureComponent {
   constructor(props) {
     super(props);
 

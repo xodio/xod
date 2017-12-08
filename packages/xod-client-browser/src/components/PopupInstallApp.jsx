@@ -4,7 +4,7 @@ import SkyLight from 'react-skylight';
 
 import { getUtmSiteUrl } from 'xod-client';
 
-class PopupInstallApp extends React.Component {
+class PopupInstallApp extends React.PureComponent {
   constructor(props) {
     super(props);
 

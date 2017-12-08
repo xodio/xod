@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import * as XP from 'xod-project';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 import PopupForm from '../../utils/components/PopupForm';
+import deepSCU from '../../utils/deepSCU';
 
 const getInitialState = (project) => {
   const version = XP.getProjectVersion(project);
@@ -25,6 +26,7 @@ class PopupProjectPreferences extends React.Component {
     this.onVersionChange = this.onVersionChange.bind(this);
     this.onDescriptionChange = this.onDescriptionChange.bind(this);
     this.commitVersionChange = this.commitVersionChange.bind(this);
+    this.shouldComponentUpdate = deepSCU.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
