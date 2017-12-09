@@ -5,3 +5,4 @@ xod.iml
 dist/
 .tmp/
 initialProject.json
+benchmark/tracing-results/*.json

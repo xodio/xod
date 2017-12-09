@@ -8,6 +8,7 @@
   "license": "AGPL-3.0",
   "scripts": {
     "bootstrap": "lerna bootstrap",
+    "benchmark:browser": "lerna run benchmark --scope xod-client-browser --stream",
     "build": "lerna run build",
     "build:browser": "lerna run build --scope xod-client-browser --include-filtered-dependencies",
     "build:cli": "lerna run build --scope xod-cli --include-filtered-dependencies",
