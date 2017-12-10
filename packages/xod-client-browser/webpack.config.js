@@ -39,7 +39,7 @@ module.exports = {
         include: pkgpath('src'),
         test: /\.jsx?$/,
         loaders: [
-          'babel?presets[]=react,presets[]=es2015,plugins[]=transform-object-rest-spread',
+          'babel',
         ],
       },
       {
