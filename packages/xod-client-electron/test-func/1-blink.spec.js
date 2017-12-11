@@ -38,7 +38,6 @@ describe('IDE: Blink project', () => {
         .then(() => ide.page.assertNoPatchesAreOpen())
         // close patch group to restore initial state
         .then(() => ide.page.findPatchGroup(patchGroup).click())
-        .then(() => ide.page.assertPatchGroupCollapsed(patchGroup))
     );
   });
 
