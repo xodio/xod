@@ -32,8 +32,10 @@ const dropTarget = {
     );
     component.goToDefaultMode();
   },
-  hover(props, monitor, component) { // TODO: performance?
+  hover(props, monitor, component) {
     if (!component.dropTargetRootRef) return;
+
+    if (!monitor.isOver()) return;
 
     component.setModeStateThrottled(
       EDITOR_MODE.ACCEPTING_DRAGGED_PATCH,

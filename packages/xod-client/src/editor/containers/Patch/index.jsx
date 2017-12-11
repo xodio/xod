@@ -82,6 +82,11 @@ class Patch extends React.Component {
     ) {
       this.dropTargetRootRef.firstChild.focus();
     }
+
+    // patch was dragged out
+    if (!this.props.isPatchDraggedOver && prevProps.isPatchDraggedOver) {
+      this.goToDefaultMode();
+    }
   }
 
   getApi(mode) {
@@ -157,6 +162,7 @@ Patch.propTypes = {
   onDoubleClick: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   isDebugSession: PropTypes.bool,
+  isPatchDraggedOver: PropTypes.bool,
   nodeValues: PropTypes.objectOf(PropTypes.string),
   /* eslint-enable react/no-unused-prop-types */
 };
