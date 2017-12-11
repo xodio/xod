@@ -59,24 +59,20 @@ class Tabs extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onSwitchTab = this.onSwitchTab.bind(this);
-    this.onCloseTab = this.onCloseTab.bind(this);
-    this.onSortEnd = this.onSortEnd.bind(this);
-
     this.shouldComponentUpdate = deepSCU.bind(this);
   }
 
-  onSwitchTab(tabId) {
+  onSwitchTab = (tabId) => {
     // a little hack to correctly handle onBlur etc events
     setTimeout(() => this.props.actions.switchTab(tabId), 0);
-  }
+  };
 
-  onCloseTab(tabId) {
+  onCloseTab = (tabId) => {
     // a little hack to correctly handle onBlur etc events, same as in onSwitchTab
     setTimeout(() => this.props.actions.closeTab(tabId), 0);
-  }
+  };
 
-  onSortEnd({ oldIndex, newIndex }) {
+  onSortEnd = ({ oldIndex, newIndex }) => {
     const tabs = this.getTabs();
     return R.compose(
       this.props.actions.sortTabs,
@@ -85,7 +81,7 @@ class Tabs extends React.Component {
       R.insert(newIndex, tabs[oldIndex]),
       R.remove(oldIndex, 1)
     )(tabs);
-  }
+  };
 
   getTabs() {
     return R.sortBy(

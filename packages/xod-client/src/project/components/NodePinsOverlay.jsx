@@ -7,13 +7,6 @@ import { noop } from '../../utils/ramda';
 import { isPinSelected } from '../../editor/utils';
 
 class NodePinsOverlay extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.onPinMouseUp = this.onPinMouseUp.bind(this);
-    this.onPinMouseDown = this.onPinMouseDown.bind(this);
-  }
-
   shouldComponentUpdate(newProps) {
     return !R.eqBy(
       R.omit(['onPinMouseUp', 'onPinMouseDown', 'pinLinkabilityValidator']),
@@ -22,13 +15,13 @@ class NodePinsOverlay extends React.Component {
     );
   }
 
-  onPinMouseUp(event, pinId) {
+  onPinMouseUp = (event, pinId) => {
     this.props.onPinMouseUp(event, this.props.id, pinId);
-  }
+  };
 
-  onPinMouseDown(event, pinId) {
+  onPinMouseDown = (event, pinId) => {
     this.props.onPinMouseDown(event, this.props.id, pinId);
-  }
+  };
 
   render() {
     const {

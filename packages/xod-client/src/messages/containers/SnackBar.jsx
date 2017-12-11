@@ -19,39 +19,34 @@ class SnackBar extends React.Component {
     this.messages = {};
 
     this.addMessages(props.errors);
-
-    this.hideMessage = this.hideMessage.bind(this);
-    this.onMouseOver = this.onMouseOver.bind(this);
-    this.onMouseOut = this.onMouseOut.bind(this);
-    this.onButtonClicked = this.onButtonClicked.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     this.addMessages(nextProps.errors);
   }
 
-  onMouseOver() {
+  onMouseOver = () => {
     R.pipe(
       R.values,
       R.forEach((message) => {
         clearTimeout(message.timeout);
       })
     )(this.messages);
-  }
+  };
 
-  onMouseOut() {
+  onMouseOut = () => {
     R.pipe(
       R.values,
       R.forEach((msg) => {
         this.messages[msg.data.id].timeout = this.setHideTimeout(msg.data);
       })
     )(this.messages);
-  }
+  };
 
-  onButtonClicked(buttonId, messageData) {
+  onButtonClicked = (buttonId, messageData) => {
     this.props.onClickMessageButton(buttonId, messageData);
     this.hideMessage(messageData.id);
-  }
+  };
 
   setHideTimeout(messageData) {
     if (messageData.persistent) return null;
@@ -61,7 +56,7 @@ class SnackBar extends React.Component {
     }, ERROR_TIMEOUT);
   }
 
-  hideMessage(id) {
+  hideMessage = (id) => {
     const element = this.messages[id].ref;
 
     if (!element) return;
@@ -70,7 +65,7 @@ class SnackBar extends React.Component {
       .hide()
       .then(() => delete this.messages[id])
       .then(() => this.props.deleteMessage(id));
-  }
+  };
 
   addMessages(messages) {
     R.pipe(

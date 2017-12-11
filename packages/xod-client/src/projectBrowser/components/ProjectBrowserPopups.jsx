@@ -10,20 +10,13 @@ import PopupConfirm from '../../utils/components/PopupConfirm';
 import { lowercaseKebabMask } from '../../utils/inputFormatting';
 
 class ProjectBrowserPopups extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.onPatchDeleteConfirmed = this.onPatchDeleteConfirmed.bind(this);
-    this.onPatchRenameConfirmed = this.onPatchRenameConfirmed.bind(this);
-  }
-
-  onPatchDeleteConfirmed() {
+  onPatchDeleteConfirmed = () => {
     this.props.onPatchDelete(this.props.selectedPatchPath);
-  }
+  };
 
-  onPatchRenameConfirmed(name) {
+  onPatchRenameConfirmed = (name) => {
     this.props.onPatchRename(this.props.selectedPatchPath, name);
-  }
+  };
 
   getProjectName() {
     return this.props.projectName;

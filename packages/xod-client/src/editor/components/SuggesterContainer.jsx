@@ -13,10 +13,6 @@ class SuggesterContainer extends React.Component {
     this.state = {
       scrollPos: undefined,
     };
-
-    this.setScrollRef = this.setScrollRef.bind(this);
-    this.getScrollPosition = this.getScrollPosition.bind(this);
-    this.updateScrollPosition = this.updateScrollPosition.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -26,11 +22,11 @@ class SuggesterContainer extends React.Component {
     this.updateScrollPosition(newPos);
   }
 
-  setScrollRef(el) {
+  setScrollRef = (el) => {
     this.scrollRef = el;
-  }
+  };
 
-  getScrollPosition() {
+  getScrollPosition = () => {
     if (this.scrollRef) {
       const contentWrapper = this.scrollRef.refs.contentWrapper;
 
@@ -59,13 +55,13 @@ class SuggesterContainer extends React.Component {
     }
     // Default value
     return undefined;
-  }
+  };
 
-  updateScrollPosition(pos) {
+  updateScrollPosition = (pos) => {
     this.setState({
       scrollPos: pos,
     });
-  }
+  };
 
   render() {
     return (

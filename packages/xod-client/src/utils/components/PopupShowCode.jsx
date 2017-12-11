@@ -7,8 +7,6 @@ class PopupShowCode extends React.PureComponent {
     super(props);
 
     this.popup = null;
-
-    this.assignPopupRef = this.assignPopupRef.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     if (!this.props.isVisible && nextProps.isVisible) {
@@ -28,9 +26,9 @@ class PopupShowCode extends React.PureComponent {
     }
   }
 
-  assignPopupRef(ref) {
+  assignPopupRef = (ref) => {
     this.popup = ref;
-  }
+  };
 
   render() {
     return (

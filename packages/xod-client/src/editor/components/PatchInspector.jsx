@@ -16,15 +16,9 @@ const PatchDescriptionWidget = Widgets.composeWidget(
 );
 
 class PatchInspector extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.onDescriptionUpdate = this.onDescriptionUpdate.bind(this);
-  }
-
-  onDescriptionUpdate(patchPath, kind, keyName, value) {
+  onDescriptionUpdate = (patchPath, kind, keyName, value) => {
     this.props.onDescriptionUpdate(value, patchPath);
-  }
+  };
 
   render() {
     const patchPath = XP.getPatchPath(this.props.patch);

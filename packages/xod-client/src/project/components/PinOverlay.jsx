@@ -8,19 +8,17 @@ import deepSCU from '../../utils/deepSCU';
 export default class PinOverlay extends React.Component {
   constructor(props) {
     super(props);
-    this.onMouseUp = this.onMouseUp.bind(this);
-    this.onMouseDown = this.onMouseDown.bind(this);
 
     this.shouldComponentUpdate = deepSCU.bind(this);
   }
 
-  onMouseUp(event) {
+  onMouseUp = (event) => {
     this.props.onMouseUp(event, this.props.keyName);
-  }
+  };
 
-  onMouseDown(event) {
+  onMouseDown = (event) => {
     this.props.onMouseDown(event, this.props.keyName);
-  }
+  };
 
   render() {
     const cls = classNames('PinOverlay', {

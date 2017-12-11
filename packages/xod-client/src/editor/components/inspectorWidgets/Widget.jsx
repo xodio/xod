@@ -36,11 +36,6 @@ export default function composeWidget(Component, widgetProps) {
         R.propOr({}, 'keyDownHandlers')
       )(widgetProps);
 
-      this.onChange = this.onChange.bind(this);
-      this.onFocus = this.onFocus.bind(this);
-      this.onBlur = this.onBlur.bind(this);
-      this.onKeyDown = this.onKeyDown.bind(this);
-
       this.shouldComponentUpdate = deepSCU.bind(this);
     }
 
@@ -48,21 +43,24 @@ export default function composeWidget(Component, widgetProps) {
       this.commit();
     }
 
-    onFocus() {
+    onFocus = () => {
       this.props.onFocusChanged();
-    }
-    onBlur() {
+    };
+
+    onBlur = () => {
       this.commit();
-    }
-    onChange(value) {
+    };
+
+    onChange = (value) => {
       this.updateValue(value);
-    }
-    onKeyDown(event) {
+    };
+
+    onKeyDown = (event) => {
       const keycode = event.keycode || event.which;
       if (this.keyDownHandlers[keycode]) {
         this.keyDownHandlers[keycode].call(this, event);
       }
-    }
+    };
 
     isDisabled() {
       return (this.props.kind === NODE_PROPERTY_KIND.PIN) && this.props.isConnected;

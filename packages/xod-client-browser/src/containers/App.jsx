@@ -28,24 +28,14 @@ class App extends client.App {
       workspace: '',
     };
 
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.onResize = this.onResize.bind(this);
-    this.onUpload = this.onUpload.bind(this);
     this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
-    this.onImportChange = this.onImportChange.bind(this);
-    this.onImport = this.onImport.bind(this);
     this.onExport = this.onExport.bind(this);
-    this.onCloseApp = this.onCloseApp.bind(this);
-    this.onCreateProject = this.onCreateProject.bind(this);
-    this.onRequestCreateProject = this.onRequestCreateProject.bind(this);
-
-    this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
 
     props.actions.openProject(props.initialProject);
     props.actions.fetchGrant();
   }
 
-  onResize() {
+  onResize = () => {
     this.setState(
       R.set(
         R.lensProp('size'),
@@ -53,17 +43,17 @@ class App extends client.App {
         this.state
       )
     );
-  }
+  };
 
-  onCreateProject(projectName) {
+  onCreateProject = (projectName) => {
     this.props.actions.createProject(projectName);
-  }
+  };
 
-  onUpload() {
+  onUpload = () => {
     this.showInstallAppPopup();
-  }
+  };
 
-  onImportChange(event) {
+  onImportChange = (event) => {
     const file = event.target.files[0];
     const reader = new window.FileReader();
 
@@ -72,9 +62,9 @@ class App extends client.App {
     };
 
     reader.readAsText(file);
-  }
+  };
 
-  onKeyDown(event) {  // eslint-disable-line class-methods-use-this
+  onKeyDown = (event) => {  // eslint-disable-line class-methods-use-this
     const keyCode = event.keyCode || event.which;
 
     if (!client.isInputTarget(event) && keyCode === client.KEYCODE.BACKSPACE) {
@@ -82,15 +72,15 @@ class App extends client.App {
     }
 
     return false;
-  }
+  };
 
-  onRequestCreateProject() {
+  onRequestCreateProject = () => {
     if (!this.confirmUnsavedChanges()) return;
 
     this.props.actions.requestCreateProject();
-  }
+  };
 
-  onImport(jsonString) {
+  onImport = (jsonString) => {
     if (!this.confirmUnsavedChanges()) return;
 
     foldEither(
@@ -98,9 +88,9 @@ class App extends client.App {
       this.props.actions.importProject,
       XP.fromXodball(jsonString)
     );
-  }
+  };
 
-  onCloseApp(event) { // eslint-disable-line class-methods-use-this
+  onCloseApp = (event) => { // eslint-disable-line class-methods-use-this
     let message = true;
 
     if (this.props.hasUnsavedChanges) {
@@ -109,7 +99,7 @@ class App extends client.App {
     }
 
     return message;
-  }
+  };
 
   getMenuBarItems() {
     const {
@@ -233,9 +223,9 @@ class App extends client.App {
     this.setState({ popupInstallApp: true });
   }
 
-  hideInstallAppPopup() {
+  hideInstallAppPopup = () => {
     this.setState({ popupInstallApp: false });
-  }
+  };
 
   confirmUnsavedChanges() {
     if (!this.props.hasUnsavedChanges) return true;

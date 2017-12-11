@@ -73,13 +73,6 @@ class ProjectBrowser extends React.Component {
       [PATCH_TYPE.MY]: this.renderLocalPatches.bind(this),
       [PATCH_TYPE.LIBRARY]: this.renderLibraryPatches.bind(this),
     };
-
-    this.renderPatches = this.renderPatches.bind(this);
-    this.deselectIfInLibrary = this.deselectIfInLibrary.bind(this);
-    this.deselectIfInLocalPatches = this.deselectIfInLocalPatches.bind(this);
-
-    this.onRenameHotkey = this.onRenameHotkey.bind(this);
-    this.onDeleteHotkey = this.onDeleteHotkey.bind(this);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -98,19 +91,19 @@ class ProjectBrowser extends React.Component {
     );
   }
 
-  onRenameHotkey() {
+  onRenameHotkey = () => {
     const { selectedPatchPath } = this.props;
     if (!isPathLocal(selectedPatchPath)) return;
 
     this.props.actions.requestRename(selectedPatchPath);
-  }
+  };
 
-  onDeleteHotkey() {
+  onDeleteHotkey = () => {
     const { selectedPatchPath } = this.props;
     if (!isPathLocal(selectedPatchPath)) return;
 
     this.props.actions.requestDelete(selectedPatchPath);
-  }
+  };
 
   getHotkeyHandlers() {
     return {
@@ -153,19 +146,17 @@ class ProjectBrowser extends React.Component {
     ];
   }
 
-  deselectIfInLocalPatches() {
+  deselectIfInLocalPatches = () => {
     if (isPathLocal(this.props.selectedPatchPath)) {
       this.props.actions.removeSelection();
     }
-  }
+  };
 
-  deselectIfInLibrary(libName) {
-    return () => {
-      if (getLibraryName(this.props.selectedPatchPath || '') === libName) {
-        this.props.actions.removeSelection();
-      }
-    };
-  }
+  deselectIfInLibrary = libName => () => {
+    if (getLibraryName(this.props.selectedPatchPath || '') === libName) {
+      this.props.actions.removeSelection();
+    }
+  };
 
   renderAddNodeButton(patchPath) {
     const { currentPatchPath } = this.props;
@@ -304,7 +295,7 @@ class ProjectBrowser extends React.Component {
     )(libComponents, installingLibsComponents);
   }
 
-  renderPatches(patchType) {
+  renderPatches = (patchType) => {
     const rendererKeys = patchType === PATCH_TYPE.ALL
       ? [PATCH_TYPE.MY, PATCH_TYPE.LIBRARY]
       : R.of(patchType);
@@ -317,7 +308,7 @@ class ProjectBrowser extends React.Component {
         </div>
       </CustomScroll>
     );
-  }
+  };
 
   render() {
     return (

@@ -14,13 +14,6 @@ import WatchNodeBody from './nodeParts/WatchNodeBody';
 import TerminalNodeBody from './nodeParts/TerminalNodeBody';
 
 class Node extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-    this.onDoubleClick = this.onDoubleClick.bind(this);
-  }
-
   shouldComponentUpdate(newProps) {
     return !R.eqBy(
       R.omit([
@@ -33,17 +26,17 @@ class Node extends React.Component {
     );
   }
 
-  onMouseDown(event) {
+  onMouseDown = (event) => {
     this.props.onMouseDown(event, this.props.id);
-  }
+  };
 
-  onMouseUp(event) {
+  onMouseUp = (event) => {
     this.props.onMouseUp(event, this.props.id);
-  }
+  };
 
-  onDoubleClick() {
+  onDoubleClick = () => {
     this.props.onDoubleClick(this.props.id, this.props.type);
-  }
+  };
 
   renderBody() {
     const { type } = this.props;

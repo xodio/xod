@@ -17,38 +17,31 @@ class PopupPrompt extends React.Component {
       inputValue: '',
     };
 
-    this.onCloseClicked = this.onCloseClicked.bind(this);
-    this.onDocumentKeyDown = this.onDocumentKeyDown.bind(this);
-    this.onInputChange = this.onInputChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-
     this.shouldComponentUpdate = deepSCU.bind(this);
-
-    this.isInputValid = this.isInputValid.bind(this);
   }
 
-  onCloseClicked() {
+  onCloseClicked = () => {
     if (this.props.isClosable) {
       this.props.onClose();
     }
-  }
+  };
 
-  onDocumentKeyDown(event) {
+  onDocumentKeyDown = (event) => {
     if (!this.props.isVisible) return;
 
     const keycode = event.keycode || event.which;
     if (keycode === KEYCODE.ESCAPE) {
       this.onCloseClicked();
     }
-  }
+  };
 
-  onInputChange(event) {
+  onInputChange = (event) => {
     const inputValue = this.props.inputMask(event.target.value);
 
     this.setState({ inputValue });
-  }
+  };
 
-  onSubmit(event) {
+  onSubmit = (event) => {
     event.preventDefault();
 
     if (!this.isInputValid() || this.state.inputValue === '') {
@@ -56,11 +49,9 @@ class PopupPrompt extends React.Component {
     }
 
     return this.props.onConfirm(this.state.inputValue);
-  }
+  };
 
-  isInputValid() {
-    return this.props.inputValidator(this.state.inputValue);
-  }
+  isInputValid = () => this.props.inputValidator(this.state.inputValue);
 
   render() {
     const {

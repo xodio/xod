@@ -9,8 +9,6 @@ class PopupInstallApp extends React.PureComponent {
     super(props);
 
     this.popup = null;
-    this.assignPopupRef = this.assignPopupRef.bind(this);
-    this.hide = this.hide.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     if (!this.props.isVisible && nextProps.isVisible) {
@@ -22,16 +20,17 @@ class PopupInstallApp extends React.PureComponent {
       this.popup.show();
     }
   }
-  hide() {
+
+  hide = () => {
     if (this.popup) {
       this.popup.hide();
       this.props.onClose();
     }
-  }
+  };
 
-  assignPopupRef(ref) {
+  assignPopupRef = (ref) => {
     this.popup = ref;
-  }
+  };
 
   render() {
     return (

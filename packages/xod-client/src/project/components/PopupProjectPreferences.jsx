@@ -21,11 +21,6 @@ class PopupProjectPreferences extends React.Component {
     super(props);
     this.state = getInitialState(props.project);
 
-    this.onUpdateClicked = this.onUpdateClicked.bind(this);
-    this.onLicenseChange = this.onLicenseChange.bind(this);
-    this.onVersionChange = this.onVersionChange.bind(this);
-    this.onDescriptionChange = this.onDescriptionChange.bind(this);
-    this.commitVersionChange = this.commitVersionChange.bind(this);
     this.shouldComponentUpdate = deepSCU.bind(this);
   }
 
@@ -33,27 +28,30 @@ class PopupProjectPreferences extends React.Component {
     this.setState(getInitialState(nextProps.project));
   }
 
-  onUpdateClicked() {
+  onUpdateClicked = () => {
     const { license, version, description } = this.state;
     this.props.onChange({ license, version, description });
-  }
-  onLicenseChange(event) {
-    this.setState({ license: event.target.value });
-  }
-  onVersionChange(event) {
-    this.setState({ dirtyVersion: event.target.value });
-  }
-  onDescriptionChange(event) {
-    this.setState({ description: event.target.value });
-  }
+  };
 
-  commitVersionChange() {
+  onLicenseChange = (event) => {
+    this.setState({ license: event.target.value });
+  };
+
+  onVersionChange = (event) => {
+    this.setState({ dirtyVersion: event.target.value });
+  };
+
+  onDescriptionChange = (event) => {
+    this.setState({ description: event.target.value });
+  };
+
+  commitVersionChange = () => {
     if (XP.isValidVersion(this.state.dirtyVersion)) {
       this.setState({ version: this.state.dirtyVersion });
     } else {
       this.setState({ dirtyVersion: this.state.version });
     }
-  }
+  };
 
   render() {
     return (
