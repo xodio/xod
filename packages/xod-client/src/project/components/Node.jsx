@@ -23,21 +23,10 @@ class Node extends React.Component {
 
   shouldComponentUpdate(newProps) {
     return !R.eqBy(
-      R.pick([
-        'id',
-        'label',
-        'type',
-        'pins',
-        'size',
-        'position',
-        'dead',
-        'isSelected',
-        'isGhost',
-        'isDragged',
-        'hidden',
-        'noEvents',
-        'linkingPin',
-        'pinLinkabilityValidator',
+      R.omit([
+        'onMouseDown',
+        'onMouseUp',
+        'onDoubleClick',
       ]),
       newProps,
       this.props
