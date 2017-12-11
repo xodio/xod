@@ -1,6 +1,8 @@
 import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+import throttle from 'throttle-debounce/throttle';
+import cn from 'classnames';
 import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -45,6 +47,8 @@ const DEFAULT_MODES = {
   [TAB_TYPES.DEBUGGER]: EDITOR_MODE.DEBUGGING,
 };
 
+const mergeLeft = R.flip(R.merge);
+
 class Patch extends React.Component {
   constructor(props) {
     super(props);
@@ -62,6 +66,7 @@ class Patch extends React.Component {
     this.goToDefaultMode = this.goToDefaultMode.bind(this);
     this.getModeState = this.getModeState.bind(this);
     this.setModeState = this.setModeState.bind(this);
+    this.setModeStateThrottled = throttle(100, true, this.setModeState);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -97,14 +102,13 @@ class Patch extends React.Component {
   setModeState(mode, newModeSpecificState, callback) {
     // TODO: suport passing state updater fn instead of object?
 
+    const statePath = ['modeSpecificState', mode];
+
     this.setState(
       R.compose(
         R.over(
-          R.lensPath(['modeSpecificState', mode]),
-          R.compose(
-            R.mergeDeepLeft(newModeSpecificState),
-            R.defaultTo({})
-          )
+          R.lens(R.pathOr({}, statePath), R.assocPath(statePath)),
+          mergeLeft(newModeSpecificState)
         ),
         R.assoc('currentMode', mode)
       ),
@@ -127,7 +131,7 @@ class Patch extends React.Component {
 
     return this.props.connectDropTarget(
       <div
-        className="PatchWrapper-container"
+        className={cn('PatchWrapper-container', currentMode)}
         ref={(r) => { this.dropTargetRootRef = r; }}
       >
         {MODE_HANDLERS[currentMode].render(this.getApi(currentMode))}

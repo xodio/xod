@@ -86,6 +86,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
       'process.env.XOD_HM_DEF': JSON.stringify(process.env.XOD_HM_DEF || false),
+      'process.env.WHY_DID_YOU_UPDATE': JSON.stringify(process.env.WHY_DID_YOU_UPDATE || false),
 
       'process.env.XOD_HOSTNAME': JSON.stringify(process.env.XOD_HOSTNAME || 'xod.io'),
       'process.env.XOD_SITE_DOMAIN': JSON.stringify(''),

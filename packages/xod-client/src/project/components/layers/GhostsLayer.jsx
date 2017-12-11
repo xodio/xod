@@ -7,26 +7,12 @@ import { EDITOR_MODE } from '../../../editor/constants';
 import XODLink from '../Link';
 
 class GhostLayer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      active: false,
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const val = this.isDraggingGhost(nextProps);
-    this.setState(
-      R.assoc('active', val, this.state)
-    );
-  }
-
   shouldComponentUpdate(nextProps) {
-    if (this.isDraggingGhost(nextProps) || this.state.active) {
-      return true;
+    if (!this.isLinking(nextProps) && this.props.mode === nextProps.mode) {
+      return false;
     }
 
-    return false;
+    return !R.equals(nextProps, this.props);
   }
 
   getLink() {
@@ -49,10 +35,6 @@ class GhostLayer extends React.Component {
   isLinking(source) {
     const props = source || this.props;
     return (props.mode === EDITOR_MODE.LINKING && props.ghostLink);
-  }
-
-  isDraggingGhost(source) {
-    return this.isLinking(source);
   }
 
   render() {

@@ -7,6 +7,7 @@ import EventListener from 'react-event-listener';
 
 import { noop } from '../../utils/ramda';
 import { KEYCODE } from '../../utils/constants';
+import deepSCU from '../deepSCU';
 
 class PopupPrompt extends React.Component {
   constructor(props) {
@@ -20,6 +21,8 @@ class PopupPrompt extends React.Component {
     this.onDocumentKeyDown = this.onDocumentKeyDown.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+
+    this.shouldComponentUpdate = deepSCU.bind(this);
 
     this.isInputValid = this.isInputValid.bind(this);
   }

@@ -21,51 +21,51 @@ const layerStyles = {
   height: '100%',
 };
 
-function getItemStyles({ initialClientOffset, initialSourceClientOffset, currentOffset }) {
-  if (!initialClientOffset || !initialSourceClientOffset || !currentOffset) {
+class CustomDragLayer extends React.PureComponent {
+  getItemStyles() {
+    const { initialClientOffset, initialSourceClientOffset, currentOffset } = this.props;
+
+    if (!initialClientOffset || !initialSourceClientOffset || !currentOffset) {
+      return {
+        display: 'none',
+      };
+    }
+
+    const offsetFromSourceRoot = subtractPoints(initialClientOffset, initialSourceClientOffset);
+    const { x, y } = addPoints(offsetFromSourceRoot, currentOffset);
+
     return {
-      display: 'none',
+      transform: `translate(${x}px, ${y}px)`,
     };
   }
 
-  const offsetFromSourceRoot = subtractPoints(initialClientOffset, initialSourceClientOffset);
-  const { x, y } = addPoints(offsetFromSourceRoot, currentOffset);
-
-  return {
-    transform: `translate(${x}px, ${y}px)`,
-  };
-}
-
-const renderPatchAsNode = (patchPath, project) => R.compose(
-  R.map(R.compose(
-    props => (
-      <Node {...props} isDragged noEvents />
-    ),
-    patchToNodeProps
-  )),
-  XP.getPatchByPath(patchPath)
-)(project);
-
-const CustomDragLayer = ({
-  item,
-  initialClientOffset,
-  initialSourceClientOffset,
-  currentOffset,
-  isDragging,
-  project,
-}) => {
-  if (!isDragging) {
-    return null;
+  renderPatchAsNode() {
+    return R.compose(
+      maybeRenderedPatch => maybeRenderedPatch.getOrElse(null),
+      R.map(R.compose(
+        props => (
+          <Node {...props} isDragged noEvents />
+        ),
+        patchToNodeProps
+      )),
+      XP.getPatchByPath(this.props.item.patchPath)
+    )(this.props.project);
   }
 
-  return (
-    <div style={layerStyles}>
-      <div style={getItemStyles({ initialClientOffset, initialSourceClientOffset, currentOffset })}>
-        {renderPatchAsNode(item.patchPath, project).getOrElse(null)}
+  render() {
+    if (!this.props.isDragging) {
+      return null;
+    }
+
+    return (
+      <div style={layerStyles}>
+        <div style={this.getItemStyles()}>
+          {this.renderPatchAsNode()}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 const pointPropType = PropTypes.shape({
   x: PropTypes.number.isRequired,

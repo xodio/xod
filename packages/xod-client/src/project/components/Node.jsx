@@ -16,26 +16,44 @@ import TerminalNodeBody from './nodeParts/TerminalNodeBody';
 class Node extends React.Component {
   constructor(props) {
     super(props);
-    this.id = this.props.id;
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onDoubleClick = this.onDoubleClick.bind(this);
   }
 
   shouldComponentUpdate(newProps) {
-    return !R.equals(newProps, this.props);
+    return !R.eqBy(
+      R.pick([
+        'id',
+        'label',
+        'type',
+        'pins',
+        'size',
+        'position',
+        'dead',
+        'isSelected',
+        'isGhost',
+        'isDragged',
+        'hidden',
+        'noEvents',
+        'linkingPin',
+        'pinLinkabilityValidator',
+      ]),
+      newProps,
+      this.props
+    );
   }
 
   onMouseDown(event) {
-    this.props.onMouseDown(event, this.id);
+    this.props.onMouseDown(event, this.props.id);
   }
 
   onMouseUp(event) {
-    this.props.onMouseUp(event, this.id);
+    this.props.onMouseUp(event, this.props.id);
   }
 
   onDoubleClick() {
-    this.props.onDoubleClick(this.id, this.props.type);
+    this.props.onDoubleClick(this.props.id, this.props.type);
   }
 
   renderBody() {
@@ -50,6 +68,7 @@ class Node extends React.Component {
 
   render() {
     const {
+      id,
       label,
       linkingPin,
       pins,
@@ -80,7 +99,7 @@ class Node extends React.Component {
 
     return (
       <svg
-        key={this.id}
+        key={id}
         style={svgStyle}
         {...position}
         {...size}
@@ -91,6 +110,7 @@ class Node extends React.Component {
           onMouseDown={this.onMouseDown}
           onMouseUp={this.onMouseUp}
           onDoubleClick={this.onDoubleClick}
+          id={id}
           title={nodeLabel} // this is for func-tests
         >
           {this.renderBody()}

@@ -1,0 +1,1 @@
+Because puppeteer can't create directories when saving tracing results.

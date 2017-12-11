@@ -8,7 +8,7 @@ import { noop } from '../../utils/ramda';
 const PatchGroup = ({ name, children, type, onClose }) => (
   <Collapsible
     classParentString="PatchGroup"
-    trigger={name}
+    trigger={<span className="patch-group-trigger" title={name}>{name}</span>}
     triggerClassName={type}
     triggerOpenedClassName={type}
     transitionTime={100}

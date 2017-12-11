@@ -9,26 +9,30 @@ import { isPinSelected } from '../../editor/utils';
 class NodePinsOverlay extends React.Component {
   constructor(props) {
     super(props);
-    this.id = this.props.id;
 
     this.onPinMouseUp = this.onPinMouseUp.bind(this);
     this.onPinMouseDown = this.onPinMouseDown.bind(this);
   }
 
   shouldComponentUpdate(newProps) {
-    return R.not(R.equals(newProps, this.props));
+    return !R.eqBy(
+      R.omit(['onPinMouseUp', 'onPinMouseDown', 'pinLinkabilityValidator']),
+      newProps,
+      this.props
+    );
   }
 
   onPinMouseUp(event, pinId) {
-    this.props.onPinMouseUp(event, this.id, pinId);
+    this.props.onPinMouseUp(event, this.props.id, pinId);
   }
 
   onPinMouseDown(event, pinId) {
-    this.props.onPinMouseDown(event, this.id, pinId);
+    this.props.onPinMouseDown(event, this.props.id, pinId);
   }
 
   render() {
     const {
+      id,
       linkingPin,
       nodeLabel,
       pins,
@@ -40,7 +44,8 @@ class NodePinsOverlay extends React.Component {
 
     return (
       <svg
-        key={this.id}
+        key={id}
+        id={`nodePinsOverlay_${id}`}
         {...position}
         {...size}
         className="NodePinsOverlay"

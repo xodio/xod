@@ -5,6 +5,7 @@ import Menu, { SubMenu, MenuItem, Divider } from 'rc-menu';
 import enhanceWithClickOutside from 'react-click-outside';
 
 import { noop } from '../ramda';
+import deepSCU from '../deepSCU';
 
 const capitalize = R.compose(
   R.join(''),
@@ -72,6 +73,8 @@ class Menubar extends React.Component {
     this.onOpenChange = this.onOpenChange.bind(this);
     this.closeAll = this.closeAll.bind(this);
     this.handleClickOutside = this.closeAll;
+
+    this.shouldComponentUpdate = deepSCU.bind(this);
 
     this.state = {
       openKeys: [],

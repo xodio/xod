@@ -117,6 +117,15 @@ configureAutoUpdater(autoUpdater, log);
 const onReady = () => {
   if (IS_DEV) {
     require('devtron').install(); // eslint-disable-line global-require
+
+    const {
+      default: installExtension,
+      REACT_DEVELOPER_TOOLS,
+      REDUX_DEVTOOLS,
+    } = require('electron-devtools-installer'); // eslint-disable-line global-require
+
+    installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
+      .catch(err => console.log(err)); // eslint-disable-line no-console
   }
   settings.setDefaults();
 

@@ -46,11 +46,29 @@ const PATCH_TYPE = {
   LIBRARY: 'library',
 };
 
+const pickPatchPartsForComparsion = R.map(R.pick(['dead', 'path']));
+
+const pickPropsForComparsion = R.compose(
+  R.evolve({
+    localPatches: pickPatchPartsForComparsion,
+    libs: pickPatchPartsForComparsion,
+  }),
+  R.pick([
+    'projectName',
+    'currentPatchPath',
+    'selectedPatchPath',
+    'selectedPatchLabel',
+    'localPatches',
+    'popups',
+    'libs',
+    'installingLibs',
+    'defaultNodePosition',
+  ])
+);
+
 class ProjectBrowser extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
-
     this.patchRenderers = {
       [PATCH_TYPE.MY]: this.renderLocalPatches.bind(this),
       [PATCH_TYPE.LIBRARY]: this.renderLibraryPatches.bind(this),
@@ -62,6 +80,14 @@ class ProjectBrowser extends React.Component {
 
     this.onRenameHotkey = this.onRenameHotkey.bind(this);
     this.onDeleteHotkey = this.onDeleteHotkey.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return !R.eqBy(
+      pickPropsForComparsion,
+      nextProps,
+      this.props
+    );
   }
 
   onAddNode(patchPath) {

@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import Autosuggest from 'react-autosuggest';
 import Highlighter from 'react-highlight-words';
 import { Icon } from 'react-fa';
-import debounce from 'debounce';
+import debounce from 'throttle-debounce/debounce';
 
 import { fetchLibData, getLibVersion, isLibQueryValid } from 'xod-pm';
 import { isAmong } from 'xod-func-tools';
@@ -52,7 +52,7 @@ class LibSuggester extends React.Component {
     this.renderContent = this.renderContent.bind(this);
 
     // call it once to prepare debounced function
-    this.fetchLibData = debounce(this.fetchLibData.bind(this), 500);
+    this.fetchLibData = debounce(500, this.fetchLibData.bind(this));
   }
 
   componentDidMount() {

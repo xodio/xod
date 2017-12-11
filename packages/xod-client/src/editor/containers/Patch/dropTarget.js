@@ -35,7 +35,7 @@ const dropTarget = {
   hover(props, monitor, component) { // TODO: performance?
     if (!component.dropTargetRootRef) return;
 
-    component.setModeState(
+    component.setModeStateThrottled(
       EDITOR_MODE.ACCEPTING_DRAGGED_PATCH,
       { previewPosition: getDraggedPatchPosition(props, monitor, component) }
     );

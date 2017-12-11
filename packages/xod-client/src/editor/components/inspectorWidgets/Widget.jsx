@@ -5,6 +5,7 @@ import { PROPERTY_TYPE_PARSE } from '../../../utils/inputFormatting';
 
 import { KEYCODE } from '../../../utils/constants';
 import { noop } from '../../../utils/ramda';
+import deepSCU from '../../../utils/deepSCU';
 import { NODE_PROPERTY_KIND } from '../../../project/constants';
 
 export default function composeWidget(Component, widgetProps) {
@@ -39,7 +40,10 @@ export default function composeWidget(Component, widgetProps) {
       this.onFocus = this.onFocus.bind(this);
       this.onBlur = this.onBlur.bind(this);
       this.onKeyDown = this.onKeyDown.bind(this);
+
+      this.shouldComponentUpdate = deepSCU.bind(this);
     }
+
     componentWillUnmount() {
       this.commit();
     }

@@ -1,4 +1,5 @@
 import R from 'ramda';
+import cn from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -12,13 +13,14 @@ import { getPinLinkabilityValidator } from '../../utils';
 const NodePinsOverlayLayer = ({
   nodes,
   linkingPin,
+  hidden,
   onPinMouseUp,
   onPinMouseDown,
 }) => {
   const pinLinkabilityValidator = getPinLinkabilityValidator(linkingPin, nodes);
 
   return (
-    <g className="PinsOverlayLayer">
+    <g className={cn('PinsOverlayLayer', { hidden })}>
       {R.compose(
           R.map(
             node =>
@@ -43,6 +45,7 @@ const NodePinsOverlayLayer = ({
 
 NodePinsOverlayLayer.propTypes = {
   nodes: PropTypes.objectOf(PropTypes.object),
+  hidden: PropTypes.bool,
   linkingPin: PropTypes.object,
   onPinMouseUp: PropTypes.func,
   onPinMouseDown: PropTypes.func,

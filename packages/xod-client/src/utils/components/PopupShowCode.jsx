@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SkyLight from 'react-skylight';
 
-class PopupShowCode extends React.Component {
+class PopupShowCode extends React.PureComponent {
   constructor(props) {
     super(props);
 

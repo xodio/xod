@@ -7,7 +7,7 @@ import { noop } from '../../utils/ramda';
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-class PatchTypeSelector extends React.Component {
+class PatchTypeSelector extends React.PureComponent {
   constructor(props) {
     super(props);
 

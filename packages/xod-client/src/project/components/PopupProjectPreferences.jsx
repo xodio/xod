@@ -1,23 +1,36 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as XP from 'xod-project';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 import PopupForm from '../../utils/components/PopupForm';
+import deepSCU from '../../utils/deepSCU';
+
+const getInitialState = (project) => {
+  const version = XP.getProjectVersion(project);
+
+  return {
+    license: XP.getProjectLicense(project),
+    version,
+    dirtyVersion: version,
+    description: XP.getProjectDescription(project),
+  };
+};
 
 class PopupProjectPreferences extends React.Component {
   constructor(props) {
     super(props);
-    this.updateState(props);
+    this.state = getInitialState(props.project);
 
-    this.updateState = this.updateState.bind(this);
     this.onUpdateClicked = this.onUpdateClicked.bind(this);
     this.onLicenseChange = this.onLicenseChange.bind(this);
     this.onVersionChange = this.onVersionChange.bind(this);
     this.onDescriptionChange = this.onDescriptionChange.bind(this);
     this.commitVersionChange = this.commitVersionChange.bind(this);
+    this.shouldComponentUpdate = deepSCU.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.updateState(nextProps);
+    this.setState(getInitialState(nextProps.project));
   }
 
   onUpdateClicked() {
@@ -32,17 +45,6 @@ class PopupProjectPreferences extends React.Component {
   }
   onDescriptionChange(event) {
     this.setState({ description: event.target.value });
-  }
-
-  updateState(props) {
-    const version = XP.getProjectVersion(props.project);
-
-    this.state = {
-      license: XP.getProjectLicense(props.project),
-      version,
-      dirtyVersion: version,
-      description: XP.getProjectDescription(props.project),
-    };
   }
 
   commitVersionChange() {
@@ -101,10 +103,10 @@ class PopupProjectPreferences extends React.Component {
 }
 
 PopupProjectPreferences.propTypes = {
-  isVisible: React.PropTypes.bool,
+  isVisible: PropTypes.bool,
   project: sanctuaryPropType(XP.Project), // eslint-disable-line react/no-unused-prop-types
-  onChange: React.PropTypes.func,
-  onClose: React.PropTypes.func,
+  onChange: PropTypes.func,
+  onClose: PropTypes.func,
 };
 
 PopupProjectPreferences.defaultProps = {

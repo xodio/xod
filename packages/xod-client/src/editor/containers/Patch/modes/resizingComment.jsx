@@ -55,7 +55,16 @@ const addDeltaToCommentSizes = R.uncurryN(2)(
 
 const resizingCommentMode = {
   getInitialState(props, { dragStartPosition, resizedCommentId }) {
+    // performance optimization:
+    // hide instead of unmounting and then remounting again
+    const idleComments = R.assocPath(
+      [resizedCommentId, 'hidden'],
+      true,
+      props.comments
+    );
+
     return {
+      idleComments,
       resizedCommentId,
       dragStartPosition,
       mousePosition: dragStartPosition,
@@ -84,13 +93,11 @@ const resizingCommentMode = {
   render(api) {
     const deltaPosition = getDeltaPosition(api);
 
-    const resizedCommentIds = [api.state.resizedCommentId];
-
-    const idleComments = R.omit(resizedCommentIds, api.props.comments);
+    const { resizedCommentId, idleComments } = api.state;
 
     const resizedComments = R.compose(
       addDeltaToCommentSizes(deltaPosition),
-      R.pick(resizedCommentIds)
+      R.pick([resizedCommentId])
     )(api.props.comments);
 
     const snappedPreviews = R.compose(
@@ -129,6 +136,16 @@ const resizingCommentMode = {
             <Layers.Nodes
               nodes={api.props.nodes}
               selection={api.props.selection}
+              linkingPin={api.props.linkingPin}
+            />
+            <Layers.LinksOverlay
+              hidden // to avoid heavy remounting
+              links={api.props.links}
+              selection={api.props.selection}
+            />
+            <Layers.NodePinsOverlay
+              hidden // to avoid heavy remounting
+              nodes={api.props.nodes}
               linkingPin={api.props.linkingPin}
             />
 

@@ -2,10 +2,14 @@ import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import deepSCU from '../../utils/deepSCU';
+
 class WidgetsGroup extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.props.createWidgetsConfig(props.entity);
+
+    this.shouldComponentUpdate = deepSCU.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {

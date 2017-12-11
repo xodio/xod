@@ -26,6 +26,7 @@ const CommentsLayer = ({
             id={comment.id}
             content={comment.content}
             position={comment.position}
+            hidden={comment.hidden}
             size={comment.size}
             isSelected={isCommentSelected(selection, comment.id)}
             isDragged={areDragged}

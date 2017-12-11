@@ -11,7 +11,7 @@ import { HotKeys, FocusTrap } from 'react-hotkeys';
 import * as XP from 'xod-project';
 import { $Maybe } from 'xod-func-tools';
 import { Icon } from 'react-fa';
-import debounce from 'debounce';
+import debounce from 'throttle-debounce/debounce';
 
 import * as Actions from '../actions';
 import * as ProjectActions from '../../project/actions';
@@ -57,7 +57,7 @@ class Editor extends React.Component {
     this.patchSize = this.props.size;
 
     this.updatePatchImplementationDebounced =
-      debounce(this.props.actions.updatePatchImplementation, 300);
+      debounce(300, this.props.actions.updatePatchImplementation);
   }
 
   onAddNode(patchPath) {

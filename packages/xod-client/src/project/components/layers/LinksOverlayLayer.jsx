@@ -1,4 +1,5 @@
 import R from 'ramda';
+import cn from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -8,8 +9,8 @@ import XODLink from '../Link';
 
 import { isLinkSelected } from '../../../editor/utils';
 
-const LinksOverlayLayer = ({ links, selection, onClick }) => (
-  <g className="LinksOverlayLayer">
+const LinksOverlayLayer = ({ links, selection, hidden, onClick }) => (
+  <g className={cn('LinksOverlayLayer', { hidden })}>
     {R.compose(
       R.map(link =>
         <XODLink
@@ -30,6 +31,7 @@ const LinksOverlayLayer = ({ links, selection, onClick }) => (
 
 LinksOverlayLayer.propTypes = {
   links: PropTypes.object,
+  hidden: PropTypes.bool,
   selection: PropTypes.arrayOf(PropTypes.object),
   onClick: PropTypes.func,
 };
