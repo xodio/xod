@@ -7,14 +7,9 @@ const getForce = propOr(false, 'force');
 const getPath = propOr('', 'path');
 
 class PopupCreateWorkspace extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onCreateWorkspace = this.onCreateWorkspace.bind(this);
-  }
-
-  onCreateWorkspace() {
+  onCreateWorkspace = () => {
     this.props.onCreateWorkspace(getPath(this.props.data));
-  }
+  };
 
   getContent() {
     return (getForce(this.props.data)) ? (

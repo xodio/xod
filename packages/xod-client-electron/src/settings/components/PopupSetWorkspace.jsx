@@ -4,24 +4,17 @@ import { remote } from 'electron';
 import { PopupForm } from 'xod-client';
 
 class PopupSetWorkspace extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.onClose = this.onClose.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.changeWorkspace = this.changeWorkspace.bind(this);
-  }
-
-  onChange(selection) {
+  onChange = (selection) => {
     if (selection && selection.length > 0) {
       this.props.onChange(selection[0]);
     }
-  }
-  onClose() {
+  };
+
+  onClose = () => {
     if (!this.props.isClosable) {
       this.props.onClose();
     }
-  }
+  };
 
   getWorkspaceView() {
     if (!this.props.workspace) {
@@ -48,13 +41,13 @@ class PopupSetWorkspace extends React.Component {
     };
   }
 
-  changeWorkspace() {
+  changeWorkspace = () => {
     remote.dialog.showOpenDialog({
       title: 'Choose workspace directory',
       properties: ['openDirectory'],
       buttonLabel: 'Choose directory',
     }, this.onChange);
-  }
+  };
 
   render() {
     const { currentWorkspace, buttonLabel } = this.getWorkspaceView();

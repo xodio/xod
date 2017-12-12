@@ -23,14 +23,6 @@ class Suggester extends React.Component {
     };
 
     this.input = null;
-
-    this.renderItem = this.renderItem.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
-    this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
-    this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
-    this.onSuggestionHighlighted = this.onSuggestionHighlighted.bind(this);
-    this.storeInputReference = this.storeInputReference.bind(this);
   }
 
   componentDidMount() {
@@ -43,39 +35,39 @@ class Suggester extends React.Component {
     }
   }
 
-  onChange(e, { newValue, method }) {
+  onChange = (e, { newValue, method }) => {
     if (isAmong(['up', 'down', 'click'], method)) return;
 
     this.setState({ value: newValue });
-  }
+  };
 
   onSelect(value) {
     this.props.onAddNode(value);
   }
 
-  onSuggestionsFetchRequested({ value, reason }) {
+  onSuggestionsFetchRequested = ({ value, reason }) => {
     if (reason === 'suggestion-selected') return;
 
     this.setState({
       suggestions: this.getSuggestions(value),
     });
-  }
+  };
 
-  onSuggestionsClearRequested() {
+  onSuggestionsClearRequested = () => {
     this.setState({
       suggestions: [],
     });
-  }
+  };
 
-  onSuggestionSelected(event, { suggestionValue }) {
+  onSuggestionSelected = (event, { suggestionValue }) => {
     this.onSelect(suggestionValue);
-  }
+  };
 
-  onSuggestionHighlighted({ suggestion }) {
+  onSuggestionHighlighted = ({ suggestion }) => {
     if (suggestion) {
       this.props.onHighlight(getSuggestionValue(suggestion));
     }
-  }
+  };
 
   getSuggestions(value) {
     const { index } = this.props;
@@ -85,13 +77,13 @@ class Suggester extends React.Component {
     return index.search(regExpEscape(inputValue));
   }
 
-  storeInputReference(autosuggest) {
+  storeInputReference = (autosuggest) => {
     if (autosuggest !== null) {
       this.input = autosuggest.input;
     }
-  }
+  };
 
-  renderItem({ item }, { isHighlighted }) {
+  renderItem = ({ item }, { isHighlighted }) => {
     const cls = classNames('Suggester-item', {
       'is-highlighted': isHighlighted,
     });
@@ -111,7 +103,7 @@ class Suggester extends React.Component {
         />
       </div>
     );
-  }
+  };
 
   render() {
     const { value, suggestions } = this.state;

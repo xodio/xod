@@ -47,20 +47,13 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.getHotkeyHandlers = this.getHotkeyHandlers.bind(this);
-    this.toggleHelpbar = this.toggleHelpbar.bind(this);
-    this.onAddNode = this.onAddNode.bind(this);
-    this.onInstallLibrary = this.onInstallLibrary.bind(this);
-    this.showSuggester = this.showSuggester.bind(this);
-    this.hideSuggester = this.hideSuggester.bind(this);
-
     this.patchSize = this.props.size;
 
     this.updatePatchImplementationDebounced =
       debounce(300, this.props.actions.updatePatchImplementation);
   }
 
-  onAddNode(patchPath) {
+  onAddNode = (patchPath) => {
     // TODO: rewrite this when implementing "zombie" nodes
     const position = this.props.suggesterPlacePosition || this.props.defaultNodePosition;
 
@@ -70,37 +63,33 @@ class Editor extends React.Component {
       position,
       this.props.currentPatchPath
     );
-  }
+  };
 
-  onInstallLibrary(libParams) {
-    return this.props.actions.installLibraries([libParams]);
-  }
+  onInstallLibrary = libParams => this.props.actions.installLibraries([libParams]);
 
-  getHotkeyHandlers() {
-    return {
-      [COMMAND.UNDO]: () => this.props.actions.undo(this.props.currentPatchPath),
-      [COMMAND.REDO]: () => this.props.actions.redo(this.props.currentPatchPath),
-      [COMMAND.TOGGLE_HELPBAR]: this.toggleHelpbar,
-      [COMMAND.INSERT_NODE]: (event) => {
-        if (isInputTarget(event)) return;
-        this.showSuggester(null);
-      },
-    };
-  }
+  getHotkeyHandlers = () => ({
+    [COMMAND.UNDO]: () => this.props.actions.undo(this.props.currentPatchPath),
+    [COMMAND.REDO]: () => this.props.actions.redo(this.props.currentPatchPath),
+    [COMMAND.TOGGLE_HELPBAR]: this.toggleHelpbar,
+    [COMMAND.INSERT_NODE]: (event) => {
+      if (isInputTarget(event)) return;
+      this.showSuggester(null);
+    },
+  });
 
-  toggleHelpbar(e) {
+  toggleHelpbar = (e) => {
     if (isInputTarget(e)) return;
 
     this.props.actions.toggleHelpbar();
-  }
+  };
 
-  showSuggester(placePosition) {
+  showSuggester = (placePosition) => {
     this.props.actions.showSuggester(placePosition);
-  }
+  };
 
-  hideSuggester() {
+  hideSuggester = () => {
     this.props.actions.hideSuggester();
-  }
+  };
 
   renderOpenedPatchTab() {
     const { currentTab, currentPatchPath } = this.props;

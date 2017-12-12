@@ -13,27 +13,23 @@ class AuthForm extends React.Component {
       username: '',
       password: '',
     };
-
-    this.onUsernameChange = this.onUsernameChange.bind(this);
-    this.onPasswordChange = this.onPasswordChange.bind(this);
-    this.onLogin = this.onLogin.bind(this);
   }
 
-  onUsernameChange(e) {
+  onUsernameChange = (e) => {
     this.setState({ username: e.target.value });
-  }
+  };
 
-  onPasswordChange(e) {
+  onPasswordChange = (e) => {
     this.setState({ password: e.target.value });
-  }
+  };
 
-  onLogin(event) {
+  onLogin = (event) => {
     event.preventDefault();
     this.props.onLogin(
       this.state.username,
       this.state.password
     );
-  }
+  };
 
   render() {
     const { isAuthorising } = this.props;

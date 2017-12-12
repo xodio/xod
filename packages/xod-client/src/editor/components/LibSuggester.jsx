@@ -43,14 +43,6 @@ class LibSuggester extends React.Component {
 
     this.input = null;
 
-    this.renderItem = this.renderItem.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
-    this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
-    this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
-    this.storeInputReference = this.storeInputReference.bind(this);
-    this.renderContent = this.renderContent.bind(this);
-
     // call it once to prepare debounced function
     this.fetchLibData = debounce(500, this.fetchLibData.bind(this));
   }
@@ -62,35 +54,35 @@ class LibSuggester extends React.Component {
     }
   }
 
-  onChange(e, { newValue, method }) {
+  onChange = (e, { newValue, method }) => {
     if (isAmong(['up', 'down', 'click'], method)) return;
 
     this.setState({
       value: newValue,
       notFound: (newValue === '') ? false : this.state.notFound,
     });
-  }
+  };
 
   onSelect(value) {
     this.props.onInstallLibrary(value);
   }
 
-  onSuggestionsFetchRequested({ reason }) {
+  onSuggestionsFetchRequested = ({ reason }) => {
     if (reason !== 'input-changed') return;
     if (isLibQueryValid(this.state.value)) {
       this.fetchLibData();
     }
-  }
+  };
 
-  onSuggestionsClearRequested() {
+  onSuggestionsClearRequested = () => {
     this.setState({
       suggestions: [],
     });
-  }
+  };
 
-  onSuggestionSelected(event, { suggestionValue }) {
+  onSuggestionSelected = (event, { suggestionValue }) => {
     this.onSelect(suggestionValue);
-  }
+  };
 
   fetchLibData() {
     const request = this.state.value;
@@ -111,11 +103,11 @@ class LibSuggester extends React.Component {
       );
   }
 
-  storeInputReference(autosuggest) {
+  storeInputReference = (autosuggest) => {
     if (autosuggest !== null) {
       this.input = autosuggest.input;
     }
-  }
+  };
 
   isNothingFound() {
     return (
@@ -133,7 +125,7 @@ class LibSuggester extends React.Component {
     );
   }
 
-  renderItem(item, { isHighlighted }) {
+  renderItem = (item, { isHighlighted }) => {
     const cls = classNames('Suggester-item Suggester-item--library', {
       'is-highlighted': isHighlighted,
     });
@@ -164,9 +156,9 @@ class LibSuggester extends React.Component {
         />
       </div>
     );
-  }
+  };
 
-  renderContent(children) {
+  renderContent = (children) => {
     if (this.isNothingFound()) {
       return renderNothingFound();
     }
@@ -175,7 +167,7 @@ class LibSuggester extends React.Component {
     }
 
     return children;
-  }
+  };
 
   render() {
     const { value, suggestions } = this.state;

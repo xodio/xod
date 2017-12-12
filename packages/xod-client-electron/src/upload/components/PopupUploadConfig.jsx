@@ -24,17 +24,6 @@ class PopupUploadConfig extends React.Component {
       doCompileInCloud: false,
       debugAfterUpload: false,
     };
-
-    this.onClose = this.onClose.bind(this);
-    this.onBoardChanged = this.onBoardChanged.bind(this);
-    this.onPortChanged = this.onPortChanged.bind(this);
-    this.onRefreshPortsClicked = this.onRefreshPortsClicked.bind(this);
-    this.onUploadClicked = this.onUploadClicked.bind(this);
-    this.onCloudCompilationChanged = this.onCloudCompilationChanged.bind(this);
-    this.onDebugCheckboxChanged = this.onDebugCheckboxChanged.bind(this);
-
-    this.changeBoard = this.changeBoard.bind(this);
-    this.changePort = this.changePort.bind(this);
   }
 
   componentDidMount() {
@@ -44,41 +33,41 @@ class PopupUploadConfig extends React.Component {
     this.props.updateCompileLimit();
   }
 
-  onClose() {
+  onClose = () => {
     this.props.onClose();
-  }
+  };
 
-  onBoardChanged(event) {
+  onBoardChanged = (event) => {
     this.changeBoard(event.target.value);
-  }
+  };
 
-  onPortChanged(event) {
+  onPortChanged = (event) => {
     const selectedPort = R.find(R.propEq('comName', event.target.value), this.state.ports);
     this.changePort(selectedPort);
-  }
+  };
 
-  onRefreshPortsClicked() {
+  onRefreshPortsClicked = () => {
     this.getPorts();
-  }
+  };
 
-  onUploadClicked() {
+  onUploadClicked = () => {
     this.props.onUpload(
       this.state.selectedBoard,
       this.props.selectedPort,
       this.state.doCompileInCloud,
       this.state.debugAfterUpload,
     );
-  }
+  };
 
-  onCloudCompilationChanged(event) {
+  onCloudCompilationChanged = (event) => {
     const val = event.target.checked;
     this.setState({ doCompileInCloud: val });
-  }
+  };
 
-  onDebugCheckboxChanged(event) {
+  onDebugCheckboxChanged = (event) => {
     const val = event.target.checked;
     this.setState({ debugAfterUpload: val });
-  }
+  };
 
   getBoards(selectedBoard = this.state.selectedBoard) {
     const isBoardSelected = (selectedBoard !== null);
@@ -147,17 +136,17 @@ class PopupUploadConfig extends React.Component {
       .then(R.tap(board => this.setState({ selectedBoard: board })));
   }
 
-  changeBoard(boardIndex) {
+  changeBoard = (boardIndex) => {
     if (this.state.boards) {
       const board = this.state.boards[boardIndex] || this.state.boards[0];
       this.props.onBoardChanged(board);
       this.setState({ selectedBoard: board });
     }
-  }
+  };
 
-  changePort(port) {
+  changePort = (port) => {
     this.props.onPortChanged(port);
-  }
+  };
 
   canUnpload() {
     return (this.state.selectedBoard && this.props.selectedPort);

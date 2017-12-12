@@ -11,15 +11,13 @@ class PopupUploadProject extends React.Component {
     this.state = {
       isVisible: props.isVisible,
     };
-
-    this.onClose = this.onClose.bind(this);
   }
 
-  onClose() {
+  onClose = () => {
     if (this.canClose()) {
       this.props.onClose(this.props.upload.id);
     }
-  }
+  };
 
   getTitle() {
     switch (this.props.upload.status) {

@@ -70,8 +70,6 @@ class Menubar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onOpenChange = this.onOpenChange.bind(this);
-    this.closeAll = this.closeAll.bind(this);
     this.handleClickOutside = this.closeAll;
 
     this.shouldComponentUpdate = deepSCU.bind(this);
@@ -81,17 +79,17 @@ class Menubar extends React.Component {
     };
   }
 
-  onOpenChange(openKeys) {
+  onOpenChange = (openKeys) => {
     this.setState({
       openKeys,
     });
-  }
+  };
 
-  closeAll() {
+  closeAll = () => {
     this.setState({
       openKeys: [],
     });
-  }
+  };
 
   render() {
     const { items } = this.props;

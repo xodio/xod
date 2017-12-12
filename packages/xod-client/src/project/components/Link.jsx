@@ -10,8 +10,6 @@ class Link extends React.Component {
   constructor(props) {
     super(props);
     this.elementId = `link_${this.props.id}`;
-
-    this.onClick = this.onClick.bind(this);
   }
 
   shouldComponentUpdate(newProps) {
@@ -22,9 +20,9 @@ class Link extends React.Component {
     );
   }
 
-  onClick(event) {
+  onClick = (event) => {
     this.props.onClick(event, this.props.id);
-  }
+  };
 
   getPosition() {
     return {

@@ -76,44 +76,8 @@ class App extends client.App {
 
     this.state = R.clone(defaultState);
 
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.onResize = this.onResize.bind(this);
-
-    this.listBoards = this.listBoards.bind(this);
-    this.listPorts = this.listPorts.bind(this);
-    this.getSelectedBoard = this.getSelectedBoard.bind(this);
-    this.getSidebarPaneHeight = this.getSidebarPaneHeight.bind(this);
-    this.setSidebarPaneHeight = this.setSidebarPaneHeight.bind(this);
-
-    this.onClickMessageButton = this.onClickMessageButton.bind(this);
-
-    this.onUploadToArduinoClicked = this.onUploadToArduinoClicked.bind(this);
-    this.onUploadToArduino = this.onUploadToArduino.bind(this);
-    this.onArduinoTargetBoardChange = this.onArduinoTargetBoardChange.bind(this);
-    this.onSerialPortChange = this.onSerialPortChange.bind(this);
     this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
-    this.onImportClicked = this.onImportClicked.bind(this);
-    this.onImport = this.onImport.bind(this);
     this.onExport = this.onExport.bind(this);
-    this.onSaveAll = this.onSaveAll.bind(this);
-    this.onOpenProjectClicked = this.onOpenProjectClicked.bind(this);
-
-    this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
-    this.onUploadConfigClose = this.onUploadConfigClose.bind(this);
-    this.onWorkspaceChange = this.onWorkspaceChange.bind(this);
-    this.onWorkspaceCreate = this.onWorkspaceCreate.bind(this);
-    this.onCreateProject = this.onCreateProject.bind(this);
-    this.onRequestCreateProject = this.onRequestCreateProject.bind(this);
-
-    this.onLoadProject = this.onLoadProject.bind(this);
-    this.onSelectProject = this.onSelectProject.bind(this);
-    this.onArduinoPathChange = this.onArduinoPathChange.bind(this);
-
-    this.hideAllPopups = this.hideAllPopups.bind(this);
-    this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
-    this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
-    this.showPopupSetWorkspaceNotCancellable = this.showPopupSetWorkspaceNotCancellable.bind(this);
-    this.showCreateWorkspacePopup = this.showCreateWorkspacePopup.bind(this);
 
     this.initNativeMenu();
 
@@ -184,14 +148,14 @@ class App extends client.App {
     props.actions.fetchGrant();
   }
 
-  onClickMessageButton(buttonId, /* messageInfo */) {
+  onClickMessageButton = (buttonId) /* messageInfo */ => {
     if (buttonId === 'downloadAndInstall') {
       downloadUpdate(ipcRenderer);
       this.setState(R.assoc('downloadProgressPopup', true));
     }
-  }
+  };
 
-  onResize() {
+  onResize = () => {
     this.setState(
       R.set(
         R.lensProp('size'),
@@ -199,13 +163,13 @@ class App extends client.App {
         this.state
       )
     );
-  }
+  };
 
-  onUploadToArduinoClicked() {
+  onUploadToArduinoClicked = () => {
     this.props.actions.uploadToArduinoConfig();
-  }
+  };
 
-  onUploadToArduino(board, port, cloud, debug, processActions = null) {
+  onUploadToArduino = (board, port, cloud, debug, processActions = null) => {
     const proc = (processActions !== null) ? processActions : this.props.actions.uploadToArduino();
     const eitherTProject = this.transformProjectForTranspiler(debug);
     const eitherCode = eitherTProject.map(transpile);
@@ -263,9 +227,9 @@ class App extends client.App {
       ipcRenderer.removeAllListeners(UPLOAD_TO_ARDUINO);
       this.props.actions.updateCompileLimit();
     });
-  }
+  };
 
-  onCreateProject(projectName) {
+  onCreateProject = (projectName) => {
     if (!this.confirmUnsavedChanges()) return;
 
     this.props.actions.createProject(projectName);
@@ -273,24 +237,24 @@ class App extends client.App {
     ipcRenderer.once(EVENTS.SAVE_ALL, () => {
       this.props.actions.addConfirmation(MESSAGES.PROJECT_SAVE_SUCCEED);
     });
-  }
+  };
 
-  onOpenProjectClicked() {
+  onOpenProjectClicked = () => {
     ipcRenderer.send(EVENTS.OPEN_PROJECT);
     this.showPopupProjectSelection();
-  }
+  };
 
-  onSelectProject(projectMeta) { // eslint-disable-line
+  onSelectProject = projectMeta => { // eslint-disable-line
     ipcRenderer.send(EVENTS.SELECT_PROJECT, projectMeta);
-  }
+  };
 
-  onLoadProject(project) {
+  onLoadProject = (project) => {
     if (!this.confirmUnsavedChanges()) return;
 
     this.props.actions.openProject(project);
-  }
+  };
 
-  onImportClicked() {
+  onImportClicked = () => {
     dialog.showOpenDialog(
       {
         properties: ['openFile'],
@@ -310,32 +274,32 @@ class App extends client.App {
         });
       }
     );
-  }
+  };
 
-  onWorkspaceChange(val) {
+  onWorkspaceChange = (val) => {
     if (!this.confirmUnsavedChanges()) return;
 
     this.props.actions.switchWorkspace(val);
     ipcRenderer.send(EVENTS.SWITCH_WORKSPACE, val);
-  }
+  };
 
-  onWorkspaceCreate(path) {
+  onWorkspaceCreate = (path) => {
     this.props.actions.createWorkspace(path);
     ipcRenderer.send(EVENTS.CREATE_WORKSPACE, path);
-  }
+  };
 
-  onSaveAll() {
+  onSaveAll = () => {
     this.props.actions.saveAll({
       oldProject: this.props.lastSavedProject,
       newProject: this.props.project,
     });
-  }
+  };
 
-  onRequestCreateProject() {
+  onRequestCreateProject = () => {
     this.props.actions.requestCreateProject();
-  }
+  };
 
-  onImport(jsonString) {
+  onImport = (jsonString) => {
     foldEither(
       this.props.actions.addError,
       (project) => {
@@ -344,7 +308,7 @@ class App extends client.App {
       },
       fromXodball(jsonString)
     );
-  }
+  };
 
   confirmUnsavedChanges() {
     if (!this.props.hasUnsavedChanges) return true;
@@ -364,15 +328,15 @@ class App extends client.App {
     return clickedButtonId !== 2;
   }
 
-  onUploadPopupClose(id) {
+  onUploadPopupClose = (id) => {
     this.props.actions.deleteProcess(id, UPLOAD);
-  }
+  };
 
-  onUploadConfigClose() {
+  onUploadConfigClose = () => {
     this.props.actions.hideUploadConfigPopup();
-  }
+  };
 
-  onKeyDown(event) { // eslint-disable-line class-methods-use-this
+  onKeyDown = (event) => { // eslint-disable-line class-methods-use-this
     const keyCode = event.keyCode || event.which;
 
     if (!client.isInputTarget(event) && keyCode === client.KEYCODE.BACKSPACE) {
@@ -380,24 +344,24 @@ class App extends client.App {
     }
 
     return false;
-  }
+  };
 
-  onArduinoPathChange(newPath) {
+  onArduinoPathChange = (newPath) => {
     ipcRenderer.send('SET_ARDUINO_IDE', { path: newPath });
     ipcRenderer.once('SET_ARDUINO_IDE',
       (event, payload) => {
         if (payload.code === 0) this.hideAllPopups();
       }
     );
-  }
+  };
 
-  onArduinoTargetBoardChange(board) { // eslint-disable-line
+  onArduinoTargetBoardChange = board => { // eslint-disable-line
     ipcRenderer.send(EVENTS.SET_SELECTED_BOARD, board);
-  }
+  };
 
-  onSerialPortChange(port) {
+  onSerialPortChange = (port) => {
     this.props.actions.selectSerialPort(port);
-  }
+  };
 
   getSaveProgress() {
     if (this.props.saveProcess && this.props.saveProcess.progress) {
@@ -496,7 +460,7 @@ class App extends client.App {
     return R.omit(commandsBoundToNativeMenu, client.HOTKEY);
   }
 
-  getSelectedBoard() { // eslint-disable-line
+  getSelectedBoard = () => { // eslint-disable-line
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.GET_SELECTED_BOARD);
       ipcRenderer.once(EVENTS.GET_SELECTED_BOARD, (event, response) => {
@@ -504,13 +468,11 @@ class App extends client.App {
         resolve(response.data);
       });
     });
-  }
+  };
 
-  getSidebarPaneHeight() {
-    return this.state.sidebarPaneHeight;
-  }
+  getSidebarPaneHeight = () => this.state.sidebarPaneHeight;
 
-  setSidebarPaneHeight(size) {
+  setSidebarPaneHeight = (size) => {
     ipcRenderer.send(
       EVENTS.CHANGE_SIDEBAR_PANE_HEIGHT,
       size
@@ -518,7 +480,7 @@ class App extends client.App {
     this.setState({
       sidebarPaneHeight: size,
     });
-  }
+  };
 
   initNativeMenu() {
     const viewMenu = {
@@ -593,7 +555,7 @@ class App extends client.App {
     )(template);
   }
 
-  showPopupProjectSelection(projects) {
+  showPopupProjectSelection = (projects) => {
     const data = projects ? {
       status: REDUCER_STATUS.LOADED,
       list: projects,
@@ -602,25 +564,25 @@ class App extends client.App {
     };
 
     this.props.actions.requestOpenProject(data);
-  }
+  };
 
-  showPopupSetWorkspace() {
+  showPopupSetWorkspace = () => {
     this.props.actions.requestSwitchWorkspace({ disposable: false });
-  }
+  };
 
-  showPopupSetWorkspaceNotCancellable() {
+  showPopupSetWorkspaceNotCancellable = () => {
     this.props.actions.requestSwitchWorkspace({ disposable: true });
-  }
+  };
 
-  showCreateWorkspacePopup(path, force) {
+  showCreateWorkspacePopup = (path, force) => {
     this.props.actions.requestCreateWorkspace(path, force);
-  }
+  };
 
-  hideAllPopups() {
+  hideAllPopups = () => {
     this.props.actions.hideAllPopups();
-  }
+  };
 
-  listBoards() { // eslint-disable-line
+  listBoards = () => { // eslint-disable-line
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.LIST_BOARDS);
       ipcRenderer.once(EVENTS.LIST_BOARDS, (event, response) => {
@@ -628,8 +590,9 @@ class App extends client.App {
         resolve(response.data);
       });
     });
-  }
-  listPorts() { // eslint-disable-line
+  };
+
+  listPorts = () => { // eslint-disable-line
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.LIST_PORTS);
       ipcRenderer.once(EVENTS.LIST_PORTS, (event, response) => {
@@ -637,7 +600,7 @@ class App extends client.App {
         resolve(response.data);
       });
     });
-  }
+  };
 
   renderPopupUploadConfig() {
     return (this.props.popups.uploadToArduinoConfig) ? (

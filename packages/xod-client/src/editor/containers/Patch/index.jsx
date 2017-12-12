@@ -62,10 +62,6 @@ class Patch extends React.Component {
       },
     };
 
-    this.goToMode = this.goToMode.bind(this);
-    this.goToDefaultMode = this.goToDefaultMode.bind(this);
-    this.getModeState = this.getModeState.bind(this);
-    this.setModeState = this.setModeState.bind(this);
     this.setModeStateThrottled = throttle(100, true, this.setModeState);
   }
 
@@ -100,11 +96,9 @@ class Patch extends React.Component {
     };
   }
 
-  getModeState(mode) {
-    return R.pathOr({}, ['modeSpecificState', mode], this.state);
-  }
+  getModeState = mode => R.pathOr({}, ['modeSpecificState', mode], this.state);
 
-  setModeState(mode, newModeSpecificState, callback) {
+  setModeState = (mode, newModeSpecificState, callback) => {
     // TODO: suport passing state updater fn instead of object?
 
     const statePath = ['modeSpecificState', mode];
@@ -119,17 +113,17 @@ class Patch extends React.Component {
       ),
       callback
     );
-  }
+  };
 
-  goToMode(newMode, payload) {
+  goToMode = (newMode, payload) => {
     const newModeState = MODE_HANDLERS[newMode].getInitialState(this.props, payload);
     this.setModeState(newMode, newModeState);
-  }
+  };
 
-  goToDefaultMode(payload) {
+  goToDefaultMode = (payload) => {
     const { tabType } = this.props;
     this.goToMode(DEFAULT_MODES[tabType], payload);
-  }
+  };
 
   render() {
     const { currentMode } = this.state;

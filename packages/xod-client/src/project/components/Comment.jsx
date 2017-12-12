@@ -19,16 +19,6 @@ class Comment extends React.Component {
       isEditing: false,
       editorValue: '',
     };
-
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-    this.onResizeHandleMouseDown = this.onResizeHandleMouseDown.bind(this);
-    this.onEditorChange = this.onEditorChange.bind(this);
-    this.onEditorKeyDown = this.onEditorKeyDown.bind(this);
-
-    this.beginEditing = this.beginEditing.bind(this);
-    this.finishEditing = this.finishEditing.bind(this);
-    this.cancelEditing = this.cancelEditing.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -44,28 +34,28 @@ class Comment extends React.Component {
     ) || !R.equals(nextState, this.state);
   }
 
-  onMouseDown(event) {
+  onMouseDown = (event) => {
     if (!this.state.isEditing) {
       this.props.onMouseDown(event, this.props.id);
     }
-  }
+  };
 
-  onMouseUp(event) {
+  onMouseUp = (event) => {
     if (!this.state.isEditing) {
       this.props.onMouseUp(event, this.props.id);
     }
-  }
+  };
 
-  onResizeHandleMouseDown(event) {
+  onResizeHandleMouseDown = (event) => {
     event.stopPropagation();
     this.props.onResizeHandleMouseDown(event, this.props.id);
-  }
+  };
 
-  onEditorChange(event) {
+  onEditorChange = (event) => {
     this.setState({ editorValue: event.target.value });
-  }
+  };
 
-  onEditorKeyDown(event) {
+  onEditorKeyDown = (event) => {
     const { key, metaKey, ctrlKey } = event;
 
     if (key === 'Enter' && (metaKey || ctrlKey)) {
@@ -75,29 +65,29 @@ class Comment extends React.Component {
     if (key === 'Escape') {
       this.cancelEditing();
     }
-  }
+  };
 
-  beginEditing() {
+  beginEditing = () => {
     if (!this.state.isEditing) {
       this.setState({
         isEditing: true,
         editorValue: this.props.content,
       });
     }
-  }
+  };
 
-  finishEditing() {
+  finishEditing = () => {
     this.props.onFinishEditing(this.props.id, this.state.editorValue);
     this.setState({
       isEditing: false,
     });
-  }
+  };
 
-  cancelEditing() {
+  cancelEditing = () => {
     this.setState({
       isEditing: false,
     });
-  }
+  };
 
   render() {
     const {
