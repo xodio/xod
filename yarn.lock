@@ -3061,7 +3061,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@^15.5.1, create-react-class@^15.5.2, create-react-class@^15.6.2:
+create-react-class@15.x, create-react-class@^15.5.1, create-react-class@^15.5.2, create-react-class@^15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.2.tgz#cf1ed15f12aad7f14ef5f2dfe05e6c42f91ef02a"
   dependencies:
@@ -3641,6 +3641,10 @@ documentation@^4.0.0-beta12:
     vinyl "^2.0.0"
     vinyl-fs "^2.3.1"
     yargs "^6.0.1"
+
+dom-align@1.x:
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/dom-align/-/dom-align-1.6.6.tgz#cceef0e30a07e7036aa6d00d1297a2fd91c3a091"
 
 dom-helpers@^3.2.0:
   version "3.2.1"
@@ -8745,6 +8749,15 @@ raw-loader@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/raw-loader/-/raw-loader-0.5.1.tgz#0c3d0beaed8a01c966d9787bf778281252a979aa"
 
+rc-align@2.x:
+  version "2.3.5"
+  resolved "https://registry.yarnpkg.com/rc-align/-/rc-align-2.3.5.tgz#5085cfa4d685ee9d030b9afd2971eb370c5e80a1"
+  dependencies:
+    babel-runtime "^6.26.0"
+    dom-align "1.x"
+    prop-types "^15.5.8"
+    rc-util "^4.0.4"
+
 rc-animate@2.x:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/rc-animate/-/rc-animate-2.4.1.tgz#df3e0f56fe106afe4bf52ff408ced241c5178919"
@@ -8753,9 +8766,9 @@ rc-animate@2.x:
     css-animation "^1.3.2"
     prop-types "15.x"
 
-rc-menu@^5.0.10:
-  version "5.1.4"
-  resolved "https://registry.yarnpkg.com/rc-menu/-/rc-menu-5.1.4.tgz#e5df08fe8b833e81469135ff13b30ab8f21ff3c6"
+rc-menu@^6.2.3:
+  version "6.2.3"
+  resolved "https://registry.yarnpkg.com/rc-menu/-/rc-menu-6.2.3.tgz#33d1e5faa9337358f54afc6ae10a7f6b582715d4"
   dependencies:
     babel-runtime "6.x"
     classnames "2.x"
@@ -8763,7 +8776,8 @@ rc-menu@^5.0.10:
     dom-scroll-into-view "1.x"
     prop-types "^15.5.6"
     rc-animate "2.x"
-    rc-util "^4.0.2"
+    rc-trigger "^2.3.0"
+    rc-util "^4.1.0"
 
 rc-progress@^2.1.2:
   version "2.2.2"
@@ -8780,9 +8794,20 @@ rc-switch@^1.4.2:
     classnames "^2.2.1"
     prop-types "^15.5.6"
 
-rc-util@^4.0.2:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-4.1.1.tgz#9350e9c00368b50cd8fbd91775cc1cf9e2ca72b2"
+rc-trigger@^2.3.0:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/rc-trigger/-/rc-trigger-2.3.3.tgz#406c5ddea594aca71d067852f27d91a5f3a653b8"
+  dependencies:
+    babel-runtime "6.x"
+    create-react-class "15.x"
+    prop-types "15.x"
+    rc-align "2.x"
+    rc-animate "2.x"
+    rc-util "^4.3.0"
+
+rc-util@^4.0.4, rc-util@^4.1.0, rc-util@^4.3.0:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-4.3.1.tgz#79f0adb30f449c1b29d7c5cdb2d82c193920c362"
   dependencies:
     add-dom-event-listener "1.x"
     babel-runtime "6.x"
