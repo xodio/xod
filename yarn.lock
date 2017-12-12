@@ -2468,7 +2468,7 @@ class-utils@^0.3.5:
     lazy-cache "^2.0.2"
     static-extend "^0.1.1"
 
-classnames@2.x, classnames@^2.1.3, classnames@^2.2.1, classnames@^2.2.5:
+classnames@2.x, classnames@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
@@ -4732,10 +4732,6 @@ forever-agent@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
 
-form-data-to-object@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/form-data-to-object/-/form-data-to-object-0.2.0.tgz#f7a8e68ddd910a1100a65e25ac6a484143ff8168"
-
 form-data@^1.0.0-rc3:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/form-data/-/form-data-1.0.1.tgz#ae315db9a4907fa065502304a66d7733475ee37c"
@@ -4759,18 +4755,6 @@ form-data@~2.3.1:
     asynckit "^0.4.0"
     combined-stream "^1.0.5"
     mime-types "^2.1.12"
-
-formsy-react-components@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/formsy-react-components/-/formsy-react-components-0.8.1.tgz#2ce4dc17edb9c73e389c1e720532325e08f9f128"
-  dependencies:
-    classnames "^2.1.3"
-
-formsy-react@^0.18.1:
-  version "0.18.1"
-  resolved "https://registry.yarnpkg.com/formsy-react/-/formsy-react-0.18.1.tgz#c52ee95baef2896f1547ce6df8dae5fcdbd9ab40"
-  dependencies:
-    form-data-to-object "^0.2.0"
 
 forwarded@~0.1.2:
   version "0.1.2"
@@ -6212,7 +6196,7 @@ isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
 
-isomorphic-fetch@2.2.1, isomorphic-fetch@^2.1.1, isomorphic-fetch@^2.2.1:
+isomorphic-fetch@2.2.1, isomorphic-fetch@^2.1.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/isomorphic-fetch/-/isomorphic-fetch-2.2.1.tgz#611ae1acf14f5e81f729507472819fe9733558a9"
   dependencies:
@@ -8785,14 +8769,6 @@ rc-progress@^2.1.2:
   dependencies:
     babel-runtime "6.x"
     prop-types "^15.5.8"
-
-rc-switch@^1.4.2:
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/rc-switch/-/rc-switch-1.5.3.tgz#283c2608bac57ebd7cdc4033269de14b6753eb39"
-  dependencies:
-    babel-runtime "^6.23.0"
-    classnames "^2.2.1"
-    prop-types "^15.5.6"
 
 rc-trigger@^2.3.0:
   version "2.3.3"
