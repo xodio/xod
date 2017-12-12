@@ -1,5 +1,6 @@
 .Toolbar {
   position: relative;
   display: block;
-  background-color: $color-toolbar-background;
+  background-color: $menubar-bg;
+  border-bottom: 1px solid $menubar-border;
 }
