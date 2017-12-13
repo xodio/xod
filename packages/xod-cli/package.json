@@ -1,6 +1,6 @@
 {
   "name": "xod-cli",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "description": "XOD project: Command Line Interface",
   "scripts": {
     "build:workspace": "cpx \"../../workspace/__lib__/**\" \"./__lib__\"",
@@ -27,10 +27,10 @@
     "sanctuary-def": "^0.12.1",
     "source-map-support": "^0.4.15",
     "swagger-client": "^3.0.13",
-    "xod-arduino": "^0.16.0",
+    "xod-arduino": "^0.16.1",
     "xod-fs": "^0.16.0",
     "xod-func-tools": "^0.16.0",
-    "xod-pm": "^0.16.0",
+    "xod-pm": "^0.16.1",
     "xod-project": "^0.16.0"
   },
   "devDependencies": {
