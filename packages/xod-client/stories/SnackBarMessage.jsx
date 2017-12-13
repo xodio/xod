@@ -6,45 +6,66 @@ import '../src/core/styles/main.scss';
 import SnackBarMessage from '../src/messages/components/SnackBarMessage';
 import { MESSAGE_TYPE } from '../src/messages/constants';
 
-const err = {
-  id: 1,
+const errMsg = {
+  id: 0,
   payload: {
-    message: 'Something bad just happened',
-    buttons: [],
+    title: 'Error',
+    note: 'Something bad just happened. And we just want to notify you. Without any actions required.',
+  },
+  timestamp: 1234567890,
+  type: MESSAGE_TYPE.ERROR,
+};
+const errMsgWithButton = {
+  id: 'errorWithButton',
+  persistent: true,
+  payload: {
+    title: 'Error occured. What shall we do now?',
+    note: 'Just showed error message, choose what to do now to fix it up?',
+    button: 'Retry',
   },
   timestamp: 1234567890,
   type: MESSAGE_TYPE.ERROR,
 };
 
 const confirmationMsg = {
-  id: 2,
+  id: 1,
   payload: {
-    message: 'Please confirm something',
-    buttons: [],
+    title: 'Confirmation',
+    note: 'Message that confirms something. For example, it tells User that Project was successfully saved.',
+  },
+  timestamp: 1234567890,
+  type: MESSAGE_TYPE.CONFIRMATION,
+};
+
+const confirmationMsgWithButton = {
+  id: 'confirmationWithButton',
+  persistent: true,
+  payload: {
+    title: 'Confirmation with buttons',
+    note: 'We have a new update of XOD. What do you want to do with it?',
+    button: 'Download & Install',
   },
   timestamp: 1234567890,
   type: MESSAGE_TYPE.CONFIRMATION,
 };
 
 const notificationMsg = {
-  id: 3,
+  id: 2,
   payload: {
-    message: 'Something happened. Just wanted you to know.',
-    buttons: [],
+    title: 'Some notification',
+    note: 'Something happened. Just wanted you to know.',
   },
   timestamp: 1234567890,
   type: MESSAGE_TYPE.NOTIFICATION,
 };
 
-const notificationWithBtns = {
-  id: 4,
+const notificationWithButton = {
+  id: 'notificationWithButton',
+  persistent: true,
   payload: {
-    message: 'Something happened. What should we do with it?',
-    buttons: [
-      { id: 'abort', text: 'Abort' },
-      { id: 'retry', text: 'Retry' },
-      { id: 'ignore', text: 'Ignore' },
-    ],
+    title: 'Notification with buttons',
+    note: 'Something happened. What should we do with it?',
+    button: 'Learn more',
   },
   timestamp: 1234567890,
   type: MESSAGE_TYPE.CONFIRMATION,
@@ -58,7 +79,7 @@ storiesOf('SnackBarMessage', module)
   ))
   .add('error', () => (
     <SnackBarMessage
-      message={err}
+      message={errMsg}
     />
   ))
   .add('confirmation', () => (
@@ -73,23 +94,34 @@ storiesOf('SnackBarMessage', module)
   ))
   .add('notification with buttons', () => (
     <SnackBarMessage
-      message={notificationWithBtns}
+      message={notificationWithButton}
       onClickMessageButton={action('OnButton')}
     />
   ))
   .add('multiple messages', () => (
     <ul className="SnackBarList">
       <SnackBarMessage
-        message={err}
+        message={errMsg}
+        onClickMessageButton={action('OnButton')}
+      />
+      <SnackBarMessage
+        message={errMsgWithButton}
+        onClickMessageButton={action('OnButton')}
       />
       <SnackBarMessage
         message={confirmationMsg}
+        onClickMessageButton={action('OnButton')}
+      />
+      <SnackBarMessage
+        message={confirmationMsgWithButton}
+        onClickMessageButton={action('OnButton')}
       />
       <SnackBarMessage
         message={notificationMsg}
+        onClickMessageButton={action('OnButton')}
       />
       <SnackBarMessage
-        message={notificationWithBtns}
+        message={notificationWithButton}
         onClickMessageButton={action('OnButton')}
       />
     </ul>

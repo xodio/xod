@@ -1,4 +1,5 @@
 @import
+  'abstracts/colors',
   'abstracts/variables',
   'abstracts/functions',
   'abstracts/mixins';
@@ -18,6 +19,7 @@
   'components/BackgroundLayer',
   'components/Breadcrumbs',
   'components/Button',
+  'components/CloseButton',
   'components/Comment',
   'components/CppImplementationEditor',
   'components/Debugger',

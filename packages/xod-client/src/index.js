@@ -15,6 +15,7 @@ import * as ProjectBrowserActions from './projectBrowser/actions';
 import * as PopupActions from './popups/actions';
 import * as DebuggerActions from './debugger/actions';
 
+import { MESSAGE_BUTTON_CLICKED } from './messages/actionTypes';
 import { TAB_CLOSE, INSTALL_LIBRARIES_COMPLETE } from './editor/actionTypes';
 import { SAVE_ALL } from './project/actionTypes';
 
@@ -33,6 +34,7 @@ import App from './core/containers/App';
 import Root from './core/containers/Root';
 import { container as Editor, CreateNodeWidget } from './editor';
 import SnackBar from './messages';
+import composeMessage from './messages/composeMessage';
 import * as MessageConstants from './messages/constants';
 import Toolbar from './utils/components/Toolbar';
 import PopupShowCode from './utils/components/PopupShowCode';
@@ -53,6 +55,7 @@ export * from './projectBrowser/actions';
 export * from './popups/actions';
 export * from './debugger/actions';
 
+export { MESSAGE_BUTTON_CLICKED } from './messages/actionTypes';
 export { TAB_CLOSE, INSTALL_LIBRARIES_COMPLETE } from './editor/actionTypes';
 export { SAVE_ALL } from './project/actionTypes';
 
@@ -82,6 +85,7 @@ export { default as App } from './core/containers/App';
 export { default as Root } from './core/containers/Root';
 export { container as Editor, CreateNodeWidget } from './editor';
 export { default as SnackBar } from './messages';
+export { default as composeMessage } from './messages/composeMessage';
 export * from './messages/constants';
 
 export { default as initialState } from './core/state';
@@ -109,9 +113,11 @@ export default Object.assign({
   PopupProjectPreferences,
   hasUnsavedChanges,
   getLastSavedProject,
+  composeMessage,
   TAB_CLOSE,
   SAVE_ALL,
   INSTALL_LIBRARIES_COMPLETE,
+  MESSAGE_BUTTON_CLICKED,
 },
   UserSelectors,
   EditorSelectors,

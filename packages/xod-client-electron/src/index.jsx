@@ -8,6 +8,7 @@ import popupsReducer from './popups/reducer';
 import uploadReducer from './upload/reducer';
 
 import debuggerMiddleware from './debugger/middleware';
+import autoupdateMiddleware from './view/autoupdateMiddleware';
 import installLibMiddleware from './view/installLibMiddleware';
 
 const extraReducers = {
@@ -18,6 +19,7 @@ const extraReducers = {
 const extraMiddlewares = [
   debuggerMiddleware,
   installLibMiddleware,
+  autoupdateMiddleware,
 ];
 
 ReactDOM.render(

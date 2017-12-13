@@ -1,0 +1,52 @@
+.CloseButton {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 32px;
+  height: 32px;
+
+  background: transparent;
+  border: 0;
+
+  cursor: pointer;
+
+  line-height: 0;
+  font-size: $font-size-xs;
+  color: $chalk;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  outline: none;
+
+  &:hover, &:focus {
+    outline: none;
+
+    &:before {
+      background-color: $black;
+    }
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 18px;
+    height: 18px;
+    background-color: rgba($black, .5);
+    border-radius: 100%;
+    border: 0;
+  }
+
+  &:after {
+    content: '╳';
+    display: inline;
+    position: absolute;
+    top: 15px;
+    width: 18px;
+    right: 6px;
+    z-index: 2;
+  }
+}

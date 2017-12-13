@@ -1,8 +1,10 @@
 .SnackBarList {
-  position: fixed;
+  position: absolute;
   z-index: 9999;
-  top: 37px; // Height of a top bar. TODO: variable?
-  right: 7px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
   margin: 0;
-  width: $snackbar-width;
+  padding: 0;
 }

@@ -10,6 +10,7 @@ import {
   addConfirmation,
   addError,
   SAVE_ALL,
+  composeMessage,
 } from 'xod-client';
 import * as EVENTS from '../shared/events';
 import * as MESSAGES from '../shared/messages';
@@ -91,7 +92,9 @@ export const createAsyncAction = ({
           );
         }
         if (notify) {
-          dispatch(addConfirmation(completeMsg));
+          dispatch(addConfirmation(
+            composeMessage(completeMsg)
+          ));
         }
 
         onComplete(payload, dispatch);
@@ -119,7 +122,7 @@ export const createAsyncAction = ({
           );
         }
         if (notify) {
-          dispatch(addError(errorMsg));
+          dispatch(addError(composeMessage(errorMsg)));
         }
 
         onError(err, dispatch);

@@ -1,0 +1,117 @@
+// Monochromes
+$black: #000;
+$white: #fff;
+
+$coal: #222;
+$coal-light: #252525;
+$coal-bright: #2b2b2b;
+
+$dark: #363636;
+$dark-deep: #303030;
+$dark-light: #3e3e3e;
+$dark-bright: #404040;
+
+$grey: #444;
+$grey-light: #555;
+$grey-bright: #666;
+
+$light-grey: #777;
+$light-grey-bright: #999;
+
+$chalk: #ccc;
+$chalk-light: #aaa;
+$chalk-bright: #eee;
+
+// Colored
+$blue: #2d83b4;
+$magenta: #9f5497;
+$cyan: #4ed5ed;
+$yellow: #f6dd0d;
+
+$red: #c33d3d;
+$red-bright: #fd6161;
+
+$green: #579205;
+$green-bright: #86cc23;
+
+$violet: #6965bd;
+$violet-light: #7570cb;
+$violet-shadow: #5c59a6;
+
+$orange: #c76530;
+$orange-light: #d9733c;
+$orange-shadow: #af592a;
+
+$blackberry: #4a4a57;
+$blackberry-light: #616077;
+$blackberry-shadow: #8c4a85;
+
+$olive: #827a22;
+$olive-light: #988f34;
+$olive-shadow: #726b1e;
+
+$emerald: #2e8f6c;
+$emerald-light: #3fa37e;
+$emerald-shadow: #287e5f;
+
+$apricot: #d8a53a;
+$apricot-light: #e9b445;
+$apricot-shadow: #be9133;
+
+$brown: #584b22;
+$brown-light: #8e5f35;
+$brown-shadow: #69421e;
+
+// Associated colors
+$selected: $cyan;
+$error: $red;
+
+$chrome-bg: $dark;
+$chrome-title: $coal-bright;
+$chrome-title-button-hover: $dark;
+$chrome-outlines: $coal;
+
+$chrome-light-bg: $chalk;
+
+$menu-bg: $dark-deep;
+$menu-hover: $dark-bright;
+$menu-active: $coal;
+$menu-item-bg: $coal;
+$menu-item-hover: $dark-deep;
+$menu-separator: $grey;
+
+$tab-bg: $coal;
+$tab-item-bg: $dark-deep;
+$tab-item-hover: $grey;
+$tab-button-hover: $dark;
+
+$canvas: $dark-deep;
+$canvas-outlines: $dark-light;
+
+$node-label: $chalk;
+$node-outlines: $light-grey-bright;
+$node-hover-outlines: $chalk;
+$pin-bg: $coal-light;
+$pin-label: $light-grey-bright;
+
+$input-bg: $chrome-bg;
+$input-outlines: $light-grey;
+$input-disabled-outlines: $dark-bright;
+$input-disabled-text: $grey-light;
+$input-active-bg: $grey-light;
+
+$dark-button-text: $coal;
+$dark-button-bg: $chrome-bg;
+$dark-button-outlines: $input-outlines;
+$dark-button-hover-bg: $tab-item-hover;
+$dark-button-hover-outlines: $grey-light;
+$dark-button-disabled-text: $grey;
+$dark-button-disabled-outlines: $grey;
+
+$light-button-text: $coal;
+$light-button-bg: $chrome-light-bg;
+$light-button-outlines: $input-outlines;
+$light-button-hover-bg: $light-button-bg;
+$light-button-hover-outlines: $grey-bright;
+$light-button-disabled-text: rgba($light-button-text, .5);
+$light-button-disabled-outlines: rgba($light-button-outlines, .5);

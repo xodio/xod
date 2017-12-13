@@ -13,7 +13,7 @@ import generateReducers from '../src/core/reducer';
 import { getProject } from '../src/project/selectors';
 
 import { NODETYPE_ERROR_TYPES } from '../src/editor/constants';
-import { NODETYPE_ERRORS } from '../src/messages/constants';
+import { NODETYPE_ERRORS } from '../src/project/messages';
 
 import { addError } from '../src/messages/actions';
 import { switchPatch } from '../src/editor/actions';

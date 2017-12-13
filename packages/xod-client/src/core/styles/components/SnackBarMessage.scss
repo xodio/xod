@@ -1,58 +1,82 @@
 .SnackBarMessage {
   position: relative;
   display: none;
-  margin-top: 7px;
-  transition: all 0.3s ease-in;
-  left: 0;
+  transition: all 0.1s ease-in;
+  opacity: 1;
 
-  &.hidden {
-    left: $snackbar-width;
-  }
+  font-family: $font-family-normal;
+  font-weight: 300;
+  background: $chrome-bg;
+  color: $chalk;
+  border-top: 1px solid $chrome-outlines;
+  min-height: 60px;
+  box-sizing: border-box;
 
-  &.display {
-    display: block;
-  }
+  &.hidden { opacity: 0; }
+  &.display { display: block; }
 
-  &.error {
-    a {
-      color: $color-error;
-      border-color: $color-error;
-    }
-  }
-
-  &.confirmation {
-    a {
-      border-color: $message-border-color;
-    }
-  }
-
-  &.notification {
-    a {
-      border-color: $color-success;
-    }
-  }
-
-  a {
-    display: block;
-    padding: 11px 11px;
-    color: $message-text-color;
-    background-color: $message-bg-color;
-    box-shadow: 0 0 7px rgba(0,0,0,.5);
-
-    border: 2px solid $message-border-color;
-    border-radius: 6px;
+  .message-content {
+    display: flex;
+    width: 70%;
+    padding: 10px 0;
+    margin: 0 auto;
 
     cursor: default;
     outline: none;
-
-    .message-content { margin: 0; }
   }
-
-  .SnackBar-buttons-container {
-    margin-top: 7px;
+  .message-text {
+    width: 65%;
+    margin: 0;
+    color: $white;
+    font-size: $font-size-m;
+    line-height: 1.4em;
+    padding-right: 3em;
+    opacity: 0.9;
+  }
+  .message-buttons {
+    width: 35%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 
     .Button {
-      margin-right: 5px;
+      display: block;
+      width: 100%;
+      border: none;
+    }
+  }
+
+  .title {
+    display: block;
+    font-family: $font-family-condensed;
+    font-size: $font-size-l;
+    font-weight: 400;
+    margin-bottom: .5em;
+  }
+
+  &.persistent {
+    color: $white !important;
+    .title { color: $white !important; }
+  }
+
+  &.error {
+    .title { color: $red-bright; }
+
+    &.persistent { background: $error; }
+  }
+
+  &.confirmation {
+    .title { color: $green-bright; }
+
+    &.persistent {
+      background: $green;
+    }
+  }
+  &.notification {
+    .title { color: $cyan; }
+
+    &.persistent {
+      background: $blue;
     }
   }
 }

@@ -37,7 +37,7 @@ import * as EVENTS from '../../shared/events';
 import * as MESSAGES from '../../shared/messages';
 import { createSystemMessage } from '../../shared/debuggerMessages';
 
-import { subscribeAutoUpdaterEvents, downloadUpdate } from '../autoupdate';
+import { subscribeAutoUpdaterEvents } from '../autoupdate';
 import { subscribeToTriggerMainMenuRequests } from '../../testUtils/triggerMainMenu';
 
 const { app, dialog, Menu } = remoteElectron;
@@ -84,8 +84,6 @@ class App extends client.App {
     this.getSelectedBoard = this.getSelectedBoard.bind(this);
     this.getSidebarPaneHeight = this.getSidebarPaneHeight.bind(this);
     this.setSidebarPaneHeight = this.setSidebarPaneHeight.bind(this);
-
-    this.onClickMessageButton = this.onClickMessageButton.bind(this);
 
     this.onUploadToArduinoClicked = this.onUploadToArduinoClicked.bind(this);
     this.onUploadToArduino = this.onUploadToArduino.bind(this);
@@ -184,13 +182,6 @@ class App extends client.App {
     props.actions.fetchGrant();
   }
 
-  onClickMessageButton(buttonId, /* messageInfo */) {
-    if (buttonId === 'downloadAndInstall') {
-      downloadUpdate(ipcRenderer);
-      this.setState(R.assoc('downloadProgressPopup', true));
-    }
-  }
-
   onResize() {
     this.setState(
       R.set(
@@ -238,7 +229,9 @@ class App extends client.App {
         proc.success(payload.message);
         if (debug) {
           foldEither(
-            error => this.props.actions.addError(error.message),
+            error => this.props.actions.addError(
+              client.composeMessage(error.message)
+            ),
             (nodeIdsMap) => {
               this.props.actions.startDebuggerSession(
                 createSystemMessage('Debug session started'),
@@ -271,7 +264,7 @@ class App extends client.App {
     this.props.actions.createProject(projectName);
     ipcRenderer.send(EVENTS.CREATE_PROJECT, projectName);
     ipcRenderer.once(EVENTS.SAVE_ALL, () => {
-      this.props.actions.addConfirmation(MESSAGES.PROJECT_SAVE_SUCCEED);
+      this.props.actions.addConfirmation(MESSAGES.SAVE_ALL_SUCCEED);
     });
   }
 
@@ -303,7 +296,9 @@ class App extends client.App {
 
         fs.readFile(filePaths[0], 'utf8', (err, data) => {
           if (err) {
-            this.props.actions.addError(err.message);
+            this.props.actions.addError(
+              client.composeMessage(err.message)
+            );
           }
 
           this.onImport(data);
@@ -337,7 +332,10 @@ class App extends client.App {
 
   onImport(jsonString) {
     foldEither(
-      this.props.actions.addError,
+      R.compose(
+        this.props.actions.addError,
+        client.composeMessage
+      ),
       (project) => {
         if (!this.confirmUnsavedChanges()) return;
         this.props.actions.importProject(project);
@@ -679,9 +677,6 @@ class App extends client.App {
           getSidebarPaneHeight={this.getSidebarPaneHeight}
           setSidebarPaneHeight={this.setSidebarPaneHeight}
           stopDebuggerSession={() => debuggerIPC.sendStopDebuggerSession(ipcRenderer)}
-        />
-        <client.SnackBar
-          onClickMessageButton={this.onClickMessageButton}
         />
         {this.renderPopupShowCode()}
         {this.renderPopupUploadConfig()}

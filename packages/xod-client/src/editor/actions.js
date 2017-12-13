@@ -7,11 +7,13 @@ import { fetchLibsWithDependencies, stringifyLibQuery, getLibName } from 'xod-pm
 import {
   SELECTION_ENTITY_TYPE,
   CLIPBOARD_DATA_TYPE,
-  CLIPBOARD_ERRORS as CLIPBOARD_ERROR_CODES,
 } from './constants';
-import { LINK_ERRORS, CLIPBOARD_ERRORS } from '../messages/constants';
-
-import { libInstalled } from './messages';
+import { LINK_ERRORS } from '../project/messages';
+import {
+  libInstalled,
+  CLIPBOARD_RECURSION_PASTE_ERROR,
+  clipboardMissingPatchPasteError,
+} from './messages';
 
 import * as ActionType from './actionTypes';
 
@@ -25,6 +27,7 @@ import {
   addError,
   addConfirmation,
 } from '../messages/actions';
+import composeMessage from '../messages/composeMessage';
 
 import * as Selectors from './selectors';
 import * as ProjectSelectors from '../project/selectors';
@@ -345,7 +348,7 @@ export const pasteEntities = event => (dispatch, getState) => {
 
   const pastedNodeTypes = R.map(XP.getNodeType, copiedEntities.nodes);
   if (R.contains(currentPatchPath, pastedNodeTypes)) {
-    dispatch(addError(CLIPBOARD_ERRORS[CLIPBOARD_ERROR_CODES.RECURSION_DETECTED]));
+    dispatch(addError(CLIPBOARD_RECURSION_PASTE_ERROR));
     return;
   }
 
@@ -358,10 +361,9 @@ export const pasteEntities = event => (dispatch, getState) => {
   const missingPatches = R.without(availablePatches, pastedNodeTypes);
 
   if (!R.isEmpty(missingPatches)) {
-    dispatch(addError(XP.formatString(
-      CLIPBOARD_ERRORS[CLIPBOARD_ERROR_CODES.NO_REQUIRED_PATCHES],
-      { missingPatches: missingPatches.join(', ') }
-    )));
+    dispatch(addError(
+      clipboardMissingPatchPasteError(missingPatches.join(', '))
+    ));
     return;
   }
 
@@ -472,6 +474,6 @@ export const installLibraries = libParams => (dispatch, getState) => {
           errorCode: err.errorCode,
         },
       });
-      dispatch(addError(err.message));
+      dispatch(addError(composeMessage(err.message)));
     });
 };

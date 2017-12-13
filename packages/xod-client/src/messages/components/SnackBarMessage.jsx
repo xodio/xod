@@ -3,8 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { MESSAGE_TYPE } from '../constants';
+import Button from '../../core/components/Button';
+import CloseButton from '../../core/components/CloseButton';
 
-const ANIMATION_TIMEOUT = 500;
+const ANIMATION_TIMEOUT = 100;
 
 class SnackBarMessage extends React.Component {
   constructor(props) {
@@ -16,6 +18,7 @@ class SnackBarMessage extends React.Component {
     };
 
     this.hide = this.hide.bind(this);
+    this.onCloseMessage = this.onCloseMessage.bind(this);
   }
 
   componentDidMount() {
@@ -24,35 +27,37 @@ class SnackBarMessage extends React.Component {
     });
   }
 
+  onCloseMessage() {
+    this.props.onCloseMessage(this.props.message.id);
+  }
+
   getMessageContent() {
     const { message, onClickMessageButton } = this.props;
 
-    const buttons = R.unless(
-      R.isEmpty,
-      R.compose(
-        btns => React.createElement(
-          'div',
-          { className: 'SnackBar-buttons-container' },
-          btns
-        ),
-        R.map(({ id, text }) => (
-          <button
-            className="Button Button--small"
-            key={id}
-            onClick={() => onClickMessageButton(id, message)}
-          >
-            {text}
-          </button>
-        ))
+    const button = R.unless(
+      R.isNil,
+      text => (
+        <Button
+          small
+          light
+          onClick={() => onClickMessageButton(message.id)}
+        >
+          {text}
+        </Button>
       )
-    )(message.payload.buttons);
+    )(message.payload.button);
 
-    return (
-      <div className="message-content">
-        {message.payload.message}
-        {buttons}
-      </div>
-    );
+    return [
+      <div className="message-text" key="text">
+        <span className="title">
+          {message.payload.title}
+        </span>
+        {message.payload.note}
+      </div>,
+      <div className="message-buttons" key="buttons">
+        {button}
+      </div>,
+    ];
   }
 
   setHidden(val) {
@@ -84,6 +89,7 @@ class SnackBarMessage extends React.Component {
       error: message.type === MESSAGE_TYPE.ERROR,
       confirmation: message.type === MESSAGE_TYPE.CONFIRMATION,
       notification: message.type === MESSAGE_TYPE.NOTIFICATION,
+      persistent: message.persistent,
     });
     const messageContent = this.getMessageContent();
 
@@ -91,7 +97,11 @@ class SnackBarMessage extends React.Component {
       <li
         className={cls}
       >
-        <a tabIndex={message.id} >
+        <a
+          className="message-content"
+          tabIndex={message.id}
+        >
+          <CloseButton onClick={this.onCloseMessage} />
           {messageContent}
         </a>
       </li>
@@ -102,19 +112,21 @@ class SnackBarMessage extends React.Component {
 SnackBarMessage.propTypes = {
   message: PropTypes.shape({
     /* eslint-disable react/no-unused-prop-types */
-    id: PropTypes.number,
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
     type: PropTypes.string,
     persistent: PropTypes.bool,
     payload: PropTypes.shape({
-      message: PropTypes.string.isRequired,
-      buttons: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string,
-        text: PropTypes.string,
-      })).isRequired,
+      title: PropTypes.string.isRequired,
+      note: PropTypes.string,
+      button: PropTypes.string,
     }),
     /* eslint-enable react/no-unused-prop-types */
   }),
   onClickMessageButton: PropTypes.func,
+  onCloseMessage: PropTypes.func.isRequired,
 };
 
 SnackBarMessage.defaultProps = {
