@@ -4,7 +4,7 @@ import {
   combineReducers,
 } from 'redux';
 import { Provider, connect } from 'react-redux';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 
 import Debugger from '../src/debugger/containers/Debugger';
 import DebuggerReducer from '../src/debugger/reducer';

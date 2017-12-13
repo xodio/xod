@@ -1,5 +1,5 @@
 import React from 'react';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 
 import '../src/core/styles/main.scss';
 import PatchGroup from '../src/projectBrowser/components/PatchGroup';

@@ -2,7 +2,7 @@ import React from 'react';
 import { SkyLightStateless } from 'react-skylight';
 import { Line as ProgressBar } from 'rc-progress';
 
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 
 import '../src/core/styles/main.scss';
 
