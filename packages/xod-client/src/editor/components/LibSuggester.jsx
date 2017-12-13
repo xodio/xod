@@ -75,9 +75,9 @@ class LibSuggester extends React.Component {
     this.props.onInstallLibrary(value);
   }
 
-  onSuggestionsFetchRequested({ reason }) {
+  onSuggestionsFetchRequested({ reason, value }) {
     if (reason !== 'input-changed') return;
-    if (isLibQueryValid(this.state.value)) {
+    if (isLibQueryValid(value)) {
       this.fetchLibData();
     }
   }
