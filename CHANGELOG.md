@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [ide] Patch crafting optimized. Performance gain is ~35%
+
+### Bug fixes
+
+* [core] Fix code generation for C\++ nodes local to the current project: no
+  more `@` symbols in the code
+* [ide] Trigger library search when a library name is pasted from the clipboard
+* [ide] Fix regression of macOS auto-update failure introduced in 0.16.0
+* [ide] Fix patch board break when trying to drag-n-drop the patch node on
+  itself or adjacent UI elements
+* [ide] Fix embedded code editor overflow past the window boundaries when
+  source code is too long
+* [ide] Handle network connection problems gracefully while authorization and
+  library publishing
+* [ide] Escape regular expression symbols while searching for a node (thanks
+  @awgrover)
+* [ide] In the account pane, send credentials on Enter press
+
 <a name="0.16.0"></a>
 ## 0.16.0 (2017-12-01)
 
