@@ -1,0 +1,30 @@
+{
+  "name": "cos-example",
+  "patches": {
+    "@/main": {
+      "path": "@/main"
+    },
+    "@/cos": {
+      "nodes": {
+        "BJWf2zrbz": {
+          "id": "BJWf2zrbz",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "label": "RAD"
+        },
+        "S1vGhGBbz": {
+          "id": "S1vGhGBbz",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 68,
+            "y": 204
+          }
+        }
+      },
+      "path": "@/cos"
+    }
+  }
+}

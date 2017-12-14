@@ -6,6 +6,7 @@ title: Reference
 
 * [List of supported hardware](./supported-hardware/)
 * [Mouse and keyboard shortcuts](./shortcuts/)
+* [C++ node API reference](./node-cpp-api/)
 
 ## Standard library nodes
 

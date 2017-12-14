@@ -1,0 +1,141 @@
+{
+  "name": "cpp-state",
+  "patches": {
+    "@/main": {
+      "links": {
+        "rJn6rAyGz": {
+          "id": "rJn6rAyGz",
+          "output": {
+            "nodeId": "ByETBAJzz",
+            "pinKey": "SyvHH0kzf"
+          },
+          "input": {
+            "nodeId": "rJ9ar0JzM",
+            "pinKey": "HkXK-dGob"
+          }
+        },
+        "S1TyURyff": {
+          "id": "S1TyURyff",
+          "output": {
+            "nodeId": "B1-J8CyfG",
+            "pinKey": "BJ--G1tI-"
+          },
+          "input": {
+            "nodeId": "ByETBAJzz",
+            "pinKey": "S1Cfr0kGM"
+          }
+        },
+        "SJC180kGz": {
+          "id": "SJC180kGz",
+          "output": {
+            "nodeId": "HJr18RyMf",
+            "pinKey": "BJ--G1tI-"
+          },
+          "input": {
+            "nodeId": "ByETBAJzz",
+            "pinKey": "B1r7rA1zz"
+          }
+        }
+      },
+      "nodes": {
+        "ByETBAJzz": {
+          "id": "ByETBAJzz",
+          "type": "@/count",
+          "position": {
+            "x": 136,
+            "y": 102
+          }
+        },
+        "rJ9ar0JzM": {
+          "id": "rJ9ar0JzM",
+          "type": "xod/core/watch",
+          "position": {
+            "x": 136,
+            "y": 204
+          }
+        },
+        "B1-J8CyfG": {
+          "id": "B1-J8CyfG",
+          "type": "xod/common-hardware/button",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "boundValues": {
+            "ByNiWkt8Z": 2
+          }
+        },
+        "HJr18RyMf": {
+          "id": "HJr18RyMf",
+          "type": "xod/common-hardware/button",
+          "position": {
+            "x": 204,
+            "y": 0
+          },
+          "boundValues": {
+            "ByNiWkt8Z": 3
+          }
+        }
+      },
+      "path": "@/main"
+    },
+    "@/count": {
+      "nodes": {
+        "BJL04AyfM": {
+          "id": "BJL04AyfM",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "label": "STEP",
+          "boundValues": {
+            "__out__": 1
+          }
+        },
+        "S1Cfr0kGM": {
+          "id": "S1Cfr0kGM",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "label": "INC"
+        },
+        "B1r7rA1zz": {
+          "id": "B1r7rA1zz",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 204,
+            "y": 0
+          },
+          "label": "RST"
+        },
+        "SyvHH0kzf": {
+          "id": "SyvHH0kzf",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 68,
+            "y": 204
+          }
+        },
+        "SJJIS0yGG": {
+          "id": "SJJIS0yGG",
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "position": {
+            "x": 68,
+            "y": 102
+          }
+        }
+      },
+      "path": "@/count",
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "struct State { };\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    if (isInputDirty<input_RST>(ctx)) {\n        emitValue<output_OUT>(ctx, 0);\n    } else if (isInputDirty<input_INC>(ctx)) {\n        Number step = getValue<input_STEP>(ctx);\n        Number counterValue = getValue<output_OUT>(ctx);\n        emitValue<output_OUT>(ctx, counterValue + step);\n    }\n}\n"
+        }
+      ]
+    }
+  }
+}

@@ -9,6 +9,10 @@ User’s Guide
 
 * [Creating nodes for XOD in XOD](./nodes-for-xod-in-xod/)
 * [Creating analog sensor driver nodes](./analog-sensor-node/)
+* [Documenting nodes](./documenting-nodes/)
+* [Creating nodes for XOD in C++](./nodes-for-xod-in-cpp/)
+* [Dealing with state in C++](./cpp-state/)
+* [Dealing with time in C++](./cpp-time/)
 
 ## Doing things sequentially
 

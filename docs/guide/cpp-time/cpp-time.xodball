@@ -1,0 +1,166 @@
+{
+  "name": "cpp-time",
+  "patches": {
+    "@/main": {
+      "links": {
+        "rkKO4lgMz": {
+          "id": "rkKO4lgMz",
+          "output": {
+            "nodeId": "B1XdVglMz",
+            "pinKey": "BJ--G1tI-"
+          },
+          "input": {
+            "nodeId": "SkldEegff",
+            "pinKey": "HyBf4exGG"
+          }
+        },
+        "Hy5uNleGz": {
+          "id": "Hy5uNleGz",
+          "output": {
+            "nodeId": "H18u4egzz",
+            "pinKey": "BJ--G1tI-"
+          },
+          "input": {
+            "nodeId": "SkldEegff",
+            "pinKey": "S1v74glMG"
+          }
+        },
+        "rkNYElxMM": {
+          "id": "rkNYElxMM",
+          "output": {
+            "nodeId": "SkldEegff",
+            "pinKey": "H1gDVlgMf"
+          },
+          "input": {
+            "nodeId": "BJ-YVexGG",
+            "pinKey": "ryTIROHwkW"
+          }
+        },
+        "B1hKVeeMM": {
+          "id": "B1hKVeeMM",
+          "output": {
+            "nodeId": "BJ-YVexGG",
+            "pinKey": "HkyxURuSPyW"
+          },
+          "input": {
+            "nodeId": "HyUF4eefM",
+            "pinKey": "HyYh1a3LZ"
+          }
+        }
+      },
+      "nodes": {
+        "SkldEegff": {
+          "id": "SkldEegff",
+          "type": "@/tick",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "boundValues": {
+            "Bkgb4lxMM": 0.2
+          }
+        },
+        "B1XdVglMz": {
+          "id": "B1XdVglMz",
+          "type": "xod/common-hardware/button",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "boundValues": {
+            "ByNiWkt8Z": 2
+          }
+        },
+        "H18u4egzz": {
+          "id": "H18u4egzz",
+          "type": "xod/common-hardware/button",
+          "position": {
+            "x": 170,
+            "y": 0
+          },
+          "boundValues": {
+            "ByNiWkt8Z": 3
+          }
+        },
+        "BJ-YVexGG": {
+          "id": "BJ-YVexGG",
+          "type": "xod/core/flip-flop",
+          "position": {
+            "x": 34,
+            "y": 204
+          }
+        },
+        "HyUF4eefM": {
+          "id": "HyUF4eefM",
+          "type": "xod/common-hardware/led",
+          "position": {
+            "x": 0,
+            "y": 306
+          },
+          "boundValues": {
+            "B1oqkTnIb": 13
+          }
+        }
+      },
+      "path": "@/main"
+    },
+    "@/tick": {
+      "nodes": {
+        "Bkgb4lxMM": {
+          "id": "Bkgb4lxMM",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "label": "T",
+          "boundValues": {
+            "__out__": 1
+          }
+        },
+        "HyBf4exGG": {
+          "id": "HyBf4exGG",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "label": "SET"
+        },
+        "S1v74glMG": {
+          "id": "S1v74glMG",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 204,
+            "y": 0
+          },
+          "label": "RST"
+        },
+        "H1gDVlgMf": {
+          "id": "H1gDVlgMf",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 68,
+            "y": 204
+          }
+        },
+        "B1NPVelMG": {
+          "id": "B1NPVelMG",
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "position": {
+            "x": 68,
+            "y": 102
+          }
+        }
+      },
+      "path": "@/tick",
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "struct State { };\n\n{{ GENERATED_CODE }}\n\nvoid charge(Context ctx) {\n    Number t = getValue<input_T>(ctx);\n    TimeMs milliseconds = t * 1000;\n    setTimeout(ctx, milliseconds);\n}\n\nvoid evaluate(Context ctx) {\n    if (isInputDirty<input_RST>(ctx)) {\n        clearTimeout(ctx);\n        return;\n    }\n\n    if (isInputDirty<input_SET>(ctx)) {\n        charge(ctx);\n    }\n\n    if (isTimedOut(ctx)) {\n        emitValue<output_OUT>(ctx, true);\n        charge(ctx);\n    }\n}\n"
+        }
+      ]
+    }
+  }
+}
