@@ -8,7 +8,7 @@
         content: '';
         display: block;
         width: 100%;
-        height: 1px;
+        height: 2px;
         background: $sidebar-color-border;
       }
 
@@ -19,9 +19,9 @@
       cursor: row-resize;
 
       &:hover {
-        background: rgba($sidebar-color-border, 0.4);
+        background: $dark-light;
         &:before {
-          background: lighten($sidebar-color-border, 10);
+          background: $sidebar-color-border;
         }
       }
     }

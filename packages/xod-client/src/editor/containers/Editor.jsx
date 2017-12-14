@@ -32,7 +32,6 @@ import Inspector from '../components/Inspector';
 import Debugger from '../../debugger/containers/Debugger';
 import Breadcrumbs from '../../debugger/containers/Breadcrumbs';
 import Sidebar from '../components/Sidebar';
-import Workarea from '../../utils/components/Workarea';
 import SnackBar from '../../messages/containers/SnackBar';
 
 import { RenderableSelection } from '../../types';
@@ -55,6 +54,12 @@ class Editor extends React.Component {
     this.showSuggester = this.showSuggester.bind(this);
     this.hideSuggester = this.hideSuggester.bind(this);
 
+    this.onProjectBrowserFocus = this.onProjectBrowserFocus.bind(this);
+    this.onInspectorFocus = this.onInspectorFocus.bind(this);
+    this.onWorkareaFocus = this.onWorkareaFocus.bind(this);
+    this.onNodeSuggesterFocus = this.onNodeSuggesterFocus.bind(this);
+    this.onLibSuggesterFocus = this.onLibSuggesterFocus.bind(this);
+
     this.patchSize = this.props.size;
 
     this.updatePatchImplementationDebounced =
@@ -75,6 +80,22 @@ class Editor extends React.Component {
 
   onInstallLibrary(libParams) {
     return this.props.actions.installLibraries([libParams]);
+  }
+
+  onProjectBrowserFocus() {
+    this.props.actions.setFocusedArea(FOCUS_AREAS.PROJECT_BROWSER);
+  }
+  onInspectorFocus() {
+    this.props.actions.setFocusedArea(FOCUS_AREAS.INSPECTOR);
+  }
+  onWorkareaFocus() {
+    this.props.actions.setFocusedArea(FOCUS_AREAS.WORKAREA);
+  }
+  onNodeSuggesterFocus() {
+    this.props.actions.setFocusedArea(FOCUS_AREAS.NODE_SUGGESTER);
+  }
+  onLibSuggesterFocus() {
+    this.props.actions.setFocusedArea(FOCUS_AREAS.LIB_SUGGESTER);
   }
 
   getHotkeyHandlers() {
@@ -169,7 +190,7 @@ class Editor extends React.Component {
         index={patchesIndex}
         onAddNode={this.onAddNode}
         onBlur={this.hideSuggester}
-        onInitialFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.NODE_SUGGESTER)}
+        onInitialFocus={this.onNodeSuggesterFocus}
         onHighlight={this.props.actions.highlightSugessterItem}
       />
     ) : null;
@@ -179,6 +200,7 @@ class Editor extends React.Component {
         addClassName={(this.props.isHelpbarVisible) ? 'with-helpbar' : ''}
         onInstallLibrary={this.onInstallLibrary}
         onBlur={this.props.actions.hideLibSuggester}
+        onInitialFocus={this.onLibSuggesterFocus}
       />
     ) : null;
 
@@ -207,13 +229,13 @@ class Editor extends React.Component {
         >
           <FocusTrap
             className="ProjectBrowser-container"
-            onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.PROJECT_BROWSER)}
+            onFocus={this.onProjectBrowserFocus}
           >
             <ProjectBrowser />
           </FocusTrap>
           <FocusTrap
             className="Inspector-container"
-            onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.INSPECTOR)}
+            onFocus={this.onInspectorFocus}
           >
             <Inspector
               selection={selection}
@@ -223,21 +245,19 @@ class Editor extends React.Component {
             />
           </FocusTrap>
         </Sidebar>
+        {suggester}
+        {libSuggester}
         <FocusTrap
-          className="Workarea-container"
-          onFocus={() => this.props.actions.setFocusedArea(FOCUS_AREAS.WORKAREA)}
+          className="Workarea"
+          onFocus={this.onWorkareaFocus}
         >
-          <Workarea>
-            <Tabs />
-            {DebugSessionStopButton}
-            {this.renderOpenedPatchTab()}
-            {suggester}
-            {libSuggester}
-            {BreadcrumbsContainer}
-            {this.renderOpenedImplementationEditorTabs()}
-            {DebuggerContainer}
-            <SnackBar />
-          </Workarea>
+          <Tabs />
+          {DebugSessionStopButton}
+          {this.renderOpenedPatchTab()}
+          {BreadcrumbsContainer}
+          {this.renderOpenedImplementationEditorTabs()}
+          {DebuggerContainer}
+          <SnackBar />
         </FocusTrap>
         <Helpbar />
         <AccountPane />

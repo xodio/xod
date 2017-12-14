@@ -262,6 +262,12 @@ export const sortTabs = newOrderObject => ({
   payload: newOrderObject,
 });
 
+export const hideHelpbar = () => ({
+  type: ActionType.HIDE_HELPBAR,
+});
+export const showHelpbar = () => ({
+  type: ActionType.SHOW_HELPBAR,
+});
 export const toggleHelpbar = () => ({
   type: ActionType.TOGGLE_HELPBAR,
 });

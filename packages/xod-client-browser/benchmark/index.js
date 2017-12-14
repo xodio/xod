@@ -36,12 +36,12 @@ const height = 850;
 
   // open a patch group in project browser
   const libname = 'xod/core';
-  await page.click(`.patch-group-trigger[title="${libname}"]`);
+  await page.click(`.patch-group-trigger[data-id="${libname}"]`);
   await page.waitFor(400); // wait for an animation to finish
 
   const nodeToAdd = 'add';
   // select a patch in project browser
-  await page.click(`.PatchGroupItem[title="${nodeToAdd}"] .PatchGroupItem__label`);
+  await page.click(`.PatchGroupItem[data-id="${nodeToAdd}"] .PatchGroupItem__label`);
   await page.waitFor('.PatchGroupItem.isSelected');
 
   // placing nodes
@@ -61,8 +61,12 @@ const height = 850;
     }
 
     for (let row = ROWS; row >= 0; row -= 1) {
-      // press 'add node' button
-      await page.click('.PatchGroupItem.isSelected .add-node');
+      // open contextmenu
+      await page.click('.PatchGroupItem.isSelected .contextmenu', { button: 'right' });
+      await page.waitFor(100); // wait for fade In of contextmenu
+      await page.waitForSelector('.ContextMenu--PatchGroupItem');
+      // press 'Place' button
+      await page.click('.ContextMenu--PatchGroupItem .react-contextmenu-item[data-id="place"]');
 
       await page.waitForSelector('.Node.is-selected');
       const nodeElementHandle = await page.$('.Node.is-selected');

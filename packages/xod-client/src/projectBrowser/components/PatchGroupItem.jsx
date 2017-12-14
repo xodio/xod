@@ -5,8 +5,9 @@ import cn from 'classnames';
 import { DragSource } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { Icon } from 'react-fa';
-import 'font-awesome/scss/font-awesome.scss';
+import { ContextMenuTrigger } from 'react-contextmenu';
 
+import { PATCH_GROUP_CONTEXT_MENU_ID } from '../constants';
 import { DRAGGED_ENTITY_TYPE } from '../../editor/constants';
 
 const dragSource = {
@@ -63,6 +64,7 @@ class PatchGroupItem extends React.Component {
       onClick,
       onDoubleClick,
       connectDragSource,
+      collectPropsFn,
       ...restProps
     } = this.props;
 
@@ -76,24 +78,30 @@ class PatchGroupItem extends React.Component {
     );
 
     return connectDragSource(
-      <div
-        title={label}
+      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+        role="button"
+        data-id={label}
         className={classNames}
+        onClick={onClick}
+        onContextMenuCapture={onClick}
         {...R.omit(['patchPath', 'onBeginDrag', 'connectDragPreview', 'dead'], restProps)}
       >
-        <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-          className="PatchGroupItem__label"
-          onClick={onClick}
-          onDoubleClick={onDoubleClick}
-          role="button"
+        <ContextMenuTrigger
+          id={PATCH_GROUP_CONTEXT_MENU_ID}
+          holdToDisplay={-1}
+          collect={collectPropsFn}
         >
-          {(dead) ? deadIcon : null}
-          {label}
-        </div>
+          <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+            className="PatchGroupItem__label"
+            onDoubleClick={onDoubleClick}
+            role="button"
+          >
+            {(dead) ? deadIcon : null}
+            {label}
+          </div>
+        </ContextMenuTrigger>
         <div className="PatchGroupItem__hover-buttons">
           {hoverButtons}
-          {/* placeholder for context menu opener */}
-          {/* <i className="fa fa-bars" /> */}
         </div>
       </div>
     );
@@ -113,6 +121,7 @@ PatchGroupItem.propTypes = {
   connectDragSource: PropTypes.func.isRequired,
   connectDragPreview: PropTypes.func.isRequired,
   onBeginDrag: PropTypes.func.isRequired,
+  collectPropsFn: PropTypes.func.isRequired,
 };
 
 export default DragSource( // eslint-disable-line new-cap

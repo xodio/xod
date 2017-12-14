@@ -65,7 +65,7 @@ function closePopup(client) {
 //-----------------------------------------------------------------------------
 // Project browser
 //-----------------------------------------------------------------------------
-const getSelectorForPatchInProjectBrowser = nodeName => `.PatchGroupItem[title="${nodeName}"]`;
+const getSelectorForPatchInProjectBrowser = nodeName => `.PatchGroupItem[data-id="${nodeName}"]`;
 
 function findProjectBrowser(client) {
   return client.element('.ProjectBrowser');
@@ -77,6 +77,12 @@ function clickAddPatch(client) {
 
 function findPatchGroup(client, groupTitle) {
   const selector = `.PatchGroup=${groupTitle}`;
+  return findProjectBrowser(client).waitForExist(selector, 5000)
+    .then(() => client.element(selector));
+}
+
+function findPatchGroupItem(client, name) {
+  const selector = getSelectorForPatchInProjectBrowser(name);
   return findProjectBrowser(client).waitForExist(selector, 5000)
     .then(() => client.element(selector));
 }
@@ -114,18 +120,31 @@ function assertNodeUnavailableInProjectBrowser(client, nodeName) {
 function scrollToPatchInProjectBrowser(client, name) {
   return scrollTo(
     client,
-    '.PatchTypeSelector .inner-container',
+    '.ProjectBrowser',
     getSelectorForPatchInProjectBrowser(name)
   );
 }
 
 function selectPatchInProjectBrowser(client, name) {
-  const patch = client.element(getSelectorForPatchInProjectBrowser(name));
+  const patch = findPatchGroupItem(client, name);
   return hasClass('isSelected', patch).then(
-    selected => (
-      selected ? Promise.resolve() : client.click(getSelectorForPatchInProjectBrowser(name))
+    selected => (selected
+      ? Promise.resolve()
+      : client.click(getSelectorForPatchInProjectBrowser(name))
     )
   );
+}
+
+function openProjectBrowserPatchContextMenu(client, name) {
+  const selector = getSelectorForPatchInProjectBrowser(name);
+
+  return selectPatchInProjectBrowser(client, name)
+    .then(() => client.waitForVisible(`${selector} .contextmenu`))
+    .then(() => findPatchGroupItem(client, name).rightClick('.contextmenu'));
+}
+
+function findProjectBrowserPatchContextMenu(client) {
+  return client.element('.ContextMenu--PatchGroupItem');
 }
 
 function openPatchFromProjectBrowser(client, name) {
@@ -133,7 +152,10 @@ function openPatchFromProjectBrowser(client, name) {
 }
 
 function clickDeletePatchButton(client, name) {
-  return client.click(`${getSelectorForPatchInProjectBrowser(name)} span[title="Delete patch"]`);
+  return openProjectBrowserPatchContextMenu(client, name)
+    .then(
+      () => findProjectBrowserPatchContextMenu(client).click('.react-contextmenu-item[data-id="delete"]')
+    );
 }
 
 function assertPatchSelected(client, name) {
@@ -144,7 +166,10 @@ function assertPatchSelected(client, name) {
 }
 
 function clickAddNodeButton(client, name) {
-  return client.element(`${getSelectorForPatchInProjectBrowser(name)} .add-node`).click();
+  return openProjectBrowserPatchContextMenu(client, name)
+    .then(
+      () => findProjectBrowserPatchContextMenu(client).click('.react-contextmenu-item[data-id="place"]')
+    );
 }
 
 function expandPatchGroup(client, groupTitle) {
@@ -234,7 +259,6 @@ function addNode(client, type, dragX, dragY) {
 function deletePatch(client, type) {
   return client.waitForVisible(getSelectorForPatchInProjectBrowser(type))
     .then(() => scrollToPatchInProjectBrowser(client, type))
-    .then(() => selectPatchInProjectBrowser(client, type))
     .then(() => clickDeletePatchButton(client, type))
     .then(() => findProjectBrowser(client).click('.PopupConfirm button.Button--primary'));
 }
@@ -329,6 +353,7 @@ const API = {
   findLink,
   findNode,
   findPatchGroup,
+  findPatchGroupItem,
   findPin,
   findPopup,
   getCodeboxValue,
@@ -336,6 +361,7 @@ const API = {
   scrollToPatchInProjectBrowser,
   selectPatchInProjectBrowser,
   openPatchFromProjectBrowser,
+  openProjectBrowserPatchContextMenu,
   deletePatch,
   expandPatchGroup,
   // LibSuggester

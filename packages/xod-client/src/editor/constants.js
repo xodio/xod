@@ -58,6 +58,7 @@ export const FOCUS_AREAS = {
   INSPECTOR: 'INSPECTOR',
   WORKAREA: 'WORKAREA',
   NODE_SUGGESTER: 'NODE_SUGGESTER',
+  LIB_SUGGESTER: 'LIB_SUGGESTER',
 };
 
 export const CLIPBOARD_DATA_TYPE = 'text/xod-entities';

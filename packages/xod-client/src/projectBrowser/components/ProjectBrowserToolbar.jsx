@@ -1,16 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon } from 'react-fa';
 
-const ProjectBrowserToolbar = ({ onClickAddPatch }) => (
+const ProjectBrowserToolbar = ({ onClickAddPatch, onClickAddLibrary }) => (
   <div className="ProjectBrowserToolbar">
-    <div className="ProjectBrowserToolbar-left">
+    <div className="ProjectBrowserToolbar-title">
+      Project Browser
+    </div>
+    <div className="ProjectBrowserToolbar-buttons">
       <button
+        className="newpatch"
         title="Add patch"
         onClick={onClickAddPatch}
-      >
-        <Icon name="file" />
-      </button>
+      />
+      <button
+        className="addlib"
+        title="Add library"
+        onClick={onClickAddLibrary}
+      />
     </div>
   </div>
 );
@@ -19,6 +25,7 @@ ProjectBrowserToolbar.displayName = 'ProjectBrowserToolbar';
 
 ProjectBrowserToolbar.propTypes = {
   onClickAddPatch: PropTypes.func.isRequired,
+  onClickAddLibrary: PropTypes.func.isRequired,
 };
 
 export default ProjectBrowserToolbar;
