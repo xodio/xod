@@ -48,6 +48,15 @@
 
     a {
       color: $color-canvas-selected;
+
+      &:focus {
+        outline: 0;
+        box-shadow: 0 0 5px 1px $color-canvas-selected;
+        border: 2px solid transparent;
+        border-top: 0;
+        margin-left: -2px;
+        border-radius: 4px;
+      }
     }
   }
 
