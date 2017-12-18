@@ -1,5 +1,5 @@
 {
-  "description": "Emits a pulse on a rising edge, i.e. when `true` changes to `false`",
+  "description": "Emits a pulse on a falling edge, i.e. when `true` changes to `false`",
   "links": [
     {
       "id": "HJXReAuIZ",
