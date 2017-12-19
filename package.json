@@ -31,7 +31,8 @@
     "test-strict": "XOD_HM_DEF=strict lerna run test",
     "test-func": "lerna run test-func",
     "test-cpp": "lerna run test-cpp",
-    "verify": "yarn build && yarn lint && yarn test && yarn test-cpp && yarn test-func"
+    "verify": "yarn build && yarn lint && yarn test && yarn test-cpp && yarn test-func",
+    "xodc": "node packages/xod-cli/bin/xodc.js"
   },
   "devDependencies": {
     "@google-cloud/storage": "^1.1.0",
