@@ -4,12 +4,10 @@ import PropTypes from 'prop-types';
 import cn from 'classnames';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { HotKeys, FocusTrap } from 'react-hotkeys';
 import * as XP from 'xod-project';
-import { $Maybe } from 'xod-func-tools';
 import { Icon } from 'react-fa';
 import debounce from 'throttle-debounce/debounce';
 
@@ -21,26 +19,21 @@ import * as EditorSelectors from '../selectors';
 
 import { isInputTarget } from '../../utils/browser';
 import { COMMAND } from '../../utils/constants';
-import { FOCUS_AREAS, DEBUGGER_TAB_ID, TAB_TYPES, IMPL_TEMPLATE } from '../constants';
+import { FOCUS_AREAS, DEBUGGER_TAB_ID, TAB_TYPES, IMPL_TEMPLATE, SIDEBAR_IDS } from '../constants';
 
 import Patch from './Patch';
 import CppImplementationEditor from '../components/CppImplementationEditor';
 import NoPatch from '../components/NoPatch';
 import Suggester from '../components/Suggester';
+import PanelContextMenu from '../components/PanelContextMenu';
 import LibSuggester from '../components/LibSuggester';
-import Inspector from '../components/Inspector';
 import Debugger from '../../debugger/containers/Debugger';
 import Breadcrumbs from '../../debugger/containers/Breadcrumbs';
-import Sidebar from '../components/Sidebar';
+import Sidebar from './Sidebar';
 import SnackBar from '../../messages/containers/SnackBar';
-
-import { RenderableSelection } from '../../types';
-import sanctuaryPropType from '../../utils/sanctuaryPropType';
-
-import AccountPane from '../../user/containers/AccountPane';
-import ProjectBrowser from '../../projectBrowser/containers/ProjectBrowser';
-import Tabs from './Tabs';
 import Helpbar from './Helpbar';
+
+import Tabs from './Tabs';
 import DragLayer from './DragLayer';
 
 class Editor extends React.Component {
@@ -54,8 +47,6 @@ class Editor extends React.Component {
     this.showSuggester = this.showSuggester.bind(this);
     this.hideSuggester = this.hideSuggester.bind(this);
 
-    this.onProjectBrowserFocus = this.onProjectBrowserFocus.bind(this);
-    this.onInspectorFocus = this.onInspectorFocus.bind(this);
     this.onWorkareaFocus = this.onWorkareaFocus.bind(this);
     this.onNodeSuggesterFocus = this.onNodeSuggesterFocus.bind(this);
     this.onLibSuggesterFocus = this.onLibSuggesterFocus.bind(this);
@@ -80,13 +71,6 @@ class Editor extends React.Component {
 
   onInstallLibrary(libParams) {
     return this.props.actions.installLibraries([libParams]);
-  }
-
-  onProjectBrowserFocus() {
-    this.props.actions.setFocusedArea(FOCUS_AREAS.PROJECT_BROWSER);
-  }
-  onInspectorFocus() {
-    this.props.actions.setFocusedArea(FOCUS_AREAS.INSPECTOR);
   }
   onWorkareaFocus() {
     this.props.actions.setFocusedArea(FOCUS_AREAS.WORKAREA);
@@ -179,8 +163,6 @@ class Editor extends React.Component {
 
   render() {
     const {
-      currentPatch,
-      selection,
       patchesIndex,
     } = this.props;
 
@@ -224,27 +206,9 @@ class Editor extends React.Component {
     return (
       <HotKeys handlers={this.getHotkeyHandlers()} className="Editor">
         <Sidebar
-          getSize={this.props.getSidebarPaneHeight}
-          onChange={this.props.setSidebarPaneHeight}
-        >
-          <FocusTrap
-            className="ProjectBrowser-container"
-            onFocus={this.onProjectBrowserFocus}
-          >
-            <ProjectBrowser />
-          </FocusTrap>
-          <FocusTrap
-            className="Inspector-container"
-            onFocus={this.onInspectorFocus}
-          >
-            <Inspector
-              selection={selection}
-              currentPatch={currentPatch}
-              onPropUpdate={this.props.actions.updateNodeProperty}
-              onPatchDescriptionUpdate={this.props.actions.updatePatchDescription}
-            />
-          </FocusTrap>
-        </Sidebar>
+          id={SIDEBAR_IDS.LEFT}
+          windowSize={this.props.size}
+        />
         {suggester}
         {libSuggester}
         <FocusTrap
@@ -259,9 +223,17 @@ class Editor extends React.Component {
           {DebuggerContainer}
           <SnackBar />
         </FocusTrap>
-        <Helpbar />
-        <AccountPane />
+        <Sidebar
+          id={SIDEBAR_IDS.RIGHT}
+          windowSize={this.props.size}
+        />
+        {this.props.isHelpbarVisible && <Helpbar />}
         <DragLayer />
+        <PanelContextMenu
+          onMinimizeClick={this.props.actions.minimizePanel}
+          onSwitchSideClick={this.props.actions.movePanel}
+          onAutohideClick={this.props.actions.togglePanelAutohide}
+        />
       </HotKeys>
     );
   }
@@ -269,11 +241,7 @@ class Editor extends React.Component {
 
 Editor.propTypes = {
   size: PropTypes.object.isRequired,
-  getSidebarPaneHeight: PropTypes.func,
-  setSidebarPaneHeight: PropTypes.func,
-  selection: sanctuaryPropType($.Array(RenderableSelection)),
   currentPatchPath: PropTypes.string,
-  currentPatch: sanctuaryPropType($Maybe(XP.Patch)),
   project: PropTypes.object,
   currentTab: PropTypes.object,
   implEditorTabs: PropTypes.array,
@@ -287,8 +255,6 @@ Editor.propTypes = {
   defaultNodePosition: PropTypes.object.isRequired,
   stopDebuggerSession: PropTypes.func,
   actions: PropTypes.shape({
-    updateNodeProperty: PropTypes.func.isRequired,
-    updatePatchDescription: PropTypes.func.isRequired,
     updatePatchImplementation: PropTypes.func.isRequired,
     closeImplementationEditor: PropTypes.func.isRequired,
     undo: PropTypes.func.isRequired,
@@ -301,6 +267,9 @@ Editor.propTypes = {
     highlightSugessterItem: PropTypes.func.isRequired,
     hideLibSuggester: PropTypes.func.isRequired,
     installLibraries: PropTypes.func.isRequired,
+    minimizePanel: PropTypes.func.isRequired,
+    movePanel: PropTypes.func.isRequired,
+    togglePanelAutohide: PropTypes.func.isRequired,
   }),
 };
 
@@ -337,6 +306,9 @@ const mapDispatchToProps = dispatch => ({
     highlightSugessterItem: Actions.highlightSugessterItem,
     hideLibSuggester: Actions.hideLibSuggester,
     installLibraries: Actions.installLibraries,
+    minimizePanel: Actions.minimizePanel,
+    movePanel: Actions.movePanel,
+    togglePanelAutohide: Actions.togglePanelAutohide,
   }, dispatch),
 });
 

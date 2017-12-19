@@ -4,8 +4,6 @@ import * as ActionTypes from './actionTypes';
 
 const userReducer = (state = {}, action) => {
   switch (action.type) {
-    case ActionTypes.TOGGLE_ACCOUNT_PANE:
-      return R.over(R.lensProp('isAccountPaneVisible'), R.not, state);
     case ActionTypes.UPDATE_COMPILE_LIMIT:
       return R.assoc('limit', action.payload, state);
     case ActionTypes.LOGIN_STARTED:

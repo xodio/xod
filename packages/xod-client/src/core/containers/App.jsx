@@ -173,6 +173,7 @@ App.propTypes = {
     showLibSuggester: PropTypes.func.isRequired,
     toggleAccountPane: PropTypes.func.isRequired,
     fetchGrant: PropTypes.func.isRequired,
+    togglePanel: PropTypes.func.isRequired,
     /* eslint-enable react/no-unused-prop-types */
   }),
 };
@@ -214,4 +215,5 @@ App.actions = {
   showLibSuggester: actions.showLibSuggester,
   toggleAccountPane: actions.toggleAccountPane,
   fetchGrant: actions.fetchGrant,
+  togglePanel: actions.togglePanel,
 };

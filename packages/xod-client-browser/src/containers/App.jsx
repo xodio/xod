@@ -207,9 +207,18 @@ class App extends client.App {
       submenu(
         items.view,
         [
-          onClick(items.toggleHelpbar, this.props.actions.toggleHelpbar),
-          onClick(items.toggleDebugger, this.props.actions.toggleDebugger),
-          onClick(items.toggleAccountPane, this.props.actions.toggleAccountPane),
+          onClick(
+            items.toggleHelpbar,
+            this.props.actions.toggleHelpbar
+          ),
+          onClick(
+            items.toggleDebugger,
+            this.props.actions.toggleDebugger
+          ),
+          onClick(
+            items.toggleAccountPane,
+            () => this.props.actions.togglePanel(client.PANEL_IDS.ACCOUNT)
+          ),
         ]
       ),
       submenu(
@@ -258,8 +267,6 @@ class App extends client.App {
         />
         <client.Editor
           size={this.state.size}
-          getSidebarPaneHeight={() => window.localStorage.getItem('Sidebar.height')}
-          setSidebarPaneHeight={size => window.localStorage.setItem('Sidebar.height', size)}
         />
         <client.SnackBar />
         <PopupInstallApp

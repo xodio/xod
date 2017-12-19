@@ -7,12 +7,90 @@
   flex-wrap: nowrap;
 
   background: $sidebar-color-bg;
-  border-right: 2px solid $chrome-outlines;
 
-  .title {
-    display: block;
-    margin: 0 8px;
-    padding: 10px 20px 4px 0;
+  &--left {
+    border-right: 2px solid $chrome-outlines;
+  }
+  &--right {
+    border-left: 2px solid $chrome-outlines;
+  }
+  &--hidden {
+    display: none !important;
+  }
+}
+
+.Sidebar-title {
+  display: block;
+  height: 28px;
+  margin: 0;
+  background: $sidebar-color-bg;
+  color: $sidebar-color-text;
+  border-bottom: 2px solid $chrome-outlines;
+
+  &--hidden {
+    display: none !important;
+  }
+
+  &--minimized {
+    width: auto;
+    height: 28px;
+
+    &.Sidebar-title--left {
+      float: left;
+      border-right: 2px solid $chrome-outlines;
+    }
+    &.Sidebar-title--right {
+      float: right;
+      border-left: 2px solid $chrome-outlines;
+    }
+  }
+
+  button {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+
+    text-align: center;
+    vertical-align: middle;
+    line-height: 1;
+
+    background: none;
+    border: none;
+    border-radius: 0;
+    outline: none;
+
+    cursor: pointer;
+
     color: $sidebar-color-text;
+    opacity: 0.8;
+
+    &:hover, &:focus {
+      color: $sidebar-color-text-hover;
+      background: $sidebar-color-bg-hover;
+    }
+
+    &.selected {
+      background: $chrome-title-bg;
+      opacity: 1;
+    }
+
+    &.projectBrowser{
+      @extend .icon-projectBrowser;
+    }
+    &.inspector{
+      @extend .icon-inspector;
+    }
+    &.helppanel {
+      @extend .icon-helppanel;
+    }
+    &.account {
+      @extend .icon-account;
+      &.not-logged-in:before {
+        // change color of SVG Icon
+        filter: brightness(50%) sepia() hue-rotate(-1deg) saturate(260%) brightness(138%);
+      }
+    }
   }
 }

@@ -13,9 +13,6 @@ export const DEFAULT_SETTINGS = {
     target: null,
   },
   workspace: '',
-  editor: {
-    sidebarPaneHeight: null,
-  },
 };
 
 // =============================================================================
@@ -68,17 +65,6 @@ const uploadTarget = R.compose(upload, R.lensProp('target'));
 
 export const setUploadTarget = R.set(uploadTarget);
 export const getUploadTarget = R.view(uploadTarget);
-
-// =============================================================================
-//
-// Editor settings setters & getters
-//
-// =============================================================================
-const editor = R.lensProp('editor');
-const sidebarPaneHeight = R.compose(editor, R.lensProp('sidebarPaneHeight'));
-
-export const setSidebarPaneHeight = R.set(sidebarPaneHeight);
-export const getSidebarPaneHeight = R.view(sidebarPaneHeight);
 
 // =============================================================================
 //

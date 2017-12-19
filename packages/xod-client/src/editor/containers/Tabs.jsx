@@ -9,11 +9,16 @@ import {
 } from 'react-sortable-hoc';
 
 import * as Actions from '../actions';
+import * as Selectors from '../selectors';
 import * as ProjectSelectors from '../../project/selectors';
+import * as UserSelectors from '../../user/selectors';
 import { assocIndexes, indexById } from '../../utils/array';
 import deepSCU from '../../utils/deepSCU';
 import TabsContainer from '../components/TabsContainer';
 import TabsItem from '../components/TabsItem';
+import SidebarSwitches from '../components/SidebarSwitches';
+
+import { SIDEBAR_IDS } from '../constants';
 
 const SortableItem = sortableElement(
   ({ value }) => (
@@ -96,18 +101,34 @@ class Tabs extends React.Component {
   render() {
     const tabs = this.getTabs();
     return (
-      <SortableList
-        items={tabs}
-        onSortEnd={this.onSortEnd}
-        axis="x"
-        lockAxis="x"
-        lockToContainerEdges
-        lockOffset="-5%"
-        helperClass="is-sorting"
+      <div className="Tabs">
+        <SidebarSwitches
+          id={SIDEBAR_IDS.LEFT}
+          isMinimized
+          panels={this.props.panels}
+          onTogglePanel={this.props.actions.togglePanel}
+          isLoggedIn={this.props.userAuthorised}
+        />
+        <SidebarSwitches
+          id={SIDEBAR_IDS.RIGHT}
+          isMinimized
+          panels={this.props.panels}
+          onTogglePanel={this.props.actions.togglePanel}
+          isLoggedIn={this.props.userAuthorised}
+        />
+        <SortableList
+          items={tabs}
+          onSortEnd={this.onSortEnd}
+          axis="x"
+          lockAxis="x"
+          lockToContainerEdges
+          lockOffset="-5%"
+          helperClass="is-sorting"
 
-        onClick={this.onSwitchTab}
-        onClose={this.onCloseTab}
-      />
+          onClick={this.onSwitchTab}
+          onClose={this.onCloseTab}
+        />
+      </div>
     );
   }
 }
@@ -115,10 +136,20 @@ class Tabs extends React.Component {
 Tabs.propTypes = {
   tabs: PropTypes.object,
   actions: PropTypes.objectOf(PropTypes.func),
+  panels: PropTypes.objectOf(PropTypes.shape({
+    /* eslint-disable react/no-unused-prop-types */
+    maximized: PropTypes.bool.isRequired,
+    sidebar: PropTypes.oneOf(R.values(SIDEBAR_IDS)).isRequired,
+    autohide: PropTypes.bool.isRequired,
+    /* eslint-enable react/no-unused-prop-types */
+  })),
+  userAuthorised: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = R.applySpec({
   tabs: ProjectSelectors.getPreparedTabs,
+  panels: Selectors.getAllPanelsSettings,
+  userAuthorised: UserSelectors.isAuthorized,
 });
 
 const mapDispatchToprops = dispatch => ({
@@ -126,6 +157,7 @@ const mapDispatchToprops = dispatch => ({
     switchTab: Actions.switchTab,
     closeTab: Actions.closeTab,
     sortTabs: Actions.sortTabs,
+    togglePanel: Actions.togglePanel,
   }, dispatch),
 });
 

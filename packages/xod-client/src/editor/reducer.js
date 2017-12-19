@@ -610,6 +610,52 @@ const editorReducer = (state = {}, action) => {
         setPropsToTab(DEBUGGER_TAB_ID, { patchPath: action.payload.patchPath }),
         R.over(currentTabLens, clearSelection),
       )(state);
+
+    //
+    // panel settings
+    //
+    case EAT.SET_SIDEBAR_LAYOUT:
+      return R.over(
+        R.lensProp('panels'),
+        R.merge(R.__, action.payload),
+        state
+      );
+    case EAT.RESIZE_PANELS:
+      return R.over(
+        R.lensProp('panels'),
+        R.mapObjIndexed(
+          (val, id) => R.when(
+            () => R.contains(id, R.keys(action.payload)),
+            R.assoc('size', action.payload[id])
+          )(val)
+        ),
+        state
+      );
+    case EAT.MINIMIZE_PANEL:
+      return R.assocPath(
+        ['panels', action.payload.panelId, 'maximized'],
+        false,
+        state
+      );
+    case EAT.MAXIMIZE_PANEL:
+      return R.assocPath(
+        ['panels', action.payload.panelId, 'maximized'],
+        true,
+        state
+      );
+    case EAT.MOVE_PANEL:
+      return R.assocPath(
+        ['panels', action.payload.panelId, 'sidebar'],
+        action.payload.sidebarId,
+        state
+      );
+    case EAT.TOGGLE_PANEL_AUTOHIDE:
+      return R.over(
+        R.lensPath(['panels', action.payload.panelId, 'autohide']),
+        R.not,
+        state
+      );
+
     default:
       return state;
   }

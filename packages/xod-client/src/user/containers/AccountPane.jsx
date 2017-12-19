@@ -6,43 +6,44 @@ import { bindActionCreators } from 'redux';
 
 import { foldMaybe } from 'xod-func-tools';
 
-import Button from '../../core/components/Button';
+import {
+  PANEL_IDS,
+  SIDEBAR_IDS,
+} from '../../editor/constants';
 
+import SidebarPanel from '../../editor/components/SidebarPanel';
+import Button from '../../core/components/Button';
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
 
 import AuthForm from '../components/AuthForm';
 
 const AccountPane = ({
+  sidebarId,
+  autohide,
   user,
-  isVisible,
   compilationsLeft,
   actions,
   isAuthorising,
-}) => {
-  if (!isVisible) return null;
-
-  return (
-    <div className="AccountPane">
-      <a
-        role="button"
-        tabIndex="0"
-        className="close-button"
-        onClick={actions.toggleAccountPane}
-      >
-        &times;
-      </a>
-
-      {foldMaybe(
-        <div className="username">Guest Xoder</div>,
-        ({ username }) => (
-          <div>
-            <div>Logged in as</div>
-            <div className="username">{username}</div>
-          </div>
-        ),
-        user
-      )}
+}) => (
+  <SidebarPanel
+    id={PANEL_IDS.ACCOUNT}
+    className="AccountPane"
+    title="Account"
+    sidebarId={sidebarId}
+    autohide={autohide}
+  >
+    <div className="AccountPane-content">
+      <div className="login-info">
+        {foldMaybe(
+          <div className="username">Guest Xoder</div>,
+          ({ username }) => [
+            <div className="introduction" key="introduction">Logged in as</div>,
+            <div className="username" key="username">{username}</div>,
+          ],
+          user
+        )}
+      </div>
 
       <div className="dailyQuotas">
         <div className="title">Daily quotas</div>
@@ -57,29 +58,27 @@ const AccountPane = ({
         user
       )}
     </div>
-  );
-};
+  </SidebarPanel>
+);
 
 AccountPane.propTypes = {
+  sidebarId: PropTypes.oneOf(R.values(SIDEBAR_IDS)).isRequired,
+  autohide: PropTypes.bool.isRequired,
   compilationsLeft: PropTypes.number,
-  isVisible: PropTypes.bool.isRequired,
   user: PropTypes.object,
   isAuthorising: PropTypes.bool.isRequired,
   actions: PropTypes.shape({
-    toggleAccountPane: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
     login: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
   }),
 };
 
 const mapStateToProps = R.applySpec({
-  isVisible: Selectors.isAccountPaneVisible,
   user: Selectors.getUser,
   compilationsLeft: Selectors.getCompileLimitLeft,
   isAuthorising: Selectors.isAuthorising,
 });
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
-    toggleAccountPane: Actions.toggleAccountPane,
     login: Actions.login,
     logout: Actions.logout,
   }, dispatch),

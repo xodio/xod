@@ -22,10 +22,6 @@ export const updateCompileLimit = (startup = false) => dispatch =>
       payload: limit,
     }));
 
-export const toggleAccountPane = () => ({
-  type: ActionTypes.TOGGLE_ACCOUNT_PANE,
-});
-
 const setGrant = grant => ({
   type: ActionTypes.SET_AUTH_GRANT,
   payload: grant,

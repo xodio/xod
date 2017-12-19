@@ -1,7 +1,6 @@
 import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
-import CustomScroll from 'react-custom-scroll';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Icon } from 'react-fa';
@@ -30,13 +29,14 @@ import * as EditorSelectors from '../../editor/selectors';
 import { COMMAND } from '../../utils/constants';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
+import SidebarPanel from '../../editor/components/SidebarPanel';
 import PatchGroup from '../components/PatchGroup';
 import PatchGroupItem from '../components/PatchGroupItem';
 import ProjectBrowserPopups from '../components/ProjectBrowserPopups';
-import ProjectBrowserToolbar from '../components/ProjectBrowserToolbar';
 import PatchGroupItemContextMenu from '../components/PatchGroupItemContextMenu';
 
 import { PATCH_GROUP_CONTEXT_MENU_ID } from '../constants';
+import { PANEL_IDS, SIDEBAR_IDS } from '../../editor/constants';
 
 const pickPatchPartsForComparsion = R.map(R.pick(['dead', 'path']));
 
@@ -45,16 +45,8 @@ const pickPropsForComparsion = R.compose(
     localPatches: pickPatchPartsForComparsion,
     libs: pickPatchPartsForComparsion,
   }),
-  R.pick([
-    'projectName',
-    'currentPatchPath',
-    'selectedPatchPath',
-    'selectedPatchLabel',
-    'localPatches',
-    'popups',
-    'libs',
-    'installingLibs',
-    'defaultNodePosition',
+  R.omit([
+    'actions',
   ])
 );
 
@@ -264,14 +256,28 @@ class ProjectBrowser extends React.Component {
 
   renderPatches() {
     return (
-      // "calc(100% - 30px)" cause patch filtering buttons are 30px height
-      <CustomScroll heightRelativeToParent="calc(100% - 30px)">
-        <div className="patches-list">
-          {this.renderLocalPatches()}
-          {this.renderLibraryPatches()}
-        </div>
-      </CustomScroll>
+      <div className="patches-list">
+        {this.renderLocalPatches()}
+        {this.renderLibraryPatches()}
+      </div>
     );
+  }
+
+  renderToolbarButtons() {
+    return [
+      <button
+        key="addPatchButton"
+        className="newpatch"
+        title="Add patch"
+        onClick={this.props.actions.requestCreatePatch}
+      />,
+      <button
+        key="addLibButton"
+        className="addlib"
+        title="Add library"
+        onClick={this.onClickAddLibrary}
+      />,
+    ];
   }
 
   render() {
@@ -291,11 +297,15 @@ class ProjectBrowser extends React.Component {
           onPatchCreate={this.props.actions.addPatch}
           onCloseAllPopups={this.props.actions.closeAllPopups}
         />
-        <ProjectBrowserToolbar
-          onClickAddPatch={this.props.actions.requestCreatePatch}
-          onClickAddLibrary={this.onClickAddLibrary}
-        />
-        {this.renderPatches()}
+        <SidebarPanel
+          id={PANEL_IDS.PROJECT_BROWSER}
+          title="Project Browser"
+          sidebarId={this.props.sidebarId}
+          autohide={this.props.autohide}
+          additionalButtons={this.renderToolbarButtons()}
+        >
+          {this.renderPatches()}
+        </SidebarPanel>
         <PatchGroupItemContextMenu
           ref={(c) => { this.patchContextMenuRef = c; }}
           onPatchAdd={this.onAddNode}
@@ -321,6 +331,8 @@ ProjectBrowser.propTypes = {
   libs: sanctuaryPropType($.StrMap($.Array(Patch))),
   installingLibs: PropTypes.array,
   defaultNodePosition: PropTypes.object.isRequired,
+  sidebarId: PropTypes.oneOf(R.values(SIDEBAR_IDS)).isRequired,
+  autohide: PropTypes.bool.isRequired,
   actions: PropTypes.shape({
     addNode: PropTypes.func.isRequired,
     switchPatch: PropTypes.func.isRequired,

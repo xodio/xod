@@ -1,0 +1,14 @@
+.Tabs {
+  background: $chrome-outlines;
+  flex-direction: column;
+
+  .Sidebar-title {
+    display: flex;
+    flex-grow: unset;
+  }
+  .TabsContainer {
+    width: auto;
+    display: flex;
+    flex-grow: 1;
+  }
+}

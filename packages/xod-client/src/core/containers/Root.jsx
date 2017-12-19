@@ -7,6 +7,9 @@ import generateReducers from '../reducer';
 import { default as defaultInitialState } from '../state';
 import composeMiddlewares from '../middlewares';
 
+import { loadPanelSettings } from '../../editor/utils';
+import { setSidebarLayout } from '../../editor/actions';
+
 export default class Root extends React.Component {
 
   constructor(props) {
@@ -16,6 +19,12 @@ export default class Root extends React.Component {
       generateReducers(this.props.extraReducers),
       this.props.initialState,
       composeMiddlewares(this.props.extraMiddlewares)
+    );
+  }
+  componentDidMount() {
+    // dispatch actions "on init"
+    this.store.dispatch(
+      setSidebarLayout(loadPanelSettings())
     );
   }
 

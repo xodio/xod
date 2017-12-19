@@ -49,6 +49,11 @@
       color: $light-grey;
     }
 
+    .state {
+      float: right;
+      color: $chalk;
+    }
+
     &--active, &--selected, &:active {
       color: $chalk;
       background-color: $blackberry;

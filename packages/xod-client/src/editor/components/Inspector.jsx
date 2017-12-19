@@ -4,10 +4,14 @@ import $ from 'sanctuary-def';
 import React from 'react';
 import { Patch } from 'xod-project';
 import { $Maybe } from 'xod-func-tools';
-import CustomScroll from 'react-custom-scroll';
 
-import { SELECTION_ENTITY_TYPE } from '../constants';
+import {
+  SELECTION_ENTITY_TYPE,
+  PANEL_IDS,
+  SIDEBAR_IDS,
+} from '../constants';
 
+import SidebarPanel from '../components/SidebarPanel';
 import NodeInspector from './NodeInspector';
 import PatchInspector from './PatchInspector';
 import Widgets from './inspectorWidgets';
@@ -24,7 +28,7 @@ import sanctuaryPropType from '../../utils/sanctuaryPropType';
 // =============================================================================
 
 const InspectorMessage = ({ text }) => (
-  <div className="Inspector">
+  <div className="Inspector-content">
     <Widgets.HintWidget
       text={text}
     />
@@ -102,6 +106,8 @@ const isPatchSelected = R.curry((patch, selection) => (
 // =============================================================================
 
 const Inspector = ({
+  sidebarId,
+  autohide,
   selection,
   currentPatch,
   onPropUpdate,
@@ -120,13 +126,21 @@ const Inspector = ({
   ])(selection);
 
   return (
-    <CustomScroll heightRelativeToParent="100%">
+    <SidebarPanel
+      id={PANEL_IDS.INSPECTOR}
+      className="Inspector"
+      title="Inspector"
+      sidebarId={sidebarId}
+      autohide={autohide}
+    >
       {inspectorContent}
-    </CustomScroll>
+    </SidebarPanel>
   );
 };
 
 Inspector.propTypes = {
+  sidebarId: PropTypes.oneOf(R.values(SIDEBAR_IDS)).isRequired,
+  autohide: PropTypes.bool.isRequired,
   selection: sanctuaryPropType($.Array(RenderableSelection)),
   currentPatch: sanctuaryPropType($Maybe(Patch)),
   onPropUpdate: PropTypes.func.isRequired,
