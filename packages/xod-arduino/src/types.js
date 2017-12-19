@@ -35,8 +35,6 @@ export const TranspilationOptions = Model('TranspilationOptions', {
 });
 
 export const TConfig = Model('TConfig', {
-  NODE_COUNT: $.Number,
-  MAX_OUTPUT_COUNT: $.Number,
   XOD_DEBUG: $.Boolean,
 });
 
@@ -44,16 +42,24 @@ const TPatchOutput = Model('TPatchOutput', {
   type: $.String,
   pinKey: $.String,
   value: DataValue,
+  isDirtyable: $.Boolean,
+  isDirtyOnBoot: $.Boolean,
 });
 
 const TPatchInput = Model('TPatchInput', {
+  type: $.String,
   pinKey: $.String,
+  isDirtyable: $.Boolean,
 });
 
 export const TPatch = Model('TPatch', {
   owner: $.String,
   libName: $.String,
   patchName: $.String,
+  isDefer: $.Boolean,
+  isConstant: $.Boolean,
+  usesTimeouts: $.Boolean,
+  usesNodeId: $.Boolean,
   outputs: $.Array(TPatchOutput),
   inputs: $.Array(TPatchInput),
   impl: $.String,
@@ -66,9 +72,10 @@ const TNodeOutput = Model('TNodeOutput', {
 });
 
 const TNodeInput = Model('TNodeInput', {
-  nodeId: TNodeId,
-  patch: TPatch,
   pinKey: TPinKey,
+  fromNodeId: TNodeId,
+  fromPatch: TPatch,
+  fromOutput: TPatchOutput,
   fromPinKey: TPinKey,
 });
 
@@ -78,7 +85,6 @@ export const TNode = Model('TNode', {
   patch: TPatch,
   outputs: $.Array(TNodeOutput),
   inputs: $.Array(TNodeInput),
-  dirtyFlags: $.Number,
 });
 
 export const TProject = Model('TProject', {

@@ -2,11 +2,18 @@ import * as R from 'ramda';
 import { Either } from 'ramda-fantasy';
 
 import { explodeMaybe, reverseLookup } from 'xod-func-tools';
+// TODO: rename to XP
 import * as Project from 'xod-project';
 import { def } from './types';
 
 import { renderProject } from './templates';
 import { DEFAULT_TRANSPILATION_OPTIONS } from './constants';
+
+import {
+  areTimeoutsEnabled,
+  isNodeIdEnabled,
+  isDirtienessEnabled,
+} from './directives';
 
 //-----------------------------------------------------------------------------
 //
@@ -16,23 +23,6 @@ import { DEFAULT_TRANSPILATION_OPTIONS } from './constants';
 
 // :: x -> Number
 const toInt = R.flip(parseInt)(10);
-
-const getNodeCount = def(
-  'getNodeCount :: Patch -> Number',
-  R.compose(
-    R.length,
-    Project.listNodes
-  )
-);
-
-const getOutputCount = def(
-  'getOutputCount :: Project -> Number',
-  R.compose(
-    R.reduce(R.max, 0),
-    R.map(R.compose(R.length, Project.listOutputPins)),
-    Project.listPatches
-  )
-);
 
 const kebabToSnake = R.replace(/-/g, '_');
 
@@ -110,18 +100,6 @@ const toposortProject = def(
 //
 //-----------------------------------------------------------------------------
 
-
-// Creates a TConfig object from entry-point path and project
-const createTConfig = def(
-  'createTConfig :: TranspilationOptions -> PatchPath -> Number -> Project -> TConfig',
-  (opts, path, deferNodeCount, project) => R.applySpec({
-    NODE_COUNT: R.compose(getNodeCount, Project.getPatchByPathUnsafe(path)),
-    MAX_OUTPUT_COUNT: getOutputCount,
-    XOD_DEBUG: () => (opts.debug),
-    DEFER_NODE_COUNT: R.always(deferNodeCount),
-  })(project)
-);
-
 const createTPatches = def(
   'createTPatches :: PatchPath -> Project -> [TPatch]',
   (entryPath, project) => R.compose(
@@ -133,6 +111,10 @@ const createTPatches = def(
         Project.getImpl(patch)
       );
 
+      const isDirtyable = pin =>
+        Project.getPinType(pin) === Project.PIN_TYPE.PULSE
+        || isDirtienessEnabled(impl, `${pin.direction}_${pin.label}`);
+
       const outputs = R.compose(
         R.map(R.applySpec({
           type: Project.getPinType,
@@ -141,26 +123,43 @@ const createTPatches = def(
             Project.defaultValueOfType,
             Project.getPinType
           ),
+          isDirtyable,
+          isDirtyOnBoot: R.compose(
+            R.not,
+            R.equals(Project.PIN_TYPE.PULSE),
+            Project.getPinType
+          ),
         })),
         Project.normalizePinLabels,
         Project.listOutputPins
       )(patch);
+
       const inputs = R.compose(
         R.map(R.applySpec({
           type: Project.getPinType,
           pinKey: Project.getPinLabel,
+          isDirtyable,
         })),
         Project.normalizePinLabels,
         Project.listInputPins
       )(patch);
 
-      return R.merge(names,
+      const isThisIsThat = {
+        isDefer: Project.isDeferNodeType(path),
+        isConstant: Project.isConstantNodeType(path),
+        usesTimeouts: areTimeoutsEnabled(impl),
+        usesNodeId: isNodeIdEnabled(impl),
+      };
+
+      return R.mergeAll([
+        names,
+        isThisIsThat,
         {
           outputs,
           inputs,
           impl,
-        }
-      );
+        },
+      ]);
     }),
     R.omit([entryPath]),
     R.indexBy(Project.getPatchPath),
@@ -253,6 +252,11 @@ const getOutputPinLabelByLink = def(
   }
 );
 
+const getTPatchOutputByLabel = def(
+  'getTPatchOutputByLabel :: PinLabel -> TPatch -> TPatchOutput',
+  (pinLabel, tpatch) => R.find(R.propEq('pinKey', pinLabel), tpatch.outputs)
+);
+
 const getTNodeInputs = def(
   'getTNodeInputs :: Project -> PatchPath -> [TPatch] -> Node -> [TNodeInput]',
   (project, entryPath, patches, node) => {
@@ -260,51 +264,30 @@ const getTNodeInputs = def(
     const nodeId = Project.getNodeId(node);
     const nodePins = getNodePinLabels(node, project);
 
+    // :: Link -> TPatch
+    const getUpstreamNodePatch = R.compose(
+      getPatchByNodeId(project, entryPath, patches),
+      Project.getLinkOutputNodeId
+    );
+
+    // :: Link -> PinLabel
+    const getUpstreamPinLabel = getOutputPinLabelByLink(project, patch);
+
+    // :: Link -> TNodeInput
+    const constructTNodeInput = R.applySpec({
+      pinKey: R.compose(R.prop(R.__, nodePins), Project.getLinkInputPinKey),
+      fromNodeId: R.compose(toInt, Project.getLinkOutputNodeId),
+      fromPatch: getUpstreamNodePatch,
+      fromPinKey: getUpstreamPinLabel,
+      fromOutput: R.converge(getTPatchOutputByLabel, [getUpstreamPinLabel, getUpstreamNodePatch]),
+    });
+
     return R.compose(
-      R.map(R.applySpec({
-        nodeId: R.compose(toInt, Project.getLinkOutputNodeId),
-        patch: R.compose(
-          getPatchByNodeId(project, entryPath, patches),
-          Project.getLinkOutputNodeId
-        ),
-        pinKey: R.compose(R.prop(R.__, nodePins), Project.getLinkInputPinKey),
-        fromPinKey: getOutputPinLabelByLink(project, patch),
-      })),
+      R.map(constructTNodeInput),
       R.filter(Project.isLinkInputNodeIdEquals(nodeId)),
       Project.listLinksByNode(node)
     )(patch);
   }
-);
-
-// returns an 8-bit number where the first bit is always set to 1,
-// and the rest are set to 0 if the corresponding pin has a pulse type:
-//
-// +---+---+---+---+---+---+---+---+
-// | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
-// +---+---+---+---+---+---+---+---+
-//             <-*---*---*---*
-//                etc  Pin1 Pin0
-export const getInitialDirtyFlags = def(
-  'getInitialDirtyFlags :: [Pin] -> Number',
-  R.reduce(
-    (flags, pin) => {
-      if (Project.getPinType(pin) !== Project.PIN_TYPE.PULSE) {
-        return flags;
-      }
-      const mask = 0b10 << pin.order; // eslint-disable-line no-bitwise
-      return flags ^ mask; // eslint-disable-line no-bitwise
-    },
-    0b11111111
-  )
-);
-
-const getNodeDirtyFlags = def(
-  'getNodeDirtyFlags :: Project -> Node -> Number',
-  R.compose(
-    getInitialDirtyFlags,
-    R.filter(Project.isOutputPin),
-    R.flip(getNodePinsUnsafe)
-  )
 );
 
 const createTNodes = def(
@@ -317,18 +300,7 @@ const createTNodes = def(
       patch: R.compose(findPatchByPath(R.__, patches), Project.getNodeType),
       outputs: getTNodeOutputs(project, entryPath),
       inputs: getTNodeInputs(project, entryPath, patches),
-      dirtyFlags: getNodeDirtyFlags(project),
     })),
-    Project.listNodes,
-    Project.getPatchByPathUnsafe
-  )(entryPath, project)
-);
-
-const getDeferNodeCount = def(
-  'getDeferNodeCount :: PatchPath -> Project -> Number',
-  (entryPath, project) => R.compose(
-    R.length,
-    R.filter(R.compose(Project.isDeferNodeType, Project.getNodeType)),
     Project.listNodes,
     Project.getPatchByPathUnsafe
   )(entryPath, project)
@@ -358,13 +330,16 @@ const transformProjectWithImpls = def(
     }),
     R.map(({ project: proj, nodeIdsMap }) => {
       const patches = createTPatches(path, proj);
-      const deferNodeCount = getDeferNodeCount(path, proj);
 
-      return R.applySpec({
-        config: createTConfig(opts, path, deferNodeCount),
-        patches: R.always(patches),
-        nodes: createTNodes(path, patches, nodeIdsMap),
-      })(proj);
+      return R.merge(
+        {
+          config: { XOD_DEBUG: opts.debug },
+        },
+        R.applySpec({
+          patches: R.always(patches),
+          nodes: createTNodes(path, patches, nodeIdsMap),
+        })(proj)
+      );
     }),
     R.chain(R.compose(
       toposortProject(path),

@@ -1,3 +1,6 @@
+
+#pragma XOD disable dirty values
+
 struct State {
 };
 

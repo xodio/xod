@@ -93,6 +93,9 @@ Handlebars.registerHelper('ns', R.compose(
   R.props(['owner', 'libName', 'patchName'])
 ));
 
+// Debug helper
+Handlebars.registerHelper('json', JSON.stringify);
+
 // Returns declaration type specifier for an initial value of an output
 Handlebars.registerHelper('decltype', (type, value) => (
   (type === PIN_TYPE.STRING && value !== '')
@@ -131,6 +134,24 @@ Handlebars.registerHelper('cppValue', (type, value) =>
     [PIN_TYPE.STRING]: cppStringLiteral,
   })(value)
 );
+
+// A helper to quickly introduce a new filtered {{each ...}} loop
+function registerHandlebarsFilterLoopHelper(name, predicate) {
+  Handlebars.registerHelper(name, (list, block) =>
+    R.compose(
+      R.join(''),
+      R.map(node => block.fn(node)),
+      R.filter(predicate)
+    )(list)
+  );
+}
+
+registerHandlebarsFilterLoopHelper('eachDeferNode', R.path(['patch', 'isDefer']));
+registerHandlebarsFilterLoopHelper('eachNonConstantNode', R.pathEq(['patch', 'isConstant'], false));
+registerHandlebarsFilterLoopHelper('eachNodeUsingTimeouts', R.path(['patch', 'usesTimeouts']));
+registerHandlebarsFilterLoopHelper('eachLinkedInput', R.has('fromNodeId'));
+registerHandlebarsFilterLoopHelper('eachNonlinkedInput', R.complement(R.has('fromNodeId')));
+registerHandlebarsFilterLoopHelper('eachDirtyablePin', R.prop('isDirtyable'));
 
 // =============================================================================
 //
@@ -182,14 +203,7 @@ export const renderImplList = def(
   R.compose(
     trimTrailingWhitespace,
     templates.implList,
-    R.map(
-      R.applySpec({
-        owner: R.prop('owner'),
-        libName: R.prop('libName'),
-        patchName: R.prop('patchName'),
-        implementation: renderImpl,
-      })
-    )
+    R.map(patch => R.assoc('implementation', renderImpl(patch), patch)),
   )
 );
 

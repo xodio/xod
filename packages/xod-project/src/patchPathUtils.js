@@ -155,6 +155,15 @@ const deferNodeRegExp =
 // :: PatchPath -> Boolean
 export const isDeferNodeType = R.test(deferNodeRegExp);
 
+//
+// constant-* nodes
+//
+
+const constantNodeRegExp =
+  new RegExp(`xod/core/constant-(${dataTypes.join('|')})$`);
+
+// :: PatchPath -> Boolean
+export const isConstantNodeType = R.test(constantNodeRegExp);
 
 //
 // utils for 'internal' terminals (used only in flatten)

@@ -5,9 +5,7 @@ import { assert } from 'chai';
 
 import { explode, foldEither, explodeEither } from 'xod-func-tools';
 import { loadProject } from 'xod-fs';
-import { PIN_TYPE } from 'xod-project';
-import { defaultizePin } from 'xod-project/test/helpers';
-import { transpile, getInitialDirtyFlags, transformProject, getNodeIdsMap, forUnitTests } from '../src/transpiler';
+import { transpile, transformProject, getNodeIdsMap, forUnitTests } from '../src/transpiler';
 
 const { createPatchNames } = forUnitTests;
 
@@ -104,67 +102,6 @@ describe('getNodeIdsMap', () => {
         (nodeId, origNodeId) => assert.propertyVal(result, origNodeId, nodeId),
         expected
       ));
-  });
-});
-
-describe('getInitialDirtyFlags', () => {
-  it('should return 0b11111111 if there are no pulse outputs', () => {
-    assert.equal(
-      getInitialDirtyFlags([]),
-      0b11111111
-    );
-
-    assert.equal(
-      getInitialDirtyFlags([
-        defaultizePin({ order: 1, type: PIN_TYPE.BOOLEAN }),
-        defaultizePin({ order: 0, type: PIN_TYPE.STRING }),
-        defaultizePin({ order: 2, type: PIN_TYPE.NUMBER }),
-      ]),
-      0b11111111
-    );
-  });
-  it('should set bits corresponding to pulse outputs to 0', () => {
-    assert.equal(
-      getInitialDirtyFlags([
-        defaultizePin({ order: 0, type: PIN_TYPE.PULSE }),
-        defaultizePin({ order: 1, type: PIN_TYPE.BOOLEAN }),
-        defaultizePin({ order: 2, type: PIN_TYPE.NUMBER }),
-      ]),
-      0b11111101
-    );
-
-    assert.equal(
-      getInitialDirtyFlags([
-        defaultizePin({ order: 0, type: PIN_TYPE.PULSE }),
-        defaultizePin({ order: 1, type: PIN_TYPE.BOOLEAN }),
-        defaultizePin({ order: 2, type: PIN_TYPE.NUMBER }),
-        defaultizePin({ order: 3, type: PIN_TYPE.PULSE }),
-      ]),
-      0b11101101
-    );
-
-    assert.equal(
-      getInitialDirtyFlags([
-        defaultizePin({ order: 0, type: PIN_TYPE.PULSE }),
-        defaultizePin({ order: 1, type: PIN_TYPE.PULSE }),
-        defaultizePin({ order: 2, type: PIN_TYPE.PULSE }),
-        defaultizePin({ order: 3, type: PIN_TYPE.PULSE }),
-        defaultizePin({ order: 4, type: PIN_TYPE.PULSE }),
-        defaultizePin({ order: 5, type: PIN_TYPE.PULSE }),
-        defaultizePin({ order: 6, type: PIN_TYPE.PULSE }),
-      ]),
-      0b00000001
-    );
-  });
-  it('should determine pin number by Pin`s `order` property', () => {
-    assert.equal(
-      getInitialDirtyFlags([
-        defaultizePin({ order: 2, type: PIN_TYPE.NUMBER }),
-        defaultizePin({ order: 1, type: PIN_TYPE.BOOLEAN }),
-        defaultizePin({ order: 0, type: PIN_TYPE.PULSE }),
-      ]),
-      0b11111101
-    );
   });
 });
 

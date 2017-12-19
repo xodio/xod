@@ -13,7 +13,7 @@ void evaluate(Context ctx) {
   DEBUG_SERIAL.print(F("+XOD:"));
   DEBUG_SERIAL.print(tNow);
   DEBUG_SERIAL.print(':');
-  DEBUG_SERIAL.print(ctx);
+  DEBUG_SERIAL.print(getNodeId(ctx));
   DEBUG_SERIAL.print(':');
   for (auto it = line->iterate(); it; ++it)
       DEBUG_SERIAL.print((char)*it);
