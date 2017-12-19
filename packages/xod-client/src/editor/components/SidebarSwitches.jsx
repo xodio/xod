@@ -30,7 +30,7 @@ const SidebarSwitches = ({
   const onToggleProjectBrowserPanel = () => onTogglePanel(PANEL_IDS.PROJECT_BROWSER);
   const onToggleInspectorPanel = () => onTogglePanel(PANEL_IDS.INSPECTOR);
   const onToggleAccountPanel = () => onTogglePanel(PANEL_IDS.ACCOUNT);
-  const onToggleHelpbarPanel = () => onTogglePanel(PANEL_IDS.HELPBAR);
+  const ontoggleHelpPanel = () => onTogglePanel(PANEL_IDS.HELPBAR);
 
   return (
     <div className={classNames}>
@@ -60,7 +60,7 @@ const SidebarSwitches = ({
           <button
             key="helppanel"
             className={`helppanel ${maximized && 'selected'}`}
-            onClick={onToggleHelpbarPanel}
+            onClick={ontoggleHelpPanel}
           />
         )),
       ]), panelsForThisSidebar)}

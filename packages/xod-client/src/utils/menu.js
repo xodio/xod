@@ -125,10 +125,10 @@ const rawItems = {
     key: 'view',
     label: 'View',
   },
-  toggleHelpbar: {
-    key: 'toggleHelpbar',
+  toggleHelp: {
+    key: 'toggleHelp',
     label: 'Toggle Helpbar',
-    command: COMMAND.TOGGLE_HELPBAR,
+    command: COMMAND.TOGGLE_HELP,
   },
   toggleDebugger: {
     key: 'toggleDebugger',

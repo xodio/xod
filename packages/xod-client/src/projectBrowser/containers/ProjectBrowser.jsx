@@ -37,6 +37,7 @@ import PatchGroupItemContextMenu from '../components/PatchGroupItemContextMenu';
 
 import { PATCH_GROUP_CONTEXT_MENU_ID } from '../constants';
 import { PANEL_IDS, SIDEBAR_IDS } from '../../editor/constants';
+import { triggerUpdateHelpboxPosition } from '../../editor/utils';
 
 const pickPatchPartsForComparsion = R.map(R.pick(['dead', 'path']));
 
@@ -106,7 +107,7 @@ class ProjectBrowser extends React.Component {
   }
 
   onPatchHelpClicked() {
-    this.props.actions.showHelpbar();
+    this.props.actions.showHelpbox();
   }
 
   getHotkeyHandlers() {
@@ -185,7 +186,10 @@ class ProjectBrowser extends React.Component {
         onDoubleClick={() => switchPatch(path)}
         onBeginDrag={startDraggingPatch}
         isSelected={path === selectedPatchPath}
-        onClick={() => setSelection(path)}
+        onClick={(event) => {
+          triggerUpdateHelpboxPosition(event);
+          setSelection(path);
+        }}
         collectPropsFn={collectPropsFn}
         hoverButtons={this.renderHoveredButtons(collectPropsFn)}
       />
@@ -284,6 +288,7 @@ class ProjectBrowser extends React.Component {
     return (
       <HotKeys
         handlers={this.getHotkeyHandlers()}
+        id="ProjectBrowser"
         className="ProjectBrowser"
       >
         <ProjectBrowserPopups
@@ -303,6 +308,7 @@ class ProjectBrowser extends React.Component {
           sidebarId={this.props.sidebarId}
           autohide={this.props.autohide}
           additionalButtons={this.renderToolbarButtons()}
+          onScroll={triggerUpdateHelpboxPosition}
         >
           {this.renderPatches()}
         </SidebarPanel>
@@ -348,7 +354,7 @@ ProjectBrowser.propTypes = {
     renameProject: PropTypes.func.isRequired,
     closeAllPopups: PropTypes.func.isRequired,
     showLibSuggester: PropTypes.func.isRequired,
-    showHelpbar: PropTypes.func.isRequired,
+    showHelpbox: PropTypes.func.isRequired,
   }),
 };
 
@@ -386,7 +392,7 @@ const mapDispatchToProps = dispatch => ({
 
     addNotification: MessagesActions.addNotification,
     showLibSuggester: EditorActions.showLibSuggester,
-    showHelpbar: EditorActions.showHelpbar,
+    showHelpbox: EditorActions.showHelpbox,
   }, dispatch),
 });
 

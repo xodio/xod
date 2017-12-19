@@ -520,19 +520,27 @@ export const togglePanelAutohide = panelId => ({
   },
 });
 
-export const hideHelpbar = () => ({
-  type: ActionType.HIDE_HELPBAR,
-});
-export const showHelpbar = () => ({
-  type: ActionType.SHOW_HELPBAR,
-});
-export const toggleHelpbar = () => (dispatch, getState) => {
+export const hideHelpbox = () => (dispatch, getState) => {
+  if (Selectors.isHelpboxVisible(getState())) {
+    dispatch({
+      type: ActionType.HIDE_HELPBOX,
+    });
+  }
+};
+export const showHelpbox = () => (dispatch, getState) => {
+  if (!Selectors.isHelpboxVisible(getState())) {
+    dispatch({
+      type: ActionType.SHOW_HELPBOX,
+    });
+  }
+};
+export const toggleHelp = () => (dispatch, getState) => {
   const state = getState();
   const focusedArea = Selectors.getFocusedArea(state);
 
   if (focusedArea === FOCUS_AREAS.PROJECT_BROWSER) {
     return dispatch({
-      type: ActionType.TOGGLE_HELPBAR,
+      type: ActionType.TOGGLE_HELP,
     });
   }
 

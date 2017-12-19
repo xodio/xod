@@ -11,7 +11,7 @@ import {
 } from '../constants';
 
 import SidebarPanel from '../components/SidebarPanel';
-import { getPatchForHelpbar } from '../../core/selectors';
+import { getPatchForQuickHelp } from '../../core/selectors';
 import PatchDocs from '../components/PatchDocs';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
@@ -46,7 +46,7 @@ HelpPanel.propTypes = {
 };
 
 const mapStateToProps = R.applySpec({
-  maybeSelectedPatch: getPatchForHelpbar,
+  maybeSelectedPatch: getPatchForQuickHelp,
 });
 
 export default connect(mapStateToProps)(HelpPanel);

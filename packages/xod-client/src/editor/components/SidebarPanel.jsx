@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import CustomScroll from 'react-custom-scroll';
+import { noop } from 'xod-func-tools';
 
 import {
   PANEL_CONTEXT_MENU_ID,
@@ -60,6 +61,7 @@ const SidebarPanel = ({
   sidebarId,
   autohide,
   children,
+  onScroll = noop,
 }) => (
   <div className={`SidebarPanel ${className}`}>
     <SidebarPanelToolbar
@@ -69,7 +71,7 @@ const SidebarPanel = ({
       title={title}
       additionalButtons={additionalButtons}
     />
-    <CustomScroll heightRelativeToParent="calc(100% - 24px)">
+    <CustomScroll flex="1" onScroll={onScroll}>
       {children}
     </CustomScroll>
   </div>
@@ -86,6 +88,7 @@ SidebarPanel.propTypes = {
     PropTypes.arrayOf(PropTypes.element),
   ]).isRequired,
   additionalButtons: PropTypes.arrayOf(PropTypes.element),
+  onScroll: PropTypes.func,
 };
 
 export default SidebarPanel;

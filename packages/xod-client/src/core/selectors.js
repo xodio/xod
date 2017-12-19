@@ -12,7 +12,7 @@ import * as Errors from '../messages/selectors';
 import * as Processes from '../processes/selectors';
 import * as Debugger from '../debugger/selectors';
 
-import { SELECTION_ENTITY_TYPE, FOCUS_AREAS } from '../editor/constants';
+import { SELECTION_ENTITY_TYPE } from '../editor/constants';
 
 //
 // Unsaved changes
@@ -29,56 +29,25 @@ export const hasUnsavedChanges = createSelector(
 // Docs sidebar
 //
 
-const fallbackMaybe = (a, b) => R.when(
-  Maybe.isNothing,
-  R.always(b)
-)(a);
-
-export const getPatchForHelpbar = createSelector(
-  [
-    Project.getProject,
-    Editor.getFocusedArea,
-    Editor.getSelection,
-    ProjectBrowser.getSelectedPatchPath,
-    Project.getCurrentPatchNodes,
-    Editor.isSuggesterVisible,
-    Editor.getSuggesterHighlightedPatchPath,
-  ],
-  (
-    project,
-    focusedArea,
-    editorSelection,
-    selectedPatchPath,
-    currentPatchNodes,
-    suggesterVisible,
-    suggesterPatchPath
-  ) => {
-    const maybeSelectedNodeTypeInWorkarea = R.compose(
-      R.map(XP.getNodeType),
-      R.map(({ id }) => currentPatchNodes[id]),
-      Maybe,
-      R.find(R.propEq('entity', SELECTION_ENTITY_TYPE.NODE)),
-    )(editorSelection);
-    const maybeSelectedPathInProjectBrowser = Maybe(selectedPatchPath);
-
-    if (suggesterVisible && suggesterPatchPath) {
-      return XP.getPatchByPath(suggesterPatchPath, project);
-    }
-
-    return R.compose(
-      R.chain(patchPath => XP.getPatchByPath(patchPath, project)),
-      R.apply(fallbackMaybe), // TODO: works with only two sources
-      R.when(
-        () => focusedArea === FOCUS_AREAS.PROJECT_BROWSER,
-        R.reverse
-      )
-    )([
-      maybeSelectedNodeTypeInWorkarea,
-      maybeSelectedPathInProjectBrowser,
-    ]);
-  }
+export const getPatchForHelpbox = createSelector(
+  [Project.getProject, ProjectBrowser.getSelectedPatchPath],
+  (project, selectedPatchPath) => R.compose(
+    R.chain(XP.getPatchByPath(R.__, project)),
+    Maybe
+  )(selectedPatchPath)
 );
-
+export const getPatchForQuickHelp = createSelector(
+  [Project.getProject, Editor.getSelection, Project.getCurrentPatchNodes],
+  (project, editorSelection, currentPatchNodes) => R.compose(
+    R.chain(XP.getPatchByPath(R.__, project)),
+    R.map(R.compose(
+      XP.getNodeType,
+      ({ id }) => currentPatchNodes[id]
+    )),
+    Maybe,
+    R.find(R.propEq('entity', SELECTION_ENTITY_TYPE.NODE)),
+  )(editorSelection)
+);
 
 export default {
   User,

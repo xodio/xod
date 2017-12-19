@@ -42,5 +42,9 @@
     width: 100%;
     overflow: hidden;
     user-select: none;
+    & > div {
+      display: flex;
+      width: 100%;
+    }
   }
 }

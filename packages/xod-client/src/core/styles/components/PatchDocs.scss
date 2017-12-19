@@ -1,9 +1,11 @@
-$node-height: 91px;
+$node-height: 93px;
 $label-width: 28px;
 $PinInfo-padding-bottom: 10px;
 
 .PatchDocs {
-  width: 540px;
+  display: table-caption;
+  min-width: 300px;
+  max-width: 510px;
   box-sizing: border-box;
   background: $sidebar-color-bg;
   cursor: default;
@@ -52,8 +54,6 @@ $PinInfo-padding-bottom: 10px;
 
   .node-preview {
     position: absolute;
-    width: 270px;
-    height: $node-height;
     bottom: 0px;
     left: 0;
     z-index: 2;
@@ -71,6 +71,13 @@ $PinInfo-padding-bottom: 10px;
     position: relative;
     background: $sidebar-color-bg;
     min-height: $node-height;
+
+    &--no-inputs {
+      min-height: 75px;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    &--no-outputs { margin-bottom: -20px; }
   }
   .input-pin {
     border: 1px solid $color-pinlabel;
@@ -126,6 +133,9 @@ $PinInfo-padding-bottom: 10px;
 
   &--minimal {
     width: 100%;
+    max-width: 100%;
+    display: block;
+
     .input-pins-container {
       padding-top: 0;
     }

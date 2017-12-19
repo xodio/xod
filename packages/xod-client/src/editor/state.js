@@ -3,7 +3,7 @@ import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
 
 export default {
   currentTabId: '@/1',
-  isHelpbarVisible: false,
+  isHelpboxVisible: false,
   focusedArea: FOCUS_AREAS.WORKAREA,
   draggedPreviewSize: { width: 0, height: 0 },
   suggester: {

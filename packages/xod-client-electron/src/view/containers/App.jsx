@@ -501,8 +501,8 @@ class App extends client.App {
       label: 'View',
       submenu: [
         client.menu.onClick(
-          client.menu.items.toggleHelpbar,
-          this.props.actions.toggleHelpbar
+          client.menu.items.toggleHelp,
+          this.props.actions.toggleHelp
         ),
         client.menu.onClick(
           client.menu.items.toggleDebugger,

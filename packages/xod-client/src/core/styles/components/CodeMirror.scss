@@ -6,7 +6,7 @@
 
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
-  font-size: 14px;
+  font-size: $font-size-l;
   // TODO: we should use roboto, but it does weird things to cursor positioning
   font-family: monospace;
   width: 100%;

@@ -11,7 +11,7 @@ import {
   subtractPoints,
 } from '../project/nodeLayout';
 
-import { SELECTION_ENTITY_TYPE, PANEL_IDS } from './constants';
+import { SELECTION_ENTITY_TYPE, PANEL_IDS, UPDATE_HELPBOX_POSITION } from './constants';
 
 export const getTabByPatchPath = R.curry(
   (patchPath, tabs) => R.compose(
@@ -281,3 +281,38 @@ export const getMaximizedPanelsBySidebarId = R.compose(
   filterMaximized,
   getPanelsBySidebarId
 );
+
+export const triggerUpdateHelpboxPosition = (event) => {
+  const container = document.getElementById('ProjectBrowser').getElementsByClassName('inner-container')[0];
+  const selectedElement = (event && event.type === 'click')
+    ? event.target.closest('.PatchGroupItem')
+    : container.getElementsByClassName('isSelected')[0];
+
+  if (container && selectedElement) {
+    const scrollTop = container.scrollTop;
+    const height = container.offsetHeight;
+    const viewBottom = scrollTop + height;
+
+    const elHeight = selectedElement.offsetHeight;
+    const elTop = selectedElement.offsetTop;
+    const elBottom = elHeight + elTop;
+
+    const elVisible = (
+      (elBottom <= viewBottom) && elTop >= scrollTop
+    );
+
+    const elAbsTop = selectedElement.getClientRects()[0].top;
+
+    window.dispatchEvent(
+      new window.CustomEvent(
+        UPDATE_HELPBOX_POSITION,
+        {
+          detail: {
+            isVisible: elVisible,
+            top: elAbsTop,
+          },
+        }
+      )
+    );
+  }
+};

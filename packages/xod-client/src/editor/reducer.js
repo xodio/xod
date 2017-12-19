@@ -5,6 +5,7 @@ import * as XP from 'xod-project';
 import * as EAT from './actionTypes';
 import * as PAT from '../project/actionTypes';
 import * as DAT from '../debugger/actionTypes';
+import { REMOVE_SELECTION } from '../projectBrowser/actionTypes';
 
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
 import {
@@ -551,14 +552,15 @@ const editorReducer = (state = {}, action) => {
       return R.assoc('focusedArea', action.payload, state);
 
     //
-    // helpbar
+    // helpbox
     //
-    case EAT.HIDE_HELPBAR:
-      return R.over(R.lensProp('isHelpbarVisible'), R.F, state);
-    case EAT.SHOW_HELPBAR:
-      return R.over(R.lensProp('isHelpbarVisible'), R.T, state);
-    case EAT.TOGGLE_HELPBAR:
-      return R.over(R.lensProp('isHelpbarVisible'), R.not, state);
+    case REMOVE_SELECTION:
+    case EAT.HIDE_HELPBOX:
+      return R.over(R.lensProp('isHelpboxVisible'), R.F, state);
+    case EAT.SHOW_HELPBOX:
+      return R.over(R.lensProp('isHelpboxVisible'), R.T, state);
+    case EAT.TOGGLE_HELP:
+      return R.over(R.lensProp('isHelpboxVisible'), R.not, state);
 
     //
     // suggester

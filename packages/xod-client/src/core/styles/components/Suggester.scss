@@ -30,7 +30,7 @@
     width: 18px;
     height: 30px;
     background: $input-color-bg;
-    font-size: $font-size-l;
+    font-size: $font-size-xl;
     overflow: hidden;
     text-align: right;
 
@@ -41,7 +41,7 @@
 
   input {
     width: 100%;
-    font-size: $font-size-l;
+    font-size: $font-size-xl;
     background-color: $input-color-bg;
     color: $input-color-text;
     border: 1px solid $input-color-border;
@@ -119,7 +119,7 @@
 
     .path {
       display: block;
-      font-size: 14px;
+      font-size: $font-size-l;
       color: $sidebar-color-text-hover;
       margin-bottom: 2px;
       margin-top: -2px;
