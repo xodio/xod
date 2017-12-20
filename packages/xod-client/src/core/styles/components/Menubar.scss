@@ -1,3 +1,17 @@
+.MenuUnderlay {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99990;
+  cursor: default;
+
+  display: none;
+
+  &.isVisible {
+    display: block;
+  }
+}
+
 // below are styles for rc-menu component (https://github.com/react-component/menu)
 // extracted from styles that were included in package, then slightly modified
 $menu-root-class: '.Menubar';
@@ -8,7 +22,7 @@ $menu-root-class: '.Menubar';
   padding-left: 0;
   list-style: none;
   z-index: 99999;
-  color: $color-toolbar-foreground;
+  color: $menubar-text;
 
   display: inline-block;
   margin-top: 0;
@@ -17,7 +31,6 @@ $menu-root-class: '.Menubar';
 
   .load-button {
     overflow: hidden;
-    cursor: pointer;
 
     input {
       position: absolute;
@@ -26,12 +39,14 @@ $menu-root-class: '.Menubar';
   }
 
   .menu-link {
-    color: $color-toolbar-foreground;
+    color: $menubar-submenu-text;
     text-decoration: none;
   }
 
   .hotkey {
     float: right;
+    padding-left: 7px;
+    color: $menubar-submenu-hotkey-text;
   }
 
   &-hidden {
@@ -51,28 +66,17 @@ $menu-root-class: '.Menubar';
     padding: 0;
   }
 
-  &-item-group-title {
-    color: $color-toolbar-foreground;
-    line-height: 1.5;
-    padding: 8px 10px;
-    border-bottom: 1px solid $color-toolbar-foreground;
+  &-submenu-active > &-submenu-title {
+    background-color: $menubar-hover-bg;
   }
-
-  &-submenu-open > &-submenu-title,
+  &-submenu-open > &-submenu-title {
+    color: $menubar-active-text;
+    background-color: $menubar-active-bg;
+  }
   &-item-active > &-clickable-item,
   &-item-active .menu-link {
-    color: $color-toolbar-background;
-    background-color: $color-toolbar-foreground;
-    cursor: pointer;
-  }
-
-  &-item-selected {
-    background-color: $color-toolbar-background;
-    transform: translateZ(0);
-  }
-
-  &-submenu-selected {
-    background-color: $color-toolbar-background;
+    color: $menubar-submenu-text;
+    background-color: $menubar-submenu-hover-bg;
   }
 
   & > li#{&}-submenu {
@@ -81,8 +85,6 @@ $menu-root-class: '.Menubar';
 
   &-submenu-horizontal > & {
     top: 100%;
-    left: 0;
-    position: absolute;
     min-width: 180px;
   }
 
@@ -93,11 +95,10 @@ $menu-root-class: '.Menubar';
     display: block;
     white-space: nowrap;
     user-select: none;
-    cursor: pointer;
   }
 
   &-clickable-item {
-    padding: 9px;
+    padding: 5px 14px;
   }
 
   &-item-disabled,
@@ -105,42 +106,46 @@ $menu-root-class: '.Menubar';
   &-submenu-title#{$menu-root-class}-item-disabled,
   &-item#{$menu-root-class}-submenu-disabled,
   &-submenu-title#{$menu-root-class}-submenu-disabled {
-    color: #777 !important;
+    color: $menubar-submenu-disabled-text !important;
     cursor: default;
   }
 
   & > &-item-divider {
     height: 1px;
-    margin: 1px 0;
+    margin: 5px 2px;
     overflow: hidden;
     padding: 0;
     line-height: 0;
-    // TODO: ask UX designer
-    background-color: $color-toolbar-foreground;
+    background-color: $menubar-submenu-separator;
   }
 
   &-submenu {
-    position: relative;
-
-    & > #{$menu-root-class} {
-      background-color: $color-toolbar-background;
+    &-popup {
+      position: absolute;
+      z-index: 99999;
+    }
+    > #{$menu-root-class} {
+      background-color: $menubar-submenu-bg;
     }
   }
 
+  &-submenu > #{$menu-root-class} {
+    background-color: $menubar-submenu-bg;
+  }
+
   &-horizontal {
-    background-color: $color-toolbar-background;
+    background-color: $menubar-bg;
   }
   &-horizontal > &-item,
   &-horizontal > &-submenu > &-submenu-title {
-    padding: 12px;
+    padding: 9px 24px;
   }
   &-horizontal > &-submenu,
   &-horizontal > &-item {
     float: left;
   }
   &-horizontal > &-item-active {
-    background-color: $color-toolbar-background;
-    color: $color-toolbar-foreground;
+    color: $menubar-text;
   }
   &-horizontal:after {
     content: "\20";
@@ -152,7 +157,6 @@ $menu-root-class: '.Menubar';
   &-submenu-vertical > & {
     top: 0;
     left: 100%;
-    position: absolute;
     min-width: 180px;
     margin-left: 4px;
   }
@@ -162,7 +166,8 @@ $menu-root-class: '.Menubar';
   }
 
   &-vertical#{$menu-root-class}-sub {
-    padding: 0;
+    padding: 5px 0;
+    border: 1px solid $menubar-submenu-separator;
   }
   &-sub#{$menu-root-class}-inline {
     padding: 0;

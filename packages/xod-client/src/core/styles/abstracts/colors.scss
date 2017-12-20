@@ -63,6 +63,7 @@ $brown-light: #8e5f35;
 $brown-shadow: #69421e;
 
 // Associated colors
+
 $selected: $cyan;
 $error: $red;
 
@@ -115,3 +116,18 @@ $light-button-hover-bg: $light-button-bg;
 $light-button-hover-outlines: $grey-bright;
 $light-button-disabled-text: rgba($light-button-text, .5);
 $light-button-disabled-outlines: rgba($light-button-outlines, .5);
+
+$menubar-bg: $dark-deep;
+$menubar-text: $chalk;
+$menubar-active-bg: $coal;
+$menubar-active-text: $green-bright;
+$menubar-hover-bg: $dark-bright;
+$menubar-hover-text: $chalk;
+$menubar-border: $coal;
+
+$menubar-submenu-text: $chalk;
+$menubar-submenu-bg: $coal;
+$menubar-submenu-hover-bg: $dark-deep;
+$menubar-submenu-separator: $grey;
+$menubar-submenu-disabled-text: $grey;
+$menubar-submenu-hotkey-text: $grey;
