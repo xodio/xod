@@ -7,7 +7,8 @@ export const COMMAND = {
   OPEN_PROJECT: 'openProject',
   RENAME_PROJECT: 'renameProject',
 
-  TOGGLE_HELPBAR: 'toggleHelpbar',
+  HIDE_HELPBOX: 'hideHelpbox',
+  TOGGLE_HELP: 'toggleHelp',
   TOGGLE_DEBUGGER: 'toggleDebugger',
 
   ADD_PATCH: 'addPatch',
@@ -44,7 +45,8 @@ export const HOTKEY = {
 
   [COMMAND.SAVE_ALL]: ['ctrl+s'],
 
-  [COMMAND.TOGGLE_HELPBAR]: ['h'],
+  [COMMAND.HIDE_HELPBOX]: 'escape',
+  [COMMAND.TOGGLE_HELP]: ['h'],
   [COMMAND.TOGGLE_DEBUGGER]: ['ctrl+shift+u'],
   [COMMAND.INSERT_NODE]: ['i'],
 };
@@ -72,6 +74,7 @@ export const ELECTRON_ACCELERATOR = {
 
   [COMMAND.SAVE_ALL]: 'CmdOrCtrl+S',
 
+  [COMMAND.HIDE_HELPBOX]: 'Escape',
   [COMMAND.TOGGLE_DEBUGGER]: 'CmdOrCtrl+Shift+U',
 };
 

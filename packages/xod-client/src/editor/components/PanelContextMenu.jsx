@@ -36,14 +36,14 @@ const PanelContextMenu = (props) => {
           onClick={callCallbackWithPanelId(callSwitchSideClick(SIDEBAR_IDS.RIGHT))}
           attributes={{ 'data-id': 'move-to-right' }}
         >
-          Dock To Right
+          Dock to Right
         </MenuItem>
       ) : (
         <MenuItem
           onClick={callCallbackWithPanelId(callSwitchSideClick(SIDEBAR_IDS.LEFT))}
           attributes={{ 'data-id': 'move-to-left' }}
         >
-          Dock To Left
+          Dock to Left
         </MenuItem>
       )}
       {/* TODO */}

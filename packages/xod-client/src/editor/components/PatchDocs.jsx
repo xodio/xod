@@ -15,7 +15,7 @@ const NODE_POSITION_IN_PREVIEW = {
 };
 
 const MAX_NODE_WIDTH = 245 - (NODE_POSITION_IN_PREVIEW.x * 2);
-const NODE_PREVIEW_HEIGHT = 101;
+const NODE_PREVIEW_HEIGHT = 93;
 
 const PinInfo = ({ type, label, description }) => (
   <div className="pin-info">
@@ -114,11 +114,9 @@ const PatchDocs = ({ patch, minimal }) => {
     ? 1
     : MAX_NODE_WIDTH / nodeProps.size.width;
 
-  const scaledNodeWidth = nodeProps.size.width * scaleFactor;
   const fromNodeEdgeToPin = scaleFactor * (SLOT_SIZE.WIDTH / 2);
-  const nodeMargin = (MAX_NODE_WIDTH - scaledNodeWidth - NODE_POSITION_IN_PREVIEW.x) / 2;
+  const scaledNodeWidth = (nodeProps.size.width * scaleFactor) + fromNodeEdgeToPin;
   const distanceToFirstPin = minimal ? 0 : (
-    nodeMargin +
     fromNodeEdgeToPin +
     (NODE_POSITION_IN_PREVIEW.x * scaleFactor)
   ) - 1;
@@ -136,34 +134,39 @@ const PatchDocs = ({ patch, minimal }) => {
   const cls = cn('PatchDocs', {
     'PatchDocs--minimal': minimal,
   });
+  const containerCls = cn('input-pins-container', {
+    'input-pins-container--no-inputs': inputPins.length === 0,
+    'input-pins-container--no-outputs': outputPins.length === 0,
+  });
 
   return (
     <div className={cls}>
       <div className="baseName">{baseName}</div>
       <div className="nodeType">{nodeType}</div>
       <div className="description">{description}</div>
-      {inputPins.length > 0 && (
-        <div className="input-pins-container" style={{ paddingLeft: distanceToFirstPin }}>
-          {minimal && (
-            <span className="pin-title">Inputs:</span>
-          )}
+      <div className={containerCls} style={{ paddingLeft: distanceToFirstPin }}>
+        {inputPins.length > 0 && [
+          minimal && (
+            <span className="pin-title" key="title">Inputs:</span>
+          ),
           <InputPins
+            key="inputPins"
             distanceBetweenPins={distanceBetweenPins}
             pins={inputPins}
-          />
-          {!minimal && (
-            <svg className="node-preview" height={scaledNodePreviewHeight}>
-              <rect className="bg" width="100%" height="100%" />
-              <g transform={`scale(${scaleFactor}) translate(${nodeMargin})`}>
-                <Node
-                  {...nodeProps}
-                  position={position}
-                />
-              </g>
-            </svg>
-          )}
-        </div>
-      )}
+          />,
+        ]}
+        {!minimal && (
+          <svg className="node-preview" width={scaledNodeWidth} height={scaledNodePreviewHeight}>
+            <rect className="bg" width="100%" height="100%" />
+            <g transform={`scale(${scaleFactor})`}>
+              <Node
+                {...nodeProps}
+                position={position}
+              />
+            </g>
+          </svg>
+        )}
+      </div>
       {outputPins.length > 0 && (
         <div className="output-pins-container" style={{ paddingLeft: distanceToFirstPin }}>
           {minimal && (

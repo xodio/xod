@@ -1,7 +1,11 @@
 .Inspector-container {
-  height: 100%;
+  display: flex;
+  flex-grow: 1;
 }
 .Inspector {
+  flex-grow: 1;
+  width: 100%;
+
   &-content {
     padding: 6px;
   }
@@ -127,7 +131,7 @@
   vertical-align: baseline;
 
   &.HintWidget, label {
-    line-height: $font-size-l;
+    line-height: $font-size-xl;
     display: block;
   }
 }

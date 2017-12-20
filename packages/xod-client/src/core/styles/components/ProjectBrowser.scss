@@ -1,8 +1,10 @@
 .ProjectBrowser-container {
-  height: 100%;
+  display: flex;
+  flex-grow: 1;
 }
 .ProjectBrowser {
-  height: 100%;
+  flex-grow: 1;
+  width: 100%;
 
   &:focus {
     box-shadow: none;

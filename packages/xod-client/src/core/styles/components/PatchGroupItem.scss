@@ -27,7 +27,7 @@
     top: 0;
     box-sizing: border-box;
     padding: 0 8px 0 8px;
-    font-size: 14px; // for FA icons
+    font-size: $font-size-l; // for FA icons
 
     &:before {
       display:    block;

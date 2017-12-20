@@ -20,9 +20,9 @@ export const PASTE_ENTITIES = 'PASTE_ENTITIES';
 export const TAB_CLOSE = 'TAB_CLOSE';
 export const TAB_SORT = 'TAB_SORT';
 
-export const SHOW_HELPBAR = 'SHOW_HELPBAR';
-export const HIDE_HELPBAR = 'HIDE_HELPBAR';
-export const TOGGLE_HELPBAR = 'TOGGLE_HELPBAR';
+export const SHOW_HELPBOX = 'SHOW_HELPBOX';
+export const HIDE_HELPBOX = 'HIDE_HELPBOX';
+export const TOGGLE_HELP = 'TOGGLE_HELP';
 
 export const SHOW_SUGGESTER = 'SHOW_SUGGESTER';
 export const HIDE_SUGGESTER = 'HIDE_SUGGESTER';

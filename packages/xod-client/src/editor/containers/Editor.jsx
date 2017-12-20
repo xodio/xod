@@ -31,7 +31,7 @@ import Debugger from '../../debugger/containers/Debugger';
 import Breadcrumbs from '../../debugger/containers/Breadcrumbs';
 import Sidebar from './Sidebar';
 import SnackBar from '../../messages/containers/SnackBar';
-import Helpbar from './Helpbar';
+import Helpbox from './Helpbox';
 
 import Tabs from './Tabs';
 import DragLayer from './DragLayer';
@@ -41,7 +41,7 @@ class Editor extends React.Component {
     super(props);
 
     this.getHotkeyHandlers = this.getHotkeyHandlers.bind(this);
-    this.toggleHelpbar = this.toggleHelpbar.bind(this);
+    this.toggleHelp = this.toggleHelp.bind(this);
     this.onAddNode = this.onAddNode.bind(this);
     this.onInstallLibrary = this.onInstallLibrary.bind(this);
     this.showSuggester = this.showSuggester.bind(this);
@@ -86,7 +86,8 @@ class Editor extends React.Component {
     return {
       [COMMAND.UNDO]: () => this.props.actions.undo(this.props.currentPatchPath),
       [COMMAND.REDO]: () => this.props.actions.redo(this.props.currentPatchPath),
-      [COMMAND.TOGGLE_HELPBAR]: this.toggleHelpbar,
+      [COMMAND.HIDE_HELPBOX]: () => this.props.actions.hideHelpbox(),
+      [COMMAND.TOGGLE_HELP]: this.toggleHelp,
       [COMMAND.INSERT_NODE]: (event) => {
         if (isInputTarget(event)) return;
         this.showSuggester(null);
@@ -94,10 +95,10 @@ class Editor extends React.Component {
     };
   }
 
-  toggleHelpbar(e) {
+  toggleHelp(e) {
     if (isInputTarget(e)) return;
 
-    this.props.actions.toggleHelpbar();
+    this.props.actions.toggleHelp();
   }
 
   showSuggester(placePosition) {
@@ -168,7 +169,7 @@ class Editor extends React.Component {
 
     const suggester = (this.props.suggesterIsVisible) ? (
       <Suggester
-        addClassName={(this.props.isHelpbarVisible) ? 'with-helpbar' : ''}
+        addClassName={(this.props.isHelpboxVisible) ? 'with-helpbar' : ''}
         index={patchesIndex}
         onAddNode={this.onAddNode}
         onBlur={this.hideSuggester}
@@ -179,7 +180,7 @@ class Editor extends React.Component {
 
     const libSuggester = (this.props.isLibSuggesterVisible) ? (
       <LibSuggester
-        addClassName={(this.props.isHelpbarVisible) ? 'with-helpbar' : ''}
+        addClassName={(this.props.isHelpboxVisible) ? 'with-helpbar' : ''}
         onInstallLibrary={this.onInstallLibrary}
         onBlur={this.props.actions.hideLibSuggester}
         onInitialFocus={this.onLibSuggesterFocus}
@@ -204,7 +205,7 @@ class Editor extends React.Component {
     ) : null;
 
     return (
-      <HotKeys handlers={this.getHotkeyHandlers()} className="Editor">
+      <HotKeys handlers={this.getHotkeyHandlers()} className="Editor" id="Editor">
         <Sidebar
           id={SIDEBAR_IDS.LEFT}
           windowSize={this.props.size}
@@ -227,8 +228,8 @@ class Editor extends React.Component {
           id={SIDEBAR_IDS.RIGHT}
           windowSize={this.props.size}
         />
-        {this.props.isHelpbarVisible && <Helpbar />}
         <DragLayer />
+        {this.props.isHelpboxVisible && <Helpbox />}
         <PanelContextMenu
           onMinimizeClick={this.props.actions.minimizePanel}
           onSwitchSideClick={this.props.actions.movePanel}
@@ -246,7 +247,7 @@ Editor.propTypes = {
   currentTab: PropTypes.object,
   implEditorTabs: PropTypes.array,
   patchesIndex: PropTypes.object,
-  isHelpbarVisible: PropTypes.bool,
+  isHelpboxVisible: PropTypes.bool,
   isDebuggerVisible: PropTypes.bool,
   isDebugSessionRunning: PropTypes.bool,
   suggesterIsVisible: PropTypes.bool,
@@ -259,7 +260,7 @@ Editor.propTypes = {
     closeImplementationEditor: PropTypes.func.isRequired,
     undo: PropTypes.func.isRequired,
     redo: PropTypes.func.isRequired,
-    toggleHelpbar: PropTypes.func.isRequired,
+    toggleHelp: PropTypes.func.isRequired,
     setFocusedArea: PropTypes.func.isRequired,
     addNode: PropTypes.func.isRequired,
     showSuggester: PropTypes.func.isRequired,
@@ -270,6 +271,7 @@ Editor.propTypes = {
     minimizePanel: PropTypes.func.isRequired,
     movePanel: PropTypes.func.isRequired,
     togglePanelAutohide: PropTypes.func.isRequired,
+    hideHelpbox: PropTypes.func.isRequired,
   }),
 };
 
@@ -284,7 +286,7 @@ const mapStateToProps = R.applySpec({
   suggesterIsVisible: EditorSelectors.isSuggesterVisible,
   suggesterPlacePosition: EditorSelectors.getSuggesterPlacePosition,
   isLibSuggesterVisible: EditorSelectors.isLibSuggesterVisible,
-  isHelpbarVisible: EditorSelectors.isHelpbarVisible,
+  isHelpboxVisible: EditorSelectors.isHelpboxVisible,
   isDebuggerVisible: DebuggerSelectors.isDebuggerVisible,
   isDebugSessionRunning: DebuggerSelectors.isDebugSession,
   defaultNodePosition: EditorSelectors.getDefaultNodePlacePosition,
@@ -298,7 +300,7 @@ const mapDispatchToProps = dispatch => ({
     closeImplementationEditor: Actions.closeImplementationEditor,
     undo: ProjectActions.undoPatch,
     redo: ProjectActions.redoPatch,
-    toggleHelpbar: Actions.toggleHelpbar,
+    toggleHelp: Actions.toggleHelp,
     setFocusedArea: Actions.setFocusedArea,
     addNode: ProjectActions.addNode,
     showSuggester: Actions.showSuggester,
@@ -309,6 +311,7 @@ const mapDispatchToProps = dispatch => ({
     minimizePanel: Actions.minimizePanel,
     movePanel: Actions.movePanel,
     togglePanelAutohide: Actions.togglePanelAutohide,
+    hideHelpbox: Actions.hideHelpbox,
   }, dispatch),
 });
 

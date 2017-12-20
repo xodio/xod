@@ -1,0 +1,59 @@
+.Helpbox {
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  left: $sidebar-width;
+  background: $sidebar-color-bg;
+  border: 1px solid $chrome-outlines;
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px -5px rgba(0,0,0,.5);
+  max-height: 80%;
+  min-width: 300px;
+
+  margin-top: -13px; // to point accurately on selected item
+
+  display: flex;
+  flex-direction: column;
+
+  transition: opacity 0.1s;
+
+  &--hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &-content {
+    display: flex;
+    flex-grow: 1;
+
+    .PatchDocs {
+      padding: 12px;
+    }
+  }
+
+  .pointer {
+    position: absolute;
+    z-index: 2;
+    left: -7px;
+    top: 20px;
+
+    &:before {
+      content: '';
+      display: block;
+      width: 12px;
+      height: 12px;
+
+      background: $sidebar-color-bg;
+      border-left: 1px solid $chrome-outlines;
+      border-top: 1px solid $chrome-outlines;
+      transform: rotate(-45deg);
+    }
+  }
+
+  .no-selection {
+    color: $sidebar-color-text;
+    font-size: $font-size-m;
+    text-align: center;
+    padding: 10px;
+  }
+}

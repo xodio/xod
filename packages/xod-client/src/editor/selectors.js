@@ -115,9 +115,9 @@ export const getFocusedArea = R.pipe(
 //
 // docs sidebar
 //
-export const isHelpbarVisible = R.pipe(
+export const isHelpboxVisible = R.pipe(
   getEditor,
-  R.prop('isHelpbarVisible')
+  R.prop('isHelpboxVisible')
 );
 
 //

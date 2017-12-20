@@ -5,7 +5,14 @@ import { ContextMenu, MenuItem, connectMenu } from 'react-contextmenu';
 
 import { PATCH_GROUP_CONTEXT_MENU_ID } from '../constants';
 
-const callCallbackWithPatchPath = onClick => (event, data) => onClick(data.patchPath);
+const onContextMenuItemClick = onClick => (event, data) => {
+  onClick(data.patchPath);
+
+  // Need to force focus on Editor to provide use of its hotkeys
+  // Cause after click ContextMenu will be unmounted and focus
+  // automatically switches to <body> element.
+  document.getElementById('Editor').focus();
+};
 
 const PatchGroupItemContextMenu = (props) => {
   const trigger = (props.trigger) ? props.trigger : {};
@@ -13,7 +20,7 @@ const PatchGroupItemContextMenu = (props) => {
   const renamePatch = (trigger.isLocalPatch)
     ? (
       <MenuItem
-        onClick={callCallbackWithPatchPath(props.onPatchRename)}
+        onClick={onContextMenuItemClick(props.onPatchRename)}
         // data-id has special attribute that used by func tests
         attributes={{ 'data-id': 'rename' }}
       >
@@ -24,7 +31,7 @@ const PatchGroupItemContextMenu = (props) => {
   const deletePatch = (trigger.isLocalPatch)
     ? (
       <MenuItem
-        onClick={callCallbackWithPatchPath(props.onPatchDelete)}
+        onClick={onContextMenuItemClick(props.onPatchDelete)}
         attributes={{ 'data-id': 'delete' }}
       >
         Delete
@@ -43,7 +50,7 @@ const PatchGroupItemContextMenu = (props) => {
       className={cls}
     >
       <MenuItem
-        onClick={callCallbackWithPatchPath(props.onPatchAdd)}
+        onClick={onContextMenuItemClick(props.onPatchAdd)}
         disabled={!trigger.canAdd}
         attributes={{ 'data-id': 'place' }}
       >
@@ -54,7 +61,7 @@ const PatchGroupItemContextMenu = (props) => {
       </MenuItem>
       <MenuItem divider />
       <MenuItem
-        onClick={callCallbackWithPatchPath(props.onPatchOpen)}
+        onClick={onContextMenuItemClick(props.onPatchOpen)}
         attributes={{ 'data-id': 'open' }}
       >
         <span className="accelerator">
@@ -66,7 +73,7 @@ const PatchGroupItemContextMenu = (props) => {
       {deletePatch}
       <MenuItem divider />
       <MenuItem
-        onClick={callCallbackWithPatchPath(props.onPatchHelp)}
+        onClick={onContextMenuItemClick(props.onPatchHelp)}
         attributes={{ 'data-id': 'help' }}
       >
         <span className="accelerator">

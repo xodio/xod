@@ -208,8 +208,8 @@ class App extends client.App {
         items.view,
         [
           onClick(
-            items.toggleHelpbar,
-            this.props.actions.toggleHelpbar
+            items.toggleHelp,
+            this.props.actions.toggleHelp
           ),
           onClick(
             items.toggleDebugger,
