@@ -48,7 +48,6 @@ class Editor extends React.Component {
     this.hideSuggester = this.hideSuggester.bind(this);
 
     this.onWorkareaFocus = this.onWorkareaFocus.bind(this);
-    this.onNodeSuggesterFocus = this.onNodeSuggesterFocus.bind(this);
     this.onLibSuggesterFocus = this.onLibSuggesterFocus.bind(this);
 
     this.patchSize = this.props.size;
@@ -74,9 +73,6 @@ class Editor extends React.Component {
   }
   onWorkareaFocus() {
     this.props.actions.setFocusedArea(FOCUS_AREAS.WORKAREA);
-  }
-  onNodeSuggesterFocus() {
-    this.props.actions.setFocusedArea(FOCUS_AREAS.NODE_SUGGESTER);
   }
   onLibSuggesterFocus() {
     this.props.actions.setFocusedArea(FOCUS_AREAS.LIB_SUGGESTER);
@@ -169,18 +165,17 @@ class Editor extends React.Component {
 
     const suggester = (this.props.suggesterIsVisible) ? (
       <Suggester
-        addClassName={(this.props.isHelpboxVisible) ? 'with-helpbar' : ''}
         index={patchesIndex}
         onAddNode={this.onAddNode}
         onBlur={this.hideSuggester}
-        onInitialFocus={this.onNodeSuggesterFocus}
         onHighlight={this.props.actions.highlightSugessterItem}
+        showHelpbox={this.props.actions.showHelpbox}
       />
     ) : null;
 
     const libSuggester = (this.props.isLibSuggesterVisible) ? (
       <LibSuggester
-        addClassName={(this.props.isHelpboxVisible) ? 'with-helpbar' : ''}
+        extraClassName="Suggester--library"
         onInstallLibrary={this.onInstallLibrary}
         onBlur={this.props.actions.hideLibSuggester}
         onInitialFocus={this.onLibSuggesterFocus}
@@ -272,6 +267,7 @@ Editor.propTypes = {
     movePanel: PropTypes.func.isRequired,
     togglePanelAutohide: PropTypes.func.isRequired,
     hideHelpbox: PropTypes.func.isRequired,
+    showHelpbox: PropTypes.func.isRequired,
   }),
 };
 
@@ -312,6 +308,7 @@ const mapDispatchToProps = dispatch => ({
     movePanel: Actions.movePanel,
     togglePanelAutohide: Actions.togglePanelAutohide,
     hideHelpbox: Actions.hideHelpbox,
+    showHelpbox: Actions.showHelpbox,
   }, dispatch),
 });
 

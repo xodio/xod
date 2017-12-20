@@ -37,7 +37,7 @@ import PatchGroupItemContextMenu from '../components/PatchGroupItemContextMenu';
 
 import { PATCH_GROUP_CONTEXT_MENU_ID } from '../constants';
 import { PANEL_IDS, SIDEBAR_IDS } from '../../editor/constants';
-import { triggerUpdateHelpboxPosition } from '../../editor/utils';
+import { triggerUpdateHelpboxPositionViaProjectBrowser } from '../../editor/utils';
 
 const pickPatchPartsForComparsion = R.map(R.pick(['dead', 'path']));
 
@@ -187,7 +187,7 @@ class ProjectBrowser extends React.Component {
         onBeginDrag={startDraggingPatch}
         isSelected={path === selectedPatchPath}
         onClick={(event) => {
-          triggerUpdateHelpboxPosition(event);
+          triggerUpdateHelpboxPositionViaProjectBrowser(event);
           setSelection(path);
         }}
         collectPropsFn={collectPropsFn}
@@ -308,7 +308,7 @@ class ProjectBrowser extends React.Component {
           sidebarId={this.props.sidebarId}
           autohide={this.props.autohide}
           additionalButtons={this.renderToolbarButtons()}
-          onScroll={triggerUpdateHelpboxPosition}
+          onScroll={triggerUpdateHelpboxPositionViaProjectBrowser}
         >
           {this.renderPatches()}
         </SidebarPanel>

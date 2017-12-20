@@ -569,12 +569,15 @@ const editorReducer = (state = {}, action) => {
       if (R.path(['suggester', 'visible'], state) === true) return state;
 
       return R.compose(
+        R.over(R.lensProp('isHelpboxVisible'), R.T),
+        R.assoc('focusedArea', FOCUS_AREAS.NODE_SUGGESTER),
         R.assocPath(['suggester', 'visible'], true),
         R.assocPath(['suggester', 'placePosition'], action.payload)
       )(state);
     }
     case EAT.HIDE_SUGGESTER:
       return R.compose(
+        R.over(R.lensProp('isHelpboxVisible'), R.F),
         R.assocPath(['suggester', 'visible'], false),
         R.assocPath(['suggester', 'highlightedPatchPath'], null),
         R.assocPath(['suggester', 'placePosition'], null)

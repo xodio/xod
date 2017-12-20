@@ -97,5 +97,7 @@ export const SIDEBAR_IDS = {
 export const PANEL_CONTEXT_MENU_ID = 'PANEL_CONTEXT_MENU_ID';
 
 // Event name for pub/sub to update position of Helpbox
-// while User scrolls ProjectBrowser or selects another Patch
+// while User:
+// - scrolls ProjectBrowser or selects another Patch by click
+// - highlights (arrows/mouse over) or scrolls Node Suggester
 export const UPDATE_HELPBOX_POSITION = 'UPDATE_HELPBOX_POSITION';

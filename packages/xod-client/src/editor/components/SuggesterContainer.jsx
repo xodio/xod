@@ -41,13 +41,13 @@ class SuggesterContainer extends React.Component {
         const containerHeight = contentWrapper.clientHeight;
         const scrollPos = this.scrollRef.state.scrollPos;
 
-        const isOutsideUp = (top - height <= scrollPos);
-        const isOutsideDown = (top + height >= (scrollPos + containerHeight) - height);
+        const isOutsideUp = (top < scrollPos);
+        const isOutsideDown = (top + height > (scrollPos + containerHeight));
 
         if (isOutsideDown) {
-          return (top + height + height) - containerHeight;
+          return (top + height) - containerHeight;
         } else if (isOutsideUp) {
-          return top - height;
+          return top;
         }
 
         // If it’s inside container do nothing at all
@@ -72,10 +72,12 @@ class SuggesterContainer extends React.Component {
       <CustomScroll
         ref={this.setScrollRef}
         scrollTo={this.state.scrollPos}
+        onScroll={this.props.onScroll}
       >
         <div
           {...this.props.containerProps}
           className="Suggester-container"
+          onMouseMove={this.props.onMouseMove}
         >
           {this.props.children}
         </div>
@@ -84,9 +86,16 @@ class SuggesterContainer extends React.Component {
   }
 }
 
+SuggesterContainer.defaultProps = {
+  onScroll: () => {},
+  onMouseMove: () => {},
+};
+
 SuggesterContainer.propTypes = {
   containerProps: PropTypes.object,
   children: PropTypes.object,
+  onScroll: PropTypes.func,
+  onMouseMove: PropTypes.func,
 };
 
 export default SuggesterContainer;
