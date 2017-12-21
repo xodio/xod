@@ -33,7 +33,13 @@ export default (state, action) => {
       return state;
     }
     case OPEN_UPLOAD_CONFIG:
-      return showOnlyPopup(POPUP_ID.UPLOADING_CONFIG, {}, state);
+      return showOnlyPopup(
+        POPUP_ID.UPLOADING_CONFIG,
+        {
+          debugAfterUpload: action.payload.debugAfterUpload,
+        },
+        state
+      );
     case CLOSE_UPLOAD_CONFIG:
       return hideOnePopup(POPUP_ID.UPLOADING_CONFIG, state);
 

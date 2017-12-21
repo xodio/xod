@@ -625,6 +625,7 @@ class App extends client.App {
         listPorts={this.listPorts}
         compileLimitLeft={this.props.compileLimitLeft}
         updateCompileLimit={this.props.actions.updateCompileLimit}
+        initialDebugAfterUpload={this.props.popupsData.uploadToArduinoConfig.debugAfterUpload}
         onBoardChanged={this.onArduinoTargetBoardChange}
         onPortChanged={this.onSerialPortChange}
         onUpload={this.onUploadToArduino}
@@ -771,6 +772,7 @@ const mapStateToProps = R.applySpec({
   popupsData: {
     projectSelection: client.getPopupData(client.POPUP_ID.OPENING_PROJECT),
     createWorkspace: client.getPopupData(client.POPUP_ID.CREATING_WORKSPACE),
+    uploadToArduinoConfig: client.getPopupData(client.POPUP_ID.UPLOADING_CONFIG),
     switchWorkspace: client.getPopupData(client.POPUP_ID.SWITCHING_WORKSPACE),
     showCode: client.getPopupData(client.POPUP_ID.SHOWING_CODE),
     publishingProject: client.getPopupData(client.POPUP_ID.PUBLISHING_PROJECT),
