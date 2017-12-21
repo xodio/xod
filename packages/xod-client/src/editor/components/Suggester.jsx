@@ -7,7 +7,7 @@ import Autosuggest from 'react-autosuggest';
 import Highlighter from 'react-highlight-words';
 import regExpEscape from 'escape-string-regexp';
 
-import { isAmong } from 'xod-func-tools';
+import { isAmong, noop } from 'xod-func-tools';
 
 import { KEYCODE } from '../../utils/constants';
 import { triggerUpdateHelpboxPositionViaSuggester } from '../../editor/utils';
@@ -53,6 +53,12 @@ class Suggester extends React.Component {
       setTimeout(() => {
         this.input.focus();
       }, 1);
+    }
+  }
+
+  componentDidUpdate() {
+    if (R.isEmpty(this.state.suggestions)) {
+      this.props.hideHelpbox();
     }
   }
 
@@ -206,8 +212,10 @@ class Suggester extends React.Component {
 
 Suggester.defaultProps = {
   extraClassName: '',
-  onBlur: () => {},
-  onHighlight: () => {},
+  onBlur: noop,
+  onHighlight: noop,
+  showHelpbox: noop,
+  hideHelpbox: noop,
 };
 
 Suggester.propTypes = {
@@ -217,6 +225,7 @@ Suggester.propTypes = {
   onHighlight: PropTypes.func,
   onBlur: PropTypes.func,
   showHelpbox: PropTypes.func,
+  hideHelpbox: PropTypes.func,
 };
 
 export default Suggester;

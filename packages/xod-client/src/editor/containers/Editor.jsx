@@ -170,6 +170,7 @@ class Editor extends React.Component {
         onBlur={this.hideSuggester}
         onHighlight={this.props.actions.highlightSugessterItem}
         showHelpbox={this.props.actions.showHelpbox}
+        hideHelpbox={this.props.actions.hideHelpbox}
       />
     ) : null;
 
