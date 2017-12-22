@@ -13,6 +13,7 @@ import {
   FOCUS_AREAS,
   SELECTION_ENTITY_TYPE,
   TAB_TYPES,
+  PANEL_IDS,
 } from './constants';
 import { createSelectionEntity, getNewSelection, getTabByPatchPath } from './utils';
 import { setCurrentPatchOffset, switchPatchUnsafe } from './actions';
@@ -649,11 +650,19 @@ const editorReducer = (state = {}, action) => {
         state
       );
     case EAT.MOVE_PANEL:
-      return R.assocPath(
-        ['panels', action.payload.panelId, 'sidebar'],
-        action.payload.sidebarId,
-        state
-      );
+      return R.compose(
+        // hide helpbox panel on moving ProjectBrowser
+        // it should be fixed in the future
+        // by saving expanded states of PatchGroups
+        R.when(
+          () => action.payload.panelId === PANEL_IDS.PROJECT_BROWSER,
+          R.over(R.lensProp('isHelpboxVisible'), R.F)
+        ),
+        R.assocPath(
+          ['panels', action.payload.panelId, 'sidebar'],
+          action.payload.sidebarId
+        )
+      )(state);
     case EAT.TOGGLE_PANEL_AUTOHIDE:
       return R.over(
         R.lensPath(['panels', action.payload.panelId, 'autohide']),

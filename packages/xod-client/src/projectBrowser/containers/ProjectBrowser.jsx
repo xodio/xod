@@ -70,7 +70,9 @@ class ProjectBrowser extends React.Component {
     this.renderLocalPatches = this.renderLocalPatches.bind(this);
     this.renderLibraryPatches = this.renderLibraryPatches.bind(this);
   }
-
+  componentDidMount() {
+    triggerUpdateHelpboxPositionViaProjectBrowser();
+  }
   shouldComponentUpdate(nextProps) {
     return !R.eqBy(
       pickPropsForComparsion,
