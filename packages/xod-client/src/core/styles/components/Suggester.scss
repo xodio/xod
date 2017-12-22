@@ -1,6 +1,5 @@
 @mixin custom-search-clear-button() {
   position: relative;
-  z-index: 10;
   width: 18px;
   height: 18px;
   border: none;
@@ -36,17 +35,20 @@
 
   .loading-icon {
     position: absolute;
-    right: 8px;
+    left: 6px;
     top: 6px;
     width: 18px;
     height: 30px;
+    box-sizing: border-box;
     background: $input-color-bg;
-    font-size: $font-size-xl;
+    font-size: $font-size-m;
     overflow: hidden;
-    text-align: right;
+    text-align: center;
 
     .fa {
+      margin-right: -2px;
       line-height: 32px;
+      color: $light-grey-bright;
     }
   }
 
